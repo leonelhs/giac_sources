@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Approximate computation of integrals : romberg nInt</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en488.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en490.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc567">4.3.3</A>  Approximate computation of integrals : <TT>romberg nInt</TT></H3><P><A NAME="@default835"></A><A NAME="@default836"></A>
+<TT>romberg</TT> or <TT>nInt</TT> takes as arguments : an expression 
+<TT>ex</TT>, the variable name of this expression (by default <TT>x</TT>), and 
+two real values <TT>a,b</TT>.<BR>
+<TT>romberg(ex,x,a,b)</TT> or <TT>nInt(ex,x,a,b)</TT> computes an approximated 
+value of the integral &#X222B;<SUB><I>a</I></SUB><SUP><I>b</I></SUP> <I>ex</I> <I>dx</I> using the Romberg method. The
+integrand must be sufficiently regular for the approximation to
+be accurate. Otherwise, <TT>romberg</TT> returns a list of real values,
+that comes from the application of the
+Romberg algorithm (the first list element is
+the trapezoid rule approximation, the next ones come from the application
+of the Euler-Mac Laurin formula to remove successive even powers of
+the step of the trapezoid rule).<BR>
+Input :
+</P><DIV CLASS="center"><TT>romberg(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1.46265174591</TT></DIV><HR>
+<A HREF="cascmd_en488.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en490.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

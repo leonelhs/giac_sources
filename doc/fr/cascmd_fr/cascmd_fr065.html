@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>L’affectation : := => sto Store</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr064.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr066.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc85">2.5.2</A>  L’affectation : <TT>:= =&gt; sto Store</TT></H3><P><A NAME="@default46"></A><A NAME="@default47"></A><A NAME="@default48"></A><A NAME="@default49"></A><A NAME="sec:variable"></A>
+On peut utiliser les fonctions infixées <TT>:=</TT> comme en Pascal ou <TT>=&gt;</TT>
+comme le "sto" des calculatrices pour réaliser une affectation ou encore,<BR>
+les fonctions préfixées, <TT>sto</TT> ou <TT>Store</TT>, d’arguments la valeur 
+à affecter et le nom d’une variable.<BR>
+<TT>:=</TT> (ou <TT>=&gt;</TT> ou <TT>sto</TT> ou <TT>Store</TT>) permet d’affecter
+une variable.<BR>
+On tape (attention à l’ordre des arguments !) :
+</P><DIV CLASS="center"><TT>a:=4</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>4=&gt;a</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>sto(4,a)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>Store(4,a)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>4</TT></DIV><P>
+<TT>:=</TT> ou <TT>=&gt;</TT> permettent aussi de définir des fonctions.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>f(x):=sin(x)/x</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>sin(x)/x=&gt;f(x)</TT></DIV><P>
+ou encore 
+</P><DIV CLASS="center"><TT>f:=x-&gt;sin(x)/x</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>x-&gt;sin(x)/x=&gt;f</TT></DIV><P>
+On peut aussi définir une fonction par morceaux :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+une fonction définie par 2 valeurs,<BR>
+par exemple, pour définir 
+la fonction <I>g</I> qui vaut 1 si <I>x</I>&gt;0 et -1 si <I>x</I>≤ 0 on tape :
+<A NAME="@default50"></A><A NAME="@default51"></A><A NAME="@default52"></A><A NAME="@default53"></A><A NAME="@default54"></A>
+On tape :
+<DIV CLASS="center"><TT>g(x):=ifte(x&gt;0,1,-1)</TT></DIV> 
+ce qui est équivalent à :
+<DIV CLASS="center"><TT>g(x):=if x&gt;0 then 1; else -1; end_if</TT></DIV>
+On tape (voir plus loin la différence avec <TT>ifte</TT>) :
+<DIV CLASS="center"><TT>g(x):=when(x&gt;0,1,-1)</TT></DIV>
+ou 
+<DIV CLASS="center"><TT>g(x):=quand(x&gt;0,1,-1)</TT></DIV>
+ou 
+<DIV CLASS="center"><TT>g(x):=IFTE(x&gt;0,1,-1)</TT></DIV>
+ou 
+<DIV CLASS="center"><TT>g(x):=x&gt;0?1:-1</TT></DIV>
+En effet <TT>ifte</TT> (ou <TT>when</TT> ou <TT>quand</TT> ou <TT>IFTE</TT>) a trois 
+arguments : une condition et deux expressions et <TT>?</TT> est infixé avec la 
+condition à gauche et à droite on met les deux expressions séparées par
+<TT>:</TT>.<BR>
+Si la condition est vraie, <TT>ifte</TT> (ou <TT>when</TT> ou <TT>quand</TT> ou 
+<TT>IFTE</TT> ou <TT>?</TT>) renvoie la première expression et sinon <TT>ifte</TT> (ou
+<TT>when</TT> ou <TT>quand</TT> ou <TT>IFTE</TT> ou <TT>?</TT>) renvoie la deuxième 
+expression.<P><B>Remarque</B><BR>
+La condition <I>x</I> != <I>a</I> peut être remplacée par le rèel <I>r</I>=<I>x</I>−<I>a</I> :<BR>
+si <I>r</I>==0 la condition est fausse et sinon elle est vraie.<BR>
+On tape pour définir la fonction qui vaut partout 0 sauf en 1 où elle 
+vaut 1 :
+</P><DIV CLASS="center"><TT>h(x):=when(x-1,0,1)</TT></DIV><P>
+est équivalent à :
+</P><DIV CLASS="center"><TT>h(x):=when(x!=1,0,1)</TT></DIV><P><B>Remarque : Différence entre </B><B><TT>ifte</TT></B><B> et les autres </B><B><TT>when....</TT></B><BR>
+On tape :
+<TT>f(x):=ifte(x&gt;0,1,0);</TT><BR>
+<TT>g(x):=when(x&gt;0,x,-x)</TT> ou <TT>g(x):=quand(x&gt;0,1,0)</TT><BR>
+puis on tape <TT>f(x)</TT><BR>
+on obtient :<BR>
+Ifte: Unable to check test Error: Bad Argument Value<BR>
+ici <TT>x</TT> n’a pas de valeur : avec <TT>ifte</TT> ou <TT>if then else end_if</TT> 
+il faut que la variable <TT>x</TT> soit affectée pour pouvoir tester la 
+condition (quand on définit une fonction ce qui suit le := n’est pas 
+évalué donc la définition de <TT>f(x)</TT> ne pose pas de problème).<BR>
+Pour la définition de <I>g</I> avec <TT>when....</TT>, la variable <TT>x</TT> n’a pas
+besoin dêtre affectée.<BR>
+On tape <TT>g(x)</TT><BR>
+on obtient :<BR>
+<TT>((x&gt;0)? 1 : -1)</TT><BR>
+car <TT>?</TT> est la version infixée de <TT>when</TT>.</P></LI><LI CLASS="li-itemize">une fonction définie par <I>n</I> valeurs,<A NAME="@default55"></A><BR>
+par exemple, pour définir 
+la fonction <I>g</I> qui vaut -1 si <I>x</I>&lt;−1, 0 si −1≤ <I>x</I>≤ 1 et 1 si <I>x</I>&gt;1,
+on tape :
+<DIV CLASS="center"><TT>g(x):=piecewise(x&lt;-1,-1,x&lt;=1,0,1)</TT> </DIV>
+<TT>piecewise</TT> utilise des paires condition/valeur ou valeur est renvoyée si 
+sa condition est vraie ce qui implique que les conditions précédentes sont 
+fausses. Si le nombre d’arguments est impair, 
+la dernière valeur est la valeur par défaut (comme dans un <TT>switch</TT>).<BR>
+<TT>piecewise</TT> est la généralisation de <TT>when</TT>.<BR>
+Pour définir 
+la fonction <I>f</I> qui vaut -2 si <I>x</I>&lt;−2, 3<I>x</I>+4 si −2≤ <I>x</I> &lt;−1,
+1 si −1 ≤ <I>x</I>&lt;0 et <I>x</I>+1 si <I>x</I> ≥ 0,
+on tape :
+<DIV CLASS="center"><TT>f(x):=piecewise(x&lt;-2,-2,x&lt;-1,3x+4,x&lt;0,1,x+1)</TT></DIV>
+On peut alors faire le graphe de <I>f</I> en tapant :
+<DIV CLASS="center"><TT>plotfunc(f(x))</TT></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_fr064.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr066.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

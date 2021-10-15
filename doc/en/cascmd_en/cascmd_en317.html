@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Remove elements of a list : remove</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en316.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en318.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc356">2.37.22</A>  Remove elements of a list : <TT>remove</TT></H3><P><A NAME="@default534"></A>
+<TT>remove</TT> takes as argument : a boolean function <TT>f</TT> and 
+a list <TT>L</TT>.<BR>
+<TT>remove</TT> removes in the list <TT>L</TT>, the elements <TT>c</TT> such that 
+<TT>f(c)==true</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>remove(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[0,1,1]</TT></DIV><P>
+<B>Remark</B> The same applies on strings, for example,
+to remove all the "a" of a string:<BR>
+Input :
+</P><DIV CLASS="center"><TT>ord("a")</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>97</TT></DIV><P>
+Input :
+</P><PRE CLASS="verbatim">f(chn):={
+  local l:=length(chn)-1;
+  return remove(x-&gt;(ord(x)==97),seq(chn[k],k,0,l));
+}
+</PRE><P>Then, input :
+</P><DIV CLASS="center"><TT>f("abracadabra")</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>["b","r","c","d","b","r"]</TT></DIV><P>
+To get a string, input :
+</P><DIV CLASS="center"><TT>char(ord(["b","r","c","d","b","r"])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>"brcdbr"</TT></DIV><HR>
+<A HREF="cascmd_en316.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en318.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

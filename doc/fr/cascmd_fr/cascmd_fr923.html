@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>La longueur d’un segment et son affichage : distanceat distanceen et distanceatraw distanceenbrut</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr922.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr924.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1072">9.17.3</A>  La longueur d’un segment et son affichage : <TT>distanceat distanceen</TT> et <TT>distanceatraw distanceenbrut</TT></H3><P><A NAME="@default1787"></A><A NAME="@default1788"></A><A NAME="@default1789"></A><A NAME="@default1790"></A>
+<TT>distanceat</TT> ou <TT>distanceen</TT> et <TT>distanceatraw</TT> ou 
+<TT>distanceenbrut</TT> sont des commandes obtenues 
+lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
+<TT>Mode-&gt;Mesures-&gt;ditanceen</TT> ou <TT>Mode-&gt;Mesures-&gt;distanceenbrut</TT>. Dans ce 
+cas il faut que tous les objets, sauf les points, désignés par la souris 
+soient déjà nommés.<BR>
+On peut néammoins taper ces commandes dans une ligne de commande.<BR>
+<TT>distanceat</TT> ou <TT>distanceen</TT> a 3 arguments : le nom de 2 points et 1 point (ou l’affixe de ce point) ou encore le nom de 2 objets 
+géométriques et un point (ou l’affixe de ce point).<BR>
+<B>Attention</B> Il faut que les 2 premiers arguments soient des noms.<BR>
+<TT>distanceat</TT> ou <TT>distanceen</TT> renvoie le point donné en 3-ième 
+argument, calcule la longueur du segment défini par les deux premiers points 
+ou la distance entre les 2 objets géométriques et affiche à l’endroit du 
+3-ième point, cette longueur précédée d’une légende.<BR>
+On tape (on doit donnerle nom des objets) :
+</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);segment(A,B);</TT></DIV><DIV CLASS="center"><TT>distanceat(A,B,0.4i)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>distanceen(A,B,0.4i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>AB=sqrt(5) s’écrit au point(0.4i)</TT></DIV><P>
+On tape (on doit donnerle nom des objets) :
+</P><DIV CLASS="center"><TT>C:=point(0);d:=droite(-1,1+i)</TT></DIV><DIV CLASS="center"><TT>distanceen(C,d,i/2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Cd=sqrt(5)/5 s’écrit au point(i/2)</TT></DIV><P>
+On tape (on doit donner le nom des objets) :
+</P><DIV CLASS="center"><TT>c:=cercle(0,1); d:=droite(-2,1+3i)</TT></DIV><DIV CLASS="center"><TT>distanceen(c,d,0)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>cd=sqrt(2)-1 s’écrit au point(0)</TT></DIV><P><TT>distanceatraw</TT> ou <TT>distanceenbrut</TT> a comme argument trois 
+points (ou 2 points et 1 nombre complexe qui est l’affixe d’un point) ou encore
+2 objets géométriques et un point (ou l’affixe de ce point).<BR>
+<TT>distanceatraw</TT> ou <TT>distanceenbrut</TT> renvoie le point donné en 
+3-ième argument, calcule la longueur du segment défini par les deux 
+premiers points ou la distance entre les 2 ojets géométriques et affiche 
+cette longueur à l’endroit du 3-ième point.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);segment(A,B);</TT></DIV><DIV CLASS="center"><TT>distanceenbrut(A,B,0.4i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(5) s’écrit au point(0.4i)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>C:=point(0);d:=droite(-1,1+i)</TT></DIV><DIV CLASS="center"><TT>distanceenbrut(C,d,i/2)</TT></DIV><P>
+ou on tape (on n’est pas obligé de donner un nom aux objets) :
+</P><DIV CLASS="center"><TT>distanceenbrut(0,droite(-1,1+i),i/2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(5)/5 s’écrit au point(i/2)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>c:=cercle(0,1); d:=droite(-2,1+3i)</TT></DIV><DIV CLASS="center"><TT>distanceenbrut(c,d(-2,1+3i),0)</TT></DIV><P>
+ou on tape (on n’est pas obligé de donner un nom aux objets) :
+</P><DIV CLASS="center"><TT>distanceenbrut(cercle(0,1),droite(-2,1+3i),0)</TT></DIV><P>On obtient :
+</P><DIV CLASS="center"><TT>sqrt(2)-1 s’écrit au point(0)</TT></DIV><HR>
+<A HREF="cascmd_fr922.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr924.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

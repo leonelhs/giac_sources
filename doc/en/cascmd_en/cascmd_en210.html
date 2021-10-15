@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Euclidean quotient : Quo</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en209.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en211.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc237">2.25.3</A>  Euclidean quotient : <TT>Quo</TT></H3><P><A NAME="@default392"></A>
+<TT>Quo</TT> is the inert form of <TT>quo</TT>.<BR>
+<TT>Quo</TT> returns the euclidean quotient between two polynomials
+(decreasing power division) without evaluation. 
+It is used when <TT>Xcas</TT> is in Maple mode to compute
+the euclidean quotient of the division of two
+polynomials with coefficients in &#X2124;/<I>p</I>&#X2124; using Maple-like syntax.<BR>
+In <TT>Xcas</TT> mode, input :
+</P><DIV CLASS="center"><TT>Quo(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>quo(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x)</TT></DIV><P>
+In <TT>Maple</TT> mode, input :
+</P><DIV CLASS="center"><TT>Quo(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-(2)*x+1)</TT></DIV><P>
+The division was done using modular arithmetic, unlike with
+</P><DIV CLASS="center"><TT>quo(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+where the division is done in &#X2124;[<I>X</I>] and reduced after to:
+</P><DIV CLASS="center"><TT>3*x-9</TT></DIV><P>
+If <TT>Xcas</TT> is not in Maple mode, polynomial division 
+in &#X2124;/<I>p</I>&#X2124;[<I>X</I>] is done e.g. by :
+</P><DIV CLASS="center">
+<CODE>quo((x^3+3*x)% 5,(2x^2+6x+5)%5)</CODE>
+</DIV><HR>
+<A HREF="cascmd_en209.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en211.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

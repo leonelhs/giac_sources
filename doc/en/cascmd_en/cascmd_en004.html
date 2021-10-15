@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Transform a boolean expression as a list : exp2list</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en003.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en005.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc8">2.2.4</A>  Transform a boolean expression as a list : <TT>exp2list</TT></H3><P><A NAME="@default23"></A>
+<TT>exp2list</TT> returns the list <TT>[expr0,expr1]</TT> when the argument 
+is <TT>(var=expr0) or (var=expr1)</TT>.<BR>
+<TT>exp2list</TT> is used in TI mode for easier processing of the answer of a
+<TT>solve</TT> command.<BR>
+Input :
+</P><DIV CLASS="center"><TT>exp2list((x=2) or (x=0))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[2,0]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>exp2list((x&gt;0) or (x&lt;2))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[0,2]</TT></DIV><P>
+In TI mode input :
+</P><DIV CLASS="center"><TT>exp2list(solve((x-1)*(x-2)))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,2]</TT></DIV><HR>
+<A HREF="cascmd_en003.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en005.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

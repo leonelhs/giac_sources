@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Extracting element(s) of a matrix : [] at</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en360.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en362.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc405">2.42.12</A>  Extracting element(s) of a matrix : <TT>[] at</TT></H3><P><A NAME="@default615"></A>
+Recall that a matrix is a list of lists with same size.<BR>
+Input : 
+</P><DIV CLASS="center"><TT>A:=[[3,4,5],[1,2,6]]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4,5],[1,2,6]]</TT></DIV><P> 
+The prefixed function <TT>at</TT> or the 
+index notation <TT>[...]</TT> is used to access 
+to an element or a row or a column of a matrix:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+To extract an element, put the matrix and then, beetween square 
+brackets put its row index, a comma, and its column index.
+In <TT>Xcas</TT> mode the first index is 0, in other modes the first
+index is 1.<BR>
+Input :
+<DIV CLASS="center"><TT>[[3,4,5],[1,2,6]][0,1]</TT></DIV>
+or
+<DIV CLASS="center"><TT>A[0,1]</TT></DIV>
+or
+<DIV CLASS="center"><TT>A[0][1]</TT></DIV>
+or
+<DIV CLASS="center"><TT>at(A,[0,1])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>4</TT></DIV></LI><LI CLASS="li-itemize">To extract a row of the matrix <TT>A</TT>, 
+put the matrix and then, beetween 
+square brackets put the row index, input :
+<DIV CLASS="center"><TT>[[3,4,5],[1,2,6]][0]</TT></DIV>
+or
+<DIV CLASS="center"><TT>A[0]</TT></DIV>
+or
+<DIV CLASS="center"><TT>at(A,0)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[3,4,2]</TT></DIV></LI><LI CLASS="li-itemize">To extract a part of a row, put two arguments 
+beetween the square brackets : 
+the row index and an interval to design the selected columns.<BR>
+Input :
+<DIV CLASS="center"><TT>A[1,0..2]</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[1,2,6]</TT></DIV>
+Input :
+<DIV CLASS="center"><TT>A[1,1..2]</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[2,6]</TT></DIV></LI><LI CLASS="li-itemize">To extract a column of the matrix <TT>A</TT>, first tranpose
+<TT>A</TT> (<TT>transpose(A)</TT>) then extract the row like above.<BR>
+Input :
+<DIV CLASS="center"><TT>tran(A)[1]</TT></DIV>
+or
+<DIV CLASS="center"><TT>at(tran(A),1)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[4,2]</TT></DIV></LI><LI CLASS="li-itemize">To extract a part of a column of the matrix <TT>A</TT> 
+as a list, put two arguments 
+beetween the square brackets : an index interval to 
+design the selected rows and the column index.<BR>
+Input :
+<DIV CLASS="center"><TT>A[0..0,1]</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[4]</TT></DIV><P>This may be used to extract a full column, by specifying all the rows
+as index interval.<BR>
+Input :
+</P><DIV CLASS="center"><TT>A[0..1,1]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[4,2]</TT></DIV></LI><LI CLASS="li-itemize">To extract a sub-matrix of a matrix, put between the square brackets two 
+intervals : one interval for the selected rows and one interval for the 
+selected columns.<BR>
+To definie the matrix <TT>A</TT>, input :
+<DIV CLASS="center"><TT>A:=[[3,4,5],[1,2,6]]</TT></DIV>
+Input :
+<DIV CLASS="center"><TT>A[0..1,1..2]</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[4,5],[2,6]]</TT></DIV>
+Input :
+<DIV CLASS="center"><TT>A[0..1,1..1]</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[4],[2]]</TT></DIV>
+<B>Remark</B>
+If the second interval is omitted, the sub-matrix is made with the consecutive 
+rows given by the first interval.<BR>
+Input :
+<DIV CLASS="center"><TT>A[1..1]</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[1,2,6]]</TT></DIV>
+</LI></UL><P>You may also assign an element of a matrix using the index notation,
+if you assign with <TT>:=</TT> a new copy of the matrix is created
+and the element is modified, if you assign with <TT>=&lt;</TT>,
+the matrix is modified in place.</P><HR>
+<A HREF="cascmd_en360.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en362.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

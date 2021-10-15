@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Limites : limit</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en139.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en141.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc161">2.19.1</A>  Limites : <TT>limit</TT></H3><P><A NAME="@default268"></A><A NAME="sec:limit"></A></P><P><TT>limit</TT> compute the limit of an expression in a finite or infinite point.
+It is also possible with an optional argument to compute unidirectional
+limit (1 for right limit and -1 for left limit .<BR>
+<TT>limit</TT> takes three or four arguments :<BR>
+an expression, the name of a variable (for example <TT>x</TT>), the limit point 
+(for example <TT>a</TT>) and an optional argument, by default <TT>0</TT>, to 
+indicate if the limit is unidirectional. 
+This argument is equal to 
+<TT>-1</TT> for a left limit (<TT>x&lt;a</TT>) or is equal to <TT>1</TT> 
+for a right limit (<TT>x&gt;a</TT>) or is equal to <TT>0</TT> for a limite.<BR>
+<TT>limit</TT> returns the limit of the expression when the variable (for example
+<TT>x</TT>) approachs the limit point (for example <TT>a</TT>).<BR>
+<B>Remark</B><BR>
+It is also possible to put <TT>x=a</TT> as argument instead of <TT>x,a</TT>, hence :
+<TT>limit</TT> takes also as arguments an expression depending of a variable, 
+an equality (variable =value of the limit point) and perhaps 1 or -1 to 
+indicate the direction.<BR>
+Input :
+</P><DIV CLASS="center"><TT>limit(1/x,x,0,-1)</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>limit(1/x,x=0,-1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-(infinity)</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>limit(1/x,x,0,1)</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>limit(1/x,x=0,1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>+(infinity)</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>limit(1/x,x,0,0)</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>limit(1/x,x,0)</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>limit(1/x,x=0)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>infinity</TT></DIV><P> 
+Hence, <TT>abs(1/x)</TT> approachs +&#X221E; when <I>x</I> approachs 0.</P><P><B>Exercises</B> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Find for <I>n</I>&gt;2, the limit when <I>x</I> approachs 0 of :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>tan(<I>x</I>)&#X2212;tan(<I>nx</I>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">sin(<I>nx</I>)&#X2212;<I>n</I>sin(<I>x</I>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+Input :
+<DIV CLASS="center"><TT>limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>2 </TT></DIV>
+</LI><LI CLASS="li-itemize">Find the limit when <I>x</I> approachs +&#X221E; of :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:4em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>&#X221A;</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>+</TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:0em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>&#X221A;</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=0 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>+</TD><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=0 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>x</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X2212;</TD><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>x</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE> 
+Input :
+<DIV CLASS="center"><TT>limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>1/2 </TT></DIV>
+</LI><LI CLASS="li-itemize">Find the limit when <I>x</I> approachs 0 of :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>1+<I>x</I>+<I>x</I><SUP>2</SUP>/2</TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X2212;exp(<I>x</I>/2)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">(1&#X2212;cos(<I>x</I>))sin(<I>x</I>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE> 
+Input :
+<DIV CLASS="center"><TT>limit((sqrt(1+x+x</TT><CODE><TT>^</TT></CODE><TT>2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>-1/6 </TT></DIV>
+</LI></UL><P><B>Remark</B><BR>
+To compute limit, it is better sometimes to quote the first argument.<BR>
+Input :
+</P><DIV CLASS="center"><TT>limit(&#X2019;(2*x-1)*exp(1/(x-1))&#X2019;,x=+infinity)</TT></DIV><P>
+Note that the first argument is quoted, because it is better that
+this argument is not simplified (i.e. not evaluated).<BR>
+Output :
+</P><DIV CLASS="center"><TT>+(infinity)</TT></DIV><HR>
+<A HREF="cascmd_en139.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en141.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

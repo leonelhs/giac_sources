@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>2D parametric curve </TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en477.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en479.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc546">3.11.1</A>  2D parametric curve </H3><P>
+<TT>plotparam([f(t),g(t)],t)</TT>
+or <TT>plotparam(f(t)+i*g(t),t)</TT> (resp 
+<TT>plotparam(f(t)+i*g(t),t=t1..t2)</TT>)
+draws the parametric representation of the curve 
+defined by <I>x</I>=<I>f</I>(<I>t</I>),<I>y</I>=<I>g</I>(<I>t</I>) 
+with the default range of values of <I>t</I> (resp for <I>t</I>1 &#X2264; <I>t</I>&#X2264; <I>t</I>2).<BR>
+The default range of values is taken as specified 
+in the graphic configuration (<TT>t-</TT> and <TT>t+</TT>, 
+cf. <A >??</A>).
+<TT>plotparam</TT> accepts an optional argument to specify the discretisation
+step for <I>t</I> with <TT>tstep=</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>plotparam(cos(x)+i*sin(x),x) </TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>plotparam([cos(x),sin(x)],x) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The unit circle</TT></DIV><P>
+If in the graphic configuration <TT>t</TT> goes from -4 to 1, input :
+</P><DIV CLASS="center"><TT>plotparam(sin(t)+i*cos(t))</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>plotparam(sin(t)+i*cos(t),t=-4..1) </TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>plotparam(sin(x)+i*cos(x),x=-4..1) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</TT></DIV><P>
+If in the graphic configuration <TT>t</TT> goes from -4 to 1, input :
+</P><DIV CLASS="center"><TT>plotparam(sin(t)+i*cos(t),t,tstep=0.5)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>plotparam(sin(t)+i*cos(t),t=-4..1,tstep=0.5)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>A polygon approching the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</TT></DIV><HR>
+<A HREF="cascmd_en477.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en479.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Transformer un nombre décimal en rationnel : exact 
+float2rational</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr194.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr196.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc263">6.9.1</A>  Transformer un nombre décimal en rationnel : <TT>exact<BR>
+float2rational</TT></H3><P><A NAME="@default354"></A><A NAME="@default355"></A><A NAME="@default356"></A>
+<TT>float2rational</TT> ou <TT>exact</TT> a comme paramètre un nombre 
+décimal <TT>d</TT> et renvoie un nombre rationnel <TT>q</TT> qui approche <TT>d</TT> 
+à moins de <TT>epsilon</TT>. On
+définit <TT>epsilon</TT> dans la configuration du <TT>cas</TT> (menu <TT>Cfg</TT>) ou 
+avec la commande <TT>cas_setup</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>float2rational(0.3670520231)</TT></DIV><P>
+On obtient pour <TT>epsilon=1e-10</TT>:
+</P><DIV CLASS="center"><TT>127/346</TT></DIV><P>
+Essayez d’entrer:
+</P><DIV CLASS="center"><TT>123/12+57/21</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>363/28</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>evalf(363/28)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>12.9642857143</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>float2rational(12.9642857143)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>363/28</TT></DIV><P>
+Si on mélange les deux représentations par exemple :
+</P><DIV CLASS="center"><TT>1/2+0.7</TT></DIV><P>
+On obtient
+</P><DIV CLASS="center"><TT>1.2</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>1/2+float2rational(0.7)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>6/5</TT></DIV><HR>
+<A HREF="cascmd_fr194.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr196.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,6 @@
+#! /bin/sh
+export LANG=en_US.UTF8
+export LC_MESSAGES=en_US.UTF8
+../src/icas testcas > cas.tst
+rm -f session.tex 
+diff cas.tst cas.out

@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Cholesky decomposition : cholesky</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en418.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en420.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc469">2.48.1</A>  Cholesky decomposition : <TT>cholesky</TT></H3><P><A NAME="@default699"></A>
+<TT>cholesky</TT> takes as argument a square symetric
+positive definite matrix <TT>M</TT> of size <I>n</I>.<BR>
+<TT>cholesky</TT> returns a symbolic or numeric matrix <TT>P</TT>. <TT>P</TT> is a
+lower triangular matrix such that :
+</P><DIV CLASS="center">
+<TT>tran(P)*P=M</TT>
+</DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>cholesky([[1,1],[1,5]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0],[1,2]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>cholesky([[3,1],[1,4]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[sqrt(3),0],[(sqrt(3))/3,(sqrt(33))/3]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>cholesky([[1,1],[1,4]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0],[1,sqrt(3)]]</TT></DIV><P>
+<B>Warning</B> If the matrix argument <I>A</I> is not a symetric matrix,
+<TT>cholesky</TT> does not return an error, instead <TT>cholesky</TT> will
+use the symetric matrix <I>B</I> of the the quadratic form <I>q</I> 
+corresponding to the (non symetric) bilinear form of matrix <I>A</I>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>cholesky([[1,-1],[-1,4]])</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>cholesky([[1,-3],[1,4]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0],[-1,sqrt(3)]]</TT></DIV><HR>
+<A HREF="cascmd_en418.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en420.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

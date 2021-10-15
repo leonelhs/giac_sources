@@ -1,0 +1,664 @@
+<HTML>
+<HEAD>
+  <TITLE>
+    Catalogue of GP/PARI Functions: Polynomials and power series
+  </TITLE>
+
+  <META NAME="author"       CONTENT="Nils-Peter Skoruppa">
+  <META NAME="created"      CONTENT="Thu Apr 27 10:11:36 2006">
+  <META NAME="author-email" CONTENT="skoruppa@math.uni-siegen.de">
+  <META NAME="keywords"     CONTENT="PARI, GP, DOC">
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+
+
+
+<h3 align=center>Polynomials and power series</h3>
+
+<a name="O"></a>
+<h4><b>O</b>(p{<font color=#a3682a><tt>
+^</tt></font>}e)</h4>
+<p></p>
+<p> if p is an integer
+greater than 2, returns a p-adic 0 of precision e. In all other
+cases, returns a power series zero with precision given by e v, where v
+is the X-adic valuation of p with respect to its main variable.</p>
+<p>The library syntax is <b>zeropadic</b>(p,e) for a p-adic and <font color=#a3682a><tt>
+ <b>zeroser</b>(v,e)</tt></font> for a
+power series zero in variable v, which is a <font color=#a3682a><tt>
+long</tt></font>. The precision e
+is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="deriv"></a>
+<h4><b>deriv</b>(x,{v})</h4>
+<p></p>
+<p> derivative of x with respect to the main
+variable if v is omitted, and with respect to v otherwise. The derivative
+of a scalar type is zero, and the derivative of a vector or matrix is done
+componentwise. One can use x' as a shortcut if the derivative is with
+respect to the main variable of x.</p>
+<p>By definition, the main variable of a <font color=#a3682a><tt>
+t_POLMOD</tt></font> is the main variable among
+the coefficients from its two polynomial components (representative and
+modulus); in other words, assuming a polmod represents an element of
+R[X]/(T(X)), the variable X is a mute variable and the derivative is
+taken with respect to the main variable used in the base ring R.</p>
+<p>The library syntax is <b>deriv</b>(x,v), where v is a <font color=#a3682a><tt>
+long</tt></font>, and an omitted v is coded as
+-1. When x is a <font color=#a3682a><tt>
+t_POL</tt></font>, <font color=#a3682a><tt>
+derivpol</tt></font>(x) is a shortcut for
+<font color=#a3682a><tt>
+deriv</tt></font>(x, -1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="eval"></a>
+<h4><b>eval</b>(x)</h4>
+<p></p>
+<p> replaces in x the formal variables by the values that
+have been assigned to them after the creation of x. This is mainly useful
+in GP, and not in library mode. Do not confuse this with substitution (see
+<font color=#a3682a><tt>
+subst</tt></font>).</p>
+<p>If x is a character string, <font color=#a3682a><tt>
+eval(x)</tt></font> executes x as a GP
+command, as if directly input from the keyboard, and returns its
+output. For convenience, x is evaluated as if
+<font color=#a3682a><tt>
+strictmatch</tt></font> was off. In particular, unused characters at the end of
+x do not prevent its evaluation:</p>
+<p><pre><font color=#a3682a><tt>    ? eval("1a")
+&nbsp;    % 1 = 1
+</tt></font></pre></p>
+<p>
+The library syntax is <b>geval</b>(x). The more basic functions <font color=#a3682a><tt>
+ <b>poleval</b>(q,x)</tt></font>,
+<font color=#a3682a><tt>
+ <b>qfeval</b>(q,x)</tt></font>, and <font color=#a3682a><tt>
+ <b>hqfeval</b>(q,x)</tt></font> evaluate q at x, where q
+is respectively assumed to be a polynomial, a quadratic form (a symmetric
+matrix), or an Hermitian form (an Hermitian complex matrix).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="factorpadic"></a>
+<h4><b>factorpadic</b>(<u>pol</u>,p,r,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> p-adic factorization
+of the polynomial <u>pol</u> to precision r, the result being a
+two-column matrix as in <font color=#a3682a><tt>
+factor</tt></font>. The factors are normalized so that
+their leading coefficient is a power of p. r must be strictly larger than
+the p-adic valuation of the discriminant of <u>pol</u> for the result to
+make any sense. The method used is a modified version of the round 4
+algorithm of Zassenhaus.</p>
+<p>If <u>flag</u> = 1, use an algorithm due to Buchmann and Lenstra, which is
+usually less efficient.</p>
+<p>The library syntax is <b>factorpadic4</b>(<u>pol</u>,p,r), where r is a <font color=#a3682a><tt>
+long</tt></font> integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="intformal"></a>
+<h4><b>intformal</b>(x,{v})</h4>
+<p></p>
+<p> formal integration of x with
+respect to the main variable if v is omitted, with respect to the variable
+v otherwise. Since PARI does not know about "abstract" logarithms (they
+are immediately evaluated, if only to a power series), logarithmic terms in
+the result will yield an error. x can be of any type. When x is a
+rational function, it is assumed that the base ring is an integral domain of
+characteristic zero.</p>
+<p>The library syntax is <b>integ</b>(x,v), where v is a <font color=#a3682a><tt>
+long</tt></font> and an omitted v is coded
+as -1.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="padicappr"></a>
+<h4><b>padicappr</b>(<u>pol</u>,a)</h4>
+<p></p>
+<p> vector of p-adic roots of the
+polynomial pol congruent to the p-adic number a modulo p, and with
+the same p-adic precision as a. The number a can be an ordinary
+p-adic number (type <font color=#a3682a><tt>
+t_PADIC</tt></font>, i.e.an element of <b>Z</b>_p) or can be an
+integral element of a finite extension of <b>Q</b>_p, given as a <font color=#a3682a><tt>
+t_POLMOD</tt></font>
+at least one of whose coefficients is a <font color=#a3682a><tt>
+t_PADIC</tt></font>. In this case, the result
+is the vector of roots belonging to the same extension of <b>Q</b>_p as a.</p>
+<p>The library syntax is <b>padicappr</b>(<u>pol</u>,a).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polcoeff"></a>
+<h4><b>polcoeff</b>(x,s,{v})</h4>
+<p></p>
+<p> coefficient of degree s of the
+polynomial x, with respect to the main variable if v is omitted, with
+respect to v otherwise. Also applies to power series, scalars (polynomial
+of degree 0), and to rational functions provided the denominator is a
+monomial.</p>
+<p>The library syntax is <b>polcoeff0</b>(x,s,v), where v is a <font color=#a3682a><tt>
+long</tt></font> and an omitted v is coded
+as -1. Also available is <font color=#a3682a><tt>
+ <b>truecoeff</b>(x,v)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="poldegree"></a>
+<h4><b>poldegree</b>(x,{v})</h4>
+<p></p>
+<p> degree of the polynomial x in the main
+variable if v is omitted, in the variable v otherwise.</p>
+<p>The degree of 0 is a fixed negative number, whose exact value should
+not be used. The degree of a non-zero scalar is 0. Finally, when x is
+a non-zero polynomial or rational function, returns the ordinary degree
+of x. Raise an error otherwise.</p>
+<p>The library syntax is <b>poldegree</b>(x,v), where v and the result are <font color=#a3682a><tt>
+long</tt></font>s (and an
+omitted v is coded as -1). Also available is <font color=#a3682a><tt>
+ <b>degree</b>(x)</tt></font>, which is
+equivalent to <font color=#a3682a><tt>
+poldegree(x,-1)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polcyclo"></a>
+<h4><b>polcyclo</b>(n,{v = x})</h4>
+<p></p>
+<p> n-th cyclotomic polynomial, in variable
+v (x by default). The integer n must be positive.</p>
+<p>The library syntax is <b>cyclo</b>(n,v), where n and v are <font color=#a3682a><tt>
+long</tt></font>
+integers (v is a variable number, usually obtained through <font color=#a3682a><tt>
+varn</tt></font>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="poldisc"></a>
+<h4><b>poldisc</b>(<u>pol</u>,{v})</h4>
+<p></p>
+<p> discriminant of the polynomial
+<u>pol</u> in the main variable is v is omitted, in v otherwise. The
+algorithm used is the subresultant algorithm.</p>
+<p>The library syntax is <b>poldisc0</b>(x,v). Also available is <font color=#a3682a><tt>
+ <b>discsr</b>(x)</tt></font>, equivalent
+to <font color=#a3682a><tt>
+poldisc0(x,-1)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="poldiscreduced"></a>
+<h4><b>poldiscreduced</b>(f)</h4>
+<p></p>
+<p> reduced discriminant vector of the
+(integral, monic) polynomial f. This is the vector of elementary divisors
+of <b>Z</b>[<font color=#FF0000>alpha</font>]/f'(<font color=#FF0000>alpha</font>)<b>Z</b>[<font color=#FF0000>alpha</font>], where <font color=#FF0000>alpha</font> is a root of the
+polynomial f. The components of the result are all positive, and their
+product is equal to the absolute value of the discriminant off.</p>
+<p>The library syntax is <b>reduceddiscsmith</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polhensellift"></a>
+<h4><b>polhensellift</b>(x, y, p, e)</h4>
+<p></p>
+<p> given a prime p, an integral
+polynomial x whose leading coefficient is a p-unit, a vector y of
+integral polynomials that are pairwise relatively prime modulo p, and whose
+product is congruent to x modulo p, lift the elements of y to
+polynomials whose product is congruent to x modulo p^e.</p>
+<p>The library syntax is <b>polhensellift</b>(x,y,p,e) where e must be a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polinterpolate"></a>
+<h4><b>polinterpolate</b>(xa,{ya},{v = x},{&amp;e})</h4>
+<p></p>
+<p> given the data vectors
+xa and ya of the same length n (xa containing the x-coordinates,
+and ya the corresponding y-coordinates), this function finds the
+interpolating polynomial passing through these points and evaluates it
+atv. If ya is omitted, return the polynomial interpolating the
+(i,xa[i]). If present, e will contain an error estimate on the returned
+value.</p>
+<p>The library syntax is <b>polint</b>(xa,ya,v,&amp;e), where e will contain an error estimate on the
+returned value.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polisirreducible"></a>
+<h4><b>polisirreducible</b>(<u>pol</u>)</h4>
+<p></p>
+<p> <u>pol</u> being a polynomial
+(univariate in the present version <b>2.2.13</b>), returns 1 if <u>pol</u> is
+non-constant and irreducible, 0 otherwise. Irreducibility is checked over
+the smallest base field over which <u>pol</u> seems to be defined.</p>
+<p>The library syntax is <b>gisirreducible</b>(<u>pol</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="pollead"></a>
+<h4><b>pollead</b>(x,{v})</h4>
+<p></p>
+<p> leading coefficient of the polynomial or
+power series x. This is computed with respect to the main variable of x
+if v is omitted, with respect to the variable v otherwise.</p>
+<p>The library syntax is <b>pollead</b>(x,v), where v is a <font color=#a3682a><tt>
+long</tt></font> and an omitted v is coded as
+-1. Also available is <font color=#a3682a><tt>
+ <b>leading_term</b>(x)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="pollegendre"></a>
+<h4><b>pollegendre</b>(n,{v = x})</h4>
+<p></p>
+<p> creates the n^{{th}}
+Legendre polynomial, in variable v.</p>
+<p>The library syntax is <b>legendre</b>(n), where x is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polrecip"></a>
+<h4><b>polrecip</b>(<u>pol</u>)</h4>
+<p></p>
+<p> reciprocal polynomial of <u>pol</u>,
+i.e.the coefficients are in reverse order. <u>pol</u> must be a polynomial.</p>
+<p>The library syntax is <b>polrecip</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polresultant"></a>
+<h4><b>polresultant</b>(x,y,{v},{<u>flag</u> = 0})</h4>
+<p></p>
+<p> resultant of the two
+polynomials x and y with exact entries, with respect to the main
+variables of x and y if v is omitted, with respect to the variable v
+otherwise. The algorithm assumes the base ring is a domain.</p>
+<p>If <u>flag</u> = 0, uses the subresultant algorithm.</p>
+<p>If <u>flag</u> = 1, uses the determinant of Sylvester's matrix instead (here x and
+y may have non-exact coefficients).</p>
+<p>If <u>flag</u> = 2, uses Ducos's modified subresultant algorithm. It should be much
+faster than the default if the coefficient ring is complicated (e.g
+multivariate polynomials or huge coefficients), and slightly slower
+otherwise.</p>
+<p>The library syntax is <b>polresultant0</b>(x,y,v,<u>flag</u>), where v is a <font color=#a3682a><tt>
+long</tt></font> and an omitted v
+is coded as -1. Also available are <font color=#a3682a><tt>
+ <b>subres</b>(x,y)</tt></font> (<u>flag</u> = 0) and
+<font color=#a3682a><tt>
+ <b>resultant2</b>(x,y)</tt></font> (<u>flag</u> = 1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polroots"></a>
+<h4><b>polroots</b>(<u>pol</u>,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> complex roots of the polynomial
+<u>pol</u>, given as a column vector where each root is repeated according to
+its multiplicity. The precision is given as for transcendental functions: in
+GP it is kept in the variable <font color=#a3682a><tt>
+realprecision</tt></font> and is transparent to the
+user, but it must be explicitly given as a second argument in library mode.</p>
+<p>The algorithm used is a modification of A.Sch&uml;nhage's
+root-finding algorithm, due to and implemented by X.Gourdon. Barring bugs, it
+is guaranteed to converge and to give the roots to the required accuracy.</p>
+<p>If <u>flag</u> = 1, use a variant of the Newton-Raphson method, which is <u>not</u>
+guaranteed to converge, but is rather fast. If you get the messages "too
+many iterations in roots" or "INTERNAL ERROR: incorrect result in roots",
+use the default algorithm. This used to be the default root-finding function in
+PARI until version 1.39.06.</p>
+<p>The library syntax is <b>roots</b>(<u>pol</u>,<u>prec</u>) or <font color=#a3682a><tt>
+ <b>rootsold</b>(<u>pol</u>,<u>prec</u>)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polrootsmod"></a>
+<h4><b>polrootsmod</b>(<u>pol</u>,p,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> row vector of roots modulo
+p of the polynomial <u>pol</u>. The particular non-prime value p = 4 is
+accepted, mainly for 2-adic computations. Multiple roots are <u>not</u>
+repeated.</p>
+<p>If p is very small, you may try setting <u>flag</u> = 1, which uses a naive search.</p>
+<p>The library syntax is <b>rootmod</b>(<u>pol</u>,p) (<u>flag</u> = 0) or
+<font color=#a3682a><tt>
+ <b>rootmod2</b>(<u>pol</u>,p)</tt></font> (<u>flag</u> = 1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polrootspadic"></a>
+<h4><b>polrootspadic</b>(<u>pol</u>,p,r)</h4>
+<p></p>
+<p> row vector of p-adic roots of
+the polynomial <u>pol</u>, given to p-adic precision r. Multiple roots are
+<u>not</u> repeated. p is assumed to be a prime, and <u>pol</u> to be
+non-zero modulo p. Note that this is not the same as the roots in
+<b>Z</b>/p^r<b>Z</b>, rather it gives approximations in <b>Z</b>/p^r<b>Z</b> of the true
+roots living in <b>Q</b>_p.</p>
+<p>If <u>pol</u> has inexact <font color=#a3682a><tt>
+t_PADIC</tt></font> coefficients, this is not always
+well-defined; in this case, the equation is first made integral, then lifted
+to <b>Z</b>. Hence the roots given are approximations of the roots of a
+polynomial which is p-adically close to the input.</p>
+<p>The library syntax is <b>rootpadic</b>(<u>pol</u>,p,r), where r is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polsturm"></a>
+<h4><b>polsturm</b>(<u>pol</u>,{a},{b})</h4>
+<p></p>
+<p> number of real roots of the real
+polynomial <u>pol</u> in the interval ]a,b], using Sturm's algorithm. a
+(resp.b) is taken to be - oo  (resp.+ oo ) if omitted.</p>
+<p>The library syntax is <b>sturmpart</b>(<u>pol</u>,a,b). Use <font color=#a3682a><tt>
+NULL</tt></font> to omit an argument.
+<font color=#a3682a><tt>
+ <b>sturm</b>(<u>pol</u>)</tt></font> is equivalent to
+<font color=#a3682a><tt>
+ <b>sturmpart</b>(<u>pol</u>,<font color=#a3682a><tt>
+NULL</tt></font>,<font color=#a3682a><tt>
+NULL</tt></font>)</tt></font>. The result is a
+<font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polsubcyclo"></a>
+<h4><b>polsubcyclo</b>(n,d,{v = x})</h4>
+<p></p>
+<p> gives polynomials (in variable
+v) defining the sub-Abelian extensions of degree d of the cyclotomic
+field <b>Q</b>(<font color=#FF0000>zeta</font>_n), where d | <font color=#FF0000>phi</font>(n).</p>
+<p>If there is exactly one such extension the output is a polynomial, else it is
+a vector of polynomials, eventually empty.</p>
+<p>To be sure to get a vector, you can use <font color=#a3682a><tt>
+concat([],polsubcyclo(n,d))</tt></font></p>
+<p>The function <font color=#a3682a><tt>
+galoissubcyclo</tt></font> allows to specify more closely which sub-Abelian extension should be computed.</p>
+<p>The library syntax is <b>polsubcyclo</b>(n,d,v), where n, d and v are <font color=#a3682a><tt>
+long</tt></font> and v is a
+variable number. When (<b>Z</b>/n<b>Z</b>)^* is cyclic, you can use
+<font color=#a3682a><tt>
+ <b>subcyclo</b>(n,d,v)</tt></font>, where n, d and v are <font color=#a3682a><tt>
+long</tt></font> and v is a
+variable number.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polsylvestermatrix"></a>
+<h4><b>polsylvestermatrix</b>(x,y)</h4>
+<p></p>
+<p> forms the Sylvester matrix
+corresponding to the two polynomials x and y, where the coefficients of
+the polynomials are put in the columns of the matrix (which is the natural
+direction for solving equations afterwards). The use of this matrix can be
+essential when dealing with polynomials with inexact entries, since
+polynomial Euclidean division doesn't make much sense in this case.</p>
+<p>The library syntax is <b>sylvestermatrix</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polsym"></a>
+<h4><b>polsym</b>(x,n)</h4>
+<p></p>
+<p> creates the vector of the symmetric powers
+of the roots of the polynomial x up to power n, using Newton's
+formula.</p>
+<p>The library syntax is <b>polsym</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="poltchebi"></a>
+<h4><b>poltchebi</b>(n,{v = x})</h4>
+<p></p>
+<p> creates the n^{{th}}
+Chebyshev polynomialT_n of the first kind in variable v.</p>
+<p>The library syntax is <b>tchebi</b>(n,v), where n and v are <font color=#a3682a><tt>
+long</tt></font>
+integers (v is a variable number).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polzagier"></a>
+<h4><b>polzagier</b>(n,m)</h4>
+<p></p>
+<p> creates Zagier's polynomial P_n^{(m)} used in
+the functions <font color=#a3682a><tt>
+sumalt</tt></font> and <font color=#a3682a><tt>
+sumpos</tt></font> (with <u>flag</u> = 1). One must have m\le
+n. The exact definition can be found in "Convergence acceleration of
+alternating series", Cohen et al., Experiment.Math., vol.9, 2000, pp.3--12.</p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p>
+The library syntax is <b>polzagreel</b>(n,m,<u>prec</u>) if the result is only wanted as a polynomial
+with real coefficients to the precision <u>prec</u>, or <font color=#a3682a><tt>
+ <b>polzag</b>(n,m)</tt></font>
+if the result is wanted exactly, where n and m are <font color=#a3682a><tt>
+long</tt></font>s.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="serconvol"></a>
+<h4><b>serconvol</b>(x,y)</h4>
+<p></p>
+<p> convolution (or Hadamard product) of the
+two power series x and y; in other words if x = <font color=#FF0000>sum</font> a_k*X^k and y = <font color=#FF0000>sum</font>
+b_k*X^k then <font color=#a3682a><tt>
+serconvol</tt></font>(x,y) = <font color=#FF0000>sum</font> a_k*b_k*X^k.</p>
+<p>The library syntax is <b>convol</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="serlaplace"></a>
+<h4><b>serlaplace</b>(x)</h4>
+<p></p>
+<p> x must be a power series with non-negative
+exponents. If x = <font color=#FF0000>sum</font> (a_k/k!)*X^k then the result is <font color=#FF0000>sum</font> a_k*X^k.</p>
+<p>The library syntax is <b>laplace</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="serreverse"></a>
+<h4><b>serreverse</b>(x)</h4>
+<p></p>
+<p> reverse power series (i.e.x^{-1}, not 1/x)
+of x. x must be a power series whose valuation is exactly equal to one.</p>
+<p>The library syntax is <b>recip</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="subst"></a>
+<h4><b>subst</b>(x,y,z)</h4>
+<p></p>
+<p>
+replace the simple variable y by the argument z in the "polynomial"
+expression x. Every type is allowed for x, but if it is not a genuine
+polynomial (or power series, or rational function), the substitution will be
+done as if the scalar components were polynomials of degree zero. In
+particular, beware that:</p>
+<p>
+<pre><font color=#a3682a><tt>? subst(1, x, [1,2; 3,4])
+&nbsp;%1 =
+&nbsp;[1 0]
+&nbsp;
+&nbsp;[0 1]
+&nbsp;
+&nbsp;? subst(1, x, Mat([0,1]))
+&nbsp;  ***   forbidden substitution by a non square matrix
+</tt></font></pre></p>
+<p>If x is a power series, z must be either a polynomial, a power
+series, or a rational function.</p>
+<p>The library syntax is <b>gsubst</b>(x,y,z), where y is the variable number.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="substpol"></a>
+<h4><b>substpol</b>(x,y,z)</h4>
+<p></p>
+<p>
+replace the "variable" y by the argument z in the "polynomial"
+expression x. Every type is allowed for x, but the same behaviour
+as <font color=#a3682a><tt>
+subst</tt></font> above apply.</p>
+<p>The difference with <font color=#a3682a><tt>
+subst</tt></font> is that y is allowed to be any polynomial
+here. The substitution is done as per the following script:</p>
+<p><pre><font color=#a3682a><tt>   subst_poly(pol, from, to) =
+&nbsp;   { local(t = 'subst_poly_t, M = from - t);
+&nbsp;
+&nbsp;     subst(lift(Mod(pol,M), variable(M)), t, to)
+&nbsp;   }
+</tt></font></pre></p>
+<p>For instance</p>
+<p><pre><font color=#a3682a><tt>? substpol(x^4 + x^2 + 1, x^2, y)
+&nbsp;%1 = y^2 + y + 1
+&nbsp;? substpol(x^4 + x^2 + 1, x^3, y)
+&nbsp;%2 = x^2 + y*x + 1
+&nbsp;? substpol(x^4 + x^2 + 1, (x+1)^2, y)
+&nbsp;%3 = (-4*y - 6)*x + (y^2 + 3*y - 3)
+</tt></font></pre></p>
+<p>
+The library syntax is <b>gsubstpol</b>(x,y,z).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="substvec"></a>
+<h4><b>substvec</b>(x,v,w)</h4>
+<p></p>
+<p> v being a vector of monomials (variables),
+w a vector of expressions of the same length, replace in the expression
+x all occurences of v_i by w_i. The substitutions are done
+simultaneously; more precisely, the v_i are first replaced by new
+variables in x, then these are replaced by the w_i:</p>
+<p>
+<pre><font color=#a3682a><tt>? substvec([x,y], [x,y], [y,x])
+&nbsp;%1 = [y, x]
+&nbsp;? substvec([x,y], [x,y], [y,x+y])
+&nbsp;%2 = [y, x + y]     \\ not [y, 2*y]
+</tt></font></pre></p>
+<p>
+The library syntax is <b>gsubstvec</b>(x,v,w).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="taylor"></a>
+<h4><b>taylor</b>(x,y)</h4>
+<p></p>
+<p> Taylor expansion around 0 of x with respect
+to
+the simple variable y. x can be of any reasonable type, for example a
+rational function. The number of terms of the expansion is transparent to the
+user in GP, but must be given as a second argument in library mode.</p>
+<p>The library syntax is <b>tayl</b>(x,y,n), where the <font color=#a3682a><tt>
+long</tt></font> integer n is the desired number of
+terms in the expansion.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="thue"></a>
+<h4><b>thue</b>(<u>tnf</u>,a,{<u>sol</u>})</h4>
+<p></p>
+<p> solves the equation
+P(x,y) = a in integers x and y, where <u>tnf</u> was created with
+<font color=#a3682a><tt>
+thueinit</tt></font>(P). <u>sol</u>, if present, contains the solutions of
+\Norm(x) = a modulo units of positive norm in the number field
+defined by P (as computed by <font color=#a3682a><tt>
+bnfisintnorm</tt></font>). If the
+result is conditional (on the GRH or some heuristic strenghtening),
+a Warning is printed. Otherwise, the result is unconditional, barring bugs.
+For instance, here's how to solve the Thue equation x^{13} - 5y^{13} = - 4:</p>
+<p>
+<pre><font color=#a3682a><tt>? tnf = thueinit(x^13 - 5);
+&nbsp;? thue(tnf, -4)
+&nbsp;%1 = [[1, 1]]
+</tt></font></pre></p>
+<p>Hence, the only solution is x = 1, y = 1 and the result is
+unconditional. On the other hand:</p>
+<p>
+<pre><font color=#a3682a><tt>? tnf = thueinit(x^3-2*x^2+3*x-17);
+&nbsp;? thue(tnf, -15)
+&nbsp;  *** thue: Warning: Non trivial conditional class group.
+&nbsp;  *** May miss solutions of the norm equation.
+&nbsp;%2 = [[1, 1]]
+</tt></font></pre></p>
+<p>This time the result is conditional. All results computed using this tnf
+are likewise conditional, <u>except</u> for a right-hand side of &#177; 1.</p>
+<p>The library syntax is <b>thue</b>(<u>tnf</u>,a,<u>sol</u>), where an omitted <u>sol</u> is coded
+as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="thueinit"></a>
+<h4><b>thueinit</b>(P,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> initializes the <u>tnf</u>
+corresponding to P. It is meant to be used in conjunction with <font color=#a3682a><tt>
+thue</tt></font>
+to solve Thue equations P(x,y) = a, where a is an integer. If <u>flag</u> is
+non-zero, certify the result unconditionnally. Otherwise, assume GRH,
+this being much faster of course.</p>
+<p><u>If</u> the conditional computed class group is trivial <u>or</u> you are
+only interested in the case a = &#177;1, then results are unconditional
+anyway. So one should only use the flag is <font color=#a3682a><tt>
+thue</tt></font> prints a Warning (see
+the example there).</p>
+<p>The library syntax is <b>thueinit</b>(P,<u>flag</u>,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+
+
+</BODY>
+</HTML>

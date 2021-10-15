@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Transformer une fraction continue en un réel : dfc2f</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr201.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr203.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc270">6.9.8</A>  Transformer une fraction continue en un réel : <TT>dfc2f</TT></H3><P><A NAME="@default368"></A>
+<TT>dfc2f</TT> a comme argument une liste représentant le 
+développement en fraction continue d’un nombre rationnel ou d’un nombre 
+quadratique (nombre qui est racine d’une équation du second degré): quand 
+le développement est périodique, le dernier élément de la liste est une
+liste qui représente la période du développement en fraction continue
+et si le dernier élément de la liste n’est ni une liste ni un entier cet 
+élément représente le reste <I>r</I> (<I>a</I>=<I>a</I>0+1/....+1/<I>an</I>+1/<I>r</I>).<BR>
+<TT>dfc2f</TT> renvoie le nombre rationnel ou le nombre quadratique ayant 
+l’argument comme développement en fraction continue.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>dfc2f([1,2,[2]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1/(1/(1+sqrt(2))+2)+1</TT></DIV><P> 
+Après simplification avec <TT>normal</TT> :
+</P><DIV CLASS="center"><TT>sqrt(2)</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>dfc2f([1,2,3])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>10/7</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>normal(dfc2f([3,3,6,[3,6]]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(11)</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>dfc2f([1,2,3,4,5,6,7])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>9976/6961</TT></DIV><P> 
+En effet 
+on tape :<BR>
+<TT>1+1/(2+1/(3+1/(4+1/(5+1/(6+1/7)))))</TT><BR>
+et on obtient :<BR>
+<TT>9976/6961</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>dfc2f([1,2,3,4,5,43/7])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>9976/6961</TT></DIV><P> 
+En effet 
+on tape :<BR>
+<TT>1+1/(2+1/(3+1/(4+1/(5+7/43))))</TT><BR>
+et on obtient :<BR>
+<TT>9976/6961</TT></P><HR>
+<A HREF="cascmd_fr201.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr203.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

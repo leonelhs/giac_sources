@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Padé expansion: pade</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en279.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en281.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc315">2.33.5</A>  Padé expansion: <TT>pade</TT></H3><P><A NAME="@default481"></A>
+<TT>pade</TT> takes 4 arguments
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+an expression, 
+</LI><LI CLASS="li-itemize">the variable name the expression depends on,
+</LI><LI CLASS="li-itemize">an integer <I>n</I> or a polynomial <I>N</I>,
+</LI><LI CLASS="li-itemize">an integer <I>p</I>.
+</LI></UL><P>
+<TT>pade</TT> returns a rationnal fraction <I>P</I>/<I>Q</I> such that <TT>degree(P)</TT>&lt;<I>p</I> and <I>P</I>/<I>Q</I>=<I>f</I> (mod <I>x</I><SUP><I>n</I>+1</SUP> ) or <I>P</I>/<I>Q</I>=<I>f</I> (mod <I>N</I> ).
+In the first case, it means that <I>P</I>/<I>Q</I> and <I>f</I> have the same 
+Taylor expansion at 0 up to order <I>n</I>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>pade(exp(x),x,5,3)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>pade(exp(x),x,x</TT><CODE><TT>^</TT></CODE><TT>6,3)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(3*x</TT><CODE><TT>^</TT></CODE><TT>2+24*x+60)/(-x</TT><CODE><TT>^</TT></CODE><TT>3+9*x</TT><CODE><TT>^</TT></CODE><TT>2-36*x+60)</TT></DIV><P>
+To verify input :
+</P><DIV CLASS="center"><TT>taylor((3*x</TT><CODE><TT>^</TT></CODE><TT>2+24*x+60)/(-x</TT><CODE><TT>^</TT></CODE><TT>3+9*x</TT><CODE><TT>^</TT></CODE><TT>2-36*x+60))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1+x+1/2*x</TT><CODE><TT>^</TT></CODE><TT>2+1/6*x</TT><CODE><TT>^</TT></CODE><TT>3+1/24*x</TT><CODE><TT>^</TT></CODE><TT>4+1/120*x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>6*order_size(x)</TT></DIV><P>
+which is the 5th-order series expansion of <TT>exp(x)</TT> at <I>x</I>=0.<BR>
+Input :
+</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,12,3)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,x</TT><CODE><TT>^</TT></CODE><TT>13,3)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x+1</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,14,4)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,x</TT><CODE><TT>^</TT></CODE><TT>15,4)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(-2*x</TT><CODE><TT>^</TT></CODE><TT>3-1)/(-x</TT><CODE><TT>^</TT></CODE><TT>11+x</TT><CODE><TT>^</TT></CODE><TT>10-x</TT><CODE><TT>^</TT></CODE><TT>9+x</TT><CODE><TT>^</TT></CODE><TT>8-x</TT><CODE><TT>^</TT></CODE><TT>7+x</TT><CODE><TT>^</TT></CODE><TT>6-x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>4- x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2+x-1)</TT></DIV><P>
+To verify, input :
+</P><DIV CLASS="center"><TT>series(ans(),x=0,15)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1+x-x</TT><CODE><TT>^</TT></CODE><TT>12</TT><TT>-x</TT><CODE><TT>^</TT></CODE><TT>13</TT><TT>+2x</TT><CODE><TT>^</TT></CODE><TT>15</TT><TT>+x</TT><CODE><TT>^</TT></CODE><TT>16</TT><TT>*order_size(x)</TT></DIV><P>
+then input :
+</P><DIV CLASS="center"><TT>series((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(</TT><CODE><TT>x^</TT></CODE><TT>12+1),x=0,15)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1+x-x</TT><CODE><TT>^</TT></CODE><TT>12</TT><TT>-x</TT><CODE><TT>^</TT></CODE><TT>13</TT><TT>+x</TT><CODE><TT>^</TT></CODE><TT>15</TT><TT>+x</TT><CODE><TT>^</TT></CODE><TT>16</TT><TT>*order_size(x)</TT></DIV><P>
+These two expressions have the same 14th-order series expansion at <I>x</I>=0.</P><HR>
+<A HREF="cascmd_en279.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en281.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

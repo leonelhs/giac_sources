@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Transform an expression into a fonction : unapply</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en121.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en123.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc139">2.15.2</A>  Transform an expression into a fonction : <TT>unapply</TT></H3><P><A NAME="@default198"></A>
+<TT>unapply</TT> is used to transform an expression into a function.<BR>
+<TT>unapply</TT> takes two arguments an expression and the name of a variable.<BR>
+<TT>unapply</TT> returns the function defined by this expression and
+this variable.</P><P><B>Warning</B> when a function is defined,
+the right member of the affectation is not evaluated,
+hence <CODE>g:=sin(x+1); f(x):=g</CODE> does not defined the function 
+<I>f</I>: <I>x</I> &#X2192; <I>sin</I>(<I>x</I>+1) but defines the function
+<I>f</I>: <I>x</I> &#X2192; <I>g</I>. To defined the former function, <TT>unapply</TT>
+should be used, like in the following example:<BR>
+Input :
+</P><DIV CLASS="center"><TT>g:= sin(x+1); f:=unapply(g,x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(sin(x+1), (x)-&gt;sin(x+1))</TT></DIV><P> 
+hence, the variable <TT>g</TT> is assigned to a symbolic expression
+and the variable <TT>f</TT> is assigned to a function.<BR>
+Input :
+</P><DIV CLASS="center"><TT>unapply(exp(x+2),x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(x)-&gt;exp(x+2)</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>f:=unapply(lagrange([1,2,3],[4,8,12]),x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(x)-&gt;4+4*(x-1)</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>f:=unapply(integrate(log(t),t,1,x),x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(x)-&gt;x*log(x)-x+1</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>f:=unapply(integrate(log(t),t,1,x),x)</TT></DIV><DIV CLASS="center"><TT>f(x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x*log(x)-x+1</TT></DIV><P>
+<B>Remark</B>
+Suppose that <I>f</I> is a function of 2 variables <I>f</I>:(<I>x</I>,<I>w</I>)&#X2192; <I>f</I>(<I>x</I>,<I>w</I>), 
+and that <I>g</I> is the function defined by
+<I>g</I>: <I>w</I> &#X2192; <I>h</I><SUB><I>w</I></SUB> where <I>h</I><SUB><I>w</I></SUB> is the function defined by 
+<I>h</I><SUB><I>w</I></SUB>(<I>x</I>)=<I>f</I>(<I>x</I>,<I>w</I>).<BR>
+<TT>unapply</TT> is also used to define <I>g</I> with <TT>Xcas</TT>.<BR>
+Input : 
+</P><DIV CLASS="center"><TT>f(x,w):=2*x+w</TT></DIV><DIV CLASS="center"><TT>g(w):=unapply(f(x,w),x)</TT></DIV><DIV CLASS="center"><TT>g(3)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x-&gt;2</TT><TT>·</TT><TT> x+3</TT></DIV><HR>
+<A HREF="cascmd_en121.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en123.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

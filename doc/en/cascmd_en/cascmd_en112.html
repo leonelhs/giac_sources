@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Substitue a variable by a value : subst</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en111.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en113.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc126">2.12.16</A>  Substitue a variable by a value : <TT>subst</TT></H3><P><A NAME="@default177"></A><A NAME="sec:subst"></A>
+<TT>subst</TT> takes two or three arguments : 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+an expression depending on a variable,
+an equality (variable=value of substitution) or a list of equalities.
+</LI><LI CLASS="li-itemize">an expression depending on a variable, a variable or a list
+of variables, a value or a list of values for substitution.
+</LI></UL><P>
+<TT>subst</TT> returns the expression with the substitution done.
+Note that <TT>subst</TT> does not quote it&#X2019;s argument, hence
+in a normal evaluation process, the substitution variable should
+be purged otherwise it will be replaced by it&#X2019;s assigned value
+before substitution is done.<BR>
+Input :
+</P><DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a=2)</TT></DIV><P> 
+or :
+</P><DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a,2)</TT></DIV><P> 
+Output (if the variable <TT>a</TT> is purged else first input <TT>purge(a)</TT>) :
+</P><DIV CLASS="center"><TT>5</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a,b],[2,1])</TT></DIV><P> 
+Or :
+</P><DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a=2,b=1])</TT></DIV><P> 
+Output (if the variables <TT>a</TT> and <TT>b</TT> are purged else first input 
+<TT>purge(a,b)</TT>) :
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+<TT>subst</TT> may also be used to make a change of variable in an integral. 
+In this case the <TT>integrate</TT> command should be quoted 
+(otherwise, the integral would be computed before substitution) or
+the inert form <TT>Int</TT> should be used.
+In both cases, the name of the integration variable must be given as
+argument of <TT>Int</TT> or <TT>integrate</TT> even you are integrating
+with respect to <TT>x</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>subst(&#X2019;integrate(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x,0,pi/2)&#X2019;,x=sqrt(t))</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>subst(Int(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x,0,pi/2),x=sqrt(t))</TT></DIV><P>
+Output
+</P><DIV CLASS="center"><TT>integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t,0,(pi/2)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>subst(&#X2019;integrate(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x)&#X2019;,x=sqrt(t))</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>subst(Int(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x),x=sqrt(t))</TT></DIV><P>
+Output
+</P><DIV CLASS="center"><TT>integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t)</TT></DIV><HR>
+<A HREF="cascmd_en111.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en113.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

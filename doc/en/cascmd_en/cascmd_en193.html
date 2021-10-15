@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Factorization : factor factoriser</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en192.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en194.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc219">2.24.13</A>  Factorization : <TT>factor factoriser</TT></H3><P><A NAME="@default369"></A><A NAME="@default370"></A><A NAME="sec:factor"></A>
+<TT>factor</TT> takes as argument a polynomial or a list of 
+polynomials and optionnally an algebraic extension, e.g. <TT>sqrt(n)</TT>.<BR>
+<TT>factor</TT> factorize the polynomial (or the polynomials of the list) on the
+field of it&#X2019;s coefficients (the field is complexified in complex mode)
+or on the smallest extension containing the optionnal second argument.
+Unlike <TT>collect</TT>,
+<TT>factor</TT> will further factorize each factor of degree 2
+if <TT>Sqrt</TT> is checked in the <TT>cas</TT> configuration
+(see also <A HREF="cascmd_en105.html#sec:factore">2.12.9</A>).
+You can check the current configuration in the status button under
+<TT>Xcas</TT> and change the configuration by hitting this status button.<BR>
+Input :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(x+1)</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(-x+1)</TT><CODE><TT>^</TT></CODE><TT>2*(x+1)</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT> 3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+Output if <TT>Sqrt</TT> is not checked in the <TT>cas</TT> configuration :
+</P><DIV CLASS="center"><TT>(x-1)*(x</TT><CODE><TT>^</TT></CODE><TT>2-x-1)</TT></DIV><P>
+Output if <TT>Sqrt</TT> is checked in the <TT>cas</TT> configuration :
+</P><DIV CLASS="center"><TT>(x-1)*(x+(sqrt(5)-1)/2)*(x+(-sqrt(5)-1)/2)</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT> 3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1,sqrt(5))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>((2*sqrt(5)-19)*((sqrt(5)+15)*x+7*sqrt(5)-5)*(-x+1)*((sqrt(5)+25)*x-13*sqrt(5)-15))/6820</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+Output in real mode :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+Output in complex mode :
+</P><DIV CLASS="center"><TT>((-i)*x+1)*((i)*x+1)</TT></DIV><HR>
+<A HREF="cascmd_en192.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en194.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

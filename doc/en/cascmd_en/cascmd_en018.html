@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Transform a string into a number : expr</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en017.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en019.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc24">2.4.11</A>  Transform a string into a number : <TT>expr</TT></H3><P><A NAME="@default43"></A><A NAME="sec:expr1"></A>
+Use <TT>expr</TT>, the parser with a string representing a number.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+For integers, enter the string representing the integer without
+leading 0 for basis 10, with prefix <TT>0x</TT> for basis 16,
+<TT>0</TT> for basis 8 or <TT>0b</TT> for basis 2.
+Input :
+<DIV CLASS="center"><TT>expr("123")</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>123</TT></DIV>
+Input :
+<DIV CLASS="center"><TT>expr("0123")</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>83</TT></DIV>
+Because : 1*8<SUP>2</SUP>+2*8+3=83
+Input :
+<DIV CLASS="center"><TT>expr("0x12f")</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>303</TT></DIV>
+Because : 1*16<SUP>2</SUP>+2*16+15=303
+</LI><LI CLASS="li-itemize">For decimal numbers, use a string with a <TT>.</TT> or <TT>e</TT> inside.<BR>
+Input :
+<DIV CLASS="center"><TT>expr("123.4567")</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>123.4567</TT></DIV>
+Input :
+<DIV CLASS="center"><TT>expr("123e-5")</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>0.00123</TT></DIV>
+</LI><LI CLASS="li-itemize">Note that <TT>expr</TT> more generally transforms a string 
+into a command if the command exists.<BR>
+Input :
+<DIV CLASS="center"><TT>expr("a:=1")</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>1</TT></DIV>
+Then, input :
+<DIV CLASS="center"><TT>a</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>1</TT></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en017.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en019.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Transform complex exponentials into sin and cos : sincos exp2trig</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en154.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en156.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc178">2.21.12</A>  Transform complex exponentials into sin and cos : <TT>sincos exp2trig</TT></H3><P><A NAME="@default306"></A><A NAME="@default307"></A>
+<TT>sincos</TT> or <TT>exp2trig</TT> takes as argument an expression 
+containing complex exponentials.<BR>
+<TT>sincos</TT> or <TT>exp2trig</TT> rewrites this expression in terms of 
+sin and cos.<BR>
+Input :
+</P><DIV CLASS="center"><TT>sincos(exp(i*x))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>cos(x)+(i)*sin(x)</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>exp2trig(exp(-i*x))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>cos(x)+(i)*(-(sin(x)))</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>simplify(sincos(((i)*(exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>2-i)/(2*exp((i)*x))))</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>simplify(exp2trig(((i)*(exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>2-i)/(2*exp((i)*x))))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-sin(x)</TT></DIV><HR>
+<A HREF="cascmd_en154.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en156.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Context-dependant functions.</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en123.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en125.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc142">2.16.1</A>  Context-dependant functions.</H3><H4 CLASS="subsubsection"><A NAME="toc1"></A>Operators <TT>+</TT> and <TT>-</TT></H4><P><A NAME="@default202"></A><A NAME="@default203"></A><A NAME="@default204"></A><A NAME="@default205"></A>
+<TT>+</TT> (resp <TT>-</TT>) is an infixed function and <TT>&#X2019;+&#X2019;</TT> (resp 
+<TT>&#X2019;-&#X2019;</TT>) is a prefixed fonction. The result depends on the nature of its 
+arguments.<BR>
+Examples with <TT>+</TT> (all examples except the last one work also 
+with <TT>-</TT> instead of <TT>+</TT>) :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+input (1,2)+(3,4) or (1,2,3)+4 or 1+2+3+4 or &#X2019;+&#X2019;(1,2,3,4), output 10,
+</LI><LI CLASS="li-itemize">input 1+i+2+3*i or &#X2019;+&#X2019;(1,i,2,3*i), output 3+4*i,
+</LI><LI CLASS="li-itemize">input [1,2,3]+[4,1] or [1,2,3]+[4,1,0] or &#X2019;+&#X2019;([1,2,3],[4,1]), output 
+[5,3,3],
+</LI><LI CLASS="li-itemize">input [1,2]+[3,4] or &#X2019;+&#X2019;([1,2],[3,4]), output [4,6], 
+</LI><LI CLASS="li-itemize">input [[1,2],[3,4]]+ [[1,2],[3,4]], output [[2,4],[6,8]],
+</LI><LI CLASS="li-itemize">input [1,2,3]+4 or &#X2019;+&#X2019;([1,2,3],4), output poly1[1,2,7],
+</LI><LI CLASS="li-itemize">input [1,2,3]+(4,1) or &#X2019;+&#X2019;([1,2,3],4,1), output poly1[1,2,8],
+</LI><LI CLASS="li-itemize">input "Hel"+"lo" or &#X2019;+&#X2019;("Hel","lo"), output "Hello".
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc2"></A>Operator <TT>*</TT></H4><P><A NAME="@default206"></A><A NAME="@default207"></A>
+<TT>*</TT> is an infixed function and <TT>&#X2019;*&#X2019;</TT> 
+is a prefixed function. The result depends on the nature of its arguments.<BR>
+Examples with <TT>*</TT> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+input (1,2)*(3,4) or (1,2,3)*4=1*2*3*4 or &#X2019;*&#X2019;(1,2,3,4), output 24,
+</LI><LI CLASS="li-itemize">input 1*i*2*3*i or &#X2019;*&#X2019;(1,i,2,3*i), output -6,
+</LI><LI CLASS="li-itemize">input [10,2,3]*[4,1] or [10,2,3]*[4,1,0] or &#X2019;+&#X2019;([10,2,3],[4,1]), 
+output 42 (scalar product),
+</LI><LI CLASS="li-itemize">input [1,2]*[3,4]=&#X2019;*&#X2019;([1,2],[3,4]), output 11 (scalar product),
+</LI><LI CLASS="li-itemize">input [[1,2],[3,4]]* [[1,2],[3,4]], output [[7,10],[15,22]],
+</LI><LI CLASS="li-itemize">input [1,2,3]*4 or &#X2019;*&#X2019;([1,2,3],4), output [4,8,12],
+</LI><LI CLASS="li-itemize">input [1,2,3]*(4,2) or &#X2019;*&#X2019;([1,2,3],4,2) or [1,2,3]*8, output [8,16,24],
+</LI><LI CLASS="li-itemize">input (1,2)+i*(2,3) or 1+2+i*2*3, output 3+6*i.
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc3"></A>Operator <TT>/</TT></H4><P><A NAME="@default208"></A><A NAME="@default209"></A>
+<TT>/</TT> is an infixed function and <TT>&#X2019;/&#X2019;</TT> 
+is a prefixed function. The result depends of the nature of its arguments.<BR>
+Examples with <TT>/</TT> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+input [10,2,3]/[4,1], output invalid dim
+</LI><LI CLASS="li-itemize">input [1,2]/[3,4] or &#X2019;/&#X2019;([1,2],[3,4]), output [1/3,1/2], 
+</LI><LI CLASS="li-itemize">input 1/[[1,2],[3,4]] or &#X2019;/&#X2019;(1,[[1,2],[3,4]], output 
+[[-2,1],[3/2,(-1)/2]],
+</LI><LI CLASS="li-itemize">input [[1,2],[3,4]]*1/ [[1,2],[3,4]], output [[1,0],[0,1]],
+</LI><LI CLASS="li-itemize">input [[1,2],[3,4]]/ [[1,2],[3,4]], output [[1,1],[1,1]] (division term 
+by term),
+</LI></UL><HR>
+<A HREF="cascmd_en123.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en125.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

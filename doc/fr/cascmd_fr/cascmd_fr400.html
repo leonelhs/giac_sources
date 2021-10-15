@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Matrice de Sylvester de deux polynômes : sylvester</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr399.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr401.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc486">6.27.18</A>  Matrice de Sylvester de deux polynômes : <TT>sylvester</TT></H3><P><A NAME="@default745"></A>
+<TT>sylvester</TT> a comme arguments deux polynômes.<BR>
+<TT>sylvester</TT> renvoie la matrice <I>S</I> de Sylvester des deux polynômes.<BR>
+Pour deux polynômes <I>A</I>(<I>x</I>)=∑<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>n</I></SUP> <I>a</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP> et 
+<I>B</I>(<I>x</I>)=∑<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>m</I></SUP><I>b</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP>, la matrice <TT>S</TT> de Sylvester est une matrice
+carrée de dimensiom <TT>m+n</TT> dont les <TT>m=degree(B(x))</TT> premières 
+lignes sont composées à partir des coefficients de <I>A</I>(<I>x</I>) :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB>11</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>12</SUB>=<I>a</I><SUB><I>n</I>−1</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>1(<I>n</I>+1)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>21</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>22</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>2(<I>n</I>+1)</SUB>=<I>a</I><SUB>1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>2(<I>n</I>+2)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>1</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>2</SUB>=0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>(<I>n</I>+1)</SUB>=<I>a</I><SUB><I>m</I>−1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>(<I>n</I>+2)</SUB>=<I>a</I><SUB><I>m</I>−2</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>a</I><SUB>0</SUB> </TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
+et les <TT>n=degree(A(x))</TT> lignes suivantes sont composées de la même 
+façon à partir des coefficients de <TT>B(x)</TT> :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)1</SUB>=<I>b</I><SUB><I>m</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)2</SUB>=<I>b</I><SUB><I>m</I>−1</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)(<I>m</I>+1)</SUB>=<I>b</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)1</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)2</SUB>=0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)(<I>m</I>+1)</SUB>=<I>b</I><SUB><I>n</I>−1</SUB></TD><TD ALIGN=center NOWRAP><I>b</I><SUB><I>n</I>−2</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>b</I><SUB>0</SUB> </TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>sylvester(x</TT><CODE><TT>^</TT></CODE><TT>3-p*x+q,3*x</TT><CODE><TT>^</TT></CODE><TT>2-p,x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>det([[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-4*p</TT><CODE><TT>^</TT></CODE><TT>3--27*q</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
+<A HREF="cascmd_fr399.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr401.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

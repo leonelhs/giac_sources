@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Restes chinois : ichinrem, ichrem</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr183.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr185.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc250">6.7.25</A>  Restes chinois : <TT>ichinrem, ichrem</TT></H3><P><A NAME="@default334"></A><A NAME="@default335"></A>
+<TT>ichinrem([a,p],[b,q])</TT> ou <TT>ichrem([a,p],[b,q])</TT> désigne 
+une liste <TT>[c,lcm(p,q)]</TT> formée de deux entiers.<BR>
+Le premier nombre <TT>c</TT> est tel que 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ <I>k</I> ∈ ℤ,    <I>d</I>=<I>c</I>+ <I>k</I> × lcm(<I>p</I>,<I>q</I>) </TD></TR>
+</TABLE><P>
+vérifie
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>d</I>=<I>a</I> (mod <I>p</I> ),    <I>d</I>=<I>b</I> (mod <I>q</I> ) </TD></TR>
+</TABLE><P>
+Si <TT>p</TT> et <TT>q</TT> sont premiers entre eux, il existe toujours une solution 
+<TT>d</TT> et toutes les solutions sont alors congrues modulo <TT>p*q</TT>.<BR>
+<B>Exemples</B> : 
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Trouver les solutions de :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>⎧<BR>
+⎨<BR>
+⎩</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>9 (</TT><TT>mod</TT><TT> 13) </TT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TT>
+</TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>ichinrem([3,5],[9,13])</TT></DIV>
+ou on tape :
+<DIV CLASS="center"><TT>ichrem([3,5],[9,13])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[-17,65] </TT></DIV>
+ce qui veut dire que <TT>x=-17 (mod 65)</TT><BR>
+On peut aussi taper :
+<DIV CLASS="center"><TT>ichrem(3% 5,9% 13)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>-17% 65 </TT></DIV>
+</LI><LI CLASS="li-enumerate">Trouver les solutions de :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>4 (</TT><TT>mod</TT><TT> 7) </TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>1 (</TT><TT>mod</TT><TT> 9)</TT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TT>
+</TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+On tape tout d’abord :
+<DIV CLASS="center"><TT>tmp:=ichinrem([3,5],[4,7])</TT></DIV>
+ou on tape :
+<DIV CLASS="center"><TT>tmp:=ichrem([3,5],[4,7])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[-17,35] </TT></DIV>
+puis on tape 
+<DIV CLASS="center"><TT>ichinrem([1,9],tmp)</TT></DIV>
+ou on tape :
+<DIV CLASS="center"><TT>ichrem([1,9],tmp)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[-17,315] </TT></DIV>
+ce qui veut dire que <TT>x=-17 (mod 315)</TT><BR>
+On peut aussi taper directement :<BR>
+<DIV CLASS="center"><TT>ichinrem([3% 5,4% 7,1% 9])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>-17% 315 </TT></DIV>
+</LI></OL><HR>
+<A HREF="cascmd_fr183.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr185.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

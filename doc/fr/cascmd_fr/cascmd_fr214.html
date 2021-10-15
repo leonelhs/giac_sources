@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>La fonction erf : erf</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr213.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr215.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc283">6.10.10</A>  La fonction <I>erf</I> : <TT>erf</TT></H3><P><A NAME="@default382"></A>
+<TT>erf</TT> a comme argument un nombre <I>a</I>.<BR>
+<TT>erf</TT> calcule les valeurs de la fonction <I>erf</I> au point <I>a</I>.<BR>
+On a par définition :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>erf</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>π</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>x</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>e</I><SUP>−<I>t</I><SUP>2</SUP></SUP><I>dt</I></TD></TR>
+</TABLE><P>
+On a : </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>erf</I>(+∞)=1</TD></TR>
+</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>erf</I>(−∞)=−1</TD></TR>
+</TABLE><P>
+En effet on sait que :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+∞</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>e</I><SUP>−<I>t</I><SUP>2</SUP></SUP><I>dt</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>π</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>erf(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.84270079295</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>erf(1/(sqrt(2)))*1/2+0.5</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.841344746069</TT></DIV><P>
+<B>Remarque</B><BR>
+Il y a une relation entre les fonctions <TT>erf</TT> et <TT>normal_cdf</TT> :<BR>
+<TT>normal_cdf</TT>(<I>x</I>)=1/2+1/2<TT>erf</TT>(<I>x</I>/√<SPAN style="text-decoration:overline">2</SPAN>)<BR>
+En effet :<BR>
+normal_cdf(<I>x</I>)=1/2+1/√<SPAN style="text-decoration:overline">2π</SPAN>∫<SUB>0</SUB><SUP><I>x</I></SUP><I>e</I><SUP>−<I>t</I><SUP>2</SUP>/2</SUP><I>dt</I><BR>
+donc avec le changement de variables <I>t</I>=<I>u</I>* √<SPAN style="text-decoration:overline">2</SPAN> on a :<BR>
+normal_cdf(<I>x</I>)=1/2+1/√<SPAN style="text-decoration:overline">π</SPAN>∫<SUB>0</SUB><SUP><I>x</I>/√<SPAN style="text-decoration:overline">2</SPAN></SUP><I>e</I><SUP>−<I>u</I><SUP>2</SUP></SUP><I>du</I>=1/2+1/2erf(<I>x</I>/√<SPAN style="text-decoration:overline">2</SPAN>)<BR>
+On vérifie en tapant :<BR>
+<TT>normal_cdf(1)=0.841344746069</TT></P><HR>
+<A HREF="cascmd_fr213.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr215.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

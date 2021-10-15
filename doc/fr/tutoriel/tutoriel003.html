@@ -1,0 +1,298 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="tutoriel.css">
+<TITLE>Outils pour l&#X2019;Analyse</TITLE>
+</HEAD>
+<BODY >
+<A HREF="tutoriel002.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="tutoriel004.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H2 CLASS="section"><A NAME="htoc14">3</A>&#XA0;&#XA0;Outils pour l&#X2019;Analyse</H2><H3 CLASS="subsection"><A NAME="toc12"></A><A NAME="htoc15">3.1</A>&#XA0;&#XA0;D&#XE9;riv&#XE9;es</H3><P>
+<A NAME="@default142"></A>
+<A NAME="@default143"></A>
+<A NAME="@default144"></A>
+<A NAME="@default145"></A>
+La fonction <CODE>diff</CODE> permet de calculer la d&#XE9;riv&#XE9;e d&#X2019;une
+expression par rapport &#XE0; une ou plusieurs de ses variables. Pour
+d&#XE9;river une fonction <I>f</I>, 
+on peut appliquer <CODE>diff</CODE> &#XE0; l&#X2019;expression <I>f</I>(<I>x</I>), mais alors le
+r&#XE9;sultat est une expression. Si on souhaite d&#XE9;finir la fonction
+d&#XE9;riv&#XE9;e, il faut utiliser <CODE>function_diff</CODE>.
+</P><PRE CLASS="verbatim">E:=x^2-1; diff(E);
+f:=unapply(E,x); diff(f(x));
+f1:=function_diff(f);f1(x);
+</PRE><P>Il ne <B>faut pas</B> d&#XE9;finir la fonction d&#XE9;riv&#XE9;e par
+<CODE>f1(x):=diff(f(x))</CODE>, car dans cette d&#XE9;finition, <CODE>x</CODE> aurait 
+deux sens incompatibles&#XA0;: c&#X2019;est d&#X2019;une part la
+variable formelle de d&#XE9;rivation et d&#X2019;autre part l&#X2019;argument
+de la fonction <CODE>f1</CODE>. D&#X2019;autre part, cette d&#XE9;finition
+&#XE9;valuerait <CODE>diff</CODE> &#XE0; chaque appel de la fonction (car
+le membre de droite d&#X2019;une affectation n&#X2019;est jamais &#XE9;valu&#XE9;), ce 
+qui serait inefficace.<BR>
+Il faut utiliser
+<CODE>f1:=function_diff(f)</CODE>, 
+ou
+<CODE>f1:=unapply(diff(f(x)),x)</CODE>.</P><P>La fonction <CODE>diff</CODE> s&#X2019;applique &#XE0; n&#X2019;importe quelle combinaison de
+variables, et permet de calculer des d&#XE9;riv&#XE9;es partielles
+successives.
+<A NAME="@default146"></A>
+</P><PRE CLASS="verbatim">E:=sin(x*y)
+diff(E,x)
+diff(E,y)
+diff(E,x,y)-diff(E,y,x)
+simplify(ans())
+diff(E,x$2,y$3)
+</PRE><P>Si le deuxi&#XE8;me argument de <CODE>diff</CODE> est une liste, une
+liste de d&#XE9;riv&#XE9;es est retourn&#XE9;e. Par exemple pour calculer
+le gradient de sin(<I>xy</I>)&#XA0;:
+<CODE>diff(sin(x*y),[x,y])</CODE> (on peut aussi utiliser <CODE>grad</CODE>). 
+Des commandes particuli&#XE8;res permettent de calculer les 
+combinaisons classiques de d&#XE9;riv&#XE9;es partielles.</P><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>D&#XE9;riv&#XE9;es</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>diff(ex,t)</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;riv&#XE9;e d&#X2019;une expression par rapport &#XE0; t</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>function_diff(f)</CODE></TD><TD ALIGN=left NOWRAP>fonction d&#XE9;riv&#XE9;e d&#X2019;une fonction</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>diff(ex,x$n,y$m)</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;riv&#XE9;es partielles</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>grad</CODE></TD><TD ALIGN=left NOWRAP>gradient</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>divergence</CODE></TD><TD ALIGN=left NOWRAP>divergence</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>curl</CODE></TD><TD ALIGN=left NOWRAP>rotationnel</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>laplacian</CODE></TD><TD ALIGN=left NOWRAP>laplacien</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>hessian</CODE></TD><TD ALIGN=left NOWRAP>matrice hessienne</TD></TR>
+</TABLE>
+</DIV><P>
+<A NAME="@default147"></A>
+<A NAME="@default148"></A>
+<A NAME="@default149"></A>
+<A NAME="@default150"></A>
+<A NAME="@default151"></A>
+<A NAME="@default152"></A>
+<A NAME="@default153"></A>
+<A NAME="@default154"></A>
+<A NAME="@default155"></A>
+<A NAME="@default156"></A>
+</P><H3 CLASS="subsection"><A NAME="toc13"></A><A NAME="htoc16">3.2</A>&#XA0;&#XA0;Limites et d&#XE9;veloppements limit&#XE9;s</H3><P>
+La fonction <CODE>limit</CODE> calcule les limites finies ou
+infinies, quand elles existent. On peut demander une limite 
+&#XE0; gauche ou &#XE0; droite &#XE0; l&#X2019;aide d&#X2019;un quatri&#XE8;me argument (+1 ou -1). 
+Quand la fonction d&#XE9;pend d&#X2019;un
+param&#XE8;tre, la limite obtenue peut d&#XE9;pendre des hypoth&#XE8;ses
+faites, avec la fonction <TT>assume</TT>, sur ce param&#XE8;tre. 
+<A NAME="@default157"></A>
+<A NAME="@default158"></A>
+<A NAME="@default159"></A>
+<A NAME="@default160"></A>
+</P><PRE CLASS="verbatim">limit(1/x,x,0)
+limit(1/x,x,0,1)
+limit(1/x,x,0,-1)
+limit(a/x,x,0,1)
+assume(a&gt;0)
+limit(a/x,x,0,1)
+</PRE><P>Pour les d&#XE9;veloppements limit&#XE9;s,
+deux fonctions sont disponibles, <CODE>series</CODE> et <CODE>taylor</CODE>. La
+diff&#XE9;rence est que l&#X2019;ordre du d&#XE9;veloppement doit &#XEA;tre
+sp&#XE9;cifi&#XE9; pour <CODE>series</CODE>, il est &#XE9;gal &#XE0; 6 par d&#XE9;faut
+pour <CODE>taylor</CODE>. 
+<A NAME="@default161"></A>
+<A NAME="@default162"></A>
+<A NAME="@default163"></A></P><P>L&#X2019;ordre du d&#XE9;veloppement limit&#XE9; demand&#XE9; est utilis&#XE9; par 
+<TT>Xcas</TT> en interne pour faire ses d&#XE9;veloppements. En cas de 
+simplifications, l&#X2019;ordre du d&#XE9;veloppement obtenu pourra &#XEA;tre inf&#XE9;rieur, 
+il faudra alors recommencer le calcul avec un ordre plus grand. L&#X2019;expression
+retourn&#XE9;e est constitu&#XE9;e du polyn&#XF4;me de Taylor, plus un reste
+dans lequel appara&#XEE;t une fonction <CODE>order_size</CODE> qui est telle que
+pour tout <I>a</I>&gt;0, <I>x</I><SUP><I>a</I></SUP><CODE>order_size</CODE>(<I>x</I>) tend vers 0
+quand <I>x</I> tend vers 0. Pour supprimer le reste et ne garder
+que le polyn&#XF4;me de Taylor, on peut utiliser <CODE>convert</CODE> avec l&#X2019;option 
+<TT>polynom</TT>.
+</P><PRE CLASS="verbatim">taylor(1/(x^2+1),0)
+taylor(1/(x^2+a^2),x=0)
+series(1/(x^2+1),0,11)
+series(1/(x^2+1),+infinity,11)
+series(tan(x),pi/4,3)
+series(sin(x)^3/((1-cos(x))*tan(x)),0,4)
+series(sin(x)^3/((1-cos(x))*tan(x)),0,6)
+series(tan(sin(x))-sin(tan(x)),0,13)
+convert(ans(),polynom)
+series(f(x),0,3)
+g:=f@f; series(g(x),0,2)
+</PRE><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Limites et d&#XE9;veloppements limit&#XE9;s</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>limit(ex,x,a)</CODE></TD><TD ALIGN=left NOWRAP>limite en a</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>limit(ex,x,a,1)</CODE></TD><TD ALIGN=left NOWRAP>limite &#XE0; droite en a</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>limit(ex,x,a,-1)</CODE></TD><TD ALIGN=left NOWRAP>limite &#XE0; gauche en a</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>taylor(ex,a)</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;veloppement limit&#XE9; en <I>a</I> ordre 6</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>series(ex,a,n)</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;veloppement limit&#XE9; en <I>a</I> ordre <I>n</I></TD></TR>
+</TABLE>
+</DIV><H3 CLASS="subsection"><A NAME="toc14"></A><A NAME="htoc17">3.3</A>&#XA0;&#XA0;Primitives et int&#XE9;grales</H3><P>
+<A NAME="@default164"></A>
+<A NAME="@default165"></A>
+<A NAME="@default166"></A>
+<A NAME="@default167"></A>
+La fonction <CODE>int</CODE> calcule une primitive d&#X2019;une expressionpar rapport &#XE0; 
+<I>x</I> ou par rapport &#XE0; la variable donn&#XE9;e en argument. Si
+l&#X2019;expression comporte plusieurs variables, il vaut pr&#XE9;ciser la
+variable d&#X2019;int&#XE9;gration. Si on ajoute deux arguments <I>a</I> et <I>b</I> 
+apr&#XE8;s la variable d&#X2019;int&#XE9;gration, on calcule l&#X2019;int&#XE9;grale sur
+l&#X2019;intervalle [<I>a</I>,<I>b</I>]. Eventuellement les
+bornes de l&#X2019;int&#XE9;grale peuvent &#XEA;tre des expressions, ce qui permet
+de calculer des int&#XE9;grales multiples.
+</P><PRE CLASS="verbatim">int(x^2-1)
+int(x^2-1,x,-1,1)
+int(x*y,x)
+int(x*y,y,0,x)
+int(int(x*y,y,0,x),x,0,1)
+</PRE><P>Pour calculer une int&#XE9;grale, un logiciel de calcul formel recherche 
+une primitive puis l&#X2019;&#XE9;value entre les bornes, afin d&#X2019;obtenir
+une valeur exacte. Dans certains cas, il est inutile de calculer
+une primitive, soit parce qu&#X2019;il n&#X2019;en existe pas qui s&#X2019;exprime
+avec les fonctions &#XE9;l&#XE9;mentaires, soit 
+parce qu&#X2019;un calcul num&#XE9;rique est plus adapt&#XE9; (par exemple si 
+le temps de calcul de la primitive est trop long, si la fonction
+pr&#XE9;sente des singularit&#XE9;s dans l&#X2019;intervalle d&#X2019;int&#XE9;gration, etc&#X2026;).
+Dans ce cas, on demande une valeur approch&#XE9;e en utilisant
+<CODE>evalf</CODE>, ou bien on utilise directement 
+la fonction <CODE>romberg</CODE>, qui est
+appel&#XE9;e par <CODE>evalf</CODE>.
+<A NAME="@default168"></A>
+</P><PRE CLASS="verbatim">int(exp(-x^2))
+int(exp(-x^2),x,0,10)
+evalf(int(exp(-x^2),x,0,10))
+romberg(exp(-x^2),x,0,10)
+ans()/sqrt(pi))
+</PRE><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Int&#XE9;grales</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>int(E)</CODE></TD><TD ALIGN=left NOWRAP>primitive d&#X2019;une expression</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>int(E,x,a,b)</CODE></TD><TD ALIGN=left NOWRAP>int&#XE9;grale exacte</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>romberg(E,x,a,b)</CODE></TD><TD ALIGN=left NOWRAP>int&#XE9;grale approch&#XE9;e</TD></TR>
+</TABLE>
+</DIV><H3 CLASS="subsection"><A NAME="toc15"></A><A NAME="htoc18">3.4</A>&#XA0;&#XA0;R&#XE9;solution d&#X2019;&#XE9;quations</H3><P>
+<A NAME="@default169"></A>
+Comme pour les int&#XE9;grales on distingue&#XA0;:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+la r&#XE9;solution exacte qui renvoie toutes les solutions 
+lorsque c&#X2019;est possible (par exemple pour certaines &#XE9;quations polynomiales
+ou s&#X2019;y ramenant)
+</LI><LI CLASS="li-itemize">la r&#XE9;solution approch&#XE9;e qui calcule par un algorithme it&#XE9;ratif
+une valeur proche d&#X2019;une des solutions.
+</LI></UL><P>
+<A NAME="@default170"></A>
+<A NAME="@default171"></A>
+La r&#XE9;solution exacte s&#X2019;effectue &#XE0; l&#X2019;aide de <CODE>solve</CODE>, dont le
+premier argument est une &#XE9;quation. Le membre de droite est
+suppos&#XE9; nul s&#X2019;il n&#X2019;est pas pr&#XE9;cis&#XE9;. Par 
+d&#XE9;faut <CODE>solve</CODE> ne retourne pas les solutions complexes. 
+Pour les obtenir, il faut cocher <CODE>Complexe</CODE> dans la configuration du CAS
+(<TT>Cfg-&gt;Configuration de CAS</TT> ou sur la barre-bouton 
+<TT>Config :exact...</TT>)<BR>
+Ex&#XE9;cutez les commandes suivantes
+avant et apr&#XE8;s avoir activ&#XE9; l&#X2019;option <CODE>Complex</CODE>. 
+<A NAME="@default172"></A>
+</P><PRE CLASS="verbatim">solve(x^2-a*x+2,x)
+solve(x^2+2,x)
+solve(x^3=1,x)
+</PRE><P>Les racines exactes sont calcul&#XE9;es pour les polyn&#XF4;mes de
+degr&#XE9; 1 et 2 (les formules de Cardan et Ferrari pour les degr&#XE9;s
+3 et 4 ne sont pas utilis&#XE9;es, car les solutions obtenues
+ne sont pas facilement maniables). En degr&#XE9; sup&#XE9;rieur,
+la fonction <CODE>solve</CODE> affiche un message d&#X2019;erreur et renvoie
+une liste vide.</P><P>Pour les &#XE9;quations trigonom&#XE9;triques, les solutions principales
+sont renvoy&#XE9;es. Pour obtenir toutes les solutions, il faut activer
+l&#X2019;option <CODE>All_trig_sol</CODE>. Comparer les commandes suivantes avec et
+sans cette option.
+</P><PRE CLASS="verbatim">solve(cos(x),x)
+solve(cos(x)+sin(x),x)
+</PRE><P>La fonction <CODE>solve</CODE> peut aussi r&#XE9;soudre des syst&#XE8;mes
+d&#X2019;&#XE9;quations. Le premier argument est la liste des &#XE9;quations, le
+second est la liste des variables.
+<A NAME="@default173"></A>
+</P><PRE CLASS="verbatim">solve([x^2+y-2,x+y^2-2],[x,y])
+</PRE><P><A NAME="@default174"></A>
+La fonction de r&#XE9;solution approch&#XE9;e est <CODE>fsolve</CODE>. Elle
+propose en option diff&#XE9;rents algorithmes
+(menus <CODE>Calc-&gt;Num_solve_eq </CODE> et <CODE>Calc-&gt;Num_solve_syst</CODE>).
+Le plus c&#XE9;l&#XE8;bre est
+l&#X2019;algorithme de Newton, qui a de multiples variantes. Le principe
+g&#XE9;n&#XE9;ral de tous ces algorithmes est de calculer les termes
+successifs d&#X2019;une suite qui converge vers une solution de l&#X2019;&#XE9;quation
+ou du syst&#XE8;me propos&#XE9;. Il faut pour cela choisir selon les cas
+un point de d&#XE9;part, ou un intervalle de recherche.
+</P><PRE CLASS="verbatim">fsolve((x^5+2*x+1)=0,x,1,newton_solver)
+newton(x^5+2*x+1,x,1.0)
+newton(x^5+2*x+1,x,1+i)
+newton(x^5+2*x+1,x,-1+i)
+</PRE><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Equations</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>solve(eq,x)</CODE></TD><TD ALIGN=left NOWRAP>r&#XE9;solution exacte d&#X2019;une &#XE9;quation</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>solve([eq1,eq2],[x,y])</CODE></TD><TD ALIGN=left NOWRAP>r&#XE9;solution exacte d&#X2019;un syst&#XE8;me</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>fsolve(eq,x)</CODE></TD><TD ALIGN=left NOWRAP>r&#XE9;solution approch&#XE9;e d&#X2019;une &#XE9;quation</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>fsolve([eq1,eq2],[x,y])</CODE></TD><TD ALIGN=left NOWRAP>r&#XE9;solution approch&#XE9;e d&#X2019;un syst&#XE8;me</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>newton</CODE></TD><TD ALIGN=left NOWRAP>m&#XE9;thode de Newton</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>linsolve</CODE></TD><TD ALIGN=left NOWRAP>syst&#XE8;me lin&#XE9;aire</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>proot</CODE></TD><TD ALIGN=left NOWRAP>racines approch&#XE9;es d&#X2019;un polyn&#XF4;me</TD></TR>
+</TABLE>
+</DIV><P>
+<A NAME="@default175"></A>
+<A NAME="@default176"></A>
+<A NAME="@default177"></A>
+</P><H3 CLASS="subsection"><A NAME="toc16"></A><A NAME="htoc19">3.5</A>&#XA0;&#XA0;Equations diff&#XE9;rentielles</H3><P>
+<A NAME="@default178"></A>
+Comme dans les deux sections pr&#XE9;c&#XE9;dentes, on distingue le
+calcul exact, qui n&#X2019;est pas toujours possible, du calcul
+approch&#XE9;. La r&#XE9;solution exacte s&#X2019;effectue par <CODE>desolve</CODE>. 
+Les d&#XE9;riv&#XE9;es de la fonction inconnue <I>y</I> peuvent s&#X2019;&#XE9;crire <I>y</I>&#X2032;,
+<I>y</I>&#X2033;, qui sont traduits en <CODE>diff(y)</CODE>, <CODE>diff(diff(y))</CODE>.
+Si on ne sp&#XE9;cifie pas de condition initiale, le r&#XE9;sultat est donn&#XE9;
+en fonction de constantes arbitraires.
+</P><PRE CLASS="verbatim">desolve(y'=y,y)
+desolve(y''+2*y'+y=0,y)
+desolve((x^2-1)*y'+2*y=0,y)
+</PRE><P>Les conditions initiales sont vues comme des &#XE9;quations
+suppl&#XE9;mentaires, qui forment une liste avec l&#X2019;&#XE9;quation 
+diff&#XE9;rentielle.
+</P><PRE CLASS="verbatim">desolve([y'=y,y(0)=1],y)
+desolve([y"+2*y'+y=0,y(0)=1],y)
+desolve([y"+2*y'+y=0,y(0)=1,y'(0)=1],y)
+desolve([y"+2*y'+y=0,y(0)=1,y(1)=0],y)
+desolve([(x^2-1)*y'+2*y=0,y(0)=1],y)
+desolve((t^2-1)*diff(y(t),t)+2*y(t)=0,y(t))
+</PRE><P><A NAME="@default179"></A>
+<A NAME="@default180"></A></P><P>La fonction <CODE>odesolve</CODE> permet de r&#XE9;soudre par des m&#XE9;thodes
+num&#XE9;riques une &#XE9;quation diff&#XE9;rentielle <I>y</I>&#X2032;=<I>f</I>(<I>x</I>,<I>y</I>) passant par
+un point (<I>x</I><SUB>0</SUB>,<I>y</I><SUB>0</SUB>). Par exemple
+</P><PRE CLASS="verbatim">odesolve(sin(x*y),[x,y],[0,1],2)
+</PRE><P>permet de calculer <I>y</I>(2) o&#XF9; <I>y</I>(<I>x</I>) est la solution de <I>y</I>&#X2032;(<I>x</I>)=sin(<I>xy</I>),
+telle que <I>y</I>(0)=1.
+La fonction <CODE>plotode</CODE> repr&#XE9;sente graphiquement
+la solution d&#X2019;une &#XE9;quation diff&#XE9;rentielle,
+<CODE>plotfield</CODE> repr&#XE9;sente le champ
+des tangentes. La fonction 
+<CODE>interactive_odeplot</CODE> repr&#XE9;sente le champ
+des tangentes et permet de cliquer sur le graphique pour tracer
+les solutions passant par les points cliqu&#XE9;s.
+</P><PRE CLASS="verbatim">plotfield(sin(x*y),[x,y])
+plotode(sin(x*y),[x,y],[0,1])
+erase()
+interactive_plotode(sin(x*y),[x,y])
+</PRE><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Equations diff&#XE9;rentielles</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>desolve</CODE></TD><TD ALIGN=left NOWRAP>r&#XE9;solution exacte</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>odesolve</CODE></TD><TD ALIGN=left NOWRAP>r&#XE9;solution approch&#XE9;e</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plotode</CODE></TD><TD ALIGN=left NOWRAP>trac&#XE9; de trajectoire</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plotfield</CODE></TD><TD ALIGN=left NOWRAP>trac&#XE9; d&#X2019;un champ de vecteurs</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>interactive_plotode</CODE></TD><TD ALIGN=left NOWRAP>interface cliquable</TD></TR>
+</TABLE>
+</DIV><P>
+<A NAME="@default181"></A>
+<A NAME="@default182"></A>
+<A NAME="@default183"></A>
+</P><HR>
+<A HREF="tutoriel002.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="tutoriel004.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

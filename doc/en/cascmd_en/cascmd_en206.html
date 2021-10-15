@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Lagrange&#X2019;s polynomial : lagrange interp</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en205.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en207.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc232">2.24.26</A>  Lagrange&#X2019;s polynomial : <TT>lagrange interp</TT></H3><P><A NAME="@default387"></A><A NAME="@default388"></A>
+<TT>lagrange</TT> takes as argument two lists of size <TT>n</TT> (resp a 
+matrix with two rows and <TT>n</TT> columns) and the name of a variable 
+<TT>var</TT> (by default <TT>x</TT>).<BR>
+The first list (resp row) corresponds to the abscissa values <I>x</I><SUB><I>k</I></SUB> (<I>k</I>=1..<I>n</I>), 
+and the second list (resp row) corresponds to ordinate values <I>y</I><SUB><I>k</I></SUB> 
+(<I>k</I>=1..<I>n</I>).<BR>
+<TT>lagrange</TT> returns a polynomial expression <TT>P</TT> 
+with respect to <TT>var</TT> of degree 
+<TT>n-1</TT>, such that <I>P</I>(<I>x</I><SUB><I>i</I></SUB>)=<I>y</I><SUB><I>i</I></SUB>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>lagrange([[1,3],[0,1]])</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>lagrange([1,3],[0,1])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(x-1)/2</TT></DIV><P>
+since <I>x</I>&#X2212;1/2=0 for <I>x</I>=1, and <I>x</I>&#X2212;1/2=1 for <I>x</I>=3.<BR>
+Input :
+</P><DIV CLASS="center"><TT>lagrange([1,3],[0,1],y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(y-1)/2</TT></DIV><P>
+<B>Warning</B><BR>
+<TT>f:=lagrange([1,2],[3,4],y)</TT> does not return a function 
+but an expression with respect to <I>y</I>.
+To define <I>f</I> as a function, input
+</P><DIV CLASS="center">
+<TT>f:=unapply(lagrange([1,2],[3,4],x),x)</TT>
+</DIV><P>
+Avoid <TT>f(x):=lagrange([1,2],[3,4],x)</TT> since
+the Lagrange polynomial would be computed each time <TT>f</TT> is called
+(indeed in a function definition, the second member of the affectation
+is not evaluated).
+Note also that<BR>
+<TT>g(x):=lagrange([1,2],[3,4])</TT> would not work
+since the default argument of <TT>lagrange</TT>
+would be global, hence not the same as the local
+variable used for the definition of <TT>g</TT>.</P><HR>
+<A HREF="cascmd_en205.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en207.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

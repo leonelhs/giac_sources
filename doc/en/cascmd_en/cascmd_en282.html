@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Boundaries of an interval : left right</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en281.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en283.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc318">2.34.2</A>  Boundaries of an interval : <TT>left right</TT></H3><P><A NAME="@default483"></A><A NAME="@default484"></A><A NAME="@default485"></A><A NAME="@default486"></A><A NAME="@default487"></A><A NAME="@default488"></A> 
+<TT>left</TT> (resp <TT>right</TT>) takes as argument an interval.<BR>
+<TT>left</TT> (resp <TT>right</TT>) returns the left (resp right) boundary
+of this interval.<BR>
+Note that <TT>..</TT> is an infixed operator, therefore:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>sommet(1..5)</TT> is equal to <TT>&#X2019;..&#X2019;</TT> and <TT>feuille(1..5)</TT>
+is equal to <TT>(1,5)</TT>.
+</LI><LI CLASS="li-itemize">the name of the interval followed by 
+<TT>[0]</TT> returns the operator <TT>..</TT>
+</LI><LI CLASS="li-itemize">the name of the interval followed by <TT>[1]</TT> 
+(or the <TT>left</TT> command) returns the left boundary.
+</LI><LI CLASS="li-itemize">The name of the interval followed by <TT>[2]</TT> 
+(or the <TT>right</TT> command) 
+returns the right boundary.
+</LI></UL><P>
+Input :
+</P><DIV CLASS="center"><TT>(3..5)[0]</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>sommet(3..5)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>&#X2019;..&#X2019;</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>left(3..5)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>(3..5)[1]</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>feuille(3..5)[0]</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>op(3..5)[0]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>right(3..5)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>(2..5)[2]</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>feuille(3..5)[1]</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>op(3..5)[1]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>5</TT></DIV><P>
+<B>Remark</B><BR>
+<TT>left</TT> (resp <TT>right</TT>) returns also the left (resp right) member of an 
+equation (for example <TT>left(2*x+1=x+2)</TT> returns <TT>2*x+1</TT>).</P><HR>
+<A HREF="cascmd_en281.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en283.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

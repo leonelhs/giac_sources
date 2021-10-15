@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Faire une hypothèse suppl’ementaire sur une variable : additionally</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr070.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr072.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc91">2.5.8</A>  Faire une hypothèse suppl’ementaire sur une variable : <TT>additionally</TT></H3><P><A NAME="@default69"></A><A NAME="@default70"></A>
+<TT>additionally</TT> permet de faire des hypothèses supplémentaires
+sur une variable. En effet, si on fait une autre hypothèse avec <TT>assume</TT>, 
+l’ancienne hypothèse est effacée. Donc, si vous voulez rajoutez une 
+nouvelle hypothèse il faut utiliser la commande <TT>additionally</TT> ou mettre 
+<TT>additionally</TT> comme deuxième argument de <TT>assume</TT>.<BR>
+<TT>additionally</TT> a les mêmes arguments que <TT>assume</TT> ou <TT>supposons</TT> :
+un nom de variable suivi d’uneégalité ou d’une inégalité représentant
+l’hypothèse faite ou bien un nom de variable suivi d’une virgule et de son 
+type. On peut mettre plusieurs hypothèses à condition de les relier par 
+<TT>and</TT> ou <TT>or</TT> selon ce que l’on veut faire !<BR>
+On est obligé d’utiliser 
+<TT>additionally</TT> pour spécifier le type de la variable et une plage de 
+valeurs pour cette variable.<BR>
+On tape pour dire que <TT>b</TT> est un entier supérieur strictement à 5 :
+</P><DIV CLASS="center"><TT>assume(b,integer);</TT></DIV><DIV CLASS="center"><TT>additionally(b&gt;5)</TT></DIV><P>
+ou bien 
+</P><DIV CLASS="center"><TT>assume(b,integer);</TT></DIV><DIV CLASS="center"><TT>assume(b&gt;5,additionally)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>DOM_INT,b</TT></DIV><P>
+puis
+</P><DIV CLASS="center"><TT>b</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>assume(b)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[DOM_INT]</TT></DIV><HR>
+<A HREF="cascmd_fr070.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr072.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

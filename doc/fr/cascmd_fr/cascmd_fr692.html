@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>L’histogramme : histogram histogramme</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr691.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr693.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc811">7.1.13</A>  L’histogramme : <TT>histogram histogramme</TT></H3><P><A NAME="@default1244"></A><A NAME="@default1245"></A>
+<TT>histogram</TT> trace l’histogramme des données de data, on peut 
+préciser une liste d’effectifs, ou un nombre nc de classes ou le mimimum 
+classmin des classes et la largeur classsize des classes.<BR>
+<TT>histogram</TT> permet de visualiser la fonction densité des 
+fréquences : on met en abscisse les classes et en ordonnée la densité des
+fréquences (si on a des valeurs discrétes elles sont considérées 
+comme étant le centre de la classe). L’histogramme est donc un graphique en 
+escalier dans lequel les fréquences des différentes classes sont 
+représentées par les aires des différents rectangles situés sous les 
+différents paliers.<BR>
+On rappelle que, si l’effectif de la classe [<I>a</I><SUB><I>j</I>−1</SUB>;<I>a</I><SUB><I>j</I></SUB>] est <I>n</I><SUB><I>j</I></SUB>, la 
+fréquence de la classe [<I>a</I><SUB><I>j</I>−1</SUB>;<I>a</I><SUB><I>j</I></SUB>] est <I>f</I><SUB><I>j</I></SUB>=<I>n</I><SUB><I>j</I></SUB>/<I>N</I> (si <I>N</I> est l’effectif
+total) et la densité de fréquence de la classe 
+[<I>a</I><SUB><I>j</I>−1</SUB>;<I>a</I><SUB><I>j</I></SUB>] est <I>f</I><SUB><I>j</I></SUB>/(<I>a</I><SUB><I>j</I></SUB>−<I>a</I><SUB><I>j</I>−1</SUB>).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>histogram([[1.5..1.65,50],[1.65..1.7,20],[1.7..1.8,30]])</TT></DIV><P>
+La fenêtre graphique s’ouvre automatiquement et on obtient l’histogramme de 
+la série <TT>[[1.5..1.65,50],[1.65..1.7,20],[1.7..1.8,30]]</TT>, à condition 
+d’avoir défini correctement la configuration du graphique.</P><P>L’argument de <TT>histogram</TT> peut aussi être une liste de valeurs 
+discrètes, dans ce cas, les classes commencent à une valeur 
+(<TT>class_min</TT>) et sont toutes de même largeur (<TT>class_size</TT>) soit 
+définies par défaut (à 0 et 1, valeurs modifiables dans la configuration 
+graphique) ou passées en second et troisième arguments.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>histogram([0,1,2,1,1,2,1,2,3,3])</TT></DIV><P> 
+alors <TT>class_min=0</TT> et <TT>class_size=1</TT> et les valeurs 0,1,2,3 ne sont 
+donc pas centrées.<BR>
+Mais si on tape :
+</P><DIV CLASS="center"><TT>histogram([0,1,2,1,1,2,1,2,3,3],-0.5,1)</TT></DIV><P> 
+alors <TT>class_min=-0.5</TT> et <TT>class_size=1</TT> et les valeurs 0,1,2,3 sont 
+donc centrées.<BR>
+et cela renvoie la même chose que :
+</P><DIV CLASS="center"><TT>histogram([[0,1],[1,4],[2,3],[3,2]])</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>histogram(seq(rand(1000),k,0,100),0,100)</TT></DIV><P> 
+Ici on a choisi <TT>class_min=0</TT> et <TT>class_size=100</TT>.</P><HR>
+<A HREF="cascmd_fr691.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr693.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

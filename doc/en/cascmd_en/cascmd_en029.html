@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>The integer Euclidean remainder : irem remain smod mods mod %</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en028.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en030.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc37">2.6.11</A>  The integer Euclidean remainder : <TT>irem remain smod mods mod %</TT></H3><P><A NAME="@default59"></A><A NAME="@default60"></A>
+<TT>irem</TT> (or <TT>remain</TT>) returns the integer remainder <I>r</I> from 
+the Euclidean division of two integers <I>a</I> and <I>b</I> given as arguments 
+(<I>a</I>=<I>b</I>*<I>q</I>+<I>r</I> avec 0&#X2264; <I>r</I>&lt; <I>b</I>).<BR>
+For Gaussian integers, we choose <I>q</I> so that <I>b</I>*<I>q</I> is as near by <I>a</I> as 
+possible and it can be proved that <I>r</I> may be choosen so that 
+|<I>r</I>|<SUP>2</SUP> &#X2264; |<I>b</I>|<SUP>2</SUP>/2.<BR>
+Input :
+</P><DIV CLASS="center"><TT>irem(148,5) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+<TT>irem</TT> works with long integers or with Gaussian integers.<BR>
+Example :
+</P><DIV CLASS="center"><TT>irem(factorial(148),factorial(45)+2 )</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>111615339728229933018338917803008301992120942047239639312</TT></DIV><P>
+Another example
+</P><DIV CLASS="center"><TT>irem(25+12*i,5+7*i) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-4+i</TT></DIV><P>
+Here <I>a</I>&#X2212;<I>b</I>*<I>q</I>=&#X2212;4+<I>i</I> and |&#X2212;4+<I>i</I>|<SUP>2</SUP>=17&lt;|5+7*<I>i</I>|<SUP>2</SUP>/2=74/2=37</P><P><TT>smod</TT> or <TT>mods</TT><A NAME="@default61"></A><A NAME="@default62"></A> is a prefixed
+function and has two integers <I>a</I> and <I>b</I> as arguments.<BR>
+<TT>smod</TT> or <TT>mods</TT> returns the 
+symetric remainder <I>s</I> of the Euclidean division of the 
+arguments <I>a</I> and <I>b</I> (<I>a</I>=<I>b</I>*<I>q</I>+<I>s</I> with &#X2212;<I>b</I>/2&lt;<I>s</I> &#X2264; <I>b</I>/2).<BR>
+Input :
+</P><DIV CLASS="center"><TT>smod(148,5) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-2</TT></DIV><P><TT>mod</TT> (or <TT>%</TT>) is an infixed function 
+and has two integers <I>a</I> and <I>b</I> 
+as arguments.<BR>
+<TT>mod</TT> (or <TT>%</TT>) returns <I>r</I>% <I>b</I> of <I>Z</I>/<I>bZ</I> where <I>r</I> is the remainder of 
+the Euclidean division of the arguments <I>a</I> and <I>b</I>.<BR>
+Input :<A NAME="@default63"></A><A NAME="@default64"></A>
+</P><DIV CLASS="center"><TT>148 mod 5 </TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>148 % 5 </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>3 % 5</TT></DIV><P>
+Note that the answer <TT>3 % 5</TT> is not an integer (3) but
+an element of <I>Z</I>/5<I>Z</I> (see <A HREF="index.html#sec:modulaire">2.31</A> to have
+the possible operations in <I>Z</I>/5<I>Z</I>).</P><HR>
+<A HREF="cascmd_en028.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en030.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

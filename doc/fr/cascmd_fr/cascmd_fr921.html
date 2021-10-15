@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Remarques générales sur l’affichage des mesures</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr920.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr922.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1070">9.17.1</A>  Remarques générales sur l’affichage des mesures</H3><P><A NAME="@default1779"></A><A NAME="@default1780"></A><A NAME="@default1781"></A><A NAME="@default1782"></A><A NAME="@default1783"></A><A NAME="@default1784"></A>
+Les commandes concernant les mesures et se terminant pas <TT>en</TT> ou <TT>at</TT>
+(resp <TT>enbrut</TT> ou <TT>atraw</TT>) gérent l’affichage de ces mesures en un 
+point (qui est le dernier argument de ces commandes) avec une 
+légende succinte (resp sans légende). Si on préfère une légende plus 
+sophistiquée il faut utiliser la commande <TT>legende</TT> ou <TT>affichage</TT>
+avec <TT>legende</TT> comme argument.
+On tape par exemple : 
+</P><DIV CLASS="center"><TT>C:=carre(0,1);a:=aire(C);p:=perimetre(C)</TT></DIV><DIV CLASS="center"><TT>legend(1+i,"aire(C)="+string(a))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>aire(C)=1 s’écrit au d’affixe 1+i</TT></DIV><P>
+puis, on tape :
+</P><DIV CLASS="center"><TT>affichage(legend(1,"perimetre(C)="+string(p)),vert)</TT></DIV><P>On obtient :
+</P><DIV CLASS="center"><TT>perimetre(C)=4 s’écrit en vert au point 1</TT></DIV><P>
+alors que si on tape :
+</P><DIV CLASS="center"><TT>aireen(C,1+i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>aC=1 s’écrit au d’affixe 1+i</TT></DIV><P>
+puis, si on tape :
+</P><DIV CLASS="center"><TT>perimetreen(C,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>pC=4 s’écrit au d’affixe 1</TT></DIV><P>
+ou bien si on tape :
+</P><DIV CLASS="center"><TT>aireenbrut(C,1+i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1 s’écrit au d’affixe 1+i</TT></DIV><P>
+puis, si on tape :
+</P><DIV CLASS="center"><TT>perimetreenbrut(C,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>4 s’écrit au d’affixe 1</TT></DIV><HR>
+<A HREF="cascmd_fr920.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr922.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

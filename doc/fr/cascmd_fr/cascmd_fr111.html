@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Solution approchée de y’=f(t,y) : odesolve</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr110.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr112.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc161">4.3.5</A>  Solution approchée de y’=f(t,y) : <TT>odesolve</TT></H3><P><A NAME="@default194"></A><A NAME="@default195"></A>
+Soit <I>f</I> une fonction de ℝ<SUP>2</SUP> 
+dans ℝ.<BR>
+<TT>odesolve</TT> renvoie la valeur approchée <I>y</I>(<I>t</I>1) de la solution 
+de léquation differentielle <I>y</I>′=<I>f</I>(<I>t</I>,<I>y</I>) lorsque <I>y</I>(<I>t</I><SUB>0</SUB>)=<I>y</I><SUB>0</SUB>.<BR>
+<TT>odesolve</TT> a comme paramètres :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>odesolve(f(t,y),[t,y],[t0,y0],t1)</TT> ou<BR>
+<TT>odesolve(f(t,y),t=t0..t1,y,y0)</TT> ou<BR>
+<TT>odesolve(t0..t1,f,y0)</TT> ou<BR>
+<TT>odesolve(t0..t1,(t,y)-&gt;f(t,y),y0)</TT><BR>
+renvoie la valeur approchée de 
+<I>y</I>(<I>t</I>1) lorsque <I>y</I>(<I>t</I>) est la 
+solution de <I>y</I>′(<I>t</I>)=<I>f</I>(<I>t</I>,<I>y</I>(<I>t</I>)) qui vérifie  <I>y</I>(<I>t</I>0)=<I>y</I>0.
+</LI><LI CLASS="li-itemize">On peut ajouter un paramètre optionnel pour
+indiquer la discrétisation en temps souhaitée
+(<TT>tstep=valeur</TT>). Cette valeur n’est pas forcément
+respectée par le solver. Par défaut <TT>tstep=0.3</TT>)
+</LI><LI CLASS="li-itemize">On peut indiquer en paramètre optionnel <TT>curve</TT>
+pour obtenir la liste des [<I>t</I>,[<I>y</I>(<I>t</I>)]] calculés au lieu
+de la seule valeur de <I>y</I>(<I>t</I>1).
+</LI></UL><P>
+On tape :
+</P><DIV CLASS="center"><TT>odesolve(sin(t*y),[t,y],[0,1],2)</TT></DIV><P>
+ou :
+</P><DIV CLASS="center">
+<TT>odesolve(sin(t*y),t=0..2,y,1)</TT>
+</DIV><P>
+ou :
+</P><DIV CLASS="center">
+<TT>odesolve(0..2,(t,y)-&gt;sin(t*y),1)</TT>
+</DIV><P>
+ou encore on définit la fonction :
+</P><DIV CLASS="center">
+<TT>f(t,y):=sin(t*y)</TT>
+</DIV><P>
+et on tape:
+</P><DIV CLASS="center"><TT>odesolve(0..2,f,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1.82241255675]</TT></DIV><P>
+puis on tape :
+</P><DIV CLASS="center"><TT>odesolve(0..2,f,1,tstep=0.3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1.82241255675]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>odesolve(sin(t*y),t=0..2,y,1,tstep=0.5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1.82241255675]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>odesolve(sin(t*y),t=0..2,y,1,tstep=0.5,curve)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[0.0,[1.0]],[0.3906,[1.07811817892]],[0.760963058921,[1.30972370161]],[1.07086790074,[1.60476137064]],[1.39334557444,[1.86417104883]],[1.78645581533,[1.90374891395]],[2.0,[1.82241253071]]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>odesolve(sin(t*y),t=0..2,y,1,curve)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>odesolve(sin(t*y),t=0..2,y,1,tstep=0.3,curve)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[0.0,[1.0]],[0.3781,[1.07309655677]],[0.6781,[1.24392692452]],[0.9781,[1.51224777765]],[1.2781,[1.7904830809]],[1.5781,[1.92164503333]],[1.8781,[1.87481063533]],[2.0,[1.82241255617]]]</TT></DIV><HR>
+<A HREF="cascmd_fr110.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr112.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

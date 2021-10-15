@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Draw a line : line</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en469.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en471.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc532">3.5.1</A>  Draw a line : <TT>line</TT></H3><P><A NAME="@default782"></A><A NAME="sec:doite"></A>
+<B>See also :</B> <A >??</A> and <A >??</A> for line usage in 
+geometry and see <A >??</A> and <A >??</A> for axis.<BR>
+<TT>line</TT> takes as argument cartesian(s) equation(s) :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+in 2D: one line equation,
+</LI><LI CLASS="li-itemize">in 3D: two plane equations.
+</LI></UL><P>
+<TT>line</TT> defines and draws the corresponding line.<BR>
+Input :
+</P><DIV CLASS="center"><TT>line(2*y+x-1=0)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>the line 2*y+x-1=0</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>line(y=1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>the horizontal line y=1</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>line(x=1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>the vertical line x=1</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>line(x+2*y+z-1=0,z=2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>the line x+2*y+1=0 in the plane z=2</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>line(y=1,x=1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>the vertical line crossing through (1,1,0)</TT></DIV><P>
+<B>Remark</B><BR>
+<TT>line</TT> defines an oriented line :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+when the 2D line is given by an equation, it is rewritten
+as "left_member-right_member=<TT>ax+by+c=0</TT>", this determinates
+its normal vector <TT>[a,b]</TT> and the orientation is given by the vector 
+<TT>[b,-a]</TT>) (or its orientation is defined by the 3D cross product of its
+normal vectors (with third coordinate 0) and the vector [0,0,1]).<BR>
+For example <TT>line(y=2*x)</TT> defines the line <TT>-2x+y=0</TT> with as direction 
+the vector <TT>[1,2]</TT> (or <TT>cross([-2,1,0],[0,0,1])</TT>=<TT>[1,2,0]</TT>).
+</LI><LI CLASS="li-itemize">when the 3D line is given by two plane equations, it&#X2019;s 
+direction is defined by the cross product of the normals to the planes 
+(where the plane equation is rewritten as
+"left_member-right_member=<TT>ax+by+cz+d=0</TT>", so that
+the normal is <TT>[a,b,c]</TT>).<BR>
+For example the <TT>line(x=y,y=z)</TT> is the line <TT>x-y=0,y-z=0</TT> and its
+direction is :<BR>
+<TT>cross([1,-1,0],[0,1,-1])</TT>=<TT>[1,1,1]</TT>.
+</LI></UL><HR>
+<A HREF="cascmd_en469.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en471.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

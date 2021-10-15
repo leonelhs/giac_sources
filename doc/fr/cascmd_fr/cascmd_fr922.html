@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>La longueur d’un segment et distance entre les deux objets 
+géométriques : distance longueur</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr921.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr923.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1071">9.17.2</A>  La longueur d’un segment et distance entre les deux objets 
+géométriques : <TT>distance longueur</TT></H3><P><A NAME="@default1785"></A><A NAME="@default1786"></A><A NAME="sec:longueur2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1018.html#sec:longueur3">10.12.7</A> pour la géométrie 3-d.<BR>
+<TT>distance</TT> ou <TT>longueur</TT> a comme argument deux points (ou deux
+nombres complexes qui sont l’affixe de ces points) ou deux objets 
+géométriques.<BR>
+ <TT>distance</TT> ou <TT>longueur</TT> renvoie la longueur du segment défini par 
+ces deux points ou la distance entre les deux objets géométriques.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>longueur(-1,1+i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(5) </TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>longueur(0,droite(-1,1+i))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(5)/5 </TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>longueur(cercle(0,1),droite(-2,1+3i))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(2)-1 </TT></DIV><P>
+<B>Attention</B> Lorsque le calcul de longueur utilise des paramètres, il faut
+être en mode réel. Par exemple :<BR>
+</P><PRE CLASS="verbatim">assume(a=[4,0,5,0.1])};
+A:=point(0);
+B:=point(a);
+simplify(longueur(B,A))
+simplify(longueur(A,B))
+</PRE><P>en mode complexe on a :<BR>
+<TT>simplify(longueur(B,A))</TT> renvoie <TT>a</TT> mais<BR>
+<TT>simplify(longueur(A,B))</TT> renvoie <TT>-a</TT>.<BR>
+en mode réel on a :<BR>
+<TT>simplify(longueur(B,A))</TT> et <TT>simplify(longueur(A,B))</TT> renvoie <TT>c</TT>. </P><HR>
+<A HREF="cascmd_fr921.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr923.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

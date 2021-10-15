@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Conic reduction : conique_reduite</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en430.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en432.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc482">2.49.6</A>  Conic reduction : <TT>conique_reduite</TT></H3><P><A NAME="@default712"></A>
+<TT>conique_reduite</TT> takes two arguments : the equation of a conic
+and a vector of variable names.<BR>
+<TT>conique_reduite</TT> returns a list whose elements are:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+the origin of the conic,
+</LI><LI CLASS="li-itemize">the matrix of a basis in which the conic is reduced, 
+</LI><LI CLASS="li-itemize">0 or 1 (0 if the conic is degenerated), 
+</LI><LI CLASS="li-itemize">the reduced equation of the conic 
+</LI><LI CLASS="li-itemize">a vector of it&#X2019;s parametric equations.
+</LI></UL><P> 
+Input :
+</P><DIV CLASS="center"><TT>conique_reduite(2*x</TT><CODE><TT>^</TT></CODE><TT>2+2*x*y+2*y</TT><CODE><TT>^</TT></CODE><TT>2+5*x+3,[x,y])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-5/3,5/6],[[-1/(sqrt(2)),1/(sqrt(2))],[-1/(sqrt(2)), -1/(sqrt(2))]],1,3*x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2+-7/6,[[(-10+5*i)/6+ (1/(sqrt(2))+(i)/(sqrt(2)))*((sqrt(14)*cos(&#X2018; t&#X2018;))/6+ ((i)*sqrt(42)*sin(&#X2018; t&#X2018;))/6),&#X2018; t&#X2018;,0,2*pi,(2*pi)/60]]]</TT></DIV><P>
+Which means that the conic is not degenerated, it&#X2019;s reduced equation is 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">3<I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>&#X2212;7/6=0 </TD></TR>
+</TABLE><P> 
+origin is &#X2212;5/3+5*<I>i</I>/6, axis are
+parallel to the vectors (&#X2212;1,1) and (&#X2212;1,&#X2212;1).
+It&#X2019;s parametric equation is
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&#X2212;10+5*<I>i</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+
+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">(1+<I>i</I>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>2</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">*</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">(</TD><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>14</TD></TR>
+</TABLE></TD><TD CLASS="dcell">*<I>cos</I>(<I>t</I>)+<I>i</I>*</TD><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>42</TD></TR>
+</TABLE></TD><TD CLASS="dcell">*<I>sin</I>(<I>t</I>))</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+where the suggested parameters value for drawing are
+<I>t</I> from 0 to 2&#X3C0; with <TT>tstep</TT>= 2&#X3C0;/60.</P><P><B>Remark</B> :<BR>
+Note that if the conic is degenerated and is made of 1 or 2 line(s), 
+the lines are not given by 
+their parametric equation but by the list of two points of the line.<BR>
+Input :
+</P><DIV CLASS="center"><TT>conique_reduite(x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2+3*x+y+2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[(-3)/2,1/2],[[1,0],[0,1]],0,x</TT><CODE><TT>^;</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2, [[(-1+2*i)/(1-i),(1+2*i)/(1-i)], [(-1+2*i)/(1-i),(-1)/(1-i)]]]</TT></DIV><HR>
+<A HREF="cascmd_en430.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en432.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

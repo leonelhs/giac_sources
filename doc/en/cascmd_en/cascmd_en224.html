@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Sturm sequences : sturmseq</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en223.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en225.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc251">2.25.17</A>  Sturm sequences : <TT>sturmseq</TT></H3><P><A NAME="@default411"></A>
+<TT>sturmseq</TT> takes as argument, a polynomial expression <I>P</I> or a 
+rationnal fraction <I>P</I>/<I>Q</I> and returns the list of the Sturm sequences 
+of the square-free factors of odd multiplicity of <I>P</I> (or of <I>P</I>/<I>Q</I>).
+For <I>F</I> a square-free factor of odd multiplicity, the Sturm 
+sequence <I>R</I><SUB>1</SUB>,<I>R</I><SUB>2</SUB>,... is made from <I>F</I>, <I>F</I>&#X2032; by a recurrence
+relation :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<I>R</I><SUB>1</SUB> is the opposite of the euclidian division remainder of <I>F</I> by
+<I>F</I>&#X2032; then,
+</LI><LI CLASS="li-itemize"><I>R</I><SUB>2</SUB> is the opposite of the euclidian division remainder of <I>F</I>&#X2032; by
+<I>R</I><SUB>1</SUB>, 
+</LI><LI CLASS="li-itemize">... 
+</LI><LI CLASS="li-itemize">and so on untill <I>R</I><SUB><I>k</I></SUB>=0.
+</LI></UL><P>
+Input :
+</P><DIV CLASS="center"><TT>sturmseq(2*x</TT><CODE><TT>^</TT></CODE><TT>3+2)</TT></DIV><P>
+or 
+</P><DIV CLASS="center"><TT>sturmseq(2*y</TT><CODE><TT>^</TT></CODE><TT>3+2,y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[2,[[1,0,0,1],[3,0,0],-9],1]</TT></DIV><P>
+The first term gives the content of the numerator (here 2), 
+then the Sturm sequence (in list representation) [<I>x</I><SUP>3</SUP>+1,3<I>x</I><SUP>2</SUP>,&#X2212;9].<BR>
+Input :
+</P><DIV CLASS="center"><TT>sturmseq((2*x</TT><CODE><TT>^</TT></CODE><TT>3+2)/(3*x</TT><CODE><TT>^</TT></CODE><TT>2+2),x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[2,[[1,0,0,1],[3,0,0],-9],1,[1,[[3,0,2],[6,0],-72]]</TT></DIV><P>
+The first term gives the content of the numerator (here 2), 
+then the Sturm sequence of the numerator ([[1,0,0,1],[3,0,0],-9]), 
+then the content of the denominator (here 1) and the Sturm 
+sequence of the denominator ([[3,0,2],[6,0],-72]). As expressions,
+[<I>x</I><SUP>3</SUP>+1,3<I>x</I><SUP>2</SUP>, &#X2212;9] is the Sturm sequence of the numerator and
+[3<I>x</I><SUP>2</SUP>+2,6<I>x</I>,&#X2212;72] is the Sturm sequence of the denominator.<BR>
+Input :
+</P><DIV CLASS="center"><TT>sturmseq((x</TT><CODE><TT>^</TT></CODE><TT>3+1)</TT><CODE><TT>^</TT></CODE><TT>2,x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,1]</TT></DIV><P>
+Indeed <I>F</I>=1.<BR>
+Input :
+</P><DIV CLASS="center"><TT>sturmseq(3*(3*x</TT><CODE><TT>^</TT></CODE><TT>3+1)/(2*x+2),x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[3,[[3,0,0,1],[9,0,0],-81],2,[[1,1],1]]</TT></DIV><P>
+The first term gives the content of the numerator 
+(here <TT>3</TT>),<BR>
+the second term gives the Sturm sequence of the numerator
+(here <TT>3x</TT><CODE><TT>^</TT></CODE><TT>3+1, 9x</TT><CODE><TT>^</TT></CODE><TT>2, -81</TT>),<BR>
+the third term gives the content of the denominator (here 
+<TT>2</TT>),<BR>
+the fourth term gives the Sturm sequence of the denominator 
+(<TT>x+1,1</TT>).<BR>
+<B>Warning !!!!</B><BR>
+<I>P</I> is defined by its symbolic expression.<BR>
+Input :<BR>
+<TT>sturmseq([1,0,0,1],x)</TT>,<BR>
+Output :<BR>
+<TT>Bad argument type</TT>.</P><HR>
+<A HREF="cascmd_en223.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en225.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

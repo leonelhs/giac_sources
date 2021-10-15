@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>3-d graph</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en466.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en468.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc526">3.2.2</A>  3-d graph</H3><P><A NAME="sec:plotfunc3"></A>
+<TT>plotfunc</TT> takes two main arguments : an expression of two 
+variables or a list of several expressions of two variables and the list of 
+these two variables, where each variable may be replaced by
+an equality variable=interval to specify the range for this variable
+(if not specified, default values are taken from the graph configuration).
+<TT>plotfunc</TT> accepts two optional arguments to specify 
+the discretisation step in <I>x</I> and in <I>y</I> by
+<TT>xstep=...</TT> and <TT>ystep=...</TT>.
+Alternatively one can specify the number of points used for the 
+representation of the function with <CODE>nstep=</CODE> (instead of <CODE>xstep</CODE> and 
+<TT>ystep</TT>).<BR>
+<TT>plotfunc</TT> draws the surface(s) defined by <I>z</I>= the first argument.<BR>
+Input :
+</P><DIV CLASS="center"><TT>plotfunc( x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2,[x,y])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>A 3D graph of z=x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>plotfunc(x*y,[x,y]) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The surface z=x*y, default ranges</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>plotfunc([x*y-10,x*y,x*y+10],[x,y]) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The surfaces z=x*y-10, z=x*y and z=x*y+10</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>plotfunc(x*sin(y),[x=0..2,y=-pi..pi]) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The surface </TT><TT><I>z</I>=<I>x</I>*<I>y</I></TT><TT> for the specified ranges</TT></DIV><P>
+Now an example where we specify the <I>x</I> and <I>y</I> discretisation step 
+with <CODE>xstep</CODE> and <CODE>ystep</CODE>. Input :
+</P><DIV CLASS="center">
+<TT>plotfunc(x*sin(y),[x=0..2,y=-pi..pi],xstep=1,ystep=0.5) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>A portion of surface </TT><TT><I>z</I>=<I>x</I>*<I>y</I></TT></DIV><P>
+Alternatively we may specify 
+the number of points used for the representation of the
+function with <CODE>nstep</CODE> instead of <CODE>xstep</CODE> and <CODE>ystep</CODE>, input :
+</P><DIV CLASS="center"><TT>plotfunc(x*sin(y),[x=0..2,y=-pi..pi],nstep=300)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>A portion of surface </TT><TT><I>z</I>=<I>x</I>*<I>y</I></TT></DIV><P>
+<B>Remarks</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Like any 3-d scene, the viewpoint may be modified by rotation 
+around the <TT>x</TT> axis, the <TT>y</TT> axis or the
+<TT>z</TT> axis, either by dragging the mouse inside the graphic 
+window (push the mouse outside the parallelepiped used for 
+the representation), or with the shortcuts
+<TT>x</TT>, <TT>X</TT>, <TT>y</TT>, <TT>Y</TT>, <TT>z</TT> and <TT>Z</TT>.
+</LI><LI CLASS="li-itemize">If you want to print a graph or get a L<sup>A</sup>T<sub>E</sub>X translation, use the graph
+menu<BR>
+<TT>Menu</TT><TT>&#X25B8;</TT><TT>print</TT><TT>&#X25B8;</TT><TT>Print(with
+Latex)</TT>
+</LI></UL><HR>
+<A HREF="cascmd_en466.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en468.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

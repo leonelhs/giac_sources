@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Combine terms of same type : combine</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en142.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en144.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc165">2.20.2</A>  Combine terms of same type : <TT>combine</TT></H3><P><A NAME="@default273"></A><A NAME="@default274"></A><A NAME="@default275"></A><A NAME="@default276"></A><A NAME="@default277"></A><A NAME="@default278"></A><A NAME="@default279"></A>
+<TT>combine</TT> takes two arguments : an expression and 
+the name of a function or class of functions
+<TT>exp,log,ln, sin,cos,trig</TT>.<BR>
+Whenever possible, <TT>combine</TT> put together subexpressions corresponding
+to the second argument:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>combine(expr,ln)</TT> or <TT>combine(expr,log)</TT> gives the same result 
+as <TT>lncollect(expr)</TT>
+</LI><LI CLASS="li-itemize"><TT>combine(expr,trig)</TT> or <TT>combine(expr,sin)</TT> or <TT>combine(expr,cos)</TT>
+gives the same result as <TT>tcollect(expr)</TT>.
+</LI></UL><P>
+Input :
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),exp)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>exp(x+y)+sin(x)*cos(x)+ln(x)+ln(y)</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),trig)</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),sin)</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),cos)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>exp(y)*exp(x)+(sin(2*x))/2+ln(x)+ln(y)</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),ln)</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),log)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>exp(x)*exp(y)+sin(x)*cos(x)+ln(x*y)</TT></DIV><HR>
+<A HREF="cascmd_en142.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en144.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

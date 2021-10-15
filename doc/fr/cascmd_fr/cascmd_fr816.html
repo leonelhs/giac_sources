@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Pour écrire des variables et leur contenu dans un fichier : write</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr815.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr817.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc945">8.5.2</A>  Pour écrire des variables et leur contenu dans un fichier : <TT>write</TT></H3><P><A NAME="@default1486"></A>
+<TT>write</TT> a comme argument un nom de fichier et des noms de 
+variables.<BR>
+<TT>write</TT> crèe un fichier du nom spécifié (et donc efface le fichier 
+précédent, si celui-ciexistait déjà) et écrit les affectations de ces variables dans ce 
+fichier .<BR>
+On tape :
+</P><DIV CLASS="center"><TT>a:=3.14; b:=456</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>write("titi",a,b)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>le fichier "titi" dans lequel il y a a:=3.14; b:=456;</TT></DIV><P>
+On tape :
+</P><PRE CLASS="verbatim">testwrite():={
+local a;
+a:=[];
+for (k:=1;k&lt;5;k++){a:=concat(a,k*6.55);}
+write("titi",a);
+return a;
+}
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>testwrite()</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>le fichier "titi" dans lequel il y a, a:=[6.55,13.1,19.65,26.2]</TT></DIV><HR>
+<A HREF="cascmd_fr815.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr817.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

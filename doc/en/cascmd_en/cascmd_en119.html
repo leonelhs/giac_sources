@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Xcas operators </TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en118.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en120.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc135">2.14.2</A>  <TT>Xcas</TT> operators </H3><P><A NAME="@default189"></A><A NAME="@default190"></A><A NAME="@default191"></A><A NAME="@default192"></A> 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>$ </TT> is the infixed version of <TT>seq</TT> for example :<BR>
+<TT>(2</TT><CODE><TT>^</TT></CODE><TT>k)$(k=0..3)= seq(2</TT><CODE><TT>^</TT></CODE><TT>k,k=0..3)=(1,2,4,8)</TT> (do not forget 
+to put parenthesis around the arguments),
+</LI><LI CLASS="li-itemize"><TT>mod</TT> or <TT>%</TT> to define a modular number,
+</LI><LI CLASS="li-itemize"><TT>@</TT> to compose functions for example :
+<TT>(f@g)(x)=f(g(x))</TT>,
+</LI><LI CLASS="li-itemize"><TT>@@ </TT> to compose a function many times (like a power, replacing
+multiplication by composition), for example :
+<TT>(f@@3)(x)=f(f(f(x)))</TT>,
+</LI><LI CLASS="li-itemize"><TT>minus union intersect</TT> to have the difference, the union and the 
+intersection of two sets,
+</LI><LI CLASS="li-itemize"><TT>-&gt;</TT> to define a function,
+</LI><LI CLASS="li-itemize"><TT>:= =&gt;</TT> to store an expression in a une variable (it is the infixed 
+version of <TT>sto</TT> and the argument order is permuted for <TT>:=</TT>), 
+for example : <TT>a:=2</TT> or <TT>2=&gt;a</TT> or <TT>sto(2,a)</TT>.
+</LI><LI CLASS="li-itemize"><TT>=&lt;</TT> to store an expression in a variable, but the storage is
+done by reference if the target is a matrix element or a list element.
+This is faster if you modify objects inside an existing list or matrix
+of large size, because no copy is made, the change is done in place.
+Use with care, all objects pointing to this matrix or list will
+be modified.
+</LI></UL><HR>
+<A HREF="cascmd_en118.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en120.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

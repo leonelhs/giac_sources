@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Individual attributes</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en463.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en465.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc522">3.1.1</A>  Individual attributes</H3><P><A NAME="@default761"></A><A NAME="@default762"></A>
+<A NAME="@default763"></A><A NAME="@default764"></A><A NAME="@default765"></A><A NAME="@default766"></A><A NAME="@default767"></A><A NAME="@default768"></A><A NAME="@default769"></A><A NAME="@default770"></A><A NAME="@default771"></A>
+Graphic attributes are optional arguments of the
+form <TT>display=value</TT>, they must be given
+as last argument of a graphic instruction. Attributes
+are ordered in several categories: color, point shape, point width,
+line style, line thickness, legend value, position and presence. 
+In addition, surfaces may be filled or not, 3-d surfaces
+may be filled with a texture, 3-d objects may also have properties
+with respect to the light. 
+Attributes of different categories
+may be added, e.g.<BR>
+<TT>plotfunc(</TT><TT><I>x</I></TT><SUP><TT>2</TT></SUP><TT>+<I>y</I></TT><SUP><TT>2</TT></SUP><TT>,[x,y],display=red+line_width_3+filled</TT>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Colors <TT>display=</TT> or <TT>color=</TT>
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>black</TT>, <TT>white</TT>, <TT>red</TT>, <TT>blue</TT>, <TT>green</TT>, 
+<TT>magenta</TT>, <TT>cyan</TT>, <TT>yellow</TT>,
+</LI><LI CLASS="li-itemize">a numeric value between 0 and 255,
+</LI><LI CLASS="li-itemize">a numeric value between 256 and 256+7*16+14 for a color of the
+rainbow,
+</LI><LI CLASS="li-itemize">any other numeric value smaller than 65535, the rendering
+is not garanteed to be portable.
+</LI></UL>
+</LI><LI CLASS="li-itemize">Point shapes <TT>display=</TT> one of the following value
+<TT>rhombus_point plus_point square_point cross_point 
+triangle_point star_point point_point invisible_point</TT>
+</LI><LI CLASS="li-itemize">Point width: <TT>display=</TT> one of the following value
+<TT>point_width_n</TT> where <TT>n</TT> is an
+integer between 1 and 7
+</LI><LI CLASS="li-itemize">Line thickness: <TT>thickness=n</TT>
+or <TT>display=line_width_n</TT> where <TT>n</TT> is an
+integer between 1 and 7 or 
+</LI><LI CLASS="li-itemize">Line shape: <TT>display=</TT> one of the following value
+<TT>dash_line solid_line dashdot_line dashdotdot_line
+cap_flat_line cap_square_line cap_round_line </TT>
+</LI><LI CLASS="li-itemize">Legend, value: <TT>legend="legendname"</TT>;
+position: <TT>display=</TT> one of
+<TT>quandrant1 quadrant2 quadrant3 quadrant4</TT>
+corresponding to the position of the legend of the object 
+(using the trigonometric plan conventions).
+The legend is not displayed if the attribute 
+<TT>display=hidden_name</TT> is added
+</LI><LI CLASS="li-itemize"><TT>display=filled</TT> specifies that surfaces will be filled,
+</LI><LI CLASS="li-itemize"><TT>gl_texture="picture_filename"</TT> is used to fill 
+a surface with a texture. 
+Cf. the interface manual for a more complete
+description and for <TT>gl_material=</TT> options.
+</LI></UL><P>
+<B>Examples</B>
+Input
+</P><DIV CLASS="center"><TT>polygon(-1,-i,1,2*i,legend="P")</TT></DIV><P>
+Input
+</P><DIV CLASS="center"><TT>point(1+i,legend="hello")</TT></DIV><P>
+Input
+</P><DIV CLASS="center"><TT>A:=point(1+i);B:=point(-1);display(D:=droite(A,B),hidden_name)</TT></DIV><P>
+Input
+</P><DIV CLASS="center"><TT>color(segment(0,1+i),red)</TT></DIV><P>
+Input
+</P><DIV CLASS="center"><TT>segment(0,1+i,color=red)</TT></DIV><HR>
+<A HREF="cascmd_en463.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en465.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

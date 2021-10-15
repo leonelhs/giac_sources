@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+  <TITLE>
+    Catalogue of GP/PARI Functions: Standard monadic or dyadic operators
+  </TITLE>
+
+  <META NAME="author"       CONTENT="Nils-Peter Skoruppa">
+  <META NAME="created"      CONTENT="Thu Apr 27 10:11:36 2006">
+  <META NAME="author-email" CONTENT="skoruppa@math.uni-siegen.de">
+  <META NAME="keywords"     CONTENT="PARI, GP, DOC">
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+
+
+
+<h3 align=center>Standard monadic or dyadic operators</h3>
+
+<a name="+/-"></a>
+<h4><b>+/-</b></h4>
+<p></p>
+<p> The expressions <font color=#a3682a><tt>
++</tt></font>x and <font color=#a3682a><tt>
+-</tt></font>x refer
+to monadic operators (the first does nothing, the second negates x).</p>
+<p>The library syntax is <b>gneg</b>(x) for <font color=#a3682a><tt>
+-</tt></font>x.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="+"></a>
+<h4><b>+</b></h4>
+<p></p>
+<p>, <font color=#a3682a><tt>
+-</tt></font>: The expression x <font color=#a3682a><tt>
++</tt></font> y is the sum and
+x <font color=#a3682a><tt>
+-</tt></font> y is the difference of x and y. Among the prominent
+impossibilities are addition/subtraction between a scalar type and a vector
+or a matrix, between vector/matrices of incompatible sizes and between an
+intmod and a real number.</p>
+<p>The library syntax is <b>gadd</b>(x,y) x <font color=#a3682a><tt>
++</tt></font> y, <font color=#a3682a><tt>
+ <b>gsub</b>(x,y)</tt></font> for x <font color=#a3682a><tt>
+-</tt></font> y.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="*"></a>
+<h4><b>*</b></h4>
+<p></p>
+<p> The expression x <font color=#a3682a><tt>
+*</tt></font> y is the product of x
+and y. Among the prominent impossibilities are multiplication between
+vector/matrices of incompatible sizes, between an intmod and a real
+number. Note that because of vector and matrix operations, <font color=#a3682a><tt>
+*</tt></font> is not
+necessarily commutative. Note also that since multiplication between two
+column or two row vectors is not allowed, to obtain the scalar product
+of two vectors of the same length, you must multiply a line vector by a
+column vector, if necessary by transposing one of the vectors (using
+the operator <font color=#a3682a><tt>
+~</tt></font> or the function <font color=#a3682a><tt>
+mattranspose</tt></font>, see
+Section [<b>Label: se:linear_algebra</b>]).</p>
+<p>If x and y are binary quadratic forms, compose them. See also
+<font color=#a3682a><tt>
+qfbnucomp</tt></font> and <font color=#a3682a><tt>
+qfbnupow</tt></font>.</p>
+<p>The library syntax is <b>gmul</b>(x,y) for x <font color=#a3682a><tt>
+*</tt></font> y. Also available is
+<font color=#a3682a><tt>

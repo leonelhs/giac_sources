@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Sort : sort</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en312.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en314.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc352">2.37.18</A>  Sort : <TT>sort</TT></H3><P><A NAME="@default530"></A>
+<TT>sort</TT> takes as argument a list or an expression.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+For a list,<BR>
+<TT>sort</TT> returns the list sorted in increasing order.<BR>
+Input :
+<DIV CLASS="center"><TT>sort([3,4,2])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[2,3,4]</TT></DIV></LI><LI CLASS="li-itemize">For an expression,<BR>
+ <TT>sort</TT> sorts and collects terms in sums and products.<BR>
+Input : 
+<DIV CLASS="center"><TT>sort(exp(2*ln(x))+x*y-x+y*x+2*x)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>2*x*y+exp(2*ln(x))+x</TT></DIV> 
+Input : 
+<DIV CLASS="center"><TT>simplify(exp(2*ln(x))+x*y-x+y*x+2*x)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+2*x*y+x</TT></DIV> 
+</LI></UL><P>
+<TT>sort</TT> accepts an optionnal second argument, which is a bivariate
+function returning 0 or 1. If provided, this function
+will be used to sort the list, for example
+<TT>(x,y)-&gt;x&gt;=y</TT> may be used as second argument
+to sort the list in decreasing order.
+This may also be used to sort list of lists 
+(that <TT>sort</TT> with one argument does not know how to sort).<BR>
+Input :
+</P><DIV CLASS="center"><TT>sort([3,4,2],(x,y)-&gt;x&gt;=y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[4,3,2]</TT></DIV><HR>
+<A HREF="cascmd_en312.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en314.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

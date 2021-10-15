@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Gröbner basis : gbasis</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en231.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en233.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc261">2.27.1</A>  Gröbner basis : <TT>gbasis</TT></H3><P><A NAME="@default419"></A>
+<A NAME="sec:gbasis"></A>
+<TT>gbasis</TT> takes at least two arguments
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+a vector of multivariate polynomials 
+</LI><LI CLASS="li-itemize">a vector of variables names,
+</LI></UL><P>
+Optionnal arguments may be used to specify the ordering and
+algorithms. By default, the ordering is lexicographic (with respect to the
+list of variable names ordering)
+and the polynomials are written in decreasing power orders with
+respect to this order. 
+For example, the output will be like 
+...+<I>x</I><SUP>2</SUP> <I>y</I><SUP>4</SUP> <I>z</I><SUP>3</SUP>+<I>x</I><SUP>2</SUP> <I>y</I><SUP>3</SUP> <I>z</I><SUP>4</SUP>+... if the second argument is [<I>x</I>,<I>y</I>,<I>z</I>] because
+(2,4,3)&gt;(2,3,4) but the output would be like
+...+<I>x</I><SUP>2</SUP> <I>y</I><SUP>3</SUP><I>z</I><SUP>4</SUP>+<I>x</I><SUP>2</SUP> <I>y</I><SUP>4</SUP> <I>z</I><SUP>3</SUP>+... if the second argument is [<I>x</I>,<I>z</I>,<I>y</I>].<BR>
+<TT>gbasis</TT> returns a Gröbner basis of the polynomial ideal spanned
+by these polynomials.</P><P><B>Property</B><BR>
+If <I>I</I> is an ideal and if (<I>G</I><SUB><I>k</I></SUB>)<SUB><I>k</I> &#X2208; <I>K</I></SUB> is a Gröbner basis of this 
+ideal <I>I</I> then, if <I>F</I> is a non zero polynomial in <I>I</I>, the greatest monomial 
+of <I>F</I> is divisible by the greatest monomial of one of the <I>G</I><SUB><I>k</I></SUB>.
+In other words, if you do an euclidian division of <I>F</I>&#X2260; 0 
+by the corresponding <I>G</I><SUB><I>k</I></SUB>, take the remainder of this division, do
+again the same and so on, at some point you get a null remainder.</P><P>Input :
+</P><DIV CLASS="center"><TT>gbasis([2*x*y-y</TT><CODE><TT>^</TT></CODE><TT>2,x</TT><CODE><TT>^</TT></CODE><TT>2-2*x*y],[x,y])</TT>
+</DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[4*x</TT><CODE><TT>^</TT></CODE><TT>2+-4*y</TT><CODE><TT>^</TT></CODE><TT>2,2*x*y-y</TT><CODE><TT>^</TT></CODE><TT>2,-(3*y</TT><CODE><TT>^</TT></CODE><TT>3)]</TT>
+</DIV><P>As indicated above, <TT>gbasis</TT> may have more than 2 arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>plex</TT> (lexicographic only), <TT>tdeg</TT> (total degree then
+lexicographic order),
+<TT>revlex</TT> (total degree then inverse lexicographic order), to
+specify an order on the monomials 
+(<TT>plex</TT> is the order by default),
+</LI><LI CLASS="li-itemize"><TT>with_cocoa=true</TT> or <TT>with_cocoa=false</TT>, if you want to use
+the <TT>CoCoA</TT> library to compute the Gröbner basis (recommended,
+requires that <TT>CoCoA</TT> support compiled in)</LI><LI CLASS="li-itemize"><TT>with_f5=true</TT> or <TT>with_f5=false</TT> for using the F5 algorithm
+of the <TT>CoCoA</TT> librairy .
+In this case the specify order is not used (the polynomials are 
+homogeneized).
+</LI></UL><P>
+Input :
+</P><DIV CLASS="center">
+<TT>gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1], [x1,x2,x3],tdeg,with_cocoa=false)</TT>
+</DIV><P>
+Output
+</P><DIV CLASS="center">
+<CODE>[x3^3-1,-x2^2-x2*x3-x3^2,x1+x2+x3]</CODE>
+</DIV><HR>
+<A HREF="cascmd_en231.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en233.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

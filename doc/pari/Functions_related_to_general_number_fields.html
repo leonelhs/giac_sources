@@ -1,0 +1,3899 @@
+<HTML>
+<HEAD>
+  <TITLE>
+    Catalogue of GP/PARI Functions: Functions related to general number fields
+  </TITLE>
+
+  <META NAME="author"       CONTENT="Nils-Peter Skoruppa">
+  <META NAME="created"      CONTENT="Thu Apr 27 10:11:36 2006">
+  <META NAME="author-email" CONTENT="skoruppa@math.uni-siegen.de">
+  <META NAME="keywords"     CONTENT="PARI, GP, DOC">
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+
+
+
+<h3 align=center>Functions related to general number fields</h3>
+
+<a name="Number field structures"></a>
+<h4><b>Number field structures</b></h4>
+<p></p>
+<p></p>
+<p>Let K = <b>Q</b>[X] / (T) a number field, <b>Z</b>_K its ring of integers, T belongs to <b>Z</b>[X]
+is monic. Three basic number field structures can be associated to K in
+GP:</p>
+<p><b>*</b> <u>nf</u> denotes a number field, i.e.a data structure output by
+<font color=#a3682a><tt>
+nfinit</tt></font>. This contains the basic arithmetic data associated to the
+number field: signature, maximal order (given by a basis <font color=#a3682a><tt>
+nf.zk</tt></font>),
+discriminant, defining polynomial T, etc.</p>
+<p><b>*</b> <u>bnf</u> denotes a "Buchmann's number field", i.e.a
+data structure output by <font color=#a3682a><tt>
+bnfinit</tt></font>. This contains
+<u>nf</u> and the deeper invariants of the field: units U(K), class group
+Cl(K), as well as technical data required to solve the two associated
+discrete logarithm problems.</p>
+<p><b>*</b> <u>bnr</u> denotes a "ray number field", i.e.a data structure
+output by <font color=#a3682a><tt>
+bnrinit</tt></font>, corresponding to the ray class group structure of
+the field, for some modulus f. It contains a <u>bnf</u>, the modulus
+f, the ray class group Cl_f(K) and data associated to
+the discrete logarithm problem therein.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Algebraic numbers and ideals"></a>
+<h4><b>Algebraic numbers and ideals</b></h4>
+<p></p>
+<p></p>
+<p>An <u>algebraic number</u> belonging to K = <b>Q</b>[X]/(T) is given as</p>
+<p><b>*</b> a <font color=#a3682a><tt>
+t_INT</tt></font>, <font color=#a3682a><tt>
+t_FRAC</tt></font> or <font color=#a3682a><tt>
+t_POL</tt></font> (implicitly modulo T), or</p>
+<p><b>*</b> a <font color=#a3682a><tt>
+t_POLMOD</tt></font> (modulo T), or</p>
+<p><b>*</b> a <font color=#a3682a><tt>
+t_COL</tt></font><font color=#a3682a><tt>
+v</tt></font> of dimension N = [K:<b>Q</b>], representing
+the element in terms of the computed integral basis, as
+<font color=#a3682a><tt>
+sum(i = 1, N,v[i] * nf.zk[i])</tt></font>. Note that a <font color=#a3682a><tt>
+t_VEC</tt></font>
+will not be recognized.</p>
+<p>
+An <u>ideal</u> is given in any of the following ways:</p>
+<p><b>*</b> an algebraic number in one of the above forms, defining a principal ideal.</p>
+<p><b>*</b> a prime ideal, i.e.a 5-component vector in the format output by
+<font color=#a3682a><tt>
+idealprimedec</tt></font>.</p>
+<p><b>*</b> a <font color=#a3682a><tt>
+t_MAT</tt></font>, square and in Hermite Normal Form (or at least
+upper triangular with non-negative coefficients), whose columns represent a
+basis of the ideal.</p>
+<p>One may use <font color=#a3682a><tt>
+idealhnf</tt></font> to convert an ideal to the last (preferred) format.</p>
+<p><b>Note.</b> Some routines accept non-square matrices, but using this
+format is strongly discouraged. Nevertheless, their behaviour is as follows:
+If strictly less than N = [K:<b>Q</b>] generators are given, it is assumed they
+form a <b>Z</b>_K-basis. If N or more are given, a <b>Z</b>-basis is assumed. If
+exactly N are given, it is further assumed the matrix is in HNF. If any of
+these assumptions is not correct the behaviour of the routine is undefined.</p>
+<p>
+<b>*</b> an <u>idele</u> is a 2-component vector, the first being an ideal as
+above, the second being a R_1+R_2-component row vector giving Archimedean
+information, as complex numbers.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Finite abelian groups"></a>
+<h4><b>Finite abelian groups</b></h4>
+<p></p>
+<p></p>
+<p>A finite abelian group G in user-readable format is given by its Smith
+Normal Form as a pair [h,d] or triple [h,d,g].
+Here h is the cardinality of G, (d_i) is the vector of elementary
+divisors, and (g_i) is a vector of generators. In short,
+G = oplus_{i <font color=#a3682a><tt>
+&#60;=</tt></font> n} (<b>Z</b>/d_i<b>Z</b>) g_i, with d_n | ... | d_2 | d_1
+and <font color=#FF0000>prod</font> d_i = h. This information can also be retrieved as
+G.<font color=#a3682a><tt>
+no</tt></font>, G.<font color=#a3682a><tt>
+cyc</tt></font> and G.<font color=#a3682a><tt>
+gen</tt></font>.</p>
+<p><b>*</b> a <u>character</u> on the abelian group
+oplus (<b>Z</b>/d_i<b>Z</b>) g_i
+is given by a row vector <font color=#FF0000>chi</font> = [a_1,...,a_n] such that
+<font color=#FF0000>chi</font>(<font color=#FF0000>prod</font> g_i^{n_i}) = exp(2i<font color=#FF0000>Pi</font><font color=#FF0000>sum</font> a_i n_i / d_i).</p>
+<p><b>*</b> given such a structure, a <u>subgroup</u> H is input as a square
+matrix, whose column express generators of H on the given generators g_i.
+Note that the absolute value of the determinant of that matrix is equal to
+the index (G:H).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Relative extensions"></a>
+<h4><b>Relative extensions</b></h4>
+<p></p>
+<p></p>
+<p>When defining a relative extension, the base field <u>nf</u> must be defined
+by a variable having a lower priority (see Section [<b>Label: se:priority</b>]) than the
+variable defining the extension. For example, you may use the variable name
+y to define the base field, and x to define the relative extension.</p>
+<p><b>*</b> <u>rnf</u> denotes a relative number field, i.e.a data structure
+output by <font color=#a3682a><tt>
+rnfinit</tt></font>.</p>
+<p><b>*</b> A <u>relative matrix</u> is a matrix whose entries are
+elements of a (fixed) number field <u>nf</u>, always expressed as column
+vectors on the integral basis <font color=#a3682a><tt>
+<u>nf</u>.zk</tt></font>. Hence it is a matrix of
+vectors.</p>
+<p><b>*</b> An <u>ideal list</u> is a row vector of (fractional)
+ideals of the number field <u>nf</u>.</p>
+<p><b>*</b> A <u>pseudo-matrix</u> is a pair (A,I) where A is a
+relative matrix and I an ideal list whose length is the same as the number
+of columns of A. This pair is represented by a 2-component row vector.</p>
+<p><b>*</b> The <u>projective module</u> generated by a pseudo-matrix (A,I) is
+the sum <font color=#FF0000>sum</font>_i {<b>a</b>}_j A_j where the {<b>a</b>}_j are the ideals of I
+and A_j is the j-th column of A.</p>
+<p><b>*</b> A pseudo-matrix (A,I) is a <u>pseudo-basis</u> of the module
+it generates if A is a square matrix with non-zero determinant and all the
+ideals of I are non-zero. We say that it is in Hermite Normal
+Form (HNF) if it is upper triangular and all the
+elements of the diagonal are equal to 1.</p>
+<p><b>*</b> The <u>determinant</u> of a pseudo-basis (A,I) is the ideal
+equal to the product of the determinant of A by all the ideals of I. The
+determinant of a pseudo-matrix is the determinant of any pseudo-basis of the
+module it generates.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Class field theory"></a>
+<h4><b>Class field theory</b></h4>
+<p></p>
+<p></p>
+<p>A <u>modulus</u>, in the sense of class field theory, is a divisor supported
+on the non-complex places of K. In PARI terms, this means either an
+ordinary ideal I as above (no archimedean component), or a pair [I,a],
+where a is a vector with r_1 {0,1}-components, corresponding to the
+infinite part of the divisor. More precisely, the i-th component of a
+corresponds to the real embedding associated to the i-th real root of
+<font color=#a3682a><tt>
+K.roots</tt></font>. (That ordering is not canonical, but well defined once a
+defining polynomial for K is chosen.) For instance, <font color=#a3682a><tt>
+[1, [1,1]]</tt></font> is a
+modulus for a real quadratic field, allowing ramification at any of the two
+places at infinity.</p>
+<p>A <u>bid</u> or "big ideal" is a structure output by <font color=#a3682a><tt>
+idealstar</tt></font>
+needed to compute in (<b>Z</b>_K/I)^*, where I is a modulus in the above sense.
+If is a finite abelian group as described above, supplemented by
+technical data needed to solve discrete log problems.</p>
+<p>Finally we explain how to input ray number fields (or <u>bnr</u>), using class
+field theory. These are defined by a triple a1, a2, a3, where the
+defining set [a1,a2,a3] can have any of the following forms: [<u>bnr</u>],
+[<u>bnr</u>,<u>subgroup</u>], [<u>bnf</u>,<u>module</u>],
+[<u>bnf</u>,<u>module</u>,<u>subgroup</u>].</p>
+<p><b>*</b> <u>bnf</u> is as output by <font color=#a3682a><tt>
+bnfinit</tt></font>, where units are mandatory
+unless the modulus is trivial; <u>bnr</u> is as output by <font color=#a3682a><tt>
+bnrinit</tt></font>. This
+is the ground field K.</p>
+<p><b>*</b> <u>module</u> is a modulus <b>f</b>, as described above.</p>
+<p><b>*</b> <u>subgroup</u> a subgroup of the ray class group modulo <b>f</b> of
+K. As described above, this is input as a square matrix expressing
+generators of a subgroup of the ray class group <font color=#a3682a><tt>
+<u>bnr</u>.clgp</tt></font> on the
+given generators.</p>
+<p>The corresponding <u>bnr</u> is the subfield of the ray class field of K
+modulo <b>f</b>, fixed by the given subgroup.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="General use"></a>
+<h4><b>General use</b></h4>
+<p></p>
+<p></p>
+<p>All the functions which are specific to relative extensions, number fields,
+Buchmann's number fields, Buchmann's number rays, share the prefix <font color=#a3682a><tt>
+rnf</tt></font>,
+<font color=#a3682a><tt>
+nf</tt></font>, <font color=#a3682a><tt>
+bnf</tt></font>, <font color=#a3682a><tt>
+bnr</tt></font> respectively. They take as first argument a
+number field of that precise type, respectively output by <font color=#a3682a><tt>
+rnfinit</tt></font>,
+<font color=#a3682a><tt>
+nfinit</tt></font>, <font color=#a3682a><tt>
+bnfinit</tt></font>, and <font color=#a3682a><tt>
+bnrinit</tt></font>.</p>
+<p>However, and even though it may not be specified in the descriptions of the
+functions below, it is permissible, if the function expects a <u>nf</u>, to
+use a <u>bnf</u> instead, which contains much more information. On the other
+hand, if the function requires a <font color=#a3682a><tt>
+bnf</tt></font>, it will <u>not</u> launch
+<font color=#a3682a><tt>
+bnfinit</tt></font> for you, which is a costly operation. Instead, it will give you
+a specific error message. In short, the types
+ <font color=#a3682a><tt>
+nf</tt></font> <font color=#a3682a><tt>
+&#60;=</tt></font> <font color=#a3682a><tt>
+bnf</tt></font> <font color=#a3682a><tt>
+&#60;=</tt></font> <font color=#a3682a><tt>
+bnr</tt></font>
+are ordered, each function requires a minimal type to work properly, but you
+may always substitute a larger type.</p>
+<p>The data types corresponding to the structures described above are rather
+complicated. Thus, as we already have seen it with elliptic curves, GP
+provides "member functions" to retrieve data from these structures (once
+they have been initialized of course). The relevant types of number fields
+are indicated between parentheses: </p>
+<p></p>
+<p><font color=#a3682a><tt>
+bid</tt></font>     (<u>bnr</u>, ) :   bid ideal structure.</p>
+<p><font color=#a3682a><tt>
+bnf</tt></font>     (<u>bnr</u>,  <u>bnf</u> ) :   Buchmann's number field.</p>
+<p><font color=#a3682a><tt>
+clgp</tt></font>   (<u>bnr</u>,  <u>bnf</u> ) :   classgroup. This one admits the
+following three subclasses:</p>
+<p>        <font color=#a3682a><tt>
+cyc</tt></font>  :     cyclic decomposition
+ (SNF).</p>
+<p>        <font color=#a3682a><tt>
+gen</tt></font>  :  
+   generators.</p>
+<p>        <font color=#a3682a><tt>
+no</tt></font>   :     number of elements.</p>
+<p><font color=#a3682a><tt>
+diff</tt></font>   (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :   the different ideal.</p>
+<p><font color=#a3682a><tt>
+codiff</tt></font> (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :   the codifferent
+(inverse of the different in the ideal group).</p>
+<p><font color=#a3682a><tt>
+disc</tt></font>  (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :   discriminant.</p>
+<p><font color=#a3682a><tt>
+fu</tt></font>    (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :  
+ fundamental units.</p>
+<p><font color=#a3682a><tt>
+index</tt></font>    (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :  
+ index of the power order in the ring of integers.</p>
+<p><font color=#a3682a><tt>
+nf</tt></font>    (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :   number field.</p>
+<p><font color=#a3682a><tt>
+r1</tt></font>  (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :   the number
+of real embeddings.</p>
+<p><font color=#a3682a><tt>
+r2</tt></font>  (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :   the number
+of pairs of complex embeddings.</p>
+<p><font color=#a3682a><tt>
+reg</tt></font>   (<u>bnr</u>,  <u>bnf</u>, ) :   regulator.</p>
+<p><font color=#a3682a><tt>
+roots</tt></font> (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :   roots of the
+polynomial generating the field.</p>
+<p><font color=#a3682a><tt>
+t2</tt></font>    (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :   the T2 matrix (see
+<font color=#a3682a><tt>
+nfinit</tt></font>).</p>
+<p><font color=#a3682a><tt>
+tu</tt></font>    (<u>bnr</u>,  <u>bnf</u>, ) :   a generator for the torsion
+units.</p>
+<p><font color=#a3682a><tt>
+tufu</tt></font>  (<u>bnr</u>,  <u>bnf</u>, ) :  
+ [w,u_1,...,u_r], (u_i) is a vector of
+fundamental units, w generates the torsion units.</p>
+<p><font color=#a3682a><tt>
+zk</tt></font>    (<u>bnr</u>,  <u>bnf</u>,  <u>nf</u> ) :   integral basis, i.e.a
+<b>Z</b>-basis of the maximal order.</p>
+<p>  For instance, assume that <u>bnf</u> = <font color=#a3682a><tt>
+bnfinit</tt></font>(<u>pol</u>), for some
+polynomial. Then <font color=#a3682a><tt>
+<u>bnf</u>.clgp</tt></font> retrieves the class group, and
+<font color=#a3682a><tt>
+<u>bnf</u>.clgp.no</tt></font> the class number. If we had set <u>bnf</u> = 
+<font color=#a3682a><tt>
+nfinit</tt></font>(<u>pol</u>), both would have output an error message. All these
+functions are completely recursive, thus for instance
+<font color=#a3682a><tt>
+<u>bnr</u>.bnf.nf.zk</tt></font> will yield the maximal order of <u>bnr</u>, which
+you could get directly with a simple <font color=#a3682a><tt>
+<u>bnr</u>.zk</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Class group, units, and the GRH"></a>
+<h4><b>Class group, units, and the GRH</b></h4>
+<p></p>
+<p></p>
+<p>Some of the functions starting with <font color=#a3682a><tt>
+bnf</tt></font> are implementations of the
+sub-exponential algorithms for finding class and unit groups under GRH,
+due to Hafner-McCurley, Buchmann and Cohen-Diaz-Olivier. The general
+call to the functions concerning class groups of general number fields
+(i.e.excluding <font color=#a3682a><tt>
+quadclassunit</tt></font>) involves a polynomial P and a
+technical vector
+<u>tech</u> = [c, c2, <u>nrpid</u> ],
+where the parameters are to be understood as follows:</p>
+<p>P is the defining polynomial for the number field, which must be in
+<b>Z</b>[X], irreducible and monic. In fact, if you supply a non-monic polynomial
+at this point, <font color=#a3682a><tt>
+gp</tt></font> issues a warning, then <u>transforms your
+polynomial</u> so that it becomes monic. The <font color=#a3682a><tt>
+nfinit</tt></font> routine
+will return a different result in this case: instead of <font color=#a3682a><tt>
+res</tt></font>, you get a
+vector <font color=#a3682a><tt>
+[res,Mod(a,Q)]</tt></font>, where <font color=#a3682a><tt>
+Mod(a,Q) = Mod(X,P)</tt></font> gives the change
+of variables. In all other routines, the variable change is simply lost.</p>
+<p>The numbers c <font color=#a3682a><tt>
+&#60;=</tt></font> c_2 are positive real numbers which control the
+execution time and the stack size. For a given c, set
+c_2 = c to get maximum speed. To get a rigorous result under GRH you
+must take c2 <font color=#a3682a><tt>
+&#62;=</tt></font> 12 (or c2 <font color=#a3682a><tt>
+&#62;=</tt></font> 6 in P is quadratic). Reasonable values
+for c are between 0.1 and 2. The default is c = c_2 = 0.3.</p>
+<p><u>nrpid</u> is the maximal number of small norm relations associated to each
+ideal in the factor base. Set it to 0 to disable the search for small norm
+relations. Otherwise, reasonable values are between 4 and 20. The default is
+4.</p>
+<p><b>Warning.</b> Make sure you understand the above! By default, most of
+the <font color=#a3682a><tt>
+bnf</tt></font> routines depend on the correctness of a heuristic assumption
+which is stronger than the GRH. In particular, any of the class number, class
+group structure, class group generators, regulator and fundamental units may
+be wrong, independently of each other. Any result computed from such a
+<font color=#a3682a><tt>
+bnf</tt></font> may be wrong. The only guarantee is that the units given generate a
+subgroup of finite index in the full unit group. In practice, very few
+counter-examples are known, requiring unlucky random seeds. No
+counter-example has been reported for c_2 = 0.5 (which should be almost as
+fast as c_2 = 0.3, and shall very probably become the default). If you use
+c_2 = 12, then everything is correct assuming the GRH holds. You can
+use <font color=#a3682a><tt>
+bnfcertify</tt></font> to certify the computations unconditionally.</p>
+<p><b>Remarks.</b></p>
+<p>Apart from the polynomial P, you do not need to supply the technical
+parameters (under the library you still need to send at least an empty
+vector, coded as <font color=#a3682a><tt>
+NULL</tt></font>). However, should you choose to set some of them,
+they <u>must</u> be given in the requested order. For example, if you want to
+specify a given value of 
+<u>nrpid</u>, you must give some values as well for c
+and c_2, and provide a vector [c,c_2,<u>nrpid</u>].</p>
+<p>Note also that you can use an <u>nf</u> instead of P, which avoids
+recomputing the integral basis and analogous quantities.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfcertify"></a>
+<h4><b>bnfcertify</b>(<u>bnf</u>)</h4>
+<p></p>
+<p> <u>bnf</u> being as output by
+<font color=#a3682a><tt>
+bnfinit</tt></font>, checks whether the result is correct, i.e.whether it is
+possible to remove the assumption of the Generalized Riemann
+Hypothesis. It is correct if and only if the answer is 1. If it is
+incorrect, the program may output some error message, or loop indefinitely.
+You can check its progress by increasing the debug level.</p>
+<p>The library syntax is <b>certifybuchall</b>(<u>bnf</u>), and the result is a C long.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfclassunit"></a>
+<h4><b>bnfclassunit</b>(P,{<u>flag</u> = 0},{<u>tech</u> = []})</h4>
+<p></p>
+<p> <u>this function
+is DEPRECATED, use <font color=#a3682a><tt>
+bnfinit</tt></font></u>.</p>
+<p>Buchmann's sub-exponential algorithm for computing the class group, the
+regulator and a system of fundamental units of the general algebraic
+number field K defined by the irreducible polynomial P with integer
+coefficients.</p>
+<p>The result of this function is a vector v with many components, which for
+ease of presentation is in fact output as a one column matrix. It is
+<u>not</u> a <u>bnf</u>, you need <font color=#a3682a><tt>
+bnfinit</tt></font> for that. First we describe
+the default behaviour (<u>flag</u> = 0):</p>
+<p> v[1] is equal to the polynomial P.</p>
+<p> v[2] is the 2-component vector [r1,r2], where r1 and r2 are as usual
+the number of real and half the number of complex embeddings of the number
+field K.</p>
+<p> v[3] is the 2-component vector containing the field discriminant and the
+index.</p>
+<p> v[4] is an integral basis in Hermite normal form.</p>
+<p> v[5] (<font color=#a3682a><tt>
+v.clgp</tt></font>) is a 3-component vector containing the class number
+(<font color=#a3682a><tt>
+v.clgp.no</tt></font>), the structure of the class group as a product of cyclic
+groups of order n_i (<font color=#a3682a><tt>
+v.clgp.cyc</tt></font>), and the corresponding generators
+of the class group of respective orders n_i (<font color=#a3682a><tt>
+v.clgp.gen</tt></font>).</p>
+<p> v[6] (<font color=#a3682a><tt>
+v.reg</tt></font>) is the regulator computed to an accuracy which is the
+maximum of an internally determined accuracy and of the default.</p>
+<p> v[7] is deprecated, maintained for backward compatibility and always equal
+to 1.</p>
+<p> v[8] (<font color=#a3682a><tt>
+v.tu</tt></font>) a vector with 2 components, the first being the number
+w of roots of unity in K and the second a primitive w-th root of unity
+expressed as a polynomial.</p>
+<p> v[9] (<font color=#a3682a><tt>
+v.fu</tt></font>) is a system of fundamental units also expressed as
+polynomials.</p>
+<p>If <u>flag</u> = 1, and the precision happens to be insufficient for obtaining the
+fundamental units, the internal precision is doubled and the computation
+redone, until the exact results are obtained. Be warned that this can take a
+very long time when the coefficients of the fundamental units on the integral
+basis are very large, for example in large real quadratic fields.
+For this case, there are alternate compact representations for algebraic
+numbers, implemented in PARI but currently not available in GP.</p>
+<p>If <u>flag</u> = 2, the fundamental units and roots of unity are not computed.
+Hence the result has only 7 components, the first seven ones.</p>
+<p>The library syntax is <b>bnfclassunit0</b>(P,<u>flag</u>,<u>tech</u>,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfclgp"></a>
+<h4><b>bnfclgp</b>(P,{<u>tech</u> = []})</h4>
+<p></p>
+<p> as <font color=#a3682a><tt>
+bnfinit</tt></font>, but only
+outputs <font color=#a3682a><tt>
+bnf.clgp</tt></font>, i.e.the class group.</p>
+<p>The library syntax is <b>classgrouponly</b>(P,<u>tech</u>,<u>prec</u>), where <u>tech</u>
+is as described under <font color=#a3682a><tt>
+bnfinit</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfdecodemodule"></a>
+<h4><b>bnfdecodemodule</b>(<u>nf</u>,m)</h4>
+<p></p>
+<p> if m is a module as output in the
+first component of an extension given by <font color=#a3682a><tt>
+bnrdisclist</tt></font>, outputs the
+true module.</p>
+<p>The library syntax is <b>decodemodule</b>(<u>nf</u>,m).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfinit"></a>
+<h4><b>bnfinit</b>(P,{<u>flag</u> = 0},{<u>tech</u> = []})</h4>
+<p></p>
+<p> initializes a
+<u>bnf</u> structure. Used in programs such as <font color=#a3682a><tt>
+bnfisprincipal</tt></font>,
+<font color=#a3682a><tt>
+bnfisunit</tt></font> or <font color=#a3682a><tt>
+bnfnarrow</tt></font>. By default, the results are conditional
+on a heuristic strengthening of the GRH, see [<b>Label: se:GRHbnf</b>]. The result is a
+10-component vector <u>bnf</u>.</p>
+<p>This implements Buchmann's sub-exponential algorithm for computing the
+class group, the regulator and a system of fundamental units of the
+general algebraic number field K defined by the irreducible polynomial P
+with integer coefficients.</p>
+<p>If the precision becomes insufficient, <font color=#a3682a><tt>
+gp</tt></font> outputs a warning
+(<font color=#a3682a><tt>
+fundamental units too large, not given</tt></font>) and does not strive to compute
+the units by default (<u>flag</u> = 0).</p>
+<p>   When <u>flag</u> = 1, we insist on finding the fundamental units exactly. Be
+warned that this can take a very long time when the coefficients of the
+fundamental units on the integral basis are very large. If the fundamental
+units are simply too large to be represented in this form, an error message
+is issued. They could be obtained using the so-called compact representation
+of algebraic numbers as a formal product of algebraic integers. The latter is
+implemented internally but not publicly accessible yet.</p>
+<p>   When <u>flag</u> = 2, on the contrary, it is initially agreed that units are not
+computed. Note that the resulting <u>bnf</u> will not be suitable for
+<font color=#a3682a><tt>
+bnrinit</tt></font>, and that this flag provides negligible time savings
+compared to the default. In short, it is deprecated.</p>
+<p>   When <u>flag</u> = 3, computes a very small version of <font color=#a3682a><tt>
+bnfinit</tt></font>, a "small
+Buchmann's number field" (or <u>sbnf</u> for short) which contains enough
+information to recover the full <u>bnf</u> vector very rapidly, but which is
+much smaller and hence easy to store and print. It is supposed to be used in
+conjunction with <font color=#a3682a><tt>
+bnfmake</tt></font>.</p>
+<p><u>tech</u> is a technical vector (empty by default, see [<b>Label: se:GRHbnf</b>]).
+Careful use of this parameter may speed up your computations considerably.</p>
+<p></p>
+<p>The components of a <u>bnf</u> or <u>sbnf</u> are technical and never used by
+the casual user. In fact: <u>never access a component directly, always use
+a proper member function.</u> However, for the sake of completeness and internal
+documentation, their description is as follows. We use the notations
+explained in the book by H. Cohen, <u>A Course in Computational Algebraic
+Number Theory</u>, Graduate Texts in Maths <b>138</b>, Springer-Verlag, 1993,
+Section 6.5, and subsection 6.5.5 in particular.</p>
+<p><u>bnf</u>[1] contains the matrix W, i.e.the matrix in Hermite normal
+form giving relations for the class group on prime ideal generators
+(wp_i)_{1 <font color=#a3682a><tt>
+&#60;=</tt></font> i <font color=#a3682a><tt>
+&#60;=</tt></font> r}.</p>
+<p><u>bnf</u>[2] contains the matrix B, i.e.the matrix containing the
+expressions of the prime ideal factorbase in terms of the wp_i. It is an
+r x c matrix.</p>
+<p><u>bnf</u>[3] contains the complex logarithmic embeddings of the system of
+fundamental units which has been found. It is an (r_1+r_2) x (r_1+r_2-1)
+matrix.</p>
+<p><u>bnf</u>[4] contains the matrix M"_C of Archimedean components of the
+relations of the matrix (W|B).</p>
+<p><u>bnf</u>[5] contains the prime factor base, i.e.the list of prime
+ideals used in finding the relations.</p>
+<p><u>bnf</u>[6] used to contain a permutation of the prime factor base, but
+has been obsoleted. It contains a dummy 0.</p>
+<p><u>bnf</u>[7] or <font color=#a3682a><tt>
+<u>bnf</u>.nf</tt></font> is equal to the number field data
+<u>nf</u> as would be given by <font color=#a3682a><tt>
+nfinit</tt></font>.</p>
+<p><u>bnf</u>[8] is a vector containing the classgroup <font color=#a3682a><tt>
+<u>bnf</u>.clgp</tt></font>
+as a finite abelian group, the regulator <font color=#a3682a><tt>
+<u>bnf</u>.reg</tt></font>, a 1 (used to
+contain an obsolete "check number"), the number of roots of unity and a
+generator <font color=#a3682a><tt>
+<u>bnf</u>.tu</tt></font>, the fundamental units <font color=#a3682a><tt>
+<u>bnf</u>.fu</tt></font>.</p>
+<p><u>bnf</u>[9] is a 3-element row vector used in <font color=#a3682a><tt>
+bnfisprincipal</tt></font> only
+and obtained as follows. Let D = U W V obtained by applying the
+Smith normal form algorithm to the matrix W ( = <u>bnf</u>[1]) and
+let U_r be the reduction of U modulo D. The first elements of the
+factorbase are given (in terms of <font color=#a3682a><tt>
+bnf.gen</tt></font>) by the columns of U_r,
+with Archimedean component g_a; let also GD_a be the Archimedean
+components of the generators of the (principal) ideals defined by the
+<font color=#a3682a><tt>
+bnf.gen[i]^bnf.cyc[i]</tt></font>. Then <u>bnf</u>[9] = [U_r, g_a, GD_a].</p>
+<p><u>bnf</u>[10] is by default unused and set equal to 0. This field is used
+to store further information about the field as it becomes available, which
+is rarely needed, hence would be too expensive to compute during the initial
+<font color=#a3682a><tt>
+bnfinit</tt></font> call. For instance, the generators of the principal ideals
+<font color=#a3682a><tt>
+bnf.gen[i]^bnf.cyc[i]</tt></font> (during a call to <font color=#a3682a><tt>
+bnrisprincipal</tt></font>), or
+those corresponding to the relations in W and B (when the <font color=#a3682a><tt>
+bnf</tt></font>
+internal precision needs to be increased). </p>
+<p>An <u>sbnf</u> is a 12 component vector v, as follows. Let <u>bnf</u> be
+the result of a full <font color=#a3682a><tt>
+bnfinit</tt></font>, complete with units. Then v[1] is the
+polynomial P, v[2] is the number of real embeddings r_1, v[3] is the
+field discriminant, v[4] is the integral basis, v[5] is the list of roots
+as in the sixth component of <font color=#a3682a><tt>
+nfinit</tt></font>, v[6] is the matrix MD of
+<font color=#a3682a><tt>
+nfinit</tt></font> giving a <b>Z</b>-basis of the different, v[7] is the matrix
+<font color=#a3682a><tt>
+W</tt></font> = <u>bnf</u>[1], v[8] is the matrix <font color=#a3682a><tt>
+matalpha</tt></font> = <u>bnf</u>[2],
+v[9] is the prime ideal factor base <u>bnf</u>[5] coded in a compact way,
+and ordered according to the permutation <u>bnf</u>[6], v[10] is the
+2-component vector giving the number of roots of unity and a generator,
+expressed on the integral basis, v[11] is the list of fundamental units,
+expressed on the integral basis, v[12] is a vector containing the algebraic
+numbers alpha corresponding to the columns of the matrix <font color=#a3682a><tt>
+matalpha</tt></font>,
+expressed on the integral basis.</p>
+<p>   Note that all the components are exact (integral or rational), except for
+the roots in v[5]. Note also that member functions will <u>not</u> work on
+<u>sbnf</u>, you have to use <font color=#a3682a><tt>
+bnfmake</tt></font> explicitly first.</p>
+<p>The library syntax is <b>bnfinit0</b>(P,<u>flag</u>,<u>tech</u>,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfisintnorm"></a>
+<h4><b>bnfisintnorm</b>(<u>bnf</u>,x)</h4>
+<p></p>
+<p> computes a complete system of
+solutions (modulo units of positive norm) of the absolute norm equation
+\Norm(a) = x,
+where a is an integer in <u>bnf</u>. If <u>bnf</u> has not been certified,
+the correctness of the result depends on the validity of GRH.</p>
+<p>See also <font color=#a3682a><tt>
+bnfisnorm</tt></font>.</p>
+<p>The library syntax is <b>bnfisintnorm</b>(<u>bnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfisnorm"></a>
+<h4><b>bnfisnorm</b>(<u>bnf</u>,x,{<u>flag</u> = 1})</h4>
+<p></p>
+<p> tries to tell whether the
+rational number x is the norm of some element y in <u>bnf</u>. Returns a
+vector [a,b] where x = Norm(a)*b. Looks for a solution which is an S-unit,
+with S a certain set of prime ideals containing (among others) all primes
+dividing x. If <u>bnf</u> is known to be Galois, set <u>flag</u> = 0 (in
+this case, x is a norm iff b = 1). If <u>flag</u> is non zero the program adds to
+S the following prime ideals, depending on the sign of <u>flag</u>. If <u>flag</u> &#62; 0,
+the ideals of norm less than <u>flag</u>. And if <u>flag</u> &#60; 0 the ideals dividing <u>flag</u>.</p>
+<p>Assuming GRH, the answer is guaranteed (i.e.x is a norm iff b = 1),
+if S contains all primes less than 12log(\disc(<u>Bnf</u>))^2, where
+<u>Bnf</u> is the Galois closure of <u>bnf</u>.</p>
+<p>See also <font color=#a3682a><tt>
+bnfisintnorm</tt></font>.</p>
+<p>The library syntax is <b>bnfisnorm</b>(<u>bnf</u>,x,<u>flag</u>,<u>prec</u>), where <u>flag</u> and
+<u>prec</u> are <font color=#a3682a><tt>
+long</tt></font>s.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfissunit"></a>
+<h4><b>bnfissunit</b>(<u>bnf</u>,<u>sfu</u>,x)</h4>
+<p></p>
+<p> <u>bnf</u> being output by
+<font color=#a3682a><tt>
+bnfinit</tt></font>, <u>sfu</u> by <font color=#a3682a><tt>
+bnfsunit</tt></font>, gives the column vector of
+exponents of x on the fundamental S-units and the roots of unity.
+If x is not a unit, outputs an empty vector.</p>
+<p>The library syntax is <b>bnfissunit</b>(<u>bnf</u>,<u>sfu</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfisprincipal"></a>
+<h4><b>bnfisprincipal</b>(<u>bnf</u>,x,{<u>flag</u> = 1})</h4>
+<p></p>
+<p> <u>bnf</u> being the
+number field data output by <font color=#a3682a><tt>
+bnfinit</tt></font>, and x being either a <b>Z</b>-basis
+of an ideal in the number field (not necessarily in HNF) or a prime ideal in
+the format output by the function <font color=#a3682a><tt>
+idealprimedec</tt></font>, this function tests
+whether the ideal is principal or not. The result is more complete than a
+simple true/false answer: it gives a row vector [v_1,v_2], where</p>
+<p> v_1 is the vector of components c_i of the class of the ideal x in the
+class group, expressed on the generators g_i given by <font color=#a3682a><tt>
+bnfinit</tt></font>
+(specifically <font color=#a3682a><tt>
+<u>bnf</u>.gen</tt></font>). The c_i are chosen so that 0 <font color=#a3682a><tt>
+&#60;=</tt></font> c_i &#60; n_i
+where n_i is the order of g_i (the vector of n_i being <font color=#a3682a><tt>
+<u>bnf</u>.cyc</tt></font>).</p>
+<p> v_2 gives on the integral basis the components of <font color=#FF0000>alpha</font> such that
+x = <font color=#FF0000>alpha</font><font color=#FF0000>prod</font>_ig_i^{c_i}. In particular, x is principal if and only if
+v_1 is equal to the zero vector. In the latter case, x = <font color=#FF0000>alpha</font><b>Z</b>_K where
+<font color=#FF0000>alpha</font> is given by v_2. Note that if <font color=#FF0000>alpha</font> is too large to be given, a
+warning message will be printed and v_2 will be set equal to the empty
+vector.</p>
+<p>If <u>flag</u> = 0, outputs only v_1, which is much easier to compute.</p>
+<p>If <u>flag</u> = 2, does as if <u>flag</u> were 0, but doubles the precision until a
+result is obtained.</p>
+<p>If <u>flag</u> = 3, as in the default behaviour (<u>flag</u> = 1), but doubles the precision
+until a result is obtained.</p>
+<p>The user is warned that these two last setting may induce <u>very</u> lengthy
+computations.</p>
+<p>The library syntax is <b>isprincipalall</b>(<u>bnf</u>,x,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfisunit"></a>
+<h4><b>bnfisunit</b>(<u>bnf</u>,x)</h4>
+<p></p>
+<p> <u>bnf</u> being the number field data
+output by <font color=#a3682a><tt>
+bnfinit</tt></font> and x being an algebraic number (type integer,
+rational or polmod), this outputs the decomposition of x on the fundamental
+units and the roots of unity if x is a unit, the empty vector otherwise.
+More precisely, if u_1,...,u_r are the fundamental units, and <font color=#FF0000>zeta</font>
+is the generator of the group of roots of unity (<font color=#a3682a><tt>
+bnf.tu</tt></font>), the output is
+a vector [x_1,...,x_r,x_{r+1}] such that x = u_1^{x_1}...
+u_r^{x_r}.<font color=#FF0000>zeta</font>^{x_{r+1}}. The x_i are integers for i <font color=#a3682a><tt>
+&#60;=</tt></font> r and is an
+integer modulo the order of <font color=#FF0000>zeta</font> for i = r+1.</p>
+<p>The library syntax is <b>isunit</b>(<u>bnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfmake"></a>
+<h4><b>bnfmake</b>(<u>sbnf</u>)</h4>
+<p></p>
+<p> <u>sbnf</u> being a "small <u>bnf</u>"
+as output by <font color=#a3682a><tt>
+bnfinit</tt></font>(x,3), computes the complete <font color=#a3682a><tt>
+bnfinit</tt></font>
+information. The result is <u>not</u> identical to what <font color=#a3682a><tt>
+bnfinit</tt></font> would
+yield, but is functionally identical. The execution time is very small
+compared to a complete <font color=#a3682a><tt>
+bnfinit</tt></font>. Note that if the default precision in
+<font color=#a3682a><tt>
+gp</tt></font> (or <u>prec</u> in library mode) is greater than the precision of the
+roots <u>sbnf</u>[5], these are recomputed so as to get a result with
+greater accuracy.</p>
+<p>Note that the member functions are <u>not</u> available for <u>sbnf</u>, you
+have to use <font color=#a3682a><tt>
+bnfmake</tt></font> explicitly first.</p>
+<p>The library syntax is <b>makebigbnf</b>(<u>sbnf</u>,<u>prec</u>), where <u>prec</u> is a
+C long integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfnarrow"></a>
+<h4><b>bnfnarrow</b>(<u>bnf</u>)</h4>
+<p></p>
+<p> <u>bnf</u> being as output by
+<font color=#a3682a><tt>
+bnfinit</tt></font>, computes the narrow class group of <u>bnf</u>. The output is
+a 3-component row vector v analogous to the corresponding class group
+component <font color=#a3682a><tt>
+<u>bnf</u>.clgp</tt></font> (<font color=#a3682a><tt>
+<u>bnf</u>[8][1]</tt></font>): the first component
+is the narrow class number <font color=#a3682a><tt>
+v.no</tt></font>, the second component is a vector
+containing the SNF cyclic components <font color=#a3682a><tt>
+v.cyc</tt></font> of
+the narrow class group, and the third is a vector giving the generators of
+the corresponding <font color=#a3682a><tt>
+v.gen</tt></font> cyclic groups. Note that this function is a
+special case of <font color=#a3682a><tt>
+bnrinit</tt></font>.</p>
+<p>The library syntax is <b>buchnarrow</b>(<u>bnf</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfsignunit"></a>
+<h4><b>bnfsignunit</b>(<u>bnf</u>)</h4>
+<p></p>
+<p> <u>bnf</u> being as output by
+<font color=#a3682a><tt>
+bnfinit</tt></font>, this computes an r_1 x (r_1+r_2-1) matrix having &#177;1
+components, giving the signs of the real embeddings of the fundamental units.
+The following functions compute generators for the totally positive units:</p>
+<p>
+<pre><font color=#a3682a><tt>/* exponents of totally positive units generators on bnf.tufu */
+&nbsp;tpuexpo(bnf)=
+&nbsp;{ local(S,d,K);
+&nbsp;
+&nbsp;  S = bnfsignunit(bnf); d = matsize(S);
+&nbsp;  S = matrix(d[1],d[2], i,j, if (S[i,j] &#60; 0, 1,0));
+&nbsp;  S = concat(vectorv(d[1],i,1), S);   \\ add sign(-1)
+&nbsp;  K = lift(matker(S * Mod(1,2)));
+&nbsp;  if (K, mathnfmodid(K, 2), 2*matid(d[1]))
+&nbsp;}
+&nbsp;
+&nbsp;/* totally positive units */
+&nbsp;tpu(bnf)=
+&nbsp;{ local(vu = bnf.tufu, ex = tpuexpo(bnf));
+&nbsp;
+&nbsp;  vector(#ex-1, i, factorback(vu, ex[,i+1]))  \\ ex[,1] is 1
+&nbsp;}
+</tt></font></pre></p>
+<p>
+The library syntax is <b>signunits</b>(<u>bnf</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfreg"></a>
+<h4><b>bnfreg</b>(<u>bnf</u>)</h4>
+<p></p>
+<p> <u>bnf</u> being as output by
+<font color=#a3682a><tt>
+bnfinit</tt></font>, computes its regulator.</p>
+<p>The library syntax is <b>regulator</b>(<u>bnf</u>,<u>tech</u>,<u>prec</u>), where <u>tech</u> is as in
+<font color=#a3682a><tt>
+bnfinit</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfsunit"></a>
+<h4><b>bnfsunit</b>(<u>bnf</u>,S)</h4>
+<p></p>
+<p> computes the fundamental S-units of the
+number field <u>bnf</u> (output by <font color=#a3682a><tt>
+bnfinit</tt></font>), where S is a list of
+prime ideals (output by <font color=#a3682a><tt>
+idealprimedec</tt></font>). The output is a vector v with
+6 components.</p>
+<p>v[1] gives a minimal system of (integral) generators of the S-unit group
+modulo the unit group.</p>
+<p>v[2] contains technical data needed by <font color=#a3682a><tt>
+bnfissunit</tt></font>.</p>
+<p>v[3] is an empty vector (used to give the logarithmic embeddings of the
+generators in v[1] in version 2.0.16).</p>
+<p>v[4] is the S-regulator (this is the product of the regulator, the
+determinant of v[2] and the natural logarithms of the norms of the ideals
+in S).</p>
+<p>v[5] gives the S-class group structure, in the usual format
+(a row vector whose three components give in order the S-class number,
+the cyclic components and the generators).</p>
+<p>v[6] is a copy of S.</p>
+<p>The library syntax is <b>bnfsunit</b>(<u>bnf</u>,S,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnfunit"></a>
+<h4><b>bnfunit</b>(<u>bnf</u>)</h4>
+<p></p>
+<p> <u>bnf</u> being as output by
+<font color=#a3682a><tt>
+bnfinit</tt></font>, outputs the vector of fundamental units of the number field.</p>
+<p>This function is mostly useless, since it will only succeed if
+<u>bnf</u> contains the units, in which case <font color=#a3682a><tt>
+bnf.fu</tt></font> is recommanded
+instead, or <u>bnf</u> was produced with <font color=#a3682a><tt>
+bnfinit(,,2)</tt></font>, which is itself
+deprecated.</p>
+<p>The library syntax is <b>buchfu</b>(<u>bnf</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrL1"></a>
+<h4><b>bnrL1</b>(<u>bnr</u>,{<u>subgroup</u>},{<u>flag</u> = 0})</h4>
+<p></p>
+<p> <u>bnr</u> being
+the number field data which is output by <font color=#a3682a><tt>
+bnrinit(,,1)</tt></font> and
+<u>subgroup</u> being a square matrix defining a congruence subgroup of the
+ray class group corresponding to <u>bnr</u> (the trivial congruence subgroup
+if omitted), returns for each character <font color=#FF0000>chi</font> of the ray class group
+which is trivial on this subgroup, the value at s = 1 (or s = 0) of the
+abelian L-function associated to <font color=#FF0000>chi</font>. For the value at s = 0, the
+function returns in fact for each character <font color=#FF0000>chi</font> a vector [r_<font color=#FF0000>chi</font> ,
+c_<font color=#FF0000>chi</font>] where r_<font color=#FF0000>chi</font> is the order of L(s, <font color=#FF0000>chi</font>) at s = 0 and c_<font color=#FF0000>chi</font>
+the first non-zero term in the expansion of L(s, <font color=#FF0000>chi</font>) at s = 0; in other
+words</p>
+<p>L(s, <font color=#FF0000>chi</font>) = c_<font color=#FF0000>chi</font>.s^{r_<font color=#FF0000>chi</font>} + O(s^{r_<font color=#FF0000>chi</font> + 1})</p>
+<p>near 0. <u>flag</u> is optional, default value is 0; its binary digits
+mean 1: compute at s = 1 if set to 1 or s = 0 if set to 0, 2: compute the
+primitive L-functions associated to <font color=#FF0000>chi</font> if set to 0 or the L-function
+with Euler factors at prime ideals dividing the modulus of <u>bnr</u> removed
+if set to 1 (this is the so-called L_S(s, <font color=#FF0000>chi</font>) function where S is the
+set of infinite places of the number field together with the finite prime
+ideals dividing the modulus of <u>bnr</u>, see the example below), 3: returns
+also the character. Example:</p>
+<p><pre><font color=#a3682a><tt>bnf = bnfinit(x^2 - 229);
+&nbsp;bnr = bnrinit(bnf,1,1);
+&nbsp;bnrL1(bnr)
+</tt></font></pre></p>
+<p>returns the order and the first non-zero term of the abelian
+L-functions L(s, <font color=#FF0000>chi</font>) at s = 0 where <font color=#FF0000>chi</font> runs through the
+characters of the class group of <b>Q</b>(sqrt{229}). Then</p>
+<p><pre><font color=#a3682a><tt>bnr2 = bnrinit(bnf,2,1);
+&nbsp;bnrL1(bnr2,,2)
+</tt></font></pre></p>
+<p>returns the order and the first non-zero terms of the abelian
+L-functions L_S(s, <font color=#FF0000>chi</font>) at s = 0 where <font color=#FF0000>chi</font> runs through the
+characters of the class group of <b>Q</b>(sqrt{229}) and S is the set
+of infinite places of <b>Q</b>(sqrt{229}) together with the finite prime
+2. Note that the ray class group modulo 2 is in fact the class
+group, so <font color=#a3682a><tt>
+bnrL1(bnr2,0)</tt></font> returns exactly the same answer as
+<font color=#a3682a><tt>
+bnrL1(bnr,0)</tt></font>.</p>
+<p>The library syntax is <b>bnrL1</b>(<u>bnr</u>,<u>subgroup</u>,<u>flag</u>,<u>prec</u>), where an omitted
+<u>subgroup</u> is coded as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrclass"></a>
+<h4><b>bnrclass</b>(<u>bnf</u>,<u>ideal</u>,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> <u>this function
+is DEPRECATED, use <font color=#a3682a><tt>
+bnrinit</tt></font></u>.</p>
+<p><u>bnf</u> being as output by <font color=#a3682a><tt>
+bnfinit</tt></font> (the units are mandatory unless
+the ideal is trivial), and <u>ideal</u> being a modulus, computes the ray
+class group of the number field for the modulus <u>ideal</u>, as a
+finite abelian group.</p>
+<p>The library syntax is <b>bnrclass0</b>(<u>bnf</u>,<u>ideal</u>,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrclassno"></a>
+<h4><b>bnrclassno</b>(<u>bnf</u>,I)</h4>
+<p></p>
+<p> <u>bnf</u> being as output by
+<font color=#a3682a><tt>
+bnfinit</tt></font> (units are mandatory unless the ideal is trivial), and I
+being a modulus, computes the ray class number of the number field for the
+modulus I. This is faster than <font color=#a3682a><tt>
+bnrinit</tt></font> and should be used if only the
+ray class number is desired. See <font color=#a3682a><tt>
+bnrclassnolist</tt></font> if you need ray class
+numbers for all moduli less than some bound.</p>
+<p>The library syntax is <b>bnrclassno</b>(<u>bnf</u>,I).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrclassnolist"></a>
+<h4><b>bnrclassnolist</b>(<u>bnf</u>,<u>list</u>)</h4>
+<p></p>
+<p> <u>bnf</u> being as
+output by <font color=#a3682a><tt>
+bnfinit</tt></font>, and <u>list</u> being a list of moduli (with units) as
+output by <font color=#a3682a><tt>
+ideallist</tt></font> or <font color=#a3682a><tt>
+ideallistarch</tt></font>, outputs the list of the
+class numbers of the corresponding ray class groups. To compute a single
+class number, <font color=#a3682a><tt>
+bnrclassno</tt></font> is more efficient.</p>
+<p>
+<pre><font color=#a3682a><tt>? bnf = bnfinit(x^2 - 2);
+&nbsp;? L = ideallist(bnf, 100, 2);
+&nbsp;? H = bnrclassnolist(bnf, L);
+&nbsp;? H[98]
+&nbsp;%4 = [1, 3, 1]
+&nbsp;? l = L[1][98]; ids = vector(#l, i, l[i].mod[1])
+&nbsp;%5 = [[98, 88; 0, 1], [14, 0; 0, 7], [98, 10; 0, 1]]
+</tt></font></pre></p>
+<p>The weird <font color=#a3682a><tt>
+l[i].mod[1]</tt></font>, is the first component of <font color=#a3682a><tt>
+l[i].mod</tt></font>, i.e.
+the finite part of the conductor. (This is cosmetic: since by construction
+the archimedean part is trivial, I do not want to see it). This tells us that
+the ray class groups modulo the ideals of norm 98 (printed as <font color=#a3682a><tt>
+%5</tt></font>) have
+respectively order 1, 3 and 1. Indeed, we may check directly :</p>
+<p><pre><font color=#a3682a><tt>? bnrclassno(bnf, ids[2])
+&nbsp;%6 = 3
+</tt></font></pre></p>
+<p>
+The library syntax is <b>bnrclassnolist</b>(<u>bnf</u>,<u>list</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrconductor"></a>
+<h4><b>bnrconductor</b>(a_1,{a_2},{a_3}, {<u>flag</u> = 0})</h4>
+<p></p>
+<p> conductor f of
+the subfield of a ray class field as defined by [a_1,a_2,a_3] (see
+<font color=#a3682a><tt>
+bnr</tt></font> at the beginning of this section).</p>
+<p>  If <u>flag</u> = 0, returns f.</p>
+<p>  If <u>flag</u> = 1, returns [f, Cl_f, H], where Cl_f is the ray class group
+modulo f, as a finite abelian group; finally H is the subgroup of Cl_f
+defining the extension.</p>
+<p>  If <u>flag</u> = 2, returns [f, <u>bnr</u>(f), H], as above except Cl_f is
+replaced by a <font color=#a3682a><tt>
+bnr</tt></font> structure, as output by <font color=#a3682a><tt>
+bnrinit</tt></font>(,f,1).</p>
+<p>The library syntax is <b>conductor</b>(<u>bnr</u>, <u>subgroup</u>, <u>flag</u>), where an omitted subgroup
+(trivial subgroup, i.e.ray class field) is input as <font color=#a3682a><tt>
+NULL</tt></font>, and <u>flag</u> is
+a C long.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrconductorofchar"></a>
+<h4><b>bnrconductorofchar</b>(<u>bnr</u>,<u>chi</u>)</h4>
+<p></p>
+<p> <u>bnr</u> being a big
+ray number field as output by <font color=#a3682a><tt>
+bnrinit</tt></font>, and <u>chi</u> being a row vector
+representing a character as expressed on the generators of the ray
+class group, gives the conductor of this character as a modulus.</p>
+<p>The library syntax is <b>bnrconductorofchar</b>(<u>bnr</u>,<u>chi</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrdisc"></a>
+<h4><b>bnrdisc</b>(a1,{a2},{a3},{<u>flag</u> = 0})</h4>
+<p></p>
+<p> a1, a2, a3
+defining a big ray number field L over a ground field K (see <font color=#a3682a><tt>
+bnr</tt></font>
+at the beginning of this section for the
+meaning of a1, a2, a3), outputs a 3-component row vector [N,R_1,D],
+where N is the (absolute) degree of L, R_1 the number of real places of
+L, and D the discriminant of L/<b>Q</b>, including sign (if <u>flag</u> = 0).</p>
+<p>   If <u>flag</u> = 1, as above but outputs relative data. N is now the degree of
+L/K, R_1 is the number of real places of K unramified in L (so that
+the number of real places of L is equal to R_1 times the relative degree
+N), and D is the relative discriminant ideal of L/K.</p>
+<p>   If <u>flag</u> = 2, as the default case, except that if the modulus is not the
+exact conductor corresponding to the L, no data is computed and the result
+is 0.</p>
+<p>   If <u>flag</u> = 3, as case 2, but output relative data.</p>
+<p>The library syntax is <b>bnrdisc0</b>(a1,a2,a3,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrdisclist"></a>
+<h4><b>bnrdisclist</b>(<u>bnf</u>,<u>bound</u>,{<u>arch</u>})</h4>
+<p></p>
+<p>
+<u>bnf</u> being as output by <font color=#a3682a><tt>
+bnfinit</tt></font> (with units), computes a list of
+discriminants of Abelian extensions of the number field by increasing modulus
+norm up to bound <u>bound</u>. The ramified Archimedean places are given by
+<u>arch</u>; all possible values are taken if <u>arch</u> is omitted.</p>
+<p>The alternative syntax <font color=#a3682a><tt>
+bnrdisclist</tt></font>(<u>bnf</u>,<u>list</u>) is
+supported, where <u>list</u> is as output by <font color=#a3682a><tt>
+ideallist</tt></font> or
+<font color=#a3682a><tt>
+ideallistarch</tt></font> (with units), in which case <u>arch</u> is disregarded.</p>
+<p>The output v is a vector of vectors, where v[i][j] is understood to be in
+fact V[2^{15}(i-1)+j] of a unique big vector V. (This akward scheme
+allows for larger vectors than could be otherwise represented.)</p>
+<p>V[k] is itself a vector W, whose length is the number of ideals of norm
+k. We consider first the case where <u>arch</u> was specified. Each
+component of W corresponds to an ideal m of norm k, and
+gives invariants associated to the ray class field L of <u>bnf</u> of
+conductor [m, <u>arch</u>]. Namely, each contains a vector [m,d,r,D] with
+the following meaning: m is the prime ideal factorization of the modulus,
+d = [L:<b>Q</b>] is the absolute degree of L, r is the number of real places
+of L, and D is the factorization of its absolute discriminant. We set d
+ = r = D = 0 if m is not the finite part of a conductor.</p>
+<p>If <u>arch</u> was omitted, all t = 2^{r_1} possible values are taken and a
+component of W has the form [m, [[d_1,r_1,D_1],..., [d_t,r_t,D_t]]],
+where m is the finite part of the conductor as above, and
+[d_i,r_i,D_i] are the invariants of the ray class field of conductor
+[m,v_i], where v_i is the i-th archimedean component, ordered by
+inverse lexicographic order; so v_1 = [0,...,0], v_2 = [1,0...,0],
+etc. Again, we set d_i = r_i = D_i = 0 if [m,v_i] is not a conductor.</p>
+<p>Finally, each prime ideal pr = [p,<font color=#FF0000>alpha</font>,e,f,<font color=#FF0000>beta</font>] in the prime
+factorization m is coded as the integer p.n^2+(f-1).n+(j-1),
+where n is the degree of the base field and j is such that</p>
+<p><font color=#a3682a><tt>
+pr = idealprimedec(<u>nf</u>,p)[j]</tt></font>.</p>
+<p>m can be decoded using <font color=#a3682a><tt>
+bnfdecodemodule</tt></font>.</p>
+<p>
+Note that to compute such data for a single field, either <font color=#a3682a><tt>
+bnrclassno</tt></font>
+or <font color=#a3682a><tt>
+bnrdisc</tt></font> is more efficient.</p>
+<p>The library syntax is <b>bnrdisclist0</b>(bnf,<u>bound</u>,<u>arch</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrinit"></a>
+<h4><b>bnrinit</b>(<u>bnf</u>,f,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> <u>bnf</u> is as
+output by <font color=#a3682a><tt>
+bnfinit</tt></font>, f is a modulus, initializes data linked to
+the ray class group structure corresponding to this module, a so-called
+<u>bnr</u> structure. The following member functions are available
+on the result: <font color=#a3682a><tt>
+.bnf</tt></font> is the underlying <u>bnf</u>,
+<font color=#a3682a><tt>
+.mod</tt></font> the modulus, <font color=#a3682a><tt>
+.bid</tt></font> the <u>bid</u> structure associated to the
+modulus; finally, <font color=#a3682a><tt>
+.clgp</tt></font>, <font color=#a3682a><tt>
+.no</tt></font>, <font color=#a3682a><tt>
+.cyc</tt></font>, <font color=#a3682a><tt>
+clgp</tt></font> refer to the
+ray class group (as a finite abelian group), its cardinality, its elementary
+divisors, its generators. </p>
+<p>The last group of functions are different from the members of the underlying
+<u>bnf</u>, which refer to the class group; use <font color=#a3682a><tt>
+<u>bnr</u>.bnf.<u>xxx</u></tt></font>
+to access these, e.g.<font color=#a3682a><tt>
+<u>bnr</u>.bnf.cyc</tt></font> to get the cyclic decomposition
+of the class group.</p>
+<p>They are also different from the members of the underlying <u>bid</u>, which
+refer to (\O_K/f)^*; use <font color=#a3682a><tt>
+<u>bnr</u>.bid.<u>xxx</u></tt></font> to access these,
+e.g.<font color=#a3682a><tt>
+<u>bnr</u>.bid.no</tt></font> to get <font color=#FF0000>phi</font>(f).</p>
+<p>If <u>flag</u> = 0 (default), the generators of the ray class group are not computed,
+which saves time. Hence <font color=#a3682a><tt>
+<u>bnr</u>.gen</tt></font> would produce an error.</p>
+<p>If <u>flag</u> = 1, as the default, except that generators are computed.</p>
+<p>The library syntax is <b>bnrinit0</b>(<u>bnf</u>,f,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrisconductor"></a>
+<h4><b>bnrisconductor</b>(a1,{a2},{a3})</h4>
+<p></p>
+<p> a1, a2, a3 represent
+an extension of the base field, given by class field theory for some modulus
+encoded in the parameters. Outputs 1 if this modulus is the conductor, and 0
+otherwise. This is slightly faster than <font color=#a3682a><tt>
+bnrconductor</tt></font>.</p>
+<p>The library syntax is <b>bnrisconductor</b>(a1,a2,a3) and the result is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrisprincipal"></a>
+<h4><b>bnrisprincipal</b>(<u>bnr</u>,x,{<u>flag</u> = 1})</h4>
+<p></p>
+<p> <u>bnr</u> being the
+number field data which is output by <font color=#a3682a><tt>
+bnrinit</tt></font>(,,1) and x being an
+ideal in any form, outputs the components of x on the ray class group
+generators in a way similar to <font color=#a3682a><tt>
+bnfisprincipal</tt></font>. That is a 2-component
+vector v where v[1] is the vector of components of x on the ray class
+group generators, v[2] gives on the integral basis an element <font color=#FF0000>alpha</font> such
+that x = <font color=#FF0000>alpha</font><font color=#FF0000>prod</font>_ig_i^{x_i}.</p>
+<p>If <u>flag</u> = 0, outputs only v_1. In that case, <u>bnr</u> need not contain the
+ray class group generators, i.e.it may be created with <font color=#a3682a><tt>
+bnrinit</tt></font>(,,0)</p>
+<p>The library syntax is <b>bnrisprincipal</b>(<u>bnr</u>,x,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrrootnumber"></a>
+<h4><b>bnrrootnumber</b>(<u>bnr</u>,<u>chi</u>,{<u>flag</u> = 0})</h4>
+<p></p>
+<p>
+if <font color=#FF0000>chi</font> = <u>chi</u> is a (not necessarily primitive)
+character over <u>bnr</u>, let
+L(s,<font color=#FF0000>chi</font>) = <font color=#FF0000>sum</font>_{id} <font color=#FF0000>chi</font>(id) N(id)^{-s} be the associated
+Artin L-function. Returns the so-called Artin root number, i.e.the
+complex number W(<font color=#FF0000>chi</font>) of modulus 1 such that</p>
+<p><font color=#FF0000>Lambda</font>(1-s,<font color=#FF0000>chi</font>) = W(<font color=#FF0000>chi</font>) <font color=#FF0000>Lambda</font>(s,\overline{<font color=#FF0000>chi</font>})</p>
+<p>where <font color=#FF0000>Lambda</font>(s,<font color=#FF0000>chi</font>) = A(<font color=#FF0000>chi</font>)^{s/2}<font color=#FF0000>gamma</font>_<font color=#FF0000>chi</font>(s) L(s,<font color=#FF0000>chi</font>) is
+the enlarged L-function associated to L.</p>
+<p>The generators of the ray class group are needed, and you can set <u>flag</u> = 1 if
+the character is known to be primitive. Example:</p>
+<p>
+<pre><font color=#a3682a><tt>bnf = bnfinit(x^2 - 145);
+&nbsp;bnr = bnrinit(bnf,7,1);
+&nbsp;bnrrootnumber(bnr, [5])
+</tt></font></pre></p>
+<p>returns the root number of the character <font color=#FF0000>chi</font> of Cl_7(<b>Q</b>(sqrt{145}))
+such that <font color=#FF0000>chi</font>(g) = <font color=#FF0000>zeta</font>^5, where g is the generator of the ray-class
+field and <font color=#FF0000>zeta</font> = e^{2i<font color=#FF0000>Pi</font>/N} where N is the order of g (N = 12 as
+<font color=#a3682a><tt>
+bnr.cyc</tt></font> readily tells us).</p>
+<p>The library syntax is <b>bnrrootnumber</b>(<u>bnf</u>,<u>chi</u>,<u>flag</u>)</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bnrstark"></a>
+<h4><b>bnrstark</b>{(<u>bnr</u>,{<u>subgroup</u>})}</h4>
+<p></p>
+<p> <u>bnr</u>
+being as output by <font color=#a3682a><tt>
+bnrinit(,,1)</tt></font>, finds a relative equation for the
+class field corresponding to the modulus in <u>bnr</u> and the given
+congruence subgroup (as usual, omit <u>subgroup</u> if you want the whole
+ray class group).</p>
+<p>The routine uses Stark units and needs to find a suitable auxilliary
+conductor, which may not exist when the class field is not cyclic over the
+base. In this case <font color=#a3682a><tt>
+bnrstark</tt></font> is allowed to return a vector of
+polynomials defining <u>independent</u> relative extensions, whose compositum
+is the requested class field. It was decided that it was more useful
+to keep the extra information thus made available, hence the user has to take
+the compositum herself.</p>
+<p>The main variable of <u>bnr</u> must not be x, and the ground field and the
+class field must be totally real. When the base field is <b>Q</b>, the vastly
+simpler <font color=#a3682a><tt>
+galoissubcyclo</tt></font> is used instead. Here is an example:</p>
+<p><pre><font color=#a3682a><tt>bnf = bnfinit(y^2 - 3);
+&nbsp;bnr = bnrinit(bnf, 5, 1);
+&nbsp;pol = bnrstark(bnr)
+</tt></font></pre></p>
+<p>returns the ray class field of <b>Q</b>(sqrt{3}) modulo 5. Usually, one wants
+to apply to the result one of</p>
+<p><pre><font color=#a3682a><tt>rnfpolredabs(bnf, pol, 16)     \\</tt></font> compute a reduced relative polynomial<font color=#a3682a><tt></p>
+<p>&nbsp;rnfpolredabs(bnf, pol, 16 + 2) \\</tt></font> compute a reduced absolute polynomial<font color=#a3682a><tt></p>
+<p></tt></font></pre></p>
+<p>
+The library syntax is <b>bnrstark</b>(<u>bnr</u>,<u>subgroup</u>), where an omitted <u>subgroup</u>
+is coded by <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="dirzetak"></a>
+<h4><b>dirzetak</b>(<u>nf</u>,b)</h4>
+<p></p>
+<p> gives as a vector the first b
+coefficients of the Dedekind zeta function of the number field <u>nf</u>
+considered as a Dirichlet series.</p>
+<p>The library syntax is <b>dirzetak</b>(<u>nf</u>,b).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="factornf"></a>
+<h4><b>factornf</b>(x,t)</h4>
+<p></p>
+<p> factorization of the univariate polynomial x
+over the number field defined by the (univariate) polynomial t. x may
+have coefficients in <b>Q</b> or in the number field. The algorithm reduces to
+factorization over <b>Q</b> (Trager's trick). The direct approach of
+<font color=#a3682a><tt>
+nffactor</tt></font>, which uses van Hoeij's method in a relative setting, is
+in general faster.</p>
+<p>The main variable of t must be of <u>lower</u> priority than that of x
+(see Section [<b>Label: se:priority</b>]). However if non-rational number field elements
+occur (as polmods or polynomials) as coefficients of x, the variable of
+these polmods <u>must</u> be the same as the main variable of t. For
+example</p>
+<p>
+<pre><font color=#a3682a><tt>? factornf(x^2 + Mod(y, y^2+1), y^2+1);
+&nbsp;? factornf(x^2 + y, y^2+1); \\</tt></font> these two are OK<font color=#a3682a><tt></p>
+<p>&nbsp;? factornf(x^2 + Mod(z,z^2+1), y^2+1)
+&nbsp;  *** factornf: inconsistent data in rnf function.
+&nbsp;? factornf(x^2 + z, y^2+1)
+&nbsp;  *** factornf: incorrect variable in rnf function.
+</tt></font></pre></p>
+<p>
+The library syntax is <b>polfnf</b>(x,t).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="galoisexport"></a>
+<h4><b>galoisexport</b>(<u>gal</u>,{<u>flag</u> = 0})</h4>
+<p></p>
+<p>
+<u>gal</u> being be a Galois field as output by <font color=#a3682a><tt>
+galoisinit</tt></font>,
+export the underlying permutation group as a string suitable
+for (no flags or <u>flag</u> = 0) GAP or (<u>flag</u> = 1) Magma. The following example
+compute the index of the underlying abstract group in the GAP library:</p>
+<p><pre><font color=#a3682a><tt>? G = galoisinit(x^6+108);
+&nbsp;? s = galoisexport(G)
+&nbsp;%2 = "Group((1, 2, 3)(4, 5, 6), (1, 4)(2, 6)(3, 5))"
+&nbsp;? extern("echo \"IdGroup("s");\" | gap -q")
+&nbsp;%3 = [6, 1]
+&nbsp;? galoisidentify(G)
+&nbsp;%4 = [6, 1]
+</tt></font></pre></p>
+<p>
+This command also accepts subgroups returned by <font color=#a3682a><tt>
+galoissubgroups</tt></font>.</p>
+<p>The library syntax is <b>galoisexport</b>(<u>gal</u>,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="galoisfixedfield"></a>
+<h4><b>galoisfixedfield</b>(<u>gal</u>,<u>perm</u>,{<u>flag</u> = 0},{v = y}))</h4>
+<p></p>
+<p>
+<u>gal</u> being be a Galois field as output by <font color=#a3682a><tt>
+galoisinit</tt></font> and
+<u>perm</u> an element of <u>gal</u>.group or a vector of such elements,
+computes the fixed field of <u>gal</u> by the automorphism defined by the
+permutations <u>perm</u> of the roots <u>gal</u>.roots. P is guaranteed to
+be squarefree modulo <u>gal</u>.p.</p>
+<p>If no flags or <u>flag</u> = 0, output format is the same as for <font color=#a3682a><tt>
+nfsubfield</tt></font>,
+returning [P,x] such that P is a polynomial defining the fixed field, and
+x is a root of P expressed as a polmod in <u>gal</u>.pol.</p>
+<p>If <u>flag</u> = 1 return only the polynomial P.</p>
+<p>If <u>flag</u> = 2 return [P,x,F] where P and x are as above and F is the
+factorization of <u>gal</u>.pol over the field defined by P, where
+variable v (y by default) stands for a root of P. The priority of v
+must be less than the priority of the variable of <u>gal</u>.pol (see
+Section [<b>Label: se:priority</b>]). Example:</p>
+<p>
+<pre><font color=#a3682a><tt>? G = galoisinit(x^4+1);
+&nbsp;? galoisfixedfield(G,G.group[2],2)
+&nbsp;%2 = [x^2 + 2, Mod(x^3 + x, x^4 + 1), [x^2 - y*x - 1, x^2 + y*x - 1]]
+</tt></font></pre></p>
+<p>computes the factorization  x^4+1 = (x^2-sqrt{-2}x-1)(x^2+sqrt{-2}x-1)</p>
+<p>The library syntax is <b>galoisfixedfield</b>(<u>gal</u>,<u>perm</u>,<u>flag</u>,v), where v is a variable number, an omitted v being coded by -1.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="galoisidentify"></a>
+<h4><b>galoisidentify</b>(<u>gal</u>)</h4>
+<p></p>
+<p>
+<u>gal</u> being be a Galois field as output by <font color=#a3682a><tt>
+galoisinit</tt></font>,
+output the isomorphism class of the underlying abstract group as a
+two-components vector [o,i], where o is the group order, and i is the
+group index in the GAP4 Small Group library, by Hans Ulrich Besche, Bettina
+Eick and Eamonn O'Brien.</p>
+<p>This command also accepts subgroups returned by <font color=#a3682a><tt>
+galoissubgroups</tt></font>.</p>
+<p>The current implementation is limited to degree less or equal to 127.
+Some larger "easy" orders are also supported.</p>
+<p>The output is similar to the output of the function <font color=#a3682a><tt>
+IdGroup</tt></font> in GAP4.
+Note that GAP4 <font color=#a3682a><tt>
+IdGroup</tt></font> handles all groups of order less than 2000
+except 1024, so you can use <font color=#a3682a><tt>
+galoisexport</tt></font> and GAP4 to identify large
+Galois groups.</p>
+<p>The library syntax is <b>galoisidentify</b>(<u>gal</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="galoisinit"></a>
+<h4><b>galoisinit</b>(<u>pol</u>,{den})</h4>
+<p></p>
+<p> computes the Galois group
+and all necessary information for computing the fixed fields of the
+Galois extension K/<b>Q</b> where K is the number field defined by
+<u>pol</u> (monic irreducible polynomial in <b>Z</b>[X] or
+a number field as output by <font color=#a3682a><tt>
+nfinit</tt></font>). The extension K/<b>Q</b> must be
+Galois with Galois group "weakly" super-solvable (see <font color=#a3682a><tt>
+nfgaloisconj</tt></font>)</p>
+<p>This is a prerequisite for most of the <font color=#a3682a><tt>
+galois</tt></font>xxx routines. For
+instance:</p>
+<p><pre><font color=#a3682a><tt>  P = x^6 + 108;
+&nbsp;  G = galoisinit(P);
+&nbsp;  L = galoissubgroups(G);
+&nbsp;  vector(#L, i, galoisisabelian(L[i],1))
+&nbsp;  vector(#L, i, galoisidentify(L[i]))
+</tt></font></pre></p>
+<p>
+The output is an 8-component vector <u>gal</u>.</p>
+<p> <u>gal</u>[1] contains the polynomial <u>pol</u>
+ (<font color=#a3682a><tt>
+<u>gal</u>.pol</tt></font>).</p>
+<p> <u>gal</u>[2] is a three-components vector [p,e,q] where p is a
+ prime number (<font color=#a3682a><tt>
+<u>gal</u>.p</tt></font>) such that <u>pol</u> totally split
+ modulo p , e is an integer and q = p^e (<font color=#a3682a><tt>
+<u>gal</u>.mod</tt></font>) is the
+ modulus of the roots in <font color=#a3682a><tt>
+<u>gal</u>.roots</tt></font>.</p>
+<p> <u>gal</u>[3] is a vector L containing the p-adic roots of
+ <u>pol</u> as integers implicitly modulo <font color=#a3682a><tt>
+<u>gal</u>.mod</tt></font>.
+ (<font color=#a3682a><tt>
+<u>gal</u>.roots</tt></font>).</p>
+<p> <u>gal</u>[4] is the inverse of the Van der Monde matrix of the
+ p-adic roots of <u>pol</u>, multiplied by <u>gal</u>[5].</p>
+<p> <u>gal</u>[5] is a multiple of the least common denominator of the
+ automorphisms expressed as polynomial in a root of <u>pol</u>.</p>
+<p> <u>gal</u>[6] is the Galois group G expressed as a vector of
+ permutations of L (<font color=#a3682a><tt>
+<u>gal</u>.group</tt></font>).</p>
+<p> <u>gal</u>[7] is a generating subset S = [s_1,...,s_g] of G
+ expressed as a vector of permutations of L (<font color=#a3682a><tt>
+<u>gal</u>.gen</tt></font>).</p>
+<p> <u>gal</u>[8] contains the relative orders [o_1,...,o_g] of
+ the generators of S (<font color=#a3682a><tt>
+<u>gal</u>.orders</tt></font>).</p>
+<p>Let H be the maximal normal supersolvable subgroup of G, we have the
+following properties:</p>
+<p><b>*</b> if G/H ~  A_4 then [o_1,...,o_g] ends by
+[2,2,3].</p>
+<p><b>*</b> if G/H ~  S_4 then [o_1,...,o_g] ends by
+[2,2,3,2].</p>
+<p><b>*</b> else G is super-solvable.</p>
+<p><b>*</b> for 1 <font color=#a3682a><tt>
+&#60;=</tt></font> i <font color=#a3682a><tt>
+&#60;=</tt></font> g the subgroup of G generated by
+[s_1,...,s_g] is normal, with the exception of i = g-2 in the
+second case and of i = g-3 in the third.</p>
+<p><b>*</b> the relative order o_i of s_i is its order in the
+quotient group G/<font color=#a3682a><tt>
+&#60;</tt></font>s_1,...,s_{i-1}<font color=#a3682a><tt>
+&#62;</tt></font>, with the same
+exceptions.</p>
+<p><b>*</b> for any x belongs to G there exists a unique family
+[e_1,...,e_g] such that (no exceptions):</p>
+<p>-- for 1 <font color=#a3682a><tt>
+&#60;=</tt></font> i <font color=#a3682a><tt>
+&#60;=</tt></font> g we have 0 <font color=#a3682a><tt>
+&#60;=</tt></font> e_i &#60; o_i</p>
+<p>-- x = g_1^{e_1}g_2^{e_2}...g_n^{e_n}</p>
+<p>If present den must be a suitable value for <u>gal</u>[5].</p>
+<p>The library syntax is <b>galoisinit</b>(<u>gal</u>,<u>den</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="galoisisabelian"></a>
+<h4><b>galoisisabelian</b>(<u>gal</u>,{fl = 0})</h4>
+<p></p>
+<p> <u>gal</u> being as output by <font color=#a3682a><tt>
+galoisinit</tt></font>, return 0 if
+ <u>gal</u> is not an abelian group, and the HNF matrix of <u>gal</u> over <font color=#a3682a><tt>
+gal.gen</tt></font> if fl = 0, 1 if
+ fl = 1.</p>
+<p>This command also accepts subgroups returned by <font color=#a3682a><tt>
+galoissubgroups</tt></font>.</p>
+<p>The library syntax is <b>galoisisabelian</b>(<u>gal</u>,<u>fl</u>) where <u>fl</u> is a C long integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="galoispermtopol"></a>
+<h4><b>galoispermtopol</b>(<u>gal</u>,<u>perm</u>)</h4>
+<p></p>
+<p> <u>gal</u> being a
+Galois field as output by <font color=#a3682a><tt>
+galoisinit</tt></font> and <u>perm</u> a element of
+<u>gal</u>.group, return the polynomial defining the Galois
+automorphism, as output by <font color=#a3682a><tt>
+nfgaloisconj</tt></font>, associated with the
+permutation <u>perm</u> of the roots <u>gal</u>.roots. <u>perm</u> can
+also be a vector or matrix, in this case, <font color=#a3682a><tt>
+galoispermtopol</tt></font> is
+applied to all components recursively.</p>
+<p>Note that</p>
+<p><pre><font color=#a3682a><tt>G = galoisinit(pol);
+&nbsp;galoispermtopol(G, G[6])~
+</tt></font></pre></p>
+<p>is equivalent to <font color=#a3682a><tt>
+nfgaloisconj(pol)</tt></font>, if degree of <u>pol</u> is greater
+or equal to 2.</p>
+<p>The library syntax is <b>galoispermtopol</b>(<u>gal</u>,<u>perm</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="galoissubcyclo"></a>
+<h4><b>galoissubcyclo</b>(N,H,{fl = 0},{v})</h4>
+<p></p>
+<p> computes the subextension
+of <b>Q</b>(<font color=#FF0000>zeta</font>_n) fixed by the subgroup H \subset (<b>Z</b>/n<b>Z</b>)^*. By the
+Kronecker-Weber theorem, all abelian number fields can be generated in this
+way (uniquely if n is taken to be minimal).</p>
+<p>The pair (n, H) is deduced from the parameters (N, H) as follows</p>
+<p><b>*</b> N an integer: then n = N; H is a generator, i.e. an
+integer or an integer modulo n; or a vector of generators.</p>
+<p><b>*</b> N the output of <font color=#a3682a><tt>
+znstar(n)</tt></font>. H as in the first case
+above, or a matrix, taken to be a HNF left divisor of the SNF for (<b>Z</b>/n<b>Z</b>)^*
+(of type <font color=#a3682a><tt>
+N.cyc</tt></font>), giving the generators of H in terms of <font color=#a3682a><tt>
+N.gen</tt></font>.</p>
+<p><b>*</b> N the output of <font color=#a3682a><tt>
+bnrinit(bnfinit(y), m, 1)</tt></font> where m is a
+module. H as in the first case, or a matrix taken to be a HNF left
+divisor of the SNF for the ray class group modulo m
+(of type <font color=#a3682a><tt>
+N.cyc</tt></font>), giving the generators of H in terms of <font color=#a3682a><tt>
+N.gen</tt></font>.</p>
+<p>In this last case, beware that H is understood relatively to N; in
+particular, if the infinite place does not divide the module, e.g if m is
+an integer, then it is not a subgroup of (<b>Z</b>/n<b>Z</b>)^*, but of its quotient by
+{&#177; 1}.</p>
+<p>If fl = 0, compute a polynomial (in the variable <u>v</u>) defining the
+the subfield of <b>Q</b>(<font color=#FF0000>zeta</font>_n) fixed by the subgroup <u>H</u> of (<b>Z</b>/n<b>Z</b>)^*.</p>
+<p>If fl = 1, compute only the conductor of the abelian extension, as a module.</p>
+<p>If fl = 2, output [pol, N], where pol is the polynomial as output when
+fl = 0 and N the conductor as output when fl = 1.</p>
+<p>The following function can be used to compute all subfields of
+<b>Q</b>(<font color=#FF0000>zeta</font>_n) (of exact degree <font color=#a3682a><tt>
+d</tt></font>, if <font color=#a3682a><tt>
+d</tt></font> is set):</p>
+<p><pre><font color=#a3682a><tt>subcyclo(n, d = -1)=
+&nbsp;{
+&nbsp;  local(bnr,L,IndexBound);
+&nbsp;  IndexBound = if (d &#60; 0, n, [d]);
+&nbsp;  bnr = bnrinit(bnfinit(y), [n,[1]], 1);
+&nbsp;  L = subgrouplist(bnr, IndexBound, 1);
+&nbsp;  vector(#L,i, galoissubcyclo(bnr,L[i]));
+&nbsp;}
+</tt></font></pre></p>
+<p>Setting <font color=#a3682a><tt>
+L = subgrouplist(bnr, IndexBound)</tt></font> would produce subfields of exact
+conductor n oo .</p>
+<p>The library syntax is <b>galoissubcyclo</b>(N,H,fl,v) where <u>fl</u> is a C long integer, and
+<u>v</u> a variable number.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="galoissubfields"></a>
+<h4><b>galoissubfields</b>(G,{fl = 0},{v})</h4>
+<p></p>
+<p> Output all the subfields of
+the Galois group <u>G</u>, as a vector.
+This works by applying <font color=#a3682a><tt>
+galoisfixedfield</tt></font> to all subgroups. The meaning of
+the flag <u>fl</u> is the same as for <font color=#a3682a><tt>
+galoisfixedfield</tt></font>.</p>
+<p>The library syntax is <b>galoissubfields</b>(<u>G</u>,fl,v), where <u>fl</u> is a long and <u>v</u> a
+variable number.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="galoissubgroups"></a>
+<h4><b>galoissubgroups</b>(gal)</h4>
+<p></p>
+<p> Output all the subgroups of the Galois
+group <font color=#a3682a><tt>
+gal</tt></font>. A subgroup is a vector [<u>gen</u>, <u>orders</u>], with the same meaning
+as for <u>gal</u>.gen and <u>gal</u>.orders. Hence <u>gen</u> is a vector of
+permutations generating the subgroup, and <u>orders</u> is the relatives
+orders of the generators. The cardinal of a subgroup is the product of the
+relative orders. Such subgroup can be used instead of a Galois group in the
+following command: <font color=#a3682a><tt>
+galoisisabelian</tt></font>, <font color=#a3682a><tt>
+galoissubgroups</tt></font>, <font color=#a3682a><tt>
+galoisexport</tt></font> and <font color=#a3682a><tt>
+galoisidentify</tt></font>.</p>
+<p>To get the subfield fixed by a subgroup <u>sub</u> of <u>gal</u>, use</p>
+<p><pre><font color=#a3682a><tt>galoisfixedfield(gal,sub[1])
+</tt></font></pre></p>
+<p>
+The library syntax is <b>galoissubgroups</b>(<u>gal</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealadd"></a>
+<h4><b>idealadd</b>(<u>nf</u>,x,y)</h4>
+<p></p>
+<p> sum of the two ideals x and y in the
+number field <u>nf</u>. When x and y are given by <b>Z</b>-bases, this does
+not depend on <u>nf</u> and can be used to compute the sum of any two
+<b>Z</b>-modules. The result is given in HNF.</p>
+<p>The library syntax is <b>idealadd</b>(<u>nf</u>,x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealaddtoone"></a>
+<h4><b>idealaddtoone</b>(<u>nf</u>,x,{y})</h4>
+<p></p>
+<p> x and y being two co-prime
+integral ideals (given in any form), this gives a two-component row vector
+[a,b] such that a belongs to x, b belongs to y and a+b = 1.</p>
+<p>The alternative syntax <font color=#a3682a><tt>
+idealaddtoone</tt></font>(<u>nf</u>,v), is supported, where
+v is a k-component vector of ideals (given in any form) which sum to
+<b>Z</b>_K. This outputs a k-component vector e such that e[i] belongs to x[i] for
+1 <font color=#a3682a><tt>
+&#60;=</tt></font> i <font color=#a3682a><tt>
+&#60;=</tt></font> k and <font color=#FF0000>sum</font>_{1 <font color=#a3682a><tt>
+&#60;=</tt></font> i <font color=#a3682a><tt>
+&#60;=</tt></font> k}e[i] = 1.</p>
+<p>The library syntax is <b>idealaddtoone0</b>(<u>nf</u>,x,y), where an omitted y is coded as
+<font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealappr"></a>
+<h4><b>idealappr</b>(<u>nf</u>,x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> if x is a fractional ideal
+(given in any form), gives an element <font color=#FF0000>alpha</font> in <u>nf</u> such that for
+all prime ideals wp such that the valuation of x at wp is non-zero, we
+have v_{wp}(<font color=#FF0000>alpha</font>) = v_{wp}(x), and. v_{wp}(<font color=#FF0000>alpha</font>) <font color=#a3682a><tt>
+&#62;=</tt></font> 0 for all other
+{wp}.</p>
+<p>If <u>flag</u> is non-zero, x must be given as a prime ideal factorization, as
+output by <font color=#a3682a><tt>
+idealfactor</tt></font>, but possibly with zero or negative exponents.
+This yields an element <font color=#FF0000>alpha</font> such that for all prime ideals wp occurring
+in x, v_{wp}(<font color=#FF0000>alpha</font>) is equal to the exponent of wp in x, and for all
+other prime ideals, v_{wp}(<font color=#FF0000>alpha</font>) <font color=#a3682a><tt>
+&#62;=</tt></font> 0. This generalizes
+<font color=#a3682a><tt>
+idealappr</tt></font>(<u>nf</u>,x,0) since zero exponents are allowed. Note that
+the algorithm used is slightly different, so that
+<font color=#a3682a><tt>
+idealappr(<u>nf</u>,idealfactor(<u>nf</u>,x))</tt></font> may not be the same as
+<font color=#a3682a><tt>
+idealappr(<u>nf</u>,x,1)</tt></font>.</p>
+<p>The library syntax is <b>idealappr0</b>(<u>nf</u>,x,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealchinese"></a>
+<h4><b>idealchinese</b>(<u>nf</u>,x,y)</h4>
+<p></p>
+<p> x being a prime ideal factorization
+(i.e.a 2 by 2 matrix whose first column contain prime ideals, and the second
+column integral exponents), y a vector of elements in <u>nf</u> indexed by
+the ideals in x, computes an element b such that</p>
+<p>v_wp(b - y_wp) <font color=#a3682a><tt>
+&#62;=</tt></font> v_wp(x) for all prime ideals in x and v_wp(b) <font color=#a3682a><tt>
+&#62;=</tt></font> 0
+for all other wp.</p>
+<p>The library syntax is <b>idealchinese</b>(<u>nf</u>,x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealcoprime"></a>
+<h4><b>idealcoprime</b>(<u>nf</u>,x,y)</h4>
+<p></p>
+<p> given two integral ideals x and y
+in the number field <u>nf</u>, finds a <font color=#FF0000>beta</font> in the field, expressed on the
+integral basis <u>nf</u>[7], such that <font color=#FF0000>beta</font>.x is an integral ideal
+coprime to y.</p>
+<p>The library syntax is <b>idealcoprime</b>(<u>nf</u>,x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealdiv"></a>
+<h4><b>idealdiv</b>(<u>nf</u>,x,y,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> quotient x.y^{-1} of the
+two ideals x and y in the number field <u>nf</u>. The result is given in
+HNF.</p>
+<p>If <u>flag</u> is non-zero, the quotient x.y^{-1} is assumed to be an
+integral ideal. This can be much faster when the norm of the quotient is
+small even though the norms of x and y are large.</p>
+<p>The library syntax is <b>idealdiv0</b>(<u>nf</u>,x,y,<u>flag</u>). Also available
+are <font color=#a3682a><tt>
+ <b>idealdiv</b>(<u>nf</u>,x,y)</tt></font> (<u>flag</u> = 0) and
+<font color=#a3682a><tt>
+ <b>idealdivexact</b>(<u>nf</u>,x,y)</tt></font> (<u>flag</u> = 1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealfactor"></a>
+<h4><b>idealfactor</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> factors into prime ideal powers the
+ideal x in the number field <u>nf</u>. The output format is similar to the
+<font color=#a3682a><tt>
+factor</tt></font> function, and the prime ideals are represented in the form
+output by the <font color=#a3682a><tt>
+idealprimedec</tt></font> function, i.e.as 5-element vectors.</p>
+<p>The library syntax is <b>idealfactor</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealhnf"></a>
+<h4><b>idealhnf</b>(<u>nf</u>,a,{b})</h4>
+<p></p>
+<p> gives the Hermite normal form
+matrix of the ideal a. The ideal can be given in any form whatsoever
+(typically by an algebraic number if it is principal, by a <b>Z</b>_K-system of
+generators, as a prime ideal as given by <font color=#a3682a><tt>
+idealprimedec</tt></font>, or by a
+<b>Z</b>-basis).</p>
+<p>If b is not omitted, assume the ideal given was a<b>Z</b>_K+b<b>Z</b>_K, where a
+and b are elements of K given either as vectors on the integral basis
+<u>nf</u>[7] or as algebraic numbers.</p>
+<p>The library syntax is <b>idealhnf0</b>(<u>nf</u>,a,b) where an omitted b is coded as <font color=#a3682a><tt>
+NULL</tt></font>.
+Also available is <font color=#a3682a><tt>
+ <b>idealhermite</b>(<u>nf</u>,a)</tt></font> (b omitted).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealintersect"></a>
+<h4><b>idealintersect</b>(<u>nf</u>,A,B)</h4>
+<p></p>
+<p> intersection of the two ideals
+A and B in the number field <u>nf</u>. The result is given in HNF.</p>
+<p><pre><font color=#a3682a><tt>    ? nf = nfinit(x^2+1);
+&nbsp;    ? idealintersect(nf, 2, x+1)
+&nbsp;    %2 = 
+&nbsp;    [2 0]
+&nbsp;
+&nbsp;    [0 2]
+</tt></font></pre></p>
+<p>
+This function does not apply to general <b>Z</b>-modules, e.g.orders, since its
+arguments are replaced by the ideals they generate. The following script
+intersects <b>Z</b>-modules A and B given by matrices of compatible
+dimensions with integer coefficients:</p>
+<p><pre><font color=#a3682a><tt>    ZM_intersect(A,B) =
+&nbsp;    { local(Ker);
+&nbsp;        Ker = matkerint(concat(A,B));
+&nbsp;        Ker = vecextract(Ker, Str(1, "..", #A), "..");
+&nbsp;        mathnf(Ker * A)
+&nbsp;    }
+</tt></font></pre></p>
+<p>
+The library syntax is <b>idealintersect</b>(<u>nf</u>,A,B).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealinv"></a>
+<h4><b>idealinv</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> inverse of the ideal x in the
+number field <u>nf</u>. The result is the Hermite normal form of the
+inverse of the ideal, together with the opposite of the Archimedean
+information if it is given.</p>
+<p>The library syntax is <b>idealinv</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ideallist"></a>
+<h4><b>ideallist</b>(<u>nf</u>,<u>bound</u>,{<u>flag</u> = 4})</h4>
+<p></p>
+<p> computes the list
+of all ideals of norm less or equal to <u>bound</u> in the number field
+<u>nf</u>. The result is a row vector with exactly <u>bound</u> components.
+Each component is itself a row vector containing the information about
+ideals of a given norm, in no specific order, depending on the value of
+<u>flag</u>:</p>
+<p>The possible values of <u>flag</u> are:</p>
+<p>0: give the <u>bid</u> associated to the ideals, without generators.</p>
+<p>1: as 0, but include the generators in the <u>bid</u>.</p>
+<p>2: in this case, <u>nf</u> must be a <u>bnf</u> with units. Each
+component is of the form [<u>bid</u>,U], where <u>bid</u> is as case 0
+and U is a vector of discrete logarithms of the units. More precisely, it
+gives the <font color=#a3682a><tt>
+ideallog</tt></font>s with respect to <u>bid</u> of <font color=#a3682a><tt>
+bnf.tufu</tt></font>.
+This structure is technical, and only meant to be used in conjunction with
+<font color=#a3682a><tt>
+bnrclassnolist</tt></font> or <font color=#a3682a><tt>
+bnrdisclist</tt></font>.</p>
+<p>3: as 2, but include the generators in the <u>bid</u>.</p>
+<p>4: give only the HNF of the ideal.</p>
+<p>
+<pre><font color=#a3682a><tt>? nf = nfinit(x^2+1);
+&nbsp;? L = ideallist(nf, 100);
+&nbsp;? L[1]
+&nbsp;%3 = [[1, 0; 0, 1]]  \\</tt></font> A single ideal of norm 1<font color=#a3682a><tt></p>
+<p>&nbsp;? #L[65]
+&nbsp;%4 = 4               \\</tt></font> There are 4 ideals of norm 4 in <b>Z</b>[i]<font color=#a3682a><tt></p>
+<p></tt></font></pre></p>
+<p>If one wants more information, one could do instead:</p>
+<p><pre><font color=#a3682a><tt>? nf = nfinit(x^2+1);
+&nbsp;? L = ideallist(nf, 100, 0);
+&nbsp;? l = L[25]; vector(#l, i, l[i].clgp)
+&nbsp;%3 = [[20, [20]], [16, [4, 4]], [20, [20]]]
+&nbsp;? l[1].mod
+&nbsp;%4 = [[25, 18; 0, 1], []]
+&nbsp;? l[2].mod
+&nbsp;%5 = [[5, 0; 0, 5], []]
+&nbsp;? l[3].mod
+&nbsp;%6 = [[25, 7; 0, 1], []]
+</tt></font></pre>
+where we ask for the structures of the (<b>Z</b>[i]/I)^* for all
+three ideals of norm 25. In fact, for all moduli with finite part of norm
+25 and trivial archimedean part, as the last 3 commands show. See
+<font color=#a3682a><tt>
+ideallistarch</tt></font> to treat general moduli.</p>
+<p>The library syntax is <b>ideallist0</b>(<u>nf</u>,<u>bound</u>,<u>flag</u>), where <u>bound</u> must
+be a C long integer. Also available is <font color=#a3682a><tt>
+ <b>ideallist</b>(<u>nf</u>,<u>bound</u>)</tt></font>,
+corresponding to the case <u>flag</u> = 4.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ideallistarch"></a>
+<h4><b>ideallistarch</b>(<u>nf</u>,<u>list</u>,<u>arch</u>)</h4>
+<p></p>
+<p>
+<u>list</u> is a vector of vectors of bid's, as output by <font color=#a3682a><tt>
+ideallist</tt></font> with
+flag 0 to 3. Return a vector of vectors with the same number of
+components as the original <u>list</u>. The leaves give information about
+moduli whose finite part is as in original list, in the same order, and
+archimedean part is now <u>arch</u> (it was originally trivial). The
+information contained is of the same kind as was present in the input; see
+<font color=#a3682a><tt>
+ideallist</tt></font>, in particular the meaning of <u>flag</u>.</p>
+<p>
+<pre><font color=#a3682a><tt>? bnf = bnfinit(x^2-2);
+&nbsp;? bnf.sign  
+&nbsp;%2 = [2, 0]                         \\</tt></font> two places at infinity<font color=#a3682a><tt></p>
+<p>&nbsp;? L = ideallist(bnf, 100, 0);
+&nbsp;? l = L[98]; vector(#l, i, l[i].clgp)
+&nbsp;%4 = [[42, [42]], [36, [6, 6]], [42, [42]]]
+&nbsp;? La = ideallistarch(bnf, L, [1,1]); \\</tt></font> add them to the modulus<font color=#a3682a><tt></p>
+<p>&nbsp;? l = La[98]; vector(#l, i, l[i].clgp)
+&nbsp;%6 = [[168, [42, 2, 2]], [144, [6, 6, 2, 2]], [168, [42, 2, 2]]]
+</tt></font></pre></p>
+<p>Of course, the results above are obvious: adding t places at infinity will
+add t copies of <b>Z</b>/2<b>Z</b> to the ray class group. The following application
+is more typical:</p>
+<p><pre><font color=#a3682a><tt>? L = ideallist(bnf, 100, 2);        \\</tt></font> units are required now<font color=#a3682a><tt></p>
+<p>&nbsp;? La = ideallistarch(bnf, L, [1,1]);
+&nbsp;? H = bnrclassnolist(bnf, La);
+&nbsp;? H[98];
+&nbsp;%6 = [2, 12, 2]
+</tt></font></pre></p>
+<p>
+The library syntax is <b>ideallistarch</b>(<u>nf</u>,<u>list</u>,<u>arch</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ideallog"></a>
+<h4><b>ideallog</b>(<u>nf</u>,x,<u>bid</u>)</h4>
+<p></p>
+<p> <u>nf</u> is a number field,
+<u>bid</u> a "big ideal" as output by <font color=#a3682a><tt>
+idealstar</tt></font> and x a
+non-necessarily integral element of <u>nf</u> which must have valuation
+equal to 0 at all prime ideals dividing I = <u>bid</u>[1]. This function
+computes the "discrete logarithm" of x on the generators given in
+<u>bid</u>[2]. In other words, if g_i are these generators, of orders
+d_i respectively, the result is a column vector of integers (x_i) such
+that 0 <font color=#a3682a><tt>
+&#60;=</tt></font> x_i &#60; d_i and
+x = <font color=#FF0000>prod</font>_ig_i^{x_i} (mod ^*I) .
+Note that when I is a module, this implies also sign conditions on the
+embeddings.</p>
+<p>The library syntax is <b>zideallog</b>(<u>nf</u>,x,<u>bid</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealmin"></a>
+<h4><b>idealmin</b>(<u>nf</u>,x,{<u>vdir</u>})</h4>
+<p></p>
+<p> computes a minimum of
+the ideal x in the direction <u>vdir</u> in the number field <u>nf</u>.</p>
+<p>The library syntax is <b>minideal</b>(<u>nf</u>,x,<u>vdir</u>,<u>prec</u>), where an omitted
+<u>vdir</u> is coded as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealmul"></a>
+<h4><b>idealmul</b>(<u>nf</u>,x,y,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> ideal multiplication of the
+ideals x and y in the number field <u>nf</u>. The result is a generating
+set for the ideal product with at most n elements, and is in Hermite normal
+form if either x or y is in HNF or is a prime ideal as output by
+<font color=#a3682a><tt>
+idealprimedec</tt></font>, and this is given together with the sum of the
+Archimedean information in x and y if both are given.</p>
+<p>If <u>flag</u> is non-zero, reduce the result using <font color=#a3682a><tt>
+idealred</tt></font>.</p>
+<p>The library syntax is <b>idealmul</b>(<u>nf</u>,x,y) (<u>flag</u> = 0) or
+<font color=#a3682a><tt>
+ <b>idealmulred</b>(<u>nf</u>,x,y,<u>prec</u>)</tt></font> (<u>flag</u> != 0), where as usual,
+<u>prec</u> is a C long integer representing the precision.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealnorm"></a>
+<h4><b>idealnorm</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> computes the norm of the idealx
+in the number field<u>nf</u>.</p>
+<p>The library syntax is <b>idealnorm</b>(<u>nf</u>, x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealpow"></a>
+<h4><b>idealpow</b>(<u>nf</u>,x,k,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> computes the k-th power of
+the ideal x in the number field <u>nf</u>. k can be positive, negative
+or zero. The result is NOT reduced, it is really the k-th ideal power, and
+is given in HNF.</p>
+<p>If <u>flag</u> is non-zero, reduce the result using <font color=#a3682a><tt>
+idealred</tt></font>. Note however
+that this is NOT the same as as <font color=#a3682a><tt>
+idealpow</tt></font>(<u>nf</u>,x,k) followed by
+reduction, since the reduction is performed throughout the powering process.</p>
+<p>The library syntax corresponding to <u>flag</u> = 0 is
+<font color=#a3682a><tt>
+ <b>idealpow</b>(<u>nf</u>,x,k)</tt></font>. If k is a <font color=#a3682a><tt>
+long</tt></font>, you can use
+<font color=#a3682a><tt>
+ <b>idealpows</b>(<u>nf</u>,x,k)</tt></font>. Corresponding to <u>flag</u> = 1 is
+<font color=#a3682a><tt>
+ <b>idealpowred</b>(<u>nf</u>,vp,k,<u>prec</u>)</tt></font>, where <u>prec</u> is a
+<font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealprimedec"></a>
+<h4><b>idealprimedec</b>(<u>nf</u>,p)</h4>
+<p></p>
+<p> computes the prime ideal
+decomposition of the prime number p in the number field <u>nf</u>. p
+must be a (positive) prime number. Note that the fact that p is prime is
+not checked, so if a non-prime p is given the result is undefined.</p>
+<p>The result is a vector of <u>pr</u> structures, each representing one of the
+prime ideals above p in the number field <u>nf</u>. The representation
+P = [p,a,e,f,b] of a prime ideal means the following. The prime ideal is
+equal to p<b>Z</b>_K+<font color=#FF0000>alpha</font><b>Z</b>_K where <b>Z</b>_K is the ring of integers of the field
+and <font color=#FF0000>alpha</font> = <font color=#FF0000>sum</font>_i a_i<font color=#FF0000>omega</font>_i where the <font color=#FF0000>omega</font>_i form the integral basis
+<font color=#a3682a><tt>
+<u>nf</u>.zk</tt></font>, e is the ramification index, f is the residual index,
+and b represents a <font color=#FF0000>beta</font> belongs to <b>Z</b>_K such that P^{-1} = <b>Z</b>_K+<font color=#FF0000>beta</font>/p<b>Z</b>_K which
+will be useful for computing valuations, but which the user can ignore. The
+number <font color=#FF0000>alpha</font> is guaranteed to have a valuation equal to 1 at the prime
+ideal (this is automatic if e &#62; 1).</p>
+<p>The components of <font color=#a3682a><tt>
+P</tt></font> should be accessed by member functions: <font color=#a3682a><tt>
+P.p</tt></font>,
+<font color=#a3682a><tt>
+P.e</tt></font>, <font color=#a3682a><tt>
+P.f</tt></font>, and <font color=#a3682a><tt>
+P.gen</tt></font> (returns the vector [p,a]).</p>
+<p>The library syntax is <b>primedec</b>(<u>nf</u>,p).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealprincipal"></a>
+<h4><b>idealprincipal</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> creates the principal ideal
+generated by the algebraic number x (which must be of type integer,
+rational or polmod) in the number field <u>nf</u>. The result is a
+one-column matrix.</p>
+<p>The library syntax is <b>principalideal</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealred"></a>
+<h4><b>idealred</b>(<u>nf</u>,I,{<u>vdir</u> = 0})</h4>
+<p></p>
+<p> LLL reduction of
+the ideal I in the number field <u>nf</u>, along the direction <u>vdir</u>.
+If <u>vdir</u> is present, it must be an r1+r2-component vector (r1 and
+r2 number of real and complex places of <u>nf</u> as usual).</p>
+<p>This function finds a "small" a in I (it is an LLL pseudo-minimum
+along direction <u>vdir</u>). The result is the Hermite normal form of
+the LLL-reduced ideal r I/a, where r is a rational number such that the
+resulting ideal is integral and primitive. This is often, but not always, a
+reduced ideal in the sense of Buchmann. If I is an idele, the
+logarithmic embeddings of a are subtracted to the Archimedean part.</p>
+<p>More often than not, a principal ideal will yield the identity
+matrix. This is a quick and dirty way to check if ideals are principal
+without computing a full <font color=#a3682a><tt>
+bnf</tt></font> structure, but it's not a necessary
+condition; hence, a non-trivial result doesn't prove the ideal is
+non-trivial in the class group.</p>
+<p>Note that this is <u>not</u> the same as the LLL reduction of the lattice
+I since ideal operations are involved.</p>
+<p>The library syntax is <b>ideallllred</b>(<u>nf</u>,x,<u>vdir</u>,<u>prec</u>), where an omitted
+<u>vdir</u> is coded as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealstar"></a>
+<h4><b>idealstar</b>(<u>nf</u>,I,{<u>flag</u> = 1})</h4>
+<p></p>
+<p> outputs a <u>bid</u> structure,
+necessary for computing in the finite abelian group G = (<b>Z</b>_K/I)^*. Here,
+<u>nf</u> is a number field and I is a <u>modulus</u>: either an ideal in any
+form, or a row vector whose first component is an ideal and whose second
+component is a row vector of r_1 0 or 1.</p>
+<p>This <u>bid</u> is used in <font color=#a3682a><tt>
+ideallog</tt></font> to compute discrete logarithms. It
+also contains useful information which can be conveniently retrieved as
+<font color=#a3682a><tt>
+<u>bid</u>.mod</tt></font> (the modulus),
+<font color=#a3682a><tt>
+<u>bid</u>.clgp</tt></font> (G as a finite abelian group),
+<font color=#a3682a><tt>
+<u>bid</u>.no</tt></font> (the cardinality of G),
+<font color=#a3682a><tt>
+<u>bid</u>.cyc</tt></font> (elementary divisors) and
+<font color=#a3682a><tt>
+<u>bid</u>.gen</tt></font> (generators).</p>
+<p>If <u>flag</u> = 1 (default), the result is a <u>bid</u> structure without
+generators.</p>
+<p>If <u>flag</u> = 2, as <u>flag</u> = 1, but including generators, which wastes some time.</p>
+<p>If <u>flag</u> = 0, <u>deprecated</u>. Only outputs (<b>Z</b>_K/I)^* as an abelian group,
+i.e as a 3-component vector [h,d,g]: h is the order, d is the vector of
+SNF cyclic components and g the corresponding
+generators. This flag is deprecated: it is in fact slightly faster
+to compute a true <u>bid</u> structure, which contains much more information.</p>
+<p>The library syntax is <b>idealstar0</b>(<u>nf</u>,I,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealtwoelt"></a>
+<h4><b>idealtwoelt</b>(<u>nf</u>,x,{a})</h4>
+<p></p>
+<p> computes a two-element
+representation of the ideal x in the number field <u>nf</u>, using a
+straightforward (exponential time) search. x can be an ideal in any form,
+(including perhaps an Archimedean part, which is ignored) and the result is a
+row vector [a,<font color=#FF0000>alpha</font>] with two components such that x = a<b>Z</b>_K+<font color=#FF0000>alpha</font><b>Z</b>_K
+and a belongs to <b>Z</b>, where a is the one passed as argument if any. If x is given
+by at least two generators, a is chosen to be the positive generator of
+xcap<b>Z</b>.</p>
+<p>Note that when an explicit a is given, we use an asymptotically faster
+method, however in practice it is usually slower.</p>
+<p>The library syntax is <b>ideal_two_elt0</b>(<u>nf</u>,x,a), where an omitted a is entered as
+<font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="idealval"></a>
+<h4><b>idealval</b>(<u>nf</u>,x,<u>vp</u>)</h4>
+<p></p>
+<p> gives the valuation of the
+ideal x at the prime ideal <u>vp</u> in the number field <u>nf</u>,
+where <u>vp</u> must be a
+5-component vector as given by <font color=#a3682a><tt>
+idealprimedec</tt></font>.</p>
+<p>The library syntax is <b>idealval</b>(<u>nf</u>,x,<u>vp</u>), and the result is a <font color=#a3682a><tt>
+long</tt></font>
+integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ideleprincipal"></a>
+<h4><b>ideleprincipal</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> creates the principal idele
+generated by the algebraic number x (which must be of type integer,
+rational or polmod) in the number field <u>nf</u>. The result is a
+two-component vector, the first being a one-column matrix representing the
+corresponding principal ideal, and the second being the vector with r_1+r_2
+components giving the complex logarithmic embedding of x.</p>
+<p>The library syntax is <b>principalidele</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matalgtobasis"></a>
+<h4><b>matalgtobasis</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> <u>nf</u> being a number field in
+<font color=#a3682a><tt>
+nfinit</tt></font> format, and x a matrix whose coefficients are expressed as
+polmods in <u>nf</u>, transforms this matrix into a matrix whose
+coefficients are expressed on the integral basis of <u>nf</u>. This is the
+same as applying <font color=#a3682a><tt>
+nfalgtobasis</tt></font> to each entry, but it would be dangerous
+to use the same name.</p>
+<p>The library syntax is <b>matalgtobasis</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matbasistoalg"></a>
+<h4><b>matbasistoalg</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> <u>nf</u> being a number field in
+<font color=#a3682a><tt>
+nfinit</tt></font> format, and x a matrix whose coefficients are expressed as
+column vectors on the integral basis of <u>nf</u>, transforms this matrix
+into a matrix whose coefficients are algebraic numbers expressed as
+polmods. This is the same as applying <font color=#a3682a><tt>
+nfbasistoalg</tt></font> to each entry, but
+it would be dangerous to use the same name.</p>
+<p>The library syntax is <b>matbasistoalg</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="modreverse"></a>
+<h4><b>modreverse</b>(a)</h4>
+<p></p>
+<p> a being a polmod A(X) modulo T(X), finds
+the "reverse polmod" B(X) modulo Q(X), where Q is the minimal
+polynomial of a, which must be equal to the degree of T, and such that if
+<font color=#FF0000>theta</font> is a root of T then <font color=#FF0000>theta</font> = B(<font color=#FF0000>alpha</font>) for a certain root <font color=#FF0000>alpha</font>
+of Q.</p>
+<p>This is very useful when one changes the generating element in algebraic
+extensions.</p>
+<p>The library syntax is <b>polmodrecip</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="newtonpoly"></a>
+<h4><b>newtonpoly</b>(x,p)</h4>
+<p></p>
+<p> gives the vector of the slopes of the Newton
+polygon of the polynomial x with respect to the prime number p. The n
+components of the vector are in decreasing order, where n is equal to the
+degree of x. Vertical slopes occur iff the constant coefficient of x is
+zero and are denoted by <font color=#a3682a><tt>
+VERYBIGINT</tt></font>, the biggest single precision
+integer representable on the machine (2^{31}-1 (resp.2^{63}-1) on 32-bit
+(resp.64-bit) machines), see Section [<b>Label: se:valuation</b>].</p>
+<p>The library syntax is <b>newtonpoly</b>(x,p).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfalgtobasis"></a>
+<h4><b>nfalgtobasis</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> this is the inverse function of
+<font color=#a3682a><tt>
+nfbasistoalg</tt></font>. Given an object x whose entries are expressed as
+algebraic numbers in the number field <u>nf</u>, transforms it so that the
+entries are expressed as a column vector on the integral basis
+<font color=#a3682a><tt>
+<u>nf</u>.zk</tt></font>.</p>
+<p>The library syntax is <b>algtobasis</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfbasis"></a>
+<h4><b>nfbasis</b>(x,{<u>flag</u> = 0},{<u>fa</u>})</h4>
+<p></p>
+<p> integral basis of the number
+field defined by the irreducible, preferably monic, polynomial x, using a
+modified version of the round 4 algorithm by default, due to David
+Ford, Sebastian Pauli and Xavier Roblot. The binary digits
+of <u>flag</u> have the following meaning:</p>
+<p>1: assume that no square of a prime greater than the default <font color=#a3682a><tt>
+primelimit</tt></font>
+divides the discriminant of x, i.e.that the index of x has only small
+prime divisors.</p>
+<p>2: use round 2 algorithm. For small degrees and coefficient size, this
+is sometimes a little faster. (This program is the translation into C of a
+program written by David Ford in Algeb.)</p>
+<p>Thus for instance, if <u>flag</u> = 3, this uses the round 2 algorithm and outputs
+an order which will be maximal at all the small primes.</p>
+<p>If <u>fa</u> is present, we assume (without checking!) that it is the two-column
+matrix of the factorization of the discriminant of the polynomial x. Note
+that it does <u>not</u> have to be a complete factorization. This is
+especially useful if only a local integral basis for some small set of places
+is desired: only factors with exponents greater or equal to 2 will be
+considered.</p>
+<p>The library syntax is <b>nfbasis0</b>(x,<u>flag</u>,<u>fa</u>). An extended version is
+<font color=#a3682a><tt>
+ <b>nfbasis</b>(x,&amp;d,<u>flag</u>,<u>fa</u>)</tt></font>, where d receives the discriminant of the
+number field (<u>not</u> of the polynomial x), and an omitted <u>fa</u> is input
+as <font color=#a3682a><tt>
+NULL</tt></font>. Also available are <font color=#a3682a><tt>
+ <b>base</b>(x,&amp;d)</tt></font> (<u>flag</u> = 0),
+<font color=#a3682a><tt>
+ <b>base2</b>(x,&amp;d)</tt></font> (<u>flag</u> = 2) and <font color=#a3682a><tt>
+ <b>factoredbase</b>(x,<u>fa</u>,&amp;d)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfbasistoalg"></a>
+<h4><b>nfbasistoalg</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> this is the inverse function of
+<font color=#a3682a><tt>
+nfalgtobasis</tt></font>. Given an object x whose entries are expressed on the
+integral basis <font color=#a3682a><tt>
+<u>nf</u>.zk</tt></font>, transforms it into an object whose entries
+are algebraic numbers (i.e.polmods).</p>
+<p>The library syntax is <b>basistoalg</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfdetint"></a>
+<h4><b>nfdetint</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> given a pseudo-matrix x, computes a
+non-zero ideal contained in (i.e.multiple of) the determinant of x. This
+is particularly useful in conjunction with <font color=#a3682a><tt>
+nfhnfmod</tt></font>.</p>
+<p>The library syntax is <b>nfdetint</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfdisc"></a>
+<h4><b>nfdisc</b>(x,{<u>flag</u> = 0},{fa})</h4>
+<p></p>
+<p> field discriminant of the
+number field defined by the integral, preferably monic, irreducible
+polynomial x. <u>flag</u> and fa are exactly as in <font color=#a3682a><tt>
+nfbasis</tt></font>. That is, fa
+provides the matrix of a partial factorization of the discriminant of x,
+and binary digits of <u>flag</u> are as follows:</p>
+<p>1: assume that no square of a prime greater than <font color=#a3682a><tt>
+primelimit</tt></font>
+divides the discriminant.</p>
+<p>2: use the round 2 algorithm, instead of the default round 4. This
+should be slower except maybe for polynomials of small degree and
+coefficients.</p>
+<p>The library syntax is <b>nfdiscf0</b>(x,<u>flag</u>,fa) where an omitted fa is input as <font color=#a3682a><tt>
+NULL</tt></font>. You
+can also use <font color=#a3682a><tt>
+ <b>discf</b>(x)</tt></font> (<u>flag</u> = 0).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltdiv"></a>
+<h4><b>nfeltdiv</b>(<u>nf</u>,x,y)</h4>
+<p></p>
+<p> given two elements x and y in
+<u>nf</u>, computes their quotient x/y in the number field <u>nf</u>.</p>
+<p>The library syntax is <b>element_div</b>(<u>nf</u>,x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltdiveuc"></a>
+<h4><b>nfeltdiveuc</b>(<u>nf</u>,x,y)</h4>
+<p></p>
+<p> given two elements x and y in
+<u>nf</u>, computes an algebraic integer q in the number field <u>nf</u>
+such that the components of x-qy are reasonably small. In fact, this is
+functionally identical to <font color=#a3682a><tt>
+round(nfeltdiv(<u>nf</u>,x,y))</tt></font>.</p>
+<p>The library syntax is <b>nfdiveuc</b>(<u>nf</u>,x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltdivmodpr"></a>
+<h4><b>nfeltdivmodpr</b>(<u>nf</u>,x,y,<u>pr</u>)</h4>
+<p></p>
+<p> given two elements x
+and y in <u>nf</u> and <u>pr</u> a prime ideal in <font color=#a3682a><tt>
+modpr</tt></font> format (see
+<font color=#a3682a><tt>
+nfmodprinit</tt></font>), computes their quotient x / y modulo the prime ideal
+<u>pr</u>.</p>
+<p>The library syntax is <b>element_divmodpr</b>(<u>nf</u>,x,y,<u>pr</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltdivrem"></a>
+<h4><b>nfeltdivrem</b>(<u>nf</u>,x,y)</h4>
+<p></p>
+<p> given two elements x and y in
+<u>nf</u>, gives a two-element row vector [q,r] such that x = qy+r, q is
+an algebraic integer in <u>nf</u>, and the components of r are
+reasonably small.</p>
+<p>The library syntax is <b>nfdivrem</b>(<u>nf</u>,x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltmod"></a>
+<h4><b>nfeltmod</b>(<u>nf</u>,x,y)</h4>
+<p></p>
+<p> given two elements x and y in
+<u>nf</u>, computes an element r of <u>nf</u> of the form r = x-qy with
+q and algebraic integer, and such that r is small. This is functionally
+identical to
+<font color=#a3682a><tt>
+x - nfeltmul(<u>nf</u>,round(nfeltdiv(<u>nf</u>,x,y)),y)</tt></font>.</p>
+<p>The library syntax is <b>nfmod</b>(<u>nf</u>,x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltmul"></a>
+<h4><b>nfeltmul</b>(<u>nf</u>,x,y)</h4>
+<p></p>
+<p> given two elements x and y in
+<u>nf</u>, computes their product x*y in the number field <u>nf</u>.</p>
+<p>The library syntax is <b>element_mul</b>(<u>nf</u>,x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltmulmodpr"></a>
+<h4><b>nfeltmulmodpr</b>(<u>nf</u>,x,y,<u>pr</u>)</h4>
+<p></p>
+<p> given two elements x and
+y in <u>nf</u> and <u>pr</u> a prime ideal in <font color=#a3682a><tt>
+modpr</tt></font> format (see
+<font color=#a3682a><tt>
+nfmodprinit</tt></font>), computes their product x*y modulo the prime ideal
+<u>pr</u>.</p>
+<p>The library syntax is <b>element_mulmodpr</b>(<u>nf</u>,x,y,<u>pr</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltpow"></a>
+<h4><b>nfeltpow</b>(<u>nf</u>,x,k)</h4>
+<p></p>
+<p> given an element x in <u>nf</u>,
+and a positive or negative integer k, computes x^k in the number field
+<u>nf</u>.</p>
+<p>The library syntax is <b>element_pow</b>(<u>nf</u>,x,k).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltpowmodpr"></a>
+<h4><b>nfeltpowmodpr</b>(<u>nf</u>,x,k,<u>pr</u>)</h4>
+<p></p>
+<p> given an element x in
+<u>nf</u>, an integer k and a prime ideal <u>pr</u> in <font color=#a3682a><tt>
+modpr</tt></font> format
+(see <font color=#a3682a><tt>
+nfmodprinit</tt></font>), computes x^k modulo the prime ideal <u>pr</u>.</p>
+<p>The library syntax is <b>element_powmodpr</b>(<u>nf</u>,x,k,<u>pr</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltreduce"></a>
+<h4><b>nfeltreduce</b>(<u>nf</u>,x,<u>ideal</u>)</h4>
+<p></p>
+<p> given an ideal in
+Hermite normal form and an element x of the number field <u>nf</u>,
+finds an element r in <u>nf</u> such that x-r belongs to the ideal
+and r is small.</p>
+<p>The library syntax is <b>element_reduce</b>(<u>nf</u>,x,<u>ideal</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltreducemodpr"></a>
+<h4><b>nfeltreducemodpr</b>(<u>nf</u>,x,<u>pr</u>)</h4>
+<p></p>
+<p> given
+an element x of the number field <u>nf</u> and a prime ideal <u>pr</u> in
+<font color=#a3682a><tt>
+modpr</tt></font> format compute a canonical representative for the class of x
+modulo <u>pr</u>.</p>
+<p>The library syntax is <b>nfreducemodpr</b>(<u>nf</u>,x,<u>pr</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfeltval"></a>
+<h4><b>nfeltval</b>(<u>nf</u>,x,<u>pr</u>)</h4>
+<p></p>
+<p> given an element x in
+<u>nf</u> and a prime ideal <u>pr</u> in the format output by
+<font color=#a3682a><tt>
+idealprimedec</tt></font>, computes their the valuation at <u>pr</u> of the
+element x. The same result could be obtained using
+<font color=#a3682a><tt>
+idealval(<u>nf</u>,x,<u>pr</u>)</tt></font> (since x would then be converted to a
+principal ideal), but it would be less efficient.</p>
+<p>The library syntax is <b>element_val</b>(<u>nf</u>,x,<u>pr</u>), and the result is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nffactor"></a>
+<h4><b>nffactor</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> factorization of the univariate
+polynomial x over the number field <u>nf</u> given by <font color=#a3682a><tt>
+nfinit</tt></font>. x
+has coefficients in <u>nf</u> (i.e.either scalar, polmod, polynomial or
+column vector). The main variable of <u>nf</u> must be of <u>lower</u>
+priority than that of x (see Section [<b>Label: se:priority</b>]). However if
+the polynomial defining the number field occurs explicitly  in the
+coefficients of x (as modulus of a <font color=#a3682a><tt>
+t_POLMOD</tt></font>), its main variable must be
+<u>the same</u> as the main variable of x. For example,</p>
+<p><pre><font color=#a3682a><tt>? nf = nfinit(y^2 + 1);
+&nbsp;? nffactor(nf, x^2 + y); \\</tt></font> OK<font color=#a3682a><tt></p>
+<p>&nbsp;? nffactor(nf, x^2 + Mod(y, y^2+1)); \\ </tt></font> OK<font color=#a3682a><tt></p>
+<p>&nbsp;? nffactor(nf, x^2 + Mod(z, z^2+1)); \\ </tt></font> WRONG<font color=#a3682a><tt></p>
+<p></tt></font></pre></p>
+<p>
+The library syntax is <b>nffactor</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nffactormod"></a>
+<h4><b>nffactormod</b>(<u>nf</u>,x,<u>pr</u>)</h4>
+<p></p>
+<p> factorization of the
+univariate polynomial x modulo the prime ideal <u>pr</u> in the number
+field <u>nf</u>. x can have coefficients in the number field (scalar,
+polmod, polynomial, column vector) or modulo the prime ideal (intmod
+modulo the rational prime under <u>pr</u>, polmod or polynomial with
+intmod coefficients, column vector of intmod). The prime ideal
+<u>pr</u> <u>must</u> be in the format output by <font color=#a3682a><tt>
+idealprimedec</tt></font>. The
+main variable of <u>nf</u> must be of lower priority than that of x
+(see Section [<b>Label: se:priority</b>]). However if the coefficients of the number
+field occur explicitly (as polmods) as coefficients of x, the variable of
+these polmods <u>must</u> be the same as the main variable of t (see
+<font color=#a3682a><tt>
+nffactor</tt></font>).</p>
+<p>The library syntax is <b>nffactormod</b>(<u>nf</u>,x,<u>pr</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfgaloisapply"></a>
+<h4><b>nfgaloisapply</b>(<u>nf</u>,<u>aut</u>,x)</h4>
+<p></p>
+<p> <u>nf</u> being a
+number field as output by <font color=#a3682a><tt>
+nfinit</tt></font>, and <u>aut</u> being a Galois
+automorphism of <u>nf</u> expressed either as a polynomial or a polmod
+(such automorphisms being found using for example one of the variants of
+<font color=#a3682a><tt>
+nfgaloisconj</tt></font>), computes the action of the automorphism <u>aut</u> on
+the object x in the number field. x can be an element (scalar, polmod,
+polynomial or column vector) of the number field, an ideal (either given by
+<b>Z</b>_K-generators or by a <b>Z</b>-basis), a prime ideal (given as a 5-element
+row vector) or an idele (given as a 2-element row vector). Because of
+possible confusion with elements and ideals, other vector or matrix
+arguments are forbidden.</p>
+<p>The library syntax is <b>galoisapply</b>(<u>nf</u>,<u>aut</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfgaloisconj"></a>
+<h4><b>nfgaloisconj</b>(<u>nf</u>,{<u>flag</u> = 0},{d})</h4>
+<p></p>
+<p> <u>nf</u> being a
+number field as output by <font color=#a3682a><tt>
+nfinit</tt></font>, computes the conjugates of a root
+r of the non-constant polynomial x = <u>nf</u>[1] expressed as
+polynomials in r. This can be used even if the number field <u>nf</u> is
+not Galois since some conjugates may lie in the field.</p>
+<p><u>nf</u> can simply be a polynomial if <u>flag</u> != 1.</p>
+<p>If no flags or <u>flag</u> = 0, if <u>nf</u> is a number field use a
+combination of flag 4 and 1 and the result is always complete,
+else use a combination of flag 4 and 2 and the result is subject
+to the restriction of <u>flag</u> = 2, but a warning is issued when it is not
+proven complete.</p>
+<p>If <u>flag</u> = 1, use <font color=#a3682a><tt>
+nfroots</tt></font> (require a number field).</p>
+<p>If <u>flag</u> = 2, use complex approximations to the roots and an integral
+LLL. The result is not guaranteed to be complete: some
+conjugates may be missing (no warning issued), especially so if the
+corresponding polynomial has a huge index. In that case, increasing
+the default precision may help.</p>
+<p>If <u>flag</u> = 4, use Allombert's algorithm and permutation testing. If the
+field is Galois with "weakly" super solvable Galois group, return
+the complete list of automorphisms, else only the identity element. If
+present, d is assumed to be a multiple of the least common
+denominator of the conjugates expressed as polynomial in a root of
+<u>pol</u>.</p>
+<p>A group G is "weakly" super solvable (WKSS) if it contains a super solvable
+normal subgroup H such that G = H , or G/H  ~  A_4 , or G/H  ~ 
+S_4. Abelian and nilpotent groups are WKSS. In practice, almost all groups
+of small order are WKSS, the exceptions having order 36(1 exception), 48(2),
+56(1), 60(1), 72(5), 75(1), 80(1), 96(10) and  <font color=#a3682a><tt>
+&#62;=</tt></font> 108.</p>
+<p>Hence <u>flag</u> = 4 permits to quickly check whether a polynomial of order
+strictly less than 36 is Galois or not. This method is much faster than
+<font color=#a3682a><tt>
+nfroots</tt></font> and can be applied to polynomials of degree larger than 50.</p>
+<p>This routine can only compute <b>Q</b>-automorphisms, but it may be used to get
+K-automorphism for any base field K as follows:</p>
+<p><pre><font color=#a3682a><tt>  rnfgaloisconj(nfK, R) = \\ K-automorphisms of L = K[X] / (R)
+&nbsp;  { local(polabs, N, H);
+&nbsp;    R *= Mod(1, nfK.pol);             \\ convert coeffs to polmod elts of K
+&nbsp;    polabs = rnfequation(nfK, R);
+&nbsp;    N = nfgaloisconj(polabs) % R;     \\ Q-automorphisms of L
+&nbsp;    H = [];
+&nbsp;    for(i=1, #N,                      \\ select the ones that fix K
+&nbsp;      if (subst(R, variable(R), Mod(N[i],R)) == 0,
+&nbsp;        H = concat(H,N[i])
+&nbsp;      )
+&nbsp;    ); H
+&nbsp;  }
+&nbsp;  K  = nfinit(y^2 + 7);
+&nbsp;  polL = x^4 - y*x^3 - 3*x^2 + y*x + 1;
+&nbsp;  rnfgaloisconj(K, polL)             \\ K-automorphisms of L
+</tt></font></pre></p>
+<p>
+The library syntax is <b>galoisconj0</b>(<u>nf</u>,<u>flag</u>,d,<u>prec</u>). Also available are
+<font color=#a3682a><tt>
+ <b>galoisconj</b>(<u>nf</u>)</tt></font> for <u>flag</u> = 0,
+<font color=#a3682a><tt>
+ <b>galoisconj2</b>(<u>nf</u>,n,<u>prec</u>)</tt></font> for <u>flag</u> = 2 where n is a bound
+on the number of conjugates, and  <font color=#a3682a><tt>
+ <b>galoisconj4</b>(<u>nf</u>,d)</tt></font>
+corresponding to <u>flag</u> = 4.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfhilbert"></a>
+<h4><b>nfhilbert</b>(<u>nf</u>,a,b,{<u>pr</u>})</h4>
+<p></p>
+<p> if <u>pr</u> is omitted,
+compute the global Hilbert symbol (a,b) in <u>nf</u>, that is 1
+if x^2 - a y^2 - b z^2 has a non trivial solution (x,y,z) in <u>nf</u>,
+and -1 otherwise. Otherwise compute the local symbol modulo the prime ideal
+<u>pr</u> (as output by <font color=#a3682a><tt>
+idealprimedec</tt></font>).</p>
+<p>The library syntax is <b>nfhilbert</b>(<u>nf</u>,a,b,<u>pr</u>), where an omitted <u>pr</u> is coded
+as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfhnf"></a>
+<h4><b>nfhnf</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> given a pseudo-matrix (A,I), finds a
+pseudo-basis in Hermite normal form of the module it generates.</p>
+<p>The library syntax is <b>nfhermite</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfhnfmod"></a>
+<h4><b>nfhnfmod</b>(<u>nf</u>,x,<u>detx</u>)</h4>
+<p></p>
+<p> given a pseudo-matrix (A,I)
+and an ideal <u>detx</u> which is contained in (read integral multiple of) the
+determinant of (A,I), finds a pseudo-basis in Hermite normal form
+of the module generated by (A,I). This avoids coefficient explosion.
+<u>detx</u> can be computed using the function <font color=#a3682a><tt>
+nfdetint</tt></font>.</p>
+<p>The library syntax is <b>nfhermitemod</b>(<u>nf</u>,x,<u>detx</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfinit"></a>
+<h4><b>nfinit</b>(<u>pol</u>,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> <u>pol</u> being a non-constant,
+preferably monic, irreducible polynomial in <b>Z</b>[X], initializes a
+<u>number field</u> structure (<font color=#a3682a><tt>
+nf</tt></font>) associated to the field K defined
+by <u>pol</u>. As such, it's a technical object passed as the first argument
+to most <font color=#a3682a><tt>
+nf</tt></font><u>xxx</u> functions, but it contains some information which
+may be directly useful. Access to this information via <u>member
+functions</u> is preferred since the specific data organization specified below
+may change in the future. Currently, <font color=#a3682a><tt>
+nf</tt></font> is a row vector with 9
+components:</p>
+<p><u>nf</u>[1] contains the polynomial <u>pol</u> (<font color=#a3682a><tt>
+<u>nf</u>.pol</tt></font>).</p>
+<p><u>nf</u>[2] contains [r1,r2] (<font color=#a3682a><tt>
+<u>nf</u>.sign</tt></font>, <font color=#a3682a><tt>
+<u>nf</u>.r1</tt></font>,
+<font color=#a3682a><tt>
+<u>nf</u>.r2</tt></font>), the number of real and complex places of K.</p>
+<p><u>nf</u>[3] contains the discriminant d(K) (<font color=#a3682a><tt>
+<u>nf</u>.disc</tt></font>) of K.</p>
+<p><u>nf</u>[4] contains the index of <u>nf</u>[1] (<font color=#a3682a><tt>
+<u>nf</u>.index</tt></font>),
+i.e.[<b>Z</b>_K : <b>Z</b>[<font color=#FF0000>theta</font>]], where <font color=#FF0000>theta</font> is any root of <u>nf</u>[1].</p>
+<p><u>nf</u>[5] is a vector containing 7 matrices M, G, T2, T,
+MD, TI, MDI useful for certain computations in the number field K.</p>
+<p><b>*</b> M is the (r1+r2) x n matrix whose columns represent
+the numerical values of the conjugates of the elements of the integral
+basis.</p>
+<p><b>*</b> G is such that T2 = ^t G G, where T2 is the quadratic
+form T_2(x) = <font color=#FF0000>sum</font> |<font color=#FF0000>sigma</font>(x)|^2, <font color=#FF0000>sigma</font> running over the embeddings of
+K into <b>C</b>.</p>
+<p><b>*</b> The T2 component is deprecated and currently unused.</p>
+<p><b>*</b> T is the n x n matrix whose coefficients are
+{Tr}(<font color=#FF0000>omega</font>_i<font color=#FF0000>omega</font>_j) where the <font color=#FF0000>omega</font>_i are the elements of the
+integral basis. Note also that det(T) is equal to the discriminant of the
+field K.</p>
+<p><b>*</b> The columns of MD (<font color=#a3682a><tt>
+<u>nf</u>.diff</tt></font>) express a <b>Z</b>-basis
+of the different of K on the integral basis.</p>
+<p><b>*</b> TI is equal to d(K)T^{-1}, which has integral
+coefficients. Note that, understood as as ideal, the matrix T^{-1}
+generates the codifferent ideal.</p>
+<p><b>*</b> Finally, MDI is a two-element representation (for faster
+ideal product) of d(K) times the codifferent ideal
+(<font color=#a3682a><tt>
+<u>nf</u>.disc*<u>nf</u>.codiff</tt></font>, which is an integral ideal). MDI
+is only used in <font color=#a3682a><tt>
+idealinv</tt></font>.</p>
+<p><u>nf</u>[6] is the vector containing the r1+r2 roots
+(<font color=#a3682a><tt>
+<u>nf</u>.roots</tt></font>) of <u>nf</u>[1] corresponding to the r1+r2
+embeddings of the number field into <b>C</b> (the first r1 components are real,
+the next r2 have positive imaginary part).</p>
+<p><u>nf</u>[7] is an integral basis for <b>Z</b>_K (<font color=#a3682a><tt>
+<u>nf</u>.zk</tt></font>) expressed
+on the powers of<font color=#FF0000>theta</font>. Its first element is guaranteed to be 1. This
+basis is LLL-reduced with respect to T_2 (strictly speaking, it is a
+permutation of such a basis, due to the condition that the first element be
+1).</p>
+<p><u>nf</u>[8] is the n x n integral matrix expressing the power
+basis in terms of the integral basis, and finally</p>
+<p><u>nf</u>[9] is the n x n^2 matrix giving the multiplication table
+of the integral basis.</p>
+<p>If a non monic polynomial is input, <font color=#a3682a><tt>
+nfinit</tt></font> will transform it into a
+monic one, then reduce it (see <u>flag</u> = 3). It is allowed, though not very
+useful given the existence of <font color=#a3682a><tt>
+nfnewprec</tt></font>, to input a <font color=#a3682a><tt>
+nf</tt></font> or a
+<font color=#a3682a><tt>
+bnf</tt></font> instead of a polynomial.</p>
+<p>
+<pre><font color=#a3682a><tt>  ? nf = nfinit(x^3 - 12); \\ initialize number field Q[X] / (X^3 - 12)
+&nbsp;  ? nf.pol   \\ defining polynomial
+&nbsp;  %2 = x^3 - 12
+&nbsp;  ? nf.disc  \\ field discriminant
+&nbsp;  %3 = -972
+&nbsp;  ? nf.index \\ index of power basis order in maximal order
+&nbsp;  %4 = 2
+&nbsp;  ? nf.zk    \\ integer basis, lifted to Q[X]
+&nbsp;  %5 = [1, x, 1/2*x^2]
+&nbsp;  ? nf.sign  \\ signature
+&nbsp;  %6 = [1, 1]
+&nbsp;  ? factor(abs(nf.disc ))  \\ determines ramified primes
+&nbsp;  %7 =
+&nbsp;  [2 2]
+&nbsp;
+&nbsp;  [3 5]
+&nbsp;  ? idealfactor(nf, 2)
+&nbsp;  %8 =
+&nbsp;  [[2, [0, 0, -1]~, 3, 1, [0, 1, 0]~] 3]  \\ </tt></font> <b>P</b>_2^3<font color=#a3682a><tt></p>
+<p></tt></font></pre></p>
+<p>
+In case <u>pol</u> has a huge discriminant which is difficult to factor,
+the special input format [<u>pol</u>,B] is also accepted where <u>pol</u> is a
+polynomial as above and B is the integer basis, as would be computed by
+<font color=#a3682a><tt>
+nfbasis</tt></font>. This is useful if the integer basis is known in advance,
+or was computed conditionnally.</p>
+<p><pre><font color=#a3682a><tt>  ? pol = polcompositum(x^5 - 101, polcyclo(7))[1];
+&nbsp;  ? B = nfbasis(pol, 1);   \\ faster than nfbasis(pol), but conditional
+&nbsp;  ? nf = nfinit( [pol, B] );
+&nbsp;  ? factor( abs(nf.disc) )
+&nbsp;  [5 18]
+&nbsp;
+&nbsp;  [7 25]
+&nbsp;
+&nbsp;  [101 24]
+</tt></font></pre></p>
+<p><font color=#a3682a><tt>
+B</tt></font> is conditional when its discriminant, which is <font color=#a3682a><tt>
+nf.disc</tt></font>, can't be
+factored. In this example, the above factorization proves the correctness of
+the computation.</p>
+<p>
+If <u>flag</u> = 2: <u>pol</u> is changed into another polynomial P defining the same
+number field, which is as simple as can easily be found using the <font color=#a3682a><tt>
+polred</tt></font>
+algorithm, and all the subsequent computations are done using this new
+polynomial. In particular, the first component of the result is the modified
+polynomial.</p>
+<p>If <u>flag</u> = 3, does a <font color=#a3682a><tt>
+polred</tt></font> as in case 2, but outputs
+[<u>nf</u>,<font color=#a3682a><tt>
+Mod</tt></font>(a,P)], where <u>nf</u> is as before and
+<font color=#a3682a><tt>
+Mod</tt></font>(a,P) = <font color=#a3682a><tt>
+Mod</tt></font>(x,<u>pol</u>) gives the change of
+variables. This is implicit when <u>pol</u> is not monic: first a linear change
+of variables is performed, to get a monic polynomial, then a <font color=#a3682a><tt>
+polred</tt></font>
+reduction.</p>
+<p>If <u>flag</u> = 4, as 2 but uses a partial <font color=#a3682a><tt>
+polred</tt></font>.</p>
+<p>If <u>flag</u> = 5, as 3 using a partial <font color=#a3682a><tt>
+polred</tt></font>.</p>
+<p>The library syntax is <b>nfinit0</b>(x,<u>flag</u>,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfisideal"></a>
+<h4><b>nfisideal</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> returns 1 if x is an ideal in
+the number field <u>nf</u>, 0 otherwise.</p>
+<p>The library syntax is <b>isideal</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfisincl"></a>
+<h4><b>nfisincl</b>(x,y)</h4>
+<p></p>
+<p> tests whether the number field K defined
+by the polynomial x is conjugate to a subfield of the field L defined
+by y (where x and y must be in <b>Q</b>[X]). If they are not, the output
+is the number 0. If they are, the output is a vector of polynomials, each
+polynomial a representing an embedding of K into L, i.e.being such
+that y | x o a.</p>
+<p>If y is a number field (<u>nf</u>), a much faster algorithm is used
+(factoring x over y using <font color=#a3682a><tt>
+nffactor</tt></font>). Before version 2.0.14, this
+wasn't guaranteed to return all the embeddings, hence was triggered by a
+special flag. This is no more the case.</p>
+<p>The library syntax is <b>nfisincl</b>(x,y,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfisisom"></a>
+<h4><b>nfisisom</b>(x,y)</h4>
+<p></p>
+<p> as <font color=#a3682a><tt>
+nfisincl</tt></font>, but tests
+for isomorphism. If either x or y is a number field, a much faster
+algorithm will be used.</p>
+<p>The library syntax is <b>nfisisom</b>(x,y,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfnewprec"></a>
+<h4><b>nfnewprec</b>(<u>nf</u>)</h4>
+<p></p>
+<p> transforms the number field <u>nf</u>
+into the corresponding data using current (usually larger) precision. This
+function works as expected if <u>nf</u> is in fact a <u>bnf</u> (update
+<u>bnf</u> to current precision) but may be quite slow (many generators of
+principal ideals have to be computed).</p>
+<p>The library syntax is <b>nfnewprec</b>(<u>nf</u>,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfkermodpr"></a>
+<h4><b>nfkermodpr</b>(<u>nf</u>,a,<u>pr</u>)</h4>
+<p></p>
+<p> kernel of the matrix a in
+<b>Z</b>_K/<u>pr</u>, where <u>pr</u> is in <b>modpr</b> format
+(see <font color=#a3682a><tt>
+nfmodprinit</tt></font>).</p>
+<p>The library syntax is <b>nfkermodpr</b>(<u>nf</u>,a,<u>pr</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfmodprinit"></a>
+<h4><b>nfmodprinit</b>(<u>nf</u>,<u>pr</u>)</h4>
+<p></p>
+<p> transforms the prime ideal
+<u>pr</u> into <font color=#a3682a><tt>
+modpr</tt></font> format necessary for all operations modulo
+<u>pr</u> in the number field <u>nf</u>.</p>
+<p>The library syntax is <b>nfmodprinit</b>(<u>nf</u>,<u>pr</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfsubfields"></a>
+<h4><b>nfsubfields</b>(<u>pol</u>,{d = 0})</h4>
+<p></p>
+<p> finds all subfields of degree
+d of the number field defined by the (monic, integral) polynomial
+<u>pol</u> (all subfields if d is null or omitted). The result is a vector
+of subfields, each being given by [g,h], where g is an absolute equation
+and h expresses one of the roots of g in terms of the root x of the
+polynomial defining <u>nf</u>. This routine uses J.Kl&uuml;ners's algorithm
+in the general case, and B.Allombert's <font color=#a3682a><tt>
+galoissubfields</tt></font> when <u>nf</u>
+is Galois (with weakly supersolvable Galois group).</p>
+<p>The library syntax is <b>subfields</b>(<u>nf</u>,d).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfroots"></a>
+<h4><b>nfroots</b>({<u>nf</u>},x)</h4>
+<p></p>
+<p> roots of the polynomial x in the
+number field <u>nf</u> given by <font color=#a3682a><tt>
+nfinit</tt></font> without multiplicity (in <b>Q</b>
+if <u>nf</u> is omitted). x has coefficients in the number field (scalar,
+polmod, polynomial, column vector). The main variable of <u>nf</u> must be
+of lower priority than that of x (see Section [<b>Label: se:priority</b>]). However if the
+coefficients of the number field occur explicitly (as polmods) as
+coefficients of x, the variable of these polmods <u>must</u> be the same as
+the main variable of t (see <font color=#a3682a><tt>
+nffactor</tt></font>).</p>
+<p>The library syntax is <b>nfroots</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfrootsof1"></a>
+<h4><b>nfrootsof1</b>(<u>nf</u>)</h4>
+<p></p>
+<p> computes the number of roots of unity
+w and a primitive w-th root of unity (expressed on the integral basis)
+belonging to the number field <u>nf</u>. The result is a two-component
+vector [w,z] where z is a column vector expressing a primitive w-th
+root of unity on the integral basis <font color=#a3682a><tt>
+<u>nf</u>.zk</tt></font>.</p>
+<p>The library syntax is <b>rootsof1</b>(<u>nf</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfsnf"></a>
+<h4><b>nfsnf</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> given a torsion module x as a 3-component
+row
+vector [A,I,J] where A is a square invertible n x n matrix, I and
+J are two ideal lists, outputs an ideal list d_1,...,d_n which is the
+Smith normal form of x. In other words, x is isomorphic to
+<b>Z</b>_K/d_1oplus...oplus<b>Z</b>_K/d_n and d_i divides d_{i-1} for i <font color=#a3682a><tt>
+&#62;=</tt></font> 2.
+The link between x and [A,I,J] is as follows: if e_i is the canonical
+basis of K^n, I = [b_1,...,b_n] and J = [a_1,...,a_n], then x is
+isomorphic to
+ (b_1e_1oplus...oplus b_ne_n) / (a_1A_1oplus...oplus a_nA_n)
+ , 
+where the A_j are the columns of the matrix A. Note that every finitely
+generated torsion module can be given in this way, and even with b_i = Z_K
+for all i.</p>
+<p>The library syntax is <b>nfsmith</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nfsolvemodpr"></a>
+<h4><b>nfsolvemodpr</b>(<u>nf</u>,a,b,<u>pr</u>)</h4>
+<p></p>
+<p> solution of a.x = b
+in <b>Z</b>_K/<u>pr</u>, where a is a matrix and b a column vector, and where
+<u>pr</u> is in <b>modpr</b> format (see <font color=#a3682a><tt>
+nfmodprinit</tt></font>).</p>
+<p>The library syntax is <b>nfsolvemodpr</b>(<u>nf</u>,a,b,<u>pr</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polcompositum"></a>
+<h4><b>polcompositum</b>(P,Q,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> P and Q
+being squarefree polynomials in <b>Z</b>[X] in the same variable, outputs
+the simple factors of the &eacute;tale <b>Q</b>-algebra A = <b>Q</b>(X, Y) / (P(X), Q(Y)).
+The factors are given by a list of polynomials R in <b>Z</b>[X], associated to
+the number field <b>Q</b>(X)/ (R), and sorted by increasing degree (with respect
+to lexicographic ordering for factors of equal degrees). Returns an error if
+one of the polynomials is not squarefree.</p>
+<p>Note that it is more efficient to reduce to the case where P and Q are
+irreducible first. The routine will not perform this for you, since it may be
+expensive, and the inputs are irreducible in most applications anyway.
+Assuming P is irreducible (of smaller degree than Q for efficiency), it
+is in general <u>much</u> faster to proceed as follows</p>
+<p><pre><font color=#a3682a><tt>   nf = nfinit(P); L = nffactor(nf, Q)[,1];
+&nbsp;   vector(#L, i, rnfequation(nf, L[i]))
+</tt></font></pre></p>
+<p>to obtain the same result. If you are only interested in the degrees of the
+simple factors, the <font color=#a3682a><tt>
+rnfequation</tt></font> instruction can be replaced by a
+trivial <font color=#a3682a><tt>
+poldegree(P) * poldegree(L[i])</tt></font>.</p>
+<p>If <u>flag</u> = 1, outputs a vector of 4-component vectors [R,a,b,k], where R
+ranges through the list of all possible compositums as above, and a
+(resp. b) expresses the root of P (resp. Q) as an element of
+<b>Q</b>(X)/(R). Finally, k is a small integer such that b + ka = X modulo
+R.</p>
+<p>A compositum is quite often defined by a complicated polynomial, which it is
+advisable to reduce before further work. Here is a simple example involving
+the field <b>Q</b>(<font color=#FF0000>zeta</font>_5, 5^{1/5}):</p>
+<p><pre><font color=#a3682a><tt>? z = polcompositum(x^5 - 5, polcyclo(5), 1)[1];
+&nbsp;? pol = z[1]                 \\</tt></font> <font color=#a3682a><tt>
+pol</tt></font> defines the compositum<font color=#a3682a><tt></p>
+<p>&nbsp;%2 = x^20 + 5*x^19 + 15*x^18 + 35*x^17 + 70*x^16 + 141*x^15 + 260*x^14 \
+&nbsp;  + 355*x^13 + 95*x^12 - 1460*x^11 - 3279*x^10 - 3660*x^9 - 2005*x^8    \
+&nbsp;  + 705*x^7 + 9210*x^6 + 13506*x^5 + 7145*x^4 - 2740*x^3 + 1040*x^2     \
+&nbsp;  - 320*x + 256
+&nbsp;? a = z[2]; a^5 - 5          \\</tt></font> <font color=#a3682a><tt>
+a</tt></font> is a fifth root of 5<font color=#a3682a><tt></p>
+<p>&nbsp;%3 = 0
+&nbsp;? z = polredabs(pol, 1);     \\</tt></font> look for a simpler polynomial<font color=#a3682a><tt></p>
+<p>&nbsp;? pol = z[1]
+&nbsp;%5 = x^20 + 25*x^10 + 5
+&nbsp;? a = subst(a.pol, x, z[2])  \\</tt></font> <font color=#a3682a><tt>
+a</tt></font> in the new coordinates<font color=#a3682a><tt></p>
+<p>&nbsp;%6 = Mod(-5/22*x^19 + 1/22*x^14 - 123/22*x^9 + 9/11*x^4, x^20 + 25*x^10 + 5)
+</tt></font></pre></p>
+<p>
+The library syntax is <b>polcompositum0</b>(P,Q,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polgalois"></a>
+<h4><b>polgalois</b>(x)</h4>
+<p></p>
+<p> Galois group of the non-constant
+polynomial x belongs to <b>Q</b>[X]. In the present version <b>2.2.13</b>, x must be irreducible
+and the degree of x must be less than or equal to 7. On certain versions for
+which the data file of Galois resolvents has been installed (available in the
+Unix distribution as a separate package), degrees 8, 9, 10 and 11 are also
+implemented.</p>
+<p>The output is a 4-component vector [n,s,k,name] with the
+following meaning: n is the cardinality of the group, s is its signature
+(s = 1 if the group is a subgroup of the alternating group A_n, s = -1
+otherwise) and name is a character string containing name of the transitive
+group according to the GAP 4 transitive groups library by Alexander Hulpke.</p>
+<p>k is more arbitrary and the choice made up to version2.2.3 of PARI is rather
+unfortunate: for n &#62; 7, k is the numbering of the group among all
+transitive subgroups of S_n, as given in "The transitive groups of degree up
+to eleven", G.Butler and J.McKay, <u>Communications in Algebra</u>, vol.11,
+1983,
+pp.863--911 (group k is denoted T_k there). And for n <font color=#a3682a><tt>
+&#60;=</tt></font> 7, it was ad
+hoc, so as to ensure that a given triple would design a unique group.
+Specifically, for polynomials of degree  <font color=#a3682a><tt>
+&#60;=</tt></font> 7, the groups are coded as
+follows, using standard notations</p>
+<p>In degree 1: S_1 = [1,1,1].</p>
+<p>In degree 2: S_2 = [2,-1,1].</p>
+<p>In degree 3: A_3 = C_3 = [3,1,1], S_3 = [6,-1,1].</p>
+<p>In degree 4: C_4 = [4,-1,1], V_4 = [4,1,1], D_4 = [8,-1,1], A_4 = [12,1,1],
+S_4 = [24,-1,1].</p>
+<p>In degree 5: C_5 = [5,1,1], D_5 = [10,1,1], M_{20} = [20,-1,1],
+ A_5 = [60,1,1], S_5 = [120,-1,1].</p>
+<p>In degree 6: C_6 = [6,-1,1], S_3 = [6,-1,2], D_6 = [12,-1,1], A_4 = [12,1,1],
+G_{18} = [18,-1,1], S_4^ -= [24,-1,1], A_4 x C_2 = [24,-1,2],
+S_4^ += [24,1,1], G_{36}^ -= [36,-1,1], G_{36}^ += [36,1,1],
+S_4 x C_2 = [48,-1,1], A_5 = PSL_2(5) = [60,1,1], G_{72} = [72,-1,1],
+S_5 = PGL_2(5) = [120,-1,1], A_6 = [360,1,1], S_6 = [720,-1,1].</p>
+<p>In degree 7: C_7 = [7,1,1], D_7 = [14,-1,1], M_{21} = [21,1,1],
+M_{42} = [42,-1,1], PSL_2(7) = PSL_3(2) = [168,1,1], A_7 = [2520,1,1],
+S_7 = [5040,-1,1].</p>
+<p>This is deprecated and obsolete, but for reasons of backward compatibility,
+we cannot change this behaviour yet. So you can use the default
+<font color=#a3682a><tt>
+new_galois_format</tt></font> to switch to a consistent naming scheme, namely k is
+always the standard numbering of the group among all transitive subgroups of
+S_n. If this default is in effect, the above groups will be coded as:</p>
+<p>In degree 1: S_1 = [1,1,1].</p>
+<p>In degree 2: S_2 = [2,-1,1].</p>
+<p>In degree 3: A_3 = C_3 = [3,1,1], S_3 = [6,-1,2].</p>
+<p>In degree 4: C_4 = [4,-1,1], V_4 = [4,1,2], D_4 = [8,-1,3], A_4 = [12,1,4],
+S_4 = [24,-1,5].</p>
+<p>In degree 5: C_5 = [5,1,1], D_5 = [10,1,2], M_{20} = [20,-1,3],
+ A_5 = [60,1,4], S_5 = [120,-1,5].</p>
+<p>In degree 6: C_6 = [6,-1,1], S_3 = [6,-1,2], D_6 = [12,-1,3], A_4 = [12,1,4],
+G_{18} = [18,-1,5], A_4 x C_2 = [24,-1,6], S_4^ += [24,1,7],
+S_4^ -= [24,-1,8], G_{36}^ -= [36,-1,9], G_{36}^ += [36,1,10],
+S_4 x C_2 = [48,-1,11], A_5 = PSL_2(5) = [60,1,12], G_{72} = [72,-1,13],
+S_5 = PGL_2(5) = [120,-1,14], A_6 = [360,1,15], S_6 = [720,-1,16].</p>
+<p>In degree 7: C_7 = [7,1,1], D_7 = [14,-1,2], M_{21} = [21,1,3],
+M_{42} = [42,-1,4], PSL_2(7) = PSL_3(2) = [168,1,5], A_7 = [2520,1,6],
+S_7 = [5040,-1,7].</p>
+<p>
+<b>Warning:</b> The method used is that of resolvent polynomials and is
+sensitive to the current precision. The precision is updated internally but,
+in very rare cases, a wrong result may be returned if the initial precision
+was not sufficient.</p>
+<p>The library syntax is <b>polgalois</b>(x,<u>prec</u>). To enable the new format in library mode,
+set the global variable <font color=#a3682a><tt>
+new_galois_format</tt></font> to 1.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polred"></a>
+<h4><b>polred</b>(x,{<u>flag</u> = 0},{fa})</h4>
+<p></p>
+<p> finds polynomials with reasonably
+small coefficients defining subfields of the number field defined by x.
+One of the polynomials always defines <b>Q</b> (hence is equal to x-1),
+and another always defines the same number field as x if x is irreducible.
+All x accepted by <font color=#a3682a><tt>
+nfinit</tt></font> are also allowed here (e.g. non-monic
+polynomials, <font color=#a3682a><tt>
+nf</tt></font>, <font color=#a3682a><tt>
+bnf</tt></font>, <font color=#a3682a><tt>
+[x,Z_K_basis]</tt></font>).</p>
+<p>The following binary digits of <u>flag</u> are significant:</p>
+<p>1: possibly use a suborder of the maximal order. The primes dividing the
+index of the order chosen are larger than <font color=#a3682a><tt>
+primelimit</tt></font> or divide integers
+stored in the <font color=#a3682a><tt>
+addprimes</tt></font> table.</p>
+<p>2: gives also elements. The result is a two-column matrix, the first column
+giving the elements defining these subfields, the second giving the
+corresponding minimal polynomials.</p>
+<p>If fa is given, it is assumed that it is the two-column matrix of the
+factorization of the discriminant of the polynomial x.</p>
+<p>The library syntax is <b>polred0</b>(x,<u>flag</u>,fa), where an omitted fa is coded by <font color=#a3682a><tt>
+NULL</tt></font>. Also
+available are <font color=#a3682a><tt>
+ <b>polred</b>(x)</tt></font> and <font color=#a3682a><tt>
+ <b>factoredpolred</b>(x,fa)</tt></font>, both
+corresponding to <u>flag</u> = 0.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polredabs"></a>
+<h4><b>polredabs</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> finds one of the polynomial defining
+the same number field as the one defined by x, and such that the sum of the
+squares of the modulus of the roots (i.e.the T_2-norm) is minimal.
+All x accepted by <font color=#a3682a><tt>
+nfinit</tt></font> are also allowed here (e.g. non-monic
+polynomials, <font color=#a3682a><tt>
+nf</tt></font>, <font color=#a3682a><tt>
+bnf</tt></font>, <font color=#a3682a><tt>
+[x,Z_K_basis]</tt></font>).</p>
+<p><b>Warning:</b> this routine uses an exponential-time algorithm to
+enumerate all potential generators, and may be exceedingly slow when the
+number field has many subfields, hence a lot of elements of small T_2-norm.
+E.g. do not try it on the compositum of many quadratic fields, use
+<font color=#a3682a><tt>
+polred</tt></font> instead.</p>
+<p>The binary digits of <u>flag</u> mean</p>
+<p>1: outputs a two-component row vector [P,a], where P is the default
+output and a is an element expressed on a root of the polynomial P,
+whose minimal polynomial is equal to x.</p>
+<p>4: gives <u>all</u> polynomials of minimal T_2 norm (of the two polynomials
+P(x) and P(-x), only one is given).</p>
+<p>16: possibly use a suborder of the maximal order. The primes dividing the
+index of the order chosen are larger than <font color=#a3682a><tt>
+primelimit</tt></font> or divide integers
+stored in the <font color=#a3682a><tt>
+addprimes</tt></font> table. In that case it may happen that the
+output polynomial does not have minimal T_2 norm.</p>
+<p>The library syntax is <b>polredabs0</b>(x,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="polredord"></a>
+<h4><b>polredord</b>(x)</h4>
+<p></p>
+<p> finds polynomials with reasonably small
+coefficients and of the same degree as that of x defining suborders of the
+order defined by x. One of the polynomials always defines <b>Q</b> (hence
+is equal to (x-1)^n, where n is the degree), and another always defines
+the same order as x if x is irreducible.</p>
+<p>The library syntax is <b>ordred</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="poltschirnhaus"></a>
+<h4><b>poltschirnhaus</b>(x)</h4>
+<p></p>
+<p>  applies a random Tschirnhausen
+transformation to the polynomial x, which is assumed to be non-constant
+and separable, so as to obtain a new equation for the &eacute;tale algebra
+defined by x. This is for instance useful when computing resolvents,
+hence is used by the <font color=#a3682a><tt>
+polgalois</tt></font> function.</p>
+<p>The library syntax is <b>tschirnhaus</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfalgtobasis"></a>
+<h4><b>rnfalgtobasis</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p>  expresses x on the relative
+integral basis. Here, <u>rnf</u> is a relative number field extension L/K
+as output by <font color=#a3682a><tt>
+rnfinit</tt></font>, and x an element of L in absolute form, i.e.
+expressed as a polynomial or polmod with polmod coefficients, <u>not</u> on
+the relative integral basis.</p>
+<p>The library syntax is <b>rnfalgtobasis</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfbasis"></a>
+<h4><b>rnfbasis</b>(<u>bnf</u>, M)</h4>
+<p></p>
+<p> let K the field represented by
+<u>bnf</u>, as output by <font color=#a3682a><tt>
+bnfinit</tt></font>. M is a projective <b>Z</b>_K-module
+given by a pseudo-basis, as output by <font color=#a3682a><tt>
+rnfhnfbasis</tt></font>. The routine returns
+either a true <b>Z</b>_K-basis of M if it exists, or an n+1-element
+generating set of M if not, where n is the rank of M over <u>K</u>.
+(Note that n is the size of the pseudo-basis.)</p>
+<p>It is allowed to use a polynomial P with coefficients in K instead of M,
+in which case, M is defined as the ring of integers of K[X]/(P)
+(P is assumed irreducible over K), viewed as a <b>Z</b>_K-module.</p>
+<p>The library syntax is <b>rnfbasis</b>(<u>bnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfbasistoalg"></a>
+<h4><b>rnfbasistoalg</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> computes the representation of x
+as a polmod with polmods coefficients. Here, <u>rnf</u> is a relative number
+field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font>, and x an element of
+L expressed on the relative integral basis.</p>
+<p>The library syntax is <b>rnfbasistoalg</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfcharpoly"></a>
+<h4><b>rnfcharpoly</b>(<u>nf</u>,T,a,{v = x})</h4>
+<p></p>
+<p> characteristic polynomial of
+a over <u>nf</u>, where a belongs to the algebra defined by T over
+<u>nf</u>, i.e.<u>nf</u>[X]/(T). Returns a polynomial in variable v
+(x by default).</p>
+<p>The library syntax is <b>rnfcharpoly</b>(<u>nf</u>,T,a,v), where v is a variable number.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfconductor"></a>
+<h4><b>rnfconductor</b>(<u>bnf</u>,<u>pol</u>,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> given <u>bnf</u>
+as output by <font color=#a3682a><tt>
+bnfinit</tt></font>, and <u>pol</u> a relative polynomial defining an
+Abelian extension, computes the class field theory conductor of this
+Abelian extension. The result is a 3-component vector
+[<u>conductor</u>,<u>rayclgp</u>,<u>subgroup</u>], where <u>conductor</u> is
+the conductor of the extension given as a 2-component row vector
+[f_0,f_ oo ], <u>rayclgp</u> is the full ray class group corresponding to
+the conductor given as a 3-component vector [h,cyc,gen] as usual for a group,
+and <u>subgroup</u> is a matrix in HNF defining the subgroup of the ray class
+group on the given generators gen. If <u>flag</u> is non-zero, check that <u>pol</u>
+indeed defines an Abelian extension, return 0 if it does not.</p>
+<p>The library syntax is <b>rnfconductor</b>(<u>rnf</u>,<u>pol</u>,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfdedekind"></a>
+<h4><b>rnfdedekind</b>(<u>nf</u>,<u>pol</u>,<u>pr</u>)</h4>
+<p></p>
+<p> given a number field
+<u>nf</u> as output by <font color=#a3682a><tt>
+nfinit</tt></font> and a polynomial <u>pol</u> with
+coefficients in <u>nf</u> defining a relative extension L of <u>nf</u>,
+evaluates the relative Dedekind criterion over the order defined by a
+root of <u>pol</u> for the prime ideal <u>pr</u> and outputs a 3-component
+vector as the result. The first component is a flag equal to 1 if the
+enlarged order could be proven to be <u>pr</u>-maximal and to 0 otherwise (it
+may be maximal in the latter case if <u>pr</u> is ramified in L), the second
+component is a pseudo-basis of the enlarged order and the third component is
+the valuation at <u>pr</u> of the order discriminant.</p>
+<p>The library syntax is <b>rnfdedekind</b>(<u>nf</u>,<u>pol</u>,<u>pr</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfdet"></a>
+<h4><b>rnfdet</b>(<u>nf</u>,M)</h4>
+<p></p>
+<p> given a pseudo-matrix M over the maximal
+order of <u>nf</u>, computes its determinant.</p>
+<p>The library syntax is <b>rnfdet</b>(<u>nf</u>,M).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfdisc"></a>
+<h4><b>rnfdisc</b>(<u>nf</u>,<u>pol</u>)</h4>
+<p></p>
+<p> given a number field <u>nf</u> as
+output by <font color=#a3682a><tt>
+nfinit</tt></font> and a polynomial <u>pol</u> with coefficients in
+<u>nf</u> defining a relative extension L of <u>nf</u>, computes the
+relative discriminant of L. This is a two-element row vector [D,d], where
+D is the relative ideal discriminant and d is the relative discriminant
+considered as an element of <u>nf</u>^*/{<u>nf</u>^*}^2. The main variable of
+<u>nf</u> <u>must</u> be of lower priority than that of <u>pol</u>, see
+Section [<b>Label: se:priority</b>].</p>
+<p>The library syntax is <b>rnfdiscf</b>(<u>bnf</u>,<u>pol</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfeltabstorel"></a>
+<h4><b>rnfeltabstorel</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative
+number field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being an
+element of L expressed as a polynomial modulo the absolute equation
+<font color=#a3682a><tt>
+<u>rnf</u>.pol</tt></font>, computes x as an element of the relative extension
+L/K as a polmod with polmod coefficients.</p>
+<p>The library syntax is <b>rnfelementabstorel</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfeltdown"></a>
+<h4><b>rnfeltdown</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative number
+field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being an element of
+L expressed as a polynomial or polmod with polmod coefficients, computes
+x as an element of K as a polmod, assuming x is in K (otherwise an
+error will occur). If x is given on the relative integral basis, apply
+<font color=#a3682a><tt>
+rnfbasistoalg</tt></font> first, otherwise PARI will believe you are dealing with a
+vector.</p>
+<p>The library syntax is <b>rnfelementdown</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfeltreltoabs"></a>
+<h4><b>rnfeltreltoabs</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative
+number field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being an
+element of L expressed as a polynomial or polmod with polmod
+coefficients, computes x as an element of the absolute extension L/<b>Q</b> as
+a polynomial modulo the absolute equation <font color=#a3682a><tt>
+<u>rnf</u>.pol</tt></font>. If x is
+given on the relative integral basis, apply <font color=#a3682a><tt>
+rnfbasistoalg</tt></font> first,
+otherwise PARI will believe you are dealing with a vector.</p>
+<p>The library syntax is <b>rnfelementreltoabs</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfeltup"></a>
+<h4><b>rnfeltup</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative number
+field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being an element of
+K expressed as a polynomial or polmod, computes x as an element of the
+absolute extension L/<b>Q</b> as a polynomial modulo the absolute equation
+<font color=#a3682a><tt>
+<u>rnf</u>.pol</tt></font>. If x is given on the integral basis of K, apply
+<font color=#a3682a><tt>
+nfbasistoalg</tt></font> first, otherwise PARI will believe you are dealing with a
+vector.</p>
+<p>The library syntax is <b>rnfelementup</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfequation"></a>
+<h4><b>rnfequation</b>(<u>nf</u>,<u>pol</u>,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> given a number field
+<u>nf</u> as output by <font color=#a3682a><tt>
+nfinit</tt></font> (or simply a polynomial) and a
+polynomial <u>pol</u> with coefficients in <u>nf</u> defining a relative
+extension L of <u>nf</u>, computes the absolute equation of L over
+<b>Q</b>.</p>
+<p>  If <u>flag</u> is non-zero, outputs a 3-component row vector [z,a,k], where
+z is the absolute equation of L over <b>Q</b>, as in the default behaviour,
+a expresses as an element of L a root <font color=#FF0000>alpha</font> of the polynomial
+defining the base field <u>nf</u>, and k is a small integer such that
+<font color=#FF0000>theta</font> = <font color=#FF0000>beta</font>+k<font color=#FF0000>alpha</font> where <font color=#FF0000>theta</font> is a root of z and <font color=#FF0000>beta</font> a root
+of <u>pol</u>.</p>
+<p>  The main variable of <u>nf</u> <u>must</u> be of lower priority than that
+of <u>pol</u> (see Section [<b>Label: se:priority</b>]). Note that for efficiency, this does
+not check whether the relative equation is irreducible over <u>nf</u>, but
+only if it is squarefree. If it is reducible but squarefree, the result will
+be the absolute equation of the &eacute;tale algebra defined by <u>pol</u>. If
+<u>pol</u> is not squarefree, an error message will be issued.</p>
+<p>The library syntax is <b>rnfequation0</b>(<u>nf</u>,<u>pol</u>,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfhnfbasis"></a>
+<h4><b>rnfhnfbasis</b>(<u>bnf</u>,x)</h4>
+<p></p>
+<p> given <u>bnf</u> as output by
+<font color=#a3682a><tt>
+bnfinit</tt></font>, and either a polynomial x with coefficients in <u>bnf</u>
+defining a relative extension L of <u>bnf</u>, or a pseudo-basis x of
+such an extension, gives either a true <u>bnf</u>-basis of L in upper
+triangular Hermite normal form, if it exists, and returns 0 otherwise.</p>
+<p>The library syntax is <b>rnfhnfbasis</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfidealabstorel"></a>
+<h4><b>rnfidealabstorel</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> let <u>rnf</u> be a relative
+number field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font>, and x an ideal of
+the absolute extension L/<b>Q</b> given by a <b>Z</b>-basis of elements of L.
+Returns the relative pseudo-matrix in HNF giving the ideal x considered as
+an ideal of the relative extension L/K.</p>
+<p>If x is an ideal in HNF form, associated to an <u>nf</u> structure, for
+instance as output by <font color=#a3682a><tt>
+idealhnf</tt></font>(<u>nf</u>,...),
+use <font color=#a3682a><tt>
+rnfidealabstorel(rnf, nf.zk * x)</tt></font> to convert it to a relative ideal.</p>
+<p>The library syntax is <b>rnfidealabstorel</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfidealdown"></a>
+<h4><b>rnfidealdown</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> let <u>rnf</u> be a relative number
+field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font>, and x an ideal of
+L, given either in relative form or by a <b>Z</b>-basis of elements of L
+(see Section [<b>Label: se:rnfidealabstorel</b>]), returns the ideal of K below x,
+i.e.the intersection of x with K.</p>
+<p>The library syntax is <b>rnfidealdown</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfidealhnf"></a>
+<h4><b>rnfidealhnf</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative number
+field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being a relative
+ideal (which can be, as in the absolute case, of many different types,
+including of course elements), computes the HNF pseudo-matrix associated to
+x, viewed as a <b>Z</b>_K-module.</p>
+<p>The library syntax is <b>rnfidealhermite</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfidealmul"></a>
+<h4><b>rnfidealmul</b>(<u>rnf</u>,x,y)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative number
+field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x and y being ideals
+of the relative extension L/K given by pseudo-matrices, outputs the ideal
+product, again as a relative ideal.</p>
+<p>The library syntax is <b>rnfidealmul</b>(<u>rnf</u>,x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfidealnormabs"></a>
+<h4><b>rnfidealnormabs</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative
+number field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being a
+relative ideal (which can be, as in the absolute case, of many different
+types, including of course elements), computes the norm of the ideal x
+considered as an ideal of the absolute extension L/<b>Q</b>. This is identical to
+<font color=#a3682a><tt>
+idealnorm(rnfidealnormrel(<u>rnf</u>,x))</tt></font>, but faster.</p>
+<p>The library syntax is <b>rnfidealnormabs</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfidealnormrel"></a>
+<h4><b>rnfidealnormrel</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative
+number field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being a
+relative ideal (which can be, as in the absolute case, of many different
+types, including of course elements), computes the relative norm of x as a
+ideal of K in HNF.</p>
+<p>The library syntax is <b>rnfidealnormrel</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfidealreltoabs"></a>
+<h4><b>rnfidealreltoabs</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative
+number field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being a
+relative ideal, gives the ideal x<b>Z</b>_L as an absolute ideal of L/<b>Q</b>, in
+the form of a <b>Z</b>-basis, given by a vector of polynomials (modulo
+<font color=#a3682a><tt>
+rnf.pol</tt></font>).
+The following routine might be useful:</p>
+<p><pre><font color=#a3682a><tt>    \\ return y = rnfidealreltoabs(rnf,...) as an ideal in HNF form
+&nbsp;    \\ associated to nf = nfinit( rnf.pol );
+&nbsp;    idealgentoHNF(nf, y) = mathnf( Mat( nfalgtobasis(nf, y) ) );
+</tt></font></pre></p>
+<p>
+The library syntax is <b>rnfidealreltoabs</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfidealtwoelt"></a>
+<h4><b>rnfidealtwoelt</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative
+number field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being an
+ideal of the relative extension L/K given by a pseudo-matrix, gives a
+vector of two generators of x over <b>Z</b>_L expressed as polmods with polmod
+coefficients.</p>
+<p>The library syntax is <b>rnfidealtwoelement</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfidealup"></a>
+<h4><b>rnfidealup</b>(<u>rnf</u>,x)</h4>
+<p></p>
+<p> <u>rnf</u> being a relative number
+field extension L/K as output by <font color=#a3682a><tt>
+rnfinit</tt></font> and x being an ideal of
+K, gives the ideal x<b>Z</b>_L as an absolute ideal of L/<b>Q</b>, in the form of a
+<b>Z</b>-basis, given by a vector of polynomials (modulo <font color=#a3682a><tt>
+rnf.pol</tt></font>).
+The following routine might be useful:</p>
+<p><pre><font color=#a3682a><tt>    \\ return y = rnfidealup(rnf,...) as an ideal in HNF form
+&nbsp;    \\ associated to nf = nfinit( rnf.pol );
+&nbsp;    idealgentoHNF(nf, y) = mathnf( Mat( nfalgtobasis(nf, y) ) );
+</tt></font></pre></p>
+<p>
+The library syntax is <b>rnfidealup</b>(<u>rnf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfinit"></a>
+<h4><b>rnfinit</b>(<u>nf</u>,<u>pol</u>)</h4>
+<p></p>
+<p> <u>nf</u> being a number field in
+<font color=#a3682a><tt>
+nfinit</tt></font>
+format considered as base field, and <u>pol</u> a polynomial defining a relative
+extension over <u>nf</u>, this computes all the necessary data to work in the
+relative extension. The main variable of <u>pol</u> must be of higher priority
+(see Section [<b>Label: se:priority</b>]) than that of <u>nf</u>, and the coefficients of
+<u>pol</u> must be in <u>nf</u>.</p>
+<p>The result is a row vector, whose components are technical. In the following
+description, we let K be the base field defined by <u>nf</u>, m the
+degree of the base field, n the relative degree, L the large field (of
+relative degree n or absolute degree nm), r_1 and r_2 the number of
+real and complex places of K.</p>
+<p><u>rnf</u>[1] contains the relative polynomial <u>pol</u>.</p>
+<p><u>rnf</u>[2] is currently unused.</p>
+<p><u>rnf</u>[3] is a two-component row vector [<b>d</b>(L/K),s] where
+<b>d</b>(L/K) is the relative ideal discriminant of L/K and s is the
+discriminant of L/K viewed as an element of K^*/(K^*)^2, in other words
+it is the output of <font color=#a3682a><tt>
+rnfdisc</tt></font>.</p>
+<p><u>rnf</u>[4] is the ideal index <b>f</b>, i.e.such that
+d(pol)<b>Z</b>_K = <b>f</b>^2<b>d</b>(L/K).</p>
+<p><u>rnf</u>[5] is currently unused.</p>
+<p><u>rnf</u>[6] is currently unused.</p>
+<p><u>rnf</u>[7] is a two-component row vector, where the first component is
+the relative integral pseudo basis expressed as polynomials (in the variable of
+pol) with polmod coefficients in <u>nf</u>, and the second component is the
+ideal list of the pseudobasis in HNF.</p>
+<p><u>rnf</u>[8] is the inverse matrix of the integral basis matrix, with
+coefficients polmods in <u>nf</u>.</p>
+<p><u>rnf</u>[9] is currently unused.</p>
+<p><u>rnf</u>[10] is <u>nf</u>.</p>
+<p><u>rnf</u>[11] is the output of <font color=#a3682a><tt>
+rnfequation(nf, pol, 1)</tt></font>. Namely, a
+vector <u>vabs</u> with 3 entries describing the <u>absolute</u> extension
+L/<b>Q</b>. <u>vabs</u>[1] is an absolute equation, more conveniently obtained
+as <font color=#a3682a><tt>
+rnf.pol</tt></font>. <u>vabs</u>[2] expresses the generator <font color=#FF0000>alpha</font> of the
+number field <u>nf</u> as a polynomial modulo the absolute equation
+<u>vabs</u>[1]. <u>vabs</u>[3] is a small integer k such that, if <font color=#FF0000>beta</font>
+is an abstract root of <u>pol</u> and <font color=#FF0000>alpha</font> the generator of <u>nf</u>,
+the generator whose root is <u>vabs</u> will be
+<font color=#FF0000>beta</font> + k <font color=#FF0000>alpha</font>. Note that one must be very careful if k != 0 when
+dealing simultaneously with absolute and relative quantities since the
+generator chosen for the absolute extension is not the same as for the
+relative one. If this happens, one can of course go on working, but we
+strongly advise to change the relative polynomial so that its root will be
+<font color=#FF0000>beta</font> + k <font color=#FF0000>alpha</font>. Typically, the GP instruction would be</p>
+<p><font color=#a3682a><tt>
+pol = subst(pol, x, x - k*Mod(y,<u>nf</u>.pol))</tt></font></p>
+<p><u>rnf</u>[12] is by default unused and set equal to 0. This
+field is used to store further information about the field as it becomes
+available (which is rarely needed, hence would be too expensive to compute
+during the initial <font color=#a3682a><tt>
+rnfinit</tt></font> call).</p>
+<p>The library syntax is <b>rnfinitalg</b>(<u>nf</u>,<u>pol</u>,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfisfree"></a>
+<h4><b>rnfisfree</b>(<u>bnf</u>,x)</h4>
+<p></p>
+<p> given <u>bnf</u> as output by
+<font color=#a3682a><tt>
+bnfinit</tt></font>, and either a polynomial x with coefficients in <u>bnf</u>
+defining a relative extension L of <u>bnf</u>, or a pseudo-basis x of
+such an extension, returns true (1) if L/<u>bnf</u> is free, false (0) if
+not.</p>
+<p>The library syntax is <b>rnfisfree</b>(<u>bnf</u>,x), and the result is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfisnorm"></a>
+<h4><b>rnfisnorm</b>(T,a,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> similar to
+<font color=#a3682a><tt>
+bnfisnorm</tt></font> but in the relative case. T is as output by
+<font color=#a3682a><tt>
+rnfisnorminit</tt></font> applied to the extension L/K. This tries to decide
+whether the element a in K is the norm of some x in the extension
+L/K.</p>
+<p>The output is a vector [x,q], where a = \Norm(x)*q. The
+algorithm looks for a solution x which is an S-integer, with S a list
+of places of K containing at least the ramified primes, the generators of
+the class group of L, as well as those primes dividing a. If L/K is
+Galois, then this is enough; otherwise, <u>flag</u> is used to add more primes to
+S: all the places above the primes p <font color=#a3682a><tt>
+&#60;=</tt></font> <u>flag</u> (resp.p|<u>flag</u>) if <u>flag</u> &#62; 0
+(resp.<u>flag</u> &#60; 0).</p>
+<p>The answer is guaranteed (i.e.a is a norm iff q = 1) if the field is
+Galois, or, under GRH, if S contains all primes less than
+12log^2|\disc(M)|, where M is the normal
+closure of L/K.</p>
+<p>If <font color=#a3682a><tt>
+rnfisnorminit</tt></font> has determined (or was told) that L/K is
+Galois, and <u>flag</u> != 0, a Warning is issued (so that you can set
+<u>flag</u> = 1 to check whether L/K is known to be Galois, according to T).
+Example:</p>
+<p>
+<pre><font color=#a3682a><tt>bnf = bnfinit(y^3 + y^2 - 2*y - 1);
+&nbsp;p = x^2 + Mod(y^2 + 2*y + 1, bnf.pol);
+&nbsp;T = rnfisnorminit(bnf, p);
+&nbsp;rnfisnorm(T, 17)
+</tt></font></pre></p>
+<p>checks whether 17 is a norm in the Galois extension <b>Q</b>(<font color=#FF0000>beta</font>) /
+<b>Q</b>(<font color=#FF0000>alpha</font>), where <font color=#FF0000>alpha</font>^3 + <font color=#FF0000>alpha</font>^2 - 2<font color=#FF0000>alpha</font> - 1 = 0 and <font color=#FF0000>beta</font>^2 +
+<font color=#FF0000>alpha</font>^2 + 2<font color=#FF0000>alpha</font> + 1 = 0 (it is).</p>
+<p>The library syntax is <b>rnfisnorm</b>(<u>T</u>,x,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfisnorminit"></a>
+<h4><b>rnfisnorminit</b>(<u>pol</u>,<u>polrel</u>,{<u>flag</u> = 2})</h4>
+<p></p>
+<p>
+let K be defined by a root of <u>pol</u>, and L/K the extension defined by
+the polynomial <u>polrel</u>. As usual, <u>pol</u> can in fact be an <u>nf</u>,
+or <u>bnf</u>, etc; if <u>pol</u> has degree 1 (the base field is <b>Q</b>),
+polrel is also allowed to be an <u>nf</u>, etc. Computes technical data needed
+by <font color=#a3682a><tt>
+rnfisnorm</tt></font> to solve norm equations Nx = a, for x in L, and a
+in K.</p>
+<p>If <u>flag</u> = 0, do not care whether L/K is Galois or not.</p>
+<p>If <u>flag</u> = 1, L/K is assumed to be Galois (unchecked), which speeds up
+<font color=#a3682a><tt>
+rnfisnorm</tt></font>.</p>
+<p>If <u>flag</u> = 2, let the routine determine whether L/K is Galois.</p>
+<p>The library syntax is <b>rnfisnorminit</b>(<u>pol</u>,<u>polrel</u>,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfkummer"></a>
+<h4><b>rnfkummer</b>(<u>bnr</u>,{<u>subgroup</u>},{deg = 0})</h4>
+<p></p>
+<p> <u>bnr</u>
+being as output by <font color=#a3682a><tt>
+bnrinit</tt></font>, finds a relative equation for the
+class field corresponding to the module in <u>bnr</u> and the given
+congruence subgroup (the full ray class field if <u>subgroup</u> is omitted).
+If <u>deg</u> is positive, outputs the list of all relative equations of
+degree <u>deg</u> contained in the ray class field defined by <u>bnr</u>, with
+the <u>same</u> conductor as (<u>bnr</u>, <u>subgroup</u>).</p>
+<p><b>Warning:</b> this routine only works for subgroups of prime index. It
+uses Kummer theory, adjoining necessary roots of unity (it needs to compute a
+tough <font color=#a3682a><tt>
+bnfinit</tt></font> here), and finds a generator via Hecke's characterization
+of ramification in Kummer extensions of prime degree. If your extension does
+not have prime degree, for the time being, you have to split it by hand as a
+tower / compositum of such extensions.</p>
+<p>The library syntax is <b>rnfkummer</b>(<u>bnr</u>,<u>subgroup</u>,<u>deg</u>,<u>prec</u>), where
+<u>deg</u> is a <font color=#a3682a><tt>
+long</tt></font> and an omitted <u>subgroup</u> is coded as
+<font color=#a3682a><tt>
+NULL</tt></font></p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnflllgram"></a>
+<h4><b>rnflllgram</b>(<u>nf</u>,<u>pol</u>,<u>order</u>)</h4>
+<p></p>
+<p> given a polynomial
+<u>pol</u> with coefficients in <u>nf</u> defining a relative extension L and
+a suborder <u>order</u> of L (of maximal rank), as output by
+<font color=#a3682a><tt>
+rnfpseudobasis</tt></font>(<u>nf</u>,<u>pol</u>) or similar, gives
+[[<u>neworder</u>],U], where <u>neworder</u> is a reduced order and U is
+the unimodular transformation matrix.</p>
+<p>The library syntax is <b>rnflllgram</b>(<u>nf</u>,<u>pol</u>,<u>order</u>,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfnormgroup"></a>
+<h4><b>rnfnormgroup</b>(<u>bnr</u>,<u>pol</u>)</h4>
+<p></p>
+<p> <u>bnr</u> being a big ray
+class field as output by <font color=#a3682a><tt>
+bnrinit</tt></font> and <u>pol</u> a relative polynomial
+defining an Abelian extension, computes the norm group (alias Artin
+or Takagi group) corresponding to the Abelian extension of <u>bnf</u> = bnr[1]
+defined by <u>pol</u>, where the module corresponding to <u>bnr</u> is assumed
+to be a multiple of the conductor (i.e.<u>pol</u> defines a subextension of
+bnr). The result is the HNF defining the norm group on the given generators
+of <u>bnr</u>[5][3]. Note that neither the fact that <u>pol</u> defines an
+Abelian extension nor the fact that the module is a multiple of the conductor
+is checked. The result is undefined if the assumption is not correct.</p>
+<p>The library syntax is <b>rnfnormgroup</b>(<u>bnr</u>,<u>pol</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfpolred"></a>
+<h4><b>rnfpolred</b>(<u>nf</u>,<u>pol</u>)</h4>
+<p></p>
+<p> relative version of <font color=#a3682a><tt>
+polred</tt></font>.
+Given a monic polynomial <u>pol</u> with coefficients in <u>nf</u>, finds a
+list of relative polynomials defining some subfields, hopefully simpler and
+containing the original field. In the present version <b>2.2.13</b>, this is slower
+and less efficient than <font color=#a3682a><tt>
+rnfpolredabs</tt></font>.</p>
+<p>The library syntax is <b>rnfpolred</b>(<u>nf</u>,<u>pol</u>,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfpolredabs"></a>
+<h4><b>rnfpolredabs</b>(<u>nf</u>,<u>pol</u>,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> relative version of
+<font color=#a3682a><tt>
+polredabs</tt></font>. Given a monic polynomial <u>pol</u> with coefficients in
+<u>nf</u>, finds a simpler relative polynomial defining the same field. The
+binary digits of <u>flag</u> mean</p>
+<p>1: returns [P,a] where P is the default output and a is an
+element expressed on a root of P whose characteristic polynomial is
+<u>pol</u></p>
+<p>2: returns an absolute polynomial (same as
+rnfequation(<u>nf</u>,rnfpolredabs(<u>nf</u>,<u>pol</u>))
+but faster).</p>
+<p>16: possibly use a suborder of the maximal order. This is slower than the
+default when the relative discriminant is smooth, and much faster otherwise.
+See Section [<b>Label: se:polredabs</b>].</p>
+<p><b>Remark.</b> In the present implementation, this is both faster and
+much more efficient than <font color=#a3682a><tt>
+rnfpolred</tt></font>, the difference being more
+dramatic than in the absolute case. This is because the implementation of
+<font color=#a3682a><tt>
+rnfpolred</tt></font> is based on (a partial implementation of) an incomplete
+reduction theory of lattices over number fields, the function
+<font color=#a3682a><tt>
+rnflllgram</tt></font>, which deserves to be improved.</p>
+<p>The library syntax is <b>rnfpolredabs</b>(<u>nf</u>,<u>pol</u>,<u>flag</u>,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfpseudobasis"></a>
+<h4><b>rnfpseudobasis</b>(<u>nf</u>,<u>pol</u>)</h4>
+<p></p>
+<p> given a number field
+<u>nf</u> as output by <font color=#a3682a><tt>
+nfinit</tt></font> and a polynomial <u>pol</u> with
+coefficients in <u>nf</u> defining a relative extension L of <u>nf</u>,
+computes a pseudo-basis (A,I) for the maximal order <b>Z</b>_L viewed as a
+<b>Z</b>_K-module, and the relative discriminant of L. This is output as a
+four-element row vector [A,I,D,d], where D is the relative ideal
+discriminant and d is the relative discriminant considered as an element of
+<u>nf</u>^*/{<u>nf</u>^*}^2.</p>
+<p>The library syntax is <b>rnfpseudobasis</b>(<u>nf</u>,<u>pol</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="rnfsteinitz"></a>
+<h4><b>rnfsteinitz</b>(<u>nf</u>,x)</h4>
+<p></p>
+<p> given a number field <u>nf</u> as
+output by <font color=#a3682a><tt>
+nfinit</tt></font> and either a polynomial x with coefficients in
+<u>nf</u> defining a relative extension L of <u>nf</u>, or a pseudo-basis
+x of such an extension as output for example by <font color=#a3682a><tt>
+rnfpseudobasis</tt></font>,
+computes another pseudo-basis (A,I) (not in HNF in general) such that all
+the ideals of I except perhaps the last one are equal to the ring of
+integers of <u>nf</u>, and outputs the four-component row vector [A,I,D,d]
+as in <font color=#a3682a><tt>
+rnfpseudobasis</tt></font>. The name of this function comes from the fact
+that the ideal class of the last ideal of I, which is well defined, is the
+Steinitz class of the <b>Z</b>_K-module <b>Z</b>_L (its image in SK_0(<b>Z</b>_K)).</p>
+<p>The library syntax is <b>rnfsteinitz</b>(<u>nf</u>,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="subgrouplist"></a>
+<h4><b>subgrouplist</b>(<u>bnr</u>,{<u>bound</u>},{<u>flag</u> = 0})</h4>
+<p></p>
+<p>
+<u>bnr</u> being as output by <font color=#a3682a><tt>
+bnrinit</tt></font> or a list of cyclic components
+of a finite Abelian group G, outputs the list of subgroups of G. Subgroups
+are given as HNF left divisors of the SNF matrix corresponding to G.</p>
+<p><b>Warning:</b> the present implementation cannot treat a group G
+where any cyclic factor has more than 2^{31}, resp.2^{63} elements on a
+32-bit, resp.64-bit architecture. <font color=#a3682a><tt>
+forsubgroup</tt></font> is a bit more
+general and can handle G if all p-Sylow subgroups of G satisfy the
+condition above.</p>
+<p>If <u>flag</u> = 0 (default) and <u>bnr</u> is as output by <font color=#a3682a><tt>
+bnrinit</tt></font>, gives
+only the subgroups whose modulus is the conductor. Otherwise, the modulus is
+not taken into account.</p>
+<p>If <u>bound</u> is present, and is a positive integer, restrict the output to
+subgroups of index less than <u>bound</u>. If <u>bound</u> is a vector
+containing a single positive integer B, then only subgroups of index
+exactly equal to B are computed. For instance</p>
+<p><pre><font color=#a3682a><tt>? subgrouplist([6,2])
+&nbsp;%1 = [[6, 0; 0, 2], [2, 0; 0, 2], [6, 3; 0, 1], [2, 1; 0, 1], [3, 0; 0, 2],
+&nbsp;      [1, 0; 0, 2], [6, 0; 0, 1], [2, 0; 0, 1], [3, 0; 0, 1], [1, 0; 0, 1]]
+&nbsp;? subgrouplist([6,2],3)    \\</tt></font> index less than 3<font color=#a3682a><tt></p>
+<p>&nbsp;%2 = [[2, 1; 0, 1], [1, 0; 0, 2], [2, 0; 0, 1], [3, 0; 0, 1], [1, 0; 0, 1]]
+&nbsp;? subgrouplist([6,2],[3])  \\</tt></font> index 3<font color=#a3682a><tt></p>
+<p>&nbsp;%3 = [[3, 0; 0, 1]]
+&nbsp;? bnr = bnrinit(bnfinit(x), [120,[1]], 1);
+&nbsp;? L = subgrouplist(bnr, [8]);
+</tt></font></pre></p>
+<p>In the last example, L corresponds to the 24 subfields of
+<b>Q</b>(<font color=#FF0000>zeta</font>_{120}), of degree 8 and conductor 120 oo  (by setting <u>flag</u>,
+we see there are a total of 43 subgroups of degree 8).</p>
+<p><pre><font color=#a3682a><tt>? vector(#L, i, galoissubcyclo(bnr, L[i]))
+</tt></font></pre></p>
+<p>will produce their equations. (For a general base field, you would
+have to rely on <font color=#a3682a><tt>
+bnrstark</tt></font>, or <font color=#a3682a><tt>
+rnfkummer</tt></font>.)</p>
+<p>The library syntax is <b>subgrouplist0</b>(<u>bnr</u>,<u>bound</u>,<u>flag</u>), where <u>flag</u>
+is a long integer, and an omitted <u>bound</u> is coded by <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="zetak"></a>
+<h4><b>zetak</b>(<u>znf</u>,x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> <u>znf</u> being a number
+field initialized by <font color=#a3682a><tt>
+zetakinit</tt></font> (<u>not</u> by <font color=#a3682a><tt>
+nfinit</tt></font>),
+computes the value of the Dedekind zeta function of the number
+field at the complex number x. If <u>flag</u> = 1 computes Dedekind <font color=#FF0000>Lambda</font>
+function instead (i.e.the product of the Dedekind zeta function by its gamma
+and exponential factors).</p>
+<p><b>CAVEAT.</b> This implementation is not satisfactory and must be
+rewritten. In particular</p>
+<p><b>*</b> The accuracy of the result depends in an essential way on the
+accuracy of both the <font color=#a3682a><tt>
+zetakinit</tt></font> program and the current accuracy.
+Be wary in particular that x of large imaginary part or, on the
+contrary, very close to an ordinary integer will suffer from precision
+loss, yielding fewer significant digits than expected. Computing with 28
+eight digits of relative accuracy, we have</p>
+<p>
+<pre><font color=#a3682a><tt>? zeta(3)
+&nbsp;    %1 = 1.202056903159594285399738161
+&nbsp;    ? zeta(3-1e-20)
+&nbsp;    %2 = 1.202056903159594285401719424
+&nbsp;    ? zetak(zetakinit(x), 3-1e-20)
+&nbsp;    %3 = 1.2020569031595952919  \\ 5 digits are wrong
+&nbsp;    ? zetak(zetakinit(x), 3-1e-28)
+&nbsp;    %4 = -25.33411749           \\ junk
+</tt></font></pre></p>
+<p>
+<b>*</b> As the precision increases, results become unexpectedly
+completely wrong:</p>
+<p><pre><font color=#a3682a><tt>    ? \p100
+&nbsp;    ? zetak(zetakinit(x^2-5), -1) - 1/30 
+&nbsp;    %1 = 7.26691813 E-108    \\ perfect
+&nbsp;    ? \p150
+&nbsp;    ? zetak(zetakinit(x^2-5), -1) - 1/30 
+&nbsp;    %2 = -2.486113578 E-156  \\ perfect
+&nbsp;    ? \p200
+&nbsp;    ? zetak(zetakinit(x^2-5), -1) - 1/30
+&nbsp;    %3 = 4.47... E-75        \\ more than half of the digits are wrong
+&nbsp;    ? \p250
+&nbsp;    ? zetak(zetakinit(x^2-5), -1) - 1/30
+&nbsp;    %4 = 1.6 E43             \\ junk
+</tt></font></pre></p>
+<p>
+The library syntax is <b>glambdak</b>(<u>znf</u>,x,<u>prec</u>) or
+<font color=#a3682a><tt>
+ <b>gzetak</b>(<u>znf</u>,x,<u>prec</u>)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="zetakinit"></a>
+<h4><b>zetakinit</b>(x)</h4>
+<p></p>
+<p> computes a number of initialization data
+concerning the number field defined by the polynomial x so as to be able
+to compute the Dedekind zeta and lambda functions (respectively
+<font color=#a3682a><tt>
+zetak</tt></font>(x) and <font color=#a3682a><tt>
+zetak</tt></font>(x,1)). This function calls in particular
+the <font color=#a3682a><tt>
+bnfinit</tt></font> program. The result is a 9-component vector v whose
+components are very technical and cannot really be used by the user except
+through the <font color=#a3682a><tt>
+zetak</tt></font> function. The only component which can be used if
+it has not been computed already is v[1][4] which is the result of the
+<font color=#a3682a><tt>
+bnfinit</tt></font> call.</p>
+<p>This function is very inefficient and should be rewritten. It needs to
+computes millions of coefficients of the corresponding Dirichlet series if
+the precision is big. Unless the discriminant is small it will not be able
+to handle more than 9 digits of relative precision. For instance,
+<font color=#a3682a><tt>
+zetakinit(x^8 - 2)</tt></font> needs 440MB of memory at default precision.</p>
+<p>The library syntax is <b>initzeta</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+
+
+</BODY>
+</HTML>

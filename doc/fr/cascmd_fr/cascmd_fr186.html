@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Reste chinois pour des listes d’entiers : chrem</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr185.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr187.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc252">6.7.27</A>  Reste chinois pour des listes d’entiers : <TT>chrem</TT></H3><P><A NAME="@default338"></A>
+<TT>chrem</TT> a comme argument deux listes de même longueur.<BR>
+<TT>chrem</TT> renvoie une liste de deux entiers.<BR>
+Par exemple, <TT>chrem([a,b,c],lcm(p,q,r))</TT> désigne une liste formée de 
+deux entiers :<BR>
+le premier entier est un nombre <TT>x</TT> vérifiant :<BR>
+ <TT>x=a mod p</TT> et <TT>x=b mod q</TT> et <TT>x=c mod r</TT>.<BR>
+Il existe toujours une solution 
+<TT>x</TT> si <TT>p</TT> et <TT>q</TT> sont premiers entre eux, et toutes les solutions
+sont congrues modulo <TT>p*q*r</TT><BR>
+<SPAN STYLE="font-variant:small-caps">Attention</SPAN> à l’ordre des paramètres, en effet on a :<BR>
+<TT>chrem([a,b],[p,q])=ichrem([a,p],[b,q])=<BR>
+ichinrem([a,p],[b,q])</TT><BR>
+<B>Exemples</B> :<BR>
+Trouver les solutions de :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>⎧<BR>
+⎨<BR>
+⎩</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>9 (</TT><TT>mod</TT><TT> 13) </TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>chrem([3,9],[5,13])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-17,65] </TT></DIV><P>
+ce qui veut dire que <TT>x=-17 (mod 65)</TT>
+Trouver les solutions de :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>4 (</TT><TT>mod</TT><TT> 6) </TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>x</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>1 (</TT><TT>mod</TT><TT> 9)</TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>chrem([3,4,1],[5,6,9])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[28,90] </TT></DIV><P>
+ce qui veut dire que <TT>x=28 (mod 90)</TT><BR>
+<B>Remarque</B><BR>
+<TT>chrem</TT> peut aussi être utiliser pour trouver les 
+coefficients de polynômes qui sont connus modulo plusieurs entiers, par 
+exemple trouver
+<I>ax</I>+<I>b</I> modulo 315=5 × 7 × 9 tel que :</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>a</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>a</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>4 (</TT><TT>mod</TT><TT> 7) </TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>a</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>1 (</TT><TT>mod</TT><TT> 9) </TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">,
+  
+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>b</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>1 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>b</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>2 (</TT><TT>mod</TT><TT> 7) </TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>b</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 9) </TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>chrem([3x+1,4x+2,x+3],[5,7,9])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-17x+156),315] </TT></DIV><P>
+ce qui veut dire que <TT>a=-17 (mod 315)</TT> et que <TT>b=156 (mod 315)</TT>.</P><HR>
+<A HREF="cascmd_fr185.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr187.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

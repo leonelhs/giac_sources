@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Surface 3-d en paramétrique : plotparam paramplot DrawParm courbe_parametrique</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr100.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr102.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc139">3.16.2</A>  Surface 3-d en paramétrique : <TT>plotparam paramplot DrawParm courbe_parametrique</TT></H3><P><A NAME="@default154"></A><A NAME="@default155"></A><A NAME="@default156"></A><A NAME="@default157"></A>
+<TT>plotparam</TT> a deux arguments principaux et éventuellement
+les sauts d’échantillonnage des variables avec <TT>ustep=</TT> et <TT>vstep=</TT>, 
+c’est à dire le pas en <I>u</I> et en <I>v</I> que l’on choisi pour le graphe.<BR>
+Les deux arguments principaux de <TT>plotparam</TT> sont : une liste de trois 
+expressions de deux variables et la liste des deux variables.<BR>
+<TT>plotparam([f(u,v),g(u,v),h(u,v)],[u,v])</TT> trace la surface définie par le
+premier argument soit <I>x</I>=<I>f</I>(<I>u</I>,<I>v</I>),<I>y</I>=<I>g</I>(<I>u</I>,<I>v</I>),<I>z</I>=<I>h</I>(<I>u</I>,<I>v</I>)).<BR>
+On peut faire tourner ce graphique selon 
+l’axe des <TT>x</TT>, l’axe des <TT>y</TT> ou l’axe des <TT>z</TT>. Pour cela, il faut 
+cliquer avec la souris dans la fenêtre graphique en dehors du 
+parallélépipéde servant à la représentation, puis faire bouger la 
+souris (sans relacher son bouton) ou utiliser les touches <TT>x</TT>, <TT>X</TT>, 
+<TT>y</TT>, <TT>Y</TT>, <TT>z</TT> et <TT>Z</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>plotparam([v*cos(u),v*sin(u),v],[u,v]) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le cône </TT><TT><I>x</I>=<I>v</I>*</TT><TT>cos</TT><TT>(<I>u</I>),<I>y</I>=<I>v</I>*</TT><TT>sin</TT><TT>(<I>u</I>),<I>z</I>=<I>v</I></TT></DIV><P>
+Pour n’avoir qu’une portion de surface on peut indiquer l’intervalle de 
+variation dans le deuxième et le troisème argument.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3]) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Une portion du cône </TT><TT><I>x</I>=<I>v</I>*</TT><TT>cos</TT><TT>(<I>u</I>),<I>y</I>=<I>v</I>*</TT><TT>sin</TT><TT>(<I>u</I>),<I>z</I>=<I>v</I></TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3], ustep=0.5,vstep=0.5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Une portion du cône </TT><TT><I>x</I>=<I>v</I>*</TT><TT>cos</TT><TT>(<I>u</I>),<I>y</I>=<I>v</I>*</TT><TT>sin</TT><TT>(<I>u</I>),<I>z</I>=<I>v</I></TT></DIV><P>
+<B>Remarque</B><BR>
+ Si vous voulez l’impression ou la traduction en Latex, il faut utiliser :<BR>
+<TT>M</TT><TT>▸</TT><TT>Exporter/Imprimer</TT><TT>▸</TT><TT>Print(with Latex)</TT>. 
+</P><HR>
+<A HREF="cascmd_fr100.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr102.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Réecriture d’une expression avec différentes options : convert convertir =></TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr333.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr335.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc416">6.23.26</A>  Réecriture d’une expression avec différentes options : <TT>convert convertir =&gt;</TT></H3><P><A NAME="@default628"></A><A NAME="@default629"></A><A NAME="@default630"></A><A NAME="@default631"></A><A NAME="@default632"></A><A NAME="@default633"></A><A NAME="@default634"></A><A NAME="@default635"></A><A NAME="@default636"></A><A NAME="@default637"></A><A NAME="@default638"></A><A NAME="@default639"></A><A NAME="@default640"></A><A NAME="@default641"></A><A NAME="@default642"></A><A NAME="@default643"></A><A NAME="sec:convert"></A><A NAME="@default644"></A><A NAME="@default645"></A><A NAME="@default646"></A><A NAME="@default647"></A>
+<TT>=&gt;</TT> est la version infixée de <TT>convert</TT>.<BR>
+<TT>convert</TT> a deux arguments une expression et une option.<BR>
+<TT>convert</TT> réecrit cette expression en fonction de l’option.<BR>
+Voici la liste des différentes options :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>’+’</TT> convertit une expression comme si on appelait directement 
+<TT>expand</TT> (à noter : il ne faut pas quoter <TT>+</TT> avec <TT>=&gt;</TT>).
+</LI><LI CLASS="li-itemize"><TT>’*’</TT> convertit une expression comme si on appelait directement 
+<TT>factor</TT>(à noter : il ne faut pas quoter <TT>*</TT> avec <TT>=&gt;</TT>).
+</LI><LI CLASS="li-itemize"><TT>sin</TT> convertit une expression comme si on appelait directement 
+<TT>trigsin</TT>.
+</LI><LI CLASS="li-itemize"><TT>cos</TT> convertit une expression comme si on appelait directement 
+<TT>trigcos</TT>.
+</LI><LI CLASS="li-itemize"><TT>sincos</TT> convertit une expression comme si on appelait directement 
+<TT>sincos</TT>.
+</LI><LI CLASS="li-itemize"><TT>trig</TT> convertit une expression comme si on appelait directement 
+<TT>sincos</TT>.
+</LI><LI CLASS="li-itemize"><TT>tan</TT> convertit une expression comme si on appelait directement 
+<TT>halftan</TT>.
+</LI><LI CLASS="li-itemize"><TT>exp</TT> convertit une expression comme si on appelait directement 
+<TT>trig2exp</TT>.
+</LI><LI CLASS="li-itemize"><TT>ln</TT> convertit une expression comme si on appelait directement 
+<TT>trig2exp</TT>.
+</LI><LI CLASS="li-itemize"><TT>expln</TT> convertit une expression comme si on appelait directement 
+<TT>trig2exp</TT>.
+</LI><LI CLASS="li-itemize"><TT>string</TT> convertit une expression en une chaîne comme si on 
+appelait directement <TT>string</TT>.
+</LI><LI CLASS="li-itemize"><TT>list</TT> convertit un polynôme en une liste(cf <A HREF="cascmd_fr376.html#sec:convertpolyl">6.26.28</A>).
+</LI><LI CLASS="li-itemize"><TT>polynom</TT> convertit un développement de Taylor ou une liste
+en un polynôme (cf <A HREF="cascmd_fr375.html#sec:convertpoly">6.26.27</A> et <A HREF="cascmd_fr377.html#sec:convertpolyp">6.26.29</A>).
+</LI><LI CLASS="li-itemize"><TT>parfrac</TT> ou <TT>partfrac</TT> ou <TT>fullparfrac</TT> ou <TT>’+’</TT>
+convertit une fraction rationnelle en éléments simples comme si on 
+utilisait directement <TT>partfrac</TT>(<A HREF="cascmd_fr419.html#sec:convertparf">6.30.9</A>). À noter : il ne 
+faut pas quoter <TT>+</TT> avec <TT>=&gt;</TT>.
+</LI><LI CLASS="li-itemize"><TT>diff</TT> calcule la dérivée d’une expression ou d’une fonction 
+comme si on utilisait directement <TT>diff</TT>.
+</LI><LI CLASS="li-itemize"><TT>int</TT> calcule l’intégrale d’une expression ou d’une fonction comme 
+si on utilisait directement <TT>int</TT>.
+</LI></UL><P>
+<TT>convert</TT> permet aussi :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+des changements d’unité, par exemple
+<TT>convert(1000_g,_kg)=1.0_kg</TT> (cf <A HREF="cascmd_fr128.html#sec:convertunit">5.1.3</A>).
+</LI><LI CLASS="li-itemize">d’écrire un réel selon une fraction continue : <A NAME="@default648"></A>
+<TT>convert(a,confrac,’fc’)</TT> écrit <TT>a</TT> selon une fraction continue 
+stockée dans <TT>fc</TT>. Ne pas oublier de quoter le dernier argument!!!
+Par exemple, <TT>convert(1.2,confrac,’fc’)=[1,5]</TT> et <TT>fc</TT> contient
+la fraction continue égale à 1.2 (cf <A HREF="cascmd_fr201.html#sec:convertdfc">6.9.7</A>). 
+</LI><LI CLASS="li-itemize">de transformer un entier en la liste de ses chiffres dans son 
+écriture dans une base, en commencant par le chiffre des unités (et 
+réciproquement) <A NAME="@default649"></A> :
+<TT>convert(n,base,b)</TT> transforme l’entier <TT>n</TT> en la liste de ses chiffres
+dans son écriture dans la base <TT>b</TT> en commencant par le chiffre des 
+unités. Par exemple, <TT>convert(123,base,10)=[3,2,1]</TT> et réciproquement
+<TT>convert(l,base,b)</TT> transforme la liste <TT>l</TT> en l’entier <TT>n</TT> qui a
+<TT>l</TT> pour liste de chiffres dans son écriture dans la base <TT>b</TT> en 
+commencant par le chiffre des unités. Par exemple, 
+<TT>convert([3,2,1],base,10)=123</TT> (cf <A HREF="index.html#sec:convertbase">6.6</A>). 
+</LI></UL><HR>
+<A HREF="cascmd_fr333.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr335.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

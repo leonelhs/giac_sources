@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Make a matrix from two matrices : semi_augment</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en370.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en372.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc415">2.42.22</A>  Make a matrix from two matrices : <TT>semi_augment</TT></H3><P><A NAME="@default627"></A>
+<TT>semi_augment</TT> concat two matrices with the same number 
+of columns.<BR>
+Input :
+</P><DIV CLASS="center"><TT>semi_augment([[3,4],[2,1],[0,1]],[[1,2],[4,5]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4],[2,1],[0,1],[1,2],[4,5]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>semi_augment([[3,4,2]],[[1,2,4]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4,2],[1,2,4]]</TT></DIV><P>
+Note the difference with <TT>concat</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>concat([[3,4,2]],[[1,2,4]]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4,2,1,2,4]]</TT></DIV><P>
+Indeed, when the two matrix <I>A</I> and <I>B</I> have the same dimension, <TT>concat</TT> 
+makes a matrix with the same number of rows than <I>A</I> and <I>B</I> by
+gluing them side by side.<BR>
+Input :
+</P><DIV CLASS="center"><TT>concat([[3,4],[2,1],[0,1]],[[1,2],[4,5]]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4],[2,1],[0,1],[1,2],[4,5]]</TT></DIV><P>
+but :
+</P><DIV CLASS="center"><TT>concat([[3,4],[2,1]],[[1,2],[4,5]]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4,1,2],[2,1,4,5]]</TT></DIV><HR>
+<A HREF="cascmd_en370.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en372.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

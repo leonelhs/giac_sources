@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Interpolation linéaire : linear_interpolate</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr703.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr705.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc824">7.2.8</A>  Interpolation linéaire : <TT>linear_interpolate</TT></H3><P><A NAME="@default1263"></A>
+É tant donné une matrice à 2 lignes donnant
+les coordonnées de points : apres avoir ordonné les abcisses de ces points,
+ces points définissent une ligne polygonale.
+On veut avoir les coordonnées des points de cette ligne pour des points
+définis de maniere régulière.<BR>
+<TT>linear_interpolate</TT> a 4 arguments, une matrice <TT>A</TT> à 2 lignes donnant
+les coordonnées des points d’une ligne polygonale, la valeur minimum des x 
+(<TT>xmin</TT>), la valeur maximum des x (<TT>xmax</TT>) et le pas (<TT>xstep</TT>).<BR>
+<TT>linear_interpolate</TT> renvoie les coordonnées des points de la ligne 
+polygonale pour x variant de <TT>xmin</TT> à <TT>xmax</TT> avec un pas ègal à 
+<TT>xstep</TT>.<BR>
+<B>Remarque</B> on doit avoir <TT>xmin</TT> et <TT>xmax</TT> dans l’intervalle 
+<TT>[min(A[0]);max(A[0])]</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>linear_interpolate([[1,2,6,9],[3,4,6,12]],1,9,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0],[3.0,4.0,4.5,5.0,5.5,6.0,8.0,10.0,12.0]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>linear_interpolate([[1,2,6,9],[3,4,6,12]],2,7,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[2.0,3.0,4.0,5.0,6.0,7.0],[4.0,4.5,5.0,5.5,6.0,8.0]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>linear_interpolate([[1,2,9,6],[3,4,6,12]],1,9,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0],[3.0,4.0,6.0,8.0,10.0,12.0,10.0,8.0,6.0]]</TT></DIV><HR>
+<A HREF="cascmd_fr703.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr705.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Faire une hypothèse sur une variable : assume supposons</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr069.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr071.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc90">2.5.7</A>  Faire une hypothèse sur une variable : <TT>assume supposons</TT></H3><P><A NAME="@default64"></A><A NAME="sec:assume"></A><A NAME="@default65"></A><A NAME="@default66"></A><A NAME="@default67"></A><A NAME="@default68"></A>
+<TT>assume</TT> ou <TT>supposons</TT> permet de faire des hypothèses sur 
+une variable.<BR>
+<TT>assume</TT> ou <TT>supposons</TT> a comme argument un nom de variable suivi d’une
+égalité ou d’une inégalité représentant l’hypothèse faite ou bien
+un nom de variable suivi d’une virgule et de son type. 
+On peut mettre plusieurs hypothèses à condition de les relier par <TT>and</TT>
+ou <TT>or</TT> selon ce que l’on veut faire ! Toutefois, il faut utiliser 
+<TT>additionally</TT> comme deuxième argument de <TT>assume</TT> pour spécifier 
+le type de la variable et une plage de valeurs pour cette variable.<BR>
+<TT>assume</TT> renvoie le nom de la variable sur laquelle on a fait les 
+hypothèses ou le type de cette variable.<BR>
+<B>Attention</B> Si on fait une autre hypothèse avec <TT>assume</TT>, l’ancienne
+hypothèse est effacée : si vous voulez rajoutez une nouvelle hypothèse il
+faut utiliser la commande <TT>additionally</TT> ou mettre <TT>additionally</TT> 
+comme deuxième argument de <TT>assume</TT>.<BR>
+<B>Remarques</B>
+Cela permet de faire de la géométrie interactive tout en faisant du calcul 
+formel. Par exemple, si on met en géométrie :<BR>
+<TT>assume(a=2);assume(b=3); A:=point(a+i*b)</TT>, la figure sera construite avec 
+les valeurs données aux variables mais les calculs seront faits avec les 
+variables symboliques <TT>a</TT> et <TT>b</TT> car pour toutes les sorties graphiques
+et seulement sur celles-ci la variable est évaluée.<BR>
+On tape
+</P><DIV CLASS="center"><TT>assume(a=2)</TT></DIV><P>
+Ou on tape
+</P><DIV CLASS="center"><TT>supposons(a=2)</TT></DIV><P>
+Ou on tape
+</P><DIV CLASS="center"><TT>assume(a=2)</TT></DIV><P>
+Ou on tape
+</P><DIV CLASS="center"><TT>supposons(a:=2)</TT></DIV><P>
+Ou on tape directement :
+</P><DIV CLASS="center"><TT>supposons(a=[2,-5,5,0.1])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>un curseur permettant de faire varier a</TT></DIV><P>
+Lorsque l’on fait varier <TT>a</TT> la commande <TT>assume(a=2)</TT> se transforme en
+<TT>supposons(a=[2.1,-5.0,5.0,0.1])</TT> et les niveaux qui suivent sont 
+évalués. Si il n’y a rien sur le niveau suivant on aura <TT>undef</TT> en 
+réponse.<BR>
+Cela signifie que <TT>a</TT> peut varier entre <TT>-5</TT> et <TT>5</TT> avec un pas 
+de <TT>0.1</TT> et que <TT>a</TT> vaut <TT>2.1</TT>.
+Si sur les deux niveaux suivants on a<BR>
+<TT>evalf(a+2)</TT> et <TT>evalf(a+3)</TT><BR>
+les réponses évolueront selon la position du curseur (curseur en <TT>2.1</TT>, 
+on aura <TT>4.1</TT> et <TT>5.1</TT> puis curseur en <TT>2.2</TT>, on aura <TT>4.2</TT> et 
+<TT>5.2</TT>). Mais si sur les deux niveaux suivants on a <TT>a+2</TT> et <TT>a+3</TT>,
+les réponses seront toujours <TT>a+2</TT> et <TT>a+3</TT>.<BR>
+On tape pour supposer que la variable formelle <TT>a </TT> est positive :
+</P><DIV CLASS="center"><TT>assume(a&gt;0)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>a</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>assume(a)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>assume[DOM_FLOAT,[line[0,+(infinity)]],[0]]</TT></DIV><P>
+cela signifie que <TT>a</TT> est une variable réelle appartenant à 
+[0;+∞ et que 0 est exclu (on a le domaine, l’intervalle et les valeurs
+exclues).<BR>
+On tape pour supposer que la variable formelle <TT>a </TT> est dans
+[2;4[∪ ]6;∞[ :
+</P><DIV CLASS="center"><TT>assume((a&gt;=2 and a&lt;4) or a&gt;6)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>a</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>assume(a)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>assume[DOM_FLOAT,[[2,4],[6,+(infinity)]],[4,6]]</TT></DIV><P>
+cela signifie que <TT>a</TT> est une variable réelle appartenant à
+[2;4]∪ [6;∞[ et que 4 et 6 sont exclus (on a le domaine, l’intervalle
+et les valeurs exclues).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>abs(1-a)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-1+a</TT></DIV><P>
+On tape pour dire que <TT>b</TT> est un entier :
+</P><DIV CLASS="center"><TT>assume(b,integer)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>DOM_INT</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>assume(b)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[DOM_INT]</TT></DIV><P>
+On tape pour dire que <TT>b</TT> est un entier supérieur strictement à 5 :
+</P><DIV CLASS="center"><TT>assume(b,integer);</TT></DIV><DIV CLASS="center"><TT>assume(b&gt;5,additionally)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>DOM_INT</TT></DIV><P>
+puis
+</P><DIV CLASS="center"><TT>b</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>assume(b)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[DOM_INT]</TT></DIV><P><B>Remarque</B><BR>
+Lorsque <TT>assume</TT> a comme argument une seule égalité et que la commande 
+est tapée dans une ligne d’entrée d’un écran de géométrie, cela met
+un petit curseur en haut et à droite de cet écran. Le nom du paramètre 
+est noté à droite du curseur. Ce curseur permet de changer la valeur du 
+paramètre et cette valeur sera notée à gauche du curseur.
+On tape par exemple :<BR>
+<TT>assume(a=[2,-10,10,0.1])</TT><BR>
+Cela signifie que tous les calculs seront faits avec <TT>a</TT> quelconque, à 
+condition que les points aient des coordonnèes exactes, mais que la figure 
+sera tracée avec <TT>a=2</TT> et que l’on pourra faire varier cette figure avec 
+le petit curseur en fonction de <TT>a</TT> de <TT>-10</TT> à <TT>+10</TT>, avec un pas
+de <TT>0.1</TT>. Si on met <TT>assume(a=[2,-5,5)</TT>, <TT>a</TT> varie de <TT>-5</TT> à 
+<TT>+5</TT> avec un pas de <TT>(5-(-5))/100</TT>), et si on met <TT>assume(a=2)</TT>,
+<TT>a</TT> varie de <TT>WX-</TT> à <TT>WX+</TT> et le pas est <TT>((WX+)-(WX-))/100</TT>.</P><P><B>Attention</B> En géométrie il faut donc travailler avec des coordonnèes
+exactes par exemple :<BR>
+<TT>A:=point(i);assume(b:=2); B:=point(b);</TT>
+puis on tape :<BR>
+<TT>longueur(A,B);</TT><BR>
+On obtient :<BR>
+<TT>sqrt((-b)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT><BR>
+Mais :<BR>
+<TT>A:=point(0.0+i);assume(b:=2); B:=point(b);</TT>
+puis on tape :<BR>
+<TT>longueur(A,B);</TT><BR>
+On obtient la valeur approchée de √<SPAN style="text-decoration:overline">(1+4)</SPAN> :<BR>
+<TT>2.2360679775</TT><BR>
+<B>Attention</B> Un paramètre défini par <TT>assume</TT> n’est évalué
+que pour les sorties graphiques, sinon il faut utiliser <TT>evalf</TT>.<BR>
+<B>Exemple</B> : On tape :<BR>
+<TT>dr(m):=ifte(m==2,droite(x=1),droite(x+(m-2)*y-1))</TT><BR>
+puis dans un niveau de géométrie, on tape :<BR>
+<TT>supposons(a=[2.0,-5,5,0.1])</TT><BR>
+<TT>dr(evalf(a))</TT><BR>
+qui renvoie <TT>droite(x=2)</TT> lorsque <TT>a:=2</TT> et <TT>droite(y=(-5*x+5))</TT>
+lorsque <TT>a:=2.2</TT> alors que<BR>
+<TT>dr(a)</TT> renvoie <TT>droite(y=(-1/(a-2)*x+1/(a-2)))</TT> quelque soit <TT>a</TT> et
+il y aura donc une erreur pour <TT>a=2</TT>....<BR>
+
+<B>Attention</B> à la différence entre <TT>assume</TT> et <TT>element</TT><BR>
+Si <TT>b:=element(0..3,1,0.1)</TT> est tapé dans une ligne d’entrée d’un 
+écran de géométrie, cela met aussi un petit curseur en haut et à droite
+de cet écran avec <TT>b=1</TT> et on pourra faire
+varier <TT>b</TT> avec le petit curseur de <TT>0</TT> à <TT>3</TT> avec un pas 
+de <TT>0.1</TT>. Mais la variable <TT>b</TT> n’est pas formelle !<BR>
+On tape
+</P><DIV CLASS="center"><TT>a;b</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(a,1)</TT></DIV><HR>
+<A HREF="cascmd_fr069.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr071.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Get an element or a sub-list of a list : at []</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en296.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en298.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc336">2.37.2</A>  Get an element or a sub-list of a list : <TT>at []</TT></H3><P><A NAME="@default508"></A><A NAME="sec:at"></A>
+</P><H4 CLASS="subsubsection"><A NAME="toc19"></A>Get an element</H4><P>
+The <I>n</I>-th element of a list <TT>l</TT> of size <I>s</I>
+is addressed by <TT>l[n]</TT> where <I>n</I> is in [0..<I>s</I>&#X2212;1] or [1..<I>s</I>].
+The equivalent prefixed function is
+<TT>at</TT>, which takes as argument a list and an integer <TT>n</TT>.<BR>
+<TT>at</TT> returns the element of the list of index <TT>n</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>[0,1,2][1]</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>at([0,1,2],1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc20"></A>Extract a sub-list</H4><P>
+If <I>l</I> is a list of size <I>s</I>, <TT>l[n1..n2]</TT> returns the list
+extracted from <TT>l</TT> containing the elements of indices <I>n</I><SUB>1</SUB> to <I>n</I><SUB>2</SUB>
+where 0 &#X2264; <I>n</I><SUB>1</SUB>&#X2264; <I>n</I><SUB>2</SUB> &lt; <I>s</I> (in Xcas syntax mode) or
+0 &lt; <I>n</I><SUB>1</SUB>&#X2264; <I>n</I><SUB>2</SUB> &#X2264; <I>s</I> in other syntax modes.
+The equivalent prefixed function is
+<TT>at</TT> with a list and an interval of integers (<TT>n1..n2</TT>) 
+as arguments.<BR>
+<B>See also</B> : <TT>mid</TT>, section <A HREF="cascmd_en298.html#sec:mid">2.37.3</A>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>[0,1,2,3,4][1..3]</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>at([0,1,2,3,4],1..3)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,2,3]</TT></DIV><P>
+<B>Warning</B><BR>
+<TT>at</TT> can not be used for sequences, index notation
+must be used, like in <TT>(0,1,2,3,4,5)[2..3]</TT>. </P><HR>
+<A HREF="cascmd_en296.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en298.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

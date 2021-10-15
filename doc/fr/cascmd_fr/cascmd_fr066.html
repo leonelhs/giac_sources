@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>L’affectation par référence dans une variable désignant un élément d’une liste ou d’une matrice : =< </TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr065.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr067.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc86">2.5.3</A>  L’affectation par référence dans une variable désignant un élément d’une liste ou d’une matrice : <TT>=&lt; </TT></H3><P><A NAME="@default56"></A><A NAME="sec:progref"></A>
+On peut utiliser l’opérateur infixé <TT>=&lt;</TT> pour stocker par référence le 
+deuxième argument dans une variable (désignant un élément d’une liste ou 
+d’une matrice) donnée comme premier argument.<BR>
+Voir aussi <A HREF="cascmd_fr804.html#sec:copie">8.4.15</A> et <A HREF="cascmd_fr803.html#sec:diffaffectation">8.4.14</A>.
+On tape :
+</P><DIV CLASS="center"><TT>a:=[1,2,3,4,5]</TT></DIV><P>
+Pour changer la valeur de <TT>a[1]</TT> il est préférable de le faire par 
+référence c’est à dire sans faire de recopie, on tape :
+</P><DIV CLASS="center"><TT>a[1]=&lt;5</TT></DIV><P>
+Dans un programme, il est préférable d’utiliser l’opérateur infixé 
+<TT>=&lt;</TT> pour changer un élément d’une liste ou 
+d’une matrice contenue dans une variable .
+<B>Exemple</B><BR>
+On cherche pour tout <I>n</I>∈ ℕ, la liste des nombres entiers <I>k</I> vérifiant 
+0&lt;<I>k</I>&lt;2<SUP><I>n</I></SUP> et dont la somme des chiffres, dans l’écriture en base 2, est 
+égale à <I>p</I> ou qui s’écrivent en base 2 avec des 0 et <I>p</I> 1.<BR>
+On sait que <TT>convert(k,base,2)</TT> renvoie la liste de 0 et de 1 de 
+l’écriture en base 2 de <I>k</I> en commençant par le chiffre des unités. On
+a, par exemple :<BR>
+<TT>convert(2,base,2)=[0,1]</TT>.<BR>
+On connait la longueur de la liste résultat qui est <TT>comb(n,p)</TT> puisque
+il peut y avoir <I>n</I> chiffres et que parmi ces <I>n</I> chiffres il doit y avoir 
+<I>p</I> 1. On peut donc initialiser la liste par :<BR>
+<TT>L:=makelist(0,1,comb(n,p));</TT>.<BR>
+On peut aussi vouloir initialiser la liste <TT>L</TT> par la liste vide et dans 
+ce cas il faut mettre <TT>L:=[0$0]</TT> et ne pas mettre <TT>L:=[]</TT>. La 
+différence est subtile : <TT>[0$0]</TT> est une liste qui est crée lors de 
+chaque exécution du programme alors que après la compilation du programme,
+<TT>L:=[]</TT> fait pointer <TT>L</TT> sur la liste <TT>[]</TT> et cette liste sera 
+modifiée par les différents <TT>L[k]=&lt;j</TT> en <TT>LR</TT> et restera modifiée
+en fin d’exécution ce qui fait que si on effectue une autre exécution du 
+programme<TT>L</TT> est initialisée par <TT>LR</TT> car elle pointe sur la liste 
+<TT>LR</TT>.<BR>
+On tape :
+</P><PRE CLASS="verbatim">truc(p,n):={
+local j,k,L;
+L:=makelist(0,1,comb(n,p));
+k:=0;
+for (j:=2^p-1;j&lt;=2^n-2^(n-1-p);j++){
+if (sum(convert(j,base,2))==p){
+L[k]=&lt;j;
+k:=k+1;
+};
+}
+return L;
+}
+:;
+</PRE><P>Puis : <TT>J:=truc(10,17):;J[0];J[10]</TT>
+renvoie : <TT>Done,1023,2046</TT><BR>
+<TT>convert(1023,base,2)</TT> renvoie <TT>[1,1,1,1,1,1,1,1,1,1]</TT><BR>
+<TT>convert(2046,base,2)</TT> renvoie <TT>[0,1,1,1,1,1,1,1,1,1,1]</TT><BR>
+Comme la liste J a pour longueur <TT>comb(17,10)=19448</TT>
+si on met dans le programme <TT>L[k]:=j;</TT> au lieu de <TT>L[k]=&lt;j;</TT>,
+<TT>Xcas</TT> effectue 19448 recopie de cette liste ce qui allonge l’execution du 
+programme....
+</P><HR>
+<A HREF="cascmd_fr065.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr067.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

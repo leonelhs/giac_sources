@@ -1,0 +1,140 @@
+// fltk 7Fl_Tile 44 76 738 197
+[
+// fltk N4xcas19Multiline_Input_tabE 44 76 738 30
+f(n,a,b):=matrix(n,n,(j,k)->ifte(j==k,a,b))
+,
+// fltk N4xcas10Log_OutputE 44 106 738 124
+// Warning, check that the following variables are global: a b ££// Parsing f£// Warning, check that the following variables are global: j k  compiling f££
+,
+// fltk N4xcas8EquationE 44 230 738 43
+ (n,a,b)->matrix(n,n, (j,k)->expr("if (j==k) a; else b; ",0))
+]
+,
+// fltk 7Fl_Tile 44 275 738 114
+[
+// fltk N4xcas19Multiline_Input_tabE 44 275 738 30
+f(2,a,b)
+,
+// fltk N4xcas10Log_OutputE 44 305 738 1
+
+,
+// fltk N4xcas8EquationE 44 306 738 83
+[[a,b],[b,a]]
+]
+,
+// fltk 7Fl_Tile 44 391 738 197
+[
+// fltk N4xcas19Multiline_Input_tabE 44 391 738 30
+g(n,a,b,c):=matrix(n,n,(j,k)->ifte(j==k,a,ifte(j==k-1,b,c*(j==k+1))))
+,
+// fltk N4xcas10Log_OutputE 44 421 738 124
+// Warning, check that the following variables are global: a b c ££// Parsing g£// Warning, check that the following variables are global: j k  compiling g££
+,
+// fltk N4xcas8EquationE 44 545 738 43
+ (n,a,b,c)->matrix(n,n, (j,k)->expr("if (j==k) a; else if (j==(k-1)) b; else c*j==(k+1); ; ",0))
+]
+,
+// fltk 7Fl_Tile 44 590 738 194
+[
+// fltk N4xcas19Multiline_Input_tabE 44 590 738 30
+g(4,a,b,c)
+,
+// fltk N4xcas10Log_OutputE 44 620 738 1
+
+,
+// fltk N4xcas8EquationE 44 621 738 163
+[[a,b,0,0],[c,a,b,0],[0,c,a,b],[0,0,c,a]]
+]
+,
+// fltk 7Fl_Tile 44 786 738 221
+[
+// fltk N4xcas19Multiline_Input_tabE 44 786 738 30
+H(n):=matrix(n,n,(j,k)->1/(j+k-1))
+,
+// fltk N4xcas10Log_OutputE 44 816 738 124
+// Success££// Parsing H£// Warning, check that the following variables are global: j k  compiling H££
+,
+// fltk N4xcas8EquationE 44 940 738 67
+ (n)->matrix(n,n, (j,k)->1/(j+k-1))
+]
+,
+// fltk 7Fl_Tile 44 1009 738 290
+[
+// fltk N4xcas19Multiline_Input_tabE 44 1009 738 30
+H(4),hilbert(4)
+,
+// fltk N4xcas10Log_OutputE 44 1039 738 1
+
+,
+// fltk N4xcas8EquationE 44 1040 738 259
+[[1,1/2,1/3,1/4],[1/2,1/3,1/4,1/5],[1/3,1/4,1/5,1/6],[1/4,1/5,1/6,1/7]],[[1,1/2,1/3,1/4],[1/2,1/3,1/4,1/5],[1/3,1/4,1/5,1/6],[1/4,1/5,1/6,1/7]]
+]
+,
+// fltk 7Fl_Tile 44 1301 738 117
+[
+// fltk N4xcas19Multiline_Input_tabE 44 1301 738 30
+time(H(20)),time(hilbert(20))
+,
+// fltk N4xcas10Log_OutputE 44 1331 738 44
+Evaluation time: 2.49£
+,
+// fltk N4xcas8EquationE 44 1375 738 43
+0.0615,0.00252
+]
+,
+// fltk 7Fl_Tile 44 1420 738 207
+[
+// fltk N4xcas19Multiline_Input_tabE 44 1420 738 30
+V(x):=matrix(size(x),size(x),(j,k)->x[k-1]^(j-1))
+,
+// fltk N4xcas10Log_OutputE 44 1450 738 124
+// Warning, check that the following variables are global: x ££// Parsing V£// Warning, check that the following variables are global: j k  compiling V££
+,
+// fltk N4xcas8EquationE 44 1574 738 53
+ (x)->matrix(expr("size(x)",0),expr("size(x)",0), (j,k)->(x[k-1])^(j-1))
+]
+,
+// fltk 7Fl_Tile 44 1629 738 164
+[
+// fltk N4xcas19Multiline_Input_tabE 44 1629 738 30
+V([x1,x2,x3]),vandermonde([x1,x2,x3])
+,
+// fltk N4xcas10Log_OutputE 44 1659 738 1
+
+,
+// fltk N4xcas8EquationE 44 1660 738 133
+[[1,1,1],[x1,x2,x3],[x1^2,x2^2,x3^2]],[[1,1,1],[x1,x2,x3],[x1*x1,x2*x2,x3*x3]]
+]
+,
+// fltk 7Fl_Tile 44 1795 738 197
+[
+// fltk N4xcas19Multiline_Input_tabE 44 1795 738 30
+T(x):=matrix(size(x),size(x),(j,k)->x[abs(j-k)])
+,
+// fltk N4xcas10Log_OutputE 44 1825 738 124
+// Warning, check that the following variables are global: x ££// Parsing T£// Warning, check that the following variables are global: j k  compiling T££
+,
+// fltk N4xcas8EquationE 44 1949 738 43
+ (x)->matrix(expr("size(x)",0),expr("size(x)",0), (j,k)->x[abs(j-k)])
+]
+,
+// fltk 7Fl_Tile 44 1994 738 154
+[
+// fltk N4xcas19Multiline_Input_tabE 44 1994 738 30
+T([x1,x2,x3])
+,
+// fltk N4xcas10Log_OutputE 44 2024 738 1
+
+,
+// fltk N4xcas8EquationE 44 2025 738 123
+[[x1,x2,x3],[x2,x1,x2],[x3,x2,x1]]
+]
+,
+// fltk 7Fl_Tile 44 2150 738 31
+[
+// fltk N4xcas19Multiline_Input_tabE 44 2150 738 30
+
+,
+// fltk N4xcas10Log_OutputE 44 2180 738 1
+
+]

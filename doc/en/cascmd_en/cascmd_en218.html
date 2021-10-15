@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Bézout&#X2019;s Identity : egcd gcdex</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en217.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en219.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc245">2.25.11</A>  Bézout&#X2019;s Identity : <TT>egcd gcdex</TT></H3><P><A NAME="@default404"></A><A NAME="@default405"></A>
+This function compute the polynomial coefficients of the Bézout&#X2019;s 
+Identity (also known as Extended Greatest Common Divisor). 
+Given two polynomials <I>A</I>(<I>x</I>),<I>B</I>(<I>x</I>), <TT>egcd</TT> computes 3 polynomials
+<I>U</I>(<I>x</I>),<I>V</I>(<I>x</I>) and <I>D</I>(<I>x</I>) such that :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>U</I>(<I>x</I>)*<I>A</I>(<I>x</I>)+<I>V</I>(<I>x</I>)*<I>B</I>(<I>x</I>)=<I>D</I>(<I>x</I>)=<I>GCD</I>(<I>A</I>(<I>x</I>),<I>B</I>(<I>x</I>)) </TD></TR>
+</TABLE><P>
+<TT>egcd</TT> takes 2 or 3 arguments: the polynomials <I>A</I> and <I>B</I> as
+expressions in terms of a variable, if the variable is not specified
+it will default to <I>x</I>. Alternatively, <I>A</I> and <I>B</I> may be given
+as list-polynomials.<BR>
+Input :
+</P><DIV CLASS="center"><TT>egcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,-1,2*x+2]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>egcd([1,2,1],[1,0,-1])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1],[-1],[2,2]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>egcd(y</TT><CODE><TT>^</TT></CODE><TT>2-2*y+1,y</TT><CODE><TT>^</TT></CODE><TT>2-y+2,y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[y-2,-y+3,4]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>egcd([1,-2,1],[1,-1,2])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,-2],[-1,3],[4]]</TT></DIV><HR>
+<A HREF="cascmd_en217.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en219.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

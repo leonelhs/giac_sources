@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Variables réelles ou complexes : complex_variables</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr030.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr032.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc40">1.7.9</A>  Variables réelles ou complexes : <TT>complex_variables</TT></H3><P><A NAME="@default21"></A>
+<TT>complex_variables</TT> permet de spécifier si on veut travailler
+avec des variables formelles réelles (dans ce cas par exemple <TT>re(A)=A</TT>) ou complexes.<BR>
+Si on veut travailler avec des variables formelles complexes, on tape :
+</P><DIV CLASS="center"><TT>complex_variables:=1</TT></DIV><P>
+Si on veut travailler avec des variables formelles réelles, on tape :
+</P><DIV CLASS="center"><TT>complex_variables:=0</TT></DIV><P>
+On peut aussi cocher ou décocher <TT>Variables_ complexes</TT> dans l’écran 
+de la <TT>Configuration du CAS</TT> du menu <TT>Cfg</TT>.<BR>
+<B>Attention !!!</B><BR>
+Dans <TT>csolve</TT> l’inconnue est toujours considérée comme une variable 
+formelle complexe et dans <TT>solve</TT> l’inconnue est considérée comme une 
+variable formelle complexe seulement si l’equation à résoudre contient 
+<TT>i</TT> et si on est en mode complexe.<BR>
+On tape en mode complexe (<TT>Complexe</TT> est coché et <TT>Variables_complexes</TT> est décoché) :
+</P><DIV CLASS="center"><TT>solve(re(r*exp(-(i)*t))-1,r)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[‘ x‘+(i)*1/(sin(t))*(-‘ x‘*cos(t)+1)]</TT></DIV><P>
+cela veut dire que la solution <TT>r</TT> est un nombre complexe qui vaut 
+<TT>‘ x‘+(i)*1/(sin(t))*(-‘ x‘*cos(t)+1)</TT> où <TT>’x’</TT> est arbitraire.<BR>
+On tape en mode complexe (<TT>Complexe</TT> est coché et <TT>Variables_complexes</TT> est décoché) :
+</P><DIV CLASS="center"><TT>solve(expand(re(r*exp(-(i)*t))-1),r)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1/(cos(t))]</TT></DIV><P>
+car <TT>(expand(re(r*exp(-(i)*t))-1)</TT> renvoie une expression qui ne contient 
+pas de <TT>i</TT> donc <TT>solve</TT> considère <TT>r</TT> comme une variable 
+réelle.<BR>
+<B>Règle</B> Pour ne pas se tromper, lorqu’on veut des solutions complexes, il
+faut utiliser <TT>csolve</TT>.<BR>
+On tape en mode complexe ou réel :
+</P><DIV CLASS="center"><TT>csolve(re(r*exp(-(i)*t))-1,r)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[‘ x‘+(i)*1/(sin(t))*(-‘ x‘*cos(t)+1)]</TT></DIV><P>
+cela veut dire que la solution <TT>r</TT> est un nombre complexe qui vaut 
+<TT>‘ x‘+(i)*1/(sin(t))*(-‘ x‘*cos(t)+1)</TT> où <TT>’x’</TT> est arbitraire.
+</P><HR>
+<A HREF="cascmd_fr030.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr032.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

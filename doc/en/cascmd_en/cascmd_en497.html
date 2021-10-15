@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>fsolve or nSolve with the option steffenson_solver</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en496.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en498.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc576">4.4.6</A>  <TT>fsolve</TT> or <TT>nSolve</TT> with the option <TT>steffenson_solver</TT></H3><P><A NAME="@default847"></A>
+The Steffenson method is generically the fastest method.<BR>
+It combines the Newton method with a "delta-two" Aitken acceleration : 
+with the Newton method, we obtain the sequence <I>x</I><SUB><I>i</I></SUB> and the convergence
+acceleration gives the Steffenson sequence 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>R</I><SUB><I>i</I></SUB> =<I>x</I><SUB><I>i</I></SUB> &#X2212; </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">(<I>x</I><SUB><I>i</I>+1</SUB> &#X2212; <I>x</I><SUB><I>i</I></SUB>)<SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"> (<I>x</I><SUB><I>i</I>+2</SUB> &#X2212; 2 <I>x</I><SUB><I>i</I>+1</SUB> + <I>x</I><SUB><I>i</I></SUB>)</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>fsolve(cos(x)=x,x,0,steffenson_solver)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>0.739085133215</TT></DIV><HR>
+<A HREF="cascmd_en496.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en498.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

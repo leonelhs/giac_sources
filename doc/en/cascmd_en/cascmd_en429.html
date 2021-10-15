@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Gramschmidt orthonormalization : gramschmidt</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en428.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en430.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc480">2.49.4</A>  Gramschmidt orthonormalization : <TT>gramschmidt</TT></H3><P><A NAME="@default710"></A>
+<TT>gramschmidt</TT> takes one or two arguments : 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+a matrix viewed as a list of row vectors, 
+the scalar product being the canonical
+scalar product, or
+</LI><LI CLASS="li-itemize">a list of elements 
+that is a basis of a vector subspace, and a function that defines a scalar 
+product on this vector space.
+</LI></UL><P>
+<TT>gramschmidt</TT> returns an orthonormal basis for this scalar product.<BR>
+Input :
+</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]]))</TT></DIV><P>
+Or input :
+</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]],dot))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[(sqrt(3))/3,(sqrt(3))/3,(sqrt(3))/3],[(-(sqrt(6)))/6,(-(sqrt(6)))/6,(sqrt(6))/3],[(-(sqrt(2)))/2,(sqrt(2))/2,0]]</TT></DIV><P>
+<B>Example</B><BR>
+We define a scalar product on the vector space of 
+polynomials by: 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>.<I>Q</I>=</TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">&#X2212;1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>P</I>(<I>x</I>).<I>Q</I>(<I>x</I>)<I>dx</I> </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],(p,q)-&gt;integrate(p*q,x,-1,1))</TT></DIV><P>
+Or define the function <TT>p_scal</TT>, input :<BR>
+<TT>p_scal(p,q):=integrate(p*q,x,-1,1)</TT><BR>
+then input :
+</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],p_scal)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1/(sqrt(2)),(1+x-1)/sqrt(2/3)]</TT></DIV><HR>
+<A HREF="cascmd_en428.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en430.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

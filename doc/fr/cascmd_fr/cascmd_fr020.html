@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Configuration du Cas</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc28">1.6.1</A>  Configuration du Cas</H3><P><A NAME="sec:configcas"></A><A NAME="@default10"></A>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>Prog style</TT> si on veut programmer en un autre langage : on peut 
+choisir <TT>maple</TT>, <TT>mupad</TT> ou <TT>ti89/92</TT>,
+</LI><LI CLASS="li-itemize"><TT>eval</TT> : nombre maximum d’évaluations récursives en mode interactif. 
+Par exemple, si on exécute dans l’ordre <CODE>a:=b+1</CODE> et <CODE>b:=5</CODE> puis on 
+évalue <CODE>a</CODE>, la valeur renvoyée sera <CODE>b+1</CODE> si <CODE>eval</CODE> vaut 1 et <CODE>6</CODE> si <CODE>eval</CODE> est plus grand que 1.
+</LI><LI CLASS="li-itemize"><TT>prog</TT> : comme ci-dessus mais lorsqu’un programme est exécuté. On 
+utilise en principe le niveau 1 d’évaluation à l’intérieur d’un programme.
+</LI><LI CLASS="li-itemize"><TT>recurs</TT> pour déterminer le nombre maximum d’appels récursifs :
+par defaut c’est 50. Il n’y a pas de limite imposée par l’interface de 
+<TT>Xcas</TT>, par contre si on met une borne trop élevée, c’est la pile du 
+programme qui risque de déborder en provoquant un segmentation fault. 
+Le moment où cela se produit dépend de la fonction, car la pile est aussi 
+utilisée pour les appels récursifs des fonctions C++ de giac,
+</LI><LI CLASS="li-itemize"><TT>debug</TT> : affiche des informations intermédiaires (en bleu) sur les algorithmes
+utilisés par giac en fonction du niveau (0 = pas d’info).
+</LI><LI CLASS="li-itemize"><TT>maxiter</TT> : nombre maximal d’itérations pour la méthode de Newton
+</LI><LI CLASS="li-itemize"><TT>Flottants</TT> on peut choisr <TT>Standard Scientific Engineer</TT> pour que l’affichage des nombres décimaux se fasse selon :
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+la notation standard : <TT>150.12</TT> sera noté <TT>150.12</TT>,
+</LI><LI CLASS="li-itemize">la notation scientifique : <TT>150.12</TT> sera noté <TT>1.501200000000e+02</TT>,
+</LI><LI CLASS="li-itemize">la notation des ingénieurs : <TT>150.12</TT> sera noté <TT>150.12e0</TT>,
+</LI></UL>
+</LI><LI CLASS="li-itemize"><TT>Chiffres</TT> pour détérminer le nombre de chiffres 
+significatifs. Si on choisit moins de 14 chiffres, les calculs sont quand 
+même faits avec 14 chiffres mais l’affichage n’en montre que ce que l’on 
+demande.
+</LI><LI CLASS="li-itemize"><TT>epsilon</TT> détermine la valeur de <TT>epsilon</TT> utilisée dans 
+<TT>epsilon2zero</TT>,
+</LI><LI CLASS="li-itemize"><TT>proba</TT> : si cette valeur est non nulle, Giac peut utiliser des 
+algorithmes non déterministes et renvoyer une réponse qui a alors une 
+probabilité d’être fausse inférieure à la valeur donnée. C’est par exemple le 
+cas pour le calcul du déterminant d’une grande matrice à coefficients entiers.
+</LI><LI CLASS="li-itemize"><TT>approx</TT> on coche cette case si on veut travailler en mode 
+numérique : si cette case n’est pas cochée on travaille en mode exact ou 
+formel. Lorsqu’on travaille en mode exact on peut avoir une évaluation 
+numérique en tapant sur la touche num ou en utilisant la commande <TT>evalf</TT>
+ou encore en mettant des nombres decimaux (par exemple 1.0/2=0.5 alors que 1/2 
+est inchangé),
+</LI><LI CLASS="li-itemize"><TT>taches</TT> pour faire du parallelisme, dans le futur..., 
+</LI><LI CLASS="li-itemize"><TT>Base (Entiers)</TT> pour travailler en base 10, 16 ou 8, 
+</LI><LI CLASS="li-itemize"><TT>radian</TT> est l’unité d’angle si cette case est cochée, sinon 
+l’unité d’angle est le degré,
+</LI><LI CLASS="li-itemize"><TT>puissance croissante</TT> pour que l’affichage des polynômes se fasse selon
+les puissances croissantes après l’utilisation de commandes comme 
+<TT>normal</TT> ou <TT>simplify</TT>,
+</LI><LI CLASS="li-itemize"><TT>Complex</TT> on coche cette case pour travailler en mode complexe : si 
+cette case n’est pas cochée on travaille en mode réel. Certaines commandes 
+cependant sont indépendante du mode choisi comme <TT>cpartfrac</TT>, 
+<TT>csolve</TT> ou <TT>cFactor</TT>,
+</LI><LI CLASS="li-itemize"><TT>Variables_complexes</TT> on coche cette case pour travailler avec des 
+variables formelles complexes : si cette case n’est pas cochée les variables 
+formelles sont réelles (si la variable <TT>a</TT> n’est pas 
+affectée <TT>re(a)=conj(a)=a</TT> et <TT>im(a)=0</TT>). Mais attention dans 
+<TT>csolve</TT> l’inconnue est toujours considérée comme une variable formelle
+complexe et dans <TT>solve</TT> l’inconnue est considérée comme une variable 
+formelle complexe seulement si l’equation à résoudre contient <TT>i</TT> ou 
+bien si on est en mode complexe,
+</LI><LI CLASS="li-itemize"><TT>puissance croissante</TT> : affiche les développements de polynômes selon les
+puissances croissantes ou décroissantes
+</LI><LI CLASS="li-itemize"><TT>All_trig_sol</TT> : renvoie toutes les solutions d’une équation trigonométrique
+(par exemple <CODE>solve(cos(x)=0)</CODE>) à l’aide de variables entières ou seulement les
+solutions principales.
+</LI><LI CLASS="li-itemize"><TT>Sqrt</TT> : si <TT>Sqrt</TT> est coché, 
+<TT>factor</TT> factorise les polynômes du second degré, même si les facteurs ne 
+sont pas dans le corps de base des coefficients.
+</LI><LI CLASS="li-itemize"><TT>Appliquer</TT> pour avoir cette configuration,
+</LI><LI CLASS="li-itemize"><TT>Sauver</TT> pour avoir cette configuration par défaut,
+</LI><LI CLASS="li-itemize"><TT>Annuler</TT> pour revenir à l’ancienne configuration.
+</LI></UL><HR>
+<A HREF="cascmd_fr019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Différence de codage entre (3.1-3) et 0.1</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr105.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr107.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc154">4.1.2</A>  Différence de codage entre (3.1-3) et 0.1</H3><UL CLASS="itemize"><LI CLASS="li-itemize">
+codage de 0.1 :<BR>
+On a :<BR>
+0.1=2<SUP>−4</SUP>*(1+1/2+1/2<SUP>4</SUP>+1/2<SUP>5</SUP>+1/2<SUP>8</SUP>+1/2<SUP>9</SUP>+...)=2<SUP>−4</SUP>*∑<SUB><I>k</I>=0</SUB><SUP>∞</SUP>1/2<SUP>4*<I>k</I></SUP>+1/2<SUP>4*<I>k</I>+1</SUP><BR>
+donc α=1 et <I>m</I>=1/2+∑<SUB><I>k</I>=1</SUB><SUP>∞</SUP>1/2<SUP>4*<I>k</I></SUP>+1/2<SUP>4*<I>k</I>+1</SUP><BR>
+On obtient le codage de 0.1 :<BR>
+ the code of3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),<BR>
+99 (10011001), 99 (10011001), 99 (10011001), 9a (10011010),<BR>
+le dernier octet est 1010 car il y a eu un arrondi les 2 derniers bits 01
+sont devenus 10 car le chiffre suivant etait 1.</LI><LI CLASS="li-itemize">codage de a:=3.1-3 :<BR>
+L’exposant sera donc α=−4 (qui correspond à 2*2<SUP>−5</SUP>) et les bits 
+qui correspondent à la mantisse vont débuter à 1/2=2*2<SUP>−6</SUP> : ainsi
+les nombres de la mantisse subissent un décalage vers la gauche de 5 places
+et on obtient :<BR>
+3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),<BR>
+99 (10011001), 99 (10011001), 99 (10011001), 9a (10100000),<BR>
+On voit alors que :<BR>
+<I>a</I>&gt;0.1 et que <I>a</I>−0.1=1/2<SUP>50</SUP>+1/2<SUP>51</SUP> (car 100000-11010=110)
+</LI></UL><P>
+<TT>Remarque</TT><BR>
+Ce qui précéde permet d’expliquer pourquoi lorsque <TT>Digits:=15</TT> :<BR>
+<TT>floor(1/(3.1-3))</TT> renvoie <TT>9</TT> et non <TT>10</TT>.</P><HR>
+<A HREF="cascmd_fr105.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr107.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

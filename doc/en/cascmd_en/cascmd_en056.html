@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Continued fraction representation of a real : dfc</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en055.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en057.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc66">2.8.7</A>  Continued fraction representation of a real : <TT>dfc</TT></H3><P><A NAME="@default105"></A><A NAME="sec:convertdfc"></A><A NAME="@default106"></A>
+<TT>dfc</TT> takes as argument a real or a rational or a
+floating point number <TT>a</TT> and an integer <TT>n</TT> 
+(or a real <TT>epsilon</TT>).<BR>
+<TT>dfc</TT> returns the list of the continued fraction representation 
+of <TT>a</TT> of order <TT>n</TT> (or with precision <TT>epsilon</TT> i.e. 
+the continued fraction representation which 
+approachs <TT>a</TT> or <TT>evalf(a)</TT> with precision 
+<TT>epsilon</TT>, by default <TT>epsilon</TT> is the value of the <TT>epsilon</TT> 
+defined in the <TT>cas</TT> configuration with the menu 
+<TT>Cfg</TT><TT>&#X25B8;</TT><TT>Cas Configuration</TT>).<BR>
+<TT>convert</TT> with the option <TT>confrac</TT> has a similar
+functionnality: in that case
+the value of <TT>epsilon</TT> is the value of the <TT>epsilon</TT> 
+defined in the <TT>cas</TT> configuration with the menu 
+<TT>Cfg</TT><TT>&#X25B8;</TT><TT>Cas Configuration</TT> (see
+<A HREF="cascmd_en166.html#sec:convert">2.21.23</A>)
+and the answer may be stored in an optionnal third argument.</P><P><B>Remarks</B> 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+If the last element of the result is a list, the representation is 
+ultimaltely periodic, and the last element is the period. It means
+that the real is a root of an equation of order 2 with integer
+coefficients.
+</LI><LI CLASS="li-itemize">if the last element of the result is not an integer, it 
+represents a remainder <I>r</I> (<I>a</I>=<I>a</I>0+1/....+1/<I>an</I>+1/<I>r</I>). Be aware
+that this remainder has lost most of it&#X2019;s accuracy.
+</LI></UL><P>
+If <TT>dfc(a)=[a0,a1,a2,[b0,b1]</TT> that means :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>a</I>=<I>a</I>0+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>a</I>1+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>a</I>2+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>b</I>0+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>b</I>1+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>b</I>0+...</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+If <TT>dfc(a)=[a0,a1,a2,r]</TT> that means :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>a</I>=<I>a</I>0+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>a</I>1+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>a</I>2+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>r</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>dfc(sqrt(2),5)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,2,[2]]</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>dfc(evalf(sqrt(2)),1e-9)</TT></DIV><P>
+Or : 
+</P><DIV CLASS="center"><TT>dfc(sqrt(2),1e-9)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,2,2,2,2,2,2,2,2,2,2,2,2]</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>convert(sqrt(2),confrac,&#X2019;dev&#X2019;</TT></DIV><P>
+Output (if in the <TT>cas</TT> configuration <TT>epsilon=1e-9</TT>) :
+</P><DIV CLASS="center"><TT>[1,2,2,2,2,2,2,2,2,2,2,2,2]</TT></DIV><P> 
+and <TT>[1,2,2,2,2,2,2,2,2,2,2,2,2]</TT> is stored in <TT>dev</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>dfc(9976/6961,5)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,2,3,4,5,43/7]</TT></DIV><P> 
+Input to verify:<BR>
+<TT>1+1/(2+1/(3+1/(4+1/(5+7/43))))</TT><BR>
+Output :<BR>
+<TT>9976/6961</TT><BR>
+Input :
+</P><DIV CLASS="center"><TT>convert(9976/6961,confrac,&#X2019;l&#X2019;)</TT></DIV><P>
+Output (if in the <TT>cas</TT> configuration <TT>epsilon=1e-9</TT>) :
+</P><DIV CLASS="center"><TT>[1,2,3,4,5,6,7]</TT></DIV><P> 
+and <TT>[1,2,3,4,5,6,7]</TT> is stored in <TT>l</TT><BR>
+Input :
+</P><DIV CLASS="center"><TT>dfc(pi,5)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[3,7,15,1,292,(-113*pi+355)/(33102*pi-103993)]</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>dfc(evalf(pi),5)</TT></DIV><P>
+Output (if floats are hardware floats, e.g. for Digits=12) :
+</P><DIV CLASS="center"><TT>[3,7,15,1,292,1.57581843574]</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>dfc(evalf(pi),1e-9)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>dfc(pi,1e-9)</TT></DIV><P>
+Or (if in the <TT>cas</TT> configuration <TT>epsilon=1e-9</TT>) :
+</P><DIV CLASS="center"><TT>convert(pi,confrac,&#X2019;ll&#X2019;)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[3,7,15,1,292]</TT></DIV><HR>
+<A HREF="cascmd_en055.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en057.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Tchebychev polynomial of second kind: tchebyshev2</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en230.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en232.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc259">2.26.5</A>  Tchebychev polynomial of second kind: <TT>tchebyshev2</TT></H3><P><A NAME="@default418"></A>
+<TT>tchebyshev2</TT> takes as argument an integer <I>n</I> and optionnally 
+a variable name (by default <I>x</I>).<BR>
+<TT>tchebyshev2</TT> returns the Tchebychev polynomial of second kind
+of degree <I>n</I>.<BR>
+The Tchebychev polynomial of second kind <I>U</I>(<I>n</I>,<I>x</I>) is defined by:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>U</I>(<I>n</I>,<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">sin((<I>n</I>+1).arccos(<I>x</I>))</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">sin(arccos(<I>x</I>))</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+or equivalently:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">sin((<I>n</I>+1)<I>x</I>)=sin(<I>x</I>)*<I>U</I>(<I>n</I>,cos(<I>x</I>))</TD></TR>
+</TABLE><P> 
+The <I>U</I>(<I>n</I>,<I>x</I>) verifies the recurrence relation:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>U</I>(0,<I>x</I>)=1,   
+<I>U</I>(1,<I>x</I>)=2<I>x</I>,   
+<I>U</I>(<I>n</I>,<I>x</I>)=2<I>xU</I>(<I>n</I>&#X2212;1,<I>x</I>)&#X2212;<I>U</I>(<I>n</I>&#X2212;2,<I>x</I>) </TD></TR>
+</TABLE><P>
+The polynomials <I>U</I>(<I>n</I>,<I>x</I>) are orthogonal for the scalar product
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&lt;<I>f</I>,<I>g</I>&gt;=</TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">&#X2212;1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)</TD><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>1&#X2212;<I>x</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>dx</I> </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>tchebyshev2(3)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>8*x</TT><CODE><TT>^</TT></CODE><TT>3+-4*x</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>tchebyshev2(3,y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>8*y</TT><CODE><TT>^</TT></CODE><TT>3+-4*y</TT></DIV><P>
+Indeed:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">sin(4.<I>x</I>)=sin(<I>x</I>)*(8*cos(<I>x</I>)<SUP>3</SUP>&#X2212;4.cos(<I>x</I>))=sin(<I>x</I>)*<I>U</I>(3,cos(<I>x</I>)) </TD></TR>
+</TABLE><HR>
+<A HREF="cascmd_en230.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en232.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

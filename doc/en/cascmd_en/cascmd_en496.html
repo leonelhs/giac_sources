@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>fsolve or nSolve with the option secant_solver</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en495.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en497.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc575">4.4.5</A>  <TT>fsolve</TT> or <TT>nSolve</TT> with the option <TT>secant_solver</TT></H3><P><A NAME="@default846"></A>
+The secant methode is a simplified version of the Newton method.
+The computation of <I>x</I><SUB>1</SUB> is done using the Newton method.
+The computation of <I>f</I>&#X2032;(<I>x</I><SUB><I>n</I></SUB>), <I>n</I>&gt;1 is done approximatively. 
+This method is used when the 
+computation of the derivative is expensive:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUB><I>i</I>+1</SUB> = <I>x</I><SUB><I>i</I></SUB>&#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"> <I>f</I>(<I>x</I><SUB><I>i</I></SUB>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>f</I>&#X2032;<SUB><I>est</I></SUB></TD></TR>
+</TABLE></TD><TD CLASS="dcell">,    
+<I>f</I>&#X2032;<SUB><I>est</I></SUB> = </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>f</I>(<I>x</I><SUB><I>i</I></SUB>) &#X2212; <I>f</I>(<I>x</I><SUB><I>i</I>&#X2212;1</SUB>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">(<I>x</I><SUB><I>i</I></SUB> &#X2212; <I>x</I><SUB><I>i</I>&#X2212;1</SUB>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+The convergence for roots of multiplicity 1
+is of order (1 + &#X221A;<SPAN style="text-decoration:overline">5</SPAN>)/2 &#X2248; 1.62... .<BR>
+Input :
+</P><DIV CLASS="center"><TT>fsolve((cos(x))=x,x,-1..1,secant_solver)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[0.739085078239,0.739085137844]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>fsolve((cos(x))=x,x,0,secant_solver)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>0.739085133215</TT></DIV><HR>
+<A HREF="cascmd_en495.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en497.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

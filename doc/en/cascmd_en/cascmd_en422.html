@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>LU decomposition : lu</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en421.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en423.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc472">2.48.4</A>  LU decomposition : <TT>lu</TT></H3><P><A NAME="@default702"></A>
+<TT>lu</TT> takes as argument a square matrix <I>A</I> of size <I>n</I> (numeric or
+symbolic).<BR>
+<TT>lu(A)</TT> returns a permutation <I>p</I> of 0..<I>n</I>&#X2212;1, 
+a lower triangular matrix <I>L</I>, with 1 on the diagonal, 
+and an upper triangular matrix <I>U</I>, such that : 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<I>P</I>*<I>A</I>=<I>L</I>*<I>U</I> where <I>P</I> is the permutation matrix 
+associated to <I>p</I> (that may be computed by <TT>P:=permu2mat(p)</TT>),
+</LI><LI CLASS="li-itemize">the equation <I>A</I>*<I>x</I>=<I>B</I> is equivalent to :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>L</I>*<I>U</I>*<I>x</I>=<I>P</I>*<I>B</I>=<I>p</I>(<I>B</I>)  where  <I>p</I>(<I>B</I>)=[<I>b</I><SUB><I>p</I>(0)</SUB>,<I>b</I><SUB><I>p</I>(1)</SUB>..<I>b</I><SUB><I>p</I>(<I>n</I>&#X2212;1)</SUB>],
+    <I>B</I>=[<I>b</I><SUB>0</SUB>,<I>b</I><SUB>1</SUB>..<I>b</I><SUB><I>n</I>&#X2212;1</SUB>] </TD></TR>
+</TABLE>
+</LI></UL><P>
+The permutation matrix <I>P</I> is defined from <I>p</I> by :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>[<I>i</I>, <I>p</I>(<I>i</I>)]=1,    <I>P</I>[<I>i</I>, <I>j</I>]=0  if  <I>j</I>  &#X2260; <I>p</I>(<I>i</I>) </TD></TR>
+</TABLE><P>
+In other words, it is the identity matrix where the rows are permuted 
+according to the permutation <I>p</I>. 
+The function <TT>permu2mat</TT><A NAME="@default703"></A> may be used to compute <I>P</I>
+(<TT>permu2mat(p)</TT> returns <TT><I>P</I></TT>).<BR>
+Input :
+</P><DIV CLASS="center"><TT>(p,L,U):=lu([[3.,5.],[4.,5.]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,0],[[1,0],[0.75,1]],[[4,5],[0,1.25]]</TT></DIV><P>
+Here <I>n</I>=2, hence :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>[0,<I>p</I>(0)]=<I>P</I><SUB>2</SUB>[0,1]=1,     <I>P</I>[1,<I>p</I>(1)]=<I>P</I><SUB>2</SUB>[1,0]=1,   
+<I>P</I>=[[0,1],[1,0]] </TD></TR>
+</TABLE><P>
+Verification :<BR>
+Input :
+</P><DIV CLASS="center"><TT>permu2mat(p)*A; L*U</TT></DIV><P>
+Output:
+</P><DIV CLASS="center"><TT>[[4.0,5.0],[3.0,5.0]],[[4.0,5.0],[3.0,5.0]]</TT></DIV><P>
+Note that the permutation is different for exact input (the choice of
+pivot is the simplest instead of the largest in absolute value).<BR>
+Input :
+</P><DIV CLASS="center"><TT>lu([[1,2],[3,4]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,0],[[1,0],[3,1]],[[1,2],[0,-2]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>lu([[1.0,2],[3,4]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,0],[[1,0],[0.333333333333,1]],[[3,4], [0,0.666666666667]]</TT></DIV><HR>
+<A HREF="cascmd_en421.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en423.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

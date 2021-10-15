@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Build a polynomial from it&#X2019;s evaluation : genpoly</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en233.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en235.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc263">2.27.3</A>  Build a polynomial from it&#X2019;s evaluation : <TT>genpoly</TT></H3><P><A NAME="@default421"></A>
+<TT>genpoly</TT> takes three arguments : a polynomial <I>P</I> with <I>n</I>&#X2212;1 
+variables, an integer <I>b</I> and the name of a variable <TT>var</TT>.<BR>
+<TT>genpoly</TT> returns the polynomial <I>Q</I> with <I>n</I> variables (the <I>P</I> variables
+and the variable <TT>var</TT> given as second argument), such that :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>subst(Q,var=b)==P</TT> 
+</LI><LI CLASS="li-itemize">the coefficients of <I>Q</I> belongs to the interval ]&#X2212;<I>b</I>/2  ;  <I>b</I>/2]
+</LI></UL><P>
+In other words, <I>P</I> is written in base <I>b</I> but using the convention
+that the euclidean remainder belongs to ]&#X2212;<I>b</I>/2  ;  <I>b</I>/2] 
+(this convention is also known as s-mod representation).
+Input :
+</P><DIV CLASS="center"><TT>genpoly(61,6,x) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>2*x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1</TT></DIV><P>
+Indeed 61 divided by 6 is 10, remains 1, then 10 divided by 6 is 2
+remains -2 (instead of the usual quotient 1 and remainder 4 out of bounds),
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">61=2*6<SUP>2</SUP>&#X2212;2*6+1 </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>genpoly(5,6,x) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x-1</TT></DIV><P>
+Indeed : 5=6&#X2212;1<BR>
+Input :
+</P><DIV CLASS="center"><TT>genpoly(7,6,x) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x+1</TT></DIV><P>
+Indeed : 7=6+1<BR>
+Input :
+</P><DIV CLASS="center"><TT>genpoly(7*y+5,6,x) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x*y+x+y-1</TT></DIV><P>
+Indeed : <I>x</I>*<I>y</I>+<I>x</I>+<I>y</I>&#X2212;1=<I>y</I>(<I>x</I>+1)+(<I>x</I>&#X2212;1)<BR>
+Input :
+</P><DIV CLASS="center"><TT>genpoly(7*y+5*z</TT><CODE><TT>^2</TT></CODE><TT>,6,x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x*y+x*z+y-z</TT></DIV><P>
+Indeed : <I>x</I>*<I>y</I>+<I>x</I>*<I>z</I>+<I>y</I>&#X2212;<I>z</I>=<I>y</I>*(<I>x</I>+1)+<I>z</I>*(<I>x</I>&#X2212;1)</P><HR>
+<A HREF="cascmd_en233.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en235.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

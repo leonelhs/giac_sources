@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>La commande Xcas : simplex_reduce</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr601.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr603.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc708">6.47.1</A>  La commande <TT>Xcas</TT> : <TT>simplex_reduce</TT></H3><P>
+<B>Cas le plus simple</B><BR>
+La fonction 
+<TT>simplex_reduce</TT> effectue la réduction par l’algorithme du simplexe pour
+trouver :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(<I>c</I>.<I>x</I>)     avec     <I>A</I>.<I>x</I> ≤ <I>b</I>, <I>x</I> ≥ 0, <I>b</I>≥ 0 </TD></TR>
+</TABLE><P>
+où <I>c</I>,<I>x</I> sont des vecteurs de ℝ<SUP><I>n</I></SUP>, <I>b</I>≥ 0 
+est un vecteur de ℝ<SUP><I>p</I></SUP> et
+<I>A</I> est une matrice de <I>p</I> lignes et de <I>n</I> colonnes.</P><P><TT>simplex_reduce</TT> a comme argument <TT>A,b,c</TT> et
+renvoie <TT>max(c.x)</TT>, la solution augmentée de <TT>x</TT>
+et la matrice réduite.<BR>
+<B>Exemple</B><BR>
+Chercher </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(<I>X</I>+2<I>Y</I>)   lorsque 
+</TD><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>(<I>X</I>,<I>Y</I>)</TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>−3<I>X</I> +2<I>Y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>3</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>X</I> +<I>Y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>4</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>simplex_reduce([[-3,2],[1,1]],[3,4],[1,2])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>7,[1,3,0,0],[[0,1,1/5,3/5,3],[1,0,(-1)/5,2/5,1], [0,0,1/5,8/5,7]]</TT></DIV><P>
+Ce qui veut dire que le maximum de <TT>X+2Y</TT> sous ces conditions
+est <TT>7</TT>, il est obtenu pour <TT>X=1,Y=3</TT> 
+car <TT>[1,3,0,0]</TT> est la solution augmentée et la matrice 
+réduite est :<BR>
+<TT>[[0,1,1/5,3/5,3],[1,0,(-1)/5,2/5,1], [0,0,1/5,8/5,7]]</TT>.</P><P><B>Un cas plus compliqué qui se ramène au cas simple</B><BR>
+<TT>simplex_reduce</TT> oblige à réécrire les contraintes impliquant une 
+seule variable pour qu’elles soient sous la forme <I>x</I><SUB><I>k</I></SUB> ≥ 0, puis à
+éliminer les variables sans contraintes puis à ajouter des variables afin 
+d’avoir comme contraintes : toutes les composantes des
+éléments du simplexe sont positives.
+Par exemple, si on part du problème :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">min(2<I>x</I>+<I>y</I>−<I>z</I>+4)   lorsque 
+</TD><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>x</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>1 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>y</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>x</I>+3<I>y</I>−<I>z</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>2<I>x</I>−<I>y</I>+<I>z</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>8</TD></TR>
+<TR><TD ALIGN=right NOWRAP>−<I>x</I>+<I>y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>5</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+on pose <I>x</I>=1−<I>X</I>, <I>y</I>=<I>Y</I>+2, <I>z</I>=5−<I>X</I>+3<I>Y</I>
+le problème devient
+chercher le minimum de (−2<I>X</I>+<I>Y</I>−(5−<I>X</I>+3<I>Y</I>)+8) lorsque
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>X</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>Y</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>2(1−<I>X</I>)−(<I>Y</I>+2)+ 5−<I>X</I>+3<I>Y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>8</TD></TR>
+<TR><TD ALIGN=right NOWRAP>−(1−<I>X</I>) +(<I>Y</I>+2)</TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>5</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+donc chercher le minimum de :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(−<I>X</I>−2<I>Y</I>+3)  lorsque 
+</TD><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>X</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>Y</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>−3<I>X</I>+2<I>Y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>3</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>X</I> +<I>Y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>4</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+ce qui revient à chercher le maximum de −(−<I>X</I>−2<I>Y</I>+3)=<I>X</I>+2<I>Y</I>−3
+sous les mêmes conditions, on est donc ramené au problème
+précédent (le maximum est donc de 7-3=4).</P><P><B>Cas général</B><BR>
+Tous les cas ne se ramènent pas directement au cas simple ci-dessus.
+On verra plus loin comment les traiter, cela nécessitera d’utiliser
+une autre forme d’appel de <TT>simplex_reduce</TT>, que l’on peut
+d’ailleurs aussi utiliser dans le cas simple de la manière
+suivante :
+si <TT>A</TT> a <I>p</I> lignes et <I>n</I> colonnes et si on définit :
+</P><DIV CLASS="center">
+<TT>B:=augment(A,idn(p));</TT> <TT>C:=border(B,b);</TT><BR>
+<TT>d:=append(-c,0$(p+1));</TT> <TT>D:=augment(C,[d]);</TT>
+</DIV><P>
+<TT>simplex_reduce</TT> accepte aussi en argument <TT>D</TT>.<BR>
+Pour l’exemple précédent, on tape :
+</P><DIV CLASS="center"><TT>A:=[[-3,2],[1,1]];B:=augment(A,idn(2)); C:=border(B,[3,4]);
+D:=augment(C,[[-1,-2,0,0,0]])</TT></DIV><P>
+On a <TT>C=[[-3,2,1,0,3],[1,1,0,1,4]]</TT><BR>
+et <TT>D=[[-3,2,1,0,3],[1,1,0,1,4],[-1,-2,0,0,0]]</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>simplex_reduce(D)</TT></DIV><P>
+On obtient le même résultat que précédemment.</P><HR>
+<A HREF="cascmd_fr601.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr603.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

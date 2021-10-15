@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Nombres de chiffres significatifs : Digits DIGITS</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr025.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr027.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc35">1.7.4</A>  Nombres de chiffres significatifs : <TT>Digits DIGITS</TT></H3><P><A NAME="@default15"></A><A NAME="@default16"></A>
+<TT>Digits</TT> ou <TT>DIGITS</TT> est le nom d’une variable qui contient
+le nombre de chiffres de l’affichage.
+On tape :
+</P><DIV CLASS="center"><TT>Digits</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>DIGITS</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>12</TT></DIV><P>
+si dans la configuration du CAS il y a 12 dans la case <TT>Chiffres</TT>.<BR>
+
+On peut changer la valeur de la case <TT>Chiffres</TT> de la configuration du CAS
+en affectant une valeur à <TT>Digits</TT> ou <TT>DIGITS</TT>.
+<TT>Digits</TT> ou <TT>DIGITS</TT> permet donc de spécifier le nombre de 
+chiffres significatifs de l’affichage, pour cela on doit taper <TT>Digits</TT> 
+puis <TT>:=</TT> et un nombre entier entre 1 et 1000.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>Digits:=3</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>DIGITS:=3</TT></DIV><P>
+pour avoir 3 chiffres à l’affichage :
+Puis, on tape :
+</P><DIV CLASS="center"><TT>1.0/3</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.333</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>4.0/3</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.33</TT></DIV><P>IL y a deux cas à distinguer :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+La valeur de <TT>Digits</TT> ou <TT>DIGITS</TT> est inférieure à 14, 
+<TT>Xcas</TT> travaille alors avec des flottants machines c’est à dire que les 
+décimaux ont environ 14 chiffres significatifs car ils sont representés en 
+binaire sur 52 bits et donc les calculs seront les mêmes quelque soit <TT>n</TT>
+inférieur à 14, seul l’affichage sera différent. En effet si 
+<TT>Digits:=n</TT> ou <TT>DIGITS:=n</TT> avec <TT>n</TT> inférieur à 14 
+l’affichage sera fait avec <TT>n</TT> chiffres significatifs.<BR>
+On tape :
+<DIV CLASS="center"><TT>Digits:=5</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>DIGITS:=5</TT></DIV>
+puis, on tape :
+<DIV CLASS="center"><TT>a:=4.0/3</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1.3333</TT></DIV>
+Mais, si on tape :
+<DIV CLASS="center"><TT>b:=a-1.333333333</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>3.3333e-10</TT></DIV>
+ce qui prouve que <TT>Xcas</TT> travaille avec <TT>a=1.33333333333333</TT>.</LI><LI CLASS="li-itemize">La valeur <TT>n</TT> de <TT>Digits</TT> ou <TT>DIGITS</TT> est supérieure à 
+14, <TT>Xcas</TT> travaille avec des flottants en multi-précision c’est à dire
+que les décimaux auront environ <TT>n</TT> chiffres significatifs. Donc si 
+on tape <TT>Digits:=n</TT> ou <TT>DIGITS:=n</TT> avec <TT>n</TT> supérieur à 14 
+l’affichage et les calculs se feront avec <TT>n</TT> chiffres significatifs.<BR>
+On tape :
+<DIV CLASS="center"><TT>Digits:=20</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>DIGITS:=20</TT></DIV>
+puis, on tape :
+<DIV CLASS="center"><TT>c:=4.0/3</TT></DIV>
+On obtient 21 chiffres significatifs:
+<DIV CLASS="center"><TT>1.33333333333333333333</TT></DIV>
+0n tape :
+<DIV CLASS="center"><TT>c-1.33333333333333333333</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0.000000000000000000000</TT></DIV>
+Dans ce cas les calculs correspondent à l’affichage.<BR>
+<B>Exemples</B>
+On tape :
+<DIV CLASS="center"><TT>Digits:=5</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>DIGITS:=5</TT></DIV>
+puis
+<DIV CLASS="center"><TT>evalf((pi)</TT><CODE><TT>^</TT></CODE><TT>4)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>97.409</TT></DIV>
+puis
+<DIV CLASS="center"><TT>evalf((pi)</TT><CODE><TT>^</TT></CODE><TT>4-97.409)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>9.1034e-05</TT></DIV>
+puis
+<DIV CLASS="center"><TT>evalf((pi)</TT><CODE><TT>^</TT></CODE><TT>4-97.40909103)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>4.0018e-09</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>Digits:=20</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>DIGITS:=20</TT></DIV>
+puis
+On tape 
+<DIV CLASS="center"><TT>evalf((pi)</TT><CODE><TT>^</TT></CODE><TT>4)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0.974090910340024372345e2</TT></DIV>
+puis
+<DIV CLASS="center"><TT>evalf((pi)</TT><CODE><TT>^</TT></CODE><TT>4--97.40909103)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>4.001776687801e-09</TT></DIV>
+</LI></UL><P>
+<B>Remarque</B><BR>
+ Si pour un calcul on veut par exemple avoir un affichage avec seulement <I>n</I> 
+chiffres significatifs il faut utiliser <TT>evalf</TT> avec 2 arguments : cela ne 
+change pas la valeur de <TT>Digits</TT>.<BR>
+On tape :<BR>
+<TT>a:=862/7</TT><BR>
+<TT>evalf(a,5)</TT><BR>
+On obtient :<BR>
+<TT>123.14</TT><BR>
+<TT>evalf(a)</TT><BR>
+On obtient si dans la configuration utilisée <TT>Digits</TT> vaut 12 :<BR>
+<TT>123.142857143</TT>
+</P><HR>
+<A HREF="cascmd_fr025.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr027.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

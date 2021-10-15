@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Construction of a Galois field : GF</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en266.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en268.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc300">2.31.18</A>  Construction of a Galois field : <TT>GF</TT></H3><P><A NAME="@default464"></A>
+<TT>GF</TT> takes as arguments a prime integer <I>p</I> 
+and an integer <I>n</I>&gt;1.<BR>
+<TT>GF</TT> returns a Galois field of caracteristic <I>p</I> having <I>p</I><SUP><I>n</I></SUP>
+elements.<BR>
+Elements of the field and the field itself
+are represented by <TT>GF(...)</TT> where <TT>...</TT> is the following 
+sequence:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+the caracteristic <I>p</I> (<I>px</I>=0),
+</LI><LI CLASS="li-itemize">an irreducible primitive minimal polynomial generating an
+ideal <I>I</I> in &#X2124;/<I>p</I>&#X2124;[<I>X</I>], the Galois field being the quotient
+of &#X2124;/<I>p</I>&#X2124;[<I>X</I>] by <I>I</I>,
+</LI><LI CLASS="li-itemize">the name of the polynomial variable, by default <TT>x</TT>,
+</LI><LI CLASS="li-itemize">a polynomial (a remainder modulo the minimal polynomial) 
+for an element of the field
+(field elements are represented with the additive representation)
+or <TT>undef</TT> for the field itself.
+</LI></UL><P>
+You should give a name to this field (for example <TT>G:=GF(p,n)</TT>),
+in order to build elements of the field from a polynomial in
+&#X2124;/<I>p</I>&#X2124;[<I>X</I>], for example <TT>G(x</TT><CODE><TT>^</TT></CODE><TT>3+x)</TT>. Note that <TT>G(x)</TT>
+is a generator of the multiplicative group <TT><I>G</I></TT><SUP><TT>*</TT></SUP>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>G:=GF(2,8)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>GF(2,x</TT><CODE><TT>^</TT></CODE><TT>8-x</TT><CODE><TT>^</TT></CODE><TT>6-x</TT><CODE><TT>^</TT></CODE><TT>4-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2-x-1,x,undef)</TT></DIV><P>
+The field <I>G</I> has 2<SUP>8</SUP>=256 elements and 
+<I>x</I> generates the multiplicative group
+of this field ({ 1,<I>x</I>,<I>x</I><SUP>2</SUP>,...<I>x</I><SUP>254</SUP> }).<BR>
+Input :
+</P><DIV CLASS="center"><TT>G(x</TT><CODE><TT>^</TT></CODE><TT>9)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>GF(2,x</TT><CODE><TT>^</TT></CODE><TT>8-x</TT><CODE><TT>^</TT></CODE><TT>6-x</TT><CODE><TT>^</TT></CODE><TT>4-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2-x-1,x,x</TT><CODE><TT>^</TT></CODE><TT>7+x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>2+x)</TT></DIV><P>
+indeed <I>x</I><SUP>8</SUP>=<I>x</I><SUP>6</SUP>+<I>x</I><SUP>4</SUP>+<I>x</I><SUP>3</SUP>+<I>x</I><SUP>2</SUP>+<I>x</I>+1, hence <I>x</I><SUP>9</SUP>=<I>x</I><SUP>7</SUP>+<I>x</I><SUP>5</SUP>+<I>x</I><SUP>4</SUP>+<I>x</I><SUP>3</SUP>+<I>x</I><SUP>2</SUP>+<I>x</I>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>G(x)</TT><CODE><TT>^</TT></CODE><TT>255</TT></DIV><P>
+Output should be the unit, indeed:
+</P><DIV CLASS="center">
+<TT>GF(2,x</TT><CODE><TT>^</TT></CODE><TT>8-x</TT><CODE><TT>^</TT></CODE><TT>6-x</TT><CODE><TT>^</TT></CODE><TT>4-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2-x-1,x,1)</TT></DIV><P>
+As one can see on these examples, the output contains many times the same
+informations that you would prefer no to see
+if you work many times with the same field. For this reason,
+the definition of a Galois field may have an optionnal argument,
+a variable name which will be used thereafter to represent elements
+of the field. Since you will also most
+likely want to modify the name of the indeterminate, the field
+name is grouped with the variable name in a list
+passed as third argument to <TT>GF</TT>.
+Note that these two variable names must be quoted.<BR>
+Example, input :
+</P><DIV CLASS="center"><TT>G:=GF(2,2,[&#X2019;w&#X2019;,&#X2019;G&#X2019;]):; G(w</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>Done, G(w+1)</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>G(w</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>G(1)</TT></DIV><P>
+Hence, the elements of <TT>GF(2,2)</TT> are
+<TT>G(0),G(1),G(w),G(w</TT><CODE><TT>^</TT></CODE><TT>2)=G(w+1)</TT>.</P><P>We may also impose the irreductible primitive polynomial that we whish
+to use, by putting it as second argument (instead of <I>n</I>), 
+for example :
+</P><DIV CLASS="center"><CODE>G:=GF(2,w^8+w^6+w^3+w^2+1,['w','G'])</CODE></DIV><P>
+If the polynomial is not primitive, <TT>Xcas</TT> will replace it
+automatically by a primitive polynomial, for example :
+</P><DIV CLASS="center"><CODE>G:=GF(2,w^8+w^7+w^5+w+1,['w','G'])</CODE></DIV><P>
+Output :
+</P><DIV CLASS="center"><CODE>G:=GF(2,w^8-w^6-w^3-w^2-1,['w','G'],undef)</CODE></DIV><HR>
+<A HREF="cascmd_en266.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en268.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

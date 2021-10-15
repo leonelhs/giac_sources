@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Length of an arc : arcLen</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en130.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en132.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc150">2.17.2</A>  Length of an arc : <TT>arcLen</TT></H3><P><A NAME="@default252"></A>
+<TT>arcLen</TT> takes four arguments : an expression <I>ex</I> (resp a list
+of two expressions [<I>ex</I>1,<I>ex</I>2]), the name of a parameter and two values <I>a</I>
+and <I>b</I> of this parameter.<BR>
+<TT>arcLen</TT> computes the length of the curve define by the equation 
+<I>y</I>=<I>f</I>(<I>x</I>)=<I>ex</I> (resp by <I>x</I>=<I>ex</I>1,<I>y</I>=<I>ex</I>2) when the parameter values varies from <I>a</I> 
+to <I>b</I>, using the formula
+<TT>arcLen(f(x),x,a,b)=</TT><BR>
+<TT>integrate(sqrt(diff(f(x),x)</TT><CODE><TT>^</TT></CODE><TT>2+1),x,a,b)</TT><BR>
+or<BR>
+<TT>integrate(sqrt(diff(x(t),t)</TT><CODE><TT>^</TT></CODE><TT>2+diff(y(t),t)</TT><CODE><TT>^</TT></CODE><TT>2),t,a,b)</TT>.<BR>
+
+<B>Examples</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Compute the length of the parabola <I>y</I>=<I>x</I><SUP>2</SUP> from <I>x</I>=0 to <I>x</I>=1.<BR>
+Input :
+<DIV CLASS="center"><TT>arcLen(x</TT><CODE><TT>^</TT></CODE><TT>2,x,0,1)</TT></DIV>
+or
+<DIV CLASS="center"><TT>arcLen([t,t</TT><CODE><TT>^</TT></CODE><TT>2],t,0,1)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>-1/4*log(sqrt(5)-2)-(-(sqrt(5)))/2</TT></DIV> 
+</LI><LI CLASS="li-itemize">Compute the length of the curve <I>y</I>=cosh(<I>x</I>) from <I>x</I>=0 to 
+<I>x</I>=ln(2).<BR>
+Input :
+<DIV CLASS="center"><TT>arcLen(cosh(x),x,0,log(2))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>3/4</TT></DIV>
+</LI><LI CLASS="li-itemize">Compute the length of the circle <I>x</I>=cos(<I>t</I>),<I>y</I>=sin(<I>t</I>) from <I>t</I>=0 to 
+<I>t</I>=2*&#X3C0;.<BR>
+Input :
+<DIV CLASS="center"><TT>arcLen([cos(t),sin(t)],t,0,2*pi)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>2*pi</TT></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en130.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en132.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

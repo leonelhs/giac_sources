@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Integration by parts : ibpdv et ibpu</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en137.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en139.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc158">2.18.4</A>  Integration by parts : <TT>ibpdv</TT> et <TT>ibpu</TT></H3><H4 CLASS="subsubsection"><A NAME="toc9"></A><TT>ibpdv</TT></H4><P><A NAME="@default266"></A>
+<TT>ibpdv</TT> is used to search the primitive of an expression written 
+as <I>u</I>(<I>x</I>).<I>v</I>&#X2032;(<I>x</I>).<BR>
+<TT>ibpdv</TT> takes two arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+an expression 
+<I>u</I>(<I>x</I>).<I>v</I>&#X2032;(<I>x</I>) and <I>v</I>(<I>x</I>) (or a list of two expressions 
+[<I>F</I>(<I>x</I>), <I>u</I>(<I>x</I>)*<I>v</I>&#X2032;(<I>x</I>)] and <I>v</I>(<I>x</I>)),
+</LI><LI CLASS="li-itemize">or an expression <I>g</I>(<I>x</I>) and 0 (or a list of two expressions 
+[<I>F</I>(<I>x</I>), <I>g</I>(<I>x</I>)] and 0).
+</LI></UL><P>
+<TT>ibpdv</TT> returns :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+if <I>v</I>(<I>x</I>) &#X2260; 0, the list [<I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>),&#X2212;<I>v</I>(<I>x</I>).<I>u</I>&#X2032;(<I>x</I>)] (or 
+[<I>F</I>(<I>x</I>)+<I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>),&#X2212;<I>v</I>(<I>x</I>).<I>u</I>&#X2032;(<I>x</I>)]),
+</LI><LI CLASS="li-itemize">if the second argument is zero, a primitive of the first argument 
+<I>g</I>(<I>x</I>) (or <I>F</I>(<I>x</I>)+a primitive of <I>g</I>(<I>x</I>)) :<BR>
+hence, <TT>ibpdv(g(x),0)</TT> returns a primitive <TT>G(x)</TT> of <TT>g(x)</TT> or<BR>
+<TT>ibpdv([F(x),g(x)],0)</TT> returns <TT>F(x)+G(x)</TT> where <TT>diff(G(x))=g(x)</TT>.
+</LI></UL><P>
+Hence, <TT>ibpdv</TT> returns the terms computed in an integration by parts, 
+with the possibility of doing several <TT>ibpdv</TT> succesively.<BR>
+When the answer of <TT>ibpdv(u(x)*v&#X2019;(x),v(x))</TT> is computed, to obtain a 
+primitive of <I>u</I>(<I>x</I>).<I>v</I>&#X2032;(<I>x</I>), it remains to 
+compute the integral of the second term of this answer and then, to sum this 
+integral with the first term of this answer : to do this, just use 
+<TT>ibpdv</TT> command with the answer as first argument and 
+a new <I>v</I>(<I>x</I>) (or 0 to terminate the integration) as second argument.<BR>
+Input :
+</P><DIV CLASS="center"><TT>ibpdv(ln(x),x) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[x.ln(x),-1]</TT></DIV><P>
+then
+</P><DIV CLASS="center"><TT>ibpdv([x.ln(x),-1],0) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-x+x.ln(x)</TT></DIV><P>
+<B>Remark</B><BR>
+ When the first argument of <TT>ibpdv</TT> is a list of two elements, <TT>ibpdv</TT> 
+works only on the last element of this list and adds the integrated term to
+the first element of this list. 
+(therefore it is possible to do several <TT>ibpdv</TT> successively).<BR>
+For example :<BR>
+<TT>ibpdv((log(x))</TT><CODE><TT>^</TT></CODE><TT>2,x) = [x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))]</TT><BR>
+it remains to integrate <TT>-(2*log(x))</TT>, the input :<BR>
+<TT>ibpdv(ans(),x)</TT> or input :<BR>
+<TT>ibpdv([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))],x)</TT><BR>
+Output :<BR>
+<TT>[x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2]</TT><BR>
+and it remains to integrate <TT>2</TT>, hence input <TT>ibpdv(ans(),0)</TT> or<BR>
+<TT>ibpdv([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2],0)</TT>.<BR>
+Output :
+<TT>x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x)))+2*x</TT>
+</P><H4 CLASS="subsubsection"><A NAME="toc10"></A><TT>ibpu</TT></H4><P><A NAME="@default267"></A>
+<TT>ibpu</TT> is used to search the primitive of an expression written 
+as <I>u</I>(<I>x</I>).<I>v</I>&#X2032;(<I>x</I>)
+<TT>ibpu</TT> takes two arguments : 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+an expression <I>u</I>(<I>x</I>).<I>v</I>&#X2032;(<I>x</I>) and <I>u</I>(<I>x</I>) (or a list of two expressions 
+[<I>F</I>(<I>x</I>), <I>u</I>(<I>x</I>)*<I>v</I>&#X2032;(<I>x</I>)] and <I>u</I>(<I>x</I>)),
+</LI><LI CLASS="li-itemize">an expression <I>g</I>(<I>x</I>) and 0 (or a list of two expressions [<I>F</I>(<I>x</I>) <I>g</I>(<I>x</I>)] 
+and 0).
+</LI></UL><P>
+<TT>ibpu</TT> returns :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+if <I>u</I>(<I>x</I>) &#X2260; 0, the list [<I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>),&#X2212;<I>v</I>(<I>x</I>).<I>u</I>&#X2032;(<I>x</I>)] 
+(or returns the list [<I>F</I>(<I>x</I>)+<I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>),&#X2212;<I>v</I>(<I>x</I>).<I>u</I>&#X2032;(<I>x</I>)]),
+</LI><LI CLASS="li-itemize">if the second argument is zero, a primitive of the first argument <I>g</I>(<I>x</I>)
+(or <I>F</I>(<I>x</I>)+a primitive of <I>g</I>(<I>x</I>)):<BR>
+<TT>ibpu(g(x),0)</TT> returns <TT>G(x)</TT> where <TT>diff(G(x))=g(x)</TT> or<BR>
+ <TT>ibpu([F(x),g(x)],0)</TT> returns <TT>F(x)+G(x)</TT> where <TT>diff(G(x))=g(x)</TT>.
+</LI></UL><P>
+Hence, <TT>ibpu</TT> returns the terms computed in an integration by parts, 
+with the possibility of doing several <TT>ibpu</TT> succesively.<BR>
+When the answer of <TT>ibpu(u(x)*v&#X2019;(x),u(x))</TT> is computed, to obtain a 
+primitive of <I>u</I>(<I>x</I>).<I>v</I>&#X2032;(<I>x</I>), it remains to 
+compute the integral of the second term of this answer and then, to sum this 
+integral with the first term of this answer : to do this, just use 
+<TT>ibpu</TT> command with the answer as first argument and 
+a new <I>u</I>(<I>x</I>) (or 0 to terminate the integration) as second argument.<BR>
+Input :
+</P><DIV CLASS="center"><TT>ibpu(ln(x),ln(x)) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[x.ln(x),-1]</TT></DIV><P>
+then
+</P><DIV CLASS="center"><TT>ibpu([x.ln(x),-1],0) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-x+x.ln(x)</TT></DIV><P>
+<B>Remark</B><BR>
+When the first argument of <TT>ibpu</TT> is a list of two elements, <TT>ibpu</TT> 
+works only on the last element of this list and adds the integrated term to
+the first element of this list. 
+(therefore it is possible to do several <TT>ibpu</TT> successively).<BR>
+For example :<BR>
+<TT>ibpu((log(x))</TT><CODE><TT>^</TT></CODE><TT>2,log(x)) = [x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))]</TT><BR>
+it remains to integrate <TT>-(2*log(x))</TT>, hence input :<BR>
+<TT>ibpu(ans(),log(x))</TT>
+or input :<BR>
+<TT>ibpu([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))],log(x))</TT><BR>
+Output :<BR>
+<TT>[x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2]</TT><BR>
+it remains to integrate <TT>2</TT>, hence input :<BR>
+<TT>ibpu(ans(),0)</TT> or input :<BR>
+<TT>ibpu([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2],0)</TT>.<BR>
+Output :
+<TT>x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x)))+2*x</TT></P><HR>
+<A HREF="cascmd_en137.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en139.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>fsolve avec l’option secant_solver</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr116.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr118.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc169">4.5.5</A>  <TT>fsolve</TT> avec l’option <TT>secant_solver</TT></H3><P><A NAME="@default204"></A>
+La méthode de la sécante est une méthode simplifiée de la méthode de 
+Newton.<BR>
+Le calcul de <I>f</I>′(<I>x</I><SUB><I>n</I></SUB>) se fait de façon approchée : cela peut être utile quand le calcul de la derivée est couteux.<BR>
+On a :<BR>
+<I>x</I><SUB><I>i</I>+1</SUB> = <I>x</I><SUB><I>i</I></SUB>− <I>f</I>(<I>x</I><SUB><I>i</I></SUB>)/<I>f</I>′<SUB><I>est</I></SUB> et
+<I>f</I>′<SUB><I>est</I></SUB> = <I>f</I>(<I>x</I><SUB><I>i</I></SUB>) − <I>f</I>(<I>x</I><SUB><I>i</I>−1</SUB>)/(<I>x</I><SUB><I>i</I></SUB> − <I>x</I><SUB><I>i</I>−1</SUB>)<BR>
+Pour le calcul de <I>x</I><SUB>1</SUB> on utilise la méthode de Newton.<BR>
+La convergence pour les racines simples est d’ordre (1 + √<SPAN style="text-decoration:overline">5</SPAN>)/2=1.62 .<BR>
+On tape :
+</P><DIV CLASS="center"><TT>fsolve((cos(x))=x,x,-1..1,secant_solver)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0.739085078239,0.739085137844]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>fsolve((cos(x))=x,x,0,secant_solver)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.739085133215</TT></DIV><HR>
+<A HREF="cascmd_fr116.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr118.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

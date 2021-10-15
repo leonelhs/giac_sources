@@ -1,0 +1,204 @@
+// fltk 7Fl_Tile 34 76 724 191
+[
+// fltk N4xcas19Multiline_Input_tabE 34 76 724 30
+f(x):=1/6+x/3+x^2/2
+,
+// fltk N4xcas10Log_OutputE 34 106 724 84
+// Parsing f£// Success compiling f££
+,
+// fltk N4xcas8EquationE 34 190 724 77
+ (x)->1/6+x/3+(x^2)/2
+]
+,
+// fltk 7Fl_Tile 34 269 724 100
+[
+// fltk N4xcas23Comment_Multiline_InputE 34 269 724 98
+on utilise un ecran de geometrie (menu Edit->ajouter->geometrie)£pour tracer plus facilement sur le meme graphique£Noter nodisp qui permet de definir un objet sans l'afficher, et inter qui£renvoie la liste des intersections, I[0] designant la 1ere intersection
+,
+// fltk N4xcas10Log_OutputE 34 367 724 2
+
+]
+,
+// fltk N4xcas6FigureE 34 371 724 369
+// fltk N4xcas12History_PackE 36 139 221 601
+[
+// fltk 7Fl_Tile 51 139 206 69
+[
+// fltk N4xcas19Multiline_Input_tabE 51 139 206 30
+B:=couleur(droite(y=x),bleu);
+,
+// fltk N4xcas10Log_OutputE 51 169 206 1
+
+,
+// fltk 9Fl_Scroll 51 170 206 38
+[
+// fltk N4xcas10Gen_OutputE 51 170 271 19
+polygone(point(0,0),point(-1,-1))
+,
+// fltk 12Fl_Scrollbar 51 413 190 16
+[]
+,
+// fltk 12Fl_Scrollbar 241 391 16 22
+[]
+]
+]
+,
+// fltk 7Fl_Tile 51 210 206 69
+[
+// fltk N4xcas19Multiline_Input_tabE 51 210 206 30
+P:=couleur(plot(f(x)),rouge);
+,
+// fltk N4xcas10Log_OutputE 51 240 206 1
+
+,
+// fltk 9Fl_Scroll 51 241 206 38
+[
+// fltk N4xcas10Gen_OutputE 51 241 12 19
+0
+,
+// fltk 12Fl_Scrollbar 51 496 190 16
+[]
+,
+// fltk 12Fl_Scrollbar 241 474 16 22
+[]
+]
+]
+,
+// fltk 7Fl_Tile 51 281 206 69
+[
+// fltk N4xcas19Multiline_Input_tabE 51 281 206 30
+nodisp(I:=inter(P,B))
+,
+// fltk N4xcas10Log_OutputE 51 311 206 1
+
+,
+// fltk 9Fl_Scroll 51 312 206 38
+[
+// fltk N4xcas10Gen_OutputE 51 312 82 19
+"nodisp()"
+,
+// fltk 12Fl_Scrollbar 51 496 190 16
+[]
+,
+// fltk 12Fl_Scrollbar 241 474 16 22
+[]
+]
+]
+,
+// fltk 7Fl_Tile 51 352 206 69
+[
+// fltk N4xcas19Multiline_Input_tabE 51 352 206 30
+x0:=abscisse(I[0])
+,
+// fltk N4xcas10Log_OutputE 51 382 206 1
+
+,
+// fltk 9Fl_Scroll 51 383 206 38
+[
+// fltk N4xcas10Gen_OutputE 51 383 492 19
+group[re(inter(0,curve(group[pnt[(1+i)*t+-1-i,t,-infinity,+(infinity)],line[0,-1-i]])))]
+,
+// fltk 12Fl_Scrollbar 51 405 206 16
+[]
+,
+// fltk 12Fl_Scrollbar 257 383 16 22
+[]
+]
+]
+,
+// fltk 7Fl_Tile 51 423 206 69
+[
+// fltk N4xcas19Multiline_Input_tabE 51 423 206 30
+tangente:=tangent(P,x0)
+,
+// fltk N4xcas10Log_OutputE 51 453 206 1
+
+,
+// fltk 9Fl_Scroll 51 454 206 38
+[
+// fltk N4xcas10Gen_OutputE 51 454 200 19
+"tangent Bad Argument Value"
+,
+// fltk 12Fl_Scrollbar 51 388 206 16
+[]
+,
+// fltk 12Fl_Scrollbar 257 350 16 38
+[]
+]
+]
+,
+// fltk 7Fl_Tile 51 494 206 69
+[
+// fltk N4xcas19Multiline_Input_tabE 51 494 206 30
+segment(point(x0,0),point(x0,x0))
+,
+// fltk N4xcas10Log_OutputE 51 524 206 1
+
+,
+// fltk 9Fl_Scroll 51 525 206 38
+[
+// fltk N4xcas10Gen_OutputE 51 525 238 19
+"pointon Error: Bad Argument Value"
+,
+// fltk 12Fl_Scrollbar 51 443 206 16
+[]
+,
+// fltk 12Fl_Scrollbar 257 421 16 22
+[]
+]
+]
+,
+// fltk 7Fl_Tile 51 565 206 69
+[
+// fltk N4xcas19Multiline_Input_tabE 51 565 206 30
+segment(point(x0,x0),point(0,x0)
+,
+// fltk N4xcas10Log_OutputE 51 595 206 1
+
+,
+// fltk 9Fl_Scroll 51 596 206 38
+[
+// fltk N4xcas10Gen_OutputE 51 596 238 19
+"pointon Error: Bad Argument Value"
+,
+// fltk 12Fl_Scrollbar 51 453 206 16
+[]
+,
+// fltk 12Fl_Scrollbar 257 431 16 22
+[]
+]
+]
+,
+// fltk 7Fl_Tile 51 636 206 69
+[
+// fltk N4xcas19Multiline_Input_tabE 51 636 206 30
+legende(I[0],"point fixe")
+,
+// fltk N4xcas10Log_OutputE 51 666 206 1
+
+,
+// fltk 9Fl_Scroll 51 667 206 38
+[
+// fltk N4xcas10Gen_OutputE 51 667 1003 19
+polygone(point(re(inter(0,curve(group[pnt[(1+i)*t+-1-i,t,-infinity,+(infinity)],line[0,-1-i]]))),im(inter(0,curve(group[pnt[(1+i)*t+-1-i,t,-infinity,+(infinity)],line[0,-1-i]])))))
+,
+// fltk 12Fl_Scrollbar 51 394 206 16
+[]
+,
+// fltk 12Fl_Scrollbar 257 372 16 22
+[]
+]
+]
+,
+// fltk 7Fl_Tile 51 707 206 31
+[
+// fltk N4xcas19Multiline_Input_tabE 51 707 206 30
+
+,
+// fltk N4xcas10Log_OutputE 51 737 206 1
+
+]
+]
+// fltk N4xcas8GeometryE 275 391 392 349
+-2.499,2.499,-2.187,2.187,[pnt(pnt[line[0,-1-i],bleu,"B"]),0,"nodisp()",group[re(inter(0,curve(group[pnt[(1+i)*t+-1-i,t,-infinity,+(infinity)],line[0,-1-i]])))],"tangent Bad Argument Value","pointon Error: Bad Argument Value","pointon Error: Bad Argument Value",pnt(pnt[group[inter(0,curve(group[pnt[(1+i)*t+-1-i,t,-infinity,+(infinity)],line[0,-1-i]]))],63,"point fixe"])],-2.499,2.499,1,0,0,0
+

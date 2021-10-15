@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Polynôme de Tchebychev de 1-ière espèce : tchebyshev1</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr404.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr406.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc492">6.28.4</A>  Polynôme de Tchebychev de 1-ière espèce : <TT>tchebyshev1</TT></H3><P><A NAME="@default750"></A>
+<TT>tchebyshev1</TT> a comme argument un entier <I>n</I> et eventuellement le 
+nom de la variable (<I>x</I> par défaut).<BR>
+<TT>tchebyshev1</TT> renvoie le polynôme de Tchebychev de première espèce,
+de degré <I>n</I>, noté <I>T</I>(<I>n</I>,<I>x</I>).<BR>
+ On a :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>T</I>(<I>n</I>,<I>x</I>)= cos(<I>n</I>.arccos(<I>x</I>))</TD></TR>
+</TABLE><P><BR>
+<I>T</I>(<I>n</I>,<I>x</I>) vérifie les relations :<BR>
+<I>T</I>(0,<I>x</I>)=1<BR>
+<I>T</I>(1,<I>x</I>)=<I>x</I><BR>
+<I>T</I>(<I>n</I>,<I>x</I>)=2<I>xT</I>(<I>n</I>−1,<I>x</I>)−<I>T</I>(<I>n</I>−2,<I>x</I>)<BR>
+Les polynômes <I>T</I>(<I>n</I>,<I>x</I>) sont orthogonaux pour le produit scalaire :<BR>
+&lt;<I>f</I>,<I>g</I>&gt;=∫<SUB>−1</SUB><SUP>+1</SUP><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)/√<SPAN style="text-decoration:overline">1−<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><I>dx</I><BR>
+On tape :
+</P><DIV CLASS="center"><TT>tchebyshev1(4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>8*x</TT><CODE><TT>^</TT></CODE><TT>4+-8*x</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>tchebyshev1(4,y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>8*y</TT><CODE><TT>^</TT></CODE><TT>4+-8*y</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+et on a bien :<BR>
+cos( 4.<I>x</I>)=<I>Re</I>((cos(<I>x</I>)+<I>i</I>.sin(<I>x</I>))<SUP>4</SUP>)<BR>
+cos( 4.<I>x</I>)=cos(<I>x</I>)<SUP>4</SUP>−6.cos(<I>x</I>)<SUP>2</SUP>.(1−cos(<I>x</I>)<SUP>2</SUP>)+((1−cos(<I>x</I>)<SUP>2</SUP>)<SUP>2</SUP>.<BR>
+cos(4.<I>x</I>)=<I>T</I>(4,cos(<I>x</I>)).
+</P><HR>
+<A HREF="cascmd_fr404.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr406.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

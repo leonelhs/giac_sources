@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Exact bounds for complex roots of a polynomial : 
+complexroot</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en243.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en245.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc275">2.29.1</A>  Exact bounds for complex roots of a polynomial :<BR>
+<TT>complexroot</TT></H3><P><A NAME="@default432"></A>
+<TT>complexroot</TT> takes 2 or 4 arguments : a polynomial and a real 
+number &#X454; and optionnally two complex numbers &#X3B1;,&#X3B2;.<BR>
+<TT>complexroot</TT> returns a list of vectors. 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+If <TT>complexroot</TT> has 2 arguments, 
+the elements of each vector are
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+either an interval (the 
+boundaries of this interval are the opposite vertices of a rectangle with sides
+parallel to the axis and containing a complex root of the polynomial) and the 
+multiplicity of this root.<BR>
+Let the interval be [<I>a</I><SUB>1</SUB>+<I>ib</I><SUB>1</SUB>,<I>a</I><SUB>2</SUB>+<I>ib</I><SUB>2</SUB>] then |<I>a</I><SUB>1</SUB>&#X2212;<I>a</I><SUB>2</SUB>|&lt;&#X454;, 
+|<I>b</I><SUB>1</SUB>&#X2212;<I>b</I><SUB>2</SUB>|&lt;&#X454; and the root <I>a</I>+<I>ib</I> verifies 
+<I>a</I><SUB>1</SUB>&#X2264; <I>a</I> &#X2264; <I>a</I><SUB>2</SUB> and <I>b</I><SUB>1</SUB>&#X2264; <I>b</I> &#X2264; <I>b</I><SUB>2</SUB>.
+</LI><LI CLASS="li-itemize">or the value of an exact complex root of 
+the polynomial and the multiplicity of this root 
+</LI></UL>
+</LI><LI CLASS="li-itemize">If <TT>complexroot</TT> has 4 arguments, <TT>complexroot</TT> returns a list of
+vectors as above, but only for the roots lying in 
+the rectangle with sides parallel to the axis having &#X3B1;,&#X3B2; as
+opposite vertices.<BR>
+</LI></UL><P>
+To find the roots of <I>x</I><SUP>3</SUP>+1, input:
+</P><DIV CLASS="center"><TT>complexroot(x</TT><CODE><TT>^</TT></CODE><TT>3+1,0.1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-1,1],[[(4-7*i)/8,(8-13*i)/16],1],[[(8+13*i)/16,(4+7*i)/8],1]]</TT></DIV><P>
+Hence, for <I>x</I><SUP>3</SUP>+1 :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+-1 is a root of multiplicity 1, 
+</LI><LI CLASS="li-itemize">1/2+i*<I>b</I> is a root of multiplicity 1 with &#X2212;7/8&#X2264; <I>b</I> &#X2264;
+&#X2212;13/16, 
+</LI><LI CLASS="li-itemize">1/2+i*<I>c</I> is a root of multiplicity 1 with 13/1&#X2264; <I>c</I> &#X2264;
+7/8.
+</LI></UL><P>
+To find the roots of <I>x</I><SUP>3</SUP>+1 lying inside the rectangle 
+of opposite vertices &#X2212;1,1+2*<I>i</I>, input:
+</P><DIV CLASS="center"><TT>complexroot(x</TT><CODE><TT>^</TT></CODE><TT>3+1,0.1,-1,1+2*i)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-1,1],[[(8+13*i)/16,(4+7*i)/8],1]]</TT></DIV><HR>
+<A HREF="cascmd_en243.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en245.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Pour ne pas faire la fin d’une boucle : continue</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr823.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr825.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc954">8.6.3</A>  Pour ne pas faire la fin d’une boucle : <TT>continue</TT></H3><P><A NAME="@default1496"></A>
+<TT>continue</TT> n’a pas d’argument ni parenthèse.<BR>
+<TT>continue</TT> dans une boucle, permet d’ignorer la fin de l’itération 
+et ainsi de passer directement à l’itération suivante.<BR>
+On tape :
+</P><PRE CLASS="verbatim">testcont(b):={
+local a;
+a:=10;
+while (a&gt;0) {
+a:=a-3; 
+if (a&gt;=b) {continue;} 
+print(a);
+}
+}
+</PRE><P>puis on tape :
+</P><DIV CLASS="center"><TT>testcont(4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>a:1 et a:-2 écrit en bleu et 1 comme réponse</TT></DIV><P>
+car <TT>a</TT> est imprimé que si <TT>a&lt;b=4</TT>
+</P><HR>
+<A HREF="cascmd_fr823.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr825.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

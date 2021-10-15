@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Rewrite an expression with different options : convert convertir</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en165.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en167.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc189">2.21.23</A>  Rewrite an expression with different options : <TT>convert convertir</TT></H3><P><A NAME="@default318"></A><A NAME="@default319"></A><A NAME="@default320"></A><A NAME="@default321"></A><A NAME="@default322"></A><A NAME="@default323"></A><A NAME="@default324"></A><A NAME="@default325"></A><A NAME="@default326"></A><A NAME="@default327"></A><A NAME="@default328"></A><A NAME="@default329"></A><A NAME="@default330"></A><A NAME="@default331"></A><A NAME="@default332"></A><A NAME="sec:convert"></A>
+<TT>convert</TT> takes two arguments an expression and an option.<BR>
+<TT>convert</TT> rewrites this expression applying rules depending 
+on the option. Valid options are :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>sin</TT> converts an expression like <TT>trigsin</TT>.
+</LI><LI CLASS="li-itemize"><TT>cos</TT> converts an expression like<TT>trigcos</TT>.
+</LI><LI CLASS="li-itemize"><TT>sincos</TT> converts an expression like <TT>sincos</TT>.
+</LI><LI CLASS="li-itemize"><TT>trig</TT> converts an expression like <TT>sincos</TT>.
+</LI><LI CLASS="li-itemize"><TT>tan</TT> converts an expression like <TT>halftan</TT>.
+</LI><LI CLASS="li-itemize"><TT>exp</TT> converts an expression like <TT>trig2exp</TT>.
+</LI><LI CLASS="li-itemize"><TT>ln</TT> converts an expression like <TT>trig2exp</TT>.
+</LI><LI CLASS="li-itemize"><TT>expln</TT> converts an expression like <TT>trig2exp</TT>.
+</LI><LI CLASS="li-itemize"><TT>string</TT> converts an expression into a string.
+</LI><LI CLASS="li-itemize"><TT>matrix</TT> converts a list of lists into a matrix.
+</LI><LI CLASS="li-itemize"><TT>polynom</TT> converts a Taylor series into a un polynomial 
+by removing the remainder (cf <A HREF="cascmd_en202.html#sec:convertpoly">2.24.22</A>).
+</LI><LI CLASS="li-itemize"><TT>parfrac</TT> or <TT>partfrac</TT> or <TT>fullparfrac</TT> converts a rational 
+fraction into it&#X2019;s partial fraction decomposition (<A HREF="cascmd_en243.html#sec:convertparf">2.28.9</A>).
+</LI></UL><P>
+<TT>convert</TT> can also :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+convert units, for example 
+<TT>convert(1000_g,_kg)=1.0_kg</TT> (cf <A HREF="cascmd_en507.html#sec:convertunit">5.1.4</A>).
+</LI><LI CLASS="li-itemize">write a real as a continued fraction : 
+<TT>convert(a,confrac,&#X2019;fc&#X2019;)</TT> writes <TT>a</TT> as a continued fraction
+stored in <TT>fc</TT>. Do not forget to quote the last argument if it
+was assigned.<BR>
+For example, <TT>convert(1.2,confrac,&#X2019;fc&#X2019;)=[1,5]</TT> and <TT>fc</TT> contains the 
+continue fraction équal to 1.2 (cf <A HREF="cascmd_en056.html#sec:convertdfc">2.8.7</A>). 
+</LI><LI CLASS="li-itemize">transform an integer into the list of its ciphers in a 
+basis, begining with the unit cipher (and reciprocally)
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>convert(n,base,b)</TT> transforms the integer <TT>n</TT> into the list of its 
+ciphers in a basis <TT>b</TT> begining with the unit cipher.<BR>
+For example,
+<TT>convert(123,base,10)=[3,2,1]</TT> and reciproqualy
+</LI><LI CLASS="li-itemize"><TT>convert(l,base,b)</TT> transforms the list <TT>l</TT> into the integer <TT>n</TT> 
+which have <TT>l</TT> as list of its 
+ciphers in a basis <TT>b</TT> begining with the unit cipher.<BR>
+For example, 
+<TT>convert([3,2,1],base,10)=123</TT> (cf <A HREF="index.html#sec:convertbase">2.5</A>). 
+</LI></UL>
+</LI></UL><HR>
+<A HREF="cascmd_en165.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en167.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

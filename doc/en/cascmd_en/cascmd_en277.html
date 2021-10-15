@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Taylor expansion : taylor</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en276.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en278.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc312">2.33.2</A>  Taylor expansion : <TT>taylor</TT></H3><P><A NAME="@default476"></A><A NAME="@default477"></A> 
+<TT>taylor</TT> takes from one to four arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+an expression dependending of a variable (by default <TT>x</TT>),
+</LI><LI CLASS="li-itemize">an equality variable=value (e.g. <I>x</I>=<I>a</I>) where to compute
+the Taylor expansion, by default <TT>x=0</TT>, 
+</LI><LI CLASS="li-itemize">an integer <I>n</I>, the order of the series expansion,
+by default <TT>5</TT>
+</LI><LI CLASS="li-itemize">a direction <TT>-1, 1</TT> (for unidirectional series expansion)
+or <TT>0</TT> (for bidirectional series expansion) (by default <TT>0</TT>).
+</LI></UL><P>
+Note that the syntax <TT>...,x,</TT><TT><I>n</I></TT><TT>,</TT><TT><I>a</I></TT><TT>,...</TT> 
+(instead of <TT>...,x=</TT><TT><I>a</I></TT><TT>,</TT><TT><I>n</I></TT><TT>,...</TT>) is also accepted.<BR>
+<TT>taylor</TT> returns a polynomial in <TT>x-a</TT>, plus a remainder 
+of the form:<BR>
+ <TT>(x-a)</TT><CODE><TT>^</TT></CODE><TT>n*order_size(x-a)</TT><BR>
+where <TT>order_size</TT> is a function such that,
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; <I>r</I>&gt;0,    </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">lim</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>&#X2192; 0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>x</I><SUP><I>r</I></SUP> order_size(<I>x</I>) = 0 </TD></TR>
+</TABLE><P>
+For regular series expansion, <TT>order_size</TT> is a bounded function,
+but for non regular series expansion, it might tend slowly to
+infinity, for example like a power of ln(<I>x</I>).<BR>
+Input :
+</P><DIV CLASS="center"><TT>taylor(sin(x),x=1,2)</TT></DIV><P>
+Or (be carefull with the order of the arguments !) :
+</P><DIV CLASS="center"><TT>taylor(sin(x),x,2,1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>sin(1)+cos(1)*(x-1)+(-(1/2*sin(1)))*(x-1)</TT><CODE><TT>^</TT></CODE><TT>2+ (x-1)</TT><CODE><TT>^</TT></CODE><TT>3*order_size(x-1)</TT></DIV><P>
+<B>Remark</B><BR>
+The order returned by <TT>taylor</TT> may be smaller than <I>n</I> if
+cancellations between numerator and denominator occur, for example
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">taylor(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>3</SUP>+sin(<I>x</I>)<SUP>3</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>&#X2212;sin(<I>x</I>)</TD></TR>
+</TABLE></TD><TD CLASS="dcell">) </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>taylor(x</TT><CODE><TT>^</TT></CODE><TT>3+sin(x)</TT><CODE><TT>^</TT></CODE><TT>3/(x-sin(x)))</TT></DIV><P>
+The output is only a 2nd-order series expansion :
+</P><DIV CLASS="center"><TT>6+-27/10*x</TT><CODE><TT>^2</TT></CODE><TT>+x</TT><CODE><TT>^</TT></CODE><TT>3*order_size(x)</TT></DIV><P>
+Indeed the numerator and denominator valuation is 3, hence we loose 3
+orders. To get order 4, we should ask <I>n</I>=7, input :
+</P><DIV CLASS="center"><TT>taylor(x</TT><CODE><TT>^</TT></CODE><TT>3+sin(x)</TT><CODE><TT>^</TT></CODE><TT>3/(x-sin(x)),x=0,7)</TT></DIV><P>
+Output is a 4th-order series expansion :
+</P><DIV CLASS="center"><TT>6+-27/10*x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3+711/1400*x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>5*order_size(x)</TT></DIV><HR>
+<A HREF="cascmd_en276.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en278.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

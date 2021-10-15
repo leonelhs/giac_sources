@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Rassembler les termes de même nature : combine</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr307.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr309.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc389">6.22.2</A>  Rassembler les termes de même nature : <TT>combine</TT></H3><P><A NAME="@default576"></A><A NAME="@default577"></A><A NAME="@default578"></A><A NAME="@default579"></A><A NAME="@default580"></A><A NAME="@default581"></A><A NAME="@default582"></A>
+<TT>combine</TT> a deux arguments : une expression <TT>Xpr</TT> et une 
+option <TT>exp,log,ln,sin,cos,trig</TT> le nom d’une classe de fonction.<BR>
+<TT>combine</TT> rassemble les termes de l’expression contenant cette fonction.<BR>
+<TT>combine(Xpr,ln)</TT> ou <TT>combine(Xpr,log)</TT> donne le même résultat 
+que <TT>lncollect(Xpr)</TT><BR>
+<TT>combine(Xpr,trig)</TT> ou <TT>combine(Xpr,sin)</TT> ou <TT>combine(Xpr,cos)</TT>
+donne le même résultat que <TT>tcollect(Xpr)</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),exp)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>exp(x+y)+sin(x)*cos(x)+ln(x)+ln(y)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),trig)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),sin)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),cos)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>exp(y)*exp(x)+(sin(2*x))/2+ln(x)+ln(y)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),ln)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),log)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>exp(x)*exp(y)+sin(x)*cos(x)+ln(x*y)</TT></DIV><HR>
+<A HREF="cascmd_fr307.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr309.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Déterminant d’une matrice : det</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr589.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr591.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc695">6.46.4</A>  Déterminant d’une matrice : <TT>det</TT></H3><P><A NAME="@default1088"></A>
+<A NAME="@default1089"></A><A NAME="@default1090"></A><A NAME="@default1091"></A><A NAME="@default1092"></A>
+<TT>det</TT> a comme argument une matrice <I>A</I>.<BR>
+<TT>det</TT> renvoie le déterminant de la matrice <I>A</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>det([[1,2],[3,4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>det(idn(3))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>On peut spécifier l’algorithme de calcul du déterminant en
+ajoutant un argument optionnel
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<CODE>lagrange</CODE> : lorsque les coefficients de la matrice sont
+des polynômes ou des fractions rationnelles, calcule le
+déterminant par évaluation des variables de ces polynômes
+ou fractions et interpolation de Lagrange
+</LI><LI CLASS="li-itemize"><CODE>rational_det</CODE> : l’algorithme du pivot de Gauss est
+appliqué sans conversion au format interne pour les fractions, et
+sans réduction préalable vers des coefficients sans
+dénominateurs
+</LI><LI CLASS="li-itemize"><CODE>bareiss</CODE> : l’algorithme de Gauss-Bareiss est utilisé
+(réduction sans fraction et division par le pivot de 
+l’étape précédente).
+</LI><LI CLASS="li-itemize"><CODE>minor_det</CODE> : l’algorithme utilisé est le développement
+des mineurs. Ceci nécessite 2<SUP><I>n</I></SUP> opérations, mais est parfois
+plus rapide que les autres algorithmes pour des matrices de taille
+moyenne (jusquà <I>n</I>=20 environ) à coefficients polynomiaux.
+</LI></UL><P>
+Par défaut, l’algorithme utilisé est choisi parmi Bareiss et
+Lagrange, celui donnant à priori en fonction des coefficients
+le temps de calcul le plus rapide est utilisé.
+Pour les matrices à coefficients entiers, l’algorithme utilisé
+par défaut est un mix d’une méthode <I>p</I>-adique et d’une méthode
+modulaire. On commence par résoudre un système linéaire modulo
+un premier <I>p</I> pour trouver un grand facteur du déterminant, puis
+on termine le calcul en complétant par les restes chinois
+avec quelques nombres premiers. On arrête l’algorithme de manière
+probabiliste (en fonction de la valeur de
+є=<CODE>proba_epsilon</CODE>)
+lorsque le déterminant reconstruit par les restes chinois reste
+constant pour un produit de nombres premiers supérieur à
+1/є.
+Si є=0, l’algorithme est déterministe, le test d’arrêt
+utilise la borne de Hadamard du déterminant. Le temps de calcul
+est en <I>O</I>(<I>n</I>4 ln(<I>n</I>)) mais pour des valeurs de <I>n</I> pas trop grandes
+il ressemble plutot à un <I>O</I>(<I>n</I>3).</P><HR>
+<A HREF="cascmd_fr589.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr591.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Approximate solution of y&#X2019;=f(t,y) : odesolve</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en489.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en491.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc568">4.3.4</A>  Approximate solution of y&#X2019;=f(t,y) : <TT>odesolve</TT></H3><P><A NAME="@default837"></A>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Let <I>f</I> be a function from &#X211D;<SUP>2</SUP> to &#X211D;.<BR>
+ <TT>odesolve(f(t,y),[t,y],[t0,y0],t1)</TT> or<BR>
+<TT>odesolve(f(t,y),t=t0..t1,y,y0)</TT> or<BR>
+<TT>odesolve(t0..t1,f,y0)</TT> or<BR>
+<TT>odesolve(t0..t1,(t,y)-&gt;f(t,y),y0)</TT><BR>
+returns an approximate value of <I>y</I>(<I>t</I>1) where <I>y</I>(<I>t</I>) is the 
+solution of:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>&#X2032;(<I>t</I>)=<I>f</I>(<I>t</I>,<I>y</I>(<I>t</I>)),     <I>y</I>(<I>t</I>0)=<I>y</I>0 </TD></TR>
+</TABLE>
+</LI><LI CLASS="li-itemize"><TT>odesolve</TT> accepts an optional argument for the 
+discretisation of <TT>t</TT> (<TT>tstep=value</TT>). 
+This value is passed as initial tstep value to the numeric solver
+from the GSL (Gnu Scientific Library), it may be modified
+by the solver. It is also used to control the number of iterations
+of the solver by <TT>2*(t1-t0)/tstep</TT> (if the number
+of iterations exceeds this value, the solver will stopsat a time <I>t</I>&lt;<I>t</I>1).
+</LI><LI CLASS="li-itemize"><TT>odesolve</TT> accepts <TT>curve</TT> as an optional argument.
+In that case, 
+<TT>odesolve</TT> returns the list of all the [<I>t</I>,[<I>y</I>(<I>t</I>)]] values
+that where computed.
+</LI></UL><P>
+Input :
+</P><DIV CLASS="center"><TT>odesolve(sin(t*y),[t,y],[0,1],2)</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>odesolve(sin(t*y),t=0..2,y,1)</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>odesolve(0..2,(t,y)-&gt;sin(t*y),1)</TT></DIV><P>
+or define the function :
+</P><DIV CLASS="center"><TT>f(t,y):=sin(t*y)</TT> </DIV><P>
+and input :
+</P><DIV CLASS="center"><TT>odesolve(0..2,f,1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1.82241255675]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>odesolve(0..2,f,1,tstep=0.3)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1.82241255675]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>odesolve(sin(t*y),t=0..2,y,1,tstep=0.5)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1.82241255675]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>odesolve(sin(t*y),t=0..2,y,1,tstep=0.5,curve)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[0.760963063136,[1.30972370515]],[1.39334557388,[1.86417104853]]]</TT></DIV><HR>
+<A HREF="cascmd_en489.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en491.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

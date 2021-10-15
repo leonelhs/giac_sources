@@ -1,0 +1,441 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Discrete Fourier Transform</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en167.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en169.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc192">2.22.2</A>  Discrete Fourier Transform</H3><P>
+Let <I>N</I> be an integer.
+The Discrete Fourier Transform (DFT) is a transformation <I>F</I><SUB><I>N</I></SUB> defined on
+the set of periodic sequences of period <I>N</I>, it depends on a choice
+of a primitive <I>N</I>-th root of unity &#X3C9;<SUB><I>N</I></SUB>. If the
+DFT is defined on sequences with complex coefficients, we take:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X3C9;<SUB><I>N</I></SUB>=<I>e</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2 <I>i</I> &#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="dcell">&nbsp;</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+If <I>x</I> is a periodic sequence of period 
+<I>N</I>, defined by the vector <I>x</I>=[<I>x</I><SUB>0</SUB>,<I>x</I><SUB>1</SUB>,...<I>x</I><SUB><I>N</I>&#X2212;1</SUB>] then 
+<I>F</I><SUB><I>N</I></SUB>(<I>x</I>)=<I>y</I> is a periodic sequence of period <I>N</I>, defined by:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>F</I><SUB><I>N</I>,&#X3C9;<SUB><I>N</I></SUB></SUB>(<I>x</I>))<SUB><I>k</I></SUB>=<I>y</I><SUB><I>k</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>x</I><SUB><I>j</I></SUB>&#X3C9;<SUB><I>N</I></SUB><SUP>&#X2212;<I>k</I>· <I>j</I></SUP>, <I>k</I>=0..<I>N</I>&#X2212;1 </TD></TR>
+</TABLE><P>
+where &#X3C9;<SUB><I>N</I></SUB> is a primitive <I>N</I>-th root of unity. 
+The discrete Fourier transform may be computed faster than by
+computing each <I>y</I><SUB><I>k</I></SUB> individually, by the Fast Fourier Transform (FFT).
+<TT>Xcas</TT> implements the FFT algorithm to compute
+the discrete Fourier transform only if <I>N</I> is a power of 2.</P><H4 CLASS="subsubsection"><A NAME="toc14"></A>The properties of the Discrete Fourier Transform</H4><P>
+The Discrete Fourier Transform <I>F</I><SUB><I>N</I></SUB> is a bijective transformation 
+on periodic sequences such that 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP> <I>F</I><SUB><I>N</I>,&#X3C9;<SUB><I>N</I></SUB></SUB><SUP>&#X2212;1</SUP></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>F</I><SUB><I>N</I>,&#X3C9;<SUB><I>N</I></SUB><SUP>&#X2212;1</SUP></SUB> </TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>F</I><SUB><I>N</I></SUB></TD></TR>
+</TABLE></TD><TD CLASS="dcell">     on  &#X2102;</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+i.e. :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>F</I><SUB><I>N</I></SUB><SUP>&#X2212;1</SUP>(<I>x</I>))<SUB><I>k</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>x</I><SUB><I>j</I></SUB>&#X3C9;<SUB><I>N</I></SUB><SUP><I>k</I>· <I>j</I></SUP> </TD></TR>
+</TABLE><P>
+Inside <TT>Xcas</TT> the discrete Fourier transform and it&#X2019;s inverse
+are denote by <TT>fft</TT> and <TT>ifft</TT>:
+</P><DIV CLASS="center">
+<TT>fft(x)</TT>= <I>F</I><SUB><I>N</I></SUB>(<I>x</I>),  <TT>ifft(x)</TT>= <I>F</I><SUB><I>N</I></SUB><SUP>&#X2212;1</SUP>(<I>x</I>)
+</DIV><P>
+<B>Definitions</B><BR>
+Let <I>x</I> and <I>y</I> be two periodic sequences of period <I>N</I>.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+The Hadamard product (notation ·) is defined by:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>x</I> · <I>y</I>)<SUB><I>k</I></SUB> = <I>x</I><SUB><I>k</I></SUB> <I>y</I><SUB><I>k</I></SUB> </TD></TR>
+</TABLE>
+</LI><LI CLASS="li-itemize">the convolution product (notation *) is defined by:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>x</I> * <I>y</I>)<SUB><I>k</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>x</I><SUB><I>j</I></SUB><I>y</I><SUB><I>k</I>&#X2212;<I>j</I></SUB> </TD></TR>
+</TABLE>
+</LI></UL><P>
+<B>Properties</B> :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>N</I>*<I>F</I><SUB><I>N</I></SUB>(<I>x</I> · <I>y</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><I>F</I><SUB><I>N</I></SUB>(<I>x</I>) * <I>F</I><SUB><I>N</I></SUB>(<I>y</I>)</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>F</I><SUB><I>N</I></SUB>(<I>x</I> * <I>y</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><I>F</I><SUB><I>N</I></SUB>(<I>x</I>) · <I>F</I><SUB><I>N</I></SUB>(<I>y</I>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE><H4 CLASS="subsubsection"><A NAME="toc15"></A>Applications</H4><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Value of a polynomial<BR>
+Define a polynomial <I>P</I>(<I>x</I>)=&#X2211;<SUB><I>j</I>=0</SUB><SUP><I>N</I>&#X2212;1</SUP><I>c</I><SUB><I>j</I></SUB><I>x</I><SUP><I>j</I></SUP> by the vector of its 
+coefficients <I>c</I>:=[<I>c</I><SUB>0</SUB>,<I>c</I><SUB>1</SUB>,..<I>c</I><SUB><I>N</I>&#X2212;1</SUB>], where zeroes may be added so that
+<I>N</I> is a power of 2.
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+Compute the values of <I>P</I>(<I>x</I>) at
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>=<I>a</I><SUB><I>k</I></SUB>=&#X3C9;<SUB><I>N</I></SUB><SUP>&#X2212;<I>k</I></SUP>=exp(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&#X2212;2<I>ik</I>&#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">),    <I>k</I>=0..<I>N</I>&#X2212;1 </TD></TR>
+</TABLE>
+This is just the discrete Fourier transform of <I>c</I> since
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>a</I><SUB><I>k</I></SUB>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>c</I><SUB><I>j</I></SUB>(&#X3C9;<SUB><I>N</I></SUB><SUP>&#X2212;<I>k</I></SUP>)<SUP><I>j</I></SUP>=<I>F</I><SUB><I>N</I></SUB>(<I>c</I>)<SUB><I>k</I></SUB> </TD></TR>
+</TABLE>
+Input, for example :
+<DIV CLASS="center">
+<TT>P(x):=x+x</TT><CODE><TT>^</TT></CODE><TT>2; w:=i</TT>
+</DIV>
+Here the coefficients of <I>P</I> are [0,1,1,0], 
+<I>N</I>=4 and &#X3C9;=exp(2<I>i</I>&#X3C0;/4)=<I>i</I>.<BR>
+Input :<BR>
+<TT>fft([0,1,1,0])</TT><BR>
+Output :<BR>
+<TT>[2,-1-i,0,-1+i]</TT><BR>
+hence 
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>P(0)=2</TT>,
+</LI><LI CLASS="li-itemize"><TT>P(-i)=P(w</TT><CODE><TT>^</TT></CODE><TT>-1)=-1-i</TT>,
+</LI><LI CLASS="li-itemize"><TT>P(-1)=P(w</TT><CODE><TT>^</TT></CODE><TT>-2)=0</TT>,
+</LI><LI CLASS="li-itemize"><TT>P(i)=P(w</TT><CODE><TT>^</TT></CODE><TT>-3)=-1+i</TT>.
+</LI></UL></LI><LI CLASS="li-itemize">Compute the values of <I>P</I>(<I>x</I>) at
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>=<I>b</I><SUB><I>k</I></SUB>=&#X3C9;<SUB><I>N</I></SUB><SUP><I>k</I></SUP>=exp(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2<I>ik</I>&#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">),    <I>k</I>=0..<I>N</I>&#X2212;1 </TD></TR>
+</TABLE>
+This is <I>N</I> times the inverse fourier transform of <I>c</I> since
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>a</I><SUB><I>k</I></SUB>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>c</I><SUB><I>j</I></SUB>(&#X3C9;<SUB><I>N</I></SUB><SUP><I>k</I></SUP>)<SUP><I>j</I></SUP>=<I>NF</I><SUB><I>N</I></SUB><SUP>&#X2212;1</SUP>(<I>c</I>)<SUB><I>k</I></SUB> </TD></TR>
+</TABLE>
+Input, for example :<BR>
+<TT>P(x):=x+x</TT><CODE><TT>^</TT></CODE><TT>2</TT> and <TT>w:=i</TT><BR>
+Hence, the coefficients of <I>P</I> are [0,1,1,0], 
+<I>N</I>=4 and &#X3C9;=exp(2<I>i</I>&#X3C0;/4)=<I>i</I>.<BR>
+Input :<BR>
+<TT>4*ifft([0,1,1,0])</TT><BR>
+Output :<BR>
+<TT>[2,-1+i,0,-1-i]</TT><BR>
+hence : <UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>P(0)=2</TT>,
+</LI><LI CLASS="li-itemize"><TT>P(i)=P(w</TT><CODE><TT>^</TT></CODE><TT>1)=-1+i</TT>,
+</LI><LI CLASS="li-itemize"><TT>P(-1)=P(w</TT><CODE><TT>^</TT></CODE><TT>2)=0</TT>,
+</LI><LI CLASS="li-itemize"><TT>P(-i)=P(w</TT><CODE><TT>^</TT></CODE><TT>3)=-1-i</TT>.
+</LI></UL>
+We find of course the same values as above...
+</LI></UL></LI><LI CLASS="li-enumerate">Trigonometric interpolation<BR>
+Let <I>f</I> be periodic function of period 2&#X3C0;, assume that <I>f</I>(2<I>k</I>&#X3C0;/<I>N</I>)=<I>f</I><SUB><I>k</I></SUB> 
+for <I>k</I>=0..(<I>N</I>&#X2212;1). Find a trigonometric polynomial <I>p</I> that interpolates <I>f</I> 
+at <I>x</I><SUB><I>k</I></SUB>=2<I>k</I>&#X3C0;/<I>N</I>, that is find <I>p</I><SUB><I>j</I></SUB>, <I>j</I>=0..<I>N</I>&#X2212;1 such that
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>p</I>(<I>x</I>)= </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>p</I><SUB><I>j</I></SUB> exp(<I>ijx</I>),    <I>p</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>f</I><SUB><I>k</I></SUB></TD></TR>
+</TABLE>
+Replacing <I>x</I><SUB><I>k</I></SUB> by it&#X2019;s value in <I>p</I>(<I>x</I>) we get:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>p</I><SUB><I>j</I></SUB> exp(<I>i</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>j</I>2<I>k</I>&#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">) = <I>f</I><SUB><I>k</I></SUB></TD></TR>
+</TABLE>
+In other words, (<I>f</I><SUB><I>k</I></SUB>) is the inverse DFT of (<I>p</I><SUB><I>k</I></SUB>), hence
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>p</I><SUB><I>k</I></SUB>)= </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>F</I><SUB><I>N</I></SUB>(  (<I>f</I><SUB><I>k</I></SUB>)  ) </TD></TR>
+</TABLE>
+If the function <I>f</I> is real, <I>p</I><SUB>&#X2212;<I>k</I></SUB>=<SPAN style="text-decoration:overline"><I>p</I></SPAN><SUB><I>k</I></SUB>, hence depending
+whether <I>N</I> is even or odd:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>p</I>(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>p</I><SUB>0</SUB>+
+2 &#X211C;(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X2212;1</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>p</I><SUB><I>k</I></SUB>exp(<I>ikx</I>))+&#X211C;(<I>p</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> exp(<I>i</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>Nx</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell">)) </TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>p</I>(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>p</I><SUB>0</SUB>+ 2 &#X211C;(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>p</I><SUB><I>k</I></SUB>exp(<I>ikx</I>))</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></LI><LI CLASS="li-enumerate">Fourier series<BR>
+Let <I>f</I> be a periodic function of period 2&#X3C0;, such that
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB>,    <I>x</I><SUB><I>k</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2<I>k</I>&#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">, <I>k</I>=0..<I>N</I>&#X2212;1 </TD></TR>
+</TABLE>
+Suppose that the Fourier serie of <I>f</I> converges to <I>f</I> (this will
+be the case if for example <I>f</I> is continuous). If <I>N</I> is large,
+a good approximation of <I>f</I> will be given by:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">&#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> &#X2264; <I>n</I>&lt;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>c</I><SUB><I>n</I></SUB> exp(<I>inx</I>) </TD></TR>
+</TABLE>
+Hence we want a numeric approximation of
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>c</I><SUB><I>n</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2&#X3C0;</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">2&#X3C0;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>f</I>(<I>t</I>)exp(&#X2212;<I>int</I>)<I>dt</I> </TD></TR>
+</TABLE>
+The numeric value of the integral &#X222B;<SUB>0</SUB><SUP>2&#X3C0;</SUP><I>f</I>(<I>t</I>)exp(&#X2212;<I>int</I>)<I>dt</I> may be
+computed by the trapezoidal rule
+(note that the Romberg algorithm would not work here, 
+because the Euler Mac Laurin developpement 
+has it&#X2019;s coefficients equal to zero, since the integrated function is 
+periodic, hence all it&#X2019;s derivatives have the same value at 0 and at 2&#X3C0;).
+If c_n is the numeric value of <I>c</I><SUB><I>n</I></SUB> obtained by the
+trapezoidal rule, then 
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">c_n=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2&#X3C0;</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2&#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>y</I><SUB><I>k</I></SUB>exp(&#X2212;2<I>i</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>nk</I>&#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">),
+    &#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> &#X2264; <I>n</I>&lt;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD></TR>
+</TABLE>
+Indeed, since <I>x</I><SUB><I>k</I></SUB>=2<I>k</I>&#X3C0;/<I>N</I> and <I>f</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB>:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>f</I>(<I>x</I><SUB><I>k</I></SUB>)exp(&#X2212;<I>inx</I><SUB><I>k</I></SUB>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I><SUB><I>k</I></SUB>exp(&#X2212;2<I>i</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>nk</I>&#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">), </TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(0)exp(0)=<I>f</I>(2&#X3C0;)exp(&#X2212;2<I>i</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>nN</I>&#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">)</TD></TR>
+</TABLE></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><I>y</I><SUB>0</SUB>=<I>y</I><SUB><I>N</I></SUB> </TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+Hence :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[c<SUB>0</SUB>,..c</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X2212;1</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">,c</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&#X2212;<I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">,..<I>c</I><SUB>&#X2212;1</SUB>]=
+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>F</I><SUB><I>N</I></SUB>([<I>y</I><SUB>0</SUB>,<I>y</I><SUB>1</SUB>...<I>y</I><SUB>(<I>N</I>&#X2212;1)</SUB>]) </TD></TR>
+</TABLE>
+since
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+if <I>n</I>&#X2265;0, c<SUB><I>n</I></SUB>=<I>y</I><SUB><I>n</I></SUB> 
+</LI><LI CLASS="li-itemize">if <I>n</I>&lt;0 c<SUB><I>n</I></SUB>=<I>y</I><SUB><I>n</I>+<I>N</I></SUB>
+</LI><LI CLASS="li-itemize">&#X3C9;<SUB><I>N</I></SUB>=exp(2<I>i</I>&#X3C0;/<I>N</I>), 
+then &#X3C9;<SUB><I>N</I></SUB><SUP><I>n</I></SUP>=&#X3C9;<SUB><I>N</I></SUB><SUP><I>n</I>+<I>N</I></SUP> 
+</LI></UL><P><B>Properties</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+The coefficients of the trigonometric polynomial that interpolates <I>f</I> 
+at <I>x</I>=2<I>k</I>&#X3C0;/<I>N</I> are
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>p</I><SUB><I>n</I></SUB>=c<SUB><I>n</I></SUB>,    &#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> &#X2264; <I>n</I>&lt;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD></TR>
+</TABLE>
+</LI><LI CLASS="li-itemize">If <I>f</I> is a trigonometric polynomial <I>P</I> of degree <I>m</I>&#X2264; <I>N</I>/2, 
+then
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>t</I>)=<I>P</I>(<I>t</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>m</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=&#X2212;<I>m</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>c</I><SUB><I>k</I></SUB>exp(2<I>ik</I>&#X3C0; <I>t</I>) </TD></TR>
+</TABLE>
+the trigonometric polynomial that interpolate <I>f</I>=<I>P</I> is <I>P</I>, the numeric 
+approximation of the coefficients are in fact exact (c<SUB><I>n</I></SUB>=<I>c</I><SUB><I>n</I></SUB>).
+</LI><LI CLASS="li-itemize">More generally, we can compute c<SUB><I>n</I></SUB>&#X2212;<I>c</I><SUB><I>n</I></SUB>.<BR>
+Suppose that <I>f</I> is equal to it&#X2019;s Fourier serie, i.e. that :<BR>
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>t</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+&#X221E;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>m</I>=&#X2212;&#X221E;</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>c</I><SUB><I>m</I></SUB>exp(2<I>i</I>&#X3C0; <I>mt</I>),   
+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+&#X221E;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>m</I>=&#X2212;&#X221E;</TD></TR>
+</TABLE></TD><TD CLASS="dcell">|<I>c</I><SUB><I>m</I></SUB>|&lt;&#X221E; </TD></TR>
+</TABLE>
+Then :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>f</I>(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2<I>k</I>&#X3C0;</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">)=<I>y</I><SUB><I>k</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+&#X221E;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>m</I>=&#X2212;&#X221E;</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>c</I><SUB><I>m</I></SUB>&#X3C9;<SUB><I>N</I></SUB><SUP><I>km</I></SUP>,
+  
+c_n=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>y</I><SUB><I>k</I></SUB>&#X3C9;<SUB><I>N</I></SUB><SUP>&#X2212;<I>kn</I></SUP> </TD></TR>
+</TABLE>
+Replace <I>y</I><SUB><I>k</I></SUB> by it&#X2019;s value in c_n:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">c_n=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+&#X221E;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>m</I>=&#X2212;&#X221E;</TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+<I>c</I><SUB><I>m</I></SUB>&#X3C9;<SUB><I>N</I></SUB><SUP><I>km</I></SUP>&#X3C9;<SUB><I>N</I></SUB><SUP>&#X2212;<I>kn</I></SUP> </TD></TR>
+</TABLE>
+If <I>m</I>&#X2260; <I>n</I> (mod <I>N</I> ), &#X3C9;<SUB><I>N</I></SUB><SUP><I>m</I>&#X2212;<I>n</I></SUP> is a <I>N</I>-th root of unity different
+from 1, hence:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X3C9;<SUB><I>N</I></SUB><SUP>(<I>m</I>&#X2212;<I>n</I>)<I>N</I></SUP>=1,    </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X3C9;<SUB><I>N</I></SUB><SUP>(<I>m</I>&#X2212;<I>n</I>)<I>k</I></SUP>=0 </TD></TR>
+</TABLE>
+Therefore, if <I>m</I>&#X2212;<I>n</I> is a multiple of <I>N</I> (<I>m</I>=<I>n</I>+<I>l</I>· <I>N</I>) then 
+&#X2211;<SUB><I>k</I>=0</SUB><SUP><I>N</I>&#X2212;1</SUP>&#X3C9;<SUB><I>N</I></SUB><SUP><I>k</I>(<I>m</I>&#X2212;<I>n</I>)</SUP>=<I>N</I>, otherwise 
+&#X2211;<SUB><I>k</I>=0</SUB><SUP><I>N</I>&#X2212;1</SUP>&#X3C9;<SUB><I>N</I></SUB><SUP><I>k</I>(<I>m</I>&#X2212;<I>n</I>)</SUP>=0.
+By reversing the two sums, we get
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>c_n</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+&#X221E;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>m</I>=&#X2212;&#X221E;</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>c</I><SUB><I>m</I></SUB></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X3C9;<SUB><I>N</I></SUB><SUP><I>k</I>(<I>m</I>&#X2212;<I>n</I>)</SUP> </TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+&#X221E;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>l</I>=&#X2212;&#X221E;</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>c</I><SUB>(<I>n</I>+<I>l</I>· <I>N</I>)</SUB> </TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>...<I>c</I><SUB><I>n</I>&#X2212;2· <I>N</I></SUB>+<I>c</I><SUB><I>n</I>&#X2212;<I>N</I></SUB>+<I>c</I><SUB><I>n</I></SUB>+<I>c</I><SUB><I>n</I>+<I>N</I></SUB>+<I>c</I><SUB><I>n</I>+2·
+<I>N</I></SUB>+.....</TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+Conclusion: if |<I>n</I>|&lt;<I>N</I>/2, c_n&#X2212;<I>c</I><SUB><I>n</I></SUB> is a sum of <I>c</I><SUB><I>j</I></SUB> of large indices 
+(at least <I>N</I>/2 in absolute value), hence is small (depending on the
+rate of convergence of the Fourier series).
+</LI></UL><P>
+<B>Example</B>, input
+</P><DIV CLASS="center">
+<TT>f(t):=cos(t)+cos(2*t)</TT><BR>
+<TT>x:=f(2*k*pi/8)$(k=0..7)</TT>
+</DIV><P>
+Output :
+</P><DIV CLASS="center">
+<TT><I>x</I>={2,(&#X221A;</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2,-1,-((&#X221A;</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2),0,-((&#X221A;</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2),-1,(&#X221A;</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2}</TT><BR>
+<TT>fft(x)=[0.0,4.0,4.0,0.0,0.0,0.0,4.0,4.0]</TT>
+</DIV><P>
+After a division by <I>N</I>=8, we get
+</P><DIV CLASS="center"> <I>c</I><SUB>0</SUB>=0,<I>c</I><SUB>1</SUB>=4.0/8,<I>c</I><SUB>2</SUB>=4.0/2,<I>c</I><SUB>3</SUB>=0.0,<BR>
+<I>c</I><SUB>&#X2212;4</SUB>=0,<I>c</I><SUB>&#X2212;3</SUB>=0,<I>c</I><SUB>&#X2212;2</SUB>=4.0/8,=<I>c</I><SUB>&#X2212;1</SUB>=4.0/8
+</DIV><P>
+Hence <I>b</I><SUB><I>k</I></SUB>=0 and <I>a</I><SUB><I>k</I></SUB>=<I>c</I><SUB>&#X2212;<I>k</I></SUB>+<I>c</I><SUB><I>k</I></SUB> is equal to 1 if <I>k</I>=1,2 and 0 otherwise. </P></LI><LI CLASS="li-enumerate">Convolution Product<BR>
+If <I>P</I>(<I>x</I>)=&#X2211;<SUB><I>j</I>=0</SUB><SUP><I>n</I>&#X2212;1</SUP><I>a</I><SUB><I>j</I></SUB><I>x</I><SUP><I>j</I></SUP> 
+and <I>Q</I>(<I>x</I>)=&#X2211;<SUB><I>j</I>=0</SUB><SUP><I>m</I>&#X2212;1</SUP><I>b</I><SUB><I>j</I></SUB><I>x</I><SUP><I>j</I></SUP> 
+are given by the vector of their coefficients 
+<I>a</I>=[<I>a</I><SUB>0</SUB>,<I>a</I><SUB>1</SUB>,..<I>a</I><SUB><I>n</I>&#X2212;1</SUB>] and <I>b</I>=[<I>b</I><SUB>0</SUB>,<I>b</I><SUB>1</SUB>,..<I>b</I><SUB><I>m</I>&#X2212;1</SUB>], we may
+compute the product of these two polynomials using the DFT.
+The product of polynomials is the convolution product 
+of the periodic sequence of their coefficients 
+if the period is greater or equal to 
+(<I>n</I>+<I>m</I>). Therefore we complete <I>a</I> (resp <I>b</I>) with <I>m</I>+<I>p</I> 
+(resp <I>n</I>+<I>p</I>) zeros, where
+<I>p</I> is choosen such that <I>N</I>=<I>n</I>+<I>m</I>+<I>p</I> is a power of 2.
+If <I>a</I>=[<I>a</I><SUB>0</SUB>,<I>a</I><SUB>1</SUB>,..<I>a</I><SUB><I>n</I>&#X2212;1</SUB>,0..0] and <I>b</I>=[<I>b</I><SUB>0</SUB>,<I>b</I><SUB>1</SUB>,..<I>b</I><SUB><I>m</I>&#X2212;1</SUB>,0..0], then:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>x</I>)<I>Q</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>+<I>m</I>&#X2212;1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell">(<I>a</I>*<I>b</I>)<SUB><I>j</I></SUB><I>x</I><SUP><I>j</I></SUP> </TD></TR>
+</TABLE>
+We compute <I>F</I><SUB><I>N</I></SUB>(<I>a</I>), <I>F</I><SUB><I>N</I></SUB>(<I>b</I>), then <I>ab</I>=<I>F</I><SUB><I>N</I></SUB><SUP>&#X2212;1</SUP>(<I>F</I><SUB><I>N</I></SUB>(<I>a</I>)· <I>F</I><SUB><I>N</I></SUB>(<I>b</I>))
+using the properties
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>NF</I><SUB><I>N</I></SUB>(<I>x</I> · <I>y</I>)=<I>F</I><SUB><I>N</I></SUB>(<I>x</I>) * <I>F</I><SUB><I>N</I></SUB>(<I>y</I>),   
+<I>F</I><SUB><I>N</I></SUB>(<I>x</I> * <I>y</I>)=<I>F</I><SUB><I>N</I></SUB>(<I>x</I>) · <I>F</I><SUB><I>N</I></SUB>(<I>y</I>) </TD></TR>
+</TABLE>
+</LI></OL><HR>
+<A HREF="cascmd_en167.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en169.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

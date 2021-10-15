@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Gauss-Jordan reduction: rref gaussjord</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en449.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en451.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc504">2.52.3</A>  Gauss-Jordan reduction: <TT>rref gaussjord</TT></H3><P><A NAME="@default740"></A><A NAME="@default741"></A><A NAME="sec:rref"></A>
+<TT>rref</TT> solves a linear system of equations written in
+matrix form (see also <A HREF="cascmd_en266.html#sec:rrefm">2.31.17</A>) :
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+<TT>rref</TT> takes one or two arguments.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+If <TT>rref</TT> has only one argument, this argument is the augmented matrix 
+of the system (the matrix obtained by augmenting matrix <TT>A</TT> to the 
+right with the column vector <TT>B</TT>).<BR>
+The result is a matrix <TT>[A1,B1]</TT> : <TT>A1</TT> has zeros both above and under 
+its principal diagonal and has 1 on its principal diagonal, and the solutions 
+of:
+<DIV CLASS="center"><TT>A1*X=B1</TT></DIV> 
+are the same as :
+<DIV CLASS="center"><TT>A*X=B</TT></DIV>
+For example, to solve the system:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>&#X2212;2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
+</TABLE></TD></TR>
+</TABLE> 
+input :
+<DIV CLASS="center"><TT>rref([[3,1,-2],[3,2,2]])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[1,0,-2],[0,1,4]]</TT></DIV>
+Hence <I>x</I>=&#X2212;2 and <I>y</I>=4 is the solution of this system.<P><TT>rref</TT> can also solve several linear systems
+of equations having the same first member.
+We write the second members as a column matrix.<BR>
+Input :
+</P><DIV CLASS="center"><TT>rref([[3,1,-2,1],[3,2,2,2]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0,-2,0],[0,1,4,1]]</TT></DIV><P>
+Which means that (<I>x</I>=&#X2212;2 and <I>y</I>=4) is the solution of the system
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>&#X2212;2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+and (<I>x</I>=0 and <I>y</I>=1) is the solution of the system
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>1 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
+</TABLE></TD></TR>
+</TABLE></LI><LI CLASS="li-itemize">If <TT>rref</TT> has two parameters, the second parameter must be an integer 
+<I>k</I>, and the Gauss-Jordan reduction will be performed on (at most)
+the first <I>k</I> columns.<BR>
+Input :
+<DIV CLASS="center"><TT>rref([[3,1,-2,1],[3,2,2,2]],1)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[3,1,-2,1],[0,1,4,1]]</TT></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en449.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en451.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

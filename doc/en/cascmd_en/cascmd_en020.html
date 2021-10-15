@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>GCD : gcd igcd</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc28">2.6.2</A>  GCD : <TT>gcd igcd</TT></H3><P><A NAME="@default47"></A><A NAME="@default48"></A><A NAME="sec:igcd"></A>
+<TT>gcd</TT> or <TT>igcd</TT> denotes the gcd (greatest common divisor)
+of several integers (for polynomials see also <A HREF="cascmd_en214.html#sec:gcd">2.25.7</A>).<BR>
+<TT>gcd</TT> or <TT>igcd</TT> returns the <TT>GCD</TT> of all integers.<BR>
+Input :
+</P><DIV CLASS="center"><TT>gcd(18,15)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>gcd(18,15,21,36) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>gcd([18,15,21,36])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+We can also put as parameters two lists of same size (or a matrix with 2 
+lines), in this case <TT>gcd</TT> returns the greatest common divisor of
+the elements with same index (or of the same column).
+Input :
+</P><DIV CLASS="center"><TT>gcd([6,10,12],[21,5,8])</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>gcd([[6,10,12],[21,5,8]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[3,5,4]</TT></DIV><P>
+<B>An example</B><BR>
+Find the greatest common divisor of 4<I>n</I>+1 and 5<I>n</I>+3 when <I>n</I> &#X2208; &#X2115;.<BR>
+Input :<BR>
+</P><DIV CLASS="center"><TT>f(n):=gcd(4*n+1,5*n+3)</TT></DIV><P>
+Then, input :<BR>
+</P><PRE CLASS="verbatim">  essai(n):={
+    local j,a,L; 
+    L:=NULL;
+    for (j:=-n;j&lt;n;j++) {
+      a:=f(j);
+      if (a!=1) {
+        L:=L,[j,a];
+      } 
+    }
+    return L;
+  }
+</PRE><P>Then, input :<BR>
+</P><DIV CLASS="center"><TT>essai(20)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[-16,7],[-9,7],[-2,7],[5,7],[12,7],[19,7]</TT></DIV><P>
+So we have now to prove that :<BR>
+if <I>n</I>!=5+<I>k</I>*7 (for <I>k</I> &#X2208; &#X2124;), 4<I>n</I>+1 and 5<I>n</I>+3 are mutually prime,<BR>
+and<BR>
+if <I>n</I>=5+<I>k</I>*7 (for <I>k</I> &#X2208; &#X2124;), the greatest common divisor of 4<I>n</I>+1 
+and 5<I>n</I>+3 is 7.
+</P><HR>
+<A HREF="cascmd_en019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Finding linear recurrences : reverse_rsolve</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en453.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en455.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc508">2.52.7</A>  Finding linear recurrences : <TT>reverse_rsolve</TT></H3><P><A NAME="@default745"></A>
+<TT>reverse_rsolve</TT> takes as argument a vector 
+<I>v</I>=[<I>v</I><SUB>0</SUB>...<I>v</I><SUB>2<I>n</I>&#X2212;1</SUB>] made of the first 2<I>n</I> terms of a sequence (<I>v</I><SUB><I>n</I></SUB>)
+which is supposed to verify a linear recurrence relation of 
+degree smaller than <I>n</I>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUB><I>n</I></SUB>*<I>v</I><SUB><I>n</I>+<I>k</I></SUB>+...+<I>x</I><SUB>0</SUB>*<I>v</I><SUB><I>k</I></SUB>=0 </TD></TR>
+</TABLE><P>
+where the <I>x</I><SUB><I>j</I></SUB> are <I>n</I>+1 unknowns.<BR>
+<TT>reverse_rsolve</TT> returns the list <I>x</I>=[<I>x</I><SUB><I>n</I></SUB>,...,<I>x</I><SUB>0</SUB>]
+of the <I>x</I><SUB><I>j</I></SUB> coefficients (if <I>x</I><SUB><I>n</I></SUB>&#X2260; 0 it is reduced to 1).</P><P>In other words <TT>reverse_rsolve</TT> solves the linear system of 
+<I>n</I> equations :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>x</I><SUB><I>n</I></SUB>*<I>v</I><SUB><I>n</I></SUB>+...+<I>x</I><SUB>0</SUB>*<I>v</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>...</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>x</I><SUB><I>n</I></SUB>*<I>v</I><SUB><I>n</I>+<I>k</I></SUB>+...+<I>x</I><SUB>0</SUB>*<I>v</I><SUB><I>k</I></SUB></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>...</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>x</I><SUB><I>n</I></SUB>*<I>v</I><SUB>2*<I>n</I>&#X2212;1</SUB>+...+<I>x</I><SUB>0</SUB>*<I>v</I><SUB><I>n</I>&#X2212;1</SUB></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>0</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+The matrix <I>A</I> of the system has <I>n</I> rows and <I>n</I>+1 columns :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>A</I>=[[<I>v</I><SUB>0</SUB>,<I>v</I><SUB>1</SUB>...<I>v</I><SUB><I>n</I></SUB>],[<I>v</I><SUB>1</SUB>,<I>v</I><SUB>2</SUB>,...<I>v</I><SUB><I>n</I>&#X2212;1</SUB>],...,[<I>v</I><SUB><I>n</I>&#X2212;1</SUB>,<I>v</I><SUB><I>n</I></SUB>...<I>v</I><SUB>2<I>n</I>&#X2212;1</SUB>]] </TD></TR>
+</TABLE><P>
+<TT>reverse_rsolve</TT> returns the list <I>x</I>=[<I>x</I><SUB><I>n</I></SUB>,...<I>x</I><SUB>1</SUB>,<I>x</I><SUB>0</SUB>] with <I>x</I><SUB><I>n</I></SUB>=1
+and <I>x</I> is the solution of the system <I>A</I>*<TT><I>revlist</I></TT>(<I>x</I>).</P><P><B>Examples</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Find a sequence verifying a linear recurrence of degree at 
+most 2 whose first elements 1, -1, 3, 3.<BR>
+Input :
+<DIV CLASS="center"><TT>reverse_rsolve([1,-1,3,3])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[1,-3,-6]</TT></DIV> 
+Hence <I>x</I><SUB>0</SUB>=&#X2212;6, <I>x</I><SUB>1</SUB>=&#X2212;3, <I>x</I><SUB>2</SUB>=1 and the recurrence relation is
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>v</I><SUB><I>k</I>+2</SUB> &#X2212;3<I>v</I><SUB><I>k</I>+1</SUB> &#X2212;6 <I>v</I><SUB><I>k</I></SUB> =0</TD></TR>
+</TABLE>
+Without <TT>reverse_rsolve</TT>, we would write the matrix of the system :<BR>
+<TT>[[1,-1,3],[-1,3,3]]</TT> and use the <TT>rref</TT> command :<BR>
+<TT>rref([[1,-1,3],[-1,3,3]])</TT><BR>
+Output is <TT>[[1,0,6],[0,1,3]]</TT> hence <I>x</I><SUB>0</SUB>=&#X2212;6 and <I>x</I><SUB>1</SUB>=&#X2212;3 
+(because <I>x</I><SUB>2</SUB>=1).</LI><LI CLASS="li-itemize">Find a sequence verifying a linear recurrence of degree at 
+most 3 whose first elements are 1, -1, 3, 3,-1, 1.<BR>
+Input :
+<DIV CLASS="center"><TT>reverse_rsolve([1,-1,3,3,-1,1])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[1,(-1)/2,1/2,-1]</TT></DIV> 
+Hence so, <I>x</I><SUB>0</SUB>=&#X2212;1, <I>x</I><SUB>1</SUB>=1/2, <I>x</I><SUB>2</SUB>=&#X2212;1/2, <I>x</I><SUB>3</SUB>=1, the recurrence
+relation is
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>v</I><SUB><I>k</I>+3</SUB> &#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>v</I><SUB><I>k</I>+2</SUB> +</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>v</I><SUB><I>k</I>+1</SUB> &#X2212;<I>v</I><SUB><I>k</I></SUB> =0 </TD></TR>
+</TABLE>
+Without <TT>reverse_rsolve</TT>, we would write the matrix of the system :<BR>
+<TT>[[1,-1,3,3],[-1,3,3,-1],[3,3,-1,1]]</TT>.<BR>
+Using <TT>rref</TT> command, we would input :<BR>
+<TT>rref([[1,-1,3,3],[-1,3,3,-1],[3,3,-1,1]])</TT><BR>
+Output is <TT>[1,0,0,1],[0,1,0,1/-2],[0,0,1,1/2]]</TT>
+hence <I>x</I><SUB>0</SUB>=&#X2212;1, <I>x</I><SUB>1</SUB>=1/2 and <I>x</I><SUB>2</SUB>=&#X2212;1/2 because <I>x</I><SUB>3</SUB>=1),
+</LI></UL><HR>
+<A HREF="cascmd_en453.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en455.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

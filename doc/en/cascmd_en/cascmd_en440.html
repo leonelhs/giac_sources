@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Conservative flux field : vpotential</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en439.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en441.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc492">2.50.7</A>  Conservative flux field : <TT>vpotential</TT></H3><P><A NAME="@default726"></A>
+<TT>vpotential</TT> takes two arguments : a vector field
+<I>V</I> 
+in <I>R</I><SUP><I>n</I></SUP> with respect to <I>n</I> real variables 
+and the vector of these variable names.<BR>
+<TT>vpotential</TT> returns, if it is possible, a vector <I>U</I> such
+that curl(<I>U</I>)=<I>V</I>.
+When it is possible we say that <I>V</I> is a conservative flux 
+field or a solenoidal field.
+The general solution is the sum of a particular solution and of the
+gradient of an arbitrary function, <TT>Xcas</TT> returns a particular
+solution with zero as first component.<BR>
+<TT>vpotential</TT> is the reciprocal function of <TT>curl</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>vpotential([2*x*y+3,x</TT><CODE><TT>^</TT></CODE><TT>2-4*z,-2*y*z],[x,y,z]) </TT></DIV><P>
+Output : 
+</P><DIV CLASS="center"><TT>[0,(-(2*y))*z*x,-x</TT><CODE><TT>^</TT></CODE><TT>3/3-(-(4*z))*x+3*y]</TT></DIV><P>
+In &#X211D;<SUP>3</SUP>, a vector field <I>V</I> is a rotationnal 
+if and only if it&#X2019;s 
+divergence is zero<BR>
+(<TT>divergence(V,[x,y,z])=0</TT>).
+In time-independant electro-magnetism,
+<I>V</I>= <I>B</I> is the magnetic field and
+<I>U</I>= <I>A</I> is the potential vector.</P><HR>
+<A HREF="cascmd_en439.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en441.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Antiderivative and definite integral : integrate int Int</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en134.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en136.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc155">2.18.1</A>  Antiderivative and definite integral : <TT>integrate int Int</TT></H3><P><A NAME="@default261"></A><A NAME="@default262"></A><A NAME="@default263"></A>
+<TT>integrate</TT> (or <TT>int</TT>) compute the primitive
+or a definite integral. A difference between the two 
+commands is that, if you input <TT>quest()</TT>, just after the evaluation of 
+<TT>integrate</TT>, the answer is written with the &#X222B; symbol.</P><P><TT>integrate</TT> (or <TT>int</TT> or <TT>Int</TT>) takes one, two or four arguments.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+with one or two arguments<BR>
+an expression or an expression and 
+the name of a variable (by default <TT>x</TT>),<BR>
+<TT>integrate</TT> (or <TT>int</TT>) returns a primitive of the expression with 
+respect to the variable given as second argument.<BR>
+Input :
+<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+Input :
+<DIV CLASS="center"><TT>integrate(t</TT><CODE><TT>^</TT></CODE><TT>2,t)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>t</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+</LI><LI CLASS="li-itemize">with four arguments :<BR>
+an expression, a name of a variable and the bounds of the definite integral,<BR>
+<TT>integrate</TT> (or <TT>int</TT>) returns the exact
+value of the definite integral if the computation was successfull or
+an unevaluated integral otherwise.<BR>
+Input :
+<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2,x,1,2)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>7/3</TT></DIV>
+Input :
+<DIV CLASS="center"><TT>integrate(1/(sin(x)+2),x,0,2*pi)</TT></DIV>
+Output after simplification (with the <TT>simplify</TT> command) :
+<DIV CLASS="center"><TT>2*pi*sqrt(3)/3</TT></DIV>
+</LI></UL><P><TT>Int</TT> is the inert form of <TT>integrate</TT>, it prevents evaluation
+for example to avoid a symbolic computation that might not be
+successfull if you just want a numeric
+evaluation.<BR>
+Input :
+</P><DIV CLASS="center"><TT>evalf(Int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>evalf(int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1.46265174591</TT></DIV><P><B>Exercise 1</B><BR>
+Let </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>&#X2212;1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+ln(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>&#X2212;1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">)</TD></TR>
+</TABLE><P>
+Find a primitive of <I>f</I>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>int(x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1)))</TT></DIV><P>
+Output : 
+</P><DIV CLASS="center"><TT>x*log((x+1)/(x-1))+log(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+1/2*log(2*x</TT><CODE><TT>^</TT></CODE><TT>2/2-1)</TT></DIV><P>
+Or define the function <TT>f</TT>, input :
+</P><DIV CLASS="center"><TT>f(x):=x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1))</TT></DIV><P>
+then input :
+</P><DIV CLASS="center"><TT>int(f(x))</TT></DIV><P>
+Output of course the same result.<BR>
+<B>Warning</B><BR>
+For <TT>Xcas</TT>, <TT>log</TT> is the natural logarithm (like <TT>ln</TT>),
+as <TT>log10</TT> is 10-basis logarithm</P><P><B>Exercise 2</B><BR>
+Compute :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>6</SUP>+2 · <I>x</I><SUP>4</SUP>+<I>x</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>int(2/(x</TT><CODE><TT>^</TT></CODE><TT>6+2*x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>2*((3*x</TT><CODE><TT>^</TT></CODE><TT>2+2)/(-(2*(x</TT><CODE><TT>^</TT></CODE><TT>3+x)))+-3/2*atan(x))</TT></DIV><P><B>Exercise 3</B><BR>
+Compute :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">sin(<I>x</I>)+sin(2 · <I>x</I> )</TD></TR>
+</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>integrate(1/(sin(x)+sin(2*x )))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(1/-3*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2-3)+1/12*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2))*2</TT></DIV><HR>
+<A HREF="cascmd_en134.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en136.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

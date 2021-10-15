@@ -1,0 +1,1209 @@
+<HTML>
+<HEAD>
+  <TITLE>
+    Catalogue of GP/PARI Functions: Vectors, matrices, linear algebra and sets
+  </TITLE>
+
+  <META NAME="author"       CONTENT="Nils-Peter Skoruppa">
+  <META NAME="created"      CONTENT="Thu Apr 27 10:11:36 2006">
+  <META NAME="author-email" CONTENT="skoruppa@math.uni-siegen.de">
+  <META NAME="keywords"     CONTENT="PARI, GP, DOC">
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+
+
+
+<h3 align=center>Vectors, matrices, linear algebra and sets</h3>
+
+<a name="algdep"></a>
+<h4><b>algdep</b>(x,k,{<u>flag</u> = 0})</h4>
+<p></p>
+<p>
+ x being real/complex, or p-adic, finds a polynomial of
+degree at most k with integer coefficients having x as approximate root.
+Note that the polynomial which is obtained is not necessarily the "correct"
+one. In fact it is not even guaranteed to be irreducible. One can check the
+closeness either by a polynomial evaluation (use <font color=#a3682a><tt>
+subst</tt></font>), or by
+computing the roots of the polynomial given by <font color=#a3682a><tt>
+algdep</tt></font> (use 
+<font color=#a3682a><tt>
+polroots</tt></font>).</p>
+<p>Internally, <font color=#a3682a><tt>
+lindep</tt></font>([1,x,...,x^k], <u>flag</u>) is used. If
+<font color=#a3682a><tt>
+lindep</tt></font> is not able to find a relation and returns a lower bound for the
+sup norm of the smallest relation, <font color=#a3682a><tt>
+algdep</tt></font> returns that bound instead.
+A suitable non-zero value of <u>flag</u> may improve on the default behaviour:</p>
+<p><pre><font color=#a3682a><tt>\\\\\\\\\ LLL
+&nbsp;? \p200
+&nbsp;? algdep(2^(1/6)+3^(1/5), 30);      \\ wrong in 3.8s
+&nbsp;? algdep(2^(1/6)+3^(1/5), 30, 100); \\ wrong in 1s
+&nbsp;? algdep(2^(1/6)+3^(1/5), 30, 170); \\ right in 3.3s
+&nbsp;? algdep(2^(1/6)+3^(1/5), 30, 200); \\ wrong in 2.9s
+&nbsp;? \p250
+&nbsp;? algdep(2^(1/6)+3^(1/5), 30);      \\ right in 2.8s
+&nbsp;? algdep(2^(1/6)+3^(1/5), 30, 200); \\ right in 3.4s
+&nbsp;\\\\\\\\\ PSLQ
+&nbsp;? \p200
+&nbsp;? algdep(2^(1/6)+3^(1/5), 30, -3);  \\ failure in 14s.
+&nbsp;? \p250
+&nbsp;? algdep(2^(1/6)+3^(1/5), 30, -3);  \\ right in 18s
+</tt></font></pre></p>
+<p>Proceeding by increments of 5 digits of accuracy, <font color=#a3682a><tt>
+algdep</tt></font> with default
+flag produces its first correct result at 205 digits, and from then on a
+steady stream of correct results. Interestingly enough, our PSLQ also
+reliably succeeds from 205 digits on (and is 5 times slower at that
+accuracy).</p>
+<p>The above example is the testcase studied in a 2000 paper by Borwein and
+Lisonek, Applications of integer relation algorithms, <u>Discrete Math.</u>,
+<b>217</b>, p.65--82. The paper conludes in the superiority of the PSLQ
+algorithm, which either shows that PARI's implementation of PSLQ is lacking,
+or that its LLL is extremely good. The version of PARI tested there was
+1.39, which succeeded reliably from precision 265 on, in about 60 as much
+time as the current version.</p>
+<p>The library syntax is <b>algdep0</b>(x,k,<u>flag</u>,<u>prec</u>), where k and <u>flag</u> are <font color=#a3682a><tt>
+long</tt></font>s.
+Also available is <font color=#a3682a><tt>
+ <b>algdep</b>(x,k,<u>prec</u>)</tt></font> (<u>flag</u> = 0).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="charpoly"></a>
+<h4><b>charpoly</b>(A,{v = x},{<u>flag</u> = 0})</h4>
+<p></p>
+<p> characteristic polynomial
+of A with respect to the variable v, i.e.determinant of v*I-A if A
+is a square matrix. If A is not a square matrix, it returns the characteristic polynomial of the map "multiplication by A" if A
+is a scalar, in particular a polmod. E.g.<font color=#a3682a><tt>
+charpoly(I) = x^2+1</tt></font>.</p>
+<p>The value of <u>flag</u> is only significant for matrices.</p>
+<p>If <u>flag</u> = 0, the method used is essentially the same as for computing the
+adjoint matrix, i.e.computing the traces of the powers of A.</p>
+<p>If <u>flag</u> = 1, uses Lagrange interpolation which is almost always slower.</p>
+<p>If <u>flag</u> = 2, uses the Hessenberg form. This is faster than the default when
+the coefficients are intmod a prime or real numbers, but is usually
+slower in other base rings.</p>
+<p>The library syntax is <b>charpoly0</b>(A,v,<u>flag</u>), where v is the variable number. Also available
+are the functions <font color=#a3682a><tt>
+ <b>caract</b>(A,v)</tt></font> (<u>flag</u> = 1), <font color=#a3682a><tt>
+ <b>carhess</b>(A,v)</tt></font>
+(<u>flag</u> = 2), and <font color=#a3682a><tt>
+ <b>caradj</b>(A,v,<u>pt</u>)</tt></font> where, in this last case,
+<u>pt</u> is a <font color=#a3682a><tt>
+GEN*</tt></font> which, if not equal to <font color=#a3682a><tt>
+NULL</tt></font>, will receive
+the address of the adjoint matrix of A (see <font color=#a3682a><tt>
+matadjoint</tt></font>), so both
+can be obtained at once.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="concat"></a>
+<h4><b>concat</b>(x,{y})</h4>
+<p></p>
+<p> concatenation of x and y. If x or y is
+not a vector or matrix, it is considered as a one-dimensional vector. All
+types are allowed for x and y, but the sizes must be compatible. Note
+that matrices are concatenated horizontally, i.e.the number of rows stays
+the same. Using transpositions, it is easy to concatenate them vertically.</p>
+<p>To concatenate vectors sideways (i.e.to obtain a two-row or two-column
+matrix), use <font color=#a3682a><tt>
+Mat</tt></font> instead (see the example there). Concatenating a row
+vector to a matrix having the same number of columns will add the row to the
+matrix (top row if the vector is x, i.e.comes first, and bottom row
+otherwise).</p>
+<p>The empty matrix <font color=#a3682a><tt>
+[;]</tt></font> is considered to have a number of rows compatible
+with any operation, in particular concatenation. (Note that this is
+definitely <u>not</u> the case for empty vectors <font color=#a3682a><tt>
+[]</tt></font> or <font color=#a3682a><tt>
+[]~</tt></font>.)</p>
+<p>If y is omitted, x has to be a row vector or a list, in which case its
+elements are concatenated, from left to right, using the above rules.</p>
+<p>
+<pre><font color=#a3682a><tt>? concat([1,2], [3,4])
+&nbsp;%1 = [1, 2, 3, 4]
+&nbsp;? a = [[1,2]~, [3,4]~]; concat(a)
+&nbsp;%2 =
+&nbsp;[1 3]
+&nbsp;
+&nbsp;[2 4]
+&nbsp;
+&nbsp;? concat([1,2; 3,4], [5,6]~)
+&nbsp;%3 =
+&nbsp;[1 2 5]
+&nbsp;
+&nbsp;[3 4 6]
+&nbsp;? concat([%, [7,8]~, [1,2,3,4]])
+&nbsp;%5 =
+&nbsp;[1 2 5 7]
+&nbsp;
+&nbsp;[3 4 6 8]
+&nbsp;
+&nbsp;[1 2 3 4]
+</tt></font></pre></p>
+<p>
+The library syntax is <b>concat</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="lindep"></a>
+<h4><b>lindep</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p>x being a
+vector with p-adic or real/complex coefficients, finds a small integral
+linear combination among these coefficients.</p>
+<p>If x is p-adic, <u>flag</u> is meaningless and the algorithm LLL-reduces a
+suitable (dual) lattice.</p>
+<p>Otherwise, the value of <u>flag</u> determines the algorithm used; in the current
+version of PARI, we suggest to use <u>non-negative</u> values, since it is by
+far the fastest and most robust implementation. See the detailed example in
+Section [<b>Label: se:algdep</b>] (<font color=#a3682a><tt>
+algdep</tt></font>).</p>
+<p>If <u>flag</u> <font color=#a3682a><tt>
+&#62;=</tt></font> 0, uses a floating point (variable precision) LLL algorithm.
+This is in general much faster than the other variants. 
+If <u>flag</u> = 0 the accuracy is chosen internally using a crude heuristic.
+If <u>flag</u> &#62; 0 the computation is done with an accuracy of <u>flag</u> decimal digits.
+In that case, the parameter <u>flag</u> should be between 0.6 and 0.9 times the
+number of correct decimal digits in the input.</p>
+<p>If <u>flag</u> = -1, uses a variant of the LLL algorithm due to Hastad,
+Lagarias and Schnorr (STACS 1986). If the precision is too low, the routine
+may enter an infinite loop.</p>
+<p>If <u>flag</u> = -2, x is allowed to be (and in any case interpreted as) a matrix.
+Returns a non trivial element of the kernel of x, or 0 if x has trivial
+kernel. The element is defined over the field of coefficients of x, and is
+in general not integral.</p>
+<p>If <u>flag</u> = -3, uses the PSLQ algorithm. This may return a real number B,
+indicating that the input accuracy was exhausted and that no relation exist
+whose sup norm is less than B.</p>
+<p>If <u>flag</u> = -4, uses an experimental 2-level PSLQ, which does not work at all.
+(Should be rewritten.)</p>
+<p>The library syntax is <b>lindep0</b>(x,<u>flag</u>,<u>prec</u>). Also available is
+<font color=#a3682a><tt>
+ <b>lindep</b>(x,<u>prec</u>)</tt></font> (<u>flag</u> = 0).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="listcreate"></a>
+<h4><b>listcreate</b>(n)</h4>
+<p></p>
+<p> creates an empty list of maximal length n.</p>
+<p>This function is useless in library mode.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="listinsert"></a>
+<h4><b>listinsert</b>(<u>list</u>,x,n)</h4>
+<p></p>
+<p> inserts the object x at
+position n in <u>list</u> (which must be of type <font color=#a3682a><tt>
+t_LIST</tt></font>). All the
+remaining elements of <u>list</u> (from position n+1 onwards) are shifted
+to the right. This and <font color=#a3682a><tt>
+listput</tt></font> are the only commands which enable
+you to increase a list's effective length (as long as it remains under
+the maximal length specified at the time of the <font color=#a3682a><tt>
+listcreate</tt></font>).</p>
+<p>This function is useless in library mode.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="listkill"></a>
+<h4><b>listkill</b>(<u>list</u>)</h4>
+<p></p>
+<p> kill <u>list</u>. This deletes all
+elements from <u>list</u> and sets its effective length to 0. The maximal
+length is not affected.</p>
+<p>This function is useless in library mode.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="listput"></a>
+<h4><b>listput</b>(<u>list</u>,x,{n})</h4>
+<p></p>
+<p> sets the n-th element of the list
+<u>list</u> (which must be of type <font color=#a3682a><tt>
+t_LIST</tt></font>) equal to x. If n is omitted,
+or greater than the list current effective length, just appends x. This and
+<font color=#a3682a><tt>
+listinsert</tt></font> are the only commands which enable you to increase a list's
+effective length (as long as it remains under the maximal length specified at
+the time of the <font color=#a3682a><tt>
+listcreate</tt></font>).</p>
+<p>If you want to put an element into an occupied cell, i.e.if you don't want to
+change the effective length, you can consider the list as a vector and use
+the usual <font color=#a3682a><tt>
+list[n] = x</tt></font> construct.</p>
+<p>This function is useless in library mode.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="listsort"></a>
+<h4><b>listsort</b>(<u>list</u>,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> sorts <u>list</u> (which must
+be of type <font color=#a3682a><tt>
+t_LIST</tt></font>) in place. If <u>flag</u> is non-zero, suppresses all repeated
+coefficients. This is much faster than the <font color=#a3682a><tt>
+vecsort</tt></font> command since no
+copy has to be made.</p>
+<p>This function is useless in library mode.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matadjoint"></a>
+<h4><b>matadjoint</b>(x)</h4>
+<p></p>
+<p> adjoint matrix of x, i.e.the matrix y
+of cofactors of x, satisfying x*y = det(x)*\Id. x must be a
+(non-necessarily invertible) square matrix.</p>
+<p>The library syntax is <b>adj</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matcompanion"></a>
+<h4><b>matcompanion</b>(x)</h4>
+<p></p>
+<p> the left companion matrix to the polynomial x.</p>
+<p>The library syntax is <b>assmat</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matdet"></a>
+<h4><b>matdet</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> determinant of x. x must be a
+square matrix.</p>
+<p>If <u>flag</u> = 0, uses Gauss-Bareiss.</p>
+<p>If <u>flag</u> = 1, uses classical Gaussian elimination, which is better when the
+entries of the matrix are reals or integers for example, but usually much
+worse for more complicated entries like multivariate polynomials.</p>
+<p>The library syntax is <b>det</b>(x) (<u>flag</u> = 0) and <font color=#a3682a><tt>
+ <b>det2</b>(x)</tt></font> (<u>flag</u> = 1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matdetint"></a>
+<h4><b>matdetint</b>(x)</h4>
+<p></p>
+<p> x being an m x n matrix with integer
+coefficients, this function computes a <u>multiple</u> of the determinant of the
+lattice generated by the columns of x if it is of rank m, and returns
+zero otherwise. This function can be useful in conjunction with the function
+<font color=#a3682a><tt>
+mathnfmod</tt></font> which needs to know such a multiple. To obtain the
+exact determinant (assuming the rank is maximal), you can compute
+<font color=#a3682a><tt>
+matdet(mathnfmod(x, matdetint(x)))</tt></font>.</p>
+<p>Note that as soon as one of the dimensions gets large (m or n is larger
+than 20, say), it will often be much faster to use <font color=#a3682a><tt>
+mathnf(x, 1)</tt></font> or
+<font color=#a3682a><tt>
+mathnf(x, 4)</tt></font> directly.</p>
+<p>The library syntax is <b>detint</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matdiagonal"></a>
+<h4><b>matdiagonal</b>(x)</h4>
+<p></p>
+<p> x being a vector, creates the diagonal matrix
+whose diagonal entries are those of x.</p>
+<p>The library syntax is <b>diagonal</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="mateigen"></a>
+<h4><b>mateigen</b>(x)</h4>
+<p></p>
+<p> gives the eigenvectors of x as columns of a
+matrix.</p>
+<p>The library syntax is <b>eigen</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matfrobenius"></a>
+<h4><b>matfrobenius</b>(M,{<u>flag</u> = 0},{v = x})</h4>
+<p></p>
+<p> returns the Frobenius form of
+the square matrix <font color=#a3682a><tt>
+M</tt></font>. If <u>flag</u> = 1, returns only the elementary divisors as
+a vectr of polynomials in the variable <font color=#a3682a><tt>
+v</tt></font>.  If <u>flag</u> = 2, returns a
+two-components vector [F,B] where <font color=#a3682a><tt>
+F</tt></font> is the Frobenius form and <font color=#a3682a><tt>
+B</tt></font> is
+the basis change so that M = B^{-1}FB.</p>
+<p>The library syntax is <b>matfrobenius</b>(M,<u>flag</u>,v), where v is the variable number.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="mathess"></a>
+<h4><b>mathess</b>(x)</h4>
+<p></p>
+<p> Hessenberg form of the square matrix x.</p>
+<p>The library syntax is <b>hess</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="mathilbert"></a>
+<h4><b>mathilbert</b>(x)</h4>
+<p></p>
+<p> x being a <font color=#a3682a><tt>
+long</tt></font>, creates the
+Hilbert matrixof order x, i.e.the matrix whose coefficient
+(i,j) is 1/ (i+j-1).</p>
+<p>The library syntax is <b>mathilbert</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="mathnf"></a>
+<h4><b>mathnf</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> if x is a (not necessarily square)
+matrix with integer entries, finds the <u>upper triangular</u>
+Hermite normal form of x. If the rank of x is equal to its number
+of rows, the result is a square matrix. In general, the columns of the result
+form a basis of the lattice spanned by the columns of x.</p>
+<p>If <u>flag</u> = 0, uses the naive algorithm. This should never be used if the
+dimension is at all large (larger than 10, say). It is recommanded to use
+either <font color=#a3682a><tt>
+mathnfmod(x, matdetint(x))</tt></font> (when x has maximal rank) or
+<font color=#a3682a><tt>
+mathnf(x, 1)</tt></font>. Note that the latter is in general faster than
+<font color=#a3682a><tt>
+mathnfmod</tt></font>, and also provides a base change matrix.</p>
+<p>If <u>flag</u> = 1, uses Batut's algorithm, which is much faster than the default.
+Outputs a two-component row vector [H,U], where H is the <u>upper
+triangular</u> Hermite normal form of x defined as above,  and U is the
+unimodular transformation matrix such that xU = [0|H]. U has in general
+huge coefficients, in particular when the kernel is large.</p>
+<p>If <u>flag</u> = 3, uses Batut's algorithm, but outputs [H,U,P], such that H and
+U are as before and P is a permutation of the rows such that P applied
+to xU gives H. The matrix U is smaller than with <u>flag</u> = 1, but may still
+be large.</p>
+<p>If <u>flag</u> = 4, as in case 1 above, but uses a heuristic variant of LLL
+reduction along the way. The matrix U is in general close to optimal (in
+terms of smallest L_2 norm), but the reduction is slower than in case 1.</p>
+<p>The library syntax is <b>mathnf0</b>(x,<u>flag</u>). Also available are <font color=#a3682a><tt>
+ <b>hnf</b>(x)</tt></font> (<u>flag</u> = 0) and
+<font color=#a3682a><tt>
+ <b>hnfall</b>(x)</tt></font> (<u>flag</u> = 1). To reduce <u>huge</u> (say 400  x 400 and
+more) relation matrices (sparse with small entries), you can use the pair
+<font color=#a3682a><tt>
+hnfspec</tt></font> / <font color=#a3682a><tt>
+hnfadd</tt></font>. Since this is rather technical and the
+calling interface may change, they are not documented yet. Look at the code
+in <font color=#a3682a><tt>
+basemath/alglin1.c</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="mathnfmod"></a>
+<h4><b>mathnfmod</b>(x,d)</h4>
+<p></p>
+<p> if x is a (not necessarily square) matrix of
+maximal rank with integer entries, and d is a multiple of the (non-zero)
+determinant of the lattice spanned by the columns of x, finds the
+<u>upper triangular</u> Hermite normal form of x.</p>
+<p>If the rank of x is equal to its number of rows, the result is a square
+matrix. In general, the columns of the result form a basis of the lattice
+spanned by the columns of x. This is much faster than <font color=#a3682a><tt>
+mathnf</tt></font> when d
+is known.</p>
+<p>The library syntax is <b>hnfmod</b>(x,d).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="mathnfmodid"></a>
+<h4><b>mathnfmodid</b>(x,d)</h4>
+<p></p>
+<p> outputs the (upper triangular)
+Hermite normal form of x concatenated with d times
+the identity matrix. Assumes that x has integer entries.</p>
+<p>The library syntax is <b>hnfmodid</b>(x,d).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matid"></a>
+<h4><b>matid</b>(n)</h4>
+<p></p>
+<p> creates the n x n identity matrix.</p>
+<p>The library syntax is <b>matid</b>(n) where n is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+<p>Related functions are <font color=#a3682a><tt>
+ <b>gscalmat</b>(x,n)</tt></font>, which creates x times the
+identity matrix (x being a <font color=#a3682a><tt>
+GEN</tt></font> and n a <font color=#a3682a><tt>
+long</tt></font>), and
+<font color=#a3682a><tt>
+ <b>gscalsmat</b>(x,n)</tt></font> which is the same when x is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matimage"></a>
+<h4><b>matimage</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> gives a basis for the image of the
+matrix x as columns of a matrix. A priori the matrix can have entries of
+any type. If <u>flag</u> = 0, use standard Gauss pivot. If <u>flag</u> = 1, use
+<font color=#a3682a><tt>
+matsupplement</tt></font>.</p>
+<p>The library syntax is <b>matimage0</b>(x,<u>flag</u>). Also available is <font color=#a3682a><tt>
+ <b>image</b>(x)</tt></font> (<u>flag</u> = 0).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matimagecompl"></a>
+<h4><b>matimagecompl</b>(x)</h4>
+<p></p>
+<p> gives the vector of the column indices which
+are not extracted by the function <font color=#a3682a><tt>
+matimage</tt></font>. Hence the number of
+components of <font color=#a3682a><tt>
+matimagecompl(x)</tt></font> plus the number of columns of
+<font color=#a3682a><tt>
+matimage(x)</tt></font> is equal to the number of columns of the matrix x.</p>
+<p>The library syntax is <b>imagecompl</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matindexrank"></a>
+<h4><b>matindexrank</b>(x)</h4>
+<p></p>
+<p> x being a matrix of rank r, gives two
+vectors y and z of length r giving a list of rows and columns
+respectively (starting from 1) such that the extracted matrix obtained from
+these two vectors using <font color=#a3682a><tt>
+vecextract</tt></font>(x,y,z) is invertible.</p>
+<p>The library syntax is <b>indexrank</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matintersect"></a>
+<h4><b>matintersect</b>(x,y)</h4>
+<p></p>
+<p> x and y being two matrices with the same
+number of rows each of whose columns are independent, finds a basis of the
+<b>Q</b>-vector space equal to the intersection of the spaces spanned by the
+columns of x and y respectively. See also the function
+<font color=#a3682a><tt>
+idealintersect</tt></font>, which does the same for free <b>Z</b>-modules.</p>
+<p>The library syntax is <b>intersect</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matinverseimage"></a>
+<h4><b>matinverseimage</b>(M,y)</h4>
+<p></p>
+<p> gives a column vector belonging to the
+inverse image z of the column vector or matrix y by the matrix M if one
+exists (i.e such that Mz = y), the empty vector otherwise. To get the
+complete inverse image, it suffices to add to the result any element of the
+kernel of x obtained for example by <font color=#a3682a><tt>
+matker</tt></font>.</p>
+<p>The library syntax is <b>inverseimage</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matisdiagonal"></a>
+<h4><b>matisdiagonal</b>(x)</h4>
+<p></p>
+<p> returns true (1) if x is a diagonal matrix,
+false (0) if not.</p>
+<p>The library syntax is <b>isdiagonal</b>(x), and this returns a <font color=#a3682a><tt>
+long</tt></font>
+integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matker"></a>
+<h4><b>matker</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> gives a basis for the kernel of the
+matrix x as columns of a matrix. A priori the matrix can have entries of
+any type.</p>
+<p>If x is known to have integral entries, set <u>flag</u> = 1.</p>
+<p><b>Note:</b> The library function <font color=#a3682a><tt>
+FpM_ker</tt></font>(x, p), where x has
+integer entries <u>reduced mod p</u> and p is prime, is equivalent to, but
+orders of magnitude faster than, <font color=#a3682a><tt>
+matker(x*Mod(1,p))</tt></font> and needs much
+less stack space. To use it under <font color=#a3682a><tt>
+gp</tt></font>, type <font color=#a3682a><tt>
+install(FpM_ker, GG)</tt></font> first.</p>
+<p>The library syntax is <b>matker0</b>(x,<u>flag</u>). Also available are <font color=#a3682a><tt>
+ <b>ker</b>(x)</tt></font> (<u>flag</u> = 0),
+<font color=#a3682a><tt>
+ <b>keri</b>(x)</tt></font> (<u>flag</u> = 1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matkerint"></a>
+<h4><b>matkerint</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> gives an LLL-reduced <b>Z</b>-basis
+for the lattice equal to the kernel of the matrix x as columns of the
+matrix x with integer entries (rational entries are not permitted).</p>
+<p>If <u>flag</u> = 0, uses a modified integer LLL algorithm.</p>
+<p>If <u>flag</u> = 1, uses <font color=#a3682a><tt>
+matrixqz</tt></font>(x,-2). If LLL reduction of the final result
+is not desired, you can save time using <font color=#a3682a><tt>
+matrixqz(matker(x),-2)</tt></font> instead.</p>
+<p>The library syntax is <b>matkerint0</b>(x,<u>flag</u>). Also available is
+<font color=#a3682a><tt>
+ <b>kerint</b>(x)</tt></font> (<u>flag</u> = 0).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matmuldiagonal"></a>
+<h4><b>matmuldiagonal</b>(x,d)</h4>
+<p></p>
+<p> product of the matrix x by the diagonal
+matrix whose diagonal entries are those of the vector d. Equivalent to,
+but much faster than x*<font color=#a3682a><tt>
+matdiagonal</tt></font>(d).</p>
+<p>The library syntax is <b>matmuldiagonal</b>(x,d).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matmultodiagonal"></a>
+<h4><b>matmultodiagonal</b>(x,y)</h4>
+<p></p>
+<p> product of the matrices x and y
+assuming that the result is a diagonal matrix. Much faster than x*y in
+that case. The result is undefined if x*y is not diagonal.</p>
+<p>The library syntax is <b>matmultodiagonal</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matpascal"></a>
+<h4><b>matpascal</b>(x,{q})</h4>
+<p></p>
+<p> creates as a matrix the lower triangular
+Pascal triangle of order x+1 (i.e.with binomial coefficients
+up to x). If q is given, compute the q-Pascal triangle (i.e.using
+q-binomial coefficients).</p>
+<p>The library syntax is <b>matqpascal</b>(x,q), where x is a <font color=#a3682a><tt>
+long</tt></font> and q = <font color=#a3682a><tt>
+NULL</tt></font> is used
+to omit q. Also available is <font color=#a3682a><tt>
+ <b>matpascal</b>(x)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matrank"></a>
+<h4><b>matrank</b>(x)</h4>
+<p></p>
+<p> rank of the matrix x.</p>
+<p>The library syntax is <b>rank</b>(x), and the result is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matrix"></a>
+<h4><b>matrix</b>(m,n,{X},{Y},{<u>expr</u> = 0})</h4>
+<p></p>
+<p> creation of the
+m x n matrix whose coefficients are given by the expression
+<u>expr</u>. There are two formal parameters in <u>expr</u>, the first one
+(X) corresponding to the rows, the second (Y) to the columns, and X
+goes from 1 to m, Y goes from 1 to n. If one of the last 3 parameters
+is omitted, fill the matrix with zeroes.</p>
+<p>The library syntax is <b>matrice</b>(GEN nlig,GEN ncol,entree *e1,entree *e2,char *expr).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matrixqz"></a>
+<h4><b>matrixqz</b>(x,p)</h4>
+<p></p>
+<p> x being an m x n matrix with m <font color=#a3682a><tt>
+&#62;=</tt></font> n
+with rational or integer entries, this function has varying behaviour
+depending on the sign of p:</p>
+<p>If p <font color=#a3682a><tt>
+&#62;=</tt></font> 0, x is assumed to be of maximal rank. This function returns a
+matrix having only integral entries, having the same image as x, such that
+the GCD of all its n x n subdeterminants is equal to 1 when p is
+equal to 0, or not divisible by p otherwise. Here p must be a prime
+number (when it is non-zero). However, if the function is used when p has
+no small prime factors, it will either work or give the message "impossible
+inverse modulo" and a non-trivial divisor of p.</p>
+<p>If p = -1, this function returns a matrix whose columns form a basis of the
+lattice equal to <b>Z</b>^n intersected with the lattice generated by the
+columns of x.</p>
+<p>If p = -2, returns a matrix whose columns form a basis of the lattice equal
+to <b>Z</b>^n intersected with the <b>Q</b>-vector space generated by the
+columns of x.</p>
+<p>The library syntax is <b>matrixqz0</b>(x,p).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matsize"></a>
+<h4><b>matsize</b>(x)</h4>
+<p></p>
+<p> x being a vector or matrix, returns a row vector
+with two components, the first being the number of rows (1 for a row vector),
+the second the number of columns (1 for a column vector).</p>
+<p>The library syntax is <b>matsize</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matsnf"></a>
+<h4><b>matsnf</b>(X,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> if X is a (singular or non-singular)
+matrix outputs the vector of elementary divisors of X (i.e.the diagonal of
+the Smith normal form of X).</p>
+<p>The binary digits of <u>flag</u> mean:</p>
+<p>1 (complete output): if set, outputs [U,V,D], where U and V are two
+unimodular matrices such that UXV is the diagonal matrix D. Otherwise
+output only the diagonal of D.</p>
+<p>2 (generic input): if set, allows polynomial entries, in which case the
+input matrix must be square. Otherwise, assume that X has integer
+coefficients with arbitrary shape.</p>
+<p>4 (cleanup): if set, cleans up the output. This means that elementary
+divisors equal to 1 will be deleted, i.e.outputs a shortened vector D'
+instead of D. If complete output was required, returns [U',V',D'] so
+that U'XV' = D' holds. If this flag is set, X is allowed to be of the
+form D or [U,V,D] as would normally be output with the cleanup flag
+unset.</p>
+<p>The library syntax is <b>matsnf0</b>(X,<u>flag</u>). Also available is <font color=#a3682a><tt>
+ <b>smith</b>(X)</tt></font> (<u>flag</u> = 0).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matsolve"></a>
+<h4><b>matsolve</b>(x,y)</h4>
+<p></p>
+<p> x being an invertible matrix and y a column
+vector, finds the solution u of x*u = y, using Gaussian elimination. This
+has the same effect as, but is a bit faster, than x^{-1}*y.</p>
+<p>The library syntax is <b>gauss</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matsolvemod"></a>
+<h4><b>matsolvemod</b>(m,d,y,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> m being any integral matrix,
+d a vector of positive integer moduli, and y an integral
+column vector, gives a small integer solution to the system of congruences
+<font color=#FF0000>sum</font>_i m_{i,j}x_j = y_i (mod d_i) if one exists, otherwise returns
+zero. Shorthand notation: y (resp.d) can be given as a single integer,
+in which case all the y_i (resp.d_i) above are taken to be equal to y
+(resp.d).</p>
+<p><pre><font color=#a3682a><tt>  ? m = [1,2;3,4];
+&nbsp;  ? matsolvemod(m, [3,4], [1,2]~)
+&nbsp;  %2 = [-2, 0]~
+&nbsp;  ? matsolvemod(m, 3, 1) \\ m X = [1,1]~ over F_3
+&nbsp;  %3 = [-1, 1]~
+</tt></font></pre></p>
+<p>
+If <u>flag</u> = 1, all solutions are returned in the form of a two-component row
+vector [x,u], where x is a small integer solution to the system of
+congruences and u is a matrix whose columns give a basis of the homogeneous
+system (so that all solutions can be obtained by adding x to any linear
+combination of columns of u). If no solution exists, returns zero.</p>
+<p>The library syntax is <b>matsolvemod0</b>(m,d,y,<u>flag</u>). Also available
+are <font color=#a3682a><tt>
+ <b>gaussmodulo</b>(m,d,y)</tt></font> (<u>flag</u> = 0)
+and <font color=#a3682a><tt>
+ <b>gaussmodulo2</b>(m,d,y)</tt></font> (<u>flag</u> = 1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="matsupplement"></a>
+<h4><b>matsupplement</b>(x)</h4>
+<p></p>
+<p> assuming that the columns of the matrix x
+are linearly independent (if they are not, an error message is issued), finds
+a square invertible matrix whose first columns are the columns of x,
+i.e.supplement the columns of x to a basis of the whole space.</p>
+<p>The library syntax is <b>suppl</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="mattranspose"></a>
+<h4><b>mattranspose</b>(x)</h4>
+<p></p>
+<p> or x~: transpose of x.
+This has an effect only on vectors and matrices.</p>
+<p>The library syntax is <b>gtrans</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="minpoly"></a>
+<h4><b>minpoly</b>(A,{v = x},{<u>flag</u> = 0})</h4>
+<p></p>
+<p> minimal polynomial
+of A with respect to the variable v., i.e. the monic polynomial P
+of minimal degree (in the variable v) such that P(A) = 0.</p>
+<p>The library syntax is <b>minpoly</b>(A,v), where v is the variable number. </p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfgaussred"></a>
+<h4><b>qfgaussred</b>(q)</h4>
+<p></p>
+<p> decomposition into squares of the
+quadratic form represented by the symmetric matrix q. The result is a
+matrix whose diagonal entries are the coefficients of the squares, and the
+non-diagonal entries represent the bilinear forms. More precisely, if
+(a_{ij}) denotes the output, one has
+ q(x) = <font color=#FF0000>sum</font>_i a_{ii} (x_i + <font color=#FF0000>sum</font>_{j &#62; i} a_{ij} x_j)^2 </p>
+<p>The library syntax is <b>sqred</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfjacobi"></a>
+<h4><b>qfjacobi</b>(x)</h4>
+<p></p>
+<p> x being a real symmetric matrix, this gives a
+vector having two components: the first one is the vector of eigenvalues of
+x, the second is the corresponding orthogonal matrix of eigenvectors of
+x. The method used is Jacobi's method for symmetric matrices.</p>
+<p>The library syntax is <b>jacobi</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qflll"></a>
+<h4><b>qflll</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> LLL algorithm applied to the
+<u>columns</u> of the matrix x. The columns of x must be linearly
+independent, unless specified otherwise below. The result is a unimodular
+transformation matrix T such that x.T is an LLL-reduced basis of
+the lattice generated by the column vectors of x.</p>
+<p>If <u>flag</u> = 0 (default), the computations are done with floating point numbers,
+using Householder matrices for orthogonalization. If x has integral
+entries, then computations are nonetheless approximate, with precision
+varying as needed (Lehmer's trick, as generalized by Schnorr).</p>
+<p>If <u>flag</u> = 1, it is assumed that x is integral. The computation is done
+entirely with integers. In this case, x needs not be of maximal rank, but
+if it is not, T will not be square. This is much slower and no more
+accurate than <u>flag</u> = 0 above if x has small dimension (say 100 or less).</p>
+<p>If <u>flag</u> = 2, x should be an integer matrix whose columns are linearly
+independent. Returns a partially reduced basis for x, using an unpublished
+algorithm by Peter Montgomery: a basis is said to be <u>partially reduced</u>
+if |v_i &#177; v_j| <font color=#a3682a><tt>
+&#62;=</tt></font> |v_i| for any two distinct basis vectors v_i, 
+v_j.</p>
+<p>This is significantly faster than <u>flag</u> = 1, esp. when one row is huge compared
+to the other rows. Note that the resulting basis is <u>not</u> LLL-reduced in
+general.</p>
+<p>If <u>flag</u> = 4, x is assumed to have integral entries, but needs not be of
+maximal rank. The result is a two-component vector of matrices: the
+columns of the first matrix represent a basis of the integer kernel of x
+(not necessarily LLL-reduced) and the second matrix is the transformation
+matrix T such that x.T is an LLL-reduced <b>Z</b>-basis of the image
+of the matrix x.</p>
+<p>If <u>flag</u> = 5, case as case 4, but x may have polynomial coefficients.</p>
+<p>If <u>flag</u> = 8, same as case 0, where x may have polynomial coefficients.</p>
+<p>The library syntax is <b>qflll0</b>(x,<u>flag</u>,<u>prec</u>). Also available are
+<font color=#a3682a><tt>
+ <b>lll</b>(x,<u>prec</u>)</tt></font> (<u>flag</u> = 0), <font color=#a3682a><tt>
+ <b>lllint</b>(x)</tt></font> (<u>flag</u> = 1), and
+<font color=#a3682a><tt>
+ <b>lllkerim</b>(x)</tt></font> (<u>flag</u> = 4).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qflllgram"></a>
+<h4><b>qflllgram</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> same as <font color=#a3682a><tt>
+qflll</tt></font>, except that the
+matrix x is the Gram matrix of the lattice vectors, and not the coordinates
+of the vectors themselves. In particular, x must now be a square symmetric
+real matrix, corresponding to a positive definite quadratic form. The result
+is again the transformation matrix T which gives (as columns) the
+coefficients with respect to the initial basis vectors. The flags have more
+or less the same meaning, but some are missing. In brief:</p>
+<p><u>flag</u> = 0: numerically unstable in the present version <b>2.2.13</b>.</p>
+<p><u>flag</u> = 1: x has integer entries, the computations are all done in integers.</p>
+<p><u>flag</u> = 4: x has integer entries, gives the kernel and reduced image.</p>
+<p><u>flag</u> = 5: same as 4 for generic x.</p>
+<p>The library syntax is <b>qflllgram0</b>(x,<u>flag</u>,<u>prec</u>). Also available are
+<font color=#a3682a><tt>
+ <b>lllgram</b>(x,<u>prec</u>)</tt></font> (<u>flag</u> = 0), <font color=#a3682a><tt>
+ <b>lllgramint</b>(x)</tt></font> (<u>flag</u> = 1), and
+<font color=#a3682a><tt>
+ <b>lllgramkerim</b>(x)</tt></font> (<u>flag</u> = 4).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfminim"></a>
+<h4><b>qfminim</b>(x,{b},{m},{<u>flag</u> = 0})</h4>
+<p></p>
+<p> x being a square and symmetric
+matrix representing a positive definite quadratic form, this function
+deals with the vectors of x whose norm is less than or equal to b,
+enumerated using the Fincke-Pohst algorithm. The function searches for
+the minimal non-zero vectors if b is omitted. The precise behaviour
+depends on <u>flag</u>.</p>
+<p>If <u>flag</u> = 0 (default), seeks at most 2m vectors. The result is a
+three-component vector, the first component being the number of vectors
+found, the second being the maximum norm found, and the last vector is a
+matrix whose columns are the vectors found, only one being given for each
+pair &#177; v (at most m such pairs). The vectors are returned in no
+particular order. In this variant, an explicit m must be provided.</p>
+<p>If <u>flag</u> = 1, ignores m and returns the first vector whose norm is less
+than b. In this variant, an explicit b must be provided.</p>
+<p>In both these cases, x is assumed to have integral entries. The
+implementation uses low precision floating point computations for maximal
+speed, which gives incorrect result when x has large entries. (The
+condition is checked in the code and the routine will raise an error if
+large rounding errors occur.) A more robust, but much slower,
+implementation is chosen if the following flag is used:</p>
+<p>If <u>flag</u> = 2, x can have non integral real entries. In this case, if b
+is omitted, the "minimal" vectors only have approximately the same norm.
+If b is omitted, m is an upper bound for the number of vectors that
+will be stored and returned, but all minimal vectors are nevertheless
+enumerated. If m is omitted, all vectors found are stored and returned;
+note that this may be a huge vector! </p>
+<p>The library syntax is <b>qfminim0</b>(x,b,m,<u>flag</u>,<u>prec</u>), also available are <font color=#a3682a><tt>
+ <b>minim</b>(x,b,m)</tt></font>
+(<u>flag</u> = 0), <font color=#a3682a><tt>
+ <b>minim2</b>(x,b,m)</tt></font> (<u>flag</u> = 1). In all cases, an omitted b
+or m is coded as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfperfection"></a>
+<h4><b>qfperfection</b>(x)</h4>
+<p></p>
+<p> x being a square and symmetric matrix with
+integer entries representing a positive definite quadratic form, outputs the
+perfection rank of the form. That is, gives the rank of the family of the s
+symmetric matrices v_iv_i^t, where s is half the number of minimal
+vectors and the v_i (1 <font color=#a3682a><tt>
+&#60;=</tt></font> i <font color=#a3682a><tt>
+&#60;=</tt></font> s) are the minimal vectors.</p>
+<p>As a side note to old-timers, this used to fail bluntly when x had more
+than 5000 minimal vectors. Beware that the computations can now be very
+lengthy when x has many minimal vectors.</p>
+<p>The library syntax is <b>perf</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfrep"></a>
+<h4><b>qfrep</b>(q, B, {<u>flag</u> = 0})</h4>
+<p></p>
+<p> q being a square and symmetric
+matrix with integer entries representing a positive definite quadratic form,
+outputs the vector whose i-th entry, 1 <font color=#a3682a><tt>
+&#60;=</tt></font> i <font color=#a3682a><tt>
+&#60;=</tt></font> B is half the number
+of vectors v such that q(v) = i. This routine uses a naive algorithm
+based on <font color=#a3682a><tt>
+qfminim</tt></font>, and will fail if any entry becomes larger than
+2^{31}.</p>
+<p>The binary digits of <u>flag</u> mean:</p>
+<p><b>*</b> 1: count vectors of even norm from 1 to 2B.</p>
+<p><b>*</b> 2: return a <font color=#a3682a><tt>
+t_VECSMALL</tt></font> instead of a <font color=#a3682a><tt>
+t_GEN</tt></font></p>
+<p>The library syntax is <b>qfrep0</b>(q, B, <u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfsign"></a>
+<h4><b>qfsign</b>(x)</h4>
+<p></p>
+<p> signature of the quadratic form represented by the
+symmetric matrix x. The result is a two-component vector.</p>
+<p>The library syntax is <b>signat</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="setintersect"></a>
+<h4><b>setintersect</b>(x,y)</h4>
+<p></p>
+<p> intersection of the two sets x and y.</p>
+<p>The library syntax is <b>setintersect</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="setisset"></a>
+<h4><b>setisset</b>(x)</h4>
+<p></p>
+<p> returns true (1) if x is a set, false (0) if
+not. In PARI, a set is simply a row vector whose entries are strictly
+increasing. To convert any vector (and other objects) into a set, use the
+function <font color=#a3682a><tt>
+Set</tt></font>.</p>
+<p>The library syntax is <b>setisset</b>(x), and this returns a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="setminus"></a>
+<h4><b>setminus</b>(x,y)</h4>
+<p></p>
+<p> difference of the two sets x and y,
+i.e.set of elements of x which do not belong to y.</p>
+<p>The library syntax is <b>setminus</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="setsearch"></a>
+<h4><b>setsearch</b>(x,y,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> searches if y belongs to the set
+x. If it does and <u>flag</u> is zero or omitted, returns the index j such that
+x[j] = y, otherwise returns 0. If <u>flag</u> is non-zero returns the index j
+where y should be inserted, and 0 if it already belongs to x (this is
+meant to be used in conjunction with <font color=#a3682a><tt>
+listinsert</tt></font>).</p>
+<p>This function works also if x is a <u>sorted</u> list (see <font color=#a3682a><tt>
+listsort</tt></font>).</p>
+<p>The library syntax is <b>setsearch</b>(x,y,<u>flag</u>) which returns a <font color=#a3682a><tt>
+long</tt></font>
+integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="setunion"></a>
+<h4><b>setunion</b>(x,y)</h4>
+<p></p>
+<p> union of the two sets x and y.</p>
+<p>The library syntax is <b>setunion</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="trace"></a>
+<h4><b>trace</b>(x)</h4>
+<p></p>
+<p> this applies to quite general x. If x is not a
+matrix, it is equal to the sum of x and its conjugate, except for polmods
+where it is the trace as an algebraic number.</p>
+<p>For x a square matrix, it is the ordinary trace. If x is a
+non-square matrix (but not a vector), an error occurs.</p>
+<p>The library syntax is <b>gtrace</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="vecextract"></a>
+<h4><b>vecextract</b>(x,y,{z})</h4>
+<p></p>
+<p> extraction of components of the
+vector or matrix x according to y. In case x is a matrix, its
+components are as usual the <u>columns</u> of x. The parameter y is a
+component specifier, which is either an integer, a string describing a
+range, or a vector.</p>
+<p>If y is an integer, it is considered as a mask: the binary bits of y are
+read from right to left, but correspond to taking the components from left to
+right. For example, if y = 13 = (1101)_2 then the components 1,3 and 4 are
+extracted.</p>
+<p>If y is a vector, which must have integer entries, these entries correspond
+to the component numbers to be extracted, in the order specified.</p>
+<p>If y is a string, it can be</p>
+<p><b>*</b> a single (non-zero) index giving a component number (a negative
+index means we start counting from the end).</p>
+<p><b>*</b> a range of the form <font color=#a3682a><tt>
+"a..b"</tt></font>, where a and b are
+indexes as above. Any of a and b can be omitted; in this case, we take
+as default values a = 1 and b = -1, i.e.the first and last components
+respectively. We then extract all components in the interval [a,b], in
+reverse order if b &#60; a.</p>
+<p>In addition, if the first character in the string is <font color=#a3682a><tt>
+^</tt></font>, the
+complement of the given set of indices is taken.</p>
+<p>If z is not omitted, x must be a matrix. y is then the <u>line</u>
+specifier, and z the <u>column</u> specifier, where the component specifier
+is as explained above.</p>
+<p>
+<pre><font color=#a3682a><tt>? v = [a, b, c, d, e];
+&nbsp;? vecextract(v, 5)          \\</tt></font> mask<font color=#a3682a><tt></p>
+<p>&nbsp;%1 = [a, c]
+&nbsp;? vecextract(v, [4, 2, 1])  \\</tt></font> component list<font color=#a3682a><tt></p>
+<p>&nbsp;%2 = [d, b, a]
+&nbsp;? vecextract(v, "2..4")     \\</tt></font> interval<font color=#a3682a><tt></p>
+<p>&nbsp;%3 = [b, c, d]
+&nbsp;? vecextract(v, "-1..-3")   \\</tt></font> interval + reverse order<font color=#a3682a><tt></p>
+<p>&nbsp;%4 = [e, d, c]
+&nbsp;? vecextract(v, "^2")       \\</tt></font> complement<font color=#a3682a><tt></p>
+<p>&nbsp;%5 = [a, c, d, e]
+&nbsp;? vecextract(matid(3), "2..", "..")
+&nbsp;%6 =
+&nbsp;[0 1 0]
+&nbsp;
+&nbsp;[0 0 1]
+</tt></font></pre></p>
+<p>
+The library syntax is <b>extract</b>(x,y) or <font color=#a3682a><tt>
+ <b>matextract</b>(x,y,z)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="vecsort"></a>
+<h4><b>vecsort</b>(x,{k},{<u>flag</u> = 0})</h4>
+<p></p>
+<p> sorts the vector x in ascending
+order, using a mergesort method. x must be a vector, and its components
+integers, reals, or fractions.</p>
+<p>If k is present and is an integer, sorts according to the value of the
+k-th subcomponents of the components ofx. Note that mergesort is
+stable, hence is the initial ordering of "equal" entries (with respect to
+the sorting criterion) is not changed.</p>
+<p>k can also be a vector, in which case the sorting is done lexicographically
+according to the components listed in the vector k. For example, if
+k = [2,1,3], sorting will be done with respect to the second component, and
+when these are equal, with respect to the first, and when these are equal,
+with respect to the third.</p>
+<p>The binary digits of <u>flag</u> mean:</p>
+<p><b>*</b> 1: indirect sorting of the vector x, i.e.if x is an
+n-component vector, returns a permutation of [1,2,...,n] which
+applied to the components of x sorts x in increasing order.
+For example, <font color=#a3682a><tt>
+vecextract(x, vecsort(x,,1))</tt></font> is equivalent to
+<font color=#a3682a><tt>
+vecsort(x)</tt></font>.</p>
+<p><b>*</b> 2: sorts x by ascending lexicographic order (as per the
+<font color=#a3682a><tt>
+lex</tt></font> comparison function).</p>
+<p><b>*</b> 4: use descending instead of ascending order.</p>
+<p>The library syntax is <b>vecsort0</b>(x,k,flag). To omit k, use <font color=#a3682a><tt>
+NULL</tt></font> instead. You can also
+use the simpler functions</p>
+<p><font color=#a3682a><tt>
+ <b>sort</b>(x)</tt></font> ( = <font color=#a3682a><tt>
+ <b>vecsort0</b>(x,<font color=#a3682a><tt>
+NULL</tt></font>,0)</tt></font>).</p>
+<p><font color=#a3682a><tt>
+ <b>indexsort</b>(x)</tt></font> ( = <font color=#a3682a><tt>
+ <b>vecsort0</b>(x,<font color=#a3682a><tt>
+NULL</tt></font>,1)</tt></font>).</p>
+<p><font color=#a3682a><tt>
+ <b>lexsort</b>(x)</tt></font> ( = <font color=#a3682a><tt>
+ <b>vecsort0</b>(x,<font color=#a3682a><tt>
+NULL</tt></font>,2)</tt></font>).</p>
+<p>Also available are <font color=#a3682a><tt>
+ <b>sindexsort</b>(x)</tt></font> and <font color=#a3682a><tt>
+ <b>sindexlexsort</b>(x)</tt></font> which
+return a <font color=#a3682a><tt>
+t_VECSMALL</tt></font> v, where v[1]...v[n] contain the indices.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="vector"></a>
+<h4><b>vector</b>(n,{X},{<u>expr</u> = 0})</h4>
+<p></p>
+<p> creates a row vector (type
+<font color=#a3682a><tt>
+t_VEC</tt></font>) with n components whose components are the expression
+<u>expr</u> evaluated at the integer points between 1 and n. If one of the
+last two arguments is omitted, fill the vector with zeroes.</p>
+<p>Avoid modifying X within <u>expr</u>; if you do, the formal variable
+still runs from 1 to n. In particular, <font color=#a3682a><tt>
+vector(n,i,expr)</tt></font> is not
+equivalent to</p>
+<p><pre><font color=#a3682a><tt>    v = vector(n)
+&nbsp;    for (i = 1, n, v[i] = expr)
+</tt></font></pre></p>
+<p>as the following example shows:</p>
+<p><pre><font color=#a3682a><tt>    n = 3
+&nbsp;    v = vector(n); vector(n, i, i++)            ----&#62; [2, 3, 4]
+&nbsp;    v = vector(n); for (i = 1, n, v[i] = i++)   ----&#62; [2, 0, 4]
+</tt></font></pre></p>
+<p></p>
+<p>The library syntax is <b>vecteur</b>(GEN nmax, entree *ep, char *expr).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="vectorsmall"></a>
+<h4><b>vectorsmall</b>(n,{X},{<u>expr</u> = 0})</h4>
+<p></p>
+<p> creates a row vector of small integers (type
+<font color=#a3682a><tt>
+t_VECSMALL</tt></font>) with n components whose components are the expression
+<u>expr</u> evaluated at the integer points between 1 and n. If one of the
+last two arguments is omitted, fill the vector with zeroes.</p>
+<p>The library syntax is <b>vecteursmall</b>(GEN nmax, entree *ep, char *expr).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="vectorv"></a>
+<h4><b>vectorv</b>(n,X,<u>expr</u>)</h4>
+<p></p>
+<p> as <font color=#a3682a><tt>
+vector</tt></font>, but returns a
+column vector (type <font color=#a3682a><tt>
+t_COL</tt></font>).</p>
+<p>The library syntax is <b>vvecteur</b>(GEN nmax, entree *ep, char *expr).</p>
+
+<br>
+<hr></hr><br>
+
+
+
+</BODY>
+</HTML>

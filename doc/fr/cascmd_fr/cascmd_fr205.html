@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Évaluer un réel et nombre de digits : evalf et Digits, DIGITS)</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr204.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr206.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc274">6.10.1</A>  Évaluer un réel et nombre de digits : <TT>evalf</TT> et <TT>Digits</TT>, <TT>DIGITS</TT>)</H3><P><A NAME="@default371"></A><A NAME="@default372"></A><A NAME="@default373"></A>
+Il faut distinguer le nombre réel de sa valeur numérique qui est un nombre 
+flottant.<BR>
+La précision des nombres flottants, en nombre de chiffres est contrôlée
+par la variable <TT>Digits</TT> qui vaut 12 par défaut.<BR>
+Une expression peut être évaluée en flottant grâce à la commande 
+<TT>evalf</TT>.<BR>
+<B>Attention !!!!</B><BR>
+ Les nombres flottants sont contagieux (!) car une expression 
+qui comporte un nombre flottant est calculée en flottant.<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>1+1/2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3/2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>1.0+1/2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.5</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>exp(pi*sqrt(20))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>exp(pi*2*sqrt(5)) </TT></DIV><P>
+Avec la commande <TT>evalf</TT>, on tape :
+</P><DIV CLASS="center"><TT>evalf(exp(pi*2*sqrt(5)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1263794.75367</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>1.1</TT><CODE><TT>^</TT></CODE><TT>20</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>6.72749994933</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sqrt(2)</TT><CODE><TT>^</TT></CODE><TT>21</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(2)*2</TT><CODE><TT>^</TT></CODE><TT>10</TT></DIV><P>
+On tape pour avoir 30 chiffres significatifs :
+</P><DIV CLASS="center"><TT>Digits:=30</TT></DIV><P>
+On tape pour avoir la valeur numérique de <I>e</I><SUP>π√<SPAN style="text-decoration:overline">163</SPAN></SUP>:
+</P><DIV CLASS="center"><TT>evalf(exp(pi*sqrt(163)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.262537412640768743999999999985e18</TT></DIV><HR>
+<A HREF="cascmd_fr204.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr206.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

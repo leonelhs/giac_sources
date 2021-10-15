@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Defining algebraic functions</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en125.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en127.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc144">2.16.3</A>  Defining algebraic functions</H3><H4 CLASS="subsubsection"><A NAME="toc4"></A>Defining a function from &#X211D;<SUP><I>p</I></SUP> to &#X211D;</H4><P>
+For <I>p</I>=1, e.g. for <I>f</I> : (<I>x</I>)&#X2192; <I>x</I>*sin(<I>x</I>), input :
+</P><DIV CLASS="center"><TT>f(x):=x*sin(x)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>f:=x-&gt;x*sin(x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(x)-&gt;x*sin(x)</TT></DIV><P>
+If <I>p</I>&gt;1, e.g. for <I>f</I> : (<I>x</I>,<I>y</I>)&#X2192; <I>x</I>*sin(<I>y</I>), input :
+</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>f:=(x,y)-&gt;x*sin(y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(x,y)-&gt;x*sin(y)</TT></DIV><P>
+<B>Warning !!!</B> the expression after <TT>-&gt; </TT> is not evaluated.
+You should use <TT>unapply</TT> if you expect the second member to
+be evaluated before the function is defined.</P><H4 CLASS="subsubsection"><A NAME="toc5"></A>Defining a function from &#X211D;<SUP><I>p</I></SUP> to &#X211D;<SUP><I>q</I></SUP></H4><P>
+For example:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+To define the function <I>h</I> : (<I>x</I>,<I>y</I>)&#X2192; (<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)).<BR>
+ Input :
+<DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>expr(" (x,y)-&gt;{<BR>
+ x*cos(y),x*sin(y);<BR>
+}",0)</TT></DIV>
+</LI><LI CLASS="li-itemize">To define the function <I>h</I> : (<I>x</I>,<I>y</I>)&#X2192; [<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)].<BR>
+ Input :
+<DIV CLASS="center"><TT>h(x,y):=[x*cos(y),x*sin(y)];</TT></DIV>
+Or :
+<DIV CLASS="center"><TT>h:=(x,y)-&gt;[x*cos(y),x*sin(y)];</TT></DIV>
+Or :
+<DIV CLASS="center"><TT>h(x,y):={[x*cos(y),x*sin(y)]};</TT></DIV>
+Or : 
+<DIV CLASS="center"><TT>h:=(x,y)-&gt;return[x*cos(y),x*sin(y)];</TT></DIV>
+Or : 
+<DIV CLASS="center"><TT>h(x,y):={return [x*cos(y),x*sin(y)];}</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>(x,y)-&gt;{return([x*cos(y),x*sin(y)]);}</TT></DIV>
+</LI></UL><P>
+<B>Warning !!!</B> the expression after <TT>-&gt; </TT> is not evaluated.</P><H4 CLASS="subsubsection"><A NAME="toc6"></A>Defining families of function from &#X211D;<SUP><I>p</I>&#X2212;1</SUP> 
+to &#X211D;<SUP><I>q</I></SUP> using a function from &#X211D;<SUP><I>p</I></SUP> to &#X211D;<SUP><I>q</I></SUP></H4><P>
+Suppose that the function <I>f</I>: (<I>x</I>,<I>y</I>) &#X2192; <I>f</I>(<I>x</I>,<I>y</I>) is defined, 
+and we want to define a family of functions <I>g</I>(<I>t</I>) such
+that <I>g</I>(<I>t</I>)(<I>y</I>):=<I>f</I>(<I>t</I>,<I>y</I>) (i.e. <I>t</I> is viewed as a parameter).
+Since the expression after <TT>-&gt; </TT> (or <TT>:=</TT>)
+is not evaluated, we should not define <I>g</I>(<I>t</I>) by <TT>g(t):=y-&gt;f(t,y)</TT>,
+we have to use the <TT>unapply</TT> command.</P><P>For example, assuming that <I>f</I>:(<I>x</I>,<I>y</I>)&#X2192; <I>x</I>sin(<I>y</I>) and <I>g</I>(<I>t</I>): <I>y</I>&#X2192; <I>f</I>(<I>t</I>,<I>y</I>), input :
+</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y);g(t):=unapply(f(t,y),y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>((x,y)-&gt;x*sin(y), (t)-&gt;unapply(f(t,y),y))</TT></DIV><P>
+Input 
+</P><DIV CLASS="center"><TT>g(2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>y-&gt;2</TT><TT>·</TT><TT> sin(y)</TT></DIV><P>
+Input 
+</P><DIV CLASS="center"><TT>g(2)(1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>2</TT><TT>·</TT><TT> sin(1)</TT></DIV><P>Next example, suppose that the function 
+<I>h</I>: (<I>x</I>,<I>y</I>) &#X2192; [<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)] is defined, and 
+we want to define the family of functions <I>k</I>(<I>t</I>) having <I>t</I> as
+parameter such that <I>k</I>(<I>t</I>)(<I>y</I>):=<I>h</I>(<I>t</I>,<I>y</I>).
+To define the function <I>h</I>(<I>x</I>,<I>y</I>), input :
+</P><DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV><P>
+To define properly the function <I>k</I>(<I>t</I>), input :
+</P><DIV CLASS="center"><TT>k(t):=unapply(h(x,t),x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(t)-&gt;unapply(h(x,t),x)</TT></DIV><P>
+Input 
+</P><DIV CLASS="center"><TT>k(2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(x)-&gt;(x*cos(2),x*sin(2))</TT></DIV><P>
+Input 
+</P><DIV CLASS="center"><TT>k(2)(1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(2*cos(1),2*sin(1))</TT></DIV><HR>
+<A HREF="cascmd_en125.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en127.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

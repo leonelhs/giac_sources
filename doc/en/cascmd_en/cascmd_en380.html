@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Statistics functions acting on column matrices : mean, stddev, variance, median, quantile, quartiles, boxwhisker</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en379.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en381.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc424">2.42.31</A>  Statistics functions acting on column matrices : <TT>mean</TT>, <TT>stddev</TT>, <TT>variance</TT>, <TT>median</TT>, <TT>quantile</TT>, <TT>quartiles</TT>, <TT>boxwhisker</TT></H3><P><A NAME="sec:statmat"></A>
+<A NAME="@default637"></A> <A NAME="@default638"></A><A NAME="@default639"></A><A NAME="@default640"></A><A NAME="@default641"></A><A NAME="@default642"></A><A NAME="@default643"></A>
+The following functions work on matrices, acting column by column:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>mean</TT> computes the arithmetic means of the statistical series
+stored in the columns of a matrix.<BR>
+Input :
+<DIV CLASS="center"><TT>mean([[3,4,2],[1,2,6]])</TT></DIV>
+Output is the vector of the means of each column :
+<DIV CLASS="center"><TT>[2,3,4]</TT></DIV>
+Input :
+<DIV CLASS="center"><TT>mean([[1,0,0],[0,1,0],[0,0,1]])</TT></DIV>
+Output 
+<DIV CLASS="center"><TT>[1/3,1/3,1/3]</TT></DIV></LI><LI CLASS="li-itemize"><TT>stddev</TT> computes the standard deviations of the population
+statistical series stored in the columns of a matrix.<BR>
+Input :
+<DIV CLASS="center"><TT>stddev([[3,4,2],[1,2,6]])</TT></DIV>
+Output is the vector of the standard deviations of each column :
+<DIV CLASS="center"><TT>[1,1,2]</TT></DIV>
+</LI><LI CLASS="li-itemize"><TT>variance</TT> computes the variances of the statistical series
+stored in the columns of a matrix.<BR>
+Input :
+<DIV CLASS="center"><TT>variance([[3,4,2],[1,2,6]])</TT></DIV>
+Output is the vector of the variance of each column :
+<DIV CLASS="center"><TT>[1,1,4]</TT></DIV></LI><LI CLASS="li-itemize"><TT>median</TT> computes the medians of the statistical series
+stored in the columns of a matrix.<BR>
+Input :
+<DIV CLASS="center"><TT>median([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</TT></DIV>
+Output is the vector of the median of each column :
+<DIV CLASS="center"><TT>[3,3,4,4,4,3,4]</TT></DIV></LI><LI CLASS="li-itemize"><TT>quantile</TT> computes the deciles as specified by the second
+argument of the statistical series stored in the columns of a matrix.<BR>
+Input :<DIV CLASS="center"><TT>quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.25)</TT></DIV>
+Output is the vector of the first quartile of each column :
+<DIV CLASS="center"><TT>[1,1,2,2,1,1,1]</TT></DIV>
+Input :
+<DIV CLASS="center"><TT>quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.75)</TT></DIV>
+Output is the vector of the third quartile of each column :
+<DIV CLASS="center"><TT>[3,3,4,4,4,3,4]</TT></DIV></LI><LI CLASS="li-itemize"><TT>quartiles</TT> computes the minima, the first quartiles, the 
+medians, the third quartiles and the maxima of the statistical series
+stored in the columns of a matrix.<BR>
+Input :
+<DIV CLASS="center"><TT>quartiles([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1], [4,2,5,6,0,1,3], [2,5,6,0,1,3,4]])</TT></DIV>
+Output is a matrix, it&#X2019;s first row is the minima of each column,
+it&#X2019;s second row is the fist quartiles of each column, 
+it&#X2019;s third row the medians 
+of each column, it&#X2019;s fourth row the third
+quartiles of each column and its last row the maxima of each column:
+<DIV CLASS="center"><TT>[[0,0,1,0,0,0,0],[1,1,2,2,1,1,1], [2,2,3,3,2,2,3],</TT></DIV>
+<DIV CLASS="center"><TT>[3,3,4,4,4,3,4],[6,5,6,6,6,6,6]]</TT></DIV></LI><LI CLASS="li-itemize"><TT>boxwhisker</TT> draws the whisker boxes of the statistical series
+stored in the columns of a matrix .<BR>
+Input :
+<DIV CLASS="center"><TT>boxwhisker([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6], [1,3,4,2,5,6,0],[3,4,2,5,6,0,1], [4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>the drawing of the whisker boxes of the statistical 
+series of each column of the matrix argument</TT></DIV> 
+</LI></UL><HR>
+<A HREF="cascmd_en379.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en381.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

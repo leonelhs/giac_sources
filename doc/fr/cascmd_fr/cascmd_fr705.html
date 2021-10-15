@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Régression linéaire : linear_regression</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr704.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr706.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc825">7.2.9</A>  Régression linéaire : <TT>linear_regression</TT></H3><P><A NAME="@default1264"></A>
+Pour approcher les données par la droite des moindres carrés ayant pour
+équation <I>y</I>=<I>mx</I>+<I>b</I>, on utilise <TT>linear_regression</TT> qui renvoie le couple
+(<I>m</I>,<I>b</I>).<BR>
+Si les données sont <I>x</I><SUB><I>i</I></SUB>,<I>y</I><SUB><I>i</I></SUB> avec <I>i</I>=1..<I>n</I>, on a :<BR>
+<I>m</I>=<I>cov</I>(<I>X</I>,<I>Y</I>)/σ(<I>X</I>)<SUP>2</SUP><BR>
+et <I>b</I>=Ȳ−<I>m</I><SPAN style="text-decoration:overline">X</SPAN><BR>
+ car la somme des carrés des distances <I>d</I><SUB><I>i</I></SUB>=|<I>y</I><SUB><I>i</I></SUB>−<I>mx</I><SUB><I>i</I></SUB>−<I>b</I><SUB><I>i</I></SUB>| est 
+minimale pour ces valeurs et ce minimum (qui est donc l’erreur quadratique 
+moyenne verticale) vaut (1−ρ<SUP>2</SUP>)σ(<I>Y</I>)<SUP>2</SUP> où <I>r</I> est
+le coefficient de corrélation (ρ=<I>cov</I>(<I>X</I>,<I>Y</I>/σ(<I>X</I>)σ(<I>Y</I>)).<BR>
+<TT>linear_regression</TT> a les mêmes arguments que <TT>covariance</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>linear_regression([[0,0],[1,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>linear_regression([0,1,2,3,4],[0,1,4,9,16])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>4,-2</TT></DIV><P>
+c’est donc la fonction linéaire d’équation <I>y</I>=4<I>x</I>−2 
+qui approche au mieux les données.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>X:=[0,1,2,3,4,5,6,7,8,9,10]</TT></DIV><DIV CLASS="center"><TT>Y:=[7.3,9.53,12.47,16.3,21.24,27.73,36.22,</TT></DIV><DIV CLASS="center"><TT>47.31,61.78,80.68,105]</TT></DIV><DIV CLASS="center"><TT>Z:=log(Y)</TT></DIV><DIV CLASS="center"><TT>linear_regression(X,Z)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.266729219953,1.98904252589</TT></DIV><P>
+c’est donc la fonction linéaire d’équation <I>z</I>=ln(<I>y</I>)=0.267<I>x</I>+1.99 
+qui approche au mieux les données.</P><HR>
+<A HREF="cascmd_fr704.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr706.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

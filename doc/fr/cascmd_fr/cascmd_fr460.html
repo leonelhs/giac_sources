@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Développement réciproque d’un développement en séries en 0 : revert</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr459.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr461.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc554">6.35.4</A>  Développement réciproque d’un développement en séries en 0 : <TT>revert</TT></H3><P><A NAME="@default823"></A> 
+<TT>revert</TT> a comme argument une expression qui est le début du 
+développement en séries en 0 d’une fonction <I>f</I>.<BR>
+<TT>revert</TT> renvoie le développement en séries en 0 de <I>g</I>(<I>f</I>(0)+<I>x</I>) où
+<I>g</I> vérifie <I>g</I>(<I>f</I>(<I>x</I>))=<I>x</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>revert(x+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x-x</TT><CODE><TT>^</TT></CODE><TT>2+2*x</TT><CODE><TT>^</TT></CODE><TT>3-6*x</TT><CODE><TT>^</TT></CODE><TT>4</TT></DIV><P>
+En effet la fonction <I>f</I> vérifie :
+<I>f</I>(0)=0, <I>f</I>′(0)=1, <I>f</I>"(0)=2,<I>f</I>′"(0)=0,<I>f</I><SUP>(4)</SUP>(0)=24 et si <I>g</I>(<I>f</I>(<I>x</I>))=<I>x</I> on en 
+déduit en dérivant cette identité que :
+<I>g</I>(0)=0,<I>g</I>′(0)=1/<I>f</I>′(0)=1,<I>g</I>″(0)=−2,<I>g</I>‴(0)=12, <I>g</I><SUP>(4)</SUP>(0)=−15*8−24=−144=−24*6
+On tape le début du développement en 0 de exp(<I>x</I>) :
+</P><DIV CLASS="center"><TT>revert(1+x+x</TT><CODE><TT>^</TT></CODE><TT>2/2+x</TT><CODE><TT>^</TT></CODE><TT>3/6+x</TT><CODE><TT>^</TT></CODE><TT>4/14)</TT></DIV><P>
+On obtient le début du développement en <I>x</I>=0 de ln(1+<I>x</I>) :
+</P><DIV CLASS="center"><TT>x-x</TT><CODE><TT>^</TT></CODE><TT>2/2+2*x</TT><CODE><TT>^</TT></CODE><TT>3/3-x</TT><CODE><TT>^</TT></CODE><TT>4/4</TT></DIV><HR>
+<A HREF="cascmd_fr459.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr461.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

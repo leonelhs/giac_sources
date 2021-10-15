@@ -1,0 +1,123 @@
+// fltk 7Fl_Tile 34 -1025 748 325
+[
+// fltk N4xcas19Multiline_Input_tabE 34 -1025 748 78
+Derive(f,xmin,x0,xmax):={ local der:=function_diff(f); £DispG; ClrGraph;£plot(der(x),x=xmin..xmax); £return evalf(der(x0)); }
+,
+// fltk N4xcas10Log_OutputE 34 -947 748 84
+// Parsing Derive£// Warning, check that the following variables are global: der x  compiling Derive££
+,
+// fltk N4xcas8EquationE 34 -863 748 163
+expr(" (f,xmin,x0,xmax)-> £{ local der:=function_diff(f); £  DispG ;  £  ClrGraph ;  £  plot(der(x),x=(xmin .. xmax));  £  return(evalf(der(x0)));  £}",0)
+]
+,
+// fltk 7Fl_Tile 34 -698 748 137
+[
+// fltk N4xcas19Multiline_Input_tabE 34 -698 748 30
+Derive(sin,1.0,2.0,3.0),cos(2.0)
+,
+// fltk N4xcas10Log_OutputE 34 -668 748 64
+// Success££
+,
+// fltk N4xcas8EquationE 34 -604 748 43
+-0.416146836547,-0.416146836547
+]
+,
+// fltk 7Fl_Tile 34 -559 748 338
+[
+// fltk N4xcas19Multiline_Input_tabE 34 -559 748 91
+Tangente(f,xmin,x0,xmax):={ local P,tang; £ClrGraph; DispG;£P:=plot(f,xmin..xmax); tang:=tangent(P,x0);£return right(equation(tang)); }
+,
+// fltk N4xcas10Log_OutputE 34 -468 748 84
+// Parsing Tangente£// Success compiling Tangente££
+,
+// fltk N4xcas8EquationE 34 -384 748 163
+expr(" (f,xmin,x0,xmax)-> £{ local P,tang; £  ClrGraph ;  £  P:=plot(f,xmin .. xmax);  £  tang:=tangent(P,x0);  £  return(right(equation(tang)));  £}",0)
+]
+,
+// fltk 7Fl_Tile 34 -219 748 74
+[
+// fltk N4xcas19Multiline_Input_tabE 34 -219 748 30
+Tangente(sin,1.0,2.0,3.0)
+,
+// fltk N4xcas10Log_OutputE 34 -189 748 1
+
+,
+// fltk N4xcas8EquationE 34 -188 748 43
+(-0.416146836547)*x+1.74159109992
+]
+,
+// fltk 7Fl_Tile 34 -143 748 543
+[
+// fltk N4xcas7EditeurE 34 -143 748 543
+752 ,
+araignee(f,xmin,x0,xmax):={
+  local g,j,x1,L1,L2;
+  ClrGraph; DispG;
+  couleur(plot(f,xmin..xmax),rouge);
+  couleur(droite(y=x),vert);
+  x0:=evalf(x0);
+  L1:=NULL,point(x0,0);
+  L2:=NULL,x0;
+  for (j:=1;j<=10;j++){
+    x1:=f(x0);
+    L1:=L1,point(x0,x1),point(x1,x1);
+    L2:=L2,x1;
+    x0:=x1;
+  }
+  polygone_ouvert(L1);
+  return L2;
+};
+
+newt(f,xmin,x0,xmax):={
+  local g,j,x1,L1,L2;
+  ClrGraph; DispG;
+  couleur(plot(f,xmin..xmax),rouge);
+  x0:=evalf(x0);
+  L1:=NULL; L2:=NULL,x0; // initialisation des listes a vide
+  g:=unapply(x-f(x)/diff(f(x),x),x);
+  for (j:=1;j<=10;j++){
+    L1:=L1,point(x0,0); // pour le graphe
+    L1:=L1,point(x0,f(x0));
+    x1:=g(x0); // element suivant
+    L2:=L2,x1;
+    x0:=x1;
+  }
+  polygone_ouvert(L1);
+  return L2;
+},
+// fltk N4xcas10Log_OutputE 34 400 748 0
+
+]
+,
+// fltk 7Fl_Tile 34 402 748 137
+[
+// fltk N4xcas19Multiline_Input_tabE 34 402 748 30
+araignee(x->cos(x),0,0,3)
+,
+// fltk N4xcas10Log_OutputE 34 432 748 64
+// Success££
+,
+// fltk N4xcas8EquationE 34 496 748 43
+0.0,1.0,0.540302305868,0.857553215846,0.654289790498,0.793480358743,0.701368773623,0.763959682901,0.722102425027,0.750417761764,0.731404042423
+]
+,
+// fltk 7Fl_Tile 34 541 748 137
+[
+// fltk N4xcas19Multiline_Input_tabE 34 541 748 30
+newt(x->x^2-2,0,2,3)
+,
+// fltk N4xcas10Log_OutputE 34 571 748 64
+// Success££
+,
+// fltk N4xcas8EquationE 34 635 748 43
+2.0,1.5,1.41666666667,1.41421568627,1.41421356237,1.41421356237,1.41421356237,1.41421356237,1.41421356237,1.41421356237,1.41421356237
+]
+,
+// fltk 7Fl_Tile 34 680 748 31
+[
+// fltk N4xcas19Multiline_Input_tabE 34 680 748 30
+
+,
+// fltk N4xcas10Log_OutputE 34 710 748 1
+
+]

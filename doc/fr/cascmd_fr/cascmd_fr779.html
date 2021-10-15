@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Génération d’une marche aléatoire sur un graphe d’état : randmarkov</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr778.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr780.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc901">7.4.54</A>  Génération d’une marche aléatoire sur un graphe d’état : <TT>randmarkov</TT></H3><P><A NAME="@default1385"></A>
+<TT>randmarkov(M,i0,n)</TT> génère une suite de <TT>n</TT> états (chaine de 
+Markov) partant de <TT>i0</TT> dont les probabilites de transitions sont données 
+par <TT>M</TT> (matrice stochastique) ou<BR>
+<TT>randmarkov(v,i0)</TT> génère une matrice stochastique ayant <I>p</I> boucles 
+récurrentes <TT>v=[n1,...,np]</TT> et <TT>i0</TT> états transients</P><P><TT>randmarkov(M,i0,n)</TT> renvoie la liste des états qui a <TT>n+1</TT> éléments.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>randmarkov([[0,0,1/2,0,1/2],[0,0,1,0,0],[1/4,1/4,0,1/4,1/4], [0,0,1/2,0,1/2],[0,0,0,0,1]],2,20)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>[2,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>randmarkov([1,2,1,3],4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>une matrice carrée de dimension [11,11]</TT></DIV><P>
+en effet 1+2+1+3+4=11</P><HR>
+<A HREF="cascmd_fr778.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr780.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

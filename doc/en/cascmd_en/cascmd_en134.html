@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Derivative and partial derivative</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en133.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en135.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc153">2.17.5</A>  Derivative and partial derivative</H3><P><A NAME="@default257"></A><A NAME="@default258"></A><A NAME="@default259"></A>
+<TT>diff</TT> or <TT>derive</TT> may have one or two arguments 
+to compute a first order derivative (or first order partial
+derivative) of an expression or of a list of expressions, 
+or several arguments to compute 
+the <I>n</I>-th partial derivative of an expression or list of expressions.</P><H4 CLASS="subsubsection"><A NAME="toc7"></A>Derivative and first order partial derivative : <TT>diff derive deriver</TT></H4><P>
+<TT>diff</TT> (or <TT>derive</TT>) takes two arguments : an expression and a variable
+(resp a vector of the variable name) (see several variable functions in
+<A HREF="index.html#sec:plusvar">2.50</A>). If only one argument is provided, the derivative
+is taken with respect to <TT>x</TT><BR>
+<TT>diff</TT> (or <TT>derive</TT>) returns the derivative (resp a vector of 
+derivative) of the expression with respect to the variable (resp with respect 
+to each variable) given as second argument.<BR>
+Examples :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Compute :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&#X2202; (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">&#X2202; <I>z</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+Input :
+<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,z)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>x*y</TT><CODE><TT>^</TT></CODE><TT>2*3*z</TT><CODE><TT>^</TT></CODE><TT>2+x*y</TT></DIV>
+</LI><LI CLASS="li-itemize">Compute the 3 first order partial derivatives of <I>x</I>*<I>y</I><SUP>2</SUP>*<I>z</I><SUP>3</SUP>+<I>x</I>*<I>y</I>*<I>z</I>.<BR>
+Input :
+<DIV CLASS="center"><TT>diff(x*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y,[x,y,z])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+y*z, x*2*y*z</TT><CODE><TT>^</TT></CODE><TT>3+x*z, x*y</TT><CODE><TT>^</TT></CODE><TT>2*3*z</TT><CODE><TT>^</TT></CODE><TT>2+x*y]</TT></DIV>
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc8"></A>Derivative and <I>n</I>-th order
+partial derivative : <TT>diff derive deriver</TT></H4><P><A NAME="@default260"></A>
+<TT>derive</TT> (or <TT>diff</TT>) may take more than two arguments : an
+expression and the names of the derivation variables (each variable
+may be followed by $<I>n</I> to indicate the number <I>n</I> of derivations).<BR>
+<TT>diff</TT> returns the partial derivative of the expression with respect to 
+the variables given after the first argument.</P><P>The notation $ is usefull if you want to derive <I>k</I> times with
+respect to the same variable, instead of entering <I>k</I> times the
+same variable name, one enters the variable name followed by <TT>$k</TT>,
+for example <TT>x$3</TT> instead of <TT>(x,x,x)</TT>. 
+Each variable may be followed by a $, for example 
+<TT>diff(exp(x*y),x$3,y$2,z)</TT> is the same as 
+<TT>diff(exp(x*y),x,x,x,y,y,z)</TT><BR>
+<B>Examples</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Compute :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&#X2202;<SUP>2</SUP> (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">&#X2202; <I>x</I>&#X2202; <I>z</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+Input :
+<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>y</TT><CODE><TT>^</TT></CODE><TT>2*3*z</TT><CODE><TT>^</TT></CODE><TT>2+y</TT></DIV>
+</LI><LI CLASS="li-itemize">Compute :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&#X2202;<SUP>3</SUP> (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">&#X2202; <I>x</I>&#X2202;<SUP>2</SUP> <I>z</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+Input :
+<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z,z)</TT></DIV>
+Or input :
+<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z$2)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>y</TT><CODE><TT>^</TT></CODE><TT>2*3*2*z</TT></DIV>
+</LI><LI CLASS="li-itemize">Compute the third derivative of :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>+2</TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+Input :
+<DIV CLASS="center"><TT>normal(diff((1)/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x,x,x))</TT></DIV>
+Or :
+<DIV CLASS="center"><TT>normal(diff((1)/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x$3))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>(-24*x</TT><CODE><TT>^</TT></CODE><TT>3+48*x)/(x</TT><CODE><TT>^</TT></CODE><TT>8+8*x</TT><CODE><TT>^</TT></CODE><TT>6+24*x</TT><CODE><TT>^</TT></CODE><TT>4+32*x</TT><CODE><TT>^</TT></CODE><TT>2+16)</TT></DIV>
+</LI></UL><P>
+<B>Remark</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Note the difference between <TT>diff(f,x,y)</TT> and <TT>diff(f,[x,y])</TT> :<BR>
+<TT>diff</TT>(<I>f</I>,<I>x</I>,<I>y</I>) returns  &#X2202;<SUP>2</SUP>(<I>f</I>)/&#X2202; <I>x</I>&#X2202; <I>y</I> and<BR>
+<TT>diff</TT>(<I>f</I>,[<I>x</I>,<I>y</I>]) returns
+[&#X2202;(<I>f</I>)/&#X2202; <I>x</I>,&#X2202;
+(<I>f</I>)/&#X2202; <I>y</I>] 
+</LI><LI CLASS="li-itemize">Never define a derivative function with <TT>f1(x):=diff(f(x),x)</TT>.
+Indeed, <TT>x</TT> would mean two different things Xcas is unable to
+deal with: the variable name to
+define the <I>f</I><SUB>1</SUB> function and the differentiation variable.
+The right way to define a derivative is either with <TT>function_diff</TT> or:
+<DIV CLASS="center">
+<TT>f1:=unapply(diff(f(x),x),x)</TT>
+</DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en133.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en135.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

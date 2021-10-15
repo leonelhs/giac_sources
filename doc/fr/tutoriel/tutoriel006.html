@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="tutoriel.css">
+<TITLE>Programmation</TITLE>
+</HEAD>
+<BODY >
+<A HREF="tutoriel005.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="tutoriel007.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H2 CLASS="section"><A NAME="htoc31">6</A>&#XA0;&#XA0;Programmation</H2><H3 CLASS="subsection"><A NAME="toc26"></A><A NAME="htoc32">6.1</A>&#XA0;&#XA0;Le langage</H3><P>
+<TT>Xcas</TT> permet d&#X2019;&#XE9;crire des programmes, comme n&#X2019;importe quel 
+langage de programmation. Voici ses
+principales caract&#XE9;ristiques.
+<A NAME="@default346"></A>
+<A NAME="@default347"></A>
+<A NAME="@default348"></A>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+C&#X2019;est un langage fonctionnel. L&#X2019;argument d&#X2019;une fonction peut &#XEA;tre
+une autre fonction. Si c&#X2019;est le cas, on peut soit donner le nom de la
+fonction argument dans la commande, soit sa d&#XE9;finition&#XA0;: par exemple
+<CODE>function_diff(f)</CODE> ou bien <CODE>function_diff(x-&gt;x^2)</CODE>.
+</LI><LI CLASS="li-itemize">Il n&#X2019;y a pas de distinction entre programme et fonction&#XA0;: 
+une fonction renvoie la valeur de la derni&#XE8;re instruction 
+&#XE9;valu&#XE9;e ou ce qui suit le mot r&#XE9;serv&#XE9; <CODE>return</CODE>.
+Comme pour tous les environnements de calcul, programmer
+consiste &#XE0; &#XE9;tendre <TT>Xcas</TT> en lui rajoutant les fonctions
+souhait&#XE9;es. Structurer la programmation consiste &#XE0; hi&#XE9;rarchiser
+les diff&#XE9;rentes fonctions qui s&#X2019;appellent entre elles.
+</LI><LI CLASS="li-itemize">Le langage est non typ&#XE9;. On distingue seulement les 
+variables globales, qui ne sont pas d&#XE9;clar&#XE9;es, 
+et les variables locales, 
+d&#XE9;clar&#XE9;es en d&#XE9;but de fonction.
+</LI></UL><P>
+<A NAME="@default349"></A>
+Dans un programme, lorsqu&#X2019;on appelle une variable munie d&#X2019;un indice qui n&#X2019;est 
+pas affect&#XE9;e &#XE0; une liste, s&#XE9;quence ou matrice, 
+c&#X2019;est une table qui est cr&#XE9;&#XE9;e, et non une liste.
+Une table est un conteneur d&#X2019;objets analogue aux listes et aux
+s&#XE9;quences. La diff&#XE9;rence est qu&#X2019;elle peut &#XEA;tre indic&#XE9;e
+par autre chose qu&#X2019;un entier, par exemple
+une cha&#XEE;ne de caract&#XE8;res&#X2026;&#XA0;
+Si <CODE>a</CODE> est une variable formelle, la commande <CODE>a[4]:=2</CODE>
+cr&#XE9;e une table <CODE>a</CODE>.<BR>
+Pour que <CODE>a</CODE> soit une liste, il faut d&#X2019;abord affecter <CODE>a</CODE>
+&#XE0; une liste par exemple <CODE>a:=[0$10]</CODE>
+(si la taille de la liste est connue) ou <CODE>a:=[]</CODE> puis 
+<CODE>a[4]:=2</CODE>.
+M&#XEA;me si le langage est non typ&#XE9;, il est donc 
+recommand&#XE9; d&#X2019;initialiser
+les variables avant de les utiliser.
+La syntaxe de d&#XE9;claration d&#X2019;une fonction est la suivante. 
+</P><PRE CLASS="verbatim">nom_fonction(var1,var2,...):={
+local var_loc1, var_loc2,... ;
+  instruction1;
+  instruction2;
+  ...
+}
+</PRE><P>La syntaxe est soit avec des mots clef en 
+fran&#XE7;ais soit celle du langage C++.</P><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Instructions en fan&#XE7;ais</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP>affectation</TD><TD ALIGN=left NOWRAP><CODE> a:=2;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>entr&#XE9;e expression</TD><TD ALIGN=left NOWRAP><CODE> saisir("a=",a);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>entr&#XE9;e chaine</TD><TD ALIGN=left NOWRAP><CODE> saisir_chaine("a=",a);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>sortie</TD><TD ALIGN=left NOWRAP><CODE> afficher("a=",a);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>valeur retourn&#XE9;e</TD><TD ALIGN=left NOWRAP><CODE> retourne(a);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>arr&#XEA;t dans boucle</TD><TD ALIGN=left NOWRAP><CODE> break;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>alternative</TD><TD ALIGN=left NOWRAP><CODE> si &lt;condition&gt; alors &lt;inst&gt; fsi;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>&nbsp;</TD><TD ALIGN=left NOWRAP><CODE> si &lt;condition&gt; alors &lt;inst1&gt; sinon &lt;inst2&gt; fsi;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>boucle pour</TD><TD ALIGN=left NOWRAP><CODE> pour j de a jusque b faire &lt;inst&gt; fpour;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>&nbsp;</TD><TD ALIGN=left NOWRAP><CODE> pour j de a jusque b pas p faire &lt;inst&gt; fpour;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>boucle r&#XE9;p&#XE9;ter</TD><TD ALIGN=left NOWRAP><CODE> repeter &lt;inst&gt; jusqua &lt;condition&gt;;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>boucle tantque</TD><TD ALIGN=left NOWRAP><CODE> tantque &lt;condition&gt; faire &lt;inst&gt; ftantque;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>boucle faire</TD><TD ALIGN=left NOWRAP><CODE> faire &lt;inst1&gt; si &lt;condition&gt; break;&lt;inst2&gt;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>&nbsp;</TD><TD ALIGN=left NOWRAP><CODE> ffaire;</CODE></TD></TR>
+</TABLE>
+</DIV><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Instructions comme en C++</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP>affectation</TD><TD ALIGN=left NOWRAP><CODE> a:=2;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>entr&#XE9;e expression</TD><TD ALIGN=left NOWRAP><CODE> input("a=",a);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>entr&#XE9;e chaine</TD><TD ALIGN=left NOWRAP><CODE> textinput("a=",a);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>sortie</TD><TD ALIGN=left NOWRAP><CODE> print("a=",a);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>valeur retourn&#XE9;e</TD><TD ALIGN=left NOWRAP><CODE> return(a);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>arr&#XEA;t dans boucle</TD><TD ALIGN=left NOWRAP><CODE> break;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>alternative</TD><TD ALIGN=left NOWRAP><CODE> if (&lt;condition&gt;) {&lt;inst&gt;};</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>&nbsp;</TD><TD ALIGN=left NOWRAP><CODE> if (&lt;condition&gt;) {&lt;inst1&gt;} else {&lt;inst2&gt;};</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>boucle pour</TD><TD ALIGN=left NOWRAP><CODE> for (j:= a;j&lt;=b;j++) {&lt;inst&gt;};</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>&nbsp;</TD><TD ALIGN=left NOWRAP><CODE> for (j:= a;j&lt;=b;j:=j+p) {&lt;inst&gt;};</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>boucle r&#XE9;p&#XE9;ter</TD><TD ALIGN=left NOWRAP><CODE> repeat &lt;inst&gt; until &lt;condition&gt;;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>boucle tantque</TD><TD ALIGN=left NOWRAP><CODE> while (&lt;condition&gt;) {&lt;inst&gt;};</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP>boucle faire</TD><TD ALIGN=left NOWRAP><CODE> do &lt;inst1&gt; if (&lt;condition&gt;) break;&lt;inst2&gt; od;</CODE></TD></TR>
+</TABLE>
+</DIV><P>
+Pour les tests, une condition est un bool&#XE9;en,
+r&#XE9;sultat d&#X2019;une expression logique, utilisant les
+op&#XE9;rateurs habituels.</P><P><A NAME="@default350"></A>
+<A NAME="@default351"></A>
+<A NAME="@default352"></A></P><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=4><B>Op&#XE9;rateurs logiques</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>==</CODE></TD><TD ALIGN=left NOWRAP>teste l&#X2019;&#XE9;galit&#XE9;</TD><TD ALIGN=left NOWRAP><CODE>!=</CODE></TD><TD ALIGN=left NOWRAP>teste la diff&#XE9;rence</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>&lt;</CODE></TD><TD ALIGN=left NOWRAP>teste la stricte inf&#XE9;riorit&#XE9;</TD><TD ALIGN=left NOWRAP><CODE>&gt;</CODE></TD><TD ALIGN=left NOWRAP>teste la stricte sup&#XE9;riorit&#XE9;</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>&lt;=</CODE></TD><TD ALIGN=left NOWRAP>teste l&#X2019;inf&#XE9;riorit&#XE9; ou l&#X2019;&#XE9;galit&#XE9;</TD><TD ALIGN=left NOWRAP><CODE>&gt;=</CODE></TD><TD ALIGN=left NOWRAP>teste la sup&#XE9;riorit&#XE9; ou l&#X2019;&#XE9;galit&#XE9;</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>&amp;&amp;, et </CODE></TD><TD ALIGN=left NOWRAP>op&#XE9;rateur bool&#XE9;en infix&#XE9; et</TD><TD ALIGN=left NOWRAP><CODE>||, ou</CODE></TD><TD ALIGN=left NOWRAP>op&#XE9;rateur bool&#XE9;en infix&#XE9; ou</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>vrai</CODE></TD><TD ALIGN=left NOWRAP>est le bool&#XE9;en true ou 1</TD><TD ALIGN=left NOWRAP><CODE>faux</CODE></TD><TD ALIGN=left NOWRAP>est le bool&#XE9;en false ou 0</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>non, !</CODE></TD><TD ALIGN=left NOWRAP>inverse logique</TD><TD ALIGN=left NOWRAP>&nbsp;</TD><TD ALIGN=left NOWRAP>&nbsp;</TD></TR>
+</TABLE>
+</DIV><P>
+<A NAME="@default353"></A>
+<A NAME="@default354"></A>
+<A NAME="@default355"></A>
+<A NAME="@default356"></A>
+<A NAME="@default357"></A>
+<A NAME="@default358"></A>
+<A NAME="@default359"></A>
+<A NAME="@default360"></A></P><P>Attention, <CODE>i</CODE> d&#XE9;signe &#X221A;<SPAN style="text-decoration:overline">&#X2212;1</SPAN> et ne peut pas &#XEA;tre
+utilis&#XE9; comme variable de boucle.
+L&#X2019;instruction <CODE>break;</CODE> permet de sortir d&#X2019;une boucle
+et <CODE>continue;</CODE> de passer imm&#XE9;diatement &#XE0; l&#X2019;it&#XE9;ration
+suivante.
+<A NAME="@default361"></A>
+<A NAME="@default362"></A>
+De nombreuses variantes sont reconnues en particulier en mode 
+de compatibilit&#XE9; avec Maple, Mupad et les TI89/Voyage 200.
+<A NAME="@default363"></A>
+On peut capturer des erreurs d&#X2019;ex&#XE9;cution par
+</P><PRE CLASS="verbatim">try {bloc_erreurs_capturees} 
+catch (variable)
+    {bloc_execute_si_erreur}
+</PRE><P>Par exemple :
+</P><PRE CLASS="verbatim">try{A:=idn(2)*idn(3)} 
+catch(erreur) 
+{print("l'erreur est "+erreur)}
+</PRE><H3 CLASS="subsection"><A NAME="toc27"></A><A NAME="htoc33">6.2</A>&#XA0;&#XA0;Quelques exemples</H3><P>
+Pour &#XE9;crire un programme, il est conseill&#XE9; d&#X2019;ouvrir
+un &#XE9;diteur de programme avec le menu <CODE>Prg-&gt;Nouveau programme</CODE>. Le menu
+<CODE>Prg</CODE> de l&#X2019;&#XE9;diteur permet d&#X2019;entrer facilement les structures
+de programmation. On peut ensuite sauvegarder le texte du programme
+ind&#XE9;pendamment de la session de travail pour l&#X2019;utiliser ensuite
+dans une autre session de travail.</P><P>Voici un programme qui donne le quotient et le 
+reste de la division euclidienne de 2 entiers en utilisant les fonctions 
+<CODE>iquo</CODE> qui renvoie le quotient et <CODE>irem</CODE> 
+qui renvoie le reste (c&#X2019;est la fonction <CODE>iquorem</CODE> de <TT>Xcas</TT>).</P><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>idiv2</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>idiv2(a,b):={</CODE></TD><TD ALIGN=left NOWRAP><CODE>idiv2(a,b):={</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE> local q,r;</CODE></TD><TD ALIGN=left NOWRAP><CODE>  local q,r;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>  if (b!=0) {</CODE></TD><TD ALIGN=left NOWRAP><CODE>  si b!=0 alors</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>    q:=iquo(a,b);</CODE></TD><TD ALIGN=left NOWRAP><CODE>     q:=iquo(a,b);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>    r:=irem(a,b);}</CODE></TD><TD ALIGN=left NOWRAP><CODE>     r:=irem(a,b);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>  else {</CODE></TD><TD ALIGN=left NOWRAP><CODE>  sinon</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>    q:=0;</CODE></TD><TD ALIGN=left NOWRAP><CODE>     q:=0;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>    r:=a;</CODE></TD><TD ALIGN=left NOWRAP><CODE>     r:=a;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>  }</CODE></TD><TD ALIGN=left NOWRAP><CODE>  fsi</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>  return [q,r];</CODE></TD><TD ALIGN=left NOWRAP><CODE>  retourne [q,r];</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>}</CODE></TD><TD ALIGN=left NOWRAP><CODE>}</CODE></TD></TR>
+</TABLE>
+</DIV><P>
+Saisissez cette fonction <TT>idiv2</TT> dans un &#XE9;diteur de programme, testez-la
+(bouton <CODE>OK</CODE>) puis sauvegardez par exemple sous le nom
+<CODE>idiv2.cxx</CODE>. Vous pouvez utiliser cette fonction 
+dans une ligne de commande, en tapant par exemple <CODE>idiv2(25,15)</CODE>.
+Vous pourrez utiliser cette fonction dans une autre session <TT>Xcas</TT>, 
+en utilisant la commande
+<CODE>read("idiv2.cxx")</CODE> ou en l&#X2019;ouvrant depuis un
+&#XE9;diteur de programme (et en le validant par OK).</P><P>Voici maintenant deux versions du calcul du PGCD de deux entiers, une
+version it&#XE9;rative, puis une version r&#XE9;cursive.
+<A NAME="@default364"></A></P><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>pgcd_iteratif</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>pgcdi(a,b):={</CODE></TD><TD ALIGN=left NOWRAP><CODE>pgcdi(a,b):={</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE> local r;</CODE></TD><TD ALIGN=left NOWRAP><CODE>  local r;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>  while (b!=0) {</CODE></TD><TD ALIGN=left NOWRAP><CODE>  tantque b!=0 faire</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>    r:=irem(a,b);</CODE></TD><TD ALIGN=left NOWRAP><CODE>     r:=irem(a,b);</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>    a:=b;</CODE></TD><TD ALIGN=left NOWRAP><CODE>     a:=b;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>    b:=r;</CODE></TD><TD ALIGN=left NOWRAP><CODE>     b:=r;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>  }</CODE></TD><TD ALIGN=left NOWRAP><CODE>  ftantque</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>  return a;</CODE></TD><TD ALIGN=left NOWRAP><CODE>  retourne a;</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>}:;</CODE></TD><TD ALIGN=left NOWRAP><CODE>}:;</CODE></TD></TR>
+</TABLE>
+</DIV><P><A NAME="@default365"></A></P><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>pgcd_recursif</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>pgcdr(a,b):={</CODE></TD><TD ALIGN=left NOWRAP><CODE>pgcdr(a,b):={</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE> if (b!=0) return a;</CODE></TD><TD ALIGN=left NOWRAP><CODE> si b!=0 alors retourne a;fsi</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE> return pgcdr(b,irem(a,b));</CODE></TD><TD ALIGN=left NOWRAP><CODE> retourne pgcdr(b,irem(a,b));</CODE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>}:;</CODE></TD><TD ALIGN=left NOWRAP><CODE>}:;</CODE></TD></TR>
+</TABLE>
+</DIV><P>Il arrive parfois qu&#X2019;un programme ne fonctionne pas du premier coup 
+comme pr&#XE9;vu (!) 
+Il est alors possible de l&#X2019;ex&#XE9;cuter en mode pas-&#XE0;-pas pour le mettre 
+au point, avec la 
+<A NAME="@default366"></A>
+commande <CODE>debug</CODE>. Pour plus de d&#XE9;tails consulter le menu
+<CODE>Aide-&gt;Interface</CODE>. Par exemple, pour le programme <CODE>idiv2</CODE>,
+on lance la mise au point en tapant :<BR>
+<CODE>debug(idiv2(25,15))</CODE><BR>
+Le d&#XE9;buggueur affiche automatiquement la valeur des param&#XE8;tres <CODE>a,b</CODE> puis
+des variables locales <CODE>q,r</CODE> lors de l&#X2019;ex&#XE9;cution instruction par 
+instruction avec le bouton <CODE>sst</CODE>.
+</P><H3 CLASS="subsection"><A NAME="toc28"></A><A NAME="htoc34">6.3</A>&#XA0;&#XA0;Style de programmation</H3><P>
+<A NAME="@default367"></A>
+<TT>Xcas</TT> est interpr&#XE9;t&#XE9; et non compil&#XE9;.
+Plus que le nombre de lignes du programme, c&#X2019;est le nombre
+d&#X2019;instructions r&#XE9;ellement ex&#XE9;cut&#XE9;es qui influence le temps de calcul.
+En r&#XE8;gle g&#XE9;n&#XE9;rale, il est plus rapide de cr&#XE9;er des listes
+ou des s&#XE9;quences que de programmer des boucles. 
+Voici quelques mani&#XE8;res de calculer
+5000!&#XA0;: comparez leurs temps d&#X2019;ex&#XE9;cution.
+</P><PRE CLASS="verbatim">5000!
+product([n$(n=1..5000)])
+product(cumSum([1$5000]))
+f:=1; (f:=f*n)$(n=2..5000):;f
+f:=1; for(n:=1;n&lt;=5000;n++) {f:=f*n}
+f:=1;n:=1; while(n&lt;5000) {n:=n+1; f:=f*n}
+f:=1; (f:=f*n)$(n=2..5000)
+</PRE><P>La rapidit&#XE9; d&#X2019;ex&#XE9;cution est parfois contradictoire avec la
+clart&#XE9; du programme, et on doit accepter des compromis. Dans une
+utilisation courante, le temps de calcul n&#X2019;est pas r&#XE9;ellement un enjeu&#XA0;: 
+on utilise en g&#XE9;n&#XE9;ral les langages
+interpr&#XE9;t&#XE9;s comme <TT>Xcas</TT> pour tester des algorithmes et r&#XE9;aliser des
+maquettes. Les applications en vraie grandeur sont cod&#XE9;es dans des
+langages compil&#XE9;s comme C++ (en utilisant par exemple la librarie
+<CODE>giac</CODE> pour les fonctions de calcul formel).</P><HR>
+<A HREF="tutoriel005.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="tutoriel007.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

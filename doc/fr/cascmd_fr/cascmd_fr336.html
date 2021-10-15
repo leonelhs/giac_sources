@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Transformée de Fourier discrète</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr335.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr337.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc419">6.24.2</A>  Transformée de Fourier discrète</H3><P>
+Soit <I>N</I> un entier.<BR>
+On considère une suite <I>x</I> périodique de période <I>N</I> : elle est
+entièrement déterminée par la liste <I>x</I>=[<I>x</I><SUB>0</SUB>,<I>x</I><SUB>1</SUB>,...<I>x</I><SUB><I>N</I>−1</SUB>].<BR>
+La transformée de Fourier discréte est une transformation <I>F</I><SUB><I>N</I></SUB> qui a une 
+suite <I>x</I> périodique de période <I>N</I> fait correspondre une suite <I>y</I>,
+périodique de période <I>N</I>, définie pour <I>k</I>=0..<I>N</I>−1 par :<BR>
+ (<I>F</I><SUB><I>N</I></SUB>(<I>x</I>))<SUB><I>k</I></SUB>=<I>y</I><SUB><I>k</I></SUB>=∑<SUB><I>j</I>=0</SUB><SUP><I>N</I>−1</SUP><I>x</I><SUB><I>j</I></SUB>ω<SUB><I>N</I></SUB><SUP>−<I>k</I>· <I>j</I></SUP>
+avec ω<SUB><I>N</I></SUB> racine <I>N</I>-ième de l’unité.<BR>
+Le but est de calculer pour <I>k</I>=0..<I>N</I>−1:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>N</I>−1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>x</I><SUB><I>j</I></SUB>ω<SUB><I>N</I></SUB><SUP>−<I>k</I>· <I>j</I></SUP></TD></TR>
+</TABLE><P>
+avec ω<SUB><I>N</I></SUB>=exp(2<I>i</I>π/<I>N</I>)<BR>
+La méthode de la transformée de Fourier rapide permet de calculer 
+rapidement ces sommes si <I>N</I> est une puissance de 2.</P><H4 CLASS="subsubsection"><A NAME="toc19"></A>Les propriétes</H4><P>
+La transformée de Fourier discréte <I>F</I><SUB><I>N</I></SUB> est une transformation bijective.<BR>
+On a :<BR>
+<I>F</I><SUB><I>N</I></SUB><SUP>−1</SUP>=1/<I>N</I> <SPAN style="text-decoration:overline"><I>F</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>N</I></SPAN></SUB><BR>
+c’est à dire :<BR>
+ (<I>F</I><SUB><I>N</I></SUB><SUP>−1</SUP>(<I>x</I>))<SUB><I>k</I></SUB>=1/<I>N</I>∑<SUB><I>j</I>=0</SUB><SUP><I>N</I>−1</SUP><I>x</I><SUB><I>j</I></SUB>ω<SUB><I>N</I></SUB><SUP><I>k</I>· <I>j</I></SUP><BR>
+<B>Notation</B><BR>
+Avec <TT>Xcas</TT> on a les fonctions <TT>fft</TT> et <TT>ifft</TT> qui sont :<BR>
+<TT>fft(x)</TT>=<I>F</I><SUB><I>N</I></SUB>(<I>x</I>) et<BR>
+<TT>ifft(x)</TT>=<I>F</I><SUB><I>N</I></SUB><SUP>−1</SUP>(<I>x</I>)<BR>
+<B>Définiton</B><BR>
+Soient deux suites <I>x</I> et <I>y</I> périodiques de période <I>N</I>.<BR>
+On définit :<BR>
+- le produit de Hadamard, noté ·, par :<BR>
+(<I>x</I> · <I>y</I>)<SUB><I>k</I></SUB>=<I>x</I><SUB><I>k</I></SUB><I>y</I><SUB><I>k</I></SUB><BR>
+- le produit de convolution, noté *, par :<BR>
+(<I>x</I> * <I>y</I>)<SUB><I>k</I></SUB>=∑<SUB><I>j</I>=0</SUB><SUP><I>N</I>−1</SUP><I>x</I><SUB><I>j</I></SUB><I>y</I><SUB><I>k</I>−<I>j</I></SUB><BR>
+On a alors :<BR>
+<I>N</I>*<I>F</I><SUB><I>N</I></SUB>(<I>x</I> · <I>y</I>)=<I>F</I><SUB><I>N</I></SUB>(<I>x</I>) * <I>F</I><SUB><I>N</I></SUB>(<I>y</I>)<BR>
+<I>F</I><SUB><I>N</I></SUB>(<I>x</I> * <I>y</I>)=<I>F</I><SUB><I>N</I></SUB>(<I>x</I>) · <I>F</I><SUB><I>N</I></SUB>(<I>y</I>)</P><H4 CLASS="subsubsection"><A NAME="toc20"></A>Où interviennent ces sommes ?</H4><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Valeur d’un polynôme<BR>
+Soit un polynôme <I>P</I>(<I>x</I>)=∑<SUB><I>j</I>=0</SUB><SUP><I>N</I>−1</SUP><I>c</I><SUB><I>j</I></SUB><I>x</I><SUP><I>j</I></SUP> donné par la liste de 
+ces coefficients [<I>c</I><SUB>0</SUB>,<I>c</I><SUB>1</SUB>,..<I>c</I><SUB><I>N</I>−1</SUB>] complété par des zéros pour que 
+<I>N</I> soit une puissance de 2.
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+On veut calculer les valeurs prises par <I>P</I>(<I>x</I>) aux points 
+<I>a</I><SUB><I>k</I></SUB>=ω<SUB><I>N</I></SUB><SUP>−<I>k</I></SUP>=exp(−2<I>ik</I>π/<I>N</I>) pour <I>k</I>=0..<I>N</I>−1, c’est à dire 
+les valeurs ∑<SUB><I>j</I>=0</SUB><SUP><I>N</I>−1</SUP><I>c</I><SUB><I>j</I></SUB>(ω<SUB><I>N</I></SUB><SUP>−<I>k</I></SUP>)<SUP><I>j</I></SUP> pour <I>k</I>=0..<I>N</I>−1.<BR>
+On a :<BR>
+[<I>P</I>(<I>a</I><SUB>0</SUB>), <I>P</I>(<I>a</I><SUB>1</SUB>),..<I>P</I>(<I>a</I><SUB><I>N</I>−1</SUB>)]=<I>F</I><SUB><I>N</I></SUB>([<I>c</I><SUB>0</SUB>,<I>c</I><SUB>1</SUB>,..<I>c</I><SUB><I>N</I>−1</SUB>])<BR>
+Par exemple on tape :<BR>
+<TT>P(x):=x+x</TT><CODE><TT>^</TT></CODE><TT>2</TT> et 
+<TT>w:=i</TT><BR>
+Les coefficients de <I>P</I> sont [0,1,1,0], 
+ω=<I>w</I>=<I>i</I>, <I>N</I>=4 et exp(2<I>i</I>π/4)=<I>i</I>.<BR>
+On a :<BR>
+<TT>fft([0,1,1,0])=[2,-1-i,0,-1+i]</TT>
+et donc<BR>
+<TT>P(0)=2</TT>,<BR>
+<TT>P(-i)=P(w</TT><CODE><TT>^</TT></CODE><TT>-1)=-1-i</TT>,<BR>
+<TT>P(-1)=P(w</TT><CODE><TT>^</TT></CODE><TT>-2)=0</TT>,<BR>
+<TT>P(i)=P(w</TT><CODE><TT>^</TT></CODE><TT>-3)=-1+i</TT>.
+</LI><LI CLASS="li-itemize">On veut calculer les valeurs prises par <I>P</I>(<I>x</I>) aux points 
+<I>b</I><SUB><I>k</I></SUB>=ω<SUB><I>N</I></SUB><SUP><I>k</I></SUP>=exp(2<I>ik</I>π/<I>N</I>) pour <I>k</I>=0..(<I>N</I>−1), c’est à dire les 
+valeurs ∑<SUB><I>j</I>=0</SUB><SUP><I>N</I>−1</SUP><I>c</I><SUB><I>j</I></SUB>(ω<SUB><I>N</I></SUB><SUP><I>k</I></SUP>)<SUP><I>j</I></SUP> pour <I>k</I>=0..(<I>N</I>−1).<BR>
+On a :<BR>
+[<I>P</I>(<I>a</I><SUB>0</SUB>), <I>P</I>(<I>a</I><SUB>1</SUB>),..<I>P</I>(<I>a</I><SUB>(<I>N</I>−1)</SUB>)]=<I>N</I>*<I>F</I><SUB><I>N</I></SUB><SUP>−1</SUP>([<I>c</I><SUB>0</SUB>,<I>c</I><SUB>1</SUB>,..<I>c</I><SUB>(<I>N</I>−1)</SUB>])<BR>
+Par exemple on tape :<BR>
+<TT>P(x):=x+x</TT><CODE><TT>^</TT></CODE><TT>2</TT> et
+<TT>w:=i</TT><BR>
+Les coefficients de <I>P</I> sont [0,1,1,0], 
+ω=<I>w</I>=<I>i</I>, <I>N</I>=4 et exp(2<I>i</I>π/4)=<I>i</I>.<BR>
+On a :<BR>
+<TT>4*ifft([0,1,1,0])=[2,-1+i,0,-1-i]</TT>
+et donc<BR>
+<TT>P(0)=2</TT>,<BR>
+<TT>P(i)=P(w</TT><CODE><TT>^</TT></CODE><TT>1)=-1+i</TT>,<BR>
+<TT>P(-1)=P(w</TT><CODE><TT>^</TT></CODE><TT>2)=0</TT>,<BR>
+<TT>P(-i)=P(w</TT><CODE><TT>^</TT></CODE><TT>3)=-1-i</TT>.
+</LI></UL>
+</LI><LI CLASS="li-enumerate">Interpolation trigonométrique<BR>
+Soit <I>f</I> une fonction 2π-périodique dont on connait les valeurs en
+<I>x</I><SUB><I>k</I></SUB>=2<I>k</I>π/<I>N</I>, <I>f</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>f</I>(2<I>k</I>π/<I>N</I>)=<I>f</I><SUB><I>k</I></SUB> pour <I>k</I>=0..(<I>N</I>−1) avec <I>N</I>=2*<I>m</I>.<BR>
+On veut déterminer le polynôme <I>p</I> trigonométrique interpolateur de <I>f</I> 
+aux points 2<I>k</I>π/<I>N</I> pour <I>k</I>=0..(<I>N</I>−1), sous la forme :<BR>
+<I>p</I>(<I>x</I>)=<I>a</I><SUB>0</SUB>/2+∑<SUB><I>n</I>=0</SUB><SUP><I>N</I>/2−1</SUP><I>a</I><SUB><I>n</I></SUB>cos(<I>nx</I>)+<I>b</I><SUB><I>n</I></SUB>sin(<I>nx</I>)+1/2 <I>a</I><SUB><I>N</I>/2</SUB><I>cos</I>(<I>Nx</I>/2)<BR>
+on suppose donc <I>b</I><SUB>0</SUB>=<I>b</I><SUB><I>N</I>/2</SUB>=0 et on choisit cette notation pour
+simplifier les calculs ultérieurs.<BR>
+ On a aussi :<BR>
+<I>p</I>(<I>x</I>)=1/2 <I>p</I><SUB>−<I>N</I>/2</SUB>exp(−<I>iNx</I>/2)+∑<SUB><I>n</I>=−<I>N</I>/2+1</SUB><SUP><I>N</I>/2−1</SUP><I>p</I><SUB><I>n</I></SUB>exp(<I>inx</I>)+1/2 <I>p</I><SUB><I>N</I>/2</SUB>exp(<I>iNx</I>/2).<BR>
+avec pour <I>k</I>=0..<I>N</I>/2<BR>
+<I>p</I><SUB><I>k</I></SUB>=1/2(<I>a</I><SUB><I>k</I></SUB>−<I>ib</I><SUB><I>k</I></SUB>)<BR>
+<I>p</I><SUB>−<I>k</I></SUB>=1/2(<I>a</I><SUB><I>k</I></SUB>+<I>ib</I><SUB><I>k</I></SUB>)<BR>
+comme <I>b</I><SUB><I>N</I>/2</SUB>=0 on a <I>p</I><SUB>−<I>N</I>/2</SUB>=<I>p</I><SUB><I>N</I>/2</SUB><BR>
+On veut déterminer les <I>p</I><SUB><I>k</I></SUB> pour avoir :<BR>
+<I>p</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>f</I><SUB><I>k</I></SUB>=<BR>
+1/2 <I>p</I><SUB>−<I>N</I>/2</SUB>exp(−<I>ik</I>π)+∑<SUB><I>n</I>=−<I>N</I>/2+1</SUB><SUP><I>N</I>/2−1</SUP><I>p</I><SUB><I>n</I></SUB>exp(<I>in</I>2<I>k</I>π/<I>N</I>)+1/2 <I>p</I><SUB><I>N</I>/2</SUB>exp(<I>ik</I>π)<BR>
+puisque exp(−<I>ik</I>π)=exp(<I>ik</I>π)=−1 et <I>p</I><SUB>−<I>N</I>/2</SUB>=<I>p</I><SUB><I>N</I>/2</SUB> on a<BR>
+<I>p</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>f</I><SUB><I>k</I></SUB>=−<I>p</I><SUB>−<I>N</I>/2</SUB>+∑<SUB><I>n</I>=−<I>N</I>/2+1</SUB><SUP><I>N</I>/2−1</SUP><I>p</I><SUB><I>n</I></SUB>exp(<I>in</I>2<I>k</I>π/<I>N</I>)<BR>
+On transforme ∑<SUB><I>n</I>=−<I>N</I>/2+1</SUB><SUP>−1</SUP> en posant <I>j</I>=<I>n</I>+<I>N</I> on obtient :<BR>
+∑<SUB><I>n</I>=−<I>N</I>/2</SUB><SUP>−1</SUP> <I>p</I><SUB><I>n</I></SUB> exp(<I>inx</I>)=∑<SUB><I>j</I>=<I>N</I>/2</SUB><SUP><I>N</I>−1</SUP><I>p</I><SUB><I>j</I>−<I>N</I></SUB>exp(<I>i</I>(<I>j</I>−<I>N</I>)<I>x</I>)<BR>
+puisque pour <I>k</I>=0..(<I>N</I>−1), exp(<I>i</I>(<I>j</I>−<I>N</I>)<I>x</I><SUB><I>k</I></SUB>)=exp(<I>ijx</I><SUB><I>k</I></SUB>),<BR>
+on a :<BR>
+<I>p</I>(<I>x</I><SUB><I>k</I></SUB>)=∑<SUB><I>j</I>=<I>N</I>/2</SUB><SUP><I>N</I>−1</SUP><I>p</I><SUB><I>j</I>−<I>N</I></SUB>exp(<I>ijx</I><SUB><I>k</I></SUB>)+∑<SUB><I>n</I>=0</SUB><SUP><I>N</I>/2−1</SUP><I>p</I><SUB><I>n</I></SUB>exp(<I>inx</I><SUB><I>k</I></SUB>).<BR>
+ou encore :<BR>
+<I>p</I>(<I>x</I><SUB><I>k</I></SUB>)=∑<SUB><I>n</I>=0</SUB><SUP><I>N</I>/2−1</SUP><I>p</I><SUB><I>n</I></SUB>exp(<I>inx</I><SUB><I>k</I></SUB>)+∑<SUB><I>n</I>=<I>N</I>/2</SUB><SUP><I>N</I>−1</SUP><I>p</I><SUB><I>n</I>−<I>N</I></SUB>exp(<I>inx</I><SUB><I>k</I></SUB>).<BR>
+On pose :<BR>
+pour <I>n</I>=0..(<I>N</I>/2−1), <I>q</I><SUB><I>n</I></SUB>=<I>p</I><SUB><I>n</I></SUB> et<BR>
+pour <I>n</I>=<I>N</I>/2..(<I>N</I>−1), <I>q</I><SUB><I>n</I></SUB>=<I>p</I><SUB><I>n</I>−<I>N</I></SUB>.<BR>
+Donc pour <I>k</I>=0..(<I>N</I>−1), <I>p</I>(<I>x</I><SUB><I>k</I></SUB>)=∑<SUB><I>n</I>=0</SUB><SUP><I>N</I>−1</SUP><I>q</I><SUB><I>n</I></SUB>exp(<I>inx</I><SUB><I>k</I></SUB>)=<I>f</I><SUB><I>k</I></SUB>.<BR>
+Il suffit donc de résoudre ce système d’inconnues <I>q</I><SUB><I>n</I></SUB>.<BR>
+On a :<BR>
+<I>f</I><SUB><I>k</I></SUB>=<I>f</I>(2<I>k</I>π/<I>N</I>)=<I>p</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>N</I>*<I>F</I><SUB><I>N</I></SUB><SUP>−1</SUP>(<I>q</I>)=<TT><I>N</I>*<I>ifft</I>(<I>q</I>)</TT><BR>
+soit :<BR>
+<I>q</I>=[<I>p</I><SUB>0</SUB>,..<I>p</I><SUB><I>N</I>/2−1</SUB>,<I>p</I><SUB>−<I>N</I>/2</SUB>,..,<I>p</I><SUB>−1</SUB>]=1/<I>N</I><I>F</I><SUB><I>N</I></SUB>([<I>f</I><SUB>0</SUB>,..<I>f</I><SUB>(<I>N</I>−1)</SUB>])=<BR>
+<TT>1/<I>N</I></TT><TT><I>fft</I>([<I>f</I></TT><SUB><TT>0</TT></SUB><TT>,...<I>f</I></TT><SUB><TT>(<I>N</I>-1)</TT></SUB><TT>])</TT><BR>
+<TT>Remarque </TT><BR>
+Si la fonction <I>f</I> est réelle on a :<BR>
+<I>p</I><SUB>−<I>k</I></SUB>=<SPAN style="text-decoration:overline"><I>p</I></SPAN><SUB><I>k</I></SUB> pour <I>k</I>=1..(<I>N</I>/2−1) et <I>p</I><SUB>0</SUB> et <I>p</I><SUB>−<I>N</I>/2</SUB> sont réels.<BR>
+Donc si la fonction <I>f</I> est réelle on a :<BR>
+<I>p</I>(<I>x</I>)=<I>p</I><SUB>0</SUB>+2*<I>re</I>(∑<SUB><I>k</I>=0</SUB><SUP><I>N</I>/2−1</SUP><I>p</I><SUB><I>k</I></SUB>exp(<I>ikx</I>)+1/2<I>p</I><SUB>−<I>N</I>/2</SUB>*exp(−<I>i</I><I>Nx</I>/2))<BR>
+En résumé :<BR>
+pour 0 ≤ <I>n</I>&lt;<I>N</I>/2, <I>p</I><SUB><I>n</I></SUB> est le <I>n</I>-ième élément de 
+1/<I>N</I><I>F</I><SUB><I>N</I></SUB>([<I>f</I><SUB>0</SUB>,..<I>f</I><SUB>(<I>N</I>−1)</SUB>]) et,<BR>
+pour −<I>N</I>/2 ≤ <I>n</I>&lt;0, <I>p</I><SUB><I>n</I></SUB> est le (<I>n</I>+<I>N</I>)-ième élément de 
+1/<I>N</I><I>F</I><SUB><I>N</I></SUB>([<I>f</I><SUB>0</SUB>,..<I>f</I><SUB>(<I>N</I>−1)</SUB>]).</LI><LI CLASS="li-enumerate">Série de Fourier<BR>
+Soit <I>f</I> une fonction 2π-périodique dont on connait les valeurs en
+<I>x</I><SUB><I>k</I></SUB>=2<I>k</I>π/<I>N</I>, <I>f</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>f</I>(2<I>k</I>π/<I>N</I>)=<I>y</I><SUB><I>k</I></SUB> pour <I>k</I>=0..(<I>N</I>−1).<BR>
+On suppose que sa série de Fourier converge simplement vers <I>f</I>, et on veut 
+connaître les coefficients <I>c</I><SUB><I>n</I></SUB> pour −<I>N</I>/2 ≤ <I>n</I>&lt;<I>N</I>/2.<BR>
+Il fait donc calculer de façon approchée :<BR>
+<I>c</I><SUB><I>n</I></SUB>=1/2π ∫<SUB>0</SUB><SUP>2π</SUP><I>f</I>(<I>t</I>)exp(−<I>int</I>)<I>dt</I><BR>
+<B>Remarque</B><BR>
+Lorsque la fonction périodique <I>f</I> est égale à sa série de Fourier,
+on a :<BR>
+<I>f</I>(<I>x</I>)=<I>a</I><SUB>0</SUB>/2+∑<SUB><I>k</I>=1</SUB><SUP>∞</SUP><I>a</I><SUB><I>k</I></SUB>cos(<I>kx</I>)+<I>b</I><SUB><I>k</I></SUB>sin(<I>kx</I>) avec
+ <I>c</I><SUB><I>k</I></SUB>=<I>a</I><SUB><I>k</I></SUB>−<I>ib</I><SUB><I>k</I></SUB>/2.<P>On calcule l’intégrale donnant <I>c</I><SUB><I>n</I></SUB> de manière approchée par la 
+méthode des trapèzes. Ici Romberg 
+ne sert a rien, car le développement d’Euler Mac Laurin a ses coefficients 
+déjà nuls puisque la fonction que l’on intègre est périodique et 
+donc toutes ses dérivées sont égales en 0 et en 2π.<BR>
+ Si <I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP> est la valeur approchée de <I>c</I><SUB><I>n</I></SUB> obtenue par la 
+méthode des trapèzes, on a pour
+−<I>N</I>/2 ≤ <I>n</I>&lt;<I>N</I>/2:<BR>
+<I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>=1/2π2π/<I>N</I>∑<SUB><I>k</I>=0</SUB><SUP><I>N</I>−1</SUP><I>y</I><SUB><I>k</I></SUB>exp(−2<I>ink</I>π/<I>N</I>)<BR>
+puisque <I>x</I><SUB><I>k</I></SUB>=2<I>k</I>π/<I>N</I> et <I>f</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB> on a<BR>
+<I>f</I>(<I>x</I><SUB><I>k</I></SUB>)exp(−<I>inx</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB>exp(−2<I>ink</I>π/<I>N</I>) et<BR>
+<I>f</I>(0)exp(0)=<I>f</I>(2π)exp(−2<I>inN</I>π/<I>N</I>)=<I>y</I><SUB>0</SUB>=<I>y</I><SUB><I>N</I></SUB><BR>
+On a donc :<BR>
+[<I>c</I><SUB>0</SUB><SUP>≃</SUP>,..<I>c</I><SUB><I>N</I>/2−1</SUB><SUP>≃</SUP>,<I>c</I><SUB>−<I>N</I>/2</SUB><SUP>≃</SUP>,..<I>c</I><SUB>−1</SUB><SUP>≃</SUP>]=1/<I>N</I><I>F</I><SUB><I>N</I></SUB>([<I>y</I><SUB>0</SUB>,<I>y</I><SUB>1</SUB>...<I>y</I><SUB>(<I>N</I>−1)</SUB>])
+car<BR>
+si <I>n</I>≥0, on a <I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>=<I>y</I><SUB><I>n</I></SUB> et<BR>
+si <I>n</I>&lt;0, on a <I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>=<I>y</I><SUB><I>n</I>+<I>N</I></SUB>
+si ω<SUB><I>N</I></SUB>=exp(2<I>i</I>π/<I>N</I>), ω<SUB><I>N</I></SUB><SUP><I>n</I></SUP>=ω<SUB><I>N</I></SUB><SUP><I>n</I>+<I>N</I></SUP> puisque 
+ω<SUB><I>N</I></SUB><SUP><I>N</I></SUP>=1</P><P><B>Propriétés</B><BR>
+On retrouve les coefficients du polynôme interpolateur de <I>f</I> :<BR>
+<I>p</I><SUB><I>n</I></SUB>=<I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP> pour −<I>N</I>/2 ≤ <I>n</I>&lt;<I>N</I>/2.<BR>
+Ce qui veut dire que le polynôme trigonométrique 
+∑<SUB><I>n</I>=−<I>N</I>/2</SUB><SUP><I>N</I>/2−1</SUP><I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>exp(<I>inx</I>)
+interpole <I>f</I>(<I>x</I>) aux points <I>x</I>=2<I>k</I>π/<I>N</I>.<BR>
+Donc si <I>f</I> est un polynôme trigonométrique <I>P</I> de degré <I>m</I>≤ <I>N</I>/2 :<BR>
+<I>f</I>(<I>t</I>)=<I>P</I>(<I>t</I>)=∑<SUB><I>k</I>=−<I>m</I></SUB><SUP><I>m</I>−1</SUP><I>c</I><SUB><I>k</I></SUB>exp(2<I>ik</I>π <I>t</I>), 
+le polynôme trigonométrique qui interpole <I>f</I>=<I>P</I> est <I>P</I> lui-même, les 
+coefficients approchés sont exacts (<I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>=<I>c</I><SUB><I>n</I></SUB>).<BR>
+On peut, plus généralement calculer l’erreur <I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>−<I>c</I><SUB><I>n</I></SUB>.<BR>
+On suppose que <I>f</I> est égale à sa série de Fourier, c’est à dire que 
+l’on a :<BR>
+<I>f</I>(<I>t</I>)=∫<SUB><I>m</I>=−∞</SUB><SUP>+∞</SUP><I>c</I><SUB><I>m</I></SUB>exp(2<I>i</I>π <I>mt</I>) avec 
+∑<SUB><I>m</I>=−∞</SUB><SUP>+∞</SUP>|<I>c</I><SUB><I>m</I></SUB>|&lt;∞<BR>
+On a donc :<BR>
+<I>f</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>f</I>(2<I>k</I>π/<I>N</I>)=<I>y</I><SUB><I>k</I></SUB>=∑<SUB><I>m</I>=−∞</SUB><SUP>+∞</SUP><I>c</I><SUB><I>m</I></SUB>ω<SUB><I>N</I></SUB><SUP><I>km</I></SUP> et<BR>
+<I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>=1/<I>N</I>∑<SUB><I>k</I>=0</SUB><SUP><I>N</I>−1</SUP><I>y</I><SUB><I>k</I></SUB>ω<SUB><I>N</I></SUB><SUP>−<I>kn</I></SUP><BR>
+En remplaçant <I>y</I><SUB><I>k</I></SUB> on obtient :<BR>
+<I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>=1/<I>N</I>∑<SUB><I>k</I>=0</SUB><SUP><I>N</I>−1</SUP>∑<SUB><I>m</I>=−∞</SUB><SUP>+∞</SUP><I>c</I><SUB><I>m</I></SUB>ω<SUB><I>N</I></SUB><SUP><I>km</I></SUP>ω<SUB><I>N</I></SUB><SUP>−<I>kn</I></SUP><BR>
+Or :<BR>
+ω<SUB><I>N</I></SUB><SUP><I>km</I></SUP>ω<SUB><I>N</I></SUB><SUP>−<I>kn</I></SUP>=ω<SUB><I>N</I></SUB><SUP><I>k</I>(<I>m</I>−<I>n</I>)</SUP> et<BR>
+puisque ω<SUB><I>N</I></SUB><SUP><I>m</I>−<I>n</I></SUP> est une racine <I>N</I>-ième de l’unité, on a :<BR>
+ω<SUB><I>N</I></SUB><SUP>(<I>m</I>−<I>n</I>)<I>N</I></SUP>=1 et ∑<SUB><I>k</I>=0</SUB><SUP><I>N</I>−1</SUP>ω<SUB><I>N</I></SUB><SUP>(<I>m</I>−<I>n</I>)<I>k</I></SUP>=0.<BR>
+Donc :<BR>
+si <I>m</I>−<I>n</I> est un multiple de <I>N</I> (<I>m</I>=<I>n</I>+<I>l</I>· <I>N</I>) on a ∑<SUB><I>k</I>=0</SUB><SUP><I>N</I>−1</SUP>ω<SUB><I>N</I></SUB><SUP><I>k</I>(<I>m</I>−<I>n</I>)</SUP>=<I>N</I> et<BR>
+sinon ∑<SUB><I>k</I>=0</SUB><SUP><I>N</I>−1</SUP>ω<SUB><I>N</I></SUB><SUP><I>k</I>(<I>m</I>−<I>n</I>)</SUP>=0<BR>
+En intervertisant les deux sommes on a :<BR>
+<I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>=1/<I>N</I>∑<SUB><I>m</I>=−∞</SUB><SUP>+∞</SUP><I>c</I><SUB><I>m</I></SUB>∑<SUB><I>k</I>=0</SUB><SUP><I>N</I>−1</SUP>ω<SUB><I>N</I></SUB><SUP><I>k</I>(<I>m</I>−<I>n</I>)</SUP><BR>
+<I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>=∑<SUB><I>l</I>=−∞</SUB><SUP>+∞</SUP><I>c</I><SUB>(<I>n</I>+<I>l</I>· <I>N</I>)</SUB><BR>
+c’est à dire :<BR>
+<I>c</I><SUB><I>n</I></SUB><SUP>≃</SUP>=...<I>c</I><SUB><I>n</I>−2· <I>N</I></SUB>+<I>c</I><SUB><I>n</I>−<I>N</I></SUB>+<I>c</I><SUB><I>n</I></SUB><I>c</I><SUB><I>n</I>+<I>N</I></SUB><I>c</I><SUB><I>n</I>+2· <I>N</I></SUB>+.....</P><P>Exemple :<BR>
+<TT>f(t):=cos(t)+cos(2*t)</TT><BR>
+<TT>x:=f(2*k*pi/8)$(k=0..7)</TT><BR>
+On obtient :<BR>
+<TT><I>x</I>={2,(√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2,-1,-((√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2),0,-((√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2),-1,(√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2}</TT><BR>
+<TT>fft(x)=[0.0,4.0,4.0,0.0,0.0,0.0,4.0,4.0]</TT><BR>
+donc en divisant par <I>N</I>=8 :<BR>
+<I>c</I><SUB>0</SUB>=0,<I>c</I><SUB>1</SUB>=4.0/8,<I>c</I><SUB>2</SUB>=4.0/2,<I>c</I><SUB>3</SUB>=0.0,<BR>
+<I>c</I><SUB>−4</SUB>=0,<I>c</I><SUB>−3</SUB>=0,<I>c</I><SUB>−2</SUB>=4.0/8,=<I>c</I><SUB>−1</SUB>=4.0/8<BR>
+donc retrouve bien :<BR>
+<I>b</I><SUB><I>k</I></SUB>=0 et <I>a</I><SUB><I>k</I></SUB>=<I>c</I><SUB>−<I>k</I></SUB>+<I>c</I><SUB><I>k</I></SUB> vaut 1 si <I>k</I>=1,2 et 0 sinon. </P></LI><LI CLASS="li-enumerate">Produit de convolution<BR>
+Soient deux polynômes <I>P</I>(<I>x</I>)=∑<SUB><I>j</I>=0</SUB><SUP><I>n</I>−1</SUP><I>a</I><SUB><I>j</I></SUB><I>x</I><SUP><I>j</I></SUP> 
+et <I>Q</I>(<I>x</I>)=∑<SUB><I>j</I>=0</SUB><SUP><I>m</I>−1</SUP><I>b</I><SUB><I>j</I></SUB><I>x</I><SUP><I>j</I></SUP> donné par la liste de 
+leurs coefficients <I>a</I>=[<I>a</I><SUB>0</SUB>,<I>a</I><SUB>1</SUB>,..<I>a</I><SUB><I>n</I>−1</SUB>] et <I>b</I>=[<I>b</I><SUB>0</SUB>,<I>b</I><SUB>1</SUB>,..<I>b</I><SUB><I>m</I>−1</SUB>].<BR>
+On veut calculer le produit de ces deux polynômes c’est à dire le produit 
+de convolution de leurs coefficients si on se place dans l’ensemble des suites 
+périodiques de période supérieure ou égale à (<I>n</I>+<I>m</I>) 
+en complétant <I>a</I> (resp <I>b</I>) par <I>m</I>+? (resp <I>n</I>+?) zéros (en pratique
+on choisit ? pour que <I>n</I>+<I>m</I>+? soit une puissance de 2).<BR>
+On alors pour <I>a</I>=[<I>a</I><SUB>0</SUB>,<I>a</I><SUB>1</SUB>,..<I>a</I><SUB><I>n</I>−1</SUB>,0..0] et <I>b</I>=[<I>b</I><SUB>0</SUB>,<I>b</I><SUB>1</SUB>,..<I>b</I><SUB><I>m</I>−1</SUB>,0..0]:<BR>
+<I>P</I>(<I>x</I>)<I>Q</I>(<I>x</I>)=∑<SUB><I>j</I>=0</SUB><SUP><I>n</I>+<I>m</I>−1</SUP>(<I>a</I>*<I>b</I>)<SUB><I>j</I></SUB><I>x</I><SUP><I>j</I></SUP><BR>
+On calcule donc :<BR>
+<I>F</I><SUB><I>n</I></SUB>(<I>a</I>), <I>F</I><SUB><I>n</I></SUB>(<I>b</I>), <I>F</I><SUB><I>n</I></SUB><SUP>−1</SUP>(<I>F</I><SUB><I>n</I></SUB>(<I>a</I>)· <I>F</I><SUB><I>n</I></SUB>(<I>b</I>)) et puisque<BR>
+<I>nF</I><SUB><I>n</I></SUB>(<I>x</I> · <I>y</I>)=<I>F</I><SUB><I>n</I></SUB>(<I>x</I>) * <I>F</I><SUB><I>n</I></SUB>(<I>y</I>)<BR>
+<I>F</I><SUB><I>n</I></SUB>(<I>x</I> * <I>y</I>)=<I>F</I><SUB><I>n</I></SUB>(<I>x</I>) · <I>F</I><SUB><I>n</I></SUB>(<I>y</I>)<BR>
+on a :<BR>
+<I>a</I>*<I>b</I>=<I>F</I><SUB><I>n</I></SUB><SUP>−1</SUP>(<I>F</I><SUB><I>n</I></SUB>(<I>a</I>)· <I>F</I><SUB><I>n</I></SUB>(<I>b</I>))
+</LI></OL><HR>
+<A HREF="cascmd_fr335.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr337.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

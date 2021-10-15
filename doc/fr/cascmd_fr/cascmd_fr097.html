@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Aire sous une courbe : area aire</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr096.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr098.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc130">3.11.1</A>  Aire sous une courbe : <TT>area aire</TT></H3><P><A NAME="@default114"></A><A NAME="@default115"></A><A NAME="@default116"></A><A NAME="@default117"></A><A NAME="@default118"></A><A NAME="@default119"></A><A NAME="@default120"></A><A NAME="@default121"></A><A NAME="@default122"></A><A NAME="@default123"></A>
+<A NAME="@default124"></A><A NAME="@default125"></A><A NAME="@default126"></A><A NAME="@default127"></A>
+<TT>aire</TT> ou <TT>area</TT> calcule de façon approchée l’aire 
+sous la courbe <I>y</I>=<I>f</I>(<I>x</I>) comprise entre <I>x</I>=<I>a</I> et <I>x</I>=<I>b</I>.<BR>
+<TT>aire</TT> ou <TT>area</TT> a quatre arguments: l’expression <I>f</I>(<I>x</I>), <I>x</I>=<I>a</I>..<I>b</I>,
+un entier <I>n</I> et le nom de la méthode numérique choisie pour faire calcul.<BR>
+La méthode numérique est choisie parmi :<BR>
+<TT>trapezoid, left_rectangle, right_rectangle, middle_point</TT> ou
+<TT>trapeze, rectangle_gauche, rectangle_droit, point_milieu</TT> et aussi
+<TT>simpson</TT> (méthode de Simpson), <TT>rombergt</TT> (accélération de 
+convergence de Romberg avec la méthode des trapèzes), <TT>rombergm</TT> 
+(accélération de convergence de Romberg avec la méthode du point milieu) 
+et <TT>gauss15</TT> (avec une quadrature de Gauss adaptative à 15 points).<BR>
+La valeur de l’entier <I>n</I> est le nombre de subdivisions que l’on a choisi pour 
+les calculs faits avec les méthodes <TT>trapezoid, left_rectangle, 
+right_rectangle, middle_point</TT> ou <TT>trapeze, rectangle_gauche, 
+rectangle_droit, point_milieu, simpson</TT> alors que pour <TT>gauss15</TT>, 
+<TT>rombergt</TT> et <TT>rombergm</TT> le nombre de subdivisions est 2<SUP><I>n</I></SUP>.<BR>
+ Ainsi,<TT>area(f(x),x=a..b,n,trapeze)</TT> calcule l’aire de <I>n</I> trapèzes :<BR>
+le troisième argument est un entier <I>n</I>, et le
+quatrième argument est le nom de la méthode numérique d’intégration 
+lorsqu’on partage [<I>a</I>,<I>b</I>] en <I>n</I> parties égales.<BR>
+<TT>area(f(x),x=a..b,n,rombergt)</TT> revient à calculer l’aire de 2<SUP><I>n</I></SUP> 
+trapèzes qui sont accélérés.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>area(x</TT><CODE><TT>^</TT></CODE><TT>2,x=0..1,8,trapeze)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.3359375</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>area(x</TT><CODE><TT>^</TT></CODE><TT>2,x=0..1,8,point_milieu)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.33203125</TT></DIV><P>
+Donc comme <I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP> est convexe on a l’aire est dans l’intervalle :<BR>
+]0.33203125, 0.3359375[:<BR>
+On tape :
+</P><DIV CLASS="center"><TT>area(x</TT><CODE><TT>^</TT></CODE><TT>2,x=0..1,3,rombergt)</TT></DIV><P>
+On obtient une meilleur approximation :
+</P><DIV CLASS="center"><TT>0.333333333333</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>area(x</TT><CODE><TT>^</TT></CODE><TT>2,x=0..1,3,rombergm)</TT></DIV><P>
+On obtient une meilleur approximation :
+</P><DIV CLASS="center"><TT>0.333333333333</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>area(x</TT><CODE><TT>^</TT></CODE><TT>2,x=0..1,3,gauss15)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1/3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>area(x</TT><CODE><TT>^</TT></CODE><TT>2,x=0..1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1/3</TT></DIV><HR>
+<A HREF="cascmd_fr096.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr098.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

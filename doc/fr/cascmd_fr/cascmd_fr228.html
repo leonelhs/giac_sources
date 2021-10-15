@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Transformer une permutation en une matrice : permu2mat</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr227.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr229.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc298">6.11.7</A>  Transformer une permutation en une matrice : <TT>permu2mat</TT></H3><P><A NAME="@default397"></A>
+<TT>permu2mat</TT> a comme argument une permutation <I>p</I> de 
+longueur <I>n</I>.<BR>
+<TT>permu2mat</TT> renvoie la matrice obtenue en permutant, selon la permutation 
+<I>p</I>, les lignes de la matrice identité d’ordre <I>n</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>permu2mat([2,0,1])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[0,0,1],[1,0,0],[0,1,0]]</TT></DIV><P>
+<B>Remarques</B><BR>
+Pour faire une permutation sur les composantes d’un vecteur, par exemple faire agir la permutation <TT>[2,0,1]</TT> sur <TT>[10,20,30]</TT>, on tape :<BR>
+<TT>P:=permu2mat([2,0,1]);V:=[10,20,30];P*V</TT><BR>
+ou bien, on tape <TT>p:=[2,0,1];V:=[10,20,30];V[p[j]]$(j=0..2)</TT>:<BR>
+et on obtient <TT>[30,10,20]</TT>.<BR>
+Pour faire une permutation sur les lignes d’une matrice carrée, par exemple 
+faire agir la permutation <TT>[2,0,1]</TT> sur les lignes de <TT>[[1,2,3],[4,5,6],[7,8,9]]</TT>, on tape :<BR>
+<TT>P:=permu2mat([2,0,1]);A:=[[1,2,3],[4,5,6],[7,8,9]];P*A</TT> et on obtient <TT>[[4,5,6],[7,8,9],[1,2,3]]</TT>.<BR>
+Pour faire une permutation sur les colonnes d’une matrice carrée, par exemple 
+faire agir la permutation <TT>[2,0,1]</TT> sur les colonnes de <TT>[[1,2,3],[4,5,6],[7,8,9]]</TT>, on tape :<BR>
+<TT>P:=permu2mat([2,0,1]);A:=[[1,2,3],[4,5,6],[7,8,9]];A*tran(P))</TT> et on obtient <TT>[[3,1,2],[6,4,5],[9,7,8]]</TT>.</P><HR>
+<A HREF="cascmd_fr227.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr229.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

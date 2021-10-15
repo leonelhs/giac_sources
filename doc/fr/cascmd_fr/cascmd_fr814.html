@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Modifier l’ordre d’exécution des instructions : label goto</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr813.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr815.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc942">8.4.25</A>  Modifier l’ordre d’exécution des instructions : <TT>label goto</TT></H3><P><A NAME="@default1483"></A><A NAME="@default1484"></A>
+<TT>label</TT> permet de repérer une instruction dans un programme par 
+un nom de variable.<BR>
+<TT>goto</TT> permet de modifier l’ordre d’exécution des instructions, en
+exécutant les instructions du programme à partir d’une instruction 
+repérée par un label.<BR>
+<TT>label</TT> a comme arguments, une suite de caractères : par exemple <TT>label(truc)</TT> ou <TT>label(1)</TT>.<BR>
+<TT>goto</TT> a comme arguments un nom de label: par exemple <TT>goto(truc)</TT> ou <TT>goto(1)</TT>.<BR>
+On tape :
+</P><PRE CLASS="verbatim">essai(eps):={
+local s,j;
+s:=0;
+j:=0;
+label(truc);
+j:=j+1;
+s:=s+1/j;
+if (1/j&gt;=eps) goto(truc);
+print(s);
+return 0;
+}
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>essai(0.2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>s:137/60 écrit en bleu, puis 0 comme réponse</TT></DIV><HR>
+<A HREF="cascmd_fr813.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr815.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

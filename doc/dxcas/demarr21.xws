@@ -1,0 +1,155 @@
+// fltk 7Fl_Tile 44 -2447 714 257
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -2447 714 30
+A:=matrix(4,4,(j,k)->ifte(j==k,a,b))
+,
+// fltk N4xcas10Log_OutputE 44 -2417 714 64
+// Warning, check that the following variables are global: a b ££
+,
+// fltk N4xcas8EquationE 44 -2353 714 163
+[[a,b,b,b],[b,a,b,b],[b,b,a,b],[b,b,b,a]]
+]
+,
+// fltk 7Fl_Tile 44 -2188 714 84
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -2188 714 30
+factor(pcar(A,x))
+,
+// fltk N4xcas10Log_OutputE 44 -2158 714 1
+
+,
+// fltk N4xcas8EquationE 44 -2157 714 53
+(x-a+(-3)*b)*(x-a+b)^3
+]
+,
+// fltk 7Fl_Tile 44 -2102 714 68
+[
+// fltk N4xcas23Comment_Multiline_InputE 44 -2102 714 64
+Il n'est pas indispensable d'avoir une matrice de passage diagonale,£en fait ici cela ralentira les calculs. Montrons quand meme comment faire.£On ecrit une base de vecteurs propres de A en ligne
+,
+// fltk N4xcas10Log_OutputE 44 -2038 714 4
+
+]
+,
+// fltk 7Fl_Tile 44 -2032 714 194
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -2032 714 30
+M:=tran(egv(A))
+,
+// fltk N4xcas10Log_OutputE 44 -2002 714 1
+
+,
+// fltk N4xcas8EquationE 44 -2001 714 163
+[[1,1,1,1],[16,0,0,-16],[0,16,0,-16],[0,0,16,-16]]
+]
+,
+// fltk 7Fl_Tile 44 -1836 714 53
+[
+// fltk N4xcas23Comment_Multiline_InputE 44 -1836 714 52
+Avec Gram-Schmidt on en deduit une base orthonormale £(car la matrice A est symetrique)
+,
+// fltk N4xcas10Log_OutputE 44 -1784 714 1
+
+]
+,
+// fltk 7Fl_Tile 44 -1781 714 302
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -1781 714 30
+N:=normal(gramschmidt(M,dot))
+,
+// fltk N4xcas10Log_OutputE 44 -1751 714 1
+
+,
+// fltk N4xcas8EquationE 44 -1750 714 271
+[[1/2,1/2,1/2,1/2],[(sqrt(2))/2,0,0,(-(sqrt(2)))/2],[(-(sqrt(6)))/6,(sqrt(6))/3,0,(-(sqrt(6)))/6],[(-(32*sqrt(3)))/192,(-(32*sqrt(3)))/192,(32*sqrt(3))/64,(-(32*sqrt(3)))/192]]
+]
+,
+// fltk 7Fl_Tile 44 -1477 714 31
+[
+// fltk N4xcas23Comment_Multiline_InputE 44 -1477 714 30
+On verifie bien que N est orthogonale, en fait P=tran(N)
+,
+// fltk N4xcas10Log_OutputE 44 -1447 714 1
+
+]
+,
+// fltk 7Fl_Tile 44 -1444 714 237
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -1444 714 30
+normal(N*tran(N))
+,
+// fltk N4xcas10Log_OutputE 44 -1414 714 44
+Evaluation time: 0.2£
+,
+// fltk N4xcas8EquationE 44 -1370 714 163
+[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
+]
+,
+// fltk 7Fl_Tile 44 -1205 714 237
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -1205 714 30
+D:=normal(N*A*tran(N))
+,
+// fltk N4xcas10Log_OutputE 44 -1175 714 44
+Evaluation time: 0.23£
+,
+// fltk N4xcas8EquationE 44 -1131 714 163
+[[a+3*b,0,0,0],[0,a-b,0,0],[0,0,a-b,0],[0,0,0,a-b]]
+]
+,
+// fltk 7Fl_Tile 44 -966 714 84
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -966 714 30
+dn:=diag(D)^n
+,
+// fltk N4xcas10Log_OutputE 44 -936 714 1
+
+,
+// fltk N4xcas8EquationE 44 -935 714 53
+[(a+3*b)^n,(a-b)^n,(a-b)^n,(a-b)^n]
+]
+,
+// fltk 7Fl_Tile 44 -880 714 297
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -880 714 30
+Dn:=makemat((j,k)->ifte(j==k,dn[j],0),4,4)
+,
+// fltk N4xcas10Log_OutputE 44 -850 714 64
+// Warning, check that the following variables are global: dn ££
+,
+// fltk N4xcas8EquationE 44 -786 714 203
+[[(a+3*b)^n,0,0,0],[0,(a-b)^n,0,0],[0,0,(a-b)^n,0],[0,0,0,(a-b)^n]]
+]
+,
+// fltk 7Fl_Tile 44 -581 714 474
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -581 714 30
+An:=normal(tran(N)*Dn*N)
+,
+// fltk N4xcas10Log_OutputE 44 -551 714 44
+Evaluation time: 0.68£
+,
+// fltk N4xcas8EquationE 44 -507 714 400
+[[1/4*(a+3*b)^n+3*1/4*(a-b)^n,1/4*(a+3*b)^n+1/(-4)*(a-b)^n,1/4*(a+3*b)^n+1/(-4)*(a-b)^n,1/4*(a+3*b)^n+1/(-4)*(a-b)^n],[1/4*(a+3*b)^n+1/(-4)*(a-b)^n,1/4*(a+3*b)^n+3*1/4*(a-b)^n,1/4*(a+3*b)^n+1/(-4)*(a-b)^n,1/4*(a+3*b)^n+1/(-4)*(a-b)^n],[1/4*(a+3*b)^n+1/(-4)*(a-b)^n,1/4*(a+3*b)^n+1/(-4)*(a-b)^n,1/4*(a+3*b)^n+3*1/4*(a-b)^n,1/4*(a+3*b)^n+1/(-4)*(a-b)^n],[1/4*(a+3*b)^n+1/(-4)*(a-b)^n,1/4*(a+3*b)^n+1/(-4)*(a-b)^n,1/4*(a+3*b)^n+1/(-4)*(a-b)^n,1/4*(a+3*b)^n+3*1/4*(a-b)^n]]
+]
+,
+// fltk 7Fl_Tile 44 -105 714 517
+[
+// fltk N4xcas19Multiline_Input_tabE 44 -105 714 30
+seq('normal((An|n=j) - A^j)',j,0,6)
+,
+// fltk N4xcas10Log_OutputE 44 -75 714 324
+// Warning, check that the following variables are global: An ££// Warning, check that the following variables are global: An ££// Warning, check that the following variables are global: An ££// Warning, check that the following variables are global: An ££// Warning, check that the following variables are global: An ££// Warning, check that the following variables are global: An ££// Warning, check that the following variables are global: An ££Evaluation time: 1.88£
+,
+// fltk N4xcas8EquationE 44 249 714 163
+[[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]]
+]
+,
+// fltk 7Fl_Tile 44 414 714 31
+[
+// fltk N4xcas19Multiline_Input_tabE 44 414 714 30
+
+,
+// fltk N4xcas10Log_OutputE 44 444 714 1
+
+]

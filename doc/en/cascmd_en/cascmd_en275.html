@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Row reduction to echelon form in &#X2124;/p&#X2124; : Rref</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en274.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en276.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc309">2.32.7</A>  Row reduction to echelon form in &#X2124;/<I>p</I>&#X2124; : <TT>Rref</TT></H3><P><A NAME="@default474"></A>
+<TT>Rref</TT> is the inert form of <TT>rref</TT>.<BR>
+<TT>Rref</TT> returns <TT>rref</TT> without
+evaluation. 
+It is used in conjonction with <TT>mod</TT> in Maple syntax mode to 
+find the row reduction to echelon form 
+of a matrix with coefficients in &#X2124;/<I>p</I>&#X2124; (see 
+also <A HREF="cascmd_en450.html#sec:rref">2.52.3</A>).<BR>
+Example, solve in &#X2124;/13&#X2124;
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>   <I>x</I> +   2 · <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>9 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3 · <I>x</I> +10 · <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>0 </TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+Input in <TT>Xcas</TT> mode :
+</P><DIV CLASS="center"><TT>Rref([[1,2,9] mod 13,[3,10,0] mod 13])</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>rref([[1%13, 2%13, 9%13],[3%13,10%13,0%13]])</TT></DIV><P>
+you need to <TT>eval(ans())</TT> to get :
+</P><DIV CLASS="center"><TT>[[1%13,0%13,3%13],[0%13,1%13,3%13]]</TT></DIV><P> 
+and conclude that <TT>x=3%13</TT> and <TT>y=3%13</TT>.<BR>
+Input in <TT>Maple</TT> mode :
+</P><DIV CLASS="center"><TT>Rref([[1,2,9],[3,10,0],[3,11,1]]) mod 13</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0,0],[0,1,0],[0,0,1]]</TT></DIV><HR>
+<A HREF="cascmd_en274.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en276.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

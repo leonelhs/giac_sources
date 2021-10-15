@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Expand a transcendental and trigonometric expression : texpand tExpand</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en141.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en143.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc164">2.20.1</A>  Expand a transcendental and trigonometric expression : <TT>texpand tExpand</TT></H3><P><A NAME="@default271"></A><A NAME="@default272"></A>
+<TT>texpand</TT> or <TT>tExpand</TT> takes as argument an
+expression containing transcendental or trigonometric functions.<BR>
+<TT>texpand</TT> or <TT>tExpand</TT> expands these functions, like simultaneous
+calling <TT>expexpand</TT>, <TT>lnexpand</TT> and <TT>trigexpand</TT>, 
+for example, ln(<I>x</I><SUP><I>n</I></SUP>) becomes  <I>n</I>ln(<I>x</I>), exp(<I>nx</I>) 
+becomes  exp(<I>x</I>)<SUP><I>n</I></SUP>, sin(2<I>x</I>) becomes  2sin(<I>x</I>)cos(<I>x</I>)...<BR>
+<B>Examples</B> :<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Expand cos(<I>x</I>+<I>y</I>).<BR>
+Input :
+<DIV CLASS="center"><TT>texpand(cos(x+y))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>cos(x)*cos(y)-sin(x)*sin(y)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Expand cos(3<I>x</I>).<BR>
+Input :
+<DIV CLASS="center"><TT>texpand(cos(3*x))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT> 3-3*cos(x)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Expand  sin(3*<I>x</I>)+sin(7*<I>x</I>)/sin(5*<I>x</I>).<BR>
+Input :
+<DIV CLASS="center"><TT>texpand((sin(3*x)+sin(7*x))/sin(5*x))</TT></DIV>
+Output
+<DIV CLASS="center"><TT>(4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-1)*(sin(x)/(16*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4- 12*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2+1))/sin(x)+(64*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>6- 80*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4+24*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-1)*sin(x)/ (16*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4-12*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2+1)/sin(x)</TT></DIV>
+Output, after a simplification with <TT>normal(ans())</TT> :
+<DIV CLASS="center"><TT>4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV>
+</LI></OL>
+</LI><LI CLASS="li-itemize"><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Expand exp(<I>x</I>+<I>y</I>).<BR>
+Input :
+<DIV CLASS="center"><TT>texpand(exp(x+y))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>exp(x)*exp(y)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Expand ln(<I>x</I>× <I>y</I>).<BR>
+Input :
+<DIV CLASS="center"><TT>texpand(log(x*y))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>log(x)+log(y)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Expand ln(<I>x</I><SUP><I>n</I></SUP>).<BR>
+Input :
+<DIV CLASS="center"><TT>texpand(ln(x</TT><CODE><TT>^</TT></CODE><TT>n))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>n*ln(x)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Expand ln((<I>e</I>2)+exp(2*ln(2))+<I>exp</I>(ln(3)+ln(2))).<BR>
+Input :
+<DIV CLASS="center"><TT>texpand(log(e</TT><CODE><TT>^</TT></CODE><TT>2)+exp(2*log(2))+exp(log(3)+log(2)))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>6+3*2</TT></DIV>
+Or input :
+<DIV CLASS="center"><TT>texpand(log(e</TT><CODE><TT>^</TT></CODE><TT>2)+exp(2*log(2)))+ lncollect(exp(log(3)+log(2)))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>12</TT></DIV>
+</LI></OL>
+</LI><LI CLASS="li-itemize">Expand exp(<I>x</I>+<I>y</I>)+cos(<I>x</I>+<I>y</I>)+ln(3<I>x</I>2).<BR>
+Input :
+<DIV CLASS="center"><TT>texpand(exp(x+y)+cos(x+y)+ln(3*x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>cos(x)*cos(y)-sin(x)*sin(y)+exp(x)*exp(y)+ ln(3)+2*ln(x)</TT></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en141.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en143.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

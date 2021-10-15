@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Développement de Padé: pade</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr461.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr463.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc556">6.35.6</A>  Développement de Padé: <TT>pade</TT></H3><P><A NAME="@default825"></A>
+<TT>pade</TT> a 4 arguments 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+une expression, 
+</LI><LI CLASS="li-itemize">le nom de la variable utilisée, 
+</LI><LI CLASS="li-itemize">un entier <I>n</I> ou un polynôme <I>N</I>,
+</LI><LI CLASS="li-itemize">un entier <I>p</I>.
+</LI></UL><P>
+<TT>pade</TT> renvoie une fraction rationnelle <I>P</I>/<I>Q</I> (avec le degré de <I>P</I>&lt;<I>p</I>)
+qui a, au voisinage de 0, le même développement de Taylor à l’ordre <I>n</I> 
+que l’expression, ou qui est égal à l’expression modulo <I>x</I><SUP><I>n</I>+1</SUP> (resp
+modulo <I>N</I>).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>pade(exp(x),x,5,3)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pade(exp(x),x,x</TT><CODE><TT>^</TT></CODE><TT>6,3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(3*x</TT><CODE><TT>^</TT></CODE><TT>2+24*x+60)/(-x</TT><CODE><TT>^</TT></CODE><TT>3+9*x</TT><CODE><TT>^</TT></CODE><TT>2-36*x+60)</TT></DIV><P>
+On vérifie en tapant :
+</P><DIV CLASS="center"><TT>taylor((3*x</TT><CODE><TT>^</TT></CODE><TT>2+24*x+60)/(-x</TT><CODE><TT>^</TT></CODE><TT>3+9*x</TT><CODE><TT>^</TT></CODE><TT>2-36*x+60))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1+x+1/2*x</TT><CODE><TT>^</TT></CODE><TT>2+1/6*x</TT><CODE><TT>^</TT></CODE><TT>3+1/24*x</TT><CODE><TT>^</TT></CODE><TT>4+1/120*x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>6*order_size(x)</TT></DIV><P>
+On reconnait le développement de Taylor à l’ordre 5 de <TT>exp(x)</TT> au 
+voisinage de 0.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,12,3)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,x</TT><CODE><TT>^</TT></CODE><TT>13,3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x+1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,14,4)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,x</TT><CODE><TT>^</TT></CODE><TT>15,4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(-2*x</TT><CODE><TT>^</TT></CODE><TT>3-1)/(-x</TT><CODE><TT>^</TT></CODE><TT>11+x</TT><CODE><TT>^</TT></CODE><TT>10-x</TT><CODE><TT>^</TT></CODE><TT>9+x</TT><CODE><TT>^</TT></CODE><TT>8-x</TT><CODE><TT>^</TT></CODE><TT>7+x</TT><CODE><TT>^</TT></CODE><TT>6-x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>4- x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2+x-1)</TT></DIV><P>
+On vérifie en tapant :
+</P><DIV CLASS="center"><TT>series(ans(),x=0,15)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1+x-x</TT><CODE><TT>^</TT></CODE><TT>12</TT><TT>-x</TT><CODE><TT>^</TT></CODE><TT>13</TT><TT>+2x</TT><CODE><TT>^</TT></CODE><TT>15</TT><TT>+x</TT><CODE><TT>^</TT></CODE><TT>16</TT><TT>*order_size(x)</TT></DIV><P>
+puis en tapant :
+</P><DIV CLASS="center"><TT>series((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(</TT><CODE><TT>x^</TT></CODE><TT>12+1),x=0,15)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1+x-x</TT><CODE><TT>^</TT></CODE><TT>12</TT><TT>-x</TT><CODE><TT>^</TT></CODE><TT>13</TT><TT>+x</TT><CODE><TT>^</TT></CODE><TT>15</TT><TT>+x</TT><CODE><TT>^</TT></CODE><TT>16</TT><TT>*order_size(x)</TT></DIV><P>
+Les deux expressions ont même développement de Taylor à l’ordre 14 au 
+voisinage de 0.</P><HR>
+<A HREF="cascmd_fr461.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr463.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

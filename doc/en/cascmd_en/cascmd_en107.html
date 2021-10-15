@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Zeros of an expression : zeros</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en106.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en108.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc121">2.12.11</A>  Zeros of an expression : <TT>zeros</TT></H3><P><A NAME="@default172"></A>
+<TT>zeros</TT> takes as argument an expression depending on <I>x</I>.<BR>
+<TT>zeros</TT> returns a list of values of <I>x</I> where the expression
+vanishes. The list may be incomplete in exact mode if the expression
+is not polynomial or if intermediate
+factorizations have irreducible factors of order strictly
+greater than 2.<BR>
+In real mode, (complex box unchecked in the Cas configuration
+or <TT>complex_mode:=0</TT>), only reals zeros are returned. In
+(<TT>complex_mode:=1</TT>) reals and complex zeros are returned. See
+also <TT>cZeros</TT> to get complex zeros in real mode.<BR>
+Input in real mode : 
+</P><DIV CLASS="center"><TT>zeros(x</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>[]</TT></DIV><P> 
+Input in complex mode : 
+</P><DIV CLASS="center"><TT>zeros(x</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>[-2*i,2*i]</TT></DIV><P> 
+Input in real mode : 
+</P><DIV CLASS="center"><TT>zeros(ln(x)</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>[exp(sqrt(2)),exp(-(sqrt(2)))]</TT></DIV><P> 
+Input in real mode : 
+</P><DIV CLASS="center"><TT>zeros(ln(y)</TT><CODE><TT>^</TT></CODE><TT>2-2,y)</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>[exp(sqrt(2)),exp(-(sqrt(2)))]</TT></DIV><P> 
+Input in real mode : 
+</P><DIV CLASS="center"><TT>zeros(x*(exp(x))</TT><CODE><TT>^</TT></CODE><TT>2-2*x-2*(exp(x))</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>[[log(sqrt(2)),2]</TT></DIV><HR>
+<A HREF="cascmd_en106.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en108.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

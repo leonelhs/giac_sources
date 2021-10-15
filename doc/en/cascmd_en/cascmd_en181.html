@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Convert to a symbolic polynomial : r2e poly2symb</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en180.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en182.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc207">2.24.1</A>  Convert to a symbolic polynomial : <TT>r2e poly2symb</TT></H3><P><A NAME="@default352"></A><A NAME="@default353"></A>
+<TT>r2e</TT> or <TT>poly2symb</TT> takes as argument 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+a list of 
+coefficients of a polynomial (by decreasing order) and a symbolic
+variable name 
+(by default <TT>x</TT>)
+</LI><LI CLASS="li-itemize">or a sum of monomials <TT>%%%{coeff,[n1,....nk] %%%}</TT> 
+and a vector of symbolic variables <TT>[x1,...,xk]</TT>).
+</LI></UL><P>
+<TT>r2e</TT> or <TT>poly2symb</TT> transforms the argument into a symbolic
+polynomial.<BR>
+Example with univariate polynomials, input :
+</P><DIV CLASS="center"><TT>r2e([1,0,-1],x)</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>r2e([1,0,-1])</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>poly2symb([1,0,-1],x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x*x-1</TT></DIV><P>
+Example with sparse multivariate polynomials, input:
+</P><DIV CLASS="center"><TT>poly2symb(%%%{1,[2]%%%}+%%%{-1,[0]%%%},[x])</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>r2e(%%%{1,[2]%%%}+%%%{-1,[0]%%%},[x])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^2</TT></CODE><TT>-1</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>r2e(%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%},[x,y])</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>poly2symb(%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%},[x,y])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-x*y+2*y</TT></DIV><HR>
+<A HREF="cascmd_en180.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en182.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

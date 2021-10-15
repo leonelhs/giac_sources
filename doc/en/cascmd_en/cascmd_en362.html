@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Modify an element or a row of a matrix : subsop</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en361.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en363.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc406">2.42.13</A>  Modify an element or a row of a matrix : <TT>subsop</TT></H3><P><A NAME="@default616"></A>
+<TT>subsop</TT> modifies an element or a row of a matrix.
+It is used mainly for <TT>Maple</TT> and <TT>MuPAD</TT> compatibility.
+Unlike <TT>:=</TT> or <TT>=&lt;</TT>,
+it does not require to store the matrix in a variable.<BR>
+<TT>subsop</TT> takes two or three arguments,
+<B>these arguments are permuted</B> in <TT>Maple</TT> mode.
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Modify an element
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+In <TT>Xcas</TT> mode, the first index is 0<BR>
+<TT>subsop</TT> has two (resp three) arguments: a matrix <TT>A</TT> and an 
+equality <TT>[r,c]=v</TT> (resp a matrix <TT>A</TT>, a list of index <TT>[r,c]</TT>,
+a value <TT>v</TT>).<BR>
+<TT>subsop</TT> replaces the element <TT>A[r,c]</TT> by <TT>v</TT>.<BR>
+Input in <TT>Xcas</TT> mode :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[1,0]=3)</TT></DIV>
+Or :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[1,0],3)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[4,5],[3,6]]</TT></DIV>
+<B>Remark</B><BR>
+If the matrix is stored in a variable, for example 
+<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[1,0]:=3</TT>
+which modifies <TT>A</TT> into the matrix<BR>
+<TT>[[4,5],[3,6]]</TT>.</LI><LI CLASS="li-itemize">In <TT>Mupad, TI</TT> mode, the first index is 1<BR>
+<TT>subsop</TT> has two (resp three) arguments: a matrix <TT>A</TT> and an 
+equality <TT>[r,c]=v</TT> (resp a matrix <TT>A</TT>, a list of index <TT>[r,c]</TT>,
+a value <TT>v</TT>).<BR>
+<TT>subsop</TT> replaces the element <TT>A[r,c]</TT> by <TT>v</TT>.<BR>
+Input in <TT>Mupad, TI</TT> mode :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[2,1]=3)</TT></DIV>
+Or :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[2,1],3)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[4,5],[3,6]]</TT></DIV>
+<B>Remark</B><BR>
+If the matrix is stored in a variable, for example 
+<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[2,1]:=3</TT> which
+modifies <TT>A</TT> into the matrix<BR>
+<TT>[[4,5],[3,6]]</TT>.</LI><LI CLASS="li-itemize">In <TT>Maple</TT> mode, 
+the arguments are permuted and the first index is 1<BR>
+<TT>subsop</TT> has two arguments: an equality <TT>[r,c]=v</TT> and a matrix 
+<TT>A</TT>.<BR>
+<TT>subsop</TT> replaces the element <TT>A[r,c]</TT> by <TT>v</TT>.<BR>
+Input in <TT>Maple</TT> mode
+<DIV CLASS="center"><TT>subsop([2,1]=3,[[4,5],[2,6]])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[4,5],[3,6]]</TT></DIV>
+<B>Remark</B><BR>
+If the matrix is stored in a variable, for example 
+<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[2,1]:=3</TT> which
+modifies <TT>A</TT> into the matrix<BR>
+<TT>[[4,5],[3,6]]</TT>.
+</LI></UL></LI><LI CLASS="li-enumerate">Modify a row
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+in <TT>Xcas</TT> mode, the first index is 0<BR>
+<TT>subsop</TT> takes two arguments : a matrix and an 
+equality (the index of the row to be modified, the <TT>=</TT> sign and the new 
+row value).<BR>
+Input in <TT>Xcas</TT> mode :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],1=[3,3])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[4,5],[3,3]]</TT></DIV>
+<B>Remark</B><BR>
+If the matrix is stored in a variable, for example 
+<TT>A:=[[4,5],[2,6]]</TT>, is is easier to input <TT>A[1]:=[3,3]</TT>
+which modifies <TT>A</TT> into the matrix<BR>
+<TT>[[4,5],[3,3]]</TT>.</LI><LI CLASS="li-itemize">In <TT>Mupad, TI</TT> mode, the first index is 1<BR>
+<TT>subsop</TT> takes two arguments : a matrix and an 
+equality (the index of the row to be modified, the <TT>=</TT> sign and the new 
+row value).<BR>
+Input in <TT>Mupad, TI</TT> mode :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],2=[3,3])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[4,5],[3,3]]</TT></DIV>
+<B>Remark</B><BR>
+If the matrix is stored in a variable, for example 
+<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[2]:=[3,3]</TT> which modifies
+<TT>A</TT> into the matrix<BR>
+<TT>[[4,5],[3,3]]</TT>.</LI><LI CLASS="li-itemize">in <TT>Maple</TT> mode, the arguments are permuted and the first index
+is 1 :<BR>
+<TT>subsop</TT> takes two arguments : an 
+equality (the index of the row to be modified, the <TT>=</TT> sign and the new 
+row value) and a matrix.<BR>
+Input in <TT>Maple</TT> mode :
+<DIV CLASS="center"><TT>subsop(2=[3,3],[[4,5],[2,6]])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[4,5],[3,3]]</TT></DIV>
+<B>Remark</B><BR>
+If the matrix is stored in a variable, for example 
+<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[2]:=[3,3]</TT> which modifies
+<TT>A</TT> into the matrix<BR>
+<TT>[[4,5],[3,3]]</TT>.
+</LI></UL>
+</LI></OL><P>
+<B>Remark</B><BR>
+Note also that <TT>subsop</TT> with a <TT>&#X2019;n=NULL&#X2019;</TT> argument 
+deletes row number <TT>n</TT>.
+In <TT>Xcas</TT> mode input :
+</P><DIV CLASS="center"><TT>subsop([[4,5],[2,6]],&#X2019;1=NULL&#X2019;)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[4,5]]</TT></DIV><HR>
+<A HREF="cascmd_en361.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en363.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

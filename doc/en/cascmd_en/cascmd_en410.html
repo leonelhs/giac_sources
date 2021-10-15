@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Characteristic polynomial using Hessenberg algorithm : 
+ pcar_hessenberg</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en409.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en411.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc458">2.46.7</A>  Characteristic polynomial using Hessenberg algorithm :<BR>
+ <TT>pcar_hessenberg</TT></H3><P><A NAME="@default690"></A>
+<TT>pcar_hessenberg</TT> takes as argument a square 
+matrix <I>A</I> of size <I>n</I> and optionnaly the name of a symbolic variable.<BR>
+<TT>pcar_hessenberg</TT> returns the characteristic polynomial <I>P</I> of <I>A</I> written
+as the list of its coefficients if no variable was provided
+or written in its symbolic form with respect to the variable name given 
+as second argument, where
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>x</I>)=det(<I>xI</I>&#X2212;<I>A</I>) </TD></TR>
+</TABLE><P>
+The characteristic polynomial is computed using the Hessenberg algorithm
+(see e.g. Cohen) which is more efficient (<I>O</I>(<I>n</I><SUP>3</SUP>) deterministic) if 
+the coefficients of <I>A</I> are in a finite field or use a finite 
+representation like approximate numeric coefficients. Note however that
+this algorithm behaves badly if the coefficients are e.g. in &#X211A;.<BR>
+Input :
+</P><DIV CLASS="center"><TT>pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]] % 37)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1 % 37 ,-6% 37,12 % 37,-8 % 37]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]] % 37,x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3-6 %37 *x</TT><CODE><TT>^</TT></CODE><TT>2+12 % 37 *x-8 % 37</TT></DIV><P>
+Hence, the characteristic polynomial of [[4,1,-2],[1,2,-1],[2,1,0]] in
+&#X2124;/37 &#X2124; is
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>3</SUP>&#X2212;6<I>x</I><SUP>2</SUP>+12<I>x</I>&#X2212;8 </TD></TR>
+</TABLE><HR>
+<A HREF="cascmd_en409.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en411.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

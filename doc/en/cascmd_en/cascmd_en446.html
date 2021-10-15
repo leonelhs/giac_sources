@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Solving equation(s): solve</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en445.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en447.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc499">2.51.6</A>  Solving equation(s): <TT>solve</TT></H3><P><A NAME="@default736"></A>
+<TT>solve</TT> solves an equation or a system of polynomial
+equations. It takes 2 arguments:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Solving an equation<BR>
+<TT>solve</TT> takes as arguments an equation between two expressions or an 
+expression (<TT>=0</TT> is omitted), and a variable name (by default <TT>x</TT>).<BR>
+<TT>solve</TT> solves this equation.
+</LI><LI CLASS="li-itemize">Solving a system of polynomial equations<BR>
+<TT>solve</TT> takes as arguments two vectors : 
+a vector of polynomial equations and a 
+vector of variable names.<BR>
+<TT>solve</TT> solves this polynomial equation system.
+</LI></UL><P>
+<B>Remarks</B>:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+In real mode, <TT>solve</TT> returns only real solutions. To have 
+the complex solutions, switch to complex mode, e.g. by checking 
+<TT>Complex</TT> in the cas configuration, or use the <TT>cSolve</TT>
+command.
+</LI><LI CLASS="li-itemize">For trigonometric equations, <TT>solve</TT> returns by default the principal
+solutions. To have all the solutions check <TT>All_trig_sol</TT> in the cas
+configuration.
+</LI></UL><P>
+<B>Examples</B> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Solve <I>x</I><SUP>4</SUP>&#X2212;1=3<BR>
+ Input :
+<DIV CLASS="center"><TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>4-1=3)</TT></DIV>
+Output in real mode :
+<DIV CLASS="center"><TT>[sqrt(2),-(sqrt(2))]</TT></DIV>
+Output in complex mode :
+<DIV CLASS="center"><TT>[sqrt(2),-(sqrt(2)),(i)*sqrt(2),-((i)*sqrt(2))]</TT></DIV>
+</LI><LI CLASS="li-itemize">Solve exp(<I>x</I>)=2<BR>
+Input :
+<DIV CLASS="center"><TT>solve(exp(x)=2)</TT></DIV>
+Output in real mode :
+<DIV CLASS="center"><TT>[log(2)]</TT></DIV>
+</LI><LI CLASS="li-itemize">Find <I>x</I>,<I>y</I> such that <I>x</I>+<I>y</I>=1,<I>x</I>&#X2212;<I>y</I>=0<BR>
+ Input :
+<DIV CLASS="center"><TT>solve([x+y=1,x-y],[x,y])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[1/2,1/2]] </TT></DIV>
+</LI><LI CLASS="li-itemize">Find <I>x</I>,<I>y</I> such that <I>x</I><SUP>2</SUP>+<I>y</I>=2,<I>x</I>+<I>y</I><SUP>2</SUP>=2<BR>
+Input :
+<DIV CLASS="center"><TT>solve([x</TT><CODE><TT>^</TT></CODE><TT>2+y=2,x+y</TT><CODE><TT>^</TT></CODE><TT>2=2],[x,y])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[-2,-2],[1,1],[(-sqrt(5)+1)/2,(1+sqrt(5))/2],</TT></DIV>
+<DIV CLASS="center"><TT>[(sqrt(5)+1)/2,(1-sqrt(5))/2]] </TT></DIV>
+</LI><LI CLASS="li-itemize">Find <I>x</I>,<I>y</I>,<I>z</I> such that <I>x</I><SUP>2</SUP>&#X2212;<I>y</I><SUP>2</SUP>=0,<I>x</I><SUP>2</SUP>&#X2212;<I>z</I><SUP>2</SUP>=0<BR>
+Input :
+<DIV CLASS="center"><TT>solve([x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2=0,x</TT><CODE><TT>^</TT></CODE><TT>2-z</TT><CODE><TT>^</TT></CODE><TT>2=0],[x,y,z])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[x,x,x],[x,-x,-x],[x,-x,x],[x,x,-x]]</TT></DIV>
+</LI><LI CLASS="li-itemize">Solve cos(2*<I>x</I>)=1/2<BR>
+Input :
+<DIV CLASS="center"><TT>solve(cos(2*x)=1/2)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[pi/6,(-pi)/6]</TT></DIV>
+Output with <TT>All_trig_sol</TT> checked :
+<DIV CLASS="center"><TT>[(6*pi*n_0+pi)/6,(6*pi*n_0-pi)/6]</TT></DIV>
+</LI><LI CLASS="li-itemize">Find the intersection of a straight line 
+(given by a list of equations) and a plane.<BR>
+For example,
+let <I>D</I> be the straight line of cartesian equations 
+[<I>y</I>&#X2212;<I>z</I>=0,<I>z</I>&#X2212;<I>x</I>=0] and let <I>P</I> the plane of equation <I>x</I>&#X2212;1+<I>y</I>+<I>z</I>=0.
+Find the intersection of <I>D</I> and <I>P</I>.<BR>
+Input :
+<DIV CLASS="center"><TT>solve([[y-z=0,z-x=0],x-1+y+z=0],[x,y,z])</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>[[1/3,1/3,1/3]]</TT></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en445.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en447.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

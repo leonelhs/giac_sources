@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Laplace transform and inverse Laplace transform : laplace ilaplace</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en455.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en457.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc511">2.53.2</A>  Laplace transform and inverse Laplace transform : <TT>laplace ilaplace</TT></H3><P><A NAME="@default749"></A><A NAME="@default750"></A><A NAME="sec:lap"></A>
+<TT>laplace</TT> and <TT>ilaplace</TT> takes one, two or three arguments :
+an expression and optionnaly the name(s) of the variable(s).<BR>
+The expression is an expression of the current variable (here <I>x</I>) or an 
+expression of the variable given as second argument.<BR>
+<TT>laplace</TT> returns the Laplace transform of the expression given as argument
+and <TT>ilaplace</TT> the inverse Laplace transform of the expression given 
+as argument. The result of <TT>laplace</TT> and <TT>ilaplace</TT> is expressed
+in terms of the variable given as third argument if supplied
+or second argument if supplied or <I>x</I> otherwise.</P><P>Laplace transform (<TT>laplace</TT>) and inverse Laplace transform
+(<TT>ilaplace</TT>) are useful to solve linear differential equations
+with constant coefficients. For example :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I> &#X2032; &#X2032; +<I>p</I>. <I>y</I> &#X2032;+<I>q</I>. <I>y</I>  = <I>f</I>(<I>x</I>)</TD></TR>
+</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>(0)=<I>a</I>,  <I>y</I>&#X2032;(0)=<I>b</I></TD></TR>
+</TABLE><P>
+Denoting by <FONT COLOR=red><I>L</I></FONT> the Laplace transform,
+the following relations hold :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+&#X221E;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>e</I><SUP>&#X2212;<I>x</I>.<I>u</I></SUP><I>y</I>(<I>u</I>)<I>du</I> </TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT><SUP>&#X2212;1</SUP>(<I>g</I>)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<I>i</I>&#X3C0;</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><I>C</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>e</I><SUP><I>z</I>.<I>x</I></SUP><I>g</I>(<I>z</I>)<I>dz</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+where <I>C</I> is a closed contour enclosing the poles of <TT>g</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>laplace(sin(x))</TT></DIV><P>
+The expression (here sin(<I>x</I>)) is an expression of the current variable 
+(here <I>x</I>) and the answer will also be an expression of the current variable 
+<I>x</I>.<BR>
+Output :
+</P><DIV CLASS="center"><TT>1/((-x)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+Or input :
+</P><DIV CLASS="center"><TT>laplace(sin(t),t)</TT></DIV><P>
+here the variable name is <I>t</I> and this name is also used in the answer.<BR>
+Output :
+</P><DIV CLASS="center"><TT>1/((-t)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+Or input :
+</P><DIV CLASS="center"><TT>laplace(sin(t),t,s)</TT></DIV><P>
+here the variable name is <I>t</I> and the variable name of the answer is <I>s</I>.<BR>
+Output:
+</P><DIV CLASS="center"><TT>1/((-s)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+The following properties hold :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>&#X2032;)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>(0)+<I>x</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>) </TD></TR>
+<TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>&#X2033;)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>&#X2032;(0)+<I>x</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>&#X2032;)(<I>x</I>) </TD></TR>
+<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>&#X2032;(0)&#X2212;<I>x</I>.<I>y</I>(0)+<I>x</I><SUP>2</SUP>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+If <I>y</I> &#X2032; &#X2032;(<I>x</I>) +<I>p</I>. <I>y</I> &#X2032;(<I>x</I>)+<I>q</I>. <I>y</I>(<I>x</I>)  = <I>f</I>(<I>x</I>), then :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>f</I>)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>&#X2033;+<I>p</I>.<I>y</I>&#X2032;+<I>q</I>.<I>y</I>)(<I>x</I>) </TD></TR>
+<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>&#X2032;(0)&#X2212;<I>x</I>.<I>y</I>(0)+<I>x</I><SUP>2</SUP>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)&#X2212;<I>p</I>.<I>y</I>(0)+<I>p</I>.<I>x</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>))+<I>q</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>) </TD></TR>
+<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>(<I>x</I><SUP>2</SUP>+<I>p</I>.<I>x</I>+<I>q</I>).<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)&#X2212;<I>y</I>&#X2032;(0)&#X2212;(<I>x</I>+<I>p</I>).<I>y</I>(0)</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+Therefore, if <I>a</I>=<I>y</I>(0) et <I>b</I>=<I>y</I>&#X2032;(0), we have
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT COLOR=red><I>L</I></FONT>(<I>f</I>)(<I>x</I>)=(<I>x</I><SUP>2</SUP>+<I>p</I>.<I>x</I>+<I>q</I>).<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)&#X2212;(<I>x</I>+<I>p</I>).<I>a</I>&#X2212;<I>b</I></TD></TR>
+</TABLE><P>
+and the solution of the differential equation is :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>(<I>x</I>)=
+<FONT COLOR=red><I>L</I></FONT><SUP>&#X2212;1</SUP>((<FONT COLOR=red><I>L</I></FONT>(<I>f</I>)(<I>x</I>)+(<I>x</I>+<I>p</I>).<I>a</I> +<I>b</I>)/(<I>x</I><SUP>2</SUP>+<I>p</I>.<I>x</I>+<I>q</I>))
+</TD></TR>
+</TABLE><P>
+Example :<BR>
+Solve :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>&#X2032; &#X2032; &#X2212;6. <I>y</I>&#X2032;+9. <I>y</I>  = <I>x</I>. <I>e</I><SUP>3. <I>x</I></SUP>,
+    <I>y</I>(0)=<I>c</I>_0,    <I>y</I>&#X2032;(0)=<I>c</I>_1
+</TD></TR>
+</TABLE><P>
+Here, <I>p</I>=&#X2212;6, <I>q</I>=9.<BR>
+Input :
+</P><DIV CLASS="center"><TT>laplace(x*exp(3*x))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1/(x</TT><CODE><TT>^</TT></CODE><TT> 2-6*x+9)</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>ilaplace((1/(x</TT><CODE><TT>^</TT></CODE><TT>2-6*x+9)+(x-6)*c_0+c_1)/(x</TT><CODE><TT>^</TT></CODE><TT>2-6*x+9))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(216*x</TT><CODE><TT>^</TT></CODE><TT>3-3888*x*c_0+1296*x*c_1+1296*c_0)*exp(3*x)/1296</TT></DIV><P>
+After simplification and factorisation (<TT>factor</TT> command) 
+the solution <I>y</I> is :
+</P><DIV CLASS="center"><TT>(-18*c_0*x+6*c_0+x</TT><CODE><TT>^</TT></CODE><TT>3+6*x*c_1)*exp(3*x)/6</TT></DIV><P>
+Note that this equation could be solved directly, input :
+</P><DIV CLASS="center"><TT>desolve(y&#X2019;&#X2019;-6*y&#X2019;+9*y=x*exp(3*x),y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>exp(3*x)*(-18*c_0*x+6*c_0+x</TT><CODE><TT>^</TT></CODE><TT>3+6*x*c_1)/6</TT></DIV><HR>
+<A HREF="cascmd_en455.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en457.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

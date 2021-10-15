@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Recognize an isometry : isom</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en416.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en418.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc466">2.47.1</A>  Recognize an isometry : <TT>isom</TT></H3><P><A NAME="@default697"></A>
+<TT>isom</TT> takes as argument the matrix of an linear
+application in dimension 2 or 3.<BR>
+<TT>isom</TT> returns :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+if the linear application is a direct isometry,<BR>
+the list of the characteristic elements of this isometry and <TT>+1</TT>,
+</LI><LI CLASS="li-itemize">if the linear application is an indirect isometry,<BR>
+the list of the characteristic elements of this isometry and <TT>-1</TT> 
+</LI><LI CLASS="li-itemize">if the linear application is not an isometry,<BR>
+<TT>[0]</TT>.
+</LI></UL><P>
+Input :
+</P><DIV CLASS="center"><TT>isom([[0,0,1],[0,1,0],[1,0,0]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0,-1],-1]</TT></DIV><P>
+which means that this isometry is a 3-d symmetry with respect to the plane 
+<I>x</I> &#X2212; <I>z</I> = 0.<BR>
+Input :
+</P><DIV CLASS="center"><TT>isom(sqrt(2)/2*[[1,-1],[1,1]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[pi/4,1]</TT></DIV><P>
+Hence, this isometry is a 2-d rotation of angle 
+ &#X3C0;/4.<BR>
+Input :
+</P><DIV CLASS="center"><TT>isom([[0,0,1],[0,1,0],[0,0,1]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[0]</TT></DIV><P>
+therefore this transformation is not an isometry.</P><HR>
+<A HREF="cascmd_en416.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en418.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

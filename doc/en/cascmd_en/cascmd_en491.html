@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Approximate solution of the system v&#X2019;=f(t,v) : odesolve</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en490.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en492.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc569">4.3.5</A>  Approximate solution of the system v&#X2019;=f(t,v) : <TT>odesolve</TT></H3><P><A NAME="@default838"></A>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+If <I>v</I> is a vector
+of variables [<I>x</I>1,..,<I>xn</I>] and if <I>f</I> is given by a vector of expressions
+<TT>[e1,...,en]</TT> depending of <I>t</I> and of [<I>x</I>1,..,<I>xn</I>],
+if the init value of <I>v</I> at <TT>t0</TT>
+is the vector [<I>x</I>10,...,<I>xn</I>0] then the instruction
+<DIV CLASS="center">
+<TT>odesolve([e1,..,en],t=t0..t1,[x1,...,xn],
+[x10,...,xn0])</TT> 
+</DIV>
+returns an approximated value of <I>v</I> at <I>t</I>=<I>t</I>1.
+With the optional argument <TT>curve</TT>, <TT>odesolve</TT> returns the list of 
+the intermediate values of [<I>t</I>,<I>v</I>(<I>t</I>)] computed by the solver. <P>Example, to solve the system
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>x</I>&#X2032;(<I>t</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>(<I>t</I>)</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>y</I>&#X2032;(<I>t</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><I>x</I>(<I>t</I>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+input :
+</P><DIV CLASS="center">
+<TT>odesolve([-y,x],t=0..pi,[x,y],[0,1])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[-1.79045146764e-15,-1]</TT></DIV></LI><LI CLASS="li-itemize">If <I>f</I> is a function from &#X211D; × &#X211D;<SUP><I>n</I></SUP> to 
+&#X211D;<SUP><I>n</I></SUP>.<BR>
+<TT>odesolve(t0..t1,(t,v)-&gt;f(t,v),v0)</TT> or<BR>
+<TT>odesolve(t0..t1,f,v0)</TT><BR>
+computes an approximate value of <I>v</I>(<I>t</I>1) where the vector <I>v</I>(<I>t</I>)
+in &#X211D;<SUP><I>n</I></SUP> is the solution of
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>v</I>&#X2032;(<I>t</I>)=<I>f</I>(<I>t</I>,<I>v</I>(<I>t</I>)), <I>v</I>(<I>t</I>0)=<I>v</I>0 </TD></TR>
+</TABLE>
+With the optional argument <TT>curve</TT>, <TT>odesolve</TT> returns the list of 
+the intermediate value [<I>t</I>,<I>v</I>(<I>t</I>)] computed by the solver.<P>Example, to solve the system :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>x</I>&#X2032;(<I>t</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>(<I>t</I>)</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>y</I>&#X2032;(<I>t</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><I>x</I>(<I>t</I>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>odesolve(0..pi,(t,v)-&gt;[-v[1],v[0]],[0,1])</TT></DIV><P>
+Or define the function:
+</P><DIV CLASS="center"><TT>f(t,v):=[-v[1],v[0]]</TT></DIV><P>
+then input : 
+</P><DIV CLASS="center"><TT>odesolve(0..pi,f,[0,1])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[-1.79045146764e-15,-1]</TT></DIV><P>
+Alternative input :
+</P><DIV CLASS="center"><TT>odesolve(0..pi/4,f,[0,1],curve)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[0.1781,[-0.177159948386,0.984182072936]], [0.3781,[-0.369155338156,0.929367707805]], [0.5781,[-0.54643366953,0.837502384954]], [0.7781,[-0.701927414872,0.712248484906]]]</TT></DIV></LI></UL><HR>
+<A HREF="cascmd_en490.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en492.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

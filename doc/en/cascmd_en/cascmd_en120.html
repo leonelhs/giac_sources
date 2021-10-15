@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Define an operator: user_operator</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en119.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en121.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc136">2.14.3</A>  Define an operator: <TT>user_operator</TT></H3><P><A NAME="@default193"></A><A NAME="@default194"></A><A NAME="@default195"></A>
+<TT>user_operator</TT> takes as argument :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+a string : the name of the operator,
+</LI><LI CLASS="li-itemize">a function of two variables with values in &#X211D; or in 
+<TT>true, false</TT>,
+</LI><LI CLASS="li-itemize">an option <TT>Binary</TT> for the definition or <TT>Delete</TT> to annulate 
+this definition.
+</LI></UL><P>
+<TT>user_operator</TT> returns 1 if the definition is done and else returns 0.</P><P><B>Example 1</B><BR>
+Let <I>R</I> be defined on &#X211D; by <I>x</I> <I>R</I>  <I>y</I>= <I>x</I>*<I>y</I>+<I>x</I>+<I>y</I>.<BR>
+To define the law <I>R</I>, input :
+</P><DIV CLASS="center"><TT>user_operator("R",(x,y)-&gt;x*y+x+y,Binary)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>5 R 7</TT></DIV><P>
+Do not forget to put spaces around <TT>R</TT>.<BR>
+Output :
+</P><DIV CLASS="center"><TT>47</TT></DIV><P><B>Example 2</B><BR>
+Let <I>S</I> by defined on &#X2115; by :<BR>
+for <I>x</I> and <I>y</I> integers, <I>x</I> <I>S</I>  <I>y</I> &lt;=&gt; <I>x</I> and <I>y</I> are not coprime.<BR>
+To define the law <I>S</I>, input :
+</P><DIV CLASS="center"><TT>user_operator("S",(x,y)-&gt;(gcd(x,y))!=1,Binary)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>5 S 7</TT></DIV><P>
+Do not forget to put spaces around <TT>S</TT>.<BR>
+Output :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>8 S 12</TT></DIV><P>
+Do not forget to put spaces around <TT>S</TT>.<BR>
+Output :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+<A HREF="cascmd_en119.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en121.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

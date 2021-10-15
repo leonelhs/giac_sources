@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Top and leaves of an expression : sommet feuille op</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en122.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en124.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc140">2.15.3</A>  Top and leaves of an expression : <TT>sommet feuille op</TT></H3><P><A NAME="@default199"></A><A NAME="@default200"></A><A NAME="@default201"></A><A NAME="sec:op"></A>
+An operator is an infixed function : for exemple &#X2019;+&#X2019; is an 
+operator and &#X2019;sin&#X2019; is a function.<BR>
+An expression can be represented by a tree. The top of the tree is 
+either an operator, or a function and the leaves of the tree are the 
+arguments of the operator or of the function 
+(see also <A HREF="cascmd_en306.html#sec:makesuiteop">2.37.11</A>).<BR>
+The instruction <TT>sommet</TT> (resp <TT>feuille</TT> (or <TT>op</TT>))
+returns the top (resp. the list of the leaves) of an expression.<BR>
+Input :
+</P><DIV CLASS="center"><TT>sommet(sin(x+2))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>&#X2019;sin&#X2019;</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>sommet(x+2*y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>&#X2019;+&#X2019;</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>feuille(sin(x+2))</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>op(sin(x+2))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x+2</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>feuille(x+2*y)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>op(x+2*y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(x,2*y) </TT></DIV><P> 
+<B>Remark</B><BR>
+Suppose that a function is defined by a program, for example 
+let us define the <TT>pgcd</TT> function :
+</P><DIV CLASS="center"><TT>pgcd(a,b):={local r; while (b!=0) {r:=irem(a,b);a:=b;b:=r;} return a;}</TT></DIV><P>
+Then input :
+</P><DIV CLASS="center"><TT>sommet(pgcd)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>&#X2019;program&#X2019;</TT></DIV><P> 
+Then input :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[0]</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>(a,b)</TT></DIV><P>
+Then input :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[1]</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>(0,0) or (15,25) if the last input was pgcd(15,25)</TT></DIV><P>
+Then input :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[2]</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>The body of the program : {local r;....return(a);}</TT></DIV><HR>
+<A HREF="cascmd_en122.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en124.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

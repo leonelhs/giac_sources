@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Le menu Edit</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr013.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr015.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc20">1.4.2</A>  Le menu <TT>Edit</TT></H3><P><A NAME="@default8"></A>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>Executer session</TT> pour recalculer cette session entièrement, 
+</LI><LI CLASS="li-itemize"><TT>Executer en-dessous</TT> pour recalculer cette session à partir d’une 
+entrée sélectionnée,
+</LI><LI CLASS="li-itemize"><TT>Enlever les reponses</TT> pour supprimer les réponses à 
+partir d’une entrée sélectionnée afin de pouvoir, devant un auditoire, 
+refaire pas à pas l’exécution des différentes entrées.
+</LI><LI CLASS="li-itemize"><TT>Inserer saut de ligne</TT> pour obtenir une nouvelle ligne sur 
+le niveau d’entrée, là où se trouve le curseur et permet ainsi de passer 
+à la ligne par exemple pour écrire dans un même niveau plusieurs lignes 
+d’entrées séparées par <TT>;</TT> (on peut aussi taper <TT>Shift+Enter</TT>).
+</LI><LI CLASS="li-itemize"><TT>Annuler</TT> ou raccourci <TT>Ctrl+z</TT> pour annuler la dernière 
+exécution : par exemple vous avez effacé malencontreusement un niveau et 
+vous voulez annuler cet effacement il faut faire <TT>Annuler</TT>, ou bien vous 
+avez modifié et exécuter une ligne de commande pour annuler cette 
+modification il faut faire <TT>Annuler</TT>, mais si il n’y a pas eu d’exécution
+(par exemple on a effacer une expression dans la ligne de commandes) il ne faut
+pas faire <TT>Annuler</TT>,
+</LI><LI CLASS="li-itemize"><TT>Redo</TT> ou raccourci <TT>Ctrl+y</TT> pour revenir à ce qu’il y avait 
+avant l’annulation : il faut faire 2 fois <TT>Redo</TT> si vous avez fait 2 fois 
+<TT>Annuler</TT>,
+</LI><LI CLASS="li-itemize"><TT>Coller</TT> permet de recopier, à l’endroit du curseur,
+ce que l’on a sélectionné avec la souris (analogue à la touche 
+<TT>coller</TT> du clavier <TT>Kbd</TT>). On peut aussi sélectionner ce 
+qui se trouve dans une ligne de commandes
+avec <TT>Shift+les flèches de déplacement</TT>.
+</LI><LI CLASS="li-itemize"><TT>Effacer niveaux selectionnes</TT> permet de supprimer les niveaux 
+sélectionnés,
+</LI><LI CLASS="li-itemize"><TT>selection-&gt;LaTeX </TT> ou raccourci <TT>Ctrl+t</TT>
+pour traduire en <TT>LaTeX</TT> la question ou la réponse ou le contenu de 
+l’éditeur d’expressions : on 
+sélectionne une question ou une réponse ou le contenu d’un éditeur 
+d’équations<SUP><A NAME="text2" HREF="cascmd_fr049.html#note2">1</A></SUP>.<BR>
+Remarquez le petit bouton <TT>M</TT> <A NAME="@default9"></A>
+situé à l’intersection des 2 barres de scroll de l’éditeur d’expressions 
+qui permet soit de recopier ce qui se trouve dans l’éditeur d’un seul clic,
+(avec <TT>Selectionner tout</TT>), soit d’évaluer la sélection (avec 
+<TT>Evaluer selection</TT>), soit de retrouver la réponse initiale (avec 
+<TT>Annuler</TT>), dans le cas où, on a fait une modification malencontreuse 
+car comme les réponses non graphiques sont affichées dans un 
+éditeur d’expressions, elles peuvent donc être modifiées...,
+Lorsqu’on utilise <TT>Edit-&gt;selection-&gt;LaTeX </TT> ou <TT>Ctrl+t</TT>, la traduction 
+en <TT>LaTeX</TT> apparait alors dans l’écran des messages (que l’on peut voir 
+en cliquant sur le bouton <TT>msg</TT> de <TT>Kbd</TT>).<BR>
+On peut la recopier dans un éditeur (<TT>emacs, nedit, vi, ...</TT>)
+par un clic avec le bouton du milieu.<BR>
+Par exemple :
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+on saisit dans un niveau de calcul formel <TT>concat([1,2],3)</TT>
+on met en surbrillance la réponse, puis on fait <TT>Ctrl+t</TT>,
+ce qui provoque l’inscription dans la partie reservée aux messages de :
+<PRE CLASS="verbatim">\mbox{concat}([1,2],3)
+</PRE></LI><LI CLASS="li-itemize">on saisit <TT>sqrt(1+3)</TT>, on met en surbrillance la réponse, puis on fait 
+<TT>Ctrl+t</TT>, ce qui provoque l’inscription dans la partie reservée aux 
+messages de :
+<PRE CLASS="verbatim">\sqrt{1+3}
+</PRE></LI><LI CLASS="li-itemize">on saisit <TT>f(x):=sin(x)/x</TT>, on met en surbrillance la réponse, puis on 
+fait <TT>Ctrl+t</TT>, ce qui provoque l’inscription dans la partie reservée aux 
+messages de :
+<PRE CLASS="verbatim">\parbox{12cm}{\tt  (x)-{\tt\symbol{62}}(sin(2*x))/x }
+</PRE></LI></UL>
+Il ne vous reste plus qu’à recopier le texte ainsi traduit, d’un coup de 
+souris, dans une portion en mode mathématique de votre document L<sup>A</sup>T<sub>E</sub>X.
+</LI><LI CLASS="li-itemize"><TT>Fusionner niveaux</TT> permet de mettre dans un même niveau, les niveaux 
+sélectionnés, 
+</LI><LI CLASS="li-itemize"><TT>Nouveau groupe</TT> permet de créer un groupe, 
+</LI><LI CLASS="li-itemize"><TT>Grouper niveaux</TT> permet de créer un regroupement 
+des niveaux sélectionnés, que l’on peut plier ou déplier en cliquant sur
+<SPAN CLASS="textboxed"><TT>-</TT></SPAN> ou <SPAN CLASS="textboxed"><TT>+</TT></SPAN> du menu propre à ce regroupement. 
+On peut aussi donner un nom au regroupement ainsi créé.
+</LI><LI CLASS="li-itemize"><TT>Degrouper niveaux</TT> effectue l’opération inverse de la précédente (on 
+aplatit le groupe dont le numéro a été sélectionné (noirci) pour 
+revenir à l’état précédent le regroupement).
+</LI></UL><HR>
+<A HREF="cascmd_fr013.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr015.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

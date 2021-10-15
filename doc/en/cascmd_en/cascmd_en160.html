@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Rewrite trigonometric functions as function of tan(x/2) 
+and hyperbolic functions as function of exp(x): 
+halftan_hyp2exp</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en159.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en161.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc183">2.21.17</A>  Rewrite trigonometric functions as function of tan(x/2) 
+and hyperbolic functions as function of exp(x):<BR>
+<TT>halftan_hyp2exp</TT></H3><P><A NAME="@default312"></A>
+<TT>halftan_hyp2exp</TT> takes as argument a trigonometric and 
+hyperbolic expression.<BR>
+<TT>halftan_hyp2exp</TT> rewrites sin(<I>x</I>), cos(<I>x</I>), tan(<I>x</I>) 
+in terms of tan(<I>x</I>/2) 
+and sinh(<I>x</I>), cosh(<I>x</I>), tanh(<I>x</I>) in terms of exp(<I>x</I>).<BR>
+Input :
+</P><DIV CLASS="center"><TT>halftan_hyp2exp(tan(x)+tanh(x))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(2*tan(x/2))/((1-(tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2))+(((exp(x))</TT><CODE><TT>^</TT></CODE><TT>2-1))/ (((exp(x))</TT><CODE><TT>^</TT></CODE><TT>2+1))</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>halftan_hyp2exp(sin(x)</TT><CODE><TT>^</TT></CODE><TT>2+cos(x)</TT><CODE><TT>^</TT></CODE><TT>2-sinh(x)</TT><CODE><TT>^</TT></CODE><TT>2+cosh(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+Output, after simplification with <TT>normal(ans())</TT> :
+</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
+<A HREF="cascmd_en159.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en161.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

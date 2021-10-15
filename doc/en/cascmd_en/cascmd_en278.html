@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Series expansion : series</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en277.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en279.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc313">2.33.3</A>  Series expansion : <TT>series</TT></H3><P><A NAME="@default478"></A><A NAME="@default479"></A> 
+<TT>series</TT> takes from one to four arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+an expression dependending of a variable (by default <TT>x</TT>),
+</LI><LI CLASS="li-itemize">an equality variable=value (e.g. <I>x</I>=<I>a</I>) where to compute
+the series expansion, by default <TT>x=0</TT>, 
+</LI><LI CLASS="li-itemize">an integer <I>n</I>, the order of the series expansion,
+by default <TT>5</TT>
+</LI><LI CLASS="li-itemize">a direction <TT>-1, 1</TT> (for unidirectional series expansion)
+or <TT>0</TT> (for bidirectional series expansion) (by default <TT>0</TT>).
+</LI></UL><P>
+Note that the syntax <TT>...,x,</TT><TT><I>a</I></TT><TT>,</TT><TT><I>n</I></TT><TT>,...</TT> 
+(instead of <TT>...,x=</TT><TT><I>a</I></TT><TT>,</TT><TT><I>n</I></TT><TT>,...</TT>) is also accepted.<BR>
+<TT>series</TT> returns a polynomial in <TT>x-a</TT>, plus a remainder 
+of the form:
+</P><DIV CLASS="center">
+<TT>(x-a)</TT><CODE><TT>^</TT></CODE><TT>n*order_size(x-a)</TT>
+</DIV><P>
+where <TT>order_size</TT> is a function such that,
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; <I>r</I>&gt;0,    </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">lim</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>&#X2192; 0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>x</I><SUP><I>r</I></SUP> order_size(<I>x</I>) = 0 </TD></TR>
+</TABLE><P>
+The order returned by <TT>series</TT> may be smaller than <I>n</I> if
+cancellations between numerator and denominator occur.</P><P>Examples :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+series expansion in the vicinity of <TT>x=0</TT><BR>
+ Find an series expansion of 
+<I>x</I><SUP>3</SUP>+sin(<I>x</I>)<SUP>3</SUP>/<I>x</I>&#X2212;sin(<I>x</I>) 
+in the vicinity of <TT>x=0</TT>.<BR>
+Input :
+<DIV CLASS="center"><TT>series(x</TT><CODE><TT>^</TT></CODE><TT>3+sin(x)</TT><CODE><TT>^</TT></CODE><TT>3/(x-sin(x)))</TT></DIV>
+Output is only a 2nd-order series expansion :
+<DIV CLASS="center"><TT>6+-27/10*x</TT><CODE><TT>^2</TT></CODE><TT>+x</TT><CODE><TT>^</TT></CODE><TT>3*order_size(x)</TT></DIV>
+We have lost 3 orders because the valuation of the numerator and
+denominator is 3. To get a 4-th order expansion, we must therefore 
+take <I>n</I>=7, input:
+<DIV CLASS="center"><TT>series(x</TT><CODE><TT>^</TT></CODE><TT>3+sin(x)</TT><CODE><TT>^</TT></CODE><TT>3/(x-sin(x)),x=0,7)</TT></DIV>
+Or :
+<DIV CLASS="center"><TT>series(x</TT><CODE><TT>^</TT></CODE><TT>3+sin(x)</TT><CODE><TT>^</TT></CODE><TT>3/(x-sin(x)),x,0,7)</TT></DIV>
+Output is a 4th-order series expansion :
+<DIV CLASS="center"><TT>6+-27/10*x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3+711/1400*x</TT><CODE><TT>^</TT></CODE><TT>4+
+x</TT><CODE><TT>^</TT></CODE><TT>5*order_size(x)</TT></DIV>
+</LI><LI CLASS="li-itemize">series expansion in the vicinity of <TT>x=a</TT><BR>
+Find a series 4th-order expansion of cos(2<I>x</I>)<SUP>2</SUP> in the vicinity of
+<I>x</I>=&#X3C0;/6.<BR>
+Input:
+<DIV CLASS="center"><TT>series(cos(2*x)</TT><CODE><TT>^</TT></CODE><TT>2,x=pi/6, 4)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>1/4+(-(4*sqrt(3)))/4*(x-pi/6)+(4*3-4)/4*(x-pi/6)</TT><CODE><TT>^</TT></CODE><TT>2+ 32*sqrt(3)/3/4*(x-pi/6)</TT><CODE><TT>^</TT></CODE><TT>3+(-16*3+16)/3/4*(x-pi/6)</TT><CODE><TT>^</TT></CODE><TT>4+ (x-pi/6)</TT><CODE><TT>^</TT></CODE><TT>5*order_size(x-pi/6)</TT></DIV> 
+</LI><LI CLASS="li-itemize">series expansion in the vicinity of <TT>x=+</TT><TT>&#X221E;</TT> or <TT>x=-</TT><TT>&#X221E;</TT>
+<OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Find a 5th-order series expansion of arctan(<I>x</I>) in the vicinity of
+<TT>x=+</TT><TT>&#X221E;</TT>.<BR>
+ Input :
+<DIV CLASS="center"><TT>series(atan(x),x=+infinity,5)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>pi/2-1/x+1/3*(1/x)</TT><CODE><TT>^</TT></CODE><TT>3+1/-5*(1/x)</TT><CODE><TT>^</TT></CODE><TT>5+
+(1/x)</TT><CODE><TT>^</TT></CODE><TT>6*order_size(1/x)</TT></DIV>
+Note that the expansion variable and the argument of the 
+<TT>order_size</TT> function is
+ <I>h</I>=1/<I>x</I> &#X2192;<SUB><I>x</I>&#X2192; + &#X221E;</SUB> 0 .
+</LI><LI CLASS="li-enumerate">Find a series 2nd-order expansion of (2<I>x</I>&#X2212;1)<I>e</I><SUP>1/<I>x</I>&#X2212;1</SUP> in the vicinity of
+<TT>x=+</TT><TT>&#X221E;</TT>.<BR>
+Input :
+<DIV CLASS="center"><TT>series((2*x-1)*exp(1/(x-1)),x=+infinity,3)</TT></DIV>
+Output is only a 1st-order series expansion :
+<DIV CLASS="center"><TT>2*x+1+2/x+(1/x)</TT><CODE><TT>^</TT></CODE><TT>2*order_size(1/x)</TT></DIV>
+To get a 2nd-order series expansion in 1/<I>x</I>, input:
+<DIV CLASS="center"><TT>series((2*x-1)*exp(1/(x-1)),x=+infinity,4)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>2*x+1+2/x+17/6*(1/x)</TT><CODE><TT>^</TT></CODE><TT>2+(1/x)</TT><CODE><TT>^</TT></CODE><TT>3*order_size(1/x)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Find a 2nd-order series expansion of (2<I>x</I>&#X2212;1)<I>e</I><SUP>1/<I>x</I>&#X2212;1</SUP> in the vicinity 
+of <TT>x=-</TT><TT>&#X221E;</TT>.<BR>
+Input :
+<DIV CLASS="center"><TT>series((2*x-1)*exp(1/(x-1)),x=-infinity,4)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>-2*(-x)+1-2*(-1/x)+17/6*(-1/x)</TT><CODE><TT>^</TT></CODE><TT>2+<BR>
+(-1/x)</TT><CODE><TT>^</TT></CODE><TT>3*order_size(-1/x)</TT></DIV>
+</LI></OL>
+</LI><LI CLASS="li-itemize">unidirectional series expansion.<BR>
+The fourth parameter indicates the direction :
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>1</TT> to do an series expansion in the vicinity of <I>x</I>=<I>a</I> with 
+  <I>x</I>&gt;<I>a</I>,
+</LI><LI CLASS="li-itemize"><TT>-1</TT> to do an series expansion in the vicinity of <I>x</I>=<I>a</I> with 
+  <I>x</I>&lt;<I>a</I>,
+</LI><LI CLASS="li-itemize"><TT>0</TT> to do an series expansion in the vicinity of <I>x</I>=<I>a</I> with 
+  <I>x</I> &#X2260; <I>a</I>.
+</LI></UL>
+For example, 
+find a 2nd-order series expansion of  (1+<I>x</I>)<SUP>1/<I>x</I></SUP>/<I>x</I><SUP>3</SUP>  in 
+the vicinity of <I>x</I>=0<SUP>+</SUP>. Input :
+<DIV CLASS="center"><TT>series((1+x)</TT><CODE><TT>^</TT></CODE><TT>(1/x)/x</TT><CODE><TT>^</TT></CODE><TT>3,x=0,2,1)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>exp(1)/x</TT><CODE><TT>^</TT></CODE><TT>3+(-(exp(1)))/2/x</TT><CODE><TT>^</TT></CODE><TT>2+1/x*order_size(x)</TT></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en277.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en279.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

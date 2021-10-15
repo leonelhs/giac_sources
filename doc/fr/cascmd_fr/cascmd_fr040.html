@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Traduction Latex d’un écran de géométrie</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr039.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr041.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc52">1.10.3</A>  Traduction Latex d’un écran de géométrie</H3><P><A NAME="@default26"></A><A NAME="@default27"></A><A NAME="sec:latexgeo"></A></P><P><B>Voir aussi :</B> <A HREF="index.html#sec:latexgeo23">3.5</A> et <A HREF="cascmd_fr042.html#sec:latex3d">1.10.5</A>
+On veut traduire en Latex toutes les sorties graphiques réalisées depuis le
+dernier <TT>erase()</TT> c’est à dire toutes celles faites 
+à partir des lignes de commandes et celles faites dans les écrans de 
+géométrie.<BR>
+On utilise pour cela la fonction <TT>graph2tex</TT>.<BR>
+On tape par exemple dans une ligne de commandes :
+</P><DIV CLASS="center"><TT>graph2tex("truc.tex")</TT></DIV><P>
+On obtient alors les graphiques sauvés en un fichier Latex 
+<TT>truc.tex</TT> qui pourra être compilé et visualisé seul, ou encore 
+être inséré dans un fichier Latex.<BR>
+Ou encore, si on veut la traduction Latex d’un seul écran de géométrie,
+on appuie sur le bouton <TT>Save</TT> de cet écran de géométrie, on
+donne un nom de fichier par exemple <TT>truc.cas</TT>. Puis, on choisit
+dans le menu <TT>Fich</TT> de cet écran de géométrie, le sous-menu 
+<TT>Imprimer</TT> puis, <TT>Pre-visualisation (Latex)</TT>, cela
+crée les fichiers <TT>truc.tex</TT>, <TT>truc.dvi</TT>, <TT>truc.ps</TT> et
+<TT>truc.png</TT> ou éventuellement si on veut imprimer, on choisit 
+<TT>Vers Imprimante (Latex)</TT>.<BR>
+On obtient alors l’écran de géométrie sauvé en un fichier Latex 
+<TT>truc.tex</TT> qui pourra être compilé et visualisé seul, ou encore 
+être inséré dans un fichier Latex, à condition d’enlever l’en-tête 
+<CODE>\documentclass{article}...\begin{document}</CODE>, d’enlever à la fin 
+<CODE>\end{document}</CODE> et de rajouter <CODE>\usepackage{pstricks}</CODE> 
+dans l’en-tête du fichier dans lequel on l’insère.<BR>
+Ou encore, on veut traduire en Latex une seule sortie graphique ou un seul 
+dessin ou un seul graphique fait dans un des écrans de géométrie et on 
+voudrait l’intégrer dans un texte Latex ou l’imprimer seul. Mais, on a 
+déjà fait d’autres graphiques, soit à l’aide de commandes qui renvoient 
+des sorties graphiques, soit dans différents écrans de géométrie, 
+alors, pour avoir la traduction Latex du dessin que vous voulez, il faut 
+utiliser la commande <TT>erase()</TT> cela n’effacera pas vos graphiques, 
+mais cela aura pour effet de 
+ne traduire en Latex que les tracés futurs. Donc on tape <TT>erase()</TT>, puis 
+on revalide ce que l’on veut traduire en Latex, puis on tape par exemple :
+</P><DIV CLASS="center"><TT>graph2tex("truc1.tex")</TT></DIV><P>Pour traduire en Latex et imprimer un seul graphique on peut aussi se servir du
+menu <TT>Exporter/Imprimer</TT> du bouton <TT>M</TT> de cet écran graphique :<BR>
+<TT>M</TT><TT>▸</TT><TT> Exporter/Imprimer</TT><TT>▸</TT><TT>Imprimer(en Latex)</TT>,<BR>
+Ou encore, on peut sélectionner le niveau de l’écran graphique que l’on 
+veut imprimer et utiliser le menu de la session :<BR>
+<TT>Fich</TT><TT>▸</TT><TT>Imprimer</TT><TT>▸</TT><TT>Imprime selection (latex)</TT>.<BR>
+Dans ces deux cas l’écran est sauvé selon 4 formats, sous 
+les noms <TT>session0.tex</TT>, <TT>session0.dvi</TT>, <TT>session0.ps</TT> et 
+<TT>session0.png</TT>
+(ou encore sous les noms <TT>session&lt;numero&gt;.tex/dvi/ps/png</TT>) (sauf si vous 
+avez donné un autre nom ce qui est conseillé !).</P><HR>
+<A HREF="cascmd_fr039.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr041.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Copier sans l’évaluer le contenu d’une variable : CopyVar</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr068.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr070.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc89">2.5.6</A>  Copier sans l’évaluer le contenu d’une variable : <TT>CopyVar</TT></H3><P><A NAME="@default63"></A>
+<TT>CopyVar</TT> a comme arguments le nom de deux variables.<BR>
+<TT>CopyVar</TT> copie sans l’évaluer le contenu de la première variable dans 
+la deuxième variable.<BR>
+On tape (attention à l’ordre) :
+</P><DIV CLASS="center"><TT>a:=c</TT></DIV><DIV CLASS="center"><TT>c:=5</TT></DIV><DIV CLASS="center"><TT>CopyVar(a,b)</TT></DIV><DIV CLASS="center"><TT>b</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>c</TT></DIV><P>
+puis on tape :
+</P><DIV CLASS="center"><TT>c:=10</TT></DIV><DIV CLASS="center"><TT>b</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>10</TT></DIV><P>
+Une modification du contenu de <TT>c</TT> va modifier le contenu de <TT>b</TT> car
+<TT>b</TT> contient <TT>c</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>a:=d</TT></DIV><DIV CLASS="center"><TT>b</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>10</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>purge(c)</TT></DIV><DIV CLASS="center"><TT>b</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>c</TT></DIV><P>
+puisque <TT>b</TT> contient <TT>c</TT>.
+</P><HR>
+<A HREF="cascmd_fr068.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr070.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

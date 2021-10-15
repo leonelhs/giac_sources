@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Un exemple : codage de 3.1 et de 3</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr104.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr106.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc153">4.1.1</A>  Un exemple : codage de 3.1 et de 3</H3><UL CLASS="itemize"><LI CLASS="li-itemize">
+codage de 3.1 :<BR>
+On a :<BR>
+3.1=2*(1+1/2+1/2<SUP>5</SUP>+1/2<SUP>6</SUP>+1/2<SUP>9</SUP>+1/2<SUP>10</SUP>+....)=2*(1+1/2+∑<SUB><I>k</I>=1</SUB><SUP>∞</SUP>1/2<SUP>4*<I>k</I>+1</SUP>+1/2<SUP>4*<I>k</I>+2</SUP>)<BR>
+donc α=1 et <I>m</I>=1/2+∑<SUB><I>k</I>=1</SUB><SUP>∞</SUP>1/2<SUP>4*<I>k</I>+1</SUP>+1/2<SUP>4*<I>k</I>+2</SUP><BR>
+On obtient le codage de 3.1 :<BR>
+40 (01000000), 8 (00001000), cc (11001100), cc (11001100),<BR>
+cc (11001100), cc (11001100), cc (11001100), cd (11001101),<BR>
+le dernier octet est 1101 car il y a eu un arrondi du dernier bit a 1, car le
+chiffre suivant etait 1.</LI><LI CLASS="li-itemize">codage de 3 :<BR>
+On a :<BR>
+3=2*(1+1/2)<BR>
+On obtient le codage de 3 :<BR>
+40 (01000000), 8 (00001000), 0 (00000000), 0 (00000000), 0 (00000000),<BR>
+0 (00000000), 0 (00000000), 0 (00000000).
+</LI></UL><HR>
+<A HREF="cascmd_fr104.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr106.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

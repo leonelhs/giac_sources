@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Définition d’un opérateur: user_operator</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr281.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr283.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc356">6.15.3</A>  Définition d’un opérateur: <TT>user_operator</TT></H3><P><A NAME="@default487"></A><A NAME="@default488"></A><A NAME="@default489"></A>
+<TT>user_operator</TT> a comme argument :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+une chaîne de caractères qui est le nom de l’opérateur,
+</LI><LI CLASS="li-itemize">une fonction de deux variablesà valeur dans ℝ ou dans
+<TT>true, false</TT>,
+</LI><LI CLASS="li-itemize">une option <TT>Binary</TT> pour la définition ou <TT>Delete</TT> pour 
+annuler cette définition.
+</LI></UL><P>
+<TT>user_operator</TT> renvoie 1 si la définition a eu lieu et 0 sinon.</P><P><B>Exemple 1</B><BR>
+Soit la loi <I>R</I> définit sur ℝ par <I>x</I> <I>R</I>  <I>y</I>= <I>x</I>*<I>y</I>+<I>x</I>+<I>y</I>.<BR>
+On tape pour définir la loi <I>R</I> :
+</P><DIV CLASS="center"><TT>user_operator("R",(x,y)-&gt;x*y+x+y,Binary)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>5 R 7</TT></DIV><P>
+Bien mettre les espace autour de <TT>R</TT>.<BR>
+On obtient :
+</P><DIV CLASS="center"><TT>47</TT></DIV><P><B>Exemple 2</B><BR>
+Soit la relation <I>S</I> définit sur ℕ par :<BR>
+pour <I>x</I> et <I>y</I> entiers, <I>x</I> <I>S</I>  <I>y</I> &lt;=&gt; <I>x</I> et <I>y</I> ne sont pas premiers entre 
+eux.<BR>
+On tape pour définir la relation <I>S</I> :
+</P><DIV CLASS="center"><TT>user_operator("S",(x,y)-&gt;(gcd(x,y))!=1,Binary)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>5 S 7</TT></DIV><P>
+Bien mettre les espace autour de <TT>S</TT>.<BR>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>8 S 12</TT></DIV><P>
+Bien mettre les espace autour de <TT>S</TT>.<BR>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+<A HREF="cascmd_fr281.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr283.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

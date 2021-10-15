@@ -1,0 +1,658 @@
+<HTML>
+<HEAD>
+  <TITLE>
+    Catalogue of GP/PARI Functions: Functions related to elliptic curves
+  </TITLE>
+
+  <META NAME="author"       CONTENT="Nils-Peter Skoruppa">
+  <META NAME="created"      CONTENT="Thu Apr 27 10:11:36 2006">
+  <META NAME="author-email" CONTENT="skoruppa@math.uni-siegen.de">
+  <META NAME="keywords"     CONTENT="PARI, GP, DOC">
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+
+
+
+<h3 align=center>Functions related to elliptic curves</h3>
+
+<a name="elladd"></a>
+<h4><b>elladd</b>(E,z1,z2)</h4>
+<p></p>
+<p> sum of the points z1 and z2 on the
+elliptic curve corresponding to E.</p>
+<p>The library syntax is <b>addell</b>(E,z1,z2).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellak"></a>
+<h4><b>ellak</b>(E,n)</h4>
+<p></p>
+<p> computes the coefficient a_n of the
+L-function of the elliptic curve E, i.e.in principle coefficients of a
+newform of weight 2 assuming Taniyama-Weil conjecture (which is now
+known to hold in full generality thanks to the work of Breuil,
+Conrad, Diamond, Taylor and Wiles). E must be an
+<u>sell</u> as output by <font color=#a3682a><tt>
+ellinit</tt></font>. For this function
+to work for every n and not just those prime to the conductor, E must
+be a minimal Weierstrass equation. If this is not the case, use the
+function <font color=#a3682a><tt>
+ellminimalmodel</tt></font> before using <font color=#a3682a><tt>
+ellak</tt></font>.</p>
+<p>The library syntax is <b>akell</b>(E,n).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellan"></a>
+<h4><b>ellan</b>(E,n)</h4>
+<p></p>
+<p> computes the vector of the first n a_k
+corresponding to the elliptic curve E. All comments in <font color=#a3682a><tt>
+ellak</tt></font>
+description remain valid.</p>
+<p>The library syntax is <b>anell</b>(E,n), where n is a C integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellap"></a>
+<h4><b>ellap</b>(E,p,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> computes the a_p corresponding to the
+elliptic curve E and the prime number p. These are defined by the
+equation #E(<b>F</b>_p) = p+1 - a_p, where #E(<b>F</b>_p) stands for the number
+of points of the curve E over the finite field <b>F</b>_p. When <u>flag</u> is 0,
+this uses the baby-step giant-step method and a trick due to Mestre. This
+runs in time O(p^{1/4}) and requires O(p^{1/4}) storage, hence becomes
+unreasonable when p has about 30 digits.</p>
+<p>If <u>flag</u> is 1, computes the a_p as a sum of Legendre symbols. This is
+slower than the previous method as soon as p is greater than 100, say.</p>
+<p>No checking is done that p is indeed prime. E must be an <u>sell</u> as
+output by <font color=#a3682a><tt>
+ellinit</tt></font>, defined over <b>Q</b>, <b>F</b>_p or <b>Q</b>_p. E must be
+given by a Weierstrass equation minimal at p.</p>
+<p>The library syntax is <b>ellap0</b>(E,p,<u>flag</u>). Also available are <font color=#a3682a><tt>
+ <b>apell</b>(E,p)</tt></font>, corresponding
+to <u>flag</u> = 0, and <font color=#a3682a><tt>
+ <b>apell2</b>(E,p)</tt></font> (<u>flag</u> = 1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellbil"></a>
+<h4><b>ellbil</b>(E,z1,z2)</h4>
+<p></p>
+<p> if z1 and z2 are points on the elliptic
+curve E, assumed to be integral given by a minimal model, this function
+computes the value of the canonical bilinear form on z1, z2:
+ ( h(E,z1<font color=#a3682a><tt>
++</tt></font>z2) - h(E,z1) - h(E,z2) ) / 2 
+where <font color=#a3682a><tt>
++</tt></font> denotes of course addition on E. In addition, z1 or z2
+(but not both) can be vectors or matrices.</p>
+<p>The library syntax is <b>bilhell</b>(E,z1,z2,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellchangecurve"></a>
+<h4><b>ellchangecurve</b>(E,v)</h4>
+<p></p>
+<p> changes the data for the elliptic curve E
+by changing the coordinates using the vector <font color=#a3682a><tt>
+v = [u,r,s,t]</tt></font>, i.e.if x'
+and y' are the new coordinates, then x = u^2x'+r, y = u^3y'+su^2x'+t.
+E must be an <u>sell</u> as output by <font color=#a3682a><tt>
+ellinit</tt></font>.</p>
+<p>The library syntax is <b>coordch</b>(E,v).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellchangepoint"></a>
+<h4><b>ellchangepoint</b>(x,v)</h4>
+<p></p>
+<p> changes the coordinates of the point or
+vector of points x using the vector <font color=#a3682a><tt>
+v = [u,r,s,t]</tt></font>, i.e.if x' and
+y' are the new coordinates, then x = u^2x'+r, y = u^3y'+su^2x'+t (see also
+<font color=#a3682a><tt>
+ellchangecurve</tt></font>).</p>
+<p>The library syntax is <b>pointch</b>(x,v).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellconvertname"></a>
+<h4><b>ellconvertname</b>(<u>name</u>)</h4>
+<p></p>
+<p> 
+converts an elliptic curve name, as found in the <font color=#a3682a><tt>
+elldata</tt></font> database,
+from a string to a triplet [<u>conductor</u>, <u>isogeny class</u>,
+<u>index</u>]. It will also convert a triplet back to a curve name.
+Examples:</p>
+<p><pre><font color=#a3682a><tt>? ellconvertname("123b1")
+&nbsp;%1 = [123, 1, 1]
+&nbsp;? ellconvertname(%)
+&nbsp;%2 = "123b1"
+</tt></font></pre></p>
+<p>
+The library syntax is <b>ellconvertname</b>(<u>name</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="elleisnum"></a>
+<h4><b>elleisnum</b>(E,k,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> E being an elliptic curve as
+output by <font color=#a3682a><tt>
+ellinit</tt></font> (or, alternatively, given by a 2-component vector
+[<font color=#FF0000>omega</font>_1,<font color=#FF0000>omega</font>_2] representing its periods), and k being an even
+positive integer, computes the numerical value of the Eisenstein series of
+weight k at E, namely</p>
+<p>(2i <font color=#FF0000>Pi</font>/<font color=#FF0000>omega</font>_2)^k
+  (1 + 2/<font color=#FF0000>zeta</font>(1-k) <font color=#FF0000>sum</font>_{n <font color=#a3682a><tt>
+&#62;=</tt></font> 0} n^{k-1}q^n / (1-q^n)),</p>
+<p>where q = e(<font color=#FF0000>omega</font>_1/<font color=#FF0000>omega</font>_2).</p>
+<p>When <u>flag</u> is non-zero and k = 4 or 6, returns the elliptic invariants g_2
+or g_3, such that
+ y^2 = 4x^3 - g_2 x - g_3
+is a Weierstrass equation for E.</p>
+<p>The library syntax is <b>elleisnum</b>(E,k,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="elleta"></a>
+<h4><b>elleta</b>(om)</h4>
+<p></p>
+<p> returns the two-component row vector
+[<font color=#FF0000>eta</font>_1,<font color=#FF0000>eta</font>_2] of quasi-periods associated to <font color=#a3682a><tt>
+om</tt></font> = [<font color=#FF0000>omega</font>_1,
+<font color=#FF0000>omega</font>_2]</p>
+<p>The library syntax is <b>elleta</b>(om, <u>prec</u>)</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellgenerators"></a>
+<h4><b>ellgenerators</b>(E)</h4>
+<p></p>
+<p> returns a <b>Z</b>-basis of the free part of the
+Mordell-Weil group associated to E.  This function depends on the
+<font color=#a3682a><tt>
+elldata</tt></font> database being installed and referencing the curve, and so
+is only available for curves over <b>Z</b> of small conductors.</p>
+<p>The library syntax is <b>ellgenerators</b>(E).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellglobalred"></a>
+<h4><b>ellglobalred</b>(E)</h4>
+<p></p>
+<p> calculates the arithmetic conductor, the global
+minimal model of E and the global Tamagawa number c. 
+E must be an <u>sell</u> as output by <font color=#a3682a><tt>
+ellinit</tt></font>, <u>and is supposed
+to have all its coefficients a_i in</u> <b>Q</b>. The result is a 3 component
+vector [N,v,c]. N is the arithmetic conductor of the curve. v gives the
+coordinate change for E over <b>Q</b> to the minimal integral model (see
+<font color=#a3682a><tt>
+ellminimalmodel</tt></font>). Finally c is the product of the local Tamagawa
+numbers c_p, a quantity which enters in the \idx{Birch and Swinnerton-Dyer
+conjecture}.</p>
+<p>The library syntax is <b>ellglobalred</b>(E).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellheight"></a>
+<h4><b>ellheight</b>(E,z,{<u>flag</u> = 2})</h4>
+<p></p>
+<p> global N&eacute;ron-Tate height of
+the point z on the elliptic curve E (defined over <b>Q</b>), given by a
+standard minimal integral model. E must be an <font color=#a3682a><tt>
+ell</tt></font> as output by
+<font color=#a3682a><tt>
+ellinit</tt></font>. <u>flag</u> selects the algorithm used to compute the archimedean
+local height. If <u>flag</u> = 0, this computation is done using sigma and
+theta-functions and a trick due to J. Silverman. If <u>flag</u> = 1, use Tate's 4^n
+algorithm. If <u>flag</u> = 2, use Mestre's AGM algorithm. The latter is much faster
+than the other two, both in theory (converges quadratically) and in practice.</p>
+<p>The library syntax is <b>ellheight0</b>(E,z,<u>flag</u>,<u>prec</u>). Also available are
+<font color=#a3682a><tt>
+ <b>ghell</b>(E,z,<u>prec</u>)</tt></font> (<u>flag</u> = 0) and <font color=#a3682a><tt>
+ <b>ghell2</b>(E,z,<u>prec</u>)</tt></font>
+(<u>flag</u> = 1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellheightmatrix"></a>
+<h4><b>ellheightmatrix</b>(E,x)</h4>
+<p></p>
+<p> x being a vector of points, this
+function outputs the Gram matrix of x with respect to the N&eacute;ron-Tate
+height, in other words, the (i,j) component of the matrix is equal to
+<font color=#a3682a><tt>
+ellbil(E,x[i],x[j])</tt></font>. The rank of this matrix, at least in some
+approximate sense, gives the rank of the set of points, and if x is a
+basis of the Mordell-Weil group of E, its determinant is equal to
+the regulator of E. Note that this matrix should be divided by 2 to be in
+accordance with certain normalizations. E is assumed to be integral,
+given by a minimal model.</p>
+<p>The library syntax is <b>mathell</b>(E,x,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellidentify"></a>
+<h4><b>ellidentify</b>(E)</h4>
+<p></p>
+<p> look up the elliptic curve E (over <b>Z</b>)
+in the <font color=#a3682a><tt>
+elldata</tt></font> database and return <font color=#a3682a><tt>
+[[N, M, G], C]</tt></font>  where N
+is the name of the curve in J.  E.  Cremona database, M the minimal
+model, G a <b>Z</b>-basis of the free part of the Mordell-Weil group
+of E and C the coordinates change (see <font color=#a3682a><tt>
+ellchangecurve</tt></font>).</p>
+<p>The library syntax is <b>ellidentify</b>(E).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellinit"></a>
+<h4><b>ellinit</b>(E,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> initialize an <font color=#a3682a><tt>
+ell</tt></font> structure,
+associated to the elliptic curve E. E is a 5-component
+vector [a_1,a_2,a_3,a_4,a_6] defining the elliptic curve with Weierstrass
+equation
+ Y^2 + a_1 XY + a_3 Y = X^3 + a_2 X^2 + a_4 X + a_6 
+or a string, in this case the coefficients of the curve with matching name
+are looked in the <font color=#a3682a><tt>
+elldata</tt></font> database if available. For the time
+being, only curves over a prime field <b>F</b>_p and over the p-adic or
+real numbers (including rational numbers) are fully supported. Other
+domains are only supported for very basic operations such as point
+addition.</p>
+<p>The result of <font color=#a3682a><tt>
+ellinit</tt></font> is a an <u>ell</u> structure by default, and
+a shorted <u>sell</u> if <u>flag</u> = 1. Both contain the following information in
+their components:</p>
+<p> a_1,a_2,a_3,a_4,a_6,b_2,b_4,b_6,b_8,c_4,c_6,<font color=#FF0000>Delta</font>,j.</p>
+<p>All are accessible via member functions. In particular, the discriminant is
+<font color=#a3682a><tt>
+E.disc</tt></font>, and the j-invariant is <font color=#a3682a><tt>
+E.j</tt></font>.</p>
+<p>The other six components are only present if <u>flag</u> is 0 or omitted.
+Their content depends on whether the curve is defined over <b>R</b> or not:</p>
+<p><b>*</b> When E is defined over <b>R</b>, <font color=#a3682a><tt>
+E.roots</tt></font> is a vector whose
+three components contain the roots of the right hand side of the associated
+Weierstrass equation.
+ (y + a_1x/2 + a_3/2)^2 = g(x) 
+If the roots are all real, then they are ordered by decreasing value. If only
+one is real, it is the first component.</p>
+<p>Then <font color=#FF0000>omega</font>_1 = <font color=#a3682a><tt>
+E.omega[1]</tt></font> is the real period of E (integral of
+dx/(2y+a_1x+a_3) over the connected component of the identity element of
+the real points of the curve), and <font color=#FF0000>omega</font>_2 = <font color=#a3682a><tt>
+E.omega[2]</tt></font> is a
+complex period. In other words, <font color=#a3682a><tt>
+E.omega</tt></font> forms a basis of the
+complex lattice defining E, with
+<font color=#FF0000>tau</font> = (<font color=#FF0000>omega</font>_2)/(<font color=#FF0000>omega</font>_1) having positive imaginary part.</p>
+<p><font color=#a3682a><tt>
+E.eta</tt></font> is a row vector containing the corresponding values <font color=#FF0000>eta</font>_1
+and <font color=#FF0000>eta</font>_2 such that <font color=#FF0000>eta</font>_1<font color=#FF0000>omega</font>_2-<font color=#FF0000>eta</font>_2<font color=#FF0000>omega</font>_1 = i<font color=#FF0000>Pi</font>.</p>
+<p>Finally, <font color=#a3682a><tt>
+E.area</tt></font> is the volume of the complex lattice defining
+E.</p>
+<p><b>*</b> When E is defined over <b>Q</b>_p, the p-adic valuation of j
+must be negative. Then <font color=#a3682a><tt>
+E.roots</tt></font> is the vector with a single component
+equal to the p-adic root of the associated Weierstrass equation
+corresponding to -1 under the Tate parametrization.</p>
+<p><font color=#a3682a><tt>
+E.tate</tt></font> yields the three-component vector [u^2,u,q], in the
+notations of Tate. If the u-component does not belong to <b>Q</b>_p, it is set
+to zero.</p>
+<p><font color=#a3682a><tt>
+E.w</tt></font> is Mestre's w (this is technical).</p>
+<p>For all other base fields or rings, the last six components are
+arbitrarily set equal to zero. See also the description of member functions
+related to elliptic curves at the beginning of this section.</p>
+<p>The library syntax is <b>ellinit0</b>(E,<u>flag</u>,<u>prec</u>). Also available are
+<font color=#a3682a><tt>
+ <b>initell</b>(E,<u>prec</u>)</tt></font> (<u>flag</u> = 0) and
+<font color=#a3682a><tt>
+ <b>smallinitell</b>(E,<u>prec</u>)</tt></font> (<u>flag</u> = 1).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellisoncurve"></a>
+<h4><b>ellisoncurve</b>(E,z)</h4>
+<p></p>
+<p> gives 1 (i.e.true) if the point z is on
+the elliptic curve E, 0 otherwise. If E or z have imprecise coefficients,
+an attempt is made to take this into account, i.e.an imprecise equality is
+checked, not a precise one. It is allowed for z to be a vector of points
+in which case a vector (of the same type) is returned.</p>
+<p>The library syntax is <b>ellisoncurve</b>(E,z). Also available is <font color=#a3682a><tt>
+ <b>oncurve</b>(E,z)</tt></font>
+which returns a <font color=#a3682a><tt>
+long</tt></font> but does not accept vector of points.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellj"></a>
+<h4><b>ellj</b>(x)</h4>
+<p></p>
+<p> elliptic j-invariant. x must be a complex number
+with positive imaginary part, or convertible into a power series or a
+p-adic number with positive valuation.</p>
+<p>The library syntax is <b>jell</b>(x,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="elllocalred"></a>
+<h4><b>elllocalred</b>(E,p)</h4>
+<p></p>
+<p> calculates the Kodaira type of the
+local fiber of the elliptic curve E at the prime p.
+E must be an <u>sell</u> as output by <font color=#a3682a><tt>
+ellinit</tt></font>, and is assumed to have
+all its coefficients a_i in <b>Z</b>. The result is a 4-component vector
+[f,kod,v,c]. Here f is the exponent of p in the arithmetic conductor of
+E, and kod is the Kodaira type which is coded as follows:</p>
+<p>1 means good reduction (type I_0), 2, 3 and 4 mean types II, III and IV
+respectively, 4+<font color=#FF0000>nu</font> with <font color=#FF0000>nu</font> &#62; 0 means type I_<font color=#FF0000>nu</font>;
+finally the opposite values -1, -2, etc.refer to the starred types
+I_0^*, II^*, etc. The third component v is itself a vector [u,r,s,t]
+giving the coordinate changes done during the local reduction. Normally, this
+has no use if u is 1, that is, if the given equation was already minimal.
+Finally, the last component c is the local Tamagawa number c_p.</p>
+<p>The library syntax is <b>elllocalred</b>(E,p).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="elllseries"></a>
+<h4><b>elllseries</b>(E,s,{A = 1})</h4>
+<p></p>
+<p> E being an <u>sell</u> as output by
+<font color=#a3682a><tt>
+ellinit</tt></font>, this computes the value of the L-series of E at s. It is
+assumed that E is defined over <b>Q</b>, not necessarily minimal. The optional
+parameter A is a cutoff point for the integral, which must be chosen close
+to 1 for best speed. The result must be independent of A, so this allows
+some internal checking of the function.</p>
+<p>Note that if the conductor of the curve is large, say greater than 10^{12},
+this function will take an unreasonable amount of time since it uses an
+O(N^{1/2}) algorithm.</p>
+<p>The library syntax is <b>elllseries</b>(E,s,A,<u>prec</u>) where <u>prec</u> is a <font color=#a3682a><tt>
+long</tt></font> and an
+omitted A is coded as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellminimalmodel"></a>
+<h4><b>ellminimalmodel</b>(E,{&amp;v})</h4>
+<p></p>
+<p>  return the standard minimal
+integral model of the rational elliptic curve E. If present, sets v to the
+corresponding change of variables, which is a vector [u,r,s,t] with
+rational components. The return value is identical to that of
+<font color=#a3682a><tt>
+ellchangecurve(E, v)</tt></font>.</p>
+<p>The resulting model has integral coefficients, is everywhere minimal, a_1
+is 0 or 1, a_2 is 0, 1 or -1 and a_3 is 0 or 1. Such a model is unique,
+and the vector v is unique if we specify that u is positive, which we do.</p>
+<p>
+The library syntax is <b>ellminimalmodel</b>(E,&amp;v), where an omitted v is coded as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellorder"></a>
+<h4><b>ellorder</b>(E,z)</h4>
+<p></p>
+<p> gives the order of the point z on the elliptic
+curve E if it is a torsion point, zero otherwise. In the present version
+<b>2.2.13</b>, this is implemented only for elliptic curves defined over <b>Q</b>.</p>
+<p>The library syntax is <b>orderell</b>(E,z).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellordinate"></a>
+<h4><b>ellordinate</b>(E,x)</h4>
+<p></p>
+<p> gives a 0, 1 or 2-component vector containing
+the y-coordinates of the points of the curve E having x as
+x-coordinate.</p>
+<p>The library syntax is <b>ordell</b>(E,x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellpointtoz"></a>
+<h4><b>ellpointtoz</b>(E,z)</h4>
+<p></p>
+<p> if E is an elliptic curve with coefficients
+in <b>R</b>, this computes a complex number t (modulo the lattice defining
+E) corresponding to the point z, i.e.such that, in the standard
+Weierstrass model, wp(t) = z[1],wp'(t) = z[2]. In other words, this is the
+inverse function of <font color=#a3682a><tt>
+ellztopoint</tt></font>. More precisely, if (w1,w2) are the
+real and complex periods of E, t is such that 0 <font color=#a3682a><tt>
+&#60;=</tt></font> Re(t) &#60; w1
+and 0 <font color=#a3682a><tt>
+&#60;=</tt></font> Im(t) &#60; Im(w2).</p>
+<p>If E has coefficients in <b>Q</b>_p, then either Tate's u is in <b>Q</b>_p, in
+which case the output is a p-adic number t corresponding to the point z
+under the Tate parametrization, or only its square is, in which case the
+output is t+1/t. E must be an <u>ell</u> as output by <font color=#a3682a><tt>
+ellinit</tt></font>.</p>
+<p>The library syntax is <b>zell</b>(E,z,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellpow"></a>
+<h4><b>ellpow</b>(E,z,n)</h4>
+<p></p>
+<p> computes n times the point z for the
+group law on the elliptic curve E. Here, n can be in <b>Z</b>, or n
+can be a complex quadratic integer if the curve E has complex multiplication
+by n (if not, an error message is issued).</p>
+<p>The library syntax is <b>powell</b>(E,z,n).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellrootno"></a>
+<h4><b>ellrootno</b>(E,{p = 1})</h4>
+<p></p>
+<p> E being an <u>sell</u> as output by
+<font color=#a3682a><tt>
+ellinit</tt></font>, this computes the local (if p != 1) or global (if p = 1)
+root number of the L-series of the elliptic curve E. Note that the global
+root number is the sign of the functional equation and conjecturally is the
+parity of the rank of the Mordell-Weil group. The equation for E must
+have coefficients in <b>Q</b> but need <u>not</u> be minimal.</p>
+<p>The library syntax is <b>ellrootno</b>(E,p) and the result (equal to &#177;1) is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellsigma"></a>
+<h4><b>ellsigma</b>(E,z,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> value of the Weierstrass <font color=#FF0000>sigma</font>
+function of the lattice associated to E as given by <font color=#a3682a><tt>
+ellinit</tt></font>
+(alternatively, E can be given as a lattice [<font color=#FF0000>omega</font>_1,<font color=#FF0000>omega</font>_2]).</p>
+<p>If <u>flag</u> = 1, computes an (arbitrary) determination of log(<font color=#FF0000>sigma</font>(z)).</p>
+<p>If <u>flag</u> = 2,3, same using the product expansion instead of theta series.
+The library syntax is <b>ellsigma</b>(E,z,<u>flag</u>)</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellsearch"></a>
+<h4><b>ellsearch</b>(N)</h4>
+<p></p>
+<p> if N is an integer, it is taken as a conductor
+else if N is a string, it can be a curve name ("11a1"), a isogeny class
+("11a") or a conductor "11". This function finds all curves in the
+<font color=#a3682a><tt>
+elldata</tt></font> database with the given property. </p>
+<p>If N is a full curve name, the output format is [N, [a_1,a_2,a_3,a_4,a_6],
+G] where [a_1,a_2,a_3,a_4,a_6] are the coefficients of the Weierstrass
+equation of the curve and G is a <b>Z</b>-basis of the free part of the
+Mordell-Weil group associated to the curve.</p>
+<p>If N is not a full-curve name, the output is the list (as a vector) of all
+matching curves in the above format.</p>
+<p>The library syntax is <b>ellsearch</b>(N). Also available is <font color=#a3682a><tt>
+ <b>ellsearchcurve</b>(N)</tt></font> that only
+accept complete curve names.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellsub"></a>
+<h4><b>ellsub</b>(E,z1,z2)</h4>
+<p></p>
+<p> difference of the points z1 and z2 on the
+elliptic curve corresponding to E.</p>
+<p>The library syntax is <b>subell</b>(E,z1,z2).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="elltaniyama"></a>
+<h4><b>elltaniyama</b>(E)</h4>
+<p></p>
+<p> computes the modular parametrization of the
+elliptic curve E, where E is an <u>sell</u> as output by <font color=#a3682a><tt>
+ellinit</tt></font>, in
+the form of a two-component vector [u,v] of power series, given to the
+current default series precision. This vector is characterized by the
+following two properties. First the point (x,y) = (u,v) satisfies the
+equation of the elliptic curve. Second, the differential du/(2v+a_1u+a_3)
+is equal to f(z)dz, a differential form on H/<font color=#FF0000>Gamma</font>_0(N) where N is the
+conductor of the curve. The variable used in the power series for u and v
+is x, which is implicitly understood to be equal to exp(2i<font color=#FF0000>Pi</font> z). It is
+assumed that the curve is a <u>strong</u> Weil curve, and that the
+Manin constant is equal to 1. The equation of the curve E must be minimal
+(use <font color=#a3682a><tt>
+ellminimalmodel</tt></font> to get a minimal equation).</p>
+<p>The library syntax is <b>elltaniyama</b>(E, prec), and the precision of the result is determined by
+<font color=#a3682a><tt>
+prec</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="elltors"></a>
+<h4><b>elltors</b>(E,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> if E is an elliptic curve <u>defined
+over <b>Q</b></u>, outputs the torsion subgroup of E as a 3-component vector
+<font color=#a3682a><tt>
+[t,v1,v2]</tt></font>, where <font color=#a3682a><tt>
+t</tt></font> is the order of the torsion group, <font color=#a3682a><tt>
+v1</tt></font>
+gives the structure of the torsion group as a product of cyclic groups
+(sorted by decreasing order), and <font color=#a3682a><tt>
+v2</tt></font> gives generators for these cyclic
+groups. E must be an <u>ell</u> as output by <font color=#a3682a><tt>
+ellinit</tt></font>.</p>
+<p>
+<pre><font color=#a3682a><tt>?  E = ellinit([0,0,0,-1,0]);
+&nbsp;?  elltors(E)
+&nbsp;%1 = [4, [2, 2], [[0, 0], [1, 0]]]
+</tt></font></pre></p>
+<p>Here, the torsion subgroup is isomorphic to <b>Z</b>/2<b>Z</b>  x <b>Z</b>/2<b>Z</b>, with
+generators [0,0] and [1,0].</p>
+<p>If <u>flag</u> = 0, use Doud's algorithm: bound torsion by computing #E(<b>F</b>_p)
+for small primes of good reduction, then look for torsion points using
+Weierstrass parametrization (and Mazur's classification).</p>
+<p>If <u>flag</u> = 1, use Lutz-Nagell (<u>much</u> slower), E is allowed to be an
+<u>sell</u>.</p>
+<p>The library syntax is <b>elltors0</b>(E,flag).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellwp"></a>
+<h4><b>ellwp</b>(E,{z = x},{<u>flag</u> = 0})</h4>
+<p></p>
+<p></p>
+<p>Computes the value at z of the Weierstrass wp function attached to the
+elliptic curve E as given by <font color=#a3682a><tt>
+ellinit</tt></font> (alternatively, E can be
+given as a lattice [<font color=#FF0000>omega</font>_1,<font color=#FF0000>omega</font>_2]).</p>
+<p>If z is omitted or is a simple variable, computes the <u>power series</u>
+expansion in z (starting z^{-2}+O(z^2)). The number of terms to an
+<u>even</u> power in the expansion is the default serieslength in <font color=#a3682a><tt>
+gp</tt></font>, and the
+second argument (C long integer) in library mode.</p>
+<p>Optional <u>flag</u> is (for now) only taken into account when z is numeric, and
+means 0: compute only wp(z), 1: compute [wp(z),wp'(z)].</p>
+<p>The library syntax is <b>ellwp0</b>(E,z,<u>flag</u>,<u>prec</u>,<u>precdl</u>). Also available is
+<font color=#a3682a><tt>
+ <b>weipell</b>(E,<u>precdl</u>)</tt></font> for the power series.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellzeta"></a>
+<h4><b>ellzeta</b>(E,z)</h4>
+<p></p>
+<p> value of the Weierstrass <font color=#FF0000>zeta</font> function of the
+lattice associated to E as given by <font color=#a3682a><tt>
+ellinit</tt></font> (alternatively, E can
+be given as a lattice [<font color=#FF0000>omega</font>_1,<font color=#FF0000>omega</font>_2]).</p>
+<p>The library syntax is <b>ellzeta</b>(E,z).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ellztopoint"></a>
+<h4><b>ellztopoint</b>(E,z)</h4>
+<p></p>
+<p> E being an <u>ell</u> as output by
+<font color=#a3682a><tt>
+ellinit</tt></font>, computes the coordinates [x,y] on the curve E
+corresponding to the complex number z. Hence this is the inverse function
+of <font color=#a3682a><tt>
+ellpointtoz</tt></font>. In other words, if the curve is put in Weierstrass
+form, [x,y] represents the Weierstrass wp-function and its
+derivative. If z is in the lattice defining E over <b>C</b>, the result is
+the point at infinity [0].</p>
+<p>The library syntax is <b>pointell</b>(E,z,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+
+
+</BODY>
+</HTML>

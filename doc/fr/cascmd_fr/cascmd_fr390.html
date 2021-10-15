@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>PGCD de deux polynômes par l’algorithme d’Euclide : Gcd</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr389.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr391.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc476">6.27.8</A>  PGCD de deux polynômes par l’algorithme d’Euclide : <TT>Gcd</TT></H3><P><A NAME="@default731"></A> <A NAME="sec:Gcd"></A>
+<TT>Gcd</TT> est la forme inerte de <TT>gcd</TT>.<BR>
+<TT>Gcd</TT> renvoie le PGCD (plus grand commun diviseur) de deux 
+polynômes (ou d’une liste de polynômes ou d’une séquence de polynômes) 
+(voir <A HREF="cascmd_fr161.html#sec:igcd">6.7.2</A> pour le PGCD d’entiers), sans l’évaluer et
+cela permet de calculer le PGCD de deux polynômes à
+coefficients dans ℤ/<I>p</I>ℤ en utilisant la syntaxe Maple.<BR>
+<B>Attention</B> il faut être en mode Maple pour que cela soit efficace.<BR>
+On tape en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>Gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x)mod 5,(x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5x) mod 5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>gcd((1% 5)*x</TT><CODE><TT>^</TT></CODE><TT>2+(2% 5)*x,(1% 5)*x</TT><CODE><TT>^</TT></CODE><TT>2+(1% 5)*x)</TT></DIV><P> 
+puis on obtient :
+</P><DIV CLASS="center"><TT>(1% 5)*x</TT></DIV><P>
+Mais si on tape en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>Gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x),(x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5x)) mod 5</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(1% 5)*gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2++6*x+5x)</TT></DIV><P> 
+puis :
+</P><DIV CLASS="center"><TT>(1% 5)</TT></DIV><P>On tape en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>Gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2+x) mod 5</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>x</TT></DIV><HR>
+<A HREF="cascmd_fr389.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr391.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

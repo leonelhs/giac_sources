@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Singular value decomposition : svd</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en423.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en425.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc474">2.48.6</A>  Singular value decomposition : <TT>svd</TT></H3><P><A NAME="@default705"></A>
+<TT>svd</TT> (singular value decomposition) takes as argument a numeric
+square matrix of size <I>n</I>.<BR>
+<TT>svd(A)</TT> returns an orthogonal matrix <I>U</I>, the diagonal <I>s</I> of a diagonal
+matrix <I>S</I> and an orthogonal matrix <I>Q</I> (<SUP><I>t</I></SUP><I>Q</I>*<I>Q</I>=<I>I</I>) such that :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>A</I>=<I>U</I>.<I>S</I>.<SUP><I>t</I></SUP><I>Q</I> </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>svd([[1,2],[3,4]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-0.404553584834,-0.914514295677],[-0.914514295677, 0.404553584834]], [5.46498570422,0.365966190626], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>(U,s,Q):=svd([[3,5],[4,5]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-0.672988041811,-0.739653361771],[-0.739653361771, 0.672988041811]],[8.6409011028,0.578643354497], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</TT></DIV><P>
+Verification :
+Input :
+</P><DIV CLASS="center"><TT>U*diag(s)*tran(Q)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3.0,5.0],[4.0,5.0]]</TT></DIV><HR>
+<A HREF="cascmd_en423.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en425.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

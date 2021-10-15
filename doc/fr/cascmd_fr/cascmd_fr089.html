@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Graphe en "4D"</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr088.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr090.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc118">3.7.4</A>  Graphe en "4D"</H3><P><A NAME="sec:plotfunc4"></A>
+<TT>plotfunc</TT> permet aussi de représenter une expression <TT>Xpr</TT>
+à valeur dans ℂ mais non imaginaire pur : on représente 
+<TT>abs(Xpr)</TT> selon <I>Oz</I> et <TT>arg(Xpr)</TT> par une couleur. Cela permet de 
+visualiser les points ayant même argument.<BR>
+Si l’expression <TT>Xpr</TT> est imaginaire pur c’est <TT>Xpr/i</TT> qui est 
+representé en dégradé (cf <A HREF="cascmd_fr088.html#sec:plotfunc3d">3.7.3</A>)
+Les deux arguments principaux de <TT>plotfunc</TT> sont alors une expression de 
+deux variables à valeur dans ℂ et la liste des noms des deux 
+variables.<BR>
+On peut aussi spécifier le nombre de points d’échantillonnage de la
+fonction à représenter en utilisant <CODE>nstep</CODE> et demander un affichage en 
+une forme pleine (<TT>affichage=rempli</TT>).<BR>
+<TT>plotfunc</TT> trace la surface aux couleurs de l’arc en ciel définie par le
+module du premier argument soit <TT>z=abs(Xpr)</TT>, chaque couleur est une 
+valeur de <TT>arg(Xpr)</TT>.<BR>
+On peut faire tourner ce graphique selon 
+l’axe des <TT>x</TT>, l’axe des <TT>y</TT> ou l’axe des <TT>z</TT>. Pour cela, il faut 
+cliquer avec la souris dans la fenêtre graphique en dehors du 
+parallélépipéde servant à la représentation, puis faire bouger la 
+souris (sans relacher son bouton) ou utiliser les touches <TT>x</TT>, <TT>X</TT>, 
+<TT>y</TT>, <TT>Y</TT>, <TT>z</TT> et <TT>Z</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>plotfunc((x+i*y)</TT><CODE><TT>^</TT></CODE><TT>2,[x,y])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Un graphique en 3-d coloré représentant z=abs((x+i*y)</TT><CODE><TT>^</TT></CODE><TT>2 et permettant de visualiser les points ayant même argument</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>plotfunc((x+i*y)</TT><CODE><TT>^</TT></CODE><TT>2,[x,y],affichage=rempli)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center">La surface précedente selon une forme pleine aux couleurs de l’arc en ciel</DIV><P>
+Pour n’avoir qu’une portion de surface on peut indiquer l’intervalle de 
+variation dans le deuxième et le troisème argument.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>plotfunc((x+i*y)</TT><CODE><TT>^</TT></CODE><TT>2,[x=-1..1,y=-2..2], nstep=900, affichage=rempli)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center">La portion de la surface précedente selon une forme pleine aux couleurs de l’arc en ciel avec x entre -1 et 1, y entre -2 et 2 et avec 900 points d’échantillonnage</DIV><P>
+<B>Remarque</B><BR>
+ Si vous voulez l’impression ou la traduction en Latex, il faut utiliser :<BR>
+<TT>M</TT><TT>▸</TT><TT>Exporter/Imprimer</TT><TT>▸</TT><TT>Print(with Latex)</TT>. </P><HR>
+<A HREF="cascmd_fr088.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr090.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

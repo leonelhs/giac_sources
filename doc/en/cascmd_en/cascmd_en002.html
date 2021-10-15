@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Tests : ==, !=, >, >=, <, =<</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en001.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en003.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc6">2.2.2</A>  Tests : <TT>==, !=, &gt;, &gt;=, &lt;, =&lt;</TT></H3><P><A NAME="@default10"></A><A NAME="@default11"></A><A NAME="@default12"></A><A NAME="@default13"></A><A NAME="@default14"></A><A NAME="@default15"></A>
+<TT>==, !=, &gt;, &gt;=, &lt;, =&lt;</TT> are infixed operators.<BR>
+<TT>a==b</TT> tests the equality between <TT>a</TT> and <TT>b</TT> and returns <TT>1</TT> 
+if <TT>a</TT> is equal to <TT>b</TT> and <TT>0</TT> otherwise.<BR>
+<TT>a!=b</TT> returns <TT>1</TT> if <TT>a</TT> and <TT>b</TT> are different and <TT>0</TT> 
+otherwise.<BR>
+ <TT>a&gt;=b</TT> returns <TT>1</TT> if <TT>a</TT> is superior or equal to <TT>b</TT> 
+and <TT>0</TT> otherwise.<BR>
+<TT>a&gt;b</TT> returns <TT>1</TT> if <TT>a</TT> is strictly superior to <TT>b</TT>
+and <TT>0</TT> otherwise.<BR>
+<TT>a&lt;=b</TT> returns <TT>1</TT> if <TT>a</TT> is inferior or equal to <TT>b</TT> and 
+<TT>0</TT> otherwise.<BR>
+<TT>a&lt;b</TT> returns <TT>1</TT> if <TT>a</TT> is strictly inferior to <TT>b</TT> 
+and <TT>0</TT> otherwise.<BR>
+To write an algebraic function having the same result as an 
+<TT>if...then...else</TT>, we use the boolean function <TT>ifte</TT>.<BR>
+For example : 
+</P><DIV CLASS="center"><TT>f(x):=ifte(x&gt;0,true,false)</TT></DIV><P>
+defines the boolean function <I>f</I> such that <TT>f(x)= true</TT> if 
+<I>x</I> &#X2208; ]0;+&#X221E;[ and <TT>f(x)=false</TT> if <I>x</I> &#X2208; ]&#X2212;&#X221E;;0].<BR>
+Input :
+</P><DIV CLASS="center"><TT>f(0)==0</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+<B>Look out !</B><BR>
+<TT>a=b</TT> is not a boolean !!!!<BR>
+<TT>a==b</TT> is a boolean.<BR>
+
+</P><HR>
+<A HREF="cascmd_en001.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en003.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Row reduction to echelon form in &#X2124;/p&#X2124; : rref</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en265.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en267.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc299">2.31.17</A>  Row reduction to echelon form in &#X2124;/<I>p</I>&#X2124; : <TT>rref</TT></H3><P><A NAME="@default463"></A><A NAME="sec:rrefm"></A>
+<TT>rref</TT> find the row reduction to echelon form of
+a matrix with coefficients in &#X2124;/<I>p</I>&#X2124;. </P><P>This may be used
+to solve a linear system of equations with coefficients in &#X2124;/<I>p</I>&#X2124;, 
+by rewriting it in matrix form (see also <A HREF="cascmd_en450.html#sec:rref">2.52.3</A>) :
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+<TT>rref</TT> takes as argument the augmented matrix 
+of the system (the matrix obtained by augmenting matrix <TT>A</TT> to the 
+right with the column vector <TT>B</TT>).<BR>
+<TT>rref</TT> returns a matrix <TT>[A1,B1]</TT> : <TT>A1</TT> has 1 on
+it&#X2019;s principal diagonal, and zeros outside, and the
+solutions in &#X2124;/<I>p</I>&#X2124;, of :
+</P><DIV CLASS="center"><TT>A1*X=B1</TT></DIV><P> 
+are the same as the solutions of:
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+Example, solve in &#X2124;/13&#X2124;
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>   <I>x</I> +   2 · <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>9 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3 · <I>x</I> +10 · <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>0 </TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>rref([[1, 2, 9]%13,[3,10,0]%13])</TT></DIV><P> 
+Or :
+</P><DIV CLASS="center"><TT>rref([[1, 2, 9],[3,10,0]])%13</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>[[1%13,0%13,3%13],[0%13,1%13,3%13]]</TT></DIV><P> 
+hence <TT>x=3%13</TT> and <TT>y=3%13</TT>.</P><HR>
+<A HREF="cascmd_en265.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en267.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

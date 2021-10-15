@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Point défini comme barycentre de n points : barycenter barycentre</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr867.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr869.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1009">9.9.10</A>  Point défini comme barycentre de <I>n</I> points : <TT>barycenter barycentre</TT></H3><P><A NAME="@default1685"></A><A NAME="@default1686"></A><A NAME="sec:barycentre2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr981.html#sec:barycentre3">10.4.7</A> pour la géométrie 3-d et <A HREF="cascmd_fr249.html#sec:baryc">6.12.10</A>.<BR>
+<TT>barycentre</TT> ou <TT>barycenter</TT>, en géométrie plane, a comme 
+argument 2 listes de longueur 2 ou une matrice ayant 2 colonnes ou ayant
+2 lignes) :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+2 listes de longueur 2<BR>
+Pour chaque liste, le premier élément contient le point <I>A</I><SUB><I>j</I></SUB> (ou le nombre 
+complexe <I>a</I><SUB><I>j</I></SUB> représentant l’affixe de ce point) et le deuxième 
+élément contient le coefficient réel α<SUB><I>j</I></SUB> affecté à <I>A</I><SUB><I>j</I></SUB> 
+(<I>j</I>=1..2)
+</LI><LI CLASS="li-itemize">une matrice ayant 2 colonnes et <I>n</I> lignes (<I>n</I>≥ 2)<BR>
+Le <I>j</I>ième élément de la première colonne de la matrice contient le 
+point <I>A</I><SUB><I>j</I></SUB> (ou le nombre complexe <I>a</I><SUB><I>j</I></SUB> représentant l’affixe de ce point),
+le <I>j</I>ième élément de la deuxième colonne contient le 
+coefficient réel α<SUB><I>j</I></SUB> affecté à <I>A</I><SUB><I>j</I></SUB> (<I>j</I>=1..<I>n</I>).
+</LI><LI CLASS="li-itemize">une matrice ayant 2 lignes et <I>n</I> colonnes (<I>n</I>≥ 3)<BR>
+Le <I>j</I>ième élément de la première ligne de la matrice contient le 
+point <I>A</I><SUB><I>j</I></SUB> (ou le nombre complexe <I>a</I><SUB><I>j</I></SUB> représentant l’affixe de ce point),
+le <I>j</I>ième élément de la deuxième ligne contient le 
+coefficient réel α<SUB><I>j</I></SUB> affecté à <I>A</I><SUB><I>j</I></SUB> (<I>j</I>=1,2,..<I>n</I>).
+</LI></UL><P>
+<TT>barycentre</TT> ou <TT>barycenter</TT> renvoie et trace le point qui est le 
+barycentre des points <I>A</I><SUB><I>j</I></SUB> d’affixes <I>a</I><SUB><I>j</I></SUB> affectés des coefficients réels
+α<SUB><I>j</I></SUB> lorsque ∑α<SUB><I>j</I></SUB> ≠ 0.<BR>
+Si ∑α<SUB><I>j</I></SUB> = 0, <TT>barycentre</TT> ou <TT>barycenter</TT> renvoie une 
+erreur.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>barycentre([1+i,1],[1-i,1])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>barycentre([point(1,1),1],[point(1,-1),1])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>barycentre([[1+i,1],[1-i,1]])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>barycentre([[point(1,1),1],[point(1,-1),1]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point d’affixe 1 est tracé avec une croix</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>barycentre([[1+i,1],[1-i,1],[1+4*i,2]])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>barycentre([[point(1,1),1],[point(1,-1),1],[point(1+4*i),2]])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>barycentre([[1+i,1-i,1+4i],[1,1,2]])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>barycentre([[point(1,1),point(1,-1),point(1,4)],[1,1,2]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point d’affixe 1+2i est tracé avec une croix</TT></DIV><HR>
+<A HREF="cascmd_fr867.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr869.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

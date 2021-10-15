@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Append a column to a matrix : border</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en374.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en376.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc419">2.42.26</A>  Append a column to a matrix : <TT>border</TT></H3><P><A NAME="@default632"></A>
+<TT>border</TT> takes as argument a matrix <TT>A</TT> of dimension <I>p</I>*<I>q</I>
+and a list <TT>b</TT> of size <I>p</I> (i.e. <TT>nrows(A)=size(b)</TT>).<BR>
+<TT>border</TT> returns the matrix obtained by appending 
+<TT>tran(b)</TT> as last column to the matrix <TT>A</TT>, therefore:
+</P><DIV CLASS="center">
+<TT>border(A,b)=tran([op(tran(A)),b])=tran(append(tran(A),b))</TT>
+</DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>border([[1,2,4],[3,4,5]],[6,7])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,2,4,6],[3,4,5,7]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>border([[1,2,3,4],[4,5,6,8],[7,8,9,10]],[1,3,5])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,2,3,4,1],[4,5,6,8,3],[7,8,9,10,5]]</TT></DIV><HR>
+<A HREF="cascmd_en374.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en376.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Exact bounds for real roots of a polynomial : realroot</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en244.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en246.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc276">2.29.2</A>  Exact bounds for real roots of a polynomial : <TT>realroot</TT></H3><P><A NAME="@default433"></A>
+<TT>realroot</TT> has 2 or 4 arguments : a polynomial and a real number 
+&#X454; and optionnally two reals numbers &#X3B1;,&#X3B2;.<BR>
+<TT>realroot</TT> returns a list of vectors.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+If <TT>realroot</TT> has 2 arguments, the elements of each vector are
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+either a real interval containing a real root of the polynomial 
+and the multiplicity of this root.
+Let the interval be [<I>a</I><SUB>1</SUB>,<I>a</I><SUB>2</SUB>] then |<I>a</I><SUB>1</SUB>&#X2212;<I>a</I><SUB>2</SUB>|&lt;&#X454; and 
+the root <I>a</I> verifies <I>a</I><SUB>1</SUB>&#X2264; <I>a</I> &#X2264; <I>a</I><SUB>2</SUB>.
+</LI><LI CLASS="li-itemize">or the value of an exact real root of the
+polynomial and the multiplicity of this roots 
+</LI></UL>
+</LI><LI CLASS="li-itemize">If <TT>realroot</TT> has 4 arguments, <TT>realroot</TT> returns a list of
+vectors as above, but only for the roots inside
+the interval [&#X3B1;,&#X3B2;].
+</LI></UL><P>
+To find the real roots of <I>x</I><SUP>3</SUP>+1, input:
+</P><DIV CLASS="center"><TT>realroot(x</TT><CODE><TT>^</TT></CODE><TT>3+1, 0.1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-1,1]] </TT></DIV><P> 
+To find the real roots of <I>x</I><SUP>3</SUP>&#X2212;<I>x</I><SUP>2</SUP>&#X2212;2<I>x</I>+2, input:
+</P><DIV CLASS="center"><TT>realroot(x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+2, 0.1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,1],[[(-3)/2,(-45)/32],1],[[45/32,3/2],1]]</TT></DIV><P> 
+To find the real roots of <I>x</I><SUP>3</SUP>&#X2212;<I>x</I><SUP>2</SUP>&#X2212;2<I>x</I>+2 in the interval [0;2], input:
+</P><DIV CLASS="center"><TT>realroot(x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+2, 0.1,0,2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,1],[[11/8,23/16],1]]</TT></DIV><HR>
+<A HREF="cascmd_en244.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en246.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

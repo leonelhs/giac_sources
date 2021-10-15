@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Les splines naturelles: spline</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr381.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr383.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc467">6.26.34</A>  Les splines naturelles: <TT>spline</TT></H3><P><A NAME="@default721"></A>
+<B>Définition</B><BR>
+Soit une subdivision σ<SUB><I>n</I></SUB> de l’intervalle [<I>a</I>,<I>b</I>] :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>a</I>=<I>x</I><SUB>0</SUB>,   <I>x</I><SUB>1</SUB>,  ...,   <I>x</I><SUB><I>n</I></SUB>=<I>b</I> </TD></TR>
+</TABLE><P>
+On dit que <I>s</I> est une fonction spline de degré <I>l</I> si <I>s</I> est une 
+application de [<I>a</I>,<I>b</I>] dans ℝ vérifiant :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<I>s</I> admet des dérivées continues jusqu’à l’ordre <I>l</I>−1,
+</LI><LI CLASS="li-itemize"><I>s</I> restreint à chaque intervalle de la subdivision est un polynôme 
+de degré inférieur ou égal à <I>l</I>.
+</LI></UL><P><B>Théorème</B><BR>
+L’ensemble des fonctions splines de degré <I>l</I> sur σ<SUB><I>n</I></SUB> est un
+ℝ-espace vectoriel de dimension <I>n</I>+<I>l</I>.<BR>
+En effet :<BR>
+Sur [<I>a</I>,<I>x</I><SUB>1</SUB>], <I>s</I> est un polynôme <I>A</I> de degré inférieur ou égal à 
+<I>l</I>, donc sur [<I>a</I>,<I>x</I><SUB>1</SUB>], <I>s</I>=<I>A</I>(<I>x</I>)=<I>a</I><SUB>0</SUB>+<I>a</I><SUB>1</SUB><I>x</I>+...<I>a</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP> et <I>A</I> est une combinaison 
+linéaire de 1,<I>x</I>,...<I>x</I><SUP><I>l</I></SUP>.<BR>
+Sur [<I>x</I><SUB>1</SUB>,<I>x</I><SUB>2</SUB>], <I>s</I> est un polynôme <I>B</I> de degré inférieur ou égal à
+<I>l</I>, donc sur [<I>x</I><SUB>1</SUB>,<I>x</I><SUB>2</SUB>], <I>s</I>=<I>B</I>(<I>x</I>)=<I>b</I><SUB>0</SUB>+<I>b</I><SUB>1</SUB><I>x</I>+...<I>b</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>.<BR>
+Puisque <I>s</I> admet des dérivées continues jusqu’à l’ordre <I>l</I>−1 on doit 
+avoir :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ 0 ≤ <I>j</I> ≤ <I>l</I>−1,     <I>B</I><SUP>(<I>j</I>)</SUP>(<I>x</I><SUB>1</SUB>)−<I>A</I><SUP>(<I>j</I>)</SUP>(<I>x</I><SUB>1</SUB>)=0</TD></TR>
+</TABLE><P>
+donc <I>B</I>(<I>x</I>)−<I>A</I>(<I>x</I>)=α<SUB>1</SUB>(<I>x</I>−<I>x</I><SUB>1</SUB>)<SUP><I>l</I></SUP> ou encore <I>B</I>(<I>x</I>)=<I>A</I>(<I>x</I>)+α<SUB>1</SUB>(<I>x</I>−<I>x</I><SUB>1</SUB>)<SUP><I>l</I></SUP>.<BR>
+Soit la fonction :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">q<SUB>1</SUB>(<I>x</I>)   = 
+</TD><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>0</TD><TD ALIGN=center NOWRAP>sur</TD><TD ALIGN=left NOWRAP>[<I>a</I>,<I>x</I><SUB>1</SUB>] </TD></TR>
+<TR><TD ALIGN=right NOWRAP>(<I>x</I>−<I>x</I><SUB>1</SUB>)<SUP><I>l</I></SUP></TD><TD ALIGN=center NOWRAP>sur</TD><TD ALIGN=left NOWRAP>[<I>x</I><SUB>1</SUB>,<I>b</I>]</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+Donc :<BR>
+<I>s</I>|<SUB>[<I>a</I>,<I>x</I><SUB>2</SUB>]</SUB>=<I>a</I><SUB>0</SUB>+<I>a</I><SUB>1</SUB><I>x</I>+...<I>a</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>+α<SUB>1</SUB><I>q</I><SUB>1</SUB>(<I>x</I>).</P><P>Sur [<I>x</I><SUB>2</SUB>,<I>x</I><SUB>3</SUB>], <I>s</I> est un polynôme <I>C</I> de degré inférieur ou égal à
+<I>l</I>, donc sur [<I>x</I><SUB>2</SUB>,<I>x</I><SUB>3</SUB>], <I>s</I>=<I>C</I>(<I>x</I>)=<I>c</I><SUB>0</SUB>+<I>c</I><SUB>1</SUB><I>x</I>+...<I>c</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>.<BR>
+Puisque <I>s</I> admet des dérivées continues jusqu’à l’ordre <I>l</I>−1 on doit 
+avoir :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ 0 ≤ <I>j</I> ≤ <I>l</I>−1,     <I>C</I><SUP>(<I>j</I>)</SUP>(<I>x</I><SUB>2</SUB>)−<I>B</I><SUP>(<I>j</I>)</SUP>(<I>x</I><SUB>2</SUB>)=0</TD></TR>
+</TABLE><P>
+donc <I>C</I>(<I>x</I>)−<I>B</I>(<I>x</I>)=α<SUB>2</SUB>(<I>x</I>−<I>x</I><SUB>2</SUB>)<SUP><I>l</I></SUP> ou encore <I>C</I>(<I>x</I>)=<I>B</I>(<I>x</I>)+α<SUB>2</SUB>(<I>x</I>−<I>x</I><SUB>2</SUB>)<SUP><I>l</I></SUP>.<BR>
+Soit la fonction :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">q<SUB>2</SUB>(<I>x</I>)   = 
+</TD><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>0</TD><TD ALIGN=center NOWRAP>sur</TD><TD ALIGN=left NOWRAP>[<I>a</I>,<I>x</I><SUB>2</SUB>] </TD></TR>
+<TR><TD ALIGN=right NOWRAP>(<I>x</I>−<I>x</I><SUB>2</SUB>)<SUP><I>l</I></SUP></TD><TD ALIGN=center NOWRAP>sur</TD><TD ALIGN=left NOWRAP>[<I>x</I><SUB>2</SUB>,<I>b</I>]</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+Donc :
+<I>s</I>|<SUB>[<I>a</I>,<I>x</I><SUB>3</SUB>]</SUB>=<I>a</I><SUB>0</SUB>+<I>a</I><SUB>1</SUB><I>x</I>+...<I>a</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>+α<SUB>1</SUB><I>q</I><SUB>1</SUB>(<I>x</I>)+α<SUB>2</SUB><I>q</I><SUB>2</SUB>(<I>x</I>)<BR>
+Et ainsi de suite, on définit les fonctions :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ 1 ≤ <I>j</I> ≤ <I>n</I>−1, q<SUB><I>j</I></SUB>(<I>x</I>)   = 
+</TD><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>0</TD><TD ALIGN=center NOWRAP>sur</TD><TD ALIGN=left NOWRAP>[<I>a</I>,<I>x</I><SUB><I>j</I></SUB>] </TD></TR>
+<TR><TD ALIGN=right NOWRAP>(<I>x</I>−<I>x</I><SUB><I>j</I></SUB>)<SUP><I>l</I></SUP></TD><TD ALIGN=center NOWRAP>sur</TD><TD ALIGN=left NOWRAP>[<I>x</I><SUB><I>j</I></SUB>,<I>b</I>]</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+ainsi,<BR>
+<I>s</I>|<SUB>[<I>a</I>,<I>b</I>]</SUB>=<I>a</I><SUB>0</SUB>+<I>a</I><SUB>1</SUB><I>x</I>+...<I>a</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>+α<SUB>1</SUB><I>q</I><SUB>1</SUB>(<I>x</I>)+....+α<SUB><I>n</I>−1</SUB><I>q</I><SUB><I>n</I>−1</SUB>(<I>x</I>) 
+et<BR>
+<I>s</I> est une combinaison linéaire des <I>n</I>+<I>l</I> fonctions indépendantes
+1,<I>x</I>,..<I>x</I><SUP><I>l</I></SUP>,<I>q</I><SUB>1</SUB>,..<I>q</I><SUB><I>n</I>−1</SUB>.</P><P><B>Interpolation avec des fonctions splines</B><BR>
+On peut demander d’interpoler une fonction <I>f</I> sur σ<SUB><I>n</I></SUB> par une fonction
+spline <I>s</I> de degré <I>l</I>,
+ce qui va imposer à <I>s</I> de vérifier <I>s</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB>=<I>f</I>(<I>x</I><SUB><I>k</I></SUB>) pour tout 
+0≥ <I>k</I>≥ <I>n</I>. On a donc <I>n</I>+1 conditions, il reste donc <I>l</I>−1 degrés de 
+liberté. On peut donc encore imposer <I>l</I>−1 conditions supplémentaires qui
+seront des conditions sur les derivées de <I>s</I> en <I>a</I> et <I>b</I>.
+Il existe alors 
+trois types d’interpolation (interpolation d’Hermite, interpolation naturelle,
+interpolation périodique) qui sont obtenues en rajoutant trois types de 
+contraintes. On peut montrer que pour chacun de ces types d’interpolation la 
+solution au problème d’interpolation est unique.</P><P>Supposons <I>l</I> impair, <I>l</I>=2<I>m</I>−1, il y a donc 2<I>m</I>−2 degrés de
+liberté. On rajoute les contraintes suivantes :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Interpolation d’Hermite
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ 1≤ <I>j</I>≤ <I>m</I>−1,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>f</I><SUP>(<I>j</I>)</SUP>(<I>a</I>),
+<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>)=<I>f</I><SUP>(<I>j</I>)</SUP>(<I>b</I>) </TD></TR>
+</TABLE>
+</LI><LI CLASS="li-itemize">Interpolation naturelle
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ <I>m</I> ≤ <I>j</I> ≤ 2<I>m</I>−2,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>)=0 </TD></TR>
+</TABLE>
+</LI><LI CLASS="li-itemize">Interpolation périodique
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ 1≤ <I>j</I>≤ 2<I>m</I>−2,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>) </TD></TR>
+</TABLE>
+</LI></UL><P>Supposons <I>l</I> pair, <I>l</I>=2<I>m</I>, il y a donc 2<I>m</I>−1 degrés de
+liberté. On rajoute les contraintes suivantes :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Interpolation d’Hermite
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ 1≤ <I>j</I>≤ <I>m</I>−1,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>f</I><SUP>(<I>j</I>)</SUP>(<I>a</I>),
+<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>)=<I>f</I><SUP>(<I>j</I>)</SUP>(<I>b</I>) </TD></TR>
+</TABLE> 
+et
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUP>(<I>m</I>)</SUP>(<I>a</I>)=<I>f</I><SUP>(<I>m</I>)</SUP>(<I>a</I>)</TD></TR>
+</TABLE> 
+</LI><LI CLASS="li-itemize">Interpolation naturelle
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ <I>m</I> ≤ <I>j</I> ≤ 2<I>m</I>−2,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>)=0 </TD></TR>
+</TABLE>
+et
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUP>(2<I>m</I>−1)</SUP>(<I>a</I>)=0</TD></TR>
+</TABLE> 
+</LI><LI CLASS="li-itemize">Interpolation périodique
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">∀ 1≤ <I>j</I>≤ 2<I>m</I>−1,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>) </TD></TR>
+</TABLE>
+</LI></UL><P>
+Une spline naturelle de degré donné passant par des points
+donnés est une fonction spline vérifiant l’interpolation naturelle.</P><P>L’instruction <TT>spline</TT> calcule une spline naturelle de degré donné 
+passant par des points dont les listes des abscisses par ordre croissant et 
+des ordonnées sont passées en argument. Elle renvoie la fonction
+spline sous forme d’une liste de polynômes, chaque polynôme
+étant valide dans un intervalle. On donne dans l’ordre croissant
+la liste des abscisses, la liste des ordonnées,
+le nom de variables souhaité pour les polynômes et le degré.</P><P>Par exemple, on veut une spline naturelle de degré 3, passant par
+les points <I>x</I><SUB>0</SUB>=0,<I>y</I><SUB>0</SUB>=1, <I>x</I><SUB>1</SUB>=1,<I>y</I><SUB>1</SUB>=3 et <I>x</I><SUB>2</SUB>=2, <I>y</I><SUB>2</SUB>=0, on tape :
+</P><DIV CLASS="center">
+<TT>spline([0,1,2],[1,3,0],x,3)</TT>
+</DIV><P>
+On obtient une liste de deux polynômes fonction de <I>x</I> :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[ −5*<I>x</I><SUP>3</SUP>/4+13*<I>x</I>/4+1,    5*(<I>x</I>−1)<SUP>3</SUP>/4−15*(<I>x</I>−1)<SUP>2</SUP>/4+(<I>x</I>−1)/−2+3 ]</TD></TR>
+</TABLE><P>
+valables respectivement sur les intervalles [0,1] et [1,2].</P><P>Par exemple, on veut une spline naturelle de degré 4, passant par
+les points <I>x</I><SUB>0</SUB>=0,<I>y</I><SUB>0</SUB>=1, <I>x</I><SUB>1</SUB>=1,<I>y</I><SUB>1</SUB>=3, <I>x</I><SUB>2</SUB>=2, <I>y</I><SUB>2</SUB>=0 et <I>x</I><SUB>3</SUB>=3, <I>y</I><SUB>3</SUB>=−1, 
+on tape :
+</P><DIV CLASS="center">
+<TT>spline([0,1,2,3],[1,3,0,-1],x,4)</TT>
+</DIV><P>
+On obtient une liste de trois polynômes fonction de <I>x</I> :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[(−62*<I>x</I><SUP>4</SUP>+304*<I>x</I>)/121+1,</TD></TR>
+</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(201*(<I>x</I>−1)<SUP>4</SUP>−248*(<I>x</I>−1)<SUP>3</SUP>−372*(<I>x</I>−1)<SUP>2</SUP>+56*(<I>x</I>−1))/121+3,</TD></TR>
+</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(−139*(<I>x</I>−2)<SUP>4</SUP>+556*(<I>x</I>−2)<SUP>3</SUP>+90*(<I>x</I>−2)<SUP>2</SUP>+−628*(<I>x</I>−2))/121]</TD></TR>
+</TABLE><P>
+valables respectivement sur les intervalles [0,1], [1,2] et [2,3].</P><P>Par exemple, pour avoir l’interpolation naturelle de cos sur 
+[0,π/2,3π/2], on tape :
+</P><DIV CLASS="center">
+<TT>spline([0,pi/2,3*pi/2],cos([0,pi/2,3*pi/2]),x,3)</TT>
+</DIV><P>
+On obtient :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[((3π<SUP>3</SUP>+(−7π<SUP>2</SUP>)<I>x</I>+4<I>x</I><SUP>3</SUP>)1/3)/(π<SUP>3</SUP>),</TD></TR>
+</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">((15π<SUP>3</SUP>+(−46π<SUP>2</SUP>)*+36π <I>x</I><SUP>2</SUP>−8<I>x</I><SUP>3</SUP>)1/12)/(π<SUP>3</SUP>)]
+</TD></TR>
+</TABLE><HR>
+<A HREF="cascmd_fr381.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr383.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

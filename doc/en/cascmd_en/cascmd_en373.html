@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Build a matrix with a function : makemat</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en372.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en374.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc417">2.42.24</A>  Build a matrix with a function : <TT>makemat</TT></H3><P><A NAME="@default630"></A>
+<TT>makemat</TT> takes three arguments : 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+a function of two variables <TT>j</TT> and <TT>k</TT> which
+should return the value of <I>a</I><SUB><I>j</I>,<I>k</I></SUB>, the element of
+row index <TT>j</TT> and column index <TT>k</TT> of the matrix to be built.
+</LI><LI CLASS="li-itemize">two integers <I>n</I> and <I>p</I>.
+</LI></UL><P>
+<TT>makemat</TT> returns the matrix <I>A</I>=(<I>a</I><SUB><I>j</I>,<I>k</I></SUB>) 
+(<I>j</I>=0..<I>n</I>&#X2212;1 and <I>k</I>=0..<I>p</I>&#X2212;1) of dimension <I>n</I> × <I>p</I>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>makemat((j,k)-&gt;j+k,4,3)</TT></DIV><P>
+or first define the <I>h</I> function:
+</P><DIV CLASS="center"><TT>h(j,k):=j+k</TT></DIV><P>
+then, input:
+</P><DIV CLASS="center"><TT>makemat(h,4,3)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[0,1,2],[1,2,3],[2,3,4],[3,4,5]]</TT></DIV><P>
+Note that the indices are counted starting from 0.</P><HR>
+<A HREF="cascmd_en372.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en374.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

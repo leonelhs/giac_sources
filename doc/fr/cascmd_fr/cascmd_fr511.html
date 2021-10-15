@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Trier une liste selon l’ordre décroissant : SortD sortd</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr510.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr512.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc610">6.40.22</A>  Trier une liste selon l’ordre décroissant : <TT>SortD sortd</TT></H3><P><A NAME="@default905"></A><A NAME="@default906"></A>
+<B>Attention</B> et <TT>sortd</TT> ne sont pas des synonymes :
+<TT>SortD</TT> s’utilise avec la syntaxe TI i.e. sans avoir besoin de mettre des 
+parenthèses et modifie la valeur de l’argument alors que <TT>sortd</TT> 
+s’utilise comme des fonctions normales de <TT>Xcas</TT> (parenthèses 
+obligatoires et sans changer l’argument !).<BR>
+<TT>SortD</TT> ou <TT>sortd</TT> a comme argument une liste, 
+une séquence ou une matrice.<BR>
+<TT>SortA</TT> ou <TT>sorta</TT> renvoie la liste ou la séquence triée selon 
+l’ordre décroissant.<BR>
+Si l’argument est une matrice, <TT>SortD</TT> ou <TT>sortd</TT> trie la 1-ière 
+ligne de la matrice selon l’ordre décroissant, et reporte les manœuvres 
+de tri de la 1-ière ligne sur les autres lignes c’est à dire le tri 
+conserve les colonnes de la matrice.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>sortd([3,4,2])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortD([3,4,2])</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>SortD [3,4,2]</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>SortD 3,4,2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[4,3,2]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sortd([[3,4,2],[6,4,5]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortD([[3,4,2],[6,4,5]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortD [[3,4,2],[6,4,5]]</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortD [3,4,2],[6,4,5]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[4,3,2],[4,6,5]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>A:=[[3,4,2],[6,4,5]]</TT></DIV><DIV CLASS="center"><TT>SortD(A)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[4,3,2],[4,6,5]]</TT></DIV><P>
+et maintenant <TT>A</TT> vaut <TT>[[4,3,2],[4,6,5]]</TT>
+Mais, on tape :
+</P><DIV CLASS="center"><TT>A:=[[3,4,2],[6,4,5]]</TT></DIV><DIV CLASS="center"><TT>sortd(A)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[4,3,2],[4,6,5]]</TT></DIV><P>
+et maintenant <TT>A</TT> vaut toujours <TT>[[3,4,2],[6,4,5]]</TT></P><P><B>Attention</B>
+La syntaxe sans parenthèse peut vous jouer des tours !<BR>
+Par exemple, on tape :<BR>
+<TT>L1:=[1,3,2];L2:=[2,3,1];</TT><BR>
+<TT>SortD L1,SortD L2</TT><BR>
+On obtient la matrice !:
+<TT>[[3,2,1],[2,1,3]]</TT><BR>
+qui est le résultat de :<BR>
+<TT>SortD(L1,SortD(L2))</TT></P><HR>
+<A HREF="cascmd_fr510.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr512.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

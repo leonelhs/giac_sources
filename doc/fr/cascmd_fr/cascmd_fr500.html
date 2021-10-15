@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Avoir la liste permutée à partir de son n-ième élément : shift</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr499.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr501.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc599">6.40.11</A>  Avoir la liste permutée à partir de son n-ième élément : <TT>shift</TT></H3><P><A NAME="@default887"></A>
+<TT>shift</TT> a comme argument une liste et un nombre entier relatif 
+(par défaut <TT>n=-1</TT>).<BR>
+<TT>shift</TT> renvoie :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si <TT>n&gt;0</TT> la liste obtenue en remplaçant les <TT>n</TT> premiers 
+éléments de la liste par <TT>undef</TT>, puis en en permuttant ces <TT>n</TT>
+premiers éléments avec la fin de la liste,
+</LI><LI CLASS="li-itemize">si <TT>n&lt;0</TT> en remplaçant les 
+<TT>-n</TT> derniers éléments de la liste par <TT>undef</TT>, puis en permuttant les 
+<TT>-n</TT> derniers éléments avec le début de la liste. Par défaut 
+(<TT>n=-1</TT>) le premier élément vaut <TT>undef</TT> et il est suivi par la liste 
+privée de son dernier élément.
+</LI></UL><P>
+On tape :
+</P><DIV CLASS="center"><TT>shift([0,1,2,3,4])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[undef,0,1,2,3]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>shift([0,1,2,3,4],2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,3,4,undef,undef]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>shift([0,1,2,3,4],-2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[undef,undef,0,1,2]</TT></DIV><HR>
+<A HREF="cascmd_fr499.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr501.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

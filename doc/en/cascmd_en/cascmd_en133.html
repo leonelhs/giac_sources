@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Table of values and graph : tablefunc and plotfunc</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en132.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en134.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc152">2.17.4</A>  Table of values and graph : <TT>tablefunc</TT> and <TT>plotfunc</TT></H3><P><A NAME="@default255"></A><A NAME="@default256"></A> 
+<TT>tablefunc</TT> is a special command that should be run from inside
+the spreadsheet. It returns the evaluation of an expression <I>ex</I> 
+depending on a variable <I>x</I> for <I>x</I>=<I>x</I><SUB>0</SUB>, <I>x</I><SUB>0</SUB>+<I>h</I>,.... :
+</P><DIV CLASS="center">
+<TT>tablefunc(ex,x,x_0,h)</TT> or <TT>tablefunc(ex,x)</TT>
+</DIV><P>
+In the latter case, the default value for <TT><I>x</I></TT><SUB><TT>0</TT></SUB>
+is the default minimum value of <I>x</I> from the graphic configuration
+and the default value for the step <I>h</I> is 0.1 times the difference
+between the default maximum and minimum values of <I>x</I> (from the
+graphic configuration).<BR>
+Example: type <TT>Alt+t</TT> to open a spreadsheet if none are open.
+Then select a cell of the spreadsheet (for example <TT>C0</TT>) and to get
+the table of <TT>"sinus"</TT>, input in the command line of the spreadsheet : 
+</P><DIV CLASS="center"><TT>tablefunc(sin(x),x)</TT></DIV><P>
+This will fill two columns with the numeric value of <TT>x</TT> and 
+<TT>sin(x)</TT> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+in the first column the variable <TT>x</TT>, 
+the value of the step <TT>h</TT>
+(1.0), the minimum value of <I>x</I> (-5.0), then a formula, for example 
+<TT>=C2+C$1</TT>, and the remaining rows 
+of the column is filled by pasting this formula.
+</LI><LI CLASS="li-itemize">in the next column the function <TT>sin(x)</TT>, the word
+"Tablefunc", a formula, 
+for example <TT>=evalf(subst(D$0,C$0,C2))</TT>, and the remaining rows
+of the column are filled by pasting this formula.
+</LI></UL><P>
+Hence the values of <TT>sin(x)</TT> are on the same rows as the values 
+of <TT>x</TT>. Note that the step and begin value and the expression 
+may be easily changed by modifying the correspondant cell.</P><P>The graphic representation may be plotted with the <TT>plotfunc</TT> command 
+(see <A HREF="cascmd_en466.html#sec:plotfunc">3.2.1</A>).</P><HR>
+<A HREF="cascmd_en132.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en134.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

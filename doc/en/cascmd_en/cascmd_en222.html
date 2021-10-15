@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Sturm sequences and number of sign changes 
+of P on ]a; b] : sturm</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en221.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en223.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc249">2.25.15</A>  Sturm sequences and number of sign changes 
+of <I>P</I> on ]<I>a</I>; <I>b</I>] : <TT>sturm</TT></H3><P><A NAME="@default409"></A>
+<TT>sturm</TT> takes two or four arguments : <I>P</I> a polynomial expression
+or <I>P</I>/<I>Q</I> a rational fraction and a variable name or <I>P</I> a polynomial 
+expression, a variable name and two real or complex numbers <I>a</I> and <I>b</I>.</P><P>If <TT>sturm</TT> takes two arguments, <TT>sturm</TT> returns the list of the Sturm 
+sequences and multiplicities of the square-free factors of <I>P</I> (or
+<I>P</I>/<I>Q</I>) (in this case <TT>sturm</TT> behaves like <TT>sturmseq</TT>).</P><P>If <TT>sturm</TT> takes four arguments, it behaves like <TT>sturmab</TT> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+if <I>a</I> and <I>b</I> are reals, 
+<TT>sturm</TT> returns the number of sign changes of <I>P</I> on ]<I>a</I>; <I>b</I>]
+</LI><LI CLASS="li-itemize">if <I>a</I> or <I>b</I> are complex, 
+<TT>sturm</TT> returns the number of complex roots of <I>P</I> in the rectangle 
+having <I>a</I> and <I>b</I> as opposite vertices.
+</LI></UL><P> 
+Input :
+</P><DIV CLASS="center"><TT>sturm(2*x</TT><CODE><TT>^</TT></CODE><TT>3+2,x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[2,[[1,0,0,1],[3,0,0],-9],1]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>sturm((2*x</TT><CODE><TT>^</TT></CODE><TT>3+2)/(x+2),x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[2,[[1,0,0,1],[3,0,0],-9],1,[[1,2],1]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>sturm(x</TT><CODE><TT>^</TT></CODE><TT>2*(x</TT><CODE><TT>^</TT></CODE><TT>3+2),x,-2,0)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+<A HREF="cascmd_en221.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en223.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

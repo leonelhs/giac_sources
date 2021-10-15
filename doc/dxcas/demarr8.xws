@@ -1,0 +1,98 @@
+// fltk 7Fl_Tile 34 -724 724 181
+[
+// fltk N4xcas19Multiline_Input_tabE 34 -724 724 30
+f(x):=sin(x)/x;x0:=0
+,
+// fltk N4xcas10Log_OutputE 34 -694 724 84
+// Parsing f£// Success compiling f££
+,
+// fltk N4xcas8EquationE 34 -610 724 67
+ (x)->(sin(x))/x,0
+]
+,
+// fltk 7Fl_Tile 34 -541 724 31
+[
+// fltk N4xcas23Comment_Multiline_InputE 34 -541 724 30
+Pour indiquer une limite directionnelle, on met 1 ou -1 en dernier argument
+,
+// fltk N4xcas10Log_OutputE 34 -511 724 1
+
+]
+,
+// fltk 7Fl_Tile 34 -508 724 117
+[
+// fltk N4xcas19Multiline_Input_tabE 34 -508 724 30
+l:=limit(f(x),x,x0,1)
+,
+// fltk N4xcas10Log_OutputE 34 -478 724 44
+Evaluation time: 0.29£
+,
+// fltk N4xcas8EquationE 34 -434 724 43
+3
+]
+,
+// fltk 7Fl_Tile 34 -389 724 72
+[
+// fltk N4xcas23Comment_Multiline_InputE 34 -389 724 71
+On calcule f(x0+10^(-j)) ou f(10^j) si x0=+infinity£en s'arretant des que le test demande est verifie, on renvoie£la valeur de x et de f(x) dans un vecteur
+,
+// fltk N4xcas10Log_OutputE 34 -318 724 1
+
+]
+,
+// fltk 7Fl_Tile 34 -315 724 156
+[
+// fltk N4xcas19Multiline_Input_tabE 34 -315 724 112
+for (j:=1;j<10;j++){ £  x1:=evalf(ifte(x0==+infinity,10^j,x0+10^(-j))); £  if (abs(evalf(f(x1)-l))<1e-3) £   break; £}; [x1, f(x1)]
+,
+// fltk N4xcas10Log_OutputE 34 -203 724 1
+
+,
+// fltk N4xcas8EquationE 34 -202 724 43
+100.0,[100.0,3.0]
+]
+,
+// fltk 7Fl_Tile 34 -157 724 189
+[
+// fltk N4xcas19Multiline_Input_tabE 34 -157 724 30
+f(x):=sin(x)^(1/x); x0:=0
+,
+// fltk N4xcas10Log_OutputE 34 -127 724 84
+// Parsing f£// Success compiling f££
+,
+// fltk N4xcas8EquationE 34 -43 724 75
+ (x)->(sin(x))^(1/x),0
+]
+,
+// fltk 7Fl_Tile 34 34 724 187
+[
+// fltk N4xcas19Multiline_Input_tabE 34 34 724 30
+f(x):=(1+1/x)^x; x0:=+infinity
+,
+// fltk N4xcas10Log_OutputE 34 64 724 84
+// Parsing f£// Success compiling f££
+,
+// fltk N4xcas8EquationE 34 148 724 73
+ (x)->(1+1/x)^x,+(infinity)
+]
+,
+// fltk 7Fl_Tile 34 223 724 189
+[
+// fltk N4xcas19Multiline_Input_tabE 34 223 724 30
+f(x):=(2^x+3^x)^(1/x); x0:=+infinity
+,
+// fltk N4xcas10Log_OutputE 34 253 724 84
+// Parsing f£// Success compiling f££
+,
+// fltk N4xcas8EquationE 34 337 724 75
+ (x)->(2^x+3^x)^(1/x),+(infinity)
+]
+,
+// fltk 7Fl_Tile 34 414 724 31
+[
+// fltk N4xcas19Multiline_Input_tabE 34 414 724 30
+
+,
+// fltk N4xcas10Log_OutputE 34 444 724 1
+
+]

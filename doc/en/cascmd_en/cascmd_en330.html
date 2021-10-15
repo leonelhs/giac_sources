@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Make a list with a function : makelist</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en329.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en331.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc369">2.37.35</A>  Make a list with a function : <TT>makelist</TT></H3><P><A NAME="@default551"></A>
+<TT>makelist</TT> takes as argument a function <TT>f</TT>, 
+the bounds <TT>a,b</TT> of an index variable and a step <TT>s</TT> 
+(by default 1 or -1 depending on the bounds order).<BR>
+<TT>makelist</TT> makes the list <TT>[f(a),f(a+p)...f(a+k*p)]</TT> with <I>k</I> such
+that : <I>a</I>&lt;<I>a</I>+<I>k</I>*<I>p</I> &#X2264; <I>b</I> &lt;<I>a</I>+(<I>k</I>+1)*<I>p</I> or <I>a</I>&gt;<I>a</I>+<I>k</I>*<I>p</I> &#X2265; <I>b</I> &gt;<I>a</I>+(<I>k</I>+1)*<I>p</I>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,3,5)</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,3,5,1)</TT></DIV><P>
+or first define the function <I>h</I>(<I>x</I>)=<I>x</I>2 by <TT>h(x):=x</TT><CODE><TT>^</TT></CODE><TT>2</TT>
+then input
+</P><DIV CLASS="center"><TT>makelist(h,3,5,1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[9,16,25]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,3,6,2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[9,25]</TT></DIV><P>
+<B>Warning!!!</B> purge <TT>x</TT> if <TT>x</TT> is not symbolic.</P><HR>
+<A HREF="cascmd_en329.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en331.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

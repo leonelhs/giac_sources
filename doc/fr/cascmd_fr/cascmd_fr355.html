@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Transformer un polynôme au format interne en une liste et réciproquement : convert</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr354.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr356.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc440">6.26.7</A>  Transformer un polynôme au format interne en une liste et réciproquement : <TT>convert</TT></H3><P><A NAME="@default679"></A><A NAME="@default680"></A><A NAME="@default681"></A>
+Si <TT>convert</TT> a comme premier argument un polynôme donné a u 
+format interne et comme deuxième argument l’option <TT>list</TT> alors 
+<TT>convert</TT> transforme le polynôme en une liste (l’option <TT>list</TT> peut 
+être omis).<BR>
+ Si <TT>convert</TT> a comme premier argument une liste et comme deuxième 
+argument l’option <TT>polynom</TT> alors 
+<TT>convert</TT> transforme la liste en un polynôme au format interne.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>p:=symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>2-x*y+2y, [x,y])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%}</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>l:=convert(p,list)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>convert(p)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,[2,0]],[-1,[1,1]],[2,[0,1]]]</TT></DIV><P>
+ce qui est la liste des coefficients suivi de la liste des exposants.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>convert(l,polynom)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%}</TT></DIV><HR>
+<A HREF="cascmd_fr354.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr356.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

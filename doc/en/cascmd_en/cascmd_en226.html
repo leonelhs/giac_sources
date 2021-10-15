@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Resultant of two polynomials : resultant</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en225.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en227.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc253">2.25.19</A>  Resultant of two polynomials : <TT>resultant</TT></H3><P><A NAME="@default413"></A>
+<TT>resultant</TT> takes as argument two polynomials and
+returns the resultant of the two polynomials.<BR>
+The resultant of two polynomials is the determinant of their
+Sylvester matrix <I>S</I>. 
+The Sylvester matrix <I>S</I> of two polynomials <I>A</I>(<I>x</I>)=&#X2211;<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>n</I></SUP> <I>a</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP>
+and <I>B</I>(<I>x</I>)=&#X2211;<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>m</I></SUP> <I>b</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP>
+is a square matrix with <I>m</I>+<I>n</I> rows and columns; its first <I>m</I> rows
+are made from the coefficients of <I>A</I>(<I>X</I>):
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X239B;<BR>
+&#X239C;<BR>
+&#X239C;<BR>
+&#X239C;<BR>
+&#X239D;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB>11</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>12</SUB>=<I>a</I><SUB><I>n</I>&#X2212;1</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>1(<I>n</I>+1)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>21</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>22</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>2(<I>n</I>+1)</SUB>=<I>a</I><SUB>1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>2(<I>n</I>+2)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22F1;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22F1;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>1</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>2</SUB>=0</TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>(<I>n</I>+1)</SUB>=<I>a</I><SUB><I>m</I>&#X2212;1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>(<I>n</I>+2)</SUB>=<I>a</I><SUB><I>m</I>&#X2212;2</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>a</I><SUB>0</SUB> </TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X239E;<BR>
+&#X239F;<BR>
+&#X239F;<BR>
+&#X239F;<BR>
+&#X23A0;</TD></TR>
+</TABLE><P>
+and the following <I>n</I> rows are made in the same way from the
+coefficients of <I>B</I>(<I>x</I>) :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X239B;<BR>
+&#X239C;<BR>
+&#X239C;<BR>
+&#X239D;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)1</SUB>=<I>b</I><SUB><I>m</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)2</SUB>=<I>b</I><SUB><I>m</I>&#X2212;1</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)(<I>m</I>+1)</SUB>=<I>b</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22F1;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22F1;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)1</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)2</SUB>=0</TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)(<I>m</I>+1)</SUB>=<I>b</I><SUB><I>n</I>&#X2212;1</SUB></TD><TD ALIGN=center NOWRAP><I>b</I><SUB><I>n</I>&#X2212;2</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>b</I><SUB>0</SUB> </TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X239E;<BR>
+&#X239F;<BR>
+&#X239F;<BR>
+&#X23A0;</TD></TR>
+</TABLE><P>If <I>A</I> and <I>B</I> have integer coefficients with non-zero resultant <I>r</I>, 
+then the polynomials equation 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>AU</I>+<I>BV</I>=<I>r</I></TD></TR>
+</TABLE><P>
+has a unique solution <I>U</I>,<I>V</I> such that degree(<I>U</I>)&lt;degree(<I>B</I>) and 
+degree(<I>V</I>)&lt;degree(<I>A</I>), and this solution has integer coefficients.</P><P>Input :
+</P><DIV CLASS="center"><TT>resultant(x</TT><CODE><TT>^</TT></CODE><TT>3-p*x+q,3*x</TT><CODE><TT>^</TT></CODE><TT>2-p,x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-4*p</TT><CODE><TT>^</TT></CODE><TT>3--27*q</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+<B>Remark</B><BR>
+discriminant(P)=resultant(P,P&#X2019;).</P><P><B>An example using resultant</B><BR>
+Let, <I>F</I>1 and <I>F</I>2 be 2 fixed points in the plan and
+<I>A</I>, a variable point on the circle of center <I>F</I>1 and radius 2<I>a</I>.
+Find the cartesian equation of the set of points <I>M</I>, intersection of
+the line <I>F</I>1<I>A</I> and of the segment bisector of <I>F</I>2<I>A</I>.</P><P>Geometric answer :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>MF</I>1+<I>MF</I>2=<I>MF</I>1+<I>MA</I>=<I>F</I>1<I>A</I>=2<I>a</I></TD></TR>
+</TABLE><P> 
+hence <I>M</I> is on an ellipse with focus <I>F</I>1,<I>F</I>2 and major axis 2<I>a</I>.</P><P>Analytic answer :
+In the Cartesian coordinate system of center <I>F</I>1 
+and <I>x</I>-axis having the same 
+direction than the vector <I>F</I>1<I>F</I>2, the coordinates of <I>A</I> are :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>A</I>= (2<I>a</I>cos(&#X3B8;);2<I>a</I>sin(&#X3B8;)) </TD></TR>
+</TABLE><P> 
+where &#X3B8; is the (<I>Ox</I>,<I>OA</I>) angle.
+Now choose <I>t</I>=tan(&#X3B8;/2) as parameter, such that the coordinates
+of <I>A</I> are rational functions with respect to <I>t</I>.
+More precisely :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>A</I>=(<I>ax</I>;<I>ay</I>)=(2<I>a</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1&#X2212;<I>t</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">1+<I>t</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">;2<I>a</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2<I>t</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">1+<I>t</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">) </TD></TR>
+</TABLE><P>
+If <I>F</I>1<I>F</I>2=2<I>c</I> and if <I>I</I> is the midel point of <I>AF</I>2, 
+since the coordinates of <I>F</I>2 are <I>F</I>2=(2<I>c</I>,0), the coordinates 
+of <I>I</I> 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>I</I>=(<I>c</I>+<I>ax</I>/2;<I>ay</I>/2)=(<I>c</I>+<I>a</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1&#X2212;<I>t</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">1+<I>t</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">;<I>a</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2<I>t</I>1&#X2212;<I>t</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">1+<I>t</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">) </TD></TR>
+</TABLE><P>
+<I>IM</I> is orthogonal to <I>AF</I>2, hence <I>M</I>=(<I>x</I>;<I>y</I>) verify the equation
+<I>eq</I>1=0 where 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>eq</I>1:=(<I>x</I>&#X2212;<I>ix</I>)*(<I>ax</I>&#X2212;2*<I>c</I>)+(<I>y</I>&#X2212;<I>iy</I>)*<I>ay</I> </TD></TR>
+</TABLE><P>
+But <I>M</I>=(<I>x</I>;<I>y</I>) is also on <I>F</I>1<I>A</I>, hence <I>M</I> verify the equation <I>eq</I>2=0
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>eq</I>2:=<I>y</I>/<I>x</I>&#X2212;<I>ay</I>/<I>ax</I> </TD></TR>
+</TABLE><P>
+The resultant of both equations with respect to <I>t</I> 
+<TT>resultant(eq1,eq2,t)</TT> is a polynomial <I>eq</I>3 depending on the
+variables <I>x</I>,<I>y</I>, independant of <I>t</I> which is the cartesian equation
+of the set of points <I>M</I> when <I>t</I> varies.
+Input :<BR>
+<TT>ax:=2*a*(1-t</TT><CODE><TT>^</TT></CODE><TT>2)/(1+t</TT><CODE><TT>^</TT></CODE><TT>2);ay:=2*a*2*t/(1+t</TT><CODE><TT>^</TT></CODE><TT>2);</TT><BR>
+<TT>ix:=(ax+2*c)/2; iy:=(ay/2)</TT><BR>
+<TT>eq1:=(x-ix)*(ax-2*c)+(y-iy)*ay</TT><BR>
+<TT>eq2:=y/x-ay/ax</TT><BR>
+<TT>factor(resultant(eq1,eq2,t))</TT><BR>
+Output gives as resultant :<BR>
+<TT>-(64·(<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+<I>y</I></TT><SUP><TT>2</TT></SUP><TT>)·(<I>x</I></TT><SUP><TT>2</TT></SUP><TT>· <I>a</I></TT><SUP><TT>2</TT></SUP><TT>-<I>x</I></TT><SUP><TT>2</TT></SUP><TT>· <I>c</I></TT><SUP><TT>2</TT></SUP><TT>+-2· <I>x</I>· <I>a</I></TT><SUP><TT>2</TT></SUP><TT>·
+<I>c</I>+2· <I>x</I>· <I>c</I></TT><SUP><TT>3</TT></SUP><TT>-<I>a</I></TT><SUP><TT>4</TT></SUP><TT>+2· <I>a</I></TT><SUP><TT>2</TT></SUP><TT>· <I>c</I></TT><SUP><TT>2</TT></SUP><TT>+</TT><BR>
+<TT><I>a</I></TT><SUP><TT>2</TT></SUP><TT>· <I>y</I></TT><SUP><TT>2</TT></SUP><TT>-<I>c</I></TT><SUP><TT>4</TT></SUP><TT>))</TT><BR>
+The factor <TT>-64· (<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+<I>y</I></TT><SUP><TT>2</TT></SUP><TT>)</TT> is always different from zero, 
+hence the locus equation of <I>M</I> :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>x</I></TT><SUP><TT>2</TT></SUP><TT><I>a</I></TT><SUP><TT>2</TT></SUP><TT>-<I>x</I></TT><SUP><TT>2</TT></SUP><TT><I>c</I></TT><SUP><TT>2</TT></SUP><TT>+-2<I>xa</I></TT><SUP><TT>2</TT></SUP><TT><I>c</I>+2<I>xc</I></TT><SUP><TT>3</TT></SUP><TT>-<I>a</I></TT><SUP><TT>4</TT></SUP><TT>+2<I>a</I></TT><SUP><TT>2</TT></SUP><TT><I>c</I></TT><SUP><TT>2</TT></SUP><TT>+<I>a</I></TT><SUP><TT>2</TT></SUP><TT><I>y</I></TT><SUP><TT>2</TT></SUP><TT>-<I>c</I></TT><SUP><TT>4</TT></SUP><TT>=0</TT> </TD></TR>
+</TABLE><P>
+If the frame origin is <I>O</I>, the middle point of <I>F</I>1<I>F</I>2,
+we find the cartesian equation of an ellipse. 
+To make the change of origin 
+<I>F</I>1<I>M</I>=<I>F</I>1<I>O</I>+<I>OM</I>, input :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>normal</I>(<I>subst</I>(<I>x</I></TT><SUP><TT>2</TT></SUP><TT>· <I>a</I></TT><SUP><TT>2</TT></SUP><TT>-<I>x</I></TT><SUP><TT>2</TT></SUP><TT>· <I>c</I></TT><SUP><TT>2</TT></SUP><TT>+-2· <I>x</I>· <I>a</I></TT><SUP><TT>2</TT></SUP><TT>·
+<I>c</I>+2· <I>x</I>· <I>c</I></TT><SUP><TT>3</TT></SUP><TT>-<I>a</I></TT><SUP><TT>4</TT></SUP><TT>+2· <I>a</I></TT><SUP><TT>2</TT></SUP><TT>· <I>c</I></TT><SUP><TT>2</TT></SUP><TT>+</TT> </TD></TR>
+</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>a</I></TT><SUP><TT>2</TT></SUP><TT>· <I>y</I></TT><SUP><TT>2</TT></SUP><TT>-<I>c</I></TT><SUP><TT>4</TT></SUP><TT>,[<I>x</I>,<I>y</I>]=[<I>c</I>+<I>X</I>,<I>Y</I>]))</TT> </TD></TR>
+</TABLE><P>
+Output :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT>-<I>c</I></TT><SUP><TT>2</TT></SUP><TT>*<I>X</I></TT><SUP><TT>2</TT></SUP><TT>+<I>c</I></TT><SUP><TT>2</TT></SUP><TT>*<I>a</I></TT><SUP><TT>2</TT></SUP><TT>+<I>X</I></TT><SUP><TT>2</TT></SUP><TT>*<I>a</I></TT><SUP><TT>2</TT></SUP><TT>-<I>a</I></TT><SUP><TT>4</TT></SUP><TT>+<I>a</I></TT><SUP><TT>2</TT></SUP><TT>*<I>Y</I></TT><SUP><TT>2</TT></SUP> </TD></TR>
+</TABLE><P>
+or if <I>b</I><SUP>2</SUP>=<I>a</I><SUP>2</SUP>&#X2212;<I>c</I><SUP>2</SUP>, input :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>normal</I>(<I>subst</I>(-<I>c</I></TT><SUP><TT>2</TT></SUP><TT>*<I>X</I></TT><SUP><TT>2</TT></SUP><TT>+<I>c</I></TT><SUP><TT>2</TT></SUP><TT>*<I>a</I></TT><SUP><TT>2</TT></SUP><TT>+<I>X</I></TT><SUP><TT>2</TT></SUP><TT>*<I>a</I></TT><SUP><TT>2</TT></SUP><TT>-<I>a</I></TT><SUP><TT>4</TT></SUP><TT>+<I>a</I></TT><SUP><TT>2</TT></SUP><TT>*<I>Y</I></TT><SUP><TT>2</TT></SUP><TT>,<I>c</I></TT><SUP><TT>2</TT></SUP><TT>=<I>a</I></TT><SUP><TT>2</TT></SUP><TT>-<I>b</I></TT><SUP><TT>2</TT></SUP><TT>))</TT> </TD></TR>
+</TABLE><P>
+Output :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT>-<I>a</I></TT><SUP><TT>2</TT></SUP><TT>*<I>b</I></TT><SUP><TT>2</TT></SUP><TT>+<I>a</I></TT><SUP><TT>2</TT></SUP><TT>*<I>Y</I></TT><SUP><TT>2</TT></SUP><TT>+<I>b</I></TT><SUP><TT>2</TT></SUP><TT>*<I>X</I></TT><SUP><TT>2</TT></SUP> </TD></TR>
+</TABLE><P>
+that is to say, after division by <I>a</I><SUP>2</SUP>*<I>b</I><SUP>2</SUP>, <I>M</I> verifies the equation :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>X</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>Y</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>b</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">=1 </TD></TR>
+</TABLE><P><B>Another example using resultant</B><BR>
+Let <I>F</I>1 and <I>F</I>2 be fixed points and <I>A</I> a variable point on the 
+circle of center <I>F</I>1 and radius 2<I>a</I>.
+Find the cartesian equation of the hull of <I>D</I>, the segment bisector 
+of <I>F</I>2<I>A</I>.</P><P>The segment bisector of <I>F</I>2<I>A</I> is tangent to the ellipse of focus 
+<I>F</I>1,<I>F</I>2 and major axis 2<I>a</I>.</P><P>In the Cartesian coordinate system of center <I>F</I>1 and <I>x</I>-axis having the same 
+direction than the vector <I>F</I>1<I>F</I>2, the coordinates of <I>A</I> are :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>A</I>= (2<I>a</I>cos(&#X3B8;);2<I>a</I>sin(&#X3B8;)) </TD></TR>
+</TABLE><P>
+where &#X3B8; is the (<I>Ox</I>,<I>OA</I>) angle.
+Choose <I>t</I>=tan(&#X3B8;/2) as parameter, such that the coordinates of <I>A</I> are
+rational functions with respect to <I>t</I>.
+More precisely :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>A</I>=(<I>ax</I>;<I>ay</I>)=(2<I>a</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1&#X2212;<I>t</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">1+<I>t</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">;2<I>a</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2<I>t</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">1+<I>t</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">) </TD></TR>
+</TABLE><P>
+If <I>F</I>1<I>F</I>2=2<I>c</I> and if <I>I</I> is the middle point of <I>AF</I>2:<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>F</I>2=(2<I>c</I>,0),   
+<I>I</I>=(<I>c</I>+<I>ax</I>/2;<I>ay</I>/2)=(<I>c</I>+<I>a</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1&#X2212;<I>t</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">1+<I>t</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">;<I>a</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2<I>t</I>1&#X2212;<I>t</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">1+<I>t</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">) 
+</TD></TR>
+</TABLE><P>
+Since <I>D</I> is orthogonal to <I>AF</I>2, the equation of <I>D</I> is
+<I>eq</I>1=0 where
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>eq</I>1:=(<I>x</I>&#X2212;<I>ix</I>)*(<I>ax</I>&#X2212;2*<I>c</I>)+(<I>y</I>&#X2212;<I>iy</I>)*<I>ay</I> </TD></TR>
+</TABLE><P>
+So, the hull of <I>D</I> is the locus of <I>M</I>, the intersection point of <I>D</I> 
+and <I>D</I>&#X2032; where <I>D</I>&#X2032; has equation <I>eq</I>2:=<I>diff</I>(<I>eq</I>1,<I>t</I>)=0.
+Input :<BR>
+<TT>ax:=2*a*(1-t</TT><CODE><TT>^</TT></CODE><TT>2)/(1+t</TT><CODE><TT>^</TT></CODE><TT>2);ay:=2*a*2*t/(1+t</TT><CODE><TT>^</TT></CODE><TT>2);</TT><BR>
+<TT>ix:=(ax+2*c)/2; iy:=(ay/2)</TT><BR>
+<TT>eq1:=normal((x-ix)*(ax-2*c)+(y-iy)*ay)</TT><BR>
+<TT>eq2:=normal(diff(eq1,t))</TT><BR>
+<TT>factor(resultant(eq1,eq2,t))</TT><BR>
+Output gives as resultant :<BR>
+<TT>(-(64· <I>a</I></TT><CODE><TT>^</TT></CODE><TT>2))·(<I>x</I></TT><CODE><TT>^</TT></CODE><TT>2+<I>y</I></TT><CODE><TT>^</TT></CODE><TT>2)·(<I>x</I></TT><CODE><TT>^</TT></CODE><TT>2· <I>a</I></TT><CODE><TT>^</TT></CODE><TT>2-<I>x</I></TT><CODE><TT>^</TT></CODE><TT>2· <I>c</I></TT><CODE><TT>^</TT></CODE><TT>2+-2· <I>x</I>· <I>a</I></TT><CODE><TT>^</TT></CODE><TT>2· <I>c</I>+</TT><BR>
+<TT>2· <I>x</I>· <I>c</I></TT><CODE><TT>^</TT></CODE><TT>3-<I>a</I></TT><CODE><TT>^</TT></CODE><TT>4+2· <I>a</I></TT><CODE><TT>^</TT></CODE><TT>2· <I>c</I></TT><CODE><TT>^</TT></CODE><TT>2+<I>a</I></TT><CODE><TT>^</TT></CODE><TT>2· <I>y</I></TT><CODE><TT>^</TT></CODE><TT>2-<I>c</I></TT><CODE><TT>^</TT></CODE><TT>4)</TT><BR>
+The factor <TT>-64· (<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+<I>y</I></TT><SUP><TT>2</TT></SUP><TT>)</TT> is always different from zero, 
+therefore the locus equation is :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>x</I></TT><SUP><TT>2</TT></SUP><TT><I>a</I></TT><SUP><TT>2</TT></SUP><TT>-<I>x</I></TT><SUP><TT>2</TT></SUP><TT><I>c</I></TT><SUP><TT>2</TT></SUP><TT>+-2<I>xa</I></TT><SUP><TT>2</TT></SUP><TT><I>c</I>+2<I>xc</I></TT><SUP><TT>3</TT></SUP><TT>-<I>a</I></TT><SUP><TT>4</TT></SUP><TT>+2<I>a</I></TT><SUP><TT>2</TT></SUP><TT><I>c</I></TT><SUP><TT>2</TT></SUP><TT>+<I>a</I></TT><SUP><TT>2</TT></SUP><TT><I>y</I></TT><SUP><TT>2</TT></SUP><TT>-<I>c</I></TT><SUP><TT>4</TT></SUP><TT>=0</TT> </TD></TR>
+</TABLE><P>
+If <I>O</I>, the middle point of <I>F</I>1<I>F</I>2, is choosen as origin,
+we find again the cartesian equation of the ellipse :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>X</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>Y</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>b</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">=1 </TD></TR>
+</TABLE><HR>
+<A HREF="cascmd_en225.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en227.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

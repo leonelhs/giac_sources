@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Representation by hardware floats</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en483.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en485.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc560">4.1.2</A>  Representation by hardware floats</H3><P>
+A real is represented by a floating number <I>d</I>, that is
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>d</I>=2(1+<I>m</I>),     0&lt;<I>m</I>&lt;1, &#X2212;2<SUP>10</SUP> &lt; &#X3B1; &lt; 2<SUP>10</SUP> </TD></TR>
+</TABLE><P>
+If &#X3B1;&gt;1&#X2212;2<SUP>10</SUP>, then <I>m</I> &#X2265; 1/2, and <I>d</I> is
+a normalized floating point number, otherwise
+<I>d</I> is denormalized (&#X3B1;=1&#X2212;2<SUP>10</SUP>). The special exponent 2<SUP>10</SUP>
+is used to represent plus or minus infinity and NaN (Not a Number).
+A hardware float is made of 64 bits:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+the first bit is for the sign of <I>d</I> (0 for &#X2019;+&#X2019; and 1 for &#X2019;-&#X2019;)
+</LI><LI CLASS="li-itemize">the 11 following bits represents the exponent, more precisely 
+if &#X3B1; denotes the integer from the 11 bits,
+the exponent is &#X3B1;+2<SUP>10</SUP>&#X2212;1, 
+</LI><LI CLASS="li-itemize">the 52 last bits codes the mantissa <I>m</I>, more precisely if
+<I>M</I> denotes the integer from the 52 bits, then
+<I>m</I>=1/2+<I>M</I>/2<SUP>53</SUP> for normalized floats and <I>m</I>=<I>M</I>/2<SUP>53</SUP> for
+denormalized floats.
+</LI></UL><P>
+Examples of representations of the exponent:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+&#X3B1;=0 is coded by 011 1111 1111
+</LI><LI CLASS="li-itemize">&#X3B1;=1 is coded by 100 0000 0000
+</LI><LI CLASS="li-itemize">&#X3B1;=4 is coded by 100 0000 0011
+</LI><LI CLASS="li-itemize">&#X3B1;=5 is coded by 100 0000 0100
+</LI><LI CLASS="li-itemize">&#X3B1;=&#X2212;1 is coded by 011 1111 1110
+</LI><LI CLASS="li-itemize">&#X3B1;=&#X2212;4 is coded by 011 1111 1011
+</LI><LI CLASS="li-itemize">&#X3B1;=&#X2212;5 is coded by 011 1111 1010
+</LI><LI CLASS="li-itemize">&#X3B1;=2<SUP>10</SUP> is coded by 111 1111 1111
+</LI><LI CLASS="li-itemize">&#X3B1;=2<SUP>&#X2212;10</SUP>&#X2212;1 is coded by 000 0000 000
+</LI></UL><P>
+<B>Remark</B>: 2<SUP>&#X2212;52</SUP>=0.2220446049250313<I>e</I>&#X2212;15</P><HR>
+<A HREF="cascmd_en483.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en485.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

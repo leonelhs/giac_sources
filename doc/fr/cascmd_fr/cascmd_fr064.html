@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Le nom des variables et la variable CST</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr063.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr065.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc84">2.5.1</A>  Le nom des variables et la variable <TT>CST</TT></H3><P><A NAME="@default45"></A><A NAME="sec:cst"></A>
+Un nom de variables est une suite de lettres ou chiffres commençant par
+une lettre.<BR>
+<B>Attention !!!</B> il y a des noms qui sont déjà employés pas le 
+système.<BR>
+La variable <TT>CST</TT> permet de définir son propre
+menu, menu qui s’affichera dans le bandeau lorsqu’on appuie sur le bouton 
+<TT>cust</TT> du bandeau.<BR>
+ On suppose que l’on a écrit deux fonctions <TT>tor</TT> et <TT>pgcd</TT>, et on 
+tape par exemple :<BR>
+<TT>CST:=[diff,["tor",tor],["pgcd",pgcd],["euro",6.55957]]</TT> 
+qui affichera <TT>diff tor pgcd euro</TT> dans le bandeau du bouton <TT>cust</TT>.<BR>
+Pour rajouter une fonction à <TT>CST</TT> on tape par exemple :<BR>
+<TT>CST:=concat(CST,evalc)</TT>.<BR>
+<B>Attention</B><BR>
+ Dans l’exemple ci-dessus, <TT>euro</TT> n’est pas une variable 
+qui contient <TT>6.55957</TT>, mais le nom d’un bouton du bandeau. Il y a donc 
+une différence entre :<BR>
+<TT>CST:=[evalc,["f",f],["a",6.55957]]</TT> et<BR>
+<TT>CST:=[evalc,["f",f],["a",a]]</TT>,
+dans la deuxième formulation le bouton <TT>a</TT> va renvoyer la valeur 
+stockée dans la variable <TT>a</TT> et cette valeur changera si on modifie 
+<TT>a</TT>, à condition que lorsque l’on définit <TT>CST</TT>, la variable 
+<TT>a</TT> ne soit pas encore affectée (sinon <TT>a</TT> est evaluée et 
+<TT>a</TT> represente la valeur stockée du début), alors que dans la 
+première formulation
+le bouton <TT>a</TT> va renvoyer <TT>6.55957</TT> quelque soit la valeur 
+stockée dans la variable <TT>a</TT>.<BR>
+On peut aussi quoter <TT>a</TT> pour que <TT>a</TT> ne soit pas évaluée et 
+renvoie <TT>a</TT> lorsqu’on appuie sur le bouton <TT>a</TT> du menu 
+<TT>cust</TT> du bandeau, par exemple :<BR>
+<TT>CST:=[evalc,["f",’f’],["a",’a’]]</TT>.<BR>
+Pour revenir au bandeau initial il faut utiliser le bouton <TT>home</TT> (voir 
+aussi page <A HREF="cascmd_fr015.html#sec:cust">??</A>).
+</P><HR>
+<A HREF="cascmd_fr063.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr065.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

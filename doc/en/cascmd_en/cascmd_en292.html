@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Definition : set[]</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en291.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en293.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc330">2.36.1</A>  Definition : <TT>set[]</TT></H3><P><A NAME="@default502"></A><A NAME="@default503"></A>
+To define a set of elements, put the elements separated by a comma, with 
+<TT>%{ ... %}</TT> or <TT>set[ ... ]</TT> as delimiters.<BR>
+Input :
+</P><DIV CLASS="center">
+<TT>%{1,2,3,4%}</TT><BR>
+<TT>set[1,2,3,4]</TT>
+</DIV><P>
+In the <TT>Xcas</TT> answers, the set delimiters are displayed
+as  and  in order
+not to confuse sets with lists.
+For example, 1,2,3 is the set <TT>%{1,2,3%}</TT>, 
+unlike [1,2,3] (normal brackets) which is the list <TT>[1,2,3]</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>A:=%{1,2,3,4%}</TT> or <TT>A:=set[1,2,3,4]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1,2,3,4 </TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>B:=%{5,5,6,3,4%}</TT> or <TT>B:=set[5,5,6,3,4]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>5,6,3,4 </TT></DIV><P>
+<B>Remark</B><BR>
+The order in a set is not significant and 
+the elements in a set are all distincts. If you input
+<TT>B:=%{5,5,6,3,4%}</TT> and <TT>C:=%{3,4,5,3,6%}</TT>, then 
+<TT>B==C</TT> will return <TT>1</TT>.</P><HR>
+<A HREF="cascmd_en291.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en293.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

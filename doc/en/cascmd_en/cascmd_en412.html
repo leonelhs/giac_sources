@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Adjoint matrix : adjoint_matrix</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en411.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en413.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc460">2.46.9</A>  Adjoint matrix : <TT>adjoint_matrix</TT></H3><P><A NAME="@default692"></A>
+<TT>adjoint_matrix </TT> takes as argument a square matrix 
+<I>A</I> of size <I>n</I>.<BR>
+<TT>adjoint_matrix </TT> returns the list of the coefficients of <I>P</I> 
+(the characteristic polynomial of <I>A</I>), and
+the list of the matrix coefficients of <I>Q</I> (the adjoint matrix 
+of <I>A</I>). </P><P>The comatrix of a square matrix <I>A</I> of size <I>n</I> is the matrix <I>B</I> 
+defined by <I>A</I>× <I>B</I>=det(<I>A</I>)× <I>I</I>. The adjoint matrix of <I>A</I>
+is the comatrix of <I>xI</I>&#X2212;<I>A</I>. It is a polynomial of degree <I>n</I>&#X2212;1 in <I>x</I>
+having matrix coefficients.
+The following relation holds:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>x</I>)× <I>I</I>=det(<I>xI</I>&#X2212;<I>A</I>)<I>I</I>=(<I>xI</I>&#X2212;<I>A</I>)<I>Q</I>(<I>x</I>)</TD></TR>
+</TABLE><P>
+Since the polynomial <I>P</I>(<I>x</I>)× <I>I</I>&#X2212;<I>P</I>(<I>A</I>) (with matrix coefficients)
+is also divisible by <I>x</I>× <I>I</I>&#X2212;<I>A</I> (by algebraic identities), 
+this proves that <I>P</I>(<I>A</I>)=0.
+We also have <I>Q</I>(<I>x</I>) = <I>I</I>× <I>x</I><SUP><I>n</I>&#X2212;1</SUP>+...+<I>B</I><SUB>0</SUB>  
+where <I>B</I><SUB>0</SUB>= is the comatrix of <I>A</I> (up to the sign if <I>n</I> is odd).
+Input :
+</P><DIV CLASS="center"><TT>adjoint_matrix([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center">
+<TT>[
+</TT><TT><B>[</B></TT><TT>1,-6,12,-8</TT><TT><B>]</B></TT><TT>,<BR>
+</TT><TT><B>[</B></TT><TT> [[1,0,0],[0,1,0],[0,0,1]],
+[[-2,1,-2], [1,-4,-1],[2,1,-6]],
+[[1,-2,3],[-2,4,2],[-3,-2,7]] </TT><TT><B>]</B></TT><TT>
+] </TT></DIV><P>
+Hence the characteristic polynomial is :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>x</I>)=<I>x</I><SUP>3</SUP>&#X2212;6*<I>x</I><SUP>2</SUP>+12*<I>x</I>&#X2212;8 </TD></TR>
+</TABLE><P>
+The determinant of <I>A</I> is equal to &#X2212;<I>P</I>(0)=8.
+The comatrix of <I>A</I> is equal to :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>B</I>=<I>Q</I>(0)=[[1,&#X2212;2,3],[&#X2212;2,4,2],[&#X2212;3,&#X2212;2,7]] </TD></TR>
+</TABLE><P>
+Hence the inverse of <I>A</I> is equal to :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">1/8*[[1,&#X2212;2,3],[&#X2212;2,4,2],[&#X2212;3,&#X2212;2,7]] </TD></TR>
+</TABLE><P>
+The adjoint matrix of <I>A</I> is :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[[<I>x</I><SUP>2</SUP>&#X2212;2<I>x</I>+1,<I>x</I>&#X2212;2,&#X2212;2<I>x</I>+3],[<I>x</I>&#X2212;2,<I>x</I><SUP>2</SUP>&#X2212;4<I>x</I>+4,&#X2212;<I>x</I>+2],[2<I>x</I>&#X2212;3,<I>x</I>&#X2212;2,<I>x</I><SUP>2</SUP>&#X2212;6<I>x</I>+7]] </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>adjoint_matrix([[4,1],[1,2]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,-6,7],[[[1,0],[0,1]],[[-2,1],[1,-4]]]]</TT></DIV><P>
+Hence the characteristic polynomial <I>P</I> is :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>&#X2212;6*<I>x</I>+7 </TD></TR>
+</TABLE><P>
+The determinant of <I>A</I> is equal to +<I>P</I>(0)=7.
+The comatrix of <I>A</I> is equal to 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>Q</I>(0)= &#X2212;[[&#X2212;2,1],[1,&#X2212;4]] </TD></TR>
+</TABLE><P>
+Hence the inverse of <I>A</I> is equal to :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2212;1/7*[[&#X2212;2,1],[1,&#X2212;4]] </TD></TR>
+</TABLE><P>
+The adjoint matrix of <I>A</I> is :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2212;[[<I>x</I>&#X2212;2,1],[1,<I>x</I>&#X2212;4]] </TD></TR>
+</TABLE><HR>
+<A HREF="cascmd_en411.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en413.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

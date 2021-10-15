@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Accès aux fonctions de PARI/GP: commande pari</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr203.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr205.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc272">6.9.10</A>  Accès aux fonctions de PARI/GP: commande <TT>pari</TT></H3><P><A NAME="@default370"></A>
+La commande <TT>pari</TT> sans argument exporte les fonctions de pari
+qui n’ont pas d’homonymes sous <TT>Xcas</TT> en leur nom habituel sous PARI/GP.<BR>
+Toutes les commandes sont aussi exportées sous leur nom d’origine
+avec le préfixe <TT>pari_</TT>.</P><P>La commande <TT>pari</TT> avec en premier argument un chaine de caractère
+- le nom d’une commande PARI - et d’éventuels autres arguments
+exécute la commande PARI avec les autres arguments.<BR>
+Par exemple :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On tape :<BR>
+<TT>pari()</TT> puis <TT>weber(1+i)</TT> ou directement<BR>
+<TT>pari("weber",1+i)</TT>, cela exécute la commande <TT>weber</TT> de PARI
+avec comme argument <TT>1+i</TT>. La commande <TT>weber</TT> n’existant pas sous 
+<TT>Xcas</TT>.
+</LI><LI CLASS="li-itemize">On tape :<BR>
+<TT>pari("content",[25,15,50,75])</TT> ou<BR>
+<TT>pari_content([25,15,50,75])</TT>, cela exécute la commande 
+<TT>content</TT> de PARI avec comme argument <TT>[25,15,50,75]</TT> et renvoie 
+<TT>5</TT> qui est le pgcdde la liste d’entiers donnée en argument alors que 
+<TT>pari()</TT> puis <TT>content([25,15,50,75])</TT> exécute la commande 
+<TT>content</TT> de <TT>Xcas</TT> et renvoie aussi <TT>5</TT> car <TT>content</TT>
+est une commande <TT>Xcas</TT> qui a comme argument un polynôme donné sous sa
+forme symbolique ou par la liste de ses coefficients et qui renvoie le même 
+résultat que la commande <TT>content</TT> de PARI car on a :<BR>
+<TT>content([25,15,50,75])=content(25x</TT><CODE><TT>^</TT></CODE><TT>3+15x</TT><CODE><TT>^</TT></CODE><TT>2+50x+75)=5</TT>
+</LI><LI CLASS="li-itemize">On tape :<BR>
+<TT>pari("gcd",[4,3,2,15],[20,30,50,75])</TT> ou<BR>
+<TT>pari_gcd([4,3,2,15],[20,30,50,75])</TT>, cela exécute la 
+commande <TT>gcd</TT> de PARI d’arguments <TT>L1=[4,3,2,15]</TT> et
+<TT>L2=[20,30,50,75]</TT> qui renvoie la matrice :<BR>
+<TT>[[4,1,2,5],[2,3,2,15],[2,1,2,5],[1,3,1,15]]</TT> :c’est la matrice
+<TT>M[j,k]</TT> égale au pgcd des entiers <TT>L1[j]</TT> et <TT>L2[k]</TT> alors que, :<BR>
+<TT>pari()</TT> puis<BR>
+<TT>gcd([4,3,2,15],[20,30,50,75])</TT> renvoie <TT>[4,3,2,15]</TT> car <TT>gcd</TT>
+est une commande <TT>Xcas</TT> qui avec comme argument 2 listes <TT>L1</TT> et 
+<TT>L2</TT> renvoie la liste <TT>L3[j]</TT> des pgcd de <TT>L1[j]</TT> et <TT>L2[j]</TT>
+c’est à dire la diagonale de la matrice précédente car on a :<BR>
+<TT>gcd([4,3,2,15],[20,30,50,75])=<BR>
+diag(pari("gcd", [4,3,2,15],[20,30,50,75]))</TT>
+</LI></UL><P>
+La documentation de PARI/GP est disponible depuis le menu
+Aide-&gt;Manuels.</P><HR>
+<A HREF="cascmd_fr203.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr205.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

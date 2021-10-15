@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Les coordonnées d’un point, d’un vecteur ou d’une droite : coordinates coordonnees</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr915.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr917.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1064">9.16.4</A>  Les coordonnées d’un point, d’un vecteur ou d’une droite : <TT>coordinates coordonnees</TT></H3><P><A NAME="@default1771"></A><A NAME="@default1772"></A><A NAME="sec:coordonnees2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1015.html#sec:coordonnees3">10.12.4</A> pour la géométrie 3-d.<BR>
+<TT>coordonnees</TT>, en géométrie plane, est une fonction ayant 
+comme argument un point ou un nombre complexe ou un vecteur ou une droite.<BR>
+<TT>coordonnees</TT> renvoie la liste de l’abscisse et de l’ordonnée du point 
+ou du vecteur ou la liste des affixes de deux points de la droite orientée.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si le point <TT>A</TT> a pour coordonnées cartésiennes (<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>A</I></SUB>),
+<TT>coordonnees(A)</TT> renvoie [<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>A</I></SUB>], 
+</LI><LI CLASS="li-itemize">si le point <TT>B</TT> a pour coordonnées cartésiennes (<I>x</I><SUB><I>B</I></SUB>,<I>y</I><SUB><I>B</I></SUB>),
+<TT>coordonnees(vecteur(A,B))</TT> ou <TT>coordonnees(B-A)</TT> renvoie 
+[<I>x</I><SUB><I>B</I></SUB>−<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>B</I></SUB>−<I>y</I><SUB><I>A</I></SUB>] (alors que <TT>B-A</TT> renvoie (<I>x</I><SUB><I>B</I></SUB>−<I>x</I><SUB><I>A</I></SUB>)+<I>i</I>*(<I>y</I><SUB><I>B</I></SUB>−<I>y</I><SUB><I>A</I></SUB>) car 
+<TT>B-A</TT> désigne l’affixe du vecteur <I>AB</I> en géométrie 
+plane),
+</LI><LI CLASS="li-itemize">si le vecteur <TT>V</TT> a pour coordonnées cartésiennes (<I>x</I><SUB><I>V</I></SUB>,<I>y</I><SUB><I>V</I></SUB>),
+<TT>coordonnees(V)</TT> ou <TT>coordonnees(vecteur(A,V))</TT> renvoie [<I>x</I><SUB><I>V</I></SUB>,<I>y</I><SUB><I>V</I></SUB>],
+</LI><LI CLASS="li-itemize">si une droite <TT>d</TT> est définie par deux points <TT>A</TT> et <TT>B</TT>, 
+<TT>coordonnees(d)</TT> renvoie <TT>[affixe(A),affixe(B)]</TT>, si <TT>d</TT> est
+définie par son équation, <TT>coordonnees(d)</TT> renvoie 
+<TT>[affixe(A),affixe(B)]</TT> où <TT>A</TT> et <TT>B</TT> sont deux points de la 
+droite <TT>d</TT>, le vecteur <TT>AB</TT> ayant même orientation que <TT>d</TT>.
+</LI></UL><P>
+On tape :
+</P><DIV CLASS="center"><TT>coordonnees(point(1+2*i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(1+2*i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,2]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>coordonnees(point(1+2*i)-point(i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(point(1+2*i)-point(i))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>coordonnees(vecteur(point(i),point(1+2*i)))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(vecteur(i,1+2*i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(vecteur([0,1],[1,2]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>coordonnees(1+2*i)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(vecteur(1+2*i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(vecteur(point(i),vecteur(1+2*i)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,2]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>coordonnees(point(i),vecteur(1+2*i))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,2]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>d:=droite(-1+i,1+2*i)</TT></DIV><P>
+Ou on tape
+</P><DIV CLASS="center"><TT>d:=droite(point(-1,1),point(1,2))</TT></DIV><P>
+Puis, 
+</P><DIV CLASS="center"><TT>coordonnees(d)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-1+i,1+2*i]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>d:=droite(y=(1/2*x+3/2))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[(3*i)/2,1+2*i]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>d:=droite(x-2*y+3=0)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[(3*i)/2,(-4+i)/2]</TT></DIV><P>
+<B>Attention</B><BR>
+<TT>coordonnees</TT> peut aussi avoir comme argument une séquence ou une liste
+de points. <TT>coordonnees</TT> renvoie alors la séquence ou la liste des
+listes des coordonnées de ces points, par exemple
+<TT>coordonnees(i,1+2*i)</TT> ou <TT>coordonnees(point(i),point(1+2*i))</TT> renvoie 
+la séquence :<BR>
+<TT>[0,1],[1,2]</TT><BR>
+et<BR>
+<TT>coordonnees([i,1+2*i])</TT> ou <TT>coordonnees([point(i),point(1+2*i)])</TT> 
+renvoie la matrice :<BR>
+<TT>[[0,1],[1,2]]</TT> donc<BR>
+<TT>coordonnees([1,2])</TT> renvoie la matrice :<BR>
+<TT>[[1,0],[2,0]]</TT> car <TT>[1,2]</TT> est considéré comme la liste de 2 
+points d’affixe <TT>1</TT> et <TT>2</TT>.
+</P><HR>
+<A HREF="cascmd_fr915.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr917.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

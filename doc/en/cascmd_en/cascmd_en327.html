@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Apply a function of one variable to the elements of a list : map apply of</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en326.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en328.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc366">2.37.32</A>  Apply a function of one variable to the elements of a list : <TT>map apply of</TT></H3><P><A NAME="@default546"></A><A NAME="@default547"></A><A NAME="@default548"></A>
+<TT>map</TT> or <TT>apply</TT> or <TT>of</TT> applies a function to a list
+of elements.<BR>
+<TT>of</TT> is the prefixed function equivalent to the parenthesis : 
+<TT>Xcas</TT> translates <TT>f(x)</TT> internally to <TT>of(f,x)</TT>. 
+It is more natural to call <TT>map</TT> 
+or <TT>apply</TT> than <TT>of</TT>. Be carefull with the order of arguments
+(that is required for compatibility reasons).<BR>
+Note that <TT>apply</TT> returns a list (<TT>[]</TT>)
+even if the second argument is not a list.<BR>
+Input :
+</P><DIV CLASS="center"><TT>apply(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,[3,5,1])</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>of(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,[3,5,1])</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>map([3,5,1],x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+or first define the function <I>h</I>(<I>x</I>)=<I>x</I>2, input :
+</P><DIV CLASS="center"><TT>h(x):=x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+then
+</P><DIV CLASS="center"><TT>apply(h,[3,5,1])</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>of(h,[3,5,1])</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>map([3,5,1],h)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[9,25,1]</TT></DIV><P>
+Next example, define the function <I>g</I>(<I>x</I>)=[<I>x</I>,<I>x</I>2,<I>x</I>3], input :
+</P><DIV CLASS="center"><TT>g:=(x)-&gt;[x,x</TT><CODE><TT>^</TT></CODE><TT>2,x</TT><CODE><TT>^</TT></CODE><TT>3]</TT></DIV><P>
+then
+</P><DIV CLASS="center"><TT>apply(g,[3,5,1])</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>of(g,[3,5,1])</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>map([3,5,1],g)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,9,27],[5,25,125],[1,1,1]]</TT></DIV><P>
+<B>Warning!!!</B> first purge <TT>x</TT> if <TT>x</TT> is not symbolic.<BR>
+Note that if <TT>l1,l2,l3</TT> are lists
+<TT>sizes([l1,l2,l3])</TT> is equivalent to <TT>map(size,[l1,l2,l3]</TT>.</P><HR>
+<A HREF="cascmd_en326.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en328.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Difference between function and expression</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en120.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en122.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc138">2.15.1</A>  Difference between function and expression</H3><P><A NAME="@default196"></A><A NAME="@default197"></A>
+A function <TT>f</TT> is defined for example by :<BR>
+<TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT> or by <TT>f:=x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT><BR>
+that is to say, for all <I>x</I>, <I>f</I>(<I>x</I>) is equal to the expression 
+<I>x</I><SUP>2</SUP>&#X2212;1. In that case, to have the value of <I>f</I> for <I>x</I>=2, input :<TT>f(2)</TT>.<BR>
+But if the input is 
+<TT>g:=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>, then <TT>g</TT> is a variable where the 
+expression <I>x</I><SUP>2</SUP>&#X2212;1 is stored. In that case, to have the value of <I>g</I> for <I>x</I>=2,
+input : <TT>subst(g,x=2)</TT> (<I>g</I> is an expression depending on <I>x</I>).</P><P>When a command expects a function as argument, this argument should
+be either the definition of the function (e.g. <TT>x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>)
+or a variable name assigned to a function (e.g. <TT>f</TT>
+previously defined by e.g. <TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>).<BR>
+When a command expects an expression as argument, this argument should
+be either the definition of the expression (for example <TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>), 
+or a variable name assigned to an expression (e.g. 
+<TT>g</TT> previously defined, for example, by 
+<TT>g:=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>), or the evaluation of a function. e.g.
+<TT>f(x)</TT> if <TT>f</TT> is a previously defined function,
+for example, by <TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>).</P><HR>
+<A HREF="cascmd_en120.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en122.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

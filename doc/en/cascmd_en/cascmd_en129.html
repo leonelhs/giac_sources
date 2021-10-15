@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Define a fonction with the history : as_function_of</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en128.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en130.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc147">2.16.6</A>  Define a fonction with the history : <TT>as_function_of</TT></H3><P><A NAME="@default250"></A>
+If an entry defined the variable <TT>a</TT> and if in a later
+entry defines the variable <TT>b</TT> (supposed to be dependant on
+<TT>a</TT>), then
+<TT>c:=as_function_of(b,a)</TT> will define a function <TT>c</TT> such that 
+<TT>c(a)=b</TT>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>a:=sin(x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>sin(x)</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>b:=sqrt(1+a</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>sqrt(1+sin(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>c:=as_function_of(b,a)</TT></DIV><P>
+Output :
+</P><DIV CLASS="flushleft"><TT>(a)-&gt;<BR>
+{ local NULL;<BR>
+ return(sqrt(1+a</TT><CODE><TT>^</TT></CODE><TT>2));<BR>
+}</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>c(x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>sqrt(1+x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>a:=2</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>b:=1+a</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>5</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>c:=as_function_of(b,a)</TT></DIV><P>
+Output :
+</P><DIV CLASS="flushleft"><TT>(a)-&gt;<BR>
+{ local NULL;<BR>
+ return(sqrt(1+a</TT><CODE><TT>^</TT></CODE><TT>2));<BR>
+}</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>c(x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P><B>Warning !!</B><BR>
+If the variable <TT>b</TT> has been assigned
+several times, the first affectation of <TT>b</TT> following the last 
+affectation of <TT>a</TT> will be used. Moreover, the order used is the
+order of validation of the commandlines, 
+which may not be reflected by the Xcas interface
+if you reused previous commandlines.<BR>
+Input for example :<BR>
+<TT>a:=2</TT> then<BR>
+<TT>b:=2*a+1</TT> then<BR>
+<TT>b:=3*a+2</TT> then<BR>
+<TT>c:=as_function_of(b,a)</TT><BR>
+Output :
+</P><DIV CLASS="center"><TT>(a)-&gt; {local NULL; return(2*a+1);}</TT></DIV><P>
+i.e. <TT>c(x)</TT> is equal to <TT>2*x+1</TT>.<BR>
+But, input :<BR>
+<TT>a:=2</TT> then<BR>
+<TT>b:=2*a+1</TT> then<BR>
+<TT>a:=2</TT> then<BR>
+<TT>b:=3*a+2</TT> then<BR>
+<TT>c:=as_function_of(b,a)</TT><BR>
+Output :
+</P><DIV CLASS="center"><TT>(a)-&gt; {local NULL; return(3*a+2);}</TT></DIV><P>
+i.e. <TT>c(x)</TT> is equal to <TT>3*x+2</TT>.<BR>
+Hence the line where <TT>a</TT> is define must be revalided before the good
+definition of <TT>b</TT>. </P><HR>
+<A HREF="cascmd_en128.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en130.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

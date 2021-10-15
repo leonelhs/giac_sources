@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Test de primalité : is_prime isprime isPrime</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr175.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr177.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc242">6.7.17</A>  Test de primalité : <TT>is_prime isprime isPrime</TT></H3><P><A NAME="@default321"></A><A NAME="@default322"></A><A NAME="@default323"></A><A NAME="@default324"></A>
+<TT>is_prime(n)</TT> renvoie <TT>1</TT> (vrai) ou <TT>0</TT> (faux)
+selon que son argument est premier ou non. <TT>isprime</TT> ou <TT>isPrime</TT> 
+renvoie <TT>true</TT> ou <TT>false</TT>.<BR>
+Utiliser la commande <TT>is_prime(n,1)</TT> (ou <TT>pari("isprime",n,1)</TT>)
+pour obtenir un certificat de primalité par le test
+"p-1" de Selfridge-Pocklington-Lehmer (voir la documentation
+de PARI/GP, depuis le menu <TT>Aide-&gt;Manuels-&gt;PARI-GP)</TT>) et
+<TT>pari("isprime",n,2)</TT> ou <TT>is_prime(n,2)</TT> pour utiliser le test APRCL
+ou <TT>is_prime(n)</TT> pour utiliser un test mixte.<BR>
+En interne isprime appelle <TT>is_prime</TT>, et si la reponse est <TT>0</TT> il la 
+transforme en <TT>false</TT>, sinon il renvoie <TT>true</TT>. On ne peut donc pas
+obtenir de certificat de primalité avec <TT>isprime</TT>, par 
+contre les arguments de <TT>isprime</TT> et <TT>is_prime</TT> sont identiques.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>is_prime(100003)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>isprime(100003)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>true</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>is_prime(98569898989987)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>is_prime(14)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>isprime(14)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>false</TT></DIV><P>
+Pour obtenir un certificat de primalité pour <I>n</I>=9856989898997789789,
+on tape :
+</P><DIV CLASS="center"><TT>is_prime(9856989898997789789,1)</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>pari("isprime",9856989898997789789,1)</TT></DIV><P>
+On obtient les coefficients prouvant la primalité par le test
+"p-1" de Selfridge-Pocklington-Lehmer :
+</P><DIV CLASS="center">
+<TT>[[2,2,1],[19,2,1],[941,2,1],[1873,2,1],[94907,2,1]]</TT>
+</DIV><P>
+sinon, on tape :
+</P><DIV CLASS="center"><TT>pari("isprime",9856989898997789789,2)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>is_prime(9856989898997789789,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+<A HREF="cascmd_fr175.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr177.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

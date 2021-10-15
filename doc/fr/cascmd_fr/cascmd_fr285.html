@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Sommet et feuille d’une expression : sommet feuille op</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr284.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr286.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc360">6.16.3</A>  Sommet et feuille d’une expression : <TT>sommet feuille op</TT></H3><P><A NAME="@default493"></A><A NAME="@default494"></A><A NAME="@default495"></A><A NAME="sec:op"></A>
+Un opérateur est une fonction infixée : par exemple ’+’ est un 
+opérateur et ’sin’ est une fonction.<BR>
+On peut représenter une expression par un arbre. Le sommet de l’arbre est 
+soit un opérateur, soit une fonction et les feuilles de l’arbre sont les 
+arguments de l’opérateur ou de la fonction (voir aussi <A HREF="cascmd_fr502.html#sec:makesuiteop">6.40.13</A>).<BR>
+La fonction <TT>sommet</TT> (resp <TT>feuille</TT> (ou <TT>op</TT>))
+renvoie le sommet (resp la liste des feuilles) d’une expression.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>sommet(sin(x+2))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>’sin’</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>sommet(x+2*y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>’+’</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>feuille(sin(x+2))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>op(sin(x+2))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x+2</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>feuille(x+2*y)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>op(x+2*y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x,2*y) </TT></DIV><P> 
+<B>Remarque</B><BR>
+Lorsque l’utilisateur définit une fonction par un programme par exemple la
+fonction <TT>pgcd</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>pgcd(a,b):={local r; while (b!=0) {r:=irem(a,b);a:=b;b:=r;} return a;}</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>sommet(pgcd)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>’program’</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[0]</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>(a,b)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[1]</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>(0,0) ou (15,25) si l’on vient d’exécuter pgcd(15,25)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[2]</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>Le corps du programme : {local r;....return(a);}</TT></DIV><HR>
+<A HREF="cascmd_fr284.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr286.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

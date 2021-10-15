@@ -1,0 +1,104 @@
+// fltk 7Fl_Tile 34 76 724 74
+[
+// fltk N4xcas19Multiline_Input_tabE 34 76 724 30
+restart
+,
+// fltk N4xcas10Log_OutputE 34 106 724 1
+
+,
+// fltk N4xcas8EquationE 34 107 724 43
+[I,a,b,dg,e1,e2,f,g,gradg,n,x0,y0]
+]
+,
+// fltk 7Fl_Tile 34 152 724 157
+[
+// fltk N4xcas19Multiline_Input_tabE 34 152 724 30
+f(x,y):=cos(x*y)
+,
+// fltk N4xcas10Log_OutputE 34 182 724 84
+// Parsing f£// Success compiling f££
+,
+// fltk N4xcas8EquationE 34 266 724 43
+ (x,y)->cos(x*y)
+]
+,
+// fltk 7Fl_Tile 34 311 724 98
+[
+// fltk N4xcas19Multiline_Input_tabE 34 311 724 30
+x0:=pi/4;y0:=pi/4;g:=unapply(f(x0+u*t,y0+v*t),u,v,t)
+,
+// fltk N4xcas10Log_OutputE 34 341 724 1
+
+,
+// fltk N4xcas8EquationE 34 342 724 67
+pi/4,pi/4, (u,v,t)->cos((pi/4+u*t)*(pi/4+v*t))
+]
+,
+// fltk 7Fl_Tile 34 411 724 98
+[
+// fltk N4xcas19Multiline_Input_tabE 34 411 724 30
+dg:=unapply(diff(g(u,v,t),t),t)
+,
+// fltk N4xcas10Log_OutputE 34 441 724 1
+
+,
+// fltk N4xcas8EquationE 34 442 724 67
+ (t)->(-(sin((pi/4+u*t)*(pi/4+v*t))))*(u*(pi/4+v*t)+(pi/4+u*t)*v)
+]
+,
+// fltk 7Fl_Tile 34 511 724 122
+[
+// fltk N4xcas19Multiline_Input_tabE 34 511 724 30
+e1:=dg(0)
+,
+// fltk N4xcas10Log_OutputE 34 541 724 1
+
+,
+// fltk N4xcas8EquationE 34 542 724 91
+(-(sin((pi*1/4*pi)/4)))*((u*pi)/4+pi*1/4*v)
+]
+,
+// fltk 7Fl_Tile 34 635 724 114
+[
+// fltk N4xcas19Multiline_Input_tabE 34 635 724 30
+gradg:=unapply(grad(f(x,y),[x,y]),x,y)
+,
+// fltk N4xcas10Log_OutputE 34 665 724 1
+
+,
+// fltk N4xcas8EquationE 34 666 724 83
+expr(" (x,y)->{ £  [(-(sin(x*y)))*y,(-(sin(x*y)))*x];  £}",0)
+]
+,
+// fltk 7Fl_Tile 34 751 724 122
+[
+// fltk N4xcas19Multiline_Input_tabE 34 751 724 30
+e2:=dot(gradg(x0,y0),[u,v])
+,
+// fltk N4xcas10Log_OutputE 34 781 724 1
+
+,
+// fltk N4xcas8EquationE 34 782 724 91
+(-(sin((pi*1/4*pi)/4)))*pi*1/4*u+(-(sin((pi*1/4*pi)/4)))*pi*1/4*v
+]
+,
+// fltk 7Fl_Tile 34 875 724 74
+[
+// fltk N4xcas19Multiline_Input_tabE 34 875 724 30
+simplify(e1-e2)
+,
+// fltk N4xcas10Log_OutputE 34 905 724 1
+
+,
+// fltk N4xcas8EquationE 34 906 724 43
+0
+]
+,
+// fltk 7Fl_Tile 34 951 724 31
+[
+// fltk N4xcas19Multiline_Input_tabE 34 951 724 30
+
+,
+// fltk N4xcas10Log_OutputE 34 981 724 1
+
+]

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Approximate computation of the derivative number : nDeriv</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en487.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en489.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc566">4.3.2</A>  Approximate computation of the derivative number : <TT>nDeriv</TT></H3><P><A NAME="@default834"></A>
+<TT>nDeriv</TT> takes as arguments : an expression <TT>ex</TT>, the variable
+name of this expression (by default <TT>x</TT>), and <TT>h</TT> (by default 
+<TT>h=0.001</TT>).<BR>
+<TT>nDeriv(ex,x,h)</TT> computes an approximated value of the derivative of the
+expression <TT>ex</TT> at the point <TT>x</TT> and returns :
+</P><DIV CLASS="center"><TT>(f(x+h)-f(x+h))/2*h</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>nDeriv(x</TT><CODE><TT>^</TT></CODE><TT> 2,x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>((x+0.001)</TT><CODE><TT>^</TT></CODE><TT>2-(x+-0.001)</TT><CODE><TT>^</TT></CODE><TT>2)*500.0</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>subst(nDeriv(x</TT><CODE><TT>^</TT></CODE><TT> 2,x),x=1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>nDeriv(exp(x</TT><CODE><TT>^</TT></CODE><TT> 2),x,0.00001)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(exp((x+1e-05)</TT><CODE><TT>^</TT></CODE><TT>2)-exp((x+-1e-05)</TT><CODE><TT>^</TT></CODE><TT>2))*50000</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>subst(exp(nDeriv(x</TT><CODE><TT>^</TT></CODE><TT> 2),x,0.00001),x=1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>5.43656365783</TT></DIV><P>
+which is an approximate value of <TT>2e=5.43656365692</TT>.</P><HR>
+<A HREF="cascmd_en487.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en489.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

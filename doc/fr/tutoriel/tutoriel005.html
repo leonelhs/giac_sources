@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="tutoriel.css">
+<TITLE>Repr&#XE9;sentations graphiques</TITLE>
+</HEAD>
+<BODY >
+<A HREF="tutoriel004.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="tutoriel006.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H2 CLASS="section"><A NAME="htoc27">5</A>&#XA0;&#XA0;Repr&#XE9;sentations graphiques</H2><P>
+Pour obtenir une repr&#XE9;sentation graphique dans Xcas, il faut saisir une commande
+dont la sortie est un objet graphique.
+Pour vous aider &#XE0; effectuer les repr&#XE9;sentations graphiques les plus courantes,
+le menu <CODE>Graphic</CODE> vous propose des boites de dialogue qui se chargent
+de cr&#XE9;er une ligne de commande et de le valider pour afficher le graphique souhait&#XE9;.</P><P>Si vous souhaitez repr&#XE9;senter plusieurs objets graphiques dans une m&#XEA;me repr&#XE9;sentation,
+vous devez s&#XE9;parer les commandes les cr&#XE9;ant par un <CODE>;</CODE>. Vous pouvez aussi cr&#XE9;er
+une figure (menu <CODE>Geo</CODE>, <CODE>Nouvelle figure</CODE>) et utiliser le menu <CODE>Geo</CODE>
+pour cr&#XE9;er des objets g&#XE9;om&#XE9;triques.</P><P>Chaque commande graphique cr&#XE9;e un objet graphique 2-d ou 3-d, qui est traduit
+en r&#XE9;ponse par une image dans la fen&#XEA;tre <TT>Xcas</TT>. A droite de cette
+image, des boutons de zoom <CODE>in</CODE> et <CODE>out</CODE> permettent
+d&#X2019;agrandir ou de rapetisser la repr&#XE9;sentation, des fl&#XE8;ches
+permettent de la d&#XE9;placer. </P><P>Les param&#XE8;tres par d&#XE9;faut (en
+particulier les intervalles de repr&#XE9;sentation en abscisse et
+ordonn&#XE9;e) peuvent &#XEA;tre chang&#XE9;s dans la fen&#XEA;tre de configuration
+graphique accessible depuis le menu
+<CODE>Cfg-&gt;Configuration graphique</CODE>.
+<A NAME="@default305"></A>
+<A NAME="@default306"></A></P><P>Notez enfin que les objets graphiques 2-d sont 
+aussi affich&#XE9;s dans une fen&#XEA;tre appel&#XE9;e
+<CODE>DispG</CODE> (Display Graphics) que vous pouvez faire appara&#XEE;tre par le 
+menu
+<CODE>Cfg-&gt;Montrer-&gt;DispG</CODE> ou avec la commande 
+<CODE>DispG</CODE>. La diff&#XE9;rence est que les graphiques successifs sont trac&#XE9;s
+individuellement dans chaque fen&#XEA;tre de r&#XE9;ponse, alors qu&#X2019;ils sont
+superpos&#XE9;s dans la fen&#XEA;tre <CODE>DispG</CODE>. Vous pouvez effacer la
+fen&#XEA;tre <CODE>DispG</CODE> par la commande <CODE>ClrGraph</CODE>.
+<A NAME="@default307"></A>
+<A NAME="@default308"></A> 
+<A NAME="@default309"></A></P><H3 CLASS="subsection"><A NAME="toc23"></A><A NAME="htoc28">5.1</A>&#XA0;&#XA0;Trac&#XE9;s de courbes</H3><P>
+Pour cr&#XE9;er rapidement des trac&#XE9;s de courbes simples, 
+il est conseill&#XE9; d&#X2019;utiliser le menu <CODE>Graphic</CODE>.</P><P>L&#X2019;instruction de trac&#XE9; d&#X2019;une courbe repr&#XE9;sentative de fonction est <CODE>plot</CODE> avec en
+param&#XE8;tres une expression ou une liste d&#X2019;expressions dont on
+veut la repr&#XE9;sentation graphique, puis la variable (&#XE9;ventuellement
+on indique l&#X2019;intervalle de valeurs de la variable). 
+<A NAME="@default310"></A>
+<A NAME="@default311"></A>
+Pour distinguer plusieurs courbes,
+on peut utiliser un troisi&#XE8;me argument par exemple
+<CODE>couleur=</CODE> suivi de la liste des couleurs &#XE0; utiliser. Les
+couleurs peuvent &#XEA;tre cod&#XE9;es par leur nom fran&#XE7;ais, leur nom
+anglais ou leur num&#XE9;ro. La fonction <CODE>couleur</CODE> change la couleur
+de base pour toutes les fonctions graphiques qui suivent.
+La fonction <CODE>tangent</CODE> permet d&#X2019;obtenir la tangente &#XE0; une courbe en un 
+point.
+<A NAME="@default312"></A>
+<A NAME="@default313"></A>
+</P><PRE CLASS="verbatim">E:=(2*x+1)/(x^2+1);plot(E)
+plot(E,x=-2..2,color=red)
+couleur(vert);plot(E,couleur=rouge);tangent(plot(E),0)
+DispG()
+plot([sin(x),x,x-x^3/6],x=-2..2,couleur=[rouge,bleu,vert])
+erase
+li:=[(x+k*0.5)^2$(k=-5..5)]:;
+plot(li,x=-8..8,couleur=[k$(k=0..10)])
+</PRE><P>La fonction <CODE>plotparam</CODE> permet d&#X2019;effectuer le
+trac&#XE9; de (<I>x</I>(<I>t</I>),<I>y</I>(<I>t</I>)). Il faut d&#XE9;finir les deux coordonn&#XE9;es 
+comme une seule expression complexe dont <I>x</I>(<I>t</I>) est la partie r&#XE9;elle 
+et <I>y</I>(<I>t</I>) la partie imaginaire. La fonction <CODE>plotpolar</CODE> 
+trace les courbes en coordonn&#XE9;es polaires. La commande
+<CODE>plotimplicit(f(x,y),x,y)</CODE> trace l&#X2019;ensemble des solutions de
+<I>f</I>(<I>x</I>,<I>y</I>)=0.
+</P><PRE CLASS="verbatim">plotparam(sin(t)^3+i*cos(t)^3,t,0,2*pi)
+plotparam(t^2+i*t^3,t,-1,1)
+plotpolar(1/(1-2sin(t/2)),t,0,4*pi)
+plotpolar(tan(t)+tan(t/2),t,0,2*pi)
+plotimplicit(x^2+4*y^2-4,x,y)
+</PRE><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Trac&#XE9;s de courbes</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plot</CODE></TD><TD ALIGN=left NOWRAP>graphe d&#X2019;une expression d&#X2019;une variable</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plotfunc</CODE></TD><TD ALIGN=left NOWRAP>graphe d&#X2019;une expression d&#X2019;1 ou 2 variable(s)</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>couleur</CODE></TD><TD ALIGN=left NOWRAP>choisir la couleur d&#X2019;un trac&#XE9;</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>tangent</CODE></TD><TD ALIGN=left NOWRAP>tangente &#XE0; une courbe</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plotparam</CODE></TD><TD ALIGN=left NOWRAP>courbe param&#XE9;trique</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plotpolar</CODE></TD><TD ALIGN=left NOWRAP>courbe en polaires</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plotimplicit</CODE></TD><TD ALIGN=left NOWRAP>courbe implicite</TD></TR>
+</TABLE>
+</DIV><P>
+<A NAME="@default314"></A>
+<A NAME="@default315"></A>
+<A NAME="@default316"></A>
+<A NAME="@default317"></A>
+<A NAME="@default318"></A>
+<A NAME="@default319"></A>
+</P><H3 CLASS="subsection"><A NAME="toc24"></A><A NAME="htoc29">5.2</A>&#XA0;&#XA0;Objets graphiques 2D</H3><P>
+<TT>Xcas</TT> &#XE9;tant aussi un logiciel de g&#XE9;om&#XE9;trie plane, de nombreuses
+figures peuvent &#XEA;tre trac&#XE9;es (dans un &#XE9;cran que l&#X2019;on obtient avec 
+<TT>Alt+g</TT>) par des commandes du menu <CODE>Geo</CODE>, par exemple des polygones,
+des coniques&#X2026;&#XA0;
+Les arguments de ces commandes sont souvent des points (commande 
+<CODE>point</CODE>) qui peuvent en g&#XE9;n&#XE9;ral &#XEA;tre saisis 
+directement par leur affixe complexe. 
+Par exemple <CODE>cercle(2+3*i,2)</CODE> trace le cercle centr&#XE9; au point
+(2,3), de rayon 2.
+La commande <CODE>legende</CODE> permet de placer un texte &#XE0; un endroit,
+lui aussi sp&#XE9;cifi&#XE9; par un nombre complexe. Les fonctions
+<CODE>polygonplot</CODE> et <CODE>scatterplot</CODE> prennent en entr&#XE9;e une
+liste d&#X2019;abscisses et une liste d&#X2019;ordonn&#XE9;es.
+</P><PRE CLASS="verbatim">lx:=[k$(k=1..10)]
+ly:=apply(sin,lx)
+polygonplot(lx,ly)
+erase
+scatterplot(lx,ly)
+polygone_ouvert(lx+i*ly)
+</PRE><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Objets graphiques 2D</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>legend</CODE></TD><TD ALIGN=left NOWRAP>met du texte &#XE0; partir d&#X2019;un point donn&#XE9;</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>point</CODE></TD><TD ALIGN=left NOWRAP>point donn&#XE9; par son affixe ou 2 coordonn&#XE9;es</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>segment</CODE></TD><TD ALIGN=left NOWRAP>segment donn&#XE9;e par 2 points</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>droite</CODE></TD><TD ALIGN=left NOWRAP>droite donn&#XE9;e par son &#XE9;quation ou 2 points</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>cercle</CODE></TD><TD ALIGN=left NOWRAP>cercle donn&#XE9;e par centre et rayon</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>inter</CODE></TD><TD ALIGN=left NOWRAP>intersection de courbes</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>equation</CODE></TD><TD ALIGN=left NOWRAP>&#XE9;quation cart&#XE9;sienne</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>parameq</CODE></TD><TD ALIGN=left NOWRAP>&#XE9;quation param&#XE9;trique</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>polygonplot</CODE></TD><TD ALIGN=left NOWRAP>ligne polygonale</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>scatterplot</CODE></TD><TD ALIGN=left NOWRAP>nuage de points</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>polygone</CODE></TD><TD ALIGN=left NOWRAP>polygone ferm&#XE9;</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>polygone_ouvert</CODE></TD><TD ALIGN=left NOWRAP>polygone ouvert</TD></TR>
+</TABLE>
+</DIV><P>
+<A NAME="@default320"></A>
+<A NAME="@default321"></A>
+<A NAME="@default322"></A>
+<A NAME="@default323"></A>
+<A NAME="@default324"></A>
+<A NAME="@default325"></A>
+<A NAME="@default326"></A>
+<A NAME="@default327"></A>
+<A NAME="@default328"></A>
+<A NAME="@default329"></A>
+<A NAME="@default330"></A>
+<A NAME="@default331"></A>
+<A NAME="@default332"></A>
+</P><H3 CLASS="subsection"><A NAME="toc25"></A><A NAME="htoc30">5.3</A>&#XA0;&#XA0;Objets graphiques 3D</H3><UL CLASS="itemize"><LI CLASS="li-itemize">
+Pour tracer une surface d&#XE9;finie par l&#X2019;&#XE9;quation
+<I>z</I>=<I>f</I>(<I>x</I>,<I>y</I>), on utilise la commande <CODE>plotfunc</CODE>, avec
+en arguments l&#X2019;&#XE9;quation de la surface et la liste des deux variables.
+On peut aussi indiquer la plage de variable, et la discr&#XE9;tisation.
+<PRE CLASS="verbatim">plotfunc(x^2-y^2,[x,y])
+plotfunc(x+y^2,[x=-5..5,y=-2..2],xstep=0.5,ystep=0.1,
+affichage=vert+rempli)
+</PRE>On obtient une surface en dimension 3.
+Pour modifier le point de vue, utilisez la souris en-dehors du cube de visualisation
+ou cliquez dans la figure 3-d, puis
+utilisez les touches x,X,y,Y,z,Z (rotations par rapport aux axes), 
++ et - pour les zooms, 
+les fl&#XE8;ches de direction et page up/down pour changer la
+fen&#XEA;tre de visualisation (la fen&#XEA;tre de calcul par d&#XE9;faut est 
+d&#XE9;finie par la configuration graphique si on ne l&#X2019;a pas indiqu&#XE9;e
+en param&#XE8;tre dans <CODE>plotfunc</CODE>)
+</LI><LI CLASS="li-itemize">On peut aussi tracer une surface param&#XE9;tr&#XE9;e
+avec <CODE>plotparam</CODE> dont le premier
+argument est une liste de taille 3 contenant les coordonn&#XE9;es du point
+et les 2 arguments suivants les param&#XE8;tres&#XA0;:
+<PRE CLASS="verbatim">plotparam([u,v,u+v],u=-1..1,v=-2..2)
+</PRE></LI><LI CLASS="li-itemize">Pour tracer des courbes param&#XE9;tr&#XE9;es dans l&#X2019;espace, on utilise
+aussi la commande <CODE>plotparam</CODE> mais avec un seul param&#XE8;tre&#XA0;:
+<PRE CLASS="verbatim">plotparam([u,u^2,u^3],u=-1..1)
+</PRE></LI><LI CLASS="li-itemize">On peut aussi tracer des objets g&#XE9;om&#XE9;triques 3D dans une figure 3-d que l&#X2019;on 
+obtient avec <TT>Alt+h</TT>, puis en utilisant des commandes du menu <CODE>Geo</CODE>, par exemple&#XA0;:
+point, droite ,plan, polygone, sphere&#X2026;<PRE CLASS="verbatim">plan(z=x+y);
+droite(x=y,z=y);
+A:=point(1,2,3); B:=point(2,-1,1); C:=point(1,0,0);
+plan(A,B,C,couleur=cyan);
+droite(A,B,affichage=line_width_3)
+</PRE></LI></UL><DIV CLASS="center">
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Objets graphiques 3D</B></TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plotfunc</CODE></TD><TD ALIGN=left NOWRAP>surface par &#XE9;quation</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plotparam</CODE></TD><TD ALIGN=left NOWRAP>surface ou courbe param&#XE9;trique</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>point</CODE></TD><TD ALIGN=left NOWRAP>point donn&#XE9; par 3 coordonn&#XE9;es</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>droite</CODE></TD><TD ALIGN=left NOWRAP>droite donn&#XE9;e par 2 &#XE9;quations ou 2 points</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>plan</CODE></TD><TD ALIGN=left NOWRAP>plan donn&#XE9; par 1 &#XE9;quation ou 3 points</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>sphere</CODE></TD><TD ALIGN=left NOWRAP>sph&#XE8;re donn&#XE9;e par centre et rayon</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>cone</CODE></TD><TD ALIGN=left NOWRAP>cone donn&#XE9; par centre, axe, angle d&#X2019;ouverture</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>inter</CODE></TD><TD ALIGN=left NOWRAP>intersection</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>polygone</CODE></TD><TD ALIGN=left NOWRAP>polygone</TD></TR>
+<TR><TD ALIGN=left NOWRAP><CODE>polygone_ouvert</CODE></TD><TD ALIGN=left NOWRAP>polygone ouvert</TD></TR>
+</TABLE>
+</DIV><P>
+<A NAME="@default333"></A>
+<A NAME="@default334"></A>
+<A NAME="@default335"></A>
+<A NAME="@default336"></A>
+<A NAME="@default337"></A>
+<A NAME="@default338"></A>
+<A NAME="@default339"></A>
+<A NAME="@default340"></A>
+<A NAME="@default341"></A> 
+<A NAME="@default342"></A>
+<A NAME="@default343"></A>
+<A NAME="@default344"></A>
+<A NAME="@default345"></A></P><HR>
+<A HREF="tutoriel004.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="tutoriel006.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

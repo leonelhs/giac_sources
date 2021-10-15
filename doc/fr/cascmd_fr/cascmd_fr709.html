@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Régression logarithmique : logarithmic_regression</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr708.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr710.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc829">7.2.13</A>  Régression logarithmique : <TT>logarithmic_regression</TT></H3><P><A NAME="@default1272"></A>
+Pour approcher les données par une fonction logarithmique d’équation 
+<I>y</I>=<I>m</I>ln(<I>x</I>)+<I>b</I>, on utilise <TT>logarithmic_regression</TT> qui renvoie le couple 
+(<I>m</I>,<I>b</I>).<BR>
+<TT>logarithmic_regression</TT> a les mêmes arguments que <TT>covariance</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>evalf(logarithmic_regression([[1,1],[2,4],[3,9],[4,16]]))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>evalf(logarithmic_regression([1,2,3,4],[1,4,9,16]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>10.1506450002,-0.564824055818</TT></DIV><P>
+c’est donc la fonction logarithmique d’équation 
+<I>y</I>=10.15ln(<I>x</I>)−0.565 qui approche au mieux les données.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>X:=[1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8]</TT></DIV><DIV CLASS="center"><TT>Y:=[1.6,2.15,2.65,3.12,3.56,3.99,4.4,4.8,5.18,</TT></DIV><DIV CLASS="center"><TT>5.58,5.92,6.27,6.62,7.06,7.3]</TT></DIV><DIV CLASS="center"><TT>logarithmic_regression(X,Y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2.83870854646,0.843078064152</TT></DIV><P>
+c’est donc la fonction logarithmique d’équation 
+<I>y</I>=0.84ln(<I>x</I>)+2.84 qui approche au mieux les données .<BR>
+On vérifie en tapant :<BR>
+</P><DIV CLASS="center"><TT>linear_regression(ln(X),Y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2.83870854646,0.843078064152</TT></DIV><P>
+et le coefficient de corrélation est :
+</P><DIV CLASS="center"><TT>correlation(ln(X),Y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.977939822434</TT></DIV><P>
+On peut aussi taper pour chercher une meilleur approximation :
+</P><DIV CLASS="center"><TT>logarithmic_regression(X,log(Y))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.732351031846,0.467599676658</TT></DIV><P>
+c’est donc la fonction logarithmique d’équation 
+<I>z</I>=ln(<I>y</I>)=0.73ln(<I>x</I>)+0.47 qui approche au mieux les données.<BR>
+On vérifie en tapant :<BR>
+</P><DIV CLASS="center"><TT>linear_regression(ln(X),ln(Y))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.732351031846,0.467599676658</TT></DIV><P>
+et le coefficient de corrélation est :
+</P><DIV CLASS="center"><TT>correlation(ln(X),ln(Y))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.999969474543</TT></DIV><HR>
+<A HREF="cascmd_fr708.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr710.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

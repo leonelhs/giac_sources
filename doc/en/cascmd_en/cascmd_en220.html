@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Chinese remainders : chinrem</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en219.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en221.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc247">2.25.13</A>  Chinese remainders : <TT>chinrem</TT></H3><P><A NAME="@default407"></A>
+<TT>chinrem</TT> takes two lists as argument, each list being made of 2 
+polynomials (either expressions or as a list of coefficients in decreassing 
+order). If the polynomials are expressions, an optionnal third
+argument may be provided to specify the main variable, by default
+<TT>x</TT> is used.
+<TT>chinrem([A,R],[B,Q])</TT> returns the list of two polynomials
+<TT>P</TT> and <TT>S</TT> such that :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>S</I>=<I>R</I>.<I>Q</I>,     <I>P</I>=<I>A</I> (mod <I>R</I> ), <I>P</I>=<I>B</I> (mod <I>Q</I> ) </TD></TR>
+</TABLE><P>
+If <TT>R</TT> and <TT>Q</TT> are coprime, a solution <TT>P</TT> always exists 
+and all the solutions are congruent modulo <TT>S=R*Q</TT>.
+For example, assume we want to solve :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>P</I>(<I>x</I>)=</TT></TD><TD ALIGN=left NOWRAP><TT><I>x</I> </TT></TD><TD ALIGN=right NOWRAP><TT>mod</TT><TT> (<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+1)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT>      <I>P</I>(<I>x</I>)=</TT></TD><TD ALIGN=left NOWRAP><TT><I>x</I>-1 </TT></TD><TD ALIGN=right NOWRAP><TT>mod</TT><TT> (<I>x</I></TT><SUP><TT>2</TT></SUP><TT>-1) </TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>chinrem([[1,0],[1,0,1]],[[1,-1],[1,0,-1]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1/-2,1,1/-2],[1,0,0,0,-1]]</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>chinrem([x,x</TT><CODE><TT>^</TT></CODE><TT>2+1],[x-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1/-2*x</TT><CODE><TT>^</TT></CODE><TT>2+x+1/-2,x</TT><CODE><TT>^</TT></CODE><TT>4-1]</TT></DIV><P>
+hence  <I>P</I>(<I>x</I>)=&#X2212;<I>x</I><SUP>2</SUP>&#X2212;2.<I>x</I>+1/2  (mod  <I>x</I><SUP>4</SUP>&#X2212;1)<BR>
+Another example, input :
+</P><DIV CLASS="center"><TT>chinrem([[1,2],[1,0,1]],[[1,1],[1,1,1]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-1,-1,0,1],[1,1,2,1,1]]</TT></DIV><P>
+or :
+</P><DIV CLASS="center"><TT>chinrem([y+2,y</TT><CODE><TT>^</TT></CODE><TT>2+1],[y+1,y</TT><CODE><TT>^</TT></CODE><TT>2+y+1],y)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[-y</TT><CODE><TT>^</TT></CODE><TT>3-y</TT><CODE><TT>^</TT></CODE><TT>2+1,y</TT><CODE><TT>^</TT></CODE><TT>4+y</TT><CODE><TT>^</TT></CODE><TT>3+2*y</TT><CODE><TT>^</TT></CODE><TT>2+y+1]</TT></DIV><HR>
+<A HREF="cascmd_en219.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en221.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

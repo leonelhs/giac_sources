@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>L’instruction conditionnelle : switch</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr808.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr810.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc937">8.4.20</A>  L’instruction conditionnelle : <TT>switch</TT></H3><P><A NAME="@default1464"></A><A NAME="@default1465"></A><A NAME="@default1466"></A>
+<TT>switch</TT> a comme paramètre une expression.<BR>
+Selon la valeur de cette expression, marquée par <TT>case</TT> (ou par 
+<TT>default</TT>), <TT>switch</TT> 
+permet de faire le bloc d’instructions correspondant à la valeur d’une 
+expression qui doit être une valeur entière.<BR>
+On tape :
+</P><PRE CLASS="verbatim">opere(a,b,c):={
+switch(c) {
+  case 1 : {a:=a+b;break;} 
+  case 2 : {a:=a-b;break;} 
+  case 3 : {a:=a*b;break;} 
+  default : {a:=a^b;}
+}
+return a;
+}
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>opere(2,3,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>5</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>opere(2,3,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-1</TT></DIV><HR>
+<A HREF="cascmd_fr808.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr810.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

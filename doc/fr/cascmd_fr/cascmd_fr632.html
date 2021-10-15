@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Décomposition LU : lu</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr631.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr633.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc742">6.51.5</A>  Décomposition LU : <TT>lu</TT></H3><P><A NAME="@default1151"></A>
+<TT>lu</TT> a comme argument une matrice carrée <I>A</I> d’ordre <I>n</I> 
+(numérique ou symbolique).<BR>
+<TT>lu(A)</TT> renvoie une permutation <I>p</I> de 0..<I>n</I>−1, une matrice
+triangulaire inférieure <I>L</I> avec des 1 sur sa diagonale et une matrice 
+triangulaire supérieure <I>U</I>.<BR>
+Ces matrices sont telles que :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<I>P</I>*<I>A</I>=<I>L</I>*<I>U</I>, où <I>P</I> est la matrice de permutation associée à <I>p</I> 
+( que l’on peut calculer avec <TT>P:=permu2mat(p)</TT>),
+</LI><LI CLASS="li-itemize">l’équation <I>A</I>*<I>x</I>=<I>B</I> équivaut à :<BR>
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>L</I>*<I>U</I>*<I>x</I>=<I>P</I>*<I>B</I>=<I>p</I>(<I>B</I>)  where  <I>p</I>(<I>B</I>)=[<I>b</I><SUB><I>p</I>(0)</SUB>,<I>b</I><SUB><I>p</I>(1)</SUB>..<I>b</I><SUB><I>p</I>(<I>n</I>−1)</SUB>],
+    <I>B</I>=[<I>b</I><SUB>0</SUB>,<I>b</I><SUB>1</SUB>..<I>b</I><SUB><I>n</I>−1</SUB>] </TD></TR>
+</TABLE>
+</LI></UL><P>
+On peut aussi définir à partir de <I>p</I> la matrice de permutation <I>P</I><SUB><I>n</I></SUB> 
+par :<BR>
+<I>P</I><SUB><I>n</I></SUB>[<I>i</I>, <I>p</I>(<I>i</I>)]=1 et<BR>
+<I>P</I><SUB><I>n</I></SUB>[<I>i</I>, <I>j</I>]=0 si <I>j</I>  ≠ <I>p</I>(<I>i</I>).<BR>
+C’est la matrice obtenue en permutant, selon la permutation <I>p</I>, les lignes de 
+la matrice unité.<BR>
+On peut utiliser la fonction <TT>permu2mat</TT> :<A NAME="@default1152"></A>
+<TT>permu2mat(p)</TT> renvoie la matrice <TT><I>P</I></TT> d’ordre <I>n</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>(p,L,U):=lu([[3,5],[4,5]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,0],[[1,0],[0.75,1]],[[4,5],[0,1.25]]</TT></DIV><P>
+On a, en effet, <I>n</I>=2 donc :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>[0,<I>p</I>(0)]=<I>P</I><SUB>2</SUB>[0,1]=1,     <I>P</I>[1,<I>p</I>(1)]=<I>P</I><SUB>2</SUB>[1,0]=1,   
+<I>P</I>=[[0,1],[1,0]] </TD></TR>
+</TABLE><P>
+Vérification :<BR>
+On tape :
+</P><DIV CLASS="center"><TT>permu2mat(p)*A; L*U</TT></DIV><P>
+On obtient:
+</P><DIV CLASS="center"><TT>[[4.0,5.0],[3.0,5.0]],[[4.0,5.0],[3.0,5.0]]</TT></DIV><P>
+Il faut noter que la permutation est différente lorsque les données sont 
+exactes (le choix du pivot est plus simple).
+On tape :
+</P><DIV CLASS="center"><TT>lu([[1,2],[3,4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,0],[[1,0],[3,1]],[[1,2],[0,-2]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lu([[1.0,2],[3,4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,0],[[1,0],[0.333333333333,1]],[[3,4], [0,0.666666666667]]</TT></DIV><HR>
+<A HREF="cascmd_fr631.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr633.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

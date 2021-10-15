@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Digits</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en482.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en484.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc559">4.1.1</A>  Digits</H3><P>
+The <TT>Digits</TT> variable is used to control how real numbers
+are represented and also how they are displayed.
+When the specified
+number of digits is less or equal to 14 (for example <TT>Digits:=14</TT>), then hardware floating point
+numbers are used and they are displayed using the specified
+number of digits.
+When <TT>Digits</TT> is larger than 14, Xcas uses the MPFR
+library, the representation is similar to hardware floats
+(cf. infra) but the number of bits of
+the mantissa is not fixed and the range of exponents is much larger.
+More precisely, the number of bits of the mantissa of created MPFR float
+is <TT>ceil(Digits*log(10)/log(2))</TT>.</P><P>Note that if you change the value of <TT>Digits</TT>, this will affect
+the creation of new real numbers compiled from commandlines 
+or programs or by instructions like <TT>approx</TT>, but it will
+not affect existing real numbers. Hence hardware floats may coexist
+with MPFR floats, and even in MPFR floats, some may have 100 bits
+of mantissa and some may have 150 bits of mantissa. If operations
+mix different kinds of floats, the most precise kind of floats
+are coerced to the less precise kind of floats.</P><HR>
+<A HREF="cascmd_en482.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en484.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

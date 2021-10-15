@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>fsolve or nSolve with the option newton_solver</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en494.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en496.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc574">4.4.4</A>  <TT>fsolve</TT> or <TT>nSolve</TT> with the option <TT>newton_solver</TT></H3><P><A NAME="@default845"></A>
+<TT>newton_solver</TT> is the standard Newton method.
+The algorithm starts at an init value <I>x</I><SUB>0</SUB>, then we search the 
+intersection <I>x</I><SUB>1</SUB> of the tangent at <I>x</I><SUB>0</SUB> to the graph of <I>f</I>, with the <I>x</I> 
+axis, the next iteration is done with <I>x</I><SUB>1</SUB> instead of <I>x</I><SUB>0</SUB>.
+The <I>x</I><SUB><I>i</I></SUB> sequence is defined by
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUB>0</SUB>=<I>x</I><SUB>0</SUB>,    <I>x</I><SUB><I>n</I>+1</SUB>=<I>x</I><SUB><I>n</I></SUB>&#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>f</I>(<I>x</I><SUB><I>n</I></SUB>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>f</I>&#X2032;(<I>x</I><SUB><I>n</I></SUB>)</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD></TR>
+</TABLE><P>
+If the Newton method converges, it is a quadratic convergence for 
+roots of multiplicity 1.<BR>
+Input :
+</P><DIV CLASS="center"><TT>fsolve((cos(x))=x,x,0,newton_solver)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>0.739085133215</TT></DIV><HR>
+<A HREF="cascmd_en494.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en496.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Simplex algorithm: simplex_reduce</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en398.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en400.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc445">2.44.1</A>  Simplex algorithm: <TT>simplex_reduce</TT></H3><P>
+<B>The simple case</B><BR>
+The function <TT>simplex_reduce</TT> makes the reduction 
+by the simplex algorithm to find : 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(<I>c</I>.<I>x</I>),     <I>A</I>.<I>x</I> &#X2264; <I>b</I>, <I>x</I> &#X2265; 0, <I>b</I>&#X2265; 0 </TD></TR>
+</TABLE><P>
+where <I>c</I>,<I>x</I> are vectors of &#X211D;<SUP><I>n</I></SUP>, <I>b</I>&#X2265; 0 is a vector of 
+&#X211D;<SUP><I>p</I></SUP> and <I>A</I> is a matrix of <I>p</I> rows and <I>n</I> columns.<BR>
+<TT>simplex_reduce</TT> takes as argument <TT>A,b,c</TT> et
+returns <TT>max(c.x)</TT>, the augmented solution of <TT>x</TT>
+(augmented since the algorithm works by adding rows(<I>A</I>) auxiliary
+variables) and the reduced matrix.<BR>
+<B>Example</B><BR>
+Find </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(<I>X</I>+2<I>Y</I>)   where 
+</TD><TD CLASS="dcell">&#X23A7;<BR>
+&#X23AA;<BR>
+&#X23A8;<BR>
+&#X23AA;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>(<I>X</I>,<I>Y</I>)</TD><TD ALIGN=center NOWRAP>&#X2265;</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>&#X2212;3<I>X</I> +2<I>Y</I></TD><TD ALIGN=center NOWRAP>&#X2264;</TD><TD ALIGN=left NOWRAP>3</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>X</I> +<I>Y</I></TD><TD ALIGN=center NOWRAP>&#X2264;</TD><TD ALIGN=left NOWRAP>4</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>simplex_reduce([[-3,2],[1,1]],[3,4],[1,2])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>7,[1,3,0,0],[[0,1,1/5,3/5,3],[1,0,(-1)/5,2/5,1], [0,0,1/5,8/5,7]]</TT></DIV><P>
+Which means that the maximum of <TT>X+2Y</TT> under these conditions
+is <TT>7</TT>, it is obtained for <TT>X=1,Y=3</TT> 
+because <TT>[1,3,0,0]</TT> is the augmented solution and the reduced matrix is :<BR>
+<TT>[[0,1,1/5,3/5,3],[1,0,(-1)/5,2/5,1], [0,0,1/5,8/5,7]]</TT>.</P><P><B>A more complicate case that reduces to the simple case</B><BR>
+With the former call of <TT>simplex_reduce</TT>, we have to :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+rewrite constraints to the form <I>x</I><SUB><I>k</I></SUB> &#X2265; 0,
+</LI><LI CLASS="li-itemize">remove variables without constraints,
+</LI><LI CLASS="li-itemize">add variables such that all the constraints have positive components.
+</LI></UL><P>
+For example, find :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">min(2<I>x</I>+<I>y</I>&#X2212;<I>z</I>+4)      where 
+</TD><TD CLASS="dcell">&#X23A7;<BR>
+&#X23AA;<BR>
+&#X23AA;<BR>
+&#X23A8;<BR>
+&#X23AA;<BR>
+&#X23AA;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>x</I></TD><TD ALIGN=center NOWRAP>&#X2264;</TD><TD ALIGN=left NOWRAP>1 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>y</I></TD><TD ALIGN=center NOWRAP>&#X2265;</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>x</I>+3<I>y</I>&#X2212;<I>z</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>2<I>x</I>&#X2212;<I>y</I>+<I>z</I></TD><TD ALIGN=center NOWRAP>&#X2264;</TD><TD ALIGN=left NOWRAP>8</TD></TR>
+<TR><TD ALIGN=right NOWRAP>&#X2212;<I>x</I>+<I>y</I></TD><TD ALIGN=center NOWRAP>&#X2264;</TD><TD ALIGN=left NOWRAP>5</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+Let <I>x</I>=1&#X2212;<I>X</I>, <I>y</I>=<I>Y</I>+2, <I>z</I>=5&#X2212;<I>X</I>+3<I>Y</I>
+the problem is equivalent to finding the minimum of
+(&#X2212;2<I>X</I>+<I>Y</I>&#X2212;(5&#X2212;<I>X</I>+3<I>Y</I>)+8) 
+where :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23AA;<BR>
+&#X23A8;<BR>
+&#X23AA;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>X</I></TD><TD ALIGN=center NOWRAP>&#X2265;</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>Y</I></TD><TD ALIGN=center NOWRAP>&#X2265;</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>2(1&#X2212;<I>X</I>)&#X2212;(<I>Y</I>+2)+ 5&#X2212;<I>X</I>+3<I>Y</I></TD><TD ALIGN=center NOWRAP>&#X2264;</TD><TD ALIGN=left NOWRAP>8</TD></TR>
+<TR><TD ALIGN=right NOWRAP>&#X2212;(1&#X2212;<I>X</I>) +(<I>Y</I>+2)</TD><TD ALIGN=center NOWRAP>&#X2264;</TD><TD ALIGN=left NOWRAP>5</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+or to find the minimum of :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(&#X2212;<I>X</I>&#X2212;2<I>Y</I>+3)     where  
+</TD><TD CLASS="dcell">&#X23A7;<BR>
+&#X23AA;<BR>
+&#X23A8;<BR>
+&#X23AA;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>X</I></TD><TD ALIGN=center NOWRAP>&#X2265;</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>Y</I></TD><TD ALIGN=center NOWRAP>&#X2265;</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>&#X2212;3<I>X</I>+2<I>Y</I></TD><TD ALIGN=center NOWRAP>&#X2264;</TD><TD ALIGN=left NOWRAP>3</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>X</I> +<I>Y</I></TD><TD ALIGN=center NOWRAP>&#X2264;</TD><TD ALIGN=left NOWRAP>4</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+i.e. to find the maximum of &#X2212;(&#X2212;<I>X</I>&#X2212;2<I>Y</I>+3)=<I>X</I>+2<I>Y</I>&#X2212;3
+under the same conditions, hence it is the same problem as 
+to find the maximum of <I>X</I>+2<I>Y</I> seen before. We found <TT>7</TT>, 
+hence, the result here is <TT>7-3=4</TT>.</P><P><B>The general case</B><BR>
+A linear programming problem may not in general be directly
+reduced like above to the simple case. The reason is that
+a starting vertex must be found before applying the simplex
+algorithm. Therefore,
+<TT>simplex_reduce</TT> may be called by specifying this starting
+vertex, in that case, all the arguments including the starting
+vertex are grouped in a single matrix. </P><P>We first illustrate this kind
+of call in the simple case where the starting point does not
+require solving an auxiliary problem.
+If <TT>A</TT> has <I>p</I> rows and <I>n</I> columns and if we define :
+</P><DIV CLASS="center">
+<TT>B:=augment(A,idn(p));</TT> <TT>C:=border(B,b);</TT><BR>
+<TT>d:=append(-c,0$(p+1));</TT> <TT>D:=augment(C,[d]);</TT>
+</DIV><P>
+<TT>simplex_reduce</TT> may be called with <TT>D</TT> as single argument.<BR>
+For the previous example, input :
+</P><DIV CLASS="center"><TT>A:=[[-3,2],[1,1]];B:=augment(A,idn(2)); C:=border(B,[3,4]);
+D:=augment(C,[[-1,-2,0,0,0]])</TT></DIV><P>
+Here 
+<TT>C=[[-3,2,1,0,3],[1,1,0,1,4]]</TT><BR>
+and <TT>D=[[-3,2,1,0,3],[1,1,0,1,4],[-1,-2,0,0,0]]</TT><BR>
+Input :
+</P><DIV CLASS="center"><TT>simplex_reduce(D)</TT></DIV><P>
+Output is the same result as before.</P><P><B>Back to the general case.</B><BR>
+The standard form of a linear programming problem is similar
+to the simplest case above, but with <I>Ax</I>=<I>b</I> (instead of <I>Ax</I>&#X2264; <I>b</I>)
+under the conditions <I>x</I>&#X2265; 0. We may further assume that <I>b</I>&#X2265; 0
+(if not, one can change the sign of the corresponding line).
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+The first problem is to find an <I>x</I> in the <I>Ax</I>=<I>b</I>, <I>x</I>&#X2265; 0 domain.
+Let <I>m</I> be the number of lines of <I>A</I>. Add artificial variables
+<I>y</I><SUB>1</SUB>,...,<I>y</I><SUB><I>m</I></SUB> and maximize
+&#X2212;&#X2211;<I>y</I><SUB><I>i</I></SUB> under the conditions <I>Ax</I>=<I>b</I>, <I>x</I> &#X2265; 0, <I>y</I> &#X2265; 0 
+starting with initial value 0 for <I>x</I> variables
+and <I>y</I>=<I>b</I>
+(to solve this with <TT>Xcas</TT>, call <CODE>simplex_reduce</CODE> with
+a single matrix argument obtained by augmenting <I>A</I> by the
+identity, <I>b</I> unchanged and an artificial
+<I>c</I> with 0 under <I>A</I> and 1 under the identity).
+If the maximum exists and is 0, the identity submatrix above the last
+column corresponds to an <I>x</I> solution, we may forget the artificial
+variables (they are 0 if the maximum is 0).
+</LI><LI CLASS="li-itemize">Now we make a second call to <CODE>simplex_reduce</CODE>
+with the original <I>c</I> and the value of <I>x</I> we found in the domain.
+</LI><LI CLASS="li-itemize">Example : find the minimum of 2<I>x</I>+3<I>y</I>&#X2212;<I>z</I>+<I>t</I> with 
+<I>x</I>,<I>y</I>,<I>z</I>,<I>t</I>&#X2265; 0 and :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>&#X2212;<I>x</I>&#X2212;<I>y</I>+<I>t</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>1</TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>y</I>&#X2212;<I>z</I>+<I>t</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>3</TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+</TD></TR>
+</TABLE>
+This is equivalent to find the opposite of the maximum of &#X2212;(2<I>x</I>+3<I>y</I>&#X2212;<I>z</I>+<I>t</I>).
+Let us add two artificial variables <I>y</I><SUB>1</SUB> and <I>y</I><SUB>2</SUB>,
+<PRE CLASS="verbatim">simplex_reduce([[-1,-1,0,1,1,0,1],
+[0,1,-1,1,0,1,3],
+[0,0,0,0,1,1,0]])
+</PRE>Output: optimum=0, artificial variables=0, and the matrix
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X239B;<BR>
+&#X239C;<BR>
+&#X239C;<BR>
+&#X239D;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>&#X2212;1/2</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>&#X2212;1/2</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1/2</TD><TD ALIGN=center NOWRAP>1/2</TD><TD ALIGN=center NOWRAP>2 </TD></TR>
+<TR><TD ALIGN=center NOWRAP>1/2</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>&#X2212;1/2</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>&#X2212;1/2</TD><TD ALIGN=center NOWRAP>1/2</TD><TD ALIGN=center NOWRAP>1 </TD></TR>
+<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X239E;<BR>
+&#X239F;<BR>
+&#X239F;<BR>
+&#X23A0;</TD></TR>
+</TABLE>
+Columns 2 and 4 are the columns of the identity (in lines 1 and 2).
+Hence <I>x</I>=(0,1,0,2) is an initial point in the domain.
+We are reduced to solve the initial problem, after replacing the
+lines of <I>Ax</I>=<I>b</I> by the two first lines of the answer above,
+removing the last columns corresponding to the artificial variables.
+We add <I>c</I>.<I>x</I> as last line
+<PRE CLASS="verbatim">simplex_reduce([[-1/2,0,-1/2,1,2],
+[1/2,1,-1/2,0,1],[2,3,-1,1,0]])
+</PRE>Output: maximum=-5, hence the minimum of the opposite is 5,
+obtained for (0,1,0,2), after replacement 
+<I>x</I>=0, <I>y</I>=1, <I>z</I>=0 and <I>t</I>=2.
+</LI></UL><P>For more details, search google for <CODE>simplex algorithm</CODE>.</P><HR>
+<A HREF="cascmd_en398.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en400.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

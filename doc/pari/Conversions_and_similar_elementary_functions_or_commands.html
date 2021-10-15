@@ -1,0 +1,1042 @@
+<HTML>
+<HEAD>
+  <TITLE>
+    Catalogue of GP/PARI Functions: Conversions and similar elementary functions or commands
+  </TITLE>
+
+  <META NAME="author"       CONTENT="Nils-Peter Skoruppa">
+  <META NAME="created"      CONTENT="Thu Apr 27 10:11:36 2006">
+  <META NAME="author-email" CONTENT="skoruppa@math.uni-siegen.de">
+  <META NAME="keywords"     CONTENT="PARI, GP, DOC">
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+
+
+
+<h3 align=center>Conversions and similar elementary functions or commands</h3>
+
+<a name="Col"></a>
+<h4><b>Col</b>({x = []})</h4>
+<p></p>
+<p> transforms the object x into a column vector.
+The vector will be with one component only, except when x is a
+vector or a quadratic form (in which case the resulting vector is simply the
+initial object considered as a column vector), a matrix (the column of row
+vectors comprising the matrix is returned), a character string (a column of
+individual characters is returned), but more importantly when x is a
+polynomial or a power series. In the case of a polynomial, the coefficients
+of the vector start with the leading coefficient of the polynomial, while for
+power series only the significant coefficients are taken into account, but
+this time by increasing order of degree.</p>
+<p>The library syntax is <b>gtocol</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="List"></a>
+<h4><b>List</b>({x = []})</h4>
+<p></p>
+<p> transforms a (row or column) vector x
+into a list. The only other way to create a <font color=#a3682a><tt>
+t_LIST</tt></font> is to use the
+function <font color=#a3682a><tt>
+listcreate</tt></font>.</p>
+<p>This is useless in library mode.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Mat"></a>
+<h4><b>Mat</b>({x = []})</h4>
+<p></p>
+<p> transforms the object x into a matrix.
+If x is already a matrix, a copy of x is created.
+If x is not a vector or a matrix, this creates a 1 x 1 matrix.
+If x is a row (resp. column) vector, this creates a 1-row (resp.
+1-column) matrix, <u>unless</u> all elements are column (resp.row) vectors
+of the same length, in which case the vectors are concatenated sideways
+and the associated big matrix is returned.</p>
+<p>
+<pre><font color=#a3682a><tt>  ? Mat(x + 1)
+&nbsp;  %1 =
+&nbsp;  [x + 1]
+&nbsp;  ? Vec( matid(3) )
+&nbsp;  %2 = [[1, 0, 0]~, [0, 1, 0]~, [0, 0, 1]~]
+&nbsp;  ? Mat(%)
+&nbsp;  %3 =
+&nbsp;  [1 0 0]
+&nbsp;
+&nbsp;  [0 1 0]
+&nbsp;
+&nbsp;  [0 0 1]
+&nbsp;  ? Col( [1,2; 3,4] )
+&nbsp;  %4 = [[1, 2], [3, 4]]~
+&nbsp;  ? Mat(%)
+&nbsp;  %5 =
+&nbsp;  [1 2]
+&nbsp;
+&nbsp;  [3 4]
+</tt></font></pre></p>
+<p>
+The library syntax is <b>gtomat</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Mod"></a>
+<h4><b>Mod</b>(x,y,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> creates the PARI object
+(x mod y), i.e.an intmod or a polmod. y must be an integer or a
+polynomial. If y is an integer, x must be an integer, a rational
+number, or a p-adic number compatible with the modulus y. If y is a
+polynomial, x must be a scalar (which is not a polmod), a polynomial, a
+rational function, or a power series.</p>
+<p>This function is not the same as x <font color=#a3682a><tt>
+%</tt></font> y, the result of which is an
+integer or a polynomial.</p>
+<p><u>flag</u> is obsolete and should not be used.</p>
+<p>The library syntax is <b>gmodulo</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Pol"></a>
+<h4><b>Pol</b>(x,{v = x})</h4>
+<p></p>
+<p> transforms the object x into a polynomial with
+main variable v. If x is a scalar, this gives a constant polynomial. If
+x is a power series, the effect is identical to <font color=#a3682a><tt>
+truncate</tt></font> (see there),
+i.e.it chops off the O(X^k). If x is a vector, this function creates
+the polynomial whose coefficients are given in x, with x[1] being the
+leading coefficient (which can be zero).</p>
+<p><b>Warning:</b> this is <u>not</u> a substitution function. It will not
+transform an object containing variables of higher priority thanv.</p>
+<p><pre><font color=#a3682a><tt>? Pol(x + y, y)
+&nbsp;  *** Pol: variable must have higher priority in gtopoly.
+</tt></font></pre></p>
+<p>
+The library syntax is <b>gtopoly</b>(x,v), where v is a variable number.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Polrev"></a>
+<h4><b>Polrev</b>(x,{v = x})</h4>
+<p></p>
+<p> transform the object x into a polynomial
+with main variable v. If x is a scalar, this gives a constant polynomial.
+If x is a power series, the effect is identical to <font color=#a3682a><tt>
+truncate</tt></font> (see
+there), i.e.it chops off the O(X^k). If x is a vector, this function
+creates the polynomial whose coefficients are given in x, with x[1] being
+the constant term. Note that this is the reverse of <font color=#a3682a><tt>
+Pol</tt></font> if x is a
+vector, otherwise it is identical to <font color=#a3682a><tt>
+Pol</tt></font>.</p>
+<p>The library syntax is <b>gtopolyrev</b>(x,v), where v is a variable number.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Qfb"></a>
+<h4><b>Qfb</b>(a,b,c,{D = 0.})</h4>
+<p></p>
+<p> creates the binary quadratic form
+ax^2+bxy+cy^2. If b^2-4ac &#62; 0, initialize Shanks' distance
+function to D. Negative definite forms are not implemented,
+use their positive definite counterpart instead.</p>
+<p>The library syntax is <b>Qfb0</b>(a,b,c,D,<u>prec</u>). Also available are
+<font color=#a3682a><tt>
+ <b>qfi</b>(a,b,c)</tt></font> (when b^2-4ac &#60; 0), and
+<font color=#a3682a><tt>
+ <b>qfr</b>(a,b,c,d)</tt></font> (when b^2-4ac &#62; 0).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Ser"></a>
+<h4><b>Ser</b>(x,{v = x})</h4>
+<p></p>
+<p> transforms the object x into a power series
+with main variable v (x by default). If x is a scalar, this gives a
+constant power series with precision given by the default <font color=#a3682a><tt>
+serieslength</tt></font>
+(corresponding to the C global variable <font color=#a3682a><tt>
+precdl</tt></font>). If x is a
+polynomial, the precision is the greatest of <font color=#a3682a><tt>
+precdl</tt></font> and the degree of
+the polynomial. If x is a vector, the precision is similarly given, and the
+coefficients of the vector are understood to be the coefficients of the power
+series starting from the constant term (i.e.the reverse of the function
+<font color=#a3682a><tt>
+Pol</tt></font>).</p>
+<p>The warning given for <font color=#a3682a><tt>
+Pol</tt></font> also applies here: this is not a substitution
+function.</p>
+<p>The library syntax is <b>gtoser</b>(x,v), where v is a variable number (i.e.a C integer).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Set"></a>
+<h4><b>Set</b>({x = []})</h4>
+<p></p>
+<p> converts x into a set, i.e.into a row
+vector of character strings, with strictly increasing entries with respect to
+lexicographic ordering. The components of x are put in canonical form (type
+<font color=#a3682a><tt>
+t_STR</tt></font>) so as to be easily sorted. To recover an ordinary <font color=#a3682a><tt>
+GEN</tt></font> from
+such an element, you can apply <font color=#a3682a><tt>
+eval</tt></font> to it.</p>
+<p>The library syntax is <b>gtoset</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Str"></a>
+<h4><b>Str</b>({x}*)</h4>
+<p></p>
+<p> converts its argument list into a
+single character string (type <font color=#a3682a><tt>
+t_STR</tt></font>, the empty string if x is omitted).
+To recover an ordinary <font color=#a3682a><tt>
+GEN</tt></font> from a string, apply <font color=#a3682a><tt>
+eval</tt></font> to it. The
+arguments of <font color=#a3682a><tt>
+Str</tt></font> are evaluated in string context, see Section [<b>Label: se:strings</b>].</p>
+<p>
+<pre><font color=#a3682a><tt>? x2 = 0; i = 2; Str(x, i)
+&nbsp;%1 = "x2"
+&nbsp;? eval(%)
+&nbsp;%2 = 0
+</tt></font></pre></p>
+<p>This function is mostly useless in library mode. Use the pair
+<font color=#a3682a><tt>
+strtoGEN</tt></font>/<font color=#a3682a><tt>
+GENtostr</tt></font> to convert between <font color=#a3682a><tt>
+GEN</tt></font> and <font color=#a3682a><tt>
+char*</tt></font>.
+The latter returns a malloced string, which should be freed after usage.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Strchr"></a>
+<h4><b>Strchr</b>(x)</h4>
+<p></p>
+<p> converts x to a string, translating each integer
+into a character.</p>
+<p>
+<pre><font color=#a3682a><tt>? Strchr(97)
+&nbsp;%1 = "a"
+&nbsp;? Vecsmall("hello world")
+&nbsp;%2 = Vecsmall([104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100])
+&nbsp;? Strchr(%)
+&nbsp;%3 = "hello world"
+</tt></font></pre></p>
+
+<br>
+<hr></hr><br>
+
+<a name="Strexpand"></a>
+<h4><b>Strexpand</b>({x}*)</h4>
+<p></p>
+<p> converts its argument list into a
+single character string (type <font color=#a3682a><tt>
+t_STR</tt></font>, the empty string if x is omitted).
+Then performe environment expansion, see Section [<b>Label: se:envir</b>].
+This feature can be used to read environment variable values.</p>
+<p>
+<pre><font color=#a3682a><tt>? Strexpand("$HOME/doc")
+&nbsp;%1 = "/home/pari/doc"
+</tt></font></pre></p>
+<p>
+The individual arguments are read in string context, see Section [<b>Label: se:strings</b>].</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Strtex"></a>
+<h4><b>Strtex</b>({x}*)</h4>
+<p></p>
+<p> translates its arguments to TeX
+format, and concatenates the results into a single character string (type
+<font color=#a3682a><tt>
+t_STR</tt></font>, the empty string if x is omitted).</p>
+<p>The individual arguments are read in string context, see Section [<b>Label: se:strings</b>].</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Vec"></a>
+<h4><b>Vec</b>({x = []})</h4>
+<p></p>
+<p> transforms the object x into a row vector.
+The vector will be with one component only, except when x is a
+vector or a quadratic form (in which case the resulting vector is
+simply the initial object considered as a row vector), a matrix
+(the vector of columns comprising the matrix is return), a character string
+(a vector of individual characters is returned), but more importantly when
+x is a polynomial or a power series. In the case of a polynomial, the
+coefficients of the vector start with the leading coefficient of the
+polynomial, while for power series only the significant coefficients are
+taken into account, but this time by increasing order of degree.</p>
+<p>The library syntax is <b>gtovec</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="Vecsmall"></a>
+<h4><b>Vecsmall</b>({x = []})</h4>
+<p></p>
+<p> transforms the object x into a row
+vector of type <font color=#a3682a><tt>
+t_VECSMALL</tt></font>. This acts as <font color=#a3682a><tt>
+Vec</tt></font>, but only on a
+limited set of objects (the result must be representable as a vector of small
+integers). In particular, polynomials and power series are forbidden.
+If x is a character string, a vector of individual characters in ASCII
+encoding is returned (<font color=#a3682a><tt>
+Strchr</tt></font> yields back the character string).</p>
+<p>The library syntax is <b>gtovecsmall</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="binary"></a>
+<h4><b>binary</b>(x)</h4>
+<p></p>
+<p> outputs the vector of the binary digits of |x|.
+Here x can be an integer, a real number (in which case the result has two
+components, one for the integer part, one for the fractional part) or a
+vector/matrix.</p>
+<p>The library syntax is <b>binaire</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bitand"></a>
+<h4><b>bitand</b>(x,y)</h4>
+<p></p>
+<p> bitwise <font color=#a3682a><tt>
+and</tt></font>
+of two integers x and y, that is the integer
+<font color=#FF0000>sum</font>_i (x_i<font color=#a3682a><tt>
+and</tt></font>y_i) 2^i</p>
+<p>Negative numbers behave 2-adically, i.e.the result is the 2-adic limit
+of <font color=#a3682a><tt>
+bitand</tt></font>(x_n,y_n), where x_n and y_n are non-negative integers
+tending to x and y respectively. (The result is an ordinary integer,
+possibly negative.)</p>
+<p>
+<pre><font color=#a3682a><tt>? bitand(5, 3)
+&nbsp;%1 = 1
+&nbsp;? bitand(-5, 3)
+&nbsp;%2 = 3
+&nbsp;? bitand(-5, -3)
+&nbsp;%3 = -7
+</tt></font></pre></p>
+<p>
+The library syntax is <b>gbitand</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bitneg"></a>
+<h4><b>bitneg</b>(x,{n = -1})</h4>
+<p></p>
+<p> bitwise negation of an integer x,
+truncated to n bits, that is the integer <font color=#FF0000>sum</font>_{i = 0}^n <font color=#a3682a><tt>
+not</tt></font>(x_i)
+2^i The special case n = -1 means no truncation: an infinite sequence of
+leading 1 is then represented as a negative number.</p>
+<p>See Section [<b>Label: se:bitand</b>] for the behaviour for negative arguments.</p>
+<p>The library syntax is <b>gbitneg</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bitnegimply"></a>
+<h4><b>bitnegimply</b>(x,y)</h4>
+<p></p>
+<p> bitwise negated imply of two integers x and
+y (or <font color=#a3682a><tt>
+not</tt></font> (x ==&#62; y)), that is the integer <font color=#FF0000>sum</font>
+(x_i<font color=#a3682a><tt>
+and not</tt></font>(y_i)) 2^i</p>
+<p>See Section [<b>Label: se:bitand</b>] for the behaviour for negative arguments.</p>
+<p>The library syntax is <b>gbitnegimply</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bitor"></a>
+<h4><b>bitor</b>(x,y)</h4>
+<p></p>
+<p> bitwise (inclusive)
+<font color=#a3682a><tt>
+or</tt></font> of two integers x and y, that is the integer <font color=#FF0000>sum</font>
+(x_i<font color=#a3682a><tt>
+or</tt></font>y_i) 2^i</p>
+<p>See Section [<b>Label: se:bitand</b>] for the behaviour for negative arguments.</p>
+<p>The library syntax is <b>gbitor</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bittest"></a>
+<h4><b>bittest</b>(x,n)</h4>
+<p></p>
+<p> outputs the n^{{th}} bit of x starting
+from the right (i.e.the coefficient of 2^n in the binary expansion of x).
+The result is 0 or 1. To extract several bits at once as a vector, pass a
+vector for n.</p>
+<p>See Section [<b>Label: se:bitand</b>] for the behaviour at negative arguments.</p>
+<p>The library syntax is <b>bittest</b>(x,n), where n and the result are <font color=#a3682a><tt>
+long</tt></font>s.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bitxor"></a>
+<h4><b>bitxor</b>(x,y)</h4>
+<p></p>
+<p> bitwise (exclusive) <font color=#a3682a><tt>
+or</tt></font>
+of two integers x and y, that is the integer
+<font color=#FF0000>sum</font> (x_i<font color=#a3682a><tt>
+xor</tt></font>y_i) 2^i</p>
+<p>See Section [<b>Label: se:bitand</b>] for the behaviour for negative arguments.</p>
+<p>The library syntax is <b>gbitxor</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ceil"></a>
+<h4><b>ceil</b>(x)</h4>
+<p></p>
+<p> ceiling of x. When x is in <b>R</b>, the result is the
+smallest integer greater than or equal to x. Applied to a rational
+function, <font color=#a3682a><tt>
+ceil</tt></font>(x) returns the euclidian quotient of the numerator by
+the denominator.</p>
+<p>The library syntax is <b>gceil</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="centerlift"></a>
+<h4><b>centerlift</b>(x,{v})</h4>
+<p></p>
+<p> lifts an element x = a mod n of <b>Z</b>/n<b>Z</b>
+to a in <b>Z</b>, and similarly lifts a polmod to a polynomial. This is the
+same as <font color=#a3682a><tt>
+lift</tt></font> except that in the particular case of elements of
+<b>Z</b>/n<b>Z</b>, the lift y is such that -n/2 &#60; y <font color=#a3682a><tt>
+&#60;=</tt></font> n/2. If x is of type
+fraction, complex, quadratic, polynomial, power series, rational function,
+vector or matrix, the lift is done for each coefficient. Reals are forbidden.</p>
+<p>The library syntax is <b>centerlift0</b>(x,v), where v is a <font color=#a3682a><tt>
+long</tt></font> and an omitted v is coded
+as -1. Also available is <font color=#a3682a><tt>
+ <b>centerlift</b>(x)</tt></font> = <font color=#a3682a><tt>
+centerlift0(x,-1)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="changevar"></a>
+<h4><b>changevar</b>(x,y)</h4>
+<p></p>
+<p> creates a copy of the object x where its
+variables are modified according to the permutation specified by the vector
+y. For example, assume that the variables have been introduced in the
+order <font color=#a3682a><tt>
+x</tt></font>, <font color=#a3682a><tt>
+a</tt></font>, <font color=#a3682a><tt>
+b</tt></font>, <font color=#a3682a><tt>
+c</tt></font>. Then, if y is the vector
+<font color=#a3682a><tt>
+[x,c,a,b]</tt></font>, the variable <font color=#a3682a><tt>
+a</tt></font> will be replaced by <font color=#a3682a><tt>
+c</tt></font>, <font color=#a3682a><tt>
+b</tt></font> by
+<font color=#a3682a><tt>
+a</tt></font>, and <font color=#a3682a><tt>
+c</tt></font> by <font color=#a3682a><tt>
+b</tt></font>, <font color=#a3682a><tt>
+x</tt></font> being unchanged. Note that the
+permutation must be completely specified, e.g.<font color=#a3682a><tt>
+[c,a,b]</tt></font> would not work,
+since this would replace <font color=#a3682a><tt>
+x</tt></font> by <font color=#a3682a><tt>
+c</tt></font>, and leave <font color=#a3682a><tt>
+a</tt></font> and <font color=#a3682a><tt>
+b</tt></font>
+unchanged (as well as <font color=#a3682a><tt>
+c</tt></font> which is the fourth variable of the initial
+list). In particular, the new variable names must be distinct.</p>
+<p>The library syntax is <b>changevar</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="component"></a>
+<h4><b>components of a PARI object</b></h4>
+<p></p>
+<p></p>
+<p>There are essentially three ways to extract the components from a PARI
+object.</p>
+<p>The first and most general, is the function <font color=#a3682a><tt>
+ <b>component</b>(x,n)</tt></font> which
+extracts the n^{{th}}-component of x. This is to be understood as
+follows: every PARI type has one or two initial code words. The
+components are counted, starting at 1, after these code words. In particular
+if x is a vector, this is indeed the n^{{th}}-component of x, if
+x is a matrix, the n^{{th}} column, if x is a polynomial, the
+n^{{th}} coefficient (i.e.of degree n-1), and for power series, the
+n^{{th}} significant coefficient. The use of the function
+<font color=#a3682a><tt>
+component</tt></font> implies the knowledge of the structure of the different PARI
+types, which can be recalled by typing <font color=#a3682a><tt>
+\t</tt></font> under <font color=#a3682a><tt>
+gp</tt></font>.</p>
+<p>The library syntax is <b>compo</b>(x,n), where n is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+<p>The two other methods are more natural but more restricted. The function
+<font color=#a3682a><tt>
+ <b>polcoeff</b>(x,n)</tt></font> gives the coefficient of degree n of the polynomial
+or power series x, with respect to the main variable of x (to check
+variable ordering, or to change it, use the function <font color=#a3682a><tt>
+reorder</tt></font>, see
+Section [<b>Label: se:reorder</b>]). In particular if n is less than the valuation of
+x or in the case of a polynomial, greater than the degree, the result is
+zero (contrary to <font color=#a3682a><tt>
+compo</tt></font> which would send an error message). If x is
+a power series and n is greater than the largest significant degree, then
+an error message is issued.</p>
+<p>For greater flexibility, vector or matrix types are also accepted for x,
+and the meaning is then identical with that of <font color=#a3682a><tt>
+compo</tt></font>.</p>
+<p>Finally note that a scalar type is considered by <font color=#a3682a><tt>
+polcoeff</tt></font> as a
+polynomial of degree zero.</p>
+<p>The library syntax is <b>truecoeff</b>(x,n).</p>
+<p>The third method is specific to vectors or matrices in GP. If x is a
+(row or column) vector, then <font color=#a3682a><tt>
+x[n]</tt></font> represents the n^{{th}}
+component of x, i.e.<font color=#a3682a><tt>
+compo(x,n)</tt></font>. It is more natural and shorter to
+write. If x is a matrix, <font color=#a3682a><tt>
+x[m,n]</tt></font> represents the coefficient of
+row <font color=#a3682a><tt>
+m</tt></font> and column <font color=#a3682a><tt>
+n</tt></font> of the matrix, <font color=#a3682a><tt>
+x[m,]</tt></font> represents
+the m^{{th}} <u>row</u> of x, and <font color=#a3682a><tt>
+x[,n]</tt></font> represents
+the n^{{th}} <u>column</u> of x.</p>
+<p>Finally note that in library mode, the macros <b>gcoeff</b> and <b>gmael</b>
+are available as direct accessors to a <font color=#a3682a><tt>
+GEN component</tt></font>. See Chapter 4 for
+details.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="conj"></a>
+<h4><b>conj</b>(x)</h4>
+<p></p>
+<p> conjugate of x. The meaning of this
+is clear, except that for real quadratic numbers, it means conjugation in the
+real quadratic field. This function has no effect on integers, reals,
+intmods, fractions or p-adics. The only forbidden type is polmod
+(see <font color=#a3682a><tt>
+conjvec</tt></font> for this).</p>
+<p>The library syntax is <b>gconj</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="conjvec"></a>
+<h4><b>conjvec</b>(x)</h4>
+<p></p>
+<p> conjugate vector representation of x. If x is a
+polmod, equal to <font color=#a3682a><tt>
+Mod</tt></font>(a,q), this gives a vector of length
+{degree}(q) containing the complex embeddings of the polmod if q has
+integral or rational coefficients, and the conjugates of the polmod if q
+has some intmod coefficients. The order is the same as that of the
+<font color=#a3682a><tt>
+polroots</tt></font> functions. If x is an integer or a rational number, the
+result isx. If x is a (row or column) vector, the result is a matrix
+whose columns are the conjugate vectors of the individual elements of x.</p>
+<p>The library syntax is <b>conjvec</b>(x,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="denominator"></a>
+<h4><b>denominator</b>(x)</h4>
+<p></p>
+<p> denominator of x. The meaning of this
+is clear when x is a rational number or function. If x is an integer
+or a polynomial, it is treated as a rational number of function,
+respectively, and the result is equal to 1. For polynomials, you
+probably want to use </p>
+<p><pre><font color=#a3682a><tt>    denominator( content(x) )
+</tt></font></pre></p>
+<p>instead. As for modular objects, <font color=#a3682a><tt>
+t_INTMOD</tt></font> and <font color=#a3682a><tt>
+t_PADIC</tt></font> have
+denominator 1, and the denominator of a <font color=#a3682a><tt>
+t_POLMOD</tt></font> is the denominator
+of its (minimal degree) polynomial representative.</p>
+<p>If x is a recursive structure, for instance a vector or matrix, the lcm
+of the denominators of its components (a common denominator) is computed.
+This also applies for <font color=#a3682a><tt>
+t_COMPLEX</tt></font>s and <font color=#a3682a><tt>
+t_QUAD</tt></font>s.</p>
+<p><b>Warning:</b> multivariate objects are created according to variable
+priorities, with possibly surprising side effects (x/y is a polynomial, but
+y/x is a rational function). See Section [<b>Label: se:priority</b>].</p>
+<p>The library syntax is <b>denom</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="floor"></a>
+<h4><b>floor</b>(x)</h4>
+<p></p>
+<p> floor of x. When x is in <b>R</b>, the result is the
+largest integer smaller than or equal to x. Applied to a rational function,
+<font color=#a3682a><tt>
+floor</tt></font>(x) returns the euclidian quotient of the numerator by the
+denominator.</p>
+<p>The library syntax is <b>gfloor</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="frac"></a>
+<h4><b>frac</b>(x)</h4>
+<p></p>
+<p> fractional part of x. Identical to
+x-{floor}(x). If x is real, the result is in [0,1[.</p>
+<p>The library syntax is <b>gfrac</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="imag"></a>
+<h4><b>imag</b>(x)</h4>
+<p></p>
+<p> imaginary part of x. When
+x is a quadratic number, this is the coefficient of <font color=#FF0000>omega</font> in
+the "canonical" integral basis (1,<font color=#FF0000>omega</font>).</p>
+<p>The library syntax is <b>gimag</b>(x). This returns a copy of the imaginary part. The internal
+routine <font color=#a3682a><tt>
+imag_i</tt></font> is faster, since it returns the pointer and skips the
+copy.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="length"></a>
+<h4><b>length</b>(x)</h4>
+<p></p>
+<p> number of non-code words in x really used
+(i.e.the effective length minus 2 for integers and polynomials). In
+particular, the degree of a polynomial is equal to its length minus 1. If x
+has type <font color=#a3682a><tt>
+t_STR</tt></font>, output number of letters.</p>
+<p>The library syntax is <b>glength</b>(x) and the result is a C long.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="lift"></a>
+<h4><b>lift</b>(x,{v})</h4>
+<p></p>
+<p> lifts an element x = a mod n of <b>Z</b>/n<b>Z</b> to
+a in <b>Z</b>, and similarly lifts a polmod to a polynomial if v is omitted.
+Otherwise, lifts only polmods whose modulus has main variable v (if v
+does not occur in x, lifts only intmods). If x is of recursive (non
+modular) type, the lift is done coefficientwise. For p-adics, this routine
+acts as <font color=#a3682a><tt>
+truncate</tt></font>. It is not allowed to have x of type <font color=#a3682a><tt>
+t_REAL</tt></font>.</p>
+<p>
+<pre><font color=#a3682a><tt>? lift(Mod(5,3))
+&nbsp;%1 = 2
+&nbsp;? lift(3 + O(3^9))
+&nbsp;%2 = 3
+&nbsp;? lift(Mod(x,x^2+1))
+&nbsp;%3 = x
+&nbsp;? lift(x * Mod(1,3) + Mod(2,3))
+&nbsp;%4 = x + 2
+&nbsp;? lift(x * Mod(y,y^2+1) + Mod(2,3))
+&nbsp;%5 = y*x + Mod(2, 3)   \\</tt></font> do you understand this one ?<font color=#a3682a><tt></p>
+<p>&nbsp;? lift(x * Mod(y,y^2+1) + Mod(2,3), x)
+&nbsp;%6 = Mod(y, y^2+1) * x + Mod(2, y^2+1)
+</tt></font></pre></p>
+<p>
+The library syntax is <b>lift0</b>(x,v), where v is a <font color=#a3682a><tt>
+long</tt></font> and an omitted v is coded as
+-1. Also available is <font color=#a3682a><tt>
+ <b>lift</b>(x)</tt></font> = <font color=#a3682a><tt>
+lift0(x,-1)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="norm"></a>
+<h4><b>norm</b>(x)</h4>
+<p></p>
+<p> algebraic norm of x, i.e.the product of x with
+its conjugate (no square roots are taken), or conjugates for polmods. For
+vectors and matrices, the norm is taken componentwise and hence is not the
+L^2-norm (see <font color=#a3682a><tt>
+norml2</tt></font>). Note that the norm of an element of
+<b>R</b> is its square, so as to be compatible with the complex norm.</p>
+<p>The library syntax is <b>gnorm</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="norml2"></a>
+<h4><b>norml2</b>(x)</h4>
+<p></p>
+<p> square of the L^2-norm of x. More precisely,
+if x is a scalar, <font color=#a3682a><tt>
+norml2</tt></font>(x) is defined to be <font color=#a3682a><tt>
+x * conj(x)</tt></font>.
+If x is a (row or column) vector or a matrix, <font color=#a3682a><tt>
+norml2(x)</tt></font> is
+defined recursively as <font color=#FF0000>sum</font>_i <font color=#a3682a><tt>
+norml2</tt></font>(x_i), where (x_i) run through
+the components of x. In particular, this yields the usual <font color=#FF0000>sum</font> |x_i|^2
+(resp.<font color=#FF0000>sum</font> |x_{i,j}|^2) if x is a vector (resp.matrix) with complex
+components.</p>
+<p>
+<pre><font color=#a3682a><tt>? norml2( [ 1, 2, 3 ] )      \\ vector
+&nbsp;%1 = 14
+&nbsp;? norml2( [ 1, 2; 3, 4] )   \\ matrix
+&nbsp;%1 = 30
+&nbsp;? norml2( I + x )
+&nbsp;%3 = x^2 + 1
+&nbsp;? norml2( [ [1,2], [3,4], 5, 6 ] )   \\ recursively defined
+&nbsp;%4 = 91
+</tt></font></pre></p>
+<p>
+The library syntax is <b>gnorml2</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="numerator"></a>
+<h4><b>numerator</b>(x)</h4>
+<p></p>
+<p> numerator of x. The meaning of this
+is clear when x is a rational number or function. If x is an integer
+or a polynomial, it is treated as a rational number of function,
+respectively, and the result is x itself. For polynomials, you
+probably want to use </p>
+<p><pre><font color=#a3682a><tt>    numerator( content(x) )
+</tt></font></pre></p>
+<p>instead.</p>
+<p>In other cases, <font color=#a3682a><tt>
+numerator(x)</tt></font> is defined to be
+<font color=#a3682a><tt>
+denominator(x)*x</tt></font>. This is the case when x is a vector or a
+matrix, but also for <font color=#a3682a><tt>
+t_COMPLEX</tt></font> or <font color=#a3682a><tt>
+t_QUAD</tt></font>. In particular since a
+<font color=#a3682a><tt>
+t_PADIC</tt></font> or <font color=#a3682a><tt>
+t_INTMOD</tt></font> has  denominator 1, its numerator is
+itself.</p>
+<p><b>Warning:</b> multivariate objects are created according to variable
+priorities, with possibly surprising side effects (x/y is a polynomial, but
+y/x is a rational function). See Section [<b>Label: se:priority</b>].</p>
+<p>The library syntax is <b>numer</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="numtoperm"></a>
+<h4><b>numtoperm</b>(n,k)</h4>
+<p></p>
+<p> generates the k-th permutation (as a
+row vector of length n) of the numbers 1 to n. The number k is taken
+modulo n!, i.e.inverse function of <font color=#a3682a><tt>
+permtonum</tt></font>.</p>
+<p>The library syntax is <b>numtoperm</b>(n,k), where n is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="padicprec"></a>
+<h4><b>padicprec</b>(x,p)</h4>
+<p></p>
+<p> absolute p-adic precision of the object x.
+This is the minimum precision of the components of x. The result is
+<font color=#a3682a><tt>
+VERYBIGINT</tt></font> (2^{31}-1 for 32-bit machines or 2^{63}-1 for 64-bit
+machines) if x is an exact object.</p>
+<p>The library syntax is <b>padicprec</b>(x,p) and the result is a <font color=#a3682a><tt>
+long</tt></font>
+integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="permtonum"></a>
+<h4><b>permtonum</b>(x)</h4>
+<p></p>
+<p> given a permutation x on n elements,
+gives the number k such that x = <font color=#a3682a><tt>
+numtoperm(n,k)</tt></font>, i.e.inverse
+function of <font color=#a3682a><tt>
+numtoperm</tt></font>.</p>
+<p>The library syntax is <b>permtonum</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="precision"></a>
+<h4><b>precision</b>(x,{n})</h4>
+<p></p>
+<p> gives the precision in decimal digits of the
+PARI object x. If x is an exact object, the largest single precision
+integer is returned. If n is not omitted, creates a new object equal to x
+with a new precision n. This is to be understood as follows:</p>
+<p>For exact types, no change. For x a vector or a matrix, the operation
+is done componentwise.</p>
+<p>For real x, n is the number of desired significant <u>decimal</u> digits.
+If n is smaller than the precision of x, x is truncated, otherwise x
+is extended with zeros.</p>
+<p>For x a p-adic or a power series, n is the desired number of
+significant p-adic or X-adic digits, where X is the main variable of
+x.</p>
+<p>Note that the function <font color=#a3682a><tt>
+precision</tt></font> never changes the type of the result.
+In particular it is not possible to use it to obtain a polynomial from a
+power series. For that, see <font color=#a3682a><tt>
+truncate</tt></font>.</p>
+<p>The library syntax is <b>precision0</b>(x,n), where n is a <font color=#a3682a><tt>
+long</tt></font>. Also available are
+<font color=#a3682a><tt>
+ <b>ggprecision</b>(x)</tt></font> (result is a <font color=#a3682a><tt>
+GEN</tt></font>) and <font color=#a3682a><tt>
+ <b>gprec</b>(x,n)</tt></font>, where
+n is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="random"></a>
+<h4><b>random</b>({N = 2^{31}})</h4>
+<p></p>
+<p> returns a random integer between 0 and
+N-1. N is an integer, which can be arbitrary large. This is an internal
+PARI function and does not depend on the system's random number generator.</p>
+<p>The resulting integer is obtained by means of linear congruences and will not
+be well distributed in arithmetic progressions. The random seed may be
+obtained via <font color=#a3682a><tt>
+getrand</tt></font>, and reset using <font color=#a3682a><tt>
+setrand</tt></font>.</p>
+<p>Note that <font color=#a3682a><tt>
+random(2^31)</tt></font> is <u>not</u> equivalent to <font color=#a3682a><tt>
+random()</tt></font>,
+although both return an integer between 0 and 2^{31}-1. In fact, calling
+<font color=#a3682a><tt>
+random</tt></font> with an argument generates a number of random words (32bit or
+64bit depending on the architecture), rescaled to the desired interval.
+The default uses directly a 31-bit generator.</p>
+<p>The library syntax is <b>genrand</b>(N). Also available are <font color=#a3682a><tt>
+pari_rand</tt></font>() which returns a
+random <font color=#a3682a><tt>
+unsigned long</tt></font> (32bit or 64bit depending on the architecture), and
+<font color=#a3682a><tt>
+pari_rand31</tt></font>() which returns a 31bit <font color=#a3682a><tt>
+long</tt></font> integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="real"></a>
+<h4><b>real</b>(x)</h4>
+<p></p>
+<p> real part of x. In the case where x is a quadratic
+number, this is the coefficient of 1 in the "canonical" integral basis
+(1,<font color=#FF0000>omega</font>).</p>
+<p>The library syntax is <b>greal</b>(x). This returns a copy of the real part. The internal routine
+<font color=#a3682a><tt>
+real_i</tt></font> is faster, since it returns the pointer and skips the copy.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="round"></a>
+<h4><b>round</b>(x,{&amp;e})</h4>
+<p></p>
+<p> If x is in <b>R</b>, rounds x to the nearest
+integer and sets e to the number of error bits, that is the binary exponent
+of the difference between the original and the rounded value (the
+"fractional part"). If the exponent of x is too large compared to its
+precision (i.e.e &#62; 0), the result is undefined and an error occurs if e
+was not given.</p>
+<p><b>Important remark:</b> note that, contrary to the other truncation
+functions, this function operates on every coefficient at every level of a
+PARI object. For example
+{truncate}((2.4*X^2-1.7)/(X)) = 2.4*X, whereas
+{round}((2.4*X^2-1.7)/(X)) = (2*X^2-2)/(X). An
+important use of <font color=#a3682a><tt>
+round</tt></font> is to get exact results after a long approximate
+computation, when theory tells you that the coefficients must be integers.</p>
+<p>The library syntax is <b>grndtoi</b>(x,&amp;e), where e is a <font color=#a3682a><tt>
+long</tt></font> integer. Also available is
+<font color=#a3682a><tt>
+ <b>ground</b>(x)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="simplify"></a>
+<h4><b>simplify</b>(x)</h4>
+<p></p>
+<p> this function simplifies x as much as it can.
+Specifically, a complex or quadratic number whose imaginary part is an exact
+0 (i.e.not an approximate one as a <font color=#a3682a><tt>
+O(3)</tt></font> or <font color=#a3682a><tt>
+0.E-28</tt></font>) is converted
+to its real part, and a polynomial of degree 0 is converted to its constant
+term. Simplifications occur recursively.</p>
+<p>This function is especially useful before using arithmetic functions,
+which expect integer arguments:</p>
+<p><pre><font color=#a3682a><tt>? x = 1 + y - y
+&nbsp;%1 = 1
+&nbsp;? divisors(x)
+&nbsp;  *** divisors: not an integer argument in an arithmetic function
+&nbsp;? type(x)
+&nbsp;%2 = "t_POL"
+&nbsp;? type(simplify(x))
+&nbsp;%3 = "t_INT"
+</tt></font></pre></p>
+<p>Note that GP results are simplified as above before they are stored in the
+history. (Unless you disable automatic simplification with <font color=#a3682a><tt>
+\y</tt></font>, that is.)
+In particular</p>
+<p><pre><font color=#a3682a><tt>? type(%1)
+&nbsp;%4 = "t_INT"
+</tt></font></pre></p>
+<p>
+The library syntax is <b>simplify</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="sizebyte"></a>
+<h4><b>sizebyte</b>(x)</h4>
+<p></p>
+<p> outputs the total number of bytes occupied by the
+tree representing the PARI object x.</p>
+<p>The library syntax is <b>taille2</b>(x) which returns a <font color=#a3682a><tt>
+long</tt></font>; <font color=#a3682a><tt>
+ <b>taille</b>(x)</tt></font> returns the
+number of <u>words</u> instead.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="sizedigit"></a>
+<h4><b>sizedigit</b>(x)</h4>
+<p></p>
+<p> outputs a quick bound for the number of decimal
+digits of (the components of) x, off by at most 1. If you want the
+exact value, you can use <font color=#a3682a><tt>
+#Str(x)</tt></font>, which is slower.</p>
+<p>The library syntax is <b>sizedigit</b>(x) which returns a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="truncate"></a>
+<h4><b>truncate</b>(x,{&amp;e})</h4>
+<p></p>
+<p> truncates x and sets e to the number of
+error bits. When x is in <b>R</b>, this means that the part after the decimal
+point is chopped away, e is the binary exponent of the difference between
+the original and the truncated value (the "fractional part"). If the
+exponent of x is too large compared to its precision (i.e.e &#62; 0), the
+result is undefined and an error occurs if e was not given. The function
+applies componentwise on vector / matrices; e is then the maximal number of
+error bits. If x is a rational function, the result is the "integer part"
+(Euclidean quotient of numerator by denominator) and e is not set.</p>
+<p>Note a very special use of <font color=#a3682a><tt>
+truncate</tt></font>: when applied to a power series, it
+transforms it into a polynomial or a rational function with denominator
+a power of X, by chopping away the O(X^k). Similarly, when applied to
+a p-adic number, it transforms it into an integer or a rational number
+by chopping away the O(p^k).</p>
+<p>The library syntax is <b>gcvtoi</b>(x,&amp;e), where e is a <font color=#a3682a><tt>
+long</tt></font> integer. Also available is
+<font color=#a3682a><tt>
+ <b>gtrunc</b>(x)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="valuation"></a>
+<h4><b>valuation</b>(x,p)</h4>
+<p></p>
+<p> computes the highest
+exponent of p dividing x. If p is of type integer, x must be an
+integer, an intmod whose modulus is divisible by p, a fraction, a
+q-adic number with q = p, or a polynomial or power series in which case the
+valuation is the minimum of the valuation of the coefficients.</p>
+<p>If p is of type polynomial, x must be of type polynomial or rational
+function, and also a power series if x is a monomial. Finally, the
+valuation of a vector, complex or quadratic number is the minimum of the
+component valuations.</p>
+<p>If x = 0, the result is <font color=#a3682a><tt>
+VERYBIGINT</tt></font> (2^{31}-1 for 32-bit machines or
+2^{63}-1 for 64-bit machines) if x is an exact object. If x is a
+p-adic numbers or power series, the result is the exponent of the zero.
+Any other type combinations gives an error.</p>
+<p>The library syntax is <b>ggval</b>(x,p), and the result is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="variable"></a>
+<h4><b>variable</b>(x)</h4>
+<p></p>
+<p> gives the main variable of the object x, and
+p if x is a p-adic number. Gives an error if x has no variable
+associated to it. Note that this function is useful only in GP, since in
+library mode the function <font color=#a3682a><tt>
+gvar</tt></font> is more appropriate.</p>
+<p>The library syntax is <b>gpolvar</b>(x). However, in library mode, this function should not be used.
+Instead, test whether x is a p-adic (type <font color=#a3682a><tt>
+t_PADIC</tt></font>), in which case p
+is in x[2], or call the function <font color=#a3682a><tt>
+ <b>gvar</b>(x)</tt></font> which returns the variable
+<u>number</u> of x if it exists, <font color=#a3682a><tt>
+BIGINT</tt></font> otherwise.</p>
+
+<br>
+<hr></hr><br>
+
+
+
+</BODY>
+</HTML>

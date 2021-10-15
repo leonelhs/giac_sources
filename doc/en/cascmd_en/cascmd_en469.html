@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>4-d graph.</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en468.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en470.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc528">3.2.4</A>  4-d graph.</H3><P><A NAME="sec:plotfunc4"></A>
+<TT>plotfunc</TT> represents a complex expression <TT>E</TT> 
+(such that <TT>re(E)</TT> is not identically 0 on the discretisation mesh)
+by the surface <TT>z=abs(E)</TT> where <TT>arg(E)</TT> defines the color 
+from the rainbow. This gives an easy way to 
+see the points having the same argument.
+Note that if <TT>re(E)==0</TT> on the discretisation mesh, 
+it is the surface <TT>z=E/i</TT> that is represented with rainbow colors 
+(cf <A HREF="cascmd_en468.html#sec:plotfunc3d">3.2.3</A>).<BR>
+The first argument of <TT>plotfunc</TT> is <TT>E</TT>, 
+the remaining arguments are the same 
+as for a real 3-d graph (cf <A HREF="cascmd_en467.html#sec:plotfunc3">3.2.2</A>).
+Input :
+</P><DIV CLASS="center"><TT>plotfunc((x+i*y)</TT><CODE><TT>^</TT></CODE><TT>2,[x,y])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>A graph 3D of z=abs((x+i*y)</TT><CODE><TT>^</TT></CODE><TT>2 with the same color for
+points having the same argument</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>plotfunc((x+i*y)</TT><CODE><TT>^</TT></CODE><TT>2x,[x,y], display=filled)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The same surface but filled</TT></DIV><P>
+We may specify the range of variation of <I>x</I> and <I>y</I> and the number of 
+discretisation points, input :
+</P><DIV CLASS="center"><TT>plotfunc((x+i*y)</TT><CODE><TT>^</TT></CODE><TT>2,[x=-1..1,y=-2..2], nstep=900,display=filled)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The specified part of the surface with </TT><TT><I>x</I></TT><TT> between -1 and 1, </TT><TT><I>y</I></TT><TT> between -2 and 2 and with 900 points</TT></DIV><HR>
+<A HREF="cascmd_en468.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en470.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

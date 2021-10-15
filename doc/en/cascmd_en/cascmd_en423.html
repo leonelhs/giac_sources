@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>LU decomposition (for TI compatibility) : LU</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en422.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en424.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc473">2.48.5</A>  LU decomposition (for TI compatibility) : <TT>LU</TT></H3><P><A NAME="@default704"></A>
+<TT>LU</TT> takes as argument a numeric
+square matrix <I>A</I> of size <I>n</I> and three variable names, <TT>var1</TT>, 
+<TT>var2</TT> and <TT>var3</TT>.<BR>
+<TT>LU(A,var1,var2,var3)</TT> returns <I>P</I>, a permutation matrix, and stores :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+a lower triangular matrix <I>L</I>, with 1 on the diagonal, in 
+<TT>var1</TT>,
+</LI><LI CLASS="li-itemize">an upper triangular matrix <I>U</I> in <TT>var2</TT>,
+</LI><LI CLASS="li-itemize">the permutation matrix <I>P</I>, result of the command <TT>LU</TT>, in 
+<TT>var3</TT>.
+</LI></UL><P>
+These matrix are such that 
+</P><DIV CLASS="center">
+the equation <I>A</I>*<I>x</I>=<I>B</I> is equivalent to <I>L</I>*<I>U</I>*<I>x</I>=<I>P</I>*<I>B</I>.
+</DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>LU([[3,5],[4,5]],L,U,P)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[0,1],[1,0]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>L</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0],[0.75,1]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>U</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[4,5],[0,1.25]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>P</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[0,1],[1,0]]</TT></DIV><HR>
+<A HREF="cascmd_en422.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en424.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>La fonction exponentielle integrale Ei : Ei</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr208.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr210.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc278">6.10.5</A>  La fonction exponentielle integrale <I>Ei</I> : <TT>Ei</TT></H3><P><A NAME="@default377"></A>
+<TT>Ei</TT> a comme argument un nombre complexe <I>a</I>.<BR>
+<TT>Ei</TT> calcule les valeurs de la fonction <I>Ei</I> au point <I>a</I>.<BR>
+On a par définition :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>Ei</I>(<I>x</I>)=</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>x</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><I>t</I>=−∞</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">exp(<I>t</I>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>t</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>dt</I> </TD></TR>
+</TABLE><P>
+Pour <I>x</I>&gt;0, on prolonge par la valeur principale de l’intégrale
+(les morceaux en 0<SUP>−</SUP> et 0<SUP>+</SUP> se compensent).
+On a : 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>Ei</I>(0)=−∞,    <I>Ei</I>(−∞)=0 </TD></TR>
+</TABLE><P>
+Lorsque l’on est proche de <I>x</I>=0 on sait que :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">exp(<I>x</I>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+1+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2!</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">3!</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+...+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP><I>n</I></SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">(<I>n</I>−1)!</TD></TR>
+</TABLE></TD><TD CLASS="dcell">.... </TD></TR>
+</TABLE><P>
+on a donc pour <I>x</I>∈ ℂ−ℝ<SUP>+</SUP>, (la fonction est discontinue sur ℝ<SUP>+</SUP>) :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>Ei</I>(<I>x</I>)=ln(−<I>x</I>)+γ + <I>x</I>+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2.2!</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>3</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">3.3!</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+...</TD></TR>
+</TABLE><P>
+où γ = la constante d’Euler = 0.57721566490..<BR>
+sur l’axe <I>x</I>&gt;0 on prend :
+<I>Ei</I>(<I>x</I>)=ln(<I>x</I>)+γ + <I>x</I>+<I>x</I><SUP>2</SUP>/2.2!+<I>x</I><SUP>3</SUP>/3.3!+...<BR>
+On tape :
+</P><DIV CLASS="center"><TT>Ei(1.)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.89511781636</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>Ei(-1.)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-0.219383934396</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>Ei(1.)-Ei(-1.)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2.11450175075</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>int((exp(x)-1)/x,x=-1..1.)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2.11450175075</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>evalf(Ei(-1)-sum((-1)</TT><CODE><TT>^</TT></CODE><TT>n/n/n!,n=1..100))</TT></DIV><P>
+On obtient la constante d’Euler γ :
+</P><DIV CLASS="center"><TT>0.577215664901532860606507</TT></DIV><P>
+Lorsque <TT>Ei</TT> a comme argument 2 nombres : <I>a</I> réel et <I>b</I> entier positif, on a :<BR>
+<TT>Ei(a,1)=-Ei(-a)</TT><BR>
+<TT>Ei(a,2)=exp(-a)+a*Ei(-a) =exp(-a)-a*Ei(a,1)</TT><BR>
+<TT>Ei(a,3)=(exp(-a)-a*(exp(-a)+a*Ei(-a)))/2=(exp(-a)-a*Ei(a,2))/2</TT><BR>
+<TT>Ei(a,4)=(exp(-a)-a*(exp(-a)-a*(exp(-a)+a*Ei(-a)))/2)/3=(exp(-a)-a*Ei(a,3))/3</TT><BR>
+<TT>Ei(a,n)= (exp(-a)-a*Ei(a,n-1))/n-1</TT> pour <I>n</I> entier ≥ 2<BR>
+Donc :<BR>
+<TT>Ei(a,1)=-Ei(-a)</TT>
+<TT>a*Ei(a,1)+Ei(a,2)=exp(-a)</TT> donc <I>a</I>*<I>Ei</I>(<I>a</I>,1)+<I>Ei</I>(<I>a</I>,2)=<I>exp</I>(−<I>a</I>)<BR>
+<TT>a*Ei(a,2)+2*Ei(a,3)=exp(-a)</TT> donc <I>a</I><SUP>2</SUP>*<I>Ei</I>(<I>a</I>,1)−2*<I>Ei</I>(<I>a</I>,3)=<I>exp</I>(−<I>a</I>)*(<I>a</I>−1)<BR>
+<TT>a*Ei(a,3)+3*Ei(a,4)=exp(-a)</TT> donc <I>a</I><SUP>3</SUP>*<I>Ei</I>(<I>a</I>,1)+3!*<I>Ei</I>(<I>a</I>,4)=<I>exp</I>(−<I>a</I>)*(<I>a</I><SUP>2</SUP>−<I>a</I>+2)
+<TT>a*Ei(a,4)+4*Ei(a,4)=exp(-a)</TT> donc<BR>
+<I>a</I><SUP>4</SUP>*<I>Ei</I>(<I>a</I>,1)−4!*<I>Ei</I>(<I>a</I>,4)=<I>exp</I>(−<I>a</I>)*(<I>a</I><SUP>3</SUP>−<I>a</I><SUP>2</SUP>+2<I>a</I>−3!)<BR>
+<I>a</I><SUP>5</SUP>*<I>Ei</I>(<I>a</I>,1)+5!*<I>Ei</I>(<I>a</I>,4)=<I>exp</I>(−<I>a</I>)*(<I>a</I><SUP>4</SUP>−<I>a</I><SUP>3</SUP>+2<I>a</I><SUP>2</SUP>−3!<I>a</I>+4!)<BR>
+etc...
+</P><HR>
+<A HREF="cascmd_fr208.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr210.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

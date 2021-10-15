@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Compute with the exact root of a polynomial : rootof</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en197.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en199.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc224">2.24.18</A>  Compute with the exact root of a polynomial : <TT>rootof</TT></H3><P><A NAME="@default375"></A>
+Let <I>P</I> and <I>Q</I> be two polynomials given by the list of their coefficients
+then <TT>rootof(P,Q)</TT> denotes the value <I>P</I>(&#X3B1;) where &#X3B1; is the 
+root of <I>Q</I> with largest real part (and largest imaginary part in
+case of equality).<BR>
+In exact computations, <TT>Xcas</TT> will rewrite rational evaluations
+of <TT>rootof</TT> as a unique <TT>rootof</TT> with degree(<I>P</I>)&lt;degree(<I>Q</I>).
+If the resulting rootof is the solution of a second degree equation,
+it will be simplified.</P><P><B>Example</B><BR>
+Let &#X3B1; be the root with largest imaginary
+part of <I>Q</I>(<I>x</I>)=<I>x</I>4+10<I>x</I>2+1 (all roots of <I>Q</I> have real part equal to 0).
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Compute  1/&#X3B1;. Input :
+<DIV CLASS="center"><TT>normal(1/rootof([1,0],[1,0,10,0,1])) </TT></DIV>
+<I>P</I>(<I>x</I>)=<I>x</I> is represented by [1,0] and &#X3B1;
+by <TT>rootof([1,0],[1,0,10,0,1])</TT>.<BR>
+Output :
+<DIV CLASS="center"><TT>rootof([[-1,0,-10,0],[1,0,10,0,1]])</TT></DIV>
+i.e. :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">&#X3B1;</TD></TR>
+</TABLE></TD><TD CLASS="dcell">=&#X2212;&#X3B1;3&#X2212;10&#X3B1; </TD></TR>
+</TABLE>
+</LI><LI CLASS="li-itemize">Compute &#X3B1;2. Input :
+<DIV CLASS="center"><TT>normal(rootof([1,0],[1,0,10,0,1])</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+or (since <I>P</I>(<I>x</I>)=<I>x</I>2 is represented by [1,0,0]) input
+<DIV CLASS="center"><TT>normal(rootof([1,0,0],[1,0,10,0,1]))</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>-5-2*sqrt(6)</TT></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en197.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en199.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

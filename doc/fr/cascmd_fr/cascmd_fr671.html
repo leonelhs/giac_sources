@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Transformée en z d’une suite, la fonction ztrans : ztrans</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr670.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr672.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc787">6.57.1</A>  Transformée en <I>z</I> d’une suite, la fonction <I>ztrans</I> : <TT>ztrans</TT></H3><P><A NAME="@default1215"></A>
+<TT>ztrans</TT> a un ou trois arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+une suite donnée par son terme général <I>a</I><SUB><I>x</I></SUB> : la 
+variable utilisée pour définir le terme général est <I>x</I> et <I>x</I> sera 
+aussi le nom de la variable utilisée dans la fonction renvoyée par 
+<TT>ztrans</TT>
+</LI><LI CLASS="li-itemize">une suite donnée par son terme général <I>a</I><SUB><I>n</I></SUB>, le 
+nom de la variable utilisée pour définir ce terme général (ici <I>n</I>) et
+le nom de la variable utilisée dans la fonction renvoyée par <TT>ztrans</TT>
+(par exemple <I>z</I>).
+</LI></UL><P> 
+<TT>ztrans</TT> calcule la transformée en <I>z</I> de la suite donnée en argument.<BR>
+On a par définition :<BR>
+si <I>f</I>(<I>x</I>)=<I>ztrans</I>(<I>a</I><SUB><I>x</I></SUB>) on a 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP><I>n</I></SUP></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+si <I>f</I>(<I>z</I>)=<I>ztrans</I>(<I>a</I><SUB><I>n</I></SUB>,<I>n</I>,<I>z</I>) on a 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>z</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>z</I><SUP><I>n</I></SUP></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>ztrans(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x/(x-1)</TT></DIV><P>
+On a en effet :<BR>
+=∑<SUB><I>n</I>=0</SUB><SUP><I>inf</I></SUP>1/<I>x</I><SUP><I>n</I></SUP>=1/1−1/<I>x</I>=<I>x</I>/<I>x</I>−1<BR>
+On tape :
+</P><DIV CLASS="center"><TT>ztrans(1,n,z)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>z/(z-1)</TT></DIV><P>
+On a en effet :<BR>
+1+1/<I>z</I>+1/<I>z</I><SUP>2</SUP>+1/<I>z</I><SUP>3</SUP>+1/<I>z</I><SUP>4</SUP>+..=∑<SUB><I>n</I>=0</SUB><SUP><I>inf</I></SUP>1/<I>z</I><SUP><I>n</I></SUP>=1/1−1/<I>z</I>=<I>z</I>/(<I>z</I>−1)<BR>
+On tape :
+</P><DIV CLASS="center"><TT>ztrans(x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x/(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>ztrans(n,n,z)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>z/(z</TT><CODE><TT>^</TT></CODE><TT>2-2*z+1)</TT></DIV><P>
+On a en effet :
+1/<I>z</I>−1=∑<SUB><I>n</I>=1</SUB><SUP><I>inf</I></SUP>1/<I>z</I><SUP><I>n</I></SUP><BR>
+1/(<I>z</I>−1)<SUP>2</SUP>=−(1/(<I>z</I>−1))′=∑<SUB><I>n</I>=1</SUB><SUP><I>inf</I></SUP><I>n</I>/<I>z</I><SUP><I>n</I>−1</SUP><BR>
+Donc <I>z</I>/(<I>z</I>−1)<SUP>2</SUP>=∑<SUB><I>n</I>=1</SUB><SUP><I>inf</I></SUP><I>n</I>/<I>z</I><SUP><I>n</I></SUP></P><HR>
+<A HREF="cascmd_fr670.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr672.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

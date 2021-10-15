@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Substitue a variable by a value (Maple and Mupad compatibility) : subs</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en112.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en114.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc127">2.12.17</A>  Substitue a variable by a value (Maple and Mupad compatibility) : <TT>subs</TT></H3><P><A NAME="@default178"></A><A NAME="sec:subs"></A>
+In <TT>Maple</TT> and in <TT>Mupad</TT>, one would use the <TT>subs</TT>
+command to substitue a variable 
+by a value in an expression. But the order of the arguments differ
+between <TT>Maple</TT> and <TT>Mupad</TT>. Therefore, to achieve compatibility,
+<TT>Xcas</TT> <TT>subs</TT> command arguments order depends on the mode
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+In <TT>Maple</TT> mode, <TT>subs</TT> takes two arguments : an equality 
+(variable=substitution value) and the expression.<BR>
+To substitue several variables in an expression, use a list of equality
+(variable names <TT>=</TT> substitution value) as first argument.
+</LI><LI CLASS="li-itemize">In <TT>Mupad</TT> or <TT>Xcas</TT> or <TT>TI</TT>, <TT>subs</TT> 
+takes two or three arguments : 
+an expression and an equality (variable=substitution value) or 
+an expression, a variable name and the substitution value.<BR>
+To substitue several variables, <TT>subs</TT> takes two ou three arguments :
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+an expression of variables and a list of 
+(variable names <TT>=</TT> substitution value),
+</LI><LI CLASS="li-itemize">an expression of variables, a list of variables and a list of their 
+substitution values.
+</LI></UL>
+</LI></UL><P>
+<TT>subs</TT> returns the expression with the substitution done.
+Note that <TT>subs</TT> does not quote it&#X2019;s argument, hence
+in a normal evaluation process, the substitution variable should
+be purged otherwise it will be replaced by it&#X2019;s assigned value
+before substitution is done.<BR>
+Input in <TT>Maple</TT> mode (if the variable <TT>a</TT> is purged else input 
+<TT>purge(a)</TT>) :
+</P><DIV CLASS="center"><TT>subs(a=2,a</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+Output 
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+Input in <TT>Maple</TT> mode (if the variables <TT>a</TT> and <TT>b</TT> are purged
+else input <TT>purge(a,b)</TT>):
+</P><DIV CLASS="center"><TT>subs([a=2,b=1],a</TT><CODE><TT>^</TT></CODE><TT>2+b)</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a=2)</TT></DIV><P> 
+or :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a,2)</TT></DIV><P> 
+Output (if the variable <TT>a</TT> is purged else input <TT>purge(a)</TT>) :
+</P><DIV CLASS="center"><TT>5</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a=2,b=1])</TT></DIV><P> 
+or :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a,b],[2,1])</TT></DIV><P> 
+Output (if the variables <TT>a</TT> and <TT>b</TT> are purged else input 
+<TT>purge(a,b)</TT>) :
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><HR>
+<A HREF="cascmd_en112.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en114.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

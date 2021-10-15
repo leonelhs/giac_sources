@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Chinese remainders : ichinrem, ichrem</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en039.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en041.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc48">2.6.22</A>  Chinese remainders : <TT>ichinrem, ichrem</TT></H3><P><A NAME="@default76"></A><A NAME="@default77"></A>
+<TT>ichinrem([a,p],[b,q])</TT> or <TT>ichrem([a,p],[b,q])</TT> returns a 
+list <TT>[c,lcm(p,q)]</TT> of 2 integers.<BR>
+The first number <TT>c</TT> is such that 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; <I>k</I> &#X2208; &#X2124;,    <I>d</I>=<I>c</I>+ <I>k</I> × lcm(<I>p</I>,<I>q</I>) </TD></TR>
+</TABLE><P>
+has the properties
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>d</I>=<I>a</I> (mod <I>p</I> ),    <I>d</I>=<I>b</I> (mod <I>q</I> ) </TD></TR>
+</TABLE><P>
+If <TT>p</TT> and <TT>q</TT> are coprime, a solution <TT>d</TT> always exists
+and all the solutions are congruent modulo <TT>p*q</TT>.<BR>
+<B>Examples</B> :<BR>
+Solve :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>x</I></TT></TD><TD ALIGN=center NOWRAP><TT>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>x</I></TT></TD><TD ALIGN=center NOWRAP><TT>=</TT></TD><TD ALIGN=left NOWRAP><TT>9 (</TT><TT>mod</TT><TT> 13) </TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>ichinrem([3,5],[9,13])</TT></DIV><P>
+or input :
+</P><DIV CLASS="center"><TT>ichrem([3,5],[9,13])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[-17,65] </TT></DIV><P>
+so <TT>x=-17 (mod 65)</TT><BR>
+we can also input :
+</P><DIV CLASS="center"><TT>ichrem(3%5,9%13)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-17%65 </TT></DIV><P>
+Solve :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>&#X23A7;<BR>
+&#X23AA;<BR>
+&#X23A8;<BR>
+&#X23AA;<BR>
+&#X23A9;</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>x</I></TT></TD><TD ALIGN=center NOWRAP><TT>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>x</I></TT></TD><TD ALIGN=center NOWRAP><TT>=</TT></TD><TD ALIGN=left NOWRAP><TT>4 (</TT><TT>mod</TT><TT> 7) </TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>x</I></TT></TD><TD ALIGN=center NOWRAP><TT>=</TT></TD><TD ALIGN=left NOWRAP><TT>1 (</TT><TT>mod</TT><TT> 9)</TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+First input :
+</P><DIV CLASS="center"><TT>tmp:=ichinrem([3,5],[4,7])</TT></DIV><P>
+or input :
+</P><DIV CLASS="center"><TT>tmp:=ichrem([3,5],[4,7])</TT></DIV><P>
+output :
+</P><DIV CLASS="center"><TT>[-17,35] </TT></DIV><P>
+then input :
+</P><DIV CLASS="center"><TT>ichinrem([1,9],tmp)</TT></DIV><P>
+or input :
+</P><DIV CLASS="center"><TT>ichrem([1,9],tmp)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[-17,315] </TT></DIV><P>
+hence <TT>x=-17 (mod 315)</TT><BR>
+Alternative :<BR>
+</P><DIV CLASS="center"><TT>ichinrem([3%5,4%7,1%9])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>-17%315 </TT></DIV><P><B>Remark</B><BR>
+<TT>ichrem</TT> (or<TT>ichinrem</TT>)may be used to find coefficients of polynomial 
+which class are known modulo several integers, for example find
+<I>ax</I>+<I>b</I> modulo 315=5 × 7 × 9 under the assumptions:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>&#X23A7;<BR>
+&#X23AA;<BR>
+&#X23A8;<BR>
+&#X23AA;<BR>
+&#X23A9;</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>a</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>a</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>4 (</TT><TT>mod</TT><TT> 7) </TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>a</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>1 (</TT><TT>mod</TT><TT> 9) </TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">,
+   
+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>&#X23A7;<BR>
+&#X23AA;<BR>
+&#X23A8;<BR>
+&#X23AA;<BR>
+&#X23A9;</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>b</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>1 (</TT><TT>mod</TT><TT> 5)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>b</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>2 (</TT><TT>mod</TT><TT> 7) </TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>b</I>=</TT></TD><TD ALIGN=left NOWRAP><TT>3 (</TT><TT>mod</TT><TT> 9) </TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>ichrem((3x+1)%5,(4x+2)%7,(x+3)%9)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(-17%315</TT><TT>×</TT><TT> x+156%315 </TT></DIV><P>
+hence <TT>a=-17 (mod 315)</TT> and <TT>b=156 (mod 315)</TT>.</P><HR>
+<A HREF="cascmd_en039.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en041.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

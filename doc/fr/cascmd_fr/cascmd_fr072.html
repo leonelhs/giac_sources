@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Connaitre les hypothèses faites sur une variable : about</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr071.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr073.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc92">2.5.9</A>  Connaitre les hypothèses faites sur une variable : <TT>about</TT></H3><P><A NAME="@default71"></A><A NAME="sec:about"></A>
+<TT>about</TT> a comme argument un nom de variable.<BR>
+<TT>about</TT> permet de connaitre les hypothèses faites sur cette variable.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>assume(a,real);additionally(a&gt;0)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>assume(a,real);assume(a&gt;0,additionally)</TT></DIV><P>
+puis,
+</P><DIV CLASS="center"><TT>about(a)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>assume[DOM_FLOAT,[0,+(infinity)],[0]]</TT></DIV><P>
+<TT>assume[ ]</TT> signifie que l’on a une liste d’un type particulier.<BR>
+Le dernier <TT>0</TT> veut dire que <TT>0</TT> est exclus de l’intervalle
+<TT>[0,+(infinity)]</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>assume(b,real);additionally(b&gt;=0 and b&lt;2)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>assume(b,real);assume(b&gt;=0 and b&lt;2,additionally)</TT></DIV><P>
+puis,
+</P><DIV CLASS="center"><TT>about(b)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>assume[DOM_FLOAT,[0,2],[2]]</TT></DIV><P>
+Le dernier <TT>2</TT> veut dire que <TT>2</TT> est exclus de l’intervalle
+<TT>[0,2]</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>about(x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x</TT></DIV><P>
+ce qui veut dire que <TT>x</TT> est une variable formelle.
+</P><HR>
+<A HREF="cascmd_fr071.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr073.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Animation of a sequence of graphic objects : animation</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en481.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en483.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc556">3.17.3</A>  Animation of a sequence of graphic objects : <TT>animation</TT></H3><P><A NAME="@default828"></A>
+<TT>animation</TT> animates the representation of a
+sequence of graphic objects
+with a given display time. The sequence of objects depends most of
+the time of a parameter and is defined using the <TT>seq</TT> command
+but it is not mandatory.<BR>
+<TT>animation</TT> takes as argument the sequence of graphic objects.<BR>
+To define a sequence of graphic objects with <TT>seq</TT>,
+enter the definition of the graphic object (depending on
+the parameter), the parameter name, it&#X2019;s minimum value, it&#X2019;s
+maximum value maximum and optionnaly a step value.<BR>
+Input :
+</P><DIV CLASS="center"><TT>animation(seq(plotfunc(cos(a*x),x),a,0,10))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of the curves defined by </TT><TT><I>y</I>=</TT><TT>cos</TT><TT>(<I>ax</I>)</TT><TT>, for </TT><TT><I>a</I>=0,1,2..10</TT></DIV><P>
+Input :
+</P><DIV CLASS="center">
+<TT>animation(seq(plotfunc(cos(a*x),x),a,0,10,0.5))</TT><BR>
+or<BR>
+<TT>animation(seq(plotfunc(cos(a*x),x),a=0..10,0.5))</TT>
+</DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of the curves defined by </TT><TT><I>y</I>=</TT><TT>cos</TT><TT>(<I>ax</I>)</TT><TT>, for </TT><TT><I>a</I>=0,0.5,1,1.5..10</TT><TT> </TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>animation(seq(plotfunc([cos(a*x),sin(a*x)],x=0..2*pi/a), a,1,10))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of two curves defined by </TT><TT><I>y</I>=</TT><TT>cos</TT><TT>(<I>ax</I>)</TT><TT> and </TT><TT><I>y</I>=</TT><TT>sin</TT><TT>(<I>ax</I>)</TT><TT>, for </TT><TT><I>a</I>=1..10</TT><TT> and for </TT><TT><I>x</I>=0..2&#X3C0;/<I>a</I></TT><TT> </TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>animation(seq(plotparam([cos(a*t),sin(a*t)], t=0..2*pi),a,1,10))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of the parametric curves defined by </TT><TT><I>x</I>=</TT><TT>cos</TT><TT>(<I>at</I>)</TT><TT> and </TT><TT><I>y</I>=</TT><TT>sin</TT><TT>(<I>at</I>)</TT><TT>, for </TT><TT><I>a</I>=1..10</TT><TT> and for </TT><TT><I>t</I>=0..2&#X3C0;</TT><TT> </TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>animation(seq(plotparam([sin(t),sin(a*t)], t,0,2*pi,tstep=0.01),a,1,10))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of the parametric curves defined by </TT><TT><I>x</I>=</TT><TT>sin</TT><TT>(<I>t</I>),<I>y</I>=</TT><TT>sin</TT><TT>(<I>at</I>)</TT><TT>, for </TT><TT><I>a</I>=0..10</TT><TT> and </TT><TT><I>t</I>=0..2&#X3C0;</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>animation(seq(plotpolar(1-a*0.01*t</TT><CODE><TT>^</TT></CODE><TT>2, t,0,5*pi,tstep=0.01),a,1,10))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of the polar curves defined by </TT><TT>&#X3C1;=1-<I>a</I>*0.01*<I>t</I></TT><SUP><TT>2</TT></SUP><TT>, for </TT><TT><I>a</I>=0..10</TT><TT> and </TT><TT><I>t</I>=0..5&#X3C0;</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>plotfield(sin(x*y),[x,y]); animation(seq(plotode(sin(x*y),[x,y],[0,a]),a,-4,4,0.5))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The tangent field of y&#X2019;=sin(xy) and the sequence of the integral curves crossing through the point </TT><TT>(0,<I>a</I>)</TT><TT> for </TT><TT><I>a</I></TT><TT>=-4,-3.5...3.5,4</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>animation(seq(display(square(0,1+i*a),filled),a,-5,5))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of the squares defined by the points 0 and 1+i*</TT><TT><I>a</I></TT><TT> for </TT><TT><I>a</I>=-5..5</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>animation(seq(droite([0,0,0],[1,1,a]),a,-5,5))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of the lines defined by the points [0,0,0] and [1,1,</TT><TT><I>a</I></TT><TT>] for </TT><TT><I>a</I>=-5..5</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>animation(seq(plotfunc(x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>a,[x,y]),a=1..3))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of the "3D" surface defined by </TT><TT><I>x</I></TT><SUP><TT>2</TT></SUP><TT>-<I>y</I></TT><SUP><TT><I>a</I></TT></SUP><TT>, for </TT><TT><I>a</I>=1..3</TT><TT> with rainbow colors</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>animation(seq(plotfunc((x+i*y)</TT><CODE><TT>^</TT></CODE><TT>a,[x,y], display=filled),a=1..10)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The sequence of the "4D" surfaces defined by </TT><TT>(<I>x</I>+<I>i</I>*<I>y</I>)</TT><SUP><TT><I>a</I></TT></SUP><TT>, for </TT><TT><I>a</I>=0..10</TT><TT> with rainbow colors</TT></DIV><P><B>Remark</B>
+We may also define the sequence with a program, 
+for example if we want to draw the
+segments of length 1,&#X221A;<SPAN style="text-decoration:overline">2</SPAN>...&#X221A;<SPAN style="text-decoration:overline">2</SPAN>0 constructed with a 
+right triangle of side 1 and the previous segment
+(note that there is a <TT>c:=evalf(..)</TT> statement
+to force approx. evaluation otherwise the computing time 
+would be too long) :
+</P><PRE CLASS="verbatim">seg(n):={
+ local a,b,c,j,aa,bb,L;
+ a:=1;
+ b:=1;
+ L:=[point(1)];
+ for(j:=1;j&lt;=n;j++){
+  L:=append(L,point(a+i*b));
+  c:=evalf(sqrt(a^2+b^2));
+  aa:=a;
+  bb:=b;
+  a:=aa-bb/c;
+  b:=bb+aa/c;
+ }
+ L;
+}
+</PRE><P>Then input : 
+</P><DIV CLASS="center"><TT>animation(seg(20))</TT></DIV><P>
+We see, each point, one to one with a display time that
+depends of the <TT>animate</TT> value in <TT>cfg</TT>.<BR>
+Or :
+</P><DIV CLASS="center"><TT>L:=seg(20); s:=segment(0,L[k])$(k=0..20)</TT></DIV><P>
+We see 21 segments.<BR>
+Then, input :
+</P><DIV CLASS="center"><TT>animation(s)</TT></DIV><P>
+We see, each segment, one to one with a display time that
+depends of the <TT>animate</TT> value in <TT>cfg</TT>.</P><HR>
+<A HREF="cascmd_en481.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en483.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

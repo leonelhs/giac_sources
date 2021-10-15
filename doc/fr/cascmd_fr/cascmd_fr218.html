@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>La fonction β : Beta</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr217.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr219.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc287">6.10.14</A>  La fonction β : <TT>Beta</TT></H3><P><A NAME="@default386"></A>
+<TT>Beta</TT> a comme argument deux réels <I>a</I>,<I>b</I> ou trois réels 
+<I>a</I>,<I>b</I>,<I>p</I> ou trois réels et 1 <I>a</I>,<I>b</I>,<I>p</I>,1.<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+avec 2 arguments <I>a</I>,<I>b</I>,
+<TT>Beta</TT> calcule les valeurs de la fonction β au point <I>a</I>,<I>b</I> de 
+ℝ<SUP>2</SUP>.<BR>
+On a par définition :<BR>
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">β(<I>x</I>,<I>y</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">Γ(<I>x</I>)*Γ(<I>y</I>)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">Γ(<I>x</I>+<I>y</I>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+On a : <TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">β(1,1)=1</TD></TR>
+</TABLE>
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">β(<I>n</I>,1)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+et :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">β(<I>n</I>,2)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>(<I>n</I>+1)</TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+On a :<BR>
+<TT>Beta(a,b)</TT>=∫<SUB>0</SUB><SUP>1</SUP><I>t</I><SUP>(</SUP><I>a</I>−1)*(1−<I>t</I>)<SUP>(</SUP><I>b</I>−1)<I>dt</I><BR>
+<TT>Beta(a,b)</TT> est défini pour <I>a</I> et <I>b</I> réels positifs (pour que 
+l’intégrale ∫<SUB>0</SUB><SUP>1</SUP><I>t</I><SUP>(</SUP><I>a</I>−1)*(1−<I>t</I>)<SUP>(</SUP><I>b</I>−1)<I>dt</I> soit convergente).<BR>
+On tape :
+<DIV CLASS="center"><TT>Beta(5,2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1/30</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>simplify(Beta(5,-3/2))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>256/15</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>Beta(x,y)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>Gamma(x)*Gamma(y)/Gamma(x+y)</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>Beta(5.1,2.2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0.0242053671402</TT></DIV>
+</LI><LI CLASS="li-itemize">avec 3 arguments <I>a</I>,<I>b</I>,<I>p</I>
+c’est la fonction Beta incomplète pour <I>p</I> entre 0 et 1, c’est :<BR>
+<TT>Beta(a,b,p)</TT>=∫<SUB>0</SUB><SUP><I>p</I></SUP><I>t</I><SUP>(</SUP><I>a</I>−1)*(1−<I>t</I>)<SUP>(</SUP><I>b</I>−1)<I>dt</I>, l’integrale va de 0 à <I>p</I> 
+au lieu de 0 à 1 pour la fonction Beta. 
+On tape :
+<DIV CLASS="center"><TT>Beta(5,2,0.5)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0.00364583333333</TT></DIV>
+</LI><LI CLASS="li-itemize">avec 4 arguments <I>a</I>,<I>b</I>,<I>p</I>,1 si on met 1 en 4eme argument cela calcule la
+fonction Beta incomplète regularisée i.e. la fonction Beta incomplète qui
+est divisé par Beta(a,b).
+On tape :
+<DIV CLASS="center"><TT>Beta(5,2,0.5,1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0.109375</TT></DIV>
+en effet <TT>Beta(5,2)=1/30</TT> et <TT>0.00364583333333*30=0.109375</TT>
+</LI></UL><HR>
+<A HREF="cascmd_fr217.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr219.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

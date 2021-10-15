@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Calcul approché d’intègrales par une quadrature de Gauss adaptative à 15 points : gaussquad</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr109.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr111.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc160">4.3.4</A>  Calcul approché d’intègrales par une quadrature de Gauss adaptative à 15 points : <TT>gaussquad</TT></H3><P><A NAME="@default193"></A>
+<TT>gaussquad</TT> a comme arguments : une expression 
+<TT>Xpr</TT>, le nom de la variable de cette expression (par défaut <TT>x</TT>), et 
+deux valeurs <TT>a,b</TT>.<BR>
+<TT>gaussquad(Xpr,x,a,b)</TT> calcule de 
+façon approchée l’intégrale ∫<SUB><I>a</I></SUB><SUP><I>b</I></SUP> <I>Xpr</I> <I>dx</I> par une 
+méthode adaptative (Ernst Hairer) utilisant des quadratures de 
+Gauss à 15 points (méthode d’ordre 30). 
+On commence par faire la quadrature à 15 points
+sur l’intervalle [<I>a</I>,<I>b</I>] tout entier et on estime l’erreur par une
+méthode emboitée (à 14 et 6 points choisis parmi les 15 points), 
+si l’erreur relative<SUP><A NAME="text3" HREF="cascmd_fr125.html#note3">1</A></SUP> est
+inférieure à la tolérance, l’algorithme s’arrête. Sinon on
+divise [<I>a</I>,<I>b</I>] en deux, et on calcule la quadrature sur chaque
+morceau, on estime l’erreur, si on dépasse la tolérance on divise
+en deux l’intervalle amenant l’erreur la plus grande, et ainsi
+de suite, on divise toujours en deux l’intervalle amenant l’erreur
+la plus grande, jusqu’à ce que l’erreur relative soit plus petite
+que la tolérance ou que le nombre de subdivisions dépasse le nombre
+maximal de subdivisions autorisées.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>gaussquad(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.46265174591</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>gaussquad(exp(-x</TT><CODE><TT>^</TT></CODE><TT>2),x,-1,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.49364826562</TT></DIV><HR>
+<A HREF="cascmd_fr109.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr111.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

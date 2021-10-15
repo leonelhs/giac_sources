@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Jordan normal form : jordan</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en407.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en409.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc456">2.46.5</A>  Jordan normal form : <TT>jordan</TT></H3><P><A NAME="@default687"></A>
+<TT>jordan</TT> takes as argument a square
+matrix <I>A</I> of size <I>n</I>.<BR>
+<TT>jordan</TT> returns :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+in <TT>Xcas</TT>, <TT>Mupad</TT> or <TT>TI</TT> mode<BR>
+a sequence of two matrix : a matrix <I>P</I> which columns are
+the eigenvectors and characteristic vectors
+of the matrix <I>A</I> and the Jordan matrix <I>J</I> of <I>A</I> verifying <I>J</I>=<I>P</I><SUP>&#X2212;1</SUP><I>AP</I>,
+</LI><LI CLASS="li-itemize">in <TT>Maple</TT> mode<BR>
+the Jordan matrix <I>J</I> of <I>A</I>. We can also have the matrix <I>P</I> verifying
+<I>J</I>=<I>P</I><SUP>&#X2212;1</SUP><I>AP</I> in a variable 
+by passing this variable as second argument, for example 
+<DIV CLASS="center"> <TT>jordan([[1,0,0],[0,1,1],[1,1,-1]],&#X2019;P&#X2019;)</TT>
+</DIV>
+</LI></UL><P>
+<B>Remarks</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+the syntax <TT>Maple</TT> is also valid in the other modes, for example, in
+<TT>Xcas</TT> mode input :
+<DIV CLASS="center"> <TT>jordan([[4,1,1],[1,4,1],[1,1,4]],&#X2019;P&#X2019;)</TT>
+</DIV>
+Output :
+<DIV CLASS="center"> <TT>[[1,-1,1/2],[1,0,-1],[1,1,1/2]]</TT>
+</DIV>
+then <TT>P</TT> returns
+<DIV CLASS="center"> <TT>[[6,0,0],[0,3,0],[0,0,3]]</TT>
+</DIV>
+</LI><LI CLASS="li-itemize">When <I>A</I> is symetric and has eigenvalues with an multiple order,
+<TT>Xcas</TT> returns orthogonal eigenvectors (not always of norm equal to 1)
+i.e. <TT>tran(P)*P</TT> is a diagonal matrix where the diagonal is the square norm
+of the eigenvectors, for example :
+<DIV CLASS="center"> <TT>jordan([[4,1,1],[1,4,1],[1,1,4]])</TT>
+</DIV>
+returns :
+<DIV CLASS="center"> <TT>[[1,-1,1/2],[1,0,-1],[1,1,1/2]],[[6,0,0],[0,3,0],[0,0,3]]</TT>
+</DIV>
+</LI></UL><P> 
+Input in <TT>Xcas</TT>, <TT>Mupad</TT> or <TT>TI</TT> mode :
+</P><DIV CLASS="center"><TT>jordan([[1,0,0],[0,1,1],[1,1,-1]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0,0],[0,1,1],[1,1,-1]],[[-1,0,0],[1,1,1],[0,-sqrt(2)-1,sqrt(2)-1]],[[1,0,0],[0,-(sqrt(2)),0],[0,0,sqrt(2)]]</TT></DIV><P>
+Input in <TT>Maple</TT> mode :
+</P><DIV CLASS="center"><TT>jordan([[1,0,0],[0,1,1],[1,1,-1]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0,0],[0,-(sqrt(2)),0],[0,0,sqrt(2)]]</TT></DIV><P>
+then input : 
+</P><DIV CLASS="center"><TT>P)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-1,0,0],[1,1,1],[0,-sqrt(2)-1,sqrt(2)-1]]</TT></DIV><P>
+Input in <TT>Xcas</TT>, <TT>Mupad</TT> or <TT>TI</TT> mode :
+</P><DIV CLASS="center"><TT>jordan([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[[1,2,1],[0,1,0],[1,2,0]],[[2,1,0],[0,2,1],[0,0,2]]]</TT></DIV><P>
+In complex mode and in <TT>Xcas</TT>, <TT>Mupad</TT> or <TT>TI</TT> mode , input :
+</P><DIV CLASS="center"><TT>jordan([[2,0,0],[0,2,-1],[2,1,2]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,0,0],[-2,-1,-1],[0,-i,i]],[[2,0,0],[0,2-i,0],[0,0,2+i]]</TT></DIV><HR>
+<A HREF="cascmd_en407.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en409.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

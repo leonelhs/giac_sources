@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Solving A*X=B : simult</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en450.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en452.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc505">2.52.4</A>  Solving A*X=B : <TT>simult</TT></H3><P><A NAME="@default742"></A>
+<TT>simult</TT> is used to solve a linear system of equations (resp. 
+several linear systems of equations with the same matrix <TT>A</TT>) written 
+in matrix form (see also <A HREF="cascmd_en266.html#sec:rrefm">2.31.17</A>) :
+</P><DIV CLASS="center"><TT>A*X=b (resp A*X=B)</TT></DIV><P>
+<TT>simult</TT> takes as arguments the matrix <TT>A</TT> of the system and the 
+column vector (i.e. a one column matrix) <TT>b</TT> of the second 
+member of the system (resp.
+the matrix <TT>B</TT> whose columns are the 
+vectors <TT>b</TT> of the second members of the different systems).<BR>
+The result is a column vector, solution of the system (resp. a matrix 
+whose columns are the solutions of the different systems).<BR>
+For example, to solve the system :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>&#X2212;2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
+</TABLE></TD></TR>
+</TABLE><P> 
+input :
+</P><DIV CLASS="center"><TT>simult([[3,1],[3,2]],[[-2],[2]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-2],[4]]</TT></DIV><P>
+Hence <I>x</I>=&#X2212;2 and <I>y</I>=4 is the solution.<BR>
+Input :
+</P><DIV CLASS="center"><TT>simult([[3,1],[3,2]],[[-2,1],[2,2]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[-2,0],[4,1]]</TT></DIV><P>
+Hence <I>x</I>=&#X2212;2 and <I>y</I>=4 is the solution of
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>&#X2212;2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+whereas <I>x</I>=0 and <I>y</I>=1 is the solution of
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>1 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
+</TABLE></TD></TR>
+</TABLE><HR>
+<A HREF="cascmd_en450.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en452.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

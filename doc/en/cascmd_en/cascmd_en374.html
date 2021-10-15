@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Define a matrix : matrix</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en373.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en375.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc418">2.42.25</A>  Define a matrix : <TT>matrix</TT></H3><P><A NAME="@default631"></A>
+<TT>matrix</TT> takes three arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+two integers <I>n</I> and <I>p</I>. 
+</LI><LI CLASS="li-itemize">a function of two variables <TT>j</TT> and <TT>k</TT> which
+should return the value of <I>a</I><SUB><I>j</I>,<I>k</I></SUB>, the element of
+row index <TT>j</TT> and column index <TT>k</TT> of the matrix to be build.
+</LI></UL><P>
+<TT>matrix</TT> returns the matrix <I>A</I>=(<I>a</I><SUB><I>j</I>,<I>k</I></SUB>) (<I>j</I>=1..<I>n</I> and <I>k</I>=1..<I>p</I>) of 
+dimension <I>n</I> × <I>p</I>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>matrix(4,3,(j,k)-&gt;j+k)</TT></DIV><P>
+or first define the <I>h</I> function:
+</P><DIV CLASS="center"> <TT>h(j,k):=j+k</TT></DIV><P>
+then, input:
+</P><DIV CLASS="center"><TT>matrix(4,3,h)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[2,3,4],[3,4,5],[4,5,6],[5,6,7]]</TT></DIV><P>
+Note the argument order and the fact that the indices are counted
+starting from 1. If the last argument is not provided, it defaults to 0.</P><HR>
+<A HREF="cascmd_en373.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en375.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

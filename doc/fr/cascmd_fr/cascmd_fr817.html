@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Pour écrire des sorties dans un fichier : fopen fprint fclose</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr816.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr818.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc946">8.5.3</A>  Pour écrire des sorties dans un fichier : <TT>fopen fprint fclose</TT></H3><P><A NAME="@default1487"></A><A NAME="@default1488"></A><A NAME="@default1489"></A>
+Voici les commandes pour ecrire dans un fichier :<BR>
+<TT>f:=fopen("essai")</TT> crèe un fichier du nom spécifié ici <TT>essai</TT> 
+(et donc l’efface si celui-ci existait déjà) et lui associer la variable 
+<TT>f</TT>.<BR>
+<TT>fprint(f,12)</TT> écrit 12 dans le fichier <TT>essai</TT>.<BR>
+<TT>fclose(f)</TT> ferme le fichier <TT>essai</TT>.<BR>
+On tape :
+</P><PRE CLASS="verbatim">testfprint(nom):={
+ local a,f;
+ a:=[];
+ f:=fopen(nom);
+ for (k:=1;k&lt;11;k++){
+ fprint(f,k);
+ }
+ fclose(f);
+ return a;
+ }
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>testfprint("toto")</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>la création d’un fichier "toto" dans lequel il y a 12345678910</TT></DIV><HR>
+<A HREF="cascmd_fr816.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr818.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

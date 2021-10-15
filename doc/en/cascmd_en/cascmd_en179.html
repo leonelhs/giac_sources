@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Rewrite exp(n*ln(x)) as a power : exp2pow</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en178.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en180.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc204">2.23.8</A>  Rewrite exp(n*ln(x)) as a power : <TT>exp2pow</TT></H3><P><A NAME="@default350"></A>
+<TT>exp2pow</TT> rewrites expression of the form exp(<I>n</I>*ln(<I>x</I>))
+as a power of <I>x</I>.<BR>
+Input :
+</P><DIV CLASS="center"><TT>exp2pow(exp(n*ln(x)))</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>n</TT></DIV><P>
+Note the difference with <TT>lncollect</TT> :<BR>
+<TT>lncollect(exp(n*ln(x))) = exp(n*log(x))</TT><BR>
+<TT>lncollect(exp(2*ln(x))) = exp(2*log(x))</TT><BR>
+<TT>exp2pow(exp(2*ln(x))) = x</TT><CODE><TT>^</TT></CODE><TT>2 </TT><BR>
+But :<BR>
+<TT>lncollect(exp(ln(x)+ln(x))) = x</TT><CODE><TT>^</TT></CODE><TT>2</TT><BR>
+<TT>exp2pow(exp(ln(x)+ln(x))) = x</TT><CODE><TT>^</TT></CODE><TT>(1+1)</TT><BR>
+
+</P><HR>
+<A HREF="cascmd_en178.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en180.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

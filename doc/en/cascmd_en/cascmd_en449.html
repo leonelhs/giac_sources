@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Gauss reduction of a matrix : ref</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en448.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en450.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc503">2.52.2</A>  Gauss reduction of a matrix : <TT>ref</TT></H3><P><A NAME="@default739"></A><A NAME="ref"></A> <A NAME="sec:ref"></A>
+<TT>ref</TT> is used to solve a linear system of equations written in
+matrix form:
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+The argument of <TT>ref</TT> is the augmented matrix of the system
+(the matrix obtained by augmenting the matrix <TT>A</TT> to the right with
+the column vector <TT>B</TT>).<BR>
+The result is a matrix <TT>[A1,B1]</TT> where <TT>A1</TT> has zeros
+under its principal diagonal, and the solutions of:
+</P><DIV CLASS="center"><TT>A1*X=B1</TT></DIV><P> 
+are the same as the solutions of:
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>For example, solve the system :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
+&#X23A8;<BR>
+&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>&#X2212;2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
+</TABLE></TD></TR>
+</TABLE><P> 
+Input :
+</P><DIV CLASS="center"><TT>ref([[3,1,-2],[3,2,2]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[1,1/3,-2/3],[0,1,4]]</TT></DIV><P>
+Hence the solution is <I>y</I>=4 (last row) and <I>x</I>=&#X2212;2 (substitute <I>y</I> 
+in the first row).</P><HR>
+<A HREF="cascmd_en448.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en450.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

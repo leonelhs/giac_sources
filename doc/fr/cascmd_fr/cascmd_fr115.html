@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>fsolve avec l’option falsepos_solver</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr114.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr116.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc167">4.5.3</A>  <TT>fsolve</TT> avec l’option <TT>falsepos_solver</TT></H3><P><A NAME="@default202"></A>
+L’algorithme de "fausse position" est itératif et est basé sur 
+l’interpolation linéaire :
+on calcule la valeur de <I>f</I> au point d’intersection de la droite passant par 
+les points d’affixe <I>a</I>+<I>i</I>*<I>f</I>(<I>a</I>) et <I>b</I>+<I>i</I>*<I>f</I>(<I>b</I>) avec l’axe des <I>x</I>. Cette valeur 
+permet de savoir sur quelle partie de l’intervalle se 
+trouve la racine, on peut ainsi recommencer l’iteration.<BR>
+La convergence est linéaire mais est plus rapide que la dichotomie (bisection).<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>fsolve((cos(x))=x,x,-1..1,falsepos_solver)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0.739085133215,0.739085133215]</TT></DIV><HR>
+<A HREF="cascmd_fr114.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr116.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

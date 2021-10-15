@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Characteristic polynomial : charpoly</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en408.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en410.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc457">2.46.6</A>  Characteristic polynomial : <TT>charpoly</TT></H3><P><A NAME="@default688"></A><A NAME="@default689"></A>
+<TT>charpoly</TT> (or <TT>pcar</TT>) takes one or two argument(s),
+a square matrix <I>A</I> of size <I>n</I> and optionnally
+the name of a symbolic variable.<BR>
+<TT>charpoly</TT> returns the characteristic polynomial 
+<I>P</I> of <I>A</I> written as the
+list of its coefficients if no variable name was provided
+or written as an expression with respect to
+the variable name provided as second argument.<BR>
+The characteristic polynomial <I>P</I> of <I>A</I> is defined as
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>x</I>)=det(<I>x</I>.<I>I</I>&#X2212;<I>A</I>) </TD></TR>
+</TABLE><P>
+Input :
+</P><DIV CLASS="center"><TT>charpoly([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV><P>
+Hence, the characteristic polynomial of this matrix is
+<I>x</I><SUP>3</SUP>&#X2212;6<I>x</I><SUP>2</SUP>+12<I>x</I>&#X2212;8 (input <TT>normal(poly2symb([1,-6,12,-8],x))</TT> to get
+its symbolic representation).<BR>
+Input :
+</P><DIV CLASS="center"><TT>purge(X):;
+charpoly([[4,1,-2],[1,2,-1],[2,1,0]],X)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>X</TT><CODE><TT>^</TT></CODE><TT>3-6*X</TT><CODE><TT>^</TT></CODE><TT>2+12*X-8</TT></DIV><HR>
+<A HREF="cascmd_en408.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en410.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

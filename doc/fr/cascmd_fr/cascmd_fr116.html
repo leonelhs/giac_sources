@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>fsolve avec l’option newton_solver</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr115.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr117.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc168">4.5.4</A>  <TT>fsolve</TT> avec l’option <TT>newton_solver</TT></H3><P><A NAME="@default203"></A>
+La méthode de Newton est la méthode standard. 
+L’algorithme démarre par une valeur initiale <I>x</I><SUB>0</SUB>, on cherche 
+l’intersection <I>x</I><SUB>1</SUB>
+de la tangente en <I>x</I><SUB>0</SUB> au graphe de <I>f</I>, avec l’axe des <I>x</I>, puis à chaque 
+itération on recommence en prenant <I>x</I><SUB>1</SUB> comme valeur <I>x</I><SUB>0</SUB> :<BR>
+La suite des <I>x</I><SUB><I>i</I></SUB> est donc définie par :<BR>
+<I>x</I><SUB>0</SUB>=<I>x</I><SUB>0</SUB> et <I>x</I><SUB><I>n</I>+1</SUB>=<I>x</I><SUB><I>n</I></SUB>−<I>f</I>(<I>x</I><SUB><I>n</I></SUB>)/<I>f</I>′(<I>x</I><SUB><I>n</I></SUB>)<BR>
+La méthode de Newton quand elle converge, converge de façon quadratique pour les racines simples.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>fsolve(cos(x)=x,x,0,newton_solver)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.739085133215</TT></DIV><HR>
+<A HREF="cascmd_fr115.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr117.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

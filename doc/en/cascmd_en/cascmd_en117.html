@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Table of values and graph of a recurrent sequence : tableseq and plotseq</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en116.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en118.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc132">2.13.2</A>  Table of values and graph of a recurrent sequence : <TT>tableseq</TT> and <TT>plotseq</TT></H3><P><A NAME="@default182"></A><A NAME="@default183"></A>
+<TT>tableseq</TT> is a command that should be used inside a spreadsheet
+(opened with <TT>Alt+t</TT>),
+it returns a template to fill one column with
+<TT><I>u</I></TT><SUB><TT>0</TT></SUB><TT>,  <I>u</I></TT><SUB><TT><I>n</I>+1</TT></SUB><TT>=<I>f</I>(<I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>)</TT> (one-term recurrence) or
+more generally <I>u</I><SUB>0</SUB>,...,<I>u</I><SUB><I>k</I></SUB>,   <I>u</I><SUB><I>n</I>+<I>k</I>+1</SUB>=<I>f</I>(<I>u</I><SUB><I>n</I></SUB>,<I>u</I><SUB><I>n</I>+1</SUB>,...,<I>u</I><SUB><I>n</I>+<I>k</I></SUB>).
+The template fills the column starting from the selected cell, or
+starting from 0 if the whole column was selected.<BR>
+See also <TT>plotseq</TT> (section <A HREF="index.html#sec:plotseq">3.13</A>) for a graphic representation
+of a one-term recurrence sequence.</P><P><B>Examples</B> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+display the values of the sequence <I>u</I><SUB>0</SUB>=3.5,  <I>u</I><SUB><I>n</I></SUB>=sin(<I>u</I><SUB><I>n</I>&#X2212;1</SUB>)<BR>
+Select a cell of the spreadsheet (for example <TT>B0</TT>) and 
+input in the command line :
+<DIV CLASS="center"><TT>tableseq(sin(n),n,3.5)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>a column with sin(n), n, 3.5 
+and the formula evalf(subst(B$0,B$1,B2))</TT>
+</DIV> 
+You get the values of the sequence 
+<TT><I>u</I></TT><SUB><TT>0</TT></SUB><TT>=3.5, <I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>=<I>sin</I>(<I>u</I></TT><SUB><TT><I>n</I>-1</TT></SUB><TT>)</TT> in the column 
+<TT>B</TT>.
+</LI><LI CLASS="li-itemize">display the values of the Fibonacci sequence 
+<I>u</I><SUB>0</SUB>=1, <I>u</I><SUB>1</SUB>=1  <I>u</I><SUB><I>n</I>+2</SUB>=<I>u</I><SUB><I>n</I></SUB>+<I>u</I><SUB><I>n</I>+1</SUB><BR>
+Select a cell, say <TT>B0</TT>, and input in the command line 
+<DIV CLASS="center"><TT>tableseq(x+y,[x,y],[1,1])</TT></DIV>
+This fills the B column sheet with
+<DIV CLASS="center"><TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=left NOWRAP><TT>row</TT></TD><TD ALIGN=left NOWRAP><TT>B</TT></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TT>0</TT></TD><TD ALIGN=left NOWRAP><TT>x+y</TT></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TT>1</TT></TD><TD ALIGN=left NOWRAP><TT>x</TT></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TT>2</TT></TD><TD ALIGN=left NOWRAP><TT>y</TT></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TT>3</TT></TD><TD ALIGN=left NOWRAP><TT>1</TT></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TT>4</TT></TD><TD ALIGN=left NOWRAP><TT>1</TT></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TT>5</TT></TD><TD ALIGN=left NOWRAP><TT>2</TT></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TT>..</TT></TD><TD ALIGN=left NOWRAP><TT>..</TT></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TT>7</TT></TD><TD ALIGN=left NOWRAP><TT>5</TT></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TT>..</TT></TD><TD ALIGN=left NOWRAP><TT>..</TT></TD></TR>
+</TABLE></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en116.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en118.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

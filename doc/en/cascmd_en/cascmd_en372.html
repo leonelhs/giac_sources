@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Make a matrix from two matrices : augment concat</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en371.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en373.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc416">2.42.23</A>  Make a matrix from two matrices : <TT>augment concat</TT></H3><P><A NAME="@default628"></A><A NAME="@default629"></A>
+<TT>augment</TT> or <TT>concat</TT> concats two matrices <I>A</I> and <I>B</I> 
+having the same number of rows, or having the same number of columns. 
+In the first case, it returns a matrix having the same number of rows 
+than <I>A</I> and <I>B</I> by horizontal gluing, in the second case
+it returns a matrix having the same number of columns by
+vertical gluing.<BR>
+Input :
+</P><DIV CLASS="center"><TT>augment([[3,4,5],[2,1,0]],[[1,2],[4,5]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4,5,1,2],[2,1,0,4,5]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>augment([[3,4],[2,1],[0,1]],[[1,2],[4,5]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4],[2,1],[0,1],[1,2],[4,5]]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>augment([[3,4,2]],[[1,2,4]]</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4,2,1,2,4]]</TT></DIV><P>
+Note that if <I>A</I> and <I>B</I> have the same dimension, <TT>augment</TT> 
+makes a matrix with the same number of rows than <I>A</I> and <I>B</I> 
+by horizontal gluing, in that case
+you must use <TT>semi_augment</TT> for vertical gluing.<BR>
+Input :
+</P><DIV CLASS="center"><TT>augment([[3,4],[2,1]],[[1,2],[4,5]])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[[3,4,1,2],[2,1,4,5]]]</TT></DIV><HR>
+<A HREF="cascmd_en371.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en373.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Les fonctions de Airy : Airy_Ai et Airy_Bi</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr220.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr222.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc290">6.10.17</A>  Les fonctions de Airy : <TT>Airy_Ai</TT> et <TT>Airy_Bi</TT></H3><P><A NAME="@default389"></A><A NAME="@default390"></A>
+<TT>Airy_Ai</TT> et <TT>Airy_Bi</TT> a comme argument un réel <I>x</I>.<BR>
+<TT>Airy_Ai</TT> et <TT>Airy_Bi</TT> sont deux solutions indépendantes
+de l’équation :<BR>
+<I>y</I><SUP>′′</SUP>−<I>x</I>*<I>y</I>=0.<BR>
+On définit :<BR>
+<I>Airy</I>_<I>Ai</I>(<I>x</I>) = (1/π) ∫<SUB>0</SUB><SUP>∞</SUP>cos(<I>t</I><SUP>3</SUP>/3 + <I>x</I>*<I>t</I>) <I>dt</I><BR>
+<I>Airy</I>_<I>Bi</I>(<I>x</I>) = (1/π) ∫<SUB>0</SUB><SUP>∞</SUP>(<I>e</I><SUP>− <I>t</I><SUP>3</SUP>/3</SUP> + sin( <I>t</I><SUP>3</SUP>/3 + <I>x</I>*<I>t</I>)) <I>dt</I><BR>
+On a aussi :<BR>
+<TT>Airy_Ai(x)</TT> vérifie :<BR>
+<TT><I>Airy</I>_<I>Ai</I>(<I>x</I>)=<I>Airy</I>_<I>Ai</I>(0)*<I>f</I>(<I>x</I>)+<I>Airy</I>_<I>Ai</I></TT><SUP><TT>′</TT></SUP><TT>(0)*<I>g</I>(<I>x</I>)</TT> et<BR>
+<TT>Airy_Bi</TT> vérifie :<BR>
+<TT><I>Airy</I>_<I>Bi</I>(<I>x</I>)=√</TT><TT><SPAN style="text-decoration:overline">3</SPAN></TT><TT>(<I>Airy</I>_<I>Ai</I>(0)*<I>f</I>(<I>x</I>)-<I>Airy</I>_<I>Ai</I></TT><SUP><TT>′</TT></SUP><TT>(0)*<I>g</I>(<I>x</I>))</TT><BR>
+où f et g sont deux séries entières solutions de 
+<I>w</I><SUP>′′</SUP>−<I>x</I>*<I>w</I>=0 :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∞</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell">3<SUP><I>k</I></SUP></TD><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">Γ(<I>k</I>+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
+</TABLE></TD><TD CLASS="dcell">)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">Γ(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
+</TABLE></TD><TD CLASS="dcell">)</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>3<I>k</I></SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">(3<I>k</I>)!</TD></TR>
+</TABLE></TD></TR>
+</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>g</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∞</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell">3<SUP><I>k</I></SUP></TD><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">Γ(<I>k</I>+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
+</TABLE></TD><TD CLASS="dcell">)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">Γ(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
+</TABLE></TD><TD CLASS="dcell">)</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>3<I>k</I>+1</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">(3<I>k</I>+1)!</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>Airy_Ai(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.135292416313</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>Airy_Bi(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.20742359495</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>Airy_Ai(0)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.355028053888</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>Airy_Bi(0)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.614926627446</TT></DIV><HR>
+<A HREF="cascmd_fr220.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr222.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Functional derivative : function_diff</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en129.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en131.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc149">2.17.1</A>  Functional derivative : <TT>function_diff</TT></H3><P><A NAME="@default251"></A>
+<TT>function_diff</TT> takes a function as argument.<BR>
+<TT>function_diff</TT> returns the derivative function of this function.<BR>
+Input :
+</P><DIV CLASS="center"><TT>function_diff(sin)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(&#X2018; x&#X2018;)-&gt;cos(&#X2018; x&#X2018;)</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>function_diff(sin)(x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>cos(x)</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2+x*cos(x)</TT></DIV><DIV CLASS="center"><TT>function_diff(f)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(&#X2018; x&#X2018;)-&gt;2*&#X2018; x&#X2018;+cos(&#X2018; x&#X2018;)+&#X2018; x&#X2018;*(-(sin(&#X2018; x&#X2018;)))</TT></DIV><P> 
+Input :
+</P><DIV CLASS="center"><TT>function_diff(f)(x)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>cos(x)+x*(-(sin(x)))+2*x</TT></DIV><P> 
+To define the function <I>g</I> as <I>f</I>&#X2032;, input :<BR>
+</P><DIV CLASS="center"><TT>g:=function_diff(f)</TT></DIV><P>
+The <TT>function_diff</TT> instruction has the same effect as
+using the expression derivative in conjonction with <TT>unapply</TT> :
+</P><DIV CLASS="center"><TT>g:=unapply(diff(f(x),x),x)</TT></DIV><DIV CLASS="center"><TT>g(x)</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>cos(x)+x*(-(sin(x)))+2*x</TT></DIV><P> 
+<B>Warning !!!</B><BR>
+In <TT>Maple</TT> mode, for compatibility,
+<TT>D</TT> may be used in place of <TT>function_diff</TT>.
+For this reason, it is impossible to assign a variable named 
+<TT>D</TT> in <TT>Maple</TT> mode (hence you can not name a 
+geometric object <TT>D</TT>).</P><HR>
+<A HREF="cascmd_en129.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en131.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

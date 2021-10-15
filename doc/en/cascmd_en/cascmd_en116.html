@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Array of values of a sequence : tablefunc</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en115.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en117.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc131">2.13.1</A>  Array of values of a sequence : <TT>tablefunc</TT></H3><P><A NAME="@default181"></A>
+<TT>tablefunc</TT> is a command that should be used inside a spreadsheet
+(opened with <TT>Alt+t</TT>),
+it returns a template to fill two columns, with
+the table of values of a function. If the step value is 1,
+<TT>tablefunc(ex,n,n0,1)</TT>, where <TT>ex</TT> is an expression
+depending on <TT>n</TT>, will fill the spreadsheet with
+the values of the sequence <I>u</I><SUB><I>n</I></SUB>=<I>ex</I> for <I>n</I>=<I>n</I>0, <I>n</I>0+1, <I>n</I>0+2,.....</P><P><B>Example</B> : display the values of the sequence <I>u</I><SUB><I>n</I></SUB>=sin(<I>n</I>)<BR>
+Select a cell of a spreadsheet (for example <TT>C0</TT>) 
+and input in the command line : 
+</P><DIV CLASS="center"><TT>tablefunc(sin(n),n,0,1)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>two columns : </TT><TT>n</TT><TT> and </TT><TT>sin(n)</TT></DIV><UL CLASS="itemize"><LI CLASS="li-itemize">
+in the column C: the variable name <TT>n</TT>, the value of the step 
+(this value should be equal to 1 for a sequence),
+the value of <TT>n0</TT> (here 0), then a recurrence 
+formula (<TT>C2+C$1</TT>, ...). 
+</LI><LI CLASS="li-itemize">in the column D: <TT>sin(n)</TT>, <TT>"Tablefunc"</TT>, then a 
+recurrence formula.
+</LI><LI CLASS="li-itemize">For each row,
+the values of the sequence <TT><I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>=</TT><TT>sin</TT><TT>(<I>n</I>)</TT> correspond to 
+the values of <TT>n</TT> starting from <TT>n=n0</TT> (here 0).
+</LI></UL><HR>
+<A HREF="cascmd_en115.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en117.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

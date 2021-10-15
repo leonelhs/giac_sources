@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Savoir si on a un triangle isocéle : is_isosceles est_isocele</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr951.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr953.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1103">9.19.6</A>  Savoir si on a un triangle isocéle : <TT>is_isosceles est_isocele</TT></H3><P><A NAME="@default1850"></A><A NAME="@default1851"></A><A NAME="sec:estisocele2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1030.html#sec:estisocele3">10.13.10</A> pour la géométrie 3-d.<BR>
+<TT>est_isocele</TT> est une fonction booléenne ayant comme 
+argument trois points ou un objet géométrique.<BR>
+<TT>est_isocele</TT> vaut 1 (resp 2, 3) si les trois points forment un 
+triangle isocéle ou si l’objet géométrique est un triangle isocéle dont
+l’angle portant les deux cotés égaux est désigné par le premier (resp 
+second, troisième) argument, ou vaut 4 si les trois points forment un 
+triangle équilatéral, ou si l’objet géométrique est un triangle 
+équilatéral, et vaut 0 sinon.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>est_isocele(1,1+i,i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>T:=triangle_isocele(0,1,pi/4);est_isocele(T)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>T:=triangle_isocele(0,1,pi/4,C);est_isocele(T[0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+En effet <TT>T[0]</TT> désigne un triangle car <TT>T</TT> est une liste composée 
+du triangle et de son sommet <TT>C</TT>.<BR>
+On tape <TT>affixe(C)</TT> et on obtient <TT>(sqrt(2))/2+((i)*sqrt(2))/2</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>est_isocele(1+i,-1+i,-i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+<A HREF="cascmd_fr951.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr953.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

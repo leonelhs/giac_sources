@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>3D parametric surface : plotparam paramplot DrawParm</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en478.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en480.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc547">3.11.2</A>  3D parametric surface : <TT>plotparam paramplot DrawParm</TT></H3><P><A NAME="@default808"></A><A NAME="@default809"></A><A NAME="@default810"></A>
+<TT>plotparam</TT> takes two main arguments,
+a list of three 
+expressions of two variables and the list of these variable names
+where each variable name may be replaced by variable=interval
+to specify the range of the parameters.
+It accepts an optionnal argument to specify
+the discretisation steps of the parameters <I>u</I> and <I>v</I> with 
+<TT>ustep=...</TT> and <TT>vstep=...</TT>.<BR>
+<TT>plotparam([f(u,v),g(u,v),h(u,v)],[u,v])</TT> draws the surface defined by the 
+first argument : <I>x</I>=<I>f</I>(<I>u</I>,<I>v</I>),<I>y</I>=<I>g</I>(<I>u</I>,<I>v</I>),<I>z</I>=<I>h</I>(<I>u</I>,<I>v</I>), where <I>u</I> and <I>v</I>
+ranges default to the graphic configuration.<BR>
+Input :
+</P><DIV CLASS="center"><TT>plotparam([v*cos(u),v*sin(u),v],[u,v])</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>The cone </TT><TT><I>x</I>=<I>v</I>*</TT><TT>cos</TT><TT>(<I>u</I>),<I>y</I>=<I>v</I>*</TT><TT>sin</TT><TT>(<I>u</I>),<I>z</I>=<I>v</I></TT></DIV><P>
+To specify the range of each parameters, replace each variable
+by an equation variable=range, like this:
+</P><DIV CLASS="center"><TT>plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3]) </TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>A portion of the cone </TT><TT><I>x</I>=<I>v</I>*</TT><TT>cos</TT><TT>(<I>u</I>),<I>y</I>=<I>v</I>*</TT><TT>sin</TT><TT>(<I>u</I>),<I>z</I>=<I>v</I></TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3],ustep=0.5,vstep=0.5)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>A portion of the cone </TT><TT><I>x</I>=<I>v</I>*</TT><TT>cos</TT><TT>(<I>u</I>),<I>y</I>=<I>v</I>*</TT><TT>sin</TT><TT>(<I>u</I>),<I>z</I>=<I>v</I></TT></DIV><HR>
+<A HREF="cascmd_en478.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en480.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

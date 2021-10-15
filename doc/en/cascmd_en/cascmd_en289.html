@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Make a sequence or a list : seq $</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en288.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en290.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc326">2.35.5</A>  Make a sequence or a list : <TT>seq $</TT></H3><P><A NAME="@default497"></A><A NAME="@default498"></A><A NAME="sec:seq"></A>
+<TT>seq</TT> takes two, three, four or five arguments : the first 
+argument is an expression depending of a parameter (for example <I>j</I>) and 
+the remaining argument(s) describe which values of <I>j</I> will be used to
+generate the sequence. More precisely <I>j</I> is assumed to move 
+from <I>a</I> to <I>b</I>:
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+with a default step of 1 or -1: <TT>j=a..b</TT> or 
+<TT>j,a..b</TT> (Maple-like syntax), <TT>j,a,b</TT> (TI-like syntax)
+</LI><LI CLASS="li-itemize">or with a specific step: 
+<TT>j=a..b,p</TT> (Maple-like syntax), <TT>j,a,b,p</TT> (TI-like syntax).
+</LI></UL><P>
+If the Maple-like syntax is used, <TT>seq</TT> returns a sequence,
+if the TI-like syntax is used, <TT>seq</TT> returns a list.</P><P><TT>$</TT> is the infixed version of <TT>seq</TT> when <TT>seq</TT> has only two 
+arguments and returns always a sequence.<BR>
+<B>Remark:</B> 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+In <TT>Xcas</TT> mode, the precedence of <TT>$</TT> is not the same as
+for example in <TT>Maple</TT>, in case of doubt 
+put the arguments of <TT>$</TT> in parenthesis.
+For example, the equivalent of <TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>2,j=-1..3)</TT> is
+<TT>(j</TT><CODE><TT>^</TT></CODE><TT>2)$(j=-1..3)</TT> and
+returns <TT>(1,0,1,4,9)</TT>. 
+The equivalent of <TT>seq(4,3)</TT> is <TT>4$3</TT> and returns 
+<TT>(4,4,4)</TT>.
+</LI><LI CLASS="li-itemize">With <TT>Maple</TT> syntax, <TT>j,a..b,p</TT> is not valid.
+To specify a step <I>p</I> for the variation of 
+<I>j</I> from <I>a</I> to <I>b</I>, use <TT>j=a..b,p</TT> or use the <TT>TI</TT> syntax
+<TT>j,a,b,p</TT> and get the sequence from the list with <TT>op(...)</TT>.
+</LI></UL><P>
+In summary, the different way to build a sequence are :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+with <TT>Maple</TT>-like <B>syntax</B> 
+<OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+<TT>seq</TT> has two arguments 
+either an expression depending of a parameter 
+(for example <I>j</I>) and <I>j</I>=<I>a</I>..<I>b</I> where <I>a</I> and <I>b</I> are reals, 
+or a constant expression and an integer <I>n</I>.<BR>
+<TT>seq</TT> returns the sequence where <I>j</I> is replaced in the 
+expression by <I>a</I>, <I>a</I>+1,...,<I>b</I> if <I>b</I>&gt;<I>a</I> and by <I>a</I>, <I>a</I>&#X2212;1,...,<I>b</I> if <I>b</I>&lt;<I>a</I>,
+or <TT>seq</TT> returns the sequence made by copying <I>n</I> times the constant.
+</LI><LI CLASS="li-enumerate"><TT>seq</TT> has three arguments an expression depending of a parameter 
+(for example <I>j</I>) and <I>j</I>=<I>a</I>..<I>b</I>,<I>p</I> where <I>a</I>, <I>b</I> are reals and <I>p</I> is a 
+real number.<BR>
+<TT>seq</TT> returns the sequence where <I>j</I> is replaced in the 
+expression by <I>a</I>, <I>a</I>+<I>p</I>,...,<I>b</I> if <I>b</I>&gt;<I>a</I> and by <I>a</I>, <I>a</I>&#X2212;<I>p</I>,...,<I>b</I> 
+if <I>b</I>&lt;<I>a</I>.<BR>
+Note that <I>j</I>,<I>a</I>..<I>b</I> is also valid but <I>j</I>,<I>a</I>..<I>b</I>,<I>p</I> is not valid. 
+</LI></OL>
+</LI><LI CLASS="li-itemize"><TT>TI</TT> <B>syntax</B>
+<OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+<TT>seq</TT> has four arguments an expression depending of a parameter (for 
+example <I>j</I>), the name of the parameter (for example <I>j</I>), <I>a</I> and <I>b</I> where
+<I>a</I> and <I>b</I> are reals.<BR>
+<TT>seq</TT> returns the list where <I>j</I> is replaced in the 
+expression by <I>a</I>, <I>a</I>+1,...,<I>b</I> if <I>b</I>&gt;<I>a</I> and by <I>a</I>, <I>a</I>&#X2212;1,...,<I>b</I> if <I>b</I>&lt;<I>a</I>.
+</LI><LI CLASS="li-enumerate"><TT>seq</TT> has five arguments an expression depending of a parameter (for 
+example <I>j</I>), the name of the parameter (for example <I>j</I>), <I>a</I>, <I>b</I> and <I>p</I> 
+where <I>a</I>, <I>b</I> and <I>p</I> are reals.<BR>
+<TT>seq</TT> returns the list where 
+<I>j</I> is substitued in the 
+expression by <I>a</I>, <I>a</I>+<I>p</I>,...,<I>a</I>+<I>k</I>*<I>p</I> (<I>a</I>+<I>k</I>*<I>p</I> &#X2264; <I>b</I> &lt;<I>a</I>+(<I>k</I>+1)*<I>p</I> or 
+<I>a</I>+<I>k</I>*<I>p</I> &#X2265; <I>b</I>&gt; <I>a</I>+(<I>k</I>+1)*<I>p</I>). 
+By default, <I>p</I>=1 if <I>b</I>&gt;<I>a</I> and <I>p</I>=-1 if <I>b</I>&lt;<I>a</I>. 
+</LI></OL>
+</LI></UL><P>
+<B>Note</B> that
+in <TT>Maple</TT> syntax, <TT>seq</TT> takes no more than 3 arguments and
+returns a sequence 
+as in <TT>TI</TT> syntax, <TT>seq</TT> takes at least 4 arguments 
+and returns a list.<BR>
+Input to have a sequence with same elements :
+</P><DIV CLASS="center"><TT>seq(t,4)</TT></DIV><P>
+Or : 
+</P><DIV CLASS="center"><TT>seq(t,k=1..4)</TT></DIV><P>
+Or :
+</P><DIV CLASS="center"><TT>t$4</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>(t,t,t,t)</TT></DIV><P>
+Input to have a sequence :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j=1..4)</TT></DIV><P>
+Or : 
+</P><DIV CLASS="center"><TT>(j</TT><CODE><TT>^</TT></CODE><TT>3)$(j=1..4)</TT></DIV><P> 
+Or :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,1..4)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(1,4,9,16)</TT></DIV><P>
+Input to have a sequence :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j=-1..4,2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>(1,1,9)</TT></DIV><P>
+Or to have a list,<BR>
+Input :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,1,4)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,4,9,16]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,0,5,2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[0,8,64]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,5,0,-2)</TT></DIV><P>
+or
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,5,0,2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[125,27,1]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,1,3,0.5)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,3.375,8,15.625,27]</TT></DIV><P>
+Input :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,1,3,1/2)</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>[1,27/8,8,125/8,27]</TT></DIV><P>
+<B>Examples</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Find the third derivative of  ln(<I>t</I>), input:
+<DIV CLASS="center"><TT>diff(log(t),t$3)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>-((-(2*t))/t</TT><CODE><TT>^</TT></CODE><TT>4)</TT></DIV>
+</LI><LI CLASS="li-itemize">Input :
+<DIV CLASS="center"><TT>l:=[[2,3],[5,1],[7,2]]</TT></DIV>
+<DIV CLASS="center"><TT>seq((l[k][0])$(l[k][1]),k=0 .. size(l)-1)</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>2,2,2,seq[5],7,7</TT></DIV>
+then <TT>eval(ans())</TT> returns:
+<DIV CLASS="center"><TT>2,2,2,5,7,7</TT></DIV>
+</LI><LI CLASS="li-itemize">Input to transform a string into the list of its characters :
+<PRE CLASS="verbatim">f(chn):={
+ local l;
+ l:=size(chn);
+ return seq(chn[j],j,0,l-1);
+}
+</PRE>then input:
+<DIV CLASS="center"><TT>f("abracadabra")</TT></DIV>
+Output :
+<DIV CLASS="center"><TT>["a","b","r","a","c","a","d","a","b","r","a"]</TT></DIV>
+</LI></UL><HR>
+<A HREF="cascmd_en288.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en290.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

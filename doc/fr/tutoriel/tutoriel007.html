@@ -1,0 +1,795 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="tutoriel.css">
+<TITLE>Des exercices corrig&#XE9;s avec Xcas</TITLE>
+</HEAD>
+<BODY >
+<A HREF="tutoriel006.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="tutoriel008.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H2 CLASS="section"><A NAME="htoc35">7</A>&#XA0;&#XA0;Des exercices corrig&#XE9;s avec <TT>Xcas</TT></H2><H3 CLASS="subsection"><A NAME="toc29"></A><A NAME="htoc36">7.1</A>&#XA0;&#XA0;Fonction et repr&#XE9;sentation graphique (niveau terminale S)</H3><H4 CLASS="subsubsection"><A NAME="htoc37">7.1.1</A>&#XA0;&#XA0;Exercice 1</H4><P>
+On consid&#XE8;re la fonction <I>f</I> de &#X211D;-{3} dans &#X211D; 
+d&#XE9;finie par :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=(<I>x</I>+1)ln|<I>x</I>&#X2212;3|</TD></TR>
+</TABLE><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Calculer la deriv&#XE9;e premi&#XE8;re <I>f</I>&#X2032; et seconde <I>f</I>&#X2033; de <I>f</I>.<BR>
+En d&#XE9;duire les variations de <I>f</I>&#X2032;.
+</LI><LI CLASS="li-enumerate">Calculer les limites de <I>f</I>&#X2032; en &#X2212;&#X221E; et en 3 &#XE0; gauche.
+</LI><LI CLASS="li-enumerate">Montrer que <I>f</I>&#X2032; s&#X2019;annule une seule fois en &#X3B1; sur ]&#X2212;&#X221E;;3[.
+Donner un encadrement de &#X3B1; d&#X2019;amplitude 0.1.
+</LI><LI CLASS="li-enumerate">&#XC9;tudier le signe de <I>f</I>&#X2032;(<I>x</I>) sur &#X211D;-{3} et en d&#XE9;duire les 
+variations de <I>f</I>.
+</LI><LI CLASS="li-enumerate">Tracer la courbe <I>C</I> de <I>f</I> dans un rep&#XE8;re orthonorm&#XE9; (unit&#XE9; 1<I>cm</I>).
+</LI><LI CLASS="li-enumerate">Calculer l&#X2019;aire en <I>cm</I><SUP>2</SUP> de la r&#XE9;gion comprise entre <I>C</I>, l&#X2019;axe des
+abscisses et les droites d&#X2019;&#XE9;quations <I>x</I>=&#X2212;1 et <I>x</I>=2.
+</LI></OL><P><B>R&#XE9;ponses</B>
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+On tape pour d&#XE9;finir la fonction <I>f</I> :
+<DIV CLASS="center">
+<CODE> f(x):=(x+1)*ln(abs(x-3))</CODE>
+</DIV>
+On tape pour d&#XE9;finir la fonction <I>f</I>&#X2032; :
+<DIV CLASS="center">
+<CODE> f1:=function_diff(f):;</CODE>
+</DIV>
+puis,
+<DIV CLASS="center">
+<CODE> f1(x)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> ln(abs(x-3))+(x+1)/(x-3)</CODE>
+</DIV>
+Donc  <I>f</I>&#X2032;(<I>x</I>)=ln(|<I>x</I>&#X2212;3|)+<I>x</I>+1/<I>x</I>&#X2212;3.<BR>
+On tape pour d&#XE9;finir la fonction <I>f</I>&#X2033; :
+<DIV CLASS="center">
+<CODE> f2:=function_diff(f1):;</CODE>
+</DIV>
+puis,
+<DIV CLASS="center">
+<CODE> f2(x)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> 1/(x-3)+1/(x-3)+(x+1)*(-(1/((x-3)^2)))</CODE>
+</DIV>
+puis pour simplifier l&#X2019;&#XE9;criture, on tape :
+<DIV CLASS="center">
+<CODE> normal(f2(x))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> (x-7)/(x^2-6*x+9)</CODE>
+</DIV>
+ou bien pour factoriser, on tape : 
+<DIV CLASS="center">
+<CODE> factor(f2(x))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>(x-7)/((x-3)^2)</CODE>
+</DIV>
+Donc  <I>f</I>&#X2033;(<I>x</I>)= <I>x</I>&#X2212;7/(<I>x</I>&#X2212;3)<SUP>2</SUP><P><B>Autre fa&#XE7;on</B><BR>
+On tape pour d&#XE9;finir la fonction <I>f</I> :
+</P><DIV CLASS="center">
+<CODE> f(x):=(x+1)*ln(abs(x-3))</CODE>
+</DIV><P>
+On tape pour calculer <I>f</I>&#X2032;(<I>x</I>) :
+</P><DIV CLASS="center">
+<CODE> dfx:=diff(f(x)</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center">
+<CODE> ln(abs(x-3))+(x+1)/(x-3)</CODE>
+</DIV><P>
+Donc  <I>f</I>&#X2032;(<I>x</I>)=ln(|<I>x</I>&#X2212;3|)+<I>x</I>+1/<I>x</I>&#X2212;3.<BR>
+Et on tape pour d&#XE9;finir la fonction <I>f</I>&#X2032; &#XE0; partir de <TT>dfx</TT>:
+</P><DIV CLASS="center">
+<CODE> f1:=unapply(dfx,x);</CODE>
+</DIV><P>
+On tape pour calculer <I>f</I>&#X2033;(<I>x</I>) :
+</P><DIV CLASS="center">
+<CODE> ddfx:=diff(dfx)</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center">
+<CODE> 1/(x-3)+1/(x-3)+(x+1)*(-(1/((x-3)^2)))</CODE>
+</DIV><P>
+ou pour avoir une &#XE9;criture factoris&#XE9;e, on tape directement :
+</P><DIV CLASS="center">
+<CODE> ddfx:=factor(diff(dfx))</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center">
+<CODE>(x-7)/((x-3)^2)</CODE>
+</DIV><P>
+Donc  <I>f</I>&#X2033;(<I>x</I>)= <I>x</I>&#X2212;7/(<I>x</I>&#X2212;3)<SUP>2</SUP><BR>
+Et on tape pour d&#XE9;finir la fonction <I>f</I>&#X2033; &#XE0; partir de <TT>ddfx</TT>:
+</P><DIV CLASS="center">
+<CODE> f2:=unapply(ddfx,x);</CODE>
+</DIV><P>
+Cette fa&#XE7;on de faire &#XE0; l&#X2019;avantage de d&#XE9;finir la fonction <I>f</I>2=<I>f</I>&#X2033; &#XE0; 
+partir d&#X2019;une expression simplifi&#XE9;e ou factoris&#XE9;e.<BR>
+<B>Attention !!!</B> On ne peut pas &#XE9;crire par exemple :<BR>
+<TT>g(x):=normal(diff(f(x)))</TT> pour d&#XE9;finir la fonction <I>g</I>=<I>f</I>&#X2032; mais on doit 
+&#XE9;crire <TT>g:=unapply(normal(diff(f(x))),x)</TT> car sinon il y a confusion 
+entre <I>x</I> variable de d&#XE9;rivation et <I>x</I> variable de la fonction <I>g</I>.</P></LI><LI CLASS="li-enumerate">On tape pour avoir la limite de <I>f</I>&#X2032; en &#X2212;&#X221E; :
+<DIV CLASS="center">
+<CODE> limit(f1(x),x,-infinity)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> +infinity</CODE>
+</DIV>
+On tape pour avoir la limite de <I>f</I>&#X2032; en 3<SUP>&#X2212;</SUP> :
+<DIV CLASS="center">
+<CODE> limit(f1(x),x,3,-1)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> -infinity</CODE>
+</DIV>
+</LI><LI CLASS="li-enumerate"><I>f</I>&#X2032; est continue et d&#XE9;croissante de +&#X221E; &#XE0; &#X2212;&#X221E; sur 
+]&#X2212;&#X221E;;3[ puisque <I>f</I>&#X2033;(<I>x</I>)&lt;0 sur ]&#X2212;&#X221E;;3[. Il existe donc &#X3B1; 
+unique dans ]&#X2212;&#X221E;;3[ tel que <I>f</I>&#X2032;(&#X3B1;)=0.<BR>
+On tape pour avoir une valeur approch&#XE9;e de &#X3B1; :
+<DIV CLASS="center">
+<CODE> assume(x&lt;3);fsolve(f1(x),x)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> x,0.776592890991</CODE>
+</DIV>
+Puis, on tape pour enlever l&#X2019;hypoth&#XE8;se sur <I>x</I> :
+<DIV CLASS="center">
+<CODE> purge(x)</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> f1(0.7)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> 0.0937786881525</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> f1(0.8)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> -0.0297244578175</CODE>
+</DIV>
+On a <I>f</I>1(0.7)&gt;0 et <I>f</I>1(0.8)&lt;0 donc 0.7&lt;&#X3B1;&lt;0;8.
+</LI><LI CLASS="li-enumerate">Puisque <I>f</I>&#X2033;(7)=0, on tape pour avoir le minimum de <I>f</I>&#X2032; sur ]3;+&#X221E;[ :
+<DIV CLASS="center">
+<CODE> f1(7)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> ln(4)+2</CODE>
+</DIV>
+Le minimum de <I>f</I>&#X2032; sur ]3;+&#X221E;[ est donc positif.<BR>
+Donc <I>f</I>&#X2032;(<I>x</I>)&gt;0 si <I>x</I> &#X2208; ]&#X2212;&#X221E;;&#X3B1;[  &#X222A;  ]3;+&#X221E;[  
+et <I>f</I>&#X2032;(<I>x</I>)&lt;0 si <I>x</I> &#X2208; ]&#X3B1;;3[.<BR>
+Donc <I>f</I> est croissante sur  ]&#X2212;&#X221E;;&#X3B1;[  &#X222A;  ]3;+&#X221E;[  et 
+est d&#XE9;croissante sur  ]&#X3B1;;3[.
+</LI><LI CLASS="li-enumerate">On cherche les limites de <I>f</I> en &#X2212;&#X221E;, +&#X221E;, et en 3.<BR>
+On tape :
+<DIV CLASS="center">
+<CODE> limit(f(x),x,-infinity)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> -infinity</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> limit(f(x),x,+infinity)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> +infinity</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> limit(f(x),x,3)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> -infinity</CODE>
+</DIV>
+On trace les graphes de <I>f</I> et des deux droites <I>x</I>=&#X2212;1 et  <I>x</I>=2, on tape :
+<DIV CLASS="center">
+<CODE> plofunc(f(x),x);droite(x=1);droite(x=2)</CODE>
+</DIV>
+On obtient le trac&#XE9; du graphe de <I>f</I> et le trac&#XE9; des droites
+<I>x</I>=&#X2212;1 et <I>x</I>=2.
+</LI><LI CLASS="li-enumerate">On tape pour trouver l&#X2019;aire en <I>cm</I><SUP>2</SUP> :
+<DIV CLASS="center">
+<CODE> integrate(f(x),x,-1,2)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> 8*ln(4)-12+15/4</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> normal(8*ln(4)-12+15/4))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> 8*ln(4)-33/4</CODE>
+</DIV>
+On tape si on veut faire l&#X2019;int&#XE9;gration par parties :
+<DIV CLASS="center">
+<CODE> ibpu((x+1)*ln(abs(x-3)),ln(abs(x-3)))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> [((x^2)/2+x)*ln(abs(x-3)),(-x^2-2*x)/(2*x-6)]</CODE>
+</DIV>
+On tape pour terminer l&#X2019;int&#XE9;gration :
+<DIV CLASS="center">
+<CODE> A:=ibpu([((x^2)/2+x)*ln(abs(x-3)),(-x^2-2*x)/(2*x-6)],0)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> (-x^2-10*x)/4-15*1/2*ln(abs(x-3))+((x^2)/2+x)*ln(abs(x-3))</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> preval(A,-1,2)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> 8*ln(4)-9/4-6)</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> normal(8*ln(4)-9/4-6))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> 8*ln(4)-33/4</CODE>
+</DIV>
+Donc l&#X2019;aire cherch&#XE9;e vaut (8*ln(4)&#X2212;33/4) <I>cm</I><SUP>2</SUP>;
+</LI></OL><H4 CLASS="subsubsection"><A NAME="htoc38">7.1.2</A>&#XA0;&#XA0;Exercice 2</H4><P>
+On consid&#XE8;re la fonction <I>f</I> de &#X211D; dans &#X211D; d&#XE9;finie par :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">exp(<I>x</I>)<SUP>2</SUP>&#X2212;exp(<I>x</I>)+1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">exp(<I>x</I>)<SUP>3</SUP>+exp(<I>x</I>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Montrer que pour tout <I>x</I> &#X2208; &#X211D;, <I>P</I>(<I>x</I>)=<I>x</I><SUP>4</SUP>&#X2212;2<I>x</I><SUP>3</SUP>+2<I>x</I><SUP>2</SUP>+1 &#X2265; 1
+</LI><LI CLASS="li-enumerate">&#XC9;tudier les variations de <I>f</I> et tracer son graphe.
+</LI><LI CLASS="li-enumerate">Trouver l&#X2019;&#XE9;quation de la tangente au graphe au point d&#X2019;abscisse <I>x</I>=0
+</LI><LI CLASS="li-enumerate">Calculer  &#X222B;<SUB>0</SUB><SUP><I>x</I></SUP> <I>f</I>(<I>t</I>)<I>dt</I>   puis,
+ lim<SUB><I>x</I>&#X2212;&gt;+&#X221E;</SUB>&#X222B;<SUB>0</SUB><SUP><I>x</I></SUP> <I>f</I>(<I>t</I>)<I>dt</I> 
+</LI></OL><P><B>R&#XE9;ponses</B>
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+On tape :
+<DIV CLASS="center">
+<CODE> factor(x^4-2x^3+2x^2)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> (x^2+-2*x+2)*x^2</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> canonical_form(x^2-2*x+2)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> (x-1)^2+1</CODE>
+</DIV>
+Donc pour tout <I>x</I> &#X2208; &#X211D;, <I>x</I><SUP>4</SUP>&#X2212;2<I>x</I><SUP>3</SUP>+2<I>x</I><SUP>2</SUP>=<I>x</I><SUP>2</SUP>*(<I>x</I>&#X2212;1)<SUP>2</SUP>+<I>x</I><SUP>2</SUP> &#X2265; 0<BR>
+donc pour tout <I>x</I> &#X2208; &#X211D;, <I>P</I>(<I>x</I>)=<I>x</I><SUP>4</SUP>&#X2212;2<I>x</I><SUP>3</SUP>+2<I>x</I><SUP>2</SUP>+1 &#X2265; 1</LI><LI CLASS="li-enumerate">On tape pour calculer la valeur de la d&#XE9;riv&#XE9;e de <I>f</I> en un point :
+<DIV CLASS="center"><CODE> normal(derive((exp(x)^2-exp(x)+1)/(exp(x)^3+exp(x)),x))</CODE></DIV>
+On obtient :
+<DIV CLASS="center"><CODE>(-(exp(x))^4+2*(exp(x))^3-2*(exp(x))^2-1)/</CODE>
+<CODE>((exp(x))^5+2*(exp(x))^3+exp(x))</CODE></DIV><P>Le num&#XE9;rateur est n&#XE9;gatif car il est &#XE9;gal &#XE0; &#X2212;<I>P</I>(exp(<I>x</I>)) et le 
+d&#XE9;nominateur est strictement positif car il est &#XE9;gal &#XE0; une somme de 
+termes strictement positifs. La fonction <I>f</I> est donc d&#XE9;croissante.<BR>
+Pour chercher la limite de <I>f</I> en +&#X221E;, on tape :
+</P><DIV CLASS="center">
+<CODE> limit((exp(x)^2-exp(x)+1)/(exp(x)^3+exp(x)),x=+infinity)</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center">
+<CODE> 0</CODE>
+</DIV><P>
+Pour chercher la limite de <I>f</I> en &#X2212;&#X221E;, on tape :
+</P><DIV CLASS="center">
+<CODE> limit((exp(x)^2-exp(x)+1)/(exp(x)^3+exp(x)),x=-infinity)</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center">
+<CODE> infinity</CODE>
+</DIV><P>
+Pour tracer le graphe de <I>f</I>, on tape :
+</P><DIV CLASS="center">
+<CODE> plotfunc(((exp(x))^2-exp(x)+1)/((exp(x))^3+exp(x)),x)</CODE>
+</DIV><P>
+On obtient le graphe de <I>f</I>.</P></LI><LI CLASS="li-enumerate">On d&#XE9;finit la fonction <I>f</I>, on tape :
+<DIV CLASS="center">
+<CODE> f(x):=(exp(x)^2-exp(x)+1)/(exp(x)^3+exp(x))</CODE>
+</DIV>
+On calcule <I>f</I>(0), on tape :
+<DIV CLASS="center">
+<CODE> f(0)</CODE>
+</DIV>
+On obtient
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+On d&#XE9;finit la fonction <I>df</I> comme &#XE9;tant la d&#XE9;riv&#XE9;e de <I>f</I>, on tape :
+<DIV CLASS="center">
+<CODE> df:=unapply(normal(diff(f(x),x)),x)</CODE>
+</DIV>
+On calcule <I>df</I>(0), on tape :
+<DIV CLASS="center">
+<CODE> df(0)</CODE>
+</DIV>
+On obtient :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+L&#X2019;&#XE9;quation de la tangente au point d&#X2019;abscisse 0 est donc :<BR>
+ <I>y</I>=<I>df</I>(0)*<I>x</I>+<I>f</I>(0)
+c&#X2019;est &#XE0; dire  <I>y</I>=&#X2212;1/2<I>x</I>+1/2.<BR>
+ou encore on tape :
+<DIV CLASS="center">
+<CODE>equation(tangent(plotfunc(f(x)),0),[x,y])</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> y=(1/-2*x+1/2)y=(1/-2*x+1/2)</CODE>
+</DIV></LI><LI CLASS="li-enumerate">On calcule l&#X2019;int&#XE9;grale :  &#X222B;<SUB>0</SUB><SUP><I>x</I></SUP> <I>f</I>(<I>t</I>)<I>dt</I><BR>
+On tape :
+<DIV CLASS="center">
+<CODE> int(f(t),t,0,x)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center"><CODE> (ln((exp(x))^2+1)*exp(x)+(-(2*x))*exp(x)+2*exp(x)-2)*</CODE>
+<CODE> 1/2/exp(x)-1/2*ln(2)</CODE></DIV>
+Puis on calcule :  lim<SUB><I>x</I>&#X2212;&gt;+&#X221E;</SUB>&#X222B;<SUB>0</SUB><SUP><I>x</I></SUP> <I>f</I>(<I>t</I>)<I>dt</I> , on tape :
+<DIV CLASS="center">
+<CODE> limit((ln((exp(x))^2+1)*exp(x)+(-(2*x))*exp(x)+2*exp(x)-2)</CODE>
+<CODE>*1/2/exp(x)-1/2*ln(2),x=+infinity)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> -1/2*ln(2)+1</CODE>
+</DIV>
+</LI></OL><H3 CLASS="subsection"><A NAME="toc30"></A><A NAME="htoc39">7.2</A>&#XA0;&#XA0;Calcul de primitives (niveau d&#XE9;but universit&#XE9;)</H3><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Calculer <TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">2</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>3</SUP>+1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>dx</I></TD></TR>
+</TABLE>
+<B>R&#XE9;ponse</B>&#XA0;:<BR>
+On tape :
+<DIV CLASS="center">
+<CODE> int(1/(x^3+1),x,1,2)</CODE>
+</DIV>
+On obtient apres simplification (en utilisant <CODE> normal} </CODE>
+<DIV CLASS="center">
+<CODE> (sqrt(3)*ln(2)+pi)*1/3/sqrt(3)</CODE>
+</DIV>
+Pour v&#XE9;rifier, on tape :
+<DIV CLASS="center">
+<CODE> partfrac(1/(1+t^3))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> 1/((t+1)*3)+(-1/3*t+2/3)/(t^2-t+1)</CODE>
+</DIV>
+Puis on int&#XE8;gre chaque terme s&#XE9;par&#XE9;ment...</LI><LI CLASS="li-enumerate">D&#XE9;composer, sur &#X211D;, en &#XE9;l&#XE9;ments simples :
+ <I>t</I><SUP>2</SUP>/1&#X2212;<I>t</I><SUP>4</SUP>.<BR>
+Calculer  &#X222B;<I>t</I><SUP>2</SUP>/1&#X2212;<I>t</I><SUP>4</SUP><I>dt</I>  et &#X222B;sin(<I>x</I>)<SUP>2</SUP>/cos(2<I>x</I>)<I>dx</I><BR>
+<B>R&#XE9;ponse</B>&#XA0;:<BR>
+On tape :
+<DIV CLASS="center">
+<CODE> partfrac(t^2/(1-t^4))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>-1/2/(t^2+1)+1/(4*(t+1))-1/4/(t-1)</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE>int(-1/2/(t^2+1)+1/(4*(t+1))-1/4/(t-1),t)</CODE>
+</DIV>
+ou on tape :
+<DIV CLASS="center">
+<CODE>int(t^2/(1-t^4),t)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>1/(-2*atan(t))+1/(4*ln(abs(t+1)))+1/(-4*ln(abs(t-1)))</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> normal(int(sin(x)^2/cos(2*x),x))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>-1/2*x-1/-4*ln(abs((tan(1/2*x))^2-2*tan(1/2*x)-1))-</CODE>
+<CODE>1/4*ln(abs((tan(1/2*x))^2+2*tan(1/2*x)-1))</CODE>
+</DIV>
+Ou on tape en lin&#XE9;arisant avant d&#X2019;int&#XE9;grer :
+<DIV CLASS="center">
+<CODE>normal(int(tlin(sin(x)^2/cos(2*x))))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>1/4*ln(abs(tan(x)+1))+1/-4*ln(abs(tan(x)-1))+1/-2*x</CODE>
+</DIV>
+Ou encore on veut faire le changement de variable tan(<I>x</I>)=<I>t</I>
+et on tape pour avoir l&#X2019;expression en fonction de la tangente,
+avant d&#X2019;int&#XE9;grer :
+<DIV CLASS="center">
+<CODE>trigtan(texpand(sin(x)^2/cos(2x)))</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>(-((tan(x))^2))/((tan(x))^2-1)</CODE>
+</DIV>
+On fait le changement de variable <I>x</I>=atan(<I>t</I>) on tape :
+<DIV CLASS="center">
+<CODE>subst('integrate(-tan(x)^2/(tan(x)^2-1),x)',x=atan(t))</CODE>
+</DIV>
+ou on tape
+<DIV CLASS="center">
+<CODE>subst(Int(-tan(x)^2/(tan(x)^2-1),x),x=atan(t))</CODE>
+</DIV>
+On obtient 
+<DIV CLASS="center">
+<CODE>integrate((-(t^2))/((1+t^2)*(t^2-1)),t)</CODE>
+</DIV>
+Soit, le remplacant <I>t</I> par tan(<I>x</I>) :
+<DIV CLASS="center">
+<CODE>1/-2*atan(tan(x))+1/4*ln(abs(tan(x)+1))+1/-4*ln(abs(tan(x)-1))</CODE>
+</DIV>
+</LI><LI CLASS="li-enumerate">Calculer &#X222B;1/<I>t</I><SUP>2</SUP><I>dt</I>,  
+&#X222B;1/<I>t</I>(<I>t</I><SUP>2</SUP>+1)<I>dt</I>,  et
+&#X222B;<I>t</I><SUP>2</SUP>&#X2212;<I>t</I>+1/<I>t</I><SUP>4</SUP>+<I>t</I><SUP>2</SUP><I>dt</I><BR>
+<B>R&#XE9;ponse</B>&#XA0;:<BR>
+On tape :
+<DIV CLASS="center">
+<CODE> int(1/t^2,t)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> 1/(-t)</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> int(1/(t*(t^2+1)),t)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE> 1/-2*ln(t^2+1)+1/2*ln((abs(t))^2)</CODE>
+</DIV>
+On tape :
+<DIV CLASS="center">
+<CODE> int((t^2-t+1)/(t^2+t^4),t)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>1/2*ln(t^2+1)-ln(abs(t))+(-t+1)/(-t)</CODE>
+</DIV>
+</LI></OL><H3 CLASS="subsection"><A NAME="toc31"></A><A NAME="htoc40">7.3</A>&#XA0;&#XA0;D&#XE9;velopements limit&#XE9;s</H3><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Donner un d&#XE9;veloppement limit&#XE9; &#XE0; l&#X2019;ordre 7 au voisinage de <I>x</I>=0
+de :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">sin(sinh(<I>x</I>))&#X2212;sinh(sin(<I>x</I>))</TD></TR>
+</TABLE>
+<B>R&#XE9;ponse</B>&#XA0;:<BR>
+On tape :
+<DIV CLASS="center">
+<CODE>  series(sin(sinh(x))-sinh(sin(x)),x=0,7)</CODE>
+</DIV>
+On obtient:
+<DIV CLASS="center">
+<CODE> 1/-45*x^7+x^8*order_size(x)</CODE>
+</DIV>
+</LI><LI CLASS="li-enumerate">Donner un d&#XE9;veloppement limit&#XE9; &#XE0; l&#X2019;ordre 4 au voisinage de <I>x</I>=0 
+de :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">ln(cos(<I>x</I>))</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">exp(<I>x</I>+<I>x</I><SUP>2</SUP>)</TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+<B>R&#XE9;ponse</B>&#XA0;:<BR>
+On tape :
+<DIV CLASS="center">
+<CODE> series(ln(cos(x))/exp(x+x^2),x=0,4)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>1/-2*x^2+1/2*x^3+1/6*x^4+x^5*order\_size(x)</CODE>
+</DIV>
+La fonction <I>order</I>_<I>size</I> est telle que, pour tout &#X3B1;&gt;0, 
+<I>x</I><SUP>&#X3B1;</SUP><I>order</I>_<I>size</I>(<I>x</I>) tend vers 0 quand <I>x</I> tend vers 0 
+</LI></OL><H3 CLASS="subsection"><A NAME="toc32"></A><A NAME="htoc41">7.4</A>&#XA0;&#XA0;&#XC9;quations diff&#XE9;rentielles</H3><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Trouver les solutions de l&#X2019;&#XE9;quation diff&#XE9;rentielle :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>(<I>x</I><SUP>2</SUP>&#X2212;1)<I>y</I>&#X2032;+2<I>y</I>=0</TD></TR>
+</TABLE>
+<B>R&#XE9;ponse</B>&#XA0;:<BR>
+On tape :
+<DIV CLASS="center">
+<CODE> desolve(x*(x^2-1)*y'+2*y=0,y)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>(c\_0*x^2)/(x^2-1)</CODE>
+</DIV></LI><LI CLASS="li-enumerate">Trouver les solutions de l&#X2019;&#XE9;quation diff&#XE9;rentielle :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>(<I>x</I><SUP>2</SUP>&#X2212;1)<I>y</I>&#X2032;+2<I>y</I>=<I>x</I><SUP>2</SUP></TD></TR>
+</TABLE>
+<B>R&#XE9;ponse</B>&#XA0;:<BR>
+On tape :
+<DIV CLASS="center">
+<CODE> desolve(x*(x^2-1)*y'+2*y=x^2,y)</CODE>
+</DIV>
+On obtient :
+<DIV CLASS="center">
+<CODE>((ln(abs(x))+c\_0)*x^2)/(x^2-1)</CODE>
+</DIV>
+</LI></OL><H3 CLASS="subsection"><A NAME="toc33"></A><A NAME="htoc42">7.5</A>&#XA0;&#XA0;Les matrices</H3><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Soit <I>M</I><SUB><I>a</I></SUB>=[ 
+<TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>2<I>a</I>&#X2212;1</TD><TD ALIGN=center NOWRAP><I>a</I></TD><TD ALIGN=center NOWRAP>2<I>a</I>&#X2212;1</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>a</I><SUP>2</SUP>+<I>a</I>&#X2212;2</TD><TD ALIGN=center NOWRAP><I>a</I><SUP>2</SUP>&#X2212;1</TD><TD ALIGN=center NOWRAP><I>a</I>&#X2212;1</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>a</I><SUP>2</SUP>+<I>a</I>&#X2212;1</TD><TD ALIGN=center NOWRAP><I>a</I><SUP>2</SUP>+<I>a</I>&#X2212;1</TD><TD ALIGN=center NOWRAP><I>a</I></TD></TR>
+</TABLE>
+]<BR>
+a) Pour quelles valeurs de <I>a</I>, <I>M</I><SUB><I>a</I></SUB> est-elle inversible ?<BR>
+Pr&#XE9;ciser son rang lorsqu&#X2019;elle n&#X2019;est pas inversible.<BR>
+b) Calculer l&#X2019;inverse de <I>M</I><SUB>2</SUB><P><B>R&#XE9;ponse</B>&#XA0;:<BR>
+On tape :
+</P><DIV CLASS="center">
+<CODE> M:=[[2a-1,a,2a-1],[a^2+a-2,a^2-1,a-1],[a^2+a-1,a^2+a-1,a]] </CODE>
+</DIV><P>
+On calcule le d&#XE9;terminant de <I>M</I>, on tape :
+</P><DIV CLASS="center">
+<CODE> det(M)</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center"><CODE>2*a^4+-2*a^3+-2*a^2+2*a</CODE></DIV><P>
+Pour avoir l&#X2019;inverse de <I>M</I> on tape :
+</P><DIV CLASS="center">
+<CODE> inv(M)</CODE>
+</DIV><P>
+On obtient :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<I>a</I><SUP>4</SUP>&#X2212;2<I>a</I><SUP>3</SUP>&#X2212;2<I>a</I><SUP>2</SUP>+2<I>a</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">&#X23A1;<BR>
+&#X23A2;<BR>
+&#X23A2;<BR>
+&#X23A3;</TD><TD CLASS="dcell">
+</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>a</I>&#X2212;1</TD><TD ALIGN=center NOWRAP>2<I>a</I><SUP>3</SUP>+3<I>a</I>+1</TD><TD ALIGN=center NOWRAP>&#X2212;2<I>a</I><SUP>3</SUP>+<I>a</I><SUP>2</SUP>+<I>a</I>&#X2212;1</TD></TR>
+<TR><TD ALIGN=center NOWRAP>&#X2212;<I>a</I><SUP>2</SUP>+1</TD><TD ALIGN=center NOWRAP>&#X2212;2<I>a</I><SUP>3</SUP>+<I>a</I><SUP>2</SUP>+2<I>a</I>&#X2212;1</TD><TD ALIGN=center NOWRAP>2<I>a</I><SUP>3</SUP>&#X2212;<I>a</I><SUP>2</SUP>&#X2212;2<I>a</I>+1</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>a</I><SUP>3</SUP>&#X2212;2<I>a</I>+1</TD><TD ALIGN=center NOWRAP>&#X2212;<I>a</I><SUP>3</SUP>+2<I>a</I>&#X2212;1</TD><TD ALIGN=center NOWRAP><I>a</I><SUP>3</SUP>&#X2212;2<I>a</I><SUP>2</SUP>+1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+</TD><TD CLASS="dcell">&#X23A4;<BR>
+&#X23A5;<BR>
+&#X23A5;<BR>
+&#X23A6;</TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center">
+<CODE> solve(2a^4-2*a^3-2*a^2+2*a,a)</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center"><CODE> [-1,0,1]</CODE></DIV><P>
+Donc la matrice est inversible si <I>a</I> &#X2209;[&#X2212;1,0,1]<BR>
+Ou on tape :
+</P><DIV CLASS="center">
+<CODE> factor(2a^4-2*a^3-2*a^2+2*a)</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center"><CODE>2*(a+1)*a*(a-1)^2</CODE></DIV><P>
+On tape :
+</P><DIV CLASS="center">
+<CODE> rank(subst(M,a,-1))</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center">
+<CODE> 2</CODE>
+</DIV><P>
+On tape :
+</P><DIV CLASS="center">
+<CODE> rank(subst(M,a,0))</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center">
+<CODE> 2</CODE>
+</DIV><P>
+On tape :
+</P><DIV CLASS="center">
+<CODE> rank(subst(M,a,1))</CODE>
+</DIV><P>
+On obtient :
+</P><DIV CLASS="center">
+<CODE> 1</CODE>
+</DIV><P>
+On tape :
+</P><DIV CLASS="center">
+<CODE> inv(subst(M,a,2))</CODE>
+</DIV><P>
+On obtient :
+<I>A</I>=1/12[ 
+</P><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>11</TD><TD ALIGN=center NOWRAP>&#X2212;7</TD></TR>
+<TR><TD ALIGN=center NOWRAP>&#X2212;3</TD><TD ALIGN=center NOWRAP>&#X2212;9</TD><TD ALIGN=center NOWRAP>9</TD></TR>
+<TR><TD ALIGN=center NOWRAP>5</TD><TD ALIGN=center NOWRAP>&#X2212;5</TD><TD ALIGN=center NOWRAP>1</TD></TR>
+</TABLE><P>
+]<BR>
+Remarque : pour &#XE9;viter de faire des substitutions on peut d&#XE9;finir la matrice <I>M</I> comme une fonction de <I>a</I>, il faut alors &#XE9;crire :
+</P><DIV CLASS="center">
+<CODE>M(a):={[[2a-1,a,2a-1],[a^2+a-2,a^2-1,a-1],[a^2+a-1,a^2+a-1,a]]}</CODE>
+</DIV><P>
+surtout ne pas oublier { et }.<BR>
+On peut alors taper : <CODE>inv(M(2))</CODE>.</P></LI><LI CLASS="li-enumerate">Soit <I>A</I>=[ 
+<TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP><I>a</I></TD></TR>
+<TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP><I>a</I></TD><TD ALIGN=center NOWRAP>1</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>a</I></TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD></TR>
+</TABLE>
+]<BR>
+Pour quelles valeurs de <I>a</I>, <I>A</I> est-elle diagonalisable ?<P><B>R&#XE9;ponse</B>&#XA0;:<BR>
+
+On tape :
+</P><DIV CLASS="center">
+<TT>A:=[[1,1,a],[1,a,1],[a,1,1]] </TT>
+</DIV><P>
+Pour avoir les valeurs propres de <I>A</I> on tape :
+</P><DIV CLASS="center">
+<TT>egvl(A)</TT>
+</DIV><P>
+On obtient :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>&#X23A1;<BR>
+&#X23A2;<BR>
+&#X23A2;<BR>
+&#X23A3;</TT></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><TT>-<I>a</I>+1</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT><I>a</I>+2</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT><I>a</I>-1</TT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A4;<BR>
+&#X23A5;<BR>
+&#X23A5;<BR>
+&#X23A6;</TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+ce qui s&#X2019;&#XE9;crit :
+</P><DIV CLASS="center"><TT>[[-a+1,0,0],[0,a+2,0],[0,0,a-1]]</TT></DIV><P>
+Si <I>a</I> &#X2260; 1 il y a 3 valeurs propres distinctes &#X2212;<I>a</I>+1,<I>a</I>+2,<I>a</I>&#X2212;1 et<BR>
+ si <I>a</I>=1 il y a une valeur propre double (&#X3BB;=0) et une valeur propre 
+simple (&#X3BB;=3).<BR>
+Puis on cherche la matrice de passage, on tape :
+</P><DIV CLASS="center">
+<TT>egv(A)</TT>
+</DIV><P>
+On obtient :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>&#X23A1;<BR>
+&#X23A2;<BR>
+&#X23A2;<BR>
+&#X23A3;</TT></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT>-1</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT>0</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD><TD ALIGN=right NOWRAP><TT>-2</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT>-1</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A4;<BR>
+&#X23A5;<BR>
+&#X23A5;<BR>
+&#X23A6;</TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+ce qui s&#X2019;&#XE9;crit : 
+</P><DIV CLASS="center">
+<TT>[[1,1,1],[0,1,-2],[-1,1,1]]</TT>
+</DIV><P>
+les vecteurs propres sont les colonnes de cette matrice.<BR>
+Ou on tape pour avoir directement les deux informations, matrice de passage et r&#XE9;duite de Jordan :
+</P><DIV CLASS="center">
+<TT>jordan(A)</TT>
+</DIV><P>
+On obtient une liste de deux matrices [<I>P</I>,<I>B</I>] (<I>P</I> est la matrice de passage et
+<I>B</I>=<I>P</I><SUP>&#X2212;1</SUP><I>AP</I>) :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>&#X23A1;<BR>
+&#X23A2;<BR>
+&#X23A2;<BR>
+&#X23A3;</TT></TD><TD CLASS="dcell"><TT>&#X23A1;<BR>
+&#X23A2;<BR>
+&#X23A2;<BR>
+&#X23A3;</TT></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT>-1</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT>0</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD><TD ALIGN=right NOWRAP><TT>-2</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT>-1</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD><TD ALIGN=right NOWRAP><TT>1</TT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A4;<BR>
+&#X23A5;<BR>
+&#X23A5;<BR>
+&#X23A6;</TT></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A1;<BR>
+&#X23A2;<BR>
+&#X23A2;<BR>
+&#X23A3;</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><TT>-<I>a</I>+1</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT><I>a</I>+2</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT><I>a</I>-1</TT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A4;<BR>
+&#X23A5;<BR>
+&#X23A5;<BR>
+&#X23A6;</TT></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A4;<BR>
+&#X23A5;<BR>
+&#X23A5;<BR>
+&#X23A6;</TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+ce qui s&#X2019;&#XE9;crit :
+</P><DIV CLASS="center">
+<TT>[[[1,1,1],[0,1,-2],[-1,1,1]],[[-a+1,0,0],[0,a+2,0],[0,0,a-1]]]</TT>
+</DIV><P>
+On remarque qu&#X2019;en faisant : <TT>a:=1</TT> puis <TT>jordan(A)</TT><BR>
+les valeurs propres doubles sont regroup&#XE9;es et on obtient :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>&#X23A1;<BR>
+&#X23A2;<BR>
+&#X23A2;<BR>
+&#X23A3;</TT></TD><TD CLASS="dcell"><TT>&#X23A1;<BR>
+&#X23A2;<BR>
+&#X23A2;<BR>
+&#X23A3;</TT></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT>1</TT></TD><TD ALIGN=right NOWRAP><TT>-3</TT></TD><TD ALIGN=right NOWRAP><TT>0</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT>1</TT></TD><TD ALIGN=right NOWRAP><TT>0</TT></TD><TD ALIGN=right NOWRAP><TT>-3</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT>1</TT></TD><TD ALIGN=right NOWRAP><TT>3</TT></TD><TD ALIGN=right NOWRAP><TT>3</TT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A4;<BR>
+&#X23A5;<BR>
+&#X23A5;<BR>
+&#X23A6;</TT></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A1;<BR>
+&#X23A2;<BR>
+&#X23A2;<BR>
+&#X23A3;</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><TT>3</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD><TD ALIGN=center NOWRAP><TT>0</TT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A4;<BR>
+&#X23A5;<BR>
+&#X23A5;<BR>
+&#X23A6;</TT></TD><TD CLASS="dcell"><TT>
+</TT></TD><TD CLASS="dcell"><TT>&#X23A4;<BR>
+&#X23A5;<BR>
+&#X23A5;<BR>
+&#X23A6;</TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P><BR>
+ce qui s&#X2019;&#XE9;crit :
+</P><DIV CLASS="center">
+<TT>[[[1,-3,0],[1,0,-3],[1,3,3]],[[3,0,0],[0,0,0],[0,0,0]]]</TT>
+</DIV><P>
+<I>A</I> est donc diagonalisable quelque soit <I>a</I> et <I>B</I>=<I>P</I><SUP>&#X2212;1</SUP><I>AP</I>.
+</P></LI></OL><HR>
+<A HREF="tutoriel006.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="tutoriel008.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

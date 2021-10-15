@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Determinant of a matrix with coefficients in &#X2124;/p&#X2124; : Det</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en272.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en274.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc307">2.32.5</A>  Determinant of a matrix with coefficients in &#X2124;/<I>p</I>&#X2124; : <TT>Det</TT></H3><P><A NAME="@default472"></A>
+<TT>Det</TT> is the inert form of <TT>det</TT>.<BR>
+<TT>Det</TT> takes as argument a matrix with coefficients in &#X2124;/<I>p</I>&#X2124;.<BR>
+<TT>Det</TT> returns <TT>det</TT> without evaluation. 
+It is used in conjonction with <TT>mod</TT> in Maple syntax mode to 
+find the determinant of a matrix with coefficients in &#X2124;/<I>p</I>&#X2124;.<BR>
+Input in <TT>Xcas</TT> mode :
+</P><DIV CLASS="center"><TT>Det([[1,2,9] mod 13,[3,10,0] mod 13,[3,11,1] mod 13])</TT></DIV><P> 
+Output :
+</P><DIV CLASS="center"><TT>det([[1%13,2%13,-4%13],[3%13,-3%13,0%13], [3%13,-2%13,1%13]])</TT></DIV><P>
+you need to <TT>eval(ans())</TT> to get :
+</P><DIV CLASS="center"><TT>5%13</TT></DIV><P> 
+hence, in &#X2124;/13&#X2124;, the determinant of
+<I>A</I>=[[1, 2, 9],[3,10,0],[3,11,1]] is <TT>5%13</TT> (in &#X2124; <TT>det(A)=31</TT>).<BR>
+Input in <TT>Maple</TT> mode :
+</P><DIV CLASS="center"><TT>Det([[1,2,9],[3,10,0],[3,11,1]]) mod 13</TT></DIV><P>
+Output :
+</P><DIV CLASS="center"><TT>5</TT></DIV><HR>
+<A HREF="cascmd_en272.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en274.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Réduction de Gauss d’une matrice : ref</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr661.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr663.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc776">6.55.2</A>  Réduction de Gauss d’une matrice : <TT>ref</TT></H3><P><A NAME="@default1198"></A><A NAME="ref"></A> <A NAME="sec:ref"></A>
+<TT>ref</TT> permet de résoudre un système d’équations linéaires 
+que l’on écrit sous forme matricielle :
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+Le paramètre de <TT>ref</TT> est la "matrice augmentée" du système (celle 
+formée par la matrice <TT>A</TT> du système et ayant comme dernier vecteur 
+colonne le second membre <TT>B</TT>).<BR>
+Le résultat est une matrice <TT>[A1,B1]</TT> : <TT>A1</TT> a des zéros 
+au dessous de sa diagonale et les solutions de :
+</P><DIV CLASS="center"><TT>A1*X=B1</TT></DIV><P> 
+sont les mêmes que celles de : 
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+<TT>ref</TT> peut travailler dans ℤ/<I>p</I>ℤ.<BR>
+Par exemple, soit à résoudre le système dans ℝ et dans ℤ/5ℤ:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>−2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
+</TABLE></TD></TR>
+</TABLE><P> 
+On tape pour résoudre le système dans ℝ :
+</P><DIV CLASS="center"><TT>ref([[3,1,-2],[3,2,2]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,1/3,-2/3],[0,1,4]]</TT></DIV><P>
+cela signifie donc que :<BR>
+ <I>y</I>=4 et <I>x</I>=−2 sont solutions du système.
+On tape pour résoudre le système dans ℤ/5ℤ :
+</P><DIV CLASS="center"><TT>ref([[3,1,-2],[3,2,2]]%5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1 % 5,2 % 5,1 % 5],[0 % 5,1 % 5,-1 % 5]]</TT></DIV><P>
+cela signifie donc que :<BR>
+ <I>y</I>=−1%5 et <I>x</I>=3%5 sont solutions du système.</P><P><B>Remarque</B><BR>
+Lorsque le nombre de colonnes est égal au nombre de lignes +1
+<TT>ref</TT> ne divise pas par le pivot de la derniere colonne, par exemple, on 
+tape :
+</P><DIV CLASS="center"><TT>ref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[1,0,0,1,-a4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[0,0,0,0,a1-a2+a3-a4]]</TT></DIV><P>
+Ainsi on peut savoir que si <TT>a1-a2+a3-a4</TT> n’est pas nul, il n’y a pas de 
+solution. </P><HR>
+<A HREF="cascmd_fr661.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr663.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

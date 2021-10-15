@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
+<TITLE>Difference between the representation of (3.1-3) and of 0.1</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_en485.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en487.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc562">4.1.4</A>  Difference between the representation of (3.1-3) and of 0.1</H3><UL CLASS="itemize"><LI CLASS="li-itemize">
+representation of 0.1 :<BR>
+We have :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">0.1=2<SUP>&#X2212;4</SUP>*(1+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<SUP>4</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<SUP>5</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+
+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<SUP>8</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<SUP>9</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+...)=
+2<SUP>&#X2212;4</SUP>*</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&#X221E;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell">(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<SUP>4*<I>k</I></SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<SUP>4*<I>k</I>+1</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">) </TD></TR>
+</TABLE>
+hence &#X3B1;=1 and <I>m</I>=1/2+
+&#X2211;<SUB><I>k</I>=1</SUB><SUP>&#X221E;</SUP>(1/2<SUP>4*<I>k</I></SUP>+1/2<SUP>4*<I>k</I>+1</SUP>),
+therefore the representation of 0.1 is
+<PRE CLASS="verbatim">3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),
+99 (10011001), 99 (10011001), 99 (10011001), 9a (10011010),
+</PRE>the last octet is 1010, indeed the 2 last bits 
+01 became 10 because the following digit is 1 (upper rounding).</LI><LI CLASS="li-itemize">representation of a:=3.1-3 :<BR>
+Computing a is done by adjusting exponents (here nothing
+to do), then substract the mantissa, and adjust the
+exponent of the result to have a normalized float.
+The exponent is &#X3B1;=&#X2212;4 (that corresponds at 2*2<SUP>&#X2212;5</SUP>) 
+and the bits 
+corresponding to the mantissa begin at 1/2=2*2<SUP>&#X2212;6</SUP> :
+the bits of the mantissa are shifted to the left of 5 positions
+and we have :
+<PRE CLASS="verbatim">3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),
+99 (10011001), 99 (10011001), 99 (10011001), 9a (10100000),
+</PRE>Therefore
+<I>a</I>&gt;0.1 and <I>a</I>&#X2212;0.1=1/2<SUP>50</SUP>+1/2<SUP>51</SUP> 
+(since 100000-11010=110)
+</LI></UL><P>
+<B>Remark</B><BR>
+This is the reason why
+</P><DIV CLASS="center">
+<TT>floor(1/(3.1-3))</TT> 
+</DIV><P>
+returns <TT>9</TT> and not <TT>10</TT> when <TT>Digits:=14</TT>.</P><HR>
+<A HREF="cascmd_en485.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_en487.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

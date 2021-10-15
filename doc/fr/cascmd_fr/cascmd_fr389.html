@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>PGCD de polynômes par l’algorithme d’Euclide : gcd igcd</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr388.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr390.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc475">6.27.7</A>  PGCD de polynômes par l’algorithme d’Euclide : <TT>gcd igcd</TT></H3><P><A NAME="@default729"></A><A NAME="@default730"></A><A NAME="sec:gcd"></A>
+<TT>gcd</TT> désigne le PGCD (plus grand commun diviseur) de deux 
+polynômes pouvant avoir plusieurs variables et aussi le PGCD d’une liste de 
+polynômes ou d’une séquence de polynômes pouvant avoir plusieurs 
+variables (voir <A HREF="cascmd_fr161.html#sec:igcd">6.7.2</A> pour le PGCD d’entiers).
+On peut aussi mettre comme paramètres deux listes de même longueur (ou une 
+matrice ayant 2 lignes), dans ce cas <TT>gcd</TT> renvoie le PGCD des 
+éléments de même indice (ou d’une même colonne).
+On tape :
+</P><DIV CLASS="center"><TT>gcd([x</TT><CODE><TT>^</TT></CODE><TT>2-4,x*y-y],[x</TT><CODE><TT>^</TT></CODE><TT>3-8,y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2*y])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>gcd([[x</TT><CODE><TT>^</TT></CODE><TT>2-4,x*y-y],[x</TT><CODE><TT>^</TT></CODE><TT>3-8,y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2*y]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[x-2,y]</TT></DIV><P><B>Exemples</B><BR>
+On tape :
+</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x+1 </TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1,x</TT><CODE><TT>^</TT></CODE><TT>2+x-2)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>gcd([x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1,x</TT><CODE><TT>^</TT></CODE><TT>2+x-2])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x-1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>A:=z</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(y</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(x</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><DIV CLASS="center"><TT>B:=x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>3*z+(-(y</TT><CODE><TT>^</TT></CODE><TT>3))*z+x</TT><CODE><TT>^</TT></CODE><TT>3*z-z</TT></DIV><DIV CLASS="center"><TT>C:=gcd(A,B)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>z*x*y+z*x-z*y-z</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(A)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(y-1)*(y+1)*(x-1)*(x+1)*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(B)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+x+1)*(x-1)*(y+1)*(y</TT><CODE><TT>^</TT></CODE><TT>2-y+1)*z</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(C)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(y+1)*(x-1)*z</TT></DIV><P>Pour les polynômes à coefficients modulaire, on tape par exemple :
+On tape :
+</P><DIV CLASS="center"><TT>gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+2) mod 5,(x</TT><CODE><TT>^</TT></CODE><TT>2-1) mod 5)</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>(1 % 5)*x-1 % 5</TT></DIV><P>
+Mais si on tape :
+</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+2,x</TT><CODE><TT>^</TT></CODE><TT>2-1) mod 5)</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>1%5</TT></DIV><P>
+car l’opération modulaire se fait après le calcul du PGCD qui a èté 
+calculé dans ℤ[<I>X</I>].</P><HR>
+<A HREF="cascmd_fr388.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr390.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

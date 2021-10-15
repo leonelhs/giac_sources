@@ -1,0 +1,1472 @@
+<HTML>
+<HEAD>
+  <TITLE>
+    Catalogue of GP/PARI Functions: Arithmetic functions
+  </TITLE>
+
+  <META NAME="author"       CONTENT="Nils-Peter Skoruppa">
+  <META NAME="created"      CONTENT="Thu Apr 27 10:11:36 2006">
+  <META NAME="author-email" CONTENT="skoruppa@math.uni-siegen.de">
+  <META NAME="keywords"     CONTENT="PARI, GP, DOC">
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+
+
+
+<h3 align=center>Arithmetic functions</h3>
+
+<a name="addprimes"></a>
+<h4><b>addprimes</b>({x = []})</h4>
+<p></p>
+<p> adds the integers contained in the
+vector x (or the single integer x) to a special table of
+"user-defined primes", and returns that table. Whenever <font color=#a3682a><tt>
+factor</tt></font> is
+subsequently called, it will trial divise by the elements in this table.
+If x is empty or omitted, just returns the current list of extra
+primes.</p>
+<p>The entries in x are not checked for primality, and in fact they need
+only be positive integers. The algorithm makes sure that all elements in
+the table are pairwise coprime, so it may end up containing divisors
+of the input integers. </p>
+<p>It is a useful trick to add known composite numbers, which the function
+<font color=#a3682a><tt>
+factor</tt></font>(x,0) was not able to factor. In case the message
+"impossible inverse modulo <font color=#a3682a><tt>
+&#60;</tt></font><u>some INTMOD</u><font color=#a3682a><tt>
+&#62;</tt></font>" shows
+up afterwards, you have just stumbled over a non-trivial factor. Note
+that the arithmetic functions in the narrow sense, like <b>eulerphi</b>,
+do <u>not</u> use this extra table.</p>
+<p>To remove primes from the list use <font color=#a3682a><tt>
+removeprimes</tt></font>.</p>
+<p>The library syntax is <b>addprimes</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bestappr"></a>
+<h4><b>bestappr</b>(x,A,{B})</h4>
+<p></p>
+<p> if B is omitted, finds the best rational
+approximation to x belongs to <b>R</b> (or <b>R</b>[X], or <b>R</b>^n,...) with denominator at
+most equal to A using continued fractions.</p>
+<p>If B is present, x is assumed to be of type <font color=#a3682a><tt>
+t_INTMOD</tt></font> modulo M (or a
+recursive combination of those), and the routine returns the unique fraction
+a/b in coprime integers a <font color=#a3682a><tt>
+&#60;=</tt></font> A and b <font color=#a3682a><tt>
+&#60;=</tt></font> B which is congruent to x
+modulo M. If M <font color=#a3682a><tt>
+&#60;=</tt></font> 2AB, uniqueness is not guaranteed and the function
+fails with an error message. If rational reconstruction is not possible
+(no such a/b exists for at least one component of x), returns -1.</p>
+<p>The library syntax is <b>bestappr0</b>(x,A,B). Also available is <font color=#a3682a><tt>
+ <b>bestappr</b>(x,A)</tt></font> corresponding
+to an omitted B.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bezout"></a>
+<h4><b>bezout</b>(x,y)</h4>
+<p></p>
+<p> finds u and v minimal in a
+natural sense such that x*u+y*v = <font color=#FF0000>gcd</font>(x,y). The arguments
+must be both integers or both polynomials, and the result is a
+row vector with three components u, v, and <font color=#FF0000>gcd</font>(x,y).</p>
+<p>
+The library syntax is <b>vecbezout</b>(x,y) to get the vector, or <font color=#a3682a><tt>
+ <b>gbezout</b>(x,y, &amp;u, &amp;v)</tt></font>
+which gives as result the address of the created gcd, and puts
+the addresses of the corresponding created objects into u and v.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bezoutres"></a>
+<h4><b>bezoutres</b>(x,y)</h4>
+<p></p>
+<p> as <font color=#a3682a><tt>
+bezout</tt></font>, with the resultant of x and
+y replacing the gcd.  The algorithm uses
+(subresultant) assumes the base ring is a domain.</p>
+<p>The library syntax is <b>vecbezoutres</b>(x,y) to get the vector, or <font color=#a3682a><tt>
+ <b>subresext</b>(x,y, &amp;u, &amp;v)</tt></font>
+which gives as result the address of the created gcd, and puts the
+addresses of the corresponding created objects into u and v.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="bigomega"></a>
+<h4><b>bigomega</b>(x)</h4>
+<p></p>
+<p> number of prime divisors of |x| counted with
+multiplicity. x must be an integer.</p>
+<p>The library syntax is <b>bigomega</b>(x), the result is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="binomial"></a>
+<h4><b>binomial</b>(x,y)</h4>
+<p></p>
+<p> binomial coefficient binom{x}{y}.
+Here y must be an integer, but x can be any PARI object.</p>
+<p>The library syntax is <b>binomial</b>(x,y), where y must be a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="chinese"></a>
+<h4><b>chinese</b>(x,{y})</h4>
+<p></p>
+<p> if x and y are both intmods or both
+polmods, creates (with the same type) a z in the same residue class
+as x and in the same residue class as y, if it is possible.</p>
+<p>This function also allows vector and matrix arguments, in which case the
+operation is recursively applied to each component of the vector or matrix.
+For polynomial arguments, it is applied to each coefficient.</p>
+<p>If y is omitted, and x is a vector, <font color=#a3682a><tt>
+chinese</tt></font> is applied recursively
+to the components of x, yielding a residue belonging to the same class as all
+components of x.</p>
+<p>Finally <font color=#a3682a><tt>
+chinese</tt></font>(x,x) = x regardless of the type of x; this allows
+vector arguments to contain other data, so long as they are identical in both
+vectors.</p>
+<p>The library syntax is <b>chinese</b>(x,y). Also available is <font color=#a3682a><tt>
+chinese1</tt></font>(x), corresponding to an
+ommitted <font color=#a3682a><tt>
+y</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="content"></a>
+<h4><b>content</b>(x)</h4>
+<p></p>
+<p> computes the gcd of all the coefficients of x,
+when this gcd makes sense. This is the natural definition
+if x is a polynomial (and by extension a power series) or a
+vector/matrix. This is in general a weaker notion than the <u>ideal</u>
+generated by the coefficients:</p>
+<p><pre><font color=#a3682a><tt>    ? content(2*x+y)
+&nbsp;    %1 = 1            \\ = gcd(2,y) over Q[y]
+</tt></font></pre></p>
+<p>
+If x is a scalar, this simply returns the absolute value of x if x is
+rational (<font color=#a3682a><tt>
+t_INT</tt></font> or <font color=#a3682a><tt>
+t_FRAC</tt></font>), and either 1 (inexact input) or x
+(exact input) otherwise; the result should be identical to <font color=#a3682a><tt>
+gcd(x, 0)</tt></font>. </p>
+<p>The content of a rational function is the ratio of the contents of the
+numerator and the denominator. In recursive structures, if a
+matrix or vector <u>coefficient</u> x appears, the gcd is taken 
+not with x, but with its content:</p>
+<p><pre><font color=#a3682a><tt>    ? content([ [2], 4*matid(3) ])
+&nbsp;    %1 = 2
+</tt></font></pre></p>
+<p>
+The library syntax is <b>content</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="contfrac"></a>
+<h4><b>contfrac</b>(x,{b},{nmax})</h4>
+<p></p>
+<p> creates the row vector whose
+components are the partial quotients of the continued fraction
+expansion of x. That is a result [a_0,...,a_n] means that x  ~ 
+a_0+1/(a_1+...+1/a_n)...). The output is normalized so that a_n != 1
+(unless we also have n = 0).</p>
+<p>The number of partial quotients n is limited to nmax. If x is a real
+number, the expansion stops at the last significant partial quotient if
+nmax is omitted. x can also be a rational function or a power series.</p>
+<p>If a vector b is supplied, the numerators will be equal to the coefficients
+of b (instead of all equal to 1 as above). The length of the result is
+then equal to the length of b, unless a partial remainder is encountered
+which is equal to zero, in which case the expansion stops. In the case of
+real numbers, the stopping criterion is thus different from the one mentioned
+above since, if b is too long, some partial quotients may not be
+significant.</p>
+<p>If b is an integer, the command is understood as <font color=#a3682a><tt>
+contfrac(x,nmax)</tt></font>.</p>
+<p>The library syntax is <b>contfrac0</b>(x,b,nmax). Also available are
+<font color=#a3682a><tt>
+ <b>gboundcf</b>(x,nmax)</tt></font>, <font color=#a3682a><tt>
+ <b>gcf</b>(x)</tt></font>, or <font color=#a3682a><tt>
+ <b>gcf2</b>(b,x)</tt></font>, where nmax
+is a C integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="contfracpnqn"></a>
+<h4><b>contfracpnqn</b>(x)</h4>
+<p></p>
+<p> when x is a vector or a one-row matrix, x
+is considered as the list of partial quotients [a_0,a_1,...,a_n] of a
+rational number, and the result is the 2 by 2 matrix
+[p_n,p_{n-1};q_n,q_{n-1}] in the standard notation of continued fractions,
+so p_n/q_n = a_0+1/(a_1+...+1/a_n)...). If x is a matrix with two rows
+[b_0,b_1,...,b_n] and [a_0,a_1,...,a_n], this is then considered as a
+generalized continued fraction and we have similarly
+p_n/q_n = 1/b_0(a_0+b_1/(a_1+...+b_n/a_n)...). Note that in this case one
+usually has b_0 = 1.</p>
+<p>The library syntax is <b>pnqn</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="core"></a>
+<h4><b>core</b>(n,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> if n is a non-zero integer written as
+n = df^2 with d squarefree, returns d. If <u>flag</u> is non-zero,
+returns the two-element row vector [d,f].</p>
+<p>The library syntax is <b>core0</b>(n,<u>flag</u>).
+Also available are <font color=#a3682a><tt>
+ <b>core</b>(n)</tt></font> ( = <font color=#a3682a><tt>
+ <b>core0</b>(n,0)</tt></font>) and <font color=#a3682a><tt>
+ <b>core2</b>(n)</tt></font>
+( = <font color=#a3682a><tt>
+ <b>core0</b>(n,1)</tt></font>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="coredisc"></a>
+<h4><b>coredisc</b>(n,{<u>flag</u>})</h4>
+<p></p>
+<p> if n is a non-zero integer written as
+n = df^2 with d fundamental discriminant (including 1), returns d. If
+<u>flag</u> is non-zero, returns the two-element row vector [d,f]. Note that if
+n is not congruent to 0 or 1 modulo 4, f will be a half integer and not
+an integer.</p>
+<p>The library syntax is <b>coredisc0</b>(n,<u>flag</u>).
+Also available are
+<font color=#a3682a><tt>
+ <b>coredisc</b>(n)</tt></font> ( = <font color=#a3682a><tt>
+ <b>coredisc</b>(n,0)</tt></font>) and
+<font color=#a3682a><tt>
+ <b>coredisc2</b>(n)</tt></font> ( = <font color=#a3682a><tt>
+ <b>coredisc</b>(n,1)</tt></font>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="dirdiv"></a>
+<h4><b>dirdiv</b>(x,y)</h4>
+<p></p>
+<p> x and y being vectors of perhaps different
+lengths but with y[1] != 0 considered as Dirichlet series, computes
+the quotient of x by y, again as a vector.</p>
+<p>The library syntax is <b>dirdiv</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="direuler"></a>
+<h4><b>direuler</b>(p = a,b,<u>expr</u>,{c})</h4>
+<p></p>
+<p> computes the
+Dirichlet series associated to the Euler product of
+expression <u>expr</u> as p ranges through the primes from a to b.
+<u>expr</u> must be a polynomial or rational function in another variable
+than p (say X) and <u>expr</u>(X) is understood as
+the local factor <u>expr</u>(p^{-s}).</p>
+<p>The series is output as a vector of coefficients. If c is present, output
+only the first c coefficients in the series. The following command computes
+the <b>sigma</b> function, associated to <font color=#FF0000>zeta</font>(s)<font color=#FF0000>zeta</font>(s-1):</p>
+<p><pre><font color=#a3682a><tt>? direuler(p=2, 10, 1/((1-X)*(1-p*X)))
+&nbsp;%1 = [1, 3, 4, 7, 6, 12, 8, 15, 13, 18]
+</tt></font></pre></p>
+<p>
+The library syntax is <b>direuler</b>(void *E, GEN (*eval)(GEN,void*), GEN a, GEN b)</p>
+
+<br>
+<hr></hr><br>
+
+<a name="dirmul"></a>
+<h4><b>dirmul</b>(x,y)</h4>
+<p></p>
+<p> x and y being vectors of perhaps different
+lengths considered as Dirichlet series, computes the product of
+x by y, again as a vector.</p>
+<p>The library syntax is <b>dirmul</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="divisors"></a>
+<h4><b>divisors</b>(x)</h4>
+<p></p>
+<p> creates a row vector whose components are the
+divisors of x. The factorization of x (as output by <font color=#a3682a><tt>
+factor</tt></font>) can
+be used instead.</p>
+<p>By definition, these divisors are the products of the irreducible
+factors of n, as produced by <font color=#a3682a><tt>
+factor(n)</tt></font>, raised to appropriate
+powers (no negative exponent may occur in the factorization). If n is
+an integer, they are the positive divisors, in increasing order.</p>
+<p>The library syntax is <b>divisors</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="eulerphi"></a>
+<h4><b>eulerphi</b>(x)</h4>
+<p></p>
+<p> Euler's <font color=#FF0000>phi</font>
+(totient) function of |x|, in other words
+|(<b>Z</b>/x<b>Z</b>)^*|. x must be of type integer.</p>
+<p>The library syntax is <b>phi</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="factor"></a>
+<h4><b>factor</b>(x,{<u>lim</u> = -1})</h4>
+<p></p>
+<p> general factorization function.
+If x is of type integer, rational, polynomial or rational function, the
+result is a two-column matrix, the first column being the irreducibles
+dividing x (prime numbers or polynomials), and the second the exponents.
+If x is a vector or a matrix, the factoring is done componentwise (hence
+the result is a vector or matrix of two-column matrices). By definition,
+0 is factored as 0^1.</p>
+<p>   If x is of type integer or rational, the factors are <u>pseudoprimes</u>
+(see <font color=#a3682a><tt>
+ispseudoprime</tt></font>), and in general not rigorously proven primes. In
+fact, any factor which is  <font color=#a3682a><tt>
+&#60;=</tt></font> 10^{13} is a genuine prime number. Use
+<font color=#a3682a><tt>
+isprime</tt></font> to prove primality of other factors, as in</p>
+<p><pre><font color=#a3682a><tt>fa = factor(2^2^7 +1)
+&nbsp;isprime( fa[,1] )
+</tt></font></pre></p>
+<p>An argument <u>lim</u> can be added, meaning that we look only for prime
+factors p &#60; <u>lim</u>, or up to <font color=#a3682a><tt>
+primelimit</tt></font>, whichever is lowest
+(except when <u>lim</u> = 0 where the effect is identical to setting
+<u>lim</u> = <font color=#a3682a><tt>
+primelimit</tt></font>). In this case, the remaining part may actually
+be a proven composite! See <font color=#a3682a><tt>
+factorint</tt></font> for more information about the
+algorithms used.</p>
+<p>   The polynomials or rational functions to be factored must have scalar
+coefficients. In particular PARI does <u>not</u> know how to factor
+multivariate polynomials. See <font color=#a3682a><tt>
+factormod</tt></font> and <font color=#a3682a><tt>
+factorff</tt></font> for the
+algorithms used over finite fields, <font color=#a3682a><tt>
+factornf</tt></font> for the algorithms over
+number fields. Over <b>Q</b>, van Hoeij's method is used, which is able to
+cope with hundreds of modular factors.</p>
+<p>   Note that PARI tries to guess in a sensible way over which ring you want
+to factor. Note also that factorization of polynomials is done up to
+multiplication by a constant. In particular, the factors of rational
+polynomials will have integer coefficients, and the content of a polynomial
+or rational function is discarded and not included in the factorization. If
+needed, you can always ask for the content explicitly:</p>
+<p>
+<pre><font color=#a3682a><tt>? factor(t^2 + 5/2*t + 1)
+&nbsp;%1 =
+&nbsp;[2*t + 1 1]
+&nbsp;
+&nbsp;[t + 2 1]
+&nbsp;
+&nbsp;? content(t^2 + 5/2*t + 1)
+&nbsp;%2 = 1/2
+</tt></font></pre></p>
+<p>See also <font color=#a3682a><tt>
+factornf</tt></font> and <font color=#a3682a><tt>
+nffactor</tt></font>.</p>
+<p>The library syntax is <b>factor0</b>(x,<u>lim</u>), where <u>lim</u> is a C integer.
+Also available are
+<font color=#a3682a><tt>
+ <b>factor</b>(x)</tt></font> ( = <font color=#a3682a><tt>
+ <b>factor0</b>(x,-1)</tt></font>),
+<font color=#a3682a><tt>
+ <b>smallfact</b>(x)</tt></font> ( = <font color=#a3682a><tt>
+ <b>factor0</b>(x,0)</tt></font>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="factorback"></a>
+<h4><b>factorback</b>(f,{e},{nf})</h4>
+<p></p>
+<p> gives back the factored object
+corresponding to a factorization. The integer 1 corresponds to the empty
+factorization. If the last argument is of number field type (e.g.created by
+<font color=#a3682a><tt>
+nfinit</tt></font>), assume we are dealing with an ideal factorization in the
+number field. The resulting ideal product is given in HNF form.</p>
+<p>If e is present, e and f must be vectors of the same length (e being
+integral), and the corresponding factorization is the product of the
+f[i]^{e[i]}.</p>
+<p>If not, and f is vector, it is understood as in the preceding case with e
+a vector of 1 (the product of the f[i] is returned). Finally, f can be a
+regular factorization, as produced with any <font color=#a3682a><tt>
+factor</tt></font> command. A few
+examples:</p>
+<p><pre><font color=#a3682a><tt>? factorback([2,2; 3,1])
+&nbsp;%1 = 12
+&nbsp;? factorback([2,2], [3,1])
+&nbsp;%2 = 12
+&nbsp;? factorback([5,2,3])
+&nbsp;%3 = 30
+&nbsp;? factorback([2,2], [3,1], nfinit(x^3+2))
+&nbsp;%4 =
+&nbsp;[16 0 0]
+&nbsp;
+&nbsp;[0 16 0]
+&nbsp;
+&nbsp;[0 0 16]
+&nbsp;? nf = nfinit(x^2+1); fa = idealfactor(nf, 10)
+&nbsp;%5 =
+&nbsp;[[2, [1, 1]~, 2, 1, [1, 1]~] 2]
+&nbsp;
+&nbsp;[[5, [-2, 1]~, 1, 1, [2, 1]~] 1]
+&nbsp;
+&nbsp;[[5, [2, 1]~, 1, 1, [-2, 1]~] 1]
+&nbsp;? factorback(fa)
+&nbsp;  ***   forbidden multiplication t_VEC * t_VEC.
+&nbsp;? factorback(fa, nf)
+&nbsp;%6 =
+&nbsp;[10 0]
+&nbsp;
+&nbsp;[0 10]
+&nbsp;
+</tt></font></pre></p>
+<p>In the fourth example, 2 and 3 are interpreted as principal ideals in a
+cubic field. In the fifth one, <font color=#a3682a><tt>
+factorback(fa)</tt></font> is meaningless since we
+forgot to indicate the number field, and the entries in the first column of
+<font color=#a3682a><tt>
+fa</tt></font> can't be multiplied.</p>
+<p>The library syntax is <b>factorback0</b>(f,e,<u>nf</u>), where an omitted
+<u>nf</u> or e is entered as <font color=#a3682a><tt>
+NULL</tt></font>. Also available is
+<font color=#a3682a><tt>
+factorback</tt></font>(f,<u>nf</u>) (case e = <font color=#a3682a><tt>
+NULL</tt></font>) where an omitted
+<u>nf</u> is entered as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="factorcantor"></a>
+<h4><b>factorcantor</b>(x,p)</h4>
+<p></p>
+<p> factors the polynomial x modulo the
+prime p, using distinct degree plus
+Cantor-Zassenhaus. The coefficients of x must be
+operation-compatible with <b>Z</b>/p<b>Z</b>. The result is a two-column matrix, the
+first column being the irreducible polynomials dividing x, and the second
+the exponents. If you want only the <u>degrees</u> of the irreducible
+polynomials (for example for computing an L-function), use
+<font color=#a3682a><tt>
+factormod</tt></font>(x,p,1). Note that the <font color=#a3682a><tt>
+factormod</tt></font> algorithm is
+usually faster than <font color=#a3682a><tt>
+factorcantor</tt></font>.</p>
+<p>The library syntax is <b>factcantor</b>(x,p).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="factorff"></a>
+<h4><b>factorff</b>(x,p,a)</h4>
+<p></p>
+<p> factors the polynomial x in the field
+<b>F</b>_q defined by the irreducible polynomial a over <b>F</b>_p. The
+coefficients of x must be operation-compatible with <b>Z</b>/p<b>Z</b>. The result
+is a two-column matrix: the first column contains the irreducible factors of
+x, and the second their exponents. If all the coefficients of x are in
+<b>F</b>_p, a much faster algorithm is applied, using the computation of
+isomorphisms between finite fields.</p>
+<p>The library syntax is <b>factorff</b>(x,p,a).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="factorial"></a>
+<h4><b>factorial</b>(x)</h4>
+<p></p>
+<p> or x!: factorial of x. The expression x!
+gives a result which is an integer, while <font color=#a3682a><tt>
+factorial</tt></font>(x) gives a real
+number.</p>
+<p>The library syntax is <b>mpfact</b>(x) for x! and
+<font color=#a3682a><tt>
+ <b>mpfactr</b>(x,prec)</tt></font> for <font color=#a3682a><tt>
+factorial</tt></font>(x). x must be a <font color=#a3682a><tt>
+long</tt></font>
+integer and not a PARI integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="factorint"></a>
+<h4><b>factorint</b>(n,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> factors the integer n into a product of
+pseudoprimes (see <font color=#a3682a><tt>
+ispseudoprime</tt></font>), using a combination of the
+Shanks SQUFOF and Pollard Rho method (with modifications due to
+Brent), Lenstra's ECM (with modifications by Montgomery), and
+MPQS (the latter adapted from the LiDIA code with the kind
+permission of the LiDIA maintainers), as well as a search for pure powers
+with exponents <font color=#a3682a><tt>
+&#60;=</tt></font> 10. The output is a two-column matrix as for
+<font color=#a3682a><tt>
+factor</tt></font>. Use <font color=#a3682a><tt>
+isprime</tt></font> on the result if you want to guarantee
+primality.</p>
+<p>This gives direct access to the integer factoring engine called by most
+arithmetical functions. <u>flag</u> is optional; its binary digits mean 1: avoid
+MPQS, 2: skip first stage ECM (we may still fall back to it later), 4: avoid
+Rho and SQUFOF, 8: don't run final ECM (as a result, a huge composite may be
+declared to be prime). Note that a (strong) probabilistic primality test is
+used; thus composites might (very rarely) not be detected.</p>
+<p>You are invited to play with the flag settings and watch the internals at
+work by using <font color=#a3682a><tt>
+gp</tt></font>'s <font color=#a3682a><tt>
+debuglevel</tt></font> default parameter (level 3 shows
+just the outline, 4 turns on time keeping, 5 and above show an increasing
+amount of internal details). If you see anything funny happening, please let
+us know.</p>
+<p>The library syntax is <b>factorint</b>(n,<u>flag</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="factormod"></a>
+<h4><b>factormod</b>(x,p,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> factors the polynomial x modulo
+the prime integer p, using Berlekamp. The coefficients of x must be
+operation-compatible with <b>Z</b>/p<b>Z</b>. The result is a two-column matrix, the
+first column being the irreducible polynomials dividing x, and the second
+the exponents. If <u>flag</u> is non-zero, outputs only the <u>degrees</u> of the
+irreducible polynomials (for example, for computing an L-function). A
+different algorithm for computing the mod p factorization is
+<font color=#a3682a><tt>
+factorcantor</tt></font> which is sometimes faster.</p>
+<p>The library syntax is <b>factormod</b>(x,p,<u>flag</u>). Also available are
+<font color=#a3682a><tt>
+ <b>factmod</b>(x,p)</tt></font> (which is equivalent to <font color=#a3682a><tt>
+ <b>factormod</b>(x,p,0)</tt></font>) and
+<font color=#a3682a><tt>
+ <b>simplefactmod</b>(x,p)</tt></font> ( = <font color=#a3682a><tt>
+ <b>factormod</b>(x,p,1)</tt></font>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="fibonacci"></a>
+<h4><b>fibonacci</b>(x)</h4>
+<p></p>
+<p> x^{{th}} Fibonacci number.</p>
+<p>The library syntax is <b>fibo</b>(x). x must be a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ffinit"></a>
+<h4><b>ffinit</b>(p,n,{v = x})</h4>
+<p></p>
+<p> computes a monic polynomial of degree
+n which is irreducible over <b>F</b>_p. For instance if
+<font color=#a3682a><tt>
+P = ffinit(3,2,y)</tt></font>, you can represent elements in <b>F</b>_{3^2} as polmods
+modulo <font color=#a3682a><tt>
+P</tt></font>. This function uses a fast variant of Adleman-Lenstra's
+algorithm.</p>
+<p>The library syntax is <b>ffinit</b>(p,n,v), where v is a variable number.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="gcd"></a>
+<h4><b>gcd</b>(x,{y})</h4>
+<p></p>
+<p> creates the greatest common divisor of x
+and y. x and y can be of quite general types, for instance both
+rational numbers. If y is omitted and x is a vector, returns the
+{gcd} of all components of x, i.e.this is equivalent to
+<font color=#a3682a><tt>
+content(x)</tt></font>.</p>
+<p>
+When x and y are both given and one of them is a vector/matrix type,
+the GCD is again taken recursively on each component, but in a different way.
+If y is a vector, resp.matrix, then the result has the same type as y,
+and components equal to <font color=#a3682a><tt>
+gcd(x, y[i])</tt></font>, resp.<font color=#a3682a><tt>
+gcd(x, y[,i])</tt></font>. Else
+if x is a vector/matrix the result has the same type as x and an
+analogous definition. Note that for these types, <font color=#a3682a><tt>
+gcd</tt></font> is not
+commutative.</p>
+<p>The algorithm used is a naive Euclid except for the following inputs:</p>
+<p><b>*</b> integers: use modified right-shift binary ("plus-minus"
+variant).</p>
+<p><b>*</b> univariate polynomials with coeffients in the same number
+field (in particular rational): use modular gcd algorithm.</p>
+<p><b>*</b> general polynomials: use the subresultant algorithm if
+coefficient explosion is likely (exact, non modular, coefficients).</p>
+<p>The library syntax is <b>ggcd</b>(x,y). For general polynomial inputs, <font color=#a3682a><tt>
+ <b>srgcd</b>(x,y)</tt></font> is also
+available. For univariate <u>rational</u> polynomials, one also has
+<font color=#a3682a><tt>
+ <b>modulargcd</b>(x,y)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="hilbert"></a>
+<h4><b>hilbert</b>(x,y,{p})</h4>
+<p></p>
+<p> Hilbert symbol of x and y modulo
+p. If x and y are of type integer or fraction, an explicit third
+parameter p must be supplied, p = 0 meaning the place at infinity.
+Otherwise, p needs not be given, and x and y can be of compatible types
+integer, fraction, real, intmod a prime (result is undefined if the
+modulus is not prime), or p-adic.</p>
+<p>The library syntax is <b>hil</b>(x,y,p).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="isfundamental"></a>
+<h4><b>isfundamental</b>(x)</h4>
+<p></p>
+<p> true (1) if x is equal to 1 or to the
+discriminant of a quadratic field, false (0) otherwise.</p>
+<p>The library syntax is <b>gisfundamental</b>(x), but the simpler function <font color=#a3682a><tt>
+ <b>isfundamental</b>(x)</tt></font>
+which returns a <font color=#a3682a><tt>
+long</tt></font> should be used if x is known to be of type
+integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ispower"></a>
+<h4><b>ispower</b>(x,{k}, {&amp;n})</h4>
+<p></p>
+<p>
+if k is given, returns true (1) if x is a k-th power, false
+(0) if not. In this case, x may be an integer or polynomial,
+a rational number or function, or an intmod a prime or p-adic.</p>
+<p>If k is omitted, only integers and fractions are allowed and the
+function returns the maximal k <font color=#a3682a><tt>
+&#62;=</tt></font> 2 such that x = n^k is a perfect
+power, or 0 if no such k exist; in particular <font color=#a3682a><tt>
+ispower(-1)</tt></font>,
+<font color=#a3682a><tt>
+ispower(0)</tt></font>, and <font color=#a3682a><tt>
+ispower(1)</tt></font> all return 0.</p>
+<p>If a third argument &amp;n is given and a k-th root was computed in the
+process, then n is set to that root.</p>
+<p>The library syntax is <b>ispower</b>(x, k, &amp;n), the result is a <font color=#a3682a><tt>
+long</tt></font>. Omitted k or n
+are coded as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="isprime"></a>
+<h4><b>isprime</b>(x,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> true (1) if x is a (proven) prime
+number, false (0) otherwise. This can be very slow when x is indeed
+prime and has more than 1000 digits, say. Use <font color=#a3682a><tt>
+ispseudoprime</tt></font> to
+quickly check for pseudo primality. See also <font color=#a3682a><tt>
+factor</tt></font>.</p>
+<p>If <u>flag</u> = 0, use a combination of Baillie-PSW pseudo primality test (see
+<font color=#a3682a><tt>
+ispseudoprime</tt></font>), Selfridge "p-1" test if x-1 is smooth enough, and
+Adleman-Pomerance-Rumely-Cohen-Lenstra (APRCL) for general x.</p>
+<p>If <u>flag</u> = 1, use Selfridge-Pocklington-Lehmer "p-1" test and output a
+primality certificate as follows: return 0 if x is composite, 1 if x is
+small enough that passing Baillie-PSW test guarantees its primality
+(currently x &#60; 10^{13}), 2 if x is a large prime whose primality could
+only sensibly be proven (given the algorithms implemented in PARI) using the
+APRCL test. Otherwise (x is large and x-1 is smooth) output a three
+column matrix as a primality certificate. The first column contains the prime
+factors p of x-1, the second the corresponding elements a_p as in
+Proposition8.3.1 in GTM138, and the third the output of isprime(p,1). The
+algorithm fails if one of the pseudo-prime factors is not prime, which is
+exceedingly unlikely (and well worth a bug report).</p>
+<p>If <u>flag</u> = 2, use APRCL.</p>
+<p>The library syntax is <b>gisprime</b>(x,<u>flag</u>), but the simpler function <font color=#a3682a><tt>
+ <b>isprime</b>(x)</tt></font>
+which returns a <font color=#a3682a><tt>
+long</tt></font> should be used if x is known to be of
+type integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="ispseudoprime"></a>
+<h4><b>ispseudoprime</b>(x,{<u>flag</u>})</h4>
+<p></p>
+<p> true (1) if x is a strong pseudo
+prime (see below), false (0) otherwise. If this function returns false, x
+is not prime; if, on the other hand it returns true, it is only highly likely
+that x is a prime number. Use <font color=#a3682a><tt>
+isprime</tt></font> (which is of course much
+slower) to prove that x is indeed prime.</p>
+<p>If <u>flag</u> = 0, checks whether x is a Baillie-Pomerance-Selfridge-Wagstaff
+pseudo prime (strong Rabin-Miller pseudo prime for base 2, followed by
+strong Lucas test for the sequence (P,-1), P smallest positive integer
+such that P^2 - 4 is not a square mod x).</p>
+<p>There are no known composite numbers passing this test (in particular, all
+composites  <font color=#a3682a><tt>
+&#60;=</tt></font> 10^{13} are correctly detected), although it is expected
+that infinitely many such numbers exist.</p>
+<p>If <u>flag</u> &#62; 0, checks whether x is a strong Miller-Rabin pseudo prime  for
+<u>flag</u> randomly chosen bases (with end-matching to catch square roots of
+-1).</p>
+<p>The library syntax is <b>gispseudoprime</b>(x,<u>flag</u>), but the simpler function <font color=#a3682a><tt>
+ <b>ispseudoprime</b>(x)</tt></font>
+which returns a <font color=#a3682a><tt>
+long</tt></font> should be used if x is known to be of type
+integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="issquare"></a>
+<h4><b>issquare</b>(x,{&amp;n})</h4>
+<p></p>
+<p> true (1) if x is a square, false (0)
+if not. What "being a square" means depends on the type of x: all
+<font color=#a3682a><tt>
+t_COMPLEX</tt></font> are squares, as well as all non-negative <font color=#a3682a><tt>
+t_REAL</tt></font>; for
+exact types such as <font color=#a3682a><tt>
+t_INT</tt></font>, <font color=#a3682a><tt>
+t_FRAC</tt></font> and <font color=#a3682a><tt>
+t_INTMOD</tt></font>, squares are
+numbers of the form s^2 with s in <b>Z</b>, <b>Q</b> and <b>Z</b>/N<b>Z</b> respectively.</p>
+<p><pre><font color=#a3682a><tt>    ? issquare(3)          \\ as an integer
+&nbsp;    %1 = 0
+&nbsp;    ? issquare(3.)         \\ as a real number
+&nbsp;    %2 = 1
+&nbsp;    ? issquare(Mod(7, 8))  \\ in Z/8Z
+&nbsp;    %3 = 0
+&nbsp;    ? issquare( 5 + O(13^4) )  \\ in Q_13
+&nbsp;    %4 = 0
+</tt></font></pre></p>
+<p>If n is given and an exact square root had to be computed in
+the checking process, puts that square root in n. This is the case when
+x is a <font color=#a3682a><tt>
+t_INT</tt></font>, <font color=#a3682a><tt>
+t_FRAC</tt></font>, <font color=#a3682a><tt>
+t_POL</tt></font> or <font color=#a3682a><tt>
+t_RFRAC</tt></font> (or a vector of
+such objects):</p>
+<p><pre><font color=#a3682a><tt>    ? issquare(4, &amp;n)
+&nbsp;    %1 = 1
+&nbsp;    ? n
+&nbsp;    %2 = 2
+&nbsp;    ? issquare([4, x^2], &amp;n)
+&nbsp;    %3 = [1, 1]  \\ both are squares
+&nbsp;    ? n
+&nbsp;    %4 = [2, x]  \\ the square roots
+</tt></font></pre></p>
+<p>This will <u>not</u> work for <font color=#a3682a><tt>
+t_INTMOD</tt></font> (use quadratic reciprocity) or
+<font color=#a3682a><tt>
+t_SER</tt></font> (only check the leading coefficient).</p>
+<p>The library syntax is <b>gissquarerem</b>(x,&amp;n). Also available is <font color=#a3682a><tt>
+ <b>gissquare</b>(x)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="issquarefree"></a>
+<h4><b>issquarefree</b>(x)</h4>
+<p></p>
+<p> true (1) if x is squarefree, false (0) if not.
+Here x can be an integer or a polynomial.</p>
+<p>The library syntax is <b>gissquarefree</b>(x), but the simpler function <font color=#a3682a><tt>
+ <b>issquarefree</b>(x)</tt></font>
+which returns a <font color=#a3682a><tt>
+long</tt></font> should be used if x is known to be of type
+integer. This <b>issquarefree</b> is just the square of the Moebius
+function, and is computed as a multiplicative arithmetic function much like
+the latter.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="kronecker"></a>
+<h4><b>kronecker</b>(x,y)</h4>
+<p></p>
+<p>
+Kronecker symbol (x|y), where x and y must be of type integer. By
+definition, this is the extension of Legendre symbol to <b>Z</b>  x <b>Z</b>
+by total multiplicativity in both arguments with the following special rules
+for y = 0, -1 or 2:</p>
+<p><b>*</b> (x|0) = 1 if |x |= 1 and 0 otherwise.</p>
+<p><b>*</b> (x|-1) = 1 if x <font color=#a3682a><tt>
+&#62;=</tt></font> 0 and -1 otherwise.</p>
+<p><b>*</b> (x|2) = 0 if x is even and 1 if x = 1,-1 mod 8 and -1
+if x = 3,-3 mod 8.</p>
+<p>The library syntax is <b>kronecker</b>(x,y), the result (0 or &#177; 1) is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="lcm"></a>
+<h4><b>lcm</b>(x,{y})</h4>
+<p></p>
+<p> least common multiple of x and y, i.e.such
+that {lcm}(x,y)*<font color=#FF0000>gcd</font>(x,y) = {abs}(x*y). If y is omitted and x
+is a vector, returns the {lcm} of all components of x.</p>
+<p>When x and y are both given and one of them is a vector/matrix type,
+the LCM is again taken recursively on each component, but in a different way.
+If y is a vector, resp.matrix, then the result has the same type as y,
+and components equal to <font color=#a3682a><tt>
+lcm(x, y[i])</tt></font>, resp.<font color=#a3682a><tt>
+lcm(x, y[,i])</tt></font>. Else
+if x is a vector/matrix the result has the same type as x and an
+analogous definition. Note that for these types, <font color=#a3682a><tt>
+lcm</tt></font> is not
+commutative.</p>
+<p>Note that <font color=#a3682a><tt>
+lcm(v)</tt></font> is quite different from </p>
+<p><pre><font color=#a3682a><tt>    l = v[1]; for (i = 1, #v, l = lcm(l, v[i]))
+</tt></font></pre></p>
+<p>Indeed, <font color=#a3682a><tt>
+lcm(v)</tt></font> is a scalar, but <font color=#a3682a><tt>
+l</tt></font> may not be (if one of
+the <font color=#a3682a><tt>
+v[i]</tt></font> is a vector/matrix). The computation uses a divide-conquer tree
+and should be much more efficient, especially when using the GMP
+multiprecision kernel (and more subquadratic algorithms become available):</p>
+<p><pre><font color=#a3682a><tt>    ? v = vector(10^4, i, random);
+&nbsp;    ? lcm(v);
+&nbsp;    time = 323 ms.
+&nbsp;    ? l = v[1]; for (i = 1, #v, l = lcm(l, v[i]))
+&nbsp;    time = 833 ms.
+</tt></font></pre></p>
+<p>
+The library syntax is <b>glcm</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="moebius"></a>
+<h4><b>moebius</b>(x)</h4>
+<p></p>
+<p> Moebius <font color=#FF0000>mu</font>-function of |x|. x must
+be of type integer.</p>
+<p>The library syntax is <b>mu</b>(x), the result (0 or &#177; 1) is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="nextprime"></a>
+<h4><b>nextprime</b>(x)</h4>
+<p></p>
+<p> finds the smallest pseudoprime (see
+<font color=#a3682a><tt>
+ispseudoprime</tt></font>) greater than or equal to x. x can be of any real
+type. Note that if x is a pseudoprime, this function returns x and not
+the smallest pseudoprime strictly larger than x. To rigorously prove that
+the result is prime, use <font color=#a3682a><tt>
+isprime</tt></font>.</p>
+<p>The library syntax is <b>nextprime</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="numdiv"></a>
+<h4><b>numdiv</b>(x)</h4>
+<p></p>
+<p> number of divisors of |x|. x must be of type
+integer.</p>
+<p>The library syntax is <b>numbdiv</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="numbpart"></a>
+<h4><b>numbpart</b>(n)</h4>
+<p></p>
+<p> gives the number of unrestricted partitions of
+n, usually called p(n) in the litterature; in other words the number of
+nonnegative integer solutions to a+2b+3c+.. .= n. n must be of type
+integer and 1 <font color=#a3682a><tt>
+&#60;=</tt></font> n &#60; 10^{15}. The algorithm uses the
+Hardy-Ramanujan-Rademacher formula.</p>
+<p>The library syntax is <b>numbpart</b>(n).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="omega"></a>
+<h4><b>omega</b>(x)</h4>
+<p></p>
+<p> number of distinct prime divisors of |x|. x
+must be of type integer.</p>
+<p>The library syntax is <b>omega</b>(x), the result is a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="precprime"></a>
+<h4><b>precprime</b>(x)</h4>
+<p></p>
+<p> finds the largest pseudoprime (see
+<font color=#a3682a><tt>
+ispseudoprime</tt></font>) less than or equal to x. x can be of any real type.
+Returns 0 if x <font color=#a3682a><tt>
+&#60;=</tt></font> 1. Note that if x is a prime, this function returns x
+and not the largest prime strictly smaller than x. To rigorously prove that
+the result is prime, use <font color=#a3682a><tt>
+isprime</tt></font>.</p>
+<p>The library syntax is <b>precprime</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="prime"></a>
+<h4><b>prime</b>(x)</h4>
+<p></p>
+<p> the x^{{th}} prime number, which must be among
+the precalculated primes.</p>
+<p>The library syntax is <b>prime</b>(x). x must be a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="primepi"></a>
+<h4><b>primepi</b>(x)</h4>
+<p></p>
+<p> the prime counting function. Returns the number of
+primes p, p <font color=#a3682a><tt>
+&#60;=</tt></font> x. Uses a naive algorithm so that x must be less than
+<font color=#a3682a><tt>
+primelimit</tt></font>.</p>
+<p>The library syntax is <b>primepi</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="primes"></a>
+<h4><b>primes</b>(x)</h4>
+<p></p>
+<p> creates a row vector whose components
+are the first x prime numbers, which must be among the precalculated primes.</p>
+<p>The library syntax is <b>primes</b>(x). x must be a <font color=#a3682a><tt>
+long</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfbclassno"></a>
+<h4><b>qfbclassno</b>(D,{<u>flag</u> = 0})</h4>
+<p></p>
+<p> ordinary class number of the quadratic
+order of discriminant D. In the present version <b>2.2.13</b>, a O(D^{1/2})
+algorithm is used for D &#62; 0 (using Euler product and the functional
+equation) so D should not be too large, say D &#60; 10^8, for the time to be
+reasonable. On the other hand, for D &#60; 0 one can reasonably compute
+<font color=#a3682a><tt>
+qfbclassno(D)</tt></font> for |D| &#60; 10^{25}, since the routine uses
+Shanks's method which is in O(|D|^{1/4}). For larger values of |D|,
+see <font color=#a3682a><tt>
+quadclassunit</tt></font>.</p>
+<p>If <u>flag</u> = 1, compute the class number using Euler products and the
+functional equation. However, it is in O(|D|^{1/2}).</p>
+<p><b>Important warning.</b> For D &#60; 0, this function may give incorrect
+results when the class group has a low exponent (has many cyclic factors),
+because implementing Shanks's method in full generality slows it down
+immensely. It is therefore strongly recommended to double-check results using
+either the version with <u>flag</u> = 1 or the function <font color=#a3682a><tt>
+quadclassunit</tt></font>.</p>
+<p><b>Warning.</b> contrary to what its name implies, this routine does not
+compute the number of classes of binary primitive forms of discriminant D,
+which is equal to the <u>narrow</u> class number. The two notions are the same
+when D &#60; 0 or the fundamental unit <font color=#FF0000>varepsilon</font> has negative norm; when D
+ &#62; 0 and N<font color=#FF0000>varepsilon</font> &#62; 0, the number of classes of forms is twice the
+ordinary class number. This is a problem which we cannot fix for backward
+compatibility reasons. Use the following routine if you are only interested
+in the number of classes of forms:</p>
+<p><pre><font color=#a3682a><tt>QFBclassno(D) =
+&nbsp;  qfbclassno(D) * if (D &#60; 0 || norm(quadunit(D)) &#60; 0, 1, 2)
+</tt></font></pre></p>
+<p>Here are a few examples:</p>
+<p><pre><font color=#a3682a><tt>? qfbclassno(400000028)
+&nbsp;time = 3,140 ms.
+&nbsp;%1 = 1
+&nbsp;? quadclassunit(400000028).no
+&nbsp;time = 20 ms. \\</tt></font>{ much faster}<font color=#a3682a><tt></p>
+<p>&nbsp;%2 = 1
+&nbsp;? qfbclassno(-400000028)
+&nbsp;time = 0 ms.
+&nbsp;%3 = 7253 \\</tt></font>{ correct, and fast enough}<font color=#a3682a><tt></p>
+<p>&nbsp;? quadclassunit(-400000028).no
+&nbsp;time = 0 ms.
+&nbsp;%4 = 7253
+</tt></font></pre></p>
+<p>
+The library syntax is <b>qfbclassno0</b>(D,<u>flag</u>). Also available:
+<font color=#a3682a><tt>
+ <b>classno</b>(D)</tt></font> ( = <font color=#a3682a><tt>
+ <b>qfbclassno</b>(D)</tt></font>),
+<font color=#a3682a><tt>
+ <b>classno2</b>(D)</tt></font> ( = <font color=#a3682a><tt>
+ <b>qfbclassno</b>(D,1)</tt></font>), and finally
+we have the function <font color=#a3682a><tt>
+ <b>hclassno</b>(D)</tt></font> which computes the class number of
+an imaginary quadratic field by counting reduced forms, an O(|D|)
+algorithm. See also <font color=#a3682a><tt>
+qfbhclassno</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfbcompraw"></a>
+<h4><b>qfbcompraw</b>(x,y)</h4>
+<p></p>
+<p> composition of the binary quadratic forms
+x and y, without reduction of the result. This is useful e.g.to
+compute a generating element of an ideal.</p>
+<p>The library syntax is <b>compraw</b>(x,y).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfbhclassno"></a>
+<h4><b>qfbhclassno</b>(x)</h4>
+<p></p>
+<p> Hurwitz class number of x, where
+x is non-negative and congruent to 0 or 3 modulo 4. For x &#62; 5.
+10^5, we assume the GRH, and use <font color=#a3682a><tt>
+quadclassunit</tt></font> with default
+parameters.</p>
+<p>The library syntax is <b>hclassno</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfbnucomp"></a>
+<h4><b>qfbnucomp</b>(x,y,l)</h4>
+<p></p>
+<p> composition of the primitive positive
+definite binary quadratic forms x and y (type <font color=#a3682a><tt>
+t_QFI</tt></font>) using the NUCOMP
+and NUDUPL algorithms of Shanks, &agrave; la Atkin. l is any positive
+constant, but for optimal speed, one should take l = |D|^{1/4}, where D is
+the common discriminant of x and y. When x and y do not have the same
+discriminant, the result is undefined.</p>
+<p>The current implementation is straightforward and in general <u>slower</u>
+than the generic routine (since the latter take advantadge of asymptotically
+fast operations and careful optimizations).</p>
+<p>The library syntax is <b>nucomp</b>(x,y,l). The auxiliary function <font color=#a3682a><tt>
+ <b>nudupl</b>(x,l)</tt></font> can be
+used when x = y.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfbnupow"></a>
+<h4><b>qfbnupow</b>(x,n)</h4>
+<p></p>
+<p> n-th power of the primitive positive definite
+binary quadratic form x using Shanks's NUCOMP and NUDUPL algorithms
+(see <font color=#a3682a><tt>
+qfbnucomp</tt></font>, in particular the final warning).</p>
+<p>The library syntax is <b>nupow</b>(x,n).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfbpowraw"></a>
+<h4><b>qfbpowraw</b>(x,n)</h4>
+<p></p>
+<p> n-th power of the binary quadratic form
+x, computed without doing any reduction (i.e.using <font color=#a3682a><tt>
+qfbcompraw</tt></font>).
+Here n must be non-negative and n &#60; 2^{31}.</p>
+<p>The library syntax is <b>powraw</b>(x,n) where n must be a <font color=#a3682a><tt>
+long</tt></font>
+integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfbprimeform"></a>
+<h4><b>qfbprimeform</b>(x,p)</h4>
+<p></p>
+<p> prime binary quadratic form of discriminant
+x whose first coefficient is the prime number p. By abuse of notation,
+p = &#177; 1 is a valid special case which returns the unit form. Returns an
+error if x is not a quadratic residue mod p. In the case where x &#62; 0,
+p &#60; 0 is allowed, and the "distance" component of the form is set equal
+to zero according to the current precision. (Note that negative definite
+<font color=#a3682a><tt>
+t_QFI</tt></font> are not implemented.)</p>
+<p>The library syntax is <b>primeform</b>(x,p,<u>prec</u>), where the third variable <u>prec</u> is a
+<font color=#a3682a><tt>
+long</tt></font>, but is only taken into account when x &#62; 0.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfbred"></a>
+<h4><b>qfbred</b>(x,{<u>flag</u> = 0},{D},{<u>isqrtD</u>},{<u>sqrtD</u>})</h4>
+<p></p>
+<p>
+reduces the binary quadratic form x (updating Shanks's distance function
+if x is indefinite). The binary digits of <u>flag</u> are toggles meaning</p>
+<p>1: perform a single reduction step</p>
+<p>2: don't update Shanks's distance</p>
+<p>  D, <u>isqrtD</u>, <u>sqrtD</u>, if present, supply the values of the
+discriminant, floor{sqrt{D}}, and sqrt{D} respectively
+(no checking is done of these facts). If D &#60; 0 these values are useless,
+and all references to Shanks's distance are irrelevant.</p>
+<p>The library syntax is <b>qfbred0</b>(x,<u>flag</u>,D,<u>isqrtD</u>,<u>sqrtD</u>). Use <font color=#a3682a><tt>
+NULL</tt></font>
+to omit any of D, <u>isqrtD</u>, <u>sqrtD</u>.</p>
+<p>Also available are</p>
+<p><font color=#a3682a><tt>
+ <b>redimag</b>(x)</tt></font> ( = <font color=#a3682a><tt>
+ <b>qfbred</b>(x)</tt></font> where x is definite),</p>
+<p>and for indefinite forms:</p>
+<p><font color=#a3682a><tt>
+ <b>redreal</b>(x)</tt></font> ( = <font color=#a3682a><tt>
+ <b>qfbred</b>(x)</tt></font>),</p>
+<p><font color=#a3682a><tt>
+ <b>rhoreal</b>(x)</tt></font> ( = <font color=#a3682a><tt>
+ <b>qfbred</b>(x,1)</tt></font>),</p>
+<p><font color=#a3682a><tt>
+ <b>redrealnod</b>(x,sq)</tt></font> ( = <font color=#a3682a><tt>
+ <b>qfbred</b>(x,2,,isqrtD)</tt></font>),</p>
+<p><font color=#a3682a><tt>
+ <b>rhorealnod</b>(x,sq)</tt></font> ( = <font color=#a3682a><tt>
+ <b>qfbred</b>(x,3,,isqrtD)</tt></font>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="qfbsolve"></a>
+<h4><b>qfbsolve</b>(Q,p)</h4>
+<p></p>
+<p> Solve the equation Q(x,y) = p over the integers,
+where Q is a binary quadratic form and p a prime number.</p>
+<p>Return [x,y] as a two-components vector, or zero if there is no solution.
+Note that this function returns only one solution and not all the solutions.</p>
+<p>Let D = \disc Q. The algorithm used runs in probabilistic polynomial time
+in p (through the computation of a square root of D modulo p); it is
+polynomial time in D if Q is imaginary, but exponential time if Q is
+real (through the computation of a full cycle of reduced forms). In the
+latter case, note that <font color=#a3682a><tt>
+bnfisprincipal</tt></font> provides a solution in heuristic
+subexponential time in D assuming the GRH.</p>
+<p>The library syntax is <b>qfbsolve</b>(Q,n).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="quadclassunit"></a>
+<h4><b>quadclassunit</b>(D,{<u>flag</u> = 0},{<u>tech</u> = []})</h4>
+<p></p>
+<p>
+Buchmann-McCurley's sub-exponential algorithm for computing the class
+group of a quadratic order of discriminant D.</p>
+<p>This function should be used instead of <font color=#a3682a><tt>
+qfbclassno</tt></font> or <font color=#a3682a><tt>
+quadregula</tt></font>
+when D &#60; -10^{25}, D &#62; 10^{10}, or when the <u>structure</u> is wanted. It
+is a special case of <font color=#a3682a><tt>
+bnfinit</tt></font>, which is slower, but more robust.</p>
+<p>If <u>flag</u> is non-zero <u>and</u> D &#62; 0, computes the narrow class group and
+regulator, instead of the ordinary (or wide) ones. In the current version
+<b>2.2.13</b>, this does not work at all: use the general function <font color=#a3682a><tt>
+bnfnarrow</tt></font>.</p>
+<p>Optional parameter <u>tech</u> is a row vector of the form [c_1, c_2], where
+c_1 <font color=#a3682a><tt>
+&#60;=</tt></font> c_2 are positive real numbers which control the execution time and
+the stack size. For a given c_1, set c_2 = c_1 to get maximum speed. To
+get a rigorous result under GRH, you must take c_2 <font color=#a3682a><tt>
+&#62;=</tt></font> 6. Reasonable
+values for c_1 are between 0.1 and 2. More precisely, the algorithm will
+<u>assume</u> that prime ideals of norm less than c_2 (log |D|)^2 generate
+the class group, but the bulk of the work is done with prime ideals of norm
+less than c_1 (log |D|)^2. A larger c_1 means that relations are easier
+to find, but more relations are needed and the linear algebra will be harder.
+The default is c_1 = c_2 = 0.2, so the result is <u>not</u> rigorously
+proven.</p>
+<p>The result is a vector v with 3 components if D &#60; 0, and
+4 otherwise. The correspond respectively to</p>
+<p><b>*</b> v[1]: the class number</p>
+<p><b>*</b> v[2]: a vector giving the structure of the class group as a
+product of cyclic groups;</p>
+<p><b>*</b> v[3]: a vector giving generators of those cyclic groups (as
+binary quadratic forms).</p>
+<p><b>*</b> v[4]: (omitted if D &#60; 0) the regulator, computed to an
+accuracy which is the maximum of an internal accuracy determined by the
+program and the current default (note that once the regulator is known to a
+small accuracy it is trivial to compute it to very high accuracy, see the
+tutorial).</p>
+<p>The library syntax is <b>quadclassunit0</b>(D,<u>flag</u>,tech). Also available are
+<font color=#a3682a><tt>
+ <b>buchimag</b>(D,c_1,c_2)</tt></font> and <font color=#a3682a><tt>
+ <b>buchreal</b>(D,<u>flag</u>,c_1,c_2)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="quaddisc"></a>
+<h4><b>quaddisc</b>(x)</h4>
+<p></p>
+<p> discriminant of the quadratic field
+<b>Q</b>(sqrt{x}), where x belongs to <b>Q</b>.</p>
+<p>The library syntax is <b>quaddisc</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="quadhilbert"></a>
+<h4><b>quadhilbert</b>(D,{pq})</h4>
+<p></p>
+<p> relative equation defining the
+Hilbert class field of the quadratic field of discriminant D.</p>
+<p>If D &#60; 0, uses complex multiplication (Schertz's variant). The
+technical component pq, if supplied, is a vector [p,q] where p, q are
+the prime numbers needed for the Schertz's method. More precisely, prime
+ideals above p and q should be non-principal and coprime to all reduced
+representatives of the class group. In addition, if one of these ideals has
+order 2 in the class group, they should have the same class. Finally, for
+efficiency, <font color=#FF0000>gcd</font>(24,(p-1)(q-1)) should be as large as possible.
+The routine returns 0 if [p,q] is not suitable.</p>
+<p>If D &#62; 0 Stark units are used and (in rare cases) a
+vector of extensions may be returned whose compositum is the requested class
+field. See <font color=#a3682a><tt>
+bnrstark</tt></font> for details.</p>
+<p>The library syntax is <b>quadhilbert</b>(D,pq,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="quadgen"></a>
+<h4><b>quadgen</b>(D)</h4>
+<p></p>
+<p> creates the quadratic
+number <font color=#FF0000>omega</font> = (a+sqrt{D})/2 where a = 0 if x = 0 mod 4,
+a = 1 if D = 1 mod 4, so that (1,<font color=#FF0000>omega</font>) is an integral basis for the
+quadratic order of discriminant D. D must be an integer congruent to 0 or
+1 modulo 4, which is not a square.</p>
+<p>The library syntax is <b>quadgen</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="quadpoly"></a>
+<h4><b>quadpoly</b>(D,{v = x})</h4>
+<p></p>
+<p> creates the "canonical" quadratic
+polynomial (in the variable v) corresponding to the discriminant D,
+i.e.the minimal polynomial of <font color=#a3682a><tt>
+quadgen</tt></font>(D). D must be an integer
+congruent to 0 or 1 modulo 4, which is not a square.</p>
+<p>The library syntax is <b>quadpoly0</b>(x,v).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="quadray"></a>
+<h4><b>quadray</b>(D,f,{<u>lambda</u>})</h4>
+<p></p>
+<p> relative equation for the ray
+class field of conductor f for the quadratic field of discriminant D
+using analytic methods. A <font color=#a3682a><tt>
+bnf</tt></font> for x^2 - D is also accepted in place
+of D.</p>
+<p>For D &#60; 0, uses the <font color=#FF0000>sigma</font> function. If supplied, <u>lambda</u> is is the
+technical element <font color=#FF0000>lambda</font> of <font color=#a3682a><tt>
+bnf</tt></font> necessary for Schertz's method. In
+that case, returns 0 if <font color=#FF0000>lambda</font> is not suitable.</p>
+<p>For D &#62; 0, uses Stark's conjecture, and a vector of relative equations may be
+returned. See <font color=#a3682a><tt>
+bnrstark</tt></font> for more details.</p>
+<p>The library syntax is <b>quadray</b>(D,f,lambda,prec), where an omitted <font color=#a3682a><tt>
+lambda</tt></font> is coded as
+<font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="quadregulator"></a>
+<h4><b>quadregulator</b>(x)</h4>
+<p></p>
+<p> regulator of the quadratic field of
+positive discriminant x. Returns an error if x is not a discriminant
+(fundamental or not) or if x is a square. See also <font color=#a3682a><tt>
+quadclassunit</tt></font> if
+x is large.</p>
+<p>The library syntax is <b>regula</b>(x,<u>prec</u>).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="quadunit"></a>
+<h4><b>quadunit</b>(D)</h4>
+<p></p>
+<p> fundamental unit of the
+real quadratic field <b>Q</b>(sqrt D) where  D is the positive discriminant
+of the field. If D is not a fundamental discriminant, this probably gives
+the fundamental unit of the corresponding order. D must be an integer
+congruent to 0 or 1 modulo 4, which is not a square; the result is a
+quadratic number (see Section [<b>Label: se:quadgen</b>]).</p>
+<p>The library syntax is <b>fundunit</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="removeprimes"></a>
+<h4><b>removeprimes</b>({x = []})</h4>
+<p></p>
+<p> removes the primes listed in x from
+the prime number table. In particular <font color=#a3682a><tt>
+removeprimes(addprimes)</tt></font> empties
+the extra prime table. x can also be a single integer. List the current
+extra primes if x is omitted.</p>
+<p>The library syntax is <b>removeprimes</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="sigma"></a>
+<h4><b>sigma</b>(x,{k = 1})</h4>
+<p></p>
+<p> sum of the k^{{th}} powers of the
+positive divisors of |x|. x and k must be of type integer.</p>
+<p>The library syntax is <b>sumdiv</b>(x) ( = <font color=#a3682a><tt>
+ <b>sigma</b>(x)</tt></font>) or <font color=#a3682a><tt>
+ <b>gsumdivk</b>(x,k)</tt></font> ( = 
+<font color=#a3682a><tt>
+ <b>sigma</b>(x,k)</tt></font>), where k is a C long integer.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="sqrtint"></a>
+<h4><b>sqrtint</b>(x)</h4>
+<p></p>
+<p> integer square root of x, which must be a
+non-negative integer. The result is non-negative and rounded towards zero.</p>
+<p>The library syntax is <b>sqrti</b>(x). Also available is <font color=#a3682a><tt>
+sqrtremi</tt></font>(x,&amp;r) which returns
+s such that s^2 = x+r, with 0 <font color=#a3682a><tt>
+&#60;=</tt></font> r <font color=#a3682a><tt>
+&#60;=</tt></font> 2s.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="zncoppersmith"></a>
+<h4><b>zncoppersmith</b>(P, N, X, {B = N})</h4>
+<p></p>
+<p> finds all integers x_0 with
+|x_0| <font color=#a3682a><tt>
+&#60;=</tt></font> X such that
+<font color=#FF0000>gcd</font>(N, P(x_0)) <font color=#a3682a><tt>
+&#62;=</tt></font> B.
+If N is prime or a prime power, <font color=#a3682a><tt>
+polrootsmod</tt></font> or <font color=#a3682a><tt>
+polrootspadic</tt></font>
+will be much faster. X must be smaller than exp(log^2 B / (deg(P) log
+N)).</p>
+<p>The library syntax is <b>zncoppersmith</b>(P, N, X, B), where an omitted B is coded as <font color=#a3682a><tt>
+NULL</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="znlog"></a>
+<h4><b>znlog</b>(x,g)</h4>
+<p></p>
+<p> g must be a primitive root mod a prime p, and
+the result is the discrete log of x in the multiplicative group
+(<b>Z</b>/p<b>Z</b>)^*. This function uses a simple-minded combination of
+Pohlig-Hellman algorithm and Shanks baby-step/giant-step which requires
+O(sqrt{q}) storage, where q is the largest prime factor of p-1. Hence
+it cannot be used when the largest prime divisor of p-1 is greater than
+about 10^{13}.</p>
+<p>The library syntax is <b>znlog</b>(x,g).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="znorder"></a>
+<h4><b>znorder</b>(x,{<u>o</u>})</h4>
+<p></p>
+<p> x must be an integer mod n, and the
+result is the order of x in the multiplicative group (<b>Z</b>/n<b>Z</b>)^*. Returns
+an error if x is not invertible. If optional parameter o is given it is
+assumed to be a multiple of the order (used to limit the search space).</p>
+<p>The library syntax is <b>znorder</b>(x,o), where an omitted o is coded as <font color=#a3682a><tt>
+NULL</tt></font>. Also
+available is <font color=#a3682a><tt>
+ <b>order</b>(x)</tt></font>.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="znprimroot"></a>
+<h4><b>znprimroot</b>(n)</h4>
+<p></p>
+<p> returns a primitive root (generator) of
+(<b>Z</b>/n<b>Z</b>)^*, whenever this latter group is cyclic (n = 4 or n = 2p^k or
+n = p^k, where p is an odd prime and k <font color=#a3682a><tt>
+&#62;=</tt></font> 0).</p>
+<p>The library syntax is <b>gener</b>(x).</p>
+
+<br>
+<hr></hr><br>
+
+<a name="znstar"></a>
+<h4><b>znstar</b>(n)</h4>
+<p></p>
+<p> gives the structure of the multiplicative group
+(<b>Z</b>/n<b>Z</b>)^* as a 3-component row vector v, where v[1] = <font color=#FF0000>phi</font>(n) is the
+order of that group, v[2] is a k-component row-vector d of integers
+d[i] such that d[i] &#62; 1 and d[i] | d[i-1] for i <font color=#a3682a><tt>
+&#62;=</tt></font> 2 and
+(<b>Z</b>/n<b>Z</b>)^*  ~  <font color=#FF0000>prod</font>_{i = 1}^k(<b>Z</b>/d[i]<b>Z</b>), and v[3] is a k-component row
+vector giving generators of the image of the cyclic groups <b>Z</b>/d[i]<b>Z</b>.</p>
+<p>The library syntax is <b>znstar</b>(n).</p>
+
+<br>
+<hr></hr><br>
+
+
+
+</BODY>
+</HTML>
