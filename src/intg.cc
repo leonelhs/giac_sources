@@ -2325,7 +2325,7 @@ namespace giac {
 	}
 	if (it->type!=_SYMB)
 	  continue;
-	f=it->_SYMBptr->feuille;
+	f=ratnormal(it->_SYMBptr->feuille);
 	if ( (f.type==_VECT) && (!f._VECTptr->empty()) )
 	  f=f._VECTptr->front();
 	if (f.type!=_SYMB)
