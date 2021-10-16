@@ -341,7 +341,9 @@ namespace giac {
 	*logptr(contextptr) << gettext("Warning, =< is in-place assign, check ") << v << endl;
     }
     if (g.is_symb_of_sommet(at_bloc) || 
-	g.is_symb_of_sommet(at_for) ||
+	g.is_symb_of_sommet(at_for) || g.is_symb_of_sommet(at_pour) ||
+	g.is_symb_of_sommet(at_tantque) || g.is_symb_of_sommet(at_si) ||
+	g.is_symb_of_sommet(at_sialorssinon) || 
 	g.is_symb_of_sommet(at_ifte) || g.is_symb_of_sommet(at_when)){
       check_local_assign(g._SYMBptr->feuille,prog_args,res1,res2,res3,res4,testequal,contextptr);
       return;
@@ -2781,6 +2783,13 @@ namespace giac {
     if (g.type!=_VECT)
       return symb_concat(g);
     vecteur & v=*g._VECTptr;
+    if (v.size()>2){
+      gen h=concat(makesequence(v[0],v[1]),glue_lines,contextptr);
+      for (unsigned i=2;i<v.size();++i){
+	h=concat(makesequence(h,v[i]),glue_lines,contextptr);
+      }
+      return h;
+    }
     if (v.size()!=2){
       if (g.subtype==_SEQ__VECT)
 	return g;
@@ -3565,6 +3574,28 @@ namespace giac {
     if (s<2)
       return symb_dollar(args);
     gen a=vargs.front(),b=vargs[1],b1=eval(b,eval_level(contextptr),contextptr);
+    if (b1.type==_VECT && b1.subtype==_SEQ__VECT && b1._VECTptr->size()==2){
+      return _dollar(gen(makevecteur(a,b1._VECTptr->front(),b1._VECTptr->back()),_SEQ__VECT),contextptr);
+    }
+    if (a.is_symb_of_sommet(at_interval) && a._SYMBptr->feuille.type==_VECT && a._SYMBptr->feuille._VECTptr->size()==2){
+      a=eval(a,1,contextptr);
+      gen a1=a._SYMBptr->feuille._VECTptr->front(),a2=a._SYMBptr->feuille._VECTptr->back();
+      gen nstep=(a2-a1)/b1;
+      if (ck_is_positive(nstep,contextptr))
+	nstep=_floor(nstep,contextptr);
+      else {
+	nstep=_floor(-nstep,contextptr);
+	b1=-b1;
+      }
+      if (nstep.type!=_INT_ || nstep.val<0 || nstep.val>LIST_SIZE_LIMIT)
+	return gendimerr(contextptr);
+      vecteur res;
+      for (unsigned i=0;i<=nstep.val;++i){
+	res.push_back(a1);
+	a1 += b1;
+      }
+      return gen(res,_SEQ__VECT);
+    }
     if (b1.type==_INT_ && b1.val>=0){
       if (b1.val>LIST_SIZE_LIMIT)
 	return gendimerr(contextptr);
@@ -3680,7 +3711,7 @@ namespace giac {
       vecteur res(t);
       for (int i=0;i<t;++i)
 	res[i]=w; // each element of res will be a free line, so that =< works
-      return res;
+      return gen(res,_MATRIX__VECT);
     }
     vecteur v,w,a(2);
     v.reserve((fi-di)*stepi);
@@ -3698,7 +3729,7 @@ namespace giac {
       if (di==fi)
 	break;
     }
-    return v;
+    return gen(v,_MATRIX__VECT);
   }
   static const char _makemat_s []="makemat";
   static define_unary_function_eval (__makemat,&_makemat,_makemat_s);
@@ -5166,6 +5197,7 @@ namespace giac {
     gen g_(g);
     if (v!=w)
       g_=subst(g,v,w,false,contextptr);
+    g_=aplatir_fois_plus(g_);
     return liste2symbolique(symbolique2liste(g_,contextptr));
   }
   gen _simplifier(const gen & g,GIAC_CONTEXT){
@@ -5519,8 +5551,13 @@ namespace giac {
 	return _simplify(g,contextptr);
       if (f==at_exp || f==at_ln || f==at_EXP)
 	return trig2exp(g,contextptr);
-      if (f==at_string)
-	return string2gen(g.print(contextptr),false);
+      if (f==at_string){
+	int maxp=MAX_PRINTABLE_ZINT;
+	MAX_PRINTABLE_ZINT= 1000000;
+	gen res=string2gen(g.print(contextptr),false);
+	MAX_PRINTABLE_ZINT=maxp;
+	return res;
+      }
       if (f==at_matrix || f==at_vector || f==at_array){
 	g.subtype=_MATRIX__VECT;
 	return g;
@@ -6273,7 +6310,7 @@ namespace giac {
       int s=giacmin(l,w.size());
       for (int i=0;i<s;++i)
 	res[i]=w[i];
-      return res;
+      return gen(res,_MATRIX__VECT);
     }
     if (vs==2){
       v.push_back(zero);
@@ -6724,6 +6761,8 @@ namespace giac {
 
   gen _string(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
+    int maxp=MAX_PRINTABLE_ZINT;
+    MAX_PRINTABLE_ZINT=1000000;
     string res;
     if (args.type==_VECT && args.subtype==_SEQ__VECT){
       const_iterateur it=args._VECTptr->begin(),itend=args._VECTptr->end();
@@ -6745,6 +6784,7 @@ namespace giac {
     }
     else
       res=args.print(contextptr);
+    MAX_PRINTABLE_ZINT=maxp;
     return string2gen(res,false);
   }
   static const char _string_s []="string";
@@ -7241,7 +7281,7 @@ namespace giac {
   const mksa_unit __Btu_unit={1055.05585262,2,1,-2,0,0,0,0,0};
   const mksa_unit __Curie_unit={3.7e10,0,0,-1,0,0,0,0,0};
   const mksa_unit __FF_unit={.152449017237,0,0,0,0,0,0,0,1};
-  const mksa_unit __Fdy_unit={96487,0,0,1,1,0,0,0,0};
+  const mksa_unit __Fdy_unit={96485.3365,0,0,1,1,0,0,0,0};
   const mksa_unit __Gal={0.01,1,0,-2,0,0,0,0,0};
   const mksa_unit __HFCC_unit={1400,1,0,0,0,0,0,0,0};
   const mksa_unit __L_unit={0.001,3,0,0,0,0,0,0,0};
@@ -8694,8 +8734,8 @@ namespace giac {
     if (s==1)
       return gensizeerr(contextptr);
     if (s==2){
-      v.push_back(undef);
-      s++;
+      v.push_back(0); // undef does not work
+      return symbolic(at_when,gen(v,_SEQ__VECT));
     }
     if (s==3)
       return symbolic(at_when,g);

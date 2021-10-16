@@ -6,31 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction testant le type de son argument: getType</TITLE>
+<TITLE>Fonction testant si une touche est pressée : getKey</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr794.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr796.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc923">8.4.6</A>  Fonction testant le type de son argument: <TT>getType</TT></H3><P><A NAME="@default1423"></A><A NAME="@default1424"></A><A NAME="@default1425"></A><A NAME="@default1426"></A><A NAME="@default1427"></A><A NAME="@default1428"></A><A NAME="@default1429"></A>
-<TT>getType</TT> est une fonction qui a un argument et qui renvoie le
-type de cet argument par exemple :<BR>
- <TT>STR,EXPR,VAR,NONE,PIC,LIST,MAT,FUNC,NUM...</TT>.<BR>
-<TT>getType</TT> ne renvoie pas la même chose que <TT>type</TT>, c’est pour des 
-raisons de compatibilité.<BR>
+<H3 CLASS="subsection"><A NAME="htoc924">8.4.3</A>  Fonction testant si une touche est pressée : <TT>getKey</TT></H3><P><A NAME="@default1415"></A>
+<TT>getKey</TT> est une fonction qui n’a pas d’argument et qui renvoie le
+code <TT>ASCII</TT> de la touche pressée dans l’écran <TT>xterm</TT> de la
+fenêtre du terminal ou <TT>0</TT> si aucune touche n’est pressée dans cet 
+écran .<BR>
 On tape :
-</P><DIV CLASS="center"><TT>getType(3.14)</TT></DIV><P>
+</P><PRE CLASS="verbatim">testkey():={
+local a;
+while (1==1) {
+a:=getKey();
+if (a!=0) break;
+}
+return a;
+}
+</PRE><P>puis:
+</P><DIV CLASS="center"><TT>testkey()</TT></DIV><P>
+puis:
+</P><DIV CLASS="center"><TT>A</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>NUM</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>getType(x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>VAR</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>getType(x+2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>EXPR</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>65</TT></DIV><HR>
 <A HREF="cascmd_fr794.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr796.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

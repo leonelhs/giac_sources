@@ -6,54 +6,20 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Ouvrir le débuggeur : debug</TITLE>
+<TITLE>Ouvrir l’ècran DispG depuis un programme : DispG</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr827.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr829.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc959">8.7.1</A>  Ouvrir le débuggeur : <TT>debug</TT></H3><P><A NAME="@default1500"></A>
-<TT>debug</TT> a comme argument une fonction et ses arguments.<BR>
-<TT>debug</TT> ouvre l’écran de la fenêtre de mise au point (ou débugger)
-avec sa barre de boutons.
-On a la possibilité :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-d’exécuter le programme au pas
-à pas avec le bouton <TT>sst</TT><A NAME="@default1501"></A> qui inscrit la commande 
-<TT>sst()</TT> dans la ligne de commande,
-</LI><LI CLASS="li-itemize">de mettre des points d’arrêts (breakpoint) avec 
-<TT>break</TT> (ou la commande <TT>breakpoint</TT>), 
-</LI><LI CLASS="li-itemize">d’aller directement avec<TT>cont</TT> à une ligne 
-précise marquée par un point d’arrêt (ou la commande <TT>cont</TT>),
-</LI><LI CLASS="li-itemize">de voir avec <TT>watch</TT> les 
-variables que l’on désire surveiller (ou la commande <TT>watch</TT>),
-</LI><LI CLASS="li-itemize">d’exécuter au pas à pas 
-les instructions d’une fonction utilisateur avec <TT>dans</TT><A NAME="@default1502"></A> qui 
-inscrit la commande <TT>sst_in()</TT> dans la ligne de commande, ou encore 
-</LI><LI CLASS="li-itemize">de sortir brutalement du débuggeur avec <TT>tuer</TT> (ou la commande <TT>kill</TT>).
-</LI></UL><P>
-On tape par exemple :<BR>
- <TT>debug(pgcd(15,25))</TT>.<BR>
-Il faut bien sûr que le programme <TT>pgcd</TT> existe.<BR>
-Par exemple on a tapé :
-</P><PRE CLASS="verbatim">pgcd(a,b):={
-local r;
-while(b!=0) {
-r:=irem(a,b);
-a:=b;
-b:=r;
-}
-return a;
-}
-</PRE><P>Puis si on veut observer les variables <TT>a</TT> et <TT>b</TT>, on clique sur 
-<TT>watch</TT> : <TT>watch</TT> s’inscrit dans la ligne <TT>eval</TT> et on compléte
-cette ligne en <TT>watch(a)</TT> puis <TT>enter</TT>, puis on clique sur 
-<TT>watch</TT> et on compléte <TT>watch</TT> en <TT>watch(b)</TT> puis <TT>enter</TT>.<BR>
-Ensuite on clique sur <TT>sst</TT>, et on voit à chaque ètape (la ligne qui 
-est exécutée est en surbrillance) les valeurs de 
-<TT>a</TT> et <TT>b</TT> dans la zone située en dessous de la barre des boutons.
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc959">8.6.4</A>  Ouvrir l’ècran <TT>DispG</TT> depuis un programme : <TT>DispG</TT></H3><P><A NAME="@default1501"></A><A NAME="sec:dispg"></A>
+<TT>DispG</TT> n’a pas d’arguments.<BR>
+<TT>DispG;</TT> permet d’ouvrir l’écran <TT>DispG</TT> depuis un programme.<BR>
+On tape (ne pas mettre de parenthèses) :
+</P><DIV CLASS="center"><TT>DispG;</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>l’ouverture de l’écran </TT><TT>DispG</TT></DIV><HR>
 <A HREF="cascmd_fr827.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr829.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

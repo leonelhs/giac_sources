@@ -924,7 +924,11 @@ namespace giac {
 
     struct dirent **eps;
     int n;
+#if defined APPLE_SMART || defined NO_SCANDIR
+    n =-1;
+#else
     n = scandir (subdir.c_str(), &eps, dir_select, alphasort);
+#endif
     if (n >= 0){
       bool index_done=false;
       int cnt;
@@ -971,6 +975,8 @@ namespace giac {
     string xcasroot;
     if (getenv("XCAS_ROOT")){
       xcasroot=string(getenv("XCAS_ROOT"));
+      if (xcasroot.empty())
+	xcasroot="/";
       if (xcasroot[xcasroot.size()-1]!='/')
 	xcasroot+='/';
     }

@@ -6,37 +6,79 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour écrire des variables et leur contenu dans un fichier : write</TITLE>
+<TITLE>La boucle : while et tantque</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr815.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr817.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc945">8.5.2</A>  Pour écrire des variables et leur contenu dans un fichier : <TT>write</TT></H3><P><A NAME="@default1486"></A>
-<TT>write</TT> a comme argument un nom de fichier et des noms de 
-variables.<BR>
-<TT>write</TT> crèe un fichier du nom spécifié (et donc efface le fichier 
-précédent, si celui-ciexistait déjà) et écrit les affectations de ces variables dans ce 
-fichier .<BR>
+<H3 CLASS="subsection"><A NAME="htoc945">8.4.24</A>  La boucle : <TT>while</TT> et <TT>tantque</TT></H3><P><A NAME="@default1483"></A><A NAME="@default1484"></A><A NAME="@default1485"></A><A NAME="@default1486"></A>
+<TT>while</TT> et <TT>tantque</TT> permettent de faire plusieurs fois des
+instructions.<BR>
+<TT>while</TT> est suivi d’un booléen mis entre des parenthèses et d’un bloc 
+d’instructions. <TT>while</TT> permet de faire plusieurs fois ce bloc 
+d’instructions tant que la valeur de ce booléen est vrai.<BR>
+<TT>tantque</TT> est suivi d’un booléen, de <TT>faire</TT> d’instructions puis de
+<TT>ftantque</TT>. <TT>tantque</TT> permet de faire plusieurs fois les instructions 
+situèes entre <TT>faire</TT> et <TT>ftantque</TT> tant que la valeur de ce 
+booléen est vrai.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>a:=3.14; b:=456</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>write("titi",a,b)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>le fichier "titi" dans lequel il y a a:=3.14; b:=456;</TT></DIV><P>
-On tape :
-</P><PRE CLASS="verbatim">testwrite():={
-local a;
-a:=[];
-for (k:=1;k&lt;5;k++){a:=concat(a,k*6.55);}
-write("titi",a);
-return a;
+</P><PRE CLASS="verbatim">somwhile(eps):={
+local s,j;
+s:=0;
+j:=1;
+while (1/j&gt;=eps){
+ s:=s+1/j;
+ j:=j+1;
+}
+return s;
+}
+</PRE><P>Ou on tape :
+</P><PRE CLASS="verbatim">somtantque(eps):={
+local s,j;
+s:=0;
+j:=1;
+tantque 1/j&gt;=eps faire
+ s:=s+1/j;
+ j:=j+1;
+ftantque
+retourne s;
 }
 </PRE><P>puis :
-</P><DIV CLASS="center"><TT>testwrite()</TT></DIV><P>
+</P><DIV CLASS="center"><TT>somwhile(0.2)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>somantque(0.2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le fichier "titi" dans lequel il y a, a:=[6.55,13.1,19.65,26.2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>137/60</TT></DIV><P>
+<B>Remarque</B><BR>
+ On peut aussi écrire un <TT>while</TT> avec un <TT>for</TT> :<BR>
+<TT>while (&lt;condition&gt;)</TT><TT>&lt;instructions&gt;</TT> est équivalent à :<BR>
+<TT>for (;&lt;condition&gt;;)</TT><TT>&lt;instructions&gt;</TT><BR>
+On aurait donc pu écrire :
+</P><PRE CLASS="verbatim">somwhilefor(eps):={
+local s,j;
+s:=0;
+j:=1;
+for (;1/j&gt;=eps;){
+ s:=s+1/j;
+ j:=j+1;
+}
+return s;
+}
+</PRE><P>ou encore
+</P><PRE CLASS="verbatim">somforwhile(eps):={
+local s,j;
+s:=0;
+for (j:=1;1/j&gt;=eps;j++){
+ s:=s+1/j;
+}
+return s;
+}
+</PRE><P>On tape :
+</P><DIV CLASS="center"><TT>somwhile(0.1);somforwhile(0.1);somwhilefor(0.1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>7129/2520,7129/2520,7129/2520</TT></DIV><HR>
 <A HREF="cascmd_fr815.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr817.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

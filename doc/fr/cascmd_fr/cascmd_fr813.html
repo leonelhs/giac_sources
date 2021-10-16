@@ -6,79 +6,85 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La boucle : while et tantque</TITLE>
+<TITLE>La boucle : for pour fpour</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr812.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr814.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc941">8.4.24</A>  La boucle : <TT>while</TT> et <TT>tantque</TT></H3><P><A NAME="@default1479"></A><A NAME="@default1480"></A><A NAME="@default1481"></A><A NAME="@default1482"></A>
-<TT>while</TT> et <TT>tantque</TT> permettent de faire plusieurs fois des
-instructions.<BR>
-<TT>while</TT> est suivi d’un booléen mis entre des parenthèses et d’un bloc 
-d’instructions. <TT>while</TT> permet de faire plusieurs fois ce bloc 
-d’instructions tant que la valeur de ce booléen est vrai.<BR>
-<TT>tantque</TT> est suivi d’un booléen, de <TT>faire</TT> d’instructions puis de
-<TT>ftantque</TT>. <TT>tantque</TT> permet de faire plusieurs fois les instructions 
-situèes entre <TT>faire</TT> et <TT>ftantque</TT> tant que la valeur de ce 
-booléen est vrai.<BR>
+<H3 CLASS="subsection"><A NAME="htoc942">8.4.21</A>  La boucle : <TT>for pour fpour</TT></H3><P><A NAME="@default1471"></A><A NAME="@default1472"></A><A NAME="@default1473"></A><A NAME="@default1474"></A><A NAME="@default1475"></A><A NAME="@default1476"></A><A NAME="@default1477"></A>
+<TT>for</TT> et <TT>pour</TT> se sert d’une variable d’incrémentation par
+exemple <TT>j</TT> (doit être déclarée comme variable locale).<BR>
+<B>Première syntaxe</B><BR>
+On précise entre des parenthèses et en les séparant par 
+un point virgule, la valeur de départ, la condition d’arrêt
+et la façon dont on incrémente la variable d’incrémentation, puis on
+met un bloc d’instructions :<BR>
+<TT>for</TT> permet de faire plusieurs fois un bloc d’instructions selon
+la valeur de la variable d’incrémentation.<BR>
+<TT>for (j:=j1;j&lt;=j2;j:=j+3) {&lt;instructions&gt; }</TT><BR>
+Par exemple :<BR>
+<TT>S:=0;for (j:=3;j&lt;20;j:=j+3) {S:=S+j;}</TT><BR>
+<B>Deuxième syntaxe</B><BR>
+On commence par <TT>for</TT>, puis, on précise avec les mots <TT>from</TT>, <TT>to</TT>
+et <TT>step</TT>, la valeur de départ, la condition d’arrêt et la faç on 
+dont on incrémente cette variable d’incrémentation, puis on met les 
+instructions à effectuer entre <TT>do</TT> et <TT>end_for</TT> :<BR>
+<TT>for j from j1 to j2 step p do &lt;instructions&gt; end_for;</TT><BR>
+Ou on utilise sa traduction. On commence par <TT>pour</TT>, puis, on précise avec
+les mots <TT>de</TT>, <TT>jusque</TT> et <TT>pas</TT>, la valeur de départ, la 
+condition d’arrêt et la façon dont on incrémente cette variable 
+d’incrémentation, puis on met les instructions à effectuer entre <TT>faire</TT>
+et <TT>fpour</TT> :<BR>
+<TT>pour j de j1 jusque j2 pas p faire &lt;instructions&gt; fpour;</TT>
+Par exemple :<BR>
+<TT>S:=0;for j from 3 to 20 step 3 do S:=S+j; end_for;</TT><BR>
+<TT>S:=0;pour j de 3 jusque 20 pas 3 faire S:=S+j; fpour;</TT><BR>
+<B>Troisième syntaxe</B><BR>
+On peut à l’aide d’un ensemble, d’une liste ou d’une plage de valeurs <TT>A</TT>
+donner les différentes valeurs que doit prendre la variable d’incrémentation <TT>j</TT>
+en mettant :<BR>
+<TT>for j in A do ....end_for;</TT>.<BR>
+ou sa traduction :<BR>
+<TT>pour j in A faire &lt;instructions&gt; fpour;</TT>
+Par exemple lorsque <TT>j</TT> s’incrémente de 1:<BR>
+<TT>S:=0;for j in 1..5 do S:=S+j; end_for;</TT><BR>
+ou sa traduction<BR>
+<TT>S:=0;pour j in 1..5 faire S:=S+j; fpour;</TT><BR>
+lorsque <TT>j</TT> décrit un ensemble de valeurs :<BR>
+<TT>A:=[3,6,9,15,30,45];S:=0;for j in A do S:=S+j; end_for;</TT><BR>
+ou sa traduction<BR>
+<TT>A:=[3,6,9,15,30,45];S:=0;pour j in A faire S:=S+j; fpour;</TT><BR>
+ou<BR>
+<TT>A:=%</TT><TT>3,6,9,15,30,45%</TT><TT>;S:=0;for j in A do S:=S+j; end_for;</TT><BR>
+ou sa traduction<BR>
+<TT>A:=%</TT><TT>3,6,9,15,30,45%</TT><TT>;S:=0;pour j in A faire S:=S+j; fpour;</TT><BR>
+
+<B>Attention</B><BR>
+ Ne pas choisir <TT>i</TT> comme variable d’incrémentation car
+<TT>i</TT> représente un nombre complexe !!!<BR>
 On tape :
-</P><PRE CLASS="verbatim">somwhile(eps):={
-local s,j;
-s:=0;
-j:=1;
-while (1/j&gt;=eps){
- s:=s+1/j;
- j:=j+1;
-}
+</P><PRE CLASS="verbatim">somfor(n):={
+local j,s:=0;
+for (j:=1;j&lt;=n;j++){
+   s:=s+1/j;
+} 
 return s;
 }
-</PRE><P>Ou on tape :
-</P><PRE CLASS="verbatim">somtantque(eps):={
-local s,j;
-s:=0;
-j:=1;
-tantque 1/j&gt;=eps faire
- s:=s+1/j;
- j:=j+1;
-ftantque
+</PRE><PRE CLASS="verbatim">sompour(n):={
+local j,s:=0;
+pour j de 1 jusque n faire
+   s:=s+1/j;
+fpour 
 retourne s;
 }
-</PRE><P>puis :
-</P><DIV CLASS="center"><TT>somwhile(0.2)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>somantque(0.2)</TT></DIV><P>
+</PRE><P>puis:
+</P><DIV CLASS="center"><TT>somfor(5)</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>sompour(5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>137/60</TT></DIV><P>
-<B>Remarque</B><BR>
- On peut aussi écrire un <TT>while</TT> avec un <TT>for</TT> :<BR>
-<TT>while (&lt;condition&gt;)</TT><TT>&lt;instructions&gt;</TT> est équivalent à :<BR>
-<TT>for (;&lt;condition&gt;;)</TT><TT>&lt;instructions&gt;</TT><BR>
-On aurait donc pu écrire :
-</P><PRE CLASS="verbatim">somwhilefor(eps):={
-local s,j;
-s:=0;
-j:=1;
-for (;1/j&gt;=eps;){
- s:=s+1/j;
- j:=j+1;
-}
-return s;
-}
-</PRE><P>ou encore
-</P><PRE CLASS="verbatim">somforwhile(eps):={
-local s,j;
-s:=0;
-for (j:=1;1/j&gt;=eps;j++){
- s:=s+1/j;
-}
-return s;
-}
-</PRE><P>On tape :
-</P><DIV CLASS="center"><TT>somwhile(0.1);somforwhile(0.1);somwhilefor(0.1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>7129/2520,7129/2520,7129/2520</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>137/60</TT></DIV><HR>
 <A HREF="cascmd_fr812.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr814.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

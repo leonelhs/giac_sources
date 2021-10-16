@@ -6,22 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Effacer l’ècran DispG depuis un programme : ClrGraph</TITLE>
+<TITLE>Pour sortir d’une boucle : break</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr825.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr827.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc956">8.6.5</A>  Effacer l’ècran <TT>DispG</TT> depuis un programme : <TT>ClrGraph</TT></H3><P><A NAME="@default1498"></A>
-<TT>ClrGraph</TT> n’a pas d’arguments.<BR>
-<TT>ClrGraph</TT> permet d’ouvrir l’écran <TT>DispG</TT> depuis un programme.<BR>
+<H3 CLASS="subsection"><A NAME="htoc957">8.6.2</A>  Pour sortir d’une boucle : <TT>break</TT></H3><P><A NAME="@default1499"></A>
+<TT>break</TT> n’a pas d’argument ni parenthèse.<BR>
+<TT>break</TT> permet de sortir d’une boucle.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>ClrGraph()</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ClrGraph</TT></DIV><P>
+</P><PRE CLASS="verbatim">testbreak(a,b):={
+local r;
+while (1==1){
+  if (b==0){break;} 
+  r:=irem(a,b);
+  a:=b;
+  b:=r;
+}
+return a;
+}
+</PRE><P>puis on tape :
+</P><DIV CLASS="center"><TT>testbreak(4,0)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>l’effacement de l’écran </TT><TT>DispG</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>4 car il y a eu l’interruption de la boucle while quand b==0</TT></DIV><HR>
 <A HREF="cascmd_fr825.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr827.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

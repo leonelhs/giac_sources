@@ -47,6 +47,7 @@ using namespace std;
 // (link with -framewrok Accelerate)
 // it is not used by default because the Accelerate version is slower 
 // than the current Atlas, at least on OSX.6, and is also slower than giac built-in
+#ifndef APPLE_SMART
 #if defined __APPLE__ && !defined(HAVE_LIBLAPACK) && !defined(USE_GMP_REPLACEMENTS)
 #define HAVE_LIBLAPACK
 #endif
@@ -54,6 +55,7 @@ using namespace std;
 #if defined(HAVE_LIBCLAPACK) && !defined(HAVE_LIBLAPACK)
 #define HAVE_LIBLAPACK
 #endif
+#endif // APPLE_SMART
 
 // Note that Atlas is slower than built-in for real matrices diago for n<400
 // and complex matrices diago for n<300
@@ -1190,6 +1192,8 @@ namespace giac {
   }
 
   vecteur mergevecteur(const vecteur & a,const vecteur & b){
+    if (is_undef(a)) return a;
+    if (is_undef(b)) return b;
     int as=a.size();
     int bs=b.size();
     vecteur v;
@@ -1204,6 +1208,8 @@ namespace giac {
   }
 
   vecteur mergeset(const vecteur & a,const vecteur & b){
+    if (is_undef(a)) return a;
+    if (is_undef(b)) return b;
     if (a.empty())
       return b;
     vecteur v(a);
@@ -2501,7 +2507,7 @@ namespace giac {
       if (tmp.type>_REAL && tmp.type!=_FLOAT_ && tmp.type!=_CPLX)
 	return gensizeerr(contextptr);
     }
-    int rprec(digits*3.3);
+    int rprec(int(digits*3.3));
     return _sorta(proot(w,eps,rprec),contextptr);
   }
   gen symb_proot(const gen & e) {
@@ -3087,7 +3093,7 @@ namespace giac {
       v=*a._VECTptr;
     matrice res;
     mtran(v,res);
-    return res;
+    return gen(res,_MATRIX__VECT);
   }
   static const char _tran_s []="tran";
   static define_unary_function_eval (__tran,&giac::_tran,_tran_s);
@@ -3267,7 +3273,7 @@ namespace giac {
   // and adds or subtracts to c[a0+c0..a1+c0,b0+c1..b1+c1]
   // computation is done modulo p (if p==0 no reduction)
   // assumes that a and b are reduced mod p and (i1-i0+1)*p^2 < 2^63
-  void mmult_mod_block(const vector< vector<int> > & A,int a0,int a1,const vector< vector<int> > & Btran,int b0,int b1,vector< vector<int> > & C,int c0,int c1,int i0,int i1,int p,int delta=0,bool add=true){
+  static void mmult_mod_block(const vector< vector<int> > & A,int a0,int a1,const vector< vector<int> > & Btran,int b0,int b1,vector< vector<int> > & C,int c0,int c1,int i0,int i1,int p,int delta=0,bool add=true){
     for (int a=a0;a<a1;++a){
       const vector<int> & Aa=A[a];
       vector<int> & Ca=C[a+c0];
@@ -3347,9 +3353,14 @@ namespace giac {
 
 
   // matrix multiplication mod p: C[c0..,c1..] += A[Ar0..Ar1,Ac0..Ac1]*B
+  // B is represented by Btran, take B[Br0..Br1,Bc0] if Br1>Br0
   // or -= if add=false
-  void in_mmult_mod(const vector< vector<int> > & A,const vector< vector<int> > & Btran,vector< vector<int> > & C,int c0,int c1,int p,int Ar0=0,int Ar1=0,int Ac0=0,int Ac1=0,bool add=true){	
+  void in_mmult_mod(const vector< vector<int> > & A,const vector< vector<int> > & Btran,vector< vector<int> > & C,int c0,int c1,int p,int Ar0,int Ar1,int Ac0,int Ac1,bool add,int Br0=0,int Br1=0,int Bc0=0){	
     int resrows=Ar1>Ar0?Ar1-Ar0:A.size(),rescols=Btran.size();
+    if (Br1>Br0)
+      rescols=Br1-Br0;
+    else
+      Br0=0;
     int n=Ac1>Ac0?Ac1-Ac0:A.front().size();
     for (int i=0;i<n;i+=mmult_int_blocksize){
       int iend=i+mmult_int_blocksize;
@@ -3363,21 +3374,355 @@ namespace giac {
 	  int jend=j+mmult_int_blocksize;
 	  if (jend>rescols)
 	    jend=rescols;
-	  mmult_mod_block(A,k+Ar0,kend+Ar0,Btran,j,jend,C,c0-Ar0,c1,i,iend,p,Ac0,add);
+	  mmult_mod_block(A,k+Ar0,kend+Ar0,Btran,Br0+j,Br0+jend,C,c0-Ar0,c1-Br0,Bc0+i,Bc0+iend,p,Ac0-Bc0,add);
 	}
       }
     }
   }
 
-  // matrix multiplication mod p: C = A*B
-  void mmult_mod(const vector< vector<int> > & A,const vector< vector<int> > & Btran,vector< vector<int> > & C,int p,int Ar0=0,int Ar1=0,int Ac0=0,int Ac1=0){	
-    int resrows=Ar1>Ar0?Ar1-Ar0:A.size(),rescols=Btran.size();
-    C.resize(resrows);
-    for (int i=0;i<resrows;++i){
-      C[i].resize(rescols);
-      fill(C[i].begin(),C[i].end(),0);
+  int linfnorm(const vector<int> & v){
+    int n=0,cur;
+    vector<int>::const_iterator it=v.begin(),itend=v.end();
+    for (;it!=itend;++it){
+      cur = *it;
+      if (cur>=-n && cur<=n)
+	continue;
+      if (cur<0)
+	n=-cur;
+      else
+	n=cur;
     }
-    in_mmult_mod(A,Btran,C,0,0,p,Ar0,Ar1,Ac0,Ac1);
+    return n;
+  }
+
+  int linfnorm(const vector< vector<int> > & A){
+    int n=0,a=A.size();
+    for (unsigned i=0;i<a;++i){
+      n=giacmax(n,linfnorm(A[i]));
+    }
+    return n;
+  }
+
+  // matrix multiplication mod p: C = A*B
+  // B is given by Btransposed, Ac1-Ac0 or ncols(A) should be = to nrows(B)=ncols(Btran)
+  void mmult_mod(const vector< vector<int> > & A,const vector< vector<int> > & Btran,vector< vector<int> > & C,int p,int Ar0,int Ar1,int Ac0,int Ac1,int Brbeg,int Brend,int Bcbeg,int Crbeg,int Ccbeg,bool add){
+    int resrows,rescols;
+    resrows=Ar1>Ar0?Ar1-Ar0:A.size();
+    rescols=Brend>Brbeg?Brend-Brbeg:Btran.size();
+    int Acols=Ac1>Ac0?Ac1-Ac0:(A.empty()?0:A.front().size());
+    // we must resize otherwise mmult_mod calls in smallmodrref do not adjust matrix sizes correctly
+    if (!add){
+      // if (C.size()<resrows+Crbeg)
+      C.resize(resrows+Crbeg);
+      for (int i=0;i<resrows;++i){
+	// if (C[Crbeg+i].size()<Ccbeg+rescols)
+	C[Crbeg+i].resize(Ccbeg+rescols);
+	fill(C[Crbeg+i].begin()+Ccbeg,C[Crbeg+i].begin()+Ccbeg+rescols,0);
+      }
+    }
+    // before enabling strassen_mod for p=0, check A and Btran inf norms!
+    if (
+	0 && 
+	resrows>strassen_limit && rescols >strassen_limit && Acols>strassen_limit && Crbeg==0 && Ccbeg==0){
+      if (p!=0){
+	strassen_mod(false,true,A,Btran,C,p,Ar0,Ar1,Ac0,Ac1,Brbeg,Brend,Bcbeg);
+	return;
+      }
+      int ainf=linfnorm(A), binf=linfnorm(Btran);
+      double nstep=std::ceil(std::log(giacmin(resrows,rescols)/double(strassen_limit))/std::log(2.0));
+      if (ainf*nstep*binf*nstep<RAND_MAX){
+	strassen_mod(false,true,A,Btran,C,p,Ar0,Ar1,Ac0,Ac1,Brbeg,Brend,Bcbeg);
+	return;
+      }
+    }
+    in_mmult_mod(A,Btran,C,Crbeg,Ccbeg,p,Ar0,Ar1,Ac0,Ac1,true,Brbeg,Brend,Bcbeg);
+  }
+
+  // Improve if &B==&C && defaults param
+  void add_mod(bool add,const vector< vector<int> > & A,const vector< vector<int> > & B,vector< vector<int> > & C,int p,int Ar0=0,int Ar1=0,int Ac0=0,int Ac1=0,int Br0=0,int Bc0=0,int Cr0=0,int Cc0=0){
+    if (Ar1<=Ar0) Ar1=A.size()+Ar0;
+    if (!A.empty() && Ac1<=Ac0) Ac1=A.front().size()+Ac0;
+    vector< vector<int> >::const_iterator at=A.begin()+Ar0,atend=A.begin()+Ar1,bt=B.begin()+Br0;
+    if (&B!=&C && C.size()<Cr0+Ar1-Ar0)
+      C.resize(Cr0+Ar1-Ar0);
+    vector< vector<int> >::iterator ct=C.begin()+Cr0;
+    for (;at!=atend;++ct,++bt,++at){
+      const vector<int> & ai=*at;
+      const vector<int> & bi=*bt;
+      vector<int> & ci=*ct;
+      if (&B!=&C && ci.size()<Cc0+Ac1-Ac0)
+	ci.resize(Cc0+Ac1-Ac0);
+      vector<int>::const_iterator it=ai.begin()+Ac0,itend=ai.begin()+Ac1,jt=bi.begin()+Bc0;
+      vector<int>::iterator kt=ci.begin()+Cc0;
+      if (p){
+	if (!add && &B==&C){
+	  for (;it!=itend;++kt,++it)
+	    *kt =(*kt+longlong(*it))%p;
+	  continue;
+	}
+	if (add){
+	  for (;it!=itend;++kt,++jt,++it)
+	    *kt =(*kt+longlong(*it)+*jt)%p;
+	}
+	else {
+	  for (;it!=itend;++kt,++jt,++it)
+	    *kt=(*it+*jt)%p;
+	}
+      }
+      else {
+	if (!add && &B==&C){
+	  for (;it!=itend;++kt,++it)
+	    *kt += *it;
+	  continue;
+	}
+	if (add){
+	  for (;it!=itend;++kt,++jt,++it)
+	    *kt += *it+*jt;
+	}
+	else {
+	  for (;it!=itend;++kt,++jt,++it)
+	    *kt=(*it+*jt);
+	}
+      }
+    }
+  }
+
+
+  void sub_mod(const vector< vector<int> > & A,const vector< vector<int> > & B,vector< vector<int> > & C,int p,int Ar0=0,int Ar1=0,int Ac0=0,int Ac1=0,int Br0=0,int Bc0=0,int Cr0=0,int Cc0=0){
+    if (Ar1<=Ar0) Ar1=A.size()+Ar0;
+    if (!A.empty() && Ac1<=Ac0) Ac1=A.front().size()+Ac0;
+    vector< vector<int> >::const_iterator at=A.begin()+Ar0,atend=A.begin()+Ar1,bt=B.begin()+Br0;
+    if (C.size()<Cr0+Ar1-Ar0)
+      C.resize(Cr0+Ar1-Ar0);
+    vector< vector<int> >::iterator ct=C.begin()+Cr0;
+    for (;at!=atend;++ct,++bt,++at){
+      const vector<int> & ai=*at;
+      const vector<int> & bi=*bt;
+      vector<int> & ci=*ct;
+      if (ci.size()<Cc0+Ac1-Ac0)
+	ci.resize(Cc0+Ac1-Ac0);
+      vector<int>::const_iterator it=ai.begin()+Ac0,itend=ai.begin()+Ac1,jt=bi.begin()+Bc0;
+      vector<int>::iterator kt=ci.begin()+Cc0;
+      if (p){
+	for (;it!=itend;++kt,++jt,++it)
+	  *kt=(*it-*jt)%p;
+      }
+      else {
+	for (;it!=itend;++kt,++jt,++it)
+	  *kt=(*it-*jt);
+      }
+    }
+  }
+
+  void mod(vector<int> & A,int p){
+    unsigned a=A.size();
+    for (unsigned i=0;i<a;++i)
+      A[i] %= p;
+  }
+
+  void mod (vector< vector<int> > & A,int p){
+    unsigned a=A.size();
+    for (unsigned i=0;i<a;++i)
+      mod(A[i], p);
+  }
+
+  // Strassen multiplication, work in progress
+  // find A*B, B is given by Btran (transposed)
+  // ncols(A)=nrows(B)=ncols(Btran)
+  // answer size: nrows(A),ncols(B)=nrows(B)
+  // reduce should be set to false by default, true means we can do + without reduction
+  int strassen_limit=180; 
+  gen _strassen_limit(const gen & g0,GIAC_CONTEXT){
+    if ( g0.type==_STRNG && g0.subtype==-1) return  g0;
+    gen g=evalf_double(g0,1,contextptr);
+    if (g.type!=_DOUBLE_)
+      return strassen_limit;
+    return strassen_limit=int(g._DOUBLE_val);
+  }
+  static const char _strassen_limit_s []="strassen_limit";
+  static define_unary_function_eval (__strassen_limit,&_strassen_limit,_strassen_limit_s);
+  define_unary_function_ptr5( at_strassen_limit ,alias_at_strassen_limit,&__strassen_limit,0,true);
+
+  // skip_reduce has not been tested yet. Needs to change inversion algorithm
+  // and use half block instead of block of size 60
+  void strassen_mod(bool skip_reduce,bool add,const vector< vector<int> > & A,const vector< vector<int> > & Btran,vector< vector<int> > & C,int p,int arbeg,int arend,int acbeg,int acend,int brbeg,int brend,int bcbeg){
+    if (A.empty() || Btran.empty())
+      return;
+    int a,ac,b;
+    if (arend>arbeg){
+      a=arend-arbeg;
+    }
+    else {
+      arend=a=A.size();
+    }
+    if (acend>acbeg){
+      ac=acend-acbeg;
+    }
+    else {
+      acend=ac=A.front().size();
+    }
+    if (brend>brbeg){
+      b=brend-brbeg;
+    }
+    else {
+      brend=b=Btran.size();
+    }
+    // ac should be equal to number of lines of B=bc
+    if (a<=strassen_limit || ac<=strassen_limit ||
+	b<=strassen_limit){
+      if (p && skip_reduce){
+	if (arbeg==0 && arend==A.size()){
+	  vector< vector<int> > A_(A);
+	  mod(A_,p);
+	  if (brbeg==0 && brend==Btran.size()){
+	    vector< vector<int> > Btran_(Btran);
+	    mod(Btran_,p);
+	    mmult_mod(A_,Btran_,C,p,arbeg,arend,acbeg,acend,brbeg,brend,bcbeg);
+	  }
+	  else 
+	    mmult_mod(A_,Btran,C,p,arbeg,arend,acbeg,acend,brbeg,brend,bcbeg);
+	}
+	else {
+	  if (brbeg==0 && brend==Btran.size()){
+	    vector< vector<int> > Btran_(Btran);
+	    mod(Btran_,p);
+	    mmult_mod(A,Btran_,C,p,arbeg,arend,acbeg,acend,brbeg,brend,bcbeg);
+	  }
+	  else 
+	    mmult_mod(A,Btran,C,p,arbeg,arend,acbeg,acend,brbeg,brend,bcbeg);
+	}
+      }
+      else
+	mmult_mod(A,Btran,C,p,arbeg,arend,acbeg,acend,brbeg,brend,bcbeg);
+      return;
+    }
+    if (debug_infolevel>2)
+      CERR << clock() << "Strassen begin " << a << "," << ac << "," << b << endl;
+    // if all +/- in recursion fit in an int, 
+    // s and t computations can be done mod 0, provided we reduce mod p just above
+    if (p && !skip_reduce){
+      int n1=giacmin(a,giacmin(ac,b))/strassen_limit;
+      // if (2*(sizeinbase2(n1)-1)+sizeinbase2(p)<32) skip_reduce=true;
+    }
+    if (ac%2 || a%2 || b%2){ // add missing 0 to get even dimensions
+      vector< vector<int> > A_(a+1),Btran_(b+1);
+      int ac_=ac;
+      if (ac%2)
+	++ac_;
+      for (unsigned i=0;i<a;++i){
+	A_[i]=vector<int>(A[arbeg+i].begin()+acbeg,A[arbeg+i].begin()+acbeg+ac);
+	if (ac%2)
+	  A_[i].push_back(0);
+      }
+      for (unsigned i=0;i<b;++i){
+	Btran_[i]=vector<int>(Btran[brbeg+i].begin()+bcbeg,Btran[brbeg+i].begin()+bcbeg+ac);
+	if (ac%2)
+	  Btran_[i].push_back(0);
+      }
+      if (a%2==0)
+	A_.pop_back();
+      else
+	A_[a]=vector<int>(ac);
+      if (b%2==0)
+	Btran_.pop_back();
+      else
+	Btran_[b]=vector<int>(ac);
+      strassen_mod(skip_reduce,add,A_,Btran_,C,p);
+      if (a%2)
+	C.pop_back();
+      if (b%2){
+	for (unsigned i=0;i<a;++i)
+	  C[i].pop_back();
+      }
+      return;
+    }
+    if (C.size()!=a)
+      C.resize(a);
+    for (unsigned i=0;i<C.size();++i){
+      if (C[i].size()!=b)
+	C[i].resize(b);
+    }
+    a/=2; ac/=2; b/=2;
+    // s1=a21+a22
+    vector< vector<int> > s1(a,vector<int>(ac));
+    add_mod(false,A,A,s1,skip_reduce?0:p,arbeg+a,arbeg+2*a,acbeg,acbeg+ac,arbeg+a,acbeg+ac);
+    // s2=s1-a11
+    vector< vector<int> > s2(a,vector<int>(ac));
+    sub_mod(s1,A,s2,skip_reduce?0:p,0,a,0,ac,arbeg,acbeg);
+    // s3=a11-a21
+    vector< vector<int> > s3(a,vector<int>(ac));
+    sub_mod(A,A,s3,skip_reduce?0:p,arbeg,arbeg+a,acbeg,acbeg+ac,arbeg+a,acbeg);
+    // s4=a12-s2
+    vector< vector<int> > s4(a,vector<int>(ac));
+    sub_mod(A,s2,s4,skip_reduce?0:p,arbeg,arbeg+a,acbeg+ac,acbeg+2*ac,0,0);
+    // t1=b12-b11=btran21-btran11
+    vector< vector<int> > t1(b,vector<int>(ac));
+    sub_mod(Btran,Btran,t1,skip_reduce?0:p,brbeg+b,brbeg+2*b,bcbeg,bcbeg+ac,brbeg,bcbeg);
+    // t2=b22-t1=btran22-t1
+    vector< vector<int> > t2(b,vector<int>(ac));
+    sub_mod(Btran,t1,t2,skip_reduce?0:p,brbeg+b,brbeg+2*b,bcbeg+ac,bcbeg+2*ac,0,0);
+    // t3=b22-b12=btran22-btran21
+    vector< vector<int> > t3(b,vector<int>(ac));
+    sub_mod(Btran,Btran,t3,skip_reduce?0:p,brbeg+b,brbeg+2*b,bcbeg+ac,bcbeg+2*ac,brbeg+b,bcbeg);
+    // t4=b21-t2=btran12-t2
+    vector< vector<int> > t4(b,vector<int>(ac));
+    sub_mod(Btran,t2,t4,skip_reduce?0:p,brbeg,brbeg+b,bcbeg+ac,bcbeg+2*ac,0,0);
+    if (debug_infolevel>2)
+      CERR << clock() << "Strassen recurse " << a << "," << ac << "," << b << endl;
+    // p2=a12*b21=a12*btran12
+    vector< vector<int> > p2(a,vector<int>(b));
+    strassen_mod(skip_reduce,false,A,Btran,p2,p,arbeg,arbeg+a,acbeg+ac,acbeg+2*ac,brbeg,brbeg+b,bcbeg+ac);
+    // p1=a11*b11
+    vector< vector<int> > p1(a,vector<int>(b));
+    strassen_mod(skip_reduce,false,A,Btran,p1,p,arbeg,arbeg+a,acbeg,acbeg+ac,brbeg,brbeg+b,bcbeg);
+    // p3=s1*t1
+    vector< vector<int> > p3(a,vector<int>(b));
+    strassen_mod(skip_reduce,false,s1,t1,p3,p);
+    // p4=s2*t2
+    vector< vector<int> > p4(a,vector<int>(b));
+    strassen_mod(skip_reduce,false,s2,t2,p4,p);
+    // p5=s3*t3
+    vector< vector<int> > p5(a,vector<int>(b));
+    strassen_mod(skip_reduce,false,s3,t3,p5,p);
+    // p6=s4*b22
+    vector< vector<int> > p6(a,vector<int>(b));
+    strassen_mod(skip_reduce,false,s4,Btran,p6,p,0,0,0,0,brbeg+b,brbeg+2*b,bcbeg+ac);
+    // p7=a22*t4
+    vector< vector<int> > p7(a,vector<int>(b));
+    strassen_mod(skip_reduce,false,A,t4,p7,p,arbeg+a,arbeg+2*a,acbeg+ac,acbeg+2*ac,0,b,0);
+    s1.clear(); 
+    s2.clear(); 
+    s3.clear(); 
+    s4.clear();
+    t1.clear(); 
+    t2.clear(); 
+    t3.clear(); 
+    t4.clear();
+    if (debug_infolevel>2)
+      CERR << clock() << "Strassen final add " << a << "," << ac << "," << b << endl;
+    // c11=u1=p1+p2
+    add_mod(add,p1,p2,C,p);
+    // u2=p1+p4 stored in p4
+    add_mod(false,p1,p4,p4,skip_reduce?0:p); // mod 0 since not used directly
+    // u3=u2+p5 stored in p5
+    add_mod(false,p4,p5,p5,skip_reduce?0:p); 
+    // c21=u4=u3+p7
+    add_mod(add,p5,p7,C,p,0,0,0,0,0,0,a,0);
+    // c22=u5=u3+p3
+    add_mod(add,p5,p3,C,p,0,0,0,0,0,0,a,b);
+    // u6=u2+p3 stored in p3
+    add_mod(false,p4,p3,p3,skip_reduce?0:p);
+    // c12=u7=u6+p6
+    add_mod(add,p3,p6,C,p,0,0,0,0,0,0,0,b);
+    p1.clear(); 
+    p2.clear(); 
+    p3.clear(); 
+    p4.clear(); 
+    p5.clear(); 
+    p6.clear(); 
+    p7.clear();
+    if (debug_infolevel>2)
+      CERR << clock() << "Strassen end " << a << "," << ac << "," << b << endl;
   }
 
   // Find x=a mod amod and =b mod bmod
@@ -3399,14 +3744,14 @@ namespace giac {
       gen * bi = &b[i]._VECTptr->front();
       if (fullreduction==2){
 	q=smod(bi[i]-ai[i],bmod).val;
-	q=(q*u) % bmod ;
+	q=smod(q*u,bmod); // (q*u) % bmod ;
 	ai[i] += int(q)*amod;
 	ai += a.size();
 	bi += a.size();
       }
       for (;ai!=aiend;++bi,++ai){
 	q=longlong(bi->val)-(ai->type==_INT_?ai->val:modulo(*ai->_ZINTptr,bmod));
-	q=(q*u) % bmod;
+	q=smod(q*u,bmod); // (q*u) % bmod;
 	if (amod.type==_ZINT && ai->type==_ZINT){
 	  if (q>=0)
 	    mpz_addmul_ui(*ai->_ZINTptr,*amod._ZINTptr,int(q));
@@ -3756,7 +4101,7 @@ namespace giac {
     }
 #ifndef GIAC_HAS_STO_38
     if (
-	a.front()._VECTptr->size()>=7 &&
+	//a.front()._VECTptr->size()>=7 &&
 	is_integer_matrice(a) && is_integer_matrice(btran) && mmult_int(a,btran,res)
 	)
       ;
@@ -4001,6 +4346,17 @@ namespace giac {
   }
 
 #ifdef PSEUDO_MOD
+  inline int pseudo_quo(longlong x,int p,unsigned invp,unsigned nbits){
+    longlong q=(((x>>nbits)*invp)>>(nbits));
+    longlong y = x-q*p;
+    while (y>=p){
+      ++q; y-=p;
+    }
+    while (y<=-p){
+      --q; y+=p;
+    }
+    return q;
+  }
   // find x mod p or smod p, assuming invp=2^(2*nbits)/p+1 has been precomputed
   // and abs(x)<2^(31+nbits)
   inline int pseudo_mod(longlong x,int p,unsigned invp,unsigned nbits){
@@ -4839,6 +5195,7 @@ namespace giac {
 			int fullreduction,int dont_swap_below,bool convert_internal,int algorithm,int rref_or_det_or_lu,
 			int modular,vector<int> & permutation,
 			GIAC_CONTEXT){
+    gen linfa=linfnorm(a,contextptr);
     unsigned as=a.size(),a0s=a.front()._VECTptr->size();
     res.clear(); // insure that res will be build properly
     // Modular algorithm for matrix integer reduction
@@ -4893,7 +5250,7 @@ namespace giac {
       }
       failure=true;
     }
-    if (!failure && as>=GIAC_PADIC){
+    if (!failure && (as>=GIAC_PADIC || algorithm==RREF_PADIC)){
       vecteur b(vranm(as,8,contextptr)),resb;
       // reconstruct (at most) 12 components of res for lcm
       // this should give the last invariant factor (estimated proba 0.998)
@@ -5148,6 +5505,15 @@ namespace giac {
 	if (fullreduction!=2 && !inverting)
 	  pivots=*ichinrem(gen(pivots),gen(pivots_mod_p),pi_p,p)._VECTptr;
 	pi_p=pi_p*p;
+	if (inverting){
+	  // early termination if abs(det*2)<pi_p and linfnorm(res)*linfnorm(original_matrix)*size*2<pi_p
+	  // smod_inplace(res,pi_p);
+	  if (is_greater(pi_p,2*abs(det,contextptr),contextptr) && is_greater(pi_p,2*linfnorm(res,contextptr)*linfa,contextptr)){
+	    if (debug_infolevel>1)
+	      *logptr(contextptr) << clock() << gettext(" Early termination") << endl;
+	    break;
+	  }
+	}
       } // end for loop on primes
       if (p.type==_INT_){
 	// there is a bug in libtommath when multiplying a _ZINT by an int
@@ -5198,8 +5564,19 @@ namespace giac {
 	    GIAC_CONTEXT){
     if (!ckmatrix(a))
       return 0;
-    int modular=(algorithm==RREF_MODULAR || algorithm==RREF_PADIC);
     unsigned as=a.size(),a0s=a.front()._VECTptr->size();
+    bool step_rref=false;
+    if (algorithm==RREF_GUESS && step_infolevel && as<5 && a0s<7){
+      algorithm=RREF_GAUSS_JORDAN;
+      step_rref=true;
+    }
+    int modular=(algorithm==RREF_MODULAR || algorithm==RREF_PADIC);
+    // NOTE for integer matrices
+    // p-adic is in n^3*log(nA)^2 where ||a||<=A
+    // multi-modular is in n^3*(n+log(nA))*log(nA)
+    // Bareiss is in n^3*M(n*log(nA)) where M is multiplication time
+    // => for small A and large n p-adic,
+    // but for large A and small n, Bareiss is faster
     if (algorithm==RREF_GUESS && rref_or_det_or_lu==0 && as>10 && as==a0s-1 && int(as)==lmax && int(a0s)==cmax)
       modular=2;
     if (algorithm==RREF_GUESS && rref_or_det_or_lu<0){
@@ -5219,7 +5596,7 @@ namespace giac {
     // modular algorithm
     if ( ( (algorithm==RREF_GUESS && (
 				      fullreduction==2 || 
-				      rref_or_det_or_lu==1)) || modular ) && is_integer_matrice(a) && as<=a0s){
+				      rref_or_det_or_lu==1)) || modular ) && is_integer_matrice(a) && as<=a0s && as>=20){
       int Res=mrref_int(a,res,pivots,det,l,lmax,c,cmax,fullreduction,dont_swap_below,convert_internal,algorithm,rref_or_det_or_lu,modular,permutation,contextptr);
       if (Res>=0)
 	return Res;
@@ -5568,8 +5945,16 @@ namespace giac {
 	CERR << endl;
       //COUT << M << endl << pivot << endl;
       if (!is_zero(pivot,contextptr)){
+	if (step_rref){
+	  std_matrix_gen2matrice(M,res);
+	  gprintf(step_rrefpivot,gettext("Matrix %gen\nReducing column %gen using pivot %gen at row %gen"),makevecteur(res,c+1,pivot,pivotline+1),contextptr);
+	}
 	// exchange lines if needed
 	if (l!=pivotline){
+	  if (step_rref){
+	    std_matrix_gen2matrice(M,res);
+	    gprintf(step_rrefexchange,gettext("Exchange row %gen and row %gen"),makevecteur(l+1,pivotline+1),contextptr);
+	  }
 	  swap(M[l],M[pivotline]);
 	  swap(permutation[l],permutation[pivotline]);
 	  // temp = M[l];
@@ -5582,8 +5967,12 @@ namespace giac {
 	  for (int ltemp=linit;ltemp<lmax;++ltemp){
 	    if (debug_infolevel>=2)
 	      CERR << "// " << l << "," << ltemp << " "<< endl;
+	    if (step_rref && l!=ltemp){
+	      std_matrix_gen2matrice(M,res);
+	      gprintf(step_rrefpivot0,gettext("Matrix %gen\nRow operation L%gen <- (%gen)*L%gen-(%gen)*L%gen"),makevecteur(res,l+1,pivot,ltemp+1,M[ltemp][pivotcol],l+1),contextptr);
+	    }
 	    if (ltemp!=l){
-	      if (algorithm!=RREF_GAUSS_JORDAN) // M[ltemp] = rdiv( pivot * M[ltemp] - M[ltemp][pivotcol]* M[l], bareiss);
+	      if (step_rref || algorithm!=RREF_GAUSS_JORDAN) // M[ltemp] = rdiv( pivot * M[ltemp] - M[ltemp][pivotcol]* M[l], bareiss);
 		linear_combination(pivot,M[ltemp],-M[ltemp][pivotcol],M[l],bareiss,M[ltemp],1e-12,0);
 	      else // M[ltemp]=M[ltemp]-rdiv(M[ltemp][pivotcol],pivot)*M[l];
 		linear_combination(plus_one,M[ltemp],-rdiv(M[ltemp][pivotcol],pivot,contextptr),M[l],plus_one,M[ltemp],1e-12,0);
@@ -5594,7 +5983,11 @@ namespace giac {
 	  for (int ltemp=l+1;ltemp<lmax;++ltemp){
 	    if (debug_infolevel>=2)
 	      CERR << "// " << l << "," << ltemp << " "<< endl;
-	    if (algorithm!=RREF_GAUSS_JORDAN)
+	    if (step_rref){
+	      std_matrix_gen2matrice(M,res);
+	      gprintf(step_rrefpivot0,gettext("Matrix %gen\nRow operation L%gen <- (%gen)*L%gen-(%gen)*L%gen"),makevecteur(res,l+1,pivot,ltemp+1,M[ltemp][pivotcol],l+1),contextptr);
+	    }
+	    if (step_rref || algorithm!=RREF_GAUSS_JORDAN)
 	      linear_combination(pivot,M[ltemp],-M[ltemp][pivotcol],M[l],bareiss,M[ltemp],1e-12,(c+1)*(rref_or_det_or_lu>0));
 	    else {
 	      gen coeff=M[ltemp][pivotcol]/pivot;
@@ -5643,6 +6036,10 @@ namespace giac {
     } // end for reduction loop
     if (debug_infolevel>1)
       CERR << "// mrref reduction end:" << clock() << endl;
+    if (step_rref){
+      std_matrix_gen2matrice(M,res);
+      gprintf(step_rrefend,gettext("End reduction %gen"),makevecteur(res),contextptr);
+    }
     if (algorithm!=RREF_GAUSS_JORDAN){
       int last=giacmin(lmax,cmax);
       det=M[last-1][last-1];
@@ -6007,7 +6404,9 @@ namespace giac {
 #endif // GIAC_HAS_STO_38
 #ifdef GIAC_DETBLOCK
     int det_blocksize=mmult_int_blocksize;
-    bool tryblock=rref_or_det_or_lu==1 && mmult_int_blocksize*double(modulo)*modulo<(1ULL << 63) && lmax-l>=3*det_blocksize && cmax-c>=3*det_blocksize;
+    bool tryblock=rref_or_det_or_lu==1 && giacmax(mmult_int_blocksize,det_blocksize)*double(modulo)*modulo<((1ULL << 63)) && lmax-l>=3*det_blocksize && cmax-c>=3*det_blocksize;
+    // commented because it's slower...
+    // if (tryblock) det_blocksize=giacmin((lmax-l)/3,(cmax-c)/3);
     if (tmpptr){
       tmpptr->Ainvtran.resize(det_blocksize);
       tmpptr->Ainv.resize(det_blocksize);
@@ -6045,7 +6444,11 @@ namespace giac {
 	  // D += CAinv*B
 	  l += det_blocksize;
 	  c += det_blocksize;
-	  in_mmult_mod(tmpptr->CAinv,tmpptr->Ainv,N,l,c,modulo);
+#if 0
+	  mmult_mod(tmpptr->CAinv,tmpptr->Ainv,N,modulo,0,0,0,0,0,0,0,l,c,true); 
+#else
+	  in_mmult_mod(tmpptr->CAinv,tmpptr->Ainv,N,l,c,modulo,0,0,0,0,true);
+#endif
 	  continue;
 	}
       } // end tryblock
@@ -6866,6 +7269,10 @@ namespace giac {
   static void multmatvecteur_int(const matrice & a,const vector< vector<int> > & A,const vecteur & b,bool smallint,vecteur & res,int p,gen *yptr){
 #ifndef GIAC_HAS_STO_38
     if (smallint){
+#if 0
+      int nbits=sizeinbase2(p); 
+      unsigned pseudoinv=((1ULL<<(2*nbits)))/p+1;
+#endif
       vector< vector<int> >::const_iterator ita=A.begin(), itaend=A.end(),ita4=itaend-4;
       res.resize(itaend-ita);
       iterateur itres=res.begin();
@@ -7073,12 +7480,24 @@ namespace giac {
       if (smallint==3)
 	multmatvecteur_int(a,A,x,true,tmp,p.val,&y.front());
       else {
+	// y_{n+1}=(y_n-Ax_n)/p, |x_n|<=p
+	// A*x_n computation requires n^2 multiplications in log(Ainf)*log(p) time
+	// optimization if p is large: compute y_n=p*q+r, then y_{n+1}=q+(r-Ax_n)/p
+	// where (r-Ax_n)/p can be computed using modular arithmetic
+	// and the majoration ||(r-A*x_n)/p|| <= Ainf*n
+	// n^2*log(Ainf*n) operations, reconstruction is O(n*...)
+	// According to Chen and Storjohann tests the best choice is
+	// p=product of l primes
+	// l=(2 or 1)*log2(Ainf*n)
+	// total time: l*n^3 (initial inversions) + n^2*log(Ainf*n)*log(hadamard)/l
+	// vs 1 prime: n^3+n^2*log(Ainf)*log(hadamard)
+	// conclusion: optimization is only interesting if the constant before inversion n^3 is small compared to constant before n^2 matrix*vector multiplication
 	multmatvecteur_int(a,A,x,smallint>=2,tmp,0,NULL);
 	if (debug_infolevel>2)
 	  CERR << clock() << " padic adjust y step " << i << endl;
 	subvecteur(y,tmp,y);
 #ifdef USE_GMP_REPLACEMENTS
-	divvecteur(y,p,y); // y_{n+1}=(y_n-Ax_n)/p
+	divvecteur(y,p,y); 
 #else
 	iterateur it=y.begin(),itend=y.end();
 	if (p.type==_INT_){
@@ -7429,8 +7848,22 @@ namespace giac {
     else { // rref with options
       if (a_orig.type!=_VECT)
 	return false;
-      vecteur & v=*a_orig._VECTptr;
+      vecteur v=*a_orig._VECTptr;
       int s=v.size();
+      if (s<=3 && v[0].is_symb_of_sommet(at_pnt)){
+	for (unsigned i=0;i<s;++i){
+	  v[i]=remove_at_pnt(v[i]);
+	  if (v[i].subtype==_VECTOR__VECT && v[i]._VECTptr->size()==2)
+	    v[i]=v[i]._VECTptr->back()-v[i]._VECTptr->front();
+	  if (v[i].type!=_VECT){
+	    gen a,b;
+	    reim(v[i],a,b,context0);
+	    v[i]=makevecteur(a,b);
+	  }
+	}
+	if (ckmatrix(v))
+	  return read_reduction_options(v,a,convert_internal,algorithm,minor_det,keep_pivot,last_col);
+      }
       if (!s || !ckmatrix(v[0]))
 	return false;
       a=*v[0]._VECTptr;
@@ -7439,6 +7872,8 @@ namespace giac {
 	  algorithm=RREF_LAGRANGE;
 	if (v[i]==at_irem)
 	  algorithm=RREF_MODULAR;
+	if (v[i]==at_linsolve)
+	  algorithm=RREF_PADIC;
 	if (v[i].type==_INT_){
 	  if (v[i].subtype==_INT_SOLVER){
 	    switch (v[i].val){
@@ -7556,7 +7991,7 @@ namespace giac {
 	  return gensizeerr(contextptr);
       }
     }
-    return res;
+    return gen(res,_MATRIX__VECT);
   }
   static const char _idn_s []="idn";
   static define_unary_function_eval (__idn,&giac::_idn,_idn_s);
@@ -7595,7 +8030,7 @@ namespace giac {
       }
       return;
     }
-    if (f.type==_INT_){
+    if (is_integer(f)){
       for (int i=0;i<n;++i)
 	res.push_back(_rand(f,contextptr));
       return;
@@ -7920,7 +8355,7 @@ namespace giac {
 	    return _randvector(e,contextptr); // try vector instead of gensizeerr(contextptr);
 	}
 	if (e._VECTptr->size()==3)
-	  return mranm(n,m,e._VECTptr->back(),contextptr);
+	  return gen(mranm(n,m,e._VECTptr->back(),contextptr),_MATRIX__VECT);
 	if (e._VECTptr->size()==4){
 	  gen loi=(*e._VECTptr)[2];
 	  if (loi.type==_INT_ && e._VECTptr->back().type==_INT_){
@@ -7934,7 +8369,7 @@ namespace giac {
 	      }
 	      M[j]=res;
 	    }
-	    return m;
+	    return gen(M,_MATRIX__VECT);
 	  }
 	  if (loi.type==_FUNC){
 	    if (loi==at_multinomial)
@@ -7944,7 +8379,7 @@ namespace giac {
 	  }
 	  else
 	    loi=symb_of(loi,e._VECTptr->back());
-	  return mranm(n,m,loi,contextptr);
+	  return gen(mranm(n,m,loi,contextptr),_MATRIX__VECT);
 	}
 	if (e._VECTptr->size()>4){
 	  gen loi=(*e._VECTptr)[2];
@@ -7956,9 +8391,9 @@ namespace giac {
 	  }
 	  else
 	    loi=symb_of(loi,gen(vecteur(e._VECTptr->begin()+3,e._VECTptr->end()),_SEQ__VECT));
-	  return mranm(n,m,loi,contextptr);
+	  return gen(mranm(n,m,loi,contextptr),_MATRIX__VECT);
 	}
-	return mranm(n,m,0,contextptr);
+	return gen(mranm(n,m,0,contextptr),_MATRIX__VECT);
       }
     default:
       return gensizeerr(contextptr);
@@ -12107,8 +12542,7 @@ namespace giac {
     matrice U,A;
     if (!ihermite(*g._VECTptr,U,A,contextptr))
       return gensizeerr(contextptr);
-    if (abs_calc_mode(contextptr)==38)
-      return makevecteur(U,A);
+    // if (abs_calc_mode(contextptr)==38) return makevecteur(U,A);
     return gen(makevecteur(U,A),_SEQ__VECT);
   }
   static const char _ihermite_s []="ihermite";

@@ -6,73 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’instruction conditionnelle : if then elif else end</TITLE>
+<TITLE>L’affectation prefixée : sto Store</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr807.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr809.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc936">8.4.19</A>  L’instruction conditionnelle : <TT>if then elif else end</TT></H3><P><A NAME="@default1460"></A>
-Lorsqu’il y a plusieurs <TT>if...else if...</TT> à la suite
-on peut aussi utiliser un <TT>elif</TT> qui est une écriture 
-condensée de <TT>else if</TT>. L’instruction <TT>elif</TT> permet une écriture
-plus lisible car un seul <TT>end</TT> suffit pour clore le <TT>if</TT>. 
-Le dernier <TT>elif</TT> peut comporter 
-ou ne pas comporter un <TT>else</TT>. Voici la syntaxe :<BR>
-<A NAME="@default1461"></A><A NAME="@default1462"></A><A NAME="@default1463"></A></P><P><TT>if (</TT><TT><EM>condition1</EM></TT><TT>) then<BR>
-</TT><TT><EM>action1</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition2</EM></TT><TT>) then<BR>
-</TT><TT><EM>action2</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition3</EM></TT><TT>) then<BR>
-</TT><TT><EM>action3</EM></TT><TT>;<BR>
-end</TT><BR>
-ou bien
-<TT>if (</TT><TT><EM>condition1</EM></TT><TT>) then<BR>
-</TT><TT><EM>action1</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition2</EM></TT><TT>) then<BR>
-</TT><TT><EM>action2</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition3</EM></TT><TT>) then<BR>
-</TT><TT><EM>action3</EM></TT><TT>;<BR>
-else 
-</TT><TT><EM>action4</EM></TT><TT>;<BR>
-end</TT><BR>
-On tape par exemple pour définir la fonction <TT>f</TT> définit par :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<I>f</I>(<I>x</I>)=8 si <I>x</I>&gt;8
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=4 si 4&lt;<I>x</I>≥ 8
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=2 si 2&lt;<I>x</I>≥ 4
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=1 si 0&lt;<I>x</I>≥ 2
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=0 si  <I>x</I>≤ 0
-</LI></UL><PRE CLASS="verbatim">f(a):= {
-  if a&gt;8 then 
-    return 8;
-  elif a&gt;4 then 
-    return 4;
-  elif a&gt;2 then 
-    return 2;
-  elif a&gt;0 then 
-    return 1;
-  elif a&lt;=0 then
-    return 0;
-  end;
-}:;
-</PRE><P>ou plutôt en utilisant un <TT>else</TT> à la place du dernier <TT>elif</TT>,
-on tape:
-</P><PRE CLASS="verbatim">f(a):= {
-  if a&gt;8 then 
-    return 8;
-  elif a&gt;4 then 
-    return 4;
-  elif a&gt;2 then 
-    return 2;
-  elif a&gt;0 then 
-    return 1;
-  else
-    return 0;
-  end;
-}:;
-</PRE><HR>
+<H3 CLASS="subsection"><A NAME="htoc937">8.4.16</A>  L’affectation prefixée : <TT>sto Store</TT></H3><P><A NAME="@default1451"></A><A NAME="@default1452"></A>
+<TT>sto</TT> (ou <TT>Store</TT>) permet de stocker une valeur dans une 
+variable.<BR>
+<TT>sto</TT> (ou <TT>Store</TT>) a deux arguments, la valeur à stocker et un nom de variable.<BR>
+<B>Attention</B><BR>
+La variable doit être purgée avant l’utilisation de <TT>sto</TT> 
+(ou <TT>Store</TT>).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>sto(3,a)</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>Store(3,a)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3 et la variable a contient 3</TT></DIV><P>
+<B>Remarque</B><BR>
+On peut faire plusieurs affectations à la fois en utilisant les séquences 
+ou les listes.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>sto([1,2,3],[a1,a2,a3])</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>Store([1,2,3],[a1,a2,a3])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,2,3] et a1 contient 1, a2 contient 2, a3 contient 3</TT></DIV><HR>
 <A HREF="cascmd_fr807.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr809.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

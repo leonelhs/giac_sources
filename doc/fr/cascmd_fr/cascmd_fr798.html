@@ -6,26 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour effacer les sorties : ClrIO</TITLE>
+<TITLE>Fonction testant le type de son argument: getType</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr797.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr799.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc926">8.4.9</A>  Pour effacer les sorties : <TT>ClrIO</TT></H3><P><A NAME="@default1434"></A>
-<TT>ClrIO</TT> n’a pas d’argument, il efface toutes les sorties faites dans le 
-niveau où il a été tapé.<BR>
+<H3 CLASS="subsection"><A NAME="htoc927">8.4.6</A>  Fonction testant le type de son argument: <TT>getType</TT></H3><P><A NAME="@default1427"></A><A NAME="@default1428"></A><A NAME="@default1429"></A><A NAME="@default1430"></A><A NAME="@default1431"></A><A NAME="@default1432"></A><A NAME="@default1433"></A>
+<TT>getType</TT> est une fonction qui a un argument et qui renvoie le
+type de cet argument par exemple :<BR>
+ <TT>STR,EXPR,VAR,NONE,PIC,LIST,MAT,FUNC,NUM...</TT>.<BR>
+<TT>getType</TT> ne renvoie pas la même chose que <TT>type</TT>, c’est pour des 
+raisons de compatibilité.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>a:=12</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>print("a=",a)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>getType(3.14)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"a=",12 s’écrit en bleu et la réponse est 1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>NUM</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>print("a=",a);ClrIO()</TT></DIV><P>
+</P><DIV CLASS="center"><TT>getType(x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(1,1) comme réponse</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>VAR</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>getType(x+2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>EXPR</TT></DIV><HR>
 <A HREF="cascmd_fr797.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr799.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

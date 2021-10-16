@@ -54,7 +54,7 @@ purge(x,y);
  eqred:=gcd(eqx,diff(eqx,x));
  rac:=[solve(approx(eqred),x)];
 /* On constate qu'il y a un point qui ne semble pas correspondre a une projection£d'un point d'instersection. Nous allons l'interpr\'eter maintenant.*/
- (d1,d2,seq(point(i,couleur=black+point_width_3),i=rac)):
+ (d1,d2,seq(point(i,color=black+point_width_3),i=rac)):
  solx:=[solve(eqred,x)];
  soly:=seq(gcd(subs(x=solx[i],C1),subs(x=solx[i],C2)),i=1..3);
 /*  les ordonn\'ees des points d'abscisse solx[i] sont:*/
@@ -71,7 +71,7 @@ coni:=factors(projy)[2][1,1];
 q:=normal(x[3]^2*unapply(coni,x,y)(x[1]/x[3],x[2]/x[3]));
 Mq:=matrix(3,3,(i,j)->diff(q,x[i],x[j]));#le determinant est bien nul pour u=4.
 purge(u);
-DS1:=implicitplot(S1,x,y,z,couleur=13+rempli):
+DS1:=implicitplot(S1,x,y,z,color=13+rempli):
  purge(t);
 u:=3;
  M:=[5,5,10]+t*[x-5,y-5,0-10];#la droite passant par [5,5,10] et [x,y,0]

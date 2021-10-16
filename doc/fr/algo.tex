@@ -5828,13 +5828,13 @@ la commande \verb|cercle(0,1); G:=point(4/(3*pi),4/(3*pi))|
 \subsection{Introduction et repr\'esentation graphique.}
 On s'int\'eresse \`a l'\'equation diff\'erentielle
 \begin{equation} \label{eq:diff}
- y'=\frac{dy}{dt}=f(t,y)
+ y'=\frac{dy}{dt}=f(y,t)
 \end{equation}
 o\`u $y \in \R^n$ et $f: \R^n \times \R \rightarrow \R^n$.
 Si $n=1$, c'est une \'equation diff\'erentielle, si $n>1$ c'est
 un syst\`eme diff\'erentiel.
 
-Exemple~: en dimension $n=1$, $y'=f(t,y)=ay$. On sait r\'esoudre cette
+Exemple~: en dimension $n=1$, $y'=f(y,t)=ay$. On sait r\'esoudre cette
 \'equation, les solutions sont de la forme $y(t)=Ce^{at}$. Si on trace
 la courbe repr\'esentative de ces solutions (appel\'ee
 courbe int\'egrale), on observe que par
@@ -5843,9 +5843,9 @@ tout point du plan, il passe une solution unique. La tangente
 vecteur directeur le vecteur de composantes $(1,ay)$.
 
 C'est vrai de mani\`ere plus g\'en\'erale, le vecteur directeur
-de la tangente \`a une courbe int\'egrale est $(1,f(t,y))$. Si
+de la tangente \`a une courbe int\'egrale est $(1,f(y,t))$. Si
 on repr\'esente dans le plan selon un quadrillage r\'egulier
-les vecteurs $(1,f(t,y))$, une courbe int\'egrale doit \^etre
+les vecteurs $(1,f(y,t))$, une courbe int\'egrale doit \^etre
 tangente \`a ces vecteurs chaque fois qu'elle passe en un point
 du quadrillage, (et \`a peu pr\`es tangente si elle passe \`a
 proximit\'e). Un tel quadrillage est appel\'e champ des tangentes
@@ -5853,15 +5853,16 @@ proximit\'e). Un tel quadrillage est appel\'e champ des tangentes
 sur certaines calculatrices).
 
 Exercice~: tracer le champ des tangentes et quelques solutions
-pour quelques exemples de fonction $f(t,y)$, avec Xcas cr\'eer
+pour quelques exemples de fonction $f(y,t)$, avec Xcas cr\'eer
 une figure 2d, puis choisir le mode Champ des tangentes
 du menu Geo, Graphe, entrer la fonction, puis cliquer en quelques
 points pour faire tracer la solution passant par ces points.
 
-L'\'equation (\ref{eq:diff})) est d'ordre 1, or certaines \'equations
+L'\'equation (\ref{eq:diff}) est d'ordre 1, or certaines \'equations
 diff\'erentielles se pr\'esentent naturellement comme des
-\'equations d'ordre 2, par exemple l'\'equation fondamentale
-de la dynamique. Mais on peut facilement se ramener \`a un
+\'equations d'ordre 2, par exemple l'\'equation fondementale
+de la dynamique (acc\'el\'eration=somme des forces divis\'ee par
+la masse). Mais on peut facilement se ramener \`a un
 syst\`eme diff\'erentiel d'ordre
 1, en augmentant la dimension de $y$. Par exemple, si
 on pose $y=(x(t),v(t))$, o\`u $x(t)$ est la position
@@ -5885,7 +5886,7 @@ temps $t$, mais uniquement $(x,v)$, on est donc naturellement
 ramen\'e \`a repr\'esenter une solution (une courbe int\'egrale)
 par une courbe param\'etrique en $(x,v)$ (ou en position
 impulsion). On a encore la notion de champ des tangentes
-si $f(t,y)=f(y)$ ne d\'epend pas explicitement du temps
+si $f(y,t)=f(y)$ ne d\'epend pas explicitement du temps
 (on dit que le syst\`eme est {\em autonome}), dans ce
 cas une courbe int\'egrale a pour tangente en $y\in \R^2$ 
 de direction port\'ee par le vecteur $f(y) \in \R^2$.\\
@@ -5918,7 +5919,7 @@ ici toutes les solutions valent 0 en $t=0$~: il passe une
 infinit\'e de solutions par le point $(0,0)$ et il n'en passe aucune
 par $(0,a), \ a \neq 0$. Ce ph\'enom\`ene de non unicit\'e/non
 existence vient de la mise sous forme r\'esolue $y'=y/t$ qui
-fait apparaitre une singularit\'e de $f(t,y)$ en $t=0$.
+fait apparaitre une singularit\'e de $f(y,t)$ en $t=0$.
 
 On pr\'esente dans la suite de cette section 
 des r\'esultats qualitatifs sur les \'equations sous forme r\'esolue
@@ -5927,7 +5928,7 @@ quelques m\'ethodes explicites
 pour certaines \'equations diff\'erentielles que l'on sait
 r\'esoudre.
 
-\subsection{Existence et unicit\'e}
+\subsection{Existence et unicit\'e} \label{sec:existence}
 Il s'agit ici de pr\'eciser dans quelles conditions le r\'esultat
 intuitif suivant est vrai~: \'etant donn\'e une condition initiale
 $y(t_0)=y_0$, il y a une et une seule \'evolution possible, donc
@@ -5963,12 +5964,12 @@ signifie que les approximations utilis\'ees pour la mod\'elisation
 ne sont plus valable bien avant.
 \end{itemize}
 On admettra ce th\'eor\`eme, voici quelques id\'ees heuristiques
-de la preuve. L'\'equation $y'=f(t,y)$ peut se r\'e\'ecrire sous la forme
+de la preuve. L'\'equation $y'=f(y,t)$ peut se r\'e\'ecrire sous la forme
 int\'egrale \'equivalente 
-$$y(t)=y(t_0)+\int_{t_0}^t y'(t) \ dt =
- y(t_0)+\int_{t_0}^t f(t,y(t))\ dt $$ 
+$$y(t)=y(t_0)+\int_{t_0}^t y'(u) \ du =
+ y(t_0)+\int_{t_0}^t f(y(u),u)\ du $$ 
 Si $t$ est assez proche de $t_0$, on peut approcher l'int\'egrale par 
-$$ y(t) = y(t_0) + (t-t_0) f(t_0,y(t_0)) + \mbox{petite erreur}$$
+$$ y(t) = y(t_0) + (t-t_0) f(y(t_0),t_0) + \mbox{petite erreur}$$
 C'est exactement ce qu'on fait en suivant le champ des tangentes
 pour approcher une courbe int\'egrale graphiquement, et si on
 discr\'etise le temps avec un pas petit, cette m\'ethode
@@ -6020,7 +6021,6 @@ $y \rightarrow 0$ en $t=-\infty$ et $y \rightarrow 1$ en $t=+\infty$.
 Le comportement \`a l'infini est donc ind\'ependant de la valeur
 pr\'ecise de la condition initiale, pourvu qu'elle soit dans $]0,1[$.
 
- 
 {\bf Exercice~}: toujours pour $y'=y(1-y)$ que se passe-t-il pour une
 condition initiale $y(t_0)>1$~?
 
@@ -6028,10 +6028,10 @@ condition initiale $y(t_0)>1$~?
 
 \subsubsection{\'Equations \`a variables
   s\'eparables}\index{s\'eparables, variables}\index{variables s\'eparables}
-Si on peut factoriser $f(t,y)$ en termes ne d\'ependant que
+Si on peut factoriser $f(y,t)$ en termes ne d\'ependant que
 de $y$ ou ne d\'ependant que de $t$, on dit que l'\'equation
 est \`a variable s\'eparable, et on int\`egre
-$$ y'=f(t,y)=g(t)h(y) \Rightarrow \int \frac{dy}{h(y)} = \int g(t) \
+$$ y'=f(y,t)=g(t)h(y) \Rightarrow \int \frac{dy}{h(y)} = \int g(t) \
 dt$$
 On obtient une \'equation implicite de la forme $H(y)=G(t)+C$ o\`u
 $G$ est une primitive de $g$, $H$ de $1/h$ et $C$ une constante
@@ -6144,7 +6144,7 @@ $$ (\alpha + i \beta) e^{(a+ib)t} + (\alpha - i \beta)  e^{(a-ib)t}
 {\bf Exemples~}: 
 \begin{itemize}
 \item $y'{'}+3y'-4y=0$, \'equation caract\'eristique $r^2+3r-4=0$,
-deux racines distinctes $r=1, r=4$, donc $y(t)=\alpha e^t+\beta e^{4t}$
+deux racines distinctes $r=1, r=-4$, donc $y(t)=\alpha e^t+\beta e^{-4t}$
 \item $y'{'}+2y'+y=0$, \'equation caract\'eristique $r^2+2r+1=0$,
 a une racine double $r=-1$, donc $y(t)=\alpha e^{-t}+\beta t e^{-t}$
 \item $y'{'}+2y'+2y=0$, \'equation caract\'eristique $r^2+2r+2=0$,
@@ -6154,12 +6154,24 @@ $y(t)=e^{-t}(\alpha \cos(t)+\beta \sin(t))$
 
 On peut trouver une solution particuli\`ere de l'\'equation avec
 second membre comme dans le cas g\'en\'eral (m\'ethode de variation
-des constantes). Pour des second membre combinaison lin\'eaire
+des constantes). Si la solution g\'en\'erale est engendr\'ee par
+$y_1,...,y_n$, on pose~:
+$$ y=\sum_{i=1}^n \lambda_i y_i$$
+On pose
+$$ \sum_{i=1}^n \lambda_i' y_i=0 \ \Rightarrow \ 
+y'=\sum_{i=1}^n \lambda_i y_i'$$
+et ainsi de suite jusqu'\`a la d\'eriv\'ee d'ordre $n$ de $y$, ces
+$n-1$ \'equations et l\'equation diff\'erentielle donnent 
+alors un syst\`eme lin\'eaire $n,n$ en
+les $\lambda_i'$.
+
+Pour des second membre combinaison lin\'eaire
 de termes $b(t)e^{rt}$ avec $b$ polyn\^ome,
 on peut chercher une solution particuli\`ere
 combinaison lin\'eaire de $a(t)e^{rt}$ o\`u $a$ est de m\^eme
 degr\'e que $b$ si $r$ n'est pas racine de $P$, ou de degr\'e le
 degr\'e de $b$ plus la multiplicit\'e de $r$ comme racine de $P$.
+On peut aussi utiliser la transformation de Laplace et son inverse.
 
 \subsubsection{Syst\`emes diff\'erentiels lin\'eaires \`a coefficients
 constants d'ordre 1.}\index{lin\'eaire, syst\`eme diff\'erentiel}
@@ -6193,7 +6205,8 @@ ex\'ecut\'es par les commandes \verb|eigenvals|, \verb|eigenvects|,
 
 On peut ensuite calculer une solution particuli\`ere par la m\'ethode
 de variation des constantes, ou encore en r\'esolvant 
-$z'=Dz+P^{-1}b(t)$ composante par composante. Avec Xcas,
+$z'=Dz+P^{-1}b(t)$ composante par composante (ou par transformation
+de Laplace). Avec Xcas,
 il suffit d'ajouter le second membre dans la commande \verb|desolve|\\
 \verb|desolve(y'=[[1,2],[2,1]]*y+[x,x+1])|
 
@@ -6234,7 +6247,9 @@ $$ P(x)=x^{2} - x (a+d) +a d-b c$$
 (on peut v\'erifier que $P(A)=0$)
 donc si $y'=Ay$ alors 
 $$ y_1'{'}-(a+d)y_1'+ad-bc=0$$
-et $y_2$ s'en d\'eduit avec $y_1'-ay_1=by_2$. On peut ainsi
+et $y_2$ s'en d\'eduit avec $y_1'-ay_1=by_2$ (on peut du reste
+partir de cette relation pour \'etablir l'\'equation d'ordre 2
+v\'erifi\'ee par $y_1$). On peut ainsi
 r\'esoudre tous les syst\`emes de dimension 2, m\^eme
 si la matrice $A$ n'est pas diagonalisable.
 
@@ -6262,23 +6277,53 @@ propres vaut 0 donc le produit des coordonn\'ees dans
 le rep\`ere propre vaut une constante),
 ces hyperboles sont \'equilat\`eres si $A$ est sym\'etrique.
 
+{\bf Remarque~:}pour un syst\`eme diff\'erentiel \`a coefficients
+non constants, il n'existe pas de m\'ethode g\'en\'erale de
+r\'esolution. Il arrive que dans certains cas particuliers,
+on puisse r\'esoudre le syst\`eme, par exemple si on trouve
+une matrice de passage ind\'ependante du temps ramenant
+le syst\`eme \`a un syst\`eme diagonal ou triangulaire~:
+un exemple avec
+$A=\left(\begin{matrix}{cc} 1+t & -t \\ -t & 1+t\end{matrix}\right)$.
+Ou si $\int A(t) \ dt$ commute avec $A$, on peut prendre 
+$\exp(\int A(t))$ comme solution.
+
 \subsubsection{Int\'egrales premi\`eres.}\index{premi\`ere,
   int\'egrale}\index{int\'egrale premi\`ere}
 Lorsqu'on ne sait pas r\'esoudre explicitement une \'equation
 ou un syst\`eme diff\'erentiel, il peut arriver qu'on connaisse
 une ou des constantes du mouvement en cin\'ematique, appel\'ees
-aussi int\'egrales premi\`eres. C'est le cas par exemple de
+aussi int\'egrales premi\`eres. 
+
+C'est le cas par exemple de
 l'\'energie totale (m\'ecanique plus cin\'etique) pour des forces
-conservatives. 
-En dimension un, cela permet de se ramener \`a une \'equation
-du premier ordre (alors que l'\'equation fondamentale de la
-dynamique est d'ordre 2) \`a variables s\'eparables~:
+conservatives.  En dimension un, la connaissance de l'int\'egrale 
+premi\`ere \'energie
+totale permet de ramener l'\'equation fondamentale de la
+dynamique d'ordre 2 \`a une \'equation
+du premier ordre \`a variables s\'eparables~:
 $$ \frac12 m x'^2+ V(x) = C $$
 En dimension plus grande, cela peut permettre de 
 connaitre la forme de la courbe int\'egrale et m\^eme
-de r\'esoudre compl\`etement l'\'equation.
+parfois de r\'esoudre compl\`etement l'\'equation (cas du probl\`eme
+\`a deux corps ci-dessous).
+ 
+Autre exemple, la d\'ecouverte d'un facteur 
+int\'egrant pour la forme diff\'erentielle $Mdx+Ndy$
+donne une int\'egrale premi\`ere pour l'\'equation $dy/dx=M/N$,
+en effet $\omega=\phi(Mdx+Ndy)=dV(x,y)$ est nul
+sur une courbe int\'egrale, donc $V(x,y)$
+est constant, les courbes int\'egrales sont donc 
+les courbes de niveau de $V(x,y)$. Une \'equation \`a variables
+s\'eparables est un cas particulier, avec $M$ ne d\'ependant que de
+$x$ et $N$ de $y$.
 
-{\bf Exemple~} Cas d'un point de $\R^3$
+Pour un syst\`eme autonome, $E$ est une int\'egrale premi\`ere si
+grad$(E).f=0$, en effet
+$$ \frac{d}{dt} E(y(t))= \sum_{j=1}^n \frac{\partial E}{\partial y_j} f_j$$
+
+{\bf Probl\`eme \`a deux corps~} 
+Cas d'un point de $\R^3$
 soumis \`a une force centrale\index{centrale, force}\index{force centrale}
 comme la gravit\'e ou la force coulombienne~:
 $$\frac{d^2 \overrightarrow{r}}{dt^2}=-\mu \frac{\overrightarrow{r}}{r^3}$$ 
@@ -6320,7 +6365,7 @@ ayant l'origine pour foyer et parcourue selon la loi des aires
 proportionnelle au temps).
 
 \subsubsection{Quelques autres m\'ethodes}
-On peut encore citer~: recherche d'un facteur int\'egrand, 
+On peut encore citer~: 
 changement de fonction, changement de variables, 
 \'equation homog\`ene, \'equations de Bernoulli,
 de Clairault, de Ricatti, d\'eveloppements en s\'eries
@@ -6423,7 +6468,7 @@ Si toutes les racines de l'\'equation caract\'eristique sont
 de partie r\'eelle n\'egative, la solution g\'en\'erale
 de l'\'equation homog\`ene tend vers 0 \`a l'infini,
 elle est appel\'ee r\'egime transitoire. Quelle que
-soit la condition initiale, on tend ver la solution particuli\`ere
+soit la condition initiale, on tend vers la solution particuli\`ere
 appel\'ee r\'egime permanent.
 
 \subsubsection{For\c{c}age p\'eriodique}\index{for\c{c}age}
@@ -6471,9 +6516,8 @@ deux racines cons\'ecutive de $f$, la solution va rester entre
 ces deux racines cons\'ecutives. Comme $f$ ne s'annule pas
 entre deux racines cons\'ecutives, $f$ est de signe constant
 donc la solution est monotone,
-et tend vers une des racines lorsque 
-$t \rightarrow \pm \infty$\footnote{On peut prouver 
-l'existence globale de la solution
+et tend vers une des racines lorsque $t \rightarrow \pm \infty$
+\footnote{On peut prouver l'existence globale de la solution
 exactement comme pour l'exemple $y'=y(1-y)$ de la section 
 \ref{sec:existence}}.
 Si $f>0$, on tend vers la plus grande des racines lorsque $t
@@ -6506,9 +6550,10 @@ initiale $y(t_0)$ est
 situ\'ee entre deux racines, la solution est monotone entre
 ces deux racines et tend vers une des racines lorsque $t\rightarrow
 \pm \infty$. Si $y(t_0)$ est situ\'e au-del\`a de la derni\`ere racine
-ou en-dec\`a de la premi\`ere racine, la solution est monotone et
-tend vers cette racine ou vers l'infini lorsque $t\rightarrow
-\pm \infty$.
+ou en-dec\`a de la premi\`ere racine (si elles existent), 
+la solution est monotone et
+tend vers cette racine lorsque $t\rightarrow \pm \infty$
+ou diverge (en temps fini ou infini).
 
 Si $f'(r_k) < 0$, la solution $y=r_k$ est appel\'ee \'equilibre
 stable~: pour toute condition initiale situ\'e entre $r_{k-1}$ et $r_{k+1}$
@@ -6938,7 +6983,7 @@ si on trouve un r\'esultat diff\'erent de 1, on passe au polyn\^ome
 suivant (g\'en\'er\'e al\'eatoirement).
 On peut calculer la probabilit\'e de r\'eussir en d\'enombrant
 les polyn\^omes irr\'eductibles de degr\'e $n$ \`a l'aide
-de la formule $x^{p^n}-x=\prod_{P/ \mbox{deg}(P)\mbox{ divise } n} P$.
+de la formule $x^{p^n}-x=\prod_{P \mbox{ irréductible unitaire }/ \mbox{deg}(P)\mbox{ divise } n} P$.
 
 Trouver un \'el\'ement cyclique\index{cyclique, \'el\'ement} se fait aussi au hasard
 (\verb|rand(g)| en Xcas si \verb|g| est le g\'en\'erateur
@@ -6990,6 +7035,8 @@ la permutation et son inverse tiennent dans le cache du
 microprocesseur et les op\'erations sur le corps $K$ se font
 en une dizaine de cycles du microprocesseur.
 
+%\pagebreak
+
 \subsection{Exercices}
 \begin{enumerate}
 \item Trouver un polyn\^ome irr\'eductible $P$ de degr\'e 5 sur $\Z/7\Z$.
@@ -7010,6 +7057,10 @@ multiplicative et additive de \verb|GF(2,4)|.
 PGCD avec les $x^{p^k}-x$ modulo $p$. Quelle est sa complexit\'e
 si $A$ est irr\'eductible de degr\'e $d$~?
 \end{enumerate}
+
+%\pagebreak
+
+%\ \\
 
 %\pagebreak
 
@@ -7765,6 +7816,15 @@ nombre d'éléments de $K$ est inférieur ou égal au degré du polynôme
 $X^{p^k}-X$ (puisque $X^{(p^k)}-X$ est divisible par
 $X-x$ pour tout $x\in K$),
 donc le degré de $F$ est inférieur ou égal à $k$.
+(En fait le degré de $F$ doit diviser $k$, en effet
+on écrit l'idendité de Bézout
+pour degré de $F$ et $k$, on a alors
+$u$deg$(F)\pm vk$=$\pm$pgcd(deg($F$),$k$),
+on change de membre les signes $-$ pour n'avoir que des entiers positifs
+on prend $X$ puissance $p$ à la puissance des deux membres, on en
+déduit que $Y^{p^{\mbox{gcd}(k,\mbox{deg}(F))}}=Y \pmod F $ donc
+degré de $F$ divise $k$ sinon il y a trop de solutions à l'équation
+ci-dessus dans le corps).
 
 Donc $P_k$ est égal au pgcd de $P/\Pi_{j<k} P_j$ avec $X^{p^k}-X$.
 

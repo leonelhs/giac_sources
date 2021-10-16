@@ -357,7 +357,7 @@ namespace xcas {
 	mp->graphic->paused=!mp->graphic->paused;
 	break;
       case 13:
-	mp->graphic->autoscale();
+	mp->graphic->autoscale(false);
 	break;
       }
       if (Fl_Widget * g=dynamic_cast<Graph2d *>(mp->graphic))
@@ -754,7 +754,13 @@ namespace xcas {
   static void cb_Graph2d3d_Autoscale(Fl_Menu_* m , void*) {
     Graph2d3d * gr = find_graph2d3d(m);
     if (gr)
-      gr->autoscale();
+      gr->autoscale(false);
+  }
+
+  static void cb_Graph2d3d_AutoscaleFull(Fl_Menu_* m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr)
+      gr->autoscale(true);
   }
 
   static void cb_Graph2d3d_Orthonormalize(Fl_Menu_* m , void*) {
@@ -1135,10 +1141,19 @@ namespace xcas {
     }
   }
 
+  Fl_Menu_Item Autoscale_menu[] = {
+    {gettext("auto"), 0,  0, 0, 64, 0, 0, 14, 56},
+    {gettext("Autoscale"), 0,  (Fl_Callback*)cb_Graph2d3d_Autoscale, 0, 0, 0, 0, 14, 56},
+    {gettext("Autoscale (full)"), 0,  (Fl_Callback*)cb_Graph2d3d_AutoscaleFull, 0, 0, 0, 0, 14, 56},
+    {0},
+    {0}
+  };
+
   Fl_Menu_Item Graph2d3d_menu[] = {
     {gettext("M"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("View"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("Autoscale"), 0,  (Fl_Callback*)cb_Graph2d3d_Autoscale, 0, 0, 0, 0, 14, 56},
+    {gettext("Autoscale (full)"), 0,  (Fl_Callback*)cb_Graph2d3d_AutoscaleFull, 0, 0, 0, 0, 14, 56},
     {gettext("Orthonormalize (2-d)"), 0,  (Fl_Callback*)cb_Graph2d3d_Orthonormalize, 0, 0, 0, 0, 14, 56},
     {gettext("Zoom in"), 0,  (Fl_Callback*)cb_Graph2d3d_Zoomin, 0, 0, 0, 0, 14, 56},
     {gettext("Zoom out"), 0,  (Fl_Callback*)cb_Graph2d3d_Zoomout, 0, 0, 0, 0, 14, 56},
@@ -1249,12 +1264,16 @@ namespace xcas {
     Fl_Button * bpause = new Fl_Button(bx+bw,by,bw,bh,"@>|");
     bpause->tooltip(gettext("Stop or restart animation"));
     bpause->callback(cb_graph_buttons);
-    Fl_Button * bauto = new Fl_Button(bx+2*bw,by,bw,bh,"auto");
+    Fl_Menu_Bar * bauto = new Fl_Menu_Bar(bx+2*bw,by,bw,bh,"auto");
     bauto->tooltip(gettext("Autoscale"));
-    bauto->callback(cb_graph_buttons);
+    int s= Autoscale_menu->size();
+    Fl_Menu_Item * automenuitem = new Fl_Menu_Item[Autoscale_menu->size()];
+    for (int i=0;i<s;++i)
+      *(automenuitem+i)=*(Autoscale_menu+i);
+    bauto->menu (automenuitem);    
     menubar= new Fl_Menu_Bar(bx,by,bw,bh,"+");
     menubar->tooltip(gettext("Graphic menu"));
-    int s= Graph2d3d_menu->size();
+    s= Graph2d3d_menu->size();
     Fl_Menu_Item * menuitem = new Fl_Menu_Item[Graph2d3d_menu->size()];
     for (int i=0;i<s;++i)
       *(menuitem+i)=*(Graph2d3d_menu+i);
@@ -2070,7 +2089,7 @@ namespace xcas {
 	  ylegende=ylegendesize->value()/labelsize();
 	}
 	if (o==button4 ){
-	  autoscale();
+	  autoscale(false);
 	  wxmin->value(window_xmin);
 	  wxmax->value(window_xmax);
 	  wymin->value(window_ymin);
@@ -2289,14 +2308,14 @@ namespace xcas {
     ylegende=double(taille)/labelsize();
   }
 
-  void Graph2d3d::autoscale(){
+  void Graph2d3d::autoscale(bool fullview){
     if (!plot_instructions.empty()){
       // Find the largest and lowest x/y/z in objects (except lines/plans)
       vector<double> vx,vy,vz;
       int s;
       context * contextptr=hp?hp->contextptr:get_context(this);
       bool ortho=autoscaleg(plot_instructions,vx,vy,vz,contextptr);
-      autoscaleminmax(vx,window_xmin,window_xmax);
+      autoscaleminmax(vx,window_xmin,window_xmax,fullview);
       if (display_mode & 0x400){
 	if (window_xmin<=0){
 	  if (vx[0]<=0)
@@ -2312,7 +2331,7 @@ namespace xcas {
 	  window_xmax=std::log10(window_xmax);
       }
       zoomx(1.0);
-      autoscaleminmax(vy,window_ymin,window_ymax);
+      autoscaleminmax(vy,window_ymin,window_ymax,fullview);
       if (display_mode & 0x800){
 	if (window_ymin<=0){
 	  if (vy[0]<=0)
@@ -2328,7 +2347,7 @@ namespace xcas {
 	  window_ymax=std::log10(window_ymax);
       }
       zoomy(1.0);
-      autoscaleminmax(vz,window_zmin,window_zmax);
+      autoscaleminmax(vz,window_zmin,window_zmax,fullview);
       zoomz(1.0);
       if (ortho)
 	orthonormalize();
@@ -3900,7 +3919,10 @@ namespace xcas {
 	  zoom(0.707);
 	  return 1;
 	case 'A': case 'a':
-	  autoscale();
+	  autoscale(false);
+	  return 1;
+	case 'V': case 'v':
+	  autoscale(true);
 	  return 1;
 	case 'R': case 'r':
 	  oxyz_rotate(this,rotanim_type,rotanim_nstep,rotanim_tstep,rotanim_danim,rotanim_rx,rotanim_ry,rotanim_rz);
@@ -5280,6 +5302,11 @@ namespace xcas {
 	if (delta>=taille && delta<=vertical_pixels-taille){
 	  fl_line(x()+horizontal_pixels,y()+delta,x()+horizontal_pixels+3,y()+delta);
 	  fl_draw(tmp.c_str(),x()+horizontal_pixels+3,y()+delta+taille);
+	  int tmpi=fl_width(tmp.c_str());
+	  if (tmpi+horizontal_pixels+3>w()){
+	    ylegende=(tmpi+3.)/labelsize();
+	    redraw();
+	  }
 	}
       }
     }
@@ -5688,8 +5715,8 @@ namespace xcas {
 #ifdef IPAQ
       int dx=240,dy=300;
 #else
-      int dx=(spread_ptr?24*spread_ptr->labelsize():240), 
-	dy=spread_ptr?8*spread_ptr->labelsize():300;
+      int dx=(spread_ptr?30*spread_ptr->labelsize():500), 
+	dy=spread_ptr?12*spread_ptr->labelsize():400;
 #endif
       int lignes=5;
       Fl_Group::current(0);

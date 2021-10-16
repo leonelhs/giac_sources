@@ -6,40 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’affectation par copie : copy</TITLE>
+<TITLE>Les sorties de ab : printpow</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr801.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr803.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc930">8.4.13</A>  L’affectation par copie : <TT>copy</TT></H3><P><A NAME="@default1441"></A>
-<TT>copy</TT> permet de cloner une liste, un vecteur
-ou une matrice, en général pour le stocker dans une 
-variable.<BR>
-<TT>copy</TT> a un argument, la liste (vecteur ou matrice) à cloner.<BR>
-<TT>A:= copy(B)</TT> recopie la liste (vecteur, matrice) B dans A.<BR>
+<H3 CLASS="subsection"><A NAME="htoc931">8.4.10</A>  Les sorties de <I>a</I><SUP><I>b</I></SUP> : <TT>printpow</TT></H3><P><A NAME="@default1439"></A>
+L’instruction <TT>printpow</TT> modifie la façon dont les puissances sont 
+affichées en mode texte ou après une commande <TT>print</TT>.<BR>
+<TT>printpow</TT> a comme argument soit <TT>0</TT>, soit <TT>1</TT>, soit <TT>-1</TT>.<BR>
+<TT>printpow(0)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture mathématique 
+<TT>a</TT><CODE><TT>^</TT></CODE><TT>b</TT>.<BR>
+<TT>printpow(1)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture en langage C
+<TT>pow(a,b)</TT>.<BR>
+<TT>printpow(-1)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture d’autres langages
+<TT>a**b</TT>.<BR>
+De plus ces 3 syntaxes sont admises en input.<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>printpow(0)</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>3 écrit en bleu et 8 comme
+réponse</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>B:=copy([[4,5],[2,6]])</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>A:=[[4,5],[2,6]];B:=copy(A)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>A,B</TT></DIV><P>
+</P><DIV CLASS="center"><TT>printpow(1)</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT> 3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4,5],[2,6]],[[4,5],[2,6]]</TT></DIV><P>
-<B>Quand doit-on utiliser </B><B><TT>copy</TT></B><B> ?</B><BR>
-<TT>copy</TT> est surtout utile pour des listes ou des matrices qui 
-seront par la suite modifiées par référence avec <TT>=&lt;</TT>.<BR>
+</P><DIV CLASS="center"><TT>pow(2,3) écrit en bleu et 8 comme
+réponse</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV><DIV CLASS="center"><TT>B:=copy(A)</TT></DIV><P>
-Puis, si on tape :
-</P><DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV><DIV CLASS="center"><TT>A,B</TT></DIV><P>
+</P><DIV CLASS="center"><TT>printpow(-1)</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,3,4]</TT></DIV><P>
-Puis si on tape :
-</P><DIV CLASS="center"><TT>B[3]=&lt;55</TT></DIV><DIV CLASS="center"><TT>A,B</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,55,4]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>2**3 écrit en bleu et 8 comme
+réponse</TT></DIV><HR>
 <A HREF="cascmd_fr801.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr803.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

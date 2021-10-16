@@ -253,6 +253,8 @@ namespace giac {
 	    return 0;
 	  return gensizeerr(gettext("Non holomorphic function ")+g.print(contextptr)+" at "+x.print(contextptr)+"="+a.print(contextptr));
 	}
+	if (e1.type==_FRAC)
+	  return undef;
 	if (is_undef(s[i].coeff))
 	  break; // stop the loop, try a larger order
 	if (is_zero(e1)){
@@ -808,6 +810,27 @@ namespace giac {
     return false;
   }
 
+  gen doapplyinv(const gen &g,GIAC_CONTEXT){
+    if (g.type!=_SYMB)
+      return inv(g,contextptr);
+    if (g._SYMBptr->sommet==at_pow && g._SYMBptr->feuille.type==_VECT && g._SYMBptr->feuille._VECTptr->size()==2)
+      return symb_pow(g._SYMBptr->feuille._VECTptr->front(),-g._SYMBptr->feuille._VECTptr->back());
+    if (g._SYMBptr->sommet==at_prod && g._SYMBptr->feuille.type==_VECT){
+      vecteur v=*g._SYMBptr->feuille._VECTptr;
+      for (unsigned i=0;i<v.size();++i){
+	v[i]=doapplyinv(v[i],contextptr);
+      }
+      return _prod(v,contextptr);
+    }
+    return inv(g,contextptr);
+  }
+
+  gen applyinv(const gen & g,GIAC_CONTEXT){
+    vector<const unary_function_ptr *> inv_v(1,at_inv);
+    vector< gen_op_context > applyinv_v(1,doapplyinv);
+    return subst(g,inv_v,applyinv_v,false,contextptr);
+  }
+
   // if true put int(g,x=a..b) into res
   bool intgab(const gen & g0,const gen & x,const gen & a,const gen & b,gen & res,GIAC_CONTEXT){
     if (x.type!=_IDNT)
@@ -832,12 +855,30 @@ namespace giac {
     vecteur subst1,subst2;
     surd2pow(g0,subst1,subst2,contextptr);
     gen g0_(subst(g0,subst1,subst2,false,contextptr)),g0mult(1);
+    // apply inv to pow and *
+    g0_=applyinv(g0_,contextptr);
+    if (x.type==_IDNT && g0_.is_symb_of_sommet(at_prod) && g0_._SYMBptr->feuille.type==_VECT){
+      // extract csts
+      vecteur v=*g0_._SYMBptr->feuille._VECTptr,v1,v2;
+      for (unsigned i=0;i<v.size();++i){
+	if (depend(v[i],*x._IDNTptr))
+	  v2.push_back(v[i]);
+	else
+	  v1.push_back(v[i]);
+      }
+      if (!v1.empty()){
+	if (!intgab(_prod(v2,contextptr),x,a,b,res,contextptr))
+	  return false;
+	res=_prod(v1,contextptr)*res;
+	return true;
+      }
+    }
     if (!is_inf(a) && !is_inf(b) && g0_.is_symb_of_sommet(at_pow)){
       g0_=g0_._SYMBptr->feuille;
       if (g0_.type==_VECT && g0_._VECTptr->size()==2){
 	gen expo=g0_._VECTptr->back();
 	gen base=g0_._VECTptr->front();
-	vecteur lv=rlvarx(base,x);
+	vecteur lv=lvarxwithinv(base,x,contextptr);//rlvarx(base,x);
 	if (lv.size()==1){
 	  int na=0,nb=0;
 	  for (;;){
@@ -854,9 +895,30 @@ namespace giac {
 	    base=tmp._VECTptr->front();
 	  }
 	  if (derive(base,x,contextptr)==0){
-	    g0mult=base;
+	    g0mult=pow(base,expo,contextptr);
 	    g0_=symbolic(at_pow,makesequence(x-a,na*expo))*symbolic(at_pow,makesequence(b-x,nb*expo));
 	  }
+	  if (nb==1 && !na){
+	    base=g0_._VECTptr->front();
+	    gen tmp=_horner(makesequence(base,a,x),contextptr);
+	    base=base-tmp;
+	    for (;;){
+	      gen tmp=_quorem(makesequence(base,x-a,x),contextptr);
+	      if (tmp.type==_VECT && tmp._VECTptr->size()==2 && tmp._VECTptr->back()==0){
+		++na;
+		base=tmp._VECTptr->front();
+		continue;
+	      }
+	      break;
+	    }
+	    if (derive(base,x,contextptr)==0){
+	      // pow(-base,expo)*int(((b-a)^na-(x-a)^na)^expo,x,a,b)
+	      // let x=a+(b-a)*t^(1/na)
+	      // -> pow(-base,expo)*(b-a)^(1+na*expo)/na*int((1-t)^expo*t^(1/na-1),t,0,1)
+	      res= pow(-base,expo,contextptr)*pow(b-a,1+na*expo,contextptr)*Gamma(inv(na,contextptr),contextptr)*Gamma(expo+1,contextptr)/Gamma(expo+1+inv(na,contextptr),contextptr)/na;
+	      return true;
+	    }
+	  } // nb==1 && !na
 	}
       }
     }
@@ -888,10 +950,10 @@ namespace giac {
 	      res=g0mult*pow(va1x,va2,contextptr)*pow(-vb1x,vb2,contextptr)*pow(b-a,va2+vb2+1,contextptr)*Beta(va2+1,vb2+1,contextptr);
 	      return true;
 	    }
-	    if (is_zero(recursive_normal(va1c/va1x-b,contextptr),contextptr) &&
-		is_zero(recursive_normal(vb1c/vb1x-a,contextptr),contextptr)){
+	    if (is_zero(recursive_normal(va1c/va1x+b,contextptr),contextptr) &&
+		is_zero(recursive_normal(vb1c/vb1x+a,contextptr),contextptr)){
 	      // int( (va1x*(x-b))^va2*(vb1x*(x-a))^vb2,a,b)
-	      res=g0mult*pow(-va1x,va2,contextptr)*pow(vb1x,vb2,contextptr)*pow(b-a,va2+vb2+1,contextptr)*Beta(va2,vb2,contextptr);
+	      res=g0mult*pow(-va1x,va2,contextptr)*pow(vb1x,vb2,contextptr)*pow(b-a,va2+vb2+1,contextptr)*Beta(va2+1,vb2+1,contextptr);
 	      return true;
 	    }
 	  }
@@ -1020,11 +1082,14 @@ namespace giac {
       gen ga=subst(g,x,x+a,false,contextptr);
       int eo=is_even_odd(ga,x,contextptr);
       if (eo==1){ 
-	if ( (rational && intgab_ratfrac(ga,x,res,contextptr)) ||
-	     intgab(ga,x,minus_inf,plus_inf,res,contextptr) ){
-	  if (!is_inf(res)) 
-	    res=ratnormal(res/2);
-	  return !is_undef(res);
+	vecteur singu=find_singularities(g,*x._IDNTptr,0 /* real singularities*/,contextptr);
+	if (singu.empty()){
+	  if ( (rational && intgab_ratfrac(ga,x,res,contextptr)) ||
+	       intgab(ga,x,minus_inf,plus_inf,res,contextptr) ){
+	    if (!is_inf(res)) 
+	      res=ratnormal(res/2);
+	    return !is_undef(res);
+	  }
 	}
       }
       vecteur v;
@@ -1587,7 +1652,8 @@ namespace giac {
       simplify(p,s);
       // IMPROVE: make a partial fraction decomposition of p(n)/s(n)
       // [could also make ln return ln(1-x) instead of ln(x-1)]
-      return sumab_ps(Q,R,v,a,x,g,est_reel,p,s,res,contextptr);
+      if (sumab_ps(Q,R,v,a,x,g,est_reel,p,s,res,contextptr))
+	return true;
     }
     gen A,B,P;
     int type=is_meromorphic(g,x,A,B,P,contextptr);

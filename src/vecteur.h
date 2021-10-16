@@ -227,6 +227,10 @@ namespace giac {
   bool mmultck(const matrice & a,const matrice & b,matrice & res);
   matrice mmultck(const matrice & a,const matrice & b);
 
+  extern int strassen_limit;
+  void strassen_mod(bool skip_reduce,bool add,const std::vector< std::vector<int> > & A,const std::vector< std::vector<int> > & Btran,std::vector< std::vector<int> > & C,int p,int arbeg=0,int arend=0,int acbeg=0,int acend=0,int brbeg=0,int brend=0,int bcbeg=0);
+  void mmult_mod(const std::vector< std::vector<int> > & A,const std::vector< std::vector<int> > & Btran,std::vector< std::vector<int> > & C,int p,int Ar0=0,int Ar1=0,int Ac0=0,int Ac1=0,int Brbeg=0,int Brend=0,int Bcbeg=0,int Crbeg=0,int Ccbeg=0,bool add=false);
+
   gen mtrace(const matrice & a);
   gen ckmtrace(const gen & a,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_trace ;

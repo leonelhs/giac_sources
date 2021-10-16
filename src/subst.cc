@@ -1431,7 +1431,10 @@ namespace giac {
 	if (w.size()==2){
 	  gen l=w.front(),m=w.back();
 #if 1
-	  point=ratnormal((l+m)/2);
+	  if (l==minus_inf && m==plus_inf)
+	    point=0;
+	  else
+	    point=ratnormal((l+m)/2);
 	  if (!is_inf(point) && !is_undef(point)){
 	    *logptr(contextptr) << gettext("Simplification assuming ") << v[i] << " near " << point << endl;
 	    point=subst(gg,*v[i]._IDNTptr,point,false,contextptr);
@@ -2188,6 +2191,34 @@ namespace giac {
     // check for the presence of trig/atrig functions
     vecteur v1(loptab(e,sincostan_tab));
     int s1=v1.size(),s2=loptab(e,asinacosatan_tab).size();
+    if (s1&&s2){
+      // retry with e texpanded
+      gen e2=_texpand(v1,contextptr);
+      if (e2.type==_VECT){
+	vecteur v2(loptab(e2,asinacosatan_tab));
+	if (v2.size()<s2){
+	  e2=simplify(e2,contextptr);
+	  if (e2.type==_VECT){
+	    e=subst(e,v1,e2,false,contextptr);
+	    return simplify(e,contextptr);
+	  }
+	}
+      }
+    }
+#if defined NO_STDEXCEPT // GIAC_HAS_STO_38
+    {
+      vecteur v2=loptab(e,asinacosatan_tab);
+      if (!v2.empty()){
+	unsigned count=0;
+	for (unsigned i=0;i<v2.size();++i){
+	  if (v2[i].is_symb_of_sommet(at_asin)||v2[i].is_symb_of_sommet(at_acos))
+	    count+=lidnt(v2[i]).size();
+	}
+	if (count>1)
+	  return e;
+      }
+    }
+#endif	
     gen g=tsimplify_noexpln(e,s1,s2,contextptr); 
     g=_exp2pow(g,contextptr);
     g=quotesubst(g,vabs2,vabs,contextptr);
@@ -2232,7 +2263,7 @@ namespace giac {
     if (args.type==_VECT){
       vecteur & v =*args._VECTptr;
       int vs=v.size();
-      if ( (vs==2 || vs==3) && args.subtype==_SEQ__VECT && args[1].type==_VECT && !ckmatrix(args)){
+      if ( (vs==2 || vs==3) && args.subtype==_SEQ__VECT && args[1].type==_VECT && !ckmatrix(args) && !ckmatrix(args._VECTptr->back())){
 	// simplify with side relations
 	return _greduce(args,contextptr);
       }
@@ -2242,7 +2273,14 @@ namespace giac {
       return apply_to_equal(args,_simplify,contextptr);
     int c=calc_mode(contextptr);
     calc_mode(0,contextptr);
-    res=simplify(args,contextptr);
+    vecteur sub1,sub2;
+    surd2pow(args,sub1,sub2,contextptr);
+    res=args;
+    if (!sub1.empty())
+      res=subst(res,sub1,sub2,false,contextptr);
+    res=simplify(res,contextptr);
+    if (!sub1.empty())
+      res=subst(res,sub2,sub1,false,contextptr);
     calc_mode(c,contextptr);
     if ( (c==1 || c==-38 || c==38) && !lop(res,at_rootof).empty())
       res=ratnormal(args);

@@ -195,7 +195,7 @@ namespace xcas {
     giac::MAX_RECURSION_LEVEL=do_max_recursion_level;
     giac::eval_level(contextptr)= giac::DEFAULT_EVAL_LEVEL=do_eval_level;
     giac::prog_eval_level_val(int(Xcas_prog_eval_level->value()),contextptr);
-    giac::NEWTON_DEFAULT_ITERATION==max(giac::absint(int(Xcas_Newton->value())),20);
+    giac::NEWTON_DEFAULT_ITERATION=max(giac::absint(int(Xcas_Newton->value())),20);
     giac::debug_infolevel=do_debug_infolevel;
     giac::withsqrt(Xcas_sqrt->value(),contextptr);
     giac::all_trig_sol(Xcas_all_trig_sol->value(),contextptr);

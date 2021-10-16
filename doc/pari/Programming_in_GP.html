@@ -5,7 +5,7 @@
   </TITLE>
 
   <META NAME="author"       CONTENT="Nils-Peter Skoruppa">
-  <META NAME="created"      CONTENT="Thu Apr 27 10:11:36 2006">
+  <META NAME="created"      CONTENT="Fri Oct  8 17:54:47 2010">
   <META NAME="author-email" CONTENT="skoruppa@math.uni-siegen.de">
   <META NAME="keywords"     CONTENT="PARI, GP, DOC">
 </HEAD>
@@ -775,7 +775,7 @@ loop whenever an exception is raised.</p>
 ""</tt></font> the default handler (for that error
 if e is present) is disabled.</p>
 <p><b>Note:</b> The interface is currently not adequate for trapping
-individual exceptions. In the current version <b>2.2.13</b>, the following keywords
+individual exceptions. In the current version <b>2.3.5</b>, the following keywords
 are recognized, but the name list will be expanded and changed in the
 future (all library mode errors can be trapped: it's a matter of defining
 the keywords to <font color=#a3682a><tt>
@@ -821,6 +821,23 @@ t_*</tt></font>.
 The name <font color=#a3682a><tt>
 type</tt></font> was avoided due to the fact that <font color=#a3682a><tt>
 type</tt></font> is a reserved identifier for some C(++) compilers.</p>
+
+<br>
+<hr></hr><br>
+
+<a name="version"></a>
+<h4><b>version</b>()</h4>
+<p></p>
+<p> Returns the current version number as a <font color=#a3682a><tt>
+t_VEC</tt></font>
+with three integer components: major version number, minor version number and
+patchlevel. To check against a particular version number, you can use:</p>
+<p><pre><font color=#a3682a><tt>   if (lex(version(), [2,2,0]) &#62;= 0,
+&nbsp;     \\ code to be executed if we are running 2.2.0 or more recent.
+&nbsp;   ,
+&nbsp;     \\ compatibility code
+&nbsp;   );
+</tt></font></pre></p>
 
 <br>
 <hr></hr><br>

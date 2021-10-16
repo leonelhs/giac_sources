@@ -3,7 +3,7 @@ dnl Run autoreconf -iv to produce the configure script and associated files.
 dnl Giac version number
 m4_define([giac_major_version], [1])
 m4_define([giac_minor_version], [1])
-m4_define([giac_micro_version], [2])
+m4_define([giac_micro_version], [3])
 m4_define([giac_version], [giac_major_version.giac_minor_version.giac_micro_version])
 
 dnl Attempt to change archive name made by make dist 
@@ -256,6 +256,7 @@ dnl		AC_CHECK_LIB(GLU, main)
 		AC_CHECK_LIB(fltk, main)
 		AC_CHECK_LIB(z, main)
 		AC_CHECK_LIB(jpeg, main)
+		AC_CHECK_LIB(ao, main)
 		AC_CHECK_LIB(fltk_images, main)
 		if test "$HAVE_LIBFLTK" = "1" ; then
 			AC_DEFINE([HAVE_LIBFLVW],1,[Now defined if fltk is available])
@@ -293,6 +294,7 @@ dnl		AC_CHECK_LIB(GLU, main)
 	AC_CHECK_LIB(z,main)
 	AC_CHECK_HEADERS(png.h, AC_CHECK_LIB(png,main))
 	AC_CHECK_LIB(jpeg, main)
+	AC_CHECK_LIB(ao, main)
 	AC_CHECK_LIB(fltk_images, main)
 	GUI_LIBS="$LIBS $X_LIBS"
 	AC_SUBST(GUI_LIBS)

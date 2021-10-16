@@ -190,7 +190,7 @@ namespace xcas {
     virtual void zoomy(double d,bool round=false);
     virtual void zoomz(double d,bool round=false);
     virtual void orthonormalize();
-    virtual void autoscale();
+    virtual void autoscale(bool fullview=false);
     virtual void find_ylegende();
     virtual void up(double d);
     virtual void down(double d);

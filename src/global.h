@@ -224,6 +224,7 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
 #endif
 #endif
   extern int FACTORIAL_SIZE_LIMIT;
+  extern int GAMMA_LIMIT;
   extern int LIST_SIZE_LIMIT;
   extern int NEWTON_DEFAULT_ITERATION;
   extern int DEFAULT_EVAL_LEVEL;
@@ -421,7 +422,14 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   extern std::string (*fl_widget_texprint_function)(void * ptr);
   extern gen (*fl_widget_updatepict_function)(const gen & g);
   // name -> gen table
-  typedef std::map<std::string, gen> sym_string_tab;
+  struct ltstring
+  {
+    bool operator()(const std::string & s1, const std::string & s2) const
+    {
+      return strcmp(s1.c_str(), s2.c_str()) < 0;
+    }
+  };
+  typedef std::map<std::string, gen,ltstring> sym_string_tab;
   struct ltstr
   {
     bool operator()(const char* s1, const char* s2) const
@@ -548,6 +556,7 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
     std::vector<logo_turtle> _turtle_stack_; 
     double _total_time_;
     void * _evaled_table_;
+    void * _extra_ptr_;
     global();  
     ~global();
     global & operator = (const global & g);
@@ -610,6 +619,7 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   int check_threads(int i=0);
 
   void * & evaled_table(GIAC_CONTEXT);
+  void * & extra_ptr(GIAC_CONTEXT);
 
   int & xcas_mode(GIAC_CONTEXT);
   void xcas_mode(int b,GIAC_CONTEXT);
@@ -915,6 +925,11 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
 
   gen add_autosimplify(const gen & g,GIAC_CONTEXT);
 
+  extern int step_infolevel;
+  extern void (*my_gprintf)(unsigned special,const std::string & format,const vecteur & v,GIAC_CONTEXT);
+  void gprintf(const std::string & format,const vecteur & v,GIAC_CONTEXT);
+  void gprintf(unsigned special,const std::string & format,const vecteur & v,GIAC_CONTEXT);
+  
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // ndef NO_NAMESPACE_GIAC

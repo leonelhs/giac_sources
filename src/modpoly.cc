@@ -4397,7 +4397,7 @@ namespace giac {
 	while (smod(env->modulo,4)==1)
 	  env->modulo=nextprime(env->modulo+2);
       }
-      if (is_zero(smod(gcdfirstcoeff,env->modulo))){
+      if (is_zero(smod(qq.front(),env->modulo))){
 	env->modulo=nextprime(env->modulo+1);
 	continue;
       }

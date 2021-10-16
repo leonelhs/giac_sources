@@ -7403,33 +7403,34 @@ On s’intéresse à l’équation différentielle
 <I>y</I>′=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>dy</I></TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><I>dt</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=<I>f</I>(<I>t</I>,<I>y</I>)
+</TABLE></TD><TD CLASS="dcell">=<I>f</I>(<I>y</I>,<I>t</I>)
     (16)</TD></TR>
 </TABLE><P>
 où <I>y</I> ∈ ℝ<SUP><I>n</I></SUP> et <I>f</I>: ℝ<SUP><I>n</I></SUP> × ℝ → ℝ<SUP><I>n</I></SUP>.
 Si <I>n</I>=1, c’est une équation différentielle, si <I>n</I>&gt;1 c’est
-un système différentiel.</P><P>Exemple : en dimension <I>n</I>=1, <I>y</I>′=<I>f</I>(<I>t</I>,<I>y</I>)=<I>ay</I>. On sait résoudre cette
+un système différentiel.</P><P>Exemple : en dimension <I>n</I>=1, <I>y</I>′=<I>f</I>(<I>y</I>,<I>t</I>)=<I>ay</I>. On sait résoudre cette
 équation, les solutions sont de la forme <I>y</I>(<I>t</I>)=<I>Ce</I><SUP><I>at</I></SUP>. Si on trace
 la courbe représentative de ces solutions (appelée
 courbe intégrale), on observe que par
 tout point du plan, il passe une solution unique. La tangente
 à une courbe intégrale a pour pente <I>y</I>′=<I>ay</I> donc pour
 vecteur directeur le vecteur de composantes (1,<I>ay</I>).</P><P>C’est vrai de manière plus générale, le vecteur directeur
-de la tangente à une courbe intégrale est (1,<I>f</I>(<I>t</I>,<I>y</I>)). Si
+de la tangente à une courbe intégrale est (1,<I>f</I>(<I>y</I>,<I>t</I>)). Si
 on représente dans le plan selon un quadrillage régulier
-les vecteurs (1,<I>f</I>(<I>t</I>,<I>y</I>)), une courbe intégrale doit être
+les vecteurs (1,<I>f</I>(<I>y</I>,<I>t</I>)), une courbe intégrale doit être
 tangente à ces vecteurs chaque fois qu’elle passe en un point
 du quadrillage, (et à peu près tangente si elle passe à
 proximité). Un tel quadrillage est appelé champ des tangentes
 (commande <CODE>plotfield</CODE> en Xcas, mode également disponible
 sur certaines calculatrices).</P><P>Exercice : tracer le champ des tangentes et quelques solutions
-pour quelques exemples de fonction <I>f</I>(<I>t</I>,<I>y</I>), avec Xcas créer
+pour quelques exemples de fonction <I>f</I>(<I>y</I>,<I>t</I>), avec Xcas créer
 une figure 2d, puis choisir le mode Champ des tangentes
 du menu Geo, Graphe, entrer la fonction, puis cliquer en quelques
-points pour faire tracer la solution passant par ces points.</P><P>L’équation (<A HREF="#eq:diff">16</A>)) est d’ordre 1, or certaines équations
+points pour faire tracer la solution passant par ces points.</P><P>L’équation (<A HREF="#eq:diff">16</A>) est d’ordre 1, or certaines équations
 différentielles se présentent naturellement comme des
-équations d’ordre 2, par exemple l’équation fondamentale
-de la dynamique. Mais on peut facilement se ramener à un
+équations d’ordre 2, par exemple l’équation fondementale
+de la dynamique (accélération=somme des forces divisée par
+la masse). Mais on peut facilement se ramener à un
 système différentiel d’ordre
 1, en augmentant la dimension de <I>y</I>. Par exemple, si
 on pose <I>y</I>=(<I>x</I>(<I>t</I>),<I>v</I>(<I>t</I>)), où <I>x</I>(<I>t</I>) est la position
@@ -7477,7 +7478,7 @@ temps <I>t</I>, mais uniquement (<I>x</I>,<I>v</I>), on est donc naturellement
 ramené à représenter une solution (une courbe intégrale)
 par une courbe paramétrique en (<I>x</I>,<I>v</I>) (ou en position
 impulsion). On a encore la notion de champ des tangentes
-si <I>f</I>(<I>t</I>,<I>y</I>)=<I>f</I>(<I>y</I>) ne dépend pas explicitement du temps
+si <I>f</I>(<I>y</I>,<I>t</I>)=<I>f</I>(<I>y</I>) ne dépend pas explicitement du temps
 (on dit que le système est <EM>autonome</EM>), dans ce
 cas une courbe intégrale a pour tangente en <I>y</I>∈ ℝ<SUP>2</SUP> 
 de direction portée par le vecteur <I>f</I>(<I>y</I>) ∈ ℝ<SUP>2</SUP>.<BR>
@@ -7507,13 +7508,13 @@ ici toutes les solutions valent 0 en <I>t</I>=0 : il passe une
 infinité de solutions par le point (0,0) et il n’en passe aucune
 par (0,<I>a</I>),  <I>a</I> ≠ 0. Ce phénomène de non unicité/non
 existence vient de la mise sous forme résolue <I>y</I>′=<I>y</I>/<I>t</I> qui
-fait apparaitre une singularité de <I>f</I>(<I>t</I>,<I>y</I>) en <I>t</I>=0.</P><P>On présente dans la suite de cette section 
+fait apparaitre une singularité de <I>f</I>(<I>y</I>,<I>t</I>) en <I>t</I>=0.</P><P>On présente dans la suite de cette section 
 des résultats qualitatifs sur les équations sous forme résolue
 lorsqu’on ne sait pas les résoudre, ainsi que 
 quelques méthodes explicites
 pour certaines équations différentielles que l’on sait
 résoudre.</P><!--TOC subsection Existence et unicité-->
-<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc94">12.2</A>  Existence et unicité</H3><!--SEC END --><P>
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc94">12.2</A>  Existence et unicité</H3><!--SEC END --><P> <A NAME="sec:existence"></A>
 Il s’agit ici de préciser dans quelles conditions le résultat
 intuitif suivant est vrai : étant donné une condition initiale
 <I>y</I>(<I>t</I><SUB>0</SUB>)=<I>y</I><SUB>0</SUB>, il y a une et une seule évolution possible, donc
@@ -7545,23 +7546,23 @@ signifie que les approximations utilisées pour la modélisation
 ne sont plus valable bien avant.
 </LI></UL><P>
 On admettra ce théorème, voici quelques idées heuristiques
-de la preuve. L’équation <I>y</I>′=<I>f</I>(<I>t</I>,<I>y</I>) peut se réécrire sous la forme
+de la preuve. L’équation <I>y</I>′=<I>f</I>(<I>y</I>,<I>t</I>) peut se réécrire sous la forme
 intégrale équivalente 
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>(<I>t</I>)=<I>y</I>(<I>t</I><SUB>0</SUB>)+</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>t</I></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><BR>
 <BR>
 </TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><I>t</I><SUB>0</SUB></TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>y</I>′(<I>t</I>)  <I>dt</I> =
+</TABLE></TD><TD CLASS="dcell"> <I>y</I>′(<I>u</I>)  <I>du</I> =
 <I>y</I>(<I>t</I><SUB>0</SUB>)+</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>t</I></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><BR>
 <BR>
 </TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><I>t</I><SUB>0</SUB></TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>f</I>(<I>t</I>,<I>y</I>(<I>t</I>)) <I>dt</I> </TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>f</I>(<I>y</I>(<I>u</I>),<I>u</I>) <I>du</I> </TD></TR>
 </TABLE><P> 
 Si <I>t</I> est assez proche de <I>t</I><SUB>0</SUB>, on peut approcher l’intégrale par 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>(<I>t</I>) = <I>y</I>(<I>t</I><SUB>0</SUB>) + (<I>t</I>−<I>t</I><SUB>0</SUB>) <I>f</I>(<I>t</I><SUB>0</SUB>,<I>y</I>(<I>t</I><SUB>0</SUB>)) + petite erreur</TD></TR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>(<I>t</I>) = <I>y</I>(<I>t</I><SUB>0</SUB>) + (<I>t</I>−<I>t</I><SUB>0</SUB>) <I>f</I>(<I>y</I>(<I>t</I><SUB>0</SUB>),<I>t</I><SUB>0</SUB>) + petite erreur</TD></TR>
 </TABLE><P>
 C’est exactement ce qu’on fait en suivant le champ des tangentes
 pour approcher une courbe intégrale graphiquement, et si on
@@ -7605,10 +7606,10 @@ condition initiale <I>y</I>(<I>t</I><SUB>0</SUB>)&gt;1 ?</P><!--TOC subsection 
 séparables-->
 <H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc96">12.3.1</A>  Équations à variables
 séparables</H4><!--SEC END --><P><A NAME="@default130"></A><A NAME="@default131"></A>
-Si on peut factoriser <I>f</I>(<I>t</I>,<I>y</I>) en termes ne dépendant que
+Si on peut factoriser <I>f</I>(<I>y</I>,<I>t</I>) en termes ne dépendant que
 de <I>y</I> ou ne dépendant que de <I>t</I>, on dit que l’équation
 est à variable séparable, et on intègre
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>′=<I>f</I>(<I>t</I>,<I>y</I>)=<I>g</I>(<I>t</I>)<I>h</I>(<I>y</I>) ⇒ </TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>dy</I></TD></TR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>′=<I>f</I>(<I>y</I>,<I>t</I>)=<I>g</I>(<I>t</I>)<I>h</I>(<I>y</I>) ⇒ </TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>dy</I></TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><I>h</I>(<I>y</I>)</TD></TR>
 </TABLE></TD><TD CLASS="dcell"> = </TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><I>g</I>(<I>t</I>) 
@@ -7726,7 +7727,7 @@ les combinaisons linéaires de <I>e</I><SUP><I>zt</I></SUP> et <I>e</I><SUP><SPA
 </TABLE><P><B>Exemples </B>: 
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 <I>y</I>′′+3<I>y</I>′−4<I>y</I>=0, équation caractéristique <I>r</I><SUP>2</SUP>+3<I>r</I>−4=0,
-deux racines distinctes <I>r</I>=1, <I>r</I>=4, donc <I>y</I>(<I>t</I>)=α <I>e</I><SUP><I>t</I></SUP>+β <I>e</I><SUP>4<I>t</I></SUP>
+deux racines distinctes <I>r</I>=1, <I>r</I>=−4, donc <I>y</I>(<I>t</I>)=α <I>e</I><SUP><I>t</I></SUP>+β <I>e</I><SUP>−4<I>t</I></SUP>
 </LI><LI CLASS="li-itemize"><I>y</I>′′+2<I>y</I>′+<I>y</I>=0, équation caractéristique <I>r</I><SUP>2</SUP>+2<I>r</I>+1=0,
 a une racine double <I>r</I>=−1, donc <I>y</I>(<I>t</I>)=α <I>e</I><SUP>−<I>t</I></SUP>+β <I>t</I> <I>e</I><SUP>−<I>t</I></SUP>
 </LI><LI CLASS="li-itemize"><I>y</I>′′+2<I>y</I>′+2<I>y</I>=0, équation caractéristique <I>r</I><SUP>2</SUP>+2<I>r</I>+2=0,
@@ -7734,12 +7735,33 @@ deux racines conjuguées <I>r</I>=−1± <I>i</I>, donc
 <I>y</I>(<I>t</I>)=<I>e</I><SUP>−<I>t</I></SUP>(α cos(<I>t</I>)+β sin(<I>t</I>))
 </LI></UL><P>On peut trouver une solution particulière de l’équation avec
 second membre comme dans le cas général (méthode de variation
-des constantes). Pour des second membre combinaison linéaire
+des constantes). Si la solution générale est engendrée par
+<I>y</I><SUB>1</SUB>,...,<I>y</I><SUB><I>n</I></SUB>, on pose :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>i</I>=1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> λ<SUB><I>i</I></SUB> <I>y</I><SUB><I>i</I></SUB></TD></TR>
+</TABLE><P>
+On pose
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>i</I>=1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> λ<SUB><I>i</I></SUB>′ <I>y</I><SUB><I>i</I></SUB>=0  ⇒  
+<I>y</I>′=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>i</I>=1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> λ<SUB><I>i</I></SUB> <I>y</I><SUB><I>i</I></SUB>′</TD></TR>
+</TABLE><P>
+et ainsi de suite jusqu’à la dérivée d’ordre <I>n</I> de <I>y</I>, ces
+<I>n</I>−1 équations et léquation différentielle donnent 
+alors un système linéaire <I>n</I>,<I>n</I> en
+les λ<SUB><I>i</I></SUB>′.</P><P>Pour des second membre combinaison linéaire
 de termes <I>b</I>(<I>t</I>)<I>e</I><SUP><I>rt</I></SUP> avec <I>b</I> polynôme,
 on peut chercher une solution particulière
 combinaison linéaire de <I>a</I>(<I>t</I>)<I>e</I><SUP><I>rt</I></SUP> où <I>a</I> est de même
 degré que <I>b</I> si <I>r</I> n’est pas racine de <I>P</I>, ou de degré le
-degré de <I>b</I> plus la multiplicité de <I>r</I> comme racine de <I>P</I>.</P><!--TOC subsubsection Systèmes différentiels linéaires à coefficients
+degré de <I>b</I> plus la multiplicité de <I>r</I> comme racine de <I>P</I>.
+On peut aussi utiliser la transformation de Laplace et son inverse.</P><!--TOC subsubsection Systèmes différentiels linéaires à coefficients
 constants d’ordre 1.-->
 <H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc99">12.3.4</A>  Systèmes différentiels linéaires à coefficients
 constants d’ordre 1.</H4><!--SEC END --><P><A NAME="@default136"></A>
@@ -7781,7 +7803,8 @@ Les calculs intermédiaires pour diagonaliser la matrice <I>A</I> sont
 exécutés par les commandes <CODE>eigenvals</CODE>, <CODE>eigenvects</CODE>,
 <CODE>jordan</CODE>.</P><P>On peut ensuite calculer une solution particulière par la méthode
 de variation des constantes, ou encore en résolvant 
-<I>z</I>′=<I>Dz</I>+<I>P</I><SUP>−1</SUP><I>b</I>(<I>t</I>) composante par composante. Avec Xcas,
+<I>z</I>′=<I>Dz</I>+<I>P</I><SUP>−1</SUP><I>b</I>(<I>t</I>) composante par composante (ou par transformation
+de Laplace). Avec Xcas,
 il suffit d’ajouter le second membre dans la commande <CODE>desolve</CODE><BR>
 <CODE>desolve(y'=[[1,2],[2,1]]*y+[x,x+1])</CODE></P><P>Si la matrice <I>A</I> n’est pas diagonalisable (ce qui entraine
 qu’elle a au moins une valeur propre de
@@ -7820,7 +7843,9 @@ Soit <I>A</I>=(</P><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRA
 donc si <I>y</I>′=<I>Ay</I> alors 
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I><SUB>1</SUB>′′−(<I>a</I>+<I>d</I>)<I>y</I><SUB>1</SUB>′+<I>ad</I>−<I>bc</I>=0</TD></TR>
 </TABLE><P>
-et <I>y</I><SUB>2</SUB> s’en déduit avec <I>y</I><SUB>1</SUB>′−<I>ay</I><SUB>1</SUB>=<I>by</I><SUB>2</SUB>. On peut ainsi
+et <I>y</I><SUB>2</SUB> s’en déduit avec <I>y</I><SUB>1</SUB>′−<I>ay</I><SUB>1</SUB>=<I>by</I><SUB>2</SUB> (on peut du reste
+partir de cette relation pour établir l’équation d’ordre 2
+vérifiée par <I>y</I><SUB>1</SUB>). On peut ainsi
 résoudre tous les systèmes de dimension 2, même
 si la matrice <I>A</I> n’est pas diagonalisable.</P><P><B>Exercice </B>: Résoudre de cette manière le système<BR>
 <CODE>desolve([y'=[[1,2],[2,1]]*y,y(0)=[1,2]])</CODE></P><P><B>Remarque :</B> allure des courbes en dimension 2.<BR>
@@ -7842,17 +7867,29 @@ orthonormé, les courbes ressemblent à des hyperboles.
 Ce sont des hyperboles si trace(<I>A</I>)=0 (la somme des valeurs
 propres vaut 0 donc le produit des coordonnées dans
 le repère propre vaut une constante),
-ces hyperboles sont équilatères si <I>A</I> est symétrique.</P><!--TOC subsubsection Intégrales premières.-->
+ces hyperboles sont équilatères si <I>A</I> est symétrique.</P><P><B>Remarque :</B>pour un système différentiel à coefficients
+non constants, il n’existe pas de méthode générale de
+résolution. Il arrive que dans certains cas particuliers,
+on puisse résoudre le système, par exemple si on trouve
+une matrice de passage indépendante du temps ramenant
+le système à un système diagonal ou triangulaire :
+un exemple avec
+<I>A</I>=(</P><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>cc</I> 1+<I>t</I></TD><TD ALIGN=center NOWRAP>−<I>t</I> </TD></TR>
+<TR><TD ALIGN=center NOWRAP>−<I>t</I></TD><TD ALIGN=center NOWRAP>1+<I>t</I></TD></TR>
+</TABLE><P>).
+Ou si ∫<I>A</I>(<I>t</I>)  <I>dt</I> commute avec <I>A</I>, on peut prendre 
+exp(∫<I>A</I>(<I>t</I>)) comme solution.</P><!--TOC subsubsection Intégrales premières.-->
 <H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc100">12.3.5</A>  Intégrales premières.</H4><!--SEC END --><P><A NAME="@default137"></A><A NAME="@default138"></A>
 Lorsqu’on ne sait pas résoudre explicitement une équation
 ou un système différentiel, il peut arriver qu’on connaisse
 une ou des constantes du mouvement en cinématique, appelées
-aussi intégrales premières. C’est le cas par exemple de
+aussi intégrales premières. </P><P>C’est le cas par exemple de
 l’énergie totale (mécanique plus cinétique) pour des forces
-conservatives. 
-En dimension un, cela permet de se ramener à une équation
-du premier ordre (alors que l’équation fondamentale de la
-dynamique est d’ordre 2) à variables séparables :
+conservatives. En dimension un, la connaissance de l’intégrale 
+première énergie
+totale permet de ramener l’équation fondamentale de la
+dynamique d’ordre 2 à une équation
+du premier ordre à variables séparables :
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
@@ -7860,7 +7897,29 @@ dynamique est d’ordre 2) à variables séparables :
 </TABLE><P>
 En dimension plus grande, cela peut permettre de 
 connaitre la forme de la courbe intégrale et même
-de résoudre complètement l’équation.</P><P><B>Exemple </B> Cas d’un point de ℝ<SUP>3</SUP>
+parfois de résoudre complètement l’équation (cas du problème
+à deux corps ci-dessous).</P><P>Autre exemple, la découverte d’un facteur 
+intégrant pour la forme différentielle <I>Mdx</I>+<I>Ndy</I>
+donne une intégrale première pour l’équation <I>dy</I>/<I>dx</I>=<I>M</I>/<I>N</I>,
+en effet ω=φ(<I>Mdx</I>+<I>Ndy</I>)=<I>dV</I>(<I>x</I>,<I>y</I>) est nul
+sur une courbe intégrale, donc <I>V</I>(<I>x</I>,<I>y</I>)
+est constant, les courbes intégrales sont donc 
+les courbes de niveau de <I>V</I>(<I>x</I>,<I>y</I>). Une équation à variables
+séparables est un cas particulier, avec <I>M</I> ne dépendant que de
+<I>x</I> et <I>N</I> de <I>y</I>.</P><P>Pour un système autonome, <I>E</I> est une intégrale première si
+grad(<I>E</I>).<I>f</I>=0, en effet
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>d</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>dt</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>E</I>(<I>y</I>(<I>t</I>))= </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∂ <I>E</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">∂ <I>y</I><SUB><I>j</I></SUB></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>f</I><SUB><I>j</I></SUB></TD></TR>
+</TABLE><P><B>Problème à deux corps </B> 
+Cas d’un point de ℝ<SUP>3</SUP>
 soumis à une force centrale<A NAME="@default139"></A><A NAME="@default140"></A>
 comme la gravité ou la force coulombienne :
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>d</I><SUP>2</SUP> </TD><TD CLASS="dcell"><TABLE CLASS="display" STYLE="width:100%;"><TR><TD CLASS="dcell" ALIGN="center" STYLE="width:90%;"><HR CLASS="hbar"></TD><TD CLASS="dcell" ALIGN="center" STYLE="width:10%;">▸</TD></TR>
@@ -7999,7 +8058,7 @@ ayant l’origine pour foyer et parcourue selon la loi des aires
 (l’aire balayée par le segment origine-point mobile est
 proportionnelle au temps).</P><!--TOC subsubsection Quelques autres méthodes-->
 <H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc101">12.3.6</A>  Quelques autres méthodes</H4><!--SEC END --><P>
-On peut encore citer : recherche d’un facteur intégrand, 
+On peut encore citer : 
 changement de fonction, changement de variables, 
 équation homogène, équations de Bernoulli,
 de Clairault, de Ricatti, développements en séries
@@ -8093,7 +8152,7 @@ Si toutes les racines de l’équation caractéristique sont
 de partie réelle négative, la solution générale
 de l’équation homogène tend vers 0 à l’infini,
 elle est appelée régime transitoire. Quelle que
-soit la condition initiale, on tend ver la solution particulière
+soit la condition initiale, on tend vers la solution particulière
 appelée régime permanent.</P><!--TOC subsubsection Forçage périodique-->
 <H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc104">12.4.2</A>  Forçage périodique</H4><!--SEC END --><P><A NAME="@default141"></A>
 Il arrive souvent qu’un système physique soit soumis à
@@ -8151,8 +8210,8 @@ deux racines consécutive de <I>f</I>, la solution va rester entre
 ces deux racines consécutives. Comme <I>f</I> ne s’annule pas
 entre deux racines consécutives, <I>f</I> est de signe constant
 donc la solution est monotone,
-et tend vers une des racines lorsque 
-<I>t</I> → ± ∞<SUP><A NAME="text21" HREF="#note21">21</A></SUP>.
+et tend vers une des racines lorsque <I>t</I> → ± ∞
+<SUP><A NAME="text21" HREF="#note21">21</A></SUP>.
 Si <I>f</I>&gt;0, on tend vers la plus grande des racines lorsque <I>t</I>
 → +∞, sinon vers la plus petite. Si la condition 
 initiale est au-delà de la plus grande racine ou en-deça
@@ -8202,9 +8261,10 @@ initiale </EM><EM><I>y</I>(<I>t</I></EM><SUB><EM>0</EM></SUB><EM>)</EM><EM> est
 située entre deux racines, la solution est monotone entre
 ces deux racines et tend vers une des racines lorsque </EM><EM><I>t</I>→
 ± ∞</EM><EM>. Si </EM><EM><I>y</I>(<I>t</I></EM><SUB><EM>0</EM></SUB><EM>)</EM><EM> est situé au-delà de la dernière racine
-ou en-decà de la première racine, la solution est monotone et
-tend vers cette racine ou vers l’infini lorsque </EM><EM><I>t</I>→
-± ∞</EM><EM>.</EM><P><EM>Si </EM><EM><I>f</I>′(<I>r</I></EM><SUB><EM><I>k</I></EM></SUB><EM>) &lt; 0</EM><EM>, la solution </EM><EM><I>y</I>=<I>r</I></EM><SUB><EM><I>k</I></EM></SUB><EM> est appelée équilibre
+ou en-decà de la première racine (si elles existent), 
+la solution est monotone et
+tend vers cette racine lorsque </EM><EM><I>t</I>→ ± ∞</EM><EM>
+ou diverge (en temps fini ou infini).</EM><P><EM>Si </EM><EM><I>f</I>′(<I>r</I></EM><SUB><EM><I>k</I></EM></SUB><EM>) &lt; 0</EM><EM>, la solution </EM><EM><I>y</I>=<I>r</I></EM><SUB><EM><I>k</I></EM></SUB><EM> est appelée équilibre
 stable : pour toute condition initiale situé entre </EM><EM><I>r</I></EM><SUB><EM><I>k</I>−1</EM></SUB><EM> et </EM><EM><I>r</I></EM><SUB><EM><I>k</I>+1</EM></SUB><EM>
 la solution tend vers </EM><EM><I>r</I></EM><SUB><EM><I>k</I></EM></SUB><EM> lorsque </EM><EM><I>t</I> → +∞</EM><EM> 
 et la convergence se fait à vitesse
@@ -9053,7 +9113,7 @@ si on trouve un résultat différent de 1, on passe au polynôme
 suivant (généré aléatoirement).
 On peut calculer la probabilité de réussir en dénombrant
 les polynômes irréductibles de degré <I>n</I> à l’aide
-de la formule <I>x</I><SUP><I>p</I><SUP><I>n</I></SUP></SUP>−<I>x</I>=∏<SUB><I>P</I>/ deg(<I>P</I>) divise  <I>n</I></SUB> <I>P</I>.</P><P>Trouver un élément cyclique<A NAME="@default154"></A> se fait aussi au hasard
+de la formule <I>x</I><SUP><I>p</I><SUP><I>n</I></SUP></SUP>−<I>x</I>=∏<SUB><I>P</I>  irréductible unitaire / deg(<I>P</I>) divise  <I>n</I></SUB> <I>P</I>.</P><P>Trouver un élément cyclique<A NAME="@default154"></A> se fait aussi au hasard
 (<CODE>rand(g)</CODE> en Xcas si <CODE>g</CODE> est le générateur
 d’un corps fini), la
 probabilité se calcule à l’aide de l’indicatrice d’Euler de
@@ -9912,7 +9972,16 @@ noyau, forment une base de l’espace vectoriel <I>K</I> sur ℤ/<I>p</I>ℤ. Do
 nombre d’éléments de <I>K</I> est inférieur ou égal au degré du polynôme
 <I>X</I><SUP><I>p</I><SUP><I>k</I></SUP></SUP>−<I>X</I> (puisque <I>X</I><SUP>(<I>p</I><SUP><I>k</I></SUP>)</SUP>−<I>X</I> est divisible par
 <I>X</I>−<I>x</I> pour tout <I>x</I>∈ <I>K</I>),
-donc le degré de <I>F</I> est inférieur ou égal à <I>k</I>.</P><P>Donc <I>P</I><SUB><I>k</I></SUB> est égal au pgcd de <I>P</I>/Π<SUB><I>j</I>&lt;<I>k</I></SUB> <I>P</I><SUB><I>j</I></SUB> avec <I>X</I><SUP><I>p</I><SUP><I>k</I></SUP></SUP>−<I>X</I>.</P><P><B>Algorithme distinct degree factorization</B><BR>
+donc le degré de <I>F</I> est inférieur ou égal à <I>k</I>.
+(En fait le degré de <I>F</I> doit diviser <I>k</I>, en effet
+on écrit l’idendité de Bézout
+pour degré de <I>F</I> et <I>k</I>, on a alors
+<I>u</I>deg(<I>F</I>)± <I>vk</I>=±pgcd(deg(<I>F</I>),<I>k</I>),
+on change de membre les signes − pour n’avoir que des entiers positifs
+on prend <I>X</I> puissance <I>p</I> à la puissance des deux membres, on en
+déduit que <I>Y</I><SUP><I>p</I><SUP>gcd(<I>k</I>,deg(<I>F</I>))</SUP></SUP>=<I>Y</I> (mod <I>F</I> )  donc
+degré de <I>F</I> divise <I>k</I> sinon il y a trop de solutions à l’équation
+ci-dessus dans le corps).</P><P>Donc <I>P</I><SUB><I>k</I></SUB> est égal au pgcd de <I>P</I>/Π<SUB><I>j</I>&lt;<I>k</I></SUB> <I>P</I><SUB><I>j</I></SUB> avec <I>X</I><SUP><I>p</I><SUP><I>k</I></SUP></SUP>−<I>X</I>.</P><P><B>Algorithme distinct degree factorization</B><BR>
 Argument: un polynôme <I>P</I> à coefficients entiers 
 sans facteur multiple et primitif.<BR>
 Valeur renvoyée: la liste <I>L</I> des produits des facteurs irréductibles et du
@@ -22604,10 +22673,9 @@ les puissances de <I>A</I> forment une famille d’un
 espace vectoriel de dimension finie <I>n</I><SUP>2</SUP>, donc la famille est liée
 à partir de <I>n</I><SUP>2</SUP>+1 éléments, en fait on peut montrer
 que c’est le cas si on considère <I>I</I>,<I>A</I>,...,<I>A</I><SUP><I>n</I></SUP>.
-</DD><DT CLASS="dt-thefootnotes"><A NAME="note21" HREF="#text21">21</A></DT><DD CLASS="dd-thefootnotes">On peut prouver 
-l’existence globale de la solution
+</DD><DT CLASS="dt-thefootnotes"><A NAME="note21" HREF="#text21">21</A></DT><DD CLASS="dd-thefootnotes">On peut prouver l’existence globale de la solution
 exactement comme pour l’exemple <I>y</I>′=<I>y</I>(1−<I>y</I>) de la section 
-<A HREF="#sec:existence">??</A>
+<A HREF="#sec:existence">12.2</A>
 </DD><DT CLASS="dt-thefootnotes"><A NAME="note22" HREF="#text22">22</A></DT><DD CLASS="dd-thefootnotes">Il n’existe à ma connaissance
 pas de résultat sur pourquoi ces choix de <I>f</I> donnent 
 des entiers bien répartis par rapport au hasard

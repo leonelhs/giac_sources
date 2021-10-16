@@ -141,6 +141,7 @@ Exemples/arit/makegf.xws \
 Exemples/arit/prime.xws \
 Exemples/arit/pollard.xws \
 Exemples/demo/calcform.xws \
+Exemples/demo/dft.xws \
 Exemples/demo/graphe_proba.xws \
 Exemples/demo/image.xws \
 Exemples/demo/terre.jpg \

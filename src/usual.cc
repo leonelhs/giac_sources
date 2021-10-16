@@ -5349,11 +5349,26 @@ namespace giac {
       return args;
     if (args.type==_FRAC){
       gen n=args._FRACptr->num,d=args._FRACptr->den;
+      if (is_cinteger(d) && !is_integer(d)){
+	n=n*conj(d,contextptr);
+	d=d*conj(d,contextptr);
+      }
       if (is_cinteger(n) && is_integer(d)){
-	if (is_positive(args,contextptr) || n.type==_CPLX)
+	if (is_positive(args,contextptr))
 	  return iquo(n,d);
-	else
+	if (n.type!=_CPLX)
 	  return iquo(n,d)-1;
+	gen nr,ni;
+	reim(n,nr,ni,contextptr);
+	if (is_positive(nr,contextptr))
+	  nr=iquo(nr,d);
+	else
+	  nr=iquo(nr,d)-1;
+	if (is_positive(ni,contextptr))
+	  ni=iquo(ni,d);
+	else
+	  ni=iquo(ni,d)-1;
+	return nr+ni*cst_i;
       }
     }
     /* old code, changed for floor(sqrt(2))
@@ -5362,6 +5377,40 @@ namespace giac {
     gen tmp=subst(args,l,lnew,false,contextptr);
     */
     vecteur l(lvar(args));
+    gen chk;
+    if (l.size()==2){
+      if (l[0]==cst_pi)
+	chk=l[1];
+      if (l[1]==cst_pi)
+	chk=l[0];
+    }
+    else {
+      if (l.size()==1)
+	chk=l[0];
+    }
+    gen a,b;
+    if (chk.type==_IDNT && is_linear_wrt(args,chk,a,b,contextptr)){
+      gen g2=chk._IDNTptr->eval(1,chk,contextptr);
+      if ((g2.type==_VECT) && (g2.subtype==_ASSUME__VECT)){
+	vecteur v=*g2._VECTptr;
+	if ( (v.size()==3) && (v.front()==vecteur(0) || v.front()==_DOUBLE_ || v.front()==_ZINT || v.front()==_SYMB || v.front()==0) && (v[1].type==_VECT && v[1]._VECTptr->size()==1 && v[1]._VECTptr->front().type==_VECT) ){
+	  vecteur v1=*v[1]._VECTptr->front()._VECTptr;
+	  if (v1.size()==2){
+	    gen A=a*v1[0]+b,B=a*v1[1]+b,Af,Bf;
+	    Af=_floor(A,contextptr);
+	    Bf=_floor(B,contextptr);
+	    if (Af==Bf)
+	      return Af;
+	    if (Af==Bf+1 && is_zero(ratnormal(A-Af)) && v[2].type==_VECT && equalposcomp(*v[2]._VECTptr,v1[0]))
+	      return Bf;
+	    if (Bf==Af+1 && is_zero(ratnormal(B-Bf)) && v[2].type==_VECT){
+	      if (equalposcomp(*v[2]._VECTptr,v1[1]))
+		return Af;
+	    }
+	  }
+	}
+      }
+    }
     vecteur lnew(l);
     int ls=l.size();
     for (int i=0;i<ls;i++){
@@ -5526,6 +5575,8 @@ namespace giac {
     if (args.type==_CPLX)
       return _round(*args._CPLXptr,contextptr)+cst_i*_round(*(args._CPLXptr+1),contextptr);
     gen tmp=args+plus_one_half;
+    if (!is_zero(im(tmp,contextptr)))
+      tmp=tmp+plus_one_half*cst_i;
     if (tmp.type==_VECT)
       tmp.subtype=args.subtype;
     return _floor(tmp,contextptr);
@@ -6227,7 +6278,7 @@ namespace giac {
   gen _version(const gen & a,GIAC_CONTEXT){
     if ( a.type==_STRNG && a.subtype==-1) return  a;
     if (abs_calc_mode(contextptr)==38)
-      return string2gen(gettext("Powered by Giac 1.1, B. Parisse and R. De Graeve, Institut Fourier, Universite Grenoble I, France"),false);
+      return string2gen(gettext("Powered by Giac 1.1.3, B. Parisse and R. De Graeve, Institut Fourier, Universite Grenoble I, France"),false);
     return string2gen(version(),false);
   }
   static const char _version_s []="version";
@@ -6561,19 +6612,35 @@ namespace giac {
 	return unsigned_inf;
       return factorial(x.val-1);
     }
-    if (x.type==_FRAC && x._FRACptr->den==2 && x._FRACptr->num.type==_INT_){
-      int n=x._FRACptr->num.val;
-      // compute Gamma(n/2)
-      gen factnum=1,factden=1;
-      for (;n>1;n-=2){
-	factnum=(n-2)*factnum;
-	factden=2*factden;
+    if (x.type==_FRAC &&  x._FRACptr->num.type==_INT_){
+      if (x._FRACptr->den==2){
+	int n=x._FRACptr->num.val;
+	// compute Gamma(n/2)
+	gen factnum=1,factden=1;
+	for (;n>1;n-=2){
+	  factnum=(n-2)*factnum;
+	  factden=2*factden;
+	}
+	for (;n<1;n+=2){
+	  factnum=2*factnum;
+	  factden=n*factden;
+	}
+	return factnum/factden*sqrt(cst_pi,contextptr);
       }
-      for (;n<1;n+=2){
-	factnum=2*factnum;
-	factden=n*factden;
+      // normalize Gamma(n/d) to fractional part ?
+      gen xd=evalf_double(x,1,contextptr),X=x;
+      if (xd.type==_DOUBLE_){
+	double d=std::floor(xd._DOUBLE_val);
+	if (d<GAMMA_LIMIT){
+	  xd=1;
+	  for (int i=d;i>0;--i){
+	    X-=1;
+	    xd=xd*X;
+	  }
+	  return xd*symbolic(at_Gamma,X);
+	}
       }
-      return factnum/factden*sqrt(cst_pi,contextptr);
+      // then complement formula if in ]0..1/2[ Gamma(z)=pi/sin(pi*z)/Gamma(1-z) ?
     }
 #if 0 // def HAVE_LIBGSL
     if (x.type==_DOUBLE_)
@@ -6692,6 +6759,204 @@ namespace giac {
   static define_unary_function_eval_taylor( __Gamma,&_Gamma,D_at_Gamma,&taylor_Gamma,_Gamma_s);
 #endif
   define_unary_function_ptr5( at_Gamma ,alias_at_Gamma,&__Gamma,0,true);
+
+  double upper_incomplete_gammad(double s,double z,bool regularize){
+    // returns -1 if continued fraction expansion is not convergent
+    // if s is a small integer = poisson_cdf(z,s-1)*Gamma(s)
+    if (s==int(s) && s>0)
+      return regularize?poisson_cdf(z,int(s-1)):poisson_cdf(z,int(s-1))*std::exp(lngamma(s));
+#if 0 // not tested
+    // if z large Gamma(s,z) = z^(s-1)*exp(z)*[1 + (s-1)/z + (s-1)*(s-2)/z^2 +...
+    if (s>100 && std::abs(z)>1.1*s){
+      long_double res=1,pi=1,S=s-1,Z=z;
+      for (;pi>1e-17;--S){
+	pi *= S/Z;
+	res += pi;
+      }
+      return pi*std::exp(z-(s-1)*std::log(z));
+    }
+#endif
+    // int_z^inf t^(s-1) exp(-t) dt
+    // Continued fraction expansion: a1/(b1+a2/(b2+...)))
+    // a1=1, a2=1-s, a3=1, a_{m+2}=a_m+1
+    // b1=z, b2=1, b_odd=z, b_{even}=1
+    // P0=0, P1=a1, Q0=1, Q1=b1
+    // j>=2: Pj=bj*Pj-1+aj*Pj-2, Qj=bj*Qj-1+aj*Qj-2
+    long_double Pm2=0,Pm1=1,Pm,Qm2=1,Qm1=z,Qm,a2m1=1,a2m=1-s,b2m1=z,b2m=1,pmqm;
+    long_double deux=9007199254740992.,invdeux=1/deux;
+    for (long_double m=1;m<200;++m){
+      // even term
+      Pm=b2m*Pm1+a2m*Pm2;
+      Qm=b2m*Qm1+a2m*Qm2;
+      Pm2=Pm1; Pm1=Pm;
+      Qm2=Qm1; Qm1=Qm;
+      a2m++;
+      // odd term
+      Pm=b2m1*Pm1+a2m1*Pm2;
+      Qm=b2m1*Qm1+a2m1*Qm2;
+      Pm2=Pm1; Pm1=Pm;
+      Qm2=Qm1; Qm1=Qm;
+      a2m1++;
+      pmqm=Pm/Qm;
+      if (std::abs(Pm2/Qm2-pmqm)<1e-16){
+	long_double coeff=s*std::log(z)-z;
+	if (regularize)
+	  coeff -= lngamma(s);
+	return pmqm*std::exp(coeff);
+      }
+      // avoid overflow
+      if (std::abs(Pm)>deux){
+	Pm2 *= invdeux;
+	Qm2 *= invdeux;
+	Pm1 *= invdeux;
+	Qm1 *= invdeux;
+      }
+    } 
+    // alt a1=1, a2=s-1, a3=2*(s-2), a_{m+1}=m*(s-m)
+    // b1=1+z-s, b_{m+1}=2+b_{m}
+    return -1;
+  }
+
+  // lower_incomplete_gamma(a,z)=z^(-a)*gammaetoile(a,z)
+  // gammaetoile(a,z)=sum(n=0..inf,(-z)^n/(a+n)/n!)
+  gen gammaetoile(const gen & a,const gen &z,GIAC_CONTEXT){
+    gen res=0,resr,resi,fact=1,zn=1,tmp,tmpr,tmpi;
+    double eps2=epsilon(contextptr); eps2=eps2*eps2;
+    if (eps2<=0)
+      eps2=1e-14;
+    for (int n=0;;){
+      tmp=zn/((a+n)*fact);
+      reim(tmp,tmpr,tmpi,contextptr);
+      reim(res,resr,resi,contextptr);
+      if (is_greater(eps2*(resr*resr+resi*resi),tmpr*tmpr+tmpi*tmpi,contextptr))
+	break;
+      res += tmp;
+      ++n;
+      fact=n*fact;
+      zn=(-z)*zn;
+    }
+    return res;
+  }
+
+  static gen lower_incomplete_gamma(double s,double z,bool regularize,GIAC_CONTEXT){ // regularize=true by default
+    // should be fixed if z is large using upper_incomplete_gamma asymptotics
+    if (z>0 && -z+s*std::log(z)-lngamma(s+1)<-37)
+      return regularize?1:std::exp(lngamma(s));
+    if (z<0){
+      gen zs=-std::pow(-z,s)*gammaetoile(s,z,contextptr);
+      return zs;
+    }
+    if (z>=s){
+      double res=upper_incomplete_gammad(s,z,regularize);
+      if (res>=0){
+	if (regularize)
+	  return 1-res;
+	else
+	  return Gamma(s,context0)-res;
+      }
+    }
+    // gamma(s,z) = int(t^s*e^(-t),t=0..z)
+    // Continued fraction expansion: a1/(b1+a2/(b2+...)))
+    // here a1=1, a2=-s*z, a3=z, then a_{2m}=a_{2m-2}-z and a_{2m+1}=a_{2m-1}+z
+    // b1=s, b_{n}=s+n-1
+    // P0=0, P1=a1, Q0=1, Q1=b1
+    // j>=2: Pj=bj*Pj-1+aj*Pj-2, Qj=bj*Qj-1+aj*Qj-2
+    // Here bm=1, am=em, etc.
+    long_double Pm2=0,Pm1=1,Pm,Qm2=1,Qm1=s,Qm,a2m=-(s-1)*z,a2m1=0,bm=s;
+    long_double deux=9007199254740992.,invdeux=1/deux;
+    for (long_double m=1;m<100;++m){
+      // even term
+      a2m -= z;
+      bm++;
+      Pm=bm*Pm1+a2m*Pm2;
+      Qm=bm*Qm1+a2m*Qm2;
+      Pm2=Pm1; Pm1=Pm;
+      Qm2=Qm1; Qm1=Qm;
+      // odd term
+      a2m1 +=z;
+      bm++;
+      Pm=bm*Pm1+a2m1*Pm2;
+      Qm=bm*Qm1+a2m1*Qm2;
+      // cerr << Pm/Qm << " " << Pm2/Qm2 << endl;
+      if (std::abs(Pm/Qm-Pm2/Qm2)<1e-16){
+	double res=Pm/Qm;
+	if (regularize)
+	  res *= std::exp(-z+s*std::log(z)-lngamma(s));
+	else
+	  res *= std::exp(-z+s*std::log(z));
+	return res;
+      }	
+      Pm2=Pm1; Pm1=Pm;
+      Qm2=Qm1; Qm1=Qm;
+      // normalize
+#if 1
+      if (std::abs(Pm)>deux){
+	Pm2 *= invdeux; Qm2 *= invdeux; Pm1 *= invdeux; Qm1 *= invdeux;
+      }
+#else
+      Pm=1/std::sqrt(Pm1*Pm1+Qm1*Qm1);
+      Pm2 *= Pm; Qm2 *= Pm; Pm1 *= Pm; Qm1 *= Pm;
+#endif
+    }
+    return undef; //error
+  }
+
+  gen _lower_incomplete_gamma(const gen & args,GIAC_CONTEXT){
+    if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type!=_VECT)
+      return gensizeerr(contextptr);
+    vecteur v=*args._VECTptr;
+    int s=v.size();
+    if (s>=2 && (v[0].type==_DOUBLE_ || v[1].type==_DOUBLE_)){
+      v[0]=evalf_double(v[0],1,contextptr);
+      v[1]=evalf_double(v[1],1,contextptr);
+    }
+    if ( (s==2 || s==3) && v[0].type==_DOUBLE_ && v[1].type==_DOUBLE_ )
+      return lower_incomplete_gamma(v[0]._DOUBLE_val,v[1]._DOUBLE_val,s==3?!is_zero(v[2]):false,contextptr);
+    if (s<2 || s>3)
+      return gendimerr(contextptr);
+    if (s==2 && is_zero(v[1],contextptr))
+      return 0;
+    if (s==2 && v[1]==plus_inf)
+      return Gamma(v[0],contextptr);
+    if (s==2 && v[0].type==_INT_){
+      if (v[0].val<=0)
+	return undef;
+      int a=v[0].val-1;
+      // int(e^(-t)*t^a,t)=-e^(-t)*sum_{b=0}^a(t^b*(a!/(a-b)!))
+      gen res=0,t(v[1]),fa(1);
+      for (int b=a;;--b){
+	res += pow(t,b,contextptr)*fa;
+	if (b==0)
+	  break;
+	fa=b*fa;
+      }
+      res=-exp(-t,contextptr)*res+fa;
+      return res;
+    }
+    if (abs_calc_mode(contextptr)!=38) // check may be removed if ugamma declared
+      return symbolic(at_lower_incomplete_gamma,args);
+    if (s==3){
+      if (is_zero(v[2]))
+	return Gamma(v[0],contextptr)-symbolic(at_Gamma,makesequence(v[0],v[1]));
+      return 1-symbolic(at_Gamma,makesequence(v[0],v[1],1));
+    }
+    return Gamma(v[0],contextptr)-symbolic(at_Gamma,args);
+  }
+  static const char _lower_incomplete_gamma_s []="igamma"; // "lower_incomplete_gamma"
+  static define_unary_function_eval (__lower_incomplete_gamma,&_lower_incomplete_gamma,_lower_incomplete_gamma_s);
+  define_unary_function_ptr5( at_lower_incomplete_gamma ,alias_at_lower_incomplete_gamma,&__lower_incomplete_gamma,0,true);
+
+  gen _igamma_exp(const gen & args,GIAC_CONTEXT){
+    return symbolic(at_igamma_exp,args);
+  }
+  static const char _igamma_exp_s []="igamma_exp";
+  static define_unary_function_eval (__igamma_exp,&_igamma_exp,_igamma_exp_s);
+  define_unary_function_ptr5( at_igamma_exp ,alias_at_igamma_exp,&__igamma_exp,0,true);
+
+  static gen igamma_replace(const gen & g,GIAC_CONTEXT){
+    return Gamma(g[0],contextptr)-_igamma_exp(g,contextptr)*exp(-g[1],contextptr);
+  }  
 
   // diGamma function
   static gen taylor_Psi_minus_ln(const gen & lim_point,const int ordre,const unary_function_ptr & f, int direction,gen & shift_coeff,GIAC_CONTEXT){
@@ -9089,9 +9354,9 @@ namespace giac {
   const alias_type  solve_fcns_tab_alias[]={  (const alias_type)&__exp, (const alias_type)&__ln, (const alias_type)&__sin, (const alias_type)&__cos, (const alias_type)&__tan, (const alias_type)&__asin, (const alias_type)&__acos, (const alias_type)&__atan, (const alias_type)&__sinh, (const alias_type)&__cosh, (const alias_type)&__tanh, (const alias_type)&__asinh, (const alias_type)&__acosh, (const alias_type)&__atanh,0};
   const unary_function_ptr * const solve_fcns_tab = (const unary_function_ptr * const)solve_fcns_tab_alias;
 
-  const alias_type limit_tab_alias[]={(const alias_type)&__Gamma,(const alias_type)&__Psi,(const alias_type)&__erf,(const alias_type)&__Si,(const alias_type)&__Ci,(const alias_type)&__Ei,0};
+  const alias_type limit_tab_alias[]={(const alias_type)&__Gamma,(const alias_type)&__Psi,(const alias_type)&__erf,(const alias_type)&__Si,(const alias_type)&__Ci,(const alias_type)&__Ei,(const alias_type)&__lower_incomplete_gamma,0};
   const unary_function_ptr * const limit_tab = (const unary_function_ptr * const) limit_tab_alias;
-  const gen_op_context limit_replace [] = {Gamma_replace,Psi_replace,erf_replace,Si_replace,Ci_replace,Ei_replace,0};
+  const gen_op_context limit_replace [] = {Gamma_replace,Psi_replace,erf_replace,Si_replace,Ci_replace,Ei_replace,igamma_replace,0};
 
   // vector<unary_function_ptr> inequality_sommets(inequality_tab,inequality_tab+sizeof(inequality_tab)/sizeof(unary_function_ptr));
   int is_inequality(const gen & g){

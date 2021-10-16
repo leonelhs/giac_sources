@@ -1678,6 +1678,15 @@ namespace xcas {
     // check filename
     if ( !newfile )
       return false;
+#if 1 // ndef WIN32
+    string sn=get_path(unix_path(newfile));
+    if (!sn.empty()){
+#ifndef HAVE_NO_CWD
+      // _cd(string2gen(sn,false),contextptr);
+      chdir(sn.c_str());
+#endif
+    }
+#endif
     string s=remove_extension(newfile)+".xws";
     if (is_file_available(s.c_str())){
       int i=fl_ask("%s",("File "+s+" exists. Overwrite?").c_str());
@@ -1907,6 +1916,15 @@ namespace xcas {
     if (!urlname0 || !_insert )
       return false;
     string urlname = unix_path(urlname0).c_str();
+#if 1 // ndef WIN32
+    string sn=get_path(urlname);
+    if (!sn.empty()){
+#ifndef HAVE_NO_CWD
+      // _cd(string2gen(sn,false),contextptr);
+      chdir(sn.c_str());
+#endif
+    }
+#endif
     FILE * f=fopen(urlname.c_str(),"r");
     if (!f){
       fl_message("%s",("Unable to load "+urlname).c_str());

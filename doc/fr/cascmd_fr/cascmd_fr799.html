@@ -6,45 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les sorties de ab : printpow</TITLE>
+<TITLE>Fonction testant le type de son argument: compare</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr798.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr800.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc927">8.4.10</A>  Les sorties de <I>a</I><SUP><I>b</I></SUP> : <TT>printpow</TT></H3><P><A NAME="@default1435"></A>
-L’instruction <TT>printpow</TT> modifie la façon dont les puissances sont 
-affichées en mode texte ou après une commande <TT>print</TT>.<BR>
-<TT>printpow</TT> a comme argument soit <TT>0</TT>, soit <TT>1</TT>, soit <TT>-1</TT>.<BR>
-<TT>printpow(0)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture mathématique 
-<TT>a</TT><CODE><TT>^</TT></CODE><TT>b</TT>.<BR>
-<TT>printpow(1)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture en langage C
-<TT>pow(a,b)</TT>.<BR>
-<TT>printpow(-1)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture d’autres langages
-<TT>a**b</TT>.<BR>
-De plus ces 3 syntaxes sont admises en input.<BR>
- On tape :
-</P><DIV CLASS="center"><TT>printpow(0)</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>3 écrit en bleu et 8 comme
-réponse</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc928">8.4.7</A>  Fonction testant le type de son argument: <TT>compare</TT></H3><P><A NAME="@default1434"></A>
+<TT>compare</TT> est une fonction qui a deux arguments et qui renvoie 
+<TT>1</TT> si ses arguments ont des types différents ou
+ou si ses arguments sont de même type et sont mis dans l’ordre croissant,
+et qui renvoie <TT>0</TT> sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>printpow(1)</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT> 3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>compare(1,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>pow(2,3) écrit en bleu et 8 comme
-réponse</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>printpow(-1)</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>compare(2,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2**3 écrit en bleu et 8 comme
-réponse</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>compare("3","a")</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>compare("a",3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>compare(3,"a")</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>compare("a",3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+En effet on a :
+<TT>type(3)=DOM_INT=2</TT> et <TT>type("a")=DOM_STRING=12</TT>
+</P><HR>
 <A HREF="cascmd_fr798.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr800.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

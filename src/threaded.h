@@ -53,7 +53,7 @@
 #include <gmpxx.h>
 #endif
 
-#ifdef HAVE_SYS_TIME_H
+#if defined HAVE_SYS_TIME_H && !defined VISUALC13
 #include <time.h>
 #else
 #define clock_t int

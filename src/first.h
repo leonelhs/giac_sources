@@ -185,12 +185,6 @@ typedef unsigned __int64 ulonglong ;
 #define M_PI       3.14159265358979323846
 #endif
 #define YY_NO_UNISTD_H
-#ifndef _HAS_ITERATOR_DEBUGGING
-#define _HAS_ITERATOR_DEBUGGING 0
-#endif
-#ifndef _ITERATOR_DEBUG_LEVEL
-#define _ITERATOR_DEBUG_LEVEL 0
-#endif
 #ifndef _SECURE_SCL
 #define _SECURE_SCL 0
 #endif

@@ -6,34 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour utiliser une chaîne comme nom de commande : expr</TITLE>
+<TITLE>Pour écrire des sorties dans un fichier : fopen fprint fclose</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr819.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr821.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc949">8.5.6</A>  Pour utiliser une chaîne comme nom de commande : <TT>expr</TT></H3><P><A NAME="@default1492"></A><A NAME="sec:expr"></A>
-<TT>expr</TT> permet d’utiliser une chaîne de caractères comme une 
-commande.<BR>
-<TT>expr</TT> est surtout utile dans un programme.<BR>
-<TT>expr</TT> a comme argument une chaîne de caractères pouvant être 
-interprétée comme une commande (ou le nom d’une 
-variable qui contient une chaîne ou une expression renvoyant une chaîne).<BR>
-<TT>expr</TT> transforme la chaîne en une expression, puis évalue cette 
-expression :<BR>
-pour faire une affectation, on ne doit pas écrire <TT>expr("a"):=2</TT>, mais on
-doit écrire <TT>expr("a:=2")</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr818.html#sec:diese">8.5.4</A>)<BR>
+<H3 CLASS="subsection"><A NAME="htoc950">8.5.3</A>  Pour écrire des sorties dans un fichier : <TT>fopen fprint fclose</TT></H3><P><A NAME="@default1491"></A><A NAME="@default1492"></A><A NAME="@default1493"></A>
+Voici les commandes pour ecrire dans un fichier :<BR>
+<TT>f:=fopen("essai")</TT> crèe un fichier du nom spécifié ici <TT>essai</TT> 
+(et donc l’efface si celui-ci existait déjà) et lui associer la variable 
+<TT>f</TT>.<BR>
+<TT>fprint(f,12)</TT> écrit 12 dans le fichier <TT>essai</TT>.<BR>
+<TT>fclose(f)</TT> ferme le fichier <TT>essai</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>expr("c:=1")</TT></DIV><P>
+</P><PRE CLASS="verbatim">testfprint(nom):={
+ local a,f;
+ a:=[];
+ f:=fopen(nom);
+ for (k:=1;k&lt;11;k++){
+ fprint(f,k);
+ }
+ fclose(f);
+ return a;
+ }
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>testfprint("toto")</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La variable c contient 1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>a:="ifactor(54)";expr(a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>expr("ifactor(54)")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>la création d’un fichier "toto" dans lequel il y a 12345678910</TT></DIV><HR>
 <A HREF="cascmd_fr819.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr821.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

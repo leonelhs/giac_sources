@@ -636,7 +636,9 @@ namespace giac {
       return common_EXT(b,a,l,contextptr);
     if (as==3 && bs==3 && is_one(a[0]) && is_one(b[0]) && is_zero(a[1]) && is_zero(b[1]) && a[2]==-b[2]){ // sqrt(X) and sqrt(-X)
       b=algebraic_EXTension(makevecteur(cst_i,0),a);
-      return a;
+      gen tmp=a;
+      a=algebraic_EXTension(makevecteur(1,0),a);
+      return tmp;
     }
     // reduce extension degree by factorizing b__VECT over Q[a]
     polynome p(poly12polynome(*b__VECT._VECTptr));
@@ -666,9 +668,47 @@ namespace giac {
     if (!trouve){
       // Change for multivariate polynomials p, added evaluation
       if (innerdim){
+	gen params;
+	*logptr(contextptr) << gettext("Warning, need to choose a branch for the root of a polynomial with parameters. This might be wrong.") << endl;
+	if (l->size()>=2){
+	  params=(*l)[1];
+	  // IMPROVE: using context and *l look for assumptions
+	  if (params.type==_VECT){
+	    vecteur paramv=*params._VECTptr;
+	    for (unsigned j=0;j<paramv.size() && j<vb.size();++j){
+	      gen p=paramv[j];
+	      if (p.type!=_IDNT)
+		continue;
+	      gen g,g2=p._IDNTptr->eval(1,g,contextptr);
+	      if ((g2.type==_VECT) && (g2.subtype==_ASSUME__VECT)){
+		vecteur V=*g2._VECTptr;
+		if ( V.size()==3 && V[1].type==_VECT && V[2].type==_VECT){
+		  for (unsigned i=0;i<V[1]._VECTptr->size();++i){
+		    gen tmp=(*V[1]._VECTptr)[i];
+		    if (tmp.type==_VECT && tmp._VECTptr->size()==2){
+		      gen a=tmp._VECTptr->front(),b=tmp._VECTptr->back();
+		      if (a==minus_inf)
+			vb[j]=b-1;
+		      else {
+			if (b==plus_inf)
+			  vb[j]=a+1;
+			else
+			  vb[j]=(a+b)/2;
+		      }
+		    }
+		  }
+		} // end if V.size()==3
+	      } // end g2 assume_vect
+	    } // end for j
+	  } // end params.type==_VECT
+	}
+	vecteur vb0=vb;
 	polynome pb(1),px(unsplitmultivarpoly(p,innerdim));
-	find_good_eval(px,pb,vb);
-	*logptr(contextptr) << gettext("Warning, choice of an algebraic branch for root of a polynomial with parameters might be wrong. The choice is done for parameters value=0 if 0 is regular, otherwise randomly. Actual choice is ") << vb << endl;
+	find_good_eval(px,pb,vb); // need to modify find_good_eval for assumptions...
+	if (vb==vb0)
+	  *logptr(contextptr) << gettext("The choice was done assuming ") << params << "=" << vb << endl;       
+	else 
+	  *logptr(contextptr) << gettext("Non regular value ") << vb0 << gettext(" was discarded and replaced randomly by ") << params << "=" << endl;
 	racines=proot(polynome2poly1(pb));
       }
       else
@@ -694,6 +734,8 @@ namespace giac {
 	  tmp=r2sym(vtmp,vecteur(1,vecteur(0)),contextptr);
 	max_sum_sqrt(maxsave,contextptr);
 	tmp=evalf(tmp,1,contextptr);
+	if (tmp.type==_VECT && !tmp._VECTptr->empty())
+	  tmp=tmp/tmp._VECTptr->front();
 	gen f_racine_max(evalf_double(abs(horner(tmp,racine_max),contextptr),1,contextptr));
 	if (f_racine_max.type!=_DOUBLE_)
 	  continue;
@@ -1400,7 +1442,7 @@ namespace giac {
     return true;
   }
 
-  static int insturmsign(const gen & g0,bool strict,GIAC_CONTEXT){
+  static int insturmsign1(const gen & g0,bool strict,GIAC_CONTEXT){
     gen g=recursive_normal(exact(g0,contextptr),contextptr);
     if (has_i(g))
       return 0;
@@ -1492,6 +1534,14 @@ namespace giac {
     }
 #endif
     return 2*current_sign+1;
+  }
+
+  static int insturmsign(const gen & g0,bool strict,GIAC_CONTEXT){
+    //bool absb=eval_abs(contextptr);
+    //eval_abs(false,contextptr);
+    int res=insturmsign1(g0,strict,contextptr);
+    return res;
+    //eval_abs(absb,contextptr);
   }
 
   int sturmsign(const gen & g0,bool strict,GIAC_CONTEXT){

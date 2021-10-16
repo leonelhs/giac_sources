@@ -6,35 +6,40 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’affectation prefixée : sto Store</TITLE>
+<TITLE>L’affectation par copie : copy</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr804.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr806.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc933">8.4.16</A>  L’affectation prefixée : <TT>sto Store</TT></H3><P><A NAME="@default1447"></A><A NAME="@default1448"></A>
-<TT>sto</TT> (ou <TT>Store</TT>) permet de stocker une valeur dans une 
+<H3 CLASS="subsection"><A NAME="htoc934">8.4.13</A>  L’affectation par copie : <TT>copy</TT></H3><P><A NAME="@default1445"></A>
+<TT>copy</TT> permet de cloner une liste, un vecteur
+ou une matrice, en général pour le stocker dans une 
 variable.<BR>
-<TT>sto</TT> (ou <TT>Store</TT>) a deux arguments, la valeur à stocker et un nom de variable.<BR>
-<B>Attention</B><BR>
-La variable doit être purgée avant l’utilisation de <TT>sto</TT> 
-(ou <TT>Store</TT>).<BR>
+<TT>copy</TT> a un argument, la liste (vecteur ou matrice) à cloner.<BR>
+<TT>A:= copy(B)</TT> recopie la liste (vecteur, matrice) B dans A.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sto(3,a)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>B:=copy([[4,5],[2,6]])</TT></DIV><P>
 ou :
-</P><DIV CLASS="center"><TT>Store(3,a)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=[[4,5],[2,6]];B:=copy(A)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>A,B</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3 et la variable a contient 3</TT></DIV><P>
-<B>Remarque</B><BR>
-On peut faire plusieurs affectations à la fois en utilisant les séquences 
-ou les listes.<BR>
+</P><DIV CLASS="center"><TT>[[4,5],[2,6]],[[4,5],[2,6]]</TT></DIV><P>
+<B>Quand doit-on utiliser </B><B><TT>copy</TT></B><B> ?</B><BR>
+<TT>copy</TT> est surtout utile pour des listes ou des matrices qui 
+seront par la suite modifiées par référence avec <TT>=&lt;</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sto([1,2,3],[a1,a2,a3])</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>Store([1,2,3],[a1,a2,a3])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV><DIV CLASS="center"><TT>B:=copy(A)</TT></DIV><P>
+Puis, si on tape :
+</P><DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV><DIV CLASS="center"><TT>A,B</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,2,3] et a1 contient 1, a2 contient 2, a3 contient 3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,3,4]</TT></DIV><P>
+Puis si on tape :
+</P><DIV CLASS="center"><TT>B[3]=&lt;55</TT></DIV><DIV CLASS="center"><TT>A,B</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,55,4]</TT></DIV><HR>
 <A HREF="cascmd_fr804.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr806.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

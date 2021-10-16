@@ -20070,8 +20070,8 @@ On tape :
 On obtient :~
 \begin{center}{\tt [0,(-(2*y))*z*x,-x\verb|^|3/3-(-(4*z))*x+3*y]}\end{center}
 
-\section{\'Equations}
-\subsection{\'Ecrire  une \'equation : {\tt equal}}\index{equal}
+\section{Équations}
+\subsection{Écrire  une \'equation : {\tt equal}}\index{equal}
 \noindent{\tt equal} a comme param\`etre les deux membres d'une \'equation.\\
 {\tt equal} renvoie cette \'equation.\\
 On tape :
@@ -21474,7 +21474,28 @@ On tape :
 \begin{center}{\tt float2rational(1.41421356237\verb|^|2)}\end{center}
 On obtient :
 \begin{center}{\tt 2}\end{center}
-
+\section{Lejour de la semaine : {\tt dayofweek}}\index{dayofweek|textbf}
+\noindent{\tt dayofweek(j,m,a} renvoie 0 pour dimanche, 1 pour lundi ...6 pour 
+samedi pour çindiquer le jour de la semaine qui correspond \`a la date 
+donn\'ee en argument date supérieure au 15 octobre 1582.
+On tape :
+\begin{center}{\tt dayofweek(15,10,1582)}\end{center}
+On obtient :
+\begin{center}{\tt 5}\end{center}
+Donc le 15 octobre 1582 \'etait un vendredi. En effet le calendrier gr\'egorien 
+date du 15 octobre 1582 (le lendemain du jeudi 4 octobre 1582 fut le vendredi 
+15 octobre 1582 car avant les ann\`ees bissextiles \'etaient tous les 4 ans ce 
+qui donne  comme dur\'ee moyenne de l'ann\`ee civile 365.25 jours alors que la 
+r\'evolution de la terre autour du soleil est plus courte (365.242 jours) 
+d'o\`u un d\'ecalage qui \'etait de 10 jours en 1582. \\
+Avec la nouvelle r\`egle (la derni\`ere ann\'ee de chaque si\'ecle est 
+bissextile si son mill\'esime est divisble par 400) l'\'ecart n'est plus 
+que de l'ordre de 1 jour tous les 3000 ans.\\
+On tape :
+\begin{center}{\tt dayofweek(1,10,2014)}\end{center}
+On obtient :
+\begin{center}{\tt 3}\end{center}
+Donc le 1ier octobre 2014 \'etait un mercredi.
 \chapter{Les fonctions de statistique}\label{sec:stat}
 \section{Les fonctions de {\tt Xcas} de statistique \`a 1 variable}
 On va d\'ecrire les diff\'erentes fonctions statistiques sur un exemple :\\
@@ -23709,6 +23730,73 @@ On tape :
 \begin{center}{\tt kolmogorovt(randvector(100,normald,0,1),normald(0,1))}\end{center}
 On obtient :
 \begin{center}{\tt [0.0797807811891,0.797807811891]}\end{center}
+\subsection{Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney {\tt wilcoxonp}}
+\index{wilcoxonp}
+\noindent{\tt wilcoxonp} a comme argument 1 ou 2 entiers.\\
+{\tt wilcoxonp} renvoie le polyn\^ome donnant la distribution du test de Wilcoxon ou de Mann-Whitney pour 1 ou 2 \'echantillon(s).
+On tape :
+\begin{center}{\tt wilcoxonp(4)}\end{center}
+On obtient :
+\begin{center}{\tt poly1[1/16,1/16,1/16,1/8,1/8,1/8,1/8,1/8,1/16,1/16,1/16]}\end{center}
+On tape :
+\begin{center}{\tt wilcoxonp(7,5)}\end{center}
+On obtient :
+\begin{center}{\tt poly1[1/792,1/792,1/396,1/264,5/792,7/792,5/396,13/792,\\
+17/792,7/264,13/396,5/132,35/792,13/264,43/792,23/396,2/33,\\
+49/792,49/792,2/33,23/396,43/792,13/264,35/792,5/132,13/396,\\
+7/264,17/792,13/792,5/396,7/792,5/792,1/264,1/396,1/792,1/792]}\end{center}
+\subsection{Statistique de Wilcoxon ou de Mann-Whitney {\tt wilcoxons}}
+\index{wilcoxons}
+\noindent{\tt wilcoxons} a comme argument  une liste et un r\`eel ou 2 listes.\\
+{\tt wilcoxons} renvoie la statistique de Wilcoxon ou de Mann-Whitney 
+pour 1 \'echantillon et une m\'ediane ou 2 \'echantillons
+ On tape :
+\begin{center}{\tt wilcoxons([1,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20])}\end{center}
+On obtient :
+\begin{center}{\tt 128.5}\end{center}
+On tape :
+\begin{center}{\tt wilcoxons([1,3,4,5,7,8,8,12,15,17],10)}\end{center}
+On obtient :
+\begin{center}{\tt 18}\end{center}
+\subsection{Test de Wilcoxon ou de Mann-Whitney {\tt wilcoxont}}
+\index{wilcoxont}
+\noindent{\tt wilcoxont} a comme argument 1 \'echantillon et une
+valeur de m\'ediane 
+ou 2 \'echantillons et peut avoir un ou deux arguments suppl\'ementaires
+une fonction \verb|>| ou \verb|<| pour un test unilat\'eral
+et un r\'eel compris entre 0 et 1 (niveau de confiance, par d\'efaut 0.05).\\
+{\tt wilcoxont} renvoie le test de Wilcoxon ou de Mann-Whitney pour 
+1 \'echantillon et une m\'ediane ou 2 \'echantillons
+ On tape :
+\begin{center}{\tt wilcoxont([1,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20])}\end{center}
+On obtient en vert :\\
+{\tt Mann-Whitney 2-sample test, H0 same Median, H1 <>}\\
+{\tt ranksum 81.5, shifted ranksum 26.5}\\
+{\tt u1=73.5 ,u2=26.5, u=min(u1,u2)=26.5}\\
+{\tt Limit value to reject H0 23}\\
+{\tt P-value 316/4199 (0.0752560133365), alpha=0.05 H0 not rejected}\\
+\begin{center}{\tt 1}\end{center}
+On tape :
+\begin{center}{\tt wilcoxont([1,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20],0.3)}\end{center}
+On obtient en vert :\\
+{\tt Mann-Whitney 2-sample test, H0 same Median, H1 <>}\\
+{\tt ranksum 81.5, shifted ranksum 26.5}\\
+{\tt u1=73.5 ,u2=26.5, u=min(u1,u2)=26.5}\\
+{\tt Limit value to reject H0 35}\\
+{\tt P-value 316/4199 (0.0752560133365), alpha=0.01 H0 rejected}\\
+\begin{center}{\tt 1}\end{center}
+On tape :
+\begin{center}{\tt wilcoxont([1,3,4,5,7,8,8,12,15,17],10,'>')}\end{center}
+On obtient en vert :\\
+{\tt Wilcoxon 1-sample test, H0 Median=10, H1 M>10}\\
+{\tt Wilcoxon statistic: 18, p-value: 0.8388671875, confidence level: 0.05}\\
+\begin{center}{\tt 1}\end{center}
+On tape :
+\begin{center}{\tt wilcoxont([1,3,4,5,7,8,8,12,15,17] ,10,'>',0.05)}\end{center}
+On obtient  en vert :\\
+{\tt Wilcoxon 1-sample test, H0 Median=10, H1 M>10}\\
+{\tt Wilcoxon statistic: 18, p-value: 0.8388671875, confidence level: 0.05}\\
+\begin{center}{\tt 1}\end{center}
 
 \subsection{Fonction g\'en\'eratrice des moments d'une loi de probabilit\'e: {\tt mgf}}\index{mgf}
 \noindent{\tt mgf}  a comme param\`etres le nom d'une loi de probabilité (parmi 
@@ -26740,82 +26828,6 @@ Si on tape :
 \begin{center}{\tt B:=eval(B,2))}\end{center}
 On obtient :
 \begin{center}{\tt Le point 1+i est marqu\'e d'une croix et n'a pas de nom}\end{center}
-\section{Comment lire et cr\'eer une image}
-\subsection{Qu'est-ce qu'une image ?}
-Pour {\tt Xcas} une image est une liste {\tt a} de 5 \'el\'ements :
-\begin{itemize}
-\item {\tt a[0]} est une liste de 3 \'el\'ements : le nombre de canaux (3 ou 4)
-et le nombre de lignes $n$ et de colonnes $p$ utilis\'es pour la dimension de 
-l'image,
-\item {\tt a[1]} correspond au canal rouge : c'est une matrice $n,p$ de nombres
-entiers entre 0 et 255,
-\item {\tt a[2]} correspond au canal vert : c'est une matrice $n,p$ de nombres
-entiers entre 0 et 255,
-\item {\tt a[3]} correspond au canal pour la transparence : c'est une matrice 
-$n,p$ de nombres entiers entre 0 et 255,
-\item {\tt a[4]} correspond au canal bleu : c'est une matrice $n,p$ de nombres
-entiers entre 0 et 255,
-\end{itemize}
-
-\subsection{Pour lire une image : {\tt readrgb}}\index{readrgb}
-\noindent{\tt readrgb} peut lire un fichier contenant une image. Ce fichier 
-peut \^etre un fichier {\tt .jpg} ou {\tt .png} ou {\tt .gif}.\\
-{\tt readrgb} renvoie [[nombre\_canaux,largeur,hauteur],rouge,vert,transparence,bleu] o\`u rouge,vert,transparence,bleu sont des matrices.\\ 
-On tape :
-\begin{center}{\tt a:=readrgb("image.jpg")}\end{center}
-On obtient :
-\begin{center}{\tt une liste de 5 \'el\'ements qui sont [4,20,10] suivi de 4 matrices de dimension 20,10 qui indiquent o\`u sont situ\'e les couleurs rouge,vert,transparence,bleu]}\end{center}
-
-\subsection{Pour  recr\'eer ou cr\'eer une image : {\tt writergb}}\index{writergb}
-\noindent{\tt writergb} permet de stocker une image lue avec {\tt readrgb} dans
-un fichier de suffixe {\tt .png}.\\
-ou \\ 
-de cr\'eer une image et de la stocker dans un fichier de suffixe {\tt .png}.
-On peut cr\'eer cette image avec des niveaux de gris ou des 
-niveaux des  diff\'erentes couleurs. 
-\begin{itemize}
-\item On poss\'ede une variable (par exemple {\tt a}) contenant une image lue 
-avec {\tt readrgb}. \\
-{\tt writergb} a deux arguments : le nom du fichier dans lequel on veut stocker 
-la nouvelle image et une liste contenant {\tt a[0]} (liste contenant le nombre 
-de canaux et les dimensions de la matrice des pixels de cette image), puis les 
-couleurs de cette image qui sont les matrices {\tt a[1]} pour la couleur rouge,
-{\tt a[2]} pour la couleur verte, {\tt a[3]} pour la transparence et {\tt a[4]}
-pour la couleur bleu.\\
-La transparence permet de superposer plusieurs images : sa valeur va de 0 \`a 
-255 (si la transparence vaut 0 c'est un cache !).\\
-On tape :
-\begin{center}{\tt a:=readrgb("image.jpg")}\end{center}
-Puis on tape :
-\begin{center}{\tt writergb("imagevrb.png",[a[0],a[2],a[1],a[3],a[4]])}\end{center}
-Puis on tape :
-\begin{center}{\tt gimp "imagevrb.png"}\end{center}
-On obtient :
-\begin{center}{\tt l'image de d\'epart dans laquelle le rouge est devenu vert et le vert est devenu rouge}\end{center}
-Essayer de cr\`eer une image :
-\begin{center}{\tt writergb("essai.png",[[4,2,2],[[255,0],[0,0]], [[0,255],[0,0]],[[255,125],[255,255]], [[0,0],[255,0]]])}\end{center}
-vous obtenez (avec un vert attenu\'e du au 125 de la 3i\`eme matrice):\\
-\includegraphics[width=\textwidth]{writergb1}
-ou encore essayer :\\
-\begin{center}{\tt writergb("image1.png",[[4,2,3],[[255,0,255],[0,255,0]], [[0,0,255],[0,0,0]],[[255,125,125],[255,255,255]], [[0,0,0],[255,255,0]]])}\end{center}
-\item On peut aussi cr\'eer et stocker des images, au format PNG avec une 
-version simplifi\'ee de la syntaxe : pas d'argument correspondant au nombre 
-de canaux et aux dimensions de la matrice des pixels de cette image ni de 
-matrice correspondant \`a la transparence.\\
-{\tt writergb} a alors deux ou quatre arguments : le nom du fichier dans lequel
-on veut stocker la nouvelle image et la matrice des niveaux de gris des pixels,
-ou 3 matrices (du rouge, du vert et du bleu) donnant la couleur RGB des 
-pixels.\\
-Par exemple :\\
-\begin{center}{\tt writergb("image.png",[[255,0],[0,255]])}\end{center}
-cr\'ee et affiche une image 2x2 pixels au format PNG en 256 niveaux de gris 
-(0 noir, 255 blanc)
-\begin{center}{\tt writergb("image.png",[[255,0],[0,0]],[[0,255],[0,0]], [[0,0],[255,0]])}\end{center}
-cr\'ee et affiche une image 2x2 pixels au format PNG en RGBA avec 256 niveaux 
-pour chaque couleur (rouge, bleu, vert). Ici la premi\`ere ligne rouge,vert et la deuxi\`eme ligne est bleu,noir.
-Essayez :
-\begin{center}{\tt writergb("essai.png",[[4,300,300],makemat(0,300,300), makemat(0,300,300), makemat(255,300,300), makemat(0,300,300)+idn(300)*255])}\end{center}
-\end{itemize}
 \section{Comment faire une d\'emonstration : {\tt assume}}\index{assume}
 Pour pouvoir faire une d\'emonstration en g\'eom\'etrie, il suffit de demander 
 au calcul formel de faire les calculs, en choisisant bien les param\`etres du 
@@ -31977,6 +31989,165 @@ Puisque {\tt SB=SD}, on a donc :\\
 ${\tt \displaystyle \frac{SN}{SB}=\frac{SP}{SD}}$\\
 ce qui montre d'apr\`es le th\'eor\`eme de Thal\`es que 
 {\tt NP} est parall\`ele \`a {\tt BD}.
+
+\chapter{Commandes multim\'edia.}
+\section{Son}
+
+\subsection{Lecture d'un fichier wav : {\tt readwav}}\index{readwav}
+La commande {\tt readwav} permet de lire un fichier son stock\'e
+au format WAV (extension de fichier {\tt .wav}), on stocke en g\'en\'eral
+le r\'esultat dans une variable, par exemple 
+{\tt s:=readwav("sound.wav")} lit le fichier \verb|sound.wav|
+et place le vecteur r\'esultat dans la variable \verb|s|. Le vecteur
+renvoy\'e est compos\'e de~:
+\begin{itemize}
+\item une liste donnant le format d\'echantillonage du son~:
+le nombre de canaux (en g\'en\'eral 1 pour mono ou 2 pour st\'er\'eo),
+le nombre de bits (en g\'en\'eral 16), la fr\'equence
+d'\'echantillonage (44100 pour un son de qualit\'e CD),
+et le nombre d'octets des donn\'ees (hors en-t\^ete), soit
+le nombre de secondes multipli\'e par la fr\'equence
+d'\'echantillonage multipli\'e par le nombre de bits/8 multipli\'e par
+le nombre de canaux.
+\item pour chaque canal, la liste des donn\'ees num\'eriques du son
+\end{itemize}
+Ainsi si \verb|s[0]| vaut \verb|[1,16,44100,88200]| on a un
+enregistrement d'une seconde sur un canal en 16 bits, un son de
+qualit\'e CD. On a alors \verb|size(s)==2| (1+nombre de canaux),
+et \verb|size(s[1])==44100|
+
+\subsection{\'Ecriture d'un fichier wav : {\tt
+    writewav}}\index{writewav}
+La commande {\tt writewav} effectue l'\'ecriture d'une donn\'ee de
+type son dans un fichier au format WAV sur le disque dur. Elle est
+donc inverse de la commande {\tt readwav}. On passe en argument
+le nom du fichier et les donn\'ees son. On peut soit utiliser le
+m\^eme format que celui renvoy\'e par la commande {\tt readwav},
+soit pour un son mono utilisant les valeurs des param\`etres 
+par d\'efaut (16 bits, 44100 Hz) 
+donner uniquement la liste des donn\'ees num\'eriques
+du son sur le canal.
+Par exemple la commande 
+\verb|writewav("la.wav",2^14*(sin(2*pi*440*soundsec(1))))|
+sauvegarde dans le fichier de nom \verb|la.wav|, un son pur
+de fr\'equence 440 Hz (un la), \'echantillon\'e 44100 fois par seconde.
+
+\subsection{\'Ecouter un son num\'eris\'e {\tt
+    playsnd}}\index{playsnd}
+La commande {\tt playsnd} ex\'ecut\'ee sur une machine locale
+permet d'\'ecouter le son correspondant aux donn\'ees num\'eris\'ees
+pass\'ees en argument, par exemple lues avec la commande {\tt readwav}
+ou g\'en\'er\'ees par des op\'erations sur le r\'esultat de la
+commande {\tt soundsec}. Les arguments sont soit au format de
+la commande {\tt readwav}, soit la liste des donn\'ees num\'eriques
+\'echantillonn\'ees pour un son mono utilisant les
+param\`etres par d\'efaut (1 canal, 16 bits, 44100 Hz).
+
+\subsection{Pr\'eparer une donn\'ee de son num\'eris\'ee {\tt
+    soundsec}} \index{soundsec}
+La commande {\tt soundsec} pr\'epare une donn\'ee de son pour un canal
+dont la dur\'ee en secondes est pass\'ee en argument. On peut passer en
+argument optionnel la fr\'equence d'\'echantillonage.
+Par exemple {\tt soundsec(2.5)} pr\'epare une donn\'ee son de 2.5
+secondes \'echantillon\'ee \`a la fr\'equence par d\'efaut de 44100Hz,
+alors que {\tt soundsec(1,22050) } pr\'epare une donn\'ee son de 1
+secondes \'echantillon\'ee \`a la fr\'equence de 22050Hz.
+
+Le r\'esultat de {\tt soundsec} est un vecteur, dont le $i$-i\`eme
+\'el\'ement est le temps correspondant \`a l'indice $i$. On lui
+applique en g\'en\'eral des op\'erations, par exemple
+\verb|sin(2*pi*440*soundsec(1.3))| pour avoir une sinuso\"ide
+de fr\'equence 440 \'echantillonn\'ee 44100 fois par seconde
+pendant 1.3 seconde.
+
+\section{Comment lire et cr\'eer une image} 
+\subsection{Qu'est-ce qu'une image ?}
+Pour {\tt Xcas} une image est une liste {\tt a} de 5 \'el\'ements :
+\begin{itemize}
+\item {\tt a[0]} est une liste de 3 \'el\'ements : le nombre de canaux (3 ou 4)
+et le nombre de lignes $n$ et de colonnes $p$ utilis\'es pour la dimension de 
+l'image,
+\item {\tt a[1]} correspond au canal rouge : c'est une matrice $n,p$ de nombres
+entiers entre 0 et 255,
+\item {\tt a[2]} correspond au canal vert : c'est une matrice $n,p$ de nombres
+entiers entre 0 et 255,
+\item {\tt a[3]} correspond au canal pour la transparence : c'est une matrice 
+$n,p$ de nombres entiers entre 0 et 255,
+\item {\tt a[4]} correspond au canal bleu : c'est une matrice $n,p$ de nombres
+entiers entre 0 et 255,
+\end{itemize}
+
+\subsection{Pour lire une image : {\tt readrgb}}\index{readrgb}
+\noindent{\tt readrgb} peut lire un fichier contenant une image. Ce fichier 
+peut \^etre un fichier {\tt .jpg} ou {\tt .png} ou {\tt .gif}.\\
+{\tt readrgb} renvoie [[nombre\_canaux,largeur,hauteur],rouge,vert,transparence,bleu] o\`u rouge,vert,transparence,bleu sont des matrices.\\ 
+On tape :
+\begin{center}{\tt a:=readrgb("image.jpg")}\end{center}
+On obtient :
+\begin{center}{\tt une liste de 5 \'el\'ements qui sont [4,20,10] suivi de 4 matrices de dimension 20,10 qui indiquent o\`u sont situ\'e les couleurs rouge,vert,transparence,bleu]}\end{center}
+
+\subsection{Pour visualiser une image}
+On peut voir une image dans un rectangle d'un graphe 2d, ou coll\'e
+\`a une surface d'un graphe 3d.
+Par exemple la commande
+\verb|rectangle(200,0,1/2,gl_texture="terre.jpg")|
+affiche dans le plan un rectangle (d\'efini par les points 200 et 0
+de rapport 1/2) 
+contenant l'image num\'eris\'ee dans le fichier \verb|terre.jpg|.
+Dans l'espace, on peut par exemple coller l'image sur une sph\`ere
+de centre l'origine et de rayon 1 par la commande
+\verb|sphere([0,0,0],1, gl_material=[gl_texture,"terre.jpg"])|
+
+\subsection{Pour  recr\'eer ou cr\'eer une image : {\tt writergb}}\index{writergb}
+\noindent{\tt writergb} permet de stocker une image lue avec {\tt readrgb} dans
+un fichier de suffixe {\tt .png}.\\
+ou \\ 
+de cr\'eer une image et de la stocker dans un fichier de suffixe {\tt .png}.
+On peut cr\'eer cette image avec des niveaux de gris ou des 
+niveaux des  diff\'erentes couleurs. 
+\begin{itemize}
+\item On poss\'ede une variable (par exemple {\tt a}) contenant une image lue 
+avec {\tt readrgb}. \\
+{\tt writergb} a deux arguments : le nom du fichier dans lequel on veut stocker 
+la nouvelle image et une liste contenant {\tt a[0]} (liste contenant le nombre 
+de canaux et les dimensions de la matrice des pixels de cette image), puis les 
+couleurs de cette image qui sont les matrices {\tt a[1]} pour la couleur rouge,
+{\tt a[2]} pour la couleur verte, {\tt a[3]} pour la transparence et {\tt a[4]}
+pour la couleur bleu.\\
+La transparence permet de superposer plusieurs images : sa valeur va de 0 \`a 
+255 (si la transparence vaut 0 c'est un cache !).\\
+On tape :
+\begin{center}{\tt a:=readrgb("image.jpg")}\end{center}
+Puis on tape :
+\begin{center}{\tt writergb("imagevrb.png",[a[0],a[2],a[1],a[3],a[4]])}\end{center}
+Puis on tape :
+\begin{center}{\tt gimp "imagevrb.png"}\end{center}
+On obtient :
+\begin{center}{\tt l'image de d\'epart dans laquelle le rouge est devenu vert et le vert est devenu rouge}\end{center}
+Essayer de cr\`eer une image :
+\begin{center}{\tt writergb("essai.png",[[4,2,2],[[255,0],[0,0]], [[0,255],[0,0]],[[255,125],[255,255]], [[0,0],[255,0]]])}\end{center}
+vous obtenez (avec un vert attenu\'e du au 125 de la 3i\`eme matrice):\\
+\includegraphics[width=\textwidth]{writergb1}
+ou encore essayer :\\
+\begin{center}{\tt writergb("image1.png",[[4,2,3],[[255,0,255],[0,255,0]], [[0,0,255],[0,0,0]],[[255,125,125],[255,255,255]], [[0,0,0],[255,255,0]]])}\end{center}
+\item On peut aussi cr\'eer et stocker des images, au format PNG avec une 
+version simplifi\'ee de la syntaxe : pas d'argument correspondant au nombre 
+de canaux et aux dimensions de la matrice des pixels de cette image ni de 
+matrice correspondant \`a la transparence.\\
+{\tt writergb} a alors deux ou quatre arguments : le nom du fichier dans lequel
+on veut stocker la nouvelle image et la matrice des niveaux de gris des pixels,
+ou 3 matrices (du rouge, du vert et du bleu) donnant la couleur RGB des 
+pixels.\\
+Par exemple :\\
+\begin{center}{\tt writergb("image.png",[[255,0],[0,255]])}\end{center}
+cr\'ee et affiche une image 2x2 pixels au format PNG en 256 niveaux de gris 
+(0 noir, 255 blanc)
+\begin{center}{\tt writergb("image.png",[[255,0],[0,0]],[[0,255],[0,0]], [[0,0],[255,0]])}\end{center}
+cr\'ee et affiche une image 2x2 pixels au format PNG en RGBA avec 256 niveaux 
+pour chaque couleur (rouge, bleu, vert). Ici la premi\`ere ligne rouge,vert et la deuxi\`eme ligne est bleu,noir.
+Essayez :
+\begin{center}{\tt writergb("essai.png",[[4,300,300],makemat(0,300,300), makemat(0,300,300), makemat(255,300,300), makemat(0,300,300)+idn(300)*255])}\end{center}
+\end{itemize}
 
 \chapter{Utilisation de  {\tt giac} \`a l'int\'erieur d'un programme}
 \section{Utilisation dans un programme  {\tt C++}}

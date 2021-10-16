@@ -6,62 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les entrées : input, saisir, Input, InputStr, saisir_chaine, textinput</TITLE>
+<TITLE>La forme d’un programme</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr790.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr792.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc919">8.4.2</A>  Les entrées : <TT>input, saisir, Input, InputStr, saisir_chaine, textinput</TT></H3><P><A NAME="@default1405"></A><A NAME="@default1406"></A><A NAME="@default1407"></A><A NAME="@default1408"></A><A NAME="@default1409"></A><A NAME="@default1410"></A>
-<TT>input, saisir, Input</TT> permettent de saisir des expressions et 
-<TT>InputStr, saisir_chaine, textinput</TT> permettent de saisir des chaines de
-caractères.
-<TT>input, saisir, Input</TT> et <TT>InputStr, saisir_chaine, textinput</TT> ont 
-comme argument le nom d’une variable (resp une séquence de noms de variables)
-ou une chaîne de caractères (chaîne donnant à l’utilisateur des 
-indications sur la valeur à entrer) et le nom d’une variable (resp une 
-séquence de chaînes 
-de caractères et une séquence de noms de variables).<BR>
-<TT>input, saisir, Input</TT> et InputStr, saisir_chaine, textinput ouvrent une
-fenêtre où on peut entrer la valeur de la variable donnée comme argument 
-et où on retrouve, comme légende, la chaîne de caractères mise dans 
-l’argument (si on la mise!!!).<BR>
-Avec <TT>input, Input, saisir</TT> on peut entrer des nombres ou des chaînes de 
-caractères (il faut alors mettre "...") ou des noms de variables 
-(sans mettre "...").<BR>
-Avec <TT>InputStr, textinput, saisir_chaine</TT> on ne peut entrer que des 
-chaînes de caractères, mais on n’a donc pas besoin de mettre "...".<BR>
-On tape :
-</P><DIV CLASS="center"><TT>input(a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>input("a=?",a)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer la valeur de </TT><TT>a</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>12 dans cette fenêtre puis OK</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>a+3</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>15</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>input("polynome",p,"valeur",a)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer les valeurs de </TT><TT>p</TT><TT> avec la légende "polynome" et de </TT><TT>a</TT><TT> avec la légende "valeur"</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>InputStr(a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>InputStr("reponse=",a)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer la valeur de </TT><TT>a</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>12 dans cette fenêtre puis OK</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>a+3</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>123</TT></DIV><P>
-car <TT>a</TT> est la chaîne de catractères <TT>"12"</TT> et le <TT>"+"</TT> 
-concaténe les deux chaînes <TT>"12"</TT> et <TT>"3"</TT>.</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc917">8.1.3</A>  La forme d’un programme</H3><P><A NAME="@default1399"></A><A NAME="@default1400"></A><A NAME="@default1401"></A><A NAME="@default1402"></A>
+<A NAME="sec:dispgg"></A>
+Un programme a la même forme qu’une fonction mais ne renvoie pas de valeurs,
+mais un programme peut afficher des résultats ou 
+faire des dessins : dans ce cas toutes les instructions d’affichage 
+(<TT>afficher</TT> ou <TT>Disp;</TT>) se feront 
+en bleu dans l’écran intermédiaire situé avant la réponse et les 
+instructions de dessins se feront dans l’écran <TT>DispG</TT>. En particulier 
+les dessins récursifs ne seront visibles que dans l’écran <TT>DispG</TT>.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Pour ouvrir l’écran <TT>DispG</TT>, on utilise le menu 
+<TT>Cfg</TT><TT>▸</TT><TT>Montrer</TT><TT>▸</TT><TT> DispG</TT> ou 
+l’instruction <TT>DispG;</TT> (ne pas mettre de parenthèses).
+</LI><LI CLASS="li-itemize">Pour effacer l’écran <TT>DispG</TT>, on utilise la commande 
+<TT>ClrGraph()</TT> ou <TT>erase</TT>.
+</LI><LI CLASS="li-itemize">Pour cacher l’écran <TT>DispG</TT>, on utilise le menu 
+<TT>Cfg</TT><TT>▸</TT><TT>Cacher</TT><TT>▸</TT><TT> DispG</TT> ou 
+l’instruction <TT>DispHome;</TT> (ne pas mettre de parenthèses).
+</LI></UL><P>
+Lors de l’exécution du programme, on aura comme réponse, la valeur 
+(ou le dessin) de la dernière instruction du programme.<BR>
+Il est préférable de mettre <TT>return 0</TT> à la fin d’un programme et de 
+le transformer ainsi en fonction : l’exécution de ce programme renverra 0 
+comme réponse ce qui voudra dire que son exécution s’est bien passée.</P><HR>
 <A HREF="cascmd_fr790.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr792.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

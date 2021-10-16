@@ -1376,7 +1376,11 @@ namespace giac {
   }
 
   polynome & operator *= (polynome & th, const polynome & other) {
+#ifdef NSPIRE
+    th=th*other;
+#else
     mulpoly(th,other,th,0);
+#endif
     return th;
   }
 
@@ -2264,18 +2268,18 @@ namespace giac {
   // Ducos: optimizations of the subresultant algorithm
   
   // n=d-1-e, d=degree(Sd), e=degree(Sd1), Se=(lc(Sd1)^n*Sd1)/lc(Sd)^n
-  void ducos_e(const polynome & Sd,const polynome & Sd1,polynome & Se){
+  void ducos_e(const polynome & Sd,const polynome & sd,const polynome & Sd1,polynome & Se){
     int n=Sd.lexsorted_degree()-Sd1.lexsorted_degree()-1;
     if (!n){
       Se=Sd1;
       return;
     }
     if (n==1){
-      Se=(Tfirstcoeff(Sd1)*Sd1)/Tfirstcoeff(Sd);
+      Se=(Tfirstcoeff(Sd1)*Sd1)/sd;
       return;
     }
     // n>=2
-    polynome sd(Tfirstcoeff(Sd)),sd1(Tfirstcoeff(Sd1)),s((sd1*sd1)/sd);
+    polynome sd1(Tfirstcoeff(Sd1)),s((sd1*sd1)/sd);
     for (int j=2;j<n;++j){
       s=(s*sd1)/sd;
     }
@@ -2389,8 +2393,12 @@ namespace giac {
 	return ;
       }
       int delta=d-e;
-      if (delta>1)
-	ducos_e(step?A:pow(Tfirstcoeff(Q),delta-1)*Q,B,C);
+      if (delta>1){
+	polynome sd(Tfirstcoeff(A));
+	if (step==0)
+	  sd=pow(sd,P.lexsorted_degree()-Q.lexsorted_degree());
+	ducos_e(A,sd,B,C);
+      }
       else
 	C=B;
       if (e==0){
@@ -3976,6 +3984,7 @@ namespace giac {
 	}
 	return true;
       }
+#ifndef NSPIRE
       if (//true ||  
 	  modop < heuop 
 	  ){ // was  if ( modop < heuop && est_reel)
@@ -3986,6 +3995,7 @@ namespace giac {
 	  COUT << "// " << clock() << " End modular gcd " << endl;
 	return res;
       }
+#endif
     }
     if (debug_infolevel)
       COUT << "// Using Heu gcd " << endl;
@@ -4969,7 +4979,8 @@ namespace giac {
 	p_y=p_y+poly1_2_polynome(*(p_it->value._EXTptr->_VECTptr),p_y.dim).shift(ii);
       }
 #ifdef HAVE_LIBPARI
-      if (p_y.dim==2 && p_y.degree(1)>=4 && !complexmode){
+      gen coefft;
+      if (p_y.dim==2 && p_y.degree(1)>=4 && !complexmode && coefftype(p_y,coefft)<_POLY && coefftype(p_mini,coefft)<_POLY){
 	int dim=p_y.dim;
 	vecteur lv=makevecteur(y__IDNT_e,x__IDNT_e);
 	gen P=r2sym(p_y,lv,context0),Pmini=r2sym(p_mini,lv,context0),res;

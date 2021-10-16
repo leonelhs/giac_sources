@@ -6,31 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour lire les entrées à partir d’un fichier : read</TITLE>
+<TITLE>La boucle : repeat until et repeter jusqua</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr814.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr816.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc944">8.5.1</A>  Pour lire les entrées à partir d’un fichier : <TT>read</TT></H3><P><A NAME="@default1485"></A>
-<TT>read</TT> a comme argument le nom d’un fichier (fichier crée par 
-<TT>write</TT> ou par la sauvegarde d’un éditeur et dans lequel on a écrit, 
-par exemple, plusieurs fonctions ou instructions).<BR>
-<TT>read</TT> renvoie la liste des valeurs stockées dans le fichier.<BR>
+<H3 CLASS="subsection"><A NAME="htoc944">8.4.23</A>  La boucle : <TT>repeat until</TT> et <TT>repeter jusqua</TT></H3><P><A NAME="@default1479"></A><A NAME="@default1480"></A><A NAME="@default1481"></A><A NAME="@default1482"></A>
+<TT>repeat</TT> et <TT>repeter</TT> permettent de faire plusieurs fois des
+instructions.<BR>
+<TT>repeat</TT> est suivi d’instructions, de <TT>until</TT> et d’un booléen.<BR>
+<TT>repeter</TT> est suivi d’instructions, de <TT>jusqua</TT> et d’un booléen.<BR>
+ <TT>repeat until</TT> et <TT>repeter jusqua</TT> permettent de faire plusieurs fois 
+ces instructions jusquà ce que la valeur de ce booléen soit vraie.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>a:=3.14; b:=456;write("titi",a,b);</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>read("titi")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[3.14,456] et les variables </TT><TT>a</TT><TT> et </TT><TT>b</TT><TT> sont affectées par 3.14 et 456</TT></DIV><P>
-<B>Attention</B><BR>
-Si <TT>a</TT> et <TT>b</TT> existent leurs valeurs seront remplacées sans préavis
-par les valeurs stockées dans le fichier :<BR>
-le principe de <TT>read</TT> est que l’utilisateur met dans un fichier
-par exemple des programmes ou des grosses variables, donc il sait
-ce qu’il y a dedans, et lors d’un <TT>read</TT> les instructions sont 
-exécutées et seules les reponses sont affichées.
+</P><PRE CLASS="verbatim">repeat
+saisir("Entrez a&gt;1",a);
+until a&gt;4;
+</PRE><P>Ou on tape :
+</P><PRE CLASS="verbatim">repeter
+saisir("Entrez a&gt;4",a);
+jusqua a&gt;1;
+</PRE><P>Cela aura pour effet de redemander la valeur de <I>a</I> jusqu’à ce qu’elle soit 
+strictement supérieur à 4. 
 </P><HR>
 <A HREF="cascmd_fr814.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

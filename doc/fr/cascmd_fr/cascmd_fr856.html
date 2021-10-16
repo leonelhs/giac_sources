@@ -6,28 +6,147 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Qu’est-ce qu’une image ?</TITLE>
+<TITLE>Les paramètres optionnels d’attributs</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr855.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr857.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc995">9.7.1</A>  Qu’est-ce qu’une image ?</H3><P>
-Pour <TT>Xcas</TT> une image est une liste <TT>a</TT> de 5 éléments :
+<H3 CLASS="subsection"><A NAME="htoc992">9.3.3</A>  Les paramètres optionnels d’attributs</H3><P>
+Les attributs des objets graphiques peuvent aussi se définir 
+à partir de paramètres optionnels. Ils sont de la forme 
+<TT>nom_de_l’attribut=valeur1+valeur2+...</TT>.<BR>
+Il y a deux sortes de paramètres optionnels :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>a[0]</TT> est une liste de 3 éléments : le nombre de canaux (3 ou 4)
-et le nombre de lignes <I>n</I> et de colonnes <I>p</I> utilisés pour la dimension de 
-l’image,
-</LI><LI CLASS="li-itemize"><TT>a[1]</TT> correspond au canal rouge : c’est une matrice <I>n</I>,<I>p</I> de nombres
-entiers entre 0 et 255,
-</LI><LI CLASS="li-itemize"><TT>a[2]</TT> correspond au canal vert : c’est une matrice <I>n</I>,<I>p</I> de nombres
-entiers entre 0 et 255,
-</LI><LI CLASS="li-itemize"><TT>a[3]</TT> correspond au canal pour la transparence : c’est une matrice 
-<I>n</I>,<I>p</I> de nombres entiers entre 0 et 255,
-</LI><LI CLASS="li-itemize"><TT>a[4]</TT> correspond au canal bleu : c’est une matrice <I>n</I>,<I>p</I> de nombres
-entiers entre 0 et 255,
-</LI></UL><HR>
+les paramètres optionnels globaux sont mis au début d’une ligne de 
+commandes ayant comme dernière instruction une instruction graphique et sont 
+applicables à toutes les instructions graphiques de cette ligne de commandes,
+</LI><LI CLASS="li-itemize">les paramètres optionnels locaux sont passés en paramètre d’une 
+commande graphique. 
+</LI></UL><P> 
+La liste des attributs et leurs valeurs possibles sont :
+<A NAME="@default1546"></A><A NAME="@default1547"></A><A NAME="@default1548"></A><A NAME="@default1549"></A><A NAME="@default1550"></A><A NAME="@default1551"></A><A NAME="@default1552"></A><A NAME="@default1553"></A>
+<A NAME="@default1554"></A><A NAME="@default1555"></A><A NAME="@default1556"></A><A NAME="@default1557"></A><A NAME="@default1558"></A>
+<A NAME="@default1559"></A><A NAME="@default1560"></A><A NAME="@default1561"></A><A NAME="@default1562"></A><A NAME="@default1563"></A>
+<A NAME="@default1564"></A><A NAME="@default1565"></A><A NAME="@default1566"></A><A NAME="@default1567"></A><A NAME="@default1568"></A><A NAME="@default1569"></A><A NAME="@default1570"></A><A NAME="@default1571"></A><A NAME="@default1572"></A>
+<A NAME="@default1573"></A><A NAME="@default1574"></A><A NAME="@default1575"></A><A NAME="@default1576"></A><A NAME="@default1577"></A><A NAME="@default1578"></A><A NAME="@default1579"></A><A NAME="@default1580"></A>
+<A NAME="@default1581"></A><A NAME="@default1582"></A><A NAME="@default1583"></A><A NAME="@default1584"></A><A NAME="@default1585"></A><A NAME="@default1586"></A><A NAME="@default1587"></A><A NAME="@default1588"></A><A NAME="@default1589"></A><A NAME="@default1590"></A>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>display=filled</TT> ou <TT>affichage=rempli</TT> pour dessiner des 
+figures pleines (est utilisé seulement comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>axes=1</TT> ou <TT>axes=true</TT> et <TT>axes=0</TT> ou <TT>axes= false</TT> 
+montre ou cache les axes. Cela est utilisé seulement comme attribut global et
+suivi d’une commande graphique,
+</LI><LI CLASS="li-itemize"><TT>couleur=0</TT>...<TT>couleur=255</TT> ou <TT>color=0</TT>...<TT>color=255</TT>
+pour dessiner avec la couleur indiquée (est utilisé seulement comme 
+attribut local),
+</LI><LI CLASS="li-itemize"><TT>couleur=</TT> une valeur entière entr 256 et 256+7*16+14 pour dessiner
+avec une couleur de l’arc en ciel,
+</LI><LI CLASS="li-itemize"><TT>epaisseur=1</TT>... <TT>epaisseur=7</TT> ou <TT>thickness=1</TT>... pour faire
+des traits plus ou moins épais. <TT>epaisseur</TT> est un attribut pour 
+compatibilité <TT>Maple</TT> (est utilisé seulement comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>nstep=400</TT> permet de spécifier le nombre de points 
+d’échantillonage de la fonction à représenter en 3-d (est utilisé seulement
+comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>tstep=0.3</TT> permet de donner le saut d’échantillonnage
+d’un paramètre de tracé paramétrique en général <TT>t</TT>, par exemple<BR>
+<TT>plotparam(sin(3*t)+i*cos(3*t),t=0..2*pi/3,tstep=0.01)</TT> (est utilisé 
+seulement comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>ustep=0.3</TT> permet de donner le saut d’échantillonnage de la
+première variable d’un tracé paramétrique 2-d, en général <TT>u</TT>,
+(est utilisé seulement comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>vstep=0.3</TT> permet de donner le saut d’échantillonnage de la
+deuxième variable d’un tracé paramétrique 2-d, en général <TT>v</TT>,
+(est utilisé seulement comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>xstep=0.01</TT> permet de donner le saut d’échantillonnage de la
+variable <TT>x</TT> (est utilisé seulement comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>ystep=0.01</TT> permet de donner le saut d’échantillonnage de la
+variable <TT>y</TT> (est utilisé seulement comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>zstep=0.01</TT> permet de donner le saut d’échantillonnage de la
+variable <TT>z</TT> (est utilisé seulement comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>frames=10</TT> or <TT>trames=10</TT> permet de spécifier le nombre de 
+graphes calculés dans une animation de graphe par les commandes <TT>animate</TT>
+ou <TT>animate3d</TT> (est utilisé seulement comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>labels=["u","v"]</TT> permet de renommer les axes (est utilisé 
+seulement comme attribut global),
+</LI><LI CLASS="li-itemize"><TT>legende</TT> ou <TT>legend</TT> (est utilisé comme attribut global ou 
+local ou comme commande) :
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>legende=["mn","kg"]</TT> (utilisé comme attribut global) permet de 
+mettre comme légende le nom des unités sur les axes, à condition qu’en
+dehors d’un écran de géométrie, 
+cette commande soit suivie sur la même ligne par une commande graphique. 
+Par exemple :<BR>
+<TT>legende=["mn","kg"];point(1+i)</TT>, ou<BR>
+<TT>legend=["xunit","yunit","zunit"]; point([1,1,1])</TT>
+</LI><LI CLASS="li-itemize"><TT>legende(1+i*sin(1),"sin(1)")</TT> ou<BR>
+<TT>legende(point(1+i*sin(1)),"sin(1)")</TT> (utilisé comme commande) ou<BR>
+<TT>point(1+i*sin(1),legende="sin(1)")</TT> (utilisé comme attribut local)
+permet de mettre une légende en un point de l’écran, donné par son 
+affixe. On peut spécifier la couleur ou la position de la légende par 
+rapport au point en mettant d’autres paramètres par exemple :<BR>
+<TT>legende(1+i*sin(1),"sin(1)",quadrant4,rouge)</TT><BR>
+(utilisé comme commande) ou<BR>
+<TT>point(1+i*sin(1),<BR>
+legende="sin(1)",affichage=quadrant4+rouge)</TT><BR>
+(utilisé comme attribut local)
+</LI><LI CLASS="li-itemize"><TT>legende([20,60],"graphe")</TT> (utilisé comme commande) 
+permet de mettre une légende en un point de l’écran, donnè par ses 
+coordonnées en pixels ([0,0] se trouve en haut et à gauche de l’écran), 
+</LI><LI CLASS="li-itemize"><TT>polygone(-1,-i,1,2*i,legende="p")</TT> permet de mettre une légende au
+milieu du côté reliant le dernier au premier sommet du polygone ici -1,2*i 
+(utilisé comme attribut local),
+</LI><LI CLASS="li-itemize"><TT>point([i,1,2,2*i],<BR>
+legende="1+i",display=quadrant2+rouge)</TT><BR>
+permet de mettre une légende au milieu du segment 2,2+i, 
+</LI></UL>
+</LI><LI CLASS="li-itemize"><TT>style</TT> n’a qu’une valeur reconnue : <TT>point</TT> (c’est pour la 
+compatibilité <TT>Maple</TT>) et <TT>style=point</TT> (utilisé comme attribut 
+local) permet de dessiner une droite selon des pointillés. 
+Ces pointillés correspondent à <TT>dashdot_line</TT> ou à 
+<TT>ligne_tiret_point</TT>. On a :<BR>
+<TT>droite(y=x,style=point,affichage=vert+line_width_2)</TT> est identique 
+à :<BR>
+<TT>droite(y=x,affichage=vert+ligne_tiret_point+<BR>
+line_width_2)</TT>,
+</LI><LI CLASS="li-itemize"><TT>titre="..."</TT> ou <TT>title="..."</TT> permet de mettre un titre à la 
+fen‘être graphique (est utilisé seulement comme attribut global).</LI><LI CLASS="li-itemize"><TT>gl_texture=</TT> peut être un attribut local ou global.<BR>
+<TT>gl_texture="nom_fichier_image"</TT> permet de mettre une image sur un
+objet graphique 3-d ou sur un rectangle 2-d si il est utilisé comme attribut 
+local. Par exemple <TT>carre(i,1+i,gl_texture="image.jpg")</TT> dessine l’image 
+contenue dans le fichier <TT>"image.jpg"</TT> dans le carré, et<BR>
+<TT>gl_texture=</TT> permet de mettre un fond sur un graphique 2-d si il est 
+utilisé comme attribut global.
+Par exemple <TT>gl_texture="image.jpg"; carre(i,1+i)</TT> dessine un carré 
+avec comme fond d’écran l’image contenu dans le fichier <TT>"image.jpg"</TT>
+</LI><LI CLASS="li-itemize"><TT>gl_x_axis_name="xname"</TT>, <TT>gl_y_axis_name="yname"</TT>,<BR>
+<TT>gl_z_axis_name=""</TT> : utilisé comme attribut global, définit 
+individuellement les noms des axes <I>x</I>,<I>y</I>,<I>z</I>,
+</LI><LI CLASS="li-itemize"><TT>gl_x_axis_unit="xunit"</TT>, <TT>gl_y_axis_unit="yunit"</TT>,<BR>
+<TT>gl_z_axis_unit="zunit"</TT> : utilisé comme attribut global, définit 
+individuellement les unités des axes <I>x</I>,<I>y</I>,<I>z</I>,
+</LI><LI CLASS="li-itemize"><TT>gl_x_axis_color=n</TT>, <TT>gl_y_axis_color=n</TT>,
+<TT>gl_z_axis_color=n</TT> : utilisé comme attribut global, définit 
+individuellement les couleurs des axes <I>x</I>,<I>y</I>,<I>z</I> avec la couleur <TT>n</TT>,
+</LI><LI CLASS="li-itemize"><TT>gl_x=xmin..xmax</TT>, <TT>gl_y=ymin..ymax</TT>,
+<TT>gl_z=zmin..zmax</TT>: utilisé comme attribut global, definit la 
+configuration du graphique (pas compatible avec l’interactivité),
+</LI><LI CLASS="li-itemize"><TT>gl_xtick=</TT>, <TT>gl_ytick=</TT>, <TT>gl_ztick=</TT> : utilisé comme 
+attribut global met des marques sur les axes selon la valeur donnée,
+</LI><LI CLASS="li-itemize"><TT>gl_shownames=true or false</TT> : utilisé comme attribut global, 
+montre ou cache les noms des objets,
+</LI><LI CLASS="li-itemize"><TT>gl_rotation=[x,y,z]</TT> : utilisé comme attribut global, definit 
+l’axe de rotation pour les animations des scénes 3-d,
+</LI><LI CLASS="li-itemize"><TT>gl_quaternion=[x,y,z,t]</TT> : utilisé comme attribut global definit 
+le quaternion pour la visualisation des scénes 3-d (pas compatible avec 
+l’interactivité),
+</LI><LI CLASS="li-itemize">d’autres options d’ OpenGL pour configurer la lumière existent mais ne 
+sont pas décrites ici.
+</LI></UL><P>
+<B>Remarque</B><BR>
+Les options d’opengl sont à utiliser avec une grande prudence car
+elles ne sont pas compatibles avec l’interactivité.</P><HR>
 <A HREF="cascmd_fr855.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr857.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

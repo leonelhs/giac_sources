@@ -685,6 +685,13 @@ namespace giac {
   gen arclen(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     vecteur v(gen2vecteur(g));
+    if (!v.empty() && v.front().type==_VECT){
+      // more than one arc?
+      if (!v.front()._VECTptr->empty() && v.front()._VECTptr->back().is_symb_of_sommet(at_pnt)){
+	v.front()=v.front()._VECTptr->back();
+	*logptr(contextptr) << gettext("Selecting last arc") << endl;
+      }
+    }
     if (!v.empty() && v.front().is_symb_of_sommet(at_pnt)){
       if (v.size()==1)
 	return _perimetre(g,contextptr);
@@ -701,10 +708,18 @@ namespace giac {
 	g=(*g._SYMBptr->feuille._VECTptr)[0];
 	if (g.type==_VECT && g._VECTptr->size()>2){
 	  gen f=g._VECTptr->front();
+	  if (g._VECTptr->size()>6)
+	    f=(*g._VECTptr)[6];
 	  gen x=(*g._VECTptr)[1];
 	  gen fprime=derive(f,x,contextptr);
 	  if (is_undef(fprime)) return fprime;
 	  fprime=abs(fprime,contextptr);
+	  if (v[1].is_symb_of_sommet(at_pnt))
+	    v[1]=projection(v[0],v[1],contextptr);
+	  if (v[2].is_symb_of_sommet(at_pnt))
+	    v[2]=projection(v[0],v[2],contextptr);
+	  if (is_greater(v[1],v[2],contextptr))
+	    return _integrate(gen(makevecteur(fprime,x,v[2],v[1]),_SEQ__VECT),contextptr);
 	  return _integrate(gen(makevecteur(fprime,x,v[1],v[2]),_SEQ__VECT),contextptr);
 	}
       }
@@ -1296,13 +1311,13 @@ namespace giac {
       for (unsigned i=0;i<v.size();++i){
 	v[i].subtype=0;
       }
-      return gen(v);
+      return gen(v,_MATRIX__VECT);
     }
     if (v.size()!=2)
       return gensizeerr(contextptr);
     gen taille=evalf_double(v[1],1,contextptr);
     if (g.subtype!=_SEQ__VECT || v.size()!=2 || v[0].type!=_VECT || taille.type!=_DOUBLE_)
-      return vecteur(1,v);
+      return gen(vecteur(1,v),_MATRIX__VECT);
     vecteur res;
     int nbre=giacmax(1,int(taille._DOUBLE_val));
     const_iterateur it=v[0]._VECTptr->begin(),itend=v[0]._VECTptr->end();
@@ -1313,7 +1328,7 @@ namespace giac {
       }
       res.push_back(vecteur(it,it+nbre));
     }
-    return res;
+    return gen(res,_MATRIX__VECT);
   }
   static const char _list2mat_s[]="list2mat";
   static define_unary_function_eval (__list2mat,&_list2mat,_list2mat_s);

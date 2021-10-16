@@ -1,3 +1,14 @@
+# ()
+1 () est utilisé pour donner une valeur à une fonction ou pour substituer des valeurs dans une expression.
+2 
+0 
+-1 subst
+-2 ->
+-3 :=
+ Expr:=x+2y+3z;Expr(x=1,y=2)
+ f(x,y,z):=x+2y+3z;f(1,2,z)
+ f:=(x,y,z)->x+2y+3z;f(1,2,z)
+
 # REDIM redim
 1 Redimensionne selon n1,n2 une matrice (resp vecteur) soit en la raccourcissant, soit en l'augmentant avec des 0.
 2 Shrink or enlarge with 0 a matrix (or vector) according to the new n1 and n2 dimensions
@@ -582,6 +593,7 @@ rectangular_coordinates(polar_point(1,pi/4))
 -2 ordinate
 -3 polar_coordinates
 -4 rectangular_coordinates
+-5 point
 polar_point(1,pi/4)
 polar_point(2,-pi/3)
 
@@ -1628,6 +1640,7 @@ common_perpendicular(line([0,0,0],[0,5,5]),line([5,0,0],[0,0,5]))
 4 Ορίζει τυχαία τις συντεταγμένες (μεταξύ -5 και 5) 2-Δ σημείων που δίνονται ως όρισμα.
 0 SeqVar(A,B,C...)
 -1 point3d
+-2 point
 point2d(A,B,C,D)
 
 # point3d
@@ -1637,6 +1650,7 @@ point2d(A,B,C,D)
 4 Ορίζει τυχαία τις συντεταγμένες (μεταξύ -5 και 5) 3-Δ σημείων που δίνονται ως όρισμα.
 0 SeqVar(A,B,C...)
 -1 point2d
+-2 point
 point3d(A,B,C,D)
 
 # octahedron
@@ -1842,16 +1856,23 @@ line([1+t,2-t,-1+3*t],t)
 line(1-i,slope=slope(line(1,2i)))
 
 # point
-1 A:=point(za) (resp A:=point([a,b,c])) dessine le point d'affixe za (resp de coordonnées (a,b,c)) et de légende A
-2 A:=point(za) (resp A:=point([a,b,c])) draws a point of affix za (resp of coordinates (a,b,c)) with the legend A
-3 A:=point(za) (resp A:=point([a,b,c])) traza el punto de afijo za (resp de coordenadas (a,b,c)) con la leyenda A
-4 A:=point(za) (resp A:=point([a,b,c])) σχεδιάζει ένα σημείο με προσθήκη za (αναφορικά με τις συντεταγμένες (a,b,c)) και με υπόμνημα A
+1 A:=point(za) ou A:=point(a,b) (resp A:=point([a,b,c])) dessine le point d'affixe za=a+ib (resp de coordonnées (a,b,c)) et de légende A
+2 A:=point(za) or A:=point(a,b) (resp A:=point([a,b,c])) draws a point of affix za=a+ib (resp of coordinates (a,b,c)) with the legend A
+3 A:=point(za) o A:=point(a,b) (resp A:=point([a,b,c])) traza el punto de afijo za=a+ib (resp de coordenadas (a,b,c)) con la leyenda A
+4 A:=point(za) ή A:=point(a,b) (resp A:=point([a,b,c])) σχεδιάζει ένα σημείο με προσθήκη za=a+ib (αναφορικά με τις συντεταγμένες (a,b,c)) και με υπόμνημα A
 0 Cplx(za)||Vect
 -1 pixon
 -2 line
-point(1+i)
+-3 point2d
+-4 point3d
+-5 polar_point
+point(1+2i)
+point(1,2)
+point(1,2,3)
 point([1,2,3])
  B:=point(1-i)
+ B:=point(1,-1)
+ B:=point(1,0,0)
  B:=point([1,0,0])
 
 # efface
@@ -5119,22 +5140,27 @@ product([[2,3,4],[5,6,7]],[[2,3,4],[5,6,7]])
 maple_ifactors(120)
 
 # .+
-1 Exécute l'addition terme à terme de 2 listes ou de 2 matrices (opérateur infixé, compatibilité TI).
-2 Performs an element by element addition of 2 lists or 2 matrix (infixed operator, TI compatibility).
+1 Exécute l'addition terme à terme de 2 listes ou de 2 matrices ou ajoute $a$ à chaque terme de la liste ou de la matrice (opérateur infixé, compatibilité TI).
+2 Performs an element by element addition of 2 lists or 2 matrix or add $a$ at each element of the list or matrix (infixed operator, TI compatibility).
 3 Ejecuta la suma componente por componente de 2 listas o 2 matrices (operador infijo, compatibilidad TI).
 4 Εκτελεί πρόσθεση στοιχείο-στοιχείο 2 λιστών ή 2 πινάκων (εντεθειμένος τελεστής, συμβατότητα με TI).
-0 Lst||Mtrx, Lst||Mtrx
+0 Lst||Mtrx, Real(a)||Lst||Mtrx
 -1 .-
- [[1,2],[3,4]] .+ [[3,4],[5,6]]
+ [1,2,3].+4
+ [[1,2],[3,4]].+5
+ [[1,2],[3,4]].+[5,6]
+ [[1,2],[3,4]].+[[3,4],[5,6]]
  [1,2] .+ [5,6]
 
 # .-
-1 Exécute la soustraction terme à terme de 2 listes ou de 2 matrices (opérateur infixé, compatibilité TI).
-2 Performs an element by element subtraction of 2 lists or 2 matrix (infixed operator, TI compatibility).
+1 Exécute la soustraction terme à terme de 2 listes ou de 2 matrices ou retranche $a$ à chaque terme de la liste ou de la matrice (opérateur infixé, compatibilité TI).
+2 Performs an element by element subtraction of 2 lists or 2 matrix or substract $a$ at each element of the list or matrix (infixed operator, TI compatibility).
 3 Ejecuta la resta componente por componente de 2 listas o 2 matrices (operador infijo, compatibilidad TI).
 4 Εκτελεί αφαίρεση στοιχείο-στοιχείο 2 λιστών ή 2 πινάκων (εντεθειμένος τελεστής, συμβατότητα με TI).
-0 Lst||Mtrx,Lst||Mtrx
+0 Lst||Mtrx,Real(a)||Lst||Mtrx
 -1 .+
+ [1,2,3].-4
+ [[1,2],[3,4]].-5
  [[1,2],[3,4]] .- [[3,4],[5,6]]
  [1,2] .- [5,6]
 
@@ -5611,6 +5637,15 @@ polygonscatterplot([[1,2,3],[2,0,1],[-1,2,3]])
 -2 polygonscatterplot
 -3 listplot
 scatterplot([[1,2,3],[2,0,1],[-1,2,3]])
+
+# batons 
+1 Dessine pour k=0..nrows, les segments (xk,0)-(xk,yk) où xk=élément ligne k colonne 0 et yk=élément ligne k colonne j (j=1..ncols).
+2 Draws for k=0..nrows, the segments (xk,0)-(xk,yk) where xk=element row k column 0 and yk=element row k column j (j=1..ncols).
+0 Mtrx
+-1 polygonplot
+-2 scatterplot
+-3 listplot
+batons([1,3],[2,5],[3,2])
 
 # user_operator
 1 Définition d'un opérateur binaire et renvoie 0 (échec) ou 1 (succès).
@@ -6308,10 +6343,10 @@ string(quote(a:=12))
  convert(symb2poly(10x^3*y+12x^2*y^2,[x,y]),list)
 
 # polynom
-1 Option de la commande convert ou convertir (list=>n-poly ou series=>poly).
-2 Option of the convert or convertir command (list=>n-poly ou series=>poly).
-3 Opción del comando convert o convertir (list=>n-poly ou series=>poly).
-4 Επιλογή της εντολής convert ή convertir (list=>n-poly ou series=>poly).
+1 Option de la commande convert ou convertir et des commandes taylor et series (list=>n-poly ou series=>poly).
+2 Option of the convert or convertir command and of the taylor and series commands (list=>n-poly ou series=>poly).
+3 Opción del comando convert o convertir y del comando taylor y series (list=>n-poly ou series=>poly).
+4 Επιλογή της εντολής convert ή convertir και της εντολής taylor  ή series (list=>n-poly ou series=>poly).
 0 Opt
 -1 poly2symb
 -2 taylor
@@ -6320,6 +6355,8 @@ string(quote(a:=12))
  convert([[10,[3,1]],[12,[2,2]]],polynom)
  convert(taylor(sin(x)),polynom)
  convert(series(sin(x),x=0,6),polynom)
+ taylor(sin(x),x=0,5,polynom)
+ series(sin(x),x=0,6,,polynom)
 
 # denom
 1 Renvoie le dénominateur de la fraction simplifiée.
@@ -7071,7 +7108,8 @@ power_regression_plot([1.0,2.0,3.0,4.0],[2.0,4.0,9.0,16.0])
 4 Επιστρέφει την τιμή cmd(Xpr), όπου cmd είναι το όνομα μιας εντολής που καθορίζεται από το 2ο όρισμα ή ξαναγράφει την expr σύμφωνα με την επιλογή cmd (π.χ. option sin=command trigsin).
 0 Expr(Xpr),Cmd(cmd)
 -1 mksa
--2 series
+-2 list
+-3 polynom
 convert(cos(x)^2,sin)
 convert(exp(i*x),sincos)
 convert(1/(x^4-1),parfrac)
@@ -7809,7 +7847,7 @@ quartiles([[1,2],[5,4],[3,6],[7,8]])
 
 # stddev ecart_type
 1 Renvoie l'écart-type d'une liste pondérée par le deuxième argument ou la liste des écarts-types des colonnes d'une matrice.
-2 Returns the standard device of the elements of its argument with the second argument as pound or the list of standard devices of the columns of a matrix.
+2 Returns the standard deviation of the elements of its argument with an optionnal second argument as pound or the list of standard deviation of the columns of a matrix.
 3 Devuelve la desviación estándar de una lista ponderada por el segundo argumento o la lista de las desviaciones estándares de las columnas de una matriz.
 4 Επιστρέφει την τυπική απόκλιση των στοιχείων του ορίσματος με το 2ο όρισμα ως οδηγό ή τη λίστα των τυπικών αποκλίσεων των στηλών του πίνακα.
 8 标准差。
@@ -7822,8 +7860,8 @@ stddev([1,2,3],[1,2,1])
 stddev([[1,2,3],[5,6,7]])
 
 # stddevp stdDev ecart_type_population
-1 Renvoie l'écart-type de la population dont est issu l'échantillon décrit par les éléments d'une liste pondérée par le deuxième argument.
-2 Returns the population standard device of the elements of its argument with the second argument as pound.
+1 Renvoie un estimateur non biaise de l'écart-type de la population dont est issu l'échantillon décrit par les éléments d'une liste pondérée par le deuxième argument.
+2 Returns an unbiaised estimate of the population standard deviation of the sample (first argument) with an optionnal list of pounds as second argument.
 3 Devuelve la desviación estándar de la población de la cual viene la muestra descrita por los elementos de una lista ponderada por el segundo argumento.
 4 Επιστρέφει την πληθυσμιακή τυπική απόκλιση των στοιχείων του ορίσματος με το 2ο όρισμα ως οδηγό.
 8 标准差为总体
@@ -7928,8 +7966,9 @@ coeff(2*y^2-3,y,2)
 -1 series
 -2 limit
 -3 pade
+-4 polynom
 taylor(sin(x)/x,x,0)
-taylor(sin(x)/x,x,0,polynom)
+taylor(sin(x),x=0,5,polynom)
 taylor(ln(y+y^2)-ln(y),y)
 taylor(ln(x+x^2)-ln(x),x,2)
 taylor(ln(x+x^2)-ln(x),x=0,2)
@@ -8072,7 +8111,7 @@ angle(i,1,1+i,"b")
 2 angleat(A,B,C,z0) displays at point(z0) with a legend, the value of the measure of the angle (AB,AC).
 3 angleat(A,B,C,z0) escribe en el punto point(z0) con una leyenda, el valor de la medida del ángulo (AB,AC).
 4 angleat(A,B,C,z0) εμφανίζει στο σημείο z0, μαζί με ένα υπόμνημα, την τιμή του μέτρου της γωνίας (AB,AC).
-0 Pnt(A)),Pnt(B),Pnt(C),(Pnt or Cplx(z0))
+0 Pnt(A),Pnt(B),Pnt(C),(Pnt or Cplx(z0))
 -1 angle
 -2 angleatraw
 -3 legend
@@ -8694,7 +8733,7 @@ quadric(7*x^2+4*y^2+4*z^2+4*x*y-4*x*z-2*y*z-4*x+5*y+4*z-18,[x,y,z])
 1 Définit en 2-d un cercle par un diamètre (arg2=Point) ou par centre et rayon (arg2=Complex, abs(arg2)=rayon) [ou l'arc AB, A d'angle a, B d'angle b, (arg1+arg2=angle 0)] ou par son équation et en 3-d par son diamètre et un 3ème point.
 2 Define for 2-d a circle with a diameter (arg2=Point) or with center and radius (arg2=Complex, abs(arg2)=radius) [or the arc AB, A angle a, B angle b (arg1+arg2=angle 0)] or by its equation and for 3-d with a diameter and a third point
 3 Define una circunferencia por un diámetro (arg2=Point) o por sus centro y radio (arg2=Complex, abs(arg2)=radio) [o arco AB A ángulo a, B ángulo b (arg1+arg2=ángulo 0)] o por su ecuación.
-4 Ορίζει έναν κύκλο με διάμετρο (arg2=σημείο) ή με κέντρο και ακτίνα (arg2=Complex, abs(arg2)=ακτίνα) [ή με τόξο AB, A γωνία a, B γωνία b (arg1+arg2=angle 0)] ή με βάση την εξίσωσή του.
+4 Ορίζει έναν κύκλο με διάμετρο (arg2=σημείο) ή με κέντρο και ακτίνα (arg2=μιγαδικού, abs(arg2)=ακτίνα) [ή με τόξο AB, A γωνία a, B γωνία b (arg1+arg2=angle 0)] ή με βάση την εξίσωσή του.
 8 圆
 0 (Pnt or Cplx),(Pnt(arg2) or Cplx(arg2)),[Real(a)],[Real(b)],[Var(A)],[Var(B)]
 -1 circumcircle
@@ -11443,16 +11482,18 @@ odeplot([-y+b,-1+(x-a)^2+(y-b)^2],[t=-3..3,x,y],[0,a+1,b+0.5],plan)
 odeplot(5*[-y,x],[t=0..1,x,y],[0,0.3,0.7],tstep=0.05,plan)
 
 # pmin
-1 Renvoie le polynôme minimal de A
-2 Returns the minimal polynomial of A
-3 Devuele el polinómio mínimo de A
-4 Επιστρέφει το ελάχιστο πολυώνυμο του Α
-0 Mtrx,[Var]
+1 Renvoie le polynôme minimal de la matrice A ou le polynôme minimal du nombre algébrique a.
+2 Returns the minimal polynomial of the matrix A or the minimal polynomial of the algebraic number a.
+3 Devuele el polinómio mínimo de una matriz A o el polinómio mínimo de un número algebraica a.
+4 Επιστρέφει το ελάχιστο πολυώνυμο του Α (πίνακα) ή το ελάχιστο πολυώνυμο του a
+(αλγεβρική αριθμού).
+0 Mtrx(A)||Real(a),[Var]
 -1 pcar
 -2 jordan
 pmin([[1,0],[0,1]])
 pmin([[1,0],[0,1]],x)
 pmin(sqrt(2)+sqrt(3))
+pmin(sqrt(2)+sqrt(3),x)
 
 # plotpolar polarplot DrawPol courbe_polaire
 1 plotpolar(f(x),x,a,b) trace la courbe en polaire r=f(x) pour x dans [a,b]
@@ -11602,13 +11643,14 @@ print(a)
 Psi(3,1)
 
 # ptayl
-1 Renvoie le polynôme de Taylor Q tel que P(x)=Q(x-a)
-2 Returns the Taylor polynomial Q such as P(x)=Q(x-a)
+1 Renvoie le polynôme de Taylor de l'expression au point a l'ordre specifie ou le polynome Q tel que P(x)=Q(x-a)
+2 Returns the Taylor polynomial of the expression at the given point and order or a polynomial Q such that P(x)=Q(x-a)
 3 Devuelve el polinomio de Taylor Q tal que P(x)=Q(x-a)
 4 Επιστρέφει το πολυώνυμου του Taylor Q τέτοιου ώστε P(x)=Q(x-a)
-0 Poly(P(var)),Real(a),[Var]
+0 Expr||Poly(P(var)),Var=Real || Real(a),[Order || Var]
 -1 series
 -2 taylor
+ptayl(sin(x),x=0,5)
 ptayl(x^2+2*x+1,1)
 ptayl(x^2+2*x+1,-1)
 ptayl(y^2+2*y+1,1.1,y)
@@ -12254,12 +12296,14 @@ half_line(point(i),point(1+i))
 -1 limit
 -2 taylor
 -3 pad
--4 convert
+-4 polynom
 -5 truncate
 series(sin(x)/x,x=0)
 series(ln(x+x^2)-ln(x),x=0,1)
 series((x^4+x+2)/(x^2+1),x=0,5)
 series(sin(x),x=0,6,polynom)
+series(1/(1+x+y),[x,y],[0,0],5) 
+ truncate(series(sin(x),x=0,6),6)
 
 # select
 1 Sélectionne les éléments e de l vérifiant f(e)=vrai
@@ -14252,7 +14296,27 @@ readwav("pop.wav")
 4 Γράφει ένα αρχείο ήχου τύπου WAV
 0 Str(s),Lst(l)
 -1 readwav
+writewav("la.wav",2^14*(sin(2*pi*440*soundsec(1))))
 writewav("beep.wav",[[1,16,44100,80000],[65000$10000,0$10000,65000$10000,0$10000]])
+
+# playsnd
+1 Joue une donnee de type son
+2 Plays a sound data
+0 Vect
+-1 readwav
+-2 writewav
+-3 soundsec
+playsnd(2^14*(sin(2*pi*440*soundsec(1)))
+
+# soundsec
+1 Genere un vecteur correspondant a n secondes de temps/N (defaut N=44100)
+2 Generates a vector coding n seconds of time/N (default N=44100)
+0 Intg(n),[Intg(N)]
+-1 readwav
+-2 writewav
+-3 playsnd
+soundsec(1)
+soundsec(1,22100)
 
 # readrgb
 1 Lit un fichier image, avec la taille originelle ou spécifiée en argument.
@@ -14499,4 +14563,3 @@ wilcoxons([1, 3, 4, 5, 7, 8, 8, 12, 15, 17] , 10)
 0 Int,Int,Int
 dayofweek(21,4,2014)
 dayofweek(15,10,1582)
-

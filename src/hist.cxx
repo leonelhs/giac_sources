@@ -445,9 +445,9 @@ giac::gen Xcas_widget_size(const giac::gen & g,const giac::context * cptr) {
         }
         if (s>11){ 
           if (v[11].type==giac::_INT_)
-            xcas::file_save_context=!v[11].val;
+            giac::step_infolevel=v[11].val;
           if (v[11].type==giac::_DOUBLE_)
-            xcas::file_save_context=!v[12]._DOUBLE_val;
+            giac::step_infolevel=v[12]._DOUBLE_val;
         }     
         if (s>12 && v[12].type==giac::_STRNG){
   	std::string browser=*v[12]._STRNGptr;
@@ -855,8 +855,8 @@ std::string Xcas_browser_name() {
 }
 
 void Xcas_load_general_setup() {
-  //
-  Xcas_down_compatibility->value(!xcas::file_save_context);
+  // xcas::file_save_context has been removed for xcas 1.1.3
+  Xcas_stepbystep->value(giac::step_infolevel);
   Xcas_html_browser->value(Xcas_browser_name().c_str());
   static std::string proxy;
   if (getenv("http_proxy")){
@@ -899,7 +899,7 @@ void Xcas_save_config(const giac::context * contextptr) {
      else
        of << "," << '"' << "builtin" << '"' ;
      of << "," << xcas_user_level ;
-     of << "," << int(Xcas_down_compatibility->value()) ;
+     of << "," << int(Xcas_stepbystep->value()) ;
      if (getenv("GIAC_PREVIEW"))
        of << "," << '"' << getenv("GIAC_PREVIEW") << '"' ;
      else
@@ -1549,7 +1549,7 @@ static void cb_Xcas_help_connan(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_help_alb(Fl_Menu_*, void*) {
-  giac::system_browser_command("http://lycee-rodezlaroque.eap.entmip.fr/le-lycee/mathematiques/");
+  giac::system_browser_command("http://lycee-rodezlaroque.eap.entmip.fr/le-lycee/xcas/");
 }
 
 static void cb_Xcas_help_cheval(Fl_Menu_*, void*) {
@@ -1850,7 +1850,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Edit", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"Execute worksheet", 0x4ffc6,  (Fl_Callback*)cb_Xcas_Execute_Worksheet, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Execute below", 0,  (Fl_Callback*)cb_Xcas_Execute_Below, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Remove answers", 0,  (Fl_Callback*)cb_Xcas_Remove_Answers, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Remove answers below", 0,  (Fl_Callback*)cb_Xcas_Remove_Answers, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Undo", 0x4007a,  (Fl_Callback*)cb_Xcas_Undo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Redo", 0x40079,  (Fl_Callback*)cb_Xcas_Redo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Paste", 0,  (Fl_Callback*)cb_Xcas_Paste, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -1966,7 +1966,8 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"int: Integration (definite/indefinite)", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"diff: Derivative", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"limit: Limit", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"series: Taylor or asymptotic expansion", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"ptayl: Taylor polynomial", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"series: series expansion (with remainder)", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"sum: Discrete summation", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"laplace: Laplace transform", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"ilaplace: invert Laplace transform", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3033,10 +3034,10 @@ static void cb_Xcas_automatic_completion_browser(Fl_Check_Button*, void*) {
   xcas::do_helpon=Xcas_automatic_completion_browser->value();
 }
 
-Fl_Check_Button *Xcas_down_compatibility=(Fl_Check_Button *)0;
+Fl_Check_Button *Xcas_stepbystep=(Fl_Check_Button *)0;
 
-static void cb_Xcas_down_compatibility(Fl_Check_Button*, void*) {
-  xcas::file_save_context=!Xcas_down_compatibility->value();
+static void cb_Xcas_stepbystep(Fl_Check_Button*, void*) {
+  giac::step_infolevel=Xcas_stepbystep->value();
 }
 
 Fl_Check_Button *Xcas_tooltip_disabled=(Fl_Check_Button *)0;
@@ -3110,7 +3111,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<322; i++)
+        for ( ; i<323; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;
@@ -4861,12 +4862,12 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
       Xcas_automatic_completion_browser->callback((Fl_Callback*)cb_Xcas_automatic_completion_browser);
       Xcas_automatic_completion_browser->align(Fl_Align(68|FL_ALIGN_INSIDE));
     } // Fl_Check_Button* Xcas_automatic_completion_browser
-    { Xcas_down_compatibility = new Fl_Check_Button(180, 245, 125, 25, gettext("Xcas < 0.8.1 compatible"));
-      Xcas_down_compatibility->tooltip(gettext("If not checked, save context information, incompatible with Xcas < 0.8.1"));
-      Xcas_down_compatibility->down_box(FL_DOWN_BOX);
-      Xcas_down_compatibility->callback((Fl_Callback*)cb_Xcas_down_compatibility);
-      Xcas_down_compatibility->align(Fl_Align(68|FL_ALIGN_INSIDE));
-    } // Fl_Check_Button* Xcas_down_compatibility
+    { Xcas_stepbystep = new Fl_Check_Button(180, 245, 125, 25, gettext("Step by step"));
+      Xcas_stepbystep->tooltip(gettext("If not checked, save context information, incompatible with Xcas < 0.8.1"));
+      Xcas_stepbystep->down_box(FL_DOWN_BOX);
+      Xcas_stepbystep->callback((Fl_Callback*)cb_Xcas_stepbystep);
+      Xcas_stepbystep->align(Fl_Align(68|FL_ALIGN_INSIDE));
+    } // Fl_Check_Button* Xcas_stepbystep
     { Xcas_tooltip_disabled = new Fl_Check_Button(180, 145, 125, 25, gettext("Disable tooltips"));
       Xcas_tooltip_disabled->tooltip(gettext("Check box to disable tooltips"));
       Xcas_tooltip_disabled->down_box(FL_DOWN_BOX);
@@ -5040,6 +5041,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   Xcas_help_int->callback(cb_Assistant_ItemName);
   Xcas_help_diff->callback(cb_Assistant_ItemName);
   Xcas_help_limit->callback(cb_Assistant_ItemName);
+  Xcas_help_ptayl->callback(cb_Assistant_ItemName);
   Xcas_help_series->callback(cb_Assistant_ItemName);
   Xcas_help_sum->callback(cb_Assistant_ItemName);
   Xcas_help_laplace->callback(cb_Assistant_ItemName);

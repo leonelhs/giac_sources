@@ -6,35 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les commandes d’attributs</TITLE>
+<TITLE>Avoir du papier triangulé : papier_triangule 
+triangle_paper</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr851.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr853.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc987">9.3.2</A>  Les commandes d’attributs</H3><P>
-Les attributs des objets graphiques peuvent être définis par des commandes 
-qui sont :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>legend</TT> ou <TT>legende</TT>,
-</LI><LI CLASS="li-itemize"><TT>display</TT> ou <TT>affichage</TT> ou <TT>color</TT> ou <TT>couleur</TT> 
-</LI></UL><P>
-Les paramètres de ces commandes sont :<BR>
-<TT>objet_graphique,nom_de_l’attribut=valeur1+valeur2+...</TT><BR>
- et les valeurs 
-de cet attribut sont valables uniquement pour l’objet graphique spécifié.<BR>
-Par exemple :<BR>
-<TT>legende(point(1+i),"A",rouge,quadrant3,epaisseur_point_2)</TT><BR>
-<TT>affichage(point(1+i),rouge+epaisseur_point_6+point_carre)</TT><BR>
-<TT>affichage(point(1+i,legend="A"),epaisseur_point_2+point_carre)</TT></P><P><B>Remarque</B><BR>
-Si la commande <TT>display(..)</TT> ou <TT>affichage(...)</TT> est tapée dans une 
-ligne de commandes, on peut utiliser ces commandes avec comme paramètre<BR>
-<TT>valeur1+valeur2+...</TT> et<BR>
-alors la commande est globale pour tous les objets définis ensuite dans cette
-ligne de commandes. Il faut éviter d’utiliser ces commandes de cette 
-façon dans un écran de géométrie, car les attributs sont déjà 
-définis globalement dans <TT>cfg</TT> et le bouton des attributs.</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc987">9.2.9</A>  Avoir du papier triangulé : <TT>papier_triangule<BR>
+triangle_paper</TT></H3><P><A NAME="@default1535"></A><A NAME="@default1536"></A>
+<TT>papier_triangule</TT> permet d’avoir du papier triangulé c’est 
+à dire de tracer un reseau triangulaire d’angle <I>t</I>.<BR>
+<TT>papier_pointe</TT> a 3,4 ou 5 arguments : l’unité <TT>ux</TT> sur l’axe des 
+<I>x</I>, l’angle <TT>t</TT> et l’unité <TT>uy</TT> sur l’axe des <I>y</I> et éventuellement
+<TT>x=xmin..xmax,y=ymin..ymax</TT> pour avoir ces lignes dans le rectangle
+<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
+les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
+Vous avez la possibilité d’enlever les axes orthonormés en utilisant
+le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
+On tape pour avoir un réseau triangulaire :
+</P><DIV CLASS="center"><TT>papier_triangule(1,pi/2,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le reseau formé par des moitiés de carrés et dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><P>
+On tape pour avoir un reseau triangulaire :
+</P><DIV CLASS="center"><TT>papier_triangule(1,pi/3,sqrt(3)/2,x=-2..3,y=-1..2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le reseau formé par des triangles équilatéraux dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><HR>
 <A HREF="cascmd_fr851.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr853.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

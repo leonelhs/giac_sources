@@ -6,31 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction génératrice des moments d’une loi de probabilité: mgf</TITLE>
+<TITLE>Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney wilcoxonp</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr774.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr776.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc897">7.4.50</A>  Fonction génératrice des moments d’une loi de probabilité: <TT>mgf</TT></H3><P><A NAME="@default1381"></A>
-<TT>mgf</TT> a comme paramètres le nom d’une loi de probabilité (parmi 
-les lois : normale, binomiale, Poisson, beta, gamma) et les paramètres de 
-cette loi.<BR>
-<TT>mgf</TT> renvoie la fonction génératrice des moments de cette loi de 
-probabilité.<BR>
+<H3 CLASS="subsection"><A NAME="htoc898">7.4.50</A>  Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney <TT>wilcoxonp</TT></H3><P>
+<A NAME="@default1382"></A>
+<TT>wilcoxonp</TT> a comme argument 1 ou 2 entiers.<BR>
+<TT>wilcoxonp</TT> renvoie le polynôme donnant la distribution du test de Wilcoxon ou de Mann-Whitney pour 1 ou 2 échantillon(s).
 On tape :
-</P><DIV CLASS="center"><TT>mgf(normald,1,0)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>wilcoxonp(4)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>exp(t)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>poly1[1/16,1/16,1/16,1/8,1/8,1/8,1/8,1/8,1/16,1/16,1/16]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>mgf(poisson,5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>wilcoxonp(7,5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>exp(5*(exp(t)-1))</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>mgf(binomial,n,p)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(1-p+p*exp(t))</TT><CODE><TT>^</TT></CODE><TT>n</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>poly1[1/792,1/792,1/396,1/264,5/792,7/792,5/396,13/792,<BR>
+17/792,7/264,13/396,5/132,35/792,13/264,43/792,23/396,2/33,<BR>
+49/792,49/792,2/33,23/396,43/792,13/264,35/792,5/132,13/396,<BR>
+7/264,17/792,13/792,5/396,7/792,5/792,1/264,1/396,1/792,1/792]</TT></DIV><HR>
 <A HREF="cascmd_fr774.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr776.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

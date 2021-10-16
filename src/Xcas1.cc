@@ -103,7 +103,7 @@ namespace xcas {
   Fl_Window * Xcas_Main_Window=0;
   Fl_Button *Xcas_DispG_Cancel=0;
   Fl_Button *Xcas_Cancel=0;
-  bool file_save_context=false;
+  bool file_save_context=true;
 
   // debugger variables
   int xcas_debug_ok,xcas_current_instruction;

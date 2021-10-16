@@ -312,6 +312,7 @@ void check_browser_help(const giac::gen & g){
 
 
 int main(int ARGC, char *ARGV[]){    
+  //giac::step_infolevel=1;
   cerr << "// Maximum number of parallel threads " << giac::threads << endl;
   giac::context giac_context;
   giac::context * contextptr = 

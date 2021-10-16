@@ -6,30 +6,39 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Évaluer une expression sous la forme d’une chaîne : string</TITLE>
+<TITLE>Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : #</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr820.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr822.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc950">8.5.7</A>  Évaluer une expression sous la forme d’une chaîne : <TT>string</TT></H3><P><A NAME="@default1493"></A>
-<TT>string</TT> évalue une expression et renvoie sa valeur sous la 
-forme d’une chaîne de caractères.<BR>
-On peut aussi utiliser la concaténation de l’expression avec une chaîne 
-vide.<BR>
+<H3 CLASS="subsection"><A NAME="htoc951">8.5.4</A>  Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : <TT>#</TT></H3><P><A NAME="@default1494"></A><A NAME="sec:diese"></A>
+<TT>#</TT> permet d’utiliser une chaîne de caractères comme nom de 
+variable ou comme nom de fonction ou comme nom d’instruction ou comme nom de 
+répertoire.<BR>
+<TT>#</TT> est surtout utile dans un programme.<BR>
+<TT>#</TT> a comme argument une chaîne ou le nom d’une variable qui contient 
+une chaîne ou une expression renvoyant une chaîne.<BR>
+<TT>#</TT> transforme la chaîne en une expression mais n’évalue pas cette
+expression. Donc,
+pour faire une affectation, on ne doit pas écrire <TT>#"a:=2"</TT>, mais on
+peut écrire <TT>#"a":=2</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr823.html#sec:expr">8.5.6</A>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>string(ifactor(6))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ifactor(6)+""</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>""+ifactor(6)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a:="abc";#a:=3</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>#"abc":=3</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"2*3"</TT></DIV><P>
+</P><DIV CLASS="center"><TT>La variable abc contient 3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>string(quote(ifactor(6)))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>b:="ifactor";(#b)(54)</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>(#"ifactor")(54)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"ifactor(6)"</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>#"ifactor(54)"</TT></DIV><P>On obtient :
+</P><DIV CLASS="center"><TT>ifactor(54)</TT></DIV><HR>
 <A HREF="cascmd_fr820.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr822.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

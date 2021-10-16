@@ -6,29 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Changer les paramètres de la fenêtre graphique : xyztrange</TITLE>
+<TITLE>Avoir du papier avec des lignes : papier_ligne 
+line_paper</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr849.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr851.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc984">9.2.10</A>  Changer les paramètres de la fenêtre graphique : <TT>xyztrange</TT></H3><P><A NAME="@default1533"></A>
-<TT>xyztrange</TT> met ou enlève les axes de l’écran 
-géométrique. <TT>xyztrange</TT> a 15 paramètres ce sont des paramètres 
-que l’on peut définir dans l’écran de la configuration du graphique. On 
-ouvre cet écran avec la configuration graphique (voir <A HREF="cascmd_fr021.html#sec:configgeo">1.6.2</A>).<BR>
-On tape ou plutôt on utilise le menu <TT>Cfg</TT> :
-</P><DIV CLASS="center"><TT>xyztrange(-5,5,-5,2,-10,10,-1,6,-5,5,-1.2384,2,1,0,1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc985">9.2.7</A>  Avoir du papier avec des lignes : <TT>papier_ligne<BR>
+line_paper</TT></H3><P><A NAME="@default1531"></A><A NAME="@default1532"></A>
+<TT>papier_ligne</TT> permet d’avoir du papier avec des lignes 
+espacées de <I>ux</I> sur l’axe des <I>x</I> et faisant un angle <I>t</I> avec 
+l’horizontale.<BR>
+<TT>papier_ligne</TT> a 2, 3 ou 4 arguments : l’unité <TT>ux</TT> sur l’axe des 
+<I>x</I>, l’angle <TT>t</TT> formé par l’axe des <I>y</I> et des <I>x</I> et éventuellement 
+<TT>x=xmin..xmax,y=ymin..ymax</TT> pour avoir ces lignes dans le rectangle
+<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
+les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
+Vous avez la possibilité d’enlever les axes orthonormés en utilisant
+le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>papier_ligne(0.6,pi/3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La fenêtre visible est [-5;5]*[-1.2834;2]</TT></DIV><P>
-<B>Attention</B> à la différence entre "fenêtre de calcul" et "fenêtre 
-visible" : si la fenêtre de calcul est plus grande, on pourra aller voir ce 
-qui se passe "ailleurs" avec les flèches faisant parties des boutons de 
-l’écran géométrique.<BR>
-De plus, si on a demandé un repère orthonormé en cliquant sur
-⊥, la fenêtre visible demandée sera contenue dans ce qui est 
-réellement visible. </P><HR>
+</P><DIV CLASS="center"><TT>des lignes espacées de 0.6 sur l’axe des </TT><TT><I>x</I></TT><TT> et faisant un angle de </TT><TT>π/3</TT><TT> avec </TT><TT><I>Ox</I></TT><TT> dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT><TT> </TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>papier_ligne(0.6,pi/3,x=-2..3,y=-1..2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>des lignes espacées de 0.6 sur l’axe des </TT><TT><I>x</I></TT><TT> et faisant un angle de </TT><TT>π/3</TT><TT> avec </TT><TT><I>Ox</I></TT><TT> dans le rectangle </TT><TT>[-2,3]×[-1,2]</TT>
+</DIV><HR>
 <A HREF="cascmd_fr849.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr851.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

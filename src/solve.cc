@@ -316,6 +316,8 @@ namespace giac {
       fxnd(*jt,n,d);
       if (d.type==_POLY)
 	res=solve(r2e(d,l,contextptr),x,cplxmode,contextptr);
+      if (is_undef(res))
+	return res;
     }
     const_iterateur it=lv.begin(),itend=lv.end();
     for (;it!=itend;++it){
@@ -453,7 +455,24 @@ namespace giac {
 	b=normal(b,contextptr);
 	if (!is_positive(a,contextptr))
 	  swapgen(l,m);
-	int n0(_ceil(evalf((l-b)/a,eval_level(contextptr),contextptr),contextptr).val),n1(_floor(evalf((m-b)/a,eval_level(contextptr),contextptr),contextptr).val);
+	gen tmp=(l-b)/a;
+#if defined HAVE_LIBMPFR && !defined NO_STDEXCEPT
+	try {
+	  if (tmp.type!=_FRAC && tmp.type!=_EXT)
+	    tmp=accurate_evalf(tmp,1000);
+	} catch (std::runtime_error & ) {}
+#endif
+	tmp=evalf(tmp,eval_level(contextptr),contextptr);
+	int n0(_ceil(tmp,contextptr).val);
+	tmp=(m-b)/a;
+#if defined HAVE_LIBMPFR && !defined NO_STDEXCEPT
+	try {
+	  if (tmp.type!=_FRAC && tmp.type!=_EXT)
+	    tmp=accurate_evalf(tmp,1000);
+	} catch (std::runtime_error & ) {}
+#endif
+	tmp=evalf(tmp,eval_level(contextptr),contextptr);
+	int n1(_floor(tmp,contextptr).val);
 	for (;n0<=n1;++n0)
 	  newv.push_back(subst(*it,n,n0,false,contextptr));
       }
@@ -1944,6 +1963,7 @@ namespace giac {
       return v;
     }
     solve(expr,x,v,isolate_mode,contextptr);
+    if (is_undef(v)) return v;
     v=solve_numeric_check(e_check,x,v,contextptr);
     if (0 && !(isolate_mode & 2)){
       // check solutions if there is a tan inside, commented now that we have the test above
@@ -3085,7 +3105,13 @@ namespace giac {
       }
       w.push_back(v[i]);
     }
-    return lidnt(w);
+    v=lidnt(w);
+    w.clear();
+    for (unsigned i=0;i<v.size();++i){
+      if (!is_inf(v[i]) && !is_undef(v[i]))
+	w.push_back(v[i]);  
+    }
+    return w;
   }
 
   gen in_fsolve(vecteur & v,GIAC_CONTEXT){
@@ -3208,7 +3234,7 @@ namespace giac {
 	  ){
 	*logptr(contextptr) << gettext("Solving by bisection with change of variable x=tan(t) and t=-1.57..1.57. Try fsolve(equation,x=guess) for iterative solver or fsolve(equation,x=xmin..xmax) for bisection.") << endl;
 	gen eq=subst(v[0],v[1],tan(v[1],contextptr),false,contextptr);
-	v=makevecteur(eq,symb_equal(v[1],angle_radian(contextptr)?symb_interval(-1.57,1.57):symb_interval(-44.97,44.97)));
+	v=makevecteur(eq,symb_equal(v[1],angle_radian(contextptr)?symb_interval(-1.57,1.57):symb_interval(-89.97,89.97)));
 	gen res=in_fsolve(v,contextptr);
 	if (is_undef(res))
 	  return res;
@@ -3782,6 +3808,11 @@ namespace giac {
 	    d=linsolve(evalf(d,1,contextptr),-fa,contextptr);
 	  else
 	    d=-evalf(d*fa,1,contextptr);
+	  if (d.type==_VECT &&d._VECTptr->empty()){
+	    a=newton_rand(j,real,rand_xmin,rand_xmax,contextptr);
+	    fa=evalf(eval(subst(f,x,a,false,contextptr),eval_level(contextptr),contextptr),1,contextptr); 
+	    continue;
+	  }	    
 	  if (d.type!=_FLOAT_ && d.type!=_DOUBLE_ && d.type!=_CPLX && d.type!=_REAL && d.type!=_VECT && !is_undef(d) && !is_inf(d))
 	    return gensizeerr(contextptr);
 	  if (k==0 && is_zero(d,contextptr) && is_greater(abs(fa,contextptr),eps2,contextptr)){
@@ -5534,7 +5565,7 @@ namespace giac {
 	  substin.push_back(lsvar);
 	  gen tmp("c__"+print_intvar_counter(contextptr),contextptr);
 	  if (!(ls[3*i+1].val %2))
-	    poscheck.push_back(var.size()+i);
+	    poscheck.push_back(var.size()+listvars.size());
 	  listvars.push_back(tmp);
 	  substout.push_back(tmp);
 	  equations.push_back(pow(tmp,ls[3*i+1],contextptr)-ls3i);

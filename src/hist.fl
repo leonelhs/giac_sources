@@ -533,9 +533,9 @@ Function {Xcas_widget_size(const giac::gen & g,const giac::context * cptr)} {ret
       }
       if (s>11){ 
         if (v[11].type==giac::_INT_)
-          xcas::file_save_context=!v[11].val;
+          giac::step_infolevel=v[11].val;
         if (v[11].type==giac::_DOUBLE_)
-          xcas::file_save_context=!v[12]._DOUBLE_val;
+          giac::step_infolevel=v[12]._DOUBLE_val;
       }     
       if (s>12 && v[12].type==giac::_STRNG){
 	std::string browser=*v[12]._STRNGptr;
@@ -950,8 +950,8 @@ return "";} {}
 
 Function {Xcas_load_general_setup()} {return_type void
 } {
-  code {//
-Xcas_down_compatibility->value(!xcas::file_save_context);
+  code {// xcas::file_save_context has been removed for xcas 1.1.3
+Xcas_stepbystep->value(giac::step_infolevel);
 Xcas_html_browser->value(Xcas_browser_name().c_str());
 static std::string proxy;
 if (getenv("http_proxy")){
@@ -996,7 +996,7 @@ std::ofstream of((giac::home_directory()+giac::xcasrc()).c_str());
    else
      of << "," << '"' << "builtin" << '"' ;
    of << "," << xcas_user_level ;
-   of << "," << int(Xcas_down_compatibility->value()) ;
+   of << "," << int(Xcas_stepbystep->value()) ;
    if (getenv("GIAC_PREVIEW"))
      of << "," << '"' << getenv("GIAC_PREVIEW") << '"' ;
    else
@@ -1240,7 +1240,7 @@ update_xcas=0;}
           xywh {150 150 100 20}
         }
         MenuItem Xcas_Remove_Answers {
-          label {Remove answers}
+          label {Remove answers below}
           callback {xcas::cb_Rm_Answers(Xcas_current_session(),0);}
           xywh {160 160 100 20}
         }
@@ -1841,7 +1841,7 @@ if (xcas::use_external_browser)
           }
           MenuItem Xcas_help_alb {
             label {Site Lycee de L. Briel}
-            callback {giac::system_browser_command("http://lycee-rodezlaroque.eap.entmip.fr/le-lycee/mathematiques/");}
+            callback {giac::system_browser_command("http://lycee-rodezlaroque.eap.entmip.fr/le-lycee/xcas/");}
             xywh {45 45 100 20}
           }
           MenuItem Xcas_help_cheval {
@@ -2003,8 +2003,12 @@ giac::html_help_init("aide_cas",language(contextptr),true,true);}
             label {limit: Limit}
             xywh {35 35 100 20}
           }
+          MenuItem Xcas_help_ptayl {
+            label {ptayl: Taylor polynomial}
+            xywh {35 35 100 20}
+          }
           MenuItem Xcas_help_series {
-            label {series: Taylor or asymptotic expansion}
+            label {series: series expansion (with remainder)}
             xywh {35 35 100 20}
           }
           MenuItem Xcas_help_sum {
@@ -3875,9 +3879,9 @@ Xcas_Page_Format_Output->value("8");}
       callback {xcas::do_helpon=Xcas_automatic_completion_browser->value();}
       tooltip {Selecting a menu item displays short index help} xywh {180 105 125 25} down_box DOWN_BOX align 84
     }
-    Fl_Check_Button Xcas_down_compatibility {
-      label {Xcas < 0.8.1 compatible}
-      callback {xcas::file_save_context=!Xcas_down_compatibility->value();}
+    Fl_Check_Button Xcas_stepbystep {
+      label {Step by step}
+      callback {giac::step_infolevel=Xcas_stepbystep->value();}
       tooltip {If not checked, save context information, incompatible with Xcas < 0.8.1} xywh {180 245 125 25} down_box DOWN_BOX align 84
     }
     Fl_Check_Button Xcas_tooltip_disabled {
@@ -4059,6 +4063,7 @@ Xcas_help_rsolve->callback(cb_Assistant_ItemName);
 Xcas_help_int->callback(cb_Assistant_ItemName);
 Xcas_help_diff->callback(cb_Assistant_ItemName);
 Xcas_help_limit->callback(cb_Assistant_ItemName);
+Xcas_help_ptayl->callback(cb_Assistant_ItemName);
 Xcas_help_series->callback(cb_Assistant_ItemName);
 Xcas_help_sum->callback(cb_Assistant_ItemName);
 Xcas_help_laplace->callback(cb_Assistant_ItemName);
