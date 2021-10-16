@@ -3630,12 +3630,85 @@ namespace giac {
     return res;
   }
   
+
+  // solve triangular system l*a=y where l is the lower part of a lu decomp 
+  void linsolve_l(const matrice & m,const vecteur & y,vecteur & a){
+    // l*a=y: a1=y1, a2=y2-m_21*a1, ..., ak=yk-sum_{j=1..k-1}(m_kj*aj)
+    int n=y.size();
+    a.resize(n);
+    gen * astart=&a[0];
+    *astart=y[0];
+    for (int k=1;k<n;++k){
+      const gen * mkj=&m[k]._VECTptr->front();
+      gen *aj=astart,*ak=astart+k;
+      gen res=y[k];
+      for (;aj<ak;++mkj,++aj)
+	res -= (*mkj)*(*aj); 
+      *ak=res;
+    }
+  }
+
+  // solve upper triangular system m*y=a
+  void linsolve_u(const matrice & m,const vecteur & y,vecteur & a){
+    // u*[a0,..,an-1]=[y0,...,yn]
+    // a_{n-1}=y_{n-1}/u_{n-1,n-1}
+    // a_{n-2}=(y_{n-2}-u_{n-2,n-1}*a_{n-1})/u_{n-2,n-2}
+    // ...
+    // a_k=(y_{k}-sum_{j=k+1..n-1} u_{k,j}a_j)/u_{k,k}
+    int n=y.size();
+    a.resize(n);
+    for (int i=0;i<n;i++){
+      for (int k=n-1;k>=0;--k){
+	gen res=y[k];
+	gen * mkj=&(*m[k]._VECTptr)[n-1],*colj=&a[n-1],*colend=&a[k];
+	for (;colj>colend;--mkj,--colj){
+	  res -= (*mkj)*(*colj);
+	}
+	*colj=res/(*mkj);
+      }
+    }
+  }
+
   gen _linsolve(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     vecteur v(plotpreprocess(args,contextptr));
     if (is_undef(v))
       return v;
     int s=v.size();
+    if (s==4){
+      // P,L,U,B, solve A*X=B where P*A=L*U
+      gen P=v[0],L=eval(v[1],1,contextptr),U=v[2],B=v[3];
+      if (P.type!=_VECT || !ckmatrix(L) || !ckmatrix(U) || B.type!=_VECT)
+	return gensizeerr(contextptr);
+      vector<int> p;
+      if (!is_permu(*P._VECTptr,p,contextptr))
+	return gensizeerr(contextptr);
+      matrice b; int n=B._VECTptr->size();
+      bool mat=ckmatrix(B);
+      if (!mat){
+	b=vecteur(1,B);
+	if (!ckmatrix(b))
+	  return gensizeerr(contextptr);
+      }
+      else 
+	b=mtran(*B._VECTptr);
+      if (n!=p.size() || n!=L._VECTptr->size() || n!=U._VECTptr->size())
+	return gendimerr(contextptr);
+      vecteur res; res.reserve(b.size());
+      for (unsigned i=0;i<b.size();++i){
+	const vecteur & Bv=*b[i]._VECTptr;
+	vecteur c(n),y(n),x(n);
+	for (int i=0;i<n;++i)
+	  c[i]=Bv[p[i]];
+	// now solve L*(U*X)=c
+	linsolve_l(*L._VECTptr,c,y);
+	linsolve_u(*U._VECTptr,y,x);
+	if (!mat)
+	  return x;
+	res.push_back(x);
+      }
+      return gen(mtran(res),_MATRIX__VECT);
+    }
     if (s!=2)
       return gentoomanyargs("linsolve");
     if (v[1].type==_IDNT)

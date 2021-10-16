@@ -2275,7 +2275,8 @@ namespace giac {
 	gen df=derive(*it,gen_x,contextptr);
 	gen tmprem;
 	fu=ratnormal(rdiv(e,df,contextptr));
-	if (is_undef(fu) && is_zero(ratnormal(df))){
+	fu=eval(fu,1,contextptr);
+	if ((is_undef(fu) || is_inf(fu)) && is_zero(ratnormal(df))){
 	  // *it is constant -> find the value
 	  tmprem=subst(*it,gen_x,zero,false,contextptr);
 	  e=subst(e,*it,tmprem,false,contextptr);
