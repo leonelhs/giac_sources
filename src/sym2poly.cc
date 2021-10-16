@@ -1457,7 +1457,7 @@ namespace giac {
 	if (resn.type==_VECT && minpoly.type==_VECT && resn._VECTptr->size()>=minpoly._VECTptr->size()){
 	  resn = *resn._VECTptr % *minpoly._VECTptr;
 	  gen tmp;
-	  lcmdeno(*resn._VECTptr,tmp,contextptr);
+	  lcmdeno_converted(*resn._VECTptr,tmp,contextptr);
 	  resd=resd*tmp;
 	}
 	res.push_back(algebraic_EXTension(resn,minpoly)/resd);
@@ -2644,6 +2644,106 @@ namespace giac {
     return normal(e,true,contextptr);
   }
 
+  // guess if g is a program/function: 1 func, 0 unknown, -1 not func
+  static int is_program(const gen & g){
+#ifdef GIAC_HAS_STO_38
+    if (g.type==_IDNT){
+      const char * idname=g._IDNTptr->id_name;
+      if (strlen(idname)==2 && (idname[0]=='F' || idname[0]=='R' || idname[0]=='X' || idname[0]=='Y') && idname[1]>='0' && idname[1]<='9')
+	return 1;
+      else
+	return -1;
+    }
+#endif
+    if (g.type==_FUNC)
+      return 1;
+    if (g.type==_VECT){
+      const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
+      for (;it!=itend;++it){
+	int res=is_program(*it);
+	if (res)
+	  return res;
+      }
+      return 0;
+    }
+    if (g.type!=_SYMB)
+      return 0;
+    if (g.is_symb_of_sommet(at_of) && g._SYMBptr->feuille.type==_VECT){
+      return is_program(g._SYMBptr->feuille._VECTptr->back());
+    }
+    if (g.is_symb_of_sommet(at_program))
+      return 1;
+    vecteur v(lvar(g));
+    if (v.size()==1 && v.front()==g){
+      if (g.type!=_SYMB)
+	return 0;
+      return is_program(g._SYMBptr->feuille);
+    }
+    for (unsigned i=0;i<v.size();++i){
+      int res=is_program(v[i]);
+      if (res)
+	return res;
+    }
+    return 0;
+  }
+
+  bool guess_program(gen & g,GIAC_CONTEXT){
+    if (is_program(g)!=1)
+      return false;
+    g=eval(g,1,contextptr);
+    return true;
+  }
+
+  bool is_algebraic_program(const gen & g,gen & f1,gen & f3){
+    if (g.type==_FUNC){
+      if (g==at_equal || g==at_superieur_strict || g==at_superieur_egal || g==at_inferieur_strict || g==at_inferieur_egal)
+	return false;
+      identificateur _tmpi(" x");
+      f1=_tmpi;    
+      f3=g(f1,context0);
+      return true;
+    }
+    if (!g.is_symb_of_sommet(at_program) || g._SYMBptr->feuille.type!=_VECT || g._SYMBptr->feuille._VECTptr->size()!=3){
+      if (is_program(g)!=1)      
+	return false;
+      identificateur _tmpi(" x");
+      f1=_tmpi;    
+      f3=g(f1,context0);
+      return true;      
+    }
+    f1=g._SYMBptr->feuille._VECTptr->front();
+    if (f1.type==_VECT && f1.subtype==_SEQ__VECT && f1._VECTptr->size()==1)
+      f1=f1._VECTptr->front();
+    f3=g._SYMBptr->feuille._VECTptr->back();
+    bool res= ((f3.type==_SYMB || f3.type<=_IDNT) && !f3.is_symb_of_sommet(at_bloc));
+    if (res)
+      f3=eval(f3,1,context0); // eval operators like /
+    return res;
+  }
+  bool has_algebraic_program(const gen & g){
+    if (g.type==_VECT){
+      vecteur & v=*g._VECTptr;
+      for (unsigned i=0;i<v.size();++i){
+	if (has_algebraic_program(v[i]))
+	  return true;
+      }
+      return false;
+    }
+    if (g.type==_FUNC){
+      if (g==at_equal || g==at_superieur_strict || g==at_superieur_egal || g==at_inferieur_strict || g==at_inferieur_egal)
+	return false;
+      return true;
+    }
+    if (!g.is_symb_of_sommet(at_program) || g._SYMBptr->feuille.type!=_VECT || g._SYMBptr->feuille._VECTptr->size()!=3){
+      if (is_program(g)!=1)      
+	return false;
+      return true;      
+    }
+    gen f3=g._SYMBptr->feuille._VECTptr->back();
+    bool res= ((f3.type==_SYMB || f3.type<=_IDNT) && !f3.is_symb_of_sommet(at_bloc));
+    return res;
+  }
+
   gen recursive_normal(const gen & e,bool distribute_div,GIAC_CONTEXT){
 #ifdef TIMEOUT
     control_c();
@@ -2676,7 +2776,8 @@ namespace giac {
 	continue;
       if (it->_SYMBptr->sommet!=at_pow){
 	gen tmp=it->_SYMBptr->feuille;
-	tmp=liste2symbolique(symbolique2liste(tmp,contextptr));
+	if (!has_algebraic_program(tmp))
+	  tmp=liste2symbolique(symbolique2liste(tmp,contextptr));
 	tmp=recursive_normal(tmp,false,contextptr);
 	if (is_undef(tmp)) return e;
 	*it=it->_SYMBptr->sommet(tmp,contextptr);
@@ -3323,80 +3424,6 @@ namespace giac {
   define_unary_function_ptr5( at_non_recursive_normal ,alias_at_non_recursive_normal,&__non_recursive_normal,0,true);
 
 
-  // guess if g is a program/function: 1 func, 0 unknown, -1 not func
-  static int is_program(const gen & g){
-#ifdef GIAC_HAS_STO_38
-    if (g.type==_IDNT){
-      const char * idname=g._IDNTptr->id_name;
-      if (strlen(idname)==2 && (idname[0]=='F' || idname[0]=='R' || idname[0]=='X' || idname[0]=='Y') && idname[1]>='0' && idname[1]<='9')
-	return 1;
-      else
-	return -1;
-    }
-#endif
-    if (g.type==_FUNC)
-      return 1;
-    if (g.type==_VECT){
-      const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
-      for (;it!=itend;++it){
-	int res=is_program(*it);
-	if (res)
-	  return res;
-      }
-      return 0;
-    }
-    if (g.type!=_SYMB)
-      return 0;
-    if (g.is_symb_of_sommet(at_of) && g._SYMBptr->feuille.type==_VECT){
-      return is_program(g._SYMBptr->feuille._VECTptr->back());
-    }
-    if (g.is_symb_of_sommet(at_program))
-      return 1;
-    vecteur v(lvar(g));
-    if (v.size()==1 && v.front()==g){
-      if (g.type!=_SYMB)
-	return 0;
-      return is_program(g._SYMBptr->feuille);
-    }
-    for (unsigned i=0;i<v.size();++i){
-      int res=is_program(v[i]);
-      if (res)
-	return res;
-    }
-    return 0;
-  }
-
-  bool guess_program(gen & g,GIAC_CONTEXT){
-    if (is_program(g)!=1)
-      return false;
-    g=eval(g,1,contextptr);
-    return true;
-  }
-
-  bool is_algebraic_program(const gen & g,gen & f1,gen & f3){
-    if (g.type==_FUNC){
-      identificateur _tmpi(" x");
-      f1=_tmpi;    
-      f3=g(f1,context0);
-      return true;
-    }
-    if (!g.is_symb_of_sommet(at_program) || g._SYMBptr->feuille.type!=_VECT || g._SYMBptr->feuille._VECTptr->size()!=3){
-      if (is_program(g)!=1)      
-	return false;
-      identificateur _tmpi(" x");
-      f1=_tmpi;    
-      f3=g(f1,context0);
-      return true;      
-    }
-    f1=g._SYMBptr->feuille._VECTptr->front();
-    if (f1.type==_VECT && f1.subtype==_SEQ__VECT && f1._VECTptr->size()==1)
-      f1=f1._VECTptr->front();
-    f3=g._SYMBptr->feuille._VECTptr->back();
-    bool res= ((f3.type==_SYMB || f3.type<=_IDNT) && !f3.is_symb_of_sommet(at_bloc));
-    if (res)
-      f3=eval(f3,1,context0); // eval operators like /
-    return res;
-  }
   static const char _factor_s []="factor";
   symbolic symb_factor(const gen & args){
     return symbolic(at_factor,args);

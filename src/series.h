@@ -62,6 +62,7 @@ namespace giac {
   bool ppow(const sparse_poly1 & base,const gen & e,int ordre,int direction,sparse_poly1 & res,GIAC_CONTEXT);
   bool pcompose(const vecteur & v,const sparse_poly1 & p, sparse_poly1 & res,GIAC_CONTEXT);
   void lcmdeno(vecteur &v,gen & e,GIAC_CONTEXT);
+  void lcmdeno_converted(vecteur &v,gen & e,GIAC_CONTEXT);
   void lcmdeno(sparse_poly1 &v,gen & e,GIAC_CONTEXT);
   bool pintegrate(sparse_poly1 & p,const gen & t,GIAC_CONTEXT);
   bool prevert(const sparse_poly1 & p_orig,sparse_poly1 & q,GIAC_CONTEXT);

@@ -3339,8 +3339,10 @@ namespace giac {
 
   void modularize(polynome & d,const gen & m){
     vector< monomial<gen> >::iterator it=d.coord.begin(),itend=d.coord.end();
-    for (;it!=itend;++it)
-      it->value=makemod(it->value,m);
+    for (;it!=itend;++it){
+      if (it->value.type!=_USER)
+	it->value=makemod(it->value,m);
+    }
   }
 
   // Find indexes of p such that p is constant, answer is in i
@@ -4482,6 +4484,7 @@ namespace giac {
     // w=p/c=Pi_{i%n>=1} p_i, 
     // y=p'/c=Sum_{i%n>=1} ip_i'*pi_{j!=i, j%n>=1} p_j
     y=y-w.derivative(); 
+    y=smod(y,gen(int(n)));
     // y=Sum_{i%n>=2} (i-1)p_i'*pi_{j!=i,j%n!=0} p_j
     int k=1;
     while(!y.coord.empty()){
@@ -4494,6 +4497,7 @@ namespace giac {
       // this push p_k, now w=pi_{i%n>=k+1} p_i and 
       // y=sum_{i%n>=k+1} (i-k) p_i' * pi_{j!=i, j%n>=k+1} p_j
       y=y-w.derivative();
+      y=smod(y,gen(int(n)));
       // y=sum_{i%n>=k+1} (i-(k+1)) p_i' * pi_{j!=i, j%n>=k+1} p_j
       k++;
     }
@@ -4662,7 +4666,11 @@ namespace giac {
 	return false;
       }
       // convert to vector 
-      modpoly Qtry(modularize(env->moduloon?unmodularize(itfact):it->fact,n,env));
+      modpoly Qtry(modularize(
+			      unmodularize(itfact)
+			      // env->moduloon?unmodularize(itfact):it->fact
+			      ,n,env)
+		   );
       if (is_undef(Qtry)){
 #ifndef NO_STDEXCEPT
 	setsizeerr();

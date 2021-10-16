@@ -1734,7 +1734,7 @@ namespace xcas {
     if (pos<0)
       pos=update_pos;
     else
-      usepos=true;
+      usepos=(dynamic_cast<Equation *>(Xcas_input_focus)==0);
     _sel_begin=savepos;
     fprintf(f,"// xcas version=%s fontsize=%i font=%i currentlevel=%i\n",VERSION,labelsize(),labelfont(),pos);
     fprintf(f,"%s",chs);

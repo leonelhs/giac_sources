@@ -3993,6 +3993,10 @@ namespace giac {
       if ( (v.size()!=1) || (v.front()!=x) )
 	return false;
     }
+    for (unsigned i=1;i<v.size();++i){
+      if (!is_zero(derive(v[i],x,contextptr)))
+	return false;
+    }
     lvar(ratio,v);
     int s=v.size();
     gen f=e2r(ratio,v,contextptr);
@@ -4405,7 +4409,15 @@ namespace giac {
     if (s==4) {
       if (v[1]==cst_i)
 	return gensizeerr(gettext("i=sqrt(-1), please use a valid identifier name"));
-      // test must be done twice for example for sum(sin(k),k,1,0)
+      gen af=evalf_double(v[2],1,contextptr),bf=evalf_double(v[3],1,contextptr);
+      if (v[1].type==_IDNT && (is_inf(af) || af.type==_DOUBLE_) && (is_inf(bf) || bf.type==_DOUBLE_)){
+	vecteur w=find_singularities(eval(v[0],1,contextptr),*v[1]._IDNTptr,0,contextptr);
+	for (unsigned i=0;i<w.size();++i){
+	  if (is_greater((v[3]-w[i])*(w[i]-v[2]),0,contextptr))
+	    return gensizeerr("Pole at "+w[i].print(contextptr));
+	}
+      }
+// test must be done twice for example for sum(sin(k),k,1,0)
       if (is_zero(v[2]-v[3]-1))
 	return zero;
       bool numeval=(!is_integer(v[2]) && v[2].type!=_FRAC) || (!is_integer(v[3]) && v[3].type!=_FRAC) || approx_mode(contextptr);

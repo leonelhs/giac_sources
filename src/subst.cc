@@ -1200,7 +1200,7 @@ namespace giac {
     vecteur v(wrt);
     v.push_back(g);
     gen d;
-    lcmdeno(v,d,contextptr);
+    lcmdeno_converted(v,d,contextptr);
     gen cl=v.back();
     int n=wrt.size();
     vecteur res(n),mat;
@@ -1290,7 +1290,7 @@ namespace giac {
       if (is_zero(w.back()))
 	continue;
       gen gg;
-      lcmdeno(w,gg,contextptr);
+      lcmdeno_converted(w,gg,contextptr);
       // check that all coeff are integers
       const_iterateur jt=w.begin(),jtend=w.end();
       for (;jt!=jtend;++jt){
@@ -1911,7 +1911,7 @@ namespace giac {
     matrice mt=mtran(m);
     gen lcmg;
     for (int i=0;i<c;++i){
-      lcmdeno(*mt[i]._VECTptr,lcmg,contextptr);
+      lcmdeno_converted(*mt[i]._VECTptr,lcmg,contextptr);
       // check for arg of the form ln()/deno
       if (i<n_ln)
 	independant[i]=pow(ln_vars[i]._SYMBptr->feuille,inv(lcmg,contextptr),contextptr);

@@ -44,7 +44,7 @@ time(charpoly(A)):
  local i,j;
  matrix(op(dim(P)),(i,j)->coeff(P[i,j],x,k));
  end_proc;
- P:=matrix(3,3,(i,j)->add(rand(7)*x^l,l=0..4));
+ P:=matrix[[2*x^4+2*x^3+x^2+4,2*x^4+5*x^2+5*x+3,3*x^2+5],[2*x^4+3*x^3+6*x^2+5*x+5,x^4+4*x^3+2*x^2+x,5*x^4+5*x^3+x^2+6*x+6],[x^4+2*x^3+2*x^2+x+6,6*x^4+x^3+x^2+2,x^4+2*x^3+5*x^2+2*x+5]]; // matrix(3,3,(i,j)->add(rand(7)*x^l,l=0..4));
 A:=matrix(3,3,(i,j)->a[i,j]);
 cf(P,4);
 R:=P;k:=4;Q:=0;

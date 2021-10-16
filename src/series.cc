@@ -712,6 +712,36 @@ namespace giac {
     }
   }
 
+  void lcmdeno_converted(vecteur &v,gen & e,GIAC_CONTEXT){
+    if (v.empty()){
+      e=1;
+      return;
+    }
+    if (is_undef(v.front())){
+      v.erase(v.begin());
+      lcmdeno_converted(v,e,contextptr);
+      v.insert(v.begin(),undef);
+      return;
+    }
+    vecteur w;
+    w.reserve(2*v.size());
+    gen common=1,f,num,den;
+    // compute lcm of denominators in common
+    vecteur::iterator it=v.begin(),itend=v.end();
+    for (;it!=itend;++it){
+      fxnd(*it,num,den);
+      w.push_back(num);
+      w.push_back(den);
+      // replace common by lcm of common and den
+      common = lcm(common,den);
+    }
+    // compute e and recompute v
+    e=common;
+    it=v.begin();
+    for (int i=0;it!=itend;++it,i=i+2)
+      *it=w[i]*rdiv(common,w[i+1],contextptr);
+  }
+
   void lcmdeno(sparse_poly1 &v,gen & e,GIAC_CONTEXT){
     if (v.empty()){
       e=1;
@@ -3109,6 +3139,9 @@ namespace giac {
       if (is_undef(f0prime)) return false;
       gen l=in_limit(f0prime/f0,*x._IDNTptr,plus_inf,1,contextptr);
       if (!is_zero(l))
+	return false;
+      l=in_limit(f0prime/f0*(f[3]-f[2]),*x._IDNTptr,plus_inf,1,contextptr);
+      if (is_zero(l) || is_undef(l) || is_inf(l))
 	return false;
       gen remains;
       gen F0=integrate_gen_rem(f0,x,remains,contextptr);

@@ -2746,7 +2746,7 @@ namespace giac {
   }
 
   bool is_atomic(const gen & e){
-    return e.type<_POLY || e.type==_FLOAT_;
+    return e.type<_POLY || e.type==_FLOAT_ || e.type==_USER;
   }
 
   static vecteur _VECTconj(const vecteur & a,GIAC_CONTEXT){
@@ -5563,6 +5563,8 @@ namespace giac {
   bool has_i(const gen & g){
     if (g.type==_CPLX)
       return true;
+    if (g.type==_FRAC)
+      return g._FRACptr->num.type==_CPLX || g._FRACptr->den.type==_CPLX;
     if (g.type==_VECT){
       const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
       for (;it!=itend;++it){
