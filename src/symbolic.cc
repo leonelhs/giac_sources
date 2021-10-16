@@ -433,7 +433,7 @@ namespace giac {
       if (l && s[l-1]=='+')
 	s[l-1]='-';
       else {
-	if (s[l-1]=='-'){
+	if (l && s[l-1]=='-'){
 	  if (l==1) 
 	    s.clear();
 	  else

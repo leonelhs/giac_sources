@@ -1136,7 +1136,7 @@ namespace giac {
       // sqrt of an exact complex number
       if (!lop(e,at_exp).empty())
 	return pow(e,plus_one_half,contextptr);
-      a=re(e,contextptr);b=im(e,contextptr);
+      a=re(e,contextptr);b=ratnormal(im(e,contextptr));
       if (a!=e && is_zero(b,contextptr))
 	return sqrt(a,contextptr);
       gen rho=sqrt(a*a+b*b,contextptr);

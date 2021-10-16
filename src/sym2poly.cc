@@ -2921,8 +2921,9 @@ namespace giac {
     }
     else
       ll=cdr_VECT(lp);
+    gen deno=1; lcmdeno(pp,deno); pp=deno*pp; deno=deno*extra_div; extra_div=1;
     gen tmp=factor(pp,ll,false,with_sqrt,1,extra_div,contextptr);
-    tmp=tmp*r2sym(v,lp,contextptr)/r2sym(extra_div,ll,contextptr);
+    tmp=tmp*r2sym(v,lp,contextptr)/r2sym(extra_div,ll,contextptr)/r2sym(deno,ll,contextptr);
     extra_div=1;
     return tmp;
   }
