@@ -1607,17 +1607,15 @@ namespace giac {
 
   modpoly operator / (const modpoly & th,const modpoly & other) {  
     modpoly rem,quo;
-    environment * env=new environment;
-    DivRem(th,other,env,quo,rem);
-    delete env;
+    environment env;
+    DivRem(th,other,&env,quo,rem);
     return quo;
   }
 
   modpoly operator % (const modpoly & th,const modpoly & other) {  
     modpoly rem,quo;
-    environment * env=new environment;
-    DivRem(th,other,env,quo,rem);
-    delete env;
+    environment env;
+    DivRem(th,other,&env,quo,rem);
     return rem;
   }
 
@@ -2784,7 +2782,7 @@ namespace giac {
   }
 
   bool gcd_modular(const polynome &p_orig, const polynome & q_orig, polynome & pgcd,polynome & pcofactor,polynome & qcofactor,bool compute_cofactors){
-    if (debug_infolevel)
+    if (debug_infolevel>1)
       CERR << "gcd modular algo begin " << CLOCK() << endl;
     int dim=p_orig.dim;
     vector< T_unsigned<gen,hashgcd_U> > p,q,g,pcof,qcof;
@@ -4142,6 +4140,20 @@ namespace giac {
     for (;it!=itend;++it){
       n=gcd(n,*it,context0);
       if (n==n1)
+        return 1;
+    }
+    return n;
+  }
+
+  // gcd of coeff of p and g
+  gen lgcd(const dense_POLY1 & p,const gen & g){
+    if (p.empty())
+      return g;
+    dense_POLY1::const_iterator it=p.begin(),itend=p.end();
+    gen n(g);
+    for (;it!=itend;++it){
+      n=gcd(n,*it,context0);
+      if (is_one(n))
         return 1;
     }
     return n;
