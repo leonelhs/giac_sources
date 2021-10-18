@@ -49,7 +49,8 @@
 \newcommand{\tr}{\mbox{tr\,}}
 
 
-\title {Examples of interactive computations inside a \LaTeX\ file compiled to HTML and PDF.}
+\title {Examples of interactive computations inside a \LaTeX\ file
+  compiled to HTML.}
 \author{B. Parisse\\Institut Fourier\\UMR 5582 du CNRS
 \\Université de Grenoble}
 
@@ -70,9 +71,7 @@
 \section{Description}
 This \LaTeX\ source will output an interactive HTML file if you compile
 with {\tt hevea} (tested with \verb|hevea 2.23|), where interactive
-computations are done with the computer algebra system Giac. If you are
-on linux, you can compile to HTML and PDF by calling {\tt icas} instead
-of {\tt hevea} ({\tt icas} will call hevea and pdflatex).
+computations are done with the computer algebra system Giac.
 
 \section{Install}
 Please install
@@ -149,6 +148,7 @@ f(x):={
   return y;
 }
 \end{giacprog}
+Do not use in another environment (like itemize or enumerate).
 
 A link\index{giaclink} to Xcas offline with a few commands\\
 \verb|\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasen.html#+factor(x^4-1)&+a:=idn(3)&}|\\

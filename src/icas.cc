@@ -1,4 +1,5 @@
 // -*- mode:C++ ; compile-command: "g++-3.4 -I.. -I../include -g -c icas.cc" -*-
+// N.B. for valgrind check, use export GIAC_RELEASE=1
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -1651,5 +1652,7 @@ int main(int ARGC, char *ARGV[]){
 #ifdef WITH_GNUPLOT
   giac::kill_gnuplot();
 #endif
+  if (getenv("GIAC_RELEASE"))
+    giac::release_globals();
   return resultat;
 }

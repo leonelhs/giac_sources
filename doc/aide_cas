@@ -1,10 +1,3 @@
-# tabvar
-1 Tableau de variations pour un graphe de fonction ou une courbe parametrique
-2 Variations for a function graph or a parametric curve
-0 f or [f,g]
-tabvar(sin(x))
-tabvar([cos(2t),sin(3t)])
-
 # keep_algext
 1 Laisse les extensions algébriques telles quelles (keep_algext:=1) ou tente de les réécrire (keep_algext:=0).
 2 Pseudo-variable to keep algebraic extensions (keep_algext:=1) or try to rewrite them (keep_algext:=0)
@@ -913,6 +906,7 @@ odd(1251)
  set[1,2,3]
  %{1,2,3%}
  L:=[1,2,2,3];S:=set[op(L)]
+ set[1,2]*set[2,3]
 
 # i[]
 1 i[] est utilisé pour définir un intervalle réel.
@@ -2668,7 +2662,7 @@ coordinates(vecteur([1,2,3],[4,5,6]))
  1==2 and 2>1
  1!=2 and 2>0
 
-# end end_for fpour end_while ftantque end_if fi fsi od ffaire
+# end end_for fpour end_while ftantque end_if fi fsi od ffaire ffonction
 1 Fin de bloc.
 2 Bloc end.
 3 Final de bloque.
@@ -2678,6 +2672,9 @@ coordinates(vecteur([1,2,3],[4,5,6]))
 -2 bloc
 -3 {}
  if (2>1) begin print("ifactor(154)=",ifactor(154));ifactor(154);end
+ f:=function(a,b) local c;c=a+b;c+gcd(a,b);end;
+ f:=fonction(a,b) local c;c=a+b;c+gcd(a,b);ffonction;
+
 
 # bisection_solver brent_solver falsepos_solver newton_solver secant_solver steffenson_solver
 1 Argument de fsolve indiquant la méthode pour résoudre numériquement une équation.
@@ -5854,13 +5851,15 @@ Circle(0,1,1,1)
 version()
 
 # seq
-1 Renvoie la séquence (2 ou 3 arg) ou la liste (4 ou 5 arg) obtenue lorsque var varie entre a et b (pas=p) dans Xpr (ou on répète n fois l'expression Xpr ou on obtient la sequence des réels entre a et b par pas de p).
-2 Returns the sequence (2 or 3 arg) or the list (4 or 5 arg) obtained when var go from a to b (step p) in Xpr (or the Xpr is repeated n times or returns the sequence of reals from a to b (step p)).
+1 Renvoie la séquence (2 ou 3 arg) ou la liste (4 ou 5 arg) obtenue lorsque var varie entre a et b (pas=p) dans Xpr (ou on répète n fois l'expression Xpr ou on obtient la sequence des réels entre a et b par pas de p). On a aussi seq(expression,variable,liste) équivaut à map(liste,unapply(expression,variable)) 
+2 Returns the sequence (2 or 3 arg) or the list (4 or 5 arg) obtained when var go from a to b (step p) in Xpr (or the Xpr is repeated n times or returns the sequence of reals from a to b (step p)).And also seq(expression,variable,liste) is equivanent to map(liste,unapply(expression,variable)) 
 3 Devuelve la secuencia (2 o 3 arg) o la lista (4 o 5 arg) obtenida cuando var va desde a hasta b (paso=p) en Xpr (o la expresión Xpr es repetida n veces).
 4 Επιστρέφει την ακολουθία (2 ή 3 ορίσματα) ή τη λίστα (4 ή 5 ορίσματα) που αποκτιέται όταν το var μεταβάλλεται από a έως b (με βήμα p) στην παράσταση (ή η παράσταση επαναλαμβάνεται n φορές).
 0 Expr(Xpr)||Int(a..b),Intg(n)||Var(var)||Real(p),[Intg(a)],[Intg(b)],[Real(p)]
 -1 $
 -2 makelist
+-3 map
+-4 unapply
 seq(0.3,4)
 seq(t,4)
 seq(0,0)
@@ -5869,6 +5868,7 @@ seq(2^k,k=0..8,2)
 seq(0.3..2,0.2)
 seq(2^k,k,0,8)
 seq(2^k,k,0,8,2)
+seq(x^3,x,[1,2,3])
  [seq(0.3..2,0.2)] 
  a:=(1,2,3);eval(seq(a,4))
 
@@ -7238,6 +7238,7 @@ convert(9976/6961,confrac,'l');l
 convert(sqrt(2),confrac,'dev');dev
 convert(123,base,8)
 convert([3,7,1],base,8)
+convert([1,2,3],set[])
  A[2,1]:=1;convert(A,array)
  B[0..1,1..2]:=1;B[2,2]:=2;convert(B,array)
 
@@ -10969,6 +10970,7 @@ ln(e)
 -3 ->
 -4 {}
  f2(x):={local (a:=2),b; b:=a*x; return b;}
+ f2(x):={var (a:=2),b; b:=a*x; return b;}
 
 # logb
 1 Logarithme à base b.
@@ -11155,7 +11157,10 @@ makelist(x->ifte(x<5,"A","B"),1,10)
 4 Εφαρμογή της συνάρτησης f στα στοιχεία της λίστας l.
 0 Lst(l),Fnc(f)
 -1 apply
+-2 set
+-3 unapply
 map([1,2,3],x->x^3)
+map([1,2,3],unapply(x^3,x))
 map(%%%{1,[2,0]%%%}+%%%{2,[1,1]%%%},(a,b,c)->a*(b+2*c))
 
 # apply
@@ -13172,13 +13177,24 @@ reflection(line(0,1+i),circle(i,1+i))
 -2 rref
 syst2mat([x-y=1,x+2*y],[x,y])
 
+# tabvar
+1 Tableau de variations et le graph sur DispG d'une fonction.
+2 Table of variations of a function with its graph on DispG.
+3 Tabla de variacións de una función.
+4 Πίνακας μιας συνάρτησης
+0 Expr,Var
+-1 tablefunc
+tabvar(sin(x),x)
+tabvar(x^2+x+1),x)
+
 # tablefunc
 1 Tableau de valeurs d'une fonction : on doit être dans un tableur.
 2 Table of value of a function : you must be in a spreadsheet.
 3 Tabla de valores de una función: debemos estar en una hoja de balance.
 4 Πίνακας τιμών μιας συνάρτησης : σε υπολογιστικό φύλλο.
 0 Expr,Var
--1 tableseq
+-1 tabvar
+-2 tableseq
 tablefunc(sin(x),x)
 tablefunc(x^2-x-2,x)
 
@@ -14062,6 +14078,19 @@ display(red+filled);square(0,1);
  f:= (x,y)->sin(x+y)+sin(x-y)
  k:=(x,y)->{if (x!=y) 0; else 1;}
  g:=(x,y)->return(sin(x+y),sin(x-y))
+
+# function fonction	
+1 Instruction qui définit une fonction utilisateur.
+2 Instruction which define an user function.
+3 Instrucción que define una función definida por el usuario.
+4 Εντολή που καθορίζει μια συνάρτηση ως απεικόνιση.
+0 Fnc(f)
+-1 ->
+-2 :=
+-3 end
+-4 ffonction
+ f:=function(a,b) local c;c=a+b;c+gcd(a,b);end;
+ f:=fonction(a,b) local c;c=a+b;c+gcd(a,b);ffonction;
 
 # mod %
 1 Opérateur infixé qui renvoie n mod p un nombre de ℤ/pℤ.

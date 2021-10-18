@@ -21,6 +21,16 @@
 }
 \loadgiacscriptend
 } 
+\newenvironment{giacjshere}[1]["max-height: 500px; overflow:auto"]
+{\loadgiacmain{#1}
+}
+{\loadgiaccontrol
+\loadgiacscriptstart
+\@print{
+<script src="giac.js" async></script> 
+}
+\loadgiacscriptend
+} 
 \newenvironment{giacparijs}[1]["max-height: 500px; overflow:auto"]
 {\loadgiacmain{#1}
 }

@@ -48,7 +48,15 @@ width:400px;
 
 <div id="startup1" style="display:none">
   Vous pouvez faire apparaitre le tutoriel en cliquant sur le bouton
-  Tutoriel ci-dessous.
+  Tutoriel ci-dessous. Vous pouvez installer Xcas sur un appareil
+  Android en d&eacute;compressant
+  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
+  xcashtml.zip</a> dans le r&eacute;pertoire <tt>/sdcard</tt> puis en suivant
+  <a href="file:///sdcard/xcasoffline/xcasfr.html">ce lien (Winzip)</a>
+  ou <a href="file:///sdcard/xcasoffline/AndroZip/xcasfr.html">ce lien
+  (AndroZip)</a>
+  ou <a href="file:///sdcard/Downloads/xcashtml/xcasoffline/xcasfr.html">ce lien
+  (Easy unrar)</a> ...
 </div>
 <div id="startup">
   Si Xcas ne fonctionne pas normalement, effacez le cache de votre
@@ -451,9 +459,9 @@ Firefox et d'ex&eacute;cuter Xcas depuis Firefox</b>
   <tr>
     <td>
       <b>Aide</b>
+      <button style="width:40px;height:25px;vertical-align:top" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
       <textarea style="height:25px;font-size:large" id="helptxt" rows=1 onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
-      <button style="height:25px" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
-      <button style="height:25px" onclick="helpoutput.innerHTML=''">Vide</button>
+      <button style="width:40px;height:25px;vertical-align:top" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Vide</button>
     </td>
   </tr>
 </table>
@@ -495,98 +503,118 @@ title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</butto
   style="display:none" onmousedown="event.preventDefault()" >
   <tr>
     <td>  
-      <input type="button" style="width:30px;height:35px;"  name="add_newline" value="\n" onmousedown="event.preventDefault()"  onClick ="UI.insert(UI.focused,' \n')">  
-      <input type="button" style="width:30px;height:35px;" name="add_'" value="'" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\'')">
-      <input type="button" style="width:30px;height:35px;" name="add_,"
+      <input type="button" style="width:29px;height:35px;"  name="add_newline" id="add_newline" value="\n" onmousedown="event.preventDefault()"  onClick ="UI.insert(UI.focused,' \n')">  
+      <input type="button" style="width:29px;height:35px;" name="add_'" id="add_'" value="'" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\'')">
+      <input type="button" style="width:29px;height:35px;" name="add_,"
+id="add_,"
   value="," onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,',')" title="La virgule est utilisee comme separateur des composantes d'un vecteur.">  
-      <input type="button" style="width:30px;height:35px;" name="add_left_paren" value="(" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'(')">  
-      <input type="button" style="width:30px;height:35px;"
-      name="add_right_paren" value=")"
+      <input type="button" style="width:29px;height:35px;" name="add_left_paren" id="add_left_paren" value="(" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'(')">  
+      <input type="button" style="width:29px;height:35px;"
+      name="add_right_paren" id="add_right_paren" value=")"
       onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,')')">
-      <input type="button" style="width:30px;height:35px;" name="add_i"
+      <input type="button" style="width:29px;height:35px;" name="add_i"
+id="add_i"
   value="i" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'i')" title="Nombre complexe racine carree de -1">
-      <input type="button" style="width:30px;height:35px;" name="add_7" value="7" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'7')">  
-      <input type="button" style="width:30px;height:35px;" name="add_8" value="8" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'8')">  
-      <input type="button" style="width:30px;height:35px;" name="add_9" value="9" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'9')">  
-      <input type="button" style="width:30px;height:35px;" name="add_/"
+      <input type="button" style="width:29px;height:35px;" name="add_7" id="add_7" value="7" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'7')">  
+      <input type="button" style="width:29px;height:35px;" name="add_8" id="add_8" value="8" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'8')">  
+      <input type="button" style="width:29px;height:35px;" name="add_9" id="add_9" value="9" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'9')">  
+      <input type="button" style="width:29px;height:35px;" name="add_/"
+id="add_/"
   value="/" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'/')" title="Division. // pour faire un commentaire">  
     </td>
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:30px;height:35px;" name="add_x" value="x" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'x')" title="x">  
-      <input type="button" style="width:30px;height:35px;" name="add_y"
+      <input type="button" style="width:29px;height:35px;" name="add_x" id="add_x" value="x" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'x')" title="x">  
+      <input type="button" style="width:29px;height:35px;" name="add_y"
+id="add_y"
   value="y" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'y')" title="y">  
-      <input type="button" style="width:30px;height:35px;"
-      name="add_semi" value=";" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,' ;')"
+      <input type="button" style="width:29px;height:35px;"
+      name="add_semi" id="add_semi" value=";" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,' ;')"
   title="Le point virgule permet de separer plusieurs commandes pour les executer en une fois, par exemple dans un programme.">
-      <input type="button" style="width:30px;height:35px;"
-  name="add_left_[" value="[]" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'[]');UI.moveCaret(UI.focused,-1);"
+      <input type="button" style="width:29px;height:35px;"
+  name="add_left_[" id="add_left_[" value="[]" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'[]');UI.moveCaret(UI.focused,-1);"
   title="[ sert de delimiteur ouvrant pour les vecteurs, listes et matrices, par exemple [1,2,3] ou [[1,2],[3,4]]">  
-      <input type="button" style="width:30px;height:35px;" name="add_%" value="%" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'%')" title="Sert a calculer dans Z/nZ, par exemple (3 % 7)^6">  
-      <input type="button" style="width:30px;height:35px;" name="add_pi" value="π" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'pi')">
-      <input type="button" style="width:30px;height:35px;" name="add_4" value="4" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'4')">  
-      <input type="button" style="width:30px;height:35px;" name="add_5" value="5" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'5')">  
-      <input type="button" style="width:30px;height:35px;" name="add_6" value="6" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'6')">  
-      <input type="button" style="width:30px;height:35px;" name="add_*" value="*" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'*')">  
+      <input type="button" style="width:29px;height:35px;" name="add_%" id="add_%" value="%" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'%')" title="Sert a calculer dans Z/nZ, par exemple (3 % 7)^6">  
+      <input type="button" style="width:29px;height:35px;" name="add_pi" id="add_pi" value="π" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'pi')">
+      <input type="button" style="width:29px;height:35px;" name="add_4" id="add_4" value="4" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'4')">  
+      <input type="button" style="width:29px;height:35px;" name="add_5" id="add_5" value="5" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'5')">  
+      <input type="button" style="width:29px;height:35px;" name="add_6" id="add_6" value="6" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'6')">  
+      <input type="button" style="width:29px;height:35px;" name="add_*" id="add_*" value="*" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'*')">  
     </td>
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:30px;height:35px;" name="add_z"
+      <input type="button" style="width:29px;height:35px;"
+  name="add_z" id="add_z"
   value="z" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'z')" title="z">  
-      <input type="button" style="width:30px;height:35px;" name="add_t"
+      <input type="button" style="width:29px;height:35px;"
+  name="add_t" id="add_t"
   value="t" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'t')" title="t">  
-      <input type="button" style="width:30px;height:35px;" name="add_:"
+      <input type="button" style="width:29px;height:35px;" name="add_:"
+id="add_:"
   value=":" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,':')" title=":= effectue une affectation, par exemple a:=pi/2; sin(a)">
-      <input type="button" style="width:30px;height:35px;"
-  name="add_left_{" value="{}" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'{}');UI.moveCaret(UI.focused,-1)"
+      <input type="button" style="width:29px;height:35px;"
+  name="add_left_{" id="add_left_{" value="{}" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'{}');UI.moveCaret(UI.focused,-1)"
   title="{ } est un delimiteur de debut de bloc en programmation">  
-      <input type="button" style="width:30px;height:35px;" name="add_!" value="!" onClick ="UI.insert(UI.focused,'!')">  
-      <input type="button" style="width:30px;height:35px;" name="add_∞"
+      <input type="button" style="width:29px;height:35px;" name="add_!" id="add_!" value="!" onClick ="UI.insert(UI.focused,'!')">  
+      <input type="button" style="width:29px;height:35px;" name="add_∞"
+id="add_∞"
   value="∞" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'∞')" title="+∞. Utiliser infinity pour l'infini complexe.">
-      <input type="button" style="width:30px;height:35px;" name="add_1" value="1" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'1')">  
-      <input type="button" style="width:30px;height:35px;" name="add_2" value="2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'2')">  
-      <input type="button" style="width:30px;height:35px;" name="add_3" value="3" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'3')">  
-      <input type="button" style="width:30px;height:35px;" name="add_-" value="-" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'-')">  
+      <input type="button" style="width:29px;height:35px;" name="add_1" id="add_1" value="1" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'1')">  
+      <input type="button" style="width:29px;height:35px;" name="add_2" id="add_2" value="2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'2')">  
+      <input type="button" style="width:29px;height:35px;" name="add_3" id="add_3" value="3" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'3')">  
+      <input type="button" style="width:29px;height:35px;" name="add_-" id="add_-" value="-" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'-')">  
     </td>
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:30px;height:35px;" name="copy_button" value="cp"
+      <input type="button" style="width:29px;height:35px;" name="copy_button" id="copy_button" value="cp"
       onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.selection)" title="Copie la derni&egrave;re ligne de commande s&eacute;lectionn&eacute;e vers le focus.">  
-      <input type="button" style="width:30px;height:35px;" name="curseur_up"
+      <input type="button" style="width:29px;height:35px;" name="curseur_up"
+id="curseur_up"
   value="↑" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="deplace le curseur vers le haut">        
-      <input type="button" style="width:30px;height:35px;" name="add-=" value="=" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'=')">
-      <input type="button" style="width:30px;height:35px;" name="add__" value="_" onClick ="UI.insert(UI.focused,'_')">  
-      <input type="button" style="width:30px;height:35px;" name="add_exp"
+      <input type="button" style="width:29px;height:35px;" name="add-=" id="add-=" value="=" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'=')">
+      <input type="button" style="width:29px;height:35px;" name="add__" id="add__" value="_" onClick ="UI.insert(UI.focused,'_')">  
+      <input type="button" style="width:29px;height:35px;" name="add_exp"
+id="add_exp"
       value="e^" onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'exp(')" title="Fonction exponentielle">
-      <input type="button" style="width:30px;height:35px;" name="add_ln"
+      <input type="button" style="width:29px;height:35px;" name="add_ln"
+id="add_ln"
   value="ln" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'ln(')" title="logarithme neperien">        
-      <input type="button" style="width:30px;height:35px;" name="add_e"
+      <input type="button" style="width:29px;height:35px;" name="add_e"
+id="add_e"
   value="e" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'e')" title="e est la base de l'exponentielle ou le separateur entre la mantisse et l'exposant d'un nombre approche ">  
-      <input type="button" style="width:30px;height:35px;" name="add_0" value="0" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'0')">  
-      <input type="button" style="width:30px;height:35px;" name="add_." value="." onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'.')">  
-      <input type="button" style="width:30px;height:35px;" name="add_+" value="+" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'+')">  
+      <input type="button" style="width:29px;height:35px;" name="add_0" id="add_0" value="0" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'0')">  
+      <input type="button" style="width:29px;height:35px;" name="add_." id="add_." value="." onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'.')">  
+      <input type="button" style="width:29px;height:35px;" name="add_+" id="add_+" value="+" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'+')">  
     </td>
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:30px;height:35px;" onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,-1)" value=" ← "  title="Deplace le curseur vers la gauche (utile pour les tablettes)">
-      <input type="button" style="width:30px;height:35px;" name="curseur_down"  value="↓" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="deplace le curseur vers le bas">
-      <input type="button" style="width:30px;height:35px;" onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,1)" value=" → "  title="Deplace le curseur vers la droite (utile pour les tablettes)">
-      <input type="button" style="width:30px;height:35px;" name="add_a" value="a" onmousedown="event.preventDefault()" onClick ="UI.insert(UI.focused,'a')">  
-      <input type="button" style="width:30px;height:35px;" name="add_sin"  value="sin" onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,'sin(')" title="fonction sinus, taper asin pour arcinus">        
-      <input type="button" style="width:30px;height:35px;" name="add_cos"
+      <input type="button" style="width:29px;height:35px;"
+  onmousedown="event.preventDefault()"
+  onClick="UI.moveCaret(UI.focused,-1)" name="curseur_gauche" id="curseur_gauche" value=" ← "  title="Deplace le curseur vers la gauche (utile pour les tablettes)">
+      <input type="button" style="width:29px;height:35px;" name="curseur_down" id="curseur_down"  value="↓" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="deplace le curseur vers le bas">
+      <input type="button" style="width:29px;height:35px;"
+  onmousedown="event.preventDefault()"
+  onClick="UI.moveCaret(UI.focused,1)" name="curseur_droit" id="curseur_droit" value=" → "  title="Deplace le curseur vers la droite (utile pour les tablettes)">
+      <input type="button" style="width:29px;height:35px;" name="add_a" id="add_a" value="a" onmousedown="event.preventDefault()" onClick ="UI.insert(UI.focused,'a')">  
+      <input type="button" style="width:29px;height:35px;" name="add_sin" id="add_sin"  value="sin" onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,'sin(')" title="fonction sinus, taper asin pour arcinus">        
+      <input type="button" style="width:29px;height:35px;" name="add_cos"
+id="add_cos"
   value="cos" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'cos(')" title="fonction cosinus, taper acos pour arccosinus">        
-      <input type="button" style="width:30px;height:35px;" name="add_tan"
+      <input type="button" style="width:29px;height:35px;" name="add_tan"
+id="add_tan"
   value="tan" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tan(')" title="fonction tangente, taper atan pour arctangente">        
-      <input type="button" style="width:30px;height:35px;" name="kbd_square"
+      <input type="button" style="width:29px;height:35px;" name="kbd_square"
+id="kbd_square"
   value="^2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'^2)" title="Carr&eacute;">  
-      <input type="button" style="width:30px;height:35px;" name="add_sqrt"
+      <input type="button" style="width:29px;height:35px;" name="add_sqrt"
+id="add_sqrt"
   value="√" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sqrt(')" title="racine carree">        
-      <input type="button" style="width:30px;height:35px;" name="add_^" value="^"  onmousedown="event.preventDefault()" onClick ="UI.insert(UI.focused,'^')">  
+      <input type="button" style="width:29px;height:35px;" name="add_^" id="add_^" value="^"  onmousedown="event.preventDefault()" onClick ="UI.insert(UI.focused,'^')">  
     </td>    
   </tr>
 </table>
@@ -596,17 +624,17 @@ title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</butto
   <tr>
     <td>
       <input type="button" style="width:60px;height:35px"
-  name="add_simplify" value="simplify"
+  name="add_simplify" id="add_simplify" value="simplify"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'simplify(') ;UI.kbdonfuncoff();" title="Tentative de simplifier une expression, par exemple simplify(sin(3x)/sin(x)). Essayez une commande comme ratnormal, normal ou de reecriture si simplify echoue.">        
       <input type="button" style="width:60px;height:35px"
-  name="add_normal" value="normal"
+  name="add_normal" id="add_normal" value="normal"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'normal(') ;UI.kbdonfuncoff();" title="normal developpe une expression, par exemple normal((x+1)^6)">        
       <input type="button" style="width:60px;height:35px"
-  name="add_factor" value="factor"
+  name="add_factor" id="add_factor" value="factor"
       onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'factor(') ;UI.kbdonfuncoff();" title="Factorisation, par exemple factor(x^4-1). Utiliser cfactor pour factoriser sur C">
       <input type="button" style="width:60px;height:35px"
-  name="add_factor" value="partfrac"
+  name="add_partfrac" id="add_partfrac" value="partfrac"
       onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'partfrac(') ;UI.kbdonfuncoff();" title="Decomposition en elements simples, par exemple partfrac(1/(x^4-1)). Utiliser cpartfrac sur C">
     </td>
@@ -614,32 +642,36 @@ title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</butto
   <tr>
     <td>
       <input type="button" style="width:60px;height:35px" name="add_solve"
+id="add_solve"
   value="solve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'solve(') ;UI.kbdonfuncoff();"
   title="r&eacute;soudre une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables, par exemple solve(x^4-1=0) ou solve(y^3-1,y) ou solve([x^2-y^2=1,x+y=3],[x,y]). Utiliser csolve pour r&eacute;soudre sur C.">        
       <input type="button" style="width:60px;height:35px"
-  name="add_fsolve" value="fsolve"
+  name="add_fsolve" id="add_fsolve" value="fsolve"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'fsolve(') ;UI.kbdonfuncoff();" title="fsolve permet de resoudre de maniere approchee une equation ou un systeme, par exemple fsolve(cos(x)=x,x=0..5) ou fsolve(cos(x),x=0.0)">        
       <input type="button" style="width:60px;height:35px"
-  name="add_desolve" value="desolve"
+  name="add_desolve" id="add_desolve" value="desolve"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'desolve(') ;UI.kbdonfuncoff();" title="Resolution d'une equation differentielle, par exemple desolve(y''+y=0), desolve(y'+y=0,y(0)=1)">        
 <input type="button" style="width:60px;height:35px"
-  name="add_rsolve" value="rsolve"
+  name="add_rsolve" id="add_rsolve" value="rsolve"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'rsolve(') ;UI.kbdonfuncoff();" title="Recherche de l'expression du terme general d'une suite recurrente, par exemple rsolve(u(n+2)=u(n+1)+u(n),u(n),[u(0)=1,u(1)=1])">             
        </td>
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:30px;height:35px" name="add_sum"
+      <input type="button" style="width:29px;height:35px" name="add_sum"
+id="add_sum"
   value="∑" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sum(') ;UI.kbdonfuncoff();" title="Somme d'une expression pour une variable entre deux bornes, par exemple ∑(k,k,1,n) ou ∑(1/n^2,n,1,inf)">  
-      <input type="button" style="width:30px;height:35px" name="add_diff"
+      <input type="button" style="width:29px;height:35px" name="add_diff"
+id="add_diff"
   value="∂" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'diff(') ;UI.kbdonfuncoff();" title="Derivee d'une expression. Pour une fonction f, par exemple f(x):=sin(x^2), la derivee de f est f', par exemple g:=f' ou f'(2)">        
-      <input type="button" style="width:30px;height:35px"
-  name="add_integrate" value="∫" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'int(') ;UI.kbdonfuncoff();"
+      <input type="button" style="width:29px;height:35px"
+  name="add_integrate" id="add_integrate" value="∫" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'int(') ;UI.kbdonfuncoff();"
   title="Calcul d'integrales, par exemple ∫(x^2*sin(x)*exp(x),x) ou ∫(1/(x^4+1),x,0,inf)">        
       <input type="button" style="width:50px;height:35px" name="add_limit"
+id="add_limit"
       value="limit" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'limit(') ;UI.kbdonfuncoff();" title="limite d'une expression lorsqu'une variable tend vers une limite, par exemple limit(sin(x)/x,x,0). Utiliser un 4eme parametre egal a 1 ou -1 pour une limite a droite ou a gauche.">        
       <input type="button" style="width:50px;height:35px"
-  name="add_series" value="series"
+  name="add_series" id="add_series" value="series"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(') ;UI.kbdonfuncoff();" title="series calcule le developpement de Taylor d'une expression lorsqu'une variable tend vers un point, par exemple series(sin(x),x=0,5,polynom). Si on omet polynom un terme de reste est renvoye. On peut specifier un developpement a droite ou a gauche en ajoutant 1 ou -1 avant polynom"> 
       &nbsp; &nbsp;
       <input type="button" value="curseur" style="height:35px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Ajoute un param&egrave;tre modifiable &agrave; la souris"></button>
@@ -648,31 +680,38 @@ title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</butto
   <tr>
     <td>
       <input type="button" style="width:60px;height:35px" name="add_tabvar"
+id="add_tabvar"
   value="tabvar" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tabvar(') ;UI.kbdonfuncoff();"
   title="Etude de graphe de fonction ou de courbe parametrique, par exemple tabvar(sin(x)) ou tabvar([cos(2t),sin(3t)])">  
       <input type="button" style="width:60px;height:35px" name="add_plot"
+id="add_plot"
   value="plotfunc" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotfunc(') ;UI.kbdonfuncoff();"
   title="Graphe d'une expression, par exemple plotfunc(sin(x),x=-5..5,xstep=0.1)">  
       <input type="button" style="width:60px;height:35px"
-  name="add_plotparam" value="param"
+  name="add_plotparam" id="add_plotparam" value="param"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotparam(') ;UI.kbdonfuncoff();" title="Graphe d'une courbe en parametriques, par exemple plotparam([cos(t),sin(t)],t=0..2*pi,tstep=0.1)">  
       <input type="button" style="width:60px;height:35px"
-  name="add_plotpolar" value="polar"
+  name="add_plotpolar" id="add_plotpolar" value="polar"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotpolar(');UI.kbdonfuncoff();" title="Graphe d'une courbe en polaires, par exemple plotpolar(exp(r),r=-3..3)">  
     </td>
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:30px;height:35px" name="add_//"
+      <input type="button" style="width:29px;height:35px" name="add_//"
+id="add_//"
   value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'//')" title="commentaire">        
-      <input type="button" style="width:30px;height:35px" name="add_space"
+      <input type="button" style="width:29px;height:35px" name="add_space"
+id="add_space"
   value=" " onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,' ')" title="Ajoute un espace">        
-      <input type="button" style="width:30px;height:35px" name="add_test"
+      <input type="button" style="width:29px;height:35px" name="add_test"
+id="add_test"
   value="si" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\nsi  alors  sinon  fsi; ');UI.moveCaret(UI.focused,-20)" title="inverse">        
       <input type="button" style="width:40px;height:35px" name="add_pour"
+id="add_pour"
   value="pour" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\npour  de  jusque  faire\n    \n  fpour;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,3);" title="logarithme a base 10">        
       <input type="button" style="width:55px;height:35px" name="add_tantque"
+id="add_tantque"
   value="tantque" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\ntantque  faire\n    \n  ftantque;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,6);" title="logarithme a base 10">        
       <input type="button" value="fonction" style="width:55px;height:35px" onclick="if(document.getElementById('assistant_prog').style.display=='none'){
       document.getElementById('assistant_prog').style.display='block';
@@ -681,6 +720,7 @@ title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</butto
       document.getElementById('assistant_prog').style.display='none';
      } UI.focused.focus();">
       <input type="button" style="width:46px;height:35px" name="add_debug"
+id="add_debug"
   value="debug" onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'debug(')" title="Mettre au point">        
     </td>
@@ -698,22 +738,23 @@ title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</butto
 <br>
 
 <span contextmenu="cmdmenu" title="F1: aide sur le mot-clef avant le curseur. Clic droit (Firefox): menu des commandes">
-  <button style="width:37px;height:35px;color:green" onclick="if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'');}" title="Evaluer la ligne de commande">
+  <button style="width:35px;height:35px;color:green" id="button_ok" onclick="if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'');}" title="Evaluer la ligne de commande">
 ok</button>
- <button style="width:36px;height:35px" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">?</button>
-  <button style="width:36px;height:35px" onmousedown="event.preventDefault()" 
+ <button style="width:35px;height:35px" id="button_help" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">?</button>
+  <button style="width:35px;height:35px" id="button_123" onmousedown="event.preventDefault()" 
   onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else UI.kbdonfuncoff(); if (UI.focusaftereval){ UI.focused.focus(); }"
   title="Montrer ou cacher le clavier scientifique">123</button>
-  <button style="width:36px;height:35px" onmousedown="event.preventDefault()"
+  <button style="width:35px;height:35px" id="button_util" onmousedown="event.preventDefault()"
   onclick="if (document.getElementById('keyboardfunc').style.display=='inline') document.getElementById('keyboardfunc').style.display='none'; else { document.getElementById('keyboardfunc').style.display='inline'; document.getElementById('keyboard').style.display='none';} if (UI.focusaftereval){ UI.focused.focus(); }"
   title="Montrer ou cacher des commandes frequentes">util</button>
-   <button style="width:37px;height:35px" onmousedown="event.preventDefault()"
+   <button style="width:37px;height:35px" id="button_cmd" onmousedown="event.preventDefault()"
   onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; UI.focused=cmentree;cmentree.focus(); UI.resizetextarea(cmentree);//if (UI.prettyprint && UI.usemathjax && UI.histcount>0)MathJax.Hub.Queue(["Typeset",MathJax.Hub]);"
   title="Focus sur la ligne de commande">cmd</button>
-      <button style="width:33px;height:35px;"  onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,-1)"   title="Deplace le curseur vers la gauche (utile pour les tablettes)"> ← </button>
-      <button type="button" style="width:30px;height:35px;" onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,1)" title="Deplace le curseur vers la droite (utile pour les tablettes)"> → </button>
-<button style="width:33px;height:35px;" name="select_button"onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Selectionne la ligne de commande">sel</button>
-<button style="width:33px;height:35px" onmousedown="event.preventDefault()" onclick="UI.backspace(UI.focused)" title="Efface 1 caract&egrave;re">del</button>
+      <button style="width:33px;height:35px;" id="button_gauche" onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,-1)"   title="Deplace le curseur vers la gauche (utile pour les tablettes)"> ← </button>
+      <button type="button" style="width:29px;height:35px;" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,1)" title="Deplace le curseur vers la droite (utile pour les tablettes)"> → </button>
+<button style="width:33px;height:35px;" name="select_button"
+  id="select_button" onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Selectionne la ligne de commande">sel</button>
+<button style="width:33px;height:35px" id="button_del" onmousedown="event.preventDefault()" onclick="UI.backspace(UI.focused)" title="Efface 1 caract&egrave;re">del</button>
 &nbsp;
 <button id="stop_button" style="height:25px;visibility:hidden" onclick="if (UI.webworker && confirm('Voulez-vous vraiment terminer la session ?')){ UI.webworker.terminate(); UI.busy=0;UI.webworker=0; alert('Session redemarree. Toutes les variables ont ete effacees.');}" title="Termine la session en cours">STOP</button>
 <div id="startup_restore" style="display:none">
@@ -1588,14 +1629,14 @@ var hashParams=chaine.split('&');
   },
   set_config_width:function(){
    var form=document.getElementById('config');
-   var hw=window.innerWidth;
+   var hw=window.innerWidth,hh=window.innerHeight;
    if (hw>=1000){ hw=hw-50; UI.focusaftereval=true;}
    if (hw<=500){ UI.focusaftereval=false;}
    form.history_width.value=hw;
    form.outdiv_width.value=Math.floor(hw/2);
    document.getElementById('mathoutput').style.maxWidth=hw;
    document.getElementById('divoutput').style.maxHeight=form.history_height.value;
-   var w=form.outdiv_width.value;
+   var w=form.outdiv_width.value,h;
    // Module.print(hw);Module.print(w);
    if (w>hw-300) w=hw-300;
    var hi=hw-w-200;
@@ -1604,6 +1645,35 @@ var hashParams=chaine.split('&');
    // Module.print(s);
    var st=document.getElementById('document_style');
    st.innerHTML=s;
+var kbd_l=["add_newline","add_'","add_,","add_left_paren",
+"add_right_paren" ,"add_i","add_7" ,"add_8" ,"add_9" ,"add_/",
+"add_x" ,"add_y","add_semi" ,"add_left_[" ,"add_%" ,"add_pi" ,
+"add_4" ,"add_5" ,"add_6" ,"add_*" ,"add_z","add_t","add_:",
+"add_left_{" ,"add_!" ,"add_∞","add_1" ,"add_2" ,
+"add_3" ,"add_-" ,"copy_button" ,"curseur_up","add-=" ,"add__" ,
+"add_exp","add_ln","add_e","add_0" ,"add_." ,
+"add_+" ,"curseur_gauche","curseur_down" ,"curseur_droit","add_a" ,"add_sin" ,"add_cos",
+"add_tan","kbd_square","add_sqrt","add_^"];
+var kbd_cmd=["button_ok","button_help","button_123","button_util","button_cmd",
+"button_gauche","button_droit","select_button","button_del"];
+var kbd_util=["keyboardfunc","add_simplify" ,"add_normal",
+"add_factor" ,"add_partfrac","add_solve",
+"add_fsolve" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
+"add_integrate" ,"add_limit","add_series" ,"add_tabvar","add_plot",
+"add_plotparam" ,"add_plotpolar" ,"add_//","add_space","add_test",
+"add_pour","add_tantque","add_debug"];
+   w=Math.floor(hw/12); w=w+"px"; 
+   h=Math.floor(hh/20); if (h<30) h=30; h=h+"px"; // console.log(hw,w,hh,h);
+   for (var i=0;i<kbd_l.length;i++){
+     document.getElementById(kbd_l[i]).style.width=w;
+     document.getElementById(kbd_l[i]).style.height=h;
+   }
+   w=Math.floor(hw/11); if (w<34) w=34; w=w+"px"; 
+   h=Math.floor(hh/20); if (h<35) h=35; h=h+"px"; // console.log(hw,w,hh,h);
+   for (var i=0;i<kbd_cmd.length;i++){
+     document.getElementById(kbd_cmd[i]).style.width=w;
+     document.getElementById(kbd_cmd[i]).style.height=h;
+   }
   },
   config_string:function(){
    var form=document.getElementById('config');

@@ -1370,6 +1370,17 @@ namespace xcas {
     return res;
   }
 
+  string replace(const string & s,char c1,const string & c2){
+    string res;
+    int l=s.size();
+    res.reserve(l);
+    const char * ch=s.c_str();
+    for (int i=0;i<l;++i,++ch){
+      if (*ch==c1) res+=c2; else res += *ch;
+    }
+    return res;
+  }
+
   vecteur seq2vecteur(const vecteur & v){
     vecteur w(v);
     iterateur it=w.begin(),itend=w.end();
@@ -1430,13 +1441,18 @@ namespace xcas {
       res = replace(s,'\n',' ');
       return '+'+res+'&';
     }
+    if (dynamic_cast<const Fl_Output *>(o))
+      return "";
     if (const Fl_Input_ * i=dynamic_cast<const Fl_Input_ *>(o)){
       string s=i->value();
+      if (dynamic_cast<const Comment_Multiline_Input *>(i))
+	s = "// "+replace(s,'\n',"<br>");
       if ( dynamic_cast<const Multiline_Input_tab *>(i) )
 	s=unlocalize(s);
       if (s.empty())
 	return s;
       res = replace(s,'\n',' ');
+      res = replace(res,'\'',"%27");
       return '+'+res+'&' ;
     }
     if (const Fl_Group * g=dynamic_cast<const Fl_Group *>(o)){
@@ -3375,7 +3391,7 @@ namespace xcas {
     Fl_Return_Button * button0 = 0 ;
     Fl_Button * button1 =0,*button2=0;
     if (!w){
-      int dx=800,dy=geometry?500:250;
+      int dx=800,dy=geometry?500:360;
       Fl_Group::current(0);
       w=new Fl_Window(dx,dy);
       button0 = new Fl_Return_Button(2,dy-25,dx/3-4,20);

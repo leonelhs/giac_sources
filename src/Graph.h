@@ -49,6 +49,7 @@ namespace xcas {
   public:
     objet_bidon();
   };
+  // extern objet_bidon * mon_objet_bidon_ptr;
 
   // k is reduced modulo 126
   void arc_en_ciel(int k,int & r,int & g,int & b);

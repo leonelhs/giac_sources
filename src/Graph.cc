@@ -290,7 +290,8 @@ namespace xcas {
     static string * ans = new string;
     return * ans;
   }
-  objet_bidon mon_objet_bidon_graph;
+  objet_bidon mon_objet_bidon;
+  // objet_bidon * mon_objet_bidon_ptr=new objet_bidon;
 
   // New buttons/menus: 
   // row1: z+   up_y  up_z
@@ -2359,7 +2360,18 @@ namespace xcas {
       zoomy(1.0);
       autoscaleminmax(vz,window_zmin,window_zmax,fullview);
       zoomz(1.0);
-      if (ortho)
+      bool do_ortho=ortho;
+      if (!do_ortho){
+	if (Graph2d * ptr=dynamic_cast<Graph2d *>(this)){
+	  double h=this->h()*ptr->orthonormal_factor;
+	  double w=this->w();
+	  double window_w=window_xmax-window_xmin,window_h=window_ymax-window_ymin;
+	  double tst=h/w*window_w/window_h;
+	  if (tst>0.7 || tst<1.4)
+	    do_ortho=true;
+	}
+      }
+      if (do_ortho )
 	orthonormalize();
     }
     find_ylegende();

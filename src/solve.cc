@@ -370,6 +370,8 @@ namespace giac {
   }
 
   vecteur protect_find_singularities(const gen & e,const identificateur & x,int cplxmode,GIAC_CONTEXT){
+    //int C=calc_mode(contextptr);
+    //calc_mode(0,contextptr);
     vecteur sp;
 #ifdef NO_STDEXCEPT
     sp=find_singularities(e,x,cplxmode,contextptr);
@@ -387,6 +389,7 @@ namespace giac {
       // sp.clear();
     }
 #endif
+    //calc_mode(C,contextptr);
     return sp;
   }
 
@@ -450,8 +453,8 @@ namespace giac {
 	  }
 	  if (expr.is_symb_of_sommet(at_exp)){
 	    if (is_positive(l,contextptr)){
-	      l=ln(l,contextptr);
-	      m=ln(m,contextptr);
+	      l=l==0?minus_inf:ln(l,contextptr);
+	      m=m==0?minus_inf:ln(m,contextptr);
 	    }
 	    else
 	      l=m=minus_inf;
@@ -944,7 +947,7 @@ namespace giac {
 	    if (complexmode)
 	      newv=proot(w,epsilon(contextptr));
 	    else {
-	      if (lidnt(w_orig).empty())
+	      if (lidnt(w_orig).empty() && !has_num_coeff(w))
 		newv=gen2vecteur(_realroot(gen(makevecteur(w_orig,epsilon(contextptr),at_evalf),_SEQ__VECT),contextptr));
 	      else 
 		newv=real_proot(w,epsilon(contextptr),contextptr);
@@ -3389,7 +3392,7 @@ namespace giac {
 	tmp=evalf(tmp,eval_level(contextptr),contextptr);
 	if (tmp.type==_VECT){
 	  // call realroot? this would be more accurate
-	  gen res=complex_mode(contextptr)?proot(*tmp._VECTptr,epsilon(contextptr)):_realroot(gen(makevecteur(tmp1,epsilon(contextptr),at_evalf),_SEQ__VECT),contextptr);//real_proot(*tmp._VECTptr,epsilon(contextptr),contextptr);
+	  gen res=complex_mode(contextptr)?proot(*tmp._VECTptr,epsilon(contextptr)):(lvar(tmp1).empty()?_realroot(gen(makevecteur(tmp1,epsilon(contextptr),at_evalf),_SEQ__VECT),contextptr):real_proot(*tmp._VECTptr,epsilon(contextptr),contextptr));
 	  if (res.type==_VECT && res._VECTptr->size()==1)
 	    return res._VECTptr->front();
 	  return res;

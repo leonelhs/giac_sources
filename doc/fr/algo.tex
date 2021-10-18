@@ -63,7 +63,7 @@
 \input{giacfr.tex}
 
 \begin{document}
-\begin{giacjs} % ne pas oublier de changer \end{giacjs...} a la fin
+\begin{giacjshere} % ne pas oublier de changer \end{giacjs...} a la fin
 %\begin{giacjsonline}
 
 \maketitle
@@ -8242,10 +8242,26 @@ si $k$ divise $N$ pour $k$ dans la table tel que $k^2\leq N$.
 Cela permet la factorisation partielle des entiers plus grands.
 Le temps d'ex\'ecution est proportionnel au nombre de premiers
 dans la table plus petits que $\sqrt{N}$, multipli\'e par un facteur
-$\ln(N)$ pour la factorisation partielle.\\
-Le {\bf crible} d'Erathosth\`ene\index{crible} permet de trouver la liste des premiers
-plus petits qu'une valeur donn\'ee. Voir le manuel de programmation
-de Xcas.
+$\ln(N)$ pour la factorisation partielle.
+\item
+Le {\bf crible} d'Eratosth\`ene\index{crible} permet de trouver la liste des premiers
+plus petits qu'une valeur donn\'ee $n$. On \'ecrit tous les entiers dans
+une table, on barre les multiples de 2, puis les multiples du premier
+entier non barr\'e (qui est premier), puis etc. et on s'arr\^ete
+lorsque le premier entier non barr\'e au carr\'e est strictement plus
+grand que $n$.
+On montre facilement que la complexit\'e de \verb|crible(n)| est
+celle du nombre de cases que l'on barre dans la boucle 
+\verb|for (j:=p*p;j<=n;j+=p)|
+elle est major\'ee par 
+$$ \frac{n}{2}\frac{n}{3}+\frac{n}{5}+...+\frac{n}{p_n}$$
+o\`u $p_n$ est le dernier nombre premier inf\'erieur ou \'egal \`a
+$\sqrt{n}$, que l'on peut facilement majorer par $O(n \ln(n))$ puisque
+la somme des inverses des premiers est inf\'erieure \`a la somme des
+inverses jusque $\sqrt{n}$. Une analyse plus fine donne une majoration
+en $O(n \ln(\ln(n)))$, en pratique l'obstacle principal au crible reste la taille
+m\'emoire n\'ecessaire au calcul qui emp\^eche de d\'epasser des
+valeurs de $n$ de l'ordre du milliard.
 \item le test de pseudo-primalit\'e de {\bf Miller-Rabin}\index{Miller}\index{Rabin} (voir
 le manuel de programmation de Xcas)~: effectu\'e
 pour 20 bases $a$, il donne en cas de r\'eussite la primalit\'e
@@ -8271,6 +8287,32 @@ Une esquisse de cette m\'ethode est pr\'esent\'ee plus bas.
 Cette m\'ethode est dite de type II, son temps d'ex\'ecution
 est fonction de la taille de l'entier.
 \end{itemize}
+\begin{giacprog}
+crible(n):={
+  local tab,prem,p;
+  tab:=seq(j,j,0,n);
+  prem:=[];
+  tab[0]=<0; tab[1]=<0;
+  p:=2;
+  while (p*p<=n) {
+    for (j:=p*p;j<=n;j+=p){
+      tab[j]=<0;
+    }
+    p:=p+1;
+    //afficher(tab);
+    while ((p*p<=n) and (tab[p]==0)) {
+      p:=p+1;
+    } 
+  }
+  for (j:=2;j<=n;j++) {
+    if (tab[j]!=0) { 
+      prem:=append(prem,j);
+    }
+  } 
+  return(prem);
+}:;
+\end{giacprog}
+\giacinput{crible(100)}
 
 \subsection{Le test de primalit\'e de Pocklington.}\index{Pocklington} \index{primalit\'e}
 \begin{thm}
@@ -18046,7 +18088,7 @@ en mobilit\'e avec un peu plus de donn\'ees \`a saisir.
 \end{itemize}
 
 %\end{giacjsonline}
-\end{giacjs}
+\end{giacjshere}
 
 \end{document}
 

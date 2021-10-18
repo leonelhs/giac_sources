@@ -5483,6 +5483,41 @@ unsigned int ConvertUTF8toUTF16 (
     return symbolic(*op._FUNCptr,args);
   }
 
+  // optional, call it just before exiting
+  int release_globals(){
+#ifndef VISUALC
+    delete normal_sin_pi_12_ptr_();
+    delete normal_cos_pi_12_ptr_();
+#endif
+#ifndef STATIC_BUILTIN_LEXER_FUNCTIONS
+    if (debug_infolevel)
+      CERR << "releasing " << builtin_lexer_functions_number << " functions" << endl;
+    for (int i=0;i<builtin_lexer_functions_number;++i){
+#ifdef SMARTPTR64
+      if (debug_infolevel)
+	CERR << builtin_lexer_functions_begin()[i].first << endl; 
+      delete (ref_unary_function_ptr *) (* ((longlong * ) &builtin_lexer_functions_begin()[i].second) >> 16);
+#endif
+    }
+#endif
+    delete &registered_lexer_functions();
+    delete &lexer_functions();
+    delete &library_functions();
+    delete &lexer_translator();
+    delete &back_lexer_localization_map();
+    delete &lexer_localization_map();
+    delete &lexer_localization_vector();
+    delete &syms();
+    delete &unit_conversion_map();
+    delete &xcasrc();
+    //delete &usual_units();
+    if (vector_aide_ptr()) delete vector_aide_ptr();
+    delete &symbolic_rootof_list();
+    delete &proot_list();
+    delete &galoisconj_list();
+    return 0;
+  }
+
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // ndef NO_NAMESPACE_GIAC

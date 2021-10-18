@@ -118,6 +118,21 @@ namespace giac {
     return w;
   }
 
+  gen attoof(const gen & g){
+    if (g.type==_VECT){
+      vecteur v=*g._VECTptr;
+      iterateur it=v.begin(),itend=v.end();
+      for (;it!=itend;++it)
+	*it=attoof(*it);
+      return gen(v,g.subtype);
+    }
+    if (g.type!=_SYMB)
+      return g;
+    if (g._SYMBptr->sommet!=at_at)
+      return symbolic(g._SYMBptr->sommet,attoof(g._SYMBptr->feuille));
+    return symbolic(at_of,attoof(g._SYMBptr->feuille));
+  }
+
   static int prog_eval_level(GIAC_CONTEXT){
     if (int i=prog_eval_level_val(contextptr))
       return i;
@@ -1150,7 +1165,7 @@ namespace giac {
     save_debug_info=(*dbgptr->debug_info_ptr);
     if (vars.type!=_VECT)
       vars=gen(makevecteur(vars));
-    if (values.type!=_VECT || values.subtype!=_SEQ__VECT || (vars._VECTptr->size()==1 && values._VECTptr->size()!=1))
+    if (values.type!=_VECT || values.subtype!=_SEQ__VECT || (vars._VECTptr->size()==1 && values._VECTptr->size()>1))
       values=gen(makevecteur(values));
     // *logptr(contextptr) << vars << " " << values << endl;
     dbgptr->args_stack.push_back(gen(mergevecteur(vecteur(1,name),*values._VECTptr)));
@@ -4274,7 +4289,7 @@ namespace giac {
   static define_unary_function_eval_quoted (__rmbreakpoint,&_rmbreakpoint,_rmbreakpoint_s);
   define_unary_function_ptr5( at_rmbreakpoint ,alias_at_rmbreakpoint,&__rmbreakpoint,_QUOTE_ARGUMENTS,true);
 
-#ifdef EMCC
+#if defined EMCC && !defined GIAC_GGB
 #include <emscripten.h>
   void debug_loop(gen &res,GIAC_CONTEXT){
     if (!debug_ptr(contextptr)->debug_allowed || (!debug_ptr(contextptr)->sst_mode && !equalposcomp(debug_ptr(contextptr)->sst_at,debug_ptr(contextptr)->current_instruction)) )
@@ -5667,6 +5682,12 @@ namespace giac {
 	a=a._SYMBptr->feuille[1]; b=b._SYMBptr->feuille[1];
       }
     }
+    if (a.type==_STRNG){
+      if (b.type!=_STRNG) return true;
+      return *a._STRNGptr<*b._STRNGptr;
+    }
+    if (b.type==_STRNG)
+      return false;
     gen res=inferieur_strict(a,b,contextptr);
     if (res.type==_INT_)
       return res;
@@ -5697,7 +5718,7 @@ namespace giac {
       f=at_inferieur_strict_sort;
       subtype=args.subtype;
     }
-    if (!v.empty() && f==at_inferieur_strict){
+    if (!v.empty() && (f==at_inferieur_strict || f==at_inferieur_strict_sort)){
       // check integer or double vector
       if (v.front().type==_INT_ && is_integer_vecteur(v)){
 	// find min/max
@@ -5719,7 +5740,7 @@ namespace giac {
 	}
 	sort(w.begin(),w.end());
 	vector_int2vecteur(w,v);
-	return v;
+	return gen(v,subtype);
       }
       vector<giac_double> V;
       if (v.front().type==_DOUBLE_ && is_fully_numeric(v) && convert(v,V,true)){
@@ -5964,6 +5985,8 @@ namespace giac {
       return gensizeerr(contextptr);
     gen f=v[1];
     gen g=v.front();
+    if (g.type==_VECT && v[1].type==_VECT)
+      return gen(*g._VECTptr,v[1].subtype);
     if (f.is_symb_of_sommet(at_unit)){
       if (f._SYMBptr->feuille.type==_VECT && f._SYMBptr->feuille._VECTptr->size()==2)
 	f=symbolic(at_unit,makesequence(1,f._SYMBptr->feuille._VECTptr->back()));

@@ -523,6 +523,39 @@ namespace giac {
     return res;
   }
 
+  void transpose_double(const matrix_double & a,int r0,int r1,int c0,int c1,matrix_double & at){
+    int L=a.size(),C=a.front().size();
+    if (r0<0) r0=0;
+    if (r1<=r0)
+      r1=L;
+    if (c1<0) c1=0;
+    if (c1<=c0)
+      c1=C;
+    if (r1>L) r1=L;
+    if (c1>C) c1=C;
+    L=r1-r0; C=c1-c0;
+    at.resize(C);
+    for (int i=0;i<C;++i)
+      at[i].resize(L);
+    for (int i=0;i<L;++i){
+      const vector<giac_double> & ai=a[r0+i];
+      for (int j=0;j<C;++j){
+	at[j][i]=ai[c0+j];
+      }
+    }
+  }
+
+  // square matrix inplace transpose
+  void transpose_double(matrix_double &P){
+    int Ps=int(P.size());
+    for (int i=0;i<Ps;++i){
+      for (int j=0;j<i;++j){
+	giac_double t=P[i][j];
+	P[i][j]=P[j][i];
+	P[j][i]=t;
+      }
+    }
+  }
   int alphaposcell(const string & s,int & r){
     int ss=int(s.size());
     r=0;
@@ -2153,6 +2186,13 @@ namespace giac {
 	return vecteur(0);
     }
     context ct;
+#ifdef HAVE_LIBPTHREAD
+    pthread_mutex_lock(&context_list_mutex);
+#endif
+    context_list().pop_back();
+#ifdef HAVE_LIBPTHREAD
+    pthread_mutex_unlock(&context_list_mutex);
+#endif
     context * contextptr=&ct;
     epsilon(contextptr)=eps;
     bool add_conjugate=is_zero(im(v,contextptr),contextptr); // ok
@@ -4288,39 +4328,6 @@ namespace giac {
     return true;
   }
 
-  void transpose_double(const matrix_double & a,int r0,int r1,int c0,int c1,matrix_double & at){
-    int L=a.size(),C=a.front().size();
-    if (r0<0) r0=0;
-    if (r1<=r0)
-      r1=L;
-    if (c1<0) c1=0;
-    if (c1<=c0)
-      c1=C;
-    if (r1>L) r1=L;
-    if (c1>C) c1=C;
-    L=r1-r0; C=c1-c0;
-    at.resize(C);
-    for (int i=0;i<C;++i)
-      at[i].resize(L);
-    for (int i=0;i<L;++i){
-      const vector<giac_double> & ai=a[r0+i];
-      for (int j=0;j<C;++j){
-	at[j][i]=ai[c0+j];
-      }
-    }
-  }
-
-  // square matrix inplace transpose
-  void transpose_double(matrix_double &P){
-    int Ps=int(P.size());
-    for (int i=0;i<Ps;++i){
-      for (int j=0;j<i;++j){
-	giac_double t=P[i][j];
-	P[i][j]=P[j][i];
-	P[j][i]=t;
-      }
-    }
-  }
 
   // ad*b->c where b is given by it's tranposed btrand
   void mmult_double(const matrix_double & ad,const matrix_double & btrand,matrix_double & c){
@@ -10724,6 +10731,7 @@ namespace giac {
     int n=int(H.size())-rstart,c=int(H.front().size()),cP=int(P.front().size());
     if (cstart>=c) return;
     if (cend<=0) cend=c;
+#ifndef GIAC_HAS_STO_38
     if (recurse && n>=c && cend-cstart>200){
       // if cstart, cend !=0, block-recursive version 
       // H n rows, c1+c2 cols, n>=c1+c2, H=[A1|A2]=Q*[[R11,R12],[0,R22]]
@@ -10783,6 +10791,7 @@ namespace giac {
 #endif
       return;
     }
+#endif // GIAC_HAS_STO_38
     int lastcol=std::min(n,cend);
     double t,tn,tabs,u,un,norme;
     vector<double> coeffs; coeffs.reserve(lastcol*(2*n-lastcol));
@@ -12352,6 +12361,7 @@ namespace giac {
     bool numeric_matrix=is_fully_numeric(m);
     bool sym=(m==mtran(*conj(m,contextptr)._VECTptr));
     double eps=epsilon(contextptr);
+    if (eps<1e-15) eps=1e-15;
     // check for symmetric numeric matrix
     if (numeric_matrix){
 #ifdef HAVE_LIBLAPACK
@@ -15439,6 +15449,7 @@ namespace giac {
     int lastcol=std::min(n,cend);
     if (debug_infolevel)
       CERR << CLOCK() << " Householder, computing H" << endl;
+#ifndef GIAC_HAS_STO_38
     if (recurse && n>=c && cend-cstart>200){
       if (n<2*(cend-cstart)) 
 	thin=false;
@@ -15493,6 +15504,7 @@ namespace giac {
 	CERR << CLOCK() << " Householder end" << endl;
       return;
     }
+#endif // GIAC_HAS_STO_38
     vector<giac_double> w(n),q(cend-cstart);
     // save w to compute P all at once at the end, this could also be done
     // inside the lower diagonal bloc of H
@@ -16104,8 +16116,14 @@ namespace giac {
       if (nend>n) nend=n;
       for (i=m+2;i<nend;++i){
 	u=H[i][m];
-	if (u==0)
+	if (u==0){
+	  //CERR << "u=0"<<endl;
+	  if (compute_P &&already_zero==2){
+	    oper.push_back(1);
+	    oper.push_back(0);
+	  }
 	  continue;
+	}
 	// line operation
 	t=H[m+1][m];
 	norme=std::sqrt(u*u+t*t);

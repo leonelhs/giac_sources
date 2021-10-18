@@ -54,7 +54,7 @@ td p{margin:0px;}
 </title>
 </head>
 <body >
-<!--HEVEA command line is: hevea -fix algo -->
+<!--HEVEA command line is: hevea algo -->
 <!--CUT STYLE article--><!--CUT DEF section 1 --><p>
 
 
@@ -2692,7 +2692,34 @@ plus égal à <span style="font-style:italic">b</span>, ces soustractions ayant 
 chiffres de <span style="font-style:italic">N</span> en base <span style="font-style:italic">b</span>.
 (On peut accélérer le calcul à la manière de Karatsuba en
 choisissant une base <span style="font-style:italic">b</span> puissance de 2 (ou 10) de l’ordre de
-√<span style="text-decoration:overline"><span style="font-style:italic">N</span></span> et en divisant pour régner).</p>
+√<span style="text-decoration:overline"><span style="font-style:italic">N</span></span> et en divisant pour régner).</p><pre class="verbatim">isqrt(x):={
+  local l,j,k,s,n,N,res;
+  l:=revlist(convert(x,base,100));
+  res:=seq(0,size(l));
+  s:=0;
+  N:=0;
+  pour k de 0 jusque size(l)-1 faire
+    N := (N-s)*100+l[k];
+    n:=2*horner(res[0..k],10)+1;
+    s:=n; // ajout de la somme des impairs consecutifs
+    pour j de 0 jusque 10 faire
+      si s&gt;N alors break; fsi;
+      n+=2;
+      s+=n;
+    fpour;
+    s -= n;
+    res[k]:=j;
+  fpour;
+  retourne horner(res,10);
+}:;
+</pre><p> 
+<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;t.value=tmp;tmp=UI.caseval(tmp);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML);field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
+
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:400px;height:20px;font-size:large">isqrt(2*10^8)
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+</p>
 <!--TOC subsubsection id="sec35" Bezout sur les entiers et les fractions continues-->
 <h4 id="sec35" class="subsubsection">3.9.3  Bezout sur les entiers et les fractions continues</h4><!--SEC END --><p>
 Il existe une variante de l’identité de Bézout présentée
@@ -11196,10 +11223,38 @@ si <span style="font-style:italic">k</span> divise <span style="font-style:itali
 Cela permet la factorisation partielle des entiers plus grands.
 Le temps d’exécution est proportionnel au nombre de premiers
 dans la table plus petits que √<span style="text-decoration:overline"><span style="font-style:italic">N</span></span>, multiplié par un facteur
-ln(<span style="font-style:italic">N</span>) pour la factorisation partielle.<br>
-Le <span style="font-weight:bold">crible</span> d’Erathosthène<a id="hevea_default174"></a> permet de trouver la liste des premiers
-plus petits qu’une valeur donnée. Voir le manuel de programmation
-de Xcas.
+ln(<span style="font-style:italic">N</span>) pour la factorisation partielle.
+</li><li class="li-itemize">Le <span style="font-weight:bold">crible</span> d’Eratosthène<a id="hevea_default174"></a> permet de trouver la liste des premiers
+plus petits qu’une valeur donnée <span style="font-style:italic">n</span>. On écrit tous les entiers dans
+une table, on barre les multiples de 2, puis les multiples du premier
+entier non barré (qui est premier), puis etc. et on s’arrête
+lorsque le premier entier non barré au carré est strictement plus
+grand que <span style="font-style:italic">n</span>.
+On montre facilement que la complexité de <code>crible(n)</code> est
+celle du nombre de cases que l’on barre dans la boucle 
+<code>for (j:=p*p;j&lt;=n;j+=p)</code>
+elle est majorée par 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">5</td></tr>
+</table></td><td class="dcell">+...+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub></td></tr>
+</table></td></tr>
+</table>
+où <span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub> est le dernier nombre premier inférieur ou égal à
+√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>, que l’on peut facilement majorer par <span style="font-style:italic">O</span>(<span style="font-style:italic">n</span> ln(<span style="font-style:italic">n</span>)) puisque
+la somme des inverses des premiers est inférieure à la somme des
+inverses jusque √<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>. Une analyse plus fine donne une majoration
+en <span style="font-style:italic">O</span>(<span style="font-style:italic">n</span> ln(ln(<span style="font-style:italic">n</span>))), en pratique l’obstacle principal au crible reste la taille
+mémoire nécessaire au calcul qui empêche de dépasser des
+valeurs de <span style="font-style:italic">n</span> de l’ordre du milliard.
 </li><li class="li-itemize">le test de pseudo-primalité de <span style="font-weight:bold">Miller-Rabin</span><a id="hevea_default175"></a><a id="hevea_default176"></a> (voir
 le manuel de programmation de Xcas) : effectué
 pour 20 bases <span style="font-style:italic">a</span>, il donne en cas de réussite la primalité
@@ -11224,7 +11279,37 @@ en un temps raisonnable les entiers jusqu’à 10<sup>70</sup> environ.
 Une esquisse de cette méthode est présentée plus bas.
 Cette méthode est dite de type II, son temps d’exécution
 est fonction de la taille de l’entier.
-</li></ul>
+</li></ul><pre class="verbatim">crible(n):={
+  local tab,prem,p;
+  tab:=seq(j,j,0,n);
+  prem:=[];
+  tab[0]=&lt;0; tab[1]=&lt;0;
+  p:=2;
+  while (p*p&lt;=n) {
+    for (j:=p*p;j&lt;=n;j+=p){
+      tab[j]=&lt;0;
+    }
+    p:=p+1;
+    //afficher(tab);
+    while ((p*p&lt;=n) and (tab[p]==0)) {
+      p:=p+1;
+    } 
+  }
+  for (j:=2;j&lt;=n;j++) {
+    if (tab[j]!=0) { 
+      prem:=append(prem,j);
+    }
+  } 
+  return(prem);
+}:;
+</pre><p> 
+<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;t.value=tmp;tmp=UI.caseval(tmp);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML);field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
+
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:400px;height:20px;font-size:large">crible(100)
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+</p>
 <!--TOC subsection id="sec147" Le test de primalité de Pocklington.-->
 <h3 id="sec147" class="subsection">16.1  Le test de primalité de Pocklington.</h3><!--SEC END --><p><a id="hevea_default177"></a> <a id="hevea_default178"></a>
 </p><div class="theorem"><span style="font-weight:bold">Théorème 29</span>  <em>
@@ -26493,7 +26578,7 @@ var Module = {
 </script>
 
 
-<script src="file:///usr/share/giac/doc/giac.js" async></script> 
+<script src="giac.js" async></script> 
 
 
 

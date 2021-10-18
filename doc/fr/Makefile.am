@@ -144,3 +144,6 @@ dist-hook:
 
 endif
 
+install-exec-hook: 
+	mkdir -p $(DESTDIR)$(prefix)/share/giac/doc/fr/
+	ln -sf ../giac.js $(DESTDIR)$(prefix)/share/giac/doc/fr/giac.js
