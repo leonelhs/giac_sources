@@ -1709,22 +1709,24 @@ namespace giac {
 	if (diffa.type==_INT_ && diffb.type==_INT_){
 	  gen P=r2sym(p,v,contextptr);
 	  if (p.lexsorted_degree()==0){
-	    res = simplify(pow(P*(-Qa/Ra)+1,truen,contextptr)*subst(g,x,truea,false,contextptr),contextptr);
+	    res = P*(-Qa/Ra)+1;
+	    if (!is_zero(res))
+	      res=simplify(pow(res,truen,contextptr)*limit(g,*x._IDNTptr,truea,0,contextptr),contextptr);
 	    if (diffb.val>0){ // b>trueb: add sum(g,x,trueb+1,b-1)
 	      for (int i=0;i<diffb.val;++i)
-		res += simplify(subst(g,x,trueb+1+i,false,contextptr),contextptr);
+		res += simplify(limit(g,*x._IDNTptr,trueb+1+i,0,contextptr),contextptr);
 	    }
 	    else { // b<=trueb substract sum(g,x,b+1,trueb)
 	      for (int i=0;i<-diffb.val;++i)
-		res -= simplify(subst(g,x,b+1+i,false,contextptr),contextptr); 
+		res -= simplify(limit(g,*x._IDNTptr,b+1+i,0,contextptr),contextptr); 
 	    }
 	    if (diffa.val>0){ // a>truea : substract sum(g,x,truea,a-1)
 	      for (int i=0;i<diffa.val;++i)
-		res -= simplify(subst(g,x,truea+i,false,contextptr),contextptr);
+		res -= simplify(limit(g,*x._IDNTptr,truea+i,0,contextptr),contextptr);
 	    }
 	    else { // a<=truea: add sum(g,x,a,truea-1)
 	      for (int i=0;i<-diffa.val;++i)
-		res += simplify(subst(g,x,a+i,false,contextptr),contextptr);
+		res += simplify(limit(g,*x._IDNTptr,a+i,0,contextptr),contextptr);
 	    }
 	    return true;
 	  }

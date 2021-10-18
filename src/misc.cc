@@ -5048,6 +5048,16 @@ static define_unary_function_eval (__remove_language,&_remove_language,_remove_l
 static define_unary_function_eval (__show_language,&_show_language,_show_language_s);
   define_unary_function_ptr5( at_show_language ,alias_at_show_language,&__show_language,0,true);
 
+  gen _set_language(const gen & args,GIAC_CONTEXT){
+    if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type!=_INT_)
+      return undef;
+    return string2gen(set_language(args.val,contextptr),false);
+  }
+  static const char _set_language_s []="set_language";
+static define_unary_function_eval (__set_language,&_set_language,_set_language_s);
+  define_unary_function_ptr5( at_set_language ,alias_at_set_language,&__set_language,0,true);
+
   gen _os_version(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
 #ifdef WIN32

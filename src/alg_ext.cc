@@ -174,7 +174,11 @@ namespace giac {
   }
 
   gen select_root(const vecteur & v,GIAC_CONTEXT){
-    vecteur a=proot(v);
+    int n=decimal_digits(contextptr);
+    if (n<12) n=12;
+    double eps=std::pow(0.1,n);
+    int rprec=n*3.3;
+    vecteur a=proot(v,eps,rprec);
     return in_select_root(a,is_real(v,contextptr),contextptr);
   }
 
@@ -925,6 +929,10 @@ namespace giac {
       if (v.size()==1)
 	return rootof(_symb2poly(makesequence(e,v.front()),contextptr),contextptr);
       return gentypeerr(gettext("rootof"));
+    }
+    if (e.type==_VECT && *e._VECTptr==makevecteur(1,0,1)){
+      *logptr(contextptr) << "rootof([1,0,1]) was converted to i" << endl;
+      return cst_i;
     }
     if (e._VECTptr->size()==2 && e._VECTptr->front().type!=_VECT){
       vecteur v=lidnt(e);

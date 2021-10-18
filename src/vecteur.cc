@@ -2561,6 +2561,7 @@ namespace giac {
   // eps is defined using the norm of v
   vecteur proot(const vecteur & v){
     double eps=1e-12; 
+    // this should take care of precision inside v!
     return proot(v,eps);
   }
 

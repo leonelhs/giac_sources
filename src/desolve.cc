@@ -712,6 +712,9 @@ namespace giac {
       gen & a=v[0];
       gen & b=v[1];
       gen & c=v[2];
+      if (ckmatrix(a)){
+	c=_tran(c,contextptr)[a._VECTptr->size()-1];
+      }
       result=desolve_lin1(a,b,c,x,parameters,contextptr);
       return true;
     }
@@ -996,6 +999,13 @@ namespace giac {
     int save=calc_mode(contextptr);
     calc_mode(0,contextptr);
     f=remove_equal(eval(f,eval_level(contextptr),contextptr));
+    if (ckmatrix(f)){
+      vecteur v = *f._VECTptr;
+      for (int i=0;i<v.size();++i){
+	v[i].subtype=0;
+      }
+      f=v;
+    }
     calc_mode(save,contextptr);
     fres=f=quotesubst(f,yof,y,contextptr);
     vx_var=save_vx;

@@ -66,9 +66,11 @@ extern "C" uint32_t mainThreadStack[];
 #include <pthread.h>
 #endif
 #ifdef EMCC
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
-#include <emscripten.h>
+#include "SDL/SDL.h"
+//#include "SDL/SDL_image.h"
+#include "SDL/SDL_opengl.h"
+//#include <emscripten.h>
+#include "opengl.h"
 #endif
 
 #ifdef USE_GMP_REPLACEMENTS
@@ -14441,69 +14443,62 @@ namespace giac {
     g=protecteval(g,1,&C);
 #endif
 #ifdef EMCC
-    if (g.is_symb_of_sommet(at_pnt)){
-  SDL_Init(SDL_INIT_VIDEO);
-  SDL_Surface *screen = SDL_SetVideoMode(600, 450, 32, SDL_HWSURFACE);
-
-  printf("Init: %d\n", TTF_Init());
-
-  TTF_Font *font = TTF_OpenFont("sans-serif", 40);
-  printf("Font: %p\n", font);
-
-  SDL_Color color = { 0xff, 0x99, 0x00, 0xff };
-
-  SDL_Surface *text = TTF_RenderText_Solid(font, "hello orange world", color);
-
-  SDL_Color color2 = { 0xbb, 0, 0xff, 0xff };
-  SDL_Surface *text2 = TTF_RenderText_Solid(font, "a second line, purple", color2);
-
-  // render
-  SDL_Rect dest = { 0, 50, 0, 0 };
-  SDL_BlitSurface (text, NULL, screen, NULL);
-  dest.y = 100;
-  SDL_BlitSurface (text2, NULL, screen, &dest);
-
-  // fill stuff
-  SDL_Rect rect = { 200, 200, 175, 125 };
-  SDL_FillRect(screen, &rect, SDL_MapRGBA(screen->format, 0x22, 0x22, 0xff, 0xff));
-
-  SDL_Flip(screen); 
-
-  SDL_LockSurface(screen);
-
-  int width, height, isFullscreen;
-  emscripten_get_canvas_size(&width, &height, &isFullscreen);
-
-  if (width != 600 && height != 450)
-  {
-    printf("error: wrong width/height\n");
-    abort();
-  }
-
-  int sum = 0;
-  for (int i = 0; i < screen->h; i++) {
-    sum += *((char*)screen->pixels + i*screen->w*4 + i*4 + 0);
-  }
-  printf("Sum: %d\n", sum);
-
-  printf("you should see two lines of text in different colors and a blue rectangle\n");
-
-  SDL_UnlockSurface(screen);
-  
-  SDL_Quit();
-  // WARNING: library_sdl.js SDL_Quit() is buggy, it should be
-  /*
-   SDL_Quit: function() {
-    _SDL_AudioQuit();
-      var keyboardListeningElement = Module['keyboardListeningElement'] || document;
-      keyboardListeningElement.removeEventListener("keydown", SDL.receiveEvent);
-      keyboardListeningElement.removeEventListener("keyup", SDL.receiveEvent);
-      keyboardListeningElement.removeEventListener("keypress", SDL.receiveEvent);
-    Module.print('SDL_Quit called (and ignored)');
-  },
-  */
-
-  printf("done.\n");
+    // compile with -s LEGACY_GL_EMULATION=1
+    gen last=g;
+    while (last.type==_VECT && !last._VECTptr->empty())
+      last=last._VECTptr->back();
+    if (last.is_symb_of_sommet(at_pnt)){
+      if ( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
+        printf("Unable to initialize SDL: %s\n", SDL_GetError());
+        return "unable to init SDL";
+      }
+      SDL_Window * window=0;
+      SDL_Surface *screen=0;
+      SDL_Renderer * sdlr=0;
+      int w=640,h=200;
+      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 ); // *new*
+      screen = SDL_SetVideoMode( w, h, 16, SDL_OPENGL ); // *changed*
+      if ( !screen ) {
+	printf("Unable to set video mode: %s\n", SDL_GetError());
+	return "unable to set video mode";
+      }
+      if (is3d(g)){
+	Opengl3d graphe(w,h);
+	graphe.plot_instructions=vecteur(1,g);
+	graphe.autoscale(true); // full view
+	graphe.draw();
+	g=string2gen("3d plot done",false);
+      }
+      else {
+	Opengl3d graphe(w,h);
+	graphe.theta_x=0;
+	graphe.theta_y=0;
+	graphe.theta_z=0;      
+	graphe.q=euler_deg_to_quaternion_double(0,0,0);
+	graphe.plot_instructions=vecteur(1,convert3d(g,&C));
+	graphe.autoscale(true); // full view
+	graphe.draw();
+	g=string2gen("2d plot done",false);
+      }
+      SDL_GL_SwapBuffers();      
+#ifndef __EMSCRIPTEN__
+      // Wait for 3 seconds to give us a chance to see the image
+      SDL_Delay(3000);
+#endif
+      SDL_Quit();
+      
+      // WARNING: library_sdl.js SDL_Quit() is buggy, it should be
+      /*
+	SDL_Quit: function() {
+	_SDL_AudioQuit();
+	var keyboardListeningElement = Module['keyboardListeningElement'] || document;
+	keyboardListeningElement.removeEventListener("keydown", SDL.receiveEvent);
+	keyboardListeningElement.removeEventListener("keyup", SDL.receiveEvent);
+	keyboardListeningElement.removeEventListener("keypress", SDL.receiveEvent);
+	Module.print('SDL_Quit called (and ignored)');
+	},
+      */
+      
     }
 #endif
     if (!lop(g,at_rootof).empty())

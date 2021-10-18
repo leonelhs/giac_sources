@@ -86,6 +86,10 @@
   int isatty (int ){ return 0; }
 #endif
 
+#ifdef BESTA_OS
+#define EINTR           4
+#endif
+
 #ifdef NSPIRE
   // after flex, move #include "config.h" and first.h before all includes
   // include "static.h" then giacPCH.h

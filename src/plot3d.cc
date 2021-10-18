@@ -2284,6 +2284,82 @@ namespace giac {
   static define_unary_function_eval (__est_cospherique,&giac::_est_cospherique,_est_cospherique_s);
   define_unary_function_ptr5( at_est_cospherique ,alias_at_est_cospherique,&__est_cospherique,0,true);
 
+  gen in_convert3d(const gen & h0,GIAC_CONTEXT){
+    if (h0.type!=_VECT)
+      return h0;
+    // convert complex to 3d vectors
+    vecteur w=*h0._VECTptr;
+    gen r,I;
+    for (unsigned i=0;i<w.size();++i){
+      reim(w[i],r,I,contextptr);
+      w[i]=gen(makevecteur(r,I,0),_POINT__VECT);
+    }
+    return gen(w,h0.subtype);
+  }
+
+  gen convert3d(const gen & g,GIAC_CONTEXT){
+    if (g.type==_VECT)
+      return apply(g,convert3d,contextptr);
+    if (!g.is_symb_of_sommet(at_pnt))
+      return g;
+    gen h=g._SYMBptr->feuille;
+    if (h.type!=_VECT || h._VECTptr->size()<2)
+      return g;
+    vecteur v=*h._VECTptr;
+    gen h0=v.front();
+    if (h0.is_symb_of_sommet(at_curve)){
+      gen c=h0._SYMBptr->feuille;
+      if (c.type!=_VECT || c._VECTptr->size()<2)
+	return g;
+      vecteur vc=*c._VECTptr;
+      gen c0=vc[0];
+      gen c1=vc[1];
+      if (c0.type==_VECT && !c0._VECTptr->empty()){
+	vecteur v0=*c0._VECTptr;
+	gen r,i;
+	reim(v0[0],r,i,contextptr);
+	v0[0]=gen(makevecteur(r,i,0),_POINT__VECT);
+	vc[0]=gen(v0,c0.subtype);
+      }
+      vc[1]=in_convert3d(c1,contextptr);
+      h0=symbolic(at_curve,gen(vc,h0.subtype));
+      v.front()=h0;
+      h=gen(v,h.subtype);
+      return symbolic(at_pnt,h);
+    }
+    if (h0.is_symb_of_sommet(at_cercle)){
+      gen centre,rayon;
+      if (!centre_rayon(h0,centre,rayon,false,contextptr))
+	return gensizeerr(contextptr); // don't care about radius sign
+      gen r,i;
+      reim(centre,r,i,contextptr);
+      identificateur t("tconvert3d");
+      gen tmin=0,tmax=2*M_PI;
+      if (h0.type==_VECT && h0._VECTptr->size()>4){
+	tmin=(*h0._VECTptr)[2];
+	tmax=(*h0._VECTptr)[3];
+      }
+      gen res=_plotparam(makesequence(makevecteur(r+rayon*symbolic(at_cos,t),i+rayon*symbolic(at_sin,t),0),t,tmin,tmax),contextptr);
+      res=remove_at_pnt(res);
+      v[0]=res;
+      return symbolic(at_pnt,gen(v,h.subtype));
+    }
+    if (h0.type==_VECT){
+      v.front()=in_convert3d(h0,contextptr);
+      h=gen(v,h.subtype);
+      return symbolic(at_pnt,h);
+    }
+    gen r,i;
+    reim(h0,r,i,contextptr);
+    h0=gen(makevecteur(r,i,0),_POINT__VECT);
+    h=gen(v,h.subtype);
+    return symbolic(at_pnt,h);    
+  }
+  static const char _convert3d_s []="convert3d";
+  static define_unary_function_eval (__convert3d,&giac::convert3d,_convert3d_s);
+  define_unary_function_ptr5( at_convert3d ,alias_at_convert3d,&__convert3d,0,true);
+
+
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // ndef NO_NAMESPACE_GIAC

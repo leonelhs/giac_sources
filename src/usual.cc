@@ -1152,6 +1152,8 @@ namespace giac {
       a=re(e,contextptr);b=ratnormal(im(e,contextptr));
       if (a!=e && is_zero(b,contextptr))
 	return sqrt(a,contextptr);
+      if ( has_i(a) || has_i(b) )
+	return pow(e,plus_one_half,contextptr);
       gen rho=sqrt(a*a+b*b,contextptr);
       if (abs_calc_mode(contextptr)==38 && rho.type!=_FRAC && rho.type>=_IDNT){
 	rho=evalf(rho,1,contextptr);
@@ -6323,7 +6325,7 @@ namespace giac {
       return gensizeerr(gettext("Longfloat library not available"));
 #endif
     set_decimal_digits(ndigits,contextptr);
-    gen res=a.evalf(1,contextptr);
+    gen res=a.evalf(1,contextptr); 
     if (res.type==_REAL || res.type==_CPLX)
       res=accurate_evalf(res,digits2bits(ndigits));
 #if 0
@@ -6861,7 +6863,10 @@ namespace giac {
       if (z.type==_DOUBLE_)
 	s=evalf_double(s,1,contextptr);
       if (s.type==_DOUBLE_ && z.type==_DOUBLE_){
-	return upper_incomplete_gammad(s._DOUBLE_val,z._DOUBLE_val,x._VECTptr->size()==3?!is_zero(x._VECTptr->back()):false);
+	gen res=upper_incomplete_gammad(s._DOUBLE_val,z._DOUBLE_val,x._VECTptr->size()==3?!is_zero(x._VECTptr->back()):false);
+	if (res==-1)
+	  return gensizeerr(contextptr);
+	return res;
       }
       return symbolic(at_Gamma,x);
     }

@@ -1,6 +1,6 @@
 SUBDIRS = 	src check intl po debianold debian doc examples 
 DIST_SUBDIRS = 	src check intl po debianold debian doc examples 
-EXTRA_DIST = path.h.in setup inst TROUBLES Init.scm compte INSTALACION LEAME.WIN LEAME.ipaq giac.specs giac.specs32 fltk.1.1.changes README.MACOSX pariinl.h changeversion mkosx mkosx10 mkosx3 mkdebian mkdebian2 win2unix.cc addu.cc xcas.nsi xcas.desktop xcas.xpm xcas.applications README.visualcpp java.README config.h.win mkiphone build_for_iphoneos path.iphone simupath.iphone config.h.iphone config.h.64 config.h.mingw path.mingw configure.mingw README.mingw archive.mingw compile.android mkrpm icons/*
+EXTRA_DIST = path.h.in setup inst TROUBLES Init.scm compte INSTALACION LEAME.WIN LEAME.ipaq giac.specs giac.specs32 fltk.1.1.changes README.MACOSX pariinl.h changeversion mkosx mkosx10 mkosx3 mkdebian mkdebian2 win2unix.cc addu.cc xcas*.nsi xcas.desktop xcas.xpm xcas.applications README.visualcpp java.README config.h.win win64 mkiphone build_for_iphoneos path.iphone simupath.iphone config.h.iphone config.h.64 config.h.mingw path.mingw configure.mingw README.mingw archive.mingw compile.android mkrpm icons/*
 
 # Rule to build tar-bzipped distribution package
 $(PACKAGE)-$(VERSION).tar.gz: dist

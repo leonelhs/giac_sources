@@ -106,6 +106,9 @@ namespace giac {
   gen _est_cospherique(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_est_cospherique;
 
+  // convert 2-d graphic object to 3-d (with z=0)
+  gen convert3d(const gen & g,GIAC_CONTEXT);
+
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // ndef NO_NAMESPACE_GIAC

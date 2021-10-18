@@ -2600,6 +2600,7 @@ namespace giac {
     gen res=linear_apply(ee,tt,remains_to_integrate,contextptr,integrate_gen_rem);
     step_infolevel=step_infolevelsave;
     res=quotesubst(res,tt,x,contextptr);
+    remains_to_integrate=quotesubst(remains_to_integrate,tt,x,contextptr);
     return res;
   }
 
@@ -2805,14 +2806,17 @@ namespace giac {
 	gen xval=x.eval(1,contextptr);
 	gen a(v[2]),b(v[3]);
 	if (evalf_double(a,1,contextptr).type==_DOUBLE_ && evalf_double(b,1,contextptr).type==_DOUBLE_){
+	  bool neg=false;
 	  if (is_greater(v[2],v[3],contextptr)){
 	    a=v[3]; b=v[2];
+	    neg=true;
+	    v[2]=a; v[3]=b;
 	  }
 	  giac_assume(symb_and(symb_superieur_egal(x,a),symb_inferieur_egal(x,b)),contextptr);
 	  v.push_back(at_assume);
 	  gen res=_integrate(gen(v,_SEQ__VECT),contextptr);
 	  sto(xval,x,contextptr);
-	  return res;
+	  return neg?-res:res;
 	}
 	if (is_greater(b,a,contextptr)){
 	  giac_assume(symb_and(symb_superieur_egal(x,a),symb_inferieur_egal(x,b)),contextptr);
@@ -3088,8 +3092,10 @@ namespace giac {
       return symbolic(at_integrate,makesequence(v[0],x,borne_inf,borne_sup));
     }
 #endif
+    if (is_undef(res))
+      res=subst(primitive,*x._IDNTptr,borne_sup,false,contextptr)-subst(primitive,*x._IDNTptr,borne_inf,false,contextptr);
     vecteur sp;
-    sp=lidnt(evalf(primitive,1,contextptr));
+    sp=lidnt(evalf(makevecteur(primitive,borne_inf,borne_sup),1,contextptr));
     if (sp.size()>1){
       *logptr(contextptr) << gettext("No check were made for singular points of antiderivative ")+primitive.print(contextptr)+gettext(" for definite integration in [")+borne_inf.print(contextptr)+","+borne_sup.print(contextptr)+"]" << endl ;
       sp.clear();

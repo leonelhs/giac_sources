@@ -1,5 +1,5 @@
 // -*- mode:C++ ; compile-command: "g++ -I.. -g -c help.cc -Wall" -*-
-#define _SCL_SECURE_NO_WARNINGS
+//#define _SCL_SECURE_NO_WARNINGS
 #include "giacPCH.h"
 
 #include "path.h"

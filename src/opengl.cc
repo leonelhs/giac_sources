@@ -1,5 +1,5 @@
-// -*- mode:C++ ; compile-command: "g++-3.4 -I. -I.. -I../include -I../../giac/include -g -c Graph3d.cc -DIN_GIAC -DHAVE_CONFIG_H" -*-
-#include "Graph3d.h"
+// -*- mode:C++ ; compile-command: "emcc opengl.cc -I. -I.. -DHAVE_CONFIG_H -DIN_GIAC -DGIAC_GENERIC_CONSTANTS -DNO_STDEXCEPT -Os -s ALLOW_MEMORY_GROWTH=1 -s LEGACY_GL_EMULATION=1" -*-
+#include "opengl.h"
 /*
  *  Copyright (C) 2006,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -20,15 +20,10 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#define __CARBONSOUND__
-#ifdef HAVE_LIBFLTK_GL
-#include <FL/fl_ask.H>
-#include <FL/fl_ask.H>
-#include <FL/Fl.H>
-#include <FL/Fl_File_Chooser.H>
-#include <FL/Fl_Value_Input.H>
-#include <FL/Fl_Return_Button.H>
-#include <FL/Fl_Check_Button.H>
+
+#include "SDL/SDL.h"
+#include "SDL/SDL_opengl.h"
+
 #include <fstream>
 #include "vector.h"
 #include <algorithm>
@@ -44,21 +39,6 @@
 #else
 #include "misc.h"
 #endif
-#include "Equation.h"
-#include "Editeur.h"
-#include "Xcas1.h"
-#include "Print.h"
-#include "gl2ps.h"
-
-#ifdef __APPLE__
-#include <AGL/agl.h>
-#include <FL/x.H>
-#include <FL/fl_draw.H>
-#define __APPLE_QUARTZ__ 1
-#include "Fl_Gl_Choice.H"
-extern Fl_Gl_Choice * gl_choice;
-// be sure to remove static declaration in gl_start.cxx in fltk src directory
-#endif
 
 #ifndef HAVE_PNG_H
 #undef HAVE_LIBPNG
@@ -70,35 +50,1394 @@ extern Fl_Gl_Choice * gl_choice;
 using namespace std;
 using namespace giac;
 
-#ifndef NO_NAMESPACE_XCAS
-namespace xcas {
-#endif // ndef NO_NAMESPACE_XCAS
-
-  std::map<std::string,Fl_Image *> texture_cache;
-
-  int Graph3d::opengl2png(const std::string & filename){
-#ifdef HAVE_LIBPNG
-    if (!screenbuf)
-      return -1;
-    int i;
-    // unsigned rowbytes = w()*4;
-    unsigned char *rows[h()];
-    for (i = 0; i < h(); i++) {
-      rows[i] = &screenbuf[(h() - i - 1)*4*w()];
-    }
-    int res= write_png(filename.c_str(), rows, w(), h(), PNG_COLOR_TYPE_RGBA, 8);
-    if (res!=-1){
-      string command="pngtopnm "+filename+" | pnmtops > "+remove_extension(filename)+".ps &";
-      cerr << command << endl;
-      system(command.c_str()); 
-      command="pngtopnm "+filename+" | pnmtojpeg > "+remove_extension(filename)+".jpg &";
-      cerr << command << endl;
-      system(command.c_str()); 
-    }
+#ifdef EMCC
+// missing from emscripten
+void glPointSize(GLint){ }
+void glColorMaterial(GLenum,GLint){}
+void glVertex3d(GLdouble d1,GLdouble d2,GLdouble d3){ glVertex3f(d1,d2,d3); }
+void glLightModeli(GLenum,GLint) {}
+void glLightModelf(GLenum,GLfloat) {}
+void glGetDoublev(GLenum i,GLdouble * d){
+  float f[16]; glGetFloatv(i,f);
+  for (int i=0;i<16;++i) d[i]=f[i];
+}
+void glRasterPos3d(GLdouble d1,GLdouble d2,GLdouble d3){
+  //glRasterPos3f(d1,d2,d3);
+}
+void glGetMaterialfv(GLenum,GLenum,GLfloat *){}
+void glLineStipple(GLint,GLushort){}
+void glMaterialf(GLenum,GLenum,GLfloat){}
+void glNormal3d(GLdouble d1,GLdouble d2,GLdouble d3){ glNormal3f(d1,d2,d3); }
+void glGetLightfv(GLenum,GLenum,GLfloat *){}
+void glClipPlane(GLenum,const GLdouble *){}
 #endif
+#ifndef NO_NAMESPACE_GIAC
+namespace giac {
+#endif // ndef NO_NAMESPACE_GIAC
+  Xcas_config_type Xcas_config;
+  
+  string print_DOUBLE_(double d){
+    char s[256];
+#ifdef IPAQ
+    sprintf(s,"%.4g",d);
+#else
+    sprintf(s,"%.5g",d);
+#endif
+    return s;
+  }
+
+  // from Graph.cc
+  bool do_helpon=true;
+
+  static double pow10(double d){
+    return std::pow(10.,d);
+  }
+
+  void arc_en_ciel(int k,int & r,int & g,int & b){
+    k += 21;
+    k %= 126;
+    if (k<0)
+      k += 126;
+    if (k<21){
+      r=251; g=0; b=12*k;
+    }
+    if (k>=21 && k<42){
+      r=251-(12*(k-21)); g=0; b=251;
+    } 
+    if (k>=42 && k<63){
+      r=0; g=(k-42)*12; b=251;
+    } 
+    if (k>=63 && k<84){
+      r=0; g=251; b=251-(k-63)*12;
+    } 
+    if (k>=84 && k<105){
+      r=(k-84)*12; g=251; b=0;
+    } 
+    if (k>=105 && k<126){
+      r=251; g=251-(k-105)*12; b=0;
+    } 
+  }
+
+  void xcas_color(int color,bool dim3){
+    switch (color){
+    case FL_RED:
+      glColor3f(1,0,0);
+      return;
+    case FL_BLACK:
+      glColor3f(0,0,0);
+      return;
+    case FL_WHITE:
+      glColor3f(1,1,1);
+      return;
+    case FL_BLUE:
+      glColor3f(0,1,0);
+      return;
+    case FL_GREEN:
+      glColor3f(0,0,1);
+      return;
+    case FL_CYAN:
+      glColor3f(0,1,1);
+      return;
+    case FL_MAGENTA:
+      glColor3f(1,0,1);
+      return;
+    case FL_YELLOW:
+      glColor3f(1,1,0);
+      return;
+    }
+    int r,g,b;
+    arc_en_ciel(color % 0x7e,r,g,b);
+    glColor3f(r/255.,g/255.,b/255.);
+  }
+
+  inline int Min(int i,int j) {return i>j?j:i;}
+
+  inline int Max(int i,int j) {return i>j?i:j;}
+
+  quaternion_double::quaternion_double(double theta_x,double theta_y,double theta_z) { 
+    *this=euler_deg_to_quaternion_double(theta_x,theta_y,theta_z); 
+  }
+
+  quaternion_double euler_deg_to_quaternion_double(double a,double b,double c){
+    double phi=a*M_PI/180, theta=b*M_PI/180, psi=c*M_PI/180;
+    double c1 = std::cos(phi/2);
+    double s1 = std::sin(phi/2);
+    double c2 = std::cos(theta/2);
+    double s2 = std::sin(theta/2);
+    double c3 = std::cos(psi/2);
+    double s3 = std::sin(psi/2);
+    double c1c2 = c1*c2;
+    double s1s2 = s1*s2;
+    double w =c1c2*c3 - s1s2*s3;
+    double x =c1c2*s3 + s1s2*c3;
+    double y =s1*c2*c3 + c1*s2*s3;
+    double z =c1*s2*c3 - s1*c2*s3;
+    return quaternion_double(w,x,y,z);
+  }
+
+  void quaternion_double_to_euler_deg(const quaternion_double & q,double & phi,double & theta, double & psi){
+    double test = q.x*q.y + q.z*q.w;
+    if (test > 0.499) { // singularity at north pole
+      phi = 2 * atan2(q.x,q.w) * 180/M_PI;
+      theta = 90; 
+      psi = 0;
+      return;
+    }
+    if (test < -0.499) { // singularity at south pole
+      phi = -2 * atan2(q.x,q.w) * 180/M_PI;
+      theta = - 90;
+      psi = 0;
+      return;
+    }
+    double sqx = q.x*q.x;
+    double sqy = q.y*q.y;
+    double sqz = q.z*q.z;
+    phi = atan2(2*q.y*q.w-2*q.x*q.z , 1 - 2*sqy - 2*sqz) * 180/M_PI;
+    theta = std::asin(2*test) * 180/M_PI;
+    psi = atan2(2*q.x*q.w-2*q.y*q.z , 1 - 2*sqx - 2*sqz) * 180/M_PI;
+  }
+
+  quaternion_double operator * (const quaternion_double & q1,const quaternion_double & q2){ 
+    double z=q1.w*q2.z+q2.w*q1.z+q1.x*q2.y-q2.x*q1.y;
+    double x=q1.w*q2.x+q2.w*q1.x+q1.y*q2.z-q2.y*q1.z;
+    double y=q1.w*q2.y+q2.w*q1.y+q1.z*q2.x-q2.z*q1.x;
+    double w=q1.w*q2.w-q1.x*q2.x-q1.y*q2.y-q1.z*q2.z;
+    return quaternion_double(w,x,y,z);
+  }
+
+  // q must be a unit
+  void get_axis_angle_deg(const quaternion_double & q,double &x,double &y,double & z, double &theta){
+    double scale=1-q.w*q.w;
+    if (scale>1e-6){
+      scale=std::sqrt(scale);
+      theta=2*std::acos(q.w)*180/M_PI;
+      x=q.x/scale;
+      y=q.y/scale;
+      z=q.z/scale;
+    }
+    else {
+      x=0; y=0; z=1;
+      theta=0;
+    }
+  }
+
+  ostream & operator << (ostream & os,const quaternion_double & q){
+    return os << q.w << "+" << q.x << "i+" << q.y << "j+" << q.z << "k";
+  }
+
+  void Opengl::update_infos(const gen & g){
+    if (g.is_symb_of_sommet(at_equal)){
+      // detect a title or a x/y-axis name
+      gen & f = g._SYMBptr->feuille;
+      if (f.type==_VECT && f._VECTptr->size()==2){
+	gen & optname = f._VECTptr->front();
+	gen & optvalue= f._VECTptr->back();
+	if (optname==at_legende && optvalue.type==_VECT){
+	  vecteur & optv=(*optvalue._VECTptr);
+	  int optvs=optv.size();
+	  if (optvs>=1)
+	    x_axis_unit=printstring(optv[0],contextptr);
+	  if (optvs>=2)
+	    y_axis_unit=printstring(optv[1],contextptr);
+	  if (optvs>=3)
+	    z_axis_unit=printstring(optv[2],contextptr);
+	}
+	if (optname.type==_INT_ && optname.subtype == _INT_PLOT){ 
+#if 0
+	  if (optname.val==_GL_TEXTURE){
+	    if (optvalue.type==_VECT && optvalue._VECTptr->size()==2 && optvalue._VECTptr->front().type==_STRNG && is_undef(optvalue._VECTptr->back())){
+	      // reload cached image
+	      optvalue=optvalue._VECTptr->front();
+	      std::map<std::string,std::pair<Fl_Image *,Fl_Image*> *>::iterator it,itend=texture2d_cache.end();
+	      it=texture2d_cache.find(optvalue._STRNGptr->c_str());
+	      if (it!=itend){
+		std::pair<Fl_Image *,Fl_Image*> * old= it->second;
+		delete old;
+		texture2d_cache.erase(it);
+	      }
+	      get_texture2d(*optvalue._STRNGptr,background_image);
+	    }
+	    else {
+	      if (optvalue.type==_STRNG){
+		get_texture2d(*optvalue._STRNGptr,background_image);
+	      }
+	      else {
+		background_image=0;
+	      }
+	    }
+	  }
+#endif
+	  if (optname.val==_TITLE )
+	    title=printstring(optvalue,contextptr);
+	  if (optname.val==_AXES){
+	    if (optvalue.type==_INT_)
+	      show_axes=optvalue.val;
+	  }
+	  if (optname.val==_LABELS && optvalue.type==_VECT){
+	    vecteur & optv=(*optvalue._VECTptr);
+	    int optvs=optv.size();
+	    if (optvs>=1)
+	      x_axis_name=printstring(optv[0],contextptr);
+	    if (optvs>=2)
+	      y_axis_name=printstring(optv[1],contextptr);
+	    if (optvs>=3)
+	      z_axis_name=printstring(optv[2],contextptr);
+	  }
+	  if (optname.val==_GL_ORTHO && optvalue==1)
+	    orthonormalize();
+	  if (optname.val==_GL_X_AXIS_COLOR && optvalue.type==_INT_)
+	    x_axis_color=optvalue.val;
+	  if (optname.val==_GL_Y_AXIS_COLOR && optvalue.type==_INT_)
+	    y_axis_color=optvalue.val;
+	  if (optname.val==_GL_Z_AXIS_COLOR && optvalue.type==_INT_)
+	    z_axis_color=optvalue.val;
+	  if (optname.val>=_GL_X && optname.val<=_GL_Z && optvalue.is_symb_of_sommet(at_interval)){
+	    gen optvf=evalf_double(optvalue._SYMBptr->feuille,1,contextptr);
+	    if (optvf.type==_VECT && optvf._VECTptr->size()==2){
+	      gen a=optvf._VECTptr->front();
+	      gen b=optvf._VECTptr->back();
+	      if (a.type==_DOUBLE_ && b.type==_DOUBLE_){
+		switch (optname.val){
+		case _GL_X:
+		  window_xmin=a._DOUBLE_val;
+		  window_xmax=b._DOUBLE_val;
+		  break;
+		case _GL_Y:
+		  window_ymin=a._DOUBLE_val;
+		  window_ymax=b._DOUBLE_val;
+		  break;
+		case _GL_Z:
+		  window_zmin=a._DOUBLE_val;
+		  window_zmax=b._DOUBLE_val;
+		  break;
+		}
+	      }
+	    }
+	  }
+	  gen optvalf=evalf_double(optvalue,1,contextptr);
+	  if (optname.val==_GL_XTICK && optvalf.type==_DOUBLE_)
+	    x_tick=optvalf._DOUBLE_val;
+	  if (optname.val==_GL_YTICK && optvalf.type==_DOUBLE_)
+	    y_tick=optvalf._DOUBLE_val;
+	  if (optname.val==_GL_ZTICK && optvalf.type==_DOUBLE_)
+	    z_tick=optvalf._DOUBLE_val;
+	  if (optname.val==_GL_ANIMATE && optvalf.type==_DOUBLE_)
+	    animation_dt=optvalf._DOUBLE_val;
+	  if (optname.val==_GL_SHOWAXES && optvalue.type==_INT_)
+	    show_axes=optvalue.val;
+	  if (optname.val==_GL_SHOWNAMES && optvalue.type==_INT_)
+	    show_names=optvalue.val;
+	  if (optname.val>=_GL_X_AXIS_NAME && optname.val<=_GL_Z_AXIS_UNIT && optvalue.type==_STRNG){
+	    if (optname.val==_GL_X_AXIS_NAME) x_axis_name=*optvalue._STRNGptr;
+	    if (optname.val==_GL_Y_AXIS_NAME) y_axis_name=*optvalue._STRNGptr;
+	    if (optname.val==_GL_Z_AXIS_NAME) z_axis_name=*optvalue._STRNGptr;
+	    if (optname.val==_GL_X_AXIS_UNIT) x_axis_unit=*optvalue._STRNGptr;
+	    if (optname.val==_GL_Y_AXIS_UNIT) y_axis_unit=*optvalue._STRNGptr;
+	    if (optname.val==_GL_Z_AXIS_UNIT) z_axis_unit=*optvalue._STRNGptr;
+	  }
+	  if (optname.val==_GL_QUATERNION && optvalf.type==_VECT && optvalf._VECTptr->size()==4){
+	    vecteur & optvalv=*optvalf._VECTptr;
+	    if (optvalv[0].type==_DOUBLE_ && optvalv[1].type==_DOUBLE_ && 
+		optvalv[2].type==_DOUBLE_ && optvalv[3].type==_DOUBLE_){
+	      q.x=optvalv[0]._DOUBLE_val;
+	      q.y=optvalv[1]._DOUBLE_val;
+	      q.z=optvalv[2]._DOUBLE_val;
+	      q.w=optvalv[3]._DOUBLE_val;
+	    }
+	  }
+	  if (optname.val==_GL_LOGX && optvalue.type==_INT_){
+	    display_mode &= (0xffff ^ 0x400);
+	    if (optvalue.val)
+	      display_mode |= 0x400;
+	  }
+	  if (optname.val==_GL_LOGY && optvalue.type==_INT_){
+	    display_mode &= (0xffff ^ 0x800);
+	    if (optvalue.val)
+	      display_mode |= 0x800;
+	  }
+	  if (optname.val==_GL_LOGZ && optvalue.type==_INT_){
+	    display_mode &= (0xffff ^ 0x1000);
+	    if (optvalue.val)
+	      display_mode |= 0x1000;
+	  }
+	  if (dynamic_cast<Opengl3d *>(this)){
+	    if (optname.val==_GL_ROTATION_AXIS && optvalf.type==_VECT && optvalf._VECTptr->size()==3){
+	      vecteur & optvalv=*optvalf._VECTptr;
+	      if (optvalv[0].type==_DOUBLE_ && optvalv[1].type==_DOUBLE_ && 
+		  optvalv[2].type==_DOUBLE_ ){
+		rotanim_rx=optvalv[0]._DOUBLE_val;
+		rotanim_ry=optvalv[1]._DOUBLE_val;
+		rotanim_rz=optvalv[2]._DOUBLE_val;	
+	      }      
+	    }
+	    if (optname.val==_GL_FLAT && optvalue.type==_INT_){
+	      display_mode &= (0xffff ^ 0x10);
+	      if (optvalue.val)
+		display_mode |= 0x10;
+	    }
+	    if (optname.val==_GL_LIGHT && optvalue.type==_INT_){
+	      display_mode &= (0xffff ^ 0x8);
+	      if (optvalue.val)
+		display_mode |= 0x8;
+	    }
+	    if (optname.val==_GL_PERSPECTIVE && optvalue.type==_INT_){
+	      display_mode &= (0xffff ^ 0x4);
+	      if (!optvalue.val)
+		display_mode |= 0x4;
+	    }
+	    // GL_LIGHT_MODEL_COLOR_CONTROL=GL_SEPARATE_SPECULAR_COLOR ||  GL_SINGLE_COLOR
+#ifndef WIN32
+	    if (optname.val==_GL_LIGHT_MODEL_COLOR_CONTROL && optvalue.type==_INT_)
+	      glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL,optvalue.val);
+	    /* GL_LIGHT_MODEL_LOCAL_VIEWER=floating-point value that spec-
+	       ifies how specular reflection angles are computed.  If params
+	       is 0 (or 0.0),  specular  reflection  angles  take  the  view
+	       direction  to  be  parallel to and in the direction of the -z
+	       axis, regardless of the location of the vertex in eye coordi-
+	       nates.  Otherwise, specular reflections are computed from the
+	       origin of the eye coordinate system.  The initial value is 0. */
+	    if (optname.val==_GL_LIGHT_MODEL_LOCAL_VIEWER){
+	      if (optvalf.type==_DOUBLE_)
+		glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER,optvalf._DOUBLE_val);
+	    }
+#endif
+#ifdef HAVE_LIBFLTK_GL
+	    /* GL_LIGHT_MODEL_TWO_SIDE = true /false */
+	    if (optname.val==_GL_LIGHT_MODEL_TWO_SIDE && optvalue.type==_INT_){
+	      glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,optvalue.val);
+	    }
+	    /* GL_LIGHT_MODEL_AMBIENT=[r,g,b,a] */
+	    if (optname.val==_GL_LIGHT_MODEL_AMBIENT && optvalf.type==_VECT && optvalf._VECTptr->size()==4){
+	      vecteur & w=*optvalf._VECTptr;
+	      GLfloat tab[4]={w[0]._DOUBLE_val,w[1]._DOUBLE_val,w[2]._DOUBLE_val,w[3]._DOUBLE_val};
+	      glLightModelfv(GL_LIGHT_MODEL_AMBIENT,tab);
+	    }
+	    // gl_blend=[d,s] 
+	    // habituellement gl_blend=[gl_src_alpha,gl_one_minus_src_alpha]
+	    if (optname.val==_GL_BLEND){
+	      if (is_zero(optvalue)){
+		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+	      }
+	      else {
+		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		if (optvalue.type==_VECT && optvalue._VECTptr->size()==2)
+		  glBlendFunc(optvalue._VECTptr->front().val,optvalue._VECTptr->back().val);
+		if (is_minus_one(optvalue))
+		  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	      }
+	    }
+#endif
+	    // gl_light0=[option1=value1,...]
+	    if (optname.val>=_GL_LIGHT0 && optname.val<=_GL_LIGHT7 && optvalue.type==_VECT){
+	      int j=optname.val-_GL_LIGHT0;
+	      // reset light0+j
+	      light_x[j]=0;light_y[j]=0;light_z[j]=0;light_w[j]=1;
+	      float di=j?0:1;
+	      light_diffuse_r[j]=di;light_diffuse_g[j]=di;light_diffuse_b[j]=di;light_diffuse_a[j]=di;
+	      light_specular_r[j]=di;light_specular_g[j]=di;light_specular_b[j]=di;light_specular_a[j]=di;
+	      light_ambient_r[j]=0;light_ambient_g[j]=0;light_ambient_b[j]=0;light_ambient_a[j]=1;
+	      light_spot_x[j]=0;light_spot_y[j]=0;light_spot_z[j]=-1;light_spot_w[j]=0;
+	      light_spot_exponent[j]=0;light_spot_cutoff[j]=180;
+	      light_0[j]=1;light_1[j]=0;light_2[j]=0;
+	      vecteur & optv=*optvalue._VECTptr;
+	      for (unsigned i=0;i<optv.size();++i){
+		gen & optg = optv[i];
+		if ( (optg.is_symb_of_sommet(at_equal) || optg.is_symb_of_sommet(at_same) )  && optg._SYMBptr->feuille.type==_VECT && g._SYMBptr->feuille._VECTptr->size()==2){
+		  gen & optgname = optg._SYMBptr->feuille._VECTptr->front();
+		  gen optgval = evalf_double(optg._SYMBptr->feuille._VECTptr->back(),1,contextptr);
+		  bool vect4=optgval.type==_VECT && optgval._VECTptr->size()==4;
+		  vecteur xyzw;
+		  if (vect4)
+		    xyzw=*optgval._VECTptr;
+		  switch (optgname.val){
+		  case _GL_AMBIENT:
+		    light_ambient_r[j]=xyzw[0]._DOUBLE_val;
+		    light_ambient_g[j]=xyzw[1]._DOUBLE_val;
+		    light_ambient_b[j]=xyzw[2]._DOUBLE_val;
+		    light_ambient_a[j]=xyzw[3]._DOUBLE_val;
+		    break;
+		  case _GL_SPECULAR:
+		    light_specular_r[j]=xyzw[0]._DOUBLE_val;
+		    light_specular_g[j]=xyzw[1]._DOUBLE_val;
+		    light_specular_b[j]=xyzw[2]._DOUBLE_val;
+		    light_specular_a[j]=xyzw[3]._DOUBLE_val;
+		    break;
+		  case _GL_DIFFUSE:
+		    light_diffuse_r[j]=xyzw[0]._DOUBLE_val;
+		    light_diffuse_g[j]=xyzw[1]._DOUBLE_val;
+		    light_diffuse_b[j]=xyzw[2]._DOUBLE_val;
+		    light_diffuse_a[j]=xyzw[3]._DOUBLE_val;
+		    break;
+		  case _GL_POSITION:
+		    light_x[j]=xyzw[0]._DOUBLE_val;
+		    light_y[j]=xyzw[1]._DOUBLE_val;
+		    light_z[j]=xyzw[2]._DOUBLE_val;
+		    light_w[j]=xyzw[3]._DOUBLE_val;
+		    break;
+		  case _GL_SPOT_DIRECTION:
+		    light_spot_x[j]=xyzw[0]._DOUBLE_val;
+		    light_spot_y[j]=xyzw[1]._DOUBLE_val;
+		    light_spot_z[j]=xyzw[2]._DOUBLE_val;
+		    light_spot_w[j]=xyzw[3]._DOUBLE_val;
+		    break;
+		  case _GL_SPOT_EXPONENT:
+		    light_spot_exponent[j]=optgval._DOUBLE_val;
+		    break;
+		  case _GL_SPOT_CUTOFF:
+		    light_spot_cutoff[j]=optgval._DOUBLE_val;
+		    break;
+		  case _GL_CONSTANT_ATTENUATION:
+		    light_0[j]=optgval._DOUBLE_val;
+		    break;
+		  case _GL_LINEAR_ATTENUATION:
+		    light_1[j]=optgval._DOUBLE_val;
+		    break;
+		  case _GL_QUADRATIC_ATTENUATION:
+		    light_2[j]=optgval._DOUBLE_val;
+		    break;
+		  }
+		}
+		;
+	      } // end for i
+	    }
+	  } // end opengl options
+	}
+      }
+    }
+    if (g.type==_VECT){
+      const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
+      for (;it!=itend;++it)
+	update_infos(*it);
+    }
+  }
+
+  void Opengl::move_cfg(int i){
+    if (history.empty()) return;
+    int j=i+history_pos;
+    int s=history.size();
+    if (j>s) j=s;
+    if (j<1) j=1;
+    history_pos=j;
+    window_xyz & h = history[j-1];
+    window_xmin=h.xmin;
+    window_xmax=h.xmax;
+    window_ymin=h.ymin;
+    window_ymax=h.ymax;
+    window_zmin=h.zmin;
+    window_zmax=h.zmax;
+  }
+
+  void Opengl::push_cfg(){
+    int s=history.size();
+    if (history_pos<s && history_pos>=0){
+      history.erase(history.begin()+history_pos,history.end());
+    }
+    history.push_back(window_xyz(window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax));
+    history_pos=history.size();
+  }
+
+  void Opengl::clear_cfg(){
+    history_pos=0;
+    history.clear();
+  }
+
+  void Opengl::find_xyz(double i,double j,double k,double &x,double&y,double &z){
+    x=i; y=j; z=k;
+  }
+
+  static void cb_Opengl_Autoscale(Opengl * gr , void*) {
+    if (gr)
+      gr->autoscale(false);
+  }
+
+  static void cb_Opengl_AutoscaleFull(Opengl * gr , void*) {
+    if (gr)
+      gr->autoscale(true);
+  }
+
+  static void cb_Opengl_Orthonormalize(Opengl * gr , void*) {
+    if (gr)
+      gr->orthonormalize();
+  }
+
+  static void cb_Opengl_Next(Opengl * gr , void*) {
+    if (gr)
+      gr->move_cfg(1);
+  }
+
+  static void cb_Opengl_Previous(Opengl * gr , void*) {
+    if (gr)
+      gr->move_cfg(-1);
+  }
+
+  static void cb_Opengl_Zoomout(Opengl * gr , void*) {
+    if (gr)
+      gr->zoom(1.414);
+  }
+
+  static void cb_Opengl_Zoomin(Opengl * gr , void*) {
+    if (gr)
+      gr->zoom(0.707);
+  }
+
+  static void cb_Opengl_Pause(Opengl * gr , void*) {
+    if (gr)
+      gr->paused=true;
+  }
+
+  static void cb_Opengl_Stop(Opengl * gr , void*) {
+    if (gr){
+      gr->animation_dt=0;
+      gr->animation_instructions_pos=0;
+    }
+  }
+
+  static void cb_Opengl_Restart(Opengl * gr , void*) {
+    if (gr)
+      gr->paused=false;
+  }
+
+  static void cb_Opengl_Faster(Opengl * gr , void*) {
+    if (gr){
+      if (gr->animation_dt)
+	gr->animation_dt /= 2;
+      else
+	gr->animation_dt = 0.2;
+    }
+  }
+
+  static void cb_Opengl_Slower(Opengl * gr , void*) {
+    if (gr){
+      if (gr->animation_dt)
+	gr->animation_dt *= 2;
+      else
+	gr->animation_dt = 0.2;
+    }
+  }
+
+  static void cb_Opengl_hide(Opengl * gr , void*) {
+    if (Opengl3d * gr3 = dynamic_cast<Opengl3d *>(gr)){
+      gr3->below_depth_hidden=true;
+      gr3->redraw();
+    }
+  }
+
+  static void cb_Opengl_show(Opengl * gr , void*) {
+    if (Opengl3d * gr3 = dynamic_cast<Opengl3d *>(gr)){
+      gr3->below_depth_hidden=false;
+      gr3->redraw();
+    }
+  }
+
+  static void cb_Opengl_startview(Opengl * gr , void*) {
+    if (Opengl3d * gr3 = dynamic_cast<Opengl3d *>(gr)){
+      gr3->theta_x=-13;
+      gr3->theta_y=-95;
+      gr3->theta_z=-110; 
+      gr3->q=euler_deg_to_quaternion_double(gr3->theta_z,gr3->theta_x,gr3->theta_y);
+      gr3->redraw();
+    }
+  }
+
+  static void cb_Opengl_xview(Opengl * gr , void*) {
+    if (Opengl3d * gr3 = dynamic_cast<Opengl3d *>(gr)){
+      gr3->theta_x=0;
+      gr3->theta_y=-90;
+      gr3->theta_z=-90;      
+      gr3->q=euler_deg_to_quaternion_double(gr3->theta_z,gr3->theta_x,gr3->theta_y);
+      gr3->redraw();
+    }
+  }
+
+  static void cb_Opengl_yview(Opengl * gr , void*) {
+    if (Opengl3d * gr3 = dynamic_cast<Opengl3d *>(gr)){
+      gr3->theta_x=0;
+      gr3->theta_y=-90;
+      gr3->theta_z=0;      
+      gr3->q=euler_deg_to_quaternion_double(gr3->theta_z,gr3->theta_x,gr3->theta_y);
+      gr3->redraw();
+    }
+  }
+
+  static void cb_Opengl_zview(Opengl * gr , void*) {
+    if (Opengl3d * gr3 = dynamic_cast<Opengl3d *>(gr)){
+      gr3->theta_x=0;
+      gr3->theta_y=0;
+      gr3->theta_z=0;      
+      gr3->q=euler_deg_to_quaternion_double(gr3->theta_z,gr3->theta_x,gr3->theta_y);
+      gr3->redraw();
+    }
+  }
+
+  static void cb_Opengl_mouse_plan(Opengl * gr , void*) {
+    if (Opengl3d * gr3d = dynamic_cast<Opengl3d *>(gr)){
+      double a,b,c;
+      gr3d->current_normal(a,b,c);
+      gr3d->normal2plan(a,b,c); // divides a,b,c by dx^2,...
+      double x0,y0,z0,t0;
+      gr3d->find_xyz(gr3d->x()+gr3d->w()/2,gr3d->y()+gr3d->h()/2,gr3d->depth,x0,y0,z0);
+      t0=a*x0+b*y0+c*z0;
+      if (std::abs(t0)<std::abs(gr3d->window_zmax-gr3d->window_zmin)/1000)
+	t0=0;
+      string s="plan("+print_DOUBLE_(a)+"*x+"+print_DOUBLE_(b)+"*y+"+print_DOUBLE_(c)+"*z="+print_DOUBLE_(t0)+")";
+      //in_Xcas_input_char(Fl::focus(),s,' ');
+    }
+  }
+
+  // image of (x,y,z) by rotation around axis r(rx,ry,rz) of angle theta
+  void rotate(double rx,double ry,double rz,double theta,double x,double y,double z,double & X,double & Y,double & Z){
+    /*
+    quaternion_double q=rotation_2_quaternion_double(rx,ry,rz,theta);
+    quaternion_double qx(x,y,z,0);
+    quaternion_double qX=conj(q)*qx*q;
+    */
+    // r(rx,ry,rz) the axis, v(x,y,z) projects on w=a*r with a such that
+    // w.r=a*r.r=v.r
+    double r2=rx*rx+ry*ry+rz*rz;
+    double r=std::sqrt(r2);
+    double a=(rx*x+ry*y+rz*z)/r2;
+    // v=w+V, w remains stable, V=v-w=v-a*r rotates
+    // Rv=w+RV, where RV=cos(theta)*V+sin(theta)*(r cross V)/sqrt(r2)
+    double Vx=x-a*rx,Vy=y-a*ry,Vz=z-a*rz;
+    // cross product of k with V
+    double kVx=ry*Vz-rz*Vy, kVy=rz*Vx-rx*Vz,kVz=rx*Vy-ry*Vx;
+    double c=std::cos(theta),s=std::sin(theta);
+    X=a*rx+c*Vx+s*kVx/r;
+    Y=a*ry+c*Vy+s*kVy/r;
+    Z=a*rz+c*Vz+s*kVz/r;
+  }
+
+  Opengl::Opengl(int w__,int h__,double xmin,double xmax,double ymin,double ymax,double zmin,double zmax,double ortho):
+    w_(w__),h_(h__),
+    pushed(false),
+    show_mouse_on_object(false),
+    mode(255),args_tmp_push_size(0),no_handle(false),
+    display_mode(0x45),
+    window_xmin(xmin),window_xmax(xmax),window_ymin(ymin),window_ymax(ymax),window_zmin(zmin),window_zmax(zmax),history_pos(0),
+    ylegende(2.5),
+    npixels(8),
+    show_axes(1),show_names(1),
+    last_event(0),x_tick(1.0),y_tick(1.0),couleur(0),approx(true),moving(false),moving_frame(false),ntheta(24),nphi(18) {
+    push_cfg();
+    legende_size=giac::LEGENDE_SIZE;
+    x_axis_color=FL_RED;
+    y_axis_color=FL_GREEN;
+    z_axis_color=FL_BLUE;
+    current_i=current_j=RAND_MAX;
+    in_area=false;
+  }
+
+  Opengl::Opengl(int w__,int h__):
+    w_(w__),h_(h__),
+    pushed(false),
+    show_mouse_on_object(false),
+    display_mode(0x45),
+    mode(255),args_tmp_push_size(0),no_handle(false),
+    window_xmin(Xcas_config.window_xmin),window_xmax(Xcas_config.window_xmax),window_ymin(Xcas_config.window_ymin),window_ymax(Xcas_config.window_ymax),window_zmin(Xcas_config.window_zmin),window_zmax(Xcas_config.window_zmax),history_pos(0),
+    ylegende(2.5),
+    npixels(8),
+    show_axes(1),show_names(1),
+    last_event(0),x_tick(1.0),y_tick(1.0),couleur(0),approx(true),hp_pos(-1),moving(false),moving_frame(false),ntheta(24),nphi(18) { 
+    legende_size=giac::LEGENDE_SIZE;
+    push_cfg();
+    x_axis_color=FL_RED;
+    y_axis_color=FL_GREEN;
+    z_axis_color=FL_BLUE;
+  }
+
+  Opengl::~Opengl(){
+  }
+
+  int Opengl::x() const { return 0; }
+  int Opengl::y() const { return 0; }
+  int Opengl::w() const { return w_; }
+  int Opengl::h() const { return h_; }
+
+  double find_tick(double dx){
+    double res=std::pow(10.0,std::floor(std::log10(std::abs(dx))));
+    int nticks=int(dx/res);
+    if (nticks<4)
+      res/=5;
+    else {
+      if (nticks<8)
+	res/=2;
+    }
+    return res;
+  }
+
+  std::string Opengl::current_config(){
+    string res="gl_quaternion=[";
+    res += print_DOUBLE_(q.x);
+    res += ",";
+    res += print_DOUBLE_(q.y);
+    res += ",";
+    res += print_DOUBLE_(q.z);
+    res += ",";
+    res += print_DOUBLE_(q.w);
+    res += "]";
+    return res;
+  }
+
+  void Opengl::reset_light(unsigned i){
+    light_on[i]=!i;
+    light_x[i]=0;light_y[i]=0;light_z[i]=1;light_w[i]=0;
+    float di=i?0:1;
+    light_diffuse_r[i]=di;light_diffuse_g[i]=di;light_diffuse_b[i]=di;light_diffuse_a[i]=di;
+    light_specular_r[i]=di;light_specular_g[i]=di;light_specular_b[i]=di;light_specular_a[i]=di;
+    light_ambient_r[i]=0;light_ambient_g[i]=0;light_ambient_b[i]=0;light_ambient_a[i]=1;
+    light_spot_x[i]=0;light_spot_y[i]=0;light_spot_z[i]=-1;light_spot_w[i]=0;
+    light_spot_exponent[i]=0;light_spot_cutoff[i]=180;
+    light_0[i]=1;light_1[i]=0;light_2[i]=0;
+  }
+
+  
+  // round to 3 decimals
+  double setup_round(double x){
+    if (x<0)
+      return -setup_round(-x);
+    if (x<1e-300)
+      return 0;
+    int n=int(std::floor(std::log10(x)+.5)); // round to nearest
+    x=int(std::floor(x*std::pow(10.0,3.0-n)+.5));
+    x=x*std::pow(10.0,n-3.0);
+    return x;
+  }
+
+  void Opengl::autoscale(bool fullview){
+    if (!plot_instructions.empty()){
+      // Find the largest and lowest x/y/z in objects (except lines/plans)
+      vector<double> vx,vy,vz;
+      int s;
+      bool ortho=autoscaleg(plot_instructions,vx,vy,vz,contextptr);
+      autoscaleminmax(vx,window_xmin,window_xmax,fullview);
+      if (display_mode & 0x400){
+	if (window_xmin<=0){
+	  if (vx[0]<=0)
+	    window_xmin=-309;
+	  else
+	    window_xmin=std::log10(vx[0]);
+	}
+	else
+	  window_xmin=std::log10(window_xmin);
+	if (window_xmax<=0)
+	  window_xmax=-300;
+	else
+	  window_xmax=std::log10(window_xmax);
+      }
+      zoomx(1.0);
+      autoscaleminmax(vy,window_ymin,window_ymax,fullview);
+      if (display_mode & 0x800){
+	if (window_ymin<=0){
+	  if (vy[0]<=0)
+	    window_ymin=-309;
+	  else
+	    window_ymin=std::log10(vy[0]);
+	}
+	else
+	  window_ymin=std::log10(window_ymin);
+	if (window_ymax<=0)
+	  window_ymax=-300;
+	else
+	  window_ymax=std::log10(window_ymax);
+      }
+      zoomy(1.0);
+      autoscaleminmax(vz,window_zmin,window_zmax,fullview);
+      zoomz(1.0);
+      if (ortho)
+	orthonormalize();
+    }
+    y_tick=find_tick(window_ymax-window_ymin);
+    redraw();
+    push_cfg();
+  }
+
+  void Opengl::zoomx(double d,bool round){
+    double x_center=(window_xmin+window_xmax)/2;
+    double dx=(window_xmax-window_xmin);
+    if (dx==0)
+      dx=gnuplot_xmax-gnuplot_xmin;
+    dx *= d/2;
+    x_tick = find_tick(dx);
+    window_xmin = x_center - dx;
+    if (round) 
+      window_xmin=int( window_xmin/x_tick -1)*x_tick;
+    window_xmax = x_center + dx;
+    if (round)
+      window_xmax=int( window_xmax/x_tick +1)*x_tick;
+  }
+
+  void Opengl::zoomy(double d,bool round){
+    double y_center=(window_ymin+window_ymax)/2;
+    double dy=(window_ymax-window_ymin);
+    if (dy==0)
+      dy=gnuplot_ymax-gnuplot_ymin;
+    dy *= d/2;
+    y_tick = find_tick(dy);
+    window_ymin = y_center - dy;
+    if (round)
+      window_ymin=int( window_ymin/y_tick -1)*y_tick;
+    window_ymax = y_center + dy;
+    if (round)
+      window_ymax=int( window_ymax/y_tick +1)*y_tick;
+  }
+
+  void Opengl::zoomz(double d,bool round){
+    double z_center=(window_zmin+window_zmax)/2;
+    double dz=(window_zmax-window_zmin);
+    if (dz==0)
+      dz=gnuplot_zmax-gnuplot_zmin;
+    dz *= d/2;
+    z_tick=find_tick(dz);
+    window_zmin = z_center - dz;
+    if (round)
+      window_zmin=int(window_zmin/z_tick -1)*z_tick;
+    window_zmax = z_center + dz;
+    if (round)
+      window_zmax=int(window_zmax/z_tick +1)*z_tick;
+  }
+
+
+  void Opengl::zoom(double d){ 
+    zoomx(d);
+    zoomy(d);
+    zoomz(d);
+    push_cfg();
+  }
+
+
+  void Opengl::orthonormalize(){ 
+    // don't do anything in base class
+  }
+
+  void Opengl::labelsize(int i){
+    labelsize_=i;
+  }
+
+  int Opengl::labelsize() const{
+    return labelsize_;
+  }
+
+  void Opengl::redraw(){
+  }
+  
+  void Opengl::up(double d){ 
+    window_ymin += d;
+    window_ymax += d;
+    push_cfg();
+  }
+
+  void Opengl::down(double d){ 
+    window_ymin -= d;
+    window_ymax -= d;
+    push_cfg();
+  }
+
+  void Opengl::up_z(double d){ 
+    window_zmin += d;
+    window_zmax += d;
+    push_cfg();
+  }
+
+  void Opengl::down_z(double d){ 
+    window_zmin -= d;
+    window_zmax -= d;
+    push_cfg();
+  }
+
+  void Opengl::left(double d){ 
+    window_xmin -= d;
+    window_xmax -= d;
+    push_cfg();
+  }
+
+  void Opengl::right(double d){ 
+    window_xmin += d;
+    window_xmax += d;
+    push_cfg();
+  }
+
+  void Opengl::set_axes(int b){ 
+    show_axes = b;
+  }
+
+  void Opengl::copy(const Opengl & gr){
+    window_xmin=gr.window_xmin;
+    window_xmax=gr.window_xmax;
+    window_ymin=gr.window_ymin;
+    window_ymax=gr.window_ymax;
+    window_zmin=gr.window_zmin;
+    window_zmax=gr.window_zmax;
+    npixels=gr.npixels;
+    show_axes=gr.show_axes;
+    show_names=gr.show_names;
+    history = gr.history;
+    labelsize(gr.labelsize());
+    q=gr.q;
+    display_mode=gr.display_mode;
+    // copy lights
+    for (int i=0;i<8;++i){
+      light_on[i]=gr.light_on[i];
+      light_x[i]=gr.light_x[i];
+      light_y[i]=gr.light_y[i];
+      light_z[i]=gr.light_z[i];
+      light_w[i]=gr.light_w[i];;
+      light_diffuse_r[i]=gr.light_diffuse_r[i];
+      light_diffuse_g[i]=gr.light_diffuse_g[i];
+      light_diffuse_b[i]=gr.light_diffuse_b[i];
+      light_diffuse_a[i]=gr.light_diffuse_a[i];
+      light_specular_r[i]=gr.light_specular_r[i];
+      light_specular_g[i]=gr.light_specular_g[i];
+      light_specular_b[i]=gr.light_specular_b[i];
+      light_specular_a[i]=gr.light_specular_a[i];
+      light_ambient_r[i]=gr.light_ambient_r[i];
+      light_ambient_g[i]=gr.light_ambient_g[i];
+      light_ambient_b[i]=gr.light_ambient_b[i];
+      light_ambient_a[i]=gr.light_ambient_a[i];
+      light_spot_x[i]=gr.light_spot_x[i];
+      light_spot_y[i]=gr.light_spot_y[i];
+      light_spot_z[i]=gr.light_spot_z[i];
+      light_spot_w[i]=gr.light_spot_w[i];
+      light_spot_exponent[i]=gr.light_spot_exponent[i];
+      light_spot_cutoff[i]=gr.light_spot_cutoff[i];
+      light_0[i]=gr.light_0[i];
+      light_1[i]=gr.light_1[i];
+      light_2[i]=gr.light_2[i];
+    }
+    ntheta=gr.ntheta;
+    nphi=gr.nphi;
+  }
+
+  int round(double d){
+    int res=int(floor(d+0.5));
+    int maxpixels=10000; // maximal number of horizontal or vertical pixels
+    if (d>maxpixels)
+      return maxpixels;
+    if (d<-maxpixels)
+      return -maxpixels;
+    return res;
+  }
+
+  string printsemi(GIAC_CONTEXT){
+    if (xcas_mode(contextptr)==3)
+      return "§";
+    else
+      return ";";
+  }
+
+
+  string cas_recalc_name(){
+    if (getenv("XCAS_TMP"))
+      return getenv("XCAS_TMP")+("/#c#"+print_INT_(parent_id));
+#ifdef WIN32
+    return "#c#"+print_INT_(parent_id);
+#endif
+#ifdef IPAQ
+    return "/tmp/#c#"+print_INT_(parent_id);
+#endif
+    return home_directory()+"#c#"+print_INT_(parent_id);
+  }
+
+  void Opengl::adjust_cursor_point_type(){
+    if (abs_calc_mode(contextptr)==38){
+      double newx,newy,newz;
+      find_xyz(current_i,current_j,current_depth,newx,newy,newz);
+      int pos=-1;
+      gen orig;
+      //gen res=Opengl::geometry_round(newx,newy,newz,find_eps(),orig,pos);
+      cursor_point_type=pos>=0?6:3;
+    }
+  }
+
+  gen geometry_round_numeric(double x,double y,double eps,bool approx){
+    return approx?gen(x,y):exact_double(x,eps)+cst_i*exact_double(y,eps);
+  }
+
+  gen geometry_round_numeric(double x,double y,double z,double eps,bool approx){
+    return approx?makevecteur(x,y,z):makevecteur(exact_double(x,eps),exact_double(y,eps),exact_double(z,eps));
+  }
+
+  void round3(double & x,double xmin,double xmax){
+    double dx=std::abs(xmax-xmin);
+    double logdx=std::log10(dx);
+    int ndec=int(logdx)-4;
+    double xpow=std::pow(10.0,ndec);
+    int newx=int(x/xpow);
+    x=newx*xpow;
+  }
+
+  bool is_numeric(const gen & a);
+  bool is_numeric(const vecteur & v){
+    const_iterateur it=v.begin(),itend=v.end();
+    for (;it!=itend;++it){
+      if (!is_numeric(*it))
+	return false;
+    }
+    return true;
+  }
+
+  bool is_numeric(const gen & a){
+    switch (a.type){
+    case _DOUBLE_: case _INT_: case _ZINT: case _REAL:
+      return true;
+    case _CPLX:
+      return is_numeric(*a._CPLXptr) && is_numeric(*(a._CPLXptr+1));
+    case _VECT:
+      return is_numeric(*a._VECTptr);
+    case _FRAC:
+      return is_numeric(a._FRACptr->num) && is_numeric(a._FRACptr->den);
+    case _SYMB:
+      if (a.is_symb_of_sommet(at_prod) || a.is_symb_of_sommet(at_inv) || a.is_symb_of_sommet(at_neg) || a.is_symb_of_sommet(at_plus))
+	return is_numeric(a._SYMBptr->feuille);
+    default:
+      return false;
+    }
+  }
+
+  double Opengl::find_eps(){
+    double dx=window_xmax-window_xmin;
+    double dy=window_ymax-window_ymin;
+    double dz=window_zmax-window_zmin;
+    double eps,epsx,epsy;
+    int L=h()>w()?w():h();
+    Opengl3d * gr3d=dynamic_cast<Opengl3d *>(this);
+    epsx=(npixels*dx)/(gr3d?L:w());
+    epsy=(npixels*dy)/(gr3d?L:h());
+    eps=(epsx<epsy)?epsy:epsx;
+    if (gr3d && dz>dy && dz >dx){
+      eps=npixels*dz/L;
+      eps *= 2;
+    }
+    return eps;
+  }
+
+  int Opengl::handle(int event){
+    if (no_handle)
+      return 0;
+#ifdef HAVE_LIBPTHREAD
+    // cerr << "handle lock" << endl;
+    int locked=pthread_mutex_trylock(&interactive_mutex);
+    if (locked)
+      return 0;
+#endif
+    no_handle=true;
+    bool b=io_graph(contextptr);
+    io_graph(false,contextptr);
+    int res=in_handle(event);
+    io_graph(b,contextptr);
+    no_handle=false;
+#ifdef HAVE_LIBPTHREAD
+    pthread_mutex_unlock(&interactive_mutex);
+    // cerr << "handle unlock" << endl;
+#endif
+    return res;
+  }
+
+  int Opengl::handle_keyboard(int event){
+#if 1
+    return 1;
+#else
+    if (event==FL_KEYBOARD){
+      // Should bring this event to the current input in the parent() group
+      switch (Fl::event_key()){
+      case FL_Escape: case FL_BackSpace: case FL_Tab: case FL_Enter: 
+      case FL_Print: case FL_Scroll_Lock: case FL_Pause: case FL_Insert: 
+      case FL_Home: case FL_Delete: case FL_End: 
+      case FL_Shift_L: case FL_Shift_R: case FL_Control_L: 
+      case FL_Control_R: case FL_Caps_Lock: case FL_Alt_L: case FL_Alt_R: 
+      case FL_Meta_L: case FL_Meta_R: case FL_Menu: case FL_Num_Lock: 
+      case FL_KP_Enter:	
+	return 1;
+      case FL_Left:
+	left((window_xmax-window_xmin)/10);
+	return 1;
+      case FL_Up:
+	up((window_ymax-window_ymin)/10);
+	return 1;
+      case FL_Right: 
+	right((window_xmax-window_xmin)/10);
+	return 1;
+      case FL_Down: 
+	down((window_ymax-window_ymin)/10);
+	return 1;
+      case FL_Page_Up:
+	up_z((window_zmax-window_zmin)/10);
+	return 1;
+      case FL_Page_Down:
+	down_z((window_zmax-window_zmin)/10);
+	return 1;	
+      default:
+	char ch=Fl::event_text()?Fl::event_text()[0]:0;
+	switch (ch){
+	case '-':
+	  zoom(1.414);
+	  return 1;
+	case '+':
+	  zoom(0.707);
+	  return 1;
+	case 'A': case 'a':
+	  autoscale(false);
+	  return 1;
+	case 'V': case 'v':
+	  autoscale(true);
+	  return 1;
+	case 'R': case 'r':
+	  oxyz_rotate(this,rotanim_type,rotanim_nstep,rotanim_tstep,rotanim_danim,rotanim_rx,rotanim_ry,rotanim_rz);
+	  return 1;
+	case 'P': case 'p':
+	  paused=!paused;
+	  return 1;
+	case 'N': case 'n': case 'F': case 'f':
+	  animation_instructions_pos++;
+	  redraw();
+	  return 1;
+	case 'B': case 'b':
+	  animation_instructions_pos--;
+	  redraw();
+	  return 1;
+	case 'C': case 'c': /* screen capture */
+	  if (Opengl3d * gr3 = dynamic_cast<Opengl3d *>(this)){
+	    char * filename = file_chooser(gettext("Export to PNG file"),"*.png","session.png");
+	    if(!filename) return 1;
+	    gr3->opengl2png(filename);
+	    return 1;
+	  }
+	}	
+      }
+    }
+    return 0;
+#endif
+  }
+
+  int Opengl::in_handle(int event){
+    int res=handle_keyboard(event);
+    return res?res:handle_mouse(event);
+  }
+
+  vecteur Opengl::selection2vecteur(const vector<int> & v){
+    int n=v.size();
+    vecteur res(n);
+    for (int i=0;i<n;++i){
+      res[i]=plot_instructions[v[i]];
+    }
+    return res;
+  }
+
+  int findfirstclosedcurve(const vecteur & v){
+    int s=v.size();
+    for (int i=0;i<s;++i){
+      gen g=remove_at_pnt(v[i]);
+      if (g.is_symb_of_sommet(at_cercle))
+	return i;
+      if (g.type==_VECT && g.subtype==_GROUP__VECT){
+	vecteur & w=*g._VECTptr;
+	if (!w.empty() && w.front()==w.back())
+	  return i;
+      }
+    }
     return -1;
   }
 
+  gen int2color(int couleur_){
+    gen col;
+    if (couleur_){
+      gen tmp;
+      int val;
+      vecteur colv;
+      if ( (val=(couleur_ & 0x0000ffff))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x00070000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x00380000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x01c00000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x0e000000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x30000000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x40000000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if ((val =(couleur_ & 0x80000000))){
+	tmp=val;
+	tmp.subtype=_INT_COLOR;
+	colv.push_back(tmp);
+      }
+      if (colv.size()==1)
+	col=colv.front();
+      else
+	col=symbolic(at_plus,gen(colv,_SEQ__VECT));
+    }
+    return col;
+  }
+
+  std::string print_color(int couleur){
+    return int2color(couleur).print(context0);
+  }
+
+  giac::gen add_attributs(const giac::gen & g,int couleur_,GIAC_CONTEXT) {
+    if (g.type!=_SYMB)
+      return g;
+    gen & f=g._SYMBptr->feuille;
+    if (g._SYMBptr->sommet==at_couleur && f.type==_VECT && !f._VECTptr->empty()){
+      gen col=couleur_;
+      col.subtype=_INT_COLOR;
+      vecteur v(*f._VECTptr);
+      v.back()=col;
+      return symbolic(at_couleur,gen(v,_SEQ__VECT));
+    }
+    if (couleur_==default_color(contextptr))
+      return g;
+    if (g._SYMBptr->sommet==at_of){
+      gen col=couleur_;
+      col.subtype=_INT_COLOR;
+      return symbolic(at_couleur,gen(makevecteur(g,col),_SEQ__VECT));
+    }
+    vecteur v =gen2vecteur(f);
+    gen col=int2color(couleur_);
+    v.push_back(symbolic(at_equal,gen(makevecteur(at_display,col),_SEQ__VECT)));
+    return symbolic(g._SYMBptr->sommet,(v.size()==1 && f.type!=_VECT)?f:gen(v,f.type==_VECT?f.subtype:_SEQ__VECT));
+  }
+
+  void Opengl::set_mode(const giac::gen & f_tmp,const giac::gen & f_final,int m){
+    if (mode>=-1){
+      pushed=false;
+      moving=moving_frame=false;
+      history_pos=-1;
+      mode=m;
+      function_final=f_final;
+      function_tmp=f_tmp;
+      args_tmp.clear();
+    }
+  }
+
+  void find_dxdy(const string & legendes,int labelpos,int labelsize,int & dx,int & dy){
+    int l=labelsize*legendes.size()/2;//int(fl_width(legendes.c_str()));
+    dx=3;
+    dy=1;
+    switch (labelpos){
+    case 1:
+      dx=-l-3;
+      break;
+    case 2:
+      dx=-l-3;
+      dy=labelsize-2;
+      break;
+    case 3:
+      dy=labelsize-2;
+      break;
+    }
+  }
+
+  
+  string printstring(const gen & g,GIAC_CONTEXT){
+    if (g.type==_STRNG)
+      return *g._STRNGptr;
+    return g.print(contextptr);
+  }
+
+  /*
+  void Opengl::find_title_plot(gen & title_tmp,gen & plot_tmp){
+    if (in_area && mode && !args_tmp.empty()){
+      if (args_tmp.size()>=2){
+	gen function=(mode==int(args_tmp.size()))?function_final:function_tmp;
+	if (function.type==_FUNC){
+	  bool dim2=dynamic_cast<Graph2d *>(this);
+	  vecteur args2=args_tmp;
+	  if ( *function._FUNCptr==(dim2?at_cercle:at_sphere)){
+	    gen argv1;
+	    try {
+	      argv1=evalf(args_tmp.back(),1,contextptr);
+	      argv1=evalf_double(argv1,1,contextptr);
+	    }
+	    catch (std::runtime_error & e){
+	      argv1=undef;
+	    }
+	    if (argv1.is_symb_of_sommet(at_pnt) ||argv1.type==_IDNT){
+	      argv1=remove_at_pnt(argv1);
+	      if ( (argv1.type==_VECT && argv1.subtype==_POINT__VECT) || argv1.type==_CPLX || argv1.type==_IDNT)
+		args2.back()=args_tmp.back()-args_tmp.front();
+	    }
+	  }
+	  if (function==at_ellipse)
+	    ;
+	  title_tmp=gen(args2,_SEQ__VECT);
+	  bool b=approx_mode(contextptr);
+	  if (!b)
+	    approx_mode(true,contextptr);
+	  plot_tmp=symbolic(*function._FUNCptr,title_tmp);
+	  if (!lidnt(title_tmp).empty())
+	    ; // cerr << plot_tmp << endl;
+	  bool bb=io_graph(contextptr);
+	  int locked=0;
+	  if (bb){
+#ifdef HAVE_LIBPTHREAD
+	    // cerr << "plot title lock" << endl;
+	    locked=pthread_mutex_trylock(&interactive_mutex);
+#endif
+	    if (!locked)
+	      io_graph(false,contextptr);
+	  }
+	  plot_tmp=protecteval(plot_tmp,1,contextptr);
+	  if (bb && !locked){
+	    io_graph(bb,contextptr);
+#ifdef HAVE_LIBPTHREAD
+	    pthread_mutex_unlock(&interactive_mutex);
+	    // cerr << "plot title unlock" << endl;
+#endif
+	  }
+	  if (!b)
+	    approx_mode(false,contextptr);	
+	} // end function.type==_FUNC
+	else
+	  title_tmp=gen(args_tmp,_SEQ__VECT);
+      } // end size()>=2
+      else	
+	title_tmp=args_tmp;
+    }
+  }
+  */
+  
+  void Opengl::autoname_plus_plus(){
+    string s=autoname(contextptr);
+    giac::autoname_plus_plus(s);
+    autoname(s,contextptr);
+  }
+  int contrast(Fl_Color c){
+    if (c<=7)
+      return 7-c;
+    if (c>=8 && c<0x10)
+      return 7;
+    if (c>=0x10 && c<0x50)
+      return 0xf8;
+    if (c & 0x4)
+      return 0;
+    return 7;
+  }
+  
+  // from Graph3d.cc
 
   double giac_max(double i,double j){
     return i>j?i:j;
@@ -115,31 +1454,16 @@ namespace xcas {
     return quaternion_double(qw/n,qx/n,qy/n,qz/n);
   }
 
-  void Graph3d::resize(int X,int Y,int W,int H){
-    int oldh=h(),oldw=w();
-    Graph2d3d::resize(X,Y,W,H);
-    if (screenbuf){
-      if (oldh==H && oldw==W)
-	return;
-      delete screenbuf;
-    }
-    screenbuf = new unsigned char[H*W*4];
-  }
-
-  Graph3d::Graph3d(int x,int y,int width, int height,const char* title,History_Pack * hp_): 
-    Graph2d3d(x,y,width, height, title,hp_),
+  Opengl3d::Opengl3d(int w__,int h__): 
+    Opengl(w__,h__),
     theta_z(-110),theta_x(-13),theta_y(-95),
-    delta_theta(5),draw_mode(GL_QUADS),printing(0),glcontext(0),dragi(0),dragj(0),push_in_area(false),depth(0),below_depth_hidden(false),screenbuf(0) {
+    delta_theta(5),draw_mode(GL_QUADS),glcontext(0),dragi(0),dragj(0),push_in_area(false),depth(0),below_depth_hidden(false) {
     // end();
     // mode=0;
     display_mode |= 0x80;
     display_mode |= 0x200;
-    box(FL_FLAT_BOX);
     couleur=_POINT_WIDTH_5;
     q=euler_deg_to_quaternion_double(theta_z,theta_x,theta_y);
-    legende_size=max(min(legende_size,width/4),width/6);
-    resize(x,y,width-legende_size,height);
-    add_mouse_param_group(x,y,width,height);
     // 8 light initialization
     for (int i=0;i<8;++i)
       reset_light(i);
@@ -231,17 +1555,16 @@ namespace xcas {
   }
 
   // draw s at g with mode= 0 (upper right), 1, 2 or 3
-  void Graph3d::legende_draw(const gen & g,const string & s,int mode){
-    context * contextptr=hp?hp->contextptr:get_context(this);
+  void Opengl3d::legende_draw(const gen & g,const string & s,int mode){
     gen gf=evalf_double(g,1,contextptr);
     if (gf.type==_VECT && gf._VECTptr->size()==3){
       double Ax=gf[0]._DOUBLE_val;
       double Ay=gf[1]._DOUBLE_val;
       double Az=gf[2]._DOUBLE_val;
       double Ai,Aj,Ad;
-      find_ij(Ax,Ay,Az,Ai,Aj,Ad);
       int di=3,dj=1;
-      find_dxdy(s,mode,labelsize(),di,dj);
+      giac::find_dxdy(s,mode,labelsize(),di,dj);
+      find_ij(Ax,Ay,Az,Ai,Aj,Ad);
       find_xyz(Ai+di,Aj+dj,Ad,Ax,Ay,Az);
       glRasterPos3d(Ax,Ay,Az);
       // string s1(s);
@@ -298,7 +1621,10 @@ namespace xcas {
 	image[i][j][2] =(GLubyte) c; } }
   }
 
-  bool test_enable_texture(Fl_Image * texture){
+  bool test_enable_texture(void * texture){
+#if 1
+    return false;
+#else
     if (!texture)
       return false;
     int depth=-1;
@@ -344,12 +1670,14 @@ namespace xcas {
       return true;
     }
     return false;
+#endif
   }
 
+  
   // Sphere centered at center, radius radius, i,j,k orthonormal, ntheta/nphi
   // number of subdivisions
   // mode=GL_QUADS for example
-  void glsphere(const vecteur & center,const gen & radius,const vecteur & i0,const vecteur & j0,const vecteur & k0,int ntheta,int nphi,int mode,Fl_Image * texture,GIAC_CONTEXT){
+  void glsphere(const vecteur & center,const gen & radius,const vecteur & i0,const vecteur & j0,const vecteur & k0,int ntheta,int nphi,int mode,void * texture,GIAC_CONTEXT){
     test_enable_texture(texture);
     double c1=evalf_double(center[0],1,contextptr)._DOUBLE_val; // center
     double c2=evalf_double(center[1],1,contextptr)._DOUBLE_val;
@@ -456,7 +1784,7 @@ namespace xcas {
     return true;
   }
 
-  void glsurface(const gen & surfaceg,int draw_mode,Fl_Image * texture,GIAC_CONTEXT){
+  void glsurface(const gen & surfaceg,int draw_mode,void * texture,GIAC_CONTEXT){
     if (!ckmatrix(surfaceg,true))
       return;
     test_enable_texture(texture);
@@ -743,7 +2071,8 @@ namespace xcas {
     giac::swapdouble(colmat[11],colmat[14]);    
   }
 
-  void get_texture(const gen & attrv1,Fl_Image * & texture){
+  void get_texture(const gen & attrv1,void * & texture){
+#if 0
     // set texture
     if (attrv1.type==_STRNG){
       std::map<std::string,Fl_Image *>::const_iterator it,itend=texture_cache.end();
@@ -764,6 +2093,7 @@ namespace xcas {
 	}
       }
     }
+#endif
   }
 
   int gen2int(const gen & g){
@@ -775,8 +2105,7 @@ namespace xcas {
     return -1;
   }
 
-  void Graph3d::indraw(const giac::gen & g){
-    context * contextptr=hp?hp->contextptr:get_context(this);
+  void Opengl3d::indraw(const giac::gen & g){
     if (g.type==_VECT)
       indraw(*g._VECTptr);
     if (g.is_symb_of_sommet(at_animation)){
@@ -784,7 +2113,7 @@ namespace xcas {
       return;
     }
     if (!g.is_symb_of_sommet(at_pnt)){
-      update_infos(g,contextptr);
+      update_infos(g);
       return;
     }
     gen & f=g._SYMBptr->feuille;
@@ -813,22 +2142,19 @@ namespace xcas {
     int labelpos        =(ensemble_attributs & 0x30000000) >> 28; // 2 bits
     bool fill_polygon   =(ensemble_attributs & 0x40000000) >> 30;
     hidden_name = hidden_name || legende.empty();
-    Fl_Image * texture=0;
+    void * texture=0;
     glLineWidth(width+1);
-    gl2psLineWidth(width);
+#if 0
     // FIXME line_stipple disabled because of printing
-    if (!printing)
-      glLineStipple(1,line_stipple(type_line));
-    else
-      glLineStipple(1,0xffff);
+    glLineStipple(1,line_stipple(type_line));
     glPointSize(epaisseur_point);
-    gl2psPointSize(epaisseur_point);
     if (styles<=2){
       glEnable(GL_COLOR_MATERIAL);
       glColorMaterial(GL_FRONT,GL_AMBIENT_AND_DIFFUSE);
     }
     else 
       glDisable(GL_COLOR_MATERIAL);
+#ifndef EMCC
     GLfloat tab[4]={0,0,0,1};
     glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,tab);
     glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,50);
@@ -837,6 +2163,7 @@ namespace xcas {
     glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,tab1);
     GLfloat tab2[4]={0.8,0.8,0.8,1};
     glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,tab2);
+#endif
     if (est_hyperplan){
       glPolygonMode(GL_FRONT_AND_BACK,fill_polygon?GL_FILL:GL_LINE);
     }
@@ -904,6 +2231,7 @@ namespace xcas {
       couleur=FL_WHITE;
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     }
+#endif
     bool hidden_line = fill_polygon && (width==7 || (display_mode & 0x8) || texture );
     xcas_color(couleur,true);
     if (debug_infolevel){
@@ -921,7 +2249,7 @@ namespace xcas {
 	  glGetLightfv(GL_LIGHT0+i,GL_SPOT_CUTOFF,&cutoff);
 	  glGetLightfv(GL_LIGHT0+i,GL_POSITION,posf);
 	  glGetLightfv(GL_LIGHT0+i,GL_SPOT_DIRECTION,direcf);
-	  direcf[3]=0; // 4 was out of bound
+	  direcf[3]=0;
 	  mult4(model_inv,posf,pos);
 	  tran4(model);
 	  mult4(model,direcf,direc);
@@ -1160,11 +2488,11 @@ namespace xcas {
 	  }
 	  // optional discretisation info for drawing
 	  if (v.size()>=5 && v[4].type==_INT_){
-	    nphi=max(absint(v[4].val),3);
+	    nphi=giac_max(absint(v[4].val),3);
 	    ntheta=ntheta;
 	  }
 	  if (v.size()>=6 && v[5].type==_INT_){
-	    ntheta=max(absint(v[5].val),3);
+	    ntheta=giac_max(absint(v[5].val),3);
 	  }
 	  // Now make the sphere
 	  if (fill_polygon){
@@ -1172,8 +2500,8 @@ namespace xcas {
 	  }
 	  if (!hidden_line){
 	    if (fill_polygon)
-	      glColor3d(0,0,0);
-	    glsphere(*v.front()._VECTptr,r,dir1,dir2,dir3,min(ntheta,36),min(nphi,36),GL_LINE_LOOP,texture,contextptr);
+	      glColor3f(0,0,0);
+	    glsphere(*v.front()._VECTptr,r,dir1,dir2,dir3,giacmin(ntheta,36),giacmin(nphi,36),GL_LINE_LOOP,texture,contextptr);
 	    xcas_color(couleur,true);
 	  }
 	  if (!hidden_name && show_names) legende_draw(v.front(),legende,labelpos);
@@ -1242,7 +2570,7 @@ namespace xcas {
 	  glsurface((*tmp._VECTptr)[4],GL_QUADS,texture,contextptr);
 	  // glLineWidth(width+2);
 	  if (!hidden_line){
-	    glColor3d(0,0,0);
+	    glColor3f(0,0,0);
 	    glsurface((*tmp._VECTptr)[4],GL_LINE_LOOP,texture,contextptr);
 	    xcas_color(couleur,true);
 	  }
@@ -1266,7 +2594,7 @@ namespace xcas {
       if (fill_polygon){
 	glsurface(*point._VECTptr,vars,umin,umax,vmin,vmax,ntheta,nphi,GL_QUADS,contextptr);
 	if (!hidden_line){
-	  glColor3d(0,0,0);
+	  glColor3f(0,0,0);
 	  glsurface(*point._VECTptr,vars,umin,umax,vmin,vmax,ntheta,nphi,GL_LINE_LOOP,contextptr);
 	  xcas_color(couleur,true);
 	}
@@ -1433,7 +2761,7 @@ namespace xcas {
 		get_glvertex(w[2],f1,f2,f3,0,0,contextptr) ){
 	      glnormal(d1,d2,d3,e1,e2,e3,f1,f2,f3);
 	      if (!hidden_line){
-		glColor3d(0,0,0);
+		glColor3f(0,0,0);
 		glBegin(GL_LINE_LOOP);
 		glVertex3d(d1,d2,d3);
 		glVertex3d(e1,e2,e3);
@@ -1509,7 +2837,7 @@ namespace xcas {
 	  di=iA-iB; dj=jA-jB;
 	  dij=std::sqrt(di*di+dj*dj);
 	  if (dij){
-	    dij /= min(5,int(dij/10))+width;
+	    dij /= giacmin(5,int(dij/10))+width;
 	    di/=dij;
 	    dj/=dij;
 	    double dip=-dj,djp=di;
@@ -1576,7 +2904,7 @@ namespace xcas {
     }
   }
 
-  void Graph3d::indraw(const vecteur & v){
+  void Opengl3d::indraw(const vecteur & v){
     const_iterateur it=v.begin(),itend=v.end();
     for (;it!=itend;++it)
       indraw(*it);
@@ -1649,23 +2977,23 @@ namespace xcas {
     z=vect[2]/vect[3];
   }
 
-  void Graph3d::find_ij(double x,double y,double z,double & i,double & j,double & depth_) {
+  void Opengl3d::find_ij(double x,double y,double z,double & i,double & j,double & depth_) {
     dim32dim2(view,proj,model,x,y,z,i,j,depth_);
 #ifdef __APPLE__
     j=this->y()+h()-j;
     i=i+this->x();
 #else
-    j=window()->h()-j;
+    j=h()-j;
 #endif
     // cout << i << " " << j <<  endl;
   }
 
-  void Graph3d::find_xyz(double i,double j,double depth_,double & x,double & y,double & z) {
+  void Opengl3d::find_xyz(double i,double j,double depth_,double & x,double & y,double & z) {
 #ifdef __APPLE__
     j=this->y()+h()-j;
     i=i-this->x();
 #else
-    j=window()->h()-j;
+    j=h()-j;
 #endif
     dim22dim3(view,proj_inv,model_inv,i,j,depth_,x,y,z);
   }
@@ -1689,16 +3017,8 @@ namespace xcas {
     return true;
   }
 
-  void Graph3d::draw_string(const string & s){
-    if (printing){
-      gl2psText(s.c_str(),"Helvetica",labelsize());
-    }
-    else {
-#if !defined(__APPLE__) || !defined(INT128) // (does not work with textures on mac 64 bits)
-      gl_font(FL_HELVETICA,labelsize());
-      gl_draw(s.c_str());
-#endif
-    }
+  void Opengl3d::draw_string(const string & s){
+    // FIXME
   }
 
   void normalize(double & a,double &b,double &c){
@@ -1708,8 +3028,7 @@ namespace xcas {
     c /= n;
   }
 
-  void Graph3d::normal2plan(double & a,double &b,double &c){
-    context * contextptr=hp?hp->contextptr:get_context(this);
+  void Opengl3d::normal2plan(double & a,double &b,double &c){
     a /= std::pow(window_xmax-window_xmin,2);
     b /= std::pow(window_ymax-window_ymin,2);
     c /= std::pow(window_zmax-window_zmin,2);
@@ -1752,7 +3071,7 @@ namespace xcas {
     }
   }
 
-  void Graph3d::current_normal(double & a,double & b,double & c) {
+  void Opengl3d::current_normal(double & a,double & b,double & c) {
     double res1[4]={0,0,1,1},vect[4];
     mult4(model_inv,res1,vect);
     a=vect[0]/vect[3]-(window_xmax+window_xmin)/2;
@@ -1771,7 +3090,8 @@ namespace xcas {
       x=0;
   }
 
-  void Graph3d::display(){
+  // clipping not supported by EMCC
+  void Opengl3d::display(){
     glEnable(GL_NORMALIZE);
     glEnable(GL_LINE_STIPPLE);
     glEnable(GL_POLYGON_OFFSET_FILL);
@@ -1872,12 +3192,10 @@ namespace xcas {
     bool triedre=(display_mode & 0x200);
     glLineStipple(1,0xffff);
     glLineWidth(1);
-    gl2psLineWidth(1);
-    gl_color(FL_RED);
-    // glColor3f(1,0,0);
+    //gl_color(FL_RED);
+    glColor3f(1,0,0);
     if (show_axes || triedre){
       glLineWidth(3);
-      gl2psLineWidth(3);
       glBegin(GL_LINES);
       glVertex3d(0,0,0);
       glVertex3d(1,0,0);
@@ -1885,13 +3203,13 @@ namespace xcas {
     }
     if (show_axes){
       glLineWidth(1);
-      gl2psLineWidth(1);
       glBegin(GL_LINES);
       glVertex3d(0,0,0);
       glVertex3d(window_xmax,0,0);
       glEnd();
     }
-    if (show_axes && !printing){
+#ifndef EMCC
+    if (show_axes){
       glBegin(GL_LINES);
       glVertex3d(window_xmin,window_ymin,window_zmin);
       glVertex3d(window_xmax,window_ymin,window_zmin);
@@ -1903,11 +3221,11 @@ namespace xcas {
       glVertex3d(window_xmax,window_ymax,window_zmax);
       glEnd();
     }
-    gl_color(FL_GREEN);
-    // glColor3f(0,1,0);
+#endif
+    // gl_color(FL_GREEN);
+    glColor3f(0,1,0);
     if (show_axes || triedre){
       glLineWidth(3);
-      gl2psLineWidth(3);
       glBegin(GL_LINES);
       glVertex3d(0,0,0);
       glVertex3d(0,1,0);
@@ -1915,13 +3233,13 @@ namespace xcas {
     }
     if (show_axes){
       glLineWidth(1);
-      gl2psLineWidth(1);
       glBegin(GL_LINES);
       glVertex3d(0,0,0);
       glVertex3d(0,window_ymax,0);
       glEnd();
     }
-    if (show_axes && !printing){
+#ifndef EMCC
+    if (show_axes){
       glBegin(GL_LINES);
       glVertex3d(window_xmin,window_ymin,window_zmin);
       glVertex3d(window_xmin,window_ymax,window_zmin);
@@ -1933,11 +3251,11 @@ namespace xcas {
       glVertex3d(window_xmax,window_ymax,window_zmax);
       glEnd();
     }
-    gl_color(FL_BLUE);
-    // glColor3f(0,0,1);
+#endif
+    // gl_color(FL_BLUE);
+    glColor3f(0,0,1);
     if (show_axes || triedre){
       glLineWidth(3);
-      gl2psLineWidth(3);
       glBegin(GL_LINES);
       glVertex3d(0,0,0);
       glVertex3d(0,0,1);
@@ -1945,13 +3263,13 @@ namespace xcas {
     }
     if (show_axes){
       glLineWidth(1);
-      gl2psLineWidth(1);
       glBegin(GL_LINES);
       glVertex3d(0,0,0);
       glVertex3d(0,0,window_zmax);
       glEnd();
     }
-    if (show_axes && !printing){
+#ifndef EMCC    
+    if (show_axes){
       glBegin(GL_LINES);
       glVertex3d(window_xmin,window_ymin,window_zmin);
       glVertex3d(window_xmin,window_ymin,window_zmax);
@@ -1963,6 +3281,7 @@ namespace xcas {
       glVertex3d(window_xmax,window_ymin,window_zmax);
       glEnd();
     }
+#endif
     if(show_axes){ // maillage
       glColor3f(1,0,0);
       glRasterPos3d(1,0,0);
@@ -1980,7 +3299,8 @@ namespace xcas {
 	find_xmin_dx(window_zmin,window_zmax,zmin,dz);
 	glLineStipple(1,0x3333);
 	glBegin(GL_LINES);
-	gl_color(FL_CYAN);
+	//gl_color(FL_CYAN);
+	glColor3f(0,1,1);
 	for (z=zmin;z<=window_zmax;z+=2*dz){
 	  for (y=ymin;y<=window_ymax;y+=2*dy){
 	    glVertex3d(window_xmin,y,z);
@@ -2000,7 +3320,10 @@ namespace xcas {
 	  }
 	}
 	glEnd();
-	gl_color((display_mode & 0x8)?FL_WHITE:FL_BLACK);
+	if (display_mode & 0x8)
+	  glColor3f(0,0,0);
+	else
+	  glColor3f(1,1,1);
 	glPointSize(3);
 	for (x=xmin;x<=window_xmax;x+=dx){
 	  round0(x,window_xmin,window_xmax);
@@ -2046,10 +3369,12 @@ namespace xcas {
     plan_t0=normal_a*plan_x0+normal_b*plan_y0+normal_c*plan_z0;
     if (std::abs(plan_t0)<std::abs(window_zmax-window_zmin)/1000)
       plan_t0=0;
-    if (show_axes && !printing && parent() && dynamic_cast<Figure *>(parent())){
-      gl_color((display_mode & 0x8)?FL_WHITE:FL_BLACK);
+    if (show_axes){
+      if (display_mode & 0x8)
+	glColor3f(0,0,0);
+      else
+	glColor3f(1,1,1);
       glLineWidth(2);
-      gl2psLineWidth(2);
       double xa,ya,za,xb,yb,zb;
       // show mouse plan intersections with the faces of the clip planes
       // example with the face z=Z:
@@ -2094,7 +3419,6 @@ namespace xcas {
       }
       // same for window_zmax, etc.
       glLineWidth(1);
-      gl2psLineWidth(1);
       glLineStipple(1,0xffff);
     }
     if (lighting){
@@ -2123,11 +3447,13 @@ namespace xcas {
 	l_dir[i][1]=light_spot_y[i];
 	l_dir[i][2]=light_spot_z[i];
 	glLightfv(GL_LIGHT0+i,GL_SPOT_DIRECTION,l_dir[i]);
+#if 0
 	glLightf(GL_LIGHT0+i,GL_SPOT_EXPONENT,light_spot_exponent[i]);
 	glLightf(GL_LIGHT0+i,GL_SPOT_CUTOFF,light_spot_cutoff[i]);
 	glLightf(GL_LIGHT0+i,GL_CONSTANT_ATTENUATION,light_0[i]);
 	glLightf(GL_LIGHT0+i,GL_LINEAR_ATTENUATION,light_1[i]);
 	glLightf(GL_LIGHT0+i,GL_QUADRATIC_ATTENUATION,light_2[i]);
+#endif
 	ambient[i][0]=light_ambient_r[i];
 	ambient[i][1]=light_ambient_g[i];
 	ambient[i][2]=light_ambient_b[i];
@@ -2151,7 +3477,7 @@ namespace xcas {
 	  glGetLightfv(GL_LIGHT0+i,GL_SPOT_CUTOFF,&cutoff);
 	  glGetLightfv(GL_LIGHT0+i,GL_POSITION,posf);
 	  glGetLightfv(GL_LIGHT0+i,GL_SPOT_DIRECTION,direcf);
-	  direcf[3]=0; // 4 was out of bound
+	  direcf[3]=0;
 	  mult4(model_inv,posf,pos);
 	  tran4(model);
 	  mult4(model,direcf,direc);
@@ -2189,13 +3515,11 @@ namespace xcas {
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
     gen plot_tmp,title_tmp;
-    History_Pack * hp =get_history_pack(this);
-    context * contextptr=hp?hp->contextptr:get_context(this);
-    find_title_plot(title_tmp,plot_tmp,contextptr);
-    indraw(plot_tmp);
+    //find_title_plot(title_tmp,plot_tmp,contextptr);
+    //indraw(plot_tmp);
     if (mode==1 && pushed && push_in_area && in_area){
       // draw segment between push and current
-      gl_color(FL_RED);
+      glColor3f(1,0,0);
       double x,y,z;
       glBegin(GL_LINES);
       find_xyz(push_i,push_j,push_depth,x,y,z);
@@ -2225,8 +3549,11 @@ namespace xcas {
     glLoadIdentity();
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gl_color((display_mode & 0x8)?FL_WHITE:FL_BLACK);
-    double td=fl_width(title.c_str());
+    if (display_mode & 0x8)
+      glColor3f(0,0,0);
+    else
+      glColor3f(1,1,1);
+    double td=title.size()*labelsize()/2; // fl_width(title.c_str());
     glRasterPos3d(-0.4*td/w(),-1,depth-0.001);
     string mytitle(title);
     if (!is_zero(title_tmp) && function_final.type==_FUNC)
@@ -2238,7 +3565,7 @@ namespace xcas {
       draw_string(gettext("Click ")+args_help[giacmax(1,args_tmp.size())-1]);
     }
     glRasterPos3d(-0.98,0.87,depth-0.001);
-    if (show_axes && !printing){
+    if (show_axes){
       string tmps=gettext("mouse plan ")+giac::print_DOUBLE_(normal_a,3)+"x+"+giac::print_DOUBLE_(normal_b,3)+"y+"+giac::print_DOUBLE_(normal_c,3)+"z="+ giac::print_DOUBLE_(plan_t0,3);
       // cerr << tmps << endl;
       draw_string(tmps); // +" Z="+giac::print_DOUBLE_(-depth,3));
@@ -2267,68 +3594,11 @@ namespace xcas {
     glPopMatrix();
     glFlush();
     glFinish();
-    if (screenbuf && !printing){
-      glReadBuffer(GL_FRONT);
-      glReadPixels(this->x(), window()->h()-this->y()-this->h(), w(), h(), GL_RGBA, GL_UNSIGNED_BYTE, screenbuf);
-    }
-  }
-
-  void Graph3d::print(){
-    if (!printing)
-      return;
-    // EPS output
-    glViewport(0,0, w(), h()); // lower left
-    int buf=1024*1024;
-    for (;;buf+=1024*1024){
-      gl2psBeginPage(label(),"xcasnew",0,GL2PS_EPS,GL2PS_BSP_SORT,GL2PS_SIMPLE_LINE_OFFSET | GL2PS_DRAW_BACKGROUND | GL2PS_USE_CURRENT_VIEWPORT,GL_RGBA,0,0,0,0,0,buf,printing,"output");
-      gl2psEnable(GL2PS_LINE_STIPPLE);
-      display();
-      if (gl2psEndPage()!=GL2PS_OVERFLOW){
-	break;
-      }
-    }    
-  }
-
-  bool find_clip_box(Fl_Widget * wid,int & x,int & y,int & w,int & h){
-    if (!wid || !wid->window())
-      return false;
-    fl_push_no_clip();
-    vector<Fl_Widget *> p;
-    for (;wid;wid=wid->parent())
-      p.push_back(wid);
-    for (int i=p.size()-2;i>=0;--i){
-      fl_clip_box(p[i]->x(),p[i]->y(),p[i]->w(),p[i]->h(),x,y,w,h);
-      fl_push_clip(x,y,w,h);
-    }
-    for (int i=p.size()-1;i>=0;--i)
-      fl_pop_clip();
-    return true;
   }
 
   // if printing is true, we call gl2ps to make an eps file
-  void Graph3d::draw(){
+  void Opengl3d::draw(){
     // cerr << "graph3d" << endl;
-    int clip_x,clip_y,clip_w,clip_h;
-#ifdef __APPLE__
-    if (!find_clip_box(this,clip_x,clip_y,clip_w,clip_h))
-#endif
-      fl_clip_box(x(),y(),w(),h(),clip_x,clip_y,clip_w,clip_h);
-    // cerr << clip_x << " " << clip_y<< " " << clip_w<< " " << clip_h << endl;
-    if (printing){
-      fprintf(printing,"%s","\nGS\n\nCR\nCS\n% avant eps -> BeginDocument\n/b4_Inc_state save def\n%save state for cleanup\n/dict_count countdictstack def\n/op_count count 1 sub def\n%count objects on op stack\nuserdict begin\n%make userdict current dict\n/showpage { } def\n%redefine showpage to be null\n0 setgray 0 setlinecap\n1 setlinewidth 0 setlinejoin\n10 setmiterlimit [] 0 setdash newpath\n/languagelevel where\n%if not equal to 1 then\n{pop languagelevel                %set strokeadjust and\n1 ne\n%overprint to their defaults\n{false setstrokeadjust false setoverprint\n} if\n} if\n");
-      // Translate by previous widget h()
-      fprintf(printing,"[1 0 0 -1 0 0] concat\n%d %d translate\n",x(),-h()-y());
-      fprintf(printing,"%s","\n%%BeginDocument: out.eps\n");
-      print();
-      fprintf(printing,"%s","\n%%EndDocument\ncount op_count sub {pop} repeat\ncountdictstack dict_count sub {end} repeat  %clean up dict stack\nb4_Inc_state restore\n% apres eps\n\nGR\n");
-      return;
-    }
-    Fl_Window * win = window();
-    if (!win)
-      return;
-    if (!hp)
-      hp=geo_find_history_pack(this);
-    context * contextptr = hp?hp->contextptr:0;
     int locked=0;
 #ifdef HAVE_LIBPTHREAD
     locked=pthread_mutex_trylock(&interactive_mutex);
@@ -2340,61 +3610,16 @@ namespace xcas {
       block=block_signal;
       block_signal=true;
     }
-#ifdef __APPLE__
-    GLContext context;
-    if (!glcontext){ // create context
-      GLContext shared_ctx = 0;
-      context = aglCreateContext( gl_choice->pixelformat, shared_ctx);
-      if (!context){ 
-	if (!locked){
-	  block_signal=block;
-	  io_graph(contextptr)=b;
-#ifdef HAVE_LIBPTHREAD
-	  pthread_mutex_unlock(&interactive_mutex);
-#endif
-	}
-	return ;
-      }
-      glcontext = (void *) context;
-    }
-    else
-      context = (GLContext) glcontext;
-    aglSetCurrentContext(context);
-    GLint rect[] = { clip_x, win->h()-clip_y-clip_h, clip_w, clip_h};
-    aglSetInteger( (GLContext)context, AGL_BUFFER_RECT, rect );
-    aglEnable( (GLContext)context, AGL_BUFFER_RECT );
-    OpaqueWindowPtr * winid=(OpaqueWindowPtr*) win->window_ref();
-    aglSetWindowRef( context, winid );
-    glEnable(GL_DEPTH_TEST);
-    // glLoadIdentity();
-    // glEnable(GL_SCISSOR_TEST);
-    // glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
+    
+    //glEnable(GL_SCISSOR_TEST);
+    //glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
     // glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
-    glViewport(0,0,w(),h());
-    // glDrawBuffer(GL_FRONT);
-    gl_font(FL_HELVETICA,labelsize());
+    glViewport(0,0, w(), h()); // lower left
+    //gl_font(FL_HELVETICA,labelsize());
     // GLint viewport[4];
     // glGetIntergerv(GL_VIEWPORT,viewport);
     //fl_push_clip(clip_x,clip_y,clip_w,clip_h);
     display();
-#else
-    gl_start();
-    glEnable(GL_SCISSOR_TEST);
-    glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
-    // glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
-    glViewport(x(),win->h()-y()-h(), w(), h()); // lower left
-    gl_font(FL_HELVETICA,labelsize());
-    // GLint viewport[4];
-    // glGetIntergerv(GL_VIEWPORT,viewport);
-    //fl_push_clip(clip_x,clip_y,clip_w,clip_h);
-    display();
-    gl_finish();
-#endif
-    struct timezone tz;
-    gettimeofday(&animation_last,&tz);
-    if (!paused)
-      ++animation_instructions_pos;
-    //fl_pop_clip();
     if (!locked){
       block_signal=block;
       io_graph(contextptr)=b;
@@ -2404,62 +3629,12 @@ namespace xcas {
     }
   }
 
-  const char * Graph3d::latex(const char * filename_){
-    const char * filename=0;
-    if ( (filename=Graph2d3d::latex(filename_)) ){
-      ofstream of(filename);
-      if (of){
-	string epsfile(remove_extension(filename)+".eps");
-	FILE * f=fopen(epsfile.c_str(),"w");
-	if (f){
-	  of << "% Generated by xcas\n" << endl;
-	  of << giac::tex_preamble << endl;
-	  of << "\\includegraphics[bb=0 0 400 "<< h() <<"]{" << remove_path(epsfile) << "}" << endl << endl ;
-	  of << giac::tex_end << endl;
-	  of.close();
-	  int gw=w();
-	  resize(x(),y(),400,h());
-	  printing=f;
-	  print();
-	  printing=0;
-	  resize(x(),y(),gw,h());
-	  fclose(f);	
-	}
-      }
-      
-      /*
-      FILE * f=fopen(filename,"w");
-      if (f){
-	int gw=w();
-	resize(x(),y(),400,h());
-	fprintf(f,"%s","% Generated by xcas\n");
-	fprintf(f,"%s",giac::tex_preamble.c_str()) ;
-	fprintf(f,"\n\n{\n\\setlength{\\unitlength}{1pt}\n\\begin{picture}(%d,%d)(%d,%d)\n{\\special{\"\n",w(),h(),0,0);
-	printing=f;
-	print();
-	printing=0;
-	resize(x(),y(),gw,h());
-	fprintf(f,"%s","}\n}\\end{picture}\n}\n\n");
-	fprintf(f,"%s",giac::tex_end.c_str());
-	fclose(f);	
-      }
-      */
-    }
-    return filename;
+  Opengl3d::~Opengl3d(){ 
   }
 
-  Graph3d::~Graph3d(){ 
-#ifdef __APPLE__
-    if (glcontext){
-      aglSetCurrentContext( NULL );
-      aglSetWindowRef((GLContext) glcontext, NULL );    
-      aglDestroyContext((GLContext)glcontext);
-    }
-#endif
-  }
-
-  int Graph3d::in_handle(int event){
-    int res=Graph2d3d::in_handle(event);
+#if 0
+  int Opengl3d::in_handle(int event){
+    int res=Opengl::in_handle(event);
     if (event==FL_FOCUS){
       if (!paused)
 	--animation_instructions_pos;
@@ -2608,41 +3783,10 @@ namespace xcas {
     }
     return res;
   }
-
-  Geo3d::Geo3d(int x,int y,int width, int height, History_Pack * _hp): Graph3d(x,y,width,height,0,_hp) { 
-    hp=_hp?_hp:geo_find_history_pack(this);
-    if (hp){
-      hp->eval_below=true;
-      hp->eval_below_once=false;
-      show_mouse_on_object=true;
-    }
-  }
-
-  int Geo3d::in_handle(int event){
-    if (!event)
-      return 1;
-    if (!hp)
-      hp=geo_find_history_pack(this);
-    // cerr << event << " " << mode << endl;
-    int res=Graph3d::in_handle(event);
-    if (event==FL_UNFOCUS){
-      return 1;
-    }
-    if (event==FL_FOCUS){
-      return 1;
-    }
-    if (int gres=geo_handle(event))
-      return gres;
-    // event not handeld by geometry
-    return res;
-  }
-
-  void Geo3d::draw(){
-    Graph3d::draw();
-  }
+#endif
 
   // set evryone to x
-  void Graph3d::orthonormalize(){ 
+  void Opengl3d::orthonormalize(){ 
     window_ymax=window_xmax;
     window_ymin=window_xmin;
     window_zmax=window_xmax;
@@ -2650,7 +3794,8 @@ namespace xcas {
     redraw();
   }
 
-  void Graph3d::geometry_round(double x,double y,double z,double eps,gen & tmp,GIAC_CONTEXT) {
+#if 0
+  void Opengl3d::geometry_round(double x,double y,double z,double eps,gen & tmp) {
     tmp= geometry_round_numeric(x,y,z,eps,approx);
     if (tmp.type==_VECT)
       tmp.subtype = _POINT__VECT;
@@ -2708,9 +3853,9 @@ namespace xcas {
       }
     }
   }
+#endif
 
-#ifndef NO_NAMESPACE_XCAS
+#ifndef NO_NAMESPACE_GIAC
 } // namespace giac
-#endif // ndef NO_NAMESPACE_XCAS
+#endif // ndef NO_NAMESPACE_GIAC
 
-#endif // HAVE_LIBFLTK_GL
