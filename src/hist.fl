@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0302 
+version 1.0300 
 i18n_type 1 
 i18n_include "giac/giacintl.h" 
 i18n_function gettext 
@@ -536,6 +536,7 @@ Function {Xcas_widget_size(const giac::gen & g,const giac::context * cptr)} {ret
           giac::step_infolevel(v[11].val,contextptr);
         if (v[11].type==giac::_DOUBLE_)
           giac::step_infolevel(v[12]._DOUBLE_val,contextptr);
+        if (giac::step_infolevel(contextptr) && xcas::Xcas_DispG_Window) xcas::Xcas_DispG_Window->show();
       }     
       if (s>12 && v[12].type==giac::_STRNG){
 	std::string browser=*v[12]._STRNGptr;
@@ -942,7 +943,8 @@ return "";} {}
 Function {Xcas_load_general_setup()} {return_type void
 } {
   code {// xcas::file_save_context has been removed for xcas 1.1.3
-Xcas_stepbystep->value(giac::step_infolevel(Xcas_get_context()));
+int ste=giac::step_infolevel(Xcas_get_context());
+Xcas_stepbystep->value(ste);
 Xcas_html_browser->value(Xcas_browser_name().c_str());
 static std::string proxy;
 if (getenv("http_proxy")){
@@ -1010,7 +1012,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
 } {
   Fl_Window Xcas_Main_Window_ {
     label {Xcas New Interface} open
-    xywh {292 196 775 520} type Single resizable visible
+    xywh {95 113 775 520} type Single resizable visible
   } {
     Fl_Menu_Bar Xcas_main_menu {open
       xywh {0 0 775 25}
@@ -1063,17 +1065,17 @@ Function {Xcas_run(int argc,char ** argv)} {open
           label Clone
           xywh {0 0 100 20}
         } {
-           MenuItem Xcas_CloneOffline {
-             label Offline
-             xywh {10 10 100 20}
-             callback { std::string html5=giac::browser_command("doc/xcasfr.html\#"+xcas::widget_html5(Xcas_current_session())); std::cout << html5 << std::endl; system(html5.c_str());}
-           }
-           MenuItem Xcas_CloneOnline {
-             label Online
-             xywh {10 10 100 20}
-             callback { std::string html5="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html\#"+xcas::widget_html5(Xcas_current_session()); std::cout << html5 << std::endl; giac::system_browser_command(html5);} 
-           }
-	}
+          MenuItem Xcas_CloneOffline {
+            label Offline
+            callback {std::string html5=giac::browser_command("doc/xcasfr.html\#"+xcas::widget_html5(Xcas_current_session())); std::cout << html5 << std::endl; system(html5.c_str());}
+            xywh {10 10 100 20}
+          }
+          MenuItem Xcas_CloneOnline {
+            label Online
+            callback {std::string html5="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html\#"+xcas::widget_html5(Xcas_current_session()); std::cout << html5 << std::endl; giac::system_browser_command(html5);}
+            xywh {10 10 100 20}
+          }
+        }
         Submenu Xcas_Insert {
           label Insert
           xywh {0 0 100 20}
@@ -1415,8 +1417,8 @@ Xcas_update_mode();}
           MenuItem Xcas_show_DispG {
             label DispG
             callback {Xcas_DispG_Window_->show(); 
-Xcas_DispG_Cancel_->hide();}
-            xywh {45 45 100 20}
+Xcas_DispG_Cancel_->hide();} selected
+            xywh {45 45 100 20} shortcut 0x80064
           }
           MenuItem Xcas_show_keyboard {
             label keyboard
@@ -1857,7 +1859,7 @@ if (xcas::use_external_browser)
           }
           MenuItem Xcas_help_han {
             label {Site de F. Han}
-            callback {giac::system_browser_command("http://www.math.jussieu.fr/~han/xcas");} selected
+            callback {giac::system_browser_command("http://www.math.jussieu.fr/~han/xcas");}
             xywh {45 45 100 20}
           }
           MenuItem Xcas_help_capes {
@@ -3907,7 +3909,7 @@ Xcas_Page_Format_Output->value("8");}
   } {}
   Fl_Window Xcas_DispG_Window_ {
     label {Xcas DispG Window} open
-    xywh {483 217 540 350} type Double resizable
+    xywh {483 123 540 550} type Double resizable
     class {xcas::DispG_Window} visible
   } {
     Fl_Menu_Bar Xcas_DispG_Menu {
@@ -3950,22 +3952,30 @@ Xcas_Page_Format_Output->value("8");}
       tooltip {Click in graph or here to cancel} xywh {220 0 365 25} align 64
     }
     Fl_Tile Xcas_DispG_Tile {open
-      xywh {0 25 545 325}
+      xywh {0 25 545 550}
     } {
       Fl_Box Xcas_DispG_ {
         label label
-        xywh {0 25 545 325} labeltype NO_LABEL resizable
+        xywh {0 25 545 320} labeltype NO_LABEL
         class {xcas::Graph2d}
+      }
+      Fl_Box Xcas_PrintG_ {
+        label label
+        xywh {0 345 545 205} labeltype NO_LABEL resizable
+        class {xcas::Equation}
       }
     }
     Fl_Button Xcas_DispG_ClrGraph {
-      label ClrGraph
-      callback {Xcas_DispG_->clear(0);}
+      label Clear
+      callback {Xcas_DispG_->clear(0); Xcas_PrintG_->set_data(giac::gen(giac::makevecteur(giac::string2gen("",false),giac::string2gen("Step by step console",false)),giac::_HIST__VECT));}
       tooltip {Clear DispG graphic} xywh {95 0 125 25} align 64
     }
   }
   code {xcas::Xcas_Main_Window=Xcas_Main_Window_;
 xcas::Xcas_DispG=Xcas_DispG_;
+giac::my_gprintf=xcas::xcas_gprintf;
+Xcas_PrintG_->modifiable=false;
+xcas::Xcas_PrintG=Xcas_PrintG_;
 xcas::Xcas_DispG_Window=Xcas_DispG_Window_;
 xcas::Xcas_DispG_Cancel=Xcas_DispG_Cancel_;
 xcas::Xcas_Cancel=0;
@@ -4312,8 +4322,7 @@ else make_history();
     running=!Xcas_save_all(Xcas_Main_Tab);
     if (running) Xcas_Main_Window_->show();
   }
-  return 0;
-} {}
+  return 0;} {}
 } 
 
 Function {main(int argc,char ** argv)} {open return_type int

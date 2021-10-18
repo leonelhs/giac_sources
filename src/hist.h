@@ -236,6 +236,7 @@ extern Fl_Button *Xcas_DispG_Cancel_;
 #include <FL/Fl_Tile.H>
 extern Fl_Tile *Xcas_DispG_Tile;
 extern xcas::Graph2d *Xcas_DispG_;
+extern xcas::Equation *Xcas_PrintG_;
 extern Fl_Button *Xcas_DispG_ClrGraph;
 Fl_Window* Xcas_run(int argc,char ** argv);
 extern unsigned char menu_Xcas_main_menu_i18n_done;

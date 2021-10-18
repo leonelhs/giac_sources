@@ -976,6 +976,8 @@ namespace giac {
     }
     if (v.subtype==_GROUP__VECT || v._VECTptr->size()>2)
       return svg_polyline(v, attr, name,xmin,xmax,ymin,ymax,contextptr);
+    if (v.subtype==_VECTOR__VECT)
+      return svg_segment(v[0],v[1], attr, name,xmin,xmax,ymin,ymax,contextptr);
     if (v.subtype==_LINE__VECT)
       return svg_line(v[0],v[1], attr, name,xmin,xmax,ymin,ymax,contextptr);
     if (v.subtype==_HALFLINE__VECT)
@@ -1043,7 +1045,7 @@ namespace giac {
 	}
 	if (figure.sommet == at_pnt)
 	  return symbolic2svg(figure,xmin,xmax,ymin,ymax,contextptr);
-	if (figure.sommet==at_segment){
+	if (figure.sommet==at_segment || figure.sommet==at_vector){
 	  gen segment=figure.feuille;
 	  return svg_segment(segment[0],segment[1], attr, name,xmin,xmax,ymin,ymax,contextptr); 
 	}   

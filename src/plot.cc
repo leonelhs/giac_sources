@@ -7241,7 +7241,7 @@ namespace giac {
 	gen c1=remove_at_pnt(v[i-1]);
 	gen c2=remove_at_pnt(v[i]);   
 	if (est_aligne(c1,c2,a,contextptr)){
-	  gen m=(a-c1)/(c2-c1);
+	  gen m=re((a-c1)/(c2-c1),contextptr);
 	  if (is_greater(m,0,contextptr) && is_greater(1,m,contextptr))
 	    return i;
 	}
@@ -7712,7 +7712,7 @@ namespace giac {
       gen m=minus_inf,M=plus_inf;
       vecteur poi,tvi;
       gen t=ggb_var(args);
-      gen fg=args,r,i;
+      gen fg=eval(args,1,contextptr),r,i;
       if (fg.type==_VECT && fg._VECTptr->size()!=2)
 	return paramplotparam(makesequence(args,t),false,contextptr);
       if (fg.type==_VECT && fg._VECTptr->size()==2){

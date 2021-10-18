@@ -4857,6 +4857,7 @@ unsigned int ConvertUTF8toUTF16 (
 
   void (*my_gprintf)(unsigned special,const string & format,const vecteur & v,GIAC_CONTEXT)=0;
 
+
 #ifdef EMCC
   static void newlinestobr(string &s,const string & add){
     int l=int(add.size());

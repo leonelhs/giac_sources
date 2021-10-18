@@ -448,6 +448,7 @@ giac::gen Xcas_widget_size(const giac::gen & g,const giac::context * cptr) {
             giac::step_infolevel(v[11].val,contextptr);
           if (v[11].type==giac::_DOUBLE_)
             giac::step_infolevel(v[12]._DOUBLE_val,contextptr);
+          if (giac::step_infolevel(contextptr) && xcas::Xcas_DispG_Window) xcas::Xcas_DispG_Window->show();
         }     
         if (s>12 && v[12].type==giac::_STRNG){
   	std::string browser=*v[12]._STRNGptr;
@@ -847,7 +848,8 @@ std::string Xcas_browser_name() {
 
 void Xcas_load_general_setup() {
   // xcas::file_save_context has been removed for xcas 1.1.3
-  Xcas_stepbystep->value(giac::step_infolevel(Xcas_get_context()));
+  int ste=giac::step_infolevel(Xcas_get_context());
+  Xcas_stepbystep->value(ste);
   Xcas_html_browser->value(Xcas_browser_name().c_str());
   static std::string proxy;
   if (getenv("http_proxy")){
@@ -1878,7 +1880,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"ti89/92", 0,  (Fl_Callback*)cb_Xcas_Set_TI0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Show", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"DispG", 0,  (Fl_Callback*)cb_Xcas_show_DispG, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"DispG", 0x80064,  (Fl_Callback*)cb_Xcas_show_DispG, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"keyboard", 0,  (Fl_Callback*)cb_Xcas_show_keyboard, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"bandeau", 0,  (Fl_Callback*)cb_Xcas_show_bandeau, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"msg", 0,  (Fl_Callback*)cb_Xcas_show_msg, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3103,10 +3105,12 @@ Fl_Tile *Xcas_DispG_Tile=(Fl_Tile *)0;
 
 xcas::Graph2d *Xcas_DispG_=(xcas::Graph2d *)0;
 
+xcas::Equation *Xcas_PrintG_=(xcas::Equation *)0;
+
 Fl_Button *Xcas_DispG_ClrGraph=(Fl_Button *)0;
 
 static void cb_Xcas_DispG_ClrGraph(Fl_Button*, void*) {
-  Xcas_DispG_->clear(0);
+  Xcas_DispG_->clear(0); Xcas_PrintG_->set_data(giac::gen(giac::makevecteur(giac::string2gen("",false),giac::string2gen("Step by step console",false)),giac::_HIST__VECT));
 }
 
 Fl_Window* Xcas_run(int argc,char ** argv) {
@@ -4890,7 +4894,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     Xcas_Script_Window->end();
     Xcas_Script_Window->resizable(Xcas_Script_Window);
   } // Fl_Double_Window* Xcas_Script_Window
-  { Xcas_DispG_Window_ = new xcas::DispG_Window(540, 350, gettext("Xcas DispG Window"));
+  { Xcas_DispG_Window_ = new xcas::DispG_Window(540, 550, gettext("Xcas DispG Window"));
     Xcas_DispG_Window_->box(FL_FLAT_BOX);
     Xcas_DispG_Window_->color(FL_BACKGROUND_COLOR);
     Xcas_DispG_Window_->selection_color(FL_BACKGROUND_COLOR);
@@ -4916,8 +4920,8 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
       Xcas_DispG_Cancel_->callback((Fl_Callback*)cb_Xcas_DispG_Cancel_);
       Xcas_DispG_Cancel_->align(Fl_Align(FL_ALIGN_CLIP));
     } // Fl_Button* Xcas_DispG_Cancel_
-    { Xcas_DispG_Tile = new Fl_Tile(0, 25, 545, 325);
-      { Xcas_DispG_ = new xcas::Graph2d(0, 25, 545, 325, gettext("label"));
+    { Xcas_DispG_Tile = new Fl_Tile(0, 25, 545, 550);
+      { Xcas_DispG_ = new xcas::Graph2d(0, 25, 545, 320, gettext("label"));
         Xcas_DispG_->box(FL_NO_BOX);
         Xcas_DispG_->color(FL_BACKGROUND_COLOR);
         Xcas_DispG_->selection_color(FL_BACKGROUND_COLOR);
@@ -4927,11 +4931,22 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
         Xcas_DispG_->labelcolor(FL_FOREGROUND_COLOR);
         Xcas_DispG_->align(Fl_Align(FL_ALIGN_CENTER));
         Xcas_DispG_->when(FL_WHEN_RELEASE);
-        Fl_Group::current()->resizable(Xcas_DispG_);
       } // xcas::Graph2d* Xcas_DispG_
+      { Xcas_PrintG_ = new xcas::Equation(0, 345, 545, 205, gettext("label"));
+        Xcas_PrintG_->box(FL_NO_BOX);
+        Xcas_PrintG_->color(FL_BACKGROUND_COLOR);
+        Xcas_PrintG_->selection_color(FL_BACKGROUND_COLOR);
+        Xcas_PrintG_->labeltype(FL_NO_LABEL);
+        Xcas_PrintG_->labelfont(0);
+        Xcas_PrintG_->labelsize(14);
+        Xcas_PrintG_->labelcolor(FL_FOREGROUND_COLOR);
+        Xcas_PrintG_->align(Fl_Align(FL_ALIGN_CENTER));
+        Xcas_PrintG_->when(FL_WHEN_RELEASE);
+        Fl_Group::current()->resizable(Xcas_PrintG_);
+      } // xcas::Equation* Xcas_PrintG_
       Xcas_DispG_Tile->end();
     } // Fl_Tile* Xcas_DispG_Tile
-    { Xcas_DispG_ClrGraph = new Fl_Button(95, 0, 125, 25, gettext("ClrGraph"));
+    { Xcas_DispG_ClrGraph = new Fl_Button(95, 0, 125, 25, gettext("Clear"));
       Xcas_DispG_ClrGraph->tooltip(gettext("Clear DispG graphic"));
       Xcas_DispG_ClrGraph->callback((Fl_Callback*)cb_Xcas_DispG_ClrGraph);
       Xcas_DispG_ClrGraph->align(Fl_Align(FL_ALIGN_CLIP));
@@ -4941,6 +4956,9 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   } // xcas::DispG_Window* Xcas_DispG_Window_
   xcas::Xcas_Main_Window=Xcas_Main_Window_;
   xcas::Xcas_DispG=Xcas_DispG_;
+  giac::my_gprintf=xcas::xcas_gprintf;
+  Xcas_PrintG_->modifiable=false;
+  xcas::Xcas_PrintG=Xcas_PrintG_;
   xcas::Xcas_DispG_Window=Xcas_DispG_Window_;
   xcas::Xcas_DispG_Cancel=Xcas_DispG_Cancel_;
   xcas::Xcas_Cancel=0;

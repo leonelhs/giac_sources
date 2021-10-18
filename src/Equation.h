@@ -77,7 +77,7 @@ namespace xcas {
     void (* cb_select) (const char * ); // callback when selection changed
     Equation_Scrollbar * vscroll,* hscroll;
     Fl_Menu_Bar * menubar;
-    Equation(int x, int y, int w, int h);
+    Equation(int x, int y, int w, int h,const char * l=0);
     Equation(int x, int y, int w, int h, const char* l,const giac::gen & g);
     Equation(int x, int y, int w, int h, const char* l,const giac::gen & g,giac::attributs mya);
     Equation(int x, int y, int w, int h, const char* l,const giac::gen & g,giac::attributs mya,const giac::context * contextptr);

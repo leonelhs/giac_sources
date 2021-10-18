@@ -491,6 +491,27 @@ namespace xcas {
     return Equation_total_size(g._VECTptr->back());
   }
 
+  // find smallest value of y and height
+  void Equation_y_dy(const gen & g,int & y,int & dy){
+    y=0; dy=0;
+    if (g.type==_EQW){
+      y=g._EQWptr->y;
+      dy=g._EQWptr->dy;
+    }
+    if (g.type==_VECT){
+      iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
+      for (;it!=itend;++it){
+	int Y,dY;
+	Equation_y_dy(*it,Y,dY);
+	// Y, Y+dY and y,y+dy
+	int ymax=giacmax(y+dy,Y+dY);
+	if (Y<y)
+	  y=Y;
+	dy=ymax-y;
+      }
+    }
+  }
+
   void Equation_translate(gen & g,int deltax,int deltay){
     if (g.type==_EQW){
       g._EQWptr->x += deltax;
@@ -993,7 +1014,7 @@ namespace xcas {
     }
   }
 
-  // windowhsize is used for g of type HIST_EQW (history) right justify answers
+  // windowhsize is used for g of type HIST__VECT (history) right justify answers
   // Returns either a eqwdata type object (terminal) or a vector 
   // (of subtype _EQW__VECT or _HIST__VECT)
   gen Equation_compute_size(const gen & g,const attributs & a,int windowhsize,GIAC_CONTEXT){
@@ -1085,6 +1106,7 @@ namespace xcas {
       /***************
        *   HISTORY   *
        ***************/
+#if 0
       if (g.subtype==_HIST__VECT){ 
 	int l=windowhsize;
 	vecteur vplot;
@@ -1152,6 +1174,39 @@ namespace xcas {
 	// cerr << v << endl;
 	gen res=gen(v,_HIST__VECT); Equation_translate(res,0,y); return res;
       } // END HISTORY
+#else
+      if (g.subtype==_HIST__VECT){ 
+	vecteur v;
+	v.reserve(g._VECTptr->size());
+	// vertical gluing
+	int W=0,H=0;
+	for (int i=0;it!=itend;++it,++i){
+	  gen g=*it;
+	  if (g.type==_VECT && g.subtype==_SEQ__VECT)
+	    g.subtype=_PRINT__VECT;
+	  gen cur_size=Equation_compute_size(g,a,windowhsize,contextptr);
+	  eqwdata tmp=Equation_total_size(cur_size);
+#if 0
+	  int Y,dY;
+	  Equation_y_dy(cur_size,Y,dY);
+	  Equation_translate(cur_size,0,Y-y-H);
+	  H += dY+2;
+#else
+	  if (ckmatrix(*it))
+	    Equation_translate(cur_size,0,tmp.y-y-H+a.fontsize/2); 
+	  else
+	    Equation_translate(cur_size,0,tmp.y-y-H-a.fontsize/2); 
+	  H += tmp.dy+2;
+#endif
+	  v.push_back(cur_size);
+	  W = giacmax(W,tmp.dx);
+	}
+	gen mkvect(at_makevector);
+	mkvect.subtype=_PRINT__VECT;
+	v.push_back(eqwdata(W,H,0,-y-H,a,mkvect,0));
+	return gen(v,_EQW__VECT);
+      } // END HISTORY
+#endif
       /***************
        *   MATRICE   *
        ***************/
@@ -1230,7 +1285,7 @@ namespace xcas {
 					       ),contextptr);
 	eqwdata tmp=Equation_total_size(cur_size);
 	Equation_translate(cur_size,x-tmp.x,0); v.push_back(cur_size);
-	x=x+tmp.dx+a.fontsize;
+	x=x+tmp.dx+((g.subtype==_PRINT__VECT)?2:a.fontsize);
 	Equation_vertical_adjust(tmp.dy,tmp.y,h,y);
       }
       gen mkvect(at_makevector);
@@ -1525,7 +1580,7 @@ namespace xcas {
 	return;
       }
       if (u==at_makevector){ // draw [] delimiters for vector/matrices
-	if (oper.subtype!=_SEQ__VECT){
+	if (oper.subtype!=_SEQ__VECT && oper.subtype!=_PRINT__VECT){
 	  int decal=1;
 	  switch (oper.subtype){
 	  case _MATRIX__VECT: decal=2; break;
@@ -1546,7 +1601,7 @@ namespace xcas {
 	    check_fl_line(eqx+x0-x-1,eqy+y-y1+1,eqx+x0-x-fontsize/4,eqy+y-y1+1,equat->clip_x,equat->clip_y,equat->clip_w,equat->clip_h,0,0);
 	  }
 	} // end if oper.subtype!=SEQ__VECT
-	if (oper.subtype!=_MATRIX__VECT){
+	if (oper.subtype!=_MATRIX__VECT && oper.subtype!=_PRINT__VECT){
 	  // print commas between args
 	  it=v.begin(),itend=v.end()-2;
 	  for (;it!=itend;++it){
@@ -4420,8 +4475,7 @@ namespace xcas {
     setscroll();
   }
 
-  Equation::Equation(int x, int y, int w, int h): Fl_Group(x, y, max(w,20), max(h,20)){
-    const giac::context * contextptr = get_context(this);
+  Equation::Equation(int x, int y, int w, int h,const char * ch): Fl_Group(x, y, max(w,20), max(h,20)){
     xleft=0;
     ytop=h;
     xcur=0;
@@ -4438,7 +4492,7 @@ namespace xcas {
     labelsize(14);
     modifiable=true;
     output_equation=true;
-    data=Equation_nullstring(attr,0,contextptr);
+    data=Equation_nullstring(attr,0,context0);
     Fl_Group::end();
     add_scroll_menu();
   }

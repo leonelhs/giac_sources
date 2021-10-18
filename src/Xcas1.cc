@@ -96,6 +96,7 @@ namespace xcas {
   void (* menu2rpn_callback)(Fl_Widget *,void *)=0;
   Enlargable_Multiline_Output *Xcas_help_output =0 ;
   xcas::Graph2d *Xcas_DispG=0;
+  xcas::Equation * Xcas_PrintG=0;
   int show_xcas_dispg=0,redraw_turtle=0;
   std::string xcas_paused="";
   int xcas_dispg_entries=0;
@@ -104,6 +105,55 @@ namespace xcas {
   Fl_Button *Xcas_DispG_Cancel=0;
   Fl_Button *Xcas_Cancel=0;
   bool file_save_context=true;
+
+  void xcas_gprintf(unsigned special,const std::string & format,const vecteur & v,GIAC_CONTEXT){
+    if (Xcas_PrintG){
+      Fl::lock();
+      gen g=Xcas_PrintG->get_data();
+      Fl::unlock();
+      vecteur w=makevecteur(string2gen("",false),string2gen("Step by step console",false));
+      if (g.type==_VECT) w=*g._VECTptr;
+      // add format,v at the end of w
+      int posnl=0;
+      unsigned i=0;
+      for (;posnl<int(format.size());){
+	int nl=int(format.find('\n',posnl));
+	string curs;
+	bool finish = nl<0 || nl>=int(format.size());
+	if (finish)
+	  curs=format.substr(posnl,format.size()-posnl);
+	else {
+	  curs=format.substr(posnl,nl-posnl);
+	  posnl=nl+1;
+	}
+	vecteur cur;
+	for (;i<v.size() && !curs.empty();++i){
+	  int p=int(curs.find("%gen"));
+	  if (p<0 || p>=int(curs.size()))
+	    break;
+	  string cursp=curs.substr(0,p);
+	  if (!cursp.empty())
+	    cur.push_back(string2gen(cursp,false));
+	  cur.push_back(v[i]);
+	  curs=curs.substr(p+4,curs.size()-p-4);
+	}
+	if (!curs.empty())
+	  cur.push_back(string2gen(curs,false));
+	if (cur.empty())
+	  continue;
+	if (cur.size()==1)
+	  w.push_back(cur.front());
+	else
+	  w.push_back(gen(cur,_SEQ__VECT));
+	if (finish)
+	  break;
+      }
+      g=gen(w,_HIST__VECT);
+      Fl::lock();
+      Xcas_PrintG->set_data(g);
+      Fl::unlock();
+    }
+  }
 
   // debugger variables
   int xcas_debug_ok,xcas_current_instruction;

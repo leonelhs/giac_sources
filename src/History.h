@@ -344,6 +344,7 @@ namespace xcas {
     DispG_Window(int x,int y,int w,int h,const char * l=0):Fl_Window(x,y,w,h,l){}
     DispG_Window(int x,int y,const char * l=0):Fl_Window(x,y,l){}
     virtual int handle(int);
+    virtual FL_EXPORT void draw();
   };
 
   // new_question widget creator

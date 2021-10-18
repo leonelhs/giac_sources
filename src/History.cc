@@ -4226,6 +4226,11 @@ namespace xcas {
     redraw(); // since children have been modified
   }
 
+  void DispG_Window::draw(){
+    //COUT << "DispG draw" << endl;
+    Fl_Window::draw();
+  }
+
   int DispG_Window::handle(int event){
     int res=Fl_Window::handle(event);
     if (event==FL_HIDE){

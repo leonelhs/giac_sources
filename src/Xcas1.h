@@ -52,6 +52,9 @@ namespace xcas {
   extern Enlargable_Multiline_Output *Xcas_help_output ;  
   class Graph2d;
   extern Graph2d *Xcas_DispG;
+  class Equation;
+  extern Equation * Xcas_PrintG;
+  void xcas_gprintf(unsigned special,const std::string & format,const giac::vecteur & v,const giac::context *);
   extern Fl_Window * Xcas_DispG_Window;
   extern Fl_Window * Xcas_Main_Window;
   extern Fl_Button *Xcas_DispG_Cancel;

@@ -40,9 +40,9 @@ libxcas_la_SOURCES = History.cc Input.cc Xcas1.cc Equation.cc Print.cc \
 	Flv_CStyle.H  Flve_Check_Button.H  Flve_Input.H  Flv_Style.H \
 	Flv_Data_Source.H  Flve_Combo.H Flv_List.H Flv_Table.H gl2ps.h
 
-libjavagiac_la_LIBADD = libgiac.la 
+##libjavagiac_la_LIBADD = libgiac.la 
 
-libjavagiac_la_SOURCES = giac_wrap.cxx
+##libjavagiac_la_SOURCES = giac_wrap.cxx
 
 
 bin_PROGRAMS = icas xcas aide
