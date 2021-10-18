@@ -285,8 +285,12 @@ namespace giac {
   define_unary_function_ptr5( at_id ,alias_at_id,&__id,0,true);
 
   static string printasnot(const gen & g,const char * s,GIAC_CONTEXT){
-    if (abs_calc_mode(contextptr)==38)
-      return "NOT "+g.print(contextptr);
+    if (abs_calc_mode(contextptr)==38){
+      if (g.is_symb_of_sommet(at_and) ||g.is_symb_of_sommet(at_ou))
+	return "NOT("+g.print(contextptr)+")";
+      else
+	return "NOT "+g.print(contextptr);
+    }
     else
       return "not("+g.print(contextptr)+")";
     
@@ -5494,7 +5498,7 @@ namespace giac {
     if (debug_infolevel>2)
       CERR << "gcd begin " << CLOCK() << endl;
     vecteur::const_iterator it=args._VECTptr->begin(),itend=args._VECTptr->end();
-    if (ckmatrix(args) && itend-it==2)
+    if (ckmatrix(args) && itend-it==2 && it->subtype!=_POLY1__VECT && (it+1)->subtype!=_POLY1__VECT)
       return apply(*it,*(it+1),contextptr,gcd);
     gen res(0);
     for (;it!=itend;++it)
@@ -5513,7 +5517,7 @@ namespace giac {
     vecteur::const_iterator it=args._VECTptr->begin(),itend=args._VECTptr->end();
     if (itend==it)
       return 1;
-    if (ckmatrix(args) && itend-it==2)
+    if (ckmatrix(args) && itend-it==2 && it->subtype!=_POLY1__VECT && (it+1)->subtype!=_POLY1__VECT)
       return apply(*it,*(it+1),lcm);
     gen res(*it);
     for (++it;it!=itend;++it)

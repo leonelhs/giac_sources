@@ -478,6 +478,9 @@
 /* The size of `long long', as computed by sizeof. */
 #define SIZEOF_LONG_LONG 8
 
+/* The size of `void *', as computed by sizeof. */
+#define SIZEOF_VOID_P 8
+
 /* Define as the maximum value of type 'size_t', if the system doesn't define
    it. */
 #define SIZE_MAX 18446744073709551615UL

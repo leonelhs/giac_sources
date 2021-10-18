@@ -243,7 +243,8 @@ var Module = {
     if (tmp.length>5 && tmp.substr(0,4)=='<svg') return tmp;
      if (UI.usemathjax){
        tmp=giaceval('latex(quote('+tmp+'))');
-       tmp='$$'+tmp.substr(1,tmp.length-2)+'$$';
+       var dollar=String.fromCharCode(36);
+       tmp=dollar+dollar+tmp.substr(1,tmp.length-2)+dollar+dollar;
        return tmp;
      }
      tmp=giaceval('mathml(quote('+tmp+',1))');

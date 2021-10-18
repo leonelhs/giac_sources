@@ -42,6 +42,8 @@ using namespace std;
 #include "ti89.h"
 #include "csturm.h"
 #include "sparse.h"
+#include "modfactor.h"
+#include "quater.h"
 #include "giacintl.h"
 #ifdef HAVE_LIBGSL
 #include <gsl/gsl_linalg.h>
@@ -13104,6 +13106,19 @@ namespace giac {
   // see modpoly.h for polynomial operations on vecteur
   dense_POLY1 mpcar(const matrice & a,vecteur & Bv,bool compute_Bv,bool convert_internal,GIAC_CONTEXT){
     int n=int(a.size());
+    gen modulo,fieldpmin;
+    if (n && has_gf_coeff(a,modulo,fieldpmin)){
+      gen tmp=_pcar(a,contextptr);
+      if (tmp.type!=_VECT)
+	return vecteur(1,gensizeerr(contextptr));
+      vecteur P=*tmp._VECTptr;
+      // do Horner to compute Bv
+      if (compute_Bv){
+	horner(P,a,0,Bv);
+	Bv[0]=midn(n);
+      }
+      return P;      
+    }
     if (n && a[0]._VECTptr->front().type==_MOD){
       vecteur P(mpcar_hessenberg(a,0,contextptr));
       // do Horner to compute Bv
@@ -13846,6 +13861,50 @@ namespace giac {
     vecteur p_car;
     p_car=mpcar(mr,m_adj,true,contextptr);
     p_car=common_deno(p_car)*p_car; // remove denominators
+    // extension handling
+    gen modulo,fieldpmin;
+    if (has_mod_coeff(p_car,modulo)){
+      modpoly pc=*unmod(p_car)._VECTptr;
+      vector< facteur<modpoly> > vpc; vector<modpoly> qmat;
+      environment env;
+      env.modulo=modulo; env.moduloon=true; env.pn=modulo;
+      if (ddf(pc,qmat,&env,vpc)){
+	int extdeg=1;
+	for (int j=0;j<int(vpc.size());++j){
+	  extdeg=lcm(extdeg,vpc[j].mult).val;
+	}
+	if (extdeg>1){
+	  *logptr(contextptr) << "Creating splitting field extension GF(" << modulo << "," << extdeg << ")" << endl;
+	  gen tmp=_galois_field(makesequence(modulo,extdeg),contextptr);
+	  tmp=tmp[plus_two];
+	  tmp=eval(tmp[2],1,contextptr); // field generator
+	  p_car=tmp*p_car;
+	}
+      }
+      else
+	*logptr(contextptr) << "Warning! Automatic extension not implemented. You can try to diagonalize the matrix * a non trivial element of GF(" << modulo << ",lcm of degrees of factor(" << symb_horner(p_car,vx_var) << "))" <<  endl;
+    }
+    if (has_gf_coeff(p_car,modulo,fieldpmin)){
+      factorization f;
+      gen res=gf_list()[pow(modulo,gfsize(fieldpmin),contextptr)].g;
+      if (galois_field * ptr=dynamic_cast<galois_field *>(res._USERptr)){
+	polynome P(1);
+	poly12polynome(p_car,1,P,1);
+	res=ptr->polyfactor(P,f);
+	int extdeg=1;
+	for (int i=0;i<int(f.size());++i){
+	  extdeg=lcm(extdeg,f[i].fact.lexsorted_degree()).val;
+	}
+	if (extdeg>1){
+	  extdeg *= gfsize(fieldpmin);
+	  *logptr(contextptr) << "Creating splitting field extension GF(" << modulo << "," << extdeg << ")" << endl;
+	  gen tmp=_galois_field(makesequence(modulo,extdeg),contextptr);
+	  tmp=tmp[plus_two];
+	  tmp=eval(tmp[2],1,contextptr); // field generator
+	  p_car=tmp*p_car;
+	}
+      }
+    }
     // factorizes p_car
     factorization f;
     polynome ppcar(poly1_2_polynome(p_car,1));
@@ -13969,11 +14028,15 @@ namespace giac {
 	vecteur ww(w.size());
 	for (unsigned i=0;i<w.size();++i)
 	  ww[i]=r2e(w[i],lv,contextptr);
-	v=solve(horner(ww,tmpx),tmpx,complex_mode(contextptr),contextptr); 
+	gen wwx=horner(ww,tmpx);
+	v=solve(wwx,tmpx,complex_mode(contextptr),contextptr); 
 	v=*apply(v,recursive_normal,contextptr)._VECTptr;
 	if (v.size()!=w.size()-1){
 	  gen m0num=evalf(m0,1,contextptr);
-	  if (m0num.type==_VECT && lidnt(m0num).empty()){
+	  if (m0num.type==_VECT 
+	      && is_numericm(*m0num._VECTptr)
+	      // && lidnt(m0num).empty()
+	      ){
 	    *logptr(contextptr) << gettext("Unable to find exact eigenvalues. Trying approx") << endl;
 	    return egv(*m0num._VECTptr,p,d,contextptr,jordan,false,eigenvalues_only);
 	  }
