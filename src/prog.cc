@@ -3164,10 +3164,90 @@ namespace giac {
     return symb_rand(gen(v,_SEQ__VECT));
   }
 
+  void shuffle(vector<int> & temp,GIAC_CONTEXT){
+    int n=temp.size();
+    // source wikipedia Fisher-Yates shuffle article
+    for (int i=0;i<n-1;++i){
+      // j â† random integer such that i â‰¤ j < n
+      // exchange a[i] and a[j]
+      int j=i+(giac_rand(contextptr)/double(rand_max2))*(n-i);
+      std::swap(temp[i],temp[j]);
+    }
+  }
+
+  vector<int> rand_k_n(int k,int n,bool sorted,GIAC_CONTEXT){
+    if (k<=0 || n<=0)
+      return vector<int>(0);
+    if (//n>=65536 && 
+	k*double(k)<=n/4){
+      vector<int> t(k),ts(k); 
+      for (int essai=20;essai>=0;--essai){
+	int i;
+	for (i=0;i<k;++i)
+	  ts[i]=t[i]=giac_rand(contextptr)/double(rand_max2)*n;
+	sort(ts.begin(),ts.end());
+	for (i=1;i<k;++i){
+	  if (ts[i]==ts[i-1])
+	    break;
+	}
+	if (i==k)
+	  return sorted?ts:t;
+      }
+    }
+    if (k>=n/3 || (sorted && k*std::log(double(k))>n) ){
+      vector<int> t; t.reserve(k);
+      // (algorithm suggested by O. Garet)
+      while (n>0){
+	int r=giac_rand(contextptr)/double(rand_max2)*n;
+	if (r<n-k) // (n-k)/n=proba that the current n is not in the list
+	  --n;
+	else {
+	  --n;
+	  t.push_back(n);
+	  --k;
+	}
+      }
+      if (sorted)
+	reverse(t.begin(),t.end());
+      else
+	shuffle(t);
+      return t;
+    }
+    vector<bool> tab(n,true);
+    vector<int> v(k);
+    for (int j=0;j<k;++j){
+      int r=-1;
+      for (;;){
+	r=giac_rand(contextptr)/double(rand_max2)*n;
+	if (tab[r]) break;
+      }
+      v[j]=r;
+    }
+    if (sorted)
+      sort(v.begin(),v.end());
+    return v;
+  }
+  
+  vector<int> randperm(const int & n,GIAC_CONTEXT){
+    //renvoie une permutation au hasard de long n
+    vector<int> temp(n);
+    for (int k=0;k<n;k++) 
+      temp[k]=k;
+    shuffle(temp,contextptr);
+    return temp;
+  }
+
   static gen rand_n_in_list(int n,const vecteur & v,GIAC_CONTEXT){
     n=absint(n);
     if (signed(v.size())<n)
       return gendimerr(contextptr);
+#if 1
+    vector<int> w=rand_k_n(n,v.size(),false,contextptr);
+    vecteur res(n);
+    for (int i=0;i<n;++i)
+      res[i]=v[w[i]];
+    return res;
+#else
     // would be faster with randperm
     vecteur w(v);
     vecteur res;
@@ -3177,6 +3257,7 @@ namespace giac {
       w.erase(w.begin()+tmp);
     }
     return res;
+#endif
   }
   gen _rand(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
@@ -3252,9 +3333,18 @@ namespace giac {
 	int m=v[1].val;
 	int M=v[2].val;
 	if (m>M){ int tmp=m; m=M; M=tmp; }
+#if 1
+	vector<int> v=rand_k_n(n,M-m+1,false,contextptr);
+	for (int i=0;i<n;++i)
+	  v[i] += m;
+	vecteur res;
+	vector_int2vecteur(v,res);
+	return res;
+#else
 	vecteur v;
 	for (int i=m;i<=M;++i) v.push_back(i);
 	return rand_n_in_list(n,v,contextptr);
+#endif
       }
     }
     if ( (args.type==_SYMB) && (args._SYMBptr->sommet==at_interval) ){
@@ -4693,7 +4783,7 @@ namespace giac {
       *logptr(contextptr) << gettext("Archiving ") << e << endl;
       archive(child_out,e,contextptr);
       archive(child_out,zero,contextptr);
-      child_out << "Debugging\n" << '¤' ;
+      child_out << "Debugging\n" << 'Â¤' ;
       child_out.close();
       kill_and_wait_sigusr2();
       ifstream child_in(cas_entree_name().c_str());
@@ -7321,9 +7411,9 @@ namespace giac {
     archive(child_out,e,contextptr);
     archive(child_out,e,contextptr);
     if ( (args.type==_VECT) && (args._VECTptr->empty()) )
-      child_out << "User input requested\n" << '¤' ;
+      child_out << "User input requested\n" << 'Â¤' ;
     else
-      child_out << args << '¤' ;
+      child_out << args << 'Â¤' ;
     child_out.close();
     kill_and_wait_sigusr2();
     ifstream child_in(cas_entree_name().c_str());
@@ -8544,7 +8634,7 @@ namespace giac {
     "_u",
     "_yd",
     "_yr",
-    "_µ"
+    "_Âµ"
   };
 
   const char * const * const unitname_tab_end=unitname_tab+unitptr_tab_length;
@@ -8588,7 +8678,7 @@ namespace giac {
   gen _atm_unit(mksa_register("_atm",&__atm_unit));
   gen _au_unit(mksa_register("_au",&__au_unit));
   gen _Angstrom_unit(mksa_register("_Angstrom",&__Angstrom_unit));
-  gen _micron_unit(mksa_register("_µ",&__micron_unit));
+  gen _micron_unit(mksa_register("_Âµ",&__micron_unit));
   gen _b_unit(mksa_register("_b",&__b_unit));
   gen _bar_unit(mksa_register("_bar",&__bar_unit));
   gen _bbl_unit(mksa_register("_bbl",&__bbl_unit));

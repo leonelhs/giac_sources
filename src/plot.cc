@@ -1253,7 +1253,7 @@ namespace giac {
     if (vars.type==_IDNT){ // function plot
       gen a,b;
       if (taille(f,100)<=100 && is_linear_wrt(f,vars,a,b,contextptr))	
-	return _droite(makesequence(b,b+cst_i*a),contextptr);
+	return _droite(makesequence(b,b+1+cst_i*a),contextptr);
       gen locvar(vars);
       locvar.subtype=0;
       gen y=quotesubst(f,vars,locvar,contextptr),yy;
@@ -7956,7 +7956,7 @@ namespace giac {
   gen _plot(const gen & g,const context * contextptr){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     gen var,res;
-    if (g.type!=_VECT && !is_algebraic_program(g,var,res) && !is_distribution(g))
+    if (g.type!=_VECT && !is_distribution(g) && !is_algebraic_program(g,var,res) )
       return _plotfunc(g,contextptr);
     vecteur v;
     gen g_(g);

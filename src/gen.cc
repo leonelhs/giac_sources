@@ -1530,7 +1530,7 @@ namespace giac {
   }
 
   void delete_ptr(signed char subtype,short int type_save,ref_mpz_t * ptr_save) {
-#ifdef COMPILE_FOR_STABILITY
+#if 0 // def COMPILE_FOR_STABILITY // commented (D.Alm) The call to delete_ptr() would sometimes get cancelled if ctrl_c was being set, which could cause the "Stopped by user interruption." exception somehow to be fired twice, with the second time not being caught properly by my exception handling code.
     control_c();
 #endif
     if (ptr_save && ptr_save->ref_count!=-1 && !--(ptr_save->ref_count)){
@@ -7909,6 +7909,14 @@ namespace giac {
     case _INT_: case _ZINT: case _CPLX: case _DOUBLE_: case _FLOAT_:
       return change_subtype(is_zero(a,context0),_INT_BOOLEAN);
     default:
+      bool as=a.is_symb_of_sommet(at_superieur_strict);
+      bool ae=a.is_symb_of_sommet(at_superieur_egal);
+      if (as || ae){
+	gen f=a._SYMBptr->feuille;
+	if (f.type==_VECT && f._VECTptr->size()==2){
+	  return symbolic(ae?at_superieur_strict:at_superieur_egal,makesequence(f._VECTptr->back(),f._VECTptr->front()));
+	}
+      }
       return symb_not(a);
     }
   }

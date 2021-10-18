@@ -242,7 +242,8 @@ namespace giac {
       s[l-1]='-';
       isneg=false;
     }
-    if ( !(f.type==_SYMB && ((f._SYMBptr->sommet==at_plus) || (f._SYMBptr->sommet==at_prod) || need_parenthesis(f._SYMBptr->sommet) || f._SYMBptr->sommet==at_inv )) && (f.type!=_CPLX) && (f.type!=_MOD)){
+    bool bt=f.type==_SYMB && (f._SYMBptr->sommet==at_plus || f._SYMBptr->sommet==at_inv || f._SYMBptr->sommet==at_prod || need_parenthesis(f._SYMBptr->sommet));
+    if ( !bt && (f.type!=_CPLX) && (f.type!=_MOD)){
       s += (isneg?(calc38?"−1/":"-1/"):"1/");
       return add_print(s,f,contextptr);
     }
@@ -398,7 +399,7 @@ namespace giac {
       return s;
     }
     if (arg.type==_IDNT || (arg.type==_SYMB && arg._SYMBptr->sommet!=at_neg && (arg._SYMBptr->sommet!=at_exp || calc_mode(contextptr)!=1) && !arg._SYMBptr->sommet.ptr()->printsommet)){
-      argpar=(arg.is_symb_of_sommet(at_exp) && abs_calc_mode(contextptr)==38);
+      argpar=arg.is_symb_of_sommet(at_inv) || (arg.is_symb_of_sommet(at_exp) && abs_calc_mode(contextptr)==38);
       if (argpar) s +='(';
       if (pui.type==_SYMB || pui.type==_FRAC){
 	add_print(s,arg,contextptr);

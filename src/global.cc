@@ -1666,7 +1666,11 @@ extern "C" void Sleep(unsigned int miliSecond);
   int INT_KARAMUL_SIZE=300;
   int FFTMUL_SIZE=100; 
   int FFTMUL_INT_MAXBITS=1024;
+#ifdef GIAC_GGB
+  int MAX_ALG_EXT_ORDER_SIZE = 3;
+#else
   int MAX_ALG_EXT_ORDER_SIZE = 6;
+#endif
 #if defined EMCC || defined NO_TEMPLATE_MULTGCD
   int MAX_COMMON_ALG_EXT_ORDER_SIZE = 16;
 #else
@@ -3874,7 +3878,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     return isnan(d);
 #endif
 #else
-#ifdef FIR_LINUX
+#if defined (FIR_LINUX) || defined (FIR_ANDROID)
     return ::isnan(d);
 #else
     return isnan(d);
@@ -3887,7 +3891,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     double x=0.0;
     return d==1.0/x || d==-1.0/x;
 #else
-#ifdef FIR_LINUX
+#if defined (FIR_LINUX) || defined (FIR_ANDROID)
     return ::isinf(d);
 #else
     return isinf(d);
