@@ -8585,6 +8585,14 @@ namespace giac {
       if (subtype==_SPARSE_MATRIX)
 	return 0;
     }
+    if (type==_SPOL1){
+      sparse_poly1::const_iterator it=_SPOL1ptr->begin(),itend=_SPOL1ptr->end();
+      for (;it!=itend;++it){
+	if (it->exponent==i)
+	  return it->coeff;
+      }
+      return 0;
+    }
     if (is_symb_of_sommet(at_at)){ // add i at the end of the index
       if (_SYMBptr->feuille.type==_VECT && _SYMBptr->feuille._VECTptr->size()==2){
 	gen operand=_SYMBptr->feuille._VECTptr->front();
@@ -11898,7 +11906,7 @@ namespace giac {
       identificateur tt(string(1,series_variable_name(contextptr)));
       gen remains,g=sparse_poly12gen(p,tt,remains,!(sf & (1<<6)));
       if ( (sf & (1<<6)) && !is_zero(remains))
-	g += symb_of(gen("O",contextptr),remains);
+	g += symb_of(gen(abs_calc_mode(contextptr)==38?"b":"O",contextptr),remains);
       return g.print(contextptr);
     }
     string s;

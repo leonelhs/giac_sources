@@ -5439,7 +5439,7 @@ namespace giac {
 			35./384,0,500./1113,125./192,-2187./6784,11./84};
     // double butcher_b5[]={35./384,0,500./1113,125./192,-2187./6784,11./84,0};
     double butcher_b4[]={5179./57600,0,7571./16695,393./640,-92097./339200,187./2100,1./40};
-    vecteur y_final5(dim),y_final4(dim);
+    vecteur y_final5(yt.begin(),yt.begin()+dim),y_final4(dim);
     vecteur butcher_k(7);
     for (int i=0;i<7;++i)
       butcher_k[i]=vecteur(dim);
@@ -5461,15 +5461,24 @@ namespace giac {
 	for (int i=0;i<dim;++i){
 	  yt1[i]=yt[i];
 	}
-	for (int k=0;k<j;k++){
-	  gen bak=butcher_a[butcher_a_shift+k];
-	  const vecteur & bkk=(*butcher_k[k]._VECTptr);
-	  for (int i=0;i<dim;++i){
-	    yt1[i] += bak*bkk[i];
+	if (dim==1){
+	  gen & yt10=yt1[0];
+	  for (int k=0;k<j;k++){
+	    type_operator_plus_times(butcher_a[butcher_a_shift+k],butcher_k[k]._VECTptr->front(),yt10); 
+	  }
+	}
+	else {
+	  for (int k=0;k<j;k++){
+	    gen bak=butcher_a[butcher_a_shift+k];
+	    const vecteur & bkk=(*butcher_k[k]._VECTptr);
+	    for (int i=0;i<dim;++i){
+	      type_operator_plus_times(bak,bkk[i],yt1[i]); //yt1[i] += bak*bkk[i];
+	    }
 	  }
 	}
 	butcher_a_shift += j;
-	yt1[dim]=yt[dim]+butcher_c[j]*dt;
+	yt1[dim]=yt[dim];
+	type_operator_plus_times(butcher_c[j],dt,yt1[dim]);
 	vecteur & bkj = *butcher_k[j]._VECTptr;
 	if (j<6)
 	  bkj=subst(odesolve_f,ytvar,yt1,false,contextptr);
@@ -5489,7 +5498,7 @@ namespace giac {
 	gen bb4j=butcher_b4[j];
 	for (int i=0;i<dim;i++){
 	  // y_final5[i] += bb5j*bkj[i];
-	  y_final4[i] += bb4j*bkj[i];
+	  type_operator_plus_times(bb4j,bkj[i],y_final4[i]);//y_final4[i] += bb4j*bkj[i];
 	}
       }
       // accept or reject current step and compute dt
