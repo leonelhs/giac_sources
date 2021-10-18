@@ -849,10 +849,10 @@ function load() {
       //console.log(col);
       if (col=='white') user.setCurrentColor("yellow");
       if (col=='yellow') user.setCurrentColor("orange");
-      if (col=='orange') user.setCurrentColor("Crimson");
+      if (col=='orange') user.setCurrentColor("white");
       if (col=="Crimson") user.setCurrentColor("Plum");
       if (col=='Plum') user.setCurrentColor("LimeGreen");
-      if (col=='LimeGreen') user.setCurrentColor("white");
+      if (col=='LimeGreen') user.setCurrentColor("Crimson");
       // previousColor();
     }
     if ((evt.ctrlKey && evt.shiftKey && evt.key == "Z") || (evt.ctrlKey && evt.key == "y")) { //ctrl + shift + z OR Ctrl + Y = redo
