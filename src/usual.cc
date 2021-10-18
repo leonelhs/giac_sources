@@ -341,6 +341,7 @@ namespace giac {
 
   gen ln(const gen & e,GIAC_CONTEXT){
     // if (abs_calc_mode(contextptr)==38 && do_lnabs(contextptr) && !complex_mode(contextptr) && (e.type<=_POLY || e.type==_FLOAT_) && !is_positive(e,contextptr)) return gensizeerr(contextptr);
+    if (!escape_real(contextptr) && !complex_mode(contextptr) && (e.type<=_POLY || e.type==_FLOAT_) && !is_positive(e,contextptr)) return gensizeerr(contextptr);
     if (e.type==_FLOAT_){
 #ifdef BCD
       if (!is_positive(e,contextptr))
@@ -361,7 +362,7 @@ namespace giac {
 #endif
       }
       else {
-	if (0 && !complex_mode(contextptr))
+	if (!escape_real(contextptr) && !complex_mode(contextptr))
 	  *logptr(contextptr) << "Taking ln of negative real " << e << endl;
 #ifdef _SOFTMATH_H
 	return M_PI*cst_i+std::giac_gnuwince_log(-e._DOUBLE_val);
@@ -374,7 +375,7 @@ namespace giac {
       if (is_positive(e,contextptr))
 	return e._REALptr->log();
       else {
-	if (0 && !complex_mode(contextptr))
+	if (!escape_real(contextptr) && !complex_mode(contextptr))
 	  *logptr(contextptr) << "Taking ln of negative real " << e << endl;
 	return (-e)._REALptr->log()+cst_pi*cst_i;
       }
@@ -1178,6 +1179,7 @@ namespace giac {
 
   gen sqrt(const gen & e,GIAC_CONTEXT){
     // if (abs_calc_mode(contextptr)==38 && do_lnabs(contextptr) &&!complex_mode(contextptr) && (e.type<=_POLY || e.type==_FLOAT_) && !is_positive(e,contextptr)) return gensizeerr(contextptr);
+    if (!escape_real(contextptr) && !complex_mode(contextptr) && (e.type<=_POLY || e.type==_FLOAT_) && !is_positive(e,contextptr)) return gensizeerr(contextptr);
     if (e.type==_FLOAT_){
       if (fsign(e._FLOAT_val)==1)
 	return fsqrt(e._FLOAT_val);
@@ -2010,7 +2012,7 @@ namespace giac {
     // return cst_i*ln(sqrt(x*x-1,contextptr)+x,contextptr)+cst_pi_over_2;
   }
   gen asin(const gen & e0,GIAC_CONTEXT){
-    if (calc_mode(contextptr)==38 && !complex_mode(contextptr) && (e0.type<=_POLY || e0.type==_FLOAT_) && (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr)))
+    if ( (calc_mode(contextptr)==38 || !escape_real(contextptr) ) && !complex_mode(contextptr) && (e0.type<=_POLY || e0.type==_FLOAT_) && (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr)))
       return gensizeerr(contextptr);
     if (e0.type==_FLOAT_){
       if (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr))
@@ -2242,7 +2244,7 @@ namespace giac {
     return symbolic(at_acos,e);
   }
   gen acos(const gen & e0,GIAC_CONTEXT){
-    if (calc_mode(contextptr)==38 && !complex_mode(contextptr) && (e0.type<=_POLY || e0.type==_FLOAT_) && (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr)))
+    if ( (calc_mode(contextptr)==38 || !escape_real(contextptr) ) && !complex_mode(contextptr) && (e0.type<=_POLY || e0.type==_FLOAT_) && (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr)))
       return gensizeerr(contextptr);
     if (e0.type==_FLOAT_ && is_positive(e0+1,contextptr) && is_positive(1-e0,contextptr)){
 #ifdef BCD

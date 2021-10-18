@@ -491,6 +491,8 @@ namespace giac {
     unary_function_ptr u =mys.sommet;
     if (u==at_equal || u==at_equal2)
       return mathml_printsommetasoperator(mys.feuille,"<mo>=</mo>",contextptr);  
+    if (u==at_different)
+      return mathml_printsommetasoperator(mys.feuille,"<mo>≠</mo>",contextptr);
     if (u==at_inferieur_egal)
       return mathml_printsommetasoperator(mys.feuille,"<mo>&le;</mo>",contextptr);
     if (u==at_superieur_egal)
@@ -1119,7 +1121,7 @@ namespace giac {
   static string symbolic2mathml(const symbolic & mys, string &svg,GIAC_CONTEXT){
 
     string opstring(mys.sommet.ptr()->print(contextptr));
-    if (opstring!="/" && mys.sommet.ptr()->texprint)  
+    if (opstring!="/" && (mys.sommet.ptr()->texprint || mys.sommet==at_different))  
       return mathml_print(mys,contextptr);
     if (mys.sommet==at_pnt) { 
       svg=svg+symbolic2svg(mys,gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax,contextptr);

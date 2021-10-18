@@ -6374,7 +6374,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     return true;
   }
   
-  int step_param(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT){
+  int step_param_(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT){
     if (t.type!=_IDNT)
       return 0;
     gen periodef,periodeg,periode;
@@ -6441,7 +6441,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     comprim(c);
     it=c.begin();itend=c.end();
     for (;it!=itend;++it){
-      if (is_greater(*it,tmin,contextptr) && is_greater(tmax,*it,contextptr)){
+      if (in_domain(df1,t,*it,contextptr) && is_greater(*it,tmin,contextptr) && is_greater(tmax,*it,contextptr)){
 	crit.push_back(*it);
 	gen fx=limit(f,xid,*it,0,contextptr);
 	fx=recursive_normal(fx,contextptr);
@@ -6770,11 +6770,22 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     return 1 + (periode!=1);
   }
 
+  int step_param(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT){
+#ifdef NO_STDEXCEPT
+    return step_param_(f,g,t,tmin,tmax,poi,tvi,printtvi,contextptr);
+#else
+    try {
+      return step_param_(f,g,t,tmin,tmax,poi,tvi,printtvi,contextptr);
+    } catch(std::runtime_error & e){}
+    return 0;
+#endif
+  }
+
   // x->f in xmin..xmax
   // pass -inf and inf by default.
   // poi will contain point of interest: asymptotes and extremas
   // xmin and xmax will be set to values containing all points in poi
-  int step_func(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT){
+  int step_func_(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT){
     if (x.type!=_IDNT)
       return 0;
     gen periode;
@@ -6834,7 +6845,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     }
     it=c._VECTptr->begin();itend=c._VECTptr->end();
     for (;it!=itend;++it){
-      if (is_greater(*it,xmin,contextptr) && is_greater(xmax,*it,contextptr)){
+      if (in_domain(df,x,*it,contextptr) && is_greater(*it,xmin,contextptr) && is_greater(xmax,*it,contextptr)){
 	crit.push_back(*it);
 	gen fx=limit(f,xid,*it,0,contextptr);
 	fx=recursive_normal(fx,contextptr);
@@ -6898,8 +6909,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       }
       gen b=limit(f-a*x,xid,*it,0,contextptr);
       b=recursive_normal(b,contextptr);
-      if (is_undef(a)) continue;
-      if (is_inf(a)){
+      if (is_undef(b)) continue;
+      if (is_inf(b)){
 	gprintf("Parabolic branch direction %gen at infinity",vecteur(1,symb_equal(y__IDNT_e,a*x__IDNT_e)),contextptr);
 	continue;
       }
@@ -7023,6 +7034,17 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 #endif
     // finished!
     return 1 + (periode!=0);
+  }
+
+  int step_func(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT){
+#ifdef NO_STDEXCEPT
+    return step_func_(f,x,xmin,xmax,poi,tvi,printtvi,contextptr);
+#else
+    try {
+     return step_func_(f,x,xmin,xmax,poi,tvi,printtvi,contextptr);
+    } catch (std::runtime_error & e){}
+    return 0;
+#endif
   }
 
   gen _tabvar(const gen & g,GIAC_CONTEXT){

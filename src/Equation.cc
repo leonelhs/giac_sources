@@ -1271,7 +1271,7 @@ namespace xcas {
        *   SEQUENCES/VECTORS   *
        *************************/
       // horizontal gluing
-      x += a.fontsize/2;
+      if (g.subtype!=_PRINT__VECT) x += a.fontsize/2;
       int ncols=itend-it;
       //ncols=min(ncols,5);
       for (;it!=itend;++it){
