@@ -1166,8 +1166,10 @@ Type the following text with your favorite editor
      using namespace giac;
 
      int main(){
-       gen e(string("x^2-1"));
-       cout << factor(e) << endl;
+       context ct;
+       gen e("x^2-1",&ct);
+       e=eval(e,1,&ct);
+       cout << _factor(e,&ct) << endl;
      }
 
    save it e.g. as `tryit.cc' and compile it with
@@ -1270,7 +1272,7 @@ Node: Making modules40124
 Node: User defined data42736
 Node: Examples43089
 Node: First example43286
-Node: Concept Index45031
+Node: Concept Index45075
 
 End Tag Table
 

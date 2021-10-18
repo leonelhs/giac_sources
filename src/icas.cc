@@ -474,6 +474,7 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
   char buf[BUFFER_SIZE+1];
   buf[BUFFER_SIZE]=0;
   bool inside=false,inprog=false,inverb=false;
+  int inhevea=0; // 1: \ifhevea, -1: \else
   string prg;
   for (;;){
     if (in.eof())
@@ -485,6 +486,27 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
     for (;!s.empty();){
       int ss=s.size();
       int pos=0;
+      if (inhevea==1){
+	pos=s.find("\\else");
+	if (pos>=0 && pos<ss){
+	  inhevea=-1;
+	}
+	break;
+      }
+      if (inhevea){
+	pos=s.find("\\fi");
+	if (pos>=0 && pos<ss){
+	  inhevea=0;
+	  break;
+	}
+      }
+      else {
+	pos=s.find("\\ifhevea");
+	if (pos>=0 && pos<ss){
+	  inhevea=1;
+	  break;
+	}
+      }
       if (inside){
 	if (!inverb){
 	  pos=s.find("\\verb");

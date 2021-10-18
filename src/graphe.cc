@@ -391,38 +391,6 @@ const int graphe::icosahedron_graph[] = {
     11,     12,-1,
     -2
 };
-const int graphe::levi_graph[] = {
-    1,      2,18,30,-1,
-    2,      3,23,-1,
-    3,      4,10,-1,
-    4,      5,27,-1,
-    5,      6,14,-1,
-    6,      7,19,-1,
-    7,      8,24,-1,
-    8,      9,29,-1,
-    9,      10,16,-1,
-    10,     11,-1,
-    11,     12,20,-1,
-    12,     13,25,-1,
-    13,     14,30,-1,
-    14,     15,-1,
-    15,     16,22,-1,
-    16,     17,-1,
-    17,     18,26,-1,
-    18,     19,-1,
-    19,     20,-1,
-    20,     21,-1,
-    21,     22,28,-1,
-    22,     23,-1,
-    23,     24,-1,
-    24,     25,-1,
-    25,     26,-1,
-    26,     27,-1,
-    27,     28,-1,
-    28,     29,-1,
-    29,     30,-1,
-    -2
-};
 const int graphe::ljubljana_graph_lcf[] = {
     47,-23,-31,39,25,-21,-31,-41,25,15,29,-41,-19,15,-49,33,39,-35,-21,17,-33,49,41,31,
     -15,-29,41,31,-15,-25,21,31,-51,-25,23,9,-17,51,35,-29,21,-51,-39,33,-9,-51,51,-47,
@@ -436,8 +404,48 @@ const int graphe::harries_wong_graph_lcf[] = {
     -9,-33,-17,19,-31,27,11,-25,29,-33,13,-13,21,-29,-21,25,9,-11,-19,29,9,-27,-19,-13,-35,-9,
     9,17,25,-9,9,27,-27,-21,15,-9,29,-29,33,-9,-25,0
 };
+const int graphe::balaban_10cage_lcf[] = {
+    -9,-25,-19,29,13,35,-13,-29,19,25,9,-29,29,17,33,21,9,-13,-31,-9,25,17,9,-31,27,-9,17,-19,-29,
+    27,-17,-9,-29,33,-25,25,-21,17,-17,29,35,-29,17,-17,21,-25,25,-33,29,9,17,-27,29,19,-17,9,-27,
+    31,-9,-17,-25,9,31,13,-9,-21,-33,-17,-29,29,0
+};
+const int graphe::balaban_11cage_lcf[] = {
+    44,26,-47,-15,35,-39,11,-27,38,-37,43,14,28,51,-29,-16,41,-11,-26,15,22,-51,-35,36,52,-14,-33,-26,-46,
+    52,26,16,43,33,-15,17,-53,23,-42,-35,-28,30,-22,45,-44,16,-38,-16,50,-55,20,28,-17,-43,47,34,-26,-41,11,
+    -36,-23,-16,41,17,-51,26,-33,47,17,-11,-20,-30,21,29,36,-43,-52,10,39,-28,-17,-52,51,26,37,-17,10,-10,
+    -45,-34,17,-26,27,-21,46,53,-10,29,-50,35,15,-47,-29,-41,26,33,55,-17,42,-26,-36,16,0
+};
 const int graphe::foster_graph_lcf[] = {
     17,-9,37,-37,9,-17,0
+};
+const int graphe::bidiakis_cube_graph_lcf[] = {
+    -6,4,-4,0
+};
+const int graphe::franklin_graph_lcf[] = {
+    5,-5,0
+};
+const int graphe::frucht_graph_lcf[] = {
+    -5,-2,-4,2,5,-2,2,5,-2,-5,4,2,0
+};
+const int graphe::biggs_smith_graph_lcf[] = {
+    16,24,-38,17,34,48,-19,41,-35,47,-20,34,-36,21,14,48,-16,-36,-43,28,-17,21,29,-43,46,-24,28,-38,-14,-50,-45,21,8,
+    27,-21,20,-37,39,-34,-44,-8,38,-21,25,15,-34,18,-28,-41,36,8,-29,-21,-48,-28,-20,-47,14,-8,-15,-27,38,24,-48,-18,25,
+    38,31,-25,24,-46,-14,28,11,21,35,-39,43,36,-38,14,50,43,36,-11,-36,-24,45,8,19,-25,38,20,-24,-14,-21,-8,44,-31,-38,-28,37,0
+};
+const int graphe::folkman_graph_lcf[] = {
+    5,-7,-7,5,0
+};
+const int graphe::gray_graph_lcf[] = {
+    -25,7,-7,13,-13,25,0
+};
+const int graphe::tutte_12cage_lcf[] = {
+    17,27,-13,-59,-35,35,-11,13,-53,53,-27,21,57,11,-21,-57, 59,-17,0
+};
+const int graphe::tutte_8cage_lcf[] = {
+    -13,-9,7,-7,9,13,0
+};
+const int graphe::f26a_graph_lcf[] = {
+    -7,7,0
 };
 const int graphe::blanusa_graph[] = {
     1,      2,6,8,-1,
@@ -455,6 +463,156 @@ const int graphe::blanusa_graph[] = {
     13,     15,-1,
     15,     16,-1,
     16,     17,-1,
+    -2
+};
+const int graphe::bull_graph[] = {
+    1,      2,3,-1,
+    2,      3,4,-1,
+    3,      5,-1,
+    -2
+};
+const int graphe::butterfly_graph[] = {
+    1,      2,3,4,5,-1,
+    2,      3,-1,
+    4,      5,-1,
+    -2
+};
+const int graphe::diamond_graph[] = {
+    1,      2,3,4,-1,
+    2,      3,-1,
+    3,      4,-1,
+    -2
+};
+const int graphe::chvatal_graph[] = {
+    1,      2,4,5,12,-1,
+    2,      3,6,7,-1,
+    3,      4,8,9,-1,
+    4,      10,11,-1,
+    5,      6,8,9,-1,
+    6,      11,10,-1,
+    7,      8,10,11,-1,
+    8,      12,-1,
+    9,      10,12,-1,
+    11,     12,-1,
+    -2
+};
+const int graphe::moser_spindle_graph[] = {
+    1,      2,5,6,7,-1,
+    2,      3,7,-1,
+    3,      4,7,-1,
+    4,      5,6,-1,
+    5,      6,-1,
+    -2
+};
+const int graphe::errera_graph[] = {
+    1,      2,3,4,14,15,-1,
+    2,      3,13,15,17,-1,
+    3,      13,14,16,-1,
+    4,      5,6,14,15,-1,
+    5,      6,7,8,14,16,-1,
+    6,      7,9,15,17,-1,
+    7,      8,9,10,-1,
+    8,      10,11,16,-1,
+    9,      10,12,17,-1,
+    10,     11,12,-1,
+    11,     12,13,16,-1,
+    12,     13,17,-1,
+    13,     16,17,-1,
+    14,     16,-1,
+    15,     17,-1,
+    -2
+};
+const int graphe::goldner_harary_graph[] = {
+    1,      2,3,4,5,6,9,10,11,-1,
+    2,      3,10,-1,
+    3,      4,7,8,9,10,-1,
+    4,      9,-1,
+    5,      9,11,-1,
+    6,      10,11,-1,
+    7,      9,11,-1,
+    8,      10,11,-1,
+    9,      11,-1,
+    10,     11,-1,
+    -2
+};
+const int graphe::golomb_graph[] = {
+    1,      2,3,4,-1,
+    2,      3,6,-1,
+    3,      8,-1,
+    4,      5,9,10,-1,
+    5,      6,10,-1,
+    6,      7,10,-1,
+    7,      8,10,-1,
+    8,      9,10,-1,
+    9,      10,-1,
+    -2
+};
+const int graphe::hoffman_graph_matrix[8][8] = {
+    {1,1,1,1,0,0,0,0},
+    {1,1,1,0,1,0,0,0},
+    {1,0,0,1,0,1,1,0},
+    {0,1,0,1,0,1,0,1},
+    {0,0,1,1,0,0,1,1},
+    {1,0,0,0,1,1,1,0},
+    {0,1,0,0,1,1,0,1},
+    {0,0,1,0,1,0,1,1}
+};
+const int graphe::poussin_graph[] = {
+    1,      2,3,4,5,10,-1,
+    2,      3,5,7,9,15,-1,
+    3,      4,6,8,15,-1,
+    4,      6,10,-1,
+    5,      7,10,-1,
+    6,      8,10,11,12,-1,
+    7,      9,10,11,13,-1,
+    8,      12,14,15,-1,
+    9,      13,14,15,-1,
+    10,     11,-1,
+    11,     12,13,-1,
+    12,     13,14,-1,
+    13,     14,-1,
+    14,     15,-1,
+    -2
+};
+const int graphe::wagner_graph[] = {
+    1,      2,5,8,-1,
+    2,      3,6,-1,
+    3,      4,7,-1,
+    4,      5,8,-1,
+    5,      6,-1,
+    6,      7,-1,
+    7,      8,-1,
+    -2
+};
+const int graphe::tietze_graph[] = {
+    1,      2,5,9,-1,
+    2,      3,7,-1,
+    3,      4,11,-1,
+    4,      5,8,-1,
+    5,      6,-1,
+    6,      7,12,-1,
+    7,      8,-1,
+    8,      9,-1,
+    9,      10,-1,
+    10,     11,12,-1,
+    11,     12,-1,
+    -2
+};
+const int graphe::tutte_fragment_graph[] = {
+    1,      2,4,-1,
+    2,      3,5,-1,
+    3,      4,7,-1,
+    4,      8,-1,
+    5,      6,9,-1,
+    6,      7,10,-1,
+    7,      11,-1,
+    8,      11,15,-1,
+    9,      10,13,-1,
+    10,     12,-1,
+    11,     12,-1,
+    12,     14,-1,
+    13,     14,-1,
+    14,     15,-1,
     -2
 };
 
@@ -1069,6 +1227,19 @@ graphe::graphe(const string &name,GIAC_CONTEXT) {
         make_circular_layout(x,hull,3.5);
     } else if (name=="desargues") {
         make_petersen_graph(10,3,&x);
+    } else if (name=="bidiakis") {
+        make_lcf_graph(bidiakis_cube_graph_lcf,4);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
+        layout_best_rotation(x);
+    } else if (name=="bull") {
+        read_special(bull_graph);
+        make_spring_layout(x,2);
+        layout_best_rotation(x);
+    } else if (name=="butterfly") {
+        read_special(butterfly_graph);
+        make_spring_layout(x,2);
+        layout_best_rotation(x);
     } else if (name=="blanusa") {
         vecteur l1=makevecteur(1,2,3,4,5,6,7,8,9);
         vecteur l2=makevecteur(10,11,12,13,14,15,16,17,18);
@@ -1081,24 +1252,90 @@ graphe::graphe(const string &name,GIAC_CONTEXT) {
         add_temporary_edge(4,15);
         make_circular_layout(x,hull,2.5,0.005,0.618);
         remove_temporary_edges();
+    } else if (name=="diamond") {
+        read_special(diamond_graph);
+        make_spring_layout(x,2);
+        layout_best_rotation(x);
+    } else if (name=="chvatal") {
+        read_special(chvatal_graph);
+        x.resize(12);
+        for (layout::iterator it=x.begin();it!=x.end();++it) it->resize(2);
+        x[0][0]=-4; x[0][1]=4; x[1][0]=4; x[1][1]=4;
+        x[5][0]=4; x[5][1]=-4; x[2][0]=-4; x[2][1]=-4;
+        x[3][0]=-1; x[3][1]=2; x[6][0]=1; x[6][1]=2;
+        x[7][0]=2; x[7][1]=1; x[8][0]=2; x[8][1]=-1;
+        x[9][0]=1; x[9][1]=-2; x[10][0]=-1; x[10][1]=-2;
+        x[11][0]=-2; x[11][1]=-1; x[4][0]=-2; x[4][1]=1;
     } else if (name=="dodecahedron") {
         read_special(dodecahedron_graph);
         for (int i=1;i<=5;++i) hull.push_back(node_index(i));
         make_circular_layout(x,hull,2.5);
+        layout_best_rotation(x);
+    } else if (name=="errera") {
+        read_special(errera_graph);
+        for (int i=0;i<3;++i) hull.push_back(i);
+        make_circular_layout(x,hull);
+        layout_best_rotation(x);
+    } else if (name=="poussin") {
+        read_special(poussin_graph);
+        for (int i=0;i<3;++i) hull.push_back(i);
+        make_circular_layout(x,hull);
+        layout_best_rotation(x);
+    } else if (name=="franklin") {
+        make_lcf_graph(franklin_graph_lcf,6);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
+        layout_best_rotation(x);
+    } else if (name=="frucht") {
+        make_lcf_graph(frucht_graph_lcf,1);
+        make_planar_layout(x);
+        layout_best_rotation(x);
+    } else if (name=="biggs-smith") {
+        make_lcf_graph(biggs_smith_graph_lcf,1);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
     } else if (name=="durer") {
         make_petersen_graph(6,2,&x);
     } else if (name=="dyck") {
         read_special(dyck_graph);
         for (int i=0;i<node_count();++i) hull.push_back(i);
         make_circular_layout(x,hull);
+    } else if (name=="folkman") {
+        make_lcf_graph(folkman_graph_lcf,5);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
+    } else if (name=="gray") {
+        make_lcf_graph(gray_graph_lcf,9);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
     } else if (name=="grinberg") {
         read_special(grinberg_graph);
         make_planar_layout(x);
+        layout_best_rotation(x);
+    } else if (name=="goldner-harary") {
+        read_special(goldner_harary_graph);
+        make_planar_layout(x);
+        layout_best_rotation(x);
+    } else if (name=="golomb") {
+        read_special(golomb_graph);
+        for (int i=0;i<3;++i) hull.push_back(i);
+        add_temporary_edge(0,6);
+        add_temporary_edge(1,6);
+        add_temporary_edge(1,9);
+        add_temporary_edge(2,9);
+        add_temporary_edge(0,7);
+        add_temporary_edge(2,7);
+        make_circular_layout(x,hull);
+        remove_temporary_edges();
         layout_best_rotation(x);
     } else if (name=="grotzsch") {
         read_special(grotzsch_graph);
         for (int i=1;i<=5;++i) hull.push_back(node_index(i));
         make_circular_layout(x,hull,2.5);
+    } else if (name=="f26a") {
+        make_lcf_graph(f26a_graph_lcf,13);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
     } else if (name=="harries") {
         make_lcf_graph(harries_graph_lcf,5);
         for (int i=0;i<node_count();++i) hull.push_back(i);
@@ -1107,30 +1344,55 @@ graphe::graphe(const string &name,GIAC_CONTEXT) {
         make_lcf_graph(harries_wong_graph_lcf,1);
         for (int i=0;i<node_count();++i) hull.push_back(i);
         make_circular_layout(x,hull);
+    } else if (name=="balaban10") {
+        make_lcf_graph(balaban_10cage_lcf,1);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
+    } else if (name=="balaban11") {
+        make_lcf_graph(balaban_11cage_lcf,1);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
     } else if (name=="heawood") {
         read_special(heawood_graph);
     } else if (name=="herschel") {
         read_special(herschel_graph);
         make_planar_layout(x);
         layout_best_rotation(x);
+    } else if (name=="hoffman") {
+        vecteur labels;
+        make_default_labels(labels,16);
+        add_nodes(labels);
+        for (int i=0;i<16;++i) for (int j=0;j<16;++j) {
+            if ((i<8 && j<8) || (i>=8 && j>=8)) continue;
+            if (hoffman_graph_matrix[i<j?j-8:i-8][i<j?i:j]==1)
+                add_edge(i,j);
+        }
+        make_spring_layout(x,2);
+        layout_best_rotation(x);
     } else if (name=="icosahedron") {
         read_special(icosahedron_graph);
         make_planar_layout(x);
         layout_best_rotation(x);
     } else if (name=="levi") {
-        read_special(levi_graph);
+        make_lcf_graph(tutte_8cage_lcf,5);
         for (int i=0;i<node_count();++i) hull.push_back(i);
         make_circular_layout(x,hull);
     } else if (name=="ljubljana") {
         make_lcf_graph(ljubljana_graph_lcf,2);
     } else if (name=="foster") {
         make_lcf_graph(foster_graph_lcf,15);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
     } else if (name=="mcgee") {
         read_special(mcgee_graph);
         for (int i=0;i<node_count();++i) hull.push_back(i);
         make_circular_layout(x,hull);
     } else if (name=="mobius-kantor") {
         make_petersen_graph(8,3,&x);
+    } else if (name=="moser") {
+        read_special(moser_spindle_graph);
+        make_planar_layout(x);
+        layout_best_rotation(x);
     } else if (name=="nauru") {
         make_petersen_graph(12,5,&x);
     } else if (name=="octahedron") {
@@ -1166,6 +1428,33 @@ graphe::graphe(const string &name,GIAC_CONTEXT) {
     } else if (name=="tetrahedron") {
         read_special(tetrahedron_graph);
         make_planar_layout(x);
+        layout_best_rotation(x);
+    } else if (name=="tietze") {
+        read_special(tietze_graph);
+        hull.push_back(0); hull.push_back(1); hull.push_back(4);
+        hull.push_back(6); hull.push_back(2); hull.push_back(9);
+        hull.push_back(5); hull.push_back(8); hull.push_back(3);
+        make_circular_layout(x,hull);
+        layout_best_rotation(x);
+    } else if (name=="tutte") {
+        make_tutte_graph();
+        vecteur l=makevecteur(28,12,15,13,42,45,43,27,30);
+        for (const_iterateur it=l.begin();it!=l.end();++it) {
+            hull.push_back(node_index(*it));
+        }
+        make_circular_layout(x,hull);
+        layout_best_rotation(x);
+    } else if (name=="tutte12") {
+        make_lcf_graph(tutte_12cage_lcf,7);
+        for (int i=0;i<node_count();++i) hull.push_back(i);
+        make_circular_layout(x,hull);
+    } else if (name=="wagner") {
+        read_special(wagner_graph);
+        hull.push_back(0); hull.push_back(1);
+        hull.push_back(4); hull.push_back(6);
+        hull.push_back(2); hull.push_back(5);
+        hull.push_back(7); hull.push_back(3);
+        make_circular_layout(x,hull);
         layout_best_rotation(x);
     }
     if (!x.empty()) {
@@ -5340,10 +5629,10 @@ void graphe::make_sierpinski_graph(int n,int k,bool triangle) {
 /* create the Shrikhande graph */
 void graphe::make_shrikhande_graph() {
     this->clear();
-    vecteur V;
-    make_default_labels(V,16);
+    vecteur labels;
+    make_default_labels(labels,16);
     reserve_nodes(16);
-    add_nodes(V);
+    add_nodes(labels);
     ipairs v(16);
     int k=0,m,n;
     for (int i=0;i<4;++i) {
@@ -5360,6 +5649,26 @@ void graphe::make_shrikhande_graph() {
             if ((m*n==0 && (m+n)%2!=0) || (m==n && (m*n)%2!=0))
                 add_edge(i,j);
         }
+    }
+}
+
+/* create the Tutte graph by joining three copies of Tutte's fragment */
+void graphe::make_tutte_graph() {
+    this->clear();
+    vecteur labels;
+    make_default_labels(labels,46);
+    reserve_nodes(46);
+    add_nodes(labels);
+    graphe fragment(ctx);
+    fragment.read_special(tutte_fragment_graph);
+    ipairs E;
+    fragment.get_edges_as_pairs(E);
+    for (int i=0;i<3;++i) {
+        for (ipairs_iter it=E.begin();it!=E.end();++it) {
+            add_edge(1+15*i+it->first,1+15*i+it->second);
+        }
+        add_edge(0,1+15*i);
+        add_edge(15*i+12,15*((i+1)%3)+13);
     }
 }
 
@@ -5690,6 +5999,42 @@ void graphe::strongly_connected_components(ivectors &components,int sg) {
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         if ((sg<0 || it->subgraph()==sg) && !it->is_visited())
             strongconnect_dfs(components,onstack,it-nodes.begin(),sg);
+    }
+}
+
+/* create the condensation of tis graph by contracting strongly connected components */
+void graphe::condensation(graphe &G) {
+    assert(is_directed());
+    ivectors comp;
+    strongly_connected_components(comp);
+    int n=comp.size(),dir;
+    G.clear();
+    G.set_directed(true);
+    if (G.supports_attributes()) {
+        vecteur labels;
+        G.make_default_labels(labels,n);
+        G.add_nodes(labels);
+    } else G.add_nodes(n);
+    for (ivectors_iter it=comp.begin();it!=comp.end();++it) {
+        for (ivectors_iter jt=it+1;jt!=comp.end();++jt) {
+            dir=0;
+            for (ivector_iter kt=it->begin();kt!=it->end() && dir==0;++kt) {
+                for (ivector_iter lt=jt->begin();lt!=jt->end() && dir==0;++lt) {
+                    if (has_edge(*kt,*lt)) dir=1;
+                    else if (has_edge(*lt,*kt)) dir=-1;
+                }
+            }
+            switch (dir) {
+            case 1:
+                G.add_edge(it-comp.begin(),jt-comp.begin());
+                break;
+            case -1:
+                G.add_edge(jt-comp.begin(),it-comp.begin());
+                break;
+            default:
+                break;
+            }
+        }
     }
 }
 
@@ -9594,7 +9939,7 @@ bool graphe::bondy_chvatal_closure(graphe &G,ivector &d) {
         for (int i=0;i<n && !have_pair;++i) {
             di=d[i];
             for (int j=i+1;j<n;++j) {
-                if (!has_edge(i,j) && di+d[j]>=n) {
+                if (!G.has_edge(i,j) && di+d[j]>=n) {
                     G.add_edge(i,j);
                     ++d[i]; ++d[j];
                     yes=have_pair=true;
@@ -9615,7 +9960,7 @@ int graphe::is_hamiltonian(bool conclusive,ivector &hc,bool make_closure) {
     if (!is_biconnected())
         return 0;
     int mindeg=RAND_MAX,deg,n=node_count(),m=edge_count();
-    ivector d(n);
+    ivector d=vecteur_2_vector_int(degree_sequence());
     /* Dirac criterion, complexity O(n) */
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         if ((deg=d[it-nodes.begin()]=it->neighbors().size())<mindeg)
@@ -9654,8 +9999,12 @@ int graphe::is_hamiltonian(bool conclusive,ivector &hc,bool make_closure) {
             return 1;
     }
     /* brute force, NP hard */
-    double cost;
-    return conclusive?find_hamiltonian_cycle(hc,cost):-1;
+    if (conclusive) {
+        cout << "Calling traveling_salesman..." << endl;
+        double cost;
+        return find_hamiltonian_cycle(hc,cost);
+    }
+    return -1;
 }
 
 /*
@@ -12000,6 +12349,125 @@ int graphe::vertex_connectivity() {
         }
     }
     return k;
+}
+
+/* truncate the graph, assuming that it is planar */
+void graphe::truncate(graphe &dest,const ivectors &faces) {
+    set_embedding(faces);
+    dest.clear();
+    int nv=node_count(),ne=edge_count(),n;
+    if (dest.supports_attributes()) {
+        vecteur V;
+        dest.make_default_labels(V,2*ne);
+        dest.add_nodes(V);
+    } else dest.add_nodes(2*ne);
+    int cnt=0,f;
+    ivector adj;
+    map<ipair,ivector> p;
+    for (int i=0;i<nv;++i) {
+        vertex &v=node(i);
+        n=v.neighbors().size();
+        ivector ngh;
+        adjacent_nodes(i,adj);
+        ngh.push_back(adj.back());
+        adj.pop_back();
+        while (!adj.empty()) {
+            f=v.edge_face(ngh.back());
+            ivector::iterator it=adj.begin();
+            for (;it!=adj.end() && f!=node(*it).edge_face(i);++it);
+            assert(it!=adj.end());
+            ngh.push_back(*it);
+            adj.erase(it);
+        }
+        for (int j=0;j<n;++j) {
+            p[make_pair(i<ngh[j]?i:ngh[j],i<ngh[j]?ngh[j]:i)].push_back(cnt+j);
+            dest.add_edge(cnt+j,cnt+(j+1)%n);
+        }
+        cnt+=n;
+    }
+    ipairs E;
+    get_edges_as_pairs(E);
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        const ivector &iv=p[*it];
+        assert(iv.size()==2);
+        dest.add_edge(iv.front(),iv.back());
+    }
+}
+
+/*
+ * CIRC_ENUM CLASS IMPLEMENTATION
+ *
+ * Implementation of Tarjan's algorithm published in SIAM J. Comp. 2(3), 1973
+ */
+
+graphe::circ_enum::circ_enum(graphe *gr) {
+    G=gr;
+    int n=G->node_count();
+    A.resize(n);
+    for (int i=0;i<n;++i) {
+        const vertex &v=G->node(i);
+        for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
+            A[i].push_back(*it);
+        }
+    }
+}
+
+void graphe::circ_enum::backtrack(int v,bool &f) {
+    bool g;
+    f=false;
+    point_stack.push_back(v);
+    mark[v]=true;
+    marked_stack.push(v);
+    int w,u;
+    for (int i=A[v].size();i-->0;) {
+        w=A[v][i];
+        if (w<s) A[v].erase(A[v].begin()+i);
+        else if (w==s) {
+            res.push_back(point_stack);
+            f=true;
+        } else if (!mark[w]) {
+            backtrack(w,g);
+            f=f||g;
+        }
+    }
+    /* f is true if an elementary circuit containing
+     * the partial path has been found */
+    if (f) {
+        while (marked_stack.top()!=v) {
+            u=marked_stack.top();
+            marked_stack.pop();
+            mark[u]=false;
+        }
+        marked_stack.pop();
+        mark[v]=false;
+    }
+    point_stack.pop_back();
+}
+
+/* return the list of all elementary cycles in the given digraph */
+graphe::ivectors graphe::circ_enum::find_cycles() {
+    int n=G->node_count(),u;
+    bool flag;
+    mark.resize(n,false);
+    for (s=0;s<n;++s) {
+        backtrack(s,flag);
+        while (!marked_stack.empty()) {
+            u=marked_stack.top();
+            mark[u]=false;
+            marked_stack.pop();
+        }
+    }
+    return res;
+}
+
+/*
+ * END OF CIRC_ENUM CLASS IMPLEMENTATION
+ */
+
+void graphe::elementary_cycles(ivectors &cyc) {
+    assert(is_directed());
+    circ_enum ce(this);
+    cyc=ce.find_cycles();
 }
 
 #ifndef NO_NAMESPACE_GIAC

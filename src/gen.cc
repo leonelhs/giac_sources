@@ -719,15 +719,6 @@ namespace giac {
 #endif
     }
     else {
-      bool signe=(i<0);
-      if (signe)
-	i=-i;
-      unsigned int i3= i;
-      i = i>>32;
-      unsigned int i2= i;
-      i = i>>32;
-      unsigned int i1= i;
-      i = i>>32;
 #ifdef SMARTPTR64
       * ((ulonglong * ) this) = ulonglong(new ref_mpz_t(128)) << 16;
 #else
@@ -735,6 +726,19 @@ namespace giac {
 #endif
       type =_ZINT;
       subtype=0;
+      bool signe=(i<0);
+      if (signe)
+	i=-i;
+#if 1
+      mpz_import(*_ZINTptr,4/* count*/,-1/*1 for least significant first*/,4/* sizeof unsigned*/,0,0,&i);
+      // CERR << gen(*_ZINTptr) ;
+#else
+      unsigned int i3= i;
+      i = i>>32;
+      unsigned int i2= i;
+      i = i>>32;
+      unsigned int i1= i;
+      i = i>>32;
       // convert to mpz_t
       if (i1 || i){
 	mpz_set_ui(*_ZINTptr,(unsigned int) i);
@@ -747,8 +751,10 @@ namespace giac {
 	mpz_set_ui(*_ZINTptr,i2);
       mpz_mul_2exp(*_ZINTptr,*_ZINTptr,32);
       mpz_add_ui(*_ZINTptr,*_ZINTptr,i3);
+#endif
       if (signe)
 	mpz_neg(*_ZINTptr,*_ZINTptr);
+      // CERR << " " << gen(*_ZINTptr) << endl ;
     }
   }
 #endif
@@ -3861,10 +3867,9 @@ namespace giac {
       if (u==at_ln)
 	return real_abs(s,contextptr);
       if (!has_i(s)){
-	if (u==at_exp || u==at_sqrt || (u==at_pow && f[1]==plus_one_half))
+	if (u==at_exp || ( (u==at_sqrt && is_positive(f,contextptr)) || (u==at_pow && f[1]==plus_one_half && is_positive(f[0],contextptr)) ) )
 	  return s;
-	if (calc_mode(contextptr)==1 && u==at_pow && f.type==_VECT && f._VECTptr->size()==2 && f._VECTptr->back()==plus_one_half)
-	  return s;
+	// if (calc_mode(contextptr)==1 && u==at_pow && f.type==_VECT && f._VECTptr->size()==2 && f._VECTptr->back()==plus_one_half && is_positive(f[0],contextptr)) return s;
       }
     }
     else {

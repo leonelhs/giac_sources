@@ -1000,10 +1000,16 @@ namespace giac {
 	    vecteur Q=makevecteur(alpha4,0,6*alpha3*gamma-2*alpha2*beta2,0,9*alpha2*gamma2-6*alpha*beta2*gamma+beta4,0,27*alpha2*delta2-18*alpha*beta*delta*gamma+4*alpha*gamma3+4*beta3*delta-beta2*gamma2);
 	    gen tmp=lgcd(Q);
 	    divvecteur(Q,tmp,Q);
-	    gen q=r2sym(Q,lv,contextptr);
+	    gen q=r2sym(Q,lv,contextptr),q0;
+	    if (q.type==_VECT && !q._VECTptr->empty()){
+	      q0=q._VECTptr->front();
+	      if (!is_one(q0) && is_one(q0*q0*q0*q0)){
+		q=q/q0;
+		q0=1;
+	      }
+	    }
 	    if (q.type==_VECT && !q._VECTptr->empty() && !is_one(q._VECTptr->front())){
 	      // make change of variable so that Q becomes monic and solve again
-	      gen q0=q._VECTptr->front();
 	      gen e1=subst(e,x,x/q0,false,contextptr);
 	      vecteur newv;
 	      int is=isolate_mode;
@@ -1110,7 +1116,10 @@ namespace giac {
       if (!complexmode && is_positive(-delta_prime,contextptr))
 	return;
 #endif
-      delta_prime=sqrt(delta_prime,contextptr);
+      if (fastsign(delta_prime,contextptr)<0)
+	delta_prime=cst_i*sqrt(-delta_prime,contextptr);
+      else
+	delta_prime=sqrt(delta_prime,contextptr);
       delta_prime=normalize_sqrt(delta_prime,contextptr,false); // no abs in sqrt
       newv.push_back(rdiv(minus_b_over_2+delta_prime,a,contextptr));
       if (!is_zero(delta_prime,contextptr))
@@ -2081,8 +2090,10 @@ namespace giac {
 	const_iterateur it=fullres.begin(),itend=fullres.end();
 	for (;it!=itend;++it){
 	  vecteur algv=alg_lvar(*it);
-	  if (!algv.empty() && algv.front().type==_VECT && !algv.front()._VECTptr->empty())
+	  if (!algv.empty() && algv.front().type==_VECT && !algv.front()._VECTptr->empty()){
+	    *logptr(contextptr) << "Warning, " << *it << " not checked" << endl;
 	    res.push_back(*it);
+	  }
 	  else {
 #ifdef HAVE_LIBMPFR
 	    gen tmp=abs(_evalf(makesequence(subst(e_check,x,*it,false,contextptr),100),contextptr),contextptr);
@@ -6160,6 +6171,21 @@ namespace giac {
 	    if (is_linear_wrt(eq[i],var[j],a,b,contextptr)){
 	      if (is_zero(derive(a,var,contextptr),contextptr) 
 		  && !is_zero(simplify(a,contextptr),contextptr)){
+		if (a!=1 && a!=-1){
+		  // maybe eq[i] is linear wrt var[jj] for jj>j with a simpler a coeff
+		  for (unsigned jj=j+1;jj<var.size();++jj){
+		    gen aa,bb;
+		    if (is_linear_wrt(eq[i],var[jj],aa,bb,contextptr) 
+			&& is_zero(derive(aa,var,contextptr),contextptr) 
+			&& !is_zero(simplify(aa,contextptr),contextptr)){
+		      if (aa.islesscomplexthan(a)){
+			j=jj;
+			a=aa;
+			b=bb;
+		      }
+		    }
+		  }
+		}
 		// eq[i]=a*var[j]+b
 		// replace var[j] by -b/a
 		gen elimj=-b/a;
@@ -7002,6 +7028,30 @@ namespace giac {
   static const char _gbasis_simult_primes_s []="gbasis_simult_primes";
   static define_unary_function_eval2 (__gbasis_simult_primes,&_gbasis_simult_primes,_gbasis_simult_primes_s,&printasDigits);
   define_unary_function_ptr5( at_gbasis_simult_primes ,alias_at_gbasis_simult_primes ,&__gbasis_simult_primes,0,true);
+
+  gen _gbasis_reinject(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG &&  g.subtype==-1) return  g;
+    gen args(evalf_double(g,1,contextptr));
+    double old=gbasis_reinject_ratio,oldtime=gbasis_reinject_speed_ratio;
+    if (g.type==_DOUBLE_){
+      gbasis_reinject_ratio=g._DOUBLE_val<=0?0:g._DOUBLE_val;
+      return old;
+    }
+    if (g.type==_VECT && g._VECTptr->size()==2){
+      gen a=g._VECTptr->front(),b=g._VECTptr->back();
+      if (a.type==_DOUBLE_ && b.type==_DOUBLE_){
+	gbasis_reinject_ratio=a._DOUBLE_val<=0?0:a._DOUBLE_val;
+	gbasis_reinject_speed_ratio=b._DOUBLE_val<=0?0:b._DOUBLE_val;
+	return makevecteur(old,oldtime);
+      }
+    }
+    if (g.type==_VECT && g._VECTptr->empty())
+      return makevecteur(old,oldtime);
+    return gensizeerr(contextptr);
+  }
+  static const char _gbasis_reinject_s []="gbasis_reinject";
+  static define_unary_function_eval2 (__gbasis_reinject,&_gbasis_reinject,_gbasis_reinject_s,&printasDigits);
+  define_unary_function_ptr5( at_gbasis_reinject ,alias_at_gbasis_reinject ,&__gbasis_reinject,0,true);
 
   static gen in_greduce(const gen & eq,const vecteur & l,const vectpoly & eqp,const gen & order,bool with_cocoa,GIAC_CONTEXT,vector<polynome> * quo=0){
     if (eq.type!=_POLY)
