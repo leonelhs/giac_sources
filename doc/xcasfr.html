@@ -276,11 +276,13 @@ Cette feuille de calcul est compos&eacute;e de :
   balisage HTML dans un commentaire).
   <br>
   Pour vous aider &agrave; remplir la ligne de commande,
-  vous pouvez cliquer sur les boutons 123+ et outils ci-dessous
-  et d&eacute;placer la souris pr&egrave;s des touches du <b>clavier
-  scientifique</b>. Avec Firefox, vous avez un menu de commande
+  vous pouvez cliquer sur le bouton 123 qui fait apparaitre
+  le <b>clavier scientifique</b> et sur le bouton util ci-dessous
+  (d&eacute;placez la souris pr&egrave;s des boutons pour
+  une description de leur action). Avec Firefox, on acc&egrave;de
+  au menu des commandes de Xcas
   en cliquant avec le bouton droit
-  sur le mot Commande.
+  sur la ligne de commande.
   <br>
   Vous pouvez taper (le d&eacute;but) du nom d'une commande
   (par exemple <tt>factor</tt>) puis
@@ -307,6 +309,8 @@ Cette feuille de calcul est compos&eacute;e de :
   ayant une sortie graphique 3d.
   </li>
 </ul>
+Lorsque vous chargez la page de Xcas, vous pouvez restaurer la
+session pr&eacute;c&eacute;dente.
 Vous pouvez <b>sauvegarder</b> l'historique
 ou <b>exporter</b> la feuille de calcul. La sauvegarde
   occupe peu de place et s'ouvre depuis cette page avec le bouton
@@ -320,9 +324,9 @@ ou <b>exporter</b> la feuille de calcul. La sauvegarde
   <br>
   Sous Firefox, pour pouvoir
   choisir l'emplacement de sauvegarde et &eacute;craser
-  une version ant&eacute;rieure, cocher Toujours demander...
+  une version ant&eacute;rieure : cocher Toujours demander...
   dans Pr&eacute;f&eacute;rences,
-  G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements)
+  G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.
 <br>
   Vous pouvez ouvrir (partiellement) une session existante Xcas en la clonant
   (menu Fich, Clone du programme Xcas, ou en ligne de commande
@@ -385,8 +389,9 @@ ou <b>exporter</b> la feuille de calcul. La sauvegarde
   g&eacute;om&eacute;triques: <tt>droite, cercle, ellipse, ...</tt>
   </li>
   <li>
-  <b>Programmes :</b> vous pouvez taper un programme dans l'&eacute;diteur de
-  texte ci-dessous. Plusieurs syntaxes sont accept&eacute;es, pour
+  <b>Programmes :</b> vous pouvez utiliser les assistants du menu
+  util pour cr&eacute;er les structures de programmation
+  (fonction, test, boucle). Plusieurs syntaxes sont accept&eacute;es, pour
   le moment la coloration syntaxique fonctionne avec la syntaxe Xcas
   qui est tr&egrave;s proche de Javascript. Par exemple
   <br>
@@ -404,6 +409,11 @@ ou <b>exporter</b> la feuille de calcul. La sauvegarde
   <br>
   }
   </tt>
+  <br>
+  La commande <button  onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'debug(')"><tt>debug</tt></button>
+  permet d'ex&eacute;cuter une fonction en mode pas &agrave; pas
+  pour la mettre au point.
   </li>
 </ul>
 <br>
@@ -411,8 +421,9 @@ Sur les appareils mobiles, certaines fonctionnalit&eacute;s sont desactiv&eacute
 parce qu'elles ne fonctionnent pas correctement avec Firefox, par
 exemple la coloration syntaxique lors de l'&eacute;dition d'un niveau
 existant.
-Notez aussi que Chrome mobile (navigateur par d&eacute;faut sur les
-appareils Android) est beaucoup plus lent que Firefox pour
+Notez aussi que Chrome mobile (et plus g&eacute;n&eacute;ralement
+le navigateur install&eacute; par d&eacute;faut sur votre appareil)
+est beaucoup plus lent que Firefox pour
 faire les calculs (5 fois plus lent environ), en particulier le
 premier calcul dure plusieurs dizaines de secondes. De plus, Chrome
 n'a pas de support natif pour afficher les formules en 2d en mathml,
@@ -420,7 +431,7 @@ on est donc oblig&eacute; de charger MathJax ce qui n&eacute;cessite
 un acc&egrave;s r&eacute;seau
 et peut donc &eacute;chouer.
 <br>
-<b>Il est fortement recommend&eacute; de t&eacute;l&eacute;charger
+<b>Il est donc fortement recommend&eacute; de t&eacute;l&eacute;charger
 Firefox et d'ex&eacute;cuter Xcas depuis Firefox</b>
 <br>
 <button style="height:25px" onclick="document.getElementById('help').style.display='none';">Masquer le tutoriel</button>

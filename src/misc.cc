@@ -6397,6 +6397,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   int step_param_(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,bool exactlegende,GIAC_CONTEXT){
     if (t.type!=_IDNT)
       return 0;
+    gprintf("====================\nParametric plot %gen,%gen, variable %gen",makevecteur(f,g,t),1,contextptr);
     gen periodef,periodeg,periode;
     if (is_periodic(f,t,periodef,contextptr) && is_periodic(g,t,periodeg,contextptr)){
       periode=gcd(periodef,periodeg,contextptr);
@@ -6468,6 +6469,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     }
     else
       *logptr(contextptr) << "Unable to find inflection points" << endl;
+    for (int i=0;i<infl.size();++i)
+      infl[i]=ratnormal(infl[i],contextptr);
     for (int i=0;i<c.size();++i)
       c[i]=ratnormal(c[i],contextptr);
     comprim(c);
@@ -6562,6 +6565,15 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       tmax=minus_inf;
     }
     it=crit.begin();itend=crit.end();
+    for (;it!=itend;++it){
+      if (!is_inf(*it)){ 
+	if (is_greater(tmin,*it,contextptr))
+	  tmin=*it;
+	if (is_greater(*it,tmax,contextptr))
+	  tmax=*it;
+      }
+    }
+    it=infl.begin();itend=infl.end();
     for (;it!=itend;++it){
       if (!is_inf(*it)){ 
 	if (is_greater(tmin,*it,contextptr))
@@ -6715,7 +6727,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (is_zero(dfx) || is_zero(dgx))
 	return 0;
       if (is_strictly_positive(dfx,contextptr)){
-#if defined NSPIRE || defined NSPIRE_NEWLIB
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
 	tvif.push_back(string2gen("↑",false));
 #else
 	tvif.push_back(string2gen("↗",false));
@@ -6723,7 +6735,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvidf.push_back(string2gen("+",false));
       }
       else {
-#if defined NSPIRE || defined NSPIRE_NEWLIB
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
 	tvif.push_back(string2gen("↓",false));
 #else
 	tvif.push_back(string2gen("↘",false));
@@ -6735,7 +6747,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       else
 	tviconv.push_back(string2gen("concav",false));
       if (is_strictly_positive(dgx,contextptr)){
-#if defined NSPIRE || defined NSPIRE_NEWLIB
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
 	tvig.push_back(string2gen("↑",false));
 #else
 	tvig.push_back(string2gen("↗",false));
@@ -6743,7 +6755,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvidg.push_back(string2gen("+",false));
       }
       else {
-#if defined NSPIRE || defined NSPIRE_NEWLIB
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
 	tvig.push_back(string2gen("↓",false));
 #else
 	tvig.push_back(string2gen("↘",false));
@@ -6810,8 +6822,11 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	y=limit(g1,xid,nextt,-1,contextptr);
 	y=recursive_normal(y,contextptr);
 	tvidg.push_back(y);
-	y=limit(conv,xid,nextt,-1,contextptr);
-	y=recursive_normal(y,contextptr);
+	if (equalposcomp(infl,nextt)) y=0;
+	else {
+	  y=limit(conv,xid,nextt,-1,contextptr);
+	  y=recursive_normal(y,contextptr);
+	}
 	tviconv.push_back(y);
       }
     }
@@ -6823,7 +6838,11 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       xmax=max(xmax,-xmin,contextptr);
       xmin=-xmax;
     }
-    if (eof)
+    if (eog==2){
+      ymax=max(ymax,-ymin,contextptr);
+      ymin=-ymax;
+    }
+    if (eof && eog)
       tmin=-tmax;
     if (periode==0){
       gen tscale=tmax-tmin;
@@ -6839,8 +6858,11 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     glx=symb_equal(glx,symb_interval(xmin-xscale/2,xmax+xscale/2));
     poi.insert(poi.begin(),glx);
     gen yscale=ymax-ymin;
-    if (is_inf(yscale) || yscale==0)
+    if (is_inf(yscale) || yscale==0){
       yscale=gnuplot_ymax-gnuplot_ymin;
+      ymax=gnuplot_ymax;
+      ymin=gnuplot_ymin;
+    }
     if (eog==2){
       ymax=max(ymax,-ymin,contextptr);
       ymin=-ymax;
@@ -6880,6 +6902,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   int step_func_(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poi,vecteur & tvi,bool printtvi,bool exactlegende,GIAC_CONTEXT){
     if (x.type!=_IDNT)
       return 0;
+    gprintf("====================\nFunction plot %gen, variable %gen",makevecteur(f,x),1,contextptr);
     gen periode;
     if (is_periodic(f,x,periode,contextptr)){
       gprintf("Periodic function T=%gen",vecteur(1,periode),1,contextptr);
@@ -7116,7 +7139,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (is_zero(dfx))
 	return 0;
       if (is_strictly_positive(dfx,contextptr)){
-#if defined NSPIRE || defined NSPIRE_NEWLIB
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
 	tvif.push_back(string2gen("↑",false));
 #else
 	tvif.push_back(string2gen("↗",false));
@@ -7124,7 +7147,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvidf.push_back(string2gen("+",false));
       }
       else {
-#if defined NSPIRE || defined NSPIRE_NEWLIB
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
 	tvif.push_back(string2gen("↓",false));
 #else
 	tvif.push_back(string2gen("↘",false));
@@ -7178,10 +7201,16 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     }
     tvi=makevecteur(tvix,tvif,tvidf,tvidf2);
     gen yscale=ymax-ymin;
-    if (is_inf(yscale) || yscale==0)
+    if (is_inf(yscale) || yscale==0){
       yscale=xmax-xmin;
-    if (is_inf(yscale) || yscale==0)
+      ymax=gnuplot_ymax;
+      ymin=gnuplot_ymin;
+    }
+    if (is_inf(yscale) || yscale==0){
       yscale=gnuplot_ymax-gnuplot_ymin;
+      ymax=gnuplot_ymax;
+      ymin=gnuplot_ymin;
+    }
     if (eo){
       xmax=max(xmax,-xmin,contextptr);
       xmin=-xmax;

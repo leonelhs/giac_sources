@@ -196,13 +196,16 @@ d'une liste en donnant le nom de variable de la liste puis l'indice
 de l'\'el\'ement entre crochet, en commen\c{c}ant \`a 0 (mettre deux crochets
 pour commencer \`a 1).
 \giacinputbigmath{v:=[1,2]; M:=[[1,2],[3,4]]; w:=M*v; w[0]; w[[1]]; M[0,0]:=-1; M*v;}
+\item Pour afficher les \'etapes interm\'ediaires de certains calculs, ex\'ecutez\\
+\giacinput{step_infolevel:=1}\\
+pour ne pas les afficher\\\giacinput{step_infolevel:=0}
 \end{itemize}
 
 \subsection{Calcul exact}
 \subsubsection{Arithm\'etique}
 \begin{itemize}
 \item division euclidienne des entiers
-\giacinput{a:=25; b:=7; q:=iquo(25,7); r:=irem(25,7); b*q+r;}
+\giacinputbig{a:=25; b:=7; q:=iquo(25,7); r:=irem(25,7); b*q+r;}
 \item PGCD, identit\'e de B\'ezout sur les entiers
 \giacinputbig{a:=25; b:=7; gcd(a,b); u,v,d:=iegcd(a,b); a*u+b*v; u,v:=iabcuv(a,b,37); a*u+b*v}
 \item restes chinois entiers
@@ -210,7 +213,7 @@ pour commencer \`a 1).
 \item primalit\'e, d\'ecomposition en facteurs premiers
 \giacinput{a:=2^64+1;isprime(a); ifactor(a);}
 \item puissance modulaire rapide
-\giacinput{a:=256789; b:=1234567; m:=345678; powmod(a,b,m);}
+\giacinputbig{a:=256789; b:=1234567; m:=345678; powmod(a,b,m);}
 \item division euclidienne des polyn\^omes, la variable par d\'efaut est $x$,
 sinon il faut la sp\'ecifier en dernier argument
 \giacinputbigmath{a:=x^4+5x^2+7x+1; b:=x^3+4x^2+x+1; q:=quo(a,b); r:=rem(a,b); quo(a,b,y)}
@@ -219,18 +222,18 @@ sinon il faut la sp\'ecifier en dernier argument
 \item factorisation sur le corps des coefficients par d\'efaut, sinon 
 ajouter l'extension alg\'ebrique souhait\'ee (\'eventuellement obtenue
 avec \verb|solve|)
-\giacinputbigmath{factor(x^4-4); solve(x^4-4=0); cfactor(x^4-4,sqrt(2));}
+\giacinputbigmath{factor(x^4-2); solve(x^4-2=0); factor(x^4-2,2^(1/4)); cfactor(x^4-2,2^(1/4));}
 \verb|sqrfree| permet d'effectuer une factorisation partielle
 en produit de facteurs premiers entre eux et sans racines multiples.
 \item \'evaluation d'un polyn\^ome
-\giacinput{p:=x^5+4x+7; horner(p,2); p(x=2); subst(p,x=2);}
+\giacinputbig{p:=x^5+4x+7; horner(p,2); p(x=2); subst(p,x=2);}
 \item R\'esultant de 2 polyn\^omes
 \giacinputbigmath{p:=randpoly(7); q:=randpoly(7); resultant(p,q,x);}
 \giacinputbigmath{m:=sylvester(p,q); det(m);}
 \item d\'ecomposition en \'el\'ements simples
 \giacinputbigmath{partfrac(1/(x^4-1))}
 \item polyn\^omes \`a coefficients dans $\Z/p\Z$
-\giacinput{p:=(x^5+4x+7) \% 11;}
+\giacinput{p:=(x^5+4x+7) \% 11; gcd(p,p');}
 \item Corps fini non premier de caract\'eristique $p$~:\\
 \verb|GF(p,n)| cr\'ee un corps fini $K$ de cardinal $p^n$, 
 et affecte une variable
@@ -252,7 +255,7 @@ base du noyau d'une application lin\'eaire
 \giacinputbigmath{m:=[[1,2],[3,4]]; rref(m); ref(m);} 
 \giacinputbigmath{m:=[[1,2,3],[4,5,6],[7,8,9]]; ker(m);}
 \item Factorisation LU
-\giacinputbigmath{m:=ranm(3,3); p,l,u:=lu(m); linsolve(p,l,u,[1,2,3]);}
+\giacinputbigmath{m:=ranm(3,3); p,l,u:=lu(m); permu2mat(p)*m-l*u;linsolve(p,l,u,[1,2,3]);}
 \item D\'eterminant
 \giacinput{m:=ranm(100,100):; det(m);}
 On peut forcer l'utilisation d'un algorithme 
@@ -270,11 +273,11 @@ On peut forcer l'utilisation d'un algorithme
 \begin{itemize}
 \item R\'esolution approch\'e d\'equation par m\'ethode it\'erative
 ou par bisection
-\giacinput{fsolve(x=cos(x),x=0.3); fsolve(x=cos(x),x=-4..4)}
+\giacinputbigmath{fsolve(x=cos(x),x=0.3); fsolve(x=cos(x),x=-4..4)}
 \item Approximation polyn\^omiale~: 
-\giacinput{lagrange([1,2,3,4],[-3,5,2,7])}
+\giacinputbigmath{lagrange([1,2,3,4],[-3,5,2,7])}
 \item Int\'egration num\'erique
-\giacinput{int(exp(-x^2),x,-3.0,2.1);}
+\giacinputmath{int(exp(-x^2),x,0.0,1.0);}
 on peut forcer une m\'ethode avec \verb|gaussquad| ou \verb|romberg|
 ou de petit ordre avec \verb|plotarea|
 \giacinput{plotarea(exp(-x^2),x=0..1.0,5,trapezes)}
@@ -290,7 +293,7 @@ Trac\'e sur l'intervalle $t \in [-10,10]$
 \subsubsection{Alg\`ebre lin\'eaire num\'erique}
 \begin{itemize}
 \item factorisation LU et r\'esolution de syst\`eme,
-\giacinputbigmath{m:=ranm(3,3,uniform,0,1); p,l,u:=lu(m); v:=[1,2,3]; linsolve(m,v); linsolve(p,l,u,[1,2,3]);}
+\giacinputbigmath{m:=ranm(3,3,uniform,0,1); p,l,u:=lu(m); v:=[1,2,3]; linsolve(m,v); linsolve(p,l,u,v);}
 \item factorisation QR
 \giacinputbigmath{q,r:=qr(m); q*r-m;}
 \item factorisation de Cholesky
@@ -1126,7 +1129,7 @@ de programmation traditionnel. Leur intérêt principal réside donc
 dans une utilisation interactive en profitant de la librairie de 
 fonctions accessibles.
 
-\subsubsection{Giac/xcas}
+\subsubsection{Giac/Xcas}
 Il s'agit du système de calcul formel que j'implémente actuellement sous 
 forme d'une biblioth\`eque C++ (ce qui
 permettra aux programmes tiers d'utiliser beaucoup plus facilement du 
@@ -1579,7 +1582,9 @@ $b$ on remarque qu'il n'est pas utile de calculer les coefficients
 appartenant à la 3ème colonne. Enfin, les lignes intermédiaires
 peuvent servir à reconstruire une fraction d'entier représentée
 par un entier de $\Z/n\Z$ lorsque le numérateur et le dénominateur
-sont de valeur absolue inférieure à $\sqrt{n/2}$.
+sont de valeur absolue inférieure à $\sqrt{n/2}$. Exemple~:\\
+\giacinputbigmath{step_infolevel:=1;iegcd(1234,357);step_infolevel:=0}\\
+Voir aussi dans Xcas la session exemple depuis le menu Exemple,arit,bezout.xws.
 \item Le théorème des {\bf restes chinois}\index{restes chinois}\index{chinois}. 
 Si on connaît $x=a \pmod m$
 et $x= b \pmod n $ avec $m$ et $n$ premiers entre eux,
@@ -1593,13 +1598,8 @@ Si $n$ est petit devant $m$ (par exemple 32 bits), $U$ est aussi petit,
 on commence par r\'eduire $b-a$ modulo $n$,
 puis on multiplie par $U$, on r\'eduit à nouveau modulo $n$ et on
 multiple enfin par $m$.
-\item Les tests de pseudo-primalité. Il est essentiel d'avoir une
-méthode rapide permettant de générer des nombres premiers pour appliquer
-des méthodes modulaires et $p$-adiques. On utilise souvent le
-{\bf test de Miller-Rabin}\index{Miller}\index{Rabin}, qui prolonge le petit théorème de Fermat
-(si $p$ est premier, alors $a^p=a \pmod p$). Voir le manuel de
-programmation de Xcas.
-\item L'algorithme de H\"orner\index{H\"orner} pour \'evaluer un polyn\^ome
+\item L'algorithme de {\bf H\"orner}\index{H\"orner}
+ pour \'evaluer un polyn\^ome
   $P(X)=a_nX^n+...+a_0$ en $x$. Il consiste \`a r\'e\'ecrire $P(x)$ sous
   la forme
 $$ P(x)=(...((a_nx+a_{n-1})x+a_{n-2})x+...+a_1)x+a_0$$
@@ -1612,9 +1612,16 @@ op\'erations se font en temps $O(1)$) avec une constante optimale.
 Voir aussi l'exercice sur cette m\'ethode et son application au calcul
 du d\'eveloppement de Taylor d'un polyn\^ome
 dans la section \ref{sec:exos_algobase}.
+Voir aussi la session exemple depuis le menu Exemples, poly, horner.xws.
+\item La puissance rapide et les tests de pseudo-primalité. Il est essentiel d'avoir une
+méthode rapide permettant de générer des nombres premiers pour appliquer
+des méthodes modulaires et $p$-adiques. On utilise souvent le
+{\bf test de Miller-Rabin}\index{Miller}\index{Rabin}, qui prolonge le petit théorème de Fermat
+(si $p$ est premier, alors $a^p=a \pmod p$). Voir le manuel de
+programmation de Xcas.
 \end{itemize}
 
-\subsubsection{Exemple~: l'algorithme de Karatsuba}\index{Karatsuba}
+\subsubsection{Exemple de multiplication rapide~: l'algorithme de Karatsuba}\index{Karatsuba}
 Soient $P, Q$ deux polyn\^omes de degr\'es strictement inf\'erieur \`a
 $2n$. On suppose que le cout d'une op\'eration arithm\'etique dans le
 corps des coefficients vaut 1 et on n\'eglige les autres
@@ -1822,8 +1829,9 @@ rapide(a,k,n):={
   return B;
 }
 \end{giacprog}
-\giacinput{rapide(123,4567890,123456)}
-
+\giacinput{rapide(123,4567890,123456)}\\
+En mode pas \`a pas~:\\
+\giacinput{debug(rapide(123,4567890,123456))}\\
 
 \subsection{Pour en savoir plus.}
 Sur des aspects plus th\'eoriques~:

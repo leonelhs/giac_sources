@@ -126,7 +126,7 @@ hypothèses</a>
 </li><li class="li-toc"><a href="#sec24">3.7  Structures de données</a>
 <ul class="toc"><li class="li-toc">
 <a href="#sec25">3.7.1  Maple, Mathematica, ...</a>
-</li><li class="li-toc"><a href="#sec26">3.7.2  Giac/xcas</a>
+</li><li class="li-toc"><a href="#sec26">3.7.2  Giac/Xcas</a>
 </li><li class="li-toc"><a href="#sec27">3.7.3  Calculatrices formelles HP48/49</a>
 </li><li class="li-toc"><a href="#sec28">3.7.4  Calculatrices formelles TI92/89/Voyage 200</a>
 </li></ul>
@@ -138,7 +138,7 @@ et Monte-Carlo</a>
 </li></ul>
 </li><li class="li-toc"><a href="#sec32">3.9  Quelques algorithmes d’arithmétique de base.</a>
 <ul class="toc"><li class="li-toc">
-<a href="#sec33">3.9.1  Exemple : l’algorithme de Karatsuba</a>
+<a href="#sec33">3.9.1  Exemple de multiplication rapide : l’algorithme de Karatsuba</a>
 </li><li class="li-toc"><a href="#sec34">3.9.2  Calcul de la racine carrée entière</a>
 </li><li class="li-toc"><a href="#sec35">3.9.3  Bezout sur les entiers et les fractions continues</a>
 </li><li class="li-toc"><a href="#sec36">3.9.4  La puissance rapide itérative</a>
@@ -731,7 +731,7 @@ spirale, <a href="#hevea_default110">10.2</a>
 </li><li class="li-indexenv">gravité, centre, <a href="#hevea_default134">12.4</a>
 <br>
 <br>
-</li><li class="li-indexenv">Hörner, <a href="#hevea_default37">3.9</a>, <a href="#hevea_default44">3.11</a>
+</li><li class="li-indexenv">Hörner, <a href="#hevea_default35">3.9</a>, <a href="#hevea_default44">3.11</a>
 </li><li class="li-indexenv">Hadamard, borne, <a href="#hevea_default241">21.1.2</a>
 </li><li class="li-indexenv">Hamming, <a href="#hevea_default169">15.4.5</a>
 </li><li class="li-indexenv">Hensel, <a href="#hevea_default55">4.3.3</a>, <a href="#hevea_default189">17.2.5</a>
@@ -801,7 +801,7 @@ de, <a href="#hevea_default291">22.1.4</a>
 <br>
 </li><li class="li-indexenv">Mac Laurin, Euler, <a href="#hevea_default215">19.7</a>
 </li><li class="li-indexenv">Mignotte, <a href="#hevea_default52">4.2.2</a>
-</li><li class="li-indexenv">Miller, <a href="#hevea_default35">3.9</a>, <a href="#hevea_default175">16</a>
+</li><li class="li-indexenv">Miller, <a href="#hevea_default36">3.9</a>, <a href="#hevea_default175">16</a>
 </li><li class="li-indexenv">Monte-Carlo, <a href="#hevea_default28">3.8.2</a>, <a href="#hevea_default218">19.11</a>
 </li><li class="li-indexenv">mantisse, <a href="#hevea_default2">3.2.1</a>, <a href="#hevea_default10">3.2.2</a>
 </li><li class="li-indexenv">minimal, polynôme, <a href="#hevea_default260">21.7.1</a>
@@ -875,7 +875,7 @@ rapide, <a href="#hevea_default42">3.9.4</a>
 </li><li class="li-indexenv">quadrature gaussienne, <a href="#hevea_default217">19.9</a>
 <br>
 <br>
-</li><li class="li-indexenv">Rabin, <a href="#hevea_default36">3.9</a>, <a href="#hevea_default176">16</a>
+</li><li class="li-indexenv">Rabin, <a href="#hevea_default37">3.9</a>, <a href="#hevea_default176">16</a>
 </li><li class="li-indexenv">Reed-Solomon (codes), <a href="#hevea_default172">15.5</a>
 </li><li class="li-indexenv">Richardson-Romberg, <a href="#hevea_default213">19.7</a>
 </li><li class="li-indexenv">Risch, <a href="#hevea_default198">18</a>
@@ -1045,6 +1045,18 @@ de l’élément entre crochet, en commençant à 0 (mettre deux crochets
 pour commencer à 1).
 <div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">v:=[1,2]; M:=[[1,2],[3,4]]; w:=M*v; w[0]; w[[1]]; M[0,0]:=-1; M*v; 
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>
+</li><li class="li-itemize">Pour afficher les étapes intermédiaires de certains calculs, exécutez<br>
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:400px;height:20px;font-size:large">step_infolevel:=1
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+<br>
+pour ne pas les afficher<br>
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:400px;height:20px;font-size:large">step_infolevel:=0
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+
 </li></ul>
 <!--TOC subsection id="sec6" Calcul exact-->
 <h3 id="sec6" class="subsection">2.2  Calcul exact</h3><!--SEC END -->
@@ -1053,7 +1065,7 @@ pour commencer à 1).
 division euclidienne des entiers
 
 <textarea onkeypress="UI.ckenter(event,this,1)" 
-style="width:400px;height:20px;font-size:large">a:=25; b:=7; q:=iquo(25,7); r:=irem(25,7); b*q+r;
+style="width:800px;height:20px;font-size:large">a:=25; b:=7; q:=iquo(25,7); r:=irem(25,7); b*q+r;
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
 
 </li><li class="li-itemize">PGCD, identité de Bézout sur les entiers
@@ -1077,7 +1089,7 @@ style="width:400px;height:20px;font-size:large">a:=2^64+1;isprime(a); ifactor(a)
 </li><li class="li-itemize">puissance modulaire rapide
 
 <textarea onkeypress="UI.ckenter(event,this,1)" 
-style="width:400px;height:20px;font-size:large">a:=256789; b:=1234567; m:=345678; powmod(a,b,m);
+style="width:800px;height:20px;font-size:large">a:=256789; b:=1234567; m:=345678; powmod(a,b,m);
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
 
 </li><li class="li-itemize">division euclidienne des polynômes, la variable par défaut est <span style="font-style:italic">x</span>,
@@ -1090,14 +1102,14 @@ sinon il faut la spécifier en dernier argument
 </li><li class="li-itemize">factorisation sur le corps des coefficients par défaut, sinon 
 ajouter l’extension algébrique souhaitée (éventuellement obtenue
 avec <code>solve</code>)
-<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">factor(x^4-4); solve(x^4-4=0); cfactor(x^4-4,sqrt(2)); 
+<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">factor(x^4-2); solve(x^4-2=0); factor(x^4-2,2^(1/4)); cfactor(x^4-2,2^(1/4)); 
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>
 <code>sqrfree</code> permet d’effectuer une factorisation partielle
 en produit de facteurs premiers entre eux et sans racines multiples.
 </li><li class="li-itemize">évaluation d’un polynôme
 
 <textarea onkeypress="UI.ckenter(event,this,1)" 
-style="width:400px;height:20px;font-size:large">p:=x^5+4x+7; horner(p,2); p(x=2); subst(p,x=2);
+style="width:800px;height:20px;font-size:large">p:=x^5+4x+7; horner(p,2); p(x=2); subst(p,x=2);
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
 
 </li><li class="li-itemize">Résultant de 2 polynômes
@@ -1111,7 +1123,7 @@ style="width:400px;height:20px;font-size:large">p:=x^5+4x+7; horner(p,2); p(x=2)
 </li><li class="li-itemize">polynômes à coefficients dans ℤ/<span style="font-style:italic">p</span>ℤ
 
 <textarea onkeypress="UI.ckenter(event,this,1)" 
-style="width:400px;height:20px;font-size:large">p:=(x^5+4x+7) % 11;
+style="width:400px;height:20px;font-size:large">p:=(x^5+4x+7) % 11; gcd(p,p');
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
 
 </li><li class="li-itemize">Corps fini non premier de caractéristique <span style="font-style:italic">p</span> :<br>
@@ -1141,7 +1153,7 @@ base du noyau d’une application linéaire
 <div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">m:=[[1,2,3],[4,5,6],[7,8,9]]; ker(m); 
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>
 </li><li class="li-itemize">Factorisation LU
-<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">m:=ranm(3,3); p,l,u:=lu(m); linsolve(p,l,u,[1,2,3]); 
+<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">m:=ranm(3,3); p,l,u:=lu(m); permu2mat(p)*m-l*u;linsolve(p,l,u,[1,2,3]); 
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>
 </li><li class="li-itemize">Déterminant
 
@@ -1167,23 +1179,14 @@ On peut forcer l’utilisation d’un algorithme
 <h4 id="sec10" class="subsubsection">2.3.1  Analyse numérique</h4><!--SEC END --><ul class="itemize"><li class="li-itemize">
 Résolution approché déquation par méthode itérative
 ou par bisection
-
-<textarea onkeypress="UI.ckenter(event,this,1)" 
-style="width:400px;height:20px;font-size:large">fsolve(x=cos(x),x=0.3); fsolve(x=cos(x),x=-4..4)
-</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
-
+<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">fsolve(x=cos(x),x=0.3); fsolve(x=cos(x),x=-4..4) 
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>
 </li><li class="li-itemize">Approximation polynômiale : 
-
-<textarea onkeypress="UI.ckenter(event,this,1)" 
-style="width:400px;height:20px;font-size:large">lagrange([1,2,3,4],[-3,5,2,7])
-</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
-
+<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">lagrange([1,2,3,4],[-3,5,2,7]) 
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>
 </li><li class="li-itemize">Intégration numérique
-
-<textarea onkeypress="UI.ckenter(event,this,1)" 
-style="width:400px;height:20px;font-size:large">int(exp(-x^2),x,-3.0,2.1);
-</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
-
+<br><textarea onkeypress="UI.ckenter(event,this,2)" style="width:400px;height:20px;font-size:large">int(exp(-x^2),x,0.0,1.0); 
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><span></span><br>
 on peut forcer une méthode avec <code>gaussquad</code> ou <code>romberg</code>
 ou de petit ordre avec <code>plotarea</code>
 
@@ -1209,7 +1212,7 @@ style="width:400px;height:20px;font-size:large">odeplot(sin(t*y),[t=-10..10,y],[
 <!--TOC subsubsection id="sec11" Algèbre linéaire numérique-->
 <h4 id="sec11" class="subsubsection">2.3.2  Algèbre linéaire numérique</h4><!--SEC END --><ul class="itemize"><li class="li-itemize">
 factorisation LU et résolution de système,
-<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">m:=ranm(3,3,uniform,0,1); p,l,u:=lu(m); v:=[1,2,3]; linsolve(m,v); linsolve(p,l,u,[1,2,3]); 
+<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">m:=ranm(3,3,uniform,0,1); p,l,u:=lu(m); v:=[1,2,3]; linsolve(m,v); linsolve(p,l,u,v); 
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>
 </li><li class="li-itemize">factorisation QR
 <div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">q,r:=qr(m); q*r-m; 
@@ -2153,8 +2156,8 @@ d’utiliser ces systèmes comme des librairies depuis un langage
 de programmation traditionnel. Leur intérêt principal réside donc
 dans une utilisation interactive en profitant de la librairie de 
 fonctions accessibles.</p>
-<!--TOC subsubsection id="sec26" Giac/xcas-->
-<h4 id="sec26" class="subsubsection">3.7.2  Giac/xcas</h4><!--SEC END --><p>
+<!--TOC subsubsection id="sec26" Giac/Xcas-->
+<h4 id="sec26" class="subsubsection">3.7.2  Giac/Xcas</h4><!--SEC END --><p>
 Il s’agit du système de calcul formel que j’implémente actuellement sous 
 forme d’une bibliothèque C++ (ce qui
 permettra aux programmes tiers d’utiliser beaucoup plus facilement du 
@@ -2570,7 +2573,10 @@ Si l’on veut l’inverse de <span style="font-style:italic">a</span> modulo
 appartenant à la 3ème colonne. Enfin, les lignes intermédiaires
 peuvent servir à reconstruire une fraction d’entier représentée
 par un entier de ℤ/<span style="font-style:italic">n</span>ℤ lorsque le numérateur et le dénominateur
-sont de valeur absolue inférieure à √<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><span style="text-decoration:overline">/2</span>.
+sont de valeur absolue inférieure à √<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><span style="text-decoration:overline">/2</span>. Exemple :<br>
+<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">step_infolevel:=1;iegcd(1234,357);step_infolevel:=0 
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div><br>
+Voir aussi dans Xcas la session exemple depuis le menu Exemple,arit,bezout.xws.
 </li><li class="li-itemize">Le théorème des <span style="font-weight:bold">restes chinois</span><a id="hevea_default33"></a><a id="hevea_default34"></a>. 
 Si on connaît <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span> (mod <span style="font-style:italic">m</span> )
 et <span style="font-style:italic">x</span>= <span style="font-style:italic">b</span> (mod <span style="font-style:italic">n</span> )  avec <span style="font-style:italic">m</span> et <span style="font-style:italic">n</span> premiers entre eux,
@@ -2585,13 +2591,8 @@ Si <span style="font-style:italic">n</span> est petit devant <span style="font-s
 on commence par réduire <span style="font-style:italic">b</span>−<span style="font-style:italic">a</span> modulo <span style="font-style:italic">n</span>,
 puis on multiplie par <span style="font-style:italic">U</span>, on réduit à nouveau modulo <span style="font-style:italic">n</span> et on
 multiple enfin par <span style="font-style:italic">m</span>.
-</li><li class="li-itemize">Les tests de pseudo-primalité. Il est essentiel d’avoir une
-méthode rapide permettant de générer des nombres premiers pour appliquer
-des méthodes modulaires et <span style="font-style:italic">p</span>-adiques. On utilise souvent le
-<span style="font-weight:bold">test de Miller-Rabin</span><a id="hevea_default35"></a><a id="hevea_default36"></a>, qui prolonge le petit théorème de Fermat
-(si <span style="font-style:italic">p</span> est premier, alors <span style="font-style:italic">a</span><sup><span style="font-style:italic">p</span></sup>=<span style="font-style:italic">a</span> (mod <span style="font-style:italic">p</span> )). Voir le manuel de
-programmation de Xcas.
-</li><li class="li-itemize">L’algorithme de Hörner<a id="hevea_default37"></a> pour évaluer un polynôme
+</li><li class="li-itemize">L’algorithme de <span style="font-weight:bold">Hörner</span><a id="hevea_default35"></a>
+pour évaluer un polynôme
 <span style="font-style:italic">P</span>(<span style="font-style:italic">X</span>)=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub><span style="font-style:italic">X</span><sup><span style="font-style:italic">n</span></sup>+...+<span style="font-style:italic">a</span><sub>0</sub> en <span style="font-style:italic">x</span>. Il consiste à réécrire <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>) sous
 la forme
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=(...((<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub><span style="font-style:italic">x</span>+<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span>−1</sub>)<span style="font-style:italic">x</span>+<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span>−2</sub>)<span style="font-style:italic">x</span>+...+<span style="font-style:italic">a</span><sub>1</sub>)<span style="font-style:italic">x</span>+<span style="font-style:italic">a</span><sub>0</sub></td></tr>
@@ -2606,9 +2607,16 @@ opérations se font en temps <span style="font-style:italic">O</span>(1)) avec u
 Voir aussi l’exercice sur cette méthode et son application au calcul
 du développement de Taylor d’un polynôme
 dans la section <a href="#sec%3Aexos_algobase">3.11</a>.
+Voir aussi la session exemple depuis le menu Exemples, poly, horner.xws.
+</li><li class="li-itemize">La puissance rapide et les tests de pseudo-primalité. Il est essentiel d’avoir une
+méthode rapide permettant de générer des nombres premiers pour appliquer
+des méthodes modulaires et <span style="font-style:italic">p</span>-adiques. On utilise souvent le
+<span style="font-weight:bold">test de Miller-Rabin</span><a id="hevea_default36"></a><a id="hevea_default37"></a>, qui prolonge le petit théorème de Fermat
+(si <span style="font-style:italic">p</span> est premier, alors <span style="font-style:italic">a</span><sup><span style="font-style:italic">p</span></sup>=<span style="font-style:italic">a</span> (mod <span style="font-style:italic">p</span> )). Voir le manuel de
+programmation de Xcas.
 </li></ul>
-<!--TOC subsubsection id="sec33" Exemple : l’algorithme de Karatsuba-->
-<h4 id="sec33" class="subsubsection">3.9.1  Exemple : l’algorithme de Karatsuba</h4><!--SEC END --><p><a id="hevea_default38"></a>
+<!--TOC subsubsection id="sec33" Exemple de multiplication rapide : l’algorithme de Karatsuba-->
+<h4 id="sec33" class="subsubsection">3.9.1  Exemple de multiplication rapide : l’algorithme de Karatsuba</h4><!--SEC END --><p><a id="hevea_default38"></a>
 Soient <span style="font-style:italic">P</span>, <span style="font-style:italic">Q</span> deux polynômes de degrés strictement inférieur à
 2<span style="font-style:italic">n</span>. On suppose que le cout d’une opération arithmétique dans le
 corps des coefficients vaut 1 et on néglige les autres
@@ -2934,6 +2942,14 @@ euclidien.
 <textarea onkeypress="UI.ckenter(event,this,1)" 
 style="width:400px;height:20px;font-size:large">rapide(123,4567890,123456)
 </textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+<br>
+En mode pas à pas :<br>
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:400px;height:20px;font-size:large">debug(rapide(123,4567890,123456))
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+<br>
+
 </p>
 <!--TOC subsection id="sec37" Pour en savoir plus.-->
 <h3 id="sec37" class="subsection">3.10  Pour en savoir plus.</h3><!--SEC END --><p>

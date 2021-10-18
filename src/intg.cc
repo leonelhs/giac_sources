@@ -1910,7 +1910,7 @@ namespace giac {
 	  return false;
 	res.push_back(tmp);
       }
-      fx=res;
+      fx=gen(res,fu.subtype);
       return true;
     }
     if (fu.type==_IDNT){

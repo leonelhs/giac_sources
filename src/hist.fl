@@ -702,20 +702,26 @@ Function {cb_Insert_Example(Fl_Widget * w , void*)} {} {
     }
     vfile.push_back(tmp);
     int i=1;
-    if (giac::is_file_available(vfile.front().c_str())){
+    std::string filename=vfile.front();
+\#ifdef __APPLE__
+    std::string thepath="/tmp/";
+\#else
+    std::string thepath="";
+\#endif
+    if (giac::is_file_available((thepath+filename).c_str())){
       i=fl_ask("%s",("File "+std::string(m->text())+" exists. Overwrite?").c_str());
     }
     if (i){
       ls=vfile.size();
       for (is=0;is<ls;++is){
         std::ifstream in((menu_buffer+vfile[is]).c_str());
-        std::ofstream out(vfile[is].c_str());
+        std::ofstream out((thepath+vfile[is]).c_str());
         i=xcas::stream_copy(in,out);
         in.close();
         out.close();
       }
     }
-    load_filename(vfile.front().c_str(),false);} {}
+    load_filename((thepath+filename).c_str(),false);} {}
 } 
 
 Function {cb_Insert_ItemName(Fl_Widget * w , void*)} {} {
