@@ -15,1235 +15,1837 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- *
- * Description
- * ^^^^^^^^^^^
- * Function 'lpsolve' solves a (mixed integer/binary) LP problem in general
- * form. It is used as follows:
- *
- *   lpsolve (obj, constr, bd, opts)
- *
- * Parameters:
- *
- *   obj    - (mandatory) linear objective function (it is allowed to have a constant term)
- *   constr - (optional) list of linear constraints
- *   bd     - (optional) bounds for one or more variables
- *   opts   - (optional) equation(s) of the form 'option=value', where
- *            'option' is one of: 'assume', 'lp_variables', 'lp_integervariables,
- *            'lp_binaryvariables', 'lp_maximize' or 'lp_depthlimit'
- *
- * The problem may be given in symbolic form or in matrix form. The objective
- * function may be given as symbolic expression (including an optional constant
- * term) and the constraints as equations and inequalities. Also, a constraint
- * may be given in form 'Expr=a..b', where Expr is a linear expression and a,b
- * are real constants (possibly +/-infinity).
- *
- * It is also possible to enter constraints of type 'Expr ∈ [a,b]' as 'Expr=a..b',
- * where Expr is a linear expression and a, b are real numbers.
- *
- * For problems given in matrix form, the parameter 'obj' is a vector c and 'constr' is
- * a list [A, b, Aeq, beq] where A,Aeq are matrices and b,beq are vectors such that
- * c.x is maximized/minimized subject to A.x<=b and Aeq.x=beq. Parameters Aeq and beq
- * may be omitted if the problem does not have equality constraints.
- *
- * For symbolically given problems, the parameter 'bd' is a sequence of
- * arguments in the form 'name=range', where 'range' is an interval (for
- * example, x=-5..5 or y=0..inf). For problems given in matrix form, 'bd' must
- * be a vector of two vectors bl and bu such that bl<=x<=bu. In that case, all
- * decision variables are bounded at once. For variables that are unbounded
- * from above/below one can use +/-infinity as an upper/lower "bound".
- *
- * All decision variables are unbounded and continuous by default.
- *
- * With the 'assume' option one can specify:
- *
- *          - assume = integer or lp_integer     (all variables are integers)
- *          - assume = lp_binary                 (all variables are binary)
- *          - assume = lp_nonnegative            (all variables are nonnegative)
- *          - assume = nonnegint or lp_nonnegint (all variables are nonnegative integers)
- *
- * The following options are used to specify continuous, integer and binary
- * variables in mixed LP problems:
- *
- *          - lp_variables = <list of continuous variables>
- *          - lp_integervariables = <list of integer variables>
- *          - lp_binaryvariables = <list of binary variables>
- *
- * Instead of a list of identifiers, a list or an interval of their indexes may
- * be given as the value for 'lp_(integer/binary)variables'. For example,
- * option 'lp_binaryvariables=m..n' specifies xm,x(m+1),...,xn as binary
- * variables, and option 'lp_integervariables=[1,3,7]' specifies that the
- * variables x1, x3 and x7 are integers. The indexes and identifiers may be
- * freely mixed within a list. Variable indexes are 1-based.
- *
- * Objective function can be either maximized or minimized. By default it is
- * minimized, which is equivalent to the (superfluous) option
- *
- *          - lp_maximize = false
- *
- * To solve a maximization problem, one can specify:
- *
- *          - lp_maximize [= true]
- *
- * Integer (mixed) LP problems are solved using the branch and bound method,
- * during which a binary tree of nodes that need to be inspected is formed. The
- * depth of that tree can be limited with option
- *
- *          - lp_depthlimit = <positive integer>
- *
- * and number of inspected nodes can be limited with option
- *
- *          - lp_nodelimit = <positive integer>
-
- * With 'lp_depthlimit' or 'lp_nodelimit' option set, the integer solution
- * returned by the branch&bound method is feasible, but not necessarily the
- * optimal one. Also, it is possible that no feasible solution is found,
- * although one may exist. By setting 'lp_depthlimit' to zero (which is the
- * default), the feasible solution returned by the branch&bound method is
- * always optimal.
- *
- * By default, 'lpsolve' uses two-phase simplex method for optimization of
- * the objective function.
- *
- * The function 'lpsolve' returns either
- *
- *  - an empty list if no feasible solution exists,
- *  - the list [+infinity,[...]] if the objective function required to be maximized
- *    is unbounded from above, i.e. the list [-infinity,[...]] if the objective
- *    function required to be minimized is unbounded from below, or
- *  - the optimal solution as a list [optimum,[x1=x1*,x2=x2*,...,xn=xn*]] for
- *    symbolically given problems, where x1,x2,...,xn are the decision variables,
- *    or as a list [optimum,[x1*,x2*,...,xn*]] for problems given in matrix form.
- *
- * If one needs only a fesible point with respect to a set of constraints, one
- * should set the parameter 'obj' to 0 for symbolic problems i.e. to [] for
- * matrix problems. The return value is the feasible point as a vector of
- * coordinates or an empty list if the given set of constraints is
- * contradictory.
- *
- * The function returns an error if no constraints were detected (i.e. when
- * none of 'constr', 'bd' and 'assume=(lp_)nonneg(ative/int)' arguments were
- * detected).
- *
- * Examples
- * ^^^^^^^^
- *  1) Use LPSolve to minimize a linear function subject to linear constraints.
- *     Remember that all decision variables are unrestricted in sign by default.
- *
- *   lpsolve(2x+y-z+4,[x<=1,y>=2,x+3y-z=2,2x-y+z<=8,-x+y<=5])
- *   lpsolve(-4x-5y,[x+2y<=6,5x+4y<=20,0<=x,0<=y])
- *
- *  2) Use the 'lp_maximize [= true]' option to maximize the objective function.
- *
- *   lpsolve(-7x+2y,[4x-12y<=20,-x+3y<=3],x=-5..5,y=0..inf,lp_maximize=true)
- *   lpsolve(x-y-2z+3,[-3x-y+z<=3,2x-3y>=4z,x-z=y,x>=0,y<=0],lp_maximize)
- *
- *  3) Use the 'assume = lp_nonnegative' option instead of including
- *     non-negative constraints explicitly.
- *
- *   lpsolve(-x-y,[y<=3x+1/2,y<=-5x+2],assume=lp_nonnegative)
- *   lpsolve(x+y,[x<=8,-x+y<=4,-x+2y>=6,2x+y<=25,3x+y>=18,-x+2y>=6],assume=lp_nonnegative)
- *   lpsolve(45.55x1+21.87x2,[1.64x1+2.67x2<=31.2,2.11x1+2.3x2>=13.9],assume=lp_nonnegative)
- *   lpsolve(3x+4y,[x<=4,x+3y<=15,-x+2y>=5,x-y>=9,x+y=6],assume=lp_nonnegative,lp_maximize=true)
- *
- *  4) Simple bounds can be added separately.
- *
- *   lpsolve(-6x+4y+z,[5x-10y<=20,2z-3y=6,-x+3y<=3],x=1..20,y=0..inf)
- *
- *  5) Use the 'integer' or 'lp_integervariables' option to solve integer
- *     programming problems.
- *
- *   lpsolve(-5x-7y,[7x+y<=35,-x+3y<=6],assume=integer)
- *   lpsolve(x+3y+3z,[x+3y+2z<=7,2x+2y+z<=11],assume=lp_nonnegative,lp_integervariables=[x,z],lp_maximize)
- *
- *  6) The 'nonnegint' option can be used to get non-negative integer values.
- *
- *   lpsolve(2x+5y,[3x-y=1,x-y<=5],assume=nonnegint)
- *   lpsolve(x1+x2,[2x1+5x2<=16,6x1+5x2<=30],assume=nonnegint,lp_maximize)
- *
- *  7) Use the 'lp_binary' option to solve binary integer programming problems,
- *    where the decision variables can only have values from the set {0,1}.
- *
- *   lpsolve(8x1+11x2+6x3+4x4,[5x1+7x2+4x3+3x4<=14],assume=lp_binary,lp_maximize)
- *
- *  8) LP problems can also be given in matrix form.
- *
- *   c:=[-2,1];A:=[[-1,1],[1,1],[-1,0],[0,-1]];b:=[3,5,0,0];lpsolve(c,[A,b])
- *   c:=[-1,1];A:=[[-3,1],[5,1]];b:=[1/2,2];lpsolve(c,[A,b],assume=lp_nonnegative)
- *
- *  9) Bounds for problem in matrix form can be added separately. In
- *     the following example, there are no other constraints.
- *
- *   c:=[-2,5,-3];bl:=[2,3,1];bu:=[6,10,3.5];lpsolve(c,[],[bl,bu])
- *
- * 10) For problems in matrix form with no inequality constraints, an empty list
- *     is passed for parameters A and b.
- *
- *   c:=[4,5];Aeq:=[[-1,1.5],[-3,2]];beq:=[2,3];lpsolve(c,[[],[],Aeq,beq])
- *
- * 11) The 'lp_integervariables' or 'lp_binaryvariables' option can be used to
- *     specify mixed-integer problems.
- *
- *   c:=[2,-3,-5];A:=[[-5,4,-5],[2,5,7],[2,-3,4]];b:=[3,1,-2];lpsolve(c,[A,b],lp_integervariables=[1,3])
- *
- * Additional LP problems for testing
- * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- * 1) Maximize
- *
- *  z = -3x1 + 2x2 - x3 + 4x4
- *
- *  subject to:
- *
- *       x1 + x2 - 4x3 + 2x4 ≥  4,
- *     -3x1 + x2 - 2x3       ≤  6,
- *            x2       -  x4 = -1,
- *       x1 + x2 -  x3       =  0,
- *                  x3,   x4 ≥  0.
- *
- *
- * 2) Minimize or maximize
- *
- *  z =   28x11 + 84x12 + 112x13 + 112x14 + 60x21 + 20x22
- *      + 50x23 + 50x24 +  96x31 +  60x32 + 24x33 + 60x34
- *      + 64x41 + 40x42 +  40x43 +  16x44 + 50y1  + 50y2
- *      + 50y3  + 50y4
- *
- *  subject to:
- *
- *       x11 + x12 + x13 + x14       = 1,
- *       x21 + x22 + x23 + x24       = 1,
- *       x31 + x32 + x33 + x34       = 1,
- *       x41 + x42 + x43 + x44       = 1,
- *      -x11 - x21 - x31 - x41 + 4y1 ≥ 0,
- *      -x12 - x22 - x32 - x42 + 4y2 ≥ 0,
- *      -x13 - x23 - x33 - x43 + 4y3 ≥ 0,
- *      -x14 - x24 - x34 - x44 + 4y4 ≥ 0,
- *                           xij, zi ∈ {0,1} for all i,j=1,2,3,4.
- *
- *
- * 3) (from cascmd_fr) Minimize
- *
- *  z = 2x + y - z + 4
- *
- *  subject to:
- *
- *       x          ≤ 1,
- *            y     ≥ 2,
- *       x + 3y - z = 2,
- *      2x -  y + z ≤ 8,
- *      -x +  y     ≤ 5.
- *
- *
- * 4) The problem of putting as much queens as possible on an 8x8 chessboard so that they don't threat each other.
- *
- * Maximize
- *   c.x,
- *   where c = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
- * subject to:
- *   A.x<=b
- *   where A = [[1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1],[1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0],[0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0],[0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0],[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0],[0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0],[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],[1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],[0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0],[0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0]]
- *   and   b = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
- *      (42 constraints in total)
- *   64 decision variables x=(x11,x12,...,x18,x21,x22,...,x28,...,x81,x82,...,x88), all binary
- *      xij=1 if there is a queen on field in ith row and jth column of a chessboard, xij=0 if the field is empty
- *
- * 5)
- *  [2,10,13,17,7,5,7,3],[[],[],[[22,13,26,33,21,3,14,26],[39,16,22,28,26,30,23,24],[18,14,29,27,30,38,26,26],[41,26,28,36,18,38,16,26]],[7872,10466,11322,12058]],assume=lp_nonnegative
- *
- * 6)
- *  1.06x1+0.56x2+3x3+2703.50x4+4368.23x5,[1.06x1+0.015x3>=729824.87,0.56x2+0.649x3>=1522188.03,x3>=1680.05,x4>=60,x5>=4],assume=lp_nonnegative
  */
 
-using namespace std;
 #include "lpsolve.h"
 #include "giac.h"
+#include <ctime>
+#ifndef DBL_MAX
+#define DBL_MAX 1.79769313486e+308
+#endif
+using namespace std;
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
-#endif // ndef NO_NAMESPACE_GIAC
+#endif //ndef NO_NAMESPACE_GIAC
+
+const gen inf=symbolic(at_plus,unsigned_inf);
+const gen minf=symbolic(at_neg,unsigned_inf);
 
 /*
- * Maximize obj^t*x subject to A*x<=b using two-phase simplex method. Slack and
- * surplus variables need to be represented with additional columns in matrix
- * m_orig. Equality constraints must come before inequality constraints in that
- * matrix. Function introduces artificial variables automatically when
- * preparing for the first phase. This implementation is intended for exact
- * computation, phase I may fail if calculations are floating-point because of
- * roundoff errors (see example 6 in 'Additional LP problems for testing'
- * section above).
+ * Convert double to exact gen.
  */
-matrice simplex_twophase(matrice & m_orig,vecteur & b,vecteur & obj,vecteur & soln,gen & optimum,GIAC_CONTEXT) {
-    int nc=m_orig.size(),nv=obj.size();
-    int ns=int(m_orig.front()._VECTptr->size())-nv;
-    int neq=nc-ns;
-    matrice m(m_orig),idn(midn(nc));
-    // append columns for artificial variables and b (rhs values)
-    vector<int> av;
-    m=mtran(m);
-    for (int i=-neq;i<ns;++i) {
-        if (i<0 || is_one(-m[i+nv][i+neq])) {
-            av.push_back(i+neq);
-            m.push_back(idn[i+neq]);
-        }
-    }
-    int na=av.size();
-    m.push_back(b);
-    m=mtran(m);
-    vecteur br; // bottom row
-    if (na==0) { // no artificial variables, the problem is in canonical form
-        br=mergevecteur(-obj,vecteur(ns+na+1,0));
-        m.push_back(br);
-        m=simplex_reduce(m,soln,optimum,true,false,contextptr);
-    }
-    else {
-        // artificial variables were introduced, proceed with the two phase method
-        br=mergevecteur(vecteur(nv+ns,0),vecteur(av.size(),1));
-        br.push_back(gen(0));
-        for (vector<int>::const_iterator it=av.begin();it!=av.end();++it) {
-            br=subvecteur(br,*m[*it]._VECTptr);
-        }
-        m.push_back(br);
-        m=simplex_reduce(m,soln,optimum,true,false,contextptr); // phase I
-        if (!is_zero(optimum,contextptr)) { // no feasible solution exists
-            soln=vecteur(0);
-            return m;
-        }
-        vector< pair<int,int> > basis;
-        vector<bool> found(nc+1,false); // found[i] becomes true when ith column of idn is found
-        vector<bool> row_active(nc+1,true); // a constraint is inactive when tautologic (0=0)
-        for (int j=0;j<nv+ns+na;++j) {
-            int I=-1;
-            for (int i=0;i<nc+1;++i) {
-                if (!is_zero(m[i][j])) {
-                    if (I>=0) {
-                        I=-1;
-                        break;
-                    }
-                    I=i;
-                }
-            }
-            if (I==-1 || found[I] || !is_one(m[I][j])) // jth variable not in the basis, skip
-                continue;
-            // jth variable is in the basis
-            found[I]=true; // remember which idn columns have been found so far
-            if (j>=nv+ns) { // jth variable is artificial, it must be pushed out of the basis
-                int k=0;
-                for (;k<nv+ns && is_zero(m[I][k]);++k);
-                if (k<nv+ns) {  // kth variable entering the basis, jth leaving
-                    m[I]=divvecteur(*m[I]._VECTptr,m[I][k]);
-                    vecteur & pivot_v = *m[I]._VECTptr;
-                    gen a;
-                    for (int i=0;i<nc+1;++i) {
-                        if (i==I)
-                            continue;
-                        vecteur & v=*m[i]._VECTptr;
-                        a=v[k];
-                        for (int J=0;J<nv+ns+na+1;++J) {
-                            v[J]=v[J]-a*pivot_v[J];
-                        }
-                    }
-                    basis.push_back(make_pair(I,k));
-                }
-                else // mark Ith row inactive
-                    row_active[I]=false;
-            }
-            else
-                basis.push_back(make_pair(I,j));
-        }
-        // remove the artificial variables columns and the last row from m
-        m=mtran(m);
-        m.erase(m.begin()+nv+ns,m.end()-1);
-        m=mtran(m);
-        m.pop_back();
-        br=mergevecteur(-obj,vecteur(ns+1,0)); // bottom row for maximizing the objective function
-        for (vector< pair<int,int> >::const_iterator it=basis.begin();it!=basis.end();++it) {
-            br=subvecteur(br,multvecteur(br[it->second],*m[it->first]._VECTptr));
-        }
-        m.push_back(br);
-        for (int i=nc;i>=0;--i) {
-            if (!row_active[i])
-                m.erase(m.begin()+i);
-        }
-        m=simplex_reduce(m,soln,optimum,true,false,contextptr); // phase II
-    }
-    return m;
+gen double2fraction(double d,GIAC_CONTEXT) {
+    return exact(double2gen(d),contextptr);
 }
 
 /*
- * Assure that b contains no negative elements.
+ * Convert gen to double.
  */
-void simplex_prepare(matrice & m,vecteur & b,GIAC_CONTEXT) {
-    for (int i=0;i<int(m.size());++i) {
-        if (is_strictly_positive(-b[i],contextptr)) {
-            m[i]=-m[i];
-            b[i]=-b[i];
-        }
-    }
+double gen2double(const gen &g,GIAC_CONTEXT) {
+    return _evalf(g,contextptr).DOUBLE_val();
 }
 
 /*
- * Compute vector w=A*v.
+ * Return number of digits of an unsigned integer.
  */
-vecteur multmatvec(const matrice & m,const vecteur & v) {
-    vecteur res(m.size(),gen(0));
-    for (int i=0;i<int(m.size());++i) {
-        for (int j=0;j<int(v.size());++j) {
-            res[i]+=m[i][j]*v[j];
-        }
-    }
-    return res;
-}
-
-vecteur multdiagvec(const vecteur & d,const vecteur & v) {
-    vecteur res(d.size());
-    for (int i=0;i<int(d.size());++i) {
-        res[i]=d[i]*v[i];
-    }
-    return res;
-}
-
-bool cholesky_decomposition(const vecteur & A,matrice & L,GIAC_CONTEXT) {
-    int n=A.size(),j,k,l;
-    for (j=0;j<n;j++) {
-        gen s;
-        for (l=j;l<n;l++) {
-            if (int(L.size())<n)
-                L.push_back(vecteur(n,gen(0)));
-            s=0;
-            for (k=0;k<j;k++) {
-                if (is_zero(L[k][k],contextptr))
-                    return false;
-                s+=L[l][k]*L[j][k]/L[k][k];
-            }
-            L[l]._VECTptr->at(j)=A[l]._VECTptr->at(j)-s;
-//            cout << "(" << l << "," << j << "): " << L[l][j] << endl;
-        }
-    }
-    for (k=0;k<n;k++) {
-        gen c(inv(sqrt(L[k][k],contextptr),contextptr));
-        for (j=k;j<n;j++) {
-            L[j]._VECTptr->at(k)=L[j][k]*c;
-        }
-    }
-    return true;
-}
-
-static int step_count;
-
-/*
- * Implementation of primal-dual affine scaling algorithm from:
- * http://www.4er.org/CourseNotes/Book%20B/B-III.pdf
- */
-bool primal_dual_affine_scaling(matrice & A,vecteur & b,vecteur & c,
-                                vecteur & x,vecteur & p,vecteur & s,GIAC_CONTEXT) {
-    gen alpha(0.99995),beta(0.1),mu;
-    int nv=A.front()._VECTptr->size(),nc=A.size();
-    matrice At(mtran(A)),L;
-    vecteur xinv(nv),dx(nv),ds;
-    do {
-        ++step_count;
-        mu=beta*scalarproduct(s,x,contextptr)/gen(nv);
-        for (int k=0;k<nv;++k) {
-            xinv[k]=pow(x[k],-1);
-        }
-        // solve the system:
-        // [-X^-1*S At] [dx] _ [c-At*p-mu*X^-1*e]
-        // [  A     0 ] [ds] ‾ [      b-A*x     ]
-        // where X^-1=diag(xinv) and S=diag(s)
-        vecteur B,rh1(subvecteur(c,addvecteur(multmatvec(At,p),multvecteur(mu,xinv))));
-        vecteur rh2(subvecteur(b,multmatvec(A,x)));
-        for (int j=0;j<nv;++j) {
-            for (int i=0;i<nc;++i) {
-                if (int(B.size())<nc)
-                    B.push_back(vecteur(i+1,0));
-                gen cf(A[i][j]*x[j]/s[j]);
-                vecteur r(At[j]._VECTptr->begin(),At[j]._VECTptr->begin()+i+1);
-                B[i]=addvecteur(*B[i]._VECTptr,multvecteur(cf,r));
-                rh2[i]+=cf*rh1[j];
-            }
-        }
-        if (!cholesky_decomposition(B,L,contextptr)) // can't iterate further
-            break;
-        vecteur dp(rh2);
-        for (int i=0;i<nc;++i) {
-            for (int j=0;j<i;++j) {
-                dp[i]-=L[i][j]*dp[j];
-            }
-            dp[i]=dp[i]/L[i][i];
-        }
-        for (int j=nc-1;j>=0;--j) {
-            for (int i=j+1;i<nc;++i) {
-                dp[j]-=L[i][j]*dp[i];
-            }
-            dp[j]=dp[j]/L[j][j];
-        }
-        for (int k=0;k<nv;++k) {
-            rh1[k]-=scalarproduct(*At[k]._VECTptr,dp,contextptr);
-            dx[k]=-x[k]*rh1[k]/s[k];
-        }
-        ds=-addvecteur(s,multdiagvec(xinv,subvecteur(multdiagvec(s,dx),vecteur(nv,mu))));
-        if (_count_inf(makesequence(gen(0),dx),contextptr).val==0 ||
-                _count_inf(makesequence(gen(0),ds),contextptr).val==0)
-            // no optimal solution can be found
-            return false;
-        vecteur theta_xv,theta_sv;
-        for (int k=0;k<nv;++k) {
-            if (is_positive(-dx[k],contextptr) && !is_exactly_zero(dx[k]))
-                theta_xv.push_back(-x[k]/dx[k]);
-            if (is_positive(-ds[k],contextptr) && !is_exactly_zero(ds[k]))
-                theta_sv.push_back(-s[k]/ds[k]);
-        }
-        gen theta_x(_min(theta_xv,contextptr)),theta_s(_min(theta_sv,contextptr));
-        gen theta(_min(makesequence(gen(1),alpha*theta_x),contextptr));
-        gen phi(_min(makesequence(gen(1),alpha*theta_s),contextptr));
-        x=addvecteur(x,multvecteur(theta,dx));
-        p=addvecteur(p,multvecteur(phi,dp));
-        s=addvecteur(s,multvecteur(phi,ds));
-    } while (!is_zero(_max(_abs(multdiagvec(dx,ds),contextptr),contextptr),contextptr));
-    // x is optimal
-    return true;
+int numdigits(unsigned i) {
+    return 1+(i>0?(int)std::log10((double)i):0);
 }
 
 /*
- * Return true iff m has full row rank.
+ * Return true iff g is a (vector of) real number or +infinity or -infinity.
  */
-bool is_fullrank(const matrice & m,int & r,GIAC_CONTEXT) {
-    r=_rank(m,contextptr).val;
-    return r==int(m.size());
-}
-
-/*
- * Maximize z=c^T*x subject to A*x=b using primal-dual affine scaling method.
- * Optimal value z* is returned.
- */
-gen affscale(matrice & A,vecteur & b,vecteur & c_orig,vecteur & x,bool report,GIAC_CONTEXT) {
-    int rnk;
-    if (!is_fullrank(A,rnk,contextptr)) {
-        x=vecteur(0);
-        if (report)
-            cout << "Error: constraint matrix is not full rank" << endl;
-        return undef;
-    }
-    step_count=0;
-    int nv=int(c_orig.size()),ns=A.front()._VECTptr->size()-nv,nc=A.size();
-    vecteur c(mergevecteur(-c_orig,vecteur(ns,gen(0))));
-    if (x.empty())
-        x=vecteur(nv,gen(1));
-    vecteur y(ns);
-    for (int k=0;k<ns;++k) {
-        int i=k+nc-ns,j=nv+k;
-        vecteur & r = *A[i]._VECTptr;
-        y[k]=(b[i]-scalarproduct(vecteur(r.begin(),r.begin()+nv),x,contextptr))/A[i][j];
-        if (!is_strictly_positive(y[k],contextptr))
-            y[k]=gen(1);
-    }
-    x=mergevecteur(x,y);
-    vecteur s(nv+ns,gen(1)),p(nc,gen(0));
-    if (!primal_dual_affine_scaling(A,b,c,x,p,s,contextptr)) {
-        x=vecteur(0);
-        if (report)
-            cout << "No optimal solution found" << endl;
-        return undef;
-    }
-    return scalarproduct(-c,x,contextptr);
-}
-
-/*
- * Test if g is integer w.r.t. tolerance itol. g is considered integer if
- * |g-round(g)|<=itol.
- */
-bool is_whole(const gen & g,gen & itol,GIAC_CONTEXT) {
-    gen d(_abs(g-_round(g,contextptr),contextptr));
-    return is_greater(itol,d,contextptr);
-}
-
-bool exactify_solution(vecteur & soln,vector<int> vartype,gen & itol,GIAC_CONTEXT) {
-    for (int i=0;i<int(vartype.size());++i) {
-        if (vartype[i]==1) {
-            if (is_whole(soln[i],itol,contextptr)) {
-                if (is_exactly_zero(itol))
-                    soln[i]=exact(soln[i],contextptr);
-            }
-            else
-                return false;
-        }
-    }
-    return true;
-}
-
-bool is_slack_integer(matrice & m,vecteur & b,int J,vector<int> & vartype,vecteur & eq,GIAC_CONTEXT) {
-    int i=0,nv=vartype.size();
-    for (;is_zero(m[i][J]);++i);
-    eq=*m[i]._VECTptr;
-    eq[J]=gen(0);
-    eq.push_back(b[i]);
-    eq=multvecteur(-m[i][J],eq);
-    gen itol(0);
-    if (!is_whole(eq.back(),itol,contextptr))
-        return false;
-    for (int j=0;j<nv;++j) {
-        if (is_zero(eq[j]))
-            continue;
-        if (vartype[j]==0 || !is_whole(eq[j],itol,contextptr))
-            return false;
-    }
-    return true;
-}
-
-/*
- * Some heuristics mentioned in:
- *
- *      http://eventos.cmm.uchile.cl/discretas2016/wp-content/uploads/sites/26/2015/12/ChileSummerSchool.pdf
- *
- * (see page 25) are implemented in this function to discard bad cuts.
- * A bad cut is represented by an empty vector.
- */
-vecteur gomory_cut(matrice & M,matrice & m,vecteur & b,int I,int J,vector<int> & vartype,GIAC_CONTEXT) {
-    int n=m.front()._VECTptr->size(),nv=vartype.size();
-    vecteur eq(*M[I]._VECTptr),cut(n,gen(0));
-    gen f0(eq.back()-_floor(eq.back(),contextptr));
-    if (is_greater(f0,gen(0.99),contextptr) || is_strictly_greater(gen(0.01),f0,contextptr))
-        // f0 or 1-f0 is too small
-        return vecteur(0);
-    eq.pop_back();
-    cut.push_back(gen(1));
-    gen cfmin(0),cfmax(0);
-    for (int j=0;j<n;++j) {
-        if (j==J || is_zero(eq[j]))
-            continue;
-        vecteur eqj;
-        gen &aij=eq[j];
-        if (j<nv?(vartype[j]==1):is_slack_integer(m,b,j,vartype,eqj,contextptr)) {
-            gen fj(aij-_floor(aij,contextptr));
-            cut[j]=is_greater(f0,fj,contextptr)?fj/f0:(1-fj)/(1-f0);
-        }
-        else
-            cut[j]=aij/(is_positive(aij,contextptr)?f0:f0-1);
-        if (is_exactly_zero(cfmin) || is_strictly_greater(cfmin,cut[j],contextptr))
-            cfmin=cut[j];
-        if (is_strictly_greater(cut[j],cfmax,contextptr))
-            cfmax=cut[j];
-        if (j>=nv) {
-            cut=addvecteur(cut,multvecteur(cut[j],eqj));
-            cut[j]=gen(0);
-        }
-    }
-    if (is_greater(_abs(_evalf(cfmax/cfmin,contextptr),contextptr),pow(gen(10),6),contextptr))
-        // dynamism of the cut is too large
-        return vecteur(0);
-    int nz=nv;
-    for (int i=0;i<nv;++i) {
-        if (is_exactly_zero(cut[i]))
-            --nz;
-    }
-    if (nz>1+nv/2) // the cut is too dense
-        return vecteur(0);
-    cut=*exact(cut,contextptr)._VECTptr;
-    gen nzv(_abs(_denom(cut.back(),contextptr),contextptr));
-    for (int i=0;i<nv;++i) {
-        if (is_zero(cut[i]))
-            continue;
-        nzv=_lcm(makesequence(nzv,_abs(_denom(cut[i],contextptr),contextptr)),contextptr);
-    }
-    return multvecteur(nzv,cut);
-}
-
-static int cut_count;
-
-bool simplex_gomory(matrice & M,matrice & m,vecteur & b,vecteur & obj,vector<int> & vartype,
-                    vecteur & soln,gen & optimum,GIAC_CONTEXT) {
-    int nv=obj.size(),discarded_cuts=0;
-    if (soln.empty())
-        return false;
-    matrice cuts;
-    gen itol(0);
-    for (int j=0;j<nv;++j) {
-        if (vartype[j]==1 && !is_whole(soln[j],itol,contextptr)) {
-            int i=0;
-            for (;!is_one(M[i][j]);++i);
-            vecteur cut(gomory_cut(M,m,b,i,j,vartype,contextptr));
-            if (cut.empty())
-                ++discarded_cuts;
-            if (!cut.empty() && find(cuts.begin(),cuts.end(),cut)==cuts.end())
-                cuts.push_back(cut);
-        }
-    }
-    if (cuts.empty())
-        return false;
-    cut_count+=int(cuts.size());
-    cuts=mtran(cuts);
-    vecteur rv(*cuts.back()._VECTptr);
-    cuts.pop_back();
-    cuts=mtran(cuts);
-    int nc=m.size(),ncuts=cuts.size();
-    m=mtran(mergevecteur(mtran(m),*_matrix(makesequence(ncuts,nc,0),contextptr)._VECTptr));
-    cuts=mtran(mergevecteur(mtran(cuts),multvecteur(gen(-1),midn(ncuts))));
-    m=mergevecteur(m,cuts);
-    b=mergevecteur(b,rv);
-    simplex_prepare(m,b,contextptr);
-    simplex_twophase(m,b,obj,soln,optimum,contextptr);
-    return true;
-}
-
-matrice copy_matrix(matrice & m) {
-    matrice m_copy;
-    for (const_iterateur it=m.begin();it!=m.end();++it) {
-        vecteur v(*it->_VECTptr);
-        m_copy.push_back(v);
-    }
-    return m_copy;
-}
-
-static int node_count;
-
-void branch_and_bound(matrice & m_orig,vecteur & b_orig,vecteur & obj,vector<int> & varsign,
-                      vector<int> & vartype,vecteur & soln_relaxed,vecteur & incumbent,gen & optimum,
-                      gen & itol,bool use_affscale,int depth,int depthlimit,int nodelimit,GIAC_CONTEXT) {
-    if ((depthlimit>0 && depth>depthlimit) || (nodelimit>0 && node_count>=nodelimit))
-        return;
-    int nv=int(obj.size()),nc=m_orig.size(); // number of variables
-    int ns=int(m_orig.front()._VECTptr->size())-nv;
-    int k=-1;
-    gen fr,min_fr(0);
-    for (int i=0;i<nv;++i) {
-        if (vartype[i]==0) // ith variable is continuous, skip
-            continue;
-        fr=_abs(soln_relaxed[i]-_round(soln_relaxed[i],contextptr),contextptr);
-        if (is_strictly_greater(fr,min_fr,contextptr)) {
-            k=i;
-            min_fr=fr;
-        }
-    }
-    if (k<0) // no variable to branch on
-        return;
-    vector<int> nxt;
-    gen xk=soln_relaxed[k];
-    vecteur bounds=makevecteur(_ceil(xk,contextptr),_floor(xk,contextptr));
-    vecteur solnv(2),optv(2),mv(2),bv(2);
-    // solve two subproblems
-    matrice idn(midn(nv+ns));
-    for (int i=0;i<2;++i) {
-        matrice m(copy_matrix(m_orig));
-        vecteur b(b_orig),soln;
-        for (int j=0;j<nc;++j) {
-            m[j]._VECTptr->push_back(gen(0));
-        }
-        vecteur c(*idn[k]._VECTptr);
-        c.push_back(gen(2*i-1));
-        m.push_back(c);
-        b.push_back(bounds[i]);
-        if (i==0 && is_strictly_positive(bounds[i],contextptr)) {
-            int l=0;
-            for (vector<int>::const_iterator it=varsign.begin();it!=varsign.end();++it) {
-                if (*it==0 && (k==l || k==l+1)) {
-                    c=*idn[k+(k==l?1:-1)]._VECTptr;
-                    c.push_back(gen(0));
-                    m=mergevecteur(vecteur(1,c),m);
-                    b=mergevecteur(vecteur(1,gen(0)),b);
-                }
-                l+=*it==0?2:1;
-            }
-        }
-        if (use_affscale) {
-            optv[i]=affscale(m,b,obj,soln,false,contextptr);
-            soln=*_epsilon2zero(soln,contextptr)._VECTptr;
-        }
-        else {
-            matrice M(simplex_twophase(m,b,obj,soln,optv[i],contextptr));
-            simplex_gomory(M,m,b,obj,vartype,soln,optv[i],contextptr);
-        }
-        if (!soln.empty() && !is_inf(_abs(optv[i],contextptr)) &&
-                (incumbent.empty() || is_strictly_greater(optv[i],optimum,contextptr))) {
-            if (exactify_solution(soln,vartype,itol,contextptr)) { // update incumbent solution
-                incumbent=soln;
-                optimum=optv[i];
-            }
-            else { // mark this branch for further searching
-                nxt.push_back(i);
-                mv[i]=m;
-                bv[i]=b;
-                solnv[i]=soln;
-            }
-        }
-        ++node_count;
-        if (nodelimit>0 && node_count>=nodelimit)
-            return;
-    }
-    // start with the branch that has higher upper bound
-    if (nxt.size()==2 && is_strictly_greater(optv[1],optv[2],contextptr))
-        reverse(nxt.begin(),nxt.end());
-    // test marked branches recursively
-    for (vector<int>::const_iterator it=nxt.begin();it!=nxt.end();++it) {
-        branch_and_bound(*mv[*it]._VECTptr,*bv[*it]._VECTptr,obj,varsign,vartype,*solnv[*it]._VECTptr,
-                incumbent,optimum,itol,use_affscale,depth+1,depthlimit,nodelimit,contextptr);
-    }
-}
-
-bool is_realcons(const gen & g,GIAC_CONTEXT) {
+bool is_realcons(const gen &g,GIAC_CONTEXT) {
     if (g.type==_VECT) {
-        vecteur & v = *g._VECTptr;
-        for (vecteur::const_iterator it=v.begin();it!=v.end();++it) {
+        vecteur &v = *g._VECTptr;
+        for (const_iterateur it=v.begin();it!=v.end();++it) {
             if (!is_realcons(*it,contextptr))
                 return false;
         }
         return true;
     }
-    return (is_inf(_abs(g,contextptr)) || _evalf(g,contextptr).type==_DOUBLE_);
+    return (is_inf(g) || _evalf(g,contextptr).type==_DOUBLE_);
 }
 
-bool lincomb_coeff(const gen & e_orig,const vecteur & v,vecteur & c,gen & r,GIAC_CONTEXT) {
-    gen e(e_orig),a;
-    c=vecteur(0);
-    for (vecteur::const_iterator it=v.begin();it!=v.end();++it) {
-        a=gen(0);
-        if (is_constant_wrt(e,*it,contextptr) || (is_linear_wrt(e,*it,a,e,contextptr) && is_realcons(a,contextptr)))
-            c.push_back(a);
-        else return false;
-    }
-    return is_realcons(r=e,contextptr);
-}
-
-bool interval2vecteur(const gen & g,vecteur & v,GIAC_CONTEXT) {
+/*
+ * If g is an interval, store its bounds to pair p and return true. If g is not
+ * an interval, return false.
+ */
+bool interval2pair(const gen &g,pair<gen,gen> &p,GIAC_CONTEXT) {
     if (g.type!=_SYMB || !g.is_symb_of_sommet(at_interval))
-        return false;  // g is not an interval
-    v=*g._SYMBptr->feuille._VECTptr;
+        return false;  //g is not an interval
+    vecteur &v=*g._SYMBptr->feuille._VECTptr;
+    p=make_pair(v[0],v[1]);
     return is_realcons(v,contextptr);
 }
 
-vector<int> findvars(const vecteur & v, const vecteur & vars) {
-    vector<int> indexes;
-    for (vecteur::const_iterator it=v.begin();it!=v.end();++it) {
-        if ((*it).type==_IDNT) {
-            // the variable is specified as an identifier
-            // find its index in 'vars'
-            int i=0;
-            for (;i<int(vars.size());++i) {
-                if (vars[i]==*it) {
-                    indexes.push_back(i);
-                    break;
+/*
+ * Make singleton vector (with one at position j and zeros at other positions).
+ */
+vecteur singleton(int n,int j) {
+    vecteur v(n,gen(0));
+    v[j]=gen(1);
+    return v;
+}
+
+/*
+ * Insert column in matrix at position j.
+ */
+void insert_column(matrice &m,const vecteur &c,int j) {
+    assert(m.size()==c.size());
+    for (int i=0;i<int(m.size());++i) {
+        m[i]._VECTptr->insert(j>=0?m[i]._VECTptr->begin()+j:m[i]._VECTptr->end()+j,c[i]);
+    }
+}
+
+/*
+ * Append column to matrix.
+ */
+void append_column(matrice &m,const vecteur &c) {
+    assert(m.size()==c.size());
+    for (int i=0;i<int(m.size());++i) {
+        m[i]._VECTptr->push_back(c[i]);
+    }
+}
+
+/*
+ * Remove jth column from matrix. If j<0, count from last column towards the first.
+ */
+void remove_column(matrice &m,int j) {
+    for (int i=0;i<int(m.size());++i) {
+        m[i]._VECTptr->erase(j+(j>=0?m[i]._VECTptr->begin():m.end()));
+    }
+}
+
+/*
+ * Get jth column from matrix. If j<0, count from last column towards the first.
+ */
+vecteur jth_column(const matrice &m,int j) {
+    int n=m.front()._VECTptr->size();
+    vecteur col(m.size());
+    for (int i=0;i<int(m.size());++i) {
+        col[i]=m[i][j>=0?j:n+j];
+    }
+    return col;
+}
+
+/*
+ * Multiply coefficients by LCM of denominators and then divide them by their
+ * GCD.
+ */
+vecteur integralize(const vecteur &v_orig,GIAC_CONTEXT) {
+    vecteur v(v_orig),vd;
+    for (const_iterateur it=v.begin();it!=v.end();++it) {
+        if (!is_zero(*it))
+            vd.push_back(_denom(*it,contextptr));
+    }
+    if (vd.empty())
+        return v;
+    v=multvecteur(abs(_lcm(vd,contextptr),contextptr),v);
+    return divvecteur(v,abs(_gcd(v,contextptr),contextptr));
+}
+
+/*
+ * LP variable constructor. By default, it is a nonnegative variable
+ * unrestricted from above.
+ */
+lp_variable::lp_variable() {
+    is_integral=false;
+    sign_type=_LP_VARSIGN_POS;
+    range=lp_range();
+    range.lbound=gen(0);
+    fill_n(nbranch,2,0);
+}
+
+/*
+ * Update lower (dir=0) or upper (dir=1) pseudocost.
+ */
+void lp_variable::update_pseudocost(double delta, double fr, int dir) {
+    double sigma=pseudocost[dir]*nbranch[dir];
+    sigma+=delta/(dir==0?fr:(1-fr));
+    pseudocost[dir]=sigma/(++nbranch[dir]);
+}
+
+/*
+ * Return score, a positive value based on pseudocost values. Variable with the
+ * best (highest) score is selected for branching.
+ */
+double lp_variable::score(double fr) {
+    if (nbranch[0]==0 || nbranch[1]==0)
+        return 0;
+    double qlo=fr*pseudocost[0],qhi=(1-fr)*pseudocost[1];
+    return (1-LP_SCORE_FACTOR)*std::min(qlo,qhi)+LP_SCORE_FACTOR*std::max(qlo,qhi);
+}
+
+/*
+ * Range constructor: by default, it contains no restriction.
+ */
+lp_range::lp_range () {
+    lbound=minf;
+    ubound=inf;
+}
+
+/*
+ * Settings constructor loads some sensible defaults.
+ */
+lp_settings::lp_settings() {
+    verbose=false;
+    status_report_freq=0.2;
+    solver=_LP_SIMPLEX;
+    precision=_LP_PROB_DEPENDENT;
+    presolve=false;
+    maximize=false;
+    relative_gap_tolerance=0.0;
+    has_binary_vars=false;
+    varselect=-1;
+    nodeselect=_LP_BEST_PROJECTION;
+    depth_limit=RAND_MAX;
+    node_limit=RAND_MAX;
+    iteration_limit=RAND_MAX;
+    time_limit=RAND_MAX;
+    max_cuts=5;
+}
+
+/*
+ * Stats constructor initializes the status container for the problem being
+ * solved. It is used to monitor the progress and to summarize when done.
+ */
+lp_stats::lp_stats() {
+    subproblems_examined=0;
+    cuts_applied=0;
+    max_active_nodes=0;
+    mip_gap=-1; //negative means undefined
+}
+
+/*
+ * Pivot on element with coordinates I,J.
+ */
+void pivot_ij(matrice &m,int I,int J,bool negate=false) {
+    int nr=m.size(),nc=m.front()._VECTptr->size();
+    gen a(m[I][J]),b;
+    m[I]=divvecteur(*m[I]._VECTptr,a);
+    vecteur col(jth_column(m,J)),&pv=*m[I]._VECTptr;
+    for (int i=0;i<nr;++i) {
+        m[i]._VECTptr->at(J)=(i==I?gen(negate?-1:1)/a:gen(0));
+    }
+    for (int i=0;i<nr;++i) {
+        b=col[i];
+        if (i==I || is_zero(b))
+            continue;
+        vecteur &v=*m[i]._VECTptr;
+        for (int j=0;j<nc;++j) {
+            v[j]-=b*pv[j];
+        }
+    }
+}
+
+/*
+ * Simplex algorithm that handles upper bounds of the variables. The solution x
+ * satisfies 0<=x<=u. An initial basis must be provided.
+ *
+ * Basis is a vector of integers B and B[i]=j means that jth variable is basic
+ * and appears in ith row (constraint). Basic columns are not kept in matrix,
+ * which contains only the columns of nonbasic variables. A nonbasic variable
+ * is assigned to the respective column with integer vector 'cols': cols[i]=j
+ * means that ith column of the matrix is associated with the jth variable. The
+ * algorithm uses upper-bounding technique when pivoting and uses an adaptation
+ * of Bland's rule to prevent cycling. ith element of 'is_slack' is true iff
+ * ith (nonbasic) variable is at its upper bound.
+ *
+ *
+ * If limit>0, simplex algorithm will terminate after that many iterations.
+ */
+matrice simplex_reduce_bounded(const matrice &m_orig,const vecteur &u,vector<bool> &is_slack,vecteur &bfs,gen &optimum,
+                               ints &basis,ints &cols,int limit,GIAC_CONTEXT) {
+    matrice m(m_orig);
+    //ev, lv: indices of entering and leaving variables
+    //ec, lr: 'entering' column and 'leaving' row in matrix m, respectively
+    int nr=basis.size(),nc=cols.size(),nv=nr+nc,ec,ev,lr,lv,icount=0;
+    gen a,b,ratio,mincoeff,opt;
+    //iterate the simplex method
+    bool choose_first=false;
+    optimum=undef;
+    while ((icount++)<limit) {
+        opt=m.back()._VECTptr->back();
+        //determine which variable enters the basis
+        mincoeff=gen(0);
+        ev=-1;
+        m.back()=_eval(m.back(),contextptr);
+        vecteur &last=*m.back()._VECTptr;
+        for (int j=0;j<nc;++j) {
+            int k=cols[j];
+            if ((choose_first && is_strictly_positive(-last[j],contextptr) &&
+                 (ev<0 || k+(is_slack[k]?nv:0)<ev+(is_slack[ev]?nv:0))) ||
+                    (!choose_first && is_strictly_greater(mincoeff,last[j],contextptr))) {
+                ec=j;
+                ev=k;
+                mincoeff=last[j];
+            }
+        }
+        if (ev<0) //the current solution is optimal
+            break;
+        //determine which variable leaves the basis
+        mincoeff=inf;
+        lv=-1;
+        bool hits_ub,ub_subs;
+        for (int i=0;i<nr;++i) {
+            a=m[i][ec];
+            b=m[i]._VECTptr->back();
+            int j=basis[i];
+            if (is_strictly_positive(a,contextptr) && is_greater(mincoeff,ratio=b/a,contextptr))
+                hits_ub=false;
+            else if (is_strictly_positive(-a,contextptr) && !is_inf(u[j]) &&
+                     is_greater(mincoeff,ratio=(b-u[j])/a,contextptr))
+                hits_ub=true;
+            else continue;
+            if (is_strictly_greater(mincoeff,ratio,contextptr)) {
+                lv=-1;
+                mincoeff=ratio;
+            }
+            if (lv<0 || (choose_first && j+(is_slack[j]?nv:0)<lv+(is_slack[lv]?nv:0))) {
+                lv=j;
+                lr=i;
+                ub_subs=hits_ub;
+            }
+        }
+        if (lv<0 && is_inf(u[ev])) { //solution is unbounded
+            optimum=inf;
+            return m;
+        }
+        if (is_zero(mincoeff))
+            choose_first=true; //switch on Bland's rule
+        if (lv<0 || is_greater(mincoeff,u[ev],contextptr)) {
+            for (iterateur it=m.begin();it!=m.end();++it) {
+                it->_VECTptr->back()-=u[ev]*(a=it->_VECTptr->at(ec));
+                it->_VECTptr->at(ec)=-a;
+            }
+            if (ev<nv)
+                is_slack[ev]=!is_slack[ev];
+            continue;
+        }
+        //swap variables: basic leaves, nonbasic enters
+        if (ub_subs) {
+            m[lr]._VECTptr->back()-=u[lv];
+            if (lv<nv)
+                is_slack[lv]=!is_slack[lv];
+        }
+        pivot_ij(m,lr,ec,ub_subs);
+        basis[lr]=ev;
+        cols[ec]=lv;
+    }
+    m=*_eval(m,contextptr)._VECTptr;
+    optimum=m[nr][nc];
+    bfs=vecteur(nv,gen(0));
+    for (int i=0;i<nr;++i) {
+        bfs[basis[i]]=m[i][nc];
+    }
+    for (int j=0;j<nv;++j) {
+        if (is_slack[j])
+            bfs[j]=u[j]-bfs[j];
+    }
+    return m;
+}
+
+/*
+ * Solve the relaxed subproblem corresponding to this node.
+ *
+ * This function uses two-phase simplex method and applies suitable Gomory
+ * mixed integer cuts generated after (each re)optimization. Weak GMI cuts are
+ * discarded either because of small away or because not being parallel enough
+ * to the objective. Cuts with too large coefficients (when integralized) are
+ * discarded too because they slow down the computational process. Generated
+ * cuts are kept in the problem structure to be used by child suboproblems
+ * during the branch&bound algorithm.
+ */
+int lp_node::solve_relaxation() {
+    int nrows=prob->constr.nrows(),ncols=prob->constr.ncols(),bs;
+    matrice m;
+    vecteur obj(prob->objective.first),l(ncols),u(ncols),br,row,b,lh,gmi_cut;
+    gen rh,obj_ct(0),mgn,minmgn;
+    ints cols(ncols),basis;
+    vector<bool> is_slack(ncols,false);
+    map<int,int> slack_cut;
+    //determine upper and lower bounds
+    for (int j=0;j<ncols;++j) {
+        lp_variable &var=prob->variables[j];
+        lp_range &range=ranges[j];
+        l[j]=max(var.range.lbound,range.lbound,prob->ctx);
+        u[j]=min(var.range.ubound,range.ubound,prob->ctx);
+        if (is_strictly_greater(l[j],u[j],prob->ctx))
+            return _LP_INFEASIBLE;
+    }
+    //populate matrix with consraint coefficients
+    for (int i=0;i<nrows;++i) {
+        row=vecteur(*prob->constr.lhs[i]._VECTptr);
+        m.push_back(row);
+    }
+    b=vecteur(prob->constr.rhs);
+    //shift variables according to their lower bounds such that l<=x<=u becomes 0<=x'<=u'
+    for (int j=0;j<ncols;++j) {
+        b=subvecteur(b,multvecteur(l[j],jth_column(m,j)));
+        u[j]-=l[j];
+        obj_ct+=obj[j]*l[j];
+        cols[j]=j;
+    }
+    append_column(m,b);
+    //assure that the right-hand side column has nonnegative coefficients
+    for (iterateur it=m.begin();it!=m.end();++it) {
+        if (is_strictly_positive(-it->_VECTptr->back(),prob->ctx)) {
+            *it=-*it;
+        }
+    }
+    //append cuts inherited from parent node
+    for (ints::const_iterator it=cut_indices.begin();it!=cut_indices.end();++it) {
+        insert_column(m,vecteur(nrows,gen(0)),-1);
+        slack_cut[ncols]=*it;
+        prob->cuts.get_lr(*it,lh,rh);
+        for (int i=0;i<prob->nv();++i) {
+            rh-=lh[i]*l[i];
+        }
+        row=vecteur(cols.size(),gen(0));
+        for (int i=0;i<int(cols.size());++i) {
+            int j=cols.at(i);
+            if (j<prob->nv())
+                row[i]=lh[j];
+        }
+        row.push_back(gen(-1));
+        row.push_back(rh);
+        if (is_strictly_positive(-rh,prob->ctx))
+            row=multvecteur(gen(-1),row);
+        m.push_back(row);
+        l.push_back(gen(0));
+        u.push_back(inf);
+        is_slack.push_back(false);
+        obj.push_back(gen(0));
+        cols.push_back(ncols++);
+        ++nrows;
+    }
+    //optimize-add cut-reoptimize-add cut...
+    //repeat until no more cuts are generated or max_cuts limit is reached
+    while (true) {
+        br=vecteur(int(cols.size())+1,gen(0));
+        bs=basis.size();
+        basis.resize(nrows);
+        u.resize(ncols+nrows-bs);
+        for (int i=bs;i<nrows;++i) {
+            br=subvecteur(br,*m[i]._VECTptr);
+            basis[i]=ncols+i;
+            u[ncols+i-bs]=inf;
+        }
+        m.push_back(br);
+        //phase 1: minimize the sum of artificial variables
+        m=simplex_reduce_bounded(m,u,is_slack,solution,optimum,basis,cols,RAND_MAX,prob->ctx);
+        if (!is_zero(_simplify(optimum,prob->ctx)))
+            return _LP_INFEASIBLE; //at least one artificial variable is basic and positive
+        m.pop_back(); //remove bottom row
+        for (int i=0;i<nrows;++i) {
+            int j=basis[i];
+            if (j<ncols)
+                continue;
+            //ith basic variable is artificial, push it out of the basis
+            int k=0;
+            for (;k<ncols && (is_zero(m[i][k]) || cols[k]>=ncols);++k);
+            if (k==ncols)
+                return _LP_ERROR;
+            pivot_ij(m,i,k);
+            basis[i]=cols[k];
+            cols[k]=j;
+        }
+        //phase 1 finished, remove artificial columns from m
+        for (int j=int(cols.size())-1;j>=0;--j) {
+            if (cols[j]>=ncols) {
+                remove_column(m,j);
+                cols.erase(cols.begin()+j);
+            }
+        }
+        //append bottom row to maximize -obj
+        br=vecteur(ncols-nrows+1);
+        for (int j=0;j<ncols-nrows;++j) {
+            int k=cols[j];
+            br[j]=obj[k];
+            if (is_slack[k]) {
+                br.back()-=br[j]*u[k];
+                br[j]=-br[j];
+            }
+        }
+        for (int i=0;i<nrows;++i) {
+            int j=basis[i];
+            if (is_slack[j])
+                br.back()-=obj[j]*u[j];
+            br=subvecteur(br,multvecteur(is_slack[j]?-obj[j]:obj[j],*m[i]._VECTptr));
+        }
+        m.push_back(br);
+        u.resize(ncols);
+        //phase 2: optimize the objective
+        m=simplex_reduce_bounded(m,u,is_slack,solution,optimum,basis,cols,
+                                 prob->settings.iteration_limit,prob->ctx);
+        if (is_inf(optimum))
+            return _LP_UNBOUNDED; //solution is unbounded
+        m.pop_back(); //remove bottom row
+        if (int(cut_indices.size())>=prob->settings.max_cuts)
+            break;
+        //try to generate Gomory mixed integer cut
+        gmi_cut.clear();
+        for (int i=0;i<nrows;++i) {
+            gen p(fracpart(solution[basis[i]]));
+            vecteur eq(*m[i]._VECTptr);
+            if (!is_zero(p) && !is_integer(eq.back())) {
+                gen f0(fracpart(eq.back())),fj,sp(0),eqnorm(0);
+                double away=_evalf(min(f0,gen(1)-f0,prob->ctx),prob->ctx).DOUBLE_val();
+                if (away<LP_MIN_AWAY)
+                    continue; //too small away, discard this cut
+                eq.back()=gen(1);
+                for (int k=0;k<int(cols.size());++k) {
+                    int j=cols[k];
+                    if (j<prob->nv() && prob->variables[j].is_integral) {
+                        fj=fracpart(eq[k]);
+                        eq[k]=(is_strictly_greater(fj,f0,prob->ctx)?(fj-1)/(f0-1):fj/f0);
+                    }
+                    else
+                        eq[k]=eq[k]/(is_strictly_positive(eq[k],prob->ctx)?f0:(f0-1));
+                    if (j<prob->nv()) {
+                        sp+=eq[k]*obj[j];
+                        eqnorm+=pow(eq[k],2);
+                    }
+                }
+                double dsp=_evalf(sp,prob->ctx).DOUBLE_val(),deqnorm=_evalf(eqnorm,prob->ctx).DOUBLE_val();
+                if (std::abs(dsp/(prob->objective_norm*std::sqrt(deqnorm)))<LP_MIN_PARALLELISM)
+                    continue; //this cut is not parallel enough to the objective
+                eq=integralize(eq,prob->ctx); //turn cut into an equivalent integral representation
+                mgn=_max(_abs(eq,prob->ctx),prob->ctx);
+                if (_evalf(mgn,prob->ctx).DOUBLE_val()>LP_MAX_MAGNITUDE)
+                    continue; //this cut has too large coefficients
+                if (gmi_cut.empty() || is_strictly_greater(minmgn,mgn,prob->ctx)) {
+                    minmgn=mgn;
+                    gmi_cut=eq;
                 }
             }
         }
-        else if (is_integer(*it))
-            // the variable is already specified as an index
-            indexes.push_back(int((*it).val)-1);
+        if (gmi_cut.empty())
+            break; //no acceptable cut was generated, so there's no need to reoptimize further
+        //store GMI cut
+        lh=vecteur(ncols,gen(0));
+        rh=gmi_cut.back();
+        for (int k=0;k<int(cols.size());++k) {
+            int j=cols[k];
+            if(!is_zero(lh[j]=gmi_cut[k])) {
+                if (is_slack[j]) {
+                    rh-=u[j]*lh[j];
+                    lh[j]=-lh[j];
+                }
+                rh+=l[j]*lh[j];
+            }
+        }
+        vecteur slacks(lh.begin()+prob->nv(),lh.end()),orig_lh;
+        gen orig_rh;
+        lh.resize(prob->nv());
+        for (int k=0;k<int(slacks.size());++k) {
+            int j=prob->nv()+k;
+            prob->cuts.get_lr(slack_cut[j],orig_lh,orig_rh);
+            rh+=slacks[k]*orig_rh;
+            lh=addvecteur(lh,multvecteur(slacks[k],orig_lh));
+        }
+        cut_indices.push_back(prob->cuts.nrows());
+        prob->cuts.append(lh,rh,_LP_GEQ);
+        ++prob->stats.cuts_applied;
+        //append GMI cut to simplex tableau and reoptimize
+        gmi_cut.insert(gmi_cut.end()-1,gen(-1));
+        insert_column(m,vecteur(nrows,gen(0)),-1);
+        m.push_back(gmi_cut);
+        slack_cut[ncols]=cut_indices.back();
+        l.push_back(gen(0));
+        u.push_back(inf);
+        is_slack.push_back(false);
+        obj.push_back(gen(0));
+        cols.push_back(ncols++);
+        ++nrows;
     }
-    return indexes;
+    for (int i=0;i<prob->nv();++i) {
+        solution[i]+=l[i];
+    }
+    solution.resize(prob->nv());
+    optimum=obj_ct-optimum;
+    //compute some data useful during branch&bound
+    opt_approx=gen2double(optimum,prob->ctx);
+    infeas=gen(0);
+    most_fractional=-1;
+    gen p,ifs,max_ifs(0);
+    for (int i=0;i<prob->nv();++i) {
+        if (!prob->variables[i].is_integral)
+            continue;
+        p=fracpart(solution[i]);
+        ifs=min(p,gen(1)-p,prob->ctx);
+        if (is_zero(ifs))
+            continue;
+        fractional_vars[i]=gen2double(p,prob->ctx);
+        infeas+=ifs;
+        if (is_strictly_greater(ifs,max_ifs,prob->ctx)) {
+            most_fractional=i;
+            max_ifs=ifs;
+        }
+    }
+    return _LP_SOLVED;
 }
 
-gen _lpsolve(const gen & g,GIAC_CONTEXT) {
-    if (g.type==_STRNG && g.subtype==-1) return g;
-    if (g.type!=_VECT || g.subtype!=_SEQ__VECT || g._VECTptr->size()<2)
-        return gensizeerr(contextptr);
-    vecteur & gv = *g._VECTptr,constr,vars;
-    vars=*_lname(gv[0],contextptr)._VECTptr;  // detect variable names from the objective function
-    int ibd;  // position of the parameter 'bd' (or 'opts', if 'bd' is not given)
-    if (gv[1].type==_VECT) { // the parameter 'constr' is given
-        constr=*gv[1]._VECTptr;
-        vecteur constr_vars=*_lname(gv[1],contextptr)._VECTptr;  // scan variables in constraints
-        // detect variables not appearing in the objective function
-        for (vecteur::const_iterator it=constr_vars.begin();it!=constr_vars.end();++it) {
-            if (!contains(vars,*it))
-                vars.push_back(*it);
+/*
+ * Return fractional part of g, i.e. [g]=g-floor(g). It is always 0<=[g]<1.
+ */
+gen lp_node::fracpart(const gen &g) {
+    return g-_floor(g,prob->ctx);
+}
+
+/*
+ * Return true iff variable with specified index is fractional.
+ */
+bool lp_node::is_var_fractional(int index) {
+    for (map<int,double>::const_iterator it=fractional_vars.begin();it!=fractional_vars.end();++it) {
+        if (it->first==index)
+            return true;
+    }
+    return false;
+}
+
+/*
+ * Create a child node with copy of ranges and cut indices and depth increased
+ * by one.
+ */
+lp_node lp_node::create_child() {
+    lp_node node;
+    node.depth=depth+1;
+    node.ranges=vector<lp_range>(ranges);
+    node.cut_indices=ints(cut_indices);
+    node.prob=prob;
+    return node;
+}
+
+/*
+ * Return true iff there are integrality constraints, i.e. iff this is a
+ * (mixed) integer problem.
+ */
+bool lp_problem::has_integral_variables() {
+    for (vector<lp_variable>::const_iterator it=variables.begin();it!=variables.end();++it) {
+        if (it->is_integral)
+            return true;
+    }
+    return false;
+}
+
+/*
+ * Return true iff problem has approximate (floating-point) coefficients.
+ */
+bool lp_problem::has_approx_coefficients() {
+    if (is_approx(objective.first) ||
+            objective.second.is_approx() ||
+            is_approx(constr.lhs) ||
+            is_approx(constr.rhs))
+        return true;
+    for (vector<lp_variable>::const_iterator it=variables.begin();it!=variables.end();++it) {
+        if (it->range.lbound.is_approx() || it->range.ubound.is_approx())
+            return true;
+    }
+    return false;
+}
+
+/*
+ * Set objective function parameters.
+ */
+void lp_problem::set_objective(const vecteur &v, const gen &ft) {
+    objective.first=v;
+    objective.second=ft;
+    for (const_iterateur it=v.begin();it!=v.end();++it) {
+        obj_approx.push_back(gen2double(abs(*it,ctx),ctx));
+    }
+}
+
+/*
+ * Display a message.
+ */
+void lp_problem::message(const char *msg, bool err) {
+    if (err || settings.verbose)
+        cout << msg << endl;
+}
+
+/*
+ * Return the jth column (coefficients of the jth variable) as vecteur.
+ */
+vecteur lp_constraints::column(int index) {
+    return jth_column(lhs,index);
+}
+
+/*
+ * Duplicate the jth column.
+ */
+void lp_constraints::duplicate_column(int index) {
+    assert(index<ncols());
+    vecteur col(column(index));
+    insert_column(lhs,col,index);
+}
+
+/*
+ * Multiply the jth column by -1.
+ */
+void lp_constraints::negate_column(int index) {
+    for (int i=0;i<nrows();++i) {
+        vecteur &lh=*lhs[i]._VECTptr;
+        lh[index]=-lh[index];
+    }
+}
+
+/*
+ * Subtract v from rhs column of constraints.
+ */
+void lp_constraints::subtract_from_rhs_column(const vecteur &v) {
+    assert(int(v.size())==nrows());
+    for (int i=0;i<nrows();++i) {
+        rhs[i]-=v[i];
+    }
+}
+
+/*
+ * Append constraint "lh rel rh".
+ */
+void lp_constraints::append(const vecteur &lh, const gen &rh, int relation_type) {
+    assert(nrows()==0 || int(lh.size())==ncols());
+    lhs.push_back(lh);
+    rhs.push_back(rh);
+    rv.push_back(relation_type);
+}
+
+/*
+ * Set the constraint with specified index.
+ */
+void lp_constraints::set(int index, const vecteur &lh, const gen &rh, int relation_type) {
+    assert(index<nrows());
+    lhs[index]=lh;
+    rhs[index]=rh;
+    rv[index]=relation_type;
+}
+
+/*
+ * Get left and right side of the constraint with specified index.
+ */
+void lp_constraints::get_lr(int index, vecteur &lh, gen &rh) {
+    assert(index<nrows());
+    lh=*lhs[index]._VECTptr;
+    rh=rhs[index];
+}
+
+/*
+ * Get the constraint with specified index.
+ */
+void lp_constraints::get(int index, vecteur &lh, gen &rh, int &relation_type) {
+    get_lr(index,lh,rh);
+    relation_type=rv[index];
+}
+
+/*
+ * Divide the constraint by g.
+ */
+void lp_constraints::div(int index, const gen &g,GIAC_CONTEXT) {
+    assert(index<nrows() && !is_zero(g));
+    lhs[index]=divvecteur(*lhs[index]._VECTptr,g);
+    rhs[index]=rhs[index]/g;
+    if (is_strictly_positive(-g,contextptr))
+        rv[index]*=-1;
+}
+
+/*
+ * Subtract vector from the constraint.
+ */
+void lp_constraints::subtract(int index, const vecteur &v, const gen &g) {
+    assert(index<nrows());
+    lhs[index]=subvecteur(*lhs[index]._VECTptr,v);
+    rhs[index]-=g;
+}
+
+/*
+ * Remove row with specified index.
+ */
+void lp_constraints::remove(int index) {
+    lhs.erase(lhs.begin()+index);
+    rhs.erase(rhs.begin()+index);
+    rv.erase(rv.begin()+index);
+    if (int(score.size())>index)
+        score.erase(score.begin()+index);
+}
+
+/*
+ * Add identifiers from g to variable_identifiers.
+ */
+void lp_problem::add_identifiers_from(const gen &g) {
+    vecteur vars(*_lname(g,ctx)._VECTptr);
+    for (const_iterateur it=vars.begin();it!=vars.end();++it) {
+        if (!contains(variable_identifiers,*it))
+            variable_identifiers.push_back(*it);
+    }
+}
+
+/*
+ * Return variable index corresponding to the given identifier.
+ */
+int lp_problem::get_variable_index(const identificateur &idnt) {
+    int n=variable_identifiers.size();
+    for (int i=0;i<n;++i) {
+        if (*variable_identifiers[i]._IDNTptr==idnt)
+            return i;
+    }
+    return -1;
+}
+
+/*
+ * Create the problem variables. Assume that they are continuous and
+ * unrestricted by default.
+ */
+void lp_problem::create_variables(int n) {
+    variables=vector<lp_variable>(n);
+    nvars_initial=n;
+    for (int i=0;i<n;++i) {
+        lp_variable var;
+        var.range.lbound=minf; // default: no restrictions whatsoever
+        variables[i]=var;
+    }
+}
+
+/*
+ * Tighten both upper and lower bound of the variable.
+ */
+void lp_problem::tighten_variable_bounds(int i, const gen &l, const gen &u) {
+    lp_variable &var=variables[i];
+    var.range.tighten_lbound(l,ctx);
+    var.range.tighten_ubound(u,ctx);
+}
+
+/*
+ * Output solution in form [x1=v1,x2=v2,...,xn=vn] where xk are variable
+ * identifiers and vk are solution values.
+ */
+vecteur lp_problem::output_solution() {
+    if (variable_identifiers.empty())
+        return solution;
+    return *_zip(makesequence(at_equal,variable_identifiers,solution),ctx)._VECTptr;
+}
+
+/*
+ * Determine coeffcients of linear combination g of variables x in
+ * variable_identifiers. varcoeffs C and freecoeff c are filled such that
+ * g=C*x+c.
+ */
+bool lp_problem::lincomb_coeff(const gen &g,vecteur &varcoeffs,gen &freecoeff) {
+    gen e(g),a;
+    varcoeffs.clear();
+    for (const_iterateur it=variable_identifiers.begin();it!=variable_identifiers.end();++it) {
+        a=gen(0);
+        if (is_constant_wrt(e,*it,ctx) || (is_linear_wrt(e,*it,a,e,ctx) && is_realcons(a,ctx)))
+            varcoeffs.push_back(a);
+        else return false;
+    }
+    return is_realcons(freecoeff=e,ctx);
+}
+
+/*
+ * Add slack variables to the problem if necessary (i.e. convert all
+ * inequalities to equalities).
+ */
+void lp_problem::add_slack_variables() {
+    ints posv;
+    int nv0=constr.ncols();
+    for (int i=0;i<nc();++i) {
+        if (constr.rv[i]==_LP_EQ)
+            continue;
+        append_column(constr.lhs,multvecteur(gen(-constr.rv[i]),singleton(nc(),i)));
+        constr.rv[i]=_LP_EQ;
+        variables.push_back(lp_variable()); //add slack variable
+        posv.push_back(i);
+    }
+    objective.first.resize(nv());
+    //determine types of slack variables
+    vecteur lh;
+    gen rh;
+    for (int k=0;k<int(posv.size());++k) {
+        int i=posv[k],j=nv0+k;
+        lp_variable &var=variables[j];
+        constr.get_lr(i,lh,rh);
+        if (is_exact(lh) && is_exact(rh)) {
+            gen den(_denom(rh,ctx));
+            for (int l=0;l<nv0;++l) {
+                if (is_zero(lh[l]))
+                    continue;
+                if (!variables[l].is_integral) {
+                    den=undef;
+                    break;
+                }
+                if (!lh[l].is_integer())
+                    den=_lcm(makesequence(den,_denom(lh[l],ctx)),ctx);
+            }
+            if (!is_undef(den)) {
+                lh=multvecteur(den,lh);
+                rh=den*rh;
+                var.is_integral=true;
+            }
         }
-        ibd=2;
-    } else // the parameter 'constr' is not given
-        ibd=1;
-    vecteur lr,bconstr,cvars,ivars,bvars,pvars,nvars,initp;
-    int dl=0,nl=0;  // branch&bound tree depth/node limit
-    gen itol(0);
-    bool maximize=false;
-    bool all_nonneg=false;
-    bool all_integer=false;
-    bool all_binary=false;
-    bool use_affscale=false;
-    // check if any boundaries or options are set
-    for (vecteur::const_iterator it=gv.begin()+ibd;it!=gv.end();++it) {
-        if (is_integer(*it)) {
+    }
+}
+
+/*
+ * Make all decision variables bounded below by negating variables unrestricted
+ * below and replacing variables unrestricted from both above and below with
+ * the difference of two nonnegative variables. This process is reversed after
+ * an optimal solution is found.
+ */
+void lp_problem::make_all_vars_bounded_below() {
+    for (int i=nv()-1;i>=0;--i) {
+        lp_variable &var=variables[i];
+        if (var.range.is_unrestricted_below()) {
+            if (var.range.is_unrestricted_above()) {
+                var.range.lbound=gen(0);
+                lp_variable negvar(var);
+                var.sign_type=_LP_VARSIGN_POS_PART;
+                negvar.sign_type=_LP_VARSIGN_NEG_PART;
+                variables.insert(variables.begin()+i,negvar);
+                objective.first.insert(objective.first.begin()+i,-objective.first[i]);
+                constr.duplicate_column(i);
+            }
+            else {
+                var.range.lbound=-var.range.ubound;
+                var.range.ubound=inf;
+                var.sign_type=_LP_VARSIGN_NEG;
+                objective.first[i]=-objective.first[i];
+            }
+            constr.negate_column(i);
+        }
+    }
+}
+
+/*
+ * Force all problem parameters to be exact.
+ */
+void lp_problem::make_problem_exact() {
+    objective.first=*exact(objective.first,ctx)._VECTptr;
+    objective.second=exact(objective.second,ctx);
+    constr.lhs=*exact(constr.lhs,ctx)._VECTptr;
+    constr.rhs=*exact(constr.rhs,ctx)._VECTptr;
+    for (vector<lp_variable>::iterator it=variables.begin();it!=variables.end();++it) {
+        it->range.lbound=exact(it->range.lbound,ctx);
+        it->range.ubound=exact(it->range.ubound,ctx);
+    }
+}
+
+/*
+ * Report status.
+ */
+void lp_problem::report_status(const char *msg, int count) {
+    char buf[16];
+    sprintf(buf,"%d: ",count);
+    int nd=numdigits((unsigned)count);
+    string str(msg);
+    str.insert(0,buf);
+    while (nd<8) {
+        str.insert(str.begin(),(char)32);
+        ++nd;
+    }
+    message(str.c_str());
+}
+
+/*
+ * Solve the problem using the specified settings.
+ */
+int lp_problem::solve() {
+    stats=lp_stats();
+    char buffer[1024];
+    make_problem_exact();
+    add_slack_variables();
+    make_all_vars_bounded_below();
+    objective_norm=_evalf(_l2norm(objective.first,ctx),ctx).DOUBLE_val();
+    if (settings.maximize)
+        objective.first=-objective.first;
+    message("Optimizing...");
+    int result;
+    optimum=undef;
+    double opt_approx;
+    lp_node root;
+    root.prob=this;
+    root.ranges=vector<lp_range>(nv());
+    root.depth=0;
+    if ((result=root.solve_relaxation())!=_LP_SOLVED)
+        return result; //optimal solution does not exist
+    if (root.is_integer_feasible()) {
+        solution=root.solution;
+        optimum=root.optimum;
+    }
+    if (is_undef(optimum)) {
+        message("Applying branch&bound method to find integer feasible solutions...");
+        double root_optimum=_evalf(root.optimum,ctx).DOUBLE_val();
+        double root_infeas=_evalf(root.infeas,ctx).DOUBLE_val();
+        root.ranges.resize(nv());
+        vector<lp_node> active_nodes;
+        active_nodes.push_back(root);
+        clock_t t=clock(),t0=t,now;
+        int n,j,k,depth;
+        double opt_lbound,fr,max_score;
+        bool depth_exceeded=false,incumbent_updated,is_use_pseudocost=false;
+        map<double,int> candidates;
+        gen lb,ub;
+        while (!active_nodes.empty()) {
+            if (stats.subproblems_examined>=settings.node_limit) {
+                message("Warning: node limit exceeded",true);
+                break;
+            }
+            n=active_nodes.size();
+            if (n>stats.max_active_nodes)
+                stats.max_active_nodes=n;
+            opt_lbound=DBL_MAX;
+            k=-1;
+            depth=-1;
+            for (int i=0;i<n;++i) {
+                lp_node &node=active_nodes[i];
+                if (opt_lbound>node.opt_approx) {
+                    opt_lbound=node.opt_approx;
+                    k=i;
+                }
+                if (settings.nodeselect==_LP_BREADTHFIRST ||
+                        (settings.nodeselect==_LP_HYBRID && !is_undef(optimum)) ||
+                        node.depth<depth)
+                    continue;
+                if (node.depth>depth) {
+                    candidates.clear();
+                    depth=node.depth;
+                }
+                candidates[node.opt_approx]=i;
+            }
+            if (settings.nodeselect==_LP_DEPTHFIRST ||
+                    (settings.nodeselect==_LP_HYBRID && is_undef(optimum)))
+                k=candidates.begin()->second;
+            if (settings.nodeselect==_LP_BEST_PROJECTION) {
+                double bestproj=DBL_MAX,proj,iopt=is_undef(optimum)?0:_evalf(optimum,ctx).DOUBLE_val();
+                for (int i=0;i<n;++i) {
+                    lp_node &node=active_nodes[i];
+                    proj=_evalf(node.optimum,ctx).DOUBLE_val()+
+                            (iopt-root_optimum)*_evalf(node.infeas,ctx).DOUBLE_val()/root_infeas;
+                    if (proj<bestproj) {
+                        bestproj=proj;
+                        k=i;
+                    }
+                }
+            }
+            if (k<0) {
+                message("Error: node selection strategy failed",true);
+                break;
+            }
+            j=-1;
+            if (settings.varselect==_LP_PSEUDOCOST || settings.varselect<0) {
+                max_score=0;
+                for (int i=0;i<nv();++i) {
+                    if (!active_nodes[k].is_var_fractional(i))
+                        continue;
+                    lp_variable &var=variables[i];
+                    double score=var.score(active_nodes[k].fractional_vars[i]);
+                    if (score==0) {
+                        j=-1;
+                        break;
+                    }
+                    if (score>max_score) {
+                        j=i;
+                        max_score=score;
+                    }
+                }
+                if (j>=0 && !is_use_pseudocost) {
+                    report_status("Switched to pseudocost based branching",stats.subproblems_examined);
+                    is_use_pseudocost=true;
+                }
+            }
+            if (j<0) {
+                switch (settings.varselect) {
+                case -1:
+                case _LP_MOSTFRACTIONAL:
+                case _LP_PSEUDOCOST:
+                    j=active_nodes[k].most_fractional;
+                    break;
+                case _LP_FIRSTFRACTIONAL:
+                    j=active_nodes[k].fractional_vars.begin()->first;
+                    break;
+                case _LP_LASTFRACTIONAL:
+                    j=active_nodes[k].fractional_vars.rbegin()->first;
+                    break;
+                }
+            }
+            if (j<0) {
+                message("Error: branching variable selection strategy failed",true);
+                break;
+            }
+            if (!is_undef(optimum)) {
+                stats.mip_gap=is_zero(optimum)?-opt_lbound:(opt_approx-opt_lbound)/std::abs(opt_approx);
+                if (stats.mip_gap<=settings.relative_gap_tolerance) {
+                    if (settings.relative_gap_tolerance>0)
+                        message("Warning: integrality gap threshold reached",true);
+                    break;
+                }
+            }
+            fr=_evalf(active_nodes[k].solution[j],ctx).DOUBLE_val();
+            lb=gen(int(std::ceil(fr)));
+            ub=gen(int(std::floor(fr)));
+            incumbent_updated=false;
+            lp_node child_node;
+            for (int i=0;i<2;++i) {
+                child_node=active_nodes[k].create_child();
+                if (child_node.depth>settings.depth_limit) {
+                    if (!depth_exceeded) {
+                        message ("Warning: depth limit exceeded",true);
+                        depth_exceeded=true;
+                    }
+                    break;
+                }
+                lp_range &range=child_node.ranges[j];
+                if (i==1) {
+                    range.tighten_lbound(lb,ctx);
+                    if (is_strictly_positive(child_node.ranges[j].lbound,ctx)) {
+                        switch (variables[j].sign_type) {
+                        case _LP_VARSIGN_POS_PART:
+                            child_node.ranges[j-1].ubound=gen(0);
+                            break;
+                        case _LP_VARSIGN_NEG_PART:
+                            child_node.ranges[j+1].ubound=gen(0);
+                        }
+                    }
+                }
+                else
+                    range.tighten_ubound(ub,ctx);
+                ++stats.subproblems_examined;
+                if (child_node.solve_relaxation()==_LP_SOLVED) {
+                    double p=child_node.fractional_vars[j];
+                    variables[j].update_pseudocost(std::abs(child_node.opt_approx-active_nodes[k].opt_approx),
+                                                   i==0?p:1-p,i);
+                    if (!is_undef(optimum) && is_greater(child_node.optimum,optimum,ctx))
+                        continue;
+                    if (child_node.is_integer_feasible()) {
+                        //new potential incumbent found
+                        if (is_undef(optimum) || is_strictly_greater(optimum,child_node.optimum,ctx)) {
+                            if (is_undef(optimum))
+                                report_status("Incumbent solution found",stats.subproblems_examined);
+                            else {
+                                sprintf(buffer,"Incumbent solution updated, objective value improvement: %g%%",
+                                        (opt_approx-child_node.opt_approx)/std::abs(opt_approx)*100.0);
+                                report_status(buffer,stats.subproblems_examined);
+                            }
+                            solution=child_node.solution;
+                            optimum=child_node.optimum;
+                            opt_approx=child_node.opt_approx;
+                            incumbent_updated=true;
+                        }
+                    }
+                    else
+                        active_nodes.push_back(child_node);
+                }
+            }
+            //fathom
+            active_nodes.erase(active_nodes.begin()+k);
+            if (incumbent_updated) {
+                for (int i=int(active_nodes.size())-1;i>=0;--i) {
+                    if (is_greater(active_nodes[i].optimum,optimum,ctx))
+                        active_nodes.erase(active_nodes.begin()+i);
+                }
+            }
+            now=clock();
+            if (1e3*double(now-t0)/CLOCKS_PER_SEC>settings.time_limit) {
+                message("Warning: time limit exceeded",true);
+                break;
+            }
+            if (CLOCKS_PER_SEC/double(now-t)<=settings.status_report_freq) { //report status
+                sprintf(buffer,"%d nodes active, lower bound: %g",(int)active_nodes.size(),opt_lbound);
+                string str(buffer);
+                if (stats.mip_gap>=0) {
+                    sprintf(buffer,", integrality gap: %g%%",stats.mip_gap*100);
+                    str+=string(buffer);
+                }
+                report_status(str.c_str(),stats.subproblems_examined);
+                t=clock();
+            }
+        }
+        //show branch&bound summary
+        sprintf(buffer,"Summary:\n * %d subproblem(s) examined\n * max. tree size: %d nodes\n * %d Gomory cut(s) applied",
+                stats.subproblems_examined,stats.max_active_nodes,stats.cuts_applied);
+        message(buffer);
+    }
+    if (is_undef(optimum))
+        return _LP_INFEASIBLE;
+    if (settings.maximize)
+        optimum=-optimum;
+    optimum+=objective.second;
+    for (int i=nv()-1;i>=0;--i) {
+        lp_variable &var=variables[i];
+        switch (var.sign_type) {
+        case _LP_VARSIGN_NEG:
+            solution[i]=-solution[i];
+            break;
+        case _LP_VARSIGN_NEG_PART:
+            solution[i+1]-=solution[i];
+            solution.erase(solution.begin()+i);
+            break;
+        }
+    }
+    solution.resize(nvars_initial);
+    return _LP_SOLVED;
+}
+
+#ifdef HAVE_LIBGLPK
+
+/*
+ * Create GLPK problem from constr.
+ */
+glp_prob *lp_problem::glpk_initialize() {
+    glp_prob *glp=glp_create_prob();
+    glp_add_rows(glp,nc());
+    glp_add_cols(glp,nv());
+    glp_set_obj_dir(glp,settings.maximize?GLP_MAX:GLP_MIN);
+    for (int i=0;i<=nv();++i) {
+        glp_set_obj_coef(glp,i,gen2double(i==0?objective.second:objective.first[i-1],ctx));
+        if (i>0) {
+            lp_variable &var=variables[i-1];
+            glp_set_col_kind(glp,i,var.is_integral?GLP_IV:GLP_CV);
+            int bound_type=GLP_FR;
+            if (!var.range.is_unrestricted_below() && var.range.is_unrestricted_above())
+                bound_type=GLP_LO;
+            else if (var.range.is_unrestricted_below() && !var.range.is_unrestricted_above())
+                bound_type=GLP_UP;
+            else if (!var.range.is_unrestricted_below() && !var.range.is_unrestricted_above())
+                bound_type=GLP_DB;
+            else if (is_zero(var.range.ubound-var.range.lbound))
+                bound_type=GLP_FX;
+            double lo=var.range.is_unrestricted_below()?0.0:gen2double(var.range.lbound,ctx);
+            double hi=var.range.is_unrestricted_above()?0.0:gen2double(var.range.ubound,ctx);
+            glp_set_col_bnds(glp,i,bound_type,lo,hi);
+        }
+    }
+    int n=constr.nrows()*constr.ncols();
+    int *ia=new int[n+1],*ja=new int[n+1],k=0;
+    double *ar=new double[n+1];
+    gen a;
+    for (int i=0;i<constr.nrows();++i) {
+        for (int j=0;j<constr.ncols();++j) {
+            if (is_zero(a=constr.lhs[i][j]))
+                continue;
+            ++k;
+            ia[k]=i+1;
+            ja[k]=j+1;
+            ar[k]=gen2double(a,ctx);
+        }
+        double rh=gen2double(constr.rhs[i],ctx);
+        switch (constr.rv[i]) {
+        case _LP_EQ:
+            glp_set_row_bnds(glp,i+1,GLP_FX,rh,0.0);
+            break;
+        case _LP_LEQ:
+            glp_set_row_bnds(glp,i+1,GLP_UP,0.0,rh);
+            break;
+        case _LP_GEQ:
+            glp_set_row_bnds(glp,i+1,GLP_LO,rh,0.0);
+            break;
+        }
+    }
+    glp_load_matrix(glp,k,ia,ja,ar);
+    delete ia;
+    delete ja;
+    delete ar;
+    return glp;
+}
+
+/*
+ * Solve LP problem using GLPK implementation of simplex method.
+ */
+int lp_problem::glpk_simplex(glp_prob *prob) {
+    glp_smcp parm;
+    glp_init_smcp(&parm);
+    parm.msg_lev=settings.verbose?GLP_MSG_ALL:GLP_MSG_ERR;
+    parm.it_lim=settings.iteration_limit;
+    parm.tm_lim=settings.time_limit;
+    parm.presolve=settings.presolve?GLP_ON:GLP_OFF;
+    return glp_simplex(prob,&parm);
+}
+
+/*
+ * Solve LP problem using GLPK implementation of interior point method.
+ */
+int lp_problem::glpk_interior_point(glp_prob *prob) {
+    glp_iptcp parm;
+    glp_init_iptcp(&parm);
+    parm.msg_lev=settings.verbose?GLP_MSG_ALL:GLP_MSG_ERR;
+    return glp_interior(prob,&parm);
+}
+
+/*
+ * Solve MIP problem using GLPK implementation of branch and cut method.
+ */
+int lp_problem::glpk_branchcut(glp_prob *prob) {
+    glp_iocp parm;
+    glp_init_iocp(&parm);
+    parm.msg_lev=settings.verbose?GLP_MSG_ALL:GLP_MSG_ERR;
+    parm.tm_lim=settings.time_limit;
+    parm.out_frq=(int)(1000.0/settings.status_report_freq);
+    parm.mip_gap=settings.relative_gap_tolerance;
+    parm.gmi_cuts=settings.max_cuts>0?GLP_ON:GLP_OFF;
+    parm.mir_cuts=settings.max_cuts>0?GLP_ON:GLP_OFF;
+    parm.clq_cuts=settings.has_binary_vars?GLP_ON:GLP_OFF;
+    parm.cov_cuts=settings.has_binary_vars?GLP_ON:GLP_OFF;
+    parm.presolve=GLP_ON;
+    switch (settings.varselect) {
+    case _LP_FIRSTFRACTIONAL:
+        parm.br_tech=GLP_BR_FFV;
+        break;
+    case _LP_LASTFRACTIONAL:
+        parm.br_tech=GLP_BR_LFV;
+        break;
+    case _LP_MOSTFRACTIONAL:
+        parm.br_tech=GLP_BR_MFV;
+        break;
+    case _LP_PSEUDOCOST:
+        parm.br_tech=GLP_BR_PCH;
+        break;
+    default:
+        parm.br_tech=GLP_BR_DTH;
+    }
+    return glp_intopt(prob,&parm);
+}
+
+#endif
+
+/*
+ * Solve the problem using facilities from GLPK library.
+ */
+int lp_problem::glpk_solve() {
+#ifndef HAVE_LIBGLPK
+    message("Warning: solving in floating-point arithmetic requires GLPK library",true);
+    return solve();
+#endif
+#ifdef HAVE_LIBGLPK
+    glp_prob *prob=glpk_initialize();
+    int result,solution_status;
+    bool is_mip=has_integral_variables();
+    switch (settings.solver) {
+    case _LP_SIMPLEX:
+        if (is_mip) {
+            result=glpk_branchcut(prob);
+            if (result==GLP_EMIPGAP)
+                result=0;
+            if (result==0)
+                solution_status=glp_mip_status(prob);
+        }
+        else if (!is_mip && (result=glpk_simplex(prob))==0)
+            solution_status=glp_get_status(prob);
+        break;
+    case _LP_INTERIOR_POINT:
+        if ((result=glpk_interior_point(prob))==0)
+            solution_status=glp_ipt_status(prob);
+        break;
+    }
+    if (result==0) { //solving process finished successfully
+        switch (solution_status) {
+        case GLP_OPT:
+            solution_status=_LP_SOLVED;
+            break;
+        case GLP_FEAS:
+            message("Warning: solution is possibly not optimal",true);
+            solution_status=_LP_SOLVED;
+            break;
+        case GLP_INFEAS:
+            message("Warning: solution is infeasible",true);
+            solution_status=_LP_SOLVED;
+            break;
+        case GLP_NOFEAS:
+            solution_status=_LP_INFEASIBLE;
+            break;
+        case GLP_UNBND:
+            solution_status=_LP_UNBOUNDED;
+            break;
+        case GLP_UNDEF:
+            solution_status=_LP_ERROR;
+            break;
+        }
+        if (solution_status==_LP_SOLVED) { //get solution and optimum
+            solution=vecteur(nv());
+            switch (settings.solver) {
+            case _LP_SIMPLEX:
+                if (is_mip) {
+                    optimum=gen(glp_mip_obj_val(prob));
+                    for (int i=0;i<nv();++i) {
+                        solution[i]=gen(glp_mip_col_val(prob,i+1));
+                    }
+                }
+                else {
+                    optimum=gen(glp_get_obj_val(prob));
+                    for (int i=0;i<nv();++i) {
+                        solution[i]=gen(glp_get_col_prim(prob,i+1));
+                    }
+                }
+                break;
+            case _LP_INTERIOR_POINT:
+                optimum=gen(glp_ipt_obj_val(prob));
+                for (int i=0;i<nv();++i) {
+                    solution[i]=gen(glp_ipt_col_prim(prob,i+1));
+                }
+                break;
+            }
+        }
+    }
+    glp_delete_prob(prob);
+    if (result==0)
+        return solution_status;
+    return _LP_ERROR;
+#endif
+}
+
+/*
+ * Load problem from file in LP or (possibly gzipped) MPS format. File types
+ * are distinguished by examining the filename extension. If it is .gz or .mps,
+ * it is assumed that the file is in (gzipped) MPS format. Else, it is assumed
+ * that file is in LP format.
+ */
+bool lp_problem::glpk_load_from_file(const char *fname) {
+#ifndef HAVE_LIBGLPK
+    message("Error: loading CPLEX and MPS files requires GLPK library",true);
+    return false;
+#endif
+#ifdef HAVE_LIBGLPK
+    glp_prob *prob=glp_create_prob();
+    int result;
+    string str(fname);
+    string ext(str.substr(str.find_last_of(".") + 1));
+    if (ext=="mps" || ext=="gz") //MPS format (modern)
+        result=glp_read_mps(prob,GLP_MPS_FILE,NULL,fname);
+    else //LP format
+        result=glp_read_lp(prob,NULL,fname);
+    if (result==0) { //successfully loaded
+        char buffer[1024];
+        int obj_dir=glp_get_obj_dir(prob),len,t,k;
+        int nr=glp_get_num_rows(prob),n=glp_get_num_cols(prob);
+        if (nr*n>LP_CONSTR_MAXSIZE) {
+            message("Error: constraint matrix is too big to be loaded. Aborting...",true);
+            return false;
+        }
+        int *ind=new int[1+n];
+        double *val=new double[1+n];
+        create_variables(n);
+        constr.lhs=*_matrix(makesequence(gen(nr),gen(nv())),ctx)._VECTptr;
+        constr.rhs=vecteur(nr);
+        constr.rv=ints(nr);
+        variable_identifiers=vecteur(nv());
+        settings.maximize=(obj_dir==GLP_MAX);
+        objective.second=double2fraction(glp_get_obj_coef(prob,0),ctx);
+        objective.first=vecteur(nv());
+        obj_approx=vector<double>(nv());
+        for (int j=0;j<nv();++j) {
+            objective.first[j]=double2fraction(glp_get_obj_coef(prob,j+1),ctx);
+            obj_approx[j]=std::abs(glp_get_obj_coef(prob,j+1));
+            lp_variable &var=variables[j];
+            t=glp_get_col_type(prob,j+1);
+            k=glp_get_col_kind(prob,j+1);
+            var.name=string(glp_get_col_name(prob,j+1));
+            variable_identifiers[j]=identificateur(var.name);
+            if (t!=GLP_UP && t!=GLP_FR)
+                var.range.lbound=double2fraction(glp_get_col_lb(prob,j+1),ctx);
+            if (t!=GLP_LO && t!=GLP_FR)
+                var.range.ubound=double2fraction(glp_get_col_ub(prob,j+1),ctx);
+            if (k!=GLP_CV)
+                var.is_integral=true;
+            if (k==GLP_BV) {
+                var.range.tighten_lbound(gen(0),ctx);
+                var.range.tighten_ubound(gen(1),ctx);
+            }
+        }
+        for (int i=nr;i>0;--i) {
+            if ((len=glp_get_mat_row(prob,i,ind,val))>0) {
+                vecteur &row=*constr.lhs[i-1]._VECTptr;
+                for (int j=1;j<=len;++j) {
+                    row[ind[j]-1]=double2fraction(val[j],ctx);
+                }
+            }
+            t=glp_get_row_type(prob,i);
+            if (t==GLP_FR) {
+                sprintf(buffer,"Warning: auxiliary variable bounds not set, discarding constraint %d",i);
+                message(buffer,true);
+                constr.remove(i-1);
+                continue;
+            }
+            if (t==GLP_FX) {
+                constr.rhs[i-1]=double2fraction(glp_get_row_lb(prob,i),ctx);
+                constr.rv[i-1]=_LP_EQ;
+            }
+            else {
+                if (t==GLP_LO || t==GLP_DB) {
+                    constr.rhs[i-1]=double2fraction(glp_get_row_lb(prob,i),ctx);
+                    constr.rv[i-1]=_LP_GEQ;
+                }
+                if (t==GLP_DB)
+                    constr.append(*constr.lhs[i-1]._VECTptr,double2fraction(glp_get_row_ub(prob,i),ctx),_LP_LEQ);
+                if (t==GLP_UP || t==GLP_DB) {
+                    constr.rhs[i-1]=double2fraction(glp_get_row_ub(prob,i),ctx);
+                    constr.rv[i-1]=_LP_LEQ;
+                }
+            }
+        }
+        delete ind;
+        delete val;
+        stringstream ss;
+        const char* name=glp_get_prob_name(prob);
+        if (name==NULL)
+            ss << "a problem";
+        else
+            ss << "problem \"" << name << "\"";
+        sprintf(buffer,"Successfully loaded %s with %d variables and %d constraints",
+                ss.str().c_str(),nv(),nc());
+        message(buffer);
+    }
+    glp_delete_prob(prob);
+    return !(bool)result;
+#endif
+}
+
+void lp_variable::set_type(int t,GIAC_CONTEXT) {
+    switch (t) {
+    case _LP_BINARYVARIABLES:
+        range.tighten_lbound(gen(0),contextptr);
+        range.tighten_ubound(gen(1),contextptr);
+    case _LP_INTEGERVARIABLES:
+        is_integral=true;
+        break;
+    }
+}
+
+bool assign_variable_types(const gen &g,int t,lp_problem &prob) {
+    pair<gen,gen> range;
+    int i,i0=array_start(prob.ctx);
+    if (g.type==_VECT) {
+        for (const_iterateur it=g._VECTptr->begin();it!=g._VECTptr->end();++it) {
+            if (!assign_variable_types(*it,t,prob))
+                return false;
+        }
+    }
+    else if ((g.type==_IDNT && (i=prob.get_variable_index(*g._IDNTptr))>=0) ||
+             (g.is_integer() && (i=g.val-i0)>=0))
+        prob.variables[i].set_type(t,prob.ctx);
+    else if (interval2pair(g,range,prob.ctx) &&
+             range.first.is_integer() && range.second.is_integer()) {
+        for (i=range.first.val;i<=range.second.val;++i) {
+            prob.variables[i-i0].set_type(t,prob.ctx);
+        }
+    }
+    else
+        return false;
+    return true;
+}
+
+void parse_limit(const gen &g,int &lim,GIAC_CONTEXT) {
+    if (is_positive(g,contextptr)) {
+        if (g.is_integer())
+            lim=g.val;
+        else if (is_inf(g))
+            lim=RAND_MAX;
+    }
+}
+
+bool parse_options_and_bounds(const_iterateur &it,const_iterateur &itend,lp_problem &prob) {
+    for (;it!=itend;++it) {
+        if (it->is_integer()) {
             switch(it->val) {
             case _LP_MAXIMIZE:
-                maximize=true;
+                prob.settings.maximize=true;
+                break;
+            case _LP_VERBOSE:
+                prob.settings.verbose=true;
                 break;
             }
         }
         else if (it->is_symb_of_sommet(at_equal)) {
-            // parse the argument in form "option=value"
-            vecteur ops(*it->_SYMBptr->feuille._VECTptr);
-            if (ops[0].type==_IDNT && interval2vecteur(ops[1],lr,contextptr)) {
-                // the boundaries for variable ops[0] are set
-                if (!is_zero(lr[0]) && !is_inf(-lr[0]))
-                    bconstr.push_back(symbolic(at_superieur_egal,makevecteur(ops[0],lr[0])));
-                if (!is_zero(lr[1]) && !is_inf(lr[1]))
-                    bconstr.push_back(symbolic(at_inferieur_egal,makevecteur(ops[0],lr[1])));
-                if (is_positive(lr[0],contextptr))
-                    // variable is nonnegative
-                    pvars.push_back(ops[0]);
-                else if (!is_strictly_positive(lr[1],contextptr))
-                    nvars.push_back(ops[0]);
+            //parse the argument in form "option=value"
+            pair<gen,gen> bounds;
+            gen a,lh(_lhs(*it,prob.ctx)),rh(_rhs(*it,prob.ctx));
+            if (lh.type==_IDNT && interval2pair(rh,bounds,prob.ctx)) {
+                int vi=prob.get_variable_index(*lh._IDNTptr);
+                if (vi>=0)
+                    prob.tighten_variable_bounds(vi,bounds.first,bounds.second);
             }
-            if (ops[0]==at_assume) { // parse assumptions
-                if (is_integer(ops[1])) {
-                    switch(ops[1].val) {
-                    case _ZINT:
-                    case _LP_INTEGER: // all variables are integer
-                        all_integer=true;
-                        ivars=vars;
-                        break;
-                    case _LP_BINARY: // all variables are binary
-                        all_nonneg=true;
-                        all_binary=true;
-                        bvars=vars;
-                        break;
-                    case _NONNEGINT:
-                    case _LP_NONNEGINT: // all variables are nonnegative integers
-                        all_nonneg=true;
-                        all_integer=true;
-                        ivars=vars;
-                        break;
-                    case _LP_NONNEGATIVE: // all variables are nonnegative
-                        all_nonneg=true;
-                        break;
+            else if (lh==at_assume && rh.is_integer())
+                prob.settings.assumption=rh.val;
+            else if (lh.is_integer()) {
+                switch(lh.val) {
+                case _LP_INTEGERVARIABLES:
+                case _LP_BINARYVARIABLES:
+                    if (!assign_variable_types(rh,lh.val,prob))
+                        return false;
+                    break;
+                case _LP_DEPTHLIMIT:
+                    parse_limit(rh,prob.settings.depth_limit,prob.ctx);
+                    break;
+                case _LP_NODE_LIMIT:
+                    parse_limit(rh,prob.settings.node_limit,prob.ctx);
+                    break;
+                case _LP_ITERATION_LIMIT:
+                    parse_limit(rh,prob.settings.iteration_limit,prob.ctx);
+                    break;
+                case _LP_MAX_CUTS:
+                    parse_limit(rh,prob.settings.max_cuts,prob.ctx);
+                    break;
+                case _LP_TIME_LIMIT:
+                    if (is_strictly_positive(rh,prob.ctx)) {
+                        if (is_inf(rh))
+                            prob.settings.time_limit=RAND_MAX;
+                        a=_evalf(rh,prob.ctx);
+                        if (a.type==_DOUBLE_)
+                            prob.settings.time_limit=int(a.DOUBLE_val()*1000.0);
                     }
-                }
-            }
-            if (is_integer(ops[0])) {
-                switch(ops[0].val) {
-                case _LP_VARIABLES: // specify continuous variables
-                    if (interval2vecteur(ops[1],lr,contextptr) && is_integer_vecteur(lr)) {
-                        for (int i=int(lr[0].val);i<=int(lr[1].val);++i) {
-                            cvars.push_back(gen(i));
-                        }
-                    }
-                    else if (ops[1].type==_VECT)
-                        cvars=*ops[1]._VECTptr;
                     break;
-                case _LP_INTEGERVARIABLES: // specify integer variables
-                    if (interval2vecteur(ops[1],lr,contextptr) && is_integer_vecteur(lr)) {
-                        for (int i=int(lr[0].val);i<=int(lr[1].val);++i) {
-                            ivars.push_back(gen(i));
-                        }
-                    }
-                    else if (ops[1].type==_VECT)
-                        ivars=*ops[1]._VECTptr;
+                case _LP_NODESELECT:
+                    if (rh.is_integer())
+                        prob.settings.nodeselect=rh.val;
                     break;
-                case _LP_BINARYVARIABLES: // specify binary variables
-                    if (interval2vecteur(ops[1],lr,contextptr) && is_integer_vecteur(lr)) {
-                        for (int i=int(lr[0].val);i<=int(lr[1].val);++i) {
-                            bvars.push_back(gen(i));
-                        }
-                    }
-                    else if (ops[1].type==_VECT)
-                        bvars=*ops[1]._VECTptr;
-                    break;
-                case _LP_DEPTHLIMIT: // specify branch&bound tree depth limit
-                    if (is_integer(ops[1]))
-                        dl=ops[1].val;
-                    break;
-                case _LP_NODE_LIMIT: // specify branch&bound tree node limit
-                    if (is_integer(ops[1]))
-                        nl=ops[1].val;
-                    break;
-                case _LP_INTEGER_TOLERANCE: // specify integer tolerance for MIP
-                    if (_evalf(ops[1],contextptr).type==_DOUBLE_ && is_positive(ops[1],contextptr))
-                        itol=ops[1];
-                    break;
-                case _LP_INITIAL_POINT: // specify initial point for affine scaling algorithm
-                    if (ops[1].type==_VECT)
-                        initp=*ops[1]._VECTptr;
-                    use_affscale=true;
-                    break;
-                case _LP_MAXIMIZE: // maximize=true/false for maximization/minimization
-                    maximize=is_one(ops[1]);
+                case _LP_VARSELECT:
+                    if (rh.is_integer())
+                        prob.settings.varselect=rh.val;
                     break;
                 case _LP_METHOD:
-                    if (is_integer(ops[1])) {
-                        switch (ops[1].val) {
-                        case _LP_SIMPLEX:
-                            use_affscale=false;
-                            break;
-                        case _LP_INTERIOR_POINT:
-                            use_affscale=true;
-                            break;
-                        }
+                    if (rh==at_exact)
+                        prob.settings.precision=_LP_EXACT;
+                    else if (rh==at_float)
+                        prob.settings.precision=_LP_INEXACT;
+                    else if (rh.is_integer() && rh.val==_LP_INTERIOR_POINT) {
+                        prob.settings.precision=_LP_INEXACT;
+                        prob.settings.solver=_LP_INTERIOR_POINT;
                     }
+                    break;
+                case _LP_GAP_TOLERANCE:
+                    a=_evalf(rh,prob.ctx);
+                    if (a.type==_DOUBLE_ && is_strictly_positive(a,prob.ctx))
+                        prob.settings.relative_gap_tolerance=a.DOUBLE_val();
+                    break;
+                case _LP_MAXIMIZE:
+                    if (rh.is_integer())
+                        prob.settings.maximize=(bool)rh.to_int();
+                    break;
+                case _LP_VERBOSE:
+                    if (rh.is_integer())
+                        prob.settings.verbose=(bool)rh.to_int();
                     break;
                 }
             }
         }
     }
-    gen obj_ct(0); // the constant term of the objective function
-    int nv=0; // number of variables
-    vector<int> sv,varsign; // ith is 1 for variable xi nonnegative, -1 for negative and 0 for unconstrained
-    matrice m;
-    vecteur b,obj_orig;
-    if (gv[0].type==_VECT && vars.size()==0) {
-        // the problem is given in matrix form
-        // objective: c=[c1,c2,...,cn], maximize/minimize c.x
-        obj_orig=*gv[0]._VECTptr;
-        nv=obj_orig.size(); // number of variables
-        int n=constr.size();
-        if ((nv==0 && n==0) || (n!=0 && n!=4 && n!=2))
-            // improper specification of constraints, stop
-            return gensizeerr(contextptr);
-        if (n>0) {
-            // constraints: [A,b,Aeq,beq] such that A.x<=b and/or Aeq.x=beq
-            m=*constr[0]._VECTptr;  // matrice A
-            sv=vector<int>(m.size(),-1);
-            b=*constr[1]._VECTptr;  // vecteur b
-            if (m.size()!=b.size())
-                return gendimerr(contextptr);
-            if (n==4) { // there are equation constraints
-                vecteur &Aeq=*constr[2]._VECTptr,&beq=*constr[3]._VECTptr;
-                if (!ckmatrix(Aeq) || Aeq.size()!=beq.size())
-                    return gendimerr(contextptr);
-                if (!Aeq.empty()) {
-                    m=mergevecteur(Aeq,m);
-                    b=mergevecteur(beq,b);
-                }
-            }
-            if (!ckmatrix(m))
-                return gendimerr(contextptr);
-            if (nv==0) {
-                nv=m.front()._VECTptr->size();
-                obj_orig=vecteur(nv,gen(0));
-            }
-            if (nv!=int(m.front()._VECTptr->size()))
-                return gendimerr(contextptr);
-        }
-        varsign=vector<int>(nv,all_nonneg ? 1 : 0);
-        // check if the third argument is a vector of bounds for variables
-        // [bl,bu] such that bl<=x<=bu
-        if (int(gv.size())>ibd &&
-                gv[ibd].type==_VECT &&
-                ckmatrix(*gv[ibd]._VECTptr) &&
-                int(gv[ibd]._VECTptr->front()._VECTptr->size())==nv &&
-                int(gv[ibd]._VECTptr->size())==2) {
-            // set boundaries to the variables
-            vecteur & bl = *(*gv[ibd]._VECTptr)[0]._VECTptr;
-            vecteur & bu = *(*gv[ibd]._VECTptr)[1]._VECTptr;
-            matrice idn(midn(nv));
-            for (int i=0;i<nv;++i) {
-                if (!is_zero(bl[i]) && !is_inf(-bl[i])) {
-                    m.push_back(*idn[i]._VECTptr);
-                    sv.push_back(1);
-                    b.push_back(bl[i]);
-                }
-                if (!is_inf(bu[i])) {
-                    m.push_back(*idn[i]._VECTptr);
-                    sv.push_back(-1);
-                    b.push_back(bu[i]);
-                }
-                if (!all_nonneg) {
-                    if (is_positive(bl[i],contextptr))
-                        varsign[i]=1;
-                    else if (!is_strictly_positive(bu[i],contextptr))
-                        varsign[i]=-1;
-                }
-            }
-        }
-    }
-    else if ((gv[0].type==_SYMB || is_zero(gv[0])) && vars.size()>0) {
-        // the problem is given in symbolic form
-        // objective: c1*x1+c2*x2+...+cn*xn
-        // constraints: a list of linear equations and inequalities
-        gen r;
-        if (!lincomb_coeff(gv[0],vars,obj_orig,obj_ct,contextptr)) {
-            cout << "Error: the objective function must be linear" << endl;
-            return gentypeerr(contextptr);
-        }
-        nv=vars.size();
-        varsign=vector<int>(nv,all_nonneg?1:0);
-        constr=mergevecteur(constr,bconstr);
-        // write the constraints in matrix form
-        for (vecteur::const_iterator it=constr.begin();it!=constr.end();++it) {
-            vecteur sides(*((*it)._SYMBptr->feuille._VECTptr)),c,bnd;
-            if (it->is_symb_of_sommet(at_equal) && interval2vecteur(sides[1],bnd,contextptr)) {
-                // a bounded expression was given as constraint
-                if (!lincomb_coeff(sides[0],vars,c,r,contextptr)) {
-                    cout << "Error: all constraints must be linear" << endl;
-                    return gentypeerr(contextptr);
-                }
-                m=mergevecteur(m,vecteur(2,c));
-                sv.push_back(1);
-                sv.push_back(-1);
-                b=mergevecteur(b,subvecteur(bnd,vecteur(2,r)));
-                continue;
-            }
-            // turn constraint to vector form
-            gen d=sides[0]-sides[1];
-            if (!lincomb_coeff(d,vars,c,r,contextptr)) {
-                cout << "Error: all constraints must be linear" << endl;
-                return gentypeerr(contextptr);
-            }
-            if (it->is_symb_of_sommet(at_equal)) {
-                m=mergevecteur(vecteur(1,c),m);
-                b=mergevecteur(vecteur(1,-r),b);
-                continue;
-            }
-            else if (it->is_symb_of_sommet(at_inferieur_egal)) {
-                if (d.type==_IDNT && find(vars.begin(),vars.end(),d)!=vars.end())
-                    nvars.push_back(d);
-                else {
-                    sv.push_back(-1);
-                    m.push_back(c);
-                    b.push_back(-r);
-                }
-            }
-            else if (it->is_symb_of_sommet(at_superieur_egal)) {
-                if (d.type==_IDNT && find(vars.begin(),vars.end(),d)!=vars.end())
-                    pvars.push_back(d);
-                else {
-                    sv.push_back(1);
-                    m.push_back(c);
-                    b.push_back(-r);
-                }
-            }
-            else {
-                cout << "Error: unrecognized relation type, it should be either >=, <= or =" << endl;
-                return gentypeerr(contextptr);
-            }
-        }
-        // update varsign
-        vector<int> vp=findvars(pvars,vars),vn=findvars(nvars,vars);
-        for (vector<int>::const_iterator vit=vp.begin();vit!=vp.end();++vit) {
-            varsign[*vit]=1;
-        }
-        for (vector<int>::const_iterator vit=vn.begin();vit!=vn.end();++vit) {
-            varsign[*vit]=-1;
-        }
-    } else // the problem is given improperly, stop
-        return gentypeerr(contextptr);
-    if (m.empty()) {
-        cout << "Error: no constraints found" << endl;
-        return gensizeerr(contextptr);
-    }
-    vecteur obj(obj_orig);
-    vector<int> vartype(nv,(all_integer || all_binary) ? 1 : 0);
-    vector<int> vi=findvars(ivars,vars),vb=findvars(bvars,vars);
-    for (vector<int>::const_iterator it=vi.begin();it!=vi.end();++it) {
-        vartype[*it]=1;
-    }
-    for (vector<int>::const_iterator it=vb.begin();it!=vb.end();++it) {
-        vartype[*it]=1;
-        varsign[*it]=1; // binary variables are always nonnegative
-        // append constraint of type xb<=1
-        m.push_back(midn(nv)[*it]);
-        sv.push_back(-1);
-        b.push_back(gen(1));
-    }
-    vector<int> vc=findvars(cvars,vars);
-    for (vector<int>::const_iterator it=vc.begin();it!=vc.end();++it) {
-        vartype[*it]=0;
-    }
-    int nc=m.size(),ns=sv.size();
-    bool has_initp=use_affscale && !initp.empty();
-    if (has_initp) {
-        if (int(initp.size())!=nv)
-            return gendimerr(contextptr);
-        initp=mergevecteur(initp,vecteur(ns,gen(1)));
-    }
-    m=mtran(m);
-    // add slack/surplus variables
-    matrice idn(midn(nc));
-    for (int i=nc-ns;i<nc;++i) {
-        m.push_back(multvecteur(gen(-sv[i-nc+ns]),*idn[i]._VECTptr));
-    }
-    // turn not-positive variables to nonnegative
-    for (int i=0;i<nv;++i) {
-        if (varsign[i]<0) {
-            obj[i]=-obj[i];
-            m[i]=-m[i];
-        }
-    }
-    // replace unrestricted variables with the difference of two nonnegative variables
-    for (int i=nv-1;i>=0;--i) {
-        if (varsign[i]==0) {
-            m.insert(m.begin()+i,-*m[i]._VECTptr);
-            obj.insert(obj.begin()+i,-obj[i]);
-            vartype.insert(vartype.begin()+i,vartype[i]);
-            if (has_initp) {
-                if (is_positive(initp[i],contextptr)) {
-                    initp[i]+=gen(1);
-                    initp.insert(initp.begin()+i,gen(1));
-                }
-                else {
-                    initp[i]=-initp[i]+gen(1);
-                    initp.insert(initp.begin()+i+1,gen(1));
-                }
-            }
-        }
-    }
-    m=mtran(m);
-    nv=obj.size();
-    // solve the problem
-    vecteur soln;
-    gen optimum;
-    if (!maximize)
-        obj=-obj;
-    if (use_affscale) {
-        soln=initp;
-        m=*_evalf(m,contextptr)._VECTptr;
-        b=*_evalf(b,contextptr)._VECTptr;
-        obj=*_evalf(obj,contextptr)._VECTptr;
-        optimum=affscale(m,b,obj,soln,true,contextptr);
-    }
-    else {
-        simplex_prepare(m,b,contextptr);
-        simplex_twophase(m,b,obj,soln,optimum,contextptr);
-    }
-    if (soln.empty())
-        return soln;
-    if (is_inf(_abs(optimum,contextptr)))
-        return makevecteur(maximize?optimum:-optimum,vecteur(0));
-    if (!exactify_solution(soln,vartype,itol,contextptr)) { // apply branch & bound method
-        vecteur isoln;
-        gen ioptimum;
-        node_count=0;
-        cut_count=0;
-        if (use_affscale)
-            itol=_max(makesequence(gen(epsilon(contextptr)*100),itol),contextptr);
-        branch_and_bound(m,b,obj,varsign,vartype,soln,isoln,ioptimum,itol,use_affscale,0,dl,nl,contextptr);
-        cout << "branch and bound summary: " << node_count << " subproblems examined";
-        if (use_affscale)
-            cout << endl;
-        else
-            cout << ", " << cut_count << " GMI cut" << (cut_count==1?"":"s") << " added" << endl;
-        soln=isoln;
-        optimum=ioptimum;
-        if (soln.empty()) // no feasible integer solution
-            return soln;
-    }
-    if (!is_exactly_zero(itol)) {
-        soln=*_evalf(soln,contextptr)._VECTptr;
-        optimum=_evalf(optimum,contextptr);
-    }
-    if (!maximize)
-        optimum=-optimum;
-    // recreate variables
-    int i=0;
-    soln.resize(nv);
-    for (vector<int>::const_iterator it=varsign.begin();it!=varsign.end();++it) {
-        switch (*it) {
-        case 0:
-            soln[i+1]-=soln[i];
-            soln.erase(soln.begin()+i);
-            break;
-        case -1:
-            soln[i]=-soln[i];
-            break;
-        }
-        ++i;
-    }
-    vecteur v=vars.empty()?soln:*_zip(makesequence(at_equal,vars,soln),contextptr)._VECTptr;
-    if ((gv[0].type==_VECT && int(gv[0]._VECTptr->size())==0) || is_zero(gv[0]))
-        return _simplify(v,contextptr);
-    return makevecteur(_simplify(optimum+obj_ct,contextptr),_simplify(v,contextptr));
+    return true;
 }
-static const char _lpsolve_s []="lpsolve";
+
+int parse_constraints(bool is_matrix_form,const_iterateur &it,const_iterateur &itend,lp_problem &prob) {
+    vecteur cv;
+    if (is_matrix_form) {
+        if (it->type!=_VECT)
+            return _LP_ERR_TYPE;
+        cv=*it->_VECTptr;
+        int n=cv.size();
+        if ((n % 2)!=0)
+            return _LP_ERR_SIZE;
+        if (n>0) {
+            //constraints are given in form [A,b,Aeq,beq] such that
+            //A.x<=b and/or Aeq.x=beq (Aeq and beq are optional)
+            if (cv[0].type!=_VECT || cv[1].type!=_VECT)
+                return _LP_ERR_TYPE;
+            vecteur &A=*cv[0]._VECTptr,&b=*cv[1]._VECTptr;
+            int len;
+            if ((len=A.size())!=int(b.size()))
+                return _LP_ERR_DIM;
+            for (int i=0;i<len;++i) {
+                prob.constr.append(*A[i]._VECTptr,b[i],_LP_LEQ);
+            }
+            if (n>2) { //there are equality constraints
+                if (cv[2].type!=_VECT || cv[3].type!=_VECT)
+                    return _LP_ERR_TYPE;
+                vecteur &Aeq=*cv[2]._VECTptr,&beq=*cv[3]._VECTptr;
+                if ((len=Aeq.size())!=int(beq.size()))
+                    return _LP_ERR_DIM;
+                for (int i=0;i<len;++i) {
+                    prob.constr.append(*Aeq[i]._VECTptr,beq[i],_LP_EQ);
+                }
+            }
+            if (!ckmatrix(prob.constr.lhs))
+                return _LP_ERR_DIM;
+            if (prob.nv()==0)
+                prob.create_variables(prob.constr.ncols());
+            else if (prob.nv()!=prob.constr.ncols())
+                return _LP_ERR_DIM;
+        }
+        //if the third arg is [bl,bu] then assume bl<=x<=bu
+        ++it;
+        if (it!=itend && it->type==_VECT) {
+            matrice &bounds=*it->_VECTptr;
+            if (!ckmatrix(bounds) || int(bounds.size())!=2 ||
+                    int(bounds.front()._VECTptr->size())<prob.nv())
+                return _LP_ERR_DIM;
+            if (prob.nv()==0)
+                prob.create_variables(bounds.front()._VECTptr->size());
+            for (int i=0;i<prob.nv();++i) {
+                prob.tighten_variable_bounds(i,bounds[0][i],bounds[1][i]);
+            }
+            ++it;
+        }
+        if (prob.nv()==0)
+            return _LP_ERR_SIZE;
+        if (prob.objective.first.empty())
+            prob.set_objective(vecteur(prob.nv(),gen(0)),gen(0));
+    }
+    else { //the problem is given in symbolic form
+        if (it->type==_VECT) {
+            cv=*it->_VECTptr;
+            prob.add_identifiers_from(cv);
+            ++it;
+        }
+        prob.create_variables(prob.variable_identifiers.size());
+        vecteur sides,c;
+        pair<gen,gen> bounds;
+        gen r;
+        int rel;
+        for (const_iterateur jt=cv.begin();jt!=cv.end();++jt) {
+            if (jt->is_symb_of_sommet(at_equal))
+                rel=_LP_EQ;
+            else if (jt->is_symb_of_sommet(at_inferieur_egal))
+                rel=_LP_LEQ;
+            else if (jt->is_symb_of_sommet(at_superieur_egal))
+                rel=_LP_GEQ;
+            else
+                return _LP_ERR_TYPE;
+            sides=*jt->_SYMBptr->feuille._VECTptr;
+            if (jt->is_symb_of_sommet(at_equal) && interval2pair(sides.back(),bounds,prob.ctx)) {
+                if (!prob.lincomb_coeff(sides.front(),c,r))
+                    return _LP_ERR_TYPE;
+                prob.constr.append(c,bounds.first-r,_LP_GEQ);
+                prob.constr.append(c,bounds.second-r,_LP_LEQ);
+                continue;
+            }
+            if (!prob.lincomb_coeff(sides.front()-sides.back(),c,r))
+                return _LP_ERR_TYPE;
+            prob.constr.append(c,-r,rel);
+        }
+    }
+    if (!parse_options_and_bounds(it,itend,prob))
+        return _LP_ERR_TYPE;
+    return 0;
+}
+
+gen _lpsolve(const gen &args,GIAC_CONTEXT) {
+    gen g(args);
+    if (g.type==_STRNG)
+        g=makesequence(g);
+    if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
+        return gensizeerr(contextptr);
+    vecteur &gv=*g._VECTptr,obj;
+    const_iterateur it=gv.begin(),itend=gv.end();
+    lp_problem prob(contextptr); //create LP problem with default settings
+    bool is_matrix_form=false;
+    if (it->type==_STRNG) { //problem is given in file
+        const char *fname=gen2string(*it).c_str();
+        if (!prob.glpk_load_from_file(fname))
+            return undef;
+        ++it;
+        if (it->type==_VECT)
+            return gentypeerr(contextptr);
+    }
+    else { //problem is entered manually
+        is_matrix_form=it->type==_VECT;
+        if (is_matrix_form) {
+            obj=*it->_VECTptr;
+            if (!obj.empty()) {
+                prob.set_objective(obj,gen(0));
+                prob.create_variables(obj.size());
+            }
+        }
+        else {
+            prob.add_identifiers_from(*it);
+            gen obj_ct;
+            if (!prob.lincomb_coeff(*it,obj,obj_ct))
+                return _LP_ERR_TYPE;
+            prob.set_objective(obj,obj_ct);
+        }
+        ++it;
+    }
+    switch (parse_constraints(is_matrix_form,it,itend,prob)) {
+    case _LP_ERR_SIZE:
+        return gensizeerr(contextptr);
+    case _LP_ERR_TYPE:
+        return gentypeerr(contextptr);
+    case _LP_ERR_DIM:
+        return gendimerr(contextptr);
+    default:
+        if (prob.nc()==0) {
+            for (int i=0;i<prob.nv();++i) {
+                lp_variable &var=prob.variables[i];
+                vecteur row(prob.nv(),gen(0));
+                if (!is_inf(var.range.lbound)) {
+                    row[i]=gen(1);
+                    prob.constr.append(row,var.range.lbound,_LP_GEQ);
+                    break;
+                }
+                else if (!is_inf(var.range.ubound)) {
+                    row[i]=gen(1);
+                    prob.constr.append(row,var.range.ubound,_LP_LEQ);
+                    break;
+                }
+            }
+            if (prob.nc()==0) {
+                prob.message("Error: no constraints detected",true);
+                return gensizeerr(contextptr);
+            }
+        }
+    }
+    for (int i=0;i<prob.nv();++i) {
+        lp_variable &var=prob.variables[i];
+        switch (prob.settings.assumption) {
+        case _ZINT:
+        case _LP_INTEGER:
+            var.set_type(_LP_INTEGERVARIABLES,contextptr);
+            break;
+        case _LP_BINARY:
+            var.set_type(_LP_BINARYVARIABLES,contextptr);
+            break;
+        case _NONNEGINT:
+        case _LP_NONNEGINT:
+            var.set_type(_LP_INTEGERVARIABLES,contextptr);
+        case _LP_NONNEGATIVE:
+            var.range.tighten_lbound(gen(0),contextptr);
+            break;
+        }
+    }
+    bool is_solver_exact;
+    switch (prob.settings.precision) {
+    case _LP_EXACT:
+        is_solver_exact=true;
+        break;
+    case _LP_INEXACT:
+        is_solver_exact=false;
+        break;
+    case _LP_PROB_DEPENDENT:
+        is_solver_exact=!prob.has_approx_coefficients();
+        break;
+    }
+    vector<lp_variable>::const_iterator vt=prob.variables.begin();
+    for (;vt!=prob.variables.end();++vt) {
+        if (vt->is_integral && is_zero(vt->range.lbound) && is_one(vt->range.ubound)) {
+            prob.settings.has_binary_vars=true;
+            break;
+        }
+    }
+    //solve the problem
+    switch (is_solver_exact?prob.solve():prob.glpk_solve()) {
+    case _LP_INFEASIBLE:
+        prob.message("Error: problem has no feasible solutions",true);
+        return vecteur(0);
+    case _LP_UNBOUNDED:
+        prob.message("Error: problem has unbounded solution",true);
+        return makevecteur(prob.settings.maximize?inf:minf,vecteur(0));
+    case _LP_ERROR:
+        return undef;
+    default: //_LP_SOLVED
+        return _eval(makevecteur(prob.optimum,prob.output_solution()),contextptr);
+    }
+}
+static const char _lpsolve_s[]="lpsolve";
 static define_unary_function_eval (__lpsolve,&_lpsolve,_lpsolve_s);
 define_unary_function_ptr5(at_lpsolve,alias_at_lpsolve,&__lpsolve,0,true)
 
 #ifndef NO_NAMESPACE_GIAC
 }
-#endif // ndef NO_NAMESPACE_GIAC
+#endif //ndef NO_NAMESPACE_GIAC

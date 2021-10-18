@@ -263,6 +263,22 @@ AC_SUBST(CONFIG_AO)
 AC_SUBST(AO_LIBS)
 AM_CONDITIONAL(CONFIG_AO, [test "$CONFIG_AO" = "yes"])
 
+dnl AC_CHECK_LIB(glpk, main)
+CONFIG_GLPK="yes"
+AC_ARG_ENABLE([glpk],
+	[AS_HELP_STRING([--enable-glpk], [Use GLPK [[default=yes]]])],
+	[if test "$enableval" = "no"; then CONFIG_GLPK="no"; fi], [])
+
+if test "$CONFIG_GLPK" = "yes"; then
+	AC_CHECK_HEADER(glpk.h, [], [CONFIG_GLPK="no"])
+  fi
+if test "$CONFIG_GLPK" = "yes"; then
+	AC_CHECK_LIB(glpk, main, [], [CONFIG_GLPK="no"])
+  fi
+AC_SUBST(CONFIG_GLPK)
+AC_SUBST(GLPK_LIBS)
+AM_CONDITIONAL(CONFIG_GLPK, [test "$CONFIG_GLPK" = "yes"])
+
   
 AC_CANONICAL_HOST
 dnl Check for stuff needed for building the Giac interactive shell (cas).

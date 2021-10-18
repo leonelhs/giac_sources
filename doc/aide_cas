@@ -15180,6 +15180,7 @@ lpsolve(x+3y+3z,[x+3y+2z<=7,2x+2y+z<=11],assume=lp_nonnegative,lp_integervariabl
 lpsolve(2x+5y,[3x-y=1,x-y<=5],assume=nonnegint)
 lpsolve(x1+x2,[2x1+5x2<=16,6x1+5x2<=30],assume=nonnegint,lp_maximize)
 lpsolve(8x1+11x2+6x3+4x4,[5x1+7x2+4x3+3x4<=14],assume=lp_binary,lp_maximize)
+lpsolve(x1+x2,[1867x1+1913x2=3618894],assume=nonnegint,lp_verbose=true)
 
 # implicitdiff
 1 Derivee implicite
@@ -15204,7 +15205,7 @@ implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=1)
 implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=2,[1,-1,0])
  pd:=implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=4,[0,z,0]);pd[4,0,0]
 
-# lp_assume lp_binary lp_binaryvariables lp_depthlimit lp_integer lp_integervariables lp_maximize lp_nonnegative lp_nonnegint lp_variables lp_nodelimit lp_integertolerance lp_method lp_simplex lp_interiorpoint lp_initialpoint
+# lp_assume lp_binary lp_binaryvariables lp_depthlimit lp_integer lp_integervariables lp_maximize lp_nonnegative lp_nonnegint lp_variables lp_nodelimit lp_integertolerance lp_method lp_simplex lp_interiorpoint lp_initialpoint lp_maxcuts lp_gaptolerance lp_nodeselect lp_varselect lp_firstfractional lp_lastfractional lp_mostfractional lp_pseudocost lp_depthfirst lp_breadthfirst lp_bestprojection lp_hybrid lp_iterationlimit lp_timelimit lp_verbose
 1 Options de la commande lpsolve
 2 Options for lpsolve command
 0 Opt

@@ -170,6 +170,9 @@
 /* Define to 1 if you have the `GL' library (-lGL). */
 #define HAVE_LIBGL 1
 
+/* Define to 1 if you have the `glpk' library (-lglpk). */
+#define HAVE_LIBGLPK 1
+
 /* Define to 1 if you have the `gmp' library (-lgmp). */
 #define HAVE_LIBGMP 1
 

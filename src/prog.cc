@@ -2355,8 +2355,12 @@ namespace giac {
       }
       else {
 	for (;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-value"
 	     idx?*idx!=stop:((for_in && test.val)?set_for_in(counter,for_in,for_in_v,for_in_s,index_name,newcontextptr):for_test(test,testf,eval_lev,newcontextptr));
-	     ++counter,idx?*idx+=step:((test.val && increment.type)?increment.eval(eval_lev,newcontextptr).val:0)){
+	     ++counter,idx?*idx+=step:((test.val && increment.type)?increment.eval(eval_lev,newcontextptr).val:0)
+#pragma clang diagnostic pop
+	     ){
 	  if (interrupted || (testf.type!=_INT_ && is_undef(testf)))
 	    break;
 	  dbgptr_current_instruction=save_current_instruction;
@@ -10333,8 +10337,11 @@ namespace giac {
     if (ws!=2)
       return gensizeerr(contextptr);
     gen a=w[0],b=w[1];
-    if (a.type==_IDNT)
-      a=eval(a,1,contextptr);
+    if (a.type==_IDNT){
+      gen tmp=eval(a,1,contextptr);
+      if (tmp.type==_FUNC)
+	a=tmp;
+    }
     if (b.type!=_SYMB)
       return _prod(eval(g,eval_level(contextptr),contextptr),contextptr);
     gen f=b;

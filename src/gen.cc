@@ -10281,6 +10281,12 @@ namespace giac {
       if (!d.type)
 	d.uncoerce();
       my_mpz_gcdext(*d._ZINTptr,*u._ZINTptr,*v._ZINTptr,*a._ZINTptr,*b._ZINTptr);
+      if (mpz_sizeinbase(*u._ZINTptr,2)<32)
+	u=mpz_get_si(*u._ZINTptr);
+      if (mpz_sizeinbase(*v._ZINTptr,2)<32)
+	v=mpz_get_si(*v._ZINTptr);
+      if (mpz_sizeinbase(*d._ZINTptr,2)<32)
+	d=mpz_get_si(*d._ZINTptr);
       break;
     default: 
       ciegcd(a,b,u,v,d);
@@ -10589,6 +10595,11 @@ namespace giac {
   gen invmod(const gen & a,const gen & modulo){
     if (a.type==_USER)
       return a._USERptr->inv();
+    if (a.type==_MOD){
+      if (*(a._MODptr+1)!=modulo)
+	return gensizeerr("Incompatible modulo "+a.print(context0)+","+modulo.print(context0));
+      return inv(a,context0);
+    }
     if (a.type==_CPLX){
       gen r=re(a,context0),i=im(a,context0); // ok
       gen n=invmod(r*r+i*i,modulo);

@@ -166,6 +166,9 @@ void a_propos() {
   #ifdef HAVE_LIBNTL
     s += "Contains NTL code (c) Victor Shoup\n";
   #endif //
+  #ifdef HAVE_LIBGLPK
+    s += "Contains GLPK code (c) Andrew Makhorin\n";
+  #endif //
     s += "Postscript output 2-d inspired by eukleides (c) Christian Obrecht\n";
     s += "3-d exports from gl2ps, (c) 1999-2006 Christophe Geuzaine\n";
     s += "Implicitplot3d code derived from Paul Bourke and Cory Gene Bloyd\n";
@@ -2014,7 +2017,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"rsolve: Solve recurrence equation", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Calculus", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"int: Integration (definite/indefinite)", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"integrate: Integration (definite/indefinite)", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"diff: Derivative", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"limit: Limit", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"ptayl: Taylor polynomial", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
