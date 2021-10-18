@@ -1702,6 +1702,30 @@ chiffres de $N$ en base $b$.
 choisissant une base $b$ puissance de 2 (ou 10) de l'ordre de
 $\sqrt{N}$ et en divisant pour r\'egner).
 
+\begin{giacprog}
+isqrt(x):={
+  local l,j,k,s,n,N,res;
+  l:=revlist(convert(x,base,100));
+  res:=seq(0,size(l));
+  s:=0;
+  N:=0;
+  pour k de 0 jusque size(l)-1 faire
+    N := (N-s)*100+l[k];
+    n:=2*horner(res[0..k],10)+1;
+    s:=n; // ajout de la somme des impairs consecutifs
+    pour j de 0 jusque 10 faire
+      si s>N alors break; fsi;
+      n+=2;
+      s+=n;
+    fpour;
+    s -= n;
+    res[k]:=j;
+  fpour;
+  retourne horner(res,10);
+}:;
+\end{giacprog}
+\giacinput{isqrt(2*10^8)}
+
 \subsubsection{Bezout sur les entiers et les fractions continues}
 Il existe une variante de l'identit\'e de B\'ezout pr\'esent\'ee
 ci-dessus pour les entiers. Soient $a\geq b>0$ deux entiers, on pose
@@ -4746,6 +4770,22 @@ vérifier que l'on a bien une solution en remplaçant la variable
 $x_i$ par $P_i/P'$ dans les équations, le reste de la division
 euclidienne du numérateur de la fraction obtenue par le polynome 
 minimal $P$ doit donner 0.
+
+Exemple~:
+\giacinputbigmath{syst:=[x^2-y^2-1,x^3+y^3-x*y-5]:fsolve(syst,[x,y])}
+Calcul en mode pas \`a pas~:
+\giacinputbigmath{G:=gbasis(syst,[x,y],rur)}
+l'\'el\'ement d'indice 1 est la forme lin\'eaire s\'eparante,
+en indice 2, le polyn\^ome minimal de l'\'el\'ement s\'eparant
+exprim\'e en fonction de $x$, en indice 3 sa d\'eriv\'ee qui
+sera le d\'enominateur commun de la solution, en indices
+de 4 \`a la fin le num\'erateur de la solution en fonction de $x$
+\giacinputbigmtah{d:=G[3];[G[4]/d,G[5]/d]; G[2]}
+On v\'erifie~:
+\giacinputbigmath{N:=numer(normal(subst(syst,[x,y],[G[4]/d,G[5]/d])))}
+\giacinputbigmath{rem(N[0],G[2]); rem(N[1],G[2])}
+On trouve les solutions approch\'ees
+\giacinputbigmath{S:=proot(G[2]);subst([G[4]/d,G[5]/d],x=S[0])}
 
 La repr\'esentation rationnelle univari\'ee a des applications
 au-del\`a de la seule r\'esolution de syst\`emes polynomiaux.
@@ -12925,7 +12965,8 @@ $$ \frac{\| \Delta x \|}{\|x\\} \leq \kappa(A)
 
 
 \subsection{R\'eduction des endomorphismes}
-\subsubsection{Le polyn\^ome minimal}\index{minimal, polyn\^ome}
+\subsubsection{Le polyn\^ome minimal (Krylov)}\index{minimal, polyn\^ome}
+\index{Krylov}
 On prend un vecteur $v$ au hasard et on calcule la relation lin\'eaire
 de degr\'e minimal entre $v$, $Av$, ..., $A^nv$ en cherchant
 le premier vecteur $w$ du noyau de la matrice obtenue en écrivant
@@ -13018,10 +13059,13 @@ soit $u=H_{i,m}/H_{m+1,m}$, on remplace alors la ligne $L_i$ de $H$
 par $L_i-uL_{m+1}$ et la colonne $C_{m+1}$ par $C_{m+1}+uC_i$
 ce qui revient ``à remplacer le vecteur $e_{m+1}$ de la base
 par le vecteur $e_{m+1}+ue_i$'' ou plus pr\'ecis\'ement
-\`a multiplier \`a gauche par $\left(\begin{array}{cc}
-1 & 0 \\ -u & 1\end{array}\right)$ et \`a droite par la matrice inverse
-$\left(\begin{array}{cc}
-1 & 0 \\ u & 1\end{array}\right)$ (en utilisant les lignes et colonnes
+\`a multiplier \`a gauche par 
+$$\left(\begin{array}{cc}
+1 & 0 \\ -u & 1\end{array}\right)$$ 
+et \`a droite par la matrice inverse
+$$\left(\begin{array}{cc}
+1 & 0 \\ u & 1\end{array}\right)$$ 
+(en utilisant les lignes et colonnes
 $m+1$ et $i$ au lieu de 1 et 2 pour ces matrices). 
 Ceci a pour effet d'annuler le coefficient $H_{i,m}$
 dans la nouvelle matrice.
@@ -13078,6 +13122,56 @@ perpendiculaire \`a $v$ on a $Hw=w$, donc $H$ est orthogonale.
 On l'utilise en g\'en\'eral pour $v=a-b$ avec $\|a\|=\|b\|$,
 on a alors $Ha=b$ puisque $H(a-b)=b-a$ car $v=a-b$ et $H(a+b)=a+b$
 car $v$ est orthogonal \`a $a+b$ (puisque $\|a\|=\|b\|$).
+
+On peut enfin utiliser l'algorithme de {\bf Danilevsky}\index{Danilevsky}. 
+Il s'agit un peu
+d'un analogue de la m\'ethode du pivot de Gauss pour se ramener
+\`a une matrice companion semblable (avec des 1 sur
+la diagonale au-dessus de la diagonale
+principale et le polyn\^ome caract\'eristique en derni\`ere
+ligne). Cela se fait ligne par ligne en commen\c{c}ant par
+la ligne $k=0$. On multiplie \`a gauche par $P$ une matrice identit\'e
+dont la ligne $k+1$ est remplac\'ee par la ligne $k$ de la matrice
+et \`a droite par son inverse $P^{-1}$, qui est une matrice identit\'e sauf
+en ligne $k+1$. Comme la $k+1$-i\`eme ligne de $P$ est la $k$-i\`eme
+ligne de la matrice $A$, le produit \`a droite par $P^{-1}$ va remplacer
+la $k$-i\`eme ligne de la matrice $A$ par la $k+1$-i\`eme ligne de $I=PP^{-1}$.
+Le produit \`a gauche par $P$ pr\'eserve les $k$ premi\`eres lignes.
+Quand on programme cet algorithme, on traduit le produit \`a droite
+par une op\'eration sur les colonnes, et le produit \`a gauche par
+une op\'eration sur les lignes, on ne doit faire ces op\'erations qu'\`a 
+partir de la ligne $k$.
+
+Exemple sur une matrice 3,3~:
+\giacinputbigmath{a:=[[1,2,3],[1,-1,1],[2,-3,3]]}
+R\'eduction de la 1\`ere ligne~:
+\giacinputbigmath{p:=idn(3):; p[1]:=a[0]; inv(p); a*inv(p); b:=p*a*inv(p);}
+Deuxi\`eme ligne~:
+\giacinputbigmath{p:=idn(3):; p[2]:=b[1]; inv(p); b*inv(p); c:=p*b*inv(p)}
+on lit le polyn\^ome caract\'eristique en derni\`ere ligne
+\giacinputbigmath{[1,op(revlist(-c[2]))];charpoly(a)}
+Notons $(a_{k,0},...,a_{k,n-1})$ la $k$-i\`eme ligne de $A$,
+donc la $k+1$-i`eme ligne de $P$, alors la $k+1$-i\`eme ligne de 
+$P^{-1}$ a comme coefficients $-a_{k,j}/a_{k,k+1}$ si $j\neq k$ et 
+$1/a_{k,k+1}$ pour $j=k$. 
+Les op\'erations de colonnes correspondant \`a $AP^{-1}$ sont donc
+$C_j \leftarrow C_j-a_{k,j}/a_{k,k+1}C_{k+1}$ si $j \neq k$ et 
+$C_{k+1} \leftarrow C_{k+1}/a_{k,k+1}$. Puis l'op\'eration de ligne
+correspondant \`a $PA$ est $L_{k+1} \leftarrow \sum_j a_{k,j} L_j$ (on peut
+commencer la somme \`a $k+1$ si on initialise la ligne \`a
+$(0,a_{k,0},..,a_{k,k},0,...0)$).
+Dans l'exemple, pour $k=0$ on a $a_{0,1}=2$ donc on fait
+$C_1=C_1-1/2C_2, C_2=C_2/2, C_3=C_3-3C_2/2$ puis $L_2=L_1+2L_2+3L_3$.
+Pour $k=1$, on a $b_{1,2}=55/2$ donc on fait 
+$C_1=C_1-27/55C_3, C_2=C_2+9/55C_3, C_3=2/55C_3$ puis
+$L_3=27/2L_1-9/2L_2+55/2L_3$.
+
+Si au cours du calcul $a_{k,k+1}=0$, il faut chercher un ``pivot'' non nul
+sur la ligne $k$ \`a partir de la colonne $k+1$, on \'echange ensuite les
+colonnes et les lignes $k+1$ et $k'$ correspondantes. Si tout le reste
+de la ligne est nul, alors le polynom\^ome caract\'eristique est le
+produit du polyn\^ome de la matrice companion lignes et colonnes 
+0 \`a $k$ incluses et de la matrice lignes et colonnes $k+1$ \`a $n-1$.
 
 \subsubsection{La m\'ethode de
   Leverrier-Faddeev-Souriau}\index{Leverrier} \index{Faddeev}\index{Souriau}
@@ -14864,7 +14958,7 @@ num\'eriquement pour une subdivision \'equidistribu\'ee,
 et montrer qu'il croit comme $\frac{2^{n+1}}{e n \ln(n)}$,
 par exemple pour $n=40$, il vaut environ {\tt 5e9}.
 Illustration avec Xcas~:\\
-\giacinputbigmath{restart();l(k,n):=product((x-j)/(k-j),j,0,k-1)*product((x-j)/(k-j),j,k+1,n);}
+\giacinputbigmath{restart;l(k,n):=product((x-j)/(k-j),j,0,k-1)*product((x-j)/(k-j),j,k+1,n);}
 
 \giacinput[style="width:800px;height:40px;font-style:large"]{n:=10; f:=add(abs(l(k,n)),k,0,n); plot(f,x=0..n)}
 
@@ -16152,6 +16246,37 @@ $2^n$ en compl\'etant par des 0, on calcule la DFT de $A$ et de $B$,
 puis on fait le produit \'el\'ement par \'el\'ement puis on calcule la
 DFT inverse.
 
+Exemple~: on cherche des nombres premiers de la forme $p=k2^n+1$
+par exemple $p=7\times 2^{20}+1$ est premier, 
+\giacinput{isprime(p:=7*2^20+1)}
+on cherche un g\'en\'erateur de $\Z/p\Z$
+\begin{giacprog}
+for(g:=2;g<p;g++){ 
+  if (powmod(g,(p-1)/2,p)!=1 and powmod(g,(p-1)/7,p)!=1) break;
+}:; g;
+\end{giacprog}
+on en d\'eduit une racine primitive $2^{20}$-i\`eme de l'unit\'e
+\giacinput{g;r:=powmod(g,7,p);}
+puis en prenant la puissance $2^{n-k}$-i\`eme de $r$ on obtient une
+racine $2^k$-i\`eme de 1 qui permettra de multiplier deux
+polyn\^omes dont la somme des degr\'es est strictement 
+inf\'erieure \`a $2^k$, par exemple pour $a$ et $b$ de
+degr\'es 5 et 7, on prendra $k=4$
+\giacinputbigmath{a:=randpoly(5,[]); b:=randpoly(7,[]);w:=powmod(r,2^16,p);}
+on allonge $a$ et $b$ avec des 0 pour les amener \`a la taille $16=2^k$
+\giacinputbigmath{ar:=[op(a),0$(16-size(a))];br:=[op(b),0$(16-size(b))];}
+on calcule les transform\'ees de Fourier rapide de $a$ et $b$
+\giacinputbigmath{A:=fft(ar,w,p); B:=fft(br,w,p);}
+puis on fait le produit terme \`a terme et on applique la transform\'ee
+de Fourier inverse
+\giacinputbigmath{C:=irem(A.*B,p); c:=ifft(C,w,p);}
+On peut comparer avec le produit calcul\'e par Xcas
+\giacinputbigmath{a*b;}
+\giacinputbigmath{smod(c,p);}
+Bien entendu les tailles de $a$ et $b$ prises ici
+en exemple sont trop petites
+pour que l'algorithme soit efficace.
+
 Pour une impl\'ementation efficace, on utilise plusieurs nombres
 premiers et les restes chinois (en fait \`a deux reprises). 
 On calcule le produit des polyn\^omes
@@ -16170,19 +16295,35 @@ dans``A parallel implementation for polynomial multiplication
 modulo a prime'',  PASCO 2015,
 \begin{itemize}
 \item $n_1 = 2013265921 =15 \times 2^{27}+1$ 
-($r=1227303670$ est racine root d'ordre $2^{27}$)
+($r=1227303670$ est racine d'ordre $2^{27}$, il suffit de prendre 
+un g\'en\'erateur de $(\Z/n_1\Z)^*$ \`a la puissance 15, ce qui
+se fait en testant 2, 3,...).
 \item
   $n_2 = 1811939329 =27 \times 2^{26}$ ($r=814458146$ est racine d'ordre $2^{26}$) 
 \item $n_3 = 469762049 $ ($r=2187$ est racine d'ordre $2^{26}$)
 \end{itemize}
-On peut retrouver ces nombres premiers avec la boucle suivante
-\giacinputbig{p:=2^25; for k from 64 downto 1 do if isprime(k*p+1) then print(k*p+1); fi od}
-Ce choix permet de multiplier des polyn\^omes dont le degr\'e du produit
-est strictement inf\'erieur \`a $2^{26}$ (environ 67 millions). Si on utilise deux de ces 3
+On peut retrouver ces nombres premiers avec une boucle comme suit
+\giacinputbig{p:=2^25; for k from 64 downto 1 do if isprime(k*p+1) then print(k,k*p+1); fi od}
+et la valeur d'une racine $2^n$-i\`eme comme suit
+\begin{giacprog}
+n:=2013265921;
+pour k de 2 jusque 100 faire
+ a:=powmod(k,(n-1)/3,n); b:=powmod(k,(n-1)/5,n); c:=powmod(k,(n-1)/2,n);
+ print(k,a,b,c);
+ si a!=1 et b!=1 et c!=1 alors break; fsi;
+fpour;
+r:=powmod(k,15,n);
+powmod(r,2^26,n); powmod(r,2^27,n);
+\end{giacprog}
+Ce choix de valeurs de $n_1, n_2, n_3$ 
+permet de multiplier des polyn\^omes dont le degr\'e du produit
+est strictement inf\'erieur \`a $2^{26}$ (environ 67 millions). 
+Si on utilise deux de ces 3
 premiers, $n_1$ et $n_2$, on peut prendre des $p_i$ dont la taille en bits est
 plus petite que (60 bits moins le nombre de bits du degr\'e minimal de
 $A$ et $B$) divis\'e par 2. Avec les trois $n_1$, $n_2$ et $n_3$ on peut prendre
-$p_i$ ayant 31 bits, mais il faut faire des restes chinois avec des
+$p_i$ ayant 31 bits, mais il faut travailler si on veut \'eviter
+de faire des restes chinois avec des
 entiers de plus de 64 bits (ce qui est possible avec des entiers 128
 bits mais au prix de r\'eductions modulo couteuses).
 

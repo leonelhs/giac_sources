@@ -353,8 +353,9 @@ void split(std::string & s,int cut){
   s = s+remains;
 }
 
-void verb(std::string & warn,int line,ostream & out,std::string cmd,const std::string & infile,int & texmacs_counter,bool slider,giac::context * contextptr){
+void verb(std::string & warn,int line,ostream & out,std::string cmd,const std::string & infile,int & texmacs_counter,bool slider,giac::context * contextptr,ostream * checkptr,std::ostream * checkptrin){
   giac::gen g(cmd,contextptr),gg;
+  string gs=cmd;
   split(cmd,50);
   int pos=cmd.find('\n');
   if (pos<0 || pos>=cmd.size())
@@ -366,6 +367,17 @@ void verb(std::string & warn,int line,ostream & out,std::string cmd,const std::s
   int reading_file=0;
   std::string filename,tmp;
   xcas::icas_eval(g,gg,reading_file,filename,contextptr);
+  if (checkptrin){
+    int ss=gs.size();
+    for (;ss>0;--ss){
+      if (gs[ss-1]!=' ' && gs[ss-1]!='\n')
+	break;
+    }
+    if (ss && gs[ss-1]!=';')
+      gs += ';';
+    *checkptrin << gs << endl ;
+  }
+  if (checkptr) *checkptr << gg << endl;
   int graph_output=graph_output_type(gg);
   if (graph_output){
     filename=infile+giac::print_INT_(texmacs_counter)+".eps";
@@ -395,7 +407,7 @@ void verb(std::string & warn,int line,ostream & out,std::string cmd,const std::s
   }  
 }
 
-void pgiac(std::string infile,std::string outfile){
+void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::ostream * checkptrin){
   COUT << "Giac pdflatex and HTML5 output" << endl;
   COUT << "Partly inspired from pgiac by Jean-Michel Sarlat" << endl;
   if (!giac::is_file_available("giac.tex")){
@@ -423,6 +435,7 @@ void pgiac(std::string infile,std::string outfile){
   std::string infile_=giac::remove_extension(infile),warn;
   int line=0;
   giac::context ct;
+  debug_ptr(&ct)->debug_allowed=false;
   ifstream in(infile.c_str());
   ofstream out(outfile.c_str());
   const int BUFFER_SIZE=32768-1;
@@ -508,6 +521,18 @@ void pgiac(std::string infile,std::string outfile){
 	  int reading_file=0;
 	  std::string filename;
 	  xcas::icas_eval(g,gg,reading_file,filename,&ct);  
+	  if (checkptrin){
+	    string gs=prg;
+	    int ss=gs.size();
+	    for (;ss>0;--ss){
+	      if (gs[ss-1]!=' ' && gs[ss-1]!='\n')
+		break;
+	    }
+	    if (ss && gs[ss-1]!=';')
+	      gs += ';';
+	    *checkptrin << gs << endl ;
+	  }
+	  if (checkptr) *checkptr << gg << endl;
 	  s=s.substr(pos+14,ss-14-pos);
 	  inprog=false;
 	  continue;
@@ -580,7 +605,7 @@ void pgiac(std::string infile,std::string outfile){
 	      cmd += ';'+s.substr(pos1+1,pos2-pos1-1);
 	      s=s.substr(pos2+1,ss-pos2-1);
 	      ss=s.size();
-	      verb(warn,line,out,cmd,infile_,texmacs_counter,true,&ct);
+	      verb(warn,line,out,cmd,infile_,texmacs_counter,true,&ct,checkptr,checkptrin);
 	    }
 	  }
 	  continue;
@@ -600,13 +625,13 @@ void pgiac(std::string infile,std::string outfile){
 	    pos2=s.find("}");
 	  }
 	  cmd = cmd + '('+s.substr(pos1+1,pos2-pos1-1)+')';
-	  verb(warn,line,out,cmd,infile_,texmacs_counter,false,&ct); 
+	  verb(warn,line,out,cmd,infile_,texmacs_counter,false,&ct,checkptr,checkptrin); 
 	  s=s.substr(pos2+1,ss-pos2-1);	
 	  continue;
 	}
 	if (pos1>0 && pos1<ss && pos2>0 && pos2<ss){
 	  string cmd=s.substr(pos1+1,pos2-pos1-1);
-	  verb(warn,line,out,cmd,infile_,texmacs_counter,false,&ct); 
+	  verb(warn,line,out,cmd,infile_,texmacs_counter,false,&ct,checkptr,checkptrin); 
 	  s=s.substr(pos2+1,ss-pos2-1);
 	  continue;
 	}
@@ -623,7 +648,7 @@ void pgiac(std::string infile,std::string outfile){
 }
 
 #else
-void pgiac(std::string infile,std::string outfile){
+void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::ostream * checkptrin){
   ifstream in(infile.c_str());
   ofstream out(outfile.c_str());
   const int BUFFER_SIZE=32768-1;
@@ -907,23 +932,39 @@ int main(int ARGC, char *ARGV[]){
   if (savedbg)
     giac::debug_infolevel=savedbg;
   if (ARGC>=2){
+    ostream * checkptr=0,*checkptrin=0;
     std::string infile(ARGV[1]),outfile=giac::remove_extension(infile);
     if (infile==outfile && !giac::is_file_available(ARGV[1]) && giac::is_file_available((infile+".tex").c_str()))
       infile=outfile+".tex";
     if (infile==outfile+".tex"){
       outfile=outfile+"_.tex";
       // outfile=outfile+"_.w";
-      if (ARGC>=3)
-	outfile=ARGV[2];
+      if (ARGC>=3){
+	if (std::string(ARGV[2])=="--check"){
+	  if (ARGC>=4){
+	    checkptr=new ofstream((string(ARGV[3])+".out").c_str());
+	    checkptrin=new ofstream((string(ARGV[3])+".in").c_str());
+	  }
+	  else {
+	    checkptr=new ofstream((infile+".out").c_str());
+	    checkptrin=new ofstream((infile+".in").c_str());
+	  }
+	}
+	else
+	  outfile=ARGV[2];
+      }
       if (!giac::is_file_available(infile.c_str())){
 	COUT << "Unable to read " << infile << endl;
 	return 1;
       }
-      pgiac(infile,outfile);
+      pgiac(infile,outfile,checkptr,checkptrin);
+      if (checkptr) delete checkptr;
+      if (checkptrin) delete checkptrin;
       return 0;
     }
   }
   if (ARGC>=3 && std::string(ARGV[1])=="--tex"){
+    ostream * checkptr=0,*checkptrin=0;
     // scan ARGV[2], search for commands starting by \giac...{}
     // output .g command, output everything else verbatim 
     // output goes in ARGV[3] or in ARGV[2].w
@@ -933,13 +974,27 @@ int main(int ARGC, char *ARGV[]){
       infile=infile+".tex";
       outfile=outfile+"_.w";
     }
-    if (ARGC>=4)
-      outfile=ARGV[3];
+    if (ARGC>=4){
+      if (std::string(ARGV[2])=="--check"){
+	if (ARGC>=5){
+	  checkptr=new ofstream((string(ARGV[4])+".out").c_str());
+	  checkptrin=new ofstream((string(ARGV[4])+".in").c_str());
+	}
+	else {
+	  checkptr=new ofstream((infile+".out").c_str());
+	  checkptrin=new ofstream((infile+".in").c_str());
+	}
+      }
+      else
+	outfile=ARGV[3];
+    }
     if (!giac::is_file_available(infile.c_str())){
       COUT << "Unable to read " << infile << endl;
       return 1;
     }
-    pgiac(infile,outfile);
+    pgiac(infile,outfile,checkptr,checkptrin);
+    if (checkptr) delete checkptr;
+    if (checkptrin) delete checkptrin;
     return 0;
   }
   // Help and completion

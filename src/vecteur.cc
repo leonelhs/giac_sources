@@ -4958,7 +4958,75 @@ namespace giac {
       }
   }
 
+  void LL_multilinear_combination(std::vector<longlong> & v1,int c1,std::vector<longlong> & v2,int c2,std::vector<longlong> & v3,int c3,std::vector<longlong> & v4,int c4,const std::vector<longlong> & w,int p,int cstart,int cend){
+    c1 %=p; c2 %=p; c3 %=p; c4 %=p;
+    longlong * it1=&*(v1.begin()+cstart),*it1end=&*(v1.end()),*it2=&*(v2.begin()+cstart),*it3=&*(v3.begin()+cstart),*it4=&*(v4.begin()+cstart),*it1_;
+    if (cend && cend>=cstart && cend<it1end-&v1.front())
+      it1end=&*(v1.begin()+cend);
+    it1_=it1-4;
+    const longlong * jt=&*(w.begin()+cstart);
+    for (;it1<=it1_;it1+=4,it2+=4,it3+=4,it4+=4,jt+=4){
+      longlong tmp=*jt;
+      *it1 += c1*tmp;
+      *it2 += c2*tmp;
+      *it3 += c3*tmp;
+      *it4 += c4*tmp;
+      tmp=jt[1];
+      it1[1] += c1*tmp;
+      it2[1] += c2*tmp;
+      it3[1] += c3*tmp;
+      it4[1] += c4*tmp;
+      tmp=jt[2];
+      it1[2] += c1*tmp;
+      it2[2] += c2*tmp;
+      it3[2] += c3*tmp;
+      it4[2] += c4*tmp;
+      tmp=jt[3];
+      it1[3] += c1*tmp;
+      it2[3] += c2*tmp;
+      it3[3] += c3*tmp;
+      it4[3] += c4*tmp;
+      tmp=jt[4];
+      it1[4] += c1*tmp;
+      it2[4] += c2*tmp;
+      it3[4] += c3*tmp;
+      it4[4] += c4*tmp;
+    }
+    for (;it1!=it1end;++jt,++it4,++it3,++it2,++it1){
+      longlong tmp=*jt;
+      *it1 += c1*tmp;
+      *it2 += c2*tmp;
+      *it3 += c3*tmp;
+      *it4 += c4*tmp;
+    }
+  }
+
   bool find_multi_linear_combination(vector< vector<int> > & N,int l0,int & l1,int &l2,int &l3,int pivotcol,int lexcluded,int lmax){
+    if (l0>=lmax-3)
+      return false;
+    l1=l0+1;
+    for (;l1<lmax;++l1){
+      if (l1!=lexcluded && !N[l1].empty() && N[l1][pivotcol])
+	break;
+    }
+    if (l1>=lmax-2)
+      return false;
+    l2=l1+1;
+    for (;l2<lmax;++l2){
+      if (l2!=lexcluded && !N[l2].empty() && N[l2][pivotcol])
+	break;
+    }
+    if (l2>=lmax-1)
+      return false;
+    l3=l2+1;
+    for (;l3<lmax;++l3){
+      if (l3!=lexcluded && !N[l3].empty() && N[l3][pivotcol])
+	break;
+    }
+    return l3<lmax;
+  }
+
+  bool find_multi_linear_combination(vector< vector<longlong> > & N,int l0,int & l1,int &l2,int &l3,int pivotcol,int lexcluded,int lmax){
     if (l0>=lmax-3)
       return false;
     l1=l0+1;
@@ -5774,7 +5842,7 @@ namespace giac {
 	it1end=v1.begin()+cend;
       it1_=it1end-4;
       vector<int>::const_iterator it2=v2.begin()+cstart;
-#if defined(PSEUDO_MOD) && !(defined(VISUALC) || defined (BESTA_OS) || defined(OSX)  || defined(OSXIOS) || defined(FIR_LINUX) || defined(FIR_ANDROID) || defined(ANDROID))
+#if defined(PSEUDO_MOD) && !(defined(VISUALC) || defined (BESTA_OS) || defined(OSX) || defined(OSXIOS) || defined(FIR_LINUX) || defined(FIR_ANDROID) || defined(ANDROID))
       c2 %= modulo;
       if (pseudo && (modulo<(1<<29) 
 		     // && modulo>=(1<<16)
@@ -5827,6 +5895,26 @@ namespace giac {
 #endif
 	  }
 	}
+    }
+  }
+
+  // v1=v1+c2*v2
+  void modlinear_combination(vector<longlong> & v1,int c2,const vector<longlong> & v2,int modulo,int cstart,int cend){
+    if (c2){
+      longlong * it1=&v1.front()+cstart,*it1end=&v1.front()+v1.size(),*it1_;
+      if (cend && cend>=cstart && cend<it1end-&v1.front())
+	it1end=&v1.front()+cend;
+      it1_=it1end-4;
+      const longlong * it2=&v2.front()+cstart;
+      for (;it1<=it1_;it1+=4,it2+=4){
+	*it1 += c2*(*it2);
+	it1[1] += c2*it2[1];
+	it1[2] += c2*it2[2];
+	it1[3] += c2*it2[3];
+      }
+      for (;it1!=it1end;++it1,++it2){
+	*it1 += c2*(*it2);
+      }
     }
   }
 
@@ -6447,9 +6535,12 @@ namespace giac {
 	if (!modrref(*unmod(a)._VECTptr,res,pivots,det,l,lmax,c,cmax,
 		     fullreduction,dont_swap_below,modulo,rref_or_det_or_lu))
 	  return 0;
-	// FIXME lu should not makemod the permutation
 	res=*makemod(res,modulo)._VECTptr;
+	// keep the permutation without makemod
+	gen last=pivots.back();
+	pivots.pop_back();
 	pivots=*makemod(pivots,modulo)._VECTptr;
+	pivots.push_back(last);
 	det=makemod(det,modulo);
 	return 1;
       }
@@ -7440,7 +7531,7 @@ namespace giac {
     for (int L=lmax-1;L>=l;--L){
       vector<int> & NL=N[L];
       if (NL.empty()) continue;
-      if (debug_infolevel>2){
+      if (debug_infolevel>1){
 	if (L%10==9){ CERR << "+"; CERR.flush();}
 	if (L%500==499){ CERR << CLOCK() << " remaining " << l-L << endl; }
       }
@@ -7549,6 +7640,45 @@ namespace giac {
     }
   }
 
+  void LL_modular_reduction(vector< vector<longlong> > & N,int l,int pivotcol,int pivotval,int linit,int lmax,int c,int effcmax,int rref_or_det_or_lu,int modulo){
+#ifndef GIAC_HAS_STO_38
+    int l1,l2,l3;
+#endif
+    bool ludecomp=rref_or_det_or_lu>=2;
+    for (int ltemp=linit;ltemp<lmax;++ltemp){
+      if (ltemp==l || N[ltemp].empty() || !N[ltemp][pivotcol])
+	continue;
+#ifndef GIAC_HAS_STO_38
+      if (!ludecomp && find_multi_linear_combination(N,ltemp,l1,l2,l3,pivotcol,l,lmax)){
+	int coeff0=(N[ltemp][pivotcol] %= modulo);
+	int coeff1=(N[l1][pivotcol] %= modulo);
+	int coeff2=(N[l2][pivotcol] %= modulo);
+	int coeff3=(N[l3][pivotcol] %= modulo);
+	if (rref_or_det_or_lu==1){
+	  coeff0 = (coeff0*longlong(pivotval)) % modulo;
+	  coeff1 = (coeff1*longlong(pivotval)) % modulo;
+	  coeff2 = (coeff2*longlong(pivotval)) % modulo;
+	  coeff3 = (coeff3*longlong(pivotval)) % modulo;
+	}
+	LL_multilinear_combination(N[ltemp],-coeff0,N[l1],-coeff1,N[l2],-coeff2,N[l3],-coeff3,N[l],modulo,c,effcmax);
+	ltemp = l3;
+	continue;
+      }
+#endif
+      int coeff;
+      if (ludecomp) {
+	int tmp=N[ltemp][pivotcol] % modulo;
+	coeff = (N[ltemp][pivotcol] = (longlong(tmp)*pivotval) % modulo);
+      }
+      else {
+	coeff = (N[ltemp][pivotcol] %= modulo);
+	if (rref_or_det_or_lu==1)
+	  coeff = (coeff * longlong(pivotval))%modulo;
+      }
+      modlinear_combination(N[ltemp],-coeff,N[l],modulo,(rref_or_det_or_lu>0)?(c+1):c,effcmax);
+    }
+  }
+
   struct thread_modular_reduction_t {
     vector< vector<int> > * Nptr;
     vector<int> * pivotcols;
@@ -7566,6 +7696,145 @@ namespace giac {
     thread_modular_reduction_t * ptr=(thread_modular_reduction_t *) ptr_;
     smallmodrref_lower(*ptr->Nptr,ptr->linit,ptr->l,ptr->lmax,ptr->c,ptr->effcmax,*ptr->pivotcols,ptr->modulo,ptr->debuginfo);
     return ptr;
+  }
+
+  // attempt to speedup smallmodrref by using longlong intermediate matrix
+  bool LLsmallmodrref(vector< vector<int> > & Nint,int l_,int lmax_,int c_,int cmax_,vecteur & pivots,vector<int> & permutation,vector<int> & maxrankcols,longlong & idet,int fullreduction,int dont_swap_below,int modulo,int rref_or_det_or_lu){
+    // return false;
+    bool inverting=fullreduction==2;
+    int L=lmax_-l_,C=cmax_-c_;
+    // copy Nint matrix
+    vector< vector<longlong> > N(L);
+    for (int i=0;i<L;++i){
+      const vector<int> & source=Nint[l_+i];
+      if (source.empty()) continue;
+      vector<longlong> & target=N[i];
+      target.resize(C);
+      for (int j=0;j<C;++j)
+	target[j]=source[c_+j];
+    }
+    // reduce N, reflect line permutations for empty lines in Nint
+    int l=0,lmax=L,c=0,cmax=C,pivotline,pivotcol,pivot,temp;
+    bool noswap;
+    for (;l<lmax && c<cmax;){
+      pivot = N[l].empty()?0:(N[l][c] %= modulo);
+      if (rref_or_det_or_lu==3 && !pivot){
+	idet=0;
+	return true;
+      }
+      if ( rref_or_det_or_lu==1 && l==lmax-1 ){
+	idet = (idet * pivot) % modulo ;
+	break;
+      }
+      pivotline=l;
+      pivotcol=c;
+      if (!pivot){ // scan current line
+	noswap=false;
+	if (l<dont_swap_below){ 
+	  for (int ctemp=c+1;ctemp<cmax;++ctemp){
+	    temp = N[l].empty()?0:(N[l][ctemp] %= modulo);
+	    if (temp){
+	      pivot=smod(temp,modulo);
+	      pivotcol=ctemp;
+	      break;
+	    }
+	  }
+	}
+	else {      // scan N current column for the best pivot available
+	  for (int ltemp=l+1;ltemp<lmax;++ltemp){
+	    temp = N[ltemp].empty()?0:(N[ltemp][c] %= modulo);
+	    if (temp){
+	      pivot=smod(temp,modulo);
+	      pivotline=ltemp;
+	      break;
+	    }
+	  }
+	}
+      } // end if is_zero(pivot), true pivot found on line or column
+      if (pivot){
+	if (debug_infolevel>1){
+	  if (l%10==9){ CERR << "+"; CERR.flush();}
+	  if (l%500==499){ CERR << CLOCK() << " remaining " << lmax-l << endl; }
+	}
+	maxrankcols.push_back(c_+c);
+	if (l!=pivotline){
+	  swap(N[l],N[pivotline]);
+	  swap(Nint[l_+l],Nint[l_+pivotline]);
+	  swap(permutation[l_+l],permutation[l_+pivotline]);
+	  pivotline=l;
+	  idet = -idet;
+	}
+	// save pivot for annulation test purposes
+	if (rref_or_det_or_lu!=1)
+	  pivots.push_back(pivot);
+	// invert pivot. If pivot==1 we might optimize but only if allow_bloc is true
+	temp=invmod(pivot,modulo);
+	// multiply det
+	idet = (idet * pivot) % modulo ;
+	if (fullreduction || rref_or_det_or_lu<1){ // not LU decomp
+	  vector<longlong>::iterator it=N[pivotline].begin()+c,itend=N[pivotline].end();
+	  for (;it!=itend;++it){
+	    longlong tmp=*it;
+	    if (!tmp) continue;
+	    tmp %= modulo;
+	    tmp=(temp * tmp)%modulo;
+	    *it=tmp; // *it=smod_adjust(tmp,modulo);
+	  }
+	}
+	else {
+	  // reduce remainder of line pivotline
+	  vector<longlong>::iterator it=N[pivotline].begin()+c,itend=N[pivotline].end();
+	  for (;it!=itend;++it){
+	    longlong tmp=*it;
+	    if (!tmp) continue;
+	    *it=tmp%modulo;
+	  }
+	}
+	// if there are 0 at the end, ignore them in linear combination
+	int effcmax=(fullreduction && inverting && noswap)?c+lmax:cmax-1;
+	const std::vector<longlong> & Npiv=N[l];
+	for (;effcmax>=c;--effcmax){
+	  if (Npiv[effcmax])
+	    break;
+	}
+	++effcmax;
+	int effl=fullreduction?0:l+1;
+	LL_modular_reduction(N,l,pivotcol,temp,effl,lmax,c,effcmax,rref_or_det_or_lu,modulo);
+	// increment column number if swap was allowed
+	if (l>=dont_swap_below)
+	  ++c;
+	// increment line number since reduction has been done
+	++l;	  	
+      } // if (pivot)
+      else { // if pivot is 0 increment either the line or the col
+	idet = 0;
+	if (rref_or_det_or_lu==1)
+	  break;
+	if (l>=dont_swap_below)
+	  c++;
+	else
+	  l++;
+      }
+    }
+    // back copy into Nint
+    if (rref_or_det_or_lu!=1){
+      for (int i=0;i<L;++i){
+	const vector<longlong> & source=N[i];
+	vector<int> & target=Nint[l_+i];
+	if (source.empty()){ 
+	  if (!target.empty())
+	    CERR << "inconsistency" << endl;
+	  continue;
+	}
+	else {
+	  if (target.empty())
+	    CERR << "inconsistency" << endl;
+	}
+	for (int j=0;j<C;++j)
+	  target[c_+j]=smod(source[j],modulo);
+      }
+    }
+    return true;
   }
     
   // if dont_swap_below !=0, for line numers < dont_swap_below
@@ -7610,11 +7879,15 @@ namespace giac {
     bool noswap=true;
     smallmodrref_temp_t * tmpptr = workptr;
 #ifndef GIAC_HAS_STO_38 
-    if (allow_block && rref_or_det_or_lu==0 && dont_swap_below==0 ){ 
+    if (allow_block && (rref_or_det_or_lu==0 
+			//|| rref_or_det_or_lu==1
+			) && dont_swap_below==0 ){ 
       if (
-	  //lmax-l>=4 && cmax-c>=4
-	  lmax-l>=3*mmult_int_blocksize && cmax-c>=3*mmult_int_blocksize
+	  //lmax-l>=4 && cmax-c>=4 
+	  lmax-l>=2.5*mmult_int_blocksize && cmax-c>=2.5*mmult_int_blocksize
 	){
+	// this is not as fast as block reduction for dense matrices
+	// a sparsness test could be useful
 	// reduce first half
 	int halfl=(lmax-l)/2,effl=l+halfl;
 	if (debug_infolevel>2)
@@ -7663,7 +7936,7 @@ namespace giac {
 	  CERR << CLOCK() << " rref_lower end " << effl << ".." << lmax << "/" << c << ".." << cmax << endl;
 	// reduce second half
 	//cerr << N <<endl;
-	smallmodrref(nthreads,N,pivots,permutation,maxrankcols,idet,l+halfl,lmax,c,cmax,0/*fullreduction*/,0,modulo,0,false,workptr);
+	smallmodrref(nthreads,N,pivots,permutation,maxrankcols,idet,l+halfl,lmax,c+(idet && rref_or_det_or_lu==1?halfl:0),cmax,0/*fullreduction*/,0,modulo,0,false,workptr);
 	if (debug_infolevel>2)
 	  CERR << CLOCK() << " rref end " << lmax-l << "x" << cmax-c << endl;
 	//cerr << N <<endl;
@@ -7683,6 +7956,7 @@ namespace giac {
 	      COUT << "erreur" << N[r][C] << endl;
 	    swap(N[r],N[L]);
 	    swap(permutation[r],permutation[L]);
+	    idet=-idet;
 	    // swap(pivots[r],pivots[L]);
 	  }
 	  ++L; ++C;
@@ -7879,6 +8153,12 @@ namespace giac {
 	}
       } // end tryblock
 #endif // GIAC_DETBLOCK
+      // normal Gauss reduction
+      if (
+	  lmax-l>=32 && cmax-c>=32 && (lmax-l)*double(modulo)*double(modulo)<(1ULL<<63) &&
+	  double(lmax-l)*(cmax-c)*sizeof(longlong)<128e3 && LLsmallmodrref(N,l,lmax,c,cmax,pivots,permutation,maxrankcols,idet,fullreduction,dont_swap_below,modulo,rref_or_det_or_lu)){
+	break;
+      }
       pivot = N[l].empty()?0:(N[l][c] %= modulo);
       if (rref_or_det_or_lu==3 && !pivot){
 	idet=0;
@@ -7918,7 +8198,7 @@ namespace giac {
 	}
       } // end if is_zero(pivot), true pivot found on line or column
       if (pivot){
-	if (debug_infolevel>2){
+	if (debug_infolevel>1){
 	  if (l%10==9){ CERR << "+"; CERR.flush();}
 	  if (l%500==499){ CERR << CLOCK() << " remaining " << lmax-l << endl; }
 	}
@@ -7933,7 +8213,6 @@ namespace giac {
 	if (rref_or_det_or_lu!=1)
 	  pivots.push_back(pivot);
 	// invert pivot. If pivot==1 we might optimize but only if allow_bloc is true
-#if 1
 	if (0 && pivot==1 && allow_block)
 	  temp=1; // can not be activated because pseudo-mod expect reducing line to be smaller than p
 	else {
@@ -7941,41 +8220,15 @@ namespace giac {
 	  // multiply det
 	  idet = (idet * pivot) % modulo ;
 	  if (fullreduction || rref_or_det_or_lu<2){ // not LU decomp
-	    vector<int>::iterator it=N[pivotline].begin(),itend=N[pivotline].end();
+	    vector<int>::iterator it=N[pivotline].begin()+c,itend=N[pivotline].end();
 	    for (;it!=itend;++it){
-	      if (!*it) continue;
-	      *it=(longlong(temp) * *it)%modulo;
-	      if (*it>0){
-		if (2* *it>modulo)
-		  *it -= modulo;
-	      }
-	      else {
-		if (2* *it<-modulo)
-		  *it += modulo;
-	      }
+	      int tmp=*it;
+	      if (!tmp) continue;
+	      tmp=(longlong(temp) * tmp)%modulo;
+	      *it=smod_adjust(tmp,modulo);
 	    }
 	  }
 	}
-#else
-	temp=invmod(pivot,modulo);
-	// multiply det
-	idet = (idet * pivot) % modulo ;
-	if (fullreduction || rref_or_det_or_lu<2){ // not LU decomp
-	  vector<int>::iterator it=N[pivotline].begin(),itend=N[pivotline].end();
-	  for (;it!=itend;++it){
-	    if (!*it) continue;
-	    *it=(longlong(temp) * *it)%modulo;
-	    if (*it>0){
-	      if (2* *it>modulo)
-		*it -= modulo;
-	    }
-	    else {
-	      if (2* *it<-modulo)
-		*it += modulo;
-	    }
-	  }
-	}
-#endif
 	// if there are 0 at the end, ignore them in linear combination
 	int effcmax=(fullreduction && inverting && noswap)?c+lmax:cmax-1;
 	const std::vector<int> & Npiv=N[l];
@@ -11934,7 +12187,8 @@ namespace giac {
       t0.reserve(n);
       for (int i=0;i<n;++i)
 	t0.push_back(std::rand()%modulo);
-      // for very large matrices, it might be faster to compute
+      // for very very large matrices (10^7 entries?) 
+      // it might be faster to compute
       // N, N^2, (N^2)^2, etc. and compute Nv, N^2(v,Nv), N^4(v,Nv,N^2v,N^3v)...
       for (int j=0;j<n;++j){
 	if (!multvectvector_int_vector_int(N,temp[j],modulo,temp[j+1]))
@@ -11999,8 +12253,10 @@ namespace giac {
       }
     }
 #if 1 // Danilevsky is faster than Hessenberg but slower than Krylov
-    mod_pcar(N,modulo,res);
-    return true;
+    if (n*double(n)*modulo<double(1ULL<<63)){
+      mod_pcar(N,modulo,res);
+      return true;
+    }
 #endif
     mhessenberg(N,N,modulo,false); // Hessenberg reduction, don't compute P
     if (debug_infolevel>2)
