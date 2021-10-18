@@ -141,10 +141,11 @@ namespace giac {
 #ifdef EMCC
 	if (difftime(caseval_current,caseval_begin)>caseval_maxtime)
 #else
-	if (caseval_current-caseval_begin>caseval_maxtime)
+	if (caseval_current>caseval_maxtime+caseval_begin)
 #endif
 	  { 
 	    CERR << "Timeout" << endl; ctrl_c=true; interrupted=true; 
+	    caseval_begin=caseval_current;
 	  } 
       } 
     }
@@ -3232,6 +3233,10 @@ extern "C" void Sleep(unsigned int miliSecond);
     }
   }
 
+#ifndef CLK_TCK
+#define CLK_TCK
+#endif
+
 #ifndef HAVE_NO_SYS_TIMES_H
    double delta_tms(struct tms tmp1,struct tms tmp2){
 #if defined(HAVE_SYSCONF) && !defined(EMCC)
@@ -4431,7 +4436,7 @@ unsigned int ConvertUTF8toUTF16 (
     powlog2float=3e4;
     MPZ_MAXLOG2=33300;
 #ifdef TIMEOUT
-    caseval_maxtime=5;
+    //caseval_maxtime=5;
     caseval_n=0;
     caseval_mod=10;
 #endif

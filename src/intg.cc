@@ -2099,7 +2099,7 @@ namespace giac {
       if (g._SYMBptr->feuille.type==_VECT && g._SYMBptr->feuille._VECTptr->size()==2){
 	vecteur gv=*g._SYMBptr->feuille._VECTptr;
 	gv=makevecteur(gv[0],inv(gv[1],contextptr));
-	g=symbolic(at_pow,gen(gv,_SEQ__VECT));
+	g=_pow(gen(gv,_SEQ__VECT),contextptr);//symbolic(at_pow,gen(gv,_SEQ__VECT));
       }
     }
     vecteur l1NTHROOT(lop(e,at_NTHROOT));
@@ -2109,7 +2109,7 @@ namespace giac {
       if (g._SYMBptr->feuille.type==_VECT && g._SYMBptr->feuille._VECTptr->size()==2){
 	vecteur gv=*g._SYMBptr->feuille._VECTptr;
 	gv=makevecteur(gv[1],inv(gv[0],contextptr));
-	g=symbolic(at_pow,gen(gv,_SEQ__VECT));
+	g=_pow(gen(gv,_SEQ__VECT),contextptr);//symbolic(at_pow,gen(gv,_SEQ__VECT));
       }
     }
     subst1=mergevecteur(l1surd,l1NTHROOT);
@@ -4430,7 +4430,15 @@ namespace giac {
 	return gensizeerr(gettext("i=sqrt(-1), please use a valid identifier name"));
       gen af=evalf_double(v[2],1,contextptr),bf=evalf_double(v[3],1,contextptr);
       if (v[1].type==_IDNT && (is_inf(af) || af.type==_DOUBLE_) && (is_inf(bf) || bf.type==_DOUBLE_)){
-	vecteur w=protect_find_singularities(eval(v[0],1,contextptr),*v[1]._IDNTptr,0,contextptr);
+	vecteur w;
+#ifdef NO_STDEXCEPT
+	  w=protect_find_singularities(eval(v[0],1,contextptr),*v[1]._IDNTptr,0,contextptr);
+#else
+	try {
+	  w=protect_find_singularities(eval(v[0],1,contextptr),*v[1]._IDNTptr,0,contextptr);
+	} catch (std::runtime_error & e){
+	}
+#endif
 	for (unsigned i=0;i<w.size();++i){
 	  if (is_greater((v[3]-w[i])*(w[i]-v[2]),0,contextptr))
 	    return gensizeerr("Pole at "+w[i].print(contextptr));

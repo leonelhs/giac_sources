@@ -2341,7 +2341,11 @@ SWIGEXPORT jlong JNICALL Java_javagiac_giacJNI_gen_1eval(JNIEnv *jenv, jclass jc
   arg1 = *(giac::gen **)&jarg1; 
   arg2 = (int)jarg2; 
   arg3 = *(giac::context **)&jarg3; 
-  result = ((giac::gen const *)arg1)->eval(arg2,(giac::context const *)arg3);
+  try {
+    result = ((giac::gen const *)arg1)->eval(arg2,(giac::context const *)arg3);
+  } catch (std::runtime_error & e){
+    std::cout << "An exception occurred in eval." << e.what() << "\n";
+  }
   *(giac::gen **)&jresult = new giac::gen((const giac::gen &)result); 
   return jresult;
 }
@@ -37155,8 +37159,12 @@ SWIGEXPORT jlong JNICALL Java_javagiac_giacJNI__1eval(JNIEnv *jenv, jclass jcls,
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "giac::gen const & reference is null");
     return 0;
   } 
-  arg2 = *(giac::context **)&jarg2; 
-  result = giac::_eval((giac::gen const &)*arg1,arg2);
+  arg2 = *(giac::context **)&jarg2;
+  try {
+    result = giac::_eval((giac::gen const &)*arg1,arg2);
+  } catch (std::runtime_error & e){
+    std::cout << "An exception occurred in _eval." << e.what() << "\n";
+  }
   *(giac::gen **)&jresult = new giac::gen((const giac::gen &)result); 
   return jresult;
 }

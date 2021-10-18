@@ -767,7 +767,12 @@ namespace giac {
 	      c[n-1]=-_trig2exp(cst,contextptr)/v.front();
 	      c=linsolve(mtran(M),c,contextptr);
 	      for (unsigned i=0;i<c.size();++i){
+		bool b=calc_mode(contextptr)==1;
+		if (b)
+		  calc_mode(0,contextptr);
 		part += _integrate(makesequence(_lin(c[i]*exp(-rac[i]*x,contextptr),contextptr),x),contextptr)*exp(rac[i]*x,contextptr);
+		if (b)
+		  calc_mode(1,contextptr);
 	      }
 	      if (reel && is_zero(im(cst,contextptr)))
 		part=re(part,contextptr);
@@ -1138,8 +1143,8 @@ namespace giac {
     if (s==3 && v[1].type==_VECT && v[2].type==_VECT)
       swapgen(v[1],v[2]);
     if (s==2 && v[1].type==_VECT && v[1]._VECTptr->size()==2){
-      gen a=v[1]._VECTptr->front();
-      gen b=v[1]._VECTptr->back();
+      gen a=eval(v[1]._VECTptr->front(),1,contextptr);
+      gen b=eval(v[1]._VECTptr->back(),1,contextptr);
       v[1]=a;
       v.insert(v.begin()+2,b);
       ++s;

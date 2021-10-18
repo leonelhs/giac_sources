@@ -9882,7 +9882,7 @@ Les fractions rationnelles admettent une primitive que l'on calcule
 en décomposant la fraction avec Bézout comme expliqué précédemment.
 Mais elles font figure d'exceptions,
 la plupart des fonctions n'admettent pas de primitives qui s'expriment
-à l'aide des fonctions usuelles. Pour calculer une intégrale,on
+à l'aide des fonctions usuelles. Pour calculer une intégrale, on
 revient donc à la définition d'aire sous la courbe, aire que
 l'on approche, en utilisant par exemple un polynome de Lagrange.
 
@@ -10228,6 +10228,48 @@ trap\`ezes & (\ref{eq:trapezes}) & 1 & 1 & $M_2 h^2 (b-a)/12$ \\
 Simpson & (\ref{eq:simpson})& 2 & 3 & $M_4 h^4 (b-a)/2880$  \\ \hline
 \end{tabular}
 
+\subsection{Cas des fonctions p\'eriodiques.}
+Si $f$ est une fonction p\'eriodique r\'eguli\`ere ($C^\infty$),
+alors la m\'ethode des trap\`ezes sur une p\'eriode est d'ordre 
+arbitrairement grand. En effet, pour une s\'erie de Fourier tronqu\'ee
+\`a l'ordre $m$, la formule des trap\`ezes avec $N$ subdivisions donne
+le r\'esultat exact de $\int_0^T f(t) dt$ d\`es que $N>m$. Il suffit
+ensuite d'utiliser que le reste de
+la s\'erie de Fourier ($m>N$) 
+a des coefficients \`a d\'ecroissance rapide.
+
+La m\'ethode des trap\`ezes donne donc de bons r\'esultats pour une 
+fonction p\'eriodique, on peut d'ailleurs aussi 
+l'appliquer pour calculer une valeur
+approch\'ee des coefficients de Fourier de la fonction. La liste des valeurs
+approch\'ees obtenue est alors la transform\'ee de Fourier discr\`ete
+des valeurs de la fonction $f$ aux $N$ points de la subdivision, elle
+se calcule donc rapidement avec la transform\'ee de Fourier rapide.
+Par exemple, pour approcher $f(x)=e^{\sin(x)}$, on peut utiliser les
+commandes suivantes en Xcas~:
+\begin{verbatim}
+f(x):=exp(sin(x));
+N:=100; F:=seq(f(k/N*2.*pi),k,0,N-1); G:=fft(F);
+k:=4;
+g:=G[0]+sum(G[j]*exp(i*j*x),j,1,k)+sum(G[N-j]*exp(-i*j*x),j,1,k);
+h:=normal(exp2trig(g)/N);
+plot(h,x=-pi..pi,color=red); //plot(f(x),x=-pi..pi)
+\end{verbatim}
+Ou directement \verb|2*re(G[j]/N)| est une valeur approch\'ee du
+$j$-i\`eme coefficient de Fourier $a_j$ de $f$, et \verb|-2*im(G[j]/N)|
+de $b_j$, par exemple~:
+\begin{verbatim}
+1/pi*int(f(x)*cos(4x),x,0,2.*pi); 2*re(G[4]/N);
+1/pi*int(f(x)*sin(5x),x,0,2.*pi); -2*im(G[5]/N);
+\end{verbatim}
+On observe en effet une tr\`es bonne concordance (11 d\'ecimales).
+
+Bien entendu, cela n'est pas tr\`es utile pour approcher $e^{\sin(x)}$
+(il vaut mieux composer exponentielle et sinus), 
+mais cela pourrait le devenir pour une
+fonction p\'eriodique plus compliqu\'ee ou pour une fonction
+p\'eriodique dont on ne connait qu'un \'echantillonage r\'egulier
+(par exemple un fichier num\'erique audio).
 
 \subsection{Quadratures gaussiennes.}\index{quadratures gaussiennes}
 On a vu que l'interpolation polynomiale \'etait de meilleure
@@ -10902,30 +10944,30 @@ sous-diagonale que pour la réduction complète (les lignes
 intervenant dans la combinaison linéaire subissent des 
 modifications identiques dans les deux cas).
 \end{itemize}
-Montrons avec MuPAD ou xcas en mode mupad (commande \verb|maple_mode(2)|)
-qu'en effet, on n'introduit pas de dénominateur dans la méthode
+V\'erifions
+qu'on n'introduit pas de dénominateur dans la méthode
 de Bareiss. Sans
 restreindre la généralité, il suffit de le montrer avec une
 matrice 3x3 \`a coefficients symboliques génériques. 
 \begin{verbatim}
-pivot:=proc (M,n,m,r) // n ligne du pivot, m colonne, r ligne a modifier
-      local col,i,a,b; 
-       begin
-         col:=ncols(M);
-         a:=M[n,m];
-         b:=M[r,m];
-         for i from 1 to col do
-           // print(i,a,b,n,m,r);
-           M[r,i]:=a*M[r,i]-b*M[n,i];
-         end_for;
-         return(M);
-       end_proc; /* End of pivot */
-A:=matrix(3,3,[[a,b,c],[d,e,f],[g,h,j]]);
-A:=pivot(A,1,1,2); A:=pivot(A,1,1,3); /* reduction 1ere colonne */
-A:=pivot(A,2,2,3); A:=pivot(A,2,2,1); /* reduction 2eme colonne */
-factor(A[3,3]);
+Pivot(M,n,m,r):={ 
+ // n ligne du pivot, m colonne, r ligne a modifier
+ local COL,j,a,b; 
+ COL:=ncols(M);
+ a:=M[n,m];
+ b:=M[r,m];
+ for j from 0 to COL-1 do
+   // afficher(j,a,b,n,m,r);
+   M[r,j]:=a*M[r,j]-b*M[n,j];
+ end_for;
+ return(M);
+}:; 
+M:=matrix(3,3,[[A,B,C],[D,E,F],[G,H,J]]);
+M:=Pivot(M,0,0,1); M:=Pivot(M,0,0,2); /* 1ere colonne */
+M:=Pivot(M,1,1,2); M:=Pivot(M,1,1,0); /* 2eme colonne */
+factor(M[2,2]);
 \end{verbatim}
-Ce qui met bien en évidence le facteur $a$ dans $A_{3,3}$.
+Ce qui met bien en évidence le facteur $A$ dans $M_{3,3}$.
 
 \subsubsection{Le d\'eterminant.}\index{d\'eterminant}
 On peut bien sûr appliquer les m\'ethodes ci-dessus en tenant compte
@@ -11273,31 +11315,32 @@ d'un noyau.
 
 Applications~: soit \`a r\'esoudre en entiers $2x+3y+5z=0$.
 On pose \verb|M:=[[2,3,5]]| puis 
-\verb|U,A:=ihermite(tran(M))|, les lignes nulles de $A$ correspondent
-\`a des lignes de $U$ qui forment une base du noyau de $M$, soit
+\verb|L,U:=ihermite(tran(M))|, les lignes nulles de $U$ correspondent
+\`a des lignes de $L$ qui forment une base du noyau de $M$, soit
 $(6,1,-3)$ et $(-5,0,2)$.
-En effet $A=U M^t$ donc $A^t=M U^t$, les colonnes nulle 
-de $A^t$ sont donc images par $M$ des colonnes
-correspondantes de $U^t$, ainsi les lignes de $U$ correspondant
-\`a des lignes nulles de $A$ sont dans le noyau. Et si un vecteur
+En effet $U=L M^t$ donc $U^t=M L^t$, les colonnes nulle 
+de $U^t$ sont donc images par $M$ des colonnes
+correspondantes de $L^t$, ainsi les lignes de $L$ correspondant
+\`a des lignes nulles de $U$ sont dans le noyau. Et si un vecteur
 \`a coefficient entiers est dans le noyau, alors il se d\'ecompose
-sur les vecteurs colonnes de $U^t$ avec des coefficients entiers
-(puisque $U\in$GL$_n(\Z)$), on applique $M$ et on conclut
-que ses composantes sur les colonnes non nulles de $A^t$ sont nulles.
+sur les vecteurs colonnes de $L^t$ avec des coefficients entiers
+(puisque $L\in$GL$_n(\Z)$), on applique $M$ et on conclut
+que ses composantes sur les colonnes non nulles de $U^t$ sont nulles.
 
 Plus g\'en\'eralement, chercher une solution particuli\`ere
 du syst\`eme $MX=B$ revient
 \`a chercher un \'el\'ement du noyau de la matrice obtenue en
-ajoutant $B$ en derni\`ere colonne de $M$ dont le dernier coefficient
-est -1.
+ajoutant $B$ en derni\`ere colonne de $M$,
+\'el\'ement tel que le dernier coefficient
+soit -1.
 
 On peut aussi se servir de la forme normale de Hermite pour
 compl\'eter un vecteur $v=(a_1,...,a_n)$ de contenu 1 en une base
 de $\Z^n$ (si le contenu n'est pas 1, c'est bien sur impossible
 puisque le d\'eterminant est un multiple du contenu), il suffit
-de prendre les colonnes de $U^{-1}$ 
-(o\`u \verb|U,A:=ihermite(tran(v))|).
-En effet on a $A=U v^t$ et $A$ est \'egal \`a $(1,0,...,0)$ car le
+de prendre les colonnes de $L^{-1}$ 
+(o\`u \verb|L,U:=ihermite(tran(v))|).
+En effet on a $U=L v^t$ et $U$ est \'egal \`a $(1,0,...,0)$ car le
 contenu de $v$ vaut 1.
 
 La r\'eduction \'echelonn\'ee sous la diagonale correspond \`a
@@ -13323,7 +13366,7 @@ divis\'ee $f[x_i,...,x_{i+m}]$ sera remplac\'ee par $f^{[m]}(x_i)/m!$.
   B\'ezier}\index{Bernstein, polyn\^omes de} \index{B\'ezier, courbes de}
 Les polyn\^omes de Bernstein de degr\'e $m$ sont les
 $$ B^n_k (x) = 
-\left( \begin{array}{c} n k \end{array} \right) x^k (1-x)^{n-k}$$
+\left( \begin{array}{c} n \\ k \end{array} \right) x^k (1-x)^{n-k}$$
 On reconnait la probabilit\'e d'avoir $k$ succ\`es si on effectue $n$
 tirages ind\'ependants (avec remise) 
 avec probabilit\'e $x \in [0,1]$ de succ\`es par tirage. Ceci donne
@@ -13360,7 +13403,7 @@ n'est pas forc\'ement tr\`es rapide.
 On les utilise pour approcher rapidement des morceaux de
 courbes, si on se donne des ``points de controle'' $A_0, ..., A_n$
 on construit la courbe param\'etr\'ee
-$$ A(t) = \sum_{k=0}^n A_k \left( \begin{array}{c} n i \end{array} \right) x^i
+$$ A(t) = \sum_{k=0}^n A_k \left( \begin{array}{c} n\\ i \end{array} \right) x^i
 (1-x)^{n-i} $$
 appel\'ee courbe de B\'ezier. En pratique on les utilise pour $n=3$.
 

@@ -16,6 +16,18 @@
 #include "giac.h"
 %}
 
+%exception eval {
+ try { $action } catch (std::runtime_error &e) {
+   std::cout << "An exception occurred in eval: " << e.what() << "\n";
+ }
+}
+%exception _eval {
+ try { $action } catch (std::runtime_error &e) {
+   std::cout << "An exception occurred in _eval: " << e.what() << "\n";
+ }
+}
+
+
 %javaconst(1);
 namespace giac {
   enum gen_unary_types {

@@ -1056,7 +1056,11 @@ namespace giac {
     if (ck_is_strictly_greater(a,b,contextptr))
       return sturmab(g,x,b,a,contextptr);
     if (a==b){
-      gen tmp=subst(g,x,a,false,contextptr);
+      gen tmp;
+      if (is_inf(a) && x.type==_IDNT)
+	tmp=limit(g,*x._IDNTptr,a,0,contextptr);
+      else
+	tmp=subst(g,x,a,false,contextptr);
       int s=fastsign(tmp,contextptr);
       if (s==1 || s==-1)
 	return (s-1)/2;

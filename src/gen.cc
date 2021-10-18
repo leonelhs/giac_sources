@@ -8338,8 +8338,13 @@ namespace giac {
       }
       return _MODptr->islesscomplexthan(*other._MODptr);
     case _SYMB:
-      if (_SYMBptr->sommet !=other._SYMBptr->sommet )
+      if (_SYMBptr->sommet !=other._SYMBptr->sommet ){
+#ifdef GIAC_HAS_STO_38 // otherwise 1 test of chk_xavier fails, needs to check
+	int c=strcmp(_SYMBptr->sommet.ptr()->s,other._SYMBptr->sommet.ptr()->s);
+	if (c) return c<0;
+#endif 
 	return (alias_type) _SYMBptr->sommet.ptr() <(alias_type) other._SYMBptr->sommet.ptr();
+      }
       return _SYMBptr->feuille.islesscomplexthan(other._SYMBptr->feuille);
       // return false;
     case _VECT:
