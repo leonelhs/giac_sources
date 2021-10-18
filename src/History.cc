@@ -561,9 +561,10 @@ namespace xcas {
 	// above commented because some race condition happened with segfault
 	Fl::remove_idle(xcas::Xcas_idle_function,0);
 	thread_eval_status(STATUS_JS_EVAL,contextptr);
-	get_history_fold(ed)->stop_button->activate();
+	Fl_Widget * stop_button=get_history_fold(ed)->stop_button;
+	if (stop_button) stop_button->activate();
 	char * ptr=js_ck_eval(s.c_str(),&global_js_context);
-	get_history_fold(ed)->stop_button->deactivate();
+	if (stop_button) stop_button->deactivate();
 	thread_eval_status(0,contextptr);
 	Fl::add_idle(xcas::Xcas_idle_function,0);
 	if (ptr){
@@ -3168,6 +3169,7 @@ namespace xcas {
 	  }
 	  name=autoname.c_str();
 	  l=strlen(name);
+	  //src=dos2unix(src);
 	  size_t L=src.size();
 	  size_t tot=l+5+L;
 	  if (tot+(nwsptr-nwsbuf)>=sizeof(nwsbuf)-0x14){
@@ -3384,7 +3386,7 @@ namespace xcas {
     if (m && m->parent()){
       History_Fold * o = get_history_fold(m);
       char fname[]="__calc.nws";
-      ofstream f(fname);
+      ofstream f(fname,ios::out | ios::binary);
       save_as_text(f,-4,o->pack);
       f.close();
       dfu_send_scriptstore(fname);
@@ -4539,10 +4541,12 @@ namespace xcas {
 
   void History_Fold::update_status(bool force){
     const giac::context * ptr = pack->contextptr;
-    if (is_context_busy(ptr))
-      stop_button->activate();
+    if (is_context_busy(ptr)){
+      if (stop_button) stop_button->activate();
+    }
     else {
       ++update_status_count;
+      if (!stop_button) return;
       if (!force && !stop_button->active() && 
 #ifdef WIN32
 	  (update_status_count%64) 

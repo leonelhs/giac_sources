@@ -1707,7 +1707,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         continue;
       }
       s = s.replace(/___/g, '%');
-      s = decodeURIComponent(s); //console.log(s);
+      s = decodeURIComponent(s);
+      //console.log(s);
       // s=s.replace('%0a','\n','g');
       s = s.replace(/%3b/g, ';');
       // s=s.replace('%3b',';','g');
@@ -1727,7 +1728,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         continue;
       }
       if (s.length && s.charAt(0) == '*') {
-        if (!asked) doexec = true;
+        //if (!asked) doexec = true; // commented otherwise restoring fails!
         var pos = s.search(',');
         var name = s.substr(1, pos - 1);
         // Module.print(name);
@@ -1744,12 +1745,12 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         var maxi = s.substr(0, pos);
         // Module.print(maxi);
         s = s.substr(pos + 1, s.length - pos - 1);
-        UI.addcurseur(name, value, mini, maxi, s);
+        UI.addcurseur(name, value, mini, maxi, s,false);
         continue;
       }
       var p = UI.split(s,'=');
       if (p[0]=='cas' || p[0]=='micropy' || p[0]=='py' || p[0]=='js' || p[0]=='comment' || p[0]=='handwriting' || p[0]=='svg' || p[0]=='img'){
-	console.log(p[1]);
+	// console.log(p[1]);
 	let ms=p[1]; // let ms = decodeURIComponent(p[1]); // already decoded!
 	if (ms.length && ms[0]==',')
 	  ms=ms.substr(1,ms.length-1);
@@ -2174,6 +2175,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	  // if mode is the same as UI.micropy from beginning use old format
 	  // console.log(field.firstChild.classList);
 	  let evaluator=UI.classlist2evaluator(field.firstChild.classList);
+	  if (evaluator=='micropy')
+	    evaluator='py';
 	  if (evaluator=='')
             s += '+'+tmp+'&';
 	  else {
@@ -3265,12 +3268,13 @@ int main(int argc,const char ** argv){
     s += UI.erase_button(!UI.qa);
     return s;
   },
-  addcurseur: function (name, value, mini, maxi, step) {
+  addcurseur: function (name, value, mini, maxi, step, docaseval=true) {
     UI.show_history123();
-    UI.caseval_noautosimp('assume(' + name + '=' + value + ')');
+    console.log('addcurseur',name,value,mini,maxi,step,docaseval);
+    if (docaseval) UI.caseval_noautosimp('assume(' + name + '=' + value + ')');
     var s = UI.curseurhtml(name, mini, maxi, step, value);
     var out = $id('mathoutput');
-    //Module.print(s);
+    // console.log(s);
     out.innerHTML += s;
     UI.link(0);
     UI.scrollatend(out.parentNode);
@@ -3626,6 +3630,7 @@ int main(int argc,const char ** argv){
         }
       }
       else {
+	//console.log(value);
         out = UI.langue == -1 ?' Non evalue. Cliquer sur Exec pour evaluer. ':' Not evaled. Click Exec to eval. ';
         s = out;
       }
@@ -3635,6 +3640,7 @@ int main(int argc,const char ** argv){
   eval_cmdline1end: function (value, out, s) {
     //console.log('eval_cmdline1end',value,out,s);
     var add = UI.addinput(value, out, s);
+    //console.log(add);
     //var s=UI.caseval_noautosimp('mathml(quote('+value+'),1)');
     //add += '&nbsp;&nbsp;'+s.substr(1,s.length-2);
     //Module.print(value+'  ->  '+out);
@@ -3971,7 +3977,8 @@ int main(int argc,const char ** argv){
 	out = UI.caseval(text);
     }
     if (out==null){
-      console.log(text,out);
+      console.log('eval null',text,out);
+      console.trace();
       return;
     }
     //console.log('UI.eval',text,out);

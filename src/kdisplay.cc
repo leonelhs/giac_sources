@@ -33,7 +33,7 @@
 #define is_cx2 false
 #endif
 #ifdef KHICAS
-#if 0 //ndef NSPIRE_NEWLIB
+#if defined NUMWORKS && !defined DEVICE //ndef NSPIRE_NEWLIB
 extern "C" {
   short int nspire_exam_mode=0;
 }
@@ -1807,6 +1807,10 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
     return "";
   }
 
+#if 0 // def NUMWORKS
+#define MENUITEM_MALLOC
+#endif
+
   // 0 on exit, 1 on success
   int doCatalogMenu(char* insertText, const char* title, int category,GIAC_CONTEXT) {
     const catalogFunc * completeCat=(lang==1)?completeCatfr:completeCaten;
@@ -1818,7 +1822,9 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
       const int CAT_COMPLETE_COUNT=((lang==1)?CAT_COMPLETE_COUNT_FR:CAT_COMPLETE_COUNT_EN);
       int nitems = isall? allcmds:(isopt?allopts:CAT_COMPLETE_COUNT);
 #ifdef MENUITEM_MALLOC
-      MenuItem *menuitems=(MenuItem *) malloc(sizeof(MenuItem)*nitems);
+      int memsize=sizeof(MenuItem)*nitems;
+      *logptr(contextptr) << "malloc " << memsize << ' ' << (size_t) &memsize << '\n';
+      MenuItem *menuitems=(MenuItem *) malloc(memsize);
       if (!menuitems)
 	return 0;
 #else
@@ -2082,7 +2088,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
       title="CATALOG";
       category=0;
     } // end endless for
-    return 0;
+    return 0; // never reached
   }
 
   int trialpha(const void *p1,const void * p2){
@@ -5316,7 +5322,7 @@ namespace xcas {
 	      y=j0save;
 	      h=j0-j0save;
 	    }
-	    draw_rectangle(deltax+x,deltay+y,w,h,couleur);
+	    draw_rectangle(deltax+x,deltay+y,w+1,h+1,couleur);
 	    if (!hidden_name)
 	      draw_legende(f,deltax+x,deltay+y,labelpos,&Mon_image,clip_x,clip_y,clip_w,clip_h,0,0,couleur,contextptr);
 	    return;
@@ -9843,12 +9849,14 @@ namespace xcas {
 	  }
 #endif // NSPIRE_NEWLIB
 #ifdef NUMWORKS
+#ifdef DEVICE
 	  if (do_confirm(lang==1?"Restaurer le backup du dernier examen?":"Restore last backup before last exam?")){
 	    if (extapp_restorebackup(-1))
 	      do_confirm(lang==1?"Restauration du backup reussie!":"Backup restore success!");
 	    else
 	      do_confirm(lang==1?"Mode exam actif ou pas de backup trouve!":"Exam mode enabled or no backup found!");
 	  }
+#endif
 	  // if (do_confirm(lang==1?"Le mode examen se lance depuis Parametres":"Enter Exam mode from Settings")) shutdown_state=1;
 	  break;
 #else
@@ -13061,8 +13069,12 @@ namespace xcas {
 	save_session(contextptr);
 	Console_Output("Session saved");
       }
-      else 
+      else {
+#ifdef NUMWORKS // add auto-save, to avoid Memory full data loss
+	save("session",contextptr);
+#endif
 	run(expr,7,contextptr);
+      }
       //print_mem_info();
       Console_NewLine(LINE_TYPE_OUTPUT,1);
       //GetKey(&key);

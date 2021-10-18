@@ -531,6 +531,7 @@ throw(std::runtime_error("Stopped by user interruption.")); \
     std::vector<unsigned char> data;
   };
   typedef std::map<std::string,nwsrec,ltstring> nws_map;
+  std::string dos2unix(const std::string & res);
   bool scriptstore2map(const char * fname,nws_map & m);
   bool map2scriptstore(const nws_map & m,const char * fname);
   // check that filename content matches a file content signed in sigfilename

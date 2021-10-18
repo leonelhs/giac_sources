@@ -311,7 +311,8 @@ DFU.Device = class {
     //console.log('logprogress',UI.nws_progress,done,total);
     if (typeof UI!=='undefined' && typeof UI.nws_progress!=='undefined'){
       UI.nws_progress.style.display='inline';
-      UI.nws_progress.scrollIntoView();
+      let mainview=document.getElementById('main');
+      if (typeof mainview!=='undefined') mainview.scrollIntoView();
       if (typeof total !== 'undefined'){
 	if (typeof total=='string')
 	  UI.nws_progresslegend.innerHTML=total;

@@ -897,6 +897,7 @@ namespace xcas {
     char * ch=e->buffer()->text(); 
     string res(ch); 
     free(ch);
+    //res=dos2unix(res);
     send_numworks(name,res);
   }
 

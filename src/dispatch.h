@@ -607,6 +607,7 @@ namespace giac {
     _GT_ACYCLIC = 149,             // acyclic
     _KDE_BANDWIDTH = 150,          // bandwidth
     _KDE_BINS = 151,               // bins
+    _LP_HEURISTIC=152,
   };
 
   enum mupad_operator {

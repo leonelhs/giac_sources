@@ -4712,6 +4712,9 @@ if (getenv("XCAS_AUTOSAVE_FOLDER")){
   if (!xcas::autosave_folder.empty() && xcas::autosave_folder[xcas::autosave_folder.size()-1]!='/')
     xcas::autosave_folder += '/';
 }
+\#if defined WIN32 && !defined __MINGW_H
+Xcas_Numworks_menu->deactivate();
+\#endif
 \#if defined WIN32 || defined __APPLE__
 static std::string arg0;
 if (!getenv("XCAS_ROOT")){

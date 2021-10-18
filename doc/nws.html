@@ -15,6 +15,10 @@ body {
     border: 8px solid #55b4d4;
 }
 
+ul.b {
+  list-style-type: square;
+}
+
 /* pour les tous petits écrans */
 @media only screen and (max-width: 500px){
     body {
@@ -43,7 +47,6 @@ body {
 
 li {
     margin-top: 5px;
-    overflow-x: auto
 }
 
 /* pour les boutons */
@@ -75,55 +78,59 @@ button:hover, input:hover {
 
 <body>
 <h1>Kit de connection Numworks non verrouill&eacute;e</h1>
-<b>Attention, Numworks verrouille ses calculatrices</b> &agrave;
-partir de la version 16 de son logiciel (sortie en aout 2021)
-ce qui les rend incompatibles avec Xcas et tous
-les logiciels d&eacute;velopp&eacute;s par la communaut&eacute;.
-<b>Ne faites pas de mise &agrave; jour sur le site de Numworks, car c'est
-irr&eacute;versible</b> : cela diminue les possibilit&eacute;s
-de votre calculatrice et lui fait perdre de la valeur
-sur le march&eacute; d'occasion.
+<b>Attention, ne faites pas de mise &agrave; jour de votre
+calculatrice sur le site de Numworks!</b>
+En effet, une mise &agrave; jour sur le site de Numworks verrouillerait
+votre calculatrice et la rendrait irr&eacute;versiblement
+incompatible avec Xcas.
 <br>
+<b>Installez plutot KhiCAS</b> (bouton ci-dessous) pour transformer votre
+Numworks N0110 en calculatrice CAS, tr&egrave;s utile pour des &eacute;tudes
+scientifiques. Vous &eacute;conomiserez environ
+50 euros par rapport aux calculatrices CAS concurrentes. Et si
+vous arretez les maths, vous pourrez revendre votre calculatrice CAS
+sur le march&eacute; d'occasion &agrave; un prix plus &eacute;lev&eacute;!
+<hr>
 Cette page contient un kit de connexion
 avec votre calculatrice qui vous &eacute;vitera d'aller sur
 le workshop de Numworks et de faire une mise &agrave; jour par
 inadvertance.
-<ul>
-  <li> 
-<button id="numworks_load" class="bouton" onclick="UI.numworks_load(false)">Numworks→</button>
-: importe un script Python de la calculatrice vers l'ordinateur. Vous
-  pouvez aussi faire un <button id="numworks_load" class="bouton"
-  onclick="UI.numworks_load(true)">Backup</button>, c'est-&agrave;-dire une
-  sauvegarde compl&egrave;te
-  de tous les scripts de la calculatrice.
-  <li>
-  <button onclick="UI.loadFile(($id('loadfileinput').files)[0]);">→Numworks</button>
-  <input id="loadfileinput" accept=".py,.nws" type="file"
-  title="Cliquer ici pour charger un fichier Python"
-  onchange="UI.loadFile((this.files)[0]);">
-  : si le fichier a pour extension <tt>.py</tt> on
-  envoie un script Python de l'ordinateur vers la calculatrice. Si le
-  fichier a pour extension <tt>.nws</tt>, on remplace le contenu de la
-  calculatrice par la sauvegarde.
-  <li>
-  Vous pouvez aussi &eacute;changer des scripts avec la calculatrice depuis
+Vous pouvez aussi &eacute;changer des scripts avec la calculatrice depuis
   <a
   href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html">
   Xcas pour Firefox </a>, les modifier, les tester, et les partager
   sous forme de liens par email ou
   sur des forums.
-  <li> <hr>
-  <span id="ploglegend"></span>
-  <progress id="plog" value=0 style="display:none"></progress>
-  <div id="output" style="max-height: 200px; overflow:auto"></div>
-  <hr>
+
+<ul id="main" class="b">
+  <li> <button class="bouton" onclick="UI.nws_detect()">D&eacute;tecter</button>
+la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas.
+  <li> 
+<button id="numworks_load" class="bouton" onclick="UI.numworks_load(false)">Numworks→</button>
+: sauvegarde un script Python de la calculatrice
+  <li><button id="numworks_load" class="bouton"
+  onclick="UI.numworks_load(true)">Backup</button> :
+  sauvegarde tous les scripts de la calculatrice.
+  <li>
+  <input id="loadfileinput" accept=".py,.nws" type="file"
+  title="Cliquer ici pour charger un fichier Python (.py) ou un backup (.nws)"
+  onchange="UI.loadFile((this.files)[0]);">
+  <button onclick="UI.loadFile(($id('loadfileinput').files)[0]);">→Numworks</button>
+  : envoie un script (extension <tt>.py</tt>) ou restaure un backup
+  (<tt>.nws</tt>) vers la calculatrice.
   <li> 
   <button
   onclick="UI.numworks_install_delta();">Installation
   KhiCAS</button> : installe Xcas sur votre calculatrice Numworks
-  N0110. <a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html">Documentation</a>
+  N0110. <a
+  href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html">Documentation</a>, <a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec47">Source</a>.
+  <li> Progression de l'installation ou de la certification<hr>
+  <span id="ploglegend"></span>
+  <progress id="plog" value=0 style="display:none"></progress>
+  <div id="output" style="max-height: 200px; overflow:auto"></div>
+  <hr>
   <li>
-  <em>Lutte contre la fraude :</em> pour certifier que le firmware d'une calculatrice Numworks N0110 est
+  <strong>Lutte contre la fraude :</strong> pour certifier que le firmware d'une calculatrice Numworks N0110 est
   une version non modifi&eacute;e de KhiCAS, cliquez sur l'un des
   deux boutons
   <br>
@@ -157,6 +164,30 @@ avec un
   Si la r&eacute;cup&eacute;ration ne fonctionne pas, essayez avec
   Xcas PC.
 </ul>
+<hr>
+<b>Si la connexion avec la calculatrice ne fonctionne pas</b>,
+commencez par d&eacute;tecter votre calculatrice (bouton
+  D&eacute;tecter ci-dessus).
+<!-- Si cela ne fonctionne toujours pas.
+il faut peut-etre installer un driver sur votre ordinateur:
+<ul class="b">
+  <li> pour Windows, vous pouvez installer le driver de <a
+  href="https://workshop.numworks.com/files/drivers/windows/numworks-driver-win64.msi">
+  Numworks</a> ou
+  <a href="https://zadig.akeo.ie/">Zadig</a>
+<li> pour linux, copiez <a
+  href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/50-numworks-calculator.rules">ce  fichier</a>
+  dans <tt>/etc/udev/rules.d</tt>
+</ul>
+-->
+En cas de probl&egrave;me persistant de connexion, essayez avec dfu-util
+comme expliqu&eacute; ici dans la section
+<a
+href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec3">Installation manuelle</a>
+ou avec
+<a
+href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr">Xcas</a>.
+<hr>
 Cette page fonctionne uniquement avec un navigateur compatible webusb,
 par exemple Chromium ou Chrome et depuis un serveur web. Firefox n'a pas de
 support pour webusb pour des raisons de s&eacute;curit&eacute;, si
@@ -184,7 +215,7 @@ MIT).
 
 <hr>
 <address></address>
-<!-- hhmts start -->Last modified: Mon Sep 13 13:04:57 CEST 2021 <!-- hhmts end -->
+<!-- hhmts start -->Last modified: Sat Sep 25 17:56:01 CEST 2021 <!-- hhmts end -->
 </body> </html>
 <script language="javascript">
 window.onload = function (e) {

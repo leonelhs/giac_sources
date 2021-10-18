@@ -1165,14 +1165,14 @@ static void cb_Xcas_nw_rescue(Fl_Menu_*, void*) {
 
 static void cb_Xcas_nw_certify(Fl_Menu_*, void*) {
   bool b=giac::nws_certify_firmware(false,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\nVérifiez que la calculatrice est bien connectée!");
 }
 
 static void cb_Xcas_nw_certify_overwrite(Fl_Menu_*, void*) {
   int i=fl_ask("Ce test necessite l'accord du proprietaire de la calculatrice et dure environ 1 minute. Effectuer?");
             if (i==0) return;
 	    bool b=giac::nws_certify_firmware(true,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\nVérifiez que la calculatrice est bien connectée!");
 }
 
 static void cb_Xcas_Export_nws(Fl_Menu_*, void*) {
@@ -5669,6 +5669,9 @@ int main(int argc,char ** argv) {
     if (!xcas::autosave_folder.empty() && xcas::autosave_folder[xcas::autosave_folder.size()-1]!='/')
       xcas::autosave_folder += '/';
   }
+  #if defined WIN32 && !defined __MINGW_H
+  Xcas_Numworks_menu->deactivate();
+  #endif
   #if defined WIN32 || defined __APPLE__
   static std::string arg0;
   if (!getenv("XCAS_ROOT")){

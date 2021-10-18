@@ -36,6 +36,17 @@ var UI = {
       //console.log('nws_connect 3');
     }
   },
+  nws_detect_success:function(){
+    alert('Success');
+  },
+  nws_detect_failure:function(error){
+    console.log(error);
+    alert('Failure');
+  },
+  nws_detect:async function(){
+    UI.calculator= new Numworks();
+    UI.calculator.detect(UI.nws_detect_success,UI.nws_detect_failure);
+  },
   nws_rescue_connect:async function(){
     if (navigator.usb){
       //console.log('nws_rescue_connect 0');
@@ -97,7 +108,7 @@ var UI = {
   numworks_load_: async function(backup){
     console.log(UI.calculator,UI.calculator_connected);
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee. Cliquez sur le bouton Detecter.':'Check that the Numworks calculator is connected. Click on the detect button.');
       if (UI.calculator) UI.calculator.stopAutoConnect();
       return;
     }
@@ -228,7 +239,7 @@ var UI = {
   },
   numworks_rescue_:async function(sigfile,rwcheck){
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee.  Cliquez sur le bouton Detecter.':'Check that the Numworks calculator is connected. Click on the detect button.');
       //console.log('numworks_rescue_',UI.calculator);
       if (UI.calculator) UI.calculator.stopAutoConnect();
       UI.calculator=0;
@@ -250,7 +261,7 @@ var UI = {
   },
   numworks_certify_:async function(sigfile,rwcheck){
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee. Cliquez sur le bouton Detecter.':'Check that the Numworks calculator is connected. Click on the detect button.');
       if (UI.calculator) UI.calculator.stopAutoConnect();
       return -1;
     }
