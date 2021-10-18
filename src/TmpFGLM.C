@@ -32,6 +32,9 @@
 #include "CoCoA/RingDistrMPolyInlPP.H"
 #include "CoCoA/RingHom.H"
 #include "CoCoA/SparsePolyRing.H"
+#include <CoCoA/SparsePolyOps-RingElem.H>
+#include <CoCoA/SparsePolyIter.H>
+#include <CoCoA/SparsePolyOps-ideal.H>
 
 // #include <cstddef>
 using std::size_t;
@@ -81,7 +84,9 @@ namespace CoCoADortmund
       // ToDo: Avoid this tedious if-else block
       if (entry == MatrixMap.end())
       {
-        ring K = CoeffRing(AsSparsePolyRing(owner(p)));
+        //ring K = CoeffRing(AsSparsePolyRing(owner(p)));
+        ring K = CoeffRing(SparsePolyRing(
+					  static_cast<const SparsePolyRingBase*>(owner(p).myRawPtr())));
         struct MatrixMapEntry NewEntry(zero(K));
         NewEntry.VarIndices.push_back(NumCols);
         NewEntry.coeffs.push_back(coeff(m));
@@ -107,12 +112,16 @@ namespace CoCoADortmund
       CoCoA_ERROR(ERR::nonstandard, "FGLMBasisConversion: empty Groebner Basis vector");
 
     // Check if generated ideal is zero-dimensional
-    const ideal I(AsSparsePolyRing(owner(OldGB.front())), OldGB);
+    //    const ideal I(AsSparsePolyRing(owner(OldGB.front())), OldGB);
+    const ideal I(SparsePolyRing(static_cast<const SparsePolyRingBase*>
+				(owner(OldGB.front()).myRawPtr())), OldGB);
     if (!IsZeroDim(I))
       CoCoA_ERROR(ERR::nonstandard, "FGLMBasisConversion: ideal must be 0-dimensional");
 
     // Initialization of objects needed for computation
-    const SparsePolyRing Kx = AsSparsePolyRing(owner(OldGB.front()));
+    //    const SparsePolyRing Kx = AsSparsePolyRing(owner(OldGB.front()));
+    const SparsePolyRing Kx = SparsePolyRing(
+					     static_cast<const SparsePolyRingBase*>(owner(OldGB.front()).myRawPtr()));
     const ring K = CoeffRing(Kx);
     const PPMonoid PPMon = PPM(Kx);
     const RingElem FieldOne(one(K));

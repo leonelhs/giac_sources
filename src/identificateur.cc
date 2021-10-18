@@ -1168,7 +1168,7 @@ namespace giac {
 
   const char * identificateur::print(GIAC_CONTEXT) const{
     if (!strcmp(id_name,string_pi)){
-#ifndef NUMWORKS
+#ifndef KHICAS
       if (abs_calc_mode(contextptr)==38)
 #endif
 	return "π";

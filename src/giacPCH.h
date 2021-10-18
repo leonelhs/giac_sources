@@ -1,10 +1,10 @@
-#if defined NSPIRE_NEWLIB && !defined NUMWORKS
-#include "os.h"
-#endif
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 #include "first.h"
+#if defined NSPIRE_NEWLIB && !defined KHICAS
+#include "os.h"
+#endif
 #include "index.h"
 /*
  *  Copyright (C) 2000,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres

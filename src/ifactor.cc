@@ -1,6 +1,6 @@
 // -*- mode:C++ ; compile-command: "g++-3.4 -I.. -g -c ifactor.cc -DHAVE_CONFIG_H -DIN_GIAC" -*-
 #include "giacPCH.h"
-#if !defined __MINGW_H && !defined NUMWORKS
+#if !defined __MINGW_H && !defined KHICAS
 #define GIAC_MPQS // define if you want to use giac for sieving 
 #endif
 
@@ -3795,6 +3795,9 @@ namespace giac {
     if (b==-1 && !ctrl_c && !interrupted){ 
       do_pollard=false;
       if (msieve(a,b,contextptr)) return b; else return -1; }
+#else
+    if (b==-1)
+      *logptr(contextptr) << "Integer too large for factorization algorithm\n";
 #endif
     if (b==-1)
       b=a;

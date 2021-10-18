@@ -185,7 +185,7 @@ template <class T> Tfraction<T> pow (const Tfraction<T> & p,int n){
   return Tfraction<T>(pow(Tfraction<T>(p.den,p.num),-n));
 }
 
-#ifdef NUMWORKS
+#ifdef KHICAS
   template <class T> 
   stdostream & operator << (stdostream & os, const Tfraction<T> & f ){
     os << f.num << "/" << f.den << " " ;
@@ -224,7 +224,7 @@ void Tfraction<T>::dbgprint() {
     facteur():fact(1),mult(0) {}
     facteur(const facteur & f) : fact(f.fact), mult(f.mult) {}
     facteur(const T & f, int m) : fact(f),mult(m) {}
-#ifdef NUMWORKS
+#ifdef KHICAS
     friend stdostream & operator << (stdostream & os, const facteur<T> & m ){
       return os << ":facteur:!" << m.fact << "!" << "^" << m.mult  ;
     }

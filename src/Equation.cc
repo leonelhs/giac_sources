@@ -691,7 +691,7 @@ namespace xcas {
 	  else {
 	    Equation_vertical_adjust(vv.dy,vv.y,h,y);
 	    eqwdata v1=Equation_total_size(v[1]);
-	    x=max(a.fontsize,v1.dx)+a.fontsize/3; // var name size
+	    x=giacmax(a.fontsize,v1.dx)+a.fontsize/3; // var name size
 	    Equation_translate(v[1],0,-v1.dy-v1.y);
 	    Equation_vertical_adjust(v1.dy,-v1.dy,h,y);
 	    Equation_translate(v[0],x,0);
@@ -4611,7 +4611,7 @@ namespace xcas {
 
   Equation::Equation(int x, int y, int w, int h, const char* l,const gen & g,attributs myattr) : Fl_Group(x, y, max(w,20), max(h,20), l){ 
     const giac::context * contextptr = get_context(this);
-    labelsize(min(max(myattr.fontsize,10),16));
+    labelsize(giacmin(giacmax(myattr.fontsize,10),16));
     xleft=0;
     ytop=h;
     xcur=0;
@@ -4636,7 +4636,7 @@ namespace xcas {
   }
 
   Equation::Equation(int x, int y, int w, int h, const char* l,const gen & g,attributs myattr,GIAC_CONTEXT) : Fl_Group(x, y, max(w,20), max(h,20), l){ 
-    labelsize(min(max(myattr.fontsize,10),16));
+    labelsize(giacmin(giacmax(myattr.fontsize,10),16));
     xleft=0;
     ytop=h;
     xcur=0;

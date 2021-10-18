@@ -72,7 +72,8 @@ namespace CoCoADortmund
       CoCoA_ERROR(ERR::BadMatrixSize, "mySolve: NumCols(b) > 1.");
 	
     // Field check; should we also check if BaseRing(M) = BaseRing(b) = BaseRing(x0)?
-    ring K(BaseRing(M));
+    // ring K(BaseRing(M));
+    ring K(RingOf(M));
     if (!IsField(K))
       CoCoA_ERROR(ERR::NotField, "mySolve: Gauss' algorithm over non-fields not yet implemented.");
 		

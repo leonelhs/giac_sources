@@ -93,7 +93,7 @@ extern "C" uint32_t mainThreadStack[];
 #include <emscripten.h>
 #endif
 
-#ifdef NUMWORKS
+#ifdef KHICAS
 const char * read_file(const char * filename);
 #include "kdisplay.h"
 #endif
@@ -2768,7 +2768,7 @@ namespace giac {
       if (vars[i].is_symb_of_sommet(at_equal))
 	vars[i]=vars[i]._SYMBptr->feuille[0];
     }
-#ifdef NUMWORKS
+#ifdef KHICAS
     if (vals.size()==1 && vars.size()!=1 && vals.front().type==_VECT)
       vals=*vals.front()._VECTptr;
 #endif
@@ -4489,7 +4489,13 @@ namespace giac {
 	vecteur tmp;
 	bool finished=true;
 	for (int j=1;j<=n;++j){
-	  gen & g=v[j];
+	  gen g=v[j];
+	  if (g.type==_STRNG){
+	    vecteur w(g._STRNGptr->size());
+	    for (size_t i=0;i<g._STRNGptr->size();++i)
+	      w[i]=string2gen(g._STRNGptr->substr(i,1),false);
+	    g=w;
+	  }
 	  if (g.type!=_VECT)
 	    tmp.push_back(g);
 	  else {
@@ -5382,7 +5388,7 @@ namespace giac {
   static define_unary_function_eval_quoted (__rmbreakpoint,&_rmbreakpoint,_rmbreakpoint_s);
   define_unary_function_ptr5( at_rmbreakpoint ,alias_at_rmbreakpoint,&__rmbreakpoint,_QUOTE_ARGUMENTS,true);
 
-#ifdef NUMWORKS
+#ifdef KHICAS
   void debug_loop(gen &res,GIAC_CONTEXT){
     if (!debug_ptr(contextptr)->debug_allowed || (!debug_ptr(contextptr)->sst_mode && !equalposcomp(debug_ptr(contextptr)->sst_at,debug_ptr(contextptr)->current_instruction)) )
       return;
@@ -5429,7 +5435,7 @@ namespace giac {
       }
     }
     w.push_back(dw);
-    numworks_fill_rect(0,0,LCD_WIDTH_PX,LCD_HEIGHT_PX,_WHITE);
+    os_fill_rect(0,0,LCD_WIDTH_PX,LCD_HEIGHT_PX,_WHITE);
     int dispx=0,dispy=12;
     // print debugged program instructions from current-2 to current+3
     progs="debug "+w[0].print(contextptr)+'\n';
@@ -5456,7 +5462,7 @@ namespace giac {
       if (M-m<5)
 	m=giacmax(0,M-5);
       for (int i=m;i<=M;++i){
-	numworks_draw_string_small(dispx,dispy,(i==w[4].val?_WHITE:_BLACK),(i==w[4].val?_BLACK:_WHITE),(print_INT_(i)+":"+ws[i]).c_str());
+	os_draw_string_small(dispx,dispy,(i==w[4].val?_WHITE:_BLACK),(i==w[4].val?_BLACK:_WHITE),(print_INT_(i)+":"+ws[i]).c_str());
 	//mPrintXY(dispx,dispy,(print_INT_(i)+":"+ws[i]).c_str(),(i==w[4].val?TEXT_MODE_INVERT:TEXT_MODE_TRANSPARENT_BACKGROUND),TEXT_COLOR_BLACK);
 	dispy+=12;
 	dispx=0;
@@ -5467,7 +5473,7 @@ namespace giac {
       string s=w[2].print(contextptr);
       progs += "\nprg: "+s+" # "+w[4].print(contextptr);
     }
-    numworks_draw_string_small(dispx,dispy,"----------------");
+    os_draw_string_small(dispx,dispy,"----------------");
     dispx=0;
     dispy += 8;
     // progs += "======\n";
@@ -5485,7 +5491,7 @@ namespace giac {
 	s=s.substr(0,35)+"...";
       evals += s+",";
       if (fewvars || (nv % 2)==1 || nv==nvars-1){
-	numworks_draw_string_small(dispx,dispy,evals.c_str());
+	os_draw_string_small(dispx,dispy,evals.c_str());
 	dispy+=12;
 	evals="";
 	// evals += '\n';
@@ -5494,10 +5500,10 @@ namespace giac {
 	evals += "    ";
     }
     if (evals.size()!=0)
-      numworks_draw_string_small(dispx,dispy,evals.c_str());
+      os_draw_string_small(dispx,dispy,evals.c_str());
     dispx=0;
     dispy=LCD_HEIGHT_PX-18;
-    numworks_draw_string_small(dispx,dispy,"down: next, right: in, EXE: cont. EXIT: kill");
+    os_draw_string_small(dispx,dispy,"down: next, right: in, EXE: cont. EXIT: kill");
     w.push_back(dw);
     debug_ptr(contextptr)->debug_allowed=true;
     *dbgptr->debug_info_ptr=w;
@@ -5543,19 +5549,19 @@ namespace giac {
       if (i==-1){
 	dbgptr->sst_in_mode=false;
 	dbgptr->sst_mode=true;
-	numworks_hide_graph();
+	os_hide_graph();
 	return;
       }
       if (i==-2){
 	dbgptr->sst_in_mode=true;
 	dbgptr->sst_mode=true;
-	numworks_hide_graph();
+	os_hide_graph();
 	return;
       }
       if (i==-3){
 	dbgptr->sst_in_mode=false;
 	dbgptr->sst_mode=false;
-	numworks_hide_graph();
+	os_hide_graph();
 	return;
       }
       if (i==-4){
@@ -5565,7 +5571,7 @@ namespace giac {
 	//debug_ptr(contextptr)->sst_at_stack.clear();
 	//debug_ptr(contextptr)->args_stack.clear();
 	ctrl_c=interrupted=true;
-	numworks_hide_graph();
+	os_hide_graph();
 	return;
       }
       if (i==-5){
@@ -5578,7 +5584,7 @@ namespace giac {
       }
     } // end while(1)
   }
-#else // NUMWORKS
+#else // KHICAS
 #if defined EMCC && !defined GIAC_GGB
   void debug_loop(gen &res,GIAC_CONTEXT){
     if (!debug_ptr(contextptr)->debug_allowed || (!debug_ptr(contextptr)->sst_mode && !equalposcomp(debug_ptr(contextptr)->sst_at,debug_ptr(contextptr)->current_instruction)) )
@@ -5948,7 +5954,7 @@ namespace giac {
   }
 #endif // GIAC_HAS_STO_38
 #endif // EMCC
-#endif // NUMWORKS
+#endif // KHICAS
   static string printasbackquote(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
     return "`"+feuille.print(contextptr)+"`";
   }
@@ -6016,7 +6022,7 @@ namespace giac {
       }
     }
 #ifndef RTOS_THREADX
-#if !defined BESTA_OS && !defined NSPIRE && !defined FXCG && !defined NUMWORKS
+#if !defined BESTA_OS && !defined NSPIRE && !defined FXCG && !defined KHICAS
 #ifdef HAVE_LIBPTHREAD
     pthread_mutex_lock(&context_list_mutex);
 #endif
@@ -7459,8 +7465,8 @@ namespace giac {
     return gensizeerr("Interval arithmetic support not compiled. Please install MPFI and recompile");
   }
 
-  gen numworks_nary_workaround(const gen & g){
-#ifdef NUMWORKS
+  gen os_nary_workaround(const gen & g){
+#ifdef KHICAS
     if (g.type==_VECT && g._VECTptr->size()==1 && g._VECTptr->front().type==_VECT)
       return change_subtype(g._VECTptr->front(),_SEQ__VECT);
 #endif
@@ -8049,13 +8055,13 @@ namespace giac {
     if (args.type!=_STRNG)
       return symbolic(at_read,args);
     string fichier=*args._STRNGptr;
-#ifdef NUMWORKS
+#ifdef KHICAS
     const char * s=read_file(fichier.c_str());
     if (!s)
       return undef;
     gen g(s,contextptr);
     return g;
-#else // NUMWORKS
+#else // KHICAS
 #ifdef EMCC
     string s=fetch(fichier);
     return gen(s,contextptr);
@@ -8123,7 +8129,7 @@ namespace giac {
     vecteur v;
     readargs_from_stream(inf2,v,contextptr);
     return v.size()==1?v.front():gen(v,_SEQ__VECT);
-#endif // NUMWORKS
+#endif // KHICAS
   }
   gen _read(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
@@ -10945,7 +10951,7 @@ namespace giac {
     if (g.type!=_VECT || g._VECTptr->size()!=2)
       return symbolic(at_maple_root,g);
     vecteur & v=*g._VECTptr;
-#ifdef NUMWORKS
+#ifdef KHICAS
     return pow(v[0],inv(v[1],contextptr),contextptr);
 #else
     return pow(v[1],inv(v[0],contextptr),contextptr);

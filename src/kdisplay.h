@@ -1,35 +1,74 @@
 // -*- mode:C++ ; compile-command: "g++ -I.. -g -c Equation.cc" -*-
 #ifndef _KDISPLAY_H
 #define _KDISPLAY_H
-#ifdef NUMWORKS
 #include "config.h"
 #include "giacPCH.h"
+#ifdef KHICAS
 #include "misc.h"
 
 extern  const int LCD_WIDTH_PX;
 extern   const int LCD_HEIGHT_PX;
 #define STATUS_AREA_PX 0 // 24
 #define GIAC_HISTORY_MAX_TAILLE 32
-#define GIAC_HISTORY_SIZE 8
+#define GIAC_HISTORY_SIZE 2
 
+// next 3 functions may be void if not inside a window class hierarchy
+void os_show_graph(); // show graph inside Python shell (Numworks), not used
+void os_hide_graph(); // hide graph, not used anymore
+void os_redraw(); // force redraw of window class hierarchy
+#ifdef NUMWORKS
+void numworks_set_pixel(int x,int y,int c);
+int numworks_get_pixel(int x,int y);
+void numworks_fill_rect(int x,int y,int w,int h,int c);
+int numworks_draw_string(int x,int y,int c,int bg,const char * s,bool fake=false);
+int numworks_draw_string_small(int x,int y,int c,int bg,const char * s,bool fake=false);
+void numworks_show_graph();
+void numworks_hide_graph();
+void numworks_redraw();
+void numworks_wait_1ms(int ms);
 // access to Numworks OS, defined in port.cpp (or modkandinsky.cpp)
+inline void os_set_pixel(int x,int y,int c){
+  numworks_set_pixel(x,y,c);
+}
+inline int os_get_pixel(int x,int y){
+  return numworks_get_pixel(x,y);
+}
+inline void os_fill_rect(int x,int y,int w,int h,int c){
+  numworks_fill_rect(x,y,w,h,c);
+}
+inline int os_draw_string(int x,int y,int c,int bg,const char * s,bool fake){
+  return numworks_draw_string(x,y,c,bg,s,fake);
+}
+inline int os_draw_string_small(int x,int y,int c,int bg,const char * s,bool fake){
+  return numworks_draw_string_small(x,y,c,bg,s,fake);
+}
+inline void os_shaw_graph(){ return numworks_show_graph(); }
+inline void os_hide_graph(){ return numworks_hide_graph(); }
+inline void os_redraw(){ return numworks_redraw(); }
+inline void os_wait_1ms(int ms) { numworks_wait_1ms(ms); }
+#endif // NUMWORKS
+
+bool os_set_angle_unit(int mode);
+int os_get_angle_unit();
 double millis(); extern int time_shift;
+void os_wait_1ms();
 bool file_exists(const char * filename);
 bool erase_file(const char * filename);
 const char * read_file(const char * filename);
 bool write_file(const char * filename,const char * s,size_t len=0);
-int giac_filebrowser(char * filename,const char * extension,const char * title);
-void numworks_set_pixel(int x,int y,int c);
-void numworks_fill_rect(int x,int y,int w,int h,int c);
+#define MAX_NUMBER_OF_FILENAMES 255
+int os_file_browser(const char ** filenames,int maxrecords,const char * extension);
+void os_set_pixel(int x,int y,int c);
+void os_fill_rect(int x,int y,int w,int h,int c);
 inline void drawRectangle(int x,int y,int w,int h,int c){
-  numworks_fill_rect(x,y,w,h,c);
+  os_fill_rect(x,y,w,h,c);
 }
-int numworks_get_pixel(int x,int y);
+int os_get_pixel(int x,int y);
 /* returns new x position */
-int numworks_draw_string(int x,int y,int c,int bg,const char * s,bool fake=false);
-inline int numworks_draw_string(int x,int y,const char * s){ return numworks_draw_string(x,y,giac::_BLACK,giac::_WHITE,s);}
-int numworks_draw_string_small(int x,int y,int c,int bg,const char * s,bool fake=false);
-inline int numworks_draw_string_small(int x,int y,const char * s){ return numworks_draw_string_small(x,y,giac::_BLACK,giac::_WHITE,s);}
+int os_draw_string(int x,int y,int c,int bg,const char * s,bool fake=false);
+inline int os_draw_string(int x,int y,const char * s){ return os_draw_string(x,y,giac::_BLACK,giac::_WHITE,s);}
+int os_draw_string_small(int x,int y,int c,int bg,const char * s,bool fake=false);
+inline int os_draw_string_small(int x,int y,const char * s){ return os_draw_string_small(x,y,giac::_BLACK,giac::_WHITE,s);}
 void GetKey(int * key);
 int getkey_raw(bool allow_suspend); // Numworks scan code
 int getkey(bool allow_suspend); // transformed
@@ -37,21 +76,27 @@ void enable_back_interrupt();
 inline void set_abort(){  enable_back_interrupt(); }
 void disable_back_interrupt();
 inline void clear_abort(){  disable_back_interrupt(); }
-void numworks_show_graph();
-void numworks_hide_graph();
 bool isalphaactive();
 extern bool alphawasactive;
 void lock_alpha();
 void reset_kbd();
-void os_redraw(); // force redraw of Numworks window class hierarchy
 void statuslinemsg(const char * msg);
-void statusline(int mode);
+void statusline(int mode=0);
 int select_item(const char ** ptr,const char * title);
 
 #ifndef NO_NAMESPACE_XCAS
 namespace xcas {
 #endif // ndef NO_NAMESPACE_XCAS
-
+  int giac_filebrowser(char * filename,const char * extension,const char * title);
+  void draw_rectangle(int x,int y,int w,int h,int c);
+  void draw_line(int x0,int y0,int x1,int y1,int c);
+  void draw_circle(int xc,int yc,int r,int color,bool q1=true,bool q2=true,bool q3=true,bool q4=true);
+  void draw_filled_circle(int xc,int yc,int r,int color,bool left=true,bool right=true);
+  void draw_polygon(std::vector< std::vector<int> > & v1,int color);
+  void draw_filled_polygon(std::vector< vector<int> > &L,int xmin,int xmax,int ymin,int ymax,int color);
+  void draw_arc(int xc,int yc,int rx,int ry,int color,double theta1, double theta2);
+  void draw_filled_arc(int x,int y,int rx,int ry,int theta1_deg,int theta2_deg,int color,int xmin,int xmax,int ymin,int ymax,bool segment);
+			   
   bool textedit(char * s,int bufsize,const giac::context * contextptr);
   // maximum "size" of symbolics displayed in an Equation (pretty print)
   extern unsigned max_prettyprint_equation;
@@ -220,7 +265,7 @@ namespace xcas {
   enum CONSOLE_SCREEN_SPEC {
 			    _LINE_MAX = 48,
 			    LINE_DISP_MAX = 11,
-			    COL_DISP_MAX = 26,//32
+			    COL_DISP_MAX = 30,//32
 			    EDIT_LINE_MAX = 2048
   };
   
@@ -283,6 +328,8 @@ namespace xcas {
   void menu_setup(const giac::context *);
   int console_main(const giac::context *);
 #endif
+  int periodic_table(const char * & name,const char * & symbol,char * protons,char * nucleons,char * mass,char * electroneg);
+
 
 #ifndef NO_NAMESPACE_XCAS
 } // namespace xcas
@@ -384,7 +431,6 @@ namespace giac {
   bool confirm_overwrite();
   void invalid_varname();
 
-
 #ifndef NO_NAMESPACE_XCAS
 } // namespace giac
 #endif // ndef NO_NAMESPACE_XCAS
@@ -445,6 +491,7 @@ namespace giac {
 #define KEY_CHAR_EQUAL      0x3d
 #define KEY_CHAR_PI         0xd0
 #define KEY_CHAR_ANS        0xc0
+#define KEY_SHIFT_ANS        0xc1
 #define KEY_CHAR_LBRCKT     0x5b
 #define KEY_CHAR_RBRCKT     0x5d
 #define KEY_CHAR_LBRACE     0x7b

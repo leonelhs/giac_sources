@@ -3,6 +3,11 @@
 #include "config.h"
 #endif
 #include "first.h"
+#ifdef KHICAS
+int main(){
+  return 0;
+}
+#else
 /*
  *  Copyright (C) 2000 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -94,3 +99,4 @@ int main(int ARGC, char *ARGV[]){
   } 
   return 0;
 } // end main
+#endif

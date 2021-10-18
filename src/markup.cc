@@ -221,11 +221,13 @@ string tex_implmul(const MarkupBlock &ml,const MarkupBlock &prev) {
   return tex_itimes;
 }
 
+#ifndef KHICAS
 void enable_texmacs_compatible_latex_export(bool yes) {
   is_texmacs_compatible_latex_export=yes;
   tex_itimes=(yes?" ":"\\,");  
 }
-
+#endif
+  
 #define NUM_MATHML_CONTENT_ELEMENTS 31
 const string mathml_content_elements[NUM_MATHML_CONTENT_ELEMENTS]={
   "cn",
@@ -3204,6 +3206,7 @@ string export_mathml(const gen &g,GIAC_CONTEXT) {
          "</annotation></semantics></math>";
 }
 
+  #ifndef KHICAS
 bool has_improved_latex_export(const gen &g,string &s,bool override_texmacs,GIAC_CONTEXT) {
   if (force_legacy_conversion_to_latex || g.is_symb_of_sommet(at_pnt))
     return false;
@@ -3224,7 +3227,8 @@ bool has_improved_latex_export(const gen &g,string &s,bool override_texmacs,GIAC
     enable_texmacs_compatible_latex_export(use_texmacs_compatibility);
   return true;
 }
-
+#endif
+  
 gen _export_mathml(const gen &g,GIAC_CONTEXT) {
   if (g.type==_STRNG && g.subtype==-1) return g;
   gen e;

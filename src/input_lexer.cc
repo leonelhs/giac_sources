@@ -1429,7 +1429,7 @@ static yyconst flex_int16_t yy_chk[2183] =
  *  Definitions
  */
 #line 48 "input_lexer.ll"
-#ifdef NUMWORKS
+#ifdef KHICAS
 #define at_log at_logb
 #else
 #define at_log at_ln
@@ -5555,14 +5555,14 @@ void giac_yyfree (void * ptr , yyscan_t yyscanner)
 	}
       }
 #endif // RTOS_THREADX
-#ifdef NUMWORKS
+#ifdef KHICAS
       char lexer_string[4096];
 #else
       string lexer_string;
 #endif
       {
 	string s(s_orig);
-#ifdef NUMWORKS
+#ifdef KHICAS
 	if (s.size()>=sizeof(lexer_string)-100)
 	  s="Parse_string_too_large";
 #endif
@@ -5582,7 +5582,7 @@ void giac_yyfree (void * ptr , yyscan_t yyscanner)
 	      s[i]='*';
 	      s[i+1]=' ';
 	    }
-#if defined NUMWORKS || defined NSPIRE || defined FXCG
+#if defined KHICAS || defined NSPIRE || defined FXCG
 	    if (s[i]==']' && s[i+1]=='[')
 	      s.insert(s.begin()+i+1,',');
 #endif
@@ -5819,7 +5819,7 @@ void giac_yyfree (void * ptr , yyscan_t yyscanner)
 	if (debug_infolevel>2)
 	  CERR << "lexer " << ss << '\n';
 	s.clear();
-#ifdef NUMWORKS
+#ifdef KHICAS
 	ss += " \n ÿ";
 	if (ss.size()>sizeof(lexer_string)-1)
 	  ss = "Parse_string_too_large";
@@ -5831,7 +5831,7 @@ void giac_yyfree (void * ptr , yyscan_t yyscanner)
       }
       giac_yylex_init(&scanner);
       giac_yyset_extra(contextptr,scanner);
-#ifdef NUMWORKS
+#ifdef KHICAS
       currently_scanned(contextptr)=lexer_string;
       YY_BUFFER_STATE state=giac_yy_scan_string(lexer_string,scanner);
 #else
