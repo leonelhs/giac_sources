@@ -2307,8 +2307,8 @@ namespace giac {
 	    gen un1=(a*n+b)/(c*n+d);
 	    gen r=normal(inv(un1-r1,contextptr)-inv(n-r1,contextptr),contextptr);
 	    if (is_zero(derive(r,n,contextptr))){
-	      un1=r*n+var;
-	      return inv(un1,contextptr);
+	      un1=r*n+inv(var-r1,contextptr);
+	      return inv(un1,contextptr)+r1;
 	    }
 	  }
 	}

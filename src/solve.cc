@@ -2258,7 +2258,14 @@ namespace giac {
       return _solve(subst(args,v,w,false,contextptr),contextptr);
     }
     vecteur v(solvepreprocess(args,complex_mode(contextptr),contextptr));
+    if (v.size()>1 && v[1].is_symb_of_sommet(at_unquote))
+      v[1]=eval(v[1],1,contextptr);
     int s=v.size();
+    if (s && ckmatrix(v[0])){
+      vecteur w;
+      aplatir(*v[0]._VECTptr,w,true);
+      v[0]=w;
+    }
     if (s && v.back()==at_interval)
       return _fsolve(args,contextptr);
     if (s>=2 && ckmatrix(v[1]) && v[1]._VECTptr->front()._VECTptr->size()==1)

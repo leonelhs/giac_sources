@@ -1145,6 +1145,17 @@ namespace giac {
 	  sol=mergevecteur(sol,solve(pr-x,*y._IDNTptr,3,contextptr));
 	  continue;
 	}
+	// check for a linear substitution -> like an x incomplete
+	fa=derive(*it,x,contextptr); fb=derive(*it,y,contextptr);
+	fc=simplify(fa/fb,contextptr);
+	if (is_zero(derive(fc,x,contextptr)) && is_zero(derive(fc,y,contextptr))){
+	  gen eff=subst(*it,y,y-fc*x,false,contextptr); // does not depend on x
+	  gen pr=integrate_without_lnabs(inv(eff+fc,contextptr),y,contextptr)+parameters.back();
+	  pr=subst(pr,y,y+fc*x,false,contextptr);	  
+	  vecteur sol1=solve(pr-x,*y._IDNTptr,3,contextptr);
+	  sol=mergevecteur(sol,sol1);
+	  continue;
+	}
 	// homogeneous?
 	gen tplus(t);
 	gen tmpsto=sto(doubleassume_and(vecteur(2,0),0,1,false,contextptr),tplus,contextptr);
@@ -1252,8 +1263,14 @@ namespace giac {
 	    result=lnexpand(ln(result,contextptr),contextptr);
 	    result=-derive(result,x,contextptr)/R;
 	    result=ratnormal(result);
+	    gen lastp=parameters.back();
+	    parameters.pop_back();
+	    gen partic=subst(result,lastp,0,false,contextptr);
+	    partic=ratnormal(partic);
+	    result=subst(result,lastp,1,false,contextptr);
+	    result=ratnormal(result);
 	    //result=-derive(result,x,contextptr)/(R*result);
-	    return result;
+	    return makevecteur(partic,result);
 	  }
 	}
       } // end for (;it!=itend;)
@@ -1421,7 +1438,12 @@ namespace giac {
 
   gen desolve(const gen & f_orig,const gen & x_orig,const gen & y_orig,int & ordre,vecteur & parameters,GIAC_CONTEXT){
     gen f;
-    return desolve_f(f_orig,x_orig,y_orig,ordre,parameters,f,contextptr);
+    gen x(x_orig),y(y_orig);
+    if (x.is_symb_of_sommet(at_unquote))
+      x=eval(x,1,contextptr);
+    if (y.is_symb_of_sommet(at_unquote))
+      y=eval(y,1,contextptr);
+    return desolve_f(f_orig,x,y,ordre,parameters,f,contextptr);
   }
 
   // "unary" version

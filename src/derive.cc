@@ -612,6 +612,8 @@ namespace giac {
       v=plotpreprocess(gen(*args._VECTptr,_SEQ__VECT),contextptr);
     else
       v=plotpreprocess(makesequence(args,vx_var),contextptr);
+    if (v.size()>1 && v[1].is_symb_of_sommet(at_unquote))
+      v[1]=eval(v[1],1,contextptr);
     if (is_undef(v))
       return v;
     gen var,res;

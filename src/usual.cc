@@ -5231,6 +5231,7 @@ namespace giac {
   gen symb_same(const gen & a){
     return symbolic(at_same,a);
   }
+  bool same_warning=true;
   gen _same(const gen & a,GIAC_CONTEXT){
     if ( a.type==_STRNG && a.subtype==-1) return  a;
     if ((a.type!=_VECT) || (a._VECTptr->size()!=2))
@@ -5238,6 +5239,13 @@ namespace giac {
     gen res=undef;
     if (a._VECTptr->front().type==_SYMB || a._VECTptr->back().type==_SYMB){
       if (!is_inf(a._VECTptr->front()) && !is_undef(a._VECTptr->front()) && !is_inf(a._VECTptr->back()) && !is_undef(a._VECTptr->back()) && a._VECTptr->front().type!=_VECT &&a._VECTptr->back().type!=_VECT ){
+	if (same_warning){
+	  string s=autosimplify(contextptr);
+	  if (unlocalize(s)!="'simplify'"){
+	    *logptr(contextptr) << gettext("Warning, the test a==b is performed by checking\nthat the internal representation of ") << s << gettext("(a-b) is not 0.\nTherefore a==b may return false even if a and b are mathematically equal,\nif they have different internal representations.\nYou can explicitly call a simplification function like simplify(a-b)==0 to avoid this.") << endl;
+	    same_warning=false;
+	  }
+	}
 	res=add_autosimplify(a._VECTptr->front()-a._VECTptr->back(),contextptr);
 	if (res.type==_SYMB)
 	  res=res._SYMBptr->sommet(res._SYMBptr->feuille,contextptr);
@@ -6553,6 +6561,10 @@ namespace giac {
       prod2frac(g._SYMBptr->feuille,num,den);
       if (!num.empty()){
 	num.front()=-num.front();
+	return;
+      }
+      if (!den.empty()){
+	den.front()=-den.front();
 	return;
       }
     }

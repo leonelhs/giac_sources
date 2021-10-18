@@ -1017,7 +1017,7 @@ std::ofstream of((giac::home_directory()+giac::xcasrc()).c_str());
    of << ");" << std::endl;
    of << giac::cas_setup_string(contextptr) << ";" << std::endl;
    of << giac::geo_setup_string() << ";" << std::endl;
-   of << "autosimplify(" << giac::autosimplify(contextptr) << ")";
+   of << "autosimplify(" << giac::unlocalize(giac::autosimplify(contextptr)) << ")";
    giac::vecteur vv(*giac::_lsmod(giac::zero,contextptr)._VECTptr);
    giac::const_iterateur it=vv.begin(),itend=vv.end();
    for (;it!=itend;++it)

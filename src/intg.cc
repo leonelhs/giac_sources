@@ -2755,6 +2755,8 @@ namespace giac {
     if (s>6)
       return gentoomanyargs("integrate");
     gen x=v[1];
+    if (x.is_symb_of_sommet(at_unquote))
+      x=eval(x,1,contextptr);
     if (rcl_38 && x.type==_IDNT && rcl_38(x,0,x._IDNTptr->id_name,undef,false,contextptr)){
       identificateur t("t_");
       x=v[1];
@@ -2830,7 +2832,13 @@ namespace giac {
 	}
       }
     }
-    v[0]=eval(v[0],eval_level(contextptr),contextptr); 
+    if (contextptr && contextptr->quoted_global_vars){
+      contextptr->quoted_global_vars->push_back(x);
+      v[0]=eval(v[0],eval_level(contextptr),contextptr); 
+      contextptr->quoted_global_vars->pop_back();
+    }
+    else 
+      v[0]=eval(v[0],eval_level(contextptr),contextptr); 
     if (x._IDNTptr->quoted)
       *x._IDNTptr->quoted=quoted;    
     if (s>4 || (approx_mode(contextptr) && (s==4)) ){
@@ -4435,6 +4443,8 @@ namespace giac {
     if ( (args.type!=_VECT) || (args._VECTptr->size()<2) )
       return prodsum(args.eval(eval_level(contextptr),contextptr),false);
     vecteur v(*args._VECTptr);
+    if (v.size()>1 && v[1].is_symb_of_sommet(at_unquote))
+      v[1]=eval(v[1],1,contextptr);
     maple_sum_product_unquote(v,contextptr);
     int s=v.size();
     if (is_zero(ratnormal(v[0])))
