@@ -3752,7 +3752,7 @@ namespace giac {
       if (u==at_ln)
 	return real_abs(s,contextptr);
       if (!has_i(s)){
-	if (u==at_exp || u==at_sqrt)
+	if (u==at_exp || u==at_sqrt || (u==at_pow && f[1]==plus_one_half))
 	  return s;
 	if (calc_mode(contextptr)==1 && u==at_pow && f.type==_VECT && f._VECTptr->size()==2 && f._VECTptr->back()==plus_one_half)
 	  return s;
@@ -7694,7 +7694,7 @@ namespace giac {
       else
 	return -1;
     case _ZINT: 
-      return mpz_cmp_si(*a._ZINTptr,0);
+      return signint(mpz_cmp_si(*a._ZINTptr,0));
     case _FRAC:
       return fastsign(a._FRACptr->num,contextptr)*fastsign(a._FRACptr->den,contextptr);
     case _CPLX:

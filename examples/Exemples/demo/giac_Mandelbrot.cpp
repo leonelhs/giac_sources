@@ -23,19 +23,19 @@ namespace giac {
 	  z_c = z_c * z_c + c_c;
 	  if (std::abs (z_c) > 100)
 	  {
-	    res_v[(N_i + 1) * j_i + k_i] = giac::_pixon (giac::makesequence (j_i, k_i, l_i + coul), contextptr);
+	    res_v[(N_i + 1) * j_i + k_i] = symb_pnt(symbolic(giac::at_pixon ,giac::makesequence (j_i, k_i, l_i + coul)), 0,contextptr);
 	    break;;
 	  };;
 	}
 	;
 	if (l_i == 51) {
-	  res_v[(N_i + 1) * j_i + k_i] = giac::_pixon (giac::makesequence (j_i, k_i), contextptr);
+	  res_v[(N_i + 1) * j_i + k_i] = symb_pnt(symbolic(giac::at_pixon ,giac::makesequence (j_i, k_i,0)), 0,contextptr);
 	};;
       }
       ;
     }
     ;
-    return res_v;
+    return merge_pixon(res_v);
   }
   giac::gen _Mandelbrot (const giac::gen & g, const giac::context * contextptr) {
     if (g.type != _VECT || g.subtype != _SEQ__VECT || g._VECTptr->size () != 6)
