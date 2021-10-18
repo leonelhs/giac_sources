@@ -1363,8 +1363,14 @@ namespace giac {
     if (&th==&new_coord){
       modpoly::iterator a = new_coord.begin();
       modpoly::const_iterator a_end = new_coord.end();
-      for (;a!=a_end;++a)
-	*a=-(*a);
+      for (;a!=a_end;++a){
+#ifndef USE_GMP_REPLACEMENTS
+	if (a->type==_ZINT && a->ref_count()==1)
+	  mpz_neg(*a->_ZINTptr,*a->_ZINTptr);
+	else
+#endif
+	  *a=-(*a);
+      }
     }
     else {
       new_coord.reserve(th.size());
@@ -3407,6 +3413,8 @@ namespace giac {
   }
 
   bool algnorme(const polynome & p_y,const polynome & pmini,polynome & n){
+    n=resultant(p_y,pmini).trunc1();
+    return true;
     matrice S=sylvester(polynome2poly1(pmini,1),polynome2poly1(p_y,1));
     S=mtran(S);
     gen g=det_minor(S,vecteur(0),false,context0);
@@ -4026,9 +4034,15 @@ namespace giac {
     gen cd1(Sd1.front()),se(Se.front());
     vector< modpoly > Hv(e);
     Hv.reserve(d);
-    modpoly tmp(e+1);
-    tmp[0]=se;
-    Hv.push_back(tmp-Se); // in fact it's -Se without first element
+    if (Se.size()>1 && Se[1]!=0){
+      Hv.push_back(modpoly(Se.begin()+1,Se.end()));
+      negmodpoly(Hv.back(),Hv.back());
+    }
+    else {
+      modpoly tmp(e+1);
+      tmp[0]=se;
+      Hv.push_back(tmp-Se); // in fact it's -Se without first element
+    }
     for (int j=e+1;j<d;++j){
       modpoly XHj1(Hv.back());
       XHj1.push_back(0); // X*H_{j-1}
@@ -4164,8 +4178,9 @@ namespace giac {
   }
 
   void subresultant(const modpoly & P,const modpoly & Q,gen & res){
-    if (0 && is_integer_vecteur(P) && is_integer_vecteur(Q)){
-      res=mod_resultant(P,Q); // according to my tests ducos is faster
+    if (0 && is_integer_vecteur(P,true) && is_integer_vecteur(Q,true)){
+      res=mod_resultant(P,Q); 
+      // according to my tests ducos is faster except for very small coefficients
       return ;
     }
     int d=P.size()-1,e=Q.size()-1;

@@ -5767,7 +5767,7 @@ namespace giac {
 	it1end=v1.begin()+cend;
       it1_=it1end-4;
       vector<int>::const_iterator it2=v2.begin()+cstart;
-#if defined(PSEUDO_MOD) && !(defined(VISUALC) || defined (BESTA_OS) || defined(OSX))
+#if defined(PSEUDO_MOD) && !(defined(VISUALC) || defined (BESTA_OS) || defined(OSX)  || defined(OSXIOS) || defined(FIR_LINUX) || defined(ANDROID))
       c2 %= modulo;
       if (pseudo && (modulo<(1<<29) 
 		     // && modulo>=(1<<16)
@@ -6544,6 +6544,8 @@ namespace giac {
 	  return 0;
 	res=res1;
 	det=detnum*det/detden;
+	if (convert_internal)
+	  det=r2sym(det,lv,contextptr);
 	if (rref_or_det_or_lu==2 || rref_or_det_or_lu == 3){
 	  vecteur P;
 	  vector_int2vecteur(permutation,P);
