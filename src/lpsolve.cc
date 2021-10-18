@@ -107,9 +107,9 @@ void insert_column(matrice &m,const vecteur &c,int j) {
  */
 void append_column(matrice &m,const vecteur &c) {
     assert(m.size()==c.size());
-    for (int i=0;i<int(m.size());++i) {
-        m[i]._VECTptr->push_back(c[i]);
-    }
+    matrice mt=mtran(m);
+    mt.push_back(c);
+    m=mtran(mt);
 }
 
 /*
@@ -368,6 +368,7 @@ int lp_node::solve_relaxation() {
     ints cols(ncols),basis;
     vector<bool> is_slack(ncols,false);
     map<int,int> slack_cut;
+    bool is_mip=prob->has_integral_variables();
     //determine upper and lower bounds
     for (int j=0;j<ncols;++j) {
         lp_variable &var=prob->variables[j];
@@ -378,11 +379,11 @@ int lp_node::solve_relaxation() {
             return _LP_INFEASIBLE;
     }
     //populate matrix with consraint coefficients
-    for (int i=0;i<nrows;++i) {
-        row=vecteur(*prob->constr.lhs[i]._VECTptr);
-        m.push_back(row);
+    m=*_matrix(makesequence(nrows,ncols+1,0),prob->ctx)._VECTptr;
+    for (int i=0;i<nrows;++i) for (int j=0;j<ncols;++j) {
+        m[i]._VECTptr->at(j)=prob->constr.lhs[i][j];
     }
-    b=vecteur(prob->constr.rhs);
+    b=prob->constr.rhs;
     //shift variables according to their lower bounds such that l<=x<=u becomes 0<=x'<=u'
     for (int j=0;j<ncols;++j) {
         b=subvecteur(b,multvecteur(l[j],jth_column(m,j)));
@@ -390,7 +391,9 @@ int lp_node::solve_relaxation() {
         obj_ct+=obj[j]*l[j];
         cols[j]=j;
     }
-    append_column(m,b);
+    for (int i=0;i<nrows;++i) {
+        m[i]._VECTptr->at(ncols)=b[i];
+    }
     //assure that the right-hand side column has nonnegative coefficients
     for (iterateur it=m.begin();it!=m.end();++it) {
         if (is_strictly_positive(-it->_VECTptr->back(),prob->ctx)) {
@@ -485,6 +488,7 @@ int lp_node::solve_relaxation() {
         if (is_inf(optimum))
             return _LP_UNBOUNDED; //solution is unbounded
         m.pop_back(); //remove bottom row
+        if (!is_mip) break;
         if (int(cut_indices.size())>=prob->settings.max_cuts)
             break;
         //try to generate Gomory mixed integer cut
@@ -1306,13 +1310,26 @@ int lp_problem::glpk_branchcut(glp_prob *prob) {
     default:
         parm.br_tech=GLP_BR_DTH;
     }
+    switch (settings.nodeselect) {
+    case _LP_DEPTHFIRST:
+        parm.bt_tech=GLP_BT_DFS;
+        break;
+    case _LP_BREADTHFIRST:
+        parm.bt_tech=GLP_BT_BFS;
+        break;
+    case _LP_BEST_PROJECTION:
+        parm.bt_tech=GLP_BT_BPH;
+        break;
+    default:
+        parm.bt_tech=GLP_BT_BLB;
+    }
     return glp_intopt(prob,&parm);
 }
 
 #endif
 
 /*
- * Solve the problem using facilities from GLPK library.
+ * Solve the problem using the GLPK library.
  */
 int lp_problem::glpk_solve() {
 #ifndef HAVE_LIBGLPK
@@ -1547,7 +1564,7 @@ void parse_limit(const gen &g,int &lim,GIAC_CONTEXT) {
 
 bool parse_options_and_bounds(const_iterateur &it,const_iterateur &itend,lp_problem &prob) {
     for (;it!=itend;++it) {
-        if (it->is_symb_of_sommet(at_maximize))
+        if (*it==at_maximize)
             prob.settings.maximize=true;
         else if (it->is_integer()) {
             switch(it->val) {
@@ -1744,8 +1761,9 @@ gen _lpsolve(const gen &args,GIAC_CONTEXT) {
     lp_problem prob(contextptr); //create LP problem with default settings
     bool is_matrix_form=false;
     if (it->type==_STRNG) { //problem is given in file
-        const char *fname=gen2string(*it).c_str();
-        if (!prob.glpk_load_from_file(fname))
+        int len=_size(*it,contextptr).val;
+        string fname(it->_STRNGptr->begin(),it->_STRNGptr->begin()+len);
+        if (!prob.glpk_load_from_file(fname.c_str()))
             return undef;
         ++it;
         if (it->type==_VECT)

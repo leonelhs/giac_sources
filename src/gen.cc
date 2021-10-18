@@ -7105,8 +7105,8 @@ namespace giac {
     if (a.type==_SYMB){
       if (a._SYMBptr->sommet==at_prod)
 	return new_ref_symbolic(symbolic(*a._SYMBptr,b));
-      else
-	return new_ref_symbolic(symbolic(at_prod,gen(makenewvecteur(a,b),_SEQ__VECT)));
+      else 
+	return new_ref_symbolic(symbolic(at_prod,gen(b.type==_INT_?makenewvecteur(b,a):makenewvecteur(a,b),_SEQ__VECT)));
     }
     if ((a.type==_IDNT) || (b.type==_IDNT))
       return new_ref_symbolic(symbolic(at_prod,gen(makenewvecteur(a,b),_SEQ__VECT)));
@@ -9342,6 +9342,15 @@ namespace giac {
 	    res=res(i[k],contextptr);
 	  }
 	  return res;
+	}
+	if (i.is_symb_of_sommet(at_interval)){
+	  const gen & ife =i._SYMBptr->feuille;
+	  if (ife.type==_VECT && ife._VECTptr->size()==2){
+	    const gen & if1=ife._VECTptr->front();
+	    const gen & if2=ife._VECTptr->back();
+	    if (if1.type==_INT_ && if2.type==_INT_ && if1.val>=1 && if2.val>=1 && if1.val<=if2.val && if1.val<=int(_VECTptr->size()) && if2.val<=int(_VECTptr->size()))
+	      return gen(vecteur(_VECTptr->begin()+if1.val-1,_VECTptr->begin()+if2.val),subtype);
+	  }
 	}
 	gen tmp=_floor(i,contextptr);
 	if (tmp.type!=_INT_)
