@@ -4,63 +4,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Top and leaves of an expression : sommet feuille op</title>
+<title>Transform an expression into a function : unapply</title>
 </head>
 <body >
 <a href="cascmd_en180.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en182.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec223" class="subsection">5.15.3  Top and leaves of an expression : <span style="font-family:monospace">sommet feuille op</span></h3>
-<p><a id="hevea_default267"></a><a id="hevea_default268"></a><a id="hevea_default269"></a><a id="sec:op"></a>
-An operator is an infixed function : for example ’+’ is an 
-operator and ’sin’ is a function.<br>
-An expression can be represented by a tree. The top of the tree is 
-either an operator, or a function and the leaves of the tree are the 
-arguments of the operator or of the function 
-(see also <a href="cascmd_en399.html#sec%3Amakesuiteop">5.39.11</a>).<br>
-The instruction <span style="font-family:monospace">sommet</span> (resp. <span style="font-family:monospace">feuille</span> (or <span style="font-family:monospace">op</span>))
-returns the top (resp. the list of the leaves) of an expression.<br>
+<h3 id="sec223" class="subsection">5.15.2  Transform an expression into a function : <span style="font-family:monospace">unapply</span></h3>
+<p><a id="hevea_default267"></a>
+<span style="font-family:monospace">unapply</span> is used to transform an expression into a function.<br>
+<span style="font-family:monospace">unapply</span> takes two arguments an expression and the name of a variable.<br>
+<span style="font-family:monospace">unapply</span> returns the function defined by this expression and
+this variable.</p><p><span style="font-weight:bold">Warning</span> when a function is defined,
+the right member of the assignment is not evaluated,
+hence <code>g:=sin(x+1); f(x):=g</code> does not defined the function 
+<span style="font-style:italic">f</span>: <span style="font-style:italic">x</span> → sin(<span style="font-style:italic">x</span>+1) but defines the function
+<span style="font-style:italic">f</span>: <span style="font-style:italic">x</span> → <span style="font-style:italic">g</span>. To defined the former function, <span style="font-family:monospace">unapply</span>
+should be used, like in the following example:<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">sommet(sin(x+2))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">g:= sin(x+1); f:=unapply(g,x)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">’sin’</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">(sin(x+1), (x)-&gt;sin(x+1))</span></div><p> 
+hence, the variable <span style="font-family:monospace">g</span> is assigned to a symbolic expression
+and the variable <span style="font-family:monospace">f</span> is assigned to a function.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">sommet(x+2*y)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">unapply(exp(x+2),x)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">’+’</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">(x)-&gt;exp(x+2)</span></div><p> 
 Input :
-</p><div class="center"><span style="font-family:monospace">feuille(sin(x+2))</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">op(sin(x+2))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">f:=unapply(lagrange([1,2,3],[4,8,12]),x)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">x+2</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">(x)-&gt;4+4*(x-1)</span></div><p> 
 Input :
-</p><div class="center"><span style="font-family:monospace">feuille(x+2*y)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">op(x+2*y)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">f:=unapply(integrate(log(t),t,1,x),x)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(x,2*y) </span></div><p> 
-<span style="font-weight:bold">Remark</span><br>
-Suppose that a function is defined by a program, for example 
-let us define the <span style="font-family:monospace">pgcd</span> function :
-</p><div class="center"><span style="font-family:monospace">pgcd(a,b):={local r; while (b!=0) {r:=irem(a,b);a:=b;b:=r;} return a;}</span></div><p>
-Then input :
-</p><div class="center"><span style="font-family:monospace">sommet(pgcd)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">(x)-&gt;x*log(x)-x+1</span></div><p> 
+Input :
+</p><div class="center"><span style="font-family:monospace">f:=unapply(integrate(log(t),t,1,x),x)</span></div><div class="center"><span style="font-family:monospace">f(x)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">’program’</span></div><p> 
-Then input :
-</p><div class="center"><span style="font-family:monospace">feuille(pgcd)[0]</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">x*log(x)-x+1</span></div><p>
+<span style="font-weight:bold">Remark</span>
+Suppose that <span style="font-style:italic">f</span> is a function of 2 variables <span style="font-style:italic">f</span>:(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>)→ <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>), 
+and that <span style="font-style:italic">g</span> is the function defined by
+<span style="font-style:italic">g</span>: <span style="font-style:italic">w</span> → <span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub> where <span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub> is the function defined by 
+<span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>).<br>
+<span style="font-family:monospace">unapply</span> is also used to define <span style="font-style:italic">g</span> with <span style="font-family:monospace">Xcas</span>.<br>
+Input : 
+</p><div class="center"><span style="font-family:monospace">f(x,w):=2*x+w</span></div><div class="center"><span style="font-family:monospace">g(w):=unapply(f(x,w),x)</span></div><div class="center"><span style="font-family:monospace">g(3)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(a,b)</span></div><p>
-Then input :
-</p><div class="center"><span style="font-family:monospace">feuille(pgcd)[1]</span></div><p> 
-Output :
-</p><div class="center"><span style="font-family:monospace">(0,0) or (15,25) if the last input was pgcd(15,25)</span></div><p>
-Then input :
-</p><div class="center"><span style="font-family:monospace">feuille(pgcd)[2]</span></div><p> 
-Output :
-</p><div class="center"><span style="font-family:monospace">The body of the program : {local r;....return(a);}</span></div>
+</p><div class="center"><span style="font-family:monospace">x-&gt;2</span>·<span style="font-family:monospace">x+3</span></div>
 <hr>
 <a href="cascmd_en180.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

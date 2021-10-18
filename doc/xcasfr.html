@@ -147,7 +147,15 @@
 </head>
 <body>
 <!-- https://developer.mozilla.org/fr/docs/Web/API/Service_Worker_API/Using_Service_Workers
-    pour le moment, on utilise manifest="xcas.appcache" en en-tete et on modifie xcas.appcache...
+    pour le moment, on utilise manifest="xcas.appcache" en en-tete et
+      on modifie xcas.appcache...
+    xcasfr.html
+      Ok &#x2705;
+      Annul. &#x274C;
+    xcas.js
+      Forum &#x282A;
+      >X< &#x274C;
+      Ok &#x2705;
     -->
 <script language="javascript">
     if (window.location.href.substr(0, 4) == "http") {
@@ -364,7 +372,10 @@
                                    max=2 min=0>
         Syntaxe <input class="bouton" type="button" value="Python"
                        onclick="python_mode.checked=!python_mode.checked;"> <input
-          class="bouton" type="checkbox" name="python_mode" title="Cocher pour utiliser la syntaxe compatible Python">,
+          class="bouton" type="checkbox" name="python_mode"
+	title="Cocher pour utiliser la syntaxe compatible Python">,
+	^ pour xor <input class="bouton" type="checkbox" name="python_xor"
+	title="Si coche, ^ est le ou exclusif bit a bit en mode Python, si non coche ^ est la puissance">,
         <input class="bouton" type="button" title="Afficher les alertes Python" value="warnings" onclick="warnpy_mode.checked=!warnpy_mode.checked">
         <input class="bouton" type="checkbox" name="warnpy_mode"
                title="Cocher pour afficher les alertes Python" checked>
@@ -426,8 +437,8 @@
       </td>
     </tr>
   </table>
-  <input class="bouton" type="submit" title="ok" value="&#x2705;">
-  <input class="bouton" type="button" title="Annule les changements de configuration" value="&#x274C;" onclick="form.style.display='none';  UI.focused.focus();">
+  <input class="bouton" type="submit" title="ok" value="Ok">
+  <input class="bouton" type="button" title="Annule les changements de configuration" value="Annul." onclick="form.style.display='none';  UI.focused.focus();">
   <hr>
 </form>
 <button id="settings" class="bouton" onclick="UI.show_config()" title="Permet de modifier la configuration">
@@ -466,7 +477,7 @@
                     <tt>Prog</tt> pour afficher des assistants
                     math&eacute;matiques ou algorithmiques, ou sur
                     <tt>123</tt> pour le clavier scientifique.
-                    Validez par la touche Entr&eacute;e ou le bouton &#x2705; en vert.
+                    Validez par la touche Entr&eacute;e ou le bouton Ok en vert.
                     <br>
                     Pour obtenir de l'aide sur une commande, tapez le d&eacute;but de son nom
                     puis tapez <tt>F1</tt> ou cliquez sur le bouton <tt>?</tt>.
@@ -628,7 +639,7 @@
                                 href="#python=0&exec&+///%20Algorithme%20de%20calcul%20de%20la%20fr%C3%A9quence%20de%20valeur%20dans%20echantillon&+fonction%20freq(echantillon%2Cvaleur)%0A%20%20var%20j%2Ctotal%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20dim(echantillon)%20faire%0A%20%20%20%20si%20echantillon(j)%3Dvaleur%20alors%20%0A%20%20%20%20%20%20total%3A%3Dtotal%2B1%3B%20%0A%20%20%20%20fsi%3B%0A%20%20fpour%3B%0A%20%20retourne%20total%2Fdim(echantillon)%3B%0Affonction%3A%3B&+echantillon%3A%3Dranv(100%2C2)&+freq(echantillon%2C1)%3B%20%0Afreq(echantillon%2C0)&+///%20Intervalle%20de%20fluctuation%20d%20une%20fr%C3%A9quence,%20ici%200.4.%20On%20tire%20100%20%C3%A9chantillons%20de%20N=200%20valeurs%20selon%20la%20loi%20binomiale%20et%20on%20renvoie%20la%20fr%C3%A9quence%20de%201.&+f%3A%3D0.4%3B%20N%3A%3D200&+echantillon%3A%3D%0Aranv(100%2Cbinomial%2CN%2Cf)%2FN&+count(x-%3E%0A%20%20abs(x-f)%3C1%2Fsqrt(N)%2Cechantillon)&+///%20Sans%20utiliser%20ranv,%20on%20peut%20simuler%20une%20frequence%20f%20avec%20rand()%20en%20comparant%20avec%20f&+rand()&+tirage(f)%3A%3Drand()%3Cf&+tirage(f)%3Btirage(f)%3Btirage(f)&+fonction%20simu(N%2Cf)%0A%20%20var%20j%2Cres%3B%0A%20%20res%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20si%20tirage(f)%20alors%20res%3A%3Dres%2B1%3B%20fsi%3B%0A%20%20fpour%3B%0A%20%20return%20res%2FN%3B%0Affonction%3A%3B&+simu(200%2C.4)&+l%3A%3Dseq(simu(200%2C.4)%2C100)&+count(x-%3Eabs(x-f)%3C1%2Fsqrt(N)%2Cl)&"
                                 target="_blank">
                             Xcas</a> ou
-                            <a href="#exec&python=1&+///Algorithme%20de%20calcul%20de%20la%20fr%C3%A9quence%20de%20%3Ctt%3evaleur%3C/tt%3e%20dans%20%3Ctt%3eechantillon%3C/tt%3e&+def%20Freq(echantillon%2Cvaleur)%3A%0A%20%20%20%20%23%20local%20j%2Ctotal%3B%0A%20%20%20%20total%3D0%3B%0A%20%20%20%20for%20j%20in%20echantillon%3A%0A%20%20%20%20%20%20%20%20if%20j%3D%3Dvaleur%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20total%3Dtotal%2B1.0%0A%20%20%20%20return%20total%2Flen(echantillon)&+echantillon%3Dranv(100%2C2)&+///%3Ctt%3eranv%3C/tt%3e%20est%20une%20instruction%20Xcas%20qui%20cr%C3%A9e%20un%20vecteur%20al%C3%A9atoire%20ici%20de%20100%20entiers%20strictement%20inf%C3%A9rieurs%20%C3%A0%202.%20Voir%20plus%20bas%20comment%20faire%20la%20m%C3%AAme%20chose%20sans%20utiliser%20%3Ctt%3eranv%3C/tt%3e&+%23%0AFreq(echantillon%2C1)%0AFreq(echantillon%2C0)&+///%20Intervalle%20de%20fluctuation%20d%20une%20fr%C3%A9quence,%20ici%200.4.%20On%20tire%20100%20%C3%A9chantillons%20de%20N=200%20valeurs%20selon%20la%20loi%20binomiale%20et%20on%20renvoie%20la%20fr%C3%A9quence%20de%201.&+%23%0Af%3D0.4%0AN%3D200&+echantillon%3Devalf(ranv(100%2Cbinomial%2CN%2Cf)%2FN)&+def%20Ok(echantillon%2Cf%2CN)%3A%0A%20%20%20%20%23%20local%20c%2Cx%0A%20%20%20%20c%3D0%0A%20%20%20%20for%20x%20in%20echantillon%3A%0A%20%20%20%20%20%20%20%20if%20abs(x-f)%3C1%2Fsqrt(N)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20c%3Dc%2B1%0A%20%20%20%20return%20c&+Ok(echantillon%2Cf%2CN)&+///%20Sans%20utiliser%20ranv,%20on%20peut%20simuler%20une%20frequence%20f%20avec%20random()%20en%20comparant%20avec%20f&+random()&+def%20Tirage(f)%3A%0A%20%20%20%20return%20random()%3Cf&+Tirage(f)%3BTirage(f)%3BTirage(f)&+def%20Simu(N%2Cf)%3A%0A%20%20%20%20%23%20local%20j%2Cres%0A%20%20%20%20res%3D0%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20if%20Tirage(f)%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20res%3Dres%2B1.0%0A%20%20%20%20return%20res%2FN&+Simu(200%2C.4)&+l%3D%5BSimu(200%2C.4)%20for%20j%20in%20range(100)%5D&+Ok(l%2Cf%2CN)&"
+                            <a href="#exec&python=1&+///Algorithme%20de%20calcul%20de%20la%20fr%C3%A9quence%20de%20%3Ctt%3evaleur%3C/tt%3e%20dans%20%3Ctt%3eechantillon%3C/tt%3e&+def%20Freq(echantillon%2Cvaleur)%3A%0A%20%20%20%20%23%20local%20j%2Ctotal%3B%0A%20%20%20%20total%3D0%3B%0A%20%20%20%20for%20j%20in%20echantillon%3A%0A%20%20%20%20%20%20%20%20if%20j%3D%3Dvaleur%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20total%3Dtotal%2B1.0%0A%20%20%20%20return%20total%2Flen(echantillon)&+echantillon%3Dranv(100%2C2)&+///%3Ctt%3eranv%3C/tt%3e%20est%20une%20instruction%20Xcas%20qui%20cr%C3%A9e%20un%20vecteur%20al%C3%A9atoire%20ici%20de%20100%20entiers%20strictement%20inf%C3%A9rieurs%20%C3%A0%202.%20Voir%20plus%20bas%20comment%20faire%20la%20m%C3%AAme%20chose%20sans%20utiliser%20%3Ctt%3eranv%3C/tt%3e&+%23%0AFreq(echantillon%2C1)%0AFreq(echantillon%2C0)&+///%20Intervalle%20de%20fluctuation%20d%20une%20fr%C3%A9quence,%20ici%200.4.%20On%20tire%20100%20%C3%A9chantillons%20de%20N=200%20valeurs%20selon%20la%20loi%20binomiale%20et%20on%20renvoie%20la%20fr%C3%A9quence%20de%201.&+%23%0Af%3D0.4%0AN%3D200&+echantillon%3Devalf(ranv(100%2Cbinomial%2CN%2Cf)%2FN)&+def%20OK(echantillon%2Cf%2CN)%3A%0A%20%20%20%20%23%20local%20c%2Cx%0A%20%20%20%20c%3D0%0A%20%20%20%20for%20x%20in%20echantillon%3A%0A%20%20%20%20%20%20%20%20if%20abs(x-f)%3C1%2Fsqrt(N)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20c%3Dc%2B1%0A%20%20%20%20return%20c&+OK(echantillon%2Cf%2CN)&+///%20Sans%20utiliser%20ranv,%20on%20peut%20simuler%20une%20frequence%20f%20avec%20random()%20en%20comparant%20avec%20f&+random()&+def%20Tirage(f)%3A%0A%20%20%20%20return%20random()%3Cf&+Tirage(f)%3BTirage(f)%3BTirage(f)&+def%20Simu(N%2Cf)%3A%0A%20%20%20%20%23%20local%20j%2Cres%0A%20%20%20%20res%3D0%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20if%20Tirage(f)%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20res%3Dres%2B1.0%0A%20%20%20%20return%20res%2FN&+Simu(200%2C.4)&+l%3D%5BSimu(200%2C.4)%20for%20j%20in%20range(100)%5D&+OK(l%2Cf%2CN)&"
                                target="_blank"><strong>Python</strong></a>
                         </li>
                         <li>
@@ -883,13 +894,13 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                                 <li>
                                     Fractale de Mandelbrot
                                     <a
-                                        href="#python=0&exec&+///Fractale%20de%20Mandelbrot,%20programme%20qui%20n'utilise%20pas%20la%20sym%C3%A9trie&+fonction%20fra(X%2CY%2CNmax)%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%3B%0A%20%20w%3A%3D2.7%2FX%3B%0A%20%20h%3A%3D-1.87%2FY%3B%0A%20%20res1%3A%3D%5B%5D%3B%20%0A%20%20Y%3A%3DY-1%3B%0A%20%20pour%20y%20de%200%20jusque%20Y%20faire%0A%20%20%20%20c%3A%3D-2.1%2Bi*(h*y%2B0.935)%3B%0A%20%20%20%20pour%20x%20de%200%20jusque%20X-1%20faire%0A%20%20%20%20%20%20z%3A%3D0%3B%0A%20%20%20%20%20%20pour%20j%20de%200%20jusque%20Nmax-1%20faire%0A%20%20%20%20%20%20%20%20if%20abs(z%3A%3Dz%5E2%2Bc)%3E2%20then%20break%3B%20fi%3B%0A%20%20%20%20%20%20fpour%3B%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%3B%0A%20%20%20%20%20%20c%3A%3Dc%2Bw%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20return%20res1%3B%0Affonction%3A%3B&+///%20Fractale%20de%20Mandelbrot%20plus%20rapide,%20en%20utilisant%20la%20sym%C3%A9trie&+fonction%20fra1(X%2CY%2CNmax)%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%3B%0A%20%20w%3A%3D2.7%2FX%3B%0A%20%20h%3A%3D-1.87%2FY%3B%0A%20%20res1%3A%3Dmakelist(-ceil(X*Y%2F2)-1)%3B%20%0A%20%20res2%3A%3Dcopy(res1)%3B%0A%20%20Y%3A%3DY-1%3B%0A%20%20pour%20y%20de%200%20jusque%20Y%2F2%20faire%0A%20%20%20%20c%3A%3D-2.1%2Bi*(h*y%2B0.935)%3B%0A%20%20%20%20pour%20x%20de%200%20jusque%20X-1%20faire%0A%20%20%20%20%20%20z%3A%3D0%3B%0A%20%20%20%20%20%20pour%20j%20de%200%20jusque%20Nmax-1%20faire%0A%20%20%20%20%20%20%20%20if%20abs(z%3A%3Dz%5E2%2Bc)%3E2%20then%20break%3B%20fi%3B%0A%20%20%20%20%20%20fpour%3B%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%3B%0A%20%20%20%20%20%20res2.append(pixon(x%2CY-y%2C5100*j%2B512))%3B%0A%20%20%20%20%20%20c%3A%3Dc%2Bw%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20return%20res1%2Cres2%3B%0Affonction%3A%3B&+pixon(1)&+fra1(260%2C222%2C10)&"
+                                        href="#python=0&exec&+///Fractale%20de%20Mandelbrot,%20programme%20qui%20n'utilise%20pas%20la%20sym%C3%A9trie&+fonction%20fra(X%2CY%2CNmax)%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%3B%0A%20%20w%3A%3D2.7%2FX%3B%0A%20%20h%3A%3D-1.87%2FY%3B%0A%20%20res1%3A%3D%5B%5D%3B%20%0A%20%20Y%3A%3DY-1%3B%0A%20%20pour%20y%20de%200%20jusque%20Y%20faire%0A%20%20%20%20c%3A%3D-2.1%2Bi*(h*y%2B0.935)%3B%0A%20%20%20%20pour%20x%20de%200%20jusque%20X-1%20faire%0A%20%20%20%20%20%20z%3A%3D0%3B%0A%20%20%20%20%20%20pour%20j%20de%200%20jusque%20Nmax-1%20faire%0A%20%20%20%20%20%20%20%20if%20abs(z%3A%3Dz%5E2%2Bc)%3E2%20then%20break%3B%20fi%3B%0A%20%20%20%20%20%20fpour%3B%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C126*j%2B2079))%3B%0A%20%20%20%20%20%20c%3A%3Dc%2Bw%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20return%20res1%3B%0Affonction%3A%3B&+///%20Fractale%20de%20Mandelbrot%20plus%20rapide,%20en%20utilisant%20la%20sym%C3%A9trie&+fonction%20fra1(X%2CY%2CNmax)%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%3B%0A%20%20w%3A%3D2.7%2FX%3B%0A%20%20h%3A%3D-1.87%2FY%3B%0A%20%20res1%3A%3Dmakelist(-ceil(X*Y%2F2)-1)%3B%20%0A%20%20res2%3A%3Dcopy(res1)%3B%0A%20%20Y%3A%3DY-1%3B%0A%20%20pour%20y%20de%200%20jusque%20Y%2F2%20faire%0A%20%20%20%20c%3A%3D-2.1%2Bi*(h*y%2B0.935)%3B%0A%20%20%20%20pour%20x%20de%200%20jusque%20X-1%20faire%0A%20%20%20%20%20%20z%3A%3D0%3B%0A%20%20%20%20%20%20pour%20j%20de%200%20jusque%20Nmax-1%20faire%0A%20%20%20%20%20%20%20%20if%20abs(z%3A%3Dz%5E2%2Bc)%3E2%20then%20break%3B%20fi%3B%0A%20%20%20%20%20%20fpour%3B%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C126*j%2B2079))%3B%0A%20%20%20%20%20%20res2.append(pixon(x%2CY-y%2C126*j%2B2079))%3B%0A%20%20%20%20%20%20c%3A%3Dc%2Bw%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20return%20res1%2Cres2%3B%0Affonction%3A%3B&+pixon(1)&+fra1(260%2C222%2C10)&"
                                         target="_blank">Xcas</a>,
-                                    <a href="#python=1&exec&+///Fractale%20de%20Mandelbrot%20sans%20utiliser%20la%20sym%C3%A9trie&+def%20fra(X%2CY%2CNmax)%3A%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%0A%20%20w%3D2.7%2FX%0A%20%20h%3D-1.87%2FY%0A%20%20res1%3D%5B%5D%0A%20%20res2%3D%5B%5D%0A%20%20for%20y%20in%20range(Y)%3A%0A%20%20%20%20c%20%3D%20-2.1%2Bi*(h*y%2B0.935)%0A%20%20%20%20for%20x%20in%20range(X)%3A%0A%20%20%20%20%20%20z%20%3D%200%0A%20%20%20%20%20%20for%20j%20in%20range(Nmax)%3A%0A%20%20%20%20%20%20%20%20if%20abs(z%3Dz**2%2Bc)%3E2%3A%0A%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%0A%20%20%20%20%20%20c%20%3D%20c%2Bw%3B%0A%20%20return%20res1&+///%20Fractale%20de%20Mandelbrot%20plus%20rapide,%20en%20utilisant%20la%20sym%C3%A9trie&+def%20fra1(X%2CY%2CNmax)%3A%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%0A%20%20w%3D2.7%2FX%0A%20%20h%3D-1.87%2FY%0A%20%20res1%3Dmakelist(-ceil(X*Y%2F2)-1)%0A%20%20res2%3Dcopy(res1)%0A%20%20Y%3DY-1%0A%20%20for%20y%20in%20range(ceil(Y%2F2)%2B1)%3A%0A%20%20%20%20c%20%3D%20-2.1%2Bi*(h*y%2B0.935)%0A%20%20%20%20for%20x%20in%20range(X)%3A%0A%20%20%20%20%20%20z%20%3D%200%0A%20%20%20%20%20%20for%20j%20in%20range(Nmax)%3A%0A%20%20%20%20%20%20%20%20if%20abs(z%3Dz**2%2Bc)%3E2%3A%0A%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%0A%20%20%20%20%20%20res2.append(pixon(x%2CY-y%2C5100*j%2B512))%0A%20%20%20%20%20%20c%20%3D%20c%2Bw%3B%0A%20%20return%20res1%2Cres2&+pixon(1)&+fra1(260%2C222%2C10)&"
+                                    <a href="#python=1&exec&+///Fractale%20de%20Mandelbrot%20sans%20utiliser%20la%20sym%C3%A9trie&+def%20fra(X%2CY%2CNmax)%3A%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%0A%20%20w%3D2.7%2FX%0A%20%20h%3D-1.87%2FY%0A%20%20res1%3D%5B%5D%0A%20%20res2%3D%5B%5D%0A%20%20for%20y%20in%20range(Y)%3A%0A%20%20%20%20c%20%3D%20-2.1%2Bi*(h*y%2B0.935)%0A%20%20%20%20for%20x%20in%20range(X)%3A%0A%20%20%20%20%20%20z%20%3D%200%0A%20%20%20%20%20%20for%20j%20in%20range(Nmax)%3A%0A%20%20%20%20%20%20%20%20if%20abs(z%3Dz**2%2Bc)%3E2%3A%0A%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C126*j%2B2079))%0A%20%20%20%20%20%20c%20%3D%20c%2Bw%3B%0A%20%20return%20res1&+///%20Fractale%20de%20Mandelbrot%20plus%20rapide,%20en%20utilisant%20la%20sym%C3%A9trie&+def%20fra1(X%2CY%2CNmax)%3A%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%0A%20%20w%3D2.7%2FX%0A%20%20h%3D-1.87%2FY%0A%20%20res1%3Dmakelist(-ceil(X*Y%2F2)-1)%0A%20%20res2%3Dcopy(res1)%0A%20%20Y%3DY-1%0A%20%20for%20y%20in%20range(ceil(Y%2F2)%2B1)%3A%0A%20%20%20%20c%20%3D%20-2.1%2Bi*(h*y%2B0.935)%0A%20%20%20%20for%20x%20in%20range(X)%3A%0A%20%20%20%20%20%20z%20%3D%200%0A%20%20%20%20%20%20for%20j%20in%20range(Nmax)%3A%0A%20%20%20%20%20%20%20%20if%20abs(z%3Dz**2%2Bc)%3E2%3A%0A%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C126*j%2B2079))%0A%20%20%20%20%20%20res2.append(pixon(x%2CY-y%2C126*j%2B2079))%0A%20%20%20%20%20%20c%20%3D%20c%2Bw%3B%0A%20%20return%20res1%2Cres2&+pixon(1)&+fra1(260%2C222%2C10)&"
                                        target="_blank">Python</a>,
                                 </li>
                                 <li>Julia
-                                    <a href="#exec&python=1&+def%20julia(c%2CN%2Cxmin%2Cxmax%2Cymin%2Cymax)%3A%0A%20%20%20%20%23%20local%20x%2Cy%2Cj%2Cz%2Czy%2Cres%2Chx%2Chy%0A%20%20%20%20res%3Dmakelist(-320*222-1)%0A%20%20%20%20hx%3D(xmax-xmin)%2F320.0%0A%20%20%20%20hy%3D(ymax-ymin)%2F222.0%0A%20%20%20%20for%20y%20in%20range(222)%3A%0A%20%20%20%20%20%20%20%20zy%3Dxmin%2Bi*(ymax-y*hy)%0A%20%20%20%20%20%20%20%20for%20x%20in%20range(320)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20z%3Dzy%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20j%20in%20range(N)%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20(abs(z%3Dz*z%2Bc)%3E2)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20%20%20%20%20%20%20res.append(pixon(x%2Cy%2C5100*j%2B512))%0A%20%20%20%20%20%20%20%20%20%20%20%20zy%2B%3Dhx%0A%20%20%20%20res&+pixon(1)%3B%0Ajulia(.3%2B.5*i%2C20%2C-1%2C1%2C-1%2C1)&"
+                                    <a href="#exec&python=1&+def%20julia(c%2CN%2Cxmin%2Cxmax%2Cymin%2Cymax)%3A%0A%20%20%20%20%23%20local%20x%2Cy%2Cj%2Cz%2Czy%2Cres%2Chx%2Chy%0A%20%20%20%20res%3Dmakelist(-320*222-1)%0A%20%20%20%20hx%3D(xmax-xmin)%2F320.0%0A%20%20%20%20hy%3D(ymax-ymin)%2F222.0%0A%20%20%20%20for%20y%20in%20range(222)%3A%0A%20%20%20%20%20%20%20%20zy%3Dxmin%2Bi*(ymax-y*hy)%0A%20%20%20%20%20%20%20%20for%20x%20in%20range(320)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20z%3Dzy%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20j%20in%20range(N)%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20(abs(z%3Dz*z%2Bc)%3E2)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20%20%20%20%20%20%20res.append(pixon(x%2Cy%2C126*j%2B2079))%0A%20%20%20%20%20%20%20%20%20%20%20%20zy%2B%3Dhx%0A%20%20%20%20res&+pixon(1)%3B%0Ajulia(.3%2B.5*i%2C20%2C-1%2C1%2C-1%2C1)&"
                                        target="_blank">Python
                                     </a>
                                 </li>
@@ -960,7 +971,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                             ligne de commande (en noir)/r&eacute;sultats (en
                             bleu), les boutons ↑ et ↓ permettent de d&eacute;placer un niveau
                             dans l'historique. Vous pouvez modifier une ligne
-                            de commande de l'historique et valider en cliquant sur le bouton &#x2705;
+                            de commande de l'historique et valider en cliquant sur le bouton Ok
                             ou sur Entree en d&eacute;but de champ. Vous
                             pouvez placer un niveau dans la corbeille avec le bouton
                             d'effacement &agrave; droite du niveau. Pour le restaurer,
@@ -972,7 +983,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                         <li>
                             une <strong>ligne de commande</strong>, on y tape des commandes
                             ou des programmes Xcas, et on
-                            valide en cliquant sur le bouton &#x2705; ou en tapant Entree (si
+                            valide en cliquant sur le bouton Ok ou en tapant Entree (si
                             votre commande est sur plusieurs lignes, tapez Ctrl-Entree ou Entree
                             sur une ligne vide). Pour
                             forcer un passage
@@ -1256,11 +1267,11 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                 <br>
                 Giac/Xcas (c) 2018 B. Parisse, R. De Graeve, Institut Fourier, Université
                 de Grenoble, sous licence GPL3, pour une licence commerciale nous
-                contacter.
+	        contacter.
+	        <br>
+	        Optimization, signalprocessing, graph theory code (c) Luka Marohnić.
                 <br>
                 Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
-                <br>
-                Commandes d'optimisation &eacute;crites par Luka Marohnić.
                 </span>
             </li>
             <br>
@@ -1851,10 +1862,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                 else $id('help').style.display='none';"
           title="Montrer ou cacher la documentation">
     <strong>Doc</strong>
-  </button>
-  <textarea cols="9" class="bouton" style="font-size:large;vertical-align:bottom" id="helptxt"
-            title="Aide courte sur un nom de commande" rows=1 onclick="UI.focused=this;" onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
-  <button class="bouton" style="vertical-align:bottom" onmousedown="event.preventDefault()"
+  </button><textarea cols="9" class="bouton" style="font-size:large;vertical-align:bottom" id="helptxt"
+            title="Aide courte sur un nom de commande" rows=1 onclick="UI.focused=this;" onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea><button class="bouton" style="vertical-align:bottom" onmousedown="event.preventDefault()"
           title="Efface l'aide" onclick="var helptxt=$id('helptxt'); helpoutput.innerHTML='';helptxt.value='';$id('helptxt').focus();">&#x232b;
   </button>
 </div>
@@ -2048,7 +2057,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
          value="test" onmousedown="event.preventDefault()" onClick="UI.savefocused=UI.focused;  $id('assistant_boucle').style.display='none'; $id('assistant_prog').style.display='none'; $id('assistant_test').style.display='block' ;UI.set_focus('sicond'); //UI.insert(UI.focused,'\nsi  alors  sinon  fsi; ');UI.moveCaret(UI.focused,-20);UI.funcoff();" title="Assistant de cr&eacute;ation de test">
   <input type="button" style="width:40px;height:35px"
          id="add_boucle" value="boucle" onclick="UI.savefocused=UI.focused; $id('assistant_boucle').style.display='block';$id('assistant_test').style.display='none';$id('assistant_prog').style.display='none'" title="Assistant de cr&eacute;ation de boucle">
-  <input type="button" value="fonct" title="Assistant de cr&eacute;ation de fonction" style="width:55px;height:35px" id="add_function" onclick="UI.savefocused=UI.focused;  $id('assistant_boucle').style.display='none';  $id('assistant_test').style.display='none'; $id('assistant_prog').style.display='block';UI.set_focus('funcname');">
+  <input type="button" value="fonct" title="Assistant de cr&eacute;ation de fonction" style="width:55px;height:35px" id="add_function" onclick="UI.savefocused=UI.focused;  $id('assistant_boucle').style.display='none';  $id('assistant_test').style.display='none'; $id('assistant_prog').style.display='block';UI.set_focus('funcname');$id('localvarspan').style.display=UI.python_mode?'none':'inline';">
   <input type="button" style="width:46px;height:35px" name="add_debug"
          id="add_debug"
          value="debug" onmousedown="event.preventDefault()"
@@ -2168,7 +2177,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
            onClick="UI.turtle_maillage=(UI.turtle_maillage+1)%3" title="Change de type de maillage (successivement quadrillage, triangulaire, rien)">
     <input type="button" style="width:46px;height:35px" name="tortue_clear"
            id="tortue_clear"
-           value="&#x274C;" onmousedown="event.preventDefault()"
+           value="Annul." onmousedown="event.preventDefault()"
            onClick="$id('boutons_tortue').style.display='none'" title="Enleve les boutons de la tortue">
   </div>
 </div>
@@ -2217,7 +2226,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   <button class="bouton" onclick="UI.insert(UI.focused,'exp2pow(')" title="e^(a*ln(b))->b^a">exp2^</button>
   <button class="bouton" onclick="UI.insert(UI.focused,'pow2exp(')" title="b^a->e^(a*ln(b))">^2exp</button>
   <button class="bouton"
-          onclick="$id('assistant_rewrite').style.display='none'">&#x274C;
+          onclick="$id('assistant_rewrite').style.display='none'">Annul.
   </button>
 </div>
 <div id="assistant_graph" style="display:none">
@@ -2271,7 +2280,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
           title="Courbe de Bezier">bezier
   </button>
   <button class="bouton"
-          onclick="$id('assistant_graph').style.display='none'">&#x274C;
+          onclick="$id('assistant_graph').style.display='none'">Annul.
   </button>
   <div id="assistant_plotfunc" style="display:none">
     Choisir un trac&eacute; de
@@ -2290,9 +2299,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
       xstep <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                       id="plotfuncvarstep" title="Pas entre 2 &eacute;valuations successives de l'expression" rows=1>0.0625</textarea>
       <br>
-      <button class="bouton" onclick="UI.assistant_plotfunc1var_ok();">&#x2705;</button>
+      <button class="bouton" onclick="UI.assistant_plotfunc1var_ok();">Ok</button>
       <button class="bouton"
-              onclick="UI.focused=UI.savefocused;$id('assistant_plotfunc').style.display='none'">&#x274C;
+              onclick="UI.focused=UI.savefocused;$id('assistant_plotfunc').style.display='none'">Annul.
       </button>
       <button class="bouton"
               onclick="$id('plotfuncexpr').value='';$id('plotfuncvarname').value='';$id('plotfuncvarmin').value='';$id('plotfuncvarmax').value='';$id('plotfuncvarstep').value='';">Effacer
@@ -2311,9 +2320,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
       ystep <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                       id="plotfunc2varystep" title="Pas entre 2 &eacute;valuations successives de l'expression" rows=1>0.25</textarea>
       <br>
-      <button class="bouton" onclick="UI.assistant_plotfunc2var_ok();">&#x2705;</button>
+      <button class="bouton" onclick="UI.assistant_plotfunc2var_ok();">Ok</button>
       <button class="bouton"
-              onclick="UI.focused=UI.savefocused;$id('assistant_plotfunc').style.display='none'">&#x274C;
+              onclick="UI.focused=UI.savefocused;$id('assistant_plotfunc').style.display='none'">Annul.
       </button>
       <button onclick="$id('plotfunc2expr').value='';$id('plotfunc2varx').value='x';$id('plotfunc2vary').value='y';$id('plotfunc2varxstep').value='';$id('plotfunc2varystep').value='';">Effacer
       </button>
@@ -2331,7 +2340,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     </button>
     param&eacute;trique.
     <button class="bouton"
-            onclick="UI.focused=UI.savefocused;$id('assistant_plotparam').style.display='none'">&#x274C;
+            onclick="UI.focused=UI.savefocused;$id('assistant_plotparam').style.display='none'">Annul.
     </button>
     <br>
     <div id="assistant_plotparam1var" style="display:none">
@@ -2348,9 +2357,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
       tstep <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                       id="plotparamvarstep" title="Pas entre 2 &eacute;valuations successives" rows=1>0.0625</textarea>
       <br>
-      <button class="bouton" onclick="UI.assistant_plotparam_ok();;">&#x2705;</button>
+      <button class="bouton" onclick="UI.assistant_plotparam_ok();;">Ok</button>
       <button class="bouton"
-              onclick="UI.focused=UI.savefocused;$id('assistant_plotparam').style.display='none'">&#x274C;
+              onclick="UI.focused=UI.savefocused;$id('assistant_plotparam').style.display='none'">Annul.
       </button>
       <button class="bouton"
               onclick="$id('plotparamexprx').value='';$id('plotparamexpry').value='';$id('plotparamvarname').value='';$id('plotparamvarmin').value='';$id('plotparamvarmax').value='';$id('plotparamvarstep').value='';">Effacer
@@ -2373,9 +2382,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
       vstep <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                       id="plotparam2varystep" title="Pas entre 2 &eacute;valuations successives de l'expression" rows=1>0.25</textarea>
       <br>
-      <button class="bouton" onclick="UI.assistant_plotparam2var_ok();">&#x2705;</button>
+      <button class="bouton" onclick="UI.assistant_plotparam2var_ok();">Ok</button>
       <button class="bouton"
-              onclick="UI.focused=UI.savefocused;$id('assistant_plotparam').style.display='none'">&#x274C;
+              onclick="UI.focused=UI.savefocused;$id('assistant_plotparam').style.display='none'">Annul.
       </button>
       <button class="bouton"
               onclick="$id('plotparam2exprx').value='';$id('plotparam2expry').value='';$id('plotparam2exprz').value='';$id('plotparam2varx').value='u';$id('plotparam2vary').value='v';$id('plotparam2varxstep').value='';$id('plotparam2varystep').value='';">Effacer
@@ -2397,9 +2406,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     niveaux=<textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                       id="plotimplicitlevel" title="Niveaux &agrave; tracer: laisser vide pour 0 ou mettre une liste" rows=1></textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_plotimplicit_ok();">&#x2705;</button>
+    <button class="bouton" onclick="UI.assistant_plotimplicit_ok();">Ok</button>
     <button class="bouton"
-            onclick="UI.focused=UI.savefocused;$id('assistant_plotimplicit').style.display='none'">&#x274C;
+            onclick="UI.focused=UI.savefocused;$id('assistant_plotimplicit').style.display='none'">Annul.
     </button>
     <button class="bouton"
             onclick="$id('plotimplicitexprf').value='';$id('plotimplicitvarx').value='x';$id('plotimplicitvary').value='y';$id('plotimplicitvarxstep').value='';$id('plotimplicitvarystep').value='';$id('plotimplicitlevel').value=''">Effacer
@@ -2423,9 +2432,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     init=<textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                    id="plotfieldinit" title="Liste de conditions initiales optionnelles" rows=1></textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_plotfield_ok();">&#x2705;</button>
+    <button class="bouton" onclick="UI.assistant_plotfield_ok();">Ok</button>
     <button class="bouton"
-            onclick="UI.focused=UI.savefocused;$id('assistant_plotfield').style.display='none'">&#x274C;
+            onclick="UI.focused=UI.savefocused;$id('assistant_plotfield').style.display='none'">Annul.
     </button>
     <button class="bouton"
             onclick="$id('plotfieldexprf').value='';$id('plotfieldvarx').value='x';$id('plotfieldvary').value='y';$id('plotfieldvarxstep').value='';$id('plotfieldvarystep').value='';$id('plotfieldinit').value=''">Effacer
@@ -2447,8 +2456,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     θstep <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                     id="plotpolarvarstep" title="Pas entre deux &eacute;valuations" rows=1></textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_plotpolar_ok();">&#x2705;</button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_plotpolar').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.assistant_plotpolar_ok();">Ok</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_plotpolar').style.display='none'">Annul.</button>
     <button class="bouton"
             onclick="$id('plotpolarexpr').value='';$id('plotpolarvarname').value='';$id('plotpolarvarmin').value='';$id('plotpolarvarmax').value='';$id('plotpolarvarstep').value='';">Effacer
     </button>
@@ -2510,7 +2519,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
           title="Potentiel">poten.
   </button>
   <button class="bouton"
-          onclick="$id('assistant_calculus').style.display='none'">&#x274C;
+          onclick="$id('assistant_calculus').style.display='none'">Annul.
   </button>
   <div id="assistant_desolve" style="display:none">
     &Eacute;quation diff&eacute;rentielle
@@ -2544,9 +2553,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     </button>
     <br>
     <button class="bouton"
-            onclick="UI.assistant_desolve_ok();">&#x2705;
+            onclick="UI.assistant_desolve_ok();">Ok
     </button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_desolve').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_desolve').style.display='none'">Annul.</button>
     <button class="bouton" onclick="$id('desolveeq').value='';$id('desolvevar').value='';$id('desolvey').value='';$id('desolveinit').value='';">Effacer</button>
     <button class="bouton" onclick="$id('desolveeq').value='y\'+t*y=t';$id('desolvevar').value='t';$id('desolvey').value='y';$id('desolveinit').value='y(0)=2';">Ordre 1</button>
     <button class="bouton" onclick="$id('desolveeq').value='y\'\'+y=t^2';$id('desolvevar').value='t';$id('desolvey').value='y';$id('desolveinit').value='y(0)=1,y\'(0)=0';">Ordre 2</button>
@@ -2565,8 +2574,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     Polynome <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                        id="seriesvarstep" title="L'option polynom supprime le terme de reste du d&eacute;veloppement" rows=1>polynom</textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_series_ok();">&#x2705;</button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_series').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.assistant_series_ok();">Ok</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_series').style.display='none'">Annul.</button>
     <button class="bouton"
             onclick="$id('seriesexpr').value='';$id('seriesvarname').value='';$id('seriesvarlim').value='';$id('seriesvarorder').value='';">Effacer
     </button>
@@ -2583,8 +2592,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     Direction optionnelle <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                                     id="limitvardir" title="-1: limite &agrave; gauche, 1: &agrave; droite" rows=1></textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_limit_ok();">&#x2705;</button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_limit').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.assistant_limit_ok();">Ok</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_limit').style.display='none'">Annul.</button>
     <button class="bouton"
             onclick="$id('limitexpr').value='';$id('limitvarname').value='';$id('limitvarlim').value='';$id('limitvardir').value='';">Effacer
     </button>
@@ -2601,8 +2610,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     &agrave; (optionnel) <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                                    id="intvarmax" title="Borne sup&eacute;rieure" rows=1></textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_int_ok();">&#x2705;</button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_int').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.assistant_int_ok();">Ok</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_int').style.display='none'">Annul.</button>
     <button class="bouton"
             onclick="$id('intexpr').value='';$id('intvarname').value='';$id('intvarmin').value='';$id('intvarmax').value='';">Effacer
     </button>
@@ -2620,8 +2629,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     &agrave; (optionnel) <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                                    id="sumvarmax" title="Borne sup&eacute;rieure" rows=1></textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_sum_ok();">&#x2705;</button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_sum').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.assistant_sum_ok();">Ok</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_sum').style.display='none'">Annul.</button>
     <button class="bouton" onclick="$id('sumexpr').value='j^2';$id('sumvarname').value='j';$id('sumvarmin').value='0';$id('sumvarmax').value='n';">Exemple</button>
     <button class="bouton"
             onclick="$id('sumexpr').value='';$id('sumvarname').value='';$id('sumvarmin').value='';$id('sumvarmax').value='';">Effacer
@@ -2636,8 +2645,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     Nombre de d&eacute;riv&eacute;es <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                                                id="diffnumber" title="Valeur par d&eacute;faut 1" rows=1>1</textarea><br>
     <br>
-    <button class="bouton" onclick="UI.assistant_diff_ok();">&#x2705;</button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_diff').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.assistant_diff_ok();">Ok</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_diff').style.display='none'">Annul.</button>
     <button class="bouton" onclick="$id('diffexpr').value='sin(x)^2';$id('diffvarname').value='x';$id('diffnumber').value='';">Exemple 1</button>
     <button class="bouton" onclick="$id('diffexpr').value='sin(x^2)';$id('diffvarname').value='x';$id('diffnumber').value='5';">Exemple 2</button>
     <button class="bouton"
@@ -2724,7 +2733,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             title="Distance">dist.
     </button>
     <button class="bouton"
-            onclick="$id('assistant_geo').style.display='none'">&#x274C;
+            onclick="$id('assistant_geo').style.display='none'">Annul.
     </button>
   </div>
 </div>
@@ -2795,7 +2804,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
           title="Racines complexes approch&eacute;es d'un polyn&circ;ome">proot
   </button>
   <button class="bouton"
-          onclick="$id('assistant_arit').style.display='none'">&#x274C;
+          onclick="$id('assistant_arit').style.display='none'">Annul.
   </button>
 </div>
 <div id="assistant_linalg" style="display:none">
@@ -2868,7 +2877,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
           title="Norme matricielle (1, 2 ou inf) ">norm
   </button>
   <button class="bouton"
-          onclick="$id('assistant_linalg').style.display='none'">&#x274C;
+          onclick="$id('assistant_linalg').style.display='none'">Annul.
   </button>
 </div>
 <div id="chooselawdiv" style="display:none">
@@ -2999,8 +3008,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     <input class="bouton" type="button" title="Matrice de Hilbert" value="Hilbert" onclick="form.matr_expr.value='1/(j+k+1)';">
     <input class="bouton" type="button" title="Effacer" value="Effacer" onclick="if (form.matr_formule.checked) form.matr_expr.value='';">
   </div>
-  <input class="bouton" type="submit" title="ok" value="&#x2705;">
-  <input class="bouton" type="button" title="Annuler" value="&#x274C;" onclick="$id('chooselawdiv').style.display='none';form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();"> &nbsp;
+  <input class="bouton" type="submit" title="ok" value="Ok">
+  <input class="bouton" type="button" title="Annuler" value="Annul." onclick="$id('chooselawdiv').style.display='none';form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();"> &nbsp;
   <div id="matr" style="display:none">
     <div id="matr_submat" style="display:none">
       Lignes <input id="stat_lmin" name="stat_lmin" class="bouton" type="number" min=0 value=0>
@@ -3071,7 +3080,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     <input class="bouton" type="number" id="rand_maxint"
            title="Entier k tel que 0&lt;=k&lt;n ou n&lt;k&lt;-n si n est n&eacute;gatif" value=100>
   </div>
-  <br><input class="bouton" type="button" title="ok" value="&#x2705;"
+  <br><input class="bouton" type="button" title="ok" value="Ok"
              onclick="UI.assistant_rand_ok()">
   <input class="bouton" type="button" title="r&eacute;el al&eacute;atoire entre 0 et 1"
          value="rand" onclick="UI.insert(UI.focused,'rand()');"><input class="bouton" type="button" title="randint(a,b): entier al&eacute;atoire entre a et b inclus"
@@ -3082,7 +3091,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
          value="perm" onclick="UI.insert(UI.focused,'randperm(');">
   <input class="bouton" type="button" title="sample(L,n) tirage de n parmi la liste L sans remise"
          value="sample" onclick="UI.insert(UI.focused,'sample(');">
-  <input class="bouton" type="button" title="Annuler" value="&#x274C;" onclick="$id('chooselawdiv').style.display='none';form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();">
+  <input class="bouton" type="button" title="Annuler" value="Annul." onclick="$id('chooselawdiv').style.display='none';form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();">
 </form>
 <div id="assistant_boucle" style="display:none">
   Choisir <strong>type de boucle</strong>
@@ -3099,8 +3108,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     pas optionnel <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                             id="pourvarstep" title="on ajoute le pas &agrave; chaque it&eacute;ration, valeur par d&eacute;faut 1" rows=1></textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_pour_ok();">&#x2705;</button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_boucle').style.display='none';$id('assistant_pour').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.assistant_pour_ok();">Ok</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_boucle').style.display='none';$id('assistant_pour').style.display='none'">Annul.</button>
     <button class="bouton"
             onclick="$id('pourvarname').value='';$id('pourvarmin').value='';$id('pourvarmax').value='';">Effacer
     </button>
@@ -3140,8 +3149,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                       id="tantquecond" title="Test de continuation de la boucle"
                       rows=1></textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_tantque_ok();">&#x2705;</button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_boucle').style.display='none';$id('assistant_pour').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.assistant_tantque_ok();">Ok</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_boucle').style.display='none';$id('assistant_pour').style.display='none'">Annul.</button>
   </div>
 </div>
 <div id="assistant_solve" style="display:none">
@@ -3169,8 +3178,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
             id="solvevar" title="Par exemple x" rows=1 cols=10></textarea>
   <br>
-  <button class="bouton" onclick="UI.assistant_solve_ok();">&#x2705;</button>
-  <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_solve').style.display='none'">&#x274C;</button>
+  <button class="bouton" onclick="UI.assistant_solve_ok();">Ok</button>
+  <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_solve').style.display='none'">Annul.</button>
   <button class="bouton" onclick="$id('solveeq').value='';$id('solvevar').value='';">Effacer</button>
   <button class="bouton" onclick="$id('solveeq').value='x^2-3x+1';$id('solvevar').value='x';">Exemple</button>
   <button class="bouton" onclick="$id('solveeq').value='[2x^2-y^2=1,x+y=3]';$id('solvevar').value='[x,y]';">Syst&egrave;me</button>
@@ -3186,7 +3195,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     trouver u_n en fonction de n
   </button>
   <button class="bouton"
-          onclick="UI.focused=UI.savefocused;$id('assistant_suites').style.display='none'">&#x274C;
+          onclick="UI.focused=UI.savefocused;$id('assistant_suites').style.display='none'">Annul.
   </button>
   <br>
   <div id="assistant_rsolve" style="display:none">
@@ -3224,9 +3233,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     </button>
     <br>
     <button class="bouton"
-            onclick="UI.assistant_rsolve_ok();">&#x2705;
+            onclick="UI.assistant_rsolve_ok();">Ok
     </button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_suites').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_suites').style.display='none'">Annul.</button>
     <button class="bouton" onclick="$id('rsolveeq').value='';$id('rsolvevar').value='';$id('rsolveinit').value='';">Effacer</button>
     <button class="bouton" onclick="$id('rsolveeq').value='u(n+1)===2*u(n)+3';$id('rsolvevar').value='u(n)';$id('rsolveinit').value='u(0)===1';">Arit-geo</button>
     <button class="bouton" onclick="$id('rsolveeq').value='u(n+1)===(u(n)+2)/(u(n)+1)';$id('rsolvevar').value='u(n)';$id('rsolveinit').value='u(0)===1';">Fixe</button>
@@ -3260,9 +3269,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
               cols=3>2</textarea>
     <br>
     <button class="bouton"
-            onclick="UI.assistant_fixe_ok();">&#x2705;
+            onclick="UI.assistant_fixe_ok();">Ok
     </button>
-    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_suites').style.display='none'">&#x274C;</button>
+    <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_suites').style.display='none'">Annul.</button>
     <button class="bouton" onclick="$id('rsolvef').value='';$id('rsolvevarf').value='';$id('rsolveexpr').value='';$id('rsolveu0').value='';$id('rsolven').value='';$id('rsolvemin').value='';$id('rsolvemax').value='';">Effacer</button>
     <button class="bouton" onclick="$id('rsolvef').value='f';$id('rsolvevarf').value='x';$id('rsolveexpr').value='(x+2)/(x+1)';$id('rsolveu0').value='1';$id('rsolven').value='10';$id('rsolvemin').value='1';$id('rsolvemax').value='2';">Exemple</button>
   </div>
@@ -3309,9 +3318,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                               id="sisinon" title="Clause fausse"
                               rows=1></textarea>
   <br>
-  <button class="bouton" onclick="UI.assistant_test_ok();">&#x2705;</button>
+  <button class="bouton" onclick="UI.assistant_test_ok();">Ok</button>
   <button class="bouton"
-          onclick="UI.focused=UI.savefocused;$id('assistant_test').style.display='none'">&#x274C;
+          onclick="UI.focused=UI.savefocused;$id('assistant_test').style.display='none'">Annul.
   </button>
   <button class="bouton"
           onclick="$id('sicond').value='';$id('sialors').value='';">Effacer
@@ -3327,10 +3336,10 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   <strong>Nouvelle fonction</strong><br>
   nom de la fonction <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="funcname" title="Nom de la fonction, par exemple f" rows=1>f</textarea><br>
   liste des arguments <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="argsname" title="Arguments de la fonction s&eacute;par&eacute;s par des virgules" rows=1>x</textarea><br>
-  variables locales <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="localvars" title="Variables locales, s&eacute;par&eacute;es par des virgule. Laisser vide pour une fonction d&eacute;finie par une expression. Pour utiliser des variables locales formelles, purgez-les apr&egrave;s les avoir d&eacute;clar&eacute;." rows=1></textarea><br>
+  <span id="localvarspan">variables locales <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="localvars" title="Variables locales, s&eacute;par&eacute;es par des virgule. Laisser vide pour une fonction d&eacute;finie par une expression. Pour utiliser des variables locales formelles, purgez-les apr&egrave;s les avoir d&eacute;clar&eacute;." rows=1></textarea><br></span>
   valeur renvoy&eacute;e <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="returnedvar" title="Valeur de retour" rows=1></textarea><br>
-  <button class="bouton" onclick="UI.assistant_prog_ok();">&#x2705;</button>
-  <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_prog').style.display='none'">&#x274C;</button>
+  <button class="bouton" onclick="UI.assistant_prog_ok();">Ok</button>
+  <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_prog').style.display='none'">Annul.</button>
   <button class="bouton"
           onclick="$id('funcname').value='';$id('argsname').value='';$id('localvars').value='';$id('returnedvar').value='';">Effacer
   </button>
@@ -3350,8 +3359,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   Pas optionnel <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                           id="seqvarstep" title="on ajoute le pas &agrave; chaque it&eacute;ration, valeur par d&eacute;faut 1" rows=1></textarea>
   <br>
-  <button class="bouton" onclick="UI.assistant_seq_ok();">&#x2705;</button>
-  <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_seq').style.display='none'">&#x274C;</button>
+  <button class="bouton" onclick="UI.assistant_seq_ok();">Ok</button>
+  <button class="bouton" onclick="UI.focused=UI.savefocused;$id('assistant_seq').style.display='none'">Annul.</button>
   <button class="bouton" onclick="$id('seqexpr').value='j^2';$id('seqvarname').value='j';$id('seqvarmin').value='1';$id('seqvarmax').value='10';$id('seqvarstep').value=''">Exemple 1</button>
   <button class="bouton" onclick="$id('seqexpr').value='[j,j^2]';$id('seqvarname').value='j';$id('seqvarmin').value='-2';$id('seqvarmax').value='2';$id('seqvarstep').value='0.25'">Exemple 2</button>
   <button class="bouton"
@@ -3367,7 +3376,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     param&eacute;tr&eacute;e
   </button>
   <button class="bouton"
-          onclick="UI.focused=UI.savefocused;$id('assistant_tabvar').style.display='none'">&#x274C;
+          onclick="UI.focused=UI.savefocused;$id('assistant_tabvar').style.display='none'">Annul.
   </button>
   <br>
   <div id="assistant_tabvarfunc" style="display:none">
@@ -3388,9 +3397,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     Option : <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                        id="tabvarfuncopt" title="diff: pas de convexit&eacute;, plot: renvoie le graphe, tabvar: renvoie le tableau de variations, equation ou coordonnees: des points particuliers," rows=1>diff</textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_tabvarfunc_ok();">&#x2705;</button>
+    <button class="bouton" onclick="UI.assistant_tabvarfunc_ok();">Ok</button>
     <button class="bouton"
-            onclick="UI.focused=UI.savefocused;$id('assistant_tabvar').style.display='none'">&#x274C;
+            onclick="UI.focused=UI.savefocused;$id('assistant_tabvar').style.display='none'">Annul.
     </button>
     <button class="bouton"
             onclick="$id('tabvarfuncname').value='';$id('tabvarfuncexpr').value='';$id('tabvarfuncvarname').value='';$id('tabvarfuncvarmin').value='';$id('tabvarfuncvarmax').value='';$id('tabvarfuncvarstep').value='';">Effacer
@@ -3420,9 +3429,9 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     tstep <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
                     id="tabvarparamvarstep" title="Pas entre 2 &eacute;valuations successives" rows=1>0.0625</textarea>
     <br>
-    <button class="bouton" onclick="UI.assistant_tabvarparam_ok();">&#x2705;</button>
+    <button class="bouton" onclick="UI.assistant_tabvarparam_ok();">Ok</button>
     <button class="bouton"
-            onclick="UI.focused=UI.savefocused;$id('assistant_tabvar').style.display='none'">&#x274C;
+            onclick="UI.focused=UI.savefocused;$id('assistant_tabvar').style.display='none'">Annul.
     </button>
     <button class="bouton"
             onclick="$id('tabvarparamnamex').value='';$id('tabvarparamnamey').value='';$id('tabvarparamexprx').value='';$id('tabvarparamexpry').value='';$id('tabvarparamvarname').value='';$id('tabvarparamvarnameshadow').innerHTML='';$id('tabvarparamvarmin').value='';$id('tabvarparamvarmax').value='';$id('tabvarparamvarstep').value='';">Effacer
@@ -3552,7 +3561,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                       rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode==13 && event.shiftKey){UI.insert(this,'\n'); UI.indentline(this); return false;} if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
   <span>
             <button class="bouton" style="color:green" id="button_ok" onclick="if (UI.assistant_ok()) return; if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'',false);}" title="Evaluer la ligne de commande">
-            <strong>&nbsp;&nbsp;&#x2705;&nbsp;&nbsp;</strong></button>
+            <strong>&nbsp;&nbsp;Ok&nbsp;&nbsp;</strong></button>
             <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">&nbsp;?&nbsp;</button>
             <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)" title="Deplace vers la gauche le curseur">&nbsp;&nbsp;←&nbsp;&nbsp;</button><button class="bouton" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur"> &nbsp;&nbsp;→&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Deplace vers le haut le curseur">&nbsp;↑&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Deplace vers le bas le curseur">&nbsp;&nbsp;↓&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()"
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             onClick="UI.indentline(UI.focused)"
@@ -3767,6 +3776,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
         } catch (e) {}
         return false;
     })();
+    if (Boolean(window.chrome) && UI.detectmob())
+       supported=false;
     var webAssemblyAvailable = supported;
     /*
     if (Boolean(window.chrome)){
@@ -3786,7 +3797,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             form.wasm_mode.checked = (ck == '1');
             webAssemblyAvailable = form.wasm_mode.checked;
         }
-    }
+     }
+    //alert(webAssemblyAvailable?'true':'false');
     console.log('wasm ', supported, webAssemblyAvailable);
     if (webAssemblyAvailable) // fixme: enable
         script.src = "giacwasm.js";
@@ -3908,10 +3920,12 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                 ck = 1;
             else ck = 0;
         }
-        UI.python_mode = form.python_mode.checked = (ck == '1');
+        form.python_mode.checked = (ck == '1' || ck=='2');
+        form.python_xor.checked = (ck=='2');
+        UI.python_mode = eval(ck);
         $id('add_//').value = UI.python_mode ? '#' : '//';
         if (!UI.kbdshift) $id('add_:').value = UI.python_mode ? ':' : ':=';
-        UI.createCookie('xcas_python_mode', form.python_mode.checked ? 1 : -1, 10000);
+        UI.createCookie('xcas_python_mode', UI.python_mode, 10000);
         ck = UI.readCookie('xcas_complex_mode');
         if (ck) form.complex_mode.checked = (ck == '1');
         ck = UI.readCookie('xcas_with_sqrt');

@@ -4,34 +4,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Singular value decomposition : svd</title>
+<title>Recognize an isometry : isom</title>
 </head>
 <body >
 <a href="cascmd_en522.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en524.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec637" class="subsection">5.51.6  Singular value decomposition : <span style="font-family:monospace">svd</span></h3>
-<p><a id="hevea_default819"></a>
-<span style="font-family:monospace">svd</span> (singular value decomposition) takes as argument a numeric
-square matrix of size <span style="font-style:italic">n</span>.<br>
-<span style="font-family:monospace">svd(A)</span> returns an orthogonal matrix <span style="font-style:italic">U</span>, the diagonal <span style="font-style:italic">s</span> of a diagonal
-matrix <span style="font-style:italic">S</span> and an orthogonal matrix <span style="font-style:italic">Q</span> (<sup><span style="font-style:italic">t</span></sup><span style="font-style:italic">Q</span>*<span style="font-style:italic">Q</span>=<span style="font-style:italic">I</span>) such that :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">A</span>=<span style="font-style:italic">U</span> <span style="font-style:italic">S</span><sup><span style="font-style:italic">t</span></sup> <span style="font-style:italic">Q</span> </td></tr>
-</table><p>
+<h3 id="sec638" class="subsection">5.51.1  Recognize an isometry : <span style="font-family:monospace">isom</span></h3>
+<p><a id="hevea_default818"></a>
+<span style="font-family:monospace">isom</span> takes as argument the matrix of a linear
+function in dimension 2 or 3.<br>
+<span style="font-family:monospace">isom</span> returns :
+</p><ul class="itemize"><li class="li-itemize">
+if the linear function is a direct isometry,<br>
+the list of the characteristic elements of this isometry and <span style="font-family:monospace">+1</span>,
+</li><li class="li-itemize">if the linear function is an indirect isometry,<br>
+the list of the characteristic elements of this isometry and <span style="font-family:monospace">-1</span> 
+</li><li class="li-itemize">if the linear function is not an isometry,<br>
+<span style="font-family:monospace">[0]</span>.
+</li></ul><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">svd([[1,2],[3,4]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">isom([[0,0,1],[0,1,0],[1,0,0]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[-0.404553584834,-0.914514295677],[-0.914514295677, 0.404553584834]], [5.46498570422,0.365966190626], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[1,0,-1],-1]</span></div><p>
+which means that this isometry is a 3-d symmetry with respect to the plane 
+<span style="font-style:italic">x</span> − <span style="font-style:italic">z</span> = 0.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">(U,s,Q):=svd([[3,5],[4,5]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">isom(sqrt(2)/2*[[1,-1],[1,1]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[-0.672988041811,-0.739653361771],[-0.739653361771, 0.672988041811]],[8.6409011028,0.578643354497], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</span></div><p>
-Verification :<br>
+</p><div class="center"><span style="font-family:monospace">[pi/4,1]</span></div><p>
+Hence, this isometry is a 2-d rotation of angle 
+ π/4.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">U*diag(s)*tran(Q)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">isom([[0,0,1],[0,1,0],[0,0,1]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[3.0,5.0],[4.0,5.0]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[0]</span></div><p>
+therefore this transformation is not an isometry.</p>
 <hr>
 <a href="cascmd_en522.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

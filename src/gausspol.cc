@@ -5485,7 +5485,9 @@ namespace giac {
   // Gtry is non 0 if algfactor has detected a possible factor
   bool algfactor(const polynome & G,const polynome & p_mini,int & k,factorization & f,bool complexmode,gen & extra_div,polynome & Gtry){
     // search sqff norm
-    polynome norme(G.dim),temp(G.dim);
+    polynome norme(G.dim),temp(G.dim),p_mini1(p_mini);
+    p_mini1.reorder(transposition(0,1,G.dim));
+    p_mini1=p_mini1.trunc1();
     k=-1;
     for (;;) {
       ++k;
@@ -5518,6 +5520,8 @@ namespace giac {
 #endif
 	  norme=resultant(G,p_mini).trunc1();
       }
+      if (gcd(norme,p_mini1).lexsorted_degree())
+	continue;
       // check that norme is squarefree, first find inner dimension
       polynome dnorme=norme.derivative();
       int innerdim=0;
@@ -5985,6 +5989,18 @@ namespace giac {
 	  for (;it!=itend;++it){
 	    polynome tmp=poly12polynome(cyclotomic(it->val),1);
 	    addtov(tmp,v,with_sqrt,complexmode);
+	  }
+	  return true;
+	}
+      }
+      if (d%4==0 && with_sqrt){
+	gen e=algebraic_EXTension(makevecteur(1,0),makevecteur(1,0,-2));
+	gen an=1,extra_div=1;
+	factorization f;
+	polynome p_content(p.dim);
+	if (ext_factor(p,e,an,p_content,f,complexmode,extra_div) && an==1 && extra_div==1){
+	  for (size_t i=0;i<f.size();++i){
+	    v.push_back(f[i].fact);
 	  }
 	  return true;
 	}

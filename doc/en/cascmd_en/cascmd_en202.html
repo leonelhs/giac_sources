@@ -4,34 +4,94 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Trigonometric functions</title>
+<title>Finding conjugate points : conjugate_equation</title>
 </head>
 <body >
 <a href="cascmd_en201.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en203.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec260" class="subsection">5.21.1  Trigonometric functions</h3>
-<p><a id="sec:trigo"></a>
+<h3 id="sec259" class="subsection">5.19.4  Finding conjugate points : <span style="font-family:monospace">conjugate_equation</span><a id="hevea_default340"></a></h3>
+<p>
+<span style="font-family:monospace">conjugate_equation</span> takes four arguments :
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">sin</span> <a id="hevea_default348"></a> is the sine function,
-</li><li class="li-itemize"><span style="font-family:monospace">cos</span> <a id="hevea_default349"></a> is the cosine function,
-</li><li class="li-itemize"><span style="font-family:monospace">tan</span> <a id="hevea_default350"></a> is the tangent function (<span style="font-family:monospace">tan(x)=
-sin(x)/cos(x)</span>),
-</li><li class="li-itemize"><span style="font-family:monospace">cot</span> <a id="hevea_default351"></a> is the cotangent function (<span style="font-family:monospace">cot(x)=
-cos(x)/sin(x)</span>),
-</li><li class="li-itemize"><span style="font-family:monospace">sec</span> <a id="hevea_default352"></a> is the secant function (<span style="font-family:monospace">sec(x)=
-1/cos(x)</span>),
-</li><li class="li-itemize"><span style="font-family:monospace">csc</span> <a id="hevea_default353"></a> is the cosecant function (<span style="font-family:monospace">csc(x) =
-1/sin(x)</span>),
-</li><li class="li-itemize"><span style="font-family:monospace">asin</span> or <span style="font-family:monospace">arcsin</span><a id="hevea_default354"></a><a id="hevea_default355"></a>, <span style="font-family:monospace">acos</span> or <span style="font-family:monospace">arccos</span><a id="hevea_default356"></a><a id="hevea_default357"></a>, <span style="font-family:monospace">atan</span> or <span style="font-family:monospace">arctan</span><a id="hevea_default358"></a><a id="hevea_default359"></a>, <span style="font-family:monospace">acot</span><a id="hevea_default360"></a>, <span style="font-family:monospace">asec</span><a id="hevea_default361"></a>, <span style="font-family:monospace">acsc</span><a id="hevea_default362"></a>
-are the inverse trigonometric functions. The latter are defined by:
-<ol class="enumerate" type=1><li class="li-enumerate">
-<span style="font-family:monospace">asec(x) = acos(1/x)</span>, 
-</li><li class="li-enumerate"><span style="font-family:monospace">acsc(x) = asin(1/x)</span>,
-</li><li class="li-enumerate"><span style="font-family:monospace">acot(x) = atan(1/x)</span>. 
-</li></ol>
-</li></ul>
+expression <span style="font-style:italic">y</span><sub>0</sub> which depends on the independent variable and two parameters,
+</li><li class="li-itemize">list [α,β] of parameters which <span style="font-style:italic">y</span><sub>0</sub> depends on,
+</li><li class="li-itemize">list [<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>] of the values of parameters α and β, respectively,
+</li><li class="li-itemize">independent variable <span style="font-style:italic">x</span>,
+</li><li class="li-itemize">real number <span style="font-style:italic">a</span> equal to the lower or to the upper bound for <span style="font-style:italic">x</span>.
+</li></ul><p>
+The function <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">x</span>) is assumed to be stationary for the problem of minimizing some functional <span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>)=∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>. The return value is the expression
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:conjugate-equation"></a>
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">t</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂α</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">a</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂β</td></tr>
+</table></td><td class="dcell">−
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">a</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂α</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">t</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂β</td></tr>
+</table></td><td class="dcell">,
+    (4)</td></tr>
+</table><p>
+at α=<span style="font-style:italic">A</span> and β=<span style="font-style:italic">B</span>, which is zero if and only if <span style="font-style:italic">t</span> is conjugate to <span style="font-style:italic">a</span>. To find any conjugate points, set the returned expression to zero and solve.</p><p>For example, we find a minimum for the functional
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>)=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><table class="display"><tr><td class="dcell" style="text-align:center">π</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>)<sup>2</sup>−<span style="font-style:italic">x</span> <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)<sup>2</sup></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"> <span style="font-style:italic">d</span><span style="font-style:italic">x</span> </td></tr>
+</table><p>
+on <span style="font-style:italic">D</span>={<span style="font-style:italic">y</span>∈ <span style="font-style:italic">C</span><sup>1</sup>[0,π/2]:<span style="font-style:italic">y</span>(0)=<span style="font-style:italic">y</span>(π/2)=0}. The corresponding Euler-Lagrange equation is :
+</p><div class="center">
+<span style="font-family:monospace">eq:=euler_lagrange(y’(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x*y(x)-y(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,y(x))
+</span></div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">diff(y(x),x,2)=((-2*y(x)-x)/2)
+</span></div><p>
+The general solution is :
+</p><div class="center">
+<span style="font-family:monospace">y0:=dsolve(eq,x,y)
+</span></div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">c_0*cos(x)+c_1*sin(x)-x/2
+</span></div><p>
+The stationary function depends on two parameters <span style="font-style:italic">c</span><sub>0</sub> and <span style="font-style:italic">c</span><sub>1</sub> which are fixed by the boundary conditions :
+</p><div class="center">
+<span style="font-family:monospace">c:=solve([subs(y0,x,0)=0,subs(y0,x,pi/2)=0],[c_0,c_1])
+</span></div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">[[0,pi/4]]
+</span></div><p>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">conjugate_equation(y0,[c_0,c_1],c[0],x,0)
+</span></div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">sin(x)
+</span></div><p>
+The above expression obviously has no zeros in (0,π/2], hence there are no points conjugate to 0. Since <span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>=2&gt;0, where <span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>) is the integrand in <span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>) (the strong Legendre condition), <span style="font-style:italic">y</span><sub>0</sub> minimizes <span style="font-style:italic">F</span> on <span style="font-style:italic">D</span>. To obtain <span style="font-style:italic">y</span><sub>0</sub> explicitly, input :
+</p><div class="center">
+<span style="font-family:monospace">subs(y0,[c_0,c_1],c[0])
+</span></div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">pi*sin(x)/4-x/2
+</span></div>
 <hr>
 <a href="cascmd_en201.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

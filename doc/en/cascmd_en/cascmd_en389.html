@@ -4,32 +4,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Definition</title>
+<title>Transform a sequence into a list : [] nop</title>
 </head>
 <body >
 <a href="cascmd_en388.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en390.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec474" class="subsection">5.39.1  Definition</h3>
-<p>
-A list (or a vector) is delimited by <span style="font-family:monospace">[ ]</span>,
-its elements must be separated by commas. 
-For example, <span style="font-family:monospace">[1,2,5]</span> is a list of three integers.</p><p>Lists can contain lists (for example, a matrix is a list of lists 
-of the same size). Lists may be used to represent vectors
-(list of coordinates), matrices, univariate polynomials 
-(list of coefficients by decreasing order). </p><p>Lists are different from sequences, because sequences are flat : an element 
-of a sequence cannot be a sequence.
-Lists are different from sets, because for a list, the order is
-important and the same element can be repeated in a list (unlike in
-a set where each element is unique). </p><p>In <span style="font-family:monospace">Xcas</span> output :
-</p><ul class="itemize"><li class="li-itemize">
-vector (or list) delimiters are displayed as <span style="font-family:monospace">[]</span>, 
-</li><li class="li-itemize">matrix delimiters are displayed as <span style="font-weight:bold">[]</span>,
-</li><li class="li-itemize">polynomial delimiters are displayed as   ,
-</li><li class="li-itemize">set delimiters are displayed as   .
-</li></ul><p>The list elements are indexed starting from 0 in Xcas syntax mode
-and from 1 in all other syntax modes.</p>
+<h3 id="sec474" class="subsection">5.38.6  Transform a sequence into a list : <span style="font-family:monospace">[] nop</span></h3>
+<p><a id="hevea_default609"></a><a id="hevea_default610"></a>
+To transform a sequence into list, just put square brackets (<span style="font-family:monospace">[]</span>) around
+the sequence or use the command <span style="font-family:monospace">nop</span>.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">[seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j=1..4)]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,1,4)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">[(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)$(j=1..4)]</span></div><p> 
+Output :
+</p><div class="center"><span style="font-family:monospace">[1,4,9,16]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">nop(1,4,9,16)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1,4,9,16]</span></div>
 <hr>
 <a href="cascmd_en388.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

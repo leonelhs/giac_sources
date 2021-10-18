@@ -4,46 +4,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>LU decomposition (for TI compatibility) : LU</title>
+<title>Smith normal form : ismith</title>
 </head>
 <body >
 <a href="cascmd_en521.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en523.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec636" class="subsection">5.51.5  LU decomposition (for TI compatibility) : <span style="font-family:monospace">LU</span></h3>
-<p><a id="hevea_default818"></a>
-<span style="font-family:monospace">LU</span> takes as argument a numeric
-square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span> and three variable names, <span style="font-family:monospace">var1</span>, 
-<span style="font-family:monospace">var2</span> and <span style="font-family:monospace">var3</span>.<br>
-<span style="font-family:monospace">LU(A,var1,var2,var3)</span> returns <span style="font-style:italic">P</span>, a permutation matrix, and stores :
-</p><ul class="itemize"><li class="li-itemize">
-a lower triangular matrix <span style="font-style:italic">L</span>, with 1 on the diagonal, in 
-<span style="font-family:monospace">var1</span>,
-</li><li class="li-itemize">an upper triangular matrix <span style="font-style:italic">U</span> in <span style="font-family:monospace">var2</span>,
-</li><li class="li-itemize">the permutation matrix <span style="font-style:italic">P</span>, result of the command <span style="font-family:monospace">LU</span>, in 
-<span style="font-family:monospace">var3</span>.
-</li></ul><p>
-These matrices are such that 
+<h3 id="sec636" class="subsection">5.50.13  Smith normal form : <span style="font-family:monospace">ismith</span></h3>
+<p><a id="hevea_default817"></a>
+<span style="font-family:monospace">ismith</span> takes as argument a matrix with coefficients in
+ℤ.<br>
+<span style="font-family:monospace">ismith</span> returns three matrices <span style="font-family:monospace">U,B</span> and <span style="font-family:monospace">V</span> such 
+that <span style="font-family:monospace">B=U*A*V</span>, <span style="font-family:monospace">U</span> and <span style="font-family:monospace">V</span> are invertible in ℤ, 
+<span style="font-family:monospace">B</span> is diagonal, and <span style="font-family:monospace">B[i,i]</span> divides <span style="font-family:monospace">B[i+1,i+1]</span>.
+The coefficients <span style="font-family:monospace">B[i,i]</span> are called 
+invariant factors, they are used to describe
+the structure of finite abelian groups.<br>
+Input :
 </p><div class="center">
-the equation <span style="font-style:italic">A</span>*<span style="font-style:italic">x</span>=<span style="font-style:italic">B</span> is equivalent to <span style="font-style:italic">L</span>*<span style="font-style:italic">U</span>*<span style="font-style:italic">x</span>=<span style="font-style:italic">P</span>*<span style="font-style:italic">B</span>.
+<span style="font-family:monospace">A:=[[9,-36,30],[-36,192,-180],[30,-180,180]]; 
+U,B,V:=ismith(A)</span>
 </div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">LU([[3,5],[4,5]],L,U,P)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[0,1],[1,0]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">L</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0],[0.75,1]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">U</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[4,5],[0,1.25]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">P</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[0,1],[1,0]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[[-3,0,1],[6,4,3],[20,15,12]],
+[[3,0,0],[0,12,0],[0,0,60]], 
+[[1,24,-30],[0,1,0],[0,0,1]] </span>
+</div><p>
+The invariant factors are 3, 12 and 60.</p>
 <hr>
 <a href="cascmd_en521.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -231,7 +231,7 @@
 #define HAVE_LIBRT 1
 
 /* Define to 1 if you have the `samplerate' library (-lsamplerate). */
-/* #undef HAVE_LIBSAMPLERATE */
+#define HAVE_LIBSAMPLERATE 1
 
 /* Define to 1 if you have the `tommath' library (-ltommath). */
 /* #undef HAVE_LIBTOMMATH */

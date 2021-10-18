@@ -57,8 +57,8 @@ namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
 
   // FIXME intvar_counter should be contextized
-  static int intvar_counter=0;
-  static int realvar_counter=0;
+  int intvar_counter=0;
+  int realvar_counter=0;
   string print_intvar_counter(GIAC_CONTEXT){
     if (intvar_counter<0)
       return print_INT_(-intvar_counter);
@@ -658,7 +658,7 @@ namespace giac {
       }
 #if 1
       string msg=gettext("Unable to isolate ")+string(x.print(contextptr))+" in "+e.print(contextptr);
-      if (calc_mode(contextptr)==1){
+      if (calc_mode(contextptr)==1){ // for solve(ln(exp(x)+1)=x) 
 	v.push_back(undef); // (string2gen(msg,false));
 	return;
       }
@@ -667,7 +667,7 @@ namespace giac {
       if (a.type==_VECT)
 	v=mergevecteur(v,*a._VECTptr);
       else 
-	if (!is_undef(a)) v.push_back(a);
+	if (!is_undef(a) && !a.is_symb_of_sommet(at_fsolve)) v.push_back(a);
       return;
 #else
 #ifndef NO_STDEXCEPT
@@ -1278,7 +1278,10 @@ namespace giac {
     if (is_zero(ratnormal(derive(e,x,contextptr),contextptr),contextptr))
       *logptr(contextptr) <<gettext("Inequation is constant with respect to ")+string(x.print(contextptr)) << endl;
     vecteur veq_not_singu,veq,singu;
+    int cm=calc_mode(contextptr); 
+    calc_mode(0,contextptr); // for solve(1/(log(abs(x))-x) > 0)
     singu=find_singularities(e,x,2,contextptr);
+    calc_mode(cm,contextptr);
     veq_not_singu=solve(e,x,2,contextptr);
     for (unsigned i=0;i<singu.size();++i){	
       singu[i]=ratnormal(singu[i],contextptr);
@@ -5808,7 +5811,7 @@ namespace giac {
 #endif
 	 res.front().dim<=GROEBNER_VARS+1-(order!=_PLEX_ORDER)){
       vectpoly tmp;
-      order_t order_={static_cast<short>(order),lexvars};
+      order_t order_={static_cast<short>(order),(unsigned char)(lexvars/256),(unsigned char)(lexvars)};
       if (!gbasis8(res,order_,tmp,env,modularcheck!=0,modularcheck>=2,rur,contextptr,eliminate_flag))
 	return false;
       int i;

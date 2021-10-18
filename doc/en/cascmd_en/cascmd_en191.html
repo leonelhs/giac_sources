@@ -4,47 +4,67 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Table of values and graph : tablefunc and plotfunc</title>
+<title>Maximum and minimum of an expression: fMax fMin</title>
 </head>
 <body >
 <a href="cascmd_en190.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en192.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec241" class="subsection">5.17.4  Table of values and graph : <span style="font-family:monospace">tablefunc</span> and <span style="font-family:monospace">plotfunc</span></h3>
-<p><a id="hevea_default323"></a><a id="hevea_default324"></a> 
-<span style="font-family:monospace">tablefunc</span> is a special command that should be run from inside
-the spreadsheet. It returns the evaluation of an expression <span style="font-style:italic">ex</span> 
-depending on a variable <span style="font-style:italic">x</span> for <span style="font-style:italic">x</span>=<span style="font-style:italic">x</span><sub>0</sub>, <span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">h</span>,.... :
-</p><div class="center">
-<span style="font-family:monospace">tablefunc(ex,x,x_0,h)</span> or <span style="font-family:monospace">tablefunc(ex,x)</span>
-</div><p>
-In the latter case, the default value for <span style="font-family:monospace"><span style="font-style:italic">x</span></span><sub><span style="font-family:monospace">0</span></sub>
-is the default minimum value of <span style="font-style:italic">x</span> from the graphic configuration
-and the default value for the step <span style="font-style:italic">h</span> is 0.1 times the difference
-between the default maximum and minimum values of <span style="font-style:italic">x</span> (from the
-graphic configuration).<br>
-Example: type <span style="font-family:monospace">Alt+t</span> to open a spreadsheet if none are open.
-Then select a cell of the spreadsheet (for example <span style="font-family:monospace">C0</span>) and to get
-the table of <span style="font-family:monospace">"sinus"</span>, input in the command line of the spreadsheet : 
-</p><div class="center"><span style="font-family:monospace">tablefunc(sin(x),x)</span></div><p>
-This will fill two columns with the numeric value of <span style="font-family:monospace">x</span> and 
-<span style="font-family:monospace">sin(x)</span> :
+<h3 id="sec241" class="subsection">5.17.3  Maximum and minimum of an expression: <span style="font-family:monospace">fMax fMin</span></h3>
+<p><a id="hevea_default322"></a><a id="hevea_default323"></a> 
+<span style="font-family:monospace">fMax</span> and <span style="font-family:monospace">fMin</span> take one or two arguments : an expression 
+of a variable and the name of this variable (by default <span style="font-family:monospace">x</span>).<br>
+<span style="font-family:monospace">fMax</span> returns the abscissa 
+of a maximum of the expression.<br>
+<span style="font-family:monospace">fMin</span> returns the abscissa 
+of a minimum of the expression.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">fMax(sin(x),x)</span></div><p>
+Or :
+</p><div class="center"><span style="font-family:monospace">fMax(sin(x))</span></div><p>
+Or :
+</p><div class="center"><span style="font-family:monospace">fMax(sin(y),y)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">pi/2</span></div><p> 
+Input :
+</p><div class="center"><span style="font-family:monospace">fMin(sin(x),x)</span></div><p>
+Or :
+</p><div class="center"><span style="font-family:monospace">fMin(sin(x))</span></div><p>
+Or :
+</p><div class="center"><span style="font-family:monospace">fMin(sin(y),y)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">-pi/2</span></div><p> 
+Input :
+</p><div class="center"><span style="font-family:monospace">fMin(sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p><span style="font-family:monospace">fMax</span> and <span style="font-family:monospace">fMin</span> can also compute the maximum resp. minimum of a nonlinear multivariate expression subject to a set of nonlinear equality and/or inequality constraints. Both functions in such cases take four to six arguments:
 </p><ul class="itemize"><li class="li-itemize">
-in the first column the variable <span style="font-family:monospace">x</span>, 
-the value of the step <span style="font-family:monospace">h</span>
-(1.0), the minimum value of <span style="font-style:italic">x</span> (-5.0), then a formula, for example 
-<span style="font-family:monospace">=C2+C$1</span>, and the remaining rows 
-of the column is filled by pasting this formula.
-</li><li class="li-itemize">in the next column the function <span style="font-family:monospace">sin(x)</span>, the word
-"Tablefunc", a formula, 
-for example <span style="font-family:monospace">=evalf(subst(D$0,C$0,C2))</span>, and the remaining rows
-of the column are filled by pasting this formula.
+	objective function (an expression)
+	</li><li class="li-itemize">list of constraints (equalities and inequalities)
+	</li><li class="li-itemize">list of problem variables
+	</li><li class="li-itemize">initial guess (must be a list of nonzero reals representing a feasible point)
+	</li><li class="li-itemize">precision (optional), if not given the default epsilon value is used
+	</li><li class="li-itemize">maximum number of iterations (optional)
 </li></ul><p>
-Hence the values of <span style="font-family:monospace">sin(x)</span> are on the same rows as the values 
-of <span style="font-family:monospace">x</span>. Note that the step and begin value and the expression 
-may be easily changed by modifying the correspondent cell.</p><p>The graphic representation may be plotted with the <span style="font-family:monospace">plotfunc</span> command 
-(see <a href="cascmd_en566.html#sec%3Aplotfunc">6.2.1</a>).</p>
+The objective function does not need to be differentiable.
+Both <span style="font-family:monospace">fMin</span> and <span style="font-family:monospace">fMax</span> return the optimal solution as a vector. Note that the actual optimal value of the objective is not returned.</p><p>Although the initial point is required to be feasible, the algorithm will sometimes succeed even if it is infeasible. Note that the initial value of a variable must not be zero.</p><p>For example, input :
+</p><div class="center">
+	<span style="font-family:monospace">fMin((x-5)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-25,[y&gt;=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2],[x,y],[1,1])
+</span></div><p>
+Output :
+</p><div class="center">
+	<span style="font-family:monospace">[1.2347728624961,1.5246640219568]
+</span></div><p>
+Input :
+</p><div class="center">
+	<span style="font-family:monospace">fMax((x-2)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(y-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[-.25x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1&gt;=0,x-2y+1=0],
+	[x,y],[.5,.75])
+</span></div><p>
+Output :
+</p><div class="center">
+	<span style="font-family:monospace">[-1.82287565553,-0.411437827766]
+</span></div>
 <hr>
 <a href="cascmd_en190.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

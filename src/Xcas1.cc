@@ -3520,17 +3520,24 @@ namespace xcas {
     }
     else {
       int t=graph_output_type(ge);
-      if (t==3||file_type==3){
-#ifdef HAVE_LIBFLTK_GL
-	print_wid=wid=new xcas::Graph3d(0,0,dx,dy-25,"",0);
-#endif
+      if (t==4 || file_type==4){
+	xcas::Turtle * tu=new xcas::Turtle(0,0,dx,dy-25);
+	tu->turtleptr=&turtle_stack(contextptr);
+	print_wid=wid=tu;
       }
       else {
-	if (t==2 || file_type==2)
-	  print_wid=wid=new xcas::Graph2d(0,0,dx,dy-25);
+	if (t==3||file_type==3){
+#ifdef HAVE_LIBFLTK_GL
+	  print_wid=wid=new xcas::Graph3d(0,0,dx,dy-25,"",0);
+#endif
+	}
 	else {
-	  print_wid=wid=new Fl_Output(0,0,dx,dy-25);
-	  ((Fl_Output *) (wid))->value("No suitable widget");
+	  if (t==2 || file_type==2)
+	    print_wid=wid=new xcas::Graph2d(0,0,dx,dy-25);
+	  else {
+	    print_wid=wid=new Fl_Output(0,0,dx,dy-25);
+	    ((Fl_Output *) (wid))->value("No suitable widget");
+	  }
 	}
       }
     }

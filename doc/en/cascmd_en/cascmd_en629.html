@@ -4,89 +4,109 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The Weibull distribution</title>
+<title>Student’s distribution</title>
 </head>
 <body >
 <a href="cascmd_en628.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en630.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec814" class="subsection">7.4.15  The Weibull distribution</h3>
-<h4 id="sec815" class="subsubsection">The probability density function for the Weibull
-distribution: <span style="font-family:monospace">weibull</span><a id="hevea_default1066"></a>
-<span style="font-family:monospace">weibulld</span><a id="hevea_default1067"></a></h4>
-<p>The Weibull distribution depends on three parameters; <span style="font-style:italic">k</span>&gt;0, λ
-&gt; 0 and a real number θ. The probability density at <span style="font-style:italic">x</span> is
-given by <span style="font-style:italic">k</span>/λ(<span style="font-style:italic">x</span> − θ/λ)<sup>2</sup>
-<span style="font-style:italic">e</span><sup>−((<span style="font-style:italic">x</span>−θ)λ)<sup>2</sup></sup>. The <span style="font-family:monospace">weibull</span> (or
-<span style="font-family:monospace">weibulld</span>) command computes this, where it can take arguments
-<span style="font-style:italic">k</span>,λ,θ and <span style="font-style:italic">x</span>, where the θ can be left out and
-will default to 0. If you enter
+<h3 id="sec790" class="subsection">7.4.6  Student’s distribution</h3>
+<h4 id="sec791" class="subsubsection">The probability density function for Student’s
+distribution: <span style="font-family:monospace">student</span><a id="hevea_default1031"></a> <span style="font-family:monospace">studentd</span><a id="hevea_default1032"></a></h4>
+<p>Student’s distribution (also called Student’s <span style="font-style:italic">t</span>-distribution or just
+the <span style="font-style:italic">t</span>-distribution) with
+<span style="font-style:italic">n</span> degrees of freedom has density function given by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace">student</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) =
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">Γ((<span style="font-style:italic">n</span>+1)/2)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">Γ(<span style="font-style:italic">n</span>/2)</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span>π</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell">1 +
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">−<span style="font-style:italic">n</span>−1/2</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+where recall the Gamma function is defined for <span style="font-style:italic">x</span>&gt;0 by Γ(<span style="font-style:italic">x</span>) =
+∫<sub>0</sub><sup>∞</sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span></sup><span style="font-style:italic">t</span><sup><span style="font-style:italic">x</span>−1</sup><span style="font-style:italic">dx</span>. If you enter
 </p><div class="center">
-<span style="font-family:monospace">weibull(2,1,3)
-</span></div><p>
-or
-</p><div class="center">
-<span style="font-family:monospace">weibull(2,1,0,3)
+<span style="font-family:monospace">student(2,3)
 </span></div><p>
 you will get
 </p><div class="center">
-<span style="font-family:monospace">6/exp(9)
+<span style="font-family:monospace">sqrt(pi)/(11*sqrt(2*pi)*sqrt(11/2))
+</span></div><p>
+which can be numerically approximated by
+</p><div class="center">
+<span style="font-family:monospace">evalf(student(2,3))
+</span></div><p>
+which is
+</p><div class="center">
+<span style="font-family:monospace">0.0274101222343
 </span></div>
-<h4 id="sec816" class="subsubsection">The cumulative distribution function for the Weibull distribution: <span style="font-family:monospace">weibull_cdf</span><a id="hevea_default1068"></a> <span style="font-family:monospace">weibulld_cdf</span><a id="hevea_default1069"></a></h4>
-<p>The command <span style="font-family:monospace">weibull_cdf</span> computes
-the cumulative distribution function for the Weibull distribution.
-Like <span style="font-family:monospace">weibull</span>, it takes parameters <span style="font-style:italic">k</span>, λ and
-θ, where θ will default to 1 if it is omitted.
-The Weibull cumulative distribution
-function is given by the formula
-<span style="font-family:monospace">weibull_cdf</span>(<span style="font-style:italic">k</span>,λ,θ,<span style="font-style:italic">x</span>) = 1 −
-<span style="font-style:italic">e</span><sup>−((<span style="font-style:italic">x</span>−θ)/λ)<sup>2</sup></sup>.
-If you enter
-</p><div class="center">
-<span style="font-family:monospace">weibull_cdf(2,3,5)
-</span></div><p>
-or
-</p><div class="center">
-<span style="font-family:monospace">weibull_cdf(2,3,0,5)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">1-exp(-25/9)
-</span></div><p>
-and if you enter
-</p><div class="center">
-<span style="font-family:monospace">weibull_cdf(2.2,1.5,0.4,1.9)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.632120558829
-</span></div><p>If you give <span style="font-family:monospace">weibull_cdf</span> an extra argument (which will
-require that θ be explicitly included), you will get the probability that
-the random variable lies between two values;
-<span style="font-family:monospace">weibull_cdf(</span><span style="font-style:italic">k</span><span style="font-family:monospace">,</span>λ<span style="font-family:monospace">,</span>θ<span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). If you
+<h4 id="sec792" class="subsubsection">The cumulative distribution function for Student’s
+distribution: <span style="font-family:monospace">student_cdf</span><a id="hevea_default1033"></a></h4>
+<p>The cumulative distribution function for Student’s distribution with
+<span style="font-style:italic">n</span> degrees of freedom at a value <span style="font-style:italic">x</span> is
+<span style="font-family:monospace">student_cdf</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>); if you
 enter
 </p><div class="center">
-<span style="font-family:monospace">weibull_cdf(2.2,1.5,0.4,1.2,1.9)
-</span></div><p>
-for example you will get
-</p><div class="center">
-<span style="font-family:monospace">0.410267239944
-</span></div>
-<h4 id="sec817" class="subsubsection">The inverse distribution function for the Weibull distribution: <span style="font-family:monospace">weibull_icdf</span><a id="hevea_default1070"></a> <span style="font-family:monospace">weibulld_icdf</span><a id="hevea_default1071"></a></h4>
-<p>Given a value <span style="font-style:italic">h</span>, the inverse distribution function gives
-the value of <span style="font-style:italic">x</span> with <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>.
-The <span style="font-family:monospace">weibull_icdf</span> command will compute the
-inverse distribution for the Weibull distribution. This uses the
-arguments <span style="font-style:italic">k</span>, λ and θ as well as <span style="font-style:italic">h</span>, although
-θ can be omitted and will default to 0.
-If you enter
-</p><div class="center">
-<span style="font-family:monospace">weibull_icdf(2.2,1.5,0.4,0.632)
+<span style="font-family:monospace">student_cdf(5,2)
 </span></div><p>
 you will get
 </p><div class="center">
-<span style="font-family:monospace">1.89977657604
+<span style="font-family:monospace">0.949030260585
+</span></div><p>If you give <span style="font-family:monospace">student_cdf</span> an extra argument,
+you will get the probability that
+the random variable lies between two values;
+<span style="font-family:monospace">student_cdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). If you
+enter
+</p><div class="center">
+<span style="font-family:monospace">student_cdf(5,-2,2)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.89806052117
+</span></div>
+<h4 id="sec793" class="subsubsection">The inverse distribution function for Student’s
+distribution: <span style="font-family:monospace">student_icdf</span><a id="hevea_default1034"></a></h4>
+<p>The inverse distribution function for Student’s
+distribution with <span style="font-style:italic">n</span> degrees of freedom is computed with
+<span style="font-family:monospace">student_icdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
+value <span style="font-style:italic">x</span> with <span style="font-family:monospace">student_cdf</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. If you enter
+</p><div class="center">
+<span style="font-family:monospace">student_icdf(5,0.95)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">2.01504837333
+</span></div>
+<h4 id="sec794" class="subsubsection">The upper tail cumulative function for Student’s
+distribution: <span style="font-family:monospace">UTPT</span><a id="hevea_default1035"></a></h4>
+<p>The <span style="font-family:monospace">UTPT</span> (the Upper Tail Probability - T distribution) will compute
+Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>). 
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">UTPT(5,2)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.0509697394149
 </span></div>
 <hr>
 <a href="cascmd_en628.html"><img src="previous_motif.gif" alt="Previous"></a>

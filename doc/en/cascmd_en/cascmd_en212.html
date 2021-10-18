@@ -4,23 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform arctan into arcsin : atan2asin</title>
+<title>Simplify : simplify</title>
 </head>
 <body >
 <a href="cascmd_en211.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en213.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec270" class="subsection">5.21.11  Transform arctan into arcsin : <span style="font-family:monospace">atan2asin</span></h3>
-<p><a id="hevea_default373"></a>
-<span style="font-family:monospace">atan2asin</span> takes as argument an expression
-containing inverse trigonometric functions.
-<span style="font-family:monospace">atan2asin</span> replaces arctan(<span style="font-style:italic">x</span>) by 
- arcsin(<span style="font-style:italic">x</span>/√<span style="text-decoration:overline">1+</span><span style="text-decoration:overline"><span style="font-style:italic">x</span></span><span style="text-decoration:overline">2</span>) in this expression.<br>
+<h3 id="sec272" class="subsection">5.22.5  Simplify : <span style="font-family:monospace">simplify</span></h3>
+<p><a id="hevea_default372"></a>
+<span style="font-family:monospace">simplify</span> simplifies the expression.<br>
+As with all automatic simplifications, do not expect miracles,
+you will have to use specific rewriting rules if it does not work.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">atan2asin(atan(x))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">simplify((sin(3*x)+sin(7*x))/sin(5*x))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">asin(x/sqrt(1+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span></div>
+</p><div class="center"><span style="font-family:monospace">4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div><p>
+<span style="font-weight:bold">Warning</span> <span style="font-family:monospace">simplify</span> is more efficient in <span style="font-family:monospace">radian</span> mode (check 
+<span style="font-family:monospace">radian</span> in the <span style="font-family:monospace">cas</span> configuration 
+or input <span style="font-family:monospace">angle_radian:=1</span>).</p>
 <hr>
 <a href="cascmd_en211.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

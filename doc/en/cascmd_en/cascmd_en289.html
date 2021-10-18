@@ -4,44 +4,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Compute with the exact root of a polynomial : rootof</title>
+<title>Factorization : collect</title>
 </head>
 <body >
 <a href="cascmd_en288.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en290.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec357" class="subsection">5.26.18  Compute with the exact root of a polynomial : <span style="font-family:monospace">rootof</span></h3>
-<p><a id="hevea_default479"></a>
-Let <span style="font-style:italic">P</span> and <span style="font-style:italic">Q</span> be two polynomials given by the list of their coefficients
-then <span style="font-family:monospace">rootof(P,Q)</span> gives the value <span style="font-style:italic">P</span>(α) where α is the 
-root of <span style="font-style:italic">Q</span> with largest real part (and largest imaginary part in
-case of equality).<br>
-In exact computations, <span style="font-family:monospace">Xcas</span> will rewrite rational evaluations
-of <span style="font-family:monospace">rootof</span> as a unique <span style="font-family:monospace">rootof</span> with degree(<span style="font-style:italic">P</span>)&lt;degree(<span style="font-style:italic">Q</span>).
-If the resulting rootof is the solution of a second degree equation,
-it will be simplified.</p><p><span style="font-weight:bold">Example</span><br>
-Let α be the root with largest imaginary
-part of <span style="font-style:italic">Q</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>4</sup>+10<span style="font-style:italic">x</span><sup>2</sup>+1 (all roots of <span style="font-style:italic">Q</span> have real part equal to 0).
+<h3 id="sec359" class="subsection">5.27.12  Factorization : <span style="font-family:monospace">collect</span></h3>
+<p><a id="hevea_default477"></a>
+<span style="font-family:monospace">collect</span> takes as argument a polynomial or a list of 
+polynomials and optionally an algebraic extension like <span style="font-family:monospace">sqrt(n)</span>
+(for √<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>).<br>
+<span style="font-family:monospace">collect</span> factorizes the polynomial (or the polynomials in the
+list) on the field of its coefficient (for example ℚ)
+or on the smallest extension containing the optional second argument (e.g.
+ℚ[√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>]). In complex mode, the field is complexified.<br>
+<span style="font-weight:bold">Examples</span> :
 </p><ul class="itemize"><li class="li-itemize">
-Compute  1/α. Input :
-<div class="center"><span style="font-family:monospace">normal(1/rootof([1,0],[1,0,10,0,1])) </span></div>
-<span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span> is represented by [1,0] and α
-by <span style="font-family:monospace">rootof([1,0],[1,0,10,0,1])</span>.<br>
+Factorize <span style="font-style:italic">x</span><sup>2</sup>−4 over the integers,
+input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-4)</span></div>
+Output in real mode :
+<div class="center"><span style="font-family:monospace">(x-2)*(x+2)</span></div>
+</li><li class="li-itemize">Factorize <span style="font-style:italic">x</span><sup>2</sup>+4 over the integers, input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)</span></div>
+Output in real mode :
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4</span></div>
+Output in complex mode :
+<div class="center"><span style="font-family:monospace">(x+2*i)*(x-2*i)</span></div>
+</li><li class="li-itemize">Factorize <span style="font-style:italic">x</span><sup>2</sup>−2 over the integers, input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2)</span></div>
+Output in real mode :
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div>
+But if you input :
+<div class="center"><span style="font-family:monospace">collect(sqrt(2)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2))</span></div>
 Output :
-<div class="center"><span style="font-family:monospace">rootof([[-1,0,-10,0],[1,0,10,0,1]])</span></div>
-i.e. :
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">α</td></tr>
-</table></td><td class="dcell">=−α<sup>3</sup>−10α </td></tr>
+<div class="center"><span style="font-family:monospace">sqrt(2)*(x-sqrt(2))*(x+sqrt(2))</span></div>
+</li><li class="li-itemize">Factorize over the integers : 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>−2<span style="font-style:italic">x</span><sup>2</sup>+1  and  <span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span></td></tr>
 </table>
-</li><li class="li-itemize">Compute α2. Input :
-<div class="center"><span style="font-family:monospace">normal(rootof([1,0],[1,0,10,0,1])</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
-or (since <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup> is represented by [1,0,0]) input
-<div class="center"><span style="font-family:monospace">normal(rootof([1,0,0],[1,0,10,0,1]))</span></div>
+Input :
+<div class="center"><span style="font-family:monospace">collect([x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x])</span></div>
 Output :
-<div class="center"><span style="font-family:monospace">-5-2*sqrt(6)</span></div>
+<div class="center"><span style="font-family:monospace">[(x-1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1),x*(x-1)]</span></div>
+But, input :
+<div class="center"><span style="font-family:monospace">collect((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)*sqrt(5))</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">((19*sqrt(5)-10)*((sqrt(5)+15)*x+7*sqrt(5)-5)* ((sqrt(5)+25)*x-13*sqrt(5)-15)*(x-1))/6820</span></div>
+Or, input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,sqrt(5))</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">((2*sqrt(5)-19)*((sqrt(5)+25)*x-</span><br>
+ <span style="font-family:monospace">13*sqrt(5)-15)*(-x+1)*((sqrt(5)+15)*x+7*sqrt(5)-5))/6820</span>
+</div>
 </li></ul>
 <hr>
 <a href="cascmd_en288.html"><img src="previous_motif.gif" alt="Previous"></a>

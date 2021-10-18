@@ -125,7 +125,7 @@ namespace giac {
 
   // FIXME: make the replacement call for APPLE
   int system_no_deprecation(const char *command) {
-#if defined _IOS_FIX_ || defined FXCG
+#if defined _IOS_FIX_ || defined FXCG || defined OSXIOS
     return 0;
 #else
     return system(command);
@@ -3408,7 +3408,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     s += print_VECT(cas_setup(contextptr),_SEQ__VECT,contextptr);
     s += "),";
     s += "xcas_mode(";
-    s += print_INT_(xcas_mode(contextptr)+(python_compat(contextptr)?256:0));
+    s += print_INT_(xcas_mode(contextptr)+python_compat(contextptr)*256);
     s += ")";
     return s;
   }
@@ -5066,7 +5066,7 @@ unsigned int ConvertUTF8toUTF16 (
     }
     int xc=xcas_mode(contextptr);
     if (xc==0 && python_compat(contextptr))
-      xc=256;
+      xc=256*python_compat(contextptr);
     if (abs_calc_mode(contextptr)==38)
       res.push_back(xc);
     else
@@ -5132,6 +5132,7 @@ unsigned int ConvertUTF8toUTF16 (
     "autosimplify",
     "canonical_form",
     "cfactor",
+    "convert",
     "cpartfrac",
     "curve",
     "developper",
@@ -5146,6 +5147,7 @@ unsigned int ConvertUTF8toUTF16 (
     "factoriser_entier",
     "factoriser_sur_C",
     "ifactor",
+    "list2exp",
     "lncollect",
     "lnexpand",
     "mathml",
@@ -5951,9 +5953,9 @@ unsigned int ConvertUTF8toUTF16 (
       static bool alertmath=true;      
       if (alertmath){
 	alertmath=false;
-	alert(gettext("Assigning log2, expm1 (imprecise), fabs, fmod, modf, radians and degrees. Not supported: copysign."),contextptr);
+	alert(gettext("Assigning log2, expm1 (imprecise), fabs, modf, radians and degrees. Not supported: copysign."),contextptr);
       }
-      cur += "log2(x):=logb(x,2):;expm1(x):=exp(x)-1:;fabs:=abs:;fmod(a,b):=a-floor(a/b)*b:;function modf(x) local y; y:=floor(x); return x-y,y; ffunction:;radians(x):=x/180*pi:;degrees(x):=x/pi*180";
+      cur += "log2(x):=logb(x,2):;expm1(x):=exp(x)-1:;fabs:=abs:;function modf(x) local y; y:=floor(x); return x-y,y; ffunction:;radians(x):=x/180*pi:;degrees(x):=x/pi*180";
       // todo copysign, isinf, isnan, isfinite, frexp, ldexp
     }
   }
@@ -6050,6 +6052,20 @@ unsigned int ConvertUTF8toUTF16 (
     if (s_orig[first]=='#' || (s_orig[first]=='_' && !isalpha(s_orig[first+1])) || s_orig.substr(first,4)=="from" || s_orig.substr(first,7)=="import "){
       pythonmode=true;
       pythoncompat=true;
+    }
+    if (pythoncompat){
+      int pos=s_orig.find("{");
+      if (pos>=0 && pos<sss)
+	pythonmode=true;
+      pos=s_orig.find("}");
+      if (pos>=0 && pos<sss)
+	pythonmode=true;
+      pos=s_orig.find("//");
+      if (pos>=0 && pos<sss)
+	pythonmode=true;
+      pos=s_orig.find(":");
+      if (pos>=0 && pos<sss-1 && s_orig[pos+1]!=';')
+	pythonmode=true;
     }
     for (first=0;!pythonmode && first<sss;){
       int pos=s_orig.find(":]");
@@ -6171,7 +6187,9 @@ unsigned int ConvertUTF8toUTF16 (
 	    if (ch==';')
 	      ++c3;
 	  }
-	  if (p<cs && c1 && c3==0){
+	  if (p<cs 
+	      //&& c1 
+	      && c3==0){
 	    // table initialization, replace {} by table( ) , 
 	    // cur=cur.substr(0,pos)+"table("+cur.substr(pos+1,p-pos-1)+")"+cur.substr(p+1,cs-pos-1);
 	    cur=cur.substr(0,pos)+"{/"+replace_deuxpoints_egal(cur.substr(pos+1,p-1-pos))+"/}"+cur.substr(p+1,cs-pos-1);

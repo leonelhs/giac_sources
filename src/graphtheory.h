@@ -63,6 +63,24 @@ enum gt_error_code {
     _GT_ERR_BAD_VERTICES=30
 };
 
+enum distribution_type {
+    _DISTR_UNIFORM,
+    _DISTR_POISSON,
+    _DISTR_EXPONENTIAL,
+    _DISTR_GEOMETRIC,
+    _DISTR_NORMAL,
+    _DISTR_FISHER,
+    _DISTR_CHISQUARE,
+    _DISTR_CAUCHY,
+    _DISTR_STUDENT,
+    _DISTR_MULTINOMIAL,
+    _DISTR_BINOMIAL,
+    _DISTR_GAMMA,
+    _DISTR_BETA,
+    _DISTR_WEIBULL,
+    _DISTR_DISCRETE
+};
+
 bool is_graphe(const gen &g,std::string &disp_out,GIAC_CONTEXT);
 gen gt_command(gen (*gtfunc)(const gen &,const context *),const char *args,GIAC_CONTEXT);
 
@@ -187,6 +205,7 @@ gen _graph_power(const gen &g,GIAC_CONTEXT);
 gen _vertex_distance(const gen &g,GIAC_CONTEXT);
 gen _shortest_path(const gen &g,GIAC_CONTEXT);
 gen _dijkstra(const gen &g,GIAC_CONTEXT);
+gen _bellman_ford(const gen &g,GIAC_CONTEXT);
 gen _allpairs_distance(const gen &g,GIAC_CONTEXT);
 gen _graph_diameter(const gen &g,GIAC_CONTEXT);
 gen _is_clique(const gen &g,GIAC_CONTEXT);
@@ -205,7 +224,6 @@ gen _sequence_graph(const gen &g,GIAC_CONTEXT);
 gen _girth(const gen &g,GIAC_CONTEXT);
 gen _odd_girth(const gen &g,GIAC_CONTEXT);
 gen _topologic_sort(const gen &g,GIAC_CONTEXT);
-gen _topological_sort(const gen &g,GIAC_CONTEXT);
 gen _is_acyclic(const gen &g,GIAC_CONTEXT);
 gen _is_arborescence(const gen &g,GIAC_CONTEXT);
 gen _graph_spectrum(const gen &g,GIAC_CONTEXT);
@@ -253,11 +271,14 @@ gen _two_edge_connected_components(const gen &g,GIAC_CONTEXT);
 gen _is_two_edge_connected(const gen &g,GIAC_CONTEXT);
 gen _edge_connectivity(const gen &g,GIAC_CONTEXT);
 gen _vertex_connectivity(const gen &g,GIAC_CONTEXT);
+gen _tonnetz(const gen &g,GIAC_CONTEXT);
 
 // GENERAL GIAC COMMANDS
 
 gen _foldl(const gen &g,GIAC_CONTEXT);
 gen _foldr(const gen &g,GIAC_CONTEXT);
+gen _randvar(const gen &g,GIAC_CONTEXT);
+gen _icomp(const gen &g,GIAC_CONTEXT);
 
 // FUNCTION POINTERS
 

@@ -109,7 +109,7 @@ extern "C" {
 #include <sys/wait.h>
 #endif
 
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS
 inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
 inline giac::gen _graph_vertices(const giac::gen &g,const giac::context *){ return g;}
 inline giac::gen _is_planar(const giac::gen &g,const giac::context *){ return g;}
@@ -1323,14 +1323,24 @@ namespace giac {
 	      if (positif) // test is false, continue
 		continue;
 	      // test is true make the plot
-	      return plotfunc(tmp,vars,attributs,densityplot,function_xmin,function_xmax,function_ymin,function_ymax,function_zmin,function_zmax,nstep,jstep,showeq,contextptr);
+	      gen curres=plotfunc(tmp,vars,attributs,densityplot,function_xmin,function_xmax,function_ymin,function_ymax,function_zmin,function_zmax,nstep,jstep,showeq,contextptr);
+	      if (curres.type==_VECT)
+		res = mergevecteur(res,*curres._VECTptr);
+	      else
+		res.push_back(curres);
+	      return res;
 	    }
 	    if (ck_is_greater(function_xmin,l,contextptr)){
 	      // l <= borne_inf < borne_sup
 	      if (!positif) // test is false, continue
 		continue;
 	      // test is true we can compute the integral
-	      return plotfunc(tmp,vars,attributs,densityplot,function_xmin,function_xmax,function_ymin,function_ymax,function_zmin,function_zmax,nstep,jstep,showeq,contextptr);
+	      gen curres=plotfunc(tmp,vars,attributs,densityplot,function_xmin,function_xmax,function_ymin,function_ymax,function_zmin,function_zmax,nstep,jstep,showeq,contextptr);
+	      if (curres.type==_VECT)
+		res = mergevecteur(res,*curres._VECTptr);
+	      else
+		res.push_back(curres);
+	      return res;
 	    }
 	    // borne_inf<l<borne_sup
 	    if (positif){
@@ -2452,7 +2462,7 @@ namespace giac {
   gen _pixon(const gen & a,GIAC_CONTEXT){
     gen args(a);
     if ( args.type==_STRNG && args.subtype==-1) return  args;
-    int s;
+    int s=1;
     if (is_integral(args)){
       s=args.val;
       if (s<=0 || s>=10)
@@ -14279,6 +14289,8 @@ gen _vers(const gen & g,GIAC_CONTEXT){
   gen _crayon(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if (g.type==_STRNG) return _crayon(gen(*g._STRNGptr,contextptr),contextptr);
+    if (g.type==_VECT && g._VECTptr->size()==3)
+      return _crayon(_rgb(g,contextptr),contextptr);
     // logo instruction
     if (g.type!=_INT_){
       gen res=turtle(contextptr).color;
@@ -15714,6 +15726,11 @@ gen _vers(const gen & g,GIAC_CONTEXT){
 
   // 0 text, 2 2d, 3 3d
   int graph_output_type(const gen & g){
+    // logo check
+    if (g.type==_VECT && g.subtype==_LOGO__VECT && g._VECTptr->size()==6){
+      vecteur & v=*g._VECTptr;
+      if (v[0].type==_DOUBLE_ && v[1].type==_DOUBLE_ && v[2].type==_DOUBLE_ && v[3].type==_INT_ && v[4].type==_INT_ && v[5].type==_STRNG) return 4;
+    }
     if (g.type==_VECT && !g._VECTptr->empty())
       return graph_output_type(g._VECTptr->back());
     if (g.is_symb_of_sommet(at_animation))

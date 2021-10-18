@@ -4,29 +4,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Euclidean quotient : quo</title>
+<title>Roots and poles of a rational function : froot</title>
 </head>
 <body >
 <a href="cascmd_en346.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en348.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec426" class="subsection">5.33.5  Euclidean quotient : <span style="font-family:monospace">quo</span></h3>
-<p><a id="hevea_default551"></a>
-<span style="font-family:monospace">quo</span> takes as arguments 
-two polynomials <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ, where
-<span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> are list polynomials or symbolic polynomials with
-respect to <span style="font-style:italic">x</span> or to an optional third argument.<br>
-<span style="font-family:monospace">quo</span> returns the quotient of the euclidean division 
-of <span style="font-style:italic">A</span> by <span style="font-style:italic">B</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].<br>
+<h3 id="sec427" class="subsection">5.33.1  Roots and poles of a rational function : <span style="font-family:monospace">froot</span></h3>
+<p><a id="hevea_default546"></a>
+<span style="font-family:monospace">froot</span> takes a rational function <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>) as argument.<br>
+<span style="font-family:monospace">froot</span> returns a vector whose components are the roots and the poles
+of <span style="font-style:italic">F</span>[<span style="font-style:italic">x</span>], each one followed by its multiplicity.<br>
+If <span style="font-family:monospace">Xcas</span> can not find the exact values of the roots or poles,
+it tries to find approximate values if <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>) has numeric coefficients.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">quo((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">quo((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">(-6%13)*x+-6%13</span></div><p>
-Indeed  <span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+1=(2<span style="font-style:italic">x</span><sup>2</sup>+4)(<span style="font-style:italic">x</span>+1/2)+5<span style="font-style:italic">x</span>−4/4
-and −3*4=−6*2=1  mod13.</p>
+</p><div class="center"><span style="font-family:monospace">froot((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)/(x-2)) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1,2,0,3,2,-1]</span></div><p>
+Hence, for  <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>5</sup>−2.<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>/<span style="font-style:italic">x</span>−2 :
+</p><ul class="itemize"><li class="li-itemize">
+1 is a root of multiplicity 2,
+</li><li class="li-itemize">0 is a root of multiplicity 3,
+</li><li class="li-itemize">2 is a pole of order 1.
+</li></ul><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">froot((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)/(x-2)) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1,1,(1+sqrt(5))/2,1,(1-sqrt(5))/2,1,2,-1]</span></div><p>
+<span style="font-weight:bold">Remark</span> : to have the complex roots and poles, check <span style="font-family:monospace">Complex</span> in
+the <span style="font-family:monospace">cas</span> configuration (red button giving the state line).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">froot((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)/(x-2)) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[-i,1,i,1,2,-1]</span></div>
 <hr>
 <a href="cascmd_en346.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

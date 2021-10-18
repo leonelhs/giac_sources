@@ -47,11 +47,14 @@ libxcas_la_SOURCES = History.cc Input.cc Xcas1.cc Equation.cc Print.cc \
 ##libjavagiac_la_SOURCES = giac_wrap.cxx
 
 
-bin_PROGRAMS = icas xcas aide
+bin_PROGRAMS = icas xcas aide hevea2mml
 icas_SOURCES = icas.cc 
 icas_LDADD = libxcas.la $(GINSH_LIBS) $(GSL_LIBS) $(LAPACK_LIBS)
 aide_SOURCES = aide.cc
 aide_LDADD = libxcas.la $(GINSH_LIBS) $(GSL_LIBS) $(LAPACK_LIBS)
+hevea2mml_SOURCES = hevea2mml.cc lex_yy.c y_tab.c
+hevea2mml_LDADD = 
+
 
 AM_CPPFLAGS = -DIN_GIAC -I$(srcdir) -I$(top_srcdir) -I$(builddir) \
 	      -I$(top_builddir) $(GMP_CFLAGS) $(NTL_CFLAGS) \
@@ -83,7 +86,8 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	config.h.numworks Makefile.numworks \
 	f2c.h clapack.h blaswrap.h mklocal64 pnt_gen \
 	giac.i runme.java archive_java archive_java_linux32 archive_java_linux64  javascript.cxx giacjs.i README.javascript \
-	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy mkgiacpy10 giac_wrap.cxx aspen_translate.h translate.cc
+	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy mkgiacpy10 giac_wrap.cxx aspen_translate.h translate.cc \
+	itex2MML.* y_tab.h
 
 bin_SCRIPTS = pgiac
 

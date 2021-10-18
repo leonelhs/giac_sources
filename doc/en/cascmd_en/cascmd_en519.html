@@ -4,30 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>QR decomposition : qr</title>
+<title>Companion matrix of a polynomial : companion</title>
 </head>
 <body >
 <a href="cascmd_en518.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en520.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec633" class="subsection">5.51.2  QR decomposition : <span style="font-family:monospace">qr</span></h3>
-<p><a id="hevea_default814"></a>
-<span style="font-family:monospace">qr</span> takes as argument a numeric
-square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span>.<br>
-<span style="font-family:monospace">qr</span> factorizes numerically 
-this matrix as <span style="font-style:italic">Q</span>*<span style="font-style:italic">R</span> where
-<span style="font-style:italic">Q</span> is an orthogonal matrix (<sup><span style="font-style:italic">t</span></sup><span style="font-style:italic">Q</span>*<span style="font-style:italic">Q</span>=<span style="font-style:italic">I</span>) and <span style="font-style:italic">R</span> is an upper triangular 
-matrix. 
-<span style="font-family:monospace">qr(A)</span> returns only <span style="font-family:monospace">R</span>, run <span style="font-family:monospace">Q=A*inv(R)</span> to get <span style="font-family:monospace">Q</span>.<br>
+<h3 id="sec633" class="subsection">5.50.10  Companion matrix of a polynomial : <span style="font-family:monospace">companion</span></h3>
+<p><a id="hevea_default814"></a><a id="sec:compagne"></a>
+<span style="font-family:monospace">companion</span> takes as argument an unitary polynomial <span style="font-style:italic">P</span> and the 
+name of its variable.<br>
+<span style="font-family:monospace">companion</span> returns the matrix whose characteristic polynomial is <span style="font-style:italic">P</span>.<br>
+If <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>+<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span>−1</sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span>−1</sup>+...+<span style="font-style:italic">a</span><sub>−1</sub><span style="font-style:italic">x</span>+<span style="font-style:italic">a</span><sub>0</sub>,
+this matrix is equal to the unit matrix of size <span style="font-style:italic">n</span>−1 bordered with
+[0,0..,0,−<span style="font-style:italic">a</span><sub>0</sub>] as first row, and with
+[−<span style="font-style:italic">a</span><sub>0</sub>,−<span style="font-style:italic">a</span><sub>1</sub>,....,−<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span>−1</sub>] as last column.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">qr([[3,5],[4,5]])</span></div><p>
-Output is the matrix <span style="font-family:monospace">R</span> :
-</p><div class="center"><span style="font-family:monospace">[[-5,-7],[0,-1]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">companion(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+5x-7,x)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[0,7],[1,-5]]</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">qr([[1,2],[3,4]])</span></div><p>
-Output is the matrix <span style="font-family:monospace">R</span> :
-</p><div class="center"><span style="font-family:monospace">[[-3.16227766017,-4.42718872424],[0,-0.632455532034]] </span></div>
+</p><div class="center"><span style="font-family:monospace">companion(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+3x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4x-1,x)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[0,0,0,1],[1,0,0,-4],[0,1,0,-2],[0,0,1,-3]]</span></div>
 <hr>
 <a href="cascmd_en518.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

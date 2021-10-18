@@ -3990,6 +3990,13 @@ namespace giac {
       return args._USERptr->rand(contextptr);
     if (args.is_symb_of_sommet(at_rootof))
       return vranm(1,args,contextptr)[0];
+    if (args.is_symb_of_sommet(at_discreted))
+      return vranm(1,args,contextptr)[0];
+    if (args.type==_VECT && args._VECTptr->front()==at_multinomial) {
+      vecteur v=*args._VECTptr;
+      v.insert(v.begin(),1);
+      return _randvector(v,contextptr)._VECTptr->at(0);
+    }
     int nd=is_distribution(args);
     if (nd==1 && args.type==_FUNC)
       return randNorm(contextptr);
@@ -4140,17 +4147,38 @@ namespace giac {
   static define_unary_function_eval (__shuffle,&_shuffle,_shuffle_s);
   define_unary_function_ptr5( at_shuffle ,alias_at_shuffle,&__shuffle,0,true);
 
+#ifndef USE_GMP_REPLACEMENTS
   gen _sample(const gen & args,GIAC_CONTEXT){
-    if (args.type!=_VECT || args._VECTptr->size()!=2)
+    if (args.is_symb_of_sommet(at_discreted) || is_distribution(args)>0)
+      return _rand(args,contextptr);
+    if (args.type==_SYMB)
+      return _randvector(makesequence(1,args),contextptr)._VECTptr->front();
+    if (args.type!=_VECT || args._VECTptr->size()<2)
       return gensizeerr(contextptr);
-    gen a=args._VECTptr->front(),b=args._VECTptr->back();
-    if (a.type!=_VECT || !is_integral(b) || b.type==_ZINT || b.val<0)
+    vecteur &argv=*args._VECTptr;
+    gen a=argv.front(),b=argv.back();
+    if (a==at_multinomial) {
+      if (argv.size()==3) {
+        vecteur v=argv;
+        v.insert(v.begin(),1);
+        return _randvector(v,contextptr)._VECTptr->at(0);
+      } if (argv.size()==4 && b.is_integer()) {
+        return _randvector(makesequence(b,at_multinomial,argv[1],argv[2]),contextptr);
+      }
+      return gensizeerr(contextptr);
+    }
+    if (args._VECTptr->size()!=2 || !is_integral(b) || b.type==_ZINT || b.val<0)
+      return gensizeerr(contextptr);
+    if (a.is_symb_of_sommet(at_discreted) || is_distribution(a)>0 || a.type==_SYMB)
+      return _randvector(makesequence(b,a),contextptr);
+    if (a.type!=_VECT)
       return gensizeerr(contextptr);
     return _rand(makesequence(b,a),contextptr);
   }
   static const char _sample_s []="sample";
   static define_unary_function_eval (__sample,&_sample,_sample_s);
   define_unary_function_ptr5( at_sample ,alias_at_sample,&__sample,0,true);
+#endif
 
   gen _srand(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
@@ -6098,7 +6126,7 @@ namespace giac {
     if (args.type!=_INT_)
       return xcas_mode(contextptr);
     xcas_mode(contextptr)=args.val & 0xff;
-    python_compat(args.val>=256,contextptr);
+    python_compat(args.val/256,contextptr);
     return string2gen(gettext("Warning: some commands like subs might change arguments order"),false);
   }
   static const char _xcas_mode_s []="xcas_mode";
@@ -6178,6 +6206,21 @@ namespace giac {
   static const char _all_trig_solutions_s []="all_trig_solutions";
   static define_unary_function_eval2 (__all_trig_solutions,&_all_trig_solutions,_all_trig_solutions_s,&printasDigits);
   define_unary_function_ptr( at_all_trig_solutions ,alias_at_all_trig_solutions ,&__all_trig_solutions);
+
+  gen _increasing_power(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG &&  g.subtype==-1) return  g;
+    gen args(g);
+    if (g.type==_DOUBLE_)
+      args=int(g._DOUBLE_val);    
+    if (args.type!=_INT_)
+      return all_trig_sol(contextptr);
+    increasing_power((args.val)!=0,contextptr);
+    parent_cas_setup(contextptr);
+    return args;
+  }
+  static const char _increasing_power_s []="increasing_power";
+  static define_unary_function_eval2 (__increasing_power,&_increasing_power,_increasing_power_s,&printasDigits);
+  define_unary_function_ptr( at_increasing_power ,alias_at_increasing_power ,&__increasing_power);
 
   gen _ntl_on(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG &&  g.subtype==-1) return  g;
@@ -7735,6 +7778,14 @@ namespace giac {
     if (args.type!=_STRNG)
       return symbolic(at_read,args);
     string fichier=*args._STRNGptr;
+#ifdef EMCC
+    string s=fetch(fichier);
+    return gen(s,contextptr);
+#endif
+    if (fichier.size()>4 && fichier.substr(0,4)=="http"){
+      string s=fetch(fichier);
+      return gen(s,contextptr);
+    }
 #ifdef NSPIRE
     file inf(fichier.c_str(),"r");
 #else
@@ -7798,7 +7849,12 @@ namespace giac {
   gen _read(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
     if (args.type==_VECT && !args._VECTptr->empty() && args._VECTptr->front().type==_STRNG){
-      FILE * f=fopen(args._VECTptr->front()._STRNGptr->c_str(),"r");
+      string file=*args._VECTptr->front()._STRNGptr;
+      if (file.size()>4 && file.substr(0,4)=="http"){
+	string s=fetch(file);
+	return string2gen(s,false);
+      }
+      FILE * f=fopen(file.c_str(),"r");
       if (!f)
 	return undef;
       string s;
@@ -9529,7 +9585,7 @@ namespace giac {
   const mksa_unit __me_unit={9.1093897e-31,0,1,0,0,0,0,0}; 
   const mksa_unit __qe_unit={1.60217733e-19,0,0,1,1,0,0,0};
   const mksa_unit __h__unit={6.6260755e-34,2,1,-1,0,0,0,0}; 
-  const mksa_unit __G_unit={6.67259e-11,3,-1,-2,0,0,0,0}; 
+  const mksa_unit __G_unit={6.67408e-11,3,-1,-2,0,0,0,0}; 
   const mksa_unit __mu0_unit={1.25663706144e-6,1,1,-2,-2,0,0,0}; 
   const mksa_unit __epsilon0_unit={8.85418781761e-12,-3,-1,4,2,0,0,0}; 
   const mksa_unit __sigma_unit={ 5.67051e-8,0,1,-3,0,-4,0,0}; 
@@ -10883,6 +10939,28 @@ namespace giac {
     if (g.type!=_VECT || g._VECTptr->size()!=3)
       return gensizeerr(contextptr);
     vecteur v = *g._VECTptr;
+    if (v[0].is_symb_of_sommet(at_not))
+      return when2sign(makevecteur(v[0]._SYMBptr->feuille,v[2],v[1]),contextptr);
+    if (v[0].is_symb_of_sommet(at_and) && v[0]._SYMBptr->feuille.type==_VECT){
+      vecteur vand=*v[0]._SYMBptr->feuille._VECTptr;
+      if (vand.size()==2)
+	return whentosign(makevecteur(vand[0],whentosign(makevecteur(vand[1],v[1],v[2]),contextptr),v[2]),contextptr);
+      if (vand.size()>2){
+	gen vandlast=vand.back();
+	vand.pop_back();
+	return whentosign(makevecteur(vandlast,whentosign(makevecteur(symbolic(at_and,vand),v[1],v[2]),contextptr),v[2]),contextptr);
+      }
+    }
+    if (v[0].is_symb_of_sommet(at_ou) && v[0]._SYMBptr->feuille.type==_VECT){
+      vecteur vor=*v[0]._SYMBptr->feuille._VECTptr;
+      if (vor.size()==2)
+	return whentosign(makevecteur(vor[0],v[1],whentosign(makevecteur(vor[1],v[1],v[2]),contextptr)),contextptr);
+      if (vor.size()>2){
+	gen vorlast=vor.back();
+	vor.pop_back();
+	return whentosign(makevecteur(vorlast,v[1],whentosign(makevecteur(symbolic(at_and,vor),v[1],v[2]),contextptr)),contextptr);
+      }
+    }
     if (is_equal(v[0]) || v[0].is_symb_of_sommet(at_same)){
       *logptr(contextptr) << gettext("Assuming false condition ") << v[0].print(contextptr) << endl;
       return v[2];
@@ -10906,6 +10984,8 @@ namespace giac {
   }
   const gen_op_context when2sign_tab[]={whentosign,0};
   gen when2sign(const gen & g,GIAC_CONTEXT){
+    if (equalposcomp(lidnt(g),unsigned_inf))
+      *logptr(contextptr) << gettext("when2sign does not work properly with infinities. Replace inf by Inf and run limit after.") << endl;
     return subst(g,when_tab,when2sign_tab,false,contextptr);
     /*
     vector< gen_op_context > when2sign_v(1,whentosign);
@@ -11013,7 +11093,8 @@ namespace giac {
       if (tmp.type==_IDNT && (strcmp(tmp._IDNTptr->id_name,"numpy")==0 || strcmp(tmp._IDNTptr->id_name,"pylab")==0 || strcmp(tmp._IDNTptr->id_name,"matplotlib")==0)){
 	if (b.type==_SYMB){
 	  gen w1=eval(w[1],1,contextptr);
-	  if (w1==at_float || w1==at_real)
+	  // at_equal test added for e.g. matplotlib.xlim(-5,5)
+	  if (w1==at_float || w1==at_real || w1.is_symb_of_sommet(at_equal))
 	    return w1;
 	  tmp=eval(b._SYMBptr->feuille,eval_level(contextptr),contextptr);
 	  tmp=evalf_double(tmp,1,contextptr);

@@ -4,67 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Maximum and minimum of an expression: fMax fMin</title>
+<title>Length of an arc : arcLen</title>
 </head>
 <body >
 <a href="cascmd_en189.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en191.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec240" class="subsection">5.17.3  Maximum and minimum of an expression: <span style="font-family:monospace">fMax fMin</span></h3>
-<p><a id="hevea_default321"></a><a id="hevea_default322"></a> 
-<span style="font-family:monospace">fMax</span> and <span style="font-family:monospace">fMin</span> take one or two arguments : an expression 
-of a variable and the name of this variable (by default <span style="font-family:monospace">x</span>).<br>
-<span style="font-family:monospace">fMax</span> returns the abscissa 
-of a maximum of the expression.<br>
-<span style="font-family:monospace">fMin</span> returns the abscissa 
-of a minimum of the expression.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">fMax(sin(x),x)</span></div><p>
-Or :
-</p><div class="center"><span style="font-family:monospace">fMax(sin(x))</span></div><p>
-Or :
-</p><div class="center"><span style="font-family:monospace">fMax(sin(y),y)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">pi/2</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">fMin(sin(x),x)</span></div><p>
-Or :
-</p><div class="center"><span style="font-family:monospace">fMin(sin(x))</span></div><p>
-Or :
-</p><div class="center"><span style="font-family:monospace">fMin(sin(y),y)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">-pi/2</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">fMin(sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">0</span></div><p><span style="font-family:monospace">fMax</span> and <span style="font-family:monospace">fMin</span> can also compute the maximum resp. minimum of a nonlinear multivariate expression subject to a set of nonlinear equality and/or inequality constraints. Both functions in such cases take four to six arguments:
+<h3 id="sec240" class="subsection">5.17.2  Length of an arc : <span style="font-family:monospace">arcLen</span></h3>
+<p><a id="hevea_default321"></a>
+<span style="font-family:monospace">arcLen</span> takes four arguments : an expression <span style="font-style:italic">ex</span> (resp. a list
+of two expressions [<span style="font-style:italic">ex</span>1,<span style="font-style:italic">ex</span>2]), the name of a parameter and two values <span style="font-style:italic">a</span>
+and <span style="font-style:italic">b</span> of this parameter.<br>
+<span style="font-family:monospace">arcLen</span> computes the length of the curve define by the equation 
+<span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">ex</span> (resp. by <span style="font-style:italic">x</span>=<span style="font-style:italic">ex</span>1,<span style="font-style:italic">y</span>=<span style="font-style:italic">ex</span>2) when the parameter values varies from <span style="font-style:italic">a</span> 
+to <span style="font-style:italic">b</span>, using the formula
+<span style="font-family:monospace">arcLen(f(x),x,a,b)=</span><br>
+<span style="font-family:monospace">integrate(sqrt(diff(f(x),x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1),x,a,b)</span><br>
+or <br>
+<span style="font-family:monospace">integrate(sqrt(diff(x(t),t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+diff(y(t),t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),t,a,b)</span>.<br>
+
+<span style="font-weight:bold">Examples</span>
 </p><ul class="itemize"><li class="li-itemize">
-	objective function (an expression)
-	</li><li class="li-itemize">list of constraints (equalities and inequalities)
-	</li><li class="li-itemize">list of problem variables
-	</li><li class="li-itemize">initial guess (must be a list of nonzero reals representing a feasible point)
-	</li><li class="li-itemize">precision (optional), if not given the default epsilon value is used
-	</li><li class="li-itemize">maximum number of iterations (optional)
-</li></ul><p>
-The objective function does not need to be differentiable.
-Both <span style="font-family:monospace">fMin</span> and <span style="font-family:monospace">fMax</span> return the optimal solution as a vector. Note that the actual optimal value of the objective is not returned.</p><p>Although the initial point is required to be feasible, the algorithm will sometimes succeed even if it is infeasible. Note that the initial value of a variable must not be zero.</p><p>For example, input :
-</p><div class="center">
-	<span style="font-family:monospace">fMin((x-5)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-25,[y&gt;=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2],[x,y],[1,1])
-</span></div><p>
-Output :
-</p><div class="center">
-	<span style="font-family:monospace">[1.2347728624961,1.5246640219568]
-</span></div><p>
+Compute the length of the parabola <span style="font-style:italic">y</span>=<span style="font-style:italic">x</span><sup>2</sup> from <span style="font-style:italic">x</span>=0 to <span style="font-style:italic">x</span>=1.<br>
 Input :
-</p><div class="center">
-	<span style="font-family:monospace">fMax((x-2)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(y-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[-.25x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1&gt;=0,x-2y+1=0],
-	[x,y],[.5,.75])
-</span></div><p>
+<div class="center"><span style="font-family:monospace">arcLen(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,0,1)</span></div>
+or
+<div class="center"><span style="font-family:monospace">arcLen([t,t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2],t,0,1)</span></div>
 Output :
-</p><div class="center">
-	<span style="font-family:monospace">[-1.82287565553,-0.411437827766]
-</span></div>
+<div class="center"><span style="font-family:monospace">-1/4*log(sqrt(5)-2)-(-(sqrt(5)))/2</span></div> 
+</li><li class="li-itemize">Compute the length of the curve <span style="font-style:italic">y</span>=cosh(<span style="font-style:italic">x</span>) from <span style="font-style:italic">x</span>=0 to 
+<span style="font-style:italic">x</span>=ln(2).<br>
+Input :
+<div class="center"><span style="font-family:monospace">arcLen(cosh(x),x,0,log(2))</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">3/4</span></div>
+</li><li class="li-itemize">Compute the length of the circle <span style="font-style:italic">x</span>=cos(<span style="font-style:italic">t</span>),<span style="font-style:italic">y</span>=sin(<span style="font-style:italic">t</span>) from <span style="font-style:italic">t</span>=0 to 
+<span style="font-style:italic">t</span>=2*π.<br>
+Input :
+<div class="center"><span style="font-family:monospace">arcLen([cos(t),sin(t)],t,0,2*pi)</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">2*pi</span></div>
+</li></ul>
 <hr>
 <a href="cascmd_en189.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

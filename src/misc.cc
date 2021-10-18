@@ -45,7 +45,7 @@ using namespace std;
 #include "quater.h"
 #include "sparse.h"
 #include "giacintl.h"
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS
 inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
 inline giac::gen _graph_charpoly(const giac::gen &g,const giac::context *){ return g;}
 #else
@@ -1070,7 +1070,7 @@ namespace giac {
     if (is_zero(a))
       return b*x+c;
     // a*x^2+b*x+c -> a*(x+b/(2*a))^2+(b^2-4*a*c)/(4*a)
-    return a*pow(x+b/(2*a),2)+(4*a*c-pow(b,2))/(4*a);
+    return a*pow(x+symbolic(at_neg,(-b)/(2*a)),2)+(4*a*c-pow(b,2))/(4*a);
   }    
   static const char _canonical_form_s []="canonical_form";
   static define_unary_function_eval (__canonical_form,&_canonical_form,_canonical_form_s);
@@ -1428,6 +1428,17 @@ namespace giac {
   static define_unary_function_eval (__float2rational,&_float2rational,_float2rational_s);
   define_unary_function_ptr5( at_float2rational ,alias_at_float2rational,&__float2rational,0,true);
 
+  gen _fmod(const gen & g,GIAC_CONTEXT){
+    if (g.type==_STRNG && g.subtype==-1) return  g;
+    if (g.type!=_VECT || g.subtype!=_SEQ__VECT || g._VECTptr->size()!=2) 
+      return gensizeerr(contextptr);
+    const gen & a=g._VECTptr->front(),b=g._VECTptr->back();
+    return a-_floor(a/b,contextptr)*b;
+  }
+  static const char _fmod_s []="fmod";
+  static define_unary_function_eval (__fmod,&_fmod,_fmod_s);
+  define_unary_function_ptr5( at_fmod ,alias_at_fmod,&__fmod,0,true);
+
   gen _gramschmidt(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if (g.type!=_VECT)
@@ -1709,6 +1720,111 @@ namespace giac {
   static const char _pmin_s []="pmin";
   static define_unary_function_eval (__pmin,&_pmin,_pmin_s);
   define_unary_function_ptr5( at_pmin ,alias_at_pmin,&__pmin,0,true);
+
+  gen fastpow(const gen & a,const gen & k_,GIAC_CONTEXT){
+    gen a2k(a),res(1),k(k_);
+    while (k!=0){
+      if (k.type==_ZINT){
+	int m=modulo(*k._ZINTptr,2);
+	if (m%2)
+	  res=res*a2k;
+	k=(k-m)/2;
+      }
+      else {
+	if (k.val % 2)
+	  res=res*a2k;
+	k.val /= 2;
+      }
+      a2k=a2k*a2k;
+    }
+    return res;
+  }
+
+  // multiplicative order of g, a divisor of mult
+  gen order(const gen &g,const gen & mult,GIAC_CONTEXT){
+    vecteur v=ifactors(mult,contextptr);
+    gen o(mult);
+    int s=v.size();
+    for (int i=0;i<s/2;++i){
+      gen n(v[2*i]);
+      gen m(v[2*i+1]);
+      for (;m.val;--m.val){
+	gen o1(o/n);
+	gen chk=fastpow(g,o1,contextptr);
+	if (!is_one(chk))
+	  break;
+	o=o1;
+      }
+    }
+    return o;
+  }
+
+  gen _order(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG && g.subtype==-1) return  g;
+    if (is_squarematrix(g)){
+      matrice &m =*g._VECTptr;
+      if (!mker(m,contextptr).empty())
+	return gensizeerr(gettext("Not invertible"));
+      gen m00=m[0][0],extdeg,p;
+      if (m00.type==_USER){
+#ifndef NO_RTTI
+	if (galois_field * gf=dynamic_cast<galois_field *>(m00._USERptr)){
+	  if (gf->a.type!=_VECT || gf->P.type!=_VECT || !is_integer(gf->p))
+	    return gensizeerr("Bad GF element");
+	  extdeg=gf->P._VECTptr->size()-1;
+	  p=gf->p;
+	  // a divisor of the lcm of gf->p^(n*degree)-1 for degree of irred factors of pmin
+	}
+#endif
+      }
+      if (m00.type==_MOD){
+	p=*(m00._MODptr+1);
+	if (!is_probab_prime_p(p))
+	  return gensizeerr("0 or prime characteristic required");
+	// a divisor of the lcm of p^degree-1 for degree of irred factors of pmin
+	extdeg=1;
+      }
+      if (extdeg!=0){
+	gen tmp=_pmin(makesequence(g,vx_var),contextptr);
+	tmp=_factors(tmp,contextptr);
+	if (tmp.type==_VECT){
+	  const vecteur & v=*tmp._VECTptr;
+	  gen res=1;
+	  for (int i=0;i<v.size()/2;++i){
+	    int m=v[2*i+1].val; 
+	    gen o=pow(p,extdeg*_degree(v[2*i],contextptr),contextptr)-1;
+	    res=lcm(res,o);
+	    if (m>0)
+	      res=lcm(res,p);
+	  }
+	  return res;
+	}
+      }
+    }
+    if (g.type==_MOD){
+      gen a=*g._MODptr,n=*(g._MODptr+1);
+      if (!is_one(gcd(a,n,contextptr)))
+	return gensizeerr(gettext("Not invertible"));
+      gen p=euler(n,contextptr);
+      return order(g,p,contextptr);
+    }
+    if (g.type==_USER){
+      if (is_zero(g))
+	return gensizeerr(gettext("Not invertible"));
+#ifndef NO_RTTI
+      if (galois_field * gf=dynamic_cast<galois_field *>(g._USERptr)){
+	if (gf->a.type!=_VECT || gf->P.type!=_VECT || !is_integer(gf->p))
+	  return gensizeerr("Bad GF element");
+	// a divisor of gf->p^n-1
+	return order(g,pow(gf->p,gf->P._VECTptr->size()-1,contextptr)-1,contextptr);
+      }
+#endif
+    } 
+    return undef;
+  }
+  static const char _order_s []="order";
+  static define_unary_function_eval (__order,&_order,_order_s);
+  define_unary_function_ptr5( at_order ,alias_at_order,&__order,0,true);
 
   // a faire: vpotential, signtab
   gen _potential(const gen & g,GIAC_CONTEXT){
@@ -2526,8 +2642,20 @@ namespace giac {
 #endif
     }
     if (g.type==_VECT && !g._VECTptr->empty() && 
-	(g._VECTptr->back().type==_INT_ || g._VECTptr->back().type==_DOUBLE_)){
+	(g._VECTptr->back().type==_INT_ || g._VECTptr->back().type==_DOUBLE_ || g._VECTptr->back().type==_FRAC)){
       vecteur v=*g._VECTptr;
+      if (v.size()==2 && v.front().type==_SPOL1){
+	const sparse_poly1 & s=*v.front()._SPOL1ptr;
+	sparse_poly1::const_iterator it=s.begin(),itend=s.end();
+	gen n=v.back();
+	for (;it!=itend;++it){
+	  if (it->exponent==n)
+	    return it->coeff;
+	  if (is_greater(it->exponent,n,contextptr))
+	    return 0;
+	}
+	return undef;
+      }
       is_integral(v.back());
       if (v.back().val<0)
 	return gendimerr(contextptr);
@@ -5318,11 +5446,13 @@ static define_unary_function_eval (__bitxor,&_bitxor,_bitxor_s);
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if (g.type==_INT_)
       return ~g.val;
+#if !defined(USE_GMP_REPLACEMENTS)
     if (g.type==_ZINT){
       ref_mpz_t *  e = new ref_mpz_t;
       mpz_com(e->z,*g._ZINTptr);
       return e;
     }
+#endif
     return gensizeerr();
   }
   static const char _bitnot_s []="bitnot";
@@ -7439,6 +7569,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       return symbolic(at_superieur_egal,g._SYMBptr->feuille);
     if (g._SYMBptr->sommet==at_inferieur_strict)
       return symbolic(at_inferieur_egal,g._SYMBptr->feuille);
+    if (g._SYMBptr->sommet==at_different)
+      return 1;
     return symbolic(g._SYMBptr->sommet,strict2large(g._SYMBptr->feuille));
   }
 
@@ -8406,9 +8538,16 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   void set_pixel(int x,int y,int c,GIAC_CONTEXT){
     _set_pixel(makesequence(x,y,c),contextptr);
   }
+  void set_pixel(double x,double y,int c,GIAC_CONTEXT){
+    _set_pixel(makesequence(int(x+.5),int(y+.5),c),contextptr);
+  }
   static const char _set_pixel_s []="set_pixel";
   static define_unary_function_eval (__set_pixel,&_set_pixel,_set_pixel_s);
   define_unary_function_ptr5( at_set_pixel ,alias_at_set_pixel,&__set_pixel,0,true);
+
+  static const char _draw_pixel_s []="draw_pixel";
+  static define_unary_function_eval (__draw_pixel,&_set_pixel,_draw_pixel_s);
+  define_unary_function_ptr5( at_draw_pixel ,alias_at_draw_pixel,&__draw_pixel,0,true);
 
   //Uses the Bresenham line algorithm 
   void draw_line(int x1, int y1, int x2, int y2, int color,GIAC_CONTEXT) {
@@ -8608,6 +8747,308 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   static define_unary_function_eval (__draw_polygon,&_draw_polygon,_draw_polygon_s);
   define_unary_function_ptr5( at_draw_polygon ,alias_at_draw_polygon,&__draw_polygon,0,true);
 
+  void draw_rectangle(int x, int y, int width, int height, unsigned short color,GIAC_CONTEXT){
+    if (x<0){ width+=x; x=0;}
+    if (y<0){ height+=y; y=0;}
+    if (width<0 || height<0) return;
+    for (int j=0;j<=height;++j){
+      for (int i=0;i<width;++i)
+	set_pixel(x+i,y+j,color,contextptr);
+    }
+  }
+
+  void draw_circle(int xc,int yc,int r,int color,bool q1,bool q2,bool q3,bool q4,GIAC_CONTEXT){
+    int x=0,y=r,delta=0;
+    while (x<=y){
+      if (q4){
+	set_pixel(xc+x,yc+y,color,contextptr);
+	set_pixel(xc+y,yc+x,color,contextptr);
+      }
+      if (q3){
+	set_pixel(xc-x,yc+y,color,contextptr);
+	set_pixel(xc-y,yc+x,color,contextptr);
+      }
+      if (q1){
+	set_pixel(xc+x,yc-y,color,contextptr);
+	set_pixel(xc+y,yc-x,color,contextptr);
+      }
+      if (q2){
+	set_pixel(xc-x,yc-y,color,contextptr);
+	set_pixel(xc-y,yc-x,color,contextptr);
+      }
+      ++x;
+      if (delta<0){
+	delta += 2*y+1;
+	--y;
+      }
+      delta += 1-2*x;
+    }
+  }
+
+  void draw_filled_arc(int x,int y,int rx,int ry,int theta1_deg,int theta2_deg,int color,int xmin,int xmax,int ymin,int ymax,bool segment,GIAC_CONTEXT){
+    // approximation by a filled polygon
+    // points: (x,y), (x+rx*cos(theta)/2,y+ry*sin(theta)/2) theta=theta1..theta2
+    while (theta2_deg<theta1_deg)
+      theta2_deg+=360;
+    if (theta2_deg-theta1_deg>=360){
+      theta1_deg=0;
+      theta2_deg=360;
+    }
+    int N0=theta2_deg-theta1_deg+1;
+    // reduce N if rx or ry is small
+    double red=double(rx)/1024*double(ry)/768;
+    if (red>1) red=1;
+    if (red<0.1) red=0.1;
+    int N=red*N0;
+    if (N<5)
+      N=N0>5?5:N0;
+    if (N<2)
+      N=2;
+    vector< vector<int> > v(segment?N+1:N+2,vector<int>(2));
+    int i=0;
+    if (!segment){
+      v[0][0]=x;
+      v[0][1]=y;
+      ++i;
+    }
+    double theta=theta1_deg*M_PI/180;
+    double thetastep=(theta2_deg-theta1_deg)*M_PI/(180*(N-1));
+    for (;i<v.size()-1;++i){
+      v[i][0]=int(x+rx*std::cos(theta)+.5);
+      v[i][1]=int(y-ry*std::sin(theta)+.5); // y is inverted
+      theta += thetastep;
+    }
+    v.back()=v.front();
+    draw_filled_polygon(v,xmin,xmax,ymin,ymax,color,contextptr);
+  }    
+
+
+  // arc of ellipse, for y/x in [t1,t2] and in quadrant 1, 2, 3, 4
+  // y must be replaced by -y 
+  void draw_arc(int xc,int yc,int rx,int ry,int color,double t1, double t2,bool q1,bool q2,bool q3,bool q4,GIAC_CONTEXT){
+    double x=0,y=rx,delta=0;
+    double ryx=double(ry)/rx;
+    // *logptr(contextptr) << "t1,t2:" << t1 << "," << t2 << ",q1234" << q1 << "," << q2 << "," << q3 << "," << q4 << endl;
+    while (x<=y){
+      double xeff=x*ryx,yeff=y*ryx;
+      if (q4){
+	if (y>=-x*t2 && y<=-x*t1) set_pixel(xc+x,yc+yeff,color,contextptr);
+	if (x>=-y*t2 && x<=-y*t1) set_pixel(xc+y,yc+xeff,color,contextptr);
+      }
+      if (q3){
+	if (y>=x*t1 && y<=x*t2) set_pixel(xc-x,yc+yeff,color,contextptr);
+	if (x>=y*t1 && x<=y*t2) set_pixel(xc-y,yc+xeff,color,contextptr);
+      }
+      if (q1){
+	if (y>=x*t1 && y<=x*t2) set_pixel(xc+x,yc-yeff,color,contextptr);
+	if (x>=y*t1 && x<=y*t2) set_pixel(xc+y,yc-xeff,color,contextptr);
+      }
+      if (q2){
+	if (y>=-x*t2 && y<=-x*t1) set_pixel(xc-x,yc-yeff,color,contextptr);
+	if (x>=-y*t2 && x<=-y*t1) set_pixel(xc-y,yc-xeff,color,contextptr);
+      }
+      ++x;
+      if (delta<0){
+	delta += 2*y+1;
+	--y;
+      }
+      delta += 1-2*x;
+    }
+  }
+  
+  void draw_arc(int xc,int yc,int rx,int ry,int color,double theta1, double theta2,GIAC_CONTEXT){
+    if (theta2-theta1>=2*M_PI){
+      draw_arc(xc,yc,rx,ry,color,-1e307,1e307,true,true,true,true,contextptr);
+      return;
+    }
+    // at most one vertical in [theta1,theta2]
+    double t1=std::tan(theta1);
+    double t2=std::tan(theta2);
+    int n=int(std::floor(theta1/M_PI+.5));
+    // n%2==0 -pi/2<theta1<pi/2, n%2==1 pi/2<theta1<3*pi/2
+    double theta=(n+.5)*M_PI;
+    // if theta1 is almost pi/2 mod pi, t1 might be wrong because of rounding
+    if (std::fabs(theta1-(theta-M_PI))<1e-6 && t1>0) 
+	t1=-1e307;
+    //*logptr(contextptr) << "thetas:" << theta1 << "," << theta << "," << theta2 << ", n " << n << ", t:" << t1 << "," << t2 << endl;
+    if (theta2>theta){
+      if (theta2>=theta+M_PI){
+	if (n%2==0){ // -pi/2<theta1<pi/2<3*pi/2<theta2
+	  draw_arc(xc,yc,rx,ry,color,t1,1e307,true,false,false,false,contextptr);
+	  draw_arc(xc,yc,rx,ry,color,-1e307,1e307,false,true,true,false,contextptr);	  
+	  draw_arc(xc,yc,rx,ry,color,-1e307,t2,false,false,false,true,contextptr);
+	}
+	else { // -3*pi/2<theta1<-pi/2<pi/2<theta2
+	  draw_arc(xc,yc,rx,ry,color,t1,1e307,false,false,true,false,contextptr);
+	  draw_arc(xc,yc,rx,ry,color,-1e307,1e307,true,false,false,true,contextptr);
+	  draw_arc(xc,yc,rx,ry,color,-1e307,t2,false,true,false,false,contextptr);
+	}
+	return;
+      }
+      if (n%2==0){ // -pi/2<theta1<pi/2<theta2<3*pi/2
+	draw_arc(xc,yc,rx,ry,color,t1,1e307,true,false,false,false,contextptr);
+	draw_arc(xc,yc,rx,ry,color,-1e307,t2,false,true,false,false,contextptr);
+      }
+      else { // -3*pi/2<theta1<-pi/2<theta2<pi/2
+	draw_arc(xc,yc,rx,ry,color,t1,1e307,false,false,true,false,contextptr);
+	draw_arc(xc,yc,rx,ry,color,-1e307,t2,false,false,false,true,contextptr);
+      }
+      return;
+    }
+    if (n%2==0) { // -pi/2<theta1<theta2<pi/2
+      draw_arc(xc,yc,rx,ry,color,t1,t2,true,false,false,true,contextptr);	
+    }
+    else { // pi/2<theta1<theta2<3*pi/2
+      draw_arc(xc,yc,rx,ry,color,t1,t2,false,true,true,false,contextptr);	
+    }
+  }
+  
+  void draw_filled_circle(int xc,int yc,int r,int color,bool left,bool right,GIAC_CONTEXT){
+    int x=0,y=r,delta=0;
+    while (x<=y){
+      for (int Y=-y;Y<=y;Y++){
+	if (right)
+	  set_pixel(xc+x,yc+Y,color,contextptr);
+	if (left)
+	  set_pixel(xc-x,yc+Y,color,contextptr);
+      }
+      for (int Y=-x;Y<=x;Y++){
+	if (right)
+	  set_pixel(xc+y,yc+Y,color,contextptr);
+	if (left)
+	  set_pixel(xc-y,yc+Y,color,contextptr);
+      }
+      ++x;
+      if (delta<0){
+	delta += 2*y+1;
+	--y;
+      }
+      delta += 1-2*x;
+    }
+  }
+  
+  gen remove_at_display(const gen &g){
+    if (g.is_symb_of_sommet(at_equal)){
+      const gen & f=g._SYMBptr->feuille;
+      if (f.type==_VECT && f._VECTptr->size()==2 && f._VECTptr->front()==at_display)
+	return f._VECTptr->back();
+    }
+    return g;
+  }
+
+  gen _draw_arc(const gen & a_,bool arc,GIAC_CONTEXT){
+    gen a(a_);
+    if (a.type==_STRNG && a.subtype==-1) return  a;
+    if (a.type!=_VECT || a._VECTptr->size()<2)
+      return gentypeerr(contextptr);
+    const vecteur & v=*a._VECTptr;
+    size_t vs=v.size();
+    if (arc && vs<6)
+      return gendimerr(contextptr);
+    if (vs>=3){
+      gen x0=v.front();
+      gen y0=v[1];
+      gen r=v[2];
+      if (x0.type==_DOUBLE_)
+	x0=int(x0._DOUBLE_val+.5);
+      if (y0.type==_DOUBLE_)
+	y0=int(y0._DOUBLE_val+.5);
+      if (r.type==_DOUBLE_)
+	r=int(r._DOUBLE_val+.5);
+      int attr=vs==(arc?6:3)?0:remove_at_display(v.back()).val;
+      if (x0.type==_INT_ &&  y0.type==_INT_ && r.type==_INT_){
+	if (arc){
+	  gen ry=v[3];
+	  if (ry.type==_DOUBLE_)
+	    ry=int(ry._DOUBLE_val+.5);
+	  gen theta1=evalf_double(v[4],1,contextptr);
+	  gen theta2=evalf_double(v[5],1,contextptr);
+	  if (attr & 0x40000000)
+	    draw_filled_arc(x0.val,y0.val,r.val,ry.val,int(theta1._DOUBLE_val*180/M_PI+.5),int(theta2._DOUBLE_val*180/M_PI+.5),attr & 0xffff,0,pixel_cols,0,pixel_lines,false,contextptr);
+	  draw_arc(x0.val,y0.val,r.val,ry.val,attr & 0xffff,theta1._DOUBLE_val,theta2._DOUBLE_val,contextptr);
+	}
+	else {
+	  if (attr & 0x40000000)
+	    draw_filled_circle(x0.val,y0.val,r.val,attr &0xffff,true,true,contextptr);
+	  else
+	    draw_circle(x0.val,y0.val,r.val,attr & 0xffff,true,true,true,true,contextptr);
+	}
+	return 1;
+      }
+    }
+    return gensizeerr(contextptr);
+    //static gen PIXEL(identificateur("PIXON_P"));
+    //return _of(makesequence(PIXEL,a_),contextptr);
+  }
+  gen _draw_circle(const gen & a_,GIAC_CONTEXT){
+    return _draw_arc(a_,false,contextptr);
+  }
+  static const char _draw_circle_s []="draw_circle";
+  static define_unary_function_eval (__draw_circle,&_draw_circle,_draw_circle_s);
+  define_unary_function_ptr5( at_draw_circle ,alias_at_draw_circle,&__draw_circle,0,true);
+
+  gen _draw_arc(const gen & a_,GIAC_CONTEXT){
+    return _draw_arc(a_,true,contextptr);
+  }
+  static const char _draw_arc_s []="draw_arc";
+  static define_unary_function_eval (__draw_arc,&_draw_arc,_draw_arc_s);
+  define_unary_function_ptr5( at_draw_arc ,alias_at_draw_arc,&__draw_arc,0,true);
+
+  gen draw_line_or_rectangle(const gen & a_,GIAC_CONTEXT,bool rect){
+    gen a(a_);
+    if (a.type==_STRNG && a.subtype==-1) return  a;
+    if (a.type!=_VECT || a._VECTptr->size()<2)
+      return gentypeerr(contextptr);
+    const vecteur & v=*a._VECTptr;
+    size_t vs=v.size();
+    if (vs>=4){
+      gen x0=v.front();
+      gen y0=v[1];
+      gen x1=v[2];
+      gen y1=v[3];
+      if (x0.type==_DOUBLE_)
+	x0=int(x0._DOUBLE_val+.5);
+      if (y0.type==_DOUBLE_)
+	y0=int(y0._DOUBLE_val+.5);
+      if (x1.type==_DOUBLE_)
+	x1=int(x1._DOUBLE_val+.5);
+      if (y1.type==_DOUBLE_)
+	y1=int(y1._DOUBLE_val+.5);
+      if (x0.type==_INT_ &&  y0.type==_INT_ && x1.type==_INT_ && y1.type==_INT_){
+	if (rect){
+	  int attr=vs==4?0:remove_at_display(v[4]).val;
+	  if (attr & 0x40000000)
+	    draw_rectangle(x0.val,y0.val,x1.val,y1.val,attr & 0xffff,contextptr);
+	  else {
+	    draw_line(x0.val,y0.val,x0.val+x1.val,y0.val,attr & 0xffff,contextptr);
+	    draw_line(x0.val+x1.val,y0.val,x0.val+x1.val,y0.val+y1.val,attr & 0xffff,contextptr);
+	    draw_line(x0.val+x1.val,y0.val+y1.val,x0.val,y0.val+y1.val,attr & 0xffff,contextptr);
+	    draw_line(x0.val,y0.val,x0.val,y0.val+y1.val,attr & 0xffff,contextptr);
+	  }	    
+	}
+	else
+	  draw_line(x0.val,y0.val,x1.val,y1.val,vs==4?0:remove_at_display(v[4]).val,contextptr);
+	return 1;
+      }
+    }
+    return gensizeerr(contextptr);
+    //static gen PIXEL(identificateur("PIXON_P"));
+    //return _of(makesequence(PIXEL,a_),contextptr);
+  }
+  gen _draw_line(const gen & a_,GIAC_CONTEXT){
+    return draw_line_or_rectangle(a_,contextptr,false);
+  }
+  static const char _draw_line_s []="draw_line";
+  static define_unary_function_eval (__draw_line,&_draw_line,_draw_line_s);
+  define_unary_function_ptr5( at_draw_line ,alias_at_draw_line,&__draw_line,0,true);
+
+  gen _draw_rectangle(const gen & a_,GIAC_CONTEXT){
+    return draw_line_or_rectangle(a_,contextptr,true);
+  }
+  static const char _draw_rectangle_s []="draw_rectangle";
+  static define_unary_function_eval (__draw_rectangle,&_draw_rectangle,_draw_rectangle_s);
+  define_unary_function_ptr5( at_draw_rectangle ,alias_at_draw_rectangle,&__draw_rectangle,0,true);
+
   gen _draw_string(const gen & a_,GIAC_CONTEXT){
 #ifdef GIAC_HAS_STO_38
     static gen PIXEL(identificateur("TEXTOUT_P"));
@@ -8719,11 +9160,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   static define_unary_function_eval (__rgb,&_rgb,_rgb_s);
   define_unary_function_ptr5( at_rgb ,alias_at_rgb,&__rgb,0,true);
 
+#ifdef EMCC
 #ifdef EMCC_FETCH
   // with emscripten 1.37.28, it does not work
 #include <emscripten/fetch.h>
 
   string fetch(const string & url){
+    COUT << "fetch " << url << endl;
     emscripten_fetch_attr_t attr;
     emscripten_fetch_attr_init(&attr);
     strcpy(attr.requestMethod, "GET");
@@ -8738,12 +9181,59 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     }
     return "Failed";
   }
-    
 #else
+#include <emscripten/emscripten.h>
+
+  string fetch(const string & url){
+    COUT << "wget_data " << url << endl;
+    char * buf;
+#if 0 // does not work emscripten 1.34/37
+    int data_size,data_error;
+    emscripten_wget_data(url.c_str(),(void **)&buf,&data_size,&data_error);
+    if (data_size>0){
+      buf[data_size-1]=0;
+      string s(buf);
+      COUT << "buffer " << s << endl;
+      free(buf);
+      return s;
+    }
+    return "ERROR";
+#else
+    const int bufsize=512*1024;
+    buf=(char *)malloc(bufsize);
+    EM_ASM_ARGS({
+	var url=Module.Pointer_stringify($0);
+	console.log("url:"+url);
+	var req = new XMLHttpRequest();
+	var bufsize=$2;
+	req.open("GET", url, false); // false: synchrone, true: async
+	req.overrideMimeType("text/plain; charset=x-user-defined");
+	req.send(null); 
+	// will not work on different domain, except if 
+	// cross-domain is enabled (firefox CORS extension like Cross Domain)
+	if (req.status === 200) {
+	  console.log("Réponse reçue: %s", req.responseText);
+	  var s=req.responseText;
+	  if (s.length>=bufsize-1)
+	    s=s.substr(0,bufsize-1);
+	  Module.writeStringToMemory(s,$1);
+	} else {
+	  console.log("Status de la réponse: %d (%s)", req.status, req.statusText);
+	  Module.writeStringToMemory("ERROR",$1);
+	}
+      },url.c_str(),buf,bufsize);
+    string s(buf);
+    free(buf);
+    return s;
+#endif
+  }
+#endif // EMCC_FETCH
+    
+#else // EMCC
 #ifdef HAVE_LIBCURL
 #include <curl/curl.h>
 #include <curl/easy.h>
-#include <curl/curlbuild.h>
+  //#include <curl/curlbuild.h>
   size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
     string data((const char*) ptr, (size_t) size * nmemb);
     *((stringstream*) stream) << data << endl;
@@ -8775,7 +9265,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     return "Failed";
   }
 #endif // HAVE_LIBCURL
-#endif // EMCC_FETCH
+#endif // EMCC
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

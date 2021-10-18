@@ -4,20 +4,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>High-pass filtering : highpass</title>
+<title>Visualizing waveforms : plotwav</title>
 </head>
 <body >
 <a href="cascmd_en244.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en246.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec311" class="subsection">5.24.5  High-pass filtering : <span style="font-family:monospace">highpass</span><a id="hevea_default429"></a></h3>
+<h3 id="sec312" class="subsection">5.24.9  Visualizing waveforms : <span style="font-family:monospace">plotwav</span><a id="hevea_default428"></a></h3>
 <p>
-<span style="font-family:monospace">highpass</span> takes two or three arguments: an audio clip or a real vector  <span style="font-weight:bold"><span style="font-style:italic">v</span></span>  representing the sampled signal, a real number  <span style="font-style:italic">c</span>  specifying the cutoff frequency and optionally a samplerate (which defaults to 44100). The command returns the input data after applying a simple first-order highpass RC filter.</p><p>For example, input :
+<span style="font-family:monospace">plotwav</span> accepts an audio clip as its first argument and optionally a range in form <span style="font-family:monospace">range=[m,n]</span> or <span style="font-family:monospace">range=a..b</span> as its second argument, where <span style="font-style:italic">m</span>, <span style="font-style:italic">n</span> are integers and <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span> are real numbers. The command displays the waveform on the specified range (by default in its entirety). It is assumed that the values <span style="font-style:italic">m</span>, <span style="font-style:italic">n</span> are in sample units and <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span> in seconds.</p><p>For example, assume that the directory <span style="font-family:monospace">sounds</span> contains two files, <span style="font-family:monospace">example1.wav</span> (a man speaking, stereo) and <span style="font-family:monospace">example2.wav</span> (guitar playing, mono). Input :
 </p><div class="center">
-	<span style="font-family:monospace">f:=unapply(periodic(sign(x),x,-1/880,1/880),x);<br>
-		s:=apply(f,soundsec(3)):;<br>
-		playsnd(highpass(createwav(s),5000))</span>
+<span style="font-family:monospace">clip1:=readwav("/path/to/sounds/example1.wav"):;<br>
+ plotwav(clip1)
+</span></div><p>
+Output :
+</p><div class="center">
+<img src="cascmd_en011.png">
+</div><p>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">clip2:=readwav("/path/to/sounds/example2.wav"):;<br>
+ plotwav(clip2)
+</span></div><p>
+Output :
+</p><div class="center">
+<img src="cascmd_en012.png">
+</div><p>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">plotwav(clip2,range=0.5..0.52)
+</span></div><p>
+Output :
+</p><div class="center">
+<img src="cascmd_en013.png">
 </div>
 <hr>
 <a href="cascmd_en244.html"><img src="previous_motif.gif" alt="Previous"></a>

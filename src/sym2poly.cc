@@ -2178,6 +2178,7 @@ namespace giac {
 	identificateur x(" x");
 	vecteur w;
 	in_solve(symb_horner(mk,x),x,w,1,contextptr);
+	if (r.type!=_DOUBLE_ && r.type!=_CPLX && !w.empty()) return w.front();
 	for (unsigned k=0;k<w.size();++k){
 	  if (lop(w[k],at_rootof).empty()){
 	    gen wkd=evalf_double(w[k],1,contextptr);
@@ -3525,8 +3526,13 @@ namespace giac {
       polynome p=it->mult==1?it->fact:pow(it->fact,it->mult),quo,rem;
       it->den.TDivRem(p,quo,rem,true);
       gen cur_deno(r2e(quo,l,contextptr));
-      if (current.mult==1)
-	res += reste/cur_deno/deno;
+      if (current.mult==1){
+	  // unitarize
+	  gen tmp(_lcoeff(makesequence(deno,xvar),contextptr));
+	  reste=ratnormal(reste/tmp/cur_deno,contextptr);
+	  deno=recursive_normal(deno/tmp,contextptr);
+	res += reste/deno;
+      }
       else {
 	for (int i=0;i<current.mult;++i){
 	  gen tmp(_quorem(makesequence(reste,deno,xvar),contextptr));

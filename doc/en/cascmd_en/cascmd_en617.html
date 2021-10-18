@@ -4,36 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The multinomial probability function: multinomial</title>
+<title>Producing random numbers with the binomial distribution: randbinomial</title>
 </head>
 <body >
 <a href="cascmd_en616.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en618.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec765" class="subsection">7.4.3  The multinomial probability function: <span style="font-family:monospace">multinomial</span><a id="hevea_default1010"></a></h3>
-<p>If <span style="font-style:italic">X</span> follows a multinomial probability distribution with
-<span style="font-style:italic">P</span> = [<span style="font-style:italic">p</span><sub>0</sub>,<span style="font-style:italic">p</span><sub>1</sub>,…,<span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub>] (where <span style="font-style:italic">p</span><sub>0</sub> + … + <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> = 1),
-then for <span style="font-style:italic">K</span>=[<span style="font-style:italic">k</span><sub>0</sub>,…,<span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>] with <span style="font-style:italic">k</span><sub>0</sub> + … + <span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub> = <span style="font-style:italic">n</span>, the
-probability that <span style="font-style:italic">X</span>=<span style="font-style:italic">K</span> is given by the <span style="font-family:monospace">multinomial</span> command; 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace">multinomial</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">P</span>,<span style="font-style:italic">K</span>)= </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>!</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sub>0</sub>!<span style="font-style:italic">k</span><sub>1</sub>!…
-<span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>!</td></tr>
-</table></td><td class="dcell">(<span style="font-style:italic">p</span><sub>0</sub><sup><span style="font-style:italic">k</span><sub>0</sub></sup><span style="font-style:italic">p</span><sub>1</sub><sup><span style="font-style:italic">k</span><sub>1</sub></sup>… <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub><sup><span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub></sup>.</td></tr>
-</table><p>
-You will get an error if <span style="font-style:italic">k</span><sub>0</sub> + … + <span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub> is not equal to <span style="font-style:italic">n</span>,
-although you won’t get one if <span style="font-style:italic">p</span><sub>0</sub> + … + <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> is not equal to 1.</p><p>For example, if you make 10 choices, where each choice is one of
-three items; the first has a 0.2 probability of being chosen, the
-second a 0.3 probability and the third a 0.5 probability, the
-probability that you end up with 3 of the first item, 2 of the
-second and 5 of the third will be
+<h3 id="sec761" class="subsection">7.3.3  Producing random numbers with the binomial distribution: <span style="font-family:monospace">randbinomial</span><a id="hevea_default1003"></a></h3>
+<p>The command <span style="font-family:monospace">randbinomial</span> will take parameters an integer <span style="font-style:italic">n</span>
+and a number <span style="font-style:italic">p</span> between 0 and 1, and return an integer from 0 to <span style="font-style:italic">n</span>
+chosen according to the binomial distribution; i.e., the number of
+successes you might get if you did an experiment <span style="font-style:italic">n</span> times, where the
+probability of success each time is <span style="font-style:italic">p</span>. If you enter
 </p><div class="center">
-<span style="font-family:monospace">multinomial(10,[0.2,0.3,0.5],[3,2,5])
+<span style="font-family:monospace">randbinomial(100,0.4)
 </span></div><p>
-or
+for example, you might get
 </p><div class="center">
-<span style="font-family:monospace">0.0567
+<span style="font-family:monospace">34
 </span></div>
 <hr>
 <a href="cascmd_en616.html"><img src="previous_motif.gif" alt="Previous"></a>

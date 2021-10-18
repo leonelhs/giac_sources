@@ -4,44 +4,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Modify an element in a list : subsop</title>
+<title>Get the first element of a list : head</title>
 </head>
 <body >
 <a href="cascmd_en397.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en399.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec485" class="subsection">5.39.10  Modify an element in a list : <span style="font-family:monospace">subsop</span></h3>
-<p><a id="hevea_default624"></a>
-<span style="font-family:monospace">subsop</span> modifies an element in a list.
-<span style="font-family:monospace">subsop</span> takes as argument a list and an equality (an index=a new
-value) in all syntax modes, but in <span style="font-family:monospace">Maple</span> syntax mode
-the order of the arguments is reversed. <br>
-<span style="font-weight:bold">Remark</span> If the second argument is <span style="font-family:monospace">’k=NULL’</span>, the element of index 
-<span style="font-family:monospace">k</span> is removed of the list.<br>
-Input in <span style="font-family:monospace">Xcas</span> mode (the index of the first element is 0) :
-</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],1=5)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[1]:=5</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div><p>
-Input in <span style="font-family:monospace">Xcas</span> mode (the index of the first element is 0) :
-</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],’1=NULL’)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[0,2]</span></div><p>Input in <span style="font-family:monospace">Mupad TI</span> mode (the index of the first element is 1) :
-</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],2=5)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div><p>
-In <span style="font-family:monospace">Maple</span> mode the arguments are permuted and the index of
-the first element is 1.<br>
+<h3 id="sec487" class="subsection">5.40.4  Get the first element of a list : <span style="font-family:monospace">head</span></h3>
+<p><a id="hevea_default623"></a>
+<span style="font-family:monospace">head</span> takes as argument a list.<br>
+<span style="font-family:monospace">head</span> returns the first element of this list.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">subsop(2=5,[0,1,2])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span></div><p>
+</p><div class="center"><span style="font-family:monospace">head([0,1,2,3])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div>
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+<span style="font-family:monospace">a:=head([0,1,2,3])</span> does the same thing as <span style="font-family:monospace">a:=[0,1,2,3][0]</span></p>
 <hr>
 <a href="cascmd_en397.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

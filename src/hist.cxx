@@ -113,13 +113,13 @@ void latex_save_DispG(const char * filename) {
 
 void a_propos() {
   std::string s("xcas "); s+=GIAC_VERSION; s+=" (c) 2000-18, Bernard Parisse, Renee De Graeve\n";
+    s += "Optimization, signalprocessing, graph theory code: Luka Marohnić\n";
     s += "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html\n";
     s += "If you like Xcas, please link your webpage to the above link to help other find it\n";
     s += "Software licensed under the GPL, General Public License version 3.0 or later\nSee the file COPYING in this package for more details\nOr browse http://www.gnu.org\n";
     s += "French documentation (c) Renee de Graeve\n";
     s += "This documentation is freely redistribuable for non commercial purpose\n";
     s += "Python giacpy module: Frederic Han\n";
-    s += "Optimization, signalprocessing, graph theory code: Luka Marohnić\n";
     s += "Math ML and SVG support initially written by Jean-Pierre Branchard\n";
     s += "OpenOffice interface: Christophe Devalland, Serge Moutou\n";
     s += "Qcas interface: Loic Le Coq, Frederic Han\n";
@@ -1222,6 +1222,14 @@ xcas_user_level=0;
 Xcas_update_mode();
 }
 
+static void cb_Xcas_Set_Python0xor(Fl_Menu_*, void*) {
+  const giac::context * contextptr=Xcas_get_context();
+giac::xcas_mode(contextptr)=0;
+giac::python_compat(contextptr)=2;
+xcas_user_level=0;
+Xcas_update_mode();
+}
+
 static void cb_Xcas_Set_Maple0(Fl_Menu_*, void*) {
   const giac::context * contextptr=Xcas_get_context();
 giac::xcas_mode(contextptr)=1;
@@ -1956,7 +1964,8 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"General configuration", 0,  (Fl_Callback*)cb_Xcas_general_config_, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Mode (syntax)", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"Xcas", 0,  (Fl_Callback*)cb_Xcas_Set_Xcas0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Python", 0,  (Fl_Callback*)cb_Xcas_Set_Python0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Python ^==**", 0,  (Fl_Callback*)cb_Xcas_Set_Python0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Python ^==xor", 0,  (Fl_Callback*)cb_Xcas_Set_Python0xor, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Maple", 0,  (Fl_Callback*)cb_Xcas_Set_Maple0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Mupad", 0,  (Fl_Callback*)cb_Xcas_Set_Mupad0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"TI89/92", 0,  (Fl_Callback*)cb_Xcas_Set_TI0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3206,7 +3215,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<337; i++)
+        for ( ; i<338; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

@@ -51,7 +51,7 @@ using namespace std;
 #include "solve.h"
 #include "csturm.h"
 #include "sparse.h"
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS
 inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
 #else
 #include "graphtheory.h"
@@ -4038,8 +4038,28 @@ namespace giac {
     if (a.is_symb_of_sommet(at_pow)){
       gen af=a._SYMBptr->feuille;
       if (af.type==_VECT && af._VECTptr->size()==2){
-	gen res=arg(af._VECTptr->front(),contextptr)*af._VECTptr->back();
+	gen res=im(ln(af._VECTptr->front(),contextptr)*af._VECTptr->back(),contextptr);
 	return _smod(makesequence(res,cst_two_pi),contextptr);
+      }
+    }
+    if (a.is_symb_of_sommet(at_exp))
+      return _smod(makesequence(im(a._SYMBptr->feuille,contextptr),cst_two_pi),contextptr);
+    if (a.is_symb_of_sommet(at_prod)){
+      const gen & af=a._SYMBptr->feuille;
+      if (af.type==_VECT){
+	const_iterateur it=af._VECTptr->begin(),itend=af._VECTptr->end();
+	gen res;
+	int nonzero=0;
+	for (;it!=itend;++it){
+	  gen tmp(arg(*it,contextptr));
+	  if (!is_zero(tmp,contextptr)){
+	    res += tmp;
+	    ++nonzero;
+	  }
+	}
+	if (nonzero>1)
+	  return _smod(makesequence(res,cst_two_pi),contextptr);	
+	return res;
       }
     }
     if (is_equal(a))
@@ -4178,6 +4198,8 @@ namespace giac {
       return a;
     if (is_exactly_zero(b)) 
       return a;
+    if (a.type==_DOUBLE_ || a.type==_REAL || a.type==_FLOAT_)
+      return gensizeerr(context0);
     gen res=makemodquoted(0,0);
     if ( (b.type==_INT_) || (b.type==_ZINT) )
       *res._MODptr=smod(a,b);
@@ -4391,6 +4413,8 @@ namespace giac {
 	return sym_add(b,a,contextptr);
       if (a.subtype==_POINT__VECT && b.subtype==_POINT__VECT)
 	return gen(addvecteur(*a._VECTptr,*b._VECTptr),0);
+      if (a.subtype==0 && b.subtype==0 && python_compat(contextptr)==2)
+	return mergevecteur(*a._VECTptr,*b._VECTptr);
       if (warnextend && a.subtype==0 && b.subtype==0 && python_compat(contextptr)){
 	warnextend=false;
 	alert(gettext("Warning + is vector addition, run list1.extend(list2) for list concatenation"),contextptr);
@@ -6013,6 +6037,8 @@ namespace giac {
       return multgen_poly(B,*A._VECTptr,A.subtype); // gen(multvecteur(b,*a._VECTptr),a.subtype);
     }
     case _INT___VECT: 
+      if (a.val>=0 && python_compat(contextptr)==2)
+	return operator_times(b,a,contextptr);
       if (warnpy && a.val>=0 && python_compat(contextptr)){
 	alert(gettext("Python compatibility, integer*list will do vector multiplication, run list*integer to duplicate list"),contextptr);
 	warnpy=false;
@@ -9617,6 +9643,8 @@ namespace giac {
   }
 
   static bool modified_islesscomplexthanf(const gen& a,const gen& b){
+    if (a.type!=b.type && (a.type<=_CPLX || b.type<=_CPLX))
+      return a.type<b.type;
     if (a.is_symb_of_sommet(at_neg))
       return modified_islesscomplexthanf(a._SYMBptr->feuille,b);
     if (b.is_symb_of_sommet(at_neg))
@@ -10773,7 +10801,7 @@ namespace giac {
     case _INT___INT_: 
       return smod(a.val,b.val);
     case _ZINT__INT_: 
-      return smod(modulo(*a._ZINTptr,b.val),b.val);
+      return smod(modulo(*a._ZINTptr,absint(b.val)),b.val);
     case _INT___ZINT: case _ZINT__ZINT: 
       _ZINTsmod(a,b,rem);
       return(rem);
@@ -11441,9 +11469,9 @@ namespace giac {
       }
       if (l>digits+delta)
 	digits=l-delta;
-#ifndef GIAC_HAS_STO_38
+#ifdef HAVE_LIBMPFR // #ifndef GIAC_HAS_STO_38
       if (digits>14){
-#ifdef HAVE_LIBMPFR
+#if 1 // def HAVE_LIBMPFR
 	int nbits=digits2bits(digits);
 #ifdef HAVE_LIBPTHREAD
 	int locked=pthread_mutex_trylock(&mpfr_mutex);
@@ -11468,7 +11496,7 @@ namespace giac {
 	if (!res)
 	  return rg;
       } // end if (digits>14)
-#endif // GIAC_HAS_STO_38
+#endif // LIBMPFR was GIAC_HAS_STO_38
       double d;
 #if defined NSPIRE || defined FXCG
 #ifdef NSPIRE
@@ -13645,9 +13673,9 @@ namespace giac {
 #endif
 
   string monome::print(GIAC_CONTEXT) const {
-    if (abs_calc_mode(contextptr)==38)
+    // if (abs_calc_mode(contextptr)==38 )
       return "%%%{" + coeff.print(contextptr) + ',' + exponent.print(contextptr) + "%%%}" ;
-    return "<<" + coeff.print(contextptr) + ',' + exponent.print(contextptr) + ">>" ;
+      //return "<<" + coeff.print(contextptr) + ',' + exponent.print(contextptr) + ">>" ;
   }
 
   const char * monome::dbgprint() const {

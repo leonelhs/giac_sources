@@ -3828,7 +3828,7 @@ namespace xcas {
       switch (giac::xcas_mode(ptr)){
       case 0: 
 	if (python_compat(ptr))
-	  mode_s += "python ";
+	  mode_s += python_compat(ptr)==2?"python ^==xor ":"python ^=** ";
 	else
 	  mode_s+="xcas "; 
 	break;

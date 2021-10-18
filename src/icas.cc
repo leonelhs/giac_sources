@@ -377,7 +377,12 @@ string ltgt(const string & s){
   return res;
 }
 
-void verb(std::string & warn,int line,ostream & out,std::string cmd,const std::string & infile,int & texmacs_counter,bool slider,giac::context * contextptr,ostream * checkptr,std::ostream * checkptrin){
+void verb(std::string & warn,int line,ostream & out,std::string cmd_,const std::string & infile,int & texmacs_counter,bool slider,giac::context * contextptr,ostream * checkptr,std::ostream * checkptrin){
+  std::string cmd;
+  if (giac::python_compat(contextptr))
+    cmd="@@"+cmd_;
+  else
+    cmd=cmd_;
   giac::gen g(cmd,contextptr),gg;
   string gs=cmd;
   split(cmd,50);
@@ -547,13 +552,27 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
       if (inprog){
 	pos=s.find("\\end{giacprog}");
 	int decal=16;
-	if (pos<0 || pos>=ss)
+	bool hide=false;
+	if (pos<0 || pos>=ss){
 	  pos=s.find("\\end{giaconload}");
+	  if (pos<0 || pos>=ss){
+	    pos=s.find("\\end{giaconloadhide}");
+	    decal=20;
+	    hide=true;
+	  }
+	}
 	else
 	  decal=14;
 	if (pos>=0 && pos<ss){
 	  prg += s.substr(0,pos);
-	  out << "\\begin{verbatim}\n" << prg << "\\end{verbatim}" << endl;
+	  if (hide){
+	    if (prg.substr(prg.size()-3,3)==":;\n")
+	      prg=prg.substr(0,prg.size()-3);
+	  }
+	  else
+	    out << "\\begin{verbatim}\n" << prg << "\\end{verbatim}" << endl;
+ 	  if (giac::python_compat(&ct))
+	    prg="@@"+prg;
 	  giac::gen g(prg,&ct),gg;
 	  int reading_file=0;
 	  std::string filename;
@@ -572,6 +591,15 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 	  if (checkptr) *checkptr << gg << endl;
 	  s=s.substr(pos+decal,ss-decal-pos);
 	  inprog=false;
+	  int graph_output=graph_output_type(gg);
+	  if (graph_output){
+	    filename=giac::remove_extension(infile)+giac::print_INT_(texmacs_counter)+".eps";
+	    string tmp;
+	    if (xcas::fltk_view(g,gg,filename,tmp,-1,&ct)){
+	      out << "\n\\begin{center}\n\\includegraphics[width=0.8\\linewidth]{" << filename << "}\n\\end{center}\n"<<std::endl;
+	      ++texmacs_counter;
+	    }
+	  }
 	  continue;
 	}
 	prg += s + '\n';
@@ -591,11 +619,23 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 	inprog=true;
 	continue;
       }
+      pos=s.find("\\begin{giaconloadhide}");
+      if (pos>=0 && pos<ss){
+	prg = "";
+	s=s.substr(pos+22,ss-22-pos);
+	inprog=true;
+	continue;
+      }
       pos=s.find("\\giac");
       if (inside && pos>=0 && pos<ss){
 	out << s.substr(0,pos) << endl;
 	s=s.substr(pos,ss-pos);
 	ss=s.size();
+	if (s=="\\giacpython" ){
+	  giac::python_compat(1,&ct);
+	  s=s.substr(pos+11,ss-pos-11);
+	  continue;
+	}
 	bool invalid=false;
 	int pos1=s.find("{"),pos2=s.find("}");
 	while ( (pos1>=0 && pos1<ss ) && (pos2<0 || pos2>=ss)){

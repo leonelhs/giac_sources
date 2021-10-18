@@ -4,48 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Make a matrix with a list of matrices : blockmatrix</title>
+<title>Extract rows or columns of a matrix (Maple compatibility) : row col</title>
 </head>
 <body >
 <a href="cascmd_en462.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en464.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec557" class="subsection">5.44.21  Make a matrix with a list of matrices : <span style="font-family:monospace">blockmatrix</span></h3>
-<p><a id="hevea_default733"></a>
-<span style="font-family:monospace">blockmatrix</span> takes as arguments two integers <span style="font-style:italic">n</span>,<span style="font-style:italic">m</span> and a 
-list of size <span style="font-style:italic">n</span>*<span style="font-style:italic">m</span> of matrices of the same dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span> 
-(or more generally such that the <span style="font-style:italic">m</span> first matrices 
-have the same number of rows and <span style="font-style:italic">c</span> columns, the 
-<span style="font-style:italic">m</span> next rows have the same number of rows and <span style="font-style:italic">c</span> columns, and so on ...).
-In both cases, we have <span style="font-style:italic">n</span> blocks of <span style="font-style:italic">c</span> columns.<br>
-<span style="font-family:monospace">blockmatrix</span> returns a matrix having <span style="font-style:italic">c</span> columns 
-by putting these <span style="font-style:italic">n</span> blocks one under another (vertical gluing). 
-If the matrix arguments
-have the same dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span>, the answer is a matrix of
-dimension <span style="font-style:italic">p</span>*<span style="font-style:italic">n</span> × <span style="font-style:italic">q</span>*<span style="font-style:italic">m</span>.<br>
+<h3 id="sec559" class="subsection">5.45.14  Extract rows or columns of a matrix (Maple compatibility) : <span style="font-family:monospace">row col</span></h3>
+<p><a id="hevea_default731"></a><a id="hevea_default732"></a>
+<span style="font-family:monospace">row</span> (resp. <span style="font-family:monospace">col</span>) extracts one or several rows (resp. columns) 
+of a matrix.<br>
+<span style="font-family:monospace">row</span> (resp. <span style="font-family:monospace">col</span>) takes 2 arguments : a matrix <span style="font-style:italic">A</span>, and an integer <span style="font-style:italic">n</span>
+or an interval <span style="font-style:italic">n</span><sub>1</sub>..<span style="font-style:italic">n</span><sub>2</sub>.<br>
+<span style="font-family:monospace">row</span> (resp. <span style="font-family:monospace">col</span>) returns the row (resp. column) of index <span style="font-style:italic">n</span> of <span style="font-style:italic">A</span>, 
+or the sequence of rows (resp. columns) of index from <span style="font-style:italic">n</span><sub>1</sub> to <span style="font-style:italic">n</span><sub>2</sub> of <span style="font-style:italic">A</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[idn(2),idn(2),idn(2), idn(2),idn(2),idn(2)])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">row([[1,2,3],[4,5,6],[7,8,9]],1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,1,0,1,0],[0,1,0,1,0,1], [1,0,1,0,1,0],[0,1,0,1,0,1]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[4,5,6]</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(2),idn(2), idn(2),idn(2),idn(2),idn(2)])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">row([[1,2,3],[4,5,6],[7,8,9]],0..1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,1,0],[0,1,0,1], [1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">([1,2,3],[4,5,6])</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(2,2,[idn(2),newMat(2,3), newMat(3,2),idn(3)])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">col([[1,2,3],[4,5,6],[7,8,9]],1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,1,0,0,0],[0,0,1,0,0], [0,0,0,1,0],[0,0,0,0,1]] </span></div><p>
+</p><div class="center"><span style="font-family:monospace">[2,5,8]</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(1),newMat(1,4), newMat(2,3),idn(2),newMat(1,2),[[1,1,1]]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">col([[1,2,3],[4,5,6],[7,8,9]],0..1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,0,0,1,0],[0,0,0,0,1],[0,0,1,1,1]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">A:=[[1,1],[1,1]];B:=[[1],[1]]</span></div><p>
-then :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[2*A,3*A,4*A,5*B,newMat(2,4),6*B])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[2,2,3,3,4,4],[2,2,3,3,4,4], [5,0,0,0,0,6],[5,0,0,0,0,6]]</span></div>
+</p><div class="center"><span style="font-family:monospace">([1,4,7,[2,5,8])</span></div>
 <hr>
 <a href="cascmd_en462.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

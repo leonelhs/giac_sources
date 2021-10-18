@@ -4,37 +4,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Approximate solution of an equation : newton</title>
+<title>Markov chains: markov</title>
 </head>
 <body >
 <a href="cascmd_en646.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en648.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec842" class="subsection">8.3.1  Approximate solution of an equation : <span style="font-family:monospace">newton</span></h3>
-<p><a id="hevea_default1088"></a>
-<span style="font-family:monospace">newton</span> takes as arguments : an expression <span style="font-family:monospace">ex</span>, 
-the variable
-name of this expression (by default <span style="font-family:monospace">x</span>), and three values <span style="font-family:monospace">a</span> (by 
-default <span style="font-family:monospace">a=0</span>), <span style="font-family:monospace">eps</span> (by default <span style="font-family:monospace">eps=1e-8</span>) and <span style="font-family:monospace">nbiter</span> 
-(by default <span style="font-family:monospace">nbiter=12</span>).<br>
-<span style="font-family:monospace">newton(ex,x,a,eps,nbiter)</span> computes an approximate 
-solution <span style="font-family:monospace">x</span> of the equation <span style="font-family:monospace">ex=0</span>
-using the Newton algorithm with starting point 
-<span style="font-family:monospace">x=a</span>. The maximum number of iterations is <span style="font-family:monospace">nbiter</span>
-and the precision is <span style="font-family:monospace">eps</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">newton(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2,x,1) </span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">1.41421356237</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">newton(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2,x,-1) </span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">-1.41421356237</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">newton(cos(x)-x,x,0)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">0.739085133215 </span></div>
+<h3 id="sec844" class="subsection">7.4.24  Markov chains: <span style="font-family:monospace">markov</span><a id="hevea_default1091"></a></h3>
+<p>Given the transition matrix of a Markov chain, the <span style="font-family:monospace">markov</span>
+command will compute characteristic features of the chain. If <span style="font-style:italic">M</span> is
+a transition matrix, then <span style="font-family:monospace">markov(</span><span style="font-style:italic">M</span><span style="font-family:monospace">)</span> will return the list of
+the positive recurrent states, the list of corresponding
+invariant probabilities, the list of other strong connected
+components, the list of probabilities of ending up in the sequence of
+recurrent states. 
+For example, if you enter
+</p><div class="center">
+<span style="font-family:monospace">markov([[0,0,1/2,0,1/2],[0,0,1,0,0],[1/4,1/4,0,1/4,1/4],[0,0,1/2,0,1/2],[0,0,0,0,1]])
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">[[4]],[[0,0,0,0,1]],[[3,1,2,0]],[[1],[1],[1],[1],[1]]
+</span></div>
 <hr>
 <a href="cascmd_en646.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -36,7 +36,7 @@ using namespace std;
 #include "rpn.h"
 #include "plot.h"
 #include "giacintl.h"
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS
 inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
 #else
 #include "graphtheory.h"
@@ -1170,6 +1170,9 @@ namespace giac {
       }
       else
 	zoom(m,M,1/0.8);
+      // include origin if not too far
+      if ( (m>-M/10 && m<M/2) || (m<-M/10 && m>M/2) )
+	m=-M/10;
     }
   }
 

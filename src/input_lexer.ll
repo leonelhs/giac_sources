@@ -427,8 +427,8 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 "%%}"                   index_status(yyextra)=1; return T_ROOTOF_END;
 "%%%{"                  index_status(yyextra)=0; return T_SPOLY1_BEGIN;
 "%%%}"                  index_status(yyextra)=1; return T_SPOLY1_END;
-"<<"                    index_status(yyextra)=0; if (abs_calc_mode(yyextra)!=38)return T_SPOLY1_BEGIN; ++in_rpn(yyextra); return T_RPN_BEGIN;
-">>"                    index_status(yyextra)=0; if (abs_calc_mode(yyextra)!=38)return T_SPOLY1_END; --in_rpn(yyextra); return T_RPN_END;
+"<<"                    index_status(yyextra)=0; if (abs_calc_mode(yyextra)!=38){ (*yylval)=gen(at_rotate,2); return T_UNION; } ++in_rpn(yyextra); return T_RPN_BEGIN;
+">>"                    index_status(yyextra)=0; if (abs_calc_mode(yyextra)!=38){ (*yylval)=gen(at_shift,2); return T_UNION; } --in_rpn(yyextra); return T_RPN_END;
 
     /* binary operators */
 "->"                    index_status(yyextra)=0; return T_MAPSTO;
@@ -542,6 +542,11 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 "%/"                     index_status(yyextra)=0; (*yylval)=gen(at_irem,2); return T_DIV;
 "/%="                     index_status(yyextra)=0; (*yylval)=gen(at_iquosto,2); return T_UNION;
 "%/="                     index_status(yyextra)=0; (*yylval)=gen(at_iremsto,2); return T_UNION;
+"&="                     index_status(yyextra)=0; (*yylval)=gen(at_andsto,2); return T_UNION;
+"|="                     index_status(yyextra)=0; (*yylval)=gen(at_orsto,2); return T_UNION;
+"^="                     index_status(yyextra)=0; (*yylval)=gen(at_xorsto,2); return T_UNION;
+">>="                     index_status(yyextra)=0; (*yylval)=gen(at_shiftsto,2); return T_UNION;
+"<<="                     index_status(yyextra)=0; (*yylval)=gen(at_rotatesto,2); return T_UNION;
 "/="                    index_status(yyextra)=0; (*yylval)=gen(at_divcrement,1); return T_DIV;
 "./"                     index_status(yyextra)=0; (*yylval)=gen(at_pointdivision,2); return T_DIV;
 "'/'"                   index_status(yyextra)=0; (*yylval)=gen(at_division,2); return T_QUOTED_BINARY;
@@ -556,7 +561,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 "'mod'"                  index_status(yyextra)=0; (*yylval)=gen(at_irem,2); return T_QUOTED_BINARY;
 "_mod"                  index_status(yyextra)=0; (*yylval)=gen(at_irem,2); return T_QUOTED_BINARY;
   /* "MOD"                   index_status(yyextra)=0; return T_MOD; */
-"^"                     index_status(yyextra)=0; (*yylval)=gen(at_pow,2); return T_POW;
+"^"                     index_status(yyextra)=0; (*yylval)=gen(python_compat(yyextra)==2?at_bitxor:at_pow,2); return T_POW;
 "^*"                     index_status(yyextra)=0; (*yylval)=gen(at_trn,1); return T_FACTORIAL;
 "pow"		         (*yylval) = gen(at_pow,2); index_status(yyextra)=0; return T_UNARY_OP;
 "**"                     index_status(yyextra)=0; (*yylval)=gen(at_pow,2); return T_POW;
@@ -575,6 +580,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 "angle_radian"		(*yylval) = gen(at_angle_radian,0); index_status(yyextra)=0; return T_DIGITS;
 "approx_mode"		(*yylval) = gen(at_approx_mode,0); index_status(yyextra)=0; return T_DIGITS;
 "all_trig_solutions"		(*yylval) = gen(at_all_trig_solutions,1); index_status(yyextra)=0; return T_DIGITS;
+"increasing_power"		(*yylval) = gen(at_increasing_power,1); index_status(yyextra)=0; return T_DIGITS;
 "ntl_on"		(*yylval) = gen(at_ntl_on,1); index_status(yyextra)=0; return T_DIGITS;
 "complex_mode"		(*yylval) = gen(at_complex_mode,1); index_status(yyextra)=0; return T_DIGITS;
 "step_infolevel"		(*yylval) = gen(at_step_infolevel,1); index_status(yyextra)=0; return T_DIGITS;
@@ -732,7 +738,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 "_me_" (*yylval) = symbolic(at_unit,makevecteur(9.1093897e-31,_kg_unit)); index_status(yyextra)=0; return T_SYMBOL; 
 "_qe_" (*yylval) = symbolic(at_unit,makevecteur(1.60217733e-19,_C_unit)); index_status(yyextra)=0; return T_SYMBOL; 
 "_h_" (*yylval) = symbolic(at_unit,makevecteur(6.6260755e-34,_J_unit*_s_unit)); index_status(yyextra)=0; return T_SYMBOL; 
-"_G_" (*yylval) = symbolic(at_unit,makevecteur(6.67259e-11,unitpow(_m_unit,3)*unitpow(_s_unit,-2)*unitpow(_kg_unit,-1))); index_status(yyextra)=0; return T_SYMBOL; 
+"_G_" (*yylval) = symbolic(at_unit,makevecteur(6.67408e-11,unitpow(_m_unit,3)*unitpow(_s_unit,-2)*unitpow(_kg_unit,-1))); index_status(yyextra)=0; return T_SYMBOL; 
 "_mu0_" (*yylval) = symbolic(at_unit,makevecteur(1.25663706144e-6,_H_unit/_m_unit)); index_status(yyextra)=0; return T_SYMBOL; 
 "_epsilon0_" (*yylval) = symbolic(at_unit,makevecteur(8.85418781761e-12,_F_unit/_m_unit)); index_status(yyextra)=0; return T_SYMBOL; 
 "_sigma_" (*yylval) = symbolic(at_unit,makevecteur( 5.67051e-8,_W_unit*unitpow(_m_unit,-2)*unitpow(_K_unit,-4))); index_status(yyextra)=0; return T_SYMBOL; 

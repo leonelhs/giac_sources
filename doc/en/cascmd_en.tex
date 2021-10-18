@@ -3637,6 +3637,26 @@ Input :
 Output :
 \begin{center}{\tt 0}\end{center}
 
+\subsection{Listing all compositions of an integer into $k$ parts : {\tt icomp\index{icomp}}}
+{\tt icomp} accepts two or three arguments : a positive integer $n$, a positive integer $k$ not larger than $n$ and optionally {\tt zeros=true} or {\tt zeros=false}. The return value is the list of all compostions of $n$ into $k$ parts. Each composition is a list of nonnegative integers which sum up to $n$. If the option {\tt zeros} is set to {\tt true} (which is the default), a part can have zero value. Else, each part has nonzero (positive) value.
+
+For example, input :
+\begin{center}
+  \tt icomp(4,2)
+\end{center}
+Output :
+\begin{center}
+  \tt [[4,0],[3,1],[2,2],[1,3],[0,4]]
+\end{center}
+Input :
+\begin{center}
+  \tt icomp(6,3,zeros=false)
+\end{center}
+Output :
+\begin{center}
+  \tt [[4,1,1],[3,2,1],[2,3,1],[1,4,1],[3,1,2], [2,2,2],[1,3,2],[2,1,3],[1,2,3],[1,1,4]]
+\end{center}
+
 \section{Combinatorial analysis}
 \subsection{Factorial : {\tt factorial \ !}}\index{factorial|textbf}\index{\symbol{33}|textbf}
 \noindent{\tt factorial} (prefix) or {\tt !} (postfix)
@@ -6250,7 +6270,486 @@ Output :
 {\tt x*(log(x))\verb|^|2+x*(-(2*log(x)))+2*x}
 
 \subsection{Change of variables : {\tt subst}}
-See the {\tt subst} command  in the section \ref{sec:subst}. 
+See the {\tt subst} command  in the section \ref{sec:subst}.
+
+\section{Calculus of variations}
+
+\subsection{Determining whether a function is convex : {\tt convex\index{convex}}}
+{\tt convex} takes two mandatory arguments, an at least twice differentiable function(al) $f:\mathbb{R}^n\to\mathbb{R}$ and a variable or list of variables. Some variables may depend on a common independent parameter, say $t$, when entered as e.g.~$x(t)$ instead of $x$. The first derivatives of such variables, when encountered in $f$, are treated as independent parameters of $f$.
+
+The command returns a condition or list of conditions under which $f$ is convex. If $f$ is convex on the entire domain, the return value is {\tt true}. If it is nowhere convex, the return value is {\tt false}. Otherwise, the conditions are returned as inequalities which depend on the parameters of $f$. The returned inequalities are not necessarily independent.
+
+An optional third argument {\tt simplify=false} or {\tt simplify=true} may be given. By default is {\tt simplify=true}, which means that simplification is applied when generating convexity conditions. If {\tt simplify=false}, only rational normalization is performed (using the {\tt ratnormal} command).
+
+The command operates by computing the Hessian $H_f$ of $f$ and its principal minors (in total $2^n$ of them where $n$ is the number of parameters) and checks their signs. If all minors are nonnegative, then $H_f$ is positive semidefinite and $f$ is therefore convex.
+
+The function $f$ is said to be \emph{concave} if the function $g=-f$ is convex.
+
+For example, input :
+\begin{center}
+  \tt convex(3*exp(x)+5x\verb|^|4-ln(x),x)
+\end{center}
+Output :
+\begin{center}
+  \tt true
+\end{center}
+Input :
+\begin{center}
+  \tt convex(x\verb|^|2+y\verb|^|2+3z\verb|^|2-x*y+2x*z+y*z,[x,y,z])
+\end{center}
+Output :
+\begin{center}
+  \tt true
+\end{center}
+Input :
+\begin{center}
+  \tt convex(x1\verb|^|3+2x1\verb|^|2+2*x1*x2+x2\verb|^|2/2-8x1-2x2-8,[x1,x2])
+\end{center}
+Output :
+\begin{center}
+  \tt [(3*x1+2)>=0,x1>=0]
+\end{center}
+In the example below, the function $f(x,y,z)=x^2+x\,z+a\,y\,z+z^2$ is not convex regardless of the value $a\in\mathbb{R}$ :
+\begin{center}
+  \tt convex(x\verb|^|2+x*z+a*y*z+z\verb|^|2,[x,y,z])
+\end{center}
+Output :
+\begin{center}
+  \tt false
+\end{center}
+In the next example we find all values $a\in\mathbb{R}$ for which the function \[f(x,y,z)=x^2+2\,y^2+a\,z^2-2\,x\,y+2\,x\,z-6\,y\,z\] is convex on $\mathbb{R}^3$. Input :
+\begin{center}
+  \tt cond:=convex(x\verb|^|2+2y\verb|^|2+a*z\verb|^|2-2x*y+2x*z-6y*z,[x,y,z])
+\end{center}
+Output :
+\begin{center}
+  \tt [a>=0,(a-1)>=0,(2*a-9)>=0,(a-5)>=0]
+\end{center}
+The returned inequalities are simplified by {\tt solve} :
+\begin{center}
+  \tt solve(cond,a)
+\end{center}
+Output :
+\begin{center}
+  \tt list[a>=5]
+\end{center}
+Therefore $f$ is convex for $a\geq 5$.
+
+Let's find the set $S\subset\mathbb{R}^2$ on which the function $f:\mathbb{R}^2\to\mathbb{R}$ defined by
+\[ f(x_1,x_2)=\exp(x_1)+\exp(x_2)+x_1\,x_2 \]
+is convex. Input :
+\begin{center}
+  \tt cond:=convex(exp(x1)+exp(x2)+x1*x2,[x1,x2]
+\end{center}
+Output :
+\begin{center}
+  \tt (exp(x1)*exp(x2)-1)>=0
+\end{center}
+Input :
+\begin{center}
+  \tt lin(cond)
+\end{center}
+Output :
+\begin{center}
+  \tt (exp(x1+x2)-1)>=0
+\end{center}
+From here we conclude that $f$ is convex when $x_1+x_2\geq 0$. The sought set $S$ is therefore the half-space defined by this inequality.
+
+The algorithm respects the assumptions that may be set upon variables. Therefore, the convexity of a given function can be checked only on a particular domain. For example, input :
+\begin{center}
+  \tt assume(x1>0),assume(x2>0):; convex(exp(x1)+exp(x2)+x1*x2,[x1,x2]
+\end{center}
+Output :
+\begin{center}
+  \tt true
+\end{center}
+Input :
+\begin{center}
+  \tt assume(x>=0 and x<=pi/4):; convex(exp(y)*sec(x)\verb|^|3-z,[x,y,z])
+\end{center}
+Output :
+\begin{center}
+  \tt true
+\end{center}
+
+\paragraph{\label{brachistochrone}The Brachistochrone Problem.}
+We want to minimize the objective functional \[T(y)=\int_0^{x_1}L(t,y(t),y'(t))\,\mathrm{d} t\] where the Lagrangian $L$ is defined by
+\[ L(t,y(t),y'(t))=\sqrt{\frac{1+y'(t)^2}{2\,g\,y(t)}} \]
+for $y:[0,x_1]\to\mathbb{R}$ such that $y(0)=y_0$ and $y(x_1)=0$ where $x_1>0$ and $y_0>0$ are fixed (the constant $g$ is the gravitational acceleration). This is called the \emph{brachistochrone problem} (the problem of shortest travel by own weight from the point $(0,y_0)$ to $(x_1,0)$).
+By solving Euler-Lagrange equation one obtains a cycloid $\overline{y}(t)$ as the only stationary function for $L$. The problem is to prove that it minimizes $T$, which would be easy if the integrand $L$ was convex. However, it's not the case here :
+\begin{center}
+  \tt assume(y>=0):; assume(g>0):; convex(sqrt((1+y'\verb|^|2)/(2*g*y)),y(t))
+\end{center}
+Output :
+\begin{center}
+  \tt (-diff(y(t),t)\verb|^|2+3)>=0
+\end{center}
+This is equivalent to $|y'(t)|\leq\sqrt{3}$, which is certainly not satisfied by the cycloid $\overline{y}$ near the point $x=0$.
+
+Using the substitution $y(t)=z(t)^2/2$ we obtain $y'(t)=z'(t)\,z(t)$ and
+\[ L(t,y(t),y'(t))=P(t,z(t),z'(t))=\sqrt{\frac{z(t)^{-2}+z'(t)^2}{g}}. \]
+The function $P$ is convex :
+\begin{center}
+  \tt assume(z>=0):; convex(sqrt((z\verb|^|-2+z'\verb|^|2)/g),z(t))
+\end{center}
+Output :
+\begin{center}
+  \tt true
+\end{center}
+Hence the function $\overline{z}(t)=\sqrt{2\,\overline{y}(t)}$, stationary for $P$ (which is verified directly), minimizes the objective functional \[U(z)=\int_0^{x_1}P(t,z(t),z'(t))\,\mathrm{d} t.\] From here and $U(z)=T(y)$ it easily follows that $\overline{y}$ minimizes $T$ and therefore the brachistochrone. For details see John L.~Troutman, \emph{Variational Calculus and Optimal Control} (second edition), page 257.
+
+\subsection{Euler-Lagrange equation(s) : {\tt euler\_lagrange\index{euler\_lagrange}}}
+{\tt euler\_lagrange} takes from one to three arguments :
+\begin{itemize}
+  \item expression $f(x,y,y')$,
+  \item independent variable (optional, by default $x$),
+  \item dependent variable (optional, by default $y$).
+\end{itemize}
+If $y\in\mathbb{R}^n$ is required (by default $n=1$), one can enter $y=(y_1,y_2,\dots,y_n)$ as a vector $[y_1,y_2,\dots,y_n]$. In that case, $y':=(y_1',y_2',\dots,y_n')$. Alternatively, one can specify two arguments, $f$ and either $y(x)$ or $[y_1(x),y_2(x),\dots,y_n(x)]$.
+
+The return value is a system of differential Euler-Lagrange equations, which represent necessary conditions for extremum of the functional
+\[ F(y)=\int_a^bf(x,y,y')\,\mathrm{d}x,\quad y\in C^2[a,b] \]
+with boundary conditions $y(a)=A$ and $y(b)=B$ where $A,B\in\mathbb{R}$. If $n=1$, a single equation is returned :
+\begin{equation}\label{eq:euler-lagrange}\frac{\partial f}{\partial y}=\frac{\mathrm{d}}{\mathrm{d}x}\,\frac{\partial f}{\partial y'}.\end{equation}
+If $n>1$, there are $n$ Euler-Lagrange equations :
+\[ \frac{\partial f}{\partial y_k}=\frac{\mathrm{d}}{\mathrm{d}x}\,\frac{\partial f}{\partial y_k'},\quad k=1,2,\dots,n. \]
+The degrees of these differential equations are kept as low as possible. If, for example, $\frac{\partial f}{\partial y}=0$, the equation $\frac{\partial f}{\partial y'}=K$ is returned, where $K\in\mathbb{R}$ is an arbitrary constant. Similarly, using the Hamiltonian
+\[ H(x,y,y')=y'\,\frac{\partial}{\partial y'}\,f(x,y,y')-f(x,y,y') \]
+the Euler-Lagrange equation is simplified in case $n=1$ and $\frac{\partial f}{\partial t}=0$ to :
+\begin{equation}\label{eq:hamiltonian}H(x,y,y')=K,\end{equation}
+since it can be shown that $\frac{\mathrm{d}}{\mathrm{d}x}\,H(y,y',x)=0$. Therefore the Euler-Lagrange equations, which are generally of order two in $y$, are returned in simpler form of order one in the aforementioned cases. If $n=1$ and $\frac{\partial f}{\partial t}=0$ then both equations~\eqref{eq:euler-lagrange} and~\eqref{eq:hamiltonian} are returned, each of them being sufficient to determine $y$ (one of the returned equations is usually simpler than the other).
+
+It can be proven that if $f$ is convex (as a function of three independent variables), then a solution $y$ to Euler-Lagrange equations minimizes the functional $F$.
+
+For example, input :
+\begin{center}
+  \tt euler\_lagrange(sqrt(x'(t)\verb|^|2+y'(t)\verb|^|2),[x(t),y(t)])
+\end{center}
+We obtain a system of two differential equations of order one :
+\[ \begin{cases}\frac{x'(t)}{\sqrt{x'(t)^2+y'(t)^2}}&=K_0,\\\frac{y'(t)}{\sqrt{x'(t)^2+y'(t)^2}}&=K_1\end{cases} \]
+where $K_0,K_1\in\mathbb{R}$ are arbitrary (these constants are generated automatically).
+
+In the following example we find the Euler-Lagrange equation for the brachistochrone problem, in which the functional
+\[ F(y)=\frac{1}{\sqrt{2\,g}}\int_0^{x_1}\sqrt{\frac{1+y'(x)^2}{y(x)}}\,\mathrm{d}x \]
+for some function $y\geq 0$ such that $y(0)=0$ and $y(x_1)=h>0$. It represents a curve alongside which an object travels, forced by the force of gravity (its vector pointing upwards), from the point $(0,0)$ to the point $(x_1,h)$ in shortest possible time. To obtain the corresponding Euler-Lagrange equation, input :
+\begin{center}
+  \tt assume(y>=0):; euler\_lagrange(sqrt((1+y\verb|'^|2)/y),t,y)
+\end{center}
+Output :
+\begin{center}
+  \tt [-1/sqrt(y(t)*(1+diff(y(t),t)\verb|^|2))=K\_2,
+  diff(y(t),t,2)=(diff(y(t),t)\verb|^|2+1)/(2*y(t))]
+\end{center}
+It is easier to solve the first equation for $y$, since it is first-order and separable.
+
+In the next example we minimize the functional $F$ for $0<a<b$ and
+\[ f(x,y,y')=x^2\,y'(x)^2+y(x)^2. \]
+Input :
+\begin{center}
+  \tt f:=x\verb|^|2*diff(y(x),x)\verb|^|2+y\verb|^|2:; eq:=euler\_lagrange(f)
+\end{center}
+We obtain the following Euler-Lagrange equation :
+\[ y''=\frac{1}{x^2}\,(y-2\,x\,y'). \]
+It can be solved by assuming $y(x)=x^r$ for some $r\in\mathbb{R}$. Input :
+\begin{center}
+  \tt solve(subs(eq,y(x)=x\verb|^|r),r)
+\end{center}
+Output :
+\begin{center}
+  \tt [-(sqrt(5)+1)/2,(sqrt(5)-1)/2]
+\end{center}
+Note that a pair of independent solutions is also returned by {\tt kovacicsols} command :
+\begin{center}
+  \tt assume(x>=0):; kovacicsols(y\verb|''|=(y-2x*y')/x\verb|^|2,x,y)
+\end{center}
+Output :
+\begin{center}
+  \tt [sqrt(x\verb|^|(sqrt(5)-1)),sqrt(x\verb|^|(-(sqrt(5))-1))]
+\end{center}
+Anyway, we conclude that $y=C_1\,x^{-\frac{\sqrt{5}+1}{2}}+C_2\,x^{\frac{\sqrt{5}+1}{2}}$. The values of $C_1$ and $C_2$ are determined from the boundary conditions. Finally we prove that $f$ is convex :
+\begin{center}
+  \tt convex(f,y(x))
+\end{center}
+Output :
+\begin{center}
+  \tt true
+\end{center}
+Therefore, $y$ minimizes $F$ on $[a,b]$.
+
+In the example below we find the function \[y\in\left\{y\in C^1\left[\frac{1}{2},1\right]:y\left(\frac{1}{2}\right)=-\frac{\sqrt{3}}{2},y(1)=0\right\}\] which minimizes the functional
+\[ F(y)=\int_{1/2}^1\frac{\sqrt{1+y'(x)^2}}{x}\,\mathrm{d}x. \]
+To obtain the corresponding Euler-Lagrange equation, input :
+\begin{center}
+  \tt f:=sqrt(1+diff(y(x),x)\verb|^|2)/x:; eq:=euler\_lagrange(f)
+\end{center}
+Output :
+\begin{center}
+  \tt diff(y(x),x)/(sqrt(diff(y(x),x)\verb|^|2+1)*x)=K\_3
+\end{center}
+Input :
+\begin{center}
+  \tt sol:=dsolve(eq)
+\end{center}
+Output :
+\begin{center}
+  \tt [c\_0-(sqrt(-K\_3\verb|^|2*x\verb|^|2+1))/K\_3]
+\end{center}
+The sought solution is the function of the above form which satisfies the boundary conditions. Input :
+\begin{center}
+  \tt y0:=sol[0]:; c:=[K\_3,c\_0]:; v:=solve([subs(y0,x=1/2)=-sqrt(3)/2,subs(y0,x=1)=0],c)
+\end{center}
+Output :
+\begin{center}
+  \tt [[1,0]]
+\end{center}
+Input :
+\begin{center}
+  \tt y0:=normal(subs(y0,c,v[0])
+\end{center}
+Output :
+\begin{center}
+  \tt -sqrt(1-x\verb|^|2)
+\end{center}
+To prove that $y_0(x)=-\sqrt{1-x^2}$ is indeed a minimizer for $F$, we show that the integrand in $F(y)$ is convex. Input :
+\begin{center}
+  \tt convex(sqrt(1+y'\verb|^|2)/x,y(x))
+\end{center}
+Output :
+\begin{center}
+  \tt x>=0
+\end{center}
+Hence the integrand is convex for $x\in\left[\frac{1}{2},1\right]$.
+
+Similarly, we find the minimizer for
+\[ F(y)=\int_0^{\pi}\left(2\,\sin(x)\,y(x)+y'(x)^2\right)\,\mathrm{d}x \]
+where $y\in C^1[0,\pi]$ and $y(0)=y(\pi)=0$. Input :
+\begin{center}
+  \tt f:=2*sin(x)*y(x)+diff(y(x),x)\verb|^|2:; eq:=euler\_lagrange(f)
+\end{center}
+Output :
+\begin{center}
+  \tt diff(y(x),x,2)=sin(x)
+\end{center}
+Input :
+\begin{center}
+  \tt dsolve(eq and y(0)=0 and y(pi)=0,x,y)
+\end{center}
+Output :
+\begin{center}
+  \tt -sin(x)
+\end{center}
+The above function is the sought minimizer as the integrand $f$ is convex :
+\begin{center}
+  \tt convex(f,y(x))
+\end{center}
+Output :
+\begin{center}
+  \tt true
+\end{center}
+
+In the next example we minimize the functional $F(y)=\int_0^1(y'(x)^4-4\,y(x))\,\mathrm{d}x$ on $C^1[0,1]$ with boundary conditions $y(0)=1$ and $y(1)=2$. First we solve the associated Euler-Lagrange equation :
+\begin{center}
+  \tt eq:=euler\_lagrange(y'\verb|^|4-4y,x,y)
+\end{center}
+Output :
+\begin{center}
+  \tt [(3*diff(y(x),x)\verb|^|4+4*y(x))=K\_4, diff(y(x),x,2)=-1/(3*diff(y(x),x)\verb|^|2)]
+\end{center}
+Input :
+\begin{center}
+  \tt dsolve(eq[1] and y(0)=1 and y(1)=2,x,y)
+\end{center}
+Output :
+\begin{center}
+  \tt [-3*(-x+1.52832425067)\verb|^|(4/3)/4+2.32032831141]
+\end{center}
+We find that the integrand in $F(y)$ is convex :
+\begin{center}
+  \tt convex(y\verb|'^|4-4y,[x,y])
+\end{center}
+Output :
+\begin{center}
+  \tt true
+\end{center}
+Hence the minimizer is
+\[ y_0(x)=\frac{3}{4}\,(1.52832425067-x)^{4/3}+2.32032831141,\quad 0\leq x\leq 1. \]
+
+\subsection{Jacobi equation : {\tt jacobi\_equation\index{jacobi\_equation}}}
+{\tt jacobi\_equation} takes five or six arguments :
+\begin{itemize}
+  \item expression $f(y,y',x)$,
+  \item independent variable $x$,
+  \item dependent variable $y$ (this argument and the previous one can be combined to a single argument $y(x)$, in which case the call has five arguments),
+  \item expression $y_0\in C^1[a,b]$ which is stationary for the functional $F(y)=\int_a^bf(y,y',x)\,\mathrm{d}x$,
+  \item symbol $h$ for the unknown function in Jacobi equation,
+  \item point $a\in\mathbb{R}$, which is the lower bound for $x$.
+\end{itemize}
+The return value contains the Jacobi equation
+\begin{equation}\label{eq:jacobi-equation}
+  -\frac{\mathrm{d}}{\mathrm{d}t}\,\left(f_{y'\,y'}(y_0,y_0',t)\,h'\right)+\left(f_{y\,y}(y_0,y_0',t)-\frac{\mathrm{d}}{\mathrm{d}t}\,f_{y\,y'}(y_0,y_0',t)\right)\,h=0.
+\end{equation}
+If the Jacobi equation has a solution such that $h(a)=0$, $h(c)=0$ for some $c\in(a,b]$ and $h$ not identically zero on $[a,c]$, then $y_0$ does not minimize the functional $F$. It is said that $c$ is \emph{conjugate} to $a$. The function $y_0$ minimizes $F$ if $f_{y'\,y'}(y_0,y_0',t)>0$ for all $t\in[a,b]$ and there are no points conjugate to $a$ in $(a,b]$.
+
+If the Jacobi equation can be solved by {\tt dsolve}, a sequence containing the equation~\eqref{eq:jacobi-equation} and its solution is returned. Otherwise, if~\eqref{eq:jacobi-equation} cannot be solved immediately, only the Jacobi equation is returned.
+
+For example, input :
+\begin{center}
+  \tt jacobi\_equation(-1/2*y'(t)\verb|^|2+y(t)\verb|^|2/2,t,y,sin(t),h,0)
+\end{center}
+Output :
+\begin{center}
+  \tt (-diff(h(t),t,2)-h(t))=0, c\_0*sin(t)
+\end{center}
+
+\subsection{Finding conjugate points : {\tt conjugate\_equation\index{conjugate\_equation}}}
+{\tt conjugate\_equation} takes four arguments :
+\begin{itemize}
+  \item expression $y_0$ which depends on the independent variable and two parameters,
+  \item list $[\alpha,\beta]$ of parameters which $y_0$ depends on,
+  \item list $[A,B]$ of the values of parameters $\alpha$ and $\beta$, respectively,
+  \item independent variable $x$,
+  \item real number $a$ equal to the lower or to the upper bound for $x$.
+\end{itemize}
+The function $y_0(x)$ is assumed to be stationary for the problem of minimizing some functional $F(y)=\int_a^bf(x,y,y')\,\mathrm{d}x$. The return value is the expression
+\begin{equation}\label{eq:conjugate-equation}
+  \frac{\partial y_0(t)}{\partial\alpha}\,\frac{\partial y_0(a)}{\partial\beta}-
+  \frac{\partial y_0(a)}{\partial\alpha}\,\frac{\partial y_0(t)}{\partial\beta},
+\end{equation}
+at $\alpha=A$ and $\beta=B$, which is zero if and only if $t$ is conjugate to $a$. To find any conjugate points, set the returned expression to zero and solve.
+
+For example, we find a minimum for the functional
+\[ F(y)=\int_0^{\frac{\pi}{2}}\left(y'(x)^2-x\,y(x)-y(x)^2\right)\,\mathrm{d}x \]
+on $D=\{y\in C^1[0,\pi/2]:y(0)=y(\pi/2)=0\}$. The corresponding Euler-Lagrange equation is :
+\begin{center}
+  \tt eq:=euler\_lagrange(y'(x)\verb|^|2-x*y(x)-y(x)\verb|^|2,y(x))
+\end{center}
+Output :
+\begin{center}
+  \tt diff(y(x),x,2)=((-2*y(x)-x)/2)
+\end{center}
+The general solution is :
+\begin{center}
+  \tt y0:=dsolve(eq,x,y)
+\end{center}
+Output :
+\begin{center}
+  \tt c\_0*cos(x)+c\_1*sin(x)-x/2
+\end{center}
+The stationary function depends on two parameters $c_0$ and $c_1$ which are fixed by the boundary conditions :
+\begin{center}
+  \tt c:=solve([subs(y0,x,0)=0,subs(y0,x,pi/2)=0],[c\_0,c\_1])
+\end{center}
+Output :
+\begin{center}
+  \tt [[0,pi/4]]
+\end{center}
+Input :
+\begin{center}
+  \tt conjugate\_equation(y0,[c\_0,c\_1],c[0],x,0)
+\end{center}
+Output :
+\begin{center}
+  \tt sin(x)
+\end{center}
+The above expression obviously has no zeros in $(0,\pi/2]$, hence there are no points conjugate to $0$. Since $f_{y'\,y'}=2>0$, where $f(y,y',x)$ is the integrand in $F(y)$ (the strong Legendre condition), $y_0$ minimizes $F$ on $D$. To obtain $y_0$ explicitly, input :
+\begin{center}
+  \tt subs(y0,[c\_0,c\_1],c[0])
+\end{center}
+Output :
+\begin{center}
+  \tt pi*sin(x)/4-x/2
+\end{center}
+
+\subsection{An example : finding the surface of revolution with minimal area}
+In this section we find the function
+\[ y_0\in D=\{y\in C^1[0,1]:y(0)=1,y(1)=2/3\} \]
+for which the area of the corresponding surface of revolution is minimal. The result is not necessarily intuitive.
+
+The area of the surface of revolution is measured by the functional
+\[ F(y)=2\,\pi\,\int_0^1y(x)\,\sqrt{1+y'(x)^2}\,\mathrm{d}x. \]
+We set $f(y,y',x)=y(x)\,\sqrt{1+y'(x)^2}$ and compute the associated Euler-Lagrange equation :
+\begin{center}
+  \tt dy:=diff(y(x),x):; f:=y*sqrt(1+dy\verb|^|2):; eq:=euler\_lagrange(f)
+\end{center}
+Output :
+\begin{center}
+  \tt [-(y(x))/(sqrt(diff(y(x),x)\verb|^|2+1))=K\_0, diff(y(x),x,2)=((diff(y(x),x)\verb|^|2+1)/(y(x)))]
+\end{center}
+We obtain the stationary function by finding the general solution of the first equation. Input :
+\begin{center}
+  \tt sol:=collect(simplify(dsolve(eq[0],x,y)))
+\end{center}
+Output :
+\begin{center}
+  \tt [-K\_0,K\_0*(-exp((x-c\_1)/K\_0)\verb|^|2-1)/(2*exp((x-c\_1)/K\_0))]
+\end{center}
+Obviously the constant solution $-K_0$ is not in $D$, so we set $y_0$ to be the second element of the above list. That function, which can be written as \[ y_0(x)=-K_0\,\cosh\left(\frac{x-c_1}{K_0}\right), \] is called a \emph{catenary}. Input :
+\begin{center}
+  \tt y0:=sol[1]:; p:=[K\_0,c\_1]:;
+\end{center}
+To find the values of $K_0$ and $c_1$ from the boundary conditions, we first plot the curves $y_0(0)=1$ and $y_0(1)=\frac{2}{3}$ for $K_0\in[-1,1]$ and $c_1\in[-1,2]$ to see where they intersect each other. Input :
+\begin{center}
+  \tt eq1:=subs(y0,x=0)=1:; eq2:=subs(y0,x=1)=2/3:; implicitplot([eq1,eq2],K\_0=-1..1,c\_1=-1..2)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{catenoid_intersections.png}
+\end{center}
+We observe that there are exactly two catenaries satisfying the Euler-Lagrange necessary conditions and the given boundary conditions : the first with $K_0\approx -0.5$ and $c_1\approx 0.6$ resp.~the second with $K_0\approx -0.3$ and $c_1\approx 0.5$. We obtain the values of these constants more precisely by using {\tt fsolve}. Input :
+\begin{center}
+  \tt p1:=fsolve([eq1,eq2],p,[-0.5,0.6]);
+  p2:=fsolve([eq1,eq2],p,[-0.3,0.5])
+\end{center}
+Output :
+\begin{center}
+  \tt [-0.56237423894,0.662588703113], [-0.30613431407,0.567138261119]
+\end{center}
+We check, for each catenary, whether the strong Legendre condition \[f_{y'\,y'}(x,y_k,y_k')>0\] holds for $k=1,2$. Input :
+\begin{center}
+  \tt y1:=subs(y0,p,p1):; y2:=subs(y0,p,p2):;
+  D2f:=diff(f,diff(y(x),x),2):;
+  solve([eval(subs(D2f,y=y1,y(x)=y1))<=0,x>=0,x<=1],x);
+  solve([eval(subs(D2f,y=y2,y(x)=y2))<=0,x>=0,x<=1],x)
+\end{center}
+Output :
+\begin{center}
+  \tt [],[]
+\end{center}
+We conclude that the strong Legendre condition is satisfied in both cases, so we proceed by attempting to find the points conjugate to 0 for each catenary. The function $y_0$ depends on two parameters, so we use {\tt conjugate\_equation} to find these points easily. Input :
+\begin{center}
+  \tt fsolve(conjugate\_equation(y0,p,p1,x,0)=0,x=0..1)
+  fsolve(conjugate\_equation(y0,p,p2,x,0)=0,x=0..1)
+\end{center}
+Output :
+\begin{center}
+  \tt [0.0], [0.0,0.799514772606]
+\end{center}
+We conclude that there are no points conjugate to $0$ in $(0,1]$ for the catenary $y_1$, so it minimizes the functional $F$. However, for the other catenary there is a conjugate point in the relevant interval, therefore $y_2$ is not a minimizer.
+
+We can verify the above conclusions by computing the surface area for catenaries $y_1$ and $y_2$ and comparing them. Input :
+\begin{center}
+  \tt int(y1*sqrt(1+diff(y1,x)\verb|^|2),x=0..1); int(y2*sqrt(1+diff(y2,x)\verb|^|2),x=0..1)
+\end{center}
+Output :
+\begin{center}
+  \tt 0.81396915825,0.826468466845
+\end{center}
+We see that the surface formed by rotating the curve $y_1$ is indeed smaller than the area of the surface formed by rotating the curve $y_2$. Finally, we visualize both surfaces for convenience. Input :
+\begin{center}
+  \tt plot3d([y1*cos(t),y1*sin(t),x],x=0..1,t=0..2*pi, display=yellow+filled)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{catenoid_1.png}
+\end{center}
+Input :
+\begin{center}
+  \tt plot3d([y2*cos(t),y2*sin(t),x],x=0..1,t=0..2*pi, display=yellow+filled)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{catenoid_2.png}
+\end{center}
 
 \section{Limits}
 \subsection{Limits : {\tt limit}}\index{limit|textbf}\label{sec:limit}
@@ -6538,7 +7037,7 @@ by combining {\tt simplify}, {\tt texpand}, {\tt tlin}, {\tt tcollect}, {\tt tri
 Input :
 \begin{center}{\tt trigsimplify((sin(x+y)-sin(x-y))/(cos(x+y)+cos(x-y)))}\end{center}
 Output :
-\begin{center}{\tt tan(4*x/3)}\end{center}
+\begin{center}{\tt tan(y)}\end{center}
 Input :
 \begin{center}{\tt trigsimplify(1-1/4*sin(2a)\verb|^|2-sin(b)\verb|^|2-cos(a)\verb|^|4)}\end{center}
 Output :
@@ -11777,6 +12276,27 @@ then :
 Output :
 \begin{center}{\tt   [[25,7],[29,7],[2,2]]}\end{center}
 
+\subsection{Fold operators : {\tt foldl\index{foldl}}, {\tt foldr\index{foldr}}}
+The fold operators {\tt foldl} and {\tt foldr} both take a binary operator, identifier or function $R$ as the first argument followed by an argument $I$ and an arbitrary number of arguments $a$, $b$, $c$, \ldots, like for example {\tt foldl(R,I,a,b,c,...)}.
+
+The left-fold operator {\tt foldl} composes a binary operator $R$ with initial value $I$ onto the arguments $a$, $b$, \ldots (which may be zero in number), associating from the left. For example, input :
+\begin{center}
+  \tt foldl(R,I,a,b,c)
+\end{center}
+Output :
+\begin{center}
+  \tt R(R(R(I,a),b),c)
+\end{center}
+
+The right-fold operator {\tt foldr} is similar but associates operands from the right. For example, input :
+\begin{center}
+  \tt foldr(R,I,a,b,c)
+\end{center}
+Output :
+\begin{center}
+  \tt R(a,R(b,R(c,I)))
+\end{center}
+
 \subsection{Make a list with zeros : {\tt newList}}\index{newList}
 \noindent{\tt newList(n)} makes a list of {\tt n} zeros.\\
 Input :
@@ -13739,76 +14259,6 @@ It is advisable to use only (capital) letters, digits and underscore when naming
 
 \textbf{Warning!} Too large problems won't be loaded. More precisely, if $ n_v\cdot n_c>10^5 $, where $ n_v $ is the number of variables and $ n_c $ is the number of constraints, loading is aborted. Many MPS files available, for example, in the Netlib repository ({\tt http://www.netlib.org/}), contain very large problems with thousands of variables and constraints. Trying to load them to Xcas without a safety limit could easily eat up huge amounts of available memory, probably freezing up the whole system. If a large LP problem needs to be solved, one may consider using GLPK standalone solver\footnote{See {\tt https://www.gnu.org/software/glpk/} for installing GLPK in Linux or {\tt http://winglpk.sourceforge.net/} for MS~Windows.}.
 
-\subsection{Nonlinear optimization: {\tt nlpsolve}}\index{nlpsolve}
-{\tt nlpsolve} computes the optimum of a (not necessarily differentiable) nonlinear (multivariate) objective function, subject to a set of nonlinear equality and/or inequality constraints, using the COBYLA algorithm. The command takes the following arguments:
-\begin{itemize}
-	\item {\tt obj} : objective expression
-	\item {\tt constr} : list of equality and inequality constraints (optional)
-	\item {\tt bd} : sequence of variable boundaries (optional) : {\tt x=a..b}, {\tt y=c..d}, \ldots
-	\item {\tt opt} : sequence of options (optional), which may be one of:
-	\begin{itemize}
-		\item {\tt maximize=true} or {\tt false} (or just {\tt maximize})
-		\item {\tt nlp\_initialpoint=[x=x0,y=y0,...]}
-		\item {\tt nlp\_iterationlimit=n}
-		\item {\tt assume=nlp\_nonnegative}
-		\item {\tt nlp\_precision=eps}
-	\end{itemize}
-\end{itemize}
-
-{\tt nlpsolve} returns a list containing the optimal value of the objective and a vector of optimal values of the decision variables.
-
-The objective is minimized by default, unless {\tt maximize} or {\tt maximize=true} is specified as an option.
-
-Initial point, if given, does not need to be feasible. Note, however, that the initial value of a variable must not be zero. If the initial point is not given or isn't feasible, a feasible starting guess is automatically generated. Note that choosing a good initial point is needed for obtaining a correct solution in some cases.
-
-Input syntax for {\tt nlpsolve} resembles that of Maple's {\tt NLPSolve} (entering the objective as a function (univariate case) is not supported, however).
-
-\subsubsection{Examples}
-
-Input :
-\begin{center}
-	\tt nlpsolve(ln(1+x1\^{}2)-x2,[(1+x1\^{}2)\^{}2+x2\^{}2=4])
-\end{center}
-Output :
-\begin{center}
-	\tt [-1.73205080757,[x1=-4.77142305945e-08,x2=1.73205080757]]
-\end{center}
-Input :
-\begin{center}
-	\tt nlpsolve(-x1*x2*x3,[72-x1-2x2-2x3>=0],
-	x1=0..20,x2=0..11,x3=0..42)
-\end{center}
-Output :
-\begin{center}
-	\tt [-3300.0,[x1=20.0,x2=11.0,x3=15.0]]
-\end{center}
-Input :
-\begin{center}
-	\tt nlpsolve(x\^{}3+2x*y-2y\^{}2,x=-10..10,y=-10..10,
-	nlp\_initialpoint=[x=3,y=4],maximize)
-\end{center}
-Output :
-\begin{center}
-	\tt [1050.0,[x=10.0,y=4.99999985519]]
-\end{center}
-Input :
-\begin{center}
-	\tt nlpsolve(sin(x)/x,x=1..30)
-\end{center}
-Output :
-\begin{center}
-	\tt [-0.217233628211,[x=4.49340942383]]
-\end{center}
-Input :
-\begin{center}
-	\tt nlpsolve(2-1/120*x1*x2*x3*x4*x5,
-	[x1<=1,x2<=2,x3<=3,x4<=4,x5<=5],assume=nlp\_nonnegative)
-\end{center}
-Output :
-\begin{center}
-	\tt [1.0,[x1=1.0,x2=2.0,x3=3.0,x4=4.0,x5=5.0]]
-\end{center}
-
 \subsection{Solving transportation problems: {\tt tpsolve}}\index{tpsolve|textbf}
 The objective of a transportation problem is to minimize the cost of distributing a product from $ m $ sources to $ n $ destinations. It is determined by three parameters :
 \begin{itemize}
@@ -14098,6 +14548,76 @@ Input :
 Output :
 \begin{center}
 {\tt [[1,0,0],[0,1,0],[0,0,1],[1/3,1/3,1/3]]}
+\end{center}
+
+\subsection{Global extrema without using derivatives : {\tt nlpsolve}}\index{nlpsolve}
+{\tt nlpsolve} computes the optimum of a (not necessarily differentiable) nonlinear (multivariate) objective function, subject to a set of nonlinear equality and/or inequality constraints, using the COBYLA algorithm. The command takes the following arguments:
+\begin{itemize}
+	\item {\tt obj} : objective expression
+	\item {\tt constr} : list of equality and inequality constraints (optional)
+	\item {\tt bd} : sequence of variable boundaries (optional) : {\tt x=a..b}, {\tt y=c..d}, \ldots
+	\item {\tt opt} : sequence of options (optional), which may be one of:
+	\begin{itemize}
+		\item {\tt maximize=true} or {\tt false} (or just {\tt maximize})
+		\item {\tt nlp\_initialpoint=[x=x0,y=y0,...]}
+		\item {\tt nlp\_iterationlimit=n}
+		\item {\tt assume=nlp\_nonnegative}
+		\item {\tt nlp\_precision=eps}
+	\end{itemize}
+\end{itemize}
+
+{\tt nlpsolve} returns a list containing the optimal value of the objective and a vector of optimal values of the decision variables.
+
+The objective is minimized by default, unless {\tt maximize} or {\tt maximize=true} is specified as an option.
+
+Initial point, if given, does not need to be feasible. Note, however, that the initial value of a variable must not be zero. If the initial point is not given or isn't feasible, a feasible starting guess is automatically generated. Note that choosing a good initial point is needed for obtaining a correct solution in some cases.
+
+Input syntax for {\tt nlpsolve} resembles that of Maple's {\tt NLPSolve} (entering the objective as a function (univariate case) is not supported, however).
+
+\subsubsection{Examples}
+
+Input :
+\begin{center}
+	\tt nlpsolve(ln(1+x1\^{}2)-x2,[(1+x1\^{}2)\^{}2+x2\^{}2=4])
+\end{center}
+Output :
+\begin{center}
+	\tt [-1.73205080757,[x1=-4.77142305945e-08,x2=1.73205080757]]
+\end{center}
+Input :
+\begin{center}
+	\tt nlpsolve(-x1*x2*x3,[72-x1-2x2-2x3>=0],
+	x1=0..20,x2=0..11,x3=0..42)
+\end{center}
+Output :
+\begin{center}
+	\tt [-3300.0,[x1=20.0,x2=11.0,x3=15.0]]
+\end{center}
+Input :
+\begin{center}
+	\tt nlpsolve(x\^{}3+2x*y-2y\^{}2,x=-10..10,y=-10..10,
+	nlp\_initialpoint=[x=3,y=4],maximize)
+\end{center}
+Output :
+\begin{center}
+	\tt [1050.0,[x=10.0,y=4.99999985519]]
+\end{center}
+Input :
+\begin{center}
+	\tt nlpsolve(sin(x)/x,x=1..30)
+\end{center}
+Output :
+\begin{center}
+	\tt [-0.217233628211,[x=4.49340942383]]
+\end{center}
+Input :
+\begin{center}
+	\tt nlpsolve(2-1/120*x1*x2*x3*x4*x5,
+	[x1<=1,x2<=2,x3<=3,x4<=4,x5<=5],assume=nlp\_nonnegative)
+\end{center}
+Output :
+\begin{center}
+	\tt [1.0,[x1=1.0,x2=2.0,x3=3.0,x4=4.0,x5=5.0]]
 \end{center}
 
 \subsection{Minimax polynomial approximation: {\tt minimax}}\index{minimax|textbf}
@@ -16021,6 +16541,163 @@ Input :
 \begin{center}{\tt desolve(y''-6*y'+9*y=x*exp(3*x),y)}\end{center}
 Output :
 \begin{center}{\tt exp(3*x)*(-18*c\_0*x+6*c\_0+x\verb|^|3+6*x*c\_1)/6}\end{center}
+
+\subsection{Solving linear homogeneous second-order ODE with rational coefficients : {\tt kovacicsols\index{kovacicsols}}}
+{\tt kovacicsols} uses Kovacic's algorithm to find a Liouvillian solution of an ordinary linear homogeneous second-order differential equation
+\begin{equation}\label{kovacic-ode}a\,y''+b\,y'+c\,y=0,\end{equation}
+where $a$, $b$ and $c$ are rational functions of the independent variable. The command takes from one to three arguments :
+\begin{itemize}
+  \item equation~\eqref{kovacic-ode} as an expression (left-hand side), equality or a list of coefficients~$[a,b,c]$,
+  \item independent variable (optional, by default $x$),
+  \item dependent variable (optional, by default $y$).
+\end{itemize}
+The dependent variable should not be specified if the equation~\eqref{kovacic-ode} is entered as a list of coefficients.
+
+The return value can be a list or an expression. An empty list means that there are no Liouvillian solutions to the input equation or that none can be determined. If a non-empty list is returned, it contains one or two independent solution(s) $y_1$ (and $y_2$) to the equation~\eqref{kovacic-ode}. The general solution to~\eqref{kovacic-ode} is then
+\[ y=C_1\,y_1+C_2\,y_2, \]
+where $C_1,C_2\in\mathbb{R}$ are arbitrary constants. However, for some equations only $y_1$ is returned, in which case $y_2$ can be obtained as (using reduction of order) :
+\begin{equation}\label{kovacic-reduction}y_2=y_1\,\int y_1^{-2}.\end{equation}
+If {\tt kovacicsols} returns an expression, it means that the solution to~\eqref{kovacic-ode} is given implicitly. In that case the return value is a polynomial $P$ of order $n\in\{4,6,12\}$ in the variable {\tt omega\_} (denoted here by $\omega$) with rational coefficients $r_k$, $k=0,1,2,\dots,n$. If $P(\omega_0)=0$ for some $\omega_0$, then $y=\exp\left(\int\omega_0\right)$ is a solution to the equation~\eqref{kovacic-ode}.
+
+\paragraph{Examples.}
+In the first example we find the general solution to the equation
+\[ y''=\left(\frac{1}{x}-\frac{3}{16\,x^2}\right)\,y. \]
+Input :
+\begin{center}
+  \tt kovacicsols(y\verb|''|=y*(1/x-3/16x\verb|^|2))
+\end{center}
+Output :
+\begin{center}
+  \tt [x\verb|^|(1/4)*exp(2*sqrt(x)),x\verb|^|(1/4)*exp(-2*sqrt(x))]
+\end{center}
+Therefore, $y=C_1\,x^{1/4}\,\mathrm{e}^{2\,\sqrt{x}}+C_2\,x^{1/4}\,\mathrm{e}^{-2\,\sqrt{x}}$ is the general solution.
+
+In the following example we solve the equation
+\[ x''(t)+\frac{3\,(t^2-t+1)}{16\,(t-1)^2\,t^2}\,x(t)=0. \]
+Input :
+\begin{center}
+  \tt kovacicsols(x\verb|''|+3*(t\verb|^|2-t+1)/(16*(t-1)\verb|^|2*t\verb|^|2)*x,t,x)
+\end{center}
+Output :
+\begin{center}
+  \tt [(-t*(t-1)*(2*t+2*sqrt(t\verb|^|2-t)-1))\verb|^|(1/4), (t*(t-1)*(-2*t+2*sqrt(t\verb|^|2-t)+1))\verb|^|(1/4)]
+\end{center}
+Now for arbitrary $C_1,C_2\in\mathbb{R}$ we have
+\[\begin{split}x(t)=C_1\,\sqrt[4]{t\,(t-1)\,(1-2\,t-2\,\sqrt{t^2-t})}+\\C_2\,\sqrt[4]{t\,(t-1)\,(1-2\,t+2\,\sqrt{t^2-t})}.\end{split}\]
+
+In the next example we find a particular solution to the equation
+\[ y''=\frac{4\,x^6-8\,x^5+12\,x^4+4\,x^3+7\,x^2-20\,x+4}{4\,x^4}\,y. \]
+Input :
+\begin{center}
+  \tt r:=(4x\verb|^|6-8x\verb|^|5+12x\verb|^|4+4x\verb|^|3+7x\verb|^|2-20x+4)/(4x\verb|^|4):; kovacicsols(y\verb|''|=r*y)
+\end{center}
+Output :
+\begin{center}
+  \tt [(x\verb|^|2-1)/(x*sqrt(x))*exp((x\verb|^|3-2*x\verb|^|2-2)/(2*x))]
+\end{center}
+Hence $y=(x^2-1)\,x^{-3/2}\,\mathrm{e}^{\frac{x^3-2\,x^2-2}{2\,x}}$ is a solution to the given equation.
+
+A similar output is obtained when solving the equation
+\[ y''+y'=\frac{6\,y}{x^2}. \]
+Input :
+\begin{center}
+  \tt kovacicsols(y\verb|''|+y\verb|'|=6y/x\verb|^|2)
+\end{center}
+Output :
+\begin{center}
+  \tt [(x\verb|^|2+6*x+12)*exp(-x)/x\verb|^|2]
+\end{center}
+
+To solve Titchmarsh equation
+\[ y''+(19-x^2)\,y=0, \]
+input :
+\begin{center}
+  \tt kovacicsols(y\verb|''|+(19-x\verb|^|2)*y=0,x,y)
+\end{center}
+We obtain a particular solution
+\[ y=\left(x^9-18\,x^7+\frac{189\,x^5}{2}-\frac{315\,x^3}{2}+\frac{945\,x}{16}\right)\,\exp\left(-\frac{x^2}{2}\right). \]
+
+To find the general solution of Halm's equation
+\[ (1+x^2)^2\,y''(x)+3\,y(x)=0, \]
+input :
+\begin{center}
+  \tt sol:=kovacicsols((1+x\verb|^|2)\verb|^|2*y\verb|''|+3y=0,x,y)
+\end{center}
+Output :
+\begin{center}
+  \tt [(x\verb|^|2-1)/(sqrt(x\verb|^|2+1))]
+\end{center}
+The other basic solution is obtained by using~\eqref{kovacic-reduction}. Input :
+\begin{center}
+  \tt y1:=sol[0]; y2:=normal(y1*int(y1\verb|^|-2,x))
+\end{center}
+Output :
+\begin{center}
+  \tt (x\verb|^|2-1)/(sqrt(x\verb|^|2+1)),-x/(sqrt(x\verb|^|2+1))
+\end{center}
+Therefore, $y=C_1\,\frac{x^2-1}{\sqrt{x^2+1}}+C_2\,\frac{x}{\sqrt{x^2+1}}$, where $C_1,C_2\in\mathbb{R}$.
+
+In the following example we find the general solution of the non-homogeneous equation
+\[ y''-\frac{27\,y}{36\,(x-1)^2}=x+4. \]
+First we need to find the general solution to the corresponding homogeneous equation $y_h''-\frac{27\,y_h}{36\,(x-1)^2}=0$. Input :
+\begin{center}
+  \tt sols:=kovacicsols(y\verb|''|-y*27/(36*(x-1)\verb|^|2),x,y)
+\end{center}
+Output :
+\begin{center}
+  \tt [(x\verb|^|2-2*x)/(sqrt(x-1))]
+\end{center}
+We call the obtained solution $y_1$ and find the other basic independent solution by using~\eqref{kovacic-reduction}. Input :
+\begin{center}
+  \tt y1:=sols[0]:; y2:=y1*int(1/y1\verb|^|2,x)
+\end{center}
+Output :
+\begin{center}
+  \tt -1/(sqrt(x-1)*2)
+\end{center}
+Now the general solution of the homogeneous equation is
+\[ y_h=C_1\,y_1+C_2\,y_2=\frac{C_1\,(x^2-2\,x)+C_2}{\sqrt{x-1}},\quad C_1,C_2\in\mathbb{R}. \]
+A particular solution $y_p$ of the non-homogeneous equation can be obtained by variation of parameters as
+\[ y_p=-y_1\,\int\frac{y_2\,f(x)}{W}\,\mathrm{d}x+y_2\,\int\frac{y_1\,f(x)}{W}\,\mathrm{d}x, \]
+where $f(x)=x+4$ and $W$ is the Wronskian of $y_1$ and $y_2$, i.e.~\[W=y_1\,y_2'-y_2\,y_1'\neq 0.\] Input :
+\begin{center}
+  \tt W:=y1*y2'-y2*y1':; f:=x+4:; yp:=normal(-y1*int(y2*f/W,x)+y2*int(y1*f/W,x))
+\end{center}
+Output :
+\begin{center}
+  \tt (4*x\verb|^|3+72*x\verb|^|2-156*x+80)/21
+\end{center}
+Hence $y_p=\frac{1}{21}\,(4\,x^3+72\,x^2-156\,x+80)$. Now $y=y_p+y_h$. We proceed by checking that it is indeed the general solution of the given equation. Input :
+\begin{center}
+  \tt purge(C1,C2):; ysol:=yp+C1*y1+C2*y2:; normal(diff(ysol,x,2)-27/(36*(x-1)\verb|^|2)*ysol)==f
+\end{center}
+Output :
+\begin{center}
+  \tt true
+\end{center}
+
+In the next example we attempt to solve the equation from the original Kovacic's paper :
+\[ y''=\left(\frac{3}{16\,x\,(x-1)}-\frac{2}{9\,(x-1)^2}-\frac{3}{16\,x^2}\right)\,y. \]
+Input :
+\begin{center}
+  \tt r:=-3/(16x\verb|^|2)-2/(9*(x-1)\verb|^|2)+3/(16x*(x-1)):; kovacicsols(y\verb|''|=r*y)
+\end{center}
+Output :
+\begin{center}
+  \tt -omega\_\verb|^|4*x\verb|^|4*(x-1)\verb|^|4+ omega\_\verb|^|3*x\verb|^|3*(x-1)\verb|^|3*(7*x-3)/3- omega\_\verb|^|2*x\verb|^|2*(x-1)\verb|^|2*(48*x\verb|^|2-41*x+9)/24+ omega\_*x*(x-1)*(320*x\verb|^|3-409*x\verb|^|2+180*x-27)/432+ (-2048*x\verb|^|4+3484*x\verb|^|3-2313*x\verb|^|2+702*x-81)/20736
+\end{center}
+The solution is $y=\exp\left(\int\omega_0\right)$, where $\omega_0$ is a zero of the above expression, thus being a root of a fourth-order polynomial in $\omega$. In similar cases one can try the Ferrari method to obtain $\omega_0$.
+
+We get similar output while trying to solve the equation
+\[ 48\,t\,(t+1)\,(5\,t-4)\,y''+8\,(25\,t+16)\,(t-2)\,y'-(5\,t+68)\,y=0. \]
+Input :
+\begin{center}
+  \tt de:=[48t*(t+1)*(5t-4),8*(25t+16)*(t-2),-(5t+68)]:; kovacicsols(de,t)
+\end{center}
+Output :
+\begin{center}
+  \tt omega\_\verb|^|4*(135*t\verb|^|4-616*t\verb|^|3-144*t\verb|^|2+3072*t-4096)/20736- omega\_\verb|^|2*t\verb|^|2*(t+1)*(15*t\verb|^|3-80*t\verb|^|2+80*t+256)/24- t\verb|^|4*(t+1)\verb|^|2*(t+4)*(5*t+4)+ 2*omega\_*t\verb|^|3*(t+1)\verb|^|2*(t-4)*(5*t+8)/3- omega\_\verb|^|3*t*(t+1)*(23*t\verb|^|2-92*t+128)/54
+\end{center}
 
 \section{Other functions}
 \subsection{Replace small values by 0: {\tt epsilon2zero}}
@@ -18565,6 +19242,264 @@ you might get
   [[2.6324726358,0.539273367446,0.793750476229],[2.24729803442,1.28189228187,2.25750809791]]  
 \end{center}
 
+\subsection{Random variables : {\tt random\_variable\index{random\_variable} randvar\index{randvar}}}
+
+{\tt randvar} (alias: {\tt random\_variable}) takes a probability distribution specification as its argument and returns an object representing a random variable. Its value(s) can be generated subsequently by calling {\tt sample}, {\tt rand}, {\tt randvector} or {\tt randmatrix}.
+
+The probability distribution is specified as a sequence of arguments. The supported types are : uniform, normal, binomial, multinomial, negbinomial, Poisson, Student, Fisher-Snedecor, Cauchy, Weibull, beta, gamma, chi-square, geometric, exponential and discrete.
+
+\paragraph{Continuous distributions.} The usual way to specify a continuous distribution is to pass the probability density function as the first argument, followed by one or more (numeric) parameters. However, it can also be defined by specifying its type and first and/or second moment (the mean and/or the standard deviation/variance); the supported types are : normal, uniform, binomial, Poisson, geometric, exponential, gamma, beta and Weibull. Additionally, a uniform distribution can be defined by specifying its range as an interval. The arguments are entered in form:
+\begin{itemize}
+  \item {\tt mean=}$\mu$
+  \item {\tt stddev=}$\sigma$
+  \item {\tt variance=}$\sigma^2$
+  \item {\tt [range=]a..b} or {\tt range=[a,b]}
+\end{itemize}
+
+\paragraph{Discrete distributions.} To create a discrete random variable one can pass either
+\begin{itemize}
+  \item a list $W=[w_1,w_2,\dots,w_n]$ of nonnegative weights as the first argument, optionally followed by a list of values $V=[v_1,v_2,\dots,v_n]$,
+  \item a list of of object-weight pairs : $[[v_1,w_1],[v_2,w_2],\dots,[v_n,w_n]]$, or
+  \item a nonnegative function $f$ followed by a range specification {\tt [range=]a..b} and optionally either a positive integer $N$ (with $a,b\in\mathbb{R}$) or a list of values $V=[v_0,v_1,v_2,\dots,v_n]$ where $n=b-a$, $a<b$ and $a,b\in\mathbb{Z}$.
+\end{itemize}
+The weights are automatically scaled by the inverse of their sum to obtain the values of the probability mass function. If a function $f$ is given instead of a list of weights, then $w_k=f(a+k)$ for $k=0,1,\dots,b-a$ unless $N$ is given, in which case $w_k=f(x_k)$ where $x_k=a+(k-1)\,\frac{b-a}{N}$ and $k=1,2,\dots,N$. The resulting random variable $X$ has values in $\{0,1,\dots,n-1\}$ for 0-based modes (e.g.~Xcas) resp.~in $\{1,2\dots,n\}$ for 1-based modes (e.g.~Maple). If the list $V$ of custom objects is given, then $V[X]$ is returned instead of $X$. If $N$ is given, then $v_k=x_k$ for $k=1,2,\dots,N$.
+
+\paragraph{Examples.} To define a random variable with a Fisher-Snedecor distribution (two degrees of freedom), input :
+\begin{center}
+  \tt X:=random\_variable(fisher,2,3)
+\end{center}
+Output :
+\begin{center}
+  \tt fisherd(2,3)
+\end{center}
+To generate some values of $X$, input :
+\begin{center}
+  \tt rand(X) // alternative : sample(X)
+\end{center}
+Output :
+\begin{center}
+  \tt 2.0457
+\end{center}
+Input :
+\begin{center}
+  \tt randvector(5,X) // alternative : sample(X,5)
+\end{center}
+Output :
+\begin{center}
+  \tt [3.9823,0.50771,0.44836,0.79225,0.088813]
+\end{center}
+To define a random variable with multinomial distribution, input :
+\begin{center}
+  \tt M:=randvar(multinomial,[1/2,1/3,1/6],[a,b,c])
+\end{center}
+Output :
+\begin{center}
+  \tt 'multinomial',[1/2,1/3,1/6],[a,b,c]
+\end{center}
+Input :
+\begin{center}
+  \tt randvector(10,M)
+\end{center}
+Output :
+\begin{center}
+  \tt [a,c,b,a,b,b,a,b,b,b]
+\end{center}
+Some continuous distributions can be defined by specifying its first and/or second moment. Input :
+\begin{center}
+  \tt randvector(10,randvar(poisson,mean=5))
+\end{center}
+Output :
+\begin{center}
+  \tt [5,4,4,8,3,8,3,3,5,9]
+\end{center}
+Input :
+\begin{center}
+  \tt randvector(5,randvar(weibull,mean=5.0,stddev=1.5))
+\end{center}
+Output :
+\begin{center}
+  \tt [3.6483,3.4194,6.8166,4.3778,2.4178]
+\end{center}
+Input :
+\begin{center}
+  \tt X:=randvar(binomial,mean=18,stddev=4)
+\end{center}
+Output :
+\begin{center}
+  \tt binomial(162,1/9)
+\end{center}
+Input :
+\begin{center}
+  \tt X:=randvar(weibull,mean=12.5,variance=1)
+\end{center}
+Output :
+\begin{center}
+  \tt weibulld(3.0857,13.98)
+\end{center}
+Input :
+\begin{center}
+  \tt mean(randvector(1000,X))
+\end{center}
+Output :
+\begin{center}
+  \tt 12.582
+\end{center}
+Input :
+\begin{center}
+  \tt G:=randvar(geometric,stddev=2.5)
+\end{center}
+Output :
+\begin{center}
+  \tt geometric(0.32792)
+\end{center}
+Input :
+\begin{center}
+  \tt evalf(stddev(randvector(1000,G)))
+\end{center}
+Output :
+\begin{center}
+  \tt 2.4245
+\end{center}
+Input :
+\begin{center}
+  \tt randvar(gammad,mean=12,variance=4)
+\end{center}
+Output :
+\begin{center}
+  \tt gammad(36,3)
+\end{center}
+Uniformly distributed random variables can be defined by specifying the support as an interval. Input :
+\begin{center}
+  \tt randvector(5,randvar(uniform,range=15..81))
+\end{center}
+Output :
+\begin{center}
+  \tt [61.97,76.427,37.939,69.639,40.325]
+\end{center}
+Input :
+\begin{center}
+  \tt rand(randvar(uniform,e..pi))
+\end{center}
+Output :
+\begin{center}
+  \tt 3.0434
+\end{center}
+The following examples demonstrate various ways to define a discrete random variable. Input :
+\begin{center}
+  \tt X:=randvar([["apple",1/3],["orange",1/4], ["pear",1/5],["plum",13/60]]):;\\randvector(5,X)
+\end{center}
+Output :
+\begin{center}
+  \tt ["apple","plum","pear","orange","apple","pear"]
+\end{center}
+Input :
+\begin{center}
+  \tt W:=[1,4,5,3,1,1,1,2]:; X:=randvar(W):;\\approx(W/sum(W))
+\end{center}
+Output :
+\begin{center}
+  \tt [0.055556,0.22222,0.27778,0.16667, 0.055556,0.055556,0.055556,0.11111]
+\end{center}
+Input :
+\begin{center}
+  \tt frequencies(randvector(10000,X))
+\end{center}
+Output :
+\begin{center}
+  \tt [[0,0.0566],[1,0.2152],[2,0.2798],[3,0.1683], [4,0.0594],[5,0.0564],[6,0.0568],[7,0.1075]]
+\end{center}
+Input :
+\begin{center}
+  \tt X:=randvar(k->1-(k/10)\verb|^|2,range=-10..10):;\\histogram(randvector(10000,X),-10,0.33,display=filled)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{random_hist1.png}
+\end{center}
+Input :
+\begin{center}
+  \tt X:=randvar([3,1,2,5],[alpha,beta,gamma,delta]):;\\randmatrix(5,4,X)
+\end{center}
+Output :
+\[ \begin{vmatrix}\alpha&\beta&\delta&\delta\\ \delta&\alpha&\alpha&\alpha\\ \delta&\gamma&\alpha&\delta\\
+\delta&\alpha&\delta&\alpha\\ \alpha&\beta&\delta&\delta\end{vmatrix}\]
+Discrete random variables can be used to approximate custom continuous random variables. For example, consider a probability density function $f$ as a mixture of two normal distributions on the support $S=[-10,10]$. We sample $f$ in $N=10000$ points in $S$. Input :
+\begin{center}
+  \tt F:=normald(3,2,x)+normald(-5,1,x):; c:=integrate(F,x=-10..10):;\\
+  f:=unapply(1/c*F,x):;\\
+  X:=randvar(f,range=-10..10,10000):;
+\end{center}
+Now we generate 25000 values of $X$ and plot a histogram :
+\begin{center}
+  \tt R:=sample(X,25000):;\\
+  hist:=histogram(R,-10,0.1):;\\
+  PDF:=plot(f(x),display=red+line\_width\_2):;
+  hist,PDF
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{random_hist2.png}
+\end{center}
+Sampling from discrete distributions is fast : generating 25 million samples from the distribution of X which
+has about 10000 outcomes takes only couple of seconds. In fact, the sampling complexity is constant.
+Also observe that the process isn't slowed down by spreading it across 1000 calls of randvector. Input :
+\begin{center}
+  \tt for k from 1 to 1000 do randvector(25000,X); od:;
+\end{center}
+{\tt Evaluation time: 2.12}
+
+Independent random variables can be combined in an expression, yielding a new random variable.
+In the example below, we define a log-normally distributed variable Y from a variable X with standard
+normal distribution. Input :
+\begin{center}
+  \tt X:=randvar(normal):; mu,sigma:=1.0,0.5:;\\Y:=exp(mu+sigma*X):;\\L:=randvector(10000,Y):; histogram(L,0,0.33)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{random_hist3.png}
+\end{center}
+It is known that $E[Y]=\mathrm{e}^{\mu+\sigma^2/2}$. The mean of $L$ should be close to that number. Input :
+\begin{center}
+  \tt mean(L); exp(mu+sigma\verb|^|2/2)
+\end{center}
+Output:
+\begin{center}
+  \tt 3.0789,3.0802
+\end{center}
+
+In case a compound random variable is defined as an expression containing several independent random variables $X,Y,\dots$ of the same type, it is sometimes needed to prevent its evaluation when passing it to {\tt randvector} or {\tt randmatrix}. Input :
+\begin{center}
+  \tt Y:=randvar(normal):;
+\end{center}
+$X/Y$ is wrapped by eval because otherwise it would automatically reduce to 1 as $X$ and $Y$ are both {\tt normald}$(0,1)$. Input :
+\begin{center}
+  \tt randvector(5,eval(X/Y,0))
+\end{center}
+Output :
+\begin{center}
+  \tt [0.2608,-0.056913,-4.7966,-1.2622,-1.2997]
+\end{center}
+To save typing, one can define Z with {\tt eval}$(\ast,0)$ and pass {\tt eval}$(Z,1)$ to {\tt randvector} or {\tt randmatrix}. Input :
+\begin{center}
+  \tt Z:=eval(X/Y,0):; randvector(5,eval(Z,1))
+\end{center}
+Output :
+\begin{center}
+  \tt [0.19015,-2.4509,-1.4277,-1.1452,1.2935]
+\end{center}
+Parameters of a distribution can be entered as symbols to allow (re)assigning them at any time. Input :
+\begin{center}
+  \tt purge(lambda):; X:=randvar(exp,lambda):;\\lambda:=1:;
+\end{center}
+Now execute the following command line several times in a row. The parameter $\lambda$ is updated in each iteration :
+\begin{center}
+  \tt r:=rand(X); lambda:=sqrt(r)
+\end{center}
+Output (by executing the above command line three times) :
+\begin{center}
+  \tt 8.5682,2.9272\\1.5702,1.2531\\0.53244,0.72968
+\end{center}
+
 \section{Density and distribution functions}
 
 \subsection{The binomial distribution}
@@ -19966,6 +20901,146 @@ you will get
   0.97998199227
 \end{center}
 
+\subsection{Kernel density estimation : {\tt kernel\_density\index{kernel\_density}}, {\tt kde\index{kde}}}
+{\tt kernel\_density} (alias : {\tt kde}) accepts a list of samples $L=[X_1,X_2,\dots,X_n]$ and optionally a sequence of options. It performs kernel density estimation\footnote{For the details on kernel density estimation and its implementation see~: Artur Gramacki, {\it Nonparametric Kernel Density Estimation and Its Computational Aspects}, Springer, 2018.} (KDE), optionally restricted to an interval $[a,b]$, to obtain an estimate $\hat{f}$ of the (unknown) probability density function $f$ from which the samples are drawn, defined by~:
+\begin{equation}\label{eq:kde1}
+  \hat{f}(x)=\frac{1}{n\,h}\,\sum_{i=1}^nK\left(\frac{x-X_i}{h}\right),
+\end{equation}
+where $K$ is the Gaussian kernel $K(u)=\frac{1}{\sqrt{2\,\pi}}\,\exp\left(-\frac{1}{2}\,u^2\right)$ and $h$ is the positive real parameter called the \emph{bandwidth}.
+
+The supported options are listed below.
+\begin{itemize}
+  \item {\tt output=<type>} or {\tt Output=<type>} : specifies the form of the return value $\hat{f}$, where {\tt <type>} may be
+  \begin{itemize}
+    \item {\tt exact} : $\hat{f}$ is returned as the sum of Gaussian kernels, i.e.~as the right side of~\eqref{eq:kde1}, which is usable only when the number of samples is relatively small (up to few hundreds),
+    \item {\tt piecewise} : $\hat{f}$ is returned as a piecewise expression obtained by the spline interpolation of the specified degree (by default, the interpolation is linear) on the interval $[a,b]$ segmented to the specified number of bins,
+    \item {\tt list} (the default) : $\hat{f}$ is returned in discrete form, as a list of values $\hat{f}\left(a+k\,\frac{b-a}{M-1}\right)$ for $k=0,1,\dots,M$, where $M$ is the number of bins.
+  \end{itemize}
+  \item {\tt bandwidth=<value>} : specifies the bandwidth. {\tt <value>} may be
+  \begin{itemize}
+    \item a positive real number $h$,
+    \item {\tt select} (the default) : bandwidth is selected using a direct plug-in method,
+    \item {\tt gauss} or {\tt normal} or {\tt normald} : the Silverman's rule of thumb is used for selecting bandwidth (this method is fast but the results are close to optimal ones only when $f$ is approximately normal).
+  \end{itemize}
+  \item {\tt bins=<posint>} (by default 100) : the number of bins for simplifying the input data. Only the number if samples in each bin is stored. Bins represent the elements of an equidistant segmentation of the interval $S$ on which KDE is performed. This allows evaluating kernel summations using convolution when {\tt output} is set to {\tt piecewise} or {\tt list}, which significantly lowers the computational burden for large values of $n$ (say, few hundreds or more). If {\tt output} is set to {\tt exact}, this option is ignored.
+  \item {\tt [range=]a..b} or {\tt range=[a,b]} or {\tt x=a..b} : the interval $[a,b]$ on which KDE is performed. If an identifier $x$ is specified, it is used as the variable of the output. If the range endpoints are not specified, they are set to $a=\min_{1\leq i\leq n} X_i-3\,h$ and $b=\max_{1\leq i\leq n}X_i+3\,h$ (unless {\tt output} is set to {\tt exact}, in which case this option is ignored).
+  \item {\tt interp=<posint>} (by default 1) : the degree of the spline interpolation, ignored unless {\tt output} is set to {\tt piecewise}.
+  \item {\tt spline=<posint>} : sets {\tt option} to {\tt piecewise} and {\tt interp} to {\tt <posint>}.
+  \item {\tt eval=x0} : only the value $\hat{f}(x_0)$ is returned (this cannot be used with {\tt output} set to {\tt list}).
+  \item an unassigned identifier {\tt x} (by default $x$) : the variable of the output.
+  \item {\tt exact} : the same as {\tt output=exact}.
+  \item {\tt piecewise} : the same as {\tt output=piecewise}.
+\end{itemize}
+
+\paragraph{Examples.}
+Input :
+\begin{center}
+  \tt kernel\_density([1,2,3,2],bandwidth=1/4,exact)
+\end{center}
+Output :
+\begin{center}
+  \tt 0.4*(exp(-8*(x-3)\verb|^|2)+2*exp(-8*(x-2)\verb|^|2)+exp(-8*(x-1)\verb|^|2))
+\end{center}
+Input :
+\begin{center}
+  \tt f:=unapply(normald(4,1,x)/2+normald(7,1/2,x)/2,x); plot(f(x),x=0..10)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{kde_plot1.png}
+\end{center}
+Input :
+\begin{center}
+  \tt X:=randvar(f,range=0..10,1000):; S:=sample(X,1000):; F:=kernel\_density(S,piecewise):; plot([F,f(x)],x=0..10, display=[line\_width\_2+blue,line\_width\_1+black])
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{kde_plot2.png}
+\end{center}
+Input :
+\begin{center}
+  \tt kernel\_density(S,bins=50,spline=3,eval=4.75)
+\end{center}
+Output :
+\begin{center}
+  \tt 0.14655478136
+\end{center}
+Input :
+\begin{center}
+  \tt time(kernel\_density(sample(X,1e5),piecewise))
+\end{center}
+Output :
+\begin{center}
+  \tt "Done",[0.17,0.1653323]
+\end{center}
+Input :
+\begin{center}
+  \tt S:=sample(X,5000):; sqrt(int((f(x)-kde(S,piecewise))\verb|^|,x=0..10))
+\end{center}
+Output :
+\begin{center}
+  \tt 0.0269841239243
+\end{center}
+Input :
+\begin{center}
+  \tt S:=sample(X,25000):; sqrt(int((f(x)-kde(S,bins=150,piecewise))\verb|^|2,x=0..10))
+\end{center}
+Output :
+\begin{center}
+  \tt 0.0144212781377
+\end{center}
+
+\subsection{Distribution fitting by maximum likelihood : {\tt fitdistr\index{fitdistr}}}
+{\tt fitdistr} takes two arguments, a list $L$ of presumably independent and identically distributed samples and a distribution type, which may be normal, exponential, Poisson, geometric, gamma, beta, Cauchy or Weibull. The type is specified as {\tt normal} ({\tt normald}), {\tt exp} ({\tt exponential} or {\tt exponentiald}), {\tt poisson}, {\tt geometric}, {\tt gammad}, {\tt betad}, {\tt cauchy} ({\tt cauchyd}) or {\tt weibull} ({\tt weibulld}), respectively. The command returns the distribution of the specified type with parameters that fit the given samples most closely according to the method of maximum likelihood.
+
+For example, input :
+\begin{center}
+  \tt S:=:; fitdistr(randvector(1000,weibulld,1/2,1),weibull)
+\end{center}
+Output :
+\begin{center}
+  \tt weibulld(0.498920254339,0.971148738409)
+\end{center}
+Input :
+\begin{center}
+  \tt X:=randvar(normal,stddev=9.5):; Y:=randvar(normal,stddev=1.5):; S:=sample(eval(X/Y,0),1000):; Z:=fitdistr(S,cauchy)
+\end{center}
+Output :
+\begin{center}
+  \tt cauchyd(-0.13160176167,6.2569300393)
+\end{center}
+Input :
+\begin{center}
+  \tt histogram(select(x->(x>-100 and x<100),S)); plot(Z(x),x=-100..100,display=red+line\_width\_2)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{fitdistr.png}
+\end{center}
+Input :
+\begin{center}
+  \tt kolmogorovt(S,Z)
+\end{center}
+Output :
+\begin{center}
+  \tt ["D=",0.0125864995943,"K=", 0.398020064869, "1-kolmogorovd(K)=",0.997387219452]
+\end{center}
+The Kolmogorov-Smirnov test indicates that the samples from $S$ are drawn from $Z$ with high probability.
+
+Fitting a lognormal distribution to samples $x_1,x_2,\dots,x_n$ can be done by fitting a normal distribution to the sample logarithms $\log x_1,\log x_2,\dots,\log x_n$ because log-likelihood functions are the same. For example, generate some samples according to the lognormal rule with parameters $\mu=5$ and $\sigma^2=2$ :
+\begin{center}
+  \tt X:=randvar(normal,mean=5,variance=2):; S:=sample(exp(X),1000):;
+\end{center}
+Now fit normal distribution to $\log S$ :
+\begin{center}
+  \tt Y:=fitdistr(log(S),normal)
+\end{center}
+Output :
+\begin{center}
+  \tt normald(5.04754808715,1.42751619912)
+\end{center}
+The mean of $Y$ is about $5.05$ and the variance is about $2.04$. Now the variable $Z=\exp(Y)$ has the sought lognormal distribution.
+
 \subsection{Markov chains: \texttt{markov}\index{markov}}
 
 Given the transition matrix of a Markov chain, the \texttt{markov}
@@ -20650,6 +21725,81 @@ Output :
 \begin{center}{\tt  [[0.1781,[-0.177159948386,0.984182072936]], [0.3781,[-0.369155338156,0.929367707805]], [0.5781,[-0.54643366953,0.837502384954]], [0.7781,[-0.701927414872,0.712248484906]]]}\end{center}
 \end{itemize}
 
+\subsection{Approximate solution of a nonlinear second-order boundary value problem : {\tt bvpsolve\index{bvpsolve}} }
+{\tt bvpsolve} finds an approximate solution of a boundary value problem
+\[ y''=f(x,y,y'),\quad y(a)=\alpha,\ y(b)=\beta \]
+on the interval $[a,b]$. It takes the following mandatory arguments :
+\begin{itemize}
+  \item expression $f(x,y,y')$,
+  \item list {\tt [x=a..b,y]}, specifying the independent variable $x$, its range $[a,b]$ and the sought function $y$,
+  \item list containing $\alpha$, $\beta$ and optionally an initial guess for $y'(a)$ as the third element.
+\end{itemize}
+One or more of the additional arguments below can optionally follow (in no particular order) :
+\begin{itemize}
+  \item integer $N\geq 2$ (by default 100),
+  \item {\tt output=<type>} or {\tt Output=<type>} : the type of the output, which can be {\tt list} (the default), {\tt diff}, {\tt piecewise} or {\tt spline},
+  \item {\tt limit=M} : the procedure will be stopped if the number of iterations exceeds $M$, which must be a positive integer (by default there is no limit).
+\end{itemize}
+
+The procedure uses the method of nonlinear shooting which is based on Newton and Runge-Kutta methods. Values of $y$ and its first derivative $y'$ are approximated at points $x_k=a+k\,\delta$, where $\delta=\frac{b-a}{N}$ and $k=0,1,\dots,N$. For the numeric tolerance (precision) threshold, the algorithm uses {\tt epsilon} specified in the session settings in Xcas. If the output type is
+\begin{itemize}
+  \item {\tt list}, a list of pairs $[x_k,y_k]$ is returned where $y_k\approx y(x_k)$,
+  \item {\tt diff}, a list of lists $[x_k,y_k,y'_k]$ is returned, where $y'_k\approx y'(x_k)$,
+  \item {\tt piecewise}, a piecewise linear interpolation of the points $(x_k,y_k)$ is returned,
+  \item {\tt spline}, a piecewise spline interpolation of the points $(x_k,y_k)$ is returned, based on the values $y'_k$ computed in the process.
+\end{itemize}
+
+Note that the shooting method is sensitive to roundoff errors and may fail to converge in some cases, especially when $y$ is a rapidly increasing function. In the absence of convergence or if the maximum number of iterations is exceeded, {\tt bvpsolve} returns {\tt undef}. However, if output type is {\tt list} or {\tt piecewise} and if $N>2$, a slower but more stable finite-difference method (which approximates only the function $y$) is tried first.
+
+Sometimes setting an initial guess for $y'(a)$ to a suitable value may help the shooting algorithm to converge or to converge faster. The default initial guess $y_0'$ for the value $y'(a)$ is\[ y_0'=\frac{\beta-\alpha}{b-a}. \]
+
+\paragraph{Examples.}
+In the first example we solve the problem \[y''=\frac{1}{8}\,(32+2\,x^3-y\,y'),\quad 1\leq x\leq 3\] with boundary conditions $y(1)=17$ and $y(3)=\frac{43}{3}$. We use $N=20$, which gives $x$-step of $0.01$. Input :
+\begin{center}
+  \tt bvpsolve((32+2x\verb|^|3-y*y')/8,[x=1..3,y],[17,43/3],20)
+\end{center}
+The output is shown in Table~\ref{tab:bvp} (the middle two columns) alongside with the values $y(x_k)$ of the exact solution $y=x^2+16/x$ (the fourth column).
+\begin{table}
+  \centering\small
+  \begin{tabular}{|r|ll|l|}
+    \hline
+    $k$ & $x_k$ & $y_k$ & $y(x_k)$\\\hline
+    0 & 1.0 & 17.0 & 17.0\\
+    1 & 1.1 & 15.7554961579 & 15.7554545455\\
+    2 & 1.2 & 14.7733911821 & 14.7733333333\\
+    3 & 1.3 & 13.9977543159 & 13.9976923077\\
+    4 & 1.4 & 13.388631813 & 13.3885714286\\
+    5 & 1.5 & 12.9167227424 & 12.9166666667\\
+    6 & 1.6 & 12.5600506483 & 12.56\\
+    7 & 1.7 & 12.3018096101 & 12.3017647059\\
+    8 & 1.8 & 12.1289281414 & 12.1288888889\\
+    9 & 1.9 & 12.0310865274 & 12.0310526316\\
+    10 & 2.0 & 12.0000289268 & 12.0\\
+    11 & 2.1 & 12.0290719981 & 12.029047619\\
+    12 & 2.2 & 12.1127475278 & 12.1127272727\\
+    13 & 2.3 & 12.2465382803 & 12.2465217391\\
+    14 & 2.4 & 12.4266798825 & 12.4266666667\\
+    15 & 2.5 & 12.650010254 & 12.65\\
+    16 & 2.6 & 12.9138537834 & 12.9138461538\\
+    17 & 2.7 & 13.2159312426 & 13.2159259259\\
+    18 & 2.8 & 13.5542890043 & 13.5542857143\\
+    19 & 2.9 & 13.9272429048 & 13.9272413793\\
+    20 & 3.0 & 14.3333333333 & 14.3333333333\\\hline
+  \end{tabular}
+  \caption{approximate and true values of the function $y=x^2+16/x$ on $[1,3]$\label{tab:bvp}}
+\end{table}
+
+In the next example we solve the problem
+\[ y''=\frac{x^2\,(y')^2-9\,y^2+4\,x^6}{x^5},\quad 1\leq x\leq 2, \]
+with the boundary conditions $y(1)=0$ and $y(2)=\ln 256$. We obtain the solution as a piecewise spline interpolation for $N=10$ and estimate the absolute error {\tt err} of the approximation using the exact solution $y=x^3\,\ln x$ and {\tt romberg} command for numerical integration. We also need to explicitly set an initial guess $y_0'$ for the value $y'(1)$ because the algorithm fails to converge with the default guess $y_0'=\ln 256\approx 5.545$. Therefore let $y_0'=1$ instead. Input :
+\begin{center}
+  \tt f:=(x\verb|^|2*diff(y(x),x)\verb|^|2-9*y(x)\verb|^|2+4*x\verb|^|6)/x\verb|^|5:; vars:=[x=1..2,y]:; yinit:=[0,ln(256),1]:; p:=bvpsolve(f,vars,yinit,10,output=spline):; err:=sqrt(romberg((p-x\verb|^|3*ln(x))\verb|^|2,x=1..2))
+\end{center}
+Output :
+\begin{center}
+  \tt 3.27720911686e-06
+\end{center}
+Note that, if the output type was set to {\tt list} or {\tt piecewise}, the solution would have been found even without specifying an initial guess for $y'(1)$ because the algorithm would automatically apply the alternative finite-difference method, which converges.
 
 \section{Solve equations with {\tt fsolve nSolve}}\index{fsolve}\index{nSolve}
 \noindent{\tt fsolve} or {\tt nSolve} solves numeric equations

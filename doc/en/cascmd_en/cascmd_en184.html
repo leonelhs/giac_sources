@@ -4,94 +4,64 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Defining algebraic functions</title>
+<title>Usual functions</title>
 </head>
 <body >
 <a href="cascmd_en183.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en185.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec230" class="subsection">5.16.3  Defining algebraic functions</h3>
-<h4 id="sec231" class="subsubsection">Defining a function from ℝ<sup><span style="font-style:italic">p</span></sup> to ℝ</h4>
-<p>
-For <span style="font-style:italic">p</span>=1, e.g. for <span style="font-style:italic">f</span> : (<span style="font-style:italic">x</span>)→ <span style="font-style:italic">x</span>*sin(<span style="font-style:italic">x</span>), input :
-</p><div class="center"><span style="font-family:monospace">f(x):=x*sin(x)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">f:=x-&gt;x*sin(x)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(x)-&gt;x*sin(x)</span></div><p>
-If <span style="font-style:italic">p</span>&gt;1, e.g. for <span style="font-style:italic">f</span> : (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)→ <span style="font-style:italic">x</span>*sin(<span style="font-style:italic">y</span>), input :
-</p><div class="center"><span style="font-family:monospace">f(x,y):=x*sin(y)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">f:=(x,y)-&gt;x*sin(y)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(x,y)-&gt;x*sin(y)</span></div><p>
-<span style="font-weight:bold">Warning !!!</span> the expression after <span style="font-family:monospace">-&gt; </span> is not evaluated.
-You should use <span style="font-family:monospace">unapply</span> if you expect the second member to
-be evaluated before the function is defined.</p>
-<h4 id="sec232" class="subsubsection">Defining a function from ℝ<sup><span style="font-style:italic">p</span></sup> to ℝ<sup><span style="font-style:italic">q</span></sup></h4>
-<p>
-For example:
-</p><ul class="itemize"><li class="li-itemize">
-To define the function <span style="font-style:italic">h</span> : (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)→ (<span style="font-style:italic">x</span>*cos(<span style="font-style:italic">y</span>),<span style="font-style:italic">x</span>*sin(<span style="font-style:italic">y</span>)).<br>
- Input :
-<div class="center"><span style="font-family:monospace">h(x,y):=(x*cos(y),x*sin(y))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">(x,y)-&gt;{ <br>
- x*cos(y),x*sin(y);<br>
-}"</span></div>
-</li><li class="li-itemize">To define the function <span style="font-style:italic">h</span> : (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)→ [<span style="font-style:italic">x</span>*cos(<span style="font-style:italic">y</span>),<span style="font-style:italic">x</span>*sin(<span style="font-style:italic">y</span>)].<br>
- Input :
-<div class="center"><span style="font-family:monospace">h(x,y):=[x*cos(y),x*sin(y)];</span></div>
-or :
-<div class="center"><span style="font-family:monospace">h:=(x,y)-&gt;[x*cos(y),x*sin(y)];</span></div>
-or :
-<div class="center"><span style="font-family:monospace">h(x,y):={[x*cos(y),x*sin(y)]};</span></div>
-or : 
-<div class="center"><span style="font-family:monospace">h:=(x,y)-&gt;return[x*cos(y),x*sin(y)];</span></div>
-or : 
-<div class="center"><span style="font-family:monospace">h(x,y):={return [x*cos(y),x*sin(y)];}</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">(x,y)-&gt;{return([x*cos(y),x*sin(y)]);}</span></div>
-</li></ul><p>
-<span style="font-weight:bold">Warning !!!</span> The expression after <span style="font-family:monospace">-&gt; </span> is not evaluated.</p>
-<h4 id="sec233" class="subsubsection">Defining families of function from ℝ<sup><span style="font-style:italic">p</span>−1</sup> 
-to ℝ<sup><span style="font-style:italic">q</span></sup> using a function from ℝ<sup><span style="font-style:italic">p</span></sup> to ℝ<sup><span style="font-style:italic">q</span></sup></h4>
-<p>
-Suppose that the function <span style="font-style:italic">f</span>: (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) → <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) is defined, 
-and we want to define a family of functions <span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>) such
-that <span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>)(<span style="font-style:italic">y</span>):=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>) (i.e. <span style="font-style:italic">t</span> is viewed as a parameter).
-Since the expression after <span style="font-family:monospace">-&gt; </span> (or <span style="font-family:monospace">:=</span>)
-is not evaluated, we should not define <span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>) by <span style="font-family:monospace">g(t):=y-&gt;f(t,y)</span>,
-we have to use the <span style="font-family:monospace">unapply</span> command.</p><p>For example, assuming that <span style="font-style:italic">f</span>:(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)→ <span style="font-style:italic">x</span>sin(<span style="font-style:italic">y</span>) and <span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>): <span style="font-style:italic">y</span>→ <span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>), input :
-</p><div class="center"><span style="font-family:monospace">f(x,y):=x*sin(y);g(t):=unapply(f(t,y),y)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">((x,y)-&gt;x*sin(y), (t)-&gt;unapply(f(t,y),y))</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">g(2)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">y-&gt;2</span>·<span style="font-family:monospace"> sin(y)</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">g(2)(1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">2</span>·<span style="font-family:monospace"> sin(1)</span></div><p>Next example, suppose that the function 
-<span style="font-style:italic">h</span>: (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) → [<span style="font-style:italic">x</span>*cos(<span style="font-style:italic">y</span>),<span style="font-style:italic">x</span>*sin(<span style="font-style:italic">y</span>)] is defined, and 
-we want to define the family of functions <span style="font-style:italic">k</span>(<span style="font-style:italic">t</span>) having <span style="font-style:italic">t</span> as
-parameter such that <span style="font-style:italic">k</span>(<span style="font-style:italic">t</span>)(<span style="font-style:italic">y</span>):=<span style="font-style:italic">h</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>).
-To define the function <span style="font-style:italic">h</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>), input :
-</p><div class="center"><span style="font-family:monospace">h(x,y):=(x*cos(y),x*sin(y))</span></div><p>
-To define properly the function <span style="font-style:italic">k</span>(<span style="font-style:italic">t</span>), input :
-</p><div class="center"><span style="font-family:monospace">k(t):=unapply(h(x,t),x)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(t)-&gt;unapply(h(x,t),x)</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">k(2)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(x)-&gt;(x*cos(2),x*sin(2))</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">k(2)(1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(2*cos(1),2*sin(1))</span></div>
+<h3 id="sec230" class="subsection">5.16.2  Usual functions</h3>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">max</span><a id="hevea_default279"></a> takes as argument two real numbers and 
+returns their maximum,
+</li><li class="li-itemize"><span style="font-family:monospace">min</span><a id="hevea_default280"></a> takes as argument two real numbers and returns 
+their minimum,
+</li><li class="li-itemize"><span style="font-family:monospace">abs</span><a id="hevea_default281"></a> takes as argument a complex number and returns the 
+modulus of the complex parameter (the absolute value if the complex is
+real),
+</li><li class="li-itemize"><span style="font-family:monospace">sign</span><a id="hevea_default282"></a> takes as argument a real number and returns its
+sign (+1 if it is positive, 0 if it is null, and -1 if it is
+negative),
+</li><li class="li-itemize"><span style="font-family:monospace">floor</span><a id="hevea_default283"></a> (or <span style="font-family:monospace">iPart</span><a id="hevea_default284"></a>) 
+takes as argument a real number <span style="font-style:italic">r</span>, 
+and returns the largest integer ≤ <span style="font-style:italic">r</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">round</span><a id="hevea_default285"></a> takes as argument a real number and returns 
+its nearest integer,
+</li><li class="li-itemize"><span style="font-family:monospace">ceil</span> or <span style="font-family:monospace">ceiling</span><a id="hevea_default286"></a><a id="hevea_default287"></a> takes as
+argument a real number and returns the smallest integer ≥ <span style="font-style:italic">r</span>
+</li><li class="li-itemize"><span style="font-family:monospace">frac</span><a id="hevea_default288"></a> (or <span style="font-family:monospace">fPart</span><a id="hevea_default289"></a>) takes as
+argument a real number and returns its fractional part,
+</li><li class="li-itemize"><span style="font-family:monospace">trunc</span><a id="hevea_default290"></a> takes as 
+argument a real number and returns the integer equal to the real without its 
+fractional part,
+</li><li class="li-itemize"><span style="font-family:monospace">id</span><a id="hevea_default291"></a> is the identity function,
+</li><li class="li-itemize"><span style="font-family:monospace">sq</span><a id="hevea_default292"></a> is the square function,
+</li><li class="li-itemize"><span style="font-family:monospace">sqrt</span><a id="hevea_default293"></a> is the squareroot function,
+</li><li class="li-itemize"><span style="font-family:monospace">exp</span><a id="hevea_default294"></a> is the exponential function,
+</li><li class="li-itemize"><span style="font-family:monospace">log</span><a id="hevea_default295"></a> or <span style="font-family:monospace">ln</span><a id="hevea_default296"></a> is the 
+natural logarithm function,
+</li><li class="li-itemize"><span style="font-family:monospace">log10</span><a id="hevea_default297"></a> is the base-10 logarithm function,
+</li><li class="li-itemize"><span style="font-family:monospace">logb</span><a id="hevea_default298"></a> is the logarithm function where the second 
+argument is the base of the logarithm: 
+<span style="font-family:monospace">logb(7,10)=log10(7)=log(7)/log(10)</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">sin</span><a id="hevea_default299"></a> (resp. <span style="font-family:monospace">cos</span><a id="hevea_default300"></a>,
+<span style="font-family:monospace">tan</span><a id="hevea_default301"></a>)
+is the sinus function, cosinus function, tangent function,
+</li><li class="li-itemize"><span style="font-family:monospace">cot, sec, csc</span> are the cotangent, secant, cosecant function
+</li><li class="li-itemize"><span style="font-family:monospace">asin</span> (or <span style="font-family:monospace">arcsin</span>)<a id="hevea_default302"></a><a id="hevea_default303"></a>,
+<span style="font-family:monospace">acos</span> (or <span style="font-family:monospace">arccos</span>)<a id="hevea_default304"></a><a id="hevea_default305"></a>, 
+<span style="font-family:monospace">atan</span> (or <span style="font-family:monospace">arctan</span>)<a id="hevea_default306"></a><a id="hevea_default307"></a>, 
+<span style="font-family:monospace">acot, asec, acsc</span> are the inverse trigonometric functions (see 
+section <a href="cascmd_en208.html#sec%3Atrigo">5.22.1</a> for more info on trigonometric functions)
+</li><li class="li-itemize"><span style="font-family:monospace">sinh</span><a id="hevea_default308"></a> (resp. <span style="font-family:monospace">cosh</span><a id="hevea_default309"></a>,
+<span style="font-family:monospace">tanh</span><a id="hevea_default310"></a>)
+is the hyperbolic sinus function, cosinus function, tangent function,
+</li><li class="li-itemize"><span style="font-family:monospace">asinh</span> or <span style="font-family:monospace">arcsinh</span><a id="hevea_default311"></a><a id="hevea_default312"></a> (resp. 
+<span style="font-family:monospace">acosh</span> or <span style="font-family:monospace">arccosh</span><a id="hevea_default313"></a><a id="hevea_default314"></a>, 
+<span style="font-family:monospace">atanh</span> or <span style="font-family:monospace">arctanh</span><a id="hevea_default315"></a><a id="hevea_default316"></a>)
+is the inverse function of <span style="font-family:monospace">sinh</span> (resp. <span style="font-family:monospace">cosh</span>, <span style="font-family:monospace">tanh</span>)
+</li></ul>
 <hr>
 <a href="cascmd_en183.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,46 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Norms of a vector : maxnorm l1norm l2norm
-norm</title>
+<title>Fold operators : foldl, foldr</title>
 </head>
 <body >
 <a href="cascmd_en427.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en429.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec518" class="subsection">5.40.1  Norms of a vector : <span style="font-family:monospace">maxnorm l1norm l2norm
-norm</span></h3>
-<p><a id="hevea_default664"></a>
-The instructions to compute the different norm of a vector are :
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">maxnorm</span> returns the <span style="font-style:italic">l</span><sup>∞</sup> norm of a
-vector, 
-defined as the maximum of the absolute values of its 
-coordinates<a id="hevea_default665"></a><a id="sec:maxnormv"></a>.<br>
-Input :
-<div class="center"><span style="font-family:monospace">maxnorm([3,-4,2])</span></div>
+<h3 id="sec519" class="subsection">5.40.34  Fold operators : <span style="font-family:monospace">foldl</span><a id="hevea_default662"></a>, <span style="font-family:monospace">foldr</span><a id="hevea_default663"></a></h3>
+<p>
+The fold operators <span style="font-family:monospace">foldl</span> and <span style="font-family:monospace">foldr</span> both take a binary operator, identifier or function <span style="font-style:italic">R</span> as the first argument followed by an argument <span style="font-style:italic">I</span> and an arbitrary number of arguments <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span>, <span style="font-style:italic">c</span>, …, like for example <span style="font-family:monospace">foldl(R,I,a,b,c,...)</span>.</p><p>The left-fold operator <span style="font-family:monospace">foldl</span> composes a binary operator <span style="font-style:italic">R</span> with initial value <span style="font-style:italic">I</span> onto the arguments <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span>, …(which may be zero in number), associating from the left. For example, input :
+</p><div class="center">
+<span style="font-family:monospace">foldl(R,I,a,b,c)
+</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">4</span></div>
-Indeed : <span style="font-family:monospace">x=3, y=-4, z=2</span> and <span style="font-family:monospace">4=max(|x|,|y|,|z|)</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">l1norm</span> returns the <span style="font-family:monospace"><span style="font-style:italic">l</span></span><sup><span style="font-family:monospace">1</span></sup> norm of a 
-vector defined as the sum of the absolute values of its 
-coordinates<a id="hevea_default666"></a><a id="sec:l1normv"></a>.<br>
-Input :
-<div class="center"><span style="font-family:monospace">l1norm([3,-4,2])</span></div>
+</p><div class="center">
+<span style="font-family:monospace">R(R(R(I,a),b),c)
+</span></div><p>The right-fold operator <span style="font-family:monospace">foldr</span> is similar but associates operands from the right. For example, input :
+</p><div class="center">
+<span style="font-family:monospace">foldr(R,I,a,b,c)
+</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">9</span></div>
-Indeed : <span style="font-family:monospace">x=3, y=-4, z=2</span> and <span style="font-family:monospace">9=|x|+|y|+|z|</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">norm</span> or <span style="font-family:monospace">l2norm</span> returns the 
-<span style="font-style:italic">l</span><sup>2</sup> norm of a vector defined as the square root 
-of the sum of the squares of its 
-coordinates<a id="hevea_default667"></a><a id="sec:l2normv"></a>.<br>
-Input :
-<div class="center"><span style="font-family:monospace">norm([3,-4,2])</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">sqrt(29)</span></div>
-Indeed : <span style="font-family:monospace">x=3, y=-4, z=2</span> and  29=|<span style="font-style:italic">x</span>|<sup>2</sup>+|<span style="font-style:italic">y</span>|<sup>2</sup>+|<span style="font-style:italic">z</span>|<sup>2</sup>.
-</li></ul>
+</p><div class="center">
+<span style="font-family:monospace">R(a,R(b,R(c,I)))
+</span></div>
 <hr>
 <a href="cascmd_en427.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

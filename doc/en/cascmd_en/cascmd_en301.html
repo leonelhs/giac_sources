@@ -4,26 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The divisors of a polynomial : divis</title>
+<title>Change the order of variables : reorder</title>
 </head>
 <body >
 <a href="cascmd_en300.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en302.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec374" class="subsection">5.27.1  The divisors of a polynomial : <span style="font-family:monospace">divis</span></h3>
-<p><a id="hevea_default495"></a>
-<span style="font-family:monospace">divis</span> takes as argument a polynomial (or a list of 
-polynomials) and returns the list
-of the divisors of the polynomial(s).<br>
-Input : 
-</p><div class="center"><span style="font-family:monospace">divis(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div><p>
+<h3 id="sec371" class="subsection">5.27.24  Change the order of variables : <span style="font-family:monospace">reorder</span></h3>
+<p><a id="hevea_default494"></a>
+<span style="font-family:monospace">reorder</span> takes two arguments : an expression and a vector 
+of variable names.<br>
+<span style="font-family:monospace">reorder</span> expands the expression according to the order of variables
+given as second argument.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">reorder(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x*a+a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x*z,[a,x,z])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x+1,(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)*(x+1),x-1,(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)*(x-1),</span></div><div class="center"><span style="font-family:monospace">(x+1)*(x-1),(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)*(x+1)*(x-1)]</span></div><p>
-Input : 
-</p><div class="center"><span style="font-family:monospace">divis([x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[1,x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2],[1,x+1,x-1,(x+1)*(x-1)]]</span></div>
+</p><div class="center"><span style="font-family:monospace">a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*a*x+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x*z+z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
+<span style="font-weight:bold">Warning</span> :<br>
+The variables must be symbolic (if not, purge them before calling
+<span style="font-family:monospace">reorder</span>)</p>
 <hr>
 <a href="cascmd_en300.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

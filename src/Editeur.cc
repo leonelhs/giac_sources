@@ -1885,6 +1885,8 @@ namespace xcas {
   }
 
   void cb_choose_func(Fl_Text_Editor * ed){
+    giac::context * contextptr = get_context(ed);
+    bool python=python_compat(contextptr);
     int dx=240,dy=300,l=14;
     if (ed->window()){
       dx=int(0.5*ed->window()->w());
@@ -1930,11 +1932,11 @@ namespace xcas {
     w->label((gettext("New function")));
     change_group_fontsize(w,l);
     w->set_modal();
+    if (python) locs->hide(); else locs->show();
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
     Fl::focus(name);
-    context * contextptr=get_context(ed);
     int lang=language(contextptr);
     int r=-2;
     for (;;) {
@@ -1963,8 +1965,6 @@ namespace xcas {
     if (r==0){
       int i=0,addi=0; // i=ed->insert_position(),addi=0;
       string s;
-      giac::context * contextptr = get_context(ed);
-      bool python=python_compat(contextptr);
       switch (xcas_mode(contextptr)){
       case 0:
 	if (python)
@@ -1984,7 +1984,7 @@ namespace xcas {
 	    s+=":={";
 	}
 	s+="\n";
-	if (strlen(locs->value())){
+	if (!python && strlen(locs->value())){
 	  s+=python?"    # local ":"  local ";
 	  s+=locs->value();
 	  if (python) 

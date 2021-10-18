@@ -95,7 +95,25 @@ namespace giac {
     bool save_complex_mode=complex_mode(contextptr);
     complex_mode(true,contextptr);
     gen res=subst(e,x,newx,false,contextptr);
-    res=eval(res,1,contextptr);
+    // avoid rewrite of fractional powers
+    vecteur v=lop(newx,at_pow);
+    int i=0;
+    for (;i<v.size();++i){
+      gen tmp=v[i];
+      if (tmp.is_symb_of_sommet(at_pow)){
+	tmp=tmp._SYMBptr->feuille;
+	if (tmp.type==_VECT && tmp._VECTptr->size()==2){
+	  tmp=tmp._VECTptr->back();
+	  if (tmp.type==_FRAC && tmp._FRACptr->den.type==_INT_ ){
+	    tmp=tmp._FRACptr->den;
+	    if (tmp.val % 2==1)
+	      break;
+	  }
+	}
+      }
+    }				 
+    if (i==v.size()) 
+      res=eval(res,1,contextptr);
     complex_mode(save_complex_mode,contextptr);
     return res;
   }
@@ -2473,6 +2491,16 @@ namespace giac {
 	e=e2;
 	v=v2;
 	rvarsize=int(v2.size());
+      }
+      if (rvarsize==2){
+	e2=simplifier(e,contextptr);
+	v2.clear();
+	v2.push_back(gen_x);
+	rlvarx(e2,gen_x,v2);
+	if (v2.size()==1 || (v2.size()==2 && taille(v2[1],100)<taille(v[1],100))){
+	  e=e2;
+	  v=v2;
+	}
       }
     }
     vecteur rvar=v;

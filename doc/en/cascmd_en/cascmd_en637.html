@@ -4,39 +4,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Generating a random walks: randmarkov</title>
+<title>The exponential distribution</title>
 </head>
 <body >
 <a href="cascmd_en636.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en638.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec827" class="subsection">7.4.23  Generating a random walks: <span style="font-family:monospace">randmarkov</span><a id="hevea_default1079"></a></h3>
-<p>Given the transition matrix <span style="font-style:italic">M</span> for a Markov chain and an initial
-state <span style="font-style:italic">i</span><sub>0</sub>, the command <span style="font-family:monospace">randmarkov(</span><span style="font-style:italic">M</span><span style="font-family:monospace">,</span><span style="font-style:italic">i</span><sub>0</sub><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> will
-generate a random walk (given as a vector) starting at <span style="font-style:italic">i</span><sub>0</sub> and
-taking <span style="font-style:italic">n</span> random steps, where each step is a transition with
-probabilities given by <span style="font-style:italic">M</span>. For example, if you enter
+<h3 id="sec825" class="subsection">7.4.14  The exponential distribution</h3>
+<h4 id="sec826" class="subsubsection">The probability density function for the exponential distribution: <span style="font-family:monospace">exponential</span><a id="hevea_default1070"></a> <span style="font-family:monospace">exponentiald</span><a id="hevea_default1071"></a></h4>
+<p>The exponential distribution depends on one parameters, λ&gt;0; the
+value of the density function at <span style="font-style:italic">x</span> ≥ 0 is
+<span style="font-family:monospace">exponential</span>(λ,<span style="font-style:italic">x</span>) =
+λ <span style="font-style:italic">e</span><sup>−λ <span style="font-style:italic">x</span></sup>. If you enter
 </p><div class="center">
-<span style="font-family:monospace">randmarkov([[0,1/2,0,1/2],[0,1,0,0],[1/4,1/4,1/4,1/4],[0,0,1/2,1/2]],2,10)
+<span style="font-family:monospace">exponential(2.1,3.5)
 </span></div><p>
-you might get
+for example, you will get
 </p><div class="center">
-<span style="font-family:monospace">[2,3,2,0,3,2,2,0,3,2,0] 
-</span></div><p>Alternatively, given a vector <span style="font-style:italic">v</span> = [<span style="font-style:italic">n</span><sub>1</sub>,…,<span style="font-style:italic">n</span><sub><span style="font-style:italic">p</span></sub>], the command
-<span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">v</span><span style="font-family:monospace">,</span><span style="font-style:italic">i</span><sub>0</sub><span style="font-family:monospace">)</span> will create a stochastic matrix with
-<span style="font-style:italic">p</span> recurrent loops (given by <span style="font-style:italic">v</span>) and <span style="font-style:italic">i</span><sub>0</sub> transient states. If you
-enter
+<span style="font-family:monospace">0.00134944395675
+</span></div>
+<h4 id="sec827" class="subsubsection">The cumulative distribution function for the exponential distribution: <span style="font-family:monospace">exponential_cdf</span><a id="hevea_default1072"></a> <span style="font-family:monospace">exponentiald_cdf</span><a id="hevea_default1073"></a></h4>
+<p>The cumulative distribution function for the exponential distribution with
+parameter λ &gt; 0 at a value <span style="font-style:italic">x</span> ≥ 0 is
+<span style="font-family:monospace">exponential_cdf</span>(λ,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>).
+If you enter
 </p><div class="center">
-<span style="font-family:monospace">randmarkov([1,2],2)
+<span style="font-family:monospace">exponential_cdf(2.3,3.2)
 </span></div><p>
-you might get
+for example, you will get
 </p><div class="center">
-<span style="font-family:monospace">[[1.0,0.0,0.0,0.0,0.0],
-[0.0,0.289031975209,0.710968024791,0.0,0.0],
-[0.0,0.46230383289,0.53769616711,0.0,0.0],
-[0.259262238137,0.149948861946,0.143448150524,0.242132758802,0.205207990592],
-[0.231568633749,0.145429586345,0.155664673778,0.282556511895,0.184780594232]] 
+<span style="font-family:monospace">0.99936380154
+</span></div><p>If you give <span style="font-family:monospace">exponential_cdf</span> an extra argument <span style="font-style:italic">y</span> &gt; <span style="font-style:italic">x</span>,
+you will get the probability that
+the random variable lies between the two values;
+<span style="font-family:monospace">exponential_cdf(</span>λ<span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). 
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">exponential_cdf(2.3,0.9,3.2)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.125549583246
+</span></div>
+<h4 id="sec828" class="subsubsection">The inverse distribution function for the exponential distribution: <span style="font-family:monospace">exponential_icdf</span><a id="hevea_default1074"></a> <span style="font-family:monospace">exponentiald_icdf</span><a id="hevea_default1075"></a></h4>
+<p>The inverse distribution function for the exponential
+distribution with parameter λ &gt; 0 is computed with
+<span style="font-family:monospace">exponential_icdf(</span>λ<span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
+value <span style="font-style:italic">x</span> with <span style="font-family:monospace">exponential_cdf</span>(λ,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. If you enter
+</p><div class="center">
+<span style="font-family:monospace">exponential_icdf(2.3,0.87)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.887052534142
 </span></div>
 <hr>
 <a href="cascmd_en636.html"><img src="previous_motif.gif" alt="Previous"></a>

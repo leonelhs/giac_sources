@@ -4,74 +4,57 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Product : product mul</title>
+<title>Sum of list (or matrix) elements 
+transformed by a function : count</title>
 </head>
 <body >
 <a href="cascmd_en418.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en420.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec506" class="subsection">5.39.31  Product : <span style="font-family:monospace">product mul</span></h3>
-<p><a id="hevea_default651"></a><a id="hevea_default652"></a>
-See also <a href="#sec%3Aproduct">5.39.31</a>, <a href="cascmd_en448.html#sec%3Aproduct1">5.44.6</a> and
-<a href="cascmd_en450.html#sec%3Aproduct2">5.44.8</a>).</p>
-<h4 id="sec507" class="subsubsection">Product of values of an expression : <span style="font-family:monospace">product</span></h4>
-<p><a id="sec:product0"></a>
-<span style="font-family:monospace">product(expr,var,a,b,p)</span> or <span style="font-family:monospace">mul(expr,var,a,b,p)</span> returns the
-product of values of an expression <span style="font-family:monospace">ex</span> when the variable <span style="font-family:monospace">var</span> goes 
-from <span style="font-family:monospace">a</span> to <span style="font-family:monospace">b</span> with a step <span style="font-family:monospace">p</span> (by default p=1) : this syntax is 
-for compatibility with Maple.<br>
+<h3 id="sec508" class="subsection">5.40.25  Sum of list (or matrix) elements 
+transformed by a function : <span style="font-family:monospace">count</span></h3>
+<p><a id="hevea_default649"></a>
+<span style="font-family:monospace">count</span> takes as argument : a real function <span style="font-family:monospace">f</span> and a list 
+<span style="font-family:monospace">l</span> of length <span style="font-family:monospace">n</span> (or a matrix <span style="font-family:monospace">A</span> of dimension <span style="font-family:monospace">p*q</span>).<br>
+<span style="font-family:monospace">count</span> applies the function to the list (or matrix) elements and returns 
+their sum, i.e. :<br>
+<span style="font-family:monospace">count(f,l)</span> returns <span style="font-family:monospace">f(l[0])+f(l[1])+...+f(l[n-1])</span> or<br>
+<span style="font-family:monospace">count(f,A)</span> returns <span style="font-family:monospace">f(A[0,0])+....+f(A[p-1,q-1])</span>.<br>
+If <span style="font-family:monospace">f</span> is a boolean function <span style="font-family:monospace">count</span> returns the number of elements 
+of the list (or of the matrix) for which the boolean function is true.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">product(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x,1,4)</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">mul(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x,1,4)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x,[2,12,45,3,7,78])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">1700</span></div><p>
-Indeed 2*5*10*17=1700<br>
+</p><div class="center"><span style="font-family:monospace">147</span></div><p>
+because : 2+12+45+3+7+78=147.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">product(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x,1,5,2)</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">mul(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x,1,5,2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x&lt;12,[2,12,45,3,7,78])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">520</span></div><p>
-Indeed 2*10*26=520</p>
-<h4 id="sec508" class="subsubsection">Product of elements of a list : <span style="font-family:monospace">product</span></h4>
-<p>
-<span style="font-family:monospace">product</span> or <span style="font-family:monospace">mul</span> takes as argument a list <span style="font-family:monospace">l</span>
-of reals (or floating numbers) or two lists of the same size (see 
-also <a href="#sec%3Aproduct0">5.39.31</a>, <a href="cascmd_en448.html#sec%3Aproduct1">5.44.6</a> and <a href="cascmd_en450.html#sec%3Aproduct2">5.44.8</a>).
-</p><ul class="itemize"><li class="li-itemize">
-if <span style="font-family:monospace">product</span> or <span style="font-family:monospace">mul</span> has a list <span style="font-family:monospace">l</span>
-as argument, <span style="font-family:monospace">product</span> or 
-<span style="font-family:monospace">mul</span> returns the product of the elements of <span style="font-family:monospace">l</span><a id="sec:product"></a>.<br>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
 Input :
-<div class="center"><span style="font-family:monospace">product([2,3,4])</span></div>
-or :
-<div class="center"><span style="font-family:monospace">mul([2,3,4])</span></div>
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x==12,[2,12,45,3,7,78])</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">24</span></div>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 Input :
-<div class="center"><span style="font-family:monospace">product([[2,3,4],[5,6,7]])</span></div>
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x&gt;12,[2,12,45,3,7,78])</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">[10,18,28]</span></div>
-</li><li class="li-itemize">if <span style="font-family:monospace">product</span> or <span style="font-family:monospace">mul</span> takes as arguments 
-<span style="font-family:monospace">l1</span> and <span style="font-family:monospace">l2</span>
-(two lists or two matrices), <span style="font-family:monospace">product</span> or <span style="font-family:monospace">mul</span> returns
-the term by term product of the elements of <span style="font-family:monospace">l1</span> and 
-<span style="font-family:monospace">l2</span>.<br>
+</p><div class="center"><span style="font-family:monospace">2</span></div><p>
 Input :
-<div class="center"><span style="font-family:monospace">product([2,3,4],[5,6,7])</span></div>
-or :
-<div class="center"><span style="font-family:monospace">mul([2,3,4],[5,6,7])</span></div>
+</p><div class="center"><span style="font-family:monospace">count(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[3,5,1])</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">[10,18,28]</span></div>
+</p><div class="center"><span style="font-family:monospace">35</span></div><p>
+Indeed 3<sup>2</sup>+5<sup>2</sup>+1<sup>1</sup>=35.<br>
 Input :
-<div class="center"><span style="font-family:monospace">product([[2,3,4],[5,6,7]],[[2,3,4],[5,6,7]])</span></div>
-or :
-<div class="center"><span style="font-family:monospace">mul([[2,3,4],[5,6,7]],[[2,3,4],[5,6,7]])</span></div>
+</p><div class="center"><span style="font-family:monospace">count(id,[3,5,1])</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">[[4,9,16],[25,36,49]]</span></div>
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">9</span></div><p>
+Indeed, <span style="font-family:monospace">id</span> is the identity functions and 3+5+1=9.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">count(1,[3,5,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+Indeed, <span style="font-family:monospace">1</span> is the constant function equal to 1 and 1+1+1=3.</p>
 <hr>
 <a href="cascmd_en418.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

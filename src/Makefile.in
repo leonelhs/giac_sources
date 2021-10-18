@@ -54,7 +54,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = icas$(EXEEXT) xcas$(EXEEXT) aide$(EXEEXT)
+bin_PROGRAMS = icas$(EXEEXT) xcas$(EXEEXT) aide$(EXEEXT) \
+	hevea2mml$(EXEEXT)
 subdir = src
 DIST_COMMON = README $(giacinclude_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in COPYING TODO input_lexer.cc \
@@ -142,6 +143,10 @@ am_aide_OBJECTS = aide.$(OBJEXT)
 aide_OBJECTS = $(am_aide_OBJECTS)
 aide_DEPENDENCIES = libxcas.la $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
+am_hevea2mml_OBJECTS = hevea2mml.$(OBJEXT) lex_yy.$(OBJEXT) \
+	y_tab.$(OBJEXT)
+hevea2mml_OBJECTS = $(am_hevea2mml_OBJECTS)
+hevea2mml_DEPENDENCIES =
 am_icas_OBJECTS = icas.$(OBJEXT)
 icas_OBJECTS = $(am_icas_OBJECTS)
 icas_DEPENDENCIES = libxcas.la $(am__DEPENDENCIES_1) \
@@ -180,9 +185,10 @@ YACCCOMPILE = $(YACC) $(AM_YFLAGS) $(YFLAGS)
 LTYACCCOMPILE = $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=compile $(YACC) $(AM_YFLAGS) $(YFLAGS)
 SOURCES = $(libgiac_la_SOURCES) $(libxcas_la_SOURCES) $(aide_SOURCES) \
-	$(icas_SOURCES) $(xcas_SOURCES)
+	$(hevea2mml_SOURCES) $(icas_SOURCES) $(xcas_SOURCES)
 DIST_SOURCES = $(libgiac_la_SOURCES) $(libxcas_la_SOURCES) \
-	$(aide_SOURCES) $(icas_SOURCES) $(xcas_SOURCES)
+	$(aide_SOURCES) $(hevea2mml_SOURCES) $(icas_SOURCES) \
+	$(xcas_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -418,6 +424,8 @@ icas_SOURCES = icas.cc
 icas_LDADD = libxcas.la $(GINSH_LIBS) $(GSL_LIBS) $(LAPACK_LIBS)
 aide_SOURCES = aide.cc
 aide_LDADD = libxcas.la $(GINSH_LIBS) $(GSL_LIBS) $(LAPACK_LIBS)
+hevea2mml_SOURCES = hevea2mml.cc lex_yy.c y_tab.c
+hevea2mml_LDADD = 
 AM_CPPFLAGS = -DIN_GIAC -I$(srcdir) -I$(top_srcdir) -I$(builddir) \
 	      -I$(top_builddir) $(GMP_CFLAGS) $(NTL_CFLAGS) \
 	      $(COCOA_CFLAGS) $(PARI_CFLAGS)
@@ -447,7 +455,8 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	config.h.numworks Makefile.numworks \
 	f2c.h clapack.h blaswrap.h mklocal64 pnt_gen \
 	giac.i runme.java archive_java archive_java_linux32 archive_java_linux64  javascript.cxx giacjs.i README.javascript \
-	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy mkgiacpy10 giac_wrap.cxx aspen_translate.h translate.cc
+	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy mkgiacpy10 giac_wrap.cxx aspen_translate.h translate.cc \
+	itex2MML.* y_tab.h
 
 bin_SCRIPTS = pgiac
 all: all-am
@@ -581,6 +590,9 @@ clean-binPROGRAMS:
 aide$(EXEEXT): $(aide_OBJECTS) $(aide_DEPENDENCIES) $(EXTRA_aide_DEPENDENCIES) 
 	@rm -f aide$(EXEEXT)
 	$(CXXLINK) $(aide_OBJECTS) $(aide_LDADD) $(LIBS)
+hevea2mml$(EXEEXT): $(hevea2mml_OBJECTS) $(hevea2mml_DEPENDENCIES) $(EXTRA_hevea2mml_DEPENDENCIES) 
+	@rm -f hevea2mml$(EXEEXT)
+	$(CXXLINK) $(hevea2mml_OBJECTS) $(hevea2mml_LDADD) $(LIBS)
 icas$(EXEEXT): $(icas_OBJECTS) $(icas_DEPENDENCIES) $(EXTRA_icas_DEPENDENCIES) 
 	@rm -f icas$(EXEEXT)
 	$(CXXLINK) $(icas_OBJECTS) $(icas_LDADD) $(LIBS)
@@ -666,6 +678,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/graphe.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/graphtheory.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/help.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hevea2mml.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/icas.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/identificateur.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ifactor.Plo@am__quote@
@@ -675,6 +688,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/intg.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/intgab.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/isom.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lex_yy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lin.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lpsolve.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/maple.Plo@am__quote@
@@ -708,6 +722,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/usual.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vecteur.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xcas.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/y_tab.Po@am__quote@
 
 .C.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

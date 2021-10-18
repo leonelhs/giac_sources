@@ -4,89 +4,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Producing random matrices: randmatrix ranm randMat</title>
+<title>Logistic regression: logistic_regression logistic_regression_plot</title>
 </head>
 <body >
 <a href="cascmd_en613.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en615.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec755" class="subsection">7.3.8  Producing random matrices: <span style="font-family:monospace">randmatrix</span><a id="hevea_default1001"></a> <span style="font-family:monospace">ranm</span><a id="hevea_default1002"></a> <span style="font-family:monospace">randMat</span><a id="hevea_default1003"></a></h3>
-<p>You can produce a random vector or matrix with the <span style="font-family:monospace">randmatrix</span>
-(or <span style="font-family:monospace">ranm</span> or <span style="font-family:monospace">randMat</span>) command. (See also sections
-<a href="cascmd_en296.html#sec%3Aranm1">5.26.25</a> and <a href="cascmd_en438.html#sec%3Aranm2">5.43.3</a>.) The <span style="font-family:monospace">randmatrix</span> command
-has the following possible arguments.
-</p><dl class="description"><dt class="dt-description">
-<span style="font-weight:bold">An integer </span><span style="font-style:italic">n</span></dt><dd class="dd-description">
-With an integer <span style="font-style:italic">n</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> will return a vector of
-length <span style="font-style:italic">n</span> whose elements are integers chosen randomly from
-[−99,−98,…,98,99] with equal probability. If you enter
-<div class="center">
-<span style="font-family:monospace">randmatrix(5)
-</span></div>
-you might get
-<div class="center">
-<span style="font-family:monospace">[86,-97,-82,7,-27]
-</span></div>
-</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span></dt><dd class="dd-description">
-Given two integers <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> will
-return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
-[−99,99] with equal probability. If you enter
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3)
-</span></div>
-you might get
-<div class="center">
-<span style="font-family:monospace">[[26,-89,63],[-49,-86,-64]] 
-</span></div>
-</dd><dt class="dt-description"><span style="font-weight:bold">Three integers </span><span style="font-style:italic">n</span><span style="font-weight:bold">, </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and </span><span style="font-style:italic">a</span></dt><dd class="dd-description">
-Given three integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and <span style="font-style:italic">a</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> will
-return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
-[0,<span style="font-style:italic">a</span>) (or (<span style="font-style:italic">a</span>,0] is <span style="font-style:italic">a</span> is negative) with equal probability. If you enter
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3,10)
-</span></div>
-you might get
-<div class="center">
-<span style="font-family:monospace">[[4,7,6],[7,4,5]]
-</span></div>
-</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold">, and an interval </span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-weight:bold">.</span></dt><dd class="dd-description">
-Given two integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and an <span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>,
-<span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will
-return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are real numbers chosen randomly from
-[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) with equal probability. If you enter
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3,0..1)
-</span></div>
-you might get
-<div class="center">
-<span style="font-family:monospace">[[0.90923402831,0.594602484722,0.250897713937],[0.332611694932,0.145975249354,0.543010003399]]
-</span></div>
-</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and a function (which must be quoted)
-to produce random numbers</span></dt><dd class="dd-description"> 
-In this case, the third argument must be
-one of <span style="font-family:monospace">’rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’binomial,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randbinomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’multinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’multinomial,</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">’</span>,
-<span style="font-family:monospace">’randmultinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’poisson(</span>λ<span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’poisson, </span>λ<span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randpoisson(</span>λ<span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’normald(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’normald,</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">’</span>,
-<span style="font-family:monospace">’randnorm(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’exp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’exp,</span><span style="font-style:italic">a</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randexp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’fisher(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’fisher,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">’</span>, or
-’randfisher(<span style="font-style:italic">n</span>,<span style="font-style:italic">m</span>)’.
-</dd></dl><p>
-Given such an <span style="font-style:italic">R</span>, the command <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">R</span><span style="font-family:monospace">)</span> will
-return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are numbers chosen
-randomly according to the rule determined by <span style="font-style:italic">R</span>.
-If you enter
+<h3 id="sec757" class="subsection">7.2.9  Logistic regression: <span style="font-family:monospace">logistic_regression</span><a id="hevea_default994"></a> <span style="font-family:monospace">logistic_regression_plot</span><a id="hevea_default995"></a></h3>
+<p>Differential equations of the form <span style="font-style:italic">y</span>′ = <span style="font-style:italic">y</span>(<span style="font-style:italic">a</span>*<span style="font-style:italic">y</span> + <span style="font-style:italic">b</span>) come up often,
+particularly when studying bounded population growth. With the
+initial condition <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0) = <span style="font-style:italic">y</span>0, the solution is the logistic equation
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span> = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−<span style="font-style:italic">b</span>*<span style="font-style:italic">y</span>0</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span>*<span style="font-style:italic">y</span>0 − (<span style="font-style:italic">a</span>*<span style="font-style:italic">y</span>0+<span style="font-style:italic">b</span>)exp(<span style="font-style:italic">b</span>(<span style="font-style:italic">x</span>0−<span style="font-style:italic">x</span>))</td></tr>
+</table></td></tr>
+</table><p>
+However, you often don’t know the values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>. You can
+still get a “best fit” logisitic equation with the following
+information: The initial value of <span style="font-style:italic">x</span>, the initial value of <span style="font-style:italic">y</span>, and
+several values of <span style="font-style:italic">y</span>′; namely, <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0),<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+1),…,<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+<span style="font-style:italic">n</span>−1) where
+<span style="font-style:italic">x</span>0 is the initial value of <span style="font-style:italic">x</span>. <span style="font-family:monospace">Xcas</span> will then take the
+initial value <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0) = <span style="font-style:italic">y</span>0 and the approximation <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>+1) ≈ <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)
++ <span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>) to get the approximations <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+1) ≈ <span style="font-style:italic">y</span>0 + <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0),
+<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+2) ≈ <span style="font-style:italic">y</span>0 + <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0) + <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+1), …<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+<span style="font-style:italic">n</span>) ≈ <span style="font-style:italic">y</span>0 + <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0) +… <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+<span style="font-style:italic">n</span>−1), …Since <span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span> = <span style="font-style:italic">a</span> + <span style="font-style:italic">by</span>, <span style="font-family:monospace">Xcas</span> will take the
+approximate values of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>)/<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>) and use linear interpolation
+to get the best fit values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, and then solve the
+differential equation.</p><p>The <span style="font-family:monospace">logistic_regression</span> command will take as input a list
+and two numbers; the list will be [<span style="font-style:italic">y</span><sub>10</sub>,<span style="font-style:italic">y</span><sub>11</sub>,…,<span style="font-style:italic">y</span><sub>1(<span style="font-style:italic">n</span>−1)</sub>], 
+where <span style="font-style:italic">y</span><sub>1<span style="font-style:italic">j</span></sub> represents the value of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub> + <span style="font-style:italic">j</span>), 
+the first number is <span style="font-style:italic">x</span><sub>0</sub> and the last number is
+<span style="font-style:italic">y</span><sub>0</sub>=<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>). The command will return the function <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>), the
+derivative <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>), the number <span style="font-style:italic">C</span>=−<span style="font-style:italic">b</span>/<span style="font-style:italic">a</span>, <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub><span style="font-style:italic">M</span></sub>) which is the maximum value
+of <span style="font-style:italic">y</span>′, <span style="font-style:italic">x</span><sub><span style="font-style:italic">M</span></sub> which is where <span style="font-style:italic">y</span>′ has its maximum, and the linear
+correlation coefficient <span style="font-style:italic">R</span> of <span style="font-style:italic">Y</span>=<span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span> as a function of <span style="font-style:italic">y</span> with <span style="font-style:italic">Y</span>=<span style="font-style:italic">a</span>*<span style="font-style:italic">y</span>
++ <span style="font-style:italic">b</span>. For example, if you enter
 </p><div class="center">
-<span style="font-family:monospace">randmatrix(2,3,’randnorm(2,1)’)
+<span style="font-family:monospace">logistic_regression([0.0,1.0,2.5],0,1)
 </span></div><p>
-you might get
+you will get
+</p><pre class="verbatim">   Pinstant=0.132478632479*Pcumul+0.0206552706553
+   Correlation 0.780548607383, Estimated total P=-0.155913978495
+   Returning estimated Pcumul, Pinstant, Ptotal, Pinstantmax, tmax, R
+   [-0.155913978495/(1+exp(-0.0554152581707*x+0.140088513344+3.14159265359*i)),
+    -0.00161022271237/(1+cos((-i)*(-0.0554152581707*x+0.140088513344+3.14159265359*i))),
+    -0.155913978495,-0.000805111356186,2.52797727501+56.6918346552*i,0.780548607383]
+</pre><p>You can plot the logistic equation with the command
+<span style="font-family:monospace">logistic_regression_plot</span>; if you enter
 </p><div class="center">
-<span style="font-family:monospace">[[2.6324726358,0.539273367446,0.793750476229],[2.24729803442,1.28189228187,2.25750809791]] 
-</span></div>
+<span style="font-family:monospace">logistic_regression_plot([1,2,4,6,8,7,5],0,2.0)
+</span></div><p>
+you will get
+</p><div class="center">
+<img src="cascmd_en040.png">
+</div>
 <hr>
 <a href="cascmd_en613.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

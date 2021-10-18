@@ -4,25 +4,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Visualizing power spectra : plotspectrum</title>
+<title>Audio playback : playsnd</title>
 </head>
 <body >
 <a href="cascmd_en239.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en241.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec305" class="subsection">5.23.10  Visualizing power spectra : <span style="font-family:monospace">plotspectrum</span><a id="hevea_default424"></a></h3>
+<h3 id="sec307" class="subsection">5.24.4  Audio playback : <span style="font-family:monospace">playsnd</span><a id="hevea_default420"></a></h3>
 <p>
-<span style="font-family:monospace">plotspectrum</span> takes an audio clip as its first argument and optionally a range in form <span style="font-family:monospace">range=[lf,uf]</span> or <span style="font-family:monospace">range=lf..uf</span>, where <span style="font-family:monospace">lf</span> is the lower bound and <span style="font-family:monospace">uf</span> the upper bound of the desired frequency band, as its second argument. The command displays the power spectrum of the audio data on the specified frequency range (by default [0,<span style="font-style:italic">s</span>/2], where <span style="font-style:italic">s</span> is the sampling rate). If the audio clip has more than one channel, the channels are mixed down to a single channel before computing the spectrum.</p><p>For example, input :
+<span style="font-family:monospace">playsnd</span> takes an audio clip as its argument and plays it back.</p><p>For example, input :
 </p><div class="center">
-<span style="font-family:monospace">clip:=readwav("/path/to/sounds/example1.wav"):;<br>
- plotspectrum(clip,range=[0,1500])
-</span></div><p>
-Output :
-</p><div class="center">
-<img src="cascmd_en011.png">
-</div><p>
-One can observe that the dominant frequency is around 220 Hz, which is the middle of tenor range. This is consistent with the fact that a male voice is recorded in the clip.</p>
+<span style="font-family:monospace">playsnd(createwav(sin(2*pi*440*soundsec(3))))</span>
+</div>
 <hr>
 <a href="cascmd_en239.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

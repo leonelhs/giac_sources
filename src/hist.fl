@@ -196,13 +196,13 @@ Function {latex_save_DispG(const char * filename)} {return_type void
 Function {a_propos()} {return_type void
 } {
   code {std::string s("xcas "); s+=GIAC_VERSION; s+=" (c) 2000-18, Bernard Parisse, Renee De Graeve\\n";
+  s += "Optimization, signalprocessing, graph theory code: Luka Marohnić\\n";
   s += "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html\\n";
   s += "If you like Xcas, please link your webpage to the above link to help other find it\\n";
   s += "Software licensed under the GPL, General Public License version 3.0 or later\\nSee the file COPYING in this package for more details\\nOr browse http://www.gnu.org\\n";
   s += "French documentation (c) Renee de Graeve\\n";
   s += "This documentation is freely redistribuable for non commercial purpose\\n";
   s += "Python giacpy module: Frederic Han\\n";
-  s += "Optimization, signalprocessing, graph theory code: Luka Marohnić\\n";
   s += "Math ML and SVG support initially written by Jean-Pierre Branchard\\n";
   s += "OpenOffice interface: Christophe Devalland, Serge Moutou\\n";
   s += "Qcas interface: Loic Le Coq, Frederic Han\\n";
@@ -1430,10 +1430,19 @@ Xcas_update_mode();}
             xywh {40 40 100 20}
           }
           MenuItem Xcas_Set_Python0 {
-            label Python
+            label {Python ^==**}
             callback {const giac::context * contextptr=Xcas_get_context();
 giac::xcas_mode(contextptr)=0;
 giac::python_compat(contextptr)=1;
+xcas_user_level=0;
+Xcas_update_mode();}
+            xywh {40 40 100 20}
+          }
+          MenuItem Xcas_Set_Python0xor {
+            label {Python ^==xor}
+            callback {const giac::context * contextptr=Xcas_get_context();
+giac::xcas_mode(contextptr)=0;
+giac::python_compat(contextptr)=2;
 xcas_user_level=0;
 Xcas_update_mode();}
             xywh {40 40 100 20}

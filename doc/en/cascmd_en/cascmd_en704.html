@@ -4,74 +4,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Starting the debugger</title>
+<title>The while loop</title>
 </head>
 <body >
 <a href="cascmd_en703.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en705.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec915" class="subsection">10.5.1  Starting the debugger</h3>
-<p>To start the debugger, you give the <span style="font-family:monospace">debug</span><a id="hevea_default1177"></a> command an argument
-of a function and its argument. That will bring up a debug window
-which contains a pane with the program with the current line highlighted, an
-<span style="font-family:monospace">eval</span> entry box, a pane with the program including the
-breakpoints, a row of buttons, and a pane keeping track of
-the values of variables. By default, the value of all variables in
-the program are in this pane. The buttons are shortcuts
-for entering commands in the <span style="font-family:monospace">eval</span> box, but you can enter
-other commands in the <span style="font-family:monospace">eval</span> box to change the values of
-variables or to run a command in the context of the program.</p>
-<h5 id="sec916" class="paragraph">The <span style="font-family:monospace">sst</span><a id="hevea_default1178"></a> button</h5>
-<p>
-This button will run the <span style="font-family:monospace">sst</span> command, which takes no
-arguments and runs the highlighted line in the program before moving
-to the next line.</p>
-<h5 id="sec917" class="paragraph">The <span style="font-family:monospace">in</span><a id="hevea_default1179"></a> button</h5>
-<p>
-This button will run the <span style="font-family:monospace">sst_in</span> command, which takes no
-argument and runs one step in the program or a user defined
-function used in the program.</p>
-<h5 id="sec918" class="paragraph">The <span style="font-family:monospace">cont</span><a id="hevea_default1180"></a> button</h5>
-<p>
-This button will run the <span style="font-family:monospace">cont</span> command, which takes no
-arguments and runs the commands from the highlighted line to a breakpoint.</p>
-<h5 id="sec919" class="paragraph">The <span style="font-family:monospace">kill</span><a id="hevea_default1181"></a> button</h5>
-<p>
-This button will run the <span style="font-family:monospace">kill</span> command, which exits the debugger.</p>
-<h5 id="sec920" class="paragraph">The <span style="font-family:monospace">break</span><a id="hevea_default1182"></a> button</h5>
-<p>
-This button will put the command <span style="font-family:monospace">breakpoint</span><a id="hevea_default1183"></a>
-in the <span style="font-family:monospace">eval</span> box, with default
-arguments of the current program and the current line. It sets a
-breakpoint at the given line of the given program.
-Alternatively, if you click on a line in the program in the top pane,
-you will get the <span style="font-family:monospace">breakpoint</span> command with that program and the
-line you clicked on.</p><p>You can set a breakpoint when you write a program with the
-<span style="font-family:monospace">halt</span><a id="hevea_default1184"></a><span style="font-family:monospace">()</span> command. When a program has a
-<span style="font-family:monospace">halt</span> command, then running the program will bring up the
-debugger. If you want to debug the program, though, it is still
-better to use the debug command. Also, you should remove any
-<span style="font-family:monospace">halt</span> commands when you are done debugging.</p>
-<h5 id="sec921" class="paragraph">The <span style="font-family:monospace">rmbrk</span><a id="hevea_default1185"></a> button</h5>
-<p>
-This button will put the command
-<span style="font-family:monospace">rmbreakpoint</span><a id="hevea_default1186"></a> in the <span style="font-family:monospace">eval</span> box , with default
-arguments of the current program and the current line. It removes a 
-breakpoint at the given line of the given program. Alternatively, you
-can click on the line in the program in the top pane with the bookmark
-you want to remove.</p>
-<h5 id="sec922" class="paragraph">The <span style="font-family:monospace">watch</span><a id="hevea_default1187"></a> button</h5>
-<p>
-This button will put the command <span style="font-family:monospace">watch</span> in the
-<span style="font-family:monospace">eval</span> box, without the arguments
-filled in. It takes a list of variables as arguments, and will keep
-track of the values of these variables in the variable pane.</p>
-<h5 id="sec923" class="paragraph">The <span style="font-family:monospace">rmwtch</span><a id="hevea_default1188"></a> button</h5>
-<p>
-This button will put the command <span style="font-family:monospace">rmwatch</span><a id="hevea_default1189"></a> in
-the <span style="font-family:monospace">eval</span> box without the arguments filled in. The arguments
-are the variables you want to remove from the watch list.</p><hr>
+<h3 id="sec920" class="subsection">10.3.5  The <span style="font-family:monospace">while</span><a id="hevea_default1171"></a> loop</h3>
+<p>The <span style="font-family:monospace">while</span> loop is used to repeat a code block as long as a
+given condition holds. To use it, enter <span style="font-family:monospace">while</span>, the
+condition, and then a code block. For example, to add the terms of
+the harmonic series 1 + 1/2 + 1/3 + 1/4 + … until a term is less
+than 0.05, you could initialize the sum <span style="font-family:monospace">S</span> to 0 and let
+<span style="font-family:monospace">j</span> be the first term 1. Then
+</p><div class="center">
+<span style="font-family:monospace">while (1/j &gt;= 0.05) {S := S + 1/j; j := j+1;}</span>
+</div><p>
+will find the sum. This line is the same as
+</p><div class="center">
+<span style="font-family:monospace">tantque (1/j &gt;= 0.05) faire S := S + 1/j; j := j+1; ftantque</span>
+</div><p>Note that a <span style="font-family:monospace">while</span> loop can also be written as a <span style="font-family:monospace">for</span>
+loop. For example, as long as <span style="font-family:monospace">S</span> is set to 0 and <span style="font-family:monospace">j</span>
+is set to 1 , the above loop
+can be written as 
+</p><div class="center">
+<span style="font-family:monospace">for (;1/j &gt;= 0.05;) {S := S + 1/j; j := j+1;}</span>
+</div><p>
+or, with only <span style="font-family:monospace">S</span> set to 0,
+</p><div class="center">
+<span style="font-family:monospace">for (j := 1; 1/j &gt;= 0.05; j++) {S := S + 1/j;}</span>
+</div>
+<hr>
 <a href="cascmd_en703.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en705.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

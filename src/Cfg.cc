@@ -153,8 +153,12 @@ namespace xcas {
     do_maple_mode=0; Xcas_Style->value("Xcas");
   }
 
-  static void cb_Xcas_Set_Python(Fl_Menu_*, void*) {
-    do_maple_mode=256; Xcas_Style->value("Python");
+  static void cb_Xcas_Set_Python1(Fl_Menu_*, void*) {
+    do_maple_mode=256; Xcas_Style->value("Python ^==**");
+  }
+
+  static void cb_Xcas_Set_Python2(Fl_Menu_*, void*) {
+    do_maple_mode=512; Xcas_Style->value("Python ^==xor");
   }
 
   static void cb_Xcas_Set_Maple(Fl_Menu_*, void*) {
@@ -171,7 +175,8 @@ namespace xcas {
 
   Fl_Menu_Item menu_Xcas_Prg_style[] = {
     {gettext("Xcas"), 0,  (Fl_Callback*)cb_Xcas_Set_CPP, 0, 0, 0, 0, 14, 56},
-    {gettext("Python"), 0,  (Fl_Callback*)cb_Xcas_Set_Python, 0, 0, 0, 0, 14, 56},
+    {gettext("Python ^==**"), 0,  (Fl_Callback*)cb_Xcas_Set_Python1, 0, 0, 0, 0, 14, 56},
+    {gettext("Python ^==xor"), 0,  (Fl_Callback*)cb_Xcas_Set_Python2, 0, 0, 0, 0, 14, 56},
     {gettext("Maple"), 0,  (Fl_Callback*)cb_Xcas_Set_Maple, 0, 0, 0, 0, 14, 56},
     {gettext("Mupad"), 0,  (Fl_Callback*)cb_Xcas_Set_Mupad, 0, 0, 0, 0, 14, 56},
     {gettext("TI89/92"), 0,  (Fl_Callback*)cb_Xcas_Set_TI, 0, 0, 0, 0, 14, 56},
@@ -223,7 +228,7 @@ namespace xcas {
     giac::complex_mode(Xcas_Complex_mode->value(),contextptr);
     giac::complex_variables(Xcas_Complex_variables->value(),contextptr);
     giac::xcas_mode(contextptr)=do_maple_mode &0xff;
-    giac::python_compat(do_maple_mode>=256,contextptr);
+    giac::python_compat(do_maple_mode/256,contextptr);
     giac::increasing_power(Xcas_Increasing_power->value(),contextptr);
     giac::angle_radian(Xcas_Angle_radian->value(),contextptr);
     giac::approx_mode(Xcas_Approx_mode->value(),contextptr);
@@ -484,11 +489,11 @@ or default eval level)"));
     Xcas_Complex_mode->value(giac::complex_mode(contextptr));
     Xcas_Complex_variables->value(giac::complex_variables(contextptr));
     do_maple_mode=giac::xcas_mode(contextptr);
-    if (giac::python_compat(contextptr))
-      do_maple_mode+=256;
+    do_maple_mode+=256*giac::python_compat(contextptr);
     switch(do_maple_mode){
     case 0: Xcas_Style->value("Xcas"); break;
-    case 256: Xcas_Style->value("Python"); break;
+    case 256: Xcas_Style->value("Python ^=**"); break;
+    case 512: Xcas_Style->value("Python ^==xor"); break;
     case 1: Xcas_Style->value("Maple"); break;
     case 2: Xcas_Style->value("Mupad"); break;
     case 3: Xcas_Style->value("Ti"); break;

@@ -4,44 +4,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Writing variable values to a file</title>
+<title>Checking conditions with assert</title>
 </head>
 <body >
 <a href="cascmd_en695.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en697.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec906" class="subsection">10.4.2  Writing variable values to a file</h3>
-<p>You can save variable values to a file, to be read later, with the
-<span style="font-family:monospace">write</span><a id="hevea_default1160"></a> command. This command takes a string for a file name
-and a list of variables to save. For example, if <span style="font-family:monospace">a</span> has the
-value <span style="font-family:monospace">3.14</span> and <span style="font-family:monospace">b</span> has the value <span style="font-family:monospace">7</span>, then
-</p><div class="center">
-<span style="font-family:monospace">write("foo",a,b)</span>
-</div><p>
-will create a file named “foo” with the contents
-</p><pre class="verbatim">  a:=(3.14);
-  b:=7;
+<h3 id="sec908" class="subsection">10.2.4  Checking conditions with <span style="font-family:monospace">assert</span><a id="hevea_default1150"></a></h3>
+<p>You can break out of a function with an error by using the
+<span style="font-family:monospace">assert</span> command, which takes a boolean as an argument. If the
+boolean is false, then the function will return with an error. For
+example, if you define a function
+</p><pre class="verbatim">  sqofpos(x) := {assert(x &gt; 0); return x^2;}
 </pre><p>
-If you wanted to store the first million digits of π to a file,
-you could set it equal to a variable
+then if you enter
 </p><div class="center">
-<span style="font-family:monospace">pidec := evalf(pi,10^6):;</span>
+<span style="font-family:monospace">sqofpos(4)</span>
 </div><p>
-and then store it in a file
+you will get 16, but 
 </p><div class="center">
-<span style="font-family:monospace">write("pi1million",pidec)</span>
-</div><p>If you want to restore the values of variables saved this way, for
-example in a different session or if you have purged the
-variables, then you can use the <span style="font-family:monospace">read</span> command, which simply
-takes a file name as a string. If, in a different session, you want
-to use the values of <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> above, the command
-</p><div class="center">
-<span style="font-family:monospace">read("foo")</span>
+<span style="font-family:monospace">sqofpos(-4)</span>
 </div><p>
-will give them the values <span style="font-family:monospace">3.14</span> and <span style="font-family:monospace">7</span> again. Note
-that this will silently overwrite any values that <span style="font-family:monospace">a</span> and
-<span style="font-family:monospace">b</span> might have had.</p>
+will return an error, since <span style="font-family:monospace">-4 &gt; 0</span> is false.</p>
 <hr>
 <a href="cascmd_en695.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,91 +4,64 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The Wilconon test polynomial: wilcoxonp</title>
+<title>The gamma distribution</title>
 </head>
 <body >
 <a href="cascmd_en631.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en633.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec820" class="subsection">7.4.18  The Wilconon test polynomial: <span style="font-family:monospace">wilcoxonp</span><a id="hevea_default1073"></a></h3>
-<p>The <span style="font-family:monospace">wilcoxonp</span> command will compute the polynomial for the
-Wilcoxon or Mann-Whitney test; it can take one or two parameters. If
-you enter
+<h3 id="sec805" class="subsection">7.4.9  The gamma distribution</h3>
+<h4 id="sec806" class="subsubsection">The probability density function for the gamma distribution: <span style="font-family:monospace">gammad</span><a id="hevea_default1049"></a></h4>
+<p>The gamma distribution depends on two parameters, <span style="font-style:italic">a</span>&gt;0 and <span style="font-style:italic">b</span>&gt;0; the
+value of the density function at <span style="font-style:italic">x</span> ≥ 0 is
+<span style="font-family:monospace">gammad</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">x</span><sup><span style="font-style:italic">a</span>−1</sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">bx</span></sup><span style="font-style:italic">b</span><sup><span style="font-style:italic">a</span></sup>/Γ(<span style="font-style:italic">a</span>). If you enter
 </p><div class="center">
-<span style="font-family:monospace">wilcoxonp(4)
+<span style="font-family:monospace">gammad(2,1,3)
 </span></div><p>
-you will get
+for example, you will get
 </p><div class="center">
-<span style="font-family:monospace">poly1[1/16,1/16,1/16,1/8,1/8,1/8,1/8,1/8,1/16,1/16,1/16]
-</span></div><p>
-and if you enter
-</p><div class="center">
-<span style="font-family:monospace">wilcoxonp(4,3)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">poly1[1/35,1/35,2/35,3/35,4/35,4/35,1/7,4/35,4/35,3/35,2/35,1/35,1/35]
+<span style="font-family:monospace">3/exp(3) 
 </span></div>
-<h4 id="sec821" class="subsubsection">The Wilcoxon/Mann-Whitney statistic: <span style="font-family:monospace">wilcoxons</span><a id="hevea_default1074"></a></h4>
-<p>Given two lists, or one list and a real number (a median), the
-<span style="font-family:monospace">wilcoxons</span> command will return the Wilcoxon or Mann-Whitney statistic. 
-If you enter
+<h4 id="sec807" class="subsubsection">The cumulative distribution function for the gamma distribution: <span style="font-family:monospace">gammad_cdf</span><a id="hevea_default1050"></a></h4>
+<p>The cumulative distribution function for the gamma distribution with
+parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> at a value <span style="font-style:italic">x</span> is
+<span style="font-family:monospace">gammad_cdf</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>). It turns out that
+<span style="font-family:monospace">gammad_cdf</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">igamma</span>(<span style="font-style:italic">a</span>, <span style="font-style:italic">bx</span>, 1) where
+<span style="font-family:monospace">igamma</span> is the incomplete gamma function; 
+<span style="font-family:monospace">igamma</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>,1) = ∫<sub>0</sub><sup><span style="font-style:italic">x</span></sup> <span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span></sup><span style="font-style:italic">t</span><sup><span style="font-style:italic">a</span>−1</sup><span style="font-style:italic">dt</span>/Γ(<span style="font-style:italic">a</span>).
+If you
+enter
 </p><div class="center">
-<span style="font-family:monospace">wilcoxons([1,3,4,5,7,8,8,12,15,17],10)
+<span style="font-family:monospace">gammad_cdf(2,1,0.5)
 </span></div><p>
 you will get
 </p><div class="center">
-<span style="font-family:monospace">18
-</span></div><p>
-and if you enter
+<span style="font-family:monospace">0.090204010431
+</span></div><p>If you give <span style="font-family:monospace">gammad_cdf</span> an extra argument,
+you will get the probability that
+the random variable lies between two values;
+<span style="font-family:monospace">gammad_cdf(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). If you
+enter
 </p><div class="center">
-<span style="font-family:monospace">wilcoxons([1,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20])
+<span style="font-family:monospace">gammad_cdf(2,1,0.5,1.5)
 </span></div><p>
 you will get
 </p><div class="center">
-<span style="font-family:monospace">128.5
+<span style="font-family:monospace">0.351970589198
 </span></div>
-<h4 id="sec822" class="subsubsection">The Wilcoxon or Mann-Whitney test</h4>
-<p>The <span style="font-family:monospace">wilcoxont</span> command will perform the Wilcoxon or
-Mann-Whitney test, given two samples or one sample and a number (a
-median). It can additionally take an optional third argument of a
-function and an optional fourth argument of a real number.
-If you enter
+<h4 id="sec808" class="subsubsection">The inverse distribution function for the gamma distribution: <span style="font-family:monospace">gammad_icdf</span><a id="hevea_default1051"></a></h4>
+<p>The inverse distribution function for the gamma
+distribution with parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> is computed with
+<span style="font-family:monospace">gammad_icdf(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
+value <span style="font-style:italic">x</span> with <span style="font-family:monospace">gammad_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. If you enter
 </p><div class="center">
-<span style="font-family:monospace">wilcoxont([1,2,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20])
+<span style="font-family:monospace">gammad_icdf(2,1,0.5)
 </span></div><p>
 you will get
-</p><pre class="verbatim">   Mann-Whitney 2-sample test, H0 same Median, H1 &lt;&gt;
-   ranksum 93.0, shifted ranksum 27.0
-   u1=83 ,u2=27, u=min(u1,u2)=27
-   Limit value to reject H0 26
-   P-value 9055/176358 (0.0513444244094), alpha=0.05 H0 not rejected 
-   1
-\end{center}
-If you enter
-\begin{center}
-  \tt
-  wilcoxont([1,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20],0.3)
-\end{center}
-you will get
-\begin{verbatim}
-   Mann-Whitney 2-sample test, H0 same Median, H1 &lt;&gt;
-   ranksum 81.5, shifted ranksum 26.5
-   u1=73.5 ,u2=26.5, u=min(u1,u2)=26.5
-   Limit value to reject H0 35
-   P-value 316/4199 (0.0752560133365), alpha=0.3 H0 rejected
-   0
-</pre><p>
-and if you enter
 </p><div class="center">
-<span style="font-family:monospace">wilcoxont([1,3,4,5,7,8,8,12,15,17] ,10,‘&gt;‘,0.05)
-</span></div><p>
-you will get
-</p><pre class="verbatim">   Wilcoxon 1-sample test, H0 Median=10, H1 M&lt;&gt;10
-   Wilcoxon statistic: 18, p-value: 0.375, confidence level: 0.05
-   1
-</pre>
+<span style="font-family:monospace">1.67834699002
+</span></div>
 <hr>
 <a href="cascmd_en631.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

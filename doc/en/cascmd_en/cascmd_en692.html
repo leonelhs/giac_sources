@@ -4,38 +4,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Breaking out a loop</title>
+<title>Code blocks</title>
 </head>
 <body >
 <a href="cascmd_en691.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en693.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec901" class="subsection">10.3.6  Breaking out a loop</h3>
-<p>If your program is running a loop and you want it to exit the loop
-without finishing it, you can use the <span style="font-family:monospace">break</span><a id="hevea_default1158"></a>
-command. For example, you can define a program
-</p><pre class="verbatim">  testbreak(a,b) := {
-  local r;
-  while (true) {
-    if (b == 0) {break;}
-    r := irem(a,b);
-    a := b;
-    b := r;
-  }
-  return a;
-  }
-</pre><p>
-If you then enter
-</p><div class="center">
-<span style="font-family:monospace">testbreak(4,0)</span>
-</div><p>
-it will return
-</p><div class="center">
-<span style="font-family:monospace">4</span>
-</div><p>
-since the <span style="font-family:monospace">while</span> loop is interrupted when <span style="font-family:monospace">b</span> is 0 and
-<span style="font-family:monospace">a</span> is 4.</p>
+<h3 id="sec903" class="subsection">10.1.7  Code blocks</h3>
+<p>A code block, such as used in defining functions, is a sequence of
+statements delimited by braces or by <span style="font-family:monospace">begin</span><a id="hevea_default1140"></a> and
+<span style="font-family:monospace">end</span><a id="hevea_default1141"></a>. Each statement must end with a semicolon.
+(If the block makes up a function, you can step through it one
+statement at a time by using the debugger<a id="hevea_default1142"></a>; see section
+<a href="index.html#sec%3Adebug">10.5</a>.)</p>
 <hr>
 <a href="cascmd_en691.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

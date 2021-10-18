@@ -210,6 +210,8 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \@print{
 <script language="javascript"> 
  var UI = {
+  n2d:0,
+  python:0,
   histcount:0,
   usemathjax:false,
   lastcmd:'',
@@ -217,7 +219,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
     if (UI.lastcmd.length){
        var tmp=UI.giaceval('VARS(-1)');
        tmp=encodeURIComponent(tmp);
-       var url='https://www-fourier.ujf-grenoble.fr/~parisse/xcasen.html#+'+tmp+':;&+'+UI.lastcmd;
+       var url='https://www-fourier.ujf-grenoble.fr/~parisse/xcasen.html'+String.fromCharCode(35)+'+'+tmp+':;&+'+UI.lastcmd;
        console.log(url);
        window.open(url,'_blank');
     }
@@ -244,19 +246,6 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
       }
     }
   },  
-  render_canvas:function(field){
-   var n=field.id;
-   if (n && n.length>5 && n.substr(0,5)=='gl3d_'){
-    Module.print(n);
-    var n3d=n.substr(5,n.length-5);
-    giac3d(n3d);
-    return;
-   }
-   var f=field.firstChild;
-   for (;f;f=f.nextSibling){
-     UI.render_canvas(f);
-   }
-  },
   count_newline:function(s){
     var ss=s.length,i,res=1;
     for (i=0;i<ss;i++){
@@ -337,7 +326,8 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
    //UI.render_canvas(nextSibling);  
   },
   giaceval:function(text){
-     if (!Module.ready){ window.setTimeout(UI.giaceval,100,text); return " Not ready ";}
+     if (UI.python) text='@@'+text;
+     if (!Module.ready){ window.setTimeout(UI.giaceval,100,text); return " ... ";}
      var dogiaceval=Module.cwrap('caseval',  'string', ['string']);
      return dogiaceval(text);
   },
@@ -347,6 +337,12 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
     try {
        s= UI.giaceval(text);
     } catch (err) { s=err.message;}
+    var is_2d=s.length>4 && s.substr(0,4)=='gr2d';
+    if (is_2d){
+      s = '<canvas id="gr2d_'+UI.n2d+'" width=400 height=250>'+s+'</canvas>';
+      //console.log(UI.n2d,s);
+      UI.n2d++;
+    }
     var is_3d=s.length>5 && s.substr(0,5)=='gl3d ';
     if (is_3d){
 	var n3d=s.substr(5,s.length-5);
@@ -354,6 +350,462 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
     }
    //console.log(s);
     return s;
+  },
+  pourcentmod:function(a,b){
+    return a-Math.floor(a/b)*b;
+  },
+  color_list: ['black',
+    'red',
+    'green',
+    'yellow',
+    'blue',
+    'magenta',
+    'cyan',
+    'white',
+    'silver',
+    'gray',
+    'maroon',
+    'purple',
+    'fuchsia',
+    'lime',
+    'olive',
+    'navy',
+    'teal',
+    'aqua',
+    'antiquewhite',
+    'aquamarine',
+    'azure',
+    'beige',
+    'bisque',
+    'blanchedalmond',
+    'blueviolet',
+    'brown',
+    'burlywood',
+    'cadetblue',
+    'chartreuse',
+    'chocolate',
+    'coral',
+    'cornflowerblue',
+    'cornsilk',
+    'crimson',
+    'cyan',
+    'darkblue',
+    'darkcyan',
+    'darkgoldenrod',
+    'darkgray',
+    'darkgreen',
+    'darkgrey',
+    'darkkhaki',
+    'darkmagenta',
+    'darkolivegreen',
+    'darkorange',
+    'darkorchid',
+    'darkred',
+    'darksalmon',
+    'darkseagreen',
+    'darkslateblue',
+    'darkslategray',
+    'darkslategrey',
+    'darkturquoise',
+    'darkviolet',
+    'deeppink',
+    'deepskyblue',
+    'dimgray',
+    'dimgrey',
+    'dodgerblue',
+    'firebrick',
+    'floralwhite',
+    'forestgreen',
+    'gainsboro',
+    'ghostwhite',
+    'gold',
+    'goldenrod',
+    'greenyellow',
+    'grey',
+    'honeydew',
+    'hotpink',
+    'indianred',
+    'indigo',
+    'ivory',
+    'khaki',
+    'lavender',
+    'lavenderblush',
+    'lawngreen',
+    'lemonchiffon',
+    'lightblue',
+    'lightcoral',
+    'lightcyan',
+    'lightgoldenrodyellow',
+    'lightgray',
+    'lightgreen',
+    'lightgrey',
+    'lightpink',
+    'lightsalmon',
+    'lightseagreen',
+    'lightskyblue',
+    'lightslategray',
+    'lightslategrey',
+    'lightsteelblue',
+    'lightyellow',
+    'limegreen',
+    'linen',
+    'mediumaquamarine',
+    'mediumblue',
+    'mediumorchid',
+    'mediumpurple',
+    'mediumseagreen',
+    'mediumslateblue',
+    'mediumspringgreen',
+    'mediumturquoise',
+    'mediumvioletred',
+    'midnightblue',
+    'mintcream',
+    'mistyrose',
+    'moccasin',
+    'navajowhite',
+    'oldlace',
+    'olivedrab',
+    'orangered',
+    'orchid',
+    'palegoldenrod',
+    'palegreen',
+    'paleturquoise',
+    'palevioletred',
+    'papayawhip',
+    'peachpuff',
+    'peru',
+    'pink',
+    'plum',
+    'powderblue',
+    'rosybrown',
+    'royalblue',
+    'saddlebrown',
+    'salmon',
+    'sandybrown',
+    'seagreen',
+    'seashell',
+    'sienna',
+    'skyblue',
+    'slateblue',
+    'slategray',
+    'slategrey',
+    'snow',
+    'springgreen',
+    'steelblue',
+    'tan',
+    'thistle',
+    'tomato',
+    'turquoise',
+    'violet',
+    'wheat',
+    'whitesmoke',
+    'yellowgreen'],
+  arc_en_ciel: function (k) {
+    var r, g, b;
+    k += 21;
+    k = pourcentmod(k,126);
+    if (k < 0)
+      k += 126;
+    if (k < 21) {
+      r = 251;
+      g = 0;
+      b = 12 * k;
+    }
+    if (k >= 21 && k < 42) {
+      r = 251 - (12 * (k - 21));
+      g = 0;
+      b = 251;
+    }
+    if (k >= 42 && k < 63) {
+      r = 0;
+      g = (k - 42) * 12;
+      b = 251;
+    }
+    if (k >= 63 && k < 84) {
+      r = 0;
+      g = 251;
+      b = 251 - (k - 63) * 12;
+    }
+    if (k >= 84 && k < 105) {
+      r = (k - 84) * 12;
+      g = 251;
+      b = 0;
+    }
+    if (k >= 105 && k < 126) {
+      r = 251;
+      g = 251 - (k - 105) * 12;
+      b = 0;
+    }
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  },
+  turtle_color: function (c) {
+    if (c >= 0x100) {
+      if (c < 0x17e)
+        return UI.arc_en_ciel(c);
+      var r=8*((c>>11) & 0x1f);
+      var g=4*((c>>5) & 0x3f);
+      var b=8*(c & 0x1f);
+      return 'rgb(' + r + ',' + g + ',' + b + ')';
+    }
+    return UI.color_list[c];
+  },
+  pixon_draw: function (id, s) {
+    var v = eval(s);
+    if (!Array.isArray(v)) return;
+    //console.log(v[0], v.length);
+    var canvas = document.getElementById(id);
+    var l = v.length, w = 0, h = 0;
+    if (l < 2) return;
+    var scale = v[0];
+    for (var k = 1; k < l; k++) {
+      var cur = v[k];
+      var x = cur[0], y = cur[1];
+      if (cur.length==3 && typeof cur[2]!="number"){
+	x+=100;
+	y+=16;
+      }
+      if (cur.length==4) {
+        var tmp = cur[3];
+	if (typeof tmp=="number"){
+          if (tmp > 0) y += tmp; else x -= tmp;
+	} else {
+	  x+=100;
+	  y+=16;
+	}
+      }
+      //console.log(cur,x,y);
+      if (x > w) w = x;
+      if (y > h) h = y;
+    }
+    w = (w + 1) * scale;
+    h = (h + 1) * scale;
+    canvas.width = w;
+    canvas.height = h;
+    //console.log(h,w);
+    if (canvas.getContext) {
+      var ctx = canvas.getContext('2d');
+      for (var k = 1; k < l; k++) {
+        var cur = v[k], cl;
+        //console.log(cur);
+        if (!Array.isArray(cur) || (cl = cur.length) < 2) continue;
+        // cur[0]=x, cur[1]=y, cur[2]=color, cur[3]=w if +, h if -
+        var x = cur[0] * scale;
+        var y = cur[1] * scale;
+	if (cl>2 && typeof cur[2]=="string"){
+	  console.log(cur[2]);
+	  ctx.font = '16px serif';
+	  ctx.fillStyle = 'black';
+	  ctx.fillText(cur[2],x,y+16,100);
+	  continue;
+	}
+        ctx.fillStyle = (cl > 2) ? UI.turtle_color(cur[2]) : 'black';
+        if (cl < 4) {
+          ctx.fillRect(x, y, scale, scale);
+          continue;
+        }
+	if (typeof cur[3]=="string"){
+	  ctx.font = '16px serif';
+	  ctx.fillText(cur[3],x,y+16,100);
+	  continue;
+	}
+        var h = cur[3] * scale, w = scale;
+        if (h < 0) {
+          w = -h;
+          h = scale;
+        }
+        ctx.fillRect(x, y, w, h);
+      }
+    }
+  },
+  turtle_dx: 0, // shift frame
+  turtle_dy: 0,
+  turtle_z: 1,  // zoom factor
+  turtle_maillage: 1,
+  turtle_draw: function (id, s) {
+    if (s.length < 7) return;
+    s = s.substr(5, s.length - 6);
+    if (s.length > 7 && s.substr(s, 6) == "pixon(") {
+      UI.pixon_draw(id, s.substr(6, s.length - 7));
+      return;
+    }
+    if (s.length < 6 || s.substr(s, 5) != "logo(")
+      return;
+    s = s.substr(5, s.length - 6);
+    //console.log(s);
+    var v = eval(s);
+    if (!Array.isArray(v)) return;
+    //console.log(v[0]);
+    var canvas = document.getElementById(id);
+    var w = canvas.width, h = canvas.height;
+    if (canvas.getContext) {
+      var ctx = canvas.getContext('2d');
+      var turtlezoom = UI.turtle_z, turtlex = UI.turtle_dx, turtley = UI.turtle_dy;
+      // maillage
+      if (UI.turtle_maillage & 3) {
+        ctx.fillStyle = 'black';
+        var xdecal = Math.floor(turtlex / 10.0) * 10;
+        var ydecal = Math.floor(turtley / 10.0) * 10;
+        if ((UI.turtle_maillage & 0x3) == 1) {
+          for (var i = xdecal; i < w + xdecal; i += 10) {
+            for (var j = ydecal; j < h + ydecal; j += 10) {
+              var X = Math.floor((i - turtlex) * turtlezoom + .5);
+              var Y = Math.floor((j - turtley) * turtlezoom + .5);
+              // console.log(X,Y);
+              ctx.fillRect(X, h - Y, 1, 1);
+            }
+          }
+        } else {
+          var dj = Math.sqrt(3.0) * 10, i0 = xdecal;
+          for (var j = ydecal; j < h + ydecal; j += dj) {
+            var J = Math.floor(h - (j - turtley) * turtlezoom);
+            for (var i = i0; i < w + xdecal; i += 10) {
+              ctx.fillRect(Math.floor((i - turtlex) * turtlezoom + .5), J, 1, 1);
+            }
+            i0 += dj;
+            while (i0 >= 10)
+              i0 -= 10;
+          }
+        }
+      }
+      var l = v.length, i;
+      // montre la position et le cap (v[l-1])
+      var prec = v[l - 1];
+      ctx.font = '16px serif';
+      ctx.fillStyle = 'yellow';
+      ctx.fillRect(w - 40, 0, 40, 50);
+      ctx.fillStyle = 'black';
+      ctx.fillText('x:' + prec[0], w - 40, 15);
+      ctx.fillText('y:' + prec[1], w - 40, 31);
+      ctx.fillText('t:' + prec[2], w - 40, 49);
+      // v[i]=[x(0),y(1),cap(2),status(3),r(4),chaine(5)],
+      // couleur=status >> 11
+      // longueur_tortue= (status>>3)&0xff
+      // direct=status&4 (vrai si angle dans le sens trigo)
+      // visible=status&2
+      // crayon baisse=status&1
+      // si r>0 arc/disque rayon=r & 0x1ff, theta1=(r >> 9) & 0x1ff, theta2=(r >> 18) & 0x1ff
+      //        rempli=(r>>27)&0x1
+      // si r<0 ligne polygonale extremite v[i] origine v[i+r] (r<0)
+      for (k = 1; k < l; k++) {
+        prec = v[k - 1];
+        var cur = v[k];
+        var preccouleur = prec[3] >> 11; // -> FIXME colors
+        var curcouleur = prec[3] >> 11; // -> FIXME colors
+        if (cur[5].length) {
+          ctx.font = cur[4] + 'px serif';
+          ctx.strokeStyle = ctx.fillStyle = UI.turtle_color(curcouleur);
+          ctx.fillText(cur[5], turtlezoom * (cur[0] - turtlex), h - turtlezoom * (cur[1] - turtley));
+          continue;
+        }
+        var radius = cur[4], precradius = prec[4];
+        var x1 = Math.floor(turtlezoom * (prec[0] - turtlex) + .5),
+            y1 = Math.floor(turtlezoom * (prec[1] - turtley) + .5),
+            x2 = Math.floor(turtlezoom * (cur[0] - turtlex) + .5),
+            y2 = Math.floor(turtlezoom * (cur[1] - turtley) + .5);
+        if (radius > 0) {
+          var r = radius & 0x1ff, theta1, theta2, rempli, x, y, R, angle;
+          theta1 = prec[2]+ ((radius >> 9) & 0x1ff);
+          theta2 = prec[2] + ((radius >> 18) & 0x1ff);
+          rempli = (radius >> 27) & 1;
+	  var seg = (radius >> 28) & 1;
+          R = Math.floor(turtlezoom * r + .5);
+          angle1 = Math.PI / 180 * (theta1 - 90);
+          angle2 = Math.PI / 180 * (theta2 - 90);
+          x = Math.floor(turtlezoom * (cur[0] - turtlex - r * Math.cos(angle2)) + .5);
+          y = Math.floor(turtlezoom * (cur[1] - turtley - r * Math.sin(angle2)) + .5);
+          ctx.beginPath();
+	  if (seg)
+            ctx.moveTo(x2, h - y2);
+	  else {
+            ctx.moveTo(x, h - y);
+            ctx.lineTo(x2, h - y2);
+	  }
+	  //console.log(x,y,x1,y1,angle1,angle2);
+          ctx.arc(x, h - y, R, -angle2,-angle1);
+          ctx.closePath();
+          ctx.strokeStyle = ctx.fillStyle = UI.turtle_color(curcouleur);
+          if (rempli)
+            ctx.fill();
+          else
+            ctx.stroke();
+          continue;
+        }
+        if (prec[3] & 1) {
+          ctx.strokeStyle = ctx.fillStyle = UI.turtle_color(preccouleur);
+          ctx.beginPath();
+          ctx.moveTo(x1, h - y1);
+          ctx.lineTo(x2, h - y2);
+          ctx.closePath();
+          ctx.stroke();
+        }
+        if (radius < -1 && k + radius >= 0) {
+          ctx.strokeStyle = ctx.fillStyle = UI.turtle_color(curcouleur);
+          ctx.beginPath();
+          var x0 = Math.floor(turtlezoom * (cur[0] - turtlex) + .5), y0 = Math.floor(turtlezoom * (cur[1] - turtley) + .5);
+          //console.log('begin',x0,y0);
+          ctx.moveTo(x0, h - y0);
+          for (var i = -1; i >= radius; i--) {
+            prec = v[k + i];
+            var x = Math.floor(turtlezoom * (prec[0] - turtlex) + .5);
+            var y = Math.floor(turtlezoom * (prec[1] - turtley) + .5);
+            //console.log(i,x,y);
+            ctx.lineTo(x, h - y);
+          }
+          //console.log('end',x0,y0);
+          //ctx.lineTo(x0,h-y0);
+          ctx.closePath();
+          ctx.fill(); // automatically close path
+        }
+      }
+      var cur = v[l - 1];
+      if (cur[3] & 2) {
+        // dessin de la tortue
+        var x = Math.floor(turtlezoom * (cur[0] - turtlex) + .5);
+        var y = Math.floor(turtlezoom * (cur[1] - turtley) + .5);
+        var cost = Math.cos(cur[2] * Math.PI / 180);
+        var sint = Math.sin(cur[2] * Math.PI / 180);
+        var turtle_length = (cur[3] >> 3) & 0xff;
+        var Dx = Math.floor(turtlezoom * turtle_length * cost / 2 + .5);
+        var Dy = Math.floor(turtlezoom * turtle_length * sint / 2 + .5);
+        //console.log('tortue',cur,w,h,turtlezoom,x,y,Dx,Dy);
+        ctx.strokeStyle = ctx.fillStyle = UI.turtle_color(curcouleur);
+        ctx.beginPath();
+        ctx.moveTo(x + Dy, h - (y - Dx));
+        ctx.lineTo(x - Dy, h - (y + Dx));
+        ctx.closePath();
+        ctx.stroke();
+        if (!(cur[3] & 1))
+          ctx.strokeStyle = ctx.fillStyle = UI.turtle_color(curcouleur + 1);
+        ctx.beginPath();
+        ctx.moveTo(x + Dy, h - (y - Dx));
+        ctx.lineTo(x + 3 * Dx, h - (y + 3 * Dy));
+        ctx.closePath();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x - Dy, h - (y + Dx));
+        ctx.lineTo(x + 3 * Dx, h - (y + 3 * Dy));
+        ctx.closePath();
+        ctx.stroke();
+      }
+    }
+  },
+  render_canvas:function(field){
+   var n=field.id;
+   if (n && n.length>4 && n.substr(0,4)=='gr2d'){
+     var s=field.innerHTML;
+     //console.log(s);
+     UI.turtle_draw(n, s);
+   }
+   if (n && n.length>5 && n.substr(0,5)=='gl3d_'){
+    Module.print(n);
+    var n3d=n.substr(5,n.length-5);
+    giac3d(n3d);
+    return;
+   }
+   var f=field.firstChild;
+   for (;f;f=f.nextSibling){
+     UI.render_canvas(f);
+   }
   },
   eval_form: function(field){
     UI.giaceval('assume('+field.name.value+'=round('+field.valname.value+',12))');
@@ -415,6 +867,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
      }
    },
   execonload: function(field){
+     if (!Module.ready){ window.setTimeout(UI.execonload, 100, field); }
      var f=field.nextSibling;
      if (f && f.innerHTML=="onload" && field.nodeName=="BUTTON"){
         field.click();
@@ -470,7 +923,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
   //UI.giaceval('factor(x^4-1)');
   //UI.giaceval('sin(x+y)+f(t)');
   UI.textarealtgt(document.documentElement);
-  UI.execonload(document.documentElement);
+  window.setTimeout(UI.execonload, 1000, document.documentElement); // UI.execonload(document.documentElement);
   document.getElementById('output').innerHTML='';
  // if (confirm('Exec commands?')) UI.exec(document.documentElement);
  };
@@ -481,19 +934,29 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \newcommand{\loadgiacscriptend}{}
 \fi
 \ifhevea
+\newcommand{\giacpython}{
+\@print{<button onclick="UI.python=1;" style="display:none"></button><span style="display:none">onload</span>}
+}
 \newenvironment{giacprog}{
 \verbatim}
 {\endverbatim 
-\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1[0];tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
+\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1[0];tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
 }
 }
 \newenvironment{giaconload}{
 \verbatim}
 {\endverbatim 
-\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=20;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span>onload</span><br>
+\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=20;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span>onload</span><br>
+}
+}
+\newenvironment{giaconloadhide}{
+\verbatim}
+{\endverbatim 
+\@print{<button onclick="this.style.display='none';var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.display='none';t.style.fontSize=16;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span>onload</span><br>
 }
 }
 \else
+\newcommand\giacpython{}
 \newenvironment{giacprog}
 {
 \VerbatimEnvironment
@@ -509,6 +972,16 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 }
 {
 \end{Verbatim}
+}
+\newenvironment{giaconloadhide}
+{
+\ifhevea
+\VerbatimEnvironment
+\begin{Verbatim}
+}
+{
+\end{Verbatim}
+\fi
 }
 \fi
 

@@ -4,46 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Convert to a symbolic polynomial : r2e poly2symb</title>
+<title>Linearize exponentials : lin</title>
 </head>
 <body >
 <a href="cascmd_en271.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en273.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec340" class="subsection">5.26.1  Convert to a symbolic polynomial : <span style="font-family:monospace">r2e poly2symb</span></h3>
-<p><a id="hevea_default456"></a><a id="hevea_default457"></a>
-<span style="font-family:monospace">r2e</span> or <span style="font-family:monospace">poly2symb</span> takes as argument 
+<h3 id="sec341" class="subsection">5.26.4  Linearize exponentials : <span style="font-family:monospace">lin</span></h3>
+<p><a id="hevea_default455"></a>
+<span style="font-family:monospace">lin</span> takes as argument an expression with
+exponentials.<br>
+<span style="font-family:monospace">lin</span> rewrites hyperbolic functions as exponentials if required,
+then linearizes this expression (i.e. replace product of
+exponentials by exponential of sums).<br>
+<span style="font-weight:bold">Examples</span>
 </p><ul class="itemize"><li class="li-itemize">
-a list of 
-coefficients of a polynomial (by decreasing order) and a symbolic
-variable name 
-(by default <span style="font-family:monospace">x</span>)
-</li><li class="li-itemize">or a sum of monomials <span style="font-family:monospace">%%%{coeff,[n1,....nk] %%%}</span> 
-and a vector of symbolic variables <span style="font-family:monospace">[x1,...,xk]</span>.
-</li></ul><p>
-<span style="font-family:monospace">r2e</span> or <span style="font-family:monospace">poly2symb</span> transforms the argument into a symbolic
-polynomial.<br>
-Example with univariate polynomials, input :
-</p><div class="center"><span style="font-family:monospace">r2e([1,0,-1],x)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">r2e([1,0,-1])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">poly2symb([1,0,-1],x)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">x*x-1</span></div><p>
-Example with sparse multivariate polynomials, input:
-</p><div class="center"><span style="font-family:monospace">poly2symb(%%%{1,[2]%%%}+%%%{-1,[0]%%%},[x])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">r2e(%%%{1,[2]%%%}+%%%{-1,[0]%%%},[x])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^2</span></code><span style="font-family:monospace">-1</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">r2e(%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%},[x,y])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">poly2symb(%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%},[x,y])</span></div><p>
+<div class="center"><span style="font-family:monospace">lin(sinh(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x*y+2*y</span></div>
+<div class="center"><span style="font-family:monospace">1/4*exp(2*x)+1/-2+1/4*exp(-(2*x))</span></div></li><li class="li-itemize">Input :
+<div class="center"><span style="font-family:monospace">lin((exp(x)+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">exp(3*x)+3*exp(2*x)+3*exp(x)+1</span></div>
+</li></ul>
 <hr>
 <a href="cascmd_en271.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

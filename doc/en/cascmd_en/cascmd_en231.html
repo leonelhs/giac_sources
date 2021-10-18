@@ -4,52 +4,58 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Creating audio clips : createwav</title>
+<title>Rewrite an expression with different options : convert convertir</title>
 </head>
 <body >
 <a href="cascmd_en230.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en232.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec296" class="subsection">5.23.1  Creating audio clips : <span style="font-family:monospace">createwav</span><a id="hevea_default412"></a></h3>
-<p>
-<span style="font-family:monospace">createwav</span> takes the following arguments (all optional), in no particular order:
+<h3 id="sec291" class="subsection">5.22.24  Rewrite an expression with different options : <span style="font-family:monospace">convert convertir</span></h3>
+<p><a id="hevea_default392"></a><a id="hevea_default393"></a><a id="hevea_default394"></a><a id="hevea_default395"></a><a id="hevea_default396"></a><a id="hevea_default397"></a><a id="hevea_default398"></a><a id="hevea_default399"></a><a id="hevea_default400"></a><a id="hevea_default401"></a><a id="hevea_default402"></a><a id="hevea_default403"></a><a id="hevea_default404"></a><a id="hevea_default405"></a><a id="hevea_default406"></a><a id="sec:convert"></a>
+<span style="font-family:monospace">convert</span> takes two arguments an expression and an option.<br>
+<span style="font-family:monospace">convert</span> rewrites this expression applying rules depending 
+on the option. Valid options are :
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">size=n</span> resp. <span style="font-family:monospace">duration=T</span>, where <span style="font-style:italic">n</span> resp. <span style="font-style:italic">T</span> is the total number of samples resp. the length in seconds,
-</li><li class="li-itemize"><span style="font-family:monospace">bit_depth=b</span>, where <span style="font-style:italic">b</span> is the number of bits reserved for each sample value and may be 8 or 16 (by default 16),
-</li><li class="li-itemize"><span style="font-family:monospace">samplerate=r</span>, where <span style="font-style:italic">r</span> is the number of samples per second (by default 44100),
-</li><li class="li-itemize"><span style="font-family:monospace">channels=c</span> where <span style="font-style:italic">c</span> is the number of channels (by default 1),
-</li><li class="li-itemize"><span style="font-family:monospace">D</span> or <span style="font-family:monospace">channel_data=D</span>, where <span style="font-family:monospace">D</span> is a list or a matrix,
-</li><li class="li-itemize"><span style="font-family:monospace">normalize=db</span>, where <span style="font-family:monospace">db</span>≤ 0 is a real number representing the amplitude peak level in dB FS (decibel "full scale") units.
+<span style="font-family:monospace">sin</span> converts an expression like <span style="font-family:monospace">trigsin</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">cos</span> converts an expression like <span style="font-family:monospace">trigcos</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">sincos</span> converts an expression like <span style="font-family:monospace">sincos</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">trig</span> converts an expression like <span style="font-family:monospace">sincos</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">tan</span> converts an expression like <span style="font-family:monospace">halftan</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">exp</span> converts an expression like <span style="font-family:monospace">trig2exp</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">ln</span> converts an expression like <span style="font-family:monospace">trig2exp</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">expln</span> converts an expression like <span style="font-family:monospace">trig2exp</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">string</span> converts an expression into a string.
+</li><li class="li-itemize"><span style="font-family:monospace">matrix</span> converts a list of lists into a matrix.
+</li><li class="li-itemize"><span style="font-family:monospace">polynom</span> converts a Taylor series into a polynomial 
+by removing the remainder (cf <a href="cascmd_en299.html#sec%3Aconvertpoly">5.27.22</a>).
+</li><li class="li-itemize"><span style="font-family:monospace">parfrac</span> or <span style="font-family:monospace">partfrac</span> or <span style="font-family:monospace">fullparfrac</span> converts a rational 
+fraction into its partial fraction decomposition (<a href="cascmd_en342.html#sec%3Aconvertparf">5.31.9</a>).
 </li></ul><p>
-Additionally, passing the desired number of samples <span style="font-style:italic">n</span> as a single argument produces a single-channel clip on 16 bits/44100 Hz containing <span style="font-style:italic">n</span> samples initialized to zero.</p><p>Data matrix should contain the <span style="font-style:italic">k</span>-th sample in the <span style="font-style:italic">j</span>-th channel at position (<span style="font-style:italic">j</span>,<span style="font-style:italic">k</span>). The value of each sample must be a real number in range [−1.0,1.0]. Any value outside this interval is clamped to it (the resulting effect is called <em>clipping</em>). If the data is provided as a single list, it is copied across channels. If the number of samples or seconds is provided alongside the data list/matrix, the rows are truncated or padded with zeros to match the desired length.</p><p>If the option <span style="font-family:monospace">normalize</span> is given, audio data is normalized to the specified level prior to conversion. This can be used to avoid clipping.</p><p>For example, input :
-</p><div class="center">
-<span style="font-family:monospace">s:=createwav(duration=3.5):; playsnd(s)</span>
-</div><p>
-Output :
-</p><div class="center">
-<span style="font-family:monospace">three and a half seconds of silence at rate 44100</span>
-</div><p>
-Input :
-</p><div class="center">
-<span style="font-family:monospace">wave:=sin(2*pi*440*soundsec(2)):;<br>
-s:=createwav(channel_data=wave,samplerate=48000):;<br>
-playsnd(s)</span>
-</div><p>
-Output :
-</p><div class="center">
-<span style="font-family:monospace">two seconds of the 440 Hz sine wave at rate 48000</span>
-</div><p>
-Input :
-</p><div class="center">
-<span style="font-family:monospace">t:=soundsec(3):;<br>
-L,R:=sin(2*pi*440*t),sin(2*pi*445*t):;<br>
-s:=createwav([L,R]):; playsnd(s)</span>
-</div><p>
-Output :
-</p><div class="center">
-<span style="font-family:monospace">3 secs of a vibrato effect on a sine wave (stereo)</span>
-</div>
+<span style="font-family:monospace">convert</span> can also :
+</p><ul class="itemize"><li class="li-itemize">
+convert units, for example 
+<span style="font-family:monospace">convert(1000_g,_kg)=1.0_kg</span> (cf <a href="cascmd_en680.html#sec%3Aconvertunit">9.1.4</a>).
+</li><li class="li-itemize">write a real as a continued fraction : 
+<span style="font-family:monospace">convert(a,confrac,’fc’)</span> writes <span style="font-family:monospace">a</span> as a continued fraction
+stored in <span style="font-family:monospace">fc</span>. Do not forget to quote the last argument if it
+was assigned.<br>
+For example, <span style="font-family:monospace">convert(1.2,confrac,’fc’)=[1,5]</span> and <span style="font-family:monospace">fc</span> contains the 
+continued fraction equal to 1.2 (cf <a href="cascmd_en115.html#sec%3Aconvertdfc">5.8.7</a>). 
+</li><li class="li-itemize">transform an integer into the list of its digits in a 
+base, beginning with the units digit (and reciprocally)
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">convert(n,base,b)</span> transforms the integer <span style="font-family:monospace">n</span> into the list of its 
+digits in base <span style="font-family:monospace">b</span> beginning with the units digit.<br>
+For example,
+<span style="font-family:monospace">convert(123,base,10)=[3,2,1]</span> and reciprocally
+</li><li class="li-itemize"><span style="font-family:monospace">convert(l,base,b)</span> transforms the list <span style="font-family:monospace">l</span> into the integer <span style="font-family:monospace">n</span> 
+which has <span style="font-family:monospace">l</span> as list of its 
+digits in base <span style="font-family:monospace">b</span> beginning with the units digit.<br>
+For example, 
+<span style="font-family:monospace">convert([3,2,1],base,10)=123</span> (cf <a href="index.html#sec%3Aconvertbase">5.5</a>). 
+</li></ul>
+</li></ul>
 <hr>
 <a href="cascmd_en230.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

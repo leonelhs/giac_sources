@@ -4,23 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform tan(x) into sin(x)/cos(x) : tan2sincos</title>
+<title>Transform arccos into arctan : acos2atan</title>
 </head>
 <body >
 <a href="cascmd_en214.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en216.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec273" class="subsection">5.21.14  Transform tan(x) into sin(x)/cos(x) : <span style="font-family:monospace">tan2sincos</span></h3>
-<p><a id="hevea_default377"></a>
-<span style="font-family:monospace">tan2sincos</span> takes as argument an expression containing 
-trigonometric functions.<br>
-<span style="font-family:monospace">tan2sincos</span> replaces tan(<span style="font-style:italic">x</span>) by
- sin(<span style="font-style:italic">x</span>)/cos(<span style="font-style:italic">x</span>) in this expression.<br>
+<h3 id="sec275" class="subsection">5.22.8  Transform arccos into arctan : <span style="font-family:monospace">acos2atan</span></h3>
+<p><a id="hevea_default375"></a>
+<span style="font-family:monospace">acos2atan</span> takes as argument an expression containing 
+inverse trigonometric functions.<br>
+<span style="font-family:monospace">acos2atan</span> replaces arccos(<span style="font-style:italic">x</span>) by
+ π/2−arctan(<span style="font-style:italic">x</span>/√<span style="text-decoration:overline">1−</span><span style="text-decoration:overline"><span style="font-style:italic">x</span></span><sup><span style="text-decoration:overline">2</span></sup>) in this 
+expression.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">tan2sincos(tan(2*x))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">acos2atan(acos(x))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">sin(2*x)/cos(2*x)</span></div>
+</p><div class="center"><span style="font-family:monospace">pi/2-atan(x/sqrt(1-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span></div>
 <hr>
 <a href="cascmd_en214.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

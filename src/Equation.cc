@@ -1329,8 +1329,8 @@ namespace xcas {
       int h=a.fontsize;
       int y=0;
       bool py=python_compat(contextptr);
-      int modsize=int(fl_width(py?" mod":"%"))+4;
-      bool paren=is_positive(-*g._MODptr,contextptr);
+      int modsize=int(fl_width(py?" mod ":"%"))+4;
+      bool paren=g._MODptr->type==_SYMB || is_positive(-*g._MODptr,contextptr);
       int llp=int(fl_width("("));
       int lrp=int(fl_width(")"));
       gen varg1=Equation_compute_size(*g._MODptr,a,windowhsize,contextptr);
@@ -1367,6 +1367,26 @@ namespace xcas {
     /**********************
      *  SYMBOLIC HANDLING *
      **********************/
+    vecteur li(lidnt(g));
+    if (g.type==_SYMB && lvar(g)==li && lop(g,at_inv).empty()){
+      // polynomial check if it has modular coefficients
+      gen p=_symb2poly(makesequence(g,li),contextptr),modulo;
+      if (p.type==_POLY && has_mod_coeff(p,modulo)){
+	polynome & P=*p._POLYptr;
+	vector< monomial<gen> >::iterator it=P.coord.begin(),itend=P.coord.end();
+	for (;it!=itend;++it){
+	  if (it->value.type==_MOD){
+	    if (*(it->value._MODptr+1)!=modulo)
+	      break;
+	    it->value=*it->value._MODptr;
+	  }
+	}
+	if (it==itend){
+	  p=makemod(_poly2symb(makesequence(P,li),contextptr),modulo);
+	  return Equation_compute_size(p,a,windowhsize,contextptr);
+	}
+      }
+    }
     return Equation_compute_symb_size(g,a,windowhsize,contextptr);
     // return Equation_compute_symb_size(aplatir_fois_plus(g),a,windowhsize,contextptr);
     // aplatir_fois_plus is a problem for Equation_replace_selection

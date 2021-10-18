@@ -1,10 +1,11 @@
 SUBDIRS = 	en es fr el local pt zh de
 DIST_SUBDIRS = 	en es fr el local pt zh de
-XCASHTML = xcasfr.html xcasfrwasm.html xcasen.html *.css *.js giac.wasm logo.png giac.tex giacfr.tex test.tex testfr.tex test.html testfr.html algolycee.html graphtheory-user_manual.pdf
-EXTRA_DIST = aide_cas README index.html $(XCASHTML) dxcas/* pari/*  
+XCASHTML = xcasfr.html xcasen.html *.css *.js giacwasm.wasm logo.png giac.tex giacfr.tex test.tex testfr.tex test.html testfr.html algolycee.html graphtheory-user_manual.pdf *.sty
+EXTRA_DIST = aide_cas README index.html $(XCASHTML) dxcas/* pari/* castex.tex tortue.tex 
 
 dist_pkgdata_DATA = aide_cas
 dist_doc_DATA = README index.html
+
 
 install-exec-hook: 
 	$(install_sh) -d $(DESTDIR)$(prefix)/share/giac/doc/dxcas
