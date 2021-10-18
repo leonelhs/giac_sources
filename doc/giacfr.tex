@@ -14,8 +14,19 @@
 \@print{
 <button onclick="UI.exec(document.documentElement);" title='Cliquer ici pour executer toutes les commandes'>Executer</button>
 <canvas id='canvas' width=0 height=0   onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"  onmouseup="UI.canvas_pushed=false;" onmousemove="UI.canvas_mousemove(event,'')"></canvas>
+<textarea id="output" rows=2 cols="80" title="Console"></textarea>
 <script language="javascript"> 
-var Module = { preRun: [], postRun: [], canvas: document.getElementById('canvas'),};
+var Module = { preRun: [], postRun: [], 
+        print: (function() {
+          var element = document.getElementById('output');
+          element.value = ''; // clear browser cache
+          return function(text) {
+            element.style.display='inherit';
+            element.value += text + "\n";
+            element.scrollTop = 99999; // focus on bottom
+          };
+        })(),
+      canvas: document.getElementById('canvas'),};
 </script>
 <script src="file:///usr/share/giac/doc/giac.js" async></script> 
 <script language="javascript"> 
@@ -71,7 +82,7 @@ var Module = { preRun: [], postRun: [], canvas: document.getElementById('canvas'
    }
   },
   eval_form: function(field){
-    giaceval(field.name.value+':='+field.valname.value);
+    giaceval('assume('+field.name.value+'='+field.valname.value+')');
     var s=UI.caseval(field.prog.value);
     var is_svg=s.substr(1,4)=='<svg';
     if (is_svg) field.parentNode.lastChild.innerHTML=s.substr(1,s.length-2);
@@ -156,8 +167,19 @@ var Module = { preRun: [], postRun: [], canvas: document.getElementById('canvas'
 \@print{
 <button onclick="UI.exec(document.documentElement);" title='Cliquer ici pour executer toutes les commandes'>Executer</button>
 <canvas id='canvas' width=0 height=0   onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"  onmouseup="UI.canvas_pushed=false;" onmousemove="UI.canvas_mousemove(event,'')"></canvas>
+<textarea id="output" rows=2 cols="80" title="Console"></textarea>
 <script language="javascript"> 
-var Module = { preRun: [], postRun: [], canvas: document.getElementById('canvas'),};
+var Module = { preRun: [], postRun: [], 
+        print: (function() {
+          var element = document.getElementById('output');
+          element.value = ''; // clear browser cache
+          return function(text) {
+            element.style.display='inherit';
+            element.value += text + "\n";
+            element.scrollTop = 99999; // focus on bottom
+          };
+        })(),
+      canvas: document.getElementById('canvas'),};
 </script>
 <script src="http://www-fourier.ujf-grenoble.fr/~parisse/giac.js" async></script> 
 <script language="javascript">
@@ -200,7 +222,7 @@ var Module = { preRun: [], postRun: [], canvas: document.getElementById('canvas'
     return s;
   },
   eval_form: function(field){
-    giaceval(field.name.value+':='+field.valname.value);
+    giaceval('assume('+field.name.value+'='+field.valname.value+')');
     var s=UI.caseval(field.prog.value);
     var is_svg=s.substr(1,4)=='<svg';
     if (is_svg) field.parentNode.lastChild.innerHTML=s.substr(1,s.length-2);

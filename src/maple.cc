@@ -165,7 +165,7 @@ namespace giac {
     if (s==3 && mode.type==_IDNT)
       return _quorem(g,contextptr);
     return gensizeerr();
-    return 0;
+    // return 0;
   }
   static const char _divide_s []="divide";
   static define_unary_function_eval (__divide,&_divide,_divide_s);

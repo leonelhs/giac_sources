@@ -552,8 +552,10 @@ namespace giac {
       }
 #endif
     }
-    if (!is_positive(p,contextptr) || !is_greater(1,p,contextptr))
-      return gensizeerr(contextptr);
+    if (!is_positive(p,contextptr) || !is_greater(1,p,contextptr)){
+      if (calc_mode(contextptr)!=1)
+	return gensizeerr(contextptr);
+    }
     return comb(n,k,contextptr)*pow(p,k,contextptr)*pow(1-p,n-k,contextptr);
   }
   gen _binomial(const gen & g,GIAC_CONTEXT){
@@ -1033,11 +1035,13 @@ namespace giac {
       return _upper_incomplete_gamma(makesequence(x+1,lambda,1),contextptr);
     else
       return _upper_incomplete_gamma(makesequence(evalf(fx,1,contextptr),lambda,1),contextptr);
+#if 0
     gen res=0;
     for (int i=0;i<=fx.val;++i){
       res +=poisson(lambda,i,contextptr);
     }
     return res;
+#endif
     //identificateur k(" k");
     //return sum(poisson(n,k,contextptr),k,0,_floor(x,contextptr),contextptr);
   }

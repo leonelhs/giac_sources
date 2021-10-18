@@ -551,13 +551,51 @@ namespace giac {
 #define GBASIS_NO_OUTPUT
 #endif 
 
-  //#define GIAC_HASH
+#define GIAC_RDEG
+  // #define GIAC_HASH  
+#if defined GIAC_HASH && defined HASH_MAP_NAMESPACE
+#define GIAC_RHASH
+#endif
+  
+#ifdef GIAC_RHASH
+  class tdeg_t64;
+  class tdeg_t64_hash_function_object {
+  public:
+    size_t operator () (const tdeg_t64 & ) const; // defined at the end of this file
+    tdeg_t64_hash_function_object() {};
+  };
+
+  typedef HASH_MAP_NAMESPACE::hash_map< tdeg_t64,int,tdeg_t64_hash_function_object > tdeg_t64_hash_t ;
+#endif
+  
+#ifndef VISUALC
+  #define GIAC_ELIM
+#endif
   short hash64tab[]={1933,1949,1951,1973,1979,1987,1993,1997,1999,2003,2011,2017,2027,2029,2039,2053,2063,2069,2081,2083,2087,2089,2099,2111,2113,2129,2131,2137,2141,2143,2153,2161,2179,2203,2207,2213,2221,2237,2239,2243,2251,2267,2269,2273,2281,2287,2293,2297,2309,2311,2333,2339,2341,2347,2351,2357,2371,2377,2381,2383,2389,2393,2399,2411};
 
   // storing indices in reverse order to have tdeg_t_greater access them
   // in increasing order seems slower (cocoa.cc.64)
   struct tdeg_t64 {
     bool vars64() const {return true;}
+#ifdef GIAC_RHASH
+    int hash_index(void * ptr_) const {
+      if (!ptr_) return -1;
+      tdeg_t64_hash_t & h=*(tdeg_t64_hash_t *) ptr_;
+      tdeg_t64_hash_t::const_iterator it=h.find(*this),itend=h.end();
+      if (it==itend)
+	return -1;
+      return it->second;
+    }
+    bool add_to_hash(void *ptr_,int no) const {
+      if (!ptr_) return false;
+      tdeg_t64_hash_t & h=*(tdeg_t64_hash_t *) ptr_;
+      h[*this]=no;
+      return true;
+    }
+#else
+  int hash_index(void * ptr_) const { return -1; }
+  bool add_to_hash(void *ptr_,int no) const { return false; }  
+#endif
     void dbgprint() const;
     // data
 #ifdef GIAC_64VARS
@@ -568,7 +606,12 @@ namespace giac {
 	short tdeg2;
 	order_t order_;
 	longlong * ui;
+#ifdef GIAC_HASH
 	longlong hash;
+#endif
+#ifdef GIAC_ELIM
+	ulonglong elim; // used for elimination order (modifies revlex/revlex)
+#endif
       };
     };
     //int front() const { if (tdeg % 2) return (*(ui+1)) & 0xffff; else return order_.o==_PLEX_ORDER?tab[0]:tab[1];}
@@ -578,7 +621,12 @@ namespace giac {
 	tdeg2=a.tdeg2;
 	order_=a.order_;
 	ui=a.ui;
+#ifdef GIAC_HASH
 	hash=a.hash;
+#endif
+#ifdef GIAC_ELIM
+	elim=a.elim;
+#endif
 	++(*ui);
       }
       else {
@@ -590,15 +638,39 @@ namespace giac {
 	ptr[3]=aptr[3];
       }
     }
+#ifdef GIAC_ELIM
+    void compute_elim(longlong * ptr,longlong * ptrend){
+      elim=0;
+      if (order_.o==_PLEX_ORDER) // don't use elim for plex
+	return;
+      if (tdeg>31){
+	elim=0x1fffffffffffffffULL;
+	return;
+      }
+      bool tdegcare=false;
+      if (ptr<ptrend-3)
+	ptr=ptrend-3;
+      for (--ptrend;ptr<=ptrend;--ptrend){
+	longlong x=*ptrend;
+	elim <<= 20;
+	elim += (x&0xffff)+(((x>>16)&0xffff)<<5)+(((x>>32)&0xffff)<<10)+(((x>>48)&0xffff)<<15);
+      }
+    }
+#endif
     void compute_degs(){
       if (tab[0]%2){
 	longlong * ptr=ui+1;
-	hash=0;
 	tdeg=0;
 	int firstblock=order_.o;
 	if (firstblock!=_3VAR_ORDER && firstblock<_7VAR_ORDER)
 	  firstblock=order_.dim;
 	longlong * ptrend=ui+1+(firstblock+degratiom1)/degratio;
+#ifdef GIAC_HASH
+	hash=0;
+#endif
+#ifdef GIAC_ELIM
+	compute_elim(ptr,ptrend);
+#endif
 	int i=0;
 	for (;ptr!=ptrend;i+=4,++ptr){
 	  longlong x=*ptr;
@@ -608,9 +680,13 @@ namespace giac {
 	  tdeg += ((x+(x>>16)+(x>>32)+(x>>48))&0xffff);
 #endif
 #ifdef GIAC_HASH
-	  hash += (x&0xffff)*hash64tab[i]+((x>>16)&0xffff)*hash64tab[i+1]+((x>>32)&0xfff)*hash64tab[i+2]+(x>>48)*hash64tab[i+3];
+	  hash += (x&0xffff)*hash64tab[i]+((x>>16)&0xffff)*hash64tab[i+1]+((x>>32)&0xffff)*hash64tab[i+2]+(x>>48)*hash64tab[i+3];
 #endif
 	}
+#ifdef GIAC_ELIM
+	if (tdeg>=16)
+	  elim=0x1fffffffffffffffULL;
+#endif
 	tdeg=2*tdeg+1;
 	tdeg2=0;
 	ptrend=ui+1+(order_.dim+degratiom1)/degratio;
@@ -644,7 +720,12 @@ namespace giac {
 	  tdeg2=a.tdeg2;
 	  order_=a.order_;
 	  ui=a.ui;
+#ifdef GIAC_HASH
 	  hash=a.hash;
+#endif
+#ifdef GIAC_ELIM
+	  elim=a.elim;
+#endif
 	  ++(*ui);
 	  return *this;
 	}
@@ -781,12 +862,20 @@ namespace giac {
 	  tdeg2=sum_degree_from(lm,order.o); 
 	}
 	else {
-	  tdeg=2*lm.total_degree()+1;
+	  tdeg=short(2*lm.total_degree()+1);
 	  tdeg2=0;
 	}
 	order_=order;
-#ifdef GIAC_HASH
+#ifdef GIAC_HASH 
 	compute_degs(); // for hash
+#else
+#ifdef GIAC_ELIM
+	ptr=ui+1;
+	int firstblock=order_.o;
+	if (firstblock!=_3VAR_ORDER && firstblock<_7VAR_ORDER)
+	  firstblock=order_.dim;
+	compute_elim(ptr,ptr+(firstblock+degratiom1)/degratio);
+#endif
 #endif
 	return;
       }
@@ -946,10 +1035,12 @@ namespace giac {
   tdeg_t64 & operator += (tdeg_t64 & x,const tdeg_t64 & y){ 
 #ifdef GIAC_64VARS
     if (x.tab[0]%2){
+#ifdef GIAC_DEBUG_TDEG_T64
       if (!(y.tab[0]%2)){
 	y.dbgprint();
 	COUT << "erreur" << endl;
       }
+#endif
       return x=x+y;
     }
 #endif    
@@ -967,6 +1058,35 @@ namespace giac {
 #endif
     return x;  
   }
+
+  inline tdeg_t64 dynamic_plus(const tdeg_t64 & x,const tdeg_t64 & y){
+    tdeg_t64 res;
+    res.order_=x.order_;
+    res.ui=(longlong *)malloc((1+(x.order_.dim+degratiom1)/degratio)*sizeof(longlong));
+    res.ui[0]=1; 
+    const longlong * xptr=x.ui+1,*xend=xptr+(x.order_.dim+degratiom1)/degratio,*yptr=y.ui+1;
+    longlong * resptr=res.ui+1;
+    for (;xptr!=xend;++resptr,++yptr,++xptr)
+      *resptr=*xptr+*yptr;
+#if 1
+    res.tdeg=1+2*(x.tdeg/2+y.tdeg/2);
+    res.tdeg2=x.tdeg2+y.tdeg2;
+#ifdef GIAC_HASH
+    res.hash=x.hash+y.hash;
+#endif
+#ifdef GIAC_ELIM      
+    if (res.tdeg>=33)
+      res.elim=0x1fffffffffffffffULL;
+    else
+      res.elim=x.elim+y.elim;
+#endif      
+#else
+    res.tdeg=1;
+    res.compute_degs();
+#endif
+    return res;
+  }
+  
   tdeg_t64 operator + (const tdeg_t64 & x,const tdeg_t64 & y){
 #ifdef GIAC_64VARS
     if (x.tab[0]%2){
@@ -974,17 +1094,7 @@ namespace giac {
       if (!(y.tab[0]%2))
 	COUT << "erreur" << endl;
 #endif
-      tdeg_t64 res;
-      res.order_=x.order_;
-      res.ui=(longlong *)malloc((1+(x.order_.dim+degratiom1)/degratio)*sizeof(longlong));
-      res.ui[0]=1; 
-      const longlong * xptr=x.ui+1,*xend=xptr+(x.order_.dim+degratiom1)/degratio,*yptr=y.ui+1;
-      longlong * resptr=res.ui+1;
-      for (;xptr!=xend;++resptr,++yptr,++xptr)
-	*resptr=*xptr+*yptr;
-      res.tdeg=1;
-      res.compute_degs();
-      return res;
+      return dynamic_plus(x,y);
     }
 #endif    
     tdeg_t64 res(x);
@@ -1021,11 +1131,25 @@ namespace giac {
 #endif
 	for (;xptr!=xend;++resptr,++yptr,++xptr)
 	  *resptr=*xptr+*yptr;
+#if 1
+	res.tdeg=1+2*(x.tdeg/2+y.tdeg/2);
+	res.tdeg2=x.tdeg2+y.tdeg2;
+#ifdef GIAC_HASH
+	res.hash=x.hash+y.hash;
+#endif
+#ifdef GIAC_ELIM      
+	if (res.tdeg>=33)
+	  res.elim=0x1fffffffffffffffULL;
+	else
+	  res.elim=x.elim+y.elim;
+#endif      
+#else
 	res.tdeg=1;
 	res.compute_degs();
+#endif
       }
       else
-	res=x+y;
+	res=dynamic_plus(x,y);
       return;
     }
 #endif    
@@ -1049,6 +1173,7 @@ namespace giac {
       res.tab[i]=x.tab[i]+y.tab[i];
 #endif
   }
+
   tdeg_t64 operator - (const tdeg_t64 & x,const tdeg_t64 & y){ 
 #ifdef GIAC_64VARS
     if (x.tab[0]%2){
@@ -1091,6 +1216,9 @@ namespace giac {
 #ifdef GIAC_HASH
     if (x.hash!=y.hash) 
       return false;
+#endif
+#ifdef GIAC_ELIM
+    if (x.elim!=y.elim) return false;
 #endif
 #ifdef GIAC_64VARS
     if (
@@ -1379,103 +1507,114 @@ namespace giac {
 #endif
   }
 
+  inline int tdeg_t_greater_dyn(const tdeg_t64 & x,const tdeg_t64 & y,order_t order){
+    const longlong * it1=x.ui,* it2=y.ui,*it1beg;
+    longlong a=0;
+    switch (order.o){
+    case _REVLEX_ORDER:
+      it1beg=x.ui;
+      it1=x.ui+(x.order_.dim+degratiom1)/degratio;
+      it2=y.ui+(y.order_.dim+degratiom1)/degratio;
+#if 0 // def GIAC_ELIM
+      --it1; --it2; // first test already done with elim field
+#endif
+      for (;it1!=it1beg;--it2,--it1){
+	a=*it1-*it2;
+	if (a)
+	  return a<=0?1:0;
+      }
+      return 2;
+    case _64VAR_ORDER:
+      a=it1[16]-it2[16];
+      if (a)
+	return a<=0?1:0;
+      a=it1[15]-it2[15];
+      if (a)
+	return a<=0?1:0;
+      a=it1[14]-it2[14];
+      if (a)
+	return a<=0?1:0;
+      a=it1[13]-it2[13];
+      if (a)
+	return a<=0?1:0;
+    case _48VAR_ORDER:
+      a=it1[12]-it2[12];
+      if (a)
+	return a<=0?1:0;
+      a=it1[11]-it2[11];
+      if (a)
+	return a<=0?1:0;
+      a=it1[10]-it2[10];
+      if (a)
+	return a<=0?1:0;
+      a=it1[9]-it2[9];
+      if (a)
+	return a<=0?1:0;
+    case _32VAR_ORDER:
+      a=it1[8]-it2[8];
+      if (a)
+	return a<=0?1:0;
+      a=it1[7]-it2[7];
+      if (a)
+	return a<=0?1:0;
+      a=it1[6]-it2[6];
+      if (a)
+	return a<=0?1:0;
+      a=it1[5]-it2[5];
+      if (a)
+	return a<=0?1:0;
+    case _16VAR_ORDER:
+      a=it1[4]-it2[4];
+      if (a)
+	return a<=0?1:0;
+    case _11VAR_ORDER:
+      a=it1[3]-it2[3];
+      if (a)
+	return a<=0?1:0;
+    case _7VAR_ORDER:
+      a=it1[2]-it2[2];
+      if (a)
+	return a<=0?1:0;
+    case _3VAR_ORDER: 
+      a=it1[1]-it2[1];
+      if (a)
+	return a<=0?1:0;
+      if (x.tdeg2!=y.tdeg2)
+	return x.tdeg2>y.tdeg2?1:0;
+      it1beg=it1+(x.order_.o+degratiom1)/degratio;
+      it1 += (x.order_.dim+degratiom1)/degratio;;
+      it2 += (x.order_.dim+degratiom1)/degratio;;
+      for (;;){
+	a=*it1-*it2;
+	if (a)
+	  return a<=0?1:0;
+	--it2;--it1;
+	if (it1<=it1beg)
+	  return 2;
+      }
+    case _TDEG_ORDER: case _PLEX_ORDER: {
+      const degtype * it1=(degtype *)(x.ui+1),*it1end=it1+x.order_.dim,*it2=(degtype *)(y.ui+1);
+      for (;it1!=it1end;++it2,++it1){
+	if (*it1!=*it2)
+	  return *it1>=*it2?1:0;
+      }
+      return 2;
+    }
+    } // end swicth
+    return -1;
+  }
+
   inline int tdeg_t_greater(const tdeg_t64 & x,const tdeg_t64 & y,order_t order){
     short X=x.tab[0];
     if (X!=y.tab[0]) return X>y.tab[0]?1:0; // since tdeg is tab[0] for plex
 #ifdef GIAC_64VARS
     if (X%2){
+#ifdef GIAC_ELIM
+      if ( x.elim!=y.elim) return x.elim<y.elim?1:0;
+#endif
       //if (x.ui==y.ui) return 2;
 #if 1 && !defined BIGENDIAN && !defined GIAC_CHARDEGTYPE
-      const longlong * it1=x.ui,* it2=y.ui,*it1beg;
-      longlong a=0;
-      switch (order.o){
-      case _64VAR_ORDER:
-	a=it1[16]-it2[16];
-	if (a)
-	  return a<=0?1:0;
-	a=it1[15]-it2[15];
-	if (a)
-	  return a<=0?1:0;
-	a=it1[14]-it2[14];
-	if (a)
-	  return a<=0?1:0;
-	a=it1[13]-it2[13];
-	if (a)
-	  return a<=0?1:0;
-      case _48VAR_ORDER:
-	a=it1[12]-it2[12];
-	if (a)
-	  return a<=0?1:0;
-	a=it1[11]-it2[11];
-	if (a)
-	  return a<=0?1:0;
-	a=it1[10]-it2[10];
-	if (a)
-	  return a<=0?1:0;
-	a=it1[9]-it2[9];
-	if (a)
-	  return a<=0?1:0;
-      case _32VAR_ORDER:
-	a=it1[8]-it2[8];
-	if (a)
-	  return a<=0?1:0;
-	a=it1[7]-it2[7];
-	if (a)
-	  return a<=0?1:0;
-	a=it1[6]-it2[6];
-	if (a)
-	  return a<=0?1:0;
-	a=it1[5]-it2[5];
-	if (a)
-	  return a<=0?1:0;
-      case _16VAR_ORDER:
-	a=it1[4]-it2[4];
-	if (a)
-	  return a<=0?1:0;
-      case _11VAR_ORDER:
-	a=it1[3]-it2[3];
-	if (a)
-	  return a<=0?1:0;
-      case _7VAR_ORDER:
-	a=it1[2]-it2[2];
-	if (a)
-	  return a<=0?1:0;
-      case _3VAR_ORDER: 
-	a=it1[1]-it2[1];
-	if (a)
-	  return a<=0?1:0;
-	if (x.tdeg2!=y.tdeg2)
-	  return x.tdeg2>y.tdeg2?1:0;
-	it1beg=it1+(x.order_.o+degratiom1)/degratio;
-	it1 += (x.order_.dim+degratiom1)/degratio;;
-	it2 += (x.order_.dim+degratiom1)/degratio;;
-	for (;;){
-	  a=*it1-*it2;
-	  if (a)
-	    return a<=0?1:0;
-	  --it2;--it1;
-	  if (it1<=it1beg)
-	    return 2;
-	}
-      case _REVLEX_ORDER:
-	it1beg=x.ui;
-	it1=x.ui+(x.order_.dim+degratiom1)/degratio;
-	it2=y.ui+(y.order_.dim+degratiom1)/degratio;
-	for (;it1!=it1beg;--it2,--it1){
-	  a=*it1-*it2;
-	  if (a)
-	    return a<=0?1:0;
-	}
-	return 2;
-      case _TDEG_ORDER: case _PLEX_ORDER: {
-	const degtype * it1=(degtype *)(x.ui+1),*it1end=it1+x.order_.dim,*it2=(degtype *)(y.ui+1);
-	for (;it1!=it1end;++it2,++it1){
-	  if (*it1!=*it2)
-	    return *it1>=*it2?1:0;
-	}
-	return 2;
-      }
-      } // end swicth
+      return tdeg_t_greater_dyn(x,y,order);
 #else // BIGENDIAN, GIAC_CHARDEGTYPE
       if (order.o>=_7VAR_ORDER || order.o==_3VAR_ORDER){
 #ifdef GIAC_GBASISLEX 
@@ -1597,6 +1736,14 @@ namespace giac {
       return false;
 #ifdef GIAC_64VARS
     if (x.tab[0]%2){
+#ifdef GIAC_ELIM
+      //bool debug=false;
+      if ( !( (x.elim | y.elim) & 0x1000000000000000ULL) &&
+	   ( (x.elim-y.elim) & 0b1111100001000010000100001000010000100001000010000100001000010000ULL) ){
+	//debug=true;
+	return false;
+      }
+#endif
 #ifdef GIAC_DEBUG_TDEG_T64
       if (!(y.tab[0]%2))
 	COUT << "erreur" << endl;
@@ -1637,6 +1784,7 @@ namespace giac {
 #endif
       }
 #endif
+      // if (debug) CERR << x << " " << y << endl << x.elim << " " << y.elim << " " << x.tdeg << " " << y.tdeg << endl;
       return true;
     }
 #endif
@@ -2961,7 +3109,7 @@ namespace giac {
   template<class tdeg_t>
   void gbasis_update(vector<unsigned> & G,vector< paire > & B,vectpoly8<tdeg_t> & res,unsigned pos,poly8<tdeg_t> & TMP1,poly8<tdeg_t> & TMP2,vectpoly8<tdeg_t> & vtmp,environment * env){
     if (debug_infolevel>1)
-      CERR << CLOCK() << " begin gbasis update " << endl;
+      CERR << CLOCK()*1e-6 << " begin gbasis update " << endl;
     const poly8<tdeg_t> & h = res[pos];
     order_t order=h.order;
     vector<unsigned> C;
@@ -3035,7 +3183,7 @@ namespace giac {
     swap(B1,B);
     // Update G by removing elements with leading monomial >= leading monomial of h
     if (debug_infolevel>1)
-      CERR << CLOCK() << " begin Groebner interreduce " << endl;
+      CERR << CLOCK()*1e-6 << " begin Groebner interreduce " << endl;
     C.clear();
     C.reserve(G.size());
     vector<unsigned> hG(1,pos);
@@ -3057,7 +3205,7 @@ namespace giac {
       // NB: removing all pairs containing i in it does not work
     }
     if (debug_infolevel>1)
-      CERR << CLOCK() << " end Groebner interreduce " << endl;
+      CERR << CLOCK()*1e-6 << " end Groebner interreduce " << endl;
     C.push_back(pos);
     swap(C,G);
   }
@@ -3075,7 +3223,7 @@ namespace giac {
     }
     for (;!B.empty() && !interrupted && !ctrl_c;){
       if (debug_infolevel>1)
-	CERR << CLOCK() << " number of pairs: " << B.size() << ", base size: " << G.size() << endl;
+	CERR << CLOCK()*1e-6 << " number of pairs: " << B.size() << ", base size: " << G.size() << endl;
       // find smallest lcm pair in B
       tdeg_t small0,cur;
       unsigned smallpos,smallsugar=0,cursugar=0;
@@ -3120,22 +3268,22 @@ namespace giac {
       }
       paire bk=B[smallpos];
       if (debug_infolevel>1 && (equalposcomp(G,bk.first)==0 || equalposcomp(G,bk.second)==0))
-	CERR << CLOCK() << " reducing pair with 1 element not in basis " << bk << endl;
+	CERR << CLOCK()*1e-6 << " reducing pair with 1 element not in basis " << bk << endl;
       B.erase(B.begin()+smallpos);
       poly8<tdeg_t> h(res.front().order,res.front().dim);
       spoly(res[bk.first],res[bk.second],h,TMP1,env);
       if (debug_infolevel>1)
-	CERR << CLOCK() << " reduce begin, pair " << bk << " remainder size " << h.coord.size() << endl;
+	CERR << CLOCK()*1e-6 << " reduce begin, pair " << bk << " remainder size " << h.coord.size() << endl;
       reduce(h,res,G,-1,vtmp,h,TMP1,TMP2,env);
       if (debug_infolevel>1){
 	if (debug_infolevel>3){ CERR << h << endl; }
-	CERR << CLOCK() << " reduce end, remainder size " << h.coord.size() << endl;
+	CERR << CLOCK()*1e-6 << " reduce end, remainder size " << h.coord.size() << endl;
       }
       if (!h.coord.empty()){
 	res.push_back(h);
 	gbasis_update(G,B,res,unsigned(res.size()-1),TMP1,TMP2,vtmp,env);
 	if (debug_infolevel>2)
-	  CERR << CLOCK() << " basis indexes " << G << " pairs indexes " << B << endl;
+	  CERR << CLOCK()*1e-6 << " basis indexes " << G << " pairs indexes " << B << endl;
       }
     }
     return true;
@@ -3322,7 +3470,9 @@ namespace giac {
       return;
     typename std::vector< T_unsigned<modint,tdeg_t> >::iterator pt=p.coord.begin(),ptend=p.coord.end();
     for (;pt!=ptend;++pt){
-      pt->g=(longlong(pt->g)*a)%m;
+      modint tmp=(longlong(pt->g)*a)%m;
+      if (tmp<0) tmp += m;
+      pt->g=tmp;
     }
   }
 
@@ -4074,6 +4224,7 @@ namespace giac {
   
   template <class tdeg_t>
   bool operator < (const zsymb_data<tdeg_t> & z1,const zsymb_data<tdeg_t> & z2){
+    //if (z1.terms!=z2.terms && (z1.terms==1 || z2.terms==1)){ return z2.terms>z1.terms; }
     int d1=z1.deg.total_degree(z1.o),d2=z2.deg.total_degree(z2.o);
 #ifdef GIAC_DEG_FIRST
     if (d1!=d2)
@@ -4083,7 +4234,7 @@ namespace giac {
     double Z1=double(z1.terms)*d1; double Z2=double(z2.terms)*d2; if (Z1!=Z2) return Z2>Z1;
     if (z1.terms!=z2.terms) return z2.terms>z1.terms;
     if (z1.deg!=z2.deg)
-      return tdeg_t_greater(z1.deg,z2.deg,z1.o);
+      return tdeg_t_greater(z1.deg,z2.deg,z1.o)!=0;
     if (z1.pos!=z2.pos)
       return z2.pos>z1.pos;
     return false;
@@ -4154,7 +4305,7 @@ namespace giac {
 	  if (!*resGi_)
 	    continue;
 	  if (tdeg_t_all_greater(ptu,**resGi_,o)){
-	    i=resGi_-resGi;
+	    i=unsigned(resGi_-resGi);
 	    break;
 	  }
 	}
@@ -4165,7 +4316,7 @@ namespace giac {
 	    if (!*resGi_)
 	      continue;
 	    if (tdeg_t_all_greater(ptu,**resGi_,o)){
-	      i=resGi_-resGi;
+	      i=unsigned(resGi_-resGi);
 	      break;
 	    }
 	  }
@@ -4186,7 +4337,7 @@ namespace giac {
 	    break;
 #endif
 	}
-	i=resGi_-resGi;
+	i=unsigned(resGi_-resGi);
       }
 #endif // GIAC_GBASIS_PERMUTATION2
       if (i==G.size()){ // no leading coeff of G is smaller than the current coeff of rem
@@ -4237,7 +4388,7 @@ namespace giac {
   template<class tdeg_t>
   void gbasis_updatemod(vector<unsigned> & G,vector< paire > & B,vectpolymod<tdeg_t> & res,unsigned pos,polymod<tdeg_t> & TMP2,modint env,bool reduce,const vector<unsigned> & oldG){
     if (debug_infolevel>2)
-      CERR << CLOCK() << " mod begin gbasis update " << G.size() << endl;
+      CERR << CLOCK()*1e-6 << " mod begin gbasis update " << G.size() << endl;
     if (debug_infolevel>3)
       CERR << G << endl;
     const polymod<tdeg_t> & h = res[pos];
@@ -4348,7 +4499,7 @@ namespace giac {
     swap(B1,B);
     // Update G by removing elements with leading monomial >= leading monomial of h
     if (debug_infolevel>2){
-      CERR << CLOCK() << " end, pairs:"<< endl;
+      CERR << CLOCK()*1e-6 << " end, pairs:"<< endl;
       if (debug_infolevel>3)
 	CERR << B << endl;
       CERR << "mod begin Groebner interreduce " << endl;
@@ -4372,7 +4523,7 @@ namespace giac {
       // NB: removing all pairs containing i in it does not work
     }
     if (debug_infolevel>2)
-      CERR << CLOCK() << " mod end Groebner interreduce " << endl;
+      CERR << CLOCK()*1e-6 << " mod end Groebner interreduce " << endl;
     C.push_back(pos);
     swap(C,G);
 #if 0
@@ -4400,7 +4551,7 @@ namespace giac {
   template<class tdeg_t>
   void gbasis_multiupdatemod(vector<unsigned> & G,vector< paire > & B,vectpolymod<tdeg_t> & res,unsigned debut,polymod<tdeg_t> & TMP2,modint env){
     if (debug_infolevel>2)
-      CERR << CLOCK() << " mod begin gbasis update " << G.size() << "+" << add.size() << endl;
+      CERR << CLOCK()*1e-6 << " mod begin gbasis update " << G.size() << "+" << add.size() << endl;
     if (debug_infolevel>3)
       CERR << G << endl;
     vector<unsigned> C;
@@ -4475,7 +4626,7 @@ namespace giac {
     swap(B1,B);
     // Update G by removing elements with leading monomial >= leading monomial of h
     if (debug_infolevel>2){
-      CERR << CLOCK() << " end, pairs:"<< endl;
+      CERR << CLOCK()*1e-6 << " end, pairs:"<< endl;
       if (debug_infolevel>3)
 	CERR << B << endl;
       CERR << "mod begin Groebner interreduce " << endl;
@@ -4500,7 +4651,7 @@ namespace giac {
 	C.push_back(G[i]);
     }
     if (debug_infolevel>2)
-      CERR << CLOCK() << " mod end Groebner interreduce " << endl;
+      CERR << CLOCK()*1e-6 << " mod end Groebner interreduce " << endl;
     swap(C,G);
   }
 #endif
@@ -4528,7 +4679,7 @@ namespace giac {
     for (;!B.empty() && !interrupted && !ctrl_c;){
       oldG=G;
       if (debug_infolevel>1)
-	CERR << CLOCK() << " mod number of pairs: " << B.size() << ", base size: " << G.size() << endl;
+	CERR << CLOCK()*1e-6 << " mod number of pairs: " << B.size() << ", base size: " << G.size() << endl;
       // find smallest lcm pair in B
       tdeg_t small0,cur;
       unsigned smallpos,smallsugar=0,cursugar=0;
@@ -4578,16 +4729,16 @@ namespace giac {
 	continue;
       }
       if (debug_infolevel>1 && (equalposcomp(G,bk.first)==0 || equalposcomp(G,bk.second)==0))
-	CERR << CLOCK() << " mod reducing pair with 1 element not in basis " << bk << endl;
+	CERR << CLOCK()*1e-6 << " mod reducing pair with 1 element not in basis " << bk << endl;
       // polymod<tdeg_t> h(res.front().order,res.front().dim);
       spolymod<tdeg_t>(res[bk.first],res[bk.second],TMP1,TMP2,env);
       if (debug_infolevel>1){
-	CERR << CLOCK() << " mod reduce begin, pair " << bk << " spoly size " << TMP1.coord.size() << " sugar deg " << TMP1.sugar << " degree " << TMP1.coord.front().u << endl;
+	CERR << CLOCK()*1e-6 << " mod reduce begin, pair " << bk << " spoly size " << TMP1.coord.size() << " sugar deg " << TMP1.sugar << " degree " << TMP1.coord.front().u << endl;
       }
       reducemod(TMP1,res,G,-1,TMP1,env);
       if (debug_infolevel>1){
 	if (debug_infolevel>2){ CERR << TMP1 << endl; }
-	CERR << CLOCK() << " mod reduce end, remainder size " << TMP1.coord.size() << endl;
+	CERR << CLOCK()*1e-6 << " mod reduce end, remainder size " << TMP1.coord.size() << endl;
       }
       if (!TMP1.coord.empty()){
 	if (ressize==res.size())
@@ -4596,7 +4747,7 @@ namespace giac {
 	++ressize;
 	gbasis_updatemod(G,B,res,ressize-1,TMP2,env,true,oldG);
 	if (debug_infolevel>2)
-	  CERR << CLOCK() << " mod basis indexes " << G << " pairs indexes " << B << endl;
+	  CERR << CLOCK()*1e-6 << " mod basis indexes " << G << " pairs indexes " << B << endl;
       }
       else {
 	if (learning && pairs_reducing_to_zero)
@@ -5708,14 +5859,14 @@ namespace giac {
 	}
 #endif // def GIAC_SHORTSHIFTTYPE
       }
-      unsigned res=v.size();
+      unsigned res=unsigned(v.size());
       for (vt=v.begin(),wt=v64.begin();vt!=vtend;++wt,++vt){
 	modint2 i=*wt;
 	if (i) // if (i>=env || i<=-env)
 	  i %= env;
-	*vt = i;
+	*vt = modint(i);
 	if (i){
-	  res=vt-v.begin();
+	  res=unsigned(vt-v.begin());
 	  break;
 	}
       }
@@ -5904,7 +6055,7 @@ namespace giac {
     }
   }
 
-  void f4_innerloop(modint2 * wt,const modint * jt,const modint * jtend,modint C,const shifttype* it){
+  inline void f4_innerloop(modint2 * wt,const modint * jt,const modint * jtend,modint C,const shifttype* it){
     jtend -= 16;
     for (;jt<=jtend;){
 #if 1
@@ -5999,27 +6150,34 @@ namespace giac {
     }
   }
 
-  unsigned reducef4buchbergersplit(vector<modint2> &v64,const vector< vector<shifttype> > & M,const vector<unsigned> & firstpos,const vector< vector<modint> > & coeffs,const vector<coeffindex_t> & coeffindex,vector<modint> & lescoeffs,unsigned * bitmap,vector<used_t> & used,modint env){
-    vector<unsigned>::const_iterator fit=firstpos.begin(),fit0=fit,fitend=firstpos.end();
+  unsigned reducef4buchbergersplit(vector<modint2> &v64,const vector< vector<shifttype> > & M,const vector<unsigned> & firstpos,unsigned firstcol,const vector< vector<modint> > & coeffs,const vector<coeffindex_t> & coeffindex,vector<modint> & lescoeffs,unsigned * bitmap,vector<used_t> & used,modint env){
+    vector<unsigned>::const_iterator fit=firstpos.begin(),fit0=fit,fitend=firstpos.end(),fit1=fit+firstcol,fit2;
+    if (fit1>fitend)
+      fit1=fitend;
     vector<modint2>::iterator wt=v64.begin(),wt0=wt,wt1,wtend=v64.end();
     unsigned skip=0;
+    while (fit+1<fit1){
+      fit2=fit+(fit1-fit)/2;
+      if (*fit2>firstcol)
+	fit1=fit2;
+      else
+	fit=fit2;
+    }
+    if (debug_infolevel>2)
+      CERR << "Firstcol " << firstcol << "/" << v64.size() << " ratio skipped " << (fit-fit0)/double(fitend-fit0) << endl;
     if (env<(1<<24)){
-      bool fastcheck = (fitend-fit0)<=0xffff;
-      for (;fit!=fitend;++fit){
-	if (fastcheck && *(wt0+*fit)==0)
+#ifdef PSEUDO_MOD
+      int nbits=sizeinbase2(env);
+      unsigned invmodulo=((1ULL<<(2*nbits)))/env+1;
+#endif
+      bool fastcheck = (fitend-fit)<32768;
+      unsigned redno=0;
+      for (;fit<fitend;++fit){
+	if (*(wt0+*fit)==0){
+	  //if (fit<fit4 && *(wt0+fit[1])==0 && *(wt0+fit[2])==0 && *(wt0+fit[3])==0 ) fit += 3;
 	  continue;
-	unsigned i=unsigned(fit-fit0);
-	if (!fastcheck){ 
-	  if ((i&0xffff)==0xffff){
-	    // reduce the line mod env
-	    for (wt=v64.begin();wt!=wtend;++wt){
-	      if (*wt)
-		*wt %= env;
-	    }
-	  }
-	  if (v64[*fit]==0)
-	    continue;
 	}
+	unsigned i=unsigned(fit-fit0);
 	const vector<shifttype> & mindex=M[i];
 	const shifttype * it=&mindex.front();
 	unsigned pos=0;
@@ -6033,11 +6191,30 @@ namespace giac {
 	  continue;
 	const modint * jt=&mcoeff.front(),*jtend=jt+mcoeff.size(),*jt_=jtend-8;
 	// if (pos>v.size()) CERR << "error" <<endl;
-	// if (*jt!=1) CERR << "not normalized" << endl;
-	modint c=(modint2(invmod(*jt,env))*(*wt % env))%env;
+	// if (*jt!=1) CERR << "not normalized " << i << endl;
+#if 0 // def PSEUDO_MOD, does not work for cyclic8m
+	modint c=pseudo_mod(*wt,env,invmodulo,nbits); // *jt should be 1
+#else
+	modint c=*wt % env; // (modint2(*jt)*(*wt % env))%env;
+#endif
 	*wt=0;
 	if (!c)
 	  continue;
+	if (!fastcheck){
+	  ++redno;
+	  if (redno==32768){
+	    redno=0;
+	    // reduce the line mod env
+	    //CERR << "reduce line" << endl;
+	    for (vector<modint2>::iterator wt=v64.begin()+pos;wt!=wtend;++wt){
+	      // 2^63-1-p*p*32768 where p:=prevprime(2^24)
+	      modint2 tmp=*wt;
+	      if (tmp>=3298534588415 || tmp<=-3298534588415)
+		*wt = tmp % env;
+	      // if (*wt) *wt %= env; // does not work pseudo_mod(*wt,env,invmodulo,nbits);
+	    }
+	  }
+	}
 	++jt;
 #ifdef GIAC_SHORTSHIFTTYPE
 	if (shortshifts){
@@ -6121,7 +6298,7 @@ namespace giac {
 	const modint * jt=&mcoeff.front(),*jtend=jt+mcoeff.size(),*jt_=jtend-8;
 	// if (pos>v.size()) CERR << "error" <<endl;
 	// if (*jt!=1) CERR << "not normalized" << endl;
-	modint c=(modint2(invmod(*jt,env))*(*wt % env))%env;
+	modint c=*wt % env; // (modint2(*jt)*(*wt % env))%env;
 	if (c<0) c += env;
 	*wt=0;
 	if (!c)
@@ -6193,7 +6370,7 @@ namespace giac {
       return 0; // result in v64, for multiple uses
     unsigned res=0;
     used_t * uit=&used.front();
-    wt=v64.begin();
+    wt=v64.begin()+firstcol;
     wt1=wtend-4;
 #if 1
     for (;wt<=wt1;++wt){
@@ -6208,21 +6385,21 @@ namespace giac {
     }
 #endif
     if (!res){
-      for (;wt!=wtend;++wt){
+      for (;wt<wtend;++wt){
 	modint2 i=*wt;
 	if (!i) continue;
 	*wt = 0;
 	i %= env;
 	if (!i) continue;
-	unsigned I=wt-wt0;
+	unsigned I=unsigned(wt-wt0);
 	res=I;
 	*(uit+I)=1; // used[i]=1;
 	bitmap[I>>5] |= (1<<(I&0x1f));
-	lescoeffs.push_back(i);
+	lescoeffs.push_back(modint(i));
 	break;
       }
       if (!res)
-	res=v64.size();
+	res=unsigned(v64.size());
     }
 #if 1
     for (;wt<=wt1;++wt){
@@ -6241,22 +6418,22 @@ namespace giac {
       *wt = 0;
       i %= env;
       if (!i) continue;
-      unsigned I=wt-wt0;
+      unsigned I=unsigned(wt-wt0);
       *(uit+I)=1; // used[i]=1;
       bitmap[I>>5] |= (1<<(I&0x1f));
-      lescoeffs.push_back(i);
+      lescoeffs.push_back(modint(i));
     }
 #endif
-    for (;wt!=wtend;++wt){
+    for (;wt<wtend;++wt){
       modint2 i=*wt;
       if (!i) continue;
       *wt=0;
       i %= env;
       if (!i) continue;
-      unsigned I=wt-wt0;
+      unsigned I=unsigned(wt-wt0);
       *(uit+I)=1; // used[i]=1;
       bitmap[I>>5] |= (1<<(I&0x1f));
-      lescoeffs.push_back(i);
+      lescoeffs.push_back(modint(i));
     }
     return res;
   }
@@ -6692,7 +6869,7 @@ namespace giac {
 	  }
 	}
       }
-      unsigned i=it-it0;
+      unsigned i=unsigned(it-it0);
       *(uit+i)=1; // used[i]=1;
       bitmap[i>>5] |= (1<<(i&0x1f));
       lescoeffs.push_back(*it);
@@ -6701,7 +6878,7 @@ namespace giac {
     for (;it!=itend;++it){
       if (!*it)
 	continue;
-      unsigned i=it-it0;
+      unsigned i=unsigned(it-it0);
       *(uit+i)=1; // used[i]=1;
       bitmap[i>>5] |= (1<<(i&0x1f));
       lescoeffs.push_back(*it);
@@ -6841,7 +7018,7 @@ namespace giac {
     // step2: for each monomials of quo[i], shift res[G[i]] by monomial
     // set coefficient in a line of a matrix M, columns are R monomials indices
     if (debug_infolevel>1)
-      CERR << CLOCK() << " begin build M" << endl;
+      CERR << CLOCK()*1e-6 << " begin build M" << endl;
     unsigned N=unsigned(R.coord.size()),i,j=0;
     unsigned c=N;
     double sknon0=0;
@@ -6870,7 +7047,7 @@ namespace giac {
 	}
       }
       if (debug_infolevel>1)
-	CERR << CLOCK() << " end build M32" << endl;
+	CERR << CLOCK()*1e-6 << " end build M32" << endl;
       // should not sort but compare res[G[i]]*quo[i] monomials to build M already sorted
       // CERR << "before sort " << M << endl;
       sort_vector_sparse_element(atrier.begin(),atrier.end()); // sort(atrier.begin(),atrier.end(),tri1);
@@ -6883,7 +7060,7 @@ namespace giac {
       swap(M,M1);
       bool freemem=mem>4e7; // should depend on real memory available
       if (debug_infolevel>1)
-	CERR << CLOCK() << " M32 sorted, rows " << M.size() << " columns " << N << " terms " << mem << " ratio " << (mem/M.size())/N <<endl;
+	CERR << CLOCK()*1e-6 << " M32 sorted, rows " << M.size() << " columns " << N << " terms " << mem << " ratio " << (mem/M.size())/N <<endl;
       // CERR << "after sort " << M << endl;
       // step3 reduce
       vector<modint> v(N); vector<modint2> w(N);
@@ -6902,11 +7079,11 @@ namespace giac {
       }
       M.clear();
       if (debug_infolevel>1)
-	CERR << CLOCK() << " f4buchbergerv reduced " << f4buchbergervG.size() << " polynoms over " << N << " monomials, start at " << c << endl;
+	CERR << CLOCK()*1e-6 << " f4buchbergerv reduced " << f4buchbergervG.size() << " polynoms over " << N << " monomials, start at " << c << endl;
       for (i=0;i<N;++i)
 	usedcount += (used[i]>0);
       if (debug_infolevel>1){
-	CERR << CLOCK() << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
+	CERR << CLOCK()*1e-6 << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
 	if (debug_infolevel>2)
 	  CERR << " column32 used " << used << endl;
       }
@@ -6965,7 +7142,7 @@ namespace giac {
 	}
       }
       if (debug_infolevel>1)
-	CERR << CLOCK() << " end build M" << endl;
+	CERR << CLOCK()*1e-6 << " end build M" << endl;
       // should not sort but compare res[G[i]]*quo[i] monomials to build M already sorted
       // CERR << "before sort " << M << endl;
       sort_vector_sparse_element(atrier.begin(),atrier.end()); // sort(atrier.begin(),atrier.end(),tri1); 
@@ -6982,7 +7159,7 @@ namespace giac {
       bool freemem=mem>4e7; // should depend on real memory available
       // sort(M.begin(),M.end(),tri);
       if (debug_infolevel>1)
-	CERR << CLOCK() << " M sorted, rows " << M.size() << " columns " << N << "[" << firstpart << "] terms " << mem << " ratio " << (mem/N)/M.size() << endl;
+	CERR << CLOCK()*1e-6 << " M sorted, rows " << M.size() << " columns " << N << "[" << firstpart << "] terms " << mem << " ratio " << (mem/N)/M.size() << endl;
       // CERR << "after sort " << M << endl;
       // step3 reduce
       vector<modint> v(N);
@@ -7019,11 +7196,11 @@ namespace giac {
       }
       M.clear();
       if (debug_infolevel>1)
-	CERR << CLOCK() << " f4buchbergerv reduced " << f4buchbergervG.size() << " polynoms over " << N << " monomials, start at " << c << endl;
+	CERR << CLOCK()*1e-6 << " f4buchbergerv reduced " << f4buchbergervG.size() << " polynoms over " << N << " monomials, start at " << c << endl;
       for (i=0;i<N;++i)
 	usedcount += (used[i]>0);
       if (debug_infolevel>1){
-	CERR << CLOCK() << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
+	CERR << CLOCK()*1e-6 << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
 	// if (debug_infolevel>2) CERR << " column use " << used << endl;
       }
       // create dense matrix K 
@@ -7055,7 +7232,7 @@ namespace giac {
       }
     }
     if (debug_infolevel>1)
-      CERR << CLOCK() << " rref " << K.size() << "x" << usedcount << " non0 " << sknon0 << " ratio " << (sknon0/K.size())/usedcount << " nulllines " << zerolines << endl;
+      CERR << CLOCK()*1e-6 << " rref " << K.size() << "x" << usedcount << " non0 " << sknon0 << " ratio " << (sknon0/K.size())/usedcount << " nulllines " << zerolines << endl;
     vecteur pivots; vector<int> maxrankcols; longlong idet;
     // CERR << K << endl;
     smallmodrref(1,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/);
@@ -7063,7 +7240,7 @@ namespace giac {
     typename vector< T_unsigned<modint,tdeg_t> >::const_iterator it=R.coord.begin(),itend=R.coord.end();
     vector<int> permu=perminv(permutation);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchbergerv interreduced" << endl;
+      CERR << CLOCK()*1e-6 << " f4buchbergerv interreduced" << endl;
     for (i=0;i<f4buchbergervG.size();++i){
 #if 0 // spare memory, keep exactly the right number of monomials in f4buchbergerv[]
       polymod<tdeg_t> tmpP(f4buchbergerv[f4buchbergervG[i]].order,f4buchbergerv[f4buchbergervG[i]].dim);
@@ -7147,7 +7324,7 @@ namespace giac {
   bool dicho(typename std::vector< T_unsigned<modint,tdeg_t> >::const_iterator & jt,typename std::vector< T_unsigned<modint,tdeg_t> >::const_iterator jtend,const tdeg_t & u,order_t order){
     if (jt->u==u) return true;
     for (;;){
-      int step=(jtend-jt)/2;
+      int step=int((jtend-jt)/2);
       typename std::vector< T_unsigned<modint,tdeg_t> >::const_iterator j=jt+step;
       if (j==jt)
 	return j->u==u;
@@ -7327,7 +7504,7 @@ namespace giac {
     // step2: for each monomials of quo[i], shift res[G[i]] by monomial
     // set coefficient in a line of a matrix M, columns are R monomials indices
     if (debug_infolevel>1)
-      CERR << CLOCK() << " begin build M" << endl;
+      CERR << CLOCK()*1e-6 << " begin build M" << endl;
     unsigned N=unsigned(R.coord.size()),i,j=0;
     if (N==0) return;
 #if GIAC_SHORTSHIFTTYPE==16
@@ -7400,7 +7577,7 @@ namespace giac {
       }
     }
     if (debug_infolevel>1)
-      CERR << CLOCK() << " end build Mindex/Mcoeff rref_f4buchbergermodsplit_interreduce" << endl;
+      CERR << CLOCK()*1e-6 << " end build Mindex/Mcoeff rref_f4buchbergermodsplit_interreduce" << endl;
     // should not sort but compare res[G[i]]*quo[i] monomials to build M already sorted
     // CERR << "before sort " << M << endl;
     sort_vector_sparse_element(atrier.begin(),atrier.end()); // sort(atrier.begin(),atrier.end(),tri1); 
@@ -7433,7 +7610,7 @@ namespace giac {
     }
     bool freemem=true; // mem>4e7; // should depend on real memory available
     if (debug_infolevel>1)
-      CERR << CLOCK() << " Mindex sorted, rows " << nrows << " columns " << N << " terms " << mem << " ratio " << (mem/nrows)/N <<endl;
+      CERR << CLOCK()*1e-6 << " Mindex sorted, rows " << nrows << " columns " << N << " terms " << mem << " ratio " << (mem/nrows)/N <<endl;
     // CERR << "after sort " << M << endl;
     // step3 reduce
     vector<modint> v(N); 
@@ -7524,11 +7701,11 @@ namespace giac {
 #endif
     Mindex.clear(); Muindex.clear();
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchbergerv split reduced " << f4buchbergervG.size() << " polynoms over " << N << " monomials, start at " << c << endl;
+      CERR << CLOCK()*1e-6 << " f4buchbergerv split reduced " << f4buchbergervG.size() << " polynoms over " << N << " monomials, start at " << c << endl;
     for (i=0;i<N;++i)
       usedcount += (used[i]>0);
     if (debug_infolevel>1){
-      CERR << CLOCK() << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
+      CERR << CLOCK()*1e-6 << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
       if (debug_infolevel>3)
 	CERR << " column split used " << used << endl;
     }
@@ -7570,7 +7747,7 @@ namespace giac {
     } // end create dense matrix K
 #endif // GIAC_Z
     if (debug_infolevel>1)
-      CERR << CLOCK() << " rref " << K.size() << "x" << usedcount << " non0 " << sknon0 << " ratio " << (sknon0/K.size())/usedcount << " nulllines " << zerolines << endl;
+      CERR << CLOCK()*1e-6 << " rref " << K.size() << "x" << usedcount << " non0 " << sknon0 << " ratio " << (sknon0/K.size())/usedcount << " nulllines " << zerolines << endl;
     vecteur pivots; vector<int> maxrankcols; longlong idet;
     //CERR << K << endl;
     smallmodrref(1,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/);
@@ -7578,7 +7755,7 @@ namespace giac {
     typename vector< T_unsigned<modint,tdeg_t> >::const_iterator it=R.coord.begin(),itend=R.coord.end();
     vector<int> permu=perminv(permutation);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchbergerv interreduced" << endl;
+      CERR << CLOCK()*1e-6 << " f4buchbergerv interreduced" << endl;
     for (i=0;i<f4buchbergervG.size();++i){
       // CERR << v << endl;
       vector< T_unsigned<modint,tdeg_t> > & Pcoord=f4buchbergerv[f4buchbergervG[i]].coord;
@@ -7618,13 +7795,13 @@ namespace giac {
     }
     if (i==G.size()){
       if (debug_infolevel>1)
-	CERR << CLOCK() << " No inter-reduction" << endl;
+	CERR << CLOCK()*1e-6 << " No inter-reduction" << endl;
       return;
     }
     // step2: for each monomials of quo[i], shift res[G[i]] by monomial
     // set coefficient in a line of a matrix M, columns are R monomials indices
     if (debug_infolevel>1)
-      CERR << CLOCK() << " begin build M" << endl;
+      CERR << CLOCK()*1e-6 << " begin build M" << endl;
     vector< vector<sparse_element> > M;
     M.reserve(N);
     vector<sparse_element> atrier;
@@ -7639,7 +7816,7 @@ namespace giac {
       }
     }
     if (debug_infolevel>1)
-      CERR << CLOCK() << " end build M" << endl;
+      CERR << CLOCK()*1e-6 << " end build M" << endl;
     // should not sort but compare res[G[i]]*quo[i] monomials to build M already sorted
     // CERR << "before sort " << M << endl;
     sort_vector_sparse_element(atrier.begin(),atrier.end()); // sort(atrier.begin(),atrier.end(),tri1); 
@@ -7650,7 +7827,7 @@ namespace giac {
     swap(M,M1);
     // sort(M.begin(),M.end(),tri);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " M sorted, rows " << M.size() << " columns " << N << " #basis to reduce" << f4buchbergervG.size() << endl;
+      CERR << CLOCK()*1e-6 << " M sorted, rows " << M.size() << " columns " << N << " #basis to reduce" << f4buchbergervG.size() << endl;
     // CERR << "after sort " << M << endl;
     // step3 reduce
     unsigned c=N;
@@ -7726,15 +7903,15 @@ namespace giac {
   void reducemodf4buchberger(vectpolymod<tdeg_t> & f4buchbergerv,vectpolymod<tdeg_t> & res,const vector<unsigned> & G,unsigned excluded, modint env,info_t<tdeg_t> & info_tmp){
     polymod<tdeg_t> allf4buchberger(f4buchbergerv.front().order,f4buchbergerv.front().dim),rem(f4buchbergerv.front().order,f4buchbergerv.front().dim);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
+      CERR << CLOCK()*1e-6 << " f4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
     // collect all terms in f4buchbergerv
     collect(f4buchbergerv,allf4buchberger);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchberger symbolic preprocess" << endl;
+      CERR << CLOCK()*1e-6 << " f4buchberger symbolic preprocess" << endl;
     // find all monomials required to reduce all polymod<tdeg_t> in f4buchberger with res[G[.]]
     symbolic_preprocess(allf4buchberger,res,G,excluded,info_tmp.quo,rem,&info_tmp.R);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchberger end symbolic preprocess" << endl;
+      CERR << CLOCK()*1e-6 << " f4buchberger end symbolic preprocess" << endl;
     // build a matrix with first lines res[G[.]]*quo[.] in terms of monomials in S
     // and finishing with lines of f4buchbergerv
     // rref (below) the matrix and find the last lines in f4buchbergerv
@@ -7790,13 +7967,13 @@ namespace giac {
     else {
       polymod<tdeg_t> all(res[B[0].first].order,res[B[0].first].dim),rem;
       if (debug_infolevel>1)
-	CERR << CLOCK() << " f4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
+	CERR << CLOCK()*1e-6 << " f4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
       collect(res,B,all,leftshift,rightshift);
       if (debug_infolevel>1)
-	CERR << CLOCK() << " f4buchberger symbolic preprocess" << endl;
+	CERR << CLOCK()*1e-6 << " f4buchberger symbolic preprocess" << endl;
       symbolic_preprocess(all,res,G,-1,info_tmp.quo,rem,&info_tmp.R);
       if (debug_infolevel>1)
-	CERR << CLOCK() << " end symbolic preprocess, rem size " << rem.coord.size() << endl;
+	CERR << CLOCK()*1e-6 << " end symbolic preprocess, rem size " << rem.coord.size() << endl;
     }
     polymod<tdeg_t> & R = info_ptr->R;
     vectpolymod<tdeg_t> & quo = info_ptr->quo;
@@ -7876,7 +8053,7 @@ namespace giac {
       }
     }
     if (debug_infolevel>1)
-      CERR << CLOCK() << " end build Mindex/Mcoeff f4mod" << endl;
+      CERR << CLOCK()*1e-6 << " end build Mindex/Mcoeff f4mod" << endl;
     // should not sort but compare res[G[i]]*quo[i] monomials to build M already sorted
     // CERR << "before sort " << M << endl;
     sort_vector_sparse_element(atrier.begin(),atrier.end()); // sort(atrier.begin(),atrier.end(),tri1); 
@@ -7909,7 +8086,7 @@ namespace giac {
     }
     bool freemem=mem>4e7; // should depend on real memory available
     if (debug_infolevel>1)
-      CERR << CLOCK() << " Mindex sorted, rows " << nrows << " columns " << N << " terms " << mem << " ratio " << (mem/nrows)/N <<endl;
+      CERR << CLOCK()*1e-6 << " Mindex sorted, rows " << nrows << " columns " << N << " terms " << mem << " ratio " << (mem/nrows)/N <<endl;
     // CERR << "after sort " << M << endl;
     // step3 reduce
     vector<modint> v(N);
@@ -7981,11 +8158,11 @@ namespace giac {
     } // end for (i=0;i<B.size();++i)
     Mindex.clear(); Muindex.clear();
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchbergerv split reduced " << B.size() << " polynoms over " << N << " monomials, start at " << c << endl;
+      CERR << CLOCK()*1e-6 << " f4buchbergerv split reduced " << B.size() << " polynoms over " << N << " monomials, start at " << c << endl;
     for (i=0;i<N;++i)
       usedcount += (used[i]>0);
     if (debug_infolevel>1){
-      CERR << CLOCK() << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
+      CERR << CLOCK()*1e-6 << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
       if (debug_infolevel>3)
 	CERR << " column split used " << used << endl;
     }
@@ -7996,7 +8173,7 @@ namespace giac {
     //vector<modint> tmp; lescoeffs.swap(tmp); 
     { vector<unsigned> tmp1; lebitmap.swap(tmp1); }
     if (debug_infolevel>1)
-      CERR << CLOCK() << " rref " << K.size() << "x" << usedcount << endl;
+      CERR << CLOCK()*1e-6 << " rref " << K.size() << "x" << usedcount << endl;
     vecteur pivots; vector<int> permutation,maxrankcols; longlong idet;
     // CERR << K << endl;
     smallmodrref(1,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/);
@@ -8030,7 +8207,7 @@ namespace giac {
     typename vector< T_unsigned<modint,tdeg_t> >::const_iterator it=R.coord.begin(),itend=R.coord.end();
     // vector<int> permu=perminv(permutation);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchbergerv interreduced" << endl;
+      CERR << CLOCK()*1e-6 << " f4buchbergerv interreduced" << endl;
     for (i=0;i<f4buchbergerv.size();++i){
       // CERR << v << endl;
       vector< T_unsigned<modint,tdeg_t> > & Pcoord=f4buchbergerv[permutation[i]].coord;
@@ -8097,7 +8274,7 @@ namespace giac {
     // Improve: we don't really need to compute the s-polys here
     // it's sufficient to do that at linalg step
     if (debug_infolevel>1)
-      CERR << CLOCK() << " Computing s-polys " << smallposp.size() << endl;
+      CERR << CLOCK()*1e-6 << " Computing s-polys " << smallposp.size() << endl;
     if (f4buchbergerv.size()<smallposp.size())
       f4buchbergerv.clear();
     f4buchbergerv.resize(smallposp.size());
@@ -8114,7 +8291,7 @@ namespace giac {
       if (debug_infolevel>2)
 	CERR << bk << " f4buchberger not learned " << learned_position << endl;
       if (debug_infolevel>2 && (equalposcomp(G,bk.first)==0 || equalposcomp(G,bk.second)==0))
-	CERR << CLOCK() << " mod reducing pair with 1 element not in basis " << bk << endl;
+	CERR << CLOCK()*1e-6 << " mod reducing pair with 1 element not in basis " << bk << endl;
       // polymod<tdeg_t> h(res.front().order,res.front().dim);
       spolymod<tdeg_t>(res[bk.first],res[bk.second],TMP1,TMP2,env);
       f4buchbergerv[i].coord.swap(TMP1.coord);
@@ -8123,7 +8300,7 @@ namespace giac {
       return 0;
     // reduce spolys in f4buchbergerv
     if (debug_infolevel>1)
-      CERR << CLOCK() << " base size " << G.size() << " reduce f4buchberger begin on " << f4buchbergerv.size() << " pairs" << endl;
+      CERR << CLOCK()*1e-6 << " base size " << G.size() << " reduce f4buchberger begin on " << f4buchbergerv.size() << " pairs" << endl;
     if (!learning && f4buchberger_info && f4buchberger_info_position<f4buchberger_info->size()){
       info_t<tdeg_t> & info=(*f4buchberger_info)[f4buchberger_info_position];
       // apply(perminv(info.permu),f4buchbergerv);
@@ -8190,7 +8367,7 @@ namespace giac {
     for (;!B.empty() && !interrupted && !ctrl_c;){
       oldG=G;
       if (debug_infolevel>1)
-	CERR << CLOCK() << " begin new iteration mod, " << env << " number of pairs: " << B.size() << ", base size: " << G.size() << endl;
+	CERR << CLOCK()*1e-6 << " begin new iteration mod, " << env << " number of pairs: " << B.size() << ", base size: " << G.size() << endl;
       if (1){
 	// mem clear: remove res[i] if i is not in G nor in B
 	vector<bool> clean(G.back()+1,true);
@@ -8278,11 +8455,11 @@ namespace giac {
 	if (debug_infolevel>2)
 	  CERR << bk << " not learned " << learned_position << endl;
 	if (debug_infolevel>2 && (equalposcomp(G,bk.first)==0 || equalposcomp(G,bk.second)==0))
-	  CERR << CLOCK() << " mod reducing pair with 1 element not in basis " << bk << endl;
+	  CERR << CLOCK()*1e-6 << " mod reducing pair with 1 element not in basis " << bk << endl;
 	// polymod<tdeg_t> h(res.front().order,res.front().dim);
 	spolymod<tdeg_t>(res[bk.first],res[bk.second],TMP1,TMP2,env);
 	if (debug_infolevel>1){
-	  CERR << CLOCK() << " mod reduce begin, pair " << bk << " spoly size " << TMP1.coord.size() << " sugar degree " << TMP1.sugar << " totdeg deg " << TMP1.coord.front().u.total_degree(order) << " degree " << TMP1.coord.front().u << endl;
+	  CERR << CLOCK()*1e-6 << " mod reduce begin, pair " << bk << " spoly size " << TMP1.coord.size() << " sugar degree " << TMP1.sugar << " totdeg deg " << TMP1.coord.front().u.total_degree(order) << " degree " << TMP1.coord.front().u << endl;
 	}
 #if 0 // def GBASIS_HEAP
 	heap_reducemod(TMP1,res,G,-1,information.quo,TMP2,env);
@@ -8292,7 +8469,7 @@ namespace giac {
 #endif
 	if (debug_infolevel>1){
 	  if (debug_infolevel>3){ CERR << TMP1 << endl; }
-	  CERR << CLOCK() << " mod reduce end, remainder size " << TMP1.coord.size() << " begin gbasis update" << endl;
+	  CERR << CLOCK()*1e-6 << " mod reduce end, remainder size " << TMP1.coord.size() << " begin gbasis update" << endl;
 	}
 	if (!TMP1.coord.empty()){
 	  increase(res);
@@ -8312,7 +8489,7 @@ namespace giac {
 	  gbasis_updatemod(G,B,res,ressize-1,TMP2,env,true,oldG);
 #endif
 	  if (debug_infolevel>3)
-	    CERR << CLOCK() << " mod basis indexes " << G << " pairs indexes " << B << endl;
+	    CERR << CLOCK()*1e-6 << " mod basis indexes " << G << " pairs indexes " << B << endl;
 	}
 	else {
 	  if (learning && pairs_reducing_to_zero){
@@ -8362,7 +8539,7 @@ namespace giac {
 	  ++added;
       }
       if (debug_infolevel>1)
-	CERR << CLOCK() << " reduce f4buchberger end on " << added << " from " << f4buchbergerv.size() << " pairs, gbasis update begin" << endl;
+	CERR << CLOCK()*1e-6 << " reduce f4buchberger end on " << added << " from " << f4buchbergerv.size() << " pairs, gbasis update begin" << endl;
       for (unsigned i=0;i<f4buchbergerv.size();++i){
 	if (!f4buchbergerv[i].coord.empty()){
 	  increase(res);
@@ -8413,7 +8590,7 @@ namespace giac {
 	  information.R2.dim=TMP1.dim;
 	  TMP1.coord.clear();
 	  if (debug_infolevel>1)
-	    CERR << CLOCK() << " collect monomials from old basis" << endl;
+	    CERR << CLOCK()*1e-6 << " collect monomials from old basis" << endl;
 	  collect(res,G1,TMP1); // collect all monomials in res[G[0..debut-1]]
 	  // in_heap_reducemod(TMP1,res,G2,-1,info_tmp.quo2,TMP2,&info_tmp.R2,env);
 	  in_heap_reducemod(TMP1,res,G2,-1,information.quo2,TMP2,&information.R2,env);
@@ -8443,7 +8620,7 @@ namespace giac {
       unsigned t=0;
       for (unsigned i=0;i<res.size();++i)
 		  t += unsigned(res[i].coord.size());
-      CERR << CLOCK() << " total number of monomials in res " << t << endl;
+      CERR << CLOCK()*1e-6 << " total number of monomials in res " << t << endl;
       CERR << "Number of monomials cleared " << cleared << endl;
     }
     // sort(res.begin(),res.end(),tripolymod<tdeg_t>);
@@ -9323,16 +9500,16 @@ namespace giac {
     vectpolymod<tdeg_t> resmod,quo;
     convert(res,resmod,0);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " checkf4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
+      CERR << CLOCK()*1e-6 << " checkf4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
     // collect all terms in f4buchbergerv
     collect(f4buchbergerv,allf4buchberger);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " checkf4buchberger symbolic preprocess" << endl;
+      CERR << CLOCK()*1e-6 << " checkf4buchberger symbolic preprocess" << endl;
     // find all monomials required to reduce allf4buchberger with res[G[.]]
     polymod<tdeg_t> R;
     in_heap_reducemod(allf4buchberger,resmod,G,excluded,quo,rem,&R,0);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " checkf4buchberger end symbolic preprocess" << endl;
+      CERR << CLOCK()*1e-6 << " checkf4buchberger end symbolic preprocess" << endl;
     // build a matrix with rows res[G[.]]*quo[.] in terms of monomials in allf4buchberger
     // sort the matrix
     // checking reduction to 0 is equivalent to
@@ -9347,7 +9524,7 @@ namespace giac {
     // and on l*f4buchbergerv, and we check further the equality modulo additional
     // primes until the equality is proved
     if (debug_infolevel>1)
-      CERR << CLOCK() << " begin build M" << endl;
+      CERR << CLOCK()*1e-6 << " begin build M" << endl;
     vector< vector<sparse_gen> > M;
     vector<sparse_element> atrier;
     unsigned N=unsigned(R.coord.size()),i,j=0,nterms=0;
@@ -9369,7 +9546,7 @@ namespace giac {
     swap(M,M1);
     // CERR << M << endl;
     if (debug_infolevel>0)
-      CERR << CLOCK() << " rows, columns, terms: " << M.size() << "x" << N << "=" << nterms << endl; 
+      CERR << CLOCK()*1e-6 << " rows, columns, terms: " << M.size() << "x" << N << "=" << nterms << endl; 
     // PSEUDO_MOD is not interesting here since there is no inter-reduction
     gen p(int(longlong(1<<31)-1));
     gen pip(1);
@@ -9410,7 +9587,7 @@ namespace giac {
       // reduce f4buchbergerv and stores coefficients of quotients for f4buchbergerv[i] in coeffmat[i]
       convert(f4buchbergerv,f4buchbergervmod,env);
       if (debug_infolevel>0)
-	CERR << CLOCK() << " checking mod " << p << endl;
+	CERR << CLOCK()*1e-6 << " checking mod " << p << endl;
       vector<modint> v;
       unsigned countres=0;
 #ifdef __x86_64__
@@ -9444,13 +9621,13 @@ namespace giac {
 	// if 2*bounds < product of primes recheck stabilization and return true
 	if (is_strictly_greater(pip,bound,context0)){
 	  if (debug_infolevel>0)
-	    CERR << CLOCK() << " modular check finished " << endl;
+	    CERR << CLOCK()*1e-6 << " modular check finished " << endl;
 	  return true;
 	}
       }
       // combine coeffmat with previous one by chinese remaindering
       if (debug_infolevel>0)
-	CERR << CLOCK() << " chinrem mod " << p << endl;
+	CERR << CLOCK()*1e-6 << " chinrem mod " << p << endl;
       if (iter)
 	ichinrem_inplace(coeffmat,coeffmatmodp,pip,p.val);
       else
@@ -9475,12 +9652,12 @@ namespace giac {
 	if (checkquo!=prevmatq){
 	  swap(prevmatq,checkquo);
 	  if (debug_infolevel>0)
-	    CERR << CLOCK() << " unstable mod " << p << " reconstructed " << prevmatq.size() << endl;
+	    CERR << CLOCK()*1e-6 << " unstable mod " << p << " reconstructed " << prevmatq.size() << endl;
 	  continue;
 	}
 	matrice coeffmatq=*_copy(checkquo,context0)._VECTptr;
 	if (debug_infolevel>0)
-	  CERR << CLOCK() << " full stable mod " << p << endl;
+	  CERR << CLOCK()*1e-6 << " full stable mod " << p << endl;
 	stable=true;
 	gen lall=1; vecteur l(coeffmatq.size());
 	for (unsigned i=0;i<coeffmatq.size();++i){
@@ -9489,7 +9666,7 @@ namespace giac {
 	    lall=l[i];
 	}
 	if (debug_infolevel>0)
-	  CERR << CLOCK() << " lcmdeno ok/start bound " << p << endl;
+	  CERR << CLOCK()*1e-6 << " lcmdeno ok/start bound " << p << endl;
 	gen ball=1,bi; // ball is the max bound of all coeff in coeffmatq
 	for (unsigned i=0;i<coeffmatq.size();++i){
 	  bi=linfnorm(coeffmatq[i],context0);
@@ -9518,16 +9695,16 @@ namespace giac {
     vectpolymod<tdeg_t> resmod,quo;
     convert(res,resmod,0);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " checkf4buchberger split begin collect monomials on #polys " << f4buchbergerv.size() << endl;
+      CERR << CLOCK()*1e-6 << " checkf4buchberger split begin collect monomials on #polys " << f4buchbergerv.size() << endl;
     // collect all terms in f4buchbergerv
     collect(f4buchbergerv,allf4buchberger);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " checkf4buchberger split symbolic preprocess" << endl;
+      CERR << CLOCK()*1e-6 << " checkf4buchberger split symbolic preprocess" << endl;
     // find all monomials required to reduce allf4buchberger with res[G[.]]
     polymod<tdeg_t> R;
     in_heap_reducemod(allf4buchberger,resmod,G,excluded,quo,rem,&R,0);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " checkf4buchberger split end symbolic preprocess" << endl;
+      CERR << CLOCK()*1e-6 << " checkf4buchberger split end symbolic preprocess" << endl;
     // build a matrix with rows res[G[.]]*quo[.] in terms of monomials in allf4buchberger
     // sort the matrix
     // checking reduction to 0 is equivalent to
@@ -9542,7 +9719,7 @@ namespace giac {
     // and on l*f4buchbergerv, and we check further the equality modulo additional
     // primes until the equality is proved
     if (debug_infolevel>1)
-      CERR << CLOCK() << " begin build Mcoeff/Mindex" << endl;
+      CERR << CLOCK()*1e-6 << " begin build Mcoeff/Mindex" << endl;
     vector< vector<gen> > Mcoeff(G.size());
     vector<vector<shifttype> > Mindex;
     vector<coeffindex_t> coeffindex;
@@ -9585,7 +9762,7 @@ namespace giac {
     swap(coeffindex,coeffindex1);
     // CERR << M << endl;
     if (debug_infolevel>0)
-      CERR << CLOCK() << " rows, columns, terms: " << Mindex.size() << "x" << N << "=" << nterms << endl; 
+      CERR << CLOCK()*1e-6 << " rows, columns, terms: " << Mindex.size() << "x" << N << "=" << nterms << endl; 
     // PSEUDO_MOD is not interesting here since there is no inter-reduction
     gen p(int(longlong(1<<31)-1));
     gen pip(1);
@@ -9626,7 +9803,7 @@ namespace giac {
       // reduce f4buchbergerv and stores coefficients of quotients for f4buchbergerv[i] in coeffmat[i]
       convert(f4buchbergerv,f4buchbergervmod,env);
       if (debug_infolevel>0)
-	CERR << CLOCK() << " checking mod " << p << endl;
+	CERR << CLOCK()*1e-6 << " checking mod " << p << endl;
       vector<modint> v;
       unsigned countres=0;
 #ifdef __x86_64__
@@ -9660,13 +9837,13 @@ namespace giac {
 	// if 2*bounds < product of primes recheck stabilization and return true
 	if (is_strictly_greater(pip,bound,context0)){
 	  if (debug_infolevel>0)
-	    CERR << CLOCK() << " modular check finished " << endl;
+	    CERR << CLOCK()*1e-6 << " modular check finished " << endl;
 	  return true;
 	}
       }
       // combine coeffmat with previous one by chinese remaindering
       if (debug_infolevel>0)
-	CERR << CLOCK() << " chinrem mod " << p << endl;
+	CERR << CLOCK()*1e-6 << " chinrem mod " << p << endl;
       if (iter)
 	ichinrem_inplace(coeffmat,coeffmatmodp,pip,p.val);
       else
@@ -9691,12 +9868,12 @@ namespace giac {
 	if (checkquo!=prevmatq){
 	  swap(prevmatq,checkquo);
 	  if (debug_infolevel>0)
-	    CERR << CLOCK() << " unstable mod " << p << " reconstructed " << prevmatq.size() << endl;
+	    CERR << CLOCK()*1e-6 << " unstable mod " << p << " reconstructed " << prevmatq.size() << endl;
 	  continue;
 	}
 	matrice coeffmatq=*_copy(checkquo,context0)._VECTptr;
 	if (debug_infolevel>0)
-	  CERR << CLOCK() << " full stable mod " << p << endl;
+	  CERR << CLOCK()*1e-6 << " full stable mod " << p << endl;
 	stable=true;
 	gen lall=1; vecteur l(coeffmatq.size());
 	for (unsigned i=0;i<coeffmatq.size();++i){
@@ -9705,7 +9882,7 @@ namespace giac {
 	    lall=l[i];
 	}
 	if (debug_infolevel>0)
-	  CERR << CLOCK() << " lcmdeno ok/start bound " << p << endl;
+	  CERR << CLOCK()*1e-6 << " lcmdeno ok/start bound " << p << endl;
 	gen ball=1,bi; // ball is the max bound of all coeff in coeffmatq
 	for (unsigned i=0;i<coeffmatq.size();++i){
 	  bi=linfnorm(coeffmatq[i],context0);
@@ -9883,11 +10060,19 @@ namespace giac {
 
   template<class tdeg_t>
   void zsmallmultmod(modint a,zpolymod<tdeg_t> & p,modint m){
-    if (a==1 || a==1-m)
-      return;
     std::vector< zmodint >::iterator pt=p.coord.begin(),ptend=p.coord.end();
+    if (a==1 || a==1-m){
+      for (;pt!=ptend;++pt){
+	modint tmp=pt->g;
+	if (tmp<0) tmp += m;
+	pt->g=tmp;
+      }
+      return;
+    }
     for (;pt!=ptend;++pt){
-      pt->g=(longlong(pt->g)*a)%m;
+      modint tmp=(longlong(pt->g)*a)%m;
+      if (tmp<0) tmp += m;
+      pt->g=tmp;
     }
   }
 
@@ -10104,7 +10289,7 @@ namespace giac {
 	// if (current.left) current.u=(*resvpos.expo)[resvpos.coord[current.polymodpos].u]+leftshift[current.f4buchbergervpos]; else current.u=(*resvpos.expo)[resvpos.coord[current.polymodpos].u]+rightshift[current.f4buchbergervpos];
 	int newtdeg=current.u.total_degree(keyorder);
 	// quick look in part of heap: if monomial is already there, increment current.polymodpos
-	int heappos=startheappos,ntests=H.size(); // giacmin(8,H.size());
+	int heappos=startheappos,ntests=int(H.size()); // giacmin(8,H.size());
 	for (;heappos<ntests;){
 	  heap_tt<tdeg_t> & heapcurrent=*H[heappos].ptr;
 	  int heapcurtdeg=heapcurrent.u.total_degree(keyorder);
@@ -10204,7 +10389,7 @@ namespace giac {
 	  add(q[current.i][current.qi],(*gcurrent.expo)[gcurrent.coord[current.gj].u],current.u,dim);
 	  int newtdeg=current.u.total_degree(order);
 	  // quick look in part of heap: is monomial already there?
-	  int heappos=startheappos,ntests=H.size(); // giacmin(8,H.size());
+	  int heappos=startheappos,ntests=int(H.size()); // giacmin(8,H.size());
 	  for (;heappos<ntests;){
 	    heap_t<tdeg_t> & heapcurrent=H_[H[heappos]];
 	    int heapcurtdeg=heapcurrent.u.total_degree(order);
@@ -10305,7 +10490,7 @@ namespace giac {
       }
     } // end main heap pseudo-division loop
     if (debug_infolevel>1)
-      CERR << CLOCK() << " Heap actual size was " << H_.size() << " discarded monomials " << countdiscarded << endl;
+      CERR << CLOCK()*1e-6 << " Heap actual size was " << H_.size() << " discarded monomials " << countdiscarded << endl;
   }
 
   template<class tdeg_t>
@@ -10337,7 +10522,7 @@ namespace giac {
     if (*jt==u) return true;
     if (jtend-jt<=6){ ++jt; return false; }// == test faster
     for (;;){
-      int step=(jtend-jt)/2;
+      int step=int((jtend-jt)/2);
       typename std::vector<tdeg_t>::const_iterator j=jt+step;
       if (j==jt)
 	return *j==u;
@@ -10353,8 +10538,60 @@ namespace giac {
     }
   }
 
+  template<>
+  bool dicho(std::vector<tdeg_t64>::const_iterator & jt,std::vector<tdeg_t64>::const_iterator jtend,const tdeg_t64 & u,order_t order){
+    if (*jt==u) return true;
+    if (jtend-jt<=6){ ++jt; return false; }// == test faster
+#ifdef GIAC_ELIM
+    if (u.tab[0]%2){
+      int utdeg=u.tab[0];
+      ulonglong uelim=u.elim;
+      for (;;){
+	int step=(jtend-jt)/2;
+	std::vector<tdeg_t64>::const_iterator j=jt+step;
+	if (j==jt)
+	  return *j==u;
+	if (j->tab[0]!=utdeg){
+	  if (j->tdeg>utdeg)
+	    jt=j;
+	  else
+	    jtend=j;
+	  continue;
+	}
+	if (j->elim!=uelim){
+	  if (j->elim<uelim)
+	    jt=j;
+	  else
+	    jtend=j;
+	  continue;
+	}
+	if (int res=tdeg_t_greater_dyn(*j,u,order)){
+	  jt=j;
+	  if (res==2)
+	    return true;
+	}
+	else
+	  jtend=j;
+      }
+    }
+#endif
+    for (;;){
+      int step=int((jtend-jt)/2);
+      std::vector<tdeg_t64>::const_iterator j=jt+step;
+      if (j==jt)
+	return *j==u;
+      if (int res=tdeg_t_greater(*j,u,order)){
+	jt=j;
+	if (res==2)
+	  return true;
+      }
+      else
+	jtend=j;
+    }
+  }
+
   template<class tdeg_t>
-  void zmakelinesplit(const zpolymod<tdeg_t> & p,const tdeg_t * shiftptr,const vector<tdeg_t> & R,vector<shifttype> & v,vector<shifttype> * prevline,int start=0){
+  void zmakelinesplit(const zpolymod<tdeg_t> & p,const tdeg_t * shiftptr,const vector<tdeg_t> & R,void * Rhashptr,const vector<int> & Rdegpos,vector<shifttype> & v,vector<shifttype> * prevline,int start=0){
     std::vector<zmodint>::const_iterator it=p.coord.begin()+start,itend=p.coord.end();
     typename std::vector<tdeg_t>::const_iterator Rbegin=R.begin(),jt=Rbegin,jtend=R.end();
     double nop1=double(R.size()); 
@@ -10367,12 +10604,27 @@ namespace giac {
       const shifttype * st=prevline?&prevline->front():0;
       for (;it!=itend;++it){
 	add(expo[it->u],*shiftptr,u,p.dim);
+#ifdef GIAC_RHASH
+	int hashi=u.hash_index(Rhashptr);
+	if (hashi>=0){
+	  pushsplit(v,pos,hashi);
+	  ++jt;
+	  continue;
+	}
+#endif
 	if (dodicho){ 
 	  typename std::vector<tdeg_t>::const_iterator end=jtend;
 	  if (st){
 	    next_index(Rpos,st);
 	    end=Rbegin+Rpos;
 	  }
+#ifdef GIAC_RDEG
+	  int a=Rdegpos[u.tdeg+1],b=Rdegpos[u.tdeg];
+	  if (jt-Rbegin<a)
+	    jt=Rbegin+a;
+	  if (end-Rbegin>b)
+	    end=Rbegin+b;
+#endif
 	  if (dicho(jt,end,u,p.order)){
 	    pushsplit(v,pos,unsigned(jt-Rbegin));
 	    ++jt;
@@ -10391,6 +10643,14 @@ namespace giac {
     else {
       for (;it!=itend;++it){
 	const tdeg_t & u=expo[it->u];
+#ifdef GIAC_RHASH
+	int hashi=u.hash_index(Rhashptr);
+	if (hashi>=0){
+	  pushsplit(v,pos,hashi);
+	  ++jt;
+	  continue;
+	}
+#endif
 #if 1
 	if (dodicho && dicho(jt,jtend,u,p.order)){
 	  pushsplit(v,pos,unsigned(jt-Rbegin));
@@ -10631,7 +10891,7 @@ namespace giac {
     }
   }
 
-  void zsub(vector<modint2> & v64,const vector<modint> & subcoeff,const vector<shifttype> & subindex,modint env){
+  void zsub(vector<modint2> & v64,const vector<modint> & subcoeff,const vector<shifttype> & subindex){
     if (subcoeff.empty()) return;
     vector<modint2>::iterator wt=v64.begin();
     const modint * jt=&subcoeff.front(),*jtend=jt+subcoeff.size(),*jt_=jtend-8;
@@ -10661,6 +10921,72 @@ namespace giac {
 #endif // def GIAC_SHORTSHIFTTYPE
   }
     
+
+  void zadd(vector<modint2> & v64,const vector<modint> & subcoeff,const vector<shifttype> & subindex){
+    if (subcoeff.empty()) return;
+    vector<modint2>::iterator wt=v64.begin();
+    const modint * jt=&subcoeff.front(),*jtend=jt+subcoeff.size();
+    const shifttype * it=&subindex.front();
+    // first shift
+    unsigned pos=0; next_index(pos,it); wt += pos;
+    *wt += (*jt); ++jt;
+    bool shortshifts=v64.size()<0xffff?true:checkshortshifts(subindex);
+#ifdef GIAC_SHORTSHIFTTYPE
+    if (shortshifts){
+      for (;jt!=jtend;++jt){
+	wt += *it; ++it;
+	*wt += (*jt);
+      }
+    }
+    else {
+      for (;jt!=jtend;++jt){
+	next_index(wt,it);
+	*wt += (*jt);
+      }
+    }
+#else // def GIAC_SHORTSHIFTTYPE
+    for (;jt!=jtend;++jt){
+      v64[*it] += (*jt);
+      ++it; ++jt;
+    }
+#endif // def GIAC_SHORTSHIFTTYPE
+  }
+
+  inline modint makepositive(modint a,modint n){
+    return a<0?a+n:a;
+  }
+
+  template<class tdeg_t>
+  void zadd(vector<modint2> & v64,const zpolymod<tdeg_t> & subcoeff,const vector<shifttype> & subindex,int start,modint env){
+    if (subcoeff.coord.size()<=start) return;
+    vector<modint2>::iterator wt=v64.begin();
+    const zmodint * jt=&subcoeff.coord.front(),*jtend=jt+subcoeff.coord.size();
+    jt += start;
+    const shifttype * it=&subindex.front();
+    // first shift
+    unsigned pos=0; next_index(pos,it); wt += pos;
+    *wt = makepositive(jt->g,env); ++jt;
+    bool shortshifts=v64.size()<0xffff?true:checkshortshifts(subindex);
+#ifdef GIAC_SHORTSHIFTTYPE
+    if (shortshifts){
+      for (;jt!=jtend;++jt){
+	wt += *it; ++it;
+	*wt = makepositive(jt->g,env);
+      }
+    }
+    else {
+      for (;jt!=jtend;++jt){
+	next_index(wt,it);
+	*wt = makepositive(jt->g,env);
+      }
+    }
+#else // def GIAC_SHORTSHIFTTYPE
+    for (;jt!=jtend;++jt){
+      v64[*it] = makepositive(jt->g,env);
+      ++it; ++jt;
+    }
+#endif // def GIAC_SHORTSHIFTTYPE
+  }    
 
 #if 0
   template<class tdeg_t>
@@ -10757,7 +11083,7 @@ namespace giac {
       }
       *vt=hashgcd_U(jt-jt0);
     }
-  }
+  }  
 
   template <class tdeg_t>
   struct thread_buchberger_t {
@@ -10766,11 +11092,14 @@ namespace giac {
     const vector< paire > * Bptr;
     const vector<unsigned> * permuBptr;
     const vector<tdeg_t> *leftshiftptr,*rightshiftptr,*Rptr;
+    void * Rhashptr;
+    const vector<int> * Rdegposptr;
     int env,debut,fin,N,colonnes;
     const vector<unsigned> * firstposptr;
     const vector<vector<unsigned short> > * Mindexptr;
     const vector< vector<modint> > * Mcoeffptr;
     const vector<coeffindex_t> * coeffindexptr;
+    vector< vector<shifttype> > * indexesptr;
     vector<used_t> * usedptr;
     unsigned * bitmap;
     bool displayinfo;
@@ -10786,62 +11115,61 @@ namespace giac {
     const vector<tdeg_t> & leftshift=*ptr->leftshiftptr;
     const vector<tdeg_t> & rightshift=*ptr->rightshiftptr;
     const vector<tdeg_t> & R=*ptr->Rptr;
+    void * Rhashptr=ptr->Rhashptr;
+    const vector<int> & Rdegpos=*ptr->Rdegposptr;
     int env=ptr->env,debut=ptr->debut,fin=ptr->fin,N=ptr->N;
     const vector<unsigned> & firstpos=*ptr->firstposptr;
     int & colonnes=ptr->colonnes;
     const vector<vector<unsigned short> > &Mindex = *ptr->Mindexptr;
     const vector< vector<modint> > &Mcoeff = *ptr->Mcoeffptr;
     const vector<coeffindex_t> &coeffindex = *ptr->coeffindexptr;
+    vector< vector<shifttype> > & indexes=*ptr->indexesptr;
     vector<used_t> & used = *ptr->usedptr;
     bool displayinfo=ptr->displayinfo;
     unsigned * bitmap=ptr->bitmap+debut*((N>>5)+1);
     vector<modint2> v64(N);
     unsigned bk_prev=-1;
     const tdeg_t * rightshift_prev =0;
-    vector<modint> subcoeff;
-    vector<shifttype> subindex;
+    vector<modint> subcoeff2;
+    int effi=-1,Bs=int(B.size());
+    for (int i=debut;i<fin;++i){
+      if (interrupted || ctrl_c)
+	return 0;
+      paire bk=B[permuB[i]];
+      // no learning with parallel
+      zmakelinesplit(res[bk.first],&leftshift[permuB[i]],R,Rhashptr,Rdegpos,indexes[i],0,1);
+      if (bk_prev!=bk.second || !rightshift_prev || *rightshift_prev!=rightshift[permuB[i]]){
+	zmakelinesplit(res[bk.second],&rightshift[permuB[i]],R,Rhashptr,Rdegpos,indexes[Bs+i],0,1);
+	bk_prev=bk.second;
+	rightshift_prev=&rightshift[permuB[i]];
+      }
+    }
+    bk_prev=-1; rightshift_prev=0;
     for (int i=debut;i<fin;++i){
       if (interrupted || ctrl_c)
 	return 0;
       if (displayinfo){
 	if (i%10==9) {COUT << "+"; COUT.flush(); }
-	if (i%500==499) COUT << " " << CLOCK() << " remaining " << fin-i << endl;
+	if (i%500==499) COUT << " " << CLOCK()*1e-6 << " remaining " << fin-i << endl;
       }
       paire bk=B[permuB[i]];
-#ifndef GIAC_GBASIS_DELAYPAIRS
-	if (bk.second!=bk_prev || !rightshift_prev ||
-	    *rightshift_prev!=rightshift[permuB[i]]){
-	  subcoeff.clear(); subindex.clear();
-	  zcopycoeff(res[bk.second],subcoeff,1);
-	  zmakelinesplit<tdeg_t>(res[bk.second],&rightshift[permuB[i]],R,subindex,0,1);
-	}
-	zmakeline(res[bk.first],&leftshift[permuB[i]],R,v64,1);
-	zsub(v64,subcoeff,subindex,env);
-#else
-#if 0
-      if (bk.second!=bk_prev || !rightshift_prev || *rightshift_prev!=rightshift[permuB[i]] ){
-	zmakeline(res[bk.second],&rightshift[permuB[i]],R,v64,1);
-	zmakelinesub(res[bk.first],&leftshift[permuB[i]],R,v64,1,env);
-	//colonnes=giacmin(colonnes,reducef4buchbergersplit(v64,Mindex,firstpos,Mcoeff,coeffindex,Ki,0,used,env));
+      if (bk.second!=bk_prev || !rightshift_prev || *rightshift_prev!=rightshift[permuB[i]]){
+	subcoeff2.clear();
+	zcopycoeff(res[bk.second],subcoeff2,1);
 	bk_prev=bk.second;
-	rightshift_prev=&rightshift[permuB[i]];
-	// if (i+1<Bs && bk_prev==B[permuB[i+1]].second && *rightshift_prev==rightshift[permuB[i+1]]) copy(v64.begin(),v64.end(),v64_prev.begin());
+	rightshift_prev=&rightshift[permuB[i]];	  
       }
-      else {
-	unsigned tofill=(N>>5)+1;
-	fill(bitmap,bitmap+tofill,0);
-	bitmap += tofill;
-	continue;
-      }
-#else
-      // v64.assign(N,0); // + reset v64 to 0, already done by zconvert_
-      zmakeline(res[bk.first],&leftshift[permuB[i]],R,v64,1);
-      // CERR << bk.second << " " << rightshift[i] << endl;
-      zmakelinesub(res[bk.second],&rightshift[permuB[i]],R,v64,1,env);
-#endif
-#endif // GIAC_GBASIS_DELAYPAIRS
+      // zcopycoeff(res[bk.first],subcoeff1,1);zadd(v64,subcoeff1,indexes[i]);
+      zadd(v64,res[bk.first],indexes[i],1,env);
+      effi=Bs+i;
+      while (indexes[effi].empty() && effi)
+	--effi;
+      zsub(v64,subcoeff2,indexes[effi]);
+      int firstcol=indexes[i].empty()?0:indexes[i].front();
+      if (effi>=0 && !indexes[effi].empty())
+	firstcol=giacmin(firstcol,indexes[effi].front());      
       K[i].clear();
-      colonnes=giacmin(colonnes,reducef4buchbergersplit(v64,Mindex,firstpos,Mcoeff,coeffindex,K[i],bitmap,used,env));
+      colonnes=giacmin(colonnes,reducef4buchbergersplit(v64,Mindex,firstpos,firstcol,Mcoeff,coeffindex,K[i],bitmap,used,env));
       bitmap += (N>>5)+1;
     }
     return ptr_;
@@ -10859,7 +11187,7 @@ namespace giac {
       const tdeg_t & adeg=(*resptr)[Ba].ldeg;
       const tdeg_t & bdeg=(*resptr)[Bb].ldeg;
       if (adeg!=bdeg)
-	return tdeg_t_greater(bdeg,adeg,o); // return tdeg_t_greater(adeg,bdeg,o);
+	return tdeg_t_greater(bdeg,adeg,o)!=0; // return tdeg_t_greater(adeg,bdeg,o);
       const tdeg_t & aleft=(*rightshiftptr)[a];
       const tdeg_t & bleft=(*rightshiftptr)[b];
       return tdeg_t_strictly_greater(bleft,aleft,o);// return tdeg_t_strictly_greater(aleft,bleft,o);
@@ -10871,6 +11199,15 @@ namespace giac {
 		 const order_t & o_):Bptr(Bptr_),resptr(resptr_),rightshiftptr(rightshiftptr_),leftshiftptr(leftshiftptr_),o(o_){}
   };
 
+  longlong memory_usage(){
+#if defined HAVE_SYS_RESOURCE_H && !defined NSPIRE
+    struct rusage r_usage;
+    getrusage(RUSAGE_SELF,&r_usage);
+    return r_usage.ru_maxrss;
+#endif
+    return -1;
+  }
+  
   template<class tdeg_t>
   int zf4mod(vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,const vector< paire > & B,const vector<unsigned> * & permuBptr,vectzpolymod<tdeg_t> & f4buchbergerv,bool learning,unsigned & learned_position,vector< paire > * pairs_reducing_to_zero,vector<zinfo_t<tdeg_t> > & f4buchberger_info,unsigned & f4buchberger_info_position,bool recomputeR,int age,bool multimodular){
     if (B.empty())
@@ -10925,15 +11262,15 @@ namespace giac {
 	  }
 	}
 	CERR << egales << " right pair elements are the same" << endl;
-	CERR << CLOCK() << " zf4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
+	CERR << CLOCK()*1e-6 << " zf4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
       }
 #endif
       zcollect(res,B,permuB,all,leftshift,rightshift);
       if (debug_infolevel>1)
-	CERR << CLOCK() << " zf4buchberger symbolic preprocess" << endl;
+	CERR << CLOCK()*1e-6 << " zf4buchberger symbolic preprocess" << endl;
       zsymbolic_preprocess(all,res,G,-1,info_tmp.quo,info_tmp.rem,info_tmp.R);
       if (debug_infolevel>1)
-	CERR << CLOCK() << " zend symbolic preprocess" << endl;
+	CERR << CLOCK()*1e-6 << " zend symbolic preprocess" << endl;
 #if 0
       f4buchberger_info->push_back(*info_ptr);
 #else
@@ -10956,6 +11293,32 @@ namespace giac {
     //CERR << quo << endl;
     unsigned N = unsigned(R.size()), i, j = 0;
     if (N==0) return 1;
+    void * Rhashptr=0;
+#ifdef GIAC_RHASH
+    tdeg_t64_hash_t Rhash; 
+    if (R.front().vars64()){
+      Rhashptr=&Rhash;
+      //Rhash.reserve(N);
+      for (unsigned i=0;i<N;++i){
+	R[i].add_to_hash(Rhashptr,i);
+      }
+    }
+#endif
+    int Rcurdeg=R.front().tdeg;
+    vector<int> Rdegpos(Rcurdeg+2);
+#ifdef GIAC_RDEG
+    for (unsigned i=0;i<N;++i){
+      int tmp=R[i].tdeg;
+      if (tmp==Rcurdeg)
+	continue;
+      for (;Rcurdeg>tmp;--Rcurdeg){
+	Rdegpos[Rcurdeg]=i;
+      }
+    }
+    for (;Rcurdeg>=0;--Rcurdeg){
+      Rdegpos[Rcurdeg]=N;
+    }
+#endif
     unsigned nrows=0;
     for (i=0;i<G.size();++i){
       nrows += unsigned(quo[i].size());
@@ -10980,12 +11343,16 @@ namespace giac {
 	Mindex[j].reserve(int(1.1*res[G[i]].coord.size()));
       }
     }
+#ifdef GIAC_MAKELINECACHE
+    vector< pair<int,int> > zmakelinecache(res.size(),pair<int,int>(-1,-1)); // -1 if res[k] is not in G, (i,j) if k==G[i] where j is the first index in Mindex of the part corresponding to res[G[i]]
+#endif
     for (i=0,j=0;i<G.size();++i){
       // copy coeffs of res[G[i]] in Mcoeff
-      if (env<(1<<24))
+      if (1 || env<(1<<24))
 	zcopycoeff(res[G[i]],Mcoeff[i],0);
       else
 	zcopycoeff(res[G[i]],Mcoeff[i],env,0);
+      // if (!Mcoeff[i].empty()) Mcoeff[i].front()=invmod(Mcoeff[i].front(),env);
       // for each monomial of quo[i], find indexes and put in Mindex
       // Improvement idea: reverse order traversing quo[i]
       // In zmakelinesplit locate res[G[i]].coord.u+*jt by dichotomoy 
@@ -10994,8 +11361,12 @@ namespace giac {
 #if 1
       typename std::vector< tdeg_t >::const_iterator jt=quo[i].end()-1;
       int quos=int(quo[i].size());
+      int Gi=G[i];
+#ifdef GIAC_MAKELINECACHE
+      zmakelinecache[Gi]=pair<int,int>(i,j);
+#endif
       for (int k=quos-1;k>=0;--k,--jt){
-	zmakelinesplit(res[G[i]],&*jt,R,Mindex[j+k],k==quos-1?0:&Mindex[j+k+1]);
+	zmakelinesplit(res[Gi],&*jt,R,Rhashptr,Rdegpos,Mindex[j+k],k==quos-1?0:&Mindex[j+k+1],0);
       }
       for (int k=0;k<quos;++j,++k){
 	coeffindex.push_back(coeffindex_t(N<=0xffff,i));
@@ -11007,7 +11378,7 @@ namespace giac {
       std::vector< tdeg_t >::const_iterator jt=quo[i].begin(),jtend=quo[i].end();
       for (;jt!=jtend;++j,++jt){
 	coeffindex.push_back(coeffindex_t(N<=0xffff,i));
-	zmakelinesplit(res[G[i]],&*jt,R,Mindex[j],0);
+	zmakelinesplit(res[G[i]],&*jt,R,Rhashptr,Rdegpos,Mindex[j],0,0);
 	if (!coeffindex.back().b)
 	  coeffindex.back().b=checkshortshifts(Mindex[j]);
 	atrier.push_back(sparse_element(first_index(Mindex[j]),j));
@@ -11015,17 +11386,23 @@ namespace giac {
 #endif
     }
     if (debug_infolevel>1)
-      CERR << CLOCK() << " end build Mindex/Mcoeff zf4mod" << endl;
+      CERR << CLOCK()*1e-6 << " end build Mindex/Mcoeff zf4mod" << endl;
     // should not sort but compare res[G[i]]*quo[i] monomials to build M already sorted
     // CERR << "before sort " << Mindex << endl;
     sort_vector_sparse_element(atrier.begin(),atrier.end()); // sort(atrier.begin(),atrier.end(),tri1); 
     vector<coeffindex_t> coeffindex1(atrier.size());
     double mem=0; // mem*4=number of bytes allocated for M1
     vector< vector<unsigned short> > Mindex1(atrier.size());
+#ifdef GIAC_MAKELINECACHE
+    vector<int> permuM(atrier.size());
+#endif
     for (i=0;i<atrier.size();++i){
       swap(Mindex1[i],Mindex[atrier[i].pos]);
       mem += Mindex1[i].size();
       swap(coeffindex1[i],coeffindex[atrier[i].pos]);
+#ifdef GIAC_MAKELINECACHE
+      permuM[atrier[i].pos]=i;
+#endif
     }
     swap(Mindex,Mindex1);
     nrows = unsigned(Mindex.size());
@@ -11038,7 +11415,7 @@ namespace giac {
     double ratio=(mem/nrows)/N;
     bool large=N>8000;
     if (debug_infolevel>1)
-      CERR << CLOCK() << " Mindex sorted, rows " << nrows << " columns " << N << " terms " << mem << " ratio " << ratio <<endl;
+      CERR << CLOCK()*1e-6 << " Mindex sorted, rows " << nrows << " columns " << N << " terms " << mem << " ratio " << ratio <<endl;
     // CERR << "after sort " << Mindex << endl;
     // step3 reduce
     vector<modint> v(N);
@@ -11053,16 +11430,23 @@ namespace giac {
       return -1;
     }
     unsigned Kcols=N-nrows;
+    // ((N>>5)+1)*Bs should not exceed 2e9 otherwise this will segfault
+    if (double(Bs)*(N>>5)>2e9){
+      CERR << "Error, problem too large" << endl;
+      return -1;
+    }
     vector<unsigned> lebitmap(((N>>5)+1)*Bs);
     unsigned * bitmap=&lebitmap.front();
     bool Kdone=false;
     int th=giacmin(threads,64)-1;
-    vector<modint> subcoeff;
-    vector<shifttype> subindex;
+    vector<modint> subcoeff2;
+    vector< vector<shifttype> > indexes(2*Bs);
 #ifdef HAVE_LIBPTHREAD
     if (Bs>=256 && threads_allowed && threads>1 && (learning || !pairs_reducing_to_zero) ){
       // prepare memory
-      for (unsigned i=0;i<unsigned(K.size());++i){
+      for (unsigned i=0;i<Bs;++i){
+	indexes[i].reserve(res[B[permuB[i]].first].coord.size()+16);
+	indexes[Bs+i].reserve(res[B[permuB[i]].second].coord.size()+16);
 	K[i].reserve(Kcols);
       }
       pthread_t tab[64];
@@ -11070,7 +11454,7 @@ namespace giac {
       int colonnes=N,debut=0,step=Bs/(th+1)+1,fin;
       for (int j=0;j<=th;debut+=step,++j){
 	fin=giacmin(debut+step,Bs);
-	thread_buchberger_t<tdeg_t> tmp={&res,&K,&B,&permuB,&leftshift,&rightshift,&R,env,debut,fin,N,Kcols,&firstpos,&Mindex,&Mcoeff,&coeffindex,&used,bitmap,j==th && debug_infolevel>1};
+	thread_buchberger_t<tdeg_t> tmp={&res,&K,&B,&permuB,&leftshift,&rightshift,&R,Rhashptr,&Rdegpos,env,debut,fin,N,Kcols,&firstpos,&Mindex,&Mcoeff,&coeffindex,&indexes,&used,bitmap,j==th && debug_infolevel>1};
 	buchberger_param[j]=tmp;
 	bool res=true;
 	// CERR << "write " << j << " " << p << endl;
@@ -11092,16 +11476,79 @@ namespace giac {
     }
 #endif
     if (!Kdone){
-      vector<modint> Ki; Ki.reserve(Kcols);
       unsigned bk_prev=-1;
-      vector<modint2> v64_prev(N);
       tdeg_t * rightshift_prev=0;
+      int pos=learned_position;
+      for (i=0;i<Bs;i++){
+	if (interrupted || ctrl_c)
+	  return -1;
+	paire bk=B[permuB[i]];
+	if (!learning && pairs_reducing_to_zero && pos<pairs_reducing_to_zero->size() && bk==(*pairs_reducing_to_zero)[pos]){
+	  ++pos;	
+	  continue;
+	}
+	bool done=false;
+	tdeg_t & curleft=leftshift[permuB[i]];
+#ifdef GIAC_MAKELINECACHE // does not seem faster
+	pair<int,int> ij=zmakelinecache[bk.first];
+	if (ij.first!=-1){
+	  // look in quo[ij.first] if leftshift[permuB[i]] is there, if true copy from Mindex
+	  // except first index
+	  typename std::vector<tdeg_t>::const_iterator cache_it=quo[ij.first].begin(),cache_end=quo[ij.first].end();
+	  if (cache_it<cache_end && !dicho(cache_it,cache_end,curleft,order)){
+	    if (cache_end-cache_it>5)
+	      cache_it=cache_end;
+	    else {
+	      for (;cache_it<cache_end;++cache_it){
+		if (*cache_it==curleft)
+		  break;
+	      }
+	    }
+	  }
+	  if (cache_it<cache_end){
+	    if (debug_infolevel>2)
+	      CERR << "cached " << ij << endl;
+	    int pos=ij.second+cache_it-quo[ij.first].begin();
+	    pos=permuM[pos];
+	    vector<shifttype> & source=Mindex[pos];
+	    vector<shifttype> & target=indexes[i];
+	    target.reserve(source.size());
+	    unsigned sourcepos=0,targetpos=0;
+	    const shifttype * sourceptr=&source.front(),*sourceend=sourceptr+source.size();
+	    next_index(sourcepos,sourceptr); // skip position 0
+	    next_index(sourcepos,sourceptr);
+	    pushsplit(target,targetpos,sourcepos);
+	    for (;sourceptr<sourceend;++sourceptr){
+	      target.push_back(*sourceptr);
+	    }
+	    //CERR << Mindex << endl << target << endl;
+	    done=true;
+	  }
+	}
+#endif // GIAC_MAKELINECACHE
+	if (!done){
+	  indexes[i].reserve(res[bk.first].coord.size()+16);
+	  zmakelinesplit(res[bk.first],&curleft,R,Rhashptr,Rdegpos,indexes[i],0,1);
+	  //CERR << indexes[i] << endl;
+	}
+	if (bk_prev!=bk.second || !rightshift_prev || *rightshift_prev!=rightshift[permuB[i]]){
+	  indexes[Bs+i].reserve(res[bk.second].coord.size()+16);
+	  zmakelinesplit(res[bk.second],&rightshift[permuB[i]],R,Rhashptr,Rdegpos,indexes[Bs+i],0,1);
+	  bk_prev=bk.second;
+	  rightshift_prev=&rightshift[permuB[i]];
+	}
+      }
+      if (debug_infolevel>1)
+	CERR << CLOCK()*1e-6 << " pairs indexes computed over " << R.size() << " monomials"<<endl;
+      bk_prev=-1; rightshift_prev=0;
+      vector<modint> Ki; Ki.reserve(Kcols);
+      int effi=-1;
       for (i=0;i<Bs;++i){
 	if (interrupted || ctrl_c)
 	  return -1;
 	if (debug_infolevel>1){
 	  if (i%10==9) {COUT << "+"; COUT.flush(); }
-	  if (i%500==499) COUT << " " << CLOCK() << " remaining " << Bs-i << endl;
+	  if (i%500==499) COUT << " " << CLOCK()*1e-6 << " remaining " << Bs-i << endl;
 	}
 	paire bk=B[permuB[i]];
 	if (!learning && pairs_reducing_to_zero && learned_position<pairs_reducing_to_zero->size() && bk==(*pairs_reducing_to_zero)[learned_position]){
@@ -11116,63 +11563,37 @@ namespace giac {
 	// zmakelinesub(res[bk.first],&leftshift[i],res[bk.second],&rightshift[i],R,v,1,env);
 	// CERR << bk.first << " " << leftshift[i] << endl;
 	// v64.assign(N,0); // + reset v64 to 0, already done by zconvert_
-#ifndef GIAC_GBASIS_DELAYPAIRS
-	if (bk.second!=bk_prev || !rightshift_prev ||
-	    *rightshift_prev!=rightshift[permuB[i]]){
-	  subcoeff.clear(); subindex.clear();
-	  zcopycoeff(res[bk.second],subcoeff,1);
-	  zmakelinesplit<tdeg_t>(res[bk.second],&rightshift[permuB[i]],R,subindex,0,1);
-	}
-	zmakeline(res[bk.first],&leftshift[permuB[i]],R,v64,1);
-	zsub(v64,subcoeff,subindex,env);
-#else
-#if 1
-	zmakeline(res[bk.first],&leftshift[permuB[i]],R,v64,1);
-	// CERR << bk.second << " " << rightshift[i] << endl;
-	zmakelinesub(res[bk.second],&rightshift[permuB[i]],R,v64,1,env);
-#else // pairs with same lcm do not necessarily cancel according to Gebauer-Moller rules
-	if (bk.second!=bk_prev || !rightshift_prev ||
-	    //*rightshift_prev!=rightshift[permuB[i]]
-	    !tdeg_t_all_greater(rightshift[permuB[i]],*rightshift_prev,order)
-	    ){
-	  // 
-	  // CERR << bk.second << " " << rightshift[i] << endl;
-	  zmakeline(res[bk.second],&rightshift[permuB[i]],R,v64,1);
-	  //colonnes=giacmin(colonnes,reducef4buchbergersplit(v64,Mindex,firstpos,Mcoeff,coeffindex,Ki,0,used,env));
+	if (bk.second!=bk_prev || !rightshift_prev || *rightshift_prev!=rightshift[permuB[i]]){
+	  subcoeff2.clear();
+	  zcopycoeff(res[bk.second],subcoeff2,1);
 	  bk_prev=bk.second;
 	  rightshift_prev=&rightshift[permuB[i]];
-	  // if (i+1<Bs && bk_prev==B[permuB[i+1]].second && *rightshift_prev==rightshift[permuB[i+1]]) copy(v64.begin(),v64.end(),v64_prev.begin());
+	  if (effi>=0)
+	    indexes[effi].clear();
+	  effi=i+Bs;
 	}
-	else {
-	  unsigned tofill=(N>>5)+1;
-	  fill(bitmap,bitmap+tofill,0);
-	  bitmap += tofill;
-	  continue;
-	  copy(v64_prev.begin(),v64_prev.end(),v64.begin());
-	}
-	zmakelinesub(res[bk.first],&leftshift[permuB[i]],R,v64,1,env);
-#endif
-#endif // GIAC_GBASIS_DELAYPAIRS
+	int firstcol=indexes[i].empty()?0:indexes[i].front();
+	if (effi>=0 && !indexes[effi].empty())
+	  firstcol=giacmin(firstcol,indexes[effi].front());
+	// zcopycoeff(res[bk.first],subcoeff1,1);zadd(v64,subcoeff1,indexes[i]);
+	zadd(v64,res[bk.first],indexes[i],1,env);
+	indexes[i].clear();
+	zsub(v64,subcoeff2,indexes[effi]);
 	Ki.clear();
-	colonnes=giacmin(colonnes,reducef4buchbergersplit(v64,Mindex,firstpos,Mcoeff,coeffindex,Ki,bitmap,used,env));
+	colonnes=giacmin(colonnes,reducef4buchbergersplit(v64,Mindex,firstpos,firstcol,Mcoeff,coeffindex,Ki,bitmap,used,env));
 	bitmap += (N>>5)+1;
 	size_t Kis=Ki.size();
 	if (Kis>Ki.capacity()*.8){
 	  K[i].swap(Ki);
-	  Ki.reserve(giacmin(Kcols,Kis*1.1));
+	  Ki.reserve(giacmin(Kcols,int(Kis*1.1)));
 	}
 	else
 	  K[i]=Ki;      
 	//CERR << v << endl << SK[i] << endl;
       } // end for (i=0;i<B.size();++i)
     } // end if (!Kdone)
-#ifdef HAVE_SYS_RESOURCE_H
-    if (debug_infolevel>1){
-      struct rusage r_usage;
-      getrusage(RUSAGE_SELF,&r_usage);
-      CERR << endl << CLOCK() << " Memory usage: " << r_usage.ru_maxrss << endl;
-    }
-#endif
+    if (debug_infolevel>1)
+      CERR << endl << CLOCK()*1e-6 << " Memory usage: " << memory_usage()*1e-6 << "M" << endl;
     Mindex.clear();
     Mcoeff.clear();
     if (!pairs_reducing_to_zero){
@@ -11180,11 +11601,11 @@ namespace giac {
       info_ptr->R.swap(clearer);
     }
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchbergerv split reduced " << Bs << " polynoms over " << N << " monomials, start at " << colonnes << endl;
+      CERR << CLOCK()*1e-6 << " f4buchbergerv split reduced " << Bs << " polynoms over " << N << " monomials, start at " << colonnes << endl;
     for (i=0;i<N;++i)
       usedcount += (used[i]>0);
     if (debug_infolevel>1){
-      CERR << CLOCK() << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
+      CERR << CLOCK()*1e-6 << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
       if (debug_infolevel>3)
 	CERR << " column split used " << used << endl;
     }
@@ -11195,7 +11616,7 @@ namespace giac {
     //vector<modint> tmp; lescoeffs.swap(tmp); 
     { vector<unsigned> tmp1; lebitmap.swap(tmp1); }
     if (debug_infolevel>1){
-      CERR << CLOCK() << " rref " << K.size() << "x" << usedcount << endl;
+      CERR << CLOCK()*1e-6 << " rref " << K.size() << "x" << usedcount << endl;
       double nz=0;
       for (unsigned i=0;i<K.size();++i){
 	vector<int> & Ki=K[i];
@@ -11210,7 +11631,7 @@ namespace giac {
     if (0 && !learning && info_ptr->permu.size()==Bs){
       permutation=info_ptr->permu;
       vector< vector<modint> > K1(Bs);
-      for (int i=0;i<Bs;++i){
+      for (unsigned i=0;i<Bs;++i){
 	swap(K1[i],K[permutation[i]]);
       }
       swap(K1,K);
@@ -11221,7 +11642,7 @@ namespace giac {
 #else
     smallmodrref(th+1,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,0/* lower reduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/,permutation.empty()/* reset */,0,!multimodular); 
     if (debug_infolevel>1)
-      CERR << CLOCK() << " rref_upper " << endl;
+      CERR << CLOCK()*1e-6 << " rref_upper " << endl;
     smallmodrref_upper(K,0,int(K.size()),0,usedcount,env);
 #endif
     free_null_lines(K,0,Bs,0,Kcols);
@@ -11259,7 +11680,7 @@ namespace giac {
     // CERR << K << "," << permutation << endl;
     // vector<int> permu=perminv(permutation);
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchbergerv interreduced" << endl;
+      CERR << CLOCK()*1e-6 << " f4buchbergerv interreduced" << endl;
     for (i=0;i<f4buchbergerv.size();++i){
       // CERR << v << endl;
       f4buchbergerv[permutation[i]].expo=&info_ptr->rem;
@@ -11291,7 +11712,7 @@ namespace giac {
       }
       if (!Pcoord.empty())
 	f4buchbergerv[permutation[i]].ldeg=(*f4buchbergerv[permutation[i]].expo)[Pcoord.front().u];
-      if (!Pcoord.empty() && Pcoord.front().g!=1){
+      if (!Pcoord.empty() && ( (env > (1<< 24)) || Pcoord.front().g!=1) ){
 	zsmallmultmod(invmod(Pcoord.front().g,env),f4buchbergerv[permutation[i]],env);	
 	Pcoord.front().g=1;
       }
@@ -11320,7 +11741,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   template<class tdeg_t>
   void zgbasis_updatemod(vector<unsigned> & G,vector< paire > & B,vectzpolymod<tdeg_t> & res,unsigned pos,vector<unsigned> & oldG,bool multimodular){
     if (debug_infolevel>2)
-      CERR << CLOCK() << " zmod begin gbasis update " << G.size() << endl;
+      CERR << CLOCK()*1e-6 << " zmod begin gbasis update " << G.size() << endl;
     if (debug_infolevel>3)
       CERR << "G=" << G << "B=" << B << endl;
     const zpolymod<tdeg_t> & h = res[pos];
@@ -11490,7 +11911,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     swap(B1,B);
     // Update G by removing elements with leading monomial >= leading monomial of h
     if (debug_infolevel>2){
-      CERR << CLOCK() << " end, pairs:"<< endl;
+      CERR << CLOCK()*1e-6 << " end, pairs:"<< endl;
       if (debug_infolevel>3)
 	CERR << B << endl;
       CERR << "mod begin Groebner interreduce " << endl;
@@ -11521,7 +11942,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       // NB: removing all pairs containing i in it does not work
     }
     if (debug_infolevel>2)
-      CERR << CLOCK() << " zmod end gbasis update " << endl;
+      CERR << CLOCK()*1e-6 << " zmod end gbasis update " << endl;
     for (unsigned i=0;i<C.size();++i){
       if (!res[C[i]].coord.empty() && tdeg_t_all_greater(h0,res[C[i]].ldeg,order)){
 	swap(C,G); return;
@@ -11634,8 +12055,10 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       R0[l]=TMP2.coord[l].u;
     vectzpolymod<tdeg_t> res;
     res.resize(ressize);
-    for (unsigned l=0;l<ressize;++l)
+    for (unsigned l=0;l<ressize;++l){
       convert(resmod[l],res[l],R0);
+      zsmallmultmod(1,res[l],env);
+    }
     if (debug_infolevel>1000){
       res.dbgprint(); res[0].dbgprint(); // instantiate
     }
@@ -11644,14 +12067,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     for (int age=1;!B.empty() && !interrupted && !ctrl_c;++age){
       if (debug_infolevel<2 && (CLOCK()-timebeg)>autodebug)
 	debug_infolevel=multimodular?1:2;
-      start_index_v.push_back(res.size()); // store size for final interreduction
+      start_index_v.push_back(int(res.size())); // store size for final interreduction
 #ifdef TIMEOUT
       control_c();
 #endif
       if (f4buchberger_info_position>=capa-1)
 	return false;
       if (debug_infolevel>1)
-	CERR << CLOCK() << " begin new iteration " << age << " zmod, " << env << " number of pairs: " << B.size() << ", base size: " << G.size() << endl;
+	CERR << CLOCK()*1e-6 << " begin new iteration " << age << " zmod, " << env << " number of pairs: " << B.size() << ", base size: " << G.size() << endl;
       vector<bool> clean(res.size(),true); 
       for (unsigned i=0;i<G.size();++i){
 	clean[G[i]]=false;
@@ -11662,7 +12085,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	clean[B[i].first]=false;
 	clean[B[i].second]=false;
 	index_lcm(res[B[i].first].ldeg,res[B[i].second].ldeg,Blcm[i],order);
-	nterms[i]=res[B[i].first].coord.size()+res[B[i].second].coord.size();
+	nterms[i]=unsigned(res[B[i].first].coord.size()+res[B[i].second].coord.size());
       }
 #if 1
       for (unsigned i=0;i<clean.size();++i){
@@ -11713,7 +12136,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
 	if (smallposv.empty()) smallposv.resize(B.size());
 	if (debug_infolevel>1)
-	  CERR << CLOCK() << " zpairs degrees " << firstdeg << "," << smalltotdeg << " #" << smallposv.size() << endl;
+	  CERR << CLOCK()*1e-6 << " zpairs degrees " << firstdeg << "," << smalltotdeg << " #" << smallposv.size() << endl;
 #else
 	// find smallest lcm pair in B
 	unsigned smallnterms=RAND_MAX,firstdeg=RAND_MAX-1;
@@ -11742,7 +12165,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
 	if (smallposv.empty()) smallposv.resize(B.size());
 	if (debug_infolevel>1)
-	  CERR << CLOCK() << " zpairs min total degrees/nterms " << firstdeg << "," << smallnterms << " #" << smallposv.size() << endl;
+	  CERR << CLOCK()*1e-6 << " zpairs min total degrees/nterms " << firstdeg << "," << smallnterms << " #" << smallposv.size() << endl;
 #endif
 	if (debug_infolevel>3)
 	  CERR << "pairs reduced " << B << " indices " << smallposv << endl;
@@ -11794,7 +12217,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  ++added;
       }
       if (debug_infolevel>1)
-	CERR << CLOCK() << " reduce f4buchberger end on " << added << " from " << f4buchbergerv.size() << " pairs, gbasis update begin" << endl;
+	CERR << CLOCK()*1e-6 << " reduce f4buchberger end on " << added << " from " << f4buchbergerv.size() << " pairs, gbasis update begin" << endl;
       vector<unsigned> oldG(G);
       for (int i=0;i<f4buchbergerv.size();++i){
 	// for (int i=f4buchbergerv.size()-1;i>=0;--i){
@@ -11876,7 +12299,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     }
     else {
       if (debug_infolevel>1)
-	CERR << CLOCK() << " zfinal interreduction begin " << G.size() << endl;
+	CERR << CLOCK()*1e-6 << " zfinal interreduction begin " << G.size() << endl;
 #if 0 // does not fully inter-reduce 
       zinterreduce_convert(res,G,env,resmod);
 #else
@@ -11894,14 +12317,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       for (int j=int(G.size())-1; j>=0;--j){
 	if (debug_infolevel>1){
 	  if (j%10==0){ CERR << "+"; CERR.flush();}
-	  if (j%500==0){ CERR << CLOCK() << " remaining " << j << endl;}
+	  if (j%500==0){ CERR << CLOCK()*1e-6 << " remaining " << j << endl;}
 	}
 	if (!start_index_v.empty() && j<start_index_v.back())
 	  start_index_v.pop_back();
 	reducesmallmod(resmod[G[j]],resmod,G,j,env,TMP1,true,start_index_v.empty()?0:start_index_v.back());
       }
       if (debug_infolevel>1)
-	CERR << CLOCK() << " zfinal interreduction end " << G.size() << endl;      
+	CERR << CLOCK()*1e-6 << " zfinal interreduction end " << G.size() << endl;      
 #endif
     }
     if (ressize<resmod.size())
@@ -11910,7 +12333,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       unsigned t=0;
       for (unsigned i=0;i<res.size();++i)
 	t += unsigned(res[i].coord.size());
-      CERR << CLOCK() << " total number of monomials in res " << t << endl;
+      CERR << CLOCK()*1e-6 << " total number of monomials in res " << t << endl;
       CERR << "Number of monomials cleared " << cleared << endl;
     }
     smod(resmod,env);
@@ -12090,7 +12513,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     }
     N=mtran(N);
     if (debug_infolevel)
-      CERR << CLOCK() << " rur rref" << endl;
+      CERR << CLOCK()*1e-6 << " rur rref" << endl;
     gen n=_rref(N,context0);
     if (!ckmatrix(n))
       return false;
@@ -12149,11 +12572,11 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     N=mtran(N);
     vecteur K;
     if (debug_infolevel)
-      CERR << CLOCK() << " begin rur ker" << endl;
+      CERR << CLOCK()*1e-6 << " begin rur ker" << endl;
     if (!mker(N,K,1,context0) || K.empty() || K.front().type!=_VECT)
       return false;
     if (debug_infolevel)
-      CERR << CLOCK() << " end rur ker" << endl;
+      CERR << CLOCK()*1e-6 << " end rur ker" << endl;
     m=*K.front()._VECTptr;
     for (unsigned i=0;i<m.size();++i){
       if (m[i].type==_MOD)
@@ -12325,7 +12748,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     vecteur m1=derivative(m,&env);
     m1=gcd(m,m1,&env);
     if (debug_infolevel && m1.size()>1)
-      CERR << CLOCK() << " sqrfree mod " << p << ":" << m1 << endl;
+      CERR << CLOCK()*1e-6 << " sqrfree mod " << p << ":" << m1 << endl;
     m1=operator_div(m,m1,&env); // m1 is the square free part
     vecteur m2=derivative(m1,&env); // m2 is the derivative, prime with m1
     // make the "product" with M (rows of M are powers of t)
@@ -12341,7 +12764,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     else
       return false;
     if (debug_infolevel)
-      CERR << CLOCK() << " rur linsolve" << endl;
+      CERR << CLOCK()*1e-6 << " rur linsolve" << endl;
     if (!rur_linsolve(gbmod,lm,mprime,M,p,res))
       return false;
     // rur=[separating element,sqrfree part of minpoly,derivative of sqrfree part,
@@ -12439,7 +12862,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   bool check_initial_generators(vectpoly8<tdeg_t> & res,const vectpoly8<tdeg_t> & Wi,vector<unsigned> & G,double eps){
     int initial=int(res.size());
     if (debug_infolevel)
-      CERR << CLOCK() << " begin final check, checking " << initial << " generators" << endl;
+      CERR << CLOCK()*1e-6 << " begin final check, checking " << initial << " generators" << endl;
     poly8<tdeg_t> tmp0,tmp1,tmp2;
     vectpoly8<tdeg_t> wtmp;
     unsigned j=0,finalchecks=initial;
@@ -12462,7 +12885,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     CERR << endl;
     if (j!=finalchecks){
       if (debug_infolevel){
-	CERR << CLOCK() << " final check failure, retrying with another prime " << endl;
+	CERR << CLOCK()*1e-6 << " final check failure, retrying with another prime " << endl;
 	CERR << "Non-zero remainder " << tmp0 << endl;
 	CERR << "checking res[j], " << j << "<" << initial << endl;
 	CERR << "res[j]=" << res[j] << endl;
@@ -12588,7 +13011,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       current=res;
       G.clear();
       if (debug_infolevel)
-	CERR << std::setprecision(15) << CLOCK() << " begin computing basis modulo " << p << endl;
+	CERR << std::setprecision(15) << CLOCK()*1e-6 << " begin computing basis modulo " << p << endl;
       // CERR << "write " << th << " " << p << endl;
 #ifdef GBASIS_F4BUCHBERGER 
       if (zdata){
@@ -12641,7 +13064,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
       }
       if (debug_infolevel){
-	CERR << CLOCK() << " end, basis size " << G.size() << " prime number " << count+1 << endl;
+	CERR << CLOCK()*1e-6 << " end, basis size " << G.size() << " prime number " << count+1 << endl;
 	if (count==0)
 	  CERR << "G=" << G << endl;
       }
@@ -12694,13 +13117,13 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    continue;
 	  }
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " begin modular rur computation" << endl;
+	    CERR << CLOCK()*1e-6 << " begin modular rur computation" << endl;
 	  if (!rur_compute(gbmod,lmtmp,lmmodradical,p.val,s,rurv)){
 	    ok=rur=false;
 	    continue;
 	  }
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " end modular rur computation" << endl;
+	    CERR << CLOCK()*1e-6 << " end modular rur computation" << endl;
 	  if (lmmodradical.coord.empty())
 	    lmmodradical=lmtmp;
 	  else {
@@ -12787,7 +13210,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 		rechecked=0; 
 		if (jpos==early.size() && (eliminate_flag || check_initial_generators(res,early,G,eps))){
 		  if (debug_infolevel)
-		    CERR << CLOCK() << " end final check " << endl;
+		    CERR << CLOCK()*1e-6 << " end final check " << endl;
 		  swap(res,early);
 		  mpz_clear(zd);
 		  mpz_clear(zu);
@@ -12841,7 +13264,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 			 zd,zd1,zabsd1,zu,zu1,zur,zq,zr,zsqrtm,ztmp,
 			 poly8tmp)){
 	      rechecked=0;
-	      CERR << CLOCK() << " reconstruction failure at position " << jpos << endl;
+	      CERR << CLOCK()*1e-6 << " reconstruction failure at position " << jpos << endl;
 	      break;
 	    }
 	    if (rur && !poly8tmp.coord.empty() && !chk_equal_mod(poly8tmp.coord.front().g,gbmod[jpos].coord.front().g,p.val)){
@@ -12857,12 +13280,12 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    Wlast[i].back().coord.swap(poly8tmp.coord);
 	  }
 	  if (debug_infolevel>0)
-	    CERR << CLOCK() << " unstable mod " << p << " from " << V[i].size() << " reconstructed " << Wlast[i].size() << " (#" << i << ")" << endl;
+	    CERR << CLOCK()*1e-6 << " unstable mod " << p << " from " << V[i].size() << " reconstructed " << Wlast[i].size() << " (#" << i << ")" << endl;
 	  break;
 	} // end for loop on i
 	if (i==V.size()){
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " creating reconstruction #" << i << endl;
+	    CERR << CLOCK()*1e-6 << " creating reconstruction #" << i << endl;
 	  // not found
 	  V.push_back(vectpoly8<tdeg_t>());
 	  convert(gbmod,V.back(),p.val);
@@ -12873,10 +13296,10 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
 	if (jpos<gbmod.size()){
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " i= " << i << " begin chinese remaindering " << p << endl;
+	    CERR << CLOCK()*1e-6 << " i= " << i << " begin chinese remaindering " << p << endl;
 	  int r=chinrem(V[i],P[i],gbmod,p.val,poly8tmp);
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " end chinese remaindering" << endl;
+	    CERR << CLOCK()*1e-6 << " end chinese remaindering" << endl;
 	  if (r==-1){
 	    ok=false;
 	    continue;
@@ -12888,12 +13311,12 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  W[i]=Wlast[i];
 	  if (!rur){
 	    if (debug_infolevel)
-	      CERR << CLOCK() << " stable, clearing denominators " << endl;
+	      CERR << CLOCK()*1e-6 << " stable, clearing denominators " << endl;
 	    cleardeno(W[i]); // clear denominators
 	  }
 	  ++rechecked;
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " end rational reconstruction " << endl;
+	    CERR << CLOCK()*1e-6 << " end rational reconstruction " << endl;
 	  // now check if W[i] is a Groebner basis over Q, if so it's the answer
 	  if (rur){ 
 	    // a final check could be performed by replacing
@@ -12947,7 +13370,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    continue; // in_gbasis(W[i],G,0,true);
 	  }
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " end final check " << endl;
+	    CERR << CLOCK()*1e-6 << " end final check " << endl;
 	  swap(res,W[i]);
 	  mpz_clear(zd);
 	  mpz_clear(zu);
@@ -12970,16 +13393,16 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #else
 	for (i=0;i<V.size();++i){
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " i= " << i << " begin chinese remaindering" << endl;
+	    CERR << CLOCK()*1e-6 << " i= " << i << " begin chinese remaindering" << endl;
 	  int r=chinrem(V[i],P[i],gbmod,p.val,poly8tmp);
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " end chinese remaindering" << endl;
+	    CERR << CLOCK()*1e-6 << " end chinese remaindering" << endl;
 	  if (r==-1){
 	    ok=false;
 	    break;
 	  }
 	  if (r==0){
-	    CERR << CLOCK() << " leading terms do not match with reconstruction " << i << " modulo " << p << endl;
+	    CERR << CLOCK()*1e-6 << " leading terms do not match with reconstruction " << i << " modulo " << p << endl;
 	    continue;
 	  }
 	  // found one! V is already updated, update W
@@ -13003,7 +13426,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	      if (!fracmod(V[i][jpos],P[i],
 			   zd,zd1,zabsd1,zu,zu1,zur,zq,zr,zsqrtm,ztmp,
 			   poly8tmp)){
-		CERR << CLOCK() << " reconstruction failure at position " << jpos << endl;
+		CERR << CLOCK()*1e-6 << " reconstruction failure at position " << jpos << endl;
 		break;
 	      }
 	      if (afewpolys.size()<=jpos){
@@ -13034,18 +13457,18 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  if (afewpolys!=Wlast[i]){
 	    swap(afewpolys,Wlast[i]);
 	    if (debug_infolevel>0)
-	      CERR << CLOCK() << " unstable mod " << p << " from " << V[i].size() << " reconstructed " << Wlast[i].size() << endl;
+	      CERR << CLOCK()*1e-6 << " unstable mod " << p << " from " << V[i].size() << " reconstructed " << Wlast[i].size() << endl;
 	    break;
 	  }
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " stable, clearing denominators " << endl;
+	    CERR << CLOCK()*1e-6 << " stable, clearing denominators " << endl;
 	  W[i]=Wlast[i];
 	  cleardeno(W[i]); // clear denominators
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " end rational reconstruction " << endl;
+	    CERR << CLOCK()*1e-6 << " end rational reconstruction " << endl;
 	  // now check if W[i] is a Groebner basis over Q, if so it's the answer
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " begin final check, checking " << initial << " generators " << endl;
+	    CERR << CLOCK()*1e-6 << " begin final check, checking " << initial << " generators " << endl;
 	  // first verify that the initial generators reduce to 0
 	  poly8<tdeg_t> tmp0,tmp1,tmp2;
 	  vectpoly8<tdeg_t> wtmp;
@@ -13067,7 +13490,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  }
 	  if (j!=finalchecks){
 	    if (debug_infolevel){
-	      CERR << CLOCK() << " final check failure, retrying with another prime " << endl;
+	      CERR << CLOCK()*1e-6 << " final check failure, retrying with another prime " << endl;
 	      CERR << "Non-zero remainder " << tmp0 << endl;
 	      CERR << "checking res[j], " << j << "<" << initial << endl;
 	      CERR << "res[j]=" << res[j] << endl;
@@ -13102,7 +13525,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  }
 #endif
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " end final check " << endl;
+	    CERR << CLOCK()*1e-6 << " end final check " << endl;
 	  swap(res,W[i]);
 	  mpz_clear(zd);
 	  mpz_clear(zu);
@@ -13124,7 +13547,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	} // end for (i<V.size())
 	if (i==V.size()){
 	  if (debug_infolevel)
-	    CERR << CLOCK() << " creating reconstruction #" << i << endl;
+	    CERR << CLOCK()*1e-6 << " creating reconstruction #" << i << endl;
 	  // not found
 	  V.push_back(gb);
 	  W.push_back(vectpoly8<tdeg_t>()); // no reconstruction yet, wait at least another prime
@@ -13157,6 +13580,13 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #undef INT128 // it's slower!
   struct tdeg_t14 {
     bool vars64() const { return false;}
+    int hash_index(void * ptr_) const {
+      // if (!ptr_)
+	return -1;
+    }
+    bool add_to_hash(void *ptr_,int no) const {
+      return false;
+    }
     void dbgprint() const;
     // data
     union {
@@ -13245,9 +13675,9 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #ifdef INT128
     * (uint128_t *) &x += * (const uint128_t *) &y;
 #else
-    ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y;
-    xtab[0]+=ytab[0];
-    xtab[1]+=ytab[1];
+    // ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y;
+    *((ulonglong *)&x) += *((ulonglong *)&y);
+    ((ulonglong *)&x)[1] += ((ulonglong *)&y)[1];
 #endif
     if (x.tab[0]>=128){
       gensizeerr("Degree too large");
@@ -13266,10 +13696,12 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #ifdef INT128
     * (uint128_t *) &res = * (const uint128_t *) &x + * (const uint128_t *) &y;
 #else
-    ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y,*ztab=(ulonglong *)&res;
-    ztab[0]=xtab[0]+ytab[0];
-    ztab[1]=xtab[1]+ytab[1];
+    // ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y,*ztab=(ulonglong *)&res;
+    *((ulonglong *)&res)=*((ulonglong *)&x)+*((ulonglong *)&y);
+    ((ulonglong *)&res)[1]=((ulonglong *)&x)[1]+((ulonglong *)&y)[1];
 #endif
+    if (res.tab[0]>=128)
+      gensizeerr("Degree too large");
   }
   tdeg_t14 operator - (const tdeg_t14 & x,const tdeg_t14 & y){ 
     tdeg_t14 res;
@@ -13410,7 +13842,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   uint128_t mask4=(((uint128_t) mask2)<<64)|mask2;
 #endif
   
-  bool tdeg_t_all_greater(const tdeg_t14 & x,const tdeg_t14 & y,order_t order){
+  inline bool tdeg_t_all_greater(const tdeg_t14 & x,const tdeg_t14 & y,order_t order){
 #ifdef INT128
     return !((* (const uint128_t *) &x - * (const uint128_t *) &y) & mask4);
 #else
@@ -13531,6 +13963,13 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 
   struct tdeg_t11 {
     bool vars64() const { return false;}
+    int hash_index(void * ptr_) const {
+      // if (!ptr_)
+	return -1;
+    }
+    bool add_to_hash(void *ptr_,int no) const {
+      return false;
+    }
     void dbgprint() const;
     // data
     union {
@@ -13759,7 +14198,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     return !tdeg_t_greater(y,x,order); // total order
   }
 
-  bool tdeg_t_all_greater(const tdeg_t11 & x,const tdeg_t11 & y,order_t order){
+  inline bool tdeg_t_all_greater(const tdeg_t11 & x,const tdeg_t11 & y,order_t order){
     ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y;
     if ((xtab[0]-ytab[0]) & 0x8000800080008000ULL)
       return false;
@@ -13882,6 +14321,13 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   
   struct tdeg_t15 {
     bool vars64() const { return false;}
+    int hash_index(void * ptr_) const {
+      // if (!ptr_)
+	return -1;
+    }
+    bool add_to_hash(void *ptr_,int no) const {
+      return false;
+    }
     void dbgprint() const;
     // data
     union {
@@ -14711,7 +15157,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 			 //order.o==_REVLEX_ORDER /* zdata*/,
 			 1 || !rur /* zdata*/,
 			 rur,contextptr,eliminate_flag)){
-	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << " Memory " << memory_usage()*1e-6 << "M" << endl;	    
 	    get_newres(res,newres,v);
 	    debug_infolevel=save_debuginfo; return true;
 	  }
@@ -14721,14 +15167,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    vector<zinfo_t<tdeg_t14> > f4buchberger_info;
 	    f4buchberger_info.reserve(256);
 	    if (zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false /* 1 mod only */)){
-	      *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	      *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" <<endl;
 	      get_newres(resmod,newres,v,G);
 	      debug_infolevel=save_debuginfo; return true;
 	    }
 	  }
 	  else {
 	    if (in_gbasisf4buchbergermod<tdeg_t14>(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,0,false)){
-	      *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	      *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" <<endl;
 	      get_newres(res,newres,v,G);
 	      debug_infolevel=save_debuginfo; return true;
 	    }
@@ -14742,7 +15188,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  vectpoly_2_vectpoly8(w,order,res);
 #endif
 	  if (in_gbasis(res,G,env,true)){
-	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << endl;
 	    get_newres(res,newres,v,G);
 	    debug_infolevel=save_debuginfo; return true;
 	  }
@@ -14766,9 +15212,9 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       if (modularalgo && (!env || env->modulo==0 || env->moduloon==false)){
 	if (mod_gbasis(res,modularcheck,
 		       //order.o==_REVLEX_ORDER /* zdata*/,
-		       !rur /* zdata*/,
+		       1 || !rur /* zdata*/,
 		       rur,contextptr,eliminate_flag)){
-	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << endl;
 	  get_newres(res,newres,v);
 	  debug_infolevel=save_debuginfo; return true;
 	}
@@ -14778,14 +15224,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  vector<zinfo_t<tdeg_t11> > f4buchberger_info;
 	  f4buchberger_info.reserve(256);
 	  if (zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false /* 1 mod only */)){
-	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << endl;
 	    get_newres(resmod,newres,v,G);
 	    debug_infolevel=save_debuginfo; return true;
 	  }
 	}
 	else {
 	  if (in_gbasisf4buchbergermod<tdeg_t11>(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,0,false)){
-	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << endl;
 	    get_newres(res,newres,v,G);
 	    debug_infolevel=save_debuginfo; return true;
 	  }
@@ -14799,7 +15245,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	vectpoly_2_vectpoly8(w,order,res);
 #endif
 	if (in_gbasis(res,G,env,true)){
-	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << endl;
 	  get_newres(res,newres,v,G);
 	  debug_infolevel=save_debuginfo; return true;
 	}
@@ -14822,9 +15268,9 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       if (modularalgo && (!env || env->modulo==0 || env->moduloon==false)){
 	if (mod_gbasis(res,modularcheck,
 		       //order.o==_REVLEX_ORDER /* zdata*/,
-		       !rur /* zdata*/,
+		       1 || !rur /* zdata*/,
 		       rur,contextptr,eliminate_flag)){
-	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << endl;
 	  newres=vectpoly(res.size(),polynome(v.front().dim,v.front()));
 	  for (unsigned i=0;i<res.size();++i)
 	    res[i].get_polynome(newres[i]);
@@ -14837,7 +15283,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  vector<zinfo_t<tdeg_t15> > f4buchberger_info;
 	  f4buchberger_info.reserve(256);
 	  zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false/* 1 mod only*/);	
-	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << endl;
 	  newres=vectpoly(G.size(),polynome(v.front().dim,v.front()));
 	  for (unsigned i=0;i<G.size();++i)
 	    resmod[G[i]].get_polynome(newres[i]);
@@ -14880,7 +15326,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 		     //order.o==_REVLEX_ORDER /* zdata*/,
 		     !rur /* zdata*/,
 		     rur,contextptr,eliminate_flag)){
-	*logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	*logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << endl;
 	newres=vectpoly(res.size(),polynome(v.front().dim,v.front()));
 	for (unsigned i=0;i<res.size();++i)
 	  res[i].get_polynome(newres[i]);
@@ -14893,7 +15339,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	vector<zinfo_t<tdeg_t64> > f4buchberger_info;
 	f4buchberger_info.reserve(256);
 	zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false/* 1 mod only*/);	
-	*logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
+	*logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << endl;
 	newres=vectpoly(G.size(),polynome(v.front().dim,v.front()));
 	for (unsigned i=0;i<G.size();++i)
 	  resmod[G[i]].get_polynome(newres[i]);
@@ -14950,10 +15396,10 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
       }
       if (debug_infolevel>1)
-	COUT << CLOCK() << " begin reduce poly no " << i << " #monomials " << red[i].coord.size() << endl;
+	COUT << CLOCK()*1e-6 << " begin reduce poly no " << i << " #monomials " << red[i].coord.size() << endl;
       reduce(red[i],gb,G,-1,quo,rem,TMP1,TMP2,env);
       if (debug_infolevel>1)
-	COUT << CLOCK() << " end reduce poly no " << i << " #monomials " << rem.coord.size() << endl;
+	COUT << CLOCK()*1e-6 << " end reduce poly no " << i << " #monomials " << rem.coord.size() << endl;
       get_index(rem.coord.back().u,idx,order,dim);
       if (is_zero(idx))
 	c_out=rem.coord.back().g;
@@ -14974,6 +15420,11 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     return true;
   }
 
+#ifdef GIAC_RHASH
+  inline size_t tdeg_t64_hash_function_object::operator () (const tdeg_t64 & v) const
+  { return v.hash; }
+#endif
+  
 #endif // CAS38_DISABLED
 
 #ifndef NO_NAMESPACE_GIAC

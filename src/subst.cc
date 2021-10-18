@@ -1995,6 +1995,7 @@ namespace giac {
     return tsimplify_common(g,contextptr);
   }
   gen tsimplify_noexpln(const gen & e,int s1,int s2,GIAC_CONTEXT){
+    int te=taille(e,65536);
     gen g=e;
     if (s1>1)
       g=trig2exp(e,contextptr);
@@ -2004,6 +2005,9 @@ namespace giac {
     complex_mode(true,contextptr);
     g=tsimplify_common(g,contextptr);
     complex_mode(b,contextptr);
+    int tg=taille(g,8*te); // since sin/cos are coded as exp(i*...)
+    if (tg>=8*te)
+      return e;
     return g;
   }
   gen _tsimplify(const gen & args,GIAC_CONTEXT){
@@ -2366,7 +2370,16 @@ namespace giac {
       int vs=int(v.size());
       if ( (vs==2 || vs==3) && args.subtype==_SEQ__VECT && args[1].type==_VECT && !ckmatrix(args) && !ckmatrix(args._VECTptr->back())){
 	// simplify with side relations
+#ifdef NO_STDEXCEPT
 	return _greduce(args,contextptr);
+#else
+	try {
+	  return _greduce(args,contextptr);
+	}
+	catch(std::runtime_error & e){ 
+	  *logptr(contextptr) << e.what() << endl;
+	}
+#endif
       }
       return apply(args,_simplify,contextptr);
     }
@@ -2379,7 +2392,14 @@ namespace giac {
     res=args;
     if (!sub1.empty())
       res=subst(res,sub1,sub2,false,contextptr);
+#ifdef NO_STDEXCEPT
     res=simplify(res,contextptr);
+#else
+    try {
+      res=simplify(res,contextptr);
+    } catch (...){
+    }
+#endif
     if (!sub1.empty())
       res=subst(res,sub2,sub1,false,contextptr);
     calc_mode(c,contextptr);

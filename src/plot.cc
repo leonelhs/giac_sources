@@ -1215,7 +1215,8 @@ namespace giac {
       context * newcontextptr= (context *) contextptr;
       int protect=giac::bind(vecteur(1,xmin),localvar,newcontextptr);
       vecteur chemin;
-      for (double i=xmin;i<xmax;i+= step){
+      double i=xmin;
+      for (;i<xmax;i+= step){
 	// yy=evalf_double(subst(f,vars,i,false,contextptr),1,contextptr);
 	local_sto_double(i,*vars._IDNTptr,newcontextptr);
 	// vars._IDNTptr->localvalue->back()._DOUBLE_val =i;
@@ -1276,7 +1277,7 @@ namespace giac {
       if (!chemin.empty()){
 	if (debug_infolevel)
 	  CERR << "curve " << chemin.size() << " " << chemin.front() << " .. " << chemin.back() << endl;
-	res.push_back(pnt_attrib(symb_curve(gen(makevecteur(vars+cst_i*f,vars,xmin,xmax,showeq),_PNT__VECT),gen(chemin,_GROUP__VECT)),attributs.empty()?color:attributs,contextptr));
+	res.push_back(pnt_attrib(symb_curve(gen(makevecteur(vars+cst_i*f,vars,xmin,i-step,showeq),_PNT__VECT),gen(chemin,_GROUP__VECT)),attributs.empty()?color:attributs,contextptr));
       }
       leave(protect,localvar,newcontextptr);
 #ifndef WIN32
@@ -3480,7 +3481,8 @@ namespace giac {
 	b=vector2vecteur(*b._VECTptr);
       if (b.type==_VECT && b._VECTptr->size()==2)
 	b=b._VECTptr->front()+cst_i*b._VECTptr->back();
-      b=symbolic(at_pnt,gen(makevecteur(gen(makevecteur(0,b),_LINE__VECT),attributs[0]),_PNT__VECT));
+      if (b.type!=_VECT)
+	b=symbolic(at_pnt,gen(makevecteur(gen(makevecteur(0,b),_LINE__VECT),attributs[0]),_PNT__VECT));
     }
     if (s>2){
       b=remove_at_pnt(b);
@@ -3497,7 +3499,7 @@ namespace giac {
       else
 	if (a.type==_VECT)
 	  a.subtype=_POINT__VECT;
-      d=gen(makevecteur(zero,b),_LINE__VECT);
+      d=gen(makevecteur(zero*b,b),_LINE__VECT);
       b=a;
     }
     else {
@@ -5080,6 +5082,25 @@ namespace giac {
       if (g._SYMBptr->feuille.type==_VECT && g._SYMBptr->feuille._VECTptr->size()>=3)
 	return normal(((*g._SYMBptr->feuille._VECTptr)[2]-(*g._SYMBptr->feuille._VECTptr)[1])*(rayon*conj(rayon,contextptr))/2,contextptr);
       return cst_pi*normal(rayon*conj(rayon,contextptr),contextptr);
+    }
+    if (g.is_symb_of_sommet(at_curve)){
+      gen f=g._SYMBptr->feuille;
+      if (f.type==_VECT && !f._VECTptr->empty())
+	f=f._VECTptr->front();
+      if (f.type==_VECT && f._VECTptr->size()>=4){
+	vecteur v=*f._VECTptr;
+#if 0
+	// workaround for ellipse because plotparam does evalf on range
+	if (is_zero(v[2]))
+	  v[2]=zero;
+	if (v[3].type==_DOUBLE_ && v[3]==2*M_PI)
+	  v[3]=cst_two_pi;
+#endif
+	gen x,y;
+	reim(v[0],x,y,contextptr);
+	y=-y*derive(x,v[1],contextptr);
+	return _integrate(makesequence(y,v[1],v[2],v[3]),contextptr);
+      }
     }
     if (g.type!=_VECT || g.subtype==_POINT__VECT || g._VECTptr->empty())
       return 0; // so that a single point has area 0
@@ -8681,11 +8702,11 @@ namespace giac {
       gen m,tmin,tmax; double T=1e300;
       if (find_curve_parametrization(ac?remove_at_pnt(aa):a,m,va[1],T,tmin,tmax,false,contextptr)){
 	return equationintercurve(m,va[1],b,vb[0],vb[1],contextptr);
-	va[0]=m;
+	// va[0]=m;
       }
       if (find_curve_parametrization(bc?remove_at_pnt(bb):b,m,vb[1],T,tmin,tmax,false,contextptr)){
 	return equationintercurve(m,vb[1],a,va[0],va[1],contextptr);
-	vb[0]=m;
+	// vb[0]=m;
       }
       if (va[1]==vb[1]){
 	gen newvb(va[1].print(contextptr)+print_INT_(std::rand()),contextptr);
@@ -11538,7 +11559,7 @@ namespace giac {
     io_graph(old_iograph,contextptr);
 #endif // WIN32
     return res; // gen(res,_SEQ__VECT);
-    return zero;
+    // return zero;
 #endif // RTOS_THREADX
   }
 
@@ -13951,7 +13972,7 @@ namespace giac {
 	gen res=w[0]/w[2]+cst_i*w[1]/w[2];
 	res=recursive_normal(res,contextptr);
 	return symb_pnt(res,contextptr);
-	return gensizeerr(contextptr);
+	//return gensizeerr(contextptr);
       }
       A1=D[0]-c;
       A2=D[1]-c;
@@ -14126,7 +14147,7 @@ namespace giac {
       gen e((c-a)/(c-b)+(d-a)/(d-b));
       return is_zero(simplify(e,contextptr),contextptr);
     } else return false; // setsizeerr(contextptr);
-    return 0;
+    // return 0;
   }
   gen _est_harmonique(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
@@ -14426,7 +14447,7 @@ namespace giac {
     vecteur w=makevecteur(v0,v1,v2);
     w.push_back(eval(symb_sto(d,v[3]),contextptr));
     return gen(w,_GROUP__VECT);
-    return gensizeerr(gettext("div_harmonique)"));
+    // return gensizeerr(gettext("div_harmonique)"));
   }
   static const char _div_harmonique_s []="harmonic_division";
   static define_unary_function_eval_quoted (__div_harmonique,&giac::_div_harmonique,_div_harmonique_s);

@@ -5777,7 +5777,7 @@ namespace giac {
       return a * (*b._POLYptr);        
     case _MOD__MOD:
 #ifdef SMARTPTR64
-      modmul( (ref_modulo *) (* ((longlong * ) &a) >> 16),(ref_modulo *) (* ((longlong * ) &b) >> 16) );
+      return modmul( (ref_modulo *) (* ((longlong * ) &a) >> 16),(ref_modulo *) (* ((longlong * ) &b) >> 16) );
 #else
       return modmul(a.__MODptr,b.__MODptr);
 #endif
@@ -9102,7 +9102,7 @@ namespace giac {
     vecteur vres;
     const_iterateur it=varg.begin(),itend=varg.end();    
     for (;it!=itend;++it){
-      if (it->type<_POLY)
+      if (it->type<_POLY || it->type==_FRAC)
 	number=number+(*it);
       else
 	vres.push_back(terme2unitaire(*it,sorted,contextptr));

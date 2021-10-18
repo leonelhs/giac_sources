@@ -61,8 +61,8 @@ mettez-le &agrave; jour pour avoir de bonnes performances, il faut
 aussi avoir environ 300M de RAM disponible)
 à partir du code du CAS (12M) qui est téléchargé
 une fois. Le prix à payer pour cette simplicité
-est la vitesse, le code est au moins 2 fois plus lent, parfois plus
-de 15 fois plus lent (par exemple pour le calcul de bases de
+est la vitesse, le code est au moins 2 fois plus lent, parfois
+beaucoup plus (par exemple 8 fois plus lent pour le calcul de bases de
 Groebner comme cyclic7).
 La plupart du temps, cela n'est pas vraiment
 genant (ce qui justifierait une interface plus conviviale...), mais
@@ -192,28 +192,18 @@ title="Montre ou cache des informations sur la conception de Xcas dans votre nav
       </th>
       <td>
 	
-<button title="Cliquer ici pour ajouter &agrave; la session courante le contenu d'une session sauvegard&eacute;e" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Charger</button>
+<button title="Cliquer ici pour ajouter &agrave; la session courante le contenu d'une session sauvegard&eacute;e" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Charge</button>
 <form id="loadfile" style="display:none">
 <input id="loadfileinput" accept=".xw" type="file" onchange="UI.loadfile(this.files);document.getElementById('loadfile').style.display='none'">
 <input type="text" value="annuler" onclick="form.style.display='none'">
 <input type="submit" value="ok" style="display:none">
 </form>
     <span id="history1" style="visibility:hidden">
-<button title="Cliquer ici pour publier la session en HTML avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(1);'>Exporter</button>
-<button title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(0);'>Sauver</button>
+<button title="Cliquer ici pour publier la session en HTML avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(1);'>Export</button>
+<button title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(0);'>Sauve</button>
 <textarea id="outputfilename" class="filenamecss" style="font-size:large" title="Nom de sauvegarde du fichier. Avec Firefox, pour pouvoir faire plusieurs sauvegardes sous le meme nom, cocher Toujours demander... dans Pr&eacute;f&eacute;rences, G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.">session</textarea>
 <span id='thelink'></span>
     </span>
-    </td>
-    <td id="history2" style="visibility:hidden">
-      &nbsp;&nbsp;<b>Historique</b>
-      <button onclick="UI.exec(document.getElementById('mathoutput'),0)"
-title="Executer toutes les commandes de
-l'historique">Ex&eacute;cuter</button>
-<button onclick="UI.show_answers(true)" title="Montrer les r&eacute;ponses">+</button>
-<button onclick="UI.show_answers(false)" title="Cacher les r&eacute;ponses">-</button>
-<button onclick="UI.erase_all(document.getElementById('mathoutput'))"
-title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</button>
     </td>
   </tr>
 <tr>
@@ -222,27 +212,45 @@ title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</butto
   onclick="if(document.getElementById('help').style.display=='none')
   document.getElementById('help').style.display='block';
   else document.getElementById('help').style.display='none';"
-title="Montrer ou cacher le tutoriel">Tutoriel</button>
+title="Montrer ou cacher le tutoriel">Tuto</button>
 <button 
   onclick="document.getElementById('manuels').style.display='block';"
 title="Montrer ou cacher la liste des manuels">Manuels</button>
-    <button onclick="document.getElementById('config').style.display='inline'" title="Permet de modifier la configuration">Configurer</button>
-    <span id="history3" style="visibility:hidden">
-&nbsp;&nbsp;<b>Corbeille</b>
-<button onclick="UI.restoretrash()" title="Restaurer les niveaux plac&eacute;s dans la corbeille">Restaurer</button>
-<button onclick="UI.emptytrash()" title="Vider la
-    corbeille">Vider</button>
-    </span>
+    <button onclick="document.getElementById('config').style.display='inline'" title="Permet de modifier la configuration">Config</button>
 </td>
-<td id="history4" style="visibility:hidden">
-&nbsp;&nbsp;<b>Variables</b>
-<button onclick="UI.addhelp(' ','VARS(1)')" title="Commande pour afficher la liste des variables">Lister</button>
-<button onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Effacer le contenu de toutes les variables">Effacer</button>
-  <b>Aide</b>  <button onclick="helpoutput.innerHTML=''">Vider</button>
-  </td>
 </tr>
 </table>
-  
+
+<table>
+  <tr>
+    <td id="history2" style="display:none">
+      <b>Historique</b>
+      <button onclick="UI.exec(document.getElementById('mathoutput'),0)"
+title="Executer toutes les commandes de
+l'historique">Exec</button>
+<button onclick="UI.show_answers(true)" title="Montrer les r&eacute;ponses">+</button>
+<button onclick="UI.show_answers(false)" title="Cacher les r&eacute;ponses">-</button>
+<button onclick="UI.erase_all(document.getElementById('mathoutput'))"
+title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</button>
+    </td>
+  </tr>
+  <tr>
+    <td id="history3" style="display:none">
+<b>Corbeille</b>
+<button onclick="UI.restoretrash()" title="Restaurer les niveaux plac&eacute;s dans la corbeille">Restaure</button>
+<button onclick="UI.emptytrash()" title="Vider la corbeille">Vide</button>
+    </td>
+  </tr>
+  <tr>
+<td id="history4" style="display:none">
+<b>Variables</b>
+<button onclick="UI.addhelp(' ','VARS(1)')" title="Commande pour afficher la liste des variables">Liste</button>
+<button onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Effacer le contenu de toutes les variables">Efface</button>
+&nbsp;  <b>Aide</b>  <button onclick="helpoutput.innerHTML=''">Vide</button>
+  </td>
+  </tr>
+</table>
+
 <div id="divhelpoutput" style="max-height: 200px; overflow:auto">
 <table id="helpoutput" title="Aide"
   style="max-width:1000px "></table>
@@ -254,17 +262,86 @@ title="Montrer ou cacher la liste des manuels">Manuels</button>
 </div>
 
 
+<table border="0" align="center" summary="" id="keyboardfunc" style="display:none">
+  <tr>
+    <td>
+      <input type="button" style="width:50;height:30"
+  name="add_simplify" value="simplify"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'simplify(')" title="Tentative de simplifier une expression, par exemple simplify(sin(3x)/sin(x)). Essayez une commande comme ratnormal, normal ou de reecriture si simplify echoue.">        
+      <input type="button" style="width:50;height:30"
+  name="add_normal" value="normal"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'normal(')" title="normal developpe une expression, par exemple normal((x+1)^6)">        
+      <input type="button" style="width:50;height:30"
+  name="add_factor" value="factor"
+      onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'factor(')" title="Factorisation, par
+  exemple factor(x^4-1). Utiliser cfactor pour factoriser sur C">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:50;height:30" name="add_solve"
+  value="solve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'solve(')"
+  title="r&eacute;soudre une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables, par exemple solve(x^4-1=0) ou solve(y^3-1,y) ou solve([x^2-y^2=1,x+y=3],[x,y]). Utiliser csolve pour r&eacute;soudre sur C.">        
+      <input type="button" style="width:50;height:30"
+  name="add_fsolve" value="fsolve"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'fsolve(')" title="fsolve permet de resoudre de maniere approchee une equation ou un systeme, par exemple fsolve(cos(x)=x,x=0..5) ou fsolve(cos(x),x=0.0)">        
+      <input type="button" style="width:50;height:30"
+  name="add_desolve" value="desolve"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'desolve(')" title="Resolution d'une equation differentielle, par exemple desolve(y''+y=0), desolve(y'+y=0,y(0)=1)">        
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:28;height:30" name="add_sum"
+  value="∑" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sum(')" title="Somme d'une expression pour une variable entre deux bornes, par exemple ∑(k,k,1,n) ou ∑(1/n^2,n,1,inf)">  
+      <input type="button" style="width:28;height:30" name="add_diff"
+  value="∂" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'diff(')" title="Derivee d'une expression. Pour une fonction f, par exemple f(x):=sin(x^2), la derivee de f est f', par exemple g:=f' ou f'(2)">        
+      <input type="button" style="width:28;height:30"
+  name="add_integrate" value="∫" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'int(')"
+  title="Calcul d'integrales, par exemple ∫(x^2*sin(x)*exp(x),x) ou ∫(1/(x^4+1),x,0,inf)">        
+      <input type="button" style="width:50;height:30" name="add_limit"
+      value="limit" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'limit(')" title="limite d'une expression lorsqu'une variable tend vers une limite, par exemple limit(sin(x)/x,x,0). Utiliser un 4eme parametre egal a 1 ou -1 pour une limite a droite ou a gauche.">        
+      <input type="button" style="width:50;height:30"
+  name="add_series" value="series"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(')" title="series calcule le developpement de Taylor d'une expression lorsqu'une variable tend vers un point, par exemple series(sin(x),x=0,5,polynom). Si on omet polynom un terme de reste est renvoye. On peut specifier un developpement a droite ou a gauche en ajoutant 1 ou -1 avant polynom">        
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:55;height:30" name="add_plot"
+  value="plotfunc" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotfunc(')"
+  title="Graphe d'une expression, par exemple plotfunc(sin(x),x=-5..5,xstep=0.1)">  
+      <input type="button" style="width:55;height:30"
+  name="add_plotparam" value="param"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotparam(')" title="Graphe d'une courbe en parametriques, par exemple plotparam([cos(t),sin(t)],t=0..2*pi,tstep=0.1)">  
+      <input type="button" style="width:55;height:30"
+  name="add_plotpolar" value="polar"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotpolar(')" title="Graphe d'une courbe en polaires, par exemple plotpolar(exp(r),r=-3..3)">  
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:28;height:30" name="add_inv"
+  value="1/" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'inv(')" title="inverse">        
+      <input type="button" style="width:45;height:30" name="add_log10"
+  value="log10" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'log10(')" title="logarithme a base 10">        
+      <input type="button" style="width:50;height:30"
+  name="add_purge" value="purge"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'purge(')" title="Efface le contenu d'une ou plusieurs variables, par exemple purge(a) ou purge(a,b,c)">         <input type="button" style="width:40;height:30"
+  name="add_rsolve" value="rsolve"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'rsolve(')" title="Recherche de l'expression du terme general d'une suite recurrente, par exemple rsolve(u(n+2)=u(n+1)+u(n),u(n),[u(0)=1,u(1)=1])">             
+    </td>
+  </tr>
+</table>
+
 <table border="0" align="center" summary="" id="keyboard" style="display:none">
   <tr>
     <td>  
       <input type="button" style="width:30;height:30"
   onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,-1)" value=" ← "
   title="Deplace le curseur vers la gauche (utile pour les tablettes)">
-      <input type="button" style="width:30;height:30"
-  onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,1)" value=" → "
-  title="Deplace le curseur vers la droite (utile pour les tablettes)">
-    </td>
-    <td>
+      <input type="button" style="width:30;height:30" name="add_x" value="x" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'x')" title="x">  
       <input type="button" style="width:30;height:30" name="add_,"
   value="," onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,',')" title="La virgule est utilisee comme separateur des composantes d'un vecteur.">  
     </td>
@@ -283,32 +360,14 @@ title="Montrer ou cacher la liste des manuels">Manuels</button>
       <input type="button" style="width:30;height:30" name="add_/"
   value="/" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'/')" title="Division. // pour faire un commentaire">  
     </td>
-    <td>
-      <input type="button" style="width:30;height:30" name="add_sqrt"
-  value="√" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sqrt(')" title="racine carree">        
-      <input type="button" style="width:30;height:30" name="add_sin"
-  value="sin" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sin(')" title="fonction sinus, taper asin pour arcinus">        
-    </td>
-    <td>
-      <input type="button" style="width:50;height:30"
-  name="add_factor" value="factor"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'factor(')" title="Factorisation, par exemple factor(x^4-1). Utiliser cfactor pour factoriser sur C">        
-      <input type="button" style="width:50;height:30" name="add_solve"
-  value="solve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'solve(')"
-  title="r&eacute;soudre une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables, par exemple solve(x^4-1=0) ou solve(y^3-1,y) ou solve([x^2-y^2=1,x+y=3],[x,y]). Utiliser csolve pour r&eacute;soudre sur C.">        
-      <input type="button" style="width:50;height:30" name="add_limit"
-  value="limit" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'limit(')" title="limite d'une expression lorsqu'une variable tend vers une limite, par exemple limit(sin(x)/x,x,0). Utiliser un 4eme parametre egal a 1 ou -1 pour une limite a droite ou a gauche.">        
-      <input type="button" style="width:55;height:30" name="add_plot"
-  value="plotfunc" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotfunc(')"
-  title="Graphe d'une expression, par exemple plotfunc(sin(x),x=-5..5,xstep=0.1)">  
-    </td>
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:30;height:30" name="select_button" value="sel" onmousedown="event.preventDefault()" onClick="UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Selectionne la ligne de commande">  
-      <input type="button" style="width:30;height:30" name="add_x" value="x" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'x')" title="x">  
-    </td>
-    <td>
+      <input type="button" style="width:30;height:30"
+  onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,1)" value=" → "
+  title="Deplace le curseur vers la droite (utile pour les tablettes)">
+      <input type="button" style="width:30;height:30" name="add_y"
+  value="y" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'y')" title="y">  
       <input type="button" style="width:30;height:30"
       name="add_semi" value=";" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,' ;')"
   title="Le point virgule permet de separer plusieurs commandes pour les executer en une fois, par exemple dans un programme.">
@@ -327,37 +386,15 @@ title="Montrer ou cacher la liste des manuels">Manuels</button>
       <input type="button" style="width:30;height:30" name="add_6" value="6" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'6')">  
       <input type="button" style="width:30;height:30" name="add_*" value="*" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'*')">  
     </td>
-    <td>
-      <input type="button" style="width:30;height:30" name="add_exp"
-  value="exp" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'exp(')" title="fonction exponentielle">        
-      <input type="button" style="width:30;height:30" name="add_cos"
-  value="cos" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'cos(')" title="fonction cosinus, taper acos pour arccosinus">        
-    </td>
-    <td>
-      <input type="button" style="width:50;height:30"
-  name="add_normal" value="normal"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'normal(')" title="normal developpe une expression, par exemple normal((x+1)^6)">        
-      <input type="button" style="width:50;height:30"
-  name="add_fsolve" value="fsolve"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'fsolve(')" title="fsolve permet de resoudre de maniere approchee une equation ou un systeme, par exemple fsolve(cos(x)=x,x=0..5) ou fsolve(cos(x),x=0.0)">        
-      <input type="button" style="width:50;height:30"
-  name="add_series" value="series"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(')" title="series calcule le developpement de Taylor d'une expression lorsqu'une variable tend vers un point, par exemple series(sin(x),x=0,5,polynom). Si on omet polynom un terme de reste est renvoye. On peut specifier un developpement a droite ou a gauche en ajoutant 1 ou -1 avant polynom">        
-      <input type="button" style="width:55;height:30"
-  name="add_plotparam" value="plotparam"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotparam(')" title="Graphe d'une courbe en parametriques, par exemple plotparam([cos(t),sin(t)],t=0..2*pi,tstep=0.1)">  
-    </td>
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:30;height:30" name="copy_button" value="col."
+      <input type="button" style="width:30;height:30" name="copy_button" value="col"
       onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.selection)" title="Copie la derni&egrave;re ligne de commande s&eacute;lectionn&eacute;e vers le focus.">  
-      <input type="button" style="width:30;height:30" name="add_y"
-  value="y" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'y')" title="y">  
-    </td>
-    <td>
+      <input type="button" style="width:30;height:30" name="add_z"
+  value="z" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'z')" title="z">  
       <input type="button" style="width:30;height:30" name="add_:="
-  value=":=" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,' :=')" title=":= effectue une affectation, par exemple a:=pi/2; sin(a)">
+  value=":" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,' :=')" title=":= effectue une affectation, par exemple a:=pi/2; sin(a)">
     </td>
     <td>
       <input type="button" style="width:30;height:30"
@@ -367,32 +404,12 @@ title="Montrer ou cacher la liste des manuels">Manuels</button>
       value="}" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'}')" title="} est un delimiteur de fin de bloc en programmation">
     </td>
     <td>
-      <input type="button" style="width:30;height:30" name="add_i"
-  value="i" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'i')" title="Nombre complexe racine carree de -1">
+      <input type="button" style="width:30;height:30" name="add_∞"
+  value="∞" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'∞')" title="+∞. Utiliser infinity pour l'infini complexe.">
       <input type="button" style="width:30;height:30" name="add_1" value="1" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'1')">  
       <input type="button" style="width:30;height:30" name="add_2" value="2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'2')">  
       <input type="button" style="width:30;height:30" name="add_3" value="3" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'3')">  
       <input type="button" style="width:30;height:30" name="add_-" value="-" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'-')">  
-    </td>
-    <td>
-      <input type="button" style="width:30;height:30" name="add_ln"
-  value="ln" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'ln(')" title="logarithme neperien">        
-      <input type="button" style="width:30;height:30" name="add_tan"
-  value="tan" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tan(')" title="fonction tangente, taper atan pour arctangente">        
-    </td>    
-    <td>
-      <input type="button" style="width:50;height:30"
-  name="add_simplify" value="simplify"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'simplify(')" title="Tentative de simplifier une expression, par exemple simplify(sin(3x)/sin(x)). Essayez une commande comme ratnormal, normal ou de reecriture si simplify echoue.">        
-      <input type="button" style="width:50;height:30"
-  name="add_desolve" value="desolve"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'desolve(')" title="Resolution d'une equation differentielle, par exemple desolve(y''+y=0), desolve(y'+y=0,y(0)=1)">        
-      <input type="button" style="width:50;height:30"
-  name="add_purge" value="purge"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'purge(')" title="Efface le contenu d'une ou plusieurs variables, par exemple purge(a) ou purge(a,b,c)">        
-      <input type="button" style="width:55;height:30"
-  name="add_plotpolar" value="plotpolar"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotpolar(')" title="Graphe d'une courbe en polaires, par exemple plotpolar(exp(r),r=-3..3)">  
     </td>
   </tr>
   <tr>
@@ -401,58 +418,62 @@ title="Montrer ou cacher la liste des manuels">Manuels</button>
   value="⌫" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Efface un caract&egrave;re">  
       <input type="button" style="width:30;height:30" name="add_t"
   value="t" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'t')" title="t">  
-    </td>
-    <td>
       <input type="button" style="width:30;height:30" name="add-=" value="=" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'=')">
     </td>
     <td>
-      <input type="button" style="width:30;height:30" name="add_'" value="'" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\'')">
       <input type="button" style="width:30;height:30" name="add__" value="_" onClick ="UI.insert(UI.focused,'_')">  
+      <input type="button" style="width:30;height:30" name="add_ln"
+  value="ln" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'ln(')" title="logarithme neperien">        
     </td>
     <td>
-      <input type="button" style="width:30;height:30" name="add_∞"
-  value="∞" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'∞')" title="+∞. Utiliser infinity pour l'infini complexe.">
-      <input type="button" style="width:30;height:30" name="add_%" value="%" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'%')" title="Sert a calculer dans Z/nZ, par exemple (3 % 7)^6">  
+      <input type="button" style="width:30;height:30" name="add_i"
+  value="i" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'i')" title="Nombre complexe racine carree de -1">
+      <input type="button" style="width:30;height:30" name="add_^" value="^" onClick ="UI.insert(UI.focused,'^')">  
       <input type="button" style="width:30;height:30" name="add_0" value="0" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'0')">  
       <input type="button" style="width:30;height:30" name="add_." value="." onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'.')">  
       <input type="button" style="width:30;height:30" name="add_+" value="+" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'+')">  
     </td>
+  </tr>
+  <tr>
     <td>
-      <input type="button" style="width:30;height:30" name="add_^" value="^" onClick ="UI.insert(UI.focused,'^')">  
+      <input type="button" style="width:30;height:30" name="select_button" value="sel" onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Selectionne la ligne de commande">  
       <input type="button" style="width:30;height:30" name="add_!" value="!" onClick ="UI.insert(UI.focused,'!')">  
-    </td>    
-    <td>
-      <input type="button" style="width:28;height:30" name="add_inv"
-  value="1/" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'inv(')" title="inverse">        
-      <input type="button" style="width:28;height:30" name="add_sum"
-  value="∑" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sum(')" title="Somme d'une expression pour une variable entre deux bornes, par exemple ∑(k,k,1,n) ou ∑(1/n^2,n,1,inf)">  
-      <input type="button" style="width:40;height:30"
-  name="add_rsolve" value="rsolve"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'rsolve(')" title="Recherche de l'expression du terme general d'une suite recurrente, par exemple rsolve(u(n+2)=u(n+1)+u(n),u(n),[u(0)=1,u(1)=1])">        
-      <input type="button" style="width:28;height:30" name="add_diff"
-  value="∂" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'diff(')" title="Derivee d'une expression. Pour une fonction f, par exemple f(x):=sin(x^2), la derivee de f est f', par exemple g:=f' ou f'(2)">        
-      <input type="button" style="width:28;height:30"
-  name="add_integrate" value="∫" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'int(')"
-  title="Calcul d'integrales, par exemple ∫(x^2*sin(x)*exp(x),x) ou ∫(1/(x^4+1),x,0,inf)">        
-      <input type="button" style="width:45;height:30" name="add_log10"
-  value="log10" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'log10(')" title="logarithme a base 10">        
+      <input type="button" style="width:30;height:30" name="add_sqrt"
+  value="√" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sqrt(')" title="racine carree">        
     </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_'" value="'" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\'')">
+      <input type="button" style="width:30;height:30" name="add_exp"
+  value="e^" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'exp(')" title="fonction exponentielle">        
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_sin"
+  value="sin" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sin(')" title="fonction sinus, taper asin pour arcinus">        
+      <input type="button" style="width:30;height:30" name="add_cos"
+  value="cos" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'cos(')" title="fonction cosinus, taper acos pour arccosinus">        
+      <input type="button" style="width:30;height:30" name="add_tan"
+  value="tg" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tan(')" title="fonction tangente, taper atan pour arctangente">        
+      <input type="button" style="width:30;height:30" name="add_%" value="%" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'%')" title="Sert a calculer dans Z/nZ, par exemple (3 % 7)^6">  
+    </td>    
   </tr>
 </table>
 <br>
   <span contextmenu="cmdmenu" title="F1: aide sur le mot-clef avant le curseur. Clic droit (Firefox): menu des commandes">
- <b>Commande :</b>
  <button style="height:25px" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">?</button>
-&nbsp;&nbsp;
+&nbsp;
   <button onclick="UI.eval_cmdline()" style="color:green; height:25px" title="Evaluer la ligne de commande">
 ok</button>
-&nbsp;&nbsp;
+&nbsp;
   <button style="height:25px" 
-  onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else document.getElementById('keyboard').style.display='inline';UI.focused.focus();"
-  title="Montrer ou cacher le clavier scientifique">clavier</button>
-&nbsp;&nbsp;
+  onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else document.getElementById('keyboard').style.display='inline';if (UI.focusaftereval) UI.focused.focus();"
+  title="Montrer ou cacher le clavier scientifique">123+-</button>
+&nbsp;
+  <button style="height:25px" 
+  onclick="if (document.getElementById('keyboardfunc').style.display=='inline') document.getElementById('keyboardfunc').style.display='none'; else document.getElementById('keyboardfunc').style.display='inline';if (UI.focusaftereval) UI.focused.focus();"
+  title="Montrer ou cacher le clavier scientifique">outils</button>
+&nbsp;
    <button style="height:25px" onclick="cmentree.setValue('//'+cmentree.getValue()); cmentree.focus();" title="Commentaire">//</button>
-&nbsp;&nbsp;
+&nbsp;
 <button style="height:25px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Ajoute un param&egrave;tre modifiable &agrave; la souris">Curseur</button>
 <textarea name="entree" id="entree" size=60></textarea>
 </span>
@@ -664,7 +685,21 @@ ou <b>exporter</b> la feuille de calcul. La sauvegarde
 	  variables locales <textarea id="localvars" rows=1>z</textarea><br>
 	  valeur renvoy&eacute;e <textarea id="returnedvar" rows=1>z</textarea>
       </div>
+      </td>
+    </tr>
+    <tr>
+    <td>
+      <form id="progform" onsubmit="setTimeout(function() {
+      UI.set_locale();
+      Module.print('  '+UI.caseval(prog.value));prog.focus();});
+      return false">
+     <textarea name="prog" id="prog" rows=10 cols=60>
+      </textarea>
+      <input type="submit" value="ok" style="color:green">
+      </form>
     </td>
+  </tr>
+  <tr>
     <td><button onclick="
       if(document.getElementById('canvas').style.display=='none'){
       document.getElementById('boutons_3d').style.display='inherit';
@@ -686,22 +721,26 @@ ou <b>exporter</b> la feuille de calcul. La sauvegarde
     </td>
   </tr>
   <tr>
-    <td>
-      <form id="progform" onsubmit="setTimeout(function() {
-      UI.set_locale();
-      Module.print('  '+UI.caseval(prog.value));prog.focus();});
-      return false">
-      <input type="submit" value="ok">
-     <textarea name="prog" id="prog" rows=10 cols=60>
-      </textarea>
-      </form>
-    </td>
     <td> 
       <canvas id='canvas' width=0 height=0
-  onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"
-  onmouseup="UI.canvas_pushed=false;"
-   >
+      onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"
+      onmouseup="UI.canvas_pushed=false;"   >
       </canvas>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <button onclick="if(document.getElementById('output').style.display=='none'){
+      document.getElementById('output').style.display='inherit';
+      }
+      else {
+      document.getElementById('output').style.display='none';
+      }"
+      >
+      Console</button>
+<textarea class="emscripten" id="output" rows="5"
+cols="80" title="Console"></textarea>
+
     </td>
   </tr>
 </table>
@@ -711,16 +750,6 @@ ou <b>exporter</b> la feuille de calcul. La sauvegarde
 <div class="emscripten">
   <progress value="0" max="100" id="progress" hidden=1></progress>  
 </div>
-
-<button onclick="if(document.getElementById('output').style.display=='none'){
-      document.getElementById('output').style.display='inherit';
-      }
-      else {
-      document.getElementById('output').style.display='none';
-      }"
->Console</button>
-<textarea class="emscripten" id="output" rows="5"
-cols="80" title="Console"></textarea>
 
 
 <menu type="context" id="cmdmenu">
@@ -1225,6 +1254,7 @@ cols="80" title="Console"></textarea>
   
   <script type='text/javascript'>
   var UI ={
+  focusaftereval:true,
   docprefix:"http://www-fourier.ujf-grenoble.fr/%7eparisse/giac/doc/fr/cascmd_fr/",
   base_url:"http://www-fourier.ujf-grenoble.fr/%7eparisse/",
   focused:entree,
@@ -1339,7 +1369,8 @@ cols="80" title="Console"></textarea>
        }
        var pos=fs.search("<textarea");
        if (pos>=0 && pos<fs.length){
-         s += '+'+field.firstChild.value.replace('\n',' ','g')+'&';
+         var tmp=field.firstChild.value.replace('\n',' ','g');
+         s += '+' + tmp.replace('&&',' and ','g') + '&';
          cur=cur.nextSibling;
          continue;
        }
@@ -1375,15 +1406,20 @@ cols="80" title="Console"></textarea>
   },
   set_config_width:function(){
    var form=document.getElementById('config');
-   var hw=form.history_width.value;
+   var hw=window.innerWidth;
+   if (hw>=1000){ hw=hw-50; UI.qa=true; form.qa.checked=true; UI.focusaftereval=true;}
+   if (hw<=500){ UI.qa=false; form.qa.checked=false; UI.focusaftereval=false;}
+   form.history_width.value=hw;
+   form.outdiv_width.value=Math.floor(hw/2);
    document.getElementById('mathoutput').style.maxWidth=hw;
    document.getElementById('divoutput').style.maxHeight=form.history_height.value;
    var w=form.outdiv_width.value;
+   // Module.print(hw);Module.print(w);
    if (w>hw-300) w=hw-300;
    var hi=hw-w-200;
-   if (!UI.qa){ hi=hw-200; w=hi; }
+   if (!UI.qa){ hi=hw-130; w=hi; }
    s='input[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+form.outdiv_height.value+'px;  overflow: auto;}\n.filenamecss {width:120px;height:20px}\n.historyinput {width:'+hi+'px;}';
-   //Module.print(s);
+   // Module.print(s);
    var st=document.getElementById('document_style');
    st.innerHTML=s;
   },
@@ -1412,7 +1448,7 @@ cols="80" title="Console"></textarea>
    // Module.print(s);
    UI.addhelp(' ',s);
    document.getElementById('config').style.display='none';
-   UI.focused.focus();
+   if (UI.focusaftereval) UI.focused.focus();
   },
   savesession:function(i){
     var s;
@@ -1430,9 +1466,9 @@ cols="80" title="Console"></textarea>
   },
   show_history123:function(){
     document.getElementById('history1').style.visibility='visible';
-    document.getElementById('history2').style.visibility='visible';
-    document.getElementById('history3').style.visibility='visible';
-    document.getElementById('history4').style.visibility='visible';
+    document.getElementById('history2').style.display='block';
+    document.getElementById('history3').style.display='block';
+    document.getElementById('history4').style.display='block';
   },
   loadfile:function(oFiles){
     var nFiles = oFiles.length;
@@ -1475,7 +1511,7 @@ cols="80" title="Console"></textarea>
      UI.show_level_answers(cur,b);
      cur=cur.nextSibling;
    }
-   UI.focused.focus();
+   if (UI.focusaftereval) UI.focused.focus();
   },
   is_alphan:function(c){
     return (c>=48 && c<=57) || (c>=65 && c<=91) || (c>=97 && c<=123);
@@ -1517,14 +1553,14 @@ cols="80" title="Console"></textarea>
   },
   addcurseur: function(name,value,mini,maxi,step){
          UI.show_history123();
-   UI.caseval(name+':='+value);
+   UI.caseval('assume('+name+'='+value+')');
    var s=UI.curseurhtml(name,mini,maxi,step,value);
    var out=document.getElementById('mathoutput');
    //Module.print(s);
    out.innerHTML += s;
    UI.link(0);
    UI.scrollatend(out.parentNode);
-   UI.focused.focus();
+   if (UI.focusaftereval) UI.focused.focus();
   },
   exec_history: function(){alert('Historique!');},
   set_focused: function(field){ UI.focused=field;},
@@ -1619,7 +1655,7 @@ cols="80" title="Console"></textarea>
   //var s=UI.caseval('mathml(quote('+value+'),1)');
   //add += '&nbsp;&nbsp;'+s.substr(1,s.length-2);
   //Module.print(value+'  ->  '+out);
-  cmentree.focus();
+  if (UI.focusaftereval) cmentree.focus();
   cmentree.execCommand('selectAll');
   //document.getElementById('canvas').focus();
   var mathoutput=document.getElementById('mathoutput');
@@ -1657,11 +1693,11 @@ cols="80" title="Console"></textarea>
      UI.eval_level(cur);
    cur=cur.nextSibling;
    }
-   UI.focused.focus();
+   if (UI.focusaftereval) UI.focused.focus();
   },
   eval_below: function(field,name,value){
   //Module.print(name+':='+value);
-  UI.caseval(name+':='+value);
+  UI.caseval('assume('+name+'='+value+')');
   var cur=field.parentNode.parentNode.parentNode;
   cur=cur.nextSibling;
   //Module.print(cur.innerHTML);
@@ -1736,7 +1772,7 @@ cols="80" title="Console"></textarea>
     //console.log('"hist'+(UI.histcount-1)+'"');
     MathJax.Hub.Queue(["Typeset",MathJax.Hub,'"hist'+(UI.histcount-1)+'"']);
   }
-  par.focus();
+  if (UI.focusaftereval) par.focus();
   },
   eval_level: function(field){
    // ? use cur.nodeType instead of search?
@@ -1924,7 +1960,7 @@ gr(text);
   var helpoutput=document.getElementById('helpoutput');
   helpoutput.innerHTML += add;  
   UI.scrollatend(helpoutput.parentNode); // focus at end
-  UI.focused.focus();
+  if (UI.focusaftereval) UI.focused.focus();
   },
   renderhelp: function(text){
   var s=text.substr(1,text.length-2);
@@ -2005,7 +2041,7 @@ moveCaret: function(field, charCount) {
   var par=field.parentNode;
   par=par.parentNode;
   par.style.visibility='hidden';
-  UI.focused.focus();
+  if (UI.focusaftereval) UI.focused.focus();
   //par=par.parentNode;
   //var list = par.parentNode;
   //list.removeChild(par);
@@ -2021,7 +2057,7 @@ moveCaret: function(field, charCount) {
      alert('Pour annuler, cliquer sur Restaurer (Corbeille). Pour confirmer, cliquer sur Vider (Corbeille).');
      UI.erase_all_warn=0;
     }
-    cmentree.focus();
+    if (UI.focusaftereval) cmentree.focus();
   },
   restoretrash:function(){
   var hist=document.getElementById('mathoutput');
@@ -2056,7 +2092,7 @@ updatelevel: function(field){
   var list = par.parentNode;
   list.removeChild(par);
   list.insertBefore(par,prev);
-  UI.focused.focus();
+  if (UI.focusaftereval) UI.focused.focus();
   },
   movedown: function(field){
   var par=field.parentNode;
@@ -2069,7 +2105,7 @@ updatelevel: function(field){
   list.insertBefore(par,nxt);
   },
   backspace: function(field){
-    field.focus();
+    if (UI.focusaftereval) field.focus();
     if (field.type!="textarea"){
       var start=field.getCursor('from');
       var end=field.getCursor('to');
@@ -2093,7 +2129,7 @@ updatelevel: function(field){
     }
   },
 insert: function(myField, myValue) {
- myField.focus();
+ if (UI.focusaftereval) myField.focus();
  if (myField.type!="textarea"){
   myField.replaceSelection(myValue);
  }
@@ -2102,7 +2138,7 @@ insert: function(myField, myValue) {
   pos=pos+myValue.length;
   //IE support
   if (document.selection) {
-    myField.focus();
+    if (UI.focusaftereval) myField.focus();
     var sel = document.selection.createRange();
     sel.text = myValue;
   }
@@ -2151,7 +2187,7 @@ insert: function(myField, myValue) {
      UI.completion(cm);
    }
   });
-  cmentree.focus();
+  if (UI.focusaftereval) cmentree.focus();
   cmprog = CodeMirror.fromTextArea(prog,{
     lineNumbers: true,
     matchBrackets: true,
@@ -2233,6 +2269,7 @@ insert: function(myField, myValue) {
 </script>
 
 <script language="javascript">
+  window.onresize=UI.set_config_width;
 // En ajoutant async a la fin de script src=giac.js on accelere les chargements
 // de la page nue (cache), mais pas si il y a un lien
   window.onload = function(e){
@@ -2240,8 +2277,6 @@ insert: function(myField, myValue) {
   var form=document.getElementById('config');
   var hw=window.innerWidth-50;
   if (hw>=1000){ UI.qa=true; form.qa.checked=true;}
-  form.history_width.value=hw;
-  form.outdiv_width.value=Math.floor(hw/2);
   UI.set_config_width();
   var ua = window.navigator.userAgent;
   var old_ie = ua.indexOf('MSIE ');

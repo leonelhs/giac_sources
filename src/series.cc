@@ -495,8 +495,8 @@ namespace giac {
     if (c_max!=plus_inf)
       final_seq.push_back(monome(undef, c_max));
     return true;
-    COUT << final_seq.back().coeff << endl;
-    return true;
+    //COUT << final_seq.back().coeff << endl;
+    //return true;
   }
 
   sparse_poly1 spmul(const sparse_poly1 & a,const sparse_poly1 &b,GIAC_CONTEXT){
@@ -1442,8 +1442,8 @@ namespace giac {
 	  }
 	  lvx_s.push_back(p);
 	  continue;
-	  invalidserieserr(gettext("taylor of sum not implemented"));
-	  return false;
+	  //invalidserieserr(gettext("taylor of sum not implemented"));
+	  //return false;
 	}
 	if (temp__SYMB.sommet==at_euler_mac_laurin){
 	  if (nargs!=5){
