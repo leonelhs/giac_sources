@@ -1,4 +1,4 @@
-# jacobi_linsolve(A,b,eps[,maxiter]) et gauss_seidel_linsolve([omega=1,]A,b,eps[,maxiter])
+# jacobi_linsolve
 1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode itérative de Jacobi avec une tolérance de eps et un nombre maximal d'itérations de maxiter. 
 2 Resolution of a linear system  A*X=b  by the iterative Jacobi method with eps as error margin  and a number of iterations inferior to maxiter.
 0 Mtrx(A),Vect(b),Real(eps),[Int(maxiter)]
@@ -6784,9 +6784,11 @@ multinomial(10,[0.2,0.3,0.5],[1,3,6])
 -3 multinomial
 -4 randvector
 -5 ranm
+binomial(4,2)
 binomial(4,0,0.5)
 binomial(4,2,0.5)
-binomial(4,2)
+ assume(p>=0 and p<=1);binomial(4,2,p)
+ assume(p>=0 and p<=1);binomial(4,p,2)
  randvector(6,binomial,4,0.2)
  ranm(4,6,binomial,4,0.7)
 
@@ -10280,9 +10282,9 @@ ichinrem([(x+1)%2,(x+2)%3,(3*x-1)%5])
 -1 switch
 -2 for
 -3 local
--4 ->
+-4 si
 -5 {}
--6 si
+-6 ->
  if (x<0) print("x negatif");
  x:=1;if (x>0) {x:=x+1; print("x est strictement plus grand que 1");x}
  if x<0 then print("x negatif"); end_if;
@@ -12331,6 +12333,7 @@ sylvester(x^3-p*x+q,3*x^2-p,x)
 -1 
  normal(1/rootof([1,0],[1,0,10,0,1]))
  normal(1/rootof([1,0,0],[1,1,0,-1]))
+ rootof(x^4+x+1):='j'; normal(j^5); 
 
 # rotation
 1 rotation(B,a1,A) (resp rotation(d,a1,A)) est le transformé de A par rotation de centre B (resp d'axe d) et d'angle a1.
@@ -13835,18 +13838,35 @@ horner(x^2+y*x+y^3-1,2,y)
  a:=2;ifte(a>1,a+1,0)
 
 # when
-1 Si condition (même symbolique) renvoie expr1 sinon renvoie expr2 (? est la version infixée de when).
-2 If condition (even symbolic) returns expr1 else returns expr2 (? is the infixed version of when).
-3 Si condición (aún simbólica) devuelve expr1 sino devuelve expr2 (? es la versión infija de when).
-4 Εάν συνθήκη (ακόμα και συμβολική) επιστρέφει expr1 αλλιώς επιστρέφει expr2 (? είναι η εντεθειμένη μορφή του when).
-8  对测试求值。  如果测试为真值（非 0），则返回 Expr1，否则返回 Expr2。(或 ?(Cond,Expr1,Expr2))。
+1 Si condition (même symbolique) renvoie Expr1 sinon renvoie Expr2 (? est la version infixée de when).
+2 If condition (even symbolic) returns Expr1 else returns Expr2 (? is the infixed version of when).
+3 Si condición (aún simbólica) devuelve Expr1 sino devuelve Expr2 (? es la versión infija de when).
+4 Εάν συνθήκη (ακόμα και συμβολική) επιστρέφει Expr1 αλλιώς επιστρέφει Expr2 (? είναι η εντεθειμένη μορφή του when).
+8  对测试求值。  如果测试为真值（非 0），则返回 Expr1，否则返回 Expr2。(或 (Cond)?Expr1:Expr2)。
 0 Cond,Expr1,Expr2
--1 if
--2 then
--3 else
--4 ifte
+-1 ?
+-2 if
+-3 then
+-4 else
+-5 ifte
 when(x>0,x+1,x-1)
 when(n,1,0)
+ (a>1)?a+1:0
+
+# ?
+1 ? est la version infixée de when : (Cond) ? Expr1:Expr2. Si la condition Cond=1 (même symbolique) renvoie Expr1 sinon renvoie Expr2.
+2 ? is the infixed version of when : (Cond) ? Expr1:Expr2. If condition Cond=1 (even symbolic) returns Expr1 else returns Expr2.
+3 ? es la versión infija de when :(Cond) ? Expr1:Expr2. Si condiciónCond=1 (aún simbólica) devuelve Expr1 sino devuelve Expr2.
+4 ? είναι η εντεθειμένη μορφή του when : (Cond) ? Expr1:Expr2. Eάν συνθήκη Cond=1 (ακόμα και συμβολική) επιστρέφει Expr1 αλλιώς επιστρέφει Expr2.
+8 或 (Cond)?Expr1:Expr2。对测试求值。  如果测试为真值（非 0），则返回 Expr1，否则返回 Expr2。
+0 Cond,Expr1,Expr2
+-1 when
+-2 if
+-3 then
+-4 else
+-5 ifte
+ (x>0)?x+1:x-1
+ (n),1:0
  (a>1)?a+1:0
 
 # intersect
@@ -14700,24 +14720,26 @@ studentt([10,20],.5,.02,'!=',0.1)
 studentt([0.48,20],0.5,0.1,'<')
 
 # osculating_circle
-1 Cercle osculateur à la courbe plane C au point M
-2 Osculating circle at point M to the curve C
+1 Cercle osculateur à la courbe plane C au point M.
+2 Osculating circle at point M to the curve C.
 0 Curve,Point
 -1 curvature
 -2 evolute
 osculating_circle(plot(x^2),point(1,1))
+osculating_circle([5*cos(t),5*sin(t)],t,0)
 osculating_circle([t,t^2],t)
 osculating_circle([t,t^2],t,1)
 osculating_circle([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)
 osculating_circle([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)
 
 # curvature
-1 Courbure de la courbe C au point M
-2 Curvature of curve C at point M
+1 Courbure de la courbe C au point M.
+2 Curvature of curve C at point M.
 0 Curve,Point
 -1 osculating_circle
 -2 evolute
 curvature(plot(x^2),point(1,1))
+curvature([5*cos(t),5*sin(t)],t)
 curvature([t,t^2],t)
 curvature([t,t^2],t,1)
 curvature([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)
@@ -14725,8 +14747,8 @@ curvature([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)
  trigcos(curvature([2*cos(t),2*sin(t),3*t],t))
 
 # evolute
-1 Courbe développée d'une courbe C
-2 Evolute of a curve C
+1 Courbe développée d'une courbe C.
+2 Evolute of a curve C.
 0 Curve
 -1 curvature
 -2 osculating_circle

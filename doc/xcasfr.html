@@ -1288,7 +1288,7 @@ cols="80" title="Console"></textarea>
    return value;
   },
   caseval: function(text){
-   var docaseval = Module.cwrap('_ZN4giac7casevalEPKc',  'string', ['string']);
+   var docaseval = Module.cwrap('caseval',  'string', ['string']);
    var value=text;
    var n=value.search(';');
    if (n<0 || n>=value.length)
@@ -1671,8 +1671,8 @@ cols="80" title="Console"></textarea>
     MathJax.Hub.Queue(["Typeset",MathJax.Hub,'"hist'+(UI.histcount-1)+'"']);
   },
   set_locale: function(){
-  if (UI.langue==-1){
-    var out=UI.caseval('set_language(1);');
+  if (UI.langue==-1){ 
+    var out=UI.caseval('set_language(1); evalf(1,30);');
     UI.langue=1;
   }
  },

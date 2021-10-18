@@ -150,12 +150,12 @@ var Module = { preRun: [], postRun: [],
     script.src  = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   }
-  giaceval=Module.cwrap('_ZN4giac7casevalEPKc',  'string', ['string']);
+  giaceval=Module.cwrap('caseval',  'string', ['string']);
   giac3d = Module.cwrap('_ZN4giac13giac_rendererEPKc','number', ['string']);
   giaceval('set_language(1);');
   giaceval('factor(x^4-1)');
   giaceval('sin(x+y)+f(t)');
- if (confirm('Exec commands?')) UI.exec(document.documentElement);
+ // if (confirm('Exec commands?')) UI.exec(document.documentElement);
  };
 </script>
 }
@@ -287,12 +287,12 @@ var Module = { preRun: [], postRun: [],
     script.src  = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   }
-  giaceval=Module.cwrap('_ZN4giac7casevalEPKc',  'string', ['string']);
+  giaceval=Module.cwrap('caseval',  'string', ['string']);
   giac3d = Module.cwrap('_ZN4giac13giac_rendererEPKc','number', ['string']);
   giaceval('set_language(1);');
   giaceval('factor(x^4-1)');
   giaceval('sin(x+y)+f(t)');
- if (confirm('Exec commands?')) UI.exec(document.documentElement);
+ // if (confirm('Exec commands?')) UI.exec(document.documentElement);
  };
 </script>
 }

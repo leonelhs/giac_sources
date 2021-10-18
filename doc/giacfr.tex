@@ -149,12 +149,12 @@ var Module = { preRun: [], postRun: [],
     script.src  = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   }
-  giaceval=Module.cwrap('_ZN4giac7casevalEPKc',  'string', ['string']);
+  giaceval=Module.cwrap('caseval',  'string', ['string']);
   giac3d = Module.cwrap('_ZN4giac13giac_rendererEPKc','number', ['string']);
   giaceval('set_language(1);');
   giaceval('factor(x^4-1)');
   giaceval('sin(x+y)+f(t)');
- if (confirm('Executer les commandes?')) UI.exec(document.documentElement);
+ // if (confirm('Executer les commandes?')) UI.exec(document.documentElement);
  };
 </script>
 }
@@ -277,7 +277,7 @@ var Module = { preRun: [], postRun: [],
   var new_ie = ua.indexOf('Trident/');
   if ((!isFirefox && !isSafari) || (old_ie > -1) || (new_ie > -1) || window.chrome){
      UI.usemathjax=true;
-     alert("Your browser does not support MathML, using MathJax for 2d rendering. Consider switching to Firefox for better results");
+     alert("Votre navigateur ne supporte MathML, on utilise MathJax pour l'affichage 2d.  Les calculs seraient plus rapides et les resultats seraient mieux affiches avec Firefox.");
   }
   if (UI.usemathjax){
     var script = document.createElement("script");
@@ -285,12 +285,12 @@ var Module = { preRun: [], postRun: [],
     script.src  = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   }
-  giaceval=Module.cwrap('_ZN4giac7casevalEPKc',  'string', ['string']);
+  giaceval=Module.cwrap('caseval',  'string', ['string']);
   giac3d = Module.cwrap('_ZN4giac13giac_rendererEPKc','number', ['string']);
   giaceval('set_language(1);');
   giaceval('factor(x^4-1)');
   giaceval('sin(x+y)+f(t)');
- if (confirm('Executer les commandes?')) UI.exec(document.documentElement);
+ // if (confirm('Executer les commandes?')) UI.exec(document.documentElement);
  };
 </script>
 }
