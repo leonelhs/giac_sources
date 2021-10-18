@@ -117,11 +117,14 @@ Vous pouvez aussi &eacute;changer des scripts avec la calculatrice depuis
   sur des forums.
 
 <ul id="main" class="b">
-  <li> <button class="bouton" onclick="UI.nws_detect()">D&eacute;tecter</button>
-la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas.
+  <li> <button class="bouton" onclick="UI.nws_detect(UI.nws_detect_success,UI.nws_detect_failure)">D&eacute;tecter</button>
+la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas. Si
+  l'&eacute;cran de la calculatrice est &eacute;teint, cliquez sur
+  le bouton R&eacute;cup&eacute;ration.
   <li> 
 <button id="numworks_load" class="bouton" onclick="UI.numworks_load(false)">Numworks→</button>
-: sauvegarde un script Python de la calculatrice
+  : sauvegarde un script Python de la calculatrice
+  <span id='storelist'></span>
   <li><button id="numworks_load" class="bouton"
   onclick="UI.numworks_load(true)">Backup</button> :
   sauvegarde tous les scripts de la calculatrice.
@@ -135,7 +138,7 @@ la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas.
   <li> 
   <button
   onclick="UI.numworks_install_delta();">Installation
-  KhiCAS (30/09/21)</button>: sur votre calculatrice Numworks
+  KhiCAS (05/10/21)</button>: sur votre calculatrice Numworks
   N0110. <a
   href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html">Documentation</a>,
   <a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec45">Licences</a>,
@@ -274,7 +277,7 @@ MIT). Cette page utilise aussi
 
 <hr>
 <address></address>
-<!-- hhmts start -->Last modified: Fri Oct  1 18:46:19 CEST 2021 <!-- hhmts end -->
+<!-- hhmts start -->Last modified: Tue Oct  5 15:35:45 CEST 2021 <!-- hhmts end -->
 </body> </html>
 <script language="javascript">
 window.onload = function (e) {

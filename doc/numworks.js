@@ -930,6 +930,7 @@ class Storage {
                     name: name.content.split(/\.(?=[^\.]+$)/)[0], // eslint-disable-line no-useless-escape
                     type: name.content.split(/\.(?=[^\.]+$)/)[1], // eslint-disable-line no-useless-escape
                     data: data,
+		    size: size,
                 }
                 
                 records.push(record);

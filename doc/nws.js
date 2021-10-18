@@ -45,9 +45,9 @@ var UI = {
     console.log(error);
     alert('Failure');
   },
-  nws_detect:async function(){
+  nws_detect:async function(success,failure){
     UI.calculator= new Numworks();
-    UI.calculator.detect(UI.nws_detect_success,UI.nws_detect_failure);
+    UI.calculator.detect(success,failure);
   },
   nws_rescue_connect:async function(){
     if (navigator.usb){
@@ -123,7 +123,10 @@ var UI = {
       return;
     }
     let storage = await UI.calculator.backupStorage();
-    let rec=storage.records,j=0,s='Choisissez un numero parmi ';
+    let rec=UI.storage_records=storage.records;
+    console.log(UI.store2html(rec,'storelist'));
+    return;
+    let j=0,s='Choisissez un numero parmi ';
     for (;j<rec.length;++j){
       s+=j;
       s+=':'+rec[j].name+', ';
@@ -208,22 +211,23 @@ var UI = {
       if (UI.calculator) UI.calculator.stopAutoConnect();
       return -1;
     } 
+    UI.print(khionly?'=========== installing Khi':'=========== installing Khi and KhiCAS');
+    UI.print('erase/write Khi external, wait about 1/2 minute');
+    UI.calculator.device.startAddress = 0x90000000;
+    let data=await UI.loadfile('delta.external.bin');
+    UI.calculator.device.logProgress(0,'external');
+    let res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
+    UI.print('Khi external OK, erase/write internal');
     UI.calculator.device.startAddress = 0x08000000;
     UI.calculator.device.logProgress(0,'internal');
-    let data=await UI.loadfile('delta.internal.bin');
-    let res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
-    UI.print(khionly?'=========== installing Khi':'=========== installing Khi && KhiCAS');
-    UI.print('internal OK, erase/write external, wait about 1/2 minute');
-    UI.calculator.device.startAddress = 0x90000000;
-    data=await UI.loadfile('delta.external.bin');
-    UI.calculator.device.logProgress(0,'external');
+    data=await UI.loadfile('delta.internal.bin');
     res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
     if (khionly){
-      UI.print('external OK, press RESET on calculator back');
+      UI.print('Khi internal OK, press RESET on calculator back');
       alert(UI.langue==-1?'Installation terminee. Appuyer sur RESET a l\'arriere de la calculatrice':'Install success. Press RESET on the calculator back.');
       return;
     }
-    UI.print('external OK, erase/write apps, wait about 2 minutes');
+    UI.print('Khi internal OK, erase/write KhiCAS and apps, wait about 2 minutes');
     UI.calculator.device.startAddress = 0x90200000;
     UI.calculator.device.logProgress(0,'apps');
     data=await UI.loadfile('apps.tar');
@@ -262,9 +266,12 @@ var UI = {
     let data=await UI.loadfile('recovery');
     await UI.calculator.device.clearStatus();
     await UI.calculator.device.do_download(UI.calculator.transferSize, data, true);
-    let tmp=confirm(UI.langue==-1?'La calculatrice devrait etre en mode recuperation. Installer KhiCAS+Delta?':'Calculator should be in rescue mode. Send KhiCAS+Delta.');
+    let tmp=confirm(UI.langue==-1?'La calculatrice devrait etre en mode recuperation. Cliquer sur le bouton Detecter puis sur install KhiCAS':'Calculator should be in rescue mode. Click on the Detect button then install KhiCAS.');
+    return;
     if (tmp)
-      UI.numworks_install_delta();
+      UI.nws_detect(UI.numworks_install_delta,UI.nws_detect_failure);
+    else
+      UI.nws_detect(UI.numworks_detect_success,UI.nws_detect_failure);
   },
   numworks_buffer:0,
   read_string:function(buffer,str_offset, size) {
@@ -437,10 +444,10 @@ var UI = {
       offset += UI.tar_filesize(file_size);
     }
     //console.log('fileinfo',offset,dohtml);
-    if (dohtml) UI.fileinfo2html(fileInfo);
+    if (dohtml) UI.fileinfo2html(fileInfo,'listtarfiles');
     return fileInfo;
   },
-  fileinfo2html:function(finfo){
+  fileinfo2html:function(finfo,fieldname){
     let l=finfo.length,s="<ul>";
     for (let i=0;i<l;++i){
       let cur=finfo[i];
@@ -460,8 +467,57 @@ var UI = {
     s += "</ul>";
     //console.log(s);
     // put it the list of tarfiles
-    $id('listtarfiles').innerHTML=s;
-    $id('perso').style.display='inline';
+    if (fieldname){
+      let field=$id(fieldname);
+      field.innerHTML=s;
+      field.style.display='inline';
+      field=field.parentNode.style.display='inline';
+    }
+    // $id('perso').style.display='inline';
+    return s;
+  },
+  storage_records:[],
+  store_savefile:function(filename){
+    let rec,j=0;
+    for (j=0;j<UI.storage_records.length;++j){
+      rec=UI.storage_records[j];
+      if (rec.name==filename) break;
+    }
+    if (j==UI.storage_records.length) return;
+    let blob = new Blob([rec.code], {type: "text/plain;charset=utf-8"});
+    if (filename.length<=3 || filename.substr(filename.length-3,3)!=".py")
+      filename +=  ".py";
+    saveAs(blob, filename);
+  },
+  store2html:function(finfo,fieldname){
+    let l=finfo.length,s="<ul>";
+    for (let i=0;i<l;++i){
+      let cur=finfo[i];
+      let S="<li>";
+      S += cur.name;
+      S += " (";
+      S += cur.size;
+      S += "): ";
+      //S += "<button onclick='UI.store_removefile(UI.numworks_buffer,";
+      //S += '"'+cur.name+'"';
+      //S +=");' title='Cliquer ici pour effacer ce fichier'>X</button>";
+      S += "<button onclick='UI.store_savefile(";
+      S += '"'+cur.name+'"';
+      S +=");' title='Cliquer ici pour sauvegarder ce fichier'>&#x1f4be;</button>";      
+      s+=S;
+    }
+    s += "</ul>";
+    //console.log(s);
+    // put it the list of tarfiles
+    if (fieldname){
+      s += '<button onclick="$id(\''+fieldname+'\').style.display=\'none\'">Fermer</button>';
+      let field=$id(fieldname);
+      field.innerHTML=s;
+      field.style.display='inline';
+      return s;
+    }
+    // $id('perso').style.display='inline';
+    return s;
   },
   tar_writestring:function(buffer,str, offset, size) {
     let strView = new Uint8Array(buffer, offset, size);
