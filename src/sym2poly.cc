@@ -524,9 +524,22 @@ namespace giac {
       coeff=den._FRACptr->den;
       den=den._FRACptr->num;
     }
+#if 0
+    gen n1g(n1),n2g(n2);
+    num=simplify3(n1g,n2g);
+    if (num.type==_FRAC){
+      den=den*num._FRACptr->den;
+      num=num._FRACptr->num;
+    }
+    n1g=(n1g*d2g+n2g*d1g)*coeff;
+    simplify3(n1g,den);
+    num=num*n1g;
+    den=den*d1g*d2g;
+#else
     num=(n1*d2g+n2*d1g)*coeff;
     simplify3(num,den);
     den=den*d1g*d2g;
+#endif
   }
 
   static void _FRACmul(const gen & n1, const gen & d1,const gen & n2, const gen & d2, gen & num, gen & den){
@@ -563,9 +576,9 @@ namespace giac {
   //**********************************
   // symbolic to tensor
   //**********************************
-  static bool sym2radd (vecteur::const_iterator debut,vecteur::const_iterator fin,const gen & iext,const vecteur &l,const vecteur & lv, const vecteur & lvnum,const vecteur & lvden, int l_size, gen & num, gen & den,GIAC_CONTEXT){
+  static bool sym2radd (vecteur::const_iterator debut,vecteur::const_iterator fin,const gen & iext,const vecteur &l,const vecteur & lv, const vecteur & lvnum,const vecteur & lvden, int l_size, gen & num, gen & den,GIAC_CONTEXT,bool sequentially){
     bool totally_converted=true;
-    if (fin-debut<4){
+    if (sequentially || fin-debut<4){
       gen n1,d1,n2,d2;
       num=zero;
       den=plus_one;
@@ -579,8 +592,8 @@ namespace giac {
     else {
       vecteur::const_iterator milieu=debut+(fin-debut)/2;
       gen n1,d1,n2,d2;
-      totally_converted=totally_converted && sym2radd(debut,milieu,iext,l,lv,lvnum,lvden,l_size,n1,d1,contextptr);
-      totally_converted=totally_converted && sym2radd(milieu,fin,iext,l,lv,lvnum,lvden,l_size,n2,d2,contextptr);
+      totally_converted=totally_converted && sym2radd(debut,milieu,iext,l,lv,lvnum,lvden,l_size,n1,d1,contextptr,sequentially);
+      totally_converted=totally_converted && sym2radd(milieu,fin,iext,l,lv,lvnum,lvden,l_size,n2,d2,contextptr,sequentially);
       _FRACadd(n1,d1,n2,d2,num,den);
     }
     return totally_converted;
@@ -1086,7 +1099,8 @@ namespace giac {
       }
       vecteur::iterator debut=s.feuille._VECTptr->begin();
       vecteur::iterator fin=s.feuille._VECTptr->end();
-      return sym2radd(debut,fin,iext,l,lv,lvnum,lvden,l_size,num,den,contextptr);
+      bool sequentially=has_op(s.feuille,*at_inv) && (fin-debut<512);
+      return sym2radd(debut,fin,iext,l,lv,lvnum,lvden,l_size,num,den,contextptr,sequentially);
     }
     if (s.sommet==at_prod){
       vecteur::iterator debut=s.feuille._VECTptr->begin();

@@ -3289,7 +3289,10 @@ namespace giac {
     }
 #endif
     if (do_else_try){
-      res=args._VECTptr->back().eval(eval_level(contextptr),contextptr);
+      if ((res.type==_SYMB && res._SYMBptr->sommet==at_return) || (res.type==_FUNC && (res==at_return || res==at_break || res==at_continue)))
+	;
+      else
+	res=args._VECTptr->back().eval(eval_level(contextptr),contextptr);
     }
     debug_ptr(contextptr)->current_instruction=save_current_instruction;
     increment_instruction(args._VECTptr->front(),contextptr);
@@ -11239,7 +11242,11 @@ namespace giac {
   gen _index(const gen & args,GIAC_CONTEXT){
     if (args.type!=_VECT || args._VECTptr->size()!=2)
       return gensizeerr(contextptr);
-    gen l=_find(makesequence(args._VECTptr->back(),args._VECTptr->front()),contextptr);
+    gen l;
+    if (args._VECTptr->front().type==_STRNG)
+      l=_find(args,contextptr);
+    else
+      l=_find(makesequence(args._VECTptr->back(),args._VECTptr->front()),contextptr);
     if (l.type!=_VECT)
       return l;
     if (l._VECTptr->empty())
