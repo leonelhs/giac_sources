@@ -2703,7 +2703,7 @@ namespace giac {
       if (fb.type!=_DOUBLE_)
 	continue;
       if (fb._DOUBLE_val==0){
-	res.push_back(fb);
+	res.push_back(b);
 	continue;
       }
       if (fa._DOUBLE_val*fb._DOUBLE_val>0)
@@ -2712,6 +2712,7 @@ namespace giac {
       if (iszero==1)
 	res=mergevecteur(res,addres);
     }
+    comprim(res);
     return res;
   }
 
@@ -6313,7 +6314,7 @@ namespace giac {
 	  switch (tmp._VECTptr->front().val){
 	  case _WITH_COCOA:
 	    with_cocoa=tmp._VECTptr->back().val!=0;
-	    modular=0;
+	    modular=!with_cocoa;
 	    break;
 	  case _WITH_F5: case _MODULAR_CHECK:
 	    with_f5=tmp._VECTptr->back().val!=0;
