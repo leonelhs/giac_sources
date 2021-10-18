@@ -364,10 +364,11 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
   <strong>Introduction</strong></button>
   
   <div id="tutointro">
-Tapez votre calcul dans la ligne de commande en bas de la page.
+    Tapez votre calcul dans la ligne de commande en bas de la page
+    (attention, tapez <tt>1.2</tt> pour 1 virgule 2).
 Vous pouvez utiliser le clavier scientifique 
 (bouton <tt>123</tt> au-dessus de la ligne de commande)
-et les assistants du bouton <tt>menu</tt>.
+    et les assistants du bouton <tt>menu</tt>.
 Validez avec Entr&eacute;e ou le bouton <tt>ok</tt> en vert.
 <br>
 Pour obtenir de l'aide, tapez un nom de commande puis le
@@ -394,12 +395,18 @@ Cette feuille de calcul est compos&eacute;e du haut vers le bas de:
   r&eacute;duit &agrave; insertion d'une session, consultation des
   manuels, configuration et restauration de la session
   pr&eacute;c&eacute;dente.
-  D&egrave;s que vous avez valid&eacute; une commande, il apparait un lien Clone
-  qui permet de <strong>cloner</strong> une session existante (ce qui peut servir si
-  le noyau de calcul formel a crash&eacute; ou pour copier-coller
-  vers un email ou une page web) et un lien E-mail qui permet de <strong>partager
-  votre session</strong> par e-mail.
-  </li>
+  D&egrave;s que vous avez valid&eacute; une commande, il apparait
+  <ul>
+    <li> un lien Clone
+    qui permet de <strong>cloner</strong> une session existante.
+    A utiliser si le noyau de calcul formel a crash&eacute; ou
+    pour copier-coller dans une page web, ou pour ex&eacute;cuter
+    dans Xcas natif.
+    <li> un lien E-mail qui permet de <strong>partager
+    votre session</strong> par e-mail.
+    </li>
+  </ul>
+</li>
   <li> une zone d'<strong>aide</strong>, qui contient des courtes description des
   commandes dont vous avez demand&eacute; la syntaxe.
   </li>
@@ -541,7 +548,7 @@ onclick="var tmp=document.getElementById('tutosimplifier'); if (tmp.style.displa
   <strong>Simplifier</strong></button>
   <span id="tutosimplifier" style="display:none">
   Il n'existe pas de mani&egrave;re universelle de simplifier une
-  expression, parfois on veut d&eacute;velopper, parfois factoriser,
+  expression, parfois il vaut mieux d&eacute;velopper, parfois factoriser,
   parfois lin&eacute;ariser, etc., il est donc important de connaitre
   quelques commandes de r&eacute;&eacute;criture.
   <ul>
@@ -550,10 +557,20 @@ onclick="var tmp=document.getElementById('tutosimplifier'); if (tmp.style.displa
     ins&egrave;re
     la commande
   <button class="bouton"
-    onclick="UI.insert(UI.focused,'simplify(')">simplify</button>.
-   Tapez ensuite
+    onclick="UI.insert(UI.focused,'simplify(')">simplify</button>,
+   tapez ensuite
     l'expression que
-    vous voulez d&eacute;velopper et simplifier.
+    vous voulez d&eacute;velopper et simplifier.<br>
+    <button class="bouton"
+    onclick="UI.insert(UI.focused,'normal(')">normal</button>,
+    <button class="bouton" onclick="UI.insert(UI.focused,'reorder(')">reorder</button>, 
+    <button class="bouton"
+    onclick="UI.insert(UI.focused,'ratnormal(')">ratnormal</button>
+    sont des versions moins puissantes mais plus rapides que simplify
+    (normal ne recherche pas de relations entre fonctions
+    trigonom&eacute;triques et exponentielles, ratnormal n'effectue
+    que des simplifications rationnelles, reorder r&eacute;ordonne
+    selon une liste de variables).
 </li>    
 <li>
 <button class="bouton" onclick="UI.insert(UI.focused,'factor(')">factor</button>
@@ -564,7 +581,7 @@ onclick="var tmp=document.getElementById('tutosimplifier'); if (tmp.style.displa
     </li>
     <li>
     <button class="bouton" onclick="UI.insert(UI.focused,'partfrac(')">partfrac</button>
-    d&eacute;composition en &eacute;l&eacute;ments simples sur R,
+    d&eacute;compose en &eacute;l&eacute;ments simples sur R,
     <button class="bouton" 
     onclick="UI.insert(UI.focused,'cpartfrac(')">cpartfrac</button>
     sur C.
@@ -579,6 +596,32 @@ onclick="var tmp=document.getElementById('tutosimplifier'); if (tmp.style.displa
     lin&eacute;rise les exponentielles,
 <button class="bouton" onclick="UI.insert(UI.focused,'tlin(')">tlin</button>    
     lin&eacute;rise les expressions trigonom&eacute;triques.
+    </li>
+    <li> <button class="bouton"
+    onclick="UI.insert(UI.focused,'subst(')">subst</button>
+    permet de substituer une ou des variables par une ou des valeurs
+    </li>
+    <li> Conversions trigo: <button class="bouton"
+    onclick="UI.insert(UI.focused,'trigcos(')">trigcos</button>,
+    <button class="bouton"
+    onclick="UI.insert(UI.focused,'trigsin(')">trigsin</button>,
+    <button class="bouton"
+    onclick="UI.insert(UI.focused,'trigtan(')">trigtan</button>,
+    <button class="bouton"
+    onclick="UI.insert(UI.focused,'halftan(')">halftan</button>,
+    <button class="bouton"
+    onclick="UI.insert(UI.focused,'tan2sincos(')">tan2sincos</button>
+    </li>
+    <li> Autres: <button class="bouton"
+    onclick="UI.insert(UI.focused,'trig2exp(')">trig2exp</button>,
+    <button class="bouton" onclick="UI.insert(UI.focused,'exp2trig(')">exp2trig</button>
+    <button class="bouton"
+    onclick="UI.insert(UI.focused,'pow2exp(')">pow2exp</button>,
+    <button class="bouton" onclick="UI.insert(UI.focused,'exp2pow(')">exp2pow</button>
+    <button class="bouton"
+    onclick="UI.insert(UI.focused,'lncollect(')">lncollect</button>
+<button class="bouton" onclick="UI.insert(UI.focused,'lnexpand(')">lnexpand</button>    
+    </li>
   </ul>
   </span>
 </li>
@@ -587,31 +630,87 @@ onclick="var tmp=document.getElementById('tutosimplifier'); if (tmp.style.displa
 onclick="var tmp=document.getElementById('tutolinalg'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
   <strong>Alg&egrave;bre lin&eacute;aire </strong>
   </button>
-  <span id="tutolinalg" style="display:none">
-  Pour cr&eacute;er une matrice, utiliser l'assitant <tt>matrix</tt>
-  du <tt>menu</tt>. Ainsi
-  <button class="bouton" onclick="UI.insert(UI.focused,'A:=[[1,2],[3,4]]')"><tt>A:=[[1,2],[3,4]];</tt></button>
-  d&eacute;finit une matrice <tt>A</tt> ayant 2 lignes et 2 colonnes,
-  on donne les coefficients par lignes. Quelques instructions
+<span id="tutolinalg" style="display:none">
+<ul>
+  <li>  Pour cr&eacute;er un vecteur, tapez ses coordonn&eacute;es
+  s&eacute;par&eacute;es par des virgules entre 2 crochets [].
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'dot(')">dot</button> produit
+  scalaire de deux vecteurs,   <button class="bouton"
+  onclick="UI.insert(UI.focused,'cross(')">cross</button> produit
+  vectoriel en dimension 2 ou 3.
+  </li>
+  <li>
+  Pour cr&eacute;er une matrice, utiliser l'assistant <tt>matrix</tt>
+  du <tt>menu</tt>. Vous pouvez d&eacute;finir les coefficients par
+  une formule en fonction de la ligne et de la colonne ou
+  &eacute;l&eacute;ment par &eacute;l&eacute;ment
+  (vous pouvez entrer plusieurs coefficients en les s&eacute;parant par
+  un espace et passer &agrave; la ligne suivante avec Entree).
+  </li>
+  <li>
   <button class="bouton" onclick="UI.insert(UI.focused,'A[0,1]')">A[0,1]</button>
-  (&eacute;l&eacute;ment ligne 0 colonne 1),
-  <button class="bouton" onclick="UI.insert(UI.focused,'inv(A)')">inv(A)</button>
-  (inverse),
-  <button class="bouton" onclick="UI.insert(UI.focused,'rref(A)')">rref(A)</button>
-  (r&eacute;duction sous forme &eacute;chelonn&eacute;e),
-  <button class="bouton" onclick="UI.insert(UI.focused,'linsolve(A,[3,4])')">linsolve(A,[3,4])</button>
-  (r&eacute;solution de syst&egrave;me lin&eacute;aire),
+  &eacute;l&eacute;ment de A ligne 0 colonne 1,
   <button class="bouton"
-  onclick="UI.insert(UI.focused,'det(A-x*idn(A))')">det(A-x*idn(A));</button>
-  d&eacute;terminant, matrice identit&eacute;
-  ou
+  onclick="UI.insert(UI.focused,'tran(')">tran</button>
+  transpos&eacute;e,
   <button class="bouton"
-  onclick="UI.insert(UI.focused,'charpoly(A,x)')">charpoly(A,x)</button>
-  polynome caract&eacute;ristique,
+  onclick="UI.insert(UI.focused,'idn(')">idn</button> identit&eacute;
+  </li>
+  <li>
+  Utiliser <tt>+,-,*</tt> et    <button class="bouton"
+  onclick="UI.insert(UI.focused,'matpow(')">matpow</button> pour
+  les op&eacute;rations usuelles sur les matrices.
+  </li>
+  <li> 
+  <button class="bouton" onclick="UI.insert(UI.focused,'linsolve(')">linsolve</button>
+  syst&egrave;me lin&eacute;aire,
   <button class="bouton"
-  onclick="UI.insert(UI.focused,'p,d:=jordan(A)')">p,d:=jordan(A);</button>
+  onclick="UI.insert(UI.focused,'rref(')">rref</button> :
+  pivot de Gauss,
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'p,l,u:=lu(')">det</button>
+  : d&eacute;terminant,
+  <button class="bouton" onclick="UI.insert(UI.focused,'inv(')">inv</button>
+  : inverse,
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'p,l,u:=lu(')">lu</button>
+  : d&eacute;composition LU et application &agrave;
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'linsolve(p,l,u,')">linsolve</button>,
+  </li>
+  <li> 
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'charpoly(')">charpoly(</button>
+  polynome caract&eacute;ristique ou
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'pmin(')">pmin(</button>
+  minimal,
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'p,d:=jordan(')">p,d:=jordan(</button>
   vecteurs et valeurs propres.
   </li>
+  <li>
+  Factorisations
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'lu(')">lu</button>,
+  <button class="bouton" onclick="UI.insert(UI.focused,'cholesky(')">cholesky</button>,
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'qr(')">qr</button>,
+  <button class="bouton" onclick="UI.insert(UI.focused,'svd(')">svd</button>
+  </li>
+  <li> Normes
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'l1norm(')">l1norm</button>,
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'l2norm(')">l2norm</button>,
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'maxnorm(')">maxnorm</button> :  
+  <button class="bouton"
+  onclick="UI.insert(UI.focused,'matrix_norm(')">matrix_norm</button>
+  de matrice subordonn&eacute;e  
+  </li>
+</ul>
 <li  style="display:inline">
   <button class="bouton"
 onclick="var tmp=document.getElementById('tutoarit'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
@@ -647,7 +746,8 @@ polynomes.
   onclick="UI.insert(UI.focused,'isprime(')">isprime</button> test de primalit&egrave;,
   <button class="bouton" 
   onclick="UI.insert(UI.focused,'ifactor(')">ifactor</button>
-  factorisation d'entier,
+  factorisation d'entier, indicatrice d'<button class="bouton" 
+  onclick="UI.insert(UI.focused,'euler(')">euler</button>
   </li>
   <li>
   <button class="bouton" 

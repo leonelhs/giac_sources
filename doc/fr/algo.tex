@@ -810,8 +810,57 @@ nulle (l'esp\'erance de la somme) et d'\'ecart-type celui de la loi
 uniforme.
 \giacinput[style="width:800px;height:40px;font-style:large"]{m:=ranm(400,500,-1..1):;gl_x=-2..2;histogram(sum(m)/20,-1,0.1); plot(normald(0,0.57),-2..2)}
 
-Il est d'ailleurs souvent trop difficile de calculer une majoration
-rigoureuse de l'erreur pour des calculs sauf les plus simples.
+Attention, si on effectue la somme de $n$ r\'eels $\sum_j x_j$, 
+les erreurs d'arrondis
+ne satisfont pas \`a ces hypoth\`eses. En effet, l'erreur d'arrondi
+\`a chaque op\'eration est une erreur relative, l'erreur absolue 
+correspondante est $\epsilon |x_1+x_2|$ puis $\epsilon |x_1+x_2+x_3|$
+puis ... $\epsilon |x_1+x_2+...+x_n|$, que l'on peut majorer par
+$$ \epsilon ((n-1)|x_1|+(n-2)|x_2|+...+|x_n||)$$
+La majoration de l'erreur d'arrondi d\'epend donc de l'ordre des termes,
+on a int\'er\^et \`a sommer en commen\c{c}ant par les termes les
+plus petits en valeur absolue.
+Mais on peut faire mieux, 
+il est possible de corriger les erreurs d'arrondi dans une somme
+avec le programme suivant pour une liste (on peut bien sur
+adapter \`a la somme d'une expression d\'ependant d'une variable
+enti\`ere sans stocker de liste)~:
+\begin{giacprog}
+Somme(l):={
+  local x,s,c;
+  s:=0.0;
+  c:=0.0;
+  pour x in l faire
+    c += (x-((s+x)-s));
+    s += x;
+  fpour;
+  print(c);
+  return s+c;
+}:;
+\end{giacprog}
+En effet, $c$ devrait valoir 0 sans erreurs d'arrondis,
+avec les erreurs d'arrondis, on a le premier calcul $s+x$ qui donnera
+une erreur oppos\'ee \`a celui du calcul de $s$ \`a la ligne
+suivante, le 2i\`eme calcul effectu\'e $(s+x)-s$ donne une erreur
+absolue en $\epsilon |x|$ au pire (car c'est une erreur relative
+par rapport \`a $(s+x)-s$), 
+et la 3i\`eme erreur d'arrondi est n\'egligeable
+(puisque la somme vaut 0). On a donc une erreur absolue sur $s+c$
+qui est au premier ordre au pire en $O(\epsilon \sum|x_i|)$, 
+bien meilleure que
+la majoration $\epsilon ((n-1)|x_1|+(n-2)|x_2|+...+|x_n||)$
+calcul\'ee pr\'ec\'edemment.
+
+Par exemple
+\giacinput{n:=25000; l:=seq(1/j,j,1,n); Somme(l);}
+\`a comparer avec
+\giacinput{S:=sum(1/j,j,1,n); evalf(S); sum(1. /j,j,1,n);}
+(le calcul de $S$ est fait en exact, celui de {\tt sum(1. /j,j,1,n)}
+est approch\'e sans correction).
+
+En conclusion, il est souvent tr\`es difficile de calculer une majoration
+rigoureuse de l'erreur pour des calculs (sauf les plus simples), et cette
+majoration est en g\'en\'eral bien trop pessimiste.
 Lorsqu'on doute de la précision d'un calcul, un test peu couteux consiste
 à refaire ce calcul en utilisant des flottants en précision plus
 grande et tester si le résultat varie en fonction du nombre de chiffres
@@ -9993,7 +10042,7 @@ $q$ ci-dessous, auquel on applique r\'ecursivement l'algorithme
 \begin{giacprog}
 restart;
 sym(P,X):={ // P polynome symetrique, X liste des variables
-  local s,xs,Q,V,W,S,q,r;
+  local k,s,xs,Q,V,W,S,q,r;
   s:=size(X);
   si s<=1 alors return P; fsi;
   xs:=X[s-1];
@@ -10001,7 +10050,7 @@ sym(P,X):={ // P polynome symetrique, X liste des variables
   Q:=normal(subst(P,xs=0)); // Q est symetrique en X[0..s-2]
   V:=sym(Q,X[0..s-2]); // appel recursif
   S:=pcoeff(X[0..s-1]); // polynomes symetriques en les X
-  pour k de 0 jusque size(S)-1 faire S[k]=(-1)^k*S[k]; fpour;
+  pour k de 0 jusque size(S)-1 faire S[k]:=(-1)^k*S[k]; fpour;
   q,r:=quorem((P-subst(V,X[0..s-2],S[1..s-1])),S[s],xs); // reste nul
   si r!=0 alors throw("non symetrique"); fsi;
   W:=sym(q,X);
@@ -14103,40 +14152,46 @@ partir de la forme simplifi\'ee. Il existe diverses formes associées
 forme de Smith, de Frobenius, forme normale de Jordan rationnelle.
 
 On commence par un algorithme tr\`es simple qui donne la d\'ecomposition
-dite de Dunford\index{Dunford} (somme d'une matrice diagonalisable et d'une matrice
+dite de Dunford\index{Dunford} $A=D+N$
+(somme d'une matrice diagonalisable et d'une matrice
 nilpotente) sans calculer les valeurs propres (donc en faisant
 tous les calculs dans le corps des coefficients de la matrice).
-Il utilise la m\'ethode de Newton, la forme diagonale
-annulant le polyn\^ome caract\'eristique o\`u on met \`a 1 toutes
+Il utilise la m\'ethode de Newton, la partie diagonalisable
+annulant le polyn\^ome $q$ d\'eduit du polyn\^ome caract\'eristique 
+en ramenant \`a 1 toutes
 les multiplicit\'es, la partie nilpotente \'etant vue comme le
-terme d'erreur (la taille de l'erreur est en raison inverse
-de l'exposant n\'ecessaire pour annuler le nilpotent).
+terme d'erreur (la taille de l'erreur se mesurant
+par l'exposant n\'ecessaire pour annuler le nilpotent). On r\'esoud
+donc $q(x)=0$ en consid\'erant la suite r\'ecurrente
+$u_{n+1}=u_n-q(u_n)/q'(u_n)$ avec comme valeur initiale de la suite $u_0=A$.
+On observe que $q(A)$ est nilpotente car $q(D)=0$.
 \begin{giacprog}
 dunford(A):={
-  local D,p,q,q1,j,d,n;
-  D:=A;
-  n:=nrows(D);
-  p:=charpoly(D);
+  local U,p,q,q1,j,d,n;
+  U:=A;
+  n:=nrows(U);
+  p:=charpoly(U);
   q:=p/gcd(p,p'); // partie sans multiplicite
   q1:=q';
   for (j:=1;j<=n;j:=2*j){
-    d:=inv(horner(q1,D))*horner(q,D); // pas de Newton
-    if (d==0*d) return D,A-D;
-    D:=D-d;
+    d:=inv(horner(q1,U))*horner(q,U); // pas de Newton
+    if (d==0*d) return U,A-U;
+    U:=U-d;
   }
-  return D,A-D;
+  return U,A-U;
 }:;
 \end{giacprog}
 \giacinputbigmath{J:=[[2,1,0],[0,1,1],[0,0,1]]; P:=trn([[1,2,3],[0,-1,4],[0,0,1]]); A:=P*J*inv(P)}\\
 \giacinputbigmath{D,N:=dunford(A); N^2; N^3}\\
-Mais cet algorithme est trop simple pour \^etre efficace pour de
-grandes matrices, pour le rendre plus efficace, il faut travailler un
+Mais cet algorithme est un peu trop simple pour \^etre efficace pour de
+grandes matrices, une it\'eration est en $O(n^4)$.
+Pour le rendre plus efficace, il faut travailler un
 peu en utilisant la factorisation la plus pouss\'ee possible sur le
 polyn\^ome caract\'eristique (en tout cas au moins la d\'ecomposition
 \verb|sqrfree|) et B\'ezout pour calculer les projecteurs spectraux,
 on diminue ainsi la dimension pour acc\'el\'erer les \'evaluations du
-polyn\^ome d'endomorphisme (en $O($dimesion$)^4$). Et au demeurant
-la forme de Dunford n'a pas beaucoup d'applications.
+polyn\^ome d'endomorphisme (en $O($dimension$)^4$). Et au demeurant
+la forme de Dunford n'a pas beaucoup d'applications pratiques.
 
 On va maintenant pr\'esenter une m\'ethode directe de calcul d'une forme normale
 contenant le maximum de z\'eros (dont la forme dite normale de Jordan

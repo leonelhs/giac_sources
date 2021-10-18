@@ -1,6 +1,17 @@
+# smith
+1 Renvoie la forme normale de Smith d'une matrice a coefficients polynomiaux (U,D,V tels que U*A*V=D)
+2 Returns the Smith normal form of a polynomial coefficients matrix (U,D,V tels que U*A*V=D)
+0 Matr(A)
+-1 hermite
+-2 ismith
+-3 ihermite
+ n:=10; A:=ranm(n,n) % 17; U,D,V:=smith(x*idn(n)-A);normal(U*(x*idn(n)-A)*V-D); diag(D);
+ GF(3,5,g); n:=3; A:=ranm(n,n,g); U,D,V:=smith(x*idn(n)-A);normal(U*(x*idn(n)-A)*V-D); diag(D);
+
 # wz_certificate
 1 Certificat de Wilf-Zeilberger pour une identite sum(U,k)=res
 2 Wilf-Zeilberger certificate for an identity sum(U,k)=res
+9 Wilf-Zeilberger Zertifikat
 0 Expr(U),[Expr(res)],[Var(n),Var(k)]
 -1 sum
 wz_certificate((-1)^k*comb(n,k)*comb(2k,k)*4^(n-k),comb(2n,n),n,k);
@@ -698,6 +709,7 @@ polar_point(2,-pi/3)
 8 向量。
 0 Pnt,Pnt || Pnt,Vect
 -1 coordinates
+-2 segment
 vecteur(1+i)
 vector(point(1,2),point(2,3))
 vector(1+2*i,vecteur(1+i))
@@ -2686,7 +2698,7 @@ coordinates(vecteur([1,2,3],[4,5,6]))
  if (2>1) begin print("ifactor(154)=",ifactor(154));ifactor(154);end
  f:=function(a,b) local c;c=a+b;c+gcd(a,b);end;
  f:=fonction(a,b) local c;c=a+b;c+gcd(a,b);ffonction;
-
+ fonction f(a,b) local c;c=a+b;c+gcd(a,b);ffonction;
 
 # bisection_solver brent_solver falsepos_solver newton_solver secant_solver steffenson_solver
 1 Argument de fsolve indiquant la méthode pour résoudre numériquement une équation.
@@ -7765,10 +7777,10 @@ genpoly(7*y+5,6,x)
 genpoly(7*y-5*z,10,x)
 
 # left lhs gauche
-1 Renvoie la partie gauche d'une égalité, d'un intervalle ou d'une chaîne.
-2 Returns the left part of an equality, of an interval or of a string.
-3 Devuelve la parte izquierda de una igualdad, de un intervalo o de una cadena.
-4 Επιστρέφει το αριστερό μέρος μια ισότητας, ενός διαστήματος ή μιας συμβολοσειράς.
+1 Renvoie la partie gauche d'une égalité, d'un intervalle, d'une liste ou d'une chaîne.
+2 Returns the left part of an equality, of an interval, of a list or of a string.
+3 Devuelve la parte izquierda de una igualdad, de un intervalo, de una lista o de una cadena.
+4 Επιστρέφει το αριστερό μέρος μια ισότητας, ενός διαστήματος, μιας λίστας ή μιας συμβολοσειράς.
 8 左。
 0 Equal(a=b) or Interval(a..b) or Str,Intg
 -1 right
@@ -7781,10 +7793,10 @@ left(1..5)
 left("abcdefg",3)
 
 # right rhs droit
-1 Renvoie la partie droite d'une égalité, d'un intervalle ou d'une chaîne.
-2 Returns the right part of an equality, of an interval or of a string.
-3 Devuelve la parte derecha de una igualdad, de un intervalo o de una cadena.
-4 Επιστρέφει το δεξιό μέρος μια ισότητας, ενός διαστήματος ή μιας συμβολοσειράς.
+1 Renvoie la partie droite d'une égalité, d'un intervalle, d'une liste ou d'une chaîne.
+2 Returns the right part of an equality, of an interval, of a list or of a string.
+3 Devuelve la parte derecha de una igualdad, de un intervalo, de una lista o de una cadena.
+4 Επιστρέφει το δεξιό μέρος μια ισότητας, ενός διαστήματος, μιας λίστας ή μιας συμβολοσειράς.
 8 右。
 0 Equal(a=b) or Interval(a..b) or Str,Intg
 -1 left
@@ -8076,24 +8088,26 @@ coldim([[1,2],[3,4],[5,6]])
 identity(3)
 identity(5)
 
-# diag BlockDiagonal
+# BlockDiagonal
 1 Renvoie soit la matrice diagonale de diagonale l soit la diagonale de A.
 2 Returns either the diagonal matrix with diagonal l or the diagonal of A.
 3 Devuelve o bien la matrix diagonal con diagonal l, o bien la diagonal de A.
 4 Αν η εισαγωγή είναι η λίστα l επιστρέφει τετραγωνικό πίνακα με διαγώνιο την l, αν η εισαγωγή είναι ο πίνακας Α επιστρέφει την διαγώνιό του.
 0 Lst(l)||Mtrx(A)
 -1 identity
+-2 diag 
 BlockDiagonal([[1,2],[3,4]])
 BlockDiagonal([1,2,3])
 
 # diag 
-1 Avec 1 argument renvoie soit la matrice diagonale de diagonale l soit la diagonale de A, avec 2 arguments renvoie la partie gauche large de A ou la partie gdroite large de A ou découpe A en 3 parties : gauche stricte, diagonale, droite stricte, et avec 3 arguments renvoie la matrice tridiagonale de diagonales l,d,u.
+1 Avec 1 argument renvoie soit la matrice diagonale de diagonale l soit la diagonale de A, avec 2 arguments renvoie la partie gauche large de A ou la partie droite large de A ou découpe A en 3 parties : gauche stricte, diagonale, droite stricte, et avec 3 arguments renvoie la matrice tridiagonale de diagonales l,d,u.
 2 With 1 argument returns either the diagonal matrix with diagonal l or the diagonal of A, with 2 arguments returns the large left part of A or the large right part of A or cuts A into 3 parts : strict left,diagonal,strict right  and with 3 arguments returns the tridiagonale matrix with diagonals l,d,u.
 3 Con 1 argumento devuelve o bien la matrix diagonal con diagonal l, o bien la diagonal de A, con 2 argumentos devuelve la parte izquierda de A o la parte derecha de A ou cortar A en 3 partes : estricto izquierda,diagonal,estricto derecha y con 3 argumentos devuelve la matrix tridiagonal con diagonal l,d,u.
 4 με 1 όρισμα η εισαγωγή είναι η λίστα l επιστρέφει τετραγωνικό πίνακα με διαγώνιο την l, αν η εισαγωγή είναι ο πίνακας Α επιστρέφει την διαγώνιό του,  και με 2 ορίσματα, επιστρέφει το αριστερό μέρος του A,διαγώνιό του Α, το δεξιό μέρος του A, και με 3 ορίσματα, η εισαγωγή είναι τις λίστες l,d,u επιστρέφει.
 0 Lst(l)||(Mtrx(A),[left||right||lu])||Lst(l),Lst(d),Lst(u)
 -1 identity
 -2 lu
+-3 BlockDiagonal
 diag([[1,2],[3,4]])
 diag([1,2,3])
 diag([[1,2],[3,4]],left)
@@ -8102,16 +8116,16 @@ diag([[1,2],[3,4]],lu)
 diag([1,2],[3,4,5],[6,7])
 
 # coeff coeffs
-1 Renvoie la liste des coefficients d'un polynôme par rapport au 2ème argument ou le coefficient du 3ème argument.
-2 Returns the list of coefficients of a polynomial with respect to the 2nd argument or the coefficient of the 3rd argument.
-3 Devuelve la lista de los coeficientes de un polinomio con respecto al 2o argumento o el coeficiente del 3er argumento.
-4 Επιστρέφει τους συντελεστές ενός πολυωνύμου αναφορικά με το 2ο όρισμα ή τον συντελεστή του 3ου ορίσματος.
-0 Expr,[Var]
+1 Renvoie la liste des coefficients d'un polynôme P par rapport au 2ème argument ou le coefficient de degré le 3ème argument.
+2 Returns the list of coefficients of a polynomial with respect to the 2nd argument or the coefficient of degree the 3rd argument.
+3 Devuelve la lista de los coeficientes de un polinomio con respecto al 2o argumento o el coeficiente de grado del 3er argumento.
+4 Επιστρέφει τους συντελεστές ενός πολυωνύμου αναφορικά με το 2ο όρισμα ή τον συντελεστή του βαθμού του 3ου ορίσματος.
+0 Expr(P),[Var]
 -1 pcoeff
 -2 fcoeff
 coeff(x*3+2)
-coeff(2*y^2-3,y)
-coeff(2*y^2-3,y,2)
+coeff(5*y^2-3,y)
+coeff(5*y^2-3,y,2)
 
 # taylor
 1 Développement limité ou asymptotique (par défaut x=0 et ordre relatif=5).
@@ -8476,7 +8490,7 @@ extract_measure(angleatraw(0,1,1+i,1))
  A:=point(0);B:=point(1+i);a:=distanceatraw(A,B,(1+i)/2);extract_measure(a)
 
 # append
-1 Ajoute un élément à une liste.
+1 Rajoute un élément à la fin d'une liste.
 2 Append an element to a list.
 3 Añade un elemento a una lista.
 4 Προσθήκη ενός στοιχείου στο τέλος μιας λίστας.
@@ -8819,9 +8833,9 @@ changebase([[1,2],[1,3]],[[1,1],[0,1]])
 changebase([[1,2],[1,3]],[[1,0],[1,1]])
 
 # char
-1 Renvoie la chaîne correspondant aux caractères contenus dans l'argument.
+1 Renvoie la chaîne correspondant aux codes des caractères contenus dans l'argument.
 2 Returns the string corresponding to the character code of the argument.
-3 Devuelve la cadena correspondiente a los caracteres contenidos en el argumento.
+3 Devuelve la cadena correspondiente a los códigos de caracteres contenidos en el argumento.
 4 Επιστρέφει την συμβολοσειρά που αντιστοιχεί στους χαρακτήρες στο όρισμα.
 8 返回与矢量的 ASCII 字符码相对应的字符串，或返回与该整数相关的单个字符。
 0 Intg or Lst(Intg)
@@ -9176,15 +9190,16 @@ debug(pgcd(25,15))
  a:=1;switch(a){case 0:{b:=1;break;} case 1:{b:=3;break;} default:{b:=0;}};
 
 # degree
-1 Degré du polynôme P.
-2 Degree of the polynomial P.
-3 Grado del polinomio P.
-4 Βαθμός του πολυωνύμου P.
-0 Poly(P)
+1 Degré du polynôme P par rapport à la variable var.
+2 Degree of the polynomial P with respect to the second argument.
+3 Grado del polinomio P con respecto al segundo argumento.
+4 Βαθμός του πολυωνύμου P αναφορικά με το 2ο όρισμα.
+0 Poly(P),Var(var)
 -1 valuation
 -2 size
 degree(x^3+x)
 degree([1,0,1,0])
+degree(x^3+x*y,y)
 
 # desolve deSolve dsolve
 1 Résout une équation différentielle ou un système différentiel linéaire à coefficients constants.
@@ -10868,6 +10883,14 @@ linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
 0 Opt=NameFich
  gl_rotation=[1,1,1];cube([0,0,0],[3,0,0],[0,0,1])
 
+# gl_ortho
+1 Option globale permettant de définir une configuration graphique orthonormée.
+2 Global option that sets a orthonormal graphic configuration.
+3 Opción global que permite definir el ortonormal gráfico.
+4 Καθολική επιλογή που επιτρέπει τον ορισμό των ορθοκανονική γραφικών κάδρων.
+0 Opt=Interval
+ gl_ortho=1; cercle(i,1+i)
+
 # gl_x gl_y gl_z
 1 Option globale permettant de définir le cadrage du graphique.
 2 Global option that sets the graphic configuration.
@@ -11500,7 +11523,7 @@ cpartfrac(a/(z*(z-b)),z)
 -4 companion
 -5 rat_jordan
 -6 pmin
--7 adjoint_matrix
+-7 adjoint_matrix 
 pcar([[1,2],[3,4]])
 pcar([[1,2],[3,4]],x)
 pcar([[1,2,3],[1,3,6],[2,5,7]])
@@ -12490,16 +12513,17 @@ same((2-1)^2,2^2-2*2+1)
 sec(pi/3)
 
 # segment
-1 segment(A,B) trace le segment AB.
-2 segment(A,B) draws the segment AB.
-3 segment(A,B) traza el segmento AB.
+1 segment(A,B) trace le segment AB et segment([xM,yM],[xN,yN]) trace le vecteur d'origine [xM,yM], de coordonnées [xN,yN] (i.e trace segment(M,point(M+N)).
+2 segment(A,B) draws the segment AB and segment([xM,yM],[xN,yN]) draws the vector as origin [xM,yM], of coordinates [xN,yN] (i.e draws segment(M,point(M+N)).
+3 segment(A,B) traza el segmento AB y segment([xM,yM],[xN,yN]) traza el vector con origen [xM,yM] de coordenadas [xN,yN] (i.e traza segment(M,point(M+N)).
 4 segment(A,B) σχεδιάζει το ευθύγραμμο τμήμα ΑΒ.
-0 (Pnt or Cplx),(Pnt or Cplx),[Var],[Var]
+0 (Pnt or Cplx or Lst([xM,yM])),(Pnt or Cplx or Lst([xN,yN]),[Var],[Var]
 -1 line
 segment(i,1+i)
 segment(point(i),point(1+i))
 segment(point(i),point(1+i),A,B)
-
+segment([-1,0],[2,1])
+segment([-1,0],point([-1,0]+[2,1]))
 
 # half_line
 1 demi_droite(A,B) trace la demi-droite AB d'origine A.
@@ -14120,6 +14144,7 @@ display(red+filled);square(0,1);
 -2 :=
 -3 end
 -4 ffonction
+fonction f(a,b) local c;c=a+b;c+gcd(a,b);ffonction;
  f:=function(a,b) local c;c=a+b;c+gcd(a,b);end;
  f:=fonction(a,b) local c;c=a+b;c+gcd(a,b);ffonction;
 

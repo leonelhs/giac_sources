@@ -1322,13 +1322,20 @@ namespace xcas {
       int x=0;
       int h=a.fontsize;
       int y=0;
-      int modsize=int(fl_width("%"))+2;
+      int modsize=int(fl_width("%"))+4;
+      bool paren=is_positive(-*g._MODptr,contextptr);
+      int llp=int(fl_width("("));
+      int lrp=int(fl_width(")"));
       gen varg1=Equation_compute_size(*g._MODptr,a,windowhsize,contextptr);
+      if (paren) Equation_translate(varg1,llp,0);
       eqwdata vv=Equation_total_size(varg1);
       Equation_vertical_adjust(vv.dy,vv.y,h,y);
       gen arg2=*(g._MODptr+1);
       gen varg2=Equation_compute_size(arg2,a,windowhsize,contextptr);
-      Equation_translate(varg2,vv.dx+modsize,0);
+      if (paren)
+	Equation_translate(varg2,vv.dx+modsize+lrp,0);
+      else
+	Equation_translate(varg2,vv.dx+modsize,0);
       vv=Equation_total_size(varg2);
       Equation_vertical_adjust(vv.dy,vv.y,h,y);
       vecteur res(makevecteur(varg1,varg2));

@@ -5921,7 +5921,7 @@ namespace giac {
 	      *it=val;
 	    }
 	  }
-	  return res;
+	  return gen(res,subtype);
 	}
 	sort(w.begin(),w.end());
 	vector_int2vecteur(w,v);
