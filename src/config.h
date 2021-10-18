@@ -209,6 +209,9 @@
 /* Define to 1 if you have the `mpfr' library (-lmpfr). */
 #define HAVE_LIBMPFR 1
 
+/* Define to 1 if you have the `nauty' library (-lnauty). */
+/* #undef HAVE_LIBNAUTY */
+
 /* Define to 1 if you have the `ntl' library (-lntl). */
 #define HAVE_LIBNTL 1
 
@@ -280,6 +283,9 @@
 
 /* Define to 1 if you have the `munmap' function. */
 #define HAVE_MUNMAP 1
+
+/* Define to 1 if you have the <nauty/naututil.h> header file. */
+/* #undef HAVE_NAUTY_NAUTUTIL_H */
 
 /* Define to 1 if you have the <nl_types.h> header file. */
 #define HAVE_NL_TYPES_H 1

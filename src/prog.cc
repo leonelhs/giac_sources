@@ -1231,7 +1231,11 @@ namespace giac {
       for (size_t i=0;i<stoprog.size();++i){
 	stoprog[i]=stoprog[i]._SYMBptr->feuille[0];
       }
-      stov=lidnt(mergevecteur(stov,stoprog));
+      vecteur stofor(lop(newc,at_for));
+      for (size_t i=0;i<stofor.size();++i){
+	stofor[i]=stofor[i]._SYMBptr->feuille[0];
+      }
+      stov=lidnt(mergevecteur(mergevecteur(stov,stoprog),stofor));
       int rs=int(non_decl.size());
       for (int i=0;i<rs;i++){
 	// remove var that are not assigned (assumed global), constant idnt and recursive def
@@ -2086,8 +2090,10 @@ namespace giac {
 	  }
 	}
       }
+      bool dodone=false;
       if (it->is_symb_of_sommet(at_for) && it->_SYMBptr->feuille.type==_VECT && it->_SYMBptr->feuille._VECTptr->size()==2){
 	res = "for "+it->_SYMBptr->feuille._VECTptr->front().print(contextptr)+" in "+ it->_SYMBptr->feuille._VECTptr->back().print(contextptr)+ " do ";
+	dodone=true;
       }
       else {
 	if (maplemode>0){
@@ -2116,7 +2122,7 @@ namespace giac {
       else
 	res += it->print(contextptr) +";";
       debug_ptr(contextptr)->indent_spaces -= 2;
-      if (maplemode==1)
+      if (maplemode==1 || dodone)
 	return res+indent(contextptr)+" od;";
       if (maplemode==2)
 	return res+indent(contextptr)+" end_while;";
@@ -2968,10 +2974,13 @@ namespace giac {
     debug_ptr(contextptr)->indent_spaces +=2;
     ++it;
     for ( ;;){
-      if (it->type!=_VECT)
-	res += indent(contextptr)+it->print(contextptr);
+      gen tmp=*it;
+      if (tmp.is_symb_of_sommet(at_bloc))
+	tmp=tmp._SYMBptr->feuille;
+      if (tmp.type!=_VECT)
+	res += indent(contextptr)+tmp.print(contextptr);
       else {
-	const_iterateur jt=it->_VECTptr->begin(),jtend=it->_VECTptr->end();
+	const_iterateur jt=tmp._VECTptr->begin(),jtend=tmp._VECTptr->end();
 	for (;jt!=jtend;++jt){
 	  res += indent(contextptr)+jt->print(contextptr);
 	  if (xcas_mode(contextptr)!=3)

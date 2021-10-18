@@ -12357,6 +12357,9 @@ namespace giac {
       else
 	s="ggbpnt[";
       break;
+    case _TABLE__VECT:
+      s="{/";
+      break;
     default:
       s=calc_mode(contextptr)==1?"{":"[";
     }
@@ -12397,6 +12400,8 @@ namespace giac {
       return calc_mode(contextptr)==1?")":"]";
     case 0: case _MATRIX__VECT:
       return calc_mode(contextptr)==1?"}":"]";
+    case _TABLE__VECT:
+      return "/}";
     default:
       return calc_mode(contextptr)==1?"}":"]";
     }    

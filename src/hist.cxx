@@ -1603,7 +1603,7 @@ static void cb_Xcas_help_PARI(Fl_Menu_*, void*) {
 
 static void cb_Xcas_help_forum(Fl_Menu_*, void*) {
   const giac::context * contextptr = xcas::get_context(xcas::Xcas_input_focus);
- giac::system_browser_command(giac::language(contextptr)==4?"http://www.inf.uth.gr/xcas/":"http://xcas.e.ujf-grenoble.fr/XCAS");
+ giac::system_browser_command(giac::language(contextptr)==4?"http://www.inf.uth.gr/xcas/":"https://xcas.univ-grenoble-alpes.fr/forum");
 }
 
 static void cb_Xcas_help_lycee_card(Fl_Menu_*, void*) {

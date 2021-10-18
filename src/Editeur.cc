@@ -723,7 +723,8 @@ namespace xcas {
     static int program_counter=0;
     Fl_Text_Editor * e = find_editor(m);
     if (e){
-      string tmp,extension;
+      static string tmp;
+      string extension;
       if (Editeur * ed = dynamic_cast<Editeur *>(m->parent()))
 	extension=ed->extension;
       for (;;){
