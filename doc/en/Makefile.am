@@ -13,7 +13,7 @@ HTML_STAMPS = casinter.stamp cascmd_en.stamp tutoriel
 info_TEXINFOS = giac_us.texinfo
 AM_MAKEINFOHTMLFLAGS = --no-split
 
-EXTRA_DIST = $(TEX_LOCAL) $(PDF_LOCAL) $(DVI_LOCAL) $(PS_LOCAL) \
+EXTRA_DIST = $(TEX_LOCAL) $(PDF_LOCAL) \
 	     $(HTML_DIRS_LOCAL) $(HTML_LOCAL) $(HTML_STAMPS) \
 	     pgcd.cc pgcd.cpp giac_bassin.cpp .gdbinit cutting.* \
 	     x*.png sound*.png kde*.png rand*.png fit*.png catenoid*.png signal*.png hevea.sty 
@@ -34,11 +34,11 @@ $(srcdir)/cascmd_en: cascmd_en.stamp
 $(srcdir)/casinter: casinter.stamp
 $(srcdir)/tutoriel: tutoriel.stamp
 
-install-data-local: $(HTML_STAMPS) $(PS_LOCAL) $(DVI_LOCAL) troussesurvie_en.pdf # $(PDF_LOCAL) 
+install-data-local: $(HTML_STAMPS) troussesurvie_en.pdf # $(PDF_LOCAL) $(PS_LOCAL) $(DVI_LOCAL) 
 	$(install_sh) -d $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
 #	$(INSTALL_DATA) $(PDF_LOCAL) $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
 	$(INSTALL_DATA) troussesurvie_en.pdf $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
-	$(INSTALL_DATA) $(PS_LOCAL) $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
+#	$(INSTALL_DATA) $(PS_LOCAL) $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
 #	$(INSTALL_DATA) $(DVI_LOCAL) $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
 #	$(INSTALL_DATA) $(HTML_LOCAL) $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
 	for dd in $(HTML_DIRS_LOCAL); do \

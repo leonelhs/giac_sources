@@ -256,6 +256,7 @@
       {"labelfont"         ,1, _LABELFONT, _INT_PLOT ,T_NUMBER},
       {"labels"         ,1, _LABELS, _INT_PLOT ,T_NUMBER},
       {"left_rectangle"         ,1, _RECTANGLE_GAUCHE, _INT_SOLVER,T_NUMBER},
+      {"let",0,0,0,T_LOCAL},
       {"ligne_chapeau_carre"         ,1, _CAP_SQUARE_LINE, _INT_COLOR ,T_NUMBER},
       {"ligne_chapeau_plat"         ,1, _CAP_FLAT_LINE, _INT_COLOR ,T_NUMBER},
       {"ligne_chapeau_rond"         ,1, _CAP_ROUND_LINE, _INT_COLOR ,T_NUMBER},

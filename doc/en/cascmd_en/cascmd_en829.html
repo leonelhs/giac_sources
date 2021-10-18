@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking if an object in the plane is a right triangle or a rectangle: is_rectangle
+<title>Checking if an object is an equilateral triangle in the plane: is_equilateral
 </title>
 </head>
 <body >
@@ -12,35 +12,23 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en830.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dcheckrect" class="subsection">13.16.7  Checking if an object in the plane is a right triangle or a rectangle: <span style="font-family:monospace">is_rectangle</span>
-<a id="hevea_default1556"></a></h3>
-<p>See Section <a href="cascmd_en903.html#ssec%3A3dcheckrect">14.13.11</a> for checking for right triangles and
-rectangles in three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_rectangle</span> command determines whether or not a
-geometric object is an rectangle or a right triangle.
+<h3 id="ssec:2dcheckequilateral" class="subsection">13.16.5  Checking if an object is an equilateral triangle in the plane: <span style="font-family:monospace">is_equilateral</span>
+<a id="hevea_default1557"></a></h3>
+<p>See Section <a href="cascmd_en903.html#ssec%3A3dcheckequilateral">14.13.9</a> for checking for equilateral
+triangles in three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_equilateral</span> command determines whether or not a
+geometric object is an equilateral triangle.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_rectangle</span> takes one argument:<br>
- <span style="font-style:italic">G</span>, a geometric object or a sequence of three or four points
-assumed to be the vertices of a triangle or a quadrilateral.
-</li><li class="li-itemize"><span style="font-family:monospace">is_rectangle(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns:
-<ul class="itemize"><li class="li-itemize">
-(for triangle <span style="font-style:italic">G</span>) 1,2 or 3 if <span style="font-style:italic">G</span> is a right
-triangle (the number indicates which vertex is has the right angle).
-</li><li class="li-itemize">(for quadrilaterals <span style="font-style:italic">G</span>) 1 if <span style="font-style:italic">G</span> is a rectangle but not a
-square.
-</li><li class="li-itemize">(for quadrilaterals <span style="font-style:italic">G</span>) 2 if <span style="font-style:italic">G</span> is square.
-</li><li class="li-itemize">0 otherwise.
+<span style="font-family:monospace">is_equilateral</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object or a sequence of three points assumed to be
+the vertices of a triangle.
+</li><li class="li-itemize"><span style="font-family:monospace">is_equilateral(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> if the object
+is an equilateral triangle and returns <span style="font-family:monospace">0</span> otherwise.
 </li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">is_rectangle(1,1+i,i)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2
-</td></tr>
-</table></li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_rectangle(1+i, -2+i, -2-i, 1-i)</span>
+<span style="font-family:monospace">is_equilateral(0,2,1+i*sqrt(3))</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
@@ -48,8 +36,8 @@ square.
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">R:= rectangle(-2-i,1-i, 3, C, D)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_rectangle(R[0])</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">T:= equilateral_triangle(0,2,C)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_equilateral(T[0])</span>
 </td></tr>
 </table>
 </div>
@@ -57,14 +45,24 @@ square.
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
 </td></tr>
 </table>
-Note that <span style="font-family:monospace">R[0]</span> is a rectangle since <span style="font-family:monospace">R</span> is a list made
-of a rectangle and vertices <span style="font-family:monospace">C</span> and <span style="font-family:monospace">D</span>.<br>
+Note that <span style="font-family:monospace">T[0]</span> is a triangle since <span style="font-family:monospace">T</span> is a list made
+of a triangle and the vertex <span style="font-family:monospace">C</span>.<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">affix(C,D)</span>
+<span style="font-family:monospace">affix(C)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−2+8 <span style="font-style:italic">i</span>,1+8 <span style="font-style:italic">i</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">i</span>+1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_equilateral(1+i, -1+i, -1-i)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
 </td></tr>
 </table>
 </li></ul>

@@ -2,11 +2,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 /*
  *  Copyright (C) 2005,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -42,11 +38,7 @@ const int xwaspy_shift=33;
 #include "Editeur.h"
 #include "Cfg.h"
 #include "Python.h"
-#ifndef IN_GIAC
-#include <giac/tex.h>
-#else
 #include "tex.h"
-#endif
 #include <FL/Fl_Multiline_Output.H>
 #include <iostream>
 #include <fstream>
@@ -69,6 +61,8 @@ const int xwaspy_shift=33;
 #ifdef __MINGW_H
 #include <direct.h>
 #endif
+
+const int STATUS_JS_EVAL=16;
 
 using namespace std;
 using namespace giac;
@@ -486,10 +480,22 @@ namespace xcas {
     else
       contextptr=get_context(w);
     if (Multiline_Input_tab * m=dynamic_cast<Multiline_Input_tab *>(w)){
+      int pyc=python_compat(contextptr);
+      giac::python_contextptr=contextptr;
+#ifdef QUICKJS
+      if (pyc<0){
+	char * ptr=js_ck_eval(m->value(),&global_js_context);
+	if (ptr){
+	  g=string2gen(ptr,false);
+	  free(ptr);
+	}
+	else
+	  g=string2gen("QuickJS error",false);
+	return 1;
+      }
+#endif
 #ifdef HAVE_LIBMICROPYTHON
-      bool py=python_compat(contextptr) & 4;
-      if (py){
-	giac::python_contextptr=contextptr;
+      if (pyc & 4){
 	int i=micropy_ck_eval(m->value());
 	g=string2gen("Done",false);
 	return 1;
@@ -520,45 +526,102 @@ namespace xcas {
       if (ed->buffer()->length()==0)
 	return 0;
       freeze=false;
-#ifdef HAVE_LIBMICROPYTHON
-      bool py=python_compat(contextptr) & 4;
-      if (py){
-	char * s=ed->buffer()->text();
-	if (strcmp(s,"xcas")==0){
-	  python_compat(python_compat(contextptr) & 3,contextptr);
-	  g=string2gen("Done",false);
+      int pyc=ed->pythonjs;//python_compat(contextptr); // 
+      giac::python_contextptr=contextptr;
+      char * s_=ed->buffer()->text();
+      string s(s_);
+      free(s_);
+      if (s.size()==1){
+	char c=s[0];
+	if (c=='.'){
+	  g=symbolic(at_avance,0);
+	  return 1;
 	}
-	else 
-	  g=symbolic(at_python,makesequence(string2gen(s,false),at_python));
-	free(s);
+	if (c==';'){
+	  g=symbolic(at_show_pixels,0);
+	  return 1;
+	}
+	if (c==','){
+	  g=symbolic(at_show,0);
+	  return 1;
+	}
+      }
+      if ( (pyc<0 || (pyc & 4)) && strcmp(s.c_str(),"xcas")==0){
+	python_compat(pyc<0?0:(pyc & 3),contextptr);
+	g=string2gen("Done",false);
+	return 1;
+      }
+#ifdef QUICKJS
+      if (pyc<0){ 
+	if (s.size() && s[0]=='@')
+	  s=s.substr(1,s.size()-1);
+	else
+	  s="\"use math\";"+s;
+	// g=symbolic(at_javascript,makesequence(string2gen(s,false),at_javascript)); return 1;
+	// above commented because some race condition happened with segfault
+	Fl::remove_idle(xcas::Xcas_idle_function,0);
+	thread_eval_status(STATUS_JS_EVAL,contextptr);
+	get_history_fold(ed)->stop_button->activate();
+	char * ptr=js_ck_eval(s.c_str(),&global_js_context);
+	get_history_fold(ed)->stop_button->deactivate();
+	thread_eval_status(0,contextptr);
+	Fl::add_idle(xcas::Xcas_idle_function,0);
+	if (ptr){
+	  string ans(ptr);
+	  free(ptr);
+	  if (freeze)
+	    *logptr(contextptr) << gettext("Type ; in an empty commandline to display pixels\n");
+	  if (ans=="Graphic_object"){
+	    giac::context * ptr=(giac::context *) caseval("caseval contextptr");
+	    g=symb_quote(history_plot(ptr));
+	    return 1;
+	  }
+	  if (ans=="Logo_turtle"){
+	    g=string2gen(ans,false);
+	    return 1;
+	  }
+	  if (quickjs_parse_error_line>=0 && quickjs_parse_error_col>=0){
+	    giac::first_error_line(quickjs_parse_error_line,contextptr);
+	    giac::lexer_column_number(contextptr)=quickjs_parse_error_col;
+	    g=string2gen(ans,false);
+	    return 1;
+	  }
+	  my_ostream * saveptr=logptr(contextptr);
+	  logptr(0,contextptr);
+	  try {
+	    g=gen(ans,contextptr);
+	    g=symb_quote(g);
+	  }
+	  catch (std::runtime_error & e){
+	    cerr << e.what() << '\n';
+	  }
+	  logptr(saveptr,contextptr);
+	  if (giac::first_error_line(contextptr))
+	    g=string2gen(ans,false);
+	  return 1;
+	}
+	g=string2gen("QuickJS error",false);
 	return 1;
       }
       else {
-	char * s=ed->buffer()->text();
-	if (strcmp(s,"python")==0){
-	  python_compat(python_compat(contextptr) | 4,contextptr);
+	if (s=="js"){
+	  python_compat(-1,contextptr);
 	  g=string2gen("Done",false);
-	  free(s);
+	  return 1;	  
+	}
+      }
+#endif
+#ifdef HAVE_LIBMICROPYTHON
+      if (pyc & 4){
+	g=symbolic(at_python,makesequence(string2gen(s,false),at_python));
+	return 1;
+      }
+      else {
+	if (pyc>=0 && strcmp(s.c_str(),"python")==0){
+	  python_compat(pyc | 4,contextptr);
+	  g=string2gen("Done",false);
 	  return 1;
 	}
-	if (strlen(s)==1){
-	  char c=s[0];
-	  free(s);
-	  if (c=='.'){
-	    g=symbolic(at_avance,0);
-	    return 1;
-	  }
-	  if (c==';'){
-	    g=symbolic(at_show_pixels,0);
-	    return 1;
-	  }
-	  if (c==','){
-	    g=symbolic(at_show,0);
-	    return 1;
-	  }
-	}
-	else
-	  free(s);
       }
 #endif
       if (!ed->changed()){
@@ -1203,21 +1266,41 @@ namespace xcas {
     for (int i=0;i<n;++i,++a){
       Fl_Widget * tmp = *a;
       if (tmp->visible()){
+	int normalcolor=FL_WHITE,inversecolor=FL_BLACK;
+	if (Fl_Group * gr=dynamic_cast<Fl_Group *>(tmp)){
+	  if (gr->children()){
+	    Fl_Widget * child=gr->child(0);
+	    if (Editeur * ed=dynamic_cast<Editeur *>(child))
+	      child=ed->editor;
+	    if (Xcas_Text_Editor * ed=dynamic_cast<Xcas_Text_Editor *>(child)){
+	      int pythonjs=ed->pythonjs;
+	      if (pythonjs<0){
+		normalcolor=0x5b;
+	      }
+	      else {
+		if (pythonjs==4)
+		  normalcolor=FL_YELLOW;
+		else
+		  normalcolor=245;
+	      }
+	    }
+	  }
+	}
 	sprintf(chaine,"%i",i+1);
 	int j=(*a)->y();
 	bool inverse ;
 	inverse = m>=0 && i>=m && i<=M ;
 	if (inverse)
-	  fl_color(FL_BLACK);
+	  fl_color(inversecolor);
 	else
-	  fl_color(FL_WHITE);
+	  fl_color(normalcolor);
 	// if (fl_not_clipped(X, j, _printlevel_w, l)){
 	  fl_rectf(X,j,_printlevel_w,l);
 	  // check_fl_rectf(X,j,_printlevel_w,l,clip_x,clip_y,clip_w,clip_h,0,0);
 	  if (inverse)
-	    fl_color(FL_WHITE);
+	    fl_color(normalcolor);
 	  else
-	    fl_color(FL_BLACK);
+	    fl_color(inversecolor);
 	  fl_rect(X,j,_printlevel_w,l);
 	  // check_fl_rect(X,j,_printlevel_w,l,clip_x,clip_y,clip_w,clip_h,0,0);
 	  fl_draw(chaine,X+1,j+l-labeladd/2-1);
@@ -1787,7 +1870,8 @@ namespace xcas {
     if (!filename || !_select || _saving)
       return false;
     static string html5;
-    html5=widget_html5(this);
+    int tpos=0;
+    html5=widget_html5(this,tpos);
     if (autosave_rm) Fl::copy(html5.c_str(),html5.size(),1);
     const char * chs=_select(this,0,children()-1);
     if (!chs)
@@ -2292,6 +2376,8 @@ namespace xcas {
       i->textfont(labelfont());
     }
     if (Xcas_Text_Editor * ed=dynamic_cast<Xcas_Text_Editor *>(q)){
+      if (ed->buffer()->length()==0)
+	ed->pythonjs=python_compat(get_context(this));
       ed->Fl_Text_Display::textsize(labelsize());
       vector<Fl_Text_Display::Style_Table_Entry> & v=ed->styletable;
       for (unsigned i=0;i<v.size();++i)
@@ -4085,11 +4171,15 @@ namespace xcas {
   }
 
   void History_cb_stop_button(Fl_Widget* b , void*){
+    xcas::History_Pack * hp =xcas::get_history_fold(b)->pack;
+    context * cptr=hp?hp->contextptr:0;
+    if (thread_eval_status(cptr)==STATUS_JS_EVAL){
+      giac::interrupted=giac::ctrl_c=true;
+      return;
+    }
 #ifndef __APPLE__
     if (xcas::interrupt_button){ 
       xcas::interrupt_button=false;
-      xcas::History_Pack * hp =xcas::get_history_fold(b)->pack;
-      context * cptr=hp?hp->contextptr:0;
       cerr << gettext("STOP pressed. Trying to cancel cleanly") << '\n';
       if (!Fl::event_state(FL_SHIFT)){
 	giac::ctrl_c=true;
@@ -4117,8 +4207,6 @@ namespace xcas {
     static string s("10");
     if (xcas::interrupt_button){ 
       xcas::interrupt_button=false;
-      xcas::History_Pack * hp =xcas::get_history_fold(b)->pack;
-      context * cptr=hp?hp->contextptr:0;
       *logptr(cptr) << gettext("STOP pressed. Trying to cancel cleanly") << '\n';
       if (!w){
 	Fl_Group::current(0);
@@ -4165,13 +4253,13 @@ namespace xcas {
 #endif
   }
 
-  void History_Fold::update_status(){
+  void History_Fold::update_status(bool force){
     const giac::context * ptr = pack->contextptr;
     if (is_context_busy(ptr))
       stop_button->activate();
     else {
       ++update_status_count;
-      if (!stop_button->active() && 
+      if (!force && !stop_button->active() && 
 #ifdef WIN32
 	  (update_status_count%64) 
 #else
@@ -4183,12 +4271,17 @@ namespace xcas {
       if (getkeywin)
 	getkeywin->hide();
     }
+    int pyc=python_compat(ptr);
     if (current_status){
-      current_status->color(
+      if (pyc<0){
+	current_status->color(0x5b);
+      }
+      else
+	current_status->color(
 #ifdef HAVE_LIBMICROPYTHON
-			    (python_compat(ptr)&4)?FL_YELLOW:
+			      (pyc&4)?FL_YELLOW:
 #endif
-			    245);
+			      245);
       string mode_s="Config ";
       if (pack->url)
 	mode_s += '\''+remove_path(*pack->url)+'\'';
@@ -4220,13 +4313,22 @@ namespace xcas {
       mode_s += ' ';
       switch (giac::xcas_mode(ptr)){
       case 0: 
-	if (python_compat(ptr)){
-#ifdef HAVE_LIBMICROPYTHON
-	  if (python_compat(ptr)&4)
-	    mode_s += "MicroPython ";
-	  else
+	if (pyc){
+	  if (pyc<0){
+#ifdef QUICKJS
+	    mode_s += "QuickJS ";
+#else
+	    mode_s += "Unsupported ";
 #endif
-	    mode_s += python_compat(ptr)==2?"python ^==xor ":"python ^=** ";
+	  }
+	  else {
+#ifdef HAVE_LIBMICROPYTHON
+	    if (pyc&4)
+	      mode_s += "MicroPython ";
+	    else
+#endif
+	      mode_s += pyc==2?"python ^==xor ":"python ^=** ";
+	  }
 	}
 	else
 	  mode_s+="xcas "; 

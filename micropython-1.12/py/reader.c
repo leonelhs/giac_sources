@@ -106,6 +106,9 @@ STATIC void mp_reader_posix_close(void *data) {
     m_del_obj(mp_reader_posix_t, reader);
 }
 
+#ifndef errno
+#define errno 0
+#endif
 void mp_reader_new_file_from_fd(mp_reader_t *reader, int fd, bool close_fd) {
     mp_reader_posix_t *rp = m_new_obj(mp_reader_posix_t);
     rp->close_fd = close_fd;

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Boxcar function: boxcar
+<title>Listening to a digital sound: playsnd
 </title>
 </head>
 <body >
@@ -12,52 +12,18 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en949.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec:boxcar" class="subsection">15.2.1  Boxcar function: <span style="font-family:monospace">boxcar</span>
-<a id="hevea_default1685"></a></h3>
-<p>The <span style="font-family:monospace">boxcar</span> command creates a function which is 0 everywhere
-except in a given interval, where it is 1.
+<h3 id="sec1254" class="subsection">15.1.13  Listening to a digital sound: <span style="font-family:monospace">playsnd</span>
+<a id="hevea_default1686"></a></h3>
+<p>The <span style="font-family:monospace">playsnd</span> command plays digitized sound data.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">boxcar</span> takes three arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, two real numbers.
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, an identifier or expression.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">boxcar(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
-θ(<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)−θ(<span style="font-style:italic">x</span>−<span style="font-style:italic">b</span>), where
-θ is the Heaviside function (see
-Section <a href="cascmd_en139.html#ssec%3Aheaviside">6.8.9</a>). The resulting expression defines a
-function which is zero everywhere except within the segment [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>],
-where its value is equal to 1.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">boxcar(1,2,x)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">θ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>−1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">−θ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>−2</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">boxcar(1,2,3/2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">boxcar(1,2,0)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
-</td></tr>
-</table>
+<span style="font-family:monospace">playsnd</span> takes one argument:<br>
+ <span style="font-style:italic">s</span>, digitized sound data, such as that which can be read with the
+<span style="font-family:monospace">readwav</span> command or generated with the help of
+<span style="font-family:monospace">soundsec</span>. <span style="font-style:italic">s</span> should be either in the format 
+of the output of the <span style="font-family:monospace">readwav</span> command or a list of sampled
+data for mono sound with the default settings of 1 channel, 16 bits
+and 44100 Hz.
+</li><li class="li-itemize"><span style="font-family:monospace">playsnd(</span><span style="font-style:italic">s</span><span style="font-family:monospace">)</span> plays the given sound.
 </li></ul>
 <hr>
 <a href="cascmd_en947.html"><img src="previous_motif.gif" alt="Previous"></a>

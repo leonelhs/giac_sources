@@ -125,7 +125,7 @@
 #define MICROPY_SCHEDULER_DEPTH     (1)
 
 #define MP_SSIZE_MAX (0x7fffffff)
-
+#define MICROPY_READER_POSIX        (1)
 extern const struct _mp_obj_module_t mp_module_utime;
 
 

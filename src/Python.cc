@@ -1,5 +1,8 @@
 // -*- mode:C++ ; compile-command: "/usr/bin/g++ -DHAVE_CONFIG_H -I. -I..  -DIN_GIAC -I. -I.. -I. -I..       -g -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS -MT Python.o -MD -MP -MF .deps/Python.Tpo -c -o Python.o Python.cc" -*-
 #include "Python.h"
+#ifdef QUICKJS
+quickjs_bidon_t quickjs_bidon;
+#endif
 #ifdef HAVE_LIBMICROPYTHON
 #include <stdio.h>
 #include <unistd.h>
@@ -7,7 +10,6 @@
 #include <string.h>
 #include "Xcas1.h"
 
-int python_stack_size=1024*1024,python_heap_size=65536*1024;
 char * python_heap=0;
 
 micropy_bidon_t micropy_bidon;
@@ -30,9 +32,9 @@ int micropy_ck_eval(const char *line){
   if (python_heap && line[0]==0)
     return 1;
   if (python_heap)
-    micropy_init(python_stack_size,0);
+    micropy_init(pythonjs_stack_size,0);
   else
-    python_init(python_stack_size,python_heap_size);
+    python_init(pythonjs_stack_size,pythonjs_heap_size);
   if (!python_heap){
     console_output("Memory full",11);
     return RAND_MAX;
@@ -42,6 +44,7 @@ int micropy_ck_eval(const char *line){
 
 const char * read_file(const char * filename){
   FILE * f =fopen(filename,"r");
+  if (!f) return 0;
   static char buf[256*1024];
   fscanf(f,"%s",buf);
   return buf;
@@ -196,9 +199,6 @@ int c_draw_string_medium(int x,int y,int c,int bg,const char * s,bool fake){
 int os_get_pixel(int x,int y){
   const context * contextptr=caseval_context();
   return _get_pixel(makevecteur(x,y),contextptr).val;
-}
-
-void sync_screen(){
 }
 
 ulonglong double2gen(double d){

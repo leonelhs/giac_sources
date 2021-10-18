@@ -172,10 +172,17 @@ void a_propos() {
   #ifdef HAVE_LIBGLPK
     s += "Contains GLPK code (c) Andrew Makhorin\n";
   #endif //
+  #ifdef HAVE_LIBMICROPYTHON
+    s += "MicroPython code (c) Damien P. George and others (MIT license)\n";
+  #endif
+  #ifdef QUICKJS
+    s += "QuickJS (c) Fabrice Bellard and Charlie Gordon (MIT license)\n";
+  #endif
     s += "Postscript output 2-d inspired by eukleides (c) Christian Obrecht\n";
     s += "3-d exports from gl2ps, (c) 1999-2006 Christophe Geuzaine\n";
     s += "Implicitplot3d code derived from Paul Bourke and Cory Gene Bloyd\n";
     s += "TinyMT code from Mutsuo Saito and Makoto Matsumoto\n";
+    s += "\n\n\n\n\n\n";
     Xcas_parse_error_output->value(s.c_str());
     Fl::focus(Xcas_parse_error_output);
 }
@@ -1037,11 +1044,11 @@ static void cb_Xcas_open_v200(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_CloneOffline(Fl_Menu_*, void*) {
-  std::string html5=giac::browser_command("doc/xcasfr.html#"+xcas::widget_html5(Xcas_current_session())); std::cout << html5 << std::endl; system(html5.c_str());
+  int pos=0;std::string html5=giac::browser_command("doc/xcasfr.html#"+xcas::widget_html5(Xcas_current_session(),pos)); std::cout << html5 << std::endl; system(html5.c_str());
 }
 
 static void cb_Xcas_CloneOnline(Fl_Menu_*, void*) {
-  std::string html5="http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session()); std::cout << html5 << std::endl; giac::system_browser_command(html5);
+  int pos=0;std::string html5="http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session(),pos); std::cout << html5 << std::endl; giac::system_browser_command(html5);
 }
 
 static void cb_Xcas_Insert_Session(Fl_Menu_*, void*) {
@@ -5504,7 +5511,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     for (int i=argstart;i<argc;++i){
       load_filename(argv[i],false);
       if (link){
-        std::string html5="http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session()); std::cout << html5 << std::endl; giac::system_browser_command(html5);
+        int pos=0;std::string html5="http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session(),pos); std::cout << html5 << std::endl; giac::system_browser_command(html5);
       }
     }
     if (link){
@@ -5537,7 +5544,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
 
 int main(int argc,char ** argv) {
   #ifdef HAVE_LIBMICROPYTHON
-      python_heap=micropy_init(python_stack_size,python_heap_size);
+      python_heap=micropy_init(pythonjs_stack_size,pythonjs_heap_size);
   #endif
   if (argc==2 && strlen(argv[1])==0)
     argc=1;

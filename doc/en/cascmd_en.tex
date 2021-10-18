@@ -10,7 +10,7 @@
 \usepackage{amssymb}
 \usepackage{stmaryrd}
 \usepackage{makeidx}
-\usepackage{times}
+%\usepackage{stix}
 \usepackage{hevea}
 %\usepackage{mathptmx}
 %HEVEA \newcommand{\leftsetbracket}{\@print@u{X27E6}}
@@ -24365,7 +24365,8 @@ since the default argument of \texttt{lagrange}
 would be global, hence not the same as the local
 variable used for the definition of \texttt{g}.
 
-\subsection{Trigonometric interpolation: \texttt{triginterp}}
+\subsection{Trigonometric interpolation: \texttt{triginterp}
+\index{triginterp|textbf}}
 
 The \texttt{triginterp} command computes a trigonometric polynomial
 which interpolates given data.
@@ -24404,7 +24405,7 @@ measuring the temperature every three hours:
 \begin{center}
 	\begin{tabular}{|r|c|c|c|c|c|c|c|c|}
 		\hline hour of the day&0&3&6&9&12&15&18&21\\
-		\hline temperature (deg~C)&11&10&17&24&32&26&23&19\\\hline
+		\hline temperature (${}^\circ$C)&11&10&17&24&32&26&23&19\\\hline
 	\end{tabular}
 \end{center}
 Furthermore, assume that an estimate of the temperature at 13:45 is
@@ -24713,9 +24714,9 @@ The \texttt{thiele} command finds the rational interpolation.
     contains the $x$ coordinates and the second column contains the
     corresponding $y$ coordinates.\\
     Instead of a single matrix, the data can be given as a vector of
-    $x$ coordinates and a vector of $y$ coordinates.
-    \item \textit{v}, an identifier, number or any symbolic
-        expression.
+		  $x$ coordinates and a vector of $y$ coordinates (in which casethe call to \texttt{thiele} has three arguments).
+    \item \textit{v}, an identifier, number or symbolic
+	    expression (default: $x$).
   \end{itemize}
   \item \texttt{thiele(}\textit{data,v}\texttt{)} returns
     $R(v)$ where $R$ is the rational interpolant.
@@ -24788,6 +24789,46 @@ the $x$ coordinates.
  %  \texttt{+3.45976823393)}
 % \end{tabular}
 % \end{center}
+\end{itemize}
+
+\subsection{Rational interpolation without poles: \texttt{ratinterp}
+\index{ratinterp|textbf}}
+
+The \texttt{ratinterp} command computes a family of pole-free rational functions which interpolate given data.
+Rational interpolation usually gives better results than the classic polynomial interpolation, which may oscillate highly in some cases.
+\begin{itemize}
+\item \texttt{ratinterp} takes up to three arguments:
+\begin{itemize}
+	\item Matrix \textit{data} with 2 columns with rows corresponding to points $(x_k,y_k)$, $k=0,1,\dots,n$, or the sequence of lists $\textit{data\_x}=[x_0,x_1,\dots,x_n]$ and $\textit{data\_y}=[y_0,y_1,\dots,y_n]$, where $a=x_0<x_1<\cdots<x_n=b$,
+	\item an identifier \textit{var}, which may also be a number, symbolic expression or list of numbers $a$ (optional, by default $x$),
+	\item an integer $d$ such that $0\leq d\leq n$ (optional, by default $\min\{3,\lfloor n/2\rfloor\}$).
+\end{itemize}
+\item \texttt{ratinterp(}\textit{data}$\langle,\textit{var},d\rangle$\texttt{)} or \texttt{ratinterp(}\textit{data\_x},\textit{data\_y}$\langle,\textit{var},d\rangle$\texttt{)} returns a rational interpolation $r(a)$ of the given points using the method of Floater and Hormann (2006). If $a$ is a list of numbers $a_1,a_2,\dots,a_m$, then the list $[r(a_1)\dots,r(a_m)]$ is returned. There are at most $n+1$ distinct interpolants which can be specified by varying the parameter $d$.
+\end{itemize}
+
+\smallskip
+
+\noindent
+\textbf{Examples.}
+\begin{itemize}
+\item
+Input:
+\begin{center}
+	\tt ratinterp([1,3,5,8],[2,-1,3,4],x,1)
+\end{center}
+Output:
+\[
+	\frac{-19 x^{3}+288 x^{2}-1133 x+1200}{6 x^{2}-48 x+210}
+\]
+\item
+Input:
+\begin{center}
+	\tt ratinterp([1,3,5,8],[2,-1,3,4],x,2)
+\end{center}
+Output:
+\[
+	-\frac{29 x^{3}}{168}+\frac{17 x^{2}}{7}-\frac{1507 x}{168}+\frac{61}{7}
+\]
 \end{itemize}
 
 \section{Arithmetic and polynomials}
@@ -31076,6 +31117,38 @@ to a number to the smallest interval which contains the number.
 %   \tt
 %   [1.1411200080598672220 .. 1.1411200080598672222]
 % \end{center}
+\end{itemize}
+
+\subsection{Converting box constraints from matrix to interval form: \texttt{box\_constraints}
+\index{box\_constraints}
+\label{ssec:numb2intvl}}
+
+The \texttt{box\_constraints} command
+can convert bounds of given variables from the matrix form to interval form.
+\begin{itemize}
+  \item \texttt{box\_constraints} takes two mandatory arguments:
+  \begin{itemize}
+    \item \textit{vars}, a list of variables $[x_1,x_2,\dots,x_n]$.
+    \item \textit{bnds}, a matrix with $n$ rows and two columns in which the $k$-th row contains the lower and upper bound $l_k$ and $u_k$ of $x_k$, respectively.
+  \end{itemize}
+  \item \texttt{box\_constraints(}\textit{vars},\textit{bnds}\texttt{)}
+   returns the list $[x_1=l_1\ldots u_1,x_2=l_2\ldots u_2,\dots,x_n=l_n\ldots u_n]$.
+\end{itemize}
+
+\smallskip
+
+\noindent
+\textbf{Examples.}
+\begin{itemize}
+\item 
+\textit{Input:}
+\begin{center}
+  \texttt{box\_constraints([x,y],[[-2,2],[-5,5]])}
+\end{center}
+\textit{Output:}
+\[
+\left[x=-2\ldots 2,y=-5\ldots 5\right]
+\]
 \end{itemize}
 
 \section{Sequences and lists\label{sec:seq}}
@@ -41765,8 +41838,8 @@ algorithm to avoid them.
 \index{minimize|textbf}
 \index{maximize|textbf}}
 
-The \texttt{minimize} command finds the smallest value of an
-expression, possibly restricted to a specific domain.
+\texttt{minimize} attempts to find the smallest value of an
+expression defined on a compact domain, using analytical methods.
 \begin{itemize}
   \item \texttt{minimize} takes two mandatory arguments and two
   optional arguments:
@@ -41788,9 +41861,9 @@ specified by constraints and/or bounding variables, or (if
 \textit{location} is specified) a list consisting of the minimum value
 and the list of points where the minimum is achieved.
 
-The domain must be closed and bounded and \textit{obj} must be
-continuous in every point of it, otherwise the final result may be
-incorrect or meaningless.  If the minimal value could not be obtained,
+The domain must be closed and bounded (i.e.~compact) and \textit{obj}
+must be continuous; otherwise the final result may be incorrect or
+meaningless.  If the minimal value could not be obtained,
 \texttt{undef} is returned.
 \end{itemize}
 
@@ -41999,8 +42072,9 @@ the specified domain.
 \subsection{Local extrema: \texttt{extrema}
 \index{extrema|textbf}}
 
-The \texttt{extrema} command finds the local extrema of a univariate
-or multivariate differentiable expression under equality constraints.
+\texttt{extrema} attempts to find local extrema of a
+univariate/multivariate differentiable expression under equality
+constraints, using analytical methods.
 \begin{itemize}
   \item \texttt{extrema} which takes two mandatory arguments and two
   optional arguments:
@@ -42155,10 +42229,10 @@ guaranteed.
 % \end{center}
 \end{itemize}
 
-\subsection{Global extrema without using derivatives: \texttt{nlpsolve}
+\subsection{Local derivative-free optimization: \texttt{nlpsolve}
 \index{nlpsolve}}
 
-The \texttt{nlpsolve} command computes the optimum of a (not necessarily
+\texttt{nlpsolve} computes the optimum of a (not necessarily
 differentiable) nonlinear (multivariate) objective function, subject
 to a set of nonlinear equality and/or inequality constraints, using
 the COBYLA algorithm.
@@ -42178,11 +42252,10 @@ the COBYLA algorithm.
          \texttt{maximize=false}.)
        \item \texttt{nlp\_initialpoint=}\textit{pt}, where \textit{pt}
        is a point given in the form $[x=x_{0},y=y_{0},\ldots]$.  
-       \textit{pt} doesn't have to be feasible, but it can't be zero.
-
-       If this isn't given or isn't feasible, then a feasible starting
+       \textit{pt} does not have to be feasible, but it must not be zero.
+       If none is given or the given point is not feasible, then a feasible starting
        guess is automatically generated. Note that choosing a good
-       initial point is needed for obtaining a correct solution in some cases.
+       initial point is required for obtaining a correct solution in some cases.
        \item \texttt{nlp\_iterationlimit=$n$} for an integer $n$.
        \item \texttt{assume=nlp\_nonnegative}
        \item \texttt{nlp\_precision=$\epsilon$} for some $\epsilon > 0$.
@@ -42194,10 +42267,6 @@ the COBYLA algorithm.
   is the optimal value of \textit{obj} and \textit{optobj}
   is a list of of optimal values of the decision variables.
 \end{itemize}
-
-The input syntax for \texttt{nlpsolve} resembles that of Maple's
-\texttt{NLPSolve} (entering the objective as a function (univariate
-case) is not supported, however).
 
 
 \smallskip

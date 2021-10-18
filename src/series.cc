@@ -775,7 +775,7 @@ namespace giac {
       w.push_back(num);
       w.push_back(den);
       // replace common by lcm of common and den
-#ifndef USE_GMP_REPLACEMENTS
+#if !defined USE_GMP_REPLACEMENTS && !defined BF2GMP_H
       if (common.type==_ZINT && common.ref_count()==1 && is_integer(den)){
 	if (den.type==_ZINT)
 	  mpz_lcm(*common._ZINTptr,*common._ZINTptr,*den._ZINTptr);
@@ -3206,7 +3206,7 @@ namespace giac {
   static define_unary_function_eval4 (__limit,&_limit,_limit_s,0,&texprintaslimit);
   define_unary_function_ptr5( at_limit ,alias_at_limit,&__limit,_QUOTE_ARGUMENTS,true);
 
-#if 0
+#if 0 // def NSPIRE_NEWLIB
   static const char _lim_s []="lim";
   static define_unary_function_eval4 (__lim,&_limit,_lim_s,0,&texprintaslimit);
   define_unary_function_ptr5( at_lim ,alias_at_lim,&__lim,_QUOTE_ARGUMENTS,true);

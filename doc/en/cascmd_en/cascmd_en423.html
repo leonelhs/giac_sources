@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Flattening a list: flatten
-
+<title>Prepending an element at the beginning of a list: prepend
 </title>
 </head>
 <body >
@@ -13,30 +12,41 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en424.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:flatten" class="subsection">6.40.14  Flattening a list: <span style="font-family:monospace">flatten</span>
-<a id="hevea_default711"></a>
-</h3>
-<p>The <span style="font-family:monospace">flatten</span> command replaces any sublists of a list by their
-elements.
+<h3 id="sec508" class="subsection">6.40.12  Prepending an element at the beginning of a list: <span style="font-family:monospace">prepend</span>
+<a id="hevea_default711"></a></h3>
+<p>The <span style="font-family:monospace">prepend</span> command adds an element to the beginning of a list.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">flatten</span> takes one argument:<br>
- <span style="font-style:italic">L</span>, a list.
-</li><li class="li-itemize"><span style="font-family:monospace">flatten(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns a list which is the result of
-recursively replacing any elements that are lists by the elements,
-resulting in a list with no lists as elements.
+<span style="font-family:monospace">prepend</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">x</span>.
+</li><li class="li-itemize"><span style="font-style:italic">L</span>, a list.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">prepend(</span><span style="font-style:italic">x</span>,<span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns a list containing <span style="font-style:italic">x</span> as the
+first element followed by the elements of <span style="font-style:italic">L</span>.
 </li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">flatten([[1,[2,3],4],[5,6]])</span>
-</div><p>
+<div class="center">
+<span style="font-family:monospace">prepend([3,4,2],1)</span>
+</div>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,2,3,4,5,6</td><td class="dcell">⎤<br>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,3,4,2</td><td class="dcell">⎤<br>
 ⎦</td></tr>
-</table><p><br>
-</p><p>If the original list is a matrix, you can also use the <span style="font-family:monospace">mat2list</span>
-command for this (see Section <a href="cascmd_en442.html#ssec%3Amat2list">6.40.33</a>).</p>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">prepend([1,2],[3,4])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">3,4</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,1,2</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en422.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

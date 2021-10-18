@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Global extrema without using derivatives: nlpsolve
+<title>Global extrema: minimize maximize
+
 </title>
 </head>
 <body >
@@ -12,105 +13,261 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en537.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec688" class="subsection">6.53.3  Global extrema without using derivatives: <span style="font-family:monospace">nlpsolve</span>
-<a id="hevea_default932"></a></h3>
-<p>The <span style="font-family:monospace">nlpsolve</span> command computes the optimum of a (not necessarily
-differentiable) nonlinear (multivariate) objective function, subject
-to a set of nonlinear equality and/or inequality constraints, using
-the COBYLA algorithm.
+<h3 id="sec688" class="subsection">6.53.1  Global extrema: <span style="font-family:monospace">minimize</span> <span style="font-family:monospace">maximize</span>
+<a id="hevea_default932"></a>
+<a id="hevea_default933"></a></h3>
+<p><span style="font-family:monospace">minimize</span> attempts to find the smallest value of an
+expression defined on a compact domain, using analytical methods.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">nlpsolve</span> takes the following arguments:
+<span style="font-family:monospace">minimize</span> takes two mandatory arguments and two
+optional arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">obj</span>, an expression to optimize.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">constr</span>, a list of equality and
-inequality constraints.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">bd</span>, a sequence of variable boundaries
-<span style="font-style:italic">x</span>=<span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, a sequence of options which may be one of:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">maximize=</span><span style="font-style:italic">bool</span>, where <span style="font-style:italic">bool</span> can
-be <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>. Just <span style="font-family:monospace">maximize</span>
-is equivalent to <span style="font-family:monospace">maximize=true</span>. (By default,
-<span style="font-family:monospace">maximize=false</span>.)
-</li><li class="li-itemize"><span style="font-family:monospace">nlp_initialpoint=</span><span style="font-style:italic">pt</span>, where <span style="font-style:italic">pt</span>
-is a point given in the form [<span style="font-style:italic">x</span>=<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span>=<span style="font-style:italic">y</span><sub>0</sub>,…]. 
-<span style="font-style:italic">pt</span> doesn’t have to be feasible, but it can’t be zero.<p>If this isn’t given or isn’t feasible, then a feasible starting
-guess is automatically generated. Note that choosing a good
-initial point is needed for obtaining a correct solution in some cases.
-</p></li><li class="li-itemize"><span style="font-family:monospace">nlp_iterationlimit=</span><span style="font-style:italic">n</span> for an integer <span style="font-style:italic">n</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">assume=nlp_nonnegative</span>
-</li><li class="li-itemize"><span style="font-family:monospace">nlp_precision=</span>є for some є &gt; 0.
+<span style="font-style:italic">obj</span>, a univariate or multivariate expression
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">constr</span>, list of constraints given by
+equalities, inequalities, and/or expressions assumed to be equal to 0.
+If there is only one constraint, it doesn’t have to be a list.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, list of variables. If there is only one
+variable, it doesn’t have to be a list. A variable can also include
+bounds, as in <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">location</span>, a keyword which may be
+<span style="font-family:monospace">coordinates</span>, <span style="font-family:monospace">locus</span> or <span style="font-family:monospace">point</span>.
 </li></ul>
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">nlpsolve(</span><span style="font-style:italic">obj</span> ⟨<span style="font-style:italic">constr,bd,opt</span>⟩<span style="font-family:monospace">)</span>
-returns a list [<span style="font-style:italic">optobj,optdec</span>], where <span style="font-style:italic">optobj</span>
-is the optimal value of <span style="font-style:italic">obj</span> and <span style="font-style:italic">optobj</span>
-is a list of of optimal values of the decision variables.
-</li></ul><p>The input syntax for <span style="font-family:monospace">nlpsolve</span> resembles that of Maple’s
-<span style="font-family:monospace">NLPSolve</span> (entering the objective as a function (univariate
-case) is not supported, however).</p><p><br>
+</li><li class="li-itemize"><span style="font-family:monospace">minimize(</span><span style="font-style:italic">obj</span> ⟨<span style="font-style:italic">, constr
+</span>⟩<span style="font-style:italic">,vars</span> ⟨<span style="font-style:italic">,location</span>⟩<span style="font-family:monospace">)</span>
+returns the minimum value of <span style="font-family:monospace">obj</span> on the domain
+specified by constraints and/or bounding variables, or (if
+<span style="font-style:italic">location</span> is specified) a list consisting of the minimum value
+and the list of points where the minimum is achieved.<p>The domain must be closed and bounded (i.e. compact) and <span style="font-style:italic">obj</span>
+must be continuous; otherwise the final result may be incorrect or
+meaningless. If the minimal value could not be obtained,
+<span style="font-family:monospace">undef</span> is returned.
+</p></li></ul><p>The <span style="font-family:monospace">maximize</span> command takes the same parameters as
+<span style="font-family:monospace">minimize</span>, but returns the global maximum of <span style="font-family:monospace">obj</span> on
+the specified domain. </p><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">nlpsolve(ln(1+x1^2)-x2,[(1+x1^2)^2+x2^2=4])</span>
+<span style="font-family:monospace">minimize(sin(x),[x=0..4])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">sin</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">4</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">minimize(asin(x),x=-1..1)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π </td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">minimize(x^4-x^2,x=-3..3,locus)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−1.73205080757,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">x</span><sub>1</sub>=−4.77142305945×10<sup>−8</sup>,<span style="font-style:italic">x</span><sub>2</sub>=1.73205080757</td><td class="dcell">⎤<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">minimize(x-abs(x),x=-1..1)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−2
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">minimize(when(x==0,0,exp(-1/x^2)),x=-1..1)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">minimize(sin(x)+cos(x),x=0..20,coordinates)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">5</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td class="dcell"> π ,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">13</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td class="dcell"> π ,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">21</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td class="dcell"> π </td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">minimize(x^2-3x+y^2+3y+3,[x=2..4,y=-4..-2],point)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−1,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >−2</td></tr>
+</table></td><td class="dcell">⎤<br>
 ⎦</td><td class="dcell">⎤<br>
 ⎦</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">nlpsolve(-x1*x2*x3,[72-x1-2x2-2x3&gt;=0],x1=0..20,x2=0..11,x3=0..42)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−3300.0,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">x</span><sub>1</sub>=20.0,<span style="font-style:italic">x</span><sub>2</sub>=11.0,<span style="font-style:italic">x</span><sub>3</sub>=15.0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">nlpsolve(x^3+2x*y-2y^2,x=-10..10,y=-10..10,</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  nlp_initialpoint=[x=3,y=4],maximize)</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">obj:=sqrt(x^2+y^2)-z;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">constr:=[x^2+y^2&lt;=16,x+y+z=10];</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">minimize(obj,constr,[x,y,z])</span>
 </td></tr>
 </table>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1050.0,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">x</span>=10.0,<span style="font-style:italic">y</span>=4.99999985519</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−4 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">−6
+</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">nlpsolve(sin(x)/x,x=1..30)</span>
+<span style="font-family:monospace">minimize(x^2*(y+1)-2y,[y&lt;=2,sqrt(1+x^2)&lt;=y],[x,y])</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−0.217233628211,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">x</span>=4.49340946198</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−4
+</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">nlpsolve(2-1/120*x1*x2*x3*x4*x5,</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  [x1&lt;=1,x2&lt;=2,x3&lt;=3,x4&lt;=4,x5&lt;=5],assume=nlp_nonnegative)</span>
+<span style="font-family:monospace">maximize(cos(x),x=1..3)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">cos</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">1</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">obj:=piecewise(x&lt;=-2,x+6,x&lt;=1,x^2,3/2-x/2);</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">maximize(obj,x=-3..2)</span>
 </td></tr>
 </table>
 </div>
 <span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">maximize(x*y*z,x^2+2*y^2+3*z^2&lt;=1,[x,y,z])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">18</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">maximize(x*y,[x+y^2&lt;=2,x&gt;=0,y&gt;=0],[x,y],locus)</span>
+</div>
+<span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1.0,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">x</span><sub>1</sub>=1.0,<span style="font-style:italic">x</span><sub>2</sub>=2.0,<span style="font-style:italic">x</span><sub>3</sub>=3.0,<span style="font-style:italic">x</span><sub>4</sub>=4.0,<span style="font-style:italic">x</span><sub>5</sub>=5.0</td><td class="dcell">⎤<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">9</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
 ⎦</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
 ⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">maximize(y^2-x^2*y,y&lt;=x,[x=0..2,y=0..2])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">27</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">assume(a&gt;0);</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">maximize(x^2*y^2*z^2,x^2+y^2+z^2=a^2,[x,y,z])</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span><sup>6</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">27</td></tr>
+</table></td></tr>
 </table>
 </li></ul>
 <hr>

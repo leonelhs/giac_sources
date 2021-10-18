@@ -5,11 +5,7 @@
 #include "config.h"
 #endif
 
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 /*
  *  Copyright (C) 2002,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -27,11 +23,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IN_GIAC
-#include <giac/gen.h>
-#else
 #include "gen.h"
-#endif
 #include "Input.h"
 #include "Graph.h"
 #ifdef HAVE_LIBFLTK
@@ -69,6 +61,7 @@ namespace xcas {
     giac::gen _g;
     std::vector<Fl_Text_Display::Style_Table_Entry> styletable;
     bool gchanged;
+    int pythonjs;
     void set_gchanged();
     void clear_gchanged();
     giac::gen g() ;

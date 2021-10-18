@@ -112,9 +112,6 @@ int os_get_pixel(int x,int y){
   return _get_pixel(makevecteur(x,y),contextptr).val;
 }
 
-void sync_screen(){
-}
-
 ulonglong double2gen(double d){
   giac::gen g(d);
   return *(ulonglong *) &g;

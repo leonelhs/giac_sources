@@ -4,15 +4,9 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifndef IN_GIAC
-#include <giac/first.h>
-#include <giac/gen.h>
-#include <giac/identificateur.h>
-#else
 #include "first.h"
 #include "gen.h"
 #include "identificateur.h"
-#endif
 #include "vector.h"
 #include <string>
 #include <iostream>

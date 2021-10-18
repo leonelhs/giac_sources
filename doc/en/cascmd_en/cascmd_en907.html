@@ -4,32 +4,57 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>General remarks</title>
+<title>Checking if an object in space is a rhombus: is_rhombus
+</title>
 </head>
 <body >
 <a href="cascmd_en906.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en908.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1208" class="subsection">14.14.1  General remarks</h3>
-<p>The transformations in this section operate on any geometric object.
-They take as arguments parameters to specify the transformation. They
-can optionally take a geometric object as the last argument, in which
-case the transformed object is returned. Without the geometric object
-as an argument, these transformations will return a new command which
-performs the transformation. For example, to move an object
-<span style="font-family:monospace">P</span> 3 units up, either
-</p><div class="center">
-<span style="font-family:monospace">translation([0,0,3],P)</span>
-</div><p>
-or
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">t:= translation([0,0,3])</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">t(P)</span>
+<h3 id="ssec:3dcheckrhombus" class="subsection">14.13.13  Checking if an object in space is a rhombus: <span style="font-family:monospace">is_rhombus</span>
+<a id="hevea_default1641"></a></h3>
+<p>See Section <a href="cascmd_en833.html#ssec%3A2dcheckrhombus">13.16.9</a> for checking for rhombuses in
+two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_rhombus</span> command determines whether or not a
+geometric object is a rhombus.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">is_rhombus</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object or a sequence of four points assumed to be
+the vertices of a quadrilateral.
+</li><li class="li-itemize"><span style="font-family:monospace">is_square(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">G</span>
+is a rhombus but not a square, returns 2 if <span style="font-style:italic">G</span> is a square and
+returns 0 otherwise. 
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_rhombus([2,0,0],[0,1,0],[-2,0,0],[0,-1,0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
 </td></tr>
 </table>
-</div><p>
-works.</p>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">R:= rhombus([0,0,0],[2,0,0],[[0,0,1],pi/4])</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_rhombus(S)</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_rhombus([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en906.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

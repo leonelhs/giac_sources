@@ -2,11 +2,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 /*
  *  Copyright (C) 2002,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -28,24 +24,12 @@
 #include "Tableur.h"
 #include "Xcas1.h"
 #include "Print.h"
-#ifndef IN_GIAC
-#include <giac/vecteur.h>
-#else
 #include "vecteur.h"
-#endif
-#ifndef IN_GIAC
-#include <giac/identificateur.h>
-#include <giac/usual.h>
-#include <giac/prog.h>
-#include <giac/misc.h>
-#include <giac/global.h>
-#else
 #include "identificateur.h"
 #include "usual.h"
 #include "prog.h"
 #include "misc.h"
 #include "global.h"
-#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif

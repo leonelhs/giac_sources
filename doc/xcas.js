@@ -1214,7 +1214,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (!UI.usecm) return;
     if (UI.python_mode) {
       //console.log('Python mode');
-      if (UI.micropy)
+      if (UI.micropy>0)
 	cmentree.setOption("mode", "micropy");
       else
 	cmentree.setOption("mode", "python");
@@ -1348,6 +1348,72 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     var ev = Module.cwrap('mp_js_do_str', 'number', ['string']);
     return ev(s);
   },
+  quickjs:function(text){
+    while (text.length>0){
+      var ch=text.substr(text.length-1,1);
+      if (ch!=' ')
+	break;
+      text=text.substr(0,text.length-1);
+    }
+    if (text=='xcas' || text=='xcas '){
+      UI.micropy=0; UI.python_mode=0; 
+      var form = $id('config');
+      form.python_xor.checked = false;
+      form.python_mode.checked = false;
+      form.js_mode.checked=false;
+      UI.set_settings();
+      return UI.caseval('python_compat(0)');
+    }
+    if (text=='.'){ // show turtle
+      let s=UI.caseval('avance(0)');
+      //console.log(s);
+      return s;
+    }
+    if (text==','){ // show (matplotl)
+      Module.print('>>> show()');
+      let s=UI.caseval('show()');
+      return s;
+    }
+    if (text==';'){
+      let s=UI.caseval('show_pixels()');
+      return s;
+    }
+    if (text.length>=2 && text[0]=='@'){
+      if (text[1]=='@')
+	return eval(text.substr(2,text.length-2));
+      text=text.substr(1,text.length-1);
+    }
+    else text='"use math";'+text;
+    let ev=Module.cwrap('quickjs_ck_eval', 'string', ['string']);
+    return ev(text);
+  },
+  classlist2evaluator:function(l){
+    let evals=['cas','micropy','js'];
+    for (let i=0;i<evals.length;++i){
+      if (l.contains(evals[i]))
+	return evals[i];
+    }
+    return '';
+  },
+  set_micropy:function(field,alert=0){
+    //console.log(field.classList);
+    if (field.classList.contains('cas')) {
+      UI.micropy=0; UI.python_mode=0;
+      if (alert)
+	console.log('set_micropy 0');
+    }
+    if (field.classList.contains('micropy')) {
+      UI.micropy=1; UI.python_mode=4;
+      if (alert)
+	console.log('set_micropy 1');
+    }
+    if (field.classList.contains('js')){
+      UI.micropy=-1; UI.python_mode=0;
+      if (alert)
+	console.log('set_micropy -1');
+    }
+    UI.set_settings();
+  },
   micropy:0,
   micropy_initialized:0,
   micropy_heap:4194304,
@@ -1368,6 +1434,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       var form = $id('config');
       form.python_xor.checked = false;
       form.python_mode.checked = true;
+      form.js_mode.checked=false;
       UI.set_settings();
       return UI.caseval('python_compat(1)');
     }
@@ -1429,6 +1496,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       var form = $id('config');
       form.python_xor.checked = true;
       form.python_mode.checked = true;
+      form.js_mode.checked=false;
       return 'python_compat(4)';
     }
     return text;
@@ -1467,6 +1535,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   withworker: 0,
   busy: 0,
   casevalcb: function (text, callback, args) {
+    //console.log('casevalcb',text,callback);
     // prepare for webworker: casevalcb will run docaseval in a worker
     // 3d plotting does not work...
     if (UI.withworker && !!window.Worker) {
@@ -1491,24 +1560,37 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       return;
       // STOP: myWorker.terminate()
     }
-    if (UI.micropy)
+    if (UI.micropy>0)
       return callback(UI.mpeval(text),args);
     if (text=='python'){
       UI.micropy=1; UI.python_mode = 4; UI.set_settings();
       var form = $id('config');
       form.python_xor.checked = true;
       form.python_mode.checked = true;
+      form.js_mode.checked=false;
       return callback(UI.caseval('python_compat(4)'),args);
     }
-    var docaseval = Module.cwrap('caseval', 'string', ['string']);
-    var value = UI.add_autosimplify(UI.handle_shortcuts(text));
-    var s, err;
-    //console.log(value);
-    try {
-      s = docaseval(value);
-    } catch (err) {
+    if (text=='js'){
+      UI.micropy=-1; UI.python_mode = 0; UI.set_settings();
+      var form = $id('config');
+      form.python_xor.checked = false;
+      form.python_mode.checked = false;
+      form.js_mode.checked=true;
+      return callback(UI.caseval('python_compat(-1)'),args);
     }
-    // Module.print(text+ ' '+s);
+    var s;
+    if (UI.micropy==-1)
+      s='"'+UI.quickjs(text)+'"';
+    else {
+      let docaseval = Module.cwrap('caseval', 'string', ['string']);
+      let value = UI.add_autosimplify(UI.handle_shortcuts(text)),err;
+      //console.log(value);
+      try {
+	s = docaseval(value);
+      } catch (err) {
+      }
+    }
+    //Module.print(text+ ' '+s);
     return callback(s, args);
   },
   history_cm: 0,
@@ -1560,6 +1642,26 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         par.focus();
     }
     return false;
+  },
+  parse_int:function(s){
+    let i=0,l=s.length,r=0;
+    for (;i<l;++i){
+      let c=s.charCodeAt(i);
+      if (c<48 || c>57){
+	console.log('invalid char in '+s+' position '+i);
+	console.trace();
+	return 0;
+      }
+      r=r*10+(c-48);
+    }
+    return r;
+  },
+  split:function(s,c){ // split s in 2 parts at c
+    for (let i=0;i<s.length;++i){
+      if (s[i]==c)
+	return [s.substr(0,i),s.substr(i+1,s.length-1)];
+    }
+    return [s,''];
   },
   restoresession: function (chaine, hist, asked, doexec) {
     if (!UI.ready) {
@@ -1620,7 +1722,51 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         UI.addcurseur(name, value, mini, maxi, s);
         continue;
       }
-      var p = s.split('=');
+      var p = UI.split(s,'=');
+      if (p[0]=='cas' || p[0]=='micropy' || p[0]=='py' || p[0]=='js' || p[0]=='comment' || p[0]=='handwriting' || p[0]=='svg' || p[0]=='img'){
+	let ms = decodeURIComponent(p[1]); // console.log(p[1]);
+	if (ms.length && ms[0]==',')
+	  ms=ms.substr(1,ms.length-1);
+	//console.log('restoresession',ms);
+	let pos=ms.search(',');
+	let ms0=ms.substr(0,pos),msbgcol='',mscol='';
+	// background color
+	// rgb(,,) or rgba(,,,) color, skip to )
+	if (pos>4 && ms0.substr(0,3)=='rgb'){
+	  pos=ms.indexOf(')')+1; // end of rgba(
+	}
+	if (ms.length && ms[0]>'9'){
+	  msbgcol=ms.substr(0,pos);
+	  ms=ms.substr(pos+1,ms.length-pos-1);
+	  pos=ms.search(',');
+	  ms0=ms.substr(0,pos);
+	}
+	// color, rgb skip
+	if (pos>4 && ms0.substr(0,3)=='rgb'){
+	  pos=ms.indexOf(')')+1; // end of rgba(
+	}
+	if (ms.length && ms[0]>'9'){
+	  mscol=ms.substr(0,pos);
+	  ms=ms.substr(pos+1,ms.length-pos-1);
+	  pos=ms.search(',');
+	  ms0=ms.substr(0,pos);
+	}
+	let mx=UI.parse_int(ms0);
+	ms=ms.substr(pos+1,ms.length-pos-1);
+	pos=ms.search(',');
+	let my=UI.parse_int(ms.substr(0,pos));
+	ms=ms.substr(pos+1,ms.length-pos-1);
+	let doit=false;
+	if (p[0]=='cas'){ doit=true; UI.micropy=0; }
+	if (p[0]=='micropy' || p[0]=='py'){ doit=true; UI.micropy=1;}
+	if (p[0]=='js'){ doit=true; UI.micropy=-1; }
+	if (p[0]=='comment'){ doit=true; ms='///'+ms;}
+	if (p[0]=='handwriting') UI.addhandwriting(ms,msbgcol);
+	if (p[0]=='img') UI.addimg(ms,'img='+ms,msbgcol);
+	if (p[0]=='svg') UI.addsvg(ms,msbgcol);
+        if (doit && ms.length) UI.eval_cmdline1(ms, false);	
+	continue;
+      }
       if (p[0] == '') continue;
       if (p[0] == 'lang') {
         p = p[1];
@@ -1675,16 +1821,28 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         if (p[1] == '0') {
           form.python_mode.checked = false;
 	  form.python_xor.checked = false;
+	  form.js_mode.checked = false;
           UI.python_mode = 0;
+	  UI.micropy=0;
         }
+	if (p[1]=='-1'){
+          form.python_mode.checked = false;
+	  form.python_xor.checked = false;
+	  form.js_mode.checked = true;
+          UI.python_mode = 0;
+	  UI.micropy=-1;
+	}
         if (p[1] == '1') {
           form.python_mode.checked = true;
 	  form.python_xor.checked = false;
+	  form.js_mode.checked = false;
           UI.python_mode = 1;
+	  UI.micropy=0;
         }
         if (p[1] == '4') {
           form.python_mode.checked = true;
 	  form.python_xor.checked = true;
+	  form.js_mode.checked = false;
           UI.python_mode = 4;
 	  UI.micropy=1;
         }
@@ -1725,6 +1883,9 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	UI.caseval_noautosimp('current_sheet('+p[1]+')');
 	continue;
       }
+      if (p[0]=='' || !p[1] || p[0]=='width' || p[0]=='height' || p[0]=='svg' || p[0]=='handwriting' || p[0]=='img')
+	continue;
+      console.log(p[0],p[1]);
       $id(p[0]).value = decodeURIComponent(p[1]);
     } // end for (i=...)
     UI.set_settings();
@@ -1761,15 +1922,22 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       s = filename + s;
       //console.log(s);
       smail = smail + s;
-      var sforum;
+      var sforum,stableau;
       if (UI.langue == -1) {
         sforum = UI.base_url + "xcasfr.html#exec&" + s;
+	stableau = "tableaufr.html#" + s;
         s = UI.base_url + "xcasfr.html#" + s;
       }
       else {
         sforum = UI.base_url + "xcasen.html#exec&" + s;
+	stableau = "tableauen.html#" + s;
         s = UI.base_url + "xcasen.html#" + s;
       }
+      if (0) stableau = UI.base_url + stableau;
+      if (UI.detectmob())
+	stableau='';
+      else
+	stableau = '<a href="'+ stableau+'" target="_blank">tableau</a>';
       //s=encodeURIComponent(s); // does not work innerHTML will add a prefix
       //var sforum=encodeURIComponent('[url]'+s+'[/url]');
       sforum = '[url=' + sforum + ']session Xcas[/url]';
@@ -1785,10 +1953,10 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       copy += "var win=window.open(\"" + UI.forum_url + "\", \"_blank\");'>F</button>,";
       //console.log(copy);
       if (window.location.href.substr(0, 4) == 'file' && !UI.detectmob()) {
-        $id('thelink').innerHTML = '<a title="Clone session" href="' + s + '" target="_blank">x2</a>, <a title="Local clone" href="' + s2 + '" target="_blank">local</a>,' + copy;//+',<a href="http://xcas.e.univ-grenoble-alpes.fr/XCAS/posting.php?mode=post&f=12&subject=session&message='+encodeURIComponent(sforum)+'" target="_blank">forum</a>,';
+        $id('thelink').innerHTML = '<a title="Clone session" href="' + s + '" target="_blank">x2</a>, <a title="Local clone" href="' + s2 + '" target="_blank">local</a>,' + copy + stableau;//+',<a href="http://xcas.e.univ-grenoble-alpes.fr/XCAS/posting.php?mode=post&f=12&subject=session&message='+encodeURIComponent(sforum)+'" target="_blank">forum</a>,';
       }
       else
-        $id('thelink').innerHTML = '<a href="' + s + '" target="_blank">x2</a>,' + (copy);
+        $id('thelink').innerHTML = '<a href="' + s + '" target="_blank">x2</a>,' + copy + stableau;
       var mailurl;
       if (UI.from.length > 9 && UI.from.substr(UI.from.length - 9, 9) == "gmail.com")
         mailurl = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&su=session+Xcas&to=' + UI.mailto;
@@ -1821,7 +1989,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     return res;
   },
   makelink: function (start) { // start=-1 Casio save
-    console.log('makelink',start);
+    //console.log('makelink',start);
     var s = 'python=';
     if (UI.python_mode) s += (UI.python_mode+'&'); else s += '0&';
     let radian_mode=($id('config').angle_mode.checked?1:0);
@@ -1848,6 +2016,36 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         var field = cur.firstChild;
         field = field.firstChild;
         field = UI.skip_buttons(field);
+	//console.log('makelink',field.firstChild);
+	if (field.firstChild.tagName=='svg'){
+	  //console.log(field.innerHTML);
+	  let position=''+Math.floor(i/3)*400+','+(i%3)*200;
+	  s += 'svg='+position+','+encodeURIComponent(field.innerHTML)+'&';	    
+	  cur=cur.nextSibling;
+	  continue;
+	}
+	if (field.firstChild.tagName=='DIV'){
+	  let f=field.nextSibling;
+	  let tmp=f.innerText;
+	  if (start>=0){
+	    let position=''+Math.floor(i/3)*400+','+(i%3)*200;
+	    let bg=f.style.backgroundColor;
+	    //console.log('makelink handwrite/img',bg,position,tmp);
+	    if (bg!='')
+	      bg += ',';
+	    let type='handwriting=';
+	    for (let p=0;p<tmp.length;++p){
+	      if (tmp[p]=='='){
+		type=tmp.substr(0,p+1);
+		tmp=tmp.substr(p+1,tmp.length-1);
+		break;
+	      }
+	    }
+	    s += type+bg+position+','+encodeURIComponent(tmp)+'&';	    
+            cur = cur.nextSibling;
+	  }
+	  continue;
+	}
         var fs = field.innerHTML;
         if (fs.length > 6 && fs.substr(0, 6) == "<span ") { // comment
           fs = field.firstChild.firstChild.value;
@@ -1944,9 +2142,18 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	      }
 	      else casioin.push("");
 	    }
+	  } // matches start==-1 Casio export
+	  else
+	    tmp=encodeURIComponent(tmp);
+	  // if mode is the same as UI.micropy from beginning use old format
+	  // console.log(field.firstChild.classList);
+	  let evaluator=UI.classlist2evaluator(field.firstChild.classList);
+	  if (evaluator=='')
+            s += '+'+tmp+'&';
+	  else {
+	    let position=''+Math.floor(i/3)*400+','+(i%3)*200;
+	    s += evaluator+'='+position+','+tmp+'&';
 	  }
-	  else tmp=encodeURIComponent(tmp);
-          s += '+' + tmp + '&';
           cur = cur.nextSibling;
           continue;
         }
@@ -2019,6 +2226,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   show_config: function () {
     var form = $id('config');
     form.style.display = 'inline';
+    form.scrollIntoView();
   },
   editline: false,
   set_editline: function (field, b) {
@@ -2039,22 +2247,38 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         field.style.display = b ? 'inline' : 'none';
     }
   },
-  python_mode_str: function(i){
+  python_mode_str: function(i,j){
+    if (j==-1) return 'JS';
     if (i==0) return 'xcas';
     if (i==1) return 'pyth xor';
     if (i==2) return 'pyth **';
     if (i & 4) return 'Python';
     return '?';
   },
-  set_settings: function () {
+  set_settings: function () { // refresh the mode displayed at the top left
     $id('bouton_math').style.display=UI.micropy?'none':'inline';
     var form = $id('config');
+    if (UI.micropy>0){
+      form.python_mode.checked=true;
+      form.python_xor.checked=true;
+      form.js_mode.checked=false;
+    }
+    if (UI.micropy==0){
+      form.python_mode.checked=UI.python_mode>0;
+      form.python_xor.checked=false;
+      form.js_mode.checked=false;
+    }
+    if (UI.micropy==-1){
+      form.python_mode.checked=false;
+      form.python_xor.checked=false;
+      form.js_mode.checked=true;
+    }
     var hw = window.innerWidth;
     //console.log(hw);
     if (hw >= 700) {
       var cfg = $id('curcfg');
       var s = "";
-      s += UI.python_mode_str(UI.python_mode)+' ';
+      s += UI.python_mode_str(UI.python_mode,UI.micropy)+' ';
       s += form.angle_mode.checked ? 'rad ' : 'deg ';
       s += form.digits_mode.value;
       if (form.complex_mode.checked) s += " ℂ"; // else s+=" ℝ";
@@ -2218,7 +2442,12 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       if (form.python_xor.checked){ s+=4; UI.micropy=1; } else { s += 1; UI.micropy=0; }
     }
     else {
-      s += 0; UI.micropy=0;
+      if (form.js_mode.checked){
+	s += -1; UI.micropy=-1;
+      }
+      else {
+	s += 0; UI.micropy=0;
+      }
     }
     s += ');';
     // Module.print(s);
@@ -2232,11 +2461,15 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   },
   set_config: function (setcm_mode) { // b==true if we set cmentree
     var form = $id('config');
+    let py=form.python_mode.checked,mp=form.python_xor.checked,js=form.js_mode.checked;
+    if (mp) py=true;
+    // console.log(py,mp);
     UI.canvas_w = form.canvas_w.value;
     UI.canvas_h = form.canvas_h.value;
     var s = UI.config_string();
     //console.log(form.wasm_mode);
     UI.addhelp(' ', s);
+    form.python_mode.checked=py; form.python_xor.checked=mp; form.js_mode.checked=js;
     form.style.display = 'none';
     if (UI.focusaftereval) UI.focused.focus();
     var test;
@@ -2252,7 +2485,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     }
     test++;
     UI.set_calc_type(test);
-    console.log('accept file',$id('loadfileinput').accept);
+    //console.log('accept file',$id('loadfileinput').accept);
     UI.createCookie('xcas_calc', test, 10000);
     UI.createCookie('xcas_from', form.from.value, 10000);
     UI.createCookie('xcas_to', form.to.value, 10000);
@@ -2260,7 +2493,11 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     UI.createCookie('xcas_angle_radian', form.angle_mode.checked ? 1 : -1, 10000);
     UI.warnpy = form.warnpy_mode.checked;
     UI.createCookie('xcas_warnpy', form.warnpy_mode.checked ? 1 : -1, 10000);
-    UI.python_mode = form.python_mode.checked?(form.python_xor.checked?4:1):0;
+    UI.python_mode = form.python_mode.checked?4:(form.python_xor.checked?1:0);
+    UI.micropy=form.python_xor.checked?1:0;
+    if (form.js_mode.checked)
+      UI.micropy=-1;
+    //console.log(UI.python_mode,UI.micropy);
     UI.createCookie('xcas_python_mode', UI.python_mode, 10000);
     UI.set_settings();
     if (setcm_mode) {
@@ -2436,7 +2673,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   },
   hide_show_python: function (t) {
     var tmp=$id(t);
-    if (UI.micropy)
+    if (UI.micropy>0)
       tmp.style.display = 'inline';
     else
       tmp.style.display = 'none'
@@ -2523,7 +2760,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	      UI.caseval(edits);
 	    UI.python_mode=py;
 	    UI.micropy=py==4;
-	    form.python_xor.checked=UI.micropy;
+	    form.python_xor.checked=UI.micropy>0;
 	    UI.set_settings();
 	    editpos=4+editl;
 	    editl=UI.unsignedchar(s,editpos);
@@ -2713,6 +2950,256 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     UI.scrollatend(out.parentNode);
     if (UI.focusaftereval) UI.focused.focus();
   },
+  decode_polygon:function(s,DX=0,DY=0){
+    // s is a string of format [color_if_not_white,]startX,startY,
+    // followed by points of the delineation in a "compact" format [pressure]dxdy
+    // where dx and dy are encoded with UI.compact
+    // returns lx,ly,lp,color,s where
+    // lx, ly is the list of x,y stroke coordinate
+    // lp list of pressures
+    // color is the color
+    // s is the part of initial string after color+initial absolute coordinates
+    let lx=[],ly=[],lp=[];
+    let l=s.length,pos=s.search(','),lastX=0,lastY=0;
+    let color="white",pressure=0.5;
+    if (s[0]>'9'){
+      color=s.substr(0,pos);
+      s=s.substr(pos+1,l-pos-1);
+      pos=s.search(',');
+    }
+    lastX=UI.parse_int(s.substr(0,pos))+DX;
+    s=s.substr(pos+1,l-pos-1);
+    pos=s.search(',');
+    lastY=UI.parse_int(s.substr(0,pos))+DY;
+    lx.push(lastX); ly.push(lastY); lp.push(pressure);
+    // console.log(color,lastX,lastY); return;
+    l=s.length; s=s.substr(pos+1,l-pos-1);
+    // now s has format [digit]majuscules minuscules
+    l=s.length;
+    for (pos=0;pos<l;){
+      let n=s.charCodeAt(pos);
+      if (n>=48 && n<=57){
+	pressure=(n-48)/10+0.05;
+	//console.log('pressure',pressure);
+	++pos;
+      }
+      let dx=0,dy=0;
+      for (;pos<l;++pos){
+	n=s.charCodeAt(pos);
+	if (n>96)
+	  break;
+	if (n<65){
+	  console.log('invalid char');
+	  return [lx,ly,lp,color];
+	}
+	dx *= 13;
+	dx += (n-77); // 65+12 where 'A'==65
+      }
+      // console.log(dx);
+      for (;pos<l;++pos){
+	n=s.charCodeAt(pos);
+	if (n<97)
+	  break;
+	if (n>122){
+	  console.log('invalid char');
+	  return [lx,ly,lp,color];
+	}
+	dy *= 13;
+	dy += (n-109); // 97+12 where 'A'==65
+      }
+      // console.log(dy);
+      let curX=lastX+dx;
+      let curY=lastY+dy;
+      //console.log(dx,dy);
+      lastX=curX; lastY=curY;
+      lx.push(lastX); ly.push(lastY); lp.push(pressure);
+    }
+    return [lx,ly,lp,color,s];
+  },
+  drawline:function(context, x1, y1, x2, y2, pressure = 1.0, color = user.getCurrentColor()) {
+    context.beginPath();
+    context.strokeStyle = color;
+    context.globalCompositeOperation = "source-over";
+    context.globalAlpha = 0.75 + 0.25 * pressure;
+    context.lineWidth = 1 + 3.5 * pressure;
+    //console.log(x1,y1,x2,y2,color,context.lineWidth);
+    context.moveTo(x1, y1);
+    context.lineTo(x2, y2);
+    context.stroke();
+    context.closePath();
+  },
+  drawdot:function(context,x, y, color) {
+    context.beginPath();
+    context.fillStyle = color;
+    context.lineWidth = 2.5;
+    context.arc(x, y, 2, 0, 2 * Math.PI);
+    context.fill();
+    context.closePath();
+  },
+  draw_encoded:function(s,ctx=0,DX=0,DY=0,bg){
+    if (ctx==0)
+      ctx=document.getElementById("canvas").getContext("2d");
+    // console.log('draw_encoded',s,bg);
+    // polyline drawing encoded by a string formatted by
+    // color,startX,startY,relative strokes (see UI.relative for relative positions encoding)
+    let lxypc=UI.decode_polygon(s,DX,DY);
+    let lx=lxypc[0],ly=lxypc[1],lp=lxypc[2],color=lxypc[3];
+    if (bg=='' && color=='white') color='black'; 
+    // console.log('draw_encoded',color);
+    let lastX=lx[0],lastY=ly[0],curX,curY,pressure=0.5;
+    if (lx.length==1){
+      UI.drawdot(ctx,lastX,lastY,color);
+      return;
+    }
+    for (let i=1;i<lx.length;++i){
+      curX=lx[i]; curY=ly[i];
+      UI.drawline(ctx,lastX,lastY,curX,curY,lp[i],color);
+      lastX=curX; lastY=curY;
+    }
+  },
+  find_whxy:function(tab){
+    // find canvas size that contains these relative handwritings
+    // and dx,dy shift to write s from 0,0
+    let xmin=1e307,xmax=-1e307,ymin=1e307,ymax=-1e307,lastX,lastY;
+    for (let i=0;i<tab.length;++i){
+      let s=tab[i];
+      // console.log('handwrite_rectangle',i,s);
+      let l=s.length,pos=s.search(','),lastX=0,lastY=0;
+      if (s[0]>'9'){
+	s=s.substr(pos+1,l-pos-1);
+	pos=s.search(',');
+      }
+      lastX=UI.parse_int(s.substr(0,pos));
+      s=s.substr(pos+1,l-pos-1);
+      pos=s.search(',');
+      lastY=UI.parse_int(s.substr(0,pos));
+      if (xmin>lastX)
+	xmin=lastX;
+      if (xmax<lastX)
+	xmax=lastX;
+      if (ymin>lastY)
+	ymin=lastY;
+      if (ymax<lastY)
+	ymax=lastY;
+      // console.log(lastX,lastY); // return;
+      l=s.length; s=s.substr(pos+1,l-pos-1);
+      // now s has format [digit]majuscules minuscules
+      l=s.length;
+      for (pos=0;pos<l;){
+	let n=s.charCodeAt(pos);
+	if (n>=48 && n<=57){
+	  //console.log('pressure',pressure);
+	  ++pos;
+	}
+	let dx=0,dy=0;
+	for (;pos<l;++pos){
+	  n=s.charCodeAt(pos);
+	  if (n>96)
+	    break;
+	  if (n<65){
+	    console.log('invalid char',n);
+	    return n;
+	  }
+	  dx *= 13;
+	  dx += (n-77); // 65+12 where 'A'==65
+	}
+	// console.log(dx);
+	for (;pos<l;++pos){
+	  n=s.charCodeAt(pos);
+	  if (n<97)
+	    break;
+	  if (n>122){
+	    console.log('invalid char');
+	    return c;
+	  }
+	  dy *= 13;
+	  dy += (n-109); // 97+12 where 'A'==65
+	}
+	// console.log(dy);
+	let curX=lastX+dx;
+	let curY=lastY+dy;
+	//console.log(dx,dy);
+	lastX=curX; lastY=curY;
+	if (xmin>lastX)
+	  xmin=lastX;
+	if (xmax<lastX)
+	  xmax=lastX;
+	if (ymin>lastY)
+	  ymin=lastY;
+	if (ymax<lastY)
+	  ymax=lastY;
+      }
+    }
+    // console.log(xmin,xmax,ymin,ymax);
+    w=xmax+1-xmin;
+    h=ymax+1-ymin;
+    dx=-xmin;
+    dy=-ymin;
+    return [w,h,dx,dy];
+  },
+  handwrite:function(s_in,w=0,h=0,dx=0,dy=0,bg=''){
+    // console.log('handwrite',s_in);
+    // return a canvas from handwritings encoded in s
+    let c=document.createElement("CANVAS");
+    //c.onfocus=(e) => { this.blur(); this.parentNode.focus();};
+    if (s_in.length && s_in[s_in.length-1]=='&')
+      s_in=s_in.substr(0,s_in.length-1);
+    let tab=s_in.split('&');
+    /*
+    for (let i=0;i<tab.length;++i){
+      let s_=UI.parse_util(tab[i]);
+      console.log(tab[i],s_);
+      tab[i]=s_.substr(1,s_.length-1); // remove '=' at start
+    }
+    */
+    if (w==0 || h==0)
+      [w,h,dx,dy]=UI.find_whxy(tab);
+    c.width=w; c.height=h;
+    let ctx=c.getContext("2d");
+    for (let i=0;i<tab.length;++i)
+      UI.draw_encoded(tab[i],ctx,dx,dy,bg);
+    return c;
+  },
+  addhandwriting:function(txt,bg=''){
+    let f=UI.handwrite(txt,0,0,0,0,bg);
+    f=f.toDataURL();
+    UI.addimg(f,'handwriting='+txt,bg);
+  },
+  addimg:function(f,txt,bg=''){
+    let s = UI.move_buttons(!UI.qa);
+    s += '<td colspan=3><div style="text-align:center"></div></td><td style="display:none">456</td>';
+    s += UI.erase_button(!UI.qa);
+    let out = $id('mathoutput');
+    //console.log('addhandwriting',txt,bg);
+    out.innerHTML += s;
+    let container=out.lastChild.firstChild.children[2].firstChild;
+    let img = new Image();
+    img.src = f;
+    if (bg!=''){ img.style.backgroundColor=bg; out.lastChild.firstChild.children[3].style.backgroundColor=bg; }
+    container.style.textAlign='center';
+    container.appendChild(img);
+    out.lastChild.firstChild.children[3].innerText=txt;
+    UI.show_history123();
+    UI.link(0);
+    UI.scrollatend(out.parentNode);
+    if (UI.focusaftereval) UI.focused.focus();    
+  },
+  addsvg:function(txt,bg=''){
+    let s = UI.move_buttons(!UI.qa);
+    //console.log('addsvg',txt);
+    s += '<td colspan=3>'+txt+'</td>';
+    s += UI.erase_button(!UI.qa);
+    let out = $id('mathoutput');
+    //console.log('addhandwriting',txt,bg);
+    out.innerHTML += s;
+    let container=out.lastChild.firstChild.children[2].firstChild;
+    if (bg!=''){ container.style.backgroundColor=bg; }
+    container.style.textAlign='center';
+    UI.show_history123();
+    UI.link(0);
+    UI.scrollatend(out.parentNode);
+    if (UI.focusaftereval) UI.focused.focus();    
+  },
   exec_history: function () {
     alert(UI.langue == -1 ? 'Historique!' : 'History!');
   },
@@ -2774,6 +3261,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     UI.eval_cmdline1(value, true);
   },
   eval_cmdline1: function (value, docaseval) {
+    //console.log('eval_cmdline1',value,docaseval);
     if (!UI.ready) {
       alert(UI.langue == -1 ? 'Veuillez patienter pendant la préparation' : 'Please wait until system is ready');
       return;
@@ -2854,6 +3342,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   eval_cmdline1cb: function (out, value) {
     var s;
     //console.log('eval_cmdline1cb',out);
+    if (out.length>6 && (out.substr(2,4)=='<svg' || out.substr(1,5)=='gl3d ' || out.substr(1,5)=='gr2d(') )
+      out=out.substr(1,out.length-2);
     if (out.length > 5 && (out.substr(1, 4) == '<svg' || out.substr(0, 5) == 'gl3d ' || out.substr(0, 5) == 'gr2d(')) {
       //console.log(s);
       s = out;
@@ -3144,18 +3634,24 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   eval: function (text, textin) {
     UI.set_locale();
     var out ;
-    if (UI.micropy)
+    if (UI.micropy>0)
       out=UI.mpeval(text);
-    else
-      out = UI.caseval(text);
+    else {
+      if (UI.micropy==-1){
+	out=UI.quickjs(text);
+	// console.log('js eval',text,out);
+      }
+      else
+	out = UI.caseval(text);
+    }
     if (out==null){
       console.log(text,out);
       return;
     }
-    //console.log(text,out);
+    //console.log('UI.eval',text,out);
     var s = ' ';
     var isstr = out[0] == '"';
-    if (out.substr(1, 4) == '<svg' || out.substr(0, 5) == 'gl3d ' || out.substr(0, 5) == 'gr2d(') {
+    if (out.length>5 && (out.substr(1, 4) == '<svg' || out.substr(0, 5) == 'gl3d ' || out.substr(0, 5) == 'gr2d(') ) {
       // Module.print(text+' -> Done');
       //console.log(out);
       s = out;
@@ -3163,8 +3659,10 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     }
     else {
       // Module.print(text+' -> '+out);
-      if (out[0] == '"' || UI.micropy)
-        s = 'text ' + out;
+      if (out[0] == '"')
+        s = 'text ' + out+'';
+      else if (UI.micropy)
+        s = '"' + out+'"';	
       else {
 	if (out.substr(0, 10) == 'GIAC_ERROR')
 	  s=' '+out+' ';
@@ -3179,6 +3677,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	}
       }
     }
+    //console.log('addinput',textin,out,s);
     s = UI.addinput(textin, out, s);
     return s;
   },
@@ -3371,6 +3870,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       tst.nextSibling.click();
       return;
     }
+    UI.set_micropy(cur);
     s = cur.value;
     s = UI.eval(s, s);
     field.innerHTML = s;
@@ -3496,13 +3996,20 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         s += '<td>';
       else
         s += '<td colspan=2>';
-      s += '<textarea class="historyinput" ';
+      s += '<textarea class="historyinput';
+      if (UI.micropy>0)
+	s += ' micropy';
+      if (UI.micropy==0)
+	s += ' cas';
+      if (UI.micropy==-1)
+	s += ' js';
+      s += ' "';
       if (is_svg && UI.qa)
         s += 'rows=8 style="font-size:large"';
       else
       //s += 'rows='+(UI.count_newline(textin)+1) +' style="font-size:large"';
         s += 'style="height:' + (20 + 16 * UI.count_newline(textin)) + 'px; font-size:large"';
-      s += ' title="Enter: saut de ligne, Ctrl-Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm) {var h=offsetHeight;UI.history_cm=CodeMirror.fromTextArea(this,{ matchBrackets: true,lineNumbers:true,viewportMargin: Infinity}); UI.history_cm.setCursor({line:0,ch:selectionStart});UI.history_cm.options.indentUnit=UI.python_mode?UI.python_indent:2; UI.prepare_cm(this,h,UI.history_cm);UI.changefontsize(UI.history_cm,16); UI.set_focused(UI.history_cm);} else UI.set_focused(this); UI.set_editline(this,true); UI.set_config_width(); parentNode.scrollIntoView();UI.moveCaret(UI.focused,1);UI.moveCaret(UI.focused,-1);" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">' + textin + '</textarea>';
+      s += ' title="Enter: saut de ligne, Ctrl-Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="UI.set_micropy(this);if (UI.usecm) {var h=offsetHeight;UI.history_cm=CodeMirror.fromTextArea(this,{ matchBrackets: true,lineNumbers:true,viewportMargin: Infinity}); UI.history_cm.setCursor({line:0,ch:selectionStart});UI.history_cm.options.indentUnit=UI.python_mode?UI.python_indent:2; UI.prepare_cm(this,h,UI.history_cm);UI.changefontsize(UI.history_cm,16); UI.set_focused(UI.history_cm);} else UI.set_focused(this); UI.set_editline(this,true); UI.set_config_width(); parentNode.scrollIntoView();UI.moveCaret(UI.focused,1);UI.moveCaret(UI.focused,-1);" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">' + textin + '</textarea>';
       s += '<span style="display:none">';
       s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.evallevel(this,true)" title="';
       s += UI.langue == -1 ? 'R&eacute;evaluer le niveau (Ctrl-Enter)' : 'Reeval level (Ctrl-Enter)';

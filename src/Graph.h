@@ -4,12 +4,8 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifndef IN_GIAC
-#include <giac/giac.h>
-#else
 #include "giacPCH.h"
 #include "giac.h"
-#endif
 #include <fstream>
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>

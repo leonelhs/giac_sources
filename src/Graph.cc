@@ -45,11 +45,7 @@
 #include <sys/time.h>
 #endif
 #include "path.h"
-#ifndef IN_GIAC
-#include <giac/plot.h>
-#else
 #include "plot.h"
-#endif
 #include "Equation.h"
 #include "Editeur.h"
 #include "Xcas1.h"
@@ -5284,7 +5280,7 @@ namespace xcas {
     find_title_plot(title_tmp,plot_tmp,contextptr);
 #if 1 // changes by L. Marohnic
     int horizontal_pixels=w()-(show_axes>0?int(ylegende*labelsize())+2:0);
-    vertical_pixels=h()-((show_axes!=0 && show_axes!=2?2:0)+(!title.empty()))*labelsize();
+    vertical_pixels=h()-((show_axes?1:0)+(!title.empty()))*labelsize();//h()-((show_axes!=0 && show_axes!=2?2:0)+(!title.empty()))*labelsize();
     int deltax=x(),deltay=y();
     double y_scale=vertical_pixels/(window_ymax-window_ymin);
     double x_scale=horizontal_pixels/(window_xmax-window_xmin);

@@ -3431,6 +3431,15 @@ namespace giac {
 	return feuille_(args._VECTptr->front(),args._VECTptr->back(),contextptr);
       return gen(*args._VECTptr,_SEQ__VECT);
     }
+    if (args.type==_MAP){
+      const gen_map & m=*args._MAPptr;
+      gen_map::const_iterator it=m.begin(),itend=m.end();
+      vecteur res;
+      for (;it!=itend;++it){
+	res.push_back(makevecteur(it->first,it->second));
+      }
+      return res;
+    }
     if (args.type!=_SYMB)
       return args;
     gen tmp=args._SYMBptr->feuille;
@@ -4293,7 +4302,7 @@ namespace giac {
 #ifdef FXCG
       int t=RTC_GetTicks();
 #else
-      int t=int(time(NULL));
+      int t=int(time(0));
 #endif // FXCG
 #endif // RTOS/BESTA
       t = (1000000000*ulonglong(t))% 2147483647;
@@ -6329,7 +6338,52 @@ namespace giac {
   static define_unary_function_eval_quoted (__xcas,&_xcas,_xcas_s);
   define_unary_function_ptr5( at_xcas ,alias_at_xcas,&__xcas,_QUOTE_ARGUMENTS,true);
 
+  char * (*quickjs_ptr) (cstcharptr)=0;
   gen _javascript(const gen & args,GIAC_CONTEXT){
+#if defined QUICKJS
+    if (quickjs_ptr && args.type==_VECT && args._VECTptr->size()==2){
+      gen a=args._VECTptr->front(),b=args._VECTptr->back();
+      if (a.type==_STRNG && b==at_javascript){
+	const char * ptr=a._STRNGptr->c_str();
+	while (*ptr==' ')
+	  ++ptr;
+	bool gr= strcmp(ptr,"show()")==0 || strcmp(ptr,",")==0;
+	bool pix =strcmp(ptr,";")==0;
+	bool turt=strcmp(ptr,".")==0;
+	bool xc=strcmp(ptr,"xcas")==0;
+	python_contextptr=contextptr;
+	gen g; string ans;
+	if (!gr && !xc && !turt && !pix ){
+	  char * ansptr=(*quickjs_ptr)(ptr);
+	  if (ansptr){
+	    ans=ansptr;
+	    free(ansptr);
+	  }
+	}
+	context * cascontextptr=(context *)caseval("caseval contextptr");
+	if (freeze || pix)
+	  return _show_pixels(0,cascontextptr);
+	if (gr || ans=="Graphic_object" )
+	  return history_plot(cascontextptr);
+	if (ans.empty())
+	  return string2gen("Done",false);
+	if (ans[ans.size()-1]=='\n')
+	  ans=ans.substr(0,ans.size()-1);
+	g=gen(ans,contextptr);
+	if (first_error_line(contextptr)>0) g=string2gen(ans.empty()?"Done":ans,false);
+#ifndef KHICAS
+	if (freezeturtle || turt || islogo(g) || ans=="Logo_turtle"){
+	  // copy caseval turtle to this context
+	  turtle(contextptr)=turtle(cascontextptr);
+	  turtle_stack(contextptr)=turtle_stack(cascontextptr);
+	  return _avance(0,contextptr);
+	}
+	CERR << "";
+#endif
+	return g;
+      }
+    }
+#endif
     return python_xcas(args,2,contextptr);
   }
   static const char _javascript_s []="javascript";
@@ -6516,8 +6570,8 @@ namespace giac {
       if (is_integral(a) && is_integral(b) && is_integral(c)){
 	python_compat(a.val,contextptr) ;
 #ifdef KHICAS
-	python_heap_size=giacmax(absint(b.val),16*1024);
-	python_stack_size=giacmax(absint(c.val),8*1024);
+	pythonjs_heap_size=giacmax(absint(b.val),16*1024);
+	pythonjs_stack_size=giacmax(absint(c.val),8*1024);
 #endif
 	return p;
       }
@@ -6981,6 +7035,7 @@ namespace giac {
     if (args.type!=_INT_)
       return decimal_digits(contextptr);
     set_decimal_digits(args.val,contextptr);
+    bf_global_prec=std::ceil(M_LN10/M_LN2*giacmax(absint(args.val),1));
     _cas_setup(cas_setup(contextptr),contextptr);
     return decimal_digits(contextptr);
   }

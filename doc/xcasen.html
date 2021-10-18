@@ -134,6 +134,16 @@
     div.matrixcell:not(:focus) {
       text-align: right;
     }
+
+    .micropy {
+      border-color: yellow;
+    }
+    .js {
+      border-color: orange;
+    }
+    .cas {
+      border-color: cyan;
+    }
   </style>
   <script>
       // Redirect to HTTPS page if not testing locally
@@ -321,7 +331,11 @@
 <div id="startup1">
   Welcome to Xcas for Firefox or compatible browser
   (c) 2020, B. Parisse and R. De Graeve, Institut Fourier,
-  Universit&eacute; de Grenoble.
+  Universit&eacute; de Grenoble. Type python or javascript to
+  switch to <a target="_blank" href="https://micropython.org/">MicroPython</a> (Damien P. George et al)
+  or Javascript  
+  (<a target="_blank" href="https://bellard.org/quickjs/">QuickJS</a> engine by
+  Fabrice Bellard and Charlie Gordon)
 </div>
 <div id="startup">
   If Xcas doesn't work
@@ -373,11 +387,17 @@
                                    title="0: none, 1: minimum, 2: maximum" value=1
                                    max=2 min=0>
         Syntax <input class="bouton" type="button" value="Python"
-	onclick="python_mode.checked=!python_mode.checked;">
+	onclick="python_mode.checked=!python_mode.checked; if (python_mode.checked) js_mode.checked=false;">
 	<input
-          class="bouton" type="checkbox" name="python_mode" title="Check to enable Python syntax compatibility">,
-	MicroPython <input class="bouton" type="checkbox" name="python_xor"
-	title="If checked, interpreter is MicroPython, otherwise Xcas">,
+          class="bouton" type="checkbox" name="python_mode"
+	title="Check to enable Python syntax compatibility">,
+	<input class="bouton" type="button" value="MicroPython"
+                       onclick="python_xor.checked=!python_xor.checked; if (python_xor.checked){ js_mode.checked=false;python_mode.checked=true;}">
+	 <input class="bouton" type="checkbox" name="python_xor"
+	title="If checked, interpreter is MicroPython">,
+	<input class="bouton" type="button" value="JS"
+                       onclick="js_mode.checked=!js_mode.checked;if (js_mode.checked) python_mode.checked=python_xor.checked=false;"> <input class="bouton" type="checkbox" name="js_mode"
+	title="If checked, interpreter is Javascript">,
         <input class="bouton" type="button" title="Display Python alerts" value="warnings" onclick="warnpy_mode.checked=!warnpy_mode.checked">
         <input class="bouton" type="checkbox" name="warnpy_mode"
                title="Check to display Python alerts" checked>
@@ -515,7 +535,16 @@
                 <strong>Introduction</strong></button>
                 <div id="tutointro" style="display:none">
                     Type a computation or program in the commandline, for
-                    example <tt>1/3+1/6</tt>.
+		  example <tt>1/3+1/6</tt>.
+		  <br>You can select the Xcas,
+		  <a target="_blank"
+		  href="https://micropython.org/">MicroPython</a>
+		  or Javascript interpreter from the
+		  settings (button at the top left). The default Javascript interpreter is
+		  <a target="_blank" href="https://bellard.org/quickjs/">QuickJS</a> in math mode unless the commandline starts
+		  with <tt>@</tt> (QuickJS without math mode) or
+		  <tt>@@</tt> (browser Javascript interpreter).
+		  <br>
                     Helpers are available by pressing <tt>Math</tt>
                     or <tt>Prog</tt> or <tt>123</tt> (scientific keyboard).
                     Press enter or hit &#x2705; to run the computation.
@@ -1104,7 +1133,13 @@ If you want to see informations while a computation is running, run first
 	    <br>
 	        Optimization, signalprocessing, graph theory code: Luka Marohnić.
 	    <br>
-                Mathml and SVG code initially written by J.P. Branchard.
+                Mathml and SVG code initially written by
+	    J.P. Branchard.
+	    <br>
+	    <a target="_blank" href="https://micropython.org/">MicroPython</a> (c) Damien P. George et al
+	    <br>
+	    <a target="_blank" href="https://bellard.org/quickjs/">QuickJS</a> (c)
+  Fabrice Bellard and Charlie Gordon.
                 </span>
             </li>
             <br>

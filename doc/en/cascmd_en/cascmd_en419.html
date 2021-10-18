@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Inserting an element into a list or a string: insert
+<title>Removing an element in a list: suppress
 </title>
 </head>
 <body >
@@ -12,50 +12,28 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en420.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec504" class="subsection">6.40.10  Inserting an element into a list or a string: <span style="font-family:monospace">insert</span>
-<a id="hevea_default706"></a></h3>
-<p>The <span style="font-family:monospace">insert</span> command inserts elements into a list or string.
+<h3 id="sec504" class="subsection">6.40.8  Removing an element in a list: <span style="font-family:monospace">suppress</span>
+<a id="hevea_default707"></a></h3>
+<p>The <span style="font-family:monospace">suppress</span> command removes elements from a list.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">insert</span> takes three arguments:
+<span style="font-family:monospace">suppress</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list or a string.
-</li><li class="li-itemize"><span style="font-style:italic">i</span>, an integer (the index).
-</li><li class="li-itemize"><span style="font-style:italic">x</span>.
+<span style="font-style:italic">L</span>, a list.
+</li><li class="li-itemize"><span style="font-style:italic">i</span>, a nonnegative integer.
 </li></ul>
-</li><li class="li-itemize"><span style="font-style:italic">insert(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">i</span>,<span style="font-style:italic">x</span><span style="font-style:italic">)</span> returns <span style="font-style:italic">L</span> with <span style="font-style:italic">x</span> inserted at
-index <span style="font-style:italic">i</span> and the necessary elements shifted to the right.
+</li><li class="li-itemize"><span style="font-family:monospace">suppress(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">i</span><span style="font-family:monospace">)</span> returns the list <span style="font-style:italic">L</span>
+with the element at index <span style="font-style:italic">i</span> removed.
 </li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">insert([3,4,2],2,5)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">3,4,5,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">insert("342",2,"5")</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">"3452"
-</td></tr>
-</table>
-</li></ul><p><span style="font-family:monospace">insert</span> returns an error if the index is too large.<br>
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">insert([3,4,2],4,5)</span>
+<span style="font-family:monospace">suppress([3,4,2],1)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">insert([3,4,2],4,5)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Error: Invalid dimension</span>
-</td></tr>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">3,2</td><td class="dcell">⎤<br>
+⎦</td></tr>
 </table>
-</div>
 <hr>
 <a href="cascmd_en418.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

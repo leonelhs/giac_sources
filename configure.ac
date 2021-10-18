@@ -2,7 +2,7 @@ dnl Run autoreconf -iv to produce the configure script and associated files.
 
 dnl Giac version number
 m4_define([giac_major_version], [1])
-m4_define([giac_minor_version], [6])
+m4_define([giac_minor_version], [7])
 m4_define([giac_micro_version], [0])
 m4_define([giac_version], [giac_major_version.giac_minor_version.giac_micro_version])
 
@@ -50,11 +50,20 @@ fi
 
 
 dnl Check for GMP
+CONFIG_GMPXX="yes"
 CONFIG_TOMMATH="no"
 AC_ARG_ENABLE([tommath],
 	[AS_HELP_STRING([--enable-tommath], [Use libtommath instead of GMP [[default=no]]])],
 	[ if test "x$enableval" = "xyes"; then CONFIG_TOMMATH="yes"; fi ], [])
 
+CONFIG_LIBBF="no"
+AC_ARG_ENABLE([libbf],
+	[AS_HELP_STRING([--enable-libbf], [Use libbf instead of GMP [[default=no]]])],
+	[ if test "x$enableval" = "xyes"; then CONFIG_LIBBF="yes"; fi ], [])
+
+if test "$CONFIG_LIBBF" = "yes" ; then 
+	AC_DEFINE([BF2GMP], [], [Replace GMP by libbf])
+else 
 if test "$CONFIG_TOMMATH" = "yes" ; then 
 	AC_DEFINE([USE_GMP_REPLACEMENTS], [], [Replace GMP by tommath])
 	AC_CHECK_HEADERS(tommath.h,AC_CHECK_LIB(tommath,mp_init))
@@ -65,40 +74,95 @@ else
   AC_CHECK_FUNCS(mpfr_set_str_raw)
   dnl Check for MPFI
   AC_CHECK_HEADERS(mpfi.h,AC_CHECK_LIB(mpfi,main))
-fi
-  
-dnl AC_CHECK_LIB(ecm, main)
-CONFIG_ECM="yes"
-AC_ARG_ENABLE([ecm],
+  AC_ARG_ENABLE([gmpxx],
+	[AS_HELP_STRING([--enable-gmpxx], [Use GMP C+wrappers [[default=yes]]])],
+	[if test "$enableval" = "no"; then CONFIG_GMPXX="no"; fi], [])
+  if test "$CONFIG_GMPXX" = "yes"; then 
+	AC_CHECK_HEADERS(gmpxx.h, [], [CONFIG_GMPXX="no"])
+    fi
+  if test "$CONFIG_GMPXX" = "yes"; then 
+	save_LIBS="$LIBS"
+	AC_CHECK_LIB(gmpxx, main, [], [CONFIG_GMPXX="no"])
+	LIBS="$save_LIBS"
+    fi
+  GMPXX_LIBS=""
+  if test "$CONFIG_GMPXX" = "yes"; then
+	GMPXX_LIBS="-lgmpxx"
+    fi
+  AC_SUBST(CONFIG_GMPXX)
+  AC_SUBST(GMPXX_LIBS)
+
+  dnl AC_CHECK_LIB(ecm, main)
+  CONFIG_ECM="yes"
+  AC_ARG_ENABLE([ecm],
 	[AS_HELP_STRING([--enable-ecm], [Use ECM [[default=yes]]])],
 	[if test "$enableval" = "no"; then CONFIG_ECM="no"; fi], [])
 
-if test "$CONFIG_ECM" = "yes"; then
+  if test "$CONFIG_ECM" = "yes"; then
 	AC_CHECK_HEADER(ecm.h, [], [CONFIG_ECM="no"])
-  fi
-if test "$CONFIG_ECM" = "yes"; then
+    fi
+  if test "$CONFIG_ECM" = "yes"; then
 	AC_CHECK_LIB(ecm, main, [], [CONFIG_ECM="no"])
-  fi
-AC_SUBST(CONFIG_ECM)
-AC_SUBST(ECM_LIBS)
-AM_CONDITIONAL(CONFIG_ECM, [test "$CONFIG_ECM" = "yes"])
+    fi
+  AC_SUBST(CONFIG_ECM)
+  AC_SUBST(ECM_LIBS)
 
-dnl AC_CHECK_LIB(bernmm, main)
-CONFIG_BERNMM="yes"
-AC_ARG_ENABLE([bernmm],
+  dnl AC_CHECK_LIB(bernmm, main)
+  CONFIG_BERNMM="yes"
+  AC_ARG_ENABLE([bernmm],
 	[AS_HELP_STRING([--enable-bernmm], [Use BERNMM [[default=yes]]])],
 	[if test "$enableval" = "no"; then CONFIG_BERNMM="no"; fi], [])
 
-if test "$CONFIG_BERNMM" = "yes"; then
+  if test "$CONFIG_BERNMM" = "yes"; then
 	AC_CHECK_HEADER(bern_rat.h, [], [CONFIG_BERNMM="no"])
-  fi
-if test "$CONFIG_BERNMM" = "yes"; then
+    fi
+  if test "$CONFIG_BERNMM" = "yes"; then
 	AC_CHECK_LIB(bernmm, main, [], [CONFIG_BERNMM="no"])
-  fi
-AC_SUBST(CONFIG_BERNMM)
-AC_SUBST(BERNMM_LIBS)
-AM_CONDITIONAL(CONFIG_BERNMM, [test "$CONFIG_BERNMM" = "yes"])
+    fi
+  AC_SUBST(CONFIG_BERNMM)
+  AC_SUBST(BERNMM_LIBS)  
 
+  dnl Checking for NTL
+  CONFIG_NTL="yes"
+  AC_ARG_ENABLE([ntl],
+	[AS_HELP_STRING([--enable-ntl], [Use NTL [[default=yes]]])],
+	[if test "$enableval" = "no"; then CONFIG_NTL="no"; fi], [])
+
+  if test "$CONFIG_NTL" = "yes"; then
+	AC_CHECK_HEADER(NTL/ZZ.h, [], [CONFIG_NTL="no"])
+    fi
+  if test "$CONFIG_NTL" = "yes"; then
+	save_LIBS="$LIBS"
+	AC_CHECK_LIB(ntl, main, [], [CONFIG_NTL="no"])
+	LIBS="$save_LIBS"
+    fi
+  NTL_LIBS=""
+  if test "$CONFIG_NTL" = "yes"; then
+	NTL_LIBS="-lntl"
+    fi
+  AC_SUBST(CONFIG_NTL)
+  AC_SUBST(NTL_LIBS)
+
+  CONFIG_PARI="yes"
+  AC_ARG_ENABLE([pari],
+	[AS_HELP_STRING([--enable-pari], [Use PARI [[default=yes]]])],
+	[ if test "$enableval" = "no"; then CONFIG_PARI="no"; fi], [])
+  
+  if test "$CONFIG_PARI" = "yes"; then
+	AC_CHECK_HEADERS(pari/pari.h, [], [CONFIG_PARI="no"])
+    fi
+  if test "$CONFIG_PARI" = "yes"; then
+	save_LIBS="$LIBS"
+	AC_CHECK_LIB(pari, main, [], [CONFIG_PARI="no"])
+	LIBS="$save_LIBS"
+    fi
+
+fi
+fi
+AM_CONDITIONAL(CONFIG_NTL, [test "$CONFIG_NTL" = "yes"])
+AM_CONDITIONAL(CONFIG_ECM, [test "$CONFIG_ECM" = "yes"])
+AM_CONDITIONAL(CONFIG_BERNMM, [test "$CONFIG_BERNMM" = "yes"])
+AM_CONDITIONAL(CONFIG_GMPXX, [test "$CONFIG_GMPXX" = "yes"])
   
 dnl Optimization or debug
 CONFIG_DEBUG_P="yes"
@@ -203,19 +267,17 @@ if test "$CONFIG_LAPACK" = "yes"; then
 #        AX_LAPACK([have_lapack=yes],[have_lapack=no])
 fi
   
-CONFIG_PARI="yes"
-AC_ARG_ENABLE([pari],
-	[AS_HELP_STRING([--enable-pari], [Use PARI [[default=yes]]])],
-	[ if test "$enableval" = "no"; then CONFIG_PARI="no"; fi], [])
-  
-if test "$CONFIG_PARI" = "yes"; then
-	AC_CHECK_HEADERS(pari/pari.h, [], [CONFIG_PARI="no"])
-fi
-if test "$CONFIG_PARI" = "yes"; then
-	save_LIBS="$LIBS"
-	AC_CHECK_LIB(pari, main, [], [CONFIG_PARI="no"])
-	LIBS="$save_LIBS"
-  fi
+dnl if test "$CONFIG_PARI" = "yes"; then
+dnl                      AC_MSG_CHECKING([whether PARI is configured with pthreads])
+dnl                      AC_RUN_IFELSE([AC_LANG_PROGRAM([
+dnl                          [#include <pari/pari.h>
+dnl                           #include <string.h>]],
+dnl                         [[return strcmp(PARI_MT_ENGINE, "pthread") != 0]])],
+dnl                        [AC_MSG_RESULT([yes. Good])],
+dnl                        [AC_MSG_RESULT([no. Not good])
+dnl                         CONFIG_PARI="no"])
+dnl  fi
+
 PARI_LIBS=""
 if test "$CONFIG_PARI" = "yes"; then
 	PARI_LIBS="-lpari"
@@ -224,47 +286,7 @@ AC_SUBST(PARI_LIBS)
 AC_SUBST(CONFIG_PARI)
 AM_CONDITIONAL(CONFIG_PARI, [test "$CONFIG_PARI" = "yes"])
   
-dnl Checking for NTL
-CONFIG_NTL="yes"
-AC_ARG_ENABLE([ntl],
-	[AS_HELP_STRING([--enable-ntl], [Use NTL [[default=yes]]])],
-	[if test "$enableval" = "no"; then CONFIG_NTL="no"; fi], [])
 
-if test "$CONFIG_NTL" = "yes"; then
-	AC_CHECK_HEADER(NTL/ZZ.h, [], [CONFIG_NTL="no"])
-  fi
-if test "$CONFIG_NTL" = "yes"; then
-	save_LIBS="$LIBS"
-	AC_CHECK_LIB(ntl, main, [], [CONFIG_NTL="no"])
-	LIBS="$save_LIBS"
-  fi
-NTL_LIBS=""
-if test "$CONFIG_NTL" = "yes"; then
-	NTL_LIBS="-lntl"
-  fi
-AC_SUBST(CONFIG_NTL)
-AC_SUBST(NTL_LIBS)
-AM_CONDITIONAL(CONFIG_NTL, [test "$CONFIG_NTL" = "yes"])
-
-CONFIG_GMPXX="yes"
-AC_ARG_ENABLE([gmpxx],
-	[AS_HELP_STRING([--enable-gmpxx], [Use GMP C+wrappers [[default=yes]]])],
-	[if test "$enableval" = "no"; then CONFIG_GMPXX="no"; fi], [])
-if test "$CONFIG_GMPXX" = "yes"; then 
-	AC_CHECK_HEADERS(gmpxx.h, [], [CONFIG_GMPXX="no"])
-  fi
-if test "$CONFIG_GMPXX" = "yes"; then 
-	save_LIBS="$LIBS"
-	AC_CHECK_LIB(gmpxx, main, [], [CONFIG_GMPXX="no"])
-	LIBS="$save_LIBS"
-  fi
-GMPXX_LIBS=""
-if test "$CONFIG_GMPXX" = "yes"; then
-	GMPXX_LIBS="-lgmpxx"
-  fi
-AC_SUBST(CONFIG_GMPXX)
-AC_SUBST(GMPXX_LIBS)
-AM_CONDITIONAL(CONFIG_GMPXX, [test "$CONFIG_GMPXX" = "yes"])
 
 CONFIG_COCOA="yes"
 AC_ARG_ENABLE([cocoa],
@@ -464,7 +486,8 @@ AC_CHECK_FUNCS(system, , AC_DEFINE(HAVE_NO_SYSTEM, 1, [Set if system() function 
 ALL_LINGUAS="es fr el pt it en zh de"
 AM_GNU_GETTEXT
 AM_GNU_GETTEXT_VERSION([0.14.5])
-AC_CHECK_LIB(intl, main)
+dnl for Slowlaris comment next line
+dnl AC_CHECK_LIB(intl, main) 
 dnl auto-check will work if the function checked is alone in a file
 dnl and independant from the whole micropython library
 dnl otherwise it will fail because it depends on giac
@@ -511,6 +534,20 @@ if test "$CONFIG_MICROPY" = "yes"; then
   LDFLAGS="$LDFLAGS -L. -L.. -lmicropython"
   CXXFLAGS="$CXXFLAGS -DHAVE_LIBMICROPYTHON -fpermissive"
 fi
+AM_CONDITIONAL([BUILD_MICROPY], [test "$CONFIG_MICROPY" = "yes"])
+
+dnl enables QuickJS, 
+CONFIG_QUICKJS="yes"
+AC_ARG_ENABLE([quickjs],
+	[AS_HELP_STRING([--enable-quickjs], [enable QUICKJS [[default=yes]]])],
+	[ if test "x$enableval" = "xno"; then CONFIG_QUICKJS="no"; fi], [])
+	
+if test "$CONFIG_QUICKJS" = "yes"; then 
+  CXXFLAGS="$CXXFLAGS -DQUICKJS"
+  LDFLAGS="$LDFLAGS"
+  CFLAGS="$CFLAGS -D_GNU_SOURCE -DQUICKJS -DCONFIG_BIGNUM -DCONFIG_VERSION=\\\"2020-11-08\\\""
+fi
+AM_CONDITIONAL([BUILD_QUICKJS], [test "$CONFIG_QUICKJS" = "yes"])
 
 dnl Output makefiles etc.
 AC_OUTPUT([

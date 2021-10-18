@@ -76,6 +76,7 @@ using namespace std;
 #include <signal.h>
 #endif
 #include "Python.h"
+#include "qjsgiac.h"
 #ifdef __MINGW_H
 #include <direct.h>
 #endif
@@ -1055,7 +1056,22 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 }
 #endif
 
-int micropy_evaled(string & s,const giac::context * contextptr){
+int micropyjs_evaled(string & s,const giac::context * contextptr){
+#ifdef QUICKJS
+  if (python_compat(contextptr) <0){
+    if (s.size() && s[0]=='@')
+      s=s.substr(1,s.size()-1);
+    else
+      s="\"use math\";"+s;
+    char * js=js_ck_eval(s.c_str(),&global_js_context);
+    if (js){
+      printf("%s\n",js);
+      free(js);
+    }
+    else printf("%s\n","QuickJS error");
+    return 1;
+  }
+#endif
 #ifdef HAVE_LIBMICROPYTHON
   if (python_compat(contextptr) & 4){
     const char * ptr=s.c_str();
@@ -1069,7 +1085,7 @@ int micropy_evaled(string & s,const giac::context * contextptr){
       python_console="";
       int i=micropy_ck_eval(s.c_str());
       cout << python_console ;
-      return true;
+      return 1;
     }
     giac::context * cascontextptr=(giac::context *)giac::caseval("caseval contextptr");
     if (gr){
@@ -1085,7 +1101,7 @@ int micropy_evaled(string & s,const giac::context * contextptr){
     }
   }
 #endif
-  return false;
+  return 0;
 }
 
 int main(int ARGC, char *ARGV[]){    
@@ -1161,7 +1177,7 @@ int main(int ARGC, char *ARGV[]){
   }
 #endif
   if (ARGC==2 && (string(ARGV[1])=="-v" || string(ARGV[1])=="--version" ) ){
-    cout << "// (c) 2001, 2020 B. Parisse & others" << '\n';
+    cout << "// (c) 2001, 2021 B. Parisse & others" << '\n';
     cout << GIAC_VERSION << '\n';
 #ifndef GNUWINCE
     return 0;
@@ -1285,7 +1301,7 @@ int main(int ARGC, char *ARGV[]){
       if (getenv("XCAS_HELP"))
 	giac::readhelp((*giac::vector_aide_ptr()),getenv("XCAS_HELP"),helpitems,true);
       else
-	giac::readhelp((*giac::vector_aide_ptr()),(giac::giac_aide_dir()+"aide_cas").c_str(),helpitems,true);
+	giac::readhelp((*giac::vector_aide_ptr()),(giac::giac_aide_dir()+"aide_cas").c_str(),helpitems,false);
     }
 #ifdef STATIC_BUILTIN_LEXER_FUNCTIONS
   }
@@ -1315,7 +1331,7 @@ int main(int ARGC, char *ARGV[]){
     printf("Giac CAS for mupacs, released under the GPL license 3.0\n");
     printf("See http://www.gnu.org for license details\n");
     printf("May contain BSD licensed software parts (lapack, atlas, tinymt)\n");
-    printf("| (c) 2006, 2018 B. Parisse & al (giac), F.Maltey & al (mupacs) |\n");
+    printf("| (c) 2006, 2021 B. Parisse & al (giac), F.Maltey & al (mupacs) |\n");
     putchar(EMACS_DATA_END);
     bool prompt=true;
     for (int k=0;;++k) {
@@ -1510,7 +1526,7 @@ int main(int ARGC, char *ARGV[]){
     printf("\nGiac %s for TeXmacs, released under the GPL license (3.0)\n",PACKAGE_VERSION);
     printf("See www.gnu.org for license details\n");
     printf("May contain BSD licensed software parts (lapack, atlas, tinymt)\n");
-    printf("© 2003–2020 B. Parisse & al (giac), J. van der Hoeven (TeXmacs), L. Marohnić (interface)\n");
+    printf("© 2003–2021 B. Parisse & al (giac), J. van der Hoeven (TeXmacs), L. Marohnić (interface)\n");
     putchar(TEXMACS_DATA_BEGIN);
     printf("scheme:(hrule)");
     putchar(TEXMACS_DATA_END);
@@ -1738,8 +1754,8 @@ int main(int ARGC, char *ARGV[]){
 	clock_t start, end;
 #endif
     using_history();
-    cout << "Welcome to giac readline interface" << '\n';
-    cout << "(c) 2001,2020 B. Parisse & others" << '\n';
+    cout << "Welcome to giac readline interface, version " << GIAC_VERSION << '\n';
+    cout << "(c) 2001,2021 B. Parisse & others" << '\n';
     cout << "Homepage http://www-fourier.ujf-grenoble.fr/~parisse/giac.html" << '\n';
     cout << "Released under the GPL license 3.0 or above" << '\n';
     cout << "See http://www.gnu.org for license details" << '\n';
@@ -1764,10 +1780,15 @@ int main(int ARGC, char *ARGV[]){
       }
       if (s=="xcas"){
 	python_compat(python_compat(contextptr)&3,contextptr);
-	printf("%s\n","Giac 1.6.0");
+	printf("%s\n","Giac 1.7.0");
 	continue;
       }
-      if (micropy_evaled(s,contextptr))
+      if (s=="js"){
+	python_compat(-1,contextptr);
+	printf("%s\n","QuickJS");
+	continue;
+      }
+      if (micropyjs_evaled(s,contextptr))
 	continue;
       if (insage && bs && s[bs-1]==63){
 	string complete_string(s.substr(0,bs-1));

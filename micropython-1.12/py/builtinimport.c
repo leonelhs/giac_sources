@@ -91,7 +91,11 @@ STATIC mp_import_stat_t stat_dir_or_file(vstr_t *path) {
     }
 
     // not a directory, add .py and try as a file
+#if defined NSPIRE || defined NSPIRE_NEWLIB
     vstr_add_str(path, ".py.tns");
+#else
+    vstr_add_str(path, ".py");
+#endif
     return stat_file_py_or_mpy(path);
 }
 
@@ -441,7 +445,11 @@ mp_obj_t mp_builtin___import__(size_t n_args, const mp_obj_t *args) {
                     mp_store_attr(module_obj, MP_QSTR___path__, mp_obj_new_str(vstr_str(&path), vstr_len(&path)));
                     size_t orig_path_len = path.len;
                     vstr_add_char(&path, PATH_SEP_CHAR);
+#if defined NSPIRE || defined NSPIRE_NEWLIN
                     vstr_add_str(&path, "__init__.py.tns");
+#else
+                    vstr_add_str(&path, "__init__.py");
+#endif
                     if (stat_file_py_or_mpy(&path) != MP_IMPORT_STAT_FILE) {
                         //mp_warning("%s is imported as namespace package", vstr_str(&path));
                     } else {

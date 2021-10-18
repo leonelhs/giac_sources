@@ -4,9 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Length of a sequence or list: size nops length
-
-
+<title>Defining a sequence or a list: seq[ ] ()
 
 </title>
 </head>
@@ -15,55 +13,60 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en403.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:listlen" class="subsection">6.39.3  Length of a sequence or list: <span style="font-family:monospace">size</span> <span style="font-family:monospace">nops</span> <span style="font-family:monospace">length</span>
-<a id="hevea_default677"></a>
-<a id="hevea_default678"></a>
-<a id="hevea_default679"></a>
-</h3>
-<p>You can find the length of a sequence or list with any of the
-<span style="font-family:monospace">size</span>, <span style="font-family:monospace">nops</span> or <span style="font-family:monospace">length</span> commands.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">size</span> (or <span style="font-family:monospace">nops</span> or <span style="font-family:monospace">length</span>) takes one
-argument:<br>
- <span style="font-style:italic">S</span>, a sequence or list.
-</li><li class="li-itemize"><span style="font-family:monospace">size(</span><span style="font-style:italic">S</span><span style="font-family:monospace">)</span> (or <span style="font-family:monospace">nops(</span><span style="font-style:italic">S</span><span style="font-family:monospace">)</span> or
-<span style="font-family:monospace">length(</span><span style="font-style:italic">S</span><span style="font-family:monospace">)</span>) returns the length of <span style="font-style:italic">L</span>.
-</li></ul><p><br>
+<h3 id="sec486" class="subsection">6.39.1  Defining a sequence or a list: <span style="font-family:monospace">seq[ ]</span> <span style="font-family:monospace">()</span>
+<a id="hevea_default676"></a>
+<a id="hevea_default677"></a></h3>
+<p>Recall (see Section <a href="cascmd_en048.html#ssec%3Aseqbasics">5.3.1</a>) that a sequence is represented by
+a sequence of elements separated by commas, either without delimiters,
+with parentheses (<span style="font-family:monospace">(</span> and <span style="font-family:monospace">)</span>) as delimiters, or with
+<span style="font-family:monospace">seq[</span> and <span style="font-family:monospace">]</span> as delimiters.</p><p><br>
+</p><p><span style="font-weight:bold">Examples.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">a,b,c,d</span>
+</div><p>
+<span style="font-style:italic">or:</span>
+</p><div class="center">
+<span style="font-family:monospace">(a,b,c,d)</span>
+</div><p>
+<span style="font-style:italic">or:</span>
+</p><div class="center">
+<span style="font-family:monospace">seq[a,b,c,d]</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span>
+</td></tr>
+</table><p>Similarly (see Section <a href="cascmd_en050.html#ssec%3Alstbasics">5.3.3</a>) a list (or a vector) is
+a sequence of elements separated by commas delimited with <span style="font-family:monospace">[</span>
+and <span style="font-family:monospace">]</span>.</p><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">nops(a,e,i,o,u)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">size(a,e,i,o,u)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">length(a,e,i,o,u)</span>
+<span style="font-family:monospace">[1,2,5]</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">5
-</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,2,5</td><td class="dcell">⎤<br>
+⎦</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">nops([3,4,2])</span>
+[]
 </div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">size([3,4,2])</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">length([3,4,2])</span>
-</div>
+(to create the empty list).<br>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3
-</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">⎤<br>
+⎦</td></tr>
 </table>
-</li></ul>
+</li></ul><p><br>
+</p><p>Lists have more structure than sequences. For example, a list can
+contain lists (for example, a matrix is a list of lists of the same
+size, see Section <a href="index.html#sec%3Adefmat">6.44</a>). Lists may be used to represent vectors
+(lists of coordinates), matrices, or univariate polynomials (lists of
+coefficients by decreasing order, see Section <a href="cascmd_en283.html#ssec%3Aspoly">6.27.1</a>).</p><p>Sequences, on the other hand, are flat. An element of a sequence
+cannot be a sequence. </p><p>See Section <a href="index.html#sec%3Alists">6.40</a> for some commands only for lists.</p>
 <hr>
 <a href="cascmd_en401.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

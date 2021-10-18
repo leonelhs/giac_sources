@@ -6,7 +6,8 @@ Quick overview
 1/ Check that the file /etc/ld.so.conf contains a line 
 /usr/local/lib
 if not edit the file as root and add this line
-2/ Get and install GMP, MPFR, FLTK 1.3.2, readline, optionnaly GSL,
+2/ Optionnal installs: 
+Get and install GMP, MPFR, FLTK 1.3.2, readline, optionnaly GSL,
 lapack, atlas if you want to do numerical stuff, 
 PARI 2.3 or above for advanced arithmetic, 
 NTL for fast polynomial (see configuration compatible with giac below)
@@ -19,6 +20,9 @@ If you want a quick compilation, type respectively for tcsh or bash
   $ export CXXFLAGS=-g
 then
   $ ./configure
+or
+  $ ./configure --enable-libbf
+if you don't have GMP installed
   $ make
 become root
   # make install
@@ -27,13 +31,15 @@ become root
 
 PREREQUSITES:
 =============
-0. If you want to cross-compile for the ARM architecture look also at
-   the file src/README.ipaq
 1. ANSI C++ compiler. C++ compiler from GNU compiler collection (GCC),
    version >= 3.4, is required.
 2. GNU multiprecision library (GMP, http://gmplib.org), version 3 or newer.
-3. GNU readline library (http://www.gnu.org/software/readline), version >= 4.2
-4. [Only if you want GUI] FLTK library (http://www.fltk.org), version 1.3.x
+   You may also compile giac without GMP, with the included libbf 
+   by Fabrice Bellard (https://bellard.org/libbf/). This is an option
+   if you find it too difficult to compile GMP for your architecture.
+3. MPFR library (http://mpfr.org). and MPFI
+4. GNU readline library (http://www.gnu.org/software/readline), version >= 4.2
+5. [Only if you want GUI] FLTK library (http://www.fltk.org), version 1.3.x
    For scrollbars to work properly, you must check that FL_REGION_STACK_SIZE
    is large enough in FL/Fl_Device.H  (100 should be large enough). 
   On Mac, you must remove static in src/gl_start.cxx in the declaration
@@ -44,8 +50,6 @@ void * Fl_Window::window_ref() const {
   return i;
 }
 
-
-5. MPFR library (http://mpfr.org).
 6. GNU scientific library (http://www.gnu.org/software/gsl)
 or/and LAPACK http://www.netlib.org/lapack/ (option ATLAS
 for faster blaslib http://www.netlib.org/lapack/)
@@ -58,12 +62,9 @@ for faster blaslib http://www.netlib.org/lapack/)
    with namespace enabled (which is sadly not the default) and GMP as 
    a bignum library, i.e.
    $ ./configure NTL_GMP_LIP=on NTL_STD_CXX=on
-9. CoCoA library (http://cocoa.dima.unige.it/cocoalib). 
-   Note that giac compiles by default with version 0.9950 (except under win32), 
-   for smaller versions try to remove #define COCOA9950 in cocoa.cc.
-   N.B.: there is no make install target currently, you must copy
-   lib/libcocoa.a to /usr/local/lib and include/CoCoA/* to 
-   /usr/local/include/CoCoA by hand
+9. ECM: elliptic curve method http://ecm.gforge.inria.fr/ (requires GMP)
+10.GLPK (https://www.gnu.org/software/glpk/
+   samplerate, curl, cliquer, nauty (https://pallini.di.uniroma1.it/) 
 
 INSTALLATION (UNIX)
 ===================

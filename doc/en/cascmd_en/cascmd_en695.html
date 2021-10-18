@@ -4,25 +4,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The program editor</title>
+<title>Simplifying units: usimplify
+</title>
 </head>
 <body >
 <a href="cascmd_en694.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en696.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:proged" class="subsection">12.1.1  The program editor</h3>
-<p><span style="font-family:monospace">Xcas</span> provides you with a program editor, which you can open with
-<span style="font-family:monospace">Alt+P</span>. This can be useful for writing small programs, but
-for writing larger programs you may want to use your usual editor.
-(Note that this requires an editor, such as <span style="font-family:monospace">emacs</span>, and not a
-word processor.) If you use your own editor, then you will need to
-save the program to a file, such as <span style="font-family:monospace">myprog.cxx</span>, and then load
-it into <span style="font-family:monospace">Xcas</span> with the command line command <span style="font-family:monospace">load</span>:<br>
+<h3 id="sec946" class="subsection">11.1.7  Simplifying units: <span style="font-family:monospace">usimplify</span>
+<a id="hevea_default1312"></a></h3>
+<p>The <span style="font-family:monospace">usimplify</span> command simplifies a unit in an unit object.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">usimplify</span> takes one argument:<br>
+ <span style="font-style:italic">unitobj</span>, a unit object.
+</li><li class="li-itemize"><span style="font-family:monospace">usimplify(</span><span style="font-style:italic">unitobj</span><span style="font-family:monospace">)</span> returns
+<span style="font-style:italic">unitobj</span> with the units simplified.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">load("myprog.cxx")</span>
-</div>
+<span style="font-family:monospace">usimplify(3_(W*s))</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3.0 <span style="font-style:italic">J</span>
+</td></tr>
+</table>
 <hr>
 <a href="cascmd_en694.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

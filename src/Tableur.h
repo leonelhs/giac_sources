@@ -2,11 +2,7 @@
 #ifndef _TABLEUR_H
 #define _TABLEUR_H
 
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 /*
  *  Copyright (C) 2002,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -24,11 +20,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IN_GIAC
-#include <giac/gen.h>
-#else
 #include "gen.h"
-#endif
 #ifdef HAVE_LIBFLTK
 #include "Flv_Table.H"
 #include "Flve_Input.H"

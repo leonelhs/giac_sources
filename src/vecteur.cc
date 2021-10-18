@@ -1141,6 +1141,10 @@ namespace giac {
 	    vecteur & w=*m[i]._VECTptr;
 	    ws=int(w.size());
 	    for (j=y;j<ws && j<=Y;++j){
+	      if (w[j].type!=_VECT){
+		w[j]=makevecteur(w[j],w[j],2);
+		continue;
+	      }
 	      vecteur & wj=*w[j]._VECTptr;
 	      if (wj.back().val==1)
 		return string2gen("Recursive eval",false);
@@ -3094,7 +3098,7 @@ namespace giac {
 	  divvecteur(*it->_VECTptr,a,*it->_VECTptr);
 	}
 	else {
-#ifndef USE_GMP_REPLACEMENTS
+#if !defined USE_GMP_REPLACEMENTS && !defined BF2GMP_H
 	  if (it->type==_ZINT && a.type==_ZINT && it->ref_count()==1){
 	    my_mpz_gcd(tmpz,*it->_ZINTptr,*a._ZINTptr);
 	    if (mpz_cmp_ui(tmpz,1)==0)
@@ -3210,7 +3214,7 @@ namespace giac {
   // ***   Matrices    ***
   // *********************
 
-  bool ckmatrix(const matrice & a,bool allow_embedded_vect){
+  bool ckmatrix(const matrice & a,bool allow_embedded_vect,bool ckundef){
     vecteur::const_iterator it=a.begin(),itend=a.end();
     if (itend==it)
       return false;
@@ -3229,9 +3233,11 @@ namespace giac {
 	  return false;
 	if (s && (it->_VECTptr->front().type==_VECT && it->_VECTptr->front().subtype!=_POLY1__VECT) && !allow_embedded_vect)
 	  return false;
-	for (int i=0;i<s;++i)
-	  if (is_undef((*it->_VECTptr)[i]))
-	    return false;
+	if (ckundef){
+	  for (int i=0;i<s;++i)
+	    if (is_undef((*it->_VECTptr)[i]))
+	      return false;
+	}
       }
     }
     return true;
@@ -3312,8 +3318,8 @@ namespace giac {
     }
   }
 
-  void mtran(const matrice & a,matrice & res,int ncolres){
-    if (!ckmatrix(a,true)){
+  void mtran(const matrice & a,matrice & res,int ncolres,bool ckundef){
+    if (!ckmatrix(a,true,ckundef)){
       res=vecteur(1,vecteur(ncolres,gensizeerr("Unable to tranpose")));
       return;
     }
@@ -3517,7 +3523,7 @@ namespace giac {
   }
 
   void smod_inplace(matrice & res,const gen & pi_p){
-#ifndef USE_GMP_REPLACEMENTS
+#if !defined USE_GMP_REPLACEMENTS && !defined BF2GMP_H
     if (pi_p.type==_ZINT && ckmatrix(res)){
       mpz_t tmpz;
       mpz_init(tmpz);
@@ -4988,7 +4994,7 @@ namespace giac {
 	    t=0;
 	}
 	for (;jt1!=it1end;++jt1,++it2){
-#ifndef USE_GMP_REPLACEMENTS
+#if !defined USE_GMP_REPLACEMENTS && !defined BF2GMP_H
 	  if (t==_ZINT && jt1->type==_ZINT && c.type==_ZINT && it2->type==_ZINT && jt1->ref_count()==1){
 	    mpz_mul(*jt1->_ZINTptr,*jt1->_ZINTptr,*c1._ZINTptr);
 	    mpz_addmul(*jt1->_ZINTptr,*it2->_ZINTptr,*c2._ZINTptr);
@@ -9757,7 +9763,7 @@ namespace giac {
     mpz_set_ui(e->z,0);
     gen tmp;
     for (;(ita!=itaend)&&(itb!=itbend);++ita,++itb){
-#ifdef USE_GMP_REPLACEMENTS
+#if defined USE_GMP_REPLACEMENTS || defined BF2GMP_H
       type_operator_times(*ita,*itb,tmp);
       if (tmp.type==_INT_){
 	if (tmp.val<0)
@@ -10032,7 +10038,7 @@ namespace giac {
 	if (binf.type==_INT_)
 	  smallint=3;
       }
-#if !defined(USE_GMP_REPLACEMENTS) 
+#if !defined(USE_GMP_REPLACEMENTS) && !defined BF2GMP_H
       if (ainf.type==_ZINT
 	  // && binf.type==_INT_ && binf.val<p.val // FIXME: temporary workaround
 	  ){
@@ -10177,7 +10183,7 @@ namespace giac {
 	if (debug_infolevel>2)
 	  CERR << CLOCK()*1e-6 << " padic adjust y step " << i << '\n';
 	subvecteur(y,tmp,y);
-#ifdef USE_GMP_REPLACEMENTS
+#if defined USE_GMP_REPLACEMENTS || defined BF2GMP_H
 	divvecteur(y,p,y); 
 #else
 	iterateur it=y.begin(),itend=y.end();

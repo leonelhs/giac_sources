@@ -741,7 +741,7 @@ namespace giac {
       bool signe=(i<0);
       if (signe)
 	i=-i;
-#if !defined(USE_GMP_REPLACEMENTS)
+#if !defined(USE_GMP_REPLACEMENTS) && !defined BF2GMP_H
       mpz_import(*_ZINTptr,4/* count*/,-1/*1 for least significant first*/,4/* sizeof unsigned*/,0,0,&i);
       // CERR << gen(*_ZINTptr) ;
 #else
@@ -2425,7 +2425,11 @@ namespace giac {
 	mpfr_set_default_prec(nbits);
       mpfr_t euler_gamma;
       mpfr_init(euler_gamma);
+#ifdef BF2GMP_H
+      mpfr_set_str(euler_gamma,"0.5772156649015328606065120900824024310421593359399235988057672348848677267776646709369470632917467495146314472498070824809605040144865428362241739976449235362535003337429373377376739427925952582470949160087352039481656708532331517766115286211995015079847937450857057400299213547861466940296043254215190587755352",nbits,MPFR_RNDN);
+#else
       mpfr_const_euler(euler_gamma,MPFR_RNDN);
+#endif
 #ifdef HAVE_LIBPTHREAD
       if (!locked)
 	pthread_mutex_unlock(&mpfr_mutex);
@@ -2649,6 +2653,13 @@ namespace giac {
 	return -real2int(-g,contextptr);
       if (is_zero(g))
 	return 0;
+#ifdef BF2GMP_H
+      ref_mpz_t * m=new ref_mpz_t;
+      mpz_init(m->z);
+      mpz_set(m->z,g._REALptr->inf);
+      bf_rint(&m->z,BF_RNDD);
+      return gen(m);
+#else
 #ifdef HAVE_LIBMPFR
       ref_mpz_t * m=new ref_mpz_t;
       int n=int(mpfr_get_z_exp(m->z,g._REALptr->inf));
@@ -2658,7 +2669,8 @@ namespace giac {
       return _iquo(makesequence(res,pow(plus_two,gen(-n),contextptr)),contextptr);
 #else
       return g;
-#endif
+#endif // MPFR
+#endif // BF2GMP_H
     }
     if (g.type!=_VECT)
       return g;
@@ -5986,7 +5998,7 @@ namespace giac {
       // (ax+i*ay)*(bx+i*by)=ax*bx-ay*by+i*(ax*by+ay*bx)
       // imaginary part is also (ax+ay)*(bx+by)-ax*bx-ay*by, Karatsuba trick
       mpz_t axbx,ayby,r;
-#ifdef USE_GMP_REPLACEMENTS
+#if defined USE_GMP_REPLACEMENTS || defined BF2GMP_H
       mpz_init(axbx); mpz_init(ayby); mpz_init(r);
 #else
       int n1=mpz_size(ax)+mpz_size(bx),n2=mpz_size(ay)+mpz_size(by);
@@ -10763,7 +10775,7 @@ namespace giac {
       else
 	return is_positive(a,contextptr)?a:-a;
     case _ZINT__ZINT: 
-#ifndef USE_GMP_REPLACEMENTS
+#if !defined USE_GMP_REPLACEMENTS && !defined BF2GMP_H
       {
 	int test=mpz_cmp(*a._ZINTptr,*b._ZINTptr);
 	if (test==0 || (test>0 && mpz_divisible_p(*a._ZINTptr,*b._ZINTptr)))
@@ -11473,6 +11485,26 @@ namespace giac {
     return res;
   }
 
+  bool miller_rabin(const gen & a,const gen & p){
+    gen p1=p-1,q,s(p1),r;
+    int t=0;
+    // p-1=2^t*s
+    for (;;++t){
+      gen Q;
+      r=irem(s,2,Q);
+      if (r!=0)
+	break;
+      s=Q;
+    }
+    gen A(powmod(a,s,p));
+    if (A==1 || A==p1) return true;
+    for (int i=0;i<t;++i){
+      A=irem(A*A,p,q);
+      if (A==p1) return true;
+    }
+    return false;
+  }
+
   int is_probab_prime_p(const gen & a){
     if ( (a.type!=_INT_) && (a.type!=_ZINT)){
 #ifndef NO_STDEXCEPT
@@ -11491,6 +11523,14 @@ namespace giac {
 	  return 0;
       }
     }
+#ifdef BF2GMP_H
+    for (int i=0;i<TEST_PROBAB_PRIME;++i){
+      int A=giac_rand(context0);
+      if (!miller_rabin(A,a))
+	return 0;
+    }
+    return 1;
+#else // BF2GMP
     ref_mpz_t *aptr;
     if (a.type!=_INT_)
 #ifdef SMARTPTR64
@@ -11506,6 +11546,7 @@ namespace giac {
     if (a.type==_INT_)
       delete aptr;
     return res;
+#endif // BF2GMP
   }
 
   gen nextprime(const gen & a){
@@ -11666,11 +11707,12 @@ namespace giac {
     mpz_set_ui(e->z,1);
     for (unsigned long int k=i;k>i-j;--k)
       mpz_mul_ui(e->z,e->z,k);
-    mpz_t tmp;
-    mpz_init(tmp);
+    mpz_t tmp,tmp1;
+    mpz_init(tmp); mpz_init(tmp1);
     mpz_fac_ui(tmp,j);
-    mpz_fdiv_q(e->z,e->z,tmp);
-    mpz_clear(tmp);
+    mpz_fdiv_q(tmp1,e->z,tmp);
+    mpz_set(e->z,tmp1);
+    mpz_clear(tmp); mpz_clear(tmp1);
 #endif
     return e;
   }
@@ -12559,7 +12601,7 @@ void sprint_double(char * s,double d){
   }
 
   std::string printmpf_t(const mpf_t & inf,GIAC_CONTEXT){
-#ifndef USE_GMP_REPLACEMENTS
+#if !defined USE_GMP_REPLACEMENTS && !defined BF2GMP_H
 #ifdef VISUALC
     char * ptr=new char[decimal_digits(contextptr)+30];
 #else
@@ -12808,8 +12850,9 @@ void sprint_double(char * s,double d){
       if (calc_mode(contextptr)==1)
 	s="{";
       else {
+	int pyc=python_compat(contextptr);
 	// s="matrix[";
-	if (!os_shell)
+	if (!os_shell || pyc<0)
 	  s="[";
 	else
 	  s=abs_calc_mode(contextptr)==38?"[":"matrix[";
@@ -13183,6 +13226,8 @@ void sprint_double(char * s,double d){
 
   const char * printi(GIAC_CONTEXT){
 #ifdef KHICAS
+    if (python_compat(contextptr)<0)
+      return "I";
     return os_shell?"i":"𝐢";
 #endif
     if (calc_mode(contextptr)==1)
@@ -13191,7 +13236,7 @@ void sprint_double(char * s,double d){
       return ""; // "\xe2\x81\xb1";
     if (xcas_mode(contextptr)==3)
       return "\xa1";
-    if (xcas_mode(contextptr)>0)
+    if (xcas_mode(contextptr)>0 || python_compat(contextptr)<0)
       return "I";
     else
       return "i";
@@ -13323,7 +13368,7 @@ void sprint_double(char * s,double d){
       }
     }
     if (subtype==_INT_BOOLEAN){
-      if (python_compat(contextptr)){
+      if (python_compat(contextptr)>0){
 	if (val)
 	  return "True";
 	else
@@ -14917,7 +14962,7 @@ void sprint_double(char * s,double d){
       }
     }
     int save_decimal_digits=decimal_digits(context0);
-    set_decimal_digits(precision,context0);
+    set_decimal_digits(std::ceil(precision*M_LN2/M_LN10),context0);
     gen tmp=re(evalf(g,1,context0),context0);
     set_decimal_digits(save_decimal_digits,context0);
     if (tmp.type!=_REAL){
@@ -15279,7 +15324,7 @@ void sprint_double(char * s,double d){
   }
     
   gen real_object::sqrt() const {
-#ifdef LONGFLOAT_DOUBLE
+#if defined LONGFLOAT_DOUBLE && !defined HAVE_LIBMPFR
     real_object res; res.inf=std::sqrt(inf); return res;
 #else
     real_object res(*this);
@@ -15302,11 +15347,9 @@ void sprint_double(char * s,double d){
     return -(*this);
   }
 
-#ifndef HAVE_LIBMPFR
   static void compile_with_mpfr(){  
     setsizeerr(gettext("Compile with MPFR or USE_GMP_REPLACEMENTS if you want transcendental long float support"));  
   }
-#endif
 
   gen real_object::exp() const {
     real_object res(*this);
@@ -15515,7 +15558,7 @@ void sprint_double(char * s,double d){
     *res.inf = ::asinh(*res.inf);
 #endif
 #else
-#ifdef HAVE_LIBMPFR
+#if defined HAVE_LIBMPFR && !defined BF2GMP_H
     mpfr_asinh(res.inf,res.inf,MPFR_RNDN);
 #else
     compile_with_mpfr();
@@ -15533,7 +15576,7 @@ void sprint_double(char * s,double d){
     *res.inf = ::acosh(*res.inf);
 #endif
 #else
-#ifdef HAVE_LIBMPFR
+#if defined HAVE_LIBMPFR && !defined BF2GMP_H
     mpfr_acosh(res.inf,res.inf,MPFR_RNDN);
 #else
     compile_with_mpfr();
@@ -15551,7 +15594,7 @@ void sprint_double(char * s,double d){
     *res.inf = ::atanh(*res.inf);
 #endif
 #else
-#ifdef HAVE_LIBMPFR
+#if defined HAVE_LIBMPFR && !defined BF2GMP_H
     mpfr_atanh(res.inf,res.inf,MPFR_RNDN);
 #else
     compile_with_mpfr();
@@ -16034,6 +16077,7 @@ void sprint_double(char * s,double d){
     else
       mpfr_get_str(ptr,&expo,10,dd,inf,MPFR_RNDN);
     std::string res(ptr);
+#ifndef BF2GMP_H
     if (expo){
       if (expo==1){
 	string reste(res.substr(1,res.size()-1));
@@ -16047,6 +16091,7 @@ void sprint_double(char * s,double d){
     }
     else
       res="0."+res;
+#endif
 #ifdef VISUALC
     delete [] ptr;
 #endif
@@ -16191,6 +16236,7 @@ void sprint_double(char * s,double d){
     context & C=*contextptr;
     if (!strcmp(s,"caseval contextptr"))
       return (const char *) contextptr;
+    history_plot(contextptr).clear();
     if (!strcmp(s,"shell off")){
       os_shell=false;
       return "shell off";
@@ -16450,7 +16496,6 @@ void sprint_double(char * s,double d){
       S="GIAC_ERROR: "+S;
     }
     else {
-#ifdef KHICAS // replace ],[ by ][
       gen last=g;
       while (last.type==_VECT && last.subtype!=_LOGO__VECT && !last._VECTptr->empty()){
 	gen tmp=last._VECTptr->back();
@@ -16459,6 +16504,7 @@ void sprint_double(char * s,double d){
 	else
 	  last=tmp;
       }
+#ifdef KHICAS // replace ],[ by ][
       if (last.is_symb_of_sommet(at_pnt)){
 	if (os_shell || nspirelua)
 	  xcas::displaygraph(g,&C);
@@ -16494,7 +16540,12 @@ void sprint_double(char * s,double d){
 	  S='['+S+']'; // vector/list not allowed in Numworks calc app
       }
 #else
-      S=g.print(&C);
+      if (last.is_symb_of_sommet(at_pnt))
+	S="Graphic_object";
+      else if (islogo(g))
+	S="Logo_turtle";
+      else
+	S=g.print(&C);
 #if !defined GIAC_GGB 
 #if defined EMCC || defined EMCC2
 	double add_evalf=EM_ASM_DOUBLE_V({
@@ -16505,10 +16556,10 @@ void sprint_double(char * s,double d){
 	  js_bigint=EM_ASM_DOUBLE_V({
 	      if (typeof(UI.js_bigint)!="undefined")
 	      return UI.js_bigint*1.0;
-	    return 1.0;
+	    return 0.0;
 	  });
 #else
-	double add_evalf=true,js_bigint=false;
+	double add_evalf=false,js_bigint=false;
 #endif
       if (g.type==_FRAC || g.type==_ZINT){
 	if (add_evalf){

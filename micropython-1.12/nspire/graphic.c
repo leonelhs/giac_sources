@@ -2028,11 +2028,13 @@ mp_obj_t turtle_ret(const char * val){
 
 static mp_obj_t turtle_forward(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  int i=10;
+  double i=10;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
+  if (n_args==1 && mp_obj_is_float(args[0])) 
+    i=mp_obj_get_float(args[0]);
   char buf[256];
-  sprintf(buf,"avance(%i):;",i);
+  sprintf(buf,"avance(%.4g):;",i);
   const char * val=caseval(buf);
   return turtle_ret(val);
 }
@@ -2040,11 +2042,13 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_forward_obj, 0, 1, turtle_forward);
 
 static mp_obj_t turtle_backward(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  int i=10;
+  double i=10;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
+  if (n_args==1 && mp_obj_is_float(args[0])) 
+    i=mp_obj_get_float(args[0]);
   char buf[256];
-  sprintf(buf,"recule(%i):;",i);
+  sprintf(buf,"recule(%.4g):;",i);
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));

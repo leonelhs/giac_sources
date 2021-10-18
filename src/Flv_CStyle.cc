@@ -13,11 +13,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 #ifdef HAVE_LIBFLTK
 
 #include "Flv_CStyle.H"

@@ -93,6 +93,44 @@ using namespace std;
 
 #include <stdio.h>
 #include <stdarg.h>
+#ifdef QUICKJS
+#include "qjsgiac.h"
+string js_vars;
+void update_js_vars(){
+  const char VARS[]="function update_js_vars(){let res=''; for(var b in globalThis) { let prop=globalThis[b]; if (globalThis.hasOwnProperty(b)) res+=b+' ';} return res;}; update_js_vars()";
+  char * names=js_ck_eval(VARS,&global_js_context);
+  if (names){
+    js_vars=names;
+    free(names);
+  }
+}
+int js_token(const char * buf){
+  return js_token(js_vars.c_str(),buf);
+}
+#else // QUICKJS
+void update_js_vars(){}
+int js_token(const char * buf){
+  return 0;
+}
+#endif
+int js_token(const char * list,const char * buf){
+  int bufl=strlen(buf);
+  for (const char * p=list;*p;){
+    if (p[0]=='\'')
+      ++p;
+    if (strncmp(p,buf,bufl)==0 && 
+	(p[bufl]==0 || p[bufl]==' ' || p[bufl]=='\'')){
+      return (p[bufl]=='\'')?3:2;
+    }
+    // skip to next keyword in p
+    for (;*p;++p){
+      if (*p==' '){
+	++p; break;
+      }
+    }
+  }
+  return 0;
+}
 
 #ifdef HAVE_LIBMICROPYTHON
 std::string python_console;
@@ -115,6 +153,14 @@ extern "C" int KeyPressed( void );
 #include <libndls.h>
 #endif
 
+#ifdef NUMWORKS
+size_t pythonjs_stack_size=30*1024,pythonjs_heap_size=40*1024,
+#else
+  size_t pythonjs_stack_size=128*1024,pythonjs_heap_size=2*1024*1024;
+#endif
+void * bf_ctx_ptr=0;
+size_t bf_global_prec=128; // global precision for BF
+
 int my_sprintf(char * s, const char * format, ...){
     int z;
     va_list ap;
@@ -128,21 +174,34 @@ int my_sprintf(char * s, const char * format, ...){
     return z;
 }
 
-  int ctrl_c_interrupted(int exception){
-    if (!giac::ctrl_c && !giac::interrupted)
-      return 0;
-    giac::ctrl_c=giac::interrupted=0;
+int ctrl_c_interrupted(int exception){
+  if (!giac::ctrl_c && !giac::interrupted)
+    return 0;
+  giac::ctrl_c=giac::interrupted=0;
 #ifndef NO_STD_EXCEPT
-    if (exception)
-      giac::setsizeerr("Interrupted");
+  if (exception)
+    giac::setsizeerr("Interrupted");
 #endif
-    return 1;
-  }
+  return 1;
+}
+
+void console_print(const char * s){
+  *logptr(giac::python_contextptr) << s;
+}
+
+const char * console_prompt(const char * s){
+  static string S;
+  giac::gen g=giac::_input(giac::string2gen(s?s:"?",false),giac::python_contextptr);
+  S=g.print(giac::python_contextptr);
+  return S.c_str();
+}
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
+
   const context * python_contextptr=0;
+
   void opaque_double_copy(void * source,void * target){
     *((double *) target) = * ((double *) source);
   }
@@ -847,7 +906,12 @@ extern "C" void Sleep(unsigned int miliSecond);
       _rpn_mode_=b;
   }
 
+#ifdef __MINGW_H
+  static bool _ntl_on_=false; 
+#else
   static bool _ntl_on_=true; 
+#endif
+
   bool & ntl_on(GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
       return contextptr->globalptr->_ntl_on_;
@@ -3310,7 +3374,7 @@ NULL,NULL,SW_SHOWNORMAL);
 	// add locale command description
 	int count;
 	string filename=giac_aide_dir()+find_doc_prefix(i)+"aide_cas";
-	readhelp(*vector_aide_ptr(),filename.c_str(),count,true);
+	readhelp(*vector_aide_ptr(),filename.c_str(),count,false);
 	// add synonyms
 	multimap<string,localized_string>::iterator it,backend=back_lexer_localization_map().end(),itend;
 	vector<aide>::iterator jt = vector_aide_ptr()->begin(),jtend=vector_aide_ptr()->end();
@@ -4080,8 +4144,12 @@ NULL,NULL,SW_SHOWNORMAL);
 		     _withsqrt_(true), 
 		     _show_point_(true),  _io_graph_(true),
 		     _all_trig_sol_(false),
-#ifdef WITH_MYOSTREAM
+#ifdef __MINGW_H
+		     _ntl_on_(false),
+#else
 		     _ntl_on_(true),
+#endif
+#ifdef WITH_MYOSTREAM
 		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),
 #ifdef KHICAS
 		     _python_compat_(true),
@@ -4096,7 +4164,6 @@ NULL,NULL,SW_SHOWNORMAL);
 #endif
 		     _total_time_(0),_evaled_table_(0),_extra_ptr_(0),_series_variable_name_('h'),_series_default_order_(5),
 #else
-		     _ntl_on_(true),
 		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),
 #ifdef KHICAS
 		     _python_compat_(true),

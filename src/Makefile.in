@@ -129,7 +129,9 @@ am_libgiac_la_OBJECTS = input_lexer.lo sym2poly.lo gausspol.lo \
 	pari.lo cocoa.lo unary.lo usual.lo identificateur.lo gen.lo \
 	tinymt32.lo first.lo TmpLESystemSolver.lo TmpFGLM.lo help.lo \
 	lpsolve.lo optimization.lo signalprocessing.lo graphe.lo \
-	graphtheory.lo nautywrapper.lo markup.lo kdisplay.lo kadd.lo
+	graphtheory.lo nautywrapper.lo markup.lo kdisplay.lo kadd.lo \
+	caseval.lo cutils.lo graphic.lo libbf.lo libregexp.lo \
+	libunicode.lo qjsgiac.lo quickjs.lo quickjs-libc.lo js.lo
 libgiac_la_OBJECTS = $(am_libgiac_la_OBJECTS)
 libxcas_la_DEPENDENCIES = libgiac.la $(am__DEPENDENCIES_1)
 am_libxcas_la_OBJECTS = History.lo Input.lo Xcas1.lo Equation.lo \
@@ -396,9 +398,11 @@ libgiac_la_SOURCES = input_lexer.ll sym2poly.cc gausspol.cc threaded.cc \
   path.h lexer.h \
   input_lexer.h input_parser.h threaded.h vector.h \
   help.cc  lpsolve.cc optimization.cc signalprocessing.cc \
-  graphe.cc graphtheory.cc nautywrapper.c markup.cc kdisplay.cc kadd.cc # Ugh..
+  graphe.cc graphtheory.cc nautywrapper.c markup.cc kdisplay.cc kadd.cc \
+  caseval.c cutils.c graphic.c libbf.c libregexp.c libunicode.c \
+  qjsgiac.c quickjs.c quickjs-libc.c js.c
 
-libgiac_la_LIBADD = $(NTL_LIBS) $(COCOA_LIBS) $(PARI_LIBS) $(GSL_LIBS)
+libgiac_la_LIBADD = $(NTL_LIBS) $(COCOA_LIBS) $(PARI_LIBS) $(GSL_LIBS) 
 giacincludedir = $(includedir)/giac
 giacinclude_HEADERS = dispatch.h fraction.h gen.h desolve.h misc.h ti89.h \
 mathml.h identificateur.h unary.h symbolic.h index.h modpoly.h modfactor.h permu.h \
@@ -410,7 +414,10 @@ pari.h cocoa.h giac.h first.h maple.h help.h tinymt32.h tinymt32_license.h \
 static.h static_extern.h static_lexer.h static_lexer_.h\
 lexer_tab_int.h \
 static_help.h giacPCH.h giacintl.h gmp_replacements.h myostream.h \
-lpsolve.h optimization.h signalprocessing.h graphe.h graphtheory.h nautywrapper.h markup.h kdisplay.h k_csdk.h k_defs.h
+lpsolve.h optimization.h signalprocessing.h graphe.h graphtheory.h nautywrapper.h markup.h kdisplay.h k_csdk.h k_defs.h \
+fenv.h libregexp.h libregexp-opcode.h libunicode.h libunicode-table.h \
+libbf.h list.h cutils.h qjsgiac.h \
+quickjs.h js.h quickjs-atom.h quickjs-libc.h quickjs-opcode.h bf2gmp.h
 
 noinst_LTLIBRARIES = libxcas.la
 libxcas_la_LIBADD = libgiac.la $(GUI_LIBS)
@@ -462,7 +469,8 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	f2c.h clapack.h blaswrap.h mklocal64 pnt_gen \
 	giac.i runme.java archive_java archive_java_linux32 archive_java_linux64  javascript.cxx giacjs.i README.javascript \
 	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy mkgiacpy10 giac_wrap.cxx aspen_translate.h numworks_translate.h translate.cc \
-	itex2MML.* y_tab.h static_lexer_numworks.h static_lexer__numworks.h k_csdk.c 
+	itex2MML.* y_tab.h static_lexer_numworks.h static_lexer__numworks.h k_csdk.c \
+	qjscalcjs.js xcasjs.js tijs.js mklibjs mkjs.cc
 
 bin_SCRIPTS = pgiac
 all: all-am
@@ -671,8 +679,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Xcas1.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aide.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alg_ext.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caseval.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cocoa.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/csturm.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cutils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/derive.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/desolve.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ezgcd.Plo@am__quote@
@@ -683,6 +693,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl2ps.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/global.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/graphe.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/graphic.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/graphtheory.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/help.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hevea2mml.Po@am__quote@
@@ -695,9 +706,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/intg.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/intgab.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/isom.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/js.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kadd.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kdisplay.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lex_yy.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libregexp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libunicode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lin.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lpsolve.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/maple.Plo@am__quote@
@@ -714,7 +729,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plot.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plot3d.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/prog.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qjsgiac.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quater.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quickjs-libc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quickjs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/risch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rpn.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/series.Plo@am__quote@
@@ -1069,6 +1087,18 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 	uninstall-binSCRIPTS uninstall-giacincludeHEADERS \
 	uninstall-libLTLIBRARIES
 
+
+libjs.a:	qjscalcjs.js xcasjs.js
+	./mklibjs
+
+js.c: mkjs qjscalcjs.js xcasjs.js
+	./mkjs
+
+js.h: mkjs qjscalcjs.js xcasjs.js
+	./mkjs
+
+mkjs: mkjs.cc
+	g++ mkjs.cc -o mkjs
 
 install-exec-hook:
 	rm -f $(DESTDIR)$(bindir)/cas_help

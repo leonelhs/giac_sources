@@ -4,7 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Matrix of a system: syst2mat
+<title>The right member of an equation: right droit rhs
+
+
+
 </title>
 </head>
 <body >
@@ -12,54 +15,33 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en554.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec708" class="subsection">6.56.1  Matrix of a system: <span style="font-family:monospace">syst2mat</span>
-<a id="hevea_default954"></a></h3>
-<p>The <span style="font-family:monospace">syst2mat</span> command turns a system of linear equations into
-its augmented matrix. (For this command, the augmented matrix of
-<span style="font-style:italic">Ax</span>=<span style="font-style:italic">b</span> has the column vector −<span style="font-style:italic">b</span> glued to the right of <span style="font-style:italic">A</span>.)
+<h3 id="ssec:rhs" class="subsection">6.55.5  The right member of an equation: <span style="font-family:monospace">right</span> <span style="font-family:monospace">droit</span> <span style="font-family:monospace">rhs</span>
+<a id="hevea_default952"></a>
+<a id="hevea_default953"></a>
+<a id="hevea_default954"></a>
+</h3>
+<p>(See Section <a href="cascmd_en078.html#ssec%3Alrstring">6.3.4</a>, Section <a href="cascmd_en206.html#ssec%3Aop">6.15.3</a>, Section <a href="cascmd_en390.html#ssec%3Arange">6.37.1</a>, Section <a href="cascmd_en394.html#ssec%3Alrinterval">6.38.2</a>,
+Section <a href="cascmd_en417.html#ssec%3Alrlist">6.40.6</a> and Section <a href="cascmd_en552.html#ssec%3Alhs">6.55.4</a> for
+other uses of <span style="font-family:monospace">left</span> and <span style="font-family:monospace">right</span>.)</p><p>The <span style="font-family:monospace">right</span> command finds the right hand side of an equation.<br>
+For this, <span style="font-family:monospace">rhs</span> is a synonym for <span style="font-family:monospace">right</span>.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">syst2mat</span> takes two as arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">eqns</span>, a list of the equations or expressions
-(assumed to be equal to zero) of a linear system.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the variable names.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">syst2mat(</span><span style="font-style:italic">eqns,vars</span><span style="font-family:monospace">)</span> returns the
-augmented matrix of the system.
-</li></ul><p>
-<span style="font-weight:bold">Warning !!!</span><br>
-The variables must be purged before <span style="font-family:monospace">syst2mat</span> is called.</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">right</span> takes one argument:<br>
+ <span style="font-style:italic">lhs</span>=<span style="font-style:italic">rhs</span>, an equation.
+</li><li class="li-itemize"><span style="font-family:monospace">right(</span><span style="font-style:italic">lhs</span>=<span style="font-style:italic">rhs</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">rhs</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">syst2mat([x+y,x-y-2],[x,y])</span>
-</div>
+</p><div class="center">
+<span style="font-family:monospace">right(2x-1=3)</span>
+</div><p>
+<span style="font-style:italic">or:</span>
+</p><div class="center">
+<span style="font-family:monospace">rhs(2x-1=3)</span>
+</div><p>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >−1</td><td style="text-align:center;white-space:nowrap" >−2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3
+</td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">syst2mat([x+y=0,x-y=2],[x,y])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >−1</td><td style="text-align:center;white-space:nowrap" >−2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
-</table>
-</li></ul>
 <hr>
 <a href="cascmd_en552.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

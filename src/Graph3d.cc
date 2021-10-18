@@ -39,11 +39,7 @@
 #include <dirent.h>
 #include <sys/stat.h> // auto-recovery function
 #include "path.h"
-#ifndef IN_GIAC
-#include <giac/misc.h>
-#else
 #include "misc.h"
-#endif
 #include "Equation.h"
 #include "Editeur.h"
 #include "Xcas1.h"

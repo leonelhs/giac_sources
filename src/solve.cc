@@ -2497,7 +2497,10 @@ namespace giac {
 	      purgenoassume(x,contextptr);
 	    }
 	    else { 
-	      if (is_zero(normal(subst(*it,x,*jt,true,contextptr),1,contextptr),contextptr))
+	      gen tst=subst(*it,x,*jt,true,contextptr);
+	      tst=eval(tst,1,contextptr);
+	      tst=normal(tst,1,contextptr);
+	      if (is_zero(tst,contextptr))
 		newres.push_back(*jt);
 	    }
 	  } // end for (;jt!=jtend;++jt) loop on previous solutions
@@ -4195,7 +4198,23 @@ namespace giac {
     A=sxa(sl,x,contextptr);
     vecteur B,R(x);
     gen rep;
-    B=mrref(A,contextptr);
+    if (A.size()==2 && x.size()==2){
+      gen a00=A[0][0];
+      if (is_zero(a00,contextptr))
+	B=makevecteur(A[1],A[0]);
+      else 
+	B=makevecteur(A[0],subvecteur(multvecteur(a00,*A[1]._VECTptr),multvecteur(A[1][0],*A[0]._VECTptr)));
+      B[1]._VECTptr->front()=0;
+      gen b11=(*B[1]._VECTptr)[1];
+      b11=simplify(b11,contextptr);
+      (*B[1]._VECTptr)[1]=b11;
+      if (!is_zero(b11)){
+	B=makevecteur(subvecteur(multvecteur(b11,*B[0]._VECTptr),multvecteur(B[0][1],*B[1]._VECTptr)),B[1]);
+	(*B[0]._VECTptr)[1]=0;
+      }
+    }
+    else
+      B=mrref(A,contextptr);
     //COUT<<B<<'\n';
     int d=int(x.size());
     int de=int(sl.size());
@@ -5474,7 +5493,7 @@ namespace giac {
   }
 
   void inplace_division(gen & a,const gen & b){
-#ifndef USE_GMP_REPLACEMENTS
+#if !defined USE_GMP_REPLACEMENTS && !defined BF2GMP_H
     if (a.type==_ZINT && a.ref_count()==1){
       if (b.type==_INT_ && mpz_divisible_ui_p(*a._ZINTptr,b.val)){
 	if (b.val>0)
@@ -6073,7 +6092,7 @@ namespace giac {
       gbasis_param.eliminate_flag=false;
       if (!giac_gbasis(resrev,_REVLEX_ORDER,env,modularcheck,rur,contextptr,gbasis_param))
 	return false;
-      if (is_zero_dim(resrev) && fglm_lex(resrev,reslex,1024,env,context0)){
+      if (resrev.size()==1 || (is_zero_dim(resrev) && fglm_lex(resrev,reslex,1024,env,context0))){
 	reslex.swap(res);
 	return true;
       }
@@ -8110,6 +8129,7 @@ namespace giac {
       res[i]=x[i];
     if (cres==0)
       return res;
+    return makevecteur(string2gen(gettext("Unable to minimize at given precision, last value "),false),res); // changed 2021/feb/22 to be able to process the result further
     *logptr(contextptr) << gettext("Unable to minimize at given precision, last value ") << res << '\n';
     return undef;
   }
@@ -8196,7 +8216,8 @@ int cobyla(int n, int m, double *x, double rhobeg, double rhoend, int iprint,
   int icon, isim, isigb, idatm, iveta, isimi, ivsig, iwork, ia, idx, mpp, rc;
   int *iact;
   double *w;
-
+  if (rhobeg<0) rhobeg=-rhobeg;
+  if (rhobeg<100*rhoend) rhobeg=100*rhoend;
 /*
  * This subroutine minimizes an objective function F(X) subject to M
  * inequality constraints on X, where X is a vector of variables that has 

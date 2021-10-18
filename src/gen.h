@@ -41,18 +41,22 @@ extern size_t stackptr;
 #include "config.h"
 #endif
 #include "first.h"
+#ifdef HAVE_ALLOCA_H
+#include <alloca.h>
+#endif
 
 // #include <gmp.h>
-#ifdef USE_GMP_REPLACEMENTS
+#if defined USE_GMP_REPLACEMENTS 
 #undef HAVE_GMPXX_H
 #undef HAVE_LIBMPFR
+#undef HAVE_LIBMPFI
 #endif
-#ifdef HAVE_GMPXX_H
-#include <gmpxx.h>
-#endif
-#ifdef HAVE_LIBMPFR
+#if defined HAVE_LIBMPFR && !defined BF2GMP_H 
 #include <mpfr.h>
 // #include <mpf2mpfr.h>
+#endif
+#if defined HAVE_GMPXX_H && !defined BF2GMP_H
+#include <gmpxx.h>
 #endif
 #ifdef HAVE_LIBMPFI
 #include <mpfi.h>
@@ -78,11 +82,6 @@ namespace giac {
 
   int sprint_int(char * s,int r);
   void sprint_double(char * s,double d);
-
-#ifdef USE_GMP_REPLACEMENTS
-#undef HAVE_GMPXX_H
-#undef HAVE_LIBMPFR
-#endif
 
   void my_mpz_gcd(mpz_t &z,const mpz_t & A,const mpz_t & B);
 
@@ -414,6 +413,7 @@ namespace giac {
   gen accurate_evalf(const gen & g,int nbits);
   vecteur accurate_evalf(const vecteur & v,int nbits);
   std::string print_DOUBLE_(double d,GIAC_CONTEXT);
+  bool islogo(const gen & g);
 
 #if 1 // def NSPIRE
   class comparegen {
@@ -686,7 +686,7 @@ namespace giac {
     gen (const gen_map & m);
     gen (const eqwdata & );
     gen (const grob & );
-#ifdef HAVE_GMPXX_H
+#if defined HAVE_GMPXX_H && !defined BF2GMP_H
     gen (const mpz_class &);
 #endif
     gen (const my_mpz &);

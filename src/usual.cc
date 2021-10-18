@@ -989,7 +989,7 @@ namespace giac {
     else
       e_copy=e;
     vecteur u;
-#ifdef USE_GMP_REPLACEMENTS
+#if defined USE_GMP_REPLACEMENTS || defined BF2GMP_H
     bool trial=true;
 #else
     bool trial=false;
@@ -1041,7 +1041,7 @@ namespace giac {
       f=*it;
       ++it;
       m=it->val;
-#ifndef USE_GMP_REPLACEMENTS
+#if !defined USE_GMP_REPLACEMENTS && !defined BF2GMP_H
       if (f.type==_ZINT && mpz_perfect_power_p(*f._ZINTptr)){
 	int nbits=mpz_sizeinbase(*f._ZINTptr,2);
 	gen h=accurate_evalf(f,nbits);
@@ -2670,15 +2670,20 @@ namespace giac {
 #endif
     }
     gen e=frac_neg_out(e0,contextptr);
+#ifdef BF2GMP_H
+    if (e.type==_DOUBLE_ || e.type==_REAL)
+      return asinhasln(e,contextptr);
+#else
     if (e.type==_DOUBLE_)
       return asinhasln(e,contextptr);
+    if (e.type==_REAL)
+      return e._REALptr->asinh();
+#endif
     if (e.type==_SPOL1){
       gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
       if (is_positive(expo,contextptr))
 	return series(*e._SPOL1ptr,*at_asinh,0,contextptr);
     }
-    if (e.type==_REAL)
-      return e._REALptr->asinh();
     if ( (e.type==_CPLX) && (e.subtype || e._CPLXptr->type==_REAL))
       return no_context_evalf(asinhasln(e,contextptr));
     if (is_squarematrix(e)){
@@ -2729,15 +2734,20 @@ namespace giac {
 #endif
     }
     gen e=frac_neg_out(e0,contextptr);
+#ifdef BF2GMP_H
+    if (e.type==_DOUBLE_ || e.type==_REAL)
+      return acoshasln(e,contextptr);
+#else
     if (e.type==_DOUBLE_)
       return acoshasln(e,contextptr);
+    if (e.type==_REAL)
+      return e._REALptr->acosh();
+#endif
     if (e.type==_SPOL1){
       gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
       if (is_positive(expo,contextptr))
 	return series(*e._SPOL1ptr,*at_acosh,0,contextptr);
     }
-    if (e.type==_REAL)
-      return e._REALptr->acosh();
     if ( (e.type==_CPLX) && (e.subtype|| e._CPLXptr->type==_REAL || e._CPLXptr->type==_FLOAT_))
       return no_context_evalf(acoshasln(e,contextptr));
     if (is_squarematrix(e))
@@ -2796,10 +2806,15 @@ namespace giac {
       if (is_positive(expo,contextptr))
 	return series(*e._SPOL1ptr,*at_atanh,0,contextptr);
     }
+#ifdef BF2GMP_H
+    if ( e.type==_REAL || ((e.type==_CPLX) && (e.subtype || e._CPLXptr->type==_REAL)) )
+      return no_context_evalf(rdiv(ln(rdiv(1+e,1-e,contextptr),contextptr),plus_two));
+#else
     if (e.type==_REAL)
       return e._REALptr->atanh();
     if ( (e.type==_CPLX) && (e.subtype || e._CPLXptr->type==_REAL))
       return no_context_evalf(rdiv(ln(rdiv(1+e,1-e,contextptr),contextptr),plus_two));
+#endif
     if (is_squarematrix(e))
       return analytic_apply(at_atanh,*e._VECTptr,0);
     if (e.type==_VECT)
@@ -6907,10 +6922,11 @@ namespace giac {
     if (!is_integral(args))
       return gentypeerr(contextptr);
 #ifdef HAVE_LIBPARI
-    return pari_isprime(args,certif);
-#else
-    return is_probab_prime_p(args);
+    gen res=pari_isprime(args,certif);
+    if (res.type!=_STRNG)
+      return res;
 #endif
+    return is_probab_prime_p(args);
   }
   static const char _is_prime_s []="is_prime";
   static define_unary_function_eval (__is_prime,&_is_prime,_is_prime_s);
@@ -7374,11 +7390,12 @@ namespace giac {
       return symbolic(at_equal,gen(makevecteur(evalf(v.front(),1,contextptr),evalf(v.back(),1,contextptr)),_SEQ__VECT));
     }
     gen res;
-    int ndigits=decimal_digits(contextptr);
+    int ndigits=decimal_digits(contextptr),ndigits_save=bf_global_prec;
     if (a.type==_VECT && a.subtype==_SEQ__VECT && a._VECTptr->size()==2 && a._VECTptr->back().type==_INT_){
       ndigits=a._VECTptr->back().val;
       a=a._VECTptr->front();
       res=_evalf(a,ndigits,contextptr);
+      // bf_global_prec=ndigits_save;
     }
     else
       res=a.evalf(1,contextptr);
@@ -7991,7 +8008,7 @@ namespace giac {
       }
     }
 #endif
-#ifdef HAVE_LIBMPFR
+#if defined HAVE_LIBMPFR && !defined BF2GMP_H
     if (x.type==_REAL && is_positive(x,contextptr)){
       mpfr_t gam;
       int prec=mpfr_get_prec(x._REALptr->inf);
@@ -8843,7 +8860,7 @@ namespace giac {
     if (x.type==_CPLX && x.subtype!=3)
       return pari_zeta(x);
 #endif
-#ifdef HAVE_LIBMPFR
+#if defined HAVE_LIBMPFR && !defined BF2GMP_H
     if (x.type==_REAL){
       mpfr_t gam;
       int prec=mpfr_get_prec(x._REALptr->inf);

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking if a point is on an object in the plane: is_element
+<title>Inversion in the plane: inversion
 </title>
 </head>
 <body >
@@ -12,38 +12,62 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en824.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2diselem" class="subsection">13.16.1  Checking if a point is on an object in the plane: <span style="font-family:monospace">is_element</span>
-<a id="hevea_default1550"></a></h3>
-<p>See Section <a href="cascmd_en893.html#ssec%3A3diselem">14.13.1</a> for checking elements in three-dimensional
-geometry.</p><p>The <span style="font-family:monospace">is_element</span> command determines whether or not a point is
-on a geometric object.
+<h3 id="ssec:2dinversion" class="subsection">13.15.7  Inversion in the plane: <span style="font-family:monospace">inversion</span>
+<a id="hevea_default1551"></a></h3>
+<p>See Section <a href="cascmd_en915.html#ssec%3A3dinversion">14.14.7</a> for inversions in space.</p><p>Given a circle <span style="font-style:italic">C</span> with center <span style="font-style:italic">P</span> and radius <span style="font-style:italic">r</span>, the
+<em>inversion</em> of a point <span style="font-style:italic">A</span> with respect to <span style="font-style:italic">C</span> is the point <span style="font-style:italic">A</span>′
+on the ray <span style="font-style:italic">PA</span> satisfying
+<span style="text-decoration:overline"><span style="font-style:italic">PA</span></span>·<span style="text-decoration:overline"><span style="font-style:italic">PA</span></span><span style="text-decoration:overline">′</span> = <span style="font-style:italic">r</span><sup>2</sup>.</p><p>The <span style="font-family:monospace">inversion</span> command creates an inversion.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_element</span> takes two arguments:
+<span style="font-family:monospace">inversion</span> takes two mandatory arguments and
+one optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a point.
-</li><li class="li-itemize"><span style="font-style:italic">G</span>, a geometric object.
+<span style="font-style:italic">P</span>, a point (the center of the inversion).
+</li><li class="li-itemize"><span style="font-style:italic">r</span>, a real number (the radius).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">is_element(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> if <span style="font-style:italic">P</span> is an element of
-<span style="font-style:italic">G</span> and returns <span style="font-family:monospace">0</span> otherwise.
+</li><li class="li-itemize"><span style="font-family:monospace">inversion(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">r</span><span style="font-family:monospace">)</span> returns a new command which
+performs the inversion.
+</li><li class="li-itemize"><span style="font-family:monospace">inversion(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">r</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the
+inversion of <span style="font-style:italic">G</span>.
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_element(-1-i, line(0,1+i))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">inver:= inversion(i, 2)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">inver(circle(1+i,1))</span>
 </td></tr>
 </table>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en261.png">
+</div>
+<span style="font-style:italic">then:</span>
+<div class="center">
+<span style="font-family:monospace">inver(circle(1+i,1/2))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en262.png">
+</div>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_element(i, line(0,1+i))</span>
+<span style="font-family:monospace">inversion(i, 2, circle(1+i,1))</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
-</td></tr>
-</table>
+<div class="center">
+<img src="cascmd_en263.png">
+</div>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">inversion(i, 2, circle(1+i,1/2))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en264.png">
+</div>
 </li></ul>
 <hr>
 <a href="cascmd_en822.html"><img src="previous_motif.gif" alt="Previous"></a>

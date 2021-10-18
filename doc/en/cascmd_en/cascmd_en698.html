@@ -4,48 +4,75 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Default values of the parameters</title>
+<title>Functions: function endfunction { } local return
+
+
+
+
+
+</title>
 </head>
 <body >
 <a href="cascmd_en697.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en699.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec952" class="subsection">12.1.4  Default values of the parameters</h3>
-<p>You can give the parameters of a function default values by putting
-<span style="font-style:italic">parameter</span><span style="font-family:monospace">=</span><span style="font-style:italic">value</span> in the parameter list of
-the function. For example, if you define a function:<br>
+<h3 id="ssec:funcs" class="subsection">12.1.2  Functions: <span style="font-family:monospace">function</span> <span style="font-family:monospace">endfunction</span> <span style="font-family:monospace">{</span> <span style="font-family:monospace">}</span> <span style="font-family:monospace">local</span> <span style="font-family:monospace">return</span>
+<a id="hevea_default1314"></a>
+<a id="hevea_default1315"></a>
+<a id="hevea_default1316"></a>
+<a id="hevea_default1317"></a>
+<a id="hevea_default1318"></a>
+</h3>
+<p>You have already seen functions defined with <span style="font-family:monospace">:=</span>. For
+example, to define a function <span style="font-family:monospace">sumprod</span> which takes two inputs
+and returns a list with the sum and the product of the inputs, you can
+enter:<br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>f(x,y=5,z):= {</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>return x*y*z;</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>}</code>
+<span style="font-family:monospace">sumprod(a,b):= [a+b,a*b]</span>
+</div><p>
+Afterwards, you can use this new function.
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">sumprod(3,5)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">8,15</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table><p>You can define functions that are computed with a sequence of
+instructions by putting the instructions between braces, where each
+command ends with a semicolon. To use local variables,
+you can declare them with the <span style="font-family:monospace">local</span> keyword, followed by the
+variable names. The value returned by the function will be indicated
+with the <span style="font-family:monospace">return</span> keyword. For example, the above function
+<span style="font-family:monospace">sumprod</span> could also be defined by:<br>
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">sumprod(a,b):= {</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">local s, p;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">s:= a + b;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">p:= a*b;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">return [s,p];</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span>
 </td></tr>
 </table>
-</div><p>
-then:<br>
+</div><p>Another way to use a sequence of instructions to define a function is
+with the <span style="font-family:monospace">function</span> …<span style="font-family:monospace">endfunction</span> construction.
+With this approach, the function name and parameters follow the
+<span style="font-family:monospace">function</span> keyword. This is otherwise like the previous
+approach. The <span style="font-family:monospace">sumprod</span> function could be defined by:<br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">f(1,2,3)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">6
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>function sumprod(a,b)</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>local s, p;</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>s:= a + b;</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>p:= a*b;</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>return [s,p];</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>endfunction</code>
 </td></tr>
-</table><p>
-since the product 1*2*3=6. If you give <span style="font-family:monospace">f</span> only two
-values as input:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">f(3,4)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">60
-</td></tr>
-</table><p>
-since the values 3 and 4 will be given to the parameters which don’t
-have default values; in this case, <span style="font-family:monospace">y</span> will get its default value <span style="font-family:monospace">5</span> while
-<span style="font-family:monospace">3</span> and <span style="font-family:monospace">4</span> will be assigned to <span style="font-family:monospace">x</span> and
-<span style="font-family:monospace">z</span>, respectively. The result is <span style="font-family:monospace">x*y*z</span>=3*5*4=60.</p>
+</table>
+</div>
 <hr>
 <a href="cascmd_en697.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

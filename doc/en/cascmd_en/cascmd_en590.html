@@ -4,53 +4,74 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Animation of a 2D graph: animate
-
-</title>
+<title>2D parametric curve</title>
 </head>
 <body >
 <a href="cascmd_en589.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en591.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec777" class="subsection">8.21.1  Animation of a 2D graph: <span style="font-family:monospace">animate</span>
-<a id="hevea_default1111"></a>
-<a id="hevea_default1112"></a></h3>
-<p>The <span style="font-family:monospace">animate</span> command creates two-dimensional animations
-using graphs of functions depending on a parameter. (See also
-Section <a href="index.html#sec%3Aplot2d">8.5</a>.)
+<h3 id="sec770" class="subsection">8.14.1  2D parametric curve</h3>
+<p>To draw a parametric curve in ℝ<sup>2</sup>:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">animate</span> takes three mandatory arguments and two optional
-arguments:
+<span style="font-family:monospace">plotparam</span> takes two mandatory and one optional
+argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression involving two
-variables, one of which will be regarded as the parameter.
-</li><li class="li-itemize"><span style="font-style:italic">var</span> the name of the (non-parameter)
-variable in the expression, which can also specify a range of
-values <span style="font-style:italic">var=a..b</span>.
-</li><li class="li-itemize"><span style="font-style:italic">param</span> the name of the parameter, which can also
-specify a range of values.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">frames=</span><span style="font-style:italic">n</span>, where <span style="font-style:italic">n</span> is an integer specifying the
-number of frames.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, which can be
-<span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span> to specify the discretization
-step or <span style="font-family:monospace">nstep=</span><span style="font-style:italic">n</span> to specify the number of points used to
-graph.
+<span style="font-style:italic">exprs</span>, a list of two real expressions or one
+complex expression involving the parameter.
+</li><li class="li-itemize"><span style="font-style:italic">var</span>, the parameter, optionally with a range
+<span style="font-style:italic">var=a..b</span>. If no range is given, the values of
+<span style="font-family:monospace">t-</span> and <span style="font-family:monospace">t+</span> from the graphics configuration will
+be used (see Section <a href="cascmd_en028.html#ssec%3Aconfgraph">3.5.8</a>).
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span>, to set the discretization
+step.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">animate(</span><span style="font-style:italic">expr,var,param,</span><span style="font-family:monospace">frames=</span><span style="font-style:italic">n</span> ⟨<span style="font-style:italic">opt</span>⟩<span style="font-family:monospace">)</span>
-draws an animation consisting of graph of the function as the
-parameter varies. 
+</li><li class="li-itemize"><span style="font-family:monospace">plotparam(</span><span style="font-style:italic">exprs,var</span> ⟨
+,<span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span>⟩<span style="font-family:monospace">)</span> draws the parametric representation of the curve.
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">animate(sin(a*x),x=-pi..pi,a=-2..2,frames=10,color=red)</span>
+<span style="font-family:monospace">plotparam(cos(x)+i*sin(x),x)</span>
 </div>
-<span style="font-style:italic">Output:</span><br>
-The output is an animation beginning with:
+<span style="font-style:italic">or:</span>
 <div class="center">
-<img src="cascmd_en086.png">
+<span style="font-family:monospace">plotparam([cos(x),sin(x)],x)</span>
 </div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en069.png">
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">plotparam(sin(x)+i*cos(x),x=-4..1)</span>
+</div>
+<span style="font-style:italic">or (with </span><span style="font-style:italic"><span style="font-family:monospace">t-=4,t+=1</span></span><span style="font-style:italic"> in the graphic configuration):</span>
+<div class="center">
+<span style="font-family:monospace">plotparam(sin(t)+i*cos(t))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en070.png">
+</div>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1,tstep=0.5)</span>
+</div>
+<span style="font-style:italic">or (with </span><span style="font-style:italic"><span style="font-family:monospace">t-=4,t+=1</span></span><span style="font-style:italic"> in the graphic configuration):</span>
+<div class="center">
+<span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t,tstep=0.5)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en071.png">
+</div>
+</li></ul>
 <hr>
 <a href="cascmd_en589.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

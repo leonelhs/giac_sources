@@ -3,11 +3,7 @@
 #include "config.h"
 #endif
 
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 /*
  *  Copyright (C) 2005,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -36,15 +32,9 @@
 #include <FL/Fl_Tile.H>
 #include <FL/Fl_Output.H>
 #endif
-#ifndef IN_GIAC
-#include <giac/global.h>
-#include <giac/gen.h>
-#include <giac/prog.h>
-#else
 #include "global.h"
 #include "gen.h"
 #include "prog.h"
-#endif
 #include "History.h"
 #include "Xcas1.h"
 #include "Cfg.h"
@@ -153,6 +143,10 @@ namespace xcas {
     do_maple_mode=0; Xcas_Style->value("Xcas");
   }
 
+  static void cb_Xcas_Set_JS(Fl_Menu_*, void*) {
+    do_maple_mode=-1; Xcas_Style->value("QuickJS");
+  }
+
   static void cb_Xcas_Set_Python1(Fl_Menu_*, void*) {
     do_maple_mode=256; Xcas_Style->value("Python ^==**");
   }
@@ -183,6 +177,9 @@ namespace xcas {
     {gettext("Python ^==xor"), 0,  (Fl_Callback*)cb_Xcas_Set_Python2, 0, 0, 0, 0, 14, 56},
 #ifdef HAVE_LIBMICROPYTHON
     {gettext("MicroPython"), 0,  (Fl_Callback*)cb_Xcas_Set_Python4, 0, 0, 0, 0, 14, 56},
+#endif
+#ifdef QUICKJS
+    {gettext("QuickJS"), 0,  (Fl_Callback*)cb_Xcas_Set_JS, 0, 0, 0, 0, 14, 56},
 #endif
     {gettext("Maple"), 0,  (Fl_Callback*)cb_Xcas_Set_Maple, 0, 0, 0, 0, 14, 56},
     {gettext("Mupad"), 0,  (Fl_Callback*)cb_Xcas_Set_Mupad, 0, 0, 0, 0, 14, 56},
@@ -234,8 +231,18 @@ namespace xcas {
     // giac::variables_are_files(Xcas_Save_var->value(),contextptr);
     giac::complex_mode(Xcas_Complex_mode->value(),contextptr);
     giac::complex_variables(Xcas_Complex_variables->value(),contextptr);
-    giac::xcas_mode(contextptr)=do_maple_mode &0xff;
-    giac::python_compat(do_maple_mode/256,contextptr);
+    if (do_maple_mode<0){
+      giac::xcas_mode(contextptr)=0;
+      giac::python_compat(do_maple_mode,contextptr);
+    }
+    else {
+      giac::xcas_mode(contextptr)=do_maple_mode &0xff;
+      giac::python_compat(do_maple_mode/256,contextptr);
+    }
+    if (Xcas_Text_Editor * ed=dynamic_cast<Xcas_Text_Editor *>(Xcas_input_focus)){
+      ed->pythonjs=giac::python_compat(contextptr);
+      get_history_pack(ed)->redraw();
+    }
     giac::increasing_power(Xcas_Increasing_power->value(),contextptr);
     giac::angle_radian(Xcas_Angle_radian->value(),contextptr);
     giac::approx_mode(Xcas_Approx_mode->value(),contextptr);
@@ -495,13 +502,19 @@ or default eval level)"));
     Xcas_Proba_Epsilon->value(giac::proba_epsilon(contextptr));
     Xcas_Complex_mode->value(giac::complex_mode(contextptr));
     Xcas_Complex_variables->value(giac::complex_variables(contextptr));
-    do_maple_mode=giac::xcas_mode(contextptr);
-    do_maple_mode+=256*giac::python_compat(contextptr);
+    int pyc=giac::python_compat(contextptr);
+    if (pyc<0)
+      do_maple_mode=pyc;
+    else {
+      do_maple_mode=giac::xcas_mode(contextptr);
+      do_maple_mode+=256*pyc;
+    }
     switch(do_maple_mode){
     case 0: Xcas_Style->value("Xcas"); break;
     case 256: Xcas_Style->value("Python ^=**"); break;
     case 512: Xcas_Style->value("Python ^==xor"); break;
     case 1024: Xcas_Style->value("MicroPython"); break;
+    case -1: Xcas_Style->value("QuickJS"); break;
     case 1: Xcas_Style->value("Maple"); break;
     case 2: Xcas_Style->value("Mupad"); break;
     case 3: Xcas_Style->value("Ti"); break;

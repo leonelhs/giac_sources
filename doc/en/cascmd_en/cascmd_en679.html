@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>fsolve with the option secant_solver
+<title>fsolve with the option falsepos_solver
 </title>
 </head>
 <body >
@@ -12,43 +12,24 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en680.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec925" class="subsection">10.4.5  <span style="font-family:monospace">fsolve</span> with the option <span style="font-family:monospace">secant_solver</span>
-<a id="hevea_default1291"></a></h3>
-<p>The secant method is a simplified version of Newton’s method. The
-computation of <span style="font-style:italic">x</span><sub>1</sub> is done using Newton’s method, but then the
-computation of <span style="font-style:italic">f</span>′(<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>), <span style="font-style:italic">n</span>&gt;1 is done approximately. This method is
-used when the computation of the derivative is expensive: 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+1</sub>=<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">f</span>′<sub><span style="font-style:italic">est</span></sub></td></tr>
-</table></td><td class="dcell">,   <span style="font-style:italic">f</span>′<sub><span style="font-style:italic">est</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)−<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>−1</sub>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>−<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>−1</sub></td></tr>
-</table></td><td class="dcell"> 
-</td></tr>
-</table><p> 
-The convergence for roots of multiplicity 1 is of order
-(1 + √<span style="text-decoration:overline">5</span>)/2 ≈ 1.62… .</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+<h3 id="sec925" class="subsection">10.4.3  <span style="font-family:monospace">fsolve</span> with the option <span style="font-family:monospace">falsepos_solver</span>
+<a id="hevea_default1292"></a></h3>
+<p>The "false position" algorithm is an iterative algorithm based on
+linear interpolation: it computes the value of <span style="font-style:italic">f</span> at the intersection
+of the line (<span style="font-style:italic">a</span>,<span style="font-style:italic">f</span>(<span style="font-style:italic">a</span>)), (<span style="font-style:italic">b</span>,<span style="font-style:italic">f</span>(<span style="font-style:italic">b</span>)) with the <span style="font-style:italic">x</span> axis. This value gives
+us the part of the interval containing the root, and on which a new
+iteration is performed. The convergence is linear but generically
+faster than bisection.</p><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">fsolve((cos(x))=x,x,-1..1,secant_solver)</span>
-</div>
+</p><div class="center">
+<span style="font-family:monospace">fsolve((cos(x))=x,x,-1..1,falsepos_solver)</span>
+</div><p>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
 ⎣</td><td class="dcell">0.739085133215</td><td class="dcell">⎤<br>
 ⎦</td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">fsolve((cos(x))=x,x,0,secant_solver)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.739085133215
-</td></tr>
-</table>
-</li></ul>
 <hr>
 <a href="cascmd_en678.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Matrix of a quadratic form: q2a
+<title>Local derivative-free optimization: nlpsolve
 </title>
 </head>
 <body >
@@ -12,33 +12,106 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en539.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec691" class="subsection">6.54.1  Matrix of a quadratic form: <span style="font-family:monospace">q2a</span>
-<a id="hevea_default934"></a></h3>
-<p>The <span style="font-family:monospace">q2a</span> command finds the matrix corresponding to a quadratic
-form.
+<h3 id="sec690" class="subsection">6.53.3  Local derivative-free optimization: <span style="font-family:monospace">nlpsolve</span>
+<a id="hevea_default935"></a></h3>
+<p><span style="font-family:monospace">nlpsolve</span> computes the optimum of a (not necessarily
+differentiable) nonlinear (multivariate) objective function, subject
+to a set of nonlinear equality and/or inequality constraints, using
+the COBYLA algorithm.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">q2a</span> takes two arguments:
+<span style="font-family:monospace">nlpsolve</span> takes the following arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">q</span>, the symbolic expression of a quadratic form <span style="font-style:italic">q</span>.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a vector of variable names.
+<span style="font-style:italic">obj</span>, an expression to optimize.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">constr</span>, a list of equality and
+inequality constraints.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">bd</span>, a sequence of variable boundaries
+<span style="font-style:italic">x</span>=<span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, a sequence of options which may be one of:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">maximize=</span><span style="font-style:italic">bool</span>, where <span style="font-style:italic">bool</span> can
+be <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>. Just <span style="font-family:monospace">maximize</span>
+is equivalent to <span style="font-family:monospace">maximize=true</span>. (By default,
+<span style="font-family:monospace">maximize=false</span>.)
+</li><li class="li-itemize"><span style="font-family:monospace">nlp_initialpoint=</span><span style="font-style:italic">pt</span>, where <span style="font-style:italic">pt</span>
+is a point given in the form [<span style="font-style:italic">x</span>=<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span>=<span style="font-style:italic">y</span><sub>0</sub>,…]. 
+<span style="font-style:italic">pt</span> does not have to be feasible, but it must not be zero.
+If none is given or the given point is not feasible, then a feasible starting
+guess is automatically generated. Note that choosing a good
+initial point is required for obtaining a correct solution in some cases.
+</li><li class="li-itemize"><span style="font-family:monospace">nlp_iterationlimit=</span><span style="font-style:italic">n</span> for an integer <span style="font-style:italic">n</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">assume=nlp_nonnegative</span>
+</li><li class="li-itemize"><span style="font-family:monospace">nlp_precision=</span>є for some є &gt; 0.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">q2a(</span><span style="font-style:italic">q</span><span style="font-family:monospace">,</span><span style="font-style:italic">vars</span><span style="font-family:monospace">)</span> returns the matrix of
-the quadratic form <span style="font-style:italic">q</span>.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">nlpsolve(</span><span style="font-style:italic">obj</span> ⟨<span style="font-style:italic">constr,bd,opt</span>⟩<span style="font-family:monospace">)</span>
+returns a list [<span style="font-style:italic">optobj,optdec</span>], where <span style="font-style:italic">optobj</span>
+is the optimal value of <span style="font-style:italic">obj</span> and <span style="font-style:italic">optobj</span>
+is a list of of optimal values of the decision variables.
 </li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">q2a(2*x*y,[x,y])</span>
-</div><p>
+<div class="center">
+<span style="font-family:monospace">nlpsolve(ln(1+x1^2)-x2,[(1+x1^2)^2+x2^2=4])</span>
+</div>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−1.73205080757,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">x</span><sub>1</sub>=−4.77142305945×10<sup>−8</sup>,<span style="font-style:italic">x</span><sub>2</sub>=1.73205080757</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">⎤<br>
 ⎦</td></tr>
 </table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">nlpsolve(-x1*x2*x3,[72-x1-2x2-2x3&gt;=0],x1=0..20,x2=0..11,x3=0..42)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−3300.0,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">x</span><sub>1</sub>=20.0,<span style="font-style:italic">x</span><sub>2</sub>=11.0,<span style="font-style:italic">x</span><sub>3</sub>=15.0</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">nlpsolve(x^3+2x*y-2y^2,x=-10..10,y=-10..10,</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  nlp_initialpoint=[x=3,y=4],maximize)</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1050.0,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">x</span>=10.0,<span style="font-style:italic">y</span>=4.99999985519</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">nlpsolve(sin(x)/x,x=1..30)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−0.217233628211,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">x</span>=4.49340946198</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">nlpsolve(2-1/120*x1*x2*x3*x4*x5,</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  [x1&lt;=1,x2&lt;=2,x3&lt;=3,x4&lt;=4,x5&lt;=5],assume=nlp_nonnegative)</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.0,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">x</span><sub>1</sub>=1.0,<span style="font-style:italic">x</span><sub>2</sub>=2.0,<span style="font-style:italic">x</span><sub>3</sub>=3.0,<span style="font-style:italic">x</span><sub>4</sub>=4.0,<span style="font-style:italic">x</span><sub>5</sub>=5.0</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en537.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

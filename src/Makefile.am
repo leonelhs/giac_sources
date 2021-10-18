@@ -12,9 +12,11 @@ libgiac_la_SOURCES = input_lexer.ll sym2poly.cc gausspol.cc threaded.cc \
   path.h lexer.h \
   input_lexer.h input_parser.h threaded.h vector.h \
   help.cc  lpsolve.cc optimization.cc signalprocessing.cc \
-  graphe.cc graphtheory.cc nautywrapper.c markup.cc kdisplay.cc kadd.cc # Ugh..
+  graphe.cc graphtheory.cc nautywrapper.c markup.cc kdisplay.cc kadd.cc \
+  caseval.c cutils.c graphic.c libbf.c libregexp.c libunicode.c \
+  qjsgiac.c quickjs.c quickjs-libc.c js.c
 
-libgiac_la_LIBADD = $(NTL_LIBS) $(COCOA_LIBS) $(PARI_LIBS) $(GSL_LIBS)
+libgiac_la_LIBADD = $(NTL_LIBS) $(COCOA_LIBS) $(PARI_LIBS) $(GSL_LIBS) 
 
 giacincludedir = $(includedir)/giac
 giacinclude_HEADERS = dispatch.h fraction.h gen.h desolve.h misc.h ti89.h \
@@ -27,7 +29,10 @@ pari.h cocoa.h giac.h first.h maple.h help.h tinymt32.h tinymt32_license.h \
 static.h static_extern.h static_lexer.h static_lexer_.h\
 lexer_tab_int.h \
 static_help.h giacPCH.h giacintl.h gmp_replacements.h myostream.h \
-lpsolve.h optimization.h signalprocessing.h graphe.h graphtheory.h nautywrapper.h markup.h kdisplay.h k_csdk.h k_defs.h
+lpsolve.h optimization.h signalprocessing.h graphe.h graphtheory.h nautywrapper.h markup.h kdisplay.h k_csdk.h k_defs.h \
+fenv.h libregexp.h libregexp-opcode.h libunicode.h libunicode-table.h \
+libbf.h list.h cutils.h qjsgiac.h \
+quickjs.h js.h quickjs-atom.h quickjs-libc.h quickjs-opcode.h bf2gmp.h
 
 noinst_LTLIBRARIES = libxcas.la
 libxcas_la_LIBADD = libgiac.la $(GUI_LIBS)
@@ -55,6 +60,17 @@ aide_LDADD = libgiac.la $(GINSH_LIBS) $(GSL_LIBS) $(LAPACK_LIBS)
 hevea2mml_SOURCES = hevea2mml.cc lex_yy.c y_tab.c
 hevea2mml_LDADD = 
 
+libjs.a:	qjscalcjs.js xcasjs.js
+	./mklibjs
+
+js.c: mkjs qjscalcjs.js xcasjs.js
+	./mkjs
+
+js.h: mkjs qjscalcjs.js xcasjs.js
+	./mkjs
+
+mkjs: mkjs.cc
+	g++ mkjs.cc -o mkjs
 
 AM_CPPFLAGS = -DIN_GIAC -I$(srcdir) -I$(top_srcdir) -I$(builddir) \
 	      -I$(top_builddir) $(GMP_CFLAGS) $(NTL_CFLAGS) \
@@ -89,7 +105,8 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	f2c.h clapack.h blaswrap.h mklocal64 pnt_gen \
 	giac.i runme.java archive_java archive_java_linux32 archive_java_linux64  javascript.cxx giacjs.i README.javascript \
 	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy mkgiacpy10 giac_wrap.cxx aspen_translate.h numworks_translate.h translate.cc \
-	itex2MML.* y_tab.h static_lexer_numworks.h static_lexer__numworks.h k_csdk.c 
+	itex2MML.* y_tab.h static_lexer_numworks.h static_lexer__numworks.h k_csdk.c \
+	qjscalcjs.js xcasjs.js tijs.js mklibjs mkjs.cc
 
 bin_SCRIPTS = pgiac
 

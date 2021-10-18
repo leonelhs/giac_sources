@@ -19,11 +19,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 #include <string>
 #ifdef HAVE_LIBFLTK
 #include <FL/Fl.H>
@@ -66,15 +62,9 @@
 #ifdef HAVE_PTHREAD_H
 #include <pthread.h>
 #endif
-#ifndef IN_GIAC
-#include <giac/global.h>
-#include <giac/misc.h>
-#include <giac/gen.h>
-#else
 #include "global.h"
 #include "misc.h"
 #include "gen.h"
-#endif
 #ifdef HAVE_SIGNAL_H
 #include <signal.h>
 #endif
@@ -521,6 +511,14 @@ namespace xcas {
       *dbgptr->fast_debug_info_ptr = g;
       thread_eval_status(1,contextptr);
     }
+  }
+
+  void Xcas_interrupt_cb(void){
+    static int counter=0;
+    ++counter;
+    if (counter & 0xf)
+      return;
+    Fl::check();
   }
 
   void Xcas_idle_function(void * dontcheck){
@@ -1172,8 +1170,16 @@ namespace xcas {
     if (!hp || !gr)
       return;
 #ifdef HAVE_LIBPTHREAD
-    // cerr << "geo2d lock" << '\n';
-    pthread_mutex_lock(&interactive_mutex);
+    // cerr << "eval lock" << '\n';
+    int locked=pthread_mutex_trylock(&interactive_mutex);
+    if (locked){
+      usleep(1000);
+      locked=pthread_mutex_trylock(&interactive_mutex);
+      if (locked){
+	cerr << "locked " << evaled_g << '\n' ;
+	return ;
+      }
+    }
 #endif
     bool b=io_graph(contextptr);
     io_graph(contextptr)=false;
@@ -1191,7 +1197,14 @@ namespace xcas {
     else
       giac::history_out(contextptr).push_back(evaled_g);
     int pos=gr->find(wid);
-    Fl_Widget * res = in_Xcas_eval(wid,evaled_g,hp->pretty_output,contextptr);
+    Fl_Widget * res =0;
+    if (evaled_g.type==_STRNG && *evaled_g._STRNGptr=="Logo_turtle"){
+      giac::context * ptr=(giac::context *) caseval("caseval contextptr");
+      giac::gen g0=_avance(0,ptr);
+      res=in_Xcas_eval(wid,g0,hp->pretty_output,ptr);
+    }
+    else
+      res = in_Xcas_eval(wid,evaled_g,hp->pretty_output,contextptr);
     if (Log_Output * lout=find_log_output(gr))
       output_resize_parent(lout,false);
     if (res){
@@ -1451,7 +1464,7 @@ namespace xcas {
     return res;
   }
 
-  std::string widget_html5(const Fl_Widget * o){
+  std::string widget_html5(const Fl_Widget * o,int & pos){
     string res;
     const giac::context * contextptr = get_context(o);
     // Add here code for specific widgets
@@ -1462,11 +1475,11 @@ namespace xcas {
       return '+'+res+'&';
     }
     if (const Figure * f = dynamic_cast<const Figure *>(o)){
-      res = widget_html5(f->geo->hp);
+      res = widget_html5(f->geo->hp,pos);
       return res;
     }
     if (const Logo * l=dynamic_cast<const Logo *>(o)){
-      res = widget_html5(l->hp);
+      res = widget_html5(l->hp,pos);
       return res;
     }
     if (const Editeur * ed=dynamic_cast<const Editeur *>(o)){
@@ -1477,6 +1490,18 @@ namespace xcas {
     if (const Xcas_Text_Editor * ed=dynamic_cast<const Xcas_Text_Editor *>(o)){
       string s=unlocalize(ed->value());
       res = replace_html5(s);
+      int xpos=(pos%2)*400;
+      int ypos=(pos/2)*400;
+      ++pos;
+      string spos=print_INT_(xpos)+","+print_INT_(ypos)+",";
+      switch (ed->pythonjs){
+      case -1:
+	return "js="+spos+res+'&';
+      case 0: case 1: case 2:
+	return "cas="+spos+res+'&';
+      case 4:
+	return "micropy="+spos+res+'&';
+      }
       return '+'+res+'&';
     }
     if (dynamic_cast<const Fl_Output *>(o))
@@ -1498,7 +1523,7 @@ namespace xcas {
       int n=g->children();
       for (int i=0;i<n;++i){
 	Fl_Widget * wid=g->child(i);
-	res += widget_html5(wid);
+	res += widget_html5(wid,pos);
       }
       return res;
     }
@@ -1585,12 +1610,12 @@ namespace xcas {
     }
     if (const Editeur * ed=dynamic_cast<const Editeur *>(o)){
       string s=unlocalize(ed->value());
-      res += '\n'+print_INT_(s.size())+" ,\n"+s;
+      res += '\n'+print_INT_(s.size())+" "+print_INT_(ed->editor->pythonjs)+" ,\n"+s;
       return res;
     }
     if (const Xcas_Text_Editor * ed=dynamic_cast<const Xcas_Text_Editor *>(o)){
       string s=unlocalize(ed->value());
-      res += '\n'+print_INT_(s.size())+" ,\n"+s;
+      res += '\n'+print_INT_(s.size())+" "+print_INT_(ed->pythonjs)+" ,\n"+s;
       return res;
     }
     if (const Gen_Output * i=dynamic_cast<const Gen_Output *>(o)){
@@ -2056,6 +2081,31 @@ namespace xcas {
       return false;
   }
 
+  void read_size_mode(const string & line, int & taille,int & mode){
+    taille=mode=0;
+    int i=0,n=line.size();
+    for (;i<n;++i){
+      if (line[i]<'0' || line[i]>'9')
+	break;
+      taille *= 10;
+      taille += line[i]-'0';
+    }
+    ++i;
+    if (i>=n) return;
+    bool neg=false;
+    if (line[i]=='-'){
+      ++i;
+      neg=true;
+    }
+    for (;i<n;++i){
+      if (line[i]<'0' || line[i]>'9')
+	break;
+      mode *= 10;
+      mode += line[i]-'0';
+    }
+    if (neg) mode=-mode;
+  }
+
   // Read a widget from string s starting at position i
   // Return 0 on syntax error or incomplete widget otherwise
   Fl_Widget * widget_load(const std::string & s,int L,int & i,GIAC_CONTEXT,int widgetw){
@@ -2355,15 +2405,11 @@ namespace xcas {
 	Xcas_Text_Editor * res=0;
 	next_line_nonl(s,L,line,i);
 	// read size
-#ifdef HAVE_SSTREAM
-	istringstream is(line);
-#else
-	istrstream is(line.c_str());
-#endif
-	int taille;
-	is >> taille;
+	int taille,mode=python_compat(contextptr);
+	read_size_mode(line,taille,mode);
 	string tmp=localize(s.substr(i,taille),language(contextptr));
 	xcas_text_editor_load(res,tmp,x,y,w,h);
+	res->pythonjs=mode;
 	i += taille ;
 	return res;
       }
@@ -2372,15 +2418,11 @@ namespace xcas {
 	Editeur * res=0;
 	next_line_nonl(s,L,line,i);
 	// read size
-#ifdef HAVE_SSTREAM
-	istringstream is(line);
-#else
-	istrstream is(line.c_str());
-#endif
-	int taille;
-	is >> taille;
+	int taille,mode=python_compat(contextptr);
+	read_size_mode(line,taille,mode);
 	string tmp=localize(s.substr(i,taille),language(contextptr));
 	editeur_load(res,tmp,x,y,w,h);
+	res->editor->pythonjs=mode;
 	i += taille ;
 	return res;
       }

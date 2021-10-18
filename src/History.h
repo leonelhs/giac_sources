@@ -4,11 +4,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 #ifdef HAVE_LIBFLTK
 #include <FL/Fl_Pack.H>
 #include <FL/Fl_Button.H>
@@ -21,12 +17,8 @@
 #include <FL/Fl_Tabs.H>
 #endif
 #include <string>
-#ifndef IN_GIAC
-#include <giac/giac.h>
-#else
 #include "giacPCH.h"
 #include "giac.h"
-#endif
 
 #ifdef HAVE_LIBFLTK
 char *file_chooser(const char *message,const char *pat,const char *fname,int relative=0);
@@ -325,7 +317,7 @@ namespace xcas {
     bool close();
     void clear_modified();
     void eval();
-    void update_status();
+    void update_status(bool force=false);
   };
 
   class Xcas_Tabs:public Fl_Tabs {

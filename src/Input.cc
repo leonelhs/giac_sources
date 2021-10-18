@@ -19,11 +19,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 #include <string>
 #ifdef HAVE_LIBFLTK
 #include "Input.h"
@@ -40,15 +36,9 @@
 #include "Tableur.h"
 #include "Graph3d.h"
 #include "Help1.h"
-#ifndef IN_GIAC
-#include <giac/plot.h>
-#include <giac/help.h>
-#include <giac/global.h>
-#else
 #include "plot.h"
 #include "help.h"
 #include "global.h"
-#endif
 #include "Python.h"
 #include <iostream>
 #include <fstream>
@@ -337,12 +327,24 @@ namespace xcas {
     }
   }
 
+
 #ifdef HAVE_LIBMICROPYTHON
   vector<string> micropython_filter_help(const vector<string> & v_orig){
     vector<string> v;
     for (int i=0;i<v_orig.size();++i){
       const char * ptr=v_orig[i].c_str();
       if (giac::is_python_builtin(ptr) || giac::is_python_keyword(ptr) || mp_token(ptr))
+	v.push_back(v_orig[i]);
+    }
+    return v;
+  }
+#endif
+#ifdef QUICKJS
+  vector<string> js_filter_help(const vector<string> & v_orig){
+    vector<string> v;
+    for (int i=0;i<v_orig.size();++i){
+      const char * ptr=v_orig[i].c_str();
+      if (giac::is_python_keyword(ptr) || js_token(ptr))
 	v.push_back(v_orig[i]);
     }
     return v;
@@ -377,10 +379,14 @@ namespace xcas {
 	dx=500;
     }
     // filter help if MicroPython is active
-#ifdef HAVE_LIBMICROPYTHON
-    vector<string> v( (contextptr && (python_compat(contextptr) & 4))?micropython_filter_help(v_orig):v_orig);
-#else
     vector<string> v(v_orig);
+#ifdef HAVE_LIBMICROPYTHON
+    if (contextptr && python_compat(contextptr)>0 && (python_compat(contextptr) & 4))
+      v=micropython_filter_help(v_orig);
+#endif
+#ifdef QUICKJS
+    if (contextptr && python_compat(contextptr)<0)
+      v=js_filter_help(v_orig);
 #endif
     if (dy<300)
       dy=300;

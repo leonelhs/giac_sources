@@ -3,6 +3,21 @@
 #define _PYTHON_H
 #include "config.h"
 #include "giacPCH.h"
+#ifdef QUICKJS
+#include "qjsgiac.h"
+#ifdef HAVE_LIBFLTK
+#include "Xcas1.h"
+#endif
+struct quickjs_bidon_t {
+  quickjs_bidon_t(){ 
+    giac::quickjs_ptr=quickjs_ck_eval; 
+    quickjs_ck_eval("0");
+#ifdef HAVE_LIBFLTK
+    qjs_interrupt_callback=xcas::Xcas_interrupt_cb;
+#endif
+}
+};
+#endif
 #ifdef HAVE_LIBMICROPYTHON
 extern "C" {
   // micropython interface to Python.cc
@@ -13,7 +28,6 @@ extern "C" {
   void  mp_stack_ctrl_init();
 
   // micropython interface to xcas
-  extern int python_stack_size,python_heap_size;
   extern char * python_heap;
   int python_init(int stack_size,int heap_size);
   int micropy_ck_eval(const char *line);
@@ -66,7 +80,6 @@ extern "C" {
   void turtle_freeze();
   void c_sprint_double(char * s,double d);
   int os_get_pixel(int x,int y);
-  void sync_screen();
 }
 struct micropy_bidon_t {
   micropy_bidon_t(){ giac::micropy_ptr=micropy_ck_eval; }

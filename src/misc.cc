@@ -66,6 +66,11 @@ inline giac::gen _graph_charpoly(const giac::gen &g,const giac::context *){ retu
 const char * mp_hal_input(const char * prompt) ;
 #endif
 
+#ifdef HAVE_LIBCURL
+#include <curl/curl.h>
+#include <curl/easy.h>
+#endif
+
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
@@ -4654,7 +4659,7 @@ static define_unary_function_eval (__center2interval,&_center2interval,_center2i
       double inf,sup; // delta=h._DOUBLE_val-g._DOUBLE_val;
       it=v.begin();
       //  int nclass=itend-it;
-#if defined HAVE_LIBFLTK && defined GIAC_LMCHANGES // changes by L. Marohnić
+#if defined GIAC_LMCHANGES // changes by L. Marohnić
       vecteur res(1,symb_equal(change_subtype(gen(_AXES),_INT_PLOT),3));
 #else
       vecteur res;
@@ -4701,7 +4706,7 @@ static define_unary_function_eval (__center2interval,&_center2interval,_center2i
     double kbegin=std::floor((w1.front()-class_minimum)/class_size);
     double kend=std::floor((w1.back()-class_minimum)/class_size);
     vector<double>::const_iterator it=w1.begin(),itend=w1.end();
-#if defined HAVE_LIBFLTK && defined GIAC_LMCHANGES // changes by L. Marohnić
+#if defined GIAC_LMCHANGES // changes by L. Marohnić
     vecteur res(1,symb_equal(change_subtype(gen(_AXES),_INT_PLOT),3));
 #else
     vecteur res;
@@ -4748,7 +4753,7 @@ static define_unary_function_eval (__center2interval,&_center2interval,_center2i
     vecteur args;
     if (g.subtype==_SEQ__VECT)
       args=*g._VECTptr;
-#if defined HAVE_LIBFLTK && defined GIAC_LMCHANGES // changes by L. Marohnić
+#if defined GIAC_LMCHANGES // changes by L. Marohnić
     vecteur attributs(1,int(FL_DARK1));
     int s=read_attributs(args,attributs,contextptr);
     int col=attributs[0].val;
@@ -6024,7 +6029,7 @@ static define_unary_function_eval (__bitxor,&_bitxor,_bitxor_s);
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if (g.type==_INT_)
       return ~g.val;
-#if !defined(USE_GMP_REPLACEMENTS)
+#if !defined(USE_GMP_REPLACEMENTS) && !defined(BF2GMP_H)
     if (g.type==_ZINT){
       ref_mpz_t *  e = new ref_mpz_t;
       mpz_com(e->z,*g._ZINTptr);
@@ -9226,6 +9231,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   define_unary_function_ptr5( at_python_list ,alias_at_python_list,&__python_list,0,true);
 
   bool freeze=false;
+  void console_freeze(){
+    giac::freeze=true;
+  }
+
   int rgb565to888(int c){
     c &= 0xffff;
     int r=(c>>11)&0x1f,g=(c>>5)&0x3f,b=c&0x1f;
@@ -9243,6 +9252,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     }
     return rgb(g,contextptr);
   }
+
+#ifndef KHICAS
+void sync_screen(){}
+#endif
 
   gen _set_pixel(const gen & a_,GIAC_CONTEXT){
     freeze=true;
@@ -9333,6 +9346,9 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   void set_pixel(int x,int y,int c,GIAC_CONTEXT){
     _set_pixel(makesequence(x,y,c),contextptr);
   }
+  void set_pixel(int x,int y,int c){
+    _set_pixel(makesequence(x,y,c),context0);
+  }
   void set_pixel(double x,double y,int c,GIAC_CONTEXT){
     _set_pixel(makesequence(int(x+.5),int(y+.5),c),contextptr);
   }
@@ -9354,6 +9370,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       return gensizeerr(contextptr);
     screen_w=giacmax(1,w.val);
     screen_h=giacmax(1,h.val);
+    return 1;
   }
   static const char _set_screen_s []="set_screen";
   static define_unary_function_eval (__set_screen,&_set_screen,_set_screen_s);
@@ -10410,8 +10427,6 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     
 #else // EMCC
 #ifdef HAVE_LIBCURL
-#include <curl/curl.h>
-#include <curl/easy.h>
   //#include <curl/curlbuild.h>
   size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
     string data((const char*) ptr, (size_t) size * nmemb);

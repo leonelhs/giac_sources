@@ -4,11 +4,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#ifndef IN_GIAC
-#include <giac/first.h>
-#else
 #include "first.h"
-#endif
 #ifdef HAVE_LIBFLTK
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Pack.H>
@@ -22,13 +18,8 @@
 #include "History.h"
 #include "Graph.h"
 #include "Input.h"
-#ifndef IN_GIAC
-#include <giac/giac.h>
-#include <giac/input_lexer.h>
-#else
 #include "giac.h"
 #include "input_lexer.h"
-#endif
 
 #ifndef NO_NAMESPACE_XCAS
 namespace xcas {
@@ -89,6 +80,7 @@ namespace xcas {
 
   void Xcas_debugguer(int status,giac::context * contextptr);
   void Xcas_idle_function(void *);
+  extern "C" void Xcas_interrupt_cb();
   extern void (* menu2rpn_callback)(Fl_Widget *,void *);
   // wait max 0.0001 second and call Xcas_idle_function
   void fl_wait_0001(giac::context *);
@@ -136,7 +128,7 @@ namespace xcas {
   int Xcas_pack_insert(xcas::History_Pack * pack,const char * chaine,int length,int before_position);
   Fl_Widget * widget_load(const std::string & s,int L,int & i,const giac::context *,int widgetw=0);
   std::string widget_sprint(const Fl_Widget * o);
-  std::string widget_html5(const Fl_Widget * o);
+  std::string widget_html5(const Fl_Widget * o,int & pos);
 
   void cb_Insert_ItemName(Fl_Widget * w , void*) ;
 

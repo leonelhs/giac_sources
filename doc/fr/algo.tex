@@ -4990,7 +4990,7 @@ ffonction:;
 \end{giacprog}
 Racines de $P$ dans $\mathbb{R}^{*+}$
 \giacinputmath{P:=(x-1/3)*(x-3)*(x^2+1); descartes(P)}
-il y a 2 racines positives au moins.
+il y a un nombre pair de racines positives.
 Racines de $P$ dans $]0,1[$
 \giacinputmath{P1:=normal(x^degree(P)*P(x=1/x)); descartes(P1(x=x+1))}
 Donc une racine dans $]0,1[$.
@@ -5000,7 +5000,7 @@ on commence par se ramener \`a chercher les racines
 de $Q$ sur $]0,1[$ (il faudra les multiplier par $M$ \`a la fin)
 \giacinputmath{M:=ceil(maxnorm(coeffs(P))/abs(lcoeff(P)))+1;Q:=P(x=M*x)}
 \giacinputmath{P1:=normal(x^degree(Q)*Q(x=1/x)); descartes(P1(x=x+1))}
-Il y a plus que une racine, il faut d\'ecouper en deux~:
+Il faut d\'ecouper en deux~:
 \giacinputmath{Q1:=Q(x=x/2); P1:=normal(x^degree(Q1)*Q1(x=1/x)); descartes(P1(x=x+1))}
 donc il y a une racine de $Q$ dans $]0,1/2[$, donc de $P$ dans $]0,5/2[$
 \giacinputmath{Q1:=Q(x=(x+1)/2); P1:=normal(x^degree(Q1)*Q1(x=1/x)); descartes(P1(x=x+1))}

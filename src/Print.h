@@ -6,13 +6,8 @@
 #endif
 #include "vector.h"
 #include <string>
-#ifndef IN_GIAC
-#include <giac/first.h>
-#include <giac/gen.h>
-#else
 #include "first.h"
 #include "gen.h"
-#endif
 #ifdef HAVE_LIBFLTK
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Menu.H>
