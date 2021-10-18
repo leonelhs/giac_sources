@@ -45,6 +45,7 @@ namespace xcas {
   void send_numworks(const std::string & name_,const std::string & res);
   std::string select_nws(const giac::nws_map & m,bool pyonly,bool xwonly);
   void cb_Editeur_Send_Numworks(Fl_Widget * m_ , void*) ;
+  void nws_flash();
 
   extern Fl_Menu_Item Editeur_menu[] ;
 

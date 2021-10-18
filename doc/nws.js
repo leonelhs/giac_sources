@@ -1,6 +1,7 @@
 function $id(id) { return document.getElementById(id); }
-
 var UI = {
+  chkmsgfr:'Verifiez que la calculatrice Numworks est connectee.\nCliquez sur le bouton Detecter puis reessayez.',
+  chkmsgen:'Check that the Numworks calculator is connected.\nClick on the detect button and try again.',
   nws_progress:0,
   nws_progresslegend:0,
   Datestart:Date.now(),
@@ -8,6 +9,7 @@ var UI = {
   calc: 2, // 1 KhiCAS, 2 Numworks, 3 TI Nspire CX
   calculator:0, // !=0 if hardware Numworks connected
   calculator_connected:false,
+  tar_first_modif_offset:0,
   nws_connect:function(){
     UI.nws_progress=$id('plog');
     UI.nws_progresslegend=$id('ploglegend');
@@ -108,7 +110,7 @@ var UI = {
   numworks_load_: async function(backup){
     console.log(UI.calculator,UI.calculator_connected);
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee. Cliquez sur le bouton Detecter.':'Check that the Numworks calculator is connected. Click on the detect button.');
+      alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
       if (UI.calculator) UI.calculator.stopAutoConnect();
       return;
     }
@@ -159,14 +161,14 @@ var UI = {
   },
   numworks_save_:async function(filename,S){
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez la connection de la calculatrice':'Check calculator connection');
+      alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
       if (UI.calculator) UI.calculator.stopAutoConnect();
       return -1;
     }
     if (filename.length>4 && filename.substr(filename.length-4,4)==".nws"){
       let pinfo = await UI.calculator.getPlatformInfo();
       UI.calculator.device.startAddress = pinfo["storage"]["address"];
-      console.log(UI.calculator.device.startAddress,S); // return;
+      // console.log(UI.calculator.device.startAddress,S); // return;
       let res=await UI.calculator.device.do_download(UI.calculator.transferSize, S, false);
       return res;
     }
@@ -190,14 +192,19 @@ var UI = {
     });
     return 0;
   },    
-  numworks_install_delta:function(){
+  numworks_install_delta:function(do_backup=1,khionly=0){
+    if (khionly && !confirm(UI.langue==-1?'En confirmant l\'installation, vous acceptez la licence CC BY-NC-SA de Khi':'If you confirm, you accept the CC BY-NC-SA license of Khi.'))
+      return;
+    if (!khionly && !confirm(UI.langue==-1?'En confirmant l\'installation, vous acceptez les licences CC BY-NC-SA de Khi et GPL2 de KhiCAS, BSD2 Hexedit, LGPL2 de Nofrendo, MIT de Peanut-GB':'If you confirm install, you accept the CC BY-NC-SA license of Khi and GPL2 license of KhiCAS, BSD2 for Hexedit, LGPL2 for Nofrendi, MIT for Peanut-GB'))
+      return;
+    $id('persoinit').style.display='none';    
     UI.calc=2;
     UI.nws_connect();
-    window.setTimeout(UI.numworks_install_delta_,100);
+    window.setTimeout(UI.numworks_install_delta_,100,do_backup,khionly);
   },
-  numworks_install_delta_:async function(do_backup){
+  numworks_install_delta_:async function(do_backup,khionly){
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
       if (UI.calculator) UI.calculator.stopAutoConnect();
       return -1;
     } 
@@ -205,12 +212,17 @@ var UI = {
     UI.calculator.device.logProgress(0,'internal');
     let data=await UI.loadfile('delta.internal.bin');
     let res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
-    UI.print('=========== installing KhiCAS');
+    UI.print(khionly?'=========== installing Khi':'=========== installing Khi && KhiCAS');
     UI.print('internal OK, erase/write external, wait about 1/2 minute');
     UI.calculator.device.startAddress = 0x90000000;
     data=await UI.loadfile('delta.external.bin');
     UI.calculator.device.logProgress(0,'external');
     res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
+    if (khionly){
+      UI.print('external OK, press RESET on calculator back');
+      alert(UI.langue==-1?'Installation terminee. Appuyer sur RESET a l\'arriere de la calculatrice':'Install success. Press RESET on the calculator back.');
+      return;
+    }
     UI.print('external OK, erase/write apps, wait about 2 minutes');
     UI.calculator.device.startAddress = 0x90200000;
     UI.calculator.device.logProgress(0,'apps');
@@ -239,7 +251,7 @@ var UI = {
   },
   numworks_rescue_:async function(sigfile,rwcheck){
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee.  Cliquez sur le bouton Detecter.':'Check that the Numworks calculator is connected. Click on the detect button.');
+      alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
       //console.log('numworks_rescue_',UI.calculator);
       if (UI.calculator) UI.calculator.stopAutoConnect();
       UI.calculator=0;
@@ -253,15 +265,482 @@ var UI = {
     let tmp=confirm(UI.langue==-1?'La calculatrice devrait etre en mode recuperation. Installer KhiCAS+Delta?':'Calculator should be in rescue mode. Send KhiCAS+Delta.');
     if (tmp)
       UI.numworks_install_delta();
- },
+  },
+  numworks_buffer:0,
+  read_string:function(buffer,str_offset, size) {
+    let strView = new Uint8Array(buffer, str_offset, size);
+    let i = 0;
+    let rtnStr = "";
+    while(strView[i] != 0) {
+      rtnStr += String.fromCharCode(strView[i]);
+      i++;
+    }
+    return rtnStr;
+  },
+  // tar support adapted from tarball.js https://github.com/ankitrohatgi/tarballjs (MIT licence)
+  filename(buffer,header_offset) {
+    let name = UI.read_string(buffer,header_offset, 100);
+    return name;
+  },
+  filetype(buffer,header_offset) {
+    // offset: 156
+    let typeView = new Uint8Array(buffer, header_offset+156, 1);
+    let typeStr = String.fromCharCode(typeView[0]);
+    if(typeStr == "0") {
+      return "file";
+    } else if(typeStr == "5") {
+      return "directory";
+    } else {
+      return typeStr;
+    }
+  },
+  filesize(buffer,header_offset) {
+    // offset: 124
+    let szView = new Uint8Array(buffer, header_offset+124, 12);
+    let szStr = "";
+    for(let i = 0; i < 11; i++) {
+      let tmp=szView[i];
+      if (tmp<48 || tmp>57) return -1; // invalid file size
+      szStr += String.fromCharCode(tmp);
+    }
+    return parseInt(szStr,8);
+  },
+  numworks_chk_buffer:function(buffer){
+    if (buffer==0){
+      alert(UI.langue==-1?'Commencez par recuperer la flash de la calculatrice':'First get the calculator flash');
+      return 0;
+    }
+    // FIXME should check that buffer is valid
+    return 1;
+  },
+  numworks_tarinfo:function(buffer){
+    if (!UI.numworks_chk_buffer(buffer))
+      return [];
+    let offset = 0;
+    let file_size = 0;       
+    let file_name = "";
+    let file_type = null;
+    let file_info=[];
+    while(offset < buffer.byteLength - 512) {
+      file_name = UI.filename(buffer,offset); // file name
+      if (file_name.length == 0) break;
+      file_type = UI.filetype(buffer,offset);
+      file_size = UI.filesize(buffer,offset);
+      if (file_size<0) break;
+      file_info.push({
+        "name": file_name,
+        "type": file_type,
+        "size": file_size,
+        "header_offset": offset
+      });
+      offset += (512 + 512*Math.trunc(file_size/512));
+      if(file_size % 512) {
+        offset += 512;
+      }
+    }
+    return file_info;
+  },
+  leftpad:function(number,targetLength) {
+    let output = number + '';
+    while (output.length < targetLength) {
+      output = '0' + output;
+    }
+    return output;
+  },
+  numworks_maxtarsize:0x600000-0x10000,
+  arrayBufferTransfer:function(oldBuffer, newByteLength) {
+    const srcArray  = new Uint8Array(oldBuffer),
+          destArray = new Uint8Array(newByteLength),
+          copylen = Math.min(srcArray.buffer.byteLength, destArray.buffer.byteLength),
+          floatArrayLength   = Math.trunc(copylen / 8),
+          floatArraySource   = new Float64Array(srcArray.buffer,0,floatArrayLength),
+          floarArrayDest     = new Float64Array(destArray.buffer,0,floatArrayLength);
+    floarArrayDest.set(floatArraySource);
+    let bytesCopied = floatArrayLength * 8;
+    // slowpoke copy up to 7 bytes.
+    while (bytesCopied < copylen ) {
+      destArray[bytesCopied]=srcArray[bytesCopied];
+      bytesCopied++;
+    }
+    return destArray.buffer;
+  },
+  tar_filesize:function(s){
+    return 512*(1+Math.ceil(s/512));
+  },
+  _readString:function(buffer,str_offset, size) {
+    let strView = new Uint8Array(buffer, str_offset, size);
+    let i = 0;
+    let rtnStr = "";
+    while(i<size) {
+      let ch=strView[i];
+      if (ch<32) break;
+      rtnStr += String.fromCharCode(ch);
+      i++;
+    }
+    return rtnStr;
+  },
+  _readFileName:function(buffer,header_offset) {
+    return UI._readString(buffer,header_offset, 100);
+  },
+  _readFileType:function(buffer,header_offset) {
+    // offset: 156
+    let typeView = new Uint8Array(buffer, header_offset+156, 1);
+    let typeStr = String.fromCharCode(typeView[0]);
+    if(typeStr == "0") {
+      return "file";
+    } else if(typeStr == "5") {
+      return "directory";
+    } else {
+      return typeStr;
+    }
+  },
+  _readFileSize:function(buffer,header_offset) {
+    // offset: 124
+    let szView = new Uint8Array(buffer, header_offset+124, 12);
+    let szStr = "";
+    for(let i = 0; i < 11; i++) {
+      let tmp=szView[i];
+      if (tmp<48 || tmp>57) return -1; // invalid file size
+      szStr += String.fromCharCode(tmp);
+    }
+    return parseInt(szStr,8);
+  },
+  tar_clear:function(buffer){
+    let view = new Uint8Array(buffer);
+    for (let i=0;i<1024;++i)
+      view[i]=0;
+    $id('listtarfiles').innerHTML="";
+    $id('perso').style.display='inline';    
+  },
+  tar_fileinfo:function(buffer,dohtml=1){
+    let fileInfo = [];
+    let offset = 0;
+    let file_size = 0;       
+    let file_name = "";
+    let file_type = null;
+    while (offset < buffer.byteLength - 512) {
+      file_name = UI._readFileName(buffer,offset); // file name
+      if (file_name.length == 0) 
+        break;
+      file_type = UI._readFileType(buffer,offset);
+      file_size = UI._readFileSize(buffer,offset);
+      if (file_size<0)
+	break;
+      //console.log(offset,file_name,file_size);
+      fileInfo.push({
+        "name": file_name,
+        "type": file_type,
+        "size": file_size,
+        "header_offset": offset
+      });
+
+      offset += UI.tar_filesize(file_size);
+    }
+    //console.log('fileinfo',offset,dohtml);
+    if (dohtml) UI.fileinfo2html(fileInfo);
+    return fileInfo;
+  },
+  fileinfo2html:function(finfo){
+    let l=finfo.length,s="<ul>";
+    for (let i=0;i<l;++i){
+      let cur=finfo[i];
+      let S="<li>";
+      S += cur.name;
+      S += " (";
+      S += cur.size;
+      S += "): ";
+      S += "<button onclick='UI.tar_removefile(UI.numworks_buffer,";
+      S += '"'+cur.name+'"';
+      S +=");' title='Cliquer ici pour effacer ce fichier'>X</button>";
+      S += "<button onclick='UI.tar_savefile(";
+      S += '"'+cur.name+'"';
+      S +=");' title='Cliquer ici pour sauvegarder ce fichier'>&#x1f4be;</button>";      
+      s+=S;
+    }
+    s += "</ul>";
+    //console.log(s);
+    // put it the list of tarfiles
+    $id('listtarfiles').innerHTML=s;
+    $id('perso').style.display='inline';
+  },
+  tar_writestring:function(buffer,str, offset, size) {
+    let strView = new Uint8Array(buffer, offset, size);
+    for(let i = 0; i < size; i++) {
+      if (i < str.length) {
+        strView[i] = str.charCodeAt(i);
+      } else {
+        strView[i] = 0;
+      }
+    }
+  },
+  tar_writechecksum:function(buffer,header_offset) {
+    // offset: 148
+    UI.tar_writestring(buffer,"        ", header_offset+148, 8); // first fill with spaces
+
+    // add up header bytes
+    let header = new Uint8Array(buffer, header_offset, 512);
+    let chksum = 0;
+    for (let i = 0; i < 512; i++) {
+      chksum += header[i];
+    }
+    UI.tar_writestring(buffer,UI.leftpad(chksum.toString(8),6), header_offset+148, 8);
+    UI.tar_writestring(buffer," ",header_offset+155,1); // add space inside chksum field
+  },
+  tar_fillheader:function(buffer,offset,exec=0){
+    let uid = 501;
+    let gid = 20;
+    let mode = exec?"755":"644";
+    let mtime = Date.now();
+    let user = "user";
+    let group = "group";
+
+    UI.tar_writestring(buffer,UI.leftpad(mode,6)+" ", offset+100, 8);  
+    UI.tar_writestring(buffer,UI.leftpad(uid.toString(8),6)+" ",offset+108,8);
+    UI.tar_writestring(buffer,UI.leftpad(gid.toString(8),6)+" ",offset+116,8);
+    UI.tar_writestring(buffer,UI.leftpad(Math.trunc(mtime/1000).toString(8),11)+" ",offset+136,12);
+
+    //UI.tar_writestring(buffer,"ustar", offset+257,6); // magic string
+    //UI.tar_writestring(buffer,"00", offset+263,2); // magic version
+    UI.tar_writestring(buffer,"ustar  ", offset+257,8);
+    
+    UI.tar_writestring(buffer,user, offset+265,32); // user
+    UI.tar_writestring(buffer,group, offset+297,32); //group
+    UI.tar_writestring(buffer,"000000 ",offset+329,7); //devmajor
+    UI.tar_writestring(buffer,"000000 ",offset+337,7); //devmajor
+    UI.tar_writechecksum(buffer,offset);
+  },
+  tar_adddata:function(buffer,filename,data,exec=0){
+    console.log('tar_adddata',exec);
+    let finfo=UI.tar_fileinfo(buffer,0);
+    let s=finfo.length;
+    if (s==0) return 0;
+    let last=finfo[s-1];
+    let offset=last.header_offset;
+    offset += UI.tar_filesize(last.size);
+    let newsize=offset+1024+data.byteLength;
+    newsize=10240*Math.ceil(newsize/10240);
+    if (newsize>UI.numworks_maxtarsize) return 0;
+    // console.log(buffer.byteLength,newsize);
+    // resize buffer
+    if (buffer.byteLength<newsize)
+      buffer=UI.numworks_buffer=UI.arrayBufferTransfer(buffer,newsize);
+    // console.log(buffer.byteLength,newsize);
+    let view = new Uint8Array(buffer);    
+    // add header
+    // fill header with 0
+    for (let i=0;i<1024;++i)
+      view[offset+i]=0;
+    UI.tar_writestring(buffer,filename,offset,100); // filename
+    UI.tar_writestring(buffer,UI.leftpad(data.byteLength.toString(8),11)+" ",offset+124,12);  // filesize
+    UI.tar_writestring(buffer,"0",offset+156,1); // file type
+    UI.tar_fillheader(buffer,offset,exec);
+    //let tmp=new Uint8Array(buffer,offset); console.log(tmp);
+    //console.log(data.byteLength);
+    // copy data 
+    let srcview = new Uint8Array(data, 0, data.byteLength);    
+    for (let i=0;i<data.byteLength;++i)
+      view[offset+512+i]=srcview[i];
+    let F=UI.tar_fileinfo(buffer,1); //console.log(F);
+    return 1;
+  },
+  tar_removefile:function(buffer,filename,really=1){
+    let finfo=UI.tar_fileinfo(buffer,0);
+    let s=finfo.length;
+    if (s==0) return 0;
+    let i = finfo.findIndex(info => info.name == filename);
+    if (i<0 || i>=s) return 0;
+    if (really && !confirm(UI.langue==-1?'Etes-vous sur?':'Are you sure?'))
+      return 0;
+    let info = finfo[i];
+    let view = new Uint8Array(buffer);
+    // move info.header_offset+info.size+512 to info.header_offset
+    let target=info.header_offset;
+    if (target<UI.tar_first_modif_offset){
+      UI.tar_first_modif_offset=target;
+      console.log('tar_removefile',UI.tar_first_modif_offset);
+    }
+    let src=target+UI.tar_filesize(info.size);
+    let infoend=finfo[s-1];
+    let end=infoend.header_offset+UI.tar_filesize(infoend.size);
+    for (src;src<end;++src,++target)
+      view[target]=view[src];
+    for (;target<end;++target) // clear space after new end
+      view[target]=0;
+    return UI.tar_fileinfo(buffer,1);
+  },
+  tar_addfile:function(file){
+    let reader = new FileReader();
+    reader.onerror = function (evt) { }
+    reader.readAsArrayBuffer(file);
+    reader.onload = function(evt){
+      let fname=file.name,exec=1;
+      if (fname.length>4 && fname.substr(fname.length-4,4)==".zip"){
+	let zip=new JSZip();
+	zip.loadAsync(evt.target.result).then(
+	  function (zip) {
+	    let lst=Object.entries(zip.files);
+	    console.log(zip.files,lst);
+	    for (let i=0;i<lst.length;++i){
+	      let cur=lst[i];
+	      let curname=cur[1].name;
+	      console.log(curname);
+	      zip.file(curname).async("arraybuffer").then(
+		function(data){
+		  exec=1;
+		  for (let j=0;j<curname.length;++j){
+		    if (curname[j]=='.'){
+		      exec=0; break;
+		    }
+		  }
+		  if (UI.tar_adddata(UI.numworks_buffer,curname,data,exec)==0){
+		    alert(UI.langue==-1?'Pas d\'espace en memoire flash':'No space left in flash');
+		    return;
+		  }
+		}
+	      );
+	    }
+	  }
+	);
+	return;
+      }
+      for (let i=0;i<fname.length;++i){
+	if (fname[i]=='.'){
+	  exec=0; break;
+	}
+      }
+      console.log(fname,exec);
+      if (UI.tar_adddata(UI.numworks_buffer,file.name,evt.target.result,exec)==0)
+	alert(UI.langue==-1?'Pas d\'espace en memoire flash':'No space left in flash');
+    }
+  },
+  file_gettar:function(file){
+    console.log(file);
+    if (UI.numworks_buffer!=0){
+      if (!confirm('Attention, la personnalisation courante va etre effacee! Continuer?'))
+	return;
+    }
+    let reader = new FileReader();
+    reader.onerror = function (evt) { }
+    reader.readAsArrayBuffer(file);
+    reader.onload = function(evt){
+      UI.tar_first_modif_offset=0;
+      UI.numworks_buffer=evt.target.result;
+      console.log(UI.tar_fileinfo(UI.numworks_buffer,1));
+    }
+  },
+  file_savetar:function(buffer,filename){
+    let finfo=UI.tar_fileinfo(buffer,0);
+    let s=finfo.length;
+    if (s==0) return 0;
+    let infoend=finfo[s-1];
+    let end=infoend.header_offset+UI.tar_filesize(infoend.size);
+    // add at least 1024 bytes, set them to 0
+    let newsize=end+1024;  //newsize=10240*Math.ceil(newsize/10240);
+    if (buffer.byteLength<newsize)
+      buffer=UI.numworks_buffer=UI.arrayBufferTransfer(buffer,newsize);
+    let view=new Uint8Array(buffer,0,newsize); 
+    for (let i=end;i<newsize;++i)
+      view[i]=0;
+    let blob = new Blob([view], {type: "octet/stream"});
+    saveAs(blob, filename);  
+  },
+  tar_savefile:function(filename){
+    let buffer=UI.numworks_buffer;
+    let finfo=UI.tar_fileinfo(buffer,0);
+    let s=finfo.length;
+    if (s==0) return 0;
+    for (let i=0;i<s;++i){
+      let cur=finfo[i];
+      if (cur.name!=filename) continue;
+      let view=new Uint8Array(cur.size);
+      let offset=cur.header_offset+512;
+      let buf=new Uint8Array(buffer);
+      for (let j=0;j<cur.size;++j)
+	view[j]=buf[offset+j];
+      //console.log(cur,offset,view);
+      let blob = new Blob([view], {type: "octet/stream"});
+      saveAs(blob, filename);  
+      return;
+    }
+  },
+  numworks_gettar:function(calc){
+    if (calc==0){
+      UI.numworks_gettar_(calc);
+      return;
+    }
+    UI.calc=2;
+    UI.nws_connect();
+    window.setTimeout(UI.numworks_gettar_,100,calc);
+  },
+  numworks_gettar_:async function(calc){
+    console.log(calc,UI.calculator);
+    if (calc && (UI.calculator==0 || !UI.calculator_connected)){
+      alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
+      if (UI.calculator) UI.calculator.stopAutoConnect();
+      return;
+    }
+    if (UI.numworks_buffer!=0){
+      if (!confirm('Attention, la personnalisation courante va etre effacee! Continuer?'))
+	return;
+    }
+    UI.tar_first_modif_offset=0;
+    if (calc==0)
+      UI.numworks_buffer=await UI.loadfile('apps.tar');
+    else
+      UI.numworks_buffer=await UI.calculator.get_apps();
+    let finfo=UI.tar_fileinfo(UI.numworks_buffer,1),s=finfo.length;
+    if (calc && s>0)
+      UI.tar_first_modif_offset=finfo[s-1].header_offset+UI.tar_filesize(finfo[s-1].size);
+    // window.setTimeout(UI.tar_fileinfo,1000,UI.numworks_buffer);
+    //UI.print("Archive flash:\n"+UI.numworks_tarinfo(UI.numworks_buffer));
+  },
+  numworks_sendtar:function(){
+    UI.calc=2;
+    UI.nws_connect();
+    window.setTimeout(UI.numworks_sendtar_,100);
+  },
+  numworks_sendtar_:async function(){
+    if (!UI.numworks_chk_buffer())
+      return;
+    if (!UI.calculator || !UI.calculator_connected){
+      alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
+      if (UI.calculator) UI.calculator.stopAutoConnect();
+      return;
+    }
+    $id('perso').style.display='none';    
+    if (UI.tar_first_modif_offset){
+      let finfo=UI.tar_fileinfo(UI.numworks_buffer,0);
+      let s=finfo.length;
+      if (s==0) return;
+      let start=65536*Math.floor(UI.tar_first_modif_offset/65536);
+      let size=finfo[s-1].header_offset+UI.tar_filesize(finfo[s-1].size)-start;
+      let buf=new Uint8Array(size);
+      let src=new Uint8Array(UI.numworks_buffer);
+      for (let i=0;i<size;++i)
+	buf[i]=src[start+i];
+      let buffer=buf.buffer;
+      console.log('sendtar',UI.tar_first_modif_offset,start,size,buffer.byteLength);
+      UI.calculator.device.startAddress = 0x90200000+start;
+      UI.calculator.device.logProgress(0,'apps');
+      res=await UI.calculator.device.do_download(UI.calculator.transferSize, buffer, false);      
+    }
+    else {
+      UI.calculator.device.startAddress = 0x90200000;
+      UI.calculator.device.logProgress(0,'apps');
+      res=await UI.calculator.device.do_download(UI.calculator.transferSize, UI.numworks_buffer, false);
+    }
+    $id('perso').style.display='inline';    
+    UI.print('apps OK, press RESET on calculator back');
+  },
   numworks_certify:function(sigfile,rwcheck=false){
+    $id('persoinit').style.display='none';    
     UI.calc=2;
     UI.nws_connect();
     window.setTimeout(UI.numworks_certify_,100,sigfile,rwcheck);
   },
   numworks_certify_:async function(sigfile,rwcheck){
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee. Cliquez sur le bouton Detecter.':'Check that the Numworks calculator is connected. Click on the detect button.');
+      alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
       if (UI.calculator) UI.calculator.stopAutoConnect();
       return -1;
     }
@@ -293,8 +772,14 @@ var UI = {
     }
     UI.print('Apps OK');
     if (rwcheck){
-      UI.print('R/W check');
+      UI.print('R/W check 0x91200000');
       res=await UI.calculator.rw_check(0x90120000,0xe0000);
+      if (!res){
+	alert(UI.langue==-1?'Echec du test lecture/ecriture':'Read/Write test failure');
+	return 4;
+      }
+      UI.print('R/W check 0x90740000');
+      res=await UI.calculator.rw_check(0x90740000,0xa0000);
       if (!res){
 	alert(UI.langue==-1?'Echec du test lecture/ecriture':'Read/Write test failure');
 	return 4;

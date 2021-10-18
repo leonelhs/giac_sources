@@ -267,18 +267,18 @@ int khicas_addins_menu(GIAC_CONTEXT){
   smallmenu.height=12;
   smallmenu.scrollbar=1;
   smallmenu.scrollout=1;
-  smallmenuitems[0].text = (char*)(lang?"Tableur":"Spreadsheet");
-  smallmenuitems[1].text = (char*)(lang?"Table periodique":"Periodic table");
-  smallmenuitems[2].text = (char*)(lang?"Exemple simple: Syracuse":"Simple example; Syracuse");
-  smallmenuitems[3].text = (char*)(lang?"Exemple de jeu: Mastermind":"Game example: Mastermind");
-  smallmenuitems[4].text = (char*)(lang?"Fractale de Mandelbrot":"Mandelbrot fractal");
+  smallmenuitems[0].text = (char*)((lang==1)?"Tableur":"Spreadsheet");
+  smallmenuitems[1].text = (char*)((lang==1)?"Table periodique":"Periodic table");
+  smallmenuitems[2].text = (char*)((lang==1)?"Exemple simple: Syracuse":"Simple example; Syracuse");
+  smallmenuitems[3].text = (char*)((lang==1)?"Exemple de jeu: Mastermind":"Game example: Mastermind");
+  smallmenuitems[4].text = (char*)((lang==1)?"Fractale de Mandelbrot":"Mandelbrot fractal");
   // smallmenuitems[5].text = (char*)"Mon application"; // adjust numitem !
   // smallmenuitems[6].text = (char*)"Autre application";
   // smallmenuitems[7].text = (char*)"Encore une autre";
   // smallmenuitems[8].text = (char*)"Une avant-derniere";
   // smallmenuitems[9].text = (char*)"Une derniere";
-  smallmenuitems[smallmenu.numitems-2].text = (char*)(lang?"Quitter le menu":"Leave menu");
-  smallmenuitems[smallmenu.numitems-1].text = (char*)(lang?"Quitter KhiCAS":"Leave KhiCAS");
+  smallmenuitems[smallmenu.numitems-2].text = (char*)((lang==1)?"Quitter le menu":"Leave menu");
+  smallmenuitems[smallmenu.numitems-1].text = (char*)((lang==1)?"Quitter KhiCAS":"Leave KhiCAS");
   while(1) {
     int sres = doMenu(&smallmenu);
     if(sres == MENU_RETURN_SELECTION || sres==KEY_CTRL_EXE) {

@@ -1617,7 +1617,7 @@ Sections written by Luka Marohnić<sup><a id="text3" href="#note3">3</a></sup></
 </a>
 </li><li class="li-toc"><a href="cascmd_en538.html#sec691">6.53.2  Local extrema: <span style="font-family:monospace">extrema</span>
 </a>
-</li><li class="li-toc"><a href="cascmd_en539.html#sec692">6.53.3  Local derivative-free optimization: <span style="font-family:monospace">nlpsolve</span>
+</li><li class="li-toc"><a href="cascmd_en539.html#sec692">6.53.3  Continuous derivative-free optimization: <span style="font-family:monospace">nlpsolve</span>
 </a>
 </li><li class="li-toc"><a href="cascmd_en540.html#sec693">6.53.4  Minimax polynomial approximation: <span style="font-family:monospace">minimax</span>
 </a>
@@ -7076,7 +7076,7 @@ problem to find an initial vertex for the simplex algorithm.</p>
 </a>
 </li><li><a href="cascmd_en538.html">Local extrema: <span style="font-family:monospace">extrema</span>
 </a>
-</li><li><a href="cascmd_en539.html">Local derivative-free optimization: <span style="font-family:monospace">nlpsolve</span>
+</li><li><a href="cascmd_en539.html">Continuous derivative-free optimization: <span style="font-family:monospace">nlpsolve</span>
 </a>
 </li><li><a href="cascmd_en540.html">Minimax polynomial approximation: <span style="font-family:monospace">minimax</span>
 </a>
@@ -10267,3 +10267,133 @@ Section <a href="cascmd_en947.html#ssec%3Aplotspectrum">15.1.10</a>).
 </li></ul>
 <h2 id="sec1287" class="section">15.3  Images</h2>
 <ul>
+<li><a href="cascmd_en980.html">Image structure in <span style="font-family:monospace">Xcas</span></a>
+</li><li><a href="cascmd_en981.html">Reading images: <span style="font-family:monospace">readrgb</span>
+</a>
+</li><li><a href="cascmd_en982.html">Viewing images</a>
+</li><li><a href="cascmd_en983.html">Creating or recreating images: <span style="font-family:monospace">writergb</span>
+</a>
+</li></ul>
+<h1 id="sec1292" class="chapter">Chapter 16  Using <span style="font-family:monospace">giac</span> inside a program</h1>
+<h2 id="sec1293" class="section">16.1  Using <span style="font-family:monospace">giac</span> inside a <span style="font-family:monospace">C++</span> program</h2>
+<p>To use <span style="font-family:monospace">giac</span> inside of a <span style="font-family:monospace">C++</span> program, put
+</p><pre class="verbatim">  #include &lt;giac/giac.h&gt;
+</pre><p>
+at the beginning of the file. To compile the file, use
+</p><pre class="verbatim">  c++ -g progname.cc -lgiac -lgmp
+</pre><p>
+After compiling, there will be a file <span style="font-family:monospace">a.out</span> which can be run
+with the command
+</p><pre class="verbatim">  ./a.out
+</pre><p>For example, put the following program in a file named
+<span style="font-family:monospace">pgcd.cc</span>.
+</p><pre class="verbatim">// -*- compile-command: "g++ -g pgcd.cc -lgiac -lgmp" -*-
+#include &lt;giac/config.h&gt;
+#include &lt;giac/giac.h&gt;
+
+using namespace std; using namespace giac;
+
+gen pgcd(gen a,gen b){ gen q,r; for (;b!=0;){ r=irem(a,b,q); a=b; b=r;
+} return a; }
+
+int main(){ cout &lt;&lt; "Enter 2 integers "; gen a,b; cin &gt;&gt; a &gt;&gt; b; cout
+&lt;&lt; pgcd(a,b) &lt;&lt; endl; return 0; }
+</pre><p>
+After compiling this with
+</p><pre class="verbatim">  c++ -g pgcd.cc -lgiac -lgmp
+</pre><p>
+and running it with
+</p><pre class="verbatim">  ./a.out
+</pre><p>
+there will be a prompt
+</p><pre class="verbatim">  Enter 2 integers
+</pre><p>
+After entering two integers, such as with
+</p><pre class="verbatim">  Enter 2 integers  30 36
+</pre><p>
+the result will appear:
+</p><pre class="verbatim">  6
+</pre>
+<h2 id="sec1294" class="section">16.2  Defining new <span style="font-family:monospace">giac</span> functions</h2>
+<p>New <span style="font-family:monospace">giac</span> functions can be defined with a <span style="font-family:monospace">C++</span>
+program. All data in the program used in formal calculations needs to
+be <span style="font-family:monospace">gen</span> type. A variable <span style="font-family:monospace">g</span> can be declared to be
+<span style="font-family:monospace">gen</span> type with
+</p><pre class="verbatim">  gen g;
+</pre><p>
+In this case, <span style="font-family:monospace">g.type</span> can have different values.
+</p><ul class="itemize"><li class="li-itemize">
+If <span style="font-family:monospace">g.val</span> is an integer type <span style="font-family:monospace">int</span>, then
+<span style="font-family:monospace">g.type</span> will be <span style="font-family:monospace">_INT_</span>.
+</li><li class="li-itemize">If <span style="font-family:monospace">g._DOUBLE_val</span> is a real <span style="font-family:monospace">double</span>,
+<span style="font-family:monospace">g.type</span> will be <span style="font-family:monospace">_DOUBLE_</span>.
+</li><li class="li-itemize">If <span style="font-family:monospace">g._SYMBptr</span> is type <span style="font-family:monospace">symbolic</span>, then
+<span style="font-family:monospace">g.type</span> will be <span style="font-family:monospace">_SYMB</span>.
+</li><li class="li-itemize">If <span style="font-family:monospace">g._VECTptr</span> is a vector, type <span style="font-family:monospace">vector</span>, then
+<span style="font-family:monospace">g.type</span> will be <span style="font-family:monospace">_VECT</span>.
+</li><li class="li-itemize">If <span style="font-family:monospace">g._ZINTptr</span> is an integer type <span style="font-family:monospace">zint</span>, then
+<span style="font-family:monospace">g.type</span> will be <span style="font-family:monospace">_ZINT</span>.
+</li><li class="li-itemize">If <span style="font-family:monospace">g._IDNTptr</span> is an identifier, type <span style="font-family:monospace">idnt</span>, then
+<span style="font-family:monospace">g.type</span> will be <span style="font-family:monospace">_IDNT</span>.
+</li><li class="li-itemize">If <span style="font-family:monospace">g._CPLXptr</span> is a complex type <span style="font-family:monospace">complex</span>, then
+<span style="font-family:monospace">g.type</span> will be <span style="font-family:monospace">_CPLX</span>.
+</li></ul><p>As an example, put the following program in a file called
+<span style="font-family:monospace">pgcd.cpp</span>.
+</p><pre class="verbatim">// -*- mode:C++ ; compile-command: "g++ -I.. -fPIC -DPIC -g -c pgcd.cpp -o pgcd.lo &amp;&amp; \
+//    ln -sf pgcd.lo pgcd.o &amp;&amp; \
+//    gcc -shared pgcd.lo -lc -lgiac -Wl,-soname -Wl,libpgcd.so.0 -o \
+//    libpgcd.so.0.0.0 &amp;&amp; ln -sf libpgcd.so.0.0.0 libpgcd.so.0 &amp;&amp; \
+//    ln -sf libpgcd.so.0.0.0 libpgcd.so" -*-
+using namespace std;
+#include &lt;stdexcept&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdlib&gt;
+#include &lt;giac/config.h&gt;
+#include &lt;giac/giac.h&gt;
+//#include "pgcd.h"
+
+#ifndef NO_NAMESPACE_GIAC namespace giac { #endif // ndef
+NO_NAMESPACE_GIAC
+
+  gen monpgcd(const gen &amp; a0,const gen &amp; b0){ gen q,r,a=a0,b=b0; for
+  (;b!=0;){ r=irem(a,b,q); a=b; b=r; } return a; } gen _monpgcd(const
+  gen &amp; args,GIAC_CONTEXT){ if ( (args.type!=_VECT) ||
+  (args._VECTptr-&gt;size()!=2)) setsizeerr(); vecteur &amp;v=*args._VECTptr;
+  return monpgcd(v[0],v[1]); } const string _monpgcd_s("monpgcd");
+  unary_function_eval __monpgcd(0,&amp;_monpgcd,_monpgcd_s);
+  unary_function_ptr at_monpgcd (&amp;__monpgcd,0,true);
+
+
+#ifndef NO_NAMESPACE_GIAC } // namespace giac #endif // ndef
+NO_NAMESPACE_GIAC
+</pre><p>
+After compiling this with the commands after the
+<span style="font-family:monospace">compile-command</span> in the header, namely
+</p><pre class="verbatim">  g++ -I.. -fPIC -DPIC -g -c pgcd.cpp -o pgcd.lo &amp;&amp; \
+    ln -sf pgcd.lo pgcd.o &amp;&amp; \
+    gcc -shared pgcd.lo -lc -lgiac -Wl,-soname -Wl,libpgcd.so.0 -o \
+    libpgcd.so.0.0.0 &amp;&amp; ln -sf libpgcd.so.0.0.0 libpgcd.so.0 &amp;&amp; \
+    ln -sf libpgcd.so.0.0.0 libpgcd.so
+</pre><p>
+the new command can be inserted with the <span style="font-family:monospace">insmod</span> command in
+<span style="font-family:monospace">giac</span>, where <span style="font-family:monospace">insmod</span> takes the full absolute path of
+the <span style="font-family:monospace">libpgcd.so</span> file as argument.<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">insmod("/path/to/file/libpgcd.so")</span>
+</div><p>
+Afterwords, the <span style="font-family:monospace">monpgcd</span> command will be another <span style="font-family:monospace">giac</span>
+command.<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">monpgcd(30,36)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">6
+</td></tr>
+</table><hr class="footnoterule"><dl class="thefootnotes"><dt class="dt-thefootnotes">
+<a id="note1" href="#text1">1</a></dt><dd class="dd-thefootnotes"><div class="footnotetext">Université de Grenoble, initial translation of parts of the French user manual</div></dd><dt class="dt-thefootnotes"><a id="note2" href="#text2">2</a></dt><dd class="dd-thefootnotes"><div class="footnotetext">Full translation and improvements</div></dd><dt class="dt-thefootnotes"><a id="note3" href="#text3">3</a></dt><dd class="dd-thefootnotes"><div class="footnotetext">Optimization, signal processing. The graph theory is in a separate manual.</div></dd></dl>
+<!--FOOTER-->
+<hr style="height:2"><blockquote class="quote"><em>This document was translated from L<sup>A</sup>T<sub>E</sub>X by
+</em><a href="http://hevea.inria.fr/index.html"><em>H</em><em><span style="font-size:small"><sup>E</sup></span></em><em>V</em><em><span style="font-size:small"><sup>E</sup></span></em><em>A</em></a><em>.</em></blockquote></body>
+</html>

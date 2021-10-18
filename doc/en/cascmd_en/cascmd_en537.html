@@ -16,14 +16,14 @@
 <h3 id="sec690" class="subsection">6.53.1  Global extrema: <span style="font-family:monospace">minimize</span> <span style="font-family:monospace">maximize</span>
 <a id="hevea_default933"></a>
 <a id="hevea_default934"></a></h3>
-<p><span style="font-family:monospace">minimize</span> attempts to find the smallest value of an
+<p><span style="font-family:monospace">minimize</span> attempts to find the smallest value of a differentiable
 expression defined on a compact domain, using analytical methods.
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-family:monospace">minimize</span> takes two mandatory arguments and two
 optional arguments:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">obj</span>, a univariate or multivariate expression
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">constr</span>, list of constraints given by
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">constr</span>, list of constraints given by
 equalities, inequalities, and/or expressions assumed to be equal to 0.
 If there is only one constraint, it doesn’t have to be a list.
 </li><li class="li-itemize"><span style="font-style:italic">vars</span>, list of variables. If there is only one
@@ -38,11 +38,12 @@ returns the minimum value of <span style="font-family:monospace">obj</span> on t
 specified by constraints and/or bounding variables, or (if
 <span style="font-style:italic">location</span> is specified) a list consisting of the minimum value
 and the list of points where the minimum is achieved.<p>The domain must be closed and bounded (i.e. compact) and <span style="font-style:italic">obj</span>
-must be continuous; otherwise the final result may be incorrect or
-meaningless. If the minimal value could not be obtained,
+must be continuous and differentiable except in a finite number of
+points; otherwise the final result may be incorrect or
+meaningless. If the minimal value could not be obtained, then
 <span style="font-family:monospace">undef</span> is returned.
 </p></li></ul><p>The <span style="font-family:monospace">maximize</span> command takes the same parameters as
-<span style="font-family:monospace">minimize</span>, but returns the global maximum of <span style="font-family:monospace">obj</span> on
+<span style="font-family:monospace">minimize</span>, but returns the global maximum of <span style="font-style:italic">obj</span> on
 the specified domain. </p><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">

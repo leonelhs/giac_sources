@@ -889,6 +889,134 @@ namespace xcas {
     return v[br->value()-1];
   }
 
+  void update_nws_flash(const char * buf,Fl_Hold_Browser * br){
+    br->clear();
+    vector<fileinfo_t> m=tar_fileinfo(buf,0);
+    if (m.empty()){
+      br->add(gettext("Please initalize"));
+    }
+    else {
+      vector<fileinfo_t>::const_iterator it=m.begin(),itend=m.end();
+      for (;it!=itend;++it){
+	string s=it->filename;
+	br->add(s.c_str());
+      }
+    }
+    br->value(1);
+    br->redraw();
+  }
+
+  // handle Numworks flash
+  void nws_flash(){
+    size_t tar_first_modif_offset=0;
+    char * buf=0;
+    static Fl_Window * w = 0;
+    static Fl_Hold_Browser * br = 0;
+    static Fl_Button *calcbut=0,*loadtarbut=0,*clearbut=0,* erasefilebut=0,*addfilebut=0,*savefilebut=0,*sendcalcbut=0,*savetarbut=0,*endbut=0;
+    if (!w){
+      Fl_Group::current(0);
+      w=new Fl_Window(300,500);
+      br = new Fl_Hold_Browser(2,82,w->w()-4,w->h()-124);
+      br->label(gettext("Select a file"));
+#if 1
+      calcbut = new Fl_Button(2,2,w->w()/3-4,36);
+      calcbut->label(gettext("Calc>"));
+      loadtarbut = new Fl_Button(w->w()/3+2,2,w->w()/3-4,36);
+      loadtarbut->label(gettext("Load archive"));
+      clearbut = new Fl_Button(2*w->w()/3+2,2,w->w()/3-4,36);
+      clearbut->label(gettext("Clear"));
+      addfilebut = new Fl_Button(2,42,w->w()/3-4,36);
+      addfilebut->label(gettext("Add file"));
+      savefilebut = new Fl_Button(w->w()/3+2,42,w->w()/3-4,36);
+      savefilebut->label(gettext("Save file"));
+      erasefilebut = new Fl_Button(2*w->w()/3+2,42,w->w()/3-4,36);
+      erasefilebut->label(gettext("Erase file"));
+      sendcalcbut=new Fl_Button(2,w->h()-38,w->w()/3-4,36);
+      sendcalcbut->label(gettext(">Calc"));
+      savetarbut=new Fl_Button(w->w()/3+2,w->h()-38,w->w()/3-4,36);
+      savetarbut->label(gettext("Save archive"));
+      endbut=new Fl_Button(2*w->w()/3+2,w->h()-38,w->w()/3-4,36);
+      endbut->label(gettext("Quit"));
+#endif
+      w->label(gettext("Numworks flash"));
+      w->end();
+    }
+    update_nws_flash(buf,br);
+    w->set_modal();
+    w->show();
+    w->hotspot(w);
+    Fl::focus(br);
+    Fl_Widget *o=0;
+    for (;;){
+      o = Fl::readqueue();
+      if (!o){
+	Fl::wait(0.0001);
+	usleep(1000);
+	continue;
+      }
+      if (o==w || o==endbut ){
+	w->hide();
+	if (buf) free(buf);
+	return ;
+      }
+      if (o==calcbut){
+	char * newbuf=numworks_gettar(tar_first_modif_offset); 
+	if (!newbuf) continue;
+	if (buf) free(buf);
+	buf=newbuf;
+	update_nws_flash(buf,br);
+	continue;
+      }
+      if (o==loadtarbut){
+	char * newfile = load_file_chooser("Open archive", "*.tar", "",0,false);
+	if (!newfile) continue;
+	char * newbuf=file_gettar(newfile);
+	tar_first_modif_offset=0;
+	if (!newbuf) continue;
+	if (buf) free(buf);
+	buf=newbuf;
+	update_nws_flash(buf,br);
+	continue;
+      }
+      if (o==clearbut){
+	if (buf) free(buf);
+	buf=0;
+	tar_first_modif_offset=0;
+	update_nws_flash(buf,br);
+	continue;
+      }
+      if (o==sendcalcbut){
+	bool res=numworks_sendtar(buf,0,tar_first_modif_offset);
+	continue;
+      }
+      if (o==savetarbut){
+	char * newfile = file_chooser("Store archive", "*.tar", "numworks.tar");
+	if (newfile){
+	  bool res=tar_savefile(buf,newfile);
+	}
+	continue;
+      }
+      int cur=br->value();
+      if (buf==0 || cur==0)
+	continue; // nothing selected
+      if (o==br){ // display file info at bottom?
+      }
+      if (o==addfilebut){
+	char * newfile = load_file_chooser("Insert file", "*", "",1,false);
+	if (!newfile || file_not_available(newfile))
+	  continue;
+	tar_addfile(buf,newfile,0);
+	update_nws_flash(buf,br);
+      }
+      if (o==savefilebut)
+	tar_savefile(buf,br->text(cur));
+      if (o==erasefilebut){
+	tar_removefile(buf,br->text(cur),&tar_first_modif_offset);
+	update_nws_flash(buf,br);
+      }
+    }
+  }
+
   void cb_Editeur_Send_Numworks(Fl_Widget * m_ , void*) {
     Fl_Text_Editor * e = find_editor(m_);
     if (!e) return;

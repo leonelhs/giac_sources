@@ -1268,7 +1268,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
             xywh {15 15 100 20}
           }
           MenuItem Xcas_Export_nws_calc {
-            label {Overwrite calculator}
+            label {Overwrite calculator RAM}
             callback {xcas::History_cb_Save_as_numworks_calculator(Xcas_current_session(),0);}
             xywh {15 15 100 20}
           }
@@ -1295,6 +1295,11 @@ Function {Xcas_run(int argc,char ** argv)} {open
           }
           xywh {30 30 100 20}
          }
+          MenuItem Xcas_Handle_nws_flash {
+            label {Customize flash}
+            callback {xcas::nws_flash();}
+            xywh {15 15 100 20}
+          }
          MenuItem Xcas_nw_install {
           label {Install KhiCAS on Numworks calculator}
           callback {

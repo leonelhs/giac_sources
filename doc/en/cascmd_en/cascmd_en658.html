@@ -17,7 +17,7 @@
 <a id="hevea_default1265"></a>
 <a id="hevea_default1266"></a></h3>
 <p>The <span style="font-family:monospace">kernel_density</span> command performs kernel density estimation
-(KDE)<sup><a id="text6" href="cascmd_en667.html#note6">1</a></sup>
+(KDE)<sup><a id="text7" href="cascmd_en667.html#note7">1</a></sup>
 <span style="font-family:monospace">kernel_density</span> takes a sample, optionally
 restricted to an interval [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>], and obtains an estimate f of
 the (unknown) probability density function <span style="font-style:italic">f</span> from which the samples
@@ -187,7 +187,7 @@ returns the function f given in (<a href="#eq%3Akde1">13</a>).
 <div class="center">
 <img src="cascmd_en126.png">
 </div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<span style="font-style:italic">Input:</span>
 <div class="center">
 <span style="font-family:monospace">X:=randvar(f,range=0..10,1000):; S:=sample(X,1000):; F:=kernel_density(S,piecewise):; plot([F,f(x)],x=0..10, display=[line_width_2+blue,line_width_1+black])</span>
 </div>
@@ -214,7 +214,7 @@ returns the function f given in (<a href="#eq%3Akde1">13</a>).
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">S:=sample(X,5000):; sqrt(int((f(x)-kde(S,piecewise))2,x=0..10))</span>
+<span style="font-family:monospace">S:=sample(X,5000):; sqrt(int((f(x)-kde(S,piecewise))^2,x=0..10))</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0.0269841239243
