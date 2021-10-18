@@ -79,7 +79,7 @@ namespace giac {
     vector<nfactor> v;
     if (is_zero(n))
       return v;
-    for (int i=0;i<100;i++){
+    for (int i=0;i<sizeof(primes)/sizeof(int);i++){
       gen p(primes[i]);
       if (is_zero(n % p) ){
 	int j=1;
@@ -4252,7 +4252,7 @@ namespace giac {
       // int dd=p_simp.dim*p.lexsorted_degree();
       // first try ezgcd then modgcd
       if ( // false && // uncomment to cancel EZGCD 
-	  (sparsenessp<0.3 || sparsenessq<0.3 ) &&
+	  (sparsenessp<0.3 || sparsenessq<0.3 ) && psrgcdop> modop &&
 	  (p_simp.dim>3) // && (Dbdeg<=maxpqdeg0/4+1) 
 	  && ezgcd(p_simp,q_simp,d,true,true,0,minop)){
 	if (debug_infolevel)
@@ -4646,6 +4646,19 @@ namespace giac {
     }
     d.dim=p.dim;
     d.coord.clear();
+    index_t pback=p.coord.back().index.iref(),qback=q.coord.back().index.iref();
+    if (!is_zero(pback))
+      pback=p.gcddeg();
+    if (!is_zero(qback))
+      qback=q.gcddeg();
+    if (!is_zero(pback) || !is_zero(qback)){
+      index_t dback=index_gcd(pback,qback);
+      polynome pshift=p.shift(-pback), qshift=q.shift(-qback);
+      gcd(pshift,qshift,d);
+      if (!is_zero(dback))
+	d=d.shift(dback);
+      return;
+    }
     polynome p_simp(p.dim),q_simp(p.dim);
     index_t pdeg=p.degree(),qdeg=q.degree();
     gen d_content,np_simp,nq_simp;
@@ -6176,6 +6189,8 @@ namespace giac {
 	} // end homogeneous poly
       } // end if (sum_degrees(...)
       if (try_sparse_factor(pcur,v,mult,f))
+	continue;
+      if (try_sparse_factor_bi(pcur,mult,f))
 	continue;
       /* Try Hensel lift factorization */
       bool hensel_factored=false;

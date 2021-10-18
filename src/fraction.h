@@ -150,8 +150,10 @@ template <class T>  Tfraction<T> operator * (const T & a,const Tfraction<T> & b)
 template <class T>  Tfraction<T> operator / (const Tfraction<T> & a,const Tfraction<T> & b){
   if (is_one(a.den))
     return(Tfraction<T> (a.num/b));
-  if (is_one(b.den))
-    return(Tfraction<T> (b.num/a));
+  if (is_one(b.den)){ 
+    // std::cerr << "fraction code change"<<std::endl; 
+    return(Tfraction<T> (a/b.num)); 
+  }
   Tfraction<T> f1(a.num,b.num);
   simplify(f1.num,f1.den);
   Tfraction<T> f2(b.den,a.den);

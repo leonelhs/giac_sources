@@ -1075,6 +1075,17 @@ namespace xcas {
       Equation_translate(tmp,0,vsize);
       return tmp;
     }
+    /* SERIES */
+    if (g.type==_SPOL1){
+      int sf=series_flags(contextptr);
+      if (sf & (1<<5) && !(sf & (1<<4))){
+	identificateur tt(string(1,series_variable_name(contextptr)));
+	gen remains,gg=sparse_poly12gen(*g._SPOL1ptr,tt,remains,!(sf & (1<<6)));
+	if ( (sf & (1<<6)) && !is_zero(remains))
+	  gg += symb_of(gen("O",contextptr),remains);
+	return Equation_compute_size(gg,a,windowhsize,contextptr);
+      }
+    }
     /*****************
      *   FRACTIONS   *
      *****************/
