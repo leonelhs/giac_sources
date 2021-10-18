@@ -579,9 +579,19 @@ font les grands fleuves).
 
 Exercice~: pour calculer la valeur
 num\'erique d'une d\'eriv\'ee de fonction, il vaut mieux
-calculer $(f(x+h)-f(x-h))/(2h)$ que $(f(x+h)-f(x))/h$. Attention
-toutefois \`a ne pas prendre $h$ trop petit, sinon $x+h=x$! Par
-exemple $h=10^{-8}$ donne un $h^2$ de l'ordre des erreurs d'arrondi.
+calculer $(f(x+h)-f(x-h))/(2h)$ que $(f(x+h)-f(x))/h$ car le terme
+d'erreur est en $O(h^2)$ et non en $O(h)$. Attention
+toutefois \`a ne pas prendre $h$ trop petit, sinon $x+h=x$
+en flottants et m\^eme si $x+h \neq x$, l'erreur absolue sur
+$f(x+h)-f(x-h)$ est (au moins) d'ordre $\varepsilon |f(x)|$, donc l'erreur
+relative est d'ordre $\varepsilon/h |f(x)|$. 
+Par exemple pour {\tt h=1e-8} le reste est en $O(h^2)$ donc
+de l'ordre des erreurs d'arrondi mais l'erreur relative sur
+$f(x+h)-f(x)$ est d'ordre $\epsilon/h$ largement sup\'erieure
+(en flottants double-pr\'ecision). On choisira plut\^ot $h$ tel que
+$\epsilon/h$ soit proche de $h^2$, donc de l'ordre de {\tt 1e-5}, qui
+fournira une valeur approch\'ee avec une erreur relative de l'ordre
+de {\tt 1e-10}.
 
 Remarquons néanmoins que les erreurs calculées ici sont des majorations
 des erreurs réelles (ou si on préfère l'erreur obtenue dans le pire
@@ -4010,12 +4020,14 @@ on success.
 {\bf Checking step}~: check that the original $f_i$ polynomials reduce
 to 0 with respect to $G_c$ and check that $G_c$ is a Groebner basis.
 
-\begin{thm} (Arnold)
+\begin{thm} (Arnold, Greuel and Pfister)
 If the checking step succeeds, then $G_c$ is the Groebner basis of $I$.
 \end{thm}
 
 This is a consequence of ideal inclusions (first check) and dimensions (second
-check), for a complete proof, see \cite{Arnold2003403}.
+check), for a complete proof, see \cite{Arnold2003403} and 
+theorem 7.5.1 in Greuel,G.-M., Pfister,G., 2007, A Singular
+Introduction to Commutative Algebra, Springer.
 
 {\bf Probabilistic checking algorithm}: instead of checking that s-polys
 of critical
@@ -4174,7 +4186,9 @@ Groebner basis, otherwise continue with next prime at step 3.
 \end{enumerate}
 
 {\bf Benchmarks}\\
-Comparison of giac (1.1.0-26) with Singular 3.1 (from sage 5.10) 
+Comparison of giac (1.1.0-26) with Singular 3.1 from sage
+5.10\footnote{Singular has also a modular implementation in
+  {\tt modstd.lib}, but it is not called by default.}
 on Mac OS X.6, Dual Core i5 2.3Ghz, RAM 2*2Go:
 \begin{itemize}
 \item Mod timings were computed modulo \verb|nextprime(2^24)|
@@ -4190,7 +4204,8 @@ it would obviously timeout (e.g. Cyclic8 or 9 on $\Q$ with Singular)
 \end{itemize}
 \begin{tabular}{|c|c|c|c||c|c|c|} \hline
         & giac mod $p$ & giac & singular & giac $\Q$ prob. & giac $\Q$  & singular \\ 
-        & 24, 31 bits & run2 & mod $p$ & \verb|1e-7|, \verb|1e-16| & certified & $\Q$ \\ \hline
+        & 24, 31 bits & run2 & mod $p$ & \verb|1e-7|, \verb|1e-16| &
+                                                                     certified & std $\Q$ \\ \hline
 %Cyclic6 & 0.02 & & 0.02 & 0.06 & 0.15 0.26& 0.35\\
 Cyclic7 & 0.5, 0.58 & 0.1&2.0 & 3.5, 4.2 & 21, 29.3 & >2700 \\
 Cyclic8 & 7.2, 8.9 & 1.8 &52.5 & 103, 106 & 258, 679 & >> \\
@@ -8830,7 +8845,7 @@ des racines de $P$, donc
 les coefficients de \verb|q| sont major\'es par exemple par $(1+4R)^{24}
 \approx 2e20$ donc on prend 24 chiffres.
 
-Autre m\'ethode plus efficace utilisant la repr\'esentation rationnelle
+Autre m\'ethode utilisant la repr\'esentation rationnelle
 univari\'ee (section \ref{sec:rur})~: 
 on \'ecrit le syst\`eme v\'erifi\'e par les relations
 racines-coefficients, ici\\
@@ -8843,7 +8858,18 @@ on obtient la factorisation compl\`ete par~:\\
 \verb|factor(x^4+3x+1,rootof(G[2]))|\\
 On peut aussi la d\'eduire de l'expressions des racines\\
 \verb|Q:=product(x-rootof(G[k],G[2])/rootof(G[3],G[2]),|\\
-\verb|   k,4,size(G)-1);normal(Q)|
+\verb|   k,4,size(G)-1);normal(Q)|\\
+Pour un polynome quelconque, on peut utiliser le script suivant\\
+\begin{verbatim}
+extension(p):={
+local l,s,g;
+ l:=seq(expr("x"+j),j,1,degree(p));
+ s:=lcoeff(p)*pcoeff(l)-symb2poly(p);
+ g:=gbasis(s,l,rur);
+ return g[2];
+}
+\end{verbatim}
+mais les calculs deviennent tr\`es vite monstrueux!
 
 \subsection{Factorisation absolue}\index{factorisation absolue} \label{sec:factorisation_absolue}
 On peut aussi se demander pour un polyn\^ome \`a coefficients
@@ -11726,13 +11752,16 @@ contient pas de vecteur court contenant uniquement des 1 et 0.
 \subsection{Le pivot de Gauss num\'erique.}
 \subsubsection{Efficacité de l'algorithme}
 Si la matrice possède $L$ lignes et $C$ colonnes,
-le nombre maximal d'opérations pour réduire une ligne est $C$ divisions,
-$C$ multiplications, $C$ soustractions, donc $3C$ opérations
-arithmétiques de base. Il y a $L-1$ lignes à réduire à chaque
+le nombre maximal d'opérations pour réduire une ligne est 
+$C$ op\'erations (une op\'eration=1 multiplication + 1 soustraction, 
+en calculant une seule fois le quotient). 
+Il y a $L-1$ lignes à réduire à chaque
 étape et min$(L,C)$ étapes à effectuer, on en déduit que le
 nombre maximal d'opérations pour réduire une matrice est
-$3LC$min$(L,C)$. Pour une matrice carrée de taille $n$, cela fait 
-$3n^3$ opérations.
+$LC$min$(L,C)$. Pour une matrice carrée de taille $n$, cela fait 
+$n^3$ opérations.  Si on effectue une r\'eduction en-dessous de la diagonale, 
+toujours pour une matrice carr\'ee, le nombre d'op\'erations est
+divis\'e par 3 ($\sum_{k=2}^n k^2$).
 
 \subsubsection{Erreurs d'arrondis du pivot de Gauss} \index{erreur}
 \index{pivot partiel}
@@ -11891,8 +11920,8 @@ vecteurs colonnes second membre \`a $A$.
 est moindre. La r\'eduction sous-diagonale n\'ecessite de r\'eduire
 les colonnes $j$ de 1 \`a $n-1$, avec pour r\'eduire la colonne $j$
 $n-j$ combinaisons lin\'eaire de lignes ayant $n+1-j$ coefficients non
-nuls, soit $\sum_{j=1}^(n-1) 2(n-j)(n+1-j)=2/3n^3+O(n^2)$ op\'erations
-(1 multiplication et 1 soustraction par coefficient).
+nuls, soit $\sum_{j=1}^(n-1) (n-j)(n+1-j)=1/3n^3+O(n^2)$ op\'erations
+(1 op\'eration = 1 multiplication et 1 soustraction).
 La r\'esolution des syst\`emes triangulaires est en $O(n^2)$.
 \item Le calcul est plus favorable au cache m\'emoire, puisqu'on
   travaille sur une portion de plus en plus petite de la matrice.
@@ -11932,8 +11961,9 @@ put them in the last line of m, then all the x_{n-2}, etc.
 
 \subsection{La factorisation de Cholesky} \index{Cholesky}
 \index{factorisation de Cholesky}
-Dans le cas o\`u la matrice est r\'eelle sym\'etrique ou plus
-g\'en\'eralement hermitienne, on peut obtenir une \'ecriture analogue
+Dans le cas o\`u la matrice est r\'eelle sym\'etrique d\'efinie
+positive (ou plus g\'en\'eralement hermitienne), 
+on peut obtenir une \'ecriture analogue
 mais o\`u $U$ est la transconjugu\'ee de $L$
 \[ A=U^* U = L L^* \]
 $L$ reste triangulaire
@@ -11999,7 +12029,7 @@ pour la deuxi\`eme ligne, 1 racine, $n-1$ additions, multiplications
 et $n-2$ divisions, ..., pour la $i$-i\`eme ligne 1 racine,
 $(i-1)(n-i)$ additions, multiplications et $n-2$ divisions, au final
 le cout est domin\'e par les additions et multiplications en $1/6n^3$
-pour chaque, donc $1/3n^3$ en tout, contre $2/3n^3$ pour la
+pour chaque, contre $1/3n^3$ pour la
 factorisation $LU$.
 
 La commande Xcas correspondante est \verb|cholesky| et renvoie
@@ -12820,8 +12850,15 @@ supérieure. Les matrices orthogonales ayant un conditionnement
 de 1 (en norme $L^2$) cette factorisation est numériquement stable.
 
 Il existe plusieurs algorithmes pour effectuer cette factorisation.
+On peut voir cette factorisation comme l'orthonormalisation de
+Gram-Schmidt appliqu\'e aux vecteurs colonnes de $A$ si $A$ est non 
+singuli\`ere. Mais la proc\'edure de Gram-Schmidt n'est pas
+num\'eriquement stable (car on retranche d'un vecteur
+une combinaison lin\'eaire des vecteurs pr\'ec\'dents pour rendre
+le nouveau vecteur orthogonal et les erreurs d'arrondi s'accumulent
+rendant l'orthogonalit\'e plus al\'eatoire).
 La m\'ethode de Householder utilise des matrices de sym\'etrie
-par rapport \`a un hyperplan.
+par rapport \`a un hyperplan et ne souffre pas de ce probl\`eme d'instabilit\'e.
 Pour annuler les coefficients de la premi\`ere colonne $c_1$ de $A$,
 on construit le vecteur $u=c_1 \pm \|c_1\| e_1$ o\`u $e_1$
 est le premier vecteur de base et le signe $\pm$ est
@@ -12867,7 +12904,13 @@ il vaut mieux résoudre cette équation que $A^* Ax=A^*b$ car
 le conditionnement de cette dernière est le carré du conditionnement
 de $A$ (le nombre d'opérations est multiplié par une constante
 car $QR$ a une constante plus grande que Cholesky, mais le résultat
-est plus précis).
+est plus précis). 
+La factorisation $QR$ peut d'ailleurs s'obtenir
+en calculant la factorisation de Cholesky de $A^* A$ qui donne $R$,
+mais on lui pr\'ef\`ere une m\'ethode de calcul direct pour des
+raisons de stabilit\'e, en tout cas pour des matrices denses (pour des
+matrices creuses des consid\'erations d'efficacit\'e peuvent faire
+pr\'ef\'erer la factorisation de Cholesky).
 
 \subsubsection{M\'ethodes it\'eratives de
 Jacobi, Gauss-Seidel, relaxation}\index{Jacobi} \index{Gauss-Seidel}
@@ -12998,7 +13041,7 @@ Cons\'equence~: si $A$ sym\'etrique d\'efinie positive, alors
 Gauss-Seidel converge, car $M^*+N=D$. Pour la relaxation,
 on a $M^*+N=(2/\omega -1)D$ qui est d\'efinie positive si $\omega<2$.
 
- \subsubsection{M\'ethode it\'erative du gradient conjugu\'e}\index{gradient conjugu\'e}
+\subsubsection{M\'ethode it\'erative du gradient conjugu\'e}\index{gradient conjugu\'e}
 Il s'agit de résoudre $Ax=b$, où $A$ est définie positive. 
 Si on a une base orthogonale pour le produit scalaire induit par $A$, 
 on peut calculer la $j$-ième coordonn\'ee de $x$ 
@@ -15858,7 +15901,7 @@ la plage donnée et avoir de bonnes propriétés statistiques.
 Xcas utilise un ``tiny'' Mersenne Twister (de période environ $2^{127}$),
 certaines implantations de Giac utilisent un générateur congruentiel.
 
-\subsubsection{Les générateurs congruentiels.}\index{g\'en\'erateur congruentiel}
+\subsubsection{Les générateurs congruentiels \`a 1 cran.}\index{g\'en\'erateur congruentiel}
 \index{congruentiel, g\'en\'erateur} 
 Etant donnés trois entiers $a, c$ et $m$ on considère la suite
 $$ u_{n+1}=au_n+c \pmod m $$
@@ -15950,6 +15993,20 @@ bien r\'epartis, ou bien\\
 \verb|seq(point(evalf(r()/n,r()/n),affichage=point_point),j,1,10000)|\\
 qui d\'etecte des biais invisibles avec le test pr\'ec\'edent, par
 exemple pour $a=7$.
+
+\subsubsection{R\'ecurrence \`a $k$ \'el\'ements}
+Au lieu d'une r\'ecurrence $u_{k+1}=au_k+c$ on conserve en m\'emoire
+$k+1$ valeurs successives de la suite et on calcule
+$$ u_{n+k+1} = a_0 u_n+...+a_{k}u_{n+k} \pmod p$$
+Si on note $U_n$ le vecteur $(u_n,...,u_{n+k})$ et $A$
+la matrice companion du polyn\^ome $a_0+a_1x+...+a_kx^k$,
+on a $U_{n+1}=AU_n$. Rechercher un g\'en\'erateur de p\'eriode
+maximale revient \`a chercher $A$ d'ordre le plus grand possible, donc
+les valeurs propres de $A$, i.e. les racines de $P$, doivent \^etre
+racines de l'unit\'e d'ordre le plus grand possible donc $p^k-1$. 
+Ce que l'on peut faire en construire un polyn\^ome $P$ irr\'eductible
+primitif (cf. la section \ref{sec:gf} sur la construction de repr\'esentation
+des corps finis).
 
 \subsubsection{Mersenne twister.}
 Ce sont des générateurs plus performants, avec un état interne

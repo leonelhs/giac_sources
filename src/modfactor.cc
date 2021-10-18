@@ -752,6 +752,7 @@ namespace giac {
       vector<modpoly>::iterator it=v_in.begin(),itend=v_in.end();
       dense_POLY1 pi;
       mulmodpoly(it,itend,env,pi);
+      lcoeff=q.front();
       // compute Q such that q=lcoeff*(pi+p^k*Q)
       // modulo=modulonext; // work in Z/p^(k+1), done by modularize below
       modpoly Q((q-lcoeff*pi)/moduloi);
@@ -761,7 +762,7 @@ namespace giac {
       if (notunit)
 	mulmodpoly(Q,invmod(lcoeff,env->modulo),env,Q); // Q=Q*invmod(lcoeff);
       // COUT << "Q:" << Q << endl;
-      // _VECTute new v_in
+      // compute new v_in
       if (Q.empty()){
 	env->modulo=modulonext;
 	moduloi=modulonext;
@@ -1288,7 +1289,8 @@ namespace giac {
       }
     }
 #endif // HAVE_LIBPARI
-    if (is_strictly_greater(bound,pow(env->modulo,(long unsigned int) HENSEL_QUADRATIC_POWER),context0)) { // bound>pow(...)
+    // quadratic lift commented until bug is fixed for factor(poly2symb([2052661997653969,0,-28627701862508750,0,2045357156640625],x));
+    if (0 && is_strictly_greater(bound,pow(env->modulo,(long unsigned int) HENSEL_QUADRATIC_POWER),context0)) { // bound>pow(...)
       int res=liftq(env,q1,bound,w,v,possible_degrees);
       if (res==-1)
 	return false;
