@@ -17361,7 +17361,7 @@ pour $n=p^{r-1}$ et $p\neq 2$, $(a^n-1)/(a-1)=n \pmod{p^r} \neq 0$.
 Le m\^eme calcul pour $p=2$ (prise en compte de la division par 2 de
 $n(n-1)$) donne la condition $b=a-1$ est multiple de 4 si $m$ l'est.
 
-On trouvera dans Knuth une discussion détaillée du choix de $a,b,m$.
+On trouvera dans Knuth une discussion détaillée du choix de $a, b, m$.
 
 
 Exemple~: $m=2^{31}-1$ est premier, on peut donc construire un
@@ -17369,20 +17369,20 @@ g\'en\'erateur congruentiel de p\'eriode $m-1$ en choisissant $a$
 g\'en\'erateur de $\Z/m\Z^*$. Pour en trouver un, on peut tester
 $a$ pris au hasard et voir si $a^{\frac{m-1}{j}} \neq 1 \pmod m$
 pour tous les diviseurs premiers de $m-1$. Par exemple\\
-\verb|F:=ifactors(b:=m-1); G:=seq(F[2*j],j,0,iquo(size(F)-1,2))|\\
-\verb|a:=456783546; for k in G do afficher(powmod(a,b/k,m)); od|\\
-\verb|etat:=1;| initialise l'\'etat du g\'en\'erateur\\
-\verb|r():=return etat:=irem(a*etat,n);|\\
+\giacinputbigmath{m:=2^31-1;F:=ifactors(b:=m-1); G:=seq(F[2*j],j,0,iquo(size(F)-1,2))}
+\giacinputbigmath{a:=456783546; for k in G do afficher(powmod(a,b/k,m)); od}\\
+\giacinputbig{r():=(etat:=irem(a*etat,m)); }\\
+\giacinput{etat:=1;} initialise l'\'etat du g\'en\'erateur.
 Un appel \`a \verb|r()| renvoie un entier entre 1 et $m-1$, pour avoir
 un g'en\'erateur pseudo-al\'eatoire selon la loi uniforme sur $]0,1[$, on tape
-\verb|evalf(r()/m)|.
+\giacinput{evalf(r()/m)}.
 Ainsi \\
-\verb|L:=seq(evalf(r()/m),j,1,10000);histogramme(L,0,.01)|\\
+\giacinputbig{L:=seq(evalf(r()/m),j,1,10000);histogramme(L,0,.02)}
 permet de v\'erifier visuellement si les r\'eels g\'en\'er\'es sont
 bien r\'epartis, ou bien\\
-\verb|seq(point(evalf(r()/n,r()/n),affichage=point_point),j,1,10000)|\\
+\giacinputbig{seq(point(evalf(r()/m,r()/m),affichage=point_point),j,1,2000)}
 qui d\'etecte des biais invisibles avec le test pr\'ec\'edent, par
-exemple pour $a=7$.
+exemple pour \giacinput{a:=7}.
 
 \subsubsection{R\'ecurrence \`a $k$ \'el\'ements}
 Au lieu d'une r\'ecurrence $u_{k+1}=au_k+c$ on conserve en m\'emoire

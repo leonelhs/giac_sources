@@ -10,6 +10,7 @@
       {"DOM_INT"               ,0, _ZINT, _INT_TYPE, T_TYPE_ID},
       {"DOM_LIST"              ,0, _VECT, _INT_TYPE, T_TYPE_ID},
       {"DOM_LONGFLOAT"                ,0, _REAL, _INT_TYPE, T_TYPE_ID},
+      {"DOM_MAP"               ,0, _MAP, _INT_TYPE, T_TYPE_ID},
       {"DOM_MATRIX"              ,0, _VECT, _INT_TYPE, T_TYPE_ID},
       {"DOM_RAT"              ,0, _FRAC, _INT_TYPE, T_TYPE_ID},
       {"DOM_SPECIALFLOAT"                  ,0,  _FLOAT_, _INT_TYPE, T_TYPE_ID},

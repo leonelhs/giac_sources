@@ -25817,25 +25817,51 @@ On sait que <span style="font-style:italic">b</span>=<span style="font-style:ita
 pour <span style="font-style:italic">n</span>=<span style="font-style:italic">p</span><sup><span style="font-style:italic">r</span></sup>, on a bien (<span style="font-style:italic">a</span><sup><span style="font-style:italic">n</span></sup>−1)/(<span style="font-style:italic">a</span>−1)=0 (mod <span style="font-style:italic">p</span><sup><span style="font-style:italic">r</span></sup> ), alors que
 pour <span style="font-style:italic">n</span>=<span style="font-style:italic">p</span><sup><span style="font-style:italic">r</span>−1</sup> et <span style="font-style:italic">p</span>≠ 2, (<span style="font-style:italic">a</span><sup><span style="font-style:italic">n</span></sup>−1)/(<span style="font-style:italic">a</span>−1)=<span style="font-style:italic">n</span> (mod <span style="font-style:italic">p</span><sup><span style="font-style:italic">r</span></sup> ) ≠ 0.
 Le même calcul pour <span style="font-style:italic">p</span>=2 (prise en compte de la division par 2 de
-<span style="font-style:italic">n</span>(<span style="font-style:italic">n</span>−1)) donne la condition <span style="font-style:italic">b</span>=<span style="font-style:italic">a</span>−1 est multiple de 4 si <span style="font-style:italic">m</span> l’est.</p><p>On trouvera dans Knuth une discussion détaillée du choix de <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">m</span>.</p><p>Exemple : <span style="font-style:italic">m</span>=2<sup>31</sup>−1 est premier, on peut donc construire un
+<span style="font-style:italic">n</span>(<span style="font-style:italic">n</span>−1)) donne la condition <span style="font-style:italic">b</span>=<span style="font-style:italic">a</span>−1 est multiple de 4 si <span style="font-style:italic">m</span> l’est.</p><p>On trouvera dans Knuth une discussion détaillée du choix de <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span>, <span style="font-style:italic">m</span>.</p><p>Exemple : <span style="font-style:italic">m</span>=2<sup>31</sup>−1 est premier, on peut donc construire un
 générateur congruentiel de période <span style="font-style:italic">m</span>−1 en choisissant <span style="font-style:italic">a</span>
 générateur de ℤ/<span style="font-style:italic">m</span>ℤ<sup>*</sup>. Pour en trouver un, on peut tester
 <span style="font-style:italic">a</span> pris au hasard et voir si <span style="font-style:italic">a</span><sup><span style="font-style:italic">m</span>−1/<span style="font-style:italic">j</span></sup> ≠ 1 (mod <span style="font-style:italic">m</span> )
 pour tous les diviseurs premiers de <span style="font-style:italic">m</span>−1. Par exemple<br>
-<code>F:=ifactors(b:=m-1); G:=seq(F[2*j],j,0,iquo(size(F)-1,2))</code><br>
-<code>a:=456783546; for k in G do afficher(powmod(a,b/k,m)); od</code><br>
-<code>etat:=1;</code> initialise l’état du générateur<br>
-<code>r():=return etat:=irem(a*etat,n);</code><br>
+<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">m:=2^31-1;F:=ifactors(b:=m-1); G:=seq(F[2*j],j,0,iquo(size(F)-1,2)) 
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>
+<div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">a:=456783546; for k in G do afficher(powmod(a,b/k,m)); od 
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div><br>
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:800px;height:20px;font-size:large">r():=(etat:=irem(a*etat,m)); 
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+<br>
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:400px;height:20px;font-size:large">etat:=1;
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+ initialise l’état du générateur.
 Un appel à <code>r()</code> renvoie un entier entre 1 et <span style="font-style:italic">m</span>−1, pour avoir
 un g’enérateur pseudo-aléatoire selon la loi uniforme sur ]0,1[, on tape
-<code>evalf(r()/m)</code>.
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:400px;height:20px;font-size:large">evalf(r()/m)
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+.
 Ainsi <br>
-<code>L:=seq(evalf(r()/m),j,1,10000);histogramme(L,0,.01)</code><br>
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:800px;height:20px;font-size:large">L:=seq(evalf(r()/m),j,1,10000);histogramme(L,0,.02)
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+
 permet de vérifier visuellement si les réels générés sont
 bien répartis, ou bien<br>
-<code>seq(point(evalf(r()/n,r()/n),affichage=point_point),j,1,10000)</code><br>
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:800px;height:20px;font-size:large">seq(point(evalf(r()/m,r()/m),affichage=point_point),j,1,2000)
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+
 qui détecte des biais invisibles avec le test précédent, par
-exemple pour <span style="font-style:italic">a</span>=7.</p>
+exemple pour 
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:400px;height:20px;font-size:large">a:=7
+</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+.</p>
 <!--TOC subsubsection id="sec298" Récurrence à <span style="font-style:italic">k</span> éléments-->
 <h4 id="sec298" class="subsubsection">27.1.2  Récurrence à <span style="font-style:italic">k</span> éléments</h4><!--SEC END --><p>
 Au lieu d’une récurrence <span style="font-style:italic">u</span><sub><span style="font-style:italic">k</span>+1</sub>=<span style="font-style:italic">au</span><sub><span style="font-style:italic">k</span></sub>+<span style="font-style:italic">c</span> on conserve en mémoire

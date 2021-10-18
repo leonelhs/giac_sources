@@ -32,12 +32,16 @@ Par exemple :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 <CODE>GF(3,5)</CODE> ou <CODE>GF(3^5)</CODE>
 crée un corps ayant 3<SUP>5</SUP>  éléments dont le générateur
-est <CODE>g</CODE> (ou <CODE>h</CODE>, ... si <I>g</I> est affectée). On peut créer un
+est <CODE>g</CODE> (ou <CODE>h</CODE>, ... si <I>g</I> est affectée). 
+On peut créer un
 élément du corps en prenant un polynôme en fonction de <I>g</I>, par
 exemple <I>g</I><SUP>10</SUP>+5<I>g</I>+1.
 </LI><LI CLASS="li-itemize"><CODE>GF(2,8,a)</CODE> crée un corps ayant 2<SUP>8</SUP> éléments, et utilise
 la variable <CODE>a</CODE> pour en désigner le générateur (attention, faire
 <CODE>purge(a)</CODE> auparavant si nécessaire). 
+La variante <CODE>GF(2,128,a,0)</CODE> g&eacute;n&egrave;re un
+corps ayant  2<SUP>128</SUP> éléments avec un polynome irr&eacute;ductible
+non forc&eacute;ment primitif.
 </LI><LI CLASS="li-itemize">La commande <CODE>pmin</CODE> permet de connaitre le polynôme minimal
 d’un élément du corps.
 </LI></UL><P>
@@ -64,7 +68,7 @@ les éléments de ce corps et le corps lui-même sont représentés par
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 la caractéristique <I>p</I> (<I>px</I>=0),
 </LI><LI CLASS="li-itemize">le polynôme minimal irréductible (primitif s’il est
-créé par giac) engendrant un
+créé par giac sauf si le dernier argument de la commande GF est 0) engendrant un
 idéal <I>I</I> dans ℤ/<I>p</I>ℤ[<I>X</I>], le corps de Galois est alors le quotient
 de ℤ/<I>p</I>ℤ[<I>X</I>] par <I>I</I>,
 </LI><LI CLASS="li-itemize">le nom de la variable du polynôme, par défaut <TT>x</TT>,
