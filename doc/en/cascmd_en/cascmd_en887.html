@@ -4,38 +4,54 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Check if an object in space is a right triangle or a rectangle: is_rectangle</title>
+<title>The slope of a line: slope</title>
 </head>
 <body >
 <a href="cascmd_en886.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en888.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1152" class="subsection">12.13.11  Check if an object in space is a right triangle or a rectangle: <span style="font-family:monospace">is_rectangle</span><a id="hevea_default1394"></a></h3>
+<h3 id="sec1147" class="subsection">12.14.8  The slope of a line: <span style="font-family:monospace">slope</span><a id="hevea_default1562"></a></h3>
 <p>
-<a id="sec:3dcheckrect"></a></p><p>See section <a href="cascmd_en815.html#sec%3A2dcheckrect">11.16.7</a> for checking for right triangles and rectangles
-in two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_rectangle</span> command checks for both right triangles and
-rectangles. It takes as arguments either three points, four points,
-or a geometric object.</p><p>If the arguments are three points or a triangle, then
-<span style="font-family:monospace">is_rectangle</span> returns <span style="font-family:monospace">1</span>, <span style="font-family:monospace">2</span> or <span style="font-family:monospace">3</span> if
-the points form a right triangle which right angle at the first,
-second or third vertex. It returns <span style="font-family:monospace">0</span> otherwise.</p><p>If the arguments are four points or a quadrilateral, then
-<span style="font-family:monospace">is_rectangle</span> returns <span style="font-family:monospace">2</span> is the points form a square,
-<span style="font-family:monospace">1</span> is they form a rectangle, and <span style="font-family:monospace">0</span> otherwise.</p><p>Input:
+<a id="sec:slope"></a></p><p>The <span style="font-family:monospace">slope</span> command takes as argument either a line, a line
+segment, or two points which determine a line.</p><p><span style="font-family:monospace">slope</span> returns the slope of the line.<br>
+Input:
 </p><div class="center">
-<span style="font-family:monospace">is_rectangle([2,0,0],[2,2,0],[0,2,0])
+<span style="font-family:monospace">slope(line(1,2i))
+</span></div><p>
+or:
+</p><div class="center">
+<span style="font-family:monospace">slope(segment(1,2i))
+</span></div><p>
+or:
+</p><div class="center">
+<span style="font-family:monospace">slope(1,2i)
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">2
-</span></div><p>Input:
+<span style="font-family:monospace">-2 
+</span></div><p>
+Input:
 </p><div class="center">
-<span style="font-family:monospace">is_rectangle([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])
+<span style="font-family:monospace">slope(line(x - 2y = 3))
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">1
-</span></div>
+<span style="font-family:monospace">1/2 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">slope(tangent(plotfunc(sin(x)),pi/4))
+</span></div><p>
+or:
+</p><div class="center">
+<span style="font-family:monospace">slope(LineTan(sin(x),pi/4))
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">sqrt(2)/2 
+</span></div><p>The <span style="font-family:monospace">slope</span> command has <span style="font-family:monospace">slopeat</span> and
+<span style="font-family:monospace">slopeatraw</span> versions (see section <a href="cascmd_en880.html#sec%3Ameasdisplay">12.14.1</a>).</p>
 <hr>
 <a href="cascmd_en886.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

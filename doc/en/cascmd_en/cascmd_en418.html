@@ -4,43 +4,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Remove elements of a list : remove</title>
+<title>Determinant of a matrix with coefficients in ℤ/pℤ : Det</title>
 </head>
 <body >
 <a href="cascmd_en417.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en419.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec507" class="subsection">5.40.22  Remove elements of a list : <span style="font-family:monospace">remove</span></h3>
-<p><a id="hevea_default647"></a>
-<span style="font-family:monospace">remove</span> takes as argument : a boolean function <span style="font-family:monospace">f</span> and 
-a list <span style="font-family:monospace">L</span>.<br>
-<span style="font-family:monospace">remove</span> removes in the list <span style="font-family:monospace">L</span>, the elements <span style="font-family:monospace">c</span> such that 
-<span style="font-family:monospace">f(c)==true</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">remove(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</span></div><p>
+<h3 id="sec502" class="subsection">5.37.5  Determinant of a matrix with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ : <span style="font-family:monospace">Det</span></h3>
+<p><a id="hevea_default661"></a>
+<span style="font-family:monospace">Det</span> is the inert form of <span style="font-family:monospace">det</span>.<br>
+<span style="font-family:monospace">Det</span> takes as argument a matrix with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ.<br>
+<span style="font-family:monospace">Det</span> returns <span style="font-family:monospace">det</span> without evaluation. 
+It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to 
+find the determinant of a matrix with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ.<br>
+Input in <span style="font-family:monospace">Xcas</span> mode :
+</p><div class="center"><span style="font-family:monospace">Det([[1,2,9] mod 13,[3,10,0] mod 13,[3,11,1] mod 13])</span></div><p> 
 Output :
-</p><div class="center"><span style="font-family:monospace">[0,1,1]</span></div><p>
-<span style="font-weight:bold">Remark</span> The same applies on strings, for example,
-to remove all the "a" of a string:<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">ord("a")</span></div><p>
+</p><div class="center"><span style="font-family:monospace">det([[1%13,2%13,-4%13],[3%13,-3%13,0%13], [3%13,-2%13,1%13]])</span></div><p>
+you need to <span style="font-family:monospace">eval(ans())</span> to get :
+</p><div class="center"><span style="font-family:monospace">5%13</span></div><p> 
+hence, in ℤ/13ℤ, the determinant of
+<span style="font-style:italic">A</span>=[[1, 2, 9],[3,10,0],[3,11,1]] is <span style="font-family:monospace">5%13</span> (in ℤ, <span style="font-family:monospace">det(A)=31</span>).<br>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Det([[1,2,9],[3,10,0],[3,11,1]]) mod 13</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">97</span></div><p>
-Input :
-</p><pre class="verbatim">f(chn):={
-  local l:=length(chn)-1;
-  return remove(x-&gt;(ord(x)==97),seq(chn[k],k,0,l));
-}
-</pre><p>
-Then, input :
-</p><div class="center"><span style="font-family:monospace">f("abracadabra")</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">["b","r","c","d","b","r"]</span></div><p>
-To get a string, input :
-</p><div class="center"><span style="font-family:monospace">char(ord(["b","r","c","d","b","r"])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">"brcdbr"</span></div>
+</p><div class="center"><span style="font-family:monospace">5</span></div>
 <hr>
 <a href="cascmd_en417.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

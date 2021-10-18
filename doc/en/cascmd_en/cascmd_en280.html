@@ -4,46 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Convert to a symbolic polynomial : r2e poly2symb</title>
+<title>Changing the sampling rate : resample</title>
 </head>
 <body >
 <a href="cascmd_en279.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en281.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec350" class="subsection">5.27.1  Convert to a symbolic polynomial : <span style="font-family:monospace">r2e poly2symb</span></h3>
-<p><a id="hevea_default462"></a><a id="hevea_default463"></a>
-<span style="font-family:monospace">r2e</span> or <span style="font-family:monospace">poly2symb</span> takes as argument 
-</p><ul class="itemize"><li class="li-itemize">
-a list of 
-coefficients of a polynomial (by decreasing order) and a symbolic
-variable name 
-(by default <span style="font-family:monospace">x</span>)
-</li><li class="li-itemize">or a sum of monomials <span style="font-family:monospace">%%%{coeff,[n1,....nk] %%%}</span> 
-and a vector of symbolic variables <span style="font-family:monospace">[x1,...,xk]</span>.
-</li></ul><p>
-<span style="font-family:monospace">r2e</span> or <span style="font-family:monospace">poly2symb</span> transforms the argument into a symbolic
-polynomial.<br>
-Example with univariate polynomials, input :
-</p><div class="center"><span style="font-family:monospace">r2e([1,0,-1],x)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">r2e([1,0,-1])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">poly2symb([1,0,-1],x)</span></div><p>
+<h3 id="sec349" class="subsection">5.26.8  Changing the sampling rate : <span style="font-family:monospace">resample</span><a id="hevea_default496"></a></h3>
+<p>
+<span style="font-family:monospace">resample</span> takes an audio clip as its first argument. The target sample rate can be passed as the second argument (by default 44100 Hz), optionally followed by a quality level specification (an integer). The return value is the input audio clip resampled to the desired rate. The quality level can range from 0 (poor) to 4 (best). By default, it is set to 2.</p><p>Giac does resampling by using <a href="http://www.mega-nerd.com/libsamplerate/"><span style="font-family:monospace">libsamplerate</span></a> library written by Erik de Castro Lopo. For more information see the library documentation.</p><p>For example, assume that the directory <span style="font-family:monospace">sounds</span> contains a WAV file <span style="font-family:monospace">example.wav</span>. Input :
+</p><div class="center">
+<span style="font-family:monospace">clip:=readwav("/path/to/sounds/example.wav"):; samplerate(clip)
+</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">x*x-1</span></div><p>
-Example with sparse multivariate polynomials, input:
-</p><div class="center"><span style="font-family:monospace">poly2symb(%%%{1,[2]%%%}+%%%{-1,[0]%%%},[x])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">r2e(%%%{1,[2]%%%}+%%%{-1,[0]%%%},[x])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^2</span></code><span style="font-family:monospace">-1</span></div><p>
+</p><div class="center">
+<span style="font-family:monospace">44100
+</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">r2e(%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%},[x,y])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">poly2symb(%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%},[x,y])</span></div><p>
+</p><div class="center">
+<span style="font-family:monospace">res:=resample(clip,48000):; samplerate(res)
+</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x*y+2*y</span></div>
+</p><div class="center">
+<span style="font-family:monospace">48000
+</span></div>
 <hr>
 <a href="cascmd_en279.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

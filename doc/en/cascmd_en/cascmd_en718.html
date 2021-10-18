@@ -4,74 +4,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Starting the debugger</title>
+<title>The geometric distribution</title>
 </head>
 <body >
 <a href="cascmd_en717.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en719.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec936" class="subsection">10.5.1  Starting the debugger</h3>
-<p>To start the debugger, you give the <span style="font-family:monospace">debug</span><a id="hevea_default1192"></a> command an argument
-of a function and its argument. That will bring up a debug window
-which contains a pane with the program with the current line highlighted, an
-<span style="font-family:monospace">eval</span> entry box, a pane with the program including the
-breakpoints, a row of buttons, and a pane keeping track of
-the values of variables. By default, the value of all variables in
-the program are in this pane. The buttons are shortcuts
-for entering commands in the <span style="font-family:monospace">eval</span> box, but you can enter
-other commands in the <span style="font-family:monospace">eval</span> box to change the values of
-variables or to run a command in the context of the program.</p>
-<h5 id="sec937" class="paragraph">The <span style="font-family:monospace">sst</span><a id="hevea_default1193"></a> button</h5>
-<p>
-This button will run the <span style="font-family:monospace">sst</span> command, which takes no
-arguments and runs the highlighted line in the program before moving
-to the next line.</p>
-<h5 id="sec938" class="paragraph">The <span style="font-family:monospace">in</span><a id="hevea_default1194"></a> button</h5>
-<p>
-This button will run the <span style="font-family:monospace">sst_in</span> command, which takes no
-argument and runs one step in the program or a user defined
-function used in the program.</p>
-<h5 id="sec939" class="paragraph">The <span style="font-family:monospace">cont</span><a id="hevea_default1195"></a> button</h5>
-<p>
-This button will run the <span style="font-family:monospace">cont</span> command, which takes no
-arguments and runs the commands from the highlighted line to a breakpoint.</p>
-<h5 id="sec940" class="paragraph">The <span style="font-family:monospace">kill</span><a id="hevea_default1196"></a> button</h5>
-<p>
-This button will run the <span style="font-family:monospace">kill</span> command, which exits the debugger.</p>
-<h5 id="sec941" class="paragraph">The <span style="font-family:monospace">break</span><a id="hevea_default1197"></a> button</h5>
-<p>
-This button will put the command <span style="font-family:monospace">breakpoint</span><a id="hevea_default1198"></a>
-in the <span style="font-family:monospace">eval</span> box, with default
-arguments of the current program and the current line. It sets a
-breakpoint at the given line of the given program.
-Alternatively, if you click on a line in the program in the top pane,
-you will get the <span style="font-family:monospace">breakpoint</span> command with that program and the
-line you clicked on.</p><p>You can set a breakpoint when you write a program with the
-<span style="font-family:monospace">halt</span><a id="hevea_default1199"></a><span style="font-family:monospace">()</span> command. When a program has a
-<span style="font-family:monospace">halt</span> command, then running the program will bring up the
-debugger. If you want to debug the program, though, it is still
-better to use the debug command. Also, you should remove any
-<span style="font-family:monospace">halt</span> commands when you are done debugging.</p>
-<h5 id="sec942" class="paragraph">The <span style="font-family:monospace">rmbrk</span><a id="hevea_default1200"></a> button</h5>
-<p>
-This button will put the command
-<span style="font-family:monospace">rmbreakpoint</span><a id="hevea_default1201"></a> in the <span style="font-family:monospace">eval</span> box , with default
-arguments of the current program and the current line. It removes a 
-breakpoint at the given line of the given program. Alternatively, you
-can click on the line in the program in the top pane with the bookmark
-you want to remove.</p>
-<h5 id="sec943" class="paragraph">The <span style="font-family:monospace">watch</span><a id="hevea_default1202"></a> button</h5>
-<p>
-This button will put the command <span style="font-family:monospace">watch</span> in the
-<span style="font-family:monospace">eval</span> box, without the arguments
-filled in. It takes a list of variables as arguments, and will keep
-track of the values of these variables in the variable pane.</p>
-<h5 id="sec944" class="paragraph">The <span style="font-family:monospace">rmwtch</span><a id="hevea_default1203"></a> button</h5>
-<p>
-This button will put the command <span style="font-family:monospace">rmwatch</span><a id="hevea_default1204"></a> in
-the <span style="font-family:monospace">eval</span> box without the arguments filled in. The arguments
-are the variables you want to remove from the watch list.</p>
+<h3 id="sec911" class="subsection">8.4.11  The geometric distribution</h3>
+<h4 id="sec912" class="subsubsection">The probability density function for the geometric
+distribution: <span style="font-family:monospace">geometric</span><a id="hevea_default1252"></a></h4>
+<p>If an experiment with probability of success <span style="font-style:italic">p</span> is iterated, the
+probability that the first success occurs on the <span style="font-style:italic">k</span>th trial is
+(1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">k</span>−1</sup><span style="font-style:italic">p</span>. This gives the geometric distribution (with parameter
+<span style="font-style:italic">p</span>) on the natural numbers. Given such a <span style="font-style:italic">p</span>, the geometric density
+function at <span style="font-style:italic">n</span> is given by <span style="font-family:monospace">geometric</span>(<span style="font-style:italic">p</span>,<span style="font-style:italic">n</span>) = (1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">n</span>−1</sup><span style="font-style:italic">p</span>.
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">geometric(0.2,3)
+</span></div><p>
+for example, you will get
+</p><div class="center">
+<span style="font-family:monospace">0.128 
+</span></div>
+<h4 id="sec913" class="subsubsection">The cumulative distribution function of the geometric
+distribution: <span style="font-family:monospace">geometric_cdf</span><a id="hevea_default1253"></a></h4>
+<p>The cumulative distribution function for the geometric distribution with
+parameter <span style="font-style:italic">p</span> at a natural number <span style="font-style:italic">n</span> is
+<span style="font-family:monospace">geometric_cdf</span>(<span style="font-style:italic">p</span>,<span style="font-style:italic">n</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">n</span>), which in this
+case turns out to be <span style="font-family:monospace">geometric_cdf</span>(<span style="font-style:italic">p</span>,<span style="font-style:italic">n</span>) =
+1 − (1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">n</span></sup>.
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">geometric_cdf(0.2,3)
+</span></div><p>
+for example, you will get
+</p><div class="center">
+<span style="font-family:monospace">0.488
+</span></div><p>If you give <span style="font-family:monospace">geometric_cdf</span> an extra argument <span style="font-style:italic">k</span>, also a
+natural number, you will get the probability that
+the random variable lies between the two values;
+<span style="font-family:monospace">geometric_cdf(</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">k</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">n</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">k</span>). 
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">geometric_cdf(0.2,3,5)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.31232
+</span></div>
+<h4 id="sec914" class="subsubsection">The inverse distribution function for the
+geometric distribution: <span style="font-family:monospace">geometric_icdf</span><a id="hevea_default1254"></a></h4>
+<p>The inverse distribution function for the geometric
+distribution with parameter <span style="font-style:italic">p</span> is computed with
+<span style="font-family:monospace">geometric_icdf(</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
+smallest natural number <span style="font-style:italic">n</span> with <span style="font-family:monospace">geometric_cdf</span>(<span style="font-style:italic">p</span>,<span style="font-style:italic">n</span>) ≥ <span style="font-style:italic">h</span>. If you enter
+</p><div class="center">
+<span style="font-family:monospace">geometric_icdf(0.2,0.5)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">4
+</span></div>
 <hr>
 <a href="cascmd_en717.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

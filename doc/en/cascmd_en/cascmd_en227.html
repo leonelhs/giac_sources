@@ -4,22 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform inverse trigonometric functions into logarithms : atrig2ln</title>
+<title>Primitive and definite integral : risch</title>
 </head>
 <body >
 <a href="cascmd_en226.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en228.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec287" class="subsection">5.22.19  Transform inverse trigonometric functions into logarithms : <span style="font-family:monospace">atrig2ln</span></h3>
-<p><a id="hevea_default387"></a>
-<span style="font-family:monospace">atrig2ln</span> takes as argument an expression containing
-inverse trigonometric functions.<br>
-<span style="font-family:monospace">atrig2ln</span> rewrites these functions with complex logarithms.<br>
+<h3 id="sec282" class="subsection">5.20.2  Primitive and definite integral : <span style="font-family:monospace">risch</span></h3>
+<p><a id="hevea_default397"></a></p><p>The <span style="font-family:monospace">risch</span> command takes one mandatory argument and three
+optional arguments. The first argument is an expression to be
+integrated. If the variable is not <span style="font-family:monospace">x</span>, then the second
+argument is the variable. The third and fourth arguments are the
+limits of integration for when you want a definite integral.<br>
+<span style="font-family:monospace">risch</span> returns a primitive (with one or two arguments) or a
+definite integral (with four arguments).<br>
+Input:
+</p><div class="center"><span style="font-family:monospace">risch(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+Output:
+</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/3</span></div><p>
+Input:
+</p><div class="center"><span style="font-family:monospace">risch(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,0,1)</span></div><p>
+Output:
+</p><div class="center"><span style="font-family:monospace">1/3</span></div><p>
+Input:
+</p><div class="center"><span style="font-family:monospace">risch(t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,t)</span></div><p>
+Output:
+</p><div class="center"><span style="font-family:monospace">t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/3</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">atrig2ln(asin(x))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">risch(exp(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">i*log(x+sqrt(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1))+pi/2</span></div>
+</p><div class="center"><span style="font-family:monospace">integrate(exp(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),x)</span></div><p>
+that is to say that exp(−<span style="font-style:italic">x</span><sup>2</sup>) has no primitive expressed
+with usual functions.</p>
 <hr>
 <a href="cascmd_en226.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,51 +4,52 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Laguerre polynomials: laguerre</title>
+<title>Factorization : factor factoriser</title>
 </head>
 <body >
 <a href="cascmd_en329.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en331.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec406" class="subsection">5.29.3  Laguerre polynomials: <span style="font-family:monospace">laguerre</span></h3>
-<p><a id="hevea_default527"></a>
-<span style="font-family:monospace">laguerre</span> takes as argument an integer <span style="font-style:italic">n</span> and optionally 
-a variable name (by default <span style="font-style:italic">x</span>) and a parameter name (by default <span style="font-style:italic">a</span>).<br>
-<span style="font-family:monospace">laguerre</span> returns the Laguerre polynomial of degree <span style="font-style:italic">n</span> and of 
-parameter <span style="font-style:italic">a</span>.<br>
-If <span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>) denotes the Laguerre polynomial of degree <span style="font-style:italic">n</span> and 
-parameter <span style="font-style:italic">a</span>, the following recurrence relation holds:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">L</span>(0,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)=1,   
-<span style="font-style:italic">L</span>(1,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)=1+<span style="font-style:italic">a</span>−<span style="font-style:italic">x</span>,   
-<span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2<span style="font-style:italic">n</span>+<span style="font-style:italic">a</span>−1−<span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>−1,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>+<span style="font-style:italic">a</span>−1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>−2,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>) </td></tr>
-</table><p>
-These polynomials are orthogonal for the scalar product
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&lt;<span style="font-style:italic">f</span>,<span style="font-style:italic">g</span>&gt;=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">x</span><sup><span style="font-style:italic">a</span></sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span></sup><span style="font-style:italic">dx</span> </td></tr>
-</table><p>
+<h3 id="sec402" class="subsection">5.29.16  Factorization : <span style="font-family:monospace">factor factoriser</span></h3>
+<p><a id="hevea_default551"></a><a id="hevea_default552"></a><a id="sec:factor"></a>
+<span style="font-family:monospace">factor</span> takes as argument a polynomial or a list of 
+polynomials and optionally an algebraic extension, e.g. <span style="font-family:monospace">sqrt(n)</span>.<br>
+<span style="font-family:monospace">factor</span> factorizes the polynomial (or the polynomials in the list) on the
+field of its coefficients (the field is complexified in complex mode)
+or on the smallest extension containing the optional second argument.
+Unlike <span style="font-family:monospace">collect</span>,
+<span style="font-family:monospace">factor</span> will further factorize each factor of degree 2
+if <span style="font-family:monospace">Sqrt</span> is checked in the <span style="font-family:monospace">cas</span> configuration
+(see also <a href="cascmd_en185.html#sec%3Afactore">5.13.10</a>).
+You can check the current configuration in the status button under
+<span style="font-family:monospace">Xcas</span> and change the configuration by hitting this status button.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">laguerre(2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x+1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-2*a*x+3*a+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*x+2)/2</span></div><p>
+</p><div class="center"><span style="font-family:monospace">(x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">laguerre(2,y)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-2*a*y+3*a+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*y+2)/2</span></div><p>
+</p><div class="center"><span style="font-family:monospace">(-x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*(x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">laguerre(2,y,b)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
+Output if <span style="font-family:monospace">Sqrt</span> is not checked in the <span style="font-family:monospace">cas</span> configuration :
+</p><div class="center"><span style="font-family:monospace">(x-1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1)</span></div><p>
+Output if <span style="font-family:monospace">Sqrt</span> is checked in the <span style="font-family:monospace">cas</span> configuration :
+</p><div class="center"><span style="font-family:monospace">(x-1)*(x+(sqrt(5)-1)/2)*(x+(-sqrt(5)-1)/2)</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,sqrt(5))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(b</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-2*b*y+3*b+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*y+2)/2</span></div>
+</p><div class="center"><span style="font-family:monospace">((2*sqrt(5)-19)*((sqrt(5)+15)*x+</span><br>
+<span style="font-family:monospace">7*sqrt(5)-5)*(-x+1)*((sqrt(5)+25)*x-13*sqrt(5)-15))/6820</span>
+</div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
+Output in real mode :
+</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1</span></div><p>
+Output in complex mode :
+</p><div class="center"><span style="font-family:monospace">((-i)*x+1)*((i)*x+1)</span></div>
 <hr>
 <a href="cascmd_en329.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

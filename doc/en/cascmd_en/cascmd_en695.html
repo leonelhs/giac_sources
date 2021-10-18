@@ -4,44 +4,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Input</title>
+<title>Logarithmic regression: logarithmic_regression logarithmic_regression_plot</title>
 </head>
 <body >
 <a href="cascmd_en694.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en696.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec907" class="subsection">10.2.2  Input</h3>
-<p>You can prompt the user to enter a value for a variable with the
-<span style="font-family:monospace">input</span><a id="hevea_default1145"></a> (or <span style="font-family:monospace">Input</span> command). If you enter
+<h3 id="sec852" class="subsection">8.2.6  Logarithmic regression: <span style="font-family:monospace">logarithmic_regression</span><a id="hevea_default1185"></a> <span style="font-family:monospace">logarithmic_regression_plot</span><a id="hevea_default1186"></a></h3>
+<p>A set of points might be expected to lie on a logarithmic curve 
+<span style="font-style:italic">y</span>=<span style="font-style:italic">m</span> ln(<span style="font-style:italic">x</span>) + <span style="font-style:italic">b</span>. Given a set of points, either as a list of <span style="font-style:italic">x</span>-coordinates
+followed by a list of <span style="font-style:italic">y</span>-coordinates, or simply by a list of points,
+the <span style="font-family:monospace">logarithmic_regression</span> command will find the values of
+<span style="font-style:italic">m</span> and <span style="font-style:italic">b</span> which give the best fit exponential. For example, if you
+enter
 </p><div class="center">
-<span style="font-family:monospace">input(a)</span>
-</div><p>
-the the user will be given a box where they can enter a value for the
-variable <span style="font-family:monospace">a</span>. There will be a prompt
-indicating the name of the variable; if you want a more descriptive
-prompt, you can give <span style="font-family:monospace">input</span> a string argument before the
-variable name.
+<span style="font-family:monospace">evalf(logarithmic_regression([[1,1],[2,4],[3,9],[4,16]]))
+</span></div><p>
+or
 </p><div class="center">
-<span style="font-family:monospace">input("Set a to the value: ",a)</span>
-</div><p>
-will prompt the user with "Set a to the value: " before the input box.</p><p>If the value that you enter for <span style="font-family:monospace">input</span> is a string, it should
-be between quotes. If you want the user to enter a string without
-having to use the quotes, you can use
-<span style="font-family:monospace">InputStr</span><a id="hevea_default1146"></a> or
-<span style="font-family:monospace">textinput</span><a id="hevea_default1147"></a>, which will assume the input will
-be a string and so the user won’t need to use quotes.</p><p>The <span style="font-family:monospace">output</span><a id="hevea_default1148"></a> (or <span style="font-family:monospace">Output</span><a id="hevea_default1149"></a>)
-command can take strings (or variables representing strings) as
-arguments and can be used to add information to the input window. For
-example, if you enter
+<span style="font-family:monospace">evalf(logarithmic_regression([1,2,3,4],[1,4,9,16]))
+</span></div><p>
+(where the <span style="font-family:monospace">evalf</span> is used to get a numeric approximation to an
+exact expression) you will get
 </p><div class="center">
-<span style="font-family:monospace">input(output("Calculate p(a)"),"polynomial",p,"value",a)</span>
-</div><p>
-then you will get a window with a box containing
+<span style="font-family:monospace">10.1506450002,-0.564824055818
+</span></div><p>
+so the best fit exponential curve will be <span style="font-style:italic">y</span> = 10.1506450002 ln(<span style="font-style:italic">x</span>)
+−0.564824055818.</p><p>To plot the curve, you can use the command
+<span style="font-family:monospace">exponential_regression_plot</span>; if you enter
 </p><div class="center">
-<span style="font-family:monospace">Calculate p(a)</span>
+<span style="font-family:monospace">logarithmic_regression_plot([1,2,3,4],[1,4,9,16])
+</span></div><p>
+you will get
+</p><div class="center">
+<img src="cascmd_en048.png">
 </div><p>
-followed by the prompts for <span style="font-family:monospace">p</span> and <span style="font-family:monospace">a</span>.</p>
+which plots the graph, and has the equation and <span style="font-style:italic">R</span><sup>2</sup> value above the
+graph.</p>
 <hr>
 <a href="cascmd_en694.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

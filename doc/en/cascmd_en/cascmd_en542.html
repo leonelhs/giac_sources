@@ -4,51 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Gradient : derive deriver diff grad</title>
+<title>Make a matrix with a list of matrices : blockmatrix</title>
 </head>
 <body >
 <a href="cascmd_en541.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en543.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec660" class="subsection">5.54.1  Gradient : <span style="font-family:monospace">derive deriver diff grad</span></h3>
-<p><a id="hevea_default837"></a><a id="hevea_default838"></a><a id="hevea_default839"></a><a id="hevea_default840"></a><a id="sec:derive"></a><a id="hevea_default841"></a><a id="hevea_default842"></a>
-<span style="font-family:monospace">derive</span> (or <span style="font-family:monospace">diff</span> or <span style="font-family:monospace">grad</span>) takes two arguments : an 
-expression <span style="font-style:italic">F</span> of <span style="font-style:italic">n</span> real variables and a vector of these variable names.<br>
-<span style="font-family:monospace">derive</span> returns the gradient of <span style="font-style:italic">F</span>,
-where the gradient is the vector of all partial derivatives,
-for example in dimension <span style="font-style:italic">n</span>=3
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell"   style="width:90%;text-align:center"><hr class="hbar"></td><td class="dcell"   style="width:10%;text-align:center">▸</td></tr>
-<tr><td class="dcell"  colspan="2" style="text-align:center">grad</td></tr>
-<tr><td class="dcell"  colspan="2" style="text-align:center"> </td></tr>
-</table></td><td class="dcell">(<span style="font-style:italic">F</span>)= [</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span></td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span></td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">z</span></td></tr>
-</table></td><td class="dcell">] </td></tr>
-</table><p>
-<span style="font-weight:bold">Example</span> <br>
-Find the gradient of <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>−<span style="font-style:italic">xz</span><sup>3</sup>.<br>
+<h3 id="sec642" class="subsection">5.49.24  Make a matrix with a list of matrices : <span style="font-family:monospace">blockmatrix</span></h3>
+<p><a id="hevea_default853"></a>
+<span style="font-family:monospace">blockmatrix</span> takes as arguments two integers <span style="font-style:italic">n</span>,<span style="font-style:italic">m</span> and a 
+list of size <span style="font-style:italic">n</span>*<span style="font-style:italic">m</span> of matrices of the same dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span> 
+(or more generally such that the <span style="font-style:italic">m</span> first matrices 
+have the same number of rows and <span style="font-style:italic">c</span> columns, the 
+<span style="font-style:italic">m</span> next rows have the same number of rows and <span style="font-style:italic">c</span> columns, and so on ...).
+In both cases, we have <span style="font-style:italic">n</span> blocks of <span style="font-style:italic">c</span> columns.<br>
+<span style="font-family:monospace">blockmatrix</span> returns a matrix having <span style="font-style:italic">c</span> columns 
+by putting these <span style="font-style:italic">n</span> blocks one under another (vertical gluing). 
+If the matrix arguments
+have the same dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span>, the answer is a matrix of
+dimension <span style="font-style:italic">p</span>*<span style="font-style:italic">n</span> × <span style="font-style:italic">q</span>*<span style="font-style:italic">m</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">derive(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">diff(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">grad(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[idn(2),idn(2),idn(2), idn(2),idn(2),idn(2)])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[2*2*x*y-z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(x*3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)]</span></div><p>
-Output after simplification with <span style="font-family:monospace">normal(ans())</span> :
-</p><div class="center"><span style="font-family:monospace">[4*x*y-z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(3*x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)]</span></div><p>
-To find the critical points of 
-<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>−<span style="font-style:italic">xz</span><sup>3</sup>, input :
-</p><div class="center"><span style="font-family:monospace">solve(derive(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z]),[x,y,z])</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">[[1,0,1,0,1,0],[0,1,0,1,0,1], [1,0,1,0,1,0],[0,1,0,1,0,1]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(2),idn(2), idn(2),idn(2),idn(2),idn(2)])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[0,y,0]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[[1,0,1,0],[0,1,0,1], [1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">blockmatrix(2,2,[idn(2),newMat(2,3), newMat(3,2),idn(3)])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,1,0,0,0],[0,0,1,0,0], [0,0,0,1,0],[0,0,0,0,1]] </span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(1),newMat(1,4), newMat(2,3),idn(2),newMat(1,2),[[1,1,1]]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,0,0,1,0],[0,0,0,0,1],[0,0,1,1,1]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">A:=[[1,1],[1,1]];B:=[[1],[1]]</span></div><p>
+then :
+</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[2*A,3*A,4*A,5*B,newMat(2,4),6*B])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[2,2,3,3,4,4],[2,2,3,3,4,4], [5,0,0,0,0,6],[5,0,0,0,0,6]]</span></div>
 <hr>
 <a href="cascmd_en541.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

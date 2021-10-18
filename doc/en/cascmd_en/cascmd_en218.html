@@ -4,23 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform arcsin into arctan : asin2atan</title>
+<title>The domain of a function: domain</title>
 </head>
 <body >
 <a href="cascmd_en217.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en219.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec278" class="subsection">5.22.10  Transform arcsin into arctan : <span style="font-family:monospace">asin2atan</span></h3>
-<p><a id="hevea_default377"></a>
-<span style="font-family:monospace">asin2atan</span> takes as argument an expression containing 
-inverse trigonometric functions.<br>
-<span style="font-family:monospace">asin2atan</span> replaces arcsin(<span style="font-style:italic">x</span>) by 
- arctan(<span style="font-style:italic">x</span>/√<span style="text-decoration:overline">1−</span><span style="text-decoration:overline"><span style="font-style:italic">x</span></span><span style="text-decoration:overline">2</span>) in this expression.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">asin2atan(asin(x))</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">atan(x/sqrt(1-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span></div>
+<h3 id="sec269" class="subsection">5.18.1  The domain of a function: <span style="font-family:monospace">domain</span></h3>
+<p><a id="hevea_default382"></a></p><p>The <span style="font-family:monospace">domain</span> command takes one or two arguments. The first
+argument is an expression involving a single variable. If the
+variable is not <span style="font-family:monospace">x</span>, the variable used should be the second
+argument.<br>
+<span style="font-family:monospace">domain</span> returns the domain of the function defined by the
+expression.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">domain(ln(x+1))
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">x&gt;-1 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">domain(asin(2*t),t)
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">((t&gt;=(-1/2)) and (t&lt;=(1/2))) 
+</span></div>
 <hr>
 <a href="cascmd_en217.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

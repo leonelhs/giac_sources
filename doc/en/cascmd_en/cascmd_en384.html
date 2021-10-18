@@ -4,27 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Center of an interval : interval2center</title>
+<title>Partial fraction expansion over ℂ: cpartfrac</title>
 </head>
 <body >
 <a href="cascmd_en383.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en385.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec468" class="subsection">5.37.3  Center of an interval : <span style="font-family:monospace">interval2center</span></h3>
-<p><a id="hevea_default600"></a>
-<span style="font-family:monospace">interval2center</span> takes as argument an interval or a list of
-intervals.<br>
-<span style="font-family:monospace">interval2center</span> returns the center of this interval or the list of
-centers of these intervals.<br>
+<h3 id="sec464" class="subsection">5.33.10  Partial fraction expansion over ℂ: <span style="font-family:monospace">cpartfrac</span></h3>
+<p><a id="hevea_default615"></a>
+<span style="font-family:monospace">cpartfrac</span> takes as argument a rational fraction.<br>
+<span style="font-family:monospace">cpartfrac</span> returns the partial fraction expansion of this rational 
+fraction over the complex numbers, whether <span style="font-family:monospace">Xcas</span> is in real or
+complex mode.</p><p><span style="font-weight:bold">Example</span> :<br>
+Find the partial fraction expansion of :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>5</sup>−2<span style="font-style:italic">x</span><sup>3</sup>+1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>4</sup>−2<span style="font-style:italic">x</span><sup>3</sup>+2<span style="font-style:italic">x</span><sup>2</sup>−2<span style="font-style:italic">x</span>+1</td></tr>
+</table></td></tr>
+</table><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">interval2center(3..5)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">4</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">interval2center([2..4,4..6,6..10])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[3,5,8]</span></div>
+</p><div class="center"><span style="font-family:monospace">cpartfrac((x^5-2*x^3+1)/(x^4-2*x^3+2*x^2-2*x+1))
+</span></div><p>
+Output:
+</p><div class="center"><span style="font-family:monospace">x+2+(-1+2*i)/((2-2*i)*((i)*x+1))+1/(2*(-x+1))+</span></div><div class="center"><span style="font-family:monospace">(-1-2*i)/((2-2*i)*(x+i))</span></div>
 <hr>
 <a href="cascmd_en383.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,30 +4,51 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Integer and fractional part : propfrac</title>
+<title>Lagrange’s polynomial : lagrange interp</title>
 </head>
 <body >
 <a href="cascmd_en342.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en344.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec421" class="subsection">5.31.8  Integer and fractional part : <span style="font-family:monospace">propfrac</span></h3>
-<p><a id="hevea_default541"></a><a id="sec:propfrac"></a>
-<span style="font-family:monospace">propfrac</span> takes as argument a rational fraction.<br>
-<span style="font-family:monospace">propfrac</span> rewrites this rational fraction as the sum of its
-integer part and proper fractional part.<br>
-<span style="font-family:monospace">propfrac(A(x)/B(x))</span> writes the fraction <span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)/<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>) (after 
-reduction), as :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">Q</span>(<span style="font-style:italic">x</span>)+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">R</span>(<span style="font-style:italic">x</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)</td></tr>
-</table></td><td class="dcell">      where  <span style="font-style:italic">R</span>(<span style="font-style:italic">x</span>)=0 
- or  0≤ degree(<span style="font-style:italic">R</span>(<span style="font-style:italic">x</span>))&lt; degree(<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)) </td></tr>
-</table><p>
+<h3 id="sec415" class="subsection">5.29.29  Lagrange’s polynomial : <span style="font-family:monospace">lagrange interp</span></h3>
+<p><a id="hevea_default569"></a><a id="hevea_default570"></a>
+<span style="font-family:monospace">lagrange</span> takes as argument two lists of size <span style="font-family:monospace">n</span> (resp. a 
+matrix with two rows and <span style="font-family:monospace">n</span> columns) and the name of a variable 
+<span style="font-family:monospace">var</span> (by default <span style="font-family:monospace">x</span>).<br>
+The first list (resp. row) corresponds to the abscissa values <span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub> (<span style="font-style:italic">k</span>=1..<span style="font-style:italic">n</span>), 
+and the second list (resp. row) corresponds to ordinate values <span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub> 
+(<span style="font-style:italic">k</span>=1..<span style="font-style:italic">n</span>).<br>
+<span style="font-family:monospace">lagrange</span> returns a polynomial expression <span style="font-family:monospace">P</span> 
+with respect to <span style="font-family:monospace">var</span> of degree 
+<span style="font-family:monospace">n-1</span>, such that <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)=<span style="font-style:italic">y</span><sub><span style="font-style:italic">i</span></sub>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">propfrac((5*x+3)*(x-1)/(x+2))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">lagrange([[1,3],[0,1]])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">lagrange([1,3],[0,1])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">5*x-12+21/(x+2)</span></div>
+</p><div class="center"><span style="font-family:monospace">(x-1)/2</span></div><p>
+since <span style="font-style:italic">x</span>−1/2=0 for <span style="font-style:italic">x</span>=1, and <span style="font-style:italic">x</span>−1/2=1 for <span style="font-style:italic">x</span>=3.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">lagrange([1,3],[0,1],y)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">(y-1)/2</span></div><p>
+<span style="font-weight:bold">Warning</span><br>
+<span style="font-family:monospace">f:=lagrange([1,2],[3,4],y)</span> does not return a function 
+but an expression with respect to <span style="font-style:italic">y</span>.
+To define <span style="font-style:italic">f</span> as a function, input
+</p><div class="center">
+<span style="font-family:monospace">f:=unapply(lagrange([1,2],[3,4],x),x)</span>
+</div><p>
+Avoid <span style="font-family:monospace">f(x):=lagrange([1,2],[3,4],x)</span> since
+the Lagrange polynomial would be computed each time <span style="font-family:monospace">f</span> is called
+(indeed in a function definition, the second member of the assignment
+is not evaluated).
+Note also that <br>
+<span style="font-family:monospace">g(x):=lagrange([1,2],[3,4])</span> would not work
+since the default argument of <span style="font-family:monospace">lagrange</span>
+would be global, hence not the same as the local
+variable used for the definition of <span style="font-family:monospace">g</span>.</p>
 <hr>
 <a href="cascmd_en342.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

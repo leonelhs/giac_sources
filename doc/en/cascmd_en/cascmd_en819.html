@@ -4,35 +4,112 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Check it two lines in the plane are parallel: is_parallel</title>
+<title>Commands for global display features</title>
 </head>
 <body >
 <a href="cascmd_en818.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en820.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1066" class="subsection">11.16.11  Check it two lines in the plane are parallel: <span style="font-family:monospace">is_parallel</span><a id="hevea_default1320"></a></h3>
+<h3 id="sec1066" class="subsection">12.3.3  Commands for global display features</h3>
+<h4 id="sec1067" class="subsubsection">Add a legend: <span style="font-family:monospace">legend</span></h4>
 <p>
-<a id="sec:2dcheckparallel"></a></p><p>See section <a href="cascmd_en879.html#sec%3A3dcheckparallel">12.13.3</a> for checking for parallels in
-three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_parallel</span> command is a Boolean function which takes as
-argument two lines.</p><p><span style="font-family:monospace">is_parallel</span> returns <span style="font-family:monospace">1</span> if the lines are parallel and
-returns <span style="font-family:monospace">0</span> otherwise.<br>
+<a id="hevea_default1474"></a>
+<a id="sec:addlegend"></a></p><p>The <span style="font-family:monospace">legend</span> command takes two arguments and an optional third. The
+arguments are:
+</p><ul class="itemize"><li class="li-itemize">
+A position to put the legend. This can either be a point or a
+list of two integers giving the number of pixels from the upper left
+hand corner.
+</li><li class="li-itemize">The legend itself, a string or a variable.
+</li><li class="li-itemize">An optional third parameter indicating where to put the legend
+relative to the point. By default, it will be to the upper right of
+the point (<span style="font-family:monospace">quadrant1</span>), but you can specify
+<span style="font-family:monospace">quadrant1</span>, <span style="font-family:monospace">quadrant2</span>, <span style="font-family:monospace">quadrant3</span> or
+<span style="font-family:monospace">quadrant4</span>.
+</li></ul><p>
+For example, to put "hello" to the upper left of the point
+(1,1):<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">is_parallel(line(0,1+i),line(i,-1))
+<span style="font-family:monospace">legend(1+i,"hello",quadrant3)
+</span></div><p>
+or<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">legend(1+i,quadrant3,"hello")
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">1 
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">is_parallel(line(0,1+i),line(i,-1-i)) 
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">0 
+<span style="font-family:monospace"><img src="cascmd_en068.png">
 </span></div>
+<h4 id="sec1068" class="subsubsection">Change various features:<span style="font-family:monospace">display, color</span></h4>
+<p>
+<a id="hevea_default1475"></a><a id="hevea_default1476"></a></p><p>The <span style="font-family:monospace">display</span> command changes the properties of
+graphics; the same properties that can also be changed with the <span style="font-family:monospace">display</span> and
+<span style="font-family:monospace">color</span> parameters. (See section <a href="cascmd_en818.html#sec%3Alocalfeatures">12.3.2</a>.) 
+The <span style="font-family:monospace">color</span> command is
+the same as the <span style="font-family:monospace">display</span> command.</p><p>The <span style="font-family:monospace">display</span> command can draw objects with specified
+properties. In this case, the first argument will be a command to
+create the object and the second argument will be a value for the 
+<span style="font-family:monospace">display</span> or <span style="font-family:monospace">color</span> parameter.
+Both<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">display(triangle(0,1,1+i),red)
+</span></div><p>
+and<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">triangle(0,1,1+i,display=red)
+</span></div><p>
+draw<br>
+Output:
+</p><div class="center">
+<span style="font-family:monospace"><img src="cascmd_en069.png">
+</span></div><p>
+Similarly, both<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">triangle(0,1,1+i,display=filled)
+</span></div><p>
+and<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">display(triangle(0,1,1+i),filled)
+</span></div><p>
+draw<br>
+Output:
+</p><div class="center">
+<span style="font-family:monospace"><img src="cascmd_en070.png">
+</span></div><p>
+The <span style="font-family:monospace">display</span> command can also take a second argument of
+<span style="font-family:monospace">hidden_name</span>. By default, if a geometric object is named,
+the drawing is labeled.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A := triangle(0,1,1+i)
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace"><img src="cascmd_en071.png">
+</span></div><p>
+Creating the object with the <span style="font-family:monospace">display</span> command and the
+<span style="font-family:monospace">hidden_name</span> argument will draw it without the label.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">display(A := triangle(0,1,1+i),hidden_name)
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace"><img src="cascmd_en072.png">
+</span></div><p>The <span style="font-family:monospace">display</span> command can also be used without drawing an
+object, such as <span style="font-family:monospace">display(hidden_name)</span> or
+<span style="font-family:monospace">display(filled)</span>. In this case it will be a
+global command; the display effect will apply to all objects
+afterwards. Entering <span style="font-family:monospace">display(0)</span> will reset the display
+parameters; afterwards, for example, the colors will be black, the
+figures won’t be filled, and the objects will have labels.</p>
 <hr>
 <a href="cascmd_en818.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

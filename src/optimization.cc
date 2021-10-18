@@ -1610,6 +1610,7 @@ void find_local_extrema(gen_map &cpts,const gen &f,const vecteur &g,const vecteu
  */
 gen _extrema(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
+    if (calc_mode(contextptr)==1) return critical(g,true,contextptr);
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
         return gentypeerr(contextptr);
     vecteur &gv=*g._VECTptr,constr;

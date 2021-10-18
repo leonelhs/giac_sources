@@ -4,34 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Replace small values by 0: epsilon2zero</title>
+<title>Image of a linear function : image</title>
 </head>
 <body >
 <a href="cascmd_en565.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en567.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec689" class="subsection">5.58.1  Replace small values by 0: <span style="font-family:monospace">epsilon2zero</span></h3>
-<p>
-<a id="hevea_default874"></a> <a id="sec:epsilon2zero"></a>
-<span style="font-family:monospace">epsilon2zero</span> takes as argument an expression of <span style="font-family:monospace">x</span>.<br>
-<span style="font-family:monospace">epsilon2zero</span> returns the expression where the values of modulus
-less than <span style="font-family:monospace">epsilon</span> are replaced by zero. The expression
-is not evaluated.<br>
-The <span style="font-family:monospace">epsilon</span><a id="hevea_default875"></a> value is defined in the <span style="font-family:monospace">cas</span> 
-configuration (by default <span style="font-family:monospace">epsilon=1e-10</span>).<br>
+<h3 id="sec668" class="subsection">5.51.11  Image of a linear function : <span style="font-family:monospace">image</span></h3>
+<p><a id="hevea_default893"></a>
+<span style="font-family:monospace">image</span> takes as argument the matrix of a linear 
+function <span style="font-style:italic">f</span> with respect to the canonical basis.<br>
+<span style="font-family:monospace">image</span> returns a list of vectors that is a basis of the image 
+of <span style="font-style:italic">f</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">epsilon2zero(1e-13+x) </span></div><p>
-Output (with <span style="font-family:monospace">epsilon=1e-10</span>) :
-</p><div class="center"><span style="font-family:monospace">0+x</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">epsilon2zero((1e-13+x)*100000) </span></div><p>
-Output (with <span style="font-family:monospace">epsilon=1e-10</span>) :
-</p><div class="center"><span style="font-family:monospace">(0+x)*100000</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">epsilon2zero(0.001+x) </span></div><p>
-Output (with <span style="font-family:monospace">epsilon=0.0001</span>) :
-</p><div class="center"><span style="font-family:monospace">0.001+x</span></div>
+</p><div class="center"><span style="font-family:monospace">image([[1,1,2],[2,1,3],[3,1,4]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[-1,0,1],[0,-1,-2]]</span></div>
 <hr>
 <a href="cascmd_en565.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,44 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Power regression: power_regression power_regression_plot</title>
+<title>The conjugate gradient algorithm:
+conjugate_gradient</title>
 </head>
 <body >
 <a href="cascmd_en612.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en614.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec756" class="subsection">7.2.7  Power regression: <span style="font-family:monospace">power_regression</span><a id="hevea_default991"></a> <span style="font-family:monospace">power_regression_plot</span><a id="hevea_default992"></a></h3>
-<p>To find the graph <span style="font-style:italic">y</span>=<span style="font-style:italic">bx</span><sup><span style="font-style:italic">m</span></sup> which best fits a set of data points, you
-can use the <span style="font-family:monospace">power_regression</span> command.
-Given a set of points, either as a list of <span style="font-style:italic">x</span>-coordinates
-followed by a list of <span style="font-style:italic">y</span>-coordinates, or simply by a list of points,
-the <span style="font-family:monospace">power_regression</span> command will find the values of
-<span style="font-style:italic">m</span> and <span style="font-style:italic">b</span> which give the best fit curve. For example, if you
-enter
+<h3 id="sec735" class="subsection">5.58.4  The conjugate gradient algorithm:
+<span style="font-family:monospace">conjugate_gradient</span></h3>
+<p><a id="hevea_default958"></a></p><p>The <span style="font-family:monospace">conjugate_gradient</span> command takes two mandatory arguments
+and two optional arguments. The mandatory arguments are an <span style="font-style:italic">n</span>× <span style="font-style:italic">n</span> positive
+definite symmetric matrix <span style="font-style:italic">A</span> and a vector <span style="font-style:italic">y</span> of length <span style="font-style:italic">n</span>. The
+optional arguments are a vector <span style="font-style:italic">x</span>0 of length <span style="font-style:italic">n</span> and a positive
+number є.<br>
+<span style="font-family:monospace">conjugate_gradient</span> uses the conjugate gradient algorithm to
+return the solution to <span style="font-style:italic">Ax</span> = <span style="font-style:italic">y</span> to within є or
+<span style="font-family:monospace">epsilon</span>. The vector <span style="font-style:italic">x</span>0 is an optional initial approximation.<br>
+Input:
 </p><div class="center">
-<span style="font-family:monospace">power_regression([[1,1],[2,4],[3,9],[4,16]])
+<span style="font-family:monospace">conjugate_gradient([[2,1],[1,5]],[1,0])
 </span></div><p>
-or
+Output:
 </p><div class="center">
-<span style="font-family:monospace">power_regression([1,2,3,4],[1,4,9,16])
+<span style="font-family:monospace">[5/9,-1/9] 
 </span></div><p>
-you will get
+Input:
 </p><div class="center">
-<span style="font-family:monospace">2.0, 1.0
+<span style="font-family:monospace">conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-2)
 </span></div><p>
-so the best fit (in this case, exact fit) power curve will be <span style="font-style:italic">y</span> = 1.0 <span style="font-style:italic">x</span><sup>2</sup>.</p><p>To plot the curve, you can use the command
-<span style="font-family:monospace">power_regression_plot</span>; if you enter
+Output:
 </p><div class="center">
-<span style="font-family:monospace">power_regression_plot([1,2,3,4],[1,4,9,16])
+<span style="font-family:monospace">[0.555,-0.11] 
 </span></div><p>
-you will get
+Input:
 </p><div class="center">
-<img src="cascmd_en040.png">
-</div><p>
-which plots the graph, and has the equation and <span style="font-style:italic">R</span><sup>2</sup> value above the
-graph. Note that in this case the <span style="font-style:italic">R</span><sup>2</sup> value is 1, indicating that
-the data points fall directly on the curve.</p>
+<span style="font-family:monospace">conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-10)
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[0.555555555556,-0.111111111111] 
+</span></div>
 <hr>
 <a href="cascmd_en612.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

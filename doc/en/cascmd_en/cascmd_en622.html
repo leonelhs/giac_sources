@@ -4,33 +4,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Producing random numbers with an exponential distribution: randexp</title>
+<title>Divergence : divergence</title>
 </head>
 <body >
 <a href="cascmd_en621.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en623.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec766" class="subsection">7.3.7  Producing random numbers with an exponential distribution: <span style="font-family:monospace">randexp</span><a id="hevea_default1009"></a></h3>
-<p>Recall that given a positive number <span style="font-style:italic">a</span>, the corresponding exponential
-distribution satisfies
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">t</span>) = <span style="font-style:italic">a</span> </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">t</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">exp</span>(−<span style="font-style:italic">a</span> * <span style="font-style:italic">u</span>) <span style="font-style:italic">du</span></td></tr>
-</table><p>
-Given a parameter <span style="font-style:italic">a</span>, the command <span style="font-family:monospace">randexp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> will return a
-number chosen randomly according to the corresponding exponential
-distribution. For example, if you enter
+<h3 id="sec745" class="subsection">5.59.4  Divergence : <span style="font-family:monospace">divergence</span></h3>
+<p><a id="hevea_default972"></a>
+<span style="font-family:monospace">divergence</span> takes two arguments : a vector 
+field of dimension <span style="font-style:italic">n</span> depending on <span style="font-style:italic">n</span> real variables.<br>
+<span style="font-family:monospace">divergence</span> returns the divergence of <span style="font-style:italic">F</span> that is the sum 
+of the derivative of the <span style="font-style:italic">k</span>-th component with respect
+to the <span style="font-style:italic">k</span>-th variable. For example in dimension <span style="font-style:italic">n</span>=3:
 </p><div class="center">
-<span style="font-family:monospace">randexp(1)
-</span></div><p>
-you might get
-</p><div class="center">
-<span style="font-family:monospace">0.193354391918
-</span></div>
+<span style="font-family:monospace">divergence([A,B,C],[x,y,z])</span>=∂ <span style="font-style:italic">A</span>/∂ <span style="font-style:italic">x</span>+∂ <span style="font-style:italic">B</span>/∂ <span style="font-style:italic">y</span>+∂ <span style="font-style:italic">C</span>/∂ <span style="font-style:italic">z</span>
+</div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">divergence([x*z,-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">y],[x,y,z])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">z+-2*y</span></div>
 <hr>
 <a href="cascmd_en621.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,40 +4,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Centered cubes: centered_cube</title>
+<title>Check if four points form a harmonic division: is_harmonic</title>
 </head>
 <body >
 <a href="cascmd_en913.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en915.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1183" class="subsection">12.17.2  Centered cubes: <span style="font-family:monospace">centered_cube</span><a id="hevea_default1422"></a></h3>
-<p>The <span style="font-family:monospace">centered_cube</span> command takes as arguments three points,
-<span style="font-family:monospace">A</span>, <span style="font-family:monospace">B</span> and <span style="font-family:monospace">C</span>.</p><p><span style="font-family:monospace">centered_cube</span> returns and draws the cube centered at
-<span style="font-family:monospace">A</span> which has <span style="font-family:monospace">B</span> as a vertex and <span style="font-family:monospace">ABC</span> as a
-plane of symmetry. This plane of symmetry has an edge of the
-cube containing <span style="font-family:monospace">B</span>, the other endpoint of this edge is on the
-same side of line <span style="font-family:monospace">AB</span> as <span style="font-family:monospace">C</span> is.<br>
+<h3 id="sec1176" class="subsection">12.16.15  Check if four points form a harmonic division: <span style="font-family:monospace">is_harmonic</span><a id="hevea_default1588"></a></h3>
+<p>The <span style="font-family:monospace">is_harmonic</span> command is a Boolean function which takes as
+arguments four points.</p><p><span style="font-family:monospace">is_harmonic</span> returns <span style="font-family:monospace">1</span> if the four points form a
+harmonic range and returns <span style="font-family:monospace">0</span> otherwise.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">centered_cube([0,0,0],[3,3,3],[0,1,0])
+<span style="font-family:monospace">is_harmonic(0,2,3/2,3)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en251.png">
-</div><p>Input:
+<span style="font-family:monospace">1 
+</span></div><p>
+Input:
 </p><div class="center">
-<span style="font-family:monospace">centered_cube([0,0,0],[3,3,3],[0,-1,0])
+<span style="font-family:monospace">is_harmonic(0,1+i,1,i)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en252.png">
-</div><p>Note that there are two cubes centered at <span style="font-family:monospace">A</span>, with a vertex at
-<span style="font-family:monospace">B</span> and with a plane of symmetry <span style="font-family:monospace">ABC</span>. 
-Each cube has an edge containing <span style="font-family:monospace">B</span> that’s contained in plane
-of symmetry, these edges are on opposite sides of the line <span style="font-family:monospace">AB</span>. 
-The cube that <span style="font-family:monospace">cube</span> returns is the cube whose edge is on the
-same side of <span style="font-family:monospace">AB</span> as the point <span style="font-family:monospace">C</span>.</p>
+<span style="font-family:monospace">0
+</span></div>
 <hr>
 <a href="cascmd_en913.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

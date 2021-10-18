@@ -4,44 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Logarithmic regression: logarithmic_regression logarithmic_regression_plot</title>
+<title>Reduction of a quadratic form : gauss</title>
 </head>
 <body >
 <a href="cascmd_en611.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en613.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec755" class="subsection">7.2.6  Logarithmic regression: <span style="font-family:monospace">logarithmic_regression</span><a id="hevea_default989"></a> <span style="font-family:monospace">logarithmic_regression_plot</span><a id="hevea_default990"></a></h3>
-<p>A set of points might be expected to lie on a logarithmic curve 
-<span style="font-style:italic">y</span>=<span style="font-style:italic">m</span> ln(<span style="font-style:italic">x</span>) + <span style="font-style:italic">b</span>. Given a set of points, either as a list of <span style="font-style:italic">x</span>-coordinates
-followed by a list of <span style="font-style:italic">y</span>-coordinates, or simply by a list of points,
-the <span style="font-family:monospace">logarithmic_regression</span> command will find the values of
-<span style="font-style:italic">m</span> and <span style="font-style:italic">b</span> which give the best fit exponential. For example, if you
-enter
-</p><div class="center">
-<span style="font-family:monospace">evalf(logarithmic_regression([[1,1],[2,4],[3,9],[4,16]]))
-</span></div><p>
-or
-</p><div class="center">
-<span style="font-family:monospace">evalf(logarithmic_regression([1,2,3,4],[1,4,9,16]))
-</span></div><p>
-(where the <span style="font-family:monospace">evalf</span> is used to get a numeric approximation to an
-exact expression) you will get
-</p><div class="center">
-<span style="font-family:monospace">10.1506450002,-0.564824055818
-</span></div><p>
-so the best fit exponential curve will be <span style="font-style:italic">y</span> = 10.1506450002 ln(<span style="font-style:italic">x</span>)
-−0.564824055818.</p><p>To plot the curve, you can use the command
-<span style="font-family:monospace">exponential_regression_plot</span>; if you enter
-</p><div class="center">
-<span style="font-family:monospace">logarithmic_regression_plot([1,2,3,4],[1,4,9,16])
-</span></div><p>
-you will get
-</p><div class="center">
-<img src="cascmd_en039.png">
-</div><p>
-which plots the graph, and has the equation and <span style="font-style:italic">R</span><sup>2</sup> value above the
-graph.</p>
+<h3 id="sec734" class="subsection">5.58.3  Reduction of a quadratic form : <span style="font-family:monospace">gauss</span></h3>
+<p><a id="hevea_default957"></a>
+<span style="font-family:monospace">gauss</span> takes two arguments : a symbolic expression
+representing a quadratic form <span style="font-style:italic">q</span> and a 
+vector of variable names.<br>
+<span style="font-family:monospace">gauss</span> returns <span style="font-style:italic">q</span> written as sum or difference of squares
+using Gauss algorithm.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">gauss(2*x*y,[x,y])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">(y+x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/2+(-(y-x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)/2</span></div>
 <hr>
 <a href="cascmd_en611.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

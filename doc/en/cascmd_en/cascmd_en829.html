@@ -4,41 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The harmonic conjugate: harmonic_conjugate</title>
+<title>The barycenter in the plane: barycenter</title>
 </head>
 <body >
 <a href="cascmd_en828.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en830.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1077" class="subsection">11.17.4  The harmonic conjugate: <span style="font-family:monospace">harmonic_conjugate</span><a id="hevea_default1330"></a></h3>
-<p>The <span style="font-family:monospace">harmonic_conjugate</span> command takes as arguments three
-collinear points, three concurrent lines or three parallel lines.</p><p><span style="font-family:monospace">harmonic_conjugate</span> returns and draws the harmonic conjugate of the
-arguments.<br>
+<h3 id="sec1081" class="subsection">12.6.10  The barycenter in the plane: <span style="font-family:monospace">barycenter</span><a id="hevea_default1490"></a></h3>
+<p>
+<a id="sec:2dbarycenter"></a></p><p>See section <a href="cascmd_en933.html#sec%3A3dbarycenter">13.4.7</a> for barycenters of objects in
+space.</p><p>The <span style="font-family:monospace">barycenter</span> command draws the barycenter of a set of
+weighted points. The points and their weights (real numbers) can be
+given in three different ways.
+</p><ol class="enumerate" type=1><li class="li-enumerate">
+A sequence of lists of length two.<br>
+ The first element of each list is a point and the second element is
+the weight of the point.
+</li><li class="li-enumerate">A matrix with two columns.<br>
+ The first column of the matrix contains the points and the
+second column contains the corresponding weights.
+</li><li class="li-enumerate">A matrix with two rows and more than two columns.<br>
+ The first row contains the points and the second row the
+corresponding weights.
+</li></ol><p>For example, the following commands will draw the barycenter of the
+points (1,1) with weight 1, (1,−1) with weight 1 and (1,4)
+with weight 2.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">harmonic_conjugate(0,2,3/2)
+<span style="font-family:monospace">barycenter([1 + i,1],[1 - i,1],[1 + 4*i, 2])
+</span></div><p>
+or:
+</p><div class="center">
+<span style="font-family:monospace">barycenter([[1 + i,1],[1 - i,1],[1 + 4*i, 2]])
+</span></div><p>
+or:
+</p><div class="center">
+<span style="font-family:monospace">barycenter([[1 + i, 1 - i, 1 + 4*i],[1,1,2]])
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en172.png">
-</div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">affix(harmonic_conjugate(0,2,3/2))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">3
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">harmonic_conjugate(line(0,1+i),line(0,3+i),line(0,i))
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en173.png">
-</div>
+<span style="font-family:monospace"><img src="cascmd_en079.png">
+</span></div>
 <hr>
 <a href="cascmd_en828.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

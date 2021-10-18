@@ -4,29 +4,61 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Euclidean quotient : quo</title>
+<title>Choosing the GCD algorithm of two polynomials : 
+ezgcd heugcd modgcd psrgcd</title>
 </head>
 <body >
 <a href="cascmd_en354.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en356.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec436" class="subsection">5.34.5  Euclidean quotient : <span style="font-family:monospace">quo</span></h3>
-<p><a id="hevea_default557"></a>
-<span style="font-family:monospace">quo</span> takes as arguments 
-two polynomials <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ, where
-<span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> are list polynomials or symbolic polynomials with
-respect to <span style="font-style:italic">x</span> or to an optional third argument.<br>
-<span style="font-family:monospace">quo</span> returns the quotient of the euclidean division 
-of <span style="font-style:italic">A</span> by <span style="font-style:italic">B</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].<br>
+<h3 id="sec432" class="subsection">5.30.9  Choosing the GCD algorithm of two polynomials : 
+<span style="font-family:monospace">ezgcd heugcd modgcd psrgcd</span></h3>
+<p><a id="hevea_default582"></a><a id="hevea_default583"></a><a id="hevea_default584"></a><a id="hevea_default585"></a>
+<span style="font-family:monospace">ezgcd heugcd modgcd psrgcd</span> denote the gcd 
+(greatest common divisor) of two univariate or multivariate
+polynomials with coefficients
+in ℤ or ℤ[<span style="font-style:italic">i</span>] using a specific algorithm :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">ezgcd</span> ezgcd algorithm,
+</li><li class="li-itemize"><span style="font-family:monospace">heugcd</span> heuristic gcd algorithm,
+</li><li class="li-itemize"><span style="font-family:monospace">modgcd</span> modular algorithm,
+</li><li class="li-itemize"><span style="font-family:monospace">psrgcd</span> sub-resultant algorithm.
+</li></ul><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">quo((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">ezgcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2*x*y+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x-y)</span></div><p>
 or :
-</p><div class="center"><span style="font-family:monospace">quo((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">(-6%13)*x+-6%13</span></div><p>
-Indeed  <span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+1=(2<span style="font-style:italic">x</span><sup>2</sup>+4)(<span style="font-style:italic">x</span>+1/2)+5<span style="font-style:italic">x</span>−4/4
-and −3*4=−6*2=1  mod13.</p>
+</p><div class="center"><span style="font-family:monospace">heugcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2*x*y+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x-y)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">modgcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2*x*y+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x-y)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">psrgcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2*x*y+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x-y)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1 </span></div><p> 
+Input :
+</p><div class="center"><span style="font-family:monospace">ezgcd((x+y-1)*(x+y+1),(x+y+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">heugcd((x+y-1)*(x+y+1),(x+y+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">modgcd((x+y-1)*(x+y+1),(x+y+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">x+y+1</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">psrgcd((x+y-1)*(x+y+1),(x+y+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">-x-y-1</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">ezgcd((x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4,(x+1-y)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">"GCD not successful Error: Bad Argument Value"</span></div><p>
+But input :
+</p><div class="center"><span style="font-family:monospace">heugcd((x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4,(x+1-y)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">modgcd((x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4,(x+1-y)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">psrgcd((x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4,(x+1-y)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">x-y+1 </span></div>
 <hr>
 <a href="cascmd_en354.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

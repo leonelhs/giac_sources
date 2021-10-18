@@ -4,70 +4,57 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Statistics functions acting on column matrices : mean, stddev, variance, median, quantile, quartiles, boxwhisker</title>
+<title>Sum of list (or matrix) elements 
+transformed by a function : count</title>
 </head>
 <body >
 <a href="cascmd_en481.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en483.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec578" class="subsection">5.45.31  Statistics functions acting on column matrices : <span style="font-family:monospace">mean</span>, <span style="font-family:monospace">stddev</span>, <span style="font-family:monospace">variance</span>, <span style="font-family:monospace">median</span>, <span style="font-family:monospace">quantile</span>, <span style="font-family:monospace">quartiles</span>, <span style="font-family:monospace">boxwhisker</span></h3>
-<p><a id="sec:statmat"></a>
-<a id="hevea_default752"></a> <a id="hevea_default753"></a><a id="hevea_default754"></a><a id="hevea_default755"></a><a id="hevea_default756"></a><a id="hevea_default757"></a><a id="hevea_default758"></a>
-The following functions work on matrices, acting column by column:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">mean</span> computes the arithmetic means of the statistical series
-stored in the columns of a matrix.<br>
+<h3 id="sec574" class="subsection">5.43.29  Sum of list (or matrix) elements 
+transformed by a function : <span style="font-family:monospace">count</span></h3>
+<p><a id="hevea_default745"></a>
+<span style="font-family:monospace">count</span> takes as argument : a real function <span style="font-family:monospace">f</span> and a list 
+<span style="font-family:monospace">l</span> of length <span style="font-family:monospace">n</span> (or a matrix <span style="font-family:monospace">A</span> of dimension <span style="font-family:monospace">p*q</span>).<br>
+<span style="font-family:monospace">count</span> applies the function to the list (or matrix) elements and returns 
+their sum, i.e. :<br>
+<span style="font-family:monospace">count(f,l)</span> returns <span style="font-family:monospace">f(l[0])+f(l[1])+...+f(l[n-1])</span> or<br>
+<span style="font-family:monospace">count(f,A)</span> returns <span style="font-family:monospace">f(A[0,0])+....+f(A[p-1,q-1])</span>.<br>
+If <span style="font-family:monospace">f</span> is a boolean function <span style="font-family:monospace">count</span> returns the number of elements 
+of the list (or of the matrix) for which the boolean function is true.<br>
 Input :
-<div class="center"><span style="font-family:monospace">mean([[3,4,2],[1,2,6]])</span></div>
-Output is the vector of the means of each column :
-<div class="center"><span style="font-family:monospace">[2,3,4]</span></div>
-Input :
-<div class="center"><span style="font-family:monospace">mean([[1,0,0],[0,1,0],[0,0,1]])</span></div>
-Output 
-<div class="center"><span style="font-family:monospace">[1/3,1/3,1/3]</span></div></li><li class="li-itemize"><span style="font-family:monospace">stddev</span> computes the standard deviations of the population
-statistical series stored in the columns of a matrix.<br>
-Input :
-<div class="center"><span style="font-family:monospace">stddev([[3,4,2],[1,2,6]])</span></div>
-Output is the vector of the standard deviations of each column :
-<div class="center"><span style="font-family:monospace">[1,1,2]</span></div>
-</li><li class="li-itemize"><span style="font-family:monospace">variance</span> computes the variances of the statistical series
-stored in the columns of a matrix.<br>
-Input :
-<div class="center"><span style="font-family:monospace">variance([[3,4,2],[1,2,6]])</span></div>
-Output is the vector of the variance of each column :
-<div class="center"><span style="font-family:monospace">[1,1,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">median</span> computes the medians of the statistical series
-stored in the columns of a matrix.<br>
-Input :
-<div class="center"><span style="font-family:monospace">median([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
-Output is the vector of the median of each column :
-<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">quantile</span> computes the deciles as specified by the second
-argument of the statistical series stored in the columns of a matrix.<br>
-Input :<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.25)</span></div>
-Output is the vector of the first quartile of each column :
-<div class="center"><span style="font-family:monospace">[1,1,2,2,1,1,1]</span></div>
-Input :
-<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.75)</span></div>
-Output is the vector of the third quartile of each column :
-<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">quartiles</span> computes the minima, the first quartiles, the 
-medians, the third quartiles and the maxima of the statistical series
-stored in the columns of a matrix.<br>
-Input :
-<div class="center"><span style="font-family:monospace">quartiles([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1], [4,2,5,6,0,1,3], [2,5,6,0,1,3,4]])</span></div>
-Output is a matrix, its first row is the minima of each column,
-its second row is the fist quartiles of each column, 
-its third row the medians 
-of each column, its fourth row the third
-quartiles of each column and its last row the maxima of each column:
-<div class="center"><span style="font-family:monospace">[[0,0,1,0,0,0,0],[1,1,2,2,1,1,1], [2,2,3,3,2,2,3],</span></div>
-<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4],[6,5,6,6,6,6,6]]</span></div></li><li class="li-itemize"><span style="font-family:monospace">boxwhisker</span> draws the whisker boxes of the statistical series
-stored in the columns of a matrix .<br>
-Input :
-<div class="center"><span style="font-family:monospace">boxwhisker([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6], [1,3,4,2,5,6,0],[3,4,2,5,6,0,1], [4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x,[2,12,45,3,7,78])</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">the drawing of the whisker boxes of the statistical 
-series of each column of the matrix argument</span></div> 
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">147</span></div><p>
+because : 2+12+45+3+7+78=147.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x&lt;12,[2,12,45,3,7,78])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x==12,[2,12,45,3,7,78])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x&gt;12,[2,12,45,3,7,78])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">2</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">count(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[3,5,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">35</span></div><p>
+Indeed 3<sup>2</sup>+5<sup>2</sup>+1<sup>1</sup>=35.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">count(id,[3,5,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">9</span></div><p>
+Indeed, <span style="font-family:monospace">id</span> is the identity functions and 3+5+1=9.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">count(1,[3,5,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+Indeed, <span style="font-family:monospace">1</span> is the constant function equal to 1 and 1+1+1=3.</p>
 <hr>
 <a href="cascmd_en481.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

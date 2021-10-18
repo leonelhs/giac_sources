@@ -4,39 +4,55 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Working directories</title>
+<title>Defining functions</title>
 </head>
 <body >
 <a href="cascmd_en055.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en057.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec82" class="subsection">4.8.1  Working directories</h3>
-<p><span style="font-family:monospace">Xcas</span> has a working directory that it uses to store files that
-it creates; typically the user’s home directory. You can print the
-name of the current working directory with the
-<span style="font-family:monospace">pwd()</span><a id="hevea_default58"></a> command; if you enter
+<h3 id="sec81" class="subsection">4.7.1  Defining functions</h3>
+<p>You can use the <span style="font-family:monospace">:=</span><a id="hevea_default71"></a> and <span style="font-family:monospace">=&gt;</span><a id="hevea_default72"></a>
+operators to define functions; both
 </p><div class="center">
-<span style="font-family:monospace">pwd()</span>
+<span style="font-family:monospace">f(x) := x^2</span>
 </div><p>
-you might get something like
+and
 </p><div class="center">
-<span style="font-family:monospace">/home/username</span>
-</div><p>You can change the working directory with the <span style="font-family:monospace">cd</span><a id="hevea_default59"></a>
-command; if you enter
-</p><div class="center">
-<span style="font-family:monospace">cd("foo")</span>
+<span style="font-family:monospace">x^2 =&gt; f(x)</span>
 </div><p>
-or (on a Unix system)
+give the name <span style="font-family:monospace">f</span> to the function which takes a value and 
+returns the square of the value. If you then enter
 </p><div class="center">
-<span style="font-family:monospace">cd("/home/username/foo")</span>
+<span style="font-family:monospace">f(3)</span>
 </div><p>
-will change to the directory <span style="font-family:monospace">foo</span>, if it exists.
-Afterwards, any files that you save from <span style="font-family:monospace">Xcas</span> will be in that
-directory. </p><p>If you have values saved in a file, then you’ll need to be in that
-working directory to load it. Note that if you have the same file
-name in different directories, then the result of loading the file
-name will depend on which directory you are in.</p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">9</span>
+</div><p>You can give <span style="font-family:monospace">Xcas</span> a function without a name with the
+<span style="font-family:monospace">-&gt;</span><a id="hevea_default73"></a> operator; the squaring function can be written
+without a name as
+</p><div class="center">
+<span style="font-family:monospace">x -&gt; x^2</span>
+</div><p>
+You can use this form of the function to assign it to a name; both
+</p><div class="center">
+<span style="font-family:monospace">f := x -&gt; x^2</span>
+</div><p>
+and
+</p><div class="center">
+<span style="font-family:monospace">x -&gt; x^2 =&gt; f</span>
+</div><p>
+are alternate ways to define <span style="font-family:monospace">f</span> as the squaring function.</p><p>You can similarly define functions of more than one variable. For
+example, to define a function which takes the lengths of the two legs
+of a right triangle and returns the hypotenuse, you could enter
+</p><div class="center">
+<span style="font-family:monospace">hypot(a,b) := sqrt(a^2 + b^2)</span>
+</div><p>
+or
+</p><div class="center">
+<span style="font-family:monospace">hypot := (a,b) -&gt; sqrt(a^2 + b^2)</span>
+</div>
 <hr>
 <a href="cascmd_en055.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

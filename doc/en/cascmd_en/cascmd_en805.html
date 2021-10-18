@@ -4,51 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Homothety in the plane: homothety</title>
+<title>Working with the graphics screen: DispG, DispHome,
+ClrGraph, ClrDraw</title>
 </head>
 <body >
 <a href="cascmd_en804.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en806.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1051" class="subsection">11.15.5  Homothety in the plane: <span style="font-family:monospace">homothety</span><a id="hevea_default1306"></a></h3>
+<h3 id="sec1037" class="subsection">11.4.9  Working with the graphics screen: <span style="font-family:monospace">DispG, DispHome,
+ClrGraph, ClrDraw</span></h3>
 <p>
-<a id="sec:2dhomothety"></a></p><p>See section <a href="cascmd_en895.html#sec%3A3dhomothety">12.14.5</a> for homotheties in space.</p><p>A homothety is a dilation about a given point.
-The <span style="font-family:monospace">homothety</span> command can take two or three arguments.</p><p>If <span style="font-family:monospace">homothety</span> has two arguments, they are a point (the center
-of the homothety) and a real number (the scaling ratio).
-<span style="font-family:monospace">homothery</span> returns a new command which performs the dilation.<br>
-Input:
+<a id="hevea_default1430"></a><a id="hevea_default1431"></a><a id="hevea_default1432"></a><a id="hevea_default1433"></a></p><p>Recall that the <span style="font-family:monospace">DispG</span> screen contains the
+graphical output of <span style="font-family:monospace">Xcas</span>. You can use the <span style="font-family:monospace">DispG</span>
+command (without parentheses) to bring it up; entering
 </p><div class="center">
-<span style="font-family:monospace">h := homothety(i, 2)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">h(1+i)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en154.png">
-</div><p>If <span style="font-family:monospace">homothety</span> has three arguments, the first two arguments are a
-point and real number as above, and the third argument is a geometric
-object. <span style="font-family:monospace">homothety</span> returns and draws the dilated object.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">homothety(i, 2, 1+i)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en155.png">
+<span style="font-family:monospace">DispG;</span>
 </div><p>
-Input:
+will open the graphics screen.</p><p>To clear the graphics screen, you can use the
+<span style="font-family:monospace">ClrGraph</span> command (equivalently, the
+<span style="font-family:monospace">ClrDraw</span> command). If you enter
 </p><div class="center">
-<span style="font-family:monospace">homothety(i, 2, circle(1+i,1))
-</span></div><p>
-Output:
+<span style="font-family:monospace">ClrGraph</span>
+</div><p>
+or
 </p><div class="center">
-<img src="cascmd_en156.png">
-</div><p>The <span style="font-family:monospace">homothety</span> command can also take a complex number as the
-second argument. In that case, the result will be a rotation as well
-as a dilation.</p>
+<span style="font-family:monospace">ClrGraph()</span>
+</div><p>
+then the <span style="font-family:monospace">DispG</span> screen will be erased.</p><p>You can close the <span style="font-family:monospace">DispG</span> screen with the <span style="font-family:monospace">DispHome</span>
+command; entering
+</p><div class="center">
+<span style="font-family:monospace">DispHome;</span>
+</div><p>
+will make the graphics screen go away.</p>
 <hr>
 <a href="cascmd_en804.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

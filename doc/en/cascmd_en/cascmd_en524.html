@@ -4,34 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Smith normal form : ismith</title>
+<title>Multiplication of elements of each column of a matrix : product</title>
 </head>
 <body >
 <a href="cascmd_en523.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en525.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec638" class="subsection">5.50.13  Smith normal form : <span style="font-family:monospace">ismith</span></h3>
-<p><a id="hevea_default818"></a>
-<span style="font-family:monospace">ismith</span> takes as argument a matrix with coefficients in
-ℤ.<br>
-<span style="font-family:monospace">ismith</span> returns three matrices <span style="font-family:monospace">U,B</span> and <span style="font-family:monospace">V</span> such 
-that <span style="font-family:monospace">B=U*A*V</span>, <span style="font-family:monospace">U</span> and <span style="font-family:monospace">V</span> are invertible in ℤ, 
-<span style="font-family:monospace">B</span> is diagonal, and <span style="font-family:monospace">B[i,i]</span> divides <span style="font-family:monospace">B[i+1,i+1]</span>.
-The coefficients <span style="font-family:monospace">B[i,i]</span> are called 
-invariant factors, they are used to describe
-the structure of finite abelian groups.<br>
+<h3 id="sec624" class="subsection">5.49.6  Multiplication of elements of each column of a matrix : <span style="font-family:monospace">product</span></h3>
+<p><a id="hevea_default821"></a><a id="sec:product1"></a>
+<span style="font-family:monospace">product</span> takes as argument a matrix <span style="font-style:italic">A</span>.<br>
+<span style="font-family:monospace">product</span> returns the list whose elements are the product of the elements 
+of each column of the matrix <span style="font-style:italic">A</span> (see also <a href="cascmd_en488.html#sec%3Aproduct">5.43.35</a> and 
+<a href="cascmd_en526.html#sec%3Aproduct2">5.49.8</a>).<br>
 Input :
-</p><div class="center">
-<span style="font-family:monospace">A:=[[9,-36,30],[-36,192,-180],[30,-180,180]]; 
-U,B,V:=ismith(A)</span>
-</div><p>
+</p><div class="center"><span style="font-family:monospace">product([[1,2],[3,4]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[-3,0,1],[6,4,3],[20,15,12]],
-[[3,0,0],[0,12,0],[0,0,60]], 
-[[1,24,-30],[0,1,0],[0,0,1]] </span>
-</div><p>
-The invariant factors are 3, 12 and 60.</p>
+</p><div class="center"><span style="font-family:monospace">[3,8]</span></div>
 <hr>
 <a href="cascmd_en523.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

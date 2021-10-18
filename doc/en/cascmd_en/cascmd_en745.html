@@ -4,26 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Half-lines in the plane</title>
+<title>Approximate computation of integrals : romberg nInt</title>
 </head>
 <body >
 <a href="cascmd_en744.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en746.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec983" class="subsection">11.7.2  Half-lines in the plane</h3>
-<p>
-<a id="sec:2dhalflines"></a></p><p>See section <a href="cascmd_en843.html#sec%3A3dhalflines">12.5.2</a> for half-lines in space.</p><p>The <span style="font-family:monospace">half_line</span> command takes as argument two points or a list of two
-points.</p><p><span style="font-family:monospace">half_line</span> returns and draws the ray from the first point
-through the second.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">half_line(0,-1+i)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en074.png">
-</div>
+<h3 id="sec960" class="subsection">9.3.3  Approximate computation of integrals : <span style="font-family:monospace">romberg nInt</span></h3>
+<p><a id="hevea_default1301"></a><a id="hevea_default1302"></a>
+<span style="font-family:monospace">romberg</span> or <span style="font-family:monospace">nInt</span> takes as arguments : an expression 
+<span style="font-family:monospace">ex</span>, the variable name of this expression (by default <span style="font-family:monospace">x</span>), and 
+two real values <span style="font-family:monospace">a,b</span>.<br>
+<span style="font-family:monospace">romberg(ex,x,a,b)</span> or <span style="font-family:monospace">nInt(ex,x,a,b)</span> computes an approximated 
+value of the integral ∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup> <span style="font-style:italic">ex</span> <span style="font-style:italic">dx</span> using the Romberg method. The
+integrand must be sufficiently regular for the approximation to
+be accurate. Otherwise, <span style="font-family:monospace">romberg</span> returns a list of real values,
+that comes from the application of the
+Romberg algorithm (the first list element is
+the trapezoid rule approximation, the next ones come from the application
+of the Euler-MacLaurin formula to remove successive even powers of
+the step of the trapezoid rule).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">romberg(exp(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),x,0,1)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1.46265174591</span></div>
 <hr>
 <a href="cascmd_en744.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

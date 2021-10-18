@@ -4,39 +4,89 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Points, vectors and complex numbers</title>
+<title>The Cauchy distribution</title>
 </head>
 <body >
 <a href="cascmd_en718.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en720.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec947" class="subsection">11.1.1  Points, vectors and complex numbers</h3>
-<p>A point in the Cartesian plane is described with an ordered pair
-(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>). It has <span style="font-style:italic">x</span>-coordinate (abscissa) <span style="font-style:italic">a</span> and
-<span style="font-style:italic">y</span>-coordinate (ordinate) <span style="font-style:italic">b</span>. </p><p>A vector from one point (<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">b</span><sub>1</sub>) to another (<span style="font-style:italic">a</span><sub>2</sub>,<span style="font-style:italic">b</span><sub>2</sub>)
-has associated ordered pair (<span style="font-style:italic">a</span><sub>2</sub>−<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">b</span><sub>2</sub>−<span style="font-style:italic">b</span><sub>1</sub>); so the
-abscissa is <span style="font-style:italic">a</span><sub>2</sub>−<span style="font-style:italic">a</span><sub>1</sub> and the ordinate is <span style="font-style:italic">b</span><sub>2</sub>−<span style="font-style:italic">b</span><sub>1</sub>.</p><p>A complex number <span style="font-style:italic">a</span> + <span style="font-style:italic">bi</span> can be associated with the point (<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) in
-the Cartesian plane. The complex number is called the <em>affix</em> of the
-point.</p><p>A point in <span style="font-family:monospace">Xcas</span> is specified with the
-<span style="font-family:monospace">point</span> command (see section <a href="cascmd_en731.html#sec%3A2dpoint">11.6.2</a>), which takes as
-argument either two real numbers <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span> or a complex number <span style="font-style:italic">a</span> + <span style="font-style:italic">bi</span>.
-In this section, when a command take a point as an argument, the
-point can either be the result of the <span style="font-family:monospace">point</span> command or 
-simply a complex number.</p><p>An interactive graphic screen opens whenever a geometric object is
-drawn, or with the command <span style="font-family:monospace">Alt+G</span>. The objects on the screen
-can also be created and manipulated with the mouse.</p><p>As an example (to be explained in more detail later), the
-<span style="font-family:monospace">triangle</span> command draws a triangle; the result will be a
-graphics screen containing axes, the triangle and a
-control panel on the right.<br>
-Input:
+<h3 id="sec915" class="subsection">8.4.12  The Cauchy distribution</h3>
+<h4 id="sec916" class="subsubsection">The probability density function for the Cauchy
+distribution: <span style="font-family:monospace">cauchy</span><a id="hevea_default1255"></a> <span style="font-family:monospace">cauchyd</span><a id="hevea_default1256"></a></h4>
+<p>The probability density function of the Cauchy distribution (sometimes
+called the Lorentz distribution) is given by the
+<span style="font-family:monospace">cauchy</span> (or <span style="font-family:monospace">cauchyd</span>) command. The Cauchy
+distribution depends on two parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, and the value of
+the density function at <span style="font-style:italic">x</span> is 
+<span style="font-family:monospace">cauchy</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">b</span>/(π ((<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)<sup>2</sup> + <span style="font-style:italic">b</span><sup>2</sup>)).
+If you enter 
 </p><div class="center">
-<span style="font-family:monospace">triangle(0,1,1+i)
+<span style="font-family:monospace">cauchy(2.2,1.5,0.8)
 </span></div><p>
-Output:
+you will get
 </p><div class="center">
-<img src="cascmd_en049.png">
-</div>
+<span style="font-family:monospace">0.113412073462
+</span></div><p>If you leave out the parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, they will default to 0
+and 1, respectively; <span style="font-family:monospace">cauchy</span>(<span style="font-style:italic">x</span>) = 1/(π (<span style="font-style:italic">x</span><sup>2</sup> + 1)). If
+you enter
+</p><div class="center">
+<span style="font-family:monospace">cauchy(0.3)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.292027418517
+</span></div>
+<h4 id="sec917" class="subsubsection">The cumulative distribution function for the Cauchy
+distribution: <span style="font-family:monospace">cauchy_cdf</span><a id="hevea_default1257"></a> <span style="font-family:monospace">cauchyd_cdf</span><a id="hevea_default1258"></a></h4>
+<p>The command <span style="font-family:monospace">cauchy_cdf</span> (or <span style="font-family:monospace">cauchyd_cdf</span>) computes
+the cumulative distribution function for the Cauchy distribution.
+Like <span style="font-family:monospace">cauchy</span>, you can give it the parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, or
+let them default to 0 and 1. The Cauchy cumulative distribution
+function is given by the formula
+<span style="font-family:monospace">cauchy_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = 1/2 + arctan((<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)/<span style="font-style:italic">b</span>)/π.
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">cauchy_cdf(2,3,1.4)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.437167041811
+</span></div><p>
+and if you enter
+</p><div class="center">
+<span style="font-family:monospace">cauchy_cdf(1.4)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.802568456711
+</span></div><p>If you give <span style="font-family:monospace">cauchy_cdf</span> an extra argument (with or without
+the parameters), you will get the probability that
+the random variable lies between two values;
+<span style="font-family:monospace">cauchy_cdf(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). If you
+enter
+</p><div class="center">
+<span style="font-family:monospace">cauchy_cdf(2,3,-1.9,1.4)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.228452641651
+</span></div>
+<h4 id="sec918" class="subsubsection">The inverse distribution function for the
+Cauchy distribution: <span style="font-family:monospace">cauchy_icdf</span><a id="hevea_default1259"></a> <span style="font-family:monospace">cauchyd_icdf</span><a id="hevea_default1260"></a></h4>
+<p>Given a value <span style="font-style:italic">h</span>, the inverse distribution function gives
+the value of <span style="font-style:italic">x</span> with <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>.
+The <span style="font-family:monospace">cauchy_icdf</span> will compute the
+inverse distribution for the Cauchy distribution. (If no
+parameters are given, they will be assumed to be 0 and 1.)
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">cauchy_icdf(2,3,0.23)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">-1.40283204777
+</span></div>
 <hr>
 <a href="cascmd_en718.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

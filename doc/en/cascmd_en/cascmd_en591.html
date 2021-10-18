@@ -4,30 +4,42 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Animation of a 3D graph : animate3d</title>
+<title>Characteristic polynomial using Hessenberg algorithm :
+pcar_hessenberg</title>
 </head>
 <body >
 <a href="cascmd_en590.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en592.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec731" class="subsection">6.17.2  Animation of a 3D graph : <span style="font-family:monospace">animate3d</span></h3>
-<p><a id="hevea_default949"></a>
-<span style="font-family:monospace">animate3d</span> can create a 3-d animation with 
-function graphs depending on a parameter. The parameter is specified as
-the third argument of <span style="font-family:monospace">animate3d</span>, the number of pictures
-as fourth argument with 
-<span style="font-family:monospace">frames=</span><a id="hevea_default950"></a>number, the remaining arguments
-are the same as those of the <span style="font-family:monospace">plotfunc</span> command, see
-section <a href="cascmd_en577.html#sec%3Aplotfunc3">6.2.2</a>, p. <a href="cascmd_en577.html#sec%3Aplotfunc3">??</a>.<br>
+<h3 id="sec710" class="subsection">5.55.8  Characteristic polynomial using Hessenberg algorithm :
+<span style="font-family:monospace">pcar_hessenberg</span></h3>
+<p><a id="hevea_default934"></a>
+<span style="font-family:monospace">pcar_hessenberg</span> takes as argument a square 
+matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span> and optionally the name of a symbolic variable.<br>
+<span style="font-family:monospace">pcar_hessenberg</span> returns the characteristic polynomial <span style="font-style:italic">P</span> of <span style="font-style:italic">A</span> written
+as the list of its coefficients if no variable was provided
+or written in its symbolic form with respect to the variable name given 
+as second argument, where
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=det(<span style="font-style:italic">xI</span>−<span style="font-style:italic">A</span>) </td></tr>
+</table><p>
+The characteristic polynomial is computed using the Hessenberg algorithm
+(see e.g. Cohen) which is more efficient (<span style="font-style:italic">O</span>(<span style="font-style:italic">n</span><sup>3</sup>) deterministic) if 
+the coefficients of <span style="font-style:italic">A</span> are in a finite field or use a finite 
+representation like approximate numeric coefficients. Note however that
+this algorithm behaves badly if the coefficients are e.g. in ℚ.<br>
 Input :
-</p><div class="center">
-<span style="font-family:monospace">animate3d(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+a*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[x=-2..2,y=-2..2],a=-2..2, frames=10,display=red+filled)</span>
-</div><p>
+</p><div class="center"><span style="font-family:monospace">pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]] % 37)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">a sequence of graphic representations
-of z=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+</span><span style="font-style:italic">a</span><span style="font-family:monospace">*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2 for 11 values of </span><span style="font-style:italic">a</span><span style="font-family:monospace"> between -2 and 2</span>
-</div>
+</p><div class="center"><span style="font-family:monospace">[1 % 37 ,-6% 37,12 % 37,-8 % 37]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]] % 37,x)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-6 %37 *x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+12 % 37 *x-8 % 37</span></div><p>
+Hence, the characteristic polynomial of [[4,1,-2],[1,2,-1],[2,1,0]] in
+ℤ/37 ℤ is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>−6<span style="font-style:italic">x</span><sup>2</sup>+12<span style="font-style:italic">x</span>−8 </td></tr>
+</table>
 <hr>
 <a href="cascmd_en590.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

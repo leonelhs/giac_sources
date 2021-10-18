@@ -4,68 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rectangles in the plane: rectangle</title>
+<title>Notation of unit objects</title>
 </head>
 <body >
 <a href="cascmd_en761.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en763.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1002" class="subsection">11.9.3  Rectangles in the plane: <span style="font-family:monospace">rectangle</span><a id="hevea_default1253"></a></h3>
-<p>
-<a id="sec:2drect"></a></p><p>See section <a href="cascmd_en859.html#sec%3A3drect">12.8.3</a> for rectangles in space.</p><p>The <span style="font-family:monospace">rectangle</span> command takes three mandatory arguments and one
-or two optional arguments. The mandatory arguments are two points
-<span style="font-family:monospace">A</span> and <span style="font-family:monospace">B</span> and a nonzero real number <span style="font-family:monospace">k</span>.</p><p><span style="font-family:monospace">rectangle</span> returns and draws the rectangle <span style="font-family:monospace">ABCD</span>, where
-<span style="font-family:monospace">AD</span>=|<span style="font-family:monospace">k</span>|·<span style="font-family:monospace">AB</span> and the angle from 
-<span style="font-family:monospace">AB</span> to <span style="font-family:monospace">AD</span> is counterclockwise if <span style="font-family:monospace">k</span> &gt; 0,
-clockwise if <span style="font-family:monospace">k</span>&lt;0.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">rectangle(0, 1+i, 1/2)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en099.png">
-</div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">rectangle(0, 1+i, -1/2)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en100.png">
-</div><p>
-The optional fourth and fifth arguments need to be
-variable names which will be assigned to vertices <span style="font-family:monospace">C</span> and
-<span style="font-family:monospace">D</span>.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">rectangle(0, 1+i, -1/2, C, D)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace"><img src="cascmd_en101.png">
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">affix(C), affix(D)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">(3 + i)/2, (1 - i)/2
-</span></div><p>Given <span style="font-family:monospace">rectangle(A,B,k)</span>, <span style="font-family:monospace">Xcas</span> computes <span style="font-family:monospace">D</span>
-by <span style="font-family:monospace">affix(D</span>) = <span style="font-family:monospace">affix(A)</span> +
-<span style="font-family:monospace">k</span>exp(<span style="font-style:italic">i</span>π/2)(<span style="font-family:monospace">affix(B)</span>−<span style="font-family:monospace">affix(A)</span>). If
-<span style="font-family:monospace">k</span> is complex, then <span style="font-family:monospace">rectangle</span> draws a
-parallelogram.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">rectangle(0,1,1+i)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en102.png">
-</div>
+<h3 id="sec985" class="subsection">10.1.1  Notation of unit objects</h3>
+<p><a id="hevea_default1326"></a>
+A unit object has two parts : a real number and a unit expression (a single 
+unit or a multiplicative combination of units). The two parts are linked by the 
+character <span style="font-family:monospace">_</span> ("underscore"). For example <span style="font-family:monospace">2_m</span> for 2 meters.
+For composite units, parenthesis must be used, e.g. <span style="font-family:monospace">1_(m*s)</span>.<br>
+If a prefix is put before the unit then the unit is multiplied by a power of
+10. For example <span style="font-family:monospace">k</span> or <span style="font-family:monospace">K</span> for kilo (indicate a multiplication by 
+10<sup>3</sup>), <span style="font-family:monospace">D</span> for deca (indicate a multiplication by 10), <span style="font-family:monospace">d</span> for
+deci (indicate a multiplication by 10<sup>−1</sup>) etc...<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">10.5_m</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">a unit object of value 10.5 meters</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">10.5_km</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">a unit object of value 10.5 kilometers</span></div>
 <hr>
 <a href="cascmd_en761.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

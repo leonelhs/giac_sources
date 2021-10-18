@@ -4,44 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Find the barycenter of a set of points in space: barycenter</title>
+<title>Tangents to curves in the plane: tangent</title>
 </head>
 <body >
 <a href="cascmd_en840.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en842.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1097" class="subsection">12.4.7  Find the barycenter of a set of points in space: <span style="font-family:monospace">barycenter</span><a id="hevea_default1347"></a></h3>
+<h3 id="sec1094" class="subsection">12.7.7  Tangents to curves in the plane: <span style="font-family:monospace">tangent</span><a id="hevea_default1505"></a></h3>
 <p>
-<a id="sec:3dbarycenter"></a></p><p>See section <a href="cascmd_en738.html#sec%3A2dbarycenter">11.6.9</a> for barycenters of objects in
-the plane.</p><p>The <span style="font-family:monospace">barycenter</span> command returns and draws the barycenter of a set of
-weighted points. If the sum of the weights is zero, then this command
-returns an error.</p><p>The points and their weights (real numbers) can be
-given in two different ways.
-</p><ol class="enumerate" type=1><li class="li-enumerate">
-A sequence of lists of length two.<br>
- The first element of each list is a point and the second element is
-the weight of the point.
-</li><li class="li-enumerate">A matrix with two columns.<br>
- The first column of the matrix contains the points and the
-second column contains the corresponding weights.
-</li></ol><p>
+<a id="sec:2dtangents"></a></p><p>See section <a href="cascmd_en944.html#sec%3A3dtangents">13.6.3</a> for tangents in space.</p><p>The <span style="font-family:monospace">tangent</span> command takes as arguments either a curve and a point, or a
+point defined with <span style="font-family:monospace">element</span> (see section <a href="cascmd_en834.html#sec%3Aelement">12.6.15</a>) using a curve and
+parameter value.</p><p><span style="font-family:monospace">tangent</span> returns and draws the list of lines tangent to the
+curve passing through the given point.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">BC := barycenter([point(1,4,0),1],[point(1,-2,0),1])
-</span></div><p>
-or:
-</p><div class="center">
-<span style="font-family:monospace">BC := barycenter([[point(1,4,0),1],[point(1,-2,0),1]])
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(BC)
+<span style="font-family:monospace">tangent(circle(0,1),1+i)
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">[1,1,0]
-</span></div>
+<img src="cascmd_en090.png">
+</div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">t := element(0..pi,pi/4):; A := element(circle(0,1),t):; tangent(A)
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en091.png">
+</div><p>When <span style="font-family:monospace">tangent</span> is called with an element,
+the tangent will change along with the point on the element.</p>
 <hr>
 <a href="cascmd_en840.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

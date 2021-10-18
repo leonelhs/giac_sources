@@ -4,29 +4,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Markov chains: markov</title>
+<title>Replace small values by 0: epsilon2zero</title>
 </head>
 <body >
 <a href="cascmd_en647.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en649.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec845" class="subsection">7.4.24  Markov chains: <span style="font-family:monospace">markov</span><a id="hevea_default1092"></a></h3>
-<p>Given the transition matrix of a Markov chain, the <span style="font-family:monospace">markov</span>
-command will compute characteristic features of the chain. If <span style="font-style:italic">M</span> is
-a transition matrix, then <span style="font-family:monospace">markov(</span><span style="font-style:italic">M</span><span style="font-family:monospace">)</span> will return the list of
-the positive recurrent states, the list of corresponding
-invariant probabilities, the list of other strong connected
-components, the list of probabilities of ending up in the sequence of
-recurrent states. 
-For example, if you enter
-</p><div class="center">
-<span style="font-family:monospace">markov([[0,0,1/2,0,1/2],[0,0,1,0,0],[1/4,1/4,0,1/4,1/4],[0,0,1/2,0,1/2],[0,0,0,0,1]])
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">[[4]],[[0,0,0,0,1]],[[3,1,2,0]],[[1],[1],[1],[1],[1]]
-</span></div>
+<h3 id="sec777" class="subsection">5.64.1  Replace small values by 0: <span style="font-family:monospace">epsilon2zero</span></h3>
+<p>
+<a id="hevea_default1007"></a> <a id="sec:epsilon2zero"></a>
+<span style="font-family:monospace">epsilon2zero</span> takes as argument an expression of <span style="font-family:monospace">x</span>.<br>
+<span style="font-family:monospace">epsilon2zero</span> returns the expression where the values of modulus
+less than <span style="font-family:monospace">epsilon</span> are replaced by zero. The expression
+is not evaluated.<br>
+The <span style="font-family:monospace">epsilon</span><a id="hevea_default1008"></a> value is defined in the <span style="font-family:monospace">cas</span> 
+configuration (by default <span style="font-family:monospace">epsilon=1e-10</span>).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">epsilon2zero(1e-13+x) </span></div><p>
+Output (with <span style="font-family:monospace">epsilon=1e-10</span>) :
+</p><div class="center"><span style="font-family:monospace">0+x</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">epsilon2zero((1e-13+x)*100000) </span></div><p>
+Output (with <span style="font-family:monospace">epsilon=1e-10</span>) :
+</p><div class="center"><span style="font-family:monospace">(0+x)*100000</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">epsilon2zero(0.001+x) </span></div><p>
+Output (with <span style="font-family:monospace">epsilon=0.0001</span>) :
+</p><div class="center"><span style="font-family:monospace">0.001+x</span></div>
 <hr>
 <a href="cascmd_en647.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

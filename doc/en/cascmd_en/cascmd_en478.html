@@ -4,32 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Count the elements of a matrix verifying a property : count</title>
+<title>Select the elements of a list : select</title>
 </head>
 <body >
 <a href="cascmd_en477.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en479.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec574" class="subsection">5.45.27  Count the elements of a matrix verifying a property : <span style="font-family:monospace">count</span></h3>
-<p><a id="hevea_default748"></a>
-<span style="font-family:monospace">count</span> takes as arguments : a real function <span style="font-family:monospace">f</span> and 
-a real matrix <span style="font-family:monospace">A</span> of dimension <span style="font-family:monospace">p*q</span> (resp. a list <span style="font-family:monospace">l</span> of size 
-<span style="font-family:monospace">n</span>).<br>
-<span style="font-family:monospace">count</span> returns <span style="font-family:monospace">f(A[0,0])+..f(A[p-1,q-1])</span> (resp. 
-<span style="font-family:monospace">f(l[0])+..f(l[n-1])</span>)<br>
-Hence, if <span style="font-family:monospace">f</span> is a boolean function, <span style="font-family:monospace">count</span> returns the number 
-of elements of the matrix <span style="font-family:monospace">A</span> (resp. the list <span style="font-family:monospace">l</span>) verifying 
-the property <span style="font-family:monospace">f</span>.<br>
+<h3 id="sec570" class="subsection">5.43.25  Select the elements of a list : <span style="font-family:monospace">select</span></h3>
+<p><a id="hevea_default741"></a>
+<span style="font-family:monospace">select</span> takes as arguments : a boolean function <span style="font-family:monospace">f</span>
+and a list <span style="font-family:monospace">L</span>.<br>
+<span style="font-family:monospace">select</span> selects in the list <span style="font-family:monospace">L</span>, the elements <span style="font-family:monospace">c</span> such that
+<span style="font-family:monospace">f(c)==true</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">count(x-&gt;x,[[2,12],[45,3],[7,78]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">select(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">147</span></div><p>
-indeed: 2+12+45+3+7+78=147.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">count(x-&gt;x&lt;10,[[2,12],[45,3],[7,78]])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">3</span></div>
+</p><div class="center"><span style="font-family:monospace">[2,3,5]</span></div>
 <hr>
 <a href="cascmd_en477.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,46 +4,91 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Hexagons in space: hexagon</title>
+<title>Circles and arcs in the plane: circle</title>
 </head>
 <body >
 <a href="cascmd_en860.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en862.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1122" class="subsection">12.9.1  Hexagons in space: <span style="font-family:monospace">hexagon</span><a id="hevea_default1367"></a></h3>
+<h3 id="sec1118" class="subsection">12.11.1  Circles and arcs in the plane: <span style="font-family:monospace">circle</span><a id="hevea_default1525"></a></h3>
 <p>
-<a id="sec:3dhex"></a></p><p>See section <a href="cascmd_en765.html#sec%3A2dhex">11.10.1</a> for hexagons in the plane.</p><p>The <span style="font-family:monospace">hexagon</span> command takes as arguments
-three points, <span style="font-family:monospace">A</span>, <span style="font-family:monospace">B</span> and <span style="font-family:monospace">P</span>.</p><p><span style="font-family:monospace">hexagon</span> returns and draws a regular hexagon.
-The first two points <span style="font-family:monospace">A</span> and <span style="font-family:monospace">B</span> are vertices of the
-hexagon, the third point <span style="font-family:monospace">P</span> determines the plane and
-orientation of the rectangle.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">A := point(0,0,0); B := point(3,3,3);<br>
- P := point(0,0,3)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">hexagon(A,B,P)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en223.png">
-</div><p><span style="font-family:monospace">hexagon</span> takes four optional arguments,
-which are variables assigned to the unnamed vertices.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">hexagon(A,B,P,C,D,E,F)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">simplify(coordinates(C))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[(-3*sqrt(6)+18)/4,(-3*sqrt(6)+18)/4,(3*sqrt(6)+9)/2]
+<a id="sec:2dcircles"></a>
+See also section <a href="cascmd_en862.html#sec%3A2darcs">12.11.2</a>.</p><p>See section <a href="index.html#sec%3A3dcircles">13.10</a> for circles in space.</p><p>The <span style="font-family:monospace">circle</span> command returns and draws a circle or arc of a circle,
+depending on the arguments. 
+<span style="font-family:monospace">circle</span> can take the following arguments:
+</p><ul class="itemize"><li class="li-itemize">
+One argument, the equation of a circle with variables <span style="font-style:italic">x</span> and
+<span style="font-style:italic">y</span> (or an expression assumed to be set to 0).<br>
+ <span style="font-family:monospace">circle</span> returns and draws the circle. <br>
+ Input:
+<div class="center">
+<span style="font-family:monospace">circle(x2 + y2 - 2*x - 2*y)
 </span></div>
+Output:
+<div class="center">
+<img src="cascmd_en125.png">
+</div>
+</li><li class="li-itemize">Two arguments, a point and a complex number.<br>
+ <span style="font-family:monospace">circle</span> returns and draws the circle centered at the
+point and whose radius is the modulus of the complex number.<br>
+ Input:
+<div class="center">
+<span style="font-family:monospace">circle(-1,i)
+</span></div>
+Output:
+<div class="center">
+<img src="cascmd_en126.png">
+</div>
+</li><li class="li-itemize">Two arguments, both points (where the second is the value of
+<span style="font-family:monospace">point</span> and not simply the affix).<br>
+ <span style="font-family:monospace">circle</span> returns and draws the circle with a diameter given
+by the two points.<br>
+ Input:
+<div class="center">
+<span style="font-family:monospace">circle(-1,point(i))
+</span></div>
+Output:
+<div class="center">
+<img src="cascmd_en127.png">
+</div>
+</li><li class="li-itemize">Four mandatory arguments and two optional arguments.
+The mandatory arguments are a point <span style="font-family:monospace">C</span>, a
+complex number <span style="font-family:monospace">r</span>, and two real numbers. The
+arguments <span style="font-family:monospace">C</span> and <span style="font-family:monospace">r</span> determine a circle, as above.
+The two real numbers specify the central angles
+that determine an arc, where the angles start on the axis defined by
+the points <span style="font-family:monospace">C</span> and <span style="font-family:monospace">C + r</span>.<br>
+ <span style="font-family:monospace">circle</span> returns and draws the arc.<br>
+ Input:
+<div class="center">
+<span style="font-family:monospace">circle(-1,1,0,pi/4)
+</span></div>
+Output:
+<div class="center">
+<img src="cascmd_en128.png">
+</div>
+The optional arguments need to be
+variable names which will be assigned to the ends of the arc.
+</li><li class="li-itemize">Four mandatory arguments and two optional arguments.
+The mandatory arguments are two points <span style="font-family:monospace">A</span>
+and <span style="font-family:monospace">B</span> and two real numbers. The
+points <span style="font-family:monospace">A</span> and <span style="font-family:monospace">B</span> determine a circle, as above.
+The two real numbers specify the central angles
+that determine an arc, where the angles start on the axis defined by 
+the diameter <span style="font-family:monospace">AB</span>.<br>
+ <span style="font-family:monospace">circle</span> returns and draws the arc.<br>
+ Input:
+<div class="center">
+<span style="font-family:monospace">circle(-1,point(i),0,pi/4)
+</span></div>
+Output:
+<div class="center">
+<img src="cascmd_en129.png">
+</div>
+The optional arguments need to be
+variable names which will be assigned to the ends of the arc.
+</li></ul>
 <hr>
 <a href="cascmd_en860.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,60 +4,113 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Inversion in the plane: inversion</title>
+<title>Dealing with errors: try, catch, throw, error, ERROR</title>
 </head>
 <body >
 <a href="cascmd_en806.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en808.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1053" class="subsection">11.15.7  Inversion in the plane: <span style="font-family:monospace">inversion</span><a id="hevea_default1308"></a></h3>
+<h3 id="sec1039" class="subsection">11.4.11  Dealing with errors: <span style="font-family:monospace">try, catch, throw, error, ERROR</span></h3>
 <p>
-<a id="sec:2dinversion"></a></p><p>See section <a href="cascmd_en897.html#sec%3A3dinversion">12.14.7</a> for inversions in space.</p><p>Given a circle <span style="font-style:italic">C</span> with center <span style="font-style:italic">O</span> and radius <span style="font-style:italic">r</span>, the <em>inversion</em>
-of a point <span style="font-style:italic">A</span> with respect to <span style="font-style:italic">C</span> is the
-point <span style="font-style:italic">A</span>′ on the ray <span style="font-style:italic">OA</span> satisfying
-<span style="text-decoration:overline"><span style="font-style:italic">OA</span></span>·<span style="text-decoration:overline"><span style="font-style:italic">OA</span></span><span style="text-decoration:overline">′</span> = <span style="font-style:italic">r</span><sup>2</sup>.</p><p>The <span style="font-family:monospace">inversion</span> command takes two or three arguments.</p><p>If <span style="font-family:monospace">inversion</span> has two arguments, they are a point (the center
-of inversion) and a real number (the radius).
-<span style="font-family:monospace">inversion</span> returns a new command which performs the
-inversion.<br>
-Input:
+<a id="hevea_default1436"></a><a id="hevea_default1437"></a><a id="hevea_default1438"></a><a id="hevea_default1439"></a><a id="hevea_default1440"></a></p><p>Some commands produce errors, and if your program tries to run such a
+command it will halt with an error. To avoid this, you can use the
+<span style="font-family:monospace">try</span> and <span style="font-family:monospace">catch</span> commands. To
+use these, you put any potentially problematic statements in a block
+following <span style="font-family:monospace">try</span>, and immediately after the block put
+<span style="font-family:monospace">catch</span> with an argument of an unused symbol. If the
+<span style="font-family:monospace">try</span> block doesn’t produce an error, then <span style="font-family:monospace">catch</span> and
+the block following <span style="font-family:monospace">catch</span> will be ignored. If the
+<span style="font-family:monospace">try</span> block does produce an error, then a string describing the
+error is assigned to the argument to <span style="font-family:monospace">catch</span>, and the block
+following catch is evaluated. For example, the command
 </p><div class="center">
-<span style="font-family:monospace">inver := inversion(i, 2)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">inver(circle(1+i,1))
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en161.png">
+<span style="font-family:monospace">[[1,1]]*[[2,2]]</span>
 </div><p>
-then:
+will produce an error saying <span style="font-style:italic">Error: Invalid dimension</span>. 
+However,
+</p><pre class="verbatim">  try {[[1,1]]*[[2,2]]}
+  catch (err) {
+    print("The error is " + err)
+    }
+</pre><p>
+will not produce an error; instead it will print
 </p><div class="center">
-<span style="font-family:monospace">inver(circle(1+i,1/2))
-</span></div><p>
-Output:
+<span style="font-family:monospace">The error is Error: Invalid dimension</span>
+</div><p>With the following program
+</p><pre class="verbatim">  test(x) := {
+    local y, str, err;
+    try { y := [[1,1]]*x; str := "This produced a product.";}
+    catch (err)
+    {y := x; 
+     str := "This produced an error " + err + " The input is returned.";}
+    print(str);
+    return y;
+    }
+</pre><p>
+if you enter
 </p><div class="center">
-<img src="cascmd_en162.png">
-</div><p>If <span style="font-family:monospace">inversion</span> has three arguments, the first two arguments are a
-point and number as above, and the third argument is a geometric
-object. <span style="font-family:monospace">inversion</span> returns and draws the inverted object.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">inversion(i, 2, circle(1+i,1))
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en163.png">
+<span style="font-family:monospace">test([[2],[2]])</span>
 </div><p>
-Input:
+then 
 </p><div class="center">
-<span style="font-family:monospace">inversion(i, 2, circle(1+i,1/2))
-</span></div><p>
-Output:
+<span style="font-family:monospace">This produced a product.</span>
+</div><p>
+will be printed and the result will be
 </p><div class="center">
-<img src="cascmd_en164.png">
-</div>
+<span style="font-family:monospace">[4]</span>
+</div><p>.
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">test([[2,2]])</span>
+</div><p>
+then
+</p><div class="center">
+<span style="font-family:monospace">This produced an error Error: Invalid dimension The input is
+returned.</span>
+</div><p>
+will be printed and the result will be
+</p><div class="center">
+<span style="font-family:monospace">[[2,2]]</span>
+</div><p>You can use the <span style="font-family:monospace">throw</span> command (or equivalently,
+the <span style="font-family:monospace">error</span> or <span style="font-family:monospace">ERROR</span>
+command) to generate an error and error string, possibly to be caught
+by <span style="font-family:monospace">catch</span>. The <span style="font-family:monospace">throw</span> command takes as argument a
+string, which will be used as the error message. For example, suppose
+you have the program
+</p><pre class="verbatim">  f(x) := {
+  if (type(x) != DOM_INT)
+    throw("Not an integer");
+  else
+    return x;
+  }
+</pre><p>
+Then
+</p><div class="center">
+<span style="font-family:monospace">f(12)</span>
+</div><p>
+will simply return
+</p><div class="center">
+<span style="font-family:monospace">12</span>
+</div><p>
+since 12 is an integer, but
+</p><div class="center">
+<span style="font-family:monospace">f(1.2)</span>
+</div><p>
+will signal an error
+</p><div class="center">
+<span style="font-family:monospace">Not an integer Error: Bad Argument Value</span>
+</div><p>
+since 1.2 in not an integer. You can catch this error in other
+programs; the program
+</p><pre class="verbatim">  g(x) := {
+  try(f(x)) catch(err) {x := 0;}
+  return x;
+  }
+</pre><p>
+will return <span style="font-family:monospace">x</span> is <span style="font-family:monospace">x</span> is an integer, but if <span style="font-family:monospace">x</span>
+is not an integer, <span style="font-family:monospace">f(x)</span> will give an error and so
+<span style="font-family:monospace">g(x)</span> will return 0.</p>
 <hr>
 <a href="cascmd_en806.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

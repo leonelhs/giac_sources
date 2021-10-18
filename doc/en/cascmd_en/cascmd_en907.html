@@ -4,36 +4,59 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Parallelepipeds: parallelepiped</title>
+<title>Check if an object in the plane is a square: is_square</title>
 </head>
 <body >
 <a href="cascmd_en906.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en908.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1175" class="subsection">12.16.3  Parallelepipeds: <span style="font-family:monospace">parallelepiped</span><a id="hevea_default1415"></a></h3>
-<p>The <span style="font-family:monospace">parallelepiped</span> command takes as arguments four points,
-<span style="font-family:monospace">A</span>, <span style="font-family:monospace">B</span>, <span style="font-family:monospace">C</span> and <span style="font-family:monospace">D</span>.</p><p><span style="font-family:monospace">parallelepiped</span> returns and draws the parallelepiped
-determined by the edges <span style="font-family:monospace">AB</span>, <span style="font-family:monospace">AC</span> and <span style="font-family:monospace">AD</span>.<br>
+<h3 id="sec1169" class="subsection">12.16.8  Check if an object in the plane is a square: <span style="font-family:monospace">is_square</span><a id="hevea_default1581"></a></h3>
+<p>
+<a id="sec:2dchecksquare"></a></p><p>See section <a href="cascmd_en981.html#sec%3A3dchecksquare">13.13.12</a> for checking for squares
+in three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_square</span> command is a Boolean function which takes as
+argument a geometric object or four points.</p><p><span style="font-family:monospace">is_square</span> returns <span style="font-family:monospace">1</span> if the object (or quadrilateral
+determined by the four points) is a square and returns <span style="font-family:monospace">0</span>
+otherwise.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">parallelepiped([0,0,0],[5,0,0],[0,5,0],[0,0,5])
+<span style="font-family:monospace">is_square(1+i, -1+i, -1-i, 1-i)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en245.png">
-</div><p>Input:
+<span style="font-family:monospace">1 
+</span></div><p>
+Input:
 </p><div class="center">
-<span style="font-family:monospace">p := parallelepiped([0,0,0],[5,0,0],[0,3,0],[0,0,2]):;
+<span style="font-family:monospace">K := square(1+i, -1+i)
 </span></div><p>
 then:
 </p><div class="center">
-<span style="font-family:monospace">c1, c2, c3, c4, c5, c6, c7, c8 := vertices(p);
+<span style="font-family:monospace">is_square(K)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en246.png">
-</div>
+<span style="font-family:monospace">1 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">K := square(1+i, -1+i, C, D); is_square(K[0])
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">1 
+</span></div><p>
+Note that <span style="font-family:monospace">K[0]</span> is a square since <span style="font-family:monospace">K</span> is a list made
+of a square and vertices <span style="font-family:monospace">C</span> and <span style="font-family:monospace">D</span>. Entering 
+<span style="font-family:monospace">affix(C,D)</span> returns <span style="font-family:monospace">-1-i,1-i</span>.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">is_square(i, -1+i, -1-i, 1-i)
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">0 
+</span></div>
 <hr>
 <a href="cascmd_en906.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

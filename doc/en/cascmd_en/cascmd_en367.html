@@ -4,43 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Row reduction to echelon form in ℤ/pℤ : rref</title>
+<title>Hermite polynomial : hermite</title>
 </head>
 <body >
 <a href="cascmd_en366.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en368.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec448" class="subsection">5.34.17  Row reduction to echelon form in ℤ/<span style="font-style:italic">p</span>ℤ : <span style="font-family:monospace">rref</span></h3>
-<p><a id="hevea_default574"></a><a id="sec:rrefm"></a>
-<span style="font-family:monospace">rref</span> finds the row reduction to echelon form of
-a matrix with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ. </p><p>This may be used
-to solve a linear system of equations with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ 
-by rewriting it in matrix form (see also <a href="cascmd_en558.html#sec%3Arref">5.56.3</a>) :
-</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
-<span style="font-family:monospace">rref</span> takes as argument the augmented matrix 
-of the system (the matrix obtained by augmenting matrix <span style="font-family:monospace">A</span> to the 
-right with the column vector <span style="font-family:monospace">B</span>).<br>
-<span style="font-family:monospace">rref</span> returns a matrix <span style="font-family:monospace">[A1,B1]</span> : <span style="font-family:monospace">A1</span> has 1 on
-its principal diagonal, and zeros outside, and the
-solutions in ℤ/<span style="font-style:italic">p</span>ℤ, of :
-</p><div class="center"><span style="font-family:monospace">A1*X=B1</span></div><p> 
-are the same as the solutions of:
-</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
-Example, solve in ℤ/13ℤ
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎨<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >   <span style="font-style:italic">x</span> +   2 · <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >9 </td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >3 · <span style="font-style:italic">x</span> +10 · <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >0 </td></tr>
-</table></td></tr>
+<h3 id="sec445" class="subsection">5.31.2  Hermite polynomial : <span style="font-family:monospace">hermite</span></h3>
+<p><a id="hevea_default598"></a>
+<span style="font-family:monospace">hermite</span> takes as argument an integer <span style="font-style:italic">n</span> and
+optionally a variable name (by default <span style="font-style:italic">x</span>).<br>
+<span style="font-family:monospace">hermite</span> returns the Hermite polynomial of degree <span style="font-style:italic">n</span>.<br>
+If <span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) denotes the Hermite polynomial of degree <span style="font-style:italic">n</span>,
+the following recurrence relation holds:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">H</span>(0,<span style="font-style:italic">x</span>)=1,   
+<span style="font-style:italic">H</span>(1,<span style="font-style:italic">x</span>)=2<span style="font-style:italic">x</span>,   
+<span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>)=2<span style="font-style:italic">xH</span>(<span style="font-style:italic">n</span>−1,<span style="font-style:italic">x</span>)−2(<span style="font-style:italic">n</span>−1)<span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>−2,<span style="font-style:italic">x</span>) </td></tr>
+</table><p>
+These polynomials are orthogonal for the scalar product:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&lt;<span style="font-style:italic">f</span>,<span style="font-style:italic">g</span>&gt;=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">−∞</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span><sup>2</sup></sup><span style="font-style:italic">dx</span> </td></tr>
 </table><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">rref([[1, 2, 9]%13,[3,10,0]%13])</span></div><p> 
-or :
-</p><div class="center"><span style="font-family:monospace">rref([[1, 2, 9],[3,10,0]])%13</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">hermite(6)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1%13,0%13,3%13],[0%13,1%13,3%13]]</span></div><p> 
-hence <span style="font-family:monospace">x=3%13</span> and <span style="font-family:monospace">y=3%13</span>.</p>
+</p><div class="center"><span style="font-family:monospace">64*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6+-480*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+720*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-120</span></div><p>Input :
+</p><div class="center"><span style="font-family:monospace">hermite(6,y)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">64*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6+-480*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+720*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-120</span></div>
 <hr>
 <a href="cascmd_en366.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,40 +4,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Definition : set[]</title>
+<title>Roots and poles of a rational function : froot</title>
 </head>
 <body >
 <a href="cascmd_en392.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en394.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec479" class="subsection">5.39.1  Definition : <span style="font-family:monospace">set[]</span></h3>
-<p><a id="hevea_default613"></a><a id="hevea_default614"></a>
-To define a set of elements, put the elements separated by a comma, with 
-<span style="font-family:monospace">%{ ... %}</span> or <span style="font-family:monospace">set[ ... ]</span> as delimiters.<br>
+<h3 id="sec475" class="subsection">5.35.1  Roots and poles of a rational function : <span style="font-family:monospace">froot</span></h3>
+<p><a id="hevea_default624"></a>
+<span style="font-family:monospace">froot</span> takes a rational function <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>) as argument.<br>
+<span style="font-family:monospace">froot</span> returns a vector whose components are the roots and the poles
+of <span style="font-style:italic">F</span>[<span style="font-style:italic">x</span>], each one followed by its multiplicity.<br>
+If <span style="font-family:monospace">Xcas</span> can not find the exact values of the roots or poles,
+it tries to find approximate values if <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>) has numeric coefficients.<br>
 Input :
-</p><div class="center">
-<span style="font-family:monospace">%{1,2,3,4%}</span><br>
-<span style="font-family:monospace">set[1,2,3,4]</span>
-</div><p>
-In the <span style="font-family:monospace">Xcas</span> answers, the set delimiters are displayed
-as  and  in order
-not to confuse sets with lists.
-For example, 1,2,3 is the set <span style="font-family:monospace">%{1,2,3%}</span>, 
-unlike [1,2,3] (normal brackets) which is the list <span style="font-family:monospace">[1,2,3]</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">A:=%{1,2,3,4%}</span> or <span style="font-family:monospace">A:=set[1,2,3,4]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">froot((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)/(x-2)) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">1,2,3,4 </span></div><p>
+</p><div class="center"><span style="font-family:monospace">[1,2,0,3,2,-1]</span></div><p>
+Hence, for  <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>5</sup>−2.<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>/<span style="font-style:italic">x</span>−2 :
+</p><ul class="itemize"><li class="li-itemize">
+1 is a root of multiplicity 2,
+</li><li class="li-itemize">0 is a root of multiplicity 3,
+</li><li class="li-itemize">2 is a pole of order 1.
+</li></ul><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">B:=%{5,5,6,3,4%}</span> or <span style="font-family:monospace">B:=set[5,5,6,3,4]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">froot((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)/(x-2)) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">5,6,3,4 </span></div><p>
-<span style="font-weight:bold">Remark</span><br>
-The order in a set is not significant and 
-the elements in a set are all distinct. If you input
-<span style="font-family:monospace">B:=%{5,5,6,3,4%}</span> and <span style="font-family:monospace">C:=%{3,4,5,3,6%}</span>, then 
-<span style="font-family:monospace">B==C</span> will return <span style="font-family:monospace">1</span>.</p>
+</p><div class="center"><span style="font-family:monospace">[1,1,(1+sqrt(5))/2,1,(1-sqrt(5))/2,1,2,-1]</span></div><p>
+<span style="font-weight:bold">Remark</span> : to have the complex roots and poles, check <span style="font-family:monospace">Complex</span> in
+the <span style="font-family:monospace">cas</span> configuration (red button giving the state line).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">froot((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)/(x-2)) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[-i,1,i,1,2,-1]</span></div>
 <hr>
 <a href="cascmd_en392.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,33 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Spheres: sphere</title>
+<title>Check if four points are concyclic in the plane: is_concyclic</title>
 </head>
 <body >
 <a href="cascmd_en901.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en903.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1169" class="subsection">12.15.4  Spheres: <span style="font-family:monospace">sphere</span><a id="hevea_default1409"></a></h3>
-<p>The <span style="font-family:monospace">sphere</span> command takes two arguments; either two points or
-a point and a real number.</p><p>With two points as arguments, <span style="font-family:monospace">sphere</span> returns and draws the
-sphere with a diameter specified by the points.<br>
+<h3 id="sec1164" class="subsection">12.16.3  Check if four points are concyclic in the plane: <span style="font-family:monospace">is_concyclic</span><a id="hevea_default1576"></a></h3>
+<p>
+<a id="sec:2dcheckconcycle"></a></p><p>See section <a href="cascmd_en976.html#sec%3A3dcheckconcycle">13.13.7</a> for checking for concyclicity in
+three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_concyclic</span> command is a Boolean function which takes as argument a list or
+sequence of points.</p><p><span style="font-family:monospace">is_concyclic</span> returns <span style="font-family:monospace">1</span> if the points are cyclic
+and returns <span style="font-family:monospace">0</span> otherwise.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">sphere([-2,0,0],[2,0,0])
+<span style="font-family:monospace">is_concyclic(1+i, -1+i, -1-i, 1-i)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en236.png">
-</div><p>With a point and a real number as arguments, <span style="font-family:monospace">sphere</span> returns
-and draws the sphere centered at the point with radius given by the
-number.<br>
+<span style="font-family:monospace">1 
+</span></div><p>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">sphere([0,0,0],2)
+<span style="font-family:monospace">is_concyclic(i, -1+i, -1-i, 1-i)
 </span></div><p>
-returns and draws the same sphere as above.
-</p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">0 
+</span></div>
 <hr>
 <a href="cascmd_en901.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

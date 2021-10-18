@@ -6,11 +6,11 @@ var UI = {
   from: '',
   ready: false,
   focusaftereval: true,
-  docprefix: "https://www-fourier.ujf-grenoble.fr/%7eparisse/giac/doc/fr/cascmd_fr/",
-  base_url: "https://www-fourier.ujf-grenoble.fr/%7eparisse/",
-  //forum_url: "http://xcas.e.ujf-grenoble.fr/XCAS/viewforum.php?f=25",
+  docprefix: "https://www-fourier.univ-grenoble-alpes.fr/%7eparisse/giac/doc/fr/cascmd_fr/",
+  base_url: "https://www-fourier.univ-grenoble-alpes.fr/%7eparisse/",
+  //forum_url: "http://xcas.e.univ-grenoble-alpes.fr/XCAS/viewforum.php?f=25",
   forum_url: "http://xcas.univ-grenoble-alpes.fr/forum/viewforum.php?f=25",
-  // forum_url: "http://xcas.e.ujf-grenoble.fr/XCAS/posting.php?mode=post&f=12&subject=session",
+  // forum_url: "http://xcas.e.univ-grenoble-alpes.fr/XCAS/posting.php?mode=post&f=12&subject=session",
   //forum_url: "http://xcas.univ-grenoble-alpes.fr/forum/posting.php?mode=post&f=12&subject=session",
   forum_warn: true,
   focused: entree,
@@ -1623,7 +1623,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       copy += "var win=window.open(\"" + UI.forum_url + "\", \"_blank\");'>F</button>,";
       //console.log(copy);
       if (window.location.href.substr(0, 4) == 'file' && !UI.detectmob()) {
-        $id('thelink').innerHTML = '<a title="Clone session" href="' + s + '" target="_blank">x2</a>, <a title="Local clone" href="' + s2 + '" target="_blank">local</a>,' + copy;//+',<a href="http://xcas.e.ujf-grenoble.fr/XCAS/posting.php?mode=post&f=12&subject=session&message='+encodeURIComponent(sforum)+'" target="_blank">forum</a>,';
+        $id('thelink').innerHTML = '<a title="Clone session" href="' + s + '" target="_blank">x2</a>, <a title="Local clone" href="' + s2 + '" target="_blank">local</a>,' + copy;//+',<a href="http://xcas.e.univ-grenoble-alpes.fr/XCAS/posting.php?mode=post&f=12&subject=session&message='+encodeURIComponent(sforum)+'" target="_blank">forum</a>,';
       }
       else
         $id('thelink').innerHTML = '<a href="' + s + '" target="_blank">x2</a>,' + (copy);
@@ -1701,11 +1701,13 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
             fs = fs.substr(pos1, fs.length - pos1);
             var pos2 = fs.search("\"");
             fs1 = fs.substr(0, pos2); // cursor name
+	    if (start==-1) fs1='assume('+fs1;
             var pos1 = fs.search("value=");
             pos1 += 7;
             fs = fs.substr(pos1, fs.length - pos1);
             var pos2 = fs.search("\"");
-            fs1 += ',' + fs.substr(0, pos2); // current value
+            fs1 += start==-1?"=[":',';
+	    fs1 += fs.substr(0, pos2); // current value
             var pos1 = fs.search("minname");
             pos1 += 7;
             fs = fs.substr(pos1, fs.length - pos1);
@@ -1727,7 +1729,12 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
             fs = fs.substr(pos1, fs.length - pos1);
             var pos2 = fs.search("\"");
             fs1 += ',' + fs.substr(0, pos2); // step
-            //console.log(fs1);
+	    if (start==-1){
+	      fs1 +='])';
+              //console.log(fs1);
+	      casioin.push(fs1);
+	      casioin.push('');
+	    }
             s += '*' + fs1 + '&';
             cur = cur.nextSibling;
             continue;
@@ -2167,13 +2174,18 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       return name.substr(0,i);
     return name;
   },
+  unsignedchar:function(s,pos){
+    var r=s.charCodeAt(pos);
+    var r1=(r+256)%256;
+    return r1;
+  },
   loadfile: function (oFiles) {
     var nFiles = oFiles.length;
     for (var nFileId = 0; nFileId < nFiles; nFileId++) {
       console.log('load',oFiles[nFileId].name);
       $id('outputfilename').innerHTML=UI.remove_extension(oFiles[nFileId].name);
       var reader = new FileReader();
-      reader.readAsText(oFiles[nFileId]);
+      reader.readAsBinaryString(oFiles[nFileId]);//reader.readAsText(oFiles[nFileId]);
       var s;
       reader.onloadend = function (e) {
         s = e.target.result;
@@ -2188,38 +2200,41 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	  // Casio change ?reader.readAsArrayBuffer or readAsBinaryString
 	  if (s.charCodeAt(0)==0){
 	    var editpos=0;
-	    var editl=s.charCodeAt(1);
-	    editl=editl*256+s.charCodeAt(2);
-	    editl=editl*256+s.charCodeAt(3);
+	    var editl=UI.unsignedchar(s,1);
+	    editl=editl*256+UI.unsignedchar(s,2);
+	    editl=editl*256+UI.unsignedchar(s,3);
 	    var edits=s.substr(4,editl);
-	    console.log(edits);
+	    //console.log(edits);
 	    var py=edits[editl-19];
 	    var rad=edits[editl-3];
-	    console.log(edits,py,rad);
+	    //console.log(edits,py,rad);
 	    edits=edits.substr(0,edits.length-34);
 	    UI.python_mode=0;
 	    if (edits.length)
 	      UI.caseval(edits);
 	    UI.python_mode=py;
 	    editpos=4+editl;
-	    editl=s.charCodeAt(editpos);
-	    for (var i=1;i<=3;i++)
-	      editl=editl*256+s.charCodeAt(editpos+i);
+	    editl=UI.unsignedchar(s,editpos);
+	    // console.log(0,editl);
+	    for (var i=1;i<=3;i++){
+	      editl=editl*256+UI.unsignedchar(s,editpos+i);
+	      // console.log(i,editl);
+	    }
 	    edits=s.substr(editpos+4,editl);
-	    //console.log('script ',edits,edits.length);
+	    // console.log('script ',editl,edits,edits.length);
 	    if (edits=='\n')
 	      edits=UI.python_mode?'def\n':'function\nffunction';
 	    if (edits.length)
 	      UI.eval_cmdline1(edits,true);
 	    editpos += 4+editl;
 	    while (editpos<s.length-4){
-	      editl=s.charCodeAt(editpos);
-	      editl=editl*256+s.charCodeAt(editpos+1);
+	      editl=UI.unsignedchar(s,editpos);
+	      editl=editl*256+UI.unsignedchar(s,editpos+1);
 	      if (editl==0) break;
-	      var t=s.charCodeAt(editpos+4);
-	      var ro=s.charCodeAt(editpos+5);
+	      var t=UI.unsignedchar(s,editpos+4);
+	      var ro=UI.unsignedchar(s,editpos+5);
 	      edits=s.substr(editpos+6,editl);
-	      console.log(t,ro,edits);
+	      //console.log(t,ro,edits);
 	      if (edits.length>=2){
 		if (edits[0]=='#')
 		  edits='///'+edits.substr(1,edits.length-1);
@@ -2235,8 +2250,47 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 		  }
 		}
 	      }
-	      if (edits.length && t==0)
-		UI.eval_cmdline1(edits,true);
+	      if (edits.length && t==0){
+		var done=false;
+		// detect assume(a=[cur,min,max,step])
+		if (edits.length>=15 && edits.substr(0,7)=="assume("){
+		  var pos=edits.search("=");
+		  var name,value,mini,maxi,step;
+		  if (pos>=8 && pos<edits.length){
+		    name=edits.substr(7,pos-7);
+		    //console.log(name);
+		    // skip =[
+		    edits=edits.substr(pos+2,edits.length-pos-2);
+		    pos=edits.search(',');
+		    if (pos>=1 && pos<edits.length){
+		      value=edits.substr(0,pos);
+		      //console.log(value);
+		      edits=edits.substr(pos+1,edits.length-pos-1);
+		      pos=edits.search(',');
+		      if (pos>=1 && pos<edits.length){
+			mini=edits.substr(0,pos);
+			//console.log(mini);
+			edits=edits.substr(pos+1,edits.length-pos-1);
+			pos=edits.search(',');
+			if (pos>=1 && pos<edits.length){
+			  maxi=edits.substr(0,pos);
+			  //console.log(maxi);
+			  edits=edits.substr(pos+1,edits.length-pos-1);
+			  pos=edits.search(']');
+			  if (pos>=1 && pos<edits.length){
+			    step=edits.substr(0,pos);
+			    //console.log(name,value,mini,maxi,step);
+			    UI.addcurseur(name, value, mini, maxi, step);
+			    done=true;
+			  }
+			}
+		      }
+		    }
+		  }
+		}
+		if (!done)
+		  UI.eval_cmdline1(edits,true);
+	      }
 	      editpos+= 6+editl;
 	    }
 	  }

@@ -4,114 +4,42 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The coordinates of a point, vector or line in the plane: coordinates</title>
+<title>Printing: print, Disp, ClrIO</title>
 </head>
 <body >
 <a href="cascmd_en783.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en785.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1028" class="subsection">11.13.4  The coordinates of a point, vector or line in the plane: <span style="font-family:monospace">coordinates</span><a id="hevea_default1275"></a></h3>
+<h3 id="sec1011" class="subsection">11.2.6  Printing: <span style="font-family:monospace">print, Disp, ClrIO</span></h3>
 <p>
-<a id="sec:2dcoordinates"></a></p><p>See section <a href="cascmd_en871.html#sec%3A3dcoordinates">12.12.4</a> for coordinates in
-three-dimensional geometry.</p><p>The <span style="font-family:monospace">coordinates</span> command takes as argument a point
-or line.</p><p>If the argument is a point,
-<span style="font-family:monospace">coordinates</span> returns a list consisting of the abscissa and
-ordinate.</p><p>If the argument is a line, <span style="font-family:monospace">coordinates</span> returns a list of
-two points on the line, in the order determined by the direction of
-the line.<br>
-Input:
+<a id="hevea_default1389"></a><a id="hevea_default1390"></a><a id="hevea_default1391"></a></p><p>The <span style="font-family:monospace">print</span> (or <span style="font-family:monospace">Disp</span>) command
+will print its arguments in a special pane and return the number
+<span style="font-family:monospace">1</span>. For example, 
 </p><div class="center">
-<span style="font-family:monospace">coordinates(1+2*i)
-</span></div><p>
-or:
+<span style="font-family:monospace">print("Hello")</span>
+</div><p>
+will result in
 </p><div class="center">
-<span style="font-family:monospace">coordinates(point(1+2*i))
-</span></div><p>
-or:
+<span style="font-family:monospace">Hello</span>
+</div><p>
+If you enter
 </p><div class="center">
-<span style="font-family:monospace">coordinates(vector(1+2*i))
-</span></div><p>
-Output:
+<span style="font-family:monospace">a := 12</span>
+</div><p>
+then
 </p><div class="center">
-<span style="font-family:monospace">[1,2]
-</span></div><p>
-Input:
+<span style="font-family:monospace">print("a =",a)</span>
+</div><p>
+will print
 </p><div class="center">
-<span style="font-family:monospace">coordinates(point(1+2*i) - point(i))
-</span></div><p>
-or:
+<span style="font-family:monospace">"a =", 12</span>
+</div><p>The <span style="font-family:monospace">ClrIO</span> (no argument) will erase the printing
+that was done in the level it was typed. For example,
 </p><div class="center">
-<span style="font-family:monospace">coordinates(vector(i,1+2*i))
-</span></div><p>
-or:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(vector(point(i),point(1+2*i)))
-</span></div><p>
-or:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(vector([0,1],[1,2]))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[1,1]
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">d := line(-1+i,1+2*i)
-</span></div><p>
-or:
-</p><div class="center">
-<span style="font-family:monospace">d := line(point(-1,1),point(1,2))
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(d)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[-1+i,1+2*i]
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(line(y = (1/2 * x + 3/2)))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[3*i/2, 1+2*i]
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(line(x - 2*y + 3 = 0))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[3*i/2, (-4 + i)/2]
-</span></div><p><span style="font-family:monospace">coordinates</span> can also take a sequence or list of points as an
-argument; it then returns a sequence or list of the coordinates of
-the points.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(i,1+2*i)
-</span></div><p>
-or:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(point(i),point(1+2*i))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[0,1], [1,2]
-</span></div><p>
-Note that if the argument is a list of real numbers, it is
-interpreted as a list of points on the real axis.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">coordinates([1,2])
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[[1,0],[2,0]]
-</span></div>
+<span style="font-family:monospace">print("Hello"); ClrIO()</span>
+</div><p>
+will simply return the result <span style="font-family:monospace">(1,1)</span>.</p>
 <hr>
 <a href="cascmd_en783.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

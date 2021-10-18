@@ -4,41 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Visualizing waveforms : plotwav</title>
+<title>Simplify : simplify</title>
 </head>
 <body >
 <a href="cascmd_en245.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en247.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec313" class="subsection">5.24.9  Visualizing waveforms : <span style="font-family:monospace">plotwav</span><a id="hevea_default428"></a></h3>
-<p>
-<span style="font-family:monospace">plotwav</span> accepts an audio clip as its first argument and optionally a range in form <span style="font-family:monospace">range=[m,n]</span> or <span style="font-family:monospace">range=a..b</span> as its second argument, where <span style="font-style:italic">m</span>, <span style="font-style:italic">n</span> are integers and <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span> are real numbers. The command displays the waveform on the specified range (by default in its entirety). It is assumed that the values <span style="font-style:italic">m</span>, <span style="font-style:italic">n</span> are in sample units and <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span> in seconds.</p><p>For example, assume that the directory <span style="font-family:monospace">sounds</span> contains two files, <span style="font-family:monospace">example1.wav</span> (a man speaking, stereo) and <span style="font-family:monospace">example2.wav</span> (guitar playing, mono). Input :
-</p><div class="center">
-<span style="font-family:monospace">clip1:=readwav("/path/to/sounds/example1.wav"):;<br>
- plotwav(clip1)
-</span></div><p>
-Output :
-</p><div class="center">
-<img src="cascmd_en011.png">
-</div><p>
+<h3 id="sec308" class="subsection">5.24.6  Simplify : <span style="font-family:monospace">simplify</span></h3>
+<p><a id="hevea_default438"></a>
+<span style="font-family:monospace">simplify</span> simplifies the expression.<br>
+As with all automatic simplifications, do not expect miracles,
+you will have to use specific rewriting rules if it does not work.<br>
 Input :
-</p><div class="center">
-<span style="font-family:monospace">clip2:=readwav("/path/to/sounds/example2.wav"):;<br>
- plotwav(clip2)
-</span></div><p>
+</p><div class="center"><span style="font-family:monospace">simplify((sin(3*x)+sin(7*x))/sin(5*x))</span></div><p>
 Output :
-</p><div class="center">
-<img src="cascmd_en012.png">
-</div><p>
-Input :
-</p><div class="center">
-<span style="font-family:monospace">plotwav(clip2,range=0.5..0.52)
-</span></div><p>
-Output :
-</p><div class="center">
-<img src="cascmd_en013.png">
-</div>
+</p><div class="center"><span style="font-family:monospace">4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div><p>
+<span style="font-weight:bold">Warning</span> <span style="font-family:monospace">simplify</span> is more efficient in <span style="font-family:monospace">radian</span> mode (check 
+<span style="font-family:monospace">radian</span> in the <span style="font-family:monospace">cas</span> configuration 
+or input <span style="font-family:monospace">angle_radian:=1</span>).</p>
 <hr>
 <a href="cascmd_en245.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

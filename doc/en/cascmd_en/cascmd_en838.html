@@ -4,68 +4,50 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Find the intersection points of two objects in space: inter</title>
+<title>Vectors in the plane: segment vector</title>
 </head>
 <body >
 <a href="cascmd_en837.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en839.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1094" class="subsection">12.4.4  Find the intersection points of two objects in space: <span style="font-family:monospace">inter</span><a id="hevea_default1344"></a></h3>
+<h3 id="sec1091" class="subsection">12.7.4  Vectors in the plane: <span style="font-family:monospace">segment</span><a id="hevea_default1501"></a> <span style="font-family:monospace">vector</span><a id="hevea_default1502"></a></h3>
 <p>
-<a id="sec:3dintersection"></a></p><p>See section <a href="cascmd_en735.html#sec%3A2dintersection">11.6.6</a> for points of intersection of objects
-in the plane.</p><p>The <span style="font-family:monospace">inter</span> command takes
-two geometric objects as arguments
-and returns a list of the points of intersection or the curve of
-intersection of the two objects.</p><p>The <span style="font-family:monospace">inter</span> command optionally takes a point as a third argument.
-In this case, <span style="font-family:monospace">inter</span> returns the point of intersection
-<em>closest</em> to this argument.</p><p>Input:
-</p><div class="center">
-<span style="font-family:monospace">LA:=inter(plane(point(0,1,1),point(1,0,1),point(1,1,0)),<br>
- line(point(0,0,0),point(1,1,1)))
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(LA)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[[2/3,2/3,2/3]]
-</span></div><p>Input:
-</p><div class="center">
-<span style="font-family:monospace">LB:=inter(sphere(point(0,0,0),1),line(point(0,0,0),point(1,1,1)))
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(LB)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[[1/sqrt(3),1/sqrt(3),1/sqrt(3)],[-1/sqrt(3),-1/sqrt(3),-1/sqrt(3)]]
-</span></div><p>
-To get just one of the points, use the usual list indices.<br>
+<a id="sec:2dvectors"></a></p><p>See section <a href="cascmd_en937.html#sec%3A3dvectors">13.5.4</a> for vectors in space.</p><p>The <span style="font-family:monospace">segment</span> and <span style="font-family:monospace">vector</span> commands return and draw vectors.
+(The <span style="font-family:monospace">segment</span> command can also draw line segments, see section
+<a href="cascmd_en837.html#sec%3A2dsegments">12.7.3</a>.)</p><p><span style="font-family:monospace">segment</span> takes as arguments a point and a vector.
+The point indicates the beginning of the result and the vector (given
+as a list of coordinates) the direction.</p><p><span style="font-family:monospace">segment</span> returns and draws the corresponding vector as a line
+segment. If the arguments are <span style="font-family:monospace">P</span> and <span style="font-family:monospace">V</span>, then command
+draws the segment from <span style="font-family:monospace">P</span> to <span style="font-family:monospace">P+V</span>.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">coordinates(LB[0])
+<span style="font-family:monospace">segment([-1,0],[1,1])
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">[1/sqrt(3),1/sqrt(3),1/sqrt(3)]
-</span></div><p>
-To get the point closest to (1/2,1/2,1/2), enter<br>
+<img src="cascmd_en086.png">
+</div><p><span style="font-family:monospace">vector</span> takes as arguments two points (or a list with two
+points) or a point and a vector.</p><p><span style="font-family:monospace">vector</span> returns and draws the corresponding vector. If the
+arguments are two points, the vector goes from the first
+to the second point; if the arguments are a point and a vector, then
+the vector starts at the given point.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">LB1:=inter(sphere(point(0,0,0),1),<br>
- line(point(0,0,0),point(1,1,1)),point(1/2,1/2,1/2))
+<span style="font-family:monospace">vector([-1,0],[1,i])
 </span></div><p>
-then:
+or:
 </p><div class="center">
-<span style="font-family:monospace">coordinates(LB1)
+<span style="font-family:monospace">vector(-1,i)
+</span></div><p>
+or:
+</p><div class="center">
+<span style="font-family:monospace">V := vector(1,2+i):; vector(-1,V)
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">[1/sqrt(3),1/sqrt(3),1/sqrt(3)]
-</span></div>
+<img src="cascmd_en087.png">
+</div>
 <hr>
 <a href="cascmd_en837.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

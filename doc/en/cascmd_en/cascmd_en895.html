@@ -4,43 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Homothety in space: homothety</title>
+<title>Rotation in the plane: rotation</title>
 </head>
 <body >
 <a href="cascmd_en894.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en896.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1161" class="subsection">12.14.5  Homothety in space: <span style="font-family:monospace">homothety</span><a id="hevea_default1402"></a></h3>
+<h3 id="sec1156" class="subsection">12.15.4  Rotation in the plane: <span style="font-family:monospace">rotation</span><a id="hevea_default1569"></a></h3>
 <p>
-<a id="sec:3dhomothety"></a></p><p>See section <a href="cascmd_en805.html#sec%3A2dhomothety">11.15.5</a> for homotheties in the plane.</p><p>The <span style="font-family:monospace">homothety</span> command takes two or three arguments. The
-first argument is a point, the center of the homothety. The second
-argument is a real number, which is the scaling ratio. The optional
-third argument is the object which is transformed.</p><p>With two arguments, <span style="font-family:monospace">homothery</span> returns a new command which
-performs the dilation.<br>
+<a id="sec:2drotations"></a></p><p>See section <a href="cascmd_en987.html#sec%3A3drotations">13.14.4</a> for rotations in space.</p><p>The <span style="font-family:monospace">rotation</span> command can take two or three arguments.</p><p>If <span style="font-family:monospace">rotation</span> has two arguments, they are a point (the center
+of rotation) and a real number (the angle of rotation).
+<span style="font-family:monospace">rotation</span> returns a new command which performs the rotation.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">h := homothety(point(0,0,0), 2)
+<span style="font-family:monospace">r := rotation(i, -pi/2)
 </span></div><p>
 then:
 </p><div class="center">
-<span style="font-family:monospace">h(point(0,0,1))
+<span style="font-family:monospace">r(1+i)
 </span></div><p>
-returns and draws the point (0,0,2), which is the point (0,0,1)
-dilated by a factor of 2 away from (0,0,0).
-</p><p>With a third argument of a geometric object, <span style="font-family:monospace">homothety</span>
-returns and draws the dilated object.<br>
+Output:
+</p><div class="center">
+<img src="cascmd_en161.png">
+</div><p>If <span style="font-family:monospace">rotation</span> has three arguments, the first two arguments are a
+point and real number as above, and the third argument is a geometric
+object. <span style="font-family:monospace">rotation</span> returns and draws the rotated object.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">homothety(point(0,0,0), 2, point(0,0,1))
+<span style="font-family:monospace">rotation(i, -pi/2, 1+i)
 </span></div><p>
-returns and draws (0,0,2), as above.
-</p><p>Input:
+Output:
 </p><div class="center">
-<span style="font-family:monospace">homothety(point(0,0,0), 2, sphere(point(0,0,0),1))
+<img src="cascmd_en162.png">
+</div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">rotation(i, -pi/2, line(1+i,-1))
 </span></div><p>
-returns and draws the sphere of radius 2 centered at (0,0,0).
-</p>
+Output:
+</p><div class="center">
+<img src="cascmd_en163.png">
+</div>
 <hr>
 <a href="cascmd_en894.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

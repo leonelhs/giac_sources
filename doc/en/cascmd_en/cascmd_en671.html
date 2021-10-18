@@ -4,28 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>fsolve or nSolve with the option steffenson_solver</title>
+<title>2D parametric curve </title>
 </head>
 <body >
 <a href="cascmd_en670.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en672.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec874" class="subsection">8.4.6  <span style="font-family:monospace">fsolve</span> or <span style="font-family:monospace">nSolve</span> with the option <span style="font-family:monospace">steffenson_solver</span></h3>
-<p><a id="hevea_default1117"></a>
-The Steffenson method is generically the fastest method.<br>
-It combines the Newton method with a "delta-two" Aitken acceleration : 
-with the Newton method, we obtain the sequence <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub> and the convergence
-acceleration gives the Steffenson sequence 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">R</span><sub><span style="font-style:italic">i</span></sub> =<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub> − </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+1</sub> − <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)<sup>2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"> (<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+2</sub> − 2 <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+1</sub> + <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)</td></tr>
-</table></td><td class="dcell"> </td></tr>
-</table><p>
+<h3 id="sec818" class="subsection">7.14.1  2D parametric curve </h3>
+<p>
+<span style="font-family:monospace">plotparam([f(t),g(t)],t)</span>
+or <span style="font-family:monospace">plotparam(f(t)+i*g(t),t)</span> (resp. 
+<span style="font-family:monospace">plotparam(f(t)+i*g(t),t=t1..t2)</span>)
+draws the parametric representation of the curve 
+defined by <span style="font-style:italic">x</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>) 
+with the default range of values of <span style="font-style:italic">t</span> (resp. for <span style="font-style:italic">t</span>1 ≤ <span style="font-style:italic">t</span>≤ <span style="font-style:italic">t</span>2).<br>
+The default range of values is taken as specified 
+in the graphic configuration (<span style="font-family:monospace">t-</span> and <span style="font-family:monospace">t+</span>, 
+cf. <a href="cascmd_en028.html#ssec%3Aconfgraph">3.5.8</a>).
+<span style="font-family:monospace">plotparam</span> accepts an optional argument to specify the discretization
+step for <span style="font-style:italic">t</span> with <span style="font-family:monospace">tstep=</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">fsolve(cos(x)=x,x,0,steffenson_solver)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">plotparam(cos(x)+i*sin(x),x) </span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam([cos(x),sin(x)],x) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">0.739085133215</span></div>
+</p><div class="center"><span style="font-family:monospace">The unit circle</span></div><p>
+If in the graphic configuration <span style="font-family:monospace">t</span> goes from -4 to 1, input :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t))</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1) </span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(x)+i*cos(x),x=-4..1) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</span></div><p>
+If in the graphic configuration <span style="font-family:monospace">t</span> goes from -4 to 1, input :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t,tstep=0.5)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1,tstep=0.5)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">A polygon approaching the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</span></div>
 <hr>
 <a href="cascmd_en670.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

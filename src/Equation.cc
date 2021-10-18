@@ -830,13 +830,14 @@ namespace xcas {
 	res.push_back(eqwdata(vv.dx+a.fontsize,vv.dy+4,vv.x,vv.y,a,at_sqrt,0));
 	return gen(res,_SEQ__VECT);
       }
-      if (vv.g.type==_FUNC || vv.g.is_symb_of_sommet(at_pow))
+      bool needpar=vv.g.type==_FUNC || vv.g.is_symb_of_sommet(at_pow) || need_parenthesis(vv.g);
+      if (needpar)
 	x=llp;
       Equation_translate(varg,x,0);
       Equation_vertical_adjust(vv.dy,vv.y,h,y);
       vecteur res(1,varg);
       // 2nd arg translated 
-      if (vv.g.type==_FUNC || vv.g.is_symb_of_sommet(at_pow))
+      if (needpar)
 	x+=vv.dx+lrp;
       else
 	x+=vv.dx+1;

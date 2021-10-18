@@ -4,70 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>3-d graph</title>
+<title>Minimax polynomial approximation: minimax</title>
 </head>
 <body >
 <a href="cascmd_en576.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en578.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec702" class="subsection">6.2.2  3-d graph</h3>
-<p><a id="sec:plotfunc3"></a>
-<span style="font-family:monospace">plotfunc</span> takes two main arguments : an expression of two 
-variables or a list of several expressions of two variables and the list of 
-these two variables, where each variable may be replaced by
-an equality variable=interval to specify the range for this variable
-(if not specified, default values are taken from the graph configuration).
-<span style="font-family:monospace">plotfunc</span> accepts two optional arguments to specify 
-the discretization step in <span style="font-style:italic">x</span> and in <span style="font-style:italic">y</span> by
-<span style="font-family:monospace">xstep=...</span> and <span style="font-family:monospace">ystep=...</span>.
-Alternatively one can specify the number of points used for the 
-representation of the function with <code>nstep=</code> (instead of <code>xstep</code> and 
-<span style="font-family:monospace">ystep</span>).<br>
-<span style="font-family:monospace">plotfunc</span> draws the surface(s) defined by <span style="font-style:italic">z</span>= the first argument.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">plotfunc( x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[x,y])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">A 3D graph of z=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">plotfunc(x*y,[x,y]) </span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">The surface z=x*y, default ranges</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">plotfunc([x*y-10,x*y,x*y+10],[x,y]) </span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">The surfaces z=x*y-10, z=x*y and z=x*y+10</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">plotfunc(x*sin(y),[x=0..2,y=-pi..pi]) </span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">The surface </span><span style="font-style:italic">z</span>=<span style="font-style:italic">x</span>*<span style="font-style:italic">y</span><span style="font-family:monospace"> for the specified ranges</span></div><p>
-Now an example where we specify the <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> discretization step 
-with <code>xstep</code> and <code>ystep</code>.<br>
-Input :
+<h3 id="sec694" class="subsection">5.53.4  Minimax polynomial approximation: <span style="font-family:monospace">minimax</span></h3>
+<p><a id="hevea_default907"></a></p><p>The function <span style="font-family:monospace">minimax</span> is called by entering :
 </p><div class="center">
-<span style="font-family:monospace">plotfunc(x*sin(y),[x=0..2,y=-pi..pi],xstep=1,ystep=0.5) </span></div><p>
+<span style="font-family:monospace">minimax(expr,var=a..b,n,[limit=m])</span>
+</div><p>
+where <span style="font-family:monospace">expr</span> is an univariate expression (e.g.  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) ) to approximate, <span style="font-family:monospace">var</span> is a variable (e.g.  <span style="font-style:italic">x</span> ),  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]⊂ℝ  and  <span style="font-style:italic">n</span>∈ℕ . Expression <span style="font-family:monospace">expr</span> must be continuous on  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] . The function returns minimax polynomial (e.g.  <span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>) ) of degree  <span style="font-style:italic">n</span>  or lower that approximates <span style="font-family:monospace">expr</span> on  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] . The approximation is found by applying Remez algorithm.</p><p>If the fourth argument is specified,  <span style="font-style:italic">m</span>  is used to limit the number of iterations of the algorithm. It is unlimited by default.</p><p>The largest absolute error of the approximation  <span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>) , i.e.  max<sub><span style="font-style:italic">a</span>≤ <span style="font-style:italic">x</span>≤ <span style="font-style:italic">b</span></sub>|<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>)| , is printed in the message area.</p><p>Since the coefficients of  <span style="font-style:italic">p</span>  are computed numerically, one should avoid setting  <span style="font-style:italic">n</span>  unnecessary high as it may result in a poor approximation due to the roundoff errors.</p><p>Input :
+</p><div class="center">
+<span style="font-family:monospace">minimax(sin(x),x=0..2*pi,10)</span>
+</div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">A portion of surface </span><span style="font-style:italic">z</span>=<span style="font-style:italic">x</span>*<span style="font-style:italic">y</span></div><p>
-Alternatively we may specify 
-the number of points used for the representation of the
-function with <code>nstep</code> instead of <code>xstep</code> and <code>ystep</code>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">plotfunc(x*sin(y),[x=0..2,y=-pi..pi],nstep=300)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">A portion of surface </span><span style="font-style:italic">z</span>=<span style="font-style:italic">x</span>*<span style="font-style:italic">y</span></div><p>
-<span style="font-weight:bold">Remarks</span>
-</p><ul class="itemize"><li class="li-itemize">
-Like any 3-d scene, the viewpoint may be modified by rotation 
-around the <span style="font-family:monospace">x</span> axis, the <span style="font-family:monospace">y</span> axis or the
-<span style="font-family:monospace">z</span> axis, either by dragging the mouse inside the graphic 
-window (push the mouse outside the parallelepiped used for 
-the representation), or with the shortcuts
-<span style="font-family:monospace">x</span>, <span style="font-family:monospace">X</span>, <span style="font-family:monospace">y</span>, <span style="font-family:monospace">Y</span>, <span style="font-family:monospace">z</span> and <span style="font-family:monospace">Z</span>.
-</li><li class="li-itemize">If you want to print a graph or get a L<sup>A</sup>T<sub>E</sub>X translation, use the graph
-menu<br>
-<span style="font-family:monospace">Menu</span>▸<span style="font-family:monospace">print</span>▸<span style="font-family:monospace">Print(with
-Latex)</span>
-</li></ul>
+</p><div class="center">
+<span style="font-family:monospace">5.8514210172e-06+0.999777263385*x+0.00140015265723*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span><br>
+<span style="font-family:monospace">-0.170089663733*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+0.0042684304696*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+</span><br>
+<span style="font-family:monospace">0.00525794766407*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+0.00135760214958*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6</span><br>
+<span style="font-family:monospace">-0.000570502074548*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">7+6.07297119422e-05*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8</span><br>
+<span style="font-family:monospace">-2.14787414001e-06*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">9-2.97767481643e-15*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">10</span>
+</div><p>
+The largest absolute error of this approximation is  5.85234008632× 10<sup>−6</sup> .</p>
 <hr>
 <a href="cascmd_en576.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

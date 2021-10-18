@@ -4,54 +4,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The slope of a line: slope</title>
+<title>Changing the order of execution: goto, label</title>
 </head>
 <body >
 <a href="cascmd_en795.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en797.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1041" class="subsection">11.14.8  The slope of a line: <span style="font-family:monospace">slope</span><a id="hevea_default1298"></a></h3>
+<h3 id="sec1027" class="subsection">11.3.8  Changing the order of execution: <span style="font-family:monospace">goto, label</span></h3>
 <p>
-<a id="sec:slope"></a></p><p>The <span style="font-family:monospace">slope</span> command takes as argument either a line, a line
-segment, or two points which determine a line.</p><p><span style="font-family:monospace">slope</span> returns the slope of the line.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">slope(line(1,2i))
-</span></div><p>
-or:
-</p><div class="center">
-<span style="font-family:monospace">slope(segment(1,2i))
-</span></div><p>
-or:
-</p><div class="center">
-<span style="font-family:monospace">slope(1,2i)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">-2 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">slope(line(x - 2y = 3))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1/2 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">slope(tangent(plotfunc(sin(x)),pi/4))
-</span></div><p>
-or:
-</p><div class="center">
-<span style="font-family:monospace">slope(LineTan(sin(x),pi/4))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">sqrt(2)/2 
-</span></div><p>The <span style="font-family:monospace">slope</span> command has <span style="font-family:monospace">slopeat</span> and
-<span style="font-family:monospace">slopeatraw</span> versions (see section <a href="cascmd_en789.html#sec%3Ameasdisplay">11.14.1</a>).</p>
+<a id="hevea_default1417"></a><a id="hevea_default1418"></a></p><p>The <span style="font-family:monospace">goto</span> command will tell a program to jump to a different
+spot in a program, where the spot needs to have been marked with
+<span style="font-family:monospace">label</span>. They both must have the same argument, which is
+simply a sequence of characters. For example, the following program
+will add the terms of the harmonic series until the term is less than
+some specified value <span style="font-family:monospace">eps</span> and print the result.
+</p><pre class="verbatim">  harmsum(eps) := {
+  local S, j;
+  S := 0;
+  j := 0;
+  label(spot);
+  j := j + 1;       
+  S := S + 1/j;
+  if (1/j &gt;= eps) goto (spot);
+  print(S);
+  return 0;
+  }
+</pre>
 <hr>
 <a href="cascmd_en795.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

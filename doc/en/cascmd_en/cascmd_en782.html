@@ -4,48 +4,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The abscissa of a point or vector in the plane: abscissa</title>
+<title>Checking conditions: assert</title>
 </head>
 <body >
 <a href="cascmd_en781.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en783.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1026" class="subsection">11.13.2  The abscissa of a point or vector in the plane: <span style="font-family:monospace">abscissa</span><a id="hevea_default1273"></a></h3>
-<p>
-<a id="sec:2dabscissa"></a></p><p>See section <a href="cascmd_en868.html#sec%3A3dabscissa">12.12.1</a> for abscissas in three-dimensional geometry.</p><p>The <span style="font-family:monospace">abscissa</span> command takes a point as argument.</p><p><span style="font-family:monospace">abscissa</span> returns the abscissa (<span style="font-style:italic">x</span>-coordinate).<br>
-Input:
+<h3 id="sec1009" class="subsection">11.2.4  Checking conditions: <span style="font-family:monospace">assert</span></h3>
+<p><a id="hevea_default1356"></a></p><p>You can break out of a function with an error by using the
+<span style="font-family:monospace">assert</span> command, which takes a boolean as an argument. If the
+boolean is false, then the function will return with an error. For
+example, if you define a function
+</p><pre class="verbatim">  sqofpos(x) := {assert(x &gt; 0); return x^2;}
+</pre><p>
+then if you enter
 </p><div class="center">
-<span style="font-family:monospace">abscissa(point(1 + 2*i))
-</span></div><p>
-Output:
+<span style="font-family:monospace">sqofpos(4)</span>
+</div><p>
+you will get 16, but 
 </p><div class="center">
-<span style="font-family:monospace">1
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">abscissa(point(i) - point(1 + 2*i))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">-1
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">abscissa(1 + 2*i)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">abscissa([1,2])
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1
-</span></div>
+<span style="font-family:monospace">sqofpos(-4)</span>
+</div><p>
+will return an error, since <span style="font-family:monospace">-4 &gt; 0</span> is false.</p>
 <hr>
 <a href="cascmd_en781.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

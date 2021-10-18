@@ -3821,7 +3821,7 @@ namespace giac {
       if ( (indice.is_symb_of_sommet(*at_interval) || indicedeuxpoints)&& indice._SYMBptr->feuille.type==_VECT && indice._SYMBptr->feuille._VECTptr->size()==2){
 	gen deb=indice._SYMBptr->feuille._VECTptr->front();
 	gen fin=indice._SYMBptr->feuille._VECTptr->back()+(indicedeuxpoints?minus_one:zero);
-	if (!is_integral(deb) || !is_integral(fin) || deb.type!=_INT_ || fin.type!=_INT_ )
+	if (!is_integral(deb) || !is_integral(fin) || deb.type!=_INT_ || fin.type!=_INT_ || fin.val>=LIST_SIZE_LIMIT)
 	  return gendimerr();
 	if (deb.val<0) deb.val+=int(vptr->size());
 	if (fin.val<0) fin.val+=int(vptr->size());
@@ -3848,7 +3848,7 @@ namespace giac {
       if (indice.type!=_VECT){
 	if (indice.type==_INT_ && indice.val<0)
 	  indice += int(vptr->size());
-	if (indice.type!=_INT_ || indice.val<0 )
+	if (indice.type!=_INT_ || indice.val<0 || indice.val>=LIST_SIZE_LIMIT)
 	  return gentypeerr(gettext("Bad index (in sto) ")+indice.print(contextptr));
 	// check size
 	int is=int(vptr->size());
@@ -3874,7 +3874,7 @@ namespace giac {
 	    return gendimerr(contextptr);
 	  if (deb.val<0) deb.val+=int(vptr->size());
 	  if (fin.val<0) fin.val+=int(vptr->size());
-	  if (deb.val<0 || fin.val<0 || deb.val>fin.val)
+	  if (deb.val<0 || fin.val<0 || deb.val>fin.val || fin.val>LIST_SIZE_LIMIT)
 	    return gendimerr(contextptr);
 	  if (a.type==_VECT && a._VECTptr->size()!=fin.val-deb.val+1)
 	    return gendimerr(contextptr);
@@ -4154,6 +4154,8 @@ namespace giac {
       return sto(_shift(makesequence(prev,val),contextptr),var,contextptr);
     if (mult==8)
       return sto(_rotate(makesequence(prev,val),contextptr),var,contextptr);
+    if (mult==9)
+      return sto(_pow(makesequence(prev,val),contextptr),var,contextptr);
     return gensizeerr(gettext("Increment"));
   }
 
@@ -4179,6 +4181,8 @@ namespace giac {
       return prev=_shift(makesequence(prev,val),contextptr);
     if (mult==8)
       return prev=_rotate(makesequence(prev,val),contextptr);
+    if (mult==9)
+      return prev=_pow(makesequence(prev,val),contextptr);
     return gensizeerr(gettext("Increment"));
   }
 
@@ -4352,6 +4356,18 @@ namespace giac {
   static const char _rotatesto_s []="rotatesto";
   static define_unary_function_eval (__rotatesto,&_rotatesto,_rotatesto_s);
   define_unary_function_ptr5( at_rotatesto ,alias_at_rotatesto,&__rotatesto,_QUOTE_ARGUMENTS,true);
+
+  gen _powsto(const gen & a,const context * contextptr){
+    if ( a.type==_STRNG && a.subtype==-1) return  a;
+    if (a.type!=_VECT)
+      return increment(a,1,true,true,contextptr);
+    if (a._VECTptr->size()!=2)
+      return gentypeerr(contextptr);
+    return increment(a._VECTptr->front(),a._VECTptr->back(),false,9,contextptr);
+  }
+  static const char _powsto_s []="powsto";
+  static define_unary_function_eval (__powsto,&_powsto,_powsto_s);
+  define_unary_function_ptr5( at_powsto ,alias_at_powsto,&__powsto,_QUOTE_ARGUMENTS,true);
 
   bool is_assumed_real(const gen & g,GIAC_CONTEXT){
     if (g.type!=_IDNT)
@@ -6048,6 +6064,12 @@ namespace giac {
   gen _normalmod(const gen & g,GIAC_CONTEXT);
   gen _irem(const gen & args,GIAC_CONTEXT){
     if (args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type==_VECT && args._VECTptr->size()==2 && args._VECTptr->front().type==_INT_ && args._VECTptr->back().type==_INT_){
+      int a=args._VECTptr->front().val,b=args._VECTptr->back().val;
+      a %= b ;
+      a -= (a>>31)*b;
+      return a;
+    }
     if (args.type==_VECT && args._VECTptr->size()>1 && args._VECTptr->front().type==_STRNG){
       vecteur v=*args._VECTptr;
       const char * fmt=v.front()._STRNGptr->c_str();
@@ -6186,9 +6208,13 @@ namespace giac {
       return v.front();
     gen vf(v.front()),vb(v.back());
     if (!is_integral(vf) || !is_integral(vb) ){
+#if 1
+      return vf-_floor(vf/vb,contextptr)*vb;
+#else      
       if (vf.type==_DOUBLE_ || vb.type==_DOUBLE_)
 	return gensizeerr(contextptr);
       return symbolic(at_irem,args);
+#endif
     }
     gen r=irem(vf,vb,q);
     if (is_integer(vb) && is_strictly_positive(-r,contextptr)){
@@ -6249,11 +6275,11 @@ namespace giac {
     }
     return false;
   }
-  gen Iquo(const gen & f0,const gen & b0){
+  gen Iquo(const gen & f0,const gen & b0,GIAC_CONTEXT){
     if (f0.type==_VECT)
-      return apply1st(f0,b0,Iquo);
+      return apply1st(f0,b0,contextptr,Iquo);
     gen f(f0),b(b0);
-    if (!is_integral(f) || !is_integral(b) )
+    if (python_compat(contextptr)==0 && (!is_integral(f) || !is_integral(b) ))
       return gensizeerr(gettext("Iquo")); // return symbolic(at_iquo,args);
     if (is_exactly_zero(b))
       return 0;
@@ -6266,7 +6292,7 @@ namespace giac {
     gen & b=args._VECTptr->back();
     if (ckmatrix(args))
       return apply(f,b,iquo);
-    return Iquo(f,b);
+    return Iquo(f,b,contextptr);
   }
   static const char _iquo_s []="iquo";
   static string printasiquo(const gen & g,const char * s,GIAC_CONTEXT){
@@ -6605,7 +6631,7 @@ namespace giac {
     if (args.type==_FRAC){
       gen n=args._FRACptr->num,d=args._FRACptr->den;
       if ( ((n.type==_INT_) || (n.type==_ZINT)) && ( (d.type==_INT_) || (d.type==_ZINT)) )
-	return Iquo(n,d)+1;
+	return Iquo(n,d,contextptr)+1;
     }
     vecteur l(lidnt(args));
     vecteur lnew=*evalf(l,1,contextptr)._VECTptr;

@@ -4,36 +4,42 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>ASCII code of a character : ord</title>
+<title>Character and string : "</title>
 </head>
 <body >
 <a href="cascmd_en068.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en070.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec100" class="subsection">5.4.4  ASCII code of a character : <span style="font-family:monospace">ord</span></h3>
-<p><a id="hevea_default103"></a>
-<span style="font-family:monospace">ord</span> takes as argument a string <span style="font-family:monospace">s</span> (resp. 
-a list <span style="font-family:monospace">l</span> of 
-strings).<br>
-<span style="font-family:monospace">ord</span> returns the ASCII code of the first character of <span style="font-family:monospace">s</span> (resp. the 
-list of the ASCII codes of the first character of the elements of <span style="font-family:monospace">l</span>).<br>
+<h3 id="sec100" class="subsection">5.4.1  Character and string : <span style="font-family:monospace">"</span></h3>
+<p><a id="hevea_default128"></a>
+<span style="font-family:monospace">"</span> is used to delimit a string.
+A character is a string of length one.<br>
+Do not confuse <span style="font-family:monospace">"</span> with
+<span style="font-family:monospace">’</span> (or <span style="font-family:monospace">quote</span>) which is used to avoid evaluation
+of an expression <a id="hevea_default129"></a>. For example,
+<span style="font-family:monospace">"a"</span> returns a string of one character 
+but <span style="font-family:monospace">’a’</span> or <span style="font-family:monospace">quote(a)</span> returns
+the variable <span style="font-family:monospace">a</span> unevaluated.<br>
+
+When a string is input in a command line, it is evaluated to itself
+hence the output is the same string. Use <span style="font-family:monospace">+</span>
+to concatenate two strings or a string and another object.<br>
+Example :<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">ord("a")</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">97</span></div><p>
+</p><div class="center"><span style="font-family:monospace">"Hello"</span></div><p>
+<span style="font-family:monospace">"Hello"</span> is the input and also the output.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">ord("abcd")</span></div><p>
+</p><div class="center"><span style="font-family:monospace">"Hello"+", how are you?"</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">97</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">"Hello, how are you?"</span></div><p>
+Index notation is used to get the n-th character of a string, 
+(as for lists). Indices begin at 0 in Xcas mode, 1 in other modes.<br>
+Example :<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">ord(["abcd","cde"])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">"Hello"[1]</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[97,99]</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">ord(["a","b","c","d"])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[97,98,99,100]</span></div>
+</p><div class="center"><span style="font-family:monospace">"e"</span></div>
 <hr>
 <a href="cascmd_en068.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

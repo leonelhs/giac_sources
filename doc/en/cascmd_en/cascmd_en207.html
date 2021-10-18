@@ -4,73 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Expand a transcendental and trigonometric expression : texpand tExpand</title>
+<title>Xcas operators </title>
 </head>
 <body >
 <a href="cascmd_en206.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en208.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec266" class="subsection">5.21.1  Expand a transcendental and trigonometric expression : <span style="font-family:monospace">texpand tExpand</span></h3>
-<p><a id="hevea_default344"></a><a id="hevea_default345"></a>
-<span style="font-family:monospace">texpand</span> or <span style="font-family:monospace">tExpand</span> takes as argument an
-expression containing transcendental or trigonometric functions.<br>
-<span style="font-family:monospace">texpand</span> or <span style="font-family:monospace">tExpand</span> expands these functions, like simultaneous
-calling <span style="font-family:monospace">expexpand</span>, <span style="font-family:monospace">lnexpand</span> and <span style="font-family:monospace">trigexpand</span>, 
-for example, ln(<span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>) becomes  <span style="font-style:italic">n</span>ln(<span style="font-style:italic">x</span>), exp(<span style="font-style:italic">nx</span>) 
-becomes  exp(<span style="font-style:italic">x</span>)<sup><span style="font-style:italic">n</span></sup>, sin(2<span style="font-style:italic">x</span>) becomes  2sin(<span style="font-style:italic">x</span>)cos(<span style="font-style:italic">x</span>)...<br>
-<span style="font-weight:bold">Examples</span> :<br>
+<h3 id="sec249" class="subsection">5.15.2  <span style="font-family:monospace">Xcas</span> operators </h3>
+<p><a id="hevea_default319"></a><a id="hevea_default320"></a><a id="hevea_default321"></a><a id="hevea_default322"></a> 
 </p><ul class="itemize"><li class="li-itemize">
-<ol class="enumerate" type=1><li class="li-enumerate">
-Expand cos(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(cos(x+y))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">cos(x)*cos(y)-sin(x)*sin(y)</span></div>
-</li><li class="li-enumerate">Expand cos(3<span style="font-style:italic">x</span>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(cos(3*x))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 3-3*cos(x)</span></div>
-</li><li class="li-enumerate">Expand  sin(3*<span style="font-style:italic">x</span>)+sin(7*<span style="font-style:italic">x</span>)/sin(5*<span style="font-style:italic">x</span>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand((sin(3*x)+sin(7*x))/sin(5*x))</span></div>
-Output
-<div class="center"><span style="font-family:monospace">(4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)*(sin(x)/(16*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4- 12*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1))/sin(x)+(64*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6- 80*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+24*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)*sin(x)/ (16*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-12*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)/sin(x)</span></div>
-Output, after a simplification with <span style="font-family:monospace">normal(ans())</span> :
-<div class="center"><span style="font-family:monospace">4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div>
-</li></ol>
-</li><li class="li-itemize"><ol class="enumerate" type=1><li class="li-enumerate">
-Expand exp(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(exp(x+y))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">exp(x)*exp(y)</span></div>
-</li><li class="li-enumerate">Expand ln(<span style="font-style:italic">x</span>× <span style="font-style:italic">y</span>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(log(x*y))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">log(x)+log(y)</span></div>
-</li><li class="li-enumerate">Expand ln(<span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(ln(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">n*ln(x)</span></div>
-</li><li class="li-enumerate">Expand ln((<span style="font-style:italic">e</span><sup>2</sup>)+exp(2*ln(2))+exp(ln(3)+ln(2))).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(log(e</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)+exp(2*log(2))+exp(log(3)+log(2)))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">6+3*2</span></div>
-Or input :
-<div class="center"><span style="font-family:monospace">texpand(log(e</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)+exp(2*log(2)))+ lncollect(exp(log(3)+log(2)))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">12</span></div>
-</li></ol>
-</li><li class="li-itemize">Expand exp(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>)+cos(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>)+ln(3<span style="font-style:italic">x</span><sup>2</sup>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(exp(x+y)+cos(x+y)+ln(3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">cos(x)*cos(y)-sin(x)*sin(y)+exp(x)*exp(y)+ ln(3)+2*ln(x)</span></div>
+<span style="font-family:monospace">$ </span> is the infixed version of <span style="font-family:monospace">seq</span>, for example :<br>
+<span style="font-family:monospace">(2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k)$(k=0..3)= seq(2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k,k=0..3)=(1,2,4,8)</span> (do not forget 
+to put parenthesis around the arguments),
+</li><li class="li-itemize"><span style="font-family:monospace">mod</span> or <span style="font-family:monospace">%</span> to define a modular number,
+</li><li class="li-itemize"><span style="font-family:monospace">@</span> to compose functions for example :
+<span style="font-family:monospace">(f@g)(x)=f(g(x))</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">@@ </span> to compose a function many times (like a power, replacing
+multiplication by composition), for example :
+<span style="font-family:monospace">(f@@3)(x)=f(f(f(x)))</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">minus union intersect</span> to get the difference, the union and the 
+intersection of two sets,
+</li><li class="li-itemize"><span style="font-family:monospace">-&gt;</span> to define a function,
+</li><li class="li-itemize"><span style="font-family:monospace">:= =&gt;</span> to store an expression in a variable (it is the infixed 
+version of <span style="font-family:monospace">sto</span> and the argument order is permuted for <span style="font-family:monospace">:=</span>), 
+for example : <span style="font-family:monospace">a:=2</span> or <span style="font-family:monospace">2=&gt;a</span> or <span style="font-family:monospace">sto(2,a)</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">=&lt;</span> to store an expression in a variable, but the storage is
+done by reference if the target is a matrix element or a list element.
+This is faster if you modify objects inside an existing list or matrix
+of large size, because no copy is made, the change is done in place.
+Use with care, all objects pointing to this matrix or list will
+be modified.
 </li></ul>
 <hr>
 <a href="cascmd_en206.html"><img src="previous_motif.gif" alt="Previous"></a>

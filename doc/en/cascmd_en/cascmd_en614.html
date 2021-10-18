@@ -4,43 +4,50 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Polynomial regression: polynomial_regression polynomial_regression_plot</title>
+<title>Gram-Schmidt orthonormalization : gramschmidt</title>
 </head>
 <body >
 <a href="cascmd_en613.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en615.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec757" class="subsection">7.2.8  Polynomial regression: <span style="font-family:monospace">polynomial_regression</span><a id="hevea_default993"></a> <span style="font-family:monospace">polynomial_regression_plot</span><a id="hevea_default994"></a></h3>
-<p>If you want to find a more general polynomial <span style="font-style:italic">y</span>=<span style="font-style:italic">a</span><sub>0</sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup> + … + <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>
-which best fits a set of data points, you can use the
-<span style="font-family:monospace">polynomial_regression</span> command. 
-Given a set of points, either as a list of <span style="font-style:italic">x</span>-coordinates
-followed by a list of <span style="font-style:italic">y</span>-coordinates, or simply by a list of points,
-as well as a power <span style="font-style:italic">n</span>, the <span style="font-family:monospace">polynomial_regression</span> command
-will return the list [<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>,…,<span style="font-style:italic">a</span><sub>0</sub>] of coefficients of the
-polynomial. For example, if you enter
-</p><div class="center">
-<span style="font-family:monospace">polynomial_regression([[1,1],[2,2],[3,10],[4,20]],3)
-</span></div><p>
-or
-</p><div class="center">
-<span style="font-family:monospace">polynomial_regression([1,2,3,4],[1,2,10,20],3)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">[-5/6,17/2,-56/3,12]
-</span></div><p>
-so the best fit polynomial will be <span style="font-style:italic">y</span> = (−5/6)<span style="font-style:italic">x</span><sup>3</sup> + (17/2)<span style="font-style:italic">x</span><sup>2</sup> −
-(56/3)<span style="font-style:italic">x</span> + 12.</p><p>To plot the curve, you can use the command
-<span style="font-family:monospace">polynomial_regression_plot</span>; if you enter
-</p><div class="center">
-<span style="font-family:monospace">polynomial_regression_plot([1,2,3,4],[1,2,10,20],3)
-</span></div><p>
-you will get
-</p><div class="center">
-<img src="cascmd_en041.png">
-</div>
+<h3 id="sec736" class="subsection">5.58.5  Gram-Schmidt orthonormalization : <span style="font-family:monospace">gramschmidt</span></h3>
+<p><a id="hevea_default959"></a>
+<span style="font-family:monospace">gramschmidt</span> takes one or two arguments : 
+</p><ul class="itemize"><li class="li-itemize">
+a matrix viewed as a list of row vectors, 
+the scalar product being the canonical
+scalar product, or
+</li><li class="li-itemize">a list of elements 
+that is a basis of a vector subspace, and a function that defines a scalar 
+product on this vector space.
+</li></ul><p>
+<span style="font-family:monospace">gramschmidt</span> returns an orthonormal basis for this scalar product.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]]))</span></div><p>
+Or input :
+</p><div class="center"><span style="font-family:monospace">normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]],dot))</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[(sqrt(3))/3,(sqrt(3))/3,(sqrt(3))/3],[(-(sqrt(6)))/6,</span><br>
+ <span style="font-family:monospace">(-(sqrt(6)))/6,(sqrt(6))/3],[(-(sqrt(2)))/2,(sqrt(2))/2,0]]</span></div><p>
+<span style="font-weight:bold">Example</span><br>
+We define a scalar product on the vector space of 
+polynomials by: 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>· <span style="font-style:italic">Q</span>=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">−1</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">Q</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">dx</span> </td></tr>
+</table><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">gramschmidt([1,1+x],(p,q)-&gt;integrate(p*q,x,-1,1))</span></div><p>
+Or define the function <span style="font-family:monospace">p_scal</span>, input :<br>
+<span style="font-family:monospace">p_scal(p,q):=integrate(p*q,x,-1,1)</span><br>
+then input :
+</p><div class="center"><span style="font-family:monospace">gramschmidt([1,1+x],p_scal)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1/(sqrt(2)),(1+x-1)/sqrt(2/3)]</span></div>
 <hr>
 <a href="cascmd_en613.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,45 +4,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Extract a sub-matrix of a matrix (TI compatibility) : subMat</title>
+<title>Modify an element in a list : subsop</title>
 </head>
 <body >
 <a href="cascmd_en466.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en468.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec563" class="subsection">5.45.16  Extract a sub-matrix of a matrix (TI compatibility) : <span style="font-family:monospace">subMat</span></h3>
-<p><a id="hevea_default736"></a>
-<span style="font-family:monospace">subMat</span> takes 5 arguments : a matrix <span style="font-style:italic">A</span>, and 4 integers 
-<span style="font-style:italic">nl</span>1,<span style="font-style:italic">nc</span>1,<span style="font-style:italic">nl</span>2,<span style="font-style:italic">nc</span>2, where
-<span style="font-style:italic">nl</span>1 is the index of the first row, <span style="font-style:italic">nc</span>1 is
-the index of the first column, <span style="font-style:italic">nl</span>2 is the index of
-the last row and <span style="font-style:italic">nc</span>2 is the index of the last column.<br>
-<span style="font-family:monospace">subMat(A,nl1,nc1,nl2,nc2)</span> extracts the sub-matrix of the matrix <span style="font-family:monospace">A</span>
-with first element <span style="font-family:monospace">A[nl1,nc1]</span> and last element 
-<span style="font-family:monospace">A[nl2,nc2]</span>.<br>
-Define the matrix <span style="font-family:monospace">A</span> :
-</p><div class="center"><span style="font-family:monospace">A:=[[3,4,5],[1,2,6]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">subMat(A,0,1,1,2)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[4,5],[2,6]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">subMat(A,0,1,1,1]</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[4],[2]]</span></div><p>
-By default <span style="font-style:italic">nl</span>1=0, <span style="font-style:italic">nc</span>1=0, <span style="font-style:italic">nl</span>2=<span style="font-family:monospace">nrows(A)</span>-1 and 
-<span style="font-style:italic">nc</span>2=<span style="font-family:monospace">ncols(A)</span>-1<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">subMat(A,1)</span></div><p>
+<h3 id="sec559" class="subsection">5.43.14  Modify an element in a list : <span style="font-family:monospace">subsop</span></h3>
+<p><a id="hevea_default725"></a>
+<a id="ssec:subsop"></a></p><p><span style="font-family:monospace">subsop</span> modifies an element in a list.
+<span style="font-family:monospace">subsop</span> takes as argument a list and an equality (an index=a new
+value) in all syntax modes, but in <span style="font-family:monospace">Maple</span> syntax mode
+the order of the arguments is reversed. <br>
+<span style="font-weight:bold">Remark</span> If the second argument is <span style="font-family:monospace">’k=NULL’</span>, the element of index 
+<span style="font-family:monospace">k</span> is removed of the list.<br>
+Input in <span style="font-family:monospace">Xcas</span> mode (the index of the first element is 0) :
+</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],1=5)</span></div><p>
 or :
-</p><div class="center"><span style="font-family:monospace">subMat(A,1,0)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">subMat(A,1,0,1)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">subMat(A,1,0,1,2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[1]:=5</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,2,6]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div><p>
+Input in <span style="font-family:monospace">Xcas</span> mode (the index of the first element is 0) :
+</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],’1=NULL’)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[0,2]</span></div><p>Input in <span style="font-family:monospace">Mupad TI</span> mode (the index of the first element is 1) :
+</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],2=5)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div><p>
+In <span style="font-family:monospace">Maple</span> mode the arguments are permuted and the index of
+the first element is 1.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">subsop(2=5,[0,1,2])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div>
 <hr>
 <a href="cascmd_en466.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

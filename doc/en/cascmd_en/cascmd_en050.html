@@ -4,40 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Storing and recalling variables and their values</title>
+<title>Copying values of list: copy</title>
 </head>
 <body >
 <a href="cascmd_en049.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en051.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec74" class="subsection">4.6.6  Storing and recalling variables and their values</h3>
-<p>You can store variables and their values for later use in a file of
-your choosing with the <span style="font-family:monospace">archive</span><a id="hevea_default29"></a> function. This
-function takes two arguments, a filename to store the variables in and
-a variable or list of variables.</p><p>If you have given the variable <span style="font-family:monospace">a</span> the value <span style="font-family:monospace">2</span> and the
-variable <span style="font-family:monospace">bee</span> the value <span style="font-family:monospace">"letter"</span> (a string), then
-entering
+<h3 id="sec74" class="subsection">4.6.5  Copying values of list: <span style="font-family:monospace">copy</span></h3>
+<p><a id="hevea_default45"></a></p><p>If you enter
 </p><div class="center">
-<span style="font-family:monospace">archive("foo",[a,bee])</span>
+<span style="font-family:monospace">list1 := [1,2,3]</span>
 </div><p>
-will create a file named “<span style="font-family:monospace">foo</span>” which contains the values
-<span style="font-family:monospace">2</span> and <span style="font-family:monospace">"letter"</span> in a format meant to be efficiently
-read by <span style="font-family:monospace">Xcas</span>.</p><p>You can recall the values stored by <span style="font-family:monospace">archive</span> with the
-<span style="font-family:monospace">unarchive</span><a id="hevea_default30"></a> command, which takes a file name
-as argument. If the file “<span style="font-family:monospace">foo</span>” is as above, then 
+and then 
 </p><div class="center">
-<span style="font-family:monospace">unarchive("foo")</span>
+<span style="font-family:monospace">list2 := list1</span>
 </div><p>
-will result in
+then <span style="font-family:monospace">list1</span> and <span style="font-family:monospace">list2</span> will be equal to the same list,
+not simply two lists with the same elements. In particular, if you
+change (by reference) the value of an element of <span style="font-family:monospace">list1</span>, then
+the change will also be reflected in <span style="font-family:monospace">list2</span>. For example, if
+you enter
 </p><div class="center">
-<span style="font-family:monospace">[2, letter]</span>
+<span style="font-family:monospace">list1[1] =&lt; 5</span>
 </div><p>
-If you want to reassign these values to <span style="font-family:monospace">a</span> and <span style="font-family:monospace">bee</span>,
-you can enter
+then both <span style="font-family:monospace">list1</span> and <span style="font-family:monospace">list2</span> will be equal to
+<span style="font-family:monospace">[1,5,3]</span>.</p><p>The <span style="font-family:monospace">copy</span> command will create a copy of a list (or
+vector or matrix) which is equal to the original list, but distinct
+from it. For example, if you enter
 </p><div class="center">
-<span style="font-family:monospace">[a,bee] := unarchive("foo")</span><a id="hevea_default31"></a>
-</div>
+<span style="font-family:monospace">list1 := [1,2,3]</span>
+</div><p>
+and then 
+</p><div class="center">
+<span style="font-family:monospace">list2 := copy(list1)</span>
+</div><p>
+then <span style="font-family:monospace">list1</span> and <span style="font-family:monospace">list2</span> will both be <span style="font-family:monospace">[1,2,3]</span>,
+but now if you enter
+</p><div class="center">
+<span style="font-family:monospace">list1[1] =&lt; 5</span>
+</div><p>
+then both <span style="font-family:monospace">list1</span> will be equal to <span style="font-family:monospace">[1,5,3]</span> but
+<span style="font-family:monospace">list2</span> will still be <span style="font-family:monospace">[1,2,3]</span>.</p>
 <hr>
 <a href="cascmd_en049.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

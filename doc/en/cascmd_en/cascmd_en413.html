@@ -4,25 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Prepend an element at the beginning of a list : prepend</title>
+<title>Factorize a polynomial with coefficients in a Galois field : factor</title>
 </head>
 <body >
 <a href="cascmd_en412.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en414.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec502" class="subsection">5.40.17  Prepend an element at the beginning of a list : <span style="font-family:monospace">prepend</span></h3>
-<p><a id="hevea_default642"></a>
-<span style="font-family:monospace">prepend</span> takes as argument a list and an element.<br>
-<span style="font-family:monospace">prepend</span> puts this element at the beginning of this list.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">prepend([3,4,2],1)</span></div><p>
+<h3 id="sec496" class="subsection">5.36.19  Factorize a polynomial with coefficients in a Galois field : <span style="font-family:monospace">factor</span></h3>
+<p><a id="hevea_default654"></a>
+<span style="font-family:monospace">factor</span> can also factorize a univariate
+polynomial with coefficients in a Galois field.<br>
+Input for example to have <span style="font-family:monospace">G=</span>F<sub>4</sub>:<br>
+</p><div class="center"><span style="font-family:monospace">G:=GF(2,2,[’w’,’G’])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[1,3,4,2]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">prepend([1,2],[3,4])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">GF(2,w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+w+1,[w,G],undef)</span></div><p>
+Input for example :
+</p><div class="center"><span style="font-family:monospace">a:=G(w)</span></div><div class="center"><span style="font-family:monospace">factor(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[3,4],1,2]</span></div>
+</p><div class="center"><span style="font-family:monospace">(G(w+1))*(x+G(w+1))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
 <hr>
 <a href="cascmd_en412.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

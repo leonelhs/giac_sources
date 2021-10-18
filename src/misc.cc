@@ -1131,7 +1131,7 @@ namespace giac {
   define_unary_function_ptr5( at_fcoeff ,alias_at_fcoeff,&__fcoeff,0,true);
 
   static void addfactors(const gen & p,const gen & x,int mult,vecteur & res,GIAC_CONTEXT){
-    vecteur v=factors(p,x,contextptr);
+    vecteur v=sqff_factors(p,contextptr); // factors(p,x,contextptr);
     const_iterateur it=v.begin(),itend=v.end();
     for (;it!=itend;){
       vecteur w=solve(*it,x,1,contextptr);
@@ -1437,6 +1437,8 @@ namespace giac {
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT || g._VECTptr->size()!=2) 
       return gensizeerr(contextptr);
     const gen & a=g._VECTptr->front(),b=g._VECTptr->back();
+    if (a.type==_DOUBLE_ && b.type==_DOUBLE_)
+      return a._DOUBLE_val-std::floor(a._DOUBLE_val/b._DOUBLE_val)*b._DOUBLE_val;
     return a-_floor(a/b,contextptr)*b;
   }
   static const char _fmod_s []="fmod";
@@ -9172,21 +9174,21 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     const vecteur & v=*args._VECTptr;
     gen a=v[0],b=v[1],c=v[2];
     if (a.type==_DOUBLE_ || b.type==_DOUBLE_ || c.type==_DOUBLE_){
-      a=_floor(256*a,contextptr);
-      b=_floor(256*b,contextptr);
-      c=_floor(256*c,contextptr);
+      a=_floor(255*a+.5,contextptr);
+      b=_floor(255*b+.5,contextptr);
+      c=_floor(255*c+.5,contextptr);
     }
-    if (a.type==_INT_ && b.type==_INT_ && c.type==_INT_ && a.val>=0 && a.val<256 && b.val>=0 && b.val<256 && c.val>=0 && c.val<256 ){
-      int d=0;
+    if (a.type==_INT_ && b.type==_INT_ && c.type==_INT_ && a.val>=0 && b.val>=0 && c.val>=0 ){
+      int d=0,av=giacmin(a.val,255),bv=giacmin(b.val,255),cv=giacmin(c.val,255);
       if (v.size()==4 && (v.back()==888 || v.back()==at_pixon || v.back()==at_set_pixel)){
-	d=(a.val<<16)|(b.val<<8)|c.val;
+	d=(av<<16)|(bv<<8)|cv;
 	if (d>0 && d<512) 
 	  d += (1<<16);
       }
       else {
 	if (v.size()==4 && v.back()!=565)
 	  return gensizeerr(contextptr);
-	d=(((a.val*32)/256)<<11) | (((b.val*64)/256)<<5) | ((c.val*32)/256);
+	d=(((av*32)/256)<<11) | (((bv*64)/256)<<5) | ((cv*32)/256);
 	if (d>0 && d<512){
 	  d += (1<<11);
 	}

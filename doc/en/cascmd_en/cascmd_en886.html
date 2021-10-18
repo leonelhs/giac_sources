@@ -4,54 +4,58 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Check if an object in space is an isosceles triangle: is_isosceles</title>
+<title>The perimeter of a polygon: perimeter</title>
 </head>
 <body >
 <a href="cascmd_en885.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en887.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1151" class="subsection">12.13.10  Check if an object in space is an isosceles triangle: <span style="font-family:monospace">is_isosceles</span><a id="hevea_default1393"></a></h3>
+<h3 id="sec1146" class="subsection">12.14.7  The perimeter of a polygon: <span style="font-family:monospace">perimeter</span><a id="hevea_default1561"></a></h3>
 <p>
-<a id="sec:3dcheckisosceles"></a></p><p>See section <a href="cascmd_en814.html#sec%3A2dcheckisosceles">11.16.6</a> for checking for isosceles
-triangles in two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_isosceles</span> command takes as argument either three
-points or a geometric object.</p><p><span style="font-family:monospace">is_equilateral</span> returns <span style="font-family:monospace">1</span>, <span style="font-family:monospace">2</span>, <span style="font-family:monospace">3</span> or
-<span style="font-family:monospace">4</span> is the points are the vertices of an isosceles triangle or
-if the object is an isosceles triangle, and returns <span style="font-family:monospace">0</span>
-otherwise. Specifically,
-</p><ul class="itemize"><li class="li-itemize">
-It returns <span style="font-family:monospace">4</span> if the object is an equilateral triangle
-or if the points are the vertices of an equilateral triangle.
-</li><li class="li-itemize">It returns <span style="font-family:monospace">1</span>, <span style="font-family:monospace">2</span> or <span style="font-family:monospace">3</span>, respectively,
-if the object is an isosceles triangle or if the points are the
-vertices of an isosceles triangle and the first, second or third
-point is the vertex with equal sides.
-</li></ul><p>Input:
+<a id="sec:perim"></a></p><p>See also <span style="font-family:monospace">arcLen</span>, section <a href="cascmd_en221.html#sec%3Aarclen">5.19.2</a>.</p><p>The <span style="font-family:monospace">perimeter</span> command takes as argument a circle, circular
+arc or a polygon.</p><p><span style="font-family:monospace">perimeter</span> returns the perimeter of the object.<br>
+Input:
 </p><div class="center">
-<span style="font-family:monospace">is_isosceles([2,0,0],[0,0,0],[0,2,0])
+<span style="font-family:monospace">perimeter(circle(0,1))
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">2
-</span></div><p>Input:
+<span style="font-family:monospace">2*pi 
+</span></div><p>
+Input:
 </p><div class="center">
-T := triangle_isosceles([0,0,0],[2,2,0],[2,2,2])
-</div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">is_isosceles(T)
+<span style="font-family:monospace">perimeter(circle(0,1,pi/4,pi))
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">1
-</span></div><p>Input:
+<span style="font-family:monospace">3*pi/4 
+</span></div><p>
+Input:
 </p><div class="center">
-<span style="font-family:monospace">is_isosceles([1,1,0],[-1,1,0],[-1,0,0])
+<span style="font-family:monospace">perimeter(arc(0,pi/4,pi))
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">0
-</span></div>
+<span style="font-family:monospace">pi^2/8 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">perimeter(triangle(0,1,i))
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">2+sqrt(2) 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">perimeter(square(0,2))
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">8 
+</span></div><p>The <span style="font-family:monospace">perimeter</span> command has <span style="font-family:monospace">perimeterat</span> and
+<span style="font-family:monospace">perimeteratraw</span> versions (see section <a href="cascmd_en880.html#sec%3Ameasdisplay">12.14.1</a>).</p>
 <hr>
 <a href="cascmd_en885.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

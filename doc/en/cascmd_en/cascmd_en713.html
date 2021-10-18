@@ -4,104 +4,110 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Using strings as commands</title>
+<title>Student’s distribution</title>
 </head>
 <body >
 <a href="cascmd_en712.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en714.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec930" class="subsection">10.4.5  Using strings as commands</h3>
-<p>The <span style="font-family:monospace">expr</span><a id="hevea_default1181"></a> command will let you use a string as a
-command. Given a string that expresses a valid command, <span style="font-family:monospace">expr</span>
-will convert the string to the command and evaluate it. 
-For example, if you enter
+<h3 id="sec888" class="subsection">8.4.6  Student’s distribution</h3>
+<h4 id="sec889" class="subsubsection">The probability density function for Student’s
+distribution: <span style="font-family:monospace">student</span><a id="hevea_default1228"></a> <span style="font-family:monospace">studentd</span><a id="hevea_default1229"></a></h4>
+<p>Student’s distribution (also called Student’s <span style="font-style:italic">t</span>-distribution or just
+the <span style="font-style:italic">t</span>-distribution) with
+<span style="font-style:italic">n</span> degrees of freedom has density function given by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace">student</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) =
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">Γ((<span style="font-style:italic">n</span>+1)/2)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">Γ(<span style="font-style:italic">n</span>/2)</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span>π</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell">1 +
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">−<span style="font-style:italic">n</span>−1/2</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+where recall the Gamma function is defined for <span style="font-style:italic">x</span>&gt;0 by Γ(<span style="font-style:italic">x</span>) =
+∫<sub>0</sub><sup>∞</sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span></sup><span style="font-style:italic">t</span><sup><span style="font-style:italic">x</span>−1</sup><span style="font-style:italic">dx</span>. If you enter
 </p><div class="center">
-<span style="font-family:monospace">expr("c := 1")</span>
-</div><p>
-then the variable <span style="font-family:monospace">c</span> will be set to 1. 
-Similarly, if you enter
+<span style="font-family:monospace">student(2,3)
+</span></div><p>
+you will get
 </p><div class="center">
-<span style="font-family:monospace">a := "ifactor(54)"</span>
-</div><p>
-then
+<span style="font-family:monospace">sqrt(pi)/(11*sqrt(2*pi)*sqrt(11/2))
+</span></div><p>
+which can be numerically approximated by
 </p><div class="center">
-<span style="font-family:monospace">expr(a)</span>
-</div><p>
-will return
+<span style="font-family:monospace">evalf(student(2,3))
+</span></div><p>
+which is
 </p><div class="center">
-<span style="font-family:monospace">2 * 3^3</span>
-</div><p>
-which is the same thing as entering <span style="font-family:monospace">ifactor(54)</span> directly.</p><p>You can also use <span style="font-family:monospace">expr</span> to convert a string to a number.
-If a string is simply a number enclosed by quotation marks, then
-<span style="font-family:monospace">expr</span> will return the number. For example,
+<span style="font-family:monospace">0.0274101222343
+</span></div>
+<h4 id="sec890" class="subsubsection">The cumulative distribution function for Student’s
+distribution: <span style="font-family:monospace">student_cdf</span><a id="hevea_default1230"></a></h4>
+<p>The cumulative distribution function for Student’s distribution with
+<span style="font-style:italic">n</span> degrees of freedom at a value <span style="font-style:italic">x</span> is
+<span style="font-family:monospace">student_cdf</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>); if you
+enter
 </p><div class="center">
-<span style="font-family:monospace">expr("123")</span>
-</div><p>
-will return 
+<span style="font-family:monospace">student_cdf(5,2)
+</span></div><p>
+you will get
 </p><div class="center">
-<span style="font-family:monospace">123</span>
-</div><p>
-In particular, the following strings will be converted to the
-appropriate number.
-</p><ul class="itemize"><li class="li-itemize">
-A string consisting of the digits 0 through 9 which doesn’t start
-with 0 will be converted to an integer. For example,
-<div class="center">
-<span style="font-family:monospace">expr("2133")</span>
-</div>
-will return
-<div class="center">
-<span style="font-family:monospace">2133</span>
-</div></li><li class="li-itemize">A string consisting of the digits 0 through 9 which contains a
-single decimal point will be converted to a decimal.
-For example,
-<div class="center">
-<span style="font-family:monospace">expr("123.4")</span>
-</div>
-will return
-<div class="center">
-<span style="font-family:monospace">123.4</span>
-</div></li><li class="li-itemize">A string consisting of the digits 0 through 9, possibly containing a
-single decimal point, followed by <span style="font-family:monospace">e</span> and then more digits 0
-through 9, will be read as a decimal in exponential notation.
-For example,
-<div class="center">
-<span style="font-family:monospace">expr("1.23e4")</span>
-</div>
-will return
-<div class="center">
-<span style="font-family:monospace">12300.0</span>
-</div></li><li class="li-itemize">A string consisting of the digits 0 through 7 which starts
-with 0 will be read as an integer base 8. For example,
-<div class="center">
-<span style="font-family:monospace">expr("0176")</span>
-</div>
-will return
-<div class="center">
-<span style="font-family:monospace">126</span>
-</div>
-since 176 base 8 equals 126 base 10.</li><li class="li-itemize">A string starting with <span style="font-family:monospace">0x</span> followed by digits 0 through 9
-and letters <span style="font-family:monospace">a</span> through <span style="font-family:monospace">f</span> will be read as an integer
-base 16. For example,
-<div class="center">
-<span style="font-family:monospace">expr("0x2a3f")</span>
-</div>
-will return
-<div class="center">
-<span style="font-family:monospace">10815</span>
-</div>
-since <span style="font-family:monospace">2a3f</span> base 16 equals 10815 base 10.</li><li class="li-itemize">A string starting with <span style="font-family:monospace">0b</span> followed by digits 0 and 1 will
-be read as a binary integer. For example,
-<div class="center">
-<span style="font-family:monospace">expr("0b1101")</span>
-</div>
-will return
-<div class="center">
-<span style="font-family:monospace">13</span>
-</div>
-since 1101 base 2 equals 13 base 10.
-</li></ul>
+<span style="font-family:monospace">0.949030260585
+</span></div><p>If you give <span style="font-family:monospace">student_cdf</span> an extra argument,
+you will get the probability that
+the random variable lies between two values;
+<span style="font-family:monospace">student_cdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). If you
+enter
+</p><div class="center">
+<span style="font-family:monospace">student_cdf(5,-2,2)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.89806052117
+</span></div>
+<h4 id="sec891" class="subsubsection">The inverse distribution function for Student’s
+distribution: <span style="font-family:monospace">student_icdf</span><a id="hevea_default1231"></a></h4>
+<p>The inverse distribution function for Student’s
+distribution with <span style="font-style:italic">n</span> degrees of freedom is computed with
+<span style="font-family:monospace">student_icdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
+value <span style="font-style:italic">x</span> with <span style="font-family:monospace">student_cdf</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. If you enter
+</p><div class="center">
+<span style="font-family:monospace">student_icdf(5,0.95)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">2.01504837333
+</span></div>
+<h4 id="sec892" class="subsubsection">The upper tail cumulative function for Student’s
+distribution: <span style="font-family:monospace">UTPT</span><a id="hevea_default1232"></a></h4>
+<p>The <span style="font-family:monospace">UTPT</span> (the Upper Tail Probability - T distribution) will compute
+Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>). 
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">UTPT(5,2)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.0509697394149
+</span></div>
 <hr>
 <a href="cascmd_en712.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

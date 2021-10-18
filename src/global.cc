@@ -1815,7 +1815,11 @@ extern "C" void Sleep(unsigned int miliSecond);
   const int BUFFER_SIZE=512;
 #else
   int CALL_LAPACK=1111;
-  int LIST_SIZE_LIMIT = 100000000 ;
+#ifdef EMCC
+  int LIST_SIZE_LIMIT = 10000000 ;
+#else
+  int LIST_SIZE_LIMIT = 500000000 ;
+#endif
 #ifdef USE_GMP_REPLACEMENTS
   int FACTORIAL_SIZE_LIMIT = 10000 ;
 #else
@@ -5931,7 +5935,7 @@ unsigned int ConvertUTF8toUTF16 (
 
   static void python_import(string & cur,int cs,int posturtle,int poscmath,int posmath,int posnumpy,int posmatplotlib,GIAC_CONTEXT){
     if (posmatplotlib>=0 && posmatplotlib<cs){
-      cur += "np:=numpy:;xlim(a,b):=gl_x=a..b:;ylim(a,b):=gl_y=a..b:;scatter:=scatterplot:;bar:=bar_plot:;";
+      cur += "np:=numpy:;xlim(a,b):=gl_x=a..b:;ylim(a,b):=gl_y=a..b:;scatter:=scatterplot:;bar:=bar_plot:;text:=legend:;xlabel:=gl_x_axis_name:;ylabel:=gl_y_axis_name:;";
       posnumpy=posmatplotlib;
     }
     if (posnumpy>=0 && posnumpy<cs){
