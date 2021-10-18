@@ -18,18 +18,41 @@
  */
 #ifndef __SIGNALPROCESSING_H
 #define __SIGNALPROCESSING_H
-#include <giac/config.h>
-#include <giac/gen.h>
-#include <giac/unary.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+#include "first.h"
+#include "gen.h"
+#include "unary.h"
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
 
+enum filter_type {
+    _LOWPASS_FILTER,
+    _HIGHPASS_FILTER
+};
+
+bool is_sound_data(const gen &g,int &nc,int &bd,int &sr,int &len);
+vecteur decode_chdata(const vecteur &data,int bd,int start=0,int len=-1);
+vecteur encode_chdata(const vecteur &data,int bd,double ratio,GIAC_CONTEXT);
+gen filter(const vecteur &args,filter_type typ,GIAC_CONTEXT);
+
+gen _createwav(const gen &g,GIAC_CONTEXT);
+gen _stereo2mono(const gen &g,GIAC_CONTEXT);
+gen _plotwav(const gen &g,GIAC_CONTEXT);
+gen _plotspectrum(const gen &g,GIAC_CONTEXT);
+gen _channels(const gen &g,GIAC_CONTEXT);
+gen _bit_depth(const gen &g,GIAC_CONTEXT);
+gen _samplerate(const gen &g,GIAC_CONTEXT);
+gen _duration(const gen &g,GIAC_CONTEXT);
+gen _channel_data(const gen &g,GIAC_CONTEXT);
 gen _cross_correlation(const gen &g,GIAC_CONTEXT);
 gen _auto_correlation(const gen &g,GIAC_CONTEXT);
 gen _lowpass(const gen &g,GIAC_CONTEXT);
 gen _highpass(const gen &g,GIAC_CONTEXT);
+gen _resample(const gen &g,GIAC_CONTEXT);
 gen _convolution(const gen &g,GIAC_CONTEXT);
 gen _threshold(const gen &g,GIAC_CONTEXT);
 gen _bartlett_hann_window(const gen &g,GIAC_CONTEXT);
@@ -48,6 +71,14 @@ gen _triangle_window(const gen &g,GIAC_CONTEXT);
 gen _tukey_window(const gen &g,GIAC_CONTEXT);
 gen _welch_window(const gen &g,GIAC_CONTEXT);
 
+extern const unary_function_ptr * const at_createwav;
+extern const unary_function_ptr * const at_plotwav;
+extern const unary_function_ptr * const at_plotspectrum;
+extern const unary_function_ptr * const at_channels;
+extern const unary_function_ptr * const at_samplerate;
+extern const unary_function_ptr * const at_bit_depth;
+extern const unary_function_ptr * const at_duration;
+extern const unary_function_ptr * const at_channel_data;
 extern const unary_function_ptr * const at_cross_correlation;
 extern const unary_function_ptr * const at_auto_correlation;
 extern const unary_function_ptr * const at_lowpass;

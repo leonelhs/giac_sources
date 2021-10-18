@@ -4,30 +4,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Linearize exponentials : lin</title>
+<title>Hann window function : hann_window</title>
 </head>
 <body >
 <a href="cascmd_en254.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en256.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec321" class="subsection">5.24.4  Linearize exponentials : <span style="font-family:monospace">lin</span></h3>
-<p><a id="hevea_default415"></a>
-<span style="font-family:monospace">lin</span> takes as argument an expression with
-exponentials.<br>
-<span style="font-family:monospace">lin</span> rewrites hyperbolic functions as exponentials if required,
-then linearizes this expression (i.e. replace product of
-exponentials by exponential of sums).<br>
-<span style="font-weight:bold">Examples</span>
-</p><ul class="itemize"><li class="li-itemize">
-Input :
-<div class="center"><span style="font-family:monospace">lin(sinh(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">1/4*exp(2*x)+1/-2+1/4*exp(-(2*x))</span></div></li><li class="li-itemize">Input :
-<div class="center"><span style="font-family:monospace">lin((exp(x)+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">exp(3*x)+3*exp(2*x)+3*exp(x)+1</span></div>
-</li></ul>
+<h3 id="sec321" class="subsection">5.24.15  Hann window function : <span style="font-family:monospace">hann_window</span><a id="hevea_default439"></a></h3>
+<p>
+<span style="font-family:monospace">hann_window</span> takes as arguments a real vector  <span style="font-weight:bold"><span style="font-style:italic">v</span></span>  of length  <span style="font-style:italic">n</span>  and optionally an interval  <span style="font-style:italic">n</span><sub>1</sub> <span style="font-family:monospace">..</span> <span style="font-style:italic">n</span><sub>2</sub>  (with default values  <span style="font-style:italic">n</span><sub>1</sub>=0  and  <span style="font-style:italic">n</span><sub>2</sub>=<span style="font-style:italic">n</span>−1 ), and returns the elementwise product of the vector  [<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>1</sub></sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>2</sub></sub>]  and the vector  <span style="font-weight:bold"><span style="font-style:italic">w</span></span>  of length  <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span><sub>2</sub>−<span style="font-style:italic">n</span><sub>1</sub>+1  defined by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=sin<sup>2</sup></td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span> π</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td></tr>
+</table><p>
+for  <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1 . For example, input :
+</p><div class="center">
+	<span style="font-family:monospace">L:=hann_window(randvector(1000,0..1)):;</span>
+</div><p>
+followed by <span style="font-family:monospace">scatterplot(L)</span>.</p>
 <hr>
 <a href="cascmd_en254.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

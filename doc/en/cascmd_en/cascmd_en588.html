@@ -4,42 +4,42 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Scatterplots: scatterplot
-nuaged_points batons</title>
+<title>Quartiles: quartiles quartile1 quartile3</title>
 </head>
 <body >
 <a href="cascmd_en587.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en589.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec727" class="subsection">7.2.2  Scatterplots: <span style="font-family:monospace">scatterplot</span><a id="hevea_default933"></a>
-<span style="font-family:monospace">nuaged_points</span><a id="hevea_default934"></a> <span style="font-family:monospace">batons</span><a id="hevea_default935"></a></h3>
-<p>A scatter plot is simply a set of points plotted on axes. You can
-draw a scatter plot with the <span style="font-family:monospace">scatterplot</span> or
-<span style="font-family:monospace">nuage_points</span> command.</p><p>You can call <span style="font-family:monospace">scatterplot</span> with a matrix with two columns
-(essentially, a list of points) or a list of
-<span style="font-style:italic">x</span>-coordinates followed by a list of <span style="font-style:italic">y</span>-coordinates. If you enter
+<h3 id="sec727" class="subsection">7.1.5  Quartiles: <span style="font-family:monospace">quartiles</span><a id="hevea_default949"></a> <span style="font-family:monospace">quartile1</span><a id="hevea_default950"></a> <span style="font-family:monospace">quartile3</span><a id="hevea_default951"></a></h3>
+<p>Recall that the quartiles of a list of numbers divide it into four
+equal parts; the first quartile is the number <span style="font-style:italic">q</span><sub>1</sub> such that
+one-fourth of the list numbers fall below <span style="font-style:italic">q</span><sub>1</sub>; i.e., the median of
+that part of the list which fall at or below the list median. The
+second quartiles is the number <span style="font-style:italic">q</span><sub>2</sub> such that half of the list
+numbers fall at or below <span style="font-style:italic">q</span><sub>2</sub>; more specifically, the median of the
+list. And of course the third quartile is the number <span style="font-style:italic">q</span><sub>3</sub> such that
+three-fourths of the list numbers fall at or below <span style="font-style:italic">q</span><sub>3</sub>.</p><p>The function <span style="font-family:monospace">quartiles</span> takes a list and returns a column
+vector consisting of the minimum of the list, the first quartile, the second
+quartile, the third quartile and the maximum. If you enter
 </p><div class="center">
-<span style="font-family:monospace">scatterplot([[0,0],[1,1],[2,4],[3,9],[4,16]])
-</span></div><p>
-or
-</p><div class="center">
-<span style="font-family:monospace">scatterplot([0,1,2,3,4],[0,1,4,9,16])
-</span></div><p>
-you will get
-</p><div class="center">
-<img src="cascmd_en018.png">
-</div><p>If you want the points connected to the <span style="font-style:italic">x</span>-axis, the <span style="font-family:monospace">batons</span>
-command will take the same arguments at <span style="font-family:monospace">scatterplot</span> and plot
-the points with a vertical line segment connecting them to the
-<span style="font-style:italic">x</span>-axis. If you enter
-</p><div class="center">
-<span style="font-family:monospace">batons([[0,0],[1,1],[2,4],[3,9],[4,16]])
+<span style="font-family:monospace">A := [0,1,2,3,4,5,6,7,8,9,10,11];<br>
+ quartiles(A)
 </span></div><p>
 you will get
 </p><div class="center">
-<img src="cascmd_en019.png">
-</div>
+<span style="font-family:monospace">[[0.0],[2.0],[5.0],[8.0],[11.0]]
+</span></div><p>You can get the individual entries of this vector with the commands
+<span style="font-family:monospace">min</span>, <span style="font-family:monospace">quartile1</span>, <span style="font-family:monospace">median</span>, <span style="font-family:monospace">quartile2</span>
+and <span style="font-family:monospace">max</span>.</p><p>Just as with median, the <span style="font-family:monospace">quartiles</span> function can take a second
+argument consisting of weights for the first argument; for example,
+</p><div class="center">
+<span style="font-family:monospace">quartiles(A,A)
+</span></div><p>
+would return
+</p><div class="center">
+<span style="font-family:monospace">[0,6,8,10,11]
+</span></div>
 <hr>
 <a href="cascmd_en587.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

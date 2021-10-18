@@ -4,104 +4,89 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking the type of the argument</title>
+<title>Producing random matrices: randmatrix ranm randMat</title>
 </head>
 <body >
 <a href="cascmd_en613.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en615.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec764" class="subsection">9.2.5  Checking the type of the argument</h3>
-<p>You can check the type of the argument of a function (or anything
-else, for that matter) with the <span style="font-family:monospace">type</span><a id="hevea_default961"></a> command.
-For example, entering
+<h3 id="sec755" class="subsection">7.3.8  Producing random matrices: <span style="font-family:monospace">randmatrix</span><a id="hevea_default1001"></a> <span style="font-family:monospace">ranm</span><a id="hevea_default1002"></a> <span style="font-family:monospace">randMat</span><a id="hevea_default1003"></a></h3>
+<p>You can produce a random vector or matrix with the <span style="font-family:monospace">randmatrix</span>
+(or <span style="font-family:monospace">ranm</span> or <span style="font-family:monospace">randMat</span>) command. (See also sections
+<a href="cascmd_en296.html#sec%3Aranm1">5.26.25</a> and <a href="cascmd_en438.html#sec%3Aranm2">5.43.3</a>.) The <span style="font-family:monospace">randmatrix</span> command
+has the following possible arguments.
+</p><dl class="description"><dt class="dt-description">
+<span style="font-weight:bold">An integer </span><span style="font-style:italic">n</span></dt><dd class="dd-description">
+With an integer <span style="font-style:italic">n</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> will return a vector of
+length <span style="font-style:italic">n</span> whose elements are integers chosen randomly from
+[−99,−98,…,98,99] with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(5)
+</span></div>
+you might get
+<div class="center">
+<span style="font-family:monospace">[86,-97,-82,7,-27]
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span></dt><dd class="dd-description">
+Given two integers <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
+[−99,99] with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(2,3)
+</span></div>
+you might get
+<div class="center">
+<span style="font-family:monospace">[[26,-89,63],[-49,-86,-64]] 
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Three integers </span><span style="font-style:italic">n</span><span style="font-weight:bold">, </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and </span><span style="font-style:italic">a</span></dt><dd class="dd-description">
+Given three integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and <span style="font-style:italic">a</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
+[0,<span style="font-style:italic">a</span>) (or (<span style="font-style:italic">a</span>,0] is <span style="font-style:italic">a</span> is negative) with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(2,3,10)
+</span></div>
+you might get
+<div class="center">
+<span style="font-family:monospace">[[4,7,6],[7,4,5]]
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold">, and an interval </span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-weight:bold">.</span></dt><dd class="dd-description">
+Given two integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and an <span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>,
+<span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are real numbers chosen randomly from
+[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(2,3,0..1)
+</span></div>
+you might get
+<div class="center">
+<span style="font-family:monospace">[[0.90923402831,0.594602484722,0.250897713937],[0.332611694932,0.145975249354,0.543010003399]]
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and a function (which must be quoted)
+to produce random numbers</span></dt><dd class="dd-description"> 
+In this case, the third argument must be
+one of <span style="font-family:monospace">’rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’binomial,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randbinomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’multinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’multinomial,</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">’</span>,
+<span style="font-family:monospace">’randmultinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’poisson(</span>λ<span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’poisson, </span>λ<span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randpoisson(</span>λ<span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’normald(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’normald,</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">’</span>,
+<span style="font-family:monospace">’randnorm(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’exp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’exp,</span><span style="font-style:italic">a</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randexp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’fisher(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’fisher,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">’</span>, or
+’randfisher(<span style="font-style:italic">n</span>,<span style="font-style:italic">m</span>)’.
+</dd></dl><p>
+Given such an <span style="font-style:italic">R</span>, the command <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">R</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are numbers chosen
+randomly according to the rule determined by <span style="font-style:italic">R</span>.
+If you enter
 </p><div class="center">
-<span style="font-family:monospace">type(4)</span>
-</div><p>
-will return
+<span style="font-family:monospace">randmatrix(2,3,’randnorm(2,1)’)
+</span></div><p>
+you might get
 </p><div class="center">
-<span style="font-family:monospace">integer</span>
-</div><p>The output of a <span style="font-family:monospace">type</span> command is actually an integer from 1 to
-12. The output of <span style="font-family:monospace">type(4)</span> is <span style="font-family:monospace">integer</span>, which is a
-constant with the value 1. Another way to represent this type is with
-<span style="font-family:monospace">DOM_INT</span>; entering
-</p><div class="center">
-<span style="font-family:monospace">type(4) == DOM_INT</span>
-</div><p>
-will return
-</p><div class="center">
-<span style="font-family:monospace">true</span>
-</div><p>
-Possible types (followed by the integer they represent) include:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">real</span>, <span style="font-family:monospace">double</span> or <span style="font-family:monospace">DOM_FLOAT</span> (1).
-</li><li class="li-itemize"><span style="font-family:monospace">integer</span> or <span style="font-family:monospace">DOM_INT</span> (2).
-</li><li class="li-itemize"><span style="font-family:monospace">complex</span> or <span style="font-family:monospace">DOM_COMPLEX</span> (4).
-</li><li class="li-itemize"><span style="font-family:monospace">identifier</span> or <span style="font-family:monospace">DOM_IDENT</span> (6).
-</li><li class="li-itemize"><span style="font-family:monospace">vector</span> or <span style="font-family:monospace">DOM_LIST</span> (7).
-</li><li class="li-itemize"><span style="font-family:monospace">func</span> or <span style="font-family:monospace">DOM_FUNC</span> (13).
-</li><li class="li-itemize"><span style="font-family:monospace">expression</span> or <span style="font-family:monospace">DOM_SYMBOLIC</span> (8).
-</li><li class="li-itemize"><span style="font-family:monospace">rational</span> or <span style="font-family:monospace">DOM_RAT</span> (10).
-</li><li class="li-itemize"><span style="font-family:monospace">string</span> or <span style="font-family:monospace">DOM_STRING</span> (12).
-</li></ul><p>If the item being tested is a list (in <span style="font-family:monospace">DOM_LIST</span>), then the
-<span style="font-family:monospace">subtype</span><a id="hevea_default962"></a> command can determine what type of
-list it is. If the object is a sequence, then <span style="font-family:monospace">subtype</span> returns 1;
-</p><div class="center">
-<span style="font-family:monospace">subtype(1,2,3)</span>
-</div><p>
-returns
-</p><div class="center">
-<span style="font-family:monospace">1</span>
-</div><p>
-If the object is a set, then <span style="font-family:monospace">subtype</span> returns 2. If the
-object is a polynomial represented as a list (see section
-<a href="index.html#sec%3Apolynomials">5.25</a>), then <span style="font-family:monospace">subtype</span> will return 10. If the
-object isn’t one of these types of list, then <span style="font-family:monospace">subtype</span> returns 0.</p><p>The <span style="font-family:monospace">compare</span><a id="hevea_default963"></a> function will compare two objects
-taking their type into account; in other words, <span style="font-family:monospace">compare(a,b)</span>
-returns <span style="font-family:monospace">1</span> (true) if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> have the same
-type with <span style="font-family:monospace">a</span> less than <span style="font-family:monospace">b</span>, or if <span style="font-family:monospace">a</span> and
-<span style="font-family:monospace">b</span> have different types and the integer <span style="font-family:monospace">type(a)</span> is
-less than <span style="font-family:monospace">type(b)</span>. For example,
-</p><div class="center">
-<span style="font-family:monospace">compare("a","b")</span>
-</div><p>
-returns
-</p><div class="center">
-<span style="font-family:monospace">1</span>
-</div><p>
-since <span style="font-family:monospace">"a"</span> and <span style="font-family:monospace">"b"</span> have the same type
-(<span style="font-family:monospace">string</span>) and <span style="font-family:monospace">"a"</span> is less than <span style="font-family:monospace">"b"</span> in the
-string ordering. Also, if <span style="font-family:monospace">b</span> is a formal variable, then
-</p><div class="center">
-<span style="font-family:monospace">compare("a",b)</span>
-</div><p>
-returns
-</p><div class="center">
-<span style="font-family:monospace">0</span>
-</div><p>
-since the type of <span style="font-family:monospace">"a"</span> is <span style="font-family:monospace">string</span> (the integer 12)
-while the type of <span style="font-family:monospace">b</span> is <span style="font-family:monospace">identifier</span> (the integer 6)
-and <span style="font-family:monospace">12</span> is not less than <span style="font-family:monospace">6</span>.</p><p>The <span style="font-family:monospace">getType</span><a id="hevea_default964"></a> command is similar to <span style="font-family:monospace">type</span> in that it
-takes an object and returns the type, but it has different possible
-return values. It is included for compatibility reasons.
-For example,
-</p><div class="center">
-<span style="font-family:monospace">getType(3.14)</span>
-</div><p>
-returns
-</p><div class="center">
-<span style="font-family:monospace">NUM</span>
-</div><p>
-and 
-</p><div class="center">
-<span style="font-family:monospace">getType(x)</span>
-</div><p>
-returns 
-</p><div class="center">
-<span style="font-family:monospace">VAR</span>
-</div><p>
-Other possible return values include <span style="font-family:monospace">STR</span>, <span style="font-family:monospace">EXPR</span>,
-<span style="font-family:monospace">NONE</span>, <span style="font-family:monospace">PIC</span>, <span style="font-family:monospace">MAT</span> and <span style="font-family:monospace">FUNC</span>.</p>
+<span style="font-family:monospace">[[2.6324726358,0.539273367446,0.793750476229],[2.24729803442,1.28189228187,2.25750809791]] 
+</span></div>
 <hr>
 <a href="cascmd_en613.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

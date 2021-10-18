@@ -4,61 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Classes: classes</title>
+<title>3D parametric surface : plotparam paramplot DrawParm</title>
 </head>
 <body >
 <a href="cascmd_en579.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en581.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec718" class="subsection">7.1.8  Classes: <span style="font-family:monospace">classes</span><a id="hevea_default920"></a></h3>
-<p>The <span style="font-family:monospace">classes</span> command can be used to groups a collection of
-numbers into intervals; the result will be a list where each element
-is an interval <span style="font-family:monospace">a..b</span> followed by how many of the numbers are
-in the interval [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>). The collection of numbers can be given as a
-list or matrix.</p><p>If <span style="font-style:italic">L</span> is a collection of numbers, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> are numbers, then
-<span style="font-family:monospace">classes(</span><span style="font-style:italic">L</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will return the list
-<span style="font-family:monospace">[[</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">a</span>+<span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">],[</span><span style="font-style:italic">a</span>+<span style="font-style:italic">b</span><span style="font-family:monospace">..</span><span style="font-style:italic">a</span>+2<span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">],...]</span> where each number in <span style="font-style:italic">L</span> is
-in one of the intervals [<span style="font-style:italic">a</span>+<span style="font-style:italic">kb</span>, <span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)<span style="font-style:italic">b</span>) and <span style="font-style:italic">n</span><sub><span style="font-style:italic">k</span></sub> is
-how many numbers from <span style="font-style:italic">L</span> are in the corresponding interval. For
-example,
-</p><div class="center">
-<span style="font-family:monospace">classes([0,0.5,1,1.5,2,2.5,3,3.5,4],0,2)
-</span></div><p>
-will return
-</p><div class="center">
-<span style="font-family:monospace">[[0.0 .. 2.0,4],[2.0 .. 4.0,4],[4.0 .. 6.0,1]]
-</span></div><p>
-while 
-</p><div class="center">
-<span style="font-family:monospace">classes([0,0.5,1,1.5,2,2.5,3,3.5,4],-1,2)
-</span></div><p>
-will return
-</p><div class="center">
-<span style="font-family:monospace">[[(-1.0) .. 1.0,2],[1.0 .. 3.0,4],[3.0 .. 5.0,3]]
-</span></div><p>
-If the numbers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> are omitted, they will default to the
-configurable values of <span style="font-family:monospace">class_min</span> and <span style="font-family:monospace">class_size</span>,
-which default to 0 and 1.</p><p>Another way to split the list <span style="font-style:italic">L</span> into intervals is by making the
-third argument the midpoints of the desired intervals. For example,
-if you enter
-</p><div class="center">
-<span style="font-family:monospace">classes([0,0.5,1,1.5,2,2.5,3,3.5,4],1,[1,3,5])
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">[[0.0..2.0,4],[2.0..4.0,4],[4.0..6.0,1]]
-</span></div><p>Finally, you can simply state the intervals that you want to use by
-giving them as a list for the second argument. In this case, not
-every number in the list is necessarily in one of the intervals. If
-you enter
-</p><div class="center">
-<span style="font-family:monospace">classes([0,0.5,1,1.5,2,2.5,3,3.5,4],[1..3,3..6])
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">[[1 .. 3,4],[3 .. 6,3]]
-</span></div>
+<h3 id="sec711" class="subsection">6.11.2  3D parametric surface : <span style="font-family:monospace">plotparam paramplot DrawParm</span></h3>
+<p><a id="hevea_default922"></a><a id="hevea_default923"></a><a id="hevea_default924"></a>
+<span style="font-family:monospace">plotparam</span> takes two main arguments,
+a list of three 
+expressions of two variables and the list of these variable names
+where each variable name may be replaced by variable=interval
+to specify the range of the parameters.
+It accepts an optional argument to specify
+the discretization steps of the parameters <span style="font-style:italic">u</span> and <span style="font-style:italic">v</span> with 
+<span style="font-family:monospace">ustep=...</span> and <span style="font-family:monospace">vstep=...</span>.<br>
+<span style="font-family:monospace">plotparam([f(u,v),g(u,v),h(u,v)],[u,v])</span> draws the surface defined by the 
+first argument : <span style="font-style:italic">x</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">g</span>(<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">h</span>(<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>), where <span style="font-style:italic">u</span> and <span style="font-style:italic">v</span>
+ranges default to the graphic configuration.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u,v])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">The cone </span><span style="font-style:italic">x</span>=<span style="font-style:italic">v</span>*cos(<span style="font-style:italic">u</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">v</span>*sin(<span style="font-style:italic">u</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span></div><p>
+To specify the range of each parameters, replace each variable
+by an equation variable=range, like this:
+</p><div class="center"><span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3]) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">A portion of the cone </span><span style="font-style:italic">x</span>=<span style="font-style:italic">v</span>*cos(<span style="font-style:italic">u</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">v</span>*sin(<span style="font-style:italic">u</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3],ustep=0.5,vstep=0.5)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">A portion of the cone </span><span style="font-style:italic">x</span>=<span style="font-style:italic">v</span>*cos(<span style="font-style:italic">u</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">v</span>*sin(<span style="font-style:italic">u</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span></div>
 <hr>
 <a href="cascmd_en579.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

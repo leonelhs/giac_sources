@@ -280,6 +280,22 @@ AC_SUBST(CONFIG_GLPK)
 AC_SUBST(GLPK_LIBS)
 AM_CONDITIONAL(CONFIG_GLPK, [test "$CONFIG_GLPK" = "yes"])
 
+dnl AC_CHECK_LIB(samplerate, main)
+CONFIG_SAMPLERATE="yes"
+AC_ARG_ENABLE([samplerate],
+	[AS_HELP_STRING([--enable-samplerate], [Use SAMPLERATE [[default=yes]]])],
+	[if test "$enableval" = "no"; then CONFIG_SAMPLERATE="no"; fi], [])
+
+if test "$CONFIG_SAMPLERATE" = "yes"; then
+	AC_CHECK_HEADER(samplerate.h, [], [CONFIG_SAMPLERATE="no"])
+  fi
+if test "$CONFIG_SAMPLERATE" = "yes"; then
+	AC_CHECK_LIB(samplerate, main, [], [CONFIG_SAMPLERATE="no"])
+  fi
+AC_SUBST(CONFIG_SAMPLERATE)
+AC_SUBST(SAMPLERATE_LIBS)
+AM_CONDITIONAL(CONFIG_SAMPLERATE, [test "$CONFIG_SAMPLERATE" = "yes"])
+
 dnl AC_CHECK_LIB(curl, main)
 CONFIG_CURL="yes"
 AC_ARG_ENABLE([curl],

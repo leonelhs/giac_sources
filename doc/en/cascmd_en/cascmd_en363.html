@@ -4,29 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Definition of an interval : a1..a2</title>
+<title>Euclidean remainder: Rem</title>
 </head>
 <body >
 <a href="cascmd_en362.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en364.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec444" class="subsection">5.35.1  Definition of an interval : <span style="font-family:monospace">a1..a2</span></h3>
-<p><a id="hevea_default552"></a>
-An interval is represented by two real numbers 
-separated by <span style="font-family:monospace">..</span>, for example 
-</p><div class="center"><span style="font-family:monospace">1..4</span><br>
-<span style="font-family:monospace">1.2..sqrt(2)</span>
-</div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">A:=1..4</span></div><div class="center"><span style="font-family:monospace">B:=1.2..sqrt(2)</span></div><p>
-<span style="font-weight:bold">Warning!</span><br>
-The order of the boundaries of the interval is significant. For
-example, if you input 
-</p><div class="center">
-<span style="font-family:monospace">B:=2..3; C:=3..2</span>,
-</div><p>
-then <span style="font-family:monospace">B</span> and <span style="font-family:monospace">C</span> are different, <span style="font-family:monospace">B==C</span> returns <span style="font-family:monospace">0</span>.</p>
+<h3 id="sec443" class="subsection">5.34.2  Euclidean remainder: <span style="font-family:monospace">Rem</span></h3>
+<p><a id="hevea_default574"></a>
+<span style="font-family:monospace">Rem</span> is the inert form of <span style="font-family:monospace">rem</span>.<br>
+<span style="font-family:monospace">Rem</span> returns the euclidean remainder between two polynomials
+without evaluation. 
+It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to compute
+the euclidean remainder of the division of two
+polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ.<br>
+Input in <span style="font-family:monospace">Xcas</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1) mod 13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
+you need to <span style="font-family:monospace">eval(ans())</span> to get :
+</p><div class="center"><span style="font-family:monospace">(-2%13)*x+-1%13</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">(-2)*x-1</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1*x</span></div>
 <hr>
 <a href="cascmd_en362.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

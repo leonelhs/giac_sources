@@ -4,53 +4,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Functions</title>
+<title>Power regression: power_regression power_regression_plot</title>
 </head>
 <body >
 <a href="cascmd_en603.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en605.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec753" class="subsection">9.1.2  Functions<a id="hevea_default941"></a></h3>
-<p>You have already seen functions defined with <span style="font-family:monospace">:=</span>. For
-example, to define a function <span style="font-family:monospace">sumprod</span> which takes two inputs
-and returns a list with the sum and the product of the inputs, you can
+<h3 id="sec744" class="subsection">7.2.7  Power regression: <span style="font-family:monospace">power_regression</span><a id="hevea_default982"></a> <span style="font-family:monospace">power_regression_plot</span><a id="hevea_default983"></a></h3>
+<p>To find the graph <span style="font-style:italic">y</span>=<span style="font-style:italic">bx</span><sup><span style="font-style:italic">m</span></sup> which best fits a set of data points, you
+can use the <span style="font-family:monospace">power_regression</span> command.
+Given a set of points, either as a list of <span style="font-style:italic">x</span>-coordinates
+followed by a list of <span style="font-style:italic">y</span>-coordinates, or simply by a list of points,
+the <span style="font-family:monospace">power_regression</span> command will find the values of
+<span style="font-style:italic">m</span> and <span style="font-style:italic">b</span> which give the best fit curve. For example, if you
 enter
 </p><div class="center">
-<span style="font-family:monospace">sumprod(a,b) := [a+b,a*b]</span>
-</div><p>
-Afterwards, entering
+<span style="font-family:monospace">power_regression([[1,1],[2,4],[3,9],[4,16]])
+</span></div><p>
+or
 </p><div class="center">
-<span style="font-family:monospace">sumprod(3,5)</span>
-</div><p>
-will return
+<span style="font-family:monospace">power_regression([1,2,3,4],[1,4,9,16])
+</span></div><p>
+you will get
 </p><div class="center">
-<span style="font-family:monospace">[8,15]</span>
-</div><p>You can define functions that are computed with a sequence of
-instructions by putting the instructions between braces, where each
-command ends with a semicolon. If any local variables will be used,
-they can be declared with the <span style="font-family:monospace">local</span><a id="hevea_default942"></a> keyword,
-followed by the variable names. The value returned by the function
-will be indicated with the <span style="font-family:monospace">return</span><a id="hevea_default943"></a> keyword. For
-example, the above function <span style="font-family:monospace">sumprod</span> could also be defined by
-</p><pre class="verbatim">sumprod(a,b) := {
-local s, p;
-s := a + b;
-p := a*b;
-return [s,p];
-}
-</pre><p>Another way to use a sequence of instructions to define a function is
-with the <span style="font-family:monospace">function</span><a id="hevea_default944"></a> …<span style="font-family:monospace">endfunction</span><a id="hevea_default945"></a> construction. With this
-approach, the function name and parameters follow the
-<span style="font-family:monospace">function</span> keyword. This is otherwise like the previous
-approach. The <span style="font-family:monospace">sumprod</span> function could be defined by
-</p><pre class="verbatim">function sumprod(a,b)
-local s, p;
-s := a + b;
-p := a*b;
-return [s,p];
-endfunction
-</pre>
+<span style="font-family:monospace">2.0, 1.0
+</span></div><p>
+so the best fit (in this case, exact fit) power curve will be <span style="font-style:italic">y</span> = 1.0 <span style="font-style:italic">x</span><sup>2</sup>.</p><p>To plot the curve, you can use the command
+<span style="font-family:monospace">power_regression_plot</span>; if you enter
+</p><div class="center">
+<span style="font-family:monospace">power_regression_plot([1,2,3,4],[1,4,9,16])
+</span></div><p>
+you will get
+</p><div class="center">
+<img src="cascmd_en035.png">
+</div><p>
+which plots the graph, and has the equation and <span style="font-style:italic">R</span><sup>2</sup> value above the
+graph. Note that in this case the <span style="font-style:italic">R</span><sup>2</sup> value is 1, indicating that
+the data points fall directly on the curve.</p>
 <hr>
 <a href="cascmd_en603.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

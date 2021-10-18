@@ -4,37 +4,85 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Unit prefixes</title>
+<title>Polygonal paths: polygonplot
+ligne_polygonale
+linear_interpolate 
+listplot plotlist</title>
 </head>
 <body >
 <a href="cascmd_en599.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en601.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec746" class="subsection">8.1.7  Unit prefixes</h3>
-<p>
-You can insert a unit prefix in front of a unit to indicate a power of ten.<br>
-The following table gives the available prefixes:
+<h3 id="sec740" class="subsection">7.2.3  Polygonal paths: <span style="font-family:monospace">polygonplot</span><a id="hevea_default971"></a>
+<span style="font-family:monospace">ligne_polygonale</span><a id="hevea_default972"></a>
+<span style="font-family:monospace">linear_interpolate</span><a id="hevea_default973"></a> 
+<span style="font-family:monospace">listplot</span><a id="hevea_default974"></a> <span style="font-family:monospace">plotlist</span><a id="hevea_default975"></a></h3>
+<p>You can draw a polygonal path with either <span style="font-family:monospace">polygonplot</span> or
+<span style="font-family:monospace">listplot</span>. </p><p>Given a list of points (a two-column matrix) or two lists (the <span style="font-style:italic">x</span>
+coordinates and the <span style="font-style:italic">y</span>-coordinates), the <span style="font-family:monospace">polygonplot</span> (or
+<span style="font-family:monospace">polygonscatterplot</span>) command
+will draw the polygonal path through the points, from left to right
+(so the points are automatically ordered by increasing
+<span style="font-style:italic">x</span>-coordinates). If you enter
 </p><div class="center">
-<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >Prefix</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >Name</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >(*10<code>^</code>) n</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Prefix</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >Name</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >(*10<code>^</code>) n </td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >Y</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >yota</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >24</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >d</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >deci</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-1</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >Z</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >zeta</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >21</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >c</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >cent</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-2</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >E</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >exa</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >18</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >m</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >mili</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-3</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >P</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >peta</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >15</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >mu</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >micro</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-6</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >T</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >tera</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >12</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >n</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >nano</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-9</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >G</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >giga</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >9</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >p</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >pico</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-12</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >M</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >mega</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >6</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >f</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >femto</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-15</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >k or K</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >kilo</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >3</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >a</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >atto</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-18</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >h or H</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >hecto</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >2</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >z</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >zepto</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-21</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >D</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >deca</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >1</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >y</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >yocto</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >-24</td></tr>
-</table>
-</div><p>
-<span style="font-weight:bold">Remark</span><br>
-You cannot use a prefix with a built-in unit if the result gives another 
-built-in unit.<br>
-For example, 
-<span style="font-family:monospace">1_a</span> is one are, but <span style="font-family:monospace">1_Pa</span> is one pascal and not 
-<span style="font-family:monospace">10</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15_a</span>.</p>
+<span style="font-family:monospace">polygonplot([0,1,2,3,4],[0,1,4,9,16])
+</span></div><p>
+or
+</p><div class="center">
+<span style="font-family:monospace">polygonplot([[0,0],[1,1],[2,4],[3,9],[4,16]])
+</span></div><p>
+or even
+</p><div class="center">
+<span style="font-family:monospace">polygonplot([[2,4],[0,0],[3,9],[1,1],[4,16]])
+</span></div><p>
+you will get
+</p><div class="center">
+<img src="cascmd_en030.png">
+</div><p>If you give <span style="font-family:monospace">polygonplot</span> a single list of numbers, then they will
+be taken to be the <span style="font-style:italic">y</span>-coordinates and the <span style="font-style:italic">x</span>-coordinates will be
+assumed to be integers starting at 0. If you enter
+</p><div class="center">
+<span style="font-family:monospace">polygonplot([0,1,4,9,16])
+</span></div><p>If you want to get coordinates on the polygonal path, you can use the
+<span style="font-family:monospace">linear_interpolate</span> command. This command takes four
+arguments; a two-row matrix consisting of the <span style="font-style:italic">x</span>-coordinates and the
+<span style="font-style:italic">y</span>-coordinates, <span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>, the minimum value of <span style="font-style:italic">x</span> that you are
+interested in, <span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>, the maximum value of <span style="font-style:italic">x</span>, and
+<span style="font-style:italic">x</span><sub><span style="font-style:italic">step</span></sub>, the step size you want. (The values of <span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>
+and <span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub> must be between the smallest and largest
+<span style="font-style:italic">x</span>-coordinates of the points.) You will get a matrix with
+two rows, the first row will be 
+[<span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>, <span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>+<span style="font-style:italic">x</span><sub><span style="font-style:italic">step</span></sub>, <span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>+2<span style="font-style:italic">x</span><sub><span style="font-style:italic">step</span></sub>,...,<span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>]
+and the second row will be the corresponding <span style="font-style:italic">y</span>-coordinates of the
+points on the polygonal path. For example, if you enter
+</p><div class="center">
+<span style="font-family:monospace">linear_interpolate([[1,2,6,9],[3,4,6,12]],2,7,1)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">[[2.0,3.0,4.0,5.0,6.0,7.0],[4.0,4.5,5.0,5.5,6.0,8.0]]
+</span></div><p>If you want to draw a polygonal path through points in an order
+determined by you, you can use the <span style="font-family:monospace">listplot</span> (or
+<span style="font-family:monospace">plotlist</span>) command. If you give <span style="font-family:monospace">listplot</span> a list of
+points, then you will get a polygonal path through the points in the
+order given by the list. If you enter
+</p><div class="center">
+<span style="font-family:monospace">listplot([[2,4],[0,0],[3,9],[1,1],[4,16]]) 
+</span></div><p>
+you will get
+</p><div class="center">
+<img src="cascmd_en031.png">
+</div><p>As with <span style="font-family:monospace">polygonplot</span>, if you give <span style="font-family:monospace">listplot</span> a single
+list of numbers, then they will be taken to be the <span style="font-style:italic">y</span>-coordinates and
+the <span style="font-style:italic">x</span>-coordinates will be assumed to be integers starting at 0.
+If you enter 
+</p><div class="center">
+<span style="font-family:monospace">listplot([0,1,4,9,16])
+</span></div><p>
+you will get the same graph that you got with <span style="font-family:monospace">polygonplot</span>.
+However, unlike <span style="font-family:monospace">polygonplot</span>, the <span style="font-family:monospace">listplot</span> command
+can’t be given two lists of numbers as arguments.</p>
 <hr>
 <a href="cascmd_en599.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

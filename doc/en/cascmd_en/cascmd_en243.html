@@ -4,32 +4,65 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Hamming window function : hamming_window</title>
+<title>Convolution of two signals : convolution</title>
 </head>
 <body >
 <a href="cascmd_en242.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en244.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec308" class="subsection">5.23.13  Hamming window function : <span style="font-family:monospace">hamming_window</span></h3>
+<h3 id="sec309" class="subsection">5.24.3  Convolution of two signals : <span style="font-family:monospace">convolution</span><a id="hevea_default427"></a></h3>
 <p>
-<span style="font-family:monospace">hamming_window</span> takes as arguments a real vector  <span style="font-weight:bold"><span style="font-style:italic">v</span></span>  of length  <span style="font-style:italic">n</span>  and optionally an interval  <span style="font-style:italic">n</span><sub>1</sub> <span style="font-family:monospace">..</span> <span style="font-style:italic">n</span><sub>2</sub>  (with default values  <span style="font-style:italic">n</span><sub>1</sub>=0  and  <span style="font-style:italic">n</span><sub>2</sub>=<span style="font-style:italic">n</span>−1 ), and returns the elementwise product of the vector  [<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>1</sub></sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>2</sub></sub>]  and the vector  <span style="font-weight:bold"><span style="font-style:italic">w</span></span>  of length  <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span><sub>2</sub>−<span style="font-style:italic">n</span><sub>1</sub>+1  defined by
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=α−β cos</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">k</span> π</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
+<span style="font-family:monospace">convolution</span> takes two arguments, a real vector  <span style="font-weight:bold"><span style="font-style:italic">v</span></span>  of length  <span style="font-style:italic">n</span>  and a real vector  <span style="font-weight:bold"><span style="font-style:italic">w</span></span>  of length  <span style="font-style:italic">m</span> , and returns their convolution  <span style="font-weight:bold"><span style="font-style:italic">z</span></span>=<span style="font-weight:bold"><span style="font-style:italic">v</span></span>∗<span style="font-weight:bold"><span style="font-style:italic">w</span></span>  which is the vector of length  <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span>+<span style="font-style:italic">m</span>−1  defined as :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">z</span><sub><span style="font-style:italic">k</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">i</span>=0</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">v</span><sub><span style="font-style:italic">i</span></sub> <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span>−<span style="font-style:italic">i</span></sub>,   <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1, </td></tr>
 </table><p>
-for  <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1 , where  α=0.54  and  β=1−α=0.46 . For example, input :
+such that  <span style="font-style:italic">v</span><sub><span style="font-style:italic">j</span></sub>=0  for  <span style="font-style:italic">j</span>≥ <span style="font-style:italic">n</span>  and  <span style="font-style:italic">w</span><sub><span style="font-style:italic">j</span></sub>=0  for  <span style="font-style:italic">j</span>≥ <span style="font-style:italic">m</span> .</p><p>For example, input :
 </p><div class="center">
-	<span style="font-family:monospace">L:=hamming_window(randvector(1000,0..1)):;</span>
+	<span style="font-family:monospace">convolution([1,2,3],[1,-1,1,-1])</span>
 </div><p>
-followed by <span style="font-family:monospace">scatterplot(L)</span>.</p>
+Output :
+</p><div class="center">
+	<span style="font-family:monospace">[1.0,1.0,2.0,-2.0,1.0,-3.0]</span>
+</div><p>In the following example convolution is used for reverberation. Assume that the directory <span style="font-family:monospace">sounds</span> contains two files, a dry, mono recording of a guitar stored in <span style="font-family:monospace">guitar.wav</span> and a two-channel impulse response recorded in a French 18th century salon and stored in <span style="font-family:monospace">salon-ir.wav</span>. Files are loaded with the following command lines :
+</p><div class="center">
+<span style="font-family:monospace">clip:=readwav("/path/to/sounds/guitar.wav"):; ir:=readwav("/path/to/sounds/salon-ir.wav"):;
+</span></div><p>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">plotwav(clip)
+</span></div><p>
+Output :
+</p><div class="center">
+<img src="cascmd_en012.png">
+</div><p>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">plotwav(ir)
+</span></div><p>
+Output :
+</p><div class="center">
+<img src="cascmd_en013.png">
+</div><p>
+Convolving the data from <span style="font-family:monospace">clip</span> with both channels in <span style="font-family:monospace">ir</span> produces a reverberated variant of the recording, in stereo. Input :
+</p><div class="center">
+<span style="font-family:monospace">data:=channel_data(clip):; L:=convolution(data,channel_data(ir,1)):; R:=convolution(data,channel_data(ir,2)):;
+</span></div><p>
+The convolved signals <span style="font-family:monospace">L</span> and <span style="font-family:monospace">R</span> now become the left and right channel of a new audio clip, respectively. The <span style="font-family:monospace">normalize</span> option is used because convolution usually results in a huge increase of sample values (which is clear from the definition). Input :
+</p><div class="center">
+<span style="font-family:monospace">spatial:=createwav([L,R],normalize=-3):; playsnd(spatial)
+</span></div><p>
+The result sounds as it was recorded in the same salon as the impulse response. Furthermore, it is a true stereo sound. To visualize it, input :
+</p><div class="center">
+<span style="font-family:monospace">plotwav(spatial)
+</span></div><p>
+Output :
+</p><div class="center">
+<img src="cascmd_en014.png">
+</div><p>
+Note that the resulting audio is longer than the input (by the length of the impulse response).</p>
 <hr>
 <a href="cascmd_en242.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -1302,11 +1302,16 @@ namespace xcas {
       return 0;
     gen g=add_autosimplify(g_,contextptr);
     giac::gen evaled_g;
-    giac::history_in(contextptr).push_back(g_);
     // if w 2nd brother is a graph2d3d, return a graph2d3d with the same
     // config
     Fl_Widget * res = 0;
     if (gr && gr->children()>=3){
+      if (Fl_Output * out=dynamic_cast<Fl_Output *>(gr->child(2))){
+	if (strcmp(out->value(),gettext("Computing..."))==0){
+	  out->value(gettext("Unable to launch thread. Press STOP to interrupt."));
+	  return w;
+	}
+      }
       if (Fl_Group * grc2=dynamic_cast<Fl_Group * >(gr->child(2))){
 	if (grc2->children()){
 	  if (Graph2d3d * graph=dynamic_cast<Graph2d3d *>(grc2->child(0))){
@@ -1321,6 +1326,7 @@ namespace xcas {
 	}
       }
     }
+    giac::history_in(contextptr).push_back(g_);
     // commented otherwise ans() does not work
     // giac::history_out.push_back(g);
     Fl_Output * out=0;

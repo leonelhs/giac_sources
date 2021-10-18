@@ -4,34 +4,61 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Random polynomial : randpoly randPoly</title>
+<title>Factorization : collect</title>
 </head>
 <body >
 <a href="cascmd_en282.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en284.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec350" class="subsection">5.25.23  Random polynomial : <span style="font-family:monospace">randpoly randPoly</span></h3>
-<p><a id="hevea_default452"></a><a id="hevea_default453"></a>
-<span style="font-family:monospace">randpoly</span> (or <span style="font-family:monospace">randPoly</span>) takes two arguments: the name of a 
-variable (by default <span style="font-family:monospace">x</span>) and an integer <span style="font-family:monospace">n</span> (the order of the
-arguments is not important).<br>
-<span style="font-family:monospace">randpoly</span> returns a polynomial with respect to the variable 
-given argument (or <span style="font-family:monospace">x</span> if none was provided), 
-of degree the second argument, having as coefficients
-random integers evenly distributed on -99..+99.<br>
+<h3 id="sec351" class="subsection">5.26.12  Factorization : <span style="font-family:monospace">collect</span></h3>
+<p><a id="hevea_default472"></a>
+<span style="font-family:monospace">collect</span> takes as argument a polynomial or a list of 
+polynomials and optionally an algebraic extension like <span style="font-family:monospace">sqrt(n)</span>
+(for √<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>).<br>
+<span style="font-family:monospace">collect</span> factorizes the polynomial (or the polynomials in the
+list) on the field of its coefficient (for example ℚ)
+or on the smallest extension containing the optional second argument (e.g.
+ℚ[√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>]). In complex mode, the field is complexified.<br>
+<span style="font-weight:bold">Examples</span> :
+</p><ul class="itemize"><li class="li-itemize">
+Factorize <span style="font-style:italic">x</span><sup>2</sup>−4 over the integers,
+input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-4)</span></div>
+Output in real mode :
+<div class="center"><span style="font-family:monospace">(x-2)*(x+2)</span></div>
+</li><li class="li-itemize">Factorize <span style="font-style:italic">x</span><sup>2</sup>+4 over the integers, input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)</span></div>
+Output in real mode :
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4</span></div>
+Output in complex mode :
+<div class="center"><span style="font-family:monospace">(x+2*i)*(x-2*i)</span></div>
+</li><li class="li-itemize">Factorize <span style="font-style:italic">x</span><sup>2</sup>−2 over the integers, input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2)</span></div>
+Output in real mode :
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div>
+But if you input :
+<div class="center"><span style="font-family:monospace">collect(sqrt(2)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2))</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">sqrt(2)*(x-sqrt(2))*(x+sqrt(2))</span></div>
+</li><li class="li-itemize">Factorize over the integers : 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>−2<span style="font-style:italic">x</span><sup>2</sup>+1  and  <span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span></td></tr>
+</table>
 Input :
-</p><div class="center"><span style="font-family:monospace">randpoly(t,4)</span></div><p>
-Output for example:
-</p><div class="center"><span style="font-family:monospace">-8*t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-87*t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-52*t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+94*t+80</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">randpoly(4)</span></div><p>
-Output for example:
-</p><div class="center"><span style="font-family:monospace">70*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-46*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-7*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-24*x+52</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">randpoly(4,u)</span></div><p>
-Output for example:
-</p><div class="center"><span style="font-family:monospace">2*u</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+33*u</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-6*u</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-92*u-12</span></div>
+<div class="center"><span style="font-family:monospace">collect([x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x])</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">[(x-1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1),x*(x-1)]</span></div>
+But, input :
+<div class="center"><span style="font-family:monospace">collect((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)*sqrt(5))</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">((19*sqrt(5)-10)*((sqrt(5)+15)*x+7*sqrt(5)-5)* ((sqrt(5)+25)*x-13*sqrt(5)-15)*(x-1))/6820</span></div>
+Or, input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,sqrt(5))</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">((2*sqrt(5)-19)*((sqrt(5)+25)*x-</span><br>
+ <span style="font-family:monospace">13*sqrt(5)-15)*(-x+1)*((sqrt(5)+15)*x+7*sqrt(5)-5))/6820</span>
+</div>
+</li></ul>
 <hr>
 <a href="cascmd_en282.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

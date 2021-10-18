@@ -4,51 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Gradient : derive deriver diff grad</title>
+<title>LU decomposition (for TI compatibility) : LU</title>
 </head>
 <body >
 <a href="cascmd_en521.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en523.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec637" class="subsection">5.52.1  Gradient : <span style="font-family:monospace">derive deriver diff grad</span></h3>
-<p><a id="hevea_default794"></a><a id="hevea_default795"></a><a id="hevea_default796"></a><a id="hevea_default797"></a><a id="sec:derive"></a><a id="hevea_default798"></a><a id="hevea_default799"></a>
-<span style="font-family:monospace">derive</span> (or <span style="font-family:monospace">diff</span> or <span style="font-family:monospace">grad</span>) takes two arguments : an 
-expression <span style="font-style:italic">F</span> of <span style="font-style:italic">n</span> real variables and a vector of these variable names.<br>
-<span style="font-family:monospace">derive</span> returns the gradient of <span style="font-style:italic">F</span>,
-where the gradient is the vector of all partial derivatives,
-for example in dimension <span style="font-style:italic">n</span>=3
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell"   style="width:90%;text-align:center"><hr class="hbar"></td><td class="dcell"   style="width:10%;text-align:center">▸</td></tr>
-<tr><td class="dcell"  colspan="2" style="text-align:center">grad</td></tr>
-<tr><td class="dcell"  colspan="2" style="text-align:center"> </td></tr>
-</table></td><td class="dcell">(<span style="font-style:italic">F</span>)= [</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span></td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span></td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">z</span></td></tr>
-</table></td><td class="dcell">] </td></tr>
-</table><p>
-<span style="font-weight:bold">Example</span> <br>
-Find the gradient of <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>−<span style="font-style:italic">xz</span><sup>3</sup>.<br>
+<h3 id="sec636" class="subsection">5.51.5  LU decomposition (for TI compatibility) : <span style="font-family:monospace">LU</span></h3>
+<p><a id="hevea_default818"></a>
+<span style="font-family:monospace">LU</span> takes as argument a numeric
+square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span> and three variable names, <span style="font-family:monospace">var1</span>, 
+<span style="font-family:monospace">var2</span> and <span style="font-family:monospace">var3</span>.<br>
+<span style="font-family:monospace">LU(A,var1,var2,var3)</span> returns <span style="font-style:italic">P</span>, a permutation matrix, and stores :
+</p><ul class="itemize"><li class="li-itemize">
+a lower triangular matrix <span style="font-style:italic">L</span>, with 1 on the diagonal, in 
+<span style="font-family:monospace">var1</span>,
+</li><li class="li-itemize">an upper triangular matrix <span style="font-style:italic">U</span> in <span style="font-family:monospace">var2</span>,
+</li><li class="li-itemize">the permutation matrix <span style="font-style:italic">P</span>, result of the command <span style="font-family:monospace">LU</span>, in 
+<span style="font-family:monospace">var3</span>.
+</li></ul><p>
+These matrices are such that 
+</p><div class="center">
+the equation <span style="font-style:italic">A</span>*<span style="font-style:italic">x</span>=<span style="font-style:italic">B</span> is equivalent to <span style="font-style:italic">L</span>*<span style="font-style:italic">U</span>*<span style="font-style:italic">x</span>=<span style="font-style:italic">P</span>*<span style="font-style:italic">B</span>.
+</div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">derive(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">diff(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">grad(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">LU([[3,5],[4,5]],L,U,P)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[2*2*x*y-z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(x*3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)]</span></div><p>
-Output after simplification with <span style="font-family:monospace">normal(ans())</span> :
-</p><div class="center"><span style="font-family:monospace">[4*x*y-z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(3*x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)]</span></div><p>
-To find the critical points of 
-<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>−<span style="font-style:italic">xz</span><sup>3</sup>, input :
-</p><div class="center"><span style="font-family:monospace">solve(derive(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z]),[x,y,z])</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">[[0,1],[1,0]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">L</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[0,y,0]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[[1,0],[0.75,1]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">U</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[4,5],[0,1.25]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">P</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[0,1],[1,0]]</span></div>
 <hr>
 <a href="cascmd_en521.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

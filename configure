@@ -821,6 +821,10 @@ CONFIG_CURL_FALSE
 CONFIG_CURL_TRUE
 CURL_LIBS
 CONFIG_CURL
+CONFIG_SAMPLERATE_FALSE
+CONFIG_SAMPLERATE_TRUE
+SAMPLERATE_LIBS
+CONFIG_SAMPLERATE
 CONFIG_GLPK_FALSE
 CONFIG_GLPK_TRUE
 GLPK_LIBS
@@ -990,6 +994,7 @@ enable_gmpxx
 enable_cocoa
 enable_ao
 enable_glpk
+enable_samplerate
 enable_curl
 enable_gui
 with_x
@@ -1661,6 +1666,7 @@ Optional Features:
   --enable-cocoa          Use CoCoA library [[default=autodetect]]
   --enable-ao             Use AO [[default=yes]]
   --enable-glpk           Use GLPK [[default=yes]]
+  --enable-samplerate     Use SAMPLERATE [[default=yes]]
   --enable-curl           Use CURL [[default=yes]]
   --enable-gui            enable GUI [[default=yes]]
   --disable-nls           do not use Native Language Support
@@ -5690,13 +5696,13 @@ if ${lt_cv_nm_interface+:} false; then :
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:5693: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:5699: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5696: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:5702: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5699: output\"" >&5)
+  (eval echo "\"\$as_me:5705: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -6784,7 +6790,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6787 "configure"' > conftest.$ac_ext
+  echo '#line 6793 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8841,11 +8847,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8844: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8850: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8848: \$? = $ac_status" >&5
+   echo "$as_me:8854: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9165,11 +9171,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9168: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9174: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9172: \$? = $ac_status" >&5
+   echo "$as_me:9178: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9270,11 +9276,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9273: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9279: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9277: \$? = $ac_status" >&5
+   echo "$as_me:9283: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9325,11 +9331,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9328: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9334: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9332: \$? = $ac_status" >&5
+   echo "$as_me:9338: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11697,7 +11703,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11700 "configure"
+#line 11706 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11797,7 +11803,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11800 "configure"
+#line 11806 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13744,11 +13750,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13747: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13753: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13751: \$? = $ac_status" >&5
+   echo "$as_me:13757: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -13843,11 +13849,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13846: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13852: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13850: \$? = $ac_status" >&5
+   echo "$as_me:13856: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -13895,11 +13901,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13898: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13904: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13902: \$? = $ac_status" >&5
+   echo "$as_me:13908: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -16481,6 +16487,77 @@ fi
 else
   CONFIG_GLPK_TRUE='#'
   CONFIG_GLPK_FALSE=
+fi
+
+
+CONFIG_SAMPLERATE="yes"
+# Check whether --enable-samplerate was given.
+if test "${enable_samplerate+set}" = set; then :
+  enableval=$enable_samplerate; if test "$enableval" = "no"; then CONFIG_SAMPLERATE="no"; fi
+fi
+
+
+if test "$CONFIG_SAMPLERATE" = "yes"; then
+	ac_fn_cxx_check_header_mongrel "$LINENO" "samplerate.h" "ac_cv_header_samplerate_h" "$ac_includes_default"
+if test "x$ac_cv_header_samplerate_h" = xyes; then :
+
+else
+  CONFIG_SAMPLERATE="no"
+fi
+
+
+  fi
+if test "$CONFIG_SAMPLERATE" = "yes"; then
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lsamplerate" >&5
+$as_echo_n "checking for main in -lsamplerate... " >&6; }
+if ${ac_cv_lib_samplerate_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lsamplerate  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_samplerate_main=yes
+else
+  ac_cv_lib_samplerate_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_samplerate_main" >&5
+$as_echo "$ac_cv_lib_samplerate_main" >&6; }
+if test "x$ac_cv_lib_samplerate_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBSAMPLERATE 1
+_ACEOF
+
+  LIBS="-lsamplerate $LIBS"
+
+else
+  CONFIG_SAMPLERATE="no"
+fi
+
+  fi
+
+
+ if test "$CONFIG_SAMPLERATE" = "yes"; then
+  CONFIG_SAMPLERATE_TRUE=
+  CONFIG_SAMPLERATE_FALSE='#'
+else
+  CONFIG_SAMPLERATE_TRUE='#'
+  CONFIG_SAMPLERATE_FALSE=
 fi
 
 
@@ -22828,6 +22905,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${CONFIG_GLPK_TRUE}" && test -z "${CONFIG_GLPK_FALSE}"; then
   as_fn_error $? "conditional \"CONFIG_GLPK\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${CONFIG_SAMPLERATE_TRUE}" && test -z "${CONFIG_SAMPLERATE_FALSE}"; then
+  as_fn_error $? "conditional \"CONFIG_SAMPLERATE\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${CONFIG_CURL_TRUE}" && test -z "${CONFIG_CURL_FALSE}"; then

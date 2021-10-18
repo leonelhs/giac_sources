@@ -4,152 +4,113 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Make a sequence or a list : seq $</title>
+<title>Series expansion : series</title>
 </head>
 <body >
 <a href="cascmd_en370.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en372.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec453" class="subsection">5.36.5  Make a sequence or a list : <span style="font-family:monospace">seq $</span></h3>
-<p><a id="hevea_default567"></a><a id="hevea_default568"></a>
-<span style="font-family:monospace">seq</span> takes two, three, four or five arguments : the first 
-argument is an expression depending of a parameter (for example <span style="font-style:italic">j</span>) and 
-the remaining argument(s) describe which values of <span style="font-style:italic">j</span> will be used to
-generate the sequence. More precisely <span style="font-style:italic">j</span> is assumed to move 
-from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>:
+<h3 id="sec452" class="subsection">5.35.3  Series expansion : <span style="font-family:monospace">series</span></h3>
+<p><a id="hevea_default583"></a><a id="hevea_default584"></a> 
+<span style="font-family:monospace">series</span> takes from one to four arguments :
 </p><ul class="itemize"><li class="li-itemize">
-with a default step of 1 or -1: <span style="font-family:monospace">j=a..b</span> or 
-<span style="font-family:monospace">j,a..b</span> (Maple-like syntax), <span style="font-family:monospace">j,a,b</span> (TI-like syntax)
-</li><li class="li-itemize">or with a specific step: 
-<span style="font-family:monospace">j=a..b,p</span> (Maple-like syntax), <span style="font-family:monospace">j,a,b,p</span> (TI-like syntax).
+an expression depending of a variable (by default <span style="font-family:monospace">x</span>),
+</li><li class="li-itemize">an equality variable=value (e.g. <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span>) where to compute
+the series expansion, by default <span style="font-family:monospace">x=0</span>, 
+</li><li class="li-itemize">an integer <span style="font-style:italic">n</span>, the order of the series expansion,
+by default <span style="font-family:monospace">5</span>
+</li><li class="li-itemize">a direction <span style="font-family:monospace">-1, 1</span> (for unidirectional series expansion)
+or <span style="font-family:monospace">0</span> (for bidirectional series expansion) (by default <span style="font-family:monospace">0</span>).
 </li></ul><p>
-If the Maple-like syntax is used, <span style="font-family:monospace">seq</span> returns a sequence,
-if the TI-like syntax is used, <span style="font-family:monospace">seq</span> returns a list.</p><p><span style="font-family:monospace">$</span> is the infixed version of <span style="font-family:monospace">seq</span> when <span style="font-family:monospace">seq</span> has only two 
-arguments and always returns a sequence.<br>
-<span style="font-weight:bold">Remark:</span> 
+Note that the syntax <span style="font-family:monospace">...,x,</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,...</span> 
+(instead of <span style="font-family:monospace">...,x=</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,...</span>) is also accepted.<br>
+<span style="font-family:monospace">series</span> returns a polynomial in <span style="font-family:monospace">x-a</span>, plus a remainder 
+of the form:
+</p><div class="center">
+<span style="font-family:monospace">(x-a)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n*order_size(x-a)</span>
+</div><p>
+where <span style="font-family:monospace">order_size</span> is a function such that,
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">∀ <span style="font-style:italic">r</span>&gt;0,    </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:center">lim</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>→ 0</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">x</span><sup><span style="font-style:italic">r</span></sup> order_size(<span style="font-style:italic">x</span>) = 0 </td></tr>
+</table><p>
+The order returned by <span style="font-family:monospace">series</span> may be smaller than <span style="font-style:italic">n</span> if
+cancellations between numerator and denominator occur.</p><p>Examples :
 </p><ul class="itemize"><li class="li-itemize">
-In <span style="font-family:monospace">Xcas</span> mode, the precedence of <span style="font-family:monospace">$</span> is not the same as
-for example in <span style="font-family:monospace">Maple</span>, in case of doubt 
-put the arguments of <span style="font-family:monospace">$</span> in parenthesis.
-For example, the equivalent of <span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,j=-1..3)</span> is
-<span style="font-family:monospace">(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)$(j=-1..3)</span> and
-returns <span style="font-family:monospace">(1,0,1,4,9)</span>. 
-The equivalent of <span style="font-family:monospace">seq(4,3)</span> is <span style="font-family:monospace">4$3</span> and returns 
-<span style="font-family:monospace">(4,4,4)</span>.
-</li><li class="li-itemize">With <span style="font-family:monospace">Maple</span> syntax, <span style="font-family:monospace">j,a..b,p</span> is not valid.
-To specify a step <span style="font-style:italic">p</span> for the variation of 
-<span style="font-style:italic">j</span> from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>, use <span style="font-family:monospace">j=a..b,p</span> or use the <span style="font-family:monospace">TI</span> syntax
-<span style="font-family:monospace">j,a,b,p</span> and get the sequence from the list with <span style="font-family:monospace">op(...)</span>.
-</li></ul><p>
-In summary, the different way to build a sequence are :
-</p><ul class="itemize"><li class="li-itemize">
-with <span style="font-family:monospace">Maple</span>-like <span style="font-weight:bold">syntax</span> 
-<ol class="enumerate" type=1><li class="li-enumerate">
-<span style="font-family:monospace">seq</span> has two arguments, 
-either an expression depending on a parameter 
-(for example <span style="font-style:italic">j</span>) and <span style="font-style:italic">j</span>=<span style="font-style:italic">a</span>..<span style="font-style:italic">b</span> where <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> are reals, 
-or a constant expression and an integer <span style="font-style:italic">n</span>.<br>
-<span style="font-family:monospace">seq</span> returns the sequence where <span style="font-style:italic">j</span> is replaced in the 
-expression by <span style="font-style:italic">a</span>, <span style="font-style:italic">a</span>+1,...,<span style="font-style:italic">b</span> if <span style="font-style:italic">b</span>&gt;<span style="font-style:italic">a</span> and by <span style="font-style:italic">a</span>, <span style="font-style:italic">a</span>−1,...,<span style="font-style:italic">b</span> if <span style="font-style:italic">b</span>&lt;<span style="font-style:italic">a</span>,
-or <span style="font-family:monospace">seq</span> returns the sequence made by copying the constant <span style="font-style:italic">n</span> times.
-</li><li class="li-enumerate"><span style="font-family:monospace">seq</span> has three arguments, an expression depending on a parameter 
-(for example <span style="font-style:italic">j</span>) and <span style="font-style:italic">j</span>=<span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>,<span style="font-style:italic">p</span> where <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span> are reals and <span style="font-style:italic">p</span> is a 
-real number.<br>
-<span style="font-family:monospace">seq</span> returns the sequence where <span style="font-style:italic">j</span> is replaced in the 
-expression by <span style="font-style:italic">a</span>, <span style="font-style:italic">a</span>+<span style="font-style:italic">p</span>,...,<span style="font-style:italic">b</span> if <span style="font-style:italic">b</span>&gt;<span style="font-style:italic">a</span> and by <span style="font-style:italic">a</span>, <span style="font-style:italic">a</span>−<span style="font-style:italic">p</span>,...,<span style="font-style:italic">b</span> 
-if <span style="font-style:italic">b</span>&lt;<span style="font-style:italic">a</span>.<br>
-Note that <span style="font-style:italic">j</span>,<span style="font-style:italic">a</span>..<span style="font-style:italic">b</span> is also valid but <span style="font-style:italic">j</span>,<span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>,<span style="font-style:italic">p</span> is not valid. 
-</li></ol>
-</li><li class="li-itemize"><span style="font-family:monospace">TI</span> <span style="font-weight:bold">syntax</span>
-<ol class="enumerate" type=1><li class="li-enumerate">
-<span style="font-family:monospace">seq</span> has four arguments, an expression depending on a parameter (for 
-example <span style="font-style:italic">j</span>), the name of the parameter (for example <span style="font-style:italic">j</span>), <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> where
-<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> are reals.<br>
-<span style="font-family:monospace">seq</span> returns the list where <span style="font-style:italic">j</span> is replaced in the 
-expression by <span style="font-style:italic">a</span>, <span style="font-style:italic">a</span>+1,...,<span style="font-style:italic">b</span> if <span style="font-style:italic">b</span>&gt;<span style="font-style:italic">a</span> and by <span style="font-style:italic">a</span>, <span style="font-style:italic">a</span>−1,...,<span style="font-style:italic">b</span> if <span style="font-style:italic">b</span>&lt;<span style="font-style:italic">a</span>.
-</li><li class="li-enumerate"><span style="font-family:monospace">seq</span> has five arguments, an expression depending on a parameter (for 
-example <span style="font-style:italic">j</span>), the name of the parameter (for example <span style="font-style:italic">j</span>), <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span> and <span style="font-style:italic">p</span> 
-where <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span> and <span style="font-style:italic">p</span> are reals.<br>
-<span style="font-family:monospace">seq</span> returns the list where 
-<span style="font-style:italic">j</span> is substituted in the 
-expression by <span style="font-style:italic">a</span>, <span style="font-style:italic">a</span>+<span style="font-style:italic">p</span>,...,<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> (<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> ≤ <span style="font-style:italic">b</span> &lt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span> or 
-<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> ≥ <span style="font-style:italic">b</span>&gt; <span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span>). 
-By default, <span style="font-style:italic">p</span>=1 if <span style="font-style:italic">b</span>&gt;<span style="font-style:italic">a</span> and <span style="font-style:italic">p</span>=-1 if <span style="font-style:italic">b</span>&lt;<span style="font-style:italic">a</span>. 
-</li></ol>
-</li></ul><p>
-<span style="font-weight:bold">Note</span> that
-in <span style="font-family:monospace">Maple</span> syntax, <span style="font-family:monospace">seq</span> takes no more than 3 arguments and
-returns a sequence,
-while in <span style="font-family:monospace">TI</span> syntax, <span style="font-family:monospace">seq</span> takes at least 4 arguments 
-and returns a list.<br>
-Input to have a sequence with same elements :
-</p><div class="center"><span style="font-family:monospace">seq(t,4)</span></div><p>
-or : 
-</p><div class="center"><span style="font-family:monospace">seq(t,k=1..4)</span></div><p>
+series expansion in the vicinity of <span style="font-family:monospace">x=0</span><br>
+ Find an series expansion of 
+<span style="font-style:italic">x</span><sup>3</sup>+sin(<span style="font-style:italic">x</span>)<sup>3</sup>/<span style="font-style:italic">x</span>−sin(<span style="font-style:italic">x</span>) 
+in the vicinity of <span style="font-family:monospace">x=0</span>.<br>
+Input :
+<div class="center"><span style="font-family:monospace">series(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/(x-sin(x)))</span></div>
+Output is only a 2nd-order series expansion :
+<div class="center"><span style="font-family:monospace">6+-27/10*x</span><code><span style="font-family:monospace">^2</span></code><span style="font-family:monospace">+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*order_size(x)</span></div>
+We have lost 3 orders because the valuation of the numerator and
+denominator is 3. To get a 4-th order expansion, we must therefore 
+take <span style="font-style:italic">n</span>=7.<br>
+Input :
+<div class="center"><span style="font-family:monospace">series(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/(x-sin(x)),x=0,7)</span></div>
 or :
-</p><div class="center"><span style="font-family:monospace">t$4</span></div><p> 
+<div class="center"><span style="font-family:monospace">series(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/(x-sin(x)),x,0,7)</span></div>
+Output is a 4th-order series expansion :
+<div class="center"><span style="font-family:monospace">6+-27/10*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+711/1400*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+
+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5*order_size(x)</span></div>
+</li><li class="li-itemize">series expansion in the vicinity of <span style="font-family:monospace">x=a</span><br>
+Find a series 4th-order expansion of cos(2<span style="font-style:italic">x</span>)<sup>2</sup> in the vicinity of
+<span style="font-style:italic">x</span>=π/6. <br>
+Input:
+<div class="center"><span style="font-family:monospace">series(cos(2*x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x=pi/6, 4)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">(t,t,t,t)</span></div><p>
-Input to have a sequence :
-</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j=1..4)</span></div><p>
-or : 
-</p><div class="center"><span style="font-family:monospace">(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)$(j=1..4)</span></div><p> 
-or :
-</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,1..4)</span></div><p>
+<div class="center"><span style="font-family:monospace">1/4+(-(4*sqrt(3)))/4*(x-pi/6)+(4*3-4)/4*(x-pi/6)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+ 32*sqrt(3)/3/4*(x-pi/6)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+(-16*3+16)/3/4*(x-pi/6)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+ (x-pi/6)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5*order_size(x-pi/6)</span></div> 
+</li><li class="li-itemize">series expansion in the vicinity of <span style="font-family:monospace">x=+</span>∞ or <span style="font-family:monospace">x=-</span>∞
+<ol class="enumerate" type=1><li class="li-enumerate">
+Find a 5th-order series expansion of arctan(<span style="font-style:italic">x</span>) in the vicinity of
+<span style="font-family:monospace">x=+</span>∞.<br>
+ Input :
+<div class="center"><span style="font-family:monospace">series(atan(x),x=+infinity,5)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">(1,8,27,64)</span></div><p>
-Input to have a sequence :
-</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j=-1..4,2)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(-1,1,27)</span></div><p>
-Or to have a list,<br>
+<div class="center"><span style="font-family:monospace">pi/2-1/x+1/3*(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1/-5*(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+
+(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6*order_size(1/x)</span></div>
+Note that the expansion variable and the argument of the 
+<span style="font-family:monospace">order_size</span> function is
+ <span style="font-style:italic">h</span>=1/<span style="font-style:italic">x</span> →<sub><span style="font-style:italic">x</span>→ + ∞</sub> 0 .
+</li><li class="li-enumerate">Find a series 2nd-order expansion of (2<span style="font-style:italic">x</span>−1)<span style="font-style:italic">e</span><sup>1/<span style="font-style:italic">x</span>−1</sup> in the vicinity of
+<span style="font-family:monospace">x=+</span>∞. <br>
 Input :
-</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,1,4)</span></div><p>
+<div class="center"><span style="font-family:monospace">series((2*x-1)*exp(1/(x-1)),x=+infinity,3)</span></div>
+Output is only a 1st-order series expansion :
+<div class="center"><span style="font-family:monospace">2*x+1+2/x+(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*order_size(1/x)</span></div>
+To get a 2nd-order series expansion in 1/<span style="font-style:italic">x</span>, input:
+<div class="center"><span style="font-family:monospace">series((2*x-1)*exp(1/(x-1)),x=+infinity,4)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">[1,8,27,64]</span></div><p>
+<div class="center"><span style="font-family:monospace">2*x+1+2/x+17/6*(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*order_size(1/x)</span></div>
+</li><li class="li-enumerate">Find a 2nd-order series expansion of (2<span style="font-style:italic">x</span>−1)<span style="font-style:italic">e</span><sup>1/<span style="font-style:italic">x</span>−1</sup> in the vicinity 
+of <span style="font-family:monospace">x=-</span>∞.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,0,5,2)</span></div><p>
+<div class="center"><span style="font-family:monospace">series((2*x-1)*exp(1/(x-1)),x=-infinity,4)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">[0,8,64]</span></div><p>
+<div class="center"><span style="font-family:monospace">-2*(-x)+1-2*(-1/x)+17/6*(-1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+<br>
+(-1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*order_size(-1/x)</span></div>
+</li></ol>
+</li><li class="li-itemize">unidirectional series expansion.<br>
+The fourth parameter indicates the direction :
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">1</span> to do an series expansion in the vicinity of <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span> with 
+  <span style="font-style:italic">x</span>&gt;<span style="font-style:italic">a</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">-1</span> to do an series expansion in the vicinity of <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span> with 
+  <span style="font-style:italic">x</span>&lt;<span style="font-style:italic">a</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">0</span> to do an series expansion in the vicinity of <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span> with 
+  <span style="font-style:italic">x</span> ≠ <span style="font-style:italic">a</span>.
+</li></ul>
+For example, 
+find a 2nd-order series expansion of  (1+<span style="font-style:italic">x</span>)<sup>1/<span style="font-style:italic">x</span></sup>/<span style="font-style:italic">x</span><sup>3</sup>  in 
+the vicinity of <span style="font-style:italic">x</span>=0<sup>+</sup>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,5,0,-2)</span></div><p>
-or
-</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,5,0,2)</span></div><p>
+<div class="center"><span style="font-family:monospace">series((1+x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">(1/x)/x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,x=0,2,1)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">[125,27,1]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,1,3,0.5)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1,3.375,8,15.625,27]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,1,3,1/2)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1,27/8,8,125/8,27]</span></div><p>
-<span style="font-weight:bold">Examples</span>
-</p><ul class="itemize"><li class="li-itemize">
-Find the third derivative of  ln(<span style="font-style:italic">t</span>), input:
-<div class="center"><span style="font-family:monospace">diff(log(t),t$3)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">-((-(2*t))/t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4)</span></div>
-</li><li class="li-itemize">Input :
-<div class="center"><span style="font-family:monospace">l:=[[2,3],[5,1],[7,2]]</span></div>
-<div class="center"><span style="font-family:monospace">seq((l[k][0])$(l[k][1]),k=0 .. size(l)-1)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">2,2,2,seq[5],7,7</span></div>
-then <span style="font-family:monospace">eval(ans())</span> returns:
-<div class="center"><span style="font-family:monospace">2,2,2,5,7,7</span></div>
-</li><li class="li-itemize">Input to transform a string into the list of its characters :
-<pre class="verbatim">f(chn):={
- local l;
- l:=size(chn);
- return seq(chn[j],j,0,l-1);
-}
-</pre>
-then input:
-<div class="center"><span style="font-family:monospace">f("abracadabra")</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">["a","b","r","a","c","a","d","a","b","r","a"]</span></div>
+<div class="center"><span style="font-family:monospace">exp(1)/x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+(-(exp(1)))/2/x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1/x*order_size(x)</span></div>
 </li></ul>
 <hr>
 <a href="cascmd_en370.html"><img src="previous_motif.gif" alt="Previous"></a>

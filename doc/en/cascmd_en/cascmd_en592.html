@@ -4,44 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Logarithmic regression: logarithmic_regression logarithmic_regression_plot</title>
+<title>Histograms: histogram histogramme</title>
 </head>
 <body >
 <a href="cascmd_en591.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en593.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec731" class="subsection">7.2.6  Logarithmic regression: <span style="font-family:monospace">logarithmic_regression</span><a id="hevea_default945"></a> <span style="font-family:monospace">logarithmic_regression_plot</span><a id="hevea_default946"></a></h3>
-<p>A set of points might be expected to lie on a logarithmic curve 
-<span style="font-style:italic">y</span>=<span style="font-style:italic">m</span> ln(<span style="font-style:italic">x</span>) + <span style="font-style:italic">b</span>. Given a set of points, either as a list of <span style="font-style:italic">x</span>-coordinates
-followed by a list of <span style="font-style:italic">y</span>-coordinates, or simply by a list of points,
-the <span style="font-family:monospace">logarithmic_regression</span> command will find the values of
-<span style="font-style:italic">m</span> and <span style="font-style:italic">b</span> which give the best fit exponential. For example, if you
-enter
+<h3 id="sec731" class="subsection">7.1.9  Histograms: <span style="font-family:monospace">histogram</span><a id="hevea_default956"></a> <span style="font-family:monospace">histogramme</span><a id="hevea_default957"></a></h3>
+<p>Given a list of intervals and a number of points in each interval,
+such as is given by the output of the <span style="font-family:monospace">classes</span> command, the
+<span style="font-family:monospace">histogram</span> (or <span style="font-family:monospace">histogramme</span>) command will draw a box
+over each interval so that the height of each box is proportional to
+the number of points and the total area of the boxes is 1. For
+example, if you enter
 </p><div class="center">
-<span style="font-family:monospace">evalf(logarithmic_regression([[1,1],[2,4],[3,9],[4,16]]))
-</span></div><p>
-or
-</p><div class="center">
-<span style="font-family:monospace">evalf(logarithmic_regression([1,2,3,4],[1,4,9,16]))
-</span></div><p>
-(where the <span style="font-family:monospace">evalf</span> is used to get a numeric approximation to an
-exact expression) you will get
-</p><div class="center">
-<span style="font-family:monospace">10.1506450002,-0.564824055818
-</span></div><p>
-so the best fit exponential curve will be <span style="font-style:italic">y</span> = 10.1506450002 ln(<span style="font-style:italic">x</span>)
-−0.564824055818.</p><p>To plot the curve, you can use the command
-<span style="font-family:monospace">exponential_regression_plot</span>; if you enter
-</p><div class="center">
-<span style="font-family:monospace">logarithmic_regression_plot([1,2,3,4],[1,4,9,16])
+<span style="font-family:monospace">histogram([[1.5..1.65,50],[1.65..1.7,20],[1.7..1.8,30]])
 </span></div><p>
 you will get
 </p><div class="center">
-<img src="cascmd_en024.png">
-</div><p>
-which plots the graph, and has the equation and <span style="font-style:italic">R</span><sup>2</sup> value above the
-graph.</p>
+<img src="cascmd_en019.png">
+</div><p>If you just give the <span style="font-family:monospace">histogram</span> a list of numbers, or a list
+with values <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, then you will get the histogram of the result
+of applying <span style="font-family:monospace">classes</span> to the list.
+For example, if you enter
+</p><div class="center">
+<span style="font-family:monospace">histogram([1,2,2.5,2.5,3],0.5,0.75)
+</span></div><p>
+you will get
+</p><div class="center">
+<img src="cascmd_en020.png">
+</div>
 <hr>
 <a href="cascmd_en591.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

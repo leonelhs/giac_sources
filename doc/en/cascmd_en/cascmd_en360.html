@@ -4,114 +4,84 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Series expansion : series</title>
+<title>Construction of a Galois field : GF</title>
 </head>
 <body >
 <a href="cascmd_en359.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en361.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec440" class="subsection">5.34.3  Series expansion : <span style="font-family:monospace">series</span></h3>
-<p><a id="hevea_default548"></a><a id="hevea_default549"></a> 
-<span style="font-family:monospace">series</span> takes from one to four arguments :
+<h3 id="sec439" class="subsection">5.33.18  Construction of a Galois field : <span style="font-family:monospace">GF</span></h3>
+<p><a id="hevea_default569"></a>
+<span style="font-family:monospace">GF</span> takes as arguments a prime integer <span style="font-style:italic">p</span> 
+and an integer <span style="font-style:italic">n</span>&gt;1.<br>
+<span style="font-family:monospace">GF</span> returns a Galois field of characteristic <span style="font-style:italic">p</span> having <span style="font-style:italic">p</span><sup><span style="font-style:italic">n</span></sup>
+elements.<br>
+Elements of the field and the field itself
+are represented by <span style="font-family:monospace">GF(...)</span> where <span style="font-family:monospace">...</span> is the following 
+sequence:
 </p><ul class="itemize"><li class="li-itemize">
-an expression depending of a variable (by default <span style="font-family:monospace">x</span>),
-</li><li class="li-itemize">an equality variable=value (e.g. <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span>) where to compute
-the series expansion, by default <span style="font-family:monospace">x=0</span>, 
-</li><li class="li-itemize">an integer <span style="font-style:italic">n</span>, the order of the series expansion,
-by default <span style="font-family:monospace">5</span>
-</li><li class="li-itemize">a direction <span style="font-family:monospace">-1, 1</span> (for unidirectional series expansion)
-or <span style="font-family:monospace">0</span> (for bidirectional series expansion) (by default <span style="font-family:monospace">0</span>).
+the characteristic <span style="font-style:italic">p</span> (<span style="font-style:italic">px</span>=0),
+</li><li class="li-itemize">an irreducible primitive minimal polynomial generating an
+ideal <span style="font-style:italic">I</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>], the Galois field being the quotient
+of ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>] by <span style="font-style:italic">I</span>,
+</li><li class="li-itemize">the name of the polynomial variable, by default <span style="font-family:monospace">x</span>,
+</li><li class="li-itemize">a polynomial (a remainder modulo the minimal polynomial) 
+for an element of the field
+(field elements are represented with the additive representation)
+or <span style="font-family:monospace">undef</span> for the field itself.
 </li></ul><p>
-Note that the syntax <span style="font-family:monospace">...,x,</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,...</span> 
-(instead of <span style="font-family:monospace">...,x=</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,...</span>) is also accepted.<br>
-<span style="font-family:monospace">series</span> returns a polynomial in <span style="font-family:monospace">x-a</span>, plus a remainder 
-of the form:
+You should give a name to this field (for example <span style="font-family:monospace">G:=GF(p,n)</span>),
+in order to build elements of the field from a polynomial in
+ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>], for example <span style="font-family:monospace">G(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x)</span>. Note that <span style="font-family:monospace">G(x)</span>
+is a generator of the multiplicative group <span style="font-style:italic">G</span><sup>*</sup>.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">G:=GF(2,8)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">GF(2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1,x,undef)</span></div><p>
+The field <span style="font-style:italic">G</span> has 2<sup>8</sup>=256 elements and 
+<span style="font-style:italic">x</span> generates the multiplicative group
+of this field ({ 1,<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span><sup>2</sup>,...<span style="font-style:italic">x</span><sup>254</sup> }).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">G(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">9)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">GF(2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1,x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">7+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x)</span></div><p>
+indeed <span style="font-style:italic">x</span><sup>8</sup>=<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1, hence <span style="font-style:italic">x</span><sup>9</sup>=<span style="font-style:italic">x</span><sup>7</sup>+<span style="font-style:italic">x</span><sup>5</sup>+<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">G(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">255</span></div><p>
+Output should be the unit, indeed:
 </p><div class="center">
-<span style="font-family:monospace">(x-a)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n*order_size(x-a)</span>
-</div><p>
-where <span style="font-family:monospace">order_size</span> is a function such that,
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">∀ <span style="font-style:italic">r</span>&gt;0,    </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
-<tr><td class="dcell" style="text-align:center">lim</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>→ 0</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">x</span><sup><span style="font-style:italic">r</span></sup> order_size(<span style="font-style:italic">x</span>) = 0 </td></tr>
-</table><p>
-The order returned by <span style="font-family:monospace">series</span> may be smaller than <span style="font-style:italic">n</span> if
-cancellations between numerator and denominator occur.</p><p>Examples :
-</p><ul class="itemize"><li class="li-itemize">
-series expansion in the vicinity of <span style="font-family:monospace">x=0</span><br>
- Find an series expansion of 
-<span style="font-style:italic">x</span><sup>3</sup>+sin(<span style="font-style:italic">x</span>)<sup>3</sup>/<span style="font-style:italic">x</span>−sin(<span style="font-style:italic">x</span>) 
-in the vicinity of <span style="font-family:monospace">x=0</span>.<br>
+<span style="font-family:monospace">GF(2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1,x,1)</span></div><p>
+As one can see in these examples, the output contains many times the same
+information that you would prefer not to see
+if you work many times with the same field. For this reason,
+the definition of a Galois field may have an optional argument,
+a variable name which will be used thereafter to represent elements
+of the field. Since you will also most
+likely want to modify the name of the indeterminate, the field
+name is grouped with the variable name in a list
+passed as third argument to <span style="font-family:monospace">GF</span>.
+Note that these two variable names must be quoted.<br>
+Example,<br>
 Input :
-<div class="center"><span style="font-family:monospace">series(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/(x-sin(x)))</span></div>
-Output is only a 2nd-order series expansion :
-<div class="center"><span style="font-family:monospace">6+-27/10*x</span><code><span style="font-family:monospace">^2</span></code><span style="font-family:monospace">+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*order_size(x)</span></div>
-We have lost 3 orders because the valuation of the numerator and
-denominator is 3. To get a 4-th order expansion, we must therefore 
-take <span style="font-style:italic">n</span>=7.<br>
+</p><div class="center"><span style="font-family:monospace">G:=GF(2,2,[’w’,’G’]):; G(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">Done, G(w+1)</span></div><p>
 Input :
-<div class="center"><span style="font-family:monospace">series(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/(x-sin(x)),x=0,7)</span></div>
-or :
-<div class="center"><span style="font-family:monospace">series(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/(x-sin(x)),x,0,7)</span></div>
-Output is a 4th-order series expansion :
-<div class="center"><span style="font-family:monospace">6+-27/10*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+711/1400*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+
-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5*order_size(x)</span></div>
-</li><li class="li-itemize">series expansion in the vicinity of <span style="font-family:monospace">x=a</span><br>
-Find a series 4th-order expansion of cos(2<span style="font-style:italic">x</span>)<sup>2</sup> in the vicinity of
-<span style="font-style:italic">x</span>=π/6. <br>
-Input:
-<div class="center"><span style="font-family:monospace">series(cos(2*x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x=pi/6, 4)</span></div>
+</p><div class="center"><span style="font-family:monospace">G(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">1/4+(-(4*sqrt(3)))/4*(x-pi/6)+(4*3-4)/4*(x-pi/6)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+ 32*sqrt(3)/3/4*(x-pi/6)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+(-16*3+16)/3/4*(x-pi/6)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+ (x-pi/6)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5*order_size(x-pi/6)</span></div> 
-</li><li class="li-itemize">series expansion in the vicinity of <span style="font-family:monospace">x=+</span>∞ or <span style="font-family:monospace">x=-</span>∞
-<ol class="enumerate" type=1><li class="li-enumerate">
-Find a 5th-order series expansion of arctan(<span style="font-style:italic">x</span>) in the vicinity of
-<span style="font-family:monospace">x=+</span>∞.<br>
- Input :
-<div class="center"><span style="font-family:monospace">series(atan(x),x=+infinity,5)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">pi/2-1/x+1/3*(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1/-5*(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+
-(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6*order_size(1/x)</span></div>
-Note that the expansion variable and the argument of the 
-<span style="font-family:monospace">order_size</span> function is
- <span style="font-style:italic">h</span>=1/<span style="font-style:italic">x</span> →<sub><span style="font-style:italic">x</span>→ + ∞</sub> 0 .
-</li><li class="li-enumerate">Find a series 2nd-order expansion of (2<span style="font-style:italic">x</span>−1)<span style="font-style:italic">e</span><sup>1/<span style="font-style:italic">x</span>−1</sup> in the vicinity of
-<span style="font-family:monospace">x=+</span>∞. <br>
+</p><div class="center"><span style="font-family:monospace">G(1)</span></div><p>
+Hence, the elements of <span style="font-family:monospace">GF(2,2)</span> are
+<span style="font-family:monospace">G(0),G(1),G(w),G(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)=G(w+1)</span>.</p><p>We may also impose the irreducible primitive polynomial that we wish
+to use, by putting it as second argument (instead of <span style="font-style:italic">n</span>), 
+for example :
+</p><div class="center"><code>G:=GF(2,w^8+w^6+w^3+w^2+1,['w','G'])</code></div><p>
+If the polynomial is not primitive, <span style="font-family:monospace">Xcas</span> will replace it
+automatically by a primitive polynomial, for example :<br>
 Input :
-<div class="center"><span style="font-family:monospace">series((2*x-1)*exp(1/(x-1)),x=+infinity,3)</span></div>
-Output is only a 1st-order series expansion :
-<div class="center"><span style="font-family:monospace">2*x+1+2/x+(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*order_size(1/x)</span></div>
-To get a 2nd-order series expansion in 1/<span style="font-style:italic">x</span>, input:
-<div class="center"><span style="font-family:monospace">series((2*x-1)*exp(1/(x-1)),x=+infinity,4)</span></div>
+</p><div class="center"><code>G:=GF(2,w^8+w^7+w^5+w+1,['w','G'])</code></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">2*x+1+2/x+17/6*(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*order_size(1/x)</span></div>
-</li><li class="li-enumerate">Find a 2nd-order series expansion of (2<span style="font-style:italic">x</span>−1)<span style="font-style:italic">e</span><sup>1/<span style="font-style:italic">x</span>−1</sup> in the vicinity 
-of <span style="font-family:monospace">x=-</span>∞.<br>
-Input :
-<div class="center"><span style="font-family:monospace">series((2*x-1)*exp(1/(x-1)),x=-infinity,4)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">-2*(-x)+1-2*(-1/x)+17/6*(-1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+<br>
-(-1/x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*order_size(-1/x)</span></div>
-</li></ol>
-</li><li class="li-itemize">unidirectional series expansion.<br>
-The fourth parameter indicates the direction :
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">1</span> to do an series expansion in the vicinity of <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span> with 
-  <span style="font-style:italic">x</span>&gt;<span style="font-style:italic">a</span>,
-</li><li class="li-itemize"><span style="font-family:monospace">-1</span> to do an series expansion in the vicinity of <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span> with 
-  <span style="font-style:italic">x</span>&lt;<span style="font-style:italic">a</span>,
-</li><li class="li-itemize"><span style="font-family:monospace">0</span> to do an series expansion in the vicinity of <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span> with 
-  <span style="font-style:italic">x</span> ≠ <span style="font-style:italic">a</span>.
-</li></ul>
-For example, 
-find a 2nd-order series expansion of  (1+<span style="font-style:italic">x</span>)<sup>1/<span style="font-style:italic">x</span></sup>/<span style="font-style:italic">x</span><sup>3</sup>  in 
-the vicinity of <span style="font-style:italic">x</span>=0<sup>+</sup>.<br>
-Input :
-<div class="center"><span style="font-family:monospace">series((1+x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">(1/x)/x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,x=0,2,1)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">exp(1)/x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+(-(exp(1)))/2/x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1/x*order_size(x)</span></div>
-</li></ul>
+</p><div class="center"><code>G:=GF(2,w^8-w^6-w^3-w^2-1,['w','G'],undef)</code></div>
 <hr>
 <a href="cascmd_en359.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

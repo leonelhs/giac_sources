@@ -4592,6 +4592,62 @@ namespace xcas {
     }
   }
 
+  void draw_filled_polygon(const vector< vector<int> > & v){
+    if (v.empty()) return;
+    fl_push_matrix();
+    fl_begin_complex_polygon();
+    for (size_t i=0;i<v.size();++i){
+      fl_vertex(v[i][0],v[i][1]);
+    }
+    if (v.back()!=v.front())
+      fl_vertex(v[0][0],v[0][1]);
+    fl_end_complex_polygon();
+    fl_pop_matrix(); // Restore initial matrix
+  }
+
+  void fl_pie_seg(int x,int y,int rx,int ry,int theta1_deg,int theta2_deg,bool segment=false){
+    if (!segment){
+      fl_pie(x,y,rx,ry,theta1_deg,theta2_deg);
+      return;
+    }
+    // approximation by a filled polygon
+    // points: (x,y), (x+rx*cos(theta)/2,y+ry*sin(theta)/2) theta=theta1..theta2
+    while (theta2_deg<theta1_deg)
+      theta2_deg+=360;
+    if (theta2_deg-theta1_deg>=360){
+      theta1_deg=0;
+      theta2_deg=360;
+    }
+    int N0=theta2_deg-theta1_deg+1;
+    // reduce N if rx or ry is small
+    double red=double(rx)/1024*double(ry)/768;
+    if (red>1) red=1;
+    if (red<0.1) red=0.1;
+    int N=red*N0;
+    if (N<5)
+      N=N0>5?5:N0;
+    if (N<2)
+      N=2;
+    vector< vector<int> > v(segment?N+1:N+2,vector<int>(2));
+    x += rx/2;
+    y += ry/2;
+    int i=0;
+    if (!segment){
+      v[0][0]=x;
+      v[0][1]=y;
+      ++i;
+    }
+    double theta=theta1_deg*M_PI/180;
+    double thetastep=(theta2_deg-theta1_deg)*M_PI/(180*(N-1));
+    for (;i<v.size()-1;++i){
+      v[i][0]=int(x+rx*std::cos(theta)/2+.5);
+      v[i][1]=int(y-ry*std::sin(theta)/2+.5); // y is inverted
+      theta += thetastep;
+    }
+    v.back()=v.front();
+    draw_filled_polygon(v);
+  }
+
   // helper for Graph2d::draw method
   // plot_i is the position we are drawing in plot_instructions
   // f is the vector of arguments and s is the function: we draw s(f)
@@ -7137,6 +7193,7 @@ namespace xcas {
 		theta2=prec.theta-double((current.radius >> 18) & 0x1ff); // bit 18-26
 	      }
 	      bool rempli=(current.radius >> 27) & 0x1;
+	      bool seg=(current.radius >> 28) & 0x1; // not yet supported 
 	      double angle;
 	      int x,y,R;
 	      R=int(2*turtlezoom*r+.5);
@@ -7152,13 +7209,13 @@ namespace xcas {
 	      xcas_color(current.color);
 	      if (current.direct){
 		if (rempli)
-		  fl_pie(deltax+x,deltay+h()-y,R,R,theta1-90,theta2-90);
+		  fl_pie_seg(deltax+x,deltay+h()-y,R,R,theta1-90,theta2-90,seg);
 		else
 		  fl_arc(deltax+x,deltay+h()-y,R,R,theta1-90,theta2-90);
 	      }
 	      else {
 		if (rempli)
-		  fl_pie(deltax+x,deltay+h()-y,R,R,90+theta2,90+theta1);
+		  fl_pie_seg(deltax+x,deltay+h()-y,R,R,90+theta2,90+theta1,seg);
 		else
 		  fl_arc(deltax+x,deltay+h()-y,R,R,90+theta2,90+theta1);
 	      }

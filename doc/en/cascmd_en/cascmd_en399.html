@@ -4,43 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Remove elements of a list : remove</title>
+<title>Transform a list into a sequence : op makesuite</title>
 </head>
 <body >
 <a href="cascmd_en398.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en400.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec485" class="subsection">5.38.22  Remove elements of a list : <span style="font-family:monospace">remove</span></h3>
-<p><a id="hevea_default606"></a>
-<span style="font-family:monospace">remove</span> takes as argument : a boolean function <span style="font-family:monospace">f</span> and 
-a list <span style="font-family:monospace">L</span>.<br>
-<span style="font-family:monospace">remove</span> removes in the list <span style="font-family:monospace">L</span>, the elements <span style="font-family:monospace">c</span> such that 
-<span style="font-family:monospace">f(c)==true</span>.<br>
+<h3 id="sec486" class="subsection">5.39.11  Transform a list into a sequence : <span style="font-family:monospace">op makesuite</span></h3>
+<p><a id="hevea_default625"></a><a id="hevea_default626"></a>
+<span style="font-family:monospace">op</span> or <span style="font-family:monospace">makesuite</span> takes as argument a list.<br>
+<span style="font-family:monospace">op</span> or <span style="font-family:monospace">makesuite</span> transforms this list into a sequence.
+<a id="sec:makesuiteop"></a><br>
+See <a href="cascmd_en181.html#sec%3Aop">5.15.3</a> for other usages of <span style="font-family:monospace">op</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">remove(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">op([0,1,2])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">makesuite([0,1,2])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[0,1,1]</span></div><p>
-<span style="font-weight:bold">Remark</span> The same applies on strings, for example,
-to remove all the "a" of a string:<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">ord("a")</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">97</span></div><p>
-Input :
-</p><pre class="verbatim">f(chn):={
-  local l:=length(chn)-1;
-  return remove(x-&gt;(ord(x)==97),seq(chn[k],k,0,l));
-}
-</pre><p>
-Then, input :
-</p><div class="center"><span style="font-family:monospace">f("abracadabra")</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">["b","r","c","d","b","r"]</span></div><p>
-To get a string, input :
-</p><div class="center"><span style="font-family:monospace">char(ord(["b","r","c","d","b","r"])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">"brcdbr"</span></div>
+</p><div class="center"><span style="font-family:monospace">(0,1,2)</span></div>
 <hr>
 <a href="cascmd_en398.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

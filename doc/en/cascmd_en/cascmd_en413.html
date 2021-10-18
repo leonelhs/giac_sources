@@ -4,42 +4,57 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Make a random vector or list : randvector</title>
+<title>Sum of list (or matrix) elements 
+transformed by a function : count</title>
 </head>
 <body >
 <a href="cascmd_en412.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en414.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec501" class="subsection">5.38.36  Make a random vector or list : <span style="font-family:monospace">randvector</span></h3>
-<p><a id="hevea_default624"></a>
-<a id="sec:ranm4"></a>
-<span style="font-family:monospace">randvector</span> takes as argument an integer <span style="font-style:italic">n</span> and optionally a 
-second argument, either an integer <span style="font-style:italic">k</span> or the quoted name of
-a random distribution law
-(see also <a href="cascmd_en285.html#sec%3Aranm1">5.25.25</a>).<br>
-<span style="font-family:monospace">randvector</span> returns a vector of size <span style="font-style:italic">n</span> containing random integers 
-uniformly distributed between -99 and +99 (default), or between 0 and <span style="font-style:italic">k</span>−1
-or containing random 
-integers according to the law put between quotes.<br>
+<h3 id="sec500" class="subsection">5.39.25  Sum of list (or matrix) elements 
+transformed by a function : <span style="font-family:monospace">count</span></h3>
+<p><a id="hevea_default644"></a>
+<span style="font-family:monospace">count</span> takes as argument : a real function <span style="font-family:monospace">f</span> and a list 
+<span style="font-family:monospace">l</span> of length <span style="font-family:monospace">n</span> (or a matrix <span style="font-family:monospace">A</span> of dimension <span style="font-family:monospace">p*q</span>).<br>
+<span style="font-family:monospace">count</span> applies the function to the list (or matrix) elements and returns 
+their sum, i.e. :<br>
+<span style="font-family:monospace">count(f,l)</span> returns <span style="font-family:monospace">f(l[0])+f(l[1])+...+f(l[n-1])</span> or<br>
+<span style="font-family:monospace">count(f,A)</span> returns <span style="font-family:monospace">f(A[0,0])+....+f(A[p-1,q-1])</span>.<br>
+If <span style="font-family:monospace">f</span> is a boolean function <span style="font-family:monospace">count</span> returns the number of elements 
+of the list (or of the matrix) for which the boolean function is true.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">randvector(3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x,[2,12,45,3,7,78])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[-54,78,-29]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">147</span></div><p>
+because : 2+12+45+3+7+78=147.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">randvector(3,5)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">randvector(3,’rand(5)’)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x&lt;12,[2,12,45,3,7,78])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[1,2,4]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">randvector(3,’randnorm(0,1)’)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x==12,[2,12,45,3,7,78])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[1.39091705476,-0.136794772167,0.187312440336]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">randvector(3,2..4)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">count((x)-&gt;x&gt;12,[2,12,45,3,7,78])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[3.92450003885,3.50059241243,2.7322040787]</span></div>
+</p><div class="center"><span style="font-family:monospace">2</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">count(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[3,5,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">35</span></div><p>
+Indeed 3<sup>2</sup>+5<sup>2</sup>+1<sup>1</sup>=35.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">count(id,[3,5,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">9</span></div><p>
+Indeed, <span style="font-family:monospace">id</span> is the identity functions and 3+5+1=9.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">count(1,[3,5,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+Indeed, <span style="font-family:monospace">1</span> is the constant function equal to 1 and 1+1+1=3.</p>
 <hr>
 <a href="cascmd_en412.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

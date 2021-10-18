@@ -4,42 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Minimal polynomial : pmin</title>
+<title>l2 matrix norm : norm l2norm</title>
 </head>
 <body >
 <a href="cascmd_en498.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en500.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec610" class="subsection">5.48.8  Minimal polynomial : <span style="font-family:monospace">pmin</span></h3>
-<p><a id="hevea_default770"></a>
-<span style="font-family:monospace">pmin</span> takes one (resp. two) argument(s):
-a square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span> and optionally
-the name of a symbolic variable.<br>
-<span style="font-family:monospace">pmin</span> returns the minimal polynomial of <span style="font-style:italic">A</span> written as a
-list of its coefficients if no variable was provided, or
-written in symbolic form with respect to the 
-variable name given as second argument.
-The minimal polynomial of <span style="font-style:italic">A</span> is the polynomial <span style="font-style:italic">P</span> 
-having minimal degree such that <span style="font-style:italic">P</span>(<span style="font-style:italic">A</span>)=0.<br>
+<h3 id="sec610" class="subsection">5.48.1  <span style="font-style:italic">l</span><sup>2</sup> matrix norm : <span style="font-family:monospace">norm l2norm</span></h3>
+<p><a id="hevea_default785"></a><a id="hevea_default786"></a><a id="sec:l2normm"></a>
+<span style="font-family:monospace">norm</span> (or <span style="font-family:monospace">l2norm</span>) takes as argument a matrix <span style="font-style:italic">A</span>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub> 
+(see also <a href="cascmd_en428.html#sec%3Al2normv">5.40.1</a>).<br>
+<span style="font-family:monospace">norm</span> (or <span style="font-family:monospace">l2norm</span>) returns 
+ √<span style="text-decoration:overline">∑</span><sub><span style="text-decoration:overline"><span style="font-style:italic">j</span></span><span style="text-decoration:overline">,</span><span style="text-decoration:overline"><span style="font-style:italic">k</span></span></sub><span style="text-decoration:overline"> </span><span style="text-decoration:overline"><span style="font-style:italic">a</span></span><sub><span style="text-decoration:overline"><span style="font-style:italic">j</span></span><span style="text-decoration:overline">,</span><span style="text-decoration:overline"><span style="font-style:italic">k</span></span></sub><sup><span style="text-decoration:overline">2</span></sup>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">pmin([[1,0],[0,1]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">norm([[1,2],[3,-4]])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">l2norm([[1,2],[3,-4]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[1,-1]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">pmin([[1,0],[0,1]],x)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">x-1</span></div><p>
-Hence the minimal polynomial of [[1,0],[0,1]] is <span style="font-family:monospace">x-1</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">pmin([[2,1,0],[0,2,0],[0,0,2]])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1,-4,4]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">pmin([[2,1,0],[0,2,0],[0,0,2]],x)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-4*x+4</span></div><p>
-Hence, the minimal polynomial of [[2,1,0],[0,2,0],[0,0,2]] is <span style="font-style:italic">x</span><sup>2</sup>−4<span style="font-style:italic">x</span>+4.</p>
+</p><div class="center"><span style="font-family:monospace">sqrt(30)</span></div>
 <hr>
 <a href="cascmd_en498.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

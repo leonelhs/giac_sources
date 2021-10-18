@@ -212,7 +212,7 @@ var UI = {
     }
     else {
       if (loc.length == 0)
-        UI.insert(UI.focused, fc + '(' + argu + '):=' + ret + ';');
+        UI.insert(UI.focused, 'fonction ' + fc + '(' + argu + ')\n \nffonction:;\n'); // was fc + '(' + argu + '):=' + ret + ';');
       else {
         UI.insert(UI.focused, 'fonction ' + fc + '(' + argu + ')\n  local ' + loc + ';\n  \n  retourne ' + ret + ';\nffonction:;\n');
         UI.moveCaretUpDown(UI.focused, -3);
@@ -4178,15 +4178,20 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
           theta1 = prec[2]+ ((radius >> 9) & 0x1ff);
           theta2 = prec[2] + ((radius >> 18) & 0x1ff);
           rempli = (radius >> 27) & 1;
+	  var seg = (radius >> 28) & 1;
           R = Math.floor(turtlezoom * r + .5);
           angle1 = Math.PI / 180 * (theta1 - 90);
           angle2 = Math.PI / 180 * (theta2 - 90);
           x = Math.floor(turtlezoom * (cur[0] - turtlex - r * Math.cos(angle2)) + .5);
           y = Math.floor(turtlezoom * (cur[1] - turtley - r * Math.sin(angle2)) + .5);
           ctx.beginPath();
-          ctx.moveTo(x, h - y);
-          ctx.lineTo(x2, h - y2);
-	  console.log(x,y,x1,y1,angle1,angle2);
+	  if (seg)
+            ctx.moveTo(x2, h - y2);
+	  else {
+            ctx.moveTo(x, h - y);
+            ctx.lineTo(x2, h - y2);
+	  }
+	  //console.log(x,y,x1,y1,angle1,angle2);
           ctx.arc(x, h - y, R, -angle2,-angle1);
           ctx.closePath();
           ctx.strokeStyle = ctx.fillStyle = UI.turtle_color(curcouleur);

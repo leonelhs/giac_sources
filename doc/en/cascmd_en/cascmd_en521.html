@@ -4,295 +4,58 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Quadric reduction : quadrique_reduite</title>
+<title>LU decomposition : lu</title>
 </head>
 <body >
 <a href="cascmd_en520.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en522.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec635" class="subsection">5.51.8  Quadric reduction : <span style="font-family:monospace">quadrique_reduite</span></h3>
-<p><a id="hevea_default793"></a>
-<span style="font-family:monospace">quadrique_reduite</span> takes two arguments : the equation of a 
-quadric and a vector of variable names.<br>
-<span style="font-family:monospace">quadrique_reduite</span> returns a list whose elements are:
+<h3 id="sec635" class="subsection">5.51.4  LU decomposition : <span style="font-family:monospace">lu</span></h3>
+<p><a id="hevea_default816"></a>
+<span style="font-family:monospace">lu</span> takes as argument a square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span> (numeric or
+symbolic).<br>
+<span style="font-family:monospace">lu(A)</span> returns a permutation <span style="font-style:italic">p</span> of 0..<span style="font-style:italic">n</span>−1, 
+a lower triangular matrix <span style="font-style:italic">L</span>, with 1s on the diagonal, 
+and an upper triangular matrix <span style="font-style:italic">U</span>, such that : 
 </p><ul class="itemize"><li class="li-itemize">
-the origin, 
-</li><li class="li-itemize">the matrix of a basis where the quadric is reduced, 
-</li><li class="li-itemize">0 or 1 (0 if the quadric is degenerate), 
-</li><li class="li-itemize">the reduced equation of the quadric 
-</li><li class="li-itemize">a vector with its parametric equations.
-</li></ul><p> 
-<span style="font-weight:bold">Warning !</span> 
-<span style="font-family:monospace">u,v</span> will be used as parameters of the parametric equations : 
-these variables should not be assigned (<span style="font-family:monospace">purge</span> them before
-calling <span style="font-family:monospace">quadrique_reduite</span>).<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">quadrique_reduite(7*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+ 4*x*y-4*x*z-2*y*z-4*x+5*y+4*z-18)</span></div><p>
-Output is a list containing :
-</p><ul class="itemize"><li class="li-itemize">
-The origin (center of symmetry) of the quadric
-<div class="center"><span style="font-family:monospace">[11/27,(-26)/27,(-29)/54],</span></div>
-</li><li class="li-itemize">The matrix of the basis change:
-<div class="center"><span style="font-family:monospace">[[(sqrt(6))/3,(sqrt(5))/5,(-(sqrt(30)))/15],
-[(sqrt(6))/6,0,(sqrt(30))/6],
-[(-(sqrt(6)))/6,(2*sqrt(5))/5,(sqrt(30))/30]],</span></div>
-</li><li class="li-itemize">1 hence the quadric is not degenerated
-</li><li class="li-itemize">the reduced equation of the quadric :
-<div class="center"><span style="font-family:monospace">0,9*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+3*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(-602)/27,</span></div> 
-</li><li class="li-itemize">The parametric equations (in the original frame) are :
-<div class="center"><span style="font-family:monospace">[[(sqrt(6)*sqrt(602/243)*sin(u)*cos(v))/3+
-(sqrt(5)*sqrt(602/81)*sin(u)*sin(v))/5+
-((-(sqrt(30)))*sqrt(602/81)*cos(u))/15+11/27,
-(sqrt(6)*sqrt(602/243)*sin(u)*cos(v))/6+
-(sqrt(30)*sqrt(602/81)*cos(u))/6+(-26)/27,
-((-(sqrt(6)))*sqrt(602/243)*sin(u)*cos(v))/6+
-(2*sqrt(5)*sqrt(602/81)*sin(u)*sin(v))/5+
-(sqrt(30)*sqrt(602/81)*cos(u))/30+(-29)/54], 
-u=(0 .. pi),v=(0.. (2*pi)),ustep=(pi/20),
-vstep=((2*pi)/20)]]</span></div>
+<span style="font-style:italic">P</span>*<span style="font-style:italic">A</span>=<span style="font-style:italic">L</span>*<span style="font-style:italic">U</span> where <span style="font-style:italic">P</span> is the permutation matrix 
+associated to <span style="font-style:italic">p</span> (that may be computed by <span style="font-family:monospace">P:=permu2mat(p)</span>),
+</li><li class="li-itemize">the equation <span style="font-style:italic">A</span>*<span style="font-style:italic">x</span>=<span style="font-style:italic">B</span> is equivalent to :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">L</span>*<span style="font-style:italic">U</span>*<span style="font-style:italic">x</span>=<span style="font-style:italic">P</span>*<span style="font-style:italic">B</span>=<span style="font-style:italic">p</span>(<span style="font-style:italic">B</span>)  where  <span style="font-style:italic">p</span>(<span style="font-style:italic">B</span>)=[<span style="font-style:italic">b</span><sub><span style="font-style:italic">p</span>(0)</sub>,<span style="font-style:italic">b</span><sub><span style="font-style:italic">p</span>(1)</sub>..<span style="font-style:italic">b</span><sub><span style="font-style:italic">p</span>(<span style="font-style:italic">n</span>−1)</sub>],
+    <span style="font-style:italic">B</span>=[<span style="font-style:italic">b</span><sub>0</sub>,<span style="font-style:italic">b</span><sub>1</sub>..<span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span>−1</sub>] </td></tr>
+</table>
 </li></ul><p>
-Hence the quadric is an ellipsoid and its reduced equation is :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">9*<span style="font-style:italic">x</span><sup>2</sup>+3*<span style="font-style:italic">y</span><sup>2</sup>+3*<span style="font-style:italic">z</span><sup>2</sup>+(−602)/27 = 0</td></tr>
+The permutation matrix <span style="font-style:italic">P</span> is defined from <span style="font-style:italic">p</span> by :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>[<span style="font-style:italic">i</span>, <span style="font-style:italic">p</span>(<span style="font-style:italic">i</span>)]=1,    <span style="font-style:italic">P</span>[<span style="font-style:italic">i</span>, <span style="font-style:italic">j</span>]=0  if  <span style="font-style:italic">j</span>  ≠ <span style="font-style:italic">p</span>(<span style="font-style:italic">i</span>) </td></tr>
 </table><p>
-after the change of origin [11/27,(−26)/27,(−29)/54],
-the matrix of basis change <span style="font-family:monospace">P</span> is :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell">
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >30</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">15</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >30</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"> −</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">2</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >30</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">30</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">
-</td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table><p>
-Its parametric equation is :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎨<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span> = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">602</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">243</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">sin(<span style="font-style:italic">u</span>)cos(<span style="font-style:italic">v</span>)</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">602</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">81</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">sin(<span style="font-style:italic">u</span>)sin(<span style="font-style:italic">v</span>)</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >30</td></tr>
-</table></td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">602</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">81</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">cos(<span style="font-style:italic">u</span>)</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">15</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">11</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">27</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span> = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">602</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">243</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">sin(<span style="font-style:italic">u</span>)cos(<span style="font-style:italic">v</span>)</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >30</td></tr>
-</table></td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">602</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">81</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">cos(<span style="font-style:italic">u</span>))</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">26</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">27</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">z</span> = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">602</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">243</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">*sin(<span style="font-style:italic">u</span>)cos(<span style="font-style:italic">v</span>)</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">2</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">602</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">81</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">sin(<span style="font-style:italic">u</span>)sin(<span style="font-style:italic">v</span>)</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >30</td></tr>
-</table></td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">602</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">81</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">cos(<span style="font-style:italic">u</span>)</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">30</td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">29</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">54</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">
-</td></tr>
-</table><p>
-<span style="font-weight:bold">Remark</span> :<br>
-Note that if the quadric is degenerate and made of 1 or 2 plane(s), 
-each plane is not given by 
-its parametric equation but by the list of a point of the plane
-and of a normal vector to the plane.<br>
+In other words, it is the identity matrix where the rows are permuted 
+according to the permutation <span style="font-style:italic">p</span>. 
+The function <span style="font-family:monospace">permu2mat</span><a id="hevea_default817"></a> may be used to compute <span style="font-style:italic">P</span>
+(<span style="font-family:monospace">permu2mat(p)</span> returns <span style="font-family:monospace"><span style="font-style:italic">P</span></span>).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">quadrique_reduite(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+3*x+y+2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">(p,L,U):=lu([[3.,5.],[4.,5.]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[(-3)/2,1/2,0],[[1,0,0],[0,1,0],[0,0,-1]],0,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2, [hyperplan([1,1,0],[(-3)/2,1/2,0]), hyperplan([1,-1,0],[(-3)/2,1/2,0])]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[1,0],[[1,0],[0.75,1]],[[4,5],[0,1.25]]</span></div><p>
+Here <span style="font-style:italic">n</span>=2, hence :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>[0,<span style="font-style:italic">p</span>(0)]=<span style="font-style:italic">P</span><sub>2</sub>[0,1]=1,     <span style="font-style:italic">P</span>[1,<span style="font-style:italic">p</span>(1)]=<span style="font-style:italic">P</span><sub>2</sub>[1,0]=1,   
+<span style="font-style:italic">P</span>=[[0,1],[1,0]] </td></tr>
+</table><p>
+Verification :<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">permu2mat(p)*A; L*U</span></div><p>
+Output:
+</p><div class="center"><span style="font-family:monospace">[[4.0,5.0],[3.0,5.0]],[[4.0,5.0],[3.0,5.0]]</span></div><p>
+Note that the permutation is different for exact input (the choice of
+pivot is the simplest instead of the largest in absolute value).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">lu([[1,2],[3,4]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1,0],[[1,0],[3,1]],[[1,2],[0,-2]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">lu([[1.0,2],[3,4]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1,0],[[1,0],[0.333333333333,1]],[[3,4], [0,0.666666666667]]</span></div>
 <hr>
 <a href="cascmd_en520.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

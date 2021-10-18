@@ -175,7 +175,7 @@ avec des quotes et pr\'ec\'ed\'ee de
 {\tt icas } ${\tt \ 'factor(1-x \verb|^| 2)'}$\\
 ou encore taper {\tt icas }, on obtient :\\
 {\tt 0>>} il suffit alors de taper des commandes par exemple :\\
-${\tt factor(1-x \verb|^| 2)}$\\
+{\tt factor(1-x\verb|^|2)}\\
 on obtient :\\
 {\tt (1-x)*(1+x)}\\
 {\tt 1>>} etc...\\
@@ -5610,6 +5610,7 @@ On peut aussi utiliser la commande {\tt convert} en utilisant l'une des options
 {\sl integer, rational, float, real, complex, symbol, identifier} pour trandformer une cha\^{i}ne de caract\`eres en un nombre entier, rationnel, d\'ecimal,
 r\'eel, complexe ou en une expression ou un nom de variable.
 \section{\'Ecriture en base b d'un entier}\label{sec:convertbase}
+
 \subsection{Transformer un entier en la liste des coefficients de son \'ecriture en base b : {\tt convert convertir}}\index{convert}\index{convertir}\index{base@{\sl base}|textbf}
 {\tt convert} ou {\tt convertir} permet de faire diff\'erente conversions selon
 l'option choisie par le deuxi\`eme argument.
@@ -9263,7 +9264,9 @@ positif, 0 si il est nul et -1 si il est n\'egatif),\\
 {\tt ceil} ou {\tt ceiling}\index{ceil|textbf}\index{ceiling|textbf} d'un 
 r\'eel renvoie sa partie enti\`ere plus un,\\
 {\tt frac}\index{frac|textbf} (ou {\tt fPart}\index{fPart|textbf}) d'un r\'eel 
-renvoie sa partie fractionnaire,\\
+renvoie sa partie fractionnaire mais\\
+{\bf Attention} si x<0 on a {\tt frac(x)+floor(x)+1=x} sinon 
+{\tt frac(x)+floor(x)=x},\\
 {\tt trunc}\index{trunc|textbf} d'un r\'eel renvoie l'entier \'egal au r\'eel 
 argument sans sa partie fractionnaire ou le r\'eel tronqu\'e \`a $n$ 
 d\'ecimales,\\
@@ -9412,6 +9415,7 @@ On obtient :
   return(a*b/c);  
 }
 \end{verbatim}
+
 
 \subsubsection{D\'efinition d'une fonction de $\mathbb{R}^p$ dans $\mathbb{R}^q$}
 On tape pour d\'efinir la fonction $h\ :\ (x,y)->(x*\cos(y),x*\sin(y))$ :
@@ -11204,7 +11208,7 @@ On obtient :
  et apr\`es simplification avec {\tt normal} on a :
 \begin{center}{\tt (2*tan(x)\verb|^|4+3*tan(x)\verb|^|2+2)/(tan(x)\verb|^|4+2*tan(x))\verb|^|2+1)}\end{center}
 
-\subsection{R\'eecriture d'une expression avec diff\'erentes options : {\tt convert convertir =>}}\index{convert|textbf}\index{convertir|textbf}\index{=>}\index{sin@{\sl sin}}\index{cos@{\sl cos}}\index{sincos@{\sl sincos}|textbf}\index{exp@{\sl exp}}\index{tan@{\sl tan}|textbf}\index{ln@{\sl ln}}\index{expln@{\sl expln}|textbf}\index{string@{\sl string}|textbf}\index{polynom@{\sl polynom}}\index{parfrac@{\sl parfrac}|textbf}\index{partfrac@{\sl partfrac}|textbf}\index{fullparfrac@{\sl fullparfrac}|textbf}\label{sec:convert}\index{diff@{\sl diff}|textbf}\index{int@{\sl int}|textbf}\index{'*'@{\sl '*'}|textbf}\index{'+'@{\sl '+'}|textbf}\index{array@{\sl array}}\index{set[]@{\sl set[]}}
+\subsection{R\'eecriture d'une expression avec diff\'erentes options : {\tt convert convertir =>}}\index{convert|textbf}\index{convertir|textbf}\index{=>}\index{sin@{\sl sin}}\index{cos@{\sl cos}}\index{sincos@{\sl sincos}|textbf}\index{exp@{\sl exp}}\index{tan@{\sl tan}|textbf}\index{ln@{\sl ln}}\index{expln@{\sl expln}|textbf}\index{string@{\sl string}|textbf}\index{polynom@{\sl polynom}}\index{parfrac@{\sl parfrac}|textbf}\index{partfrac@{\sl partfrac}|textbf}\index{fullparfrac@{\sl fullparfrac}|textbf}\label{sec:convert}\index{diff@{\sl diff}|textbf}\index{int@{\sl int}|textbf}\index{'*'@{\sl '*'}|textbf}\index{'+'@{\sl '+'}|textbf}\index{array@{\sl array}}\index{set[]@{\sl set[]}}\index{interval@{\sl interval}}
 \noindent{\tt =>} est la version infix\'ee de {\tt convert}.\\
 {\tt convert} a deux arguments une expression et une option.\\
 {\tt convert} r\'eecrit cette expression en fonction de l'option.\\
@@ -11265,6 +11269,19 @@ On tape :\\
 {\tt A:=convert([1,2,3],set[])}\\
 On obtient :\\
 {\tt set[1,2,3]}
+\item {\tt interval} convertit une expression,liste ou un ensemble en une suite d'intervalles.
+On tape :\\
+{\tt A:=convert(sqrt(2),interval)}\\
+On obtient :\\
+{\tt [1.41421356237308..1.41421356237311]}
+On tape :\\
+{\tt A:=convert(sqrt(2)*sin(2)+sqrt(2)*cos(2),interval,20)}\\
+On obtient :\\
+{\tt [0.69742025306420769093..0.69742025306420769114]}
+On tape :\\
+{\tt A:=convert([sqrt(2),2*sqrt(2)],interval)}\\
+On obtient :\\
+{\tt [[1.41421356237308..1.41421356237311],[2.82842712474615..2.82842712474624]]}
 \end{itemize}
 {\tt convert} permet aussi :
 \begin{itemize}
@@ -26955,10 +26972,21 @@ On tape :
 \begin{center}{\tt kolmogorovd(1.36)}\end{center}
 On obtient :
 \begin{center}{\tt 0.950514123245}\end{center}
-
 \subsection{Test de Kolmogorov-Smirnov : {\tt kolmogorovt}}\index{kolmogorovt}
-Cf. la section \ref{sec:kolmogorovt}
-
+\noindent{\tt kolmogorovt(l1,l2)} renvoie le test de Kolmogorov-Smirnov 
+d'ad\'equation \`a une loi de distribution continue, entre 2 \'echantillons 
+{\tt l1} et {\tt l2} lorsque la loi est inconnue, ou\\
+{\tt  kolmogorovt(l1,s)} renvoie le test de Kolmogorov-Smirnov d'ad\'equation 
+\`a une loi de distribution continue, entre un \'echantillon {\tt l1} et une 
+loi {\tt s}.\\
+On tape :
+\begin{center}{\tt kolmogorovt(randvector(100,normald,0,1), randvector(100,normald,0,1))}\end{center}
+On obtient :
+\begin{center}{\tt [0.21,1.48492424049]}\end{center}
+On tape :
+\begin{center}{\tt kolmogorovt(randvector(100,normald,0,1),normald(0,1))}\end{center}
+On obtient :
+\begin{center}{\tt [0.0797807811891,0.797807811891]}\end{center}
 \subsection{Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney {\tt wilcoxonp}}
 \index{wilcoxonp}
 \noindent{\tt wilcoxonp} a comme argument 1 ou 2 entiers.\\
@@ -27353,8 +27381,7 @@ On calcule la valeur $d^2$ de la statistique $D^2$, on tape :
 \begin{center}{\tt sum((C[k,1]-P[k]*1000)\verb|^|2/(P[k]*1000),k=0..5)}\end{center}
 On obtient bien :
 \begin{center}{\tt 3.79611127141}\end{center}
-
-\subsection{{\tt kolmogorovt}}\index{kolmogorovt} \label{sec:kolmogorovt}
+\subsection{{\tt kolmogorovt}}\index{kolmogorovt}
 {\tt kolmogorovt} a pour arguments :
 \begin{itemize}
 \item la liste des donn\'ees d'un \'echantillon,
@@ -28058,8 +28085,8 @@ ne faut donc pas tenir compte lors de la compilation du warning  :
 \subsection{Valeurs par d\'efaut des param\`etres d'une fonction}
 Prenons l'exemple d'une fonction {\tt f} ayant quatre param\`etres 
 {\tt x,y,z,t}.\\
-On peut donner a certains param\`etres des valeurs par d\'efaut, on \'ecrit 
-par exemple dans la d\'efintion de {\tt f} :\\
+On peut donner a certains param\`etres des valeurs par d\'efaut avec le signe 
+{\tt =}, on \'ecrit par exemple dans la d\'efintion de {\tt f} :\\
 {\tt f(x,y=2,z,t=pi/2):=\{ \\
 {\tt retourne simplify(x*cos(t)+y*sin(t)+z)}x*cos(t)+y*sin(t)+z\}:;}\\
 On tape :\\
@@ -29495,7 +29522,7 @@ variables que l'on d\'esire surveiller (ou la commande {\tt watch}),
 \item d'ex\'ecuter  au pas \`a pas 
 les instructions d'une fonction utilisateur avec {\tt dans}\index{sst\_in} qui 
 inscrit la commande {\tt sst\_in()} dans la ligne de commande, ou encore 
-\item de sortir brutalement du d\'ebuggeur avec {\tt tuer} (ou la commande {\tt kill}).
+\item de sortir brutalement du d\'ebuggeur avec {\tt tuer} (ou la commande {\tt kill} ou {\tt tuer}).
 \end{itemize}
 On tape par exemple :\\
  {\tt debug(pgcd(15,25))}. \\
@@ -29519,6 +29546,7 @@ cette ligne en {\tt watch(a)} puis {\tt enter}, puis on clique sur
 Ensuite on clique sur {\tt sst}, et on voit \`a chaque \`etape (la ligne qui 
 est ex\'ecut\'ee est en surbrillance) les valeurs de 
 {\tt a} et {\tt b} dans la zone situ\'ee en dessous de la barre des boutons.
+
 \subsection{Instruction du debuggeur : {\tt watch}}\index{watch}
 \noindent{\tt watch} a comme argument le nom des variables que l'on d\'esire 
 surveiller.\\
@@ -29555,7 +29583,8 @@ On tape :
 \begin{center}{\tt cont()}\end{center}
 On obtient :
 \begin{center}{\tt le d\'eroulement du programme jusqu'au prochain point d'arr\^et}\end{center}
-\subsection{Instruction du debuggeur : {\tt kill}}\index{kill|textbf}
+
+\subsection{Instruction du debuggeur : {\tt kill tuer}}\index{kill|textbf}\index{tuer|textbf}
 \noindent{\tt kill} n'a pas d'argument.\\
 {\tt kill()} est une instruction du debuggeur et permet de sortir du debuggeur.\\
 On tape :
@@ -31783,6 +31812,8 @@ On obtient :
 \begin{center}{\tt La courbe ferm\'ee form\'ee par arc (1,i,pi/2) et sa corde}\end{center}
 On tape :
 \begin{center}{\tt arc(1,i,pi/2,segment,affichage=1+rempli)}\end{center}
+Ou on tape :
+\begin{center}{\tt arc(1,i,pi/2,affichage=1+rempli,segment)}\end{center}
 Ou on tape :
 \begin{center}{\tt affichage(arc(1,i,pi/2,segment),1+rempli)}\end{center}
 On obtient :

@@ -4,31 +4,51 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Factorization in ℤ/pℤ[x] : Factor</title>
+<title>Rebuild a fraction from its value modulo p : fracmod</title>
 </head>
 <body >
 <a href="cascmd_en353.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en355.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec433" class="subsection">5.33.4  Factorization in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>] : <span style="font-family:monospace">Factor</span></h3>
-<p><a id="hevea_default541"></a>
-<span style="font-family:monospace">Factor</span> is the inert form of <span style="font-family:monospace">factor</span>.<br>
-<span style="font-family:monospace">Factor</span> takes as argument a polynomial.<br>
-<span style="font-family:monospace">Factor</span> returns <span style="font-family:monospace">factor</span> without evaluation. 
-It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to 
-factorize a polynomial with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ
-where <span style="font-style:italic">p</span> must be prime.<br>
-Input in <span style="font-family:monospace">Xcas</span> mode :
-</p><div class="center"><span style="font-family:monospace">Factor((-3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-5*x+4)%13)</span></div><p>
+<h3 id="sec433" class="subsection">5.33.12  Rebuild a fraction from its value modulo <span style="font-style:italic">p</span> : <span style="font-family:monospace">fracmod</span></h3>
+<p><a id="hevea_default561"></a>
+<span style="font-family:monospace">fracmod</span> takes two arguments, an integer <span style="font-style:italic">n</span> 
+(representing a fraction) and an integer <span style="font-style:italic">p</span> (the modulus).<br>
+If possible, <span style="font-family:monospace">fracmod</span> returns a fraction <span style="font-style:italic">a</span>/<span style="font-style:italic">b</span> such that 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">p</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> &lt; <span style="font-style:italic">a</span> ≤ </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">p</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,   
+0 ≤ <span style="font-style:italic">b</span> &lt; </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">p</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,    
+<span style="font-style:italic">n</span> × <span style="font-style:italic">b</span> =<span style="font-style:italic">a</span> (mod <span style="font-style:italic">p</span> ) </td></tr>
+</table><p>
+In other words <span style="font-style:italic">n</span>=<span style="font-style:italic">a</span>/<span style="font-style:italic">b</span>(mod <span style="font-style:italic">p</span> ).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">fracmod(3,13) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">factor((-3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-5*x+4)%13)</span></div><p>
-you need to <span style="font-family:monospace">eval(ans())</span> to get :
-</p><div class="center"><span style="font-family:monospace">((1%13)*x+-6%13)*((-3%13)*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-5%13)</span></div><p>
-Input in <span style="font-family:monospace">Maple</span> mode :
-</p><div class="center"><span style="font-family:monospace">Factor(-3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-5*x+4) mod 13</span></div><p>
+</p><div class="center"><span style="font-family:monospace">-1/4</span></div><p>
+Indeed : 3*−4=−12=1 (mod 13), hence 3=−1/4%13.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">fracmod(13,121)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">-3*(1*x-6)*(1*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6)</span></div>
+</p><div class="center"><span style="font-family:monospace">-4/9</span></div><p>
+Indeed : 13×−9=−117=4 (mod 121) hence 13=−4/9%13.</p>
 <hr>
 <a href="cascmd_en353.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

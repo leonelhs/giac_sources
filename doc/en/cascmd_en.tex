@@ -7268,24 +7268,199 @@ Output :
 ${\tt \displaystyle \frac{8632428959}{286654464}\simeq 30.1144061688}$
 \end{center}
 
+\section{Audio Tools}
+\subsection{Creating audio clips : {\tt createwav}\index{createwav}}
+{\tt createwav} takes the following arguments (all optional), in no particular order:
+\begin{itemize}
+  \item {\tt size=n} resp.~{\tt duration=T}, where $n$ resp.~$T$ is the total number of samples resp.~the length in seconds,
+  \item {\tt bit\_depth=b}, where $b$ is the number of bits reserved for each sample value and may be 8 or 16 (by default 16),
+  \item {\tt samplerate=r}, where $r$ is the number of samples per second (by default 44100),
+  \item {\tt channels=c} where $c$ is the number of channels (by default 1),
+  \item {\tt D} or {\tt channel\_data=D}, where {\tt D} is a list or a matrix,
+  \item {\tt normalize=db}, where {\tt db}$\leq 0$ is a real number representing the amplitude peak level in dB~FS (decibel "full scale") units.
+\end{itemize}
+Additionally, passing the desired number of samples $n$ as a single argument produces a single-channel clip on 16~bits/44100~Hz containing $n$ samples initialized to zero.
+
+Data matrix should contain the $k$-th sample in the $j$-th channel at position $(j,k)$. The value of each sample must be a real number in range $[-1.0,1.0]$. Any value outside this interval is clamped to it (the resulting effect is called \emph{clipping}). If the data is provided as a single list, it is copied across channels. If the number of samples or seconds is provided alongside the data list/matrix, the rows are truncated or padded with zeros to match the desired length.
+
+If the option {\tt normalize} is given, audio data is normalized to the specified level prior to conversion. This can be used to avoid clipping.
+
+For example, input :
+\begin{center}
+  {\tt s:=createwav(duration=3.5):; playsnd(s)}
+\end{center}
+Output :
+\begin{center}
+  {\tt three and a half seconds of silence at rate 44100}
+\end{center}
+Input :
+\begin{center}
+  {\tt wave:=sin(2*pi*440*soundsec(2)):;\\s:=createwav(channel\_data=wave,samplerate=48000):;\\playsnd(s)}
+\end{center}
+Output :
+\begin{center}
+  {\tt two seconds of the 440 Hz sine wave at rate 48000}
+\end{center}
+Input :
+\begin{center}
+  {\tt t:=soundsec(3):;\\L,R:=sin(2*pi*440*t),sin(2*pi*445*t):;\\s:=createwav([L,R]):; playsnd(s)}
+\end{center}
+Output :
+\begin{center}
+  {\tt 3 secs of a vibrato effect on a sine wave (stereo)}
+\end{center}
+%
+\subsection{Reading WAV files from disk : {\tt readwav}\index{readwav}}
+{\tt readwav} takes a string containing the name of a WAV file as its only argument and loads the file. The return value is an audio clip object.
+
+For example, assume that the file {\tt example.wav} is stored in the directory {\tt sounds}. Input:
+\begin{center}
+  {\tt s:=readwav("/path/to/sounds/example.wav"):; playsnd(s)}
+\end{center}
+
+\subsection{Writing WAV files to disk : {\tt writewav}\index{writewav}}
+{\tt writewav} takes two arguments, a string containing a file name and an audio clip object, and writes the clip to disk as a WAV file with the specified name. It returns {\tt 1} on success and {\tt 0} on failure.
+
+For example, input :
+\begin{center}
+  {\tt s:=createwav(sin(2*pi*440*soundsec(1))):;\\writewav("sounds/sine.wav",s)}
+\end{center}
+Output :
+\begin{center}
+  {\tt 1}
+\end{center}
+
+\subsection{Audio playback : {\tt playsnd}\index{playsnd}}
+{\tt playsnd} takes an audio clip as its argument and plays it back.
+
+For example, input :
+\begin{center}
+  {\tt playsnd(createwav(sin(2*pi*440*soundsec(3))))}
+\end{center}
+
+\subsection{Averaging channel data : {\tt stereo2mono}\index{stereo2mono}}
+{\tt stereo2mono} takes a multichannel audio clip as its argument and returns a clip with input channels mixed down to a single channel. Every sample in the output is the arithmetic mean of the samples at the same position in the input channels.
+
+For example, input :
+\begin{center}
+  {\tt t:=soundsec(3):;\\L,R:=sin(2*pi*440*t),sin(2*pi*445*t):;\\s:=stereo2mono(createwav([L,R])):; playsnd(s)}
+\end{center}
+
+\subsection{Audio clip properties : {\tt channels}\index{channels}, {\tt bit\_depth}\index{bit\_depth}, {\tt samplerate}\index{samplerate}, {\tt duration}\index{duration}}
+Each of the above commands takes an audio clip as an argument. {\tt channels} returns the number of channels, {\tt bit\_depth} returns the number of bits reserved for each sample value (8 or 16), {\tt samplerate} returns the number of samples per second and {\tt duration} returns the duration of the clip in seconds.
+
+\subsection{Extracting samples from audio clips : {\tt channel\_data}\index{channel\_data}}
+{\tt channel\_data} takes an audio clip as the first argument and optionally the following arguments (in no particular order) :
+\begin{itemize}
+  \item channel number (positive integer) or the option {\tt matrix},
+  \item {\tt range=[m,n]} or {\tt range=m..n} or {\tt range=a..b}, where $m$, $n$ are nonnegative integers and $a$, $b$ are floating point values.
+\end{itemize}
+By default, the data from all channels is extracted and returned as a sequence of lists. If the option {\tt matrix} is specified, the lists representing channel data are returned as the rows of a matrix. If channel number is specified (or if there is only one channel), the data is returned in a single list. If a range is specified, only the samples from $n$-th to $m$-th (inclusive) are extracted. If a real interval {\tt a..b} is given, it is assumed that the bounds $a$ and $b$ are in seconds and must be given as floating point values.
+
+The returned sample values are all within the interval $[-1.0,1.0]$, i.e.~the amplitude of the returned signal is relative. The maximum possible amplitude is represented by the value $1.0$.
+
+For example, assume that the directory {\tt sounds} contains a WAV file {\tt example.wav} with 3 seconds of stereo sound. Input :
+\begin{center}
+  {\tt s:=readwav("/path/to/sounds/example.wav"):;\\L,R:=channel\_data(s,range=1.2..1.5)}
+\end{center}
+The output is a list {\tt L} resp.~{\tt R} containing the data between 1.2 and 1.5 seconds in the left resp.~right channel of the original file.
+
+\subsection{Changing the sampling rate : {\tt resample}\index{resample}}
+{\tt resample} takes an audio clip as its first argument. The target sample rate can be passed as the second argument (by default 44100 Hz), optionally followed by a quality level specification (an integer). The return value is the input audio clip resampled to the desired rate. The quality level can range from 0 (poor) to 4 (best). By default, it is set to 2.
+
+Giac does resampling by using \href{http://www.mega-nerd.com/libsamplerate/}{\tt libsamplerate} library written by Erik de Castro Lopo. For more information see the library documentation.
+
+For example, assume that the directory {\tt sounds} contains a WAV file {\tt example.wav}. Input :
+\begin{center}
+  \tt clip:=readwav("/path/to/sounds/example.wav"):; samplerate(clip)
+\end{center}
+Output :
+\begin{center}
+  \tt 44100
+\end{center}
+Input :
+\begin{center}
+  \tt res:=resample(clip,48000):; samplerate(res)
+\end{center}
+Output :
+\begin{center}
+  \tt 48000
+\end{center}
+
+\subsection{Visualizing waveforms : {\tt plotwav}\index{plotwav}}
+{\tt plotwav} accepts an audio clip as its first argument and optionally a range in form {\tt range=[m,n]} or {\tt range=a..b} as its second argument, where $m$, $n$ are integers and $a$, $b$ are real numbers. The command displays the waveform on the specified range (by default in its entirety). It is assumed that the values $m$, $n$ are in sample units and $a$, $b$ in seconds.
+
+For example, assume that the directory {\tt sounds} contains two files, {\tt example1.wav} (a man speaking, stereo) and {\tt example2.wav} (guitar playing, mono). Input :
+\begin{center}
+  \tt clip1:=readwav("/path/to/sounds/example1.wav"):;\\
+  plotwav(clip1)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_wav3.png}
+\end{center}
+Input :
+\begin{center}
+  \tt clip2:=readwav("/path/to/sounds/example2.wav"):;\\
+  plotwav(clip2)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_wav1.png}
+\end{center}
+Input :
+\begin{center}
+  \tt plotwav(clip2,range=0.5..0.52)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_wav2.png}
+\end{center}
+
+\subsection{Visualizing power spectra : {\tt plotspectrum}\index{plotspectrum}}
+{\tt plotspectrum} takes an audio clip as its first argument and optionally a range in form {\tt range=[lf,uf]} or {\tt range=lf..uf}, where {\tt lf} is the lower bound and {\tt uf} the upper bound of the desired frequency band, as its second argument. The command displays the power spectrum of the audio data on the specified frequency range (by default $[0,s/2]$, where $s$ is the sampling rate). If the audio clip has more than one channel, the channels are mixed down to a single channel before computing the spectrum.
+
+For example, input :
+\begin{center}
+  \tt clip:=readwav("/path/to/sounds/example1.wav"):;\\
+  plotspectrum(clip,range=[0,1500])
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_spectrum.png}
+\end{center}
+One can observe that the dominant frequency is around 220~Hz, which is the middle of tenor range. This is consistent with the fact that a male voice is recorded in the clip.
+
 \section{Signal Processing}
-\subsection{Cross-correlation of two signals : {\tt cross\_correlation}}
+\subsection{Cross-correlation of two signals : {\tt cross\_correlation}\index{cross\_correlation}}
 \label{sec:crosscorr}
 {\tt cross\_correlation} takes two arguments, a complex vector $ \mathbf{v} $ of length $ n $ and a complex vector $ \mathbf{w} $ of length $ m $. The returned value is the complex vector $ \mathbf{z}=\mathbf{v}\star\mathbf{w} $ of length $ N=n+m-1 $ which is the cross-correlation of the two input vectors, i.e.~such that the following holds :
 \[ z_k=\sum_{i=k}^{N-1}\overline{v_{i-k}^\ast}\,w_i^\ast,\quad k=0,1,\dots,N-1, \]
 where
 \[ \mathbf{v}^\ast=[v_0,v_1,\dots,v_{n-1},\underbrace{0,0,\dots,0}_{m-1}]\quad\text{and}\quad\mathbf{w}^\ast=[\underbrace{0,0,\dots,0}_{n-1},w_0,w_1,\dots,w_{m-1}]. \]
 
+Cross-correlation is typically used for measuring similarity between signals.
+
 For example, input :
 \begin{center}
-	{\tt cross\_correlation([1,2],[3,4,5])}
+	\tt cross\_correlation([1,2],[3,4,5])
 \end{center}
 Output :
 \begin{center}
 	{\tt [6.0,11.0,14.0,5.0]}
 \end{center}
+Input :
+\begin{center}
+  \tt v:=[2,1,3,2]:; w:=[1,-1,1,2,2,1,3,2,1]:;
+  round(cross\_correlation(v,w))
+\end{center}
+Output :
+\begin{center}
+  \tt [2,1,0,8,9,12,15,18,13,11,5,2]
+\end{center}
+Observe that the cross-correlation of {\tt v} and {\tt w} is peaking at position 8 with the value 18, indicating that the two signals are best correlated when the last sample in {\tt v} is aligned with the eighth sample in {\tt w}. Indeed, there is an occurrence of {\tt v} in {\tt w} precisely at that point.
 
-\subsection{Auto-correlation of a signal : {\tt auto\_correlation}}
+\subsection{Auto-correlation of a signal : {\tt auto\_correlation}\index{auto\_correlation}}
 {\tt auto\_correlation} takes as argument a complex vector $ \mathbf{v} $ of length $ n $ and returns its cross-correlation with itself as the vector $ \mathbf{v}\star\mathbf{v} $ of length $ 2\,n-1 $ (see the {\tt cross\_correlation} command, section~\ref{sec:crosscorr}). For example, input :
 \begin{center}
 	{\tt auto\_correlation([2,3,4,3,1,4,5,1,3,1])}
@@ -7296,10 +7471,12 @@ Output :
 		91.0,68.0,58.0,58.0,44.0,37.0,28.0,15.0,9.0,2.0]}
 \end{center}
 
-\subsection{Convolution of two signals : {\tt convolution}}
+\subsection{Convolution of two signals : {\tt convolution}\index{convolution}}
 {\tt convolution} takes two arguments, a real vector $ \mathbf{v} $ of length $ n $ and a real vector $ \mathbf{w} $ of length $ m $, and returns their convolution $ \mathbf{z}=\mathbf{v}\ast\mathbf{w} $ which is the vector of length $ N=n+m-1 $ defined as :
 \[ z_k=\sum_{i=0}^{k}v_i\,w_{k-i},\quad k=0,1,\dots,N-1, \]
-such that $ v_j=0 $ for $ j\geq n $ and $ w_j=0 $ for $ j\geq m $. For example, input :
+such that $ v_j=0 $ for $ j\geq n $ and $ w_j=0 $ for $ j\geq m $.
+
+For example, input :
 \begin{center}
 	{\tt convolution([1,2,3],[1,-1,1,-1])}
 \end{center}
@@ -7308,27 +7485,65 @@ Output :
 	{\tt [1.0,1.0,2.0,-2.0,1.0,-3.0]}
 \end{center}
 
-\subsection{Low-pass filtering : {\tt lowpass}}
-{\tt lowpass} takes two or three arguments: a real vector $ \mathbf{v} $ representing the sampled signal, a real number $ c $ specifying the cutoff frequency and optionally a samplerate (which defaults to 44100). This implementation is an emulation of a simple first-order lowpass RC filter.
+In the following example convolution is used for reverberation. Assume that the directory {\tt sounds} contains two files, a dry, mono recording of a guitar stored in {\tt guitar.wav} and a two-channel impulse response recorded in a French 18th century salon and stored in {\tt salon-ir.wav}. Files are loaded with the following command lines :
+\begin{center}
+  \tt clip:=readwav("/path/to/sounds/guitar.wav"):; ir:=readwav("/path/to/sounds/salon-ir.wav"):;
+\end{center}
+Input :
+\begin{center}
+  \tt plotwav(clip)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_guitar.png}
+\end{center}
+Input :
+\begin{center}
+  \tt plotwav(ir)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_salon.png}
+\end{center}
+Convolving the data from {\tt clip} with both channels in {\tt ir} produces a reverberated variant of the recording, in stereo. Input :
+\begin{center}
+  \tt data:=channel\_data(clip):; L:=convolution(data,channel\_data(ir,1)):; R:=convolution(data,channel\_data(ir,2)):;
+\end{center}
+The convolved signals {\tt L} and {\tt R} now become the left and right channel of a new audio clip, respectively. The {\tt normalize} option is used because convolution usually results in a huge increase of sample values (which is clear from the definition). Input :
+\begin{center}
+  \tt spatial:=createwav([L,R],normalize=-3):; playsnd(spatial)
+\end{center}
+The result sounds as it was recorded in the same salon as the impulse response. Furthermore, it is a true stereo sound. To visualize it, input :
+\begin{center}
+  \tt plotwav(spatial)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_reverb.png}
+\end{center}
+Note that the resulting audio is longer than the input (by the length of the impulse response).
+
+\subsection{Low-pass filtering : {\tt lowpass}\index{lowpass}}
+{\tt lowpass} takes two or three arguments: an audio clip or a real vector $ \mathbf{v} $ representing the sampled signal, a real number $ c $ specifying the cutoff frequency and optionally a samplerate (which defaults to 44100). The command returns the input data after applying a simple first-order lowpass RC filter.
 
 For example, input :
 \begin{center}
 	{\tt f:=unapply(periodic(sign(x),x,-1/880,1/880),x);\\
-		s:=2\verb|^|14*(apply(f,soundsec(1)));\\
-		playsnd(lowpass(s,1000))}
+		s:=apply(f,soundsec(3)):;\\
+		playsnd(lowpass(createwav(s),1000))}
 \end{center}
 
-\subsection{High-pass filtering : {\tt highpass}}
-{\tt highpass} takes two or three arguments: a real vector $ \mathbf{v} $ representing the sampled signal, a real number $ c $ specifying the cutoff frequency and optionally a samplerate (which defaults to 44100). This implementation is an emulation of a simple first-order highpass RC filter.
+\subsection{High-pass filtering : {\tt highpass}\index{highpass}}
+{\tt highpass} takes two or three arguments: an audio clip or a real vector $ \mathbf{v} $ representing the sampled signal, a real number $ c $ specifying the cutoff frequency and optionally a samplerate (which defaults to 44100). The command returns the input data after applying a simple first-order highpass RC filter.
 
 For example, input :
 \begin{center}
 	{\tt f:=unapply(periodic(sign(x),x,-1/880,1/880),x);\\
-		s:=2\verb|^|14*(apply(f,soundsec(1)));\\
-		playsnd(highpass(s,5000))}
+		s:=apply(f,soundsec(3)):;\\
+		playsnd(highpass(createwav(s),5000))}
 \end{center}
 
-\subsection{Perform thresholding operations on an array : {\tt threshold}}
+\subsection{Perform thresholding operations on an array : {\tt threshold}\index{threshold}}
 {\tt threshold} changes the data in an array which does not meet some kind of minimality criterion. It takes the following parameters :
 \begin{itemize}
 	\item vector $ \mathbf{v} $ of real or complex numbers
@@ -7359,7 +7574,7 @@ As before, {\tt value} defaults to $ b $ and the comparison operator used to tes
 
 For example, input :
 \begin{center}
-	{\tt threshold(2,3,1,2,5,4,3,7],3)}
+	{\tt threshold([2,3,1,2,5,4,3,7],3)}
 \end{center}
 Output :
 \begin{center}
@@ -7406,7 +7621,24 @@ Output :
 	{\tt [-infinity,-11,-3,0,7,27,+infinity,+infinity]}
 \end{center}
 
-\subsection{Bartlett-Hann window function : {\tt bartlett\_hann\_window}}
+In the following example, a square-like wave is created from a single sine wave by clipping sample values. Input :
+\begin{center}
+  \tt data:=threshold(3*sin(2*pi*440*soundsec(2)),[-1.0,1.0]):;\\s:=createwav(data):; playsnd(s)
+\end{center}
+Output :
+\begin{center}
+  \tt 1
+\end{center}
+Input :
+\begin{center}
+  \tt plotwav(s,range=[1000,2000])
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_wav4.png}
+\end{center}
+
+\subsection{Bartlett-Hann window function : {\tt bartlett\_hann\_window}\index{bartlett\_hann\_window}}
 {\tt bartlett\_hann\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=a_0+a_1\,\left|\frac{k}{N-1}-\frac{1}{2}\right|-a_2\,\cos\left(\frac{2\,k\,\pi}{N-1}\right) \]
 for $ k=0,1,\dots,N-1 $, where $ a_0=0.62 $, $ a_1=0.48 $ and $ a_2=0.38 $. For example, input :
@@ -7415,7 +7647,7 @@ for $ k=0,1,\dots,N-1 $, where $ a_0=0.62 $, $ a_1=0.48 $ and $ a_2=0.38 $. For 
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Blackman-Harris window function : {\tt blackman\_harris\_window}}
+\subsection{Blackman-Harris window function : {\tt blackman\_harris\_window}\index{blackman\_harris\_window}}
 {\tt blackman\_harris\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=a_0-a_1\,\cos\left(\frac{2\,k\,\pi}{N-1}\right)+a_2\,\cos\left(\frac{4\,k\,\pi}{N-1}\right)-a_3\,\cos\left(\frac{6\,k\,\pi}{N-1}\right) \]
 for $ k=0,1,\dots,N-1 $, where $ a_0=0.35875 $, $ a_1=0.48829 $, $ a_2=0.14128 $ and $ a_3=0.01168 $. For example, input :
@@ -7424,7 +7656,7 @@ for $ k=0,1,\dots,N-1 $, where $ a_0=0.35875 $, $ a_1=0.48829 $, $ a_2=0.14128 $
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Blackman window function : {\tt blackman\_window}}
+\subsection{Blackman window function : {\tt blackman\_window}\index{blackman\_window}}
 {\tt blackman\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a real number $ \alpha $ (by default $ \alpha=0.16 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\frac{1-\alpha}{2}-\frac{1}{2}\,\cos\left(\frac{2\,k\,\pi}{N-1}\right)+\frac{\alpha}{2}\,\cos\left(\frac{4\,k\,\pi}{N-1}\right) \]
 for $ k=0,1,\dots,N-1 $. For example, input :
@@ -7433,7 +7665,7 @@ for $ k=0,1,\dots,N-1 $. For example, input :
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Bohman window function : {\tt bohman\_window}}
+\subsection{Bohman window function : {\tt bohman\_window}\index{bohman\_window}}
 {\tt bohman\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\left(1-x_k\right)\,\cos\left(\pi\,x_k\right)+\frac{1}{\pi}\,\sin\left(\pi\,x_k\right), \]
 where $ x_k=\left|\frac{2\,k}{N-1}-1\right| $, for $ k=0,1,\dots,N-1 $. For example, input :
@@ -7442,7 +7674,7 @@ where $ x_k=\left|\frac{2\,k}{N-1}-1\right| $, for $ k=0,1,\dots,N-1 $. For exam
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Cosine window function : {\tt cosine\_window}}
+\subsection{Cosine window function : {\tt cosine\_window}\index{cosine\_window}}
 {\tt cosine\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a positive real number $ \alpha $ (by default $ \alpha=1 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\sin^\alpha\left(\frac{k\,\pi}{N-1}\right) \]
 for $ k=0,1,\dots,N-1 $. For example, input :
@@ -7451,7 +7683,7 @@ for $ k=0,1,\dots,N-1 $. For example, input :
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Gaussian window function : {\tt gaussian\_window}}
+\subsection{Gaussian window function : {\tt gaussian\_window}\index{gaussian\_window}}
 {\tt gaussian\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a positive real number $ \alpha\leq 0.5 $ (by default $ \alpha=0.1 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\exp\left(-\frac{1}{2}\,\left(\frac{k-(N-1)/2}{\alpha\,(N-1)/2}\right)^2\right) \]
 for $ k=0,1,\dots,N-1 $. For example, input :
@@ -7460,7 +7692,7 @@ for $ k=0,1,\dots,N-1 $. For example, input :
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Hamming window function : {\tt hamming\_window}}
+\subsection{Hamming window function : {\tt hamming\_window}\index{hamming\_window}}
 {\tt hamming\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\alpha-\beta\,\cos\left(\frac{2\,k\,\pi}{N-1}\right) \]
 for $ k=0,1,\dots,N-1 $, where $ \alpha=0.54 $ and $ \beta=1-\alpha=0.46 $. For example, input :
@@ -7469,7 +7701,7 @@ for $ k=0,1,\dots,N-1 $, where $ \alpha=0.54 $ and $ \beta=1-\alpha=0.46 $. For 
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Hann-Poisson window function : {\tt hann\_poisson\_window}}
+\subsection{Hann-Poisson window function : {\tt hann\_poisson\_window}\index{hann\_poisson\_window}}
 {\tt hann\_poisson\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a real number $ \alpha $ (by default $ \alpha=1 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\frac{1}{2}\,\left(1-\cos\frac{2\,k\,\pi}{N-1}\right)\,\exp\left(-\frac{\alpha\,|N-1-2\,k|}{N-1}\right) \]
 for $ k=0,1,\dots,N-1 $. For example, input :
@@ -7478,7 +7710,7 @@ for $ k=0,1,\dots,N-1 $. For example, input :
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Hann window function : {\tt hann\_window}}
+\subsection{Hann window function : {\tt hann\_window}\index{hann\_window}}
 {\tt hann\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\sin^2\left(\frac{k\,\pi}{N-1}\right) \]
 for $ k=0,1,\dots,N-1 $. For example, input :
@@ -7487,7 +7719,7 @@ for $ k=0,1,\dots,N-1 $. For example, input :
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Parzen window function : {\tt parzen\_window}}
+\subsection{Parzen window function : {\tt parzen\_window}\index{parzen\_window}}
 {\tt parzen\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\begin{cases}
 \left(1-6\,x_k^2\,\left(1-x_k\right)\right),&\left|\frac{N-1}{2}-k\right|\leq\frac{N-1}{4},\\
@@ -7499,7 +7731,7 @@ where $ x_k=\left|1-\frac{2\,k}{N-1}\right| $, for $ k=0,1,\dots,N-1 $. For exam
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Poisson window function : {\tt poisson\_window}}
+\subsection{Poisson window function : {\tt poisson\_window}\index{poisson\_window}}
 {\tt poisson\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a real number $ \alpha $ (by default $ \alpha=1 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\exp\left(-\alpha\,\left|\frac{2\,k}{N-1}-1\right|\right) \]
 for $ k=0,1,\dots,N-1 $. For example, input :
@@ -7508,7 +7740,7 @@ for $ k=0,1,\dots,N-1 $. For example, input :
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Riemann window function : {\tt riemann\_window}}
+\subsection{Riemann window function : {\tt riemann\_window}\index{riemann\_window}}
 {\tt riemann\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\begin{cases}
 1,&k=\frac{N-1}{2},\\
@@ -7520,7 +7752,7 @@ where $ x_k=\frac{2\,k}{N-1}-1 $, for $ k=0,1,\dots,N-1 $. For example, input :
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Triangular window function : {\tt triangle\_window}}
+\subsection{Triangular window function : {\tt triangle\_window}\index{triangle\_window}}
 {\tt triangle\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an integer $ d\in\{-1,0,1\} $ (by default $ d=0 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=1-\left|\frac{n-\frac{N-1}{2}}{\frac{N+d}{2}}\right| \]
 for $ k=0,1,\dots,N-1 $ (the case $ d=-1 $ is called the Bartlett window function). For example, input :
@@ -7529,7 +7761,7 @@ for $ k=0,1,\dots,N-1 $ (the case $ d=-1 $ is called the Bartlett window functio
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Tukey window function : {\tt tukey\_window}}
+\subsection{Tukey window function : {\tt tukey\_window}\index{tukey\_window}}
 {\tt tukey\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a real number $ \alpha\in[0,1] $ (by default $ \alpha=0.5 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=\begin{cases}
 \frac{1}{2}\,\left(1+\cos\left(\pi\,\left(\frac{k}{\beta}-1\right)\right)\right),&k<\beta,\\
@@ -7542,7 +7774,7 @@ where $ \beta=\frac{\alpha\,(N-1)}{2} $, for $ k=0,1,\dots,N-1 $. When $ \alpha=
 \end{center}
 followed by {\tt scatterplot(L)}.
 
-\subsection{Welch window function : {\tt welch\_window}}
+\subsection{Welch window function : {\tt welch\_window}\index{welch\_window}}
 {\tt welch\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
 \[ w_k=1-\left(\frac{k-\frac{N-1}{2}}{\frac{N-1}{2}}\right)^2 \]
 for $ k=0,1,\dots,N-1 $. For example, input :
@@ -7550,6 +7782,77 @@ for $ k=0,1,\dots,N-1 $. For example, input :
 	{\tt L:=welch\_window(randvector(1000,0..1)):;}
 \end{center}
 followed by {\tt scatterplot(L)}.
+
+\subsection{An example : static noise removal\index{noise removal} by spectral subtraction}
+In this section we use Xcas to inplement a simple algorithm for static noise removal based on the spectral subtraction method. For a theoretical overview see the paper "Noise Reduction Based on Modified Spectral Subtraction Method" by Ekaterina Verteletskaya and Boris Simak (2011), \emph{International Journal of Computer Science}, 38:1 (\href{https://pdfs.semanticscholar.org/c212/84207dcf8e95b8b44d0ce703f9fe23b28f2a.pdf}{PDF}).
+
+Efficiency of the spectral subtraction method is largely dependent on a good noise spectrum estimate. Below is the code for a function {\tt noiseprof} that takes {\tt data} and {\tt wlen} as its arguments. These are, respectively, a signal chunk containing only noise and the window length for signal segmentation (the best values are powers of two, such as 256, 512 or 1024). The function returns an estimate of the noise power spectrum obtained by averaging the power spectra of a (not too large) number of distinct chunks of {\tt data} of length {\tt wlen}. Hamming window function is applied prior to FFT.
+\begin{verbatim}
+noiseprof(data,wlen):={
+  local N,h,dx,x,v,cnt;
+  N:=length(data);
+  h:=wlen/2;
+  dx:=min(h,max(1,(N-wlen)/100));
+  v:=[0$wlen];
+  cnt:=0;
+  for (x:=h;x<N-h;x+=dx) {
+    v+=abs(fft(hamming_window(
+                 mid(data,floor(x)-h,wlen)))).^2;
+    cnt++;
+  };
+  return 1.0/cnt*v;
+}:;
+\end{verbatim}
+
+The main function is {\tt noisered}, which takes three arguments: the input signal {\tt data}, the noise power spectrum {\tt np} and the "spectral floor" parameter {\tt beta} ($\beta$, the minimum power level). The function performs subtraction of the noise spectrum in chunks of length {\tt wlen} (the length of list {\tt np}) using the overlap-and-add approach with Hamming window function. For details see Section 3A of the paper "Speech Enhancement using Spectral Subtraction-type Algorithms: A Comparison and Simulation Study" by Navneet Upadhyay and Abhijit Karmakar (2015), \emph{Procedia Computer Science}, vol.~54, pp.~574--584 (\href{https://core.ac.uk/download/pdf/81218023.pdf}{PDF}).
+\begin{verbatim}
+noisered(data,np,beta):={
+  local wlen,h,N,L,padded,out,j,k,s,ds,r,alpha;
+  wlen:=length(np);
+  N:=length(data);
+  h:=wlen/2;
+  L:=0;
+  repeat L+=wlen; until L>=N;
+  padded:=concat(data,[0$(L-N)]);
+  out:=[0$L];
+  for (k:=0;k<L-wlen;k+=h) {
+    s:=fft(hamming_window(mid(padded,k,wlen)));
+    alpha:=max(1,4-3*sum(abs(s).^2)/(20*sum(np)));
+    r:=ifft(zip(max,abs(s).^2-alpha*np,beta*np).^(1/2)
+            .*exp(i*arg(s)));
+    for (j:=0;j<wlen;j++) {
+      out[k+j]+=re(r[j]);
+    };
+  };
+  return mid(out,0,N);
+}:;
+\end{verbatim}
+
+To demonstrate the efficiency of the algorithm, we test it on a small speech sample with an audible amount of static noise. Assume that the corresponding WAV file {\tt noised.wav} is stored in the directory {\tt sounds}. Input :
+\begin{center}
+  \tt clip:=readwav("/path/to/sounds/noised.wav"):; plotwav(clip)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_noise.png}
+\end{center}
+Speech starts after approximately 0.2 seconds of pure noise. We use that part of the clip for obtaining an estimate of the noise power spectrum with {\tt wlen} set to 256. Input :
+\begin{center}
+  \tt noise:=channel\_data(clip,range=0.0..0.15):; np:=noiseprof(noise,256):;
+\end{center}
+Now we call the {\tt noisered} function with $\beta=0.03$ :
+\begin{center}
+  \tt c:=noisered(channel\_data(clip),np,0.03):; cleaned:=createwav(c):; plotwav(cleaned)
+\end{center}
+Output :
+\begin{center}
+  \includegraphics[width=0.75\textwidth]{sound_clean.png}
+\end{center}
+It is clearly visible that the noise level is significantly lower than in the original clip. One can also use the {\tt playsnd} command to compare the input with the output by hearing, which reveals that the noise is still present but in a lesser degree (the parameter $\beta$ controls how much noise is "left in").
+
+The algorithm implemented in this section is not particularly fast (removing the noise from a two and a half seconds long recording took 20 seconds of computation time), but serves as a proof of concept and demonstrates the efficiency of noise removal.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Exponentials and Logarithms}
 \subsection{Rewrite hyperbolic functions as exponentials : {\tt hyp2exp}}\index{hyp2exp}
