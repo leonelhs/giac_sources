@@ -955,6 +955,14 @@ static void cb_Xcas_open_v200(Fl_Menu_*, void*) {
   load_history(7);
 }
 
+static void cb_Xcas_CloneOffline(Fl_Menu_*, void*) {
+  std::string html5=giac::browser_command("doc/xcasfr.html#"+xcas::widget_html5(Xcas_current_session())); std::cout << html5 << std::endl; system(html5.c_str());
+}
+
+static void cb_Xcas_CloneOnline(Fl_Menu_*, void*) {
+  std::string html5="http://www-fourier.ujf-grenoble.fr/~parisse/"+xcas::widget_html5(Xcas_current_session()); std::cout << html5 << std::endl; giac::system_browser_command(html5);
+}
+
 static void cb_Xcas_Insert_Session(Fl_Menu_*, void*) {
   xcas::History_cb_Insert(Xcas_current_session(),0);
 }
@@ -1822,6 +1830,10 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"maple worksheet", 0,  (Fl_Callback*)cb_Xcas_open_maple, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"ti89 program", 0,  (Fl_Callback*)cb_Xcas_open_ti89, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"V200 program", 0,  (Fl_Callback*)cb_Xcas_open_v200, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0},
+ {"Clone", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Offline", 0,  (Fl_Callback*)cb_Xcas_CloneOffline, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Online", 0,  (Fl_Callback*)cb_Xcas_CloneOnline, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Insert", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"xcas session", 0,  (Fl_Callback*)cb_Xcas_Insert_Session, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3120,7 +3132,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<323; i++)
+        for ( ; i<327; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

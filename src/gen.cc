@@ -6822,7 +6822,7 @@ namespace giac {
       return inv(pow(base,-exponent),context0);
     }
     if (is_one(base))
-      return 1;
+      return base;
     if (is_minus_one(base))
       return exponent%2?-1:1;
     unsigned long int expo=exponent;

@@ -1590,7 +1590,7 @@ namespace xcas {
   void next_line_nonl(const string & s,int L,string & line,int & i){
     next_line(s,L,line,i);
     int t=line.size();
-    if (t)
+    if (t && line[t-1]=='\n')
       line=line.substr(0,t-1);
   }
 
@@ -2388,6 +2388,38 @@ namespace xcas {
     }
     // cerr << s << endl;
     int L=s.size(),i=0;
+    // Check for an HTML link
+    if (L>8 && (s.substr(0,6)=="http:/" || s.substr(0,6)=="file:/") ){
+      // find # position, then create normal line for +, slider for *
+      int pos=s.find('#');
+      if (pos>0 && pos<L){
+	int police=pack->labelfont(),lsize=pack->labelsize(),y=before_position;
+	bool finished=false;
+	while (!finished){
+	  int nextpos=s.find('&',pos+1);
+	  if (nextpos > L){
+	    nextpos=L;
+	    finished=true;
+	  }
+	  if (nextpos<pos+2)
+	    break;
+	  string txt=s.substr(pos+2,nextpos-pos-2);
+	  if (s[pos+1]=='*'){
+	    gen g(txt,contextptr);
+	    if (g.type==_VECT && g._VECTptr->size()>=5){
+	      txt="assume("+g[0].print(contextptr)+"=["+g[1].print(contextptr)+","+g[2].print(contextptr)+","+g[3].print(contextptr)+","+g[4].print(contextptr)+"])";
+	    }
+	  }
+	  Xcas_pack_insert(pack,txt.c_str(),txt.size(),y);
+	  ++y;
+	  pos=nextpos;
+	}
+	pack->redraw();
+	// next_line(s,L,line,i);
+	return 1;	
+      }
+    }
+
     Fl_Widget * o;
     for (;i<L;++before_position){
       if (i+7<L && s.substr(i,7)=="// fltk"){
@@ -2424,6 +2456,8 @@ namespace xcas {
       int ls=line.size();
       if (ls>2 && line[ls-1]==';' && line[ls-2]==';')
 	line = line.substr(0,ls-1);
+      if (ls>2 && line[0]=='/' && line[1]=='/')
+	line = "/*"+line.substr(1,ls-1)+"*/";
       if (ls>4 && line[0]=='/' && line[1]=='*' && line[ls-1]=='/' && line[ls-2]=='*'){
 	line=line.substr(2,ls-4);
 	Comment_Multiline_Input * w = dynamic_cast<Comment_Multiline_Input *>(new_comment_input(max(pack->w()-pack->_printlevel_w,1),pack->labelsize()+10));

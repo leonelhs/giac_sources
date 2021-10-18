@@ -1543,6 +1543,76 @@ namespace giac {
     return true;
   }
 
+#ifdef GIAC_CHARDEGTYPE
+    const longlong mask=0x8080808080808080ULL;
+#else
+    const longlong mask=0x8000800080008000ULL;
+#endif
+
+  // 1 (all greater), 0 (unknown), -1 (all smaller)
+  int tdeg_t_compare_all(const tdeg_t & x,const tdeg_t & y,order_t order){
+#ifdef GIAC_64VARS
+    if (x.tab[0]%2){
+#ifdef DEBUG_SUPPORT
+      if (!(y.tab[0]%2))
+	COUT << "erreur" << endl;
+#endif
+      if ( (x.tdeg<y.tdeg) ^ (x.tdeg2<y.tdeg2))
+	return 0;
+      const longlong * it1=x.ui+1,*it1end=it1+(x.order_.dim+degratiom1)/degratio,*it2=y.ui+1;
+      int res=0;
+      for (;it1!=it1end;++it2,++it1){
+	longlong tmp=*it1-*it2;
+	if (tmp & mask){
+	  if (res==1 || ((-tmp) & mask)) return 0;
+	  res=-1;
+	}
+	else {
+	  if (res==-1) return 0; else res=1;
+	}
+      }
+      return res;
+    }
+#endif // GIAC_64VARS
+    int res=0;
+    ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y;
+    longlong tmp=xtab[0]-ytab[0];
+    if (tmp & mask){
+      if (res==1 || ((-tmp) & mask)) return 0;
+      res=-1;
+    }
+    else {
+      if (res==-1) return 0; else res=1;
+    }
+    tmp=xtab[1]-ytab[1];
+    if (tmp & mask){
+      if (res==1 || ((-tmp) & mask)) return 0;
+      res=-1;
+    }
+    else {
+      if (res==-1) return 0; else res=1;
+    }
+    tmp=xtab[2]-ytab[2];
+    if (tmp & mask){
+      if (res==1 || ((-tmp) & mask)) return 0;
+      res=-1;
+    }
+    else {
+      if (res==-1) return 0; else res=1;
+    }
+#if GROEBNER_VARS>11
+    tmp=xtab[3]-ytab[3];
+    if (tmp & mask){
+      if (res==1 || ((-tmp) & mask)) return 0;
+      res=-1;
+    }
+    else {
+      if (res==-1) return 0; else res=1;
+    }
+#endif
+    return res;
+  }
+
   void index_lcm(const tdeg_t & x,const tdeg_t & y,tdeg_t & z,order_t order){
 #ifdef GIAC_64VARS
     if (x.tdeg%2){
@@ -3870,13 +3940,17 @@ namespace giac {
       if (excluded<Gs){
 	const tdeg_t ** resGi_=resGi,**resGiend=resGi+excluded;
 	for (;resGi_<resGiend;++resGi_){
-	  if (*resGi_ && tdeg_t_all_greater(ptu,**resGi_,o))
+	  if (!*resGi_)
+	    continue;
+	  if (tdeg_t_all_greater(ptu,**resGi_,o)) 
 	    break;
 	}
 	if (resGi_==resGiend){
 	  resGiend=resGi+Gs;
 	  for (++resGi_;resGi_<resGiend;++resGi_){
-	    if (*resGi_ && tdeg_t_all_greater(ptu,**resGi_,o))
+	    if (!*resGi_)
+	      continue;
+	    if (tdeg_t_all_greater(ptu,**resGi_,o))
 	      break;
 	  }
 	}
@@ -3885,8 +3959,17 @@ namespace giac {
       else {
 	const tdeg_t ** resGi_=resGi,**resGiend=resGi+Gs;
 	for (;resGi_<resGiend;++resGi_){
-	  if (*resGi_ && tdeg_t_all_greater(ptu,**resGi_,o))
+	  if (!*resGi_)
+	    continue;
+#if 0
+	  int res=tdeg_t_compare_all(ptu,**resGi_,o);
+	  if (res==1) break;
+	  if (res==-1) 
+	    *resGi_=0;
+#else	    
+	  if (tdeg_t_all_greater(ptu,**resGi_,o)) 
 	    break;
+#endif
 	}
 	i=resGi_-resGi;
       }
@@ -10911,6 +10994,13 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     double eps=proba_epsilon(contextptr); int rechecked=0;
     order_t order={0,0};
     bool multithread_enabled=true;
+    // multithread disabled for more than 14 vars because otherwise
+    // threads:=2; n:=9;P:=mul(1+x[j]*t,j=0..n-1);
+    // X:=[seq(x[j],j=0..n-1)];
+    // S:=seq(p[j]-coeff(P,t,j), j=1..n-1);
+    //  N:=sum(x[j]^(n-1),j=0..n-1);
+    // I:=[N,S]:;eliminate(I,X)
+    // segfaults and valgrind does not help...
     for (unsigned i=0;i<res.size();++i){
       const poly8 & P=res[i];
 #ifdef GIAC_64VARS
