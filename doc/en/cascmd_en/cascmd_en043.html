@@ -4,42 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Character and string : "</title>
+<title>Incrementing variables</title>
 </head>
 <body >
 <a href="cascmd_en042.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en044.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec65" class="subsection">4.4.1  Character and string : <span style="font-family:monospace">"</span></h3>
-<p><a id="hevea_default29"></a>
-<span style="font-family:monospace">"</span> is used to delimit a string.
-A character is a string of length one.<br>
-Do not confuse <span style="font-family:monospace">"</span> with
-<span style="font-family:monospace">’</span> (or <span style="font-family:monospace">quote</span>) which is used to avoid evaluation
-of an expression <a id="hevea_default30"></a>. For example,
-<span style="font-family:monospace">"a"</span> returns a string of one character 
-but <span style="font-family:monospace">’a’</span> or <span style="font-family:monospace">quote(a)</span> returns
-the variable <span style="font-family:monospace">a</span> unevaluated.<br>
-
-When a string is input in a command line, it is evaluated to itself
-hence the output is the same string. Use <span style="font-family:monospace">+</span>
-to concatenate two strings or a string and another object.<br>
-Example :<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">"Hello"</span></div><p>
-<span style="font-family:monospace">"Hello"</span> is the input and also the output.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">"Hello"+", how are you?"</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">"Hello, how are you?"</span></div><p>
-Index notation is used to get the n-th character of a string, 
-(as for lists). Indices begin at 0 in Xcas mode, 1 in other modes.<br>
-Example :<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">"Hello"[1]</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">"e"</span></div>
+<h3 id="sec66" class="subsection">4.5.3  Incrementing variables</h3>
+<p>You can increase the value of a variable <span style="font-family:monospace">a</span> by <span style="font-family:monospace">4</span>, for
+example, with
+</p><blockquote class="quote"><span style="font-family:monospace">
+a := a + 4
+</span></blockquote><p>
+If beforehand <span style="font-family:monospace">a</span> were equal to <span style="font-family:monospace">4</span>, it would now be
+equal to <span style="font-family:monospace">8</span>. A shorthand way of doing this is with the
+<span style="font-family:monospace">+=</span><a id="hevea_default16"></a> operator;
+</p><blockquote class="quote"><span style="font-family:monospace">
+a += 4
+</span></blockquote><p>
+will also increase the value of <span style="font-family:monospace">a</span> by <span style="font-family:monospace">4</span>.</p><p>Similar shorthands exist for subtraction, multiplication and division.
+If <span style="font-family:monospace">a</span> is equal to <span style="font-family:monospace">8</span> and you enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+a -= 2</span><a id="hevea_default17"></a><span style="font-family:monospace">
+</span></blockquote><p>
+then <span style="font-family:monospace">a</span> will be equal to <span style="font-family:monospace">6</span>. If you follow this with
+</p><blockquote class="quote"><span style="font-family:monospace">
+a *= 3</span><a id="hevea_default18"></a><span style="font-family:monospace">
+</span></blockquote><p>
+then <span style="font-family:monospace">a</span> will be equal to <span style="font-family:monospace">18</span>, and finally
+</p><blockquote class="quote"><span style="font-family:monospace">
+a /= 9</span><a id="hevea_default19"></a><span style="font-family:monospace">
+</span></blockquote><p>
+will end with <span style="font-family:monospace">a</span> equal to <span style="font-family:monospace">2</span>.</p>
 <hr>
 <a href="cascmd_en042.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,38 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Approximate computation of the derivative number : nDeriv</title>
+<title>Gauss reduction of a matrix : ref</title>
 </head>
 <body >
 <a href="cascmd_en530.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en532.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec660" class="subsection">6.3.2  Approximate computation of the derivative number : <span style="font-family:monospace">nDeriv</span></h3>
-<p><a id="hevea_default841"></a>
-<span style="font-family:monospace">nDeriv</span> takes as arguments : an expression <span style="font-family:monospace">ex</span>, the variable
-name of this expression (by default <span style="font-family:monospace">x</span>), and <span style="font-family:monospace">h</span> (by default 
-<span style="font-family:monospace">h=0.001</span>).<br>
-<span style="font-family:monospace">nDeriv(ex,x,h)</span> computes an approximated value of the derivative of the
-expression <span style="font-family:monospace">ex</span> at the point <span style="font-family:monospace">x</span> and returns :
-</p><div class="center"><span style="font-family:monospace">(f(x+h)-f(x+h))/2*h</span></div><p>
+<h3 id="sec647" class="subsection">5.54.2  Gauss reduction of a matrix : <span style="font-family:monospace">ref</span></h3>
+<p><a id="hevea_default807"></a><a id="ref"></a> <a id="sec:ref"></a>
+<span style="font-family:monospace">ref</span> is used to solve a linear system of equations written in
+matrix form:
+</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
+The argument of <span style="font-family:monospace">ref</span> is the augmented matrix of the system
+(the matrix obtained by augmenting the matrix <span style="font-family:monospace">A</span> to the right with
+the column vector <span style="font-family:monospace">B</span>).<br>
+The result is a matrix <span style="font-family:monospace">[A1,B1]</span> where <span style="font-family:monospace">A1</span> has zeros
+under its principal diagonal, and the solutions of:
+</p><div class="center"><span style="font-family:monospace">A1*X=B1</span></div><p> 
+are the same as the solutions of:
+</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>For example, solve the system :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >−2 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
+</table></td></tr>
+</table><p> 
 Input :
-</p><div class="center"><span style="font-family:monospace">nDeriv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">ref([[3,1,-2],[3,2,2]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">((x+0.001)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-(x+-0.001)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)*500.0</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">subst(nDeriv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x),x=1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">2</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">nDeriv(exp(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 2),x,0.00001)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(exp((x+1e-05)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)-exp((x+-1e-05)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))*50000</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">subst(exp(nDeriv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 2),x,0.00001),x=1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">5.43656365783</span></div><p>
-which is an approximate value of <span style="font-family:monospace">2e=5.43656365692</span>.</p>
+</p><div class="center"><span style="font-family:monospace">[[1,1/3,-2/3],[0,1,4]]</span></div><p>
+Hence the solution is <span style="font-style:italic">y</span>=4 (last row) and <span style="font-style:italic">x</span>=−2 (substitute <span style="font-style:italic">y</span> 
+in the first row).</p>
 <hr>
 <a href="cascmd_en530.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

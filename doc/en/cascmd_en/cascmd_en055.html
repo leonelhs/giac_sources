@@ -4,65 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>GCD : gcd igcd</title>
+<title>Boolean operators : or xor and not</title>
 </head>
 <body >
 <a href="cascmd_en054.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en056.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec79" class="subsection">4.6.2  GCD : <span style="font-family:monospace">gcd igcd</span></h3>
-<p><a id="hevea_default47"></a><a id="hevea_default48"></a><a id="sec:igcd"></a>
-<span style="font-family:monospace">gcd</span> or <span style="font-family:monospace">igcd</span> denotes the gcd (greatest common divisor)
-of several integers (for polynomials, see also <a href="cascmd_en250.html#sec%3Agcd">4.25.7</a>).<br>
-<span style="font-family:monospace">gcd</span> or <span style="font-family:monospace">igcd</span> returns the <span style="font-family:monospace">GCD</span> of integers.<br>
+<h3 id="sec83" class="subsection">5.2.3  Boolean operators : <span style="font-family:monospace">or xor and not</span></h3>
+<p><a id="hevea_default75"></a><a id="hevea_default76"></a><a id="hevea_default77"></a><a id="hevea_default78"></a><a id="hevea_default79"></a><a id="hevea_default80"></a><a id="hevea_default81"></a>
+<span style="font-family:monospace">or</span> (or <span style="font-family:monospace">||</span>), <span style="font-family:monospace">xor</span>, <span style="font-family:monospace">and</span> (or <span style="font-family:monospace">&amp;&amp;</span>) are infixed 
+operators.<br>
+<span style="font-family:monospace">not</span> is a prefixed operators.<br>
+If <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are two booleans :<br>
+<span style="font-family:monospace">(a or b)</span> <span style="font-family:monospace">(a || b)</span> returns <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> and
+<span style="font-family:monospace">b</span> are equal to 0 and returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) otherwise.<br>
+<span style="font-family:monospace">(a xor b)</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> is equal to 1 and <span style="font-family:monospace">b</span> is
+equal to 0 or if <span style="font-family:monospace">a</span> is equal to 0 and <span style="font-family:monospace">b</span> is equal to 1 and returns 0
+if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 0
+or if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 1 (it is the "exclusive or").<br>
+<span style="font-family:monospace">(a and b)</span> or <span style="font-family:monospace">(a &amp;&amp; b)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span>
+and <span style="font-family:monospace">b</span> are equal to 1 and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) otherwise.<br>
+<span style="font-family:monospace">not(a)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span> is equal to 0 (or 
+<span style="font-family:monospace">false</span>), and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> is equal to 1 (or 
+<span style="font-family:monospace">true</span>).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">gcd(18,15)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">1&gt;=0 or 1&lt;0</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">3</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">gcd(18,15,21,36) </span></div><p>
+</p><div class="center"><span style="font-family:monospace">1&gt;=0 xor 1&gt;0</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">gcd([18,15,21,36])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">1&gt;=0 and 1&gt;0</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">3</span></div><p>
-We can also put as parameters two lists of same size (or a matrix with 2 
-rows), in this case <span style="font-family:monospace">gcd</span> returns the greatest common divisor of
-the elements with same index (or in the same column).<br>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">gcd([6,10,12],[21,5,8])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">gcd([[6,10,12],[21,5,8]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">not(0==0)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[3,5,4]</span></div><p>
-<span style="font-weight:bold">An example</span><br>
-Find the greatest common divisor of 4<span style="font-style:italic">n</span>+1 and 5<span style="font-style:italic">n</span>+3 when <span style="font-style:italic">n</span> ∈ ℕ.<br>
-Input :<br>
-</p><div class="center"><span style="font-family:monospace">f(n):=gcd(4*n+1,5*n+3)</span></div><p>
-Then, input :<br>
-</p><pre class="verbatim">  essai(n):={
-    local j,a,L; 
-    L:=NULL;
-    for (j:=-n;j&lt;n;j++) {
-      a:=f(j);
-      if (a!=1) {
-        L:=L,[j,a];
-      } 
-    }
-    return L;
-  }
-</pre><p> 
-Then, input :<br>
-</p><div class="center"><span style="font-family:monospace">essai(20)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[-16,7],[-9,7],[-2,7],[5,7],[12,7],[19,7]</span></div><p>
-So we now have to prove that :<br>
-If <span style="font-style:italic">n</span>≠5+<span style="font-style:italic">k</span>*7 (for <span style="font-style:italic">k</span> ∈ ℤ), 4<span style="font-style:italic">n</span>+1 and 5<span style="font-style:italic">n</span>+3 are mutually prime,
-and <span style="font-style:italic">n</span>=5+<span style="font-style:italic">k</span>*7 (for <span style="font-style:italic">k</span> ∈ ℤ), then the greatest common divisor of 4<span style="font-style:italic">n</span>+1 
-and 5<span style="font-style:italic">n</span>+3 is 7.
-</p>
+</p><div class="center"><span style="font-family:monospace">0</span></div>
 <hr>
 <a href="cascmd_en054.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

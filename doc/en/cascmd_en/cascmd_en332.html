@@ -4,32 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Definition</title>
+<title>Euclidean quotient and euclidean remainder : quorem</title>
 </head>
 <body >
 <a href="cascmd_en331.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en333.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec406" class="subsection">4.37.1  Definition</h3>
-<p>
-A list (or a vector) is delimited by <span style="font-family:monospace">[ ]</span>,
-its elements must be separated by commas. 
-For example, <span style="font-family:monospace">[1,2,5]</span> is a list of three integers.</p><p>Lists can contain lists (for example, a matrix is a list of lists 
-of the same size). Lists may be used to represent vectors
-(list of coordinates), matrices, univariate polynomials 
-(list of coefficients by decreasing order). </p><p>Lists are different from sequences, because sequences are flat : an element 
-of a sequence cannot be a sequence.
-Lists are different from sets, because for a list, the order is
-important and the same element can be repeated in a list (unlike in
-a set where each element is unique). </p><p>In <span style="font-family:monospace">Xcas</span> output :
-</p><ul class="itemize"><li class="li-itemize">
-vector (or list) delimiters are displayed as <span style="font-family:monospace">[]</span>, 
-</li><li class="li-itemize">matrix delimiters are displayed as <span style="font-weight:bold">[]</span>,
-</li><li class="li-itemize">polynomial delimiters are displayed as   ,
-</li><li class="li-itemize">set delimiters are displayed as   .
-</li></ul><p>The list elements are indexed starting from 0 in Xcas syntax mode
-and from 1 in all other syntax modes.</p>
+<h3 id="sec409" class="subsection">5.32.7  Euclidean quotient and euclidean remainder : <span style="font-family:monospace">quorem</span></h3>
+<p><a id="hevea_default509"></a>
+<span style="font-family:monospace">quorem</span> takes as arguments 
+two polynomials <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ, where
+<span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> are list polynomials or symbolic polynomials with
+respect to <span style="font-style:italic">x</span> or to an optional third argument.<br>
+<span style="font-family:monospace">quorem</span> returns the list of the quotient and remainder of the 
+euclidean division of <span style="font-style:italic">A</span> by <span style="font-style:italic">B</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>]
+(see also <a href="cascmd_en082.html#sec%3Aiquorem">5.6.12</a> and <a href="cascmd_en289.html#sec%3Aquorem">5.26.6</a>).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">quorem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">quorem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
+Output:
+</p><div class="center"><span style="font-family:monospace">[(-6%13)*x+-6%13,(-2%13)*x+-1%13]</span></div><p>
+Indeed
+ <span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+1=(2<span style="font-style:italic">x</span><sup>2</sup>+4)(<span style="font-style:italic">x</span>+1/2)+5<span style="font-style:italic">x</span>−4/4<br>
+and −3*4=−6*2=1  mod13.</p>
 <hr>
 <a href="cascmd_en331.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

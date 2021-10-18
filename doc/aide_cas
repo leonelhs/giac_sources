@@ -1,3 +1,10 @@
+# domain
+1 Renvoie le domaine de définition d'une expression.
+2 Returns the definition domain of an expression.
+0 Expr
+domain(log(x+1))
+domain(log(x)+asin(x))
+
 # smith
 1 Calcule la forme normale de Smith d'une matrice a coefficients polynomiaux :renvoie U,D,V tels que tels que U et V inversibles, D  diagonale et U*A*V=D.
 2 Smith normal form of a matrix with  polynomial coefficients : returns U,D,V such that U and V invertible, D diagonal, and U*A*V=D.
@@ -135,15 +142,15 @@ redim([[1,2,3],[3,-9,6],[4,5,6]],4,4)
 -1 redim
 replace([[1,2,3],[3,-9,6],[4,5,6]],[1,0],[[7,8],[9,0]])
 
-# infnorm
-1 Triple norme d'une matrice subordonnée soit à la norme linfini.
-2 Matrix norm induced by linfinty norm.
+# linfnorm
+1 Triple norme d'une matrice subordonnée à la norme linfini.
+2 Matrix norm induced by linfinity norm.
 0 Mtrx
 -1 l1norm
 -2 l2norm
 -3 matrix_norm
 -4 frobenius_norm
-infnorm([[1,2,3],[3,-9,6],[4,5,6]])
+linfnorm([[1,2,3],[3,-9,6],[4,5,6]])
 
 # frobenius_norm
 1 Norme de Frobenius d'une matrice A (=sqrt(sum |aij|^2)).
@@ -6054,7 +6061,7 @@ ou triple norme d'une matrice selon l1.
 0 Vect
 -1 l2norm
 -2 maxnorm
--3 matrixnorm
+-3 matrix_norm
 l1norm([3,-4,2])
 l1norm([[1,2,3],[3,-9,6],[4,5,6]])
 
@@ -9368,6 +9375,7 @@ dot([[1,2],[3,4]],[[3,2],[4,5]])
 -2 function_diff
 -3 integrate
 -4 taux_accroissement
+-5 implicitdiff
 diff(x^3-x)
 diff(x^3-x,'x'$3)
 diff(x^3-x,quote(x)$3)
@@ -9912,6 +9920,8 @@ froot((x^5-2*x^4+x^3)/(x-1))
 -2 nSolve
 -3 solve
 -4 csolve
+-5 lpsolve
+-6 nlpsolve
 fsolve(cos(x)=x,x,-1..1,bisection_solver)
 fsolve(cos(x)=x,x,0,newton_solver)
 fsolve([x^2+y-2,x+y^2-2],[x,y],[0,0],newtonj_solver)
@@ -10524,6 +10534,7 @@ inter(line(i,1-i),circle(0,1),point(-i))
 inter(plane(x=y+3),cone([0,0,0],[0,0,1],pi/6))
 inter(plane(x=y+3),cone([0,0,0],[0,0,1],pi/6))
 inter(line(i,1-i),circle(0,1))[0]
+
 
 # single_inter line_inter
 1 Donne l'une des intersections de 2 courbes ou surfaces (ou l'intersection le plus près de A ou qui n'est pas dans L).
@@ -12038,7 +12049,7 @@ ptayl(y^3+y^2+2*y+1,2,y)
 # purge DelVar del
 1 purge(nomvar) enlève la valeur stockée dans la variable nomvar.
 2 purge(varname) unassign the variable varname.
-3 purge(nombrevariable) borra el valor guardado en la variable nombrevariable.
+3 purge(nomvar) borra el valor guardado en la variable nomvar.
 4 purge(varname) αποανάθεση της μεταβλητής με όνομα varname.
 0 Var
 -1 sto
@@ -12387,7 +12398,9 @@ randexp(2)
 randpoly(5)
 randpoly(t,8)
 randpoly(t,8,-1..1)
- GF(2,8,g);randpoly(t,8,g)
+randpoly([x,y],[10,3])
+randpoly([x,y],[10,3],1 mod 7)
+ GF(2,8,g);randpoly(t,8,g);randpoly([x,y],[2,3],g)
 
 # ranm randMat randmatrix
 1 Renvoie une liste de taille n ou une matrice n*m constituée d'entiers aléatoires uniformément distribués entre -99 et 99 ou de nombres aléatoires distribués selon la loi mise entre-quote.
@@ -15141,6 +15154,8 @@ tpsolve([1,1,1,1],[1,1,1,1],[[10,12,9,11],[5,10,7,8],[12,14,13,11],[8,15,11,9]])
 1 Resoud un probleme d'optimisation lineaire de fonction objectif o sous contraintes optionnelles c
 2 solves a (mixed integer/binary) LP problem in general form
 0 Expr(o),[List(c)],[bounds],[options]
+-1 nlpsolve
+-2 fsolve
 lpsolve(2x+y-z+4,[x<=1,y>=2,x+3y-z=2,2x-y+z<=8,-x+y<=5])
 lpsolve(-4x-5y,[x+2y<=6,5x+4y<=20,0<=x,0<=y])
 lpsolve(-7x+2y,[4x-12y<=20,-x+3y<=3],x=-5..5,y=0..inf,lp_maximize=true)
@@ -15157,10 +15172,30 @@ lpsolve(x1+x2,[2x1+5x2<=16,6x1+5x2<=30],assume=nonnegint,lp_maximize)
 lpsolve(8x1+11x2+6x3+4x4,[5x1+7x2+4x3+3x4<=14],assume=lp_binary,lp_maximize)
 lpsolve(x1+x2,[1867x1+1913x2=3618894],assume=nonnegint,lp_verbose=true)
 
+# nlpsolve
+1 Optimisation non lineaire de objectif (expression non lineaire) sous contraintes d'egalite ou inegalite non lineaires par l'algorithme COBYLA
+2 Solves a nonlinear programming problem of optimizing the objective obj under constraints constr (list of equations and/or inequations) and within bounds bd (sequence of x=a..b) with optional options (for example setting an initial point).
+0 objective, [constr], [bd], [opts]
+-1 lpsolve
+-2 fsolve
+-3 fMin
+-4 fMax
+nlpsolve((x1-10)^3+(x2-20)^3,[(x1-5)^2+(x2-5)^2>=100,(x2-5)^2+(x1-6)^2<=82.81],nlp_initialpoint=[x1=20.1,x2=5.84])
+nlpsolve(sin(x1+x2)+(x1-x2)^2-1.5x1+2.5x2+1,x1=-1.5..4,x2=-3..3)
+nlpsolve(ln(1+x1^2)-x2,[(1+x1^2)^2+x2^2=4])
+nlpsolve(x1,[x2>=exp(x1),x3>=exp(x2)],maximize=true,x1=0..100,x2=0..100,x3=0..10,nlp_initialpoint=[x1=1,x2=1.05,x3=2.9])
+nlpsolve(-x1*x2*x3,[72-x1-2x2-2x3>=0],x1=0..20,x2=0..11,x3=0..42)
+nlpsolve(2-1/120*x1*x2*x3*x4*x5,[x1<=1,x2<=2,x3<=3,x4<=4,x5<=5],assume=nlp_nonnegative)
+nlpsolve(sin(x)/x,x=1..30)
+nlpsolve(x^3+2x*y-2y^2,x=-10..10,y=-10..10,nlp_initialpoint=[x=3,y=4],maximize) 
+nlpsolve(w^3*(v-w)^2+(w-x-1)^2+(x-y-2)^2+(y-z-3)^2,[w+x+y+z<=5,3z+2v=3],assume=nlp_nonnegative)
+nlpsolve(sin(x)*Psi(x),x=1..20,nlp_initialpoint=[x=16])
+
 # implicitdiff
 1 Derivee implicite
 2 Implicit differentiation
 0 constr,[depvars],y,diffvars
+-1 diff
 implicitdiff(x^2*y+y^2=1,y,x)
 implicitdiff(R=P*V/T,P,T)
 implicitdiff([x^2+y=z,x+y*z=1],[y(x),z(x)],y,x)
@@ -15252,3 +15287,347 @@ extrema(x+y-exp(x)-exp(y)-exp(x+y),[x,y])
 extrema(x^2*sin(y)-4*x,[x,y])    
 extrema((1+y*sinh(x))/(1+y^2+tanh(x)^2),[x,y])
 extrema((1+y*sinh(x))/(1+y^2+tanh(x)^2),y=x^2,[x,y])
+
+# cross_correlation
+2 Returns the cross_correlation of two signals u and v.
+0 cross_correlation(Lst(u),Lst(v))
+-1 auto_correlation
+-2 correlation
+cross_correlation([1,2],[3,4,5])
+
+# auto_correlation
+1 Autocorrelation d'un signal (liste) avec lui-meme
+2 Returns the cross-correlation of the given signal with itself.
+0 Lst
+-1 cross_correlation
+-2 correlation
+auto_correlation([1,-1,0,2,1])
+
+# convolution
+1 Convolution de 2 signaux (liste) u et v
+2 Returns the convolution of two signals u and v.
+0 Lst(u),Lst(v)
+-1 fft
+-2 cross_correlation
+convolution([1,2,3],[1,-1,1,-1])
+
+# lowpass
+2 Returns the result of applying a simple first-order lowpass RC filter with cutoff frequency c (the default samplerate is 44100) to the given signal s.
+0 Lst(s),Real(c),[Intg(samplerate)]
+-1 highpass
+f:=unapply(periodic(sign(x),x,-1/880,1/880),x);s:=2^14*(apply(f,soundsec(1)));playsnd(lowpass(s,1000))
+
+# highpass
+2 Returns the result of applying a simple first-order highpass RC filter with cutoff frequency c (the default samplerate is 44100) to the given signal s.
+0 Lst(s),Real(c),[Intg(samplerate)]
+-1 highpass
+f:=unapply(periodic(sign(x),x,-1/880,1/880),x);s:=2^14*(apply(f,soundsec(1)));playsnd(highpass(s,5000))
+
+# threshold
+2 Performs thresholding operations on a list of real or complex numbers.
+0 Lst,Real(bound)[=Expr(repl)] or Lst[Real(lower)[=Expr(rl)],Real(upper)[=Expr(ru)]],[Fnc(compare)],[abs[=true or false]]
+-1 max
+-2 min
+threshold([1,3,2,4,5,4,3,2,3,1],3,'>=')
+threshold([-10,-5,0,5,10],7=a,abs=true)
+
+# bartlett_hann_window
+2 Applies the Bartlett-Hann windowing function to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(bartlett_hann_window(randvector(1000,0..1)))
+
+# blackman_harris_window
+2 Applies the Blackman-Harris windowing function to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Interval(n1..n2)]
+-1 bartlett_hann_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(blackman_harris_window(randvector(1000,0..1)))
+
+# blackman_window
+2 Applies the Blackman windowing function with parameter a (by default a=0.16) to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Real(a)],[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 bartlett_harris_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(blackman_window(randvector(1000,0..1)))
+
+# bohman_window
+2 Applies the Bohman windowing function to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bartlett_hann_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(bohman_window(randvector(1000,0..1)))
+
+# cosine_window
+2 Applies the cosine windowing function with parameter a>0 (by default a=1 for sine window) to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Real(a)],[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 bartlett_hann_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(cosine_window(randvector(1000,0..1),1.5))
+
+# gaussian_window
+2 Applies the Gaussian windowing function with parameter 0<a<=0.5 (by default a=0.1) to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Real(a)],[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 bartlett_hann_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(gaussian_window(randvector(1000,0..1),0.4))
+
+# hamming_window
+2 Applies the Hamming windowing function to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 bartlett_hann_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(hamming_window(randvector(1000,0..1)))
+
+# hann_poisson_window
+2 Applies the Hann-Poisson windowing function with parameter a (by default a=1) to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 bartlett_hann_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(hann_poisson_window(randvector(1000,0..1),2))
+
+# hann_window
+2 Applies the Hann windowing function to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 bartlett_hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(hann_window(randvector(1000,0..1)))
+
+# parzen_window
+2 Applies the Parzen windowing function to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 bartlett_hann_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(parzen_window(randvector(1000,0..1)))
+
+# poisson_window
+2 Applies the Poisson windowing function with parameter a>0 (by default a=1) to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Real(a)],[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 bartlett_hann_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(poisson_window(randvector(1000,0..1),0.5))
+
+# riemann_window
+2 Applies the Riemann windowing function to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 bartlett_hann_window
+-12 triangle_window
+-13 tukey_window
+-14 welch_window
+scatterplot(riemann_window(randvector(1000,0..1)))
+
+# triangle_window
+2 Applies the triangular windowing function with parameter d in {-1,0,1} (by default L=0) to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Intg(d)],[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 bartlett_hann_window
+-13 tukey_window
+-14 welch_window
+scatterplot(triangle_window(randvector(1000,0..1),1))
+
+# tukey_window
+2 Applies the Tukey windowing function with parameter a in [0,1] (by default a=0.5) to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Real(a)],[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 bartlett_hann_window
+-14 welch_window
+scatterplot(tukey_window(randvector(1000,0..1),0.4))
+
+# welch_window
+2 Applies the Welch windowing function to the given signal u (or to the elements with indices between n1 and n2) and returns the result in a new list.
+0 Lst,[Interval(n1..n2)]
+-1 blackman_harris_window
+-2 blackman_window
+-3 bohman_window
+-4 cosine_window
+-5 gaussian_window
+-6 hamming_window
+-7 hann_poisson_window
+-8 hann_window
+-9 parzen_window
+-10 poisson_window
+-11 riemann_window
+-12 triangle_window
+-13 tukey_window
+-14 bartlett_hann_window
+scatterplot(welch_window(randvector(1000,0..1)))
+
+# trigsimplify
+2 Simplifies a trigonometric expression.
+0 Expr
+-1 simplify
+trigsimplify(3*sin(x)-4*sin(x)^3)
+
+
+# triginterp
+1 Polynome d'interpolation trigonometrique des donnees contenues dans une liste
+2 Returns a trigonometric polynomial interpolation (with respect to variable x) of the points with ordinate given in list y and the abscissa equally spaced between a and b.
+0 List,Var=xmin..xmax
+-1 lagrange
+-2 thiele
+triginterp([11,10,17,24,32,26,23,19],x=0..21)
+triginterp([11,10,17,24,32,26,23,19],x,0,21)

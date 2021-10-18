@@ -4,36 +4,129 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>ASCII code of a character : ord</title>
+<title>Assumptions on variables</title>
 </head>
 <body >
 <a href="cascmd_en045.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en047.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec68" class="subsection">4.4.4  ASCII code of a character : <span style="font-family:monospace">ord</span></h3>
-<p><a id="hevea_default35"></a>
-<span style="font-family:monospace">ord</span> takes as argument a string <span style="font-family:monospace">s</span> (resp. 
-a list <span style="font-family:monospace">l</span> of 
-strings).<br>
-<span style="font-family:monospace">ord</span> returns the ASCII code of the first character of <span style="font-family:monospace">s</span> (resp. the 
-list of the ASCII codes of the first character of the elements of <span style="font-family:monospace">l</span>).<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">ord("a")</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">97</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">ord("abcd")</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">97</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">ord(["abcd","cde"])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[97,99]</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">ord(["a","b","c","d"])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[97,98,99,100]</span></div>
+<h3 id="sec69" class="subsection">4.5.6  Assumptions on variables</h3>
+<p>If you enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+abs(var)
+</span></blockquote><p>
+the <span style="font-family:monospace">Xcas</span> will return it unevaluated, since <span style="font-family:monospace">Xcas</span>
+doesn’t know what type of value the variable is supposed to represent.</p><p>The <span style="font-family:monospace">assume</span><a id="hevea_default24"></a> (or
+<span style="font-family:monospace">supposons</span><a id="hevea_default25"></a>) command will let you tell
+<span style="font-family:monospace">Xcas</span> some properties of a variable without giving the
+variable a specific value. For example, if you enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+assume(var &gt; 0)
+</span></blockquote><p>
+then <span style="font-family:monospace">Xcas</span> will assume that <span style="font-family:monospace">var</span> is a positive real
+number, and so for example
+</p><blockquote class="quote"><span style="font-family:monospace">
+abs(var)
+</span></blockquote><p>
+will be evaluated to
+</p><blockquote class="quote"><span style="font-family:monospace">
+var
+</span></blockquote><p>You can put one or more conditions in the <span style="font-family:monospace">assume</span> command by
+combining them with <span style="font-family:monospace">and</span><a id="hevea_default26"></a> and <span style="font-family:monospace">or</span><a id="hevea_default27"></a>.
+For example, if you want the variable <span style="font-family:monospace">a</span> to be in [2,4) ∪
+(6,∞), you can enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+assume((a &gt;= 2 and a &lt; 4) or a &gt; 6)
+</span></blockquote><p>If a variable has attached assumptions, then making another assumption
+with <span style="font-family:monospace">assume</span> will remove the original assumptions. To add
+extra assumptions, you can either use the
+<span style="font-family:monospace">additionally</span><a id="hevea_default28"></a> command or give
+<span style="font-family:monospace">assume</span> a second argument of
+<span style="font-family:monospace">additionally</span><a id="hevea_default29"></a>. If
+you assume that <span style="font-style:italic">b</span> &gt; 0 with
+</p><blockquote class="quote"><span style="font-family:monospace">
+assume(b &gt; 0)
+</span></blockquote><p>
+and you want to add the condition that <span style="font-style:italic">b</span> &lt; 1, you can either enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+assume(b &lt; 1, additionally)
+</span></blockquote><p>
+or
+</p><blockquote class="quote"><span style="font-family:monospace">
+additionally(b &lt; 1)
+</span></blockquote><p>As well as equalities and inequalities, you can make assumptions about
+the domain of a variable. If you want <span style="font-family:monospace">n</span> to represent a
+positive integer<a id="hevea_default30"></a>, for example, you can enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+assume(n, integer)
+</span></blockquote><p>
+If you want <span style="font-family:monospace">n</span> to be a positive integer, you can add the
+condition
+</p><blockquote class="quote"><span style="font-family:monospace">
+additionally(n &gt; 0)
+</span></blockquote><p>You can use the <span style="font-family:monospace">about</span><a id="hevea_default31"></a> command to check the assumptions on a
+variable; for the above positive integer <span style="font-family:monospace">n</span>, if you enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+about(n)
+</span></blockquote><p>
+you will get
+</p><blockquote class="quote"><span style="font-family:monospace">
+assume[integer,[line[0,+infinity]],[0]]
+</span></blockquote><p>
+The first element tells you that <span style="font-family:monospace">n</span> is an integer, the second
+element tells you that <span style="font-family:monospace">n</span> is between <span style="font-family:monospace">0</span> and
+<span style="font-family:monospace">+infinity</span>, and the third element tells you that the value
+<span style="font-family:monospace">0</span> is excluded.</p><p>If you assume that a variable is equal to a specific value, such as
+</p><blockquote class="quote"><span style="font-family:monospace">
+assume(c = 2)
+</span></blockquote><p>
+then by default the variable <span style="font-family:monospace">c</span> will remain unevaluated in
+later levels. If you want an expression involving <span style="font-family:monospace">c</span> to be
+evaluated, you would need to put the expression inside the
+<span style="font-family:monospace">evalf</span><a id="hevea_default32"></a> command; if you enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+evalf(c^2 + 3)
+</span></blockquote><p>
+then you will get 
+</p><blockquote class="quote"><span style="font-family:monospace">
+7.0
+</span></blockquote><p>
+Right below the <span style="font-family:monospace">assume(c = 2)</span> command line
+there will be a slider, namely arrows pointing left and right with the
+value <span style="font-family:monospace">2</span> between them. These
+can be used to change the values of <span style="font-family:monospace">c</span>. If you click on the
+right arrow, the <span style="font-family:monospace">assume(c = 2)</span> command will transform to
+</p><blockquote class="quote"><span style="font-family:monospace">
+assume(c=[2.2,-10.0,10.0,0.0])
+</span></blockquote><p>
+and the value between the arrows will be <span style="font-family:monospace">2.2</span>. Also, any
+later levels where the variable <span style="font-family:monospace">c</span> is evaluated will be
+re-evaluated with the value of <span style="font-family:monospace">c</span> now <span style="font-family:monospace">2.2</span>. The
+output to <span style="font-family:monospace">evalf(c^2 + 3</span> will become
+</p><blockquote class="quote"><span style="font-family:monospace">
+7.84
+</span></blockquote><p>
+The <span style="font-family:monospace">-10.0</span> and <span style="font-family:monospace">10.0</span> in the <span style="font-family:monospace">assume</span> line
+represent the smallest and largest values that <span style="font-family:monospace">c</span> can become
+using the sliders. You can set them yourself in the <span style="font-family:monospace">assume</span>
+command, as well as the increment that the value will change; if you
+want <span style="font-family:monospace">c</span> to start with the value <span style="font-family:monospace">5</span> and vary between
+<span style="font-family:monospace">2</span> and <span style="font-family:monospace">8</span> in increments of <span style="font-family:monospace">0.05</span>, then you can
+enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+assume(c = [5,2,8,0.05])
+</span></blockquote><p>You can remove any assumptions you have made about a variable with the
+<span style="font-family:monospace">purge</span><a id="hevea_default33"></a> command; if you enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+purge(a)
+</span></blockquote><p>
+then <span style="font-family:monospace">a</span> will no longer have any assumptions made about it.
+You can remove assumptions from more than one variable at a time;
+</p><blockquote class="quote"><span style="font-family:monospace">
+purge(a,b)
+</span></blockquote><p>
+will remove any assumptions about <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span>.</p>
 <hr>
 <a href="cascmd_en045.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -3137,13 +3137,13 @@ namespace giac {
     return res;
   }
 
-  gen ckmultmatvecteur(const vecteur & a,const vecteur & b){
+  gen ckmultmatvecteur(const vecteur & a,const vecteur & b,GIAC_CONTEXT){
     if (ckmatrix(a)){
       if (ckmatrix(b)){
 	matrice res;
 	if (!mmultck(a,b,res))
 	  return gendimerr("");
-	gen tmp=_simplifier(res,context0);
+	gen tmp=_simplifier(res,contextptr);
 	// code added for e.g. matpow([[0,1],[0,0]],n)
 	if (contains(tmp,undef))
 	  return res;
@@ -3154,14 +3154,14 @@ namespace giac {
       if (a.front()._VECTptr->size()!=b.size())
 	return gendimerr(gettext("dotvecteur"));
       multmatvecteur(a,b,res);
-      return _simplifier(res,context0);
+      return _simplifier(res,contextptr);
     }
     if (ckmatrix(b)){
       vecteur res;
       multvecteurmat(a,b,res);
-      return _simplifier(res,context0);
+      return _simplifier(res,contextptr);
     }
-    if (xcas_mode(context0)==3)
+    if (xcas_mode(contextptr)==3 || calc_mode(contextptr)==1)
       return apply(a,b,prod);
     return dotvecteur(a,b);
   }
@@ -4627,7 +4627,7 @@ namespace giac {
 	std_matrix_gen2matrice_destroy(cg,res);
 	return true;
       }
-#endif // GIAC_HAS_STO38
+#endif // GIAC_HAS_STO_38
       matrix_double::const_iterator ita=ad.begin(),itaend=ad.end();
       matrix_double::const_iterator itbbeg=btrand.begin(),itb,itbend=btrand.end();
       res.clear();
@@ -15525,7 +15525,7 @@ namespace giac {
       if (is_zero(tmp,contextptr)){ //is_greater(1e-8,tmp/(s*svdmax),contextptr)){
 	tmp=l2norm(*u[i]._VECTptr,contextptr);
       }
-      tmp=inv(tmp,contextptr);
+      if (!is_zero(tmp,contextptr)) tmp=inv(tmp,contextptr);
       u[i]=tmp*u[i];
     }
     reverse(u.begin(),u.end()); // put 0 SVD at the end
@@ -15541,6 +15541,7 @@ namespace giac {
       if (is_strictly_positive(-u[i][i],contextptr))
 	Mp[i]=-Mp[i];
     }
+    if (s<Mp.size()) Mp.erase(Mp.begin()+s,Mp.end());
     reverse(Mp.begin(),Mp.begin()+s);
     mtran(Mp,u);
 #endif
@@ -15622,7 +15623,7 @@ namespace giac {
 	w[j]=LU[i][j];
       L.push_back(w);
     }
-    return ckmultmatvecteur(L,D);
+    return ckmultmatvecteur(L,D,contextptr);
 */
     /*
     std_matrix<gen> C(n,vecteur(n));

@@ -4,28 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>fsolve or nSolve with the option steffenson_solver</title>
+<title>List of variables : lname indets</title>
 </head>
 <body >
 <a href="cascmd_en539.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en541.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec670" class="subsection">6.4.6  <span style="font-family:monospace">fsolve</span> or <span style="font-family:monospace">nSolve</span> with the option <span style="font-family:monospace">steffenson_solver</span></h3>
-<p><a id="hevea_default854"></a>
-The Steffenson method is generically the fastest method.<br>
-It combines the Newton method with a "delta-two" Aitken acceleration : 
-with the Newton method, we obtain the sequence <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub> and the convergence
-acceleration gives the Steffenson sequence 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">R</span><sub><span style="font-style:italic">i</span></sub> =<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub> − </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+1</sub> − <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)<sup>2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"> (<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+2</sub> − 2 <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+1</sub> + <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)</td></tr>
-</table></td><td class="dcell"> </td></tr>
-</table><p>
+<h3 id="sec658" class="subsection">5.56.2  List of variables : <span style="font-family:monospace">lname indets</span></h3>
+<p><a id="hevea_default821"></a><a id="hevea_default822"></a>
+<span style="font-family:monospace">lname</span> (or <span style="font-family:monospace">indets</span>) takes as argument an expression.<br>
+<span style="font-family:monospace">lname</span> (or <span style="font-family:monospace">indets</span>) returns the list of the symbolic
+variable names used in this expression.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">fsolve(cos(x)=x,x,0,steffenson_solver)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">lname(x*y*sin(x))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">0.739085133215</span></div>
+</p><div class="center"><span style="font-family:monospace">[x,y]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">a:=2;assume(b&gt;0);assume(c=3);</span></div><div class="center"><span style="font-family:monospace">lname(a*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+b*x+c)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[x,b,c]</span></div>
 <hr>
 <a href="cascmd_en539.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

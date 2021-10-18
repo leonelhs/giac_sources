@@ -4,26 +4,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Primitive part of a polynomial : primpart</title>
+<title>Convolution of two signals : convolution</title>
 </head>
 <body >
 <a href="cascmd_en225.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en227.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec283" class="subsection">4.24.11  Primitive part of a polynomial : <span style="font-family:monospace">primpart</span></h3>
-<p><a id="hevea_default367"></a>
-<span style="font-family:monospace">primpart</span> takes as argument a polynomial <span style="font-family:monospace">P</span> given by a
-symbolic expression or by the list of its coefficients.<br>
-<span style="font-family:monospace">primpart</span> returns the primitive part of <span style="font-family:monospace">P</span>,
-that is <span style="font-family:monospace">P</span> divided by the GCD 
-(greatest common divisor) of its coefficients.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">primpart(6x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-3x+9)</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">primpart([6,-3,9],x))</span></div><p>
+<h3 id="sec290" class="subsection">5.23.3  Convolution of two signals : <span style="font-family:monospace">convolution</span></h3>
+<p>
+<span style="font-family:monospace">convolution</span> takes two arguments, a real vector  <span style="font-weight:bold"><span style="font-style:italic">v</span></span>  of length  <span style="font-style:italic">n</span>  and a real vector  <span style="font-weight:bold"><span style="font-style:italic">w</span></span>  of length  <span style="font-style:italic">m</span> , and returns their convolution  <span style="font-weight:bold"><span style="font-style:italic">z</span></span>=<span style="font-weight:bold"><span style="font-style:italic">v</span></span>∗<span style="font-weight:bold"><span style="font-style:italic">w</span></span>  which is the vector of length  <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span>+<span style="font-style:italic">m</span>−1  defined as :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">z</span><sub><span style="font-style:italic">k</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">i</span>=0</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">v</span><sub><span style="font-style:italic">i</span></sub> <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span>−<span style="font-style:italic">i</span></sub>,   <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1, </td></tr>
+</table><p>
+such that  <span style="font-style:italic">v</span><sub><span style="font-style:italic">j</span></sub>=0  for  <span style="font-style:italic">j</span>≥ <span style="font-style:italic">n</span>  and  <span style="font-style:italic">w</span><sub><span style="font-style:italic">j</span></sub>=0  for  <span style="font-style:italic">j</span>≥ <span style="font-style:italic">m</span> . For example, input :
+</p><div class="center">
+	<span style="font-family:monospace">convolution([1,2,3],[1,-1,1,-1])</span>
+</div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x+3</span></div>
+</p><div class="center">
+	<span style="font-family:monospace">[1.0,1.0,2.0,-2.0,1.0,-3.0]</span>
+</div>
 <hr>
 <a href="cascmd_en225.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

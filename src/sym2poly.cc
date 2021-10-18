@@ -2320,7 +2320,7 @@ namespace giac {
 	      tmp2=accurate_evalf_until(tmp2,contextptr);// tmp2.evalf_double(1,contextptr); 
 	      if (tmp3.type<=_CPLX && tmp2.type<=_CPLX && tmp2!=tmp3){
 		if (!vzero.empty() && !tst)
-		  *logptr(contextptr) << gettext("Warning, choosing root of ") << f << " at parameters values " << vzero << endl;
+		  *logptr(contextptr) << gettext("Warning, choosing root of ") << f << gettext(" at parameters values ") << vzero << endl;
 		if (is_greater(abs(tmp3-tmp00,contextptr),abs(tmp2-tmp00,contextptr),contextptr))
 		  return w.back();
 		else
@@ -3643,6 +3643,8 @@ namespace giac {
   }
   gen _factor(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (is_integer(args))
+      *logptr(contextptr) << "Run ifactor(" << args << ") for integer factorization." << endl;
     if (is_equal(args))
       return apply_to_equal(args,_factor,contextptr);
     if (args.type==_VECT && args._VECTptr->size()==2 && is_equal(args._VECTptr->front())){
@@ -3780,7 +3782,7 @@ namespace giac {
 	int d2=a*n+b*m;
 	int d=giacmin(d1,d2);
 	if (debug_infolevel)
-	  CERR << CLOCK()*1e-6 << " interp degree " << d << endl;
+	  CERR << CLOCK()*1e-6 << " interp degree " << d << endl;	
 	vecteur X(d+1),Y(d+1);
 	int j=-d/2;
 	gen pl=_lcoeff(makesequence(p,x),contextptr);
@@ -3802,6 +3804,8 @@ namespace giac {
 	  if ( (f1_num.type==_POLY) && (f2_num.type==_POLY)){
 	    const polynome & pp=*f1_num._POLYptr;
 	    const polynome & qp=*f2_num._POLYptr;
+	    if (!interpolable_resultant(pp,d) || !interpolable_resultant(qp,d))
+	      return gensizeerr(gettext("Characteristic is too small"));
 	    int dim=pp.dim;
 	    vecteur vp,vq,vp0,vq0;
 	    polynome2poly1(pp,1,vp);

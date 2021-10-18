@@ -2526,6 +2526,10 @@ namespace xcas {
 	    }
 	  }
 	  else {
+	    if (s[pos+1]!='+'){
+	      pos=nextpos;
+	      continue;
+	    }
 	    int pos=txt.find('\n');
 	    if (pos>0 && pos<txt.size()){
 	      txt="// fltk 7Fl_Tile 14 68 845 254 18 0\n[\n// fltk N4xcas16Xcas_Text_EditorE 14 68 845 253 18 0\n"+print_INT_(txt.size())+" ,\n"+txt+",\n// fltk N4xcas10Log_OutputE 14 321 845 1 18 0\n\n]";

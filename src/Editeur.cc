@@ -144,6 +144,7 @@ namespace xcas {
     "fsi",
     "ftantque",
     "function",
+    "global",
     "goto",
     "if",
     "jusqu_a",
@@ -1910,7 +1911,7 @@ namespace xcas {
       args->value("x");
       y_ += dh;
       locs=new Fl_Input(dw,y_,dw-2,dh-2,gettext("Locals"));
-      locs->tooltip(gettext("Enter local variable(s), e.g. k or n1,n2,n3. Leave empty if no local variables"));
+      locs->tooltip(gettext("Enter local variable(s), e.g. k or n1,n2,n3. Leave empty if no local variables. Local symbolic variables should be purged after declaration."));
       locs->value("k");
       y_ += dh;
       ret=new Fl_Input(dw,y_,dw-2,dh-2,gettext("Return value"));

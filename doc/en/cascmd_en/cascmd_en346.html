@@ -4,38 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Concatenate two lists or a list and an element : concat augment</title>
+<title>Euclidean remainder: Rem</title>
 </head>
 <body >
 <a href="cascmd_en345.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en347.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec422" class="subsection">4.37.15  Concatenate two lists or a list and an element : <span style="font-family:monospace">concat augment</span></h3>
-<p><a id="hevea_default527"></a><a id="hevea_default528"></a>
-<span style="font-family:monospace">concat</span> (or <span style="font-family:monospace">augment</span>) takes as argument a list and an 
-element or two lists.<br>
-<span style="font-family:monospace">concat</span> (or <span style="font-family:monospace">augment</span>) concats this list and this element, or concats 
-these two lists.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">concat([3,4,2],[1,2,4])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">augment([3,4,2],[1,2,4])</span></div><p>
+<h3 id="sec424" class="subsection">5.33.2  Euclidean remainder: <span style="font-family:monospace">Rem</span></h3>
+<p><a id="hevea_default530"></a>
+<span style="font-family:monospace">Rem</span> is the inert form of <span style="font-family:monospace">rem</span>.<br>
+<span style="font-family:monospace">Rem</span> returns the euclidean remainder between two polynomials
+without evaluation. 
+It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to compute
+the euclidean remainder of the division of two
+polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ.<br>
+Input in <span style="font-family:monospace">Xcas</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1) mod 13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[3,4,2,1,2,4]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">concat([3,4,2],5)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">augment([3,4,2],5)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
+you need to <span style="font-family:monospace">eval(ans())</span> to get :
+</p><div class="center"><span style="font-family:monospace">(-2%13)*x+-1%13</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[3,4,2,5]</span></div><p>
-<span style="font-weight:bold">Warning</span>
-If you input :
-</p><div class="center"><span style="font-family:monospace">concat([[3,4,2]],[[1,2,4]])</span></div><p>
-or
-</p><div class="center"><span style="font-family:monospace">augment([[3,4,2]],[[1,2,4]])</span></div><p>
-the output will be:
-</p><div class="center"><span style="font-family:monospace">[[3,4,2,1,2,4]]</span></div>
+</p><div class="center"><span style="font-family:monospace">(-2)*x-1</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1*x</span></div>
 <hr>
 <a href="cascmd_en345.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

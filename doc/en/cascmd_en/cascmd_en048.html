@@ -4,32 +4,55 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>String defined by the ASCII codes of its characters : char</title>
+<title>Defining functions</title>
 </head>
 <body >
 <a href="cascmd_en047.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en049.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec70" class="subsection">4.4.6  String defined by the ASCII codes of its characters : <span style="font-family:monospace">char</span></h3>
-<p><a id="hevea_default37"></a>
-<span style="font-family:monospace">char</span> takes as argument a list <span style="font-family:monospace">l</span> of ASCII codes.<br>
-<span style="font-family:monospace">char</span> returns the string whose characters have as ASCII codes the 
-elements of the list <span style="font-family:monospace">l</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">char([97,98,99,100])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">"abcd"</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">char(97)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">"a"</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">char(353)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">"a"</span></div><p>
-because:<br>
-353−256=97.</p>
+<h3 id="sec72" class="subsection">4.6.1  Defining functions</h3>
+<p>You can use the <span style="font-family:monospace">:=</span><a id="hevea_default38"></a> and <span style="font-family:monospace">=&gt;</span><a id="hevea_default39"></a>
+operators to define functions; both
+</p><blockquote class="quote"><span style="font-family:monospace">
+f(x) := x^2
+</span></blockquote><p>
+and
+</p><blockquote class="quote"><span style="font-family:monospace">
+x^2 =&gt; f(x)
+</span></blockquote><p>
+give the name <span style="font-family:monospace">f</span> to the function which takes a value and 
+returns the square of the value. If you then enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+f(3)
+</span></blockquote><p>
+you will get
+</p><blockquote class="quote"><span style="font-family:monospace">
+9
+</span></blockquote><p>You can give <span style="font-family:monospace">Xcas</span> a function without a name with the
+<span style="font-family:monospace">-&gt;</span><a id="hevea_default40"></a> operator; the squaring function can be written
+without a name as
+</p><blockquote class="quote"><span style="font-family:monospace">
+x -&gt; x^2
+</span></blockquote><p>
+You can use this form of the function to assign it to a name; both
+</p><blockquote class="quote"><span style="font-family:monospace">
+f := x -&gt; x^2
+</span></blockquote><p>
+and
+</p><blockquote class="quote"><span style="font-family:monospace">
+x -&gt; x^2 =&gt; f
+</span></blockquote><p>
+are alternate ways to define <span style="font-family:monospace">f</span> as the squaring function.</p><p>You can similarly define functions of more than one variable. For
+example, to define a function which takes the lengths of the two legs
+of a right triangle and returns the hypotenuse, you could enter
+</p><blockquote class="quote"><span style="font-family:monospace">
+hypot(a,b) := sqrt(a^2 + b^2)
+</span></blockquote><p>
+or
+</p><blockquote class="quote"><span style="font-family:monospace">
+hypot := (a,b) -&gt; sqrt(a^2 + b^2)
+</span></blockquote>
 <hr>
 <a href="cascmd_en047.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

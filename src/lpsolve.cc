@@ -18,11 +18,14 @@
  */
 
 #include "lpsolve.h"
+#include "optimization.h"
 #include "giac.h"
 #include <ctime>
+
 #ifndef DBL_MAX
 #define DBL_MAX 1.79769313486e+308
 #endif
+
 using namespace std;
 
 #ifndef NO_NAMESPACE_GIAC
@@ -252,7 +255,6 @@ void pivot_ij(matrice &m,int I,int J,bool negate=false) {
  * algorithm uses upper-bounding technique when pivoting and uses an adaptation
  * of Bland's rule to prevent cycling. ith element of 'is_slack' is true iff
  * ith (nonbasic) variable is at its upper bound.
- *
  *
  * If limit>0, simplex algorithm will terminate after that many iterations.
  */
@@ -779,6 +781,7 @@ void lp_problem::add_identifiers_from(const gen &g) {
         if (!contains(variable_identifiers,*it))
             variable_identifiers.push_back(*it);
     }
+    variable_identifiers=*_sort(variable_identifiers,ctx)._VECTptr;
 }
 
 /*
@@ -1217,7 +1220,7 @@ glp_prob *lp_problem::glpk_initialize() {
         }
     }
     int n=constr.nrows()*constr.ncols();
-    int *ia=new int[n+1],*ja=new int[n+1],k=0;
+    int *ia=new int[n+1],*ja=new int[n+1]; int k=0;
     double *ar=new double[n+1];
     gen a;
     for (int i=0;i<constr.nrows();++i) {
@@ -1243,9 +1246,9 @@ glp_prob *lp_problem::glpk_initialize() {
         }
     }
     glp_load_matrix(glp,k,ia,ja,ar);
-    delete ia;
-    delete ja;
-    delete ar;
+    delete [] ia;
+    delete [] ja;
+    delete [] ar;
     return glp;
 }
 
@@ -1482,8 +1485,8 @@ bool lp_problem::glpk_load_from_file(const char *fname) {
                 }
             }
         }
-        delete ind;
-        delete val;
+        delete [] ind;
+        delete [] val;
         stringstream ss;
         const char* name=glp_get_prob_name(prob);
         if (name==NULL)
@@ -1544,7 +1547,9 @@ void parse_limit(const gen &g,int &lim,GIAC_CONTEXT) {
 
 bool parse_options_and_bounds(const_iterateur &it,const_iterateur &itend,lp_problem &prob) {
     for (;it!=itend;++it) {
-        if (it->is_integer()) {
+        if (it->is_symb_of_sommet(at_maximize))
+            prob.settings.maximize=true;
+        else if (it->is_integer()) {
             switch(it->val) {
             case _LP_MAXIMIZE:
                 prob.settings.maximize=true;
@@ -1563,6 +1568,8 @@ bool parse_options_and_bounds(const_iterateur &it,const_iterateur &itend,lp_prob
                 if (vi>=0)
                     prob.tighten_variable_bounds(vi,bounds.first,bounds.second);
             }
+            else if (lh==at_maximize && rh.is_integer())
+                prob.settings.maximize=(bool)rh.to_int();
             else if (lh==at_assume && rh.is_integer())
                 prob.settings.assumption=rh.val;
             else if (lh.is_integer()) {
@@ -1839,7 +1846,7 @@ gen _lpsolve(const gen &args,GIAC_CONTEXT) {
     case _LP_ERROR:
         return undef;
     default: //_LP_SOLVED
-        return _eval(makevecteur(prob.optimum,prob.output_solution()),contextptr);
+        return gen(makevecteur(_eval(prob.optimum,contextptr),_eval(prob.output_solution(),contextptr)),_LIST__VECT);
     }
 }
 static const char _lpsolve_s[]="lpsolve";

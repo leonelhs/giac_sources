@@ -4,56 +4,67 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform an expression into a function : unapply</title>
+<title>Factorization : factor</title>
 </head>
 <body >
 <a href="cascmd_en156.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en158.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec190" class="subsection">4.15.2  Transform an expression into a function : <span style="font-family:monospace">unapply</span></h3>
-<p><a id="hevea_default198"></a>
-<span style="font-family:monospace">unapply</span> is used to transform an expression into a function.<br>
-<span style="font-family:monospace">unapply</span> takes two arguments an expression and the name of a variable.<br>
-<span style="font-family:monospace">unapply</span> returns the function defined by this expression and
-this variable.</p><p><span style="font-weight:bold">Warning</span> when a function is defined,
-the right member of the assignment is not evaluated,
-hence <code>g:=sin(x+1); f(x):=g</code> does not defined the function 
-<span style="font-style:italic">f</span>: <span style="font-style:italic">x</span> → sin(<span style="font-style:italic">x</span>+1) but defines the function
-<span style="font-style:italic">f</span>: <span style="font-style:italic">x</span> → <span style="font-style:italic">g</span>. To defined the former function, <span style="font-family:monospace">unapply</span>
-should be used, like in the following example:<br>
+<h3 id="sec195" class="subsection">5.12.9  Factorization : <span style="font-family:monospace">factor</span></h3>
+<p><a id="hevea_default227"></a><a id="sec:factore"></a>
+<span style="font-family:monospace">factor</span> takes as argument an expression.<br>
+<span style="font-family:monospace">factor</span> factorizes this expression on the field of its coefficients,
+with the addition of <span style="font-style:italic">i</span> in complex mode. If <span style="font-family:monospace">sqrt</span> is enabled
+in the Cas configuration, polynomials of order 2 are factorized in
+complex mode or in real mode if the discriminant is positive.<br>
+<span style="font-weight:bold">Examples</span>
+</p><ol class="enumerate" type=1><li class="li-enumerate">
+Factorize <span style="font-style:italic">x</span><sup>4</sup>−1 over ℚ.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">g:= sin(x+1); f:=unapply(g,x)</span></div><p>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">(sin(x+1), (x)-&gt;sin(x+1))</span></div><p> 
-hence, the variable <span style="font-family:monospace">g</span> is assigned to a symbolic expression
-and the variable <span style="font-family:monospace">f</span> is assigned to a function.<br>
+<div class="center"><span style="font-family:monospace">(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)*(x+1)*(x-1)</span></div>
+The coefficients are rationals, hence the factors are polynomials with
+rationals coefficients.<br>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>−1 over ℚ[<span style="font-style:italic">i</span>] <br>
+To have a complex factorization, check <span style="font-family:monospace">complex</span> in the <span style="font-family:monospace">cas</span>
+configuration (red button displaying the status line).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">unapply(exp(x+2),x)</span></div><p>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">(x)-&gt;exp(x+2)</span></div><p> 
+<div class="center"><span style="font-family:monospace">-i*(-x+-i)*(i*x+1)*(-x+1)*(x+1)</span></div>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>+1 over ℚ<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">f:=unapply(lagrange([1,2,3],[4,8,12]),x)</span></div><p>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">(x)-&gt;4+4*(x-1)</span></div><p> 
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1</span></div>
+Indeed  <span style="font-style:italic">x</span><sup>4</sup>+1 has no factor with rational coefficients.<br>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>+1 over ℚ[<span style="font-style:italic">i</span>]<br>
+Check <span style="font-family:monospace">complex</span> in the <span style="font-family:monospace">cas</span>
+configuration (red button rouge displaying the status line).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">f:=unapply(integrate(log(t),t,1,x),x)</span></div><p>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">(x)-&gt;x*log(x)-x+1</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">f:=unapply(integrate(log(t),t,1,x),x)</span></div><div class="center"><span style="font-family:monospace">f(x)</span></div><p>
+<div class="center"><span style="font-family:monospace">(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+i)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-i)</span></div>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>+1 over ℝ.<br>
+You have to provide the square root required for extending the
+rationals. In order to do that with the help of <span style="font-family:monospace">Xcas</span>, 
+first check <span style="font-family:monospace">complex</span> in the <span style="font-family:monospace">cas</span>
+configuration and input :<br>
+<div class="center"><span style="font-family:monospace">solve(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1,x)</span></div><a id="hevea_default228"></a><a id="hevea_default229"></a>
 Output :
-</p><div class="center"><span style="font-family:monospace">x*log(x)-x+1</span></div><p>
-<span style="font-weight:bold">Remark</span>
-Suppose that <span style="font-style:italic">f</span> is a function of 2 variables <span style="font-style:italic">f</span>:(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>)→ <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>), 
-and that <span style="font-style:italic">g</span> is the function defined by
-<span style="font-style:italic">g</span>: <span style="font-style:italic">w</span> → <span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub> where <span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub> is the function defined by 
-<span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>).<br>
-<span style="font-family:monospace">unapply</span> is also used to define <span style="font-style:italic">g</span> with <span style="font-family:monospace">Xcas</span>.<br>
-Input : 
-</p><div class="center"><span style="font-family:monospace">f(x,w):=2*x+w</span></div><div class="center"><span style="font-family:monospace">g(w):=unapply(f(x,w),x)</span></div><div class="center"><span style="font-family:monospace">g(3)</span></div><p>
+<div class="center"><span style="font-family:monospace">[sqrt(2)/2+(i)*sqrt(2)/2,sqrt(2)/2+(i)*(-(sqrt(2)/2)),
+-sqrt(2)/2+(i)*sqrt(2)/2,-sqrt(2)/2+(i)*(-(sqrt(2)/2))]</span></div>
+The roots depends on √<span style="text-decoration:overline">2</span>. Uncheck complex mode in the Cas configuration
+and input :
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1,sqrt(2))</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">x-&gt;2</span>·<span style="font-family:monospace">x+3</span></div>
+<div class="center"><span style="font-family:monospace">(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+sqrt(2)*x+1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(-(sqrt(2)))*x+1)</span></div>
+To factorize over ℂ, check <span style="font-family:monospace">complex</span> in the 
+<span style="font-family:monospace">cas</span> configuration or input <span style="font-family:monospace">cFactor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1,sqrt(2))</span> 
+(cf <span style="font-family:monospace">cFactor</span>).
+</li></ol>
 <hr>
 <a href="cascmd_en156.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

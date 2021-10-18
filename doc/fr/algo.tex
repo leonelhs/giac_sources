@@ -3989,9 +3989,75 @@ donc $P$ croit en $0^+$, donc doit atteindre un maximum local avant
 la premi\`ere racine de $P$, ce maximum local est une racine de $P'$.
 
 On peut m\^eme montrer que $r(P)$ et $\sigma(P)$ sont de m\^eme
-parit\'e.
-L'algorithme VAS utilise ce r\'esultat et des changements de variable
+parit\'e. En particulier si $\sigma(P)=1$, on a $r(P)=1$ car
+le coefficient dominant et de plus bas degr\'e non nul de $P$ sont
+de signes contraires, donc la valeur en 0 et la limite en $+\infty$
+aussi.
+
+On d\'eduit de la r\`egle des signes de Descartes
+un crit\`ere indiquant si un polyn\^ome poss\`ede 0, 1 ou 
+plus de racines sur $]0,1[$ en se ramenant par changement de variables 
+$x \leftarrow 1/x$ \`a $]1,+\infty[$ puis par $x \leftarrow x+1$
+\`a $]0,+\infty[$. 
+
+On prend alors le polyn\^ome de d\'epart et une majoration
+sur les racines, par exemple $C=|P|_{\infty}/|\mbox{lcoeff}(P)|$. Si $z$
+est une racine positive de $P$, alors $z/C$ est une racine positive
+de $Q(x):=P(Cx)$, on est donc ramen\'e a chercher des intervalles
+d'isolation de racines de $Q$ dans $]0,1[$. S'il y a 0 ou 1 changement
+de signe, on conclut. Sinon, on teste si $1/2$ est racine
+puis on cherche dans $]0,1/2[$ et dans $]1/2,1[$, ce qui
+revient au probl\`eme pr\'ec\'edent sur $]0,1[$
+avec les polyn\^omes $R(x)=Q(x/2)$ et $S(x)=Q((x+1)/2)$.
+
+On fait de m\^eme sur $P(x=-x)$ pour les racines r\'eelles n\'egatives.
+\begin{giacprog}
+fonction descartes(P)
+  local l,res,j;
+  l:=coeffs(P);
+  l:=remove(0,l);
+  res:=0;
+  pour j de 0 jusque dim(l)-2 faire
+    si l[j]*l[j+1]<0 alors res++; fsi;
+  fpour;
+  return res;
+ffonction:;
+  
+fonction isole01(P,a,b)
+  // renvoie une liste d'intervalles d'isolation
+  local n,m,Q,R,res;
+  global x;
+  Q:=x^degree(P)*P(x=1/x);
+  R:=Q(x=x+1);
+  n:=descartes(R);
+  si n=0 alors return NULL; fsi;
+  si n=1 alors return [a,b]; fsi;
+  Q:=numer(P(x=x/2));
+  R:=numer(P(x=(x+1)/2));
+  m:=(a+b)/2;
+  si P(x=1/2)=0 alors res:=(a+b)/2; sinon res:=NULL; fsi;
+  res:=res,isole01(Q,a,m),isole01(R,m,b)
+  retourne res;
+ffonction:;
+
+fonction isole(P) // racines positives de P
+  local l,M;
+  l:=coeffs(P);
+  M:=ceil(maxnorm(l)/abs(l[0]));
+  P:=P(x=M*x);
+  return isole01(P,0,M);
+ffonction:;
+\end{giacprog}
+Racines de $P$ dans $\mathbb{R}^{*+}$
+\giacinputmath{P:=(x-1/3)*(x-2)*(x^2+1); descartes(P)}
+Racines de $P$ dans $]0,1[$
+\giacinputmath{Q:=normal(x^degree(P)*P(x=1/x)); descartes(Q(x=x+1))}
+Isolation des racines positives de $P$
+\giacinputmath{isole(P);}
+
+L'algorithme VAS utilise ce type de r\'esultat et des changements de variable
 homographique $x \rightarrow \frac{ax+b}{cx+d}$ pour isoler les racines.
+
 \item Les suites de Sturm se g\'en\'erallisent dans le plan complexe, on
 peut d\'eterminer le nombre de racines contenues dans un
 rectangle du plan complexe (cf. par exemple l'article
@@ -5897,7 +5963,7 @@ pas pour n'importe quelle \'equation cart\'esienne}.
 Graphiquement, par exemple\\
 \giacinput{L:=NULL:;}\\
 \giacslider{T}{-10}{10}{0.1}{1}{purge(x,y);
-eq:=x^2+y^2+x*y-4:; gl_x=-3..3;gl_y=-3..3;G:=implicitplot(eq);D:=line(y=evalf(T)*x); L:=L,inter(G,D,color=red)}
+eq:=x^2+y^2+x*y-4:; gl_x=-3..3;gl_y=-3..3;G:=implicitplot(eq);D:=line(y=evalf(T)*(x+2)); L:=L,inter(G,D,color=red)}
 %\giacinput[style="width:400px;height:40px;font-size:large"]{t:=2; implicitplot(x^2+3y^2-x*y+3x+y); line(y=t*x,color=red)}\\
 puis faire varier la valeur de $t$ ou d'un des coefficients de
 l'\'equation.
@@ -13685,6 +13751,10 @@ x_k=(a_{k}-sum_{j=k+1..n-1} u_{k,j}x_j)/u_{k,k}
 To store the solution in place, we first compute all the x_{n-1}
 put them in the last line of m, then all the x_{n-2}, etc.
 \end{verbatim}
+
+Pour une analyse des erreurs d'arrondis dans la d\'ecomposition
+$LU$, voir par exemple Higham et les r\'ef\'erences cit\'ees\\
+\verb|www.maths.manchester.ac.uk/~higham/narep/narep173.pdf|
 
 \section{La factorisation de Cholesky} \index{Cholesky}
 \index{factorisation de Cholesky}

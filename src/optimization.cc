@@ -80,7 +80,6 @@
 #include "optimization.h"
 #include "giac.h"
 #include <sstream>
-using namespace std;
 
 using namespace std;
 
@@ -102,7 +101,7 @@ gen make_idnt(const char* name,int index=-1,bool intern=true) {
  * Return true iff the expression 'e' is constant with respect to
  * variables in 'vars'.
  */
-bool is_constant_wrt_vars(const gen & e,vecteur & vars,GIAC_CONTEXT) {
+bool is_constant_wrt_vars(const gen &e,vecteur &vars,GIAC_CONTEXT) {
     for (const_iterateur it=vars.begin();it!=vars.end();++it) {
         if (!is_constant_wrt(e,*it,contextptr))
             return false;
@@ -114,7 +113,7 @@ bool is_constant_wrt_vars(const gen & e,vecteur & vars,GIAC_CONTEXT) {
  * Return true iff the expression 'e' is rational with respect to
  * variables in 'vars'.
  */
-bool is_rational_wrt_vars(const gen & e,vecteur & vars,GIAC_CONTEXT) {
+bool is_rational_wrt_vars(const gen &e,const vecteur &vars,GIAC_CONTEXT) {
     for (const_iterateur it=vars.begin();it!=vars.end();++it) {
         vecteur l(rlvarx(e,*it));
         if (l.size()>1)
@@ -128,7 +127,7 @@ bool is_rational_wrt_vars(const gen & e,vecteur & vars,GIAC_CONTEXT) {
  * This function is based on _solve but handles cases where a variable
  * is found inside trigonometric, hyperbolic or exponential functions.
  */
-vecteur solve2(vecteur & e_orig,vecteur & vars_orig,GIAC_CONTEXT) {
+vecteur solve2(const vecteur &e_orig,const vecteur &vars_orig,GIAC_CONTEXT) {
     int m=e_orig.size(),n=vars_orig.size(),i=0;
     for (;i<m;++i) {
         if (!is_rational_wrt_vars(e_orig[i],vars_orig,contextptr))
@@ -187,10 +186,10 @@ vecteur solve2(vecteur & e_orig,vecteur & vars_orig,GIAC_CONTEXT) {
  * transition in piecewise subexpressions, no matter of the inequality sign.
  * Nested piecewise expressions are not supported.
  */
-void gather_piecewise_transitions(const gen & e,vecteur & cv,GIAC_CONTEXT) {
+void gather_piecewise_transitions(const gen &e,vecteur &cv,GIAC_CONTEXT) {
     if (e.type!=_SYMB)
         return;
-    gen & f = e._SYMBptr->feuille;
+    gen &f=e._SYMBptr->feuille;
     if (f.type==_VECT) {
         for (const_iterateur it=f._VECTptr->begin();it!=f._VECTptr->end();++it) {
             if (e.is_symb_of_sommet(at_piecewise) || e.is_symb_of_sommet(at_when)) {
@@ -200,7 +199,7 @@ void gather_piecewise_transitions(const gen & e,vecteur & cv,GIAC_CONTEXT) {
                         it->is_symb_of_sommet(at_superieur_egal) ||
                         it->is_symb_of_sommet(at_inferieur_strict) ||
                         it->is_symb_of_sommet(at_superieur_strict)) {
-                    vecteur & w = *it->_SYMBptr->feuille._VECTptr;
+                    vecteur &w=*it->_SYMBptr->feuille._VECTptr;
                     cv.push_back(w[0].type==_IDNT?w[1]:w[0]);
                 }
             }
@@ -213,7 +212,7 @@ void gather_piecewise_transitions(const gen & e,vecteur & cv,GIAC_CONTEXT) {
         gather_piecewise_transitions(f,cv,contextptr);
 }
 
-bool next_binary_perm(vector<bool> & perm,int to_end=0) {
+bool next_binary_perm(vector<bool> &perm,int to_end=0) {
     if (to_end==int(perm.size()))
         return false;
     int end=int(perm.size())-1-to_end;
@@ -221,11 +220,40 @@ bool next_binary_perm(vector<bool> & perm,int to_end=0) {
     return perm[end]?true:next_binary_perm(perm,to_end+1);
 }
 
+vecteur create_temp_variables(const vecteur &vars,const vecteur &ineq,GIAC_CONTEXT) {
+    gen t,xmin,xmax;
+    vecteur tmpvars;
+    int index=0;
+    for (const_iterateur it=vars.begin();it!=vars.end();++it) {
+        xmin=undef;
+        xmax=undef;
+        for (const_iterateur jt=ineq.begin();jt!=ineq.end();++jt) {
+            if (jt->is_symb_of_sommet(at_superieur_egal) &&
+                    jt->_SYMBptr->feuille._VECTptr->front()==*it &&
+                    (t=jt->_SYMBptr->feuille._VECTptr->back()).evalf(1,contextptr).type==_DOUBLE_)
+                xmin=t;
+            if (jt->is_symb_of_sommet(at_inferieur_egal) &&
+                    jt->_SYMBptr->feuille._VECTptr->front()==*it &&
+                    (t=jt->_SYMBptr->feuille._VECTptr->back()).evalf(1,contextptr).type==_DOUBLE_)
+                xmax=t;
+        }
+        gen v=make_idnt("var",index++);
+        if (!is_undef(xmax) && !is_undef(xmin))
+            assume_t_in_ab(v,xmin,xmax,false,false,contextptr);
+        else if (!is_undef(xmin))
+            giac_assume(symb_superieur_egal(v,xmin),contextptr);
+        else if (!is_undef(xmax))
+            giac_assume(symb_inferieur_egal(v,xmax),contextptr);
+        tmpvars.push_back(v);
+    }
+    return tmpvars;
+}
+
 /*
  * Determine critical points of function f under constraints g<=0 and h=0 using
  * Karush-Kuhn-Tucker conditions.
  */
-vecteur critical_kkt(gen & f,vecteur & g,vecteur & h,vecteur & vars_orig,GIAC_CONTEXT) {
+vecteur critical_kkt(gen &f,vecteur &g,vecteur &h,vecteur &vars_orig,GIAC_CONTEXT) {
     int n=vars_orig.size(),m=g.size(),l=h.size();
     vecteur vars(vars_orig),gr_f(*_grad(makesequence(f,vars_orig),contextptr)._VECTptr),mug;
     matrice gr_g,gr_h;
@@ -284,19 +312,12 @@ vecteur critical_kkt(gen & f,vecteur & g,vecteur & h,vecteur & vars_orig,GIAC_CO
  * not differentiable are considered critical as well as zeros of the first
  * derivative. Also, bounds of the range of x are critical points.
  */
-matrice critical_univariate(gen & f,identificateur & x,GIAC_CONTEXT) {
+matrice critical_univariate(const gen &f,const gen &x,GIAC_CONTEXT) {
     gen df(_derive(makesequence(f,x),contextptr));
-    matrice cv(*_solve(makesequence(symb_equal(df,gen(0)),x),contextptr)._VECTptr);
-    vecteur range;
-    find_range(x,range,contextptr);
-    range=*range[0]._VECTptr;
-    if (!is_inf(-range[0]))
-        cv.push_back(range[0]);
-    if (!is_inf(range[1]))
-        cv.push_back(range[1]);
+    matrice cv(*_zeros(makesequence(df,x),contextptr)._VECTptr);
     gen den(_denom(df,contextptr));
     if (!is_constant_wrt(den,x,contextptr)) {
-        cv=mergevecteur(cv,*_solve(makesequence(symb_equal(den,gen(0)),x),contextptr)._VECTptr);
+        cv=mergevecteur(cv,*_zeros(makesequence(den,x),contextptr)._VECTptr);
     }
     gather_piecewise_transitions(f,cv,contextptr);  // assuming that f is not differentiable on transitions
     for (int i=cv.size()-1;i>=0;--i) {
@@ -313,9 +334,21 @@ matrice critical_univariate(gen & f,identificateur & x,GIAC_CONTEXT) {
  * conditions g<=0 and h=0. The list of points where global minimum is achieved
  * is returned.
  */
-vecteur global_extrema(gen & f,vecteur & g,vecteur & h,vecteur & vars,gen & mn,gen & mx,GIAC_CONTEXT) {
+vecteur global_extrema(gen &f,vecteur &g,vecteur &h,vecteur &vars,gen &mn,gen &mx,GIAC_CONTEXT) {
     int n=vars.size();
-    matrice cv(n==1?critical_univariate(f,*vars[0]._IDNTptr,contextptr):critical_kkt(f,g,h,vars,contextptr));
+    matrice cv;
+    vecteur tmpvars=create_temp_variables(vars,g,contextptr);
+    gen ff=subst(f,vars,tmpvars,false,contextptr);
+    if (n==1) {
+        cv=critical_univariate(ff,tmpvars[0],contextptr);
+        for (const_iterateur it=g.begin();it!=g.end();++it) {
+            cv.push_back(makevecteur(it->_SYMBptr->feuille._VECTptr->back()));
+        }
+    } else {
+        vecteur gg=subst(g,vars,tmpvars,false,contextptr);
+        vecteur hh=subst(h,vars,tmpvars,false,contextptr);
+        cv=critical_kkt(ff,gg,hh,tmpvars,contextptr);
+    }
     if (cv.empty())
         return vecteur(0);
     bool min_set=false,max_set=false;
@@ -344,42 +377,33 @@ vecteur global_extrema(gen & f,vecteur & g,vecteur & h,vecteur & vars,gen & mn,g
     return min_locations;
 }
 
-vecteur parse_varlist(vecteur & gv, int ngv,vecteur & vars,vecteur & initial,GIAC_CONTEXT) {
-    vecteur varlist(gv[ngv-1].type==_VECT ? *gv[ngv-1]._VECTptr : vecteur(1,gv[ngv-1]));
-    int n=varlist.size();
-    vars=vecteur(n);
-    vecteur range,oldvars(n);
-    for (int i=0;i<n;++i) {
-        gen & v = varlist[i];
-        range.clear();
-        vars[i]=make_idnt("x",i);
-        purgenoassume(vars[i],contextptr);
-        if (v.is_symb_of_sommet(at_equal)) {
-            vecteur & ops = *v._SYMBptr->feuille._VECTptr;
-            if (ops[0].type!=_IDNT)
+int parse_varlist(const gen &g,vecteur &vars,vecteur &ineq,vecteur &initial,GIAC_CONTEXT) {
+    vecteur varlist(g.type==_VECT ? *g._VECTptr : vecteur(1,g));
+    int n=0;
+    for (const_iterateur it=varlist.begin();it!=varlist.end();++it) {
+        if (it->is_symb_of_sommet(at_equal)) {
+            vecteur &ops=*it->_SYMBptr->feuille._VECTptr;
+            gen &v=ops.front(), &rh=ops.back();
+            if (v.type!=_IDNT)
                 return 0;
-            oldvars[i]=ops[0];
-            if (ops[1].is_symb_of_sommet(at_interval)) {
-                // variable is required to be in range specified by ops[1]
-                range=*ops[1]._SYMBptr->feuille._VECTptr;
-                bool has_lower=!is_inf(-range[0]),has_upper=!is_inf(range[1]);
-                if (has_lower && has_upper)
-                    assume_t_in_ab(vars[i],range[0],range[1],true,true,contextptr);
-                else if (has_lower)
-                    giac_assume(symb_superieur_strict(vars[i],range[0]),contextptr);
-                else if (has_upper)
-                    giac_assume(symb_inferieur_strict(vars[i],range[1]),contextptr);
+            vars.push_back(v);
+            if (rh.is_symb_of_sommet(at_interval)) {
+                vecteur &range=*rh._SYMBptr->feuille._VECTptr;
+                if (!is_inf(range.front()))
+                    ineq.push_back(symbolic(at_superieur_egal,makevecteur(v,range.front())));
+                if (!is_inf(range.back()))
+                    ineq.push_back(symbolic(at_inferieur_egal,makevecteur(v,range.back())));
             }
             else
-                initial.push_back(ops[1]);
+                initial.push_back(rh);
         }
-        else if (v.type!=_IDNT)
+        else if (it->type!=_IDNT)
             return 0;
         else
-            oldvars[i]=v;
+            vars.push_back(*it);
+        ++n;
     }
-    // return detected variables
-    return oldvars;
+    return n;
 }
 
 /*
@@ -467,11 +491,11 @@ vecteur parse_varlist(vecteur & gv, int ngv,vecteur & vars,vecteur & initial,GIA
  * minimize(z*x*exp(y),z^2+x^2+exp(2y)=1,[x,y,z])
  *    >> -sqrt(3)/9
  */
-gen _minimize(const gen & args,GIAC_CONTEXT) {
+gen _minimize(const gen &args,GIAC_CONTEXT) {
     if (args.type==_STRNG && args.subtype==-1) return args;
     if (args.type!=_VECT || args.subtype!=_SEQ__VECT || args._VECTptr->size()>4)
         return gentypeerr(contextptr);
-    vecteur & argv = *args._VECTptr,g,h;
+    vecteur &argv=*args._VECTptr,g,h;
     bool location=false;
     int nargs=argv.size();
     if (argv.back()==at_coordonnees || argv.back()==at_lieu || argv.back()==at_point) {
@@ -490,29 +514,18 @@ gen _minimize(const gen & args,GIAC_CONTEXT) {
                 h.push_back(*it);
         }
     }
-    vecteur vars,oldvars,initial;
+    vecteur vars,initial;
     int n;  // number of variables
-    if ((n=(oldvars=parse_varlist(argv,nargs,vars,initial,contextptr)).size())==0 || !initial.empty())
+    if ((n=parse_varlist(argv[nargs-1],vars,g,initial,contextptr))==0 || !initial.empty())
         return gensizeerr(contextptr);
-    for (int i=0;i<int(g.size());++i) {
-        gen & gi = g[i];
-        vecteur & s = *gi._SYMBptr->feuille._VECTptr;
-        g[i]=gi.is_symb_of_sommet(at_inferieur_egal)?s[0]-s[1]:s[1]-s[0];
+    if (n>1) {
+        for (int i=0;i<int(g.size());++i) {
+            gen &gi=g[i];
+            vecteur &s=*gi._SYMBptr->feuille._VECTptr;
+            g[i]=gi.is_symb_of_sommet(at_inferieur_egal)?s[0]-s[1]:s[1]-s[0];
+        }
     }
-    vecteur range;
-    for (const_iterateur it=vars.begin();it!=vars.end();++it) {
-        find_range(*it,range,contextptr);
-        range=*range[0]._VECTptr;
-        if (!is_inf(-range[0]))
-            g.push_back(range[0]-*it);
-        if (!is_inf(range[1]))
-            g.push_back(*it-range[1]);
-        if (n>1)
-            purgenoassume(*it,contextptr);
-    }
-    gen f(subst(argv[0],oldvars,vars,false,contextptr));
-    g=subst(g,oldvars,vars,false,contextptr);
-    h=subst(h,oldvars,vars,false,contextptr);
+    gen &f=argv[0];
     gen mn,mx;
     vecteur loc(global_extrema(f,g,h,vars,mn,mx,contextptr));
     if (loc.empty())
@@ -563,7 +576,7 @@ define_unary_function_ptr5(at_minimize,alias_at_minimize,&__minimize,0,true)
  * assume(a>0);maximize(x^2*y^2*z^2,x^2+y^2+z^2=a^2,[x,y,z])
  *    >> a^6/27
  */
-gen _maximize(const gen & g,GIAC_CONTEXT) {
+gen _maximize(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT || g._VECTptr->size()<2)
         return gentypeerr(contextptr);
@@ -585,7 +598,7 @@ define_unary_function_ptr5(at_maximize,alias_at_maximize,&__maximize,0,true)
  * Partition nonnegative integer m into n nonnegative integers x1,x2,...,xn. All
  * possible combinations are put in c.
  */
-void partition_m_in_n_terms (int m,int n,vector<vint> & c,vint p=vint(0)) {
+void partition_m_in_n_terms (int m,int n,vector<vint> &c,vint p=vint(0)) {
     if (p.empty())
         p=vint(n,0);
     for (int i=0;i<n;++i) {
@@ -607,7 +620,7 @@ void partition_m_in_n_terms (int m,int n,vector<vint> & c,vint p=vint(0)) {
     }
 }
 
-int sum_vint(vint & v,bool drop_last=false) {
+int sum_vint(vint &v,bool drop_last=false) {
     int s=0;
     for (vint::const_iterator it=v.begin();it!=v.end()-drop_last?1:0;++it) {
         s+=*it;
@@ -615,18 +628,7 @@ int sum_vint(vint & v,bool drop_last=false) {
     return s;
 }
 
-/*
-void print_t(diffterm t) {
-    cout << "f: " << t.first << endl;
-    cout << "h: ";
-    for (map<vint,int>::const_iterator it=t.second.begin();it!=t.second.end();++it) {
-        cout << it->first << "^" << it->second << " ";
-    }
-    cout << endl;
-}
-*/
-
-impldiff derive_diffterms(impldiff & terms,int n,int m,vint & sig) {
+impldiff derive_diffterms(impldiff &terms,int n,int m,vint &sig) {
     while (!sig.empty() && sig.back()==0) {
         sig.pop_back();
     }
@@ -675,22 +677,18 @@ impldiff derive_diffterms(impldiff & terms,int n,int m,vint & sig) {
     return derive_diffterms(tv,n,m,sig);
 }
 
-gen get_pd(map<vint,gen> & pdv,const vint & sig) {
+gen get_pd(map<vint,gen> &pdv,const vint &sig) {
     gen ret;
-#ifdef NO_STDEXCEPT
-    ret=pdv.at(sig);
-#else
     try {
         ret=pdv.at(sig);
     }
-    catch (out_of_range & e) {
+    catch (out_of_range &e) {
         ret=undef;
     }
-#endif
     return ret;
 }
 
-gen compute_pd(gen & f,vecteur & vars,map<vint,gen> & pdv,vint & sig,GIAC_CONTEXT) {
+gen compute_pd(const gen &f,const vecteur &vars,map<vint,gen> &pdv,vint &sig,GIAC_CONTEXT) {
     gen pd(get_pd(pdv,sig));
     if (!is_undef(pd))
         return pd;
@@ -708,8 +706,8 @@ gen compute_pd(gen & f,vecteur & vars,map<vint,gen> & pdv,vint & sig,GIAC_CONTEX
     return f;
 }
 
-void compute_h(vecteur & g,vecteur & vars,vector<impldiff> & grv,
-               map<vint,gen> & pdg,map<vint,gen> & pdh,int order,GIAC_CONTEXT) {
+void compute_h(const vecteur &g,const vecteur &vars,vector<impldiff> &grv,
+               map<vint,gen> &pdg,map<vint,gen> &pdh,int order,GIAC_CONTEXT) {
     if (g.empty())
         return;
     vector<vint> hsigv;
@@ -762,7 +760,7 @@ void compute_h(vecteur & g,vecteur & vars,vector<impldiff> & grv,
     }
 }
 
-void find_nearest_terms(const map<vint,impldiff> & terms,vint & sig,impldiff & match,vint & excess) {
+void find_nearest_terms(const map<vint,impldiff> &terms,vint &sig,impldiff &match,vint &excess) {
     int n=sig.size();
     excess=sig;
     for (map<vint,impldiff>::const_iterator it=terms.begin();it!=terms.end();++it) {
@@ -782,8 +780,8 @@ void find_nearest_terms(const map<vint,impldiff> & terms,vint & sig,impldiff & m
 }
 
 map<vint,gen> implicit_partial_derivatives(
-        gen & f,vecteur & g,vecteur & vars,int order,vint sig,map<vint,impldiff> & cterms,
-        map<vint,gen> & pdf,map<vint,gen> & pdg,GIAC_CONTEXT) {
+        const gen &f,const vecteur &g,const vecteur &vars,int order,vint sig,map<vint,impldiff> &cterms,
+        map<vint,gen> &pdf,map<vint,gen> &pdg,GIAC_CONTEXT) {
     int m=g.size();
     int n=vars.size()-m;
     map<vint,gen> pdh,pdv;
@@ -816,7 +814,7 @@ map<vint,gen> implicit_partial_derivatives(
     for (vector<vint>::const_iterator ct=c.begin();ct!=c.end();++ct) {
         if (!sig.empty() && sig!=*ct)
             continue;
-        impldiff & terms=cterms[*ct];
+        impldiff &terms=cterms[*ct];
         pd=gen(0);
         for (impldiff::const_iterator it=terms.begin();it!=terms.end();++it) {
             vint sig(it->first.first);
@@ -856,7 +854,7 @@ vint rearrange_vars(matrice J,GIAC_CONTEXT) {
     return v;
 }
 
-matrice jacobian(vecteur & g,vecteur & vars,GIAC_CONTEXT) {
+matrice jacobian(vecteur &g,vecteur &vars,GIAC_CONTEXT) {
     matrice J;
     for (int i=0;i<int(g.size());++i) {
         J.push_back(*_grad(makesequence(g[i],vars),contextptr)._VECTptr);
@@ -864,7 +862,7 @@ matrice jacobian(vecteur & g,vecteur & vars,GIAC_CONTEXT) {
     return J;
 }
 
-bool ck_jacobian(vecteur & g,vecteur & vars,GIAC_CONTEXT) {
+bool ck_jacobian(vecteur &g,vecteur &vars,GIAC_CONTEXT) {
     matrice J(jacobian(g,vars,contextptr));
     int m=g.size();
     int n=vars.size()-m;
@@ -977,12 +975,12 @@ matrice pdv2hessian(map<vint,gen> pdv,int n) {
  * pd:=implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=4,[0,z,0]);pd[4,0,0]
  *      >> -2*z
  */
-gen _implicitdiff(const gen & g,GIAC_CONTEXT) {
+gen _implicitdiff(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT || g._VECTptr->size()<2)
         return gentypeerr(contextptr);
-    vecteur & gv = *g._VECTptr;
-    gen & f = gv[0];
+    vecteur &gv=*g._VECTptr;
+    gen &f=gv[0];
     if (int(gv.size())<3)
         return gensizeerr(contextptr);
     int ci=gv[0].type!=_VECT && !gv[0].is_symb_of_sommet(at_equal)?1:0;
@@ -1005,7 +1003,7 @@ gen _implicitdiff(const gen & g,GIAC_CONTEXT) {
     bool compute_all=false;
     int order=0;
     if (ci==1 && gv[dvi].is_symb_of_sommet(at_equal)) {
-        vecteur & v = *gv[dvi]._SYMBptr->feuille._VECTptr;
+        vecteur &v=*gv[dvi]._SYMBptr->feuille._VECTptr;
         if (v.front()!=at_order_size || !v.back().is_integer())
             return gentypeerr(contextptr);
         order=v.back().val;
@@ -1037,7 +1035,7 @@ gen _implicitdiff(const gen & g,GIAC_CONTEXT) {
                 depvars.push_back(fe.front());
                 if (fe.back().type==_VECT) {
                     for (int i=0;i<int(fe.back()._VECTptr->size());++i) {
-                        gen & x = fe.back()._VECTptr->at(i);
+                        gen &x=fe.back()._VECTptr->at(i);
                         if (find(freevars.begin(),freevars.end(),x)==freevars.end())
                             freevars.push_back(x);
                     }
@@ -1146,8 +1144,8 @@ define_unary_function_ptr5(at_implicitdiff,alias_at_implicitdiff,&__implicitdiff
  * condition g=0 in the neighborhood of a. This function uses the multinomial
  * formula to compute 1/k!*(sum(i=1)^n (xi-ai)*d/dxi)^k f(x)|a.
  */
-gen compute_implicit_taylor_term(gen & f,vecteur & g,vecteur & a,vecteur & vars,int k,
-                                 map<vint,impldiff> & cterms,map<vint,gen> & pdf,map<vint,gen> & pdg,GIAC_CONTEXT) {
+gen compute_implicit_taylor_term(const gen &f,const vecteur &g,const vecteur &a,const vecteur &vars,int k,
+                                 map<vint,impldiff> &cterms,map<vint,gen> &pdf,map<vint,gen> &pdg,GIAC_CONTEXT) {
     int n=int(vars.size())-int(g.size());
     vector<vint> sigv;
     partition_m_in_n_terms(k,n,sigv);
@@ -1180,7 +1178,8 @@ gen compute_implicit_taylor_term(gen & f,vecteur & g,vecteur & a,vecteur & vars,
     return term;
 }
 
-gen_map find_extrema(gen & f,vecteur & g,vecteur & vars,vecteur & initial,int order_size,GIAC_CONTEXT) {
+gen_map find_extrema(const gen &f,const vecteur &g,const vecteur &vars,
+                     const vecteur &ineq,const vecteur &initial,int order_size,GIAC_CONTEXT) {
     int nv=int(vars.size()),m=int(g.size()),n=nv-m;
     vecteur fvars(vars);
     fvars.resize(n);
@@ -1196,11 +1195,12 @@ gen_map find_extrema(gen & f,vecteur & g,vecteur & vars,vecteur & initial,int or
         gr=*_grad(makesequence(f,vars),contextptr)._VECTptr;
     matrice cv,h;
     gen_map res;
-    vecteur eqv(mergevecteur(gr,g));
+    vecteur tmpvars=create_temp_variables(vars,ineq,contextptr);
+    vecteur eqv(subst(mergevecteur(gr,g),vars,tmpvars,false,contextptr));
     if (initial.empty())
-        cv=solve2(eqv,vars,contextptr);
+        cv=solve2(eqv,tmpvars,contextptr);
     else {
-        vecteur fsol(*_fsolve(makesequence(eqv,vars,initial),contextptr)._VECTptr);
+        vecteur fsol(*_fsolve(makesequence(eqv,tmpvars,initial),contextptr)._VECTptr);
         if (!fsol.empty())
             cv.push_back(fsol);
     }
@@ -1264,8 +1264,9 @@ gen_map find_extrema(gen & f,vecteur & g,vecteur & vars,vecteur & initial,int or
                 }
             }
             else if (n>1) {
-                // higher derivative test for multivariate functions by Salvador Gigena
-                // (Theorem 6.5 on page 27 in:  https://arxiv.org/abs/1303.3184)
+                // higher derivative test for multivariate functions in:
+                // ramanujan.math.trinity.edu/wtrench/texts/TRENCH_REAL_ANALYSIS.PDF
+                // (Theorem 5.4.10, page 354)
                 for (int k=2;k<=order_size;++k) {
                     if (int(taylor_terms.size())<k-1)
                         taylor_terms.push_back(compute_implicit_taylor_term(f,g,a,vars,k,cterms,pdf,pdg,contextptr));
@@ -1324,7 +1325,7 @@ gen_map find_extrema(gen & f,vecteur & g,vecteur & vars,vecteur & initial,int or
     return res;
 }
 
-gen_map format_critical_points(gen_map & cv,vint & arr,vecteur & vars,GIAC_CONTEXT) {
+gen_map format_critical_points(gen_map &cv,vint &arr,vecteur &vars,GIAC_CONTEXT) {
     gen_map res;
     int n=int(vars.size());
     for (gen_map::const_iterator it=cv.begin();it!=cv.end();++it) {
@@ -1387,7 +1388,7 @@ gen_map format_critical_points(gen_map & cv,vint & arr,vecteur & vars,GIAC_CONTE
  * attempting to classify them. Setting 'order_size' to 2 or higher will
  * activate checking for saddle points and inspecting higher derivatives (up to
  * 'order_size') to determine the nature of some or all unclassified critical
- * points. By default 'order_size' equals to 12.
+ * points. By default 'order_size' equals to 5.
  *
  * The return value is a sequence with two elements: list of strict local
  * minima and list of strict local maxima. If only critical points are
@@ -1433,7 +1434,7 @@ gen_map format_critical_points(gen_map & cv,vint & arr,vecteur & vars,GIAC_CONTE
  * extrema(x^3-2x*y+3y^4,[x,y])
  *    >> [[12^(1/5)/3,(12^(1/5))^2/6]],[]
  * extrema((2x^2-y)*(y-x^2),[x,y])  //Peano surface
- *    >> [],[] (non-strict local maximum at origin)
+ *    >> [],[] (saddle point at origin)
  * extrema(5x^2+3y^2+x*z^2-z*y^2,[x,y,z])
  *    >> [],[] (non-strict local minimum at origin)
  * extrema(3*atan(x)-2*ln(x^2+y^2+1),[x,y])
@@ -1533,15 +1534,15 @@ gen_map format_critical_points(gen_map & cv,vint & arr,vecteur & vars,GIAC_CONTE
  * extrema((1+y*sinh(x))/(1+y^2+tanh(x)^2),y=x^2,[x,y])
  *    >> [[1.42217627369,2.02258535346]],[[8.69443642205e-16,7.55932246971e-31]]
  */
-gen _extrema(const gen & g,GIAC_CONTEXT) {
+gen _extrema(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
         return gentypeerr(contextptr);
-    vecteur & gv = *g._VECTptr,constr;
-    int order_size=5; // will not compute derivatives of order higher than 'order_size'
+    vecteur &gv=*g._VECTptr,constr;
+    int order_size=5; // will not compute the derivatives of order higher than 'order_size'
     int ngv=gv.size();
     if (gv.back().is_symb_of_sommet(at_equal)) {
-        vecteur & v = *gv.back()._SYMBptr->feuille._VECTptr;
+        vecteur &v=*gv.back()._SYMBptr->feuille._VECTptr;
         if (v[0]==at_order_size && is_integer(v[1])) {
             order_size=v[1].val;
             --ngv;
@@ -1551,9 +1552,9 @@ gen _extrema(const gen & g,GIAC_CONTEXT) {
         return gensizeerr(contextptr);
     // get the variables
     int nv;
-    vecteur vars,oldvars,initial;
+    vecteur vars,ineq,initial;
     // parse variables and their ranges, if given
-    if ((nv=(oldvars=parse_varlist(gv,ngv,vars,initial,contextptr)).size())==0)
+    if ((nv=parse_varlist(gv[ngv-1],vars,ineq,initial,contextptr))==0)
         return gentypeerr(contextptr);
     if (!initial.empty() && int(initial.size())<nv)
         return gensizeerr(contextptr);
@@ -1570,25 +1571,23 @@ gen _extrema(const gen & g,GIAC_CONTEXT) {
     }
     vint arr;
     if (!constr.empty()) {
-        matrice J(jacobian(constr,oldvars,contextptr));
+        matrice J(jacobian(constr,vars,contextptr));
         if (_rank(J,contextptr).val<int(constr.size())) {
-            cout << "Error: too many constraints" << endl;
+            *logptr(contextptr) << "Error: too many constraints" << endl;
             return gendimerr(contextptr);
         }
         arr=rearrange_vars(J,contextptr);
     }
-    vecteur tmp_vars,tmp_oldvars;
+    vecteur tmp_vars;
     if (!arr.empty()) {
         for (vint::const_iterator it=arr.begin();it!=arr.end();++it) {
             tmp_vars.push_back(vars[*it]);
-            tmp_oldvars.push_back(oldvars[*it]);
         }
         vars=tmp_vars;
     }
-    constr=subst(constr,arr.empty()?oldvars:tmp_oldvars,vars,false,contextptr);
-    gen f(subst(gv[0],arr.empty()?oldvars:tmp_oldvars,vars,false,contextptr));
-    gen_map res(find_extrema(f,constr,vars,initial,order_size,contextptr));
-    res=format_critical_points(res,arr,oldvars,contextptr);
+    gen &f = gv[0];
+    gen_map res(find_extrema(f,constr,vars,ineq,initial,order_size,contextptr));
+    res=format_critical_points(res,arr,vars,contextptr);
     if (order_size<2) {
         // return list of critical points
         vecteur cv;
@@ -1597,10 +1596,10 @@ gen _extrema(const gen & g,GIAC_CONTEXT) {
         }
         return cv;
     }
-    // return sequence of minima and maxima in separate lists and report non-extrema
+    // return sequence of minima and maxima in separate lists and report non- or possible extrema
     vecteur minv,maxv;
     for (gen_map::const_iterator it=res.begin();it!=res.end();++it) {
-        gen dispt(nv==1?symb_equal(oldvars[0],it->first):_zip(makesequence(at_equal,oldvars,it->first),contextptr));
+        gen dispt(nv==1?symb_equal(vars[0],it->first):_zip(makesequence(at_equal,vars,it->first),contextptr));
         switch(it->second.val) {
         case _CPCLASS_MIN:
             minv.push_back(it->first);
@@ -1609,16 +1608,16 @@ gen _extrema(const gen & g,GIAC_CONTEXT) {
             maxv.push_back(it->first);
             break;
         case _CPCLASS_SADDLE:
-            cout << dispt << (nv==1?": inflection point":": saddle point") << endl;
+            *logptr(contextptr) << dispt << (nv==1?": inflection point":": saddle point") << endl;
             break;
         case _CPCLASS_POSSIBLE_MIN:
-            cout << dispt << ": possible local minimum" << endl;
+            *logptr(contextptr) << dispt << ": possible local minimum" << endl;
             break;
         case _CPCLASS_POSSIBLE_MAX:
-            cout << dispt << ": possible local maximum" << endl;
+            *logptr(contextptr) << dispt << ": possible local maximum" << endl;
             break;
         case _CPCLASS_UNDECIDED:
-            cout << dispt << ": unclassified critical point" << endl;
+            *logptr(contextptr) << dispt << ": unclassified critical point" << endl;
             break;
         }
     }
@@ -1632,7 +1631,7 @@ define_unary_function_ptr5(at_extrema,alias_at_extrema,&__extrema,0,true)
  * Compute the value of expression f(var) (or |f(var)| if 'absolute' is true)
  * for var=a.
  */
-gen compf(const gen & f,identificateur & x,gen & a,bool absolute,GIAC_CONTEXT) {
+gen compf(const gen &f,identificateur &x,gen &a,bool absolute,GIAC_CONTEXT) {
     gen val(subst(f,x,a,false,contextptr));
     return _evalf(absolute?_abs(val,contextptr):val,contextptr);
 }
@@ -1640,7 +1639,7 @@ gen compf(const gen & f,identificateur & x,gen & a,bool absolute,GIAC_CONTEXT) {
 /*
  * find zero of expression f(x) for x in [a,b] using Brent solver
  */
-gen find_zero(const gen & f,identificateur & x,gen & a,gen & b,GIAC_CONTEXT) {
+gen find_zero(const gen &f,identificateur &x,gen &a,gen &b,GIAC_CONTEXT) {
     gen I(symb_interval(a,b));
     gen var(symb_equal(x,I));
     vecteur sol(*_fsolve(makesequence(f,var,_BRENT_SOLVER),contextptr)._VECTptr);
@@ -1651,7 +1650,7 @@ gen find_zero(const gen & f,identificateur & x,gen & a,gen & b,GIAC_CONTEXT) {
  * Find point of maximum/minimum of unimodal expression f(x) in [a,b] using the
  * golden-section search.
  */
-gen find_peak(const gen & f,identificateur & x,gen & a_orig,gen & b_orig,GIAC_CONTEXT) {
+gen find_peak(const gen &f,identificateur &x,gen &a_orig,gen &b_orig,GIAC_CONTEXT) {
     gen a(a_orig),b(b_orig);
     gen c(b-(b-a)/GOLDEN_RATIO),d(a+(b-a)/GOLDEN_RATIO);
     while (is_strictly_greater(_abs(c-d,contextptr),epsilon(contextptr),contextptr)) {
@@ -1669,7 +1668,7 @@ gen find_peak(const gen & f,identificateur & x,gen & a_orig,gen & b_orig,GIAC_CO
 /*
  * Compute n Chebyshev nodes in [a,b].
  */
-vecteur chebyshev_nodes(gen & a,gen & b,int n,GIAC_CONTEXT) {
+vecteur chebyshev_nodes(gen &a,gen &b,int n,GIAC_CONTEXT) {
     vecteur nodes(1,a);
     for (int i=1;i<=n;++i) {
         nodes.push_back(_evalf((a+b)/2+(b-a)*symbolic(at_cos,((2*i-1)*cst_pi/(2*n)))/2,contextptr));
@@ -1732,11 +1731,11 @@ vecteur chebyshev_nodes(gen & a,gen & b,int n,GIAC_CONTEXT) {
  * minimax(min(1/cosh(3*sin(10x)),sin(9x)),x=-0.3..0.4,25)
  * minimax(when(x==0,0,exp(-1/x^2)),x=-1..1,30)
  */
-gen _minimax(const gen & g,GIAC_CONTEXT) {
+gen _minimax(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
         return gentypeerr(contextptr);
-    vecteur & gv = *g._VECTptr;
+    vecteur &gv=*g._VECTptr;
     if (gv.size()<3)
         return gensizeerr(contextptr);
     if (!gv[1].is_symb_of_sommet(at_equal) || !is_integer(gv[2]))
@@ -1750,7 +1749,7 @@ gen _minimax(const gen & g,GIAC_CONTEXT) {
     gen a(_evalf(s[0],contextptr)),b(_evalf(s[1],contextptr));
     if (!is_strictly_greater(b,a,contextptr))
         return gentypeerr(contextptr);
-    gen & f=gv[0];
+    gen &f=gv[0];
     int n=gv[2].val;
     gen threshold(1.02);  // threshold for stopping criterion
     // detect options
@@ -1758,7 +1757,7 @@ gen _minimax(const gen & g,GIAC_CONTEXT) {
     //bool poly=true;
     for (const_iterateur it=gv.begin()+3;it!=gv.end();++it) {
         if (it->is_symb_of_sommet(at_equal)) {
-            vecteur & p=*it->_SYMBptr->feuille._VECTptr;
+            vecteur &p=*it->_SYMBptr->feuille._VECTptr;
             if (p[0]==at_limit) {
                 if (!is_integer(p[1]) || !is_strictly_positive(p[1],contextptr))
                     return gentypeerr(contextptr);
@@ -1846,7 +1845,7 @@ gen _minimax(const gen & g,GIAC_CONTEXT) {
             break;
         }
     }
-    cout << "max. absolute error: " << best_emax << endl;
+    *logptr(contextptr) << "max. absolute error: " << best_emax << endl;
     return best_p;
 }
 static const char _minimax_s []="minimax";
@@ -1859,7 +1858,7 @@ define_unary_function_ptr5(at_minimax,alias_at_minimax,&__minimax,0,true)
  * degeneracy cases (assignment problems, for example, always have degenerate
  * solutions).
  */
-matrice north_west_corner(vecteur & supply,vecteur & demand,GIAC_CONTEXT) {
+matrice north_west_corner(vecteur &supply,vecteur &demand,GIAC_CONTEXT) {
     int m=supply.size(),n=demand.size();
     gen eps(exact(epsilon(contextptr)/2,contextptr));
     matrice X;
@@ -1894,7 +1893,7 @@ matrice north_west_corner(vecteur & supply,vecteur & demand,GIAC_CONTEXT) {
  * Stepping stone path method for determining a closed path "jumping" from one
  * positive element of X to another in the same row or column.
  */
-vector<pint> stepping_stone_path(vector<pint> & path_orig,matrice & X,GIAC_CONTEXT) {
+vector<pint> stepping_stone_path(vector<pint> &path_orig,matrice &X,GIAC_CONTEXT) {
     vector<pint> path(path_orig);
     int I=path.back().first,J=path.back().second;
     int m=X.size(),n=X.front()._VECTptr->size();
@@ -1922,7 +1921,7 @@ vector<pint> stepping_stone_path(vector<pint> & path_orig,matrice & X,GIAC_CONTE
  * Implementation of MODI (modified ditribution) method. It handles degenerate
  * solutions if they appear during the process.
  */
-void modi(matrice & P_orig,matrice & X,gen & M,GIAC_CONTEXT) {
+void modi(matrice &P_orig,matrice &X,gen &M,GIAC_CONTEXT) {
     matrice P(P_orig);
     int m=X.size(),n=X.front()._VECTptr->size();
     vecteur u(m),v(n);
@@ -1981,7 +1980,7 @@ void modi(matrice & P_orig,matrice & X,gen & M,GIAC_CONTEXT) {
             d=_min(makesequence(d,X[it->first][it->second]),contextptr);
         }
         for (int i=0;i<int(path.size());++i) {
-            gen & Xij=X[path.at(i).first]._VECTptr->at(path.at(i).second);
+            gen &Xij=X[path.at(i).first]._VECTptr->at(path.at(i).second);
             gen x(Xij+(i%2?-d:d));
             bool has_zero=false;
             for (vector<pint>::const_iterator it=path.begin();it!=path.end();++it) {
@@ -2050,11 +2049,11 @@ void modi(matrice & P_orig,matrice & X,gen & M,GIAC_CONTEXT) {
  *  tpsolve([1,1,1,1],[1,1,1,1],[[10,12,9,11],[5,10,7,8],[12,14,13,11],[8,15,11,9]])
  *      >> [[0,0,1,0],[1,0,0,0],[0,1,0,0],[0,0,0,1]]
  */
-gen _tpsolve(const gen & g,GIAC_CONTEXT) {
+gen _tpsolve(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
         return gentypeerr(contextptr);
-    vecteur & gv = *g._VECTptr;
+    vecteur &gv=*g._VECTptr;
     if (gv.size()<3)
         return gensizeerr(contextptr);
     if (gv[0].type!=_VECT || gv[1].type!=_VECT ||
@@ -2069,7 +2068,7 @@ gen _tpsolve(const gen & g,GIAC_CONTEXT) {
     gen M(sy.size()==1 && sy[0].type==_IDNT?sy[0]:0);
     gen ts(_sum(supply,contextptr)),td(_sum(demand,contextptr));
     if (ts!=td) {
-        cout << "Warning: transportation problem is not balanced" << endl;
+        *logptr(contextptr) << "Warning: transportation problem is not balanced" << endl;
         if (is_greater(ts,td,contextptr)) {
             demand.push_back(ts-td);
             P=mtran(P);
@@ -2102,7 +2101,7 @@ static const char _tpsolve_s []="tpsolve";
 static define_unary_function_eval (__tpsolve,&_tpsolve,_tpsolve_s);
 define_unary_function_ptr5(at_tpsolve,alias_at_tpsolve,&__tpsolve,0,true)
 
-gen compute_invdiff(int n,int k,vecteur & xv,vecteur & yv,map< pint,gen > & invdiff,GIAC_CONTEXT) {
+gen compute_invdiff(int n,int k,vecteur &xv,vecteur &yv,map< pint,gen > &invdiff,GIAC_CONTEXT) {
     pint I=make_pair(n,k);
     assert(n<=k);
     gen res(invdiff[I]);
@@ -2117,7 +2116,7 @@ gen compute_invdiff(int n,int k,vecteur & xv,vecteur & yv,map< pint,gen > & invd
     return invdiff[I]=(xv[k]-xv[n-1])/(d2-d1);
 }
 
-gen thiele(int k,vecteur & xv,vecteur & yv,identificateur & var,map< pint,gen > & invdiff,GIAC_CONTEXT) {
+gen thiele(int k,vecteur &xv,vecteur &yv,identificateur &var,map< pint,gen > &invdiff,GIAC_CONTEXT) {
     if (k==int(xv.size()))
         return gen(0);
     gen phi(compute_invdiff(k,k,xv,yv,invdiff,contextptr));
@@ -2165,11 +2164,11 @@ gen thiele(int k,vecteur & xv,vecteur & yv,identificateur & var,map< pint,gen > 
  *       -2.40784868317*x^2-7.55954205222*x+9.40462512097)/(x^6-1.24295718965*x^5
  *       -1.33526268624*x^4+4.03629272425*x^3-0.885419321*x^2-2.77913222418*x+3.45976823393)
  */
-gen _thiele(const gen & g,GIAC_CONTEXT) {
+gen _thiele(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
         return gentypeerr(contextptr);
-    vecteur & gv = *g._VECTptr;
+    vecteur &gv=*g._VECTptr;
     if (gv.size()<2)
         return gensizeerr(contextptr);
     vecteur xv,yv;
@@ -2209,13 +2208,13 @@ gen _thiele(const gen & g,GIAC_CONTEXT) {
             }
         }
         if (!sing.empty()) {
-            cout << "Warning, the interpolant has singularities in ";
+            *logptr(contextptr) << "Warning, the interpolant has singularities in ";
             for (int i=0;i<int(sing.size());++i) {
-                cout << "(" << sing[i][0] << "," << sing[i][1] << ")";
+                *logptr(contextptr) << "(" << sing[i][0] << "," << sing[i][1] << ")";
                 if (i<int(sing.size())-1)
-                    cout << (i<int(sing.size())-2?", ":" and ");
+                    *logptr(contextptr) << (i<int(sing.size())-2?", ":" and ");
             }
-            cout << endl;
+            *logptr(contextptr) << endl;
         }
     }
     else
@@ -2225,6 +2224,238 @@ gen _thiele(const gen & g,GIAC_CONTEXT) {
 static const char _thiele_s []="thiele";
 static define_unary_function_eval (__thiele,&_thiele,_thiele_s);
 define_unary_function_ptr5(at_thiele,alias_at_thiele,&__thiele,0,true)
+
+void add_identifiers(const gen &source,vecteur &dest,GIAC_CONTEXT) {
+    vecteur v(*_lname(source,contextptr)._VECTptr);
+    for (const_iterateur it=v.begin();it!=v.end();++it) {
+        if (!contains(dest,*it))
+            dest.push_back(*it);
+    }
+    dest=*_sort(dest,contextptr)._VECTptr;
+}
+
+int indexof(const gen &g,const vecteur &v) {
+    int n=v.size();
+    for (int i=0;i<n;++i) {
+        if (v.at(i)==g)
+            return i;
+    }
+    return -1;
+}
+
+/*
+ * 'nlpsolve' computes an optimum of a nonlinear objective function, subject to
+ * nonlinear equality and inequality constraints, using the COBYLA algorithm.
+ *
+ * Syntax
+ * ^^^^^^
+ *      nlpsolve(objective, [constr], [bd], [opts])
+ *
+ * - objective: objective function
+ * - constr: list of constraints
+ * - bd: sequence of arguments of type x=a..b, where x is a problem variable
+ *       and a,b are reals
+ * - opts: one of:
+ *       assume=nlp_nonnegative
+ *       maximize[=true]
+ *       nlp_initialpoint=[x1=a,x2=b,...]
+ *       nlp_precision=real
+ *       nlp_iterationlimit=intg
+ *
+ * If initial point is not given, it will be automatically generated. The given
+ * point does not need to be feasible. Note that choosing a good initial point
+ * is needed for obtaining a correct solution in some cases.
+ *
+ * Examples
+ * ^^^^^^^^
+ * (problems taken from:
+ *      www.ai7.uni-bayreuth.de/test_problem_coll.pdf
+ *      https://www.maplesoft.com/support/help/maple/view.aspx?path=Optimization%2FNLPSolve)
+ *
+ * nlpsolve(
+ *  (x1-10)^3+(x2-20)^3,
+ *  [(x1-5)^2+(x2-5)^2>=100,(x2-5)^2+(x1-6)^2<=82.81],
+ *  nlp_initialpoint=[x1=20.1,x2=5.84]) // problem 19, using initial point
+ * nlpsolve(sin(x1+x2)+(x1-x2)^2-1.5x1+2.5x2+1,x1=-1.5..4,x2=-3..3) // problem 5
+ * nlpsolve(ln(1+x1^2)-x2,[(1+x1^2)^2+x2^2=4]) // problem 7
+ * nlpsolve(
+ *  x1,[x2>=exp(x1),x3>=exp(x2)],maximize=true,
+ *  x1=0..100,x2=0..100,x3=0..10,nlp_initialpoint=[x1=1,x2=1.05,x3=2.9]) // problem 34 (modified)
+ * nlpsolve(-x1*x2*x3,[72-x1-2x2-2x3>=0],x1=0..20,x2=0..11,x3=0..42) // problem 36
+ * nlpsolve(2-1/120*x1*x2*x3*x4*x5,[x1<=1,x2<=2,x3<=3,x4<=4,x5<=5],assume=nlp_nonnegative) // problem 45
+ * nlpsolve(sin(x)/x,x=1..30) // Maple computes wrong result for this example, at least on their web page
+ * nlpsolve(x^3+2x*y-2y^2,x=-10..10,y=-10..10,nlp_initialpoint=[x=3,y=4],maximize) // Maple example
+ * nlpsolve(w^3*(v-w)^2+(w-x-1)^2+(x-y-2)^2+(y-z-3)^2,[w+x+y+z<=5,3z+2v=3],assume=nlp_nonnegative) // Maple example
+ * nlpsolve(sin(x)*Psi(x),x=1..20,nlp_initialpoint=[x=16]) // Maple example, needs an initial point
+ */
+gen _nlpsolve(const gen &g,GIAC_CONTEXT) {
+    if (g.type==_STRNG && g.subtype==-1) return g;
+    if (g.type!=_VECT || g.subtype!=_SEQ__VECT || g._VECTptr->size() < 2)
+        return gentypeerr(contextptr);
+    vecteur &gv=*g._VECTptr;
+    vecteur constr,vars,initp;
+    gen &obj=gv.front();
+    add_identifiers(obj,vars,contextptr);
+    const_iterateur it=gv.begin();
+    bool maximize=false;
+    int maxiter=RAND_MAX;
+    double eps=epsilon(contextptr);
+    if (gv.at(1).type==_VECT) {
+        constr=*gv.at(1)._VECTptr;
+        add_identifiers(constr,vars,contextptr);
+        ++it;
+    }
+    initp=vecteur(vars.size(),gen(1));
+    while (++it!=gv.end()) {
+        if (*it==at_maximize || (it->is_integer() && it->val==_NLP_MAXIMIZE))
+            maximize=true;
+        else if (it->is_symb_of_sommet(at_equal)) {
+            gen &lh=it->_SYMBptr->feuille._VECTptr->front();
+            gen &rh=it->_SYMBptr->feuille._VECTptr->back();
+            if (lh==at_assume && rh.is_integer() && rh.val==_NLP_NONNEGATIVE) {
+                for (const_iterateur jt=vars.begin();jt!=vars.end();++jt) {
+                    constr.push_back(symbolic(at_inferieur_egal,makevecteur(gen(0),*jt)));
+                }
+            } else if (lh==at_maximize && rh.is_integer())
+                maximize=(bool)rh.val;
+            else if (lh.is_integer() && lh.val==_NLP_INITIALPOINT && rh.type==_VECT) {
+                vecteur &pnt=*rh._VECTptr;
+                for (const_iterateur jt=pnt.begin();jt!=pnt.end();++jt) {
+                    gen var;
+                    if (jt->is_symb_of_sommet(at_equal) &&
+                            contains(vars,var=jt->_SYMBptr->feuille._VECTptr->front()))
+                        initp.at(indexof(var,vars))=jt->_SYMBptr->feuille._VECTptr->back();
+                }
+            } else if (lh.is_integer() && lh.val==_NLP_ITERATIONLIMIT && rh.is_integer())
+                maxiter=rh.val;
+            else if (lh.is_integer() && lh.val==_NLP_MAXIMIZE && rh.is_integer())
+                maximize=(bool)rh.val;
+            else if(lh.is_integer() && lh.val==_NLP_PRECISION && rh.type==_DOUBLE_)
+                eps=rh.DOUBLE_val();
+            else if (contains(vars,lh) && rh.is_symb_of_sommet(at_interval)) {
+                gen &lb=rh._SYMBptr->feuille._VECTptr->front();
+                gen &ub=rh._SYMBptr->feuille._VECTptr->back();
+                if (!is_inf(lh))
+                    constr.push_back(symbolic(at_superieur_egal,makevecteur(lh,lb)));
+                if (!is_inf(rh))
+                    constr.push_back(symbolic(at_inferieur_egal,makevecteur(lh,ub)));
+            }
+        }
+    }
+    if (constr.empty()) {
+        *logptr(contextptr) << "Error: no contraints detected" << endl;
+        return gensizeerr(contextptr);
+    }
+    bool feasible=true;
+    for (it=constr.begin();it!=constr.end();++it) {
+        if (it->is_symb_of_sommet(at_equal)) {
+            gen expr=_equal2diff(*it,contextptr);
+            if (!is_zero(_subs(makesequence(expr,vars,initp),contextptr))) {
+                feasible=false;
+                break;
+            }
+        } else if (it->is_symb_of_sommet(at_inferieur_egal) || it->is_symb_of_sommet(at_superieur_egal)) {
+            if (_evalb(_subs(makesequence(*it,vars,initp),contextptr),contextptr).val==0) {
+                feasible=false;
+                break;
+            }
+        } else {
+            *logptr(contextptr) << "Error: unrecognized constraint " << *it << endl;
+            return gentypeerr(contextptr);
+        }
+    }
+    gen sol,optval;
+    try {
+        if (!feasible) {
+            initp=*_fMin(makesequence(gen(0),constr,vars,initp),contextptr)._VECTptr;
+            if (is_undef(initp) || initp.empty()) {
+                *logptr(contextptr) << "Error: unable to generate a feasible initial point" << endl;
+                return undef;
+            }
+            *logptr(contextptr) << "Using a generated feasible initial point " << initp << endl;
+        }
+        gen args=makesequence(obj,constr,vars,initp,gen(eps),gen(maxiter));
+        if (maximize)
+            sol=_fMax(args,contextptr);
+        else
+            sol=_fMin(args,contextptr);
+    } catch (std::runtime_error &err) {
+        *logptr(contextptr) << "Error: " << err.what() << endl;
+        return undef;
+    }
+    if (is_undef(sol))
+        return undef;
+    optval=_subs(makesequence(obj,vars,sol),contextptr);
+    return gen(makevecteur(optval,_zip(makesequence(at_equal,vars,sol),contextptr)),_LIST__VECT);
+}
+static const char _nlpsolve_s []="nlpsolve";
+static define_unary_function_eval (__nlpsolve,&_nlpsolve,_nlpsolve_s);
+define_unary_function_ptr5(at_nlpsolve,alias_at_nlpsolve,&__nlpsolve,0,true)
+
+/*
+ * Returns the trigonometric polynomial in variable x passing through points
+ * with ordinate componets in 'data' and the abscissa components equally spaced between
+ * a and b (the first being equal a and the last being equal to b).
+ */
+gen triginterp(const vecteur &data,const gen &a,const gen &b,const identificateur &x,GIAC_CONTEXT) {
+    int n=data.size();
+    if (n<2)
+        return gensizeerr(contextptr);
+    int N=(n%2)==0?n/2:(n-1)/2;
+    gen T=(b-a)*fraction(n,n-1),twopi=2*_IDNT_pi(),X;
+    matrice cos_coeff=*_matrix(makesequence(N,n,0),contextptr)._VECTptr;
+    matrice sin_coeff=*_matrix(makesequence(N,n,0),contextptr)._VECTptr;
+    for (int k=0;k<n;++k) {
+        X=twopi*(a/T+fraction(k,n));
+        for (int j=1;j<=N;++j) {
+            cos_coeff[j-1]._VECTptr->at(k)=cos(j*X,contextptr);
+            sin_coeff[j-1]._VECTptr->at(k)=sin(j*X,contextptr);
+        }
+    }
+    gen tp=_mean(data,contextptr);
+    for (int j=0;j<N;++j) {
+        gen c=fraction(((n%2)==0 && j==N-1)?1:2,n);
+        gen ak=_evalc(trig2exp(scalarproduct(data,*cos_coeff[j]._VECTptr,contextptr),contextptr),contextptr);
+        gen bk=_evalc(trig2exp(scalarproduct(data,*sin_coeff[j]._VECTptr,contextptr),contextptr),contextptr);
+#if 1
+        tp+=_simplify(c*ak,contextptr)*cos(_ratnormal((j+1)*twopi/T,contextptr)*x,contextptr);
+        tp+=_simplify(c*bk,contextptr)*sin(_ratnormal((j+1)*twopi/T,contextptr)*x,contextptr);
+#else
+        tp+=_ratnormal(c*ak,contextptr)*cos(_ratnormal((j+1)*twopi/T,contextptr)*x,contextptr);
+        tp+=_ratnormal(c*bk,contextptr)*sin(_ratnormal((j+1)*twopi/T,contextptr)*x,contextptr);
+#endif
+    }
+    return tp;
+}
+
+gen _triginterp(const gen &g,GIAC_CONTEXT) {
+    if (g.type==_STRNG && g.subtype==-1) return g;
+    if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
+        return gentypeerr(contextptr);
+    vecteur &args=*g._VECTptr;
+    if (args.size()<2)
+        return gensizeerr(contextptr);
+    if (args.front().type!=_VECT)
+        return gentypeerr(contextptr);
+    vecteur &data=*args.front()._VECTptr;
+    gen x,ab,a,b,&vararg=args.at(1);
+    if (vararg.is_symb_of_sommet(at_equal) &&
+               (x=_lhs(vararg,contextptr)).type==_IDNT &&
+               (ab=_rhs(vararg,contextptr)).is_symb_of_sommet(at_interval)) {
+        a=_lhs(ab,contextptr);
+        b=_rhs(ab,contextptr);
+    } else if (args.size()==4 && (x=args.back()).type==_IDNT) {
+        a=args.at(1);
+        b=args.at(2);
+    } else return gentypeerr(contextptr);
+    gen tp=triginterp(data,a,b,*x._IDNTptr,contextptr);
+    if (is_approx(data) || is_approx(a) || is_approx(b))
+        tp=_evalf(tp,contextptr);
+    return tp;
+}
+static const char _triginterp_s []="triginterp";
+static define_unary_function_eval (__triginterp,&_triginterp,_triginterp_s);
+define_unary_function_ptr5(at_triginterp,alias_at_triginterp,&__triginterp,0,true)
 
 #ifndef NO_NAMESPACE_GIAC
 }

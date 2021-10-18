@@ -1,4 +1,7 @@
 var UI ={
+  mailto:'',
+  from:'',
+  ready:false,
   focusaftereval:true,
   docprefix:"http://www-fourier.ujf-grenoble.fr/%7eparisse/giac/doc/fr/cascmd_fr/",
   base_url:"http://www-fourier.ujf-grenoble.fr/%7eparisse/",
@@ -224,6 +227,8 @@ var UI ={
   sheet_rowadd:function(n){
     var field=document.getElementById('matr_nrows');
     field.value=eval(field.value)+n;
+    var f=document.getElementById('stat_lmax');
+    f.value++;
     UI.assistant_matr_setdisplay();
   },
   sheet_coladd:function(n){
@@ -254,6 +259,7 @@ var UI ={
     // if cmd=='' convert to CAS sheet, eval and convert back
     // else calls convert(matrix,cmd), where cmd='command,row,col',
     // command=0 copy down, =1 copy right
+    // console.log('sheet_recompute',cmd);
     var R=UI.assistant_matr_maxrows;
     if (!UI.is_sheet || R==0) return;
     var s='spreadsheet[';
@@ -273,6 +279,7 @@ var UI ={
       s='convert('+s+',cell,'+cmd+')';
     //console.log(s);
     s=UI.caseval_noautosimp(s);
+    if (s==' Non_evalue_Cliquer_sur_Exec ') return;
     //console.log(s);
     s=eval(s);
     UI.assistant_matr_source=s;
@@ -391,11 +398,11 @@ var UI ={
 	if (field!==null) oldval=field.value;
 	if (UI.assistant_matr_textarea>0)
 	  s+='<td class="matrixcell"><textarea class="matrixcell" \
-onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this); return false;" \
+onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this,true); return false;" \
 onclick="UI.focused=this;" onblur="UI.sheet_blur(this)" onfocus="nextSibling.style.display=\'none\';UI.focused=this;" \
 id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);" id="matr_span'+i+'_'+j+'"></div></td>';
 	else
-	  s+='<td class="matrixcell" onclick="UI.sheet_onfocus(lastChild);"><input class="matrixcell" onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this); return false;" onclick="UI.focused=this;" onblur="UI.sheet_blur(this)" onfocus="nextSibling.style.display=\'none\';UI.focused=this;" id="matr_case'+i+'_'+j+'" value="'+oldval+'" /><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);"  id="matr_span'+i+'_'+j+'"></div></td>';
+	  s+='<td class="matrixcell" onclick="UI.sheet_onfocus(lastChild);"><input class="matrixcell" onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this,true); return false;" onclick="UI.focused=this;" onblur="UI.sheet_blur(this)" onfocus="nextSibling.style.display=\'none\';UI.focused=this;" id="matr_case'+i+'_'+j+'" value="'+oldval+'" /><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);"  id="matr_span'+i+'_'+j+'"></div></td>';
       }
       s += '</tr>\n';
     }
@@ -407,10 +414,12 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     //mydiv.style.display='none';
   },
   sheet_blur:function(field){
-    //UI.cb_matr_enter(field); return;
-    //field.style.display='none'; field.nextSibling.style.display='inline';
+    UI.cb_matr_enter(field,false); 
+    //console.log(field.innerHTML);
+    //console.log(field.nextSibling.innerHTML);
+    field.style.display='none'; field.nextSibling.style.display='inline';
   },
-  cb_matr_enter:function(field){
+  cb_matr_enter:function(field,focusnext){
     var s='csv2gen("'+field.value+'",string)';
     //console.log(s);
     var se=UI.caseval_noautosimp(s);
@@ -434,7 +443,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       }
       UI.sheet_recompute('');
       var tmp='matr_span'+i+'_'+j; // console.log(tmp);
-      document.getElementById(tmp).click();
+      if (focusnext) document.getElementById(tmp).click();
       return;
     }
     else {
@@ -466,7 +475,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	  if (iend>=nr) iend=0; if (j0>=nc) j0=0;
 	  UI.sheet_recompute('');
 	  tmp='matr_span'+iend+'_'+j0;
-	  document.getElementById(tmp).click();
+	  if (focusnext) document.getElementById(tmp).click();
 	}
 	return;
       }
@@ -483,7 +492,8 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     for (test=0;test<7;++test){
       if (form.adequation[test].checked) break;
     }
-    if (test==6 || test==7){
+    //console.log(test);
+    if (test==0 || test==1){
       document.getElementById('matr').style.display='none';
       document.getElementById('matr_matr').style.display='none';
     }
@@ -548,7 +558,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	var alphaf=document.getElementById('adequation_alpha');
 	//console.log(alphaf.value); return;
 	if (alphaf.value.length) alpha=eval(alphaf.value);
-	tmp = tmp+alpha/2+'),'+tmp+(1-alpha/2)+');';
+	tmp = tmp+alpha/2+'),\n'+tmp+(1-alpha/2)+');';
       }
       else {
 	var argu=document.getElementById('law_arg');
@@ -604,14 +614,14 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       tmp += ':;\n';
       var submat=mat+'['+form.stat_lmin.value+'..'+form.stat_lmax.value+','+form.stat_cmin.value+'..'+form.stat_cmax.value+']';
       if (stat12){
-	if (form.stat_mean.checked) tmp+='mean('+submat+');';
-	if (form.stat_stddev.checked) tmp+='stddev('+submat+');';
-	if (form.stat_quartiles.checked) tmp+='quartiles('+submat+');';
-	if (form.stat_histo.checked) tmp+='histogram('+submat+',0,1);';
-	if (form.stat_moustache.checked) tmp+='moustache('+submat+');';
-	if (form.stat_scatter.checked) tmp+='scatterplot('+submat+');';
-	if (form.stat_polygonscatter.checked) tmp+='polygonscatterplot('+submat+');';
-	if (form.stat_linreg.checked) tmp+='linear_regression_plot('+submat+');';    
+	if (form.stat_mean.checked) tmp+='mean('+submat+');\n';
+	if (form.stat_stddev.checked) tmp+='stddev('+submat+');\n';
+	if (form.stat_quartiles.checked) tmp+='quartiles('+submat+');\n';
+	if (form.stat_histo.checked) tmp+='histogram('+submat+',0,1);\n';
+	if (form.stat_moustache.checked) tmp+='moustache('+submat+');\n';
+	if (form.stat_scatter.checked) tmp+='scatterplot('+submat+');\n';
+	if (form.stat_polygonscatter.checked) tmp+='polygonscatterplot('+submat+');\n';
+	if (form.stat_linreg.checked) tmp+='linear_regression_plot('+submat+');\n';    
       }
       else {
 	var alpha=0.05,test,hyp,mu=form.adequation_mu.value,sigma=0,dof=1;
@@ -625,12 +635,12 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	for (hyp=0;hyp<3;++hyp){
 	  if (form.adequation_alt[hyp].checked) break;
 	}
-	if (test==0) tmp += 'chisquaret(';
-	if (test==1) tmp += 'kolmogorovt(';
-	if (test==2) tmp += 'wilcoxont(';
+	if (test==3) tmp += 'chisquaret(';
+	if (test==4) tmp += 'kolmogorovt(';
+	if (test==5) tmp += 'wilcoxont(';
 	var l1=form.stat_lmin.value,l2=form.stat_lmax.value,
 	    c1=form.stat_cmin.value,c2=form.stat_cmax.value;
-	if (test>=0 && test<=2){
+	if (test>=3 && test<=5){
 	  if (l2-l1>c2-c1){ // lines
 	    tmp += mat+'['+l1+'..'+l2+','+c1+'],';
 	    tmp += mat+'['+l1+'..'+l2+','+c2+']';
@@ -641,7 +651,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	    tmp += mat+'['+l2+','+c1+'..'+c2+']';
 	    dof=c2-c1;
 	  }
-	  if (test==2){
+	  if (test==5){
 	    if (hyp==0) tmp += ',\'<\'';
 	    if (hyp==1) tmp += ',\'!=\'';
 	    if (hyp==2) tmp += ',\'>\'';
@@ -649,32 +659,32 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	  }
 	  tmp += ');';
 	}
-	if (test==0) tmp += 'chisquare_icdf('+dof+','+(1-alpha)+');';
-	if (test==3) tmp += 'normalt(';
-	if (test==4) tmp += 'studentt(';
-	if (test==6){
+	if (test==3) tmp += 'chisquare_icdf('+dof+','+(1-alpha)+');';
+	if (test==6) tmp += 'normalt(';
+	if (test==7) tmp += 'studentt(';
+	if (test==0){
 	  var n=form.confiance_n.value,p=form.confiance_p.value;
 	  var coeff='1/2';
 	  if (n>100) coeff='sqrt('+(n/(n-1)*p*(1-p))+')';
 	  tmp='p:='+p+';n:='+n+';alpha:='+alpha+';\ndelta_p:='+coeff+'*normald_icdf(0,1,(1-alpha/2))/sqrt(n);';
-	  tmp +='\n[p-delta_p,p+delta_p];';
+	  tmp +='\n[p-delta_p,p+delta_p];\n';
 	  if (n*p<5 || n*(1-p)<5) tmp="Erreur : n*p et n*(1-p) doivent etre plus grand que 5"; 
 	  UI.insert(UI.focused,tmp);
 	  return;
 	}
-	if (test==7){
+	if (test==1){
 	  var n=form.confiance_n_.value,mu=form.confiance_mu.value,sigma=form.confiance_sigma.value;
-	  tmp = 'mu:='+mu+'; sigma:='+sigma+';';
-	  tmp += 'delta:=sigma/sqrt('+n+')*student_icdf('+n+','+(1-alpha/2)+');';
+	  tmp = 'mu:='+mu+'; sigma:='+sigma+';\n';
+	  tmp += 'delta:=sigma/sqrt('+n+')*student_icdf('+n+','+(1-alpha/2)+');\n';
 	  tmp += '[mu-delta,mu+delta]';
 	}
-	if (test==5){
-	  tmp += 'mu:=mean(flatten('+submat+'));'
+	if (test==2){
+	  tmp += 'mu:=mean(flatten('+submat+'));\n'
 	  dof=(c2-c1+1)*(l2-l1+1)-1;
-	  tmp += 'delta:=stddevp(flatten('+submat+'))/sqrt('+dof+')*student_icdf('+dof+','+(1-alpha/2)+');';
+	  tmp += 'delta:=stddevp(flatten('+submat+'))/sqrt('+dof+')*student_icdf('+dof+','+(1-alpha/2)+');\n';
 	  tmp += '[mu-delta,mu+delta]';
 	}
-	if (test==3 || test==4){
+	if (test==6 || test==7){
 	  tmp += 'flatten('+submat+'),'+mu+',';
 	  if (sigma>0)
 	    tmp += sigma+',';
@@ -753,8 +763,10 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	document.getElementById('matr_ligne'+i).style.display='table-row';
 	if (UI.is_sheet){
 	  for (var j=0;j<ncols.value;j++){
-	    matr[i][j].nextSibling.style.display='inline';
-	    matr[i][j].parentNode.style.display='';
+	    var f=matr[i][j];
+	    // console.log(i,j,f.innerHTML);
+	    f.nextSibling.style.display='inline';
+	    f.parentNode.style.display='';
 	  }
 	}
 	else {
@@ -963,6 +975,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     return value;
   },
   caseval: function(text){
+    if (!UI.ready) return ' Non_evalue_Cliquer_sur_Exec ';
     var docaseval = Module.cwrap('caseval',  'string', ['string']);
     var value=text;
     value=value.replace(/%22/g,'\"'); 
@@ -975,6 +988,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     return s;
   },
   caseval_noautosimp: function(text){
+    if (!UI.ready) return ' Non_evalue_Cliquer_sur_Exec ';
     var docaseval = Module.cwrap('caseval',  'string', ['string']);
     var value=text;
     value=value.replace(/%22/g,'\"'); 
@@ -1031,7 +1045,15 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
   ckenter_comment: function(event,field){
     //console.log(event.keyCode,event.shiftKey);
     var key = event.keyCode;
-    if (key != 13 || !event.ctrlKey) return true;
+    if (key==13) UI.resizetextarea(field);
+    var skipline=key != 13 || !event.ctrlKey;
+    if (skipline && key==13 && !event.shiftKey){ // check enter at beginning of field
+      var pos=field.selectionStart;
+      var end=field.selectionEnd;
+      if (pos==0 && end==0)
+	skipline=false;
+    }
+    if (skipline) return true;
     UI.editcomment_end(field.nextSibling);
     var par=field.parentNode;
     par=par.parentNode;
@@ -1105,6 +1127,19 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       }
       var p = s.split('=');
       if (p[0]=='') continue;
+      if (p[0]=='from'){
+	UI.mailto=decodeURIComponent(p[1]);
+	continue;
+      }
+      if (p[0]=='filename'){
+	var out=document.getElementById("outputfilename");
+	var s=decodeURIComponent(p[1]);
+	out.value=s;
+	//console.log(out);
+	if (!UI.detectmob())
+	  out.style.width=(s.length*10)+"px";
+	continue;
+      }
       if (p[0]=='entree' || p[0]=='cmentree'){
 	cmentree.setValue( decodeURIComponent(p[1]));
 	clearcmd=false;
@@ -1126,16 +1161,27 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       document.getElementById(p[0]).value = decodeURIComponent(p[1]);
     } // end for (i=...)
     if (doexec){ UI.exec(hist,0); }
-    if (clearcmd) cmentree.setValue('');
+    if (clearcmd && cmentree) cmentree.setValue('');
     if (hist.firstChild!=null) hist.firstChild.scrollIntoView();
   },
   link: function(start){
     var s=UI.makelink(start);
-    //console.log(s);
+    //console.log(UI.from);
     UI.createCookie('xcas_session',s,365);
     if (s.length>0){
-      var smail = UI.base_url+"xcasfr.html#exec&"+s;
-      var s2 = "xcasfr.html#exec&"+s;
+      var s2 = "#exec&"+s;
+      var smail = UI.base_url+"xcasfr.html#exec&";
+      var filename=document.getElementById("outputfilename").value;
+      var pos=filename.search('@');
+      if (pos<0 || pos>=filename.length)
+	filename=UI.from+'@'+filename;
+      if (pos==0)
+	filename=filename.substr(1,filename.length-1);
+      filename='filename='+encodeURIComponent(filename)+'&';
+      if (UI.from.length)
+	filename+='from='+encodeURIComponent(UI.from)+'&';
+      s=filename+s;
+      smail=smail+s;
       s = UI.base_url+"xcasfr.html#"+s;
       //Module.print(s);
       if (window.location.href.substr(0,4)=='file' && !UI.detectmob()){
@@ -1143,7 +1189,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       }
       else
 	document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Clone</a>';
-      document.getElementById('themailto').innerHTML='<a href="mailto:?subject=session Xcas&body=Bonjour%0d%0aVeuillez suivre ce lien : <'+UI.rewritestring(smail)+'>">Mail</a>';
+      document.getElementById('themailto').innerHTML='<a href="mailto:'+UI.mailto+'?subject=session Xcas&body=Bonjour%0d%0aVeuillez suivre ce lien : <'+UI.rewritestring(smail)+'>">Mail</a>';
     }
   },
   rewritestring: function(s){
@@ -1313,7 +1359,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     form.outdiv_width.value=Math.floor(hw/2);
     document.getElementById('mathoutput').style.maxWidth=hw+'px';
     var mh=Math.floor(hh*.61);
-    if (UI.detectmob() && UI.editline) mh=Math.floor(hh*.8);
+    if (UI.editline && UI.detectmob()) mh=Math.floor(hh*.8);
     //console.log('set_config_width hh',document.getElementById('divoutput').style.maxHeight,mh);
     document.getElementById('divoutput').style.maxHeight=mh+'px';
     var w=form.outdiv_width.value,h;
@@ -1322,11 +1368,12 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     var hi=hw-w-153;
     if (!UI.qa){ hi=hw-130; w=hi; }
     var hb=29; if (hh>=400) hb=32; if (hh>=500) hb=34; if (hh>600) hb=37;
-    mh=form.outdiv_height.value;
+    //mh=form.outdiv_height.value;
     var cms=mh-2*hb; // codemirror scrollbar max height
     if (UI.focused==cmentree) cms=Math.floor(hw*.67);
     s='h1,h2,h3 { display:inline; font-size:1em;}\ninput[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+mh+'px;  overflow: auto;}\n.filenamecss {width:80px;height:20px}\n.historyinput {width:'+hi+'px;}\n.bouton{vertical-align:bottom; height:'+hb+'px;}\n.CodeMirror-scroll {height:auto; max-height:'+cms+'px;}\n.CodeMirror {border: 1px solid black;  height:auto; min-width:'+hi+'px;}\n  dt {font-family: monospace; color: #666;}';
-    // console.log(s);// Module.print(s);
+    //console.log(mh,cms);// Module.print(s);
+    //Module.print(mh,cms);
     var st=document.getElementById('document_style');
     st.innerHTML=s;
     var kbd_l=["add_newline","add_infer","add_super","add_left_par","add_right_par",
@@ -1353,7 +1400,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 		  "add_boucle","add_function","add_debug","add_efface","add_avance",
 		  "add_recule","add_tourne_gauche","add_tourne_droite",
 		  "add_pas_de_cote","add_saute","add_crayon","add_rond","add_disque",
-		  "add_rectangle_plein","add_triangle_plein","add_ecris","add_repete","tortue_maillage"];
+		  "add_rectangle_plein","add_triangle_plein","add_ecris","add_repete","tortue_maillage","tortue_clear"];
     w=Math.floor(hw/12)-1; w=w+"px"; 
     h=Math.floor(hh/20); if (h<34) h=34; h=h+"px"; // console.log(hw,w,hh,h);
     for (var i=0;i<kbd_l.length;i++){
@@ -1380,6 +1427,9 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
   },
   config_string:function(){
     var form=document.getElementById('config');
+    UI.from=form.from.value;
+    UI.mailto=form.to.value;
+    //console.log(UI.from);
     if (form.qa.checked) UI.qa=true; else UI.qa=false;
     if (form.usecm.checked) UI.usecm=true; else UI.usecm=false; UI.switchcm();
     if (form.fixeddel.checked) UI.fixeddel=true; else UI.fixeddel=false; 
@@ -1425,6 +1475,8 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.addhelp(' ',s);
     document.getElementById('config').style.display='none';
     if (UI.focusaftereval) UI.focused.focus();
+    UI.createCookie('xcas_from',form.from.value,10000);
+    UI.createCookie('xcas_to',form.to.value,10000);
     UI.createCookie('xcas_digits',form.digits_mode.value,10000);
     UI.createCookie('xcas_angle_radian',form.angle_mode.checked?1:-1,10000);
     UI.createCookie('xcas_python_mode',form.python_mode.checked?1:-1,10000);
@@ -1483,6 +1535,12 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     document.getElementById('startup1').style.display='none';
     document.getElementById('startup2').style.display='none';
   },
+  hide_show:function(tmp){
+    if(tmp.style.display=='none')
+      tmp.style.display='block';
+    else
+      tmp.style.display='none'
+  },
   loadfile:function(oFiles){
     var nFiles = oFiles.length;
     for (var nFileId = 0; nFileId < nFiles; nFileId++) {
@@ -1530,7 +1588,9 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     return (c>=48 && c<=57) || (c>=65 && c<=91) || (c>=97 && c<=123) || c==95;
   },
   erase_button:function(newline){
-    var s='<td><button class="bouton" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">&#x232b;</button>';
+    var s='<td><button class="bouton" onclick=\'UI.erase(this)\' title="';
+    s += UI.langue==-1?'placer ce niveau dans la corbeille':'throw this level in the trash';
+    s += '">&#x232b;</button>';
     /* if (newline)
        s+='<br>';
        s +='<button class="bouton" onclick=\'UI.reeval(UI.focused,"",false)\'>ok</button>';
@@ -1541,10 +1601,24 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
   move_buttons:function(newline){
     var s='<tr onmouseenter="UI.switch_buttons(this,true)" onmouseleave="if (!UI.fixeddel) UI.switch_buttons(this,false)">';
     // s += '<td>&bull;</td>'; // f=f.nextSibling in switch_buttons
-    if (newline)
-      s += '<td><button style="width:20px;height:28px;" onclick="UI.moveup(this)" title="d&eacute;placer vers le haut">↑</button><br><button style="width:20px;height:28px;" onclick="UI.movedown(this)" title="d&eacute;placer vers la bas">↓</button></td><td></td>';
-    else
-      s += '<td><button style="width:20px;height:16px;" onclick="UI.moveup(this)" title="d&eacute;placer vers le haut">↑</button><button style="width:20px;height:16px;" onclick="UI.movedown(this)" title="d&eacute;placervers la bas">↓</button></td><td><button style="width:20px;height:16px;" onclick="for (var i=0;i<5;i++) UI.moveup(this)" title="d&eacute;placer de 5 vers le haut">↑↑</button><button style="width:20px;height:16px;" onclick="for (var i=0;i<5;i++) UI.movedown(this)" title="d&eacute;placer de 5  vers la bas">↓↓</button></td>';
+    if (newline){
+      s += '<td><button style="width:20px;height:28px;" onclick="UI.moveup(this)" title="';
+      s += UI.langue==-1?'d&eacute;placer vers le haut':'move level up';
+      s += '">↑</button><br><button style="width:20px;height:28px;" onclick="UI.movedown(this)" title="';
+      s += UI.langue==-1?'d&eacute;placer vers la bas':'move level down';
+      s += '">↓</button></td><td></td>';
+    }
+    else {
+      s += '<td><button style="width:20px;height:16px;" onclick="UI.moveup(this)" title="';
+      s += UI.langue==-1?'d&eacute;placer vers le haut':'move level up';
+      s += '">↑</button><button style="width:20px;height:16px;" onclick="UI.movedown(this)" title="';
+      s += UI.langue==-1?'d&eacute;placer vers la bas':'move level down';
+      s += '">↓</button></td><td><button style="width:20px;height:16px;" onclick="for (var i=0;i<5;i++) UI.moveup(this)" title="';
+      s += UI.langue==-1? 'd&eacute;placer de 5 vers le haut':'move level 5 times up';
+      s += '">↑↑</button><button style="width:20px;height:16px;" onclick="for (var i=0;i<5;i++) UI.movedown(this)" title="';
+      s += UI.langue==-1?'d&eacute;placer de 5 vers la bas':'move level 5 times down';
+      s += '">↓↓</button></td>';
+    }
     return s;
   },
   skip_buttons:function(field){
@@ -1654,10 +1728,15 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     }
     value=value.substr(n,value.length-n);
     for (n=value.length-1;n>=0;n--){
-      if (value.charCodeAt(n)>32) break;
+      if (value.charCodeAt(n)>32 || value.charCodeAt(n)==10) break;
     }
     value=value.substr(0,n+1);
-    if (cmentree.type!='textarea') cmentree.setValue(value); else entree.value=value;
+    if (value.charCodeAt(n)!=10){
+      if (cmentree.type!='textarea')
+	cmentree.setValue(value);
+      else
+	entree.value=value;
+    }
     var s=' ';
     if (value.length >= 2 && value.substr(0,2)=='//'){
       out=value;
@@ -1687,7 +1766,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       var f=mathoutput.lastChild.firstChild.firstChild.nextSibling.nextSibling.firstChild.nextSibling;
       //console.log(f);
       f.click();
-      UI.selectionne();
+      //UI.selectionne();
     }
     // mathoutput.innerHTML += add;
     UI.render_canvas(mathoutput.lastChild);
@@ -1720,8 +1799,8 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.eval_cmdline1end(value,out,s);
   },
   set_locale: function(){
-    if (UI.langue==-1){ 
-      var out=UI.caseval('set_language(1); evalf(1,30);');
+    if (UI.langue<=0){ 
+      var out=UI.caseval('set_language('+-UI.langue+'); ');
       //UI.langue=1; // commente sinon la langue n'est pas toujours reconnue
     }
     if (UI.initconfigstring!=''){
@@ -1796,6 +1875,14 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.insert(field,"<em></em>");
     UI.moveCaret(field,-5);
   },
+  add_red:function(field){
+    UI.insert(field,"<font color='red'></font>");
+    UI.moveCaret(field,-7);
+  },
+  add_green:function(field){
+    UI.insert(field,"<font color='green'></font>");
+    UI.moveCaret(field,-7);
+  },
   add_tt:function(field){
     UI.insert(field,"<tt></tt>");
     UI.moveCaret(field,-5);
@@ -1816,22 +1903,58 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.insert(field,"<h2></h2>");
     UI.moveCaret(field,-5);
   },
+  addcommentafter: function(field){
+    var f=field.parentNode.parentNode.parentNode;
+    var p=f.parentNode;
+    add=UI.addcomment('');
+    var tr=document.createElement("TABLE"); 
+    tr.innerHTML += add;
+    if (f.nextSibling){
+      f=f.nextSibling;
+      p.insertBefore(tr.firstChild,f);
+      f=f.previousSibling;
+    }
+    else {
+      f=p.appendChild(tr.firstChild);
+    }
+    f.firstChild.firstChild.nextSibling.nextSibling.firstChild.nextSibling.click();
+  },
   addcomment: function(text){
     UI.show_history123();
     var s=UI.move_buttons(!UI.qa);
     var t=text.substr(2,text.length-2);
-    s += '<td colspan="2"><span style="display:none"><textarea title="Ctrl-Enter ou bouton ok pour valider ce commentaire" onkeypress="UI.ckenter_comment(event,this)" row="5" cols="60">'+t+'</textarea>';
-    s += '<button class="bouton" title="Valide ce commentaire" onclick="UI.editcomment_end(this)">&#x2705;</button>';
-    s += '<br><button onmousedown="event.preventDefault()" title="Ajoute $ $ pour ins&eacute;rer des maths" class="bouton" onclick="UI.add_math(UI.focused)">math</button>';
-    s += '<button onmousedown="event.preventDefault()" title="Passe en police fixe" class="bouton" onclick="UI.add_tt(UI.focused)">fixe</button>';
-    s += '<button title="Passe en gras" onmousedown="event.preventDefault()"  class="bouton" onclick="UI.add_strong(UI.focused)">gras</button>';
-    s += '<button title="Passe en italique" onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_em(UI.focused)">italique</button>';
-    s += '<button onmousedown="event.preventDefault()" title="Ins&egrave;re une liste" class="bouton" onclick="UI.add_list(UI.focused)">liste</button>';
-    s += '<button onmousedown="event.preventDefault()" title="Ins&egrave;re une listenum&eacute;rot&eacute;e" class="bouton" onclick="UI.add_enum(UI.focused)">num&eacute;rot&eacute;e</button>';
-    s += '<button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_h2(UI.focused)">sous</button>';
-    s += '<button onmousedown="event.preventDefault()" title="Ins&egrave;re un titre" class="bouton" onclick="UI.add_h1(UI.focused)">titre</button>';
+    s += '<td colspan="2"><span style="display:none"><textarea title="';
+    s += UI.langue==-1?'Ctrl-Enter ou &#x2705; pour valider ce commentaire':'Ctrl-Enter or &#x2705; will update this comment';
+    s += '" onkeypress="UI.ckenter_comment(event,this)" row="5" cols="60">'+t+'</textarea>';
+    s += '<button class="bouton" title="';
+    s += UI.langue==-1?'Valide ce commentaire':'Update comment';
+    s += '" onclick="UI.editcomment_end(this)">&#x2705;</button>';
+    s += '<br><button onmousedown="event.preventDefault()" title="';
+    s += UI.langue==-1?'Ajoute $ $ pour ins&eacute;rer des maths':'Add $ $ to insert maths';
+    s += '" class="bouton" onclick="UI.add_math(UI.focused)">math</button>';
+    s += '<button onmousedown="event.preventDefault()" title="'
+    s += UI.langue==-1?'Passe en police fixe':'Fixed size police';
+    s += '" class="bouton" onclick="UI.add_tt(UI.focused)"><tt>Abc</tt></button>';
+    s += '<button title="';
+    s += UI.langue==-1?'Passe en gras':'Boldface';
+    s += '" onmousedown="event.preventDefault()"  class="bouton" onclick="UI.add_strong(UI.focused)"><strong>Abc</strong></button>';
+    s += '<button title="';
+    s += UI.langue==-1?'Passe en italique':'italics';
+    s += '" onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_em(UI.focused)"><em>Abc</em></button>';
+    s += '<button title="Red/Rouge" onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_red(UI.focused)"><font color="red">Abc</font></button>';
+    s += '<button title="Green/Vert" onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_green(UI.focused)"><font color="green">Abc</font></button>';
+    s += '<button onmousedown="event.preventDefault()" title="';
+    s += UI.langue==-1?'Ins&egrave;re une liste':'List insertion';
+    s += '" class="bouton" onclick="UI.add_list(UI.focused)">list</button>';
+    s += '<button onmousedown="event.preventDefault()" title="';
+    s += UI.langue==-1?'Ins&egrave;re une listenum&eacute;rot&eacute;e':'Numbered list insertion';
+    s += '" class="bouton" onclick="UI.add_enum(UI.focused)">num</button>';
+    s += '<button style="display:none" onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_h2(UI.focused)">sous</button>';
+    s += UI.langue==-1? '<button onmousedown="event.preventDefault()" title="Ins&egrave;re un titre" class="bouton" onclick="UI.add_h1(UI.focused)">titre</button>':'<button onmousedown="event.preventDefault()" title="Insert title" class="bouton" onclick="UI.add_h1(UI.focused)">title</button>';
     s += '</span><span onclick="UI.editcomment1(this)">'+UI.rendercomment(t)+'</span></td>';
-    s += '<td> <button title="Editer ce commentaire" class="bouton" onclick="UI.editcomment2(this);">&#x270e;</td>';
+    s += '<td> <button title="';
+    s += UI.langue==-1?'Editer ce commentaire':'Edit this comment';
+    s += '" style="width:20px;height:30px;" onclick="UI.editcomment2(this);">&#x270e;</td>';
     s += UI.erase_button(!UI.qa);
     return s;
   },
@@ -1841,6 +1964,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     prev.firstChild.style.display='inline';
     // console.log(prev.firstChild.firstChild.innerHTML);
     UI.focused=prev.firstChild.firstChild;
+    UI.resizetextarea(UI.focused);
     UI.focused.focus();
     prev.nextSibling.style.display='none';
   },
@@ -1848,6 +1972,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     var prev=field.parentNode.previousSibling;
     prev.firstChild.style.display='inline';
     UI.focused=prev.firstChild.firstChild;
+    UI.resizetextarea(UI.focused);
     UI.focused.focus();
     prev.lastChild.style.display='none';
     field.parentNode.style.display='none';
@@ -1916,6 +2041,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	  field=field.firstChild;
 	  if (field){
 	    var cm=field.nextSibling.CodeMirror;
+	    if (field.id='entree') cm=cmentree;
 	    if (cm){
 	      if (cmd==0){ CodeMirror.commands.find(cm); return;}
 	      if (cmd==1){ CodeMirror.commands.findNext(cm); return;}
@@ -1954,6 +2080,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     }
   },
   reeval: function(field,postcmd,focusnextsibling){
+    var field_=field;
     // field=field.previousSibling;
     UI.set_config_width();
     if (field.type!='textarea'){ var t=field.getTextArea(); t.value=field.getValue();field=t;}
@@ -1980,10 +2107,17 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	  par=par.firstChild;
 	  if (par.style.display=='none'){ // commentaire
 	    par=par.nextSibling;
-	    par.click();
+	    if (par.CodeMirror){
+	      par=par.CodeMirror;
+	      UI.focused=par;
+	      par.focus();
+	    }
+	    else
+	      par.click();
 	  }
-	  else
+	  else {
 	    par.focus();
+	  }
 	}
       }
       else
@@ -2068,6 +2202,18 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     });
     // cm.setOption("inputStyle", "textarea");
     cm.setOption("extraKeys", {
+      Enter: function(cm){
+	// Enter inserts \n except on empty line (two Enter without indent reevals)
+	var start=cm.getCursor('from');
+	var end=cm.getCursor('to');
+	if ( end.line!=start.line || end.ch!=start.ch || ( (start.line>0 || start.ch>0) && cm.getLine(end.line).length>0)){
+	  UI.insert(cm,'\n');
+	  return;
+	}
+	var txt=cm.getTextArea();
+	cm.toTextArea();
+	UI.reeval(txt,'',true);
+      },
       "Ctrl-Enter": function(cm){
 	var txt=cm.getTextArea();
 	cm.toTextArea();
@@ -2120,21 +2266,44 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	s += 'style="height:'+(20+16*UI.count_newline(textin))+'px; font-size:large"';
       s += ' title="Enter: saut de ligne, Ctrl-Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm) {var h=offsetHeight;UI.history_cm=CodeMirror.fromTextArea(this,{ matchBrackets: true,lineNumbers:true,viewportMargin: Infinity}); UI.history_cm.setCursor({line:0,ch:selectionStart});UI.history_cm.options.indentUnit=UI.python_mode?UI.python_indent:2; UI.prepare_cm(this,h,UI.history_cm);UI.changefontsize(UI.history_cm,16); UI.set_focused(UI.history_cm);} else UI.set_focused(this); UI.set_editline(this,true); UI.set_config_width(); parentNode.scrollIntoView();" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">'+textin+'</textarea>';
       s += '<span style="display:none">';
-      s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.evallevel(this,true)" title="R&eacute;evaluer le niveau (Ctrl-Enter)">&nbsp;&#x2705;&nbsp;&nbsp;</button>';
-      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.search(this,-1);" title="Donne une aide courte et quelques exemples d\'utilisation d\'une commande.">&nbsp;?&nbsp;</button>';
-      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)" title="Deplace vers la gauche le curseur">&nbsp;←&nbsp;</button>'
-      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur">&nbsp;→&nbsp;</button>'
-      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Deplace vers le haut le curseur">↑&nbsp;</button>'
-      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Deplace vers le bas le curseur">&nbsp;↓</button>'
-      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.indentline(UI.focused)" title="Indente">→|</button>'
-      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Efface">&#x232b;</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.evallevel(this,true)" title="';
+      s += UI.langue==-1?'R&eacute;evaluer le niveau (Ctrl-Enter)':'Reeval level (Ctrl-Enter)';
+      s += '">&nbsp;&#x2705;&nbsp;&nbsp;</button>';
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.search(this,-1);" title="';
+      s += UI.langue==-1?'Donne une aide courte et quelques exemples d\'utilisation d\'une commande.':'Short help and examples on a command';
+      s += '">&nbsp;?&nbsp;</button>';
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)" title="cursor ←">&nbsp;←&nbsp;</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="cursor →">&nbsp;→&nbsp;</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="cursor ↑">↑&nbsp;</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="cursor ↓">&nbsp;↓</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.indentline(UI.focused)" title="Indent">→|</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="';
+      s += UI.langue==-1?'Efface':'Erase';
+      s += '">&#x232b;</button>'
       if (UI.usecm){
-	s += '<br>';
-	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,6)" title="Annuler"><img width="16" height="16" src="undo.png" alt="Annuler" align="center"></button>';
-	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,7)" title="Refaire"><img width="16" height="16" src="redo.png" alt="Refaire" align="center"></button>';
-	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,0)" title="Rechercher">find</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,1)" title="Rechercher suivant">&#x21D2;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,2)" title="Rechercher pr&eacute;c&eacute;dent">&#x21D0;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,3)" title="Remplacer">repl</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,5)" title="Aller ligne">go</button>';
+	//s += '<br>';
+	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,6)" title="';
+	s += UI.langue==-1?'Annuler':'Undo';
+	s +='"><img width="16" height="16" src="undo.png" alt="Annuler" align="center"></button>';
+	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,7)" title="';
+	s += UI.langue==-1?'Refaire':'Redo';
+	s+='"><img width="16" height="16" src="redo.png" alt="Redo" align="center"></button>';
+	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,0)" title="';
+	s += UI.langue==-1?'Rechercher':'Find';
+	s += '">find</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,1)" title="';
+	s += UI.langue==-1?'Rechercher suivant':'Find next';
+	s += '">&#x21D2;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,2)" title="';
+	s += UI.langue==-1?'Rechercher pr&eacute;c&eacute;dent':'Find previous';
+	s += '">&#x21D0;</button>';
+	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,3)" title="';
+	s += UI.langue==-1?'Remplacer':'Replace';
+	s += '">rep</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,5)" title="';
+	s += UI.langue==-1?'Aller ligne':'Go line';
+	s += '">go</button>';
       }
-      s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.evallevel(this,false)" title="Abandonner">&nbsp;&#x274C;</button>';
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.evallevel(this,false)" title="';
+      s += UI.langue==-1?'Abandonner':'Cancel';
+      s += '">&nbsp;&#x274C;</button>';
       s += '</span>';
       if (UI.qa) s += '</td>'; 
       if (is_svg || is_3d || is_gr2d){
@@ -2162,12 +2331,16 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	  s += '<button class="bouton" onclick="UI.zoom(this.previousSibling,0.707)">in</button><br>';
 	}
 	if (is_svg) s += '<button class="bouton" onclick="UI.savesvg(parentNode.previousSibling)">sav</button><br>';
-	s += '<br><button style="height:25px;" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">&#x232b;</button>'; delbut=true;
+	s += '<br><button style="height:25px;" onclick=\'UI.erase(this)\' title="';
+	s += UI.langue==-1?'placer ce niveau dans la corbeille':'throw this level in the trash';
+	s += '">&#x232b;</button>'; delbut=true;
 	s += '</td>';
       }
       else {
 	if (UI.qa) s += '<td>';
-	s += '<div style="color:blue; text-align:center" title="Double clic: voir en mode texte (utile pour copier-coller)" class="outdiv" ondblclick="nextSibling.style.display=\'inherit\';this.nextSibling.select();UI.selection=nextSibling.value;this.style.display=\'none\';this.nextSibling.nextSibling.style.display=\'inherit\';" id="hist'+UI.histcount+'">';
+	s += '<div style="color:blue; text-align:center" title="';
+	s += UI.langue==-1?'Double clic: voir en mode texte (utile pour copier-coller)':'Double clic: view answer in text mode, useful for copy/paste';
+	s += '" class="outdiv" ondblclick="nextSibling.style.display=\'inherit\';this.nextSibling.select();UI.selection=nextSibling.value;this.style.display=\'none\';this.nextSibling.nextSibling.style.display=\'inherit\';" id="hist'+UI.histcount+'">';
 	UI.histcount++;
 	if (UI.prettyprint){
 	  if (UI.usemathjax)
@@ -2178,10 +2351,18 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	s += '</div>';
 	s += '<textarea class="outdiv" onfocus="UI.set_focused(this)" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);" style="display:none">'+textout+'</textarea>';
 	s += '<button style="display:none" onclick="previousSibling.previousSibling.style.display=\'block\'; previousSibling.style.display=\'none\';this.style.display=\'none\'">cancel</button>';
-	s += '</td>';
-	s += '<td><button style="width:20px;height:30px;" onclick=\'UI.insert(UI.focused,decodeURIComponent("evalf('+encodeURIComponent(textin)+')"))\' title="Valeur approch&eacute;e" style="color:blue">~</button>';
+	s += '</td><td>';
+	s += '<button style="width:20px;height:30px;" onclick="UI.addcommentafter(this)" title="';
+	s += UI.langue==-1?'Ajouter un commentaire':'Add a comment';
+	s += '" >&#x270e;</button>';
+	//s += '<button style="width:20px;height:30px;" onclick=\'UI.insert(UI.focused,decodeURIComponent("evalf('+encodeURIComponent(textin)+')"))\' title="Valeur approch&eacute;e" style="color:blue">~</button>';
 	//s += '<button style="width:20px;height:30px;" onclick=\'UI.insert(UI.focused,decodeURIComponent("latex('+encodeURIComponent(textin)+')"))\' title="convertir en LaTeX" style="color:blue">TeX</button>';
-	if (!UI.qa) { s += '<button style="height:25px;" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">del</button>'; delbut=true; }
+	if (!UI.qa) {
+	  s += '<button style="height:25px;" onclick=\'UI.erase(this)\' title="';
+	  s += UI.langue==-1?'placer ce niveau dans la corbeille':'throw this level in the trash';
+	  s += '">del</button>';
+	  delbut=true;
+	}
 	s +='</td>';
       }
     }
@@ -2670,6 +2851,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     var list = par.parentNode;
     list.removeChild(par);
     list.insertBefore(par,prev);
+    par.scrollIntoView(false);
     if (UI.focusaftereval) UI.focused.focus();
     UI.link(0);
   },
@@ -2682,6 +2864,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     var list = par.parentNode;
     list.removeChild(par);
     list.insertBefore(par,nxt);
+    par.scrollIntoView(true);
     UI.link(0);
   },
   backspace: function(field){
@@ -2739,58 +2922,102 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       }
     }
   },
-  insert: function(myField, value) {
+  insert: function(field, value) {
     var myValue=value.replace(/&quote;/g,'\"');
-    //console.log('2',myField);
-    if (UI.focusaftereval) myField.focus();
-    if (myField.type!="textarea" && myField.type!="text"){
-      if (myField.type==undefined && myField.firstChild!=undefined){
-	// console.log(myField.innerHTML);
-	UI.insert(myField.firstChild,value);
+    //console.log('2',field);
+    if (UI.focusaftereval) field.focus();
+    if (field.type!="textarea" && field.type!="text"){
+      if (field.type==undefined && field.firstChild!=undefined){
+	// console.log(field.innerHTML);
+	UI.insert(field.firstChild,value);
 	return;
       }
-      myField.replaceSelection(myValue);
-      myField.execCommand("indentAuto");
-      var t=myField.getTextArea(); t.value=myField.getValue();
+      var start=field.getCursor('from');
+      var end=field.getCursor('to');
+      if (end.line!=start.line || end.ch!=start.ch || myValue.length<3)
+	field.replaceSelection(myValue);
+      else {
+	// detect the same command not selected just before
+	var parpos=0;
+	for (;parpos<myValue.length;++parpos){
+	  if (myValue[parpos]=='(') break;
+	}
+	if (parpos<myValue.length){
+	  var S={line:start.line,ch:start.ch};
+	  S.ch -= (parpos+1);
+	  var deb=S.ch==-1;
+	  if (deb) S.ch=0;
+	  if (S.ch>=0){
+	    var avant=field.getRange(S,end);
+	    //console.log('avant avant',avant,S.ch,deb);
+	    var tst=avant.length-1;
+	    if (!deb && avant[tst]!='('){
+	      avant=avant.substr(1,avant.length-1);
+	      //console.log('avant avant',avant);
+	      --tst;
+	    }
+	    else {
+	      if (avant[tst]=='(')
+		++parpos;
+	    }
+	    //console.log('avant apres',avant);
+	    for (;tst>=0;--tst){
+	      if (myValue[tst]!=avant[tst]) break;
+	    }
+	    //console.log('avant',myValue);
+	    if (tst<0)
+	      myValue=myValue.substr(parpos,myValue.length-parpos);
+	    //console.log('apres',myValue);
+	  }
+	}
+	field.replaceSelection(myValue);
+      }
+      field.execCommand("indentAuto");
+      var t=field.getTextArea(); t.value=field.getValue();
     }
     else {
-      var pos=myField.selectionStart;
+      var pos=field.selectionStart;
       pos=pos+myValue.length;
       //IE support
       if (document.selection) {
-	if (UI.focusaftereval) myField.focus();
+	if (UI.focusaftereval) field.focus();
 	var sel = document.selection.createRange();
 	sel.text = myValue;
       }
       //MOZILLA and others
       else {
-	var startPos = myField.selectionStart;
-	var endPos = myField.selectionEnd;
-	if (myField.selectionStart || myField.selectionStart == '0') {
-	  myField.value = myField.value.substring(0, startPos)
+	var startPos = field.selectionStart;
+	var endPos = field.selectionEnd;
+	if (field.selectionStart || field.selectionStart == '0') {
+	  field.value = field.value.substring(0, startPos)
 	    + myValue
-	    + myField.value.substring(endPos, myField.value.length);
+	    + field.value.substring(endPos, field.value.length);
 	} else {
-	  myField.value += myValue;
+	  field.value += myValue;
 	}
       }
-      myField.setSelectionRange(pos,pos);
-      UI.resizetextarea(myField);
+      field.setSelectionRange(pos,pos);
+      UI.resizetextarea(field);
     }
     // UI.show_curseur();
   },
   insertsemi: function(myField, value) {
     if (UI.python_mode)
-      return UI.insert(myField,value);
-    UI.insert(myField,';'+value);
+      return UI.insert(myField,'\n'+value);
+    UI.insert(myField,value+';\n');
   },
   resizetextarea:function(field){
     if (field.type!='textarea') return;
     var s=field.value;
-    var N=0,i,n=s.length,c;
-    for (i=0;i<n;i++){
+    var C=field.cols;
+    console.log(C);
+    var N=0,i,j=0,n=s.length,c;
+    for (i=0;i<n;i++,j++){
       c=s.charCodeAt(i);
-      if (c==10) N++;
+      if (c==10 || j==C){
+	N++;
+	j=0;
+      }
     }
     field.rows=N+1;
   },

@@ -4,52 +4,70 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Hermite normal form : ihermite</title>
+<title>Statistics functions acting on column matrices : mean, stddev, variance, median, quantile, quartiles, boxwhisker</title>
 </head>
 <body >
 <a href="cascmd_en455.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en457.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec556" class="subsection">4.47.12  Hermite normal form : <span style="font-family:monospace">ihermite</span></h3>
-<p><a id="hevea_default702"></a>
-<span style="font-family:monospace">ihermite</span> takes as argument a matrix <span style="font-family:monospace">A</span> with coefficients 
-in ℤ.<br>
-<span style="font-family:monospace">ihermite</span> returns two matrices <span style="font-family:monospace">U</span> and <span style="font-family:monospace">B</span> such that 
-<span style="font-family:monospace">B=U*A</span>, <span style="font-family:monospace">U</span> is invertible in ℤ (det(<span style="font-style:italic">U</span>) = ± 1)
-and <span style="font-family:monospace">B</span> is upper-triangular. Moreover,
-the absolute value of the coefficients above the diagonal of <span style="font-family:monospace">B</span> are 
-smaller than the pivot of the column divided by 2.</p><p>The answer is obtained by a Gauss-like reduction algorithm
-using only operations of rows with integer coefficients
-and invertible in ℤ.<br>
+<h3 id="sec548" class="subsection">5.43.31  Statistics functions acting on column matrices : <span style="font-family:monospace">mean</span>, <span style="font-family:monospace">stddev</span>, <span style="font-family:monospace">variance</span>, <span style="font-family:monospace">median</span>, <span style="font-family:monospace">quantile</span>, <span style="font-family:monospace">quartiles</span>, <span style="font-family:monospace">boxwhisker</span></h3>
+<p><a id="sec:statmat"></a>
+<a id="hevea_default698"></a> <a id="hevea_default699"></a><a id="hevea_default700"></a><a id="hevea_default701"></a><a id="hevea_default702"></a><a id="hevea_default703"></a><a id="hevea_default704"></a>
+The following functions work on matrices, acting column by column:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">mean</span> computes the arithmetic means of the statistical series
+stored in the columns of a matrix.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">A:=[[9,-36,30],[-36,192,-180],[30,-180,180]]; U,B:=ihermite(A)</span></div><p>
+<div class="center"><span style="font-family:monospace">mean([[3,4,2],[1,2,6]])</span></div>
+Output is the vector of the means of each column :
+<div class="center"><span style="font-family:monospace">[2,3,4]</span></div>
+Input :
+<div class="center"><span style="font-family:monospace">mean([[1,0,0],[0,1,0],[0,0,1]])</span></div>
+Output 
+<div class="center"><span style="font-family:monospace">[1/3,1/3,1/3]</span></div></li><li class="li-itemize"><span style="font-family:monospace">stddev</span> computes the standard deviations of the population
+statistical series stored in the columns of a matrix.<br>
+Input :
+<div class="center"><span style="font-family:monospace">stddev([[3,4,2],[1,2,6]])</span></div>
+Output is the vector of the standard deviations of each column :
+<div class="center"><span style="font-family:monospace">[1,1,2]</span></div>
+</li><li class="li-itemize"><span style="font-family:monospace">variance</span> computes the variances of the statistical series
+stored in the columns of a matrix.<br>
+Input :
+<div class="center"><span style="font-family:monospace">variance([[3,4,2],[1,2,6]])</span></div>
+Output is the vector of the variance of each column :
+<div class="center"><span style="font-family:monospace">[1,1,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">median</span> computes the medians of the statistical series
+stored in the columns of a matrix.<br>
+Input :
+<div class="center"><span style="font-family:monospace">median([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
+Output is the vector of the median of each column :
+<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">quantile</span> computes the deciles as specified by the second
+argument of the statistical series stored in the columns of a matrix.<br>
+Input :<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.25)</span></div>
+Output is the vector of the first quartile of each column :
+<div class="center"><span style="font-family:monospace">[1,1,2,2,1,1,1]</span></div>
+Input :
+<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.75)</span></div>
+Output is the vector of the third quartile of each column :
+<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">quartiles</span> computes the minima, the first quartiles, the 
+medians, the third quartiles and the maxima of the statistical series
+stored in the columns of a matrix.<br>
+Input :
+<div class="center"><span style="font-family:monospace">quartiles([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1], [4,2,5,6,0,1,3], [2,5,6,0,1,3,4]])</span></div>
+Output is a matrix, its first row is the minima of each column,
+its second row is the fist quartiles of each column, 
+its third row the medians 
+of each column, its fourth row the third
+quartiles of each column and its last row the maxima of each column:
+<div class="center"><span style="font-family:monospace">[[0,0,1,0,0,0,0],[1,1,2,2,1,1,1], [2,2,3,3,2,2,3],</span></div>
+<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4],[6,5,6,6,6,6,6]]</span></div></li><li class="li-itemize"><span style="font-family:monospace">boxwhisker</span> draws the whisker boxes of the statistical series
+stored in the columns of a matrix .<br>
+Input :
+<div class="center"><span style="font-family:monospace">boxwhisker([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6], [1,3,4,2,5,6,0],[3,4,2,5,6,0,1], [4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[9,-36,30],[-36,192,-180],[30,-180,180]], [[13,9,7],[6,4,3],[20,15,12]],[[3,0,30],[0,12,0],[0,0,60]]</span></div><p><span style="font-weight:bold">Application: Compute a </span>ℤ<span style="font-weight:bold">-basis of the kernel of a
-matrix having integer coefficients</span><br>
-Let <span style="font-family:monospace">M</span> be a matrix with integer coefficients.<br>
-Input :
-</p><div class="center">
-<span style="font-family:monospace">(U,A):=ihermite(transpose(M))</span>.
-</div><p>
-This returns <span style="font-style:italic">U</span> and <span style="font-style:italic">A</span> such that <span style="font-family:monospace">A=U*transpose(M)</span> hence <br>
-<span style="font-family:monospace">transpose(A)=M*transpose(U)</span>.<br>
-The columns of <span style="font-family:monospace">transpose(A)</span> which are identically 0 (at the right,
-coming from the rows of <span style="font-style:italic">A</span> which are identically 0 at the bottom)
-correspond to columns of <span style="font-family:monospace">transpose(U)</span> which form a basis 
-of <span style="font-family:monospace">Ker(M)</span>. In other words, the rows of <span style="font-family:monospace">A</span>
-which are identically 0 correspond to rows of <span style="font-family:monospace">U</span> 
-which form a basis of <span style="font-family:monospace">Ker(M)</span>.<br>
-<span style="font-weight:bold">Example</span><br>
-Let <span style="font-family:monospace">M:=[[1,4,7],[2,5,8],[3,6,9]]</span>. Input 
-</p><div class="center"><span style="font-family:monospace">U,A:=ihermite(tran(M))</span></div><p>
-Output
-</p><div class="center">
-<span style="font-family:monospace">U:=[[-3,1,0],[4,-1,0],[-1,2,-1]] and A:=[[1,-1,-3],[0,3,6],[0,0,0]]</span>
-</div><p>
-Since <span style="font-family:monospace">A[2]=[0,0,0]</span>, a ℤ-basis of <span style="font-family:monospace">Ker(M)</span> is
-<span style="font-family:monospace">U[2]=[-1,2,-1]</span>.<br>
-Verification <span style="font-family:monospace">M*U[2]=[0,0,0]</span>.</p>
+<div class="center"><span style="font-family:monospace">the drawing of the whisker boxes of the statistical 
+series of each column of the matrix argument</span></div> 
+</li></ul>
 <hr>
 <a href="cascmd_en455.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

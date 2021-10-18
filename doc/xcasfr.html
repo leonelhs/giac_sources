@@ -281,6 +281,14 @@ document.onkeydown = applyKey;
 <table>
   <tr>
     <td>
+      E-mail personnel <input class="bouton" type="text" name="from"
+  title="Indiquez ici votre adresse e-mail" value="">
+      correspondant <input class="bouton" type="text" name="to"
+  title="Indiquez ici l'adresse de la personne &agrave; qui vous envoyez habituellement des sessions, par exemple celle de l'enseignant pour un &eacute;l&egrave;ve" value="">
+    </td>
+  </tr>
+  <tr>
+    <td>
       Chiffres:<input class="bouton" type="number" name="digits_mode" title="Nombre de chiffres significatifs (si &gt; 14 multipr&eacute;cision, calculs plus lents)" value=12>
       Autosimplification: <input class="bouton"
       type="number" name="autosimp_level"
@@ -308,7 +316,7 @@ document.onkeydown = applyKey;
   title="Cocher pour avoir commandes et reponses sur le meme niveau">,
       <input class="bouton" type="button" title="Coloration syntaxique si on edite un niveau existant" value="Coloration syntaxique" onclick="usecm.checked=!usecm.checked"> <input class="bouton" type="checkbox" name="usecm"
       title="Coloration syntaxique si on edite un niveau existant">
-      <input class="bouton" type="button" title="Les boutons de deplacement et del restent" value="Del fixe" onclick="fixeddel.checked=!fixeddel.checked"> <input class="bouton" type="checkbox" name="fixeddel"
+      <input class="bouton" type="button" title="Boutons de deplacement et del persistants" value="Del fixe" onclick="fixeddel.checked=!fixeddel.checked"> <input class="bouton" type="checkbox" name="fixeddel"
       title="Les boutons de deplacement et del sont toujours affich&eacute;s"  checked>
       
     </td>
@@ -364,11 +372,11 @@ document.onkeydown = applyKey;
   </span>
   <button id="loadbutton_cookie" class="bouton" title="Cliquer ici pour charger une session sauvegard&eacute;e" onclick="document.getElementById('loadfile_cookie').innerHTML=UI.listCookies();">Charge</button>
   <span id="loadfile_cookie"></span>
-  <button id="loadbutton_file" style="height:25px;display:none" title="Cliquer ici pour ajouter &agrave; la session courante le contenu d'une session sauvegard&eacute;e" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Charger</button>
+  <button id="loadbutton_file" class="bouton" title="Cliquer ici pour ajouter &agrave; la session courante le contenu d'une session sauvegard&eacute;e" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Charger</button>
 <form id="loadfile" style="display:none">
-<input id="loadfileinput" accept=".xw" type="file"  title="Parcourir" onchange="UI.loadfile(this.files);document.getElementById('loadfile').style.display='none'">
-<input type="submit" value="&#x2705;" style="display:none">
-<input type="text" value="&#x274C;" title="Annuler" onclick="form.style.display='none'">
+<input id="loadfileinput" accept=".xw" class="bouton" type="file"  title="Parcourir" onchange="UI.loadfile(this.files);document.getElementById('loadfile').style.display='none'">
+<input type="submit" class="bouton" value="&#x2705;" style="display:none">
+<input type="text" class="bouton" value="&#x274C;" title="Annuler" onclick="form.style.display='none'">
 </form>
 
 <span id="help" style="display:none">
@@ -392,10 +400,8 @@ document.onkeydown = applyKey;
     math&eacute;matiques ou algorithmiques, ou sur
     <tt>123</tt> pour le clavier scientifique.
     Validez par la touche Entr&eacute;e ou le bouton &#x2705; en vert.
-    Pour saisir du texte, tapez sur l'icone <tt>Xcas</tt> puis
-    <tt>texte</tt> 
 <br>
-Pour obtenir de l'aide, tapez le d&eacute;but d'un nom de commande
+Pour obtenir de l'aide sur une commande, tapez le d&eacute;but de son nom
 puis cliquez sur le bouton <tt>?</tt>.
 Pour trouver les noms des commandes, cliquez sur un des th&egrave;mes
 ci-dessous, ou consultez le
@@ -404,7 +410,46 @@ href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/cascmd_fr"
     target="_blank">guide de Xcas</a>
     
   </div>
-
+  <li style="display:inline">
+  <button class="bouton"
+  onclick="var tmp=document.getElementById('tutonet'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
+  <strong>&Agrave; plusieurs</strong></button>
+  <div id="tutonet" style="display:none">
+    Vous pouvez &eacute;changer des sessions de calculs Xcas entre
+    plusieurs personnes par email. Renseignez une fois pour toutes
+    les champs e-mail de la
+    configuration (bouton R&eacute;glages en haut &agrave; gauche)
+    et validez.
+    Vous pouvez alors envoyer votre session &agrave; votre
+    correspondant en cliquant
+    sur le lien Mail, modifiez le destinataire si
+  n&eacute;cessaire. Le destinataire
+    clique sur le lien du mail ce qui ouvrira un clone de votre
+    session dans son navigateur. Il peut alors modifier ou corriger 
+    votre session, et si il clique sur le lien Mail, il vous
+    renvoie votre session avec les corrections.
+    <br>
+    Lorsqu'une session est envoy&eacute;e par mail, le nom de la
+    session chez le destinataire est modifi&eacute; par ajout 
+    pr&eacute;fix&eacute; de l'adresse e-mail de l'envoyeur, sauf si
+    le nom de session contient @. Si le nom de session commence par @,
+    le caract&egrave;re @ est supprim&eacute;.
+    <br>
+    Exemple: un enseignant envoie &agrave; ses &eacute;l&egrave;ves
+    une session &eacute;nonc&eacute;. Il choisit un nom de session commencant
+    par @, par exemple <tt>@exercice</tt>, il cr&eacute;e
+    la session puis il clique sur le lien Mail
+    et met comme destinataire l'alias mail de la classe.
+    Les &eacute;l&egrave;ves font le travail et le renvoient en
+    cliquant sur le lien Mail, qui contient automatiquement
+    l'adresse mail de l'enseignant.
+    Le nom de session devient alors
+    <tt>mail_eleve@fournisseur@exercice</tt> ce qui permet &agrave;
+    l'enseignant de savoir qui il corrige.
+    L'enseignant corrige la session et la renvoie, le nom de session
+  reste inchang&eacute;.
+  </div>
+  </li>
   </li>
     <li style="display:inline">
 <button class="bouton"
@@ -431,18 +476,19 @@ onclick="var tmp=document.getElementById('tutoinst'); if (tmp.style.display=='no
     <li style="display:inline">
 <button class="bouton"
 onclick="var tmp=document.getElementById('tutoex'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
-<strong>Exemples</strong></button>
+<strong>Exemples lyc&eacute;e</strong></button>
 <div id="tutoex" style="display:none">
-Voici quelques exemples de sessions 
+Voici quelques exemples de sessions illustrant des concepts
+  math&eacute;matiques ou algorithmiques au lyc&eacute;e.
 <ul>
   <li>Variables,
   types, affectation, test, boucle, fonction, syntaxe
   <a
-  href="xcasfr.html#python=0&exec&+//Utilisez%20le%20point%20(.)%20pour%20s%C3%A9parer%20partie%20enti%C3%A8re%20et%20d%C3%A9cimale,%20expliciter%20les%20multiplications,%20attention%20aux%20parenth%C3%A8ses&+1.2%3B%202*3%2B4%3B%202*(3%2B4)&+expand((x%2B1)%5E2)%3B%0Afactor(x%5E2%2B4x%2B4)%3B%0Asin(pi%2F3)&+//%20Variables,%20l'affectation%20se%20fait%20avec%20:=&+a%3A%3D2&+2*a%2B5&+a%3A%3D2%3B%20type(a)&+a%3A%3D2.3%3B%20type(a)&+a%3A%3D%22bonjour%22%3B%20type(a)&+//%20Un%20test&+a%3A%3D1%3B%20%0Asi%20a%3E0%20alors%20%22positif%22%3B%20%0Asinon%20%22negatif%22%3B%20fsi%3B&+//Une%20boucle%20d%C3%A9finie,%20l'affichage%20print%20se%20fait%20dans%20la%20console%20tout%20en%20bas&+pour%20j%20de%201%20jusque%2010%20faire%0A%20%20print(j%2B%22%20au%20carre%20vaut%20%22%2Bj%5E2)%3B%20%0Afpour%3B&+//%20Une%20boucle%20tantque,%20illustrant%20la%20pr%C3%A9cision%20des%20tests%20avec%20des%20nombres%20approch%C3%A9s.&+j%3A%3D1.0%3B%20%0Atantque%20j-1!%3Dj%20faire%20%0A%20%20j%3D2*j%3B%20%0Aftantque%3B&+//%20Cr%C3%A9ation%20d'une%20fonction%20simple,%20par%20exemple%20le%20milieu%20de%202%20points%20$A$%20et%20$B$.%20On%20construit%20d'abord%20le%20milieu%20de%20mani%C3%A8re%20interactive.&+A%3A%3Dpoint(1%2C2)%3B%20B%3A%3Dpoint(-2%2C-2)&+Ax%3A%3Dabscisse(A)%3B%20%0AAy%3A%3Dordonnee(A)%3B%0ABx%3A%3Dabscisse(B)%3B%20%0ABy%3A%3Dordonnee(B)&+//%20On%20calcule%20$M$%20et%20on%20fait%20la%20repr%C3%A9sentation%20graphique%20des%20trois%20points.&+M%3A%3Dpoint((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)%3B%0AA%3B%0AB%3B&+//%20On%20regroupe%20maintenant%20ces%20instructions%20dans%20une%20fonction%20puis%20on%20teste%20la%20fonction.&+fonction%20Milieu(A%2CB)%0A%20%20var%20Ax%2CAy%2CBx%2CBy%3B%0A%20%20Ax%3A%3Dabscisse(A)%3B%20%0A%20%20Ay%3A%3Dordonnee(A)%3B%0A%20%20Bx%3A%3Dabscisse(B)%3B%20%0A%20%20By%3A%3Dordonnee(B)%3B%20%0A%20%20retourne%20point((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)%3B%0Affonction%3A%3B&+A%3BB%3BM%3A%3DMilieu(A%2CB)&+//%3Ch1%3eExercice%3C/h1%3e%20%C3%A9crire%20une%20fonction%20%3Ctt%3eCercle(A,B,C)%3C/tt%3e%20qui%20renvoie%20le%20cercle%20circonscrit%20au%20triangle%20$ABC$,%20en%20utilisant%20les%20commandes%20%3Ctt%3emediatrice%3C/tt%3e,%20%3Ctt%3einter_unique%3C/tt%3e,%20%3Ctt%3edistance%3C/tt%3e%20et%20%3Ctt%3ecercle(centre,rayon)%3C/tt%3e&"
+  href="#python=0&exec&+//Utilisez%20le%20point%20(.)%20pour%20s%C3%A9parer%20partie%20enti%C3%A8re%20et%20d%C3%A9cimale,%20expliciter%20les%20multiplications,%20attention%20aux%20parenth%C3%A8ses&+1.2%3B%202*3%2B4%3B%202*(3%2B4)&+expand((x%2B1)%5E2)%3B%0Afactor(x%5E2%2B4x%2B4)%3B%0Asin(pi%2F3)&+//%20Variables,%20l'affectation%20se%20fait%20avec%20:=&+a%3A%3D2&+2*a%2B5&+a%3A%3D2%3B%20type(a)&+a%3A%3D2.3%3B%20type(a)&+a%3A%3D%22bonjour%22%3B%20type(a)&+//%20Un%20test&+a%3A%3D1%3B%20%0Asi%20a%3E0%20alors%20%22positif%22%3B%20%0Asinon%20%22negatif%22%3B%20fsi%3B&+//Une%20boucle%20d%C3%A9finie,%20l'affichage%20print%20se%20fait%20dans%20la%20console%20tout%20en%20bas&+pour%20j%20de%201%20jusque%2010%20faire%0A%20%20print(j%2B%22%20au%20carre%20vaut%20%22%2Bj%5E2)%3B%20%0Afpour%3B&+//%20Une%20boucle%20tantque,%20illustrant%20la%20pr%C3%A9cision%20des%20tests%20avec%20des%20nombres%20approch%C3%A9s.&+j%3A%3D1.0%3B%20%0Atantque%20j-1!%3Dj%20faire%20%0A%20%20j%3D2*j%3B%20%0Aftantque%3B&+//%20Cr%C3%A9ation%20d'une%20fonction%20simple,%20par%20exemple%20le%20milieu%20de%202%20points%20$A$%20et%20$B$.%20On%20construit%20d'abord%20le%20milieu%20de%20mani%C3%A8re%20interactive.&+A%3A%3Dpoint(1%2C2)%3B%20B%3A%3Dpoint(-2%2C-2)&+Ax%3A%3Dabscisse(A)%3B%20%0AAy%3A%3Dordonnee(A)%3B%0ABx%3A%3Dabscisse(B)%3B%20%0ABy%3A%3Dordonnee(B)&+//%20On%20calcule%20$M$%20et%20on%20fait%20la%20repr%C3%A9sentation%20graphique%20des%20trois%20points.&+M%3A%3Dpoint((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)%3B%0AA%3B%0AB%3B&+//%20On%20regroupe%20maintenant%20ces%20instructions%20dans%20une%20fonction%20puis%20on%20teste%20la%20fonction.&+fonction%20Milieu(A%2CB)%0A%20%20var%20Ax%2CAy%2CBx%2CBy%3B%0A%20%20Ax%3A%3Dabscisse(A)%3B%20%0A%20%20Ay%3A%3Dordonnee(A)%3B%0A%20%20Bx%3A%3Dabscisse(B)%3B%20%0A%20%20By%3A%3Dordonnee(B)%3B%20%0A%20%20retourne%20point((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)%3B%0Affonction%3A%3B&+A%3BB%3BM%3A%3DMilieu(A%2CB)&+//%3Ch1%3eExercice%3C/h1%3e%20%C3%A9crire%20une%20fonction%20%3Ctt%3eCercle(A,B,C)%3C/tt%3e%20qui%20renvoie%20le%20cercle%20circonscrit%20au%20triangle%20$ABC$,%20en%20utilisant%20les%20commandes%20%3Ctt%3emediatrice%3C/tt%3e,%20%3Ctt%3einter_unique%3C/tt%3e,%20%3Ctt%3edistance%3C/tt%3e%20et%20%3Ctt%3ecercle(centre,rayon)%3C/tt%3e&"
   target="_blank">
   Xcas</a> ou
   <a
-  href="xcasfr.html#python=1&exec&+//En%20ligne%20de%20commande,%20utiliser%20des%20points%20(.)%20pour%20s%C3%A9parer%20partie%20enti%C3%A8re%20et%20d%C3%A9cimale,%20expliciter%20les%20multiplications,%20attention%20aux%20parenth%C3%A8ses.&+%23%20calcul%20avec%20des%20nombres%0A1.2%0A2*3%2B4%0A2*(3%2B4)&+%23%20calculs%20litteraux%0Adevelopper((x%2B1)%5E2)%0Afactoriser(x%5E2%2B4x%2B4)%0Asin(pi%2F3)&+//Variables,%20l'affectation%20se%20fait%20avec%20:=,%20ou%20=&+a%3D2&+2*a%2B5&+type(a)&+a%3D2.3&+type(a)&+%23%0Aa%3D%22bonjour%22%0Atype(a)&+//%20Un%20test&+a%3D1%0Aif%20a%3E0%3A%20%0A%20%20%20%20%22positif%22%0A%20%20%20%20else%3A%0A%20%20%20%20%22negatif%22&+//%20Une%20boucle%20d%C3%A9finie,%20l'affichage%20des%20print%20se%20fait%20dans%20la%20console%20tout%20en%20bas.&+for%20j%20in%20range(10)%3A%0A%20%20%20%20print(j%2B%22%20au%20carre%20vaut%20%22%2Bj%5E2)&+//%20Une%20boucle%20tantque,%20qui%20s'arrete%20lorsque%20la%20valeur%20approch%C3%A9e%20de%20j%20est%20consider%C3%A9e%20comme%20%C3%A9gale%20a%20j+1&+j%3D1.0%0Awhile%20j-1!%3Dj%3A%0A%20%20%20%20j%3D2*j&+//%20Cr%C3%A9ation%20d'une%20fonction%20simple,%20par%20exemple%20le%20milieu%20de%202%20points.%20On%20construit%20d'abord%20le%20milieu%20de%20mani%C3%A8re%20interactive&+%23%20creation%20de%202%20points%0AA%3Dpoint(1%2C2)%20%0AB%3Dpoint(-2%2C-2)&+%23%20calcul%20des%20coordonnees%0AAx%3Dabscisse(A)%20%0AAy%3Dordonnee(A)%0ABx%3Dabscisse(B)%0ABy%3Dordonnee(B)&+%23%20calcul%20de%20M%20et%20representation%20graphique%0AM%3Dpoint((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)%0AA%0AB&+//%20On%20regroupe%20ces%20instructions%20dans%20une%20fonction&+def%20Milieu(A%2CB)%3A%0A%20%20%20%20%23%20local%20Ax%2CAy%2CBx%2CBy%3B%0A%20%20%20%20Ax%3Dabscisse(A)%0A%20%20%20%20Ay%3Dordonnee(A)%0A%20%20%20%20Bx%3Dabscisse(B)%0A%20%20%20%20By%3Dordonnee(B)%0A%20%20%20%20return%20point((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)&+%23%0AA%0AB%0AM%3DMilieu(A%2CB)&+//%3Ch1%3eExercice%3C/h1%3e%20%C3%A9crire%20une%20fonction%20%3Ctt%3eCercle(A,B,C)%3C/tt%3e%20qui%20renvoie%20le%20cercle%20circonscrit%20au%20triangle%20$ABC$,%20en%20utilisant%20les%20commandes%20%3Ctt%3emediatrice%3C/tt%3e,%20%3Ctt%3einter_unique%3C/tt%3e,%20%3Ctt%3edistance%3C/tt%3e%20et%20%3Ctt%3ecercle(centre,rayon)%3C/tt%3e&"
+  href="#python=1&exec&+//En%20ligne%20de%20commande,%20utiliser%20des%20points%20(.)%20pour%20s%C3%A9parer%20partie%20enti%C3%A8re%20et%20d%C3%A9cimale,%20expliciter%20les%20multiplications,%20attention%20aux%20parenth%C3%A8ses.&+%23%20calcul%20avec%20des%20nombres%0A1.2%0A2*3%2B4%0A2*(3%2B4)&+%23%20calculs%20litteraux%0Adevelopper((x%2B1)%5E2)%0Afactoriser(x%5E2%2B4x%2B4)%0Asin(pi%2F3)&+//Variables,%20l'affectation%20se%20fait%20avec%20:=,%20ou%20=&+a%3D2&+2*a%2B5&+type(a)&+a%3D2.3&+type(a)&+%23%0Aa%3D%22bonjour%22%0Atype(a)&+//%20Un%20test&+a%3D1%0Aif%20a%3E0%3A%20%0A%20%20%20%20%22positif%22%0A%20%20%20%20else%3A%0A%20%20%20%20%22negatif%22&+//%20Une%20boucle%20d%C3%A9finie,%20l'affichage%20des%20print%20se%20fait%20dans%20la%20console%20tout%20en%20bas.&+for%20j%20in%20range(10)%3A%0A%20%20%20%20print(j%2B%22%20au%20carre%20vaut%20%22%2Bj%5E2)&+//%20Une%20boucle%20tantque,%20qui%20s'arrete%20lorsque%20la%20valeur%20approch%C3%A9e%20de%20j%20est%20consider%C3%A9e%20comme%20%C3%A9gale%20a%20j+1&+j%3D1.0%0Awhile%20j-1!%3Dj%3A%0A%20%20%20%20j%3D2*j&+//%20Cr%C3%A9ation%20d'une%20fonction%20simple,%20par%20exemple%20le%20milieu%20de%202%20points.%20On%20construit%20d'abord%20le%20milieu%20de%20mani%C3%A8re%20interactive&+%23%20creation%20de%202%20points%0AA%3Dpoint(1%2C2)%20%0AB%3Dpoint(-2%2C-2)&+%23%20calcul%20des%20coordonnees%0AAx%3Dabscisse(A)%20%0AAy%3Dordonnee(A)%0ABx%3Dabscisse(B)%0ABy%3Dordonnee(B)&+%23%20calcul%20de%20M%20et%20representation%20graphique%0AM%3Dpoint((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)%0AA%0AB&+//%20On%20regroupe%20ces%20instructions%20dans%20une%20fonction&+def%20Milieu(A%2CB)%3A%0A%20%20%20%20%23%20local%20Ax%2CAy%2CBx%2CBy%3B%0A%20%20%20%20Ax%3Dabscisse(A)%0A%20%20%20%20Ay%3Dordonnee(A)%0A%20%20%20%20Bx%3Dabscisse(B)%0A%20%20%20%20By%3Dordonnee(B)%0A%20%20%20%20return%20point((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)&+%23%0AA%0AB%0AM%3DMilieu(A%2CB)&+//%3Ch1%3eExercice%3C/h1%3e%20%C3%A9crire%20une%20fonction%20%3Ctt%3eCercle(A,B,C)%3C/tt%3e%20qui%20renvoie%20le%20cercle%20circonscrit%20au%20triangle%20$ABC$,%20en%20utilisant%20les%20commandes%20%3Ctt%3emediatrice%3C/tt%3e,%20%3Ctt%3einter_unique%3C/tt%3e,%20%3Ctt%3edistance%3C/tt%3e%20et%20%3Ctt%3ecercle(centre,rayon)%3C/tt%3e&"
   target="_blank">Python</a>
 </li>
 <li> Seconde: tortue.
@@ -453,123 +499,185 @@ Voici quelques exemples de sessions
 </li>
   <li> Seconde: trac&eacute; de courbe, syntaxe
   <a
-  href="xcasfr.html#python=0&exec&+//Soit%20$f$%20la%20fonction%20d%C3%A9finie%20par%20$f(x)=-x^2-3$%20lorsque%20$x%3C0$%20et%20$f(x)=x^2+1$%20sinon&+f(x)%3A%3Dsi%20x%3C0%20alors%20-x%5E2-3%20%0A%20%20sinon%20x%5E2%2B1%20fsi%3B&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+L%3A%3DNULL%3B%20%0Apour%20x%20de%20-3%20jusque%203%20pas%200.5%20faire%0A%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0Afpour%3B&+polygone_ouvert(L)&+//Observer%20le%20saut%20%C3%A0%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20interet%20%C3%A0%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+fonction%20tabval(f%2Cxmin%2Cxmax%2Cdx)%0A%20%20var%20x%2CL%3B%0A%20%20L%3A%3DNULL%3B%0A%20%20pour%20x%20de%20xmin%20jusque%20xmax%20pas%20dx%20faire%0A%20%20%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0A%20%20fpour%3B%0A%20%20retourne%20L%3B%0Affonction%3A%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
+  href="#python=0&exec&+//Soit%20$f$%20la%20fonction%20d%C3%A9finie%20par%20$f(x)=-x^2-3$%20lorsque%20$x%3C0$%20et%20$f(x)=x^2+1$%20sinon&+f(x)%3A%3Dsi%20x%3C0%20alors%20-x%5E2-3%20%0A%20%20sinon%20x%5E2%2B1%20fsi%3B&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+L%3A%3DNULL%3B%20%0Apour%20x%20de%20-3%20jusque%203%20pas%200.5%20faire%0A%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0Afpour%3B&+polygone_ouvert(L)&+//Observer%20le%20saut%20%C3%A0%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20interet%20%C3%A0%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+fonction%20tabval(f%2Cxmin%2Cxmax%2Cdx)%0A%20%20var%20x%2CL%3B%0A%20%20L%3A%3DNULL%3B%0A%20%20pour%20x%20de%20xmin%20jusque%20xmax%20pas%20dx%20faire%0A%20%20%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0A%20%20fpour%3B%0A%20%20retourne%20L%3B%0Affonction%3A%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
   target="_blank">
   Xcas</a> ou
   <a
-  href="xcasfr.html#python=1&exec&+//Soit%20$f$%20la%20fonction%20d%C3%A9finie%20par%20$f(x)=-x^2-3$%20lorsque%20$x%3C0$%20et%20$f(x)=x^2+1$%20sinon&+def%20f(x)%3A%0A%20%20%20%20if%20x%3C0%3A%0A%20%20%20%20%20%20%20%20return%20-x%5E2-3%20%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20return%20x%5E2%2B1&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+L%3D%5B%5D%0Afor%20j%20in%20range(13)%3A%0A%20%20%20%20x%3D-3%2B0.5*j%0A%20%20%20%20L.append(%5Bx%2Cf(x)%5D)&+polygone_ouvert(L)&+//Observer%20le%20saut%20&agrave;%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20interet%20&agrave;%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+def%20tabval(f%2Ca%2Cb%2Cdx)%3A%0A%20%20%20%20%23%20local%20x%2Cj%2CL%3B%0A%20%20%20%20L%3D%5B%5D%3B%0A%20%20%20%20for%20j%20in%20range((b-a)%2Fdx%2B1)%3A%0A%20%20%20%20%20%20%20%20x%3Da%2Bj*dx%0A%20%20%20%20%20%20%20%20L.append(%5Bx%2Cf(x)%5D)%0A%20%20%20%20return%20L%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
+  href="#python=1&exec&+//Soit%20$f$%20la%20fonction%20d%C3%A9finie%20par%20$f(x)=-x^2-3$%20lorsque%20$x%3C0$%20et%20$f(x)=x^2+1$%20sinon&+def%20f(x)%3A%0A%20%20%20%20if%20x%3C0%3A%0A%20%20%20%20%20%20%20%20return%20-x%5E2-3%20%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20return%20x%5E2%2B1&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+L%3D%5B%5D%0Afor%20j%20in%20range(13)%3A%0A%20%20%20%20x%3D-3%2B0.5*j%0A%20%20%20%20L.append(%5Bx%2Cf(x)%5D)&+polygone_ouvert(L)&+//Observer%20le%20saut%20&agrave;%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20interet%20&agrave;%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+def%20tabval(f%2Ca%2Cb%2Cdx)%3A%0A%20%20%20%20%23%20local%20x%2Cj%2CL%3B%0A%20%20%20%20L%3D%5B%5D%3B%0A%20%20%20%20for%20j%20in%20range((b-a)%2Fdx%2B1)%3A%0A%20%20%20%20%20%20%20%20x%3Da%2Bj*dx%0A%20%20%20%20%20%20%20%20L.append(%5Bx%2Cf(x)%5D)%0A%20%20%20%20return%20L%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
+  target="_blank">Python</a>
+</li>
+  <li> Seconde, longueur de courbe
+  <a href="#exec&python=1&+//Longueur%20d'un%20arc%20de%20courbe%20en%20l'approchant%20par%20une%20ligne%20polygonale.%20Dans%20un%20premier%20temps,%20on%20peut%20faire%20tracer%20le%20graphe%20%C3%A0%20la%20main.%20On%20peut%20prolonger%20en%20remplacant%20$1/x$%20par%20une%20fonction%20$f$%20quelconque.&+plot(1%2Fx%2Cx%2C1%2C4%2Ccolor%3Dred)%3B%20open_polygon(seq(point(x%2C1%2Fx)%2Cx%2C1%2C4))&+def%20Distance(xa%2Cxb)%3A%0A%20%20%20%20%23%20local%20ya%2Cyb%0A%20%20%20%20ya%3D1%2Fxa%0A%20%20%20%20yb%3D1%2Fxb%0A%20%20%20%20return%20sqrt((xb-xa)%5E2%2B(yb-ya)%5E2)&+Distance(1%2C2)%2BDistance(2%2C3)%2BDistance(3%2C4)&+def%20Longueur(xa%2Cxb%2CN)%3A%0A%20%20%20%20%23%20local%20h%2Cd%2Ck%0A%20%20%20%20h%3D(xb-xa)%2FN%0A%20%20%20%20d%3D0%0A%20%20%20%20for%20k%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20d%3Dd%2BDistance(xa%2Bk*h%2Cxa%2B(k%2B1)*h)%0A%20%20%20%20return%20d&+l%3A%3DLongueur(1%2C4%2C10)&+arclen(1%2Fx%2C1.0%2C4)%3B%20evalf(l)&"
   target="_blank">Python</a>
   </li>
   <li> Seconde: &Eacute;quation  d'une droite
   <a
-  href="xcasfr.html#python=0&exec&+A%3A%3Dpoint(-2%2C3)%3B%20%0AB%3A%3Dpoint(1%2C-1)%3B%20%0AD%3A%3Ddroite(A%2CB)&+fonction%20eqdroite(A%2CB)%0A%20%20var%20Ax%2CAy%2CBx%2CBy%2Cm%3B%0A%20%20Ax%2CAy%3A%3Dcoordonnees(A)%3B%0A%20%20Bx%2CBy%3A%3Dcoordonnees(B)%3B%0A%20%20si%20Ax%3DBx%20alors%20return%20%22x%3D%22%2BAx%3B%20fsi%3B%0A%20%20m%3A%3D(By-Ay)%2F(Bx-Ax)%3B%0A%20%20%2F%2F%20m*Ax%2Bp%3DAy%0A%20%20retourne%20%22y%3D%22%2Bm%2B%22*x%2B%22%2B(Ay-m*Ax)%3B%0Affonction%3A%3B&+eqdroite(A%2CB)%3B%20equation(D)&"
+  href="#python=0&exec&+A%3A%3Dpoint(-2%2C3)%3B%20%0AB%3A%3Dpoint(1%2C-1)%3B%20%0AD%3A%3Ddroite(A%2CB)&+fonction%20eqdroite(A%2CB)%0A%20%20var%20Ax%2CAy%2CBx%2CBy%2Cm%3B%0A%20%20Ax%2CAy%3A%3Dcoordonnees(A)%3B%0A%20%20Bx%2CBy%3A%3Dcoordonnees(B)%3B%0A%20%20si%20Ax%3DBx%20alors%20return%20%22x%3D%22%2BAx%3B%20fsi%3B%0A%20%20m%3A%3D(By-Ay)%2F(Bx-Ax)%3B%0A%20%20%2F%2F%20m*Ax%2Bp%3DAy%0A%20%20retourne%20%22y%3D%22%2Bm%2B%22*x%2B%22%2B(Ay-m*Ax)%3B%0Affonction%3A%3B&+eqdroite(A%2CB)%3B%20equation(D)&"
   target="_blank">Xcas</a>
   ou
   <a
-  href="xcasfr.html#python=1&exec&+%23%20%0AA%3Dpoint(-2%2C3)%0AB%3A%3Dpoint(1%2C-1)%3B%20%0AD%3A%3Ddroite(A%2CB)&+def%20eqdroite(A%2CB)%3A%0A%20%20%20%20%23%20local%20Ax%2CAy%2CBx%2CBy%2Cm%3B%0A%20%20%20%20Ax%2CAy%3Dcoordonnees(A)%0A%20%20%20%20Bx%2CBy%3Dcoordonnees(B)%0A%20%20%20%20if%20Ax%3D%3DBx%3A%0A%20%20%20%20%20%20%20%20return%20%22x%3D%22%2BAx%0A%20%20%20%20m%3D(By-Ay)%2F(Bx-Ax)%0A%20%20%20%20%23%20m*Ax%2Bp%3DAy%0A%20%20%20%20return%20%22y%3D%22%2Bm%2B%22*x%2B%22%2B(Ay-m*Ax)&+eqdroite(A%2CB)%3B%20equation(D)&"
+  href="#python=1&exec&+%23%20%0AA%3Dpoint(-2%2C3)%0AB%3A%3Dpoint(1%2C-1)%3B%20%0AD%3A%3Ddroite(A%2CB)&+def%20eqdroite(A%2CB)%3A%0A%20%20%20%20%23%20local%20Ax%2CAy%2CBx%2CBy%2Cm%3B%0A%20%20%20%20Ax%2CAy%3Dcoordonnees(A)%0A%20%20%20%20Bx%2CBy%3Dcoordonnees(B)%0A%20%20%20%20if%20Ax%3D%3DBx%3A%0A%20%20%20%20%20%20%20%20return%20%22x%3D%22%2BAx%0A%20%20%20%20m%3D(By-Ay)%2F(Bx-Ax)%0A%20%20%20%20%23%20m*Ax%2Bp%3DAy%0A%20%20%20%20return%20%22y%3D%22%2Bm%2B%22*x%2B%22%2B(Ay-m*Ax)&+eqdroite(A%2CB)%3B%20equation(D)&"
   target="_blank">
   Python</a>
   </li>
   <li> Seconde, recherche de minimum
   <a
-  href="xcasfr.html#python=0&exec&+//Recherche%20de%20minimum%20local.%0aOn%20se%20donne%20un%20intervalle%20$[a,b]$%20et%20une%20fonction%20$f$,%20on%20coupe%20l'intervalle%20en%2010,%20on%20cherche%20la%20plus%20petite%20valeur.%0aOn%20recommencera%20ensuite%20sur%20l'intervalle%20encadrant%20la%20plus%20petite%20valeur%20pour%20ameliorer%20la%20pr%C3%A9cision.&+fonction%20posmin10(f%2Ca%2Cb)%0A%20%20local%20j%2Cxcur%2Cxmin%2Cfxcur%2Cfxmin%2Ch%3B%0A%20%20h%3A%3D(b-a)%2F10.0%3B%0A%20%20xmin%3A%3Da%3B%0A%20%20fxmin%3A%3Df(xmin)%3B%0A%20%20pour%20j%20de%201%20jusque%2010%20faire%0A%20%20%20%20xcur%3A%3Da%2Bj*h%3B%0A%20%20%20%20fxcur%3A%3Df(xcur)%3B%0A%20%20%20%20si%20fxcur%3Cfxmin%20alors%0A%20%20%20%20%20%20xmin%3A%3Dxcur%3B%0A%20%20%20%20%20%20fxmin%3A%3Dfxcur%3B%0A%20%20%20%20fsi%3B%0A%20%20fpour%3B%0A%20%20return%20xmin%3B%0Affonction%3A%3B&+posmin10(cos%2C0%2C6)&+fonction%20posmin(f%2Ca%2Cb%2Ceps)%0A%20%20local%20x%2Ch%3B%0A%20%20x%3A%3Da%3B%0A%20%20tantque%20b-a%3Eeps%20faire%0A%20%20%20%20x%3A%3Dposmin10(f%2Ca%2Cb)%3B%0A%20%20%20%20h%3A%3D(b-a)%2F10.0%3B%0A%20%20%20%20si%20x!%3Da%20alors%20a%3A%3Dx-h%3B%20fsi%3B%0A%20%20%20%20si%20x!%3Db%20alors%20b%3A%3Dx%2Bh%3B%20fsi%3B%0A%20%20ftantque%3B%0A%20%20return%20x%3B%0Affonction%3A%3B&+posmin(cos%2C0%2C6%2C1e-2)&" target="_blank">Xcas</a>,
-  <a href="xcasfr.html#python=1&exec&+//Recherche%20de%20minimum%20local.On%20se%20donne%20un%20intervalle%20$[a,b]$%20et%20une%20fonction%20$f$,%20on%20coupe%20l'intervalle%20en%2010,%20on%20cherche%20la%20plus%20petite%20valeur.On%20recommencera%20ensuite%20sur%20l'intervalle%20encadrant%20la%20plus%20petite%20valeur%20pour%20ameliorer%20la%20pr%C3%A9cision.&+def%20posmin10(f%2Ca%2Cb)%3A%0A%20%20%20%20%23%20local%20j%2Cxcur%2Cxmin%2Cfxcur%2Cfxmin%2Ch%0A%20%20%20%20h%3D(b-a)%2F10.0%0A%20%20%20%20xmin%3Da%0A%20%20%20%20fxmin%3Df(xmin)%0A%20%20%20%20for%20j%20in%20range(11)%3A%0A%20%20%20%20%20%20%20%20xcur%3Da%2Bj*h%0A%20%20%20%20%20%20%20%20fxcur%3Df(xcur)%0A%20%20%20%20%20%20%20%20if%20fxcur%3Cfxmin%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20xmin%3Dxcur%0A%20%20%20%20%20%20%20%20%20%20%20%20fxmin%3Dfxcur%0A%20%20%20%20return%20xmin&+posmin10(cos%2C0%2C6)&+def%20posmin(f%2Ca%2Cb%2Ceps)%3A%0A%20%20%20%20%23%20local%20x%2Ch%0A%20%20%20%20x%3Da%0A%20%20%20%20while%20b-a%3Eeps%3A%0A%20%20%20%20%20%20%20%20x%3Dposmin10(f%2Ca%2Cb)%0A%20%20%20%20%20%20%20%20h%3D(b-a)%2F10.0%0A%20%20%20%20%20%20%20%20if%20x!%3Da%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20a%3Dx-h%0A%20%20%20%20%20%20%20%20if%20x!%3Db%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20b%3Dx%2Bh%0A%20%20%20%20return%20x&+posmin(cos%2C0%2C6%2C1e-2)&" target="_blank">Python</a>
+  href="#python=0&exec&+//Recherche%20de%20minimum%20local.%0aOn%20se%20donne%20un%20intervalle%20$[a,b]$%20et%20une%20fonction%20$f$,%20on%20coupe%20l'intervalle%20en%2010,%20on%20cherche%20la%20plus%20petite%20valeur.%0aOn%20recommencera%20ensuite%20sur%20l'intervalle%20encadrant%20la%20plus%20petite%20valeur%20pour%20ameliorer%20la%20pr%C3%A9cision.&+fonction%20posmin10(f%2Ca%2Cb)%0A%20%20local%20j%2Cxcur%2Cxmin%2Cfxcur%2Cfxmin%2Ch%3B%0A%20%20h%3A%3D(b-a)%2F10.0%3B%0A%20%20xmin%3A%3Da%3B%0A%20%20fxmin%3A%3Df(xmin)%3B%0A%20%20pour%20j%20de%201%20jusque%2010%20faire%0A%20%20%20%20xcur%3A%3Da%2Bj*h%3B%0A%20%20%20%20fxcur%3A%3Df(xcur)%3B%0A%20%20%20%20si%20fxcur%3Cfxmin%20alors%0A%20%20%20%20%20%20xmin%3A%3Dxcur%3B%0A%20%20%20%20%20%20fxmin%3A%3Dfxcur%3B%0A%20%20%20%20fsi%3B%0A%20%20fpour%3B%0A%20%20return%20xmin%3B%0Affonction%3A%3B&+posmin10(cos%2C0%2C6)&+fonction%20posmin(f%2Ca%2Cb%2Ceps)%0A%20%20local%20x%2Ch%3B%0A%20%20x%3A%3Da%3B%0A%20%20tantque%20b-a%3Eeps%20faire%0A%20%20%20%20x%3A%3Dposmin10(f%2Ca%2Cb)%3B%0A%20%20%20%20h%3A%3D(b-a)%2F10.0%3B%0A%20%20%20%20si%20x!%3Da%20alors%20a%3A%3Dx-h%3B%20fsi%3B%0A%20%20%20%20si%20x!%3Db%20alors%20b%3A%3Dx%2Bh%3B%20fsi%3B%0A%20%20ftantque%3B%0A%20%20return%20x%3B%0Affonction%3A%3B&+posmin(cos%2C0%2C6%2C1e-2)&" target="_blank">Xcas</a>,
+  <a href="#python=1&exec&+//Recherche%20de%20minimum%20local.On%20se%20donne%20un%20intervalle%20$[a,b]$%20et%20une%20fonction%20$f$,%20on%20coupe%20l'intervalle%20en%2010,%20on%20cherche%20la%20plus%20petite%20valeur.On%20recommencera%20ensuite%20sur%20l'intervalle%20encadrant%20la%20plus%20petite%20valeur%20pour%20ameliorer%20la%20pr%C3%A9cision.&+def%20posmin10(f%2Ca%2Cb)%3A%0A%20%20%20%20%23%20local%20j%2Cxcur%2Cxmin%2Cfxcur%2Cfxmin%2Ch%0A%20%20%20%20h%3D(b-a)%2F10.0%0A%20%20%20%20xmin%3Da%0A%20%20%20%20fxmin%3Df(xmin)%0A%20%20%20%20for%20j%20in%20range(11)%3A%0A%20%20%20%20%20%20%20%20xcur%3Da%2Bj*h%0A%20%20%20%20%20%20%20%20fxcur%3Df(xcur)%0A%20%20%20%20%20%20%20%20if%20fxcur%3Cfxmin%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20xmin%3Dxcur%0A%20%20%20%20%20%20%20%20%20%20%20%20fxmin%3Dfxcur%0A%20%20%20%20return%20xmin&+posmin10(cos%2C0%2C6)&+def%20posmin(f%2Ca%2Cb%2Ceps)%3A%0A%20%20%20%20%23%20local%20x%2Ch%0A%20%20%20%20x%3Da%0A%20%20%20%20while%20b-a%3Eeps%3A%0A%20%20%20%20%20%20%20%20x%3Dposmin10(f%2Ca%2Cb)%0A%20%20%20%20%20%20%20%20h%3D(b-a)%2F10.0%0A%20%20%20%20%20%20%20%20if%20x!%3Da%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20a%3Dx-h%0A%20%20%20%20%20%20%20%20if%20x!%3Db%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20b%3Dx%2Bh%0A%20%20%20%20return%20x&+posmin(cos%2C0%2C6%2C1e-2)&" target="_blank">Python</a>
   </li>
   <li> Seconde, fr&eacute;quence dans un &eacute;chantillon, syntaxe
   <a
-  href="xcasfr.html#python=0&exec&+//%20Algorithme%20de%20calcul%20de%20la%20fr%C3%A9quence%20de%20valeur%20dans%20echantillon&+fonction%20freq(echantillon%2Cvaleur)%0A%20%20var%20j%2Ctotal%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20dim(echantillon)%20faire%0A%20%20%20%20si%20echantillon(j)%3Dvaleur%20alors%20%0A%20%20%20%20%20%20total%3A%3Dtotal%2B1%3B%20%0A%20%20%20%20fsi%3B%0A%20%20fpour%3B%0A%20%20retourne%20total%2Fdim(echantillon)%3B%0Affonction%3A%3B&+echantillon%3A%3Dranv(100%2C2)&+freq(echantillon%2C1)%3B%20%0Afreq(echantillon%2C0)&+//%20Intervalle%20de%20fluctuation%20d%20une%20fr%C3%A9quence,%20ici%200.4.%20On%20tire%20100%20%C3%A9chantillons%20de%20N=200%20valeurs%20selon%20la%20loi%20binomiale%20et%20on%20renvoie%20la%20fr%C3%A9quence%20de%201.&+f%3A%3D0.4%3B%20N%3A%3D200&+echantillon%3A%3D%0Aranv(100%2Cbinomial%2CN%2Cf)%2FN&+count(x-%3E%0A%20%20abs(x-f)%3C1%2Fsqrt(N)%2Cechantillon)&+//%20Sans%20utiliser%20ranv,%20on%20peut%20simuler%20une%20frequence%20f%20avec%20rand()%20en%20comparant%20avec%20f&+rand()&+tirage(f)%3A%3Drand()%3Cf&+tirage(f)%3Btirage(f)%3Btirage(f)&+fonction%20simu(N%2Cf)%0A%20%20var%20j%2Cres%3B%0A%20%20res%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20si%20tirage(f)%20alors%20res%3A%3Dres%2B1%3B%20fsi%3B%0A%20%20fpour%3B%0A%20%20return%20res%2FN%3B%0Affonction%3A%3B&+simu(200%2C.4)&+l%3A%3Dseq(simu(200%2C.4)%2C100)&+count(x-%3Eabs(x-f)%3C1%2Fsqrt(N)%2Cl)&"
+  href="#python=0&exec&+//%20Algorithme%20de%20calcul%20de%20la%20fr%C3%A9quence%20de%20valeur%20dans%20echantillon&+fonction%20freq(echantillon%2Cvaleur)%0A%20%20var%20j%2Ctotal%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20dim(echantillon)%20faire%0A%20%20%20%20si%20echantillon(j)%3Dvaleur%20alors%20%0A%20%20%20%20%20%20total%3A%3Dtotal%2B1%3B%20%0A%20%20%20%20fsi%3B%0A%20%20fpour%3B%0A%20%20retourne%20total%2Fdim(echantillon)%3B%0Affonction%3A%3B&+echantillon%3A%3Dranv(100%2C2)&+freq(echantillon%2C1)%3B%20%0Afreq(echantillon%2C0)&+//%20Intervalle%20de%20fluctuation%20d%20une%20fr%C3%A9quence,%20ici%200.4.%20On%20tire%20100%20%C3%A9chantillons%20de%20N=200%20valeurs%20selon%20la%20loi%20binomiale%20et%20on%20renvoie%20la%20fr%C3%A9quence%20de%201.&+f%3A%3D0.4%3B%20N%3A%3D200&+echantillon%3A%3D%0Aranv(100%2Cbinomial%2CN%2Cf)%2FN&+count(x-%3E%0A%20%20abs(x-f)%3C1%2Fsqrt(N)%2Cechantillon)&+//%20Sans%20utiliser%20ranv,%20on%20peut%20simuler%20une%20frequence%20f%20avec%20rand()%20en%20comparant%20avec%20f&+rand()&+tirage(f)%3A%3Drand()%3Cf&+tirage(f)%3Btirage(f)%3Btirage(f)&+fonction%20simu(N%2Cf)%0A%20%20var%20j%2Cres%3B%0A%20%20res%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20si%20tirage(f)%20alors%20res%3A%3Dres%2B1%3B%20fsi%3B%0A%20%20fpour%3B%0A%20%20return%20res%2FN%3B%0Affonction%3A%3B&+simu(200%2C.4)&+l%3A%3Dseq(simu(200%2C.4)%2C100)&+count(x-%3Eabs(x-f)%3C1%2Fsqrt(N)%2Cl)&"
   target="_blank">
   Xcas</a> ou
-  <a
-  href="xcasfr.html#python=1&exec&+//%20Algorithme%20de%20calcul%20de%20la%20fr%C3%A9quence%20de%20valeur%20dans%20echantillon&+def%20Freq(echantillon%2Cvaleur)%3A%0A%20%20%20%20%23%20local%20j%2Ctotal%3B%0A%20%20%20%20total%3D0%3B%0A%20%20%20%20for%20j%20in%20range(dim(echantillon))%3A%0A%20%20%20%20%20%20%20%20if%20echantillon%5Bj%5D%3D%3Dvaleur%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20total%3Dtotal%2B1%0A%20%20%20%20return%20total%2Fdim(echantillon)&+echantillon%3Dranv(100%2C2)&+%23%0AFreq(echantillon%2C1)%0AFreq(echantillon%2C0)&+//%20Intervalle%20de%20fluctuation%20d%20une%20fr%C3%A9quence,%20ici%200.4.%20On%20tire%20100%20%C3%A9chantillons%20de%20N=200%20valeurs%20selon%20la%20loi%20binomiale%20et%20on%20renvoie%20la%20fr%C3%A9quence%20de%201.&+%23%0Af%3D0.4%0AN%3D200&+echantillon%3D%0Aranv(100%2Cbinomial%2CN%2Cf)%2FN&+def%20Ok(echantillon%2Cf%2CN)%3A%0A%20%20%20%20%23%20local%20c%2Cx%0A%20%20%20%20c%3D0%0A%20%20%20%20for%20x%20in%20echantillon%3A%0A%20%20%20%20%20%20%20%20if%20abs(x-f)%3C1%2Fsqrt(N)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20c%3Dc%2B1%0A%20%20%20%20return%20c&+Ok(echantillon%2Cf%2CN)&+//%20Sans%20utiliser%20ranv,%20on%20peut%20simuler%20une%20frequence%20f%20avec%20random()%20en%20comparant%20avec%20f&+random()&+def%20Tirage(f)%3A%0A%20%20%20%20return%20random()%3Cf&+Tirage(f)%3BTirage(f)%3BTirage(f)&+def%20Simu(N%2Cf)%3A%0A%20%20%20%20%23%20local%20j%2Cres%0A%20%20%20%20res%3D0%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20if%20Tirage(f)%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20res%3Dres%2B1%0A%20%20%20%20return%20res%2FN&+Simu(200%2C.4)&+l%3Dseq(Simu(200%2C.4)%2C100)&+Ok(l%2Cf%2CN)&"
+  <a href="#exec&python=0&+//%20Algorithme%20de%20calcul%20de%20la%20fr%C3%A9quence%20de%20valeur%20dans%20echantillon&+def%20Freq(echantillon%2Cvaleur)%3A%0A%20%20%20%20%23%20local%20j%2Ctotal%3B%0A%20%20%20%20total%3D0%3B%0A%20%20%20%20for%20j%20in%20echantillon%3A%0A%20%20%20%20%20%20%20%20if%20j%3D%3Dvaleur%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20total%3Dtotal%2B1%0A%20%20%20%20return%20total%2Fdim(echantillon)&+echantillon%3Dranv(100%2C2)&+%23%0AFreq(echantillon%2C1)%0AFreq(echantillon%2C0)&+//%20Intervalle%20de%20fluctuation%20d%20une%20fr%C3%A9quence,%20ici%200.4.%20On%20tire%20100%20%C3%A9chantillons%20de%20N=200%20valeurs%20selon%20la%20loi%20binomiale%20et%20on%20renvoie%20la%20fr%C3%A9quence%20de%201.&+%23%0Af%3D0.4%0AN%3D200&+echantillon%3D%0Aranv(100%2Cbinomial%2CN%2Cf)%2FN&+def%20Ok(echantillon%2Cf%2CN)%3A%0A%20%20%20%20%23%20local%20c%2Cx%0A%20%20%20%20c%3D0%0A%20%20%20%20for%20x%20in%20echantillon%3A%0A%20%20%20%20%20%20%20%20if%20abs(x-f)%3C1%2Fsqrt(N)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20c%3Dc%2B1%0A%20%20%20%20return%20c&+Ok(echantillon%2Cf%2CN)&+//%20Sans%20utiliser%20ranv,%20on%20peut%20simuler%20une%20frequence%20f%20avec%20random()%20en%20comparant%20avec%20f&+random()&+def%20Tirage(f)%3A%0A%20%20%20%20return%20random()%3Cf&+Tirage(f)%3BTirage(f)%3BTirage(f)&+def%20Simu(N%2Cf)%3A%0A%20%20%20%20%23%20local%20j%2Cres%0A%20%20%20%20res%3D0%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20if%20Tirage(f)%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20res%3Dres%2B1%0A%20%20%20%20return%20res%2FN&+Simu(200%2C.4)&+l%3Dseq(Simu(200%2C.4)%2C100)&+Ok(l%2Cf%2CN)&"
   target="_blank">Python</a>
   </li>
+<li>
+Lyc&eacute;e: d&eacute;composition d'un entier en facteurs premiers par division
+<a href="#exec&python=0&+fonction%20tdiv(n)%0A%20%20local%20r%2Cj%3B%0A%20%20r%3A%3Dmakelist(0)%3B%0A%20%20pour%20j%20de%202%20jusque%2010000%20faire%0A%20%20%20%20si%20j*j%3En%20alors%20%0A%20%20%20%20%20%20si%20n!%3D1%20alors%20r.append(n)%3B%20fsi%3B%0A%20%20%20%20%20%20return%20r%3B%20%0A%20%20%20%20fsi%3B%0A%20%20%20%20tantque%20irem(n%2Cj)%3D0%20faire%0A%20%20%20%20%20%20n%3A%3Dn%2Fj%3B%0A%20%20%20%20%20%20r.append(j)%3B%0A%20%20%20%20ftantque%3B%0A%20%20%20%20si%20j%3E2%20alors%20j%2B%2B%3B%20fsi%3B%20%2F%2F%20saut%20de%202%20en%202%0A%20%20fpour%3B%0A%20%20return%20%22Trop%20grand%22%3B%0Affonction%3A%3B&+tdiv(1007)&"
+target="_blank">Xcas</a>,
+<a
+href="#exec&python=1&+def%20tdiv(n)%3A%0A%20%20%20%20%23%20local%20r%2Cj%0A%20%20%20%20r%3Dmakelist(0)%0A%20%20%20%20for%20j%20in%20range(2%2C10000)%3A%0A%20%20%20%20%20%20%20%20if%20j*j%3En%20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20n%3C%3E1%20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20r.append(n)%0A%20%20%20%20%20%20%20%20%20%20%20%20return(r)%0A%20%20%20%20%20%20%20%20while%20n%20%25j%20%3D%3D0%20%3A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20n%3Dn%2Fj%0A%20%20%20%20%20%20%20%20%20%20%20%20r.append(j)%0A%20%20%20%20%20%20%20%20if%20j%3E2%20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20j%2B%2B%0A%20%20%20%20return(%22Trop%20grand%22)%0A&+tdiv(1007)&"
+target="_blank">Python</a>
+</li>
   <li> Premi&egrave;re, &eacute;quation du second degr&eacute;
   <a
-  href="xcasfr.html#python=0&exec&+fonction%20resolution2(a%2Cb%2Cc)%0A%20%20var%20delta%3B%0A%20%20delta%3A%3Db%5E2-4*a*c%3B%0A%20%20si%20delta%3C0%20alors%20retourne%20%22pas%20de%20racines%22%3B%20fsi%3B%0A%20%20si%20delta%3D0%20alors%20retourne%20-b%2F(2*a)%3B%20fsi%3B%0A%20%20delta%3A%3Dsqrt(delta)%3B%0A%20%20retourne%20(-b-delta)%2F(2*a)%2C(-b%2Bdelta)%2F(2*a)%3B%0Affonction%3A%3B&+resolution2(1%2C2%2C3)&+resolution2(1%2C2%2C1)&+resolution2(1%2C1%2C-1)&"
+  href="#python=0&exec&+fonction%20resolution2(a%2Cb%2Cc)%0A%20%20var%20delta%3B%0A%20%20delta%3A%3Db%5E2-4*a*c%3B%0A%20%20si%20delta%3C0%20alors%20retourne%20%22pas%20de%20racines%22%3B%20fsi%3B%0A%20%20si%20delta%3D0%20alors%20retourne%20-b%2F(2*a)%3B%20fsi%3B%0A%20%20delta%3A%3Dsqrt(delta)%3B%0A%20%20retourne%20(-b-delta)%2F(2*a)%2C(-b%2Bdelta)%2F(2*a)%3B%0Affonction%3A%3B&+resolution2(1%2C2%2C3)&+resolution2(1%2C2%2C1)&+resolution2(1%2C1%2C-1)&"
   target="_blank">
   Xcas</a>,
   <a
-  href="xcasfr.html#python=1&exec&+def%20resolution2(a%2Cb%2Cc)%3A%0A%20%20%20%20%23%20local%20delta%2Cs%0A%20%20%20%20delta%3Db%5E2-4*a*c%0A%20%20%20%20if%20delta%3C0%3A%0A%20%20%20%20%20%20%20%20return%20%22pas%20de%20racines%22%0A%20%20%20%20if%20delta%3D%3D0%3A%0A%20%20%20%20%20%20%20%20return%20-b%2F(2*a)%0A%20%20%20%20s%3Dsqrt(delta)%0A%20%20%20%20return%20%5B(-b-s)%2F(2*a)%2C(-b%2Bs)%2F(2*a)%5D&+resolution2(1%2C2%2C3)&+resolution2(1%2C2%2C1)&+resolution2(1%2C1%2C-1)&"
+  href="#python=1&exec&+def%20resolution2(a%2Cb%2Cc)%3A%0A%20%20%20%20%23%20local%20delta%2Cs%0A%20%20%20%20delta%3Db%5E2-4*a*c%0A%20%20%20%20if%20delta%3C0%3A%0A%20%20%20%20%20%20%20%20return%20%22pas%20de%20racines%22%0A%20%20%20%20if%20delta%3D%3D0%3A%0A%20%20%20%20%20%20%20%20return%20-b%2F(2*a)%0A%20%20%20%20s%3Dsqrt(delta)%0A%20%20%20%20return%20%5B(-b-s)%2F(2*a)%2C(-b%2Bs)%2F(2*a)%5D&+resolution2(1%2C2%2C3)&+resolution2(1%2C2%2C1)&+resolution2(1%2C1%2C-1)&"
   target="_blank">Python</a>
   </li>
   <li> Premi&egrave;re, suites
   <a
-  href="xcasfr.html#python=0&exec&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20donn%C3%A9e%20par%20une%20expression&+u(n)%3A%3D1%2Fn&+s%3A%3Dseq(u(n)%2Cn%2C1%2C10)&+seq(point(n%2Cu(n))%2Cn%2C1%2C10)&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20recurrente%20u_{n+1}=f(u_n)&+fonction%20ntermes(f%2Cu0%2CN)%20%0A%20%20var%20n%2Cu%3B%0A%20%20u%3A%3D%5Bu0%5D%3B%0A%20%20pour%20n%20de%201%20jusque%20N%20faire%0A%20%20%20%20u%5Bn%5D%3A%3Df(u%5Bn-1%5D)%3B%0A%20%20fpour%3B%0A%20%20retourne%20u%3B%20%0A%20%20%2F%2F%20ou%20retourne%20u%5BN%5D%20pour%20le%20dernier%20terme%0Affonction%3A%3B&+f(x)%3A%3D1%2F2*(x%2B2%2Fx)&+ntermes(f%2C1.0%2C1)&+U%3A%3Dntermes(f%2C1.0%2C5)&+ntermes(f%2C1%2C5)&+seq(point(n%2CU%5Bn%5D)%2Cn%2C0%2Csize(U)-1)&"
+  href="#python=0&exec&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20donn%C3%A9e%20par%20une%20expression&+u(n)%3A%3D1%2Fn&+s%3A%3Dseq(u(n)%2Cn%2C1%2C10)&+seq(point(n%2Cu(n))%2Cn%2C1%2C10)&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20recurrente%20u_{n+1}=f(u_n)&+fonction%20ntermes(f%2Cu0%2CN)%20%0A%20%20var%20n%2Cu%3B%0A%20%20u%3A%3D%5Bu0%5D%3B%0A%20%20pour%20n%20de%201%20jusque%20N%20faire%0A%20%20%20%20u%5Bn%5D%3A%3Df(u%5Bn-1%5D)%3B%0A%20%20fpour%3B%0A%20%20retourne%20u%3B%20%0A%20%20%2F%2F%20ou%20retourne%20u%5BN%5D%20pour%20le%20dernier%20terme%0Affonction%3A%3B&+f(x)%3A%3D1%2F2*(x%2B2%2Fx)&+ntermes(f%2C1.0%2C1)&+U%3A%3Dntermes(f%2C1.0%2C5)&+ntermes(f%2C1%2C5)&+seq(point(n%2CU%5Bn%5D)%2Cn%2C0%2Csize(U)-1)&"
   target="_blank"">Xcas
   </a>,
   <a
-  href="xcasfr.html#python=1&exec&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20donn%C3%A9e%20par%20une%20expression&+def%20u(n)%3A%0A%20%20%20%20return%201.0%2Fn%0A&+s%3D%5Bu(n)%20for%20n%20in%20range(1%2C11)%5D&+%5Bpoint(n%2Cu(n))%20for%20n%20in%20range(1%2C11)%5D&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20r%C3%A9currente%20u_{n+1}=f(u_n)&+def%20ntermes(f%2Cu0%2CN)%3A%0A%20%20%20%20%23%20local%20n%2Cu%0A%20%20%20%20u%3D%5Bu0%5D%3B%0A%20%20%20%20for%20n%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20u.append(f(u%5Bn%5D))%0A%20%20%20%20return%20u%20%0A%20%20%20%20%23%20ou%20retourne%20u%5BN%5D%20pour%20le%20dernier%20terme%0A%20%20%20%20&+def%20f(x)%3A%0A%20%20%20%20return%201%2F2*(x%2B2%2Fx)&+ntermes(f%2C1.0%2C1)&+U%3Dntermes(f%2C1.0%2C5)&+ntermes(f%2C1%2C5)&+%5Bpoint(n%2CU%5Bn%5D)%20for%20n%20in%20range(size(U))%5D%0A&"
+  href="#python=1&exec&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20donn%C3%A9e%20par%20une%20expression&+def%20u(n)%3A%0A%20%20%20%20return%201.0%2Fn%0A&+s%3D%5Bu(n)%20for%20n%20in%20range(1%2C11)%5D&+%5Bpoint(n%2Cu(n))%20for%20n%20in%20range(1%2C11)%5D&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20r%C3%A9currente%20u_{n+1}=f(u_n)&+def%20ntermes(f%2Cu0%2CN)%3A%0A%20%20%20%20%23%20local%20n%2Cu%0A%20%20%20%20u%3D%5Bu0%5D%3B%0A%20%20%20%20for%20n%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20u.append(f(u%5Bn%5D))%0A%20%20%20%20return%20u%20%0A%20%20%20%20%23%20ou%20retourne%20u%5BN%5D%20pour%20le%20dernier%20terme%0A%20%20%20%20&+def%20f(x)%3A%0A%20%20%20%20return%201%2F2*(x%2B2%2Fx)&+ntermes(f%2C1.0%2C1)&+U%3Dntermes(f%2C1.0%2C5)&+ntermes(f%2C1%2C5)&+%5Bpoint(n%2CU%5Bn%5D)%20for%20n%20in%20range(size(U))%5D%0A&"
   target="_blank"">Python</a>
   </li>
   <li> Premi&egrave;re, Loi binomiale et loi g&eacute;om&eacute;trique tronqu&eacute;e
   <a
-  href="xcasfr.html#python=0&exec&+python_compat(0)&+//%20simulation%20de%20$n$%20tirages%20au%20hasard%20avec%20probabilit%C3%A9%20$p$%20de%20succ&egrave;s&+fonction%20Tirages(n%2Cp)%0A%20%20var%20total%2Cj%2Ch%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20n%20faire%0A%20%20%20%20h%3A%3Drand(0%2C1)%3B%0A%20%20%20%20si%20h%3C%3Dp%20alors%20total%3A%3Dtotal%2B1%3B%20fsi%3B%0A%20%20%20fpour%3B%0A%20%20retourne%20total%3B%0Affonction%3A%3B&+Tirages(10%2C0.4)&+//%20histogramme%20de%201000%20tirages%20et%20comparaison%20avec%20l'histogramme%20de%20la%20loi%20binomiale&+s%3A%3Dseq(Tirages(10%2C0.4)%2C1000)&+histogramme(s%2C-0.5%2C1%2Ccouleur%3Dred)%3B%20%0Ahistogramme(binomial%2C10%2C0.4)&+//%20calcul%20de%20l'intervalle%20de%20confiance%20centr%C3%A9%20pour%20la%20loi%20binomiale&+n%3A%3D100%3B%20p%3A%3D0.16%3B%20%0Axmin%3A%3Dbinomial_icdf(n%2Cp%2C0.025)%3B%0Axmax%3A%3Dbinomial_icdf(n%2Cp%2C0.975)&+gl_x%3D0..40%3B%20gl_y%3D0..0.15%3B%0Ahistogram(binomial%2Cn%2Cp)%3B%0Adroite(x%3Dxmin%2Ccolor%3Dred)%3B%0Adroite(x%3Dxmax%2Ccolor%3Dred)%3B&+//%20programme%20de%20calcul%20de%20l'intervalle%20de%20confiance%20%C3%A0%20partir%20de%20la%20loi%20binomiale&+fonction%20confiance(n%2Cp%2Cseuil)%0A%20%20var%20k%2Ctotal%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20k%20de%200%20jusque%20n%20faire%0A%20%20%20%20total%3A%3Dtotal%2Bbinomial(n%2Cp%2Ck)%3B%0A%20%20%20%20si%20total%3E%3Dseuil%20alors%20retourne%20k%3B%20fsi%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+confiance(100%2C.16%2C0.025)&+confiance(100%2C.16%2C0.975)&+//%20comparaison%20avec%20$[p-1/sqrt(n),p+1/sqrt(n)]$&+n%3A%3D30%3Bplotfunc(%0A%5Bbinomial_icdf(30%2Cp%2C0.025)%2Fn%2C%0Abinomial_icdf(30%2Cp%2C0.975)%2Fn%2C%0Ap-sqrt(1%2Fn)%2Cp%2Bsqrt(1%2Fn)%5D%2C%0Ap%3D0..1%2Ccolor%3D%5Bred%2Cred%2Cblack%2Cblack%5D)%3B&+//%20loi%20g%C3%A9om%C3%A9trique%20tronqu%C3%A9e%20(renvoie%20le%201er%20succ%C3%A8s%20ou%200)&+fonction%20geo(n%2Cp)%0A%20%20var%20k%2Ct%3B%0A%20%20pour%20k%20de%201%20jusque%20n%20faire%0A%20%20%20%20t%3A%3Dalea(0%2C1)%3B%0A%20%20%20%20si%20t%3C%3Dp%20alors%20retourne%20k%3B%20fsi%3B%0A%20%20fpour%3B%0A%20%20retourne%200%3B%0Affonction%3A%3B&+geo(10%2C.4)&+s%3A%3Dseq(geo(10%2C.4)%2C1000)&+histogramme(s%2C-0.5%2C1%2Ccouleur%3Dred)%3B%20%0Ahistogramme(geometric%2C0.4)&"
+  href="#python=0&exec&+python_compat(0)&+//%20simulation%20de%20$n$%20tirages%20au%20hasard%20avec%20probabilit%C3%A9%20$p$%20de%20succ&egrave;s&+fonction%20Tirages(n%2Cp)%0A%20%20var%20total%2Cj%2Ch%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20n%20faire%0A%20%20%20%20h%3A%3Drand(0%2C1)%3B%0A%20%20%20%20si%20h%3C%3Dp%20alors%20total%3A%3Dtotal%2B1%3B%20fsi%3B%0A%20%20%20fpour%3B%0A%20%20retourne%20total%3B%0Affonction%3A%3B&+Tirages(10%2C0.4)&+//%20histogramme%20de%201000%20tirages%20et%20comparaison%20avec%20l'histogramme%20de%20la%20loi%20binomiale&+s%3A%3Dseq(Tirages(10%2C0.4)%2C1000)&+histogramme(s%2C-0.5%2C1%2Ccouleur%3Dred)%3B%20%0Ahistogramme(binomial%2C10%2C0.4)&+//%20calcul%20de%20l'intervalle%20de%20confiance%20centr%C3%A9%20pour%20la%20loi%20binomiale&+n%3A%3D100%3B%20p%3A%3D0.16%3B%20%0Axmin%3A%3Dbinomial_icdf(n%2Cp%2C0.025)%3B%0Axmax%3A%3Dbinomial_icdf(n%2Cp%2C0.975)&+gl_x%3D0..40%3B%20gl_y%3D0..0.15%3B%0Ahistogram(binomial%2Cn%2Cp)%3B%0Adroite(x%3Dxmin%2Ccolor%3Dred)%3B%0Adroite(x%3Dxmax%2Ccolor%3Dred)%3B&+//%20programme%20de%20calcul%20de%20l'intervalle%20de%20confiance%20%C3%A0%20partir%20de%20la%20loi%20binomiale&+fonction%20confiance(n%2Cp%2Cseuil)%0A%20%20var%20k%2Ctotal%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20k%20de%200%20jusque%20n%20faire%0A%20%20%20%20total%3A%3Dtotal%2Bbinomial(n%2Cp%2Ck)%3B%0A%20%20%20%20si%20total%3E%3Dseuil%20alors%20retourne%20k%3B%20fsi%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+confiance(100%2C.16%2C0.025)&+confiance(100%2C.16%2C0.975)&+//%20comparaison%20avec%20$[p-1/sqrt(n),p+1/sqrt(n)]$&+n%3A%3D30%3Bplotfunc(%0A%5Bbinomial_icdf(30%2Cp%2C0.025)%2Fn%2C%0Abinomial_icdf(30%2Cp%2C0.975)%2Fn%2C%0Ap-sqrt(1%2Fn)%2Cp%2Bsqrt(1%2Fn)%5D%2C%0Ap%3D0..1%2Ccolor%3D%5Bred%2Cred%2Cblack%2Cblack%5D)%3B&+//%20loi%20g%C3%A9om%C3%A9trique%20tronqu%C3%A9e%20(renvoie%20le%201er%20succ%C3%A8s%20ou%200)&+fonction%20geo(n%2Cp)%0A%20%20var%20k%2Ct%3B%0A%20%20pour%20k%20de%201%20jusque%20n%20faire%0A%20%20%20%20t%3A%3Dalea(0%2C1)%3B%0A%20%20%20%20si%20t%3C%3Dp%20alors%20retourne%20k%3B%20fsi%3B%0A%20%20fpour%3B%0A%20%20retourne%200%3B%0Affonction%3A%3B&+geo(10%2C.4)&+s%3A%3Dseq(geo(10%2C.4)%2C1000)&+histogramme(s%2C-0.5%2C1%2Ccouleur%3Dred)%3B%20%0Ahistogramme(geometric%2C0.4)&"
   target="_blank">Xcas
 </a>,
 <a
-  href="xcasfr.html#python=1&exec&+//%20simulation%20de%20$n$%20tirages%20au%20hasard%20avec%20probabilit%C3%A9%20$p$%20de%20succ&egrave;s&+def%20Tirages(n%2Cp)%3A%0A%20%20%20%20%23%20local%20total%2Cj%2Ch%0A%20%20%20%20total%3D0%0A%20%20%20%20for%20j%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20h%3Drandom()%0A%20%20%20%20%20%20%20%20if%20h%3C%3Dp%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20total%3Dtotal%2B1%0A%20%20%20%20return%20total%0A&+Tirages(10%2C0.4)&+//%20histogramme%20de%201000%20tirages%20et%20comparaison%20avec%20l'histogramme%20de%20la%20loi%20binomiale&+s%3Dseq(Tirages(10%2C0.4)%2C1000)&+histogramme(s%2C-0.5%2C1%2Ccouleur%3Dred)%3B%0Ahistogramme(binomial%2C10%2C0.4)&+//%20calcul%20de%20l'intervalle%20de%20confiance%20centr%C3%A9%20pour%20la%20loi%20binomiale&+%23%0An%3D100%0Ap%3D0.16%0Axmin%3Dbinomial_icdf(n%2Cp%2C0.025)%0Axmax%3Dbinomial_icdf(n%2Cp%2C0.975)&+%23%0Agl_x%3D0..40%0Agl_y%3D0..0.15%0Ahistogram(binomial%2Cn%2Cp)%0Acolor(droite(equal(x%2Cxmin))%2Cred)%0Acolor(droite(equal(x%2Cxmax))%2Cred)&+//%20programme%20de%20calcul%20de%20l'intervalle%20de%20confiance%20%C3%A0%20partir%20de%20la%20loi%20binomiale&+def%20confiance(n%2Cp%2Cseuil)%3A%0A%20%20%20%20%23%20local%20k%2Ctotal%0A%20%20%20%20total%3D0%0A%20%20%20%20for%20k%20in%20range(n%2B1)%3A%0A%20%20%20%20%20%20%20%20total%3Dtotal%2Bbinomial(n%2Cp%2Ck)%0A%20%20%20%20%20%20%20%20if%20total%3E%3Dseuil%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20k%0A&+confiance(100%2C.16%2C0.025)&+confiance(100%2C.16%2C0.975)&+//%20comparaison%20avec%20$[p-1/sqrt(n),p+1/sqrt(n)]$&+%23%0An%3D30%0Aplotfunc(%5Bbinomial_icdf(30%2Cp%2C0.025)%2Fn%2Cbinomial_icdf(30%2Cp%2C0.975)%2Fn%2Cp-sqrt(1%2Fn)%2Cp%2Bsqrt(1%2Fn)%5D%2Cp%2C0%2C1)&+//%20loi%20g%C3%A9om%C3%A9trique%20tronqu%C3%A9e%20(renvoie%20le%201er%20succ%C3%A8s%20ou%200)&+def%20geo(n%2Cp)%3A%0A%20%20%20%20%23%20local%20k%2Ct%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20t%3Drandom()%0A%20%20%20%20%20%20%20%20if%20t%3C%3Dp%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20k%2B1%0A%20%20%20%20return%200%0A&+geo(10%2C.4)&+s%3Dseq(geo(10%2C.4)%2C1000)&+%23%0Acolor(histogramme(s%2C-0.5%2C1)%2Cred)%20%0Ahistogramme(geometric%2C0.4)&"
+  href="#python=1&exec&+//%20simulation%20de%20$n$%20tirages%20au%20hasard%20avec%20probabilit%C3%A9%20$p$%20de%20succ&egrave;s&+def%20Tirages(n%2Cp)%3A%0A%20%20%20%20%23%20local%20total%2Cj%2Ch%0A%20%20%20%20total%3D0%0A%20%20%20%20for%20j%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20h%3Drandom()%0A%20%20%20%20%20%20%20%20if%20h%3C%3Dp%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20total%3Dtotal%2B1%0A%20%20%20%20return%20total%0A&+Tirages(10%2C0.4)&+//%20histogramme%20de%201000%20tirages%20et%20comparaison%20avec%20l'histogramme%20de%20la%20loi%20binomiale&+s%3Dseq(Tirages(10%2C0.4)%2C1000)&+histogramme(s%2C-0.5%2C1%2Ccouleur%3Dred)%3B%0Ahistogramme(binomial%2C10%2C0.4)&+//%20calcul%20de%20l'intervalle%20de%20confiance%20centr%C3%A9%20pour%20la%20loi%20binomiale&+%23%0An%3D100%0Ap%3D0.16%0Axmin%3Dbinomial_icdf(n%2Cp%2C0.025)%0Axmax%3Dbinomial_icdf(n%2Cp%2C0.975)&+%23%0Agl_x%3D0..40%0Agl_y%3D0..0.15%0Ahistogram(binomial%2Cn%2Cp)%0Acolor(droite(equal(x%2Cxmin))%2Cred)%0Acolor(droite(equal(x%2Cxmax))%2Cred)&+//%20programme%20de%20calcul%20de%20l'intervalle%20de%20confiance%20%C3%A0%20partir%20de%20la%20loi%20binomiale&+def%20confiance(n%2Cp%2Cseuil)%3A%0A%20%20%20%20%23%20local%20k%2Ctotal%0A%20%20%20%20total%3D0%0A%20%20%20%20for%20k%20in%20range(n%2B1)%3A%0A%20%20%20%20%20%20%20%20total%3Dtotal%2Bbinomial(n%2Cp%2Ck)%0A%20%20%20%20%20%20%20%20if%20total%3E%3Dseuil%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20k%0A&+confiance(100%2C.16%2C0.025)&+confiance(100%2C.16%2C0.975)&+//%20comparaison%20avec%20$[p-1/sqrt(n),p+1/sqrt(n)]$&+%23%0An%3D30%0Aplotfunc(%5Bbinomial_icdf(30%2Cp%2C0.025)%2Fn%2Cbinomial_icdf(30%2Cp%2C0.975)%2Fn%2Cp-sqrt(1%2Fn)%2Cp%2Bsqrt(1%2Fn)%5D%2Cp%2C0%2C1)&+//%20loi%20g%C3%A9om%C3%A9trique%20tronqu%C3%A9e%20(renvoie%20le%201er%20succ%C3%A8s%20ou%200)&+def%20geo(n%2Cp)%3A%0A%20%20%20%20%23%20local%20k%2Ct%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20t%3Drandom()%0A%20%20%20%20%20%20%20%20if%20t%3C%3Dp%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20k%2B1%0A%20%20%20%20return%200%0A&+geo(10%2C.4)&+s%3Dseq(geo(10%2C.4)%2C1000)&+%23%0Acolor(histogramme(s%2C-0.5%2C1)%2Cred)%20%0Ahistogramme(geometric%2C0.4)&"
   target="_blank">Python</a>
 </li>
 <li> Premi&egrave;re Triangle de Pascal
 <a
-href="xcasfr.html#python=0&exec&+//%20Triangle%20de%20Pascal%20pour%20trouver%20les%20coefficients%20binomiaux&+fonction%20Pascal(n)%0A%20%20var%20tableau%2Cj%2Ck%3B%0A%20%20tableau%3A%3Dmatrix(n%2Cn)%3B%0A%20%20pour%20j%20de%200%20jusque%20n-1%20faire%0A%20%20%20%20tableau%5Bj%2C0%5D%3A%3D1%3B%0A%20%20%20%20pour%20k%20de%201%20jusque%20j%20faire%0A%20%20%20%20%20%20tableau%5Bj%2Ck%5D%3A%3Dtableau%5Bj-1%2Ck-1%5D%2Btableau%5Bj-1%2Ck%5D%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20retourne%20tableau%3B%0Affonction%3A%3B&+Pascal(6)&"
+href="#python=0&exec&+//%20Triangle%20de%20Pascal%20pour%20trouver%20les%20coefficients%20binomiaux&+fonction%20Pascal(n)%0A%20%20var%20tableau%2Cj%2Ck%3B%0A%20%20tableau%3A%3Dmatrix(n%2Cn)%3B%0A%20%20pour%20j%20de%200%20jusque%20n-1%20faire%0A%20%20%20%20tableau%5Bj%2C0%5D%3A%3D1%3B%0A%20%20%20%20pour%20k%20de%201%20jusque%20j%20faire%0A%20%20%20%20%20%20tableau%5Bj%2Ck%5D%3A%3Dtableau%5Bj-1%2Ck-1%5D%2Btableau%5Bj-1%2Ck%5D%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20retourne%20tableau%3B%0Affonction%3A%3B&+Pascal(6)&"
   target="_blank">
 Xcas</a>
 <a
-  href="xcasfr.html#python=1&exec&+//%20Triangle%20de%20Pascal%20pour%20trouver%20les%20coefficients%20binomiaux&+def%20Pascal(n)%3A%0A%20%20%20%20%23%20local%20tableau%2Cj%2Ck%3B%0A%20%20%20%20tableau%3Dmatrix(n%2Cn)%0A%20%20%20%20for%20j%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20tableau%5Bj%2C0%5D%3D1%0A%20%20%20%20%20%20%20%20for%20k%20in%20range(1%2Cj%2B1)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20tableau%5Bj%2Ck%5D%3Dtableau%5Bj-1%2Ck-1%5D%2Btableau%5Bj-1%2Ck%5D%0A%20%20%20%20return%20tableau%0A&+Pascal(6)&"
+  href="#python=1&exec&+//%20Triangle%20de%20Pascal%20pour%20trouver%20les%20coefficients%20binomiaux&+def%20Pascal(n)%3A%0A%20%20%20%20%23%20local%20tableau%2Cj%2Ck%3B%0A%20%20%20%20tableau%3Dmatrix(n%2Cn)%0A%20%20%20%20for%20j%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20tableau%5Bj%2C0%5D%3D1%0A%20%20%20%20%20%20%20%20for%20k%20in%20range(1%2Cj%2B1)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20tableau%5Bj%2Ck%5D%3Dtableau%5Bj-1%2Ck-1%5D%2Btableau%5Bj-1%2Ck%5D%0A%20%20%20%20return%20tableau%0A&+Pascal(6)&"
   target="_blank">Python</a>
 </li>
 <li>
 Terminale: Dichotomie
 <a
-href="xcasfr.html#python=0&exec&+//Recherche%20d'une%20racine%20de%20$f$%20entre%20$a$%20et%20$b$%20par%20dichotomie,%20avec%20pr%C3%A9cision%20%3Ctt%3eeps%3C/tt%3e.%0aLa%20fonction%20%3Ctt%3edicho%3C/tt%3e%20commence%20par%20tester%20que%20le%20signe%20n'est%20pas%20identique%20en%20$a$%20et%20$b$.&+fonction%20dicho(f%2Ca%2Cb%2Ceps)%0A%20%20var%20c%2Cniter%3B%0A%20%20si%20f(a)*f(b)%3E%3D0%20alors%20retourne%20%22erreur%3A%20pas%20de%20changement%20de%20signe%22%3B%20fsi%3B%0A%20%20tantque%20abs(b-a)%3Eeps%20faire%0A%20%20%20%20c%3D(a%2Bb)%2F2%3B%0A%20%20%20%20si%20f(a)*f(c)%3E0%20alors%20a%3Dc%3B%20sinon%20b%3Dc%3B%20fsi%3B%0A%20%20ftantque%0A%20%20retourne%20c%3B%0Affonction%3A%3B&+f(x)%3A%3Dcos(x)-x%3B&+plot(f(x)%2Cx%2C0%2C2)&+dicho(f%2C0.0%2C1.0%2C1e-8)&"
+href="#python=0&exec&+//Recherche%20d'une%20racine%20de%20$f$%20entre%20$a$%20et%20$b$%20par%20dichotomie,%20avec%20pr%C3%A9cision%20%3Ctt%3eeps%3C/tt%3e.%0aLa%20fonction%20%3Ctt%3edicho%3C/tt%3e%20commence%20par%20tester%20que%20le%20signe%20n'est%20pas%20identique%20en%20$a$%20et%20$b$.&+fonction%20dicho(f%2Ca%2Cb%2Ceps)%0A%20%20var%20c%2Cniter%3B%0A%20%20si%20f(a)*f(b)%3E%3D0%20alors%20retourne%20%22erreur%3A%20pas%20de%20changement%20de%20signe%22%3B%20fsi%3B%0A%20%20tantque%20abs(b-a)%3Eeps%20faire%0A%20%20%20%20c%3D(a%2Bb)%2F2%3B%0A%20%20%20%20si%20f(a)*f(c)%3E0%20alors%20a%3Dc%3B%20sinon%20b%3Dc%3B%20fsi%3B%0A%20%20ftantque%0A%20%20retourne%20c%3B%0Affonction%3A%3B&+f(x)%3A%3Dcos(x)-x%3B&+plot(f(x)%2Cx%2C0%2C2)&+dicho(f%2C0.0%2C1.0%2C1e-8)&"
   target="_blank">
 Xcas
 </a>,
 <a
-  href="xcasfr.html#python=1&exec&+//%20recherche%20d'une%20racine%20de%20f%20entre%20a%20et%20b%20par%20dichotomie,%20avec%20pr%C3%A9cision%20eps&+def%20dicho(f%2Ca%2Cb%2Ceps)%3A%0A%20%20%20%20%23%20local%20var%20c%2Cniter%3B%0A%20%20%20%20if%20f(a)*f(b)%3E%3D0%3A%20%0A%20%20%20%20%20%20%20%20return%20%22erreur%3A%20f(a)*f(b)%3E%3D0%22%0A%20%20%20%20while%20abs(b-a)%3Eeps%3A%0A%20%20%20%20%20%20%20%20c%3D(a%2Bb)%2F2%0A%20%20%20%20%20%20%20%20if%20f(a)*f(c)%3E0%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20a%3Dc%0A%20%20%20%20%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20b%3Dc%0A%20%20%20%20return%20c%0A&+def%20f(x)%3A%0A%20%20%20%20return%20cos(x)-x&+plot(f(x)%2Cx%2C0%2C2)&+dicho(f%2C0.0%2C1.0%2C1e-8)&"
+  href="#python=1&exec&+//%20recherche%20d'une%20racine%20de%20f%20entre%20a%20et%20b%20par%20dichotomie,%20avec%20pr%C3%A9cision%20eps&+def%20dicho(f%2Ca%2Cb%2Ceps)%3A%0A%20%20%20%20%23%20local%20var%20c%2Cniter%3B%0A%20%20%20%20if%20f(a)*f(b)%3E%3D0%3A%20%0A%20%20%20%20%20%20%20%20return%20%22erreur%3A%20f(a)*f(b)%3E%3D0%22%0A%20%20%20%20while%20abs(b-a)%3Eeps%3A%0A%20%20%20%20%20%20%20%20c%3D(a%2Bb)%2F2%0A%20%20%20%20%20%20%20%20if%20f(a)*f(c)%3E0%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20a%3Dc%0A%20%20%20%20%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20b%3Dc%0A%20%20%20%20return%20c%0A&+def%20f(x)%3A%0A%20%20%20%20return%20cos(x)-x&+plot(f(x)%2Cx%2C0%2C2)&+dicho(f%2C0.0%2C1.0%2C1e-8)&"
   target="_blank">Python</a>
 </li>
 <li>
 Terminale, Calcul approch&eacute; d'int&eacute;grales.
 <a
-href="xcasfr.html#python=0&exec&+//%20calcul%20approche%20d'int%C3%A9grale&+f(x)%3A%3Dsin(x)&+plot(f(x)%2Cx%2C0%2C1)%3B%20droite(y%3D0)%3B&+fonction%20rect(f%2Ca%2Cb%2CN)%0A%20%20var%20S%3B%0A%20%20S%3A%3D0.0%3B%0A%20%20h%3A%3D(b-a)%2FN%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20S%3A%3DS%2Bf(a%2Bj*h)%3B%0A%20%20fpour%3B%0A%20%20retourne%20S*h%3B%0Affonction%3A%3B&+rect(f%2C0%2C1%2C100)&+integrate(f(x)%2Cx%2C0%2C1.0)&+//%20pour%20le%20point%20milieu%20on%20remplace%20f(a+j*h)%20par%20f(a-h/2+j*h)&+fonction%20pointmilieu(f%2Ca%2Cb%2CN)%0A%20%20var%20S%3B%0A%20%20S%3A%3D0.0%3B%0A%20%20h%3A%3D(b-a)%2FN%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20S%3A%3DS%2Bf(a-h%2F2%2Bj*h)%3B%0A%20%20fpour%3B%0A%20%20retourne%20S*h%3B%0Affonction%3A%3B&+pointmilieu(f%2C0%2C1%2C100)&+//%20Observer%20la%20pr%C3%A9cision%20bien%20meilleure,%20pour%20un%20cout%20de%20calcul%20quasi-identique.%20Intuitivement%20le%20rectangle%20correspondant%20approche%20mieux%20la%20fonction.&+plot(f(x)%2Cx%2C0%2C1)%3B%0Arectangle(0%2C1%2Cf(1)%2Ccolor%3Dred)%3B%20%0Arectangle(0%2C1%2Cf(1%2F2)%2Ccolor%3Dgreen)&+//%20Estimation%20par%20la%20m%C3%A9thode%20de%20Monte-Carlo&+fonction%20Montecarlo(f%2Ca%2Cb%2Cn)%0A%20%20local%20k%2Cr%3B%0A%20%20r%3A%3D0%3B%0A%20%20pour%20k%20de%201%20jusque%20n%20faire%0A%20%20%20%20r%3A%3Dr%2Bf(alea(uniformd%2Ca%2Cb))%3B%0A%20%20fpour%3B%0A%20%20retourne%20r*(b-a)%2Fn%3B%0Affonction%3A%3B&+n%3A%3D100%3BMontecarlo(f%2C0%2C1%2Cn)&+N%3A%3D800%3B%0Al%3A%3Dseq(Montecarlo(f%2C0%2C1%2Cn)%2CN)%3B%0Ahistogram(l%2C0%2C0.005)%3B%0Am%3A%3D1-cos(1)%3B%0Adroite(x%3Dm%2Ccolor%3Dred)%3B%0Aplot(normald(m%2Cstddev(l)%2Cx)%2Cx%3D0.35..0.55)&"
+href="#python=0&exec&+//%20calcul%20approche%20d'int%C3%A9grale&+f(x)%3A%3Dsin(x)&+plot(f(x)%2Cx%2C0%2C1)%3B%20droite(y%3D0)%3B&+fonction%20rect(f%2Ca%2Cb%2CN)%0A%20%20var%20S%3B%0A%20%20S%3A%3D0.0%3B%0A%20%20h%3A%3D(b-a)%2FN%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20S%3A%3DS%2Bf(a%2Bj*h)%3B%0A%20%20fpour%3B%0A%20%20retourne%20S*h%3B%0Affonction%3A%3B&+rect(f%2C0%2C1%2C100)&+integrate(f(x)%2Cx%2C0%2C1.0)&+//%20pour%20le%20point%20milieu%20on%20remplace%20f(a+j*h)%20par%20f(a-h/2+j*h)&+fonction%20pointmilieu(f%2Ca%2Cb%2CN)%0A%20%20var%20S%3B%0A%20%20S%3A%3D0.0%3B%0A%20%20h%3A%3D(b-a)%2FN%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20S%3A%3DS%2Bf(a-h%2F2%2Bj*h)%3B%0A%20%20fpour%3B%0A%20%20retourne%20S*h%3B%0Affonction%3A%3B&+pointmilieu(f%2C0%2C1%2C100)&+//%20Observer%20la%20pr%C3%A9cision%20bien%20meilleure,%20pour%20un%20cout%20de%20calcul%20quasi-identique.%20Intuitivement%20le%20rectangle%20correspondant%20approche%20mieux%20la%20fonction.&+plot(f(x)%2Cx%2C0%2C1)%3B%0Arectangle(0%2C1%2Cf(1)%2Ccolor%3Dred)%3B%20%0Arectangle(0%2C1%2Cf(1%2F2)%2Ccolor%3Dgreen)&+//%20Estimation%20par%20la%20m%C3%A9thode%20de%20Monte-Carlo&+fonction%20Montecarlo(f%2Ca%2Cb%2Cn)%0A%20%20local%20k%2Cr%3B%0A%20%20r%3A%3D0%3B%0A%20%20pour%20k%20de%201%20jusque%20n%20faire%0A%20%20%20%20r%3A%3Dr%2Bf(alea(uniformd%2Ca%2Cb))%3B%0A%20%20fpour%3B%0A%20%20retourne%20r*(b-a)%2Fn%3B%0Affonction%3A%3B&+n%3A%3D100%3BMontecarlo(f%2C0%2C1%2Cn)&+N%3A%3D800%3B%0Al%3A%3Dseq(Montecarlo(f%2C0%2C1%2Cn)%2CN)%3B%0Ahistogram(l%2C0%2C0.005)%3B%0Am%3A%3D1-cos(1)%3B%0Adroite(x%3Dm%2Ccolor%3Dred)%3B%0Aplot(normald(m%2Cstddev(l)%2Cx)%2Cx%3D0.35..0.55)&"
   target="_blank">Xcas
 </a>
 <a
-href="xcasfr.html#python=1&exec&+//%20calcul%20approche%20d'int%C3%A9grale&+f(x)%3A%3Dsin(x)&+plot(f(x)%2Cx%2C0%2C1)%3B%20droite(y%3D0)%3B&+def%20Rect(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2FN%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2Bj*h)%0A%20%20%20%20return%20S*h&+Rect(f%2C0%2C1%2C100)&+integrate(f(x)%2Cx%2C0%2C1.0)&+//%20pour%20le%20point%20milieu%20on%20remplace%20f(a+j*h)%20par%20f(a-h/2+j*h)&+def%20Pointmilieu(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2FN%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2F2%2Bj*h)%0A%20%20%20%20return%20S*h&+Pointmilieu(f%2C0%2C1%2C100)&+//%20Observer%20la%20pr%C3%A9cision%20bien%20meilleure,%20pour%20un%20cout%20de%20calcul%20quasi-identique.%20Intuitivement%20le%20rectangle%20correspondant%20approche%20mieux%20la%20fonction.&+plot(f(x)%2Cx%2C0%2C1)%3B%0Arectangle(0%2C1%2Cf(1)%2Ccolor%3Dred)%3B%20%0Arectangle(0%2C1%2Cf(1%2F2)%2Ccolor%3Dgreen)&+def%20Montecarlo(f%2Ca%2Cb%2Cn)%3A%0A%20%20%20%20%23%20local%20k%2Cr%2Cx%0A%20%20%20%20r%3D0%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20r%3Dr%2Bf(random.uniform(a%2Cb))%0A%20%20%20%20return(r*(b-a)%2Fn)&+%23%0An%3D100%0AMontecarlo(f%2C0%2C1%2Cn)&+%23%0AN%3D800%3B%0Al%3D%5BMontecarlo(f%2C0%2C1%2Cn)%20for%20j%20in%20range(N)%5D%0Ahistogram(l%2C0%2C0.005)%0Am%3D1-cos(1)%0Adroite(x%3D%3D%3Dm%2Ccolor%3D%3D%3Dred)%3B%0Aplot(normald(m%2Cstddev(l)%2Cx)%2Cx%3D%3D%3D0.35..0.55)&"
+href="#python=1&exec&+//%20calcul%20approche%20d'int%C3%A9grale&+f(x)%3A%3Dsin(x)&+plot(f(x)%2Cx%2C0%2C1)%3B%20droite(y%3D0)%3B&+def%20Rect(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2FN%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2Bj*h)%0A%20%20%20%20return%20S*h&+Rect(f%2C0%2C1%2C100)&+integrate(f(x)%2Cx%2C0%2C1.0)&+//%20pour%20le%20point%20milieu%20on%20remplace%20f(a+j*h)%20par%20f(a-h/2+j*h)&+def%20Pointmilieu(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2FN%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2F2%2Bj*h)%0A%20%20%20%20return%20S*h&+Pointmilieu(f%2C0%2C1%2C100)&+//%20Observer%20la%20pr%C3%A9cision%20bien%20meilleure,%20pour%20un%20cout%20de%20calcul%20quasi-identique.%20Intuitivement%20le%20rectangle%20correspondant%20approche%20mieux%20la%20fonction.&+plot(f(x)%2Cx%2C0%2C1)%3B%0Arectangle(0%2C1%2Cf(1)%2Ccolor%3Dred)%3B%20%0Arectangle(0%2C1%2Cf(1%2F2)%2Ccolor%3Dgreen)&+def%20Montecarlo(f%2Ca%2Cb%2Cn)%3A%0A%20%20%20%20%23%20local%20k%2Cr%2Cx%0A%20%20%20%20r%3D0%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20r%3Dr%2Bf(random.uniform(a%2Cb))%0A%20%20%20%20return(r*(b-a)%2Fn)&+%23%0An%3D100%0AMontecarlo(f%2C0%2C1%2Cn)&+%23%0AN%3D800%3B%0Al%3D%5BMontecarlo(f%2C0%2C1%2Cn)%20for%20j%20in%20range(N)%5D%0Ahistogram(l%2C0%2C0.005)%0Am%3D1-cos(1)%0Adroite(x%3D%3D%3Dm%2Ccolor%3D%3D%3Dred)%3B%0Aplot(normald(m%2Cstddev(l)%2Cx)%2Cx%3D%3D%3D0.35..0.55)&"
   target="_blank">Python</a>
 </li>
 <li>
 Terminale: distribution cumul&eacute;e
-<a  href="xcasfr.html#exec&python=0&+//Illustration%20de%20la%20probabilit%C3%A9%20cumul%C3%A9e%20entre%202%20bornes%20$a$%20et%20$b$.%0aOn%20peut%20changer%20de%20loi,%20par%20exemple%20prendre%20exponentiald(1),%20il%20faut%20alors%20prendre%20garde%20aux%20valeurs%20de%20$a$%20et%20$b$%20et%20modifier%20x=-5..5%20par%20exemple%20en%20x=0..6&+loi%3A%3Dnormald(0%2C1)&*a,0,-5,5,0.125&*b,1.25,-5,5,0.125&+plotfunc(loi(x)%2Cx%3D-5..5)%3B%0Aplotarea(loi(x)%2Cx%3Da..b)%3B&+//Calcul%20d'intervalle%20de%20confiance%20bilat%C3%A9ral%20pour%20la%20loi%20au%20seuil%20alpha&+alpha%3A%3D0.05%3A%3B%0Aicdf(loi%2Calpha%2F2)%2Cicdf(loi%2C1-alpha%2F2)&"
+<a  href="#exec&python=0&+//Illustration%20de%20la%20probabilit%C3%A9%20cumul%C3%A9e%20entre%202%20bornes%20$a$%20et%20$b$.%0aOn%20peut%20changer%20de%20loi,%20par%20exemple%20prendre%20exponentiald(1),%20il%20faut%20alors%20prendre%20garde%20aux%20valeurs%20de%20$a$%20et%20$b$%20et%20modifier%20x=-5..5%20par%20exemple%20en%20x=0..6&+loi%3A%3Dnormald(0%2C1)&*a,0,-5,5,0.125&*b,1.25,-5,5,0.125&+plotfunc(loi(x)%2Cx%3D-5..5)%3B%0Aplotarea(loi(x)%2Cx%3Da..b)%3B&+//Calcul%20d'intervalle%20de%20confiance%20bilat%C3%A9ral%20pour%20la%20loi%20au%20seuil%20alpha&+alpha%3A%3D0.05%3A%3B%0Aicdf(loi%2Calpha%2F2)%2Cicdf(loi%2C1-alpha%2F2)&"
 target="_blank">loi normale</a>
 </li>
-<li>
-<a    href="xcasfr.html#exec&python=0&+//%3Ch1%3eNombres%20flottants%3C/h1%3e&+1.0-0.9-0.1&+//On%20voit%20ci-dessus%20que%20Xcas%20ne%20calcule%20pas%20en%20base%2010.%0aVoici%20un%20programme%20qui%20d%C3%A9termine%20la%20base%20utilis%C3%A9e%20pour%20repr%C3%A9senter%20les%20flottants.&+function%20Base()%0A%20%20local%20A%2CB%3B%0A%20%20A%3A%3D1.0%3B%20B%3A%3D1.0%3B%0A%20%20while%20evalf(evalf(A%2B1.0)-A)-1.0%3D0.0%20do%20%20A%3A%3D2*A%3B%20od%3B%0A%20%20while%20evalf(evalf(A%2BB)-A)-B!%3D0%20do%20B%3A%3DB%2B1%3B%20od%3B%0A%20%20return%20B%3B%0Affunction%3A%3B%20Base()&+//Plus%20grand%20et%20plus%20petit%20r%C3%A9el%20positif%20non%20nul%20repr%C3%A9sentable%20en%20arithm%C3%A9tique%20double%20pr%C3%A9cision.&+MINREAL%3BMAXREAL&+//Pr%C3%A9cision%20dans%20Xcas%20en%20nombre%20de%20bits.%20Si%20%3Ctt%3eDigits%3C/tt%3e%20est%20sup%C3%A9rieur%20%C3%A0%2014,%20les%20calculs%20sont%20plus%20lents%20mais%20plus%20pr%C3%A9cis.&+epsilon%3A%3D0%3A%3B%20Digits%3A%3D14%3B%0Apour%20j%20de%201%20jusque%201000%20faire%20%0A%20%20si%20evalf(1)%2B2%5E(-j)%3D%3Devalf(1)%20alors%20break%3B%20fsi%3B%20%0Afpour%3A%3B%0Aj&+//Erreur%20relative,%20exemple%20avec%20le%20calcul%20num%C3%A9rique%20de%20d%C3%A9riv%C3%A9e%20selon%20deux%20formules.%20Observer%20la%20valeur%20optimale%20de%20$h$,%20qui%20d%C3%A9pend%20de%20la%20valeur%20de%20%3Ctt%3eDigits%3C/tt%3e&+der(f%2Cx%2Ch)%3A%3D(f(x%2Bh)-f(x))%2Fh&+Digits%3A%3D14&+seq(der(exp%2C0.0%2C10%5E(-j))-1%0A%20%20%2Cj%2C1%2C15))&+der2(f%2Cx%2Ch)%3A%3D(f(x%2Bh)-f(x-h))%2F2%2Fh&+seq(der2(exp%2C0.0%2C10%5E(-j))-1%0A%20%20%2Cj%2C1%2C15))&+//L'erreur%20relative%20sur%20$f(x)$%20est%20en%20gros%20$abs(x*f'(x)/f(x))$.%20Illustration%20avec%20l'arithm%C3%A9tique%20d'intervalle.&+x%3A%3Dconvert(pi%2Cinterval)&+err%3A%3D(right(x)-left(x))%2Fpi&+f(x)%3A%3Dexp(x)%3A%3By%3A%3Df(x)&+(right(y)-left(y))%2Fexp(pi)%3B%20%0Aerr*pi*f'(pi)%2Ff(pi)&+//Somme%20de%20$n$%20erreurs%20absolues%20ind%C3%A9pendantes.%20%0aL'estimation%20rigoureuse%20sur%20l'erreur%20de%20la%20somme%20(multipli%C3%A9e%20par%20$n$)%20est%20pessimiste,%20statistiquement%20l'erreur%20totale%20est%20de%20l'ordre%20de%20$sqrt(n)$.%0aExemple%20de%20simulation%20:%20on%20somme%20$n=400$%20nombres%20r%C3%A9partis%20sur%20[%E2%88%921,1]%20selon%20la%20loi%20uniforme%20(repr%C3%A9sentant%20des%20erreurs),%20on%20divise%20par%20$sqrt(n)=20$,%20on%20effectue%20plusieurs%20tirages,%20disons%201000.%20On%20trace%20l%E2%80%99histogramme%20des%20erreurs%20divis%C3%A9ees%20par%20$sqrt(n)$%20et%20on%20compare%20avec%20la%20loi%20normale%20de%20moyenne%20nulle%20(l%E2%80%99esp%C3%A9rance%20de%20la%20somme)%20et%20d%E2%80%99%C3%A9cart-type%20celui%20de%20la%20loi%20uniforme.&+n%3A%3D400%3B%0Am%3A%3Dranm(n%2C1000%2C-1..1)%3A%3B%0Agl_x%3D-2..2%3B%0Ahistogram(sum(m)%2Fsqrt(n)%2C-1%2C0.1)%3B%20%0Aplot(normald(0%2Cstddev(uniform%2C-1%2C1))%2C-2..2)&+//Correction%20d'erreurs%20d'arrondi%20de%20la%20somme%20des%20%C3%A9l%C3%A9ments%20d'une%20liste.%20On%20accumule%20dans%20$c$%20%C3%A0%20peu%20pr%C3%A8s%20l'oppos%C3%A9%20de%20la%20somme%20des%20erreurs%20d'arrondis%20du%20calcul%20de%20%3Ctt%3es+=x%3C/tt%3e&+fonction%20Somme(l)%0A%20%20local%20x%2Cs%2Cc%3B%0A%20%20s%3A%3D0.0%3B%0A%20%20c%3A%3D0.0%3B%0A%20%20pour%20x%20in%20l%20faire%0A%20%20%20%20c%20%2B%3D%20(x-((s%2Bx)-s))%3B%0A%20%20%20%20s%20%2B%3D%20x%3B%0A%20%20fpour%3B%0A%20%20print(c)%3B%0A%20%20return%20s%2Bc%3B%0Affonction%3A%3B&+n%3A%3D6000%3B%0Al%3A%3Dseq(1%2Fj%2Cj%2C1%2Cn)%3A%3B%0ASomme(l)%3B&+//Comparaison%20avec%20la%20valeur%20approch%C3%A9e%20du%20calcul%20exact%20de%20$S$%20et%20le%20calcul%20approch%C3%A9%20sans%20pr%C3%A9caution&+S%3A%3Dsum(1%2Fj%2Cj%2C1%2Cn)%3A%3B%20evalf(S)%3B%0Asum(1.%20%2Fj%2Cj%2C1%2Cn)%3B&"
+<li> 
+<a
+    href="#exec&python=0&+n%3A%3D2%5E13%3B%0Al%3A%3Dseq(%0A%20%20%20%20sum(ranv(n%2Cuniformd%2C0%2C1))%2Fn-0.5%2C%0A%20%20%20%20400)&+sigma%3A%3Dstddev(uniformd%2C0%2C1)%3B%0Aevalf(sigma%2Fsqrt(n))%0A&+histogram(l%2C-0.01%2C0.0005)%3B%0Aplot(normald(0%2Csigma%2Fsqrt(n)%2Cx)%2Cx%3D-0.01..0.01)&"
+target="_blank">
+Convergence d'une moyenne vers la loi normale.
+</a>
+</li>
+</ul>
+</div>
+
+    <li style="display:inline">
+<button class="bouton"
+onclick="var tmp=document.getElementById('tutoex2'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
+<strong>Exemples</strong></button>
+<div id="tutoex2" style="display:none">
+<ul>
+<li> Licence:
+<a    href="#exec&python=0&+//%3Ch1%3eNombres%20flottants%3C/h1%3e&+1.0-0.9-0.1&+//On%20voit%20ci-dessus%20que%20Xcas%20ne%20calcule%20pas%20en%20base%2010.%0aVoici%20un%20programme%20qui%20d%C3%A9termine%20la%20base%20utilis%C3%A9e%20pour%20repr%C3%A9senter%20les%20flottants.&+function%20Base()%0A%20%20local%20A%2CB%3B%0A%20%20A%3A%3D1.0%3B%20B%3A%3D1.0%3B%0A%20%20while%20evalf(evalf(A%2B1.0)-A)-1.0%3D0.0%20do%20%20A%3A%3D2*A%3B%20od%3B%0A%20%20while%20evalf(evalf(A%2BB)-A)-B!%3D0%20do%20B%3A%3DB%2B1%3B%20od%3B%0A%20%20return%20B%3B%0Affunction%3A%3B%20Base()&+//Plus%20grand%20et%20plus%20petit%20r%C3%A9el%20positif%20non%20nul%20repr%C3%A9sentable%20en%20arithm%C3%A9tique%20double%20pr%C3%A9cision.&+MINREAL%3BMAXREAL&+//Pr%C3%A9cision%20dans%20Xcas%20en%20nombre%20de%20bits.%20Si%20%3Ctt%3eDigits%3C/tt%3e%20est%20sup%C3%A9rieur%20%C3%A0%2014,%20les%20calculs%20sont%20plus%20lents%20mais%20plus%20pr%C3%A9cis.&+epsilon%3A%3D0%3A%3B%20Digits%3A%3D14%3B%0Apour%20j%20de%201%20jusque%201000%20faire%20%0A%20%20si%20evalf(1)%2B2%5E(-j)%3D%3Devalf(1)%20alors%20break%3B%20fsi%3B%20%0Afpour%3A%3B%0Aj&+//Erreur%20relative,%20exemple%20avec%20le%20calcul%20num%C3%A9rique%20de%20d%C3%A9riv%C3%A9e%20selon%20deux%20formules.%20Observer%20la%20valeur%20optimale%20de%20$h$,%20qui%20d%C3%A9pend%20de%20la%20valeur%20de%20%3Ctt%3eDigits%3C/tt%3e&+der(f%2Cx%2Ch)%3A%3D(f(x%2Bh)-f(x))%2Fh&+Digits%3A%3D14&+seq(der(exp%2C0.0%2C10%5E(-j))-1%0A%20%20%2Cj%2C1%2C15))&+der2(f%2Cx%2Ch)%3A%3D(f(x%2Bh)-f(x-h))%2F2%2Fh&+seq(der2(exp%2C0.0%2C10%5E(-j))-1%0A%20%20%2Cj%2C1%2C15))&+//L'erreur%20relative%20sur%20$f(x)$%20est%20en%20gros%20$abs(x*f'(x)/f(x))$.%20Illustration%20avec%20l'arithm%C3%A9tique%20d'intervalle.&+x%3A%3Dconvert(pi%2Cinterval)&+err%3A%3D(right(x)-left(x))%2Fpi&+f(x)%3A%3Dexp(x)%3A%3By%3A%3Df(x)&+(right(y)-left(y))%2Fexp(pi)%3B%20%0Aerr*pi*f'(pi)%2Ff(pi)&+//Somme%20de%20$n$%20erreurs%20absolues%20ind%C3%A9pendantes.%20%0aL'estimation%20rigoureuse%20sur%20l'erreur%20de%20la%20somme%20(multipli%C3%A9e%20par%20$n$)%20est%20pessimiste,%20statistiquement%20l'erreur%20totale%20est%20de%20l'ordre%20de%20$sqrt(n)$.%0aExemple%20de%20simulation%20:%20on%20somme%20$n=400$%20nombres%20r%C3%A9partis%20sur%20[%E2%88%921,1]%20selon%20la%20loi%20uniforme%20(repr%C3%A9sentant%20des%20erreurs),%20on%20divise%20par%20$sqrt(n)=20$,%20on%20effectue%20plusieurs%20tirages,%20disons%201000.%20On%20trace%20l%E2%80%99histogramme%20des%20erreurs%20divis%C3%A9ees%20par%20$sqrt(n)$%20et%20on%20compare%20avec%20la%20loi%20normale%20de%20moyenne%20nulle%20(l%E2%80%99esp%C3%A9rance%20de%20la%20somme)%20et%20d%E2%80%99%C3%A9cart-type%20celui%20de%20la%20loi%20uniforme.&+n%3A%3D400%3B%0Am%3A%3Dranm(n%2C1000%2C-1..1)%3A%3B%0Agl_x%3D-2..2%3B%0Ahistogram(sum(m)%2Fsqrt(n)%2C-1%2C0.1)%3B%20%0Aplot(normald(0%2Cstddev(uniform%2C-1%2C1))%2C-2..2)&+//Correction%20d'erreurs%20d'arrondi%20de%20la%20somme%20des%20%C3%A9l%C3%A9ments%20d'une%20liste.%20On%20accumule%20dans%20$c$%20%C3%A0%20peu%20pr%C3%A8s%20l'oppos%C3%A9%20de%20la%20somme%20des%20erreurs%20d'arrondis%20du%20calcul%20de%20%3Ctt%3es+=x%3C/tt%3e&+fonction%20Somme(l)%0A%20%20local%20x%2Cs%2Cc%3B%0A%20%20s%3A%3D0.0%3B%0A%20%20c%3A%3D0.0%3B%0A%20%20pour%20x%20in%20l%20faire%0A%20%20%20%20c%20%2B%3D%20(x-((s%2Bx)-s))%3B%0A%20%20%20%20s%20%2B%3D%20x%3B%0A%20%20fpour%3B%0A%20%20print(c)%3B%0A%20%20return%20s%2Bc%3B%0Affonction%3A%3B&+n%3A%3D6000%3B%0Al%3A%3Dseq(1%2Fj%2Cj%2C1%2Cn)%3A%3B%0ASomme(l)%3B&+//Comparaison%20avec%20la%20valeur%20approch%C3%A9e%20du%20calcul%20exact%20de%20$S$%20et%20le%20calcul%20approch%C3%A9%20sans%20pr%C3%A9caution&+S%3A%3Dsum(1%2Fj%2Cj%2C1%2Cn)%3A%3B%20evalf(S)%3B%0Asum(1.%20%2Fj%2Cj%2C1%2Cn)%3B&"
 target="_blank">Nombres flottants</a>
 </li>
 <li> Licence 
 <a
-href="xcasfr.html#exec&python=0&+//Temps%20de%20calcul%20et%20pr%C3%A9cision%20d'une%20factorisation%20LU%20en%20fonction%20de%20la%20taille%20$n$%20de%20la%20matrice&+t%3A%3D%5B%5D%3A%3B%20err%3A%3D%5B%5D%3A%3B%0Apour%20n%20de%201%20jusque%2012%20faire%0A%20%20m%3A%3Dranm(n*50%2Cn*50%2Cuniformd%2C-1%2C1)%3B%20%0A%20%20t.append(time(p%2Cl%2Cu%3A%3Dlu(m)))%3B%20%0A%20%20err.append(maxnorm(permu2mat(p)*m-l*u))%3B%0Afpour%3A%3B%0At%3Berr%3B&+N%3A%3Dseq(ln(n)%2Cn%2C2%2C12)%3B%0AT%3A%3Dln(t)%5B1..11%5D%3B%0Apolygonscatterplot(N%2CT)%3B%0Alinear_regression_plot(N%2CT%2Ccolor%3Dred)&+linear_regression(N%2CT)&+//On%20est%20en-dessous%20du%20$O(n^3)$%20attendu,%20il%20y%20a%20des%20gains%20d'efficacit%C3%A9%20lorsque%20la%20taille%20de%20la%20matrice%20augmente,%20%20Xcas%20utilise%20des%20algorithmes%20par%20blocs%20plus%20efficaces.%20Il%20peut%20aussi%20etre%20int%C3%A9ressant%20d'utiliser%20des%20algorithmes%20sp%C3%A9cifiques%20lorsque%20la%20matrice%20est%20creuse%20par%20exemple%20pour%20la%20matrice%20du%20laplacien%20discret%20%3Ctt%3elaplacian(n)%3C/tt%3e,%20ou%20lorsque%20la%20matrice%20est%20sym%C3%A9trique%20d%C3%A9finie%20positive%20(%3Ctt%3echolesky%3C/tt%3e).&+n%3A%3D7%3B%20a%3A%3Dlaplacian(n)%3B&+//Comparaison%20entre%20r%C3%A9solution%20par%20LU%20en%20$O(n^2)$%20ou%20directe.&+fonction%20f(n)%0A%20%20local%20t1%2Ct2%2Cp%2Cl%2Cu%2Ca%2Cb%2Cv%2Cw%3B%0A%20%20p%2Cl%2Cu%3A%3Dlu(a%3A%3Dranm(n%2Cn%2Cuniformd%2C-1%2C1))%3A%3B%20%0A%20%20b%3A%3Dranv(n%2Cuniformd%2C-1%2C1)%3A%3B%20%0A%20%20t1%3A%3Dtime(v%3A%3Dlinsolve(p%2Cl%2Cu%2Cb))%3B%0A%20%20t2%3A%3Dtime(w%3A%3Dlinsolve(a%2Cb))%3B%0A%20%20return%20t1%2Ct2%2Cmaxnorm(v-w)%3B%0Affonction%3A%3B&+f(600)&+//Conditionnement%20d'une%20matrice,%20exemple%20de%20r%C3%A9solution%20de%20syst%C3%A8me%20avec%202%20seconds%20membres%20proches,%20l'erreur%20relative%20sur%20la%20solution%20est%20fortement%20amplifi%C3%A9e.&+a%3A%3D%5B%5B10%2C7%2C8%2C7%5D%2C%0A%20%20%5B7%2C5%2C6%2C5%5D%2C%0A%20%20%5B8%2C6%2C10%2C9%5D%2C%0A%20%20%5B7%2C5%2C9%2C10%5D%5D&+b%3A%3D%5B32%2C23%2C33%2C31%5D&+v%3A%3Dlinsolve(a%2Cb)&+delta_b%3A%3D%5B1%2C-1%2C1%2C-1%5D%2F100&+w%3A%3Dlinsolve(a%2Cb%2Bdelta_b)&+err1%3A%3Dl2norm(evalf(delta_b))%2Fl2norm(b)%3B%0Aerr2%3A%3Dl2norm(evalf(w-v))%2Fl2norm(v)%3B&+cond(a%2C2)%3B%20err2%2Ferr1&"
+href="#exec&python=0&+//Temps%20de%20calcul%20et%20pr%C3%A9cision%20d'une%20factorisation%20LU%20en%20fonction%20de%20la%20taille%20$n$%20de%20la%20matrice&+t%3A%3D%5B%5D%3A%3B%20err%3A%3D%5B%5D%3A%3B%0Apour%20n%20de%201%20jusque%208%20faire%0A%20%20m%3A%3Dranm(n*50%2Cn*50%2Cuniformd%2C-1%2C1)%3B%20%0A%20%20t.append(time(p%2Cl%2Cu%3A%3Dlu(m)))%3B%20%0A%20%20err.append(maxnorm(permu2mat(p)*m-l*u))%3B%0Afpour%3A%3B%0At%3Berr%3B&+N%3A%3Dseq(ln(n)%2Cn%2C2%2C8)%3B%0AT%3A%3Dln(t)%5B1..11%5D%3B%0Apolygonscatterplot(N%2CT)%3B%0Alinear_regression_plot(N%2CT%2Ccolor%3Dred)&+linear_regression(N%2CT)&+//On%20est%20en-dessous%20du%20$O(n^3)$%20attendu,%20il%20y%20a%20des%20gains%20d'efficacit%C3%A9%20lorsque%20la%20taille%20de%20la%20matrice%20augmente,%20%20Xcas%20utilise%20des%20algorithmes%20par%20blocs%20plus%20efficaces.%20Il%20peut%20aussi%20etre%20int%C3%A9ressant%20d'utiliser%20des%20algorithmes%20sp%C3%A9cifiques%20lorsque%20la%20matrice%20est%20creuse%20par%20exemple%20pour%20la%20matrice%20du%20laplacien%20discret%20%3Ctt%3elaplacian(n)%3C/tt%3e,%20ou%20lorsque%20la%20matrice%20est%20sym%C3%A9trique%20d%C3%A9finie%20positive%20(%3Ctt%3echolesky%3C/tt%3e).&+n%3A%3D7%3B%20a%3A%3Dlaplacian(n)%3B&+//Comparaison%20entre%20r%C3%A9solution%20par%20LU%20en%20$O(n^2)$%20ou%20directe.&+fonction%20f(n)%0A%20%20local%20t1%2Ct2%2Cp%2Cl%2Cu%2Ca%2Cb%2Cv%2Cw%3B%0A%20%20p%2Cl%2Cu%3A%3Dlu(a%3A%3Dranm(n%2Cn%2Cuniformd%2C-1%2C1))%3A%3B%20%0A%20%20b%3A%3Dranv(n%2Cuniformd%2C-1%2C1)%3A%3B%20%0A%20%20t1%3A%3Dtime(v%3A%3Dlinsolve(p%2Cl%2Cu%2Cb))%3B%0A%20%20t2%3A%3Dtime(w%3A%3Dlinsolve(a%2Cb))%3B%0A%20%20return%20t1%2Ct2%2Cmaxnorm(v-w)%3B%0Affonction%3A%3B&+f(600)&+//Conditionnement%20d'une%20matrice,%20exemple%20de%20r%C3%A9solution%20de%20syst%C3%A8me%20avec%202%20seconds%20membres%20proches,%20l'erreur%20relative%20sur%20la%20solution%20est%20fortement%20amplifi%C3%A9e.&+a%3A%3D%5B%5B10%2C7%2C8%2C7%5D%2C%0A%20%20%5B7%2C5%2C6%2C5%5D%2C%0A%20%20%5B8%2C6%2C10%2C9%5D%2C%0A%20%20%5B7%2C5%2C9%2C10%5D%5D&+b%3A%3D%5B32%2C23%2C33%2C31%5D&+v%3A%3Dlinsolve(a%2Cb)&+delta_b%3A%3D%5B1%2C-1%2C1%2C-1%5D%2F100&+w%3A%3Dlinsolve(a%2Cb%2Bdelta_b)&+err1%3A%3Dl2norm(evalf(delta_b))%2Fl2norm(b)%3B%0Aerr2%3A%3Dl2norm(evalf(w-v))%2Fl2norm(v)%3B&+cond(a%2C2)%3B%20err2%2Ferr1&"
 target="_blank">Syst&egrave;mes lin&eacute;aires, LU, conditionnement</a>
 </li>
-<li> Deux exemples de programmes un peu plus avanc&eacute;s 
+<li> Licence
+<a
+    href="#exec&python=0&+//D%C3%A9composition%20$Q*R$%20et%20moindre%20carr%C3%A9s.%0aExemple:%20r%C3%A9gression%20lin%C3%A9aire.&+//On%20se%20donne%20une%20suite%20de%20valeurs%20sur%20une%20droite%20modulo%20une%20petite%20erreur%20al%C3%A9toire,%20on%20cherche%20la%20meilleure%20droite%20$y=a*x+b$%20approchant%20les%20points%20correspondants%20au%20sens%20des%20moindres%20carr%C3%A9s%20en%20$y$.&+n%3A%3D30%3B%20b%3A%3Dseq(2*j%2B5*rand()%2Cj%2C1%2Cn)&+x%3A%3Dseq(j%2Cj%2C1%2Cn)%3B%20scatterplot(x%2Cb)%3B%0Alinear_regression_plot(x%2Cb)&+//%C3%89criture%20matricielle%20du%20probl%C3%A8me%20sous%20la%20forme%20$A*x=b$%20avec%20$x=[m,p]$&+A%3A%3Dtrn(%5Bx%2Cseq(1%2Cn)%5D)&+A*%5Bm%2Cp%5D%3Db&+//Le%20syst%C3%A8me%20est%20surd%C3%A9termin%C3%A9.%0aOn%20le%20r%C3%A9soud%20au%20sens%20des%20moindres%20carr%C3%A9s,%20on%20cherche%20$x$%20tel%20que%20$abs(A*x-b)$%20minimal%20soit%20$A^t*A*x=A^t*b$&+//On%20utilise%20la%20d%C3%A9composition%20QR%20de%20$A$.%20%0aIci%20sous%20la%20forme%20$A=Q_1*R_1$%20avec%20$R_1$%20triangulaire%20sup%C3%A9rieure%20inversible.%20Donc%20$R_1*x=Q_1^t*b$&+q%2Cr%3A%3Dqr(evalf(A))&+q1%3A%3Dq%5B%3A%2C0..1%5D&+r1%3A%3Dr%5B0..1%2C0..1%5D&+linsolve(r1%2Ctran(q1)*b)&+//V%C3%A9rification%20avec%20la%20fonction%20int%C3%A9gr%C3%A9e%20de%20Xcas&+linear_regression(x%2Cb)&+//Int%C3%A9r%C3%AAt%20par%20rapport%20%C3%A0%20r%C3%A9soudre%20$A^t*A*x=A^t*b$.%20On%20a%20un%20syst%C3%A8me%20mieux%20conditionn%C3%A9.&+cond(A%2C2)&+//%20On%20perd%20intrins%C3%A8quement%20environ%201.5%20chiffres%20significatifs%20au%20lieu%20de%203.&"
+target="_blank">D&eacute;composition QR, moindres carr&eacute;s,
+    exemple r&eacute;gression lin&eacute;aire</a>
+</li>
+<li> Polyn&ocirc;me en une variable:
+<a href="xcasfr.html#exec&python=0&+//M%C3%A9thode%20de%20Horner%20pour%20%C3%A9valuer%20un%20polyn%C3%B4me%20en%20un%20point&+fonction%20Horner(p%2Ca)%0A%20%20%2F%2F%20p%20liste%20des%20coefficients%20par%20ordre%20decroissant%0A%20%20%2F%2F%20renvoie%20p%20evalue%20en%20a%0A%20%20local%20c%2Cr%3B%0A%20%20r%3A%3D0%3B%0A%20%20pour%20c%20in%20p%20faire%0A%20%20%20%20r%3A%3Dr*a%2Bc%3B%0A%20%20fpour%3B%0A%20%20return%20r%3B%0Affonction%3A%3B&+Horner(%5B1%2C2%2C3%5D%2C4)%3B%20%0Ahorner(%5B1%2C2%2C3%5D%2C4)&+//On%20modifie%20le%20programme%20pr%C3%A9c%C3%A9dent%20pour%20renvoyer%20le%20quotient%20de%20$p$%20par%20$x-a$.%0aNotez%20que%20%3Ctt%3eq.append%3C/tt%3e%20modifie%20en%20place%20la%20liste%20$q$,%20il%20faut%20donc%20l'initialiser%20en%20faisant%20une%20copie%20de%20la%20liste%20vide.&+fonction%20Horner2(p%2Ca)%0A%20%20local%20c%2Cr%2Cq%3B%0A%20%20r%3A%3D0%3B%20q%3A%3Dcopy(%5B%5D)%3B%0A%20%20pour%20c%20in%20p%20faire%0A%20%20%20%20r%3A%3Dr*a%2Bc%3B%0A%20%20%20%20q.append(r)%3B%0A%20%20fpour%3B%0A%20%20q%3A%3Dq%5B0..-2%5D%3B%0A%20%20return%20q%2Cr%3B%0Affonction%3A%3B&+Horner2(%5B1%2C2%2C3%5D%2C4)&+//Et%20on%20l'appelle%20pour%20faire%20un%20changement%20d'origine,%20on%20exprime%20$P(X)$%20en%20fonction%20des%20$(X-a)^k$&+fonction%20Taylor(p%2Ca)%0A%20%20local%20q%2Cj%2Cn%3B%0A%20%20q%3A%3Dp%3B%0A%20%20n%3A%3Ddegree(p)%3B%0A%20%20pour%20j%20de%200%20jusque%20n%20faire%0A%20%20%20%20p%2Cq%5Bj%5D%3A%3DHorner2(p%2Ca)%3B%0A%20%20fpour%3B%0A%20%20return%20reverse(q)%3B%0Afpour%3A%3B&+Taylor(%5B1%2C2%2C3%5D%2C4)%3B%0Aptayl(%5B1%2C2%2C3%5D%2C4)&"
+target="_blank">Horner et Taylor</a>
+</li>
+<li> Interpolation polynomiale
+<a href="#exec&python=0&+//Interpolation%20de%20$ln(x^2+1)$%20en%2011%20points%20%C3%A9quidistribu%C3%A9s%20sur%20$[0,1]$.&+f(x)%3A%3Dln(x%5E2%2B1)%3B%20n%3A%3D10%3B%20%0AX%3A%3Devalf(seq(j%2Fn%2Cj%2C0%2Cn))%3B%20%0AY%3A%3Dmap(X%2Cf)%3B&+P%3A%3Dinterp(X%2CY)%3B%0A&+plot(%5Bf(x)%2CP%5D%2Cx%3D-1..2%2Ccolor%3D%5Bred%2Cblue%5D)&+plot(1e7*abs(f(x)-P)%2Cx%3D0..1)&+//Ph%C3%A9nom%C3%A8ne%20de%20Runge,%20ajouter%20des%20points%20%C3%A9quidistribu%C3%A9s%20peut%20s'av%C3%A9rer%20n%C3%A9faste.%0aIci%20on%20prend%20$n+1$%20points%20sur%20[-1,1]%20avec%20$n=20$.&+f(x)%3A%3D1%2F(1%2B25x%5E2)%3B%20n%3A%3D20%3B%20%0AX%3A%3Dseq(2*j%2Fn-1.0%2Cj%2C0%2Cn)%3A%3B&+gl_y%3D-2..2%3B%0Al%3A%3Dlagrange(X%2Cmap(X%2Cf))%3A%3B%20%0Aplot(%5Bl%2Cf(x)%5D%2Cx%3D-1..1)&+plot(l-f(x)%2Cx%3D-1..1)%0A&+//Ceci%20n'arrive%20pas%20avec%20les%20points%20de%20Tchebyshev.&+T%3A%3Dseq(cos((j%2B0.5)*pi%2F(n%2B1))%2C%0A%20%20j%2C0%2Cn)%3B&+apply(point%2CT)&+l%3A%3Dlagrange(T%2Cmap(T%2Cf))%3A%3B%20%0Aplot(%5Bl%2Cf(x)%5D%2Cx%3D-1..1)&+plot((l-f(x))%2Cx%3D-1..1)&"
+target="_blank">ph&eacute;nom&egrave;ne de Runge, points de
+Tchebyshev</a>
+</li>
+<li> PGCD de polyn&ocirc;mes
+<a href="#exec&python=0&+//Le%20PGCD%20de%20polyn%C3%B4mes%20en%20une%20variable%20%C3%A0%20coefficients%20entiers&+a%3A%3D(x-1)%5E8*(x%5E2%2B2)%3B%0Ab%3A%3D(x-1)*(x%5E2%2B2)%5E4&+fonction%20Euclide(a%2Cb)%0A%20%20tantque%20b!%3D0%20faire%0A%20%20%20%20print(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(a%2Cb)%3B%0A%20%20ftantque%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide(a%2Cb)&+//Les%20coefficients%20sont%20rationnels%20donc%20les%20calculs%20plus%20couteux%20d'autant%20plus%20que%20la%20taille%20des%20num%C3%A9rateurs%20et%20d%C3%A9nominateurs%20augmente%20rapidement%20dans%20l'algorithme%20d'Euclide.%0aOn%20peut%20travailler%20dans%20Z%20au%20lieu%20de%20Q%20avec%20la%20pseudo-division&+fonction%20Euclide1(a%2Cb)%0A%20%20si%20degree(a)%3Cdegree(b)%20alors%20return%20Euclide1(b%2Ca)%3B%20fsi%3B%0A%20%20tantque%20b!%3D0%20faire%0A%20%20%20%20print(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(lcoeff(b)%5E(degree(a)-degree(b)%2B1)*a%2Cb)%3B%0A%20%20ftantque%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide1(a%2Cb)&+//Mais%20le%20probl%C3%A8me%20de%20la%20taille%20des%20coefficients%20reste.%20%0aOn%20peut%20remplacer%20$b$%20par%20sa%20partie%20primitive.&+fonction%20Euclide2(a%2Cb)%0A%20%20si%20degree(a)%3Cdegree(b)%20alors%20return%20Euclide2(b%2Ca)%3B%20fsi%3B%0A%20%20tantque%20b!%3D0%20faire%0A%20%20%20%20b%3A%3Dprimpart(b)%3B%0A%20%20%20%20print(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(lcoeff(b)%5E(degree(a)-degree(b)%2B1)*a%2Cb)%3B%0A%20%20ftantque%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide2(a%2Cb)&+//C'est%20mieux,%20mais%20calculer%20le%20PGCD%20des%20coefficients%20de%20$b$%20%C3%A0%20chaque%20%C3%A9tape%20est%20co%C3%BBteux.%0aL'algorithme%20du%20sous-r%C3%A9sultant%20calcule%20%C3%A0%20la%20place%20un%20diviseur%20%C3%A0%20priori.%20Ce%20coefficient%20n'est%20pas%20optimal,%20mais%20presque,%20et%20il%20se%20calcule%20facilement.&+fonction%20Euclide3(a%2Cb)%0A%20%20local%20g%2Ch%2Cq%3B%0A%20%20si%20degree(a)%3Cdegree(b)%20alors%20return%20Euclide3(b%2Ca)%3B%20fsi%3B%0A%20%20g%3A%3D1%3B%20h%3A%3D1%3B%20%0A%20%20tantque%20b!%3D0%20faire%0A%20%20%20%20d%3A%3Ddegree(a)-degree(b)%3B%0A%20%20%20%20q%3A%3Dlcoeff(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(q%5E(d%2B1)*a%2Cb)%3B%0A%20%20%20%20b%3A%3Dratnormal(b%2F(g*h%5Ed))%3B%0A%20%20%20%20g%3A%3Dq%3B%20h%3A%3Dq%5Ed%2Fh%5E(d-1)%3B%0A%20%20ftantque%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide3(a%2Cb)&+//Les%20m%C3%A9thodes%20modulaires%20sont%20plus%20efficaces.%20Si%20les%20polyn%C3%B4mes%20sont%20premiers%20entre%20eux,%20ils%20le%20sont%20toujours%20modulo%20n'importe%20quel%20nombre%20premier%20ne%20divisant%20pas%20leur%20r%C3%A9sultant,%20on%20s'en%20rend%20vite%20compte.%0aSinon%20on%20reconstruit%20le%20PGCD%20modulo%20un%20ou%20plusieurs%20nombres%20premiers%20qui%20donnent%20le%20degr%C3%A9%20minimal%20et%20on%20teste%20la%20divisibilit%C3%A9%20par%20les%20polyn%C3%B4mes%20$a$%20et%20$b$.&+Euclide(a%20mod%2011%2Cb%2B1%20mod%2011)&+g%3A%3DEuclide(a%20mod%2011%2Cb%20mod%2011)&+normal(g%2Flcoeff(g))%20mod%200&"
+target="_blank">d'Euclide ou sous-r&eacute;sultant</a>
+</li>
+<li> Bases de Groebner 
+<a
+    href="#exec&python=0&+cyclic6%3A%3D%20%5B2*(x*y*z%2By*z*t%2Bz*t*u%2Bt*u*v%2Bu*v*x%2Bv*x*y)%2C%20%0Ax*y*z*t%2By*z*t*u%2Bz*t*u*v%2Bt*u*v*x%2Bu*v*x*y%2Bv*x*y*z%2C%20%0Ax*y*z*t*u*v-1%2C%20%0Ax%2By%2Bz%2Bt%2Bu%2Bv%2C%20%0Ax*y%2By*z%2Bz*t%2Bt*u%2Bu*v%2Bx*v%2C%20%0Ax*y*z*t*u%2By*z*t*u*v%2Bz*t*u*v*x%2Bt*u*v*x*y%2Bu*v*x*y*z%2Bv*x*y*z*t%5D%3B&+p%3A%3Dprevprime(2%5E24)%3B&+time(G%3A%3D%0A%20%20gbasis(cyclic6%20mod%20p%2C%0A%20%20%20%20indets(cyclic6)))&+size(G)&+G%5B20%5D&+time(H%3A%3D%0A%20%20gbasis(cyclic6%2C%0A%20%20%20%20indets(cyclic6)))&+H%5B20%5D&+normal(1%2F(lcoeff(H%5B20%5D%2Cv)%20mod%20p)%0A%20%20*H%5B20%5D)&+normal(1%2F(lcoeff(G%5B20%5D%2Cv)%20mod%20p)%0A%20%20*G%5B20%5D-1%2F(lcoeff(H%5B20%5D%2Cv)%20mod%20p)%0A%20%20*H%5B20%5D)&"
+target="_blank">cyclic6</a>.
+Pour des calculs plus intensifs, installez  Firefox version &geq; 58
+et inspirez-vous de
+<a
+href="xcasfrwasm.html#exec&python=1&+cyclic7%3A%3D%5Bx1%2Bx2%2Bx3%2Bx4%2Bx5%2Bx6%2Bx7%2C%0A%20%20%20%20%20%20%20%20%20%20x1*x2%2Bx1*x7%2Bx2*x3%2Bx3*x4%2Bx4*x5%2Bx5*x6%2Bx6*x7%2C%0A%20%20%20%20%20%20%20%20%20%20x1*x2*x3%2Bx1*x2*x7%2Bx1*x6*x7%2Bx2*x3*x4%2Bx3*x4*x5%2Bx4*x5*x6%2Bx5*x6*x7%2C%0A%20%20%20%20%20%20%20%20%20%20x1*x2*x3*x4%2Bx1*x2*x3*x7%2Bx1*x2*x6*x7%2Bx1*x5*x6*x7%2Bx2*x3*x4*x5%2Bx3*x4*x5*x6%2Bx4*x5*x6*x7%2C%0A%20%20%20%20%20%20%20%20%20%20x1*x2*x3*x4*x5%2Bx1*x2*x3*x4*x7%2Bx1*x2*x3*x6*x7%2Bx1*x2*x5*x6*x7%2Bx1*x4*x5*x6*x7%2Bx2*x3*x4*x5*x6%2Bx3*x4*x5*x6*x7%2C%0A%20%20%20%20%20%20%20%20%20%20x1*x2*x3*x4*x5*x6%2Bx1*x2*x3*x4*x5*x7%2Bx1*x2*x3*x4*x6*x7%2Bx1*x2*x3*x5*x6*x7%2Bx1*x2*x4*x5*x6*x7%2Bx1*x3*x4*x5*x6*x7%2Bx2*x3*x4*x5*x6*x7%2C%0A%20%20%20%20%20%20%20%20%20%20x1*x2*x3*x4*x5*x6*x7-1%5D%3A%3B&+p%3A%3Dprevprime(2%5E24)&+time(G%3A%3Dgbasis(cyclic7%20mod%20p%2Clname(cyclic7)%2Crevlex))%3B&+size(G)&" target="_blank">cyclic7 modulaire</a>.
+Pour des calculs vraiment intensifs, utilisez la version native de Xcas.
+</li>
+<li> Produit, quotient de polyn&ocirc;mes &agrave; plusieurs variables
+    (pour navigateur compatible avec web-assembly, par exemple Firefox &geq; 58)
+<a
+href="xcasfrwasm.html#exec&python=0&+n%3A%3D20%3B&+f%20%3A%3D%20symb2poly((1%20%2B%20x%20%2B%20y%20%2B%20z%2Bt)%5En%2C%5Bx%2Cy%2Cz%2Ct%5D)%3A%3B%0Aq%3A%3Dsymb2poly(x%5E(n-3)%2C%5Bx%2Cy%2Cz%2Ct%5D)%3A%3B%0Asize(f)%3B&+time(p%3A%3Df*(f%2B1))%3B%0Asize(p)%3B&+time(h%3A%3Dquo(p%2Cf%2C2))%3B%0Ah-f%3B&+time(h%2Cr%3A%3Dquorem(p%2Bq%2Cf%2C-1))%3B%0Ah-f%3Bpoly2symb(r%2C%5Bx%2Cy%2Cz%2Ct%5D)%3B&"
+target="_blank">benchmark de Fateman n=20</a>
+</li>
+<li> Deux exemples de fractales
 <ul>
   <li>
 Fractale de Mandelbrot
 <a
-href="xcasfr.html#python=0&exec&+//Fractale%20de%20Mandelbrot,%20programme%20qui%20n'utilise%20pas%20la%20sym%C3%A9trie&+fonction%20fra(X%2CY%2CNmax)%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%3B%0A%20%20w%3A%3D2.7%2FX%3B%0A%20%20h%3A%3D-1.87%2FY%3B%0A%20%20res1%3A%3D%5B%5D%3B%20%0A%20%20Y%3A%3DY-1%3B%0A%20%20pour%20y%20de%200%20jusque%20Y%20faire%0A%20%20%20%20c%3A%3D-2.1%2Bi*(h*y%2B0.935)%3B%0A%20%20%20%20pour%20x%20de%200%20jusque%20X-1%20faire%0A%20%20%20%20%20%20z%3A%3D0%3B%0A%20%20%20%20%20%20pour%20j%20de%200%20jusque%20Nmax-1%20faire%0A%20%20%20%20%20%20%20%20if%20abs(z%3A%3Dz%5E2%2Bc)%3E2%20then%20break%3B%20fi%3B%0A%20%20%20%20%20%20fpour%3B%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%3B%0A%20%20%20%20%20%20c%3A%3Dc%2Bw%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20return%20res1%3B%0Affonction%3A%3B&+//%20Fractale%20de%20Mandelbrot%20plus%20rapide,%20en%20utilisant%20la%20sym%C3%A9trie&+fonction%20fra1(X%2CY%2CNmax)%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%3B%0A%20%20w%3A%3D2.7%2FX%3B%0A%20%20h%3A%3D-1.87%2FY%3B%0A%20%20res1%3A%3Dmakelist(-ceil(X*Y%2F2)-1)%3B%20%0A%20%20res2%3A%3Dcopy(res1)%3B%0A%20%20Y%3A%3DY-1%3B%0A%20%20pour%20y%20de%200%20jusque%20Y%2F2%20faire%0A%20%20%20%20c%3A%3D-2.1%2Bi*(h*y%2B0.935)%3B%0A%20%20%20%20pour%20x%20de%200%20jusque%20X-1%20faire%0A%20%20%20%20%20%20z%3A%3D0%3B%0A%20%20%20%20%20%20pour%20j%20de%200%20jusque%20Nmax-1%20faire%0A%20%20%20%20%20%20%20%20if%20abs(z%3A%3Dz%5E2%2Bc)%3E2%20then%20break%3B%20fi%3B%0A%20%20%20%20%20%20fpour%3B%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%3B%0A%20%20%20%20%20%20res2.append(pixon(x%2CY-y%2C5100*j%2B512))%3B%0A%20%20%20%20%20%20c%3A%3Dc%2Bw%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20return%20res1%2Cres2%3B%0Affonction%3A%3B&+pixon(1)&+fra1(260%2C222%2C10)&"
+href="#python=0&exec&+//Fractale%20de%20Mandelbrot,%20programme%20qui%20n'utilise%20pas%20la%20sym%C3%A9trie&+fonction%20fra(X%2CY%2CNmax)%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%3B%0A%20%20w%3A%3D2.7%2FX%3B%0A%20%20h%3A%3D-1.87%2FY%3B%0A%20%20res1%3A%3D%5B%5D%3B%20%0A%20%20Y%3A%3DY-1%3B%0A%20%20pour%20y%20de%200%20jusque%20Y%20faire%0A%20%20%20%20c%3A%3D-2.1%2Bi*(h*y%2B0.935)%3B%0A%20%20%20%20pour%20x%20de%200%20jusque%20X-1%20faire%0A%20%20%20%20%20%20z%3A%3D0%3B%0A%20%20%20%20%20%20pour%20j%20de%200%20jusque%20Nmax-1%20faire%0A%20%20%20%20%20%20%20%20if%20abs(z%3A%3Dz%5E2%2Bc)%3E2%20then%20break%3B%20fi%3B%0A%20%20%20%20%20%20fpour%3B%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%3B%0A%20%20%20%20%20%20c%3A%3Dc%2Bw%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20return%20res1%3B%0Affonction%3A%3B&+//%20Fractale%20de%20Mandelbrot%20plus%20rapide,%20en%20utilisant%20la%20sym%C3%A9trie&+fonction%20fra1(X%2CY%2CNmax)%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%3B%0A%20%20w%3A%3D2.7%2FX%3B%0A%20%20h%3A%3D-1.87%2FY%3B%0A%20%20res1%3A%3Dmakelist(-ceil(X*Y%2F2)-1)%3B%20%0A%20%20res2%3A%3Dcopy(res1)%3B%0A%20%20Y%3A%3DY-1%3B%0A%20%20pour%20y%20de%200%20jusque%20Y%2F2%20faire%0A%20%20%20%20c%3A%3D-2.1%2Bi*(h*y%2B0.935)%3B%0A%20%20%20%20pour%20x%20de%200%20jusque%20X-1%20faire%0A%20%20%20%20%20%20z%3A%3D0%3B%0A%20%20%20%20%20%20pour%20j%20de%200%20jusque%20Nmax-1%20faire%0A%20%20%20%20%20%20%20%20if%20abs(z%3A%3Dz%5E2%2Bc)%3E2%20then%20break%3B%20fi%3B%0A%20%20%20%20%20%20fpour%3B%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%3B%0A%20%20%20%20%20%20res2.append(pixon(x%2CY-y%2C5100*j%2B512))%3B%0A%20%20%20%20%20%20c%3A%3Dc%2Bw%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20return%20res1%2Cres2%3B%0Affonction%3A%3B&+pixon(1)&+fra1(260%2C222%2C10)&"
 target="_blank">Xcas</a>,
-<a href="xcasfr.html#python=1&exec&+//Fractale%20de%20Mandelbrot%20sans%20utiliser%20la%20sym%C3%A9trie&+def%20fra(X%2CY%2CNmax)%3A%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%0A%20%20w%3D2.7%2FX%0A%20%20h%3D-1.87%2FY%0A%20%20res1%3D%5B%5D%0A%20%20res2%3D%5B%5D%0A%20%20for%20y%20in%20range(Y)%3A%0A%20%20%20%20c%20%3D%20-2.1%2Bi*(h*y%2B0.935)%0A%20%20%20%20for%20x%20in%20range(X)%3A%0A%20%20%20%20%20%20z%20%3D%200%0A%20%20%20%20%20%20for%20j%20in%20range(Nmax)%3A%0A%20%20%20%20%20%20%20%20if%20abs(z%3Dz**2%2Bc)%3E2%3A%0A%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%0A%20%20%20%20%20%20c%20%3D%20c%2Bw%3B%0A%20%20return%20res1&+//%20Fractale%20de%20Mandelbrot%20plus%20rapide,%20en%20utilisant%20la%20sym%C3%A9trie&+def%20fra1(X%2CY%2CNmax)%3A%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%0A%20%20w%3D2.7%2FX%0A%20%20h%3D-1.87%2FY%0A%20%20res1%3Dmakelist(-ceil(X*Y%2F2)-1)%0A%20%20res2%3Dcopy(res1)%0A%20%20Y%3DY-1%0A%20%20for%20y%20in%20range(ceil(Y%2F2)%2B1)%3A%0A%20%20%20%20c%20%3D%20-2.1%2Bi*(h*y%2B0.935)%0A%20%20%20%20for%20x%20in%20range(X)%3A%0A%20%20%20%20%20%20z%20%3D%200%0A%20%20%20%20%20%20for%20j%20in%20range(Nmax)%3A%0A%20%20%20%20%20%20%20%20if%20abs(z%3Dz**2%2Bc)%3E2%3A%0A%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%0A%20%20%20%20%20%20res2.append(pixon(x%2CY-y%2C5100*j%2B512))%0A%20%20%20%20%20%20c%20%3D%20c%2Bw%3B%0A%20%20return%20res1%2Cres2&+pixon(1)&+fra1(260%2C222%2C10)&"
+<a href="#python=1&exec&+//Fractale%20de%20Mandelbrot%20sans%20utiliser%20la%20sym%C3%A9trie&+def%20fra(X%2CY%2CNmax)%3A%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%0A%20%20w%3D2.7%2FX%0A%20%20h%3D-1.87%2FY%0A%20%20res1%3D%5B%5D%0A%20%20res2%3D%5B%5D%0A%20%20for%20y%20in%20range(Y)%3A%0A%20%20%20%20c%20%3D%20-2.1%2Bi*(h*y%2B0.935)%0A%20%20%20%20for%20x%20in%20range(X)%3A%0A%20%20%20%20%20%20z%20%3D%200%0A%20%20%20%20%20%20for%20j%20in%20range(Nmax)%3A%0A%20%20%20%20%20%20%20%20if%20abs(z%3Dz**2%2Bc)%3E2%3A%0A%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%0A%20%20%20%20%20%20c%20%3D%20c%2Bw%3B%0A%20%20return%20res1&+//%20Fractale%20de%20Mandelbrot%20plus%20rapide,%20en%20utilisant%20la%20sym%C3%A9trie&+def%20fra1(X%2CY%2CNmax)%3A%0A%20%20local%20x%2Cy%2Cz%2Cc%2Cj%2Cw%2Ch%2Cres1%2Cres2%0A%20%20w%3D2.7%2FX%0A%20%20h%3D-1.87%2FY%0A%20%20res1%3Dmakelist(-ceil(X*Y%2F2)-1)%0A%20%20res2%3Dcopy(res1)%0A%20%20Y%3DY-1%0A%20%20for%20y%20in%20range(ceil(Y%2F2)%2B1)%3A%0A%20%20%20%20c%20%3D%20-2.1%2Bi*(h*y%2B0.935)%0A%20%20%20%20for%20x%20in%20range(X)%3A%0A%20%20%20%20%20%20z%20%3D%200%0A%20%20%20%20%20%20for%20j%20in%20range(Nmax)%3A%0A%20%20%20%20%20%20%20%20if%20abs(z%3Dz**2%2Bc)%3E2%3A%0A%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20res1.append(pixon(x%2Cy%2C5100*j%2B512))%0A%20%20%20%20%20%20res2.append(pixon(x%2CY-y%2C5100*j%2B512))%0A%20%20%20%20%20%20c%20%3D%20c%2Bw%3B%0A%20%20return%20res1%2Cres2&+pixon(1)&+fra1(260%2C222%2C10)&"
 target="_blank">Python</a>,
 </li>
 <li>
 Fractale de Newton ou bassins d'attraction des racines d'un polynome
-<a href="xcasfr.html#python=0&exec&+//Bassins%20d'attraction%20des%20racines%20du%20polynome%20$P$On%20it%C3%A8re%20la%20m%C3%A9thode%20de%20Newton%20$z[n+1]=z[n]-P(z[n])/P'(z[n])$%20et%20on%20regarde%20si%20on%20converge%20vers%20une%20des%20racines%20de%20$P$,%20on%20colorie%20$z[0]$%20en%20fonction%20de%20la%20racine%20et%20de%20la%20vitesse%20de%20convergence.On%20pr%C3%A9sente%20deux%20versions,%20la%20premi%C3%A8re%20utilise%20la%20conjugaison%20complexe%20pour%20acc%C3%A9l%C3%A9rer%20les%20calculs.&+fonction%20f(P%2Cxmin%2Cxmax%2Cymin%2Cymax%2CN%2Cmaxiter)%0A%20%20local%20z0%2Cz%2Czp%2Chx%2Chy%2Cj%2Ck%2Cl%2Cn%2Cr%2Crs%2Cres%3B%0A%20%20P%3A%3Dsymb2poly(P)%3B%0A%20%20res%3A%3Dmakelist(-(N%2B1)%5E2)%3B%0A%20%20r%3A%3Dproot(P)%3B0%3B%20%2F%2F%20f(x%5E5-1%2C-1.3%2C1.3%2C-1.3%2C1.3%2C134%2C10)%0A%20%20rs%3A%3Dsize(r)-1%3B%0A%20%20hx%3A%3Devalf(xmax-xmin)%2FN%3B%20%0A%20%20hy%3A%3Devalf(ymax-ymin)%2FN%3B%0A%20%20for%20k%20from%200%20to%20N%20do%0A%20%20%20%20z0%3A%3Dxmin%2Bi*(ymin%2Bk*hy)%3B%0A%20%20%20%20for%20j%20from%200%20to%20N%20do%0A%20%20%20%20%20%20z%3A%3Dz0%3B%0A%20%20%20%20%20%20for%20l%20from%200%20to%20maxiter%20do%0A%20%20%20%20%20%20%20%20si%20distance((z%3A%3Dhorner(P%2C(zp%3A%3Dhorner(P%2Cz%2Cnewton))%2Cnewton))%2Czp)%3C1e-4%20ou%20abs(z)%3E1e20%20alors%20break%3B%20fsi%3B%0A%20%20%20%20%20%20od%3B%0A%20%20%20%20%20%20si%20z%3D%3Dundef%20alors%20continue%3B%20fsi%3B%0A%20%20%20%20%20%20for%20n%20from%200%20to%20rs%20do%0A%20%20%20%20%20%20%20%20si%20distance(z%2Cr%5Bn%5D)%3C1e-4%20alors%20break%3B%20fsi%3B%0A%20%20%20%20%20%20od%3B%0A%20%20%20%20%20%20res.append(pixon(j%2Ck%2C256%2B25*n%2Bl))%3B%0A%20%20%20%20%20%20z0%3A%3Dz0%2Bhx%3B%0A%20%20%20%20od%3B%0A%20%20od%3B%0A%20%20return%20res%3B%0Affonction%3A%3B&+fonction%20fsym(P%2Cxmin%2Cxmax%2Cymin%2CN%2Cmaxiter)%0A%20%20local%20z0%2Cz%2Czp%2Chx%2Chy%2Cj%2Ck%2Cl%2Cn%2Cr%2Crs%2Crimag%2Cres1%2Cres2%3B%0A%20%20P%3A%3Dsymb2poly(P)%3B%0A%20%20si%20size(im(P))!%3D0%20alors%20return%20%22Le%20polynome%20doit%20etre%20a%20coefficients%20reels%22%3B%20fsi%3B%0A%20%20r%3A%3Dproot(P)%3B%0A%20%20%2F%2F%20extrait%20les%20racines%20de%20partie%20imaginaire%20%3E%3D0%2C%20place%20les%20reelles%20en%20fin%0A%20%20res1%3A%3Dselect(x-%3Eim(x)%3E0%2Cr)%3B%0A%20%20rimag%3A%3D2*size(res1)%3B%0A%20%20res2%3A%3Dselect(x-%3Eim(x)%3D%3D0%2Cr)%3B%0A%20%20r%3A%3Dconcat(res1%2Creverse(conj(res1))%2Cres2)%3B%0A%20%20rs%3A%3Dsize(r)-1%3B%0A%20%20res1%3A%3Dmakelist(-ceil((N%2B1)%5E2%2F2))%3B%20%0A%20%20res2%3A%3Dmakelist(-ceil((N%2B1)%5E2%2F2))%3B%0A%20%20hx%3A%3Devalf(xmax-xmin)%2FN%3B%20%0A%20%20hy%3A%3Devalf(-2*ymin)%2FN%3B%0A%20%20for%20k%20from%200%20to%20N%2F2%20do%0A%20%20%20%20z0%3A%3Dxmin%2Bi*(ymin%2Bk*hy)%3B%0A%20%20%20%20for%20j%20from%200%20to%20N%20do%0A%20%20%20%20%20%20z%3A%3Dz0%3B%0A%20%20%20%20%20%20for%20l%20from%200%20to%20maxiter%20do%0A%20%20%20%20%20%20%20%20si%20distance((z%3A%3Dhorner(P%2C(zp%3A%3Dhorner(P%2Cz%2Cnewton))%2Cnewton))%2Czp)%3C1e-4%20ou%20abs(z)%3E1e20%20alors%20break%3B%20fsi%3B%0A%20%20%20%20%20%20od%3B%0A%20%20%20%20%20%20si%20z%3D%3Dundef%20alors%20continue%3B%20fsi%3B%0A%20%20%20%20%20%20for%20n%20from%200%20to%20rs%20do%0A%20%20%20%20%20%20%20%20si%20distance(z%2Cr%5Bn%5D)%3C1e-4%20alors%20break%3B%20fsi%3B%0A%20%20%20%20%20%20od%3B%0A%20%20%20%20%20%20res1.append(pixon(j%2Ck%2C256%2B25*n%2Bl))%3B%0A%20%20%20%20%20%20res2.append(pixon(j%2CN-k%2C256%2B25*quand(n%3E%3Drimag%2Cn%2Crimag-n-1)%2Bl))%3B%0A%20%20%20%20%20%20z0%3A%3Dz0%2Bhx%3B%0A%20%20%20%20od%3B%0A%20%20od%3B%0A%20%20return%20res1%2Cres2%3B%0Affonction%3A%3B&+pixon(1)&+fsym(x%5E5-1%2C-1.3%2C1.3%0A%2C-1.3%2C150%2C10)&+0%3B%20%2F%2F%20f(x%5E5-1%2C-1.3%2C1.3%2C-1.3%2C1.3%2C134%2C10)&"
+<a href="#python=0&exec&+//Bassins%20d'attraction%20des%20racines%20du%20polynome%20$P$On%20it%C3%A8re%20la%20m%C3%A9thode%20de%20Newton%20$z[n+1]=z[n]-P(z[n])/P'(z[n])$%20et%20on%20regarde%20si%20on%20converge%20vers%20une%20des%20racines%20de%20$P$,%20on%20colorie%20$z[0]$%20en%20fonction%20de%20la%20racine%20et%20de%20la%20vitesse%20de%20convergence.On%20pr%C3%A9sente%20deux%20versions,%20la%20premi%C3%A8re%20utilise%20la%20conjugaison%20complexe%20pour%20acc%C3%A9l%C3%A9rer%20les%20calculs.&+fonction%20f(P%2Cxmin%2Cxmax%2Cymin%2Cymax%2CN%2Cmaxiter)%0A%20%20local%20z0%2Cz%2Czp%2Chx%2Chy%2Cj%2Ck%2Cl%2Cn%2Cr%2Crs%2Cres%3B%0A%20%20P%3A%3Dsymb2poly(P)%3B%0A%20%20res%3A%3Dmakelist(-(N%2B1)%5E2)%3B%0A%20%20r%3A%3Dproot(P)%3B0%3B%20%2F%2F%20f(x%5E5-1%2C-1.3%2C1.3%2C-1.3%2C1.3%2C134%2C10)%0A%20%20rs%3A%3Dsize(r)-1%3B%0A%20%20hx%3A%3Devalf(xmax-xmin)%2FN%3B%20%0A%20%20hy%3A%3Devalf(ymax-ymin)%2FN%3B%0A%20%20for%20k%20from%200%20to%20N%20do%0A%20%20%20%20z0%3A%3Dxmin%2Bi*(ymin%2Bk*hy)%3B%0A%20%20%20%20for%20j%20from%200%20to%20N%20do%0A%20%20%20%20%20%20z%3A%3Dz0%3B%0A%20%20%20%20%20%20for%20l%20from%200%20to%20maxiter%20do%0A%20%20%20%20%20%20%20%20si%20distance((z%3A%3Dhorner(P%2C(zp%3A%3Dhorner(P%2Cz%2Cnewton))%2Cnewton))%2Czp)%3C1e-4%20ou%20abs(z)%3E1e20%20alors%20break%3B%20fsi%3B%0A%20%20%20%20%20%20od%3B%0A%20%20%20%20%20%20si%20z%3D%3Dundef%20alors%20continue%3B%20fsi%3B%0A%20%20%20%20%20%20for%20n%20from%200%20to%20rs%20do%0A%20%20%20%20%20%20%20%20si%20distance(z%2Cr%5Bn%5D)%3C1e-4%20alors%20break%3B%20fsi%3B%0A%20%20%20%20%20%20od%3B%0A%20%20%20%20%20%20res.append(pixon(j%2Ck%2C256%2B25*n%2Bl))%3B%0A%20%20%20%20%20%20z0%3A%3Dz0%2Bhx%3B%0A%20%20%20%20od%3B%0A%20%20od%3B%0A%20%20return%20res%3B%0Affonction%3A%3B&+fonction%20fsym(P%2Cxmin%2Cxmax%2Cymin%2CN%2Cmaxiter)%0A%20%20local%20z0%2Cz%2Czp%2Chx%2Chy%2Cj%2Ck%2Cl%2Cn%2Cr%2Crs%2Crimag%2Cres1%2Cres2%3B%0A%20%20P%3A%3Dsymb2poly(P)%3B%0A%20%20si%20size(im(P))!%3D0%20alors%20return%20%22Le%20polynome%20doit%20etre%20a%20coefficients%20reels%22%3B%20fsi%3B%0A%20%20r%3A%3Dproot(P)%3B%0A%20%20%2F%2F%20extrait%20les%20racines%20de%20partie%20imaginaire%20%3E%3D0%2C%20place%20les%20reelles%20en%20fin%0A%20%20res1%3A%3Dselect(x-%3Eim(x)%3E0%2Cr)%3B%0A%20%20rimag%3A%3D2*size(res1)%3B%0A%20%20res2%3A%3Dselect(x-%3Eim(x)%3D%3D0%2Cr)%3B%0A%20%20r%3A%3Dconcat(res1%2Creverse(conj(res1))%2Cres2)%3B%0A%20%20rs%3A%3Dsize(r)-1%3B%0A%20%20res1%3A%3Dmakelist(-ceil((N%2B1)%5E2%2F2))%3B%20%0A%20%20res2%3A%3Dmakelist(-ceil((N%2B1)%5E2%2F2))%3B%0A%20%20hx%3A%3Devalf(xmax-xmin)%2FN%3B%20%0A%20%20hy%3A%3Devalf(-2*ymin)%2FN%3B%0A%20%20for%20k%20from%200%20to%20N%2F2%20do%0A%20%20%20%20z0%3A%3Dxmin%2Bi*(ymin%2Bk*hy)%3B%0A%20%20%20%20for%20j%20from%200%20to%20N%20do%0A%20%20%20%20%20%20z%3A%3Dz0%3B%0A%20%20%20%20%20%20for%20l%20from%200%20to%20maxiter%20do%0A%20%20%20%20%20%20%20%20si%20distance((z%3A%3Dhorner(P%2C(zp%3A%3Dhorner(P%2Cz%2Cnewton))%2Cnewton))%2Czp)%3C1e-4%20ou%20abs(z)%3E1e20%20alors%20break%3B%20fsi%3B%0A%20%20%20%20%20%20od%3B%0A%20%20%20%20%20%20si%20z%3D%3Dundef%20alors%20continue%3B%20fsi%3B%0A%20%20%20%20%20%20for%20n%20from%200%20to%20rs%20do%0A%20%20%20%20%20%20%20%20si%20distance(z%2Cr%5Bn%5D)%3C1e-4%20alors%20break%3B%20fsi%3B%0A%20%20%20%20%20%20od%3B%0A%20%20%20%20%20%20res1.append(pixon(j%2Ck%2C256%2B25*n%2Bl))%3B%0A%20%20%20%20%20%20res2.append(pixon(j%2CN-k%2C256%2B25*quand(n%3E%3Drimag%2Cn%2Crimag-n-1)%2Bl))%3B%0A%20%20%20%20%20%20z0%3A%3Dz0%2Bhx%3B%0A%20%20%20%20od%3B%0A%20%20od%3B%0A%20%20return%20res1%2Cres2%3B%0Affonction%3A%3B&+pixon(1)&+fsym(x%5E5-1%2C-1.3%2C1.3%0A%2C-1.3%2C150%2C10)&+0%3B%20%2F%2F%20f(x%5E5-1%2C-1.3%2C1.3%2C-1.3%2C1.3%2C134%2C10)&"
 target="_blank">Xcas</a>,
-<a href="xcasfr.html#python=1&exec&+//%3Ch1%3eBassins%20d'attractions%3C/h1%3e%20On%20se%20donne%20un%20polynome%20$P$%20et%20on%20cherche%20en%20partant%20d'un%20point%20$u_0$%20du%20plan%20complexe%20si%20la%20m%C3%A9thode%20de%20Newton$u[n+1]=u_n-P(u_n)/P'(u_n)$converge%20vers%20une%20des%20racines%20complexes%20de%20$P(z)=0$.%20On%20colorie%20le%20point%20en%20fonction%20de%20la%20racine%20et%20de%20la%20vitesse%20de%20convergence.Deux%20fonctions%20sont%20donn%C3%A9es,%20la%20deuxi%C3%A8me%20utilise%20la%20conjugaison%20complexe%20pour%20acc%C3%A9l%C3%A9rer%20les%20calculs.&+def%20f(P%2Cxmin%2Cxmax%2Cymin%2Cymax%2CN%2Cmaxiter)%3A%0A%20%20%20%20%23%20local%20z%2Cz0%2Czp%2Chx%2Chy%2Cj%2Ck%2Cl%2Cn%2Cr%2Crs%2Cres%0A%20%20%20%20P%3Dsymb2poly(P)%0A%20%20%20%20res%3D%5B%5D%0A%20%20%20%20r%3Dproot(P)%0A%20%20%20%20rs%3Dsize(r)%0A%20%20%20%20hx%3Devalf(xmax-xmin)%2FN%0A%20%20%20%20hy%3Devalf(ymax-ymin)%2FN%0A%20%20%20%20for%20k%20in%20range(N%2B1)%3A%0A%20%20%20%20%20%20%20%20z0%3Dxmin%2Bi*(ymin%2Bk*hy)%0A%20%20%20%20%20%20%20%20for%20j%20in%20range(N%2B1)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20z%3Dz0%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20l%20in%20range(maxiter)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20distance((z%3Dhorner(P%2C(zp%3Dhorner(P%2Cz%2Cnewton))%2Cnewton))%2Czp)%3C1e-4%20or%20abs(z)%3E1e20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20z%3D%3Dundef%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20continue%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20n%20in%20range(rs)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20distance(z%2Cr%5Bn%5D)%3C1e-4%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20%20%20%20%20%20%20res.append(pixon(j%2Ck%2C256%2B25*n%2Bl))%0A%20%20%20%20%20%20%20%20%20%20%20%20z0%3Dz0%2Bhx%0A%20%20%20%20return%20res&+def%20fsym(P%2Cxmin%2Cxmax%2Cymin%2CN%2Cmaxiter)%3A%0A%20%20%20%20%23%20local%20z0%2Cz%2Czp%2Chx%2Chy%2Cj%2Ck%2Cl%2Cn%2Cr%2Crs%2Crimag%2Cres1%2Cres2%0A%20%20%20%20P%3Dsymb2poly(P)%0A%20%20%20%20if%20size(im(P))%3C%3E0%20%3A%0A%20%20%20%20%20%20%20%20return(%22Le%20polynome%20doit%20etre%20a%20coefficients%20reels%22)%0A%20%20%20%20r%3Dproot(P)%0A%20%20%20%20res1%3Dselect(lambda%20x%3Aim(x)%3E0%2Cr)%0A%20%20%20%20rimag%3D2*size(res1)%0A%20%20%20%20res2%3Dselect(lambda%20x%3Aim(x)%3D%3D0%2Cr)%0A%20%20%20%20r%3Dconcat(res1%2Creverse(conj(res1))%2Cres2)%0A%20%20%20%20rs%3Dsize(r)%0A%20%20%20%20res1%3D%5B%5D%0A%20%20%20%20res2%3D%5B%5D%0A%20%20%20%20hx%3Devalf(xmax-xmin)%2FN%0A%20%20%20%20hy%3Devalf(-2*ymin)%2FN%0A%20%20%20%20for%20k%20in%20range(ceil((N%2B1)%2F2))%3A%0A%20%20%20%20%20%20%20%20z0%3Dxmin%2Bi*(ymin%2Bk*hy)%0A%20%20%20%20%20%20%20%20for%20j%20in%20range(0%2CN%2B1)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20z%3Dz0%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20l%20in%20range(maxiter)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20distance((z%3Dhorner(P%2C(zp%3Dhorner(P%2Cz%2Cnewton))%2Cnewton))%2Czp)%3C0.0001%20or%20abs(z)%3E1e%2B20%20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20(z%3D%3Dundef)%20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20continue%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20n%20in%20range(rs)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20(distance(z%2Cr%5Bn%5D))%3C0.0001%20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20%20%20%20%20%20%20res1.append(pixon(j%2Ck%2C256%2B25*n%2Bl))%0A%20%20%20%20%20%20%20%20%20%20%20%20res2.append(pixon(j%2CN-k%2C256%2B25*when(n%3E%3Drimag%2Cn%2Crimag-n-1)%2Bl))%0A%20%20%20%20%20%20%20%20%20%20%20%20z0%3Dz0%2Bhx%0A%20%20%20%20return(res1%2Cres2)&+pixon(1)&+fsym(x%5E5-1%2C-1.3%2C1.3%0A%2C-1.3%2C150%2C10)&+0%3B%20%2F%2F%20f(x%5E5-1%2C-1.3%2C1.3%2C-1.3%2C1.3%2C134%2C10)&"
+<a href="#python=1&exec&+//%3Ch1%3eBassins%20d'attractions%3C/h1%3e%20On%20se%20donne%20un%20polynome%20$P$%20et%20on%20cherche%20en%20partant%20d'un%20point%20$u_0$%20du%20plan%20complexe%20si%20la%20m%C3%A9thode%20de%20Newton$u[n+1]=u_n-P(u_n)/P'(u_n)$converge%20vers%20une%20des%20racines%20complexes%20de%20$P(z)=0$.%20On%20colorie%20le%20point%20en%20fonction%20de%20la%20racine%20et%20de%20la%20vitesse%20de%20convergence.Deux%20fonctions%20sont%20donn%C3%A9es,%20la%20deuxi%C3%A8me%20utilise%20la%20conjugaison%20complexe%20pour%20acc%C3%A9l%C3%A9rer%20les%20calculs.&+def%20f(P%2Cxmin%2Cxmax%2Cymin%2Cymax%2CN%2Cmaxiter)%3A%0A%20%20%20%20%23%20local%20z%2Cz0%2Czp%2Chx%2Chy%2Cj%2Ck%2Cl%2Cn%2Cr%2Crs%2Cres%0A%20%20%20%20P%3Dsymb2poly(P)%0A%20%20%20%20res%3D%5B%5D%0A%20%20%20%20r%3Dproot(P)%0A%20%20%20%20rs%3Dsize(r)%0A%20%20%20%20hx%3Devalf(xmax-xmin)%2FN%0A%20%20%20%20hy%3Devalf(ymax-ymin)%2FN%0A%20%20%20%20for%20k%20in%20range(N%2B1)%3A%0A%20%20%20%20%20%20%20%20z0%3Dxmin%2Bi*(ymin%2Bk*hy)%0A%20%20%20%20%20%20%20%20for%20j%20in%20range(N%2B1)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20z%3Dz0%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20l%20in%20range(maxiter)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20distance((z%3Dhorner(P%2C(zp%3Dhorner(P%2Cz%2Cnewton))%2Cnewton))%2Czp)%3C1e-4%20or%20abs(z)%3E1e20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20z%3D%3Dundef%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20continue%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20n%20in%20range(rs)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20distance(z%2Cr%5Bn%5D)%3C1e-4%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20%20%20%20%20%20%20res.append(pixon(j%2Ck%2C256%2B25*n%2Bl))%0A%20%20%20%20%20%20%20%20%20%20%20%20z0%3Dz0%2Bhx%0A%20%20%20%20return%20res&+def%20fsym(P%2Cxmin%2Cxmax%2Cymin%2CN%2Cmaxiter)%3A%0A%20%20%20%20%23%20local%20z0%2Cz%2Czp%2Chx%2Chy%2Cj%2Ck%2Cl%2Cn%2Cr%2Crs%2Crimag%2Cres1%2Cres2%0A%20%20%20%20P%3Dsymb2poly(P)%0A%20%20%20%20if%20size(im(P))%3C%3E0%20%3A%0A%20%20%20%20%20%20%20%20return(%22Le%20polynome%20doit%20etre%20a%20coefficients%20reels%22)%0A%20%20%20%20r%3Dproot(P)%0A%20%20%20%20res1%3Dselect(lambda%20x%3Aim(x)%3E0%2Cr)%0A%20%20%20%20rimag%3D2*size(res1)%0A%20%20%20%20res2%3Dselect(lambda%20x%3Aim(x)%3D%3D0%2Cr)%0A%20%20%20%20r%3Dconcat(res1%2Creverse(conj(res1))%2Cres2)%0A%20%20%20%20rs%3Dsize(r)%0A%20%20%20%20res1%3D%5B%5D%0A%20%20%20%20res2%3D%5B%5D%0A%20%20%20%20hx%3Devalf(xmax-xmin)%2FN%0A%20%20%20%20hy%3Devalf(-2*ymin)%2FN%0A%20%20%20%20for%20k%20in%20range(ceil((N%2B1)%2F2))%3A%0A%20%20%20%20%20%20%20%20z0%3Dxmin%2Bi*(ymin%2Bk*hy)%0A%20%20%20%20%20%20%20%20for%20j%20in%20range(0%2CN%2B1)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20z%3Dz0%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20l%20in%20range(maxiter)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20distance((z%3Dhorner(P%2C(zp%3Dhorner(P%2Cz%2Cnewton))%2Cnewton))%2Czp)%3C0.0001%20or%20abs(z)%3E1e%2B20%20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20(z%3D%3Dundef)%20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20continue%0A%20%20%20%20%20%20%20%20%20%20%20%20for%20n%20in%20range(rs)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20(distance(z%2Cr%5Bn%5D))%3C0.0001%20%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20break%0A%20%20%20%20%20%20%20%20%20%20%20%20res1.append(pixon(j%2Ck%2C256%2B25*n%2Bl))%0A%20%20%20%20%20%20%20%20%20%20%20%20res2.append(pixon(j%2CN-k%2C256%2B25*when(n%3E%3Drimag%2Cn%2Crimag-n-1)%2Bl))%0A%20%20%20%20%20%20%20%20%20%20%20%20z0%3Dz0%2Bhx%0A%20%20%20%20return(res1%2Cres2)&+pixon(1)&+fsym(x%5E5-1%2C-1.3%2C1.3%0A%2C-1.3%2C150%2C10)&+0%3B%20%2F%2F%20f(x%5E5-1%2C-1.3%2C1.3%2C-1.3%2C1.3%2C134%2C10)&"
 target="_blank">Python</a>
 </li>
 </ul>
@@ -586,44 +694,49 @@ onclick="var tmp=document.getElementById('tutointerface'); if (tmp.style.display
 
 Cette feuille de calcul est compos&eacute;e du haut vers le bas de:
 <ul>
-  <li> un logo Xcas et un panel de boutons permettant de restaurer/sauvegarder
-  une session et de g&eacute;rer l'historique, la corbeille et les
-  variables. Au lancement de Xcas, le panel est
+  <li> Un panel de boutons permettant de restaurer/sauvegarder
+  une session, et des aides &agrave; la saisie de commandes
+  (Xcas/math, programmation, clavier scientifique, documentation) .
+  Au lancement de Xcas, le panel est
   r&eacute;duit &agrave; insertion d'une session, consultation des
   manuels, configuration et restauration de la session
   pr&eacute;c&eacute;dente.
   D&egrave;s que vous avez valid&eacute; une commande, il apparait
   <ul>
-    <li> un lien Clone
-    qui permet de <strong>cloner</strong> une session existante.
+    <li> un lien Clone (respectivement local)
+    qui permet de <strong>cloner</strong> une session existante
+    (respectivement localement).
     A utiliser si le noyau de calcul formel a crash&eacute; ou
     pour copier-coller dans une page web, ou pour ex&eacute;cuter
-    dans Xcas natif.
+    dans Xcas natif. 
     <li> un lien Mail qui permet de <strong>partager
     votre session</strong> par e-mail.
     </li>
   </ul>
 </li>
   <li> une zone d'<strong>aide</strong>, qui contient des courtes description des
-  commandes dont vous avez demand&eacute; la syntaxe.
+  commandes dont vous avez demand&eacute; la syntaxe. Vous pouvez
+effacer l'aide avec le bouton d'effacement &agrave; droite du champ de recherche.
   </li>
-  <li> un <strong>historique</strong> (vide au d&eacute;but).
-  Les lignes de commande y apparaissent en noir, les r&eacute;sultats en
-  bleu, les boutons ↑ et ↓ permettent de d&eacute;placer un niveau
-  dans l'historique, le bouton bleu ~ permet d'avoir une valeur
-  num&eacute;rique du r&eacute;sultat. Vous pouvez modifier une ligne
+  <li> un <strong>historique</strong> qui contient 0 ou plusieurs
+  niveaux (0 au d&eacute;but). Un niveau est une paire 
+  ligne de commande (en noir)/r&eacute;sultats (en
+  bleu), les boutons ↑ et ↓ permettent de d&eacute;placer un niveau
+  dans l'historique. Vous pouvez modifier une ligne
   de commande de l'historique et valider en cliquant sur le bouton &#x2705;
-  ou la touche Entree. Vous
+  ou sur Entree en d&eacute;but de champ. Vous
   pouvez placer un niveau dans la corbeille avec le bouton
-  d'effacement &agrave; droite du niveau (pour le restaurer,
-  cliquer sur le bouton Restaure, pour l'effacer
-  d&eacute;finitivement cliquer sur le bouton Vide). 
+  d'effacement &agrave; droite du niveau. Pour le restaurer,
+  cliquez sur le bouton Restaure, pour l'effacer
+  d&eacute;finitivement cliquez sur le bouton Vide. Le lien <tt>+</tt>
+  &agrave; droite du bouton Vide permet d'ouvrir un nouvel onglet
+  sur une session vide.
   </li>
   <li> une <strong>ligne de commande</strong>, on y tape des commandes
   ou des programmes Xcas, et on
   valide en cliquant sur le bouton &#x2705; ou en tapant Entree. Pour passer
   &agrave; la ligne dans un programme, tapez Shift-Entree au clavier
-  ou utilisez le bouton <tt>\n</tt> du clavier scientifique.
+  ou utilisez le bouton <tt>\n</tt>.
   <br>
   Par exemple, tapez un calcul simple comme <tt>1/2+1/3</tt>
   ou <tt>sin(pi/4)</tt> ou <tt>sin(pi/4.0)</tt>.
@@ -639,14 +752,15 @@ Cette feuille de calcul est compos&eacute;e du haut vers le bas de:
   Si vous connaissez le nom d'une commande,
   vous pouvez taper (le d&eacute;but) du nom d'une commande
   (par exemple <tt>factor</tt>) puis
-  la touche <button class="bouton">F1</button> ou <button class="bouton">Tab</button>
-  ou cliquer sur le bouton <button class="bouton">?</button>
+  la touche <button >F1</button> 
+  ou cliquer sur le bouton <button >?</button>
   pour obtenir une
   <strong>aide courte</strong> sur la commande (si elle
   est compl&egrave;te) ou des suggestions de noms de
   commande (sinon).
   <br>
-  Par exemple, cliquer sur le bouton <tt>math</tt> puis sur le bouton
+  Par exemple, cliquer sur le bouton <tt>math</tt> puis
+  <tt>reecr.</tt> puis
   <tt>factor</tt> puis tapez sur <tt>?</tt>, observez l'aide
   en haut, cliquez sur un des exemples ou completez avec
   x^4-1 puis tapez Entree.
@@ -699,12 +813,9 @@ avec le nom de session affich&eacute; &agrave; droite du bouton
 (par d&eacute;faut <tt>session</tt>).
 Une session sauvegard&eacute;e
 s'ouvre ensuite avec le bouton Charger.
-Les sauvegardes sont faites dans localStorage ou dans les cookies du
-navigateur avec un nom de cookie commencant par <tt>xcas__</tt>, vous
-pouvez les effacer depuis la gestion de la Vie priv&eacute;e de votre
-navigateur.
+Sur mobile, les sauvegardes sont faites dans localStorage.
 Vous pouvez aussi <strong>exporter</strong> la feuille de calcul (sauf
-sur smartphone), l'export occupe plus de place mais
+sur mobile), l'export occupe plus de place mais
   permet de publier le fichier HTML comme une page autonome.
   Vous pouvez sauvegarder les graphes 2d au format SVG avec le bouton
   save &agrave; droite du graphe. Le fichier SVG cr&eacute;&eacute;
@@ -718,7 +829,8 @@ sur smartphone), l'export occupe plus de place mais
   dans Pr&eacute;f&eacute;rences,
   G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.
 <br>
-  Vous pouvez ouvrir (partiellement) une session existante Xcas en la clonant
+Vous pouvez ouvrir (partiellement) dans Xcas pour Firefox
+une session existante Xcas natif en la clonant
   (menu Fich, Clone du programme Xcas, ou en ligne de commande
 <tt>xcas --online nom_fichier.xws</tt>)
 <br>
@@ -832,7 +944,9 @@ de Grenoble, sous licence GPL3, pour une licence commerciale nous
 contacter.
 <br>
 Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
-  </span>
+<br>
+Commandes d'optimisation &eacute;crites par Luka Marohnić.
+</span>
 </li>
 <br>
   <li  style="display:inline"> 
@@ -843,21 +957,22 @@ onclick="var tmp=document.getElementById('tutosimplifier'); if (tmp.style.displa
   Il n'existe pas de mani&egrave;re universelle de simplifier une
   expression, parfois il vaut mieux d&eacute;velopper, parfois factoriser,
   parfois lin&eacute;ariser, etc., il est donc important de connaitre
-  quelques commandes de r&eacute;&eacute;criture.
+  quelques commandes de r&eacute;&eacute;criture, que l'on peut
+  retrouver depuis le menu Math, r&eacute;&eacute;cr.
   <ul>
     <li>
-  L'appui sur le bouton <tt>math</tt> puis <tt>simpl</tt>
+  L'appui sur le bouton <tt>math</tt> puis <tt>r&eacute;ecr.</tt> puis <tt>simpl</tt>
     ins&egrave;re
     la commande
-  <button class="bouton"
+  <button 
     onclick="UI.insert(UI.focused,'simplify(')">simplify</button>,
    tapez ensuite
     l'expression que
     vous voulez d&eacute;velopper et simplifier.<br>
-    <button class="bouton"
+    <button 
     onclick="UI.insert(UI.focused,'normal(')">normal</button>,
-    <button class="bouton" onclick="UI.insert(UI.focused,'reorder(')">reorder</button>, 
-    <button class="bouton"
+    <button  onclick="UI.insert(UI.focused,'reorder(')">reorder</button>, 
+    <button 
     onclick="UI.insert(UI.focused,'ratnormal(')">ratnormal</button>
     sont des versions moins puissantes mais plus rapides que simplify
     (normal ne recherche pas de relations entre fonctions
@@ -866,54 +981,54 @@ onclick="var tmp=document.getElementById('tutosimplifier'); if (tmp.style.displa
     selon une liste de variables).
 </li>    
 <li>
-<button class="bouton" onclick="UI.insert(UI.focused,'factor(')">factor</button>
+<button  onclick="UI.insert(UI.focused,'factor(')">factor</button>
    factorise sur R,
-<button class="bouton" 
+<button  
     onclick="UI.insert(UI.focused,'cfactor(')">cfactor</button>
     sur C
     </li>
     <li>
-    <button class="bouton" onclick="UI.insert(UI.focused,'partfrac(')">partfrac</button>
+    <button  onclick="UI.insert(UI.focused,'partfrac(')">partfrac</button>
     d&eacute;compose en &eacute;l&eacute;ments simples sur R,
-    <button class="bouton" 
+    <button  
     onclick="UI.insert(UI.focused,'cpartfrac(')">cpartfrac</button>
     sur C.
     </li>
     <li>
-<button class="bouton"
+<button 
     onclick="UI.insert(UI.focused,'texpand(')">texpand</button>
     d&eacute;veloppe les expressions trigonom&eacute;triques,
     exponentielles et logarithmes,
-<button class="bouton"
+<button 
     onclick="UI.insert(UI.focused,'lin(')">lin</button>
     lin&eacute;rise les exponentielles,
-<button class="bouton" onclick="UI.insert(UI.focused,'tlin(')">tlin</button>    
+<button  onclick="UI.insert(UI.focused,'tlin(')">tlin</button>    
     lin&eacute;rise les expressions trigonom&eacute;triques.
     </li>
-    <li> <button class="bouton"
+    <li> <button 
     onclick="UI.insert(UI.focused,'subst(')">subst</button>
     permet de substituer une ou des variables par une ou des valeurs
     </li>
-    <li> Conversions trigo: <button class="bouton"
+    <li> Conversions trigo: <button 
     onclick="UI.insert(UI.focused,'trigcos(')">trigcos</button>,
-    <button class="bouton"
+    <button 
     onclick="UI.insert(UI.focused,'trigsin(')">trigsin</button>,
-    <button class="bouton"
+    <button 
     onclick="UI.insert(UI.focused,'trigtan(')">trigtan</button>,
-    <button class="bouton"
+    <button 
     onclick="UI.insert(UI.focused,'halftan(')">halftan</button>,
-    <button class="bouton"
+    <button 
     onclick="UI.insert(UI.focused,'tan2sincos(')">tan2sincos</button>
     </li>
-    <li> Autres: <button class="bouton"
+    <li> Autres: <button 
     onclick="UI.insert(UI.focused,'trig2exp(')">trig2exp</button>,
-    <button class="bouton" onclick="UI.insert(UI.focused,'exp2trig(')">exp2trig</button>
-    <button class="bouton"
+    <button  onclick="UI.insert(UI.focused,'exp2trig(')">exp2trig</button>
+    <button 
     onclick="UI.insert(UI.focused,'pow2exp(')">pow2exp</button>,
-    <button class="bouton" onclick="UI.insert(UI.focused,'exp2pow(')">exp2pow</button>
-    <button class="bouton"
+    <button  onclick="UI.insert(UI.focused,'exp2pow(')">exp2pow</button>
+    <button 
     onclick="UI.insert(UI.focused,'lncollect(')">lncollect</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'lnexpand(')">lnexpand</button>    
+<button  onclick="UI.insert(UI.focused,'lnexpand(')">lnexpand</button>    
     </li>
   </ul>
   </span>
@@ -927,79 +1042,87 @@ onclick="var tmp=document.getElementById('tutolinalg'); if (tmp.style.display=='
 <ul>
   <li>  Pour cr&eacute;er un vecteur, tapez ses coordonn&eacute;es
   s&eacute;par&eacute;es par des virgules entre 2 crochets [].
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'dot(')">dot</button> produit
-  scalaire de deux vecteurs,   <button class="bouton"
+  scalaire de deux vecteurs,   <button 
   onclick="UI.insert(UI.focused,'cross(')">cross</button> produit
   vectoriel en dimension 2 ou 3.
   </li>
   <li>
-  Pour cr&eacute;er une matrice, utiliser l'assistant <tt>matrix</tt>
-  du <tt>math</tt>. Vous pouvez d&eacute;finir les coefficients par
+  Pour cr&eacute;er une matrice, utilisez l'assistant <tt>matrix</tt>
+  du menu <tt>math</tt>. Vous pouvez d&eacute;finir les coefficients par
   une formule en fonction de la ligne et de la colonne ou
   &eacute;l&eacute;ment par &eacute;l&eacute;ment
   (vous pouvez entrer plusieurs coefficients en les s&eacute;parant par
-  un espace et passer &agrave; la ligne suivante avec Entree).
+  un espace et passer &agrave; la ligne suivante avec Entree). Pour
+  une matrice al&eacute;atoire, utilisez l'assistant <tt>alea</tt>.
   </li>
   <li>
-  <button class="bouton" onclick="UI.insert(UI.focused,'A[0,1]')">A[0,1]</button>
-  &eacute;l&eacute;ment de A ligne 0 colonne 1,
-  <button class="bouton"
+  Les indices de lignes et colonnes commencent &agrave; 0 avec une
+  seule paire de <tt>[]</tt> et &agrave; 1 avec une double-paire
+  <tt>[[]]</tt>, par
+  exemple
+  <button  onclick="UI.insert(UI.focused,'A[0,1]')">A[0,1]</button>
+  ou <button
+  onclick="UI.insert(UI.focused,'A[[1,2]]')">A[[1,2]]</button>.
+  <li>
+  Vous pouvez utiliser <tt>+,-,*</tt> et <button 
+  onclick="UI.insert(UI.focused,'matpow(')">matpow</button> pour
+  effectuer les op&eacute;rations usuelles sur les matrices.
+  </li>
+  <li>
+  <button 
   onclick="UI.insert(UI.focused,'tran(')">tran</button>
-  transpos&eacute;e,
-  <button class="bouton"
+  transpos&eacute;e, <button 
+  onclick="UI.insert(UI.focused,'tran(')">trn</button>: transconjugu&eacute;e,
+  <button 
   onclick="UI.insert(UI.focused,'idn(')">idn</button> identit&eacute;
   </li>
-  <li>
-  Utiliser <tt>+,-,*</tt> et    <button class="bouton"
-  onclick="UI.insert(UI.focused,'matpow(')">matpow</button> pour
-  les op&eacute;rations usuelles sur les matrices.
-  </li>
   <li> 
-  <button class="bouton" onclick="UI.insert(UI.focused,'linsolve(')">linsolve</button>
+  <button  onclick="UI.insert(UI.focused,'linsolve(')">linsolve</button>
   syst&egrave;me lin&eacute;aire,
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'rref(')">rref</button> :
   pivot de Gauss,
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'p,l,u:=lu(')">det</button>
   : d&eacute;terminant,
-  <button class="bouton" onclick="UI.insert(UI.focused,'inv(')">inv</button>
+  <button  onclick="UI.insert(UI.focused,'inv(')">inv</button>
   : inverse,
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'p,l,u:=lu(')">lu</button>
   : d&eacute;composition LU et application &agrave;
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'linsolve(p,l,u,')">linsolve</button>,
   </li>
   <li> 
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'charpoly(')">charpoly(</button>
   polynome caract&eacute;ristique ou
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'pmin(')">pmin(</button>
   minimal,
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'p,d:=jordan(')">p,d:=jordan(</button>
   vecteurs et valeurs propres.
   </li>
   <li>
   Factorisations
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'lu(')">lu</button>,
-  <button class="bouton" onclick="UI.insert(UI.focused,'cholesky(')">cholesky</button>,
-  <button class="bouton"
+  <button  onclick="UI.insert(UI.focused,'cholesky(')">cholesky</button>,
+  <button 
   onclick="UI.insert(UI.focused,'qr(')">qr</button>,
-  <button class="bouton" onclick="UI.insert(UI.focused,'svd(')">svd</button>
+  <button  onclick="UI.insert(UI.focused,'svd(')">svd</button>
   </li>
   <li> Normes
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'l1norm(')">l1norm</button>,
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'l2norm(')">l2norm</button>,
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'maxnorm(')">maxnorm</button> :  
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'matrix_norm(')">matrix_norm</button>
   de matrice subordonn&eacute;e  
   </li>
@@ -1010,65 +1133,77 @@ onclick="var tmp=document.getElementById('tutoarit'); if (tmp.style.display=='no
 <strong>Arithm&eacute;tique</strong>
 </button>
 <span id="tutoarit" style="display:none">
-Lorsqu'un doute est possible,
-les commandes agissant sur les entiers ont comme initiale <tt>i</tt>
-pour les distinguer des commandes agissant sur les
-polynomes.
+Les commandes fr&eacute;quentes se trouvent dans le menu Math, bouton arit.
+Certaines commandes agissent indiff&eacute;ramment sur les entiers
+et sur les polyn&ocirc;mes, par exemple <tt>gcd</tt> ou <tt>lcm</tt>,
+d'autres commandes ont deux versions, celle qui agit sur des entiers
+a comme initiale <tt>i</tt>, par exemple <tt>irem</tt> est le reste
+euclidien pour des entiers, et <tt>rem</tt> pour des polyn&ocirc;mes.
 <ul>
   <li>
-  <button class="bouton" 
+    <button 
+  onclick="UI.insert(UI.focused,'gcd(')">gcd</button>,
+    <button 
+  onclick="UI.insert(UI.focused,'lcm(')">lcm</button> PGCD et PPCM
+  </li>
+  <li>
+  <button 
   onclick="UI.insert(UI.focused,'irem(')">irem</button>,
-   <button class="bouton" 
+   <button 
   onclick="UI.insert(UI.focused,'iquo(')">iquo</button>,
- <button class="bouton" 
+ <button 
     onclick="UI.insert(UI.focused,'iquorem(')">iquorem</button>:
   reste et quotient de la division euclidienne sur les entiers
   </li>
   <li>
-  <button class="bouton" 
-  onclick="UI.insert(UI.focused,'gcd(')">gcd</button> PGCD,
-  <button class="bouton" 
+  <button 
   onclick="UI.insert(UI.focused,'iegcd(')">iegcd</button> identit&eacute;
   de B&eacute;zout sur les entiers,
-  <button class="bouton" 
+  <button 
   onclick="UI.insert(UI.focused,'iabcuv(')">iabcuv</button> solutions
   de au+bv=c,
-  </li>
-  <li>
-  <button class="bouton" 
-  onclick="UI.insert(UI.focused,'isprime(')">isprime</button> test de primalit&egrave;,
-  <button class="bouton" 
+  <button 
+  onclick="UI.insert(UI.focused,'isprime(')">isprime</button> test de pseudo-primalit&eacute;,
+  <button 
+  onclick="UI.insert(UI.focused,'nextprime(')">nextprime</button>
+  prochain nombre premier,
+  <button 
   onclick="UI.insert(UI.focused,'ifactor(')">ifactor</button>
-  factorisation d'entier, indicatrice d'<button class="bouton" 
-  onclick="UI.insert(UI.focused,'euler(')">euler</button>
+  factorisation d'entier, indicatrice d'<button 
+  onclick="UI.insert(UI.focused,'euler(')">Euler</button>,
+  <button 
+  onclick="UI.insert(UI.focused,'powmod(')">powmod</button> puissance
+  modulaire rapide.
   </li>
   <li>
-  <button class="bouton" 
+  <button 
   onclick="UI.insert(UI.focused,'rem(')">rem</button>,
-   <button class="bouton" 
+   <button 
   onclick="UI.insert(UI.focused,'quo(')">quo</button>,
- <button class="bouton" 
+ <button 
     onclick="UI.insert(UI.focused,'quorem(')">quorem</button>:
   reste et quotient de la division euclidienne sur les polynomes. La
   variable par d&eacute;faut est <tt>x</tt>, sinon l'indiquer en
-  3&egrave;me argument.
-  </li>
+  3&egrave;me argument
   <li>
-  <button class="bouton" 
-  onclick="UI.insert(UI.focused,'gcd(')">gcd</button> PGCD,
-  <button class="bouton" 
+  <button 
   onclick="UI.insert(UI.focused,'egcd(')">egcd</button> identit&eacute;
   de B&eacute;zout sur les polynomes,
-  <button class="bouton" 
+  <button 
   onclick="UI.insert(UI.focused,'abcuv(')">abcuv</button> solutions
   de au+bv=c,
+  <button 
+  onclick="UI.insert(UI.focused,'horner(')">horner</button> valeur en
+  un point par Horner,
+  <button 
+  onclick="UI.insert(UI.focused,'interp(')">interp</button> interpolation
+  polynomiale.
   </li>
-  <li> Pour travailler dans ℤ/nℤ, utiliser le signe <tt>%</tt>, par
-  exemple <tt>x^3+5x-11 % 17</tt> est un polynome a coefficients dans ℤ/17ℤ.
-  </li>
-  <li> Pour travailler sur un corps fini non premier, utiliser la
+  <li> Pour travailler dans ℤ/nℤ, utiliser le signe <tt>mod</tt>, par
+  exemple <tt>x^3+5x-11 mod 17</tt> est un polynome a coefficients dans ℤ/17ℤ.
+  Pour travailler sur un corps fini non premier, utiliser la
   commande
-  <button class="bouton" 
+  <button 
   onclick="UI.insert(UI.focused,'GF(')">GF</button>
   </li>
 </ul>
@@ -1087,27 +1222,33 @@ Depuis le bouton <tt>math</tt>
   syst&egrave;me
   polynomial en mode exact ou approch&eacute; sur les r&eacute;els ou
 les complexes (fonctions
-<button class="bouton" 
+<button  
 onclick="UI.insert(UI.focused,'solve(')">solve</button>
-<button class="bouton" 
+<button  
 onclick="UI.insert(UI.focused,'csolve(')">csolve</button>
-<button class="bouton" 
+<button  
 onclick="UI.insert(UI.focused,'fsolve(')">fsolve</button>
-<button class="bouton" 
+<button  
   onclick="UI.insert(UI.focused,'cfsolve(')">cfsolve</button>)
   </li>
   <li>
   Pour r&eacute;soudre une &eacute;quation diff&eacute;rentielle,
-cliquez sur <tt>deslv</tt>
-(exact <button class="bouton" 
-onclick="UI.insert(UI.focused,'desolve(')">desolve</button>,
-num&eacute;rique <button class="bouton" 
-onclick="UI.insert(UI.focused,'odesolve(')">odesolve</button>, voir
-  aussi la section graphes).
+cliquez sur <tt>analyse</tt> du menu <tt>Math</tt>,
+<button  
+  onclick="UI.insert(UI.focused,'desolve(')">desolve</button> pour un
+  calcul exact,
+<button  
+onclick="UI.insert(UI.focused,'odesolve(')">odesolve</button>
+  approch&eacute;, ou cliquez sur <tt>graphe</tt> puis
+  <button  
+  onclick="UI.insert(UI.focused,'odeplot(')">ode</button>
+  pour un graphe de solution approch&eacute;e.
   </li>
   <li>
-Pour une ou des suites r&eacute;currentes cliquez sur <tt>rslv</tt> (commande
-<button class="bouton" 
+Pour calculer le terme g&eacute;n&eacute;ral d'une suite
+  r&eacute;currente (ou d'un syst&egrave;me), cliquez sur <tt>u_n</tt>
+  du menu <tt>Math</tt> (commande
+<button  
   onclick="UI.insert(UI.focused,'rsolve(')">rsolve</button>).
   </li>
   </ul>
@@ -1135,34 +1276,34 @@ onclick="var tmp=document.getElementById('tutoanalyse'); if (tmp.style.display==
   mettre <tt>f</tt> comme nom de fonction,
   <tt>x</tt> comme liste des arguments et <tt>sin(x^2)</tt> comme
   valeur renvoy&eacute;ee :
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'f(x):=sin(x^2):;')"><tt>f(x):=sin(x^2)</tt></button>.
   On peut ensuite calcule la valeur
   de <tt>f</tt> ou de sa d&eacute;riv&eacute;e par
-   <button class="bouton" 
+   <button  
   onclick="UI.insert(UI.focused,'f(sqrt(pi)); f'(2);f'(y);')">
   <tt>f(sqrt(pi)); f'(2); f'(y) </tt></button>.
   <br>
   Une d&eacute;riv&eacute;e se calcule avec
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'diff(')">diff</button> ou <tt>'</tt>.
   Une primitive d'une
-  expression se calcule avec <button class="bouton"
+  expression se calcule avec <button 
   onclick="UI.insert(UI.focused,'integrate(')">int</button>, par
-  exemple <button class="bouton"
+  exemple <button 
   onclick="UI.insert(UI.focused,'integrate(1/(x^4-1))')">int(1/(x^4-1));</button>,
   pour une int&eacute;grale entre deux bornes
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'int(1/(x^4+1),x,0,+infinity)')">
   int(1/(x^4+1)^4,x,0,+infinity);</button>.
   <br>
-  Enfin  <button class="bouton"
+  Enfin  <button 
   onclick="UI.insert(UI.focused,'limit(')">limit</button> et
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'series(')">series</button>
   permettent de calculer une limite ou un d&eacute;veloppement de
   Taylor, par exemple
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'limit(sin(x)/x,x=0); series(sin(x),x=0,5,polynom)')">
   limit(sin(x)/x,x=0); series(sin(x),x=0,5,polynom);</button>
   </span>
@@ -1172,50 +1313,50 @@ onclick="var tmp=document.getElementById('tutoanalyse'); if (tmp.style.display==
 onclick="var tmp=document.getElementById('tutoproba'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
   <strong>Probabilit&eacute;s </strong></button>
   <span id="tutoproba" style="display:none">
-  Utiliser l'assistant <tt>rand</tt> de <tt>math</tt> pour
+  Utiliser l'assistant <tt>al&ecute;a</tt> de <tt>math</tt> pour
   g&eacute;n&eacute;rer des nombres pseudo-al&eacute;atoires.
   <br>
   Lois continues:
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'uniformd(')">uniformd</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'normald(')">normald</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'studentd(')">studentd</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'chisquared(')">chisquared</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'gammad(')">gammad</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'exponentiald(')">exponentiald</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'cauchyd(')">cauchyd</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'fisherd(')">fisherd</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'betad(')">betad</button>.
   <br>
   Lois discr&egrave;tes :
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'binomial(')">binomial</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'negbinomial(')">negbinomial</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'geometric(')">geometric</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'poisson(')">poisson</button>.
   <br>
   Les distributions cumul&eacute;es s'obtiennent en rajoutant le
-  suffixe <tt>_cdf</tt> ou par la commande  <button class="bouton"
+  suffixe <tt>_cdf</tt> ou par la commande  <button 
   onclick="UI.insert(UI.focused,'cdf(')">cdf</button>, et les
-  inverses avec le suffixe  <tt>_icdf</tt> ou par la commande  <button class="bouton"
+  inverses avec le suffixe  <tt>_icdf</tt> ou par la commande  <button 
   onclick="UI.insert(UI.focused,'icdf(')">icdf</button>.
   <br>
-  La commande    <button class="bouton"
+  La commande    <button 
   onclick="UI.insert(UI.focused,'histogram(')">histogram</button>
   permet de repr&eacute;senter un histogramme.
   <br>
-  La commande    <button class="bouton"
+  La commande    <button 
   onclick="UI.insert(UI.focused,'markov(')">markov</button> permet
   de d&eacute;composer une matrice de transition.
   </span>
@@ -1234,12 +1375,12 @@ onclick="var tmp=document.getElementById('tutograph'); if (tmp.style.display=='n
   pour une &eacute;quation diff&eacute;rentielle (<tt>field</tt>).
   <br>
   Exemples
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])')">
   <tt>plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])</tt>
   </button> affiche
   le graphe 2d des fonctions sin(x) et x-x^3/6, alors que
-  <button class="bouton"
+  <button 
   onclick="UI.insert(UI.focused,'plotfunc(x^2-y^2,[x=-2..2,y=-2..2]);plan(z=0,color=cyan+filled);')">
   <tt>plotfunc(x^2-y^2,[x=-2..2,y=-2..2]);plan(z=0,color=cyan+filled);</tt>
   </button>
@@ -1248,27 +1389,27 @@ onclick="var tmp=document.getElementById('tutograph'); if (tmp.style.display=='n
   <br>
   Vous pouvez aussi utiliser de nombreuses instructions
   g&eacute;om&eacute;triques:
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'point(')">point</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'milieu(')">milieu</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'droite(')">droite</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'bissectrice(')">bissectrice</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'mediatrice(')">mediatrice</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'segment(')">segment</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'triangle(')">triangle</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'cercle(')">cercle</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'ellipse(')">ellipse</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'hyperbole(')">hyperbole</button>,
-   <button class="bouton"
+   <button 
   onclick="UI.insert(UI.focused,'parabole(')">parabole</button>, ...
   </span>
   </li>
@@ -1278,12 +1419,19 @@ onclick="var tmp=document.getElementById('tutoprog'); if (tmp.style.display=='no
   <strong>Programmation</strong>
   </button>
   <span id="tutoprog" style="display:none">
-  Cliquez sur le bouton <tt>prg</tt> juste au-dessus
-  de la ligne de commande, ceci affiche des assistants 
+  Si vous n'avez jamais programm&eacute;, vous pouvez apprendre
+  &agrave; le faire avec la tortue, cliquez sur le tutoriel
+  <tt>Tortue</tt>.
+  <br>
+  Le bouton <tt>Prog</tt> affiche des assistants 
    pour cr&eacute;er les structures de programmation
-  (test, boucle, fonction). Pour passer &agrave; la ligne,
-  tapez simultan&eacute;ment sur Shift-Entree ou utilisez le
-  bouton <tt>\n</tt>. Pour indenter, utilisez le bouton <tt>->/</tt>.
+  (test, boucle, fonction). Pour passer &agrave; la ligne dans un
+  champ d'entr&eacute;e d&eacute;j&agrave; valid&eacute; que vous
+  modifiez, tapez Entree. Dans
+  la ligne de commande en bas de page, il faut
+  taper simultan&eacute;ment sur Shift-Entree ou utiliser le
+  bouton <tt>\n</tt>.
+  Pour indenter, utilisez le bouton <tt>→|</tt>.
   Le bouton <tt>debug</tt>
   permet d'ex&eacute;cuter une fonction en mode pas &agrave; pas
   pour la mettre au point.
@@ -1292,7 +1440,7 @@ onclick="var tmp=document.getElementById('tutoprog'); if (tmp.style.display=='no
   dont une syntaxe en francais tr&egrave;s proche du langage
   algorithmique et une syntaxe compatible avec Python.
   Vous pouvez afficher un
-  <button class="bouton"
+  <button 
 onclick="var tmp=document.getElementById('progex'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
   <strong>exemple de programme</strong>
   </button>, regarder les sessions exemples ou lire le
@@ -1331,8 +1479,8 @@ onclick="var tmp=document.getElementById('progex'); if (tmp.style.display=='none
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s=s+y**2<br>
   &nbsp;&nbsp;&nbsp;&nbsp;return s<br>
   </tt>
-  <button class="bouton" onclick="UI.insert(UI.focused,'fonction f(x)\n  local y,s;\n  si x &gt; 100 alors retourne &quot;Nombre trop grand&quot; fsi;\n  s:=0;\n  pour y de 1 jusque x faire\n    s:=s+y^2;\n  fpour\n  retourne s;\nffonction:; ')">Tester (Xcas)</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'def f(x):\n    # local y,s\n    if x > 100000:\n        return &quot;Nombre trop grand&quot;\n    s=0\n    for y in range(x+1):\n        s=s+y**2\n    return s\n')">Tester (Python)</button>
+  <button  onclick="UI.insert(UI.focused,'fonction f(x)\n  local y,s;\n  si x &gt; 100 alors retourne &quot;Nombre trop grand&quot; fsi;\n  s:=0;\n  pour y de 1 jusque x faire\n    s:=s+y^2;\n  fpour\n  retourne s;\nffonction:; ')">Tester (Xcas)</button>
+  <button  onclick="UI.insert(UI.focused,'def f(x):\n    # local y,s\n    if x > 100000:\n        return &quot;Nombre trop grand&quot;\n    s=0\n    for y in range(x+1):\n        s=s+y**2\n    return s\n')">Tester (Python)</button>
 <br>
 
   <br>
@@ -1349,33 +1497,56 @@ onclick="var tmp=document.getElementById('tutotortue'); if (tmp.style.display=='
   utilisable d&egrave;s le primaire. Il s'agit d'un robot
   qui se d&eacute;place selon des commandes avec un crayon
   qui marque son passage, avec une couleur donn&eacute;e.
-  Cliquez sur le bouton Prog puis Tortue pour
-  faire apparaitre les commandes les plus courantes, comme
+  <br>
+  Cliquez sur le bouton Prog puis Tortue &agrave; droite,
+  puis sur le bouton <tt>nouveau</tt> de la ligne du dessous
+  pour cr&eacute;er un dessin tortue.
+  <br>
+  Deux champs d'entr&eacute;e
+  sont cr&eacute;&eacute;s,
+  le second sert &agrave;
+  saisir les commandes de d&eacute;placement de la tortue, en-dessous
+  de la commande <tt>efface</tt>. 
+  La barre de bouton &agrave; droite du bouton <tt>nouveau</tt>
+  <tt>av rec td ...</tt>
+  permet de saisir facilement les commandes de d&eacute;placement, comme
   <tt>avance</tt> (la tortue avance de 10 pas ou de la longueur
-  indiqu&eacute;e en param&egrave;tre), <tt>tourne_gauche</tt>
-  (la tortue tourne &agrave; gauche, par d&eacute;faut de 90
-  degr&eacute;s), etc.. <br>
+  indiqu&eacute;e en param&egrave;tre), <tt>recule</tt> <tt>tourne_droite</tt>
+  (la tortue tourne &agrave; droite, par d&eacute;faut de 90
+  degr&eacute;s), etc.
+  <br>
+  Par exemple, si vous cliquez juste en-dessous de <tt>efface</tt>,
+  puis sur le bouton <tt>av</tt> puis sur le bouton <tt>tg</tt> puis
+  validez la ligne, la tortue se d&eacute;placera de 10 pixels vers
+  la gauche puis s'orientera vers le haut.
+  <br>
+  Le premier champ d'entr&eacute;e sert &agrave; d&eacute;finir des
+  fonctions regroupant plusieurs instructions de d&eacute;placement,
+  il peut contenir des tests et des boucles. Vous pouvez vous aider
+  des assistants <tt>test</tt>, <tt>boucle</tt> et <tt>fonct</tt>
+  pour cr&eacute;er une nouvelle fonction.
+  <br>
   Voici un exemple de construction
   de carr&eacute;s avec la tortue en syntaxe
 <a
-href="xcasfr.html#exec&+fonction%20Carre(l)%0A%20%20local%20k%3B%0A%20%20pour%20k%20de%201%20jusque%204%20faire%0A%20%20%20%20avance(l)%3B%0A%20%20%20%20tourne_gauche%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+%23%0Aefface%0ACarre(40)%0Asaute%2080%0ACarre(40)&+fonction%20Polygone(l%2Cn)%0A%20%20local%20k%2Ct%3B%0A%20%20t%3A%3D360%2Fn%3B%0A%20%20pour%20k%20de%201%20jusque%20n%20faire%0A%20%20%20%20avance(l)%3B%0A%20%20%20%20tourne_gauche(t)%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+%23%0Aefface%0APolygone(50%2C5)&" target="_blank">
+href="#exec&+fonction%20Carre(l)%0A%20%20local%20k%3B%0A%20%20pour%20k%20de%201%20jusque%204%20faire%0A%20%20%20%20avance(l)%3B%0A%20%20%20%20tourne_gauche%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+%23%0Aefface%0ACarre(40)%0Asaute%2080%0ACarre(40)&+fonction%20Polygone(l%2Cn)%0A%20%20local%20k%2Ct%3B%0A%20%20t%3A%3D360%2Fn%3B%0A%20%20pour%20k%20de%201%20jusque%20n%20faire%0A%20%20%20%20avance(l)%3B%0A%20%20%20%20tourne_gauche(t)%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+%23%0Aefface%0APolygone(50%2C5)&" target="_blank">
 Xcas</a>
 <a
-  href="xcasfr.html#exec&+def%20Carre(l)%3A%0A%20%20%20%20%23%20local%20k%0A%20%20%20%20for%20k%20in%20range(4)%3A%0A%20%20%20%20%20%20%20%20avance(l)%0A%20%20%20%20%20%20%20%20tourne_gauche&+%23%0Aefface%0ACarre(40)%0Asaute%2080%0ACarre(40)&+def%20Polygone(l%2Cn)%3A%0A%20%20%20%20%23%20local%20k%2Ct%0A%20%20%20%20t%3D360%2Fn%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20avance(l)%0A%20%20%20%20%20%20%20%20tourne_gauche(t)&+%23%0Aefface%0APolygone(50%2C5)&"
+  href="#exec&+def%20Carre(l)%3A%0A%20%20%20%20%23%20local%20k%0A%20%20%20%20for%20k%20in%20range(4)%3A%0A%20%20%20%20%20%20%20%20avance(l)%0A%20%20%20%20%20%20%20%20tourne_gauche&+%23%0Aefface%0ACarre(40)%0Asaute%2080%0ACarre(40)&+def%20Polygone(l%2Cn)%3A%0A%20%20%20%20%23%20local%20k%2Ct%0A%20%20%20%20t%3D360%2Fn%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20avance(l)%0A%20%20%20%20%20%20%20%20tourne_gauche(t)&+%23%0Aefface%0APolygone(50%2C5)&"
   target="_blank">Python</a>,
   des polygones r&eacute;guliers
 <a
-href="xcasfr.html#python=0&exec&+fonction%20Carre(l)%0A%20%20local%20k%3B%0A%20%20pour%20k%20de%201%20jusque%204%20faire%0A%20%20%20%20avance(l)%3B%0A%20%20%20%20tourne_gauche%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+%23%0Aefface%0ACarre(40)%0Asaute%2080%0ACarre(40)&+fonction%20Polygone(l%2Cn)%0A%20%20local%20k%2Ct%3B%0A%20%20t%3A%3D360%2Fn%3B%0A%20%20pour%20k%20de%201%20jusque%20n%20faire%0A%20%20%20%20avance(l)%3B%0A%20%20%20%20tourne_gauche(t)%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+%23%0Aefface%0APolygone(50%2C5)&"
+href="#python=0&exec&+fonction%20Carre(l)%0A%20%20local%20k%3B%0A%20%20pour%20k%20de%201%20jusque%204%20faire%0A%20%20%20%20avance(l)%3B%0A%20%20%20%20tourne_gauche%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+%23%0Aefface%0ACarre(40)%0Asaute%2080%0ACarre(40)&+fonction%20Polygone(l%2Cn)%0A%20%20local%20k%2Ct%3B%0A%20%20t%3A%3D360%2Fn%3B%0A%20%20pour%20k%20de%201%20jusque%20n%20faire%0A%20%20%20%20avance(l)%3B%0A%20%20%20%20tourne_gauche(t)%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+%23%0Aefface%0APolygone(50%2C5)&"
   target="_blank">
 Xcas</a>,  
 <a
-  href="xcasfr.html#python=1&exec&+def%20Carre(l)%3A%0A%20%20%20%20%23%20local%20k%0A%20%20%20%20for%20k%20in%20range(4)%3A%0A%20%20%20%20%20%20%20%20avance(l)%0A%20%20%20%20%20%20%20%20tourne_gauche&+%23%0Aefface%0ACarre(40)%0Asaute%2080%0ACarre(40)&+def%20Polygone(l%2Cn)%3A%0A%20%20%20%20%23%20local%20k%2Ct%0A%20%20%20%20t%3D360%2Fn%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20avance(l)%0A%20%20%20%20%20%20%20%20tourne_gauche(t)&+%23%0Aefface%0APolygone(50%2C5)&"
+  href="#python=1&exec&+def%20Carre(l)%3A%0A%20%20%20%20%23%20local%20k%0A%20%20%20%20for%20k%20in%20range(4)%3A%0A%20%20%20%20%20%20%20%20avance(l)%0A%20%20%20%20%20%20%20%20tourne_gauche&+%23%0Aefface%0ACarre(40)%0Asaute%2080%0ACarre(40)&+def%20Polygone(l%2Cn)%3A%0A%20%20%20%20%23%20local%20k%2Ct%0A%20%20%20%20t%3D360%2Fn%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20avance(l)%0A%20%20%20%20%20%20%20%20tourne_gauche(t)&+%23%0Aefface%0APolygone(50%2C5)&"
   target="_blank">Python</a>, ou 
 <a
-href="xcasfr.html#python=0&exec&+sap(n)%3A%3D%7B%0A%20%20triangle_plein(5*n%2C5*n)%3B%0A%20%20tourne_gauche%20%3B%0A%20%20triangle_plein(5*n%2C5*n)%3B%0A%20%20saute%204*n%3B%0A%20%20triangle_plein(4*n%2C4*n)%3B%0A%20%20tourne_droite%20%3B%0A%20%20triangle_plein(4*n%2C4*n)%3B%0A%20%20pas_de_cote%20-4*n%3B%0A%7D%3A%3B&+sapins2(n)%3A%3D%7B%0A%20%20si%20n%3C%3D1%20alors%20crayon%20jaune%3B%20disque%2010%3B%20crayon%20vert%3B%20return%3B%20fsi%3B%0A%20%20crayon%20vert%3B%0A%20%20sap(n)%3B%0A%20%20tourne_gauche%2030%3B%0A%20%20saute%2010*n%3B%0A%20%20tourne_droite%2030%3B%0A%20%20sapins2(n-2)%3B%0A%20%20tourne_droite%2030%3B%0A%20%20saute%2010*n%3B%0A%20%20tourne_gauche%2030%3B%0A%20%20sap(n)%3B%0A%7D%3A%3B&+efface%3B%0Apas_de_cote%2050%3B%0Asaute%20-75%3B%0Asapins2(8)%3B%0Acrayon%20bleu%3B%0Asigne%20%22Joyeux%20Xcas%22&" target="_blank">
+href="#python=0&exec&+sap(n)%3A%3D%7B%0A%20%20triangle_plein(5*n%2C5*n)%3B%0A%20%20tourne_gauche%20%3B%0A%20%20triangle_plein(5*n%2C5*n)%3B%0A%20%20saute%204*n%3B%0A%20%20triangle_plein(4*n%2C4*n)%3B%0A%20%20tourne_droite%20%3B%0A%20%20triangle_plein(4*n%2C4*n)%3B%0A%20%20pas_de_cote%20-4*n%3B%0A%7D%3A%3B&+sapins2(n)%3A%3D%7B%0A%20%20si%20n%3C%3D1%20alors%20crayon%20jaune%3B%20disque%2010%3B%20crayon%20vert%3B%20return%3B%20fsi%3B%0A%20%20crayon%20vert%3B%0A%20%20sap(n)%3B%0A%20%20tourne_gauche%2030%3B%0A%20%20saute%2010*n%3B%0A%20%20tourne_droite%2030%3B%0A%20%20sapins2(n-2)%3B%0A%20%20tourne_droite%2030%3B%0A%20%20saute%2010*n%3B%0A%20%20tourne_gauche%2030%3B%0A%20%20sap(n)%3B%0A%7D%3A%3B&+efface%3B%0Apas_de_cote%2050%3B%0Asaute%20-75%3B%0Asapins2(8)%3B%0Acrayon%20bleu%3B%0Asigne%20%22Joyeux%20Xcas%22&" target="_blank">
 Joyeux Xcas</a>,  
   <a
-  href="xcasfr.html#python=1&exec&+def%20sap(n)%3A%0A%20%20%20%20triangle_plein(5*n%2C5*n)%0A%20%20%20%20tourne_gauche%0A%20%20%20%20triangle_plein(5*n%2C5*n)%0A%20%20%20%20saute%204*n%0A%20%20%20%20triangle_plein(4*n%2C4*n)%0A%20%20%20%20tourne_droite%0A%20%20%20%20triangle_plein(4*n%2C4*n)%0A%20%20%20%20pas_de_cote%20-4*n&+def%20sapins2(n)%3A%0A%20%20%20%20if%20n%3C%3D1%3A%0A%20%20%20%20%20%20%20%20crayon%20jaune%0A%20%20%20%20%20%20%20%20disque%2010%20%0A%20%20%20%20%20%20%20%20crayon%20vert%20%0A%20%20%20%20%20%20%20%20return%0A%20%20%20%20crayon%20vert%0A%20%20%20%20sap(n)%0A%20%20%20%20tourne_gauche%2030%0A%20%20%20%20saute%2010*n%0A%20%20%20%20tourne_droite%2030%0A%20%20%20%20sapins2(n-2)%0A%20%20%20%20tourne_droite%2030%0A%20%20%20%20saute%2010*n%0A%20%20%20%20tourne_gauche%2030%0A%20%20%20%20sap(n)&+%23%0Aefface%0Apas_de_cote%2050%0Asaute%20-75%0Asapins2(8)%0Acrayon%20bleu%0Asigne%20%22Joyeux%20Xcas%22&"
+  href="#python=1&exec&+def%20sap(n)%3A%0A%20%20%20%20triangle_plein(5*n%2C5*n)%0A%20%20%20%20tourne_gauche%0A%20%20%20%20triangle_plein(5*n%2C5*n)%0A%20%20%20%20saute%204*n%0A%20%20%20%20triangle_plein(4*n%2C4*n)%0A%20%20%20%20tourne_droite%0A%20%20%20%20triangle_plein(4*n%2C4*n)%0A%20%20%20%20pas_de_cote%20-4*n&+def%20sapins2(n)%3A%0A%20%20%20%20if%20n%3C%3D1%3A%0A%20%20%20%20%20%20%20%20crayon%20jaune%0A%20%20%20%20%20%20%20%20disque%2010%20%0A%20%20%20%20%20%20%20%20crayon%20vert%20%0A%20%20%20%20%20%20%20%20return%0A%20%20%20%20crayon%20vert%0A%20%20%20%20sap(n)%0A%20%20%20%20tourne_gauche%2030%0A%20%20%20%20saute%2010*n%0A%20%20%20%20tourne_droite%2030%0A%20%20%20%20sapins2(n-2)%0A%20%20%20%20tourne_droite%2030%0A%20%20%20%20saute%2010*n%0A%20%20%20%20tourne_gauche%2030%0A%20%20%20%20sap(n)&+%23%0Aefface%0Apas_de_cote%2050%0Asaute%20-75%0Asapins2(8)%0Acrayon%20bleu%0Asigne%20%22Joyeux%20Xcas%22&"
   target="_blank">Joyeux Xcas (version Python)</a>
   <br>
   Le <a
@@ -1387,7 +1558,7 @@ Joyeux Xcas</a>,
   </li>  
   <li  style="display:inline">
     <button class="bouton"
-onclick="var l=['tutoinst','tutoex','tutointro','tutointerface','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
+onclick="var l=['tutoinst','tutoex','tutoex2','tutointro','tutointerface','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
   <em>Replier tout</em>
   </button>
 </ul>
@@ -1538,7 +1709,7 @@ id="add_calculus"
       <input type="button" style="width:60px;height:35px" name="add_solve"
 id="add_solve"
   value="solve" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused; document.getElementById('assistant_solve').style.display='block';UI.set_focus('solveeq') ;"
-  title="r&eacute;soudre une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables, par exemple solve(x^4-1=0) ou solve(y^3-1,y) ou solve([2x^2-y^2=1,x+y=3],[x,y]). Utiliser csolve pour r&eacute;soudre sur C.">        
+  title="Assistant pour r&eacute;soudre une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables">        
       <input type="button" style="width:60px;height:35px"
   name="add_graph" id="add_graph" value="graph"
   onmousedown="event.preventDefault()"
@@ -1594,7 +1765,7 @@ id="add_tabvar"
   name="add_stats" id="add_stats" value="stats"
       title="Probabilit&eacute;s et statistiques"
       onmousedown="event.preventDefault()"
-  onClick="UI.funcoff();UI.savefocused=UI.focused;var mat=document.getElementById('assistant_matr');mat.style.display='block';mat.matr_formule.checked=false;mat.matr_formuleshadow.checked=true;document.getElementById('matr_type_chooser').style.display='none';document.getElementById('matr_stats').style.display='block';UI.assistant_matr_setdisplay();document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';"
+  onClick="UI.funcoff();UI.savefocused=UI.focused;var mat=document.getElementById('assistant_matr');mat.style.display='block';mat.matr_formule.checked=false;mat.matr_formuleshadow.checked=true;document.getElementById('matr_type_chooser').style.display='none';document.getElementById('matr_stat12').style.display='none';document.getElementById('matr_stats').style.display='block';UI.assistant_matr_setdisplay();document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';"
 >
 
       <input type="button" style="width:60px;height:35px"
@@ -1623,19 +1794,19 @@ id="add_debug"
       value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.python_mode?'#':'//');UI.funcoff();" title="commentaire">        
       <input type="button" style="width:29px;height:35px" name="add_nlprog"
       id="add_nlprog"
-      value="→|" onmousedown="event.preventDefault()"
-      onClick="UI.indentline(UI.focused)" title="Indente la ligne">        
+      value="[]" onmousedown="event.preventDefault()"
+      onClick="UI.hide_show(document.getElementById('list_cmds'))"
+      title="Commandes listes">        
       <input type="button" style="width:29px;height:35px" name="add_listechaine"
       id="add_listechaine"
-      value='[] ""' onmousedown="event.preventDefault()"
-      onClick="var tmp=document.getElementById('prog_cmds');if(tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none'"
-      title="Commandes listes, ensembles, chaines">        
+      value='""' onmousedown="event.preventDefault()"
+      onClick="UI.hide_show(document.getElementById('prog_cmds'));"
+      title="Commandes chaines et ensembles">        
       <input type="button" style="width:29px;height:35px" 
       id="add_tortue"
       value="Tortue" onmousedown="event.preventDefault()"
       onClick="var f=document.getElementById('boutons_tortue'); if (f.style.display=='none'){ f.style.display='block'; } else { f.style.display='none'; }" title="Commandes de la tortue">        
-<div id="prog_cmds" style="display:none">
-    <strong> Listes:</strong>
+<div id="list_cmds" style="display:none">
     <button class="bouton" onclick="UI.insert(UI.focused,'seq(');">seq</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'append(');">append</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'concat(');">concat</button>
@@ -1650,15 +1821,16 @@ id="add_debug"
     <button class="bouton" onclick="UI.insert(UI.focused,'suppress(');">suppress</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'select(');">select</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'count(');">count</button>
-    <br>
-    <strong>Ensembles:</strong>
+</div>
+<div id="prog_cmds" style="display:none">
+    <strong>{}</strong>
     <button class="bouton" onclick="UI.insert(UI.focused,'intersect(');">intersect</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'minus(');">minus</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'union(');">union</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'est_element(');">est_element</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'est_inclus(');">est_inclus</button>    
     <br>
-    <strong> Chaines:</strong>
+    <strong> ""</strong>
     <button class="bouton" onclick="UI.insert(UI.focused,'asc(');">asc</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'char(');">char</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'inString(');">inString</button>
@@ -1670,61 +1842,61 @@ id="add_debug"
 <div id="boutons_tortue" style="display:none">
       <input type="button" style="width:46px;height:35px" name="add_efface"
 id="add_efface"
-  value="efface" onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,(UI.python_mode?'# script tortue':'/* script tortue */')+'\nefface');" title="efface l'ecran tortue, &agrave; mettre en d&eacute;but de script">   
+  value="nouveau" onmousedown="event.preventDefault()"
+  onClick="if (UI.python_mode){ UI.eval_cmdline1('# fonctions du script\n',true);UI.eval_cmdline1('# Script de d&eacute;placement\nefface\n',true);} else {UI.eval_cmdline1('/* fonctions du script */\n',true); UI.eval_cmdline1('/* Script de d&eacute;placement*/\nefface;\n',true);}" title="cr&eacute; un &eacute;cran tortue">   
       <input type="button" style="width:46px;height:35px" name="add_avance"
 id="add_avance"
   value="av" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\navance ');" title="la tortue avance de n pas (10 par d&eacute;faut)">        
+  onClick="UI.insertsemi(UI.focused,'avance ');" title="la tortue avance de n pas (10 par d&eacute;faut)">        
       <input type="button" style="width:46px;height:35px" name="add_recule"
 id="add_recule"
   value="rec" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\nrecule ');" title="la tortue recule de n pas (10 par d&eacute;faut)">        
+  onClick="UI.insertsemi(UI.focused,'recule ');" title="la tortue recule de n pas (10 par d&eacute;faut)">        
       <input type="button" style="width:46px;height:35px" name="add_tourne_droite"
 id="add_tourne_droite"
   value="td" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\ntourne_droite ');" title="la tortue tourne &agrave; droite de n degr&eacute;s (90 par d&eacute;faut)">        
+  onClick="UI.insertsemi(UI.focused,'tourne_droite ');" title="la tortue tourne &agrave; droite de n degr&eacute;s (90 par d&eacute;faut)">        
       <input type="button" style="width:46px;height:35px" name="add_tourne_gauche"
 id="add_tourne_gauche"
   value="tg" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\ntourne_gauche ');" title="la tortue tourne &agrave; gauche de n degr&eacute;s (90 par d&eacute;faut)">        
+  onClick="UI.insertsemi(UI.focused,'tourne_gauche ');" title="la tortue tourne &agrave; gauche de n degr&eacute;s (90 par d&eacute;faut)">        
       <input type="button" style="width:46px;height:35px" name="add_pas_de_cote"
 id="add_pas_de_cote"
   value="pas_de_cote" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\npas_de_cote ');" title="la tortue saute de n pas  vers la gauche (10 par d&eacute;faut)">        
+  onClick="UI.insertsemi(UI.focused,'pas_de_cote ');" title="la tortue saute de n pas  vers la gauche (10 par d&eacute;faut)">        
       <input type="button" style="width:46px;height:35px" name="add_saute"
 id="add_saute"
   value="saute" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\nsaute ');" title="la tortue saute de n pas (10 par d&eacute;faut)">        
+  onClick="UI.insertsemi(UI.focused,'saute ');" title="la tortue saute de n pas (10 par d&eacute;faut)">        
       <input type="button" style="width:46px;height:35px" name="add_crayon"
 id="add_crayon"
   value="crayon" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\ncrayon ');" title="change la couleur du crayon de la tortue">        <br>
+  onClick="UI.insertsemi(UI.focused,'crayon ');" title="change la couleur du crayon de la tortue">        <br>
       <input type="button" style="width:46px;height:35px" name="add_rond"
 id="add_rond"
   value="rond" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\nrond ');" title="Arc de cercle">        
+  onClick="UI.insertsemi(UI.focused,'rond ');" title="Arc de cercle">        
       <input type="button" style="width:46px;height:35px" name="add_disque"
 id="add_disque"
   value="disque" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\ndisque ');" title="Arc de cercle
+  onClick="UI.insertsemi(UI.focused,'disque ');" title="Arc de cercle
 rempli">
 <input type="button" style="width:46px;height:35px" name="add_rectangle_plein"
 id="add_rectangle_plein"
   value="rectangle_plein" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\nrectangle_plein ');" title="Rectangle plein">        
+  onClick="UI.insertsemi(UI.focused,'rectangle_plein ');" title="Rectangle plein">        
 <input type="button" style="width:46px;height:35px" name="add_triangle_plein"
 id="add_triangle_plein"
   value="triangle_plein" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\ntriangle_plein ');" title="Triangle plein">        
+  onClick="UI.insertsemi(UI.focused,'triangle_plein ');" title="Triangle plein">        
 <input type="button" style="width:46px;height:35px" name="add_ecris"
 id="add_ecris"
   value="ecris" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\necris ');" title="&Eacute;crire &agrave; la droite de la tortue">        
+  onClick="UI.insertsemi(UI.focused,'ecris ');" title="&Eacute;crire &agrave; la droite de la tortue">        
 <input type="button" style="width:46px;height:35px" name="add_repete"
 id="add_repete"
   value="repete" onmousedown="event.preventDefault()"
-  onClick="UI.insertsemi(UI.focused,'\nrepete ');"
+  onClick="UI.insertsemi(UI.focused,'repete ');"
   title="R&eacute;p&eacute;ter plusieurs instructions">        
 <input type="button" style="width:46px;height:35px" name="tortue_maillage"
 id="tortue_maillage"
@@ -1984,16 +2156,16 @@ ou  <button class="bouton" onclick="document.getElementById('assistant_plotfunc1
   onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused;document.getElementById('assistant_desolve').style.display='block';UI.set_focus('desolveeq');" title="Resolution d'une equation differentielle, par exemple desolve(y''+y=0), desolve(y'+y=0,y(0)=1)">desolve</button>       
  <br>
 <button class="bouton" onclick="UI.insert(UI.focused,'ilaplace(')"
-  title="Transform&eacute;e de Laplace inverse">i</button><button class="bouton" onclick="UI.insert(UI.focused,'laplace(')"
+  title="ilaplace: transform&eacute;e de Laplace inverse">i</button><button class="bouton" onclick="UI.insert(UI.focused,'laplace(')"
   title="Transform&eacute;e de Laplace">laplace</button>
 <button class="bouton" onclick="UI.insert(UI.focused,'odesolve(')"
-  title="R&eacute;solution approch&eacute;e d'&eacute;quation diff&eacute;rentielles">o</button><button class="bouton" onclick="UI.insert(UI.focused,'desolve(')"
+  title="odesolve: r&eacute;solution approch&eacute;e d'&eacute;quation diff&eacute;rentielles">o</button><button class="bouton" onclick="UI.insert(UI.focused,'desolve(')"
   title="R&eacute;solution exacte d'&eacute;quation diff&eacute;rentielle">desolve</button>
 <button class="bouton" onclick="UI.insert(UI.focused,'ifft(')"
-  title="Transform&eacute;e de Fourier rapide inverse">i</button><button class="bouton" onclick="UI.insert(UI.focused,'fft(')"
+  title="ifft: transform&eacute;e de Fourier rapide inverse">i</button><button class="bouton" onclick="UI.insert(UI.focused,'fft(')"
   title="Transform&eacute;e de Fourier rapide">fft</button>
 <button class="bouton" onclick="UI.insert(UI.focused,'invztrans(')"
-  title="Transform&eacute;e en z inverse d'une fraction rationnelle">inv</button>
+  title="invztrans: transform&eacute;e en z inverse d'une fraction rationnelle">inv</button>
 <button class="bouton" onclick="UI.insert(UI.focused,'ztrans(')"
   title="Transform&eacute;e en z d'une suite">ztrans</button>
 
@@ -2006,7 +2178,7 @@ ou  <button class="bouton" onclick="document.getElementById('assistant_plotfunc1
 <button class="bouton" onclick="UI.insert(UI.focused,'divergence(')"
   title="Divergence">div</button>
 <button class="bouton" onclick="UI.insert(UI.focused,'vpotential(')"
-  title="Potentiel vecteur">v</button><button class="bouton" onclick="UI.insert(UI.focused,'potential(')"
+  title="vpotential: potentiel vecteur">v</button><button class="bouton" onclick="UI.insert(UI.focused,'potential(')"
   title="Potentiel">poten.</button>
 
 <button class="bouton"
@@ -2197,43 +2369,43 @@ onclick="UI.assistant_desolve_ok();">&#x2705;</button>
 </div>
 
 <div id="assistant_arit" style="display:none">
-<button class="bouton" onclick="UI.insert(UI.focused,'iquo(')"
-  title="Quotient de la division euclidienne d'entiers">iquo</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'irem(')"
-  title="Reste de la division euclidienne d'entiers">irem</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'iabcuv(')"
-  title="R&eacute;soudre a*u+b*v=c pour a,b,c donn&eacute;s">iabcuv</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'ichinrem(')"
-  title="Restes chinois entiers">ichinrem</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'isprime(')"
-  title="Test de pseudo-primalit&eacute;">isprime</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'ifactor(')"
-  title="Factorisation d'un entier">ifactor</button>
-  <br>
-  <button class="bouton"  onclick="UI.insert(UI.focused,'quo(')"
-  title="Quotient euclidien de 2 polynomes">quo</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'rem(')"
-  title="Reste euclidien de 2 polynomes">rem</button> 
-<button class="bouton" onclick="UI.insert(UI.focused,'abcuv(')"
-  title="Solution polynomiale de A*U+B*V=C">abcuv</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'chinrem(')"
-  title="Restes chinois pour des polynomes">chinrem</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'lcoeff(')"
-  title="Coefficient dominant">&nbsp;l</button><button class="bouton" onclick="UI.insert(UI.focused,'coeff(')" title="Coefficient">coeff</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'degree(')" title="Degr&eacute;">degree</button>
-<br>  
-<button class="bouton" onclick="UI.insert(UI.focused,'ptayl(')"
-  title="D&eacute;veloppement de Taylor">ptayl</button>
 <button class="bouton" onclick="UI.insert(UI.focused,'gcd(')"
   title="PGCD d'entiers ou de polynomes">gcd</button>
+<button class="bouton" onclick="UI.insert(UI.focused,'iquo(')"
+  title="iquo: quotient de la division euclidienne d'entiers">&nbsp;&nbsp;i</button><button class="bouton"  onclick="UI.insert(UI.focused,'quo(')"
+  title="Quotient euclidien de 2 polynomes">quo</button>
+  <button class="bouton" onclick="UI.insert(UI.focused,'irem(')"
+  title="irem: reste de la division euclidienne d'entiers">&nbsp;&nbsp;i</button><button class="bouton" onclick="UI.insert(UI.focused,'rem(')"
+  title="Reste euclidien de 2 polynomes">rem</button> 
+  <button class="bouton" onclick="UI.insert(UI.focused,'iabcuv(')"
+  title="iabcuv: r&eacute;soudre a*u+b*v=c pour a,b,c donn&eacute;s">&nbsp;&nbsp;i</button><button class="bouton" onclick="UI.insert(UI.focused,'abcuv(')"
+  title="Solution polynomiale de A*U+B*V=C">abcuv</button>
+<button class="bouton" onclick="UI.insert(UI.focused,'ifactor(')"
+title="ifactor: factorisation d'un entier">&nbsp;&nbsp;i</button><button class="bouton" onclick="UI.insert(UI.focused,'factor(')"
+  title="Factorisation d'un polynome">factor</button>
+  <br>
 <button class="bouton" onclick="UI.insert(UI.focused,'lcm(')"
 title="PPCM d'entiers ou de polynomes">lcm</button>    
+  <button class="bouton" onclick="UI.insert(UI.focused,'ichinrem(')"
+  title="Restes chinois entiers">ichrem</button><button class="bouton" onclick="UI.insert(UI.focused,'isprime(')"
+  title="Test de pseudo-primalit&eacute;">isprime</button><button class="bouton" onclick="UI.insert(UI.focused,'nextprime(')"
+  title="Prochain entier pseudo-premier">next</button>
 <button class="bouton" onclick="UI.insert(UI.focused,'powmod(')"
-title="Puissance modulaire rapide">powmod</button> 
+ title="powmod: puissance modulaire rapide">pow</button><button class="bouton" onclick="UI.insert(UI.focused,'mod(')"
+title="Cr&eacute;ation d'un &eacute;l&eacute;ment de
+  Z/nZ">mod</button>
 <button class="bouton"  onclick="UI.insert(UI.focused,'GF(')"
 title="Cr&eacute;ation d'un corps fini non premier">GF</button>
-<button class="bouton" onclick="UI.insert(UI.focused,'mod(')"
-title="Cr&eacute;ation d'un &eacute;l&eacute;ment de Z/nZ">mod</button>
+  <br>
+<button class="bouton" onclick="UI.insert(UI.focused,'lcoeff(')"
+  title="lcoeff: coefficient dominant">&nbsp;l</button><button class="bouton" onclick="UI.insert(UI.focused,'coeff(')" title="Coefficient">coeff</button>
+<button class="bouton" onclick="UI.insert(UI.focused,'degree(')" title="Degr&eacute;">degree</button>
+<button class="bouton" onclick="UI.insert(UI.focused,'horner(')"
+  title="&Eacute;valuation">horner</button>
+<button class="bouton" onclick="UI.insert(UI.focused,'ptayl(')"
+  title="D&eacute;veloppement de Taylor">ptayl</button>
+<button class="bouton" onclick="UI.insert(UI.focused,'proot(')"
+  title="Racines complexes approch&eacute;es d'un polyn&circ;ome">proot</button>
 <button class="bouton"
   onclick="document.getElementById('assistant_arit').style.display='none'">&#x274C;</button>
 </div>
@@ -2324,7 +2496,7 @@ title="1er param&egrave;tre" value=0 step=0.01>
   onclick="document.getElementById('chooselawdiv').style.display='block';document.getElementById('law_arg').style.display='inline';document.getElementById('matr_stat12').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';" value="lois usuelles">
   ou <input class="bouton" type="button"
   onclick="document.getElementById('chooselawdiv').style.display='block';document.getElementById('law_arg').style.display='none';document.getElementById('matr_stat12').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='block';document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';" value="intervalle de fluctuation">
-  ou <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='block';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='block';document.getElementById('matr_submat').style.display='block';" value="statistiques descriptives">
+  ou <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='block';document.getElementById('matr').style.display='block'; if(UI.is_sheet){ UI.spreadsheet2matrix(false);UI.matrix2spreadsheet();} UI.assistant_matr_setdisplay();document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='block';document.getElementById('matr_submat').style.display='block';" value="statistiques descriptives">
   ou <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='none';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='block';document.getElementById('risque_alpha').style.display='block';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='block';document.getElementById('matr_submat').style.display='block';UI.adequation(document.getElementById('assistant_matr'))" value="statistiques inf&eacute;rentielles">
 <div id="matr_stat12" style="display:none">
   <input class="bouton" type="checkbox" name="stat_mean">Moyenne,
@@ -2343,18 +2515,41 @@ title="1er param&egrave;tre" value=0 step=0.01>
 </div>
 <div id="matr_testhyp" style="display:none">
   <ul>
+    <li>
+    Intervalle de confiance :
+    <input type="button" class="bouton" onclick="form.adequation[0].checked=true;UI.adequation(form)" value="proportion"><input type="radio" name="adequation"
+    onclick="UI.adequation(form)" title="Intervalle de confiance calcul&eacute; par la loi normale en supposant n*p et n*(1-p)>=5" checked>
+    (n=<input name="confiance_n" class="bouton" type="number" value=30
+    min=30 step=1 title="Taille de la population. Pour n&gt;100, utilise sqrt(n/(n-1)*p*(1-p)) comme estimateur de l'ecart-type, sinon on majore par 0.5">&geq;30,
+    p=<input name="confiance_p" class="bouton" type="number"
+    title="Proportion dans l'&eacute;chantillon"
+    value=0.5 min=0 max=1 step=0.001>),
+    <input type="button" class="bouton" onclick="form.adequation[1].checked=true;UI.adequation(form)" value="Student &mu;&sigma;"><input type="radio"
+    onclick="UI.adequation(form)" name="adequation" title="Intervalle calcul&eacute par la loi de Student">
+    (&mu;=<input name="confiance_mu" class="bouton" type="number"
+    title="Moyenne de l'&eacute;chantillon" value=0
+    step=0.001>, &sigma;=<input name="confiance_sigma" class="bouton" type="number"
+    step=0.001 min=0 value=1 title="Ecart-type de la population">
+    n=<input name="confiance_n_" class="bouton" type="number" value=30
+    min=30 step=1 >)
+    <br>
+    <input type="button" class="bouton" onclick="form.adequation[2].checked=true;UI.adequation(form)" value="donn&eacute;es"><input type="radio" onclick="UI.adequation(form)" name="adequation"
+    title="Intervalle calcul&eacute; par la loi de Student sur les donn&eacute;es des lignes et colonnes de la matrice m">,    
+    </li>
     <li> Ad&eacute;quation data/data : 
-    <strong>Chi2</strong> <input type="radio" onclick="UI.adequation(form)"
-    name="adequation" value="radio" checked>, 
-    <strong>Kolmogorov</strong> <input onclick="UI.adequation(form)"
+     <input type="button" class="bouton" onclick="form.adequation[3].checked=true;UI.adequation(form)" value="Chi2"> <input type="radio" onclick="UI.adequation(form)"
+    name="adequation" value="radio" >, 
+     <input type="button" class="bouton" onclick="form.adequation[4].checked=true;UI.adequation(form)" value= "Kolmogorov"> <input onclick="UI.adequation(form)"
     type="radio" name="adequation" value="radio" title="test de Kolmogorov-Smirnov d'ad&eacute;quation &agrave; une loi commune continue inconnue">, 
-    ou <strong>Wilcoxon</strong> <input onclick="UI.adequation(form)"
+    ou
+     <input type="button" class="bouton" onclick="form.adequation[5].checked=true;UI.adequation(form)" value= "Wilcoxon"> <input onclick="UI.adequation(form)"
     type="radio" name="adequation" value="radio" title="test de Wilcoxon-Mann-Whitney"> 
     </li>
     <li>
-    Ad&eacute;quation data/loi : <strong>normal</strong> <input type="radio"
-    name="adequation" value="radio" onclick="UI.adequation(form)" checked>
-    ou <strong>Student</strong> <input type="radio" onclick="UI.adequation(form)"
+    Ad&eacute;quation data/loi :  <input type="button" class="bouton" onclick="form.adequation[6].checked=true;UI.adequation(form)" value= "normal"> <input type="radio"
+    name="adequation" value="radio" onclick="UI.adequation(form)">
+    ou
+     <input type="button" class="bouton" onclick="form.adequation[7].checked=true;UI.adequation(form)" value= "Student"> <input type="radio" onclick="UI.adequation(form)"
     name="adequation" value="radio"> :
     &mu;=<input class="bouton" type="text" name="adequation_mu" size=4
     value=0>
@@ -2363,28 +2558,8 @@ title="1er param&egrave;tre" value=0 step=0.01>
     <br>
     <span title="Hypoth&egrave;se alternative a H0">Alternative H1 &lt;<input
     type="radio" name="adequation_alt" >,
-    &ne;<input type="radio" name="adequation_alt" checked>,
+    &ne;<input type="radio" name="adequation_alt">,
     &gt;<input type="radio" name="adequation_alt"></span>
-    </li>
-    <li>
-    Intervalle de confiance :
-    <strong>data</strong><input type="radio" onclick="UI.adequation(form)" name="adequation"
-    title="Intervalle calcul&eacute; par la loi de Student sur les donn&eacute;es des lignes et colonnes de la matrice m">,
-    <strong>proportion</strong><input type="radio" name="adequation"
-    onclick="UI.adequation(form)" title="Intervalle de confiance calcul&eacute; par la loi normale en supposant n*p et n*(1-p)>=5" checked>
-    (n=<input name="confiance_n" class="bouton" type="number" value=30
-    min=30 step=1 title="Taille de la population. Pour n&gt;100, utilise sqrt(n/(n-1)*p*(1-p)) comme estimateur de l'ecart-type, sinon on majore par 0.5">&gt;30,
-    p=<input name="confiance_p" class="bouton" type="number"
-    title="Proportion dans l'&eacute;chantillon"
-    value=0.5 min=0 max=1 step=0.001>),
-    <strong>&mu;&sigma;</strong><input type="radio"
-    onclick="UI.adequation(form)" name="adequation" title="Intervalle calcul&eacute par la loi de Student">
-    (&mu;=<input name="confiance_mu" class="bouton" type="number"
-    title="Moyenne de l'&eacute;chantillon" value=0
-    step=0.001>, &sigma;=<input name="confiance_sigma" class="bouton" type="number"
-    step=0.001 min=0 value=1 title="Ecart-type de la population">
-    n=<input name="confiance_n_" class="bouton" type="number" value=30
-    min=30 step=1 >)
     </li>
   </ul>
 </div>
@@ -2419,12 +2594,12 @@ title="Nombre de colonnes de la matrice" value=3 min=1 max=6>
 <div id="matr" style="display:none">
   
   <div id="matr_submat" style="display:none">
-  Lignes <input name="stat_lmin" class="bouton" type="number" min=0 value=0>
+  Lignes <input id="stat_lmin" name="stat_lmin" class="bouton" type="number" min=0 value=0>
   -
-  <input name="stat_lmax" class="bouton" type="number" min=0 value=1>,
-  colonnes <input name="stat_cmin" class="bouton" type="number" min=0 value=0>
+  <input id="stat_lmax" name="stat_lmax" class="bouton" type="number" min=0 value=2>,
+  colonnes <input id="stat_cmin" name="stat_cmin" class="bouton" type="number" min=0 value=0>
   -
-  <input name="stat_cmax" class="bouton" type="number" min=0 value=1>
+  <input id="stat_cmax" name="stat_cmax" class="bouton" type="number" min=0 value=1>
   </div>
 
 <input id="matr_or_sheet" name="matr_or_sheet" class="bouton"
@@ -2436,7 +2611,7 @@ onclick="UI.sheet_edit_cmd(0)" onmousedown="event.preventDefault()"
 title="Copier vers le bas"  value="cp↓">
   <input class="bouton" type="button"
 onclick="UI.sheet_edit_cmd(1)" onmousedown="event.preventDefault()" 
-title="Copier vers la droite"  value="cp→">
+title="Copier vers la droite"  value=" →">
   <input class="bouton" type="button"
 onclick="UI.sheet_edit_cmd(2)" onmousedown="event.preventDefault()" 
 title="Ajouter une ligne"  value="l+">
@@ -2473,18 +2648,23 @@ title="Nombre de colonnes de la matrice (0 pour un seul nombre)"
 value=1 min=0>
 <input class="bouton" type="button" onclick="document.getElementById('rand_ncols').value++;" value="+">
  nombres 
-<input class="bouton" type="checkbox" name="rand_int"
- onclick="document.getElementById('assistant_rand').rand_intshadow.checked=!checked;UI.assistant_rand_setdisplay();" title="Cocher pour entiers" checked>
-entiers ou
-<input class="bouton" type="checkbox" name="rand_intshadow"
+<input class="bouton" type="checkbox" name="rand_int" 
+ onclick="document.getElementById('assistant_rand').rand_intshadow.checked=!checked;UI.assistant_rand_setdisplay();"
+  title="Cocher pour entiers" checked>
+<input class="bouton" type="button" value="entiers"
+ onclick="var checked=form.rand_int.checked;form.rand_int.checked=!checked;form.rand_intshadow.checked=checked;UI.assistant_rand_setdisplay();">
+ ou selon une
+<input class="bouton" type="checkbox" name="rand_intshadow" value="loi"
  onclick="document.getElementById('assistant_rand').rand_int.checked=!checked;UI.assistant_rand_setdisplay();"
 title="Cocher pour choisir une loi">
-selon une loi.
+<input class="bouton" type="button" value="loi"
+ onclick="var checked=form.rand_intshadow.checked;form.rand_intshadow.checked=!checked;form.rand_int.checked=checked;UI.assistant_rand_setdisplay();">
 <div id="rand_intdiv">
  Entiers entre 0 et n ou n et -n avec n=
 <input class="bouton" type="number" id="rand_maxint"
 title="Entier k tel que 0&lt;=k&lt;n ou n&lt;k&lt;-n si n est n&eacute;gatif" value=100></div>
-<input class="bouton" type="button" title="ok" value="&#x2705;" onclick="UI.assistant_rand_ok()">
+<br><input class="bouton" type="button" title="ok" value="&#x2705;"
+onclick="UI.assistant_rand_ok()">
 <input class="bouton" type="button" title="r&eacute;el al&eacute;atoire entre 0 et 1"
 value="rand" onclick="UI.insert(UI.focused,'rand()');"><input class="bouton" type="button" title="randint(a,b): entier al&eacute;atoire entre a et b inclus"
 value="int" onclick="UI.insert(UI.focused,'randint(');"><input class="bouton" type="button" title="r&eacute;el al&eacute;atoire selon la loi normale (centr&eacute;e r&eacute;duite par d&eacute;faut)"
@@ -2706,7 +2886,7 @@ onclick="UI.assistant_fixe_ok();">&#x2705;</button>
   <strong>Nouvelle fonction</strong><br>
   nom de la fonction <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="funcname" title="Nom de la fonction, par exemple f" rows=1>f</textarea><br>
   liste des arguments <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="argsname" title="Arguments de la fonction s&eacute;par&eacute;s par des virgules" rows=1>x</textarea><br>
-  variables locales <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="localvars" title="Variables locales, s&eacute;par&eacute;es par des virgule. Laisser vide pour une fonction d&eacute;finie par une expression." rows=1></textarea><br>
+  variables locales <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="localvars" title="Variables locales, s&eacute;par&eacute;es par des virgule. Laisser vide pour une fonction d&eacute;finie par une expression. Pour utiliser des variables locales formelles, purgez-les apr&egrave;s les avoir d&eacute;clar&eacute;." rows=1></textarea><br>
   valeur renvoy&eacute;e <textarea onclick="UI.focused=this;" style="height:25px;font-size:large" id="returnedvar" title="Valeur de retour" rows=1></textarea><br>
 
   <button class="bouton" onclick="UI.assistant_prog_ok();">&#x2705;</button> 
@@ -2898,7 +3078,7 @@ for (var i=0;i<kbd_a.length;i++){
   style="max-width:1000px "></table>
 </div>
 <div id="history4" style="display:none">
-  <button class="bouton" onclick="var tmp=document.getElementById('variables'); if(tmp.style.display=='inline') tmp.style.display='none'; else tmp.style.display='inline';"><strong>Variables</strong></button>
+  <button class="bouton" onclick="var tmp=document.getElementById('variables'); if(tmp.style.display=='inline') tmp.style.display='none'; else tmp.style.display='inline';"><strong>Vars</strong></button>
   <span id="variables" style="display:none">
   <button class="bouton" onclick="UI.addhelp(' ','VARS(1)')" title="Commande pour afficher la liste des variables">liste</button>
   <button class="bouton"  name="add_purge"
@@ -2917,7 +3097,9 @@ for (var i=0;i<kbd_a.length;i++){
 title="Placer tout les niveaux de l'historique dans la
   corbeille">→Corbeille</button>
   <button class="bouton" onclick="UI.restoretrash()" class="bouton" title="Restaurer les niveaux plac&eacute;s dans la corbeille">Restaure</button>
-  <button class="bouton" onclick="UI.emptytrash()" class="bouton" title="Vider la corbeille">Vide</button>
+  <button class="bouton" onclick="UI.emptytrash()" class="bouton"
+  title="Vider la corbeille">Vide</button>
+  <a href="xcasfr.html" target="_blank">&nbsp;+&nbsp;</a>
   </span>
 </div>
 
@@ -2929,19 +3111,16 @@ rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode
   <button class="bouton" style="color:green" id="button_ok" onclick="if (UI.assistant_ok()) return; if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'',false);}" title="Evaluer la ligne de commande">
   <strong>&nbsp;&nbsp;&#x2705;&nbsp;&nbsp;</strong></button>
   <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">&nbsp;?&nbsp;</button>
-  <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"   title="Deplace vers la gauche le curseur">&nbsp;&nbsp;←&nbsp;&nbsp;</button><button class="bouton" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur"> &nbsp;&nbsp;→&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Deplace vers le haut le curseur">&nbsp;↑&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Deplace vers le bas le curseur">&nbsp;↓&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Efface">&nbsp;&#x232b;&nbsp;</button><button class="bouton" name="select_button"
+  <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"   title="Deplace vers la gauche le curseur">&nbsp;&nbsp;←&nbsp;&nbsp;</button><button class="bouton" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur"> &nbsp;&nbsp;→&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Deplace vers le haut le curseur">&nbsp;↑&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Deplace vers le bas le curseur">&nbsp;&nbsp;↓&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.indentline(UI.focused)" title="Indente">→|</button>
+<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Efface">&nbsp;&#x232b;&nbsp;</button><br>
+<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\n')" title="Saut de ligne">\n</button>
+<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,6)" title="Annuler"><img width="16" height="16" src="undo.png" alt="Annuler" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,7)" title="Refaire"><img width="16" height="16" src="redo.png" alt="Refaire" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,0)" title="Rechercher">find</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,1)" title="Rechercher suivant">&#x21D2;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,2)" title="Rechercher pr&eacute;c&eacute;dent">&#x21D0;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,3)" title="Remplacer">rep</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,5)" title="Aller ligne">go</button>
+<button class="bouton" name="select_button"
   id="select_button" onmousedown="event.preventDefault()"
   onClick="UI.selectionne()" title="Selectionne la ligne de
-  commande">&nbsp;sel&nbsp;</button>
-<button class="bouton" onmousedown="event.preventDefault()"
-  onClick="var tmp=document.getElementById('entree_editmore'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';" title="Autres commandes d'&eacute;dition">+</button>
-  <button id="stop_button" class="bouton" style="display:none"
+  commande">&nbsp;sel&nbsp;</button>  <button id="stop_button" class="bouton" style="display:none"
 onclick="if (UI.webworker && confirm('Voulez-vous vraiment terminer la session ?')){
 UI.webworker.terminate(); UI.busy=0;UI.webworker=0; alert('Session redemarree. Toutes les variables ont ete effacees.');}" title="Termine la session en cours">STOP</button>
-</span>
-<span id="entree_editmore" style="display:none">
-<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\n')" title="Saut de ligne">\n</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.indentline(UI.focused)" title="Indente">→|</button>
-<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,6)" title="Annuler"><img width="16" height="16" src="undo.png" alt="Annuler" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,7)" title="Refaire"><img width="16" height="16" src="redo.png" alt="Refaire" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,0)" title="Rechercher">find</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,1)" title="Rechercher suivant">→</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,2)" title="Rechercher pr&eacute;c&eacute;dent">←</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,3)" title="Remplacer">rep</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,5)" title="Aller ligne">go</button>
 </span>
 
 </div>
@@ -3091,7 +3270,7 @@ UI.webworker.terminate(); UI.busy=0;UI.webworker=0; alert('Session redemarree. T
         }
       };
       Module.setStatus('T&eacute;l&eacute;chargement et pr&eacute;paration (peut prendre 1 ou 2 minutes la premi&egrave;re fois)');
-</script>      
+Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); UI.ready=true;}</script>      
 <script type='text/javascript'>
 </script>
 
@@ -3124,7 +3303,8 @@ window.onbeforeunload = function(e) {
 // En ajoutant async a la fin de script src=giac.js on accelere les chargements
 // de la page nue (cache), mais pas si il y a un lien
   window.onload = function(e){
-  var mth=document.getElementById('bouton_math');
+  console.log('init');
+ var mth=document.getElementById('bouton_math');
   //mth.style.backgroundImage = "url('logo.png')";
   //mth.style.backgroundSize = '100%';
   //UI.caseval('abc(x=0); [x, y]; z+1;');
@@ -3150,13 +3330,22 @@ window.onbeforeunload = function(e) {
     alert(alertmsg);
   }
   //console.log(window.location.href);
- if (!UI.is_touch_device()) w3IncludeHTML(); // contextmenu
+  var mobile=UI.detectmob();
+  if (!mobile){
+    document.getElementById('loadbutton_cookie').style.display='none';
+    document.getElementById('loadbutton_file').style.display='inline';
+  }
+  if (!UI.is_touch_device()) w3IncludeHTML(); // contextmenu
  //if (bt==1 && hw>=1000 && window.location.href.substr(0,4)=="http") w3IncludeHTML();
  document.getElementById('apropos').style.display='none';
  document.getElementById('help').style.display='none';
  console.log("window.onload");
   // config in cookies
   var ck;
+  ck=UI.readCookie('xcas_from');
+  if (ck){ form.from.value=ck; UI.from=ck; }
+  ck=UI.readCookie('xcas_to');
+  if (ck){ form.to.value=ck; UI.mailto=ck; }
   ck=UI.readCookie('xcas_digits');
   if (ck) form.digits_mode.value=eval(ck);
   ck=UI.readCookie('xcas_angle_radian');
@@ -3206,7 +3395,7 @@ window.onbeforeunload = function(e) {
   ck=UI.readCookie('xcas_canvas_h');
   ck=eval(ck);
   if (ck>0 && ck<=1000) ; else ck=Math.floor(window.innerHeight/2);
-  if (ck>200 && UI.detectmob()) ck=200;
+  if (ck>200 && mobile) ck=200;
   console.log('canvas_h',ck);
   UI.canvas_h=ck; document.getElementById('config').canvas_h.value=ck;
   ck=UI.readCookie('xcas_matrix_maxrows');
@@ -3219,6 +3408,7 @@ window.onbeforeunload = function(e) {
   ck=eval(ck);
   if (ck>0 && ck<=100){ UI.assistant_matr_textarea=ck; document.getElementById('matr_textarea').checked=ck;}
   UI.assistant_matr_setmatrix(UI.assistant_matr_maxrows,UI.assistant_matr_maxcols);
+  document.getElementById('assistant_matr').adequation[0].checked=true;
  var hist=document.getElementById('mathoutput');
  var doexec=false;
  var asked=false;
@@ -3236,10 +3426,13 @@ window.onbeforeunload = function(e) {
   document.getElementById('startup1').style.display='none';}
   else document.getElementById('help').style.display='block';
  //UI.restoresession(hashParams,hist,asked,doexec);
-  window.setTimeout(UI.restoresession,200,hashParams,hist,asked,doexec);
+  if (UI.ready)
+   window.setTimeout(UI.restoresession,0,hashParams,hist,asked,doexec);
+  else
+    window.setTimeout(UI.restoresession,400,hashParams,hist,asked,doexec);
  if (access)
   document.getElementById('startup2').style.display='block';
-}
+};
 </script>
 
 </body>

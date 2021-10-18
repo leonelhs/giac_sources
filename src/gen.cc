@@ -2631,7 +2631,7 @@ namespace giac {
 	if (s==at_quote)
 	  return f;
 	f=s(f,contextptr);
-	if (f.type<_IDNT || f.type==_FRAC)
+	if (f.type<_IDNT || f.type==_FRAC || (f.type==_SYMB && contains(f,cst_pi)) )
 	  f=evalf2double_nock(f,1,contextptr);
 	return f;
       }
@@ -2641,8 +2641,14 @@ namespace giac {
       return f;
     }
     if (g0.type==_CPLX){
-      if (g0._CPLXptr->type==_DOUBLE_ && (g0._CPLXptr+1)->type==_DOUBLE_)
+      if (g0._CPLXptr->type==_DOUBLE_ && (g0._CPLXptr+1)->type==_DOUBLE_){
+#if 1
+	// maybe we should round complex numbers that are close to reals?
+	if (fabs((g0._CPLXptr+1)->_DOUBLE_val)<1e-12*fabs(g0._CPLXptr->_DOUBLE_val)) 
+	  return g0._CPLXptr->_DOUBLE_val;
+#endif
 	return g0;
+      }
       return evalf2double_nock(*g0._CPLXptr,1,contextptr)+cst_i*evalf2double_nock(*(g0._CPLXptr+1),1,contextptr);
     }
     gen g=evalf(g0,level,contextptr);
@@ -5991,7 +5997,12 @@ namespace giac {
 	return multgen_poly(*A._VECTptr,*B._VECTptr);
       if ( (A.subtype==_LIST__VECT) || (B.subtype==_LIST__VECT) )
 	return matrix_apply(A,B,contextptr,operator_times);
-      { gen res=ckmultmatvecteur(*A._VECTptr,*B._VECTptr);
+      if (A.subtype==_GGBVECT || (b.subtype==_GGBVECT && !ckmatrix(A))){
+	gen res=dotvecteur(a,b);
+	if (res.type==_VECT) res.subtype=_GGBVECT;
+	return res;
+      }
+      { gen res=ckmultmatvecteur(*A._VECTptr,*B._VECTptr,contextptr);
 	if ( (calc_mode(contextptr)==1 || abs_calc_mode(contextptr)==38) && res.type==_VECT){
 	  res.subtype=B.subtype;
 	  if (res.subtype==0)
@@ -7367,6 +7378,12 @@ namespace giac {
   static gen divpoly(const polynome & p, const gen & e){
     if (p.coord.empty())
       return zero;
+    gen coefft; int pt=coefftype(p,coefft);
+    if (pt==_MOD || pt==_USER){
+      polynome res(p);
+      mulpoly(res,coefft/(e*coefft),res);
+      return res;
+    }
     gen d=gcd(Tcontent<gen>(p),e,context0);
     if (d.type==_EXT)
       d=_gcd(*d._EXTptr,context0);
@@ -7542,8 +7559,9 @@ namespace giac {
 	return apply2nd(a,b,contextptr,rdiv);
       if (ckmatrix(b))
 	return a*inv(b,contextptr);
-      else
-	return fraction(a,b);
+      if (calc_mode(contextptr)==1 && b.subtype!=_POLY1__VECT)
+	return apply2nd(a,b,contextptr,rdiv);
+      return fraction(a,b);
     default:
 #ifdef TIMEOUT
       control_c();
@@ -11153,7 +11171,7 @@ namespace giac {
 
   /* I/O: Input routines */
 
-  gen chartab2gen(char * & s,GIAC_CONTEXT){
+  gen chartab2gen(char * s,GIAC_CONTEXT){
     gen res;
     // subtype=0;
     // initialize as a null _INT_
@@ -11200,7 +11218,7 @@ namespace giac {
     if (l>0 && s[l-1]=='.'){
       // make a copy of s, call chartab2gen recursivly, 
       // because some implementations of strtod do not like a . at the end
-#ifdef FREERTOS
+#if 1 // def FREERTOS
       ALLOCA(char, scopy, l+2); 
 #else
       char * scopy=(char *)alloca(l+2);
@@ -15477,7 +15495,11 @@ namespace giac {
       else
 	g=gen(v,g.subtype);
     }
-    bool push=!g.is_symb_of_sommet(at_mathml);
+    gen gp=g;
+    if (gp.is_symb_of_sommet(at_add_autosimplify))
+      gp=gp._SYMBptr->feuille;
+    bool push=!gp.is_symb_of_sommet(at_mathml) && !gp.is_symb_of_sommet(at_set_language);
+    //bool push=!g.is_symb_of_sommet(at_mathml);
     if (push){
       history_in(&C).push_back(g);
       // COUT << "hin " << g << endl;
@@ -15531,10 +15553,19 @@ namespace giac {
     if (has_undef_stringerr(g,S))
       S="GIAC_ERROR: "+S;
     else {
-#if 1
       S=g.print(&C);
-#else
-      S=ingen2mathml(g,true,&C);
+#ifndef GIAC_GGB
+      if (g.type==_FRAC){
+	S += "=";	  
+	S += evalf_double(g,1,&C).print(&C);
+      }
+      if (g.type==_SYMB){
+	g=evalf_double(g,1,&C);
+	if (g.type<=_CPLX){
+	  S += "=";
+	  S += g.print(&C);
+	}
+      }
 #endif
     }
     return S.c_str();

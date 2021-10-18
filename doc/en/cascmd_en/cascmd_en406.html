@@ -4,48 +4,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Make a matrix with a list of matrices : blockmatrix</title>
+<title>Make a list with a function : makelist</title>
 </head>
 <body >
 <a href="cascmd_en405.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en407.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec489" class="subsection">4.42.21  Make a matrix with a list of matrices : <span style="font-family:monospace">blockmatrix</span></h3>
-<p><a id="hevea_default627"></a>
-<span style="font-family:monospace">blockmatrix</span> takes as arguments two integers <span style="font-style:italic">n</span>,<span style="font-style:italic">m</span> and a 
-list of size <span style="font-style:italic">n</span>*<span style="font-style:italic">m</span> of matrices of the same dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span> 
-(or more generally such that the <span style="font-style:italic">m</span> first matrices 
-have the same number of rows and <span style="font-style:italic">c</span> columns, the 
-<span style="font-style:italic">m</span> next rows have the same number of rows and <span style="font-style:italic">c</span> columns, and so on ...).
-In both cases, we have <span style="font-style:italic">n</span> blocks of <span style="font-style:italic">c</span> columns.<br>
-<span style="font-family:monospace">blockmatrix</span> returns a matrix having <span style="font-style:italic">c</span> columns 
-by putting these <span style="font-style:italic">n</span> blocks one under another (vertical gluing). 
-If the matrix arguments
-have the same dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span>, the answer is a matrix of
-dimension <span style="font-style:italic">p</span>*<span style="font-style:italic">n</span> × <span style="font-style:italic">q</span>*<span style="font-style:italic">m</span>.<br>
+<h3 id="sec493" class="subsection">5.38.35  Make a list with a function : <span style="font-family:monospace">makelist</span></h3>
+<p><a id="hevea_default612"></a>
+<span style="font-family:monospace">makelist</span> takes as argument a function <span style="font-family:monospace">f</span>, 
+the bounds <span style="font-family:monospace">a,b</span> of an index variable and a step <span style="font-family:monospace">p</span> 
+(by default 1 or -1 depending on the bounds order).<br>
+<span style="font-family:monospace">makelist</span> makes the list <span style="font-family:monospace">[f(a),f(a+p)...f(a+k*p)]</span> with <span style="font-style:italic">k</span> such
+that : <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> ≤ <span style="font-style:italic">b</span> &lt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span> or <span style="font-style:italic">a</span>&gt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> ≥ <span style="font-style:italic">b</span> &gt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[idn(2),idn(2),idn(2), idn(2),idn(2),idn(2)])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,5)</span></div><p>
+or
+</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,5,1)</span></div><p>
+or first define the function <span style="font-style:italic">h</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup> by <span style="font-family:monospace">h(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span>
+then input
+</p><div class="center"><span style="font-family:monospace">makelist(h,3,5,1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,1,0,1,0],[0,1,0,1,0,1], [1,0,1,0,1,0],[0,1,0,1,0,1]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[9,16,25]</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(2),idn(2), idn(2),idn(2),idn(2),idn(2)])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,6,2)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,1,0],[0,1,0,1], [1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(2,2,[idn(2),newMat(2,3), newMat(3,2),idn(3)])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,1,0,0,0],[0,0,1,0,0], [0,0,0,1,0],[0,0,0,0,1]] </span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(1),newMat(1,4), newMat(2,3),idn(2),newMat(1,2),[[1,1,1]]])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,0,0,1,0],[0,0,0,0,1],[0,0,1,1,1]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">A:=[[1,1],[1,1]];B:=[[1],[1]]</span></div><p>
-then :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[2*A,3*A,4*A,5*B,newMat(2,4),6*B])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[2,2,3,3,4,4],[2,2,3,3,4,4], [5,0,0,0,0,6],[5,0,0,0,0,6]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[9,25]</span></div><p>
+<span style="font-weight:bold">Warning!!!</span> purge <span style="font-family:monospace">x</span> if <span style="font-family:monospace">x</span> is not symbolic.</p>
 <hr>
 <a href="cascmd_en405.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

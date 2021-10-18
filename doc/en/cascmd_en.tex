@@ -1537,6 +1537,839 @@ you can use the menu item \texttt{File$\blacktriangleright$laTeX
 preview selection}
 
 
+\chapter{Entry in \texttt{Xcas}}
+
+\section{Suppressing output}
+
+If you enter a command into \texttt{Xcas}, the result will appear in
+the output box below the input.  If you enter
+\begin{giaccmd}
+  a := 2+2
+\end{giaccmd}
+then 
+\begin{giaccmd}
+  4
+\end{giaccmd}
+will appear in the output box.  You can evaluate the input and
+suppress the output with the \texttt{nodisp}\index{nodisp} command.
+If you enter 
+\begin{giaccmd}
+  nodisp(a := 2+2)
+\end{giaccmd}
+then \texttt{a} will still be set to \texttt{4}, but the result will
+not appear in the output box.  Instead, 
+\begin{giaccmd}
+  Done
+\end{giaccmd}
+will appear.
+
+An alternate way of suppressing the output is to end the input with
+\texttt{:;}\index{:;}, if you enter
+\begin{giaccmd}
+  b := 3+3:;
+\end{giaccmd}
+then \texttt{b} will be set to \texttt{6} but it won't be displayed.
+
+\section{Entering comments\index{comments}}
+
+You can annotate an \texttt{Xcas} session by adding comments.
+You can enter a comment on the current line at any time by typing
+\texttt{Alt+C}.  The line will appear in green text and conclude when
+you type \texttt{Enter}.  Comments are not evaluated and so have no
+output.  If you have begun entering a command when you begin a
+comment, the command line be pushed down so that you can finish it
+when you complete the comment.
+
+You can open the browser in a comment line by entering the web address
+beginning with the \texttt{@} sign.  If you enter the comment line
+\begin{giaccmd}
+The Xcas homepage is at\\
+@www-fourier.ujf-grenoble.fr/\~{}parisse/giac.html
+\end{giaccmd}
+then the browser will open to the \texttt{Xcas} home page.
+
+To add a comment to a program, rather than a session, you can use the
+\texttt{comment\index{comment}} command, which takes a string as an argument.
+Alternatively, any part of a program between \texttt{//}\index{//} and the end
+of the line is a comment.  So both
+\begin{giaccmd}
+bs() := \{comment("Hello"); return "Hi there!";\}
+\end{giaccmd}
+and
+\begin{giaccmd}
+bs() := \{ // Hello\\
+       return "Hi there!";\}
+\end{giaccmd}
+are programs with the comment "Hello".
+
+\section{Editing expressions}
+
+You can enter expressions on the command line, but \texttt{Xcas} also
+has a built-in expression editor that you can use to enter expressions
+in two dimensions, the way they normally look when typeset.  When you
+have an expression in the editor, you can also manipulate
+subexpressions apart from the entire expression.
+
+\subsection{Entering expressions in the editor}
+
+The expression
+\[\frac{x+2}{x^2-4}\]
+can be entered on the command line with
+\begin{giaccmd}
+(x+2)/(x\^{}2-4)
+\end{giaccmd}
+You also can use the expression editor\index{expression editor} to
+enter it visually, as $x+2$ on top of $x^2 - 4$.  To do this, you can
+start the expression editor with the \texttt{Alt+E} keystroke (or the
+\texttt{Expression $\blacktriangleright$ New Expression} menu
+command).  There will be a small \texttt{M} on the right side of the
+expression line, which is a menu with some commands you can use on the
+expressions.  There will also be a \texttt{0} selected on the
+expression line and an on-screen keyboard at the bottom.  If you type
+\texttt{x + 2}, it will overwrite the \texttt{0}.  To make this the
+top of the fraction, you can select it with the mouse (you can also
+make selections with the keyboard, as will be discussed later) and
+then type \texttt{/}.  This will leave the \texttt{x + 2} on the top
+and the cursor on the bottom.  To enter $x^2 - 4$ on the bottom, begin
+by typing \texttt{x}.  Selecting this \texttt{x} and typing
+\texttt{\^{}2} will put on the superscript.  Finally, selecting the
+$\texttt{x}^{\texttt{2}}$ and typing \texttt{- 4} will finish the
+bottom.  If you then hit \texttt{Enter}, the expression will be
+evaluated and will appear on the output line.
+
+\subsection{Subexpressions}\index{subexpressions}
+
+\texttt{Xcas} can operate on expressions in the expression editor or
+subexpressions of the expression.  To understand subexpressions and
+how to select them, it helps to know that \texttt{Xcas} stores
+expressions as \textsl{trees}.
+
+A tree, in this sense, consists of objects
+called nodes.  A node can be connected to lower nodes, called the
+children of the first node. Each node (except one) will be connected
+to exactly one node above it, called the parent node.  One special
+node, called the root node, won't have a parent node.  Two nodes with
+the same parent nodes are called siblings.  Finally, if a node doesn't
+have any children, it is called a leaf.  This terminology comes from a
+visual representation of a tree,
+\begin{center}
+  \includegraphics[width=0.4\textwidth]{tree.png}
+\end{center}
+which looks like an upside-down tree; the root is at the
+top and the leaves are at the bottom. 
+
+Given an expression, the nodes of the corresponding
+tree\index{expression tree} are the functions, operators, variables
+and constants.  The children of a function node are its arguments, the
+children of an operator node are its operands, and the constants and
+variables will be the leaves.  For example, the tree for $\sin(2*x +
+y)$ will look like
+\begin{center}
+  \includegraphics[width=0.4\textwidth]{expr-tree.png}
+\end{center}
+A subexpression\index{subexpression} of an expression will be a
+selected node together with the nodes below it.  For example, both
+$2*x$ and $2*x+y$ are subexpressions of $\sin(2*x+y)$, but $x+y$ is
+not.
+
+A subexpression of the contents of the expression editor can be
+selected with the mouse; the selection will appear white on a black
+background.  A subexpression can also be chosen with the keyboard
+using the arrow keys.  Given a selection:
+\begin{itemize}
+  \item
+  The up arrow will go to the parent node.
+  \item
+  The down arrow will go to the leftmost child node.
+  \item
+  The right and left arrows will go to the right and left sibling nodes.
+  \item
+  The control key with the right and left arrows will switch the
+  selection with the corresponding sibling.
+  \item
+  If a constant or variable is selected, the backspace key will delete
+  it.  For other selections, backspace will delete the function or
+  operator, and another backspace will delete the arguments or operands.
+\end{itemize}
+
+You can use the arrow keys to navigate the tree structure of an
+expression, which isn't always evident by looking at the expression
+itself.  For example, suppose you enter \texttt{x*y*z} in the editor.
+The two multiplications will be a different levels; the tree will look
+like
+\begin{center}
+  \includegraphics[width=0.4\textwidth]{xyz-tree.png}
+\end{center}
+If you select the entire expression with the up arrow and then go to
+the \texttt{M} menu to the right of the line and choose eval, then the
+expression will look the same but, as you can check by navigating it
+with the arrow keys, the tree will look like
+\begin{center}
+  \includegraphics[width=0.4\textwidth]{xyz-tree2.png}
+\end{center}
+
+\subsection{Manipulating subexpressions\index{subexpressions}}
+
+If a subexpression is selected in the expression editor, then any menu
+command will be applied to that subexpression.  
+
+For example, suppose that you enter the expression
+\begin{giaccmd}
+  (x+1)*(x+2)*(x-1)
+\end{giaccmd}
+in the expression editor.  Note that you can use the abilities of the
+editor to make this easier.  First, enter \texttt{x+1}.  Select this
+with the up arrow, then type \texttt{*} followed by \texttt{x+2}.  Select
+the \texttt{x+2} with the up arrow and then type \texttt{*} followed
+by \texttt{x-1}.  Using the up arrow again will select the \texttt{x-1}.
+Select the entire expression with the up arrow, and then select
+\texttt{eval} from the \texttt{M} menu.  This will put all factors at
+the same level.  Suppose you want the factors \texttt{(x+1)*(x+2)} to
+be expanded.  You could select \texttt{(x+1)*(x+2)} with the mouse and
+do one of the following:
+\begin{itemize}
+  \item
+  Select the
+  \texttt{Expression$\blacktriangleright$Misc$\blacktriangleright$normal}
+  menu item.  You will then have \texttt{normal((x+1)*(x+2))*(x-1)} in
+  the editor.  If you hit enter, the result $(x^2 + 3x + 2)*(x-1)$ will
+  appear in the output window.
+  \item
+  Again, select the   
+  \texttt{Expression$\blacktriangleright$Misc$\blacktriangleright$normal}
+  menu item, so again you have \texttt{normal((x+1)*(x+2))*(x-1)} in
+  the editor.  Now if you select \texttt{eval} from the \texttt{M}
+  menu, then the expression in the editor will become the result
+  $(x^2 + 3x + 2)*(x-1)$, which you can continue editing.
+  \item
+  Choose \texttt{normal} from the \texttt{M} menu.  This will apply
+  normal to the selection, and again you will have the result
+  $(x^2 + 3x + 2)*(x-1)$ in the editor.
+\end{itemize}
+
+There are also keystroke commands that you can use to operate
+on subexpressions that you've selected.  There are the usual
+\texttt{Ctrl+Z} and \texttt{Ctrl+Y} for undoing and redoing.  Some of
+the others are given in the following table.
+
+\begin{center}
+\begin{tabular}{|p{.20\textwidth}|p{.6\textwidth}|}
+\hline
+\textbf{Key} & \textbf{Action on selection}\\
+%\multicolumn{2}{|c|}{\textbf{Conversions}}\\
+\hline\hline
+\texttt{Ctrl+D}   & differentiate\\
+\texttt{Ctrl+F} & factor\\
+\texttt{Ctrl+L} & limit\\
+\texttt{Ctrl+N} & normalize\\
+\texttt{Ctrl+P} & partial fraction\\
+\texttt{Ctrl+R} & integrate\\
+\texttt{Ctrl+S} & simplify\\
+\texttt{Ctrl+T} & copy \LaTeX{} version to clipboard\\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Spreadsheet}
+\index{spreadsheet}
+
+\subsection{Opening a spreadsheet}
+
+You can open a spreadsheet (or a matrix editor) with the
+\texttt{Spreadsheet$\blacktriangleright$New Spreadsheet} menu item or
+with the key \texttt{Alt+T}. 
+
+When you open a new spreadsheet, you will be given a configuration screen.  
+The configuration screen allows you to set the following options:
+\begin{itemize}
+  \item
+  \texttt{Variable}
+  The name of the file where the spreadsheet will be
+  saved.
+  \item
+  \texttt{Rows} and \texttt{Columns}
+  The number of rows and columns in the spreadsheet.  
+  \item
+  \texttt{Eval}
+  Whether or not to automatically re-evaluate the entries in the
+  spreadsheet after each change.  If this is not checked, then you can
+  re-evaluate the spreadsheet with the \texttt{eval} button on the
+  spreadsheet menu bar.
+  \item
+  \texttt{Distribute}
+  Whether or not entering a matrix into a cell will keep the entry in
+  a single cell or distribute it across an appropriate array of cells.
+  \item
+  \texttt{Landscape}
+  Whether the graphical representation of the spreadsheet should be
+  displayed below the spreadsheet or to the right of the spreadsheet.
+  If this is checked, it will be displayed below the spreadsheet.
+  \item
+  \texttt{Move right}
+  Whether or not to move to the cell to the right of the current cell
+  when data is entered.  If this is not checked, you will be moved to
+  the cell below the current cell.
+  \item
+  \texttt{Spreadsheet}
+  Whether to format a spreadsheet or a matrix.
+  \item
+  \texttt{Graph}
+  Whether or not to display the graphical representation of the
+  spreadsheet. 
+  % \item
+  % \texttt{Undo history}
+  % \item
+  % \texttt{Init sheet}
+\end{itemize}
+
+\subsection{The spreadsheet window}
+
+When you open a spreadsheet, the input line will become the
+spreadsheet.
+\begin{center}
+\includeimage{xcas-spreadsheet.png}
+\end{center}
+The top will be a menu bar with
+\texttt{Table}, \texttt{Edit} and \texttt{Maths} menus as well as
+\texttt{eval}, \texttt{val}, \texttt{init}, \texttt{2-d} and
+\texttt{3-d} buttons. To the right will be the name of
+the file the spreadsheet will be saved into. Below the menu bar will
+be two boxes; a box which displays the active cell (and can be used to
+choose a cell) and a command line to enter information into the cell.
+Below that will be a status line, you can click on this to return to
+the configuration screen.
+
+%% \section{Deletions}?
+
+\section{Variables}
+
+\subsection{Variable names}
+
+A variable\index{variable} or function name is a sequence of letters,
+numbers and underscores that begins with a letter.  If you define your
+own variable or function, you can't use the names of built-in
+variables or functions, or other keywords reserved by \texttt{Xcas}.
+
+%% \subsection{CST}?
+
+\subsection{Assigning values}
+
+You can assign a value to a variable with the \texttt{:=}\index{:=}
+operator. For example, to give the variable \texttt{a} the value of
+\texttt{4}, you can enter
+\begin{giaccmd}
+  a := 4
+\end{giaccmd}
+Alternatively, you can use the \texttt{=>}\index{=>} operator; when
+you use this operator, the value comes before the variable;
+\begin{giaccmd}
+  4 => a
+\end{giaccmd}
+The function \texttt{sto\index{sto}} or \texttt{Store\index{Store}}
+can also be used; again, the value comes before the variable
+\begin{giaccmd}
+  sto(4,a)
+\end{giaccmd}
+After any one of these commands, any time you use the variable
+\texttt{a} in an expression, it will be replaced by \texttt{4}.
+
+\subsection{Incrementing variables}
+
+You can increase the value of a variable \texttt{a} by \texttt{4}, for
+example, with
+\begin{giaccmd}
+  a := a + 4
+\end{giaccmd}
+If beforehand \texttt{a} were equal to \texttt{4}, it would now be
+equal to \texttt{8}.  A shorthand way of doing this is with the
+\texttt{+=}\index{+=} operator;
+\begin{giaccmd}
+  a += 4
+\end{giaccmd}
+will also increase the value of \texttt{a} by \texttt{4}.
+
+Similar shorthands exist for subtraction, multiplication and division.
+If \texttt{a} is equal to \texttt{8} and you enter
+\begin{giaccmd}
+  a -= 2\index{-=}
+\end{giaccmd}
+then \texttt{a} will be equal to \texttt{6}.  If you follow this with
+\begin{giaccmd}
+  a *= 3\index{*=}
+\end{giaccmd}
+then \texttt{a} will be equal to \texttt{18}, and finally
+\begin{giaccmd}
+  a /= 9\index{/=}
+\end{giaccmd}
+will end with \texttt{a} equal to \texttt{2}.
+
+
+\subsection{Storing and recalling variables and their values}
+
+You can store variables and their values for later use in a file of
+your choosing with the \texttt{archive\index{archive}} function.  This
+function takes two arguments, a filename to store the variables in and
+a variable or list of variables.
+
+If you have given the variable \texttt{a} the value \texttt{2} and the
+variable \texttt{bee} the value \texttt{"letter"} (a string), then
+entering
+\begin{giaccmd}
+  archive("foo",[a,bee])
+\end{giaccmd}
+will create a file named ``\texttt{foo}'' which contains the values
+\texttt{2} and \texttt{"letter"} in a format meant to be efficiently
+read by \texttt{Xcas}.
+
+You can recall the values stored by \texttt{archive} with the
+\texttt{unarchive\index{unarchive}} command, which takes a file name
+as argument.  If the file ``\texttt{foo}'' is as above, then 
+\begin{giaccmd}
+  unarchive("foo")
+\end{giaccmd}
+will result in
+\begin{giaccmd}
+  [2, letter]
+\end{giaccmd}
+If you want to reassign these values to \texttt{a} and \texttt{bee},
+you can enter
+\begin{giaccmd}
+  [a,bee] := unarchive("foo")\index{unarchive}
+\end{giaccmd}
+
+\subsection{Copying variables}
+
+If a variable has a value, such as
+\begin{giaccmd}
+  a := 1
+\end{giaccmd}
+and you set a second variable to the first variable
+\begin{giaccmd}
+  b := a
+\end{giaccmd}
+the new variable will have the same value as the first; in this case
+\texttt{b} will be equal to \texttt{1}.  If you later give the first
+variable a new value;
+\begin{giaccmd}
+  a := 5
+\end{giaccmd}
+the new value will still have the old value, in this case, \texttt{b}
+will still be equal to \texttt{1}.
+
+The \texttt{CopyVar\index{CopyVar}} command will copy one variable to
+another without evaluating the first variable; the new variable will
+simply be a copy of the first.  With \texttt{a} having the value of
+\texttt{5}, as above, the command
+\begin{giaccmd}
+  CopyVar(a,c)
+\end{giaccmd}
+will make \texttt{c} a copy of the variable \texttt{a}, so it will
+have the value \texttt{5} also.  If you now change the value of
+\texttt{a}
+\begin{giaccmd}
+  a := 10
+\end{giaccmd}
+then the value of \texttt{c} will also change; here, \texttt{c} will
+now have the value \texttt{10}.
+
+\subsection{Assumptions on variables}
+
+If you enter
+\begin{giaccmd}
+  abs(var)
+\end{giaccmd}
+the \texttt{Xcas} will return it unevaluated, since \texttt{Xcas}
+doesn't know what type of value the variable is supposed to represent.
+
+The \texttt{assume\index{assume}} (or
+\texttt{supposons\index{supposons}}) command will let you tell
+\texttt{Xcas} some properties of a variable without giving the
+variable a specific value.  For example, if you enter
+\begin{giaccmd}
+  assume(var > 0)
+\end{giaccmd}
+then \texttt{Xcas} will assume that \texttt{var} is a positive real
+number, and so for example
+\begin{giaccmd}
+  abs(var)
+\end{giaccmd}
+will be evaluated to
+\begin{giaccmd}
+   var
+\end{giaccmd}
+
+You can put one or more conditions in the \texttt{assume} command by
+combining them with \texttt{and\index{and}} and \texttt{or\index{or}}.
+For example, if you want the variable \texttt{a} to be in $[2,4) \cup
+(6,\infty)$, you can enter
+\begin{giaccmd}
+  assume((a >= 2 and a < 4) or a > 6)
+\end{giaccmd}
+
+If a variable has attached assumptions, then making another assumption
+with \texttt{assume} will remove the original assumptions.  To add
+extra assumptions, you can either use the
+\texttt{additionally\index{additionally}} command or give
+\texttt{assume} a second argument of
+\texttt{additionally\index{additionally@\textit{additionally}}}.  If
+you assume that $b > 0$ with
+\begin{giaccmd}
+  assume(b > 0)
+\end{giaccmd}
+and you want to add the condition that $b < 1$, you can either enter
+\begin{giaccmd}
+  assume(b < 1, additionally)
+\end{giaccmd}
+or
+\begin{giaccmd}
+  additionally(b < 1)
+\end{giaccmd}
+
+As well as equalities and inequalities, you can make assumptions about
+the domain of a variable.  If you want \texttt{n} to represent a
+positive integer\index{integer@\textit{integer}}, for example, you can enter
+\begin{giaccmd}
+  assume(n, integer)
+\end{giaccmd}
+If you want \texttt{n} to be a positive integer, you can add the
+condition
+\begin{giaccmd}
+  additionally(n > 0)
+\end{giaccmd}
+
+You can use the \texttt{about\index{about}} command to check the assumptions on a
+variable; for the above positive integer \texttt{n}, if you enter
+\begin{giaccmd}
+  about(n)
+\end{giaccmd}
+you will get
+\begin{giaccmd}
+  assume[integer,[line[0,+infinity]],[0]]
+\end{giaccmd}
+The first element tells you that \texttt{n} is an integer, the second
+element tells you that \texttt{n} is between \texttt{0} and
+\texttt{+infinity}, and the third element tells you that the value
+\texttt{0} is excluded.
+
+If you assume that a variable is equal to a specific value, such as
+\begin{giaccmd}
+  assume(c = 2)
+\end{giaccmd}
+then by default the variable \texttt{c} will remain unevaluated in
+later levels.  If you want an expression involving \texttt{c} to be
+evaluated, you would need to put the expression inside the
+\texttt{evalf\index{evalf}} command; if you enter
+\begin{giaccmd}
+  evalf(c\^{}2 + 3)
+\end{giaccmd}
+then you will get 
+\begin{giaccmd}
+  7.0
+\end{giaccmd}
+Right below the \texttt{assume(c = 2)} command line
+there will be a slider, namely arrows pointing left and right with the
+value \texttt{2} between them.  These
+can be used to change the values of \texttt{c}.  If you click on the
+right arrow, the \texttt{assume(c = 2)} command will transform to
+\begin{giaccmd}
+  assume(c=[2.2,-10.0,10.0,0.0])
+\end{giaccmd}
+and the value between the arrows will be \texttt{2.2}.  Also, any
+later levels where the variable \texttt{c} is evaluated will be
+re-evaluated with the value of \texttt{c} now \texttt{2.2}.  The
+output to \texttt{evalf(c\^{}2 + 3} will become
+\begin{giaccmd}
+  7.84
+\end{giaccmd}
+The \texttt{-10.0} and \texttt{10.0} in the \texttt{assume} line
+represent the smallest and largest values that \texttt{c} can become
+using the sliders.  You can set them yourself in the \texttt{assume}
+command, as well as the increment that the value will change; if you
+want \texttt{c} to start with the value \texttt{5} and vary between
+\texttt{2} and \texttt{8} in increments of \texttt{0.05}, then you can
+enter
+\begin{giaccmd}
+  assume(c = [5,2,8,0.05])
+\end{giaccmd}
+
+You can remove any assumptions you have made about a variable with the
+\texttt{purge\index{purge}} command; if you enter
+\begin{giaccmd}
+  purge(a)
+\end{giaccmd}
+then \texttt{a} will no longer have any assumptions made about it.
+You can remove assumptions from more than one variable at a time;
+\begin{giaccmd}
+  purge(a,b)
+\end{giaccmd}
+will remove any assumptions about \texttt{a} and \texttt{b}.
+
+\subsection{Unassigning variables}
+
+The \texttt{VARS()}\index{VARS} command will list the variables to which you have
+assigned values or assumptions.  If you begin by entering
+\begin{giaccmd}
+  a := 1
+\end{giaccmd}
+and
+\begin{giaccmd}
+  anothervar := 2
+\end{giaccmd}
+then 
+\begin{giaccmd}
+  VARS()
+\end{giaccmd}
+will return
+\begin{giaccmd}
+  [a, anothervar]
+\end{giaccmd}
+
+The \texttt{purge\index{purge}} command will clear the values and
+assumptions you make on variables.  You can clear the values and
+assumptions you have made on all variables with
+\begin{giaccmd}
+  restart\index{restart}
+\end{giaccmd}
+or
+\begin{giaccmd}
+  rm\_all\_vars()\index{rm\_all\_vars}
+\end{giaccmd}
+command.
+
+\section{Functions}
+
+\subsection{Defining functions}
+
+You can use the \texttt{:=}\index{:=} and \texttt{=>}\index{=>}
+operators to define functions; both
+\begin{giaccmd}
+  f(x) := x\^{}2
+\end{giaccmd}
+and
+\begin{giaccmd}
+  x\^{}2 => f(x)
+\end{giaccmd}
+give the name \texttt{f} to the function which takes a value and 
+returns the square of the value.  If you then enter
+\begin{giaccmd}
+  f(3)
+\end{giaccmd}
+you will get
+\begin{giaccmd}
+  9
+\end{giaccmd}
+
+You can give \texttt{Xcas} a function without a name with the
+\texttt{->}\index{->} operator; the squaring function can be written
+without a name as
+\begin{giaccmd}
+  x -> x\^{}2
+\end{giaccmd}
+You can use this form of the function to assign it to a name; both
+\begin{giaccmd}
+  f := x -> x\^{}2
+\end{giaccmd}
+and
+\begin{giaccmd}
+  x -> x\^{}2 => f
+\end{giaccmd}
+are alternate ways to define \texttt{f} as the squaring function.
+
+You can similarly define functions of more than one variable.  For
+example, to define a function which takes the lengths of the two legs
+of a right triangle and returns the hypotenuse, you could enter
+\begin{giaccmd}
+  hypot(a,b) := sqrt(a\^{}2 + b\^{}2)
+\end{giaccmd}
+or
+\begin{giaccmd}
+  hypot := (a,b) -> sqrt(a\^{}2 + b\^{}2)
+\end{giaccmd}
+
+\subsection{Defining piecewise defined functions}
+\index{piecewise defined functions}
+
+You can use \texttt{Xcas}'s control structures to define functions not
+given by a single simple formula.  Notably, you can use the
+\texttt{ifte\index{ifte}} command or \texttt{? :\index{?:}} operator
+to define piecewise-defined functions.
+
+The \texttt{ifte} command takes three arguments; the first argument is
+a condition, the second argument tells the command what to return when
+the condition is true, and the third argument tells the command what
+to return when the condition is false.  For example, you could define
+your own absolute value function with
+\begin{giaccmd}
+  myabs(x) := ifte(x >= 0, x -1*x)
+\end{giaccmd}
+Afterwards, for example, entering
+\begin{giaccmd}
+  myabs(-4)
+\end{giaccmd}
+will return
+\begin{giaccmd}
+  4
+\end{giaccmd}
+However, this will return an error if it can't evaluate the
+conditional.  For example, if you enter
+\begin{giaccmd}
+  myabs(x)
+\end{giaccmd}
+you will get the error
+\begin{giaccmd}
+  Ifte: Unable to check test Error: Bad Argument Value
+\end{giaccmd}
+
+The \texttt{?:}\index{? :} construct behaves similarly to \texttt{ifte} but is
+structured differently.  Here, the condition comes first, followed by
+\texttt{?}, then what to return if the condition is true, followed by
+the \texttt{:}, and then what to return if the condition is false.
+You could define your absolute value function with
+\begin{giaccmd}
+  myabs(x) := (x >= 0)? x: -1*x
+\end{giaccmd}
+If you enter
+\begin{giaccmd}
+  myabs(-4)
+\end{giaccmd}
+you will again get
+\begin{giaccmd}
+  4
+\end{giaccmd}
+but now if the conditional can't be evaluated, you won't get an error.
+\begin{giaccmd}
+  myabs(x)
+\end{giaccmd}
+will return
+\begin{giaccmd}
+  ((x >= 0)? x: -x)
+\end{giaccmd}
+
+The \texttt{when\index{when}} and \texttt{IFTE\index{IFTE}} commands
+are synonyms for the \texttt{? :} construct; 
+\begin{giaccmd}
+  (\textit{condition})? \textit{true-result}: \textit{false-result}
+\end{giaccmd}
+\begin{giaccmd}
+  when(\textit{condition}, \textit{true-result}, \textit{false-result})
+\end{giaccmd}
+and
+\begin{giaccmd}
+  IFTE(\textit{condition}, \textit{true-result}, \textit{false-result})
+\end{giaccmd}
+all represent the same expression.
+
+If you want to define a function with several pieces, it may be
+simpler to use the \texttt{piecewise\index{piecewise}} function.  The
+arguments to this function are alternately conditions and results to
+return if the condition is true, with the last argument being what to
+return if none of the conditions are true.  For example, to define the
+function given by
+\[
+f(x) = 
+\begin{cases}
+-2 & \text{if } x < -2\\
+3x+4 & \text{if } -2 \le x < -1\\
+1 & \text{if } -1 \le x < 0\\
+x + 1 & \text{if } x \ge 0
+\end{cases}
+\]
+you can enter
+\begin{giaccmd}
+  f(x) := piecewise(x < -2, -2, x < -1, 3*x+4, x < 0, 1, x + 1)
+\end{giaccmd}
+
+\section{Directories}
+\index{directories}
+
+\subsection{Working directories}
+
+\texttt{Xcas} has a working directory that it uses to store files that
+it creates; typically the user's home directory.  You can print the
+name of the current working directory with the
+\texttt{pwd()}\index{pwd} command; if you enter
+\begin{giaccmd}
+  pwd()
+\end{giaccmd}
+you might get something like
+\begin{giaccmd}
+  /home/username
+\end{giaccmd}
+
+You can change the working directory with the \texttt{cd\index{cd}}
+command; if you enter
+\begin{giaccmd}
+  cd("foo")
+\end{giaccmd}
+or (on a Unix system)
+\begin{giaccmd}
+  cd("/home/username/foo")
+\end{giaccmd}
+will change to the directory \texttt{foo}, if it exists.
+Afterwards, any files that you save from \texttt{Xcas} will be in that
+directory.  
+
+If you have values saved in a file, then you'll need to be in that
+working directory to load it.  Note that if you have the same file
+name in different directories, then the result of loading the file
+name will depend on which directory you are in.
+
+\subsection{Reading files}
+
+If you have a function or other \texttt{Xcas} information in a file,
+you can load it with the \texttt{read\index{read}} function.  If the
+file is named \texttt{myfunction.cxx}, then
+\begin{giaccmd}
+  read("myfunction.cxx")
+\end{giaccmd}
+will load the file, as long as the directory is in the current working
+directory.  If the file is in a different directory, you can still
+load it by giving the path to the file,
+\begin{giaccmd}
+  read("/path/to/file/myfunction.cxx")
+\end{giaccmd}
+
+While \texttt{read} can be used to load files containing \texttt{Xcas}
+functions, which typically end in \texttt{.cxx}, if you want to load a
+saved session you should use the \texttt{load\index{load}} function;
+\begin{giaccmd}
+  load("mysession.cas")
+\end{giaccmd}
+
+\subsection{Internal directories}
+\index{internal directories}
+
+You can create a directory that isn't actually on your hard drive but
+is treated like one from \texttt{Xcas}.  You can create such an
+internal directory with the \texttt{NewFold\index{NewFold}} command,
+which takes a variable name as an argument. If you enter
+\begin{giaccmd}
+  NewFold(MyIntDir)
+\end{giaccmd}
+then there will be a new internal directory named \texttt{MyIntDir}.
+Internal directories will also be listed with the
+\texttt{VARS()}\index{VARS}
+command. To actually use this directory, you'll have to use the
+\texttt{SetFold\index{SetFold}} command;
+\begin{giaccmd}
+  SetFold(MyIntDir)
+\end{giaccmd}
+Finally, we can print out the internal directory that we are in with
+the \texttt{GetFold\index{GetFold}} command; entering
+\begin{giaccmd}
+  GetFold()
+\end{giaccmd}
+will result in
+\begin{giaccmd}
+  MyIntDir
+\end{giaccmd}
+Afterwards, if this directory is empty, you can delete it with the
+\texttt{DelFold\index{DelFold}} command;
+\begin{giaccmd}
+  DelFold(MyIntDir)
+\end{giaccmd}
+
+
 \chapter{The CAS functions}\label{sec:cas}
 
 \section{Symbolic constants : {\tt e pi infinity i}}\index{e}\index{pi}
@@ -4680,17 +5513,17 @@ of a maximum of the expression.\\
 of a minimum of the expression.\\
 Input :
 \begin{center}{\tt fMax(sin(x),x)}\end{center}
-or :
+Or :
 \begin{center}{\tt fMax(sin(x))}\end{center}
-or :
+Or :
 \begin{center}{\tt fMax(sin(y),y)}\end{center}
 Output :
 \begin{center}{\tt pi/2}\end{center} 
 Input :
 \begin{center}{\tt fMin(sin(x),x)}\end{center}
-or :
+Or :
 \begin{center}{\tt fMin(sin(x))}\end{center}
-or :
+Or :
 \begin{center}{\tt fMin(sin(y),y)}\end{center}
 Output :
 \begin{center}{\tt -pi/2}\end{center} 
@@ -4698,6 +5531,38 @@ Input :
 \begin{center}{\tt fMin(sin(x)\verb|^|2,x)}\end{center}
 Output :
 \begin{center}{\tt 0}\end{center}
+
+{\tt fMax} and {\tt fMin} can also compute the maximum resp.~minimum of a nonlinear multivariate expression subject to a set of nonlinear equality and/or inequality constraints. Both functions in such cases take four to six arguments:
+\begin{itemize}
+	\item objective function (an expression)
+	\item list of constraints (equalities and inequalities)
+	\item list of problem variables
+	\item initial guess (must be a list of nonzero reals representing a feasible point)
+	\item precision (optional), if not given the default epsilon value is used
+	\item maximum number of iterations (optional)
+\end{itemize}
+The objective function does not need to be differentiable.
+Both {\tt fMin} and {\tt fMax} return the optimal solution as a vector. Note that the actual optimal value of the objective is not returned.
+
+Although the initial point is required to be feasible, the algorithm will sometimes succeed even if it is infeasible. Note that the initial value of a variable must not be zero.
+
+For example, input :
+\begin{center}
+	\tt fMin((x-5)\verb|^|2+y\verb|^|2-25,[y>=x\verb|^|2],[x,y],[1,1])
+\end{center}
+Output :
+\begin{center}
+	\tt [1.2347728624961,1.5246640219568]
+\end{center}
+Input :
+\begin{center}
+	\tt fMax((x-2)\verb|^|2+(y-1)\verb|^|2,[-.25x\verb|^|2-y\verb|^|2+1>=0,x-2y+1=0],
+	[x,y],[.5,.75])
+\end{center}
+Output :
+\begin{center}
+	\tt [-1.82287565553,-0.411437827766]
+\end{center}
 
 \subsection{Table of values and graph : {\tt tablefunc} and {\tt plotfunc}}\index{tablefunc|textbf}\index{plotfunc}   
 {\tt tablefunc} is a special command that should be run from inside
@@ -6140,6 +7005,290 @@ Output :
 \begin{center}
 ${\tt \displaystyle \frac{8632428959}{286654464}\simeq 30.1144061688}$
 \end{center}
+
+\section{Signal Processing}
+\subsection{Cross-correlation of two signals : {\tt cross\_correlation}}
+\label{sec:crosscorr}
+{\tt cross\_correlation} takes two arguments, a complex vector $ \mathbf{v} $ of length $ n $ and a complex vector $ \mathbf{w} $ of length $ m $. The returned value is the complex vector $ \mathbf{z}=\mathbf{v}\star\mathbf{w} $ of length $ N=n+m-1 $ which is the cross-correlation of the two input vectors, i.e.~such that the following holds :
+\[ z_k=\sum_{i=k}^{N-1}\overline{v_{i-k}^\ast}\,w_i^\ast,\quad k=0,1,\dots,N-1, \]
+where
+\[ \mathbf{v}^\ast=[v_0,v_1,\dots,v_{n-1},\underbrace{0,0,\dots,0}_{m-1}]\quad\text{and}\quad\mathbf{w}^\ast=[\underbrace{0,0,\dots,0}_{n-1},w_0,w_1,\dots,w_{m-1}]. \]
+
+For example, input :
+\begin{center}
+	{\tt cross\_correlation([1,2],[3,4,5])}
+\end{center}
+Output :
+\begin{center}
+	{\tt [6.0,11.0,14.0,5.0]}
+\end{center}
+
+\subsection{Auto-correlation of a signal : {\tt auto\_correlation}}
+{\tt auto\_correlation} takes as argument a complex vector $ \mathbf{v} $ of length $ n $ and returns its cross-correlation with itself as the vector $ \mathbf{v}\star\mathbf{v} $ of length $ 2\,n-1 $ (see the {\tt cross\_correlation} command, section~\ref{sec:crosscorr}). For example, input :
+\begin{center}
+	{\tt auto\_correlation([2,3,4,3,1,4,5,1,3,1])}
+\end{center}
+Output :
+\begin{center}
+	{\tt [2.0,9.0,15.0,28.0,37.0,44.0,58.0,58.0,68.0,\\
+		91.0,68.0,58.0,58.0,44.0,37.0,28.0,15.0,9.0,2.0]}
+\end{center}
+
+\subsection{Convolution of two signals : {\tt convolution}}
+{\tt convolution} takes two arguments, a real vector $ \mathbf{v} $ of length $ n $ and a real vector $ \mathbf{w} $ of length $ m $, and returns their convolution $ \mathbf{z}=\mathbf{v}\ast\mathbf{w} $ which is the vector of length $ N=n+m-1 $ defined as :
+\[ z_k=\sum_{i=0}^{k}v_i\,w_{k-i},\quad k=0,1,\dots,N-1, \]
+such that $ v_j=0 $ for $ j\geq n $ and $ w_j=0 $ for $ j\geq m $. For example, input :
+\begin{center}
+	{\tt convolution([1,2,3],[1,-1,1,-1])}
+\end{center}
+Output :
+\begin{center}
+	{\tt [1.0,1.0,2.0,-2.0,1.0,-3.0]}
+\end{center}
+
+\subsection{Low-pass filtering : {\tt lowpass}}
+{\tt lowpass} takes two or three arguments: a real vector $ \mathbf{v} $ representing the sampled signal, a real number $ c $ specifying the cutoff frequency and optionally a samplerate (which defaults to 44100). This implementation is an emulation of a simple first-order lowpass RC filter.
+
+For example, input :
+\begin{center}
+	{\tt f:=unapply(periodic(sign(x),x,-1/880,1/880),x);\\
+		s:=2\^14*(apply(f,soundsec(1)));\\
+		playsnd(lowpass(s,1000))}
+\end{center}
+
+\subsection{High-pass filtering : {\tt highpass}}
+{\tt highpass} takes two or three arguments: a real vector $ \mathbf{v} $ representing the sampled signal, a real number $ c $ specifying the cutoff frequency and optionally a samplerate (which defaults to 44100). This implementation is an emulation of a simple first-order highpass RC filter.
+
+For example, input :
+\begin{center}
+	{\tt f:=unapply(periodic(sign(x),x,-1/880,1/880),x);\\
+		s:=2\^14*(apply(f,soundsec(1)));\\
+		playsnd(highpass(s,5000))}
+\end{center}
+
+\subsection{Perform thresholding operations on an array : {\tt threshold}}
+{\tt threshold} changes the data in an array which does not meet some kind of minimality criterion. It takes the following parameters :
+\begin{itemize}
+	\item vector $ \mathbf{v} $ of real or complex numbers
+	\item bound specification {\tt bnd}
+	\item comparison operator (optional)
+	\item {\tt abs[=true,false]} (optional)
+\end{itemize}
+Bound specification may be either a single real number $ b $ (or an equation {\tt b=value}) or a list of two real numbers $ l,u $ (or equations {\tt l=lvalue}, {\tt u=uvalue}). In the latter case a vector $ \mathbf{w} $ is returned, as defined by :
+\[ w_k=\begin{cases}
+\text{{\tt uvalue} (defaults to $ u $)},&v_k>u,\\
+\text{{\tt lvalue} (defaults to $ l $)},&v_k<l,\\
+v_k,&\text{otherwise}
+\end{cases} \]
+for $ k=0,1,\dots,n-1 $ where $ n= ${\tt size}($ \mathbf{v} $) when the element $ v_k $ is a real number. If $ v_k $ is complex, then $ |v_k| $ is compared with $ u $ resp.~$ l $ and the value {\tt uvalue} resp.~{\tt lvalue} is multiplied by $ \frac{v_k}{|v_k|} $.
+
+In the first case where {\tt bnd} is a number or an equation, the return vector $ \mathbf{w} $ is defined by :
+\[ w_k=\begin{cases}
+\text{{\tt value} (defaults to $ b $)},&v_k<b,\\
+v_k,&\text{otherwise}
+\end{cases} \]
+if $ v_k\in\mathbb{R} $ (if $ v_k $ is complex, then $ |v_k| $ is compared with $ b $ and the {\tt value} is multiplied by $ \frac{v_k}{|v_k|} $), for $ k=0,1,\dots,n-1 $. If comparison operator is specified (one of {\tt >}, {\tt <=} or {\tt >=}, must be quoted), it is used instead of {\tt <} (which is the default) in the above formula. If the fourth argument is specified, the data in $ \mathbf{v} $ must be real and the following formula is used for $ w_k $, $ k=0,1,\dots,n-1 $ :
+\[ w_k=\begin{cases}
+\text{{\tt value}},& \text{$ v_k\geq 0 $ and $ |v_k|<b $},\\
+-\text{{\tt value}},& \text{$ v_k<0 $ and $ |v_k|<b $},\\
+v_k,&\text{otherwise}.
+\end{cases} \]
+As before, {\tt value} defaults to $ b $ and the comparison operator used to test $ |v_k| $ against $ b $ (by default {\tt <}) is specified by the third argument.
+
+For example, input :
+\begin{center}
+	{\tt threshold(2,3,1,2,5,4,3,7],3)}
+\end{center}
+Output :
+\begin{center}
+	{\tt [3,3,3,3,5,4,3,7]}
+\end{center}
+Input :
+\begin{center}
+	{\tt threshold([2,3,1,2,5,4,3,7],3=a,'>=')}
+\end{center}
+Output :
+\begin{center}
+	{\tt [2,a,1,2,a,a,a,a]}
+\end{center}
+Input :
+\begin{center}
+	{\tt threshold([-2,-3,1,2,5,-4,3,-1],3=0,abs=true)}
+\end{center}
+Output :
+\begin{center}
+	{\tt [0,-3,0,0,5,-4,3,0]}
+\end{center}
+Input :
+\begin{center}
+	{\tt threshold([-2,-3,1,2,5,-4,3,-1],3=0,'<=',abs=true)}
+\end{center}
+Output :
+\begin{center}
+	{\tt [0,0,0,0,5,-4,0,0]}
+\end{center}
+Input :
+\begin{center}
+	{\tt threshold([-120,-11,-3,0,7,27,111,234],[-100,100])}
+\end{center}
+Output :
+\begin{center}
+	{\tt [-100,-11,-3,0,7,27,100,100]}
+\end{center}
+Input :
+\begin{center}
+	{\tt threshold([-120,-11,-3,0,7,27,111,234],[-100=-inf,100=inf])}
+\end{center}
+Output :
+\begin{center}
+	{\tt [-infinity,-11,-3,0,7,27,+infinity,+infinity]}
+\end{center}
+
+\subsection{Bartlett-Hann window function : {\tt bartlett\_hann\_window}}
+{\tt bartlett\_hann\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=a_0+a_1\,\left|\frac{k}{N-1}-\frac{1}{2}\right|-a_2\,\cos\left(\frac{2\,k\,\pi}{N-1}\right) \]
+for $ k=0,1,\dots,N-1 $, where $ a_0=0.62 $, $ a_1=0.48 $ and $ a_2=0.38 $. For example, input :
+\begin{center}
+	{\tt L:=bartlett\_hann\_window(randvector(1000,0..1)):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Blackman-Harris window function : {\tt blackman\_harris\_window}}
+{\tt blackman\_harris\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=a_0-a_1\,\cos\left(\frac{2\,k\,\pi}{N-1}\right)+a_2\,\cos\left(\frac{4\,k\,\pi}{N-1}\right)-a_3\,\cos\left(\frac{6\,k\,\pi}{N-1}\right) \]
+for $ k=0,1,\dots,N-1 $, where $ a_0=0.35875 $, $ a_1=0.48829 $, $ a_2=0.14128 $ and $ a_3=0.01168 $. For example, input :
+\begin{center}
+	{\tt L:=blackman\_harris\_window(randvector(1000,0..1)):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Blackman window function : {\tt blackman\_window}}
+{\tt blackman\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a real number $ \alpha $ (by default $ \alpha=0.16 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\frac{1-\alpha}{2}-\frac{1}{2}\,\cos\left(\frac{2\,k\,\pi}{N-1}\right)+\frac{\alpha}{2}\,\cos\left(\frac{4\,k\,\pi}{N-1}\right) \]
+for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=blackman\_window(randvector(1000,0..1)):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Bohman window function : {\tt bohman\_window}}
+{\tt bohman\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\left(1-x_k\right)\,\cos\left(\pi\,x_k\right)+\frac{1}{\pi}\,\sin\left(\pi\,x_k\right), \]
+where $ x_k=\left|\frac{2\,k}{N-1}-1\right| $, for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=bohman\_window(randvector(1000,0..1)):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Cosine window function : {\tt cosine\_window}}
+{\tt cosine\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a positive real number $ \alpha $ (by default $ \alpha=1 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\sin^\alpha\left(\frac{k\,\pi}{N-1}\right) \]
+for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=cosine\_window(randvector(1000,0..1),1.5):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Gaussian window function : {\tt gaussian\_window}}
+{\tt gaussian\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a positive real number $ \alpha\leq 0.5 $ (by default $ \alpha=0.1 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\exp\left(-\frac{1}{2}\,\left(\frac{k-(N-1)/2}{\alpha\,(N-1)/2}\right)^2\right) \]
+for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=gaussian\_window(randvector(1000,0..1),0.4):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Hamming window function : {\tt hamming\_window}}
+{\tt hamming\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\alpha-\beta\,\cos\left(\frac{2\,k\,\pi}{N-1}\right) \]
+for $ k=0,1,\dots,N-1 $, where $ \alpha=0.54 $ and $ \beta=1-\alpha=0.46 $. For example, input :
+\begin{center}
+	{\tt L:=hamming\_window(randvector(1000,0..1)):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Hann-Poisson window function : {\tt hann\_poisson\_window}}
+{\tt hann\_poisson\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a real number $ \alpha $ (by default $ \alpha=1 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\frac{1}{2}\,\left(1-\cos\frac{2\,k\,\pi}{N-1}\right)\,\exp\left(-\frac{\alpha\,|N-1-2\,k|}{N-1}\right) \]
+for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=hann\_poisson\_window(randvector(1000,0..1),2):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Hann window function : {\tt hann\_window}}
+{\tt hann\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\sin^2\left(\frac{k\,\pi}{N-1}\right) \]
+for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=hann\_window(randvector(1000,0..1)):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Parzen window function : {\tt parzen\_window}}
+{\tt parzen\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\begin{cases}
+\left(1-6\,x_k^2\,\left(1-x_k\right)\right),&\left|\frac{N-1}{2}-k\right|\leq\frac{N-1}{4},\\
+2\,\left(1-x_k\right)^3,&\text{otherwise},
+\end{cases} \]
+where $ x_k=\left|1-\frac{2\,k}{N-1}\right| $, for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=parzen\_window(randvector(1000,0..1)):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Poisson window function : {\tt poisson\_window}}
+{\tt poisson\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a real number $ \alpha $ (by default $ \alpha=1 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\exp\left(-\alpha\,\left|\frac{2\,k}{N-1}-1\right|\right) \]
+for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=poisson\_window(randvector(1000,0..1),2):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Riemann window function : {\tt riemann\_window}}
+{\tt riemann\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\begin{cases}
+1,&k=\frac{N-1}{2},\\
+\frac{\sin(\pi\,x_k)}{\pi\,x_k},&\text{otherwise},
+\end{cases} \]
+where $ x_k=\frac{2\,k}{N-1}-1 $, for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=riemann\_window(randvector(1000,0..1)):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Triangular window function : {\tt triangle\_window}}
+{\tt triangle\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an integer $ d\in\{-1,0,1\} $ (by default $ d=0 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=1-\left|\frac{n-\frac{N-1}{2}}{\frac{N+d}{2}}\right| \]
+for $ k=0,1,\dots,N-1 $ (the case $ d=-1 $ is called the Bartlett window function). For example, input :
+\begin{center}
+	{\tt L:=triangle\_window(randvector(1000,0..1),1):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Tukey window function : {\tt tukey\_window}}
+{\tt tukey\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally a real number $ \alpha\in[0,1] $ (by default $ \alpha=0.5 $) and/or an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=\begin{cases}
+\frac{1}{2}\,\left(1+\cos\left(\pi\,\left(\frac{k}{\beta}-1\right)\right)\right),&k<\beta,\\
+1,&\beta\leq k\leq(N-1)\,\left(1-\frac{\alpha}{2}\right),\\
+\frac{1}{2}\,\left(1+\cos\left(\pi\,\left(\frac{k}{\beta}-\frac{2}{\alpha}+1\right)\right)\right),&\text{otherwise},
+\end{cases} \]
+where $ \beta=\frac{\alpha\,(N-1)}{2} $, for $ k=0,1,\dots,N-1 $. When $ \alpha=0 $ the rectangular window function (on-off windowing) is obtained, and the case $ \alpha=1 $ corresponds to the Hann window function. For example, input :
+\begin{center}
+	{\tt L:=tukey\_window(randvector(1000,0..1),0.4):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
+\subsection{Welch window function : {\tt welch\_window}}
+{\tt welch\_window} takes as arguments a real vector $ \mathbf{v} $ of length $ n $ and optionally an interval $ n_1 ${\tt ..}$ n_2 $ (with default values $ n_1=0 $ and $ n_2=n-1 $), and returns the elementwise product of the vector $ [v_{n_1},\dots,v_{n_2}] $ and the vector $ \mathbf{w} $ of length $ N=n_2-n_1+1 $ defined by
+\[ w_k=1-\left(\frac{k-\frac{N-1}{2}}{\frac{N-1}{2}}\right)^2 \]
+for $ k=0,1,\dots,N-1 $. For example, input :
+\begin{center}
+	{\tt L:=welch\_window(randvector(1000,0..1)):;}
+\end{center}
+followed by {\tt scatterplot(L)}.
+
 \section{Exponentials and Logarithms}
 \subsection{Rewrite hyperbolic functions as exponentials : {\tt hyp2exp}}\index{hyp2exp}
 \noindent{\tt hyp2exp} takes as argument an hyperbolic expression.\\
@@ -6244,6 +7393,19 @@ Input :
 \begin{center}{\tt tsimplify((sin(7*x)+sin(3*x))/sin(5*x))}\end{center}
 Output :
 \begin{center}{\tt ((exp((i)*x))\verb|^|4+1)/(exp((i)*x))\verb|^|2 }\end{center}
+
+\subsection{Simplify trigonometric expressions : {\tt trigsimplify}}\index{trigsimplify}
+\noindent{\tt trigsimplify} simplifies trigonometric expressions
+by combining {\tt simplify}, {\tt texpand}, {\tt tlin}, {\tt tcollect}, {\tt trigsin}, {\tt trigcos} and {\tt trigtan} commands in a certain order.\\
+Input :
+\begin{center}{\tt trigsimplify((sin(x+y)-sin(x-y))/(cos(x+y)+cos(x-y)))}\end{center}
+Output :
+\begin{center}{\tt tan(4*x/3)}\end{center}
+Input :
+\begin{center}{\tt trigsimplify(1-1/4*sin(2a)\verb|^|2-sin(b)\verb|^|2-cos(a)\verb|^|4)}\end{center}
+Output :
+\begin{center}{\tt sin(a)\verb|^|2-sin(b)\verb|^|2}\end{center}
+
 
 \section{Polynomials}
 A polynomial of one variable is represented either 
@@ -6812,6 +7974,50 @@ Note also that \\
 since the default argument of {\tt lagrange}
 would be global, hence not the same as the local
 variable used for the definition of {\tt g}.
+
+\subsection{Trigonometric interpolation : {\tt triginterp}}
+{\tt triginterp(y,x=a..b)} or {\tt triginterp(y,a,b,x)} returns the trigonometric polynomial that interpolates data given in the list $ \textbf{y} $. It is assumed that the list $ \textbf{y} $ contains ordinate components of the points with equidistant abscissa components between $ a $ and $ b $ such that the first element from $ \textbf{y} $ corresponds to $ a $ and the last element to $ b $.
+
+For example, $ \textbf{y} $ may be a list of experimental measurements of some quantity taken in regular intervals, with the first observation in the moment $ t=a $ and the last observation in the moment $ t=b $. The resulting trigonometric polynomial has the period
+\[ T=\frac{n\,(b-a)}{n-1}, \]
+where $ n $ is the number of observations ($ n $={\tt size(y)}). For example, assume that the following data is obtained by measuring the temperature every three hours:
+\begin{center}
+	\begin{tabular}{|r|c|c|c|c|c|c|c|c|}
+		\hline hour of the day&0&3&6&9&12&15&18&21\\
+		\hline temperature (deg~C)&11&10&17&24&32&26&23&19\\\hline
+	\end{tabular}
+\end{center}
+Furthermore, assume that an estimate of the temperature at 13:45 is required. To obtain a trigonometric interpolation of the data, input :
+\begin{center}
+	{\tt tp:=triginterp([11,10,17,24,32,26,23,19],x=0..21)}
+\end{center}
+Output :
+\begin{center}
+	{\tt 81/4+(-21*sqrt(2)-42)/8*cos(pi/12*x)+\\
+		(-11*sqrt(2)-12)/8*sin(pi/12*x)+3/4*cos(pi/6*x)\\
+		-7/4*sin(pi/6*x)+(21*sqrt(2)-42)/8*cos(pi/4*x)\\
+		+(-11*sqrt(2)+12)/8*sin(pi/4*x)+1/2*cos(pi/3*x)}
+\end{center}
+Now a temperature at 13:45 hrs can be approximated with the value of {\tt tp} for $ x=13.75 $. Input :
+\begin{center}
+	{\tt tp | x=13.75}
+\end{center}
+Output :
+\begin{center}
+	{\tt 29.4863181684}
+\end{center}
+
+If one of the input parameters is inexact, the result will be inexact too. For example, input :
+\begin{center}
+	{\tt Digits:=3;\\
+		triginterp([11,10,17,24,32,26,23,19],x=0..21.0)}
+\end{center}
+Output :
+\begin{center}
+	{\tt 0.5*cos(1.05*x)-1.54*cos(0.785*x)+0.75*cos(0.524*x)\\
+		-8.96*cos(0.262*x)-0.445*sin(0.785*x)-1.75*sin(0.524*x)\\
+		-3.44*sin(0.262*x)+20.2}
+\end{center}
 
 \subsection{Natural splines: {\tt spline}}\index{spline|textbf}
 \subsubsection{Definition}
@@ -11651,10 +12857,10 @@ Linear programming problems (where a multivariate linear function needs to be ma
 \item {\tt bd} (optional) : sequence of expressions of type {\tt var=a..b} specifying that the variable {\tt var} is bounded with {\tt a} below and with {\tt b} above
 \item {\tt opts} (optional) : sequence of solver settings in form {\tt option=value}, where {\tt option} may be one of :
 \begin{description}
-	\item [\tt assume] -- one of {\tt lp\_nonnegative}, {\tt lp\_integer} ({\tt integer}), {\tt lp\_binary} or {\tt lp\_nonnegint} ({\tt nonnegint}), default : \emph{unset}
+	\item [\tt assume] -- one of {\tt lp\_nonnegative}, {\tt lp\_integer} ({\tt integer}), {\tt lp\_binary} or {\tt lp\_nonnegint} (or {\tt nonnegint}), default : \emph{unset}
 	\item [\tt lp\_integervariables] -- list of identifiers or indices (of integer variables), default : \emph{empty}
 	\item [\tt lp\_binaryvariables] -- list of identifiers or indices (of binary variables), default : \emph{empty}
-	\item [\tt lp\_maximize] -- \emph{true} or \emph{false} (objective direction), default : \emph{false}
+	\item [\tt lp\_maximize] (or {\tt maximize}) -- \emph{true} or \emph{false} (objective direction), default : \emph{false}
 	\item [\tt lp\_method] -- one of {\tt exact}, {\tt float}, {\tt lp\_simplex} or {\tt lp\_interiorpoint}\\(solver type), default {\tt lp\_simplex}
 	\item [\tt lp\_depthlimit] -- positive integer (max.~depth of branch\&bound tree), default : \emph{unlimited}
 	\item [\tt lp\_nodelimit] -- positive integer (max.~nodes in branch\&bound tree), default : \emph{unlimited}
@@ -11670,7 +12876,7 @@ Linear programming problems (where a multivariate linear function needs to be ma
 
 The return value is in the form {\tt [optimum,soln]} where {\tt optimum} is the minimum/maximum value of the objective function and {\tt soln} is the list of coordinates corresponding to the point at which the optimal value is attained, i.e.~the optimal solution. If there is no feasible solution, an empty list is returned. When the objective function is unbounded, {\tt optimum} is returned as {\tt +infinity} (for maximization problems) or {\tt -infinity} (for minimization problems). If an error is experienced while solving (terminating the process), {\tt undef} is returned.
 
-The given objective function is minimized by default. To maximize it, include the option {\tt lp\_maximize=true} or simply {\tt lp\_maximize}. Also note that all variables are, unless specified otherwise, assumed to be continuous and unrestricted in sign.
+The given objective function is minimized by default. To maximize it, include the option {\tt lp\_maximize=true} or {\tt lp\_maximize} or simply {\tt maximize}. Also note that all variables are, unless specified otherwise, assumed to be continuous and unrestricted in sign.
 
 \subsubsection{Solving LP problems}
 By default, {\tt lpsolve} uses primal simplex method implementation to solve LP problems. For example, to solve the problem specified in~\eqref{eq:lpexample}, input :
@@ -11773,7 +12979,7 @@ Use option {\tt assume=lp\_binary} to specify that all variables are binary, i.e
 \noindent Input :
 \begin{center}
 {\tt lpsolve(8x1+11x2+6x3+4x4,[5x1+7x2+4x3+3x4<=14],}\\
-{\tt assume=lp\_binary,lp\_maximize)}
+{\tt assume=lp\_binary,maximize)}
 \end{center}
 Output :
 \begin{center}
@@ -11978,6 +13184,76 @@ Output :
 It is advisable to use only (capital) letters, digits and underscore when naming variables in a LP file, although the corresponding format allows many more characters. That is because these names are converted to Giac identifiers during the loading process.
 
 \textbf{Warning!} Too large problems won't be loaded. More precisely, if $ n_v\cdot n_c>10^5 $, where $ n_v $ is the number of variables and $ n_c $ is the number of constraints, loading is aborted. Many MPS files available, for example, in the Netlib repository ({\tt http://www.netlib.org/}), contain very large problems with thousands of variables and constraints. Trying to load them to Xcas without a safety limit could easily eat up huge amounts of available memory, probably freezing up the whole system. If a large LP problem needs to be solved, one may consider using GLPK standalone solver\footnote{See {\tt https://www.gnu.org/software/glpk/} for installing GLPK in Linux or {\tt http://winglpk.sourceforge.net/} for MS~Windows.}.
+
+\subsection{Nonlinear optimization: {\tt nlpsolve}}\index{nlpsolve}
+{\tt nlpsolve} computes the optimum of a (not necessarily differentiable) nonlinear (multivariate) objective function, subject to a set of nonlinear equality and/or inequality constraints, using the COBYLA algorithm. The command takes the following arguments:
+\begin{itemize}
+	\item {\tt obj} : objective expression
+	\item {\tt constr} : list of equality and inequality constraints (optional)
+	\item {\tt bd} : sequence of variable boundaries (optional) : {\tt x=a..b}, {\tt y=c..d}, \ldots
+	\item {\tt opt} : sequence of options (optional), which may be one of:
+	\begin{itemize}
+		\item {\tt maximize=true} or {\tt false} (or just {\tt maximize})
+		\item {\tt nlp\_initialpoint=[x=x0,y=y0,...]}
+		\item {\tt nlp\_iterationlimit=n}
+		\item {\tt assume=nlp\_nonnegative}
+		\item {\tt nlp\_precision=eps}
+	\end{itemize}
+\end{itemize}
+
+{\tt nlpsolve} returns a list containing the optimal value of the objective and a vector of optimal values of the decision variables.
+
+The objective is minimized by default, unless {\tt maximize} or {\tt maximize=true} is specified as an option.
+
+Initial point, if given, does not need to be feasible. Note, however, that the initial value of a variable must not be zero. If the initial point is not given or isn't feasible, a feasible starting guess is automatically generated. Note that choosing a good initial point is needed for obtaining a correct solution in some cases.
+
+Input syntax for {\tt nlpsolve} resembles that of Maple's {\tt NLPSolve} (entering the objective as a function (univariate case) is not supported, however).
+
+\subsubsection{Examples}
+
+Input :
+\begin{center}
+	\tt nlpsolve(ln(1+x1\^{}2)-x2,[(1+x1\^{}2)\^{}2+x2\^{}2=4])
+\end{center}
+Output :
+\begin{center}
+	\tt [-1.73205080757,[x1=-4.77142305945e-08,x2=1.73205080757]]
+\end{center}
+Input :
+\begin{center}
+	\tt nlpsolve(-x1*x2*x3,[72-x1-2x2-2x3>=0],
+	x1=0..20,x2=0..11,x3=0..42)
+\end{center}
+Output :
+\begin{center}
+	\tt [-3300.0,[x1=20.0,x2=11.0,x3=15.0]]
+\end{center}
+Input :
+\begin{center}
+	\tt nlpsolve(x\^{}3+2x*y-2y\^{}2,x=-10..10,y=-10..10,
+	nlp\_initialpoint=[x=3,y=4],maximize)
+\end{center}
+Output :
+\begin{center}
+	\tt [1050.0,[x=10.0,y=4.99999985519]]
+\end{center}
+Input :
+\begin{center}
+	\tt nlpsolve(sin(x)/x,x=1..30)
+\end{center}
+Output :
+\begin{center}
+	\tt [-0.217233628211,[x=4.49340942383]]
+\end{center}
+Input :
+\begin{center}
+	\tt nlpsolve(2-1/120*x1*x2*x3*x4*x5,
+	[x1<=1,x2<=2,x3<=3,x4<=4,x5<=5],assume=nlp\_nonnegative)
+\end{center}
+Output :
+\begin{center}
+	\tt [1.0,[x1=1.0,x2=2.0,x3=3.0,x4=4.0,x5=5.0]]
+\end{center}
 
 \subsection{Solving transportation problems: {\tt tpsolve}}\index{tpsolve|textbf}
 The objective of a transportation problem is to minimize the cost of distributing a product from $ m $ sources to $ n $ destinations. It is determined by three parameters :

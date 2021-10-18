@@ -4,44 +4,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Number of zeros in [a,b) : sturmab</title>
+<title>Polynomial valuation : valuation ldegree</title>
 </head>
 <body >
 <a href="cascmd_en258.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en260.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec321" class="subsection">4.25.16  Number of zeros in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) : <span style="font-family:monospace">sturmab</span></h3>
-<p><a id="hevea_default411"></a>
-<span style="font-family:monospace">sturmab</span> takes four arguments: a polynomial expression <span style="font-style:italic">P</span>, a 
-variable name and two real or complex numbers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>
-</p><ul class="itemize"><li class="li-itemize">
-if <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> are reals, 
-<span style="font-family:monospace">sturmab</span> returns the number of sign changes of <span style="font-style:italic">P</span> on (<span style="font-style:italic">a</span>, <span style="font-style:italic">b</span>].
-In other words, it returns the number of zeros in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) of the 
-polynomial <span style="font-style:italic">P</span>/<span style="font-style:italic">G</span> where <span style="font-style:italic">G</span>=gcd(<span style="font-style:italic">P</span>,diff(<span style="font-style:italic">P</span>)).
-</li><li class="li-itemize">if <span style="font-style:italic">a</span> or <span style="font-style:italic">b</span> are complex, 
-<span style="font-family:monospace">sturmab</span> returns the number of complex roots of <span style="font-style:italic">P</span> in the rectangle 
-having <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> as opposite vertices.
-</li></ul><p> 
+<h3 id="sec325" class="subsection">5.25.5  Polynomial valuation : <span style="font-family:monospace">valuation ldegree</span></h3>
+<p><a id="hevea_default419"></a><a id="hevea_default420"></a>
+<span style="font-family:monospace">valuation</span> or <span style="font-family:monospace">ldegree</span> takes as argument a polynomial given 
+by a symbolic expression or by the list of its coefficients.<br>
+<span style="font-family:monospace">valuation</span> or <span style="font-family:monospace">ldegree</span> returns the valuation of this 
+polynomial, that is the lowest degree of its non-zero monomials.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">sturmab(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2),x,-2,0)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">valuation(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p> 
 Input :
-</p><div class="center"><span style="font-family:monospace">sturmab(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x,-2-i,5+3i)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">valuation([1,0,1,0])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">3</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">sturmab(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x,-i,5+3i)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-<span style="font-weight:bold">Warning !!!!</span><br>
- <span style="font-style:italic">P</span> is defined by its symbolic expression.<br>
-Input :<br>
-<span style="font-family:monospace">sturmab([1,0,0,2,0,0],x,-2,0)</span>,<br>
-Output :<br>
-<span style="font-family:monospace">Bad argument type</span>.</p>
+</p><div class="center"><span style="font-family:monospace">1</span></div>
 <hr>
 <a href="cascmd_en258.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

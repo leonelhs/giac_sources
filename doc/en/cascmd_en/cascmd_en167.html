@@ -4,41 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Maximum and minimum of an expression: fMax fMin</title>
+<title>Sub-expression of an expression : part</title>
 </head>
 <body >
 <a href="cascmd_en166.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en168.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec208" class="subsection">4.17.3  Maximum and minimum of an expression: <span style="font-family:monospace">fMax fMin</span></h3>
-<p><a id="hevea_default253"></a><a id="hevea_default254"></a> 
-<span style="font-family:monospace">fMax</span> and <span style="font-family:monospace">fMin</span> take one or two arguments : an expression 
-of a variable and the name of this variable (by default <span style="font-family:monospace">x</span>).<br>
-<span style="font-family:monospace">fMax</span> returns the abscissa 
-of a maximum of the expression.<br>
-<span style="font-family:monospace">fMin</span> returns the abscissa 
-of a minimum of the expression.<br>
+<h3 id="sec205" class="subsection">5.12.19  Sub-expression of an expression : <span style="font-family:monospace">part</span></h3>
+<p><a id="hevea_default239"></a>
+<span style="font-family:monospace">part</span> takes two arguments : an expression and an integer <span style="font-style:italic">n</span>.<br>
+<span style="font-family:monospace">part</span> evaluate the expression and then returns the <span style="font-style:italic">n</span>-th sub-expression
+of this expression.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">fMax(sin(x),x)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">fMax(sin(x))</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">fMax(sin(y),y)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">part(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x+1,2)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">pi/2</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">x</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">fMin(sin(x),x)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">fMin(sin(x))</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">fMin(sin(y),y)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">part(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(x+1)*(y-2)+2,2)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">-pi/2</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">(x+1)*(y-2)</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">fMin(sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">part((x+1)*(y-2)/2,2)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">0</span></div>
+</p><div class="center"><span style="font-family:monospace">y-2</span></div>
 <hr>
 <a href="cascmd_en166.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

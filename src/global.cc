@@ -256,7 +256,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   void language(int b,GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
       contextptr->globalptr->_language_=b;
+#ifndef EMCC
     else
+#endif
       _language_=b;
   }
 
@@ -274,7 +276,11 @@ extern "C" void Sleep(unsigned int miliSecond);
       _max_sum_sqrt_=b;
   }
 
+#ifdef GIAC_HAS_STO_38 // Prime sum(x^2,x,0,100000) crash on hardware
+  static int _max_sum_add_=10000; 
+#else
   static int _max_sum_add_=100000; 
+#endif
   int & max_sum_add(GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
       return contextptr->globalptr->_max_sum_add_;
@@ -5646,6 +5652,8 @@ unsigned int ConvertUTF8toUTF16 (
 
   void convert_python(string & cur,GIAC_CONTEXT){
     bool indexshift=array_start(contextptr); //xcas_mode(contextptr)!=0 || abs_calc_mode(contextptr)==38;
+    if (cur[0]=='_' && (cur.size()==1 || !isalpha(cur[1])))
+      cur[0]='@'; // python shortcut for ans(-1)
     bool instring=cur.size() && cur[0]=='"';
     for (int pos=1;pos<int(cur.size());++pos){
       char prevch=cur[pos-1],curch=cur[pos];
@@ -5751,7 +5759,7 @@ unsigned int ConvertUTF8toUTF16 (
       first=17;
     if (s_orig[first]=='/')
       return s_orig;
-    if (s_orig[first]=='#' || s_orig.substr(first,4)=="from" || s_orig.substr(first,7)=="import ")
+    if (s_orig[first]=='#' || (s_orig[first]=='_' && !isalpha(s_orig[first+1])) || s_orig.substr(first,4)=="from" || s_orig.substr(first,7)=="import ")
       pythonmode=true;
     for (first=0;!pythonmode && first<sss;){
       int pos=s_orig.find(":]");
@@ -6080,6 +6088,12 @@ unsigned int ConvertUTF8toUTF16 (
   }
   
     std::string translate_at(const char * ch){
+      if (!strcmp(ch,"∡"))
+	return "polar_complex";
+      if (!strcmp(ch,"."))
+	return "struct_dot";
+      if (!strcmp(ch,"LINEAR?"))
+	return "IS_LINEAR";
       if (!strcmp(ch,"ΔLIST"))
 	return "DELTALIST";
       if (!strcmp(ch,"ΠLIST"))
