@@ -67,6 +67,13 @@ namespace giac {
   gen laplace(const gen & f0,const gen & x,const gen & s,GIAC_CONTEXT){
     if (x.type!=_IDNT)
       return gensizeerr(contextptr);
+    if (f0.type==_VECT){
+      vecteur v=*f0._VECTptr;
+      for (int i=0;i<int(v.size());++i){
+	v[i]=laplace(v[i],x,s,contextptr);
+      }
+      return gen(v,f0.subtype);
+    }
     gen t(s);
     if (s==x){
 #ifdef GIAC_HAS_STO_38
@@ -717,6 +724,8 @@ namespace giac {
       gen & b=v[1];
       gen & c=v[2];
       if (ckmatrix(a)){
+	if (c.type!=_VECT && is_zero(c))
+	  c=c*a;
 	c=_tran(c,contextptr)[int(a._VECTptr->size())-1];
       }
       result=desolve_lin1(a,b,c,x,parameters,contextptr);
@@ -780,7 +789,7 @@ namespace giac {
 	      bool b=calc_mode(contextptr)==1;
 	      if (b)
 		calc_mode(0,contextptr);
-	      part += _integrate(makesequence(_lin(c[i]*exp(-rac[i]*x,contextptr),contextptr),x),contextptr)*exp(rac[i]*x,contextptr);
+	      part += _lin(_integrate(makesequence(_lin(c[i]*exp(-rac[i]*x,contextptr),contextptr),x),contextptr)*exp(rac[i]*x,contextptr),contextptr);
 	      if (b)
 		calc_mode(1,contextptr);
 	    }
@@ -1373,10 +1382,9 @@ namespace giac {
       vecteur lv(lop(args,at_of));
       vecteur f;
       if (lv.size()>=1 && lv[0]._SYMBptr->feuille.type==_VECT && (f=*lv[0]._SYMBptr->feuille._VECTptr).size()==2){
-	gen f1=vx_var;
-	if (f[1].type==_IDNT || f[1].is_symb_of_sommet(at_at))
-	  f1=f[1];
-	return desolve(args,f1,f[0],ordre,parameters,contextptr);
+	if (f[1].type==_IDNT || f[1].is_symb_of_sommet(at_at)){
+	  return desolve(args,f[1],f[0],ordre,parameters,contextptr);
+	}
       }
       gen vx,vy;
       lv=lidnt(evalf(args,1,contextptr));

@@ -2696,6 +2696,8 @@ namespace giac {
     if (a.type!=_VECT){
       if (a.type==_REAL)
 	return contains(a,b);
+      if (b==cst_i)
+	return has_i(a);
       return gensizeerr(contextptr);
     }
     return equalposcomp(*a._VECTptr,b);
@@ -3692,6 +3694,8 @@ namespace giac {
     }
     if ( (intervalle.type==_SYMB) && (intervalle._SYMBptr->sommet==at_interval)){
       gen c=intervalle._SYMBptr->feuille._VECTptr->front(),d=intervalle._SYMBptr->feuille._VECTptr->back();
+      if ( (!is_integral(c) || !is_integral(d)) && abs_calc_mode(contextptr)==38)
+	return gensizeerr(contextptr);
       gen debut=c,fin=d;
       bool reverse=ck_is_greater(debut,fin,contextptr);
       step=abs(step,contextptr);
@@ -4348,9 +4352,9 @@ namespace giac {
     gen a,b,c;
     if (!check_binary(args,a,b))
       return a;
-    if (sto_38 && abs_calc_mode(contextptr)==38 && a.type==_IDNT){
+    if (storcl_38 && abs_calc_mode(contextptr)==38 && a.type==_IDNT){
       gen value;
-      if (rcl_38(value,a._IDNTptr->id_name,b.type==_IDNT?b._IDNTptr->id_name:b.print().c_str(),undef,false,contextptr)){
+      if (storcl_38(value,a._IDNTptr->id_name,b.type==_IDNT?b._IDNTptr->id_name:b.print().c_str(),undef,false,contextptr,NULL,false)){
 	return value;
       }
     }

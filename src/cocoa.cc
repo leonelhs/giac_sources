@@ -434,8 +434,11 @@ namespace giac {
 #endif
   // minimal numbers of pair to reduce simultaneously with f4buchberger
   //#define GBASIS_F4BUCHBERGER 5
-  #define GBASIS_F4BUCHBERGER 0
+#define GBASIS_F4BUCHBERGER 0
 #define GBASIS_POSTF4BUCHBERGER 0 // 0 means final simplification at the end, 1 at each loop
+
+  // #define GIAC_GBASIS_REDUCTOR_MAXSIZE 10 // max size for keeping a reductor even if it should be removed from gbasis
+  
   // if GIAC_SHORTSHIFTTYPE is defined, sparse matrix is using shift index
   // coded on 2 bytes -> FIXME segfault for cyclic9
 
@@ -548,6 +551,11 @@ namespace giac {
 #define GBASIS_NO_OUTPUT
 #endif 
 
+  //#define GIAC_HASH
+  short hash64tab[]={1933,1949,1951,1973,1979,1987,1993,1997,1999,2003,2011,2017,2027,2029,2039,2053,2063,2069,2081,2083,2087,2089,2099,2111,2113,2129,2131,2137,2141,2143,2153,2161,2179,2203,2207,2213,2221,2237,2239,2243,2251,2267,2269,2273,2281,2287,2293,2297,2309,2311,2333,2339,2341,2347,2351,2357,2371,2377,2381,2383,2389,2393,2399,2411};
+
+  // storing indices in reverse order to have tdeg_t_greater access them
+  // in increasing order seems slower (cocoa.cc.64)
   struct tdeg_t64 {
     bool vars64() const {return true;}
     void dbgprint() const;
@@ -560,6 +568,7 @@ namespace giac {
 	short tdeg2;
 	order_t order_;
 	longlong * ui;
+	longlong hash;
       };
     };
     //int front() const { if (tdeg % 2) return (*(ui+1)) & 0xffff; else return order_.o==_PLEX_ORDER?tab[0]:tab[1];}
@@ -569,6 +578,7 @@ namespace giac {
 	tdeg2=a.tdeg2;
 	order_=a.order_;
 	ui=a.ui;
+	hash=a.hash;
 	++(*ui);
       }
       else {
@@ -583,28 +593,36 @@ namespace giac {
     void compute_degs(){
       if (tab[0]%2){
 	longlong * ptr=ui+1;
+	hash=0;
 	tdeg=0;
 	int firstblock=order_.o;
 	if (firstblock!=_3VAR_ORDER && firstblock<_7VAR_ORDER)
 	  firstblock=order_.dim;
 	longlong * ptrend=ui+1+(firstblock+degratiom1)/degratio;
-	for (;ptr!=ptrend;++ptr){
+	int i=0;
+	for (;ptr!=ptrend;i+=4,++ptr){
 	  longlong x=*ptr;
 #ifdef GIAC_CHARDEGTYPE
 	  tdeg += ((x+(x>>8)+(x>>16)+(x>>24)+(x>>32)+(x>>40)+(x>>48)+(x>>56))&0xff);
 #else
 	  tdeg += ((x+(x>>16)+(x>>32)+(x>>48))&0xffff);
 #endif
+#ifdef GIAC_HASH
+	  hash += (x&0xffff)*hash64tab[i]+((x>>16)&0xffff)*hash64tab[i+1]+((x>>32)&0xfff)*hash64tab[i+2]+(x>>48)*hash64tab[i+3];
+#endif
 	}
 	tdeg=2*tdeg+1;
 	tdeg2=0;
 	ptrend=ui+1+(order_.dim+degratiom1)/degratio;
-	for (;ptr!=ptrend;++ptr){
+	for (;ptr!=ptrend;i+=4,++ptr){
 	  longlong x=*ptr;
 #ifdef GIAC_CHARDEGTYPE
 	  tdeg2 += ((x+(x>>8)+(x>>16)+(x>>24)+(x>>32)+(x>>40)+(x>>48)+(x>>56))&0xff);
 #else
 	  tdeg2 += ((x+(x>>16)+(x>>32)+(x>>48))&0xffff);
+#endif
+#ifdef GIAC_HASH
+	  hash += (x&0xffff)*hash64tab[i]+((x>>16)&0xffff)*hash64tab[i+1]+((x>>32)&0xfff)*hash64tab[i+2]+(x>>48)*hash64tab[i+3];
 #endif
 	}
       }
@@ -626,6 +644,7 @@ namespace giac {
 	  tdeg2=a.tdeg2;
 	  order_=a.order_;
 	  ui=a.ui;
+	  hash=a.hash;
 	  ++(*ui);
 	  return *this;
 	}
@@ -648,7 +667,7 @@ namespace giac {
     int front(){ return tab[1];}
 #endif
     // methods
-    unsigned total_degree(order_t order) const {
+    inline unsigned total_degree(order_t order) const {
 #ifdef GIAC_64VARS
       if (tab[0]%2)
 	return tdeg/2+tdeg2;
@@ -766,6 +785,9 @@ namespace giac {
 	  tdeg2=0;
 	}
 	order_=order;
+#ifdef GIAC_HASH
+	compute_degs(); // for hash
+#endif
 	return;
       }
 #endif // GIAC_64VARS
@@ -948,7 +970,7 @@ namespace giac {
   tdeg_t64 operator + (const tdeg_t64 & x,const tdeg_t64 & y){
 #ifdef GIAC_64VARS
     if (x.tab[0]%2){
-#ifdef DEBUG_SUPPORT
+#ifdef GIAC_DEBUG_TDEG_T64
       if (!(y.tab[0]%2))
 	COUT << "erreur" << endl;
 #endif
@@ -984,7 +1006,7 @@ namespace giac {
   inline void add(const tdeg_t64 & x,const tdeg_t64 & y,tdeg_t64 & res,int dim){
 #ifdef GIAC_64VARS
     if (x.tab[0]%2){
-#ifdef DEBUG_SUPPORT
+#ifdef GIAC_DEBUG_TDEG_T64
       if (!(y.tab[0]%2))
 	COUT << "erreur" << endl;
 #endif
@@ -1030,7 +1052,7 @@ namespace giac {
   tdeg_t64 operator - (const tdeg_t64 & x,const tdeg_t64 & y){ 
 #ifdef GIAC_64VARS
     if (x.tab[0]%2){
-#ifdef DEBUG_SUPPORT
+#ifdef GIAC_DEBUG_TDEG_T64
       if (!(y.tab[0]%2))
 	COUT << "erreur" << endl;
 #endif
@@ -1066,6 +1088,10 @@ namespace giac {
     longlong X=((longlong *) x.tab)[0];
     if (X!= ((longlong *) y.tab)[0])
       return false;
+#ifdef GIAC_HASH
+    if (x.hash!=y.hash) 
+      return false;
+#endif
 #ifdef GIAC_64VARS
     if (
 #ifdef BIGENDIAN
@@ -1353,95 +1379,80 @@ namespace giac {
 #endif
   }
 
-  inline int tdeg_t_greater (const tdeg_t64 & x,const tdeg_t64 & y,order_t order){
+  inline int tdeg_t_greater(const tdeg_t64 & x,const tdeg_t64 & y,order_t order){
     short X=x.tab[0];
     if (X!=y.tab[0]) return X>y.tab[0]?1:0; // since tdeg is tab[0] for plex
 #ifdef GIAC_64VARS
     if (X%2){
+      //if (x.ui==y.ui) return 2;
 #if 1 && !defined BIGENDIAN && !defined GIAC_CHARDEGTYPE
-      longlong a=0,b=0;
       const longlong * it1=x.ui,* it2=y.ui,*it1beg;
+      longlong a=0;
       switch (order.o){
       case _64VAR_ORDER:
-	a=it1[16]; 
-	b=it2[16];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[15]; 
-	b=it2[15];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[14]; 
-	b=it2[14];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[13]; 
-	b=it2[13];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[12]; 
-	b=it2[12];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[11]; 
-	b=it2[11];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[10]; 
-	b=it2[10];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[9]; 
-	b=it2[9];
-	if (a!=b)
-	  return a<=b?1:0;
+	a=it1[16]-it2[16];
+	if (a)
+	  return a<=0?1:0;
+	a=it1[15]-it2[15];
+	if (a)
+	  return a<=0?1:0;
+	a=it1[14]-it2[14];
+	if (a)
+	  return a<=0?1:0;
+	a=it1[13]-it2[13];
+	if (a)
+	  return a<=0?1:0;
+      case _48VAR_ORDER:
+	a=it1[12]-it2[12];
+	if (a)
+	  return a<=0?1:0;
+	a=it1[11]-it2[11];
+	if (a)
+	  return a<=0?1:0;
+	a=it1[10]-it2[10];
+	if (a)
+	  return a<=0?1:0;
+	a=it1[9]-it2[9];
+	if (a)
+	  return a<=0?1:0;
       case _32VAR_ORDER:
-	a=it1[8]; 
-	b=it2[8];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[7]; 
-	b=it2[7];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[6]; 
-	b=it2[6];
-	if (a!=b)
-	  return a<=b?1:0;
-	a=it1[5]; 
-	b=it2[5];
-	if (a!=b)
-	  return a<=b?1:0;
+	a=it1[8]-it2[8];
+	if (a)
+	  return a<=0?1:0;
+	a=it1[7]-it2[7];
+	if (a)
+	  return a<=0?1:0;
+	a=it1[6]-it2[6];
+	if (a)
+	  return a<=0?1:0;
+	a=it1[5]-it2[5];
+	if (a)
+	  return a<=0?1:0;
       case _16VAR_ORDER:
-	a=it1[4]; 
-	b=it2[4];
-	if (a!=b)
-	  return a<=b?1:0;
+	a=it1[4]-it2[4];
+	if (a)
+	  return a<=0?1:0;
       case _11VAR_ORDER:
-	a=it1[3]; 
-	b=it2[3];
-	if (a!=b)
-	  return a<=b?1:0;
+	a=it1[3]-it2[3];
+	if (a)
+	  return a<=0?1:0;
       case _7VAR_ORDER:
-	a=it1[2]; 
-	b=it2[2];
-	if (a!=b)
-	  return a<=b?1:0;
+	a=it1[2]-it2[2];
+	if (a)
+	  return a<=0?1:0;
       case _3VAR_ORDER: 
-	a=it1[1]; 
-	b=it2[1];
-	if (a!=b)
-	  return a<=b?1:0;
+	a=it1[1]-it2[1];
+	if (a)
+	  return a<=0?1:0;
 	if (x.tdeg2!=y.tdeg2)
 	  return x.tdeg2>y.tdeg2?1:0;
 	it1beg=it1+(x.order_.o+degratiom1)/degratio;
 	it1 += (x.order_.dim+degratiom1)/degratio;;
 	it2 += (x.order_.dim+degratiom1)/degratio;;
 	for (;;){
-	  a=*it1; 
-	  b=*it2;
-	  if (a!=b)
-	    return a<=b?1:0;
+	  a=*it1-*it2;
+	  if (a)
+	    return a<=0?1:0;
 	  --it2;--it1;
 	  if (it1<=it1beg)
 	    return 2;
@@ -1451,10 +1462,9 @@ namespace giac {
 	it1=x.ui+(x.order_.dim+degratiom1)/degratio;
 	it2=y.ui+(y.order_.dim+degratiom1)/degratio;
 	for (;it1!=it1beg;--it2,--it1){
-	  a=*it1; 
-	  b=*it2;
-	  if (a!=b)
-	    return a<=b?1:0;
+	  a=*it1-*it2;
+	  if (a)
+	    return a<=0?1:0;
 	}
 	return 2;
       case _TDEG_ORDER: case _PLEX_ORDER: {
@@ -1493,10 +1503,9 @@ namespace giac {
 	}
 #else
 	for (;it1!=it1beg;--it2,--it1){
-	  a=*it1; 
-	  b=*it2;
-	  if (a!=b)
-	    return a<=b?1:0;
+	  a=*it1-*it2;
+	  if (a)
+	    return a<=0?1:0;
 	}
 #endif
 	if (x.tdeg2!=y.tdeg2)
@@ -1522,10 +1531,9 @@ namespace giac {
 	}
 #else
 	for (;it1!=it1beg;--it2,--it1){
-	  a=*it1; 
-	  b=*it2;
-	  if (a!=b)
-	    return a<=b?1:0;
+	  a=*it1-*it2;
+	  if (a)
+	    return a<=0?1:0;
 	}
 #endif
 	return 2;
@@ -1551,10 +1559,9 @@ namespace giac {
 	}
 #else
 	for (;it1!=it1beg;--it2,--it1){
-	  a=*it1; 
-	  b=*it2;
-	  if (a!=b)
-	    return a<=b?1:0;
+	  a=*it1-*it2;
+	  if (a)
+	    return a<=0?1:0;
 	}
 #endif
 	return 2;
@@ -1585,15 +1592,19 @@ namespace giac {
     return !tdeg_t_greater(y,x,order); // total order
   }
 
-  bool tdeg_t_all_greater(const tdeg_t64 & x,const tdeg_t64 & y,order_t order){
+  inline bool tdeg_t_all_greater(const tdeg_t64 & x,const tdeg_t64 & y,order_t order){
+    if ((*((ulonglong*)&x)-*((ulonglong*)&y)) & 0x8000800080008000ULL)
+      return false;
 #ifdef GIAC_64VARS
     if (x.tab[0]%2){
-#ifdef DEBUG_SUPPORT
+#ifdef GIAC_DEBUG_TDEG_T64
       if (!(y.tab[0]%2))
 	COUT << "erreur" << endl;
 #endif
-      if (x.tdeg<y.tdeg || x.tdeg2<y.tdeg2)
+#ifdef GIAC_HASH
+      if (x.hash<y.hash)
 	return false;
+#endif
 #if 0
       const degtype * it1=(degtype *)(x.ui+1),*it1end=it1+x.order_.dim,*it2=(degtype *)(y.ui+1);
       for (;it1!=it1end;++it2,++it1){
@@ -1630,8 +1641,7 @@ namespace giac {
     }
 #endif
     ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y;
-    if ((xtab[0]-ytab[0]) & 0x8000800080008000ULL)
-      return false;
+  // if ((xtab[0]-ytab[0]) & 0x8000800080008000ULL) return false;
     if ((xtab[1]-ytab[1]) & 0x8000800080008000ULL)
       return false;
     if ((xtab[2]-ytab[2]) & 0x8000800080008000ULL)
@@ -1654,7 +1664,7 @@ namespace giac {
   int tdeg_t_compare_all(const tdeg_t64 & x,const tdeg_t64 & y,order_t order){
 #ifdef GIAC_64VARS
     if (x.tab[0]%2){
-#ifdef DEBUG_SUPPORT
+#ifdef GIAC_DEBUG_TDEG_T64
       if (!(y.tab[0]%2))
 	COUT << "erreur" << endl;
 #endif
@@ -1717,7 +1727,7 @@ namespace giac {
   void index_lcm(const tdeg_t64 & x,const tdeg_t64 & y,tdeg_t64 & z,order_t order){
 #ifdef GIAC_64VARS
     if (x.tdeg%2){
-#ifdef DEBUG_SUPPORT
+#ifdef GIAC_DEBUG_TDEG_T64
       if (!(y.tab[0]%2))
 	COUT << "erreur" << endl;
 #endif
@@ -1863,6 +1873,19 @@ namespace giac {
     }
   }
 
+  void index_lcm_overwrite(const tdeg_t64 & x,const tdeg_t64 & y,tdeg_t64 & z,order_t order){
+    if (z.tdeg%2==0){
+      index_lcm(x,y,z,order);
+      return;
+    }
+    const degtype * xptr=(degtype *)(x.ui+1),*xend=xptr+degratio*((x.order_.dim+degratiom1)/degratio),*yptr=(degtype *)(y.ui+1);
+    degtype * resptr=(degtype *)(z.ui+1);
+    for (;xptr!=xend;++resptr,++yptr,++xptr)
+      *resptr=*xptr>*yptr?*xptr:*yptr;
+    z.tdeg=1;
+    z.compute_degs();
+  }
+  
   void get_index(const tdeg_t64 & x_,index_t & idx,order_t order,int dim){
 #ifdef GIAC_64VARS
     if (x_.tab[0]%2){
@@ -1929,7 +1952,7 @@ namespace giac {
   bool disjoint(const tdeg_t64 & a,const tdeg_t64 & b,order_t order,short dim){
 #ifdef GIAC_64VARS
     if (a.tab[0]%2){
-#ifdef DEBUG_SUPPORT
+#ifdef GIAC_DEBUG_TDEG_T64
       if (!(b.tab[0]%2))
 	COUT << "erreur" << endl;
 #endif
@@ -4046,21 +4069,21 @@ namespace giac {
       return z2.pos>z1.pos;
     return false;
   }
+
+  // #define GIAC_DEG_FIRST
   
   template <class tdeg_t>
   bool operator < (const zsymb_data<tdeg_t> & z1,const zsymb_data<tdeg_t> & z2){
-#ifdef GIAC_DEG_FIRST
-    if (z1.deg!=z2.deg)
-      return tdeg_t_greater(z2.deg,z1.deg,z1.o);
-    if (z1.terms!=z2.terms) return z2.terms>z1.terms;
-#else 
     int d1=z1.deg.total_degree(z1.o),d2=z2.deg.total_degree(z2.o);
+#ifdef GIAC_DEG_FIRST
+    if (d1!=d2)
+      return d1<d2;
+#endif
     //double Z1=d1*double(z1.terms)*(z1.age+1); double Z2=d2*double(z2.terms)*(z2.age+1); if (Z1!=Z2) return Z2>Z1;
     double Z1=double(z1.terms)*d1; double Z2=double(z2.terms)*d2; if (Z1!=Z2) return Z2>Z1;
     if (z1.terms!=z2.terms) return z2.terms>z1.terms;
     if (z1.deg!=z2.deg)
       return tdeg_t_greater(z1.deg,z2.deg,z1.o);
-#endif
     if (z1.pos!=z2.pos)
       return z2.pos>z1.pos;
     return false;
@@ -6003,7 +6026,7 @@ namespace giac {
 	next_index(pos,it);
 	skip=pos;
 	wt=wt0+pos;
-	// if (*wt==0) continue;
+	//if (*wt==0) continue; // test already done with v64[*fit]==0
 	const vector<modint> & mcoeff=coeffs[coeffindex[i].u];
 	bool shortshifts=coeffindex[i].b;
 	if (mcoeff.empty())
@@ -9836,14 +9859,15 @@ namespace giac {
   struct zpolymod {
     order_t order;
     short int dim;
-    short int age;
+    bool in_gbasis; // set to false in zgbasis_updatemod for "small" reductors that we still want to use for reduction
+    short int age:15;
     vector<zmodint> coord;
     const vector<tdeg_t> * expo;
     tdeg_t ldeg;
-    zpolymod():dim(0),expo(0),ldeg(),age(0) {order.o=0; order.lex=0; order.dim=0;}
-    zpolymod(order_t o,int d): dim(d),expo(0),ldeg(),age(0) {order=o; order.dim=d;}
-    zpolymod(order_t o,int d,const tdeg_t & l): dim(d),expo(0),ldeg(l),age(0) {order=o; order.dim=d;}
-    zpolymod(order_t o,int d,const vector<tdeg_t> * e,const tdeg_t & l): dim(d),expo(e),ldeg(l),age(0) {order=o; order.dim=d;}
+    zpolymod():in_gbasis(true),dim(0),expo(0),ldeg(),age(0) {order.o=0; order.lex=0; order.dim=0;}
+    zpolymod(order_t o,int d): in_gbasis(true),dim(d),expo(0),ldeg(),age(0) {order=o; order.dim=d;}
+    zpolymod(order_t o,int d,const tdeg_t & l): in_gbasis(true),dim(d),expo(0),ldeg(l),age(0) {order=o; order.dim=d;}
+    zpolymod(order_t o,int d,const vector<tdeg_t> * e,const tdeg_t & l): in_gbasis(true),dim(d),expo(e),ldeg(l),age(0) {order=o; order.dim=d;}
     void dbgprint() const;
   };
 
@@ -10018,13 +10042,13 @@ namespace giac {
 
   template<class tdeg_t>
   void zleftright(const vectzpolymod<tdeg_t> & res,const vector< paire > & B,vector<tdeg_t> & leftshift,vector<tdeg_t> & rightshift){
+    tdeg_t l;
     for (unsigned i=0;i<B.size();++i){
       const zpolymod<tdeg_t> & p=res[B[i].first];
       const zpolymod<tdeg_t> & q=res[B[i].second];
       if (debug_infolevel>2)
 	CERR << "zleftright " << p << "," << q << endl;
-      tdeg_t l;
-      index_lcm(p.ldeg,q.ldeg,l,p.order);
+      index_lcm_overwrite(p.ldeg,q.ldeg,l,p.order);
       leftshift[i]=l-p.ldeg;
       rightshift[i]=l-q.ldeg;
     }
@@ -10034,7 +10058,7 @@ namespace giac {
   // does not collect leading monomial (since they cancel)
   template<class tdeg_t>
   void zcollect(const vectzpolymod<tdeg_t> & res,const vector< paire > & B,const vector<unsigned> & permuB,vector<tdeg_t> & allf4buchberger,vector<tdeg_t> & leftshift,vector<tdeg_t> & rightshift){
-    int start=1;
+    int start=1,countdiscarded=0;
     vector<heap_tt<tdeg_t> > Ht;
     heap_tt<tdeg_t> heap_elem;
     vector<heap_tt_ptr<tdeg_t> > H; 
@@ -10068,38 +10092,61 @@ namespace giac {
       heap_tt<tdeg_t> & current = *H.front().ptr;
       if (allf4buchberger.empty() || allf4buchberger.back()!=current.u)
 	allf4buchberger.push_back(current.u);
-      ++current.polymodpos;
       unsigned vpos;
       if (current.left)
 	vpos=B[current.f4buchbergervpos].first;
       else
 	vpos=B[current.f4buchbergervpos].second;
-      if (current.polymodpos>=res[vpos].coord.size()){
-	std::pop_heap(H.begin(),H.end(),key);
-	H.pop_back();
-	continue;
-      }
+      ++current.polymodpos;
       const zpolymod<tdeg_t> & resvpos=res[vpos];
-      if (current.left)
-	current.u=(*resvpos.expo)[resvpos.coord[current.polymodpos].u]+leftshift[current.f4buchbergervpos];
-      else 
-	current.u=(*resvpos.expo)[resvpos.coord[current.polymodpos].u]+rightshift[current.f4buchbergervpos];
+      for (int startheappos=1;current.polymodpos<resvpos.coord.size();++current.polymodpos){
+	add((*resvpos.expo)[resvpos.coord[current.polymodpos].u],current.left?leftshift[current.f4buchbergervpos]:rightshift[current.f4buchbergervpos],current.u,keyorder.dim);
+	// if (current.left) current.u=(*resvpos.expo)[resvpos.coord[current.polymodpos].u]+leftshift[current.f4buchbergervpos]; else current.u=(*resvpos.expo)[resvpos.coord[current.polymodpos].u]+rightshift[current.f4buchbergervpos];
+	int newtdeg=current.u.total_degree(keyorder);
+	// quick look in part of heap: if monomial is already there, increment current.polymodpos
+	int heappos=startheappos,ntests=H.size(); // giacmin(8,H.size());
+	for (;heappos<ntests;){
+	  heap_tt<tdeg_t> & heapcurrent=*H[heappos].ptr;
+	  int heapcurtdeg=heapcurrent.u.total_degree(keyorder);
+	  if (heapcurtdeg<newtdeg){
+	    heappos=ntests; break;
+	  }
+	  if (heapcurtdeg==newtdeg && heapcurrent.u==current.u)
+	    break;
+	  //if (heappos<8) ++heappos; else
+	    heappos=2*heappos+1;
+	}
+	if (heappos<ntests){
+	  ++countdiscarded;
+	  startheappos=2*heappos+1;
+	  continue;
+	}
+	break;
+      }
       // push_back &current into heap so that pop_heap will bubble out the
       // modified root node (initialization will exchange two identical pointers)
-      H.push_back(heap_tt_ptr<tdeg_t>(&current));
+      if (current.polymodpos<resvpos.coord.size())
+	H.push_back(heap_tt_ptr<tdeg_t>(&current));
       std::pop_heap(H.begin(),H.end(),key);
       H.pop_back();
     }
+    if (debug_infolevel>1)
+      CERR << "pairs " << 2*B.size() << ", discarded monomials " << countdiscarded << endl;
   }
 
   template<class tdeg_t>
   void zsymbolic_preprocess(const vector<tdeg_t> & f,const vectzpolymod<tdeg_t> & g,const vector<unsigned> & G,unsigned excluded,vector< vector<tdeg_t> > & q,vector<tdeg_t> & rem,vector<tdeg_t> & R){
+    int countdiscarded=0;
     // divides f by g[G[0]] to g[G[G.size()-1]] except maybe g[G[excluded]]
     // CERR << f << "/" << g << endl;
     // first implementation: use quotient heap for all quotient/divisor
     // do not use heap chain
     // ref Monaghan Pearce if g.size()==1
     // R is the list of all monomials
+    if (f.empty() || G.empty())
+      return ;
+    int dim=g[G.front()].dim;
+    order_t order=g[G.front()].order;
 #ifdef GIAC_GBASIS_PERMUTATION
     // First reorder G in order to use the "best" possible reductor
     // This is done using the ldegree of g[G[i]] (should be minmal)
@@ -10111,6 +10158,7 @@ namespace giac {
     }
     sort(GG.begin(),GG.end());
 #endif
+    tdeg_t minldeg(g[G.front()].ldeg);
     R.clear();
     rem.clear();
     // if (G.size()>q.size()) q.clear();
@@ -10119,11 +10167,9 @@ namespace giac {
     for (unsigned i=0;i<G.size();++i){
       q[i].clear();
       guess += unsigned(g[G[i]].coord.size());
+      if (!tdeg_t_greater(g[G[i]].ldeg,minldeg,order))
+	minldeg=g[G[i]].ldeg;
     }
-    if (f.empty() || G.empty())
-      return ;
-    int dim=g[G.front()].dim;
-    order_t order=g[G.front()].order;
     vector<heap_t<tdeg_t> > H_;
     vector<unsigned> H;
     if (debug_infolevel>1)
@@ -10146,15 +10192,38 @@ namespace giac {
       else {
 	m=H_[H.front()].u;
       }
+      //CERR << m << endl;
       R.push_back(m);
       // extract from heap all terms having m as monomials, substract from c
       while (!H.empty() && H_[H.front()].u==m){
 	heap_t<tdeg_t> & current=H_[H.front()]; // was root node of the heap
 	const zpolymod<tdeg_t> & gcurrent = g[G[current.i]];
-	if (current.gj<gcurrent.coord.size()-1){
-	  ++current.gj;
+	++current.gj;
+	for (int startheappos=1;current.gj<gcurrent.coord.size();++current.gj){
 	  //current.u=q[current.i][current.qi]+(*gcurrent.expo)[gcurrent.coord[current.gj].u];
 	  add(q[current.i][current.qi],(*gcurrent.expo)[gcurrent.coord[current.gj].u],current.u,dim);
+	  int newtdeg=current.u.total_degree(order);
+	  // quick look in part of heap: is monomial already there?
+	  int heappos=startheappos,ntests=H.size(); // giacmin(8,H.size());
+	  for (;heappos<ntests;){
+	    heap_t<tdeg_t> & heapcurrent=H_[H[heappos]];
+	    int heapcurtdeg=heapcurrent.u.total_degree(order);
+	    if (heapcurtdeg<newtdeg){
+	      heappos=ntests; break;
+	    }
+	    if (heapcurtdeg==newtdeg && heapcurrent.u==current.u)
+	      break;
+	    //if (heappos<8) ++heappos; else
+	      heappos=2*heappos+1;
+	  }
+	  if (heappos<ntests){
+	    ++countdiscarded;
+	    startheappos=2*heappos+1;
+	    continue;
+	  }
+	  break;
+	}
+	if (current.gj<gcurrent.coord.size()){
 	  H.push_back(H.front());
 	  std::pop_heap(H.begin(),H.end(),key);
 	  H.pop_back();
@@ -10169,6 +10238,9 @@ namespace giac {
 	rem.push_back(m); // add to remainder
 	continue;
       }
+#ifdef GIAC_DEG_FIRST
+      int mtot=m.total_degree(order);
+#endif
       unsigned ii;
       for (ii=0;ii<G.size();++ii){
 #ifdef GIAC_GBASIS_PERMUTATION
@@ -10179,6 +10251,11 @@ namespace giac {
 	if (i==excluded)
 	  continue;
 	const tdeg_t & deg=g[G[i]].ldeg;
+#ifdef GIAC_DEG_FIRST
+	if (deg.total_degree(order)>mtot){
+	  ii=G.size(); break;
+	}
+#endif
 	if (tdeg_t_all_greater(m,deg,order))
 	  break;
       }
@@ -10186,16 +10263,7 @@ namespace giac {
 	rem.push_back(m); // add to remainder
 	// no monomial divide m, check if m is greater than one of the monomial of G
 	// if not we can push all remaining monomials in rem
-	finish=true;
-	for (ii=0;ii<G.size();++ii){
-	  if (ii==excluded)
-	    continue;
-	  const tdeg_t & deg=g[G[ii]].ldeg;
-	  if (tdeg_t_greater(m,deg,order)){
-	    finish=false;
-	    break;
-	  }
-	}
+	finish=!tdeg_t_greater(m,minldeg,order);
 	continue;
       }
       // add m/leading monomial of g[G[i]] to q[i]
@@ -10204,16 +10272,40 @@ namespace giac {
       q[i].push_back(monom);
       // CERR << i << " " << q[i] << endl;
       // push in heap
-      if (gGi.coord.size()>1){
-	heap_t<tdeg_t> current = { i, unsigned(q[i].size()) - 1, 1, (*gGi.expo)[gGi.coord[1].u] + monom };
+      int startheappos=0;
+      for (int pos=1;pos<gGi.coord.size();++pos){
+#if 0 // not useful here, but would be above!
+	tdeg_t newmonom=(*gGi.expo)[gGi.coord[pos].u] + monom;
+	int newtdeg=newmonom.total_degree(order);
+	// quick look in part of heap is monomial already there
+	int heappos=startheappos,ntests=H.size(); // giacmin(8,H.size());
+	for (;heappos<ntests;heappos=2*heappos+1){
+	  heap_t<tdeg_t> & current=H_[H[heappos]];
+	  int curtdeg=current.u.total_degree(order);
+	  if (curtdeg<newtdeg){
+	    heappos=ntests; break;
+	  }
+	  if (curtdeg==newtdeg && current.u==newmonom)
+	    break;
+	}
+	if (heappos<ntests){
+	  ++countdiscarded;
+	  startheappos=2*heappos+1;
+	  continue;
+	}
+	heap_t<tdeg_t> current = { i, unsigned(q[i].size()) - 1, pos, newmonom };
+#else
+	heap_t<tdeg_t> current = { i, unsigned(q[i].size()) - 1, pos, (*gGi.expo)[gGi.coord[pos].u] + monom };
+#endif
 	H.push_back(hashgcd_U(H_.size()));
 	H_.push_back(current);
 	key.ptr=&H_.front();
 	std::push_heap(H.begin(),H.end(),key);
+	break;
       }
     } // end main heap pseudo-division loop
     if (debug_infolevel>1)
-      CERR << CLOCK() << "Heap actual size was " << H_.size() << endl;
+      CERR << CLOCK() << " Heap actual size was " << H_.size() << " discarded monomials " << countdiscarded << endl;
   }
 
   template<class tdeg_t>
@@ -11251,7 +11343,16 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     unsigned tmpsize = unsigned(G.size());
     vector<tdeg_t> tmp(tmpsize);
     for (unsigned i=0;i<tmpsize;++i){
-      index_lcm(h0,res[G[i]].ldeg,tmp[i],order); 
+      if (
+#ifdef GIAC_GBASIS_REDUCTOR_MAXSIZE
+	  res[G[i]].in_gbasis
+#else
+	  1
+#endif
+	  )
+	index_lcm(h0,res[G[i]].ldeg,tmp[i],order);
+      else
+	tmp[i].tab[0]=-1;
     }
 #else
     // this would be faster but it does not work for 
@@ -11267,6 +11368,10 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     for (unsigned i=0;i<G.size();++i){
 #ifdef TIMEOUT
       control_c();
+#endif
+#ifdef GIAC_GBASIS_REDUCTOR_MAXSIZE
+      if (!res[G[i]].in_gbasis)
+	continue;
 #endif
       if (interrupted || ctrl_c)
 	return;
@@ -11291,12 +11396,15 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	if (tdeg_t_all_greater(*tmp1,*tmp2,order))
 	  break; // found another pair, keep the smallest, or the first if equal
       }
-      if (tmp2!=tmp1)
+      if (tmp2!=tmp1){
+	tmp1->tab[0]=-1; // desactivate tmp1 since it is >=tmp2
 	continue;
+      }
       for (++tmp2;tmp2<tmpend;++tmp2){
 	if (tmp2->tab[0]==-1)
 	  continue;
 	if (tdeg_t_all_greater(*tmp1,*tmp2,order) && *tmp1!=*tmp2){
+	  tmp1->tab[0]=-1; // desactivate tmp1 since it is >tmp2
 	  break; 
 	}
       }
@@ -11313,7 +11421,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	return;
       if (res[B[i].first].coord.empty() || res[B[i].second].coord.empty())
 	continue;
-      index_lcm(res[B[i].first].ldeg,res[B[i].second].ldeg,tmp1,order);
+      index_lcm_overwrite(res[B[i].first].ldeg,res[B[i].second].ldeg,tmp1,order);
 #ifdef GIAC_GBASIS_DELAYPAIRS
       if (!multimodular){
 	// look for the pair B[i].second,pos compared to B[i].first/B[i].second
@@ -11362,12 +11470,12 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	B1.push_back(B[i]);
 	continue;
       }
-      index_lcm(res[B[i].first].ldeg,h0,tmp2,order);
+      index_lcm_overwrite(res[B[i].first].ldeg,h0,tmp2,order);
       if (tmp2==tmp1){
 	B1.push_back(B[i]);
 	continue;
       }
-      index_lcm(res[B[i].second].ldeg,h0,tmp2,order);
+      index_lcm_overwrite(res[B[i].second].ldeg,h0,tmp2,order);
       if (tmp2==tmp1){
 	B1.push_back(B[i]);
 	continue;
@@ -11396,9 +11504,20 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #endif
       if (interrupted || ctrl_c)
 	return;
+#ifdef GIAC_GBASIS_REDUCTOR_MAXSIZE
+      if (!res[G[i]].in_gbasis)
+	continue;
+#endif
       if (!res[G[i]].coord.empty() && !tdeg_t_all_greater(res[G[i]].ldeg,h0,order)){
 	C.push_back(G[i]);
+	continue;
       }
+#ifdef GIAC_GBASIS_REDUCTOR_MAXSIZE
+      if (res[G[i]].coord.size()<=GIAC_GBASIS_REDUCTOR_MAXSIZE){
+	res[G[i]].in_gbasis=false;
+	C.push_back(G[i]);
+      }
+#endif
       // NB: removing all pairs containing i in it does not work
     }
     if (debug_infolevel>2)
@@ -11709,6 +11828,15 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       // CERR << "finish loop G.size "<<G.size() << endl;
       // CERR << added << endl;
     } // end main loop
+#ifdef GIAC_GBASIS_REDUCTOR_MAXSIZE
+    // remove small size reductors that were kept despite not being in gbasis
+    vector<unsigned> G1;
+    for (unsigned i=0;i<G.size();++i){
+      if (res[G[i]].in_gbasis)
+	G1.push_back(G[i]);
+    }
+    G.swap(G1);
+#endif
     // convert back zpolymod<tdeg_t> to polymod<tdeg_t>
     // if eliminate_flag is true, keep only basis element that do not depend
     // on variables to eliminate
@@ -11816,6 +11944,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     if (order.o==_11VAR_ORDER) return 11;
     if (order.o==_16VAR_ORDER) return 16;
     if (order.o==_32VAR_ORDER) return 32;
+    if (order.o==_48VAR_ORDER) return 48;
     if (order.o==_64VAR_ORDER) return 64;
     return dim;
   }
@@ -12367,7 +12496,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  return false;
       }
     }
-    if (order.o!=_REVLEX_ORDER && order.o!=_3VAR_ORDER && order.o!=_7VAR_ORDER && order.o!=_11VAR_ORDER && order.o!=_16VAR_ORDER && order.o!=_32VAR_ORDER && order.o!=_64VAR_ORDER)
+    if (order.o!=_REVLEX_ORDER && order.o!=_3VAR_ORDER && order.o!=_7VAR_ORDER && order.o!=_11VAR_ORDER && order.o!=_16VAR_ORDER && order.o!=_32VAR_ORDER && order.o!=_48VAR_ORDER && order.o!=_64VAR_ORDER)
       return false;
     // if (order!=_REVLEX_ORDER) zdata=false;
     vectpoly8<tdeg_t> current,vtmp,afewpolys;
@@ -13041,7 +13170,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     };
     int front(){ return tab[2];}
     // methods
-    unsigned total_degree(order_t order) const {
+    inline unsigned total_degree(order_t order) const {
       return tdeg+tdeg2;
     }
     // void set_total_degree(unsigned d) { tab[0]=d;}
@@ -13162,11 +13291,19 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 
   static inline int tdeg_t14_revlex_greater (const tdeg_t14 & x,const tdeg_t14 & y){
 #ifdef GBASIS_SWAP
+#if 0
+    longlong *xtab=(longlong *)&x,*ytab=(longlong *)&y;
+    if (longlong a=*xtab-*ytab) // tdeg test already donne by caller
+      return a<=0?1:0;
+    if (longlong a=xtab[1]-ytab[1])
+      return a<=0?1:0;
+#else
     ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y;
     if (xtab[0]!=ytab[0]) // tdeg test already donne by caller
       return xtab[0]<=ytab[0]?1:0;
     if (xtab[1]!=ytab[1])
       return xtab[1]<=ytab[1]?1:0;
+#endif
     return 2;
 #else // GBASIS_SWAP
     if (((longlong *) x.tab)[0] != ((longlong *) y.tab)[0]){
@@ -13351,6 +13488,10 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     }
   }
 
+  void index_lcm_overwrite(const tdeg_t14 & x,const tdeg_t14 & y,tdeg_t14 & z,order_t order){
+    index_lcm(x,y,z,order);
+  }
+  
   void get_index(const tdeg_t14 & x_,index_t & idx,order_t order,int dim){
     idx.resize(dim);
 #ifdef GBASIS_SWAP    
@@ -13403,7 +13544,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     };
     int front(){ return tab[1];}
     // methods
-    unsigned total_degree(order_t order) const {
+    inline unsigned total_degree(order_t order) const {
       // works only for revlex and tdeg
       return tab[0];
     }
@@ -13511,6 +13652,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 
   static inline int tdeg_t11_revlex_greater (const tdeg_t11 & x,const tdeg_t11 & y){
 #ifdef GBASIS_SWAP
+#if 1
     ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y;
     if (xtab[0]!=ytab[0]) // tdeg test already donne by caller
       return xtab[0]<=ytab[0]?1:0;
@@ -13518,6 +13660,15 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       return xtab[1]<=ytab[1]?1:0;
     if (xtab[2]!=ytab[2])
       return xtab[2]<=ytab[2]?1:0;
+#else
+    longlong *xtab=(longlong *)&x,*ytab=(longlong *)&y;
+    if (longlong a=*xtab-*ytab) // tdeg test already donne by caller
+      return a<=0?1:0;
+    if (longlong a=xtab[1]-ytab[1])
+      return a<=0?1:0;
+    if (longlong a=xtab[2]-ytab[2])
+      return a<=0?1:0;
+#endif
     return 2;
 #else // GBASIS_SWAP
     if (((longlong *) x.tab)[0] != ((longlong *) y.tab)[0]){
@@ -13683,6 +13834,10 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     }
   }
 
+  inline void index_lcm_overwrite(const tdeg_t11 & x,const tdeg_t11 & y,tdeg_t11 & z,order_t order){
+    index_lcm(x,y,z,order);
+  }
+  
   void get_index(const tdeg_t11 & x_,index_t & idx,order_t order,int dim){
     idx.resize(dim);
 #ifdef GBASIS_SWAP    
@@ -13740,7 +13895,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     };
     int front(){ return tab[1];}
     // methods
-    unsigned total_degree(order_t order) const {
+    inline unsigned total_degree(order_t order) const {
       if (order.o==_REVLEX_ORDER)
 	return tab[0];      // works only for revlex and tdeg
       if (order.o==_3VAR_ORDER)
@@ -13961,6 +14116,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 
   static inline int tdeg_t15_revlex_greater (const tdeg_t15 & x,const tdeg_t15 & y){
 #ifdef GBASIS_SWAP
+#if 1
     ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y;
     if (xtab[0]!=ytab[0]) // tdeg test already donne by caller
       return xtab[0]<=ytab[0]?1:0;
@@ -13968,6 +14124,15 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       return xtab[1]<=ytab[1]?1:0;
     if (xtab[2]!=ytab[2])
       return xtab[2]<=ytab[2]?1:0;
+#else
+    longlong *xtab=(longlong *)&x,*ytab=(longlong *)&y;
+    if (longlong a=*xtab-*ytab) // tdeg test already donne by caller
+      return a<=0?1:0;
+    if (longlong a=xtab[1]-ytab[1])
+      return a<=0?1:0;
+    if (longlong a=xtab[2]-ytab[2])
+      return a<=0?1:0;
+#endif
 #if GROEBNER_VARS>11
     return xtab[3]<=ytab[3]?1:0;
 #endif
@@ -14382,6 +14547,10 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       z.tab[0]=(x.tab[0]>y.tab[0])?x.tab[0]:y.tab[0];
     }
   }
+
+  inline void index_lcm_overwrite(const tdeg_t15 & x,const tdeg_t15 & y,tdeg_t15 & z,order_t order){
+    index_lcm(x,y,z,order);
+  }  
 
   void get_index(const tdeg_t15 & x_,index_t & idx,order_t order,int dim){
     idx.resize(dim);

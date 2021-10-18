@@ -87,11 +87,7 @@ using namespace std;
 #endif // visualc || besta_os
 
 #ifdef BESTA_OS
-#ifdef BESTA_WIN32_TARGET
-#include <Windows.h>
-#else
 #include <stdlib.h>
-#endif // besta_win32_target
 #endif // besta_os
 
 #include <stdio.h>
@@ -1527,7 +1523,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   const char cas_suffixe[]=".cas";
 #if defined RTOS_THREADX || defined BESTA_OS
 #ifdef BESTA_OS
-  int LIST_SIZE_LIMIT = 10000 ;
+  int LIST_SIZE_LIMIT = 100000 ;
   int FACTORIAL_SIZE_LIMIT = 1000 ;
 #else
   int LIST_SIZE_LIMIT = 1000 ;

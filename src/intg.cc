@@ -2816,7 +2816,7 @@ namespace giac {
     gen x=v[1];
     if (x.is_symb_of_sommet(at_unquote))
       x=eval(x,1,contextptr);
-    if (rcl_38 && x.type==_IDNT && rcl_38(x,0,x._IDNTptr->id_name,undef,false,contextptr)){
+    if (storcl_38 && x.type==_IDNT && storcl_38(x,0,x._IDNTptr->id_name,undef,false,contextptr,NULL,false)){
       identificateur t("t_");
       x=v[1];
       v[0]=quotesubst(v[0],x,t,contextptr);
@@ -4094,7 +4094,7 @@ namespace giac {
   // write e(x+1)/e(x) as P(n+1)/P(n)*Q(x)/R(x+1) 
   bool is_hypergeometric(const gen & e,const identificateur &x,vecteur &v,polynome & P,polynome & Q,polynome & R,GIAC_CONTEXT){
     v=lvarx(e,x);
-    if (!loptab(v,sincostan_tab).empty() || !loptab(v,asinacosatan_tab).empty())
+    if (!loptab(v,sincostan_tab).empty() || !loptab(v,asinacosatan_tab).empty() || !lop(v,at_Psi).empty())
       return false;
     // if v contains a non linear exp abort
     int vs=int(v.size());
