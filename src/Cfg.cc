@@ -154,7 +154,7 @@ namespace xcas {
   }
 
   static void cb_Xcas_Set_Python(Fl_Menu_*, void*) {
-    do_maple_mode=256; Xcas_Style->value("Xcas (Python)");
+    do_maple_mode=256; Xcas_Style->value("Python");
   }
 
   static void cb_Xcas_Set_Maple(Fl_Menu_*, void*) {
@@ -171,7 +171,7 @@ namespace xcas {
 
   Fl_Menu_Item menu_Xcas_Prg_style[] = {
     {gettext("Xcas"), 0,  (Fl_Callback*)cb_Xcas_Set_CPP, 0, 0, 0, 0, 14, 56},
-    {gettext("Xcas (Python)"), 0,  (Fl_Callback*)cb_Xcas_Set_Python, 0, 0, 0, 0, 14, 56},
+    {gettext("Python"), 0,  (Fl_Callback*)cb_Xcas_Set_Python, 0, 0, 0, 0, 14, 56},
     {gettext("Maple"), 0,  (Fl_Callback*)cb_Xcas_Set_Maple, 0, 0, 0, 0, 14, 56},
     {gettext("Mupad"), 0,  (Fl_Callback*)cb_Xcas_Set_Mupad, 0, 0, 0, 0, 14, 56},
     {gettext("TI89/92"), 0,  (Fl_Callback*)cb_Xcas_Set_TI, 0, 0, 0, 0, 14, 56},
@@ -488,7 +488,7 @@ or default eval level)"));
       do_maple_mode+=256;
     switch(do_maple_mode){
     case 0: Xcas_Style->value("Xcas"); break;
-    case 256: Xcas_Style->value("Xcas (Python-ic)"); break;
+    case 256: Xcas_Style->value("Python"); break;
     case 1: Xcas_Style->value("Maple"); break;
     case 2: Xcas_Style->value("Mupad"); break;
     case 3: Xcas_Style->value("Ti"); break;

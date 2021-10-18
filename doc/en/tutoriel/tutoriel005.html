@@ -26,16 +26,16 @@
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">hessian</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >hessian matrix</td></tr>
 </table>
 </div><p>
-<a id="hevea_default121"></a>
-<a id="hevea_default122"></a>
-<a id="hevea_default123"></a>
-<a id="hevea_default124"></a>
-<a id="hevea_default125"></a>
-<a id="hevea_default126"></a>
-<a id="hevea_default127"></a>
-<a id="hevea_default128"></a>
-<a id="hevea_default129"></a>
-<a id="hevea_default130"></a></p><p>The <span style="font-family:monospace">diff</span> function will find the derivative of an expression
+<a id="hevea_default170"></a>
+<a id="hevea_default171"></a>
+<a id="hevea_default172"></a>
+<a id="hevea_default173"></a>
+<a id="hevea_default174"></a>
+<a id="hevea_default175"></a>
+<a id="hevea_default176"></a>
+<a id="hevea_default177"></a>
+<a id="hevea_default178"></a>
+<a id="hevea_default179"></a></p><p>The <span style="font-family:monospace">diff</span> function will find the derivative of an expression
 and returns the derivative as an expression. If you have a function
 <span style="font-style:italic">f</span>, you can find the derivative by entering
 </p><blockquote class="quote"><span style="font-family:monospace">diff(f(x),x)
@@ -43,8 +43,8 @@ and returns the derivative as an expression. If you have a function
 Note that the result will itself be an expression; do not define the
 deritivave function by <span style="font-family:monospace">fprime(x) := diff(f(x),x)</span>. If you
 want to define the derivative as a function, you can use
-<span style="font-family:monospace">unapply</span>:
-</p><blockquote class="quote"><span style="font-family:monospace">fprime(x) := unapply(diff(f(x),x),x)
+<span style="font-family:monospace">unapply</span>:<a id="hevea_default180"></a>
+</p><blockquote class="quote"><span style="font-family:monospace">fprime := unapply(diff(f(x),x),x)
 </span></blockquote><p>
 Alternatively, you can use <span style="font-family:monospace">function_diff</span>, which takes a
 function (not an expression) as input and returns the derivative
@@ -103,11 +103,11 @@ commands for other types of special derivatives.</p>
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">order_size</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >used in the remainder term of a series expansion</td></tr>
 </table>
 </div><p>
-<a id="hevea_default131"></a>
-<a id="hevea_default132"></a>
-<a id="hevea_default133"></a>
-<a id="hevea_default134"></a>
-<a id="hevea_default135"></a></p><p>The <span style="font-family:monospace">limit</span> function will take an expression, a variable and a
+<a id="hevea_default181"></a>
+<a id="hevea_default182"></a>
+<a id="hevea_default183"></a>
+<a id="hevea_default184"></a>
+<a id="hevea_default185"></a></p><p>The <span style="font-family:monospace">limit</span> function will take an expression, a variable and a
 point and return the limit at the point. If you enter
 </p><blockquote class="quote"><span style="font-family:monospace">limit(sin(x)/x,x,0)
 </span></blockquote><p>
@@ -149,7 +149,7 @@ find the Taylor series of the expression. If you enter
 </span></blockquote><p>
 you will get
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-1&#X2212;</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
+1&#X2212;</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup></td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center">6</td></tr>
 </table></td><td class="dcell">&#XA0;+&#XA0;</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>4</sup></td></tr>
@@ -162,7 +162,7 @@ The <span style="font-family:monospace">series</span> function works the same as
 function.</p><p>By default, <span style="font-family:monospace">taylor</span> will find the terms up to the fifth
 degree. The <span style="font-family:monospace">order_size(x)</span> represents a factor for which 
 for all <span style="font-style:italic">a</span>&gt;0, the term <span style="font-style:italic">x</span><sup><span style="font-style:italic">a</span></sup><span style="font-family:monospace">order_size</span>(<span style="font-style:italic">x</span>) will approach 0
-as <span style="font-style:italic">x</span> approaches 0. </p><p>The series will returned by <span style="font-family:monospace">taylor</span> will also
+as <span style="font-style:italic">x</span> approaches 0. </p><p>The series returned by <span style="font-family:monospace">taylor</span> will also
 be centered about 0 by default; if you want to center it around the number
 <span style="font-family:monospace">a</span>, you can replace <span style="font-family:monospace">x</span> by <span style="font-family:monospace">x=a</span>;
 </p><blockquote class="quote"><span style="font-family:monospace">taylor(exp(x),x=1)
@@ -176,7 +176,7 @@ exp(1)*(<span style="font-style:italic">x</span>&#X2212;1)<sup>4</sup>/24+exp(1)
 </td></tr>
 </table><p>
 You can also give the center of the series with a third argument.
-To find the terms to higher order, you can add an extra argument
+To find the terms to a different you can add an extra argument
 giving the order;
 </p><blockquote class="quote"><span style="font-family:monospace">taylor(sin(x)/x,x=0,3)
 </span></blockquote><p>
@@ -188,7 +188,7 @@ will return
 </table></td><td class="dcell">&#XA0;+&#XA0;<span style="font-style:italic">x</span><sup>4</sup>*<span style="font-family:monospace">order_size</span>(<span style="font-style:italic">x</span>)
 </td></tr>
 </table><p>
-Note that in this case, you must explicitly give the center of the
+Note that in this case you must explicitly give the center of the
 series, even if it is 0.</p><p>To find the Taylor polynomial, you can add an extra argument of
 <span style="font-family:monospace">polynom</span>;
 </p><blockquote class="quote"><span style="font-family:monospace">taylor(sin(x)/x,x,polynom)
@@ -210,10 +210,10 @@ will return
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">romberg</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >approximation of integrals</td></tr>
 </table>
 </div><p>
-<a id="hevea_default136"></a>
-<a id="hevea_default137"></a>
-<a id="hevea_default138"></a>
-<a id="hevea_default139"></a></p><p>The <span style="font-family:monospace">int</span> function will find an antiderivative of an
+<a id="hevea_default186"></a>
+<a id="hevea_default187"></a>
+<a id="hevea_default188"></a>
+<a id="hevea_default189"></a></p><p>The <span style="font-family:monospace">int</span> function will find an antiderivative of an
 expression. By default, it will assume that the variable is <span style="font-style:italic">x</span>, to
 use another variable you can give it as an argument.
 </p><blockquote class="quote"><span style="font-family:monospace">int(x*sin(x))
@@ -257,7 +257,7 @@ integral, for cases when the exact value can&#X2019;t be computed or you
 don&#X2019;t want to compute it. For example,
 </p><blockquote class="quote"><span style="font-family:monospace">romberg(exp(-x^2),x,0,10)
 </span></blockquote><p>
-returns
+will return
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
 0.886226925452
 </td></tr>
@@ -274,10 +274,10 @@ returns
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">proot</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >approximate roots of a polynomial</td></tr>
 </table>
 </div><p>
-<a id="hevea_default140"></a>
-<a id="hevea_default141"></a>
-<a id="hevea_default142"></a>
-<a id="hevea_default143"></a></p><p>Solving equations is important, but it is often impossible to find
+<a id="hevea_default190"></a>
+<a id="hevea_default191"></a>
+<a id="hevea_default192"></a>
+<a id="hevea_default193"></a></p><p>Solving equations is important, but it is often impossible to find
 exact solutions. <span style="font-family:monospace">Xcas</span> has the ability to find exact
 solutions in some cases and to approximate solutions.</p><p>The <span style="font-family:monospace">solve</span> function will attempt to find the exact solution of
 an equation that you give it. If you enter an expression that isn&#X2019;t
@@ -388,7 +388,7 @@ will result in
 where <span style="font-style:italic">n</span><sub>0</sub> represents an arbitrary integer.</p><p>The <span style="font-family:monospace">solve</span> function can also handle systems of equations.
 For this, use a list of equations for the first argument and a list of
 variables for the second. If you enter
-</p><blockquote class="quote"><span style="font-family:monospace">solve([x^2 + y - 2, x + y^2 - 2],[x,y]
+</p><blockquote class="quote"><span style="font-family:monospace">solve([x^2 + y - 2, x + y^2 - 2],[x,y])
 </span></blockquote><p>
 you will get all four solutions as a matrix; each row represents one
 solution.
@@ -494,9 +494,9 @@ you will get
 </td></tr>
 </table><p>
 Algorithms for approximating solutions of equations 
-typically involve finding a sequence which converges to a
-solution given a starting point. The <span style="font-family:monospace">fsolve</span> command can take
-an initial value, if you enter
+typically involve starting with a given point and finding a sequence
+which converges to a solution. The <span style="font-family:monospace">fsolve</span> command can take
+a starting point, if you enter
 </p><blockquote class="quote"><span style="font-family:monospace">fsolve(x^3 -3*x + 1,x,1)
 </span></blockquote><p>
 you will get
@@ -514,11 +514,11 @@ you will get
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">interactive_plotode</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >clickable interface</td></tr>
 </table>
 </div><p>
-<a id="hevea_default144"></a>
-<a id="hevea_default145"></a>
-<a id="hevea_default146"></a>
-<a id="hevea_default147"></a>
-<a id="hevea_default148"></a></p><p>The <span style="font-family:monospace">desolve</span> command is used to try to find exact solutions of
+<a id="hevea_default194"></a>
+<a id="hevea_default195"></a>
+<a id="hevea_default196"></a>
+<a id="hevea_default197"></a>
+<a id="hevea_default198"></a></p><p>The <span style="font-family:monospace">desolve</span> command is used to try to find exact solutions of
 differential equations. The first argument is the differential
 equation itself, the second argument is the function. The derivative
 of an unknown function <span style="font-style:italic">y</span> is denoted <span style="font-family:monospace">diff(y)</span>, which can be

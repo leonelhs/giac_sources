@@ -15,8 +15,6 @@
 <h3 id="sec29" class="subsection">5.1&#XA0;&#XA0;Integer arithmetic</h3>
 <div class="center">
 <table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:center;border:solid 1px;white-space:nowrap"  colspan=2><span style="font-weight:bold">Integers</span></td></tr>
-<tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">a%p</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-style:italic">a</span> modulo <span style="font-style:italic">p</span></td></tr>
-<tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">powmod(a,n,p)</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-style:italic">a</span><sup><span style="font-style:italic">n</span></sup> modulo <span style="font-style:italic">p</span></td></tr>
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">irem</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >remainder</td></tr>
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">iquo</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >quotient</td></tr>
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">iquorem</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >quotient and remainder</td></tr>
@@ -29,26 +27,28 @@
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">isprime</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >primality test</td></tr>
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">nextprime</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >next prime number</td></tr>
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">previousprime</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >previous prime number</td></tr>
+<tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">a%p</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-style:italic">a</span> modulo <span style="font-style:italic">p</span></td></tr>
+<tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">powmod(a,n,p)</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-style:italic">a</span><sup><span style="font-style:italic">n</span></sup> modulo <span style="font-style:italic">p</span></td></tr>
 </table>
 </div><p>
-<a id="hevea_default149"></a>
-<a id="hevea_default150"></a>
-<a id="hevea_default151"></a>
-<a id="hevea_default152"></a>
-<a id="hevea_default153"></a>
-<a id="hevea_default154"></a>
-<a id="hevea_default155"></a>
-<a id="hevea_default156"></a>
-<a id="hevea_default157"></a>
-<a id="hevea_default158"></a>
-<a id="hevea_default159"></a>
-<a id="hevea_default160"></a>
-<a id="hevea_default161"></a>
-<a id="hevea_default162"></a>
-<a id="hevea_default163"></a>
-<a id="hevea_default164"></a>
-<a id="hevea_default165"></a>
-<a id="hevea_default166"></a></p><p><span style="font-family:monospace">Xcas</span> has the usual number theoretic functions. The
+<a id="hevea_default199"></a>
+<a id="hevea_default200"></a>
+<a id="hevea_default201"></a>
+<a id="hevea_default202"></a>
+<a id="hevea_default203"></a>
+<a id="hevea_default204"></a>
+<a id="hevea_default205"></a>
+<a id="hevea_default206"></a>
+<a id="hevea_default207"></a>
+<a id="hevea_default208"></a>
+<a id="hevea_default209"></a>
+<a id="hevea_default210"></a>
+<a id="hevea_default211"></a>
+<a id="hevea_default212"></a>
+<a id="hevea_default213"></a>
+<a id="hevea_default214"></a>
+<a id="hevea_default215"></a>
+<a id="hevea_default216"></a></p><p><span style="font-family:monospace">Xcas</span> has the usual number theoretic functions. The
 <span style="font-family:monospace">iquo</span> command will find the integer quotient of two integers
 and <span style="font-family:monospace">irem</span> will find the remainder. The <span style="font-family:monospace">iquorem</span>
 command will return a list of both the quotient and remainder; if you
@@ -64,14 +64,14 @@ since 30 divided by 7 is 4 with a remainder of 2.</p><p>The <span style="font-fa
 common divisor and least common multiple of two integers. If you enter
 </p><blockquote class="quote"><span style="font-family:monospace">gcd(72,120)
 </span></blockquote><p>
-returns 
+you will get
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
 24
 </td></tr>
 </table><p>
 The greatest common divisor <span style="font-style:italic">d</span> of two integers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> can always be
 written in the form <span style="font-style:italic">a</span>*<span style="font-style:italic">u</span> + <span style="font-style:italic">b</span>*<span style="font-style:italic">v</span> = <span style="font-style:italic">d</span> for integers <span style="font-style:italic">u</span> and <span style="font-style:italic">v</span>. (This
-is known as B&#XE9;zout&#X2019;s Identity). The <span style="font-family:monospace">iegcd</span> will
+is known as B&#XE9;zout&#X2019;s Identity.) The <span style="font-family:monospace">iegcd</span> will
 return the coefficients <span style="font-style:italic">u</span> and <span style="font-style:italic">v</span> as well as the greatest commond
 divisor. If you enter
 </p><blockquote class="quote"><span style="font-family:monospace">iegcd(72,120)
@@ -117,7 +117,7 @@ the command <span style="font-family:monospace">isprime</span> will return <span
 depending on whether or not you enter a prime. If you enter
 </p><blockquote class="quote"><span style="font-family:monospace">isprime(37)
 </span></blockquote><p>
-will return
+you will get
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
 <span style="font-style:italic">true</span>
 </td></tr>
@@ -199,53 +199,53 @@ proper rational part</td></tr>
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">tchebyshev2</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >Tchebyshev polynomials</td></tr>
 </table>
 </div><p>
-<a id="hevea_default167"></a>
-<a id="hevea_default168"></a>
-<a id="hevea_default169"></a>
-<a id="hevea_default170"></a>
-<a id="hevea_default171"></a>
-<a id="hevea_default172"></a>
-<a id="hevea_default173"></a>
-<a id="hevea_default174"></a>
-<a id="hevea_default175"></a>
-<a id="hevea_default176"></a>
-<a id="hevea_default177"></a>
-<a id="hevea_default178"></a>
-<a id="hevea_default179"></a>
-<a id="hevea_default180"></a>
-<a id="hevea_default181"></a>
-<a id="hevea_default182"></a>
-<a id="hevea_default183"></a>
-<a id="hevea_default184"></a>
-<a id="hevea_default185"></a>
-<a id="hevea_default186"></a>
-<a id="hevea_default187"></a>
-<a id="hevea_default188"></a>
-<a id="hevea_default189"></a>
-<a id="hevea_default190"></a>
-<a id="hevea_default191"></a>
-<a id="hevea_default192"></a>
-<a id="hevea_default193"></a>
-<a id="hevea_default194"></a>
-<a id="hevea_default195"></a>
-<a id="hevea_default196"></a>
-<a id="hevea_default197"></a>
-<a id="hevea_default198"></a>
-<a id="hevea_default199"></a>
-<a id="hevea_default200"></a>
-<a id="hevea_default201"></a>
-<a id="hevea_default202"></a>
-<a id="hevea_default203"></a>
-<a id="hevea_default204"></a>
-<a id="hevea_default205"></a>
-<a id="hevea_default206"></a> 
-<a id="hevea_default207"></a>
-<a id="hevea_default208"></a>
-<a id="hevea_default209"></a>
-<a id="hevea_default210"></a>
-<a id="hevea_default211"></a>
-<a id="hevea_default212"></a></p><p>Various polynomial operations are available in the <span style="font-family:monospace">Polynomials</span>
-submenu of the <span style="font-family:monospace">Cmds</span> menu.</p><p>The <span style="font-family:monospace">expand</span> or <span style="font-family:monospace">normal</span> operators will distribute
+<a id="hevea_default217"></a>
+<a id="hevea_default218"></a>
+<a id="hevea_default219"></a>
+<a id="hevea_default220"></a>
+<a id="hevea_default221"></a>
+<a id="hevea_default222"></a>
+<a id="hevea_default223"></a>
+<a id="hevea_default224"></a>
+<a id="hevea_default225"></a>
+<a id="hevea_default226"></a>
+<a id="hevea_default227"></a>
+<a id="hevea_default228"></a>
+<a id="hevea_default229"></a>
+<a id="hevea_default230"></a>
+<a id="hevea_default231"></a>
+<a id="hevea_default232"></a>
+<a id="hevea_default233"></a>
+<a id="hevea_default234"></a>
+<a id="hevea_default235"></a>
+<a id="hevea_default236"></a>
+<a id="hevea_default237"></a>
+<a id="hevea_default238"></a>
+<a id="hevea_default239"></a>
+<a id="hevea_default240"></a>
+<a id="hevea_default241"></a>
+<a id="hevea_default242"></a>
+<a id="hevea_default243"></a>
+<a id="hevea_default244"></a>
+<a id="hevea_default245"></a>
+<a id="hevea_default246"></a>
+<a id="hevea_default247"></a>
+<a id="hevea_default248"></a>
+<a id="hevea_default249"></a>
+<a id="hevea_default250"></a>
+<a id="hevea_default251"></a>
+<a id="hevea_default252"></a>
+<a id="hevea_default253"></a>
+<a id="hevea_default254"></a>
+<a id="hevea_default255"></a>
+<a id="hevea_default256"></a> 
+<a id="hevea_default257"></a>
+<a id="hevea_default258"></a>
+<a id="hevea_default259"></a>
+<a id="hevea_default260"></a>
+<a id="hevea_default261"></a>
+<a id="hevea_default262"></a></p><p>Various polynomial operations are available in the <span style="font-family:monospace">Polynomials</span>
+submenu of the <span style="font-family:monospace">Cmds</span> menu.</p><p>The <span style="font-family:monospace">expand</span> and <span style="font-family:monospace">normal</span> operators will distribute
 multiplication across addition, and so expand a polynomial completely
 out. If you enter
 </p><blockquote class="quote"><span style="font-family:monospace">expand((x+1)*(x+2)^2)
@@ -265,8 +265,7 @@ you will get
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>+1</td></tr>
 </table></td></tr>
-</table><p>The <span style="font-family:monospace">normal</span> operator will additionally put a rational
-expression into lowest terms. </p><p>The <span style="font-family:monospace">factor</span> operator will factor a polynomial. 
+</table><p>The <span style="font-family:monospace">factor</span> operator will factor a polynomial. 
 If you enter
 </p><blockquote class="quote"><span style="font-family:monospace">factor(x^3+6*x^2+3*x-10
 </span></blockquote><p>
@@ -296,12 +295,12 @@ factored over &#X2124;/<span style="font-style:italic">p</span>&#X2124;.</p>
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">hyp2exp</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >hyperbolic to exponential</td></tr>
 </table>
 </div><p>
-<a id="hevea_default213"></a>
-<a id="hevea_default214"></a>
-<a id="hevea_default215"></a>
-<a id="hevea_default216"></a>
-<a id="hevea_default217"></a>
-<a id="hevea_default218"></a></p><p><span style="font-family:monospace">Xcas</span> has the usual trigonometic functions, both circular and
+<a id="hevea_default263"></a>
+<a id="hevea_default264"></a>
+<a id="hevea_default265"></a>
+<a id="hevea_default266"></a>
+<a id="hevea_default267"></a>
+<a id="hevea_default268"></a></p><p><span style="font-family:monospace">Xcas</span> has the usual trigonometic functions, both circular and
 hyperbolic, as well as their inverses. It also has commands for
 manipulating trigonometric expressions; these are in the
 <span style="font-family:monospace">Trigo</span> submenus of the <span style="font-family:monospace">Expression</span> menu.</p><p>One example is the <span style="font-family:monospace">tlin</span> command will write products and powers of sines and
@@ -348,25 +347,25 @@ you will get
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">blockmatrix</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >combine matrices</td></tr>
 </table>
 </div><p>
-<a id="hevea_default219"></a>
-<a id="hevea_default220"></a>
-<a id="hevea_default221"></a>
-<a id="hevea_default222"></a>
-<a id="hevea_default223"></a>
-<a id="hevea_default224"></a>
-<a id="hevea_default225"></a>
-<a id="hevea_default226"></a>
-<a id="hevea_default227"></a>
-<a id="hevea_default228"></a>
-<a id="hevea_default229"></a>
-<a id="hevea_default230"></a>
-<a id="hevea_default231"></a>
-<a id="hevea_default232"></a>
-<a id="hevea_default233"></a>
-<a id="hevea_default234"></a>
-<a id="hevea_default235"></a>
-<a id="hevea_default236"></a>
-<a id="hevea_default237"></a></p><p>A vector is a list of numbers, such as <span style="font-family:monospace">[2,3,5]</span>, and a matrix
+<a id="hevea_default269"></a>
+<a id="hevea_default270"></a>
+<a id="hevea_default271"></a>
+<a id="hevea_default272"></a>
+<a id="hevea_default273"></a>
+<a id="hevea_default274"></a>
+<a id="hevea_default275"></a>
+<a id="hevea_default276"></a>
+<a id="hevea_default277"></a>
+<a id="hevea_default278"></a>
+<a id="hevea_default279"></a>
+<a id="hevea_default280"></a>
+<a id="hevea_default281"></a>
+<a id="hevea_default282"></a>
+<a id="hevea_default283"></a>
+<a id="hevea_default284"></a>
+<a id="hevea_default285"></a>
+<a id="hevea_default286"></a>
+<a id="hevea_default287"></a></p><p>A vector is a list of numbers, such as <span style="font-family:monospace">[2,3,5]</span>, and a matrix
 is a list of vectors all of the same length, such as
 <span style="font-family:monospace">[[1,2,3],[4,5,6]]</span>.</p><p>The usual matrix operations (addition, scalar multiplication, matrix
 multiplication) are done with the usual operators <span style="font-family:monospace">+</span> and
@@ -412,7 +411,7 @@ will give you
 A vector can be regarded as a matrix with one row, except that if a matrix
 is multiplied on the right by a vector, the vector will be regarded as
 a column. In particular, if <span style="font-family:monospace">v</span> and <span style="font-family:monospace">w</span> are vectors of
-the same length, then <span style="font-family:monospace">v*w</span> returns the scalar product.</p><p>The <span style="font-family:monospace">idn</span> command will create an identity matrix;
+the same length, then <span style="font-family:monospace">v*w</span> will return the scalar product.</p><p>The <span style="font-family:monospace">idn</span> command will create an identity matrix;
 </p><blockquote class="quote"><span style="font-family:monospace">idn(2)
 </span></blockquote><p>
 will return
@@ -490,7 +489,7 @@ will return
 6
 </td></tr>
 </table><p>
-You can extract a submatrix by using intervals of indices (the
+You can extract a submatrix<a id="hevea_default288"></a> by using intervals of indices (the
 beginning and end index separated by two periods);
 </p><blockquote class="quote"><span style="font-family:monospace">A[0..1,1..2]
 </span></blockquote><p>
@@ -517,10 +516,10 @@ matrix one element at a time, this time can add up.</p>
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">rref</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >Gauss-Jordan reduction</td></tr>
 </table>
 </div><p>
-<a id="hevea_default238"></a>
-<a id="hevea_default239"></a>
-<a id="hevea_default240"></a>
-<a id="hevea_default241"></a></p><p>The <span style="font-family:monospace">linsolve</span> command will solve a system of linear equations;
+<a id="hevea_default289"></a>
+<a id="hevea_default290"></a>
+<a id="hevea_default291"></a>
+<a id="hevea_default292"></a></p><p>The <span style="font-family:monospace">linsolve</span> command will solve a system of linear equations;
 its syntax is the same as that of <span style="font-family:monospace">solve</span> (see section
 <a href="tutoriel005.html#solve">4.4</a>, &#X201C;Solving equations&#X201D;).
 If you enter
@@ -628,18 +627,18 @@ all solutions while <span style="font-family:monospace">simult</span> will retur
 <tr><td style="vertical-align:top;text-align:left;border:solid 1px;" ><span style="font-family:monospace">eigenvects</span></td><td style="vertical-align:top;text-align:left;border:solid 1px;" >eigenvectors</td></tr>
 </table>
 </div><p>
-<a id="hevea_default242"></a>
-<a id="hevea_default243"></a>
-<a id="hevea_default244"></a>
-<a id="hevea_default245"></a>
-<a id="hevea_default246"></a>
-<a id="hevea_default247"></a>
-<a id="hevea_default248"></a>
-<a id="hevea_default249"></a>
-<a id="hevea_default250"></a>
-<a id="hevea_default251"></a>
-<a id="hevea_default252"></a></p><p>The <span style="font-family:monospace">jordan</span> command will take a matrix <span style="font-style:italic">A</span> and returns a
-transition matrix <span style="font-style:italic">P</span> and a matrix <span style="font-style:italic">J</span> in Jordan canonical form such
+<a id="hevea_default293"></a>
+<a id="hevea_default294"></a>
+<a id="hevea_default295"></a>
+<a id="hevea_default296"></a>
+<a id="hevea_default297"></a>
+<a id="hevea_default298"></a>
+<a id="hevea_default299"></a>
+<a id="hevea_default300"></a>
+<a id="hevea_default301"></a>
+<a id="hevea_default302"></a>
+<a id="hevea_default303"></a></p><p>The <span style="font-family:monospace">jordan</span> command will take a matrix <span style="font-style:italic">A</span> and returns a
+transition matrix <span style="font-style:italic">P</span> and a matrix <span style="font-style:italic">J</span> in Jordan canonical form, so
 that <span style="font-style:italic">P</span><sup>&#X2212;1</sup> <span style="font-style:italic">A</span> <span style="font-style:italic">P</span> = <span style="font-style:italic">J</span>. In particular, if <span style="font-style:italic">A</span> is diagonalizable, then
 <span style="font-style:italic">J</span> will be diagonal with the eigenvalues of <span style="font-style:italic">A</span> on the diagonal and
 the columns of <span style="font-style:italic">P</span> will be the corresponding eigenvectors.
@@ -714,7 +713,7 @@ function at a matrix. For example, you can find the exponential of a
 square matrix;
 </p><blockquote class="quote"><span style="font-family:monospace">exp([[0,-1],[1,2]])
 </span></blockquote><p>
-results in
+will result in
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
 
 </td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">&#X239B;<br>

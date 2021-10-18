@@ -3827,7 +3827,10 @@ namespace xcas {
       mode_s += ' ';
       switch (giac::xcas_mode(ptr)){
       case 0: 
-	mode_s+="xcas "; 
+	if (python_compat(ptr))
+	  mode_s += "python ";
+	else
+	  mode_s+="xcas "; 
 	break;
       case 1: 
 	mode_s+="maple "; break;
@@ -3836,8 +3839,6 @@ namespace xcas {
       case 3: 
 	mode_s+="ti89 "; break;
       }
-      if (python_compat(ptr))
-	mode_s += "(py) ";
       /*
 	if (giac::withsqrt(0))
 	mode_s += "sqrt ";

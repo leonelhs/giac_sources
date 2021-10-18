@@ -129,7 +129,7 @@ void a_propos() {
     s += "Greek localization, Alkiviadis Akritas, Eugenia Kelepesi-Akritas, George Nasopoulos, Nikos Larisis\n";
     s += "Spanish localization, Xavier Vidaux, J. Manrique Lopez\n";
     s += "German short help localization, Philipp Rösch\n";
-    s += "English user guide contributions by Luka Marohnić and Jay Belanger\n";
+    s += "English user guide contributions by Jay Belanger and Luka Marohnić\n";
     s += "Debian package: Carlos Enrique Carleos Artime\n";
     s += "Mac OS X port thanks to Jean-Yves Avenard and IREM Grenoble\n";
     s += "Tablor by Guillaume Connan, Pgiac by Jean-Michel Sarlat\n";
@@ -751,7 +751,12 @@ void load_autorecover_data() {
       if (f){
         fclose(f);
        // Xcas_Main_Window_->hide();
-       int n=fl_choice(gettext("Choose start mode"),gettext("Xcas"),gettext("Xcas-Python"),gettext("Other")),mm=-1; // n==2 other
+  #if 1
+       int n=fl_choice(gettext("Choose syntax compatibility"),gettext("Python"),gettext("Xcas"),gettext("Other")),mm=-1; // n==2 other
+      if (n<2) n=1-n;
+  #else
+       int n=fl_choice(gettext("Choose syntax compatibility"),gettext("Xcas"),gettext("Python"),gettext("Other")),mm=-1; // n==2 other
+  #endif
        if (n==2){
           mm=fl_choice(gettext("Choose start mode"),gettext("Turtle"),gettext("Spreadsheet"),gettext("Geometry"));
           if (mm==0) mm=7;
