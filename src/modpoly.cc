@@ -3578,9 +3578,9 @@ namespace giac {
     }
     gen res;
     if (simp)
-      return rdiv(gen(resz),gen(dz),context0);
+      res=rdiv(gen(resz),gen(dz),context0);
     else
-      return fraction(gen(resz),gen(dz));
+      res=fraction(gen(resz),gen(dz));
     mpz_clear(resz);
     mpz_clear(dz);
     mpz_clear(denz);

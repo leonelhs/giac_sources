@@ -6979,46 +6979,95 @@ namespace giac {
     }
   }    
 
-#if 0
-  // lower row reduction using column slices
-  void smallmodrref_lower(vector< vector<int> > & N,int l,int lmax,int c,int cmax,int modulo){
+  // lower row reduction of N from l to lmax using already reduced lines 
+  void smallmodrref_lower(vector< vector<int> > & N,int lstart,int l,int lmax,int c,int cmax,const vector<int> & pivots,int modulo,bool debuginfo){
+    int ps=int(pivots.size());
     longlong modulo2=longlong(modulo)*modulo;
-    bool convertpos= double(modulo2)*(lmax-l) >= 9.22e18;
+    bool convertpos= double(modulo2)*ps >= 9.22e18;
     if (convertpos)
-      makepositive(N);
-    vector< pair<int,int> > pivots;
-    int L=l,C=c,pl,blocksize=200;
-    for (int count=0;L<lmax&&C<cmax;){
-      // search pivot in col C from row L
-      for (pl=L;pl<lmax;++pl){
-	int & p=N[pl][C];
-	if (!p) continue;
-	p %= modulo;
-	if (!p) continue;
-	swap(N[L],N[pl]);
-	int temp=invmod(p,modulo);
-	vector<int>::iterator it=N[L].begin()+C,itend=N[L].begin()+cmax;
-	for (;it!=itend;++it)
-	  *it=(longlong(temp) * *it)%modulo;
-	break;
+      makepositive(N,lstart,lmax,c,cmax,modulo);
+    vector<longlong> buffer(cmax);
+    for (int L=l;L<lmax;++L){
+      if (debuginfo){
+	if (L%10==9){ CERR << "+"; CERR.flush();}
+	if (L%500==499){ CERR << CLOCK() << " remaining " << lmax-L << endl; }
       }
-      if (pl==lmax){
-	++C;
+      // copy line to 64 bits buffer
+      vector<int> & NL=N[L];
+      if (NL.empty()) continue;
+      for (int C=c;C<cmax;++C)
+	buffer[C]=NL[C];
+      // substract lines in pivots[k].first from column pivots[k].second to cmax
+      for (int line=lstart;line<lstart+ps;++line){
+	int col=pivots[line-lstart];
+	if (col<0) continue;
+	vector<int> & Nline=N[line];
+	if (Nline.empty()){
+	  CERR << "rref_lower Bad matrix "<< lmax << "x" << cmax << " l" << line << " c" << col << endl;
+	  continue;
+	}
+	Nline[col] %= modulo;
+	if (Nline[col]!=1){
+	  CERR << "rref_lower Bad matrix "<< lmax << "x" << cmax << " l" << line << " c" << col << " " << Nline[col] << endl;
+	  continue;
+	}
+	longlong coeff=buffer[col] % modulo;
+	if (!coeff) continue;
+	buffer[col]=0;
+	if (convertpos){
+	  int C=col+1;
+	  for (;C<cmax;++C){
+	    longlong & b=buffer[C] ;
+	    longlong x = b;
+	    x -= coeff*Nline[C];   
+	    x -= (x>>63)*modulo2;
+	    b=x;
+	  }
+	}
+	else {
+	  int C=col+1;
+	  for (;C<cmax;++C){
+	    buffer[C] -= coeff*Nline[C];   
+	  }
+	}
+      }
+      // copy back buffer to N[l]
+      for (int C=c;C<cmax;++C){
+	longlong x=buffer[C];
+	if (x) 
+	  NL[C]=x % modulo;
+	else
+	  NL[C]=0;
+      } 
+    } // end loop on L
+  }
+
+  // find pivot columns in submatrix N[l..lmax-1,c..cmax-1]
+  void smallmodrref_lower_pivots(vector< vector<int> > & N,int l,int lmax,int c,int cmax,vector<int> & pivots,int modulo){
+    pivots.clear();
+    int L=l,C=c,k;
+    for (;L<lmax && C<cmax;){
+      // N is assumed to be already partially reduced
+      vector<int> & NL=N[L];
+      if (NL.empty()){
+	pivots.push_back(-1);
+	++L;
 	continue;
       }
-      // reduction 
-      ++count;++L; ++C;
-      if ( (count+1) % blocsize==0){
-	// 
+      for (k=C;k<cmax;++k){
+	if (NL[k]){
+	  pivots.push_back(k);
+	  ++L; ++C;
+	  break;
+	}
+      }
+      if (k==cmax){
+	pivots.push_back(-1); ++L;
       }
     }
   }
-#endif
   
-  // finish full row reduction to echelon form if N is upper triangular
-  // this is done from lmax-1 to l
-  void smallmodrref_upper(vector< vector<int> > & N,int l,int lmax,int c,int cmax,int modulo){
-    // desalloc null lines
+  void free_null_lines(vector< vector<int> > & N,int l,int lmax,int c,int cmax){
     if (c==0){
       for (int L=lmax-1;L>=l;--L){
 	vector<int> & NL=N[L];
@@ -7028,10 +7077,17 @@ namespace giac {
 	for (C=cmax-1;C>=c;--C){
 	  if (NL[C]) break;
 	}
-	if (C>c) break;
+	if (C>=c) break;
 	NL.clear();
       }
     }
+  }
+
+  // finish full row reduction to echelon form if N is upper triangular
+  // this is done from lmax-1 to l
+  void smallmodrref_upper(vector< vector<int> > & N,int l,int lmax,int c,int cmax,int modulo){
+    // desalloc null lines
+    free_null_lines(N,l,lmax,c,cmax);
     longlong modulo2=longlong(modulo)*modulo;
     bool convertpos= double(modulo2)*(lmax-l) >= 9.22e18;
     if (convertpos){
@@ -7057,7 +7113,7 @@ namespace giac {
 	  int line=pivots[k].first;
 	  const vector<int> & Nline=N[line];
 	  int col=pivots[k].second;
-	  longlong coeff=NL[col];
+	  longlong coeff=NL[col]; // or buffer[col]
 	  if (!coeff) continue;
 	  buffer[col]=0;
 	  // we could skip pivots columns here, but if they are not contiguous
@@ -7103,7 +7159,7 @@ namespace giac {
       for (int C=c+(L-l);C<cmax;++C){
 	if (NL[C]){
 	  if (NL[C]!=1)
-	    CERR << "Bad matrix"<<endl;
+	    CERR << "rref_upper Bad matrix "<< lmax << "x" << cmax << endl;
 	  pivots.push_back(pair<int,int>(L,C));
 	  break;
 	}
@@ -7153,12 +7209,20 @@ namespace giac {
 
   struct thread_modular_reduction_t {
     vector< vector<int> > * Nptr;
+    vector<int> * pivotcols;
     int l,pivotcol,pivotval,linit,lmax,c,effcmax,rref_or_det_or_lu,modulo;
+    bool debuginfo;
   };
 
   void * do_thread_modular_reduction(void * ptr_){
     thread_modular_reduction_t * ptr=(thread_modular_reduction_t *) ptr_;
     do_modular_reduction(*ptr->Nptr,ptr->l,ptr->pivotcol,ptr->pivotval,ptr->linit,ptr->lmax,ptr->c,ptr->effcmax,ptr->rref_or_det_or_lu,ptr->modulo);
+    return ptr;
+  }
+    
+  void * do_thread_lower_reduction(void * ptr_){
+    thread_modular_reduction_t * ptr=(thread_modular_reduction_t *) ptr_;
+    smallmodrref_lower(*ptr->Nptr,ptr->linit,ptr->l,ptr->lmax,ptr->c,ptr->effcmax,*ptr->pivotcols,ptr->modulo,ptr->debuginfo);
     return ptr;
   }
     
@@ -7168,7 +7232,7 @@ namespace giac {
   // rref_or_det_or_lu = 0 for rref, 1 for det, 2 for lu, 
   // 3 for lu without permutation
   // fullreduction=0 or 1, use 2 if the right part of a is idn
-  void smallmodrref(int nthreads,vector< vector<int> > & N,vecteur & pivots,vector<int> & permutation,vector<int> & maxrankcols,longlong & idet,int l, int lmax, int c,int cmax,int fullreduction,int dont_swap_below,int modulo,int rref_or_det_or_lu,bool reset,smallmodrref_temp_t * workptr){
+  void smallmodrref(int nthreads,vector< vector<int> > & N,vecteur & pivots,vector<int> & permutation,vector<int> & maxrankcols,longlong & idet,int l, int lmax, int c,int cmax,int fullreduction,int dont_swap_below,int modulo,int rref_or_det_or_lu,bool reset,smallmodrref_temp_t * workptr,bool allow_block){
     bool inverting=fullreduction==2;
     int linit=l;//,previous_l=l;
     // Reduction
@@ -7184,15 +7248,116 @@ namespace giac {
       for (int i=0;i<lmax;++i)
 	permutation.push_back(i);
     }
+    int ilmax=lmax;
+    if (allow_block){
+      for (int i=0;i<lmax-1;){
+      if (N[lmax-1].empty()){
+      --lmax;
+      continue;
+      }
+      if (N[i].empty()){
+	swap(N[i],N[lmax-1]);
+	swap(permutation[i],permutation[lmax-1]);
+	--lmax;
+      }
+      ++i;
+    }
+    }
+    if (debug_infolevel>2)
+      CERR << CLOCK() << " Effective number of rows " << lmax << "/" << ilmax << endl;
     bool noswap=true;
     smallmodrref_temp_t * tmpptr = workptr;
 #ifndef GIAC_HAS_STO_38 
-    bool blocktest=lmax-l>=2*mmult_int_blocksize && cmax-c>=2*mmult_int_blocksize;
+    if (allow_block && rref_or_det_or_lu==0 && dont_swap_below==0 ){ 
+      if (
+	  //lmax-l>=4 && cmax-c>=4
+	  lmax-l>=3*mmult_int_blocksize && cmax-c>=3*mmult_int_blocksize
+	){
+	// reduce first half
+	int halfl=(lmax-l)/2,effl=l+halfl;
+	if (debug_infolevel>2)
+	  CERR << CLOCK() << " rref begin " << lmax-l << "x" << cmax-c << endl;
+	smallmodrref(nthreads,N,pivots,permutation,maxrankcols,idet,l,l+halfl,c,cmax,0/*fullreduction*/,0,modulo,0,false,workptr);
+	// use first half for second half
+	vector<int> pivotcols;
+	smallmodrref_lower_pivots(N,l,effl,c,cmax,pivotcols,modulo);
+	bool reduction_done=false;
+	if (debug_infolevel>2)
+	  CERR << CLOCK() << " rref_lower begin " << effl << ".." << lmax << "/" << c << ".." << cmax << endl;
+	// CERR << pivotcols << endl;
+#ifdef HAVE_LIBPTHREAD
+	if (nthreads>1 && double(lmax-effl)*(cmax-c)>1e5){
+	  pthread_t tab[64];
+	  thread_modular_reduction_t redparam[64];
+	  if (nthreads>64) nthreads=64;
+	  for (int j=0;j<nthreads;++j){
+	    thread_modular_reduction_t tmp={&N,&pivotcols,effl,pivotcol,temp,l,lmax,c,cmax,rref_or_det_or_lu,modulo,j==0 && debug_infolevel>1};
+	    redparam[j]=tmp;
+	  }
+	  int kstep=int(std::ceil((lmax-effl)/double(nthreads))),k=effl;
+	  for (int j=0;j<nthreads;++j){
+	    redparam[j].l=k;
+	    k += kstep;
+	    if (k>lmax)
+	      k=lmax;
+	    redparam[j].lmax=k;
+	    bool res=true;
+	    if (j<nthreads-1)
+	      res=pthread_create(&tab[j],(pthread_attr_t *) NULL,do_thread_lower_reduction,(void *) &redparam[j]);
+	    if (res)
+	      do_thread_lower_reduction((void *)&redparam[j]);
+	  }
+	  for (int j=0;j<nthreads;++j){
+	    void * ptr=(void *)&nthreads; // non-zero initialisation
+	    if (j<nthreads-1)
+	      pthread_join(tab[j],&ptr);
+	  }
+	  reduction_done=true;
+	}
+#endif
+	if (!reduction_done)
+	  smallmodrref_lower(N,l,effl,lmax,c,cmax,pivotcols,modulo,debug_infolevel>1);
+	if (debug_infolevel>2)
+	  CERR << CLOCK() << " rref_lower end " << effl << ".." << lmax << "/" << c << ".." << cmax << endl;
+	// reduce second half
+	//cerr << N <<endl;
+	smallmodrref(nthreads,N,pivots,permutation,maxrankcols,idet,l+halfl,lmax,c,cmax,0/*fullreduction*/,0,modulo,0,false,workptr);
+	if (debug_infolevel>2)
+	  CERR << CLOCK() << " rref end " << lmax-l << "x" << cmax-c << endl;
+	//cerr << N <<endl;
+#if 1
+	// finish reduction with permutations only
+	int L=l,C=c,r;
+	for (;L<lmax && C<cmax;){
+	  for (r=L;r<lmax;++r){
+	    if (!N[r].empty() && N[r][C])
+	      break;
+	  }
+	  if (r==lmax){ 
+	    ++C; continue;
+	  }
+	  if (r>L){
+	    if (N[r][C]!=1)
+	      COUT << "erreur" << N[r][C] << endl;
+	    swap(N[r],N[L]);
+	    swap(permutation[r],permutation[L]);
+	    // swap(pivots[r],pivots[L]);
+	  }
+	  ++L; ++C;
+	}
+	if (fullreduction)
+	  smallmodrref_upper(N,l,lmax,c,cmax,modulo);
+	return;
+      } else nthreads=1;
+#endif
+    }
+    bool blocktest=allow_block && rref_or_det_or_lu!=0 && lmax-l>=2*mmult_int_blocksize && cmax-c>=2*mmult_int_blocksize;
     if (blocktest){
       // count 0 in N[l->lmax][c->cmax]
       // if matrix is sparse, then block operations is not faster
       double count=0;
       for (int i=l;i<lmax;++i){
+	if (N[i].empty()){ blocktest=false; break; }
 	vector<int>::const_iterator it=N[l].begin()+c,itend=N[l].begin()+giacmin(cmax,N[l].size());
 	for (;it!=itend;++it){
 	  if (!*it)
@@ -7425,7 +7590,30 @@ namespace giac {
 	// save pivot for annulation test purposes
 	if (rref_or_det_or_lu!=1)
 	  pivots.push_back(pivot);
-	// invert pivot 
+	// invert pivot. If pivot==1 we might optimize but only if allow_bloc is true
+#if 1
+	if (pivot==1 && allow_block)
+	  temp=1;
+	else {
+	  temp=invmod(pivot,modulo);
+	  // multiply det
+	  idet = (idet * pivot) % modulo ;
+	  if (fullreduction || rref_or_det_or_lu<2){ // not LU decomp
+	    vector<int>::iterator it=N[pivotline].begin(),itend=N[pivotline].end();
+	    for (;it!=itend;++it){
+	      *it=(longlong(temp) * *it)%modulo;
+	      if (*it>0){
+		if (2* *it>modulo)
+		  *it -= modulo;
+	      }
+	      else {
+		if (2* *it<-modulo)
+		  *it += modulo;
+	      }
+	    }
+	  }
+	}
+#else
 	temp=invmod(pivot,modulo);
 	// multiply det
 	idet = (idet * pivot) % modulo ;
@@ -7443,6 +7631,7 @@ namespace giac {
 	    }
 	  }
 	}
+#endif
 	// if there are 0 at the end, ignore them in linear combination
 	int effcmax=(fullreduction && inverting && noswap)?c+lmax:cmax-1;
 	const std::vector<int> & Npiv=N[l];
@@ -7460,7 +7649,7 @@ namespace giac {
 	  thread_modular_reduction_t redparam[64];
 	  if (nthreads>64) nthreads=64;
 	  for (int j=0;j<nthreads;++j){
-	    thread_modular_reduction_t tmp={&N,l,pivotcol,temp,linit,lmax,c,effcmax,rref_or_det_or_lu,modulo};
+	    thread_modular_reduction_t tmp={&N,0,l,pivotcol,temp,linit,lmax,c,effcmax,rref_or_det_or_lu,modulo,j==0 && debug_infolevel>1};
 	    redparam[j]=tmp;
 	  }
 	  int kstep=int(std::ceil((lmax-effl)/double(nthreads))),k=effl;

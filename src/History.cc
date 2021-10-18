@@ -448,6 +448,18 @@ namespace xcas {
   }
 
   giac::gen warn_equal(const giac::gen & g,GIAC_CONTEXT){
+    if (g.is_symb_of_sommet(at_of)){
+      gen f=g._SYMBptr->feuille;
+      if (f.type==_VECT && f._VECTptr->size()==2 && f._VECTptr->front().type==_IDNT && f._VECTptr->back().type==_VECT){
+	gen n=f._VECTptr->front(),n1;
+	gen arg=f._VECTptr->back();
+	size_t s=arg._VECTptr->size();
+	if ((s==2 || s==3) && !n._IDNTptr->in_eval(0,n,n1,contextptr,true))
+	  *logptr(contextptr) << gettext("If you want to create a point ") << n 
+			      << gettext(" with coordinates ") << arg << endl
+			      << gettext("the right command is ") << n <<":=point(" << arg << ")" << endl;
+      }
+    }
     if (g.is_symb_of_sommet(at_equal) && g._SYMBptr->feuille.type==_VECT && g._SYMBptr->feuille._VECTptr->size()==2 && g._SYMBptr->feuille._VECTptr->front().type!=_INT_){
       if (g._SYMBptr->feuille._VECTptr->front().is_symb_of_sommet(at_at) || g._SYMBptr->feuille._VECTptr->front().is_symb_of_sommet(at_of) || g._SYMBptr->feuille._VECTptr->front().type!=_SYMB)
 	*logptr(contextptr) << gettext("Warning evaluating = at top level, you must use := to assign ") << g._SYMBptr->feuille._VECTptr->back() << gettext(" to ") << g._SYMBptr->feuille._VECTptr->front() << gettext(" or == to test equality") << endl;

@@ -3034,7 +3034,7 @@ namespace giac {
     if (x.type==_VECT && l.type==_VECT){
       vecteur &v=*x._VECTptr;
       gen h(identificateur(" h"));
-      vecteur w=addvecteur(*l._VECTptr,multvecteur(h,subvecteur(v,*l._VECTptr)));
+      vecteur w=addvecteur(*l._VECTptr,multvecteur(h,v));
       gen newe=subst(e,v,w,false,contextptr);
       sparse_poly1 res=series__SPOL1(newe,*h._IDNTptr,zero,ordre,direction,contextptr);
       poly_truncate(res,ordre,contextptr);
@@ -3042,7 +3042,8 @@ namespace giac {
 	res.pop_back();
       // order term has been removed
       gen remains;
-      return sparse_poly12gen(res,1,remains,false);
+      gen r=sparse_poly12gen(res,1,remains,false);
+      return subst(r,v,subvecteur(v,*l._VECTptr),false,contextptr);
     }
     if (x.type!=_IDNT){
       identificateur xx("x");

@@ -53,6 +53,9 @@ using namespace std;
 #include "giacintl.h"
 #include "index.h"
 #include "modpoly.h"
+#ifdef HAVE_SYS_RESOURCE_H
+#include <sys/resource.h>
+#endif
 
 #if defined(USE_GMP_REPLACEMENTS) || defined(GIAC_VECTOR)
 #undef HAVE_LIBCOCOA
@@ -414,6 +417,7 @@ namespace giac {
     bool live; // set to false to defer the pair for reduction at end
     paire(unsigned f,unsigned s):first(f),second(s),live(true){}
     paire(const paire & p):first(p.first),second(p.second),live(p.live) {}
+    paire():first(-1),second(-1) {}
   };
 
   ostream & operator << (ostream & os,const paire & p){
@@ -2605,7 +2609,7 @@ namespace giac {
 
   // a and b are assumed to be _ZINT
   template<class tdeg_t>
-  static void linear_combination(const gen & a,const poly8<tdeg_t> &p,tdeg_t * ashift,const gen &b,const poly8<tdeg_t> & q,tdeg_t * bshift,poly8<tdeg_t> & r,environment * env){
+  void linear_combination(const gen & a,const poly8<tdeg_t> &p,tdeg_t * ashift,const gen &b,const poly8<tdeg_t> & q,tdeg_t * bshift,poly8<tdeg_t> & r,environment * env){
     r.coord.clear();
     typename std::vector< T_unsigned<gen,tdeg_t> >::const_iterator it=p.coord.begin(),itend=p.coord.end(),jt=q.coord.begin(),jtend=q.coord.end();
     r.coord.reserve((itend-it)+(jtend-jt));
@@ -2703,7 +2707,7 @@ namespace giac {
 
   // check that &v1!=&v and &v2!=&v
   template<class tdeg_t>
-  static void sub(const poly8<tdeg_t> & v1,const poly8<tdeg_t> & v2,poly8<tdeg_t> & v,environment * env){
+  void sub(const poly8<tdeg_t> & v1,const poly8<tdeg_t> & v2,poly8<tdeg_t> & v,environment * env){
     typename std::vector< T_unsigned<gen,tdeg_t> >::const_iterator it1=v1.coord.begin(),it1end=v1.coord.end(),it2=v2.coord.begin(),it2end=v2.coord.end();
     gen g;
     v.coord.clear();
@@ -2932,7 +2936,7 @@ namespace giac {
   }
 
   template<class tdeg_t>
-  static void gbasis_update(vector<unsigned> & G,vector< paire > & B,vectpoly8<tdeg_t> & res,unsigned pos,poly8<tdeg_t> & TMP1,poly8<tdeg_t> & TMP2,vectpoly8<tdeg_t> & vtmp,environment * env){
+  void gbasis_update(vector<unsigned> & G,vector< paire > & B,vectpoly8<tdeg_t> & res,unsigned pos,poly8<tdeg_t> & TMP1,poly8<tdeg_t> & TMP2,vectpoly8<tdeg_t> & vtmp,environment * env){
     if (debug_infolevel>1)
       CERR << CLOCK() << " begin gbasis update " << endl;
     const poly8<tdeg_t> & h = res[pos];
@@ -4208,7 +4212,7 @@ namespace giac {
   }
 
   template<class tdeg_t>
-  static void gbasis_updatemod(vector<unsigned> & G,vector< paire > & B,vectpolymod<tdeg_t> & res,unsigned pos,polymod<tdeg_t> & TMP2,modint env,bool reduce,const vector<unsigned> & oldG){
+  void gbasis_updatemod(vector<unsigned> & G,vector< paire > & B,vectpolymod<tdeg_t> & res,unsigned pos,polymod<tdeg_t> & TMP2,modint env,bool reduce,const vector<unsigned> & oldG){
     if (debug_infolevel>2)
       CERR << CLOCK() << " mod begin gbasis update " << G.size() << endl;
     if (debug_infolevel>3)
@@ -4371,7 +4375,7 @@ namespace giac {
   // update G, G is a list of index of the previous gbasis + new spolys
   // new spolys index are starting at debut
   template<class tdeg_t>
-  static void gbasis_multiupdatemod(vector<unsigned> & G,vector< paire > & B,vectpolymod<tdeg_t> & res,unsigned debut,polymod<tdeg_t> & TMP2,modint env){
+  void gbasis_multiupdatemod(vector<unsigned> & G,vector< paire > & B,vectpolymod<tdeg_t> & res,unsigned debut,polymod<tdeg_t> & TMP2,modint env){
     if (debug_infolevel>2)
       CERR << CLOCK() << " mod begin gbasis update " << G.size() << "+" << add.size() << endl;
     if (debug_infolevel>3)
@@ -8656,7 +8660,7 @@ namespace giac {
   // search for d such that d*P mod p has small coefficients
   // call with d set to 1,
   template<class tdeg_t>
-  static bool findmultmod(const poly8<tdeg_t> & P,int p,int & d){
+  bool findmultmod(const poly8<tdeg_t> & P,int p,int & d){
     int n,s=int(P.coord.size());
     for (int i=0;i<s;++i){
       int a=smod(longlong(P.coord[i].g.val)*d,p);
@@ -8683,7 +8687,7 @@ namespace giac {
   }
 
   template<class tdeg_t>
-  static bool fracmod(const poly8<tdeg_t> &P,const gen & p,
+  bool fracmod(const poly8<tdeg_t> &P,const gen & p,
 	       mpz_t & d,mpz_t & d1,mpz_t & absd1,mpz_t &u,mpz_t & u1,mpz_t & ur,mpz_t & q,mpz_t & r,mpz_t &sqrtm,mpz_t & tmp,
 	       poly8<tdeg_t> & Q){
     Q.coord.clear();
@@ -8730,7 +8734,7 @@ namespace giac {
   }
 
   template<class tdeg_t>
-  static bool fracmod(const vectpoly8<tdeg_t> & P,const gen & p_,
+  bool fracmod(const vectpoly8<tdeg_t> & P,const gen & p_,
 		      mpz_t & d,mpz_t & d1,mpz_t & absd1,mpz_t &u,mpz_t & u1,mpz_t & ur,mpz_t & q,mpz_t & r,mpz_t &sqrtm,mpz_t & tmp,
 		      vectpoly8<tdeg_t> & Q){
     Q.resize(P.size());
@@ -10047,8 +10051,12 @@ namespace giac {
     order_t order=g[G.front()].order;
     vector<heap_t<tdeg_t> > H_;
     vector<unsigned> H;
-    H_.reserve(guess);
-    H.reserve(guess);
+    if (debug_infolevel>1)
+      CERR << "Heap reserve " << 3*f.size() << " * " << sizeof(heap_t<deg_t>)+sizeof(unsigned) << ", number of monomials in basis " << guess  << endl;
+    // H_.reserve(guess);
+    // H.reserve(guess);
+    H_.reserve(3*f.size());
+    H.reserve(3*f.size());
     heap_t_compare<tdeg_t> key(H_,order);
     unsigned k=0,i; // k=position in f
     tdeg_t m;
@@ -10125,7 +10133,8 @@ namespace giac {
 	std::push_heap(H.begin(),H.end(),key);
       }
     } // end main heap pseudo-division loop
-    // CERR << H_.size() << endl;
+    if (debug_infolevel>1)
+      CERR << CLOCK() << "Heap actual size was " << H_.size() << endl;
   }
 
   template<class tdeg_t>
@@ -10618,6 +10627,8 @@ namespace giac {
     vector<modint> subcoeff;
     vector<shifttype> subindex;
     for (int i=debut;i<fin;++i){
+      if (interrupted || ctrl_c)
+	return 0;
       if (displayinfo){
 	if (i%10==9) {COUT << "+"; COUT.flush(); }
 	if (i%500==499) COUT << " " << CLOCK() << " remaining " << fin-i << endl;
@@ -10687,7 +10698,7 @@ namespace giac {
   };
 
   template<class tdeg_t>
-  int zf4mod(vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,const vector< paire > & B,const vector<unsigned> * & permuBptr,vectzpolymod<tdeg_t> & f4buchbergerv,bool learning,unsigned & learned_position,vector< paire > * pairs_reducing_to_zero,vector<zinfo_t<tdeg_t> > & f4buchberger_info,unsigned & f4buchberger_info_position,bool recomputeR,int age){
+  int zf4mod(vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,const vector< paire > & B,const vector<unsigned> * & permuBptr,vectzpolymod<tdeg_t> & f4buchbergerv,bool learning,unsigned & learned_position,vector< paire > * pairs_reducing_to_zero,vector<zinfo_t<tdeg_t> > & f4buchberger_info,unsigned & f4buchberger_info_position,bool recomputeR,int age,bool multimodular){
     if (B.empty())
       return 0;
     unsigned Bs=unsigned(B.size());
@@ -10912,6 +10923,8 @@ namespace giac {
       vector<modint2> v64_prev(N);
       tdeg_t * rightshift_prev=0;
       for (i=0;i<Bs;++i){
+	if (interrupted || ctrl_c)
+	  return -1;
 	if (debug_infolevel>1){
 	  if (i%10==9) {COUT << "+"; COUT.flush(); }
 	  if (i%500==499) COUT << " " << CLOCK() << " remaining " << Bs-i << endl;
@@ -10979,6 +10992,13 @@ namespace giac {
 	//CERR << v << endl << SK[i] << endl;
       } // end for (i=0;i<B.size();++i)
     } // end if (!Kdone)
+#ifdef HAVE_SYS_RESOURCE_H
+    if (debug_infolevel>1){
+      struct rusage r_usage;
+      getrusage(RUSAGE_SELF,&r_usage);
+      CERR << endl << CLOCK() << " Memory usage: " << r_usage.ru_maxrss << endl;
+    }
+#endif
     Mindex.clear();
     Mcoeff.clear();
     if (!pairs_reducing_to_zero){
@@ -11000,19 +11020,37 @@ namespace giac {
     // clear memory required for lescoeffs
     //vector<modint> tmp; lescoeffs.swap(tmp); 
     { vector<unsigned> tmp1; lebitmap.swap(tmp1); }
-    if (debug_infolevel>1)
-      CERR << CLOCK() << " rref " << K.size() << "x" << usedcount << " non0 " << sknon0 << " ratio " << (sknon0/K.size())/usedcount << " nulllines " << zerolines << endl;
+    if (debug_infolevel>1){
+      CERR << CLOCK() << " rref " << K.size() << "x" << usedcount << endl;
+      double nz=0;
+      for (unsigned i=0;i<K.size();++i){
+	vector<int> & Ki=K[i];
+	for (unsigned j=0;j<Ki.size();++j){
+	  if (Ki[j]) ++nz;
+	}
+      }
+      CERR << "non-0 percentage " << (nz/K.size())/K.front().size() << endl;
+    }
     vecteur pivots; vector<int> permutation,maxrankcols; longlong idet;
     // CERR << K << endl;
+    if (0 && !learning && info_ptr->permu.size()==Bs){
+      permutation=info_ptr->permu;
+      vector< vector<modint> > K1(Bs);
+      for (int i=0;i<Bs;++i){
+	swap(K1[i],K[permutation[i]]);
+      }
+      swap(K1,K);
+    }
 #if 0
     // vector< vector<modint> > Kcopy(K);
-    smallmodrref(th+1,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/);
+    smallmodrref(th+1,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/,permutation.empty(),0,!multimodular); // disable rref optimization in multi-modular mode otherwise cyclic92 fails
 #else
-    smallmodrref(th+1,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,0/* lower reduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/);
+    smallmodrref(th+1,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,0/* lower reduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/,permutation.empty()/* reset */,0,!multimodular); 
     if (debug_infolevel>1)
       CERR << CLOCK() << " rref_upper " << endl;
     smallmodrref_upper(K,0,int(K.size()),0,usedcount,env);
 #endif
+    free_null_lines(K,0,Bs,0,Kcols);
     unsigned first0 = unsigned(pivots.size());
     if (first0<K.size() && learning){
       vector<modint> & tmpv=K[first0];
@@ -11029,12 +11067,18 @@ namespace giac {
     //CERR << permutation << K << endl;
     if (!learning){
       // check that permutation is the same as learned permutation
+      bool copy=false;
       for (unsigned j=0;j<permutation.size();++j){
 	if (permutation[j]!=info_ptr->permu[j]){
+	  copy=true;
+	  if (K[permutation[j]].empty() && K[info_ptr->permu[j]].empty())
+	    continue;
 	  CERR << "learning failed"<<endl;
 	  return -1;
 	}
       }
+      if (copy) 
+	permutation=info_ptr->permu;
     }
     if (learning)
       info_ptr->permu=permutation;
@@ -11100,7 +11144,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   // otherwise we might miss some new pairs to be added
   // f:=(1387482169552326*s*t1*t2^2-25694114250969*s*t1*t2+240071563017*s*t1+579168836143704*t1*t2^2-10725348817476*t1*t2+100212766488*t1):;fb:=(-7035747399*s*t1^2*t2^2+118865637*s*t1^2*t2-793881*s*t1^2+118865637*s*t1*t2^2-1167858*s*t1*t2+1944*s*t1-1089126*s*t2^2+1944*s*t2+18*s-2936742966*t1^2*t2^2+49601160*t1^2*t2-328050*t1^2+49601160*t1*t2^2-485514*t1*t2+972*t1-446148*t2^2+972*t2+36):;rmp:=s^2+10*s+4:;gbasis([f,fb,rmp],[s,t1,t2],revlex);
   template<class tdeg_t>
-  static void zgbasis_updatemod(vector<unsigned> & G,vector< paire > & B,vectzpolymod<tdeg_t> & res,unsigned pos,vector<unsigned> & oldG,bool multimodular){
+  void zgbasis_updatemod(vector<unsigned> & G,vector< paire > & B,vectzpolymod<tdeg_t> & res,unsigned pos,vector<unsigned> & oldG,bool multimodular){
     if (debug_infolevel>2)
       CERR << CLOCK() << " zmod begin gbasis update " << G.size() << endl;
     if (debug_infolevel>3)
@@ -11384,7 +11428,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     vector<int> start_index_v;
     for (int age=1;!B.empty() && !interrupted && !ctrl_c;++age){
       if (debug_infolevel<2 && (CLOCK()-timebeg)>autodebug)
-	debug_infolevel=2;
+	debug_infolevel=multimodular?1:2;
       start_index_v.push_back(res.size()); // store size for final interreduction
 #ifdef TIMEOUT
       control_c();
@@ -11510,9 +11554,9 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	if (!clean[i])
 	  Gall.push_back(i);
       }
-      f4res=zf4mod(res,Gall,env,smallposp,permuBptr,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age);
+      f4res=zf4mod(res,Gall,env,smallposp,permuBptr,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age,multimodular);
 #else
-      f4res=zf4mod(res,G,env,smallposp,permuBptr,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age);
+      f4res=zf4mod(res,G,env,smallposp,permuBptr,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age,multimodular);
 #endif
       if (f4res==-1)
 	return false;
@@ -12167,7 +12211,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #endif
 
   template<class tdeg_t>
-  static bool check_initial_generators(vectpoly8<tdeg_t> & res,const vectpoly8<tdeg_t> & Wi,vector<unsigned> & G,double eps){
+  bool check_initial_generators(vectpoly8<tdeg_t> & res,const vectpoly8<tdeg_t> & Wi,vector<unsigned> & G,double eps){
     int initial=int(res.size());
     if (debug_infolevel)
       CERR << CLOCK() << " begin final check, checking " << initial << " generators" << endl;
@@ -14378,6 +14422,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   }
 
   bool gbasis8(const vectpoly & v,order_t & order,vectpoly & newres,environment * env,bool modularalgo,bool modularcheck,bool & rur,GIAC_CONTEXT,bool eliminate_flag){
+    int save_debuginfo=debug_infolevel;
     if (v.empty()){ newres.clear(); return true;}
 #ifdef GIAC_TDEG_T14
     if (v.front().dim<=14 && order.o==_REVLEX_ORDER){
@@ -14399,7 +14444,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 			 rur,contextptr,eliminate_flag)){
 	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
 	    get_newres(res,newres,v);
-	    return true;
+	    debug_infolevel=save_debuginfo; return true;
 	  }
 	}
 	if (env && env->moduloon && env->modulo.type==_INT_){
@@ -14409,14 +14454,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    if (zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false /* 1 mod only */)){
 	      *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
 	      get_newres(resmod,newres,v,G);
-	      return true;
+	      debug_infolevel=save_debuginfo; return true;
 	    }
 	  }
 	  else {
 	    if (in_gbasisf4buchbergermod<tdeg_t14>(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,0,false)){
 	      *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
 	      get_newres(res,newres,v,G);
-	      return true;
+	      debug_infolevel=save_debuginfo; return true;
 	    }
 	  }
 	}
@@ -14430,7 +14475,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  if (in_gbasis(res,G,env,true)){
 	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
 	    get_newres(res,newres,v,G);
-	    return true;
+	    debug_infolevel=save_debuginfo; return true;
 	  }
 	}
       }  catch (std::runtime_error & e){ CERR << "degree too large" << endl;}
@@ -14454,7 +14499,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 		       rur,contextptr,eliminate_flag)){
 	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
 	  get_newres(res,newres,v);
-	  return true;
+	  debug_infolevel=save_debuginfo; return true;
 	}
       }
       if (env && env->moduloon && env->modulo.type==_INT_){
@@ -14464,14 +14509,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  if (zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false /* 1 mod only */)){
 	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
 	    get_newres(resmod,newres,v,G);
-	    return true;
+	    debug_infolevel=save_debuginfo; return true;
 	  }
 	}
 	else {
 	  if (in_gbasisf4buchbergermod<tdeg_t11>(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,0,false)){
 	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
 	    get_newres(res,newres,v,G);
-	    return true;
+	    debug_infolevel=save_debuginfo; return true;
 	  }
 	}
       }
@@ -14485,7 +14530,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	if (in_gbasis(res,G,env,true)){
 	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
 	  get_newres(res,newres,v,G);
-	  return true;
+	  debug_infolevel=save_debuginfo; return true;
 	}
       }
     }
@@ -14512,7 +14557,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  newres=vectpoly(res.size(),polynome(v.front().dim,v.front()));
 	  for (unsigned i=0;i<res.size();++i)
 	    res[i].get_polynome(newres[i]);
-	  return true;
+	  debug_infolevel=save_debuginfo; return true;
 	}
       }
       if (env && env->moduloon && env->modulo.type==_INT_){
@@ -14525,7 +14570,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  newres=vectpoly(G.size(),polynome(v.front().dim,v.front()));
 	  for (unsigned i=0;i<G.size();++i)
 	    resmod[G[i]].get_polynome(newres[i]);
-	  return true;
+	  debug_infolevel=save_debuginfo; return true;
 	}
 	else
 	  in_gbasisf4buchbergermod<tdeg_t15>(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,0,false);
@@ -14547,7 +14592,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       newres=vectpoly(G.size(),polynome(v.front().dim,v.front()));
       for (unsigned i=0;i<G.size();++i)
 	res[G[i]].get_polynome(newres[i]);
-      return true;
+      debug_infolevel=save_debuginfo; return true;
     }
     vectpoly8<tdeg_t64> res;
     vectpolymod<tdeg_t64> resmod;
@@ -14568,7 +14613,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	newres=vectpoly(res.size(),polynome(v.front().dim,v.front()));
 	for (unsigned i=0;i<res.size();++i)
 	  res[i].get_polynome(newres[i]);
-	return true;
+	debug_infolevel=save_debuginfo; return true;
       }
     }
     if (env && env->moduloon && env->modulo.type==_INT_){
@@ -14581,7 +14626,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	newres=vectpoly(G.size(),polynome(v.front().dim,v.front()));
 	for (unsigned i=0;i<G.size();++i)
 	  resmod[G[i]].get_polynome(newres[i]);
-	return true;
+	debug_infolevel=save_debuginfo; return true;
       }
       else
 	in_gbasisf4buchbergermod<tdeg_t64>(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,0,false);
@@ -14603,7 +14648,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     newres=vectpoly(G.size(),polynome(v.front().dim,v.front()));
     for (unsigned i=0;i<G.size();++i)
       res[G[i]].get_polynome(newres[i]);
-    return true;
+    debug_infolevel=save_debuginfo; return true;
   }
 
   bool greduce8(const vectpoly & v,const vectpoly & gb_,order_t & order,vectpoly & newres,environment * env,GIAC_CONTEXT){

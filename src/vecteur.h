@@ -299,7 +299,9 @@ namespace giac {
   // finish full row reduction to echelon form if N is upper triangular
   // this is done from lmax-1 to l
   void smallmodrref_upper(std::vector< std::vector<int> > & N,int l,int lmax,int c,int cmax,int modulo);
-  void smallmodrref(int nthreads,std::vector< std::vector<int> > & N,vecteur & pivots,std::vector<int> & permutation,std::vector<int> & maxrankcols,longlong & idet,int l, int lmax, int c,int cmax,int fullreduction,int dont_swap_below,int modulo,int rref_or_det_or_lu,bool reset=true,smallmodrref_temp_t * workptr=0);
+  void free_null_lines(std::vector< std::vector<int> > & N,int l,int lmax,int c,int cmax);
+
+  void smallmodrref(int nthreads,std::vector< std::vector<int> > & N,vecteur & pivots,std::vector<int> & permutation,std::vector<int> & maxrankcols,longlong & idet,int l, int lmax, int c,int cmax,int fullreduction,int dont_swap_below,int modulo,int rref_or_det_or_lu,bool reset=true,smallmodrref_temp_t * workptr=0,bool allow_block=true);
   void doublerref(matrix_double & N,vecteur & pivots,std::vector<int> & permutation,std::vector<int> & maxrankcols,double & idet,int l, int lmax, int c,int cmax,int fullreduction,int dont_swap_below,int rref_or_det_or_lu,double eps);
   void modlinear_combination(vecteur & v1,const gen & c2,const vecteur & v2,const gen & modulo,int cstart,int cend=0);
   void modlinear_combination(std::vector<int> & v1,int c2,const std::vector<int> & v2,int modulo,int cstart,int cend,bool pseudo);

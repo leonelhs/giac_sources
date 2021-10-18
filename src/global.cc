@@ -90,7 +90,6 @@ using namespace std;
 #ifdef BESTA_WIN32_TARGET
 #include <Windows.h>
 #else
-#include <bestafir.h>
 #include <stdlib.h>
 #endif // besta_win32_target
 #endif // besta_os

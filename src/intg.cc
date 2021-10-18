@@ -4939,7 +4939,11 @@ namespace giac {
     }
     if (tstep>abs(t1_e-t0_e,contextptr)._DOUBLE_val)
       tstep=abs(t1_e-t0_e,contextptr)._DOUBLE_val;
+#if 1
+    double * y =(double *)alloca(dim*sizeof(double));
+#else
     double * y=new double[dim];
+#endif
     for (int i=0;i<dim;i++){
       if (y0v[i].type!=_DOUBLE_ && y0v[i].type!=_CPLX)
 	return gensizeerr(contextptr);

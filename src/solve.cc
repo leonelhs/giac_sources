@@ -153,25 +153,25 @@ namespace giac {
     gen asine=asin(e,contextptr);
     if (!(isolate_mode & 2))
       return makevecteur(asine,one_half_tour(contextptr)-asine);
-    identificateur * x=new identificateur(string("n_")+print_intvar_counter(contextptr));
+    identificateur x(string("n_")+print_intvar_counter(contextptr));
     if (is_zero(e,contextptr))
-      return asine+(*x)*one_half_tour(contextptr);
-    return makevecteur(asine+(*x)*one_tour(contextptr),one_half_tour(contextptr)-asine+(*x)*one_tour(contextptr));
+      return asine+(x)*one_half_tour(contextptr);
+    return makevecteur(asine+(x)*one_tour(contextptr),one_half_tour(contextptr)-asine+(x)*one_tour(contextptr));
   }
   static gen isolate_cos(const gen & e,int isolate_mode,GIAC_CONTEXT){
     gen acose=acos(e,contextptr);
     if (!(isolate_mode & 2))
       return makevecteur(acose,-acose);
-    identificateur * x=new identificateur(string("n_")+print_intvar_counter(contextptr));
+    identificateur x(string("n_")+print_intvar_counter(contextptr));
     if (is_zero(e,contextptr))
-      return acose+(*x)*one_half_tour(contextptr);
-    return makevecteur(acose+(*x)*one_tour(contextptr),-acose+(*x)*one_tour(contextptr));
+      return acose+(x)*one_half_tour(contextptr);
+    return makevecteur(acose+(x)*one_tour(contextptr),-acose+(x)*one_tour(contextptr));
   }
   static gen isolate_tan(const gen & e,int isolate_mode,GIAC_CONTEXT){
     if (!(isolate_mode & 2))
       return atan(e,contextptr);
-    identificateur * x=new identificateur(string("n_")+print_intvar_counter(contextptr));
-    return atan(e,contextptr)+(*x)*one_half_tour(contextptr);
+    identificateur x(string("n_")+print_intvar_counter(contextptr));
+    return atan(e,contextptr)+(x)*one_half_tour(contextptr);
   }
   static gen isolate_asin(const gen & e,int isolate_mode,GIAC_CONTEXT){
     return sin(e,contextptr);
