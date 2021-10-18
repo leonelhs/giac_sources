@@ -1,95 +1,98 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="tutoriel.css">
-<TITLE>Outils pour l&#X2019;Alg&#XE8;bre</TITLE>
-</HEAD>
-<BODY >
-<A HREF="tutoriel003.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="tutoriel005.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H2 CLASS="section"><A NAME="htoc20">4</A>&#XA0;&#XA0;Outils pour l&#X2019;Alg&#XE8;bre</H2><H3 CLASS="subsection"><A NAME="toc17"></A><A NAME="htoc21">4.1</A>&#XA0;&#XA0;Arithm&#XE9;tique des entiers</H3><P>
-<A NAME="@default184"></A>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="tutoriel.css">
+<title>Outils pour l&#X2019;Alg&#XE8;bre</title>
+</head>
+<body >
+<a href="tutoriel003.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="tutoriel005.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h2 id="sec20" class="section">4&#XA0;&#XA0;Outils pour l&#X2019;Alg&#XE8;bre</h2>
+<h3 id="sec21" class="subsection">4.1&#XA0;&#XA0;Arithm&#XE9;tique des entiers</h3>
+<p>
+<a id="hevea_default184"></a>
 Les op&#XE9;rations sur les entiers figurent dans le menu 
-<CODE>Cmds-&gt;Entier</CODE>.
-<A NAME="@default185"></A>
-Les calculs modulo <I>p</I> se font en 
-utilisant <CODE>% p</CODE>. Une fois d&#XE9;fini un entier modulo <I>p</I>, disons
-<CODE>a:=3%5</CODE>, tous les calculs seront efffectu&#XE9;s dans
-&#X2124;/<I>p</I>&#X2124;&#XA0;: <CODE>a*2</CODE> renvoie <CODE>1%5</CODE> (6 modulo 5),
-<CODE>1/a</CODE> renvoie <CODE>2%5</CODE>, &#X2026;&#XA0;
-Pour calculer efficacement les puissances modulo <I>p</I>, on peut utiliser ce qui
-pr&#XE9;c&#XE8;de, ou la fonction <CODE>powermod</CODE> ou <CODE>powmod</CODE>. 
-</P><PRE CLASS="verbatim">a:=3%5
+<code>Cmds-&gt;Entier</code>.
+<a id="hevea_default185"></a>
+Les calculs modulo <span style="font-style:italic">p</span> se font en 
+utilisant <code>% p</code>. Une fois d&#XE9;fini un entier modulo <span style="font-style:italic">p</span>, disons
+<code>a:=3%5</code>, tous les calculs seront efffectu&#XE9;s dans
+&#X2124;/<span style="font-style:italic">p</span>&#X2124;&#XA0;: <code>a*2</code> renvoie <code>1%5</code> (6 modulo 5),
+<code>1/a</code> renvoie <code>2%5</code>, &#X2026;&#XA0;
+Pour calculer efficacement les puissances modulo <span style="font-style:italic">p</span>, on peut utiliser ce qui
+pr&#XE9;c&#XE8;de, ou la fonction <code>powermod</code> ou <code>powmod</code>. 
+</p><pre class="verbatim">a:=3%5
 a+12
 a^4
 powermod(3,4,5)
-</PRE><P><A NAME="@default186"></A></P><DIV CLASS="center">
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Nombres entiers</B></TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>a%p</CODE></TD><TD ALIGN=left NOWRAP><I>a</I> modulo <I>p</I></TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>powmod(a,n,p)</CODE></TD><TD ALIGN=left NOWRAP><I>a</I><SUP><I>n</I></SUP> modulo <I>p</I></TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>irem</CODE></TD><TD ALIGN=left NOWRAP>reste de la division euclidienne</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>iquo</CODE></TD><TD ALIGN=left NOWRAP>quotient de la division euclidienne</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>iquorem</CODE></TD><TD ALIGN=left NOWRAP>quotient et reste</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>ifactor</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;composition en facteurs premiers</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>ifactors</CODE></TD><TD ALIGN=left NOWRAP>liste des facteurs premiers</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>idivis</CODE></TD><TD ALIGN=left NOWRAP>liste des diviseurs</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>gcd</CODE></TD><TD ALIGN=left NOWRAP>plus grand diviseur commun</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>lcm</CODE></TD><TD ALIGN=left NOWRAP>plus petit multiple commun</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>iegcd</CODE></TD><TD ALIGN=left NOWRAP>identit&#XE9; de Bezout</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>iabcuv</CODE></TD><TD ALIGN=left NOWRAP>renvoie [<I>u</I>,<I>v</I>] tels que <I>au</I>+<I>bv</I>=<I>c</I></TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>is_prime</CODE></TD><TD ALIGN=left NOWRAP>l&#X2019;entier est-il premier</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>nextprime</CODE></TD><TD ALIGN=left NOWRAP>prochain entier premier</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>previousprime</CODE></TD><TD ALIGN=left NOWRAP>entier premier pr&#XE9;c&#XE9;dent</TD></TR>
-</TABLE>
-</DIV><P>
-<A NAME="@default187"></A>
-<A NAME="@default188"></A>
-<A NAME="@default189"></A>
-<A NAME="@default190"></A>
-<A NAME="@default191"></A>
-<A NAME="@default192"></A>
-<A NAME="@default193"></A>
-<A NAME="@default194"></A>
-<A NAME="@default195"></A>
-<A NAME="@default196"></A>
-<A NAME="@default197"></A>
-<A NAME="@default198"></A>
-<A NAME="@default199"></A>
-<A NAME="@default200"></A>
-<A NAME="@default201"></A>
-<A NAME="@default202"></A>
-<A NAME="@default203"></A>
-<A NAME="@default204"></A>
-<A NAME="@default205"></A>
-<A NAME="@default206"></A>
-</P><H3 CLASS="subsection"><A NAME="toc18"></A><A NAME="htoc22">4.2</A>&#XA0;&#XA0;Polyn&#XF4;mes et fractions rationnelles</H3><P>
-<A NAME="@default207"></A>
-<A NAME="@default208"></A>
+</pre><p>
+<a id="hevea_default186"></a></p><div class="center">
+<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:center;border:solid 1px;white-space:nowrap"  colspan=2><span style="font-weight:bold">Nombres entiers</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>a%p</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-style:italic">a</span> modulo <span style="font-style:italic">p</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>powmod(a,n,p)</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-style:italic">a</span><sup><span style="font-style:italic">n</span></sup> modulo <span style="font-style:italic">p</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>irem</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >reste de la division euclidienne</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>iquo</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >quotient de la division euclidienne</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>iquorem</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >quotient et reste</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>ifactor</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >d&#XE9;composition en facteurs premiers</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>ifactors</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >liste des facteurs premiers</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>idivis</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >liste des diviseurs</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>gcd</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >plus grand diviseur commun</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>lcm</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >plus petit multiple commun</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>iegcd</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >identit&#XE9; de Bezout</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>iabcuv</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >renvoie [<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>] tels que <span style="font-style:italic">au</span>+<span style="font-style:italic">bv</span>=<span style="font-style:italic">c</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>is_prime</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >l&#X2019;entier est-il premier</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>nextprime</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >prochain entier premier</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>previousprime</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >entier premier pr&#XE9;c&#XE9;dent</td></tr>
+</table>
+</div><p>
+<a id="hevea_default187"></a>
+<a id="hevea_default188"></a>
+<a id="hevea_default189"></a>
+<a id="hevea_default190"></a>
+<a id="hevea_default191"></a>
+<a id="hevea_default192"></a>
+<a id="hevea_default193"></a>
+<a id="hevea_default194"></a>
+<a id="hevea_default195"></a>
+<a id="hevea_default196"></a>
+<a id="hevea_default197"></a>
+<a id="hevea_default198"></a>
+<a id="hevea_default199"></a>
+<a id="hevea_default200"></a>
+<a id="hevea_default201"></a>
+<a id="hevea_default202"></a>
+<a id="hevea_default203"></a>
+<a id="hevea_default204"></a>
+<a id="hevea_default205"></a>
+<a id="hevea_default206"></a>
+</p>
+<h3 id="sec22" class="subsection">4.2&#XA0;&#XA0;Polyn&#XF4;mes et fractions rationnelles</h3>
+<p>
+<a id="hevea_default207"></a>
+<a id="hevea_default208"></a>
 Les fonctions de traitement des polyn&#XF4;mes sont dans le menu 
-<CODE>Cmds-&gt;Polyn\^omes</CODE>. </P><P>On utilise <CODE>normal</CODE> ou <CODE>expand</CODE> 
+<code>Cmds-&gt;Polyn\^omes</code>. </p><p>On utilise <code>normal</code> ou <code>expand</code> 
 pour d&#XE9;velopper, ou plus g&#XE9;n&#XE9;ralement mettre une fraction 
-sous forme irr&#XE9;ductible, et <CODE>factor</CODE> pour
+sous forme irr&#XE9;ductible, et <code>factor</code> pour
 factoriser. 
-<A NAME="@default209"></A>
-<A NAME="@default210"></A>
+<a id="hevea_default209"></a>
+<a id="hevea_default210"></a>
 Le r&#XE9;sultat d&#XE9;pend du corps de nombres dans lequel on
 se place. Par d&#XE9;faut il s&#X2019;agit des rationnels si les coefficients
 sont exacts ou des r&#XE9;els sinon. Pour les complexes 
 (exacts ou approch&#XE9;es), il
-faut activer l&#X2019;option <CODE>Complexe</CODE> &#XE0; partir du bouton rappelant la configuration <CODE> Config:...</CODE>. On peut aussi d&#XE9;clarer les 
+faut activer l&#X2019;option <code>Complexe</code> &#XE0; partir du bouton rappelant la configuration <code> Config:...</code>. On peut aussi d&#XE9;clarer les 
 coefficients comme des
-entiers modulo <I>p</I> pour travailler dans &#X2124;/<I>p</I>&#X2124; (commande <CODE>%</CODE>) 
+entiers modulo <span style="font-style:italic">p</span> pour travailler dans &#X2124;/<span style="font-style:italic">p</span>&#X2124; (commande <code>%</code>) 
 ou dans un corps
-fini (d&#XE9;fini par la commande <CODE>GF</CODE>). Ex&#XE9;cutez les
+fini (d&#XE9;fini par la commande <code>GF</code>). Ex&#XE9;cutez les
 commandes suivantes avant et apr&#XE8;s avoir activ&#XE9; l&#X2019;option
-<CODE>Complexe</CODE>.
-</P><PRE CLASS="verbatim">P:=x^4-1
+<code>Complexe</code>.
+</p><pre class="verbatim">P:=x^4-1
 factor(P)
 gcd(P,x^3-1)
 divis(P)
@@ -102,105 +105,107 @@ factor(G(a^3)*x^2+1)
 genpoly(5,3,x)
 genpoly(2,3,x)
 genpoly(2*y+5,3,x)
-</PRE><P><A NAME="@default211"></A>
-<A NAME="@default212"></A>
-<A NAME="@default213"></A>
-<A NAME="@default214"></A>
-<A NAME="@default215"></A>
-<A NAME="@default216"></A>
-<A NAME="@default217"></A>
-<A NAME="@default218"></A>
-<A NAME="@default219"></A>
-<A NAME="@default220"></A>
-<A NAME="@default221"></A>
-<A NAME="@default222"></A>
-<A NAME="@default223"></A>
-<A NAME="@default224"></A> 
-<A NAME="@default225"></A>
-<A NAME="@default226"></A>
-<A NAME="@default227"></A></P><DIV CLASS="center">
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Polyn&#XF4;mes</B></TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>normal</CODE></TD><TD ALIGN=left NOWRAP>forme normale (d&#XE9;velopp&#XE9;e et r&#XE9;duite)</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>expand</CODE></TD><TD ALIGN=left NOWRAP>forme d&#XE9;velopp&#XE9;e</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>ptayl</CODE></TD><TD ALIGN=left NOWRAP>forme de Taylor</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>peval</CODE> ou <CODE>horner</CODE></TD><TD ALIGN=left NOWRAP>&#XE9;valuation en un point par l&#X2019;algorithme de Horner</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>genpoly</CODE></TD><TD ALIGN=left NOWRAP>polyn&#XF4;me d&#XE9;fini par sa valeur en un point</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>canonical_form</CODE></TD><TD ALIGN=left NOWRAP>trin&#XF4;me sous forme canonique</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>coeff</CODE></TD><TD ALIGN=left NOWRAP>(liste des) coefficient(s)</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>poly2symb</CODE></TD><TD ALIGN=left NOWRAP>de l&#X2019;expression alg&#XE9;brique &#XE0; la forme symbolique</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>symb2poly</CODE></TD><TD ALIGN=left NOWRAP>de la forme symbolique &#XE0; l&#X2019;expression alg&#XE9;brique</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>pcoeff</CODE></TD><TD ALIGN=left NOWRAP>polyn&#XF4;me d&#XE9;crit par ses racines</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>degree</CODE></TD><TD ALIGN=left NOWRAP>degr&#XE9;</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>lcoeff</CODE></TD><TD ALIGN=left NOWRAP>coefficient du terme de plus haut degr&#XE9;</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>valuation</CODE></TD><TD ALIGN=left NOWRAP>degr&#XE9; du mon&#XF4;me de plus bas degr&#XE9;</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>tcoeff</CODE></TD><TD ALIGN=left NOWRAP>coefficient du terme de plus bas degr&#XE9;</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>factor</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;composition en facteurs premiers</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>factors</CODE></TD><TD ALIGN=left NOWRAP>liste des facteurs premiers</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>divis</CODE></TD><TD ALIGN=left NOWRAP>liste des diviseurs</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>collect</CODE></TD><TD ALIGN=left NOWRAP>factorisation sur les entiers</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>froot</CODE></TD><TD ALIGN=left NOWRAP>racines avec leurs multiplicit&#XE9;s</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>proot</CODE></TD><TD ALIGN=left NOWRAP>valeurs approch&#XE9;es des racines</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>sturmab</CODE></TD><TD ALIGN=left NOWRAP>nombre de racines dans un intervalle</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>getNum</CODE></TD><TD ALIGN=left NOWRAP>num&#XE9;rateur d&#X2019;une fraction rationnelle</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>getDenom</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;nominateur d&#X2019;une fraction rationnelle</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>propfrac</CODE></TD><TD ALIGN=left NOWRAP>isole partie enti&#XE8;re et fraction propre</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>partfrac</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;composition en &#XE9;l&#XE9;ments simples</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>quo</CODE></TD><TD ALIGN=left NOWRAP>quotient de la division euclidienne</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>rem</CODE></TD><TD ALIGN=left NOWRAP>reste de la division euclidienne</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>gcd</CODE></TD><TD ALIGN=left NOWRAP>plus grand diviseur commun</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>lcm</CODE></TD><TD ALIGN=left NOWRAP>plus petit multiple commun</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>egcd</CODE></TD><TD ALIGN=left NOWRAP>identit&#XE9; de Bezout</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>divpc</CODE></TD><TD ALIGN=left NOWRAP>division suivant les puissances croissantes</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>randpoly</CODE></TD><TD ALIGN=left NOWRAP>polyn&#XF4;me al&#XE9;atoire</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>cyclotomic</CODE></TD><TD ALIGN=left NOWRAP>polyn&#XF4;mes cyclotomiques</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>lagrange</CODE></TD><TD ALIGN=left NOWRAP>polyn&#XF4;mes de Lagrange</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>hermite</CODE></TD><TD ALIGN=left NOWRAP>polyn&#XF4;mes de Hermite</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>laguerre</CODE></TD><TD ALIGN=left NOWRAP>polyn&#XF4;mes de Laguerre</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>tchebyshev1</CODE></TD><TD ALIGN=left NOWRAP>polyn&#XF4;mes de Tchebyshev</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>tchebyshev2</CODE></TD><TD ALIGN=left NOWRAP>polyn&#XF4;mes de Tchebyshev</TD></TR>
-</TABLE>
-</DIV><P>
-<A NAME="@default228"></A>
-<A NAME="@default229"></A>
-<A NAME="@default230"></A>
-<A NAME="@default231"></A>
-<A NAME="@default232"></A>
-<A NAME="@default233"></A>
-<A NAME="@default234"></A>
-<A NAME="@default235"></A>
-<A NAME="@default236"></A>
-<A NAME="@default237"></A>
-<A NAME="@default238"></A>
-<A NAME="@default239"></A>
-<A NAME="@default240"></A>
-<A NAME="@default241"></A>
-<A NAME="@default242"></A>
-<A NAME="@default243"></A>
-<A NAME="@default244"></A>
-<A NAME="@default245"></A>
-<A NAME="@default246"></A>
-<A NAME="@default247"></A>
-<A NAME="@default248"></A> 
-<A NAME="@default249"></A>
-<A NAME="@default250"></A>
-<A NAME="@default251"></A>
-<A NAME="@default252"></A>
-<A NAME="@default253"></A>
-<A NAME="@default254"></A>
-</P><H3 CLASS="subsection"><A NAME="toc19"></A><A NAME="htoc23">4.3</A>&#XA0;&#XA0;Trigonom&#XE9;trie</H3><P>
-<A NAME="@default255"></A>
-Le menu <CODE>Cmds-&gt;R\'eel-&gt;Transcendental</CODE> contient 
+</pre><p><a id="hevea_default211"></a>
+<a id="hevea_default212"></a>
+<a id="hevea_default213"></a>
+<a id="hevea_default214"></a>
+<a id="hevea_default215"></a>
+<a id="hevea_default216"></a>
+<a id="hevea_default217"></a>
+<a id="hevea_default218"></a>
+<a id="hevea_default219"></a>
+<a id="hevea_default220"></a>
+<a id="hevea_default221"></a>
+<a id="hevea_default222"></a>
+<a id="hevea_default223"></a>
+<a id="hevea_default224"></a> 
+<a id="hevea_default225"></a>
+<a id="hevea_default226"></a>
+<a id="hevea_default227"></a></p><div class="center">
+<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:center;border:solid 1px;white-space:nowrap"  colspan=2><span style="font-weight:bold">Polyn&#XF4;mes</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>normal</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >forme normale (d&#XE9;velopp&#XE9;e et r&#XE9;duite)</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>expand</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >forme d&#XE9;velopp&#XE9;e</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>ptayl</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >forme de Taylor</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>peval</code> ou <code>horner</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >&#XE9;valuation en un point par l&#X2019;algorithme de Horner</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>genpoly</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >polyn&#XF4;me d&#XE9;fini par sa valeur en un point</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>canonical_form</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >trin&#XF4;me sous forme canonique</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>coeff</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >(liste des) coefficient(s)</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>poly2symb</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >de l&#X2019;expression alg&#XE9;brique &#XE0; la forme symbolique</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>symb2poly</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >de la forme symbolique &#XE0; l&#X2019;expression alg&#XE9;brique</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>pcoeff</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >polyn&#XF4;me d&#XE9;crit par ses racines</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>degree</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >degr&#XE9;</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>lcoeff</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >coefficient du terme de plus haut degr&#XE9;</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>valuation</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >degr&#XE9; du mon&#XF4;me de plus bas degr&#XE9;</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>tcoeff</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >coefficient du terme de plus bas degr&#XE9;</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>factor</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >d&#XE9;composition en facteurs premiers</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>factors</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >liste des facteurs premiers</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>divis</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >liste des diviseurs</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>collect</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >factorisation sur les entiers</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>froot</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >racines avec leurs multiplicit&#XE9;s</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>proot</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >valeurs approch&#XE9;es des racines</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>sturmab</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >nombre de racines dans un intervalle</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>getNum</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >num&#XE9;rateur d&#X2019;une fraction rationnelle</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>getDenom</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >d&#XE9;nominateur d&#X2019;une fraction rationnelle</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>propfrac</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >isole partie enti&#XE8;re et fraction propre</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>partfrac</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >d&#XE9;composition en &#XE9;l&#XE9;ments simples</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>quo</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >quotient de la division euclidienne</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>rem</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >reste de la division euclidienne</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>gcd</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >plus grand diviseur commun</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>lcm</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >plus petit multiple commun</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>egcd</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >identit&#XE9; de Bezout</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>divpc</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >division suivant les puissances croissantes</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>randpoly</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >polyn&#XF4;me al&#XE9;atoire</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>cyclotomic</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >polyn&#XF4;mes cyclotomiques</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>lagrange</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >polyn&#XF4;mes de Lagrange</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>hermite</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >polyn&#XF4;mes de Hermite</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>laguerre</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >polyn&#XF4;mes de Laguerre</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>tchebyshev1</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >polyn&#XF4;mes de Tchebyshev</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>tchebyshev2</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >polyn&#XF4;mes de Tchebyshev</td></tr>
+</table>
+</div><p>
+<a id="hevea_default228"></a>
+<a id="hevea_default229"></a>
+<a id="hevea_default230"></a>
+<a id="hevea_default231"></a>
+<a id="hevea_default232"></a>
+<a id="hevea_default233"></a>
+<a id="hevea_default234"></a>
+<a id="hevea_default235"></a>
+<a id="hevea_default236"></a>
+<a id="hevea_default237"></a>
+<a id="hevea_default238"></a>
+<a id="hevea_default239"></a>
+<a id="hevea_default240"></a>
+<a id="hevea_default241"></a>
+<a id="hevea_default242"></a>
+<a id="hevea_default243"></a>
+<a id="hevea_default244"></a>
+<a id="hevea_default245"></a>
+<a id="hevea_default246"></a>
+<a id="hevea_default247"></a>
+<a id="hevea_default248"></a> 
+<a id="hevea_default249"></a>
+<a id="hevea_default250"></a>
+<a id="hevea_default251"></a>
+<a id="hevea_default252"></a>
+<a id="hevea_default253"></a>
+<a id="hevea_default254"></a>
+</p>
+<h3 id="sec23" class="subsection">4.3&#XA0;&#XA0;Trigonom&#XE9;trie</h3>
+<p>
+<a id="hevea_default255"></a>
+Le menu <code>Cmds-&gt;R\'eel-&gt;Transcendental</code> contient 
 les fonctions circulaires et hyperboliques ainsi que leurs inverses. 
 Pour lin&#XE9;ariser et
-d&#XE9;velopper on utilise <CODE>tlin</CODE> et <CODE>texpand</CODE>. Beaucoup
+d&#XE9;velopper on utilise <code>tlin</code> et <code>texpand</code>. Beaucoup
 d&#X2019;autres r&#XE9;&#XE9;critures sont accessibles &#XE0; partir des menus
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<CODE>Expression-&gt;Trigo</CODE>&#XA0;: transformations en tan(<I>x</I>/2) (<TT>halftan</TT>), transformation des tangentes en sinus et
-cosinus (<TT>tan2sincos</TT>), &#X2026;</LI><LI CLASS="li-itemize"><CODE>Expression-&gt;Trigo exp</CODE>&#XA0;: transformation des fonctions 
+</p><ul class="itemize"><li class="li-itemize">
+<code>Expression-&gt;Trigo</code>&#XA0;: transformations en tan(<span style="font-style:italic">x</span>/2) (<span style="font-family:monospace">halftan</span>), transformation des tangentes en sinus et
+cosinus (<span style="font-family:monospace">tan2sincos</span>), &#X2026;</li><li class="li-itemize"><code>Expression-&gt;Trigo exp</code>&#XA0;: transformation des fonctions 
 trigonom&#XE9;triques en exponentielles par les
-formules d&#X2019;Euler (<TT>trig2exp</TT>), transformation des exponentielles en fonctions trigonom&#XE9;triques (<TT>exp2trig</TT>), transformation des exponentielles en puissances (<TT>exp2pow</TT>)...,
-</LI><LI CLASS="li-itemize"><CODE>Expression-&gt;Trigo inv</CODE>&#XA0;: transformation des fonctions inverses
-</LI></UL><PRE CLASS="verbatim">exp2pow(exp(3*ln(x)))
+formules d&#X2019;Euler (<span style="font-family:monospace">trig2exp</span>), transformation des exponentielles en fonctions trigonom&#XE9;triques (<span style="font-family:monospace">exp2trig</span>), transformation des exponentielles en puissances (<span style="font-family:monospace">exp2pow</span>)...,
+</li><li class="li-itemize"><code>Expression-&gt;Trigo inv</code>&#XA0;: transformation des fonctions inverses
+</li></ul><pre class="verbatim">exp2pow(exp(3*ln(x)))
 exp2trig(exp(i*x))
 trig2exp(cos(x))
 E:=sin(x)^4+sin(x)^3
@@ -215,36 +220,39 @@ Et:=trigtan(E)
 tan2sincos(Et)
 tan2sincos2(Et)
 tan2cossin2(Et)
-</PRE><P><A NAME="@default256"></A>
-<A NAME="@default257"></A>
-<A NAME="@default258"></A></P><DIV CLASS="center">
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Trigonom&#XE9;trie</B></TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>tlin</CODE></TD><TD ALIGN=left NOWRAP>lin&#XE9;ariser</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>tcollect</CODE></TD><TD ALIGN=left NOWRAP>lin&#XE9;ariser et regrouper</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>texpand</CODE></TD><TD ALIGN=left NOWRAP>forme polynomiale</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>trig2exp</CODE></TD><TD ALIGN=left NOWRAP>trigonom&#XE9;trique vers exponentielle</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>exp2trig</CODE></TD><TD ALIGN=left NOWRAP>exponentielle vers trigonom&#XE9;trique</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>hyp2exp</CODE></TD><TD ALIGN=left NOWRAP>hyperbolique vers exponentielle</TD></TR>
-</TABLE>
-</DIV><P>
-<A NAME="@default259"></A>
-<A NAME="@default260"></A>
-<A NAME="@default261"></A>
-<A NAME="@default262"></A>
-<A NAME="@default263"></A>
-<A NAME="@default264"></A>
-</P><H3 CLASS="subsection"><A NAME="toc20"></A><A NAME="htoc24">4.4</A>&#XA0;&#XA0;Vecteurs et matrices</H3><P>
-<A NAME="@default265"></A>
-<A NAME="@default266"></A>
+</pre><p>
+<a id="hevea_default256"></a>
+<a id="hevea_default257"></a>
+<a id="hevea_default258"></a></p><div class="center">
+<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:center;border:solid 1px;white-space:nowrap"  colspan=2><span style="font-weight:bold">Trigonom&#XE9;trie</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>tlin</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >lin&#XE9;ariser</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>tcollect</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >lin&#XE9;ariser et regrouper</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>texpand</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >forme polynomiale</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>trig2exp</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >trigonom&#XE9;trique vers exponentielle</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>exp2trig</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >exponentielle vers trigonom&#XE9;trique</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>hyp2exp</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >hyperbolique vers exponentielle</td></tr>
+</table>
+</div><p>
+<a id="hevea_default259"></a>
+<a id="hevea_default260"></a>
+<a id="hevea_default261"></a>
+<a id="hevea_default262"></a>
+<a id="hevea_default263"></a>
+<a id="hevea_default264"></a>
+</p>
+<h3 id="sec24" class="subsection">4.4&#XA0;&#XA0;Vecteurs et matrices</h3>
+<p>
+<a id="hevea_default265"></a>
+<a id="hevea_default266"></a>
 Un vecteur est une liste de nombres, une matrice est la liste de ses
 vecteurs lignes. Le produit matriciel est not&#XE9; comme le produit
-ordinaire <CODE>*</CODE>. Les vecteurs sont a priori des vecteurs lignes,
+ordinaire <code>*</code>. Les vecteurs sont a priori des vecteurs lignes,
 mais le produit &#XE0; droite par un vecteur ligne est effectu&#XE9; comme
-si c&#X2019;&#XE9;tait une colonne. En particulier, si <CODE>v</CODE> et <CODE>w</CODE> 
-sont deux vecteurs de m&#XEA;me taille, <CODE>v*w</CODE> retourne leur produit
+si c&#X2019;&#XE9;tait une colonne. En particulier, si <code>v</code> et <code>w</code> 
+sont deux vecteurs de m&#XEA;me taille, <code>v*w</code> retourne leur produit
 scalaire. 
-<A NAME="@default267"></A>
-</P><PRE CLASS="verbatim">A:=[[1,2,3],[4,5,6],[7,8,9]]
+<a id="hevea_default267"></a>
+</p><pre class="verbatim">A:=[[1,2,3],[4,5,6],[7,8,9]]
 v:=[1,1,1]
 v*v
 A*v
@@ -253,99 +261,105 @@ B:=[[1,1,1],[2,2,2]]
 A*B
 B*A
 A*tran(B)
-</PRE><P>A partir d&#X2019;une fonction qui &#XE0; deux indices (<I>j</I>,<I>k</I>) associe un r&#XE9;el
-<I>a</I>(<I>j</I>,<I>k</I>), on peut constituer une matrice avec <CODE>makemat</CODE> ou
-<CODE>matrix</CODE>. Pour <CODE>makemat</CODE> les indices commencent &#XE0; 0, pour
-<CODE>matrix</CODE> il commencent &#XE0; 1.
-<A NAME="@default268"></A>
-<A NAME="@default269"></A>
-</P><PRE CLASS="verbatim">makemat((j,k)-&gt;j+2*k,3,2)
+</pre><p>
+A partir d&#X2019;une fonction qui &#XE0; deux indices (<span style="font-style:italic">j</span>,<span style="font-style:italic">k</span>) associe un r&#XE9;el
+<span style="font-style:italic">a</span>(<span style="font-style:italic">j</span>,<span style="font-style:italic">k</span>), on peut constituer une matrice avec <code>makemat</code> ou
+<code>matrix</code>. Pour <code>makemat</code> les indices commencent &#XE0; 0, pour
+<code>matrix</code> il commencent &#XE0; 1.
+<a id="hevea_default268"></a>
+<a id="hevea_default269"></a>
+</p><pre class="verbatim">makemat((j,k)-&gt;j+2*k,3,2)
 matrix(3,2,(j,k)-&gt;j+2*k)
-</PRE><P>On peut aussi cr&#XE9;er des matrices par blocs avec la commande
-<CODE>blockmatrix</CODE>.
-<A NAME="@default270"></A>
-</P><PRE CLASS="verbatim">A:=makemat((j,k)-&gt;j+2*k,3,2)
+</pre><p>
+On peut aussi cr&#XE9;er des matrices par blocs avec la commande
+<code>blockmatrix</code>.
+<a id="hevea_default270"></a>
+</p><pre class="verbatim">A:=makemat((j,k)-&gt;j+2*k,3,2)
 B:=idn(3)
 blockmatrix(1,2,[A,B])
 blockmatrix(2,2,[A,B,B,A])
-</PRE><P>On acc&#XE8;de &#XE0; un &#XE9;l&#XE9;ment d&#X2019;une matrice gr&#XE2;ce &#XE0; deux indices 
+</pre><p>
+On acc&#XE8;de &#XE0; un &#XE9;l&#XE9;ment d&#X2019;une matrice gr&#XE2;ce &#XE0; deux indices 
 s&#XE9;par&#XE9;s par une virgule et mis entre 
 crochets. Le premier indice est l&#X2019;indice de la ligne et le deuxi&#XE8;me 
 celui de la colonne. Les indices commencent &#XE0; 0.
-Par exemple, si <CODE>A:=[[0,2],[1,3],[2,4]]</CODE> alors 
-<CODE>A[2,1]</CODE> renvoie <CODE>4</CODE>.
+Par exemple, si <code>A:=[[0,2],[1,3],[2,4]]</code> alors 
+<code>A[2,1]</code> renvoie <code>4</code>.
 Pour extraire un bloc de la matrice, on utilise des intervalles
-comme indices&#XA0;: <CODE>A[1..2,0..1]</CODE> renvoie le bloc
-constitu&#XE9; des lignes 1 &#XE0; 2 et des colonnes 0 &#XE0; 1.</P><P>Notez que les matrices de <TT>Xcas</TT> sont
+comme indices&#XA0;: <code>A[1..2,0..1]</code> renvoie le bloc
+constitu&#XE9; des lignes 1 &#XE0; 2 et des colonnes 0 &#XE0; 1.</p><p>Notez que les matrices de <span style="font-family:monospace">Xcas</span> sont
 recopi&#XE9;es enti&#XE8;rement &#XE0; chaque modification d&#X2019;un coefficient.
 Ceci est p&#XE9;nalisant si on modifie successivement 
 dans un programme beaucoup
-de coefficients d&#X2019;une m&#XEA;me (grande) matrice.</P><DIV CLASS="center">
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Vecteurs et matrices</B></TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>v*w</CODE></TD><TD ALIGN=left NOWRAP>produit scalaire</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>cross(v,w)</CODE></TD><TD ALIGN=left NOWRAP>produit vectoriel</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>A*B</CODE></TD><TD ALIGN=left NOWRAP>produit matriciel</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>A.*B</CODE></TD><TD ALIGN=left NOWRAP>produit terme &#XE0; terme</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>1/A</CODE></TD><TD ALIGN=left NOWRAP>inverse</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>tran</CODE></TD><TD ALIGN=left NOWRAP>transpos&#XE9;e</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>rank</CODE></TD><TD ALIGN=left NOWRAP>rang</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>det</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;terminant</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>ker</CODE></TD><TD ALIGN=left NOWRAP>base du noyau</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>image</CODE></TD><TD ALIGN=left NOWRAP>base de l&#X2019;image</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>idn</CODE></TD><TD ALIGN=left NOWRAP>matrice identit&#XE9;</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>ranm</CODE></TD><TD ALIGN=left NOWRAP>matrice &#XE0; coefficients al&#XE9;atoires</TD></TR>
-</TABLE>
-</DIV><P>
-<A NAME="@default271"></A>
-<A NAME="@default272"></A>
-<A NAME="@default273"></A>
-<A NAME="@default274"></A>
-<A NAME="@default275"></A>
-<A NAME="@default276"></A>
-<A NAME="@default277"></A>
-<A NAME="@default278"></A>
-<A NAME="@default279"></A>
-<A NAME="@default280"></A>
-<A NAME="@default281"></A>
-<A NAME="@default282"></A>
-<A NAME="@default283"></A>
-<A NAME="@default284"></A>
-<A NAME="@default285"></A>
-<A NAME="@default286"></A>
-<A NAME="@default287"></A>
-</P><H3 CLASS="subsection"><A NAME="toc21"></A><A NAME="htoc25">4.5</A>&#XA0;&#XA0;Syst&#XE8;mes lin&#XE9;aires</H3><P>
-<A NAME="@default288"></A>
-<A NAME="@default289"></A>
-<A NAME="@default290"></A>
-<A NAME="@default291"></A>
-La fonction <CODE>linsolve</CODE> r&#XE9;sout une liste d&#X2019;&#XE9;quations
+de coefficients d&#X2019;une m&#XEA;me (grande) matrice.</p><div class="center">
+<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:center;border:solid 1px;white-space:nowrap"  colspan=2><span style="font-weight:bold">Vecteurs et matrices</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>v*w</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >produit scalaire</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>cross(v,w)</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >produit vectoriel</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>A*B</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >produit matriciel</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>A.*B</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >produit terme &#XE0; terme</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>1/A</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >inverse</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>tran</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >transpos&#XE9;e</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>rank</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >rang</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>det</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >d&#XE9;terminant</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>ker</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >base du noyau</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>image</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >base de l&#X2019;image</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>idn</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >matrice identit&#XE9;</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>ranm</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >matrice &#XE0; coefficients al&#XE9;atoires</td></tr>
+</table>
+</div><p>
+<a id="hevea_default271"></a>
+<a id="hevea_default272"></a>
+<a id="hevea_default273"></a>
+<a id="hevea_default274"></a>
+<a id="hevea_default275"></a>
+<a id="hevea_default276"></a>
+<a id="hevea_default277"></a>
+<a id="hevea_default278"></a>
+<a id="hevea_default279"></a>
+<a id="hevea_default280"></a>
+<a id="hevea_default281"></a>
+<a id="hevea_default282"></a>
+<a id="hevea_default283"></a>
+<a id="hevea_default284"></a>
+<a id="hevea_default285"></a>
+<a id="hevea_default286"></a>
+<a id="hevea_default287"></a>
+</p>
+<h3 id="sec25" class="subsection">4.5&#XA0;&#XA0;Syst&#XE8;mes lin&#XE9;aires</h3>
+<p>
+<a id="hevea_default288"></a>
+<a id="hevea_default289"></a>
+<a id="hevea_default290"></a>
+<a id="hevea_default291"></a>
+La fonction <code>linsolve</code> r&#XE9;sout une liste d&#X2019;&#XE9;quations
 lin&#XE9;aires, avec la m&#XEA;me syntaxe que solve. On peut aussi utiliser
-<CODE>simult</CODE> pour r&#XE9;soudre plusieurs syst&#XE8;mes d&#X2019;&#XE9;quations lin&#XE9;aires 
+<code>simult</code> pour r&#XE9;soudre plusieurs syst&#XE8;mes d&#X2019;&#XE9;quations lin&#XE9;aires 
 qui ne diff&#XE8;rent que par leur second membre, en mettant comme premier 
 argument la matrice du syst&#XE8;me et comme second argument la matrice dont la 
 (ou les) colonnes sont le (ou les) second membre(s) des syst&#XE8;mes, ou bien 
-<CODE>rref</CODE> d&#X2019;argument une matrice obtenue en bordant la matrice du syst&#XE8;me 
-avec lesecond membre (<TT>border(A,tran(b))</TT> si <TT>b</TT> est une matrice 
-colonne). Quand le syst&#XE8;me est impossible, <CODE>linsolve</CODE> retourne
-la liste vide, <CODE>simult</CODE> retourne un message d&#X2019;erreur, <CODE>rref</CODE>
+<code>rref</code> d&#X2019;argument une matrice obtenue en bordant la matrice du syst&#XE8;me 
+avec lesecond membre (<span style="font-family:monospace">border(A,tran(b))</span> si <span style="font-family:monospace">b</span> est une matrice 
+colonne). Quand le syst&#XE8;me est impossible, <code>linsolve</code> retourne
+la liste vide, <code>simult</code> retourne un message d&#X2019;erreur, <code>rref</code>
 retourne une matrice dont une des lignes est nulle, sauf le dernier
-coefficient. Quand le syst&#XE8;me est ind&#XE9;termin&#XE9;, <CODE>linsolve</CODE>
-retourne la solution fonction de certaines variables, <CODE>simult</CODE>
-retourne seulement une solution, <CODE>rref</CODE> retourne une matrice dont
+coefficient. Quand le syst&#XE8;me est ind&#XE9;termin&#XE9;, <code>linsolve</code>
+retourne la solution fonction de certaines variables, <code>simult</code>
+retourne seulement une solution, <code>rref</code> retourne une matrice dont
 une ou plusieurs lignes sont nulles. L&#X2019;exemple ci-dessous concerne
 le syst&#XE8;me
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
-&#X23AA;<BR>
-&#X23A8;<BR>
-&#X23AA;<BR>
-&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>&#XA0;<I>x</I></TD><TD ALIGN=left NOWRAP>+</TD><TD ALIGN=left NOWRAP><I>y</I></TD><TD ALIGN=left NOWRAP>+</TD><TD ALIGN=left NOWRAP><I>az</I></TD><TD ALIGN=left NOWRAP>=</TD><TD ALIGN=right NOWRAP>1</TD></TR>
-<TR><TD ALIGN=left NOWRAP>&#XA0;<I>x</I></TD><TD ALIGN=left NOWRAP>+</TD><TD ALIGN=left NOWRAP><I>a</I>&#XA0;<I>y</I></TD><TD ALIGN=left NOWRAP>+</TD><TD ALIGN=left NOWRAP><I>z</I></TD><TD ALIGN=left NOWRAP>=</TD><TD ALIGN=right NOWRAP>1&#XA0;</TD></TR>
-<TR><TD ALIGN=left NOWRAP>&#XA0;<I>ax</I></TD><TD ALIGN=left NOWRAP>+</TD><TD ALIGN=left NOWRAP><I>y</I></TD><TD ALIGN=left NOWRAP>+</TD><TD ALIGN=left NOWRAP><I>z</I></TD><TD ALIGN=left NOWRAP>=</TD><TD ALIGN=right NOWRAP>&#X2212;2&#XA0;</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-Il a une solution unique pour <I>a</I>&#X2260; 1 et <I>a</I>&#X2260; &#X2212;2, il est impossible pour
-<I>a</I>=1 et il est ind&#XE9;termin&#XE9; pour <I>a</I>=&#X2212;2.
-</P><PRE CLASS="verbatim">linsolve([x+y+a*z=1,x+a*y+z=1,x+a*y+z=-2],[x,y,z])
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X23A7;<br>
+&#X23AA;<br>
+&#X23A8;<br>
+&#X23AA;<br>
+&#X23A9;</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >&#XA0;<span style="font-style:italic">x</span></td><td style="text-align:left;white-space:nowrap" >+</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">y</span></td><td style="text-align:left;white-space:nowrap" >+</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">az</span></td><td style="text-align:left;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >1</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >&#XA0;<span style="font-style:italic">x</span></td><td style="text-align:left;white-space:nowrap" >+</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">a</span>&#XA0;<span style="font-style:italic">y</span></td><td style="text-align:left;white-space:nowrap" >+</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">z</span></td><td style="text-align:left;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >1&#XA0;</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >&#XA0;<span style="font-style:italic">ax</span></td><td style="text-align:left;white-space:nowrap" >+</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">y</span></td><td style="text-align:left;white-space:nowrap" >+</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">z</span></td><td style="text-align:left;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >&#X2212;2&#XA0;
+</td></tr>
+</table></td></tr>
+</table><p>
+Il a une solution unique pour <span style="font-style:italic">a</span>&#X2260; 1 et <span style="font-style:italic">a</span>&#X2260; &#X2212;2, il est impossible pour
+<span style="font-style:italic">a</span>=1 et il est ind&#XE9;termin&#XE9; pour <span style="font-style:italic">a</span>=&#X2212;2.
+</p><pre class="verbatim">linsolve([x+y+a*z=1,x+a*y+z=1,x+a*y+z=-2],[x,y,z])
 a:=1
 linsolve([x+y+a*z=1,x+a*y+z=1,x+a*y+z=-2],[x,y,z])
 a:=-2
@@ -371,33 +385,35 @@ rref(M)
 rref(border(A,b))
 rref(border(A1,b))
 rref(border(A2,b))
-</PRE><DIV CLASS="center">
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>Syst&#XE8;mes lin&#XE9;aires</B></TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>linsolve</CODE></TD><TD ALIGN=left NOWRAP>r&#XE9;solution d&#X2019;un syst&#XE8;me</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>simult</CODE></TD><TD ALIGN=left NOWRAP>r&#XE9;solution simultan&#XE9;e de plusieurs syst&#XE8;mes</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>rref</CODE></TD><TD ALIGN=left NOWRAP>r&#XE9;duction de Gauss-Jordan</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>rank</CODE></TD><TD ALIGN=left NOWRAP>rang</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>det</CODE></TD><TD ALIGN=left NOWRAP>d&#XE9;terminant du syst&#XE8;me</TD></TR>
-</TABLE>
-</DIV><P>
-<A NAME="@default292"></A>
-</P><H3 CLASS="subsection"><A NAME="toc22"></A><A NAME="htoc26">4.6</A>&#XA0;&#XA0;R&#XE9;duction des matrices</H3><P>
-<A NAME="@default293"></A>
-<A NAME="@default294"></A>
-La fonction <CODE>jordan</CODE> prend en entr&#XE9;e une matrice <I>A</I> et retourne en
-sortie une matrice de passage <I>P</I> et une forme r&#XE9;duite de Jordan <I>J</I> telles
-que <I>P</I><SUP>&#X2212;1</SUP><I>A</I> <I>P</I>=<I>J</I>. Soit <I>A</I> est diagonalisable auquel cas <I>J</I> est
-diagonale et contient les valeurs propres de <I>A</I> sur la diagonale,
-soit <I>A</I> n&#X2019;est pas diagonalisable et <I>J</I> comporte des "1" ou des "0"
+</pre><div class="center">
+<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:center;border:solid 1px;white-space:nowrap"  colspan=2><span style="font-weight:bold">Syst&#XE8;mes lin&#XE9;aires</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>linsolve</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >r&#XE9;solution d&#X2019;un syst&#XE8;me</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>simult</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >r&#XE9;solution simultan&#XE9;e de plusieurs syst&#XE8;mes</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>rref</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >r&#XE9;duction de Gauss-Jordan</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>rank</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >rang</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>det</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >d&#XE9;terminant du syst&#XE8;me</td></tr>
+</table>
+</div><p>
+<a id="hevea_default292"></a>
+</p>
+<h3 id="sec26" class="subsection">4.6&#XA0;&#XA0;R&#XE9;duction des matrices</h3>
+<p>
+<a id="hevea_default293"></a>
+<a id="hevea_default294"></a>
+La fonction <code>jordan</code> prend en entr&#XE9;e une matrice <span style="font-style:italic">A</span> et retourne en
+sortie une matrice de passage <span style="font-style:italic">P</span> et une forme r&#XE9;duite de Jordan <span style="font-style:italic">J</span> telles
+que <span style="font-style:italic">P</span><sup>&#X2212;1</sup><span style="font-style:italic">A</span> <span style="font-style:italic">P</span>=<span style="font-style:italic">J</span>. Soit <span style="font-style:italic">A</span> est diagonalisable auquel cas <span style="font-style:italic">J</span> est
+diagonale et contient les valeurs propres de <span style="font-style:italic">A</span> sur la diagonale,
+soit <span style="font-style:italic">A</span> n&#X2019;est pas diagonalisable et <span style="font-style:italic">J</span> comporte des "1" ou des "0"
 au-dessus de la diagonale. Pour les matrices exactes et symboliques,
 seules les valeurs propres calculables par
-<CODE>solve</CODE> sont accessibles. Pour des matrices de nombres approch&#XE9;s,
+<code>solve</code> sont accessibles. Pour des matrices de nombres approch&#XE9;s,
 un algorithme num&#XE9;rique est utilis&#XE9;, et il risque
 d&#X2019;&#XE9;chouer en cas de valeurs propres multiples ou tr&#XE8;s proches.
-La matrice <I>A</I> de l&#X2019;exemple qui suit a pour valeurs propres doubles 1
+La matrice <span style="font-style:italic">A</span> de l&#X2019;exemple qui suit a pour valeurs propres doubles 1
 et 2. Elle est diagonalisable pour
-<I>a</I>=0, non diagonalisable pour <I>a</I>&#X2260; 0.
-</P><PRE CLASS="verbatim">A:=[[1,1,-1,0],[0,1,0,a],[0,-1,2,0],[1,0,1,2]
+<span style="font-style:italic">a</span>=0, non diagonalisable pour <span style="font-style:italic">a</span>&#X2260; 0.
+</p><pre class="verbatim">A:=[[1,1,-1,0],[0,1,0,a],[0,-1,2,0],[1,0,1,2]
 factor(poly2symb(simplify(pcar(A))))
 jordan(A)
 eigenvals(A)
@@ -406,36 +422,38 @@ jordan(subs(A,a=0))
 eigenvects(subs(A,a=1))
 jordan(evalf(subs(A,a=0)))
 jordan(evalf(subs(A,a=1)))
-</PRE><P>Certaines fonctions, d&#XE9;finies par des s&#XE9;ries
+</pre><p>
+Certaines fonctions, d&#XE9;finies par des s&#XE9;ries
 enti&#XE8;res, s&#X2019;&#XE9;tendent aux matrices d&#XE8;s lors que l&#X2019;on sait calculer
 leur forme de Jordan. La plus utile est l&#X2019;exponentielle.
-</P><PRE CLASS="verbatim">A:=[[0,1,0],[0,0,1],[-2,1,2]]
+</p><pre class="verbatim">A:=[[0,1,0],[0,0,1],[-2,1,2]]
 jordan(A)
 exp(A)
 ln(A)
 sin(A)
-</PRE><DIV CLASS="center">
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=center NOWRAP COLSPAN=2><B>R&#XE9;duction des matrices</B></TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>jordan</CODE></TD><TD ALIGN=left NOWRAP>diagonalisation ou r&#XE9;duction de Jordan</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>pcar</CODE></TD><TD ALIGN=left NOWRAP>coefficients du polyn&#XF4;me caract&#XE9;ristique</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>pmin</CODE></TD><TD ALIGN=left NOWRAP>coefficients du polyn&#XF4;me minimal</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>eigenvals</CODE></TD><TD ALIGN=left NOWRAP>valeurs propres</TD></TR>
-<TR><TD ALIGN=left NOWRAP><CODE>eigenvects</CODE></TD><TD ALIGN=left NOWRAP>vecteurs propres</TD></TR>
-</TABLE>
-</DIV><P>
-<A NAME="@default295"></A>
-<A NAME="@default296"></A>
-<A NAME="@default297"></A>
-<A NAME="@default298"></A>
-<A NAME="@default299"></A>
-<A NAME="@default300"></A>
-<A NAME="@default301"></A>
-<A NAME="@default302"></A>
-<A NAME="@default303"></A>
-<A NAME="@default304"></A>
-</P><HR>
-<A HREF="tutoriel003.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="tutoriel005.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</pre><div class="center">
+<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:center;border:solid 1px;white-space:nowrap"  colspan=2><span style="font-weight:bold">R&#XE9;duction des matrices</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>jordan</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >diagonalisation ou r&#XE9;duction de Jordan</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>pcar</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >coefficients du polyn&#XF4;me caract&#XE9;ristique</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>pmin</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >coefficients du polyn&#XF4;me minimal</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>eigenvals</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >valeurs propres</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><code>eigenvects</code></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >vecteurs propres</td></tr>
+</table>
+</div><p>
+<a id="hevea_default295"></a>
+<a id="hevea_default296"></a>
+<a id="hevea_default297"></a>
+<a id="hevea_default298"></a>
+<a id="hevea_default299"></a>
+<a id="hevea_default300"></a>
+<a id="hevea_default301"></a>
+<a id="hevea_default302"></a>
+<a id="hevea_default303"></a>
+<a id="hevea_default304"></a>
+</p>
+<hr>
+<a href="tutoriel003.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="tutoriel005.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

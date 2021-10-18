@@ -4,29 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Animation of a 2D graph : animate</title>
+<title>3D parametric surface : plotparam paramplot DrawParm</title>
 </head>
 <body >
 <a href="cascmd_en521.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en523.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec642" class="subsection">5.17.1  Animation of a 2D graph : <span style="font-family:monospace">animate</span></h3>
-<p><a id="hevea_default831"></a>
-<span style="font-family:monospace">animate</span> can create a 2-d animation with graphs of functions
-depending on a parameter. The parameter is specified as the 
-third argument of 
-<span style="font-family:monospace">animate</span>, the number of pictures as fourth argument with
-<span style="font-family:monospace">frames=</span><a id="hevea_default832"></a>number, 
-the remaining arguments are the same as those of the <span style="font-family:monospace">plot</span> command, 
-see section <a href="index.html#sec%3Aplot2d">5.3</a>, p. <a href="index.html#sec%3Aplot2d">??</a>.<br>
+<h3 id="sec641" class="subsection">5.11.2  3D parametric surface : <span style="font-family:monospace">plotparam paramplot DrawParm</span></h3>
+<p><a id="hevea_default815"></a><a id="hevea_default816"></a><a id="hevea_default817"></a>
+<span style="font-family:monospace">plotparam</span> takes two main arguments,
+a list of three 
+expressions of two variables and the list of these variable names
+where each variable name may be replaced by variable=interval
+to specify the range of the parameters.
+It accepts an optional argument to specify
+the discretization steps of the parameters <span style="font-style:italic">u</span> and <span style="font-style:italic">v</span> with 
+<span style="font-family:monospace">ustep=...</span> and <span style="font-family:monospace">vstep=...</span>.<br>
+<span style="font-family:monospace">plotparam([f(u,v),g(u,v),h(u,v)],[u,v])</span> draws the surface defined by the 
+first argument : <span style="font-style:italic">x</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">g</span>(<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">h</span>(<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>), where <span style="font-style:italic">u</span> and <span style="font-style:italic">v</span>
+ranges default to the graphic configuration.<br>
 Input :
-</p><div class="center">
-<span style="font-family:monospace">animate(sin(a*x),x=-pi..pi,a=-2..2,frames=10,color=red)</span>
-</div><p>
+</p><div class="center"><span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u,v])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">a sequence of graphic representations of y=sin(</span><span style="font-style:italic">a</span><span style="font-family:monospace">x) for 
-11 values of </span><span style="font-style:italic">a</span><span style="font-family:monospace"> between -2 and 2</span></div>
+</p><div class="center"><span style="font-family:monospace">The cone </span><span style="font-style:italic">x</span>=<span style="font-style:italic">v</span>*cos(<span style="font-style:italic">u</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">v</span>*sin(<span style="font-style:italic">u</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span></div><p>
+To specify the range of each parameters, replace each variable
+by an equation variable=range, like this:
+</p><div class="center"><span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3]) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">A portion of the cone </span><span style="font-style:italic">x</span>=<span style="font-style:italic">v</span>*cos(<span style="font-style:italic">u</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">v</span>*sin(<span style="font-style:italic">u</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3],ustep=0.5,vstep=0.5)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">A portion of the cone </span><span style="font-style:italic">x</span>=<span style="font-style:italic">v</span>*cos(<span style="font-style:italic">u</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">v</span>*sin(<span style="font-style:italic">u</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span></div>
 <hr>
 <a href="cascmd_en521.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,39 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>3D parametric surface : plotparam paramplot DrawParm</title>
+<title>2D parametric curve </title>
 </head>
 <body >
 <a href="cascmd_en520.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en522.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec635" class="subsection">5.11.2  3D parametric surface : <span style="font-family:monospace">plotparam paramplot DrawParm</span></h3>
-<p><a id="hevea_default815"></a><a id="hevea_default816"></a><a id="hevea_default817"></a>
-<span style="font-family:monospace">plotparam</span> takes two main arguments,
-a list of three 
-expressions of two variables and the list of these variable names
-where each variable name may be replaced by variable=interval
-to specify the range of the parameters.
-It accepts an optional argument to specify
-the discretization steps of the parameters <span style="font-style:italic">u</span> and <span style="font-style:italic">v</span> with 
-<span style="font-family:monospace">ustep=...</span> and <span style="font-family:monospace">vstep=...</span>.<br>
-<span style="font-family:monospace">plotparam([f(u,v),g(u,v),h(u,v)],[u,v])</span> draws the surface defined by the 
-first argument : <span style="font-style:italic">x</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">g</span>(<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">h</span>(<span style="font-style:italic">u</span>,<span style="font-style:italic">v</span>), where <span style="font-style:italic">u</span> and <span style="font-style:italic">v</span>
-ranges default to the graphic configuration.<br>
+<h3 id="sec640" class="subsection">5.11.1  2D parametric curve </h3>
+<p>
+<span style="font-family:monospace">plotparam([f(t),g(t)],t)</span>
+or <span style="font-family:monospace">plotparam(f(t)+i*g(t),t)</span> (resp. 
+<span style="font-family:monospace">plotparam(f(t)+i*g(t),t=t1..t2)</span>)
+draws the parametric representation of the curve 
+defined by <span style="font-style:italic">x</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>) 
+with the default range of values of <span style="font-style:italic">t</span> (resp. for <span style="font-style:italic">t</span>1 ≤ <span style="font-style:italic">t</span>≤ <span style="font-style:italic">t</span>2).<br>
+The default range of values is taken as specified 
+in the graphic configuration (<span style="font-family:monospace">t-</span> and <span style="font-family:monospace">t+</span>, 
+cf. <a >??</a>).
+<span style="font-family:monospace">plotparam</span> accepts an optional argument to specify the discretization
+step for <span style="font-style:italic">t</span> with <span style="font-family:monospace">tstep=</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u,v])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">plotparam(cos(x)+i*sin(x),x) </span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam([cos(x),sin(x)],x) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">The cone </span><span style="font-style:italic">x</span>=<span style="font-style:italic">v</span>*cos(<span style="font-style:italic">u</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">v</span>*sin(<span style="font-style:italic">u</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span></div><p>
-To specify the range of each parameters, replace each variable
-by an equation variable=range, like this:
-</p><div class="center"><span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3]) </span></div><p>
+</p><div class="center"><span style="font-family:monospace">The unit circle</span></div><p>
+If in the graphic configuration <span style="font-family:monospace">t</span> goes from -4 to 1, input :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t))</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1) </span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(x)+i*cos(x),x=-4..1) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">A portion of the cone </span><span style="font-style:italic">x</span>=<span style="font-style:italic">v</span>*cos(<span style="font-style:italic">u</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">v</span>*sin(<span style="font-style:italic">u</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3],ustep=0.5,vstep=0.5)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</span></div><p>
+If in the graphic configuration <span style="font-family:monospace">t</span> goes from -4 to 1, input :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t,tstep=0.5)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1,tstep=0.5)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">A portion of the cone </span><span style="font-style:italic">x</span>=<span style="font-style:italic">v</span>*cos(<span style="font-style:italic">u</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">v</span>*sin(<span style="font-style:italic">u</span>),<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span></div>
+</p><div class="center"><span style="font-family:monospace">A polygon approaching the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</span></div>
 <hr>
 <a href="cascmd_en520.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -942,7 +942,8 @@ namespace giac {
 	}
 #ifndef NO_STDEXCEPT
       } catch (std::runtime_error & ){
-	;  //    *logptr(contextptr) << e.what() << endl;
+	last_evaled_argptr(contextptr)=NULL;
+	//    *logptr(contextptr) << e.what() << endl;
       }
 #endif
     }
@@ -2203,6 +2204,66 @@ namespace giac {
     return w;
   }
 
+  void pixon_print(const gen &g,std::string & S,GIAC_CONTEXT){
+    if (g.type==_VECT){
+      vecteur v=merge_pixon(*g._VECTptr);
+      const_iterateur it=v.begin(),itend=v.end();
+      if (it==itend) return;
+      S+='[';
+      S+=print_INT_(pixon_size);
+      S+=",";
+      for (;;++it){
+	if (it->type!=_SYMB || it->_SYMBptr->sommet!=at_pnt)
+	  continue;
+	const gen & g=it->_SYMBptr->feuille;
+	if (g.type!=_VECT)
+	  continue;
+	const vecteur & w= *g._VECTptr;
+	if (w.empty() || w.front().type!=_SYMB || w.front()._SYMBptr->sommet!=at_pixon)
+	  continue;
+	const gen & f=w.front()._SYMBptr->feuille;
+	if (f.type!=_VECT){
+	  S+=f.print(contextptr);
+	  continue;
+	}
+	S+='[';
+	const_iterateur jt=f._VECTptr->begin(),jtend=f._VECTptr->end();
+	for (;;){
+	  S+=jt->print(contextptr);
+	  ++jt;
+	  if (jt==jtend) break;
+	  S+=',';
+	}
+	S+=']';
+	if (it+1==itend) break;
+	S+=',';
+      }
+      S+=']';
+    }
+    if (g.type!=_SYMB)
+      return;
+    if (g._SYMBptr->sommet==at_pnt && g._SYMBptr->feuille.type==_VECT){
+      pixon_print(g._SYMBptr->feuille._VECTptr->front(),S,contextptr);
+      return;
+    }
+    if (g._SYMBptr->sommet!=at_pixon)
+      return;
+    const gen & f=g._SYMBptr->feuille;
+    if (f.type!=_VECT){
+      S+=f.print(contextptr);
+      return;
+    }
+    S+='[';
+    const_iterateur it=f._VECTptr->begin(),itend=f._VECTptr->end();
+    for (;;){
+      S+=it->print(contextptr);
+      ++it;
+      if (it==itend) break;
+      S+=',';
+    }
+    S+=']';
+  }
+
   int pixon_size=2; // global size, used in all sessions
   // pixel (i,j,[color])
   gen _pixon(const gen & a,GIAC_CONTEXT){
@@ -2221,9 +2282,10 @@ namespace giac {
       if (s==0) return pixon_size;
       return gensizeerr(contextptr);
     }
+    if (s>=3)
+      return symb_pnt(symbolic(at_pixon,a),0,contextptr);
     vecteur v(*args._VECTptr);
-    if (s<3)
-      v.push_back(default_color(contextptr));
+    v.push_back(default_color(contextptr));
     return symb_pnt(symbolic(at_pixon,gen(v,_SEQ__VECT)),0,contextptr);
   }
   static const char _pixon_s []="pixon";
@@ -2623,6 +2685,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
       }
       catch (std::runtime_error & ){
+	last_evaled_argptr(contextptr)=NULL;
 	name=undef;
       }
 #endif
@@ -4910,7 +4973,8 @@ namespace giac {
 #if 1
       if (v.size()>6 && !is_undef(v[6])){
 	v[0]=vparameq=v[6];
-	v[1]=t__IDNT_e;
+	if (is_constant_wrt(vparameq,v[1],contextptr))
+	  v[1]=t__IDNT_e;
 	v[2]=minus_inf;
 	v[3]=plus_inf;
 	tt=*v[1]._IDNTptr;
@@ -4961,7 +5025,9 @@ namespace giac {
 #else
 	try {
 	  distance2_found=distance2pp(limit(v[0],*v[1]._IDNTptr,v[2],0,contextptr),p,contextptr),cur_distance2;
-	} catch (std::runtime_error) {}
+	} catch (std::runtime_error) {
+	  last_evaled_argptr(contextptr)=NULL;
+	}
 #endif
 	if (is_undef(distance2_found))
 	  distance2_found=plus_inf;
@@ -4978,6 +5044,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
       } // end try
       catch(std::runtime_error & ){ // could not solve
+	last_evaled_argptr(contextptr)=NULL;
 	// if curve is a function (plotfunc) return re(p)
 	gen eq=re(v[0],contextptr);
 	rewrite_with_t_real(eq,v[1],contextptr);
@@ -5754,6 +5821,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     }
     catch (std::runtime_error & ){
+      last_evaled_argptr(contextptr)=NULL;
       // CERR  << error.what() << endl;
       // *logptr(contextptr) << error.what() << endl;
       return false;
@@ -5792,6 +5860,7 @@ namespace giac {
       }
 #ifndef NO_STDEXCEPT
     } catch (std::runtime_error & e){
+      last_evaled_argptr(contextptr)=NULL;
       *logptr(contextptr) << e.what() << endl;
     }
 #endif
@@ -5813,6 +5882,7 @@ namespace giac {
       args_evaled=args.eval(1,contextptr);
     }
     catch (std::runtime_error & error ){
+      last_evaled_argptr(contextptr)=NULL;
       args_evaled = string2gen('"'+string(error.what())+'"');
     }
 #ifdef WIN32
@@ -6662,6 +6732,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     }
     catch (std::runtime_error & e){
+      last_evaled_argptr(contextptr)=NULL;
 #ifdef HAVE_SIGNAL_H_OLD
       signal_store=old_signal_store;
 #endif
@@ -8231,7 +8302,7 @@ namespace giac {
 	if (w0[i].type>_REAL || w1[i].type>_REAL)
 	  break;
       }
-      if (i=ss){
+      if (i==ss){
 	// polygonscatterplot
 	s=read_attributs(v,attributs,contextptr);
 	return put_attributs(_polygonscatterplot(makesequence(v[0],v1),contextptr),attributs,contextptr);
@@ -8922,6 +8993,7 @@ namespace giac {
       return remove_not_in_arc(res,circle,contextptr);
 #ifndef NO_STDEXCEPT
     } catch (std::runtime_error & ){
+      last_evaled_argptr(contextptr)=NULL;
       *logptr(contextptr) << gettext("Unable to solve intersection equation ") << eq << endl;
       return makevecteur(symbolic(at_inter,makesequence(curve,circle)));
     }
@@ -8991,6 +9063,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     }
     catch (std::runtime_error & ) {
+      last_evaled_argptr(contextptr)=NULL;
     }
 #endif
     return res;
@@ -9012,6 +9085,7 @@ namespace giac {
       v=solve(eq,t,0,contextptr);
 #ifndef NO_STDEXCEPT
     } catch(std::runtime_error) {
+      last_evaled_argptr(contextptr)=NULL;
       return false;
     }
 #endif
@@ -9206,6 +9280,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
       }
       catch (std::runtime_error &){
+	last_evaled_argptr(contextptr)=NULL;
 	return makevecteur(symbolic(at_inter,makesequence(a,b)));
       }
 #endif
@@ -9411,7 +9486,11 @@ namespace giac {
 	    // c1:=cercle(F1,2a);
 	    // c2:=cercle(P,l2);
 	    // [M1,M2]:=inter(c1,c2);
-	    // retourne mediatrice(F2,M1), mediatrice(F2,M2);
+	    // d1:=mediatrice(F2,M1);
+	    // d2:=mediatrice(F2,M2);
+	    // T1:=inter_unique(droite(F1,M1),d1);
+	    // T2:=inter_unique(droite(F1,M2),d2);
+	    // retourne d1,d2,T1,T2;
 	    // }:;
 	    // rational parametrization analytic construction
 	    // conic O+(1+i*t)*(d*t+e)/(a*t^2+b*t+c)
@@ -9515,6 +9594,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
 	}
 	catch (std::runtime_error & error ){
+	  last_evaled_argptr(contextptr)=NULL;
 	  *logptr(contextptr) << error.what() << endl;
 	  sol.clear();
 	}
@@ -9610,7 +9690,7 @@ namespace giac {
   }
 
   // cartesian ellipse or hyperbola equation from focus F1/F2 and square of a
-  static gen ellipse_hyperbole_equation(const gen & F1,const gen & F2,const gen & a2,GIAC_CONTEXT){
+  gen ellipse_hyperbole_equation(const gen & F1,const gen & F2,const gen & a2,GIAC_CONTEXT){
     gen x1,x2,y1,y2,x(x__IDNT_e),y(y__IDNT_e);
     if (F1.type==_VECT)
       return undef;
@@ -10761,6 +10841,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
       }
       catch (std::runtime_error & ){
+	last_evaled_argptr(contextptr)=NULL;
 	e=string2gen(s,false);
       }
 #endif
@@ -10951,6 +11032,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
       }
       catch (std::runtime_error & ){
+	last_evaled_argptr(contextptr)=NULL;
 	s=u.ptr()->s;
       }
 #endif
@@ -15505,6 +15587,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
       }
       catch (std::runtime_error &){
+	last_evaled_argptr(contextptr)=NULL;
 	return makevecteur(symbolic(at_inter,makesequence(a,b)));
       }
 #endif

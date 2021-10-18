@@ -1661,6 +1661,8 @@ namespace giac {
     common_EXT(iext,currentext,0,contextptr);
     if (currentext.type==_EXT)
       currentext=*(currentext._EXTptr+1);
+    Extension=change_subtype(Extension,_POLY1__VECT);
+    currentext=change_subtype(currentext,_POLY1__VECT);
     if (Extension==currentext)
       return true;
     already.push_back(Extension);
@@ -2332,6 +2334,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
 	}
 	catch (std::runtime_error & e){
+	  last_evaled_argptr(contextptr)=NULL;
 	  CERR << "sym2poly exception caught " << e.what() << endl;
 	}
 #endif
@@ -2774,6 +2777,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     }
     catch (std::runtime_error & err){
+      last_evaled_argptr(contextptr)=NULL;
       CERR << err.what() << endl;
       return e;
     }

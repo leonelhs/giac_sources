@@ -97,7 +97,7 @@ namespace giac {
 #endif
 
   gen equaltosto(const gen & g,GIAC_CONTEXT){
-    if (!eval_equaltosto(contextptr))
+    if (g.type<=_IDNT || !eval_equaltosto(contextptr))
       return g;
     if (g.is_symb_of_sommet(at_add_autosimplify)){
       return symbolic(g._SYMBptr->sommet,equaltosto(g._SYMBptr->feuille,contextptr));
@@ -982,6 +982,14 @@ namespace giac {
 	  v2.push_back(*it);
 	  continue;
 	}
+	if (thetype==at_complex){
+	  v1.push_back(theid);
+	  *it=gen(theid.print(contextptr)+"_c",contextptr);
+	  if (egal!=0)
+	    *it=symb_equal(*it,egal);
+	  v2.push_back(*it);
+	  continue;
+	}
 	if (thetype==at_vector){
 	  v1.push_back(theid);
 	  newid=*it=gen(theid.print(contextptr)+"_v",contextptr);
@@ -1396,6 +1404,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     } // end try
     catch (std::runtime_error & e){
+      last_evaled_argptr(contextptr)=NULL;
       if (!vars._VECTptr->empty())
 	leave(protect,*vars._VECTptr,newcontextptr);
       if (calc_save) 
@@ -1702,12 +1711,11 @@ namespace giac {
     }
 #endif
     bool rt;
-    gen clause_vraie=(*(args._VECTptr))[1];
-    gen clause_fausse=args._VECTptr->back();
+    vecteur *argsptr=args._VECTptr;
     // *logptr(contextptr) << "Ifte " << debug_ptr(contextptr)->current_instruction << endl ;
     if (is_zero(test)){ // test false, do the else part
       if (isifte){
-	increment_instruction(clause_vraie,contextptr);
+	increment_instruction((*argsptr)[1],contextptr);
 	// *logptr(contextptr) << "Else " << debug_ptr(contextptr)->current_instruction << endl ;
 	debug_struct * dbgptr=debug_ptr(contextptr);
 	++dbgptr->current_instruction;
@@ -1716,7 +1724,9 @@ namespace giac {
 	  if (is_undef(test)) return test;
 	}
       }
-      clause_fausse=equaltosto(clause_fausse,contextptr);
+      if (argsptr->back().type==_INT_)
+	return argsptr->back();
+      gen clause_fausse=equaltosto(argsptr->back(),contextptr);
       rt=clause_fausse.is_symb_of_sommet(at_return);
       if (rt)
 	clause_fausse=clause_fausse._SYMBptr->feuille;
@@ -1736,7 +1746,7 @@ namespace giac {
 	  if (is_undef(test)) return test;
 	}
       }
-      clause_vraie=equaltosto(clause_vraie,contextptr);
+      gen clause_vraie=equaltosto((*argsptr)[1],contextptr);
       rt=clause_vraie.is_symb_of_sommet(at_return);
       if (rt)
 	clause_vraie=clause_vraie._SYMBptr->feuille;
@@ -1747,7 +1757,7 @@ namespace giac {
 	res=symb_return(res);
       // *logptr(contextptr) << "Then " << debug_ptr(contextptr)->current_instruction << endl ;
       if (isifte)
-	increment_instruction(clause_fausse,contextptr);
+	increment_instruction(argsptr->back(),contextptr);
       // *logptr(contextptr) << "Then " << debug_ptr(contextptr)->current_instruction << endl ;
     }
     return res;
@@ -2163,14 +2173,14 @@ namespace giac {
       return true;
     unary_function_ptr & u=forprog._SYMBptr->sommet;
     if (u==at_sto || u==at_array_sto){
-      gen to=forprog._SYMBptr->feuille[1];
-      if (to==index || to==stopg)
+      const gen * to=&(*forprog._SYMBptr->feuille._VECTptr)[1];
+      if (*to==index || *to==stopg)
 	return false;
     }
     if (u==at_increment || u==at_decrement){
-      gen to=forprog._SYMBptr->feuille;
-      if (to.type==_VECT) to=to._VECTptr->front();
-      if (to==index || to==stopg) 
+      const gen * to=&forprog._SYMBptr->feuille;
+      if (to->type==_VECT) to=&to->_VECTptr->front();
+      if (*to==index || *to==stopg) 
 	return false;
     }
     return chk_forprog(forprog._SYMBptr->feuille,index,stopg);
@@ -2459,6 +2469,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     } // end try
     catch (std::runtime_error & e){
+      last_evaled_argptr(contextptr)=NULL;
       if (bound)
 	leave(protect,loop_var,newcontextptr);
       return gensizeerr(e.what());
@@ -2998,6 +3009,7 @@ namespace giac {
       res=args._VECTptr->front().eval(eval_level(contextptr),contextptr);
     }
     catch (std::runtime_error & error ){
+      last_evaled_argptr(contextptr)=NULL;
       ++debug_ptr(contextptr)->current_instruction;
       if (debug_ptr(contextptr)->debug_mode)
 	debug_loop(res,contextptr);
@@ -5298,6 +5310,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
       }
       catch (std::runtime_error & error){
+	last_evaled_argptr(contextptr)=NULL;
 	w[6]=string2gen(error.what(),false);
       }
 #endif
@@ -5340,6 +5353,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
       }
       catch (std::runtime_error & error ){
+	last_evaled_argptr(contextptr)=NULL;
 	w[2]=string2gen(error.what(),false);
       }
 #endif
@@ -5516,6 +5530,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     }
     catch (std::runtime_error &  ){
+      last_evaled_argptr(contextptr)=NULL;
       xcas_mode(contextptr)=save_maple_mode;
       return false;
     }
@@ -6395,14 +6410,18 @@ namespace giac {
 	    gen z=fast_icontent(f0);
 	    gen n= f._VECTptr->back()._FRACptr->num;
 	    if (d.val<0){ n=-n; d=-d;}
-	    gen zn=pow(z,n,contextptr),a,b;
+	    gen zn=pow(z,n,contextptr),a,b,fapprox;
 	    bool pos; // pos should be true after next call since zn is > 0
 	    zint2simpldoublpos(zn,a,b,pos,d.val,contextptr);
 	    if (pos){
 	      if (0 && n==1)
 		wi=b*pow(fast_divide_by_icontent(f0,z/a),f._VECTptr->back(),contextptr);
-	      else
-		wi=b*pow(a,inv(d,contextptr),contextptr)*pow(fast_divide_by_icontent(f0,z),f._VECTptr->back(),contextptr);
+	      else { // avoid extracting sqrt(2) out for simplify(exp(i*pi/5));
+		if (d*f._VECTptr->back()==1 && has_evalf(f0,fapprox,1,contextptr))
+		  wi=b*pow(a*fast_divide_by_icontent(f0,z),inv(d,contextptr),contextptr);
+		else
+		  wi=b*pow(a,inv(d,contextptr),contextptr)*pow(fast_divide_by_icontent(f0,z),f._VECTptr->back(),contextptr);
+	      }
 	      continue;
 	    }
 	  }
@@ -7694,6 +7713,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     }
     catch (std::runtime_error & e){
+      last_evaled_argptr(contextptr)=NULL;
       *debug_ptr(contextptr)=dbg;
       res=string2gen(e.what(),false);
       res.subtype=-1;

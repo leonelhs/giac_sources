@@ -365,7 +365,10 @@ namespace giac {
     if (itb->type==_FRAC)
       s=gen2mathml(*itb,contextptr); 
     else {
-      if ( (itb->type==_IDNT) || ((itb->type!=_SYMB) && is_positive(*itb,contextptr)) || sommetstr=="<mo>=</mo>")
+      if ( 
+	  !need_parenthesis(*itb) || itb->is_symb_of_sommet(at_of)
+	  // (itb->type==_IDNT) || ((itb->type!=_SYMB) && is_positive(*itb,contextptr)) 
+	  || sommetstr=="<mo>=</mo>")
 	s=gen2mathml(*itb,contextptr);
       else
 	s="<mo>(</mo>"+gen2mathml(*itb,contextptr)+"<mo>)</mo>";
@@ -1388,6 +1391,14 @@ namespace giac {
   static string symbolic2mathml(const symbolic & mys, string &svg,GIAC_CONTEXT){
 
     string opstring(mys.sommet.ptr()->print(contextptr));
+    bool of=mys.sommet==at_of;
+    if (of || mys.sommet==at_at) {
+      gen g=mys.feuille[1];
+      if (of)
+	return gen2mathml(mys.feuille[0],svg,contextptr)+"<mo>(</mo>"+gen2mathml(g,svg,contextptr)+"<mo>)</mo>";
+      g+=array_start(contextptr);
+      return "<msub><mrow>"+gen2mathml(mys.feuille[0],svg,contextptr)+"</mrow><mrow>"+gen2mathml(g,svg,contextptr)+"</mrow></msub>";
+    }
     if (opstring!="/" && (mys.sommet.ptr()->texprint || mys.sommet==at_different))  
       return mathml_print(mys,contextptr);
     if (mys.sommet==at_pnt) { 

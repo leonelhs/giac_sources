@@ -88,7 +88,7 @@
       {"cap_square_line"         ,1, _CAP_SQUARE_LINE, _INT_COLOR ,T_NUMBER},
       {"case",0,0,0,T_CASE},
       {"catch",0,0,0,T_CATCH},
-      {"complex"               ,0, _CPLX, _INT_TYPE, T_TYPE_ID},
+      // {"complex"               ,0, _CPLX, _INT_TYPE, T_TYPE_ID},
       {"confrac"         ,1,_CONFRAC , _INT_MAPLECONVERSION ,T_NUMBER},
       {"continue",0,0,0,T_CONTINUE},
       {"coords"         ,1, _COORDS, _INT_PLOT ,T_NUMBER},

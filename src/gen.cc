@@ -272,24 +272,24 @@ namespace giac {
   // bool is_inevalf=false;
 
   static string last_evaled_function(GIAC_CONTEXT){
-    std::vector<const char *> & last =last_evaled_function_name(contextptr);
-    if (last.empty() || !last.back())
+    const char * last =last_evaled_function_name(contextptr);
+    if (!last)
       return "";
     string res;
     bool paren=true;
-    if (abs_calc_mode(contextptr)==38 && !strcmp(last.back(),"sqrt"))
+    if (abs_calc_mode(contextptr)==38 && !strcmp(last,"sqrt"))
       res="√";
     else {
       string tmp=unlocalize(autosimplify(contextptr));
-      if (tmp!=last.back())
-	res=last.back();
+      if (tmp!=last)
+	res=last;
       else
 	paren=false;
     }
     if (paren) res +="(";
-    vecteur & lastarg= last_evaled_arg(contextptr);
-    if (!lastarg.empty())
-      res += lastarg.back().print(contextptr);
+    const gen * lastarg= last_evaled_argptr(contextptr);
+    if (lastarg)
+      res += lastarg->print(contextptr);
     if (paren) res += ")";
     debug_struct * dbg = debug_ptr(contextptr);
     if (!dbg->sst_at_stack.empty()){
@@ -2042,8 +2042,8 @@ namespace giac {
 	return false;
       { 
 	unary_function_ptr & Sommet=_SYMBptr->sommet;
-	bool is_ifte=false,is_of_local_ifte_bloc=false;
-	if (Sommet==at_plus || Sommet==at_prod || Sommet==at_pow || (is_of_local_ifte_bloc=(Sommet==at_of || Sommet==at_local || (is_ifte=Sommet==at_ifte) || Sommet==at_bloc)) ){
+	bool is_ifte=false,is_of_local_ifte_bloc=false,is_plus=Sommet==at_plus,is_prod=false,is_pow=false;
+	if (is_plus || (is_prod=(Sommet==at_prod)) || (is_pow=(Sommet==at_pow)) || (is_of_local_ifte_bloc=(Sommet==at_of || Sommet==at_local || (is_ifte=Sommet==at_ifte) || Sommet==at_bloc)) ){
 	  int & elevel=eval_level(contextptr);
 	  short int slevel=elevel;
 	  // Check if we are not far from stack end
@@ -2084,6 +2084,25 @@ namespace giac {
 	      }
 	    }
 #endif // rtos
+	  if ( (is_plus ||is_prod || is_pow) && _SYMBptr->feuille.type==_VECT && _SYMBptr->feuille._VECTptr->size()==2){
+	    vecteur * vptr=_SYMBptr->feuille._VECTptr;
+	    gen a;
+	    if (!vptr->front().in_eval(level,a,contextptr))
+	      a=vptr->front();
+	    if (a.type!=_VECT || a.subtype!=_SEQ__VECT){
+	      if (!vptr->back().in_eval(level,evaled,contextptr))
+		evaled=vptr->back();
+	      if (evaled.type!=_VECT || evaled.subtype!=_SEQ__VECT){		
+		if (is_plus) evaled=operator_plus(a,evaled,contextptr);
+		else {
+		  if (is_prod) evaled=operator_times(a,evaled,contextptr);
+		  else evaled=pow(a,evaled,contextptr);
+		}
+		elevel=slevel;
+		return true;
+	      }
+	    }
+	  }
 	  if (is_of_local_ifte_bloc){
 	    elevel=level;
 	    evaled=_SYMBptr->feuille; // FIXME must also set eval_level to level
@@ -3780,8 +3799,6 @@ namespace giac {
   }
 
   gen abs(const gen & a,GIAC_CONTEXT){ 
-    if (is_equal(a))
-      return apply_to_equal(a,abs,contextptr);
     switch (a.type ) {
     case _INT_: 
       return(absint(a.val));
@@ -3821,6 +3838,8 @@ namespace giac {
     case _IDNT:
       return idnt_abs(a,contextptr);
     case _SYMB:
+      if (is_equal(a))
+	return apply_to_equal(a,abs,contextptr);
       if (a.is_symb_of_sommet(at_pnt)){
 	if (is3d(a))
 	  return _l2norm(_coordonnees(a,contextptr),contextptr);
@@ -4340,6 +4359,8 @@ namespace giac {
     case _ZINT__CPLX: case _FLOAT___CPLX: case _DOUBLE___CPLX: case _REAL__CPLX:
       return gen(a+*b._CPLXptr,*(b._CPLXptr+1));
     case _CPLX__CPLX:
+      if (a._CPLXptr->type==_DOUBLE_ && (a._CPLXptr+1)->type==_DOUBLE_ && b._CPLXptr->type ==_DOUBLE_ && (b._CPLXptr+1)->type ==_DOUBLE_)
+	return adjust_complex_display(gen(a._CPLXptr->_DOUBLE_val + b._CPLXptr->_DOUBLE_val, (a._CPLXptr+1)->_DOUBLE_val + (b._CPLXptr+1)->_DOUBLE_val),a,b);
       return adjust_complex_display(gen(*a._CPLXptr + *b._CPLXptr, *(a._CPLXptr+1) + *(b._CPLXptr+1)),a,b);
     case _POLY__POLY:
       return addpoly(a,b);
@@ -6111,7 +6132,7 @@ namespace giac {
     return undef;
   }
 
-  gen operator_times (const gen & a,const gen & b,GIAC_CONTEXT){
+  gen operator_times(const gen & a,const gen & b,GIAC_CONTEXT){
     register unsigned t=(a.type<< _DECALAGE) | b.type;
     if (!t)
       return gen((longlong) a.val*b.val);
@@ -6253,7 +6274,13 @@ namespace giac {
     }
     if (exponent.type==_INT_){
       if (exponent.val==1) return base;
-      if (exponent.val==2 && base.type<=_REAL) return base*base;
+      if (exponent.val==2 && base.type<=_CPLX){
+	if (base.type==_CPLX && base.subtype==3){
+	  double a=base._CPLXptr->_DOUBLE_val,b=(base._CPLXptr+1)->_DOUBLE_val;
+	  return gen(a*a-b*b,2.0*a*b);
+	}
+	return operator_times(base,base,contextptr);
+      }
     }
     if (is_undef(base))
       return base;
@@ -8169,6 +8196,7 @@ namespace giac {
 	if (a==_VECT && b==at_vector) return true;
 	if (a==_FLOAT_ && b==at_float) return true;
 	if (a==_DOUBLE_ && b==at_real) return true;
+	if (a==_CPLX && b==at_complex) return true;
       }
       if (b.type==_INT_ && b.subtype==_INT_TYPE && a.type==_FUNC)
 	return operator_equal(b,a,contextptr);
@@ -12201,6 +12229,18 @@ namespace giac {
         return "stack()";
       }
     }
+#if 1 // for debugging/profiling pixon_print
+    if (v.back().is_symb_of_sommet(at_pnt) ){
+      gen f=v.back()._SYMBptr->feuille;
+      if (f.type==_VECT)
+	f=f._VECTptr->front();
+      if (f.is_symb_of_sommet(at_pixon)){
+	string S;
+	pixon_print(v,S,contextptr);
+	return S;
+      }
+    }
+#endif
     string s;
     if (subtype==_SPREAD__VECT && !v.empty() && v.front().type==_VECT){
 #ifdef EMCC
@@ -15439,7 +15479,7 @@ namespace giac {
 	last=tmp;
     }
     if (last.type==_VECT && last.subtype==_LOGO__VECT){
-      S="logo("+last.print(&C)+")";
+      S="gr2d(logo("+last.print(&C)+"))";
       return S.c_str();
     }
     if (calc_mode(&C)!=1 && last.is_symb_of_sommet(at_pnt)){
@@ -15456,6 +15496,13 @@ namespace giac {
 	return S.c_str();
       }
 #endif // GIAC_GGB
+      last=remove_at_pnt(last);
+      if (last.is_symb_of_sommet(at_pixon)){
+	S="gr2d(pixon(";
+	pixon_print(g,S,&C);
+	S+="))";
+	return S.c_str();
+      }
       return svg2doutput(g,S,&C);
     }
 #endif // EMCC

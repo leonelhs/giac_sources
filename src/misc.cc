@@ -1693,6 +1693,18 @@ namespace giac {
   static define_unary_function_eval (__float,&_float,_float_s);
   define_unary_function_ptr5( at_float ,alias_at_float,&__float,0,true);
 
+  gen _build_complex(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG && g.subtype==-1) return  g;
+    if (g.type==_VECT && g._VECTptr->size()==2)
+      return gen(g._VECTptr->front(),g._VECTptr->back());
+    if (g.type==_STRNG)
+      return gen(*g._STRNGptr,contextptr);
+    return g;
+  }
+  static const char _build_complex_s []="complex";
+  static define_unary_function_eval (__build_complex,&_build_complex,_build_complex_s);
+  define_unary_function_ptr5( at_complex ,alias_at_build_complex,&__build_complex,0,true);
+
   gen _hold(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     return g;
@@ -7097,7 +7109,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 #else
     try {
       s=step_param_(f,g,t,tmin,tmax,poi,tvi,printtvi,exactlegende,contextptr);
-    } catch(std::runtime_error & e){ s=0;}
+    } catch(std::runtime_error & e){ 
+      last_evaled_argptr(contextptr)=NULL;
+      s=0;
+    }
 #endif
     complex_mode(c,contextptr);
     step_infolevel(st,contextptr);
@@ -7524,7 +7539,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 #else
     try {
       s=step_func_(f,x,xmin,xmax,poi,tvi,periode,asym,parab,crit,inflex,printtvi,exactlegende,contextptr,do_inflex);
-    } catch (std::runtime_error & e){s=0;}
+    } catch (std::runtime_error & e){
+      last_evaled_argptr(contextptr)=NULL;
+      s=0;
+    }
 #endif
     complex_mode(c,contextptr);
     step_infolevel(st,contextptr);

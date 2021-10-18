@@ -1012,6 +1012,7 @@ namespace giac {
       try {
 	u=ifactors(e_copy,contextptr);
       } catch (std::runtime_error & err){
+	last_evaled_argptr(contextptr)=NULL;
 	*logptr(contextptr) << gettext("Unable to factor ") << e << endl;
 	simpl=e;
 	pos=true;
@@ -3268,12 +3269,11 @@ namespace giac {
   }
   
   gen sto(const gen & a,const gen & b,const context * contextptr){
-    gen res= sto(a,b,false,contextptr);
-    return res;
+    return sto(a,b,false,contextptr);
   }
   // in_place==true to store in vector/matrices without making a new copy
   gen sto(const gen & a,const gen & b,bool in_place,const context * contextptr_){
-    if (is_undef(a) && a.type==_STRNG)
+    if (a.type==_STRNG && is_undef(a))
       return a;
     if ( (a.type==_IDNT || a.is_symb_of_sommet(at_at)) && b.is_symb_of_sommet(at_rootof) && contextptr_){
       if (!contextptr_->globalcontextptr->rootofs)
@@ -3281,7 +3281,7 @@ namespace giac {
       gen b_=eval(b,1,contextptr_);
       gen Pmin=b_._SYMBptr->feuille;
       if (Pmin.type!=_VECT || Pmin._VECTptr->size()!=2 || Pmin._VECTptr->front()!=makevecteur(1,0))
-	return gensizeerr(gettext("Bad rootof"));
+	return gensizeerr(gettext("Bad rootof (in sto)"));
       Pmin=Pmin._VECTptr->back();
       vecteur & r =*contextptr_->globalcontextptr->rootofs;
       for (unsigned i=0;i<r.size();++i){
@@ -3361,11 +3361,12 @@ namespace giac {
     }
     if (b.type==_IDNT){
       // typed variable name must end with _d (double) or _i (int)
-      int bl=int(strlen(b._IDNTptr->id_name));
+      const char * name=b._IDNTptr->id_name;
+      int bl=int(strlen(name));
       if (bl==1){
-	if (b._IDNTptr->id_name[0]=='O' && (series_flags(contextptr) & (1<<6)) )
+	if (name[0]=='O' && (series_flags(contextptr) & (1<<6)) )
 	  series_flags(contextptr) ^= (1<<6);
-	if (b._IDNTptr->id_name[0]==series_variable_name(contextptr)){
+	if (name[0]==series_variable_name(contextptr)){
 	  if (series_flags(contextptr) & (1<<5))
 	    series_flags(contextptr) ^= (1<<5);
 	  if (series_flags(contextptr) & (1<<6))
@@ -3373,12 +3374,11 @@ namespace giac {
 	}
       }
       if (bl>=3){
-	const char * name=b._IDNTptr->id_name;
 	if (name[bl-2]=='_'){
 	  switch (name[bl-1]){
 	  case 'd':
 	    if (a.type!=_INT_ && a.type!=_DOUBLE_ && a.type!=_FRAC)
-	      return gensizeerr(gettext("Unable to convert to float ")+a.print(contextptr));
+	      return gensizeerr(gettext("Unable to convert to float (in sto) ")+a.print(contextptr));
 	    break;
 	  case 'f':
 	    if (a.type==_FRAC)
@@ -3392,12 +3392,12 @@ namespace giac {
 	    }
 	    if (a.type!=_INT_){
 	      if (a.type!=_ZINT || mpz_sizeinbase(*a._ZINTptr,2)>62)
-		return gensizeerr(gettext("Unable to convert to integer ")+a.print(contextptr));
+		return gensizeerr(gettext("Unable to convert to integer (in sto) ")+a.print(contextptr));
 	    }
 	    break;
 	  case 'v':
 	    if (a.type!=_VECT)
-	      return gensizeerr(gettext("Unable to convert to vector ")+a.print(contextptr));
+	      return gensizeerr(gettext("Unable to convert to vector (in sto) ")+a.print(contextptr));
 	    break;
 	  case 's':
 	    if (a.type!=_STRNG)
@@ -3413,17 +3413,19 @@ namespace giac {
 #else
 	try {
 	  b._IDNTptr->eval(1,b,contextptr); 
-	} catch (std::runtime_error & ) { }
+	} catch (std::runtime_error & ) { 
+	  last_evaled_argptr(contextptr)=NULL;
+	}
 #endif
       }
-      gen aa(a),error;
-      if (strcmp(b._IDNTptr->id_name,string_pi)==0 || strcmp(b._IDNTptr->id_name,string_infinity)==0 || strcmp(b._IDNTptr->id_name,string_undef)==0 
+      gen aa(a);
+      if (strcmp(name,string_pi)==0 || strcmp(name,string_infinity)==0 || strcmp(name,string_undef)==0 
 #ifdef GIAC_HAS_STO_38
-	  || b._IDNTptr->id_name[0]=='_' 
+	  || name[0]=='_' 
 #endif
 	  )
-	return gensizeerr(b.print(contextptr)+": reserved word");
-      if (a==b)
+	return gensizeerr(b.print(contextptr)+": reserved word (in sto)");
+      if (a.type==_IDNT && a==b)
 	return purgenoassume(b,contextptr);
       gen ans(aa);
       if ( (a.type==_SYMB) && (a._SYMBptr->sommet==at_parameter)){
@@ -3463,7 +3465,7 @@ namespace giac {
 	ans=symbolic(at_parameter,makesequence(b,debut,fin,aa,saut));
       } // end parameter
       if (abs_calc_mode(contextptr)==38){
-	if (storcl_38 && storcl_38(ans,0,b._IDNTptr->id_name,undef,false,contextptr,&aa,false) )
+	if (storcl_38 && storcl_38(ans,0,name,undef,false,contextptr,&aa,false) )
 	  return ans;
       }
       if (b._IDNTptr->quoted)
@@ -3472,12 +3474,12 @@ namespace giac {
 	const context * ptr=contextptr;
 	bool done=false;
 	for (;ptr->previous && ptr->tabptr;ptr=ptr->previous){
-	  sym_tab::iterator it=ptr->tabptr->find(b._IDNTptr->id_name),itend=ptr->tabptr->end();
+	  sym_tab::iterator it=ptr->tabptr->find(name),itend=ptr->tabptr->end();
 	  if (it!=itend){ // found in current local context
 	    // check that the current value is a thread pointer
 	    if (it->second.type==_POINTER_ && it->second.subtype==_THREAD_POINTER){
 	      if (it->second._POINTER_val!=(void *)contextptr_)
-		return gentypeerr(b.print(contextptr)+gettext(" is locked by thread ")+it->second.print(contextptr));
+		return gentypeerr(b.print(contextptr)+gettext(" is locked by thread (in sto) ")+it->second.print(contextptr));
 	    }
 	    it->second=aa;
 	    done=true;
@@ -3489,20 +3491,20 @@ namespace giac {
 	    if (a.is_symb_of_sommet(at_when) || a.is_symb_of_sommet(at_ifte) || a.is_symb_of_sommet(at_program))
 	      *logptr(contextptr) << b.print(contextptr)+gettext(": recursive definition") << endl;
 	    else
-	      return gensizeerr(b.print(contextptr)+gettext(": recursive definition"));
+	      return gensizeerr(b.print(contextptr)+gettext(": recursive definition (in sto) "));
 	  }
 	  sym_tab * symtabptr=contextptr->globalcontextptr?contextptr->globalcontextptr->tabptr:contextptr->tabptr;
-	  sym_tab::iterator it=symtabptr->find(b._IDNTptr->id_name),itend=symtabptr->end();
+	  sym_tab::iterator it=symtabptr->find(name),itend=symtabptr->end();
 	  if (it!=itend){ 
 	    // check that the current value is a thread pointer
 	    if (it->second.type==_POINTER_ && it->second.subtype==_THREAD_POINTER){
 	      if (it->second._POINTER_val!=(void *)contextptr_)
-		return gentypeerr(b.print(contextptr)+gettext(" is locked by thread ")+it->second.print(contextptr));
+		return gentypeerr(b.print(contextptr)+gettext(" is locked by thread (in sto) ")+it->second.print(contextptr));
 	    }
 	    it->second=aa;
 	  }
 	  else
-	    (*symtabptr)[b._IDNTptr->id_name]=aa;
+	    (*symtabptr)[name]=aa;
 	}
 #ifdef HAVE_SIGNAL_H_OLD
 	if (!child_id && signal_store)
@@ -3514,7 +3516,7 @@ namespace giac {
 	if (a.is_symb_of_sommet(at_when) || a.is_symb_of_sommet(at_ifte) || a.is_symb_of_sommet(at_program))
 	  *logptr(contextptr) << b.print(contextptr)+gettext(": recursive definition") << endl;
 	else
-	  return gensizeerr(b.print(contextptr)+gettext(": recursive definition"));
+	  return gensizeerr(b.print(contextptr)+gettext(": recursive definition (in sto) "));
       }
       if (b._IDNTptr->localvalue && !b._IDNTptr->localvalue->empty() && (b.subtype!=_GLOBAL__EVAL))
 	b._IDNTptr->localvalue->back()=aa;
@@ -3637,7 +3639,7 @@ namespace giac {
 	  iterateur it=indice._VECTptr->begin(),itend=indice._VECTptr->end();
 	  for (;;){
 	    if (it->type!=_INT_)
-	      return gentypeerr(gettext("Bad index ")+indice.print(contextptr));
+	      return gentypeerr(gettext("Bad index (in sto) ")+indice.print(contextptr));
 	    empile.push_back(v);
 	    v=v[*it];
 	    ++it;
@@ -3730,7 +3732,7 @@ namespace giac {
 	if (valeur.subtype==1){ // array
 	  gen_map::iterator it=valeur._MAPptr->find(indice),itend=valeur._MAPptr->end();
 	  if (it==itend)
-	    return gendimerr(gettext("Index outside of range"));
+	    return gendimerr(gettext("Index outside of range (in sto) "));
 	  if (xcas_mode(contextptr)==1)
 	    in_place=true;
 	}
@@ -3786,7 +3788,7 @@ namespace giac {
 	if (indice.type==_INT_ && indice.val<0)
 	  indice += int(vptr->size());
 	if (indice.type!=_INT_ || indice.val<0 )
-	  return gentypeerr(gettext("Bad index ")+indice.print(contextptr));
+	  return gentypeerr(gettext("Bad index (in sto) ")+indice.print(contextptr));
 	// check size
 	int is=int(vptr->size());
 	for (;is<=indice.val;++is){
@@ -3884,7 +3886,7 @@ namespace giac {
 	} // end first value interval
 	if (it->type==_INT_ && it->val<0) it->val += vptr->size();
 	if (it->type!=_INT_ || it->val<0)
-	  return gentypeerr(gettext("Bad index ")+indice.print(contextptr));
+	  return gentypeerr(gettext("Bad index (in sto) ")+indice.print(contextptr));
 	int i1=it->val;
 	bool i2deuxpoints=i2.is_symb_of_sommet(*at_deuxpoints);
 	if ( (i2.is_symb_of_sommet(*at_interval) || i2deuxpoints) && i2._SYMBptr->feuille.type==_VECT && i2._SYMBptr->feuille._VECTptr->size()==2){
@@ -3915,7 +3917,7 @@ namespace giac {
       } // end itend-it==2
       for (;;){
 	if (it->type!=_INT_)
-	  return gentypeerr(gettext("Bad index ")+indice.print(contextptr));
+	  return gentypeerr(gettext("Bad index (in sto) ")+indice.print(contextptr));
 	if (!in_place)
 	  empile.push_back(v);
 	gen tmp;
@@ -3935,7 +3937,7 @@ namespace giac {
 	if (it==itend)
 	  break;
 	if (tmp.type!=_VECT)
-	  return gentypeerr(gettext("Bad index ")+indice.print(contextptr));
+	  return gentypeerr(gettext("Bad index (in sto) ")+indice.print(contextptr));
 	if (in_place)
 	  vptr= tmp._VECTptr;
 	else
@@ -4385,6 +4387,13 @@ namespace giac {
 	if (is_undef(tmpsto)) return tmpsto;
 	return a2;
       }
+      if (a2==at_complex){
+	a2=_CPLX;
+	a2.subtype=1;
+	gen tmpsto=sto(gen(makevecteur(a2),_ASSUME__VECT),a1,contextptr);
+	if (is_undef(tmpsto)) return tmpsto;
+	return a2;
+      }
       if ( (a2.type==_FUNC) && (*a2._FUNCptr==at_ou) ){
 	purge_assume(a1,contextptr);
 	return assumesymbolic(a1,a1,contextptr);
@@ -4457,6 +4466,15 @@ namespace giac {
       return args;
     }
     iterateur it=args._VECTptr->begin(), itend=args._VECTptr->end();
+    if (itend-it==2){
+      int t1=it->type,t2=(it+1)->type;
+      if (t1<_IDNT && t2<_IDNT){
+	unsigned t=(t1<< _DECALAGE) | t2;
+	if (!t)
+	  return((longlong) it->val+(it+1)->val);
+	return operator_plus(*it,*(it+1),t,contextptr);
+      }
+    }
     if (it==itend)
       return zero;
     const gen & a=*it;
@@ -4600,6 +4618,8 @@ namespace giac {
     if (args.type!=_VECT)
       return args;
     iterateur it=args._VECTptr->begin(), itend=args._VECTptr->end();
+    if (itend-it==2 && it->type<_IDNT && (it+1)->type<_IDNT)
+      return operator_times(*it,*(it+1),contextptr);
     gen prod(1);
     /*
     if (it==itend)
