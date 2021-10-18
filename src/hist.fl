@@ -1253,6 +1253,18 @@ update_xcas=0;}
           callback {xcas::History_cb_Run_Worksheet(Xcas_current_session(),0);}
           xywh {140 140 100 20} shortcut 0x4ffc6
         }
+        MenuItem Xcas_Execute_Worksheet_Delay {
+          label {Execute worksheet with pauses}
+          callback {const char * ch=fl_input("Enter delay in seconds","1.5"); 
+              if (ch){
+                Fl_Widget * wid=Xcas_current_session();
+                xcas::History_Pack * hp=dynamic_cast<xcas::History_Pack *>(wid);
+                int i=std::floor(atof(ch)*1e6);
+                if (hp && i>0 && i<120e6){ hp->next_delay=i;xcas::History_cb_Run_Worksheet(wid,0);}
+             }
+          }
+          xywh {140 140 100 20} 
+        }
         MenuItem Xcas_Execute_Below {
           label {Execute below}
           callback {xcas::History_cb_Run_Below(Xcas_current_session(),0);}

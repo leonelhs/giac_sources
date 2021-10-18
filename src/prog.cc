@@ -5582,10 +5582,7 @@ namespace giac {
   }
   gen _cas_setup(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
-    if (args.type!=_VECT)
-      return gensizeerr(contextptr);
-    vecteur & w=*args._VECTptr;
-    if (w.empty()){
+    if (args.type!=_VECT){
       vecteur v=cas_setup(contextptr);
       v[0]=makevecteur(string2gen("~",false),v[0]);
       v[1]=makevecteur(string2gen("var C",false),v[1]);
@@ -5601,6 +5598,9 @@ namespace giac {
       v[11]=makevecteur(string2gen("integer",false),v[11]);
       return v;
     }
+    vecteur & w=*args._VECTptr;
+    if (w.empty())
+      return cas_setup(contextptr);
     if (!cas_setup(w,contextptr))
       return gendimerr(contextptr);
 #ifdef HAVE_SIGNAL_H_OLD

@@ -335,7 +335,7 @@ namespace xcas {
     if (x<0) return -x; else return x;
   }
 
-  History_Pack::History_Pack(int X,int Y,int W,int H,const char*l):Fl_Group(X,Y,W,H,l),_selecting(false),_pushed(false),_moving(false),_saving(false),undo_position(0),_modified(false),_resize_above(false),_spacing(2),_printlevel_w(labelsize()),_sel_begin(-1),_sel_end(-1),pretty_output(1),eval_below(false),doing_eval(false),eval_below_once(true),eval_next(false),queue_pos(-1),update_pos(-1),contextptr(0),
+  History_Pack::History_Pack(int X,int Y,int W,int H,const char*l):Fl_Group(X,Y,W,H,l),_selecting(false),_pushed(false),_moving(false),_saving(false),undo_position(0),_modified(false),_resize_above(false),_spacing(2),_printlevel_w(labelsize()),_sel_begin(-1),_sel_end(-1),pretty_output(1),next_delay(0),eval_below(false),doing_eval(false),eval_below_once(true),eval_next(false),queue_pos(-1),update_pos(-1),contextptr(0),
 #if 1
 								   new_question(new_question_editor),
 #else
@@ -2287,6 +2287,8 @@ namespace xcas {
     if (!p) return;
     // add an entry if none are below or focus on next entry
     int N=p->find(g),M=p->children();
+    if (N && p->next_delay)
+      usleep(p->next_delay);
     // Search in g->children if there is a Log_Output available
     if (Xcas_DispG)
       xcas_dispg_entries=Xcas_DispG->plot_instructions.size();
@@ -2374,6 +2376,7 @@ namespace xcas {
 	fin_pack =true;
     }
     if (fin_pack){
+      p->next_delay=0;
       if (add_group){
 	p->add_entry(N+1);
 	if (p->children()>N+1)
@@ -2997,6 +3000,7 @@ namespace xcas {
     if (hp_pos<hp_n)
       update(hp_pos);
     else {
+      next_delay=0;
       // Check for a Graphic child in parent, update it
       Fl_Group * hpp = parent_skip_scroll(this);
       bool nextup=eval_next;

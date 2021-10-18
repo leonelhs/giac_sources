@@ -146,6 +146,7 @@ namespace xcas {
     // if true then the next entry in above history pack is evaled
     int _spacing,_printlevel_w,_sel_begin,_sel_end;
     int pretty_output;
+    int next_delay;
     // set to true if you want to reeval the remaining items of the pack 
     bool eval_below,doing_eval; 
     bool eval_below_once,eval_next;
