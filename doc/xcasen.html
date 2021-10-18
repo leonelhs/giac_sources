@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html id="fulldocument" manifest="xcas.appcache">
+<html id="fulldocument" >
 <head>
 <meta charset="utf-8">
 <meta name=viewport content="width=device-width, initial-scale=1">
@@ -39,6 +39,9 @@ width:400px;
 
 <body>
 <script language="javascript">
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
 
 KEY_DOWN	= 40;
 KEY_UP		= 38;
@@ -168,7 +171,7 @@ document.onkeydown = applyKey;
  (function () {
   var script = document.createElement("script");
   script.type = "text/javascript";
-  script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+  script.src  = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
   document.getElementsByTagName("head")[0].appendChild(script);
 })();
 }
@@ -182,12 +185,6 @@ document.onkeydown = applyKey;
   title="Show or hide tutorial">Tuto</button>.
 </div>
 <div id="startup">
-  To <strong>install</strong> Xcas, unzip
-  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
-  xcashtml.zip</a> and search
-  <tt>xcasen.html</tt>, from
-  <a href="file:///sdcard/">here</tt></a> (Android).
-  <br>
   If Xcas does not work correctly, <a href="https://en.wikipedia.org/wiki/Wikipedia:Bypass_your_cache#Cache_clearing_and_disabling">clear your browser cache</a> and reload.
 <hr>
 </div>
@@ -302,11 +299,11 @@ Initial Mathml and SVG code by J.P. Branchard.
       </button>
     </th>
     <td>
+      <button style="height:25px" onclick="UI.show_config()"
+      title="Change configuration">Config</button>
       <h3>Session</h3>
       <span id='thelink'></span>
       <span id='themailto'></span>
-      <button style="height:25px" onclick="UI.show_config()"
-      title="Change configuration">Config</button>
     </td>
   </tr>
   <tr>
@@ -431,6 +428,12 @@ natively, it requires Mathjax to display 2d formula, this requires
 net access and works only if Xcas is installed on the device.
 <br><b>It is highly recommended to download Firefox and run Xcas from Firefox.</b>
 <br>
+  If you want to <strong>install</strong> Xcas on your device, unzip
+  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
+  xcashtml.zip</a> and search
+  <tt>xcasen.html</tt>, from
+  <a href="file:///sdcard/">here</tt></a> (Android).
+  <br>
 <b>On mobile devices, the builtin keyboard delete key is incompatible
 with the commandline, please use the del key above.</b><br>
 <button
@@ -843,7 +846,6 @@ title="Show or hide frequently used commands">menu</button>
 </div>
 
 
-
 <script src="w3data.js"></script>
 <div w3-include-html="menuen.js"></div>
 
@@ -876,6 +878,17 @@ title="Show or hide frequently used commands">menu</button>
   canvas_lastx:0,
   canvas_lasty:0,
   canvas_pushed:false,
+  initconfigstring:'',
+  sleep:function(miliseconds) {
+     var currentTime = new Date().getTime();
+     while (currentTime + miliseconds >= new Date().getTime()) {
+     }
+  },
+  is_touch_device() {
+   return (('ontouchstart' in window)
+      || (navigator.MaxTouchPoints > 0)
+      || (navigator.msMaxTouchPoints > 0));
+  },
   switchcm:function(){
   if (UI.usecm){
     if (cmentree==entree){
@@ -1561,6 +1574,10 @@ var kbd_util=["add_simplify" ,"add_normal",
   if (UI.langue==-1){ 
     var out=UI.caseval('set_langage(0); ');
     UI.langue=1;
+  }
+  if (UI.initconfigstring!=''){
+    UI.caseval(UI.initconfigstring);
+    UI.initconfigstring=''    
   }
  },
   switch_buttons: function(field,onoff){
@@ -2451,7 +2468,7 @@ insert: function(myField, myValue) {
   ck=UI.readCookie('xcas_usecm'); 
   if (ck) form.usecm.checked=UI.usecm=(ck=='1');
   ck=UI.config_string(); console.log(ck);
-  UI.caseval(ck); //UI.set_config_width();
+  if (0) UI.caseval(ck); else UI.initconfigstring=ck; //UI.set_config_width();
   var ua = window.navigator.userAgent;
   var old_ie = ua.indexOf('MSIE ');
   var new_ie = ua.indexOf('Trident/');
@@ -2464,7 +2481,8 @@ insert: function(myField, myValue) {
     if (UI.isie) alertmsg="3d does not work with Internet Explorer. "+alertmsg;
     alert(alertmsg);
   }
- if (bt==1 && hw>=1000) w3IncludeHTML();
+ if (!UI.is_touch_device()) w3IncludeHTML(); // context-menu
+ // if (bt==1 && hw>=1000) w3IncludeHTML();
  document.getElementById('apropos').style.display='none';
  document.getElementById('help').style.display='none';
  console.log("window.onload");
@@ -2481,7 +2499,8 @@ insert: function(myField, myValue) {
  var hashParams = window.location.hash.substr(1);
  // substr(1) to remove the `#`
  if (UI.readCookie('xcas_session')!=null) document.getElementById('startup_restore').style.display='block';
- UI.restoresession(hashParams,hist,asked,doexec);
+ //UI.restoresession(hashParams,hist,asked,doexec);
+  window.setTimeout(UI.restoresession,200,hashParams,hist,asked,doexec);
   document.getElementById('startup1').style.display='block';
 }
 </script>

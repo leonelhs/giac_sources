@@ -900,7 +900,7 @@ namespace giac {
     return false;
   }
 
-  gen subst(const gen & e,const unary_function_ptr * v,const gen_op_context * w,bool quotesubst,GIAC_CONTEXT){
+  gen subst(const gen & e,const unary_function_ptr * v,const gen_op_context * w,bool quotesubst,GIAC_CONTEXT,bool recursive_nonrat){
     if (*v==0 || !has_op_list(e,v))
       return e;
     if (e.type==_VECT){
@@ -908,12 +908,15 @@ namespace giac {
       vecteur res;
       res.reserve(itend-it);
       for (;it!=itend;++it)
-	res.push_back(subst(*it,v,w,quotesubst,contextptr));
+	res.push_back(subst(*it,v,w,quotesubst,contextptr,recursive_nonrat));
       return gen(res,e.subtype);
     }
     if (e.type!=_SYMB)
       return e;
-    gen arg=subst(e._SYMBptr->feuille,v,w,quotesubst,contextptr);
+    // recursive call only for rational operators
+    gen arg=e._SYMBptr->feuille; int pos=-1;
+    if (recursive_nonrat || ((pos= equalposcomp(analytic_sommets,e._SYMBptr->sommet)) && pos<=4))
+      arg=subst(arg,v,w,quotesubst,contextptr,recursive_nonrat);
     int n=equalposcomp(v,e._SYMBptr->sommet);
     if (!n){
       if (quotesubst){
@@ -1964,9 +1967,12 @@ namespace giac {
     int n_ln=int(independant.size());
     independant.push_back(e2r(cst_i*cst_pi,vars,contextptr));
     matrice m;
+    int st=step_infolevel(contextptr);
+    step_infolevel(0,contextptr);
     for (int i=0;i<s;++i){
       m.push_back(as_linear_combination(e2r(newl[i],vars,contextptr),independant,contextptr));
     }
+    step_infolevel(st,contextptr);
     // we have a matrix of rational numbers and a vector "independant"
     // so that newl[i]=i-th line of the matrix dot independant
     // For each column of the matrix we take the lcm of the denominators
@@ -2016,10 +2022,10 @@ namespace giac {
   gen tsimplify_noexpln(const gen & e,int s1,int s2,GIAC_CONTEXT){
     int te=taille(e,65536);
     gen g=e;
-    if (s1>1)
-      g=trig2exp(e,contextptr);
-    if (s2>1)
-      g=atrig2ln(g,contextptr);
+    if (s1>1 && angle_radian(contextptr))
+      g=subst(e,sincostan_tab,trig2exp_tab,false,contextptr,false); // g=trig2exp(e,contextptr);
+    if (s2>1 && angle_radian(contextptr))
+      g=subst(g,asinacosatan_tab,atrig2ln_tab,false,contextptr,false);//g=atrig2ln(g,contextptr);
     bool b=complex_mode(contextptr);
     complex_mode(true,contextptr);
     g=tsimplify_common(g,contextptr);
@@ -2215,7 +2221,7 @@ namespace giac {
   bool in_cklin(const gen & tmp){	
     if (tmp.is_symb_of_sommet(at_neg))
       return in_cklin(tmp._SYMBptr->feuille);
-    if (tmp.is_symb_of_sommet(at_exp))
+    if (tmp.is_symb_of_sommet(at_exp) && has_i(tmp))
       return true;
     if (tmp.is_symb_of_sommet(at_pow))
       return in_cklin(tmp._SYMBptr->feuille[0]);
@@ -2228,6 +2234,7 @@ namespace giac {
 	    return true;
       }
     }
+    return false;
   }
 
   // ck if g has a denominator with exponentials, if so linearize
@@ -2236,7 +2243,7 @@ namespace giac {
     prod2frac(g,gn,gd);
     if (gd.empty())
       return g;
-    for (int i=0;i<gd.size();++i){
+    for (unsigned i=0;i<gd.size();++i){
       gen tmp=simplifier(gd[i],contextptr);
       if (in_cklin(tmp))
 	return _lin(g,contextptr);
@@ -2471,10 +2478,14 @@ namespace giac {
     }
 #endif	
     gen g=tsimplify_noexpln(e,s1,s2,contextptr); 
-    g=cklin(g,contextptr);
+    gen glin=cklin(g,contextptr);
+    bool glinb=glin!=g;
+    g=glin;
     g=_exp2pow(g,contextptr);
-    if (s1<=1 && s2<= 1)
-      return ratnormal(quotesubst(g,vabs2,vabs,contextptr),contextptr);
+    if (s1<=1 && s2<= 1){
+      g=quotesubst(g,vabs2,vabs,contextptr);
+      return ratnormal(g,contextptr);//glinb?g:ratnormal(g,contextptr);
+    }
     int te=taille(e,RAND_MAX);
     int tg=taille(g,10*te);
     if (tg>=10*te)

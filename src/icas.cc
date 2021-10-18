@@ -475,6 +475,8 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 	}
       }
       pos=s.find("%");
+      while (pos>0 && s[pos-1]=='\\')
+	pos=s.find("%",pos+1);
       if (pos>=0 && pos<ss){
 	int pos1=s.find("{"),pos2=s.find("}");
 	if (pos1<0 || pos1>=pos || pos2<0 || pos2>=ss){ 

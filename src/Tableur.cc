@@ -38,11 +38,13 @@
 #include <giac/usual.h>
 #include <giac/prog.h>
 #include <giac/misc.h>
+#include <giac/global.h>
 #else
 #include "identificateur.h"
 #include "usual.h"
 #include "prog.h"
 #include "misc.h"
+#include "global.h"
 #endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -1076,49 +1078,6 @@ namespace xcas {
     }
   }
 
-  bool csv_guess(const char * data,int count,char & sep,char & nl,char & decsep){
-    bool ans=true;
-    int nb[256],pointdecsep=0,commadecsep=0; 
-    for (int i=0;i<256;++i)
-      nb[i]=0;
-    // count occurence of each char
-    // and detect decimal separator between . or ,
-    for (int i=1;i<count-1;++i){
-      if (data[i]=='[' || data[i]==']')
-	ans=false;
-      ++nb[(unsigned char) data[i]];
-      if (data[i-1]>='0' && data[i-1]<='9' && data[i+1]>='0' && data[i+1]<='9'){
-	if (data[i]=='.')
-	  ++pointdecsep;
-	if (data[i]==',')
-	  ++commadecsep;
-      }
-    }
-    decsep=commadecsep>pointdecsep?',':'.';
-    // detect nl (ctrl-M or ctrl-J)
-    nl=nb[10]>nb[13]?10:13;
-    // find in control characters and : ; the most used (except 10/13)
-    int nbmax=0,imax=-1;
-    for (int i=0;i<60;++i){
-      if (i==10 || i==13 || (i>=' ' && i<='9') )
-	continue;
-      if (nb[i]>nbmax){
-	imax=i;
-	nbmax=nb[i];
-      }
-    }
-    // compare . with , (44)
-    if (nb[unsigned(',')]>=nbmax){
-      imax=',';
-      nbmax=nb[unsigned(',')];
-    }
-    if (nbmax>=nb[unsigned(nl)])
-      sep=imax;
-    else
-      sep=' ';
-    return ans;
-  }
-
   // scan filename supposed to be a CSV data file
   // guess separator and newline character
   bool csv_guess(const string & filename,char & sep,char & nl,char & decsep){
@@ -1132,7 +1091,7 @@ namespace xcas {
     char data[count];
     fread(data,size,count,f);
     fclose(f);
-    return csv_guess(data,count,sep,nl,decsep);
+    return giac::csv_guess(data,count,sep,nl,decsep);
   }
 
   void cb_Sheet_Input(Fl_Widget* widg, void*) {
@@ -1163,7 +1122,7 @@ namespace xcas {
     if (giac::first_error_line(contextptr)>0 && nlpos>0 && nlpos<strs-1){
       char nl,sep,decsep,eof=-1;
       // removed the test sep!=' '
-      if (csv_guess(str.c_str(),strs,sep,nl,decsep)){ 
+      if (giac::csv_guess(str.c_str(),strs,sep,nl,decsep)){ 
 	if (str[strs-1]!=nl)
 	  str += nl;
 	istringstream i(str);

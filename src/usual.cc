@@ -5016,7 +5016,8 @@ namespace giac {
     vecteur vb(lvar(b));
     vecteur vab(lvar(makevecteur(a,b)));
     if (vab.size()==va.size()+vb.size()){
-      if (va.size()!=1 || va.front().type!=_IDNT || lvarx(b,va.front()).empty())
+      vecteur lvarxb;
+      if (va.size()!=1 || va.front().type!=_IDNT || (lvarxb=lvarx(b,va.front())).empty() || !lop(lvarxb,at_of).empty())
 	return symb_of(a,b);
     }
     if (!warn_implicit(a,b,contextptr))
@@ -7473,6 +7474,11 @@ namespace giac {
       return pi*std::exp(z-(s-1)*std::log(z));
     }
 #endif
+    if (z<0){
+      double l=lower_incomplete_gamma(s,z,regularize,context0)._DOUBLE_val;
+      if (regularize) return 1-l;
+      return std::exp(lngamma(s))-l;
+    }
     // int_z^inf t^(s-1) exp(-t) dt
     // Continued fraction expansion: a1/(b1+a2/(b2+...)))
     // a1=1, a2=1-s, a3=1, a_{m+2}=a_m+1
@@ -7517,20 +7523,19 @@ namespace giac {
   // lower_incomplete_gamma(a,z)=z^(-a)*gammaetoile(a,z)
   // gammaetoile(a,z)=sum(n=0..inf,(-z)^n/(a+n)/n!)
   gen gammaetoile(const gen & a,const gen &z,GIAC_CONTEXT){
-    gen res=0,resr,resi,fact=1,zn=1,tmp,tmpr,tmpi;
+    gen res=0,resr,resi,znsurfact=1,tmp,tmpr,tmpi;
     double eps2=epsilon(contextptr); eps2=eps2*eps2;
     if (eps2<=0)
       eps2=1e-14;
     for (int n=0;;){
-      tmp=zn/((a+n)*fact);
+      tmp=znsurfact/(a+n);
       reim(tmp,tmpr,tmpi,contextptr);
       reim(res,resr,resi,contextptr);
       if (is_greater(eps2*(resr*resr+resi*resi),tmpr*tmpr+tmpi*tmpi,contextptr))
 	break;
       res += tmp;
       ++n;
-      fact=n*fact;
-      zn=(-z)*zn;
+      znsurfact = znsurfact *(-z)/n;
     }
     return res;
   }
