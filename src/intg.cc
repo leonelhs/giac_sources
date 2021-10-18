@@ -1890,7 +1890,19 @@ namespace giac {
       return x*atan(x, contextptr)*grad2rad_e - rdiv(ln(pow(x, 2) + 1, contextptr), plus_two, contextptr);
   }
 
-  static const gen_op_context primitive_tab_primitive[]={giac::int_sin,giac::int_cos,giac::int_tan,giac::int_exp,giac::int_sinh,giac::int_cosh,giac::int_tanh,giac::int_asin,giac::int_acos,giac::int_atan,giac::xln_x};
+  static gen int_asinh(const gen & x,GIAC_CONTEXT){
+    return x*asinh(x,contextptr)-sqrt(pow(x,2)+1,contextptr);
+  }
+
+  static gen int_acosh(const gen & x,GIAC_CONTEXT){
+    return x*acosh(x,contextptr)-sqrt(pow(x,2)-1,contextptr);
+  }
+
+  static gen int_atanh(const gen & x,GIAC_CONTEXT){
+    return x*atan(x,contextptr)-rdiv(ln(abs(pow(x,2)-1,contextptr),contextptr),plus_two,contextptr);
+  }
+
+  static const gen_op_context primitive_tab_primitive[]={giac::int_sin,giac::int_cos,giac::int_tan,giac::int_exp,giac::int_sinh,giac::int_cosh,giac::int_tanh,giac::int_asin,giac::int_acos,giac::int_atan,giac::xln_x,giac::int_asinh,giac::int_acosh,giac::int_atanh};
 
 #if 0
   static void insure_real_deno(gen & n,gen & d,GIAC_CONTEXT){
@@ -2470,7 +2482,15 @@ namespace giac {
 	  fu=_trigsin(tan2sincos(fu,contextptr),contextptr);
 	if (it->is_symb_of_sommet(at_tan))
 	  fu=_trigtan(fu,contextptr);
-	if (is_rewritable_as_f_of(fu,*it,fx,gen_x,contextptr)){
+	bool tst=is_rewritable_as_f_of(fu,*it,fx,gen_x,contextptr);
+	if (tst){
+	  if (taille(fx,256)>taille(e,255)){
+	    vecteur fxv=lvarx(fx,gen_x);
+	    if (has_op(fxv,*at_ln) || has_op(fxv,*at_atan))
+	      tst=false;
+	  }
+	}
+	if (tst){
 	  if ( (intmode & 2)==0)
 	    gprintf(step_fuuprime,gettext("Integration of %gen: f(u)*u' where f=%gen->%gen and u=%gen"),makevecteur(e,gen_x,fx,*it),contextptr);
 #if 0
@@ -2528,7 +2548,15 @@ namespace giac {
 	}
 	if (it->is_symb_of_sommet(at_pow)){
 	  v[it-v.begin()]=powexpand(*it,contextptr);
-	  if (is_rewritable_as_f_of(powexpand(fu,contextptr),*it,fx,gen_x,contextptr)){
+	  bool tst=is_rewritable_as_f_of(powexpand(fu,contextptr),*it,fx,gen_x,contextptr);
+	  if (tst){
+	    if (taille(fx,256)>taille(e,255)){
+	      vecteur fxv=lvarx(fx,gen_x);
+	      if (has_op(fxv,*at_ln) || has_op(fxv,*at_atan))
+		tst=false;
+	    }
+	  }
+	  if (tst){
 	    if ( (intmode & 2)==0)
 	      gprintf(step_fuuprime,gettext("Integration of %gen: f(u)*u' where f=%gen->%gen and u=%gen"),makevecteur(e,gen_x,fx,*it),contextptr);
 	    e=linear_integrate_nostep(fx,gen_x,tmprem,intmode,contextptr);
@@ -2904,7 +2932,7 @@ namespace giac {
       return res+symbolic(at_integrate,gen(makevecteur(remains_to_integrate,x),_SEQ__VECT));
   }
 
-  static gen integrate0(const gen & e,const identificateur & x,gen & remains_to_integrate,GIAC_CONTEXT){
+  static gen integrate0_(const gen & e,const identificateur & x,gen & remains_to_integrate,GIAC_CONTEXT){
     if (step_infolevel(contextptr))
       gprintf(step_integrate_header,gettext("===== Step/step primitive of %gen with respect to %gen ====="),makevecteur(e,x),contextptr);
     if (e.type==_VECT){
@@ -2920,6 +2948,14 @@ namespace giac {
     remains_to_integrate=remains_to_integrate+tmprem;
     if (step_infolevel(contextptr) && is_zero(remains_to_integrate))
       gprintf(gettext("Hence primitive of %gen with respect to %gen is %gen"),makevecteur(e,x,res),contextptr);
+    return res;
+  }
+
+  static gen integrate0(const gen & e,const identificateur & x,gen & remains_to_integrate,GIAC_CONTEXT){
+    bool b_acosh=keep_acosh_asinh(contextptr);
+    keep_acosh_asinh(true,contextptr);
+    gen res=integrate0_(e,x,remains_to_integrate,contextptr);
+    keep_acosh_asinh(b_acosh,contextptr);
     return res;
   }
 
@@ -3166,6 +3202,8 @@ namespace giac {
 	}
       }
     }
+    bool b_acosh=keep_acosh_asinh(contextptr);
+    keep_acosh_asinh(true,contextptr);
 #ifdef NO_STDEXCEPT
     if (contextptr && contextptr->quoted_global_vars && !is_assumed_real(x,contextptr)){
       contextptr->quoted_global_vars->push_back(x);
@@ -3197,6 +3235,7 @@ namespace giac {
       CERR << "Unable to eval " << v[0] << ": " << err.what() << endl;
     }
 #endif
+    keep_acosh_asinh(b_acosh,contextptr);
     if (x._IDNTptr->quoted)
       *x._IDNTptr->quoted=quoted;    
     if (s>4 || (approx_mode(contextptr) && (s==4)) ){

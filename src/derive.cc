@@ -316,14 +316,14 @@ namespace giac {
 	gen v0=v[0],v1=v[1],v2=v[2],v3=v[3]; 
 	if (!is_zero(derive(v0,i,contextptr)) || !is_zero(derive(v1,i,contextptr)) )
 	  return gensizeerr("diff of incomplete beta with respect to non constant 1st or 2nd arg not implemented");
-	// diff/v2(int_0^v2 t^(v0-1)*(1-t)^(v1-1) dt)
+	// diff/v2 of int_0^v2 t^(v0-1)*(1-t)^(v1-1) dt
 	gen tmp=pow(v2,v0-1,contextptr)*pow(1-v2,v1-1,contextptr)*derive(v2,i,contextptr);
 	if (vs==4){
 	  gen v3p=derive(v3,i,contextptr);
 	  if (!is_zero(v3p))
 	    return tmp-pow(v3,v0-1,contextptr)*pow(1-v3,v1-1,contextptr)*v3p;
 	}
-	return tmp;
+	return tmp/Beta(v0,v1,contextptr);
       }
       if (vs==4 && s.sommet==at_sum){
 	gen v0=v[0],v1=v[1],v2=v[2],v3=v[3];
@@ -369,7 +369,7 @@ namespace giac {
       return symbolic(at_plus,gen(v,_SEQ__VECT));
     }
     // integrate
-    if (s.sommet==at_integrate){
+    if (s.sommet==at_integrate || s.sommet==at_HPINT){
       if (s.feuille.type!=_VECT)
 	return s.feuille;
       vecteur v=*s.feuille._VECTptr;
@@ -513,6 +513,15 @@ namespace giac {
   }
 
   gen derive(const gen & e,const identificateur & i,GIAC_CONTEXT){
+    if (abs_calc_mode(contextptr)==38 && i.id_name[0]>='A' && i.id_name[0]<='Z'){
+      identificateur tmp("xdiff");
+      gen ee=subst(e,i,tmp,true,contextptr);
+      ee=eval(ee,1,contextptr);
+      ee=subst(ee,i,tmp,true,contextptr);
+      ee=derive(ee,tmp,contextptr);
+      ee=subst(ee,tmp,i,true,contextptr);
+      return ee;
+    }
     switch (e.type){
     case _INT_: case _DOUBLE_: case _ZINT: case _CPLX: case _MOD: case _REAL: case _USER: case _FLOAT_:
       return 0;

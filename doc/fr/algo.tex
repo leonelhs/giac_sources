@@ -103,17 +103,14 @@ interactifs, ceux-ci apparaissent comme des commandes ``mortes'' dans
 la version PDF (elles sont ex\'ecut\'ees une fois pour toutes
 par la version non interactive de \verb|giac|). 
 La version HTML est optimis\'ee pour le navigateur Firefox. 
-Deux versions HTML
-sont propos\'ees, une utilisant mathml pour
-un rendu plus fid\`ele des formules, mais qui n\'ecessite
-un navigateur affichant le mathml, l'autre sans. Ces fichiers HTML
-ont \'et\'e g\'en\'er\'es avec \verb|hevea.inria.fr| de Luc Maranget,
-et le fork de Yannick Chevallier pour le support mathjax, ainsi
+Elle est g\'en\'er\'ee avec \verb|hevea.inria.fr| de Luc Maranget,
+ou le fork de Yannick Chevallier pour le support mathjax, ainsi
 qu'une version modifi\'ee de \verb|itex2MML| 
 de Jacques Distler pour la conversion en MathML.
-Vous pouvez
+Si vous avez une machine tr\`es puissante, vous pouvez
 ex\'ecuter toutes les commandes interactives en cliquant sur le bouton
-Ex\'ecuter, le champ suivant est la console de l'interpr\'eteur du
+Ex\'ecuter. En-dessous de ce bouton se trouve 
+la console de l'interpr\'eteur du
 logiciel de calcul formel.
 
 
@@ -10167,7 +10164,7 @@ $q$ ci-dessous, auquel on applique r\'ecursivement l'algorithme
 \begin{giacprog}
 restart;
 sym(P,X):={ // P polynome symetrique, X liste des variables
-  local s,xs,Q,V,W,S,q,r;
+  local k,s,xs,Q,V,W,S,q,r;
   s:=size(X);
   si s<=1 alors return P; fsi;
   xs:=X[s-1];

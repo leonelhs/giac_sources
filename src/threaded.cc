@@ -3775,6 +3775,12 @@ mpz_class smod(const mpz_class & a,int reduce){
     mulext(a,b,reduce.pmin,reduce.modulo,c);
   }
 
+  vector<int> operator %(const vector<int> & a,const modred & reduce){
+    vector<int> q,res;
+    DivRem(a,reduce.pmin,reduce.modulo,q,res);
+    return res;
+  }
+
   // c += a*b % reduce
   static void type_operator_plus_times_reduce(const vector<int> & a,const vector<int> & b,vector<int> & c,const modred & reduce){
     vector<int> tmp;
@@ -3809,10 +3815,17 @@ mpz_class smod(const mpz_class & a,int reduce){
     mulmodpoly(a,b,c);
   }
 
-  static void type_operator_plus_times(vecteur & a,const vecteur & b,const vecteur & c){
+  static void type_operator_plus_times(const vecteur & a,const vecteur & b,vecteur & c){
     vecteur tmp;
-    mulmodpoly(b,c,tmp);
-    addmodpoly(a,tmp,a);
+    mulmodpoly(a,b,tmp);
+    addmodpoly(c,tmp,c);
+  }
+
+  static void type_operator_plus_times_reduce(const vecteur & a,const vecteur & b,vecteur & c,int reduce){
+    assert(reduce==0);
+    vecteur tmp;
+    mulmodpoly(a,b,tmp);
+    addmodpoly(c,tmp,c);
   }
 
   // c += a*b % reduce
@@ -3820,6 +3833,15 @@ mpz_class smod(const mpz_class & a,int reduce){
     vecteur tmp;
     mulext(a,b,reduce.pmin,reduce.modulo,tmp);
     addmod(c,tmp,reduce.modulo);
+  }
+
+  vecteur operator %(const vecteur & a,const Modred & reduce){
+    vecteur q,res;
+    environment env;
+    env.modulo=reduce.modulo;
+    env.moduloon=true;
+    DivRem(a,reduce.pmin,&env,q,res);
+    return res;
   }
 
   static void smallmult(int g,const std::vector< T_unsigned<vector<int>,hashgcd_U> > & v1,std::vector< T_unsigned<vector<int>,hashgcd_U> > & v,int reduce){

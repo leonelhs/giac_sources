@@ -546,6 +546,11 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
       }
       if (inprog){
 	pos=s.find("\\end{giacprog}");
+	int decal=16;
+	if (pos<0 || pos>=ss)
+	  pos=s.find("\\end{giaconload}");
+	else
+	  decal=14;
 	if (pos>=0 && pos<ss){
 	  prg += s.substr(0,pos);
 	  out << "\\begin{verbatim}\n" << prg << "\\end{verbatim}" << endl;
@@ -565,7 +570,7 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 	    *checkptrin << gs << endl ;
 	  }
 	  if (checkptr) *checkptr << gg << endl;
-	  s=s.substr(pos+14,ss-14-pos);
+	  s=s.substr(pos+decal,ss-decal-pos);
 	  inprog=false;
 	  continue;
 	}
@@ -576,6 +581,13 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
       if (pos>=0 && pos<ss){
 	prg = "";
 	s=s.substr(pos+16,ss-16-pos);
+	inprog=true;
+	continue;
+      }
+      pos=s.find("\\begin{giaconload}");
+      if (pos>=0 && pos<ss){
+	prg = "";
+	s=s.substr(pos+18,ss-18-pos);
 	inprog=true;
 	continue;
       }
