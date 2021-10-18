@@ -1165,10 +1165,15 @@ namespace giac {
     return "mathml error (gen2mathml)";
   }
 
-
+  
+  string ingen2mathml(const gen & g,bool html5,GIAC_CONTEXT){
+    if (html5)
+      return "\n<math>\n"+gen2mathml(g,contextptr)+"\n</math>\n";
+    return "\n<math mode=\"display\" xmlns=\"http://www.w3.org/1998/Math/MathML\">\n\n"+gen2mathml(g,contextptr)+"\n\n</math><br/>\n";
+  }
 
   static string gen2mathmlfull(const gen & g,GIAC_CONTEXT){
-    return string(mathml_preamble)+"\n<math mode=\"display\" xmlns=\"http://www.w3.org/1998/Math/MathML\">\n\n"+gen2mathml(g,contextptr)+"\n\n</math><br/>\n"+mathml_end+'\n';
+    return string(mathml_preamble)+ingen2mathml(g,false,contextptr)+mathml_end+'\n';
   }
   gen _mathml(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
@@ -1177,6 +1182,8 @@ namespace giac {
       of << gen2mathmlfull(g._VECTptr->front(),contextptr) << endl;
       return plus_one;
     }
+    if (g.type==_VECT && g._VECTptr->size()==2 && g._VECTptr->back().type==_INT_)
+      return string2gen(ingen2mathml(g._VECTptr->front(),g._VECTptr->back().val,contextptr),false);
     return string2gen(gen2mathmlfull(g,contextptr),false);
   }
   static const char _mathml_s []="mathml";

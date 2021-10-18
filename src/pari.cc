@@ -91,7 +91,7 @@ namespace giac {
       pari_function_table[ptr->name]=ptr;
     }
     // initialize variable ordering x,y,z
-    flisexpr("[x,y,z,t]");
+    gp_read_str("[x,y,z,t]");
   }
 
   struct giac_pari_init {
@@ -524,8 +524,8 @@ namespace giac {
     // if (vars_.empty()) vars_.push_back(vx_var);
     if (!vars_.empty())
       s="["+(vars_.size()==1?vars_.front().print():print_VECT(vars_,_SEQ__VECT,contextptr))+","+s+"]";
-    GEN res= flisexpr((char *) s.c_str());
-    // flisexpr seems to have problems with large strings (s.size()>2^16?)
+    GEN res= gp_read_str((char *) s.c_str());
+    // gp_read_str seems to have problems with large strings (s.size()>2^16?)
     return vars_.empty()?res:gel(res,1+vars_.size());
   }
   GEN gen2GEN(const gen & e,const vecteur & vars,GIAC_CONTEXT){
@@ -660,7 +660,7 @@ namespace giac {
     }
     s+="]";
     // cerr << s << endl;
-    GEN pari_factmod=flisexpr((char *) s.c_str());
+    GEN pari_factmod=gp_read_str((char *) s.c_str());
     GEN pari_modulo=gen2GEN(modulo,vecteur(0),0);
     GEN pari_res=combine_factors(pari_a,pari_factmod,pari_modulo,0,1);
     // back conversion
@@ -697,7 +697,7 @@ namespace giac {
 	// setsizeerr();
 	return undef;
       } 
-    GEN gres= flisexpr((char *) s.c_str());
+    GEN gres= gp_read_str((char *) s.c_str());
     gen res=GEN2gen(gres,vecteur(0));
     avma=av;
     PARI_stack_limit = save_pari_stack_limit ;

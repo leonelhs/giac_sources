@@ -158,7 +158,7 @@ namespace giac {
       return symbolic(at_Beta,args);
     vecteur v=*args._VECTptr;
     int s=v.size();
-    if (s>2 && (v[0].type==_DOUBLE_ || v[1].type==_DOUBLE_ || v[2].type==_DOUBLE_)){
+    if (s>2 && (v[0].type==_DOUBLE_ || v[1].type==_DOUBLE_ || v[2].type==_DOUBLE_ || v[0].type==_REAL || v[1].type==_REAL || v[2].type==_REAL)){
       gen tmp=evalf_double(v,1,contextptr);
       if (tmp.type==_VECT)
 	v=*tmp._VECTptr;
@@ -194,8 +194,12 @@ namespace giac {
     }
     if ( (s==2 || s==3) && v[0].type==_DOUBLE_ && v[1].type==_DOUBLE_ ){
       double res=upper_incomplete_gammad(v[0]._DOUBLE_val,v[1]._DOUBLE_val,s==3?!is_zero(v[2]):false);
-      if (res==-1)
-	return gensizeerr(contextptr);
+      if (res==-1){
+	if (s==3 && !is_zero(v[2]))
+	  return 1-lower_incomplete_gamma(v[0]._DOUBLE_val,v[1]._DOUBLE_val,true,contextptr); 
+	return Gamma(v[0]._DOUBLE_val,contextptr)-lower_incomplete_gamma(v[0]._DOUBLE_val,v[1]._DOUBLE_val,false,contextptr); 
+	// return gensizeerr(contextptr);
+      }
       return res;
     }
     if (s<2 || s>3)

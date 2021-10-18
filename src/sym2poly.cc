@@ -3413,6 +3413,9 @@ namespace giac {
     gen res;
     gen tmp2(polynome2poly1(temp,1));
     res=l.empty()?tmp2:r2e(tmp2,l,contextptr); // (tmp2.type==_FRAC?gen(fraction(r2e(tmp2._FRACptr->num,l,contextptr),r2e(tmp2._FRACptr->den,l,contextptr))):r2e(tmp2,l,contextptr));
+    if (res.type==_FRAC && res._FRACptr->num.type==_VECT && res._FRACptr->den.type<_POLY){
+      res=inv(res._FRACptr->den,contextptr)*res._FRACptr->num;
+    }
     if (res.type==_VECT && calc_mode(contextptr)!=1)
       res.subtype=_POLY1__VECT;
     return res;

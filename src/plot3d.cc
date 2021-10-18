@@ -2331,17 +2331,27 @@ namespace giac {
       gen centre,rayon;
       if (!centre_rayon(h0,centre,rayon,false,contextptr))
 	return gensizeerr(contextptr); // don't care about radius sign
-      gen r,i;
-      reim(centre,r,i,contextptr);
-      identificateur t("tconvert3d");
+      double nstep=50.0;
       gen tmin=0,tmax=2*M_PI;
       if (h0.type==_VECT && h0._VECTptr->size()>4){
 	tmin=(*h0._VECTptr)[2];
 	tmax=(*h0._VECTptr)[3];
       }
-      gen res=_plotparam(makesequence(makevecteur(r+rayon*symbolic(at_cos,t),i+rayon*symbolic(at_sin,t),0),t,tmin,tmax),contextptr);
-      res=remove_at_pnt(res);
-      v[0]=res;
+      gen tstep=(tmax-tmin)/nstep;
+      vecteur curve;
+      for (int i=0;i<=nstep;++i){
+	gen t=tmin+i*tstep;
+	if (i==nstep){
+	  if (h0.type==_VECT && h0._VECTptr->size()>4)
+	    t=tmax;
+	  else
+	    t=tmin;
+	}
+	gen z=centre+rayon*exp(cst_i*t,contextptr),zx,zy;
+	reim(z,zx,zy,contextptr);
+	curve.push_back(gen(makevecteur(zx,zy,0),_POINT__VECT));
+      }
+      v[0]=gen(curve,_GROUP__VECT);
       return symbolic(at_pnt,gen(v,h.subtype));
     }
     if (h0.type==_VECT){
@@ -2352,6 +2362,7 @@ namespace giac {
     gen r,i;
     reim(h0,r,i,contextptr);
     h0=gen(makevecteur(r,i,0),_POINT__VECT);
+    v[0]=h0;
     h=gen(v,h.subtype);
     return symbolic(at_pnt,h);    
   }

@@ -494,8 +494,7 @@ namespace giac {
       return apply(e,giac::log10,contextptr);
     }
     gen a,b;
-    if (abs_calc_mode(contextptr)==38 && has_evalf(e,a,1,contextptr))
-      return log10(a,contextptr);
+    // if (abs_calc_mode(contextptr)==38 && has_evalf(e,a,1,contextptr)) return log10(a,contextptr);
     if (is_algebraic_program(e,a,b))
       return symbolic(at_program,gen(makevecteur(a,0,log10(b,contextptr)),_SEQ__VECT));
     int n=0; gen e1(e),q;
@@ -6863,9 +6862,12 @@ namespace giac {
       if (z.type==_DOUBLE_)
 	s=evalf_double(s,1,contextptr);
       if (s.type==_DOUBLE_ && z.type==_DOUBLE_){
-	gen res=upper_incomplete_gammad(s._DOUBLE_val,z._DOUBLE_val,x._VECTptr->size()==3?!is_zero(x._VECTptr->back()):false);
-	if (res==-1)
+	bool regu=x._VECTptr->size()==3?!is_zero(x._VECTptr->back()):false;
+	gen res=upper_incomplete_gammad(s._DOUBLE_val,z._DOUBLE_val,regu);
+	if (res==-1){
+	  return regu?1:Gamma(s._DOUBLE_val,contextptr)-lower_incomplete_gamma(s._DOUBLE_val,z._DOUBLE_val,regu,contextptr);
 	  return gensizeerr(contextptr);
+	}
 	return res;
       }
       return symbolic(at_Gamma,x);
@@ -7108,13 +7110,13 @@ namespace giac {
     return res;
   }
 
-  static gen lower_incomplete_gamma(double s,double z,bool regularize,GIAC_CONTEXT){ // regularize=true by default
+  gen lower_incomplete_gamma(double s,double z,bool regularize,GIAC_CONTEXT){ // regularize=true by default
     // should be fixed if z is large using upper_incomplete_gamma asymptotics
     if (z>0 && -z+s*std::log(z)-lngamma(s+1)<-37)
       return regularize?1:std::exp(lngamma(s));
     if (z<0){
       gen zs=-std::pow(-z,s)*gammaetoile(s,z,contextptr);
-      return zs;
+      return regularize?std::exp(-lngamma(s))*zs:zs;
     }
     if (z>=s){
       double res=upper_incomplete_gammad(s,z,regularize);

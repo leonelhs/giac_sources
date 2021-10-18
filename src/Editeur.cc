@@ -142,6 +142,7 @@ namespace xcas {
     "from",
     "fsi",
     "ftantque",
+    "function",
     "goto",
     "if",
     "jusqu_a",
@@ -173,6 +174,7 @@ namespace xcas {
     "true",
     "try",
     "until",
+    "var",
     "while",
     "xor"
   };

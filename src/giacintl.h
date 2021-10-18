@@ -23,8 +23,8 @@
 #ifndef _LIBINTL_H
 #define _LIBINTL_H      1
 #define __LIBINTL_H_DEFINED__ // Pour NetBSD 
-#ifdef GIAC_HAS_STO_38
-const char * gettext(const char * s); // in aspen.cc
+#if defined GIAC_HAS_STO_38 || defined EMCC
+const char * gettext(const char * s); // in aspen.cc or opengl.cc
 #else
 inline const char * gettext(const char * s) { return s; };
 #endif

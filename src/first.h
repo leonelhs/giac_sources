@@ -45,7 +45,14 @@
 #else
 #define CIN std::cin
 #define COUT std::cout
+#ifdef EMCC
+#define CERR std::cout
+extern "C" double emcctime(); 
+#define CLOCK emcctime
+#else
 #define CERR std::cerr
+#define CLOCK clock
+#endif
 #endif
 
 #ifdef __sparc__

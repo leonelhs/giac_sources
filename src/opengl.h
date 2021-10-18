@@ -113,6 +113,8 @@ namespace giac {
     giac::vecteur plot_instructions,animation_instructions,trace_instructions ;
     double animation_dt; // rate for animated plot
     bool paused;
+    bool twodim;
+    double ipos,jpos,depthpos;
     //struct timeval animation_last; // clock value at last display
     int animation_instructions_pos;
     int rotanim_type,rotanim_danim,rotanim_nstep;
@@ -177,6 +179,7 @@ namespace giac {
     virtual ~Opengl();
     std::string current_config();
     void adjust_cursor_point_type();
+    void glRasterPos3d(double d1,double d2,double d3);
   };
 
 
@@ -212,6 +215,10 @@ namespace giac {
     void normal2plan(double & a,double &b,double &c);
   };
 
+  extern Opengl3d * openglptr;  
+  void sdl_loop();
+  int giac_renderer(const char * ch);
+  int giac_gen_renderer(const gen & g,GIAC_CONTEXT);
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

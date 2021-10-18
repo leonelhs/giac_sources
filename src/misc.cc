@@ -2204,7 +2204,7 @@ namespace giac {
       if (!is_zero(partial_sum) && is_strictly_greater(partial_sum,sigma,contextptr))
 	return data[i];
       if (partial_sum==sigma && i<s)
-	return (data[i]+data[i+1])/2;
+	return (i==s-1 || (calc_mode(contextptr)!=1 && abs_calc_mode(contextptr)!=38) )?data[i]:(data[i]+data[i+1])/2;
     }
     return undef;
   }
@@ -5001,7 +5001,7 @@ static define_unary_function_eval (__hamdist,&_hamdist,_hamdist_s);
   gen _add_language(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if (args.type==_INT_){
-      add_language(args.val);
+      add_language(args.val,contextptr);
       return 1;
     }
     if (args.type==_STRNG){
@@ -5009,7 +5009,7 @@ static define_unary_function_eval (__hamdist,&_hamdist,_hamdist_s);
       s=s.substr(0,2);
       int i=string2lang(s);
       if (i){
-	add_language(i);
+	add_language(i,contextptr);
 	return 1;
       }
     }
@@ -5022,7 +5022,7 @@ static define_unary_function_eval (__add_language,&_add_language,_add_language_s
   gen _remove_language(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if (args.type==_INT_){
-      remove_language(args.val);
+      remove_language(args.val,contextptr);
       return 1;
     }
     if (args.type==_STRNG){
@@ -5030,7 +5030,7 @@ static define_unary_function_eval (__add_language,&_add_language,_add_language_s
       s=s.substr(0,2);
       int i=string2lang(s);
       if (i){
-	remove_language(i);
+	remove_language(i,contextptr);
 	return 1;
       }
     }
@@ -5052,7 +5052,15 @@ static define_unary_function_eval (__show_language,&_show_language,_show_languag
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if (args.type!=_INT_)
       return undef;
-    return string2gen(set_language(args.val,contextptr),false);
+#if 0
+    static int i=0;
+    if (language(contextptr)==args.val){
+      ++i;
+      return string2gen("ans("+print_INT_(i)+")= ",false);
+    }
+#endif
+    gen res=string2gen(set_language(args.val,contextptr),false);
+    return res;
   }
   static const char _set_language_s []="set_language";
 static define_unary_function_eval (__set_language,&_set_language,_set_language_s);

@@ -2384,16 +2384,18 @@ namespace giac {
 	  a1=a1._SYMBptr->feuille;
 	  a2=a2._SYMBptr->feuille;
 	}
-	vecteur lv=lvarx(makevecteur(a1,a2),v.back());
-	vecteur w=mergevecteur(lop(lv,at_pow),lop(lv,at_exp));
-	if (a2.type!=_VECT && a2!=0 && w.size()>1){
-	  arg1=ln(simplify(a1,contextptr),contextptr)-ln(simplify(a2,contextptr),contextptr);
-	  if (lvarx(arg1,v.back()).size()>1)
-	    arg1=lnexpand(arg1,contextptr);
+	if (a2.type!=_VECT && !lvarx(a1,v.back()).empty() && !lvarx(a2,v.back()).empty()){
+	  vecteur lv=lvarx(makevecteur(a1,a2),v.back());
+	  vecteur w=mergevecteur(lop(lv,at_pow),lop(lv,at_exp));
+	  if (w.size()>1){
+	    arg1=ln(simplify(a1,contextptr),contextptr)-ln(simplify(a2,contextptr),contextptr);
+	    if (lvarx(arg1,v.back()).size()>1)
+	      arg1=lnexpand(arg1,contextptr);
+	  }
+	  w=lop(lv,at_exp);
+	  if (w.size()>1)
+	    arg1=lnexpand(ln(simplify(a1,contextptr),contextptr)-ln(simplify(a2,contextptr),contextptr),contextptr);
 	}
-	w=lop(lv,at_exp);
-	if (a2.type!=_VECT && a2!=0 && w.size()>1)
-	  arg1=lnexpand(ln(simplify(a1,contextptr),contextptr)-ln(simplify(a2,contextptr),contextptr),contextptr);
       }
 #endif
     }
@@ -6488,6 +6490,7 @@ namespace giac {
   static define_unary_function_eval (__greduce,&_greduce,_greduce_s);
   define_unary_function_ptr5( at_greduce ,alias_at_greduce,&__greduce,0,true);
 
+  // eliminate/algsubs adapted from Reinhard Oldenburg user code
   // eliminate(eqs,vars)
   gen _eliminate(const gen & args,GIAC_CONTEXT){
     if (args.type!=_VECT || args._VECTptr->size()<2)

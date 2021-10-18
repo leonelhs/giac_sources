@@ -1,3 +1,29 @@
+# jacobi_linsolve(A,b,eps[,maxiter]) et gauss_seidel_linsolve([omega=1,]A,b,eps[,maxiter])
+1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode itérative de Jacobi avec une tolérance de eps et un nombre maximal d'iterations de maxiter. 
+2 Resolution of a linear system  A*X=b  by the iterative Jacobi method with eps as error margin  and a number of iterations inferior to maxiter.
+0 Mtrx(A),Vect(b),Real(eps),[Int(maxiter)]
+-1 gauss_seidel_linsolve
+-2 linsolve
+ a:=[[100,2],[2,100]];jacobi_linsolve(a,[0,1],1e-12);
+ a:=[[100,2],[2,100]];jacobi_linsolve(table(a),[0,1],1e-12); 
+
+#  gauss_seidel_linsolve
+1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode iterative de Gauss-Seidel (par défaut omega=1) ou de relaxation avec une tolérance de eps et un nombre maximal d'iterations de maxiter. 
+2 Resolution of a linear system A*X=b  by the iterative Gauss-Seidel method (by defaut omega=1) or by relaxation method, with eps as error margin and a number of iterations inferior to maxiter.
+0 [Real(omega)],Mtrx(A),Vect(b),Real(eps),[Int(maxiter)]
+-1 jacobi_linsolve
+-2 linsolve
+ a:=[[100,2],[2,100]];gauss_seidel_linsolve(a,[0,1],1e-12);
+ a:=[[100,2],[2,100]];gauss_seidel_linsolve(table(a),[0,1],1e-12); 
+ a:=[[100,2],[2,100]];gauss_seidel_linsolve(1.5,a,[0,1],1e-12);
+ a:=[[100,2],[2,100]];gauss_seidel_linsolve(1.5,table(a),[0,1],1e-12); 
+
+# linspace
+1 linspace(a,b,n) génère une liste de n éléments régulièrement espacés entre a et b, par défaut n=100 (commande compatible scilab).
+2 linspace(a,b,n) creates a list of n elements at regular intervals between a and b, by defaut n=100 (compatibility with scilab).
+0 Real(a),Real(b),[Int(n)]
+linspace(0,1,11)
+
 # besselY
 1 besselY(x,p) renvoie la fonction de Bessel de deuxième espèce Yp(x).
 2 besselY(x,p) returns the Bessel function of second kind Yp(x).
@@ -5357,6 +5383,8 @@ fMax(-x^2+2*x+1,x=1..2)
 -1 fMax
 fMin(x^2-2*x+1,x)
 fMin(x^2-2*x+1,x=1..2)
+fMin((x-3)^2+(y-5)^2+1,[],[x,y],[1,1])
+fMin((x-3)^2+(y-5)^2+1,[x+y^2=1],[x,y],[1,1])
 
 # DrawInv
 1 Trace le graphe du symétrique de l'expression par rapport à y=x.
@@ -9799,27 +9827,45 @@ nSolve(cos(x)=x,x)
 nSolve(cos(x)=x,x=1.3)
 
 # Gamma
-1 Calcule les valeurs de la fonction Gamma au point a (Gamma(n+1)=n! pour n entier) (Gamma(a)=int(e^{-t}*t^{a-1},t=0..inf)).
-2 Calculus of Gamma at a point a (Gamma(n+1)=n! for n integer) (Gamma(a)=int(e^{-t}*t^{a-1},t=0..inf)).
-3 Calcula los valores de la función Gamma en el punto a (Gamma(n+1)=n! para n entero) (Gamma(a)=int(e^{-t}*t^{a-1},t=0..inf)).
-4 Υπολογισμός τιμών της συνάρτησης Gamma στο σημείο a (Gamma(n+1)=n! για n ακέραιο) (Gamma(a)=int(e^{-t}*t^{a-1},t=0..inf)).
-0 Real(a)
+1 Calcule les valeurs de la fonction Gamma au point a (Gamma(n+1)=n! pour n entier) si a>0, Gamma(a)=int(e^{-t}*t^{a-1},t=0..inf) et Gamma(a)=Gamma(a+1)/a et Gamma(a,b)=ugamma(a,b).
+2 Calculus of Gamma at a point a (Gamma(n+1)=n! for n integer) if a>0, Gamma(a)=int(e^{-t}*t^{a-1},t=0..inf)) and Gamma(a)=Gamma(a+1)/a and Gamma(a,b)=ugamma(a,b).
+3 Calcula los valores de la función Gamma en el punto a (Gamma(n+1)=n! para n entero) si a>0, Gamma(a)=int(e^{-t}*t^{a-1},t=0..inf)) y Gamma(a)=Gamma(a+1)/a y Gamma(a,b)=ugamma(a,b).
+4 Υπολογισμός τιμών της συνάρτησης Gamma στο σημείο a (Gamma(n+1)=n! για n ακέραιο) αν a>0, Gamma(a)=int(e^{-t}*t^{a-1},t=0..inf))  και Gamma(a)=Gamma(a+1)/a και Gamma(a,b)=ugamma(a,b).
+0 Real(a),[Real(b)]
 -1 Psi
 -2 Beta
--3 igamma
+-3 ugamma
+-4 igamma
 Gamma(5)
 Gamma(1/2)
+gamma(-5.1)
+Gamma(-5.1,2.1)
 
-# igamma
-1 Calcule les valeurs de la fonction gamma au point (a,x) : c'est la fonction Gamma incomplète (igamma(a,x)=int(e^{-t}*t^{a-1},t=0..x)).(igamma(a,x,1)=igamma(a,x)/Gamma(a))
-2 Calculus of gamma at a point (a,x) (igamma(a,x)=int(e^{-t}*t^{a-1},t=0..x)).(igamma(a,x,1)=igamma(a,x)/Gamma(a)).
-3 Calcula los valores de la función gamma en el punto a,x (igamma(a,x)=int(e^{-t}*t^{a-1},t=0..x)).(igamma(a,x,1)=igamma(a,x)/Gamma(a)).
-4 Υπολογισμός τιμών της συνάρτησης gamma στο σημείο a,x (igamma(a,x)=int(e^{-t}*t^{a-1},t=0..x)).(igamma(a,x,1)=igamma(a,x)/Gamma(a)).
+# ugamma
+1 Calcule les valeurs de la fonction gamma supérieure au point (a,x):si a et x>=0 ugamma(a,x)=int(e^{-t}*t^{a-1},t=x..inf)),(igamma(a,x)+ugamma(a,x)=Gamma(a))
+2 Calculus of ugamma function at a point (a,x):if a and x>=0 ugamma(a,x)=int(e^{-t}*t^{a-1},t=x..inf),(ugamma(a,x)+igamma(a,x)=Gamma(a)).
+3 Calcula los valores de la función ugamma en el punto (a,x):si a,x>=0 ugamma(a,x)=int(e^{-t}*t^{a-1},t=..inf),(ugamma(a,x)+igamma(a,x)=Gamma(a)).
+4 Υπολογισμός τιμών της συνάρτησης gamma στο σημείο (a,x):αν a,x>0, igamma(a,x)=int(e^{-t}*t^{a-1},t=x..inf),(ugamma(a,x)+igamma(a,x)=Gamma(a)).
 0 Real(a),Real(x),[1]
 -1 Psi
 -2 Beta
 -3 Gamma
+-4 igamma
+ugamma(5.0,2.0)
+ugamma(-5.1,2.1)
+
+# igamma
+1 Calcule les valeurs de la fonction gamma au point (a,x) : c'est la fonction Gamma incomplète. Si a et x>0, igamma(a,x)=int(e^{-t}*t^{a-1},t=0..x), (igamma(a,x,1)=igamma(a,x)/Gamma(a))
+2 Calculus of gamma at a point (a,x). If a and x>0, igamma(a,x)=int(e^{-t}*t^{a-1},t=0..x), (igamma(a,x,1)=igamma(a,x)/Gamma(a)).
+3 Calcula los valores de la función gamma en el punto (a,x). Si a,x>0, igamma(a,x)=int(e^{-t}*t^{a-1},t=0..x), (igamma(a,x,1)=igamma(a,x)/Gamma(a)).
+4 Υπολογισμός τιμών της συνάρτησης gamma στο σημείο (a,x). αν a,x>0, igamma(a,x)=int(e^{-t}*t^{a-1},t=0..x),(igamma(a,x,1)=igamma(a,x)/Gamma(a)).
+0 Real(a),Real(x),[1]
+-1 Psi
+-2 Beta
+-3 Gamma
+-3 ugamma
 igamma(5.0,2.0)
+igamma(-5.1,2.1)
 igamma(5.0,2.0,1)
 
 # gauss
@@ -10148,7 +10194,6 @@ ibasis([[1,0,0],[0,1,0]],[[1,1,1],[0,0,1]])
 0 
 -1 +infinity
 -2 -infinity
-
 
 # +infinity inf
 1 Plus infini
@@ -10687,6 +10732,7 @@ linsolve([[3,4],[1,2]],[0,1])
 linsolve([2*x+y+z=1,x+y+2*z=1,x+2*y+z=4],[x,y,z])
 linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
  p,l,u:=lu([[2,1,1],[1,1,2],[1,2,1]]);linsolve(p,l,u,[1,1,4])
+ a:=[[100,2],[2,100]];linsolve(evalf(a),[0,1]);
 
 # thickness epaisseur
 1 Option (compatibilité Maple) d'une commande graphique pour définir l'épaisseur des traits.
@@ -13106,10 +13152,10 @@ tableseq(cos(x),x,0.0)
 tableseq(x+y,[x,y],[1,1])
 
 # seqsolve
-1 Donne la valeur d'une suite récurrente (u_{n+1}=f(u_n) ou u_{n+2}=f(,u_n,u_{n+1},...) ou d'un système de suites récurrentes.
-2 Gives the value of a recurrent sequence (u_{n+1}=f(u_n) or u_{n+2}=f(,u_n,u_{n+1}...) or of a system of recurrent sequences.
-3 Valores de una secuencia recurente (u_{n+1}=f(u_n) o u_{n+2}=f(u_n,u_{n+1}...) o de un sistema de secuencias recurrentes.
-4 Τιμές μιας αναδρομικής ακολουθίας (u_{n+1}=f(u_n) ή u_{n+2}=f(u_n,u_{n+1},...) ή ενός συστήματος αναδρομικών ακολουθιών.
+1 Donne la valeur d'une suite récurrente (u_{n+1}=f(u_n) ou u_{n+k}=f(u_n,u_{n+1},...u_{n+k-1})) ou d'un système de suites récurrentes.
+2 Gives the value of a recurrent sequence (u_{n+1}=f(u_n) or u_{n+k}=f(u_n,u_{n+1}...u_{n+k-1})) or of a system of recurrent sequences.
+3 Valores de una secuencia recurente (u_{n+1}=f(u_n) o u_{n+k}=f(u_n,u_{n+1}...u_{n+k-1})) o de un sistema de secuencias recurrentes.
+4 Τιμές μιας αναδρομικής ακολουθίας (u_{n+1}=f(u_n) ή u_{n+k}=f(u_n,u_{n+1},...u_{n+k-1})) ή ενός συστήματος αναδρομικών ακολουθιών.
 0 (Expr or LstExpr),(Var or LstVar),(InitVal or LstInitVal)
 -1 rsolve
 -2 plotseq
@@ -14095,12 +14141,12 @@ simplify(texpand((sin(3*x)+sin(7*x))/sin(5*x)))
 simplify(texpand((cos(3*x)+cos(7*x))/cos(5*x)))
 
 # sort
-1 Renvoie la liste (ou suite) triée par ordre croissant ou selon la fonction donnée en second argument ou trie et collecte les termes égaux dans les sommes et produits.
-2 Returns the sorted list (or sequence) with increasing order according with the second argument or sort and collect equal terms in sums and products.
+1 Renvoie la liste (ou suite) triée par ordre croissant ou selon la fonction donnée en second argument qui définit un ordre strict faible ou trie et collecte les termes égaux dans les sommes et produits.
+2 Returns the sorted list (or sequence) with increasing order according with the second argument which defines an weak strict ordering or sort and collect equal terms in sums and products.
 3 Devuelve la lista (o secuencia) ordenada en orden creciente o según la función dada en segundo argumento, o ordena y recupera los términos iguales en las sumas y los productos.
 4 Επιστρέφει την λίστα (ή ακολουθία) ταξινομημένη κατά αύξοντα ή φθίνοντα τρόπο σύμφωνα με το 2ο όρισμα ή ταξινομεί και συλλέγει ίσους όρους σε αθροίσματα και γινόμενα.
 8 数据列排序。  按升序对数据列中的元素排序。
-0 LstReal or Seq
+0 LstReal or Seq [Fnc]
 -1 SortA
 -2 SortD
 sort([3,2,2,4,1,0])

@@ -40,6 +40,7 @@ namespace giac {
   std::string svg_grid();
   extern const char svg_end[];
   extern std::string svg_legend; // variable globale
+  std::string ingen2mathml(const gen & g,bool html5,GIAC_CONTEXT);
 
 #endif // RTOS_THREADX
 

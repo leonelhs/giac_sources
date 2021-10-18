@@ -859,8 +859,8 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   std::string find_lang_prefix(int i);
   int string2lang(const std::string & s); // convert "fr" to 1, "es" to 3 etc.
   void update_completions();
-  void add_language(int i);
-  void remove_language(int i);
+  void add_language(int i,GIAC_CONTEXT);
+  void remove_language(int i,GIAC_CONTEXT);
   std::string set_language(int i,GIAC_CONTEXT);
   std::string read_env(GIAC_CONTEXT,bool verbose=true); // return doc prefix
   std::string home_directory();

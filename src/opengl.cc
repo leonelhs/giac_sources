@@ -21,8 +21,13 @@
 #include "config.h"
 #endif
 
+#ifdef EMCC_GLUT
+#include <GL/glut.h>
+#else
 #include "SDL/SDL.h"
 #include "SDL/SDL_opengl.h"
+#include <emscripten.h>
+#endif
 
 #include <fstream>
 #include "vector.h"
@@ -61,9 +66,8 @@ void glGetDoublev(GLenum i,GLdouble * d){
   float f[16]; glGetFloatv(i,f);
   for (int i=0;i<16;++i) d[i]=f[i];
 }
-void glRasterPos3d(GLdouble d1,GLdouble d2,GLdouble d3){
-  //glRasterPos3f(d1,d2,d3);
-}
+// glRasterPos3d(GLdouble d1,GLdouble d2,GLdouble d3) is not defined
+// so we define it as a member of Opengl
 void glGetMaterialfv(GLenum,GLenum,GLfloat *){}
 void glLineStipple(GLint,GLushort){}
 void glMaterialf(GLenum,GLenum,GLfloat){}
@@ -130,10 +134,10 @@ namespace giac {
       glColor3f(1,1,1);
       return;
     case FL_BLUE:
-      glColor3f(0,1,0);
+      glColor3f(0,0,1);
       return;
     case FL_GREEN:
-      glColor3f(0,0,1);
+      glColor3f(0,1,0);
       return;
     case FL_CYAN:
       glColor3f(0,1,1);
@@ -719,6 +723,8 @@ namespace giac {
     ylegende(2.5),
     npixels(8),
     show_axes(1),show_names(1),
+    paused(true),twodim(false),
+    ipos(0),jpos(0),depthpos(0),
     last_event(0),x_tick(1.0),y_tick(1.0),couleur(0),approx(true),moving(false),moving_frame(false),ntheta(24),nphi(18) {
     push_cfg();
     legende_size=giac::LEGENDE_SIZE;
@@ -739,6 +745,8 @@ namespace giac {
     ylegende(2.5),
     npixels(8),
     show_axes(1),show_names(1),
+    paused(true),twodim(false),
+    ipos(0),jpos(0),depthpos(0),
     last_event(0),x_tick(1.0),y_tick(1.0),couleur(0),approx(true),hp_pos(-1),moving(false),moving_frame(false),ntheta(24),nphi(18) { 
     legende_size=giac::LEGENDE_SIZE;
     push_cfg();
@@ -1540,22 +1548,9 @@ namespace giac {
     return false;
   }
 
-  void glraster(const vecteur & v){
-    if (v.size()==3){
-      double d1=evalf_double(v[0],2,context0)._DOUBLE_val;
-      double d2=evalf_double(v[1],2,context0)._DOUBLE_val;
-      double d3=evalf_double(v[2],2,context0)._DOUBLE_val;
-      glRasterPos3d(d1,d2,d3);
-    }
-  }
-
-  void glraster(const gen & g){
-    if (g.type==_VECT)
-      glraster(*g._VECTptr);
-  }
-
   // draw s at g with mode= 0 (upper right), 1, 2 or 3
   void Opengl3d::legende_draw(const gen & g,const string & s,int mode){
+    // COUT << "legende_draw " << g << " " << s << endl;
     gen gf=evalf_double(g,1,contextptr);
     if (gf.type==_VECT && gf._VECTptr->size()==3){
       double Ax=gf[0]._DOUBLE_val;
@@ -2300,93 +2295,72 @@ namespace giac {
       double n2=evalf_double(n[1],1,contextptr)._DOUBLE_val;
       double n3=evalf_double(n[2],1,contextptr)._DOUBLE_val;
       if (fill_polygon){
-	vecteur v1,v2;
-	if (!normal3d(n,v1,v2))
-	  return;
-	double v11=evalf_double(v1[0],1,contextptr)._DOUBLE_val;
-	double v12=evalf_double(v1[1],1,contextptr)._DOUBLE_val;
-	double v13=evalf_double(v1[2],1,contextptr)._DOUBLE_val;
-	double v21=evalf_double(v2[0],1,contextptr)._DOUBLE_val;
-	double v22=evalf_double(v2[1],1,contextptr)._DOUBLE_val;
-	double v23=evalf_double(v2[2],1,contextptr)._DOUBLE_val;
-	// moves P along v1 so that one coordinate is in clip
-	if (std::abs(v11)>=std::abs(v12) && std::abs(v11)>=std::abs(v13)){
-	  P=addvecteur(P,multvecteur((window_xmin-P[0])/v11,v1));
-	}
-	if (std::abs(v12)>std::abs(v11) && std::abs(v12)>=std::abs(v13)){
-	  P=addvecteur(P,multvecteur((window_ymin-P[1])/v12,v1));
-	}
-	if (std::abs(v13)>std::abs(v11) && std::abs(v13)>std::abs(v12)){
-	  P=addvecteur(P,multvecteur((window_zmin-P[2])/v13,v1));
-	}
-	// find a large constant so that the points are outside clipping
-	double v31=v11+v21,v32=v12+v22,v33=v13+v23,v41=v11-v21,v42=v12-v22,v43=v13-v23;
-	double nv3=std::sqrt(v31*v31+v32*v32+v33*v33);
-	double nv4=std::sqrt(v41*v41+v42*v42+v43*v43);
-	double lambda=1;
-	if (std::abs(v31)>0.1*nv3)
-	  lambda=giac_max(lambda,(window_xmax-window_xmin)/std::abs(v31));
-	if (std::abs(v32)>0.1*nv3)
-	  lambda=giac_max(lambda,(window_ymax-window_ymin)/std::abs(v32));
-	if (std::abs(v33)>0.1*nv3)
-	  lambda=giac_max(lambda,(window_zmax-window_zmin)/std::abs(v33));
-	if (std::abs(v41)>0.1*nv4)
-	  lambda=giac_max(lambda,(window_xmax-window_xmin)/std::abs(v41));
-	if (std::abs(v42)>0.1*nv4)
-	  lambda=giac_max(lambda,(window_ymax-window_ymin)/std::abs(v42));
-	if (std::abs(v43)>0.1*nv4)
-	  lambda=giac_max(lambda,(window_zmax-window_zmin)/std::abs(v43));
-	lambda *= 2;
-	if (display_mode & 0x8){
-	  // if lighting enabled, we must draw small quads otherwise
-	  // light will be incorrectly rendered (vertices too far)
-	  // divide v1 and v2 by 10 (100 quads)
-	  P=subvecteur(P,multvecteur(lambda,addvecteur(v1,v2))); // base point
-	  unsigned hyperplan_light_rep=10;
-	  v1=multvecteur(2*double(lambda)/hyperplan_light_rep,v1);
-	  v2=multvecteur(2*double(lambda)/hyperplan_light_rep,v2);
-	  for (unsigned j=1;j<hyperplan_light_rep;++j){
-	    vecteur P1=addvecteur(P,multvecteur(int(j-1),v2));
-	    for (unsigned i=1;i<hyperplan_light_rep;++i){
-	      vecteur P2(addvecteur(P1,v1));
-	      vecteur P3(addvecteur(P2,v2));
-	      vecteur P4(addvecteur(P1,v2));
+	glNormal3d(n1,n2,n3);
+	if (std::abs(n1)>=std::abs(n2) && std::abs(n1)>=std::abs(n3)){
+	  // x=a*y+b*z+c
+	  double a=-n2/n1, b=-n3/n1;
+	  double c=evalf_double(P[0]-a*P[1]-b*P[2],1,contextptr)._DOUBLE_val;
+	  double dy=(window_ymax-window_ymin)/10;
+	  double dz=(window_zmax-window_zmin)/10;
+	  for (int j=0;j<10;++j){
+	    double y=window_ymin+j*dy;
+	    for (int k=0;k<10;++k){
+	      double z=window_zmin+k*dz;
+	      double x=a*y+b*z+c;
+	      if (x>window_xmax || x<window_xmin)
+		continue;
 	      glBegin(GL_QUADS);
-	      glNormal3d(n1,n2,n3);
-	      glvertex(P1,0,0,contextptr);
-	      glvertex(P2,0,0,contextptr);
-	      glvertex(P3,0,0,contextptr);
-	      glvertex(P4,0,0,contextptr);
-	      glNormal3d(-n1,-n2,-n3);
-	      glvertex(P1,0,0,contextptr);
-	      glvertex(P4,0,0,contextptr);
-	      glvertex(P3,0,0,contextptr);
-	      glvertex(P2,0,0,contextptr);
+	      glVertex3d(x,y,z);
+	      glVertex3d(x+a*dy,y+dy,z);
+	      glVertex3d(x+a*dy+b*dz,y+dy,z+dz);
+	      glVertex3d(x+b*dz,y,z+dz);
 	      glEnd();
-	      // cerr << P1 << "," << P2 << "," << P3 << "," << P4 << endl;
-	      P1=P2;
 	    }
 	  }
-	} // end if (display_mode & 0x8)
-	else {
-	  // Plan representation: face P+lambda*(-v1-v2), P+lambda*(-v1+v2), ...
-	  vecteur P1(subvecteur(P,multvecteur(lambda,addvecteur(v1,v2))));
-	  vecteur P2(subvecteur(P,multvecteur(lambda,addvecteur(v1,-v2))));
-	  vecteur P4(addvecteur(P,multvecteur(lambda,addvecteur(v1,-v2))));
-	  vecteur P3(addvecteur(P,multvecteur(lambda,addvecteur(v1,v2))));
-	  glBegin(GL_QUADS);
-	  // normal not needed (light not enabled)
-	  glNormal3d(n1,n2,n3);
-	  glvertex(P1,0,0,contextptr);
-	  glvertex(P2,0,0,contextptr);
-	  glvertex(P3,0,0,contextptr);
-	  glvertex(P4,0,0,contextptr);
-	  glNormal3d(-n1,-n2,-n3);
-	  glvertex(P1,0,0,contextptr);
-	  glvertex(P4,0,0,contextptr);
-	  glvertex(P3,0,0,contextptr);
-	  glvertex(P2,0,0,contextptr);
-	  glEnd();
+	}
+	if (std::abs(n2)>std::abs(n1) && std::abs(n2)>=std::abs(n3)){
+	  // y=a*x+b*z+c
+	  double a=-n1/n2, b=-n3/n2;
+	  double c=evalf_double(P[1]-a*P[0]-b*P[2],1,contextptr)._DOUBLE_val;
+	  double dx=(window_xmax-window_xmin)/10;
+	  double dz=(window_zmax-window_zmin)/10;
+	  for (int j=0;j<10;++j){
+	    double x=window_xmin+j*dx;
+	    for (int k=0;k<10;++k){
+	      double z=window_zmin+k*dz;
+	      double y=a*x+b*z+c;
+	      if (y>window_ymax || y<window_ymin)
+		continue;
+	      glBegin(GL_QUADS);
+	      glVertex3d(x,y,z);
+	      glVertex3d(x+dx,y+a*dx,z);
+	      glVertex3d(x+dx,y+a*dx+b*dz,z+dz);
+	      glVertex3d(x,y+b*dz,z+dz);
+	      glEnd();
+	    }
+	  }
+	}
+	if (std::abs(n3)>std::abs(n1) && std::abs(n3)>std::abs(n2)){
+	  // z=a*x+b*y+c
+	  double a=-n1/n3, b=-n2/n3;
+	  double c=evalf_double(P[2]-a*P[0]-b*P[1],1,contextptr)._DOUBLE_val;
+	  double dx=(window_xmax-window_xmin)/10;
+	  double dy=(window_ymax-window_ymin)/10;
+	  for (int j=0;j<10;++j){
+	    double x=window_xmin+j*dx;
+	    for (int k=0;k<10;++k){
+	      double y=window_ymin+k*dy;
+	      double z=a*x+b*y+c;
+	      if (z>window_zmax || z<window_zmin)
+		continue;
+	      glBegin(GL_QUADS);
+	      glVertex3d(x,y,z);
+	      glVertex3d(x+dx,y,z+a*dx);
+	      glVertex3d(x+dx,y+dy,z+a*dx+b*dy);
+	      glVertex3d(x,y+dy,z+b*dy);
+	      glEnd();
+	    }
+	  }
 	}
       } // end fill_polygon
       else { // use equation
@@ -2510,10 +2484,38 @@ namespace giac {
       return;
     }
     if (v0.is_symb_of_sommet(at_curve) && v0._SYMBptr->feuille.type==_VECT && !v0._SYMBptr->feuille._VECTptr->empty()){
-      gen & f = v0._SYMBptr->feuille._VECTptr->front();
+      if (f._SYMBptr->feuille._VECTptr->size()>=2){
+	gen f=(*v0._SYMBptr->feuille._VECTptr)[1];
+	if (f.type==_VECT){
+	  // COUT << f << endl;
+	  vecteur v =*f._VECTptr;
+	  int n=v.size();
+	  for (int i=0;i<n-1;++i){
+	    glBegin(GL_LINES);
+	    gen tmp=v[i];
+	    if (tmp.type==_VECT && glvertex(*tmp._VECTptr,0,0,contextptr)){
+	      gen tmp1=v[i+1];
+	      if (tmp1.type==_VECT &&glvertex(*tmp1._VECTptr,0,0,contextptr))
+		;
+	      else {
+		COUT << "rendering err0 " << tmp1 << " " << i+1 << "," << n << endl;
+		glvertex(*tmp._VECTptr,0,0,contextptr);
+	      }
+	    }
+	    else {
+	      glvertex(makevecteur(0,0,0),0,0,contextptr);
+	      glvertex(makevecteur(0,0,0),0,0,contextptr);
+	      COUT << "rendering err1 " << tmp << " " << i << "," << n <<endl;
+	    }
+	    glEnd();
+	  }
+	}
+	return;
+      }
+      gen f = v0._SYMBptr->feuille._VECTptr->front();
       // f = vect[ pnt,var,xmin,xmax ]
       if (f.type==_VECT && f._VECTptr->size()>=4){
-	vecteur & vf = *f._VECTptr;
+	vecteur vf = *f._VECTptr;
 	if (vf.size()>4){
 	  gen poly=vf[4];
 	  if (ckmatrix(poly)){
@@ -2543,15 +2545,31 @@ namespace giac {
 	  closed=is_approx_zero(subst(point,var,mini,false,contextptr)-subst(point,var,maxi,false,contextptr),window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax);
 	int n=nphi*10;
 	gen delta=(maxi-mini)/n;
-	glBegin(closed?GL_POLYGON:GL_LINE_STRIP);
-	for (int i=closed?1:0;i<=n;++i){
-	  if (!glvertex(*subst(point,var,mini,false,contextptr)._VECTptr,0,0,contextptr)){
-	    glEnd();
-	    glBegin(closed?GL_POLYGON:GL_LINE_STRIP);
-	  }
+	COUT << "rendering curve " << vf << " " << delta << " " << n << endl;
+	for (int i=closed?1:0;i<n;++i){
+	  glBegin(GL_LINES);
+	  gen tmp=subst(point,var,mini,false,contextptr);
 	  mini = mini + delta;
+	  if (tmp.type==_VECT && glvertex(*tmp._VECTptr,0,0,contextptr)){
+	    gen tmp1=subst(point,var,mini,false,contextptr);
+	    if (tmp1.type==_VECT)
+	      glvertex(*tmp1._VECTptr,0,0,contextptr);
+	    else {
+	      glvertex(*tmp._VECTptr,0,0,contextptr);
+	      glEnd();
+	      COUT << "rendering err0 " << point << " " << var << " " << mini << " -> " << tmp << endl;
+	      return;
+	    }
+	  }
+	  else {
+	    glvertex(makevecteur(0,0,0),0,0,contextptr);
+	    glvertex(makevecteur(0,0,0),0,0,contextptr);
+	    glEnd();
+	    COUT << "rendering err1 " << point << " " << var << " " << mini << " -> " << tmp << endl;
+	    return;
+	  }
+	  glEnd();
 	}
-	glEnd();
 	if (!hidden_name && show_names) legende_draw(mini,legende,labelpos);
       }
       return;
@@ -2612,17 +2630,22 @@ namespace giac {
 	double zA=A._VECTptr->back()._DOUBLE_val;
 	double iA,jA,depthA;
 	find_ij(xA,yA,zA,iA,jA,depthA);
+	// COUT << "point " << type_point << "," << xA << "," << yA << "," << zA << "," << iA << "," << jA << "," << depthA << endl;
 	glLineWidth(1+epaisseur_point/2);
 	switch(type_point){ 
 	case 0:
 	  glBegin(GL_LINES);
 	  find_xyz(iA-epaisseur_point,jA-epaisseur_point,depthA,xA,yA,zA);
+	  // COUT << xA << "," << yA << "," << zA << endl;
 	  glVertex3d(xA,yA,zA);
 	  find_xyz(iA+epaisseur_point,jA+epaisseur_point,depthA,xA,yA,zA);
+	  // COUT << xA << "," << yA << "," << zA << endl;
 	  glVertex3d(xA,yA,zA);
 	  find_xyz(iA-epaisseur_point,jA+epaisseur_point,depthA,xA,yA,zA);
+	  // COUT << xA << "," << yA << "," << zA << endl;
 	  glVertex3d(xA,yA,zA);
 	  find_xyz(iA+epaisseur_point,jA-epaisseur_point,depthA,xA,yA,zA);
+	  // COUT << xA << "," << yA << "," << zA << endl;
 	  glVertex3d(xA,yA,zA);
 	  glEnd();
 	  break;
@@ -2885,16 +2908,20 @@ namespace giac {
 	    glDisable(GL_TEXTURE_2D);
 	  }
 	  else {
-	    glBegin(closed?GL_POLYGON:GL_LINE_STRIP);
-	    glnormal(d1,d2,d3,e1,e2,e3,f1,f2,f3);
+	    // glBegin(closed?GL_POLYGON:GL_LINE_STRIP);
 	    const_iterateur it=vv0.begin(),itend=vv0.end();
-	    if (closed)
-	      ++it;
 	    for (;it!=itend;++it){
-	      if (check3dpoint(*it))
+	      //COUT << *it << endl;
+	      if (it+1==itend)
+		break;
+	      if (check3dpoint(*it) && check3dpoint(*(it+1))){
+		glBegin(GL_LINES);
+		glnormal(d1,d2,d3,e1,e2,e3,f1,f2,f3);
 		glvertex(*it->_VECTptr,0,0,contextptr);
+		glvertex(*(it+1)->_VECTptr,0,0,contextptr);
+		glEnd();
+	      }
 	    }
-	    glEnd();
 	  }
 	  if (!hidden_name && show_names && !vv0.empty()) 
 	    legende_draw(vv0.front(),legende,labelpos);
@@ -2966,6 +2993,11 @@ namespace giac {
     // x and y are the distance to the BOTTOM LEFT of the window
   }
 
+  void Opengl::glRasterPos3d(double d1,double d2,double d3){
+    if (Opengl3d * ptr=dynamic_cast<Opengl3d *>(this))
+      dim32dim2(ptr->view,ptr->proj,ptr->model,d1,d2,d3,ipos,jpos,depthpos);
+  }
+  
   void dim22dim3(double * view,double * proj_inv,double * model_inv,double i,double j,double depth_,double & x,double & y,double & z){
     i=(i-view[0])*2/view[2]-1;
     j=(j-view[1])*2/view[3]-1;
@@ -3017,8 +3049,84 @@ namespace giac {
     return true;
   }
 
+  /* font data for drawing text borrowed from freeglut */
+
+typedef struct tagSFG_StrokeVertex SFG_StrokeVertex;
+struct tagSFG_StrokeVertex
+{
+    GLfloat         X, Y;
+};
+
+typedef struct tagSFG_StrokeStrip SFG_StrokeStrip;
+struct tagSFG_StrokeStrip
+{
+    int             Number;
+    const SFG_StrokeVertex* Vertices;
+};
+
+typedef struct tagSFG_StrokeChar SFG_StrokeChar;
+struct tagSFG_StrokeChar
+{
+    GLfloat         Right;
+    int             Number;
+    const SFG_StrokeStrip* Strips;
+};
+
+typedef struct tagSFG_StrokeFont SFG_StrokeFont;
+struct tagSFG_StrokeFont
+{
+    char*           Name;                       /* The source font name      */
+    int             Quantity;                   /* Number of chars in font   */
+    GLfloat         Height;                     /* Height of the characters  */
+    const SFG_StrokeChar** Characters;          /* The characters mapping    */
+};
+
+#include "freeglut_stroke_roman.c"  
+/*
+ * Draw a stroke character
+ */
+void freeglutStrokeCharacter( int character )
+{
+    const SFG_StrokeChar *schar;
+    const SFG_StrokeStrip *strip;
+    int i, j;
+
+    schar = fgStrokeRoman.Characters[ character ];
+    if (!schar) return;
+    strip = schar->Strips;
+
+    for( i = 0; i < schar->Number; i++, strip++ )
+    {
+        glBegin( GL_LINE_STRIP );
+        for( j = 0; j < strip->Number; j++ )
+	  glVertex3f( strip->Vertices[ j ].X, strip->Vertices[ j ].Y,0);
+        glEnd( );
+	glBegin( GL_POINTS );
+        for( j = 0; j < strip->Number; j++ )
+	  glVertex3f( strip->Vertices[ j ].X, strip->Vertices[ j ].Y, 0 );
+	glEnd( );
+    }
+    glTranslatef( schar->Right, 0.0, 0.0 );
+}
+
+
   void Opengl3d::draw_string(const string & s){
-    // FIXME
+    //COUT << "draw_string position " << ipos-w()/2. << "," << jpos-h()/2. << " " << s << endl;
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();   
+    glLoadIdentity();    
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();   
+    glLoadIdentity();
+    glScalef(.2/w(),.2/h(),1.0);
+    glTranslatef(10*(ipos-w()/2.),10*(jpos-h()/2.),0);
+    for (unsigned i=0;i<s.size();++i){
+      freeglutStrokeCharacter(s[i]);
+    }
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();    
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();    
   }
 
   void normalize(double & a,double &b,double &c){
@@ -3092,6 +3200,10 @@ namespace giac {
 
   // clipping not supported by EMCC
   void Opengl3d::display(){
+    if (twodim){
+      window_zmin=-1;
+      window_zmax=1;
+    }
     glEnable(GL_NORMALIZE);
     glEnable(GL_LINE_STIPPLE);
     glEnable(GL_POLYGON_OFFSET_FILL);
@@ -3103,8 +3215,10 @@ namespace giac {
     glEnable(GL_CLIP_PLANE4);
     glEnable(GL_CLIP_PLANE5);
     // cout << glIsEnabled(GL_CLIP_PLANE0) << endl;
-    glDepthFunc(GL_LESS);
-    glEnable(GL_DEPTH_TEST);
+    if (!twodim){
+      glDepthFunc(GL_LESS);
+      glEnable(GL_DEPTH_TEST);
+    }
     glShadeModel((display_mode & 0x10)?GL_FLAT:GL_SMOOTH);
     bool lighting=display_mode & 0x8;
     if (lighting)
@@ -3118,11 +3232,13 @@ namespace giac {
     glPushMatrix();   
     glLoadIdentity();
     bool notperspective=display_mode & 0x4;
-    if (notperspective)
-      // glFrustum(-sqrt3over2,sqrt3over2,-sqrt3over2,sqrt3over2,sqrt3over2,3*sqrt3over2);
-      glOrtho(-sqrt3over2,sqrt3over2,-sqrt3over2,sqrt3over2,-sqrt3over2,sqrt3over2);
-    else
-      glFrustum(-0.5,0.5,-0.5,0.5,sqrt3over2,3*sqrt3over2);
+    if (!twodim){
+      if (notperspective)
+	// glFrustum(-sqrt3over2,sqrt3over2,-sqrt3over2,sqrt3over2,sqrt3over2,3*sqrt3over2);
+	glOrtho(-sqrt3over2,sqrt3over2,-sqrt3over2,sqrt3over2,-sqrt3over2,sqrt3over2);
+      else
+	glFrustum(-0.5,0.5,-0.5,0.5,sqrt3over2,3*sqrt3over2);
+    }
     // put the visualisation cube inside above visualisation
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();   
@@ -3131,13 +3247,17 @@ namespace giac {
     if (dx==0) { dx=1; ++window_xmax; }
     if (dy==0) { dy=1; ++window_ymax; }
     if (dz==0) { dz=1; ++window_zmax; }
-    double x,y,z,theta;
-    get_axis_angle_deg( (dragi || dragj)?(quaternion_double(dragi*180/h(),0,0)*rotation_2_quaternion_double(1,0,0,dragj*180/w())*q):q,x,y,z,theta);
-    // cerr << theta << " " << x << "," << y << "," << z << endl;
-    if (!notperspective)
-      glTranslated(0,0,-2*sqrt3over2);
-    glRotated(theta,x,y,z);
-    glScaled(1/dx,1/dy,1/dz);
+    if (twodim){
+      glScaled(1.9/dx,1.9/dy,1/dz);
+    } else {
+      double x,y,z,theta;
+      get_axis_angle_deg( (dragi || dragj)?(quaternion_double(dragi*180/h(),0,0)*rotation_2_quaternion_double(1,0,0,dragj*180/w())*q):q,x,y,z,theta);
+      // cerr << theta << " " << x << "," << y << "," << z << endl;
+      if (!notperspective)
+	glTranslated(0,0,-2*sqrt3over2);
+      glRotated(theta,x,y,z);
+      glScaled(1/dx,1/dy,1/dz);
+    }
     glTranslated(-(window_xmin+window_xmax)/2,-(window_ymin+window_ymax)/2,-(window_zmin+window_zmax)/2);
     // glRotated(theta_y,0,0,1);
     double plan0[]={1,0,0,0.5};
@@ -3204,24 +3324,27 @@ namespace giac {
     if (show_axes){
       glLineWidth(1);
       glBegin(GL_LINES);
-      glVertex3d(0,0,0);
+      if (twodim)
+	glVertex3d(window_xmin,0,0);
+      else
+	glVertex3d(0,0,0);
       glVertex3d(window_xmax,0,0);
       glEnd();
     }
-#ifndef EMCC
     if (show_axes){
       glBegin(GL_LINES);
       glVertex3d(window_xmin,window_ymin,window_zmin);
       glVertex3d(window_xmax,window_ymin,window_zmin);
       glVertex3d(window_xmin,window_ymax,window_zmin);
       glVertex3d(window_xmax,window_ymax,window_zmin);
-      glVertex3d(window_xmin,window_ymin,window_zmax);
-      glVertex3d(window_xmax,window_ymin,window_zmax);
-      glVertex3d(window_xmin,window_ymax,window_zmax);
-      glVertex3d(window_xmax,window_ymax,window_zmax);
+      if (!twodim){
+	glVertex3d(window_xmin,window_ymin,window_zmax);
+	glVertex3d(window_xmax,window_ymin,window_zmax);
+	glVertex3d(window_xmin,window_ymax,window_zmax);
+	glVertex3d(window_xmax,window_ymax,window_zmax);
+      }
       glEnd();
     }
-#endif
     // gl_color(FL_GREEN);
     glColor3f(0,1,0);
     if (show_axes || triedre){
@@ -3234,42 +3357,44 @@ namespace giac {
     if (show_axes){
       glLineWidth(1);
       glBegin(GL_LINES);
-      glVertex3d(0,0,0);
+      if (twodim)
+	glVertex3d(0,window_ymin,0);
+      else
+	glVertex3d(0,0,0);
       glVertex3d(0,window_ymax,0);
       glEnd();
     }
-#ifndef EMCC
     if (show_axes){
       glBegin(GL_LINES);
       glVertex3d(window_xmin,window_ymin,window_zmin);
       glVertex3d(window_xmin,window_ymax,window_zmin);
       glVertex3d(window_xmax,window_ymin,window_zmin);
       glVertex3d(window_xmax,window_ymax,window_zmin);
-      glVertex3d(window_xmin,window_ymin,window_zmax);
-      glVertex3d(window_xmin,window_ymax,window_zmax);
-      glVertex3d(window_xmax,window_ymin,window_zmax);
-      glVertex3d(window_xmax,window_ymax,window_zmax);
+      if (!twodim){
+	glVertex3d(window_xmin,window_ymin,window_zmax);
+	glVertex3d(window_xmin,window_ymax,window_zmax);
+	glVertex3d(window_xmax,window_ymin,window_zmax);
+	glVertex3d(window_xmax,window_ymax,window_zmax);
+      }
       glEnd();
     }
-#endif
     // gl_color(FL_BLUE);
     glColor3f(0,0,1);
-    if (show_axes || triedre){
+    if (!twodim && (show_axes || triedre)){
       glLineWidth(3);
       glBegin(GL_LINES);
       glVertex3d(0,0,0);
       glVertex3d(0,0,1);
       glEnd();
     }
-    if (show_axes){
+    if (show_axes && !twodim){
       glLineWidth(1);
       glBegin(GL_LINES);
       glVertex3d(0,0,0);
       glVertex3d(0,0,window_zmax);
       glEnd();
-    }
-#ifndef EMCC    
-    if (show_axes){
+    }  
+    if (show_axes && !twodim){
       glBegin(GL_LINES);
       glVertex3d(window_xmin,window_ymin,window_zmin);
       glVertex3d(window_xmin,window_ymin,window_zmax);
@@ -3281,7 +3406,6 @@ namespace giac {
       glVertex3d(window_xmax,window_ymin,window_zmax);
       glEnd();
     }
-#endif
     if(show_axes){ // maillage
       glColor3f(1,0,0);
       glRasterPos3d(1,0,0);
@@ -3289,41 +3413,69 @@ namespace giac {
       glColor3f(0,1,0);
       glRasterPos3d(0,1,0);
       draw_string(y_axis_name.empty()?"y":y_axis_name);
-      glColor3f(0,0,1);
-      glRasterPos3d(0,0,1);
-      draw_string(z_axis_name.empty()?"z":z_axis_name);
-      if (fbox){
+      if (!twodim){
+	glColor3f(0,0,1);
+	glRasterPos3d(0,0,1);
+	draw_string(z_axis_name.empty()?"z":z_axis_name);
+      }
+      if (fbox || twodim){
 	double xmin,dx,x,ymin,dy,y,zmin,dz,z;
 	find_xmin_dx(window_xmin,window_xmax,xmin,dx);
 	find_xmin_dx(window_ymin,window_ymax,ymin,dy);
 	find_xmin_dx(window_zmin,window_zmax,zmin,dz);
+	// COUT << "maillage " << xmin << " " << dx << " " << ymin << " " << dy << endl;
 	glLineStipple(1,0x3333);
-	glBegin(GL_LINES);
 	//gl_color(FL_CYAN);
 	glColor3f(0,1,1);
-	for (z=zmin;z<=window_zmax;z+=2*dz){
-	  for (y=ymin;y<=window_ymax;y+=2*dy){
-	    glVertex3d(window_xmin,y,z);
-	    glVertex3d(window_xmax,y,z);
+	if (twodim){
+	  double taille=30;
+	  for (y=ymin;y<=window_ymax;y+=dy){
+	    for (x=xmin;x<=window_xmax;x+=dx){
+#if 0
+	      glBegin(GL_LINE_LOOP);
+	      glVertex3d(x-dx/taille,y-dy/taille,-1);
+	      glVertex3d(x+dx/taille,y-dy/taille,-1);
+	      glVertex3d(x+dx/taille,y+dy/taille,-1);
+	      glVertex3d(x-dx/taille,y+dy/taille,-1);
+	      glEnd();
+#else
+	      glBegin(GL_LINES);
+	      glVertex3d(x-dx/taille,y,-1);
+	      glVertex3d(x+dx/taille,y,-1);
+	      glVertex3d(x,y+dy/taille,-1);
+	      glVertex3d(x,y-dy/taille,-1);
+	      glEnd();
+#endif
+	    }
 	  }
 	}
-	for (z=zmin;z<=window_zmax;z+=2*dz){
+	else {
+	  for (z=zmin;z<=window_zmax;z+=2*dz){
+	    for (y=ymin;y<=window_ymax;y+=2*dy){
+	      glBegin(GL_LINES);
+	      glVertex3d(window_xmin,y,z);
+	      glVertex3d(window_xmax,y,z);
+	      glEnd();
+	    }
+	  }
+	  for (z=zmin;z<=window_zmax;z+=2*dz){
+	    for (x=xmin;x<=window_xmax;x+=2*dx){
+	      glBegin(GL_LINES);
+	      glVertex3d(x,window_ymin,z);
+	      glVertex3d(x,window_ymax,z);
+	      glEnd();
+	    }
+	  }
 	  for (x=xmin;x<=window_xmax;x+=2*dx){
-	    glVertex3d(x,window_ymin,z);
-	    glVertex3d(x,window_ymax,z);
+	    for (y=ymin;y<=window_ymax;y+=2*dy){
+	      glBegin(GL_LINES);
+	      glVertex3d(x,y,window_zmin);
+	      glVertex3d(x,y,window_zmax);
+	      glEnd();
+	    }
 	  }
-	}
-	for (x=xmin;x<=window_xmax;x+=2*dx){
-	  for (y=ymin;y<=window_ymax;y+=2*dy){
-	    glVertex3d(x,y,window_zmin);
-	    glVertex3d(x,y,window_zmax);
-	  }
-	}
-	glEnd();
-	if (display_mode & 0x8)
-	  glColor3f(0,0,0);
-	else
-	  glColor3f(1,1,1);
+	}	  
+	glColor3f(1,0,1);
 	glPointSize(3);
 	for (x=xmin;x<=window_xmax;x+=dx){
 	  round0(x,window_xmin,window_xmax);
@@ -3343,14 +3495,16 @@ namespace giac {
 	  string tmps=giac::print_DOUBLE_(y,2)+y_axis_unit;
 	  draw_string(tmps);
 	}
-	for (z=zmin;z<=window_zmax;z+=dz){
-	  round0(z,window_zmin,window_zmax);
-	  glBegin(GL_POINTS);
-	  glVertex3d(window_xmin,window_ymin,z);
-	  glEnd();
-	  glRasterPos3d(window_xmin,window_ymin,z);
-	  string tmps=giac::print_DOUBLE_(z,2)+z_axis_unit;
-	  draw_string(tmps);
+	if (!twodim){
+	  for (z=zmin;z<=window_zmax;z+=dz){
+	    round0(z,window_zmin,window_zmax);
+	    glBegin(GL_POINTS);
+	    glVertex3d(window_xmin,window_ymin,z);
+	    glEnd();
+	    glRasterPos3d(window_xmin,window_ymin,z);
+	    string tmps=giac::print_DOUBLE_(z,2)+z_axis_unit;
+	    draw_string(tmps);
+	  }
 	}
       }
     }
@@ -3369,11 +3523,8 @@ namespace giac {
     plan_t0=normal_a*plan_x0+normal_b*plan_y0+normal_c*plan_z0;
     if (std::abs(plan_t0)<std::abs(window_zmax-window_zmin)/1000)
       plan_t0=0;
-    if (show_axes){
-      if (display_mode & 0x8)
-	glColor3f(0,0,0);
-      else
-	glColor3f(1,1,1);
+    if (!twodim && show_axes){
+      glColor3f(1,1,0);
       glLineWidth(2);
       double xa,ya,za,xb,yb,zb;
       // show mouse plan intersections with the faces of the clip planes
@@ -3495,7 +3646,7 @@ namespace giac {
 	}
       }
     }
-    if (display_mode & 0x20){
+    if (!twodim && (display_mode & 0x20)){
       glDisable(GL_DEPTH_TEST);
       glEnable(GL_BLEND);
       glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -3512,8 +3663,10 @@ namespace giac {
       for (int i=0;i<8;++i)
 	glDisable(GL_LIGHT0+i);
     }
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_BLEND);
+    if (!twodim){
+      glEnable(GL_DEPTH_TEST);
+      glDisable(GL_BLEND);
+    }
     gen plot_tmp,title_tmp;
     //find_title_plot(title_tmp,plot_tmp,contextptr);
     //indraw(plot_tmp);
@@ -3549,6 +3702,11 @@ namespace giac {
     glLoadIdentity();
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    glGetDoublev(GL_PROJECTION_MATRIX,proj); // projection matrix in columns
+    inv4(proj,proj_inv);
+    glGetDoublev(GL_MODELVIEW_MATRIX,model); // modelview matrix in columns
+    inv4(model,model_inv);
+    glGetDoublev(GL_VIEWPORT,view);
     if (display_mode & 0x8)
       glColor3f(0,0,0);
     else
@@ -3565,7 +3723,8 @@ namespace giac {
       draw_string(gettext("Click ")+args_help[giacmax(1,args_tmp.size())-1]);
     }
     glRasterPos3d(-0.98,0.87,depth-0.001);
-    if (show_axes){
+    if (0 && show_axes && !twodim){
+      glColor3f(0,0,0);
       string tmps=gettext("mouse plan ")+giac::print_DOUBLE_(normal_a,3)+"x+"+giac::print_DOUBLE_(normal_b,3)+"y+"+giac::print_DOUBLE_(normal_c,3)+"z="+ giac::print_DOUBLE_(plan_t0,3);
       // cerr << tmps << endl;
       draw_string(tmps); // +" Z="+giac::print_DOUBLE_(-depth,3));
@@ -3587,13 +3746,15 @@ namespace giac {
       glVertex3d(1,-1,depth);
       glEnd();
     }
-    glDisable(GL_DEPTH_TEST);
+    if (!twodim)
+      glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glFlush();
     glFinish();
+    // COUT << "display end 4" << endl;
   }
 
   // if printing is true, we call gl2ps to make an eps file
@@ -3786,11 +3947,28 @@ namespace giac {
 #endif
 
   // set evryone to x
-  void Opengl3d::orthonormalize(){ 
-    window_ymax=window_xmax;
-    window_ymin=window_xmin;
-    window_zmax=window_xmax;
-    window_zmin=window_xmin;
+  void Opengl3d::orthonormalize(){
+    if (twodim){ 
+      double ratio=double(w())/h();
+      double dx=(window_xmax-window_xmin)/ratio;
+      double dy=(window_ymax-window_ymin);
+      double x=(window_xmax+window_xmin)/2;
+      double y=(window_ymax+window_ymin)/2;
+      if (dx>dy){
+	window_ymin=y-dx/2;
+	window_ymax=y+dx/2;
+      }
+      else {
+	window_xmin=x-ratio*dy/2;
+	window_xmax=x+ratio*dy/2;
+      }
+    }
+    else {
+      window_ymax=window_xmax;
+      window_ymin=window_xmin;
+      window_zmax=window_xmax;
+      window_zmin=window_xmin;
+    }
     redraw();
   }
 
@@ -3855,7 +4033,251 @@ namespace giac {
   }
 #endif
 
+  int keys[1000];
+  Opengl3d * openglptr=0;
+  bool pushed=false;
+  void sdl_loop() {
+    SDL_EnableUNICODE( 1 );
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+      switch(event.type) {
+      case SDL_MOUSEMOTION: {
+        SDL_MouseMotionEvent *m = (SDL_MouseMotionEvent*)&event;
+        // printf("motion: %d,%d  %d,%d\n", m->x, m->y, m->xrel, m->yrel);
+	if (!openglptr->twodim && pushed){
+	  // COUT << "pushed " << m->xrel << "," << m->yrel << endl;
+	  openglptr->q=quaternion_double(m->xrel,0,0)*rotation_2_quaternion_double(m->yrel,0,0,1)*openglptr->q;
+	  openglptr->draw();	      
+	}
+        break;
+      }
+      case SDL_MOUSEBUTTONDOWN: {
+	pushed=true;
+        SDL_MouseButtonEvent *m = (SDL_MouseButtonEvent*)&event;
+        // printf("button down: %d,%d  %d,%d\n", m->button, m->state, m->x, m->y);
+        break;
+      }
+      case SDL_MOUSEBUTTONUP: {
+	pushed=false;
+        SDL_MouseButtonEvent *m = (SDL_MouseButtonEvent*)&event;
+        // printf("button up: %d,%d  %d,%d\n", m->button, m->state, m->x, m->y);
+        break;
+      }
+      case SDL_KEYDOWN:
+        if (!keys[event.key.keysym.sym]) {
+          keys[event.key.keysym.sym] = 1;
+          //printf("key down: sym %d scancode %d\n", event.key.keysym.sym, event.key.keysym.scancode);
+        }
+        break;
+      case SDL_KEYUP:
+        if (keys[event.key.keysym.sym]) {
+          keys[event.key.keysym.sym] = 0;
+          //printf("key up: sym %d scancode %d\n", event.key.keysym.sym, event.key.keysym.scancode);
+	  if (event.key.keysym.sym=='q' || event.key.keysym.sym=='Q' || event.key.keysym.sym==SDLK_ESCAPE){
+	    // deleting openglptr does not work, don't know why...
+	    //if (openglptr){ delete openglptr; openglptr=0;}
+	    emscripten_cancel_main_loop();
+	    SDL_Quit();
+	  }
+	  if (openglptr){
+	    switch (event.key.keysym.sym){
+	    case SDLK_MINUS: case SDLK_UNDERSCORE:
+	      openglptr->zoom(1.414);
+	      openglptr->draw();
+	      break;
+	    case SDLK_PLUS: case SDLK_EQUALS:
+	      openglptr->zoom(0.707);
+	      openglptr->draw();
+	      break;
+	    case 'a': case 'A':
+	      openglptr->autoscale(true);
+	      openglptr->draw();
+	      break;
+	    case SDLK_LEFT: case 'l': case 'L':
+	      openglptr->q=quaternion_double(-1,0,0)*openglptr->q;
+	      openglptr->draw();	      
+	      break;
+	    case SDLK_RIGHT: case 'r': case 'R':
+	      openglptr->q=quaternion_double(1,0,0)*openglptr->q;
+	      openglptr->draw();	      
+	      break;
+	    case SDLK_UP: case 'u': case 'U':
+	      openglptr->q=rotation_2_quaternion_double(-1,0,0,1)*openglptr->q;
+	      openglptr->draw();
+	      break;
+	    case SDLK_DOWN: case 'd': case 'D':
+	      openglptr->q=rotation_2_quaternion_double(1,0,0,1)*openglptr->q;
+	      openglptr->draw();
+	      break;
+	    }
+	  }
+        }
+        break;
+      }
+    }
+  }
+  
+  int init_screen(int & w,int & h){
+    int fs;
+    emscripten_get_canvas_size(&w, &h, &fs);
+    if ( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
+      printf("Unable to initialize SDL: %s\n", SDL_GetError());
+      return 1; // "unable to init SDL";
+    }
+    SDL_Window * window=0;
+    SDL_Surface *screen=0;
+    SDL_Renderer * sdlr=0;
+    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 ); // *new*
+    screen = SDL_SetVideoMode( w, h, 16, SDL_OPENGL ); // *changed*
+    if ( !screen ) {
+      printf("Unable to set video mode: %s\n", SDL_GetError());
+      return 2; // "unable to set video mode";
+    }
+    return 0;
+  }
+  
+  int giac_renderer(const char * ch){
+    // COUT << "giac_renderer " << ch << endl;
+    if (ch==0)
+      return -1;
+    int s=strlen(ch);
+    if (s==1 && openglptr){
+      int w,h,fs;
+      switch (ch[0]){
+      case 'q':
+	// emscripten_cancel_main_loop();
+	// SDL_Quit();
+	break;
+      case '-':
+	fs=init_screen(w,h);
+	if (fs==0){
+	  openglptr->zoom(1.414);
+	  openglptr->draw();
+	  SDL_Quit();
+	}
+	break;
+      case '+':
+	fs=init_screen(w,h);
+	if (fs==0){
+	  openglptr->zoom(0.707);
+	  openglptr->draw();
+	  SDL_Quit();
+	}
+	break;
+      case 'a':
+	fs=init_screen(w,h);
+	if (fs==0){
+	  openglptr->autoscale(true);
+	  openglptr->draw();
+	  SDL_Quit();
+	}
+	break;
+      case 'l':
+	fs=init_screen(w,h);
+	if (fs==0){
+	  openglptr->q=quaternion_double(-1,0,0)*openglptr->q;
+	  openglptr->draw();
+	  SDL_Quit();
+	}
+	break;
+      case 'r':
+	fs=init_screen(w,h);
+	if (fs==0){
+	  openglptr->q=quaternion_double(1,0,0)*openglptr->q;
+	  openglptr->draw();
+	  SDL_Quit();
+	}
+	break;
+      case 'u':
+	fs=init_screen(w,h);
+	if (fs==0){
+	  openglptr->q=rotation_2_quaternion_double(-1,0,0,1)*openglptr->q;
+	  openglptr->draw();
+	  SDL_Quit();
+	}
+	break;
+      case 'd':
+	fs=init_screen(w,h);
+	if (fs==0){
+	  openglptr->q=rotation_2_quaternion_double(1,0,0,1)*openglptr->q;
+	  openglptr->draw();
+	  SDL_Quit();
+	}
+	break;	
+      }
+      return 0;
+    }
+    context C;
+    gen g(ch,&C);
+    return giac_gen_renderer(g,&C);
+  }
+
+  int giac_gen_renderer(const gen & g_,GIAC_CONTEXT){
+    gen g=g_;
+    gen last=g;
+    while (last.type==_VECT && !last._VECTptr->empty())
+      last=last._VECTptr->back();
+    if (calc_mode(contextptr)!=1 && last.is_symb_of_sommet(at_pnt)){
+      int w=600,h=300,fs;
+      // emscripten_set_canvas_size(640, 480);
+      fs=init_screen(w,h);
+      if (fs)
+	return fs;
+      if (is3d(g)){
+	if (!openglptr)
+	  openglptr = new Opengl3d (w,h);
+	else {
+	  if (openglptr->twodim){
+	    openglptr->theta_z=-110;
+	    openglptr->theta_x=-13;
+	    openglptr->theta_y=-95;
+	    openglptr->q=euler_deg_to_quaternion_double(-110,-13,-95);
+	  }
+	}
+	openglptr->twodim=false;
+	openglptr->plot_instructions=vecteur(1,g);
+	openglptr->autoscale(true); // full view
+	openglptr->draw();
+	//COUT << "reset g end" << endl;
+      }
+      else {
+	if (!openglptr)
+	  openglptr = new Opengl3d (w,h);
+	openglptr->twodim=true;
+	openglptr->theta_x=0;
+	openglptr->theta_y=0;
+	openglptr->theta_z=0;      
+	openglptr->q=euler_deg_to_quaternion_double(0,0,0);
+	openglptr->plot_instructions=vecteur(1,g);
+	openglptr->autoscale(true); // full view, autoscale with 2-d objects
+	openglptr->plot_instructions=vecteur(1,convert3d(g,contextptr)); // draw in 3-d
+	openglptr->draw();
+	//g.type=0;
+      }
+      SDL_GL_SwapBuffers();
+      // emscripten_cancel_main_loop();
+      // emscripten_set_main_loop(sdl_loop, 0, 0);
+      SDL_Quit();
+      // WARNING: library_sdl.js SDL_Quit() is buggy, it should be
+      /*
+	SDL_Quit: function() {
+	_SDL_AudioQuit();
+	var keyboardListeningElement = Module['keyboardListeningElement'] || document;
+	keyboardListeningElement.removeEventListener("keydown", SDL.receiveEvent);
+	keyboardListeningElement.removeEventListener("keyup", SDL.receiveEvent);
+	keyboardListeningElement.removeEventListener("keypress", SDL.receiveEvent);
+	Module.print('SDL_Quit called (and ignored)');
+	},
+      */
+      
+    }
+    return 0;
+  }
+  
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // ndef NO_NAMESPACE_GIAC
 
+#ifdef EMCC
+const char * gettext(const char * s) { return s; }
+#endif

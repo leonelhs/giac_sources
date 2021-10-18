@@ -2863,10 +2863,11 @@ extern "C" void Sleep(unsigned int miliSecond);
     }
   }
 
-  void add_language(int i){
+  void add_language(int i,GIAC_CONTEXT){
     if (!equalposcomp(lexer_localization_vector(),i)){
       lexer_localization_vector().push_back(i);
-      update_lexer_localization(lexer_localization_vector(),lexer_localization_map(),back_lexer_localization_map());
+      update_lexer_localization(lexer_localization_vector(),lexer_localization_map(),back_lexer_localization_map(),contextptr);
+#ifndef EMCC
       if (vector_aide_ptr()){
 	// add locale command description
 	int count;
@@ -2904,10 +2905,11 @@ extern "C" void Sleep(unsigned int miliSecond);
 	sort(vector_aide_ptr()->begin(),vector_aide_ptr()->end(),alpha_order);
 	update_completions();
       }
+#endif
     }
   }
 
-  void remove_language(int i){
+  void remove_language(int i,GIAC_CONTEXT){
     if (int pos=equalposcomp(lexer_localization_vector(),i)){
       if (vector_aide_ptr()){
 	vector<aide> nv;
@@ -2931,7 +2933,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       }
       --pos;
       lexer_localization_vector().erase(lexer_localization_vector().begin()+pos);
-      update_lexer_localization(lexer_localization_vector(),lexer_localization_map(),back_lexer_localization_map());
+      update_lexer_localization(lexer_localization_vector(),lexer_localization_map(),back_lexer_localization_map(),contextptr);
     }
   }
 
@@ -2958,8 +2960,15 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   std::string set_language(int i,GIAC_CONTEXT){
+#ifdef EMCC
+    if (language(contextptr)!=i){
+      language(i,contextptr);
+      add_language(i,contextptr);
+    }
+#else
     language(i,contextptr);
-    add_language(i);
+    add_language(i,contextptr);
+#endif
     return find_doc_prefix(i);
   }
 
@@ -4702,7 +4711,7 @@ unsigned int ConvertUTF8toUTF16 (
 #ifdef USTL    
   // void update_lexer_localization(const std::vector<int> & v,ustl::map<std::string,std::string> &lexer_map,ustl::multimap<std::string,giac::localized_string> &back_lexer_map){}
 #else
-    void update_lexer_localization(const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,giac::localized_string> &back_lexer_map){
+  void update_lexer_localization(const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,giac::localized_string> &back_lexer_map,GIAC_CONTEXT){
       lexer_map.clear();
       back_lexer_map.clear();
       int s=v.size();
@@ -4711,12 +4720,14 @@ unsigned int ConvertUTF8toUTF16 (
 	if (lang>=1 && lang<=4){
 	  std::string doc=find_doc_prefix(lang);
 	  std::string file=giac::giac_aide_dir()+doc+"keywords";
+	  //COUT << "keywords " << file << endl;
 	  std::string giac_kw,local_kw;
 	  size_t l;
 	  char * line = (char *)malloc(1024);
 	  ifstream f(file.c_str());
 	  if (f.good()){
-	    CERR << "// Using keyword file " << file << endl;
+	    if (debug_infolevel)
+	      COUT << "// Using keyword file " << file << endl;
 	    for (;;){
 	      f.getline(line,1023,'\n');
 	      l=strlen(line);
@@ -4740,8 +4751,12 @@ unsigned int ConvertUTF8toUTF16 (
 		for (++j;j<l;++j){
 		  if (line[j]==' '){
 		    if (!local_kw.empty()){
+#ifdef EMCC
+		      sto(gen(giac_kw,contextptr),gen(local_kw,contextptr),contextptr);
+#else
 		      lexer_map[local_kw]=giac_kw;
 		      back_lexer_map.insert(pair<string,localized_string>(giac_kw,localized_string(lang,local_kw)));
+#endif
 		    }
 		    local_kw="";
 		  }
@@ -4749,8 +4764,12 @@ unsigned int ConvertUTF8toUTF16 (
 		    local_kw += line[j];
 		}
 		if (!local_kw.empty()){
+#ifdef EMCC
+		      sto(gen(giac_kw,contextptr),gen(local_kw,contextptr),contextptr);
+#else
 		  lexer_map[local_kw]=giac_kw;
 		  back_lexer_map.insert(pair<string,localized_string>(giac_kw,localized_string(lang,local_kw)));
+#endif
 		}
 	      }
 	    }

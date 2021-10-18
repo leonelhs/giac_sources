@@ -65,11 +65,21 @@ extern "C" uint32_t mainThreadStack[];
 #ifdef HAVE_PTHREAD_H
 #include <pthread.h>
 #endif
+
+#ifdef EMCC_BIND
+#include <emscripten/bind.h>  
+#endif
+
 #ifdef EMCC
+#if 0 // def EMCC_GLUT
+#include <GL/glut.h>
+#else
 #include "SDL/SDL.h"
+#include <SDL/SDL_ttf.h>
+#include <emscripten.h>
 //#include "SDL/SDL_image.h"
 #include "SDL/SDL_opengl.h"
-//#include <emscripten.h>
+#endif
 #include "opengl.h"
 #endif
 
@@ -256,7 +266,11 @@ namespace giac {
 #ifdef NSPIRE
     dtostr(d,8,ch); // FIXME!
 #else
+#ifdef EMCC
+    sprintf(ch,format,d);
+#else
     my_sprintf(ch,format,d);
+#endif
 #endif
   }
 
@@ -10446,7 +10460,13 @@ namespace giac {
       int digits=decimal_digits(contextptr);
       // count numeric char
       int delta=0;
+      if (l && s[0]=='0')
+	++delta;
       for (int k=0;k<l;++k){
+	if (s[k]=='e' || s[k]=='E'){
+	  delta += l-k;
+	  break;
+	}
 	if (s[k]<'0' || s[k]>'9')
 	  ++delta;
       }
@@ -14440,6 +14460,15 @@ namespace giac {
     }
 #else
     gen g(s,&C);
+    if (g.type==_VECT && !g._VECTptr->empty() && g._VECTptr->front().is_symb_of_sommet(at_set_language)){
+      vecteur v=*g._VECTptr;
+      protecteval(v.front(),1,&C);
+      v.erase(v.begin());
+      if (g.subtype==_SEQ__VECT && v.size()==1)
+	g=v.front();
+      else
+	g=gen(v,g.subtype);
+    }
     g=protecteval(g,1,&C);
 #endif
 #ifdef EMCC
@@ -14447,68 +14476,32 @@ namespace giac {
     gen last=g;
     while (last.type==_VECT && !last._VECTptr->empty())
       last=last._VECTptr->back();
-    if (last.is_symb_of_sommet(at_pnt)){
-      if ( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
-        printf("Unable to initialize SDL: %s\n", SDL_GetError());
-        return "unable to init SDL";
-      }
-      SDL_Window * window=0;
-      SDL_Surface *screen=0;
-      SDL_Renderer * sdlr=0;
-      int w=640,h=200;
-      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 ); // *new*
-      screen = SDL_SetVideoMode( w, h, 16, SDL_OPENGL ); // *changed*
-      if ( !screen ) {
-	printf("Unable to set video mode: %s\n", SDL_GetError());
-	return "unable to set video mode";
-      }
-      if (is3d(g)){
-	Opengl3d graphe(w,h);
-	graphe.plot_instructions=vecteur(1,g);
-	graphe.autoscale(true); // full view
-	graphe.draw();
-	g=string2gen("3d plot done",false);
-      }
-      else {
-	Opengl3d graphe(w,h);
-	graphe.theta_x=0;
-	graphe.theta_y=0;
-	graphe.theta_z=0;      
-	graphe.q=euler_deg_to_quaternion_double(0,0,0);
-	graphe.plot_instructions=vecteur(1,convert3d(g,&C));
-	graphe.autoscale(true); // full view
-	graphe.draw();
-	g=string2gen("2d plot done",false);
-      }
-      SDL_GL_SwapBuffers();      
-#ifndef __EMSCRIPTEN__
-      // Wait for 3 seconds to give us a chance to see the image
-      SDL_Delay(3000);
-#endif
-      SDL_Quit();
-      
-      // WARNING: library_sdl.js SDL_Quit() is buggy, it should be
-      /*
-	SDL_Quit: function() {
-	_SDL_AudioQuit();
-	var keyboardListeningElement = Module['keyboardListeningElement'] || document;
-	keyboardListeningElement.removeEventListener("keydown", SDL.receiveEvent);
-	keyboardListeningElement.removeEventListener("keyup", SDL.receiveEvent);
-	keyboardListeningElement.removeEventListener("keypress", SDL.receiveEvent);
-	Module.print('SDL_Quit called (and ignored)');
-	},
-      */
-      
+    if (calc_mode(&C)!=1 && last.is_symb_of_sommet(at_pnt)){
+      //giac_renderer(last.print(&C).c_str());
+      giac_gen_renderer(g,&C);
+      return "Done";
     }
 #endif
     if (!lop(g,at_rootof).empty())
       g=evalf(g,1,&C);
     if (has_undef_stringerr(g,S))
       S="GIAC_ERROR: "+S;
-    else
+    else {
+#if 1
       S=g.print(&C);
+#else
+      S=ingen2mathml(g,true,&C);
+#endif
+    }
     return S.c_str();
   }
+
+#ifdef EMCC_BIND
+  EMSCRIPTEN_BINDINGS(cas){
+    emscripten::function("caseval",&caseval,emscripten::allow_raw_pointers());
+  }
+#endif
+  
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // ndef NO_NAMESPACE_GIAC

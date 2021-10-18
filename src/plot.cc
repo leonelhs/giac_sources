@@ -135,7 +135,7 @@ namespace giac {
   double global_window_xmin(gnuplot_xmin),global_window_xmax(gnuplot_xmax),global_window_ymin(gnuplot_ymin),global_window_ymax(gnuplot_ymax);
   double x_tick(1.0),y_tick(1.0);
   double class_minimum(0.0),class_size(1.0);
-#ifdef RTOS_THREADX
+#if defined RTOS_THREADX || defined EMCC
   int gnuplot_pixels_per_eval=128;
 #else
   int gnuplot_pixels_per_eval=400;
@@ -1170,6 +1170,8 @@ namespace giac {
 
   gen plotfunc(const gen & f,const gen & vars,const vecteur & attributs,bool densityplot,double function_xmin,double function_xmax,double function_ymin,double function_ymax,double function_zmin, double function_zmax,int nstep,int jstep,bool showeq,const context * contextptr){
     double step=(function_xmax-function_xmin)/nstep;
+    if (debug_infolevel)
+      CERR << "plot " << f << " x=" << function_xmin << ".." << function_xmax << " " << step << endl;
     if (step<=0 || (function_xmax-function_xmin)/step>1e5)
       return gensizeerr(gettext("Plotfunc: unable to discretize: xmin, xmax, step=")+print_DOUBLE_(function_xmin,12)+","+print_DOUBLE_(function_xmax,12)+","+print_DOUBLE_(step,12));
     vecteur res;
@@ -1211,10 +1213,13 @@ namespace giac {
       int protect=giac::bind(vecteur(1,xmin),localvar,newcontextptr);
       vecteur chemin;
       for (double i=xmin;i<xmax;i+= step){
+	// yy=evalf_double(subst(f,vars,i,false,contextptr),1,contextptr);
 	local_sto_double(i,*vars._IDNTptr,newcontextptr);
 	// vars._IDNTptr->localvalue->back()._DOUBLE_val =i;
 	yy=y.evalf2double(eval_level(contextptr),newcontextptr);
 	if (yy.type!=_DOUBLE_){
+	  if (debug_infolevel)
+	    CERR << y << " not real at " << i << " " << yy << endl;
 	  if (!chemin.empty())
 	    res.push_back(pnt_attrib(symb_curve(gen(makevecteur(vars+cst_i*f,vars,xmin,i,showeq),_PNT__VECT),gen(chemin,_GROUP__VECT)),attributs.empty()?color:attributs,contextptr));
 	  xmin=i;
@@ -1222,8 +1227,14 @@ namespace giac {
 	  continue;
 	}
 	j=yy._DOUBLE_val;
+	if (j>function_ymax)
+	  function_ymax=j;
+	if (j<function_ymin)
+	  function_ymin=j;
 	if (i!=xmin){
 	  if (fabs(oldj-j)>(function_ymax-function_ymin)/5){ // try middle-pnt
+	    if (debug_infolevel)
+	      CERR << y << " checking step at " << i << " " << yy << endl;
 	    local_sto_double_increment(-step/2,*vars._IDNTptr,newcontextptr);
 	    // vars._IDNTptr->localvalue->back()._DOUBLE_val -= step/2;
 	    yy=y.evalf2double(eval_level(contextptr),newcontextptr);
@@ -1247,15 +1258,23 @@ namespace giac {
 	if (joindre)
 	  chemin.push_back(gen(i,j));
 	else {
-	  if (!chemin.empty())
+	  if (!chemin.empty()){
+	    if (debug_infolevel){
+	      CERR << y << " step at " << i << " " << yy << endl;
+	      CERR << "curve " << chemin.size() << " " << chemin.front() << " .. " << chemin.back() << endl;
+	    }
 	    res.push_back(pnt_attrib(symb_curve(gen(makevecteur(vars+cst_i*f,vars,xmin,i,showeq),_PNT__VECT),gen(chemin,_GROUP__VECT)),attributs.empty()?color:attributs,contextptr));
+	  }
 	  xmin=i;
 	  chemin=vecteur(1,gen(i,j));
 	}
 	oldj=j;
       }
-      if (!chemin.empty())
+      if (!chemin.empty()){
+	if (debug_infolevel)
+	  CERR << "curve " << chemin.size() << " " << chemin.front() << " .. " << chemin.back() << endl;
 	res.push_back(pnt_attrib(symb_curve(gen(makevecteur(vars+cst_i*f,vars,xmin,xmax,showeq),_PNT__VECT),gen(chemin,_GROUP__VECT)),attributs.empty()?color:attributs,contextptr));
+      }
       leave(protect,localvar,newcontextptr);
 #ifndef WIN32
       //      if (child_id)
