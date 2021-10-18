@@ -1470,7 +1470,8 @@ namespace giac {
 	    // -> atan( cos(theta)*((beta-1)*sin(theta)+gamma*cos(theta))/
 	    //          (cos(theta)^2+beta*sin(theta)^2+gamma*sin(theta)*cos()) )
 	    gen beta,gamma;
-	    if (0 && xvar.is_symb_of_sommet(at_tan) && is_linear_wrt(tmpatan,xvar,beta,gamma,contextptr) && is_strictly_greater(4*beta,gamma*gamma,contextptr) ){
+	    if (  //0 && 
+		  xvar.is_symb_of_sommet(at_tan) && is_linear_wrt(tmpatan,xvar,beta,gamma,contextptr) && is_strictly_greater(4*beta,gamma*gamma,contextptr) ){
 	      gen argtan=ratnormal(2*xvar._SYMBptr->feuille);
 	      gen si=symbolic(at_sin,argtan),ci=symbolic(at_cos,argtan);
 	      tmpatan=symbolic(at_atan,ratnormal(((beta-1)*si+gamma*(1+ci))/(1+beta+gamma*si+(1-beta)*ci)));

@@ -1599,6 +1599,19 @@ des méthodes modulaires et $p$-adiques. On utilise souvent le
 {\bf test de Miller-Rabin}\index{Miller}\index{Rabin}, qui prolonge le petit théorème de Fermat
 (si $p$ est premier, alors $a^p=a \pmod p$). Voir le manuel de
 programmation de Xcas.
+\item L'algorithme de H\"orner\index{H\"orner} pour \'evaluer un polyn\^ome
+  $P(X)=a_nX^n+...+a_0$ en $x$. Il consiste \`a r\'e\'ecrire $P(x)$ sous
+  la forme
+$$ P(x)=(...((a_nx+a_{n-1})x+a_{n-2})x+...+a_1)x+a_0$$
+on calcule donc successivement 
+$$ b_n=a_n, \ b_{n-1}=b_nx+a_{n-1}, \ b_{n-2}=b_{n-1}x+a_{n-2},
+.... \ b_0=b_1x+a_0=P(x)$$
+ce qui n\'ecessite $n$ multiplications et $n$ additions, donc une
+complexit\'e $O(n)$ (sur un corps fini ou un anneau dont les
+op\'erations se font en temps $O(1)$) avec une constante optimale.
+Voir aussi l'exercice sur cette m\'ethode et son application au calcul
+du d\'eveloppement de Taylor d'un polyn\^ome
+dans la section \ref{sec:exos_algobase}.
 \end{itemize}
 
 \subsubsection{Exemple~: l'algorithme de Karatsuba}\index{Karatsuba}
@@ -1641,6 +1654,46 @@ aux additions est plus petit que la multiplication \'economis\'ee,
 soit $8n<2n^2$ soit $n>4$, en pratique plut\^ot pour $n$ de l'ordre de quelques
 dizaines selon les impl\'ementations, car nous n'avons tenu compte
 que des op\'erations arithm\'etiques).
+
+\subsubsection{Calcul de la racine carr\'ee enti\`ere}
+\'Etant donn\'e un entier $N$, il s'agit de d\'eterminer le plus grand
+entier $n$ tel que $n^2\leq N$, $n$ est la racine
+carr\'ee\index{racine carr\'ee enti\`ere} de $N$.
+On choisit une base $b$ par exemple $b=10$ pour un humain ou une
+puissance de 2 pour une machine, et on \'ecrit $N$ en base $b$, en
+d\'ecoupant les chiffres par blocs de 2 en commen\c{c}ant par la
+droite, par exemple 2 00 00 00. On initialise la racine carr\'ee $n$ \`a 0
+et son carr\'e $c$ \`a 0, on va calculer la racine carr\'ee enti\`ere bloc par bloc en
+commen\c{c}ant par la gauche. Pour calculer le bloc suivant, on
+multiplie $n$ par $b$ et $c$ par $b^2$ (c'est un simple d\'ecalage de
+l'\'ecriture en ajoutant un ou deux z\'eros). Puis on ajoute les
+nombres impairs successifs $2n+1$, $(2n+1)+2$, ... \`a $c$ tant que l'on est
+inf\'erieur \`a $N$ tronqu\'e au bloc. Le nombre d'impairs successifs
+ajout\'e est ajout\'e \`a $n$. En pratique, il suffit de conserver
+$N-c$ tronqu\'e et de lui retrancher les impairs successifs.
+
+Ainsi, pour 2 00 00 00, au 1er bloc 2, on initialise $n=c=0$, on
+ajoute $2n+1=1$ \`a $c$ qui vaut alors 1 et on s'arr\^ete car 1+3
+est sup\'erieur \`a 2. On passe au 2i\`eme bloc, $N-c$ tronqu\'e vaut
+100, $n$ vaut 10, $2n+1$ vaut 21, on retranche donc \`a 100
+successivement 21, 23, 25, 27 et on s'arr\^ete car le reste est
+4. Donc $n$ devient 14, et $N-c=4$. On passe au troisi\`eme bloc,
+$N-c=400$ et $n=140$ donc $2n+1=281$, on retranche de 400 les impairs
+successifs \`a partir de 281, ce qui n'est possible qu'une seule fois,
+cela donne $N-c=119$ et $n=141$. On passe au dernier bloc,
+$N-c=11900$ et $n=1410$ donc $2n+1=2821$, on soustrait
+2821, 2823, 2825, 2827 de 11900, il reste 604 et $n=1414$.
+
+Exercice~: calculer la quatri\`eme d\'ecimale de $\sqrt{2}$ de cette
+mani\`ere.
+
+La complexit\'e de cet algorithme est en $O(\log_b(N)^2)$. En effet,
+pour calculer un chiffre il faut faire un nombre de soustraction au
+plus \'egal \`a $b$, ces soustractions ayant au plus le nombre de
+chiffres de $N$ en base $b$.
+(On peut acc\'el\'erer le calcul \`a la mani\`ere de Karatsuba en
+choisissant une base $b$ puissance de 2 (ou 10) de l'ordre de
+$\sqrt{N}$ et en divisant pour r\'egner).
 
 \subsubsection{Bezout sur les entiers et les fractions continues}
 Il existe une variante de l'identit\'e de B\'ezout pr\'esent\'ee
@@ -1804,7 +1857,7 @@ NTL, GAP, CoCoA, ...), rechercher ces mots-clefs sur un moteur de recherche.
 \pagebreak
 
 \subsection{Exercices  sur types, calcul exact et approch\'e, 
-algorithmes  de  bases}
+algorithmes  de  bases} \label{sec:exos_algobase}
 Vous pouvez 
 \begin{rawhtml}
 <a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html" target="_blank">tester directement dans votre navigateur</a>

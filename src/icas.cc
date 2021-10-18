@@ -434,6 +434,8 @@ void pgiac(std::string infile,std::string outfile){
       break;
     in.getline(buf,BUFFER_SIZE,'\n');++line;
     string s(buf);
+    if (s.empty() && inside)
+      out << endl;
     for (;!s.empty();){
       int ss=s.size();
       int pos=0;

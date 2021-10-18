@@ -7174,8 +7174,18 @@ namespace giac {
     gen a=remove_at_pnt(a_orig),b=remove_at_pnt(b_orig);
     if (b.type==_REAL)
       return contains(b,a)?1:0;
-    if (b.type==_VECT && b.subtype<=_SET__VECT)
-      return equalposcomp(*b._VECTptr,a);
+    if (b.type==_VECT && b.subtype<=_SET__VECT){
+      int p=equalposcomp(*b._VECTptr,a);
+      if (p) return p;
+      const_iterateur it=b._VECTptr->begin(),itend=b._VECTptr->end();
+      for (;it!=itend;++it){
+	if (it->is_symb_of_sommet(at_pnt))
+	  p=est_element(a,*it,contextptr);
+	if (p)
+	  return 1+it-b._VECTptr->begin();
+      }
+      return 0;
+    }
     if (b.is_symb_of_sommet(at_cercle)){
       // check orthogonality with diameter
       gen diam=remove_at_pnt(b._SYMBptr->feuille._VECTptr->front());

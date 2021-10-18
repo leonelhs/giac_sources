@@ -80,7 +80,7 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	config.h.iphone Makefile.iphone \
 	f2c.h clapack.h blaswrap.h mklocal64 pnt_gen \
 	giac.i runme.java archive_java archive_java_linux32 archive_java_linux64  javascript.cxx giacjs.i giacjs.js README.javascript \
-	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy giac_wrap.cxx
+	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy mkgiacpy10 giac_wrap.cxx
 
 bin_SCRIPTS = pgiac
 

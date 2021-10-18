@@ -3268,6 +3268,23 @@ namespace giac {
       } // end TI path
     }
     if (b.type==_IDNT){
+      // typed variable name must end with _d (double) or _i (int)
+      int bl=strlen(b._IDNTptr->id_name);
+      if (bl>=3){
+	const char * name=b._IDNTptr->id_name;
+	if (name[bl-2]=='_'){
+	  if (name[bl-1]=='d'){
+	    if (a.type!=_INT_ && a.type!=_DOUBLE_)
+	      return gensizeerr("Unable to coerce to double "+a.print(contextptr));
+	  }
+	  if (name[bl-1]=='i'){
+	    if (a.type==_DOUBLE_ && a._DOUBLE_val<=RAND_MAX && a._DOUBLE_val>=-RAND_MAX)
+	      return sto(int(a._DOUBLE_val),b,in_place,contextptr);
+	    if (a.type!=_INT_)
+	      return gensizeerr("Unable to coerce to integer "+a.print(contextptr));
+	  }
+	}	  
+      }
       if (!contextptr){
 	// Remove stale local assignements
 #ifdef NO_STDEXCEPT

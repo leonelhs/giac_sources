@@ -110,6 +110,14 @@ namespace giac {
     return g;
   }
 
+  vecteur equaltostov(const vecteur & v,GIAC_CONTEXT){
+    vecteur w(v);
+    iterateur it=w.begin(),itend=w.end();
+    for (;it!=itend;++it)
+      *it=equaltosto(*it,contextptr);
+    return w;
+  }
+
   static int prog_eval_level(GIAC_CONTEXT){
     if (int i=prog_eval_level_val(contextptr))
       return i;
@@ -333,6 +341,10 @@ namespace giac {
       gen declaredvars=f._VECTptr->front();
       if (declaredvars.type==_VECT && declaredvars._VECTptr->size()==2){
 	vecteur f1(gen2vecteur(declaredvars._VECTptr->front()));
+	for (int i=0;i<int(f1.size());++i){
+	  if (f1[i].is_symb_of_sommet(at_equal))
+	    f1[i]=f1[i]._SYMBptr->feuille[0];
+	}
 	vecteur f2(gen2vecteur(declaredvars._VECTptr->back()));
 	res3=mergevecteur(res3,f2);
 	declaredvars=mergevecteur(f1,f2);
@@ -443,7 +455,7 @@ namespace giac {
 	--i; --rs;
       }
     }
-    if (!res1.empty()){
+    if (0 && !res1.empty()){ // disabled since it is now accepted
       res += gettext("// Warning, assignation is :=, check these lines: ");
       const_iterateur it=res1.begin(),itend=res1.end();
       for (;it!=itend;++it){
@@ -458,7 +470,7 @@ namespace giac {
 	// pi already checked if (*it!=cst_pi)
 	res += it->print(contextptr)+",";
       }
-      res +=gettext(" declared as global variable(s)\n");
+      res +=gettext(" declared as global variable(s). If symbolic variables are required, declare them as local and run purge\n");
     }
     if (res.empty())
       return giac::first_error_line(contextptr)?gettext("// Error(s)\n"):gettext("// Success\n");
@@ -793,11 +805,24 @@ namespace giac {
     vecteur v1,v2;
     iterateur it=newv.begin(),itend=newv.end();
     for (;it!=itend;++it){
-      if (it->is_symb_of_sommet(at_sto) || it->is_symb_of_sommet(at_check_type)) // FIXME check 1st arg too
+      if (it->is_symb_of_sommet(at_sto) || it->is_symb_of_sommet(at_check_type) || it->is_symb_of_sommet(at_equal)) // FIXME check 1st arg too
 	continue;
       if (it->is_symb_of_sommet(at_of)){
 	*logptr(contextptr) << "Invalid argument name " << *it << ". You should use " << it->_SYMBptr->feuille._VECTptr->front() << " instead, even if the argument should be of type function" << endl;
 	*it=it->_SYMBptr->feuille._VECTptr->front();
+      }
+      if (it->is_symb_of_sommet(at_deuxpoints)){
+	gen theid=it->_SYMBptr->feuille[0];
+	gen thetype=it->_SYMBptr->feuille[1];
+	if (thetype.type==_INT_ && thetype.subtype==_INT_TYPE){
+	  v1.push_back(theid);
+	  if (thetype.val==_ZINT)
+	    *it=gen(theid.print(contextptr)+"_i",contextptr);
+	  if (thetype.val==_DOUBLE_ || thetype.val==_REAL)
+	    *it=gen(theid.print(contextptr)+"_d",contextptr);
+	  v2.push_back(*it);
+	  continue;
+	}
       }
       if (it->type!=_IDNT && it->type!=_CPLX){
 	v1.push_back(*it);
@@ -826,7 +851,7 @@ namespace giac {
     if (v1.empty())
       newb=b;
     else {
-      *logptr(contextptr) << "Invalid variable(s) name(s) were replaced by creating special identifiers, check " << v1 << endl;
+      *logptr(contextptr) << "Invalid or typed variable(s) name(s) were replaced by creating special identifiers, check " << v1 << endl;
       newb=quotesubst(b,v1,v2,contextptr);
     }
   }
@@ -1965,7 +1990,32 @@ namespace giac {
   define_unary_function_ptr5( at_for ,alias_at_for,&__for,_QUOTE_ARGUMENTS,0);
 
   // returns level or -1 on error
-  int bind(const vecteur & vals,const vecteur & vars,context * & contextptr){
+  int bind(const vecteur & vals_,const vecteur & vars_,context * & contextptr){
+    vecteur vals(vals_),vars(vars_);
+#if 1
+    int ins=int(vals.size());
+    for (int i=int(vars.size())-1;i>=0;--i){
+      if (vars.size()<=vals.size())
+	break;
+      if (vars[i].is_symb_of_sommet(at_equal))
+	vals.insert(vals.begin()+ins,vars[i]._SYMBptr->feuille[1]);
+      else {
+	if (ins>0)
+	  --ins;
+      }
+    }
+#else
+    for (;vars.size()>vals.size();){
+      int s=int(vals.size());
+      if (!vars[s].is_symb_of_sommet(at_equal))
+	break;
+      vals.push_back(vars[s]._SYMBptr->feuille[1]);
+    }
+#endif
+    for (int i=0;i<vars.size();++i){
+      if (vars[i].is_symb_of_sommet(at_equal))
+	vars[i]=vars[i]._SYMBptr->feuille[0];
+    }
     if (vals.size()!=vars.size()){
 #ifdef DEBUG_SUPPORT
       setsizeerr(gen(vals).print(contextptr)+ " size() != " + gen(vars).print(contextptr));
@@ -2235,10 +2285,13 @@ namespace giac {
 #endif
 	continue;
       }
-      if ( (it->type!=_SYMB) || (it->_SYMBptr->sommet!=at_sto))
+      if ( (it->type!=_SYMB) || (it->_SYMBptr->sommet!=at_sto && it->_SYMBptr->sommet!=at_equal))
 	return gentypeerr(contextptr);
       gen nom=it->_SYMBptr->feuille._VECTptr->back();
-      gen val=it->_SYMBptr->feuille._VECTptr->front().eval(eval_level(contextptr),contextptr);
+      gen val=it->_SYMBptr->feuille._VECTptr->front();
+      if (it->_SYMBptr->sommet==at_equal)
+	swapgen(nom,val);
+      val=val.eval(eval_level(contextptr),contextptr);
       if (nom.type!=_IDNT)
 	return gentypeerr(contextptr);
       names.push_back(nom);
@@ -5138,6 +5191,8 @@ namespace giac {
   gen _xport(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
     string libname(gen2string(args));
+    if (libname.size()>5 && libname.substr(0,5)=="giac_")
+      libname=libname.substr(5,libname.size()-5);
 #ifdef USTL
     ustl::map<std::string,std::vector<std::string> >::iterator it=library_functions().find(libname);
     if (it==library_functions().end())
@@ -5181,7 +5236,7 @@ namespace giac {
     // a way to add the current path to the search
     if (libname[0]!='/'){
       if (libname.size()<3 || libname.substr(0,3)!="lib")
-	libname = "lib"+libname;
+	libname = "libgiac_"+libname;
       gen pwd=_pwd(0,contextptr);
       if (pwd.type==_STRNG){
 	string libname1 = *pwd._STRNGptr+'/'+libname;
@@ -5197,7 +5252,7 @@ namespace giac {
 #endif
     modules_tab::const_iterator i = giac_modules_tab.find(libname);
     if (i!=giac_modules_tab.end())
-      return plus_two; // still registered
+      return 3; // still registered
     registered_lexer_functions().clear();
     doing_insmod=true;
     void * handle = dlopen (libname.c_str(), RTLD_LAZY);
@@ -5212,8 +5267,8 @@ namespace giac {
       _signal(symb_quote(symbolic(at_insmod,args)),contextptr);
     else
 #endif
-      *logptr(contextptr) << gettext("Parent insmod") <<endl;
-    return _xport(args,contextptr);
+      if (debug_infolevel) *logptr(contextptr) << gettext("Parent insmod") <<endl;
+    return 1+_xport(args,contextptr);
 #else // HAVE_LIBDL
     return zero;
 #endif // HAVE_LIBDL
