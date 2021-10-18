@@ -1,4 +1,4 @@
- restart;maple_mode(1);cas_setup(0,0,0,1,0,1e-10,10,[1,50,0,25],0,0,0); #radians,pas de cmplx, pas de  Sqrt
+ restart(1);maple_mode(1);cas_setup(0,0,0,1,0,1e-10,10,[1,50,0,25],0,0,0); #radians,pas de cmplx, pas de  Sqrt
  Factor(x^23-1) mod 2;
 /* Astuce: pour recuperer directement le second facteur, on peut utiliser op, ou£bien on utilise factors, mais£il en faut la forme inerte pour travailler sur Z/2Z, d'ou les£guillemets. Attention, ca ne marche pas toujours, par exemple si P:=x^23-1,£'factors(P)' mod 2 ne marche pas. En revanche, on peut introduire les nombres£modulaires comme en mode xcas grace a makemod, ou bien basculer en mode xcas,£creer a:=1%2; et revenir en mode maple, puis utiliser a.*/
  op(Factor(x^23-1) mod 2);

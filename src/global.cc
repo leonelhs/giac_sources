@@ -4911,10 +4911,13 @@ unsigned int ConvertUTF8toUTF16 (
       }
       unlock_syms_mutex();  
     }
+    int xc=xcas_mode(contextptr);
+    if (xc==0 && python_compat(contextptr))
+      xc=256;
     if (abs_calc_mode(contextptr)==38)
-      res.push_back(xcas_mode(contextptr));
+      res.push_back(xc);
     else
-      res.push_back(symbolic(at_xcas_mode,xcas_mode(contextptr)));
+      res.push_back(symbolic(at_xcas_mode,xc));
     return res;
   }
 
@@ -5691,7 +5694,7 @@ unsigned int ConvertUTF8toUTF16 (
 	++pos;
 	continue;
       }
-      if (curch=='=' && prevch!='>' && prevch!='<' && prevch!='!' && prevch!=':' && prevch!=';' && prevch!='=' && prevch!='+' && prevch!='-' && prevch!='*' && prevch!='/' && (pos==int(cur.size())-1 || (cur[pos+1]!='=' && cur[pos+1]!='<'))){
+      if (curch=='=' && prevch!='>' && prevch!='<' && prevch!='!' && prevch!=':' && prevch!=';' && prevch!='=' && prevch!='+' && prevch!='-' && prevch!='*' && prevch!='/' && prevch!='%' && (pos==int(cur.size())-1 || (cur[pos+1]!='=' && cur[pos+1]!='<'))){
 	cur.insert(cur.begin()+pos,':');
 	++pos;
 	continue;
@@ -6028,7 +6031,11 @@ unsigned int ConvertUTF8toUTF16 (
 	progpos=cur.find("for");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
 	  pythonmode=true;
+	  // for _ -> for x_
 	  cur=cur.substr(0,pos);
+	  if (progpos+5<cs && cur[progpos+3]==' ' && cur[progpos+4]=='_' && cur[progpos+5]==' '){
+	    cur.insert(cur.begin()+progpos+4,'x');
+	  }
 	  convert_python(cur,contextptr);
 	  s += cur+" do\n";
 	  stack.push_back(int_string(ws,"od"));
@@ -6046,7 +6053,12 @@ unsigned int ConvertUTF8toUTF16 (
 	progpos=cur.find("def");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
 	  pythonmode=true;
-	  s += cur.substr(0,progpos)+"function"+cur.substr(progpos+3,pos-progpos-3)+"\n";
+	  // should remove possible returned type, between -> ... and :
+	  string entete=cur.substr(progpos+3,pos-progpos-3);
+	  int posfleche=entete.find("->");
+	  if (posfleche>0 || posfleche<entete.size())
+	    entete=entete.substr(0,posfleche);
+	  s += cur.substr(0,progpos)+"function"+entete+"\n";
 	  stack.push_back(int_string(ws,"ffunction"));
 	  continue;
 	}

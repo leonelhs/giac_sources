@@ -3800,8 +3800,12 @@ namespace giac {
       if (u==at_exp)
 	return exp(re(f,contextptr),contextptr);
     }
-    if ( (u==at_pow) && (is_zero(im(f._VECTptr->back(),contextptr),contextptr)))
+    if ( (u==at_pow) && (is_zero(im(f._VECTptr->back(),contextptr),contextptr))){
+      gen fback=f._VECTptr->back();
+      if (fback.type==_INT_ && (fback.val % 2==0))
+	return pow(abs(f._VECTptr->front(),contextptr),fback,contextptr);
       return new_ref_symbolic(symbolic(u,makesequence(abs(f._VECTptr->front(),contextptr),f._VECTptr->back())));
+    }
     if (u==at_inv)
       return inv(abs(f,contextptr),contextptr);
     if (u==at_prod)
@@ -4313,6 +4317,8 @@ namespace giac {
 	return sym_add(b,a,contextptr);
       if (a.subtype==_POINT__VECT && b.subtype==_POINT__VECT)
 	return gen(addvecteur(*a._VECTptr,*b._VECTptr),0);
+      if (a.subtype==0 && b.subtype==0 && python_compat(contextptr))
+	*logptr(contextptr) << gettext("Warning + is vector addition, run list1.extend(list2) instead") << endl;
       return gen(addvecteur(*a._VECTptr,*b._VECTptr),a.subtype?a.subtype:b.subtype);
     case _MAP__MAP:
       {
@@ -5159,7 +5165,7 @@ namespace giac {
       return ext_sub(a,b,contextptr);
     case _POLY__INT_: case _POLY__ZINT: case _POLY__DOUBLE_: case _POLY__FLOAT_: case _POLY__CPLX: case _POLY__MOD: case _POLY__REAL: case _POLY__USER:
       return subpoly(*a._POLYptr,b);
-    case _INT___POLY: case _ZINT__POLY: case _DOUBLE___POLY: case _FLOAT___POLY: case _CPLX__POLY: case _MOD__POLY:
+    case _INT___POLY: case _ZINT__POLY: case _DOUBLE___POLY: case _FLOAT___POLY: case _CPLX__POLY: case _MOD__POLY:case _USER__POLY: case _REAL__POLY: 
       return subpoly(a,*b._POLYptr);        
     case _MOD__MOD:
 #ifdef SMARTPTR64
@@ -5929,6 +5935,8 @@ namespace giac {
 	  return A;
 	// if (a.type==_POLY) return b*(*a._POLYptr);
       }
+      if (A.type==_INT_ && B.subtype==0 && python_compat(contextptr))
+	*logptr(contextptr) << gettext("Warning, * is vector multiplication. Run concat(seq(list,n)) to replicate a list.") << endl;
       return multgen_poly(A,*B._VECTptr,B.subtype); // gen(multvecteur(a,*b._VECTptr),b.subtype);
     }
     case _VECT__VECT: {
@@ -8228,6 +8236,7 @@ namespace giac {
 	if (a==_FLOAT_ && b==at_float) return true;
 	if (a==_DOUBLE_ && b==at_real) return true;
 	if (a==_CPLX && b==at_complex) return true;
+	if ( (a==_INT_||a==_ZINT) && b==at_int) return true;
       }
       if (b.type==_INT_ && b.subtype==_INT_TYPE && a.type==_FUNC)
 	return operator_equal(b,a,contextptr);

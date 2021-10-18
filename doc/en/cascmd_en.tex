@@ -6219,6 +6219,7 @@ are the inverse trigonometric functions. The latter are defined by:
 \end{enumerate}
 \end{itemize}
 
+
 \subsection{Expand a trigonometric expression : {\tt trigexpand}}\index{trigexpand}
 \noindent{\tt trigexpand} takes as argument an expression
 containing trigonometric functions.\\
@@ -6281,6 +6282,19 @@ Output :
 {\bf Warning} {\tt simplify} is more efficient in {\tt radian} mode (check 
 {\tt radian} in the {\tt cas} configuration 
   or  input {\tt angle\_radian:=1}).
+
+
+\subsection{Simplify trigonometric expressions : {\tt trigsimplify}}\index{trigsimplify}
+\noindent{\tt trigsimplify} simplifies trigonometric expressions
+by combining {\tt simplify}, {\tt texpand}, {\tt tlin}, {\tt tcollect}, {\tt trigsin}, {\tt trigcos} and {\tt trigtan} commands in a certain order.\\
+Input :
+\begin{center}{\tt trigsimplify((sin(x+y)-sin(x-y))/(cos(x+y)+cos(x-y)))}\end{center}
+Output :
+\begin{center}{\tt tan(4*x/3)}\end{center}
+Input :
+\begin{center}{\tt trigsimplify(1-1/4*sin(2a)\verb|^|2-sin(b)\verb|^|2-cos(a)\verb|^|4)}\end{center}
+Output :
+\begin{center}{\tt sin(a)\verb|^|2-sin(b)\verb|^|2}\end{center}
 
 \subsection{Transform arccos into arcsin : {\tt acos2asin}}\index{acos2asin}
 \noindent{\tt acos2asin} takes as argument an expression containing 
@@ -7052,7 +7066,7 @@ Output :
 For example, input :
 \begin{center}
 	{\tt f:=unapply(periodic(sign(x),x,-1/880,1/880),x);\\
-		s:=2\^14*(apply(f,soundsec(1)));\\
+		s:=2\verb|^|14*(apply(f,soundsec(1)));\\
 		playsnd(lowpass(s,1000))}
 \end{center}
 
@@ -7062,7 +7076,7 @@ For example, input :
 For example, input :
 \begin{center}
 	{\tt f:=unapply(periodic(sign(x),x,-1/880,1/880),x);\\
-		s:=2\^14*(apply(f,soundsec(1)));\\
+		s:=2\verb|^|14*(apply(f,soundsec(1)));\\
 		playsnd(highpass(s,5000))}
 \end{center}
 
@@ -7393,19 +7407,6 @@ Input :
 \begin{center}{\tt tsimplify((sin(7*x)+sin(3*x))/sin(5*x))}\end{center}
 Output :
 \begin{center}{\tt ((exp((i)*x))\verb|^|4+1)/(exp((i)*x))\verb|^|2 }\end{center}
-
-\subsection{Simplify trigonometric expressions : {\tt trigsimplify}}\index{trigsimplify}
-\noindent{\tt trigsimplify} simplifies trigonometric expressions
-by combining {\tt simplify}, {\tt texpand}, {\tt tlin}, {\tt tcollect}, {\tt trigsin}, {\tt trigcos} and {\tt trigtan} commands in a certain order.\\
-Input :
-\begin{center}{\tt trigsimplify((sin(x+y)-sin(x-y))/(cos(x+y)+cos(x-y)))}\end{center}
-Output :
-\begin{center}{\tt tan(4*x/3)}\end{center}
-Input :
-\begin{center}{\tt trigsimplify(1-1/4*sin(2a)\verb|^|2-sin(b)\verb|^|2-cos(a)\verb|^|4)}\end{center}
-Output :
-\begin{center}{\tt sin(a)\verb|^|2-sin(b)\verb|^|2}\end{center}
-
 
 \section{Polynomials}
 A polynomial of one variable is represented either 

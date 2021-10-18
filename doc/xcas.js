@@ -279,7 +279,7 @@ var UI ={
       s='convert('+s+',cell,'+cmd+')';
     //console.log(s);
     s=UI.caseval_noautosimp(s);
-    if (s==' Non_evalue_Cliquer_sur_Exec ') return;
+    if (s==' Clic_on_Exec ') return;
     //console.log(s);
     s=eval(s);
     UI.assistant_matr_source=s;
@@ -975,7 +975,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     return value;
   },
   caseval: function(text){
-    if (!UI.ready) return ' Non_evalue_Cliquer_sur_Exec ';
+    if (!UI.ready) return ' Clic_on_Exec ';
     var docaseval = Module.cwrap('caseval',  'string', ['string']);
     var value=text;
     value=value.replace(/%22/g,'\"'); 
@@ -988,7 +988,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     return s;
   },
   caseval_noautosimp: function(text){
-    if (!UI.ready) return ' Non_evalue_Cliquer_sur_Exec ';
+    if (!UI.ready) return ' Clic_on_Exec ';
     var docaseval = Module.cwrap('caseval',  'string', ['string']);
     var value=text;
     value=value.replace(/%22/g,'\"'); 
@@ -1153,7 +1153,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       if (p[0]=='python'){
 	var form=document.getElementById('config');
 	if (p[1]=='0'){ form.python_mode.checked=false;}
-	if (p[0]=='1'){ form.python_mode.checked=true;}
+	if (p[1]=='1'){ form.python_mode.checked=true;}
 	UI.python_mode=form.python_mode.checked;
 	UI.setoption_mode(cmentree);
 	continue;
@@ -1170,7 +1170,11 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.createCookie('xcas_session',s,365);
     if (s.length>0){
       var s2 = "#exec&"+s;
-      var smail = UI.base_url+"xcasfr.html#exec&";
+      var smail;
+      if (UI.langue==-1)
+	smail= UI.base_url+"xcasfr.html#exec&";
+      else
+	smail= UI.base_url+"xcasen.html#exec&";
       var filename=document.getElementById("outputfilename").value;
       var pos=filename.search('@');
       if (pos<0 || pos>=filename.length)
@@ -1182,7 +1186,10 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	filename+='from='+encodeURIComponent(UI.from)+'&';
       s=filename+s;
       smail=smail+s;
-      s = UI.base_url+"xcasfr.html#"+s;
+      if (UI.langue==-1)
+	s = UI.base_url+"xcasfr.html#"+s;
+      else
+	s = UI.base_url+"xcasen.html#"+s;
       //Module.print(s);
       if (window.location.href.substr(0,4)=='file' && !UI.detectmob()){
 	document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Clone</a> <a href="'+s2+'" target="_blank">local</a>';
@@ -1223,9 +1230,9 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	if (fs.length>5){
 	  var fs1=fs.substr(0,5);
 	  if (fs1=="<form") {
-	    //Module.print(fs);
 	    var pos1=fs.search("<input");
 	    fs=fs.substr(pos1,fs.length-pos1);
+	    //console.log(fs);
 	    var pos1=fs.search("value=");
 	    pos1 += 7;
 	    fs=fs.substr(pos1,fs.length-pos1);
@@ -1236,7 +1243,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	    fs=fs.substr(pos1,fs.length-pos1);
 	    var pos2=fs.search("\"");
 	    fs1 += ','+fs.substr(0,pos2); // current value
-	    var pos1=fs.search("value="); 
+	    var pos1=fs.search("minname"); 
 	    pos1 += 7;
 	    fs=fs.substr(pos1,fs.length-pos1);
 	    var pos1=fs.search("value=");
@@ -1244,10 +1251,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	    fs=fs.substr(pos1,fs.length-pos1);
 	    var pos2=fs.search("\"");
 	    fs1 += ','+fs.substr(0,pos2); // min
-	    var pos1=fs.search("value=");
-	    pos1 += 7;
-	    fs=fs.substr(pos1,fs.length-pos1);
-	    var pos1=fs.search("value=");
+	    var pos1=fs.search("maxname");
 	    pos1 += 7;
 	    fs=fs.substr(pos1,fs.length-pos1);
 	    var pos1=fs.search("value=");
@@ -1260,6 +1264,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	    fs=fs.substr(pos1,fs.length-pos1);
 	    var pos2=fs.search("\"");
 	    fs1 += ','+fs.substr(0,pos2); // step
+	    //console.log(fs1);
 	    s += '*' + fs1 +'&';
 	    cur=cur.nextSibling;
 	    continue;
@@ -1471,7 +1476,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.canvas_w=form.canvas_w.value;
     UI.canvas_h=form.canvas_h.value;
     var s=UI.config_string();
-    //console.log(s);
+    //console.log(form.wasm_mode);
     UI.addhelp(' ',s);
     document.getElementById('config').style.display='none';
     if (UI.focusaftereval) UI.focused.focus();
@@ -1493,6 +1498,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.createCookie('xcas_autosimplify',form.autosimp_level.value,10000);
     UI.createCookie('xcas_docprefix',UI.docprefix,10000);
     UI.createCookie('xcas_withworker',UI.withworker?1:-1,10000);
+    UI.createCookie('xcas_wasm',form.wasm_mode.checked?1:-1,10000);
     UI.createCookie('xcas_prettyprint',UI.prettyprint?1:-1,10000);
     UI.createCookie('xcas_qa',UI.qa?1:-1,10000);
     UI.createCookie('xcas_usecm',UI.usecm?1:-1,10000);
@@ -2041,7 +2047,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	  field=field.firstChild;
 	  if (field){
 	    var cm=field.nextSibling.CodeMirror;
-	    if (field.id='entree') cm=cmentree;
+	    if (field.id=='entree') cm=cmentree;
 	    if (cm){
 	      if (cmd==0){ CodeMirror.commands.find(cm); return;}
 	      if (cmd==1){ CodeMirror.commands.findNext(cm); return;}

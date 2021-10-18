@@ -4,30 +4,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Linearize exponentials : lin</title>
+<title>Expand logarithms : lnexpand</title>
 </head>
 <body >
 <a href="cascmd_en247.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en249.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec313" class="subsection">5.24.4  Linearize exponentials : <span style="font-family:monospace">lin</span></h3>
+<h3 id="sec313" class="subsection">5.24.3  Expand logarithms : <span style="font-family:monospace">lnexpand</span></h3>
 <p><a id="hevea_default405"></a>
-<span style="font-family:monospace">lin</span> takes as argument an expression with
-exponentials.<br>
-<span style="font-family:monospace">lin</span> rewrites hyperbolic functions as exponentials if required,
-then linearizes this expression (i.e. replace product of
-exponentials by exponential of sums).<br>
-<span style="font-weight:bold">Examples</span>
-</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">lnexpand</span> takes as argument an expression with logarithms.<br>
+<span style="font-family:monospace">lnexpand</span> expands this expression (rewrites ln of products
+as sum of ln).<br>
 Input :
-<div class="center"><span style="font-family:monospace">lin(sinh(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
+</p><div class="center"><span style="font-family:monospace">lnexpand(ln(3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)+ln(2*x+2))</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">1/4*exp(2*x)+1/-2+1/4*exp(-(2*x))</span></div></li><li class="li-itemize">Input :
-<div class="center"><span style="font-family:monospace">lin((exp(x)+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">exp(3*x)+3*exp(2*x)+3*exp(x)+1</span></div>
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">ln(3)+2*ln(x)+ln(2)+ln(x+1)</span></div>
 <hr>
 <a href="cascmd_en247.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
