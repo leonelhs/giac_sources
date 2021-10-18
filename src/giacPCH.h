@@ -1,3 +1,6 @@
+#ifdef NSPIRE_NEWLIB
+#include "os.h"
+#endif
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

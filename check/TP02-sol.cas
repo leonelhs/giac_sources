@@ -14,7 +14,7 @@ histogram(classes(listecondi,0,10));
  classes(listecondi,[0..50,50..100,100..200,200..400,400..floor(ml+1)]);#l'infini ne marche pas, on prend donc une borne strictement superieure au max
  bar_plot(classes(listecondi,[0..50,50..100,100..200,200..400,400..floor(ml+1)]));
 /*  L'ecart type est enorme par rapport a la moyenne. On constate£ souvent 80 pourcent des condtionnements en dessous de 50, alors que£ parfois ca peut depasser 1000*/
- listetriee:=sort(l,(x,y)->x[1]>=y[1]);
+ listetriee:=sort(l,(x,y)->x[1]>y[1]);
  listetriee[1];M:=listetriee[1][2];
  complex_mode:=1;det(M);eigenvalues(M);
  jordan(M);#bon c'etait pas la peine!

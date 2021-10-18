@@ -12,6 +12,8 @@ const char * giac_caseval(const char * s){
   vx_var=identificateur("x");
   //static nio::console console_cin;
   //console_cin_ptr=&console_cin;
-  return giac::caseval(s);
+  giac::debug_infolevel=2;
+  const char * res=giac::caseval(s);
+  return res;
 }
 

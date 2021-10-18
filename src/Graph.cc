@@ -272,7 +272,11 @@ namespace xcas {
 #ifdef HAVE_LC_MESSAGES
       xcas_locale()=getenv("XCAS_LOCALE")?getenv("XCAS_LOCALE"):giac_locale_location;	
       cerr << "// Using locale " << xcas_locale() << endl;
-      cerr << "// " << setlocale (LC_MESSAGES, "") << endl;
+      const char * ptr=setlocale (LC_MESSAGES, "");
+      if (ptr)
+	cerr << "// " << ptr << endl;
+      else
+	cerr << "// setlocale returns 0" << endl;
 #if defined(HAVE_GETTEXT) 
       cerr << "// " << bindtextdomain (PACKAGE, xcas_locale().c_str()) << endl;
       cerr << "// " << textdomain (PACKAGE) << endl;

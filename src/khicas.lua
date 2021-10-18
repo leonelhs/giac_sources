@@ -1242,8 +1242,8 @@ function on.paint(gc)
 				gc:drawString("Giac (c) B. Parisse/R. De Graeve, license GPL3", 2, 1 * strHeight, "top")
 				gc:drawString("Not allowed during exams if", 2, 2 * strHeight, "top")
 				gc:drawString("CAS calculators are forbidden!", 2, 3 * strHeight, "top")
-				gc:drawString("This is still a beta version.", 2, scrHeight/2-20, "top")
-				gc:drawString("Please report any bugs/issues you encounter !", 2, scrHeight/2, "top")
+				gc:drawString("Type ?commandname for short help", 2, scrHeight/2-20, "top")
+				gc:drawString("Beta version, report bugs/issues you encounter !", 2, scrHeight/2, "top")
 			else
 				gc:setColorRGB(255, 0, 0)
 				gc:drawString("NO.", gc:getStringWidth("Giac CAS engine :") + 6, 0, "top")
@@ -1690,10 +1690,13 @@ menu = {
        	 { "max(x)",	function() menustring( "max(" ) end },
        	 { "min(x)",	function() menustring( "min(" ) end },
        	 { "round(x[,n])",	function() menustring( "round(" ) end },
+       	 { "evalf(x[,prec])",	function() menustring( "evalf(" ) end },
+       	 { "[inf..sup]",	function() menustring( "[..]") end },
        	 { "re(z)",	function() menustring( "re(" ) end },
        	 { "im(z)",	function() menustring( "im(" ) end },
        	 { "conj(z)",	function() menustring( "conj(" ) end },
        	 { "arg(z)",	function() menustring( "arg(" ) end },
+       	 { "convert(expr,interval[,prec])",	function() menustring( "convert(,interval)" ) end },
        },
        { "Integers",
        	 { "iquo(a,b): euclidean quotient",	function() menustring( "iquo(" ) end },

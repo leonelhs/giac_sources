@@ -207,7 +207,11 @@ extern "C" void Sleep(unsigned int miliSecond);
     static std::vector<std::string> * ans = new  std::vector<std::string>;
     return ans;
   }
+#ifdef NSPIRE_NEWLIB
+  const context * context0=new context;
+#else
   const context * context0=0;
+#endif
   // Global variable when context is 0
   void (*fl_widget_delete_function)(void *) =0;
 #ifndef NSPIRE
@@ -4781,7 +4785,13 @@ unsigned int ConvertUTF8toUTF16 (
 	registered_lexer_functions().push_back(user_function(s,parser_token));
       if (!builtin_lexer_functions_sorted){
 #ifndef STATIC_BUILTIN_LEXER_FUNCTIONS
+#ifdef NSPIRE_NEWLIB
 	builtin_lexer_functions_begin()[builtin_lexer_functions_number]=std::pair<const char *,gen>(s,gen(u));
+#else
+	builtin_lexer_functions_begin()[builtin_lexer_functions_number].first=s;
+	builtin_lexer_functions_begin()[builtin_lexer_functions_number].second.type=0;
+	builtin_lexer_functions_begin()[builtin_lexer_functions_number].second=gen(u);
+#endif
 	if (parser_token==1)
 	  builtin_lexer_functions_begin()[builtin_lexer_functions_number].second.subtype=T_UNARY_OP-256;
 	else
@@ -4903,13 +4913,13 @@ unsigned int ConvertUTF8toUTF16 (
 	  res=gen(int((*builtin_lexer_functions_())[p.first-builtin_lexer_functions_begin()]+p.first->second.val));
 	  res=gen(*res._FUNCptr);	  
 #else
-#if 1 // def SMARTPTR64
+#ifndef NSPIRE_NEWLIB
 	  res=0;
 	  int pos=p.first-builtin_lexer_functions_begin();
 	  size_t val=builtin_lexer_functions_[pos];
 	  unary_function_ptr * at_val=(unary_function_ptr *)val;
 	  res=at_val;
-#else
+#else // keep this code, required for the nspire otherwise evalf(pi)=reboot
 	  res=gen(int(builtin_lexer_functions_[p.first-builtin_lexer_functions_begin()]+p.first->second.val));
 	  res=gen(*res._FUNCptr);
 #endif

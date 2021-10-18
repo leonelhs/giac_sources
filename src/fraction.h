@@ -44,7 +44,7 @@ public:
 
 template <class T> class Tref_fraction {
 public:
-  int ref_count;
+  ref_count_t ref_count;
   Tfraction<T> f;
   Tref_fraction(const Tfraction<T> & F):ref_count(1),f(F) {}
 };

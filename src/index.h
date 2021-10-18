@@ -230,7 +230,7 @@ namespace giac {
 
   class ref_index_t {
   public:
-    int ref_count;
+    ref_count_t ref_count;
     index_t i;
     ref_index_t():ref_count(1) {}
     ref_index_t(int s):ref_count(1),i(s) {}

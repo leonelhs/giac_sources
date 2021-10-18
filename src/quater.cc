@@ -38,12 +38,13 @@
 #include "giacintl.h"
 using namespace std;
 
-#ifndef NO_RTTI
-
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
 
+#ifdef NO_RTTI
+  extern const unary_function_ptr * const  at_quaternion=0; // user-level quaterni
+#else
   static const char _quaternion_s []="quaternion";
   gen _quaternion(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
@@ -818,8 +819,9 @@ namespace giac {
     return galois_field(p,P,x,v);
   }
 
+#endif // NO_RTTI
+
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // ndef NO_NAMESPACE_GIAC
 
-#endif // NO_RTTI

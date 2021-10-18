@@ -10384,12 +10384,14 @@ namespace giac {
 	return fl_widget_archive_function(os,e._POINTER_val);
       else
 	return archive(os,string2gen("Done",false),contextptr);
+#ifndef NO_RTTI
     case _USER:
       {
 	if (galois_field * gf=dynamic_cast<galois_field *>(e._USERptr)){
 	  return os << et << "GF(" << gf->p << "," << gf->P << "," << gf->x << "," << gf->a << ")" << endl;
 	}
       }
+#endif
     default:
       return os << et << " " << e.print(contextptr) << endl;
     }

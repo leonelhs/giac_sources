@@ -331,6 +331,11 @@ namespace giac {
     }
     if (s<2)
       return gensizeerr(contextptr);
+    if (s>2 && v[1].type==_IDNT){
+      vecteur res=find_singularities(v[0],*v[1]._IDNTptr,(is_zero(v[2])?1:9),contextptr);
+      comprim(res);
+      return res;
+    }
     return singular(v[0],v[1],contextptr);
   } 
   static const char _singular_s []="singular";

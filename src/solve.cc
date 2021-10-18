@@ -310,6 +310,10 @@ namespace giac {
 
   vecteur find_singularities(const gen & e,const identificateur & x,int cplxmode,GIAC_CONTEXT){
     vecteur lv(lvarxpow(e,x));
+    if (cplxmode & 8){
+      lv=mergevecteur(lv,lvarxwithinv(e,x,contextptr));
+      cplxmode ^= 8;
+    }
     vecteur res;
     vecteur l(lvar(e));
     gen p=e2r(e,l,contextptr),n,d;

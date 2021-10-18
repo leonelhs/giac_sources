@@ -184,7 +184,7 @@ namespace giac {
   };
   template <class T> class Tref_tensor{
   public:
-    int ref_count;
+    ref_count_t ref_count;
     tensor<T> t;
     Tref_tensor<T>(const tensor<T> & P): ref_count(1),t(P) {}
     Tref_tensor<T>(int dim): ref_count(1),t(dim) {}

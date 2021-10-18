@@ -21,6 +21,12 @@
 #ifndef _GIAC_FIRST_H_
 #define _GIAC_FIRST_H_
 
+#if 0 // def WIN32
+typedef long ref_count_t;
+#else
+typedef int ref_count_t;
+#endif
+
 #ifdef PNACL
 #define EMCC
 #undef HAVE_LIBPTHREAD

@@ -63,7 +63,7 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	input_parser.h softmath.h softmath.cc\
 	mkxcas mkwcas mkgcas mkaout Makefile.wince Makefile.osx\
 	Makefile.rpm Makefile.ipaq Makefilenew.ipaq ipaq_usr.tgz \
-	Makefile.fast Makefile.win Makefile.win64 Makefile.O3 Makefile.64 \
+	Makefile.fast Makefile.win Makefile.win64 config.h.win64 Makefile.O3 Makefile.64 \
 	Makefile.nspire khicas.lua luagiac.c luabridge.cc luabridge.h \
 	giacnspire.cc config.h.nspire missing.c ndlessconfigure\
 	normalize.cc integrate.cc partfrac.cc factor.cc xcas.cc \
