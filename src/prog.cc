@@ -837,7 +837,7 @@ namespace giac {
     default_args(a,b,contextptr);
     bool warn=false;
 #ifndef GIAC_HAS_STO_38
-    if (logptr(contextptr))
+    if (logptr(contextptr) && calc_mode(contextptr)!=1)
       warn=true;
 #endif
     if (warn){

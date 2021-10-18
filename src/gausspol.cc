@@ -938,6 +938,54 @@ namespace giac {
     return true;
   }
 
+  bool polynome2poly1(const polynome & p,const index_t & pdeg,const index_t &deg,vecteur & v){
+    v.clear();
+    int tot=0;
+    for (size_t i=0;i<deg.size();++i){
+      tot *= deg[i];
+      tot += pdeg[i];
+    }
+    v.resize(tot+1);
+    std::vector< monomial<gen> >::const_iterator it=p.coord.begin(),itend=p.coord.end();
+    int u;
+    index_t::const_iterator itit,ditbeg=deg.begin(),ditend=deg.end(),dit;
+    gen tmp;
+    for (;it!=itend;++it){
+      u=0;
+      itit=it->index.begin();
+      for (dit=ditbeg;dit!=ditend;++itit,++dit)
+	u=u*(*dit)+(*itit);
+      if (!is_integer(it->value.type))
+	return false;
+      v[u]=it->value;
+    }
+    return true;
+  }
+
+  bool poly12polynome(const vecteur & v,const index_t & deg,polynome & p){
+    const_iterateur it=v.begin(),itend=v.end();
+    index_t::const_reverse_iterator ditbeg=deg.rbegin(),ditend=deg.rend(),dit;
+    p.dim=ditend-ditbeg;
+    p.coord.clear();
+    p.coord.reserve(itend-it);
+    int u,U=v.size();
+    index_t i(p.dim);
+    int k;
+    for (--itend;itend>=it;--itend){
+      gen g=*itend;
+      if (is_zero(g))
+	continue;
+      u=itend-it;
+      for (k=p.dim-1,dit=ditbeg;dit!=ditend;++dit,--k){
+	i[k]=u % unsigned(*dit);
+	u = u/unsigned(*dit);
+      }
+      p.coord.push_back(monomial<gen>(g,i));
+    }
+    return true;
+  }
+
+
   // Fast multiplication using hash maps, might also use an int for reduction
   // but there is no garantee that res is smod-ed modulo reduce
   void mulpoly(const polynome & th, const polynome & other,polynome & res,const gen & reduce){
@@ -969,7 +1017,7 @@ namespace giac {
       return ;
     }
     index_t d1=th.degree(),d2=other.degree(),d(th.dim);
-    int d10,d20;
+    double d10,d20;
     if ( 0 && 
 	 th.dim==1 
 	 && (d10=d1[0])>=FFTMUL_SIZE && (d20=d2[0])>=FFTMUL_SIZE && (ita_end-ita)*double(itb_end-itb)>(d10+d20)*std::log(double(d10+d20))
@@ -992,6 +1040,7 @@ namespace giac {
       sumdeg += tmp;
       lagrtime *= tmp;
     }
+    d10=lagrtime;
     lagrtime *= sumdeg;
     // Now look if length a=1 or length b=1, happens frequently
     // think of x^3*y^2*z translated to internal form
@@ -1061,6 +1110,25 @@ namespace giac {
 	if ( //false 
 	     (t1==_INT_ || t1==_ZINT) && (t2==_INT_ || t2==_ZINT)
 	    ){
+	  if (//1||
+	      0 && 
+	      c1>=FFTMUL_SIZE && c2>=FFTMUL_SIZE && th.dim>1 && d10*std::log(d10)<c1*double(c2)){
+	    CERR << CLOCK()*1e-6 << " ?fftmult " << c1 << "*" << c2 << " fft " << d10 << endl;
+#if 1
+	    vecteur thv,otherv,resv;
+	    polynome2poly1(th,d1,d,thv); 
+	    polynome2poly1(other,d2,d,otherv);
+	    fftmult(thv,otherv,resv,0);
+	    poly12polynome(resv,d,res);
+#if 0	    // debug
+	    polynome res1(res.dim);
+	    Mul<gen>(ita,ita_end,itb,itb_end,res1.coord,th.is_strictly_greater,th.m_is_strictly_greater);
+	    if (res1!=res)
+	      CERR << "fftmult * error " << res-res1 << endl;
+#endif
+	    return;
+#endif
+	  }
 	  longlong maxp1,maxp2;
 	  // should be T_unsigned<long,unsigned>
 	  // instead tmp_operator_times converts longlong args of * to long
@@ -2351,7 +2419,7 @@ namespace giac {
   void ducos_e1(const polynome & A,const polynome & Sd1,const polynome & Se,const polynome & sd,polynome & res){
     int d=A.lexsorted_degree(),e=Sd1.lexsorted_degree(),dim=A.dim;
     if (debug_infolevel)
-      CERR << CLOCK() << "ducos_e1 begin d=" << d << endl;
+      CERR << CLOCK()*1e-6 << "cducos_e1 begin d=" << d << endl;
     polynome cd1(Tfirstcoeff(Sd1)),se(Tfirstcoeff(Se));
     index_t sh(dim);
 #if 0
@@ -2383,22 +2451,22 @@ namespace giac {
 #endif
     // split next loop in 2 parts, because Hv indexes lower than e are straightforward
     if (debug_infolevel)
-      CERR << CLOCK() << "ducos_e1 D begin" << endl;
+      CERR << CLOCK()*1e-6 << " ducos_e1 D begin" << endl;
     for (int j=e-1;j>=0;--j){
       sh[0]=j;
 #if 0
-      D.append((Av[Av.size()-1-j]*se).untrunc1().shift(sh));
+      D.append((Av[Av.size()-1-j]*se.trunc1()).untrunc1().shift(sh));
 #else
       D.append(Av[Av.size()-1-j].untrunc1()*se.shift(sh));
 #endif
     }
     if (debug_infolevel)
-      CERR << CLOCK() << "ducos_e1 D j=e" << endl;
+      CERR << CLOCK()*1e-6 << " ducos_e1 D j=e " << e << "<" << d << endl;
     for (int j=e;j<d;++j){
       D = D + Av[Av.size()-1-j].untrunc1()*Hv[j];
     }
     if (debug_infolevel)
-      CERR << CLOCK() << "ducos_e1 D end" << endl;
+      CERR << CLOCK()*1e-6 << " ducos_e1 D end, start division" << endl;
 #if 1
     D = D/Av.front().untrunc1();
 #else
@@ -2409,7 +2477,7 @@ namespace giac {
     }
 #endif
     if (debug_infolevel)
-      CERR << CLOCK() << "ducos_e1 D ready" << endl;
+      CERR << CLOCK()*1e-6 << " ducos_e1 D ready" << endl;
     polynome Hd1(Hv.back());
     sh[0]=1;
     Hd1=Hd1.shift(sh); // X*Hd1
@@ -2418,6 +2486,8 @@ namespace giac {
 #else
     res=(cd1*(Hd1+D)-(Hd1.Tcoeffs()[Hv.size()-1-e]).untrunc1()*Sd1);
 #endif
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " ducos_e1 D final division" << endl;
 #if 1
     res=res/sd;
 #else
@@ -2428,7 +2498,7 @@ namespace giac {
     }
 #endif
     if (debug_infolevel)
-      CERR << CLOCK() << "ducos_e1 end" << endl;
+      CERR << CLOCK()*1e-6 << " ducos_e1 end" << endl;
     if ( (d-e+1)%2)
       res=-res;
   }
