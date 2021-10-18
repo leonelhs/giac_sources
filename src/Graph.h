@@ -51,8 +51,6 @@ namespace xcas {
   };
   // extern objet_bidon * mon_objet_bidon_ptr;
 
-  // k is reduced modulo 126
-  void arc_en_ciel(int k,int & r,int & g,int & b);
   void xcas_color(int color,bool dim3=false);
 
   int plotparam_dialog(Fl_Widget * spread_ptr,std::string & arg,int modeplot);

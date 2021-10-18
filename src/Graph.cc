@@ -94,31 +94,6 @@ namespace xcas {
     }
   }
 
-  void arc_en_ciel(int k,int & r,int & g,int & b){
-    k += 21;
-    k %= 126;
-    if (k<0)
-      k += 126;
-    if (k<21){
-      r=251; g=0; b=12*k;
-    }
-    if (k>=21 && k<42){
-      r=251-(12*(k-21)); g=0; b=251;
-    } 
-    if (k>=42 && k<63){
-      r=0; g=(k-42)*12; b=251;
-    } 
-    if (k>=63 && k<84){
-      r=0; g=251; b=251-(k-63)*12;
-    } 
-    if (k>=84 && k<105){
-      r=(k-84)*12; g=251; b=0;
-    } 
-    if (k>=105 && k<126){
-      r=251; g=251-(k-105)*12; b=0;
-    } 
-  }
-
   void xcas_color(int color,bool dim3){
     if (color>=0x100 && color<0x17e){
       int r,g,b;
@@ -4612,7 +4587,7 @@ namespace xcas {
     History_Pack * hp =get_history_pack(&Mon_image);
     context * contextptr=hp?hp->contextptr:get_context(hp);
     if (g.type==_VECT){
-      vecteur & v =*g._VECTptr;
+      vecteur v = merge_pixon(*g._VECTptr);
       const_iterateur it=v.begin(),itend=v.end();
       for (;it!=itend;++it){
 	fltk_draw(Mon_image,plot_i,*it,x_scale,y_scale,clip_x,clip_y,clip_w,clip_h);
@@ -4797,21 +4772,24 @@ namespace xcas {
 	  vecteur &v=*point._SYMBptr->feuille._VECTptr;
 	  if (v.size()<3 || v[0].type!=_INT_ || v[1].type!=_INT_ || v[2].type!=_INT_)
 	    return;
-	  int delta_i=v[0].val,delta_j=v[1].val;
-	  xcas_color(v[2].val);
-#ifdef IPAQ
-	  if (delta_i>0 && delta_i<mxw && delta_j>0 && delta_j<myw)
-	    check_fl_point(deltax+delta_i,deltay+delta_j,clip_x,clip_y,clip_w,clip_h,0,0);
-#else
-	  delta_i *= 2;
-	  delta_j *= 2;
-	  if (delta_i>0 && delta_i<mxw && delta_j>0 && delta_j<myw){
-	    check_fl_point(deltax+delta_i,deltay+delta_j,clip_x,clip_y,clip_w,clip_h,0,0);
-	    check_fl_point(deltax+delta_i,deltay+delta_j+1,clip_x,clip_y,clip_w,clip_h,0,0);
-	    check_fl_point(deltax+delta_i+1,deltay+delta_j,clip_x,clip_y,clip_w,clip_h,0,0);
-	    check_fl_point(deltax+delta_i+1,deltay+delta_j+1,clip_x,clip_y,clip_w,clip_h,0,0);
+	  int delta_i=v[0].val,delta_j=v[1].val,psx=0,psy=0;
+	  if (v.size()>3 && v[3].type==_INT_){
+	    if (v[3].val>0) psy=v[3].val; else psx=-v[3].val;
 	  }
+	  psx=pixon_size*(psx+1);
+	  psy=pixon_size*(psy+1);
+	  xcas_color(v[2].val);
+	  delta_i *= pixon_size;
+	  delta_j *= pixon_size;
+	  if (delta_i>=0 && delta_i<mxw && delta_j>=0 && delta_j<myw){
+#if 1
+	    check_fl_rectf(deltax+delta_i,deltay+delta_j,psx,psy,clip_x,clip_y,clip_w,clip_h,0,0);
+#else
+	    for (int i=0;i<psx;++i)
+	      for (int j=0;j<psy;++j)
+		check_fl_point(deltax+delta_i+i,deltay+delta_j+j,clip_x,clip_y,clip_w,clip_h,0,0);
 #endif
+	  }
 	  return;
 	}
 	if (point._SYMBptr->sommet==at_bitmap){

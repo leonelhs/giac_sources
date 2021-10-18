@@ -2089,7 +2089,18 @@ namespace giac {
 	stdloop=index.type==_IDNT && incrementstep.type==_INT_ && stopindex.type==_INT_;
       }
       if (stdloop){
-	sym_tab::iterator it=contextptr->tabptr->find(index._IDNTptr->id_name),itend=contextptr->tabptr->end();
+	const context * cur=contextptr;
+	sym_tab::iterator it,itend;
+	for (;cur->previous;cur=cur->previous){
+	  it=cur->tabptr->find(index._IDNTptr->id_name);
+	  itend=cur->tabptr->end();
+	  if (it!=itend)
+	    break;
+	}
+	if (it==itend){
+	  it=cur->tabptr->find(index._IDNTptr->id_name);
+	  itend=cur->tabptr->end();
+	}
 	// compute idx
 	if (it!=itend && it->second.type==_INT_ 
      	    && (stop-it->second.val)/step>50){
@@ -2166,7 +2177,6 @@ namespace giac {
 	  }
 	  unary_function_ptr & u=res._SYMBptr->sommet;
 	  if (u==at_break){
-	    test=zero;
 	    res=u; // res=oldres;
 	    break;
 	  }
@@ -2178,7 +2188,7 @@ namespace giac {
       }
       else {
 	for (;
-	     idx?*idx!=stop:(for_in?set_for_in(counter,for_in,for_in_v,for_in_s,index_name,newcontextptr):for_test(test,testf,eval_lev,newcontextptr));
+	     idx?*idx!=stop:((for_in && test.val)?set_for_in(counter,for_in,for_in_v,for_in_s,index_name,newcontextptr):for_test(test,testf,eval_lev,newcontextptr));
 	     ++counter,idx?*idx+=step:((test.val && increment.type)?increment.eval(eval_lev,newcontextptr).val:0)){
 	  if (interrupted || (testf.type!=_INT_ && is_undef(testf)))
 	    break;
@@ -2233,6 +2243,7 @@ namespace giac {
 		if (u==at_break){
 		  increment_instruction(it+1,itend,newcontextptr);
 		  test=zero;
+		  idx=0;
 		  res=u; // res=oldres;
 		  break;
 		}
@@ -7518,7 +7529,13 @@ namespace giac {
     }
     if ( (v[0].type!=_INT_) || (v[1].type!=_INT_) )
       return gensizeerr(contextptr);
-    int l(giacmax(v[0].val,0)),c(giacmax(v[1].val,0));
+    int l(giacmax(v[0].val,1)),c(giacmax(v[1].val,1));
+    if (vs==3 && v[2].type<=_IDNT){
+      vecteur res(l);
+      for (int i=0;i<l;++i)
+	res[i]=vecteur(c,v[2]);
+      return gen(res,_MATRIX__VECT);
+    }
     bool transpose=(vs>3);
     if (transpose){ // try to merge arguments there
       // v[2]..v[vs-1] represents flattened submatrices 
