@@ -834,6 +834,8 @@ namespace giac {
     }
     if (args.type!=_IDNT)
       return gensizeerr("Invalid purgenoassume "+args.print(contextptr));
+    if (!contextptr)
+      return _purge(args,contextptr);
     // purge a global variable
     sym_tab::iterator it=contextptr->tabptr->find(args._IDNTptr->id_name),itend=contextptr->tabptr->end();
     if (it==itend)

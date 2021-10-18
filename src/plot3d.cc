@@ -2136,7 +2136,7 @@ namespace giac {
       nystep=nxstep;
       nzstep=nxstep;
     }
-    gen ff(unfactored?f_orig:factor(f_orig,false,contextptr));
+    gen ff( (unfactored || has_num_coeff(f_orig))?f_orig:factor(f_orig,false,contextptr));
     return in_plotimplicit(ff,x,y,z,xmin,xmax,ymin,ymax,zmin,zmax,nxstep,nystep,nzstep,eps,attributs,contextptr);
   }
 

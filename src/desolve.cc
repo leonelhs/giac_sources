@@ -887,7 +887,7 @@ namespace giac {
 	      if (A-2==C){
 		// a*n*(n-1)+b*n+c=a*n^2+(b-1)*n+c=0
 		gen aa=a._VECTptr->front(),bb=b._VECTptr->front()-1,cc=c._VECTptr->front();
-		gen delta=(sqrt(b*b-4*aa*cc,contextptr)+bb)/2;
+		gen delta=(sqrt(bb*bb-4*aa*cc,contextptr)+bb)/2;
 		if (delta.type==_INT_ && delta.val>N)
 		  N=delta.val;
 	      }
