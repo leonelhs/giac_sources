@@ -1,61 +1,73 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le triangle isocèle dans l’espace : isosceles_triangle triangle_isocele</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1029.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1031.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1208">11.7.2</A>  Le triangle isocèle dans l’espace : <TT>isosceles_triangle triangle_isocele</TT></H3><P><A NAME="@default2005"></A><A NAME="@default2006"></A><A NAME="sec:triangleiso3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr921.html#sec:triangleiso2">10.10.3</A> pour la géométrie plane.<BR>
-<TT>triangle_isocele</TT>, en géométrie 3-d, a trois ou quatre 
-arguments.<BR>
-Description des arguments :<BR>
-- si il a trois arguments, ce sont : 3 points (les 2 premiers sommets <I>A</I> et
-<I>B</I> du triangle) et le troisième argument est soit un point <I>P</I>, soit une 
-liste formée par un point <I>P</I> et un réel <I>c</I> qui désigne la mesure en 
-radians (ou en degrés) de l’angle (<I>AB</I>,<I>AC</I>), l’angle (<I>AB</I>,<I>AP</I>) étant positif.<BR>
-Le point <I>P</I> définit le plan du triangle 
-ainsi que l’orientation de ce plan pour que l’angle (<I>AB</I>,<I>AP</I>) soit positif.<BR>
-<TT>triangle_isocele(A,B,P)</TT> renvoie et trace dans le plan <I>ABP</I> orienté 
-par <I>P</I> (l’angle (<I>AB</I>,<I>AP</I>) est positif)
-le triangle <I>ABC</I> isocèle de sommet <I>A</I> (<I>AB</I>=<I>AC</I>) et tel que l’angle 
-(<I>AB</I>,<I>AC</I>)=(<I>AB</I>,<I>AP</I>), sans définir le point <I>C</I>).<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Le triangle rectangle dans l’espace : triangle_rectangle</title>
+</head>
+<body >
+<a href="cascmd_fr1029.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1031.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1246" class="subsection">11.7.3  Le triangle rectangle dans l’espace : <span style="font-family:monospace">triangle_rectangle</span></h3>
+<p><a id="hevea_default2004"></a><a id="sec:trianglerect3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr921.html#sec%3Atrianglerect2">10.10.4</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">triangle_rectangle</span>, en géométrie 3-d, peut avoir trois ou 
+quatre arguments.<br>
+Description des arguments :<br>
+- si il a trois arguments, ce sont : 3 points (les 2 premiers sommets <span style="font-style:italic">A</span> et
+<span style="font-style:italic">B</span> du triangle) et le troisième argument est un point <span style="font-style:italic">P</span> ou une liste 
+formée par un point <span style="font-style:italic">P</span> et un réel <span style="font-style:italic">k</span> non nul.<br>
+Le point <span style="font-style:italic">P</span> définit le plan du triangle ainsi que l’orientation de ce plan 
+pour que l’angle (<span style="font-style:italic">AB</span>,<span style="font-style:italic">AP</span>) soit positif,<br>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">triangle_rectangle(A,B,P)</span> renvoie et trace, dans le plan <span style="font-style:italic">ABP</span>, le 
+triangle <span style="font-style:italic">ABC</span> rectangle en <span style="font-style:italic">A</span>, tel que <span style="font-style:italic">AC</span>=<span style="font-style:italic">AP</span>. <br>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
+<div class="center"><span style="font-family:monospace">A:=point(0,0,0)</span></div>
+<div class="center"><span style="font-family:monospace">B:=point(3,3,3)</span></div>
+<div class="center"><span style="font-family:monospace">P:=point(0,0,3)</span></div>
+<div class="center"><span style="font-family:monospace">Q:=point(0,0,-3)</span></div>
 Puis on tape :
-</P><DIV CLASS="center"><TT>triangle_isocele(A,B,P)</TT></DIV><DIV CLASS="center"><TT>Dans le plan ABP, le triangle isocéle de sommets AB, d’angle </TT><TT>(<I>AB</I>,<I>AC</I>)=(<I>AB</I>,<I>AP</I>)</TT></DIV><P><TT>triangle_isocele(A,B,[P,c])</TT> renvoie et trace dans le plan <I>ABP</I> 
-orienté par <I>P</I> (l’angle (<I>AB</I>,<I>AP</I>) est positif) le triangle <I>ABC</I> isocèle de sommet <I>A</I> (<I>AB</I>=<I>AC</I>) et tel que l’angle 
-(<I>AB</I>,<I>AC</I>)=<I>c</I> radians (ou degrés), sans 
-définir le point <I>C</I>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>triangle_isocele(A,B,[P,3*pi/4])</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>Dans le plan ABP, le triangle isocéle de sommets AB, 
-d’angle </TT><TT>(<I>AB</I>,<I>AC</I>)=3*<I>pi</I>/4</TT></DIV><P>
-- si il a quatre arguments, le dernier argument est le nom d’une 
-variable qui servira à définir le troisième sommet.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>triangle_isocele(A,B,[P,3*pi/4],C)</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>Dans le plan ABP, le triangle isocéle de sommets AB, d’angle </TT><TT>(<I>AB</I>,<I>AC</I>)=3*<I>pi</I>/4</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
+<div class="center"><span style="font-family:monospace">triangle_rectangle(A,B,P)</span></div>
 On obtient :
-</P><DIV CLASS="center"><TT>[(-3*sqrt(2)-3)/2,(-3*sqrt(2)-3)/2,(-3*sqrt(2)+6)/2]</TT></DIV><HR>
-<A HREF="cascmd_fr1029.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1031.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">Dans le plan </span><span style="font-style:italic">ABP</span><span style="font-family:monospace">, le triangle </span><span style="font-style:italic">ABC</span><span style="font-family:monospace"> rectangle en </span><span style="font-style:italic">A</span><span style="font-family:monospace"> tel que </span><span style="font-style:italic">AC</span>=<span style="font-style:italic">AP</span><span style="font-family:monospace"> </span></div>
+</li><li class="li-itemize"><span style="font-family:monospace">triangle_rectangle(A,B,[P,k])</span> renvoie et trace dans le plan 
+<span style="font-style:italic">ABP</span>, le triangle <span style="font-style:italic">ABC</span> rectangle en <span style="font-style:italic">A</span> : ce triangle est direct si <span style="font-style:italic">k</span>&gt;0, 
+indirect si <span style="font-style:italic">k</span>&lt;0 et est tel que <span style="font-style:italic">AC</span>=|<span style="font-style:italic">k</span>|*<span style="font-style:italic">AB</span>. <br>
+Ainsi si l’angle (<span style="font-style:italic">BC</span>,<span style="font-style:italic">BA</span>)=β radians 
+(ou degrés), on a tan(β)=<span style="font-style:italic">k</span>.<br>
+On remarquera que si <span style="font-style:italic">C</span> est le transformé de <span style="font-style:italic">B</span> dans la similitude de 
+centre <span style="font-style:italic">A</span> de rapport |<span style="font-style:italic">k</span>| et d’angle (<span style="font-style:italic">k</span>/|<span style="font-style:italic">k</span>|)*π/2.<br>
+On tape :
+<div class="center"><span style="font-family:monospace">A:=point(0,0,0)</span></div>
+<div class="center"><span style="font-family:monospace">B:=point(3,3,3)</span></div>
+<div class="center"><span style="font-family:monospace">P:=point(0,0,3)</span></div>
+<div class="center"><span style="font-family:monospace">Q:=point(0,0,-3)</span></div>
+Puis on tape :
+<div class="center"><span style="font-family:monospace">triangle_rectangle(A,B,[P,2])</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">Dans le plan ABP, le triangle ABC direct, rectangle en A tel que AC=2*AB</span></div>
+On tape :
+<div class="center"><span style="font-family:monospace">triangle_rectangle(A,B,[P,-2])</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">Dans le plan ABP, le triangle ABC indirect, rectangle en A tel que AC=2*AB</span></div>
+- si il a quatre arguments, le dernier argument est le nom d’une 
+variable qui servira à définir le troisième sommet.<br>
+On tape :
+<div class="center"><span style="font-family:monospace">triangle_rectangle(A,B,[P,2],C)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">Dans le plan ABP, le triangle rectangle de sommets ABC</span></div>
+On tape :
+<div class="center"><span style="font-family:monospace">simplify(coordonnees(C))</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">[-(3*sqrt(2)),-(3*sqrt(2)),6*sqrt(2)] </span></div>
+</li></ul>
+<hr>
+<a href="cascmd_fr1029.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1031.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

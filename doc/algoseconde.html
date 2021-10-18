@@ -5768,6 +5768,37 @@ ffonction:;
 <div><textarea onkeypress="UI.ckenter(event,this,2)" 
 style="width:800px;font-size:large">f(x):=sqrt(1-x^2); longueurcourbe(f,0,1,100) 
 </textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>
+</p><p>Remarque : <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>h</mi></mrow><annotation encoding='application/x-tex'>h</annotation></semantics></math> est approché, donc en effectuant la boucle on
+va accumuler des erreurs d’arrondis. Si l’erreur est faite par
+excès, la dernière valeur de <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>x</mi></mrow><annotation encoding='application/x-tex'>x</annotation></semantics></math> risque d’être un peu 
+supérieure à 1, et <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding='application/x-tex'>f(x)</annotation></semantics></math> devient alors complexe, avec
+une partie imaginaire très petite. Ceci n’a pas d’importance
+dans Xcas, car l’instruction <code>point(x,y)</code> renvoie
+le point d’affixe <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>x</mi><mo>+</mo><mi>i</mi><mi>y</mi></mrow><annotation encoding='application/x-tex'>x+iy</annotation></semantics></math>. Dans d’autres langages, par exemple Python,
+cela peut provoquer une erreur.</p><p>Exercice : faire afficher la ligne polygonale dont on calcule la longueur.</p><p>Solution :
+
+</p><pre class="verbatim">fonction approxcourbe(f,a,b,n)
+  local L,k,h,x,M,N;
+  h:=evalf((b-a)/n);
+  x:=a;
+  M:=point(x,f(x));
+  L:=[M];
+  pour k de 0 jusque n-1 faire
+    x:=x+h;
+    N:=point(x,f(x));
+    L:=append(L,N);
+    M:=N;
+  fpour;
+  return polygone_ouvert(L);
+ffonction:;
+</pre><p> 
+<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1[0];tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
+
+
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="width:800px;font-size:large">f(x):=sqrt(1-x^2); plot(f(x),x=0..1,affichage=rouge);approxcourbe(f,0,1,10)
+</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
 </p>
 <!--TOC section id="sec105" Réfraction et recherche de minimas-->
 <h2 id="sec105" class="section">8.3  Réfraction et recherche de minimas</h2><!--SEC END --><p>

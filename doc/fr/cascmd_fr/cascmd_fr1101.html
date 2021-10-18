@@ -1,34 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Qu’est-ce qu’une image ?</title>
+</head>
+<body >
+<a href="cascmd_fr1100.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1102.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1331" class="subsection">12.2.1  Qu’est-ce qu’une image ?</h3>
+<p>
+Pour <span style="font-family:monospace">Xcas</span> une image est une liste <span style="font-family:monospace">a</span> de 5 éléments :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">a[0]</span> est une liste de 3 éléments : le nombre de canaux (3 ou 4)
+et le nombre de lignes <span style="font-style:italic">n</span> et de colonnes <span style="font-style:italic">p</span> utilisés pour la dimension de
+l’image,
+</li><li class="li-itemize"><span style="font-family:monospace">a[1]</span> correspond au canal rouge : c’est une matrice <span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres
+entiers entre 0 et 255,
+</li><li class="li-itemize"><span style="font-family:monospace">a[2]</span> correspond au canal vert : c’est une matrice <span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres
+entiers entre 0 et 255,
+</li><li class="li-itemize"><span style="font-family:monospace">a[3]</span> correspond au canal pour la transparence : c’est une matrice
+<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres entiers entre 0 et 255,
+</li><li class="li-itemize"><span style="font-family:monospace">a[4]</span> correspond au canal bleu : c’est une matrice <span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres
+entiers entre 0 et 255.
+</li></ul><p>
+Pour creer d’autres couleurs que rouge, vert, bleu au pixel ligne i colonne j, 
+il faut donner des valeurs non nulles en ligne i colonne j des 1ere, 2eme et 
+4eme matrices, plus la valeur est grande plus la composante rouge, vert, bleu 
+sera importante.<br>
+Par exemple :<br>
 
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Préparer une donnée de son numérisée soundsec</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1100.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1102.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1292">12.1.4</A>  Préparer une donnée de son numérisée <TT>soundsec</TT></H3><P> <A NAME="@default2123"></A>
-La commande <TT>soundsec</TT> prépare une donnée de son pour un canal
-dont la durée en secondes est passée en argument. On peut passer en
-argument optionnel la fréquence d’échantillonage.<BR>
-Par exemple <TT>soundsec(2.5)</TT> prépare une donnée son de 2.5
-secondes échantillonée à la fréquence par défaut de 44100Hz,
-alors que <TT>soundsec(1,22050) </TT> prépare une donnée son de 1
-secondes échantillonée à la fréquence de 22050Hz.<BR>
-Le résultat de <TT>soundsec</TT> est un vecteur, dont le <I>i</I>-ième
-élément est le temps correspondant à l’indice <I>i</I>. On lui
-applique en général des opérations, par exemple<BR>
-<CODE>sin(2*pi*440*soundsec(1.3))</CODE><BR>
-pour avoir une sinusoïde de fréquence 440 échantillonnée 44100 fois 
-par seconde pendant 1.3 seconde.</P><HR>
-<A HREF="cascmd_fr1100.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1102.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p>
+<hr>
+<a href="cascmd_fr1100.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1102.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

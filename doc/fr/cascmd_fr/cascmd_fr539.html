@@ -1,52 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Appliquer une fonction de plusieurs variables à un polynôme 
-donné au format interne :map</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr538.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr540.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc640">6.42.37</A>  Appliquer une fonction de plusieurs variables à un polynôme 
-donné au format interne :<TT>map</TT></H3><P><A NAME="@default960"></A>
-Le polynôme <I>x</I><SUP>2</SUP>+2<I>xy</I>+<I>y</I><SUP>2</SUP> s’écrit au format interne :<BR>
-<TT>% % % {1,[2,0]% % % }+% % % {2,[1,1]% % % }+% % % {1,[0,2]% % % }</TT><BR>
-On peut transformer <I>x</I><SUP>2</SUP>+2<I>xy</I>+<I>y</I><SUP>2</SUP> au format interne avec la commande 
-<TT>symb2poly</TT> (voir <A HREF="cascmd_fr364.html#sec:interne">6.28.6</A>). Par exemple <TT>p:=symb2poly((x+y)</TT><CODE><TT>^</TT></CODE><TT>2,[x,y])</TT> renvoie
-<TT>% % % {1,[2,0]% % % }+% % % {2,[1,1]% % % }+% % % {1,[0,2]% % % }</TT><BR>
-Pour un polynôme de <I>n</I> variables, <I>f</I> va agir sur les coefficients de
-chaque monôme du polynôme.<BR>
-Pour agir sur un monôme de <I>n</I> variables, <I>f</I> doit être une fonction de 
-<I>n</I>+1 variables, on considère que ces variables représentent le coefficient,
-l’exposant de la première variable,...,l’exposant de la <I>n</I>-ième variable 
-et <I>f</I> transforme le coefficient de ce monôme.<BR>
-Par exemple, si le monôme est 5<I>x</I><SUP>2</SUP><I>y</I><SUP>3</SUP>, au format interne il s’écrit :
-<TT>% % % {5,[2,3]% % % }</TT><BR>
-et si <I>f</I> est dédfinie par :<BR>
-<TT>f(a,b,c):=a*(2*b+3*c)</TT><BR>
-alors<BR>
-<TT>map(% % % {5,[2,3]% % % },f)</TT> renvoie le monôme 
-<I>f</I>(5,2,3)<I>x</I><SUP>2</SUP><I>y</I><SUP>3</SUP>=65<I>x</I><SUP>2</SUP><I>y</I><SUP>3</SUP> écrit au format interne, c’est à dire
-<TT>% % % {65,[2,3]% % % }</TT><BR>
-On tape :<BR>
-<TT>map(% % % {5,[2,3]% % % },(a,b,c)-&gt;a*(2b+3c))</TT><BR>
-On obtient :<BR>
-<TT>% % % {65,[2,3]% % % }</TT><BR>
-On tape :<BR>
-<TT>map(% % % {1,[2,0]% % % }+% % % {2,[1,1]% % % }+% % % {1,[0,2]% % % },(a,b,c)-&gt;a*(b+2c))</TT><BR>
-On obtient :<BR>
-<TT>% % % {2,[2,0]% % % }+% % % {6,[1,1]% % % }+% % % {4,[0,2]% % % }</TT>
-car si <I>f</I> est la fonction (<I>a</I>,<I>b</I>,<I>c</I>)−&gt;<I>a</I>*(<I>b</I>+2<I>c</I>) alors <I>f</I>(1,2,0)=2,<I>f</I>(2,1,1)=6, <I>f</I>(1,0,2)=4
-</P><HR>
-<A HREF="cascmd_fr538.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr540.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Appliquer une fonction de plusieurs variables à un polynôme 
+donné au format interne :map</title>
+</head>
+<body >
+<a href="cascmd_fr538.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr540.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec668" class="subsection">6.42.37  Appliquer une fonction de plusieurs variables à un polynôme 
+donné au format interne :<span style="font-family:monospace">map</span></h3>
+<p><a id="hevea_default960"></a>
+Le polynôme <span style="font-style:italic">x</span><sup>2</sup>+2<span style="font-style:italic">xy</span>+<span style="font-style:italic">y</span><sup>2</sup> s’écrit au format interne :<br>
+<span style="font-family:monospace">% % % {1,[2,0]% % % }+% % % {2,[1,1]% % % }+% % % {1,[0,2]% % % }</span><br>
+On peut transformer <span style="font-style:italic">x</span><sup>2</sup>+2<span style="font-style:italic">xy</span>+<span style="font-style:italic">y</span><sup>2</sup> au format interne avec la commande 
+<span style="font-family:monospace">symb2poly</span> (voir <a href="cascmd_fr364.html#sec%3Ainterne">6.28.6</a>). Par exemple <span style="font-family:monospace">p:=symb2poly((x+y)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[x,y])</span> renvoie
+<span style="font-family:monospace">% % % {1,[2,0]% % % }+% % % {2,[1,1]% % % }+% % % {1,[0,2]% % % }</span><br>
+Pour un polynôme de <span style="font-style:italic">n</span> variables, <span style="font-style:italic">f</span> va agir sur les coefficients de
+chaque monôme du polynôme.<br>
+Pour agir sur un monôme de <span style="font-style:italic">n</span> variables, <span style="font-style:italic">f</span> doit être une fonction de 
+<span style="font-style:italic">n</span>+1 variables, on considère que ces variables représentent le coefficient,
+l’exposant de la première variable,...,l’exposant de la <span style="font-style:italic">n</span>-ième variable 
+et <span style="font-style:italic">f</span> transforme le coefficient de ce monôme.<br>
+Par exemple, si le monôme est 5<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span><sup>3</sup>, au format interne il s’écrit :
+<span style="font-family:monospace">% % % {5,[2,3]% % % }</span> <br>
+et si <span style="font-style:italic">f</span> est dédfinie par :<br>
+<span style="font-family:monospace">f(a,b,c):=a*(2*b+3*c)</span><br>
+alors <br>
+<span style="font-family:monospace">map(% % % {5,[2,3]% % % },f)</span> renvoie le monôme 
+<span style="font-style:italic">f</span>(5,2,3)<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span><sup>3</sup>=65<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span><sup>3</sup> écrit au format interne, c’est à dire
+<span style="font-family:monospace">% % % {65,[2,3]% % % }</span> <br>
+On tape :<br>
+<span style="font-family:monospace">map(% % % {5,[2,3]% % % },(a,b,c)-&gt;a*(2b+3c))</span><br>
+On obtient :<br>
+<span style="font-family:monospace">% % % {65,[2,3]% % % }</span> <br>
+On tape :<br>
+<span style="font-family:monospace">map(% % % {1,[2,0]% % % }+% % % {2,[1,1]% % % }+% % % {1,[0,2]% % % },(a,b,c)-&gt;a*(b+2c))</span><br>
+On obtient :<br>
+<span style="font-family:monospace">% % % {2,[2,0]% % % }+% % % {6,[1,1]% % % }+% % % {4,[0,2]% % % }</span>
+car si <span style="font-style:italic">f</span> est la fonction (<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>)−&gt;<span style="font-style:italic">a</span>*(<span style="font-style:italic">b</span>+2<span style="font-style:italic">c</span>) alors <span style="font-style:italic">f</span>(1,2,0)=2,<span style="font-style:italic">f</span>(2,1,1)=6, <span style="font-style:italic">f</span>(1,0,2)=4
+</p>
+<hr>
+<a href="cascmd_fr538.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr540.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

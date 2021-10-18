@@ -1,31 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Append an element at the end of a list : append</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en310.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en312.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc350">2.37.16</A>  Append an element at the end of a list : <TT>append</TT></H3><P><A NAME="@default528"></A>
-<TT>append</TT> takes as argument a list and an element.<BR>
-<TT>append</TT> puts this element at the end of this list.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Concatenate two lists or a list and an element : concat augment</title>
+</head>
+<body >
+<a href="cascmd_en310.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en312.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec373" class="subsection">2.37.15  Concatenate two lists or a list and an element : <span style="font-family:monospace">concat augment</span></h3>
+<p><a id="hevea_default527"></a><a id="hevea_default528"></a>
+<span style="font-family:monospace">concat</span> (or <span style="font-family:monospace">augment</span>) takes as argument a list and an 
+element or two lists.<br>
+<span style="font-family:monospace">concat</span> (or <span style="font-family:monospace">augment</span>) concats this list and this element, or concats 
+these two lists.<br>
 Input :
-</P><DIV CLASS="center"><TT>append([3,4,2],1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">concat([3,4,2],[1,2,4])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">augment([3,4,2],[1,2,4])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[3,4,2,1]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[3,4,2,1,2,4]</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>append([1,2],[3,4])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">concat([3,4,2],5)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">augment([3,4,2],5)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[1,2,[3,4]]</TT></DIV><HR>
-<A HREF="cascmd_en310.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en312.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[3,4,2,5]</span></div><p>
+<span style="font-weight:bold">Warning</span>
+If you input :
+</p><div class="center"><span style="font-family:monospace">concat([[3,4,2]],[[1,2,4]])</span></div><p>
+or
+</p><div class="center"><span style="font-family:monospace">augment([[3,4,2]],[[1,2,4]])</span></div><p>
+the output will be:
+</p><div class="center"><span style="font-family:monospace">[[3,4,2,1,2,4]]</span></div>
+<hr>
+<a href="cascmd_en310.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en312.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

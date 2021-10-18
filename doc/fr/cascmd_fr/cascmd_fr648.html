@@ -1,57 +1,57 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Trouver la matrice d’une isométrie : mkisom</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr647.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr649.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc764">6.57.2</A>  Trouver la matrice d’une isométrie : <TT>mkisom</TT></H3><P><A NAME="@default1187"></A>
-<TT>mkisom</TT> a comme argument :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Trouver la matrice d’une isométrie : mkisom</title>
+</head>
+<body >
+<a href="cascmd_fr647.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr649.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec792" class="subsection">6.57.2  Trouver la matrice d’une isométrie : <span style="font-family:monospace">mkisom</span></h3>
+<p><a id="hevea_default1187"></a>
+<span style="font-family:monospace">mkisom</span> a comme argument :
+</p><ul class="itemize"><li class="li-itemize">
 En dimension 3, la liste des éléments caractéristiques (vecteur 
 directeur de l’axe et angle de la rotation ou vecteur de la normale au plan de 
-symétrie) et <TT>+1</TT> ou <TT>-1</TT> (<TT>+1</TT> pour les isométries directes et
-<TT>-1</TT> pour les indirectes).
-</LI><LI CLASS="li-itemize">En dimension 2, l’élément caractéristique (un angle ou un vecteur) 
-et <TT>+1</TT> ou <TT>-1</TT> (<TT>+1</TT> pour les isométries directes et <TT>-1</TT> 
+symétrie) et <span style="font-family:monospace">+1</span> ou <span style="font-family:monospace">-1</span> (<span style="font-family:monospace">+1</span> pour les isométries directes et
+<span style="font-family:monospace">-1</span> pour les indirectes).
+</li><li class="li-itemize">En dimension 2, l’élément caractéristique (un angle ou un vecteur) 
+et <span style="font-family:monospace">+1</span> ou <span style="font-family:monospace">-1</span> (<span style="font-family:monospace">+1</span> pour les isométries directes et <span style="font-family:monospace">-1</span> 
 pour les indirectes).
-</LI></UL><P>
-<TT>mkisom</TT> renvoie la matrice de l’isométrie définie par les arguments.<BR>
+</li></ul><p>
+<span style="font-family:monospace">mkisom</span> renvoie la matrice de l’isométrie définie par les arguments.<br>
 On tape :
-</P><DIV CLASS="center"><TT>mkisom([[-1,2,-1],pi],1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">mkisom([[-1,2,-1],pi],1)</span></div><p>
 On obtient la matrice d’une rotation d’axe [−1,2,−1] et d’angle π:
-</P><DIV CLASS="center"><TT>[[-2/3,-2/3,1/3],[-2/3,1/3,-2/3],[1/3,-2/3,-2/3]]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[[-2/3,-2/3,1/3],[-2/3,1/3,-2/3],[1/3,-2/3,-2/3]]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>mkisom([pi],-1)</TT></DIV><P>
-On obtient la matrice d’une symétrie par rapport à <I>O</I> :
-</P><DIV CLASS="center"><TT>[[-1,0,0],[0,-1,0],[0,0,-1]]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">mkisom([pi],-1)</span></div><p>
+On obtient la matrice d’une symétrie par rapport à <span style="font-style:italic">O</span> :
+</p><div class="center"><span style="font-family:monospace">[[-1,0,0],[0,-1,0],[0,0,-1]]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>mkisom([1,1,1],-1)</TT></DIV><P>
-On obtient la matrice d’une symétrie par rapport au plan <I>x</I>+<I>y</I>+<I>z</I>=0 :
-</P><DIV CLASS="center"><TT>[[1/3,-2/3,-2/3],[-2/3,1/3,-2/3],[-2/3,-2/3,1/3]]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">mkisom([1,1,1],-1)</span></div><p>
+On obtient la matrice d’une symétrie par rapport au plan <span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>+<span style="font-style:italic">z</span>=0 :
+</p><div class="center"><span style="font-family:monospace">[[1/3,-2/3,-2/3],[-2/3,1/3,-2/3],[-2/3,-2/3,1/3]]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>mkisom([[1,1,1],pi/3],-1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">mkisom([[1,1,1],pi/3],-1)</span></div><p>
 On obtient la matrice produit d’une rotation d’axe [1,1,1] et d’angle 
-π/3 et d’une symétrie par rapport au plan <I>x</I>+<I>y</I>+<I>z</I>=0:
-</P><DIV CLASS="center"><TT>[[0,-1,0],[0,0,-1],[-1,0,0]]</TT></DIV><P>
+π/3 et d’une symétrie par rapport au plan <span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>+<span style="font-style:italic">z</span>=0:
+</p><div class="center"><span style="font-family:monospace">[[0,-1,0],[0,0,-1],[-1,0,0]]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>mkisom(pi/2,1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">mkisom(pi/2,1)</span></div><p>
 On obtient la matrice en dimension 2, de la rotation plane d’angle π/2 :
-</P><DIV CLASS="center"><TT>[[0,-1],[1,0]]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[[0,-1],[1,0]]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>mkisom([1,2],-1)</TT></DIV><P>
-On obtient la matrice en dimension 2, de la symétrie plane par rapport à la droite d’équation <I>x</I>+2<I>y</I>=0 :
-</P><DIV CLASS="center"><TT>[[3/5,-4/5],[-4/5,-3/5]]</TT></DIV><HR>
-<A HREF="cascmd_fr647.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr649.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">mkisom([1,2],-1)</span></div><p>
+On obtient la matrice en dimension 2, de la symétrie plane par rapport à la droite d’équation <span style="font-style:italic">x</span>+2<span style="font-style:italic">y</span>=0 :
+</p><div class="center"><span style="font-family:monospace">[[3/5,-4/5],[-4/5,-3/5]]</span></div>
+<hr>
+<a href="cascmd_fr647.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr649.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

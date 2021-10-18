@@ -1,40 +1,41 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Digits</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en482.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en484.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc559">4.1.1</A>  Digits</H3><P>
-The <TT>Digits</TT> variable is used to control how real numbers
-are represented and also how they are displayed.
-When the specified
-number of digits is less or equal to 14 (for example <TT>Digits:=14</TT>), then hardware floating point
-numbers are used and they are displayed using the specified
-number of digits.
-When <TT>Digits</TT> is larger than 14, Xcas uses the MPFR
-library, the representation is similar to hardware floats
-(cf. infra) but the number of bits of
-the mantissa is not fixed and the range of exponents is much larger.
-More precisely, the number of bits of the mantissa of created MPFR float
-is <TT>ceil(Digits*log(10)/log(2))</TT>.</P><P>Note that if you change the value of <TT>Digits</TT>, this will affect
-the creation of new real numbers compiled from commandlines 
-or programs or by instructions like <TT>approx</TT>, but it will
-not affect existing real numbers. Hence hardware floats may coexist
-with MPFR floats, and even in MPFR floats, some may have 100 bits
-of mantissa and some may have 150 bits of mantissa. If operations
-mix different kinds of floats, the most precise kind of floats
-are coerced to the less precise kind of floats.</P><HR>
-<A HREF="cascmd_en482.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en484.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>3D implicit surface</title>
+</head>
+<body >
+<a href="cascmd_en482.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en484.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec581" class="subsection">3.10.2  3D implicit surface</h3>
+<p><a id="sec:implicitplot3"></a>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">plotimplicit(f(x,y,z),x,y,z)</span> draws the graphic 
+representation of the surface defined by the implicit equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=0, 
+</li><li class="li-itemize"><span style="font-family:monospace">plotimplicit(f(x,y,z),x=0..1,y=-1..1,z=-1..1)</span> draws the surface 
+defined by the implicit equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=0, 
+where 0&#X2264; <span style="font-style:italic">x</span> &#X2264; 1, &#X2212;1&#X2264; <span style="font-style:italic">y</span> &#X2264; 1 and &#X2212;1&#X2264; <span style="font-style:italic">z</span> &#X2264; 1.
+</li></ul><p>
+It is possible to add three arguments to specify the discretization
+steps used for <span style="font-style:italic">x</span>, <span style="font-style:italic">y</span> and <span style="font-style:italic">z</span> with <span style="font-family:monospace">xstep=...</span>, <span style="font-family:monospace">ystep=...</span> and 
+<span style="font-family:monospace">zstep=...</span>.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotimplicit(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x,y,z, xstep=0.2,ystep=0.1,zstep=0.3)</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotimplicit(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x,y,z, xstep=0.2,ystep=0.1,zstep=0.3,unfactored)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">The unit sphere</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotimplicit(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x=-1..1,y=-1..1,z=-1..1)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">The unit sphere</span></div>
+<hr>
+<a href="cascmd_en482.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en484.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

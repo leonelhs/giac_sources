@@ -1,117 +1,83 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Point sur un objet géométrique : element</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr903.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr905.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1062">10.8.14</A>  Point sur un objet géométrique : <TT>element</TT></H3><P><A NAME="@default1762"></A>
-<TT>element</TT> peut avoir différents types d’arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un intervalle <I>a</I>..<I>b</I> et deux réels la valeur et le pas (par défaut la
-valeur vaut (<I>a</I>+<I>b</I>)/2 et le pas (<I>b</I>−<I>a</I>)/100), par exemple, 
-<TT>t:=element(0..pi)</TT> ou 
-<TT>t:=element(0..pi,pi/2)</TT> ou
-<TT>t:=element(0..pi,pi/2,pi/100.0)</TT> 
-signifie que <TT>t</TT> peut prendre une valeur quelconque de l’intervalle 
-[0;π] et le deuxième argument π/2 donne la valeur qui définit 
-<TT>t</TT> : cela a pour effet d’avoir en haut et à droite un curseur noté 
-<TT>t</TT> que l’on peut faire bouger à la souris de 0 à π, avec à 
-gauche de ce curseur un nombre égal à la valeur de <TT>t</TT> du curseur.
-</LI><LI CLASS="li-itemize">un objet géométrique et un réel (par défaut ce réel vaut 
-1/2), par exemple, <TT>A:=element(cercle(0,2),1)</TT> signifie que <TT>A</TT> se 
-trouve sur le cercle de centre 0 et de rayon 2 et a comme affixe 2*exp(<I>i</I>) 
-(car 2*exp(<I>i</I>*<I>t</I>) est l’équation paramétrique du cercle(0,2) et le 
-deuxième argument 1 donne la valeur du paramètre <I>t</I> pour définir 
-<TT>A</TT>). Par exemple, <TT>A:=element(cercle(0,1))</TT> signifie que <TT>A</TT> se 
-trouve sur le cercle de centre 0 et de rayon 1, le point <TT>A</TT> sera tracé
-en prenant <I>t</I>=1/2 comme valeur du paramètre de l’équation 
-paramétrique de l’objet géométrique (ici <TT>affixe(A)</TT>=
-2*exp(<I>i</I>/2)). Lorsque ensuite on déplacera <TT>A</TT> avec la souris, 
-<TT>A</TT> se déplacera sur l’objet géométrique.</LI><LI CLASS="li-itemize">un objet géométrique et un nom de variable (par exemple <TT>t</TT>)
-défini auparavant par la commande <TT>element</TT> : par exemple 
-<TT>t:=element(0..pi)</TT>. Si on tape <TT>A:=element(cercle(0,2),t)</TT>, alors
-<I>t</I> est la variable de paramétrage de l’obget géométrique défini par 
-le premier argument, c’est à dire que <TT>A</TT> se trouve sur le cercle de 
-centre 0 et de rayon 2 et que <TT>A</TT> a comme affixe 2*exp(<I>i</I>*<I>t</I>), car 
-2*exp(<I>i</I>*<I>t</I>) est l’équation paramétrique du cercle(0,2). Il est donc 
-obligatoire dans ce cas de définir auparavant le deuxième argument (ici 
-<TT>t</TT>) comme étant l’élément d’un intervalle.<BR>
-On tape par exemple:<BR>
-<DIV CLASS="center"><TT>t:=element(0..pi)</TT></DIV>
-puis
-<DIV CLASS="center"><TT>A:=element(cercle(0,2),t)</TT></DIV>
-cela a pour effet d’avoir en haut et à droite un curseur noté <TT>t</TT> que 
-l’on peut faire bouger à la souris de 0 à π, avec à gauche de ce 
-curseur un nombre égal à la valeur de <TT>t</TT> du curseur. Ce curseur permet
-de faire bouger le point <TT>A</TT> sur le demi-cercle supérieur du cercle de 
-centre 0 et de rayon 1 (car 0≤ <I>t</I> ≤ π) et cela sans tracer ce 
-demi-cercle.
-On tape par exemple:<BR>
-<DIV CLASS="center"><TT>A:=point(1);B:=point(2+i)</TT></DIV>
-<DIV CLASS="center"><TT>t:=element(0..2)</TT></DIV>
-puis
-<DIV CLASS="center"><TT>M:=element(droite(A,B),t)</TT></DIV>
-<TT>M</TT> est un point de la droite <TT>AB</TT> et on a <TT>M=A+t*(B-A)</TT>
-c’est à dire <TT>M=(1-t)*A+t*B</TT>
-pout parcourir le segment <TT>AB</TT> , il faut mettre <TT>t:=element(0..1)</TT> ou 
-encore <TT>M:=element(segment(A,B),t)</TT> qui aura pour effet de laisser <TT>M</TT> 
-en <TT>A</TT> si <TT>t&lt;0</TT> et de laisser <TT>M</TT> en <TT>B</TT> si <TT>t&gt;1</TT>.
-</LI><LI CLASS="li-itemize">une ligne polygonale <TT>LP</TT> et <TT>[floor(t),frac(t)]</TT> avec <TT>t</TT>
-défini auparavant par la commande <TT>element</TT> : par exemple 
-<TT>t:=element(0..5)</TT> si <TT>LP</TT> a 5 côtés.<BR>
-Les côtés de la ligne polygonale <TT>LP</TT> ont comme numèro : 0,1....<BR>
-Si par exemple <TT>LP</TT> a 5 côtés et a pour sommets 
-<TT>A(0),...A(4),A(5)=A(0)</TT>,
-on tapera :<BR>
-<TT>t:=element(0..5)</TT><BR>
-<TT>M:=element(LP,[floor(t),frac(t)])</TT><BR>
-Ainsi selon les valeurs de <TT>t</TT>, <TT>M</TT> va parcourir les 5 côtés de 
-<TT>LP</TT> : <TT>M</TT> sera situé sur le côté de numéro <TT>n=floor(t)</TT>
-et on aura <TT>M=frac(t)*A(n)+(1-frac(t))*A(n+1)</TT>.<BR>
-Par exemple :
-<PRE CLASS="verbatim">A:=point(0);
-B:=point(4);
-C:=point(4*i);
-t:=element(0..3);
-T:=triangle(A,B,C);
-M:=element(T,[floor(t),frac(t)]);
-</PRE></LI></UL><P>
-<B>Attention</B>
-Si à un point <I>M</I> d’affixe <I>m</I>, défini comme élément d’une courbe <I>C</I>,
-on ajoute un complexe <I>a</I>, cela définit un point <I>N</I> de la courbe <I>C</I> qui est
-le projeté du point d’affixe <I>m</I>+<I>a</I> sur <I>C</I>.<BR>
-Par contre si un point <I>M</I> d’affixe <I>m</I>, défini comme élément d’une 
-courbe <I>C</I>, on ajoute un point <I>A</I> d’affixe <I>a</I>, cela définit un point <I>P</I>
-d’affixe <I>m</I>+<I>a</I>
-Par exemple, étant donné 3 points <I>M</I>,<I>A</I>,<I>B</I>, si on veut définir le point 
-<TT>N</TT> vérifiant par exemple : <I>MN</I>=<I>AB</I>, 
-on peut taper : <TT>N:=M+(B-A)</TT> à condition que <I>M</I> ne soit pas défini 
-comme élément d’une courbe <I>C</I>.
-En effet si on a tapé <TT>M:=element(C)</TT> il faut définir <I>N</I> en tapant :
-<TT>N:=affixe(M)+B-A</TT> ou <TT>N:=M+B-A</TT> (sans parenthèses) car 
-<TT>N:=M+B-A</TT> est interprété en <TT>N:=(M+B)-A</TT> car il n’y a pas de 
-règle de priorité entre <TT>+</TT> et <TT>-</TT> alors que<BR>
- <TT>M+(B-A)</TT> renvoie un élément de la courbe <I>C</I> qui est le projeté de
-<I>N</I> sur <I>C</I>.<BR>
-On a donc, si on tape :<BR>
-<TT>A:=point(-2,2);B:=point(1,3);C:=cercle(0,1);</TT><BR>
-<TT>M:=element(C);N:=affixe(M)+B-A</TT>;(ou <TT>N:=M+B-A</TT>;) <TT>N</TT> n’est pas sur
-la courbe <TT>C</TT><BR>
-si on tape :<BR>
-<TT>P:=M+(B-A)</TT> (ou P:=projection(C,N);) <TT>P</TT> est sur la courbe <TT>C</TT><BR>
-
-</P><HR>
-<A HREF="cascmd_fr903.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr905.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La droite et la droite orientée en géométrie plane : line droite</title>
+</head>
+<body >
+<a href="cascmd_fr903.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr905.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1101" class="subsection">10.9.1  La droite et la droite orientée en géométrie plane : <span style="font-family:monospace">line droite</span></h3>
+<p><a id="hevea_default1760"></a><a id="hevea_default1761"></a><a id="sec:droite2"></a><a id="hevea_default1762"></a><a id="hevea_default1763"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr090.html#sec%3Adroite">3.10.1</a> et<a href="cascmd_fr1014.html#sec%3Adroite3">11.5.1</a> pour la géométrie
+3-d et <a href="cascmd_fr964.html#sec%3Apente">10.16.12</a> pour avoir la valeur de la pente d’une droite.<br>
+<span style="font-family:monospace">droite</span>, en géométrie plane, a comme argument deux points (ou
+deux nombres complexes représentant l’affixe de ces points) ou une liste de 
+deux points (ou de deux complexes) ou a comme argument un point et 
+<span style="font-family:monospace">pente=m</span> ou a comme argument un point et son vecteur directeur
+<span style="font-family:monospace">[u1,u2]</span> ou encore une équation de droite de la forme a*x+by+c=0.<br>
+<span style="font-family:monospace">droite</span> renvoie et trace la droite définie par les deux arguments.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">droite(0,1+i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">La droite d’équation y=x est tracée</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">droite(1+i,pente=1)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">La droite d’équation y=x est tracée</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">droite(1+i,[3,3])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">La droite d’équation y=x est tracée</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">droite(y-x=0)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">La droite d’équation y=x est tracée</span></div><p>
+<span style="font-weight:bold">Remarque : l’orientation de la droite</span><br>
+<a id="sec:axe2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1015.html#sec%3Aaxe3">11.5.2</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">droite</span> définit une droite orientée :
+</p><ul class="itemize"><li class="li-itemize">
+Lorsque la droite est donnée par deux points, son orientation
+est définie par l’ordre des points donnés en argument.
+Par exemple <span style="font-family:monospace">droite(A,B)</span> définit une droite orientée par le vecteur 
+<span style="font-style:italic">AB</span>.<br>
+</li><li class="li-itemize">Lorsque c’est une équation qui définit la droite on écrit 
+l’équation sous la forme :"membre_de_gauche-membre_de_droite=0" pour 
+avoir une équation de la droite de la forme <span style="font-family:monospace">a*x+by+c=0</span> et alors le 
+vecteur orientant la droite est
+<span style="font-family:monospace">[b,-a]</span> ou encore son orientation
+est définie par le produit vectoriel 3-d de son vecteur normal (de cote 0) et 
+de [0,0,1]. Par exemple <span style="font-family:monospace">droite(y=2*x)</span> est orientée par <span style="font-family:monospace">[1,2]</span> car 
+son équation est <span style="font-family:monospace">-2*x+y=0</span> et
+<span style="font-family:monospace">cross([-2,1,0],[0,0,1])</span>=<span style="font-family:monospace">[1,2,0]</span>. 
+</li><li class="li-itemize">Lorsque la droite est donnée par un point <span style="font-style:italic">A</span> et sa pente <span style="font-style:italic">m</span>, son 
+orientation est définie par le vecteur <span style="font-style:italic">AB</span> avec <span style="font-style:italic">B</span>=<span style="font-style:italic">A</span>+1+<span style="font-style:italic">i</span>*<span style="font-style:italic">m</span>.
+</li><li class="li-itemize">Lorsque la droite est donnée par un point <span style="font-style:italic">A</span> et son vecteur directeur,
+son orientation est définie par le vecteur directeur.
+</li></ul><p>
+<span style="font-weight:bold">Attention</span><br>
+Si on veut tracer la droite en couleur en utilisant un argument 
+supplémentaire par exemple,
+<span style="font-family:monospace">couleur=1</span>, il faut impérativement que cet argument soit le 
+troisième argument : donc si la droite est définie par une liste il faut 
+transformer cette liste en une séquence avec <span style="font-family:monospace">op</span>, par exemple, on tape :
+</p><pre class="verbatim">A:=point(0,0);
+B:=point(2,1);
+C1:=cercle(A,B-A);
+C2:=cercle(B,A-B);
+droite(op(inter(C1,C2)),couleur=1)
+</pre><p>
+alors que <span style="font-family:monospace">droite(inter(C1,C2),’couleur’=1)</span> vous répondra 
+<span style="font-family:monospace">"Invalid dimension"</span>
+</p>
+<hr>
+<a href="cascmd_fr903.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr905.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

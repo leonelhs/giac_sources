@@ -1,49 +1,27 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Probabilité que X égale [k0,k1..kj]+K lorsque X suit une loi multinomiale de probabilité [p0,p1,..pj]=P : multinomial</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr762.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr764.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc903">8.4.7</A>  Probabilité que <I>X</I> égale [<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>]+<I>K</I> lorsque <I>X</I> suit une loi multinomiale de probabilité [<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>]=<I>P</I> : <TT>multinomial</TT></H3><P><A NAME="@default1372"></A>
-La probabilité pour que <I>X</I> égale <I>K</I>=[<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>]
-(avec <I>k</I><SUB>0</SUB>+..+<I>k</I><SUB><I>j</I></SUB>=<I>n</I>) lorsque <I>X</I> suit une loi multinomiale de probabilité 
-<I>P</I>=[<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>] (avec <I>p</I><SUB>0</SUB>+..+<I>p</I><SUB><I>j</I></SUB>=1) est :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>multinomial</I>(<I>n</I>,<I>P</I>,<I>K</I>)=</TT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>!</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">(<I>k</I><SUB>0</SUB>!<I>k</I><SUB>1</SUB>!..<I>k</I><SUB><I>j</I></SUB>!)</TD></TR>
-</TABLE></TD><TD CLASS="dcell">*(<I>p</I><SUB>0</SUB><SUP><I>k</I><SUB>0</SUB></SUP> <I>p</I><SUB>1</SUB><SUP><I>k</I><SUB>1</SUB></SUP>..<I>p</I><SUB><I>j</I></SUB><SUP><I>k</I><SUB><I>j</I></SUB></SUP>)</TD></TR>
-</TABLE><P>
-<B>Remarque</B>
-<TT>multinomial(n,P,K)</TT> avec <I>P</I>=[<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>] et <I>K</I>=[<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>] renvoie
-<I>n</I>!/(<I>k</I><SUB>0</SUB>!<I>k</I><SUB>1</SUB>!..<I>k</I><SUB><I>j</I></SUB>!)*(<I>p</I><SUB>0</SUB><SUP><I>k</I><SUB>0</SUB></SUP> <I>p</I><SUB>1</SUB><SUP><I>k</I><SUB>1</SUB></SUP>..<I>p</I><SUB><I>j</I></SUB><SUP><I>k</I><SUB><I>j</I></SUB></SUP>) même si 
-<I>p</I><SUB>0</SUB>+..+<I>p</I><SUB><I>j</I></SUB>≠ 1 mais renvoie une erreur si <I>k</I><SUB>0</SUB>+..+<I>k</I><SUB><I>j</I></SUB>≠ <I>n</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Probabilité pour que X égale k lorsque X∈ P(µ) : poisson</title>
+</head>
+<body >
+<a href="cascmd_fr762.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr764.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec935" class="subsection">8.4.8  Probabilité pour que <span style="font-style:italic">X</span> égale <span style="font-style:italic">k</span> lorsque <span style="font-style:italic">X</span>∈ <span style="color:red"><span style="font-style:italic">P</span></span>(µ) : <span style="font-family:monospace">poisson</span></h3>
+<p><a id="hevea_default1370"></a>
+La densité de probabilité de la loi de Poisson de paramètre <span style="font-family:monospace">mu</span>, c’est à dire de moyenne <span style="font-family:monospace">mu</span> et d’écart-type <span style="font-family:monospace">mu</span> est :<br>
+<span style="font-family:monospace">poisson(mu,k)= exp(-mu)*mu</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k/k!</span>=<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span>=<span style="font-style:italic">k</span>) avec <span style="font-style:italic">X</span>∈ <span style="color:red"><span style="font-style:italic">P</span></span>(<span style="font-style:italic">mu</span>).<br>
 On tape :
-</P><DIV CLASS="center"><TT>multinomial(10,[0.2,0.3,0.5],[3,2,5])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">poisson(10.0,9)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0567</TT></DIV><P>
-On vérifie :<BR>
-10!/(3!*2!*5!)*0.2<SUP>3</SUP>*0.3<SUP>2</SUP>*0.5<SUP>5</SUP>=0.0567.<BR>
-Donc la probabilité d’obtenir [3,2,5] (3 fois l’objet ayant la probabilité 
-0.2 d’être tiré, 2 fois l’objet ayant la probabilité 0.3 d’être tiré 
-et 5 fois l’objet ayant la probabilité 0.5 d’être tiré) lors de 10 
-tirages d’un objet parmi ces 3 objets est 0.0567.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>multinomial(4,[0.5,0.5],[2,2])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>binomial(4,2,0.5)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.375</TT></DIV><HR>
-<A HREF="cascmd_fr762.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr764.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0.125110035721</span></div>
+<hr>
+<a href="cascmd_fr762.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr764.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

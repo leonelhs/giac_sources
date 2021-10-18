@@ -1,49 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un triangle isocéle : is_isosceles est_isocele</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr984.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr986.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1153">10.18.6</A>  Savoir si on a un triangle isocéle : <TT>is_isosceles est_isocele</TT></H3><P><A NAME="@default1918"></A><A NAME="@default1919"></A><A NAME="sec:estisocele2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1063.html#sec:estisocele3">11.13.10</A> pour la géométrie 3-d.<BR>
-<TT>est_isocele</TT> est une fonction booléenne ayant comme 
-argument trois points ou un objet géométrique.<BR>
-<TT>est_isocele</TT> vaut 1 (resp 2, 3) si les trois points forment un 
-triangle isocéle ou si l’objet géométrique est un triangle isocéle dont
-l’angle portant les deux cotés égaux est désigné par le premier (resp 
-second, troisième) argument, ou vaut 4 si les trois points forment un 
-triangle équilatéral, ou si l’objet géométrique est un triangle 
-équilatéral, et vaut 0 sinon.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Savoir si on a un triangle rectangle ou si on a un rectangle : is_rectangle est_rectangle</title>
+</head>
+<body >
+<a href="cascmd_fr984.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr986.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1191" class="subsection">10.18.7  Savoir si on a un triangle rectangle ou si on a un rectangle : <span style="font-family:monospace">is_rectangle est_rectangle</span></h3>
+<p><a id="hevea_default1917"></a><a id="hevea_default1918"></a><a id="sec:estrectangle2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1063.html#sec%3Aestrectangle3">11.13.11</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">est_rectangle</span> est une fonction booléenne ayant comme 
+argument trois ou quatre points ou un objet géométrique.<br>
+<span style="font-family:monospace">est_rectangle</span> vaut 1 (resp 2 ou 3) si les trois points forment un triangle rectangle, l’angle droit étant
+désigné par le premier (resp second, troisième) argument ou si l’objet géométrique est un triangle rectangle,<br>
+<span style="font-family:monospace">est_rectangle</span> vaut 1 (resp 2) si les quatre points forment un rectangle
+(resp un carré) ou si 
+l’objet géométrique est un rectangle (resp un carré), et vaut 0 sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>est_isocele(1,1+i,i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_rectangle(1,1+i,i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">2</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>T:=triangle_isocele(0,1,pi/4);est_isocele(T)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_rectangle(1+i,-2+i,-2-i,1-i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>T:=triangle_isocele(0,1,pi/4,C);est_isocele(T[0])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">R:=rectangle(-2-i,1-i,3,C,D);est_rectangle(R[0])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-En effet <TT>T[0]</TT> désigne un triangle car <TT>T</TT> est une liste composée 
-du triangle et de son sommet <TT>C</TT>.<BR>
-On tape <TT>affixe(C)</TT> et on obtient <TT>(sqrt(2))/2+((i)*sqrt(2))/2</TT><BR>
-On tape :
-</P><DIV CLASS="center"><TT>est_isocele(1+i,-1+i,-i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
-<A HREF="cascmd_fr984.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr986.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+En effet <span style="font-family:monospace">R[0]</span> désigne un rectangle car <span style="font-family:monospace">R</span> est une liste composée
+du rectangle et de ses sommets <span style="font-family:monospace">C</span> et <span style="font-family:monospace">D</span>.<br>
+</p>
+<hr>
+<a href="cascmd_fr984.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr986.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

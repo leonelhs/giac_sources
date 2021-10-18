@@ -1,69 +1,62 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La mesure d’un angle et son affichage : angleat angleen et angleatraw angleenbrut</title>
+</head>
+<body >
+<a href="cascmd_fr957.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr959.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1162" class="subsection">10.16.6  La mesure d’un angle et son affichage : <span style="font-family:monospace">angleat angleen</span> et <span style="font-family:monospace">angleatraw angleenbrut</span></h3>
+<p><a id="hevea_default1859"></a><a id="hevea_default1860"></a><a id="hevea_default1861"></a><a id="hevea_default1862"></a>
+<span style="font-family:monospace">angleat</span> ou <span style="font-family:monospace">angleen</span> (resp <span style="font-family:monospace">angleatraw</span> ou 
+<span style="font-family:monospace">angleenbrut</span>) sont des commandes qui permettent l’affichage avec légende
+(resp sans légende) de la valeur d’un angle désigné en cliquant (on 
+cliqueson sommet puis ses 2 côtés et enfin la position de la l’affichage).
+Ces commandes sont obtenues 
+lorsqu’on utilse, dans un niveau de géométrie 2<span style="font-style:italic">d</span> ou 3<span style="font-style:italic">d</span>, le bouton 
+<span style="font-family:monospace">Mode-&gt;Mesures-&gt;angleen</span> ou <span style="font-family:monospace">Mode-&gt;Mesures-&gt;angleenbrut</span>. Dans ce cas 
+il faut que tous les objets désignés par la souris soient 
+déjà nommés, sauf les points qui seront alors définis par les différents clicks de la souris.<br>
 
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La mesure d’un angle : angle</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr957.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr959.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1124">10.16.5</A>  La mesure d’un angle : <TT>angle</TT></H3><P><A NAME="@default1861"></A>
-<A NAME="sec:angle2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1053.html#sec:angle3">11.12.9</A> pour la géométrie 3-d.<BR>
-<TT>angle</TT> a comme argument trois points (ou trois nombres 
-complexes qui sont l’affixe de ces points) ou 2 points et une droite et 
-éventuellement une chaine de caractères pour afficher un petit arc de 
-cercle avec ce symbole en légende afin de représenter l’angle sur la figure
-(l’arc est remplacé par le symbole quart de carre si l’angle vaut pi/2 ou 
--pi/2).<BR>
-<TT>angle</TT> renvoie la mesure (en radians ou en degrés) de 
-l’angle orienté de sommet le premier argument, le deuxième argument se 
-trouve sur le premier coté de l’angle et le troisième argument se 
-trouve sur le deuxiéme coté.<BR>
-<B>Remarque</B><BR>
-Si le troisième argument est une droite, cette droite donne la direction 
-du 2ième côté de l’angle.
-Ainsi :<BR>
-<TT>angle(A,B,C)</TT> désigne la mesure de l’angle en radians (ou en 
-degrés) de (<I>AB</I>,<I>AC</I>).<BR>
-<TT>angle(A,B,C,"")</TT> trace l’angle (<I>AB</I>,<I>AC</I>) avec comme légende un petit arc orienté.<BR>
-<TT>angle(A,B,C,"a")</TT> trace l’angle (<I>AB</I>,<I>AC</I>) avec comme légende un petit arc orienté noté <I>a</I>.<BR>
-<TT>angle(A,B,C,"")[0]</TT> ou <TT>angle(A,B,C,"a")[0]</TT> désigne la mesure de 
-l’angle en radians (ou en degrés) de 
-(<I>AB</I>,<I>AC</I>).<BR>
+On peut néammoins taper ces commandes dans une ligne de commande.<br>
+<span style="font-family:monospace">angleat</span> ou <span style="font-family:monospace">angleen</span> a comme argument quatre points (ou 3 points et 
+1 nombre complexe qui est l’affixe d’un point).<br>
+<span style="font-weight:bold">Attention</span> Il faut que les 3 premiers points aient un nom.<br>
+<span style="font-family:monospace">angleat</span> ou <span style="font-family:monospace">angleen</span> renvoie le 4-ième point, calcule la mesure (en
+radians ou en degrés) de l’angle orienté de sommet le premier argument, le
+deuxième argument se trouve sur le premier coté de l’angle et le troisième
+argument se trouve sur le deuxiéme coté et cette mesure est affichée, 
+précédée d’une légende, à l’endroit du 4-ième point.<br>
+Ainsi <span style="font-family:monospace">anglen(A,B,C,D)</span> désigne la mesure de l’angle en radians (ou en 
+degrés) de (<span style="font-style:italic">AB</span>,<span style="font-style:italic">AC</span>) et cette messue sera 
+affichée, pécédée de α<span style="font-family:monospace">A=</span>, à l’endroit du point <span style="font-family:monospace">D</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>angle(0,1,1+i) </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>pi/4</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);C:=point(i);</span></div><div class="center"><span style="font-family:monospace">segment(A,B);segment(A,C);</span></div><div class="center"><span style="font-family:monospace">angleen(A,B,C,0.2i) </span></div><p>
+On obtient si on a coché <span style="font-family:monospace">radian</span> dans la configuration du 
+<span style="font-family:monospace">cas</span> (bouton donnant la ligne d’état) :
+</p><div class="center">α<span style="font-family:monospace">A=atan(1/3) s’écrit au point(0.4i)</span></div><p><span style="font-family:monospace">angleatraw</span> ou <span style="font-family:monospace">angleenbrut</span> a comme argument quatre points
+(ou 3 points et 1 nombre complexe qui est l’affixe d’un point).<br>
+<span style="font-family:monospace">angleatraw</span> ou <span style="font-family:monospace">angleenbrut</span> renvoie le 4-ième point, calcule la 
+mesure (en radians ou en degrés) de l’angle orienté de sommet le premier 
+argument, le deuxième point se trouve sur le premier coté de l’angle et le 
+troisième point se trouve sur le deuxiéme coté et cette mesure est 
+affichée à l’endroit du 4-ième point.
+Ainsi <span style="font-family:monospace">angleenbrut(A,B,C,D)</span> désigne la mesure de l’angle en radians 
+(ou en degrés) de (<span style="font-style:italic">AB</span>,<span style="font-style:italic">AC</span>) et cette mesure
+sera affichée à l’endroit du point <span style="font-family:monospace">D</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>angle(0,1,1+i,"") </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>[pi/4,cercle(point(0,0),1/5)]</TT></DIV><P>
-et l’angle est repéré par un arc de cercle sans légende.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>angle(0,1,1+i,"a")</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>[pi/4,cercle(point(0,0),1/5)]</TT></DIV><P>
-et l’angle est repéré par un arc de cercle avec <TT>a</TT> comme
-légende.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>angle(0,1,i,"a") </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>[pi/2,polygone(point(1/5,0),point(1/5,1/5),point(0,1/5),point(0,1/5))]</TT></DIV><P>
-et l’angle droit est repéré par un quart de carré avec <TT>a</TT> 
-comme légende.</P><HR>
-<A HREF="cascmd_fr957.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr959.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);C:=point(i);</span></div><div class="center"><span style="font-family:monospace">segment(A,B);segment(A,C);</span></div><div class="center"><span style="font-family:monospace">angleenbrut(A,B,C,0.2i) </span></div><p>
+On obtient si on a coché <span style="font-family:monospace">radian</span> dans la configuration du 
+<span style="font-family:monospace">cas</span> (bouton donnant la ligne d’état) :
+</p><div class="center"><span style="font-family:monospace">atan(1/3) s’écrit au point(0.4i)</span></div>
+<hr>
+<a href="cascmd_fr957.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr959.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

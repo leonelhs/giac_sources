@@ -11,7 +11,7 @@ libgiac_la_SOURCES = input_lexer.ll sym2poly.cc gausspol.cc threaded.cc \
   TmpFGLM.H TmpLESystemSolver.H \
   path.h lexer.h \
   input_lexer.h input_parser.h threaded.h vector.h \
-  help.cc  # Ugh..
+  help.cc  lpsolve.cc optimization.cc # Ugh..
 
 libgiac_la_LIBADD = $(NTL_LIBS) $(COCOA_LIBS) $(PARI_LIBS) $(GSL_LIBS)
 
@@ -25,7 +25,8 @@ ifactor.h alg_ext.h gauss.h isom.h plot.h plot3d.h rpn.h prog.h \
 pari.h cocoa.h giac.h first.h maple.h help.h tinymt32.h tinymt32_license.h \
 static.h static_extern.h static_lexer.h static_lexer_.h\
 lexer_tab_int.h \
-static_help.h giacPCH.h giacintl.h gmp_replacements.h myostream.h
+static_help.h giacPCH.h giacintl.h gmp_replacements.h myostream.h \
+lpsolve.h optimization.h
 
 noinst_LTLIBRARIES = libxcas.la
 libxcas_la_LIBADD = libgiac.la $(GUI_LIBS)

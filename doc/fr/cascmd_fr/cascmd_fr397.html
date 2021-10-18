@@ -1,47 +1,47 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Reste euclidien : Rem</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr396.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr398.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc485">6.29.5</A>  Reste euclidien : <TT>Rem</TT></H3><P><A NAME="@default745"></A>
-<TT>Rem</TT> est la forme inerte de <TT>rem</TT>.<BR>
-<TT>Rem</TT> renvoie le reste de la division euclidienne de deux 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Reste euclidien : Rem</title>
+</head>
+<body >
+<a href="cascmd_fr396.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr398.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec509" class="subsection">6.29.5  Reste euclidien : <span style="font-family:monospace">Rem</span></h3>
+<p><a id="hevea_default745"></a>
+<span style="font-family:monospace">Rem</span> est la forme inerte de <span style="font-family:monospace">rem</span>.<br>
+<span style="font-family:monospace">Rem</span> renvoie le reste de la division euclidienne de deux 
 polynômes (division selon les puissances décroissantes) sans l’évaluer et
 cela permet de calculer le reste euclidien de deux polynômes à
-coefficients dans ℤ/<I>p</I>ℤ en utilisant la syntaxe Maple.<BR>
- <B>Attention</B> il faut être en mode Maple pour que cela soit efficace.<BR>
-On tape, en mode <TT>Xcas</TT> :
-</P><DIV CLASS="center"><TT>Rem(x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+coefficients dans ℤ/<span style="font-style:italic">p</span>ℤ en utilisant la syntaxe Maple.<br>
+ <span style="font-weight:bold">Attention</span> il faut être en mode Maple pour que cela soit efficace.<br>
+On tape, en mode <span style="font-family:monospace">Xcas</span> :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>rem(x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
-On peut aussi taper pour avoir le reste de <I>x</I><SUP>2</SUP>+2<I>x</I>+4 par <I>x</I><SUP>2</SUP>+<I>x</I>+2 :
-</P><DIV CLASS="center"><TT>Rem([1,2,4],[1,1,2])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)</span></div><p>
+On peut aussi taper pour avoir le reste de <span style="font-style:italic">x</span><sup>2</sup>+2<span style="font-style:italic">x</span>+4 par <span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+2 :
+</p><div class="center"><span style="font-family:monospace">Rem([1,2,4],[1,1,2])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>rem([1,2,4],[1,1,2])</TT></DIV><P>
-En mode <TT>Maple</TT> on tape :
-</P><DIV CLASS="center"><TT>Rem(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">rem([1,2,4],[1,1,2])</span></div><p>
+En mode <span style="font-family:monospace">Maple</span> on tape :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+3*x,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2*x</TT></DIV><P>
-La division est faite dans ℤ/5ℤ[<I>X</I>] alors que pour :
-</P><DIV CLASS="center"><TT>rem(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
-la division est faite dans ℤ[<I>X</I>] puis est réduite après :
-</P><DIV CLASS="center"><TT>12*x</TT></DIV><P>
-Si <TT>Xcas</TT> n’est pas en mode Maple, la division des polynômes dans 
-ℤ/<I>p</I>ℤ[<I>X</I>] se fait en tapant :
-</P><DIV CLASS="center"><CODE>rem((x^3+3*x)% 5,(2x^2+6x+5)%5)</CODE>
-</DIV><HR>
-<A HREF="cascmd_fr396.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr398.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">2*x</span></div><p>
+La division est faite dans ℤ/5ℤ[<span style="font-style:italic">X</span>] alors que pour :
+</p><div class="center"><span style="font-family:monospace">rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+3*x,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
+la division est faite dans ℤ[<span style="font-style:italic">X</span>] puis est réduite après :
+</p><div class="center"><span style="font-family:monospace">12*x</span></div><p>
+Si <span style="font-family:monospace">Xcas</span> n’est pas en mode Maple, la division des polynômes dans 
+ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>] se fait en tapant :
+</p><div class="center"><code>rem((x^3+3*x)% 5,(2x^2+6x+5)%5)</code>
+</div>
+<hr>
+<a href="cascmd_fr396.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr398.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

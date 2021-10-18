@@ -1,37 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Eigenvalues : egvl eigenvalues eigVl</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en404.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en406.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc453">2.46.2</A>  Eigenvalues : <TT>egvl eigenvalues eigVl</TT></H3><P><A NAME="@default679"></A><A NAME="@default680"></A><A NAME="@default681"></A>
-<TT>egvl</TT> (or <TT>eigenvalues eigVl</TT>) takes as argument a 
-square matrix <I>A</I> of size <I>n</I>.<BR>
-<TT>egvl</TT> (or <TT>eigenvalues eigVl</TT>) returns the Jordan normal
-form of <I>A</I>.<BR>
-<B>Remark</B> : If <I>A</I> is exact, <TT>Xcas</TT> may not be able
-to find the exact roots of the characteristic polynomial, 
-<TT>eigenvalues</TT> will return an approximate diagonalozation of <I>A</I> if the
-coefficients are numeric.<BR>
-Input :
-</P><DIV CLASS="center"><TT>egvl([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Minimax polynomial approximation: minimax</title>
+</head>
+<body >
+<a href="cascmd_en404.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en406.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec482" class="subsection">2.45.3  Minimax polynomial approximation: <span style="font-family:monospace">minimax</span></h3>
+<p><a id="hevea_default677"></a></p><p>The function <span style="font-family:monospace">minimax</span> is called by entering :
+</p><div class="center">
+<span style="font-family:monospace">minimax(expr,var=a..b,n,[limit=m])</span>
+</div><p>
+where <span style="font-family:monospace">expr</span> is an univariate expression (e.g.  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) ) to approximate, <span style="font-family:monospace">var</span> is a variable (e.g.  <span style="font-style:italic">x</span> ),  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]&#X2282;&#X211D;  and  <span style="font-style:italic">n</span>&#X2208;&#X2115; . Expression <span style="font-family:monospace">expr</span> must be continuous on  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] . The function returns minimax polynomial (e.g.  <span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>) ) of degree  <span style="font-style:italic">n</span>  or lower that approximates <span style="font-family:monospace">expr</span> on  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] . The approximation is found by applying Remez algorithm.</p><p>If the fourth argument is specified,  <span style="font-style:italic">m</span>  is used to limit the number of iterations of the algorithm. It is unlimited by default.</p><p>The maximum error of the approximation  <span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>) , i.e.  max<sub><span style="font-style:italic">a</span>&#X2264; <span style="font-style:italic">x</span>&#X2264; <span style="font-style:italic">b</span></sub>|<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)&#X2212;<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>)| , is printed in the message area.</p><p>Input :
+</p><div class="center">
+<span style="font-family:monospace">minimax(sin(x),x=0..2*pi,10)</span>
+</div><p>
 Output :
-</P><DIV CLASS="center"><TT>[[2,1,0],[0,2,1],[0,0,2]] </TT></DIV><P>
-Input :
-</P><DIV CLASS="center"><TT>egvl([[4,1,0],[1,2,-1],[2,1,0]])</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[[0.324869129433,0,0],[0,4.21431974338,0],[0,0,1.46081112719]]</TT></DIV><HR>
-<A HREF="cascmd_en404.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en406.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center">
+<span style="font-family:monospace">5.8514210172e-06+0.999777263385*x+0.00140015265723*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span><br>
+<span style="font-family:monospace">-0.170089663733*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+0.0042684304696*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+</span><br>
+<span style="font-family:monospace">0.00525794766407*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+0.00135760214958*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6</span><br>
+<span style="font-family:monospace">-0.000570502074548*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">7+6.07297119422e-05*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8</span><br>
+<span style="font-family:monospace">-2.14787414001e-06*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">9-2.97767481643e-15*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">10</span>
+</div><p>
+The maximum error of this approximation is  5.85234008632× 10<sup>&#X2212;6</sup> .</p>
+<hr>
+<a href="cascmd_en404.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en406.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

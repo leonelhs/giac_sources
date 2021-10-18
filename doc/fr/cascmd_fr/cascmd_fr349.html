@@ -1,79 +1,79 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Un exercice utilisant fft</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr348.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr350.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc434">6.26.5</A>  Un <B>exercice</B> utilisant <TT>fft</TT></H3><P>
-Voici un relevé des températures <I>T</I>, en degré Celsius, au temps <I>t</I> :<BR>
-</P><TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=right NOWRAP>t</TD><TD ALIGN=right NOWRAP>0</TD><TD ALIGN=right NOWRAP>3</TD><TD ALIGN=right NOWRAP>6</TD><TD ALIGN=right NOWRAP>9</TD><TD ALIGN=right NOWRAP>12</TD><TD ALIGN=right NOWRAP>15</TD><TD ALIGN=right NOWRAP>19</TD><TD ALIGN=right NOWRAP>21</TD></TR>
-<TR><TD ALIGN=right NOWRAP>T</TD><TD ALIGN=right NOWRAP>11</TD><TD ALIGN=right NOWRAP>10</TD><TD ALIGN=right NOWRAP>17</TD><TD ALIGN=right NOWRAP>24</TD><TD ALIGN=right NOWRAP>32</TD><TD ALIGN=right NOWRAP>26</TD><TD ALIGN=right NOWRAP>23</TD><TD ALIGN=right NOWRAP>19</TD></TR>
-</TABLE><P><BR>
-Quelle est la température à 13h45 ?<BR>
-On a <I>N</I>=8=2*<I>m</I>.<BR>
-Le polynôme d’interpolation est :<BR>
-<I>p</I>(<I>t</I>)=1/2<I>p</I><SUB>−<I>m</I></SUB>(exp(−2<I>i</I>π <I>mt</I>/24)+exp(2<I>i</I>π <I>mt</I>/24))+∑<SUB><I>k</I>=−<I>m</I>+1</SUB><SUP><I>m</I>−1</SUP><I>p</I><SUB><I>k</I></SUB> exp(2<I>i</I>π <I>kt</I>/24)<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Un exercice utilisant fft</title>
+</head>
+<body >
+<a href="cascmd_fr348.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr350.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec458" class="subsection">6.26.5  Un <span style="font-weight:bold">exercice</span> utilisant <span style="font-family:monospace">fft</span></h3>
+<p>
+Voici un relevé des températures <span style="font-style:italic">T</span>, en degré Celsius, au temps <span style="font-style:italic">t</span> :<br>
+</p><table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:right;border:solid 1px;white-space:nowrap" >t</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >0</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >3</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >6</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >9</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >12</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >15</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >19</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >21</td></tr>
+<tr><td style="text-align:right;border:solid 1px;white-space:nowrap" >T</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >11</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >10</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >17</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >24</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >32</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >26</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >23</td><td style="text-align:right;border:solid 1px;white-space:nowrap" >19</td></tr>
+</table><p><br>
+Quelle est la température à 13h45 ?<br>
+On a <span style="font-style:italic">N</span>=8=2*<span style="font-style:italic">m</span>.<br>
+Le polynôme d’interpolation est :<br>
+<span style="font-style:italic">p</span>(<span style="font-style:italic">t</span>)=1/2<span style="font-style:italic">p</span><sub>−<span style="font-style:italic">m</span></sub>(exp(−2<span style="font-style:italic">i</span>π <span style="font-style:italic">mt</span>/24)+exp(2<span style="font-style:italic">i</span>π <span style="font-style:italic">mt</span>/24))+∑<sub><span style="font-style:italic">k</span>=−<span style="font-style:italic">m</span>+1</sub><sup><span style="font-style:italic">m</span>−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub> exp(2<span style="font-style:italic">i</span>π <span style="font-style:italic">kt</span>/24) <br>
 et on a 
-<I>p</I><SUB><I>k</I></SUB>=1/<I>N</I>*∑<SUB><I>k</I>=<I>j</I></SUB><SUP><I>N</I>−1</SUP><I>T</I><SUB><I>k</I></SUB> exp(2<I>i</I>π <I>k</I>/<I>N</I>)<BR>
-On tape :<BR>
-<TT>q:=1/8*fft([11,10,17,24,32,26,23,19])</TT><BR>
-On obtient :<BR>
-<TT>[20,-4.5+1.7*i,0.37+0.88*i,-0.77+0.22*i,0.5,<BR>
--0.77-0.22*i,0.38-0.88*i,-4.5-1.7*i]</TT><BR>
-ou avec plus de décimales :<BR>
-<I>p</I><SUB>0</SUB>=20.25,<BR>
- <I>p</I><SUB>1</SUB>=−4.48115530061+1.72227182413*<I>i</I>=<SPAN style="text-decoration:overline"><I>p</I></SPAN><SUB><SPAN style="text-decoration:overline">−1</SPAN></SUB>,<BR>
-<I>p</I><SUB>2</SUB>=0.375+0.875*<I>i</I>=<SPAN style="text-decoration:overline"><I>p</I></SPAN><SUB><SPAN style="text-decoration:overline">−2</SPAN></SUB>,<BR>
-<I>p</I><SUB>3</SUB>=−0.768844699385+0.222271824132*<I>i</I>=<SPAN style="text-decoration:overline"><I>p</I></SPAN><SUB><SPAN style="text-decoration:overline">−3</SPAN></SUB>,<BR>
- <I>p</I><SUB>−4</SUB>=0.5
-car on a :<BR>
-<I>q</I>=[<I>q</I><SUB>0</SUB>,...<I>q</I><SUB><I>N</I>−1</SUB>]=[<I>p</I><SUB>0</SUB>,..<I>p</I><SUB><I>N</I>/2−1</SUB>,<I>p</I><SUB>−<I>N</I>/2</SUB>,..,<I>p</I><SUB>−1</SUB>]=1/<I>N</I><I>F</I><SUB><I>N</I></SUB>([<I>y</I><SUB>0</SUB>,..<I>y</I><SUB><I>N</I>−1</SUB>])=<TT>1/<I>N</I></TT><TT><I>fft</I>(<I>y</I>)</TT><BR>
-On calcule la valeur <I>T</I>0 du polynôme d’interpolation au point 
-<I>t</I>0=13,75=13+3/4=55/4.<BR>
-On a :<BR>
-<TT>q:=[20.25,-4.48115530061+1.72227182413*i,-0.375+0.875*i,<BR>
--0.768844699385+0.222271824132*i,0.5,<BR>
--0.768844699385-0.222271824132*i,<BR>
--0.375-0.875*i,-4.48115530061-1.72227182413*i]</TT><BR>
-On pose :<BR>
-<TT>pp:=[q[4],q[5],q[6],q[7],q[0],q[1],q[2],q[3]]</TT><BR>
-On a <I>p</I><SUB><I>k</I></SUB>=<I>pp</I>[<I>k</I>+4] pour <I>k</I>=−4...3<BR>
-On tape :<BR>
-<TT>t0(j):=exp(2*i*pi*(13+3/4)/24*j)</TT><BR>
-<TT>T0:=1/2*pp[0]*(t0(4)+t0(-4))+sum(pp[j+4]*t0(j),j,-3,3)</TT><BR>
-<TT>evalf(sincos(T0))</TT><BR>
-On obtient :<BR>
-<TT>29.4863181684</TT><BR>
-On prévoit donc une température de 29.49 degrés Celsius.<BR>
-On tape :<BR>
-<TT>q1:=[q[4]/2,q[3],q[2],q[1],q[0]/2]</TT><BR>
-<TT>a:=t0(1)</TT> (ou <TT>a:=-exp(i*pi*7/48)</TT>)<BR>
-<TT>g(x):=r2e(q1,x)</TT><BR>
-<TT>evalf(2*re(g(a)))</TT><BR>
-ou encore<BR>
-<TT>2.0*re(q[0]/2+q[1]*t0(1)+q[2]*t0(2)+q[3]*t0(3)+q[4]/2*t0(4))</TT><BR>
-On obtient :<BR>
-<TT>29.4863181684</TT><BR>
-<B>Remarque</B><BR>
+<span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub>=1/<span style="font-style:italic">N</span>*∑<sub><span style="font-style:italic">k</span>=<span style="font-style:italic">j</span></sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">T</span><sub><span style="font-style:italic">k</span></sub> exp(2<span style="font-style:italic">i</span>π <span style="font-style:italic">k</span>/<span style="font-style:italic">N</span>)<br>
+On tape :<br>
+<span style="font-family:monospace">q:=1/8*fft([11,10,17,24,32,26,23,19])</span><br>
+On obtient :<br>
+<span style="font-family:monospace">[20,-4.5+1.7*i,0.37+0.88*i,-0.77+0.22*i,0.5,<br>
+-0.77-0.22*i,0.38-0.88*i,-4.5-1.7*i]</span><br>
+ou avec plus de décimales :<br>
+<span style="font-style:italic">p</span><sub>0</sub>=20.25,<br>
+ <span style="font-style:italic">p</span><sub>1</sub>=−4.48115530061+1.72227182413*<span style="font-style:italic">i</span>=<span style="text-decoration:overline"><span style="font-style:italic">p</span></span><sub><span style="text-decoration:overline">−1</span></sub>,<br>
+<span style="font-style:italic">p</span><sub>2</sub>=0.375+0.875*<span style="font-style:italic">i</span>=<span style="text-decoration:overline"><span style="font-style:italic">p</span></span><sub><span style="text-decoration:overline">−2</span></sub>,<br>
+<span style="font-style:italic">p</span><sub>3</sub>=−0.768844699385+0.222271824132*<span style="font-style:italic">i</span>=<span style="text-decoration:overline"><span style="font-style:italic">p</span></span><sub><span style="text-decoration:overline">−3</span></sub>,<br>
+ <span style="font-style:italic">p</span><sub>−4</sub>=0.5
+car on a :<br>
+<span style="font-style:italic">q</span>=[<span style="font-style:italic">q</span><sub>0</sub>,...<span style="font-style:italic">q</span><sub><span style="font-style:italic">N</span>−1</sub>]=[<span style="font-style:italic">p</span><sub>0</sub>,..<span style="font-style:italic">p</span><sub><span style="font-style:italic">N</span>/2−1</sub>,<span style="font-style:italic">p</span><sub>−<span style="font-style:italic">N</span>/2</sub>,..,<span style="font-style:italic">p</span><sub>−1</sub>]=1/<span style="font-style:italic">N</span><span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>([<span style="font-style:italic">y</span><sub>0</sub>,..<span style="font-style:italic">y</span><sub><span style="font-style:italic">N</span>−1</sub>])=<span style="font-family:monospace">1/</span><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace"><span style="font-style:italic">fft</span></span><span style="font-family:monospace">(</span><span style="font-family:monospace"><span style="font-style:italic">y</span></span><span style="font-family:monospace">)</span><br>
+On calcule la valeur <span style="font-style:italic">T</span>0 du polynôme d’interpolation au point 
+<span style="font-style:italic">t</span>0=13,75=13+3/4=55/4.<br>
+On a :<br>
+<span style="font-family:monospace">q:=[20.25,-4.48115530061+1.72227182413*i,-0.375+0.875*i,<br>
+-0.768844699385+0.222271824132*i,0.5,<br>
+-0.768844699385-0.222271824132*i,<br>
+-0.375-0.875*i,-4.48115530061-1.72227182413*i]</span><br>
+On pose :<br>
+<span style="font-family:monospace">pp:=[q[4],q[5],q[6],q[7],q[0],q[1],q[2],q[3]]</span><br>
+On a <span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">pp</span>[<span style="font-style:italic">k</span>+4] pour <span style="font-style:italic">k</span>=−4...3<br>
+On tape :<br>
+<span style="font-family:monospace">t0(j):=exp(2*i*pi*(13+3/4)/24*j)</span><br>
+<span style="font-family:monospace">T0:=1/2*pp[0]*(t0(4)+t0(-4))+sum(pp[j+4]*t0(j),j,-3,3)</span><br>
+<span style="font-family:monospace">evalf(sincos(T0))</span><br>
+On obtient :<br>
+<span style="font-family:monospace">29.4863181684</span><br>
+On prévoit donc une température de 29.49 degrés Celsius.<br>
+On tape :<br>
+<span style="font-family:monospace">q1:=[q[4]/2,q[3],q[2],q[1],q[0]/2]</span><br>
+<span style="font-family:monospace">a:=t0(1)</span> (ou <span style="font-family:monospace">a:=-exp(i*pi*7/48)</span>)<br>
+<span style="font-family:monospace">g(x):=r2e(q1,x)</span><br>
+<span style="font-family:monospace">evalf(2*re(g(a)))</span><br>
+ou encore<br>
+<span style="font-family:monospace">2.0*re(q[0]/2+q[1]*t0(1)+q[2]*t0(2)+q[3]*t0(3)+q[4]/2*t0(4))</span><br>
+On obtient :<br>
+<span style="font-family:monospace">29.4863181684</span><br>
+<span style="font-weight:bold">Remarque</span><br>
 Si on utilise le polynôme d’interpolation de Lagrange (on interpole par un 
-polynôme non périodique).<BR>
-On tape :<BR>
-<TT>l1:=[0,3,6,9,12,15,18,21]</TT><BR>
-<TT>l2:=[11,10,17,24,32,26,23,19]</TT><BR>
-<TT>subst(lagrange(l1,l2,13+3/4),x=13+3/4)</TT><BR>
-On obtient :<BR>
-<TT> </TT><TT>8632428959/286654464</TT><TT>≃ 30.1144061688</TT></P><HR>
-<A HREF="cascmd_fr348.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr350.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+polynôme non périodique).<br>
+On tape :<br>
+<span style="font-family:monospace">l1:=[0,3,6,9,12,15,18,21]</span><br>
+<span style="font-family:monospace">l2:=[11,10,17,24,32,26,23,19]</span><br>
+<span style="font-family:monospace">subst(lagrange(l1,l2,13+3/4),x=13+3/4)</span><br>
+On obtient :<br>
+<span style="font-family:monospace"> </span><span style="font-family:monospace">8632428959/286654464</span><span style="font-family:monospace">≃ 30.1144061688</span></p>
+<hr>
+<a href="cascmd_fr348.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr350.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

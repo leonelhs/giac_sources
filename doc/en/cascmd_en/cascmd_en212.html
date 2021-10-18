@@ -1,43 +1,34 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Euclidien remainder: Rem</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en211.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en213.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc239">2.25.5</A>  Euclidien remainder: <TT>Rem</TT></H3><P><A NAME="@default394"></A>
-<TT>Rem</TT> is the inert form of <TT>rem</TT>.<BR>
-<TT>Rem</TT> returns the euclidean remainder between two polynomials
-(decreasing power division) without evaluation. 
-It is used when <TT>Xcas</TT> is in Maple mode to compute
-the euclidean remainder of the division of two
-polynomials with coefficients in &#X2124;/<I>p</I>&#X2124; using Maple-like syntax.<BR>
-In <TT>Xcas</TT> mode, input :
-</P><DIV CLASS="center"><TT>Rem(x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Euclidean remainder : rem</title>
+</head>
+<body >
+<a href="cascmd_en211.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en213.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec260" class="subsection">2.25.4  Euclidean remainder : <span style="font-family:monospace">rem</span></h3>
+<p><a id="hevea_default394"></a>
+<span style="font-family:monospace">rem</span> returns the euclidean remainder between two polynomials
+(decreasing power division). If the polynomials are represented as 
+expressions, the variable may be specified as a third
+argument.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>rem(x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
-In <TT>Maple</TT> mode, input :
-</P><DIV CLASS="center"><TT>Rem(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">x-1</span></div><p>
+To have the remainder of <span style="font-style:italic">x</span><sup>2</sup>+2<span style="font-style:italic">x</span>+4 by <span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+2 we can also input :
+</p><div class="center"><span style="font-family:monospace">rem([1,2,4],[1,1,2])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>2*x</TT></DIV><P>
-The division was done using modular arithmetic, unlike with
-</P><DIV CLASS="center"><TT>rem(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
-where the division is done in &#X2124;[<I>X</I>] and reduced after to:
-</P><DIV CLASS="center"><TT>12*x</TT></DIV><P>
-If <TT>Xcas</TT> is not in Maple mode, polynomial division 
-in &#X2124;/<I>p</I>&#X2124;[<I>X</I>] is done e.g. by :
-</P><DIV CLASS="center"><CODE>rem((x^3+3*x)% 5,(2x^2+6x+5)%5)</CODE>
-</DIV><HR>
-<A HREF="cascmd_en211.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en213.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[1,2]</span></div><p>
+i.e. the polynomial <span style="font-style:italic">x</span>+2.</p>
+<hr>
+<a href="cascmd_en211.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en213.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

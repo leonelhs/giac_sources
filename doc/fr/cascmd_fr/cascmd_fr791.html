@@ -1,33 +1,41 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de la loi géométrique : geometric_icdf</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr790.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr792.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc931">8.4.35</A>  Fonction de répartition inverse de la loi géométrique : <TT>geometric_icdf</TT></H3><P><A NAME="@default1410"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi géométrique de paramètre
-<I>p</I> (0&lt;<I>p</I>&lt;1), si on a <TT>geometric_icdf(p,x)=h</TT> avec <I>x</I>∈ [0,1]
-c’est que l’on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=geometric_cdf(p,h)</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Densité de probabilité de la loi de Cauchy : cauchy cauchyd</title>
+</head>
+<body >
+<a href="cascmd_fr790.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr792.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec963" class="subsection">8.4.36  Densité de probabilité de la loi de Cauchy : <span style="font-family:monospace">cauchy cauchyd</span></h3>
+<p><a id="hevea_default1408"></a><a id="hevea_default1409"></a>
+<span style="font-family:monospace">cauchyd</span> a 1 ou 3 paramètres : deux réels <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span> strictement positifs 
+(par défaut <span style="font-style:italic">a</span>=0 et <span style="font-style:italic">b</span>=1) et un réel <span style="font-style:italic">x</span>.<br>
+<span style="font-family:monospace">cauchyd(a,b,x)</span> renvoie la densité de probabilité de la loi de Cauchy
+à savoir : <br>
+<span style="font-family:monospace">cauchy(x)</span>= 1/(<span style="font-style:italic">x</span><sup>2</sup>+1)*<span style="font-style:italic">pi</span><br>
+<span style="font-family:monospace">cauchy(a,b,x)</span>= <span style="font-style:italic">b</span>/((<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)<sup>2</sup>+<span style="font-style:italic">b</span><sup>2</sup>)*<span style="font-style:italic">pi</span><br>
 On tape :
-</P><DIV CLASS="center"><TT>geometric_icdf(0.2,0.488)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">cauchyd(0.3)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">cauchyd(0,1,0.3)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">0.292027418517</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>geometric_icdf(0.5,0.5)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">cauchyd(2,1,3)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
-<A HREF="cascmd_fr790.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr792.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">1/(2*pi)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">cauchy(2.2,1.5,0.8)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.113412073462</span></div>
+<hr>
+<a href="cascmd_fr790.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr792.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

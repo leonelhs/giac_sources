@@ -1,42 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour écrire des sorties dans un fichier : fopen fprint fclose</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr851.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr853.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc999">9.5.3</A>  Pour écrire des sorties dans un fichier : <TT>fopen fprint fclose</TT></H3><P><A NAME="@default1556"></A><A NAME="@default1557"></A><A NAME="@default1558"></A>
-Voici les commandes pour ecrire dans un fichier :<BR>
-<TT>f:=fopen("essai")</TT> crèe un fichier du nom spécifié ici <TT>essai</TT> 
-(et donc l’efface si celui-ci existait déjà) et lui associer la variable 
-<TT>f</TT>.<BR>
-<TT>fprint(f,12)</TT> écrit 12 dans le fichier <TT>essai</TT>.<BR>
-<TT>fclose(f)</TT> ferme le fichier <TT>essai</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : #</title>
+</head>
+<body >
+<a href="cascmd_fr851.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr853.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1031" class="subsection">9.5.4  Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : <span style="font-family:monospace">#</span></h3>
+<p><a id="hevea_default1556"></a><a id="sec:diese"></a>
+<span style="font-family:monospace">#</span> permet d’utiliser une chaîne de caractères comme nom de 
+variable ou comme nom de fonction ou comme nom d’instruction ou comme nom de 
+répertoire.<br>
+<span style="font-family:monospace">#</span> est surtout utile dans un programme.<br>
+<span style="font-family:monospace">#</span> a comme argument une chaîne ou le nom d’une variable qui contient 
+une chaîne ou une expression renvoyant une chaîne.<br>
+<span style="font-family:monospace">#</span> transforme la chaîne en une expression mais n’évalue pas cette
+expression. Donc,
+pour faire une affectation, on ne doit pas écrire <span style="font-family:monospace">#"a:=2"</span>, mais on
+peut écrire <span style="font-family:monospace">#"a":=2</span> (voir aussi <span style="font-family:monospace">expr</span> <a href="cascmd_fr854.html#sec%3Aexpr">9.5.6</a>).<br>
 On tape :
-</P><PRE CLASS="verbatim">testfprint(nom):={
- local a,f;
- a:=[];
- f:=fopen(nom);
- for (k:=1;k&lt;11;k++){
- fprint(f,k);
- }
- fclose(f);
- return a;
- }
-</PRE><P>puis :
-</P><DIV CLASS="center"><TT>testfprint("toto")</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">a:="abc";#a:=3</span></div><p>
+ou :
+</p><div class="center"><span style="font-family:monospace">#"abc":=3</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>la création d’un fichier "toto" dans lequel il y a 12345678910</TT></DIV><HR>
-<A HREF="cascmd_fr851.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr853.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">La variable abc contient 3</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">b:="ifactor";(#b)(54)</span></div><p>
+ou :
+</p><div class="center"><span style="font-family:monospace">(#"ifactor")(54)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">2*3</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">#"ifactor(54)"</span></div><p>On obtient :
+</p><div class="center"><span style="font-family:monospace">ifactor(54)</span></div>
+<hr>
+<a href="cascmd_fr851.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr853.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

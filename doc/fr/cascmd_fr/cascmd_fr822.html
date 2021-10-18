@@ -1,34 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Valeurs par défaut des paramètres d’une fonction</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr821.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr823.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc965">9.1.3</A>  Valeurs par défaut des paramètres d’une fonction</H3><P>
-Prenons l’exemple d’une fonction <TT>f</TT> ayant quatre paramètres 
-<TT>x,y,z,t</TT>.<BR>
-On peut donner a certains paramètres des valeurs par défaut, on écrit 
-par exemple dans la défintion de <TT>f</TT> :<BR>
-<TT>f(x,y=2,z,t=pi/2):={<BR>
-</TT><TT>retourne simplify(x*cos(t)+y*sin(t)+z)</TT><TT>x*cos(t)+y*sin(t)+z}:;</TT><BR>
-On tape :<BR>
-<TT>f(10,3)</TT><BR>
-ou<BR>
-<TT>f(10,2,3,pi/2)</TT><BR>
-On obtient :<BR>
-<TT>5</TT>
-</P><HR>
-<A HREF="cascmd_fr821.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr823.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La forme d’un programme</title>
+</head>
+<body >
+<a href="cascmd_fr821.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr823.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec997" class="subsection">9.1.4  La forme d’un programme</h3>
+<p><a id="hevea_default1452"></a><a id="hevea_default1453"></a><a id="hevea_default1454"></a><a id="hevea_default1455"></a>
+<a id="sec:dispgg"></a>
+Un programme a la même forme qu’une fonction mais ne renvoie pas de valeurs,
+mais un programme peut afficher des résultats ou 
+faire des dessins : dans ce cas toutes les instructions d’affichage 
+(<span style="font-family:monospace">afficher</span> ou <span style="font-family:monospace">Disp;</span>) se feront 
+en bleu dans l’écran intermédiaire situé avant la réponse et les 
+instructions de dessins se feront dans l’écran <span style="font-family:monospace">DispG</span>. En particulier 
+les dessins récursifs ne seront visibles que dans l’écran <span style="font-family:monospace">DispG</span>.
+</p><ul class="itemize"><li class="li-itemize">
+Pour ouvrir l’écran <span style="font-family:monospace">DispG</span>, on utilise le menu 
+<span style="font-family:monospace">Cfg</span>▸<span style="font-family:monospace">Montrer</span>▸<span style="font-family:monospace"> DispG</span> ou 
+l’instruction <span style="font-family:monospace">DispG;</span> (ne pas mettre de parenthèses).
+</li><li class="li-itemize">Pour effacer l’écran <span style="font-family:monospace">DispG</span>, on utilise la commande 
+<span style="font-family:monospace">ClrGraph()</span> ou <span style="font-family:monospace">erase</span>.
+</li><li class="li-itemize">Pour cacher l’écran <span style="font-family:monospace">DispG</span>, on utilise le menu 
+<span style="font-family:monospace">Cfg</span>▸<span style="font-family:monospace">Cacher</span>▸<span style="font-family:monospace"> DispG</span> ou 
+l’instruction <span style="font-family:monospace">DispHome;</span> (ne pas mettre de parenthèses).
+</li></ul><p>
+Lors de l’exécution du programme, on aura comme réponse, la valeur 
+(ou le dessin) de la dernière instruction du programme.<br>
+Il est préférable de mettre <span style="font-family:monospace">return 0</span> à la fin d’un programme et de 
+le transformer ainsi en fonction : l’exécution de ce programme renverra 0 
+comme réponse ce qui voudra dire que son exécution s’est bien passée.</p>
+<hr>
+<a href="cascmd_fr821.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr823.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

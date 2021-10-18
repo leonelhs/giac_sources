@@ -1,68 +1,68 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Calcul avec les racines exactes d’un polynôme : rootof</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr380.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr382.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc468">6.28.23</A>  Calcul avec les racines exactes d’un polynôme : <TT>rootof</TT></H3><P><A NAME="@default719"></A>
-Soient <I>P</I> et <I>Q</I> deux polynômes donnés par la liste de leurs coefficients
-alors, <TT>rootof(P,Q)</TT> désigne la valeur <I>P</I>(α) où α 
-est la "plus grande" racine de <I>Q</I> (on compare d’abord les parties réelles et 
-en cas dégalité on compare les parties imaginaires).<BR>
-On peut alors faire des calculs avec cette valeur.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Calcul avec les racines exactes d’un polynôme : rootof</title>
+</head>
+<body >
+<a href="cascmd_fr380.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr382.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec492" class="subsection">6.28.23  Calcul avec les racines exactes d’un polynôme : <span style="font-family:monospace">rootof</span></h3>
+<p><a id="hevea_default719"></a>
+Soient <span style="font-style:italic">P</span> et <span style="font-style:italic">Q</span> deux polynômes donnés par la liste de leurs coefficients
+alors, <span style="font-family:monospace">rootof(P,Q)</span> désigne la valeur <span style="font-style:italic">P</span>(α) où α 
+est la "plus grande" racine de <span style="font-style:italic">Q</span> (on compare d’abord les parties réelles et 
+en cas dégalité on compare les parties imaginaires).<br>
+On peut alors faire des calculs avec cette valeur.<br>
 On tape :
-</P><DIV CLASS="center"><TT>normal(rootof([1,0],[1,2,-3]))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">normal(rootof([1,0],[1,2,-3]))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-en effet <I>x</I><SUP>2</SUP>+2<I>x</I>−3=(<I>x</I>−1)(<I>x</I>+3) a comme plus grande racine 1.<BR>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+en effet <span style="font-style:italic">x</span><sup>2</sup>+2<span style="font-style:italic">x</span>−3=(<span style="font-style:italic">x</span>−1)(<span style="font-style:italic">x</span>+3) a comme plus grande racine 1.<br>
 
-<B>Autre exemple</B><BR>
-Soit α la plus grande racine en norme de <I>Q</I>(<I>x</I>)=<I>x</I><SUP>4</SUP>+10<I>x</I><SUP>2</SUP>+1.
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<span style="font-weight:bold">Autre exemple</span><br>
+Soit α la plus grande racine en norme de <span style="font-style:italic">Q</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>4</sup>+10<span style="font-style:italic">x</span><sup>2</sup>+1.
+</p><ul class="itemize"><li class="li-itemize">
 Calculer 
- 1/α<BR>
+ 1/α<br>
  On tape :
-<DIV CLASS="center"><TT>normal(1/rootof([1,0],[1,0,10,0,1]))</TT></DIV>
-car <I>P</I>(<I>x</I>)=<I>x</I> est représenté par [1,0].<BR>
+<div class="center"><span style="font-family:monospace">normal(1/rootof([1,0],[1,0,10,0,1]))</span></div>
+car <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span> est représenté par [1,0].<br>
 On obtient :
-<DIV CLASS="center"><TT>rootof([[-1,0,-10,0],[1,0,10,0,1]])</TT></DIV>
-ce qui veut dire que :<BR>
- 1/α=−(α)<SUP>3</SUP>−10.α<BR>
-</LI><LI CLASS="li-itemize">Calculer (α)<SUP>2</SUP>.<BR>
+<div class="center"><span style="font-family:monospace">rootof([[-1,0,-10,0],[1,0,10,0,1]])</span></div>
+ce qui veut dire que :<br>
+ 1/α=−(α)<sup>3</sup>−10.α<br>
+</li><li class="li-itemize">Calculer (α)<sup>2</sup>.<br>
 On tape :
-<DIV CLASS="center"><TT>normal(rootof([1,0],[1,0,10,0,1])</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
-On a α=<TT>rootof([1,0],[1,0,10,0,1])</TT> car <I>P</I>(<I>x</I>)=<I>x</I> est représenté par [1,0], et pour avoir α<SUP>2</SUP>, on élève α au carré.<BR>
+<div class="center"><span style="font-family:monospace">normal(rootof([1,0],[1,0,10,0,1])</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
+On a α=<span style="font-family:monospace">rootof([1,0],[1,0,10,0,1])</span> car <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span> est représenté par [1,0], et pour avoir α<sup>2</sup>, on élève α au carré.<br>
 On obtient :
-<DIV CLASS="center"><TT>-5-2*sqrt(6)</TT></DIV>
-ou pour avoir α<SUP>2</SUP> directement, on tape :
-<DIV CLASS="center"><TT>normal(rootof([1,0,0],[1,0,10,0,1])</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
-car <I>P</I>(<I>x</I>)=<I>x</I><SUP>2</SUP> est représenté par [1,0,0].<BR>
+<div class="center"><span style="font-family:monospace">-5-2*sqrt(6)</span></div>
+ou pour avoir α<sup>2</sup> directement, on tape :
+<div class="center"><span style="font-family:monospace">normal(rootof([1,0,0],[1,0,10,0,1])</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
+car <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup> est représenté par [1,0,0].<br>
 On obtient :
-<DIV CLASS="center"><TT>-5-2*sqrt(6)</TT></DIV>
-</LI></UL><P>
+<div class="center"><span style="font-family:monospace">-5-2*sqrt(6)</span></div>
+</li></ul><p>
 Ce résultat peut se vérifier puisque l’on a une équation bicarrée 
 de discriminant réduit 25−1=24=4*6.
 On tape :
-</P><DIV CLASS="center"><TT>csolve(x</TT><CODE><TT>^</TT></CODE><TT>4+10x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">csolve(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+10x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[(i)*sqrt(-2*sqrt(6)+5),(-i)*sqrt(-2*sqrt(6)+5),<BR>
-(i)*sqrt(2*sqrt(6)+5),(-i)*sqrt(2*sqrt(6)+5)]</TT></DIV><P>
-Donc α=<I>i</I>*√<SPAN style="text-decoration:overline">2*√</SPAN><SPAN style="text-decoration:overline">6</SPAN><SPAN style="text-decoration:overline">+5</SPAN><BR>
+</p><div class="center"><span style="font-family:monospace">[(i)*sqrt(-2*sqrt(6)+5),(-i)*sqrt(-2*sqrt(6)+5),<br>
+(i)*sqrt(2*sqrt(6)+5),(-i)*sqrt(2*sqrt(6)+5)]</span></div><p>
+Donc α=<span style="font-style:italic">i</span>*√<span style="text-decoration:overline">2*√</span><span style="text-decoration:overline">6</span><span style="text-decoration:overline">+5</span><br>
 On tape :
-</P><DIV CLASS="center"><TT>((i)*sqrt(2*sqrt(6)+5))</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">((i)*sqrt(2*sqrt(6)+5))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>-5-2*sqrt(6)</TT></DIV><HR>
-<A HREF="cascmd_fr380.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr382.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">-5-2*sqrt(6)</span></div>
+<hr>
+<a href="cascmd_fr380.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr382.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

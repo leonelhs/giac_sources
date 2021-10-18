@@ -1,278 +1,278 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Somme de Riemann : sum_riemann</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr308.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr310.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc389">6.21.4</A>  Somme de Riemann : <TT>sum_riemann</TT></H3><P><A NAME="@default576"></A>
-<TT>sum_riemann</TT> a deux arguments : une expression <TT>Xpr</TT>
-dépendant de deux variables et la liste des noms de ces deux variables.<BR>
-<TT>sum_riemann(Xpr(n,k),[n,k])</TT> renvoie un équivalent, au 
-voisinage de <I>n</I>=+∞, de ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>Xpr</I>(<I>n</I>,<I>k</I>) ou de 
- ∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP> <I>Xpr</I>(<I>n</I>,<I>k</I>) ou de  ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP> <I>Xpr</I>(<I>n</I>,<I>k</I>), 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Somme de Riemann : sum_riemann</title>
+</head>
+<body >
+<a href="cascmd_fr308.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr310.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec406" class="subsection">6.21.4  Somme de Riemann : <span style="font-family:monospace">sum_riemann</span></h3>
+<p><a id="hevea_default576"></a>
+<span style="font-family:monospace">sum_riemann</span> a deux arguments : une expression <span style="font-family:monospace">Xpr</span>
+dépendant de deux variables et la liste des noms de ces deux variables.<br>
+<span style="font-family:monospace">sum_riemann(Xpr(n,k),[n,k])</span> renvoie un équivalent, au 
+voisinage de <span style="font-style:italic">n</span>=+∞, de ∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span></sup> <span style="font-style:italic">Xpr</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) ou de 
+ ∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">n</span>−1</sup> <span style="font-style:italic">Xpr</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) ou de  ∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span>−1</sup> <span style="font-style:italic">Xpr</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>), 
 lorsque la somme considérée est une somme de Riemann associée à une 
 fonction continue sur [0,1] ou répond quand la recherche a été 
-infructueuse <TT>"ce n’est probablement pas une somme de Riemann"</TT> .<BR>
-<B>Exercice 1</B><BR>
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>2</SUP>/<I>n</I><SUP>3</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
+infructueuse <span style="font-family:monospace">"ce n’est probablement pas une somme de Riemann"</span> .<br>
+<span style="font-weight:bold">Exercice 1</span><br>
+Soit  <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>=∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span></sup> <span style="font-style:italic">k</span><sup>2</sup>/<span style="font-style:italic">n</span><sup>3</sup>.<br>
+Calculer  lim<sub><span style="font-style:italic">n</span> → +∞</sub> <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(k</TT><CODE><TT>^</TT></CODE><TT>2/n</TT><CODE><TT>^</TT></CODE><TT>3,[n,k])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[n,k])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1/3</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1/3</span></div><p>
 car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>2</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>3</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>2</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>3</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>2</sup></td></tr>
+</table></td></tr>
+</table><p>
 est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>x</I><SUP>2</SUP><I>dx</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-<B>Exercice 2</B><BR>
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>3</SUP>/<I>n</I><SUP>4</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">dx</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td></tr>
+</table><p>
+<span style="font-weight:bold">Exercice 2</span><br>
+Soit  <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>=∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span></sup> <span style="font-style:italic">k</span><sup>3</sup>/<span style="font-style:italic">n</span><sup>4</sup>.<br>
+Calculer  lim<sub><span style="font-style:italic">n</span> → +∞</sub> <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(k</TT><CODE><TT>^</TT></CODE><TT>3/n</TT><CODE><TT>^</TT></CODE><TT>4,[n,k])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4,[n,k])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1/4</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1/4</span></div><p>
 car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>3</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>4</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>3</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>3</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sup>3</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>4</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sup>3</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>3</sup></td></tr>
+</table></td></tr>
+</table><p>
 est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>x</I><SUP>3</SUP><I>dx</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-<B>Exercice 3</B><BR>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup><span style="font-style:italic">dx</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table><p>
+<span style="font-weight:bold">Exercice 3</span><br>
 Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(1/<I>n</I>+1+1/<I>n</I>+2+...+1/<I>n</I>+<I>n</I>).<BR>
+ lim<sub><span style="font-style:italic">n</span> → +∞</sub>(1/<span style="font-style:italic">n</span>+1+1/<span style="font-style:italic">n</span>+2+...+1/<span style="font-style:italic">n</span>+<span style="font-style:italic">n</span>).<br>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(1/(n+k),[n,k])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(1/(n+k),[n,k])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>log(2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">log(2)</span></div><p>
 car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>+<I>k</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+(<I>k</I>/<I>n</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>+<span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">1+(<span style="font-style:italic">k</span>/<span style="font-style:italic">n</span>)</td></tr>
+</table></td></tr>
+</table><p>
 est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+<I>x</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=ln(1+1)=ln(2)</TD></TR>
-</TABLE><P>
-<B>Exercice 4</B><BR>
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 32<I>n</I><SUP>3</SUP>/16<I>n</I><SUP>4</SUP>−<I>k</I><SUP>4</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">1+<span style="font-style:italic">x</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span>=ln(1+1)=ln(2)</td></tr>
+</table><p>
+<span style="font-weight:bold">Exercice 4</span><br>
+Soit  <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>=∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span></sup> 32<span style="font-style:italic">n</span><sup>3</sup>/16<span style="font-style:italic">n</span><sup>4</sup>−<span style="font-style:italic">k</span><sup>4</sup>.<br>
+Calculer  lim<sub><span style="font-style:italic">n</span> → +∞</sub> <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(32*n</TT><CODE><TT>^</TT></CODE><TT>3/(16*n</TT><CODE><TT>^</TT></CODE><TT>4-k</TT><CODE><TT>^</TT></CODE><TT>4),[n,k])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(32*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/(16*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4),[n,k])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2*atan(1/2)+log(3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">2*atan(1/2)+log(3)</span></div><p>
 car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">32<I>n</I><SUP>3</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">16<I>n</I><SUP>4</SUP>−<I>k</I><SUP>4</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">32</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">16−(<I>k</I>/<I>n</I>)<SUP>4</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">32<span style="font-style:italic">n</span><sup>3</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16<span style="font-style:italic">n</span><sup>4</sup>−<span style="font-style:italic">k</span><sup>4</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">32</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16−(<span style="font-style:italic">k</span>/<span style="font-style:italic">n</span>)<sup>4</sup></td></tr>
+</table></td></tr>
+</table><p>
 est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">32</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">16−<I>x</I><SUP>4</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−2</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>+4</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-qui vaut donc ln(3)−ln(2)+ln(2)−ln(1)+2  atan (1/2)=ln(3)+2  atan (1/2)<BR>
-<B>Exercice 5</B><BR>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">32</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16−<span style="font-style:italic">x</span><sup>4</sup></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span>=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>+2</td></tr>
+</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>−2</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup>+4</td></tr>
+</table></td></tr>
+</table><p>
+qui vaut donc ln(3)−ln(2)+ln(2)−ln(1)+2  atan (1/2)=ln(3)+2  atan (1/2)<br>
+<span style="font-weight:bold">Exercice 5</span><br>
 Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(<I>n</I>/<I>n</I><SUP>2</SUP>+1<SUP>2</SUP>+<I>n</I>/<I>n</I><SUP>2</SUP>+2<SUP>2</SUP>+...+<I>n</I>/<I>n</I><SUP>2</SUP>+<I>n</I><SUP>2</SUP>).<BR>
+ lim<sub><span style="font-style:italic">n</span> → +∞</sub>(<span style="font-style:italic">n</span>/<span style="font-style:italic">n</span><sup>2</sup>+1<sup>2</sup>+<span style="font-style:italic">n</span>/<span style="font-style:italic">n</span><sup>2</sup>+2<sup>2</sup>+...+<span style="font-style:italic">n</span>/<span style="font-style:italic">n</span><sup>2</sup>+<span style="font-style:italic">n</span><sup>2</sup>).<br>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(n/(n</TT><CODE><TT>^</TT></CODE><TT>2+k</TT><CODE><TT>^</TT></CODE><TT>2),[n,k])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(n/(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),[n,k])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>pi/4</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pi/4</span></div><p>
 car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+(<I>k</I>/<I>n</I>)<SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>2</sup>+<span style="font-style:italic">k</span><sup>2</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">1+(<span style="font-style:italic">k</span>/<span style="font-style:italic">n</span>)<sup>2</sup></td></tr>
+</table></td></tr>
+</table><p>
 est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+<I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=  atan (1)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">π</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-<B>Exercice 6</B><BR>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">1+<span style="font-style:italic">x</span><sup>2</sup></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span>=  atan (1)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table><p>
+<span style="font-weight:bold">Exercice 6</span><br>
 Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(1/√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>+1/√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+2</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>+...+1/√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>).<BR>
+ lim<sub><span style="font-style:italic">n</span> → +∞</sub>(1/√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sup><span style="text-decoration:overline">2</span></sup><span style="text-decoration:overline">+1</span><sup><span style="text-decoration:overline">2</span></sup>+1/√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sup><span style="text-decoration:overline">2</span></sup><span style="text-decoration:overline">+2</span><sup><span style="text-decoration:overline">2</span></sup>+...+1/√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sup><span style="text-decoration:overline">2</span></sup><span style="text-decoration:overline">+</span><span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sup><span style="text-decoration:overline">2</span></sup>).<br>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(1/sqrt(n</TT><CODE><TT>^</TT></CODE><TT>2+k</TT><CODE><TT>^</TT></CODE><TT>2),[n,k])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(1/sqrt(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),[n,k])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>-ln(sqrt(2)-1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">-ln(sqrt(2)-1)</span></div><p>
 car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+(<I>k</I>/<I>n</I>)<SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span><sup>2</sup>+<span style="font-style:italic">k</span><sup>2</sup></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+(<span style="font-style:italic">k</span>/<span style="font-style:italic">n</span>)<sup>2</sup></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table><p>
 est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+<I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=ln(1+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+1<SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">−ln(0+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+0<SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=ln(1+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD></TR>
-</TABLE></TD></TR>
-</TABLE><HR>
-<A HREF="cascmd_fr308.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr310.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+<span style="font-style:italic">x</span><sup>2</sup></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span>=ln(1+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+1<sup>2</sup></td></tr>
+</table></td><td class="dcell">−ln(0+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+0<sup>2</sup></td></tr>
+</table></td><td class="dcell">=ln(1+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td></tr>
+</table>
+<hr>
+<a href="cascmd_fr308.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr310.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

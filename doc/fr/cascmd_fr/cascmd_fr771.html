@@ -1,34 +1,39 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi de Student : student studentd</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr770.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr772.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc911">8.4.15</A>  Densité de probabilité de la loi de Student : <TT>student studentd</TT></H3><P><A NAME="@default1383"></A><A NAME="@default1384"></A>
-<TT>student(n,x)</TT> est la densité de probabilité de la loi de Student ayant <I>n</I> degrés de liberté.<BR>
-<TT>student(n,x)</TT>, est égale à :
- Γ(<I>n</I>+1/2)/Γ(<I>n</I>/2)√<SPAN style="text-decoration:overline"><I>n</I>π</SPAN>(1+<I>x</I><SUP>2</SUP>/<I>n</I>)<SUP>−<I>n</I>−1/2</SUP><BR>
-où Γ est définie pour <I>x</I>&gt;0 par 
-Γ(<I>x</I>)=∫<SUB>0</SUB><SUP>∞</SUP><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>x</I>−1</SUP> <I>dt</I><BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonction de répartition de la loi de Student : student_cdf</title>
+</head>
+<body >
+<a href="cascmd_fr770.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr772.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec943" class="subsection">8.4.16  Fonction de répartition de la loi de Student : <span style="font-family:monospace">student_cdf</span></h3>
+<p><a id="hevea_default1382"></a>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> suit une loi de Student ayant <span style="font-style:italic">n</span> degrés 
+de liberté, on a :<br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)= <span style="font-family:monospace">student_cdf(n,x)</span>.<br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">x</span>≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>)= <span style="font-family:monospace">student_cdf(n,x,y)</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>student(2,3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">student_cdf(5,2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>Gamma(3/2)*sqrt(11/2)</TT><CODE><TT>^</TT></CODE><TT>-1*2/(sqrt(2*pi)*11)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">0.949030260585</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>evalf(student(2,3))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">student_cdf(5,-2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0274101222343</TT></DIV><HR>
-<A HREF="cascmd_fr770.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr772.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0.0509697394149</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">student_cdf(5,-2,2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.89806052117</span></div><p>
+car 0.949030260585−0.0509697394149=0.89806052117
+</p>
+<hr>
+<a href="cascmd_fr770.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr772.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

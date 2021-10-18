@@ -1,52 +1,47 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’inversion : inversion</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr977.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr979.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1145">10.17.7</A>  L’inversion : <TT>inversion</TT></H3><P><A NAME="@default1906"></A><A NAME="sec:inversion2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1074.html#sec:inversion3">11.14.7</A> pour la géométrie 3-d.<BR>
-<TT>inversion</TT>, en géométrie plane, a deux ou trois arguments : 
-un point (le centre de l’inversion), un réel (la valeur du rapport de 
-l’inversion) et éventuellement l’objet géométrique à transformer.<BR>
-Lorsque <TT>inversion</TT> a deux arguments, c’est une fonction qui agit sur un 
-objet géométrique.<BR>
-Si <TT>inver:=inversion(C,k)</TT> et <TT>A1:=inver(A)</TT>,
-on a <SPAN style="text-decoration:overline"><I>CA</I></SPAN>*<SPAN style="text-decoration:overline"><I>CA</I>1</SPAN>=<I>k</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La projection orthogonale : projection</title>
+</head>
+<body >
+<a href="cascmd_fr977.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr979.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1183" class="subsection">10.17.8  La projection orthogonale : <span style="font-family:monospace">projection</span></h3>
+<p><a id="hevea_default1904"></a><a id="sec:projection2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1074.html#sec%3Aprojection3">11.14.8</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">projection</span>, en géométrie plane, a un ou deux arguments : un 
+objet géométrique et éventuellement un point.<br>
+Lorsque <span style="font-family:monospace">projection</span> a un argument, c’est une fonction qui agit sur un 
+point et qui projette orthogonalement ce point sur l’objet géométrique.<br>
 On tape :
-</P><DIV CLASS="center"><TT>inver:=inversion(i,2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">p1:=projection(droite(-1,i))</span></div><p>
 Puis :
-</P><DIV CLASS="center"><TT>inver(cercle(1+i,1))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">p1(1+i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>La droite verticale d’équation x=1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">Le point 1/2+3/2*i apparait avec une croix (x) noire</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>inver(cercle(1+i,1/2))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">p2:=projection(cercle(-1,1))</span></div><div class="center"><span style="font-family:monospace">p2(i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>Le cercle de centre 8/3+i et de rayon 4/3, il passe par le 
-point 4+i</TT></DIV><P>
-Lorsque <TT>inversion</TT> a trois arguments, <TT>inversion</TT> dessine et renvoie 
-le transformé du troisième argument dans l’inversion de centre le premier 
-argument et de rapport le deuxième argument.<BR>
-Si <TT>A1:=inversion(C,k,A)</TT> on a <SPAN style="text-decoration:overline"><I>CA</I></SPAN>*<SPAN style="text-decoration:overline"><I>CA</I>1</SPAN>=<I>k</I>.<BR>
+</p><div class="center"><span style="font-family:monospace">Le point d’affixe, sqrt(2)/2+(i)*sqrt(2)/2-1, apparait avec une croix (x) noire</span></div><p>
+Lorsque <span style="font-family:monospace">projection</span> a deux arguments, <span style="font-family:monospace">projection</span> dessine et renvoie
+le transformé du point par la projection orthogonale sur le premier 
+argument.<br>
 On tape :
-</P><DIV CLASS="center"><TT>inversion(i,2,cercle(1+i,1))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">projection(droite(-1,i),1+i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>La droite verticale d’équation x=1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">Le point 1/2+3/2*i apparait avec une croix (x) noire</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>inversion(i,2,cercle(1+i,1/2))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">projection(cercle(-1,1),i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>Le cercle de centre 8/3+i et de rayon 4/3 (il passe par le point 4+i)</TT></DIV><HR>
-<A HREF="cascmd_fr977.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr979.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">Le point d’affixe, -1+sqrt(2)/2+(i)*sqrt(2)/2, apparait avec une croix (x) noire</span></div>
+<hr>
+<a href="cascmd_fr977.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr979.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

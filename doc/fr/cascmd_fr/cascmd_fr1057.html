@@ -1,42 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si des droites ou/et plans sont perpendiculaires is_perpendicular est_perpendiculaire</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1056.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1058.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1241">11.13.4</A>  Savoir si des droites ou/et plans sont perpendiculaires <TT>is_perpendicular</TT> <TT>est_perpendiculaire</TT></H3><P><A NAME="@default2054"></A><A NAME="@default2055"></A><A NAME="sec:estperp3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr991.html#sec:estperp2">10.18.12</A> pour la géométrie plane et 
-<A HREF="cascmd_fr1058.html#sec:estortho3">11.13.5</A> pour l’orthogonalité 3-d.<BR>
-<TT>est_perpendiculaire</TT>, en géométrie 3-d, teste si deux droites ou, si
-une droite et un plan ou, si deux plans sont perpendiculaires.<BR>
-En 3-d, deux droites perpendiculaires sont coplanaires et orthogonales.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Orthogonalité de 2 droites ou 2 sphères : is_orthogonal est_orthogonal</title>
+</head>
+<body >
+<a href="cascmd_fr1056.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1058.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1279" class="subsection">11.13.5  Orthogonalité de 2 droites ou 2 sphères : <span style="font-family:monospace">is_orthogonal est_orthogonal</span></h3>
+<p><a id="hevea_default2053"></a><a id="hevea_default2054"></a><a id="sec:estortho3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr991.html#sec%3Aestortho2">10.18.13</a> pour la géométrie plane et
+<a href="cascmd_fr1056.html#sec%3Aestperp3">11.13.4</a> pour la perpendicularité 3-d.<br>
+<span style="font-family:monospace">est_orthogonal</span> est une fonction booléenne ayant comme 
+argument deux droites ou deux sphères ou une droite et un plan ou d
+eux plans.<br>
+ <span style="font-family:monospace">est_orthogonal</span> vaut 1 si les deux droites ou les deux sphères (i.e
+si les plans tangents en leurs points d’intersection sont orthogonaux), 
+ou la droite et le plan ou les deux plans sont orthogonaux et vaut 0 sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>est_perpendiculaire(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_orthogonal(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>est_coplanaire(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_orthogonal(droite([2,3,-2],[-1,-1,-1]), plan([-1,-1,-1],[-1,0,3],[-2,0,0]))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>P:=plan([0,0,0],[1,2,-3],[1,1,-2])</TT></DIV><DIV CLASS="center"><TT>S:=plan([-1,-1,-1],[1,2,-3],[0,0,0])</TT></DIV><DIV CLASS="center"><TT>est_perpendiculaire(P,S)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_orthogonal(plan([0,0,0],[1,2,-3],[1,1,-2]), plan([-1,-1,-1],[1,2,-3],[0,0,0]))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>dd:=droite([2,3,-2],[-1,-1,-1])</TT></DIV><DIV CLASS="center"><TT>est_perpendiculaire(dd,P)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_orthogonal(sphere([0,0,0],sqrt(2)), sphere([2,0,0],sqrt(2)))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
-<A HREF="cascmd_fr1056.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1058.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">1</span></div>
+<hr>
+<a href="cascmd_fr1056.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1058.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

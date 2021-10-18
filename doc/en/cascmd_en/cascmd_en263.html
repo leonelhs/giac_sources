@@ -1,29 +1,39 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Factorization over &#X2124;/p&#X2124;[x] : factor factoriser</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en262.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en264.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc296">2.31.14</A>  Factorization over &#X2124;/<I>p</I>&#X2124;[<I>x</I>] : <TT>factor factoriser</TT></H3><P><A NAME="@default458"></A><A NAME="@default459"></A>
-<TT>factor</TT> takes as argument a polynomial
-with coefficients in &#X2124;/<I>p</I>&#X2124;[<I>x</I>].<BR>
-<TT>factor</TT> factorizes this polynomial in &#X2124;/<I>p</I>&#X2124;[<I>x</I>] (<I>p</I> must
-be prime).<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>GCD in &#X2124;/p&#X2124;[x] : gcd</title>
+</head>
+<body >
+<a href="cascmd_en262.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en264.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec317" class="subsection">2.31.13  GCD in &#X2124;/<span style="font-style:italic">p</span>&#X2124;[<span style="font-style:italic">x</span>] : <span style="font-family:monospace">gcd</span></h3>
+<p><a id="hevea_default458"></a><a id="sec:gcdm"></a>
+<span style="font-family:monospace">gcd</span> takes as arguments two polynomials with 
+coefficients in &#X2124;/<span style="font-style:italic">p</span>&#X2124; (<span style="font-style:italic">p</span> must be prime).<br>
+<span style="font-family:monospace">gcd</span> returns the GCD of these polynomials
+computed in &#X2124;/<span style="font-style:italic">p</span>&#X2124;[<span style="font-style:italic">x</span>] (see also 
+<a href="cascmd_en215.html#sec%3Agcd">2.25.7</a> for polynomials with non modular coefficients).<br>
 Input :
-</P><DIV CLASS="center"><TT>factor((-3*x</TT><CODE><TT>^</TT></CODE><TT>3+5*x</TT><CODE><TT>^</TT></CODE><TT>2-5*x+4)%13)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">gcd((2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+5)%13,(5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x-3)%13)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>((1%13)*x+-6%13)*((-3%13)*x</TT><CODE><TT>^</TT></CODE><TT>2+-5%13)</TT></DIV><HR>
-<A HREF="cascmd_en262.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en264.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">(-4%13)*x+5%13</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">gcd((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x+1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)) mod 5)</span></div><p> 
+Output :
+</p><div class="center"><span style="font-family:monospace">x%5</span></div><p>
+Note the difference with a gcd computation in &#X2124;[<span style="font-style:italic">X</span>] followed
+by a reduction modulo 5, input:
+</p><div class="center"><span style="font-family:monospace">gcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x+1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1) mod 5</span></div><p> 
+Output :
+</p><div class="center"><span style="font-family:monospace">1</span></div>
+<hr>
+<a href="cascmd_en262.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en264.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

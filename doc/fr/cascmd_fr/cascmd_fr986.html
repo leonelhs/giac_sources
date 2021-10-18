@@ -1,44 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un triangle rectangle ou si on a un rectangle : is_rectangle est_rectangle</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr985.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr987.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1154">10.18.7</A>  Savoir si on a un triangle rectangle ou si on a un rectangle : <TT>is_rectangle est_rectangle</TT></H3><P><A NAME="@default1920"></A><A NAME="@default1921"></A><A NAME="sec:estrectangle2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1064.html#sec:estrectangle3">11.13.11</A> pour la géométrie 3-d.<BR>
-<TT>est_rectangle</TT> est une fonction booléenne ayant comme 
-argument trois ou quatre points ou un objet géométrique.<BR>
-<TT>est_rectangle</TT> vaut 1 (resp 2 ou 3) si les trois points forment un triangle rectangle, l’angle droit étant
-désigné par le premier (resp second, troisième) argument ou si l’objet géométrique est un triangle rectangle,<BR>
-<TT>est_rectangle</TT> vaut 1 (resp 2) si les quatre points forment un rectangle
-(resp un carré) ou si 
-l’objet géométrique est un rectangle (resp un carré), et vaut 0 sinon.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Savoir si on a un carré : is_square est_carre</title>
+</head>
+<body >
+<a href="cascmd_fr985.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr987.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1192" class="subsection">10.18.8  Savoir si on a un carré : <span style="font-family:monospace">is_square est_carre</span></h3>
+<p><a id="hevea_default1919"></a><a id="hevea_default1920"></a><a id="sec:estcarre2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1064.html#sec%3Aestcarre3">11.13.12</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">est_carre</span> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<br>
+<span style="font-family:monospace">est_carre</span> vaut 1 si les quatre points forment un carré ou si l’objet 
+géométrique est un carré, et vaut 0 sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>est_rectangle(1,1+i,i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_carre(1+i,-1+i,-1-i,1-i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>est_rectangle(1+i,-2+i,-2-i,1-i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">K:=carre(1+i,-1+i);est_carre(K)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>R:=rectangle(-2-i,1-i,3,C,D);est_rectangle(R[0])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">K:=carre(1+i,-1+i,C,D);est_carre(K[0])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-En effet <TT>R[0]</TT> désigne un rectangle car <TT>R</TT> est une liste composée
-du rectangle et de ses sommets <TT>C</TT> et <TT>D</TT>.<BR>
-</P><HR>
-<A HREF="cascmd_fr985.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr987.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+En effet <span style="font-family:monospace">K[0]</span> désigne un carré car <span style="font-family:monospace">K</span> est une liste composée
+d’un carré et de ses sommets <span style="font-family:monospace">C</span> et <span style="font-family:monospace">D</span>.<br>
+Si on tape <span style="font-family:monospace">affixe(C,D)</span>, on obtient <span style="font-family:monospace">-1-i,1-i</span>.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">est_carre(i,-1+i,-1-i,1-i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div>
+<hr>
+<a href="cascmd_fr985.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr987.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

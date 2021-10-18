@@ -1,41 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi binomiale : binomial_cdf</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr757.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr759.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc898">8.4.2</A>  Fonction de répartition de la loi binomiale : <TT>binomial_cdf</TT></H3><P><A NAME="@default1367"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale 
-<FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>), on a :<BR>
-<TT>binomial_cdf(n,p,x)</TT>=<I>Proba</I>(<I>X</I> ≤ <I>x</I>)=<BR>
-<TT>binomial(n,0,p)+...+binomial(n,floor(x),p)</TT>.<BR>
-<TT>binomial_cdf(n,p,x,y)</TT>=<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)=<BR>
-<TT>binomial(n,ceil(x),p)+...+binomial(n,floor(y),p)</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonction de répartition inverse de la loi binomiale: binomial_icdf</title>
+</head>
+<body >
+<a href="cascmd_fr757.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr759.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec930" class="subsection">8.4.3  Fonction de répartition inverse de la loi binomiale: <span style="font-family:monospace">binomial_icdf</span></h3>
+<p><a id="hevea_default1365"></a>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> suit une loi binomiale <span style="color:red"><span style="font-style:italic">B</span></span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>),
+si on a :<br>
+<span style="font-family:monospace">binomial_icdf(n,p,x)=h</span> c’est que <br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">h</span>)=<span style="font-style:italic">x</span>=<span style="font-family:monospace">binomial_cdf(n,p,h)</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(4,0.5,2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial_icdf(4,0.5,0.9)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.6875</TT></DIV><P>
-On peut vérifier que :
-</P><DIV CLASS="center"><TT>binomial(4,0,0.5)+binomial(4,1,0.5)+binomial(4,2,0.5)</TT></DIV><DIV CLASS="center"><TT>=0.6875</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(2,0.3,1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial_icdf(2,0.3,0.95)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.91</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(2,0.3,1,2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.51</TT></DIV><HR>
-<A HREF="cascmd_fr757.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr759.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">2</span></div>
+<hr>
+<a href="cascmd_fr757.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr759.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

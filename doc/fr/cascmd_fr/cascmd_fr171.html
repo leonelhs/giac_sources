@@ -1,72 +1,72 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Reste entier de la division euclidienne : irem remain smod mods mod %</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr170.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr172.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc237">6.7.12</A>  Reste entier de la division euclidienne : <TT>irem remain smod mods mod %</TT></H3><P><A NAME="@default309"></A><A NAME="@default310"></A>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>irem</TT> (ou <TT>remain</TT>) désigne le reste entier <I>r</I> de la 
-division euclidienne des deux entiers <I>a</I> et <I>b</I> donnés en argument 
-(<I>a</I>=<I>b</I>*<I>q</I>+<I>r</I> avec 0≤ <I>r</I>&lt; <I>b</I>).<BR>
-Pour les entiers de Gauss, on choisit <I>q</I> pour <I>b</I>*<I>q</I> soit le plus proche 
-possible de <I>a</I> et on peut montrer que l’on peut choisir <I>r</I> tel que 
-|<I>r</I>|<SUP>2</SUP> ≤ |<I>b</I>|<SUP>2</SUP>/2.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Reste entier de la division euclidienne : irem remain smod mods mod %</title>
+</head>
+<body >
+<a href="cascmd_fr170.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr172.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec243" class="subsection">6.7.12  Reste entier de la division euclidienne : <span style="font-family:monospace">irem remain smod mods mod %</span></h3>
+<p><a id="hevea_default309"></a><a id="hevea_default310"></a>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">irem</span> (ou <span style="font-family:monospace">remain</span>) désigne le reste entier <span style="font-style:italic">r</span> de la 
+division euclidienne des deux entiers <span style="font-style:italic">a</span> et <span style="font-style:italic">b</span> donnés en argument 
+(<span style="font-style:italic">a</span>=<span style="font-style:italic">b</span>*<span style="font-style:italic">q</span>+<span style="font-style:italic">r</span> avec 0≤ <span style="font-style:italic">r</span>&lt; <span style="font-style:italic">b</span>).<br>
+Pour les entiers de Gauss, on choisit <span style="font-style:italic">q</span> pour <span style="font-style:italic">b</span>*<span style="font-style:italic">q</span> soit le plus proche 
+possible de <span style="font-style:italic">a</span> et on peut montrer que l’on peut choisir <span style="font-style:italic">r</span> tel que 
+|<span style="font-style:italic">r</span>|<sup>2</sup> ≤ |<span style="font-style:italic">b</span>|<sup>2</sup>/2.<br>
 On tape :
-<DIV CLASS="center"><TT>irem(148,5) </TT></DIV>
+<div class="center"><span style="font-family:monospace">irem(148,5) </span></div>
 On obtient :
-<DIV CLASS="center"><TT>3</TT></DIV>
-<TT>irem</TT> travaille avec des entiers longs ou des entiers de Gauss.<BR>
+<div class="center"><span style="font-family:monospace">3</span></div>
+<span style="font-family:monospace">irem</span> travaille avec des entiers longs ou des entiers de Gauss.<br>
 On tape :
-<DIV CLASS="center"><TT>irem(factorial(148),factorial(45)+2 )</TT></DIV>
+<div class="center"><span style="font-family:monospace">irem(factorial(148),factorial(45)+2 )</span></div>
 On obtient :
-<DIV CLASS="center"><TT>111615339728229933018338917803008301992120942047239639312</TT></DIV>
+<div class="center"><span style="font-family:monospace">111615339728229933018338917803008301992120942047239639312</span></div>
 ou encore
-<DIV CLASS="center"><TT>irem(25+12*i,5+7*i) </TT></DIV>
+<div class="center"><span style="font-family:monospace">irem(25+12*i,5+7*i) </span></div>
 On obtient :
-<DIV CLASS="center"><TT>-4+i</TT></DIV>
-On a :<BR>
-<I>a</I>−<I>b</I>*<I>q</I>=−4+<I>i</I> et on a |−4+<I>i</I>|<SUP>2</SUP>=17&lt;|5+7*<I>i</I>|<SUP>2</SUP>/2=74/2=37</LI><LI CLASS="li-itemize"><TT>smod</TT> ou <TT>mods</TT><A NAME="@default311"></A><A NAME="@default312"></A> est préfixé
-et a 2 entiers comme arguments.<BR>
-<TT>smod</TT> ou <TT>mods</TT> désigne le reste entier 
-symétrique <I>s</I> de la division euclidienne des deux entiers <I>a</I> et <I>b</I> 
-donnés en argument (<I>a</I>=<I>b</I>*<I>q</I>+<I>s</I> avec −<I>b</I>/2&lt;<I>s</I> ≤ <I>b</I>/2).<BR>
+<div class="center"><span style="font-family:monospace">-4+i</span></div>
+On a :<br>
+<span style="font-style:italic">a</span>−<span style="font-style:italic">b</span>*<span style="font-style:italic">q</span>=−4+<span style="font-style:italic">i</span> et on a |−4+<span style="font-style:italic">i</span>|<sup>2</sup>=17&lt;|5+7*<span style="font-style:italic">i</span>|<sup>2</sup>/2=74/2=37</li><li class="li-itemize"><span style="font-family:monospace">smod</span> ou <span style="font-family:monospace">mods</span><a id="hevea_default311"></a><a id="hevea_default312"></a> est préfixé
+et a 2 entiers comme arguments.<br>
+<span style="font-family:monospace">smod</span> ou <span style="font-family:monospace">mods</span> désigne le reste entier 
+symétrique <span style="font-style:italic">s</span> de la division euclidienne des deux entiers <span style="font-style:italic">a</span> et <span style="font-style:italic">b</span> 
+donnés en argument (<span style="font-style:italic">a</span>=<span style="font-style:italic">b</span>*<span style="font-style:italic">q</span>+<span style="font-style:italic">s</span> avec −<span style="font-style:italic">b</span>/2&lt;<span style="font-style:italic">s</span> ≤ <span style="font-style:italic">b</span>/2).<br>
 On tape :
-<DIV CLASS="center"><TT>smod(148,5) </TT></DIV>
+<div class="center"><span style="font-family:monospace">smod(148,5) </span></div>
 On obtient :
-<DIV CLASS="center"><TT>-2</TT></DIV></LI><LI CLASS="li-itemize"><TT>mod</TT> ou <TT>%</TT> sert à désigner un nombre modulaire.<BR>
-<TT>mod</TT> ou <TT>%</TT> est infixé et renvoie un nombre modulaire. 
-<B>Attention</B> <TT>%</TT> doit être suivi d’un espace.<BR>
+<div class="center"><span style="font-family:monospace">-2</span></div></li><li class="li-itemize"><span style="font-family:monospace">mod</span> ou <span style="font-family:monospace">%</span> sert à désigner un nombre modulaire.<br>
+<span style="font-family:monospace">mod</span> ou <span style="font-family:monospace">%</span> est infixé et renvoie un nombre modulaire. 
+<span style="font-weight:bold">Attention</span> <span style="font-family:monospace">%</span> doit être suivi d’un espace.<br>
 
-On tape :<A NAME="@default313"></A><A NAME="@default314"></A>
-<DIV CLASS="center"><TT>148 mod 5 </TT></DIV>
+On tape :<a id="hevea_default313"></a><a id="hevea_default314"></a>
+<div class="center"><span style="font-family:monospace">148 mod 5 </span></div>
 ou
-<DIV CLASS="center"><TT>148 % 5 </TT></DIV>
+<div class="center"><span style="font-family:monospace">148 % 5 </span></div>
 On obtient :
-<DIV CLASS="center"><TT>-2 % 5</TT></DIV>
-ce qui veut dire que <TT>148  <I>mod</I>  5=-2 <I>mod</I> 5 </TT> et que 
-<TT>148 <I>mod</I> 5 </TT> et −2 % 5 sont des 
-éléments de <I>Z</I>/5<I>Z</I> (voir <A HREF="index.html#sec:modulaire">6.35</A> pour avoir les opérations 
-possibles dans <I>Z</I>/5<I>Z</I>).
-</LI></UL><P>
-<B>Remarque</B><A NAME="@default315"></A><BR>
-Si on veut passer d’un élément de <I>Z</I>/5<I>Z</I> à un élément de <I>Z</I>, on tape
-<TT>% 0</TT> :
+<div class="center"><span style="font-family:monospace">-2 % 5</span></div>
+ce qui veut dire que <span style="font-family:monospace">148  </span><span style="font-family:monospace"><span style="font-style:italic">mod</span></span><span style="font-family:monospace">  5=-2 </span><span style="font-family:monospace"><span style="font-style:italic">mod</span></span><span style="font-family:monospace"> 5 </span> et que 
+<span style="font-family:monospace">148 </span><span style="font-family:monospace"><span style="font-style:italic">mod</span></span><span style="font-family:monospace"> 5 </span> et −2 % 5 sont des 
+éléments de <span style="font-style:italic">Z</span>/5<span style="font-style:italic">Z</span> (voir <a href="index.html#sec%3Amodulaire">6.35</a> pour avoir les opérations 
+possibles dans <span style="font-style:italic">Z</span>/5<span style="font-style:italic">Z</span>).
+</li></ul><p>
+<span style="font-weight:bold">Remarque</span><a id="hevea_default315"></a><br>
+Si on veut passer d’un élément de <span style="font-style:italic">Z</span>/5<span style="font-style:italic">Z</span> à un élément de <span style="font-style:italic">Z</span>, on tape
+<span style="font-family:monospace">% 0</span> :
 On tape :
-</P><DIV CLASS="center"><TT>(148% 5)% 0 </TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">(148% 5)% 0 </span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>-2</TT></DIV><HR>
-<A HREF="cascmd_fr170.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr172.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">-2</span></div>
+<hr>
+<a href="cascmd_fr170.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr172.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

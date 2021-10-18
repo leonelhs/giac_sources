@@ -1,53 +1,53 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Polynôme de Hermite : hermite</title>
+</head>
+<body >
+<a href="cascmd_fr412.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr414.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec526" class="subsection">6.30.2  Polynôme de Hermite : <span style="font-family:monospace">hermite</span></h3>
+<p><a id="hevea_default767"></a>
+<span style="font-family:monospace">hermite</span> deux fonctionnalités :
+</p><ol class="enumerate" type=1><li class="li-enumerate">
+<span style="font-family:monospace">hermite</span> a comme argument un entier <span style="font-style:italic">n</span> et èventuellement le 
+nom de la variable (<span style="font-style:italic">x</span> par défaut).<br>
+<span style="font-family:monospace">hermite</span> renvoie le polynôme de Hermite de degré <span style="font-style:italic">n</span>.<br>
+Le polynôme de Hermite de degré <span style="font-style:italic">n</span> noté <span style="font-style:italic">P</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) vérifie les relations
+:<br>
+<span style="font-style:italic">P</span>(0,<span style="font-style:italic">x</span>)=1<br>
+<span style="font-style:italic">P</span>(1,<span style="font-style:italic">x</span>)=2<span style="font-style:italic">x</span><br>
+<span style="font-style:italic">P</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>)=2<span style="font-style:italic">xP</span>(<span style="font-style:italic">n</span>−1,<span style="font-style:italic">x</span>)−2(<span style="font-style:italic">n</span>−1)<span style="font-style:italic">P</span>(<span style="font-style:italic">n</span>−2,<span style="font-style:italic">x</span>)<br>
+Ces polynômes sont orthogonaux pour le produit scalaire :<br>
+&lt;<span style="font-style:italic">f</span>,<span style="font-style:italic">g</span>&gt;=∫<sub>−∞</sub><sup>+∞</sup><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span><sup>2</sup></sup><span style="font-style:italic">dx</span> <br>
+On tape :
+<div class="center"><span style="font-family:monospace">hermite(6)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">64*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6+-480*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+720*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-120</span></div>On tape :
+<div class="center"><span style="font-family:monospace">hermite(6,y)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">64*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6+-480*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+720*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-120</span></div>
+</li><li class="li-enumerate"><span style="font-family:monospace">hermite</span> a comme argument une matrice <span style="font-family:monospace">A</span> à coefficients polynomiaux.<br>
+<span style="font-family:monospace">hermite</span> renvoie la forme normale de Hermite de la matrice <span style="font-family:monospace">A</span>.<br>
+Si les matrices <span style="font-family:monospace">I</span> et <span style="font-family:monospace">U</span> sont définies par <span style="font-family:monospace">I,U:=hermite(A)</span>, 
+on a <span style="font-family:monospace">I*A=U</span>.<br>
+On tape :
+<div class="center"><span style="font-family:monospace">n:=5; a:=ranm(n,n) % 17; </span></div>
+<div class="center"><span style="font-family:monospace">I,U:=hermite(x-a)</span></div>
+On obtient :
 
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynôme de Hermite : hermite</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr412.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr414.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc502">6.30.2</A>  Polynôme de Hermite : <TT>hermite</TT></H3><P><A NAME="@default767"></A>
-<TT>hermite</TT> deux fonctionnalités :
-</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-<TT>hermite</TT> a comme argument un entier <I>n</I> et èventuellement le 
-nom de la variable (<I>x</I> par défaut).<BR>
-<TT>hermite</TT> renvoie le polynôme de Hermite de degré <I>n</I>.<BR>
-Le polynôme de Hermite de degré <I>n</I> noté <I>P</I>(<I>n</I>,<I>x</I>) vérifie les relations
-:<BR>
-<I>P</I>(0,<I>x</I>)=1<BR>
-<I>P</I>(1,<I>x</I>)=2<I>x</I><BR>
-<I>P</I>(<I>n</I>,<I>x</I>)=2<I>xP</I>(<I>n</I>−1,<I>x</I>)−2(<I>n</I>−1)<I>P</I>(<I>n</I>−2,<I>x</I>)<BR>
-Ces polynômes sont orthogonaux pour le produit scalaire :<BR>
-&lt;<I>f</I>,<I>g</I>&gt;=∫<SUB>−∞</SUB><SUP>+∞</SUP><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)<I>e</I><SUP>−<I>x</I><SUP>2</SUP></SUP><I>dx</I><BR>
 On tape :
-<DIV CLASS="center"><TT>hermite(6)</TT></DIV>
+<div class="center"><span style="font-family:monospace">normal(I*(x-a)-U)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>64*x</TT><CODE><TT>^</TT></CODE><TT>6+-480*x</TT><CODE><TT>^</TT></CODE><TT>4+720*x</TT><CODE><TT>^</TT></CODE><TT>2-120</TT></DIV>On tape :
-<DIV CLASS="center"><TT>hermite(6,y)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>64*y</TT><CODE><TT>^</TT></CODE><TT>6+-480*y</TT><CODE><TT>^</TT></CODE><TT>4+720*y</TT><CODE><TT>^</TT></CODE><TT>2-120</TT></DIV>
-</LI><LI CLASS="li-enumerate"><TT>hermite</TT> a comme argument une matrice <TT>A</TT> à coefficients polynomiaux.<BR>
-<TT>hermite</TT> renvoie la forme normale de Hermite de la matrice <TT>A</TT>.<BR>
-Si les matrices <TT>I</TT> et <TT>U</TT> sont définies par <TT>I,U:=hermite(A)</TT>, 
-on a <TT>I*A=U</TT>.<BR>
-On tape :
-<DIV CLASS="center"><TT>n:=5; a:=ranm(n,n) % 17; </TT></DIV>
-<DIV CLASS="center"><TT>I,U:=hermite(x-a)</TT></DIV>
-On obtient :
-
-On tape :
-<DIV CLASS="center"><TT>normal(I*(x-a)-U)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>0</TT></DIV></LI></OL><HR>
-<A HREF="cascmd_fr412.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr414.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">0</span></div></li></ol>
+<hr>
+<a href="cascmd_fr412.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr414.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

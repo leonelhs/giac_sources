@@ -1,37 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un triangle équilatéral : is_equilateral est_equilateral</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1061.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1063.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1246">11.13.9</A>  Savoir si on a un triangle équilatéral : <TT>is_equilateral est_equilateral</TT></H3><P><A NAME="@default2064"></A><A NAME="@default2065"></A><A NAME="sec:estequilateral3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr984.html#sec:estequilateral2">10.18.5</A> pour la géométrie plane.<BR>
-<TT>est_equilateral</TT> est une fonction booléenne ayant comme 
-argument trois points ou un objet géométrique.<BR>
-<TT>est_equilateral</TT> vaut 1 si les trois points forment un triangle 
-équilatéral ou si l’objet géométrique est un triangle équilatéral,
-et vaut 0 sinon.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Savoir si on a un triangle isocéle : is_isosceles est_isocele</title>
+</head>
+<body >
+<a href="cascmd_fr1061.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1063.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1284" class="subsection">11.13.10  Savoir si on a un triangle isocéle : <span style="font-family:monospace">is_isosceles est_isocele</span></h3>
+<p><a id="hevea_default2063"></a><a id="hevea_default2064"></a><a id="sec:estisocele3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr984.html#sec%3Aestisocele2">10.18.6</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">est_isocele</span> est une fonction booléenne ayant comme 
+argument trois points ou un objet géométrique.<br>
+<span style="font-family:monospace">est_isocele</span> vaut 1 (resp 2, 3) si les trois points forment un 
+triangle isocéle ou si l’objet géométrique est un triangle isocéle dont
+le sommet de l’angle portant les deux cotés égaux est désigné par le 
+premier (resp second, troisième) argument, ou vaut 4 si les trois points 
+forment un triangle équilatéral, ou si l’objet géométrique est un 
+triangle équilatéral, et vaut 0 sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>est_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>T:=triangle_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0]); est_equilateral(T)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_isocele([2,0,0],[0,0,0],[0,2,0])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">2</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>est_equilateral([2,0,0],[0,2,0],[1,1,0])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">T:=triangle_isocele([0,0,0],[2,2,0],[2,2,2]); est_isocele(T)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
-<A HREF="cascmd_fr1061.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1063.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">est_isocele([1,1,0],[-1,1,0],[-1,0,0])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div>
+<hr>
+<a href="cascmd_fr1061.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1063.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

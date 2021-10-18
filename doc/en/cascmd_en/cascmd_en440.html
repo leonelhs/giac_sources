@@ -1,44 +1,57 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Conservative flux field : vpotential</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en439.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en441.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc492">2.50.7</A>  Conservative flux field : <TT>vpotential</TT></H3><P><A NAME="@default726"></A>
-<TT>vpotential</TT> takes two arguments : a vector field
-<I>V</I> 
-in <I>R</I><SUP><I>n</I></SUP> with respect to <I>n</I> real variables 
-and the vector of these variable names.<BR>
-<TT>vpotential</TT> returns, if it is possible, a vector <I>U</I> such
-that curl(<I>U</I>)=<I>V</I>.
-When it is possible we say that <I>V</I> is a conservative flux 
-field or a solenoidal field.
-The general solution is the sum of a particular solution and of the
-gradient of an arbitrary function, <TT>Xcas</TT> returns a particular
-solution with zero as first component.<BR>
-<TT>vpotential</TT> is the reciprocal function of <TT>curl</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Gradient : derive deriver diff grad</title>
+</head>
+<body >
+<a href="cascmd_en439.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en441.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec523" class="subsection">2.51.1  Gradient : <span style="font-family:monospace">derive deriver diff grad</span></h3>
+<p><a id="hevea_default722"></a><a id="hevea_default723"></a><a id="hevea_default724"></a><a id="hevea_default725"></a><a id="sec:derive"></a><a id="hevea_default726"></a><a id="hevea_default727"></a>
+<span style="font-family:monospace">derive</span> (or <span style="font-family:monospace">diff</span> or <span style="font-family:monospace">grad</span>) takes two arguments : an 
+expression <span style="font-style:italic">F</span> of <span style="font-style:italic">n</span> real variables and a vector of these variable names.<br>
+<span style="font-family:monospace">derive</span> returns the gradient of <span style="font-style:italic">F</span>,
+where the gradient is the vector of all partial derivatives,
+for example in dimension <span style="font-style:italic">n</span>=3
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell"   style="width:90%;text-align:center"><hr class="hbar"></td><td class="dcell"   style="width:10%;text-align:center">&#X25B8;</td></tr>
+<tr><td class="dcell"  colspan="2" style="text-align:center">grad</td></tr>
+<tr><td class="dcell"  colspan="2" style="text-align:center"> </td></tr>
+</table></td><td class="dcell">(<span style="font-style:italic">F</span>)= [</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&#X2202; <span style="font-style:italic">F</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">&#X2202; <span style="font-style:italic">x</span></td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&#X2202; <span style="font-style:italic">F</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">&#X2202; <span style="font-style:italic">y</span></td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&#X2202; <span style="font-style:italic">F</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">&#X2202; <span style="font-style:italic">z</span></td></tr>
+</table></td><td class="dcell">] </td></tr>
+</table><p>
+<span style="font-weight:bold">Example</span> <br>
+Find the gradient of <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>&#X2212;<span style="font-style:italic">xz</span><sup>3</sup>.<br>
 Input :
-</P><DIV CLASS="center"><TT>vpotential([2*x*y+3,x</TT><CODE><TT>^</TT></CODE><TT>2-4*z,-2*y*z],[x,y,z]) </TT></DIV><P>
-Output : 
-</P><DIV CLASS="center"><TT>[0,(-(2*y))*z*x,-x</TT><CODE><TT>^</TT></CODE><TT>3/3-(-(4*z))*x+3*y]</TT></DIV><P>
-In &#X211D;<SUP>3</SUP>, a vector field <I>V</I> is a rotationnal 
-if and only if it&#X2019;s 
-divergence is zero<BR>
-(<TT>divergence(V,[x,y,z])=0</TT>).
-In time-independant electro-magnetism,
-<I>V</I>= <I>B</I> is the magnetic field and
-<I>U</I>= <I>A</I> is the potential vector.</P><HR>
-<A HREF="cascmd_en439.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en441.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">derive(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">diff(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">grad(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[2*2*x*y-z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(x*3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)]</span></div><p>
+Output after simplification with <span style="font-family:monospace">normal(ans())</span> :
+</p><div class="center"><span style="font-family:monospace">[4*x*y-z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(3*x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)]</span></div><p>
+To find the critical points of 
+<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>&#X2212;<span style="font-style:italic">xz</span><sup>3</sup>, input :
+</p><div class="center"><span style="font-family:monospace">solve(derive(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z]),[x,y,z])</span></div><p> 
+Output :
+</p><div class="center"><span style="font-family:monospace">[[0,y,0]]</span></div>
+<hr>
+<a href="cascmd_en439.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en441.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

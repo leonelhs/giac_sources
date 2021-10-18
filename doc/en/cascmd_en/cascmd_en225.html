@@ -1,63 +1,80 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Sylvester matrix of two polynomials : sylvester</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en224.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en226.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc252">2.25.18</A>  Sylvester matrix of two polynomials : <TT>sylvester</TT></H3><P><A NAME="@default412"></A>
-<TT>sylvester</TT> takes two polynomials as arguments.<BR>
-<TT>sylvester</TT> returns the Sylvester matrix <I>S</I> of these polynomials.<BR>
-If <I>A</I>(<I>x</I>)=&#X2211;<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>n</I></SUP> <I>a</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP> and 
-<I>B</I>(<I>x</I>)=&#X2211;<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>m</I></SUP><I>b</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP> are 2 polynomials, their Sylvester matrix 
-<I>S</I> is a squared matrix of size <TT>m+n</TT> where <TT>m=degree(B(x))</TT> and 
-<TT>n=degree(A(x))</TT>. The <TT>m</TT> first lines are made with the <I>A</I>(<I>x</I>)
-coefficients, so that :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X239B;<BR>
-&#X239C;<BR>
-&#X239C;<BR>
-&#X239C;<BR>
-&#X239D;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB>11</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>12</SUB>=<I>a</I><SUB><I>n</I>&#X2212;1</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>1(<I>n</I>+1)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>21</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>22</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>2(<I>n</I>+1)</SUB>=<I>a</I><SUB>1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>2(<I>n</I>+2)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22F1;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22F1;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>1</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>2</SUB>=0</TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>(<I>n</I>+1)</SUB>=<I>a</I><SUB><I>m</I>&#X2212;1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>(<I>n</I>+2)</SUB>=<I>a</I><SUB><I>m</I>&#X2212;2</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>a</I><SUB>0</SUB> </TD></TR>
-</TABLE></TD><TD CLASS="dcell">&#X239E;<BR>
-&#X239F;<BR>
-&#X239F;<BR>
-&#X239F;<BR>
-&#X23A0;</TD></TR>
-</TABLE><P>
-and the <TT>n</TT> further lines are made with the <I>B</I>(<I>x</I>)
-coefficients, so that :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X239B;<BR>
-&#X239C;<BR>
-&#X239C;<BR>
-&#X239D;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)1</SUB>=<I>b</I><SUB><I>m</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)2</SUB>=<I>b</I><SUB><I>m</I>&#X2212;1</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)(<I>m</I>+1)</SUB>=<I>b</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22F1;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD><TD ALIGN=center NOWRAP>&#X22F1;</TD><TD ALIGN=center NOWRAP>&#X22EE;</TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)1</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)2</SUB>=0</TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)(<I>m</I>+1)</SUB>=<I>b</I><SUB><I>n</I>&#X2212;1</SUB></TD><TD ALIGN=center NOWRAP><I>b</I><SUB><I>n</I>&#X2212;2</SUB></TD><TD ALIGN=center NOWRAP>&#X22EF;</TD><TD ALIGN=center NOWRAP><I>b</I><SUB>0</SUB> </TD></TR>
-</TABLE></TD><TD CLASS="dcell">&#X239E;<BR>
-&#X239F;<BR>
-&#X239F;<BR>
-&#X23A0;</TD></TR>
-</TABLE><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Sturm sequences : sturmseq</title>
+</head>
+<body >
+<a href="cascmd_en224.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en226.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec273" class="subsection">2.25.17  Sturm sequences : <span style="font-family:monospace">sturmseq</span></h3>
+<p><a id="hevea_default412"></a>
+<span style="font-family:monospace">sturmseq</span> takes as argument, a polynomial expression <span style="font-style:italic">P</span> or a 
+rational fraction <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span> and returns the list of the Sturm sequences 
+of the square-free factors of odd multiplicity of <span style="font-style:italic">P</span> (or of <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span>).
+For <span style="font-style:italic">F</span> a square-free factor of odd multiplicity, the Sturm 
+sequence <span style="font-style:italic">R</span><sub>1</sub>,<span style="font-style:italic">R</span><sub>2</sub>,... is made from <span style="font-style:italic">F</span>, <span style="font-style:italic">F</span>&#X2032; by a recurrence
+relation :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">R</span><sub>1</sub> is the opposite of the euclidean division remainder of <span style="font-style:italic">F</span> by
+<span style="font-style:italic">F</span>&#X2032; then,
+</li><li class="li-itemize"><span style="font-style:italic">R</span><sub>2</sub> is the opposite of the euclidean division remainder of <span style="font-style:italic">F</span>&#X2032; by
+<span style="font-style:italic">R</span><sub>1</sub>, 
+</li><li class="li-itemize">... 
+</li><li class="li-itemize">and so on until <span style="font-style:italic">R</span><sub><span style="font-style:italic">k</span></sub>=0.
+</li></ul><p>
 Input :
-</P><DIV CLASS="center"><TT>sylvester(x</TT><CODE><TT>^</TT></CODE><TT>3-p*x+q,3*x</TT><CODE><TT>^</TT></CODE><TT>2-p,x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sturmseq(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2)</span></div><p>
+or 
+</p><div class="center"><span style="font-family:monospace">sturmseq(2*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2,y)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[2,[[1,0,0,1],[3,0,0],-9],1]</span></div><p>
+The first term gives the content of the numerator (here 2), 
+then the Sturm sequence (in list representation) [<span style="font-style:italic">x</span><sup>3</sup>+1,3<span style="font-style:italic">x</span><sup>2</sup>,&#X2212;9].<br>
 Input :
-</P><DIV CLASS="center"><TT>det([[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sturmseq((2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2)/(3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2),x)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>-4*p</TT><CODE><TT>^</TT></CODE><TT>3--27*q</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
-<A HREF="cascmd_en224.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en226.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[2,[[1,0,0,1],[3,0,0],-9],1,[1,[[3,0,2],[6,0],-72]]</span></div><p>
+The first term gives the content of the numerator (here 2), 
+then the Sturm sequence of the numerator ([[1,0,0,1],[3,0,0],-9]), 
+then the content of the denominator (here 1) and the Sturm 
+sequence of the denominator ([[3,0,2],[6,0],-72]). As expressions,
+[<span style="font-style:italic">x</span><sup>3</sup>+1,3<span style="font-style:italic">x</span><sup>2</sup>, &#X2212;9] is the Sturm sequence of the numerator and
+[3<span style="font-style:italic">x</span><sup>2</sup>+2,6<span style="font-style:italic">x</span>,&#X2212;72] is the Sturm sequence of the denominator.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">sturmseq((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1,1]</span></div><p>
+Indeed <span style="font-style:italic">F</span>=1.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">sturmseq(3*(3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1)/(2*x+2),x)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[3,[[3,0,0,1],[9,0,0],-81],2,[[1,1],1]]</span></div><p>
+The first term gives the content of the numerator 
+(here <span style="font-family:monospace">3</span>),<br>
+the second term gives the Sturm sequence of the numerator
+(here <span style="font-family:monospace">3x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1, 9x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2, -81</span>),<br>
+the third term gives the content of the denominator (here 
+<span style="font-family:monospace">2</span>),<br>
+the fourth term gives the Sturm sequence of the denominator 
+(<span style="font-family:monospace">x+1,1</span>).<br>
+<span style="font-weight:bold">Warning !!!!</span><br>
+<span style="font-style:italic">P</span> is defined by its symbolic expression.<br>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">sturmseq([1,0,0,1],x)</span>
+</div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">Bad argument type</span>.
+</div>
+<hr>
+<a href="cascmd_en224.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en226.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

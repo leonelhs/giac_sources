@@ -1,48 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les enveloppes : envelope enveloppe</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1003.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1005.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1174">10.20.2</A>  Les enveloppes : <TT>envelope enveloppe</TT></H3><P><A NAME="@default1957"></A><A NAME="@default1958"></A> <A NAME="sec:envelope"></A>
-<TT>enveloppe</TT> a 2 arguments : une expression <I>Xpr</I> dépendant de 3
-variables <I>x</I>,<I>y</I>,<I>t</I> (resp <I>u</I>,<I>v</I>,<I>t</I>) et <I>t</I> (resp le vecteur [<I>u</I>,<I>v</I>,<I>t</I>]).<BR>
-Les equations <I>Xpr</I>=0 sont considérées comme les 
-équations de courbes de paramètre <I>t</I>.<BR>
-<TT>enveloppe</TT> renvoie l’enveloppe de ces courbes lorsque <I>t</I> varie.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>enveloppe(y+x*tan(t)-2*sin(t),t)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>enveloppe(v+u*tan(t)-3*sin(t),[u,v,t))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
-<B>Remarque</B>
-Si on a une famille de droites <TT>d</TT> qui dépendent d’un paramètre 
-<TT>a</TT>, on peut utiliser soit <TT>enveloppe(equation(d,a))</TT> soit 
-la commande <TT>lieu</TT> (voir <A HREF="cascmd_fr1003.html#sec:lieudroite">10.20.1</A>).<BR>
-Voici un exemple simple : enveloppe de la tangente à un cercle.<BR>
-On tape :
-</P><PRE CLASS="verbatim">c:=cercle(0,2):;
-assume(a:=1);
-A:=element(c,a);
-d:=tangente(cercle(0,2),A);
-</PRE><P>Puis soit:
-</P><DIV CLASS="center"><TT>enveloppe(equation(d),a)</TT></DIV><P> 
-soit :
-</P><DIV CLASS="center"><TT>lieu(d,A)</TT></DIV><HR>
-<A HREF="cascmd_fr1003.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1005.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La trace d’un objet géométrique: trace</title>
+</head>
+<body >
+<a href="cascmd_fr1003.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1005.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1212" class="subsection">10.20.3  La trace d’un objet géométrique: <span style="font-family:monospace">trace</span></h3>
+<p><a id="hevea_default1956"></a><a id="sec:tracegeo"></a> 
+<span style="font-family:monospace">trace</span> a comme arguments un objet géométrique qui dépend ou non d’un
+paramètre (voir aussi <span style="font-family:monospace">trace</span> d’une matrice <a href="cascmd_fr609.html#sec%3Atracemat">6.53.3</a>).<br>
+<span style="font-family:monospace">trace</span> dessine la trace de cet objet géométrique lorsqu’on fait varier
+le paramètre ou lorsqu’on fait bouger cet objet géométrique en mode 
+<span style="font-family:monospace">Pointeur</span>.<br>
+<span style="font-weight:bold">Exemple</span>
+Trouver le lieu géométrique des points du plan équidistants d’une droite
+<span style="font-style:italic">D</span> et d’un point <span style="font-style:italic">F</span>. Pour cela on construit un point <span style="font-style:italic">H</span> sur la droite <span style="font-style:italic">D</span> et
+la droite <span style="font-style:italic">T</span> perpendiculaire à <span style="font-style:italic">D</span> en <span style="font-style:italic">H</span>. <span style="font-style:italic">M</span> de <span style="font-style:italic">T</span> équidistant de <span style="font-style:italic">F</span> 
+et de <span style="font-style:italic">H</span>.<br>
+On ouvre un niveau de géométrie (<span style="font-family:monospace">Alt+g</span>), puis on tape les instructions suivantes en mettant une instruction par ligne.<br>
+On tape :<br>
+<span style="font-family:monospace">A:=point(-3-i);</span><br>
+<span style="font-family:monospace">B:=point(1/2+2*(i));</span><br>
+<span style="font-family:monospace">D:=droite(A,B,’couleur’=0);</span><br>
+<span style="font-family:monospace">F:=point(4/3,1/2,’couleur’=0);</span><br>
+<span style="font-family:monospace">assume(a=[0.7,-5,5,0.1]);</span><br>
+<span style="font-family:monospace">H:=element(D,a)</span><br>
+<span style="font-family:monospace">T:=perpendiculaire(H,D)</span><br>
+<span style="font-family:monospace">M:=inter_unique(mediatrice(H,F),T);</span><br>
+<span style="font-family:monospace">trace(M);</span><br>
+puis on fait bouger le curseur <span style="font-family:monospace">a</span> et on obtient la trace de <span style="font-family:monospace">M</span>.</p><p><span style="font-weight:bold">Remarque</span>
+Pour effacer les traces ou pour rajouter des traces ou pour les activer ou les
+desactiver il faut utiliser le menu <span style="font-family:monospace">Trace</span> du bouton <span style="font-family:monospace">M</span> situé 
+à droite de l’écran de géométrie. </p>
+<hr>
+<a href="cascmd_fr1003.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1005.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

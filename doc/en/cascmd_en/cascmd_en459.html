@@ -1,37 +1,54 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>List of variables and of expressions : lvar</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en458.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en460.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc515">2.54.3</A>  List of variables and of expressions : <TT>lvar</TT></H3><P><A NAME="@default755"></A><A NAME="sec:lvar"></A>
-<TT>lvar</TT> takes as argument an expression.<BR>
-<TT>lvar</TT> returns a list of variable names and non-rationnal
-expressions such that it&#X2019;s argument is a rational fraction
-with respect to the variables and expressions of the list.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Linear system solving: linsolve</title>
+</head>
+<body >
+<a href="cascmd_en458.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en460.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec544" class="subsection">2.53.6  Linear system solving: <span style="font-family:monospace">linsolve</span></h3>
+<p><a id="hevea_default751"></a>
+<span style="font-family:monospace">linsolve</span> is used to solve a system of linear equations.<br>
+<span style="font-family:monospace">linsolve</span> has two arguments: a list of equations or
+expressions (in that case the convention is that the equation 
+is <span style="font-style:italic">expression</span> = 0), and a list of variable names.<br>
+<span style="font-family:monospace">linsolve</span> returns the solution of the system in a list.<br>
 Input :
-</P><DIV CLASS="center"><TT>lvar(x*y*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">linsolve([2*x+y+z=1,x+y+2*z=1,x+2*y+z=4],[x,y,z])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[x,y,sin(x)]</TT></DIV><P>
-Input :
-</P><DIV CLASS="center"><TT>lvar(x*y*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2+ln(x)*cos(y))</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[x,y,sin(x),ln(x),cos(y)]</TT></DIV><P>
-Input :
-</P><DIV CLASS="center"><TT>lvar(y+x*sqrt(z)+y*sin(x))</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[x,y,sqrt(z),sin(x)]</TT></DIV><HR>
-<A HREF="cascmd_en458.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en460.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[1/-2,5/2,1/-2]</span></div><p> 
+Which means that
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>=&#X2212;</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">, <span style="font-style:italic">y</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">5</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">, <span style="font-style:italic">z</span>=&#X2212;</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> </td></tr>
+</table><p>
+is the solution of the system :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X23A7;<br>
+&#X23AA;<br>
+&#X23A8;<br>
+&#X23AA;<br>
+&#X23A9;</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >2<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>+<span style="font-style:italic">z</span></td><td style="text-align:left;white-space:nowrap" >=1</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>+2<span style="font-style:italic">z</span></td><td style="text-align:left;white-space:nowrap" >=1</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">x</span>+2<span style="font-style:italic">y</span>+<span style="font-style:italic">z</span></td><td style="text-align:left;white-space:nowrap" >=4
+</td></tr>
+</table></td><td class="dcell">
+</td></tr>
+</table>
+<hr>
+<a href="cascmd_en458.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en460.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

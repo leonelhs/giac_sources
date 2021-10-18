@@ -1,66 +1,66 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les coefficients binomiaux et valeur de Proba(X=k) quand X suit la loi B(n,p) : binomial</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr192.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr194.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc260">6.8.3</A>  Les coefficients binomiaux et valeur de Proba(<I>X</I>=<I>k</I>) quand <I>X</I> suit la loi <I>B</I>(<I>n</I>,<I>p</I>) : <TT>binomial</TT></H3><P><A NAME="@default349"></A>
-On a <TT>binomial(n,k)=comb(n,k)</TT> lorsque <TT>n</TT> et <TT>k</TT> sont deux 
-entiers positifs mais <TT>binomial</TT> peut admettre un paramètre 
-supplémentaire <TT>p</TT> compris entre 0 et 1 et dans ce cas 
-<TT>binomial(n,k,p)</TT> ou
-<TT>binomial(n,p,k)</TT> calcule :
-<I>C</I><SUB><I>n</I></SUB><SUP><I>k</I></SUP>*<I>p</I><SUP><I>k</I></SUP>*(1−<I>p</I>)<SUP><I>n</I>−<I>k</I></SUP> si 0≤ <I>p</I> ≤ 1.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Les coefficients binomiaux et valeur de Proba(X=k) quand X suit la loi B(n,p) : binomial</title>
+</head>
+<body >
+<a href="cascmd_fr192.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr194.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec266" class="subsection">6.8.3  Les coefficients binomiaux et valeur de Proba(<span style="font-style:italic">X</span>=<span style="font-style:italic">k</span>) quand <span style="font-style:italic">X</span> suit la loi <span style="font-style:italic">B</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>) : <span style="font-family:monospace">binomial</span></h3>
+<p><a id="hevea_default349"></a>
+On a <span style="font-family:monospace">binomial(n,k)=comb(n,k)</span> lorsque <span style="font-family:monospace">n</span> et <span style="font-family:monospace">k</span> sont deux 
+entiers positifs mais <span style="font-family:monospace">binomial</span> peut admettre un paramètre 
+supplémentaire <span style="font-family:monospace">p</span> compris entre 0 et 1 et dans ce cas 
+<span style="font-family:monospace">binomial(n,k,p)</span> ou
+<span style="font-family:monospace">binomial(n,p,k)</span> calcule :
+<span style="font-style:italic">C</span><sub><span style="font-style:italic">n</span></sub><sup><span style="font-style:italic">k</span></sup>*<span style="font-style:italic">p</span><sup><span style="font-style:italic">k</span></sup>*(1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">n</span>−<span style="font-style:italic">k</span></sup> si 0≤ <span style="font-style:italic">p</span> ≤ 1.<br>
 On tape :
-</P><DIV CLASS="center"><TT>binomial(5,2,0.6)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial(5,2,0.6)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.2304</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">0.2304</span></div><p>
 Mais si on tape :
-</P><DIV CLASS="center"><TT>comb(5,2,0.6)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">comb(5,2,0.6)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>comb(5,2,0.6) Erreur: Type Argument Incorrect</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">comb(5,2,0.6) Erreur: Type Argument Incorrect</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>assume(p&gt;=0 and p&lt;=1);</TT></DIV><DIV CLASS="center"><TT>binomial(5,2,p)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">assume(p&gt;=0 and p&lt;=1);</span></div><div class="center"><span style="font-family:monospace">binomial(5,2,p)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>binomial(5,p,2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial(5,p,2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>10*p</TT><CODE><TT>^</TT></CODE><TT>2*(1-p)</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">10*p</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*(1-p)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>assume(p&gt;=0 and p&lt;=1);</TT></DIV><DIV CLASS="center"><TT>binomial(n,k,p)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">assume(p&gt;=0 and p&lt;=1);</span></div><div class="center"><span style="font-family:monospace">binomial(n,k,p)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>binomial(n,p,k)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial(n,p,k)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>10*p</TT><CODE><TT>^</TT></CODE><TT>2*(1-p)</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
-<B>Remarque : relation avec </B><B><TT>binomial_cdf</TT></B><BR>
+</p><div class="center"><span style="font-family:monospace">10*p</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*(1-p)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3</span></div><p>
+<span style="font-weight:bold">Remarque : relation avec </span><span style="font-weight:bold"><span style="font-family:monospace">binomial_cdf</span></span><br>
 On tape :
-</P><DIV CLASS="center"><TT>binomial(4,2,0.5)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial(4,2,0.5)</span></div><p>
 ou
-</P><DIV CLASS="center"><TT>binomial(4,0.5,2)</TT></DIV><P>
-On obtient, Proba(<I>X</I>=2) quand <I>X</I> suit la loi <I>B</I>(4,0.5) :
-</P><DIV CLASS="center"><TT>0.375</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial(4,0.5,2)</span></div><p>
+On obtient, Proba(<span style="font-style:italic">X</span>=2) quand <span style="font-style:italic">X</span> suit la loi <span style="font-style:italic">B</span>(4,0.5) :
+</p><div class="center"><span style="font-family:monospace">0.375</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(4,0.5,2,2)</TT></DIV><P>
-On obtient , Proba(2≤ <I>X</I>≤ 2) quand <I>X</I> suit la loi <I>B</I>(4,0.5) :
-</P><DIV CLASS="center"><TT>0.375</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial_cdf(4,0.5,2,2)</span></div><p>
+On obtient , Proba(2≤ <span style="font-style:italic">X</span>≤ 2) quand <span style="font-style:italic">X</span> suit la loi <span style="font-style:italic">B</span>(4,0.5) :
+</p><div class="center"><span style="font-family:monospace">0.375</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>binomial(4,2,0.5)+binomial(4,1,0.5)+binomial(4,0,0.5)</TT></DIV><P>
-On obtient Proba(0≤ <I>X</I>≤ 2) quand <I>X</I> suit la loi <I>B</I>(4,0.5) :
-</P><DIV CLASS="center"><TT>0.6875</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial(4,2,0.5)+binomial(4,1,0.5)+binomial(4,0,0.5)</span></div><p>
+On obtient Proba(0≤ <span style="font-style:italic">X</span>≤ 2) quand <span style="font-style:italic">X</span> suit la loi <span style="font-style:italic">B</span>(4,0.5) :
+</p><div class="center"><span style="font-family:monospace">0.6875</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(4,0.5,2)</TT></DIV><P>
-On obtient Proba(0≤ <I>X</I>≤ 2) quand <I>X</I> suit la loi <I>B</I>(4,0.5) :
-</P><DIV CLASS="center"><TT>0.6875</TT></DIV><HR>
-<A HREF="cascmd_fr192.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr194.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">binomial_cdf(4,0.5,2)</span></div><p>
+On obtient Proba(0≤ <span style="font-style:italic">X</span>≤ 2) quand <span style="font-style:italic">X</span> suit la loi <span style="font-style:italic">B</span>(4,0.5) :
+</p><div class="center"><span style="font-family:monospace">0.6875</span></div>
+<hr>
+<a href="cascmd_fr192.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr194.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

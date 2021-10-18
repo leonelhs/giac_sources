@@ -1,62 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La mesure d’un angle et son affichage : angleat angleen et angleatraw angleenbrut</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr958.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr960.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1125">10.16.6</A>  La mesure d’un angle et son affichage : <TT>angleat angleen</TT> et <TT>angleatraw angleenbrut</TT></H3><P><A NAME="@default1862"></A><A NAME="@default1863"></A><A NAME="@default1864"></A><A NAME="@default1865"></A>
-<TT>angleat</TT> ou <TT>angleen</TT> (resp <TT>angleatraw</TT> ou 
-<TT>angleenbrut</TT>) sont des commandes qui permettent l’affichage avec légende
-(resp sans légende) de la valeur d’un angle désigné en cliquant (on 
-cliqueson sommet puis ses 2 côtés et enfin la position de la l’affichage).
-Ces commandes sont obtenues 
-lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
-<TT>Mode-&gt;Mesures-&gt;angleen</TT> ou <TT>Mode-&gt;Mesures-&gt;angleenbrut</TT>. Dans ce cas 
-il faut que tous les objets désignés par la souris soient 
-déjà nommés, sauf les points qui seront alors définis par les différents clicks de la souris.<BR>
-
-On peut néammoins taper ces commandes dans une ligne de commande.<BR>
-<TT>angleat</TT> ou <TT>angleen</TT> a comme argument quatre points (ou 3 points et 
-1 nombre complexe qui est l’affixe d’un point).<BR>
-<B>Attention</B> Il faut que les 3 premiers points aient un nom.<BR>
-<TT>angleat</TT> ou <TT>angleen</TT> renvoie le 4-ième point, calcule la mesure (en
-radians ou en degrés) de l’angle orienté de sommet le premier argument, le
-deuxième argument se trouve sur le premier coté de l’angle et le troisième
-argument se trouve sur le deuxiéme coté et cette mesure est affichée, 
-précédée d’une légende, à l’endroit du 4-ième point.<BR>
-Ainsi <TT>anglen(A,B,C,D)</TT> désigne la mesure de l’angle en radians (ou en 
-degrés) de (<I>AB</I>,<I>AC</I>) et cette messue sera 
-affichée, pécédée de α<TT>A=</TT>, à l’endroit du point <TT>D</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Représentation graphique de l’aire d’un polygone : tracer_aire graphe_aire aire_graphe plotarea areaplot</title>
+</head>
+<body >
+<a href="cascmd_fr958.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr960.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1163" class="subsection">10.16.7  Représentation graphique de l’aire d’un polygone : <span style="font-family:monospace">tracer_aire graphe_aire aire_graphe plotarea areaplot</span></h3>
+<p><a id="hevea_default1863"></a><a id="hevea_default1864"></a><a id="hevea_default1865"></a> <a id="hevea_default1866"></a><a id="hevea_default1867"></a>
+Avec un polygone comme argument, <span style="font-family:monospace">aire_graphe</span> ou <span style="font-family:monospace">graphe_aire</span> ou
+<span style="font-family:monospace">tracer_aire</span><span style="font-family:monospace">plotarea</span> permet 
+de représenter et d’afficher l’aire d’un polygone. L’aire est positive si le 
+le polygone est direct et est négative sinon
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);C:=point(i);</TT></DIV><DIV CLASS="center"><TT>segment(A,B);segment(A,C);</TT></DIV><DIV CLASS="center"><TT>angleen(A,B,C,0.2i) </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>α</TT><TT>A=atan(1/3) s’écrit au point(0.4i)</TT></DIV><P><TT>angleatraw</TT> ou <TT>angleenbrut</TT> a comme argument quatre points
-(ou 3 points et 1 nombre complexe qui est l’affixe d’un point).<BR>
-<TT>angleatraw</TT> ou <TT>angleenbrut</TT> renvoie le 4-ième point, calcule la 
-mesure (en radians ou en degrés) de l’angle orienté de sommet le premier 
-argument, le deuxième point se trouve sur le premier coté de l’angle et le 
-troisième point se trouve sur le deuxiéme coté et cette mesure est 
-affichée à l’endroit du 4-ième point.
-Ainsi <TT>angleenbrut(A,B,C,D)</TT> désigne la mesure de l’angle en radians 
-(ou en degrés) de (<I>AB</I>,<I>AC</I>) et cette mesure
-sera affichée à l’endroit du point <TT>D</TT>.<BR>
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(1),point((1+i)*1/2),point(1+i)))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">le polygone rempli avec -1/4 affiché au point(1)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);C:=point(i);</TT></DIV><DIV CLASS="center"><TT>segment(A,B);segment(A,C);</TT></DIV><DIV CLASS="center"><TT>angleenbrut(A,B,C,0.2i) </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>atan(1/3) s’écrit au point(0.4i)</TT></DIV><HR>
-<A HREF="cascmd_fr958.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr960.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(1),point(1+i),point((1+i)*1/2)))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">le polygone rempli avec 1/4 affiché au point(1)</span></div><p>
+<span style="font-weight:bold">Remarque</span>
+Si on ne voit pas l’affichage, on tape par exemple : 
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(0),point(1),point(1+i),point((1+i)/2),point(i)))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">le polygone rempli, mais ne l’affichage au point(0) est caché</span></div><p>
+On tape alors :
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(0),point(1),point(1+i),point((1+i)/2),point(i)),affichage=quadrant2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">le polygone rempli, avec 3/4 affiché au au point(0)</span></div><p>
+On peut aussi taper, pour n’avoir que la valeur :
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(0),point(1),point(1+i),point((1+i)/2),point(i)))[3]</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">3/4</span></div>
+<hr>
+<a href="cascmd_fr958.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr960.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

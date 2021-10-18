@@ -1,83 +1,83 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Norme : COND cond</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr630.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr632.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc745">6.55.5</A>  Norme : <TT>COND cond</TT></H3><P><A NAME="@default1158"></A><A NAME="@default1159"></A>
-<TT>COND</TT> ou <TT>cond</TT> a a deux arguments : une matrice <TT>A</TT> 
-inversible et <TT>1</TT> ou <TT>2</TT> ou <TT>inf</TT> et par défaut <TT>1</TT>.<BR>
-<TT>COND</TT> renvoie le nombre de condition de cette matrice <TT>A</TT> c’est à 
-dire :<BR>
-||| <I>A</I>|| *||| <I>A</I><SUP>−1</SUP>||| où ||| ||| désigne la 
-norme triple d’une matrice inversible qui est subordonnée à <I>l</I><SUB>1</SUB> 
-(resp <I>l</I><SUB>2</SUB> ou <I>l</I><SUP>∞</SUP>) si il n’y a pas de second argument ou si le 
-second argument est <TT>1</TT> (resp <TT>2</TT> ou <TT>inf</TT>)
-On a donc :<BR>
-<TT>COND(A)</TT> ou <TT>cond(A)</TT> ou <TT>cond(A,1)</TT> renvoie le nombre de 
-condition de <TT>A</TT> pour la norme <I>l</I><SUB>1</SUB>,<BR>
-<TT>COND(A,2)</TT> ou <TT>cond(A,2)</TT> renvoie le nombre de condition de <TT>A</TT> 
-pour la norme <I>l</I><SUB>2</SUB>.<BR>
-<TT>COND(A,inf)</TT> ou <TT>cond(A,inf)</TT> renvoie le nombre de condition de 
-<TT>A</TT> pour la norme <I>l</I><SUP>∞</SUP>.<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-La norme triple de la matrice <TT>A</TT> subordonnée à <I>l</I><SUB>1</SUB> est 
-<TT>colnorm</TT> qui est :<BR>
-<TT>max(sum(abs(A[j,k]),j=0..size(A)-1)$(k=0..size(A)-1))</TT> i.e. le 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Norme : COND cond</title>
+</head>
+<body >
+<a href="cascmd_fr630.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr632.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec773" class="subsection">6.55.5  Norme : <span style="font-family:monospace">COND cond</span></h3>
+<p><a id="hevea_default1158"></a><a id="hevea_default1159"></a>
+<span style="font-family:monospace">COND</span> ou <span style="font-family:monospace">cond</span> a a deux arguments : une matrice <span style="font-family:monospace">A</span> 
+inversible et <span style="font-family:monospace">1</span> ou <span style="font-family:monospace">2</span> ou <span style="font-family:monospace">inf</span> et par défaut <span style="font-family:monospace">1</span>.<br>
+<span style="font-family:monospace">COND</span> renvoie le nombre de condition de cette matrice <span style="font-family:monospace">A</span> c’est à 
+dire :<br>
+||| <span style="font-style:italic">A</span>|| *||| <span style="font-style:italic">A</span><sup>−1</sup>||| où ||| ||| désigne la 
+norme triple d’une matrice inversible qui est subordonnée à <span style="font-style:italic">l</span><sub>1</sub> 
+(resp <span style="font-style:italic">l</span><sub>2</sub> ou <span style="font-style:italic">l</span><sup>∞</sup>) si il n’y a pas de second argument ou si le 
+second argument est <span style="font-family:monospace">1</span> (resp <span style="font-family:monospace">2</span> ou <span style="font-family:monospace">inf</span>)
+On a donc :<br>
+<span style="font-family:monospace">COND(A)</span> ou <span style="font-family:monospace">cond(A)</span> ou <span style="font-family:monospace">cond(A,1)</span> renvoie le nombre de 
+condition de <span style="font-family:monospace">A</span> pour la norme <span style="font-style:italic">l</span><sub>1</sub>,<br>
+<span style="font-family:monospace">COND(A,2)</span> ou <span style="font-family:monospace">cond(A,2)</span> renvoie le nombre de condition de <span style="font-family:monospace">A</span> 
+pour la norme <span style="font-style:italic">l</span><sub>2</sub>.<br>
+<span style="font-family:monospace">COND(A,inf)</span> ou <span style="font-family:monospace">cond(A,inf)</span> renvoie le nombre de condition de 
+<span style="font-family:monospace">A</span> pour la norme <span style="font-style:italic">l</span><sup>∞</sup>.<br>
+</p><ul class="itemize"><li class="li-itemize">
+La norme triple de la matrice <span style="font-family:monospace">A</span> subordonnée à <span style="font-style:italic">l</span><sub>1</sub> est 
+<span style="font-family:monospace">colnorm</span> qui est :<br>
+<span style="font-family:monospace">max(sum(abs(A[j,k]),j=0..size(A)-1)$(k=0..size(A)-1))</span> i.e. le 
 maximum des sommes des valeurs absolues des éléments situés sur
-les colonnes de la matrice.<BR>
-<TT>COND(A)</TT> ou <TT>cond(A)</TT> ou <TT>cond(A,1)</TT> renvoie donc :<BR>
-<TT>colnorm(A)*colnorm(inv(A))</TT>.
-</LI><LI CLASS="li-itemize">La norme triple de la matrice <TT>A</TT> subordonnée à <I>l</I><SUB>2</SUB> est 
-<TT>max(SVL(A))</TT> :<BR>
-c’est la plus grande valeur singulière de <TT>A</TT> i.e la 
-plus grande valeur de la racine carrée des valeurs propres de <TT>A*trn(A)</TT>.<BR>
-<TT>COND(A,2)</TT> ou <TT>cond(A,2)</TT> renvoie donc :<BR>
-<TT>max(SVL(A))*max(SVL(inv(A)))</TT>
-</LI><LI CLASS="li-itemize">La norme triple de la matrice <TT>A</TT> subordonnée à <I>l</I><SUP>∞</SUP> est 
-<TT>rownorm</TT> qui est :<BR>
-<TT>max(sum(abs(A[j,k]),k=0..size(A)-1)$(j=0..size(A)-1))</TT> i.e. le 
+les colonnes de la matrice.<br>
+<span style="font-family:monospace">COND(A)</span> ou <span style="font-family:monospace">cond(A)</span> ou <span style="font-family:monospace">cond(A,1)</span> renvoie donc :<br>
+<span style="font-family:monospace">colnorm(A)*colnorm(inv(A))</span>.
+</li><li class="li-itemize">La norme triple de la matrice <span style="font-family:monospace">A</span> subordonnée à <span style="font-style:italic">l</span><sub>2</sub> est 
+<span style="font-family:monospace">max(SVL(A))</span> :<br>
+c’est la plus grande valeur singulière de <span style="font-family:monospace">A</span> i.e la 
+plus grande valeur de la racine carrée des valeurs propres de <span style="font-family:monospace">A*trn(A)</span>.<br>
+<span style="font-family:monospace">COND(A,2)</span> ou <span style="font-family:monospace">cond(A,2)</span> renvoie donc :<br>
+<span style="font-family:monospace">max(SVL(A))*max(SVL(inv(A)))</span>
+</li><li class="li-itemize">La norme triple de la matrice <span style="font-family:monospace">A</span> subordonnée à <span style="font-style:italic">l</span><sup>∞</sup> est 
+<span style="font-family:monospace">rownorm</span> qui est :<br>
+<span style="font-family:monospace">max(sum(abs(A[j,k]),k=0..size(A)-1)$(j=0..size(A)-1))</span> i.e. le 
 maximum des sommes des valeurs absolues des éléments situés sur
-les lignes de la matrice.<BR>
-<TT>COND(A,inf)</TT> ou <TT>cond(A,inf)</TT> renvoie donc :<BR>
-<TT>rownorm(A)*rownorm(inv(A))</TT>.
-</LI></UL><P>
+les lignes de la matrice.<br>
+<span style="font-family:monospace">COND(A,inf)</span> ou <span style="font-family:monospace">cond(A,inf)</span> renvoie donc :<br>
+<span style="font-family:monospace">rownorm(A)*rownorm(inv(A))</span>.
+</li></ul><p>
 On tape :
-</P><DIV CLASS="center"><TT>COND([[1,2,3],[3,-9,6],[4,5,6]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">COND([[1,2,3],[3,-9,6],[4,5,6]])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>27.8518518519</TT></DIV><P>
-En effet, si <TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT> on tape :<BR>
-<TT>colnorm(B),colnorm(inv(B)),colnorm(B)*colnorm(inv(B)) </TT><BR>
-On obtient :<BR>
-<TT>16,47/27,752/27</TT> et 752/27≃27.8518518519<BR>
+</p><div class="center"><span style="font-family:monospace">27.8518518519</span></div><p>
+En effet, si <span style="font-family:monospace">B:=[[1,2,3],[3,-9,6],[4,5,6]]</span> on tape :<br>
+<span style="font-family:monospace">colnorm(B),colnorm(inv(B)),colnorm(B)*colnorm(inv(B)) </span><br>
+On obtient :<br>
+<span style="font-family:monospace">16,47/27,752/27</span> et 752/27≃27.8518518519<br>
 On tape :
-</P><DIV CLASS="center"><TT>COND([[1,2,3],[3,-9,6],[4,5,6]],2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">COND([[1,2,3],[3,-9,6],[4,5,6]],2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>14.807741389</TT></DIV><P>
-En effet, si <TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT> on tape :<BR>
-<TT>max(SVL(B)),max(SVL(inv(B))),max(SVL(B))*max(SVL(inv(B)))</TT><BR>
- On obtient :<BR>
-<TT>11.2449175989,1.31683858585,14.807741389</TT><BR>
+</p><div class="center"><span style="font-family:monospace">14.807741389</span></div><p>
+En effet, si <span style="font-family:monospace">B:=[[1,2,3],[3,-9,6],[4,5,6]]</span> on tape :<br>
+<span style="font-family:monospace">max(SVL(B)),max(SVL(inv(B))),max(SVL(B))*max(SVL(inv(B)))</span><br>
+ On obtient :<br>
+<span style="font-family:monospace">11.2449175989,1.31683858585,14.807741389</span><br>
 On tape :
-</P><DIV CLASS="center"><TT>COND([[1,2,3],[3,-9,6],[4,5,6]],inf)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">COND([[1,2,3],[3,-9,6],[4,5,6]],inf)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>28</TT></DIV><P>
-En effet, si <TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT> on tape :<BR>
-<TT>rownorm(B),rownorm(inv(B)),rownorm(B)*rownorm(inv(B))</TT><BR>
-On obtient :<BR>
-<TT>18,14/9,28</TT>
-</P><HR>
-<A HREF="cascmd_fr630.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr632.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">28</span></div><p>
+En effet, si <span style="font-family:monospace">B:=[[1,2,3],[3,-9,6],[4,5,6]]</span> on tape :<br>
+<span style="font-family:monospace">rownorm(B),rownorm(inv(B)),rownorm(B)*rownorm(inv(B))</span><br>
+On obtient : <br>
+<span style="font-family:monospace">18,14/9,28</span>
+</p>
+<hr>
+<a href="cascmd_fr630.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr632.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

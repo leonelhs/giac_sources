@@ -1,36 +1,36 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Animation of a 3D graph : animate3d</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en480.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en482.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc555">3.17.2</A>  Animation of a 3D graph : <TT>animate3d</TT></H3><P><A NAME="@default826"></A>
-<TT>animate3d</TT> can create a 3-d animation with 
-function graphs depending of a parameter. The parameter is specified as
-the third argument of <TT>animate3d</TT>, the number of pictures
-as fourth argument with 
-<TT>frames=</TT><A NAME="@default827"></A>number, the remaining arguments
-are the same as those of the <TT>plotfunc</TT> command, see
-section <A HREF="cascmd_en467.html#sec:plotfunc3">3.2.2</A>, p. <A HREF="cascmd_en467.html#sec:plotfunc3">??</A>.<BR>
-Input :
-</P><DIV CLASS="center">
-<TT>animate3d(x</TT><CODE><TT>^</TT></CODE><TT>2+a*y</TT><CODE><TT>^</TT></CODE><TT>2,[x=-2..2,y=-2..2],a=-2..2, frames=10,display=red+filled)</TT>
-</DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>a sequence of graphic representations
-of z=x</TT><CODE><TT>^</TT></CODE><TT>2+</TT><TT><I>a</I></TT><TT>*y</TT><CODE><TT>^</TT></CODE><TT>2 for 11 values of </TT><TT><I>a</I></TT><TT> between -2 and 2</TT>
-</DIV><HR>
-<A HREF="cascmd_en480.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en482.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Intersection of a 2D graph with the axis</title>
+</head>
+<body >
+<a href="cascmd_en480.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en482.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec574" class="subsection">3.5.6  Intersection of a 2D graph with the axis</h3>
+<p><a id="hevea_default794"></a><a id="hevea_default795"></a>
+</p><ul class="itemize"><li class="li-itemize">
+The ordinate of the intersection of the graph of <span style="font-style:italic">f</span> with the 
+<span style="font-style:italic">y</span>-axis is returned by :
+<div class="center"><span style="font-family:monospace">f(0)</span></div>
+indeed the point of coordinates (0,<span style="font-style:italic">f</span>(0)) is the intersection point of the 
+graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">y</span>-axis,
+</li><li class="li-itemize">Finding the intersection of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">x</span>-axis 
+requires solving the equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=0. <br>
+If the equation is polynomial-like, <span style="font-family:monospace">solve</span> will find
+the exact values of the abscissa of these points. Input:
+<div class="center"><span style="font-family:monospace">solve(f(x),x)</span></div>
+Otherwise, we can find numeric approximations of these 
+abscissa. First look at the graph for an initial guess or a
+range with an intersection and refine with <span style="font-family:monospace">fsolve</span>.
+</li></ul>
+<hr>
+<a href="cascmd_en480.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en482.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

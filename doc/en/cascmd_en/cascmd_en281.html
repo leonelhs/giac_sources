@@ -1,35 +1,63 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Definition of an interval : a1..a2</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en280.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en282.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc317">2.34.1</A>  Definition of an interval : <TT>a1..a2</TT></H3><P><A NAME="@default482"></A>
-An interval is represented by two real numbers 
-separated by <TT>..</TT>, for example 
-</P><DIV CLASS="center"><TT>1..3</TT><BR>
-<TT>1.2..sqrt(2)</TT>
-</DIV><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Padé expansion: pade</title>
+</head>
+<body >
+<a href="cascmd_en280.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en282.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec337" class="subsection">2.33.5  Padé expansion: <span style="font-family:monospace">pade</span></h3>
+<p><a id="hevea_default482"></a>
+<span style="font-family:monospace">pade</span> takes 4 arguments
+</p><ul class="itemize"><li class="li-itemize">
+an expression, 
+</li><li class="li-itemize">the variable name the expression depends on,
+</li><li class="li-itemize">an integer <span style="font-style:italic">n</span> or a polynomial <span style="font-style:italic">N</span>,
+</li><li class="li-itemize">an integer <span style="font-style:italic">p</span>.
+</li></ul><p>
+<span style="font-family:monospace">pade</span> returns a rational fraction <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span> such that <span style="font-family:monospace">degree(P)</span>&lt;<span style="font-style:italic">p</span> and <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span>=<span style="font-style:italic">f</span> (mod <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span>+1</sup> ) or <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span>=<span style="font-style:italic">f</span> (mod <span style="font-style:italic">N</span> ).
+In the first case, it means that <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span> and <span style="font-style:italic">f</span> have the same 
+Taylor expansion at 0 up to order <span style="font-style:italic">n</span>.<br>
 Input :
-</P><DIV CLASS="center"><TT>A:=1..4</TT></DIV><DIV CLASS="center"><TT>B:=1.2..sqrt(2)</TT></DIV><P>
-<B>Warning!</B><BR>
-The order of the boundaries of the interval is significant. For
-example, if you input 
-</P><DIV CLASS="center">
-<TT>B:=2..3; C:=3..2</TT>,
-</DIV><P>
-then <TT>B</TT> and <TT>C</TT> are different, <TT>B==C</TT> returns <TT>0</TT>.</P><HR>
-<A HREF="cascmd_en280.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en282.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">pade(exp(x),x,5,3)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">pade(exp(x),x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6,3)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">(3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+24*x+60)/(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+9*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-36*x+60)</span></div><p>
+To verify input :
+</p><div class="center"><span style="font-family:monospace">taylor((3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+24*x+60)/(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+9*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-36*x+60))</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1+x+1/2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1/6*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1/24*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1/120*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6*order_size(x)</span></div><p>
+which is the 5th-order series expansion of <span style="font-family:monospace">exp(x)</span> at <span style="font-style:italic">x</span>=0.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">pade((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12+1),x,12,3)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">pade((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12+1),x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">13,3)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">x+1</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">pade((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12+1),x,14,4)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">pade((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12+1),x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15,4)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">(-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1)/(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">11+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">10-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">9+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">7+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4- x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x-1)</span></div><p>
+To verify, input :
+</p><div class="center"><span style="font-family:monospace">series(ans(),x=0,15)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1+x-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12</span><span style="font-family:monospace">-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">13</span><span style="font-family:monospace">+2x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15</span><span style="font-family:monospace">+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">16</span><span style="font-family:monospace">*order_size(x)</span></div><p>
+then input :
+</p><div class="center"><span style="font-family:monospace">series((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(</span><code><span style="font-family:monospace">x^</span></code><span style="font-family:monospace">12+1),x=0,15)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1+x-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12</span><span style="font-family:monospace">-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">13</span><span style="font-family:monospace">+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15</span><span style="font-family:monospace">+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">16</span><span style="font-family:monospace">*order_size(x)</span></div><p>
+These two expressions have the same 14th-order series expansion at <span style="font-style:italic">x</span>=0.</p>
+<hr>
+<a href="cascmd_en280.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en282.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

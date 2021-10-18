@@ -1,29 +1,51 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Add a row to another row : rowAdd</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en365.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en367.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc410">2.42.17</A>  Add a row to another row : <TT>rowAdd</TT></H3><P><A NAME="@default622"></A>
-<TT>rowAdd</TT> takes three arguments : a matrix <I>A</I> and two integers 
-<I>n</I>1 and <I>n</I>2.<BR>
-<TT>rowAdd</TT> returns the matrix obtained by replacing in <I>A</I>, the row of index
-<I>n</I>2 by the sum of the rows of index <I>n</I>1 and <I>n</I>2.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Extract a sub-matrix of a matrix (TI compatibility) : subMat</title>
+</head>
+<body >
+<a href="cascmd_en365.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en367.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec435" class="subsection">2.42.16  Extract a sub-matrix of a matrix (TI compatibility) : <span style="font-family:monospace">subMat</span></h3>
+<p><a id="hevea_default622"></a>
+<span style="font-family:monospace">subMat</span> takes 5 arguments : a matrix <span style="font-style:italic">A</span>, and 4 integers 
+<span style="font-style:italic">nl</span>1,<span style="font-style:italic">nc</span>1,<span style="font-style:italic">nl</span>2,<span style="font-style:italic">nc</span>2, where
+<span style="font-style:italic">nl</span>1 is the index of the first row, <span style="font-style:italic">nc</span>1 is
+the index of the first column, <span style="font-style:italic">nl</span>2 is the index of
+the last row and <span style="font-style:italic">nc</span>2 is the index of the last column.<br>
+<span style="font-family:monospace">subMat(A,nl1,nc1,nl2,nc2)</span> extracts the sub-matrix of the matrix <span style="font-family:monospace">A</span>
+with first element <span style="font-family:monospace">A[nl1,nc1]</span> and last element 
+<span style="font-family:monospace">A[nl2,nc2]</span>.<br>
+Define the matrix <span style="font-family:monospace">A</span> :
+</p><div class="center"><span style="font-family:monospace">A:=[[3,4,5],[1,2,6]]</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>rowAdd([[1,2],[3,4]],0,1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">subMat(A,0,1,1,2)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[[1,2],[4,6]]</TT></DIV><HR>
-<A HREF="cascmd_en365.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en367.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[[4,5],[2,6]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">subMat(A,0,1,1,1]</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[4],[2]]</span></div><p>
+By default <span style="font-style:italic">nl</span>1=0, <span style="font-style:italic">nc</span>1=0, <span style="font-style:italic">nl</span>2=<span style="font-family:monospace">nrows(A)</span>-1 and 
+<span style="font-style:italic">nc</span>2=<span style="font-family:monospace">ncols(A)</span>-1<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">subMat(A,1)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">subMat(A,1,0)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">subMat(A,1,0,1)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">subMat(A,1,0,1,2)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[1,2,6]]</span></div>
+<hr>
+<a href="cascmd_en365.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en367.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

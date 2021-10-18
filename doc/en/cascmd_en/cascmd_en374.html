@@ -1,40 +1,39 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Define a matrix : matrix</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en373.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en375.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc418">2.42.25</A>  Define a matrix : <TT>matrix</TT></H3><P><A NAME="@default631"></A>
-<TT>matrix</TT> takes three arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-two integers <I>n</I> and <I>p</I>. 
-</LI><LI CLASS="li-itemize">a function of two variables <TT>j</TT> and <TT>k</TT> which
-should return the value of <I>a</I><SUB><I>j</I>,<I>k</I></SUB>, the element of
-row index <TT>j</TT> and column index <TT>k</TT> of the matrix to be build.
-</LI></UL><P>
-<TT>matrix</TT> returns the matrix <I>A</I>=(<I>a</I><SUB><I>j</I>,<I>k</I></SUB>) (<I>j</I>=1..<I>n</I> and <I>k</I>=1..<I>p</I>) of 
-dimension <I>n</I> × <I>p</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Build a matrix with a function : makemat</title>
+</head>
+<body >
+<a href="cascmd_en373.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en375.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec443" class="subsection">2.42.24  Build a matrix with a function : <span style="font-family:monospace">makemat</span></h3>
+<p><a id="hevea_default631"></a>
+<span style="font-family:monospace">makemat</span> takes three arguments : 
+</p><ul class="itemize"><li class="li-itemize">
+a function of two variables <span style="font-family:monospace">j</span> and <span style="font-family:monospace">k</span> which
+should return the value of <span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>, the element of
+row index <span style="font-family:monospace">j</span> and column index <span style="font-family:monospace">k</span> of the matrix to be built.
+</li><li class="li-itemize">two integers <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>.
+</li></ul><p>
+<span style="font-family:monospace">makemat</span> returns the matrix <span style="font-style:italic">A</span>=(<span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>) 
+(<span style="font-style:italic">j</span>=0..<span style="font-style:italic">n</span>&#X2212;1 and <span style="font-style:italic">k</span>=0..<span style="font-style:italic">p</span>&#X2212;1) of dimension <span style="font-style:italic">n</span> × <span style="font-style:italic">p</span>.<br>
 Input :
-</P><DIV CLASS="center"><TT>matrix(4,3,(j,k)-&gt;j+k)</TT></DIV><P>
-or first define the <I>h</I> function:
-</P><DIV CLASS="center"> <TT>h(j,k):=j+k</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">makemat((j,k)-&gt;j+k,4,3)</span></div><p>
+or first define the <span style="font-style:italic">h</span> function:
+</p><div class="center"><span style="font-family:monospace">h(j,k):=j+k</span></div><p>
 then, input:
-</P><DIV CLASS="center"><TT>matrix(4,3,h)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">makemat(h,4,3)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[[2,3,4],[3,4,5],[4,5,6],[5,6,7]]</TT></DIV><P>
-Note the argument order and the fact that the indices are counted
-starting from 1. If the last argument is not provided, it defaults to 0.</P><HR>
-<A HREF="cascmd_en373.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en375.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[[0,1,2],[1,2,3],[2,3,4],[3,4,5]]</span></div><p>
+Note that the indices are counted starting from 0.</p>
+<hr>
+<a href="cascmd_en373.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en375.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

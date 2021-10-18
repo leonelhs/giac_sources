@@ -1,29 +1,31 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour lire une image : readrgb</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1102.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1104.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1295">12.2.2</A>  Pour lire une image : <TT>readrgb</TT></H3><P><A NAME="@default2124"></A>
-<TT>readrgb</TT> peut lire un fichier contenant une image. Ce fichier
-peut être un fichier <TT>.jpg</TT> ou <TT>.png</TT> ou <TT>.gif</TT>.<BR>
-<TT>readrgb</TT> renvoie [[nombre_canaux,largeur,hauteur],Rouge,Vert,
-Transparence,Bleu] où Rouge,Vert,Transparence,Bleu sont des matrices.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>a:=readrgb("image.jpg")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>une liste de 5 éléments qui sont [4,20,10] suivi de 4 matrices de dimension 20,10 qui indiquent où sont situé les couleurs rouge,vert,transparence,bleu]</TT></DIV><HR>
-<A HREF="cascmd_fr1102.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1104.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Pour visualiser une image</title>
+</head>
+<body >
+<a href="cascmd_fr1102.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1104.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1333" class="subsection">12.2.3  Pour visualiser une image</h3>
+<p>
+On peut voir une image dans un rectangle d’un graphe 2d, ou collé
+à une surface d’un graphe 3d.<br>
+Par exemple la commande :<br>
+<code>rectangle(200,0,1/2,gl_texture="terre.jpg")</code>
+affiche dans le plan un rectangle (défini par les points 200 et 0 de rapport 
+1/2) contenant l’image numérisée dans le fichier <code>terre.jpg</code>:
+Dans l’espace, on peut par exemple coller l’image sur une sphère
+de centre l’origine et de rayon 1 par la commande :<br>
+<code>sphere([0,0,0],1, gl_material=[gl_texture,"terre.jpg"])</code>: <br>
+</p>
+<hr>
+<a href="cascmd_fr1102.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1104.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

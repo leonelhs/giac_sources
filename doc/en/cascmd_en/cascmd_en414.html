@@ -1,37 +1,78 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Hessenberg matrix reduction : hessenberg</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en413.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en415.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc462">2.46.11</A>  Hessenberg matrix reduction : <TT>hessenberg</TT></H3><P><A NAME="@default694"></A>
-<TT>hessenberg</TT> takes as argument a matrix <I>A</I>.<BR>
-<TT>hessenberg</TT> returns a matrix <I>B</I> equivalent to <I>A</I> where the 
-coefficients below the sub-principal diagonal are zero. 
-<I>B</I> is a Hessenberg matrix.<BR>
-Input :
-</P><DIV CLASS="center"><TT>hessenberg([[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1], [2,-1,-1,3,1],[2,-1,1,1,2]])</TT></DIV><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Jordan normal form : jordan</title>
+</head>
+<body >
+<a href="cascmd_en413.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en415.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec493" class="subsection">2.47.5  Jordan normal form : <span style="font-family:monospace">jordan</span></h3>
+<p><a id="hevea_default694"></a>
+<span style="font-family:monospace">jordan</span> takes as argument a square
+matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span>.<br>
+<span style="font-family:monospace">jordan</span> returns :
+</p><ul class="itemize"><li class="li-itemize">
+in <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> or <span style="font-family:monospace">TI</span> mode<br>
+a sequence of two matrices : a matrix <span style="font-style:italic">P</span> whose columns are
+the eigenvectors and characteristic vectors
+of the matrix <span style="font-style:italic">A</span> and the Jordan matrix <span style="font-style:italic">J</span> of <span style="font-style:italic">A</span> verifying <span style="font-style:italic">J</span>=<span style="font-style:italic">P</span><sup>&#X2212;1</sup><span style="font-style:italic">AP</span>,
+</li><li class="li-itemize">in <span style="font-family:monospace">Maple</span> mode<br>
+the Jordan matrix <span style="font-style:italic">J</span> of <span style="font-style:italic">A</span>. We can also have the matrix <span style="font-style:italic">P</span> verifying
+<span style="font-style:italic">J</span>=<span style="font-style:italic">P</span><sup>&#X2212;1</sup><span style="font-style:italic">AP</span> in a variable 
+by passing this variable as second argument, for example 
+<div class="center"> <span style="font-family:monospace">jordan([[1,0,0],[0,1,1],[1,1,-1]],&#X2019;P&#X2019;)</span>
+</div>
+</li></ul><p>
+<span style="font-weight:bold">Remarks</span>
+</p><ul class="itemize"><li class="li-itemize">
+the <span style="font-family:monospace">Maple</span> syntax is also valid in the other modes, for example, in
+<span style="font-family:monospace">Xcas</span> mode input :
+<div class="center"> <span style="font-family:monospace">jordan([[4,1,1],[1,4,1],[1,1,4]],&#X2019;P&#X2019;)</span>
+</div>
 Output :
-</P><DIV CLASS="center"><TT>[[3,8,5,10,2],[2,1,1/2,-5,-1],[0,2,1,8,2], [0,0,1/2,8,1],[0,0,0,-26,-3]]</TT></DIV><P>
-Input 
-</P><DIV CLASS="center">
-<TT>A:=[[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1],</TT><BR>
-<TT> [2,-1,-1,3,1],[2,-1,1,1,2]] :;</TT><BR>
-<TT>B:= hessenberg(A):; pcar(A); pcar(B)
-</TT>
-</DIV><P>
-Output: <TT>[1,-7,-66,-24]</TT>.</P><HR>
-<A HREF="cascmd_en413.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en415.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"> <span style="font-family:monospace">[[1,-1,1/2],[1,0,-1],[1,1,1/2]]</span>
+</div>
+then <span style="font-family:monospace">P</span> returns
+<div class="center"> <span style="font-family:monospace">[[6,0,0],[0,3,0],[0,0,3]]</span>
+</div>
+</li><li class="li-itemize">When <span style="font-style:italic">A</span> is symmetric and has eigenvalues with multiple orders,
+<span style="font-family:monospace">Xcas</span> returns orthogonal eigenvectors (not always of norm equal to 1)
+i.e. <span style="font-family:monospace">tran(P)*P</span> is a diagonal matrix where the diagonal is the square norm
+of the eigenvectors, for example :
+<div class="center"> <span style="font-family:monospace">jordan([[4,1,1],[1,4,1],[1,1,4]])</span>
+</div>
+returns :
+<div class="center"> <span style="font-family:monospace">[[1,-1,1/2],[1,0,-1],[1,1,1/2]],[[6,0,0],[0,3,0],[0,0,3]]</span>
+</div>
+</li></ul><p> 
+Input in <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> or <span style="font-family:monospace">TI</span> mode :
+</p><div class="center"><span style="font-family:monospace">jordan([[1,0,0],[0,1,1],[1,1,-1]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[1,0,0],[0,1,1],[1,1,-1]],[[-1,0,0],[1,1,1],[0,-sqrt(2)-1,sqrt(2)-1]],[[1,0,0],[0,-(sqrt(2)),0],[0,0,sqrt(2)]]</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">jordan([[1,0,0],[0,1,1],[1,1,-1]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[1,0,0],[0,-(sqrt(2)),0],[0,0,sqrt(2)]]</span></div><p>
+then input : 
+</p><div class="center"><span style="font-family:monospace">P</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[-1,0,0],[1,1,1],[0,-sqrt(2)-1,sqrt(2)-1]]</span></div><p>
+Input in <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> or <span style="font-family:monospace">TI</span> mode :
+</p><div class="center"><span style="font-family:monospace">jordan([[4,1,-2],[1,2,-1],[2,1,0]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[[1,2,1],[0,1,0],[1,2,0]],[[2,1,0],[0,2,1],[0,0,2]]]</span></div><p>
+In complex mode and in <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> or <span style="font-family:monospace">TI</span> mode , input :
+</p><div class="center"><span style="font-family:monospace">jordan([[2,0,0],[0,2,-1],[2,1,2]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[1,0,0],[-2,-1,-1],[0,-i,i]],[[2,0,0],[0,2-i,0],[0,0,2+i]]</span></div>
+<hr>
+<a href="cascmd_en413.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en415.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

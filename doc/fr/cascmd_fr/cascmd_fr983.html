@@ -1,37 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si 1 point est à l’intérieur d’un polygone ou d’un cercle : is_inside est_dans</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr982.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr984.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1151">10.18.4</A>  Savoir si 1 point est à l’intérieur d’un polygone ou d’un cercle : <TT>is_inside est_dans</TT></H3><P><A NAME="@default1914"></A><A NAME="@default1915"></A>
-<TT>is_inside</TT> ou <TT>est_dans</TT> est une fonction 
-booléenne ayant comme argument un point et un polygone ou un cercle.<BR>
-<TT>is_inside</TT> ou <TT>est_dans</TT> vaut 1 si le point est à l’intérieur 
-ou sur le bord du polygone ou du cercle, et vaut 0 sinon.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Savoir si on a un triangle équilatéral : is_equilateral est_equilateral</title>
+</head>
+<body >
+<a href="cascmd_fr982.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr984.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1189" class="subsection">10.18.5  Savoir si on a un triangle équilatéral : <span style="font-family:monospace">is_equilateral est_equilateral</span></h3>
+<p><a id="hevea_default1913"></a><a id="hevea_default1914"></a><a id="sec:estequilateral2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1061.html#sec%3Aestequilateral3">11.13.9</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">est_equilateral</span> est une fonction booléenne ayant comme 
+argument trois points ou un objet géométrique.<br>
+<span style="font-family:monospace">est_equilateral</span> vaut 1 si les trois points forment un triangle 
+équilatéral ou si l’objet géométrique est un triangle équilatéral,
+et vaut 0 sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>est_dans((point(0),cercle(-1,1))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_equilateral(0,2,1+i*sqrt(3))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>est_dans(point(2),polygone([1,2-i,3+i]))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">T:=triangle_equilateral(0,2,C);est_equilateral(T[0])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+En effet <span style="font-family:monospace">T[0]</span> désigne un triangle car <span style="font-family:monospace">T</span> est une liste composée 
+du triangle et de son sommet <span style="font-family:monospace">C</span>.<br>
+On tape <span style="font-family:monospace">affixe(C)</span> et on obtient <span style="font-family:monospace">1+i*sqrt(3)</span><br>
 On tape :
-</P><DIV CLASS="center"><TT>est_dans(point(1-i),triangle([1,2-i,3+i]))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_equilateral(1+i,-1+i,-1-i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
-<A HREF="cascmd_fr982.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr984.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0</span></div>
+<hr>
+<a href="cascmd_fr982.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr984.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

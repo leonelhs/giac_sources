@@ -2495,8 +2495,9 @@ namespace giac {
 	// first_try = quotesubst(ratnormal(e,contextptr),x,lim_point,contextptr);
       }
       bool absb=eval_abs(contextptr);
+      first_try=eval(first_try,eval_level(contextptr),contextptr); // moved before eval_abs(false,contextptr), must be before simplifier below
+      first_try=simplifier(first_try,contextptr); // for assume(a>0); limit((sqrt(2*a^3*x-x^4)-a*root(3,a^2*x))/(a-root(4,a*x^3)),x=a);
       eval_abs(false,contextptr);
-      first_try=eval(first_try,eval_level(contextptr),contextptr);
       first_try = recursive_normal(first_try,contextptr);
       //first_try=eval(first_try,1,contextptr);
       eval_abs(absb,contextptr);
@@ -2587,8 +2588,11 @@ namespace giac {
 	  return g1;
 	return gensizeerr("Unidirectional limits are distincts "+g2.print(contextptr)+","+g1.print(contextptr));
       }
-      if (p.empty() || ck_is_strictly_positive(p.front().exponent,contextptr))
+      if (p.empty() || ck_is_strictly_positive(p.front().exponent,contextptr) ){
+	if (check_bounded(p.front().coeff,contextptr)==-1)
+	  return gensizeerr("Unable to bound coefficient");
 	return 0;
+      }
       if (ck_is_strictly_positive(-p.front().exponent,contextptr)){
 	if (p.front().exponent.type==_INT_ && p.front().exponent.val%2==0){
 	  int s=fastsign(p.front().coeff,contextptr);

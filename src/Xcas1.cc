@@ -2914,7 +2914,7 @@ namespace xcas {
       }
       if ( (it->type==_STRNG) && it+1!=itend && ((it+1)->type==_IDNT || (it+1)->is_symb_of_sommet(at_at) || (it+1)->is_symb_of_sommet(at_of)) ){
 	Fl_Input * o;
-	string * l=new string (it->print(contextptr));
+	string * l=new string (*it->_STRNGptr);
 	labels.push_back(l);
 	int yadd=6+nlines(*l)*14;
 	int taille=4+int(fl_width(l->c_str()));
@@ -2939,7 +2939,8 @@ namespace xcas {
 	if (vg.empty())
 	  continue;
 	Fl_Input * o;
-	string * l=new string (vg[0].eval(eval_level(contextptr),contextptr).print(contextptr));
+	gen tmps=vg[0].eval(eval_level(contextptr),contextptr);
+	string * l=new string (tmps.type==_STRNG?*tmps._STRNGptr:tmps.print(contextptr));
 	labels.push_back(l);
 	int taille=4+int(fl_width(l->c_str()));
 	if (taille>taillew/2)
@@ -2959,14 +2960,14 @@ namespace xcas {
 	g=g.eval(eval_level(contextptr),contextptr);
 	Fl_Output * o;
 	if (u==at_Title){
-	  string * l=new string (g.print(contextptr));
+	  string * l=new string (g.type==_STRNG?*g._STRNGptr:g.print(contextptr));
 	  labels.push_back(l);
-	  o=new Fl_Output(taillew-40,current_y,0,20,l->c_str());
+	  o=new Fl_Output(taillew/2-40,current_y,0,20,l->c_str());
 	  o->value("");
 	}
 	else {
 	  o=new Fl_Output(40,current_y,taillew-60,20,"");
-	  o->value(g.print(contextptr).c_str());
+	  o->value((g.type==_STRNG?*g._STRNGptr:g.print(contextptr)).c_str());
 	}
 	voutput.push_back(o);
 	current_y += 20;
@@ -3006,7 +3007,7 @@ namespace xcas {
 	Fl_Browser * o =new Fl_Browser(50, current_y+16, 180, hs);
 	current_y += hs+16;
         o->type(2);
-	string * l=new string (vg[0].print(contextptr));
+	string * l=new string (vg[0].type==_STRNG?*vg[0]._STRNGptr:vg[0].print(contextptr));
 	labels.push_back(l);
         o->label(l->c_str());
 	o->align(FL_ALIGN_TOP);

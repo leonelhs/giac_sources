@@ -1,64 +1,67 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Factorization : collect</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en191.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en193.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc218">2.24.12</A>  Factorization : <TT>collect</TT></H3><P><A NAME="@default368"></A>
-<TT>collect</TT> takes as argument a polynomial or a list of 
-polynomials and optionnaly an algebraic extension like <TT>sqrt(n)</TT>
-(for &#X221A;<SPAN style="text-decoration:overline"><I>n</I></SPAN>).<BR>
-<TT>collect</TT> factorizes the polynomial (or the polynomials of the
-list) on the field of it&#X2019;s coefficient (for example &#X211A;)
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Factorization : collect</title>
+</head>
+<body >
+<a href="cascmd_en191.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en193.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec235" class="subsection">2.24.12  Factorization : <span style="font-family:monospace">collect</span></h3>
+<p><a id="hevea_default368"></a>
+<span style="font-family:monospace">collect</span> takes as argument a polynomial or a list of 
+polynomials and optionally an algebraic extension like <span style="font-family:monospace">sqrt(n)</span>
+(for &#X221A;<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>).<br>
+<span style="font-family:monospace">collect</span> factorizes the polynomial (or the polynomials in the
+list) on the field of its coefficient (for example &#X211A;)
 or on the smallest extension containing the optional second argument (e.g.
-&#X211A;[&#X221A;<SPAN style="text-decoration:overline"><I>n</I></SPAN>]). In complex mode, the field is complexified.<BR>
-<B>Examples</B> :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Factorize <I>x</I>2&#X2212;4 over the integers,
+&#X211A;[&#X221A;<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>]). In complex mode, the field is complexified.<br>
+<span style="font-weight:bold">Examples</span> :
+</p><ul class="itemize"><li class="li-itemize">
+Factorize <span style="font-style:italic">x</span><sup>2</sup>&#X2212;4 over the integers,
 input :
-<DIV CLASS="center"><TT>collect(x</TT><CODE><TT>^</TT></CODE><TT>2-4)</TT></DIV>
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-4)</span></div>
 Output in real mode :
-<DIV CLASS="center"><TT>(x-2)*(x+2)</TT></DIV>
-</LI><LI CLASS="li-itemize">Factorize <I>x</I>2+4 over the integers, input :
-<DIV CLASS="center"><TT>collect(x</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV>
+<div class="center"><span style="font-family:monospace">(x-2)*(x+2)</span></div>
+</li><li class="li-itemize">Factorize <span style="font-style:italic">x</span><sup>2</sup>+4 over the integers, input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)</span></div>
 Output in real mode :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+4</TT></DIV>
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4</span></div>
 Output in complex mode :
-<DIV CLASS="center"><TT>(x+2*i)*(x-2*i)</TT></DIV>
-</LI><LI CLASS="li-itemize">Factorize <I>x</I>2&#X2212;2 over the integers, input :
-<DIV CLASS="center"><TT>collect(x</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV>
+<div class="center"><span style="font-family:monospace">(x+2*i)*(x-2*i)</span></div>
+</li><li class="li-itemize">Factorize <span style="font-style:italic">x</span><sup>2</sup>&#X2212;2 over the integers, input :
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2)</span></div>
 Output in real mode :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV>
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div>
 But if you input :
-<DIV CLASS="center"><TT>collect(sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>2-2))</TT></DIV>
+<div class="center"><span style="font-family:monospace">collect(sqrt(2)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2))</span></div>
 Output :
-<DIV CLASS="center"><TT>sqrt(2)*(x-sqrt(2))*(x+sqrt(2))</TT></DIV>
-</LI><LI CLASS="li-itemize">Factorize over the integers : 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>3&#X2212;2<I>x</I>2+1  and  <I>x</I>2&#X2212;<I>x</I></TD></TR>
-</TABLE>
+<div class="center"><span style="font-family:monospace">sqrt(2)*(x-sqrt(2))*(x+sqrt(2))</span></div>
+</li><li class="li-itemize">Factorize over the integers : 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>&#X2212;2<span style="font-style:italic">x</span><sup>2</sup>+1  and  <span style="font-style:italic">x</span><sup>2</sup>&#X2212;<span style="font-style:italic">x</span></td></tr>
+</table>
 Input :
-<DIV CLASS="center"><TT>collect([x</TT><CODE><TT>^</TT></CODE><TT>3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1,x</TT><CODE><TT>^</TT></CODE><TT>2-x])</TT></DIV>
+<div class="center"><span style="font-family:monospace">collect([x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x])</span></div>
 Output :
-<DIV CLASS="center"><TT>[(x-1)*(x</TT><CODE><TT>^</TT></CODE><TT>2-x-1),x*(x-1)]</TT></DIV>
+<div class="center"><span style="font-family:monospace">[(x-1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1),x*(x-1)]</span></div>
 But, input :
-<DIV CLASS="center"><TT>collect((x</TT><CODE><TT>^</TT></CODE><TT>3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1)*sqrt(5))</TT></DIV>
+<div class="center"><span style="font-family:monospace">collect((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)*sqrt(5))</span></div>
 Output :
-<DIV CLASS="center"><TT>((19*sqrt(5)-10)*((sqrt(5)+15)*x+7*sqrt(5)-5)* ((sqrt(5)+25)*x-13*sqrt(5)-15)*(x-1))/6820</TT></DIV>
+<div class="center"><span style="font-family:monospace">((19*sqrt(5)-10)*((sqrt(5)+15)*x+7*sqrt(5)-5)* ((sqrt(5)+25)*x-13*sqrt(5)-15)*(x-1))/6820</span></div>
 Or, input :
-<DIV CLASS="center"><TT>collect(x</TT><CODE><TT>^</TT></CODE><TT>3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1,sqrt(5))</TT></DIV>
+<div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,sqrt(5))</span></div>
 Output :
-<DIV CLASS="center"><TT>((2*sqrt(5)-19)*((sqrt(5)+25)*x-13*sqrt(5)-15)*(-x+1)*((sqrt(5)+15)*x+7*sqrt(5)-5))/6820</TT></DIV></LI></UL><HR>
-<A HREF="cascmd_en191.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en193.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">((2*sqrt(5)-19)*((sqrt(5)+25)*x-</span><br>
+ <span style="font-family:monospace">13*sqrt(5)-15)*(-x+1)*((sqrt(5)+15)*x+7*sqrt(5)-5))/6820</span>
+</div>
+</li></ul>
+<hr>
+<a href="cascmd_en191.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en193.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

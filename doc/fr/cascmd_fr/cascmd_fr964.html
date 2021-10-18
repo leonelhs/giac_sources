@@ -1,71 +1,48 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Périmètre d’un polygone et son affichage :perimeterat perimetreen et perimeteratraw perimetreenbrut</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr963.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr965.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1130">10.16.11</A>  Périmètre d’un polygone et son affichage :<TT>perimeterat perimetreen</TT> et <TT>perimeteratraw perimetreenbrut</TT></H3><P><A NAME="@default1879"></A><A NAME="@default1880"></A><A NAME="@default1881"></A><A NAME="@default1882"></A>
-<TT>perimeterat</TT> ou <TT>perimetreen</TT> et <TT>perimeteratraw</TT> ou 
-<TT>perimetreenbrut</TT> sont des commandes 
-obtenues lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le 
-bouton <TT>Mode-&gt;Mesures-&gt;perimetreen</TT> ou <TT>Mode-&gt;Mesures-&gt;perimetreenbrut</TT>.
-Dans ce cas il faut que tous les objets désignés par la souris soient 
-déjà nommés.<BR>
-On peut néammoins taper ces commandes dans une ligne de commande.<BR>
-
-<TT>perimeterat</TT> ou <TT>perimetreen</TT> et <TT>perimeteratraw</TT> ou 
-<TT>perimetreenbrut</TT> ont comme argument un cercle ou un polygone et 1
-point (ou 1 nombre complexe qui est l’affixe d’un point).<BR>
-<TT>perimeterat</TT> ou <TT>perimetreen</TT> renvoie le point, calcule le 
-périmètre du cercle ou du polygone et affiche ce périmètre à 
-l’endroit du point avec une légende. <B>Attention</B> Il faut que le 
-polygone ait un nom.<BR>
-<TT>perimeteratraw</TT> ou <TT>perimetreenbrut</TT> renvoie le point, calcule le 
-périmètre du cercle ou du polygone et affiche ce périmètre à 
-l’endroit du point.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Pente d’une droite : slope pente</title>
+</head>
+<body >
+<a href="cascmd_fr963.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr965.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1168" class="subsection">10.16.12  Pente d’une droite : <span style="font-family:monospace">slope pente</span></h3>
+<p><a id="hevea_default1880"></a><a id="hevea_default1881"></a>
+<a id="hevea_default1882"></a><a id="hevea_default1883"></a><a id="sec:pente"></a>
+<span style="font-family:monospace">slope pente</span> est soit une commande soit un attribut de la 
+commande <span style="font-family:monospace">droite</span> pour cela voir <a href="cascmd_fr904.html#sec%3Adroite2">10.9.1</a><br>
+Lorsque <span style="font-family:monospace">slope pente</span> est une commande son argument est une droite ou un 
+segment ou deux points ou deux nombres complexes.<br>
+ <span style="font-family:monospace">slope pente</span> renvoie la pente de la droite définie par le segment ou par 
+les 2 points ou leurs affixes.<br>
 On tape :
-</P><DIV CLASS="center"><TT>t:=triangle(0,1,i)</TT></DIV><DIV CLASS="center"><TT>perimetreen(t,(1+i)/2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pente(droite(1,2i))</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">pente(segment(1,2i))</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">pente(point(1),point(2i))</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">pente(1,2i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2+sqrt(2) s’écrit au point((1+i)/2) avec une légende</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">-2</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>perimetreenbrut(triangle(0,1,i),(1+i)/2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pente(droite(2y-x=3))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2+sqrt(2) s’écrit au point((1+i)/2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1/2</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>c:=carre(0,2)</TT></DIV><DIV CLASS="center"><TT>perimetreen(c,2.2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pente(tangente(plotfunc(sin(x)),pi/4))</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">pente(droite_tangente(sin(x),pi/4))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>8 s’écrit au point(2.2) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>perimetreenbrut(carre(0,2),2.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>8 s’écrit au point(2.2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>cc:=cercle(0,2)</TT></DIV><DIV CLASS="center"><TT>perimetreen(cc,2.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>4*pi s’écrit au point(2.2) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>perimetreenbrut(cercle(0,2),2.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>4*pi s’écrit au point(2.2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>h:=hexagone(0,1)</TT></DIV><DIV CLASS="center"><TT>perimetreen(h,1.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>6 s’écrit au point(1.2) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>perimetreenbrut(hexagone(0,1),1.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>6 s’écrit au point(1.2)</TT></DIV><HR>
-<A HREF="cascmd_fr963.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr965.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">(sqrt(2))/2</span></div>
+<hr>
+<a href="cascmd_fr963.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr965.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

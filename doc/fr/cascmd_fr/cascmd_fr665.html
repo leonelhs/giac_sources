@@ -1,95 +1,95 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Réduction d’une conique : conique_reduite 
-reduced_conic</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr664.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr666.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc783">6.59.7</A>  Réduction d’une conique : <TT>conique_reduite<BR>
-reduced_conic</TT></H3><P><A NAME="@default1207"></A><A NAME="@default1208"></A> 
-<TT>conique_reduite</TT> a un ou deux arguments : l’expression d’une 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Réduction d’une conique : conique_reduite
+reduced_conic</title>
+</head>
+<body >
+<a href="cascmd_fr664.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr666.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec811" class="subsection">6.59.7  Réduction d’une conique : <span style="font-family:monospace">conique_reduite<br>
+reduced_conic</span></h3>
+<p><a id="hevea_default1207"></a><a id="hevea_default1208"></a> 
+<span style="font-family:monospace">conique_reduite</span> a un ou deux arguments : l’expression d’une 
 conique et le vecteur de composantes les variables utilisées si il est 
-différent de <TT>[x,y]</TT>.<BR>
-<TT>conique_reduite</TT> renvoie une liste d’éléments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+différent de <span style="font-family:monospace">[x,y]</span>.<br>
+<span style="font-family:monospace">conique_reduite</span> renvoie une liste d’éléments :
+</p><ul class="itemize"><li class="li-itemize">
 l’origine de la conique,
-</LI><LI CLASS="li-itemize">la matrice d’un repère dans lequel
+</li><li class="li-itemize">la matrice d’un repère dans lequel
 la conique est réduite,
-</LI><LI CLASS="li-itemize">0 ou 1 pour savoir si la conique est dégénérée
+</li><li class="li-itemize">0 ou 1 pour savoir si la conique est dégénérée
 ou pas,
-</LI><LI CLASS="li-itemize">l’équation réduite de la conique dans ce repère,
-</LI><LI CLASS="li-itemize">un vecteur contenant son équation paramétrique ou ses équations 
-paramétriques lorsque la conique est composée de plusieurs nappes.<BR>
-</LI></UL><P> 
+</li><li class="li-itemize">l’équation réduite de la conique dans ce repère,
+</li><li class="li-itemize">un vecteur contenant son équation paramétrique ou ses équations 
+paramétriques lorsque la conique est composée de plusieurs nappes.<br>
+</li></ul><p> 
 On tape :
-</P><DIV CLASS="center"><TT>conique_reduite(2*x</TT><CODE><TT>^</TT></CODE><TT>2+2*x*y+2*y</TT><CODE><TT>^</TT></CODE><TT>2+5*x+3,[x,y])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">conique_reduite(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x*y+2*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+5*x+3,[x,y])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[[-5/3,5/6],[[-1/(sqrt(2)),1/(sqrt(2))],[-1/(sqrt(2)),
--1/(sqrt(2))]],1,3*x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2+-7/6,[[(-10+5*i)/6+(1/(sqrt(2))+
+</p><div class="center"><span style="font-family:monospace">[[-5/3,5/6],[[-1/(sqrt(2)),1/(sqrt(2))],[-1/(sqrt(2)),
+-1/(sqrt(2))]],1,3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-7/6,[[(-10+5*i)/6+(1/(sqrt(2))+
 (i)/(sqrt(2)))*((sqrt(14)*cos(‘ t‘))/6+
-((i)*sqrt(42)*sin(t))/6),t,0,2*pi,(2*pi)/60]]]</TT></DIV><P>
+((i)*sqrt(42)*sin(t))/6),t,0,2*pi,(2*pi)/60]]]</span></div><p>
 La conique n’est pas dégénérée et a pour équation réduite :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">3<I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>−7/6=0 </TD></TR>
-</TABLE><P> 
-dans le repère d’origine −5/3+5*<I>i</I>/6 et d’axes parallèles
-aux vecteurs (−1,1) et (−1,−1).<BR>
-Son équation paramétrique est :<BR>
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">−10+5*<I>i</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
-</TABLE></TD><TD CLASS="dcell">+
-</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">(1+<I>i</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">*</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">(</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>14</TD></TR>
-</TABLE></TD><TD CLASS="dcell">*<I>cos</I>(<I>t</I>)+<I>i</I>*</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>42</TD></TR>
-</TABLE></TD><TD CLASS="dcell">*<I>sin</I>(<I>t</I>))</TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-et pour le dessin, le paramètre <I>t</I> varie de 0 à 2π avec un pas
-<TT>tstep</TT>=2π/60.</P><P><B>Remarque</B> :<BR>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">y</span><sup>2</sup>−7/6=0 </td></tr>
+</table><p> 
+dans le repère d’origine −5/3+5*<span style="font-style:italic">i</span>/6 et d’axes parallèles
+aux vecteurs (−1,1) et (−1,−1).<br>
+Son équation paramétrique est :<br>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−10+5*<span style="font-style:italic">i</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell">+
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">(1+<span style="font-style:italic">i</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">*</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">(</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >14</td></tr>
+</table></td><td class="dcell">*<span style="font-style:italic">cos</span>(<span style="font-style:italic">t</span>)+<span style="font-style:italic">i</span>*</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >42</td></tr>
+</table></td><td class="dcell">*<span style="font-style:italic">sin</span>(<span style="font-style:italic">t</span>))</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td></tr>
+</table><p>
+et pour le dessin, le paramètre <span style="font-style:italic">t</span> varie de 0 à 2π avec un pas
+<span style="font-family:monospace">tstep</span>=2π/60.</p><p><span style="font-weight:bold">Remarque</span> :<br>
  Lorsque la conique est dégénérée en 1 ou 2 droite(s), chaque droite 
 n’est pas donné par son équation paramétrique mais par la liste 
-constituée par un vecteur normal à la droite et un point de la droite.<BR>
+constituée par un vecteur normal à la droite et un point de la droite.<br>
 On tape :
-</P><DIV CLASS="center"><TT>conique_reduite(x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2+3*x+y+2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">conique_reduite(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+3*x+y+2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[[(-3)/2,1/2],[[1,0],[0,1]],0,x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2,
-[[(-1+2*i)/(1-i),(1+2*i)/(1-i)], [(-1+2*i)/(1-i),(-1)/(1-i)]]]</TT></DIV><P>On obtient :<BR>
-<TT>(2*sqrt(5*23297</TT><CODE><TT>^</TT></CODE><TT>2*126757</TT><CODE><TT>^</TT></CODE><TT>*21302293</TT><CODE><TT>^</TT></CODE><TT>2))/62906903119301897</TT><BR>
-Soit :<BR>
-<TT>2*sqrt(5)</TT><BR>
-On tape :<BR>
-<TT>H1:=projection(D1,M)</TT><BR>
-<TT>longueur(M,F1)/longueur(M,H1)</TT><BR>
-On obtient :<BR>
-<TT>(2</TT><CODE><TT>^</TT></CODE><TT>14*3*13*17*89*311*521*563*769*2609*<BR>
-sqrt(2*3*49409</TT><CODE><TT>^</TT></CODE><TT>2*112249</TT><CODE><TT>^</TT></CODE><TT>2*126757</TT><CODE><TT>^</TT></CODE><TT>2*<BR>
-21302293</TT><CODE><TT>^</TT></CODE><TT>2*568000439</TT><CODE><TT>^</TT></CODE><TT>2*6789838247809</TT><CODE><TT>^</TT></CODE><TT>2))/<BR>
-(2</TT><CODE><TT>^</TT></CODE><TT>14*3</TT><CODE><TT>^</TT></CODE><TT>2*13*17*89*311*521*563*769*<BR>
-2609*49409*112249*126757*21302293*568000439*6789838247809)</TT><BR>
-Soit :<BR>
-<TT>(sqrt(6))/3</TT>
-</P><HR>
-<A HREF="cascmd_fr664.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr666.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[[(-3)/2,1/2],[[1,0],[0,1]],0,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,
+[[(-1+2*i)/(1-i),(1+2*i)/(1-i)], [(-1+2*i)/(1-i),(-1)/(1-i)]]]</span></div><p>On obtient :<br>
+<span style="font-family:monospace">(2*sqrt(5*23297</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*126757</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">*21302293</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))/62906903119301897</span><br>
+Soit :<br>
+<span style="font-family:monospace">2*sqrt(5)</span><br>
+On tape :<br>
+<span style="font-family:monospace">H1:=projection(D1,M)</span><br>
+<span style="font-family:monospace">longueur(M,F1)/longueur(M,H1)</span><br>
+On obtient :<br>
+<span style="font-family:monospace">(2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">14*3*13*17*89*311*521*563*769*2609*<br>
+sqrt(2*3*49409</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*112249</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*126757</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*<br>
+21302293</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*568000439</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*6789838247809</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))/<br>
+(2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">14*3</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*13*17*89*311*521*563*769*<br>
+2609*49409*112249*126757*21302293*568000439*6789838247809)</span><br>
+Soit :<br>
+<span style="font-family:monospace">(sqrt(6))/3</span>
+</p>
+<hr>
+<a href="cascmd_fr664.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr666.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

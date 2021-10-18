@@ -1,80 +1,80 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Expand a transcendental and trigonometric expression : texpand tExpand</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en141.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en143.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc164">2.20.1</A>  Expand a transcendental and trigonometric expression : <TT>texpand tExpand</TT></H3><P><A NAME="@default271"></A><A NAME="@default272"></A>
-<TT>texpand</TT> or <TT>tExpand</TT> takes as argument an
-expression containing transcendental or trigonometric functions.<BR>
-<TT>texpand</TT> or <TT>tExpand</TT> expands these functions, like simultaneous
-calling <TT>expexpand</TT>, <TT>lnexpand</TT> and <TT>trigexpand</TT>, 
-for example, ln(<I>x</I><SUP><I>n</I></SUP>) becomes  <I>n</I>ln(<I>x</I>), exp(<I>nx</I>) 
-becomes  exp(<I>x</I>)<SUP><I>n</I></SUP>, sin(2<I>x</I>) becomes  2sin(<I>x</I>)cos(<I>x</I>)...<BR>
-<B>Examples</B> :<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-Expand cos(<I>x</I>+<I>y</I>).<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Expand a transcendental and trigonometric expression : texpand tExpand</title>
+</head>
+<body >
+<a href="cascmd_en141.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en143.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec176" class="subsection">2.20.1  Expand a transcendental and trigonometric expression : <span style="font-family:monospace">texpand tExpand</span></h3>
+<p><a id="hevea_default271"></a><a id="hevea_default272"></a>
+<span style="font-family:monospace">texpand</span> or <span style="font-family:monospace">tExpand</span> takes as argument an
+expression containing transcendental or trigonometric functions.<br>
+<span style="font-family:monospace">texpand</span> or <span style="font-family:monospace">tExpand</span> expands these functions, like simultaneous
+calling <span style="font-family:monospace">expexpand</span>, <span style="font-family:monospace">lnexpand</span> and <span style="font-family:monospace">trigexpand</span>, 
+for example, ln(<span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>) becomes  <span style="font-style:italic">n</span>ln(<span style="font-style:italic">x</span>), exp(<span style="font-style:italic">nx</span>) 
+becomes  exp(<span style="font-style:italic">x</span>)<sup><span style="font-style:italic">n</span></sup>, sin(2<span style="font-style:italic">x</span>) becomes  2sin(<span style="font-style:italic">x</span>)cos(<span style="font-style:italic">x</span>)...<br>
+<span style="font-weight:bold">Examples</span> :<br>
+</p><ul class="itemize"><li class="li-itemize">
+<ol class="enumerate" type=1><li class="li-enumerate">
+Expand cos(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>).<br>
 Input :
-<DIV CLASS="center"><TT>texpand(cos(x+y))</TT></DIV>
+<div class="center"><span style="font-family:monospace">texpand(cos(x+y))</span></div>
 Output :
-<DIV CLASS="center"><TT>cos(x)*cos(y)-sin(x)*sin(y)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Expand cos(3<I>x</I>).<BR>
+<div class="center"><span style="font-family:monospace">cos(x)*cos(y)-sin(x)*sin(y)</span></div>
+</li><li class="li-enumerate">Expand cos(3<span style="font-style:italic">x</span>).<br>
 Input :
-<DIV CLASS="center"><TT>texpand(cos(3*x))</TT></DIV>
+<div class="center"><span style="font-family:monospace">texpand(cos(3*x))</span></div>
 Output :
-<DIV CLASS="center"><TT>4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT> 3-3*cos(x)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Expand  sin(3*<I>x</I>)+sin(7*<I>x</I>)/sin(5*<I>x</I>).<BR>
+<div class="center"><span style="font-family:monospace">4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 3-3*cos(x)</span></div>
+</li><li class="li-enumerate">Expand  sin(3*<span style="font-style:italic">x</span>)+sin(7*<span style="font-style:italic">x</span>)/sin(5*<span style="font-style:italic">x</span>).<br>
 Input :
-<DIV CLASS="center"><TT>texpand((sin(3*x)+sin(7*x))/sin(5*x))</TT></DIV>
+<div class="center"><span style="font-family:monospace">texpand((sin(3*x)+sin(7*x))/sin(5*x))</span></div>
 Output
-<DIV CLASS="center"><TT>(4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-1)*(sin(x)/(16*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4- 12*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2+1))/sin(x)+(64*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>6- 80*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4+24*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-1)*sin(x)/ (16*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4-12*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2+1)/sin(x)</TT></DIV>
-Output, after a simplification with <TT>normal(ans())</TT> :
-<DIV CLASS="center"><TT>4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV>
-</LI></OL>
-</LI><LI CLASS="li-itemize"><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-Expand exp(<I>x</I>+<I>y</I>).<BR>
+<div class="center"><span style="font-family:monospace">(4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)*(sin(x)/(16*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4- 12*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1))/sin(x)+(64*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6- 80*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+24*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)*sin(x)/ (16*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-12*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)/sin(x)</span></div>
+Output, after a simplification with <span style="font-family:monospace">normal(ans())</span> :
+<div class="center"><span style="font-family:monospace">4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div>
+</li></ol>
+</li><li class="li-itemize"><ol class="enumerate" type=1><li class="li-enumerate">
+Expand exp(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>).<br>
 Input :
-<DIV CLASS="center"><TT>texpand(exp(x+y))</TT></DIV>
+<div class="center"><span style="font-family:monospace">texpand(exp(x+y))</span></div>
 Output :
-<DIV CLASS="center"><TT>exp(x)*exp(y)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Expand ln(<I>x</I>× <I>y</I>).<BR>
+<div class="center"><span style="font-family:monospace">exp(x)*exp(y)</span></div>
+</li><li class="li-enumerate">Expand ln(<span style="font-style:italic">x</span>× <span style="font-style:italic">y</span>).<br>
 Input :
-<DIV CLASS="center"><TT>texpand(log(x*y))</TT></DIV>
+<div class="center"><span style="font-family:monospace">texpand(log(x*y))</span></div>
 Output :
-<DIV CLASS="center"><TT>log(x)+log(y)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Expand ln(<I>x</I><SUP><I>n</I></SUP>).<BR>
+<div class="center"><span style="font-family:monospace">log(x)+log(y)</span></div>
+</li><li class="li-enumerate">Expand ln(<span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>).<br>
 Input :
-<DIV CLASS="center"><TT>texpand(ln(x</TT><CODE><TT>^</TT></CODE><TT>n))</TT></DIV>
+<div class="center"><span style="font-family:monospace">texpand(ln(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n))</span></div>
 Output :
-<DIV CLASS="center"><TT>n*ln(x)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Expand ln((<I>e</I>2)+exp(2*ln(2))+<I>exp</I>(ln(3)+ln(2))).<BR>
+<div class="center"><span style="font-family:monospace">n*ln(x)</span></div>
+</li><li class="li-enumerate">Expand ln((<span style="font-style:italic">e</span><sup>2</sup>)+exp(2*ln(2))+exp(ln(3)+ln(2))).<br>
 Input :
-<DIV CLASS="center"><TT>texpand(log(e</TT><CODE><TT>^</TT></CODE><TT>2)+exp(2*log(2))+exp(log(3)+log(2)))</TT></DIV>
+<div class="center"><span style="font-family:monospace">texpand(log(e</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)+exp(2*log(2))+exp(log(3)+log(2)))</span></div>
 Output :
-<DIV CLASS="center"><TT>6+3*2</TT></DIV>
+<div class="center"><span style="font-family:monospace">6+3*2</span></div>
 Or input :
-<DIV CLASS="center"><TT>texpand(log(e</TT><CODE><TT>^</TT></CODE><TT>2)+exp(2*log(2)))+ lncollect(exp(log(3)+log(2)))</TT></DIV>
+<div class="center"><span style="font-family:monospace">texpand(log(e</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)+exp(2*log(2)))+ lncollect(exp(log(3)+log(2)))</span></div>
 Output :
-<DIV CLASS="center"><TT>12</TT></DIV>
-</LI></OL>
-</LI><LI CLASS="li-itemize">Expand exp(<I>x</I>+<I>y</I>)+cos(<I>x</I>+<I>y</I>)+ln(3<I>x</I>2).<BR>
+<div class="center"><span style="font-family:monospace">12</span></div>
+</li></ol>
+</li><li class="li-itemize">Expand exp(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>)+cos(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>)+ln(3<span style="font-style:italic">x</span><sup>2</sup>).<br>
 Input :
-<DIV CLASS="center"><TT>texpand(exp(x+y)+cos(x+y)+ln(3*x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV>
+<div class="center"><span style="font-family:monospace">texpand(exp(x+y)+cos(x+y)+ln(3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span></div>
 Output :
-<DIV CLASS="center"><TT>cos(x)*cos(y)-sin(x)*sin(y)+exp(x)*exp(y)+ ln(3)+2*ln(x)</TT></DIV>
-</LI></UL><HR>
-<A HREF="cascmd_en141.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en143.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">cos(x)*cos(y)-sin(x)*sin(y)+exp(x)*exp(y)+ ln(3)+2*ln(x)</span></div>
+</li></ul>
+<hr>
+<a href="cascmd_en141.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en143.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

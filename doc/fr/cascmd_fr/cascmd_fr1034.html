@@ -1,70 +1,62 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le losange dans l’espace : rhombus losange</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1033.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1035.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1213">11.8.2</A>  Le losange dans l’espace : <TT>rhombus losange</TT></H3><P><A NAME="@default2012"></A><A NAME="@default2013"></A> <A NAME="sec:losange3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr926.html#sec:losange2">10.11.3</A> pour la géométrie plane.<BR>
-<TT>losange</TT>, en géométrie 3-d, peut avoir de trois à cinq 
-arguments.<BR>
-Les arguments sont :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si il a trois arguments ce sont : 2 points (les 2 premiers sommets du 
-losange) et le troisième argument est soit un point <I>P</I>, soit une liste 
-formée par un point <I>P</I> et un nombre réel <I>a</I>. Le point <I>P</I> définit le 
-plan du losange et l’orientation de ce plan.<BR>
-On a :<BR>
-- <TT>losange(A,B,P)</TT> renvoie et trace dans le plan <I>ABP</I>, le losange <I>ABCD</I> 
-tel que :<BR>
-<I>AB</I>,<I>AD</I>)=<I>AB</I>,<I>AP</I>), mais sans définir les points <I>C</I> et <I>D</I>.<BR>
-- <TT>losange(A,B,[P,a])</TT> renvoie et trace dans le plan <I>ABP</I>, le losange <I>ABCD</I>
-tel que :<BR>
-<I>AB</I>,<I>AD</I>)=<I>a</I> radians (ou degrés), mais sans 
-définir les points <I>C</I> et <I>D</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Le rectangle dans l’espace : rectangle</title>
+</head>
+<body >
+<a href="cascmd_fr1033.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1035.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1251" class="subsection">11.8.3  Le rectangle dans l’espace : <span style="font-family:monospace">rectangle</span></h3>
+<p><a id="hevea_default2011"></a><a id="sec:rectangle3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr926.html#sec%3Arectangle2">10.11.4</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">rectangle</span>, en géométrie 3-d, peut avoir de trois à cinq 
+arguments.<br>
+Les arguments sont :<br>
+- si il a trois arguments ce sont : 2 points (les 2 sommets du rectangle) et 
+le troisième argument est soit un point <span style="font-style:italic">P</span> soit la
+liste formée par un point <span style="font-style:italic">P</span> et un nombre réel <span style="font-style:italic">k</span> non nul.<br>
+Le point <span style="font-style:italic">P</span> définit le plan du rectangle et l’orientation de ce plan.<br>
+<span style="font-family:monospace">rectangle(A,B,P)</span> renvoie et trace dans le plan <span style="font-style:italic">ABP</span>, le rectangle 
+<span style="font-style:italic">ABCD</span> tel que :<br>
+<span style="font-style:italic">AD</span>=<span style="font-style:italic">AP</span> et (<span style="font-style:italic">AB</span>,<span style="font-style:italic">AD</span>)=π/2, 
+mais sans définir les points <span style="font-style:italic">C</span> et <span style="font-style:italic">D</span>.<br>
 On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">A:=point(0,0,0)</span></div><div class="center"><span style="font-family:monospace">B:=point(3,3,3)</span></div><div class="center"><span style="font-family:monospace">P:=point(0,0,3)</span></div><p>
 Puis on tape :
-<DIV CLASS="center"><TT>losange(A,B,P)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">rectangle(A,B,P)</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à </TT><TT><I>BAP</I></TT><TT>, dans le plan </TT><TT><I>ABP</I></TT></DIV>
+</p><div class="center"><span style="font-family:monospace">Le rectangle de sommets </span></div><p><span style="font-family:monospace">rectangle(A,B,[P,k])</span> renvoie et trace dans le plan <span style="font-style:italic">ABP</span>, le rectangle 
+<span style="font-style:italic">ABCD</span> tel que :<br>
+<span style="font-style:italic">AD</span>=|<span style="font-style:italic">k</span>|*<span style="font-style:italic">AB</span> et (<span style="font-style:italic">AB</span>,<span style="font-style:italic">AD</span>)=(<span style="font-style:italic">k</span>/|<span style="font-style:italic">k</span>|)*π/2, 
+mais sans définir les points <span style="font-style:italic">C</span> et <span style="font-style:italic">D</span>.<br>
 On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">A:=point(0,0,0)</span></div><div class="center"><span style="font-family:monospace">B:=point(3,3,3)</span></div><div class="center"><span style="font-family:monospace">P:=point(0,0,3)</span></div><p>
 Puis on tape :
-<DIV CLASS="center"><TT>losange(A,B,[P,pi/3])</TT></DIV>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à pi/3, dans le plan </TT><TT><I>ABP</I></TT></DIV>
-</LI><LI CLASS="li-itemize">si il a quatre ou cinq arguments, les derniers paramètres sont les 
-noms des variables qui serviront à définir les derniers sommets.<BR>
-On tape :
-<DIV CLASS="center"><TT>losange(A,B,[P,pi/3],C,D)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">rectangle(A,B,[P,1/2])</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I>,<I>C</I>,<I>D</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à pi/3, dans le plan </TT><TT><I>ABP</I></TT></DIV>
+</p><div class="center"><span style="font-family:monospace">Le rectangle de sommets </span></div><p>
+- si il a cinq arguments, les 2 derniers paramètres sont les noms de deux 
+variables qui serviront à définir les 2 derniers sommets.<br>
 On tape :
-<DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">rectangle(A,B,P,C,D)</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>[(-3*sqrt(6)+18)/4,(-3*sqrt(6)+18)/4,(3*sqrt(6)+9)/2]</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">Le rectangle de sommets </span></div><p>
 On tape :
-<DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">simplify(coordonnees(C))</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>[(-3*sqrt(6)+6)/4,(-3*sqrt(6)+6)/4,(3*sqrt(6)+3)/2]</TT></DIV>
-</LI></UL><HR>
-<A HREF="cascmd_fr1033.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1035.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[(-sqrt(6)+6)/2,(-sqrt(6)+6)/2,sqrt(6)+3]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">simplify(coordonnees(D))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[(-(sqrt(6)))/2,(-(sqrt(6)))/2,sqrt(6)]</span></div>
+<hr>
+<a href="cascmd_fr1033.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1035.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

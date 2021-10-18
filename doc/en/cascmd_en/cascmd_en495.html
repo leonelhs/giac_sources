@@ -1,37 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>fsolve or nSolve with the option newton_solver</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en494.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en496.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc574">4.4.4</A>  <TT>fsolve</TT> or <TT>nSolve</TT> with the option <TT>newton_solver</TT></H3><P><A NAME="@default845"></A>
-<TT>newton_solver</TT> is the standard Newton method.
-The algorithm starts at an init value <I>x</I><SUB>0</SUB>, then we search the 
-intersection <I>x</I><SUB>1</SUB> of the tangent at <I>x</I><SUB>0</SUB> to the graph of <I>f</I>, with the <I>x</I> 
-axis, the next iteration is done with <I>x</I><SUB>1</SUB> instead of <I>x</I><SUB>0</SUB>.
-The <I>x</I><SUB><I>i</I></SUB> sequence is defined by
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUB>0</SUB>=<I>x</I><SUB>0</SUB>,    <I>x</I><SUB><I>n</I>+1</SUB>=<I>x</I><SUB><I>n</I></SUB>&#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>f</I>(<I>x</I><SUB><I>n</I></SUB>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>f</I>&#X2032;(<I>x</I><SUB><I>n</I></SUB>)</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD></TR>
-</TABLE><P>
-If the Newton method converges, it is a quadratic convergence for 
-roots of multiplicity 1.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Approximate computation of integrals : romberg nInt</title>
+</head>
+<body >
+<a href="cascmd_en494.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en496.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec604" class="subsection">4.3.3  Approximate computation of integrals : <span style="font-family:monospace">romberg nInt</span></h3>
+<p><a id="hevea_default842"></a><a id="hevea_default843"></a>
+<span style="font-family:monospace">romberg</span> or <span style="font-family:monospace">nInt</span> takes as arguments : an expression 
+<span style="font-family:monospace">ex</span>, the variable name of this expression (by default <span style="font-family:monospace">x</span>), and 
+two real values <span style="font-family:monospace">a,b</span>.<br>
+<span style="font-family:monospace">romberg(ex,x,a,b)</span> or <span style="font-family:monospace">nInt(ex,x,a,b)</span> computes an approximated 
+value of the integral &#X222B;<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup> <span style="font-style:italic">ex</span> <span style="font-style:italic">dx</span> using the Romberg method. The
+integrand must be sufficiently regular for the approximation to
+be accurate. Otherwise, <span style="font-family:monospace">romberg</span> returns a list of real values,
+that comes from the application of the
+Romberg algorithm (the first list element is
+the trapezoid rule approximation, the next ones come from the application
+of the Euler-MacLaurin formula to remove successive even powers of
+the step of the trapezoid rule).<br>
 Input :
-</P><DIV CLASS="center"><TT>fsolve((cos(x))=x,x,0,newton_solver)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">romberg(exp(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),x,0,1)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>0.739085133215</TT></DIV><HR>
-<A HREF="cascmd_en494.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en496.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">1.46265174591</span></div>
+<hr>
+<a href="cascmd_en494.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en496.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

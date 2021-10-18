@@ -1,41 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour utiliser une chaîne comme nom de commande : expr</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr854.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr856.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1002">9.5.6</A>  Pour utiliser une chaîne comme nom de commande : <TT>expr</TT></H3><P><A NAME="@default1561"></A><A NAME="sec:expr"></A>
-<TT>expr</TT> permet d’utiliser une chaîne de caractères comme une 
-commande.<BR>
-<TT>expr</TT> est surtout utile dans un programme.<BR>
-<TT>expr</TT> a comme argument une chaîne de caractères pouvant être 
-interprétée comme une commande (ou le nom d’une 
-variable qui contient une chaîne ou une expression renvoyant une chaîne).<BR>
-<TT>expr</TT> transforme la chaîne en une expression, puis évalue cette 
-expression :<BR>
-pour faire une affectation, on ne doit pas écrire <TT>expr("a"):=2</TT>, mais on
-doit écrire <TT>expr("a:=2")</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr853.html#sec:diese">9.5.4</A>)<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Évaluer une expression sous la forme d’une chaîne : string</title>
+</head>
+<body >
+<a href="cascmd_fr854.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr856.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1034" class="subsection">9.5.7  Évaluer une expression sous la forme d’une chaîne : <span style="font-family:monospace">string</span></h3>
+<p><a id="hevea_default1559"></a>
+<span style="font-family:monospace">string</span> évalue une expression et renvoie sa valeur sous la 
+forme d’une chaîne de caractères.<br>
+On peut aussi utiliser la concaténation de l’expression avec une chaîne 
+vide.<br>
 On tape :
-</P><DIV CLASS="center"><TT>expr("c:=1")</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">string(ifactor(6))</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">ifactor(6)+""</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">""+ifactor(6)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>La variable c contient 1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">"2*3"</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>a:="ifactor(54)";expr(a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>expr("ifactor(54)")</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">string(quote(ifactor(6)))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><HR>
-<A HREF="cascmd_fr854.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr856.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">"ifactor(6)"</span></div>
+<hr>
+<a href="cascmd_fr854.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr856.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

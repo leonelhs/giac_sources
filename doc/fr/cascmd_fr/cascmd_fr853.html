@@ -1,46 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : #</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr852.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr854.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1000">9.5.4</A>  Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : <TT>#</TT></H3><P><A NAME="@default1559"></A><A NAME="sec:diese"></A>
-<TT>#</TT> permet d’utiliser une chaîne de caractères comme nom de 
-variable ou comme nom de fonction ou comme nom d’instruction ou comme nom de 
-répertoire.<BR>
-<TT>#</TT> est surtout utile dans un programme.<BR>
-<TT>#</TT> a comme argument une chaîne ou le nom d’une variable qui contient 
-une chaîne ou une expression renvoyant une chaîne.<BR>
-<TT>#</TT> transforme la chaîne en une expression mais n’évalue pas cette
-expression. Donc,
-pour faire une affectation, on ne doit pas écrire <TT>#"a:=2"</TT>, mais on
-peut écrire <TT>#"a":=2</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr855.html#sec:expr">9.5.6</A>).<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Pour utiliser une chaîne comme un nombre : expr</title>
+</head>
+<body >
+<a href="cascmd_fr852.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr854.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1032" class="subsection">9.5.5  Pour utiliser une chaîne comme un nombre : <span style="font-family:monospace">expr</span></h3>
+<p><a id="hevea_default1557"></a><a id="sec:expr2"></a>
+<span style="font-family:monospace">expr</span> permet d’utiliser une chaîne de chiffres ne 
+commençant pas par un zéro comme un nombre entier écrit en base 10
+ou une chaîne de chiffres comportant un point comme un nombre 
+décimal écrit en base 10.<br>
 On tape :
-</P><DIV CLASS="center"><TT>a:="abc";#a:=3</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>#"abc":=3</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">expr("123")+1</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>La variable abc contient 3</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">124</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>b:="ifactor";(#b)(54)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>(#"ifactor")(54)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">expr("45.67")+2.12</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">47.79</span></div><p>
+<span style="font-family:monospace">expr</span> permet d’utiliser une chaîne de chiffres ne comportant 
+pas de <span style="font-family:monospace">8</span>, ni de <span style="font-family:monospace">9</span>, et commençant
+par un zéro comme un nombre entier écrit en base <span style="font-family:monospace">8</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>#"ifactor(54)"</TT></DIV><P>On obtient :
-</P><DIV CLASS="center"><TT>ifactor(54)</TT></DIV><HR>
-<A HREF="cascmd_fr852.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr854.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">expr("0123")</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">83</span></div><p>
+En effet 1*8<sup>2</sup>+2*8+3=83<br>
+<span style="font-weight:bold">Remarque</span>:<br>
+ Si on tape <span style="font-family:monospace">expr("018")</span> on obtient le nombre décimale <span style="font-family:monospace">18.0</span>.<br>
+<span style="font-family:monospace">expr</span> permet d’utiliser une chaîne contenant des chiffres et 
+les lettres <span style="font-family:monospace">a,b,c,d,e,f</span>, et commençant par <span style="font-family:monospace">0x</span> comme un nombre entier écrit en base 16.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">expr("0x12f")</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">303</span></div><p>
+En effet 1*16<sup>2</sup>+2*16+15=303
+Voir aussi <a href="cascmd_fr157.html#sec%3Aexpr1">6.5.16</a>
+</p>
+<hr>
+<a href="cascmd_fr852.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr854.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,27 +1,41 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Transform an equation into a difference : equal2diff</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en441.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en443.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc495">2.51.2</A>  Transform an equation into a difference : <TT>equal2diff</TT></H3><P><A NAME="@default728"></A>
-<TT>equal2diff</TT> takes as argument an equation.<BR>
-<TT>equal2diff</TT> returns the difference of the two members of this equation.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Hessian matrix : hessian</title>
+</head>
+<body >
+<a href="cascmd_en441.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en443.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec525" class="subsection">2.51.3  Hessian matrix : <span style="font-family:monospace">hessian</span></h3>
+<p><a id="hevea_default729"></a>
+<span style="font-family:monospace">hessian</span> takes two arguments : an 
+expression <span style="font-style:italic">F</span> of <span style="font-style:italic">n</span> real variables and a vector of these variable names.<br>
+<span style="font-family:monospace">hessian</span> returns the hessian matrix of <span style="font-style:italic">F</span>, that is the matrix of the 
+derivatives of order 2.<br>
+<span style="font-weight:bold">Example</span><br>
+Find the hessian matrix of <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>&#X2212;<span style="font-style:italic">xz</span><sup>3</sup>.<br>
 Input :
-</P><DIV CLASS="center"><TT>equal2diff(2x-1=3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">hessian(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3 , [x,y,z])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>2*x-1-3</TT></DIV><HR>
-<A HREF="cascmd_en441.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en443.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[[4*y,4*x,-(3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)],[2*2*x,0,0],[-(3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),0,x*3*2*z]]</span></div><p>
+To have the hessian matrix at the critical points, first input :
+</p><div class="center"><span style="font-family:monospace">solve(derive(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z]),[x,y,z])</span></div><p> 
+Output is the critical points : 
+</p><div class="center"><span style="font-family:monospace">[[0,y,0]]</span></div><p>
+Then, to have the hessian matrix at this points, input : 
+</p><div class="center"><span style="font-family:monospace">subst([[4*y,4*x,-(3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)],[2*2*x,0,0], [-(3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),0,6*x*z]],[x,y,z],[0,y,0])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[4*y,4*0,-(3*0</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)],[4*0,0,0],[-(3*0</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),0,6*0*0]]</span></div><p>
+and after simplification :
+</p><div class="center"><span style="font-family:monospace">[[4*y,0,0],[0,0,0],[0,0,0]]</span></div>
+<hr>
+<a href="cascmd_en441.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en443.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

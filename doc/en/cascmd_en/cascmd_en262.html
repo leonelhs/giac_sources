@@ -1,39 +1,57 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>GCD in &#X2124;/p&#X2124;[x] : gcd</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en261.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en263.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc295">2.31.13</A>  GCD in &#X2124;/<I>p</I>&#X2124;[<I>x</I>] : <TT>gcd</TT></H3><P><A NAME="@default457"></A><A NAME="sec:gcdm"></A>
-<TT>gcd</TT> takes as arguments two polynomials with 
-coefficients in &#X2124;/<I>p</I>&#X2124; (<I>p</I> must be prime).<BR>
-<TT>gcd</TT> returns the GCD of these polynomials
-computed in &#X2124;/<I>p</I>&#X2124;[<I>x</I>] (see also 
-<A HREF="cascmd_en214.html#sec:gcd">2.25.7</A> for polynomials with non modular coefficients).<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Rebuild a fraction from its value modulo p : fracmod</title>
+</head>
+<body >
+<a href="cascmd_en261.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en263.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec316" class="subsection">2.31.12  Rebuild a fraction from its value modulo <span style="font-style:italic">p</span> : <span style="font-family:monospace">fracmod</span></h3>
+<p><a id="hevea_default457"></a>
+<span style="font-family:monospace">fracmod</span> takes two arguments, an integer <span style="font-style:italic">n</span> 
+(representing a fraction) and an integer <span style="font-style:italic">p</span> (the modulus).<br>
+If possible, <span style="font-family:monospace">fracmod</span> returns a fraction <span style="font-style:italic">a</span>/<span style="font-style:italic">b</span> such that 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2212;</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">&#X221A;</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">p</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> &lt; <span style="font-style:italic">a</span> &#X2264; </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">&#X221A;</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">p</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,   
+0 &#X2264; <span style="font-style:italic">b</span> &lt; </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">&#X221A;</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">p</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,    
+<span style="font-style:italic">n</span> × <span style="font-style:italic">b</span> =<span style="font-style:italic">a</span> (mod <span style="font-style:italic">p</span> ) </td></tr>
+</table><p>
+In other words <span style="font-style:italic">n</span>=<span style="font-style:italic">a</span>/<span style="font-style:italic">b</span>(mod <span style="font-style:italic">p</span> ).<br>
 Input :
-</P><DIV CLASS="center"><TT>gcd((2*x</TT><CODE><TT>^</TT></CODE><TT>2+5)%13,(5*x</TT><CODE><TT>^</TT></CODE><TT>2+2*x-3)%13)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">fracmod(3,13) </span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>(-4%13)*x+5%13</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">-1/4</span></div><p>
+Indeed : 3*&#X2212;4=&#X2212;12=1 (mod 13), hence 3=&#X2212;1/4%13.<br>
 Input :
-</P><DIV CLASS="center"><TT>gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)) mod 5)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">fracmod(13,121)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>x%5</TT></DIV><P>
-Note the difference with a gcd computation in &#X2124;[<I>X</I>] followed
-by a reduction modulo 5, input:
-</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1) mod 5</TT></DIV><P> 
-Output :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
-<A HREF="cascmd_en261.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en263.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">-4/9</span></div><p>
+Indeed : 13×&#X2212;9=&#X2212;117=4 (mod 121) hence 13=&#X2212;4/9%13.</p>
+<hr>
+<a href="cascmd_en261.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en263.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

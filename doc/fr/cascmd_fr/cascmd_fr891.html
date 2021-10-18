@@ -1,35 +1,81 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les points et les nombres complexes</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr890.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr892.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1049">10.8.1</A>  Les points et les nombres complexes</H3><P><A NAME="sec:pointa2"></A>
-L’affixe d’un point en géométrie plane est un nombre complexe.<BR>
-La commande <TT>point</TT> a comme argument un nombre complexe <I>c</I> (ou un couple 
-de 2 nombres <I>a</I>,<I>b</I>) et renvoie
-le point d’affixe <I>c</I> (ou d’affixe <I>a</I>+<I>ib</I>) tracé dans un écran graphique.<BR>
-Certaines fonctions peuvent admettre comme argument soit un point, soit un 
-nombre complexe, mais quelquefois le résultat n’est pas le même.<BR>
-<B>Exemples</B><BR>
-<TT>re(1+2*i)</TT> renvoie <TT>1</TT><BR>
-Si <TT>A:=point(1+2*i)</TT>, <TT>re(A)</TT> renvoie un point d’affixe <TT>1</TT>, 
-et <TT>im(A)</TT> renvoie un point d’affixe <TT>2*i</TT><BR>
-<TT>cercle(1,1+i)</TT> renvoie le cercle de centre le point d’affixe 1 et de
-rayon égal à √<SPAN style="text-decoration:overline">2</SPAN>=<TT>abs(1+i)</TT>,<BR>
-<TT>cercle(1,point(1+i))</TT> renvoie le cercle de diamètre le point d’affixe 
-1 et le point d’affixe (1+i)</P><HR>
-<A HREF="cascmd_fr890.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr892.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Le point en géométrie plane : point</title>
+</head>
+<body >
+<a href="cascmd_fr890.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr892.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1087" class="subsection">10.8.2  Le point en géométrie plane : <span style="font-family:monospace">point</span></h3>
+<p><a id="hevea_default1734"></a><a id="sec:point2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1007.html#sec%3Apoint3">11.4.1</a> <span style="font-family:monospace">point</span> en géométrie 3-d.<br>
+Pour obtenir un point il suffit d’être en mode <span style="font-family:monospace">point</span> et de cliquer avec
+la souris (bouton gauche) pour qu’un point s’affiche avec un nom.<br>
+Ce nom est crée automatiquement : <span style="font-family:monospace">A</span> puis <span style="font-family:monospace">B</span> etc...<br>
+On peut aussi utiliser la commande <span style="font-family:monospace">point</span> :<br>
+<span style="font-family:monospace">point</span> a comme argument un nombre complexe ou un couple de 2 
+nombres réels représentant ses coordonnées rectangulaires (pour définir
+un point par ses coordonnées polaires il faut utiliser <span style="font-family:monospace">polar_point</span> ou 
+<span style="font-family:monospace">point_polaire</span>.<br>
+<span style="font-weight:bold">Attention</span> <br>
+Si <span style="font-family:monospace">a,b</span> est un couple de 2 nombres complexes dont 1 n’est pas réel, 
+<span style="font-family:monospace">K:=point(a,b)</span> renvoie 2 points de même nom (ici <span style="font-family:monospace">K</span>) l’un d’affixe
+<span style="font-family:monospace">a</span>, l’autre d’affixe <span style="font-family:monospace">b</span>.<br>
+Lorsque <span style="font-family:monospace">a,b</span> est un couple de 2 nombres réels, <span style="font-family:monospace">A:=point(a,b)</span>
+renvoie et dessine le point ayant pour affixe <span style="font-family:monospace">a+ib</span>. <br>
+<span style="font-family:monospace">point</span> renvoie et dessine le point ayant pour 
+affixe son argument. Ce point aura la forme choisie par la commande 
+<span style="font-family:monospace">affichage</span> : par défaut il aura la forme d’une croix et il aura la forme
+d’un point si on a tapé <span style="font-family:monospace">affichage(point_point)</span>. 
+On tape :
+</p><div class="center"><span style="font-family:monospace">point(1+i)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">point(1,1)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">point([1,1])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le point d’affixe 1+i est tracé avec une croix</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">A:=point(-2+i)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">A:=point(-2,1)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">A:=point([-2,1])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le point d’affixe -2+i est tracé avec une croix et est noté A</span></div><p>
+<span style="font-weight:bold">Attention</span><br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">point(-2,i)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">point([-2,i])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Les 2 points d’affixe -2 et i sont tracés avec une croix</span></div><p>
+<span style="font-weight:bold">Remarque</span>
+Lorqu’on fait une affectation par exemple <span style="font-family:monospace">A:=point(-2+i)</span> cela a pour 
+effet de stocker le <span style="font-family:monospace">point(-2+i)</span> dans la variable <span style="font-family:monospace">A</span>, d’ouvrir un 
+écran graphique si on n’est pas dans un niveau de géométrie et de dessiner
+le point avec une croix et de lui mettre comme légende le nom qui est situé
+à gauche de <span style="font-family:monospace">:=</span> ici <span style="font-family:monospace">A</span>.<br>
+Si on fait plusieurs affectations avec un seul signe <span style="font-family:monospace">:=</span> par exemple :<br>
+<span style="font-family:monospace">A,B:=point(-2+i),point(2+i)</span> la variable <span style="font-family:monospace">A</span> contient le
+<span style="font-family:monospace">point(-2+i)</span>, la variable <span style="font-family:monospace">B</span> contient <span style="font-family:monospace">point(-2+i)</span> mais
+les deux points auront le même nom : <span style="font-family:monospace">A,B</span> et on ne pourra pas deplacer 
+ces points en mode <span style="font-family:monospace">pointeur</span>. Pour éviter cela on doit 
+taper sur des niveaux séparés :<br>
+<span style="font-family:monospace">L:=point(-2+i),point(2+i):;A:=L[0];B:=L[1]</span><br>
+<span style="font-weight:bold">Autre exemple</span><br>
+<span style="font-family:monospace">LL:=point(-2,i):;C:=LL[0];D:=LL[1]</span> définit le point <span style="font-family:monospace">C</span>
+d’affixe -2 et le point <span style="font-family:monospace">D</span> d’affixe i (car l’affixe de <span style="font-family:monospace">D</span> n’est pas 
+réel !).<br>
+</p>
+<hr>
+<a href="cascmd_fr890.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr892.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

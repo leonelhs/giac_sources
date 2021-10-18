@@ -1,41 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi binomiale négative : negbinomial_cdf</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr760.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr762.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc901">8.4.5</A>  Fonction de répartition de la loi binomiale négative : <TT>negbinomial_cdf</TT></H3><P><A NAME="@default1370"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale négative 
-<FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>), on a :<BR>
-<TT>negbinomial_cdf(n,p,x)</TT>=<I>Proba</I>(<I>X</I> ≤ <I>x</I>)=<BR>
-<TT>negbinomial(n,0,p)+...+negbinomial(n,floor(x),p)</TT>.<BR>
-<TT>negbinomial_cdf(n,p,x,y)</TT>=<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)=<BR>
-<TT>negbinomial(n,ceil(x),p)+...+negbinomial(n,floor(y),p)</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonction de répartition inverse de la loi binomiale négative : negbinomial_icdf</title>
+</head>
+<body >
+<a href="cascmd_fr760.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr762.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec933" class="subsection">8.4.6  Fonction de répartition inverse de la loi binomiale négative : <span style="font-family:monospace">negbinomial_icdf</span></h3>
+<p><a id="hevea_default1368"></a>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> suit une loi binomiale négative
+<span style="color:red"><span style="font-style:italic">N</span></span><span style="font-style:italic">eg</span><span style="color:red"><span style="font-style:italic">B</span></span><span style="font-style:italic">in</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>), lorsqu’on a 
+<span style="font-family:monospace">negbinomial_icdf(n,p,x)=h</span> c’est que <br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">h</span>)=<span style="font-style:italic">x</span>=<span style="font-family:monospace">negbinomial_cdf(n,p,h)</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>negbinomial_cdf(4,0.5,2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">negbinomial_icdf(4,0.5,0.9)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.34375</TT></DIV><P>
-On peut vérifier que :
-</P><DIV CLASS="center"><TT>negbinomial(4,0,0.5)+negbinomial(4,1,0.5)+negbinomial(4,2,0.5)</TT></DIV><DIV CLASS="center"><TT>0.34375</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">8</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>negbinomial_cdf(2,0.3,1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">negbinomial_icdf(2,0.3,0.95)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.216</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>negbinomial_cdf(2,0.3,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.47178</TT></DIV><HR>
-<A HREF="cascmd_fr760.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr762.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">12</span></div><p>
+<span style="font-weight:bold">Les programmes naifs pour calculer les fonctiond précédentes</span><br>
+</p><pre class="verbatim">negbino(n,p,k):=comb(-n,k)*p^n*(p-1)^k;
+negbin(n,p,k):=comb(n+k-1,k)*p^n*(1-p)^k;
+negbi(n,p,k):=(n+k-1)!/k!/(n-1)!*p^n*(1-p)^k;
+negbino_cdf(n,p,x):=sum(negbi(n,p,k),k=0..floor(x));
+negbino_icdf(n,p,x):={
+ local k:=0;
+ tantque negbino_cd(n,p,k)&lt;x faire
+   k:=k+1;
+   ftantque;
+   return k;
+   }:;
+</pre>
+<hr>
+<a href="cascmd_fr760.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr762.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

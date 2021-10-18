@@ -1,34 +1,54 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Extract a sub-list : mid</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en297.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en299.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc337">2.37.3</A>  Extract a sub-list : <TT>mid</TT></H3><P><A NAME="@default509"></A><A NAME="sec:mid"></A>
-<B>See also :</B> <TT>at</TT> section <A HREF="cascmd_en297.html#sec:at">2.37.2</A>.<BR>
-<TT>mid</TT> is used to extract a sub-list of a list<A NAME="@default510"></A>.<BR>
-<TT>mid</TT> takes as argument a list, the index of the begining of the 
-sub-list and the length of the sub-list.<BR>
-<TT>mid</TT> returns the sub-list.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Get an element or a sub-list of a list : at []</title>
+</head>
+<body >
+<a href="cascmd_en297.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en299.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec358" class="subsection">2.37.2  Get an element or a sub-list of a list : <span style="font-family:monospace">at []</span></h3>
+<p><a id="hevea_default509"></a><a id="sec:at"></a>
+</p>
+<h4 id="sec359" class="subsubsection">Get an element</h4>
+<p>
+The <span style="font-style:italic">n</span>-th element of a list <span style="font-family:monospace">l</span> of size <span style="font-style:italic">s</span>
+is addressed by <span style="font-family:monospace">l[n]</span> where <span style="font-style:italic">n</span> is in [0..<span style="font-style:italic">s</span>&#X2212;1] or [1..<span style="font-style:italic">s</span>].
+The equivalent prefixed function is
+<span style="font-family:monospace">at</span>, which takes as argument a list and an integer <span style="font-family:monospace">n</span>.<br>
+<span style="font-family:monospace">at</span> returns the element of the list at index <span style="font-family:monospace">n</span>.<br>
 Input :
-</P><DIV CLASS="center"><TT>mid([0,1,2,3,4,5],2,3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[0,1,2][1]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">at([0,1,2],1)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[1,2,3]</TT></DIV><P>
-<B>Warning</B><BR>
-<TT>mid</TT> can not be used to extract a subsequence of a sequence,
-because the arguments of <TT>mid</TT> would be merged with the sequence.
-Index notation must be used, like e.g.<TT>(0,1,2,3,4,5)[2..3]</TT>. </P><HR>
-<A HREF="cascmd_en297.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en299.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">1</span></div>
+<h4 id="sec360" class="subsubsection">Extract a sub-list</h4>
+<p>
+If <span style="font-style:italic">l</span> is a list of size <span style="font-style:italic">s</span>, <span style="font-family:monospace">l[n1..n2]</span> returns the list
+extracted from <span style="font-family:monospace">l</span> containing the elements of indexes <span style="font-style:italic">n</span><sub>1</sub> to <span style="font-style:italic">n</span><sub>2</sub>
+where 0 &#X2264; <span style="font-style:italic">n</span><sub>1</sub>&#X2264; <span style="font-style:italic">n</span><sub>2</sub> &lt; <span style="font-style:italic">s</span> (in Xcas syntax mode) or
+0 &lt; <span style="font-style:italic">n</span><sub>1</sub>&#X2264; <span style="font-style:italic">n</span><sub>2</sub> &#X2264; <span style="font-style:italic">s</span> in other syntax modes.
+The equivalent prefixed function is
+<span style="font-family:monospace">at</span> with a list and an interval of integers (<span style="font-family:monospace">n1..n2</span>) 
+as arguments.<br>
+<span style="font-weight:bold">See also</span> : <span style="font-family:monospace">mid</span>, section <a href="cascmd_en299.html#sec%3Amid">2.37.3</a>.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">[0,1,2,3,4][1..3]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">at([0,1,2,3,4],1..3)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1,2,3]</span></div><p>
+<span style="font-weight:bold">Warning</span><br>
+<span style="font-family:monospace">at</span> can not be used for sequences, index notation
+must be used, as in <span style="font-family:monospace">(0,1,2,3,4,5)[2..3]</span>. </p>
+<hr>
+<a href="cascmd_en297.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en299.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

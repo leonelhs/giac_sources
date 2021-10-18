@@ -1,65 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pente d’une droite et son affichage : slopeat, penteen et slopeatraw, penteenbrut</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr965.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr967.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1132">10.16.13</A>  Pente d’une droite et son affichage : <TT>slopeat, penteen</TT> et <TT>slopeatraw, penteenbrut</TT></H3><P><A NAME="@default1887"></A><A NAME="@default1888"></A><A NAME="@default1889"></A><A NAME="@default1890"></A>
-<TT>slopeat</TT> ou <TT>penteen</TT> et <TT>slopeatraw</TT> ou 
-<TT>penteenbrut</TT> est une commande obtenue 
-lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
-<TT>Mode-&gt;Mesures-&gt;penteen</TT> ou <TT>Mode-&gt;Mesures-&gt;penteenbrut</TT>. Dans ce cas il
-faut que tous les objets désignés par la souris soient déjà nommés.<BR>
-On peut néammoins taper ces commandes dans une ligne de commande.<BR>
-<TT>slopeat</TT> ou <TT>penteen</TT> ont 2 arguments le nom d’une droite (ou d’un 
-segment) et 1 point (ou 1 nombre complexe qui est l’affixe d’un point).<BR>
-et <TT>slopeatraw</TT> ou <TT>penteenbrut</TT> ont 
-comme arguments une droite (ou un segment) et 1 point (ou 1 nombre complexe qui
-est l’affixe d’un point).<BR>
-<TT>slopeat</TT> ou <TT>penteen</TT> renvoie le point, calcule la pente de
-la droite (ou du segment) et affiche cette pente à l’endroit du point
-avec une légende. <B>Attention</B> <TT>slopeat</TT> ou <TT>penteen</TT>, il faut mettre le nom de la droite (ou du segment).<BR>
-<TT>slopeatraw</TT> ou <TT>penteenbrut</TT> renvoie le point, calcule la pente de
-la droite (ou du segment) et affiche cette pente à l’endroit du point.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Avoir comme réponse la valeur d’une mesure affichée : extract_measure, extraire_mesure</title>
+</head>
+<body >
+<a href="cascmd_fr965.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr967.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1170" class="subsection">10.16.14  Avoir comme réponse la valeur d’une mesure affichée : <span style="font-family:monospace">extract_measure, extraire_mesure</span></h3>
+<p><a id="hevea_default1888"></a><a id="hevea_default1889"></a>
+<span style="font-family:monospace">extract_measure</span> ou <span style="font-family:monospace">extraire_mesure</span> permet d’obtenir la valeur 
+d’une mesure qui a été affichée.<br>
+<span style="font-family:monospace">extract_measure</span> ou <span style="font-family:monospace">extraire_mesure</span> a pour argument la commande 
+qui a affiché cette mesure.<br>
 On tape :
-</P><DIV CLASS="center"><TT>d:=droite(1,2i)</TT></DIV><DIV CLASS="center"><TT>penteen(d,i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);C:=point(i);</span></div><div class="center"><span style="font-family:monospace">extraire_mesure(angleen(A,B,C,0.2i))</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">extract_measure(angleat(A,B,C,0.2i))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>"sd=-2" s’écrit au point(i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">atan(1/3)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>penteenbrut(droite(1,2i),i)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>penteenbrut(segment(1,2i),i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">extraire_mesure(distanceenbrut(A,B,C,0.2i))</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">extract_measure(distanceatraw(A,B,0.4i))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>-2 s’écrit au point(i)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>d1:=droite(2y-x=3),2*i)</TT></DIV><DIV CLASS="center"><TT>penteen(d1,2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>"sd1=1/2’’ s’écrit au point(2*i) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>penteenbrut(droite(2y-x=3),2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1/2 s’écrit au point(2*i)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>T:=tangente(plotfunc(sin(x)),pi/4)</TT></DIV><DIV CLASS="center"><TT>slopeat(T,i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>"sT=(sqrt(2))/2" s’écrit au point(i)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>penteenbrut(tangente(plotfunc(sin(x)),pi/4),i)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>penteenbrut(droite_tangente(sin(x),pi/4),i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(sqrt(2))/2 s’écrit au point(i)</TT></DIV><HR>
-<A HREF="cascmd_fr965.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr967.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">sqrt(5)</span></div>
+<hr>
+<a href="cascmd_fr965.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr967.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

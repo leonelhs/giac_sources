@@ -1,78 +1,78 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Discrete summation: sum</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en135.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en137.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc156">2.18.2</A>  Discrete summation: <TT>sum</TT></H3><P><A NAME="@default264"></A>
-<TT>sum</TT> takes two or four arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-four arguments<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Discrete summation: sum</title>
+</head>
+<body >
+<a href="cascmd_en135.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en137.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec166" class="subsection">2.18.2  Discrete summation: <span style="font-family:monospace">sum</span></h3>
+<p><a id="hevea_default264"></a>
+<span style="font-family:monospace">sum</span> takes two or four arguments :
+</p><ul class="itemize"><li class="li-itemize">
+four arguments<br>
 an expression, the name of the variable (for 
-example <TT>n</TT>), and the bounds (for example <TT>a</TT> and <TT>b</TT>).<BR>
-<TT>sum</TT> returns the discrete sum of this expression with respect to
-the variable from <I>a</I> to <I>b</I>.<BR>
+example <span style="font-family:monospace">n</span>), and the bounds (for example <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span>).<br>
+<span style="font-family:monospace">sum</span> returns the discrete sum of this expression with respect to
+the variable from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>.<br>
 Input :
-<DIV CLASS="center"><TT>sum(1,k,-2,n) </TT></DIV>
+<div class="center"><span style="font-family:monospace">sum(1,k,-2,n) </span></div>
 Output :
-<DIV CLASS="center"><TT>n+1+2</TT></DIV>
+<div class="center"><span style="font-family:monospace">n+1+2</span></div>
 Input :
-<DIV CLASS="center"><TT>normal(sum(2*k-1,k,1,n))</TT></DIV>
+<div class="center"><span style="font-family:monospace">normal(sum(2*k-1,k,1,n))</span></div>
 Output :
-<DIV CLASS="center"><TT>n</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+<div class="center"><span style="font-family:monospace">n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
 Input :
-<DIV CLASS="center"><TT>sum(1/(n</TT><CODE><TT>^</TT></CODE><TT>2),n,1,10)</TT></DIV>
+<div class="center"><span style="font-family:monospace">sum(1/(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),n,1,10)</span></div>
 Output :
-<DIV CLASS="center"><TT>1968329/1270080</TT></DIV> 
+<div class="center"><span style="font-family:monospace">1968329/1270080</span></div> 
 Input :
-<DIV CLASS="center"><TT>sum(1/(n</TT><CODE><TT>^</TT></CODE><TT>2),n,1,+(infinity)) </TT></DIV>
+<div class="center"><span style="font-family:monospace">sum(1/(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),n,1,+(infinity)) </span></div>
 Output :
-<DIV CLASS="center"><TT>pi</TT><CODE><TT>^</TT></CODE><TT>2/6</TT></DIV>
+<div class="center"><span style="font-family:monospace">pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/6</span></div>
 Input :
-<DIV CLASS="center"><TT>sum(1/(n</TT><CODE><TT>^</TT></CODE><TT>3-n),n,2,10) </TT></DIV>
+<div class="center"><span style="font-family:monospace">sum(1/(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-n),n,2,10) </span></div>
 Output :
-<DIV CLASS="center"><TT>27/110</TT></DIV> 
+<div class="center"><span style="font-family:monospace">27/110</span></div> 
 Input :
-<DIV CLASS="center"><TT>sum(1/(n</TT><CODE><TT>^</TT></CODE><TT>3-n),n,1,+(infinity)) </TT></DIV>
+<div class="center"><span style="font-family:monospace">sum(1/(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-n),n,1,+(infinity)) </span></div>
 Output :
-<DIV CLASS="center"><TT>1/4</TT></DIV>
-This result comes from the decomposition of <TT>1/(<I>n</I></TT><CODE><TT>^</TT></CODE><TT>3-<I>n</I>)</TT>.<BR>
+<div class="center"><span style="font-family:monospace">1/4</span></div>
+This result comes from the decomposition of <span style="font-family:monospace">1/(</span><span style="font-family:monospace"><span style="font-style:italic">n</span></span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-</span><span style="font-family:monospace"><span style="font-style:italic">n</span></span><span style="font-family:monospace">)</span>.<br>
 Input :
-<DIV CLASS="center"><TT>partfrac(1/(n</TT><CODE><TT>^</TT></CODE><TT>3-n)) </TT></DIV>
+<div class="center"><span style="font-family:monospace">partfrac(1/(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-n)) </span></div>
 Output :
-<DIV CLASS="center"><TT>1/(2*(n+1))-1/n+1/(2*(n-1))</TT></DIV>
-Hence :<BR>
- &#X2211;<SUB><I>n</I>=2</SUB><SUP><I>N</I></SUP> &#X2212;1/<I>n</I>=&#X2212;&#X2211;<SUB><I>n</I>=1</SUB><SUP><I>N</I>&#X2212;1</SUP> 1/<I>n</I>+1=&#X2212;1/2&#X2212;&#X2211;<SUB><I>n</I>=2</SUB><SUP><I>N</I>&#X2212;2</SUP> 1/<I>n</I>+1&#X2212;1/<I>N</I><BR>
- 1/2*&#X2211;<SUB><I>n</I>=2</SUB><SUP><I>N</I></SUP> 1/<I>n</I>&#X2212;1=1/2*(&#X2211;<SUB><I>n</I>=0</SUB><SUP><I>N</I>&#X2212;2</SUP> 1/<I>n</I>+1)=1/2*(1+1/2+&#X2211;<SUB><I>n</I>=2</SUB><SUP><I>N</I>&#X2212;2</SUP>1/<I>n</I>+1)<BR>
- 1/2*&#X2211;<SUB><I>n</I>=2</SUB><SUP><I>N</I></SUP> 1/<I>n</I>+1=1/2*(&#X2211;<SUB><I>n</I>=2</SUB><SUP><I>N</I>&#X2212;2</SUP> 1/<I>n</I>+1+1/<I>N</I>+1/<I>N</I>+1)<BR>
-After simplification by &#X2211;<SUB><I>n</I>=2</SUB><SUP><I>N</I>&#X2212;2</SUP>, it remains :<BR>
-  &#X2212;1/2+1/2*(1+1/2)&#X2212;1/<I>N</I>+1/2*(1/<I>N</I>+1/<I>N</I>+1)=1/4&#X2212;1/2<I>N</I>(<I>N</I>+1)<BR>
+<div class="center"><span style="font-family:monospace">1/(2*(n+1))-1/n+1/(2*(n-1))</span></div>
+Hence :<br>
+ &#X2211;<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span></sup> &#X2212;1/<span style="font-style:italic">n</span>=&#X2212;&#X2211;<sub><span style="font-style:italic">n</span>=1</sub><sup><span style="font-style:italic">N</span>&#X2212;1</sup> 1/<span style="font-style:italic">n</span>+1=&#X2212;1/2&#X2212;&#X2211;<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span>&#X2212;2</sup> 1/<span style="font-style:italic">n</span>+1&#X2212;1/<span style="font-style:italic">N</span><br>
+ 1/2*&#X2211;<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span></sup> 1/<span style="font-style:italic">n</span>&#X2212;1=1/2*(&#X2211;<sub><span style="font-style:italic">n</span>=0</sub><sup><span style="font-style:italic">N</span>&#X2212;2</sup> 1/<span style="font-style:italic">n</span>+1)=1/2*(1+1/2+&#X2211;<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span>&#X2212;2</sup>1/<span style="font-style:italic">n</span>+1)<br>
+ 1/2*&#X2211;<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span></sup> 1/<span style="font-style:italic">n</span>+1=1/2*(&#X2211;<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span>&#X2212;2</sup> 1/<span style="font-style:italic">n</span>+1+1/<span style="font-style:italic">N</span>+1/<span style="font-style:italic">N</span>+1)<br>
+After simplification by &#X2211;<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span>&#X2212;2</sup>, it remains :<br>
+  &#X2212;1/2+1/2*(1+1/2)&#X2212;1/<span style="font-style:italic">N</span>+1/2*(1/<span style="font-style:italic">N</span>+1/<span style="font-style:italic">N</span>+1)=1/4&#X2212;1/2<span style="font-style:italic">N</span>(<span style="font-style:italic">N</span>+1)<br>
 Therefore :
-<UL CLASS="itemize"><LI CLASS="li-itemize">
-for <I>N</I>=10 the sum is equal to : 1/4&#X2212;1/220=27/110
-</LI><LI CLASS="li-itemize">for <I>N</I>=+&#X221E; the sum is equal to : 1/4 because 1/2<I>N</I>(<I>N</I>+1) 
-approaches zero when <I>N</I> approaches infinity.
-</LI></UL></LI><LI CLASS="li-itemize">two arguments<BR>
-an expression of one variable (for example <I>f</I>) and the name of this
-variable (for example <I>x</I>).<BR>
-<TT>sum</TT> returns the discrete antiderivative of this expression, i.e. 
-an expression <I>G</I> such that <I>G</I><SUB>|<I>x</I>=<I>n</I>+1</SUB>&#X2212;<I>G</I><SUB>|<I>x</I>=<I>n</I></SUB>=<I>f</I><SUB>|<I>x</I>=<I>n</I></SUB>.<BR>
+<ul class="itemize"><li class="li-itemize">
+for <span style="font-style:italic">N</span>=10 the sum is equal to : 1/4&#X2212;1/220=27/110
+</li><li class="li-itemize">for <span style="font-style:italic">N</span>=+&#X221E; the sum is equal to : 1/4 because 1/2<span style="font-style:italic">N</span>(<span style="font-style:italic">N</span>+1) 
+approaches zero when <span style="font-style:italic">N</span> approaches infinity.
+</li></ul></li><li class="li-itemize">two arguments <br>
+an expression of one variable (for example <span style="font-style:italic">f</span>) and the name of this
+variable (for example <span style="font-style:italic">x</span>).<br>
+<span style="font-family:monospace">sum</span> returns the discrete antiderivative of this expression, i.e. 
+an expression <span style="font-style:italic">G</span> such that <span style="font-style:italic">G</span><sub>|<span style="font-style:italic">x</span>=<span style="font-style:italic">n</span>+1</sub>&#X2212;<span style="font-style:italic">G</span><sub>|<span style="font-style:italic">x</span>=<span style="font-style:italic">n</span></sub>=<span style="font-style:italic">f</span><sub>|<span style="font-style:italic">x</span>=<span style="font-style:italic">n</span></sub>.<br>
 Input :
-<DIV CLASS="center"><TT>sum(1/(x*(x+1)),x)</TT></DIV>
+<div class="center"><span style="font-family:monospace">sum(1/(x*(x+1)),x)</span></div>
 Output :
-<DIV CLASS="center"><TT>-1/x</TT></DIV>
-</LI></UL><HR>
-<A HREF="cascmd_en135.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en137.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">-1/x</span></div>
+</li></ul>
+<hr>
+<a href="cascmd_en135.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en137.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,169 +1,175 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Natural splines: spline</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en206.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en208.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc233">2.24.27</A>  Natural splines: <TT>spline</TT></H3><P><A NAME="@default389"></A>
-</P><H4 CLASS="subsubsection"><A NAME="toc16"></A>Definition</H4><P>
-Let &#X3C3;<SUB><I>n</I></SUB> be a subdivision of a real interval [<I>a</I>,<I>b</I>] :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>a</I>=<I>x</I><SUB>0</SUB>,   <I>x</I><SUB>1</SUB>,  ...,   <I>x</I><SUB><I>n</I></SUB>=<I>b</I> </TD></TR>
-</TABLE><P>
-<I>s</I> is a spline function of degree <I>l</I>, if <I>s</I> is an application from [<I>a</I>,<I>b</I>] 
-in &#X211D; such that :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<I>s</I> has continuous derivatives up to the order <I>l</I>&#X2212;1,
-</LI><LI CLASS="li-itemize">on each interval of the subdivision, <I>s</I> 
-is a polynomial of degree less or equal than <I>l</I>.
-</LI></UL><H4 CLASS="subsubsection"><A NAME="toc17"></A>Theorem</H4><P>
-The set of spline functions of degree <I>l</I> on &#X3C3;<SUB><I>n</I></SUB> is a
-&#X211D;-vectorial subspace of dimension <I>n</I>+<I>l</I>.</P><P><B>Proof</B><BR>
-On [<I>a</I>,<I>x</I><SUB>1</SUB>], <I>s</I> is a polynomial <I>A</I> of degree less or equal to
-<I>l</I>, hence on [<I>a</I>,<I>x</I><SUB>1</SUB>], <I>s</I>=<I>A</I>(<I>x</I>)=<I>a</I><SUB>0</SUB>+<I>a</I><SUB>1</SUB><I>x</I>+...<I>a</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP> and <I>A</I> is a linear 
-combinaison of 1,<I>x</I>,...<I>x</I><SUP><I>l</I></SUP>.<BR>
-On [<I>x</I><SUB>1</SUB>,<I>x</I><SUB>2</SUB>], <I>s</I> is a polynomial <I>B</I> of degree less or equal to
-<I>l</I>, hence on [<I>x</I><SUB>1</SUB>,<I>x</I><SUB>2</SUB>], <I>s</I>=<I>B</I>(<I>x</I>)=<I>b</I><SUB>0</SUB>+<I>b</I><SUB>1</SUB><I>x</I>+...<I>b</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>.<BR>
-<I>s</I> has continuous derivatives up to order <I>l</I>&#X2212;1, hence :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; 0 &#X2264; <I>j</I> &#X2264; <I>l</I>&#X2212;1,     <I>B</I><SUP>(<I>j</I>)</SUP>(<I>x</I><SUB>1</SUB>)&#X2212;<I>A</I><SUP>(<I>j</I>)</SUP>(<I>x</I><SUB>1</SUB>)=0</TD></TR>
-</TABLE><P>
-therefore <I>B</I>(<I>x</I>)&#X2212;<I>A</I>(<I>x</I>)=&#X3B1;<SUB>1</SUB>(<I>x</I>&#X2212;<I>x</I><SUB>1</SUB>)<SUP><I>l</I></SUP> or <I>B</I>(<I>x</I>)=<I>A</I>(<I>x</I>)+&#X3B1;<SUB>1</SUB>(<I>x</I>&#X2212;<I>x</I><SUB>1</SUB>)<SUP><I>l</I></SUP>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Natural splines: spline</title>
+</head>
+<body >
+<a href="cascmd_en206.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en208.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec250" class="subsection">2.24.27  Natural splines: <span style="font-family:monospace">spline</span></h3>
+<p><a id="hevea_default389"></a>
+</p>
+<h4 id="sec251" class="subsubsection">Definition</h4>
+<p>
+Let &#X3C3;<sub><span style="font-style:italic">n</span></sub> be a subdivision of a real interval [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>=<span style="font-style:italic">x</span><sub>0</sub>,   <span style="font-style:italic">x</span><sub>1</sub>,  ...,   <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">b</span> </td></tr>
+</table><p>
+<span style="font-style:italic">s</span> is a spline function of degree <span style="font-style:italic">l</span>, if <span style="font-style:italic">s</span> is a function from [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] 
+to &#X211D; such that :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">s</span> has continuous derivatives up to the order <span style="font-style:italic">l</span>&#X2212;1,
+</li><li class="li-itemize">on each interval of the subdivision, <span style="font-style:italic">s</span> 
+is a polynomial of degree less or equal than <span style="font-style:italic">l</span>.
+</li></ul>
+<h4 id="sec252" class="subsubsection">Theorem</h4>
+<p>
+The set of spline functions of degree <span style="font-style:italic">l</span> on &#X3C3;<sub><span style="font-style:italic">n</span></sub> is an
+&#X211D;-vector subspace of dimension <span style="font-style:italic">n</span>+<span style="font-style:italic">l</span>.</p><p><span style="font-weight:bold">Proof</span><br>
+On [<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>1</sub>], <span style="font-style:italic">s</span> is a polynomial <span style="font-style:italic">A</span> of degree less or equal to
+<span style="font-style:italic">l</span>, hence on [<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>1</sub>], <span style="font-style:italic">s</span>=<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+...<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup> and <span style="font-style:italic">A</span> is a linear 
+combination of 1,<span style="font-style:italic">x</span>,...<span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>.<br>
+On [<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>], <span style="font-style:italic">s</span> is a polynomial <span style="font-style:italic">B</span> of degree less or equal to
+<span style="font-style:italic">l</span>, hence on [<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>], <span style="font-style:italic">s</span>=<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">b</span><sub>0</sub>+<span style="font-style:italic">b</span><sub>1</sub><span style="font-style:italic">x</span>+...<span style="font-style:italic">b</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>.<br>
+<span style="font-style:italic">s</span> has continuous derivatives up to order <span style="font-style:italic">l</span>&#X2212;1, hence :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2200; 0 &#X2264; <span style="font-style:italic">j</span> &#X2264; <span style="font-style:italic">l</span>&#X2212;1,     <span style="font-style:italic">B</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>1</sub>)&#X2212;<span style="font-style:italic">A</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>1</sub>)=0</td></tr>
+</table><p>
+therefore <span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)&#X2212;<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)=&#X3B1;<sub>1</sub>(<span style="font-style:italic">x</span>&#X2212;<span style="font-style:italic">x</span><sub>1</sub>)<sup><span style="font-style:italic">l</span></sup> or <span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)+&#X3B1;<sub>1</sub>(<span style="font-style:italic">x</span>&#X2212;<span style="font-style:italic">x</span><sub>1</sub>)<sup><span style="font-style:italic">l</span></sup>.<br>
 Define the function :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">q<SUB>1</SUB>(<I>x</I>)   = 
-</TD><TD CLASS="dcell">&#X23A7;<BR>
-&#X23A8;<BR>
-&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>0</TD><TD ALIGN=center NOWRAP>sur</TD><TD ALIGN=left NOWRAP>[<I>a</I>,<I>x</I><SUB>1</SUB>] </TD></TR>
-<TR><TD ALIGN=right NOWRAP>(<I>x</I>&#X2212;<I>x</I><SUB>1</SUB>)<SUP><I>l</I></SUP></TD><TD ALIGN=center NOWRAP>sur</TD><TD ALIGN=left NOWRAP>[<I>x</I><SUB>1</SUB>,<I>b</I>]</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> 
-</TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">q<sub>1</sub>(<span style="font-style:italic">x</span>)   = 
+</td><td class="dcell">&#X23A7;<br>
+&#X23A8;<br>
+&#X23A9;</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>1</sub>] </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >(<span style="font-style:italic">x</span>&#X2212;<span style="font-style:italic">x</span><sub>1</sub>)<sup><span style="font-style:italic">l</span></sup></td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">b</span>]</td></tr>
+</table></td><td class="dcell"> 
+</td></tr>
+</table><p>
 Hence :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I>|<SUB>[<I>a</I>,<I>x</I><SUB>2</SUB>]</SUB>=<I>a</I><SUB>0</SUB>+<I>a</I><SUB>1</SUB><I>x</I>+...<I>a</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>+&#X3B1;<SUB>1</SUB><I>q</I><SUB>1</SUB>(<I>x</I>) </TD></TR>
-</TABLE><P>
-On [<I>x</I><SUB>2</SUB>,<I>x</I><SUB>3</SUB>], <I>s</I> is a polynomial <I>C</I> of degree less or equal than
-<I>l</I>, hence on [<I>x</I><SUB>2</SUB>,<I>x</I><SUB>3</SUB>], <I>s</I>=<I>C</I>(<I>x</I>)=<I>c</I><SUB>0</SUB>+<I>c</I><SUB>1</SUB><I>x</I>+...<I>c</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>.<BR>
-<I>s</I> has continuous derivatives until <I>l</I>&#X2212;1, hence : 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; 0 &#X2264; <I>j</I> &#X2264; <I>l</I>&#X2212;1,     <I>C</I><SUP>(<I>j</I>)</SUP>(<I>x</I><SUB>2</SUB>)&#X2212;<I>B</I><SUP>(<I>j</I>)</SUP>(<I>x</I><SUB>2</SUB>)=0</TD></TR>
-</TABLE><P>
-therefore <I>C</I>(<I>x</I>)&#X2212;<I>B</I>(<I>x</I>)=&#X3B1;<SUB>2</SUB>(<I>x</I>&#X2212;<I>x</I><SUB>2</SUB>)<SUP><I>l</I></SUP> or <I>C</I>(<I>x</I>)=<I>B</I>(<I>x</I>)+&#X3B1;<SUB>2</SUB>(<I>x</I>&#X2212;<I>x</I><SUB>2</SUB>)<SUP><I>l</I></SUP>.<BR>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">s</span>|<sub>[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>2</sub>]</sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+...<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>+&#X3B1;<sub>1</sub><span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>) </td></tr>
+</table><p>
+On [<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">x</span><sub>3</sub>], <span style="font-style:italic">s</span> is a polynomial <span style="font-style:italic">C</span> of degree less or equal than
+<span style="font-style:italic">l</span>, hence on [<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">x</span><sub>3</sub>], <span style="font-style:italic">s</span>=<span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">c</span><sub>0</sub>+<span style="font-style:italic">c</span><sub>1</sub><span style="font-style:italic">x</span>+...<span style="font-style:italic">c</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>.<br>
+<span style="font-style:italic">s</span> has continuous derivatives until <span style="font-style:italic">l</span>&#X2212;1, hence : 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2200; 0 &#X2264; <span style="font-style:italic">j</span> &#X2264; <span style="font-style:italic">l</span>&#X2212;1,     <span style="font-style:italic">C</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>2</sub>)&#X2212;<span style="font-style:italic">B</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>2</sub>)=0</td></tr>
+</table><p>
+therefore <span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)&#X2212;<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=&#X3B1;<sub>2</sub>(<span style="font-style:italic">x</span>&#X2212;<span style="font-style:italic">x</span><sub>2</sub>)<sup><span style="font-style:italic">l</span></sup> or <span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)+&#X3B1;<sub>2</sub>(<span style="font-style:italic">x</span>&#X2212;<span style="font-style:italic">x</span><sub>2</sub>)<sup><span style="font-style:italic">l</span></sup>.<br>
 Define the function :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">q<SUB>2</SUB>(<I>x</I>)   = 
-</TD><TD CLASS="dcell">&#X23A7;<BR>
-&#X23A8;<BR>
-&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>0</TD><TD ALIGN=center NOWRAP>on</TD><TD ALIGN=left NOWRAP>[<I>a</I>,<I>x</I><SUB>2</SUB>] </TD></TR>
-<TR><TD ALIGN=right NOWRAP>(<I>x</I>&#X2212;<I>x</I><SUB>2</SUB>)<SUP><I>l</I></SUP></TD><TD ALIGN=center NOWRAP>on</TD><TD ALIGN=left NOWRAP>[<I>x</I><SUB>2</SUB>,<I>b</I>]</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> 
-</TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">q<sub>2</sub>(<span style="font-style:italic">x</span>)   = 
+</td><td class="dcell">&#X23A7;<br>
+&#X23A8;<br>
+&#X23A9;</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>2</sub>] </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >(<span style="font-style:italic">x</span>&#X2212;<span style="font-style:italic">x</span><sub>2</sub>)<sup><span style="font-style:italic">l</span></sup></td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">b</span>]</td></tr>
+</table></td><td class="dcell"> 
+</td></tr>
+</table><p>
 Hence :
-<I>s</I>|<SUB>[<I>a</I>,<I>x</I><SUB>3</SUB>]</SUB>=<I>a</I><SUB>0</SUB>+<I>a</I><SUB>1</SUB><I>x</I>+...<I>a</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>+&#X3B1;<SUB>1</SUB><I>q</I><SUB>1</SUB>(<I>x</I>)+&#X3B1;<SUB>2</SUB><I>q</I><SUB>2</SUB>(<I>x</I>)<BR>
+<span style="font-style:italic">s</span>|<sub>[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>3</sub>]</sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+...<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>+&#X3B1;<sub>1</sub><span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>)+&#X3B1;<sub>2</sub><span style="font-style:italic">q</span><sub>2</sub>(<span style="font-style:italic">x</span>)<br>
 And so on, the functions are defined by :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; 1 &#X2264; <I>j</I> &#X2264; <I>n</I>&#X2212;1, q<SUB><I>j</I></SUB>(<I>x</I>)   = 
-</TD><TD CLASS="dcell">&#X23A7;<BR>
-&#X23A8;<BR>
-&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>0</TD><TD ALIGN=center NOWRAP>on</TD><TD ALIGN=left NOWRAP>[<I>a</I>,<I>x</I><SUB><I>j</I></SUB>] </TD></TR>
-<TR><TD ALIGN=right NOWRAP>(<I>x</I>&#X2212;<I>x</I><SUB><I>j</I></SUB>)<SUP><I>l</I></SUP></TD><TD ALIGN=center NOWRAP>on</TD><TD ALIGN=left NOWRAP>[<I>x</I><SUB><I>j</I></SUB>,<I>b</I>]</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> 
-</TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2200; 1 &#X2264; <span style="font-style:italic">j</span> &#X2264; <span style="font-style:italic">n</span>&#X2212;1, q<sub><span style="font-style:italic">j</span></sub>(<span style="font-style:italic">x</span>)   = 
+</td><td class="dcell">&#X23A7;<br>
+&#X23A8;<br>
+&#X23A9;</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>] </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >(<span style="font-style:italic">x</span>&#X2212;<span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>)<sup><span style="font-style:italic">l</span></sup></td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>,<span style="font-style:italic">b</span>]</td></tr>
+</table></td><td class="dcell"> 
+</td></tr>
+</table><p>
 hence,
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I>|<SUB>[<I>a</I>,<I>b</I>]</SUB>=<I>a</I><SUB>0</SUB>+<I>a</I><SUB>1</SUB><I>x</I>+...<I>a</I><SUB><I>l</I></SUB><I>x</I><SUP><I>l</I></SUP>+&#X3B1;<SUB>1</SUB><I>q</I><SUB>1</SUB>(<I>x</I>)+....+&#X3B1;<SUB><I>n</I>&#X2212;1</SUB><I>q</I><SUB><I>n</I>&#X2212;1</SUB>(<I>x</I>) </TD></TR>
-</TABLE><P>
-and <I>s</I> is a linear combination of <I>n</I>+<I>l</I> independant functions 
-1,<I>x</I>,..<I>x</I><SUP><I>l</I></SUP>,<I>q</I><SUB>1</SUB>,..<I>q</I><SUB><I>n</I>&#X2212;1</SUB>.</P><H4 CLASS="subsubsection"><A NAME="toc18"></A>Interpolation with spline functions</H4><P>
-If we want to interpolate a function <I>f</I> on &#X3C3;<SUB><I>n</I></SUB> by a spline function
-<I>s</I> of degree <I>l</I>, then <I>s</I> must verify <I>s</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB>=<I>f</I>(<I>x</I><SUB><I>k</I></SUB>) for all 
-0&#X2265; <I>k</I>&#X2265; <I>n</I>. Hence there are <I>n</I>+1 conditions, and <I>l</I>&#X2212;1 degrees of 
-liberty. We can therefore add <I>l</I>&#X2212;1 conditions, these conditions are on the 
-derivatives of <I>s</I> at <I>a</I> and <I>b</I>.</P><P>Hermite interpolation, natural interpolation and periodic interpolation
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">s</span>|<sub>[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]</sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+...<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>+&#X3B1;<sub>1</sub><span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>)+....+&#X3B1;<sub><span style="font-style:italic">n</span>&#X2212;1</sub><span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span>&#X2212;1</sub>(<span style="font-style:italic">x</span>) </td></tr>
+</table><p>
+and <span style="font-style:italic">s</span> is a linear combination of <span style="font-style:italic">n</span>+<span style="font-style:italic">l</span> independent functions 
+1,<span style="font-style:italic">x</span>,..<span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>,<span style="font-style:italic">q</span><sub>1</sub>,..<span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span>&#X2212;1</sub>.</p>
+<h4 id="sec253" class="subsubsection">Interpolation with spline functions</h4>
+<p>
+If we want to interpolate a function <span style="font-style:italic">f</span> on &#X3C3;<sub><span style="font-style:italic">n</span></sub> by a spline function
+<span style="font-style:italic">s</span> of degree <span style="font-style:italic">l</span>, then <span style="font-style:italic">s</span> must verify <span style="font-style:italic">s</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>) for all 
+0&#X2264; <span style="font-style:italic">k</span>&#X2264; <span style="font-style:italic">n</span>. Hence there are <span style="font-style:italic">n</span>+1 conditions, and <span style="font-style:italic">l</span>&#X2212;1 degrees of 
+liberty. We can therefore add <span style="font-style:italic">l</span>&#X2212;1 conditions, these conditions are on the 
+derivatives of <span style="font-style:italic">s</span> at <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.</p><p>Hermite interpolation, natural interpolation and periodic interpolation
 are three kinds of interpolation obtained by specifying three kinds 
 of constraints. The unicity of the 
 solution of the interpolation problem can be proved
-for each kind of constraints.</P><P>If <I>l</I> is odd (<I>l</I>=2<I>m</I>&#X2212;1), there are 2<I>m</I>&#X2212;2 degrees of
-liberty. The constraints are defined by :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+for each kind of constraints.</p><p>If <span style="font-style:italic">l</span> is odd (<span style="font-style:italic">l</span>=2<span style="font-style:italic">m</span>&#X2212;1), there are 2<span style="font-style:italic">m</span>&#X2212;2 degrees of
+freedom. The constraints are defined by :
+</p><ul class="itemize"><li class="li-itemize">
 Hermite interpolation
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; 1&#X2264; <I>j</I>&#X2264; <I>m</I>&#X2212;1,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>f</I><SUP>(<I>j</I>)</SUP>(<I>a</I>),
-<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>)=<I>f</I><SUP>(<I>j</I>)</SUP>(<I>b</I>) </TD></TR>
-</TABLE>
-</LI><LI CLASS="li-itemize">Natural interpolation
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; <I>m</I> &#X2264; <I>j</I> &#X2264; 2<I>m</I>&#X2212;2,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>)=0 </TD></TR>
-</TABLE>
-</LI><LI CLASS="li-itemize">periodic interpolation 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; 1&#X2264; <I>j</I>&#X2264; 2<I>m</I>&#X2212;2,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>) </TD></TR>
-</TABLE>
-</LI></UL><P>If <I>l</I> is even (<I>l</I>=2<I>m</I>), there are 2<I>m</I>&#X2212;1 degrees of
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2200; 1&#X2264; <span style="font-style:italic">j</span>&#X2264; <span style="font-style:italic">m</span>&#X2212;1,    <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>),
+<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>) </td></tr>
+</table>
+</li><li class="li-itemize">Natural interpolation
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2200; <span style="font-style:italic">m</span> &#X2264; <span style="font-style:italic">j</span> &#X2264; 2<span style="font-style:italic">m</span>&#X2212;2,    <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=0 </td></tr>
+</table>
+</li><li class="li-itemize">periodic interpolation 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2200; 1&#X2264; <span style="font-style:italic">j</span>&#X2264; 2<span style="font-style:italic">m</span>&#X2212;2,    <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>) </td></tr>
+</table>
+</li></ul><p>If <span style="font-style:italic">l</span> is even (<span style="font-style:italic">l</span>=2<span style="font-style:italic">m</span>), there are 2<span style="font-style:italic">m</span>&#X2212;1 degrees of
 liberty. The constraints are defined by :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+</p><ul class="itemize"><li class="li-itemize">
 Hermite interpolation
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; 1&#X2264; <I>j</I>&#X2264; <I>m</I>&#X2212;1,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>f</I><SUP>(<I>j</I>)</SUP>(<I>a</I>),
-<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>)=<I>f</I><SUP>(<I>j</I>)</SUP>(<I>b</I>) </TD></TR>
-</TABLE> 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2200; 1&#X2264; <span style="font-style:italic">j</span>&#X2264; <span style="font-style:italic">m</span>&#X2212;1,    <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>),
+<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>) </td></tr>
+</table> 
 and
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUP>(<I>m</I>)</SUP>(<I>a</I>)=<I>f</I><SUP>(<I>m</I>)</SUP>(<I>a</I>)</TD></TR>
-</TABLE> 
-</LI><LI CLASS="li-itemize">Natural interpolation 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; <I>m</I> &#X2264; <I>j</I> &#X2264; 2<I>m</I>&#X2212;2,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>)=0 </TD></TR>
-</TABLE>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">s</span><sup>(<span style="font-style:italic">m</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">m</span>)</sup>(<span style="font-style:italic">a</span>)</td></tr>
+</table> 
+</li><li class="li-itemize">Natural interpolation 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2200; <span style="font-style:italic">m</span> &#X2264; <span style="font-style:italic">j</span> &#X2264; 2<span style="font-style:italic">m</span>&#X2212;2,    <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=0 </td></tr>
+</table>
 and
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUP>(2<I>m</I>&#X2212;1)</SUP>(<I>a</I>)=0</TD></TR>
-</TABLE> 
-</LI><LI CLASS="li-itemize">Periodic interpolation
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X2200; 1&#X2264; <I>j</I>&#X2264; 2<I>m</I>&#X2212;1,    <I>s</I><SUP>(<I>j</I>)</SUP>(<I>a</I>)=<I>s</I><SUP>(<I>j</I>)</SUP>(<I>b</I>) </TD></TR>
-</TABLE>
-</LI></UL><P>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">s</span><sup>(2<span style="font-style:italic">m</span>&#X2212;1)</sup>(<span style="font-style:italic">a</span>)=0</td></tr>
+</table> 
+</li><li class="li-itemize">Periodic interpolation
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X2200; 1&#X2264; <span style="font-style:italic">j</span>&#X2264; 2<span style="font-style:italic">m</span>&#X2212;1,    <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>) </td></tr>
+</table>
+</li></ul><p>
 A natural spline 
-is a spline function which verifies the natural interpolation constraints.</P><P><TT>spline</TT> takes as arguments a list of abscissa (by increasing order), 
-a list of ordinates, a variable name, and a degree.<BR>
-<TT>spline</TT> returns the natural spline function (with the specified degree
+is a spline function which verifies the natural interpolation constraints.</p><p><span style="font-family:monospace">spline</span> takes as arguments a list of abscissa (by increasing order), 
+a list of ordinates, a variable name, and a degree.<br>
+<span style="font-family:monospace">spline</span> returns the natural spline function (with the specified degree
 and crossing points) as a list of polynomials, each 
-polynomial being valid on an interval.</P><P>Examples:
-</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+polynomial being valid on an interval.</p><p>Examples:
+</p><ol class="enumerate" type=1><li class="li-enumerate">
 a natural spline of degree 3, crossing through the points 
-<I>x</I><SUB>0</SUB>=0,<I>y</I><SUB>0</SUB>=1, <I>x</I><SUB>1</SUB>=1,<I>y</I><SUB>1</SUB>=3 and <I>x</I><SUB>2</SUB>=2, <I>y</I><SUB>2</SUB>=0, input :
-<DIV CLASS="center">
-<TT>spline([0,1,2],[1,3,0],x,3)</TT>
-</DIV>
-Output is a list of two polynomial expressions of <I>x</I> :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[ &#X2212;5*<I>x</I>3/4+13*<I>x</I>/4+1,    5*(<I>x</I>&#X2212;1)3/4&#X2212;15*(<I>x</I>&#X2212;1)2/4+(<I>x</I>&#X2212;1)/&#X2212;2+3 ]</TD></TR>
-</TABLE>
-defined respectivly on the intervals [0,1] and [1,2].
-</LI><LI CLASS="li-enumerate">a natural spline of degree 4, crossing through the points 
-<I>x</I><SUB>0</SUB>=0,<I>y</I><SUB>0</SUB>=1, <I>x</I><SUB>1</SUB>=1,<I>y</I><SUB>1</SUB>=3, <I>x</I><SUB>2</SUB>=2, <I>y</I><SUB>2</SUB>=0 and <I>x</I><SUB>3</SUB>=3, <I>y</I><SUB>3</SUB>=&#X2212;1, 
+<span style="font-style:italic">x</span><sub>0</sub>=0,<span style="font-style:italic">y</span><sub>0</sub>=1, <span style="font-style:italic">x</span><sub>1</sub>=1,<span style="font-style:italic">y</span><sub>1</sub>=3 and <span style="font-style:italic">x</span><sub>2</sub>=2, <span style="font-style:italic">y</span><sub>2</sub>=0, input :
+<div class="center">
+<span style="font-family:monospace">spline([0,1,2],[1,3,0],x,3)</span>
+</div>
+Output is a list of two polynomial expressions of <span style="font-style:italic">x</span> :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[ &#X2212;5*<span style="font-style:italic">x</span><sup>3</sup>/4+13*<span style="font-style:italic">x</span>/4+1,    5*(<span style="font-style:italic">x</span>&#X2212;1)<sup>3</sup>/4&#X2212;15*(<span style="font-style:italic">x</span>&#X2212;1)<sup>2</sup>/4+(<span style="font-style:italic">x</span>&#X2212;1)/&#X2212;2+3 ]</td></tr>
+</table>
+defined respectively on the intervals [0,1] and [1,2].
+</li><li class="li-enumerate">a natural spline of degree 4, crossing through the points 
+<span style="font-style:italic">x</span><sub>0</sub>=0,<span style="font-style:italic">y</span><sub>0</sub>=1, <span style="font-style:italic">x</span><sub>1</sub>=1,<span style="font-style:italic">y</span><sub>1</sub>=3, <span style="font-style:italic">x</span><sub>2</sub>=2, <span style="font-style:italic">y</span><sub>2</sub>=0 and <span style="font-style:italic">x</span><sub>3</sub>=3, <span style="font-style:italic">y</span><sub>3</sub>=&#X2212;1, 
 input :
-<DIV CLASS="center">
-<TT>spline([0,1,2,3],[1,3,0,-1],x,4)</TT>
-</DIV>
-Output is a list of three polynomial functions of <I>x</I> :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[(&#X2212;62*<I>x</I>4+304*<I>x</I>)/121+1,</TD></TR>
-</TABLE> 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(201*(<I>x</I>&#X2212;1)4&#X2212;248*(<I>x</I>&#X2212;1)3&#X2212;372*(<I>x</I>&#X2212;1)2+56*(<I>x</I>&#X2212;1))/121+3,</TD></TR>
-</TABLE> 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(&#X2212;139*(<I>x</I>&#X2212;2)4+556*(<I>x</I>&#X2212;2)3+90*(<I>x</I>&#X2212;2)2+&#X2212;628*(<I>x</I>&#X2212;2))/121]</TD></TR>
-</TABLE>
-defined respectivly on the intervals [0,1], [1,2] and [2,3].
-</LI><LI CLASS="li-enumerate">The natural spline interpolation of cos on 
+<div class="center">
+<span style="font-family:monospace">spline([0,1,2,3],[1,3,0,-1],x,4)</span>
+</div>
+Output is a list of three polynomial functions of <span style="font-style:italic">x</span> :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[(&#X2212;62*<span style="font-style:italic">x</span><sup>4</sup>+304*<span style="font-style:italic">x</span>)/121+1,</td></tr>
+</table> 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">(201*(<span style="font-style:italic">x</span>&#X2212;1)<sup>4</sup>&#X2212;248*(<span style="font-style:italic">x</span>&#X2212;1)<sup>3</sup>&#X2212;372*(<span style="font-style:italic">x</span>&#X2212;1)<sup>2</sup>+56*(<span style="font-style:italic">x</span>&#X2212;1))/121+3,</td></tr>
+</table> 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">(&#X2212;139*(<span style="font-style:italic">x</span>&#X2212;2)<sup>4</sup>+556*(<span style="font-style:italic">x</span>&#X2212;2)<sup>3</sup>+90*(<span style="font-style:italic">x</span>&#X2212;2)<sup>2</sup>+&#X2212;628*(<span style="font-style:italic">x</span>&#X2212;2))/121]</td></tr>
+</table>
+defined respectively on the intervals [0,1], [1,2] and [2,3].
+</li><li class="li-enumerate">The natural spline interpolation of cos on 
 [0,&#X3C0;/2,3&#X3C0;/2], input :
-<DIV CLASS="center">
-<TT>spline([0,pi/2,3*pi/2],cos([0,pi/2,3*pi/2]),x,3)</TT>
-</DIV>
+<div class="center">
+<span style="font-family:monospace">spline([0,pi/2,3*pi/2],cos([0,pi/2,3*pi/2]),x,3)</span>
+</div>
 Output :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[((3*&#X3C0;3+(&#X2212;7*&#X3C0;2)*<I>x</I>+4*<I>x</I>3)*1/3)/(&#X3C0;3),</TD></TR>
-</TABLE>
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">((15*&#X3C0;3+(&#X2212;46*&#X3C0;2)*<I>x</I>+36*<I>x</I>2&#X2212;8*<I>x</I>3)*1/12)/(&#X3C0;3)]
-</TD></TR>
-</TABLE>
-</LI></OL><HR>
-<A HREF="cascmd_en206.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en208.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[((3*&#X3C0;<sup>3</sup>+(&#X2212;7*&#X3C0;<sup>2</sup>)*<span style="font-style:italic">x</span>+4*<span style="font-style:italic">x</span><sup>3</sup>)*1/3)/(&#X3C0;<sup>3</sup>),</td></tr>
+</table>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">((15*&#X3C0;<sup>3</sup>+(&#X2212;46*&#X3C0;<sup>2</sup>)*<span style="font-style:italic">x</span>+36*<span style="font-style:italic">x</span><sup>2</sup>&#X2212;8*<span style="font-style:italic">x</span><sup>3</sup>)*1/12)/(&#X3C0;<sup>3</sup>)]
+</td></tr>
+</table>
+</li></ol>
+<hr>
+<a href="cascmd_en206.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en208.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

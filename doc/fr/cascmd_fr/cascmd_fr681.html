@@ -1,51 +1,51 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Résoudre des équations dans ℂ : resoudre_dans_C csolve cSolve </TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr680.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr682.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc801">6.61.7</A>  Résoudre des équations dans ℂ : <TT>resoudre_dans_C csolve cSolve </TT></H3><P><A NAME="@default1235"></A><A NAME="@default1236"></A><A NAME="@default1237"></A>
-<TT>csolve</TT> ou <TT>cSolve</TT> ou <TT>resoudre_dans_C</TT> résout une 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Résoudre des équations dans ℂ : resoudre_dans_C csolve cSolve </title>
+</head>
+<body >
+<a href="cascmd_fr680.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr682.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec829" class="subsection">6.61.7  Résoudre des équations dans ℂ : <span style="font-family:monospace">resoudre_dans_C csolve cSolve </span></h3>
+<p><a id="hevea_default1235"></a><a id="hevea_default1236"></a><a id="hevea_default1237"></a>
+<span style="font-family:monospace">csolve</span> ou <span style="font-family:monospace">cSolve</span> ou <span style="font-family:monospace">resoudre_dans_C</span> résout une 
 équation ou un système d’équations 
 polynômiales dans ℂ sans avoir besoin d’être en mode complexe.
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Résolution d’une équation<BR>
-<TT>cSolve</TT> a comme arguments une équation entre deux 
-expressions ou une expression (<TT>=0</TT> est alors sous-entendu), 
-et le nom d’une variable (par défaut <TT>x</TT>).<BR>
-<TT>cSolve</TT> résout cette équation dans ℂ sans avoir besoin 
+</p><ul class="itemize"><li class="li-itemize">
+Résolution d’une équation<br>
+<span style="font-family:monospace">cSolve</span> a comme arguments une équation entre deux 
+expressions ou une expression (<span style="font-family:monospace">=0</span> est alors sous-entendu), 
+et le nom d’une variable (par défaut <span style="font-family:monospace">x</span>).<br>
+<span style="font-family:monospace">cSolve</span> résout cette équation dans ℂ sans avoir besoin 
 d’être en mode complexe.
-</LI><LI CLASS="li-itemize">Résolution d’un système d’équations polynômiales<BR>
-<TT>cSolve</TT> a comme arguments deux vecteurs : le vecteur des équations du
-système et le vecteur du nom des variables.<BR>
-<TT>cSolve</TT> résout ce système d’équations polynômiales dans 
-<FONT COLOR=red><I>C</I></FONT> sans avoir besoin d’être en mode complexe.
-</LI></UL><P>
+</li><li class="li-itemize">Résolution d’un système d’équations polynômiales<br>
+<span style="font-family:monospace">cSolve</span> a comme arguments deux vecteurs : le vecteur des équations du
+système et le vecteur du nom des variables. <br>
+<span style="font-family:monospace">cSolve</span> résout ce système d’équations polynômiales dans 
+<span style="color:red"><span style="font-style:italic">C</span></span> sans avoir besoin d’être en mode complexe.
+</li></ul><p>
 On tape :
-</P><DIV CLASS="center"><TT>cSolve(x</TT><CODE><TT>^</TT></CODE><TT>4-1=3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">cSolve(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1=3)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[sqrt(2),-(sqrt(2)),(i)*sqrt(2),-((i)*sqrt(2))]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[sqrt(2),-(sqrt(2)),(i)*sqrt(2),-((i)*sqrt(2))]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>cSolve([-x</TT><CODE><TT>^</TT></CODE><TT>2+y=2,x</TT><CODE><TT>^</TT></CODE><TT>2+y],[x,y])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">cSolve([-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y=2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y],[x,y])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[[i,1],[-i,1]]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[[i,1],[-i,1]]</span></div><p>
 On tape en mode complexe ou réel:
-</P><DIV CLASS="center"><TT>csolve(re(r*exp(-(i)*t))-1,r) </TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">csolve(re(r*exp(-(i)*t))-1,r) </span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[‘ x‘+(i)*1/(sin(t))*(-‘ x‘*cos(t)+1)]</TT></DIV><P>
-car avec <TT>csolve</TT>, l’inconnue <TT>r</TT> est toujours considérée comme un 
-nombre complexe.)</P><HR>
-<A HREF="cascmd_fr680.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr682.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[‘ x‘+(i)*1/(sin(t))*(-‘ x‘*cos(t)+1)]</span></div><p>
+car avec <span style="font-family:monospace">csolve</span>, l’inconnue <span style="font-family:monospace">r</span> est toujours considérée comme un 
+nombre complexe.)</p>
+<hr>
+<a href="cascmd_fr680.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr682.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

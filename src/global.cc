@@ -533,6 +533,21 @@ extern "C" void Sleep(unsigned int miliSecond);
       _integer_mode_=b;
   }
 
+  static bool _python_compat_=false;
+  bool & python_compat(GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      return contextptr->globalptr->_python_compat_;
+    else
+      return _python_compat_;
+  }
+
+  void python_compat(bool b,GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      contextptr->globalptr->_python_compat_=b;
+    else
+      _python_compat_=b;
+  }
+
   static bool _complex_mode_=false; 
   bool & complex_mode(GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
@@ -2969,11 +2984,9 @@ extern "C" void Sleep(unsigned int miliSecond);
       */
     case 8:
       return "zh/";
-      /*
     case 9:
       return "de/";
       break;
-      */
     default:
       return "local/";
     }  
@@ -3007,11 +3020,9 @@ extern "C" void Sleep(unsigned int miliSecond);
     case 8:
       return "doc/zh/";
       break;
-      /*
     case 9:
       return "doc/de/";
       break;
-      */
     default:
       return "doc/local/";
     }  
@@ -3227,7 +3238,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     s += print_VECT(cas_setup(contextptr),_SEQ__VECT,contextptr);
     s += "),";
     s += "xcas_mode(";
-    s += print_INT_(xcas_mode(contextptr));
+    s += print_INT_(xcas_mode(contextptr)+(python_compat(contextptr)?256:0));
     s += ")";
     return s;
   }
@@ -3350,6 +3361,7 @@ extern "C" void Sleep(unsigned int miliSecond);
      ptr->globalptr->_atan_tan_no_floor_=_atan_tan_no_floor_;
      ptr->globalptr->_keep_acosh_asinh_=_keep_acosh_asinh_;
      ptr->globalptr->_keep_algext_=_keep_algext_;
+     ptr->globalptr->_python_compat_=_python_compat_;
      ptr->globalptr->_complex_variables_=_complex_variables_;
      ptr->globalptr->_increasing_power_=_increasing_power_;
      ptr->globalptr->_approx_mode_=_approx_mode_;
@@ -3765,10 +3777,10 @@ extern "C" void Sleep(unsigned int miliSecond);
 		     _all_trig_sol_(false),
 #ifdef WITH_MYOSTREAM
 		     _ntl_on_(true),
-		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),_angle_mode_(0), _bounded_function_no_(0), _series_flags_(0x3),_step_infolevel_(0),_default_color_(FL_BLACK), _epsilon_(1e-12), _proba_epsilon_(1e-15),  _show_axes_(1),_spread_Row_ (-1), _spread_Col_ (-1),_logptr_(&my_CERR),_prog_eval_level_val(1), _eval_level(DEFAULT_EVAL_LEVEL), _rand_seed(123457),_max_sum_sqrt_(3),_max_sum_add_(100000),_total_time_(0),_evaled_table_(0),_extra_ptr_(0),_series_variable_name_('h'),_series_default_order_(5),
+		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),_python_compat_(false),_angle_mode_(0), _bounded_function_no_(0), _series_flags_(0x3),_step_infolevel_(0),_default_color_(FL_BLACK), _epsilon_(1e-12), _proba_epsilon_(1e-15),  _show_axes_(1),_spread_Row_ (-1), _spread_Col_ (-1),_logptr_(&my_CERR),_prog_eval_level_val(1), _eval_level(DEFAULT_EVAL_LEVEL), _rand_seed(123457),_max_sum_sqrt_(3),_max_sum_add_(100000),_total_time_(0),_evaled_table_(0),_extra_ptr_(0),_series_variable_name_('h'),_series_default_order_(5),
 #else
 		     _ntl_on_(true),
-		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),_angle_mode_(0), _bounded_function_no_(0), _series_flags_(0x3),_step_infolevel_(0),_default_color_(FL_BLACK), _epsilon_(1e-12), _proba_epsilon_(1e-15),  _show_axes_(1),_spread_Row_ (-1), _spread_Col_ (-1), 
+		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),_python_compat_(false),_angle_mode_(0), _bounded_function_no_(0), _series_flags_(0x3),_step_infolevel_(0),_default_color_(FL_BLACK), _epsilon_(1e-12), _proba_epsilon_(1e-15),  _show_axes_(1),_spread_Row_ (-1), _spread_Col_ (-1), 
 #ifdef EMCC
 		     _logptr_(&COUT), 
 #else
@@ -3826,6 +3838,7 @@ extern "C" void Sleep(unsigned int miliSecond);
      _atan_tan_no_floor_=g._atan_tan_no_floor_;
      _keep_acosh_asinh_=g._keep_acosh_asinh_;
      _keep_algext_=g._keep_algext_;
+     _python_compat_=g._python_compat_;
      _variables_are_files_=g._variables_are_files_;
      _bounded_function_no_=g._bounded_function_no_;
      _series_flags_=g._series_flags_; // bit1= full simplify, bit2=1 for truncation, bit3=?, bit4=1 do not convert back SPOL1 to symbolic expression
@@ -5512,6 +5525,233 @@ unsigned int ConvertUTF8toUTF16 (
       unlock_syms_mutex();  
     }
   }
+
+  static string remove_comment(const string & s,const string &pattern,bool replace){
+    string res(s);
+    for (;;){
+      int pos1=res.find(pattern);
+      if (pos1<0 || pos1+3>=int(res.size()))
+	break;
+      int pos2=res.find(pattern,pos1+3);
+      if (pos2<0 || pos2+3>=int(res.size()))
+	break;
+      if (replace)
+	res=res.substr(0,pos1)+'"'+res.substr(pos1+3,pos2-pos1-3)+'"'+res.substr(pos2+3,res.size()-pos2-3);
+      else
+	res=res.substr(0,pos1)+res.substr(pos2+3,res.size()-pos2-3);
+    }
+    return res;
+  }
+
+  struct int_string {
+    int decal;
+    std::string endbloc;
+    int_string():decal(0){}
+    int_string(int i,string s):decal(i),endbloc(s){}
+  };
+
+  static bool instruction_at(const string & s,int pos,int shift){
+    if (pos && isalphan(s[pos-1]))
+      return false;
+    if (pos+shift<int(s.size()) && isalphan(s[pos+shift]))
+      return false;
+    return true;
+  }
+
+  // detect Python like syntax: 
+  // remove """ """ docstrings and ''' ''' comments
+  // cut string in lines, remove comments at the end (search for #)
+  // warning don't take care of # inside strings
+  // if a line of s ends with a :
+  // search for matching def/for/if/else/while
+  // stores matching end keyword in a stack as a vector<[int,string]>
+  // int is the number of white spaces at the start of the next line
+  // def ... : -> function [ffunction]
+  // for ... : -> for ... do [od]
+  // while ... : -> while ... do [od]
+  // if ...: -> if ... then [fi]
+  // else: -> else [nothing in stack]
+  // elif ...: -> elif ... then [nothing in stack]
+  // ? support for try except
+  std::string python2xcas(const std::string & s_orig,GIAC_CONTEXT){
+    // quick check for python-like syntax: search line ending with :
+    int first=0,sss=s_orig.size();
+    first=s_orig.find("maple_mode");
+    if (first>=0 && first<sss)
+      return s_orig;
+    first=s_orig.find("xcas_mode");
+    if (first>=0 && first<sss)
+      return s_orig;
+    for (first=0;first<sss;){
+      first=s_orig.find(':',first);
+      if (first<0 || first>=sss)
+	return s_orig; // not Python like
+      int pos=s_orig.find("lambda");
+      if (pos>=0 && pos<sss)
+	break;
+      int endl=s_orig.find('\n',first);
+      if (endl<0 || endl>=sss)
+	endl=sss;
+      ++first;
+      if (first<endl && (s_orig[first]==';' || s_orig[first]=='=')) 
+	continue; // ignore :;
+      // search for line finishing with : (or with # comment)
+      for (;first<endl;++first){
+	char ch=s_orig[first];
+	if (ch!=' '){
+	  if (ch=='#')
+	    first=endl;
+	  break;
+	}
+      }
+      if (first==endl) 
+	break;
+    }
+    // probably Python-like
+    bool pythonmode=false;
+    string res(s_orig);
+    if (res.size()>18 && res.substr(0,17)=="add_autosimplify(" 
+	&& res[res.size()-1]==')'
+	)
+      res=res.substr(17,res.size()-18);
+    res=remove_comment(res,"\"\"\"",false);
+    res=remove_comment(res,"'''",true);
+    vector<int_string> stack;
+    string s,cur; 
+    for (;res.size();){
+      int pos=res.find('\n');
+      if (pos<0 || pos>=int(res.size())){
+	cur=res; res="";
+      }
+      else {
+	cur=res.substr(0,pos); // without \n
+	res=res.substr(pos+1,res.size()-pos-1);
+      }
+      // detect comment (outside of a string) and lambda expr:expr
+      bool instring=false;
+      for (pos=0;pos<int(cur.size());++pos){
+	char ch=cur[pos];
+	if (ch=='"')
+	  instring=!instring;
+	if (instring) continue;
+	if (ch=='#'){
+	  cur=cur.substr(0,pos);
+	  break;
+	}
+	if (ch=='l' && pos+6<int(cur.size()) && cur.substr(pos,6)=="lambda" && instruction_at(cur,pos,6)){
+	  int posdot=cur.find(':',pos);
+	  if (posdot>pos+7 && posdot<int(cur.size())-1 && cur[posdot+1]!='=')
+	    cur=cur.substr(0,pos)+cur.substr(pos+6,posdot-pos-6)+"->"+cur.substr(posdot+1,cur.size()-posdot-1);
+	}
+      }
+      // detect : at end of line
+      for (pos=int(cur.size())-1;pos>=0;--pos){
+	if (cur[pos]!=' ' && cur[pos]!=char(9))
+	  break;
+      }
+      if (pos<=0) continue;
+      // count whitespaces, compare to stack
+      int ws=0;
+      int cs=cur.size();
+      for (ws=0;ws<cs;++ws){
+	if (cur[ws]!=' ' && cur[ws]!=char(9))
+	  break;
+      }
+      if (cur[pos]==':'){
+	// detect else or elif
+	int progpos=cur.find("else");
+	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
+	  pythonmode=true;
+	  s += cur.substr(0,pos)+"\n";
+	  continue;
+	}
+	progpos=cur.find("elif");
+	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
+	  pythonmode=true;
+	  s += cur.substr(0,pos)+" then\n";
+	  continue;
+	}
+      }
+      if (!stack.empty()){ 
+	int indent=stack.back().decal;
+	if (ws<=indent){
+	  // remove last \n and add explicit endbloc delimiters from stack
+	  int ss=s.size();
+	  bool nl= ss && s[ss-1]=='\n';
+	  if (nl)
+	    s=s.substr(0,ss-1);
+	  while (!stack.empty() && stack.back().decal>=ws){
+	    s += ' '+stack.back().endbloc+';';
+	    stack.pop_back();
+	  }
+	  if (nl)
+	    s += '\n';
+	}
+      }
+      if (cur[pos]==':'){
+	// detect matching programming structure
+	int progpos=cur.find("if");
+	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,2)){
+	  pythonmode=true;
+	  s += cur.substr(0,pos)+" then\n";
+	  stack.push_back(int_string(ws,"fi"));
+	  continue;
+	}
+	progpos=cur.find("for");
+	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
+	  pythonmode=true;
+	  s += cur.substr(0,pos)+" do\n";
+	  stack.push_back(int_string(ws,"od"));
+	  continue;
+	}
+	progpos=cur.find("while");
+	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,5)){
+	  pythonmode=true;
+	  s += cur.substr(0,pos)+" do\n";
+	  stack.push_back(int_string(ws,"od"));
+	  continue;
+	}
+	progpos=cur.find("def");
+	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
+	  pythonmode=true;
+	  s += cur.substr(0,progpos)+"function"+cur.substr(progpos+3,pos-progpos-3)+"\n";
+	  stack.push_back(int_string(ws,"ffunction"));
+	  continue;
+	}
+      }
+      else {
+	// normal line add ; at end
+	if (pythonmode && pos>=0 && cur[pos]!=';')
+	  cur = cur +';';
+	if (pythonmode){
+	  for (pos=1;pos<int(cur.size());++pos){
+	    char prevch=cur[pos-1],curch=cur[pos];
+	    if (curch=='%'){
+	      cur.insert(cur.begin()+pos+1,'/');
+	      ++pos;
+	      continue;
+	    }
+	    if (curch=='=' && prevch!='>' && prevch!='<' && prevch!='!' && prevch!=':' && prevch!='=' && (pos==int(cur.size())-1 || cur[pos+1]!='=')){
+	      cur.insert(cur.begin()+pos,':');
+	      ++pos;
+	      continue;
+	    }
+	    if (prevch=='/' && curch=='/')
+	      cur[pos]='%';
+	  }
+	}
+	cur = cur +'\n';
+	s = s+cur;
+      }
+    }
+    while (!stack.empty()){
+      s += ' '+stack.back().endbloc+';';
+      stack.pop_back();
+    }
+    if (pythonmode)
+      *logptr(contextptr) << "// Python-like syntax, check string delimiters \"\" and declare local variables.\nTranslated to Xcas as:\n" << s << endl;
+    return s;
+  }
   
     std::string translate_at(const char * ch){
       if (!strcmp(ch,"ΔLIST"))
@@ -5652,7 +5892,7 @@ unsigned int ConvertUTF8toUTF16 (
 #ifdef SMARTPTR64
       if (debug_infolevel)
 	CERR << builtin_lexer_functions_begin()[i].first << endl; 
-      delete (ref_unary_function_ptr *) (* ((longlong * ) &builtin_lexer_functions_begin()[i].second) >> 16);
+      delete (ref_unary_function_ptr *) (* ((ulonglong * ) &builtin_lexer_functions_begin()[i].second) >> 16);
 #endif
     }
 #endif

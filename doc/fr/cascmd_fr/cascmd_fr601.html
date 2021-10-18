@@ -1,84 +1,84 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonctions utiles pour les colonnes d’une matrice : mean ou moyenne, stddev ou ecart_type, variance, median, quantile, quartiles, boxwhisker ou 
-moustache</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr600.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr602.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc711">6.51.5</A>  Fonctions utiles pour les colonnes d’une matrice : <TT>mean</TT> ou <TT>moyenne</TT>, <TT>stddev</TT> ou <TT>ecart_type</TT>, <TT>variance</TT>, <TT>median</TT>, <TT>quantile</TT>, <TT>quartiles</TT>, <TT>boxwhisker</TT> ou<BR>
-<TT>moustache</TT></H3><P><A NAME="sec:statmat"></A>
-<A NAME="@default1101"></A> <A NAME="@default1102"></A><A NAME="@default1103"></A><A NAME="@default1104"></A><A NAME="@default1105"></A><A NAME="@default1106"></A><A NAME="@default1107"></A><A NAME="@default1108"></A><A NAME="@default1109"></A><A NAME="@default1110"></A>
-Voir aussi <A HREF="index.html#sec:statlist">6.44</A> and <A HREF="index.html#sec:stat">8</A>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonctions utiles pour les colonnes d’une matrice : mean ou moyenne, stddev ou ecart_type, variance, median, quantile, quartiles, boxwhisker ou 
+moustache</title>
+</head>
+<body >
+<a href="cascmd_fr600.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr602.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec739" class="subsection">6.51.5  Fonctions utiles pour les colonnes d’une matrice : <span style="font-family:monospace">mean</span> ou <span style="font-family:monospace">moyenne</span>, <span style="font-family:monospace">stddev</span> ou <span style="font-family:monospace">ecart_type</span>, <span style="font-family:monospace">variance</span>, <span style="font-family:monospace">median</span>, <span style="font-family:monospace">quantile</span>, <span style="font-family:monospace">quartiles</span>, <span style="font-family:monospace">boxwhisker</span> ou <br>
+<span style="font-family:monospace">moustache</span></h3>
+<p><a id="sec:statmat"></a>
+<a id="hevea_default1101"></a> <a id="hevea_default1102"></a><a id="hevea_default1103"></a><a id="hevea_default1104"></a><a id="hevea_default1105"></a><a id="hevea_default1106"></a><a id="hevea_default1107"></a><a id="hevea_default1108"></a><a id="hevea_default1109"></a><a id="hevea_default1110"></a>
+Voir aussi <a href="index.html#sec%3Astatlist">6.44</a> and <a href="index.html#sec%3Astat">8</a>.<br>
 Fonctions utiles pour les statistiques dont les donn’ees sont les 
 colonnes d’une matrice :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>mean</TT> ou <TT>moyenne</TT> pour calculer la moyenne numèrique de series
-statistiques qui sont les colonnes d’une matrice.<BR>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">mean</span> ou <span style="font-family:monospace">moyenne</span> pour calculer la moyenne numèrique de series
+statistiques qui sont les colonnes d’une matrice.<br>
 On tape :
-<DIV CLASS="center"><TT>mean([[3,4,2],[1,2,6]])</TT></DIV>
+<div class="center"><span style="font-family:monospace">mean([[3,4,2],[1,2,6]])</span></div>
 On obtient un vecteur de composantes la moyenne des colonnes :
-<DIV CLASS="center"><TT>[2,3,4]</TT></DIV>
+<div class="center"><span style="font-family:monospace">[2,3,4]</span></div>
 On tape :
-<DIV CLASS="center"><TT>mean([[1,0,0],[0,1,0],[0,0,1]])</TT></DIV>
+<div class="center"><span style="font-family:monospace">mean([[1,0,0],[0,1,0],[0,0,1]])</span></div>
 On obtient 
-<DIV CLASS="center"><TT>[1/3,1/3,1/3]</TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>stddev</TT> ou <TT>ecart_type</TT> pour calculer l’écart type numèrique
-de series statistiques qui sont les colonnes d’une matrice.<BR>
+<div class="center"><span style="font-family:monospace">[1/3,1/3,1/3]</span></div>
+</li><li class="li-itemize"><span style="font-family:monospace">stddev</span> ou <span style="font-family:monospace">ecart_type</span> pour calculer l’écart type numèrique
+de series statistiques qui sont les colonnes d’une matrice.<br>
 On tape :
-<DIV CLASS="center"><TT>stddev([[3,4,2],[1,2,6]])</TT></DIV>
+<div class="center"><span style="font-family:monospace">stddev([[3,4,2],[1,2,6]])</span></div>
 On obtient un vecteur de composantes l’écart type des colonnes :
-<DIV CLASS="center"><TT>[1,1,2]</TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>variance</TT> pour calculer la variance numèrique de series
+<div class="center"><span style="font-family:monospace">[1,1,2]</span></div>
+</li><li class="li-itemize"><span style="font-family:monospace">variance</span> pour calculer la variance numèrique de series
 statistiques qui sont les colonnes d’une 
-matrice.<BR>
+matrice.<br>
 On tape :
-<DIV CLASS="center"><TT>variance([[3,4,2],[1,2,6]])</TT></DIV>
+<div class="center"><span style="font-family:monospace">variance([[3,4,2],[1,2,6]])</span></div>
 On obtient un vecteur de composantes la variance des colonnes :
-<DIV CLASS="center"><TT>[1,1,4]</TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>median</TT> pour calculer la médiane de series
+<div class="center"><span style="font-family:monospace">[1,1,4]</span></div>
+</li><li class="li-itemize"><span style="font-family:monospace">median</span> pour calculer la médiane de series
 statistiques qui sont les colonnes d’une 
-matrice.<BR>
+matrice.<br>
 On tape :
-<DIV CLASS="center"><TT>median([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</TT></DIV>
+<div class="center"><span style="font-family:monospace">median([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
 On obtient un vecteur de composantes la médiane des colonnes :
-<DIV CLASS="center"><TT>[2.0,2.0,3.0,3.0,2.0,2.0,3.0]</TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>quantile</TT> pour calculer le décile selon le second argument, de 
-series statistiques qui sont les colonnes d’une matrice.<BR>
-On tape :<DIV CLASS="center"><TT>quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.25)</TT></DIV>
+<div class="center"><span style="font-family:monospace">[2.0,2.0,3.0,3.0,2.0,2.0,3.0]</span></div>
+</li><li class="li-itemize"><span style="font-family:monospace">quantile</span> pour calculer le décile selon le second argument, de 
+series statistiques qui sont les colonnes d’une matrice.<br>
+On tape :<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.25)</span></div>
 On obtient un vecteur de composantes le premier quartile des colonnes :
-<DIV CLASS="center"><TT>[1.0,1.0,2.0,2.0,1.0,1.0,1.0]</TT></DIV>
+<div class="center"><span style="font-family:monospace">[1.0,1.0,2.0,2.0,1.0,1.0,1.0]</span></div>
 On tape :
-<DIV CLASS="center"><TT>quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.75)</TT></DIV>
+<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.75)</span></div>
 On obtient un vecteur de composantes le troisième quartile des colonnes :
-<DIV CLASS="center"><TT>[4.0,4.0,5.0,5.0,5.0,5.0,5.0]</TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>quartiles</TT> pour calculer le minimum, le premier quartile, la 
+<div class="center"><span style="font-family:monospace">[4.0,4.0,5.0,5.0,5.0,5.0,5.0]</span></div>
+</li><li class="li-itemize"><span style="font-family:monospace">quartiles</span> pour calculer le minimum, le premier quartile, la 
 médiane, le troisième quartile et le maximum de series
-statistiques qui sont les colonnes d’une matrice.<BR>
-On tape :<BR>
-<DIV CLASS="center"><TT>quartiles([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1], [4,2,5,6,0,1,3], [2,5,6,0,1,3,4]])</TT></DIV>
+statistiques qui sont les colonnes d’une matrice.<br>
+On tape : <br>
+<div class="center"><span style="font-family:monospace">quartiles([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1], [4,2,5,6,0,1,3], [2,5,6,0,1,3,4]])</span></div>
 On obtient la matrice, de premiére ligne le minimum de chaque colonne,
 de deuxième ligne le premier quartile de chaque colonne, de troisième 
 ligne la médiane de chaque colonne, de quatrième ligne le troisième 
 quartile de chaque colonne et de dernière ligne le maximum de chaque 
-colonne :<BR>
-<DIV CLASS="center"><TT>[[0.0,0.0,1.0,0.0,0.0,0.0,0.0],[1.0,1.0,2.0,2.0,1.0,1.0,1.0], [2.0,2.0,3.0,3.0,2.0,2.0,3.0],[4.0,4.0,5.0,5.0,5.0,5.0,5.0], [6.0,5.0,6.0,6.0,6.0,6.0,6.0]]</TT></DIV></LI><LI CLASS="li-itemize"><TT>boxwhisker</TT> ou <TT>moustache</TT> pour afficher les boites à 
-moustaches de series statistiques qui sont les colonnes d’une matrice.<BR>
+colonne : <br>
+<div class="center"><span style="font-family:monospace">[[0.0,0.0,1.0,0.0,0.0,0.0,0.0],[1.0,1.0,2.0,2.0,1.0,1.0,1.0], [2.0,2.0,3.0,3.0,2.0,2.0,3.0],[4.0,4.0,5.0,5.0,5.0,5.0,5.0], [6.0,5.0,6.0,6.0,6.0,6.0,6.0]]</span></div></li><li class="li-itemize"><span style="font-family:monospace">boxwhisker</span> ou <span style="font-family:monospace">moustache</span> pour afficher les boites à 
+moustaches de series statistiques qui sont les colonnes d’une matrice.<br>
 On tape :
-<DIV CLASS="center"><TT>moustache([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6], [1,3,4,2,5,6,0], [3,4,2,5,6,0,1], [4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</TT></DIV>
+<div class="center"><span style="font-family:monospace">moustache([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6], [1,3,4,2,5,6,0], [3,4,2,5,6,0,1], [4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
 On obtient les dessins des boites à moustaches des series
 statistiques qui sont les colonnes de la matrice mise comme paramètre.
-</LI></UL><HR>
-<A HREF="cascmd_fr600.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr602.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</li></ul>
+<hr>
+<a href="cascmd_fr600.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr602.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

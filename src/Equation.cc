@@ -616,7 +616,7 @@ namespace xcas {
 	return Equation_compute_size(arg,a,windowhsize,contextptr);
       gen tmp;
 #ifdef SMARTPTR64
-      * ((longlong * ) &tmp) = longlong(new ref_fraction(Tfraction<gen>(arg._VECTptr->front(),arg._VECTptr->back()))) << 16;
+      * ((ulonglong * ) &tmp) = ulonglong(new ref_fraction(Tfraction<gen>(arg._VECTptr->front(),arg._VECTptr->back()))) << 16;
 #else
       tmp.__FRACptr = new ref_fraction(Tfraction<gen>(arg._VECTptr->front(),arg._VECTptr->back()));
 #endif

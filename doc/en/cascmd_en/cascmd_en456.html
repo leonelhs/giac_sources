@@ -1,116 +1,74 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Laplace transform and inverse Laplace transform : laplace ilaplace</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en455.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en457.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc511">2.53.2</A>  Laplace transform and inverse Laplace transform : <TT>laplace ilaplace</TT></H3><P><A NAME="@default749"></A><A NAME="@default750"></A><A NAME="sec:lap"></A>
-<TT>laplace</TT> and <TT>ilaplace</TT> takes one, two or three arguments :
-an expression and optionnaly the name(s) of the variable(s).<BR>
-The expression is an expression of the current variable (here <I>x</I>) or an 
-expression of the variable given as second argument.<BR>
-<TT>laplace</TT> returns the Laplace transform of the expression given as argument
-and <TT>ilaplace</TT> the inverse Laplace transform of the expression given 
-as argument. The result of <TT>laplace</TT> and <TT>ilaplace</TT> is expressed
-in terms of the variable given as third argument if supplied
-or second argument if supplied or <I>x</I> otherwise.</P><P>Laplace transform (<TT>laplace</TT>) and inverse Laplace transform
-(<TT>ilaplace</TT>) are useful to solve linear differential equations
-with constant coefficients. For example :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I> &#X2032; &#X2032; +<I>p</I>. <I>y</I> &#X2032;+<I>q</I>. <I>y</I>  = <I>f</I>(<I>x</I>)</TD></TR>
-</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>(0)=<I>a</I>,  <I>y</I>&#X2032;(0)=<I>b</I></TD></TR>
-</TABLE><P>
-Denoting by <FONT COLOR=red><I>L</I></FONT> the Laplace transform,
-the following relations hold :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+&#X221E;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>e</I><SUP>&#X2212;<I>x</I>.<I>u</I></SUP><I>y</I>(<I>u</I>)<I>du</I> </TD></TR>
-</TABLE></TD></TR>
-<TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT><SUP>&#X2212;1</SUP>(<I>g</I>)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2<I>i</I>&#X3C0;</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">&nbsp;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><I>C</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>e</I><SUP><I>z</I>.<I>x</I></SUP><I>g</I>(<I>z</I>)<I>dz</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-where <I>C</I> is a closed contour enclosing the poles of <TT>g</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Gauss-Jordan reduction: rref gaussjord</title>
+</head>
+<body >
+<a href="cascmd_en455.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en457.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec541" class="subsection">2.53.3  Gauss-Jordan reduction: <span style="font-family:monospace">rref gaussjord</span></h3>
+<p><a id="hevea_default747"></a><a id="hevea_default748"></a><a id="sec:rref"></a>
+<span style="font-family:monospace">rref</span> solves a linear system of equations written in
+matrix form (see also <a href="cascmd_en267.html#sec%3Arrefm">2.31.17</a>) :
+</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
+<span style="font-family:monospace">rref</span> takes one or two arguments.
+</p><ul class="itemize"><li class="li-itemize">
+If <span style="font-family:monospace">rref</span> has only one argument, this argument is the augmented matrix 
+of the system (the matrix obtained by augmenting matrix <span style="font-family:monospace">A</span> to the 
+right with the column vector <span style="font-family:monospace">B</span>).<br>
+The result is a matrix <span style="font-family:monospace">[A1,B1]</span> : <span style="font-family:monospace">A1</span> has zeros both above and under 
+its principal diagonal and has 1 on its principal diagonal, and the solutions 
+of:
+<div class="center"><span style="font-family:monospace">A1*X=B1</span></div> 
+are the same as :
+<div class="center"><span style="font-family:monospace">A*X=B</span></div>
+For example, to solve the system:
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X23A7;<br>
+&#X23A8;<br>
+&#X23A9;</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >&#X2212;2 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
+</table></td></tr>
+</table> 
 Input :
-</P><DIV CLASS="center"><TT>laplace(sin(x))</TT></DIV><P>
-The expression (here sin(<I>x</I>)) is an expression of the current variable 
-(here <I>x</I>) and the answer will also be an expression of the current variable 
-<I>x</I>.<BR>
+<div class="center"><span style="font-family:monospace">rref([[3,1,-2],[3,2,2]])</span></div>
 Output :
-</P><DIV CLASS="center"><TT>1/((-x)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
-Or input :
-</P><DIV CLASS="center"><TT>laplace(sin(t),t)</TT></DIV><P>
-here the variable name is <I>t</I> and this name is also used in the answer.<BR>
-Output :
-</P><DIV CLASS="center"><TT>1/((-t)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
-Or input :
-</P><DIV CLASS="center"><TT>laplace(sin(t),t,s)</TT></DIV><P>
-here the variable name is <I>t</I> and the variable name of the answer is <I>s</I>.<BR>
-Output:
-</P><DIV CLASS="center"><TT>1/((-s)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
-The following properties hold :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>&#X2032;)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>(0)+<I>x</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>) </TD></TR>
-<TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>&#X2033;)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>&#X2032;(0)+<I>x</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>&#X2032;)(<I>x</I>) </TD></TR>
-<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>&#X2032;(0)&#X2212;<I>x</I>.<I>y</I>(0)+<I>x</I><SUP>2</SUP>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-If <I>y</I> &#X2032; &#X2032;(<I>x</I>) +<I>p</I>. <I>y</I> &#X2032;(<I>x</I>)+<I>q</I>. <I>y</I>(<I>x</I>)  = <I>f</I>(<I>x</I>), then :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>f</I>)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>&#X2033;+<I>p</I>.<I>y</I>&#X2032;+<I>q</I>.<I>y</I>)(<I>x</I>) </TD></TR>
-<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>&#X2212;<I>y</I>&#X2032;(0)&#X2212;<I>x</I>.<I>y</I>(0)+<I>x</I><SUP>2</SUP>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)&#X2212;<I>p</I>.<I>y</I>(0)+<I>p</I>.<I>x</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>))+<I>q</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>) </TD></TR>
-<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>(<I>x</I><SUP>2</SUP>+<I>p</I>.<I>x</I>+<I>q</I>).<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)&#X2212;<I>y</I>&#X2032;(0)&#X2212;(<I>x</I>+<I>p</I>).<I>y</I>(0)</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-Therefore, if <I>a</I>=<I>y</I>(0) et <I>b</I>=<I>y</I>&#X2032;(0), we have
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT COLOR=red><I>L</I></FONT>(<I>f</I>)(<I>x</I>)=(<I>x</I><SUP>2</SUP>+<I>p</I>.<I>x</I>+<I>q</I>).<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)&#X2212;(<I>x</I>+<I>p</I>).<I>a</I>&#X2212;<I>b</I></TD></TR>
-</TABLE><P>
-and the solution of the differential equation is :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>(<I>x</I>)=
-<FONT COLOR=red><I>L</I></FONT><SUP>&#X2212;1</SUP>((<FONT COLOR=red><I>L</I></FONT>(<I>f</I>)(<I>x</I>)+(<I>x</I>+<I>p</I>).<I>a</I> +<I>b</I>)/(<I>x</I><SUP>2</SUP>+<I>p</I>.<I>x</I>+<I>q</I>))
-</TD></TR>
-</TABLE><P>
-Example :<BR>
-Solve :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>&#X2032; &#X2032; &#X2212;6. <I>y</I>&#X2032;+9. <I>y</I>  = <I>x</I>. <I>e</I><SUP>3. <I>x</I></SUP>,
-    <I>y</I>(0)=<I>c</I>_0,    <I>y</I>&#X2032;(0)=<I>c</I>_1
-</TD></TR>
-</TABLE><P>
-Here, <I>p</I>=&#X2212;6, <I>q</I>=9.<BR>
+<div class="center"><span style="font-family:monospace">[[1,0,-2],[0,1,4]]</span></div>
+Hence <span style="font-style:italic">x</span>=&#X2212;2 and <span style="font-style:italic">y</span>=4 is the solution of this system.<p><span style="font-family:monospace">rref</span> can also solve several linear systems
+of equations having the same first member.
+We write the second members as a column matrix.<br>
 Input :
-</P><DIV CLASS="center"><TT>laplace(x*exp(3*x))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">rref([[3,1,-2,1],[3,2,2,2]])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>1/(x</TT><CODE><TT>^</TT></CODE><TT> 2-6*x+9)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[[1,0,-2,0],[0,1,4,1]]</span></div><p>
+Which means that (<span style="font-style:italic">x</span>=&#X2212;2 and <span style="font-style:italic">y</span>=4) is the solution of the system
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X23A7;<br>
+&#X23A8;<br>
+&#X23A9;</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >&#X2212;2 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
+</table></td></tr>
+</table><p>
+and (<span style="font-style:italic">x</span>=0 and <span style="font-style:italic">y</span>=1) is the solution of the system
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X23A7;<br>
+&#X23A8;<br>
+&#X23A9;</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >1 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
+</table></td></tr>
+</table></li><li class="li-itemize">If <span style="font-family:monospace">rref</span> has two parameters, the second parameter must be an integer 
+<span style="font-style:italic">k</span>, and the Gauss-Jordan reduction will be performed on (at most)
+the first <span style="font-style:italic">k</span> columns.<br>
 Input :
-</P><DIV CLASS="center"><TT>ilaplace((1/(x</TT><CODE><TT>^</TT></CODE><TT>2-6*x+9)+(x-6)*c_0+c_1)/(x</TT><CODE><TT>^</TT></CODE><TT>2-6*x+9))</TT></DIV><P>
+<div class="center"><span style="font-family:monospace">rref([[3,1,-2,1],[3,2,2,2]],1)</span></div>
 Output :
-</P><DIV CLASS="center"><TT>(216*x</TT><CODE><TT>^</TT></CODE><TT>3-3888*x*c_0+1296*x*c_1+1296*c_0)*exp(3*x)/1296</TT></DIV><P>
-After simplification and factorisation (<TT>factor</TT> command) 
-the solution <I>y</I> is :
-</P><DIV CLASS="center"><TT>(-18*c_0*x+6*c_0+x</TT><CODE><TT>^</TT></CODE><TT>3+6*x*c_1)*exp(3*x)/6</TT></DIV><P>
-Note that this equation could be solved directly, input :
-</P><DIV CLASS="center"><TT>desolve(y&#X2019;&#X2019;-6*y&#X2019;+9*y=x*exp(3*x),y)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>exp(3*x)*(-18*c_0*x+6*c_0+x</TT><CODE><TT>^</TT></CODE><TT>3+6*x*c_1)/6</TT></DIV><HR>
-<A HREF="cascmd_en455.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en457.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">[[3,1,-2,1],[0,1,4,1]]</span></div>
+</li></ul>
+<hr>
+<a href="cascmd_en455.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en457.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

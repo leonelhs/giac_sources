@@ -1,26 +1,40 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Effacer les points définis par TX et TY</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr879.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr881.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1032">10.2.5</A>  Effacer les points définis par <TT>TX</TT> et <TT>TY</TT></H3><P>
-Lorsque les axes sont dessinés, les points ayant pour coordonnées des 
-multiples de <TT>TX</TT> et de <TT>TY</TT> sont dessinés.<BR>
-Pour effacer ces points, en gardant les axes il suffit de mettre 0 dans
-<TT>TX</TT> et/ou dans <TT>TY</TT> : on définit <TT>TX</TT> et <TT>TY</TT>
-avec la configuration graphique.</P><HR>
-<A HREF="cascmd_fr879.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr881.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Avoir du papier pointé : papier_pointe dot_paper</title>
+</head>
+<body >
+<a href="cascmd_fr879.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr881.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1064" class="subsection">10.2.6  Avoir du papier pointé : <span style="font-family:monospace">papier_pointe dot_paper</span></h3>
+<p><a id="hevea_default1591"></a><a id="hevea_default1592"></a>
+<span style="font-family:monospace">papier_pointe</span> permet d’avoir du papier pointé c’est à dire
+de tracer un reseau de points sur des droites horizontales et sur des droites
+de pente tan(<span style="font-style:italic">t</span>).<br>
+<span style="font-family:monospace">papier_pointe</span> a 3,4 ou 5 arguments : l’unité <span style="font-family:monospace">ux</span> sur l’axe des 
+<span style="font-style:italic">x</span>, l’angle <span style="font-family:monospace">t</span> et l’unité 
+<span style="font-family:monospace">uy</span> sur l’axe des <span style="font-style:italic">y</span> et éventuellement <span style="font-family:monospace">x=xmin..xmax,y=ymin..ymax</span>
+pour n’avoir que des points dans le rectangle
+<span style="font-family:monospace">[xmin..xmax]*[ymin..ymax]</span>. Par défaut <span style="font-family:monospace">xmin,xmax,ymin,ymax</span> sont
+les valeurs définies dans <span style="font-family:monospace">Cfg-&gt;Configuration graphique</span>.<br>
+Vous avez la possibilité d’enlever les axes orthonormés en utilisant
+le bouton <span style="font-family:monospace">cfg</span> et en décochant <span style="font-family:monospace">Montrer les axes</span>.<br>
+On tape pour avoir les sommets d’un réseau :
+</p><div class="center"><span style="font-family:monospace">papier_pointe(0.6,pi/2,0.6)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le pointage de tous les sommets du reseau formé par des carrés dans le rectangle </span>[<span style="font-style:italic">xmin</span>,<span style="font-style:italic">xmax</span>]×[<span style="font-style:italic">ymin</span>,<span style="font-style:italic">ymax</span>]</div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">papier_pointe(1,pi/3,sqrt(3)/2,x=-2..3,y=-1..2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le pointage de tous les sommets du reseau formé par des triangles équilatéraux dans le rectangle </span>[−2,3]×[−1,2]</div>
+<hr>
+<a href="cascmd_fr879.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr881.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

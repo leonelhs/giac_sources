@@ -1,25 +1,34 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>fsolve with the option hybridsj_solver</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en502.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en504.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc583">4.5.6</A>  <TT>fsolve</TT> with the option <TT>hybridsj_solver</TT></H3><P><A NAME="@default854"></A>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>fsolve or nSolve with the option steffenson_solver</title>
+</head>
+<body >
+<a href="cascmd_en502.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en504.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec613" class="subsection">4.4.6  <span style="font-family:monospace">fsolve</span> or <span style="font-family:monospace">nSolve</span> with the option <span style="font-family:monospace">steffenson_solver</span></h3>
+<p><a id="hevea_default854"></a>
+The Steffenson method is generically the fastest method.<br>
+It combines the Newton method with a "delta-two" Aitken acceleration : 
+with the Newton method, we obtain the sequence <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub> and the convergence
+acceleration gives the Steffenson sequence 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">R</span><sub><span style="font-style:italic">i</span></sub> =<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub> &#X2212; </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+1</sub> &#X2212; <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)<sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"> (<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+2</sub> &#X2212; 2 <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+1</sub> + <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)</td></tr>
+</table></td><td class="dcell"> </td></tr>
+</table><p>
 Input :
-</P><DIV CLASS="center"><TT>fsolve([x</TT><CODE><TT>^</TT></CODE><TT>2+y-2,x+y</TT><CODE><TT>^</TT></CODE><TT>2-2],[x,y],[2,2],hybridsj_solver)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">fsolve(cos(x)=x,x,0,steffenson_solver)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[1.0,1.0]</TT></DIV><HR>
-<A HREF="cascmd_en502.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en504.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0.739085133215</span></div>
+<hr>
+<a href="cascmd_en502.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en504.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

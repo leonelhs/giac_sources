@@ -847,8 +847,11 @@ namespace giac {
     else
       s = "<circle vector-effect=\"non-scaling-stroke\" stroke=\""+color_string(attr)+"\"  stroke-width=\""+print_INT_(attr.width);
     // COUT << s << endl;
-    s = s+"\" fill=\"none\" cx=\""
-      + re(center,contextptr).print(contextptr)+"\" cy=\""
+    if (attr.fill_polygon)
+      s = s+"\" fill=\""+color_string(attr)+"\" cx=\"";
+    else
+      s = s+"\" fill=\"none\" cx=\"";
+    s = s + re(center,contextptr).print(contextptr)+"\" cy=\""
       + im(center,contextptr).print(contextptr)+"\" r=\""
       + print_DOUBLE_(r,contextptr)
       + "\" />\n";
@@ -954,19 +957,22 @@ namespace giac {
 
   static string svg_half_line(gen A, gen B, svg_attribut attr, string legende,double xmin,double xmax,double ymin,double ymax,GIAC_CONTEXT){
     gen i=cst_i, C,D;
-    A=evalf(A,1,contextptr); B=evalf(B,1,contextptr);
-    // recherche de l'??quation de la droite
-    if (is_zero(eval(re(A,contextptr)-re(B,contextptr),eval_level(contextptr),contextptr))){
-      gen x=re(A,contextptr);
-      if (is_positive(eval(im(B,contextptr)-im(A,contextptr),eval_level(contextptr),contextptr),contextptr))
+    A=evalf(eval(A,1,contextptr),1,contextptr); B=evalf(eval(B,1,contextptr),1,contextptr);
+    gen reA,imA,reB,imB;
+    reim(A,reA,imA,contextptr);
+    reim(B,reB,imB,contextptr);
+    // recherche de l'equation de la droite
+    if (is_zero(reA-reB)){
+      gen x=reA;
+      if (is_positive(imB-imA,contextptr))
 	C=x+i*ymax;
       else
 	C=x+i*ymin;
     } 
     else {
-      gen a=eval((im(A,contextptr)-im(B,contextptr))/(re(A,contextptr)-re(B,contextptr)),eval_level(contextptr),contextptr);
-      gen b=eval(im(A,contextptr)-a*re(A,contextptr),eval_level(contextptr),contextptr);
-      if (is_positive(eval(im(B,contextptr)-im(A,contextptr),eval_level(contextptr),contextptr),contextptr))
+      gen a=(imB-imA)/(reB-reA);
+      gen b=imA-a*reA;
+      if (is_positive(reB-reA,contextptr))
 	C=xmax+i*(a*xmax+b);
       else
 	C=xmin+i*(a*xmin+b); 
@@ -990,7 +996,10 @@ namespace giac {
     }
     else
       s = s+"vector-effect=\"non-scaling-stroke\"  stroke-width=\""+print_INT_(attr.width);
-    s = s+"\" stroke=\""+color_string(attr)+"\" fill=\"none\" points=\"";
+    if (attr.fill_polygon)
+      s = s+"\" fill=\""+color_string(attr)+"\" points=\"";
+    else
+      s = s+"\" stroke=\""+color_string(attr)+"\" fill=\"none\" points=\"";
     for (i=0 ; i<signed(v.size())-1 ; i++){
       s = s+re(evalf(v[i],1,contextptr),contextptr).print(contextptr)+" "+im(evalf(v[i],1,contextptr),contextptr).print(contextptr)+", ";
     }
@@ -1012,7 +1021,10 @@ namespace giac {
     }
     else
       s = s+"vector-effect=\"non-scaling-stroke\"  stroke-width=\""+print_INT_(attr.width);
-    s = s+"\" stroke=\""+color_string(attr)+"\" fill=\"none\" d=\"M";
+    if (attr.fill_polygon)
+      s = s+"\" fill=\""+color_string(attr)+"\" d=\"M";
+    else
+      s = s+"\" stroke=\""+color_string(attr)+"\" fill=\"none\" d=\"M";
     g=evalf(g,1,contextptr);
     vecteur v=*(g._VECTptr);
     for (i=0 ; i<signed(v.size()) ; i++){

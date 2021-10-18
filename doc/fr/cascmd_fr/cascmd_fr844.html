@@ -1,44 +1,93 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La boucle : for pour fpour</title>
+</head>
+<body >
+<a href="cascmd_fr843.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr845.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1022" class="subsection">9.4.21  La boucle : <span style="font-family:monospace">for pour fpour</span></h3>
+<p><a id="hevea_default1533"></a><a id="hevea_default1534"></a><a id="hevea_default1535"></a><a id="hevea_default1536"></a><a id="hevea_default1537"></a><a id="hevea_default1538"></a><a id="hevea_default1539"></a>
+<span style="font-family:monospace">for</span> et <span style="font-family:monospace">pour</span> se sert d’une variable d’incrémentation par
+exemple <span style="font-family:monospace">j</span> (doit être déclarée comme variable locale).<br>
+<span style="font-weight:bold">Première syntaxe</span> <br>
+On précise entre des parenthèses et en les séparant par 
+un point virgule, la valeur de départ, la condition d’arrêt
+et la façon dont on incrémente la variable d’incrémentation, puis on
+met un bloc d’instructions :<br>
+<span style="font-family:monospace">for</span> permet de faire plusieurs fois un bloc d’instructions selon
+la valeur de la variable d’incrémentation.<br>
+<span style="font-family:monospace">for (j:=j1;j&lt;=j2;j:=j+3) {&lt;instructions&gt; }</span><br>
+Par exemple :<br>
+<span style="font-family:monospace">S:=0;for (j:=3;j&lt;20;j:=j+3) {S:=S+j;}</span><br>
+<span style="font-weight:bold">Deuxième syntaxe</span><br>
+On commence par <span style="font-family:monospace">for</span>, puis, on précise avec les mots <span style="font-family:monospace">from</span>, <span style="font-family:monospace">to</span>
+et <span style="font-family:monospace">step</span>, la valeur de départ, la condition d’arrêt et la faç on 
+dont on incrémente cette variable d’incrémentation, puis on met les 
+instructions à effectuer entre <span style="font-family:monospace">do</span> et <span style="font-family:monospace">end_for</span> :<br>
+<span style="font-family:monospace">for j from j1 to j2 step p do &lt;instructions&gt; end_for;</span><br>
+Ou on utilise sa traduction. On commence par <span style="font-family:monospace">pour</span>, puis, on précise avec
+les mots <span style="font-family:monospace">de</span>, <span style="font-family:monospace">jusque</span> et <span style="font-family:monospace">pas</span>, la valeur de départ, la 
+condition d’arrêt et la façon dont on incrémente cette variable 
+d’incrémentation, puis on met les instructions à effectuer entre <span style="font-family:monospace">faire</span>
+et <span style="font-family:monospace">fpour</span> :<br>
+<span style="font-family:monospace">pour j de j1 jusque j2 pas p faire &lt;instructions&gt; fpour;</span>
+Par exemple :<br>
+<span style="font-family:monospace">S:=0;for j from 3 to 20 step 3 do S:=S+j; end_for;</span><br>
+<span style="font-family:monospace">S:=0;pour j de 3 jusque 20 pas 3 faire S:=S+j; fpour;</span><br>
+<span style="font-weight:bold">Troisième syntaxe</span><br>
+On peut à l’aide d’un ensemble, d’une liste ou d’une plage de valeurs <span style="font-family:monospace">A</span>
+donner les différentes valeurs que doit prendre la variable d’incrémentation <span style="font-family:monospace">j</span>
+en mettant :<br>
+<span style="font-family:monospace">for j in A do ....end_for;</span>.<br>
+ou sa traduction :<br>
+<span style="font-family:monospace">pour j in A faire &lt;instructions&gt; fpour;</span>
+Par exemple lorsque <span style="font-family:monospace">j</span> s’incrémente de 1:<br>
+<span style="font-family:monospace">S:=0;for j in 1..5 do S:=S+j; end_for;</span><br>
+ou sa traduction<br>
+<span style="font-family:monospace">S:=0;pour j in 1..5 faire S:=S+j; fpour;</span><br>
+lorsque <span style="font-family:monospace">j</span> décrit un ensemble de valeurs :<br>
+<span style="font-family:monospace">A:=[3,6,9,15,30,45];S:=0;for j in A do S:=S+j; end_for;</span><br>
+ou sa traduction<br>
+<span style="font-family:monospace">A:=[3,6,9,15,30,45];S:=0;pour j in A faire S:=S+j; fpour;</span><br>
+ou<br>
+<span style="font-family:monospace">A:=%</span><span style="font-family:monospace">3,6,9,15,30,45%</span><span style="font-family:monospace">;S:=0;for j in A do S:=S+j; end_for;</span><br>
+ou sa traduction<br>
+<span style="font-family:monospace">A:=%</span><span style="font-family:monospace">3,6,9,15,30,45%</span><span style="font-family:monospace">;S:=0;pour j in A faire S:=S+j; fpour;</span><br>
 
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’instruction conditionnelle : switch</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr843.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr845.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc990">9.4.20</A>  L’instruction conditionnelle : <TT>switch</TT></H3><P><A NAME="@default1533"></A><A NAME="@default1534"></A><A NAME="@default1535"></A>
-<TT>switch</TT> a comme paramètre une expression.<BR>
-Selon la valeur de cette expression, marquée par <TT>case</TT> (ou par 
-<TT>default</TT>), <TT>switch</TT> 
-permet de faire le bloc d’instructions correspondant à la valeur d’une 
-expression qui doit être une valeur entière.<BR>
+<span style="font-weight:bold">Attention</span><br>
+ Ne pas choisir <span style="font-family:monospace">i</span> comme variable d’incrémentation car
+<span style="font-family:monospace">i</span> représente un nombre complexe !!!<br>
 On tape :
-</P><PRE CLASS="verbatim">opere(a,b,c):={
-switch(c) {
-  case 1 : {a:=a+b;break;} 
-  case 2 : {a:=a-b;break;} 
-  case 3 : {a:=a*b;break;} 
-  default : {a:=a^b;}
+</p><pre class="verbatim">somfor(n):={
+local j,s:=0;
+for (j:=1;j&lt;=n;j++){
+   s:=s+1/j;
+} 
+return s;
 }
-return a;
+</pre><pre class="verbatim">sompour(n):={
+local j,s:=0;
+pour j de 1 jusque n faire
+   s:=s+1/j;
+fpour 
+retourne s;
 }
-</PRE><P>puis :
-</P><DIV CLASS="center"><TT>opere(2,3,1)</TT></DIV><P>
+</pre><p>
+puis:
+</p><div class="center"><span style="font-family:monospace">somfor(5)</span></div><p>
+ou 
+</p><div class="center"><span style="font-family:monospace">sompour(5)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>5</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>opere(2,3,2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-1</TT></DIV><HR>
-<A HREF="cascmd_fr843.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr845.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">137/60</span></div>
+<hr>
+<a href="cascmd_fr843.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr845.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

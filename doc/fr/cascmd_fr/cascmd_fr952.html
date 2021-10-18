@@ -1,36 +1,39 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’équation cartésienne d’un objet géométrique : equation</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr951.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr953.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1117">10.15.7</A>  L’équation cartésienne d’un objet géométrique : <TT>equation</TT></H3><P><A NAME="@default1845"></A><A NAME="sec:equation2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1049.html#sec:equation3">11.12.5</A> pour la géométrie 3-d.<BR>
-<TT>equation</TT> permet d’avoir l’équation cartésienne d’un objet
-géométrique.<BR>
-<B>Attention</B> !!! il faut auparavant purger les variables <TT>x</TT> et 
-<TT>y</TT> en tapant <TT>purge(x)</TT> et <TT>purge(y)</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>L’équation paramétrique d’un objet géométrique : parameq</title>
+</head>
+<body >
+<a href="cascmd_fr951.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr953.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1155" class="subsection">10.15.8  L’équation paramétrique d’un objet géométrique : <span style="font-family:monospace">parameq</span></h3>
+<p><a id="hevea_default1843"></a><a id="sec:parameq2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1049.html#sec%3Aparameq3">11.12.6</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">parameq</span>, en géométrie plane, permet d’avoir l’équation
+paramétrique d’un objet géométrique sous la forme du nombre complexe 
+<span style="font-style:italic">x</span>(<span style="font-style:italic">t</span>)+<span style="font-style:italic">i</span>*<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>).<br>
+<span style="font-weight:bold">Attention</span> !!! il faut auparavant purger la variable <span style="font-family:monospace">t</span> en tapant :
+<span style="font-family:monospace">purge(t)</span> ou <span style="font-family:monospace">t:=’t’</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>equation(droite(-1,i))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">parameq(droite(-1,i))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(x-y)=-1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">-t+(1-t)*(i)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>equation(cercle(-1,i))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">parameq(cercle(-1,i))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>((x+1)</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2)=1</TT></DIV><P>
-qui est l’équation du cercle de centre -1 et de rayon le module de <TT>i</TT>.
-</P><HR>
-<A HREF="cascmd_fr951.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr953.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">-1+exp(i*t)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">normal(parameq(ellipse(-1,1,i)))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">sqrt(2)*cos(t)+(i)*sin(t)</span></div>
+<hr>
+<a href="cascmd_fr951.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr953.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,38 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction testant le type de son argument: getType</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr829.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr831.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc976">9.4.6</A>  Fonction testant le type de son argument: <TT>getType</TT></H3><P><A NAME="@default1492"></A><A NAME="@default1493"></A><A NAME="@default1494"></A><A NAME="@default1495"></A><A NAME="@default1496"></A><A NAME="@default1497"></A><A NAME="@default1498"></A>
-<TT>getType</TT> est une fonction qui a un argument et qui renvoie le
-type de cet argument par exemple :<BR>
- <TT>STR,EXPR,VAR,NONE,PIC,LIST,MAT,FUNC,NUM...</TT>.<BR>
-<TT>getType</TT> ne renvoie pas la même chose que <TT>type</TT>, c’est pour des 
-raisons de compatibilité.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonction testant le type de son argument: compare</title>
+</head>
+<body >
+<a href="cascmd_fr829.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr831.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1008" class="subsection">9.4.7  Fonction testant le type de son argument: <span style="font-family:monospace">compare</span></h3>
+<p><a id="hevea_default1496"></a>
+<span style="font-family:monospace">compare</span> est une fonction qui a deux arguments et qui renvoie 
+<span style="font-family:monospace">1</span> si ses arguments ont des types différents ou
+ou si ses arguments sont de même type et sont mis dans l’ordre croissant,
+et qui renvoie <span style="font-family:monospace">0</span> sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>getType(3.14)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">compare(1,2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>NUM</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>getType(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">compare(2,1)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>VAR</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>getType(x+2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">compare("3","a")</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>EXPR</TT></DIV><HR>
-<A HREF="cascmd_fr829.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr831.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">compare("a",3)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">compare(3,"a")</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">compare("a",3)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+En effet on a :
+<span style="font-family:monospace">type(3)=DOM_INT=2</span> et <span style="font-family:monospace">type("a")=DOM_STRING=12</span>
+</p>
+<hr>
+<a href="cascmd_fr829.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr831.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

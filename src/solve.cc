@@ -491,8 +491,11 @@ namespace giac {
 #endif
 	tmp=evalf(tmp,eval_level(contextptr),contextptr);
 	int n1(_floor(tmp,contextptr).val);
-	for (;n0<=n1;++n0)
-	  newv.push_back(subst(*it,n,n0,false,contextptr));
+	for (;n0<=n1;++n0){
+	  gen sol=ratnormal(subst(*it,n,n0,false,contextptr),contextptr);
+	  if (!equalposcomp(excluded,sol))
+	    newv.push_back(sol);
+	}
       }
       else {
 	if (is_strictly_greater(l,sol,contextptr))
@@ -2045,7 +2048,16 @@ namespace giac {
       }
     }
 #endif
-    expr=factor(expr,false,contextptr); // factor in complex or real mode
+    gen ea,eb,ec;
+    if (is_quadratic_wrt(expr,x,ea,eb,ec,contextptr)){
+      gen tmp=factor(expr,false,contextptr); // factor in complex or real mode
+      if (!lop(tmp,at_rootof).empty())
+	expr=_sqrfree(expr,contextptr);
+      else
+	expr=tmp;
+    }
+    else
+      expr=factor(expr,false,contextptr); // factor in complex or real mode
     if (expr.is_symb_of_sommet(at_neg))
       expr=expr._SYMBptr->feuille;
     if (is_undef(expr))
@@ -2163,8 +2175,10 @@ namespace giac {
       }
       return res;
     }
-    if (!g.is_symb_of_sommet(u))
+    if (!g.is_symb_of_sommet(u)){
+      // if (g.is_symb_of_sommet(at_and)) return g._SYMBptr->feuille;
       return g;
+    }
     return remove_and(g._SYMBptr->feuille,u);
   }
 
@@ -6390,41 +6404,47 @@ namespace giac {
       const_iterateur st=sols.begin(),stend=sols.end();
       for (;st!=stend;++st){
 	int foundvars=int(st->_VECTptr->size());
-	vecteur current=*st->_VECTptr;
-	gen curg=ratnormal(ratnormal(subst(g,vecteur(var.end()-foundvars,var.end()),*st,false,contextptr),contextptr),contextptr);
-	gen x;
-	int xpos=0;
-	// First search in current an identifier curg depends on
-	for (;xpos<foundvars;++xpos){
-	  x=current[xpos];
-	  if (x==var[s-foundvars+xpos] && !is_zero(derive(curg,x,contextptr),contextptr) )
-	    break;
-	}
-	if (xpos==foundvars){
-	  xpos=0;
-	  // find next var g depends on 
-	  for (;foundvars<s;++foundvars){
-	    x=var[s-foundvars-1];
-	    current.insert(current.begin(),x);
-	    if (!is_zero(derive(curg,x,contextptr),contextptr))
+	gen curgf=_factors(ratnormal(ratnormal(subst(g,vecteur(var.end()-foundvars,var.end()),*st,false,contextptr),contextptr),contextptr),contextptr);
+	if (curgf.type!=_VECT) return vecteur(1,gensizeerr(contextptr));
+	const_iterateur curgfit=curgf._VECTptr->begin(),curgfend=curgf._VECTptr->end();
+	for (;curgfit!=curgfend;curgfit+=2){
+	  vecteur current=*st->_VECTptr;
+	  foundvars=int(st->_VECTptr->size());
+	  gen curg=*curgfit;
+	  gen x;
+	  int xpos=0;
+	  // First search in current an identifier curg depends on
+	  for (;xpos<foundvars;++xpos){
+	    x=current[xpos];
+	    if (x==var[s-foundvars+xpos] && !is_zero(derive(curg,x,contextptr),contextptr) )
 	      break;
 	  }
-	  if (s==foundvars){
-	    if (is_zero(simplify(curg,contextptr),contextptr))
-	      newsols.push_back(current);
-	    continue;
+	  if (xpos==foundvars){
+	    xpos=0;
+	    // find next var g depends on 
+	    for (;foundvars<s;++foundvars){
+	      x=var[s-foundvars-1];
+	      current.insert(current.begin(),x);
+	      if (!is_zero(derive(curg,x,contextptr),contextptr))
+		break;
+	    }
+	    if (s==foundvars){
+	      if (is_zero(simplify(curg,contextptr),contextptr))
+		newsols.push_back(current);
+	      continue;
+	    }
 	  }
-	}
-	// solve
-	vecteur xsol(solve(curg,*x._IDNTptr,complexmode,contextptr));
-	const_iterateur xt=xsol.begin(),xtend=xsol.end();
-	for (;xt!=xtend;++xt){
-	  // current[xpos]=*xt;
-	  newsols.push_back(subst(current,*x._IDNTptr,*xt,false,contextptr));
-	}
+	  // solve
+	  vecteur xsol(solve(curg,*x._IDNTptr,complexmode,contextptr));
+	  const_iterateur xt=xsol.begin(),xtend=xsol.end();
+	  for (;xt!=xtend;++xt){
+	    // current[xpos]=*xt;
+	    newsols.push_back(subst(current,*x._IDNTptr,*xt,false,contextptr));
+	  }
+	} // end for curfit!=curfitend
       } // end for (;st!=stend;)
       sols=newsols;
-    }
+    } // end for jt!=jtend
     // Add var at the beginning of each solution of sols if needed
     it=sols.begin(); 
     itend=sols.end();

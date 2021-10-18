@@ -1,37 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Fast Fourier Transform : fft</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en168.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en170.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc193">2.22.3</A>  Fast Fourier Transform : <TT>fft</TT></H3><P><A NAME="@default341"></A>
-<TT>fft</TT> takes as argument a list (or a sequence)
-<TT>[<I>a</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>a</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT> where <TT>N</TT> is a power of two.<BR>
-<TT>fft</TT> returns the list <TT>[<I>b</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>b</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT> such that, 
-for <TT>k=0..N-1</TT> 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>fft</I>([<I>a</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>a</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>])</TT><TT>[<I>k</I>]=<I>b</I></TT><SUB><TT><I>k</I></TT></SUB><TT>=</TT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT><TT><I>N</I>-1</TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT><FONT SIZE=6>&#X2211;</FONT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT><TT><I>j</I>=0</TT></TT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TT><I>x</I></TT><SUB><TT><I>j</I></TT></SUB><TT>&#X3C9;</TT><SUB><TT><I>N</I></TT></SUB><SUP><TT>-<I>k</I>·
-<I>j</I></TT></SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD></TR>
-</TABLE><P>
-where &#X3C9;<SUB><I>N</I></SUB> is a primitive <I>N</I>-th root of the unity.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Fast Fourier Transform : fft</title>
+</head>
+<body >
+<a href="cascmd_en168.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en170.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec210" class="subsection">2.22.3  Fast Fourier Transform : <span style="font-family:monospace">fft</span></h3>
+<p><a id="hevea_default341"></a>
+<span style="font-family:monospace">fft</span> takes as argument a list (or a sequence)
+<span style="font-family:monospace">[</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">]</span> where <span style="font-family:monospace">N</span> is a power of two.<br>
+<span style="font-family:monospace">fft</span> returns the list <span style="font-family:monospace">[</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">]</span> such that, 
+for <span style="font-family:monospace">k=0..N-1</span> 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace"><span style="font-style:italic">fft</span></span><span style="font-family:monospace">([</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">])</span><span style="font-family:monospace">[</span><span style="font-family:monospace"><span style="font-style:italic">k</span></span><span style="font-family:monospace">]=</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">k</span></span></sub><span style="font-family:monospace">=</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-family:monospace"><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-family:monospace"><span style="font-size:xx-large">&#X2211;</span></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-family:monospace"><span style="font-family:monospace"><span style="font-style:italic">j</span></span><span style="font-family:monospace">=0</span></span></td></tr>
+</table></td><td class="dcell"><span style="font-family:monospace"><span style="font-style:italic">x</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">j</span></span></sub><span style="font-family:monospace">&#X3C9;</span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span></sub><sup><span style="font-family:monospace">-</span><span style="font-family:monospace"><span style="font-style:italic">k</span></span><span style="font-family:monospace">·
+</span><span style="font-family:monospace"><span style="font-style:italic">j</span></span></sup></td></tr>
+</table></td><td class="dcell"> </td></tr>
+</table><p>
+where &#X3C9;<sub><span style="font-style:italic">N</span></sub> is a primitive <span style="font-style:italic">N</span>-th root of the unity.<br>
 Input :
-</P><DIV CLASS="center"><TT>fft(0,1,1,0)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">fft(0,1,1,0)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[2.0, -1-i, 0.0, -1+i]</TT></DIV><HR>
-<A HREF="cascmd_en168.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en170.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[2.0, -1-i, 0.0, -1+i]</span></div>
+<hr>
+<a href="cascmd_en168.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en170.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

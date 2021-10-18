@@ -54,7 +54,8 @@ width:400px;
 <style type="text/css">
 
 .matrixcell {
-  font-size:18px;
+font-size:18px;
+width:100px;
 }
 
 td.matrixcell {
@@ -189,12 +190,17 @@ function applyKey (_event_){
  // --- Retrieve event object from current web explorer
  var winObj = checkEventObj(_event_);	
  var intKeyCode = winObj.keyCode;
+ var intShiftKey = winObj.shiftKey;
  var intAltKey = winObj.altKey;
  var intCtrlKey = winObj.ctrlKey;
+ var done=false;
+ if (intShiftKey && intKeyCode == KEY_ENTER){
+   UI.insert(UI.focused,'\n');
+   done=true;
+ }
  // raccourcis avec Alt
- // F1 aide, c cmdline, m menu, 
+ // F1 aide, c cmdline, m menu,
  if (intAltKey) {
-   var done=false;
    if (intKeyCode == KEY_D || intKeyCode == KEY_B || intKeyCode == KEY_RIGHT){
     UI.move_focus(UI.focused,1);
     done=true;
@@ -227,13 +233,14 @@ function applyKey (_event_){
     UI.completion(cmentree);
     done=true;
    }
-   if (done){
+ }
+ if (done){
     // --- Map the keyCode in another keyCode not used
     winObj.keyCode = REMAP_KEY_T;
     winObj.returnValue = false;
     return false;
-   }
- }	
+ }
+ return true;
 }
 
 document.onkeydown = applyKey;
@@ -256,10 +263,10 @@ document.onkeydown = applyKey;
   href="https://fr.wikipedia.org/wiki/Aide:Purge_du_cache_du_navigateur">effacez
   compl&egrave;tement le cache du navigateur</a> et rechargez.
   <br>
-  Consultez le 
+  Le 
   <button  
   onclick="if(document.getElementById('help').style.display=='none') document.getElementById('help').style.display='block';  else document.getElementById('help').style.display='none';" title="Montrer ou cacher le tutoriel">Tutoriel</button>
-  sous l'icone de Xcas.  
+  est sous l'icone de Xcas.  
 <hr>
 </div>
 <span id="apropos" style="display:none">
@@ -307,6 +314,9 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
       type="number" name="autosimp_level"
   title="0: pas d'autosimplification, 1: minimum, 2: maximum" value=1
   max=2 min=0>
+      Syntaxe <input class="bouton" type="button" value="Python"
+  onclick="python_mode.checked=!python_mode.checked;"> <input
+  class="bouton" type="checkbox" name="python_mode" title="Cocher pour utiliser la syntaxe compatible Python">,
     </td>
     </tr>
     <tr>
@@ -380,12 +390,7 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
     </th>
     <td>
       <button class="bouton" onclick="UI.show_config()" title="Permet de modifier la configuration">Config</button>
-      <h1>Session</h1>
-      <span id="startup_restore" style="display:none">
-      pr&eacute;c&eacute;dente
-      <button title="Charge la session pr&eacute;c&eacute;dente" class="bouton" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),false,false);">evalu&eacute;e</button> ou
-      <button title="Charge la session pr&eacute;c&eacute;dente sans l'&eacute;valuer" class="bouton" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),true,false);">non</button>
-      </span>
+      <strong>Session</strong>
       <span id='thelink'></span>
       <span id='themailto'></span>
     </td>
@@ -398,6 +403,11 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
       <button id="exportbutton" class="bouton" title="Cliquer ici pour publier la session en HTML avec le nom de fichier du champ texte qui pr&eacute;c&egrave;de" onclick='UI.savesession(1);'>Export</button>
       </span>
       <button id="loadbutton_cookie" class="bouton" title="Cliquer ici pour charger une session sauvegard&eacute;e" onclick="document.getElementById('loadfile_cookie').innerHTML=UI.listCookies();">Charger</button>
+      <span id="startup_restore" style="display:none">
+      pr&eacute;c&eacute;dente
+      <button title="Charge la session pr&eacute;c&eacute;dente" class="bouton" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),false,false);">evalu&eacute;e</button> ou
+      <button title="Charge la session pr&eacute;c&eacute;dente sans l'&eacute;valuer" class="bouton" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),true,false);">non</button>
+      </span>
       <span id="loadfile_cookie"></span>
       <button id="loadbutton_file" style="height:25px;display:none" title="Cliquer ici pour ajouter &agrave; la session courante le contenu d'une session sauvegard&eacute;e" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Charger</button>
       <form id="loadfile" style="display:none">
@@ -427,7 +437,7 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
     (attention, tapez <tt>1.2</tt> pour 1 virgule 2).
 Vous pouvez utiliser le clavier scientifique 
 (bouton <tt>123</tt> au-dessus de la ligne de commande)
-    et les assistants du bouton <tt>menu</tt>.
+    et les assistants du bouton <tt>apps</tt>.
 Validez avec Entr&eacute;e ou le bouton <tt>ok</tt> en vert.
 <br>
 Pour obtenir de l'aide, tapez un nom de commande puis le
@@ -492,7 +502,7 @@ Cette feuille de calcul est compos&eacute;e du haut vers le bas de:
   <br>
   Pour vous aider &agrave; remplir la ligne de commande,
   vous pouvez cliquer sur le bouton 123 qui fait apparaitre
-  le <strong>clavier scientifique</strong> et sur le bouton menu
+  le <strong>clavier scientifique</strong> et sur le bouton apps
   qui contient des commandes
   fr&eacute;quemment utili&eacute;es et des assistants
   (d&eacute;placez la souris pr&egrave;s des boutons pour
@@ -508,7 +518,7 @@ Cette feuille de calcul est compos&eacute;e du haut vers le bas de:
   est compl&egrave;te) ou des suggestions de noms de
   commande (sinon).
   <br>
-  Par exemple, cliquer sur le bouton <tt>menu</tt> puis sur le bouton
+  Par exemple, cliquer sur le bouton <tt>apps</tt> puis sur le bouton
   <tt>factor</tt> puis tapez sur <tt>?</tt>, observez l'aide
   en haut, cliquez sur un des exemples ou completez avec
   x^4-1 puis tapez Entree.
@@ -612,7 +622,7 @@ onclick="var tmp=document.getElementById('tutosimplifier'); if (tmp.style.displa
   quelques commandes de r&eacute;&eacute;criture.
   <ul>
     <li>
-  L'appui sur le bouton <tt>menu</tt> puis <tt>simpl</tt>
+  L'appui sur le bouton <tt>apps</tt> puis <tt>simpl</tt>
     ins&egrave;re
     la commande
   <button class="bouton"
@@ -701,7 +711,7 @@ onclick="var tmp=document.getElementById('tutolinalg'); if (tmp.style.display=='
   </li>
   <li>
   Pour cr&eacute;er une matrice, utiliser l'assistant <tt>matrix</tt>
-  du <tt>menu</tt>. Vous pouvez d&eacute;finir les coefficients par
+  du <tt>apps</tt>. Vous pouvez d&eacute;finir les coefficients par
   une formule en fonction de la ligne et de la colonne ou
   &eacute;l&eacute;ment par &eacute;l&eacute;ment
   (vous pouvez entrer plusieurs coefficients en les s&eacute;parant par
@@ -846,7 +856,7 @@ onclick="var tmp=document.getElementById('tutosolve'); if (tmp.style.display=='n
 <strong>R&eacute;soudre</strong>
 </button>
 <span id="tutosolve" style="display:none">
-Depuis le bouton <tt>menu</tt>
+Depuis le bouton <tt>apps</tt>
 <ul>
   <li> l'assistant <tt>solve</tt>
   vous guidera pour r&eacute;soudre une &eacute;quation ou un
@@ -885,7 +895,7 @@ onclick="var tmp=document.getElementById('tutoanalyse'); if (tmp.style.display==
   <strong>Analyse</strong>
   </button>
   <span id="tutoanalyse" style="display:none">
-  Le <tt>menu</tt> contient des assistants pour
+  Le <tt>apps</tt> contient des assistants pour
   d&eacute;finir une fonction (bouton <tt>fonct</tt>),
   d&eacute;terminer le tableau de variations d'une expression
   (<tt>f(x)</tt>),
@@ -897,7 +907,7 @@ onclick="var tmp=document.getElementById('tutoanalyse'); if (tmp.style.display==
   <br>
   Par exemple pour d&eacute;finir une fonction alg&eacute;brique
   <tt>f</tt> d'une variable, cliquer sur
-  <tt>fonct</tt> du <tt>menu</tt> puis
+  <tt>fonct</tt> de <tt>apps</tt> puis
   mettre <tt>f</tt> comme nom de fonction,
   <tt>x</tt> comme liste des arguments et <tt>sin(x^2)</tt> comme
   valeur renvoy&eacute;ee :
@@ -938,7 +948,7 @@ onclick="var tmp=document.getElementById('tutoanalyse'); if (tmp.style.display==
 onclick="var tmp=document.getElementById('tutoproba'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
   <strong>Probabilit&eacute;s </strong></button>
   <span id="tutoproba" style="display:none">
-  Utiliser l'assistant <tt>rand</tt> du <tt>menu</tt> pour
+  Utiliser l'assistant <tt>rand</tt> de <tt>apps</tt> pour
   g&eacute;n&eacute;rer des nombres pseudo-al&eacute;atoires.
   <br>
   Lois continues:
@@ -992,7 +1002,7 @@ onclick="var tmp=document.getElementById('tutograph'); if (tmp.style.display=='n
   <strong>Graphes </strong>
   </button>
   <span id="tutograph" style="display:none">
-  Utiliser les assistants du <tt>menu</tt> pour
+  Utiliser les assistants du <tt>apps</tt> pour
   cr&eacute;er un graphe d'une fonction d'une ou deux variables
   (<tt>plot</tt>, voir aussi <tt>f(x)</tt> pour avoir un tableau
   de variations),
@@ -1338,10 +1348,10 @@ id="add_e"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'simplify(') ;UI.kbdonfuncoff();" title="Tentative de simplifier une expression, par exemple simplify(sin(3x)/sin(x)). Essayez une commande comme ratnormal, normal ou de reecriture si simplify echoue.">        
  
       <input type="button" style="width:60px;height:35px"
-  name="add_texpand" id="add_texpand" value="texpnd"
+  name="open_rewritetrig" id="open_rewritetrig" value="trigo"
   onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,'texpand(') ;UI.kbdonfuncoff();"
-  title="Developpe les expressions trigonometriques, exponentielles et logarithmes">  
+  onClick="document.getElementById('assistant_rewrite_trig').style.display='block';UI.kbdonfuncoff();"
+  title="Commandes pour transformer des expressions trigonometriques">  
 
       <input type="button" style="width:60px;height:35px" name="add_solve"
 id="add_solve"
@@ -1374,14 +1384,14 @@ id="add_limit"
       onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'factor(') ;UI.kbdonfuncoff();" title="Factorisation, par exemple factor(x^4-1). Utiliser cfactor pour factoriser sur C">
       <input type="button" style="width:60px;height:35px"
-  name="add_tcollect" id="add_tcollect" value="tcoll"
+  name="add_tableur" id="add_tableur" value="tabl."
   onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,'tcollect(') ;UI.kbdonfuncoff();"
-  title="Linearise et regroupe les expressions trigonometriques">        
+  onClick="UI.open_sheet(true);"
+  title="Tableur">        
       <input type="button" style="width:60px;height:35px"
   name="add_matr" id="add_matr" value="matrix"
   onmousedown="event.preventDefault()"
-  onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;document.getElementById('assistant_matr').style.display='block';document.getElementById('matr_type_chooser').style.display='inline';document.getElementById('matr_stats').style.display='none';UI.assistant_matr_setdisplay();UI.set_focus('matr_case0_0');"
+  onClick="UI.open_sheet(false);"
   title="assistant cr&eacute;ation de matrice">
       <input type="button" style="width:60px;height:35px" name="add_tabvar"
 id="add_tabvar"
@@ -1466,6 +1476,17 @@ id="add_debug"
       value=" " onmousedown="event.preventDefault()"
       onClick="UI.insert(UI.focused,' ')" title="Ajoute un espace">        
 </div>
+<div id="assistant_rewrite_trig" style="display:none">
+<button class="bouton"
+    onclick="document.getElementById('assistant_rewrite_trig').style.display='none'">Masquer</button>
+<button class="bouton" onclick="UI.insert(UI.focused,'texpand(')">texpand</button>
+<button class="bouton" onclick="UI.insert(UI.focused,'tlin(')">tlin</button>    
+<button class="bouton" onclick="UI.insert(UI.focused,'tcollect(')">tcollect</button>    
+<button class="bouton" onclick="UI.insert(UI.focused,'trigsin(')">trigsin</button>    
+<button class="bouton" onclick="UI.insert(UI.focused,'trigcos(')">trigcos</button>    
+<button class="bouton" onclick="UI.insert(UI.focused,'trigtan(')">trigtan</button>    
+<button class="bouton" onclick="UI.insert(UI.focused,'halftan(')">halftan</button>    
+</div>
 
 <form id="assistant_matr" style="display:none" onsubmit="setTimeout(UI.assistant_matr_ok()); return false">
 <div id="matr_type_chooser">
@@ -1479,7 +1500,7 @@ id="add_debug"
   <input class="bouton" type="button" value="&eacute;l&eacute;ment par &eacute;l&eacute;ment" onclick="document.getElementById('assistant_matr').matr_formule.checked=false;document.getElementById('assistant_matr').matr_formuleshadow.checked=true;UI.assistant_matr_setdisplay();">
 </div>
 &nbsp; &nbsp; &nbsp;
-<input class="bouton" type="button" title="Annuler" value="Annul." onclick="form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();"> &nbsp;
+<input class="bouton" type="button" title="Annuler" value="Annul." onclick="document.getElementById('chooselawdiv').style.display='none';form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();"> &nbsp;
 <input class="bouton" type="submit" title="ok" value="OK">
 <div id="matr_stats" style="display:none">
   <input class="bouton" type="button"
@@ -1552,24 +1573,17 @@ id="add_debug"
 </div>
 </div>
 <div id="matr_matr">
-<input id="matr_or_sheet" name="matr_or_sheet" class="bouton"
-  type="checkbox" title="Cocher pour passer en mode tableur"
-  onchange="UI.is_sheet=checked; if (checked) UI.matrix2spreadsheet(); else UI.spreadsheet2matrix(false);" checked> Tableur
-<input id="matr_name" name="matr_name" class="bouton" type="text" value="m" title="Nom de la matrice" size=3> :
-<input class="bouton" type="button"
-onclick="var field=document.getElementById('matr_nrows');field.value=eval(field.value)-1;UI.assistant_matr_setdisplay();" value="-">
+<input id="matr_name" name="matr_name" class="bouton" type="text"
+  value="m" title="Nom de la matrice" size=3>:
+<input class="bouton" type="button" onclick="UI.sheet_rowadd(-1);" value="-">
 <input class="bouton" type="number" id="matr_nrows" name="matr_nrows" onkeypress="if (event.keyCode!=13) return true; UI.assistant_matr_setdisplay(); return false;"
 title="Nombre de lignes de la matrice" value=3 min=1 max=40>
-<input class="bouton" type="button"
-onclick="var field=document.getElementById('matr_nrows');field.value=eval(field.value)+1;UI.assistant_matr_setdisplay();" value="+">
- par 
-<input class="bouton" type="button"
-onclick="var field=document.getElementById('matr_ncols');field.value=eval(field.value)-1;UI.assistant_matr_setdisplay();" value="-">
+<input class="bouton" type="button" onclick="UI.sheet_rowadd(1)" value="+">
+lignes par 
+<input class="bouton" type="button" onclick="UI.sheet_coladd(-1)" value="-">
 <input class="bouton" type="number" id="matr_ncols" name="matr_ncols" onkeypress="if (event.keyCode!=13) return true; UI.assistant_matr_setdisplay(); return false;" 
 title="Nombre de colonnes de la matrice" value=3 min=1 max=6>
-<input class="bouton" type="button"
-onclick="var field=document.getElementById('matr_ncols');field.value=eval(field.value)+1;UI.assistant_matr_setdisplay();"
- value="+">
+<input class="bouton" type="button" onclick="UI.sheet_coladd(1)" value="+"> colonnes
   </div>
 <div id="matr_formulediv"> 
   (j,k)-&gt;<textarea rows="1" cols="20" style="font-size:18px"
@@ -1594,6 +1608,27 @@ onclick="var field=document.getElementById('matr_ncols');field.value=eval(field.
   <input name="stat_cmax" class="bouton" type="number" min=0 value=1>
   </div>
 
+<input id="matr_or_sheet" name="matr_or_sheet" class="bouton"
+  type="checkbox" title="Cocher pour passer en mode tableur"
+  onchange="UI.is_sheet=checked; if (checked) UI.matrix2spreadsheet(); else UI.spreadsheet2matrix(false);" checked> Tableur
+  <input class="bouton" type="button"
+onclick="UI.sheet_edit_cmd(0)" onmousedown="event.preventDefault()" 
+title="Copier vers le bas"  value="cp↓">
+  <input class="bouton" type="button"
+onclick="UI.sheet_edit_cmd(1)" onmousedown="event.preventDefault()" 
+title="Copier vers la droite"  value="cp→">
+  <input class="bouton" type="button"
+onclick="UI.sheet_edit_cmd(2)" onmousedown="event.preventDefault()" 
+title="Ajouter une ligne"  value="l+">
+  <input class="bouton" type="button"
+onclick="UI.sheet_edit_cmd(3)" onmousedown="event.preventDefault()" 
+title="Enlever une ligne"  value="l-">
+  <input class="bouton" type="button"
+onclick="UI.sheet_edit_cmd(4)" onmousedown="event.preventDefault()" 
+title="Ajouter une colonne"  value="c+">
+  <input class="bouton" type="button"
+onclick="UI.sheet_edit_cmd(5)" onmousedown="event.preventDefault()" 
+title="Enlever une colonne"  value="c-">
   <div id="matr_casediv">
   </div>
   </div>
@@ -1619,12 +1654,12 @@ entiers ou
  onclick="document.getElementById('assistant_rand').rand_int.checked=!checked;UI.assistant_rand_setdisplay();"
 title="Cocher pour choisir une loi">
 selon une loi.
+<input class="bouton" type="button" title="Annuler" value="Annul." onclick="document.getElementById('chooselawdiv').style.display='none';form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();">
+  <input class="bouton" type="button" title="ok" value="OK" onclick="UI.assistant_rand_ok()">
 <div id="rand_intdiv">
  Entiers entre 0 et n ou n et -n avec n=
 <input class="bouton" type="number" id="rand_maxint"
 title="Entier k tel que 0&lt;=k&lt;n ou n&lt;k&lt;-n si n est n&eacute;gatif" value=100></div>
-<input class="bouton" type="button" title="Annuler" value="Annul." onclick="form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();">
-  <input class="bouton" type="button" title="ok" value="OK" onclick="UI.assistant_rand_ok()">
 </form>
 <div id="chooselawdiv" style="display:none">
   <form id="chooselawform">
@@ -2257,7 +2292,7 @@ ou  <button class="bouton" onclick="document.getElementById('assistant_plotfunc1
   
   <button style="width:35px;height:35px" id="button_util" onmousedown="event.preventDefault()"
 onclick="UI.show_menu();"
-  title="Montrer ou cacher les assistants">menu</button>  
+  title="Montrer ou cacher les assistants">apps</button>  
 
   <button style="width:35px;height:35px" id="button_123" onmousedown="event.preventDefault()" 
   onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else UI.kbdonfuncoff(); if (UI.focusaftereval){ UI.focused.focus(); }"
@@ -2288,7 +2323,7 @@ title="Efface 1 caract&egrave;re">del</button>
 <button id="stop_button" style="height:35px;visibility:hidden" onclick="if (UI.webworker && confirm('Voulez-vous vraiment terminer la session ?')){ UI.webworker.terminate(); UI.busy=0;UI.webworker=0; alert('Session redemarree. Toutes les variables ont ete effacees.');}" title="Termine la session en cours">STOP</button>
 <br>
 <textarea name="entree" id="entree" title="Taper une commande ici puis Entree pour valider" style="font-size:18px;width:98%"
-rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
+rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode==13 && event.shiftKey){UI.insert(this,'\n'); UI.indentline(this); return false;} if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
 </div>
 <hr>
 <div id="consolediv" style="display:none">
@@ -2374,6 +2409,7 @@ rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode
   canvas_lasty:0,
   canvas_pushed:false,
   initconfigstring:'',
+  python_mode:false,
   xtn:'x', // var name, depends on last app
   sleep:function(miliseconds) {
      var currentTime = new Date().getTime();
@@ -2408,9 +2444,49 @@ rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode
     return false;
   },
   assistant_pour_ok:function(){
-UI.focused=UI.savefocused;var tmp='\npour '+document.getElementById('pourvarname').value+' de '+document.getElementById('pourvarmin').value+' jusque '+document.getElementById('pourvarmax').value; console.log(tmp);UI.insert(UI.focused,tmp);UI.indentline(UI.focused);tmp=document.getElementById('pourvarstep').value; if(tmp.length) UI.insert(UI.focused,' pas '+tmp); UI.insert(UI.focused,' faire\n\nfpour;'); UI.indentline(UI.focused); UI.moveCaretUpDown(UI.focused,-1);UI.indentline(UI.focused);document.getElementById('assistant_boucle').style.display='none';},
+   UI.focused=UI.savefocused;
+   var st=document.getElementById('pourvarstep').value;
+   if (UI.python_mode){
+     UI.insert(UI.focused,'\nfor '+document.getElementById('pourvarname').value+' in range('+document.getElementById('pourvarmin').value+','+document.getElementById('pourvarmax').value);
+     if (st.length) st=','+st;
+     UI.insert(UI.focused,st+'):');
+     UI.indentline(UI.focused);
+     UI.insert(UI.focused,'\n');     
+     UI.indentline(UI.focused);
+   }
+   else {
+     var tmp='\npour '+document.getElementById('pourvarname').value+' de '+document.getElementById('pourvarmin').value+' jusque '+document.getElementById('pourvarmax').value;
+     //console.log(tmp);
+     UI.insert(UI.focused,tmp);
+     UI.indentline(UI.focused);
+     if (st.length) UI.insert(UI.focused,' pas '+st);
+     UI.insert(UI.focused,' faire\n\nfpour;');
+     UI.indentline(UI.focused);
+     UI.moveCaretUpDown(UI.focused,-1);
+     UI.indentline(UI.focused);
+   }
+   document.getElementById('assistant_pour').style.display='none';
+   document.getElementById('assistant_boucle').style.display='none';
+  },
   assistant_tantque_ok:function(){
-UI.focused=UI.savefocused;UI.insert(UI.focused,'\ntantque '+document.getElementById('tantquecond').value+' faire\n\nftantque;');UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,1);UI.kbdonfuncoff(); document.getElementById('assistant_boucle').style.display='none';},
+   UI.focused=UI.savefocused;
+   if (UI.python_mode){
+     UI.insert(UI.focused,'\nwhile '+document.getElementById('tantquecond').value+':');
+     UI.indentline(UI.focused);
+     UI.insert(UI.focused,'\n');
+   }
+   else {
+     UI.insert(UI.focused,'\ntantque '+document.getElementById('tantquecond').value+' faire\n\nftantque;');
+     UI.indentline(UI.focused);
+     UI.moveCaretUpDown(UI.focused,-1);
+     UI.indentline(UI.focused);
+     UI.moveCaretUpDown(UI.focused,-1);
+     UI.indentline(UI.focused);
+     UI.moveCaretUpDown(UI.focused,1);
+   }
+   document.getElementById('assistant_tantque').style.display='none';
+   document.getElementById('assistant_boucle').style.display='none';
+  },
   assistant_solve_ok:function(){
 UI.focused=UI.savefocused;if(document.getElementById('solveC').style.display=='inline' ) UI.insert(UI.focused,'c');if(document.getElementById('solvenum').style.display=='inline' ) UI.insert(UI.focused,'f');UI.insert(UI.focused,'solve('+document.getElementById('solveeq').value);UI.indentline(UI.focused);var tmp=document.getElementById('solvevar').value; if (tmp.length) UI.insert(UI.focused,','+tmp);UI.insert(UI.focused,')'); document.getElementById('assistant_solve').style.display='none';},
   assistant_rsolve_ok:function(){
@@ -2419,8 +2495,59 @@ UI.focused=UI.savefocused;UI.insert(UI.focused,'rsolve('+document.getElementById
 UI.focused=UI.savefocused;var tmpeq=document.getElementById('desolveeq').value ;var tmpt=document.getElementById('desolvevar').value ;var tmpy=document.getElementById('desolvey').value ; var tmp=document.getElementById('desolveinit').value; if (tmp.length) tmp='desolve(['+tmpeq+','+tmp+']'; else tmp='desolve('+tmpeq; tmp+=','+tmpt+','+tmpy+')';UI.insert(UI.focused,tmp); document.getElementById('assistant_desolve').style.display='none';},
   assistant_fixe_ok:function(){
 UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if (tmp.length){tmp+=':='+ document.getElementById('rsolvevarf').value+'->'+document.getElementById('rsolveexpr').value+';\nplotseq('+tmp+'('+document.getElementById('rsolvevarf').value+')';} else tmp='plotseq('+document.getElementById('rsolveexpr').value; tmp+=','+document.getElementById('rsolvevarf').value+'=';var tmp1=document.getElementById('rsolvemin').value;if (tmp1.length) tmp+='['+document.getElementById('rsolveu0').value+','+tmp1+','+document.getElementById('rsolvemax').value+']'; else tmp+=document.getElementById('rsolveu0').value;tmp+=','+document.getElementById('rsolven').value+')'; UI.insert(UI.focused,tmp);document.getElementById('assistant_fixe').style.display='none'; document.getElementById('assistant_suites').style.display='none';},
-  assistant_test_ok:function(){UI.focused=UI.savefocused;UI.insert(UI.focused,'\nsi '+document.getElementById('sicond').value+' alors '+document.getElementById('sialors').value);UI.indentline(UI.focused);var tmp=document.getElementById('sisinon').value; if (tmp.length) UI.insert(UI.focused,' sinon '+tmp);UI.insert(UI.focused,' fsi;\n');UI.indentline(UI.focused);UI.kbdonfuncoff(); document.getElementById('assistant_test').style.display='none';},
-  assistant_prog_ok:function(){UI.focused=UI.savefocused;var loc=document.getElementById('localvars').value; var fc=document.getElementById('funcname').value; var argu=document.getElementById('argsname').value; var ret=document.getElementById('returnedvar').value;if (loc.length==0) UI.insert(UI.focused,fc+'('+argu+'):='+ret+';'); else { UI.insert(UI.focused,'fonction '+fc+'('+argu+')\n  local '+loc+';\n  \n  retourne '+ret+';\nffonction:;\n');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,2);} document.getElementById('assistant_prog').style.display='none';},
+  assistant_test_ok:function(){
+    UI.focused=UI.savefocused;
+    if (UI.python_mode){
+      UI.insert(UI.focused,'\nif '+document.getElementById('sicond').value+':');
+      UI.indentline(UI.focused);
+      UI.insert(UI.focused,'\n'+document.getElementById('sialors').value);
+    } else UI.insert(UI.focused,'\nsi '+document.getElementById('sicond').value+' alors '+document.getElementById('sialors').value);
+    UI.indentline(UI.focused);
+    var tmp=document.getElementById('sisinon').value;
+    if (tmp.length){
+      if (UI.python_mode){
+        UI.indentline(UI.focused);
+        UI.insert(UI.focused,'\nelse:')
+        UI.indentline(UI.focused); // should remove 2 spaces at start
+        UI.insert(UI.focused,'\n'+tmp);
+      } else { UI.insert(UI.focused,' sinon '+tmp);UI.insert(UI.focused,' fsi;\n'); }
+    }
+    UI.indentline(UI.focused);UI.kbdonfuncoff();
+    document.getElementById('assistant_test').style.display='none';
+  },
+  assistant_prog_ok:function(){
+    UI.focused=UI.savefocused;
+    var loc=document.getElementById('localvars').value;
+    var fc=document.getElementById('funcname').value;
+    var argu=document.getElementById('argsname').value;
+    var ret=document.getElementById('returnedvar').value;
+    if (UI.python_mode){
+      UI.insert(UI.focused,'def '+fc+'('+argu+'):');
+      UI.indentline(UI.focused);
+      if (loc.length!=0){
+        UI.insert(UI.focused,'\nlocal '+loc);
+        UI.indentline(UI.focused);
+        UI.insert(UI.focused,'\n\nreturn '+ret);
+        UI.indentline(UI.focused);
+        UI.moveCaretUpDown(UI.focused,-1);
+        UI.indentline(UI.focused);
+      }
+      else {
+        UI.insert(UI.focused,'\nreturn '+ret);
+        UI.indentline(UI.focused);
+      }
+    }
+    else {
+      if (loc.length==0)
+        UI.insert(UI.focused,fc+'('+argu+'):='+ret+';');
+      else {
+        UI.insert(UI.focused,'fonction '+fc+'('+argu+')\n  local '+loc+';\n  \n  retourne '+ret+';\nffonction:;\n');
+        UI.moveCaretUpDown(UI.focused,-3);
+        UI.moveCaret(UI.focused,2);
+     }
+   }
+   document.getElementById('assistant_prog').style.display='none';
+  },
   assistant_seq_ok:function(){UI.focused=UI.savefocused;var tmp='seq('+document.getElementById('seqexpr').value+','+document.getElementById('seqvarname').value+','+document.getElementById('seqvarmin').value+','+document.getElementById('seqvarmax').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('seqvarstep').value; if(tmp.length) UI.insert(UI.focused,','+tmp); UI.insert(UI.focused,')');document.getElementById('assistant_seq').style.display='none';},
   assistant_plot_polar:function(){UI.focused=UI.savefocused;var tmp='plotpolar('+document.getElementById('plotpolarexpr').value+','+document.getElementById('plotpolarvarname').value+','+document.getElementById('plotpolarvarmin').value+','+document.getElementById('plotpolarvarmax').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('plotpolarvarstep').value; if(tmp.length) UI.insert(UI.focused,',tstep='+tmp); UI.insert(UI.focused,')');document.getElementById('assistant_plotpolar').style.display='none';},
   assistant_series_ok:function(){UI.focused=UI.savefocused;var tmp='series('+document.getElementById('seriesexpr').value+','+document.getElementById('seriesvarname').value+'='+document.getElementById('seriesvarlim').value+','+document.getElementById('seriesvarorder').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('seriesvarstep').value; if(tmp.length) UI.insert(UI.focused,','+tmp); UI.insert(UI.focused,')');document.getElementById('assistant_series').style.display='none';},
@@ -2453,7 +2580,60 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
   assistant_matr_textarea:-1,
   assistant_matr_source:[], // JS array for spreadsheet, if length==0 matrix
   is_sheet:true,
-  sheet_recompute:function(){ // convert to CAS sheet, eval and convert back
+  sheet_i:0,
+  sheet_j:0,
+  open_sheet:function(tableur){
+   UI.kbdonfuncoff();UI.savefocused=UI.focused;
+   document.getElementById('assistant_matr').style.display='block';
+   document.getElementById('matr_type_chooser').style.display='inline';
+   document.getElementById('matr_stats').style.display='none';
+   UI.assistant_matr_setdisplay();
+   UI.is_sheet=tableur;
+   document.getElementById('matr_or_sheet').checked=tableur;
+   document.getElementById('matr_type_chooser').style.display=tableur?'none':'inline';
+   if (tableur){
+    document.getElementById('assistant_matr').matr_formuleshadow.checked=true;
+    document.getElementById('assistant_matr').matr_formule.checked=false;
+  }
+   UI.assistant_matr_setdisplay();
+   if (tableur) UI.matrix2spreadsheet(); else UI.spreadsheet2matrix(false);
+   var field=document.getElementById('matr_span0_0');
+   UI.sheet_onfocus(field); 
+   UI.set_focus('matr_span0_0');
+  },
+  sheet_rowadd:function(n){
+   var field=document.getElementById('matr_nrows');
+   field.value=eval(field.value)+n;
+   UI.assistant_matr_setdisplay();
+  },
+  sheet_coladd:function(n){
+   var field=document.getElementById('matr_ncols');
+   field.value=eval(field.value)+n;
+   UI.assistant_matr_setdisplay();
+  },
+  sheet_edit_cmd:function(cmd){
+   var s=UI.focused.id;
+   var sh=UI.is_sheet;
+   if (!sh){ UI.is_sheet=true; UI.matrix2spreadsheet(); }
+   if (s===undefined) return;
+   if (s.length<12 || s.substr(0,9)!='matr_case') return;
+   var l=s.length,i,j,err;
+   for (i=8;i<l;++i){ if (s[i]=='_') break; }
+   j=eval(s.substr(i+1,l-i-1));
+   i=eval(s.substr(9,i-9));
+   s=cmd+','+i+','+j;
+   //console.log(s);
+   UI.sheet_recompute(s);
+   if (!sh){ UI.is_sheet=false; UI.spreadsheet2matrix(false); }
+   if (cmd==2) UI.sheet_rowadd(1);
+   if (cmd==3) UI.sheet_rowadd(-1);
+   if (cmd==4) UI.sheet_coladd(1);
+   if (cmd==5) UI.sheet_coladd(-1);
+  },
+  sheet_recompute:function(cmd){
+    // if cmd=='' convert to CAS sheet, eval and convert back
+    // else calls convert(matrix,cmd), where cmd='command,row,col',
+    // command=0 copy down, =1 copy right
     var R=UI.assistant_matr_maxrows;
     if (!UI.is_sheet || R==0) return;
     var s='spreadsheet[';
@@ -2469,6 +2649,8 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
       s +='],';
     }
     s += ']';
+    if (cmd.length!=0)
+      s='convert('+s+',cell,'+cmd+')';
     //console.log(s);
     s=UI.caseval_noautosimp(s);
     //console.log(s);
@@ -2483,14 +2665,17 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
       if (C>UI.assistant_matr_maxcols) C=UI.assistant_matr_maxcols;
       for (var j=0;j<C;j++){
         var field=document.getElementById('matr_span'+i+'_'+j);
+        var field2=document.getElementById('matr_case'+i+'_'+j);
         //console.log(i,j,field,r);
-        var tmp=r[j];
+        var tmp=r[j],tmp2;
         if (tmp === undefined) continue;
-        if (r[j].length>1) tmp=tmp[1]; else tmp=tmp[0];
+        if (r[j].length>1) {tmp2=tmp[0]; tmp=tmp[1]; } else tmp2=tmp=tmp[0];
         if (r[j].length==3) tmp=r[j][2];
         // console.log(i,j,tmp);
         if (tmp=='""') tmp='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         field.innerHTML=tmp;
+        if (tmp2=='""') tmp2='';
+        field2.value=tmp2;
         //console.log(i,j,tmp,field.innerHTML);
         // field.style.display='inline';
       }
@@ -2507,7 +2692,7 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
       document.getElementById('matr_head_'+j).innerHTML=String.fromCharCode(65+j);
     }
     UI.is_sheet=true;
-    UI.sheet_recompute();
+    UI.sheet_recompute('');
     for (var i=0;i<l;i++){
       for (var j=0;j<c;j++){
         //console.log(i,j);
@@ -2539,6 +2724,16 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
   },
   sheet_onfocus:function(field){
    //console.log(field.id,field.previousSibling.id);
+   s=field.id;
+   var l=s.length,i,j,err;
+   for (i=8;i<l;++i){ if (s[i]=='_') break; }
+   j=eval(s.substr(i+1,l-i-1));
+   i=eval(s.substr(9,i-9));
+   document.getElementById('matr_line_'+UI.sheet_i).style.color="black";
+   document.getElementById('matr_head_'+UI.sheet_j).style.color="black";
+   UI.sheet_i=i; UI.sheet_j=j;
+   document.getElementById('matr_line_'+UI.sheet_i).style.color="red";
+   document.getElementById('matr_head_'+UI.sheet_j).style.color="red";
    field=field.previousSibling;
    field.style.display='inline';
    field.focus();
@@ -2546,6 +2741,9 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
   },
   sheet_set:function(field,value){
     field.value=value;
+    var s=field.id;
+    if (s.length>9 && s.substr(0,9)=='matr_case')
+      document.getElementById('matr_span'+s.substr(9,s.length-9)).innerHTML=value;
   },
   assistant_matr_setmatrix:function(l,c){
     // Code de creation de la matrice
@@ -2557,7 +2755,7 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
     UI.assistant_matr_maxrows=l;
     UI.assistant_matr_maxcols=c;
     var s='<table>\n';
-    var h = '<tr><th>@</th>';
+    var h = '<tr><th id="matr_head">@</th>';
     for (var j=0;j<c;++j){
       h+='<th id="matr_head_'+j+'" style="text-align:center">'+j+'</th>';
     }
@@ -2565,7 +2763,7 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
     s += h;
     for (var i=0;i<l;++i){
       s += '<tr id="matr_ligne'+i+'">';
-      s += '<td>'+i+'</td>';
+      s += '<td id="matr_line_'+i+'">'+i+'</td>';
       for (var j=0;j<c;++j){
         var field=document.getElementById('matr_case'+i+'_'+j);
         var oldval='';
@@ -2604,12 +2802,13 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
     try { se=eval(se); } catch(err){ se=UI.caseval_noautosimp(field.value); }
     // console.log(i,j); // position dans la matrice
     if (!Array.isArray(se)){
+       //console.log(i,j,field.id); // position dans la matrice
        UI.sheet_set(field,se);
        i++;
        if (i>=nr){
         i=0; j++; if (j>=nc) j=0; 
        }
-       UI.sheet_recompute();
+       UI.sheet_recompute('');
        var tmp='matr_span'+i+'_'+j; // console.log(tmp);
        document.getElementById(tmp).click();
        return;
@@ -2636,12 +2835,12 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
         }
         if (extend){
           UI.assistant_matr_setdisplay();
-          UI.sheet_recompute();
+          UI.sheet_recompute('');
         }
         else {
           //console.log(iend,j0);
           if (iend>=nr) iend=0; if (j0>=nc) j0=0;
-          UI.sheet_recompute();
+          UI.sheet_recompute('');
           tmp='matr_span'+iend+'_'+j0;
           document.getElementById(tmp).click();
         }
@@ -2652,7 +2851,7 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
       if (jend>=UI.assistant_matr_maxncols) jend=UI.assistant_matr_maxncols;
       for (;j<jend;++j)
         UI.sheet_set(document.getElementById('matr_case'+i+'_'+j),se[j-shift]);
-      UI.sheet_recompute();
+      UI.sheet_recompute('');
     }
   },
   adequation:function(form){
@@ -2995,14 +3194,14 @@ UI.insert(UI.focused,tmp);
      cmentree.setValue(entree.value);
      UI.changefontsize(cmentree,18);
      cmentree.setOption("extraKeys", {
-      Enter: function(cm){
+     Enter: function(cm){
       UI.eval_cmdline();
      },
      F1: function(cm) {
       UI.completion(cm);
      },
      Tab: function(cm) {
-      UI.completion(cm);
+      UI.indentline(cm);
      },
     });
    } // if (UI.usecm)
@@ -3147,7 +3346,9 @@ UI.insert(UI.focused,tmp);
    callback(s,args);
   },
   ckenter: function(event,field){
+    //console.log(event.keyCode,event.shiftKey);
     var key = event.keyCode;
+    if (key==13 && event.shiftKey){UI.insert(field,'\n');  UI.indentline(field); return false;}
     if (key != 13 || event.shiftKey) return true;
     UI.reeval(field,'');
     return false;
@@ -3338,7 +3539,7 @@ show_menu:function(){
   document.getElementById('progbuttons').style.display='none';
   var tab=['boucle','seq','rand','series','int','sum','limit','plotfunc','plotparam',
            'plotpolar','plotimplicit','plotfield','tabvar','test','prog','solve',
-           'rsolve','diff','matr','suites','desolve'];
+           'rsolve','diff','matr','suites','desolve','rewrite_trig'];
   var s=tab.length,k;
   for (k=0;k<s;++k){
     var tmp=document.getElementById('assistant_'+tab[k]);
@@ -3385,13 +3586,13 @@ var kbd_l=["add_newline","add_left_paren",
 var kbd_cmd=["button_ok","button_help","button_123","button_util","button_cmd",
 "button_gauche","button_droit","select_button","button_del"];
 var kbd_util=["add_simplify" ,"add_matr",
-"add_factor" ,"add_stats","add_tcollect","add_texpand","add_solve","add_polar",
+"add_factor" ,"add_stats","add_tableur","open_rewritetrig","add_solve","add_polar",
 "add_linsolve","add_rand" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
 "add_integrate" ,"add_limit","add_series","add_seq","add_tabvar","add_plot",
 "add_plotparam" ,"add_plotfield","add_plotimplicit","add_curseur",
 "add_//","add_space","add_nlprog","add_indent","add_test",
 "add_boucle","add_function","add_debug"];
-   w=Math.floor(hw/12); w=w+"px"; 
+   w=Math.floor(hw/12)-1; w=w+"px"; 
    h=Math.floor(hh/20); if (h<30) h=30; h=h+"px"; // console.log(hw,w,hh,h);
    for (var i=0;i<kbd_l.length;i++){
      document.getElementById(kbd_l[i]).style.width=w;
@@ -3454,6 +3655,8 @@ var kbd_util=["add_simplify" ,"add_matr",
    if (UI.focusaftereval) UI.focused.focus();
    UI.createCookie('xcas_digits',form.digits_mode.value,10000);
    UI.createCookie('xcas_angle_radian',form.angle_mode.checked?1:-1,10000);
+   UI.createCookie('xcas_python_mode',form.python_mode.checked?1:-1,10000);
+   UI.python_mode=form.python_mode.checked;
    UI.createCookie('xcas_complex_mode',form.complex_mode.checked?1:-1,10000);
    UI.createCookie('xcas_with_sqrt',form.sqrt_mode.checked?1:-1,10000);
    UI.createCookie('xcas_step_infolevel',form.step_mode.checked?1:-1,10000);
@@ -4177,7 +4380,7 @@ move_focus:function(field,n){
  // focus on next or previous history level
  if (n>0){
   if (field==cmentree) return;
-  if (field.type!="textarea")
+  if (field.type!="textarea" && field.type!="text")
    field=field.getTextArea();
   if (field.previousSibling==null){
    var par=field.parentNode;
@@ -4236,7 +4439,7 @@ move_focus:function(field,n){
    par.focus();
    return;
  }
-  if (field.type!="textarea")
+  if (field.type!="textarea" && field.type!="text")
    field=field.getTextArea();
   if (field.previousSibling==null){
    var par=field.parentNode.parentNode.parentNode.previousSibling;
@@ -4266,7 +4469,7 @@ move_focus:function(field,n){
 selline:0,
 selch:0,
 setselbeg:function(field){
-  if (field.type!="textarea"){
+  if (field.type!="textarea"&& field.type!="text"){
     var pos=field.getCursor(); // save position
     UI.selline=pos.line; UI.selch=pos.ch;
     //console.log(UI.selline,UI.selch);
@@ -4275,7 +4478,7 @@ setselbeg:function(field){
   UI.selch=field.selectionStart;
 },
 setselend:function(field){
-  if (field.type!="textarea"){
+  if (field.type!="textarea"&& field.type!="text"){
     var startpos=field.getCursor(); // current position
     field.setSelection({line: UI.selline,ch:UI.selch },startpos);
     field.refresh();
@@ -4293,7 +4496,7 @@ indentline:function(field){
  if (field.type!='textarea') field.execCommand('indentAuto');
 },
 moveCaret: function(field, charCount) {
-  if (field.type!="textarea"){
+  if (field.type!="textarea" && field.type!="text"){
     var pos=field.getCursor();
     pos.ch = pos.ch+charCount;
     field.setCursor(pos);
@@ -4315,7 +4518,7 @@ show_curseur:function(){
    }
 },
 moveCaretUpDown: function(field, Count) {
-  if (field.type!="textarea"){
+  if (field.type!="textarea"&& field.type!="text"){
     var pos=field.getCursor();
     pos.line = pos.line+Count;
     field.setCursor(pos);
@@ -4442,7 +4645,7 @@ updatelevel: function(field){
   },
   backspace: function(field){
     //if (UI.focusaftereval) field.focus();
-    if (field.type!="textarea"){
+    if (field.type!="textarea"&& field.type!="text"){
       var start=field.getCursor('from');
       var end=field.getCursor('to');
       if (end.line!=start.line || end.ch!=start.ch)
@@ -4661,6 +4864,14 @@ insert: function(myField, myValue) {
   if (ck) form.digits_mode.value=eval(ck);
   ck=UI.readCookie('xcas_angle_radian');
   if (ck) form.angle_mode.checked=(ck=='1');
+  ck=UI.readCookie('xcas_python_mode');
+  if (!ck){
+    if (confirm('Voulez-vous activer la compatibilite de syntaxe Python ?'))
+      ck=1;
+    else ck=0;
+  }
+  UI.python_mode=form.python_mode.checked=(ck=='1');
+  UI.createCookie('xcas_python_mode',form.python_mode.checked?1:-1,10000);
   ck=UI.readCookie('xcas_complex_mode');
   if (ck) form.complex_mode.checked=(ck=='1');
   ck=UI.readCookie('xcas_with_sqrt');

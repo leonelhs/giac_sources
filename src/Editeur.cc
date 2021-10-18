@@ -1643,22 +1643,30 @@ namespace xcas {
     autosave_disabled=false;
     w->hide();
     if (r==0){
+      giac::context * contextptr = get_context(ed);
+      bool python=python_compat(contextptr);
       int i=ed->insert_position();
-      string s=("si ");
+      string s=python?"if ":"si ";
       s += cond->value();
-      s += " alors ";
+      s += python?":\n":" alors ";
       s += ifclause->value();
       gen g(elseclause->value(),contextptr);
       if (!is_undef(g)){
-	s += " sinon ";
+	s += python?"\nelse:\n":" sinon ";
 	s += elseclause->value();
       }
-      s += " fsi;\n";
+      if (!python) s += " fsi;\n";
       ed->buffer()->insert(i,s.c_str());
       int delta=s.size();
       if (Xcas_Text_Editor * xed=dynamic_cast<Xcas_Text_Editor *>(ed)){
 	int j=ed->buffer()->line_end(i)+1;
 	delta += xed->indent(j)-j;
+	if (python){
+	  j=ed->buffer()->line_end(j)+1;
+	  delta += xed->indent(j)-j;
+	  j=ed->buffer()->line_end(j)+1;
+	  delta += xed->indent(j)-j;
+	}
       }
       ed->insert_position(i+delta);
     }
@@ -1765,30 +1773,59 @@ namespace xcas {
     autosave_disabled=false;
     w->hide();
     if (r==0){
+      giac::context * contextptr = get_context(ed);
+      bool python=python_compat(contextptr);
       int i=ed->insert_position();
       string s;
       if (tantque->value()){
-	s = "tantque ";
+	if (python)
+	  s = "while ";
+	else
+	  s = "tantque ";
 	s += cond->value();
-	s += " faire\n";
+	if (python)
+	  s += ":\n";
+	else
+	  s += " faire\n";
 	s +=  loop->value();
-	s += "\nftantque;\n";
+	if (!python) s += "\nftantque;\n";
       }
       else {
-	s="pour ";
+	if (python)
+	  s="for ";
+	else
+	  s="pour ";
 	s += count->value();
-	s += " de ";
-	s += start->value();
-	s += " jusque ";
-	s += stop->value();
+	if (python){
+	  s += " in range(";
+	  s += start->value();
+	  s += ",";
+	  s += stop->value();
+	}
+	else {
+	  s += " de ";
+	  s += start->value();
+	  s += " jusque ";
+	  s += stop->value();
+	}
 	gen g(step->value(),contextptr);
 	if (!is_undef(g)){
-	  s += " pas ";
-	  s += step->value();
+	  if (python){
+	    s += ',';
+	    s += step->value();
+	  }
+	  else {
+	    s += " pas ";
+	    s += step->value();
+	  }
 	}
-	s += " faire\n";
+	if (python)
+	  s+="):\n";
+	else
+	  s += " faire\n";
 	s += loop->value();
-	s += "\nfpour;\n";
+	if (!python)
+	  s += "\nfpour;\n";
       }
       ed->buffer()->insert(i,s.c_str());
       int delta=s.size();
@@ -1884,38 +1921,50 @@ namespace xcas {
       int i=0,addi=0; // i=ed->insert_position(),addi=0;
       string s;
       giac::context * contextptr = get_context(ed);
+      bool python=python_compat(contextptr);
       switch (xcas_mode(contextptr)){
       case 0:
-	if (syntaxefr)
-	  s+="fonction ";
+	if (python)
+	  s += "def ";
+	else {
+	  if (syntaxefr)
+	    s+="fonction ";
+	}
 	s+=name->value();
 	s+='(';
 	s+=args->value();
 	s+=")";
-	if (!syntaxefr)
-	  s+=":={";
+	if (python)
+	  s += ":";
+	else {
+	  if (!syntaxefr)
+	    s+=":={";
+	}
 	s+="\n";
 	if (strlen(locs->value())){
 	  s+="  local ";
 	  s+=locs->value();
-	  s+=";\n  ";
+	  if (!python) s+=';';
+	  s+="\n  ";
 	}
 	addi=s.size();
 	s += "\n";
 	if (strlen(ret->value())){
-	  if (lang==1)
+	  if (lang==1 && !python)
 	    s+="  retourne ";
 	  else
 	    s+="  return ";
 	  s+=ret->value();
-	  s+=";";
+	  if (!python) s+=";";
 	}	  
 	s += "\n";
-	if (syntaxefr)
-	  s+="ffonction";
-	else
-	  s+="}";
-	s+=":;\n\n";
+	if (!python){
+	  if (syntaxefr)
+	    s+="ffonction";
+	  else
+	    s+="}";
+	  s+=":;\n\n";
+	}
 	ed->buffer()->insert(i,s.c_str());  
 	ed->insert_position(i+addi);
 	break;
@@ -2728,6 +2777,8 @@ namespace xcas {
 
   // indent current line at position pos, return new current position
   int Xcas_Text_Editor::indent(int pos){
+    giac::context * contextptr = get_context(this);
+    bool python=python_compat(contextptr);
     int debut_ligne=buffer()->line_start(pos),indent=0;
     // Tab pressed -> indent current line
     char Lastchar;
@@ -2735,7 +2786,7 @@ namespace xcas {
       char * ch_ = buffer()->line_text(pos-1),*ch=ch_;
       bool empty_line=true;
       int position=buffer()->line_start(debut_ligne-2);
-      indent = 2;
+      indent = python?0:2;
       while (1){
 	free(ch_);
 	ch_ = buffer()->line_text(position);
@@ -2743,7 +2794,7 @@ namespace xcas {
 	int save_indent=indent;
 	// Count spaces in ch
 	for (;*ch;++ch,++indent){
-	  if (*ch=='/' && *(ch+1)=='/')
+	  if ( (python && *ch=='#') || (!python && *ch=='/' && *(ch+1)=='/') )
 	    break;
 	  if (*ch!=' '){
 	    empty_line=false;
@@ -2762,7 +2813,7 @@ namespace xcas {
 	while (*ch==' ') 
 	  ++ch;
 	int firstchar=*ch,lastchar = *ch,prevlast=0;
-	if (lastchar ==';' && !*(ch+1))
+	if (!python && lastchar ==';' && !*(ch+1))
 	  indent -= 2;
 	// Add spaces for each open (, open {, open [, 
 	// remove spaces for ] } )
@@ -2783,9 +2834,15 @@ namespace xcas {
 	  }
 	}
 	Lastchar=lastchar;
-	// Last non space should be { or ; 
-	if ( (lastchar=='{' && firstchar!='}') || (lastchar=='}' && firstchar!='}') || (lastchar==';' && prevlast!='}' ) )
-	  indent -=2;
+	if (python){
+	  if (lastchar==':')
+	    indent += 2;
+	}
+	else {
+	  // Last non space should be { or ; 
+	  if ( (lastchar=='{' && firstchar!='}') || (lastchar=='}' && firstchar!='}') || (lastchar==';' && prevlast!='}' ) )
+	    indent -=2;
+	}
 	free(ch_);
       }
     }

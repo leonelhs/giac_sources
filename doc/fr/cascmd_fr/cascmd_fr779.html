@@ -1,42 +1,35 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi de Fisher-Snédécor : fisher fisherd snedecor snedecord</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr778.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr780.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc919">8.4.23</A>  Densité de probabilité de la loi de Fisher-Snédécor : <TT>fisher fisherd snedecor snedecord</TT></H3><P><A NAME="@default1393"></A><A NAME="@default1394"></A><A NAME="@default1395"></A><A NAME="@default1396"></A>
-<TT>fisher(n1,n2,x)</TT> ou <TT>snedecor(n1,n2,x)</TT> est a densité
-de probabilité de la loi de Fisher-Snédécor ayant <TT>n1,n2</TT> degrés
-de liberté.<BR>
-<TT>fisher(n1,n2,x)</TT>, vaut pour <I>x</I>≥ 0 :<BR>
- <I>n</I>1/<I>n</I>2<SUP><I>n</I>1/2</SUP>Γ(<I>n</I>1+<I>n</I>2/2)/Γ(<I>n</I>1/2)Γ(<I>n</I>2/2)<I>x</I><SUP><I>n</I>1−2/2</SUP>(1+(<I>n</I>1/<I>n</I>2) <I>x</I>)<SUP>−<I>n</I>1−<I>n</I>2/2</SUP><BR>
-où Γ est définie pour <I>x</I>&gt;0 par 
-Γ(<I>x</I>)=∫<SUB>0</SUB><SUP>∞</SUP><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>x</I>−1</SUP> <I>dt</I><BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La fonction de répartition de la loi de Fisher-Snédécor : fisher_cdf snedecor_cdf</title>
+</head>
+<body >
+<a href="cascmd_fr778.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr780.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec951" class="subsection">8.4.24  La fonction de répartition de la loi de Fisher-Snédécor : <span style="font-family:monospace">fisher_cdf snedecor_cdf</span></h3>
+<p><a id="hevea_default1394"></a><a id="hevea_default1395"></a>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> suit une loi de 
+Fisher-Snédécor ayant degrés de liberté <span style="font-style:italic">n</span>1,<span style="font-style:italic">n</span>2, on a :<br>
+ <span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)= <span style="font-family:monospace">fisher_cdf(n1,n2,x)=snedecor_cdf(n1,n2,x)</span>.<br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">x</span>≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>)= <span style="font-family:monospace">fisher_cdf(n1,n2,x,y)=snedecor_cdf(n1,n2,x,y)</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>fisher(5,3,2.5)</TT></DIV><P>
-Oo on tape :
-</P><DIV CLASS="center"><TT>snedecor(5,3,2.5)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">fisher_cdf(5,3,9)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">snedecor_cdf(5,3,9)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.10131184472</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">0.949898927032</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>fisher(4,2,1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">fisher_cdf(3,5,9)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>8/27</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>fisher(4,2,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>8/27</TT></DIV><HR>
-<A HREF="cascmd_fr778.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr780.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0.981472898262</span></div>
+<hr>
+<a href="cascmd_fr778.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr780.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

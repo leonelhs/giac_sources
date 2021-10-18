@@ -1,251 +1,262 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Derivées et derivées partielles d’une expression et derivées d’une fonction : diff derive deriver ’</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr304.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr306.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc384">6.20.4</A>  Derivées et derivées partielles d’une expression et derivées d’une fonction : <TT>diff derive deriver ’</TT></H3><P><A NAME="@default564"></A><A NAME="@default565"></A><A NAME="@default566"></A><A NAME="@default567"></A>
-</P><H4 CLASS="subsubsection"><A NAME="toc11"></A>Généralités</H4><P>
-<TT>diff</TT> ou <TT>derive</TT> ou <TT>deriver</TT> sont des fonctions 
-préfixées alors que <TT>’</TT> est la version postfixée de <TT>diff</TT> ou 
-<TT>derive</TT> ou <TT>deriver</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Derivées et derivées partielles d’une expression et derivées d’une fonction : diff derive deriver ’</title>
+</head>
+<body >
+<a href="cascmd_fr304.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr306.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec397" class="subsection">6.20.4  Derivées et derivées partielles d’une expression et derivées d’une fonction : <span style="font-family:monospace">diff derive deriver ’</span></h3>
+<p><a id="hevea_default564"></a><a id="hevea_default565"></a><a id="hevea_default566"></a><a id="hevea_default567"></a>
+</p>
+<h4 id="sec398" class="subsubsection">Généralités</h4>
+<p>
+<span style="font-family:monospace">diff</span> ou <span style="font-family:monospace">derive</span> ou <span style="font-family:monospace">deriver</span> sont des fonctions 
+préfixées alors que <span style="font-family:monospace">’</span> est la version postfixée de <span style="font-family:monospace">diff</span> ou 
+<span style="font-family:monospace">derive</span> ou <span style="font-family:monospace">deriver</span>.<br>
 Ces fonctions ont un, deux ou plus de 2 arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+</p><ul class="itemize"><li class="li-itemize">
 avec un argument qui peut être soit une fonction, soit une expression 
-de la variable <TT>x</TT>.
-<UL CLASS="itemize"><LI CLASS="li-itemize">
-Si cet argument est une fonction, <TT>diff</TT> ou <TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT> renvoie la fonction dérivée de cette fonction.<BR>
-Ces fonctions sont alors equivalentes à <TT>function_diff</TT>.
-</LI><LI CLASS="li-itemize">Si cet argument est une expression de la variable <TT>x</TT>, <TT>diff</TT> ou 
-<TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT> renvoie la dérivée de l’expression
-par rapport à <TT>x</TT> 
-</LI><LI CLASS="li-itemize"><B>Remarque</B> Dans ce cas on peut aussi utiliser <TT>convert</TT> (ou sa 
-version infixée <TT>=&gt;</TT>) avec l’option <TT>diff</TT>. 
-</LI></UL>
-</LI><LI CLASS="li-itemize">avec 2 arguments qui peuvent être soit une expression et le nom d’une 
-variable, soit une expression et une liste de noms de variables.<BR>
+de la variable <span style="font-family:monospace">x</span>.
+<ul class="itemize"><li class="li-itemize">
+Si cet argument est une fonction, <span style="font-family:monospace">diff</span> ou <span style="font-family:monospace">derive</span> ou <span style="font-family:monospace">deriver</span> ou <span style="font-family:monospace">’</span> renvoie la fonction dérivée de cette fonction.<br>
+Ces fonctions sont alors equivalentes à <span style="font-family:monospace">function_diff</span>.
+</li><li class="li-itemize">Si cet argument est une expression de la variable <span style="font-family:monospace">x</span>, <span style="font-family:monospace">diff</span> ou 
+<span style="font-family:monospace">derive</span> ou <span style="font-family:monospace">deriver</span> ou <span style="font-family:monospace">’</span> renvoie la dérivée de l’expression
+par rapport à <span style="font-family:monospace">x</span> 
+</li><li class="li-itemize"><span style="font-weight:bold">Remarque</span> Dans ce cas on peut aussi utiliser <span style="font-family:monospace">convert</span> (ou sa 
+version infixée <span style="font-family:monospace">=&gt;</span>) avec l’option <span style="font-family:monospace">diff</span>. 
+</li></ul>
+</li><li class="li-itemize">avec 2 arguments qui peuvent être soit une expression et le nom d’une 
+variable, soit une expression et une liste de noms de variables.<br>
 Cela va permettre de calculer des 
 dérivées et des derivées partielles du premier ordre et plusieurs 
 arguments pour calculer des derivées partielles de tous les ordres d’une 
 expression.
-</LI><LI CLASS="li-itemize">avec plus que 2 arguments qui peuvent être:<BR>
+</li><li class="li-itemize">avec plus que 2 arguments qui peuvent être:<br>
  une expression et le nom des variables par rapport 
 auxquelles il faut dériver cette expression (le nom des variables est 
-éventuellement suivi de $<I>n</I> pour indiquer le nombre <I>n</I> de fois que l’on 
+éventuellement suivi de $<span style="font-style:italic">n</span> pour indiquer le nombre <span style="font-style:italic">n</span> de fois que l’on 
 veut dériver) , 
-</LI></UL><H4 CLASS="subsubsection"><A NAME="toc12"></A>Derivée et fonction derivée</H4><P>
-<TT>diff</TT> ou <TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT> ont comme argument soit 
-une fonction, soit une expression de la variable <TT>x</TT>.<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Si cet argument est une fonction, <TT>diff</TT> ou <TT>derive</TT> ou 
-<TT>deriver</TT> ou <TT>’</TT> renvoie une fonction qui est la fonction dérivée 
-de la fonction argument.<BR>
-<TT>diff</TT> (ou <TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT>) est alors equivalente à <TT>function_diff</TT>.<BR>
-On tape :<BR>
-<DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2+x*cos(x)+</TT></DIV>
-Pour définir <I>g</I> comme <I>f</I>′, on tape :<BR>
-<DIV CLASS="center"><TT>g:=f’</TT></DIV>
+</li></ul>
+<h4 id="sec399" class="subsubsection">Derivée et fonction derivée</h4>
+<p>
+<span style="font-family:monospace">diff</span> ou <span style="font-family:monospace">derive</span> ou <span style="font-family:monospace">deriver</span> ou <span style="font-family:monospace">’</span> ont comme argument soit 
+une fonction, soit une expression de la variable <span style="font-family:monospace">x</span>.<br>
+</p><ul class="itemize"><li class="li-itemize">
+Si cet argument est une fonction, <span style="font-family:monospace">diff</span> ou <span style="font-family:monospace">derive</span> ou 
+<span style="font-family:monospace">deriver</span> ou <span style="font-family:monospace">’</span> renvoie une fonction qui est la fonction dérivée 
+de la fonction argument.<br>
+<span style="font-family:monospace">diff</span> (ou <span style="font-family:monospace">derive</span> ou <span style="font-family:monospace">deriver</span> ou <span style="font-family:monospace">’</span>) est alors equivalente à <span style="font-family:monospace">function_diff</span>.<br>
+On tape :<br>
+<div class="center"><span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*cos(x)+</span></div>
+Pour définir <span style="font-style:italic">g</span> comme <span style="font-style:italic">f</span>′, on tape :<br>
+<div class="center"><span style="font-family:monospace">g:=f’</span></div>
 Ou :
-<DIV CLASS="center"><TT>g:=(f=&gt;diff)</TT></DIV>
+<div class="center"><span style="font-family:monospace">g:=(f=&gt;diff)</span></div>
 Ou :
-<DIV CLASS="center"><TT>g:=diff(f)</TT></DIV>
+<div class="center"><span style="font-family:monospace">g:=diff(f)</span></div>
 Ou :
-<DIV CLASS="center"><TT>g:=function_diff(f)</TT></DIV>
+<div class="center"><span style="font-family:monospace">g:=function_diff(f)</span></div>
 Ou :
-<DIV CLASS="center"><TT>g:=unapply(diff(f(x),x),x)</TT></DIV>
+<div class="center"><span style="font-family:monospace">g:=unapply(diff(f(x),x),x)</span></div>
 Ou :
-<DIV CLASS="center"><TT>g(x):=f’(x)</TT></DIV>
+<div class="center"><span style="font-family:monospace">g(x):=f’(x)</span></div>
 Ou :
-<DIV CLASS="center"><TT>g(x):=(f(x)=&gt;diff)</TT></DIV>
+<div class="center"><span style="font-family:monospace">g(x):=(f(x)=&gt;diff)</span></div>
 Ou :
-<DIV CLASS="center"><TT>g(x):=diff(f)(x))</TT></DIV>
+<div class="center"><span style="font-family:monospace">g(x):=diff(f)(x))</span></div>
 Puis, on tape :
-<DIV CLASS="center"><TT>g(x)</TT></DIV> 
+<div class="center"><span style="font-family:monospace">g(x)</span></div> 
 On obtient :
-<DIV CLASS="center"><TT>cos(x)+x*(-(sin(x)))+2*x</TT></DIV> 
-Pour définir <I>h</I> comme <I>f</I>″, on tape :<BR>
-<DIV CLASS="center"><TT>h:=f’’</TT></DIV>
+<div class="center"><span style="font-family:monospace">cos(x)+x*(-(sin(x)))+2*x</span></div> 
+Pour définir <span style="font-style:italic">h</span> comme <span style="font-style:italic">f</span>″, on tape :<br>
+<div class="center"><span style="font-family:monospace">h:=f’’</span></div>
 Ou :
-<DIV CLASS="center"><TT>h:=diff(diff(f))</TT></DIV>
+<div class="center"><span style="font-family:monospace">h:=diff(diff(f))</span></div>
 Ou :
-<DIV CLASS="center"><TT>h:=function_diff(function_diff(f))</TT></DIV>
+<div class="center"><span style="font-family:monospace">h:=function_diff(function_diff(f))</span></div>
 Ou :
-<DIV CLASS="center"><TT>h:=diff(unapply(diff(f(x),x),x))</TT></DIV>
+<div class="center"><span style="font-family:monospace">h:=diff(unapply(diff(f(x),x),x))</span></div>
 Ou :
-<DIV CLASS="center"><TT>h(x):=diff(diff(f))(x))</TT></DIV>
+<div class="center"><span style="font-family:monospace">h(x):=diff(diff(f))(x))</span></div>
 Ou :
-<DIV CLASS="center"><TT>h(x):=f’’(x)</TT></DIV>
+<div class="center"><span style="font-family:monospace">h(x):=f’’(x)</span></div>
 Puis, on tape :
-<DIV CLASS="center"><TT>h(x)</TT></DIV> 
+<div class="center"><span style="font-family:monospace">h(x)</span></div> 
 On obtient :
-<DIV CLASS="center"><TT>-sin(x)+x*(-cos(x))-sin(x)+2</TT></DIV> </LI><LI CLASS="li-itemize">Si cet argument est une expression de la variable <TT>x</TT>, <TT>diff</TT> ou 
-<TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT> renvoie une expression qui est 
-l’expression de la dérivée de l’argument par rapport à <TT>x</TT>. 
-On tape :<BR>
-<DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>+x*cos(x)+</TT></DIV>
-Pour calculer la dérivée de <I>f</I>(<I>x</I>), on tape :<BR>
-<DIV CLASS="center"><TT>A:=f(x)’</TT></DIV>
+<div class="center"><span style="font-family:monospace">-sin(x)+x*(-cos(x))-sin(x)+2</span></div> </li><li class="li-itemize">Si cet argument est une expression de la variable <span style="font-family:monospace">x</span>, <span style="font-family:monospace">diff</span> ou 
+<span style="font-family:monospace">derive</span> ou <span style="font-family:monospace">deriver</span> ou <span style="font-family:monospace">’</span> renvoie une expression qui est 
+l’expression de la dérivée de l’argument par rapport à <span style="font-family:monospace">x</span>. 
+On tape :<br>
+<div class="center"><span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">+x*cos(x)+</span></div>
+Pour calculer la dérivée de <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>), on tape :<br>
+<div class="center"><span style="font-family:monospace">A:=f(x)’</span></div>
 Ou :
-<DIV CLASS="center"><TT>A:=diff(f(x))</TT></DIV>
+<div class="center"><span style="font-family:monospace">A:=diff(f(x))</span></div>
 On obtient :
-<DIV CLASS="center"><TT>cos(x)+x*(-(sin(x)))+2*x</TT></DIV> 
+<div class="center"><span style="font-family:monospace">cos(x)+x*(-(sin(x)))+2*x</span></div> 
 Ou encore :
-<DIV CLASS="center"><TT>A:=diff(f(a),a)</TT></DIV>
+<div class="center"><span style="font-family:monospace">A:=diff(f(a),a)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>cos(a)+a*(-(sin(a)))+2*a</TT></DIV> 
-<B>MAIS ATTENTION</B><BR>
-cela ne définit pas une fonction car le résultat est une expression.<BR>
-<TT>g(x):=diff(f(x))</TT> ou <TT>g(x):=diff(f(x),x)</TT> n’est pas correct, car lors 
-d’une affectation ce qui est à droite de <TT>:=</TT> n’est pas évalué lors 
-de la définition....il faut utiliser <TT>unapply</TT> 
-(<TT>g(x):=unapply(diff(f(x),x),x)</TT>) ou écrire <TT>g(x):=diff(f)(x)</TT>.
-</LI></UL><H4 CLASS="subsubsection"><A NAME="toc13"></A>Derivées et derivées partielles d’ordre 1 : <TT>diff derive deriver ’</TT></H4><P>
-Pour avoir des derivées partielles d’ordre 1 :<BR>
-<TT>diff</TT> (ou <TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT>) a deux arguments : 
+<div class="center"><span style="font-family:monospace">cos(a)+a*(-(sin(a)))+2*a</span></div> 
+<span style="font-weight:bold">MAIS ATTENTION</span><br>
+cela ne définit pas une fonction car le résultat est une expression.<br>
+<span style="font-family:monospace">g(x):=diff(f(x))</span> ou <span style="font-family:monospace">g(x):=diff(f(x),x)</span> n’est pas correct, car lors 
+d’une affectation ce qui est à droite de <span style="font-family:monospace">:=</span> n’est pas évalué lors 
+de la définition....il faut utiliser <span style="font-family:monospace">unapply</span> 
+(<span style="font-family:monospace">g(x):=unapply(diff(f(x),x),x)</span>) ou écrire <span style="font-family:monospace">g(x):=diff(f)(x)</span>.
+</li></ul>
+<h4 id="sec400" class="subsubsection">Derivées et derivées partielles d’ordre 1 : <span style="font-family:monospace">diff derive deriver ’</span></h4>
+<p>
+Pour avoir des derivées partielles d’ordre 1 :<br>
+<span style="font-family:monospace">diff</span> (ou <span style="font-family:monospace">derive</span> ou <span style="font-family:monospace">deriver</span> ou <span style="font-family:monospace">’</span>) a deux arguments : 
 une expression et une variable (resp une liste contenant le nom des variables) 
-(voir fonctions de plusieurs variables paragraphe <A HREF="index.html#sec:plusvar">6.60</A>).<BR>
-<TT>diff</TT> renvoie la dérivée de l’expression par rapport à la variable 
+(voir fonctions de plusieurs variables paragraphe <a href="index.html#sec%3Aplusvar">6.60</a>).<br>
+<span style="font-family:monospace">diff</span> renvoie la dérivée de l’expression par rapport à la variable 
 donnée comme deuxième paramètre, trés utile pour calculer des 
 dérivées partielles!) (resp renvoie une liste contenant les dérivées
-par rapport aux variables de la liste du 2nd argument).<BR>
-<B>Exemples</B> :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+par rapport aux variables de la liste du 2nd argument).<br>
+<span style="font-weight:bold">Exemples</span> :
+</p><ul class="itemize"><li class="li-itemize">
 Soit à calculer :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∂ (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">∂ <I>z</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ (<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span><sup>2</sup>.<span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span>.<span style="font-style:italic">z</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">z</span></td></tr>
+</table></td></tr>
+</table>
 On tape :
-<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,z)’</TT></DIV>
+<div class="center"><span style="font-family:monospace">(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,z)’</span></div>
 ou on tape :
-<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,z)</TT></DIV>
+<div class="center"><span style="font-family:monospace">diff(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,z)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>x*y</TT><CODE><TT>^</TT></CODE><TT>2*3*z</TT><CODE><TT>^</TT></CODE><TT>2+x*y</TT></DIV>
+<div class="center"><span style="font-family:monospace">x*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*y</span></div>
 Si on a cocher  Pas à pas dans la configuration générale on a en plus, en vert,
 le détail du calcul :
-<PRE CLASS="verbatim">Derivative of a sum: (u+v+...)'=u'+v'+...
+<pre class="verbatim">Derivative of a sum: (u+v+...)'=u'+v'+...
   with u,v,...=x*y^2*z^3,x*y*z
 Derivative of a power: (z^3)'=3*z'*(z)^(3-1)
-</PRE></LI><LI CLASS="li-itemize">Soit à calculer les 3 derivées partielles premières de <I>x</I>*<I>y</I><SUP>2</SUP>*<I>z</I><SUP>3</SUP>+<I>x</I>*<I>y</I>*<I>z</I>.<BR>
+</pre>
+</li><li class="li-itemize">Soit à calculer les 3 derivées partielles premières de <span style="font-style:italic">x</span>*<span style="font-style:italic">y</span><sup>2</sup>*<span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span>*<span style="font-style:italic">y</span>*<span style="font-style:italic">z</span>.<br>
 On tape :
-<DIV CLASS="center"><TT>(x*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y,[x,y,z])’</TT></DIV>
+<div class="center"><span style="font-family:monospace">(x*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y,[x,y,z])’</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>diff(x*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y,[x,y,z])</TT></DIV>
+<div class="center"><span style="font-family:monospace">diff(x*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y,[x,y,z])</span></div>
 On obtient :
-<DIV CLASS="center"><TT>[y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+y*z, x*2*y*z</TT><CODE><TT>^</TT></CODE><TT>3+x*z, x*y</TT><CODE><TT>^</TT></CODE><TT>2*3*z</TT><CODE><TT>^</TT></CODE><TT>2+x*y]</TT></DIV>
+<div class="center"><span style="font-family:monospace">[y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+y*z, x*2*y*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*z, x*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*y]</span></div>
 Si on a cocher  Pas à pas dans la configuration générale on a en plus, en vert,
 le détail du calcul :
-<PRE CLASS="verbatim">Derivative of a sum: (u+v+...)'=u'+v'+...
+<pre class="verbatim">Derivative of a sum: (u+v+...)'=u'+v'+...
   with u,v,...=x*y^2*z^3,x*y
 Derivative of a sum: (u+v+...)'=u'+v'+...
   with u,v,...=x*y^2*z^3,x*y
 Derivative of a power: (y^2)'=2*y'*(y)^(2-1)
 Derivative of a power: (z^3)'=3*z'*(z)^(3-1)
-</PRE></LI><LI CLASS="li-itemize">Soit à calculer :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∂<SUP>3</SUP> (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">∂ <I>y</I>∂<SUP>2</SUP> <I>z</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
+</pre>
+</li><li class="li-itemize">Soit à calculer :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂<sup>3</sup> (<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span><sup>2</sup>.<span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span>.<span style="font-style:italic">z</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span>∂<sup>2</sup> <span style="font-style:italic">z</span></td></tr>
+</table></td></tr>
+</table>
 On tape :
-<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,y,z$2)’</TT></DIV>
+<div class="center"><span style="font-family:monospace">(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,y,z$2)’</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,y,z$2)</TT></DIV>
+<div class="center"><span style="font-family:monospace">diff(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,y,z$2)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>12*x*y*z</TT></DIV>
-Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+<div class="center"><span style="font-family:monospace">12*x*y*z</span></div>
+Si on a cocher <span style="font-family:monospace">Pas à pas</span> dans la configuration générale on a en 
 plus, en vert, le détail du calcul :
-<PRE CLASS="verbatim">Derivative of a sum: (u+v+...)'=u'+v'+...
+<pre class="verbatim">Derivative of a sum: (u+v+...)'=u'+v'+...
   with u,v,...=x*y^2*z^3,x*y*z
 Derivative of a power: (y^2)'=2*y'*(y)^(2-1)
 Derivative of a sum: (u+v+...)'=u'+v'+...
   with u,v,...=2*x*y*z^3,x*z
 Derivative of a power: (z^3)'=3*z'*(z)^(3-1)
 Derivative of a power: (z^2)'=2*z'*(z)^(2-1)
-</PRE></LI></UL><H4 CLASS="subsubsection"><A NAME="toc14"></A>Derivée et derivée partielle d’ordre <I>n</I> : <TT>diff derive deriver</TT></H4><P><A NAME="@default568"></A>
-Lorsque <TT>derive</TT> (ou <TT>diff</TT>) a plus de deux arguments,
+</pre>
+</li></ul>
+<h4 id="sec401" class="subsubsection">Derivée et derivée partielle d’ordre <span style="font-style:italic">n</span> : <span style="font-family:monospace">diff derive deriver</span></h4>
+<p><a id="hevea_default568"></a>
+Lorsque <span style="font-family:monospace">derive</span> (ou <span style="font-family:monospace">diff</span>) a plus de deux arguments,
 ce sont : une expression et le nom des variables par rapport 
 auxquelles il faut dériver cette expression (le nom des variables est 
-éventuellement suivi de $<I>n</I> pour indiquer le nombre <I>n</I> de fois que l’on 
-veut dériver).<BR>
-<TT>diff</TT> renvoie la dérivée de l’expression par rapport aux variables
+éventuellement suivi de $<span style="font-style:italic">n</span> pour indiquer le nombre <span style="font-style:italic">n</span> de fois que l’on 
+veut dériver).<br>
+<span style="font-family:monospace">diff</span> renvoie la dérivée de l’expression par rapport aux variables
 données après le premier paramètre (utile pour calculer des 
-dérivées partielles de tous les ordres).<BR>
-Donc pour dériver <I>n</I> fois :<BR>
-<TT>diff</TT> (ou <TT>derive</TT>) a <I>n</I>+1 arguments : une expression et le nom de 
-la variable qui sera répété <I>n</I> fois. Pour avoir une écriture plus 
-facile on écrira plutôt le nom de la variable suivi de $<I>n</I> pour indiquer 
-que l’on veut dériver <I>n</I> fois (en effet <TT>x$3=(x,x,x)</TT>).
-Par exemple pour dériver <TT>exp(x*y)</TT> 1 fois par 
-rapport à <I>x</I> et 2 fois par rapport à <I>y</I>, on met comme arguments 
+dérivées partielles de tous les ordres).<br>
+Donc pour dériver <span style="font-style:italic">n</span> fois :<br>
+<span style="font-family:monospace">diff</span> (ou <span style="font-family:monospace">derive</span>) a <span style="font-style:italic">n</span>+1 arguments : une expression et le nom de 
+la variable qui sera répété <span style="font-style:italic">n</span> fois. Pour avoir une écriture plus 
+facile on écrira plutôt le nom de la variable suivi de $<span style="font-style:italic">n</span> pour indiquer 
+que l’on veut dériver <span style="font-style:italic">n</span> fois (en effet <span style="font-family:monospace">x$3=(x,x,x)</span>).
+Par exemple pour dériver <span style="font-family:monospace">exp(x*y)</span> 1 fois par 
+rapport à <span style="font-style:italic">x</span> et 2 fois par rapport à <span style="font-style:italic">y</span>, on met comme arguments 
 l’expression, puis, les noms des variables éventuellement suivi de $ pour 
 indiquer le nombre de fois que l’on veut dériver et on tape 
-<TT>diff(exp(x*y),x,y$2)</TT> qui est équivalent à <TT>diff(exp(x*y),x,y,y)</TT>
-(en effet <TT>y$2=(y,y)</TT>).<BR>
-<B>Exemples</B>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<span style="font-family:monospace">diff(exp(x*y),x,y$2)</span> qui est équivalent à <span style="font-family:monospace">diff(exp(x*y),x,y,y)</span>
+(en effet <span style="font-family:monospace">y$2=(y,y)</span>).<br>
+<span style="font-weight:bold">Exemples</span>
+</p><ul class="itemize"><li class="li-itemize">
 Soit à calculer :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∂<SUP>2</SUP> (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">∂ <I>x</I>∂ <I>z</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂<sup>2</sup> (<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span><sup>2</sup>.<span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span>.<span style="font-style:italic">z</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span>∂ <span style="font-style:italic">z</span></td></tr>
+</table></td></tr>
+</table>
 On tape :
-<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z)’</TT></DIV>
+<div class="center"><span style="font-family:monospace">(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,x,z)’</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z)</TT></DIV>
+<div class="center"><span style="font-family:monospace">diff(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,x,z)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>y</TT><CODE><TT>^</TT></CODE><TT>2*3*z</TT><CODE><TT>^</TT></CODE><TT>2+y</TT></DIV>
-</LI><LI CLASS="li-itemize">Soit à calculer :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∂<SUP>3</SUP> (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">∂ <I>x</I>∂<SUP>2</SUP> <I>z</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
+<div class="center"><span style="font-family:monospace">y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span></div>
+</li><li class="li-itemize">Soit à calculer :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂<sup>3</sup> (<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span><sup>2</sup>.<span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span>.<span style="font-style:italic">z</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span>∂<sup>2</sup> <span style="font-style:italic">z</span></td></tr>
+</table></td></tr>
+</table>
 On tape :
-<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z,z)’</TT></DIV>
+<div class="center"><span style="font-family:monospace">(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,x,z,z)’</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z$2)’</TT></DIV>
+<div class="center"><span style="font-family:monospace">(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,x,z$2)’</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z,z)</TT></DIV>
+<div class="center"><span style="font-family:monospace">diff(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,x,z,z)</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z$2)</TT></DIV>
+<div class="center"><span style="font-family:monospace">diff(x*y </span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x*y*z,x,z$2)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>6*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT></DIV>
-</LI><LI CLASS="li-itemize">Soit à calculer la dérivée troisième de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>+2</TD></TR>
-</TABLE></TD></TR>
-</TABLE>
+<div class="center"><span style="font-family:monospace">6*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*z</span></div>
+</li><li class="li-itemize">Soit à calculer la dérivée troisième de :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup>+2</td></tr>
+</table></td></tr>
+</table>
 On tape :
-<DIV CLASS="center"><TT>(1/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x,x,x)’</TT></DIV>
+<div class="center"><span style="font-family:monospace">(1/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2),x,x,x)’</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>(1/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x$3)’</TT></DIV>
+<div class="center"><span style="font-family:monospace">(1/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2),x$3)’</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>diff((1)/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x,x,x)</TT></DIV>
+<div class="center"><span style="font-family:monospace">diff((1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2),x,x,x)</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>diff((1)/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x$3)</TT></DIV>
+<div class="center"><span style="font-family:monospace">diff((1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2),x$3)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>(-24*x</TT><CODE><TT>^</TT></CODE><TT>3+48*x)/(x</TT><CODE><TT>^</TT></CODE><TT>8+8*x</TT><CODE><TT>^</TT></CODE><TT>6+24*x</TT><CODE><TT>^</TT></CODE><TT>4+32*x</TT><CODE><TT>^</TT></CODE><TT>2+16)</TT></DIV>
-</LI></UL><P>
-<B>Remarque</B><BR>
-Bien voir la différence entre <TT>diff(Xpr,x,y)</TT> et <TT>diff(Xpr,[x,y])</TT> 
-où <TT>Xpr</TT> est une expression :<BR>
-<TT>diff</TT>(<I>Xpr</I>,<I>x</I>,<I>y</I>) renvoie  ∂<SUP>2</SUP>(<I>Xpr</I>)/∂ <I>x</I>∂ <I>y</I> et<BR>
-<TT>diff</TT>(<I>Xpr</I>,[<I>x</I>,<I>y</I>]) renvoie [∂(<I>Xpr</I>)/∂ <I>x</I>,∂ (<I>Xpr</I>)/∂ <I>y</I>] </P><HR>
-<A HREF="cascmd_fr304.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr306.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">(-24*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+48*x)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8+8*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6+24*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+32*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+16)</span></div>
+</li></ul><p>
+<span style="font-weight:bold">Remarque</span><br>
+Bien voir la différence entre <span style="font-family:monospace">diff(Xpr,x,y)</span> et <span style="font-family:monospace">diff(Xpr,[x,y])</span> 
+où <span style="font-family:monospace">Xpr</span> est une expression :<br>
+<span style="font-family:monospace">diff</span>(<span style="font-style:italic">Xpr</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) renvoie  ∂<sup>2</sup>(<span style="font-style:italic">Xpr</span>)/∂ <span style="font-style:italic">x</span>∂ <span style="font-style:italic">y</span> et <br>
+<span style="font-family:monospace">diff</span>(<span style="font-style:italic">Xpr</span>,[<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>]) renvoie [∂(<span style="font-style:italic">Xpr</span>)/∂ <span style="font-style:italic">x</span>,∂ (<span style="font-style:italic">Xpr</span>)/∂ <span style="font-style:italic">y</span>] </p>
+<hr>
+<a href="cascmd_fr304.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr306.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,73 +1,73 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Factorisation : factor</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en104.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en106.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc119">2.12.9</A>  Factorisation : <TT>factor</TT></H3><P><A NAME="@default168"></A><A NAME="sec:factore"></A>
-<TT>factor</TT> takes as argument an expression.<BR>
-<TT>factor</TT> factorizes this expression on the field of it&#X2019;s coefficients,
-with the addition of <I>i</I> in complex mode. If <TT>sqrt</TT> is enabled
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Factorization : factor</title>
+</head>
+<body >
+<a href="cascmd_en104.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en106.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec121" class="subsection">2.12.9  Factorization : <span style="font-family:monospace">factor</span></h3>
+<p><a id="hevea_default168"></a><a id="sec:factore"></a>
+<span style="font-family:monospace">factor</span> takes as argument an expression.<br>
+<span style="font-family:monospace">factor</span> factorizes this expression on the field of its coefficients,
+with the addition of <span style="font-style:italic">i</span> in complex mode. If <span style="font-family:monospace">sqrt</span> is enabled
 in the Cas configuration, polynomials of order 2 are factorized in
-complex mode or in real mode if the discriminant is positive.<BR>
-<B>Examples</B>
-</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-Factorize <I>x</I><SUP>4</SUP>&#X2212;1 over &#X211A;.<BR>
+complex mode or in real mode if the discriminant is positive.<br>
+<span style="font-weight:bold">Examples</span>
+</p><ol class="enumerate" type=1><li class="li-enumerate">
+Factorize <span style="font-style:italic">x</span><sup>4</sup>&#X2212;1 over &#X211A;.<br>
 Input :
-<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4-1)</TT></DIV>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div>
 Output :
-<DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+1)*(x+1)*(x-1)</TT></DIV>
+<div class="center"><span style="font-family:monospace">(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)*(x+1)*(x-1)</span></div>
 The coefficients are rationals, hence the factors are polynomials with
-rationals coefficients.<BR>
-</LI><LI CLASS="li-enumerate">Factorize <I>x</I><SUP>4</SUP>&#X2212;1 over &#X211A;[<I>i</I>]<BR>
-To have a complex factorisation, check <TT>complex</TT> in the <TT>cas</TT>
-configuration (red button displaying the status line).<BR>
+rationals coefficients.<br>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>&#X2212;1 over &#X211A;[<span style="font-style:italic">i</span>] <br>
+To have a complex factorization, check <span style="font-family:monospace">complex</span> in the <span style="font-family:monospace">cas</span>
+configuration (red button displaying the status line).<br>
 Input :
-<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4-1)</TT></DIV>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div>
 Output :
-<DIV CLASS="center"><TT>-i*(-x+-i)*(i*x+1)*(-x+1)*(x+1)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Factorize <I>x</I><SUP>4</SUP>+1 over &#X211A;<BR>
+<div class="center"><span style="font-family:monospace">-i*(-x+-i)*(i*x+1)*(-x+1)*(x+1)</span></div>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>+1 over &#X211A;<br>
 Input :
-<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4+1)</TT></DIV>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1)</span></div>
 Output :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4+1</TT></DIV>
-Indeed  <I>x</I><SUP>4</SUP>+1 has no factor with rational coefficients.<BR>
-</LI><LI CLASS="li-enumerate">Factorize <I>x</I><SUP>4</SUP>+1 over &#X211A;[<I>i</I>]<BR>
-Check <TT>complex</TT> in the <TT>cas</TT>
-configuration (red button rouge displaying the status line).<BR>
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1</span></div>
+Indeed  <span style="font-style:italic">x</span><sup>4</sup>+1 has no factor with rational coefficients.<br>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>+1 over &#X211A;[<span style="font-style:italic">i</span>]<br>
+Check <span style="font-family:monospace">complex</span> in the <span style="font-family:monospace">cas</span>
+configuration (red button rouge displaying the status line).<br>
 Input :
-<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4-1)</TT></DIV>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div>
 Output :
-<DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+i)*(x</TT><CODE><TT>^</TT></CODE><TT>2+-i)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Factorize <I>x</I><SUP>4</SUP>+1 over &#X211D;.<BR>
+<div class="center"><span style="font-family:monospace">(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+i)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-i)</span></div>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>+1 over &#X211D;.<br>
 You have to provide the square root required for extending the
-rationals. In order to do that with the help of <TT>Xcas</TT>, 
-first check <TT>complex</TT> in the <TT>cas</TT>
-configuration and input :<BR>
-<DIV CLASS="center"><TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>4+1,x)</TT></DIV><A NAME="@default169"></A><A NAME="@default170"></A>
+rationals. In order to do that with the help of <span style="font-family:monospace">Xcas</span>, 
+first check <span style="font-family:monospace">complex</span> in the <span style="font-family:monospace">cas</span>
+configuration and input :<br>
+<div class="center"><span style="font-family:monospace">solve(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1,x)</span></div><a id="hevea_default169"></a><a id="hevea_default170"></a>
 Output :
-<DIV CLASS="center"><TT>[sqrt(2)/2+(i)*sqrt(2)/2,sqrt(2)/2+(i)*(-(sqrt(2)/2)),
--sqrt(2)/2+(i)*sqrt(2)/2,-sqrt(2)/2+(i)*(-(sqrt(2)/2))]</TT></DIV>
-The roots depends on &#X221A;<SPAN style="text-decoration:overline">2</SPAN>. Uncheck complex mode in the Cas configuration
+<div class="center"><span style="font-family:monospace">[sqrt(2)/2+(i)*sqrt(2)/2,sqrt(2)/2+(i)*(-(sqrt(2)/2)),
+-sqrt(2)/2+(i)*sqrt(2)/2,-sqrt(2)/2+(i)*(-(sqrt(2)/2))]</span></div>
+The roots depends on &#X221A;<span style="text-decoration:overline">2</span>. Uncheck complex mode in the Cas configuration
 and input :
-<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4+1,sqrt(2))</TT></DIV>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1,sqrt(2))</span></div>
 Output :
-<DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+sqrt(2)*x+1)*(x</TT><CODE><TT>^</TT></CODE><TT>2+(-(sqrt(2)))*x+1)</TT></DIV>
-To factorize over &#X2102;, check <TT>complex</TT> in the 
-<TT>cas</TT> configuration and input <TT>cFactor(x</TT><CODE><TT>^</TT></CODE><TT>4+1,sqrt(2))</TT> 
-(cf <TT>cFactor</TT>).
-</LI></OL><HR>
-<A HREF="cascmd_en104.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en106.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+sqrt(2)*x+1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(-(sqrt(2)))*x+1)</span></div>
+To factorize over &#X2102;, check <span style="font-family:monospace">complex</span> in the 
+<span style="font-family:monospace">cas</span> configuration or input <span style="font-family:monospace">cFactor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1,sqrt(2))</span> 
+(cf <span style="font-family:monospace">cFactor</span>).
+</li></ol>
+<hr>
+<a href="cascmd_en104.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en106.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

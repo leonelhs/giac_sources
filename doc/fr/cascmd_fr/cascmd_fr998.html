@@ -1,32 +1,64 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le birapport de 4 points alignés : cross_ratio birapport</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr997.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr999.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1167">10.19.2</A>  Le birapport de 4 points alignés : <TT>cross_ratio birapport</TT></H3><P><A NAME="@default1944"></A><A NAME="@default1945"></A>
-<TT>birapport</TT> a comme argument 4 nombres complexes <I>a</I>,<I>b</I>,<I>c</I>,<I>d</I>.<BR>
-<TT>birapport</TT> renvoie le birapport deces 4 nombres à savoir :<BR>
-<I>c</I>−<I>a</I>/<I>c</I>−<I>b</I>/<I>d</I>−<I>a</I>/<I>d</I>−<I>b</I>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Division harmonique : harmonic_division div_harmonique</title>
+</head>
+<body >
+<a href="cascmd_fr997.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr999.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1205" class="subsection">10.19.3  Division harmonique : <span style="font-family:monospace">harmonic_division div_harmonique</span></h3>
+<p><a id="hevea_default1943"></a><a id="hevea_default1944"></a>
+Quatre points alignés <span style="font-style:italic">A</span>, <span style="font-style:italic">B</span>, <span style="font-style:italic">C</span>, <span style="font-style:italic">D</span> sont en division harmonique 
+si on a :<br>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">CA</span></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">CB</span></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">=−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">DA</span></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">DB</span></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">=<span style="font-style:italic">k</span></td></tr>
+</table><p>
+On dit aussi que <span style="font-style:italic">C</span> et <span style="font-style:italic">D</span> divisent le segment <span style="font-style:italic">AB</span> dans le rapport <span style="font-style:italic">k</span> et que
+le point <span style="font-style:italic">D</span> est le conjugué harmonique de <span style="font-style:italic">C</span> par rapport à <span style="font-style:italic">A</span> et <span style="font-style:italic">B</span>
+ou plus rapidement <span style="font-style:italic">D</span> est le conjugué harmonique de <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>.<br>
+Quatre droites concourantes ou parallèles <span style="font-style:italic">d</span>1, <span style="font-style:italic">d</span>2, <span style="font-style:italic">d</span>3, <span style="font-style:italic">d</span>4 sont 
+en division harmonique si elles déterminent sur chaque droite sécante une
+division harmonique. On dit aussi que <span style="font-style:italic">d</span>1, <span style="font-style:italic">d</span>2, <span style="font-style:italic">d</span>3, <span style="font-style:italic">d</span>4 forment un
+faisceau harmonique.<br>
+<span style="font-family:monospace">div_harmonique</span> a comme arguments 3 points alignés ou leur 3 affixes
+(resp 3 droites concourantes ou parallèles) et le nom d’une variable.<br>
+<span style="font-family:monospace">div_harmonique</span> affecte le dernier argument pour que l’on obtienne une 
+division harmonique et renvoie la liste des 4 points (resp des 4 
+droites) et dessine les points (resp les droites).<br>
 On tape :
-</P><DIV CLASS="center"><TT>birapport(0,1,2,3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">div_harmonique(0,2,3/2,D)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>4/3</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[0,2,3/2,pnt(3,0,"D")] et seul le point </span><span style="font-style:italic">D</span><span style="font-family:monospace"> est dessiné</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>birapport(i,2+i,3/2+i,3+i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">div_harmonique(point(0),point(2),point(3/2),D)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>-1</TT></DIV><HR>
-<A HREF="cascmd_fr997.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr999.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[pnt(0,0),pnt(2,0),pnt(3/2,0), pnt(3,0,"D")] et les 4 points sont dessinés</span></div><p>
+<span style="font-weight:bold">Remarque</span> : 0 représente la couleur du point.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">div_harmonique(droite(i,0),droite(i,1+i), droite(i,3+2*(i)),D)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[pnt([[i,0],0]),pnt([[i,1+i],0]), pnt([[i,3+2*i],0]),pnt([[i,-3+2*i],0,"D"])] et les 4 droites sont dessinées</span></div>
+<hr>
+<a href="cascmd_fr997.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr999.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

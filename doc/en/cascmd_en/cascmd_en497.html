@@ -1,34 +1,70 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>fsolve or nSolve with the option steffenson_solver</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en496.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en498.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc576">4.4.6</A>  <TT>fsolve</TT> or <TT>nSolve</TT> with the option <TT>steffenson_solver</TT></H3><P><A NAME="@default847"></A>
-The Steffenson method is generically the fastest method.<BR>
-It combines the Newton method with a "delta-two" Aitken acceleration : 
-with the Newton method, we obtain the sequence <I>x</I><SUB><I>i</I></SUB> and the convergence
-acceleration gives the Steffenson sequence 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>R</I><SUB><I>i</I></SUB> =<I>x</I><SUB><I>i</I></SUB> &#X2212; </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">(<I>x</I><SUB><I>i</I>+1</SUB> &#X2212; <I>x</I><SUB><I>i</I></SUB>)<SUP>2</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"> (<I>x</I><SUB><I>i</I>+2</SUB> &#X2212; 2 <I>x</I><SUB><I>i</I>+1</SUB> + <I>x</I><SUB><I>i</I></SUB>)</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD></TR>
-</TABLE><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Approximate solution of the system v&#X2019;=f(t,v) : odesolve</title>
+</head>
+<body >
+<a href="cascmd_en496.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en498.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec606" class="subsection">4.3.5  Approximate solution of the system v&#X2019;=f(t,v) : <span style="font-family:monospace">odesolve</span></h3>
+<p><a id="hevea_default845"></a>
+</p><ul class="itemize"><li class="li-itemize">
+If <span style="font-style:italic">v</span> is a vector
+of variables [<span style="font-style:italic">x</span>1,..,<span style="font-style:italic">xn</span>] and if <span style="font-style:italic">f</span> is given by a vector of expressions
+<span style="font-family:monospace">[e1,...,en]</span> depending on <span style="font-style:italic">t</span> and of [<span style="font-style:italic">x</span>1,..,<span style="font-style:italic">xn</span>],
+if the initial value of <span style="font-style:italic">v</span> at <span style="font-family:monospace">t0</span>
+is the vector [<span style="font-style:italic">x</span>10,...,<span style="font-style:italic">xn</span>0] then the instruction
+<div class="center">
+<span style="font-family:monospace">odesolve([e1,..,en],t=t0..t1,[x1,...,xn],
+[x10,...,xn0])</span> 
+</div>
+returns an approximated value of <span style="font-style:italic">v</span> at <span style="font-style:italic">t</span>=<span style="font-style:italic">t</span>1.
+With the optional argument <span style="font-family:monospace">curve</span>, <span style="font-family:monospace">odesolve</span> returns the list of 
+the intermediate values of [<span style="font-style:italic">t</span>,<span style="font-style:italic">v</span>(<span style="font-style:italic">t</span>)] computed by the solver. <p>Example, to solve the system
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">x</span>&#X2032;(<span style="font-style:italic">t</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >&#X2212;<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">y</span>&#X2032;(<span style="font-style:italic">t</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">x</span>(<span style="font-style:italic">t</span>)
+</td></tr>
+</table></td></tr>
+</table><p>
 Input :
-</P><DIV CLASS="center"><TT>fsolve(cos(x)=x,x,0,steffenson_solver)</TT></DIV><P>
+</p><div class="center">
+<span style="font-family:monospace">odesolve([-y,x],t=0..pi,[x,y],[0,1])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>0.739085133215</TT></DIV><HR>
-<A HREF="cascmd_en496.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en498.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[-1.79045146764e-15,-1]</span></div></li><li class="li-itemize">If <span style="font-style:italic">f</span> is a function from &#X211D; × &#X211D;<sup><span style="font-style:italic">n</span></sup> to 
+&#X211D;<sup><span style="font-style:italic">n</span></sup>.<br>
+<span style="font-family:monospace">odesolve(t0..t1,(t,v)-&gt;f(t,v),v0)</span> or<br>
+<span style="font-family:monospace">odesolve(t0..t1,f,v0)</span><br>
+computes an approximate value of <span style="font-style:italic">v</span>(<span style="font-style:italic">t</span>1) where the vector <span style="font-style:italic">v</span>(<span style="font-style:italic">t</span>)
+in &#X211D;<sup><span style="font-style:italic">n</span></sup> is the solution of
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">v</span>&#X2032;(<span style="font-style:italic">t</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">v</span>(<span style="font-style:italic">t</span>)), <span style="font-style:italic">v</span>(<span style="font-style:italic">t</span>0)=<span style="font-style:italic">v</span>0 </td></tr>
+</table>
+With the optional argument <span style="font-family:monospace">curve</span>, <span style="font-family:monospace">odesolve</span> returns the list of 
+the intermediate value [<span style="font-style:italic">t</span>,<span style="font-style:italic">v</span>(<span style="font-style:italic">t</span>)] computed by the solver.<p>Example, to solve the system :<br>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">x</span>&#X2032;(<span style="font-style:italic">t</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >&#X2212;<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">y</span>&#X2032;(<span style="font-style:italic">t</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">x</span>(<span style="font-style:italic">t</span>)
+</td></tr>
+</table></td></tr>
+</table><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">odesolve(0..pi,(t,v)-&gt;[-v[1],v[0]],[0,1])</span></div><p>
+Or define the function:
+</p><div class="center"><span style="font-family:monospace">f(t,v):=[-v[1],v[0]]</span></div><p>
+then input : 
+</p><div class="center"><span style="font-family:monospace">odesolve(0..pi,f,[0,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[-1.79045146764e-15,-1]</span></div><p>
+Alternative input :
+</p><div class="center"><span style="font-family:monospace">odesolve(0..pi/4,f,[0,1],curve)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[0.1781,[-0.177159948386,0.984182072936]], [0.3781,[-0.369155338156,0.929367707805]], [0.5781,[-0.54643366953,0.837502384954]], [0.7781,[-0.701927414872,0.712248484906]]]</span></div></li></ul>
+<hr>
+<a href="cascmd_en496.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en498.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

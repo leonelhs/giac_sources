@@ -1,27 +1,38 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Make a list with a matrix : mat2list</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en333.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en335.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc373">2.37.39</A>  Make a list with a matrix : <TT>mat2list</TT></H3><P><A NAME="@default555"></A>
-<TT>mat2list</TT><A NAME="@default556"></A> takes as argument a matrix.<BR>
-<TT>mat2list</TT> returns the list of the coefficients of this matrix.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Make a matrix with a list : list2mat</title>
+</head>
+<body >
+<a href="cascmd_en333.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en335.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec398" class="subsection">2.37.38  Make a matrix with a list : <span style="font-family:monospace">list2mat</span></h3>
+<p><a id="hevea_default555"></a>
+<span style="font-family:monospace">list2mat</span> takes as argument a list <span style="font-family:monospace">l</span> and an integer 
+<span style="font-family:monospace">p</span>.<br>
+<span style="font-family:monospace">list2mat</span> returns a matrix having <span style="font-family:monospace">p</span> columns 
+by cutting the list <span style="font-family:monospace">l</span> in rows of length <span style="font-family:monospace">p</span>. 
+The matrix is filled with <span style="font-family:monospace">0</span>s if the size of <span style="font-family:monospace">l</span> is not
+a multiple of <span style="font-family:monospace">p</span>.<br>
 Input :
-</P><DIV CLASS="center"><TT>mat2list([[5,8],[1,9]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">list2mat([5,8,1,9,5,6],2)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[5,8,1,9]</TT></DIV><HR>
-<A HREF="cascmd_en333.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en335.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[[5,8],[1,9],[5,6]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">list2mat([5,8,1,9],3)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[5,8,1],[9,0,0]]</span></div><p>
+<span style="font-weight:bold">Remark</span> <br>
+<span style="font-family:monospace">Xcas</span> displays matrix with <span style="font-weight:bold">[</span> and <span style="font-weight:bold">]</span> and lists with [ and ] 
+as delimiters (the vertical bar of the brackets are thicker for matrices). </p>
+<hr>
+<a href="cascmd_en333.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en335.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

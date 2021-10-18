@@ -831,10 +831,17 @@ namespace giac {
 
   // insert nrows/ncols of fill in m, e.g. fill= [0,0,2] for a spreadsheet
   // or ["","",2] or 0 for a matrix
-  matrice matrice_insert(const matrice & m,int insert_row,int insert_col,int nrows,int ncols,const gen & fill,GIAC_CONTEXT){
+  matrice matrice_insert(const matrice & m,int insert_row,int insert_col,int nrows,int ncols,const gen & fill_,GIAC_CONTEXT){
     int r,c,cell_r,cell_c;
     int decal_i=0,decal_j;
     mdims(m,r,c);
+    gen fill(fill_);
+    if (is_undef(fill)){
+      if (m[0][0].type==_VECT)
+	fill=makevecteur(string2gen("",false),string2gen("",false),2);
+      else
+	fill=0;
+    }
     matrice res;
     res.reserve(r+nrows);
     // i,j position in the old matrix; i+decal_i,i+decal_j in the new
@@ -1072,7 +1079,7 @@ namespace giac {
       ref_vecteur * vptr=0;
       for (int x0=x;x0<=X;++x0){
 #ifdef SMARTPTR64
-	vptr=((ref_vecteur*)(* (longlong *) &(*mptr)[x0] >> 16));
+	vptr=((ref_vecteur*)(* (ulonglong *) &(*mptr)[x0] >> 16));
 #else
 	vptr=(*mptr)[x0].__VECTptr;
 #endif
@@ -3509,7 +3516,7 @@ namespace giac {
     if (g.type==_INT_){
       int tmp =g.val;
 #ifdef SMARTPTR64
-      * ((longlong * ) &g) = longlong(new ref_mpz_t(prealloc)) << 16;
+      * ((ulonglong * ) &g) = ulonglong(new ref_mpz_t(prealloc)) << 16;
 #else
       g.__ZINTptr = new ref_mpz_t(prealloc);
 #endif
@@ -4343,7 +4350,7 @@ namespace giac {
 	    if (it->type==_INT_){
 	      if (jt->type==_INT_){
 		longlong x=longlong(it->val)*jt->val;
-#ifdef x86_64
+#if defined x86_64 && !defined(WIN64) //fred
 		if (x>=0)
 		  mpz_add_ui(*tmp._ZINTptr,*tmp._ZINTptr,x);
 		else
@@ -7172,7 +7179,7 @@ namespace giac {
 	  // find degrees wrt main variable
 	  int polydim=0;
 	  int totaldeg=0;
-	  vector<int> maxdegj(as);
+	  vector<int> maxdegj(a0s);
 	  for (unsigned int i=0;i<as;++i){
 	    int maxdegi=0;
 	    for (unsigned int j=0;j<a0s;++j){
@@ -7206,7 +7213,7 @@ namespace giac {
 		CERR << CLOCK()*1e-6 << " det: begin horner" << endl;
 	      for (unsigned int i=0;i<as;++i){
 		vecteur resxi;
-		resxi.reserve(totaldeg+1);
+		resxi.reserve(a0s); // was (totaldeg+1);
 		for (unsigned int j=0;j<a0s;++j){
 		  const gen & tmp = (*res[i]._VECTptr)[j];
 		  resxi.push_back(horner(tmp,realx));
@@ -7235,7 +7242,7 @@ namespace giac {
 		// extract right submatrix
 		res1=mtran(res1);
 		Z[x]=vecteur(res1.begin()+lmax,res1.end());
-	      }
+	      } // if (fullreduction)
 	    } // end for x
 	    if (x==totaldeg+1){
 	      proba_epsilon(contextptr) *= totaldeg;
@@ -7281,7 +7288,17 @@ namespace giac {
 		res=mtran(R);
 	      }
 	      return 1;
-	    } // end if interpolation ok (x==totaldeg+1)
+	    } // if interpolation ok (x==totaldeg+1)
+	    else { // back convert from poly1 to polynome
+	      for (unsigned int i=0;i<as;++i){
+		for (unsigned int j=0;j<a0s;++j){
+		  gen & tmp = (*res[i]._VECTptr)[j];
+		  if (tmp.type==_VECT){
+		    tmp=poly12polynome(*tmp._VECTptr,1,polydim);
+		  }
+		}
+	      }
+	    }
 	  } // end if polydim
 	}
       }

@@ -1,48 +1,40 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Make a random vector or list : randvector</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en330.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en332.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc370">2.37.36</A>  Make a random vector or list : <TT>randvector</TT></H3><P><A NAME="@default552"></A>
-<A NAME="sec:ranm4"></A>
-<TT>randvector</TT> takes as argument an integer <I>n</I> and optionnally a 
-second argument, either an integer <I>k</I> or the quoted name of
-a random distribution law
-(see also <A HREF="cascmd_en205.html#sec:ranm1">2.24.25</A>, <A HREF="#sec:ranm4">2.37.36</A> and <A >??</A>).<BR>
-<TT>randvector</TT> returns a vector of size <I>n</I> containing random integers 
-uniformally distributed between -99 and +99 (default), or between 0 and <I>k</I>&#X2212;1
-or containing random 
-integers according to the law put between quotes.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Make a list with a function : makelist</title>
+</head>
+<body >
+<a href="cascmd_en330.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en332.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec395" class="subsection">2.37.35  Make a list with a function : <span style="font-family:monospace">makelist</span></h3>
+<p><a id="hevea_default552"></a>
+<span style="font-family:monospace">makelist</span> takes as argument a function <span style="font-family:monospace">f</span>, 
+the bounds <span style="font-family:monospace">a,b</span> of an index variable and a step <span style="font-family:monospace">p</span> 
+(by default 1 or -1 depending on the bounds order).<br>
+<span style="font-family:monospace">makelist</span> makes the list <span style="font-family:monospace">[f(a),f(a+p)...f(a+k*p)]</span> with <span style="font-style:italic">k</span> such
+that : <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> &#X2264; <span style="font-style:italic">b</span> &lt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span> or <span style="font-style:italic">a</span>&gt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> &#X2265; <span style="font-style:italic">b</span> &gt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span>.<br>
 Input :
-</P><DIV CLASS="center"><TT>randvector(3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,5)</span></div><p>
+or
+</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,5,1)</span></div><p>
+or first define the function <span style="font-style:italic">h</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup> by <span style="font-family:monospace">h(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span>
+then input
+</p><div class="center"><span style="font-family:monospace">makelist(h,3,5,1)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[-54,78,-29]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[9,16,25]</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>randvector(3,5)</TT></DIV><P>
-Or input :
-</P><DIV CLASS="center"><TT>randvector(3,&#X2019;rand(5)&#X2019;)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,6,2)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[1,2,4]</TT></DIV><P>
-Input :
-</P><DIV CLASS="center"><TT>randvector(3,&#X2019;randnorm(0,1)&#X2019;)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[1.39091705476,-0.136794772167,0.187312440336]</TT></DIV><P>
-Input :
-</P><DIV CLASS="center"><TT>randvector(3,2..4)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[3.92450003885,3.50059241243,2.7322040787]</TT></DIV><HR>
-<A HREF="cascmd_en330.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en332.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[9,25]</span></div><p>
+<span style="font-weight:bold">Warning!!!</span> purge <span style="font-family:monospace">x</span> if <span style="font-family:monospace">x</span> is not symbolic.</p>
+<hr>
+<a href="cascmd_en330.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en332.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

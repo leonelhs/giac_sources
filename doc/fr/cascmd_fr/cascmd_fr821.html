@@ -1,134 +1,34 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La forme d’une fonction</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr820.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr822.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc964">9.1.2</A>  La forme d’une fonction</H3><P><A NAME="@default1449"></A><A NAME="@default1450"></A>
-Une fonction renvoie une valeur : l’instruction <TT>return valeur;</TT> ou 
-<TT>retourne valeur;</TT> fait 
-sortir du programme et renvoie <TT>valeur</TT>.<BR>
-Une fonction a un nom (par exemple <TT>toto</TT>), puis on met entre des
-parenthèses les arguments de la fonction (par exemple si 
-<TT>toto</TT> a besion de deux paramètres <TT>a</TT> et <TT>b</TT> on met
-<TT>toto(a,b)</TT>). On met ensuite <TT>:=</TT> puis on met entre des accolades 
-(ou entre <TT>begin</TT> et <TT>end</TT>) <A NAME="@default1451"></A><A NAME="@default1452"></A> le 
-bloc qui définit la fonction c’est à dire
-la suite des instructions (chaque instuction se termine par <TT>;</TT>) et 
-si l’algorithme définissant la fonction a besoin de 
-variables locales, ces variables devront être déclarées en mettant 
-au début du bloc <TT>local</TT> <A NAME="@default1453"></A> (ou <TT>var</TT> <A NAME="@default1454"></A>) puis, 
-les noms des variables locales séparés par des virgules puis, <TT>;</TT> pour 
-terminer cette déclaration. Ces variables locales peuvent être 
-initialisées lors de leur déclaration.<BR>
-On écrit par exemple :
-</P><PRE CLASS="verbatim">toto(a,b):={
-local q,r,s;
-&lt;instrucion-1&gt;;
-........... ;
-&lt;instrucion-n&gt;;
-return r;
-}
-</PRE><P>ou
-</P><PRE CLASS="verbatim">toto(a,b):={
-var q,r,s;
-&lt;instrucion-1&gt;;
-........... ;
-&lt;instrucion-n&gt;;
-return r;
-}
-</PRE><P><B>Attention</B> Les variables locales ne sont pas des variables formelles et 
-doivent toujours être affectèes dans le corps du programme : on ne 
-définira donc pas, les variables formelles, avec <TT>local</TT> (ou <TT>var</TT>).<BR>
-Si on veut qu’une variable déclarèe avec <TT>local</TT> (ou <TT>var</TT>)soit 
-formelle (par ex <TT>a</TT>), il faudra mettre dans le corps du programme soit 
-<TT>purge(a)</TT> soit <TT>assume(a,symbol)</TT>.<BR>
-<B>Exemple</B>
-</P><PRE CLASS="verbatim">kk(a):={
-local x,c;
-c:=4*a;
-return solve((x-c)^2-a=0,x);
-}:;
-f(a):={
-local x,c;
-c:=4*a;
-assume(x,symbol);
-return solve((x-c)^2-a=0,x);
-}:;
-g(a):={
-local c;
-c:=4*a;
-return solve((x-c)^2-a=0,x);
-}:;
-</PRE><P>On tape :<BR>
-<TT>kk(1),f(1),g(1)</TT><BR>
-On obtient :<BR>
-<TT>list[],list[3,5],list[3,5]</TT>
-Il ne faut pas tenir compte du message renvoyé pas <TT>Xcas</TT> lors de la compilation :<BR>
-"Attention: x, declarée(s) comme variable(s) globale(s) en compilant g"
-car dans <TT>solve</TT> la variable <TT>x</TT> est toujours symbolique.</P><P><B>Remarque</B> on peut initialiser les variables locales en même temps que
-leur déclaration à condition de mettre des parenthèses, par exemple :<BR>
-<TT>local (q:=1),(r:=0),s;</TT></P><P><B>Attention</B> Il est important de déclarer les variables locales car une
-variable globale est évaluée avant l’execution de la fonction qui s’en sert
-lorsque cette fonction est appelée par une autre fonction...on risque donc 
-d’avoir des ennuis si une fonction qui utilise une variable globale est 
-appelée par une autre fonction, par exemple :
-</P><PRE CLASS="verbatim">  truc(a,b):={
-    if (b!=0) {
-      r:=irem(a,b);
-    } else {
-      r:=b;
-    }
-    return r;
-  };
-
-machin(a,b):={
-local rr;
-rr:=truc(a,b);
-return rr;
-}
-</PRE><P>L’exécution de <TT>truc(45,6)</TT> ne pose pas de problème et renvoie <TT>3</TT>,
-mais l’exécution de <TT>machin(45,6)</TT> renvoie le message d’erreurs :<BR>
-<TT>sto 3 not allowed! Error: Bad Argument Type</TT><BR>
-car lorsque <TT>truc</TT> est appelé par <TT>machin</TT> <TT>r</TT> qui est une
-variable globale est evaluée et alors <TT>r:=irem(a,b)</TT> n’est pas possible
-car <TT>r</TT> vaut <TT>3</TT>....<BR>
-Il est donc important de tenir compte du message donné par <TT>Xcas</TT>
-lors de la compilation de <TT>truc</TT> :<BR>
-<TT>//Parsing truc</TT>
-<TT>//Warning, check that the following variables are global: r compiling truc</TT>
-à condition que les variables signalées ne soient pas des variables 
-formelles. Voici comme exemple le programme qui donne la valeur de la suite de 
-Fibonnacci définie par <I>u</I><SUB>0</SUB>=<I>u</I>0,<I>u</I><SUB>1</SUB>=<I>u</I>1,<I>u</I><SUB><I>n</I>+2</SUB>=<I>u</I><SUB><I>n</I>+1</SUB>+<I>u</I><SUB><I>n</I></SUB>. Dans ce programme
-on utilise les variables formelles <TT>x,A,B</TT> qui doivent être purgées.<BR>
-On tape :
-</P><PRE CLASS="verbatim">u(n,uo,u1):={
-local L,a,b;
-//verifier que A,B,x ne sont pas affect\'ees
-[a,b]:=solve(x^2-x-1,x);
-L:=linsolve([A+B=uo,A*a+B*b=u1],[A,B]);
-return normal(L[0]*a^n+L[1]*b^n);
-};
-</PRE><P>On tape :
-</P><DIV CLASS="center"><TT>u(3,0,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
-Dans ce programme, les variables <TT>x,A,B</TT> ne doivent pas être 
-déclarées comme variables locales car ce sont des variables formelles : il 
-ne faut donc pas tenir compte lors de la compilation du warning :
-<TT>// Warning: x A B declared as global variable(s) compiling u</TT>
-</P><HR>
-<A HREF="cascmd_fr820.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr822.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Valeurs par défaut des paramètres d’une fonction</title>
+</head>
+<body >
+<a href="cascmd_fr820.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr822.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec996" class="subsection">9.1.3  Valeurs par défaut des paramètres d’une fonction</h3>
+<p>
+Prenons l’exemple d’une fonction <span style="font-family:monospace">f</span> ayant quatre paramètres 
+<span style="font-family:monospace">x,y,z,t</span>.<br>
+On peut donner a certains paramètres des valeurs par défaut, on écrit 
+par exemple dans la défintion de <span style="font-family:monospace">f</span> :<br>
+<span style="font-family:monospace">f(x,y=2,z,t=pi/2):={ <br>
+</span><span style="font-family:monospace">retourne simplify(x*cos(t)+y*sin(t)+z)</span><span style="font-family:monospace">x*cos(t)+y*sin(t)+z}:;</span><br>
+On tape :<br>
+<span style="font-family:monospace">f(10,3)</span><br>
+ou<br>
+<span style="font-family:monospace">f(10,2,3,pi/2)</span><br>
+On obtient :<br>
+<span style="font-family:monospace">5</span>
+</p>
+<hr>
+<a href="cascmd_fr820.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr822.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

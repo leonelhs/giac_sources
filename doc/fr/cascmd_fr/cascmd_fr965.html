@@ -1,48 +1,65 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pente d’une droite : slope pente</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr964.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr966.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1131">10.16.12</A>  Pente d’une droite : <TT>slope pente</TT></H3><P><A NAME="@default1883"></A><A NAME="@default1884"></A>
-<A NAME="@default1885"></A><A NAME="@default1886"></A><A NAME="sec:pente"></A>
-<TT>slope pente</TT> est soit une commande soit un attribut de la 
-commande <TT>droite</TT> pour cela voir <A HREF="cascmd_fr905.html#sec:droite2">10.9.1</A><BR>
-Lorsque <TT>slope pente</TT> est une commande son argument est une droite ou un 
-segment ou deux points ou deux nombres complexes.<BR>
- <TT>slope pente</TT> renvoie la pente de la droite définie par le segment ou par 
-les 2 points ou leurs affixes.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Pente d’une droite et son affichage : slopeat, penteen et slopeatraw, penteenbrut</title>
+</head>
+<body >
+<a href="cascmd_fr964.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr966.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1169" class="subsection">10.16.13  Pente d’une droite et son affichage : <span style="font-family:monospace">slopeat, penteen</span> et <span style="font-family:monospace">slopeatraw, penteenbrut</span></h3>
+<p><a id="hevea_default1884"></a><a id="hevea_default1885"></a><a id="hevea_default1886"></a><a id="hevea_default1887"></a>
+<span style="font-family:monospace">slopeat</span> ou <span style="font-family:monospace">penteen</span> et <span style="font-family:monospace">slopeatraw</span> ou 
+<span style="font-family:monospace">penteenbrut</span> est une commande obtenue 
+lorsqu’on utilse, dans un niveau de géométrie 2<span style="font-style:italic">d</span> ou 3<span style="font-style:italic">d</span>, le bouton 
+<span style="font-family:monospace">Mode-&gt;Mesures-&gt;penteen</span> ou <span style="font-family:monospace">Mode-&gt;Mesures-&gt;penteenbrut</span>. Dans ce cas il
+faut que tous les objets désignés par la souris soient déjà nommés.<br>
+On peut néammoins taper ces commandes dans une ligne de commande.<br>
+<span style="font-family:monospace">slopeat</span> ou <span style="font-family:monospace">penteen</span> ont 2 arguments le nom d’une droite (ou d’un 
+segment) et 1 point (ou 1 nombre complexe qui est l’affixe d’un point).<br>
+et <span style="font-family:monospace">slopeatraw</span> ou <span style="font-family:monospace">penteenbrut</span> ont 
+comme arguments une droite (ou un segment) et 1 point (ou 1 nombre complexe qui
+est l’affixe d’un point).<br>
+<span style="font-family:monospace">slopeat</span> ou <span style="font-family:monospace">penteen</span> renvoie le point, calcule la pente de
+la droite (ou du segment) et affiche cette pente à l’endroit du point
+avec une légende. <span style="font-weight:bold">Attention</span> <span style="font-family:monospace">slopeat</span> ou <span style="font-family:monospace">penteen</span>, il faut mettre le nom de la droite (ou du segment).<br>
+<span style="font-family:monospace">slopeatraw</span> ou <span style="font-family:monospace">penteenbrut</span> renvoie le point, calcule la pente de
+la droite (ou du segment) et affiche cette pente à l’endroit du point.<br>
 On tape :
-</P><DIV CLASS="center"><TT>pente(droite(1,2i))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>pente(segment(1,2i))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>pente(point(1),point(2i))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>pente(1,2i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">d:=droite(1,2i)</span></div><div class="center"><span style="font-family:monospace">penteen(d,i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>-2</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">"sd=-2" s’écrit au point(i)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>pente(droite(2y-x=3))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1/2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>pente(tangente(plotfunc(sin(x)),pi/4))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">penteenbrut(droite(1,2i),i)</span></div><p>
 Ou on tape :
-</P><DIV CLASS="center"><TT>pente(droite_tangente(sin(x),pi/4))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">penteenbrut(segment(1,2i),i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(sqrt(2))/2</TT></DIV><HR>
-<A HREF="cascmd_fr964.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr966.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">-2 s’écrit au point(i)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">d1:=droite(2y-x=3),2*i)</span></div><div class="center"><span style="font-family:monospace">penteen(d1,2*i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">"sd1=1/2’’ s’écrit au point(2*i) avec une légende</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">penteenbrut(droite(2y-x=3),2*i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">1/2 s’écrit au point(2*i)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">T:=tangente(plotfunc(sin(x)),pi/4)</span></div><div class="center"><span style="font-family:monospace">slopeat(T,i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">"sT=(sqrt(2))/2" s’écrit au point(i)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">penteenbrut(tangente(plotfunc(sin(x)),pi/4),i)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">penteenbrut(droite_tangente(sin(x),pi/4),i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">(sqrt(2))/2 s’écrit au point(i)</span></div>
+<hr>
+<a href="cascmd_fr964.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr966.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,41 +1,41 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Différence entre fonction et expression</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr290.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr292.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc367">6.17.1</A>  Différence entre fonction et expression</H3><P><A NAME="@default498"></A><A NAME="@default499"></A>
-Une fonction <TT>f</TT> est définie par exemple par :<BR>
-<TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT> ou encore par <TT>f:=x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT><BR>
-cela signifie que pour tous les <I>x</I>, <I>f</I>(<I>x</I>) est égale à l’expression 
-<I>x</I><SUP>2</SUP>−1.<BR>
-On pourra ainsi taper <TT>f(2)</TT> pour avoir la valeur de <I>f</I> en <I>x</I>=2.<BR>
-Par contre si on définit :<BR>
-<TT>g:=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT> cela signifie que <TT>g</TT> est une variable qui contient 
-l’expression <I>x</I><SUP>2</SUP>−1. Pour avoir la valeur de <I>g</I> en <I>x</I>=2 il faut alors 
-écrire :<BR>
-<TT>subst(g,x=2)</TT> car <I>g</I> est une expression qui dépend de <I>x</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Différence entre fonction et expression</title>
+</head>
+<body >
+<a href="cascmd_fr290.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr292.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec373" class="subsection">6.17.1  Différence entre fonction et expression</h3>
+<p><a id="hevea_default498"></a><a id="hevea_default499"></a>
+Une fonction <span style="font-family:monospace">f</span> est définie par exemple par :<br>
+<span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> ou encore par <span style="font-family:monospace">f:=x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> <br>
+cela signifie que pour tous les <span style="font-style:italic">x</span>, <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) est égale à l’expression 
+<span style="font-style:italic">x</span><sup>2</sup>−1.<br>
+On pourra ainsi taper <span style="font-family:monospace">f(2)</span> pour avoir la valeur de <span style="font-style:italic">f</span> en <span style="font-style:italic">x</span>=2.<br>
+Par contre si on définit :<br>
+<span style="font-family:monospace">g:=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> cela signifie que <span style="font-family:monospace">g</span> est une variable qui contient 
+l’expression <span style="font-style:italic">x</span><sup>2</sup>−1. Pour avoir la valeur de <span style="font-style:italic">g</span> en <span style="font-style:italic">x</span>=2 il faut alors 
+écrire :<br>
+<span style="font-family:monospace">subst(g,x=2)</span> car <span style="font-style:italic">g</span> est une expression qui dépend de <span style="font-style:italic">x</span>.<br>
 Aussi, lorsque l’argument d’une commande est une fonction il faut mettre 
-comme argument, soit par exemple <TT>x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>, soit <TT>f</TT> (si 
-<TT>f</TT> est une fonction qui a été définie auparavant par exemple par 
-<TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>) et<BR>
+comme argument, soit par exemple <span style="font-family:monospace">x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>, soit <span style="font-family:monospace">f</span> (si 
+<span style="font-family:monospace">f</span> est une fonction qui a été définie auparavant par exemple par 
+<span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>) et <br>
 lorsque l’argument d’une commande est une expression on met comme argument, 
-soit par exemple <TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>, soit <TT>g</TT> (si <TT>g</TT> est une variable 
-que l’on a définie auparavant par exemple <TT>g:=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>), soit 
-<TT>f(x)</TT> (si <TT>f</TT> est une fonction qui a été définie auparavant par 
-exemple <TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>).
-</P><HR>
-<A HREF="cascmd_fr290.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr292.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+soit par exemple <span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>, soit <span style="font-family:monospace">g</span> (si <span style="font-family:monospace">g</span> est une variable 
+que l’on a définie auparavant par exemple <span style="font-family:monospace">g:=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>), soit 
+<span style="font-family:monospace">f(x)</span> (si <span style="font-family:monospace">f</span> est une fonction qui a été définie auparavant par 
+exemple <span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>).
+</p>
+<hr>
+<a href="cascmd_fr290.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr292.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

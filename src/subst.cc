@@ -756,7 +756,7 @@ namespace giac {
     int is=int(i.size());
     if (is<2)
       return;
-    if (is==2){
+    if (is==2 && is==int(newi.size()) ){
       if (islesscomplexthanf(i[0],i[1]))
 	return;
       swapgen(i[0],i[1]);
@@ -2477,7 +2477,7 @@ namespace giac {
 	    count+=int(lidnt(v2[i]).size());
 	}
 	if (count>1)
-	  return e;
+	  return quotesubst(e,vabs2,vabs,contextptr);
       }
     }
 #endif	

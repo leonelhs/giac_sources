@@ -153,6 +153,10 @@ namespace xcas {
     do_maple_mode=0; Xcas_Style->value("Xcas");
   }
 
+  static void cb_Xcas_Set_Python(Fl_Menu_*, void*) {
+    do_maple_mode=256; Xcas_Style->value("Xcas (Python-ic)");
+  }
+
   static void cb_Xcas_Set_Maple(Fl_Menu_*, void*) {
     do_maple_mode=1; Xcas_Style->value("Maple");
   }
@@ -167,6 +171,7 @@ namespace xcas {
 
   Fl_Menu_Item menu_Xcas_Prg_style[] = {
     {gettext("Xcas"), 0,  (Fl_Callback*)cb_Xcas_Set_CPP, 0, 0, 0, 0, 14, 56},
+    {gettext("Xcas (Python)"), 0,  (Fl_Callback*)cb_Xcas_Set_Python, 0, 0, 0, 0, 14, 56},
     {gettext("Maple"), 0,  (Fl_Callback*)cb_Xcas_Set_Maple, 0, 0, 0, 0, 14, 56},
     {gettext("Mupad"), 0,  (Fl_Callback*)cb_Xcas_Set_Mupad, 0, 0, 0, 0, 14, 56},
     {gettext("TI89/92"), 0,  (Fl_Callback*)cb_Xcas_Set_TI, 0, 0, 0, 0, 14, 56},
@@ -180,7 +185,7 @@ namespace xcas {
     // giac::variables_are_files(Xcas_Save_var->value(),contextptr);
     Xcas_Complex_mode->value(false);
     Xcas_Complex_variables->value(false);
-    do_maple_mode=0; Xcas_Style->value("xcas");
+    do_maple_mode=0; Xcas_Style->value("Xcas");
     Xcas_Increasing_power->value(false);
     Xcas_Angle_radian->value(true);
     Xcas_Approx_mode->value(false);
@@ -217,7 +222,8 @@ namespace xcas {
     // giac::variables_are_files(Xcas_Save_var->value(),contextptr);
     giac::complex_mode(Xcas_Complex_mode->value(),contextptr);
     giac::complex_variables(Xcas_Complex_variables->value(),contextptr);
-    giac::xcas_mode(contextptr)=do_maple_mode;
+    giac::xcas_mode(contextptr)=do_maple_mode &0xff;
+    giac::python_compat(contextptr)=do_maple_mode>=256;
     giac::increasing_power(Xcas_Increasing_power->value(),contextptr);
     giac::angle_radian(Xcas_Angle_radian->value(),contextptr);
     giac::approx_mode(Xcas_Approx_mode->value(),contextptr);
@@ -477,11 +483,15 @@ or default eval level)"));
     Xcas_Proba_Epsilon->value(giac::proba_epsilon(contextptr));
     Xcas_Complex_mode->value(giac::complex_mode(contextptr));
     Xcas_Complex_variables->value(giac::complex_variables(contextptr));
-    switch(do_maple_mode=giac::xcas_mode(contextptr)){
-    case 0: Xcas_Style->value("xcas"); break;
-    case 1: Xcas_Style->value("maple"); break;
-    case 2: Xcas_Style->value("mupad"); break;
-    case 3: Xcas_Style->value("ti"); break;
+    do_maple_mode=giac::xcas_mode(contextptr);
+    if (giac::python_compat(contextptr))
+      do_maple_mode+=256;
+    switch(do_maple_mode){
+    case 0: Xcas_Style->value("Xcas"); break;
+    case 256: Xcas_Style->value("Xcas (Python-ic)"); break;
+    case 1: Xcas_Style->value("Maple"); break;
+    case 2: Xcas_Style->value("Mupad"); break;
+    case 3: Xcas_Style->value("Ti"); break;
     }
     Xcas_Increasing_power->value(giac::increasing_power(contextptr));
     Xcas_Angle_radian->value(giac::angle_radian(contextptr));

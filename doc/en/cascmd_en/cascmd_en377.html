@@ -1,29 +1,38 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Count the elements equal to a given value : count_eq</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en376.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en378.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc421">2.42.28</A>  Count the elements equal to a given value : <TT>count_eq</TT></H3><P><A NAME="@default634"></A>
-<TT>count_eq</TT> takes as arguments: a real and a real list or 
-a real matrix.<BR>
-<TT>count_eq</TT> returns the number of elements of the list or matrix
-equal to the first argument.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Count the elements of a matrix verifying a property : count</title>
+</head>
+<body >
+<a href="cascmd_en376.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en378.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec446" class="subsection">2.42.27  Count the elements of a matrix verifying a property : <span style="font-family:monospace">count</span></h3>
+<p><a id="hevea_default634"></a>
+<span style="font-family:monospace">count</span> takes as arguments : a real function <span style="font-family:monospace">f</span> and 
+a real matrix <span style="font-family:monospace">A</span> of dimension <span style="font-family:monospace">p*q</span> (resp. a list <span style="font-family:monospace">l</span> of size 
+<span style="font-family:monospace">n</span>).<br>
+<span style="font-family:monospace">count</span> returns <span style="font-family:monospace">f(A[0,0])+..f(A[p-1,q-1])</span> (resp. 
+<span style="font-family:monospace">f(l[0])+..f(l[n-1])</span>)<br>
+Hence, if <span style="font-family:monospace">f</span> is a boolean function, <span style="font-family:monospace">count</span> returns the number 
+of elements of the matrix <span style="font-family:monospace">A</span> (resp. the list <span style="font-family:monospace">l</span>) verifying 
+the property <span style="font-family:monospace">f</span>.<br>
 Input :
-</P><DIV CLASS="center"><TT>count_eq(12,[[2,12,45],[3,7,78]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">count(x-&gt;x,[[2,12],[45,3],[7,78]])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
-<A HREF="cascmd_en376.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en378.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">147</span></div><p>
+indeed: 2+12+45+3+7+78=147.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">count(x-&gt;x&lt;10,[[2,12],[45,3],[7,78]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">3</span></div>
+<hr>
+<a href="cascmd_en376.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en378.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,73 +1,54 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le triangle rectangle dans l’espace : triangle_rectangle</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1030.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1032.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1209">11.7.3</A>  Le triangle rectangle dans l’espace : <TT>triangle_rectangle</TT></H3><P><A NAME="@default2007"></A><A NAME="sec:trianglerect3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr922.html#sec:trianglerect2">10.10.4</A> pour la géométrie plane.<BR>
-<TT>triangle_rectangle</TT>, en géométrie 3-d, peut avoir trois ou 
-quatre arguments.<BR>
-Description des arguments :<BR>
-- si il a trois arguments, ce sont : 3 points (les 2 premiers sommets <I>A</I> et
-<I>B</I> du triangle) et le troisième argument est un point <I>P</I> ou une liste 
-formée par un point <I>P</I> et un réel <I>k</I> non nul.<BR>
-Le point <I>P</I> définit le plan du triangle ainsi que l’orientation de ce plan 
-pour que l’angle (<I>AB</I>,<I>AP</I>) soit positif,<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>triangle_rectangle(A,B,P)</TT> renvoie et trace, dans le plan <I>ABP</I>, le 
-triangle <I>ABC</I> rectangle en <I>A</I>, tel que <I>AC</I>=<I>AP</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Le triangle équilatèral dans l’espace : equilateral_triangle triangle_equilateral</title>
+</head>
+<body >
+<a href="cascmd_fr1030.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1032.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1247" class="subsection">11.7.4  Le triangle équilatèral dans l’espace : <span style="font-family:monospace">equilateral_triangle triangle_equilateral</span></h3>
+<p><a id="hevea_default2005"></a><a id="hevea_default2006"></a><a id="sec:trianglequi3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr922.html#sec%3Atrianglequi2">10.10.5</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">triangle_equilateral</span>, en géométrie 3-d, a trois ou quatre 
+arguments.<br>
+Description des arguments :<br>
+- si il a trois arguments, ce sont 3 points : les 2 premiers sommets <span style="font-style:italic">A</span> et
+<span style="font-style:italic">B</span> du triangle et le troisième point définit le plan du triangle.<br>
+<span style="font-family:monospace">triangle_equilateral(A,B,P)</span> renvoie et trace dans le demi-plan <span style="font-style:italic">ABP</span> le 
+triangle équilatéral <span style="font-style:italic">ABC</span>
+mais sans définir le point <span style="font-style:italic">C</span>. <br>
 On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
-<DIV CLASS="center"><TT>Q:=point(0,0,-3)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">A:=point(0,0,0)</span></div><div class="center"><span style="font-family:monospace">B:=point(3,3,3)</span></div><div class="center"><span style="font-family:monospace">P:=point(0,0,3)</span></div><div class="center"><span style="font-family:monospace">Q:=point(0,0,-3)</span></div><p>
 Puis on tape :
-<DIV CLASS="center"><TT>triangle_rectangle(A,B,P)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">triangle_equilateral(A,B,P)</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>Dans le plan </TT><TT><I>ABP</I></TT><TT>, le triangle </TT><TT><I>ABC</I></TT><TT> rectangle en </TT><TT><I>A</I></TT><TT> tel que </TT><TT><I>AC</I>=<I>AP</I></TT><TT> </TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>triangle_rectangle(A,B,[P,k])</TT> renvoie et trace dans le plan 
-<I>ABP</I>, le triangle <I>ABC</I> rectangle en <I>A</I> : ce triangle est direct si <I>k</I>&gt;0, 
-indirect si <I>k</I>&lt;0 et est tel que <I>AC</I>=|<I>k</I>|*<I>AB</I>.<BR>
-Ainsi si l’angle (<I>BC</I>,<I>BA</I>)=β radians 
-(ou degrés), on a tan(β)=<I>k</I>.<BR>
-On remarquera que si <I>C</I> est le transformé de <I>B</I> dans la similitude de 
-centre <I>A</I> de rapport |<I>k</I>| et d’angle (<I>k</I>/|<I>k</I>|)*π/2.<BR>
-On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
-<DIV CLASS="center"><TT>Q:=point(0,0,-3)</TT></DIV>
-Puis on tape :
-<DIV CLASS="center"><TT>triangle_rectangle(A,B,[P,2])</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>Dans le plan ABP, le triangle ABC direct, rectangle en A tel que AC=2*AB</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>triangle_rectangle(A,B,[P,-2])</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>Dans le plan ABP, le triangle ABC indirect, rectangle en A tel que AC=2*AB</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">Dans le demi-plan ABP,le triangle équilatèral de sommets A et B</span></div><p>
 - si il a quatre arguments, le dernier argument est le nom d’une 
-variable qui servira à définir le troisième sommet.<BR>
+variable qui servira à définir le troisième sommet
 On tape :
-<DIV CLASS="center"><TT>triangle_rectangle(A,B,[P,2],C)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">triangle_equilateral(A,B,P,C)</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>Dans le plan ABP, le triangle rectangle de sommets ABC</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">Dans le demi-plan ABP, le triangle équilatèral de sommets A et B</span></div><p>
 On tape :
-<DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">simplify(coordonnees(C))</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>[-(3*sqrt(2)),-(3*sqrt(2)),6*sqrt(2)] </TT></DIV>
-</LI></UL><HR>
-<A HREF="cascmd_fr1030.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1032.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[(-3*sqrt(6)+6)/4,(-3*sqrt(6)+6)/4,(3*sqrt(6)+3)/2]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">triangle_equilateral(A,B,Q,D)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Dans le demi-plan ABQ, le triangle équilatèral de sommets A et B</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">simplify(coordonnees(D))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[(3*sqrt(6)+6)/4,(3*sqrt(6)+6)/4,(-3*sqrt(6)+3)/2]</span></div>
+<hr>
+<a href="cascmd_fr1030.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1032.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

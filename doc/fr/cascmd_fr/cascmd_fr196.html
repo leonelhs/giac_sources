@@ -1,55 +1,55 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Certificat de Wilf-Zeilberger pour une identité : wz_certificate</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr195.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr197.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc263">6.8.6</A>  Certificat de Wilf-Zeilberger pour une identité : <TT>wz_certificate</TT></H3><P><A NAME="@default355"></A> 
-<TT>wz_certificate(U,res,n,k)</TT> renvoie le certificat de Wilf-Zeilberger pour 
-une identité de la forme <TT>sum(U,k)=res</TT>
-Par exemple, si on veut prouver que pour tout <I>n</I>∈ ℕ :<BR>
-<TT>sum((-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k),k=0..n);</TT> estégale à :<BR>
-<TT>comb(2n,n)</TT>,<BR>
-on forme le quotient :<BR>
-<TT>F(n,k):=(-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k)/comb(2n,n)</TT>.<BR>
-Il s’agit donc de montrer que :<BR>
-<TT>sum(F(n,k),k=0..n) == sum(F(n+1,k),k=0..n+1)</TT><BR>
-On cherche s’il existe une fonction <TT>G</TT> telle que :<BR>
-<TT>F(n+1,k)-F(n,k)=G(n,k+1)-G(n,k)</TT>, comme ca
-<TT>sum(F(n+1,k),k=0..n+1)-sum(F(n,k),k=0..n)=</TT><BR>
-<TT>sum(F(n+1,k)-F(n,k),k=1..n)+F(n+1,n+1)+F(n+1,0)-F(n,0)=</TT><BR>
-<TT>sum(G(n,k+1)-G(n,k),k=1..n)+F(n+1,n+1)+F(n+1,0)-F(n,0)</TT><BR>
-ce qui est une somme qui se simplifie en :<BR>
-<TT>G(n,n+1)-G(n,1)+F(n+1,n+1)+F(n+1,0)-F(n,0)</TT>.<BR>
-Le certificat de Wilf-Zeilberger renvoie <TT>R(n,k)</TT> qui est une fonction 
-rationnelle de <TT>n</TT> et <TT>k</TT> prouvant l’existence de <TT>G</TT>, plus 
-precisement <TT>G(n,k)=R(n,k)*F(n,k-1)</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Certificat de Wilf-Zeilberger pour une identité : wz_certificate</title>
+</head>
+<body >
+<a href="cascmd_fr195.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr197.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec269" class="subsection">6.8.6  Certificat de Wilf-Zeilberger pour une identité : <span style="font-family:monospace">wz_certificate</span></h3>
+<p><a id="hevea_default355"></a> 
+<span style="font-family:monospace">wz_certificate(U,res,n,k)</span> renvoie le certificat de Wilf-Zeilberger pour 
+une identité de la forme <span style="font-family:monospace">sum(U,k)=res</span>
+Par exemple, si on veut prouver que pour tout <span style="font-style:italic">n</span>∈ ℕ :<br>
+<span style="font-family:monospace">sum((-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k*comb(n,k)*comb(2k,k)*4</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">(n-k),k=0..n);</span> estégale à :<br>
+<span style="font-family:monospace">comb(2n,n)</span>,<br>
+on forme le quotient :<br>
+<span style="font-family:monospace">F(n,k):=(-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k*comb(n,k)*comb(2k,k)*4</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">(n-k)/comb(2n,n)</span>.<br>
+Il s’agit donc de montrer que :<br>
+<span style="font-family:monospace">sum(F(n,k),k=0..n) == sum(F(n+1,k),k=0..n+1)</span><br>
+On cherche s’il existe une fonction <span style="font-family:monospace">G</span> telle que :<br>
+<span style="font-family:monospace">F(n+1,k)-F(n,k)=G(n,k+1)-G(n,k)</span>, comme ca
+<span style="font-family:monospace">sum(F(n+1,k),k=0..n+1)-sum(F(n,k),k=0..n)=</span><br>
+<span style="font-family:monospace">sum(F(n+1,k)-F(n,k),k=1..n)+F(n+1,n+1)+F(n+1,0)-F(n,0)=</span><br>
+<span style="font-family:monospace">sum(G(n,k+1)-G(n,k),k=1..n)+F(n+1,n+1)+F(n+1,0)-F(n,0)</span><br>
+ce qui est une somme qui se simplifie en :<br>
+<span style="font-family:monospace">G(n,n+1)-G(n,1)+F(n+1,n+1)+F(n+1,0)-F(n,0)</span>.<br>
+Le certificat de Wilf-Zeilberger renvoie <span style="font-family:monospace">R(n,k)</span> qui est une fonction 
+rationnelle de <span style="font-family:monospace">n</span> et <span style="font-family:monospace">k</span> prouvant l’existence de <span style="font-family:monospace">G</span>, plus 
+precisement <span style="font-family:monospace">G(n,k)=R(n,k)*F(n,k-1)</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>wz_certificate((-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k),comb(2n,n),n,k);</TT></DIV><P>
-On obtient <TT>R(n,k)</TT> :
-</P><DIV CLASS="center"><TT>(-1+2*k)/(1+2*n)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">wz_certificate((-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k*comb(n,k)*comb(2k,k)*4</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">(n-k),comb(2n,n),n,k);</span></div><p>
+On obtient <span style="font-family:monospace">R(n,k)</span> :
+</p><div class="center"><span style="font-family:monospace">(-1+2*k)/(1+2*n)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>F(n,k):=(-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>n-k)/comb(2n,n)</TT></DIV><DIV CLASS="center"><TT>R(n,k):=(-1+2*k)/(1+2*n)</TT></DIV><DIV CLASS="center"><TT>G(n,k):=R(n,k)*F(n,k-1)</TT></DIV><DIV CLASS="center"><TT>simplify(G(n,n+1)-G(n,1)+F(n+1,n+1)+F(n+1,0)-F(n,0))</TT></DIV><P>
-On obtient la valeur de <TT>sum(F(n+1,k),k=0..n+1)-sum(F(n,k),k=0..n)</TT> :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
-ce qui prouve que <TT>sum(F(n,k),k=0..n)</TT> ne dépend pas de <TT>n</TT> et donc<BR>
-<TT>sum((-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k),k=0..n)/comb(2n,n)</TT> 
-ne dépend pas de <TT>n</TT> et donc cette somme vaut <TT>F(0,0)</TT> c’est à dire 
-<TT>1</TT><BR>
-Donc on a prouver que :<BR>
-<TT>sum((-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k),k=0..n);</TT> estégale à :<BR>
-<TT>comb(2n,n)</TT></P><HR>
-<A HREF="cascmd_fr195.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr197.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">F(n,k):=(-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k*comb(n,k)*comb(2k,k)*4</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n-k)/comb(2n,n)</span></div><div class="center"><span style="font-family:monospace">R(n,k):=(-1+2*k)/(1+2*n)</span></div><div class="center"><span style="font-family:monospace">G(n,k):=R(n,k)*F(n,k-1)</span></div><div class="center"><span style="font-family:monospace">simplify(G(n,n+1)-G(n,1)+F(n+1,n+1)+F(n+1,0)-F(n,0))</span></div><p>
+On obtient la valeur de <span style="font-family:monospace">sum(F(n+1,k),k=0..n+1)-sum(F(n,k),k=0..n)</span> :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+ce qui prouve que <span style="font-family:monospace">sum(F(n,k),k=0..n)</span> ne dépend pas de <span style="font-family:monospace">n</span> et donc <br>
+<span style="font-family:monospace">sum((-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k*comb(n,k)*comb(2k,k)*4</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">(n-k),k=0..n)/comb(2n,n)</span> 
+ne dépend pas de <span style="font-family:monospace">n</span> et donc cette somme vaut <span style="font-family:monospace">F(0,0)</span> c’est à dire 
+<span style="font-family:monospace">1</span><br>
+Donc on a prouver que :<br>
+<span style="font-family:monospace">sum((-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k*comb(n,k)*comb(2k,k)*4</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">(n-k),k=0..n);</span> estégale à :<br>
+<span style="font-family:monospace">comb(2n,n)</span></p>
+<hr>
+<a href="cascmd_fr195.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr197.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

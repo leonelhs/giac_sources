@@ -1,33 +1,65 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Center of an interval : interval2center</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en282.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en284.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc319">2.34.3</A>  Center of an interval : <TT>interval2center</TT></H3><P><A NAME="@default489"></A>
-<TT>interval2center</TT> takes as argument an interval or a list of
-intervals.<BR>
-<TT>interval2center</TT> returns the center of this interval or the list of
-centers of these intervals.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Boundaries of an interval : left right</title>
+</head>
+<body >
+<a href="cascmd_en282.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en284.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec340" class="subsection">2.34.2  Boundaries of an interval : <span style="font-family:monospace">left right</span></h3>
+<p><a id="hevea_default484"></a><a id="hevea_default485"></a><a id="hevea_default486"></a><a id="hevea_default487"></a><a id="hevea_default488"></a><a id="hevea_default489"></a> 
+<span style="font-family:monospace">left</span> (resp. <span style="font-family:monospace">right</span>) takes as argument an interval.<br>
+<span style="font-family:monospace">left</span> (resp. <span style="font-family:monospace">right</span>) returns the left (resp. right) boundary
+of this interval. <br>
+Note that <span style="font-family:monospace">..</span> is an infixed operator, therefore:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">sommet(1..5)</span> is equal to <span style="font-family:monospace">&#X2019;..&#X2019;</span> and <span style="font-family:monospace">feuille(1..5)</span>
+is equal to <span style="font-family:monospace">(1,5)</span>.
+</li><li class="li-itemize">the name of the interval followed by 
+<span style="font-family:monospace">[0]</span> returns the operator <span style="font-family:monospace">..</span>
+</li><li class="li-itemize">the name of the interval followed by <span style="font-family:monospace">[1]</span> 
+(or the <span style="font-family:monospace">left</span> command) returns the left boundary.
+</li><li class="li-itemize">The name of the interval followed by <span style="font-family:monospace">[2]</span> 
+(or the <span style="font-family:monospace">right</span> command) 
+returns the right boundary.
+</li></ul><p>
 Input :
-</P><DIV CLASS="center"><TT>interval2center(3..5)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">(3..5)[0]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">sommet(3..5)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>4</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">&#X2019;..&#X2019;</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>interval2center([2..4,4..6,6..10])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">left(3..5)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">(3..5)[1]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">feuille(3..5)[0]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">op(3..5)[0]</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[3,5,8]</TT></DIV><HR>
-<A HREF="cascmd_en282.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en284.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">right(3..5)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">(2..5)[2]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">feuille(3..5)[1]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">op(3..5)[1]</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">5</span></div><p>
+<span style="font-weight:bold">Remark</span><br>
+<span style="font-family:monospace">left</span> (resp. <span style="font-family:monospace">right</span>) returns also the left (resp. right) member of an 
+equation (for example <span style="font-family:monospace">left(2*x+1=x+2)</span> returns <span style="font-family:monospace">2*x+1</span>).</p>
+<hr>
+<a href="cascmd_en282.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en284.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

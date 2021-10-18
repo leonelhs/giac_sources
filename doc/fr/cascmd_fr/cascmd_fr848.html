@@ -1,86 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La boucle : while et tantque</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr847.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr849.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc994">9.4.24</A>  La boucle : <TT>while</TT> et <TT>tantque</TT></H3><P><A NAME="@default1548"></A><A NAME="@default1549"></A><A NAME="@default1550"></A><A NAME="@default1551"></A>
-<TT>while</TT> et <TT>tantque</TT> permettent de faire plusieurs fois des
-instructions.<BR>
-<TT>while</TT> est suivi d’un booléen mis entre des parenthèses et d’un bloc 
-d’instructions. <TT>while</TT> permet de faire plusieurs fois ce bloc 
-d’instructions tant que la valeur de ce booléen est vrai.<BR>
-<TT>tantque</TT> est suivi d’un booléen, de <TT>faire</TT> d’instructions puis de
-<TT>ftantque</TT>. <TT>tantque</TT> permet de faire plusieurs fois les instructions 
-situèes entre <TT>faire</TT> et <TT>ftantque</TT> tant que la valeur de ce 
-booléen est vrai.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Modifier l’ordre d’exécution des instructions : label goto</title>
+</head>
+<body >
+<a href="cascmd_fr847.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr849.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1026" class="subsection">9.4.25  Modifier l’ordre d’exécution des instructions : <span style="font-family:monospace">label goto</span></h3>
+<p><a id="hevea_default1549"></a><a id="hevea_default1550"></a>
+<span style="font-family:monospace">label</span> permet de repérer une instruction dans un programme par 
+un nom de variable.<br>
+<span style="font-family:monospace">goto</span> permet de modifier l’ordre d’exécution des instructions, en
+exécutant les instructions du programme à partir d’une instruction 
+repérée par un label.<br>
+<span style="font-family:monospace">label</span> a comme arguments, une suite de caractères : par exemple <span style="font-family:monospace">label(truc)</span> ou <span style="font-family:monospace">label(1)</span>.<br>
+<span style="font-family:monospace">goto</span> a comme arguments un nom de label: par exemple <span style="font-family:monospace">goto(truc)</span> ou <span style="font-family:monospace">goto(1)</span>.<br>
 On tape :
-</P><PRE CLASS="verbatim">somwhile(eps):={
+</p><pre class="verbatim">essai(eps):={
 local s,j;
 s:=0;
-j:=1;
-while (1/j&gt;=eps){
- s:=s+1/j;
- j:=j+1;
+j:=0;
+label(truc);
+j:=j+1;
+s:=s+1/j;
+if (1/j&gt;=eps) goto(truc);
+print(s);
+return 0;
 }
-return s;
-}
-</PRE><P>Ou on tape :
-</P><PRE CLASS="verbatim">somtantque(eps):={
-local s,j;
-s:=0;
-j:=1;
-tantque 1/j&gt;=eps faire
- s:=s+1/j;
- j:=j+1;
-ftantque
-retourne s;
-}
-</PRE><P>puis :
-</P><DIV CLASS="center"><TT>somwhile(0.2)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>somantque(0.2)</TT></DIV><P>
+</pre><p>
+puis :
+</p><div class="center"><span style="font-family:monospace">essai(0.2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>137/60</TT></DIV><P>
-<B>Remarque</B><BR>
- On peut aussi écrire un <TT>while</TT> avec un <TT>for</TT> :<BR>
-<TT>while (&lt;condition&gt;)</TT><TT>&lt;instructions&gt;</TT> est équivalent à :<BR>
-<TT>for (;&lt;condition&gt;;)</TT><TT>&lt;instructions&gt;</TT><BR>
-On aurait donc pu écrire :
-</P><PRE CLASS="verbatim">somwhilefor(eps):={
-local s,j;
-s:=0;
-j:=1;
-for (;1/j&gt;=eps;){
- s:=s+1/j;
- j:=j+1;
-}
-return s;
-}
-</PRE><P>ou encore
-</P><PRE CLASS="verbatim">somforwhile(eps):={
-local s,j;
-s:=0;
-for (j:=1;1/j&gt;=eps;j++){
- s:=s+1/j;
-}
-return s;
-}
-</PRE><P>On tape :
-</P><DIV CLASS="center"><TT>somwhile(0.1);somforwhile(0.1);somwhilefor(0.1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>7129/2520,7129/2520,7129/2520</TT></DIV><HR>
-<A HREF="cascmd_fr847.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr849.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">s:137/60 écrit en bleu, puis 0 comme réponse</span></div>
+<hr>
+<a href="cascmd_fr847.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr849.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,48 +1,29 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Remove elements of a list : remove</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en316.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en318.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc356">2.37.22</A>  Remove elements of a list : <TT>remove</TT></H3><P><A NAME="@default534"></A>
-<TT>remove</TT> takes as argument : a boolean function <TT>f</TT> and 
-a list <TT>L</TT>.<BR>
-<TT>remove</TT> removes in the list <TT>L</TT>, the elements <TT>c</TT> such that 
-<TT>f(c)==true</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Select the elements of a list : select</title>
+</head>
+<body >
+<a href="cascmd_en316.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en318.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec379" class="subsection">2.37.21  Select the elements of a list : <span style="font-family:monospace">select</span></h3>
+<p><a id="hevea_default534"></a>
+<span style="font-family:monospace">select</span> takes as arguments : a boolean function <span style="font-family:monospace">f</span>
+and a list <span style="font-family:monospace">L</span>.<br>
+<span style="font-family:monospace">select</span> selects in the list <span style="font-family:monospace">L</span>, the elements <span style="font-family:monospace">c</span> such that
+<span style="font-family:monospace">f(c)==true</span>.<br>
 Input :
-</P><DIV CLASS="center"><TT>remove(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">select(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[0,1,1]</TT></DIV><P>
-<B>Remark</B> The same applies on strings, for example,
-to remove all the "a" of a string:<BR>
-Input :
-</P><DIV CLASS="center"><TT>ord("a")</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>97</TT></DIV><P>
-Input :
-</P><PRE CLASS="verbatim">f(chn):={
-  local l:=length(chn)-1;
-  return remove(x-&gt;(ord(x)==97),seq(chn[k],k,0,l));
-}
-</PRE><P>Then, input :
-</P><DIV CLASS="center"><TT>f("abracadabra")</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>["b","r","c","d","b","r"]</TT></DIV><P>
-To get a string, input :
-</P><DIV CLASS="center"><TT>char(ord(["b","r","c","d","b","r"])</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>"brcdbr"</TT></DIV><HR>
-<A HREF="cascmd_en316.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en318.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[2,3,5]</span></div>
+<hr>
+<a href="cascmd_en316.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en318.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,53 +1,49 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Un des points d’intersection de deux objets géométriques : single_inter line_inter inter_unique inter_droite</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1009.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1011.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1185">11.4.3</A>  Un des points d’intersection de deux objets géométriques : <TT>single_inter line_inter inter_unique inter_droite</TT></H3><P><A NAME="@default1970"></A><A NAME="@default1971"></A><A NAME="@default1972"></A><A NAME="@default1973"></A><A NAME="sec:interdroite3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr895.html#sec:interdroite2">10.8.5</A> pour la géométrie plane.<BR>
-<TT>inter_unique</TT> ou <TT>inter_droite</TT> a 2 ou 3 arguments qui 
-sont deux objets géométriques et éventuellement un 3ième argument qui 
-est soit un point soit une liste de points.<BR>
-<TT>inter_unique</TT> renvoie l’un des points d’intersection de ces deux objets
-géométriques. Si on a mis un point <TT>A</TT> comme troisième argument 
-<TT>inter_unique</TT> renvoie le point d’intersection le plus proche de <TT>A</TT>
-et si on a mis une liste de points <TT>L</TT> comme troisième argument 
-<TT>inter_unique</TT> renvoie le point d’intersection qui ne se trouve pas dans 
-la liste <TT>L</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Les points d’intersection de deux objets géométriques : inter</title>
+</head>
+<body >
+<a href="cascmd_fr1009.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1011.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1223" class="subsection">11.4.4  Les points d’intersection de deux objets géométriques : <span style="font-family:monospace">inter</span></h3>
+<p><a id="hevea_default1971"></a><a id="sec:inter3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr895.html#sec%3Ainter2">10.8.6</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">inter</span> a 2 arguments qui sont deux objets géométriques.<br>
+<span style="font-family:monospace">inter</span> renvoie la liste des points (ou la courbe) d’intersection de ces 
+deux objets géométriques.<br>
 On tape :
-</P><DIV CLASS="center"><TT>A:=inter_unique(plan(point(0,1,1),point(1,0,1),point(1,1,0)),droite(point(0,0,0),point(1,1,1)))</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>coordonnees(A)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">LA:=inter(plan(point(0,1,1),point(1,0,1),point(1,1,0)),droite(point(0,0,0),point(1,1,1)))</span></div><div class="center"><span style="font-family:monospace">coordonnees(LA)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[2/3,2/3,2/3]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[[2/3,2/3,2/3]]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>B:=inter_unique(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)))</TT></DIV><DIV CLASS="center"><TT>coordonnees(B)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">LB:=inter(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)))</span></div><div class="center"><span style="font-family:monospace">coordonnees(LB)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))],[-(1/(sqrt(3))),-(1/(sqrt(3))),-(1/(sqrt(3)))]]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>B1:=inter_unique(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)),point(-1,0,0))</TT></DIV><DIV CLASS="center"><TT>coordonnees(B1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">coordonnees(LB[0])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[1/(sqrt(3)),1/(sqrt(3))]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>B1:=inter_unique(sphere(point(0,0,0),1),droite(point(1,0,0),point(1,1,1)))</TT></DIV><DIV CLASS="center"><TT>coordonnees(B1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">coordonnees(LB[1])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,0,0]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[-(1/(sqrt(3))),-(1/(sqrt(3))),-(1/(sqrt(3)))]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>B1:=inter_unique(sphere(point(0,0,0),1),droite(point(1,0,0),point(1,1,1)),[point(1,0,0)])</TT></DIV><DIV CLASS="center"><TT>coordonnees(B1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">C:=inter(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)),point([1/2,1,2,1/2]))</span></div><div class="center"><span style="font-family:monospace">coordonnees(C)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[1/3,2/3,2/3]</TT></DIV><HR>
-<A HREF="cascmd_fr1009.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1011.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">LB:=inter(sphere(point(0,0,0),1),plan(point(0,0,0),point(1,0,0),point(1,1,0)))[0]</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">un cercle</span></div>
+<hr>
+<a href="cascmd_fr1009.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1011.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

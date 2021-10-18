@@ -1,50 +1,39 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Définir une fonction ayant un nombre variable d’arguments : args</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr856.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr858.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1005">9.6.1</A>  Définir une fonction ayant un nombre variable d’arguments : <TT>args</TT></H3><P><A NAME="@default1563"></A>
-<TT>args</TT> ou <TT>args(NULL)</TT> renvoie la liste des arguments d’une 
-fonction sous forme d’une liste :
-l’élément d’indice <TT>0</TT> est la fonction, les suivants sont les
-arguments passés à la fonction.
-Cela permet de travailler avec des fonctions ayant un nombre d’arguments
-non fixé a l’avance.<BR>
-<B>Remarque</B> on ne peut pas mettre <TT>args()</TT> mais <TT>args</TT> ou 
-<TT>args(NULL)</TT> (<TT>NULL</TT> est obligatoire) 
-on peut aussi utiliser <TT>(args)[0]</TT> pour désigner la fonction, 
-<TT>(args)[1]</TT> pour désigner le nom du premier argument... mais il ne 
-faut pas oublier les parenthèses autour de <TT>args</TT>!<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Pour sortir d’une boucle : break</title>
+</head>
+<body >
+<a href="cascmd_fr856.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr858.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1037" class="subsection">9.6.2  Pour sortir d’une boucle : <span style="font-family:monospace">break</span></h3>
+<p><a id="hevea_default1561"></a>
+<span style="font-family:monospace">break</span> n’a pas d’argument ni parenthèse.<br>
+<span style="font-family:monospace">break</span> permet de sortir d’une boucle.<br>
 On tape :
-</P><DIV CLASS="center"><TT>testargs():={ local y; y:=args; return y[1];}</TT></DIV><DIV CLASS="center"><TT>testargs(12,5)</TT></DIV><P>
+</p><pre class="verbatim">testbreak(a,b):={
+local r;
+while (1==1){
+  if (b==0){break;} 
+  r:=irem(a,b);
+  a:=b;
+  b:=r;
+}
+return a;
+}
+</pre><p>
+puis on tape :
+</p><div class="center"><span style="font-family:monospace">testbreak(4,0)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>12</TT></DIV><P>
-On tape :
-</P><PRE CLASS="verbatim">somme():={
- local s,a;
- a:=args;
- s:=0;
- for (k:=1;k&lt;size(a);k++){
- s:=s+a[k];
- }
- return s;
- }
-</PRE><P>puis :
-</P><DIV CLASS="center"><TT>somme(1,2,3,4)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>10</TT></DIV><HR>
-<A HREF="cascmd_fr856.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr858.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">4 car il y a eu l’interruption de la boucle while quand b==0</span></div>
+<hr>
+<a href="cascmd_fr856.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr858.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

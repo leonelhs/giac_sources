@@ -1,60 +1,60 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Réduction de Gauss d’une matrice : ref</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr682.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr684.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc804">6.62.2</A>  Réduction de Gauss d’une matrice : <TT>ref</TT></H3><P><A NAME="@default1239"></A><A NAME="ref"></A> <A NAME="sec:ref"></A>
-<TT>ref</TT> permet de résoudre un système d’équations linéaires 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Réduction de Gauss d’une matrice : ref</title>
+</head>
+<body >
+<a href="cascmd_fr682.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr684.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec832" class="subsection">6.62.2  Réduction de Gauss d’une matrice : <span style="font-family:monospace">ref</span></h3>
+<p><a id="hevea_default1239"></a><a id="ref"></a> <a id="sec:ref"></a>
+<span style="font-family:monospace">ref</span> permet de résoudre un système d’équations linéaires 
 que l’on écrit sous forme matricielle :
-</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
-Le paramètre de <TT>ref</TT> est la "matrice augmentée" du système (celle 
-formée par la matrice <TT>A</TT> du système et ayant comme dernier vecteur 
-colonne le second membre <TT>B</TT>).<BR>
-Le résultat est une matrice <TT>[A1,B1]</TT> : <TT>A1</TT> a des zéros 
+</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
+Le paramètre de <span style="font-family:monospace">ref</span> est la "matrice augmentée" du système (celle 
+formée par la matrice <span style="font-family:monospace">A</span> du système et ayant comme dernier vecteur 
+colonne le second membre <span style="font-family:monospace">B</span>).<br>
+Le résultat est une matrice <span style="font-family:monospace">[A1,B1]</span> : <span style="font-family:monospace">A1</span> a des zéros 
 au dessous de sa diagonale et les solutions de :
-</P><DIV CLASS="center"><TT>A1*X=B1</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">A1*X=B1</span></div><p> 
 sont les mêmes que celles de : 
-</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
-<TT>ref</TT> peut travailler dans ℤ/<I>p</I>ℤ.<BR>
+</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
+<span style="font-family:monospace">ref</span> peut travailler dans ℤ/<span style="font-style:italic">p</span>ℤ.<br>
 Par exemple, soit à résoudre le système dans ℝ et dans ℤ/5ℤ:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
-⎨<BR>
-⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>−2 </TD></TR>
-<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
-</TABLE></TD></TR>
-</TABLE><P> 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >−2 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
+</table></td></tr>
+</table><p> 
 On tape pour résoudre le système dans ℝ :
-</P><DIV CLASS="center"><TT>ref([[3,1,-2],[3,2,2]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">ref([[3,1,-2],[3,2,2]])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,1/3,-2/3],[0,1,4]]</TT></DIV><P>
-cela signifie donc que :<BR>
- <I>y</I>=4 et <I>x</I>=−2 sont solutions du système.
+</p><div class="center"><span style="font-family:monospace">[[1,1/3,-2/3],[0,1,4]]</span></div><p>
+cela signifie donc que :<br>
+ <span style="font-style:italic">y</span>=4 et <span style="font-style:italic">x</span>=−2 sont solutions du système.
 On tape pour résoudre le système dans ℤ/5ℤ :
-</P><DIV CLASS="center"><TT>ref([[3,1,-2],[3,2,2]]%5)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">ref([[3,1,-2],[3,2,2]]%5)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1 % 5,2 % 5,1 % 5],[0 % 5,1 % 5,-1 % 5]]</TT></DIV><P>
-cela signifie donc que :<BR>
- <I>y</I>=−1%5 et <I>x</I>=3%5 sont solutions du système.</P><P><B>Remarque</B><BR>
+</p><div class="center"><span style="font-family:monospace">[[1 % 5,2 % 5,1 % 5],[0 % 5,1 % 5,-1 % 5]]</span></div><p>
+cela signifie donc que :<br>
+ <span style="font-style:italic">y</span>=−1%5 et <span style="font-style:italic">x</span>=3%5 sont solutions du système.</p><p><span style="font-weight:bold">Remarque</span><br>
 Lorsque le nombre de colonnes est égal au nombre de lignes +1
-<TT>ref</TT> ne divise pas par le pivot de la derniere colonne, par exemple, on 
+<span style="font-family:monospace">ref</span> ne divise pas par le pivot de la derniere colonne, par exemple, on 
 tape :
-</P><DIV CLASS="center"><TT>ref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[1,0,0,1,-a4]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">ref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[1,0,0,1,-a4]])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[0,0,0,0,a1-a2+a3-a4]]</TT></DIV><P>
-Ainsi on peut savoir que si <TT>a1-a2+a3-a4</TT> n’est pas nul, il n’y a pas de 
-solution. </P><HR>
-<A HREF="cascmd_fr682.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr684.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[0,0,0,0,a1-a2+a3-a4]]</span></div><p>
+Ainsi on peut savoir que si <span style="font-family:monospace">a1-a2+a3-a4</span> n’est pas nul, il n’y a pas de 
+solution. </p>
+<hr>
+<a href="cascmd_fr682.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr684.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

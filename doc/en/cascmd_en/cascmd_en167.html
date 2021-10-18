@@ -1,203 +1,209 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Fourier coefficients : fourier_an and fourier_bn or fourier_cn</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en166.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en168.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc191">2.22.1</A>  Fourier coefficients : <TT>fourier_an</TT> and <TT>fourier_bn</TT> or <TT>fourier_cn</TT></H3><P> <A NAME="@default333"></A>
-Let <I>f</I> be a <I>T</I>-periodic continuous functions on
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Fourier coefficients : fourier_an and fourier_bn or fourier_cn</title>
+</head>
+<body >
+<a href="cascmd_en166.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en168.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec203" class="subsection">2.22.1  Fourier coefficients : <span style="font-family:monospace">fourier_an</span> and <span style="font-family:monospace">fourier_bn</span> or <span style="font-family:monospace">fourier_cn</span></h3>
+<p> <a id="hevea_default333"></a>
+Let <span style="font-style:italic">f</span> be a <span style="font-style:italic">T</span>-periodic continuous functions on
 &#X211D; except maybe at a finite number of points.
-One can prove that if <I>f</I> is continuous at <I>x</I>, then;
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>f</I>(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB>0</SUB></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+&#X221E;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>a</I><SUB><I>n</I></SUB> cos(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2&#X3C0;
-<I>nx</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">)+<I>b</I><SUB><I>n</I></SUB> sin(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2&#X3C0; <I>nx</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">) </TD></TR>
-</TABLE></TD></TR>
-<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+&#X221E;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>&#X2211;</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=&#X2212;&#X221E;</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>c</I><SUB><I>n</I></SUB> <I>e</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2<I>i</I>&#X3C0; <I>nx</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="dcell">&nbsp;</TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-where the coefficients <I>a</I><SUB><I>n</I></SUB>, <I>b</I><SUB><I>n</I></SUB>, <I>n</I>&#X2208; <I>N</I>, (or <I>c</I><SUB><I>n</I></SUB>, <I>n</I> &#X2208; <I>Z</I>) are the 
-Fourier coefficients of <I>f</I>.
-The commands<TT>fourier_an</TT> and <TT>fourier_bn</TT> or <TT>fourier_cn</TT> 
-compute these coefficients. </P><H4 CLASS="subsubsection"><A NAME="toc11"></A><TT>fourier_an</TT></H4><P><A NAME="@default334"></A><A NAME="sec:fourier_an"></A>
-<TT>fourier_an</TT> takes four or five arguments : an expression <I>expr</I>
-depending of a variable, the name of this variable (for example <I>x</I>), the 
-period <I>T</I>, an integer <I>n</I> and a real <I>a</I> (by default <I>a</I>=0).<BR>
-<TT>fourier_an(expr,x,T,n,a)</TT> returns the Fourier coefficient <I>a</I><SUB><I>n</I></SUB> of a 
-function <I>f</I> of 
-variable <I>x</I> defined on [<I>a</I>,<I>a</I>+<I>T</I>[ by <I>f</I>(<I>x</I>)=<I>expr</I> and such that
-<I>f</I> is periodic of period <I>T</I>:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> <I>a</I><SUB><I>n</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>a</I>+<I>T</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><I>a</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>f</I>(<I>x</I>)cos(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2&#X3C0; <I>nx</I> </TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">)<I>dx</I></TD></TR>
-</TABLE><P>
-To simplify the computations, ons should input <TT>assume(n,integer)</TT> 
-before calling <TT>fourier_an</TT> to specify 
-that <I>n</I> is an integer.<BR>
-<B>Example</B> Let the function <I>f</I>, of period <I>T</I>=2, defined on [&#X2212;1;1[ by 
-<I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
-Input, to have the coefficient <I>a</I><SUB>0</SUB> :
-</P><DIV CLASS="center"><TT>fourier_an(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,0,-1)</TT></DIV><P>
+One can prove that if <span style="font-style:italic">f</span> is continuous at <span style="font-style:italic">x</span>, then;
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span><sub>0</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">+&#X221E;</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">&#X2211;</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=1</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub> cos(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2&#X3C0;
+<span style="font-style:italic">nx</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td><td class="dcell">)+<span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub> sin(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2&#X3C0; <span style="font-style:italic">nx</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td><td class="dcell">) </td></tr>
+</table></td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">+&#X221E;</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">&#X2211;</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=&#X2212;&#X221E;</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> <span style="font-style:italic">e</span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2<span style="font-style:italic">i</span>&#X3C0; <span style="font-style:italic">nx</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td></tr>
+<tr><td class="dcell">&nbsp;</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table><p>
+where the coefficients <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">n</span>&#X2208; <span style="font-style:italic">N</span>, (or <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">n</span> &#X2208; <span style="font-style:italic">Z</span>) are the 
+Fourier coefficients of <span style="font-style:italic">f</span>.
+The commands<span style="font-family:monospace">fourier_an</span> and <span style="font-family:monospace">fourier_bn</span> or <span style="font-family:monospace">fourier_cn</span> 
+compute these coefficients. </p>
+<h4 id="sec204" class="subsubsection"><span style="font-family:monospace">fourier_an</span></h4>
+<p><a id="hevea_default334"></a><a id="sec:fourier_an"></a>
+<span style="font-family:monospace">fourier_an</span> takes four or five arguments : an expression <span style="font-style:italic">expr</span>
+depending on a variable, the name of this variable (for example <span style="font-style:italic">x</span>), the 
+period <span style="font-style:italic">T</span>, an integer <span style="font-style:italic">n</span> and a real <span style="font-style:italic">a</span> (by default <span style="font-style:italic">a</span>=0).<br>
+<span style="font-family:monospace">fourier_an(expr,x,T,n,a)</span> returns the Fourier coefficient <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub> of a 
+function <span style="font-style:italic">f</span> of 
+variable <span style="font-style:italic">x</span> defined on [<span style="font-style:italic">a</span>,<span style="font-style:italic">a</span>+<span style="font-style:italic">T</span>) by <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">expr</span> and such that
+<span style="font-style:italic">f</span> is periodic of period <span style="font-style:italic">T</span>:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td><td class="dcell"><span style="font-size:xx-large">&#X222B;</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">a</span>+<span style="font-style:italic">T</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">a</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)cos(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2&#X3C0; <span style="font-style:italic">nx</span> </td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td><td class="dcell">)<span style="font-style:italic">dx</span></td></tr>
+</table><p>
+To simplify the computations, one should input <span style="font-family:monospace">assume(n,integer)</span> 
+before calling <span style="font-family:monospace">fourier_an</span> to specify 
+that <span style="font-style:italic">n</span> is an integer.<br>
+<span style="font-weight:bold">Example</span> Let the function <span style="font-style:italic">f</span>, of period <span style="font-style:italic">T</span>=2, defined on [&#X2212;1,1) by 
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+Input, to have the coefficient <span style="font-style:italic">a</span><sub>0</sub> :
+</p><div class="center"><span style="font-family:monospace">fourier_an(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,0,-1)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>1/3</TT></DIV><P>
-Input, to have the coefficient <I>a</I><SUB><I>n</I></SUB> (<I>n</I>&#X2260; 0) :
-</P><DIV CLASS="center"><TT>assume(n,integer);fourier_an(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,n,-1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1/3</span></div><p>
+Input, to have the coefficient <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub> (<span style="font-style:italic">n</span>&#X2260; 0) :
+</p><div class="center"><span style="font-family:monospace">assume(n,integer);fourier_an(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,n,-1)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>4*(-1)</TT><CODE><TT>^</TT></CODE><TT>n/(pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc12"></A><TT>fourier_bn</TT></H4><P><A NAME="@default335"></A><A NAME="sec:fourier_bn"></A>
-<TT>fourier_bn</TT> takes four or five arguments : an expression <I>expr</I>
-depending of a variable, the name of this variable (for example <I>x</I>), the 
-period <I>T</I>, an integer <I>n</I> and a real <I>a</I> (by default <I>a</I>=0).<BR>
-<TT>fourier_bn(expr,x,T,n,a)</TT> returns the Fourier coefficient <I>b</I><SUB><I>n</I></SUB> of a 
-function <I>f</I> of variable <I>x</I> defined on [<I>a</I>,<I>a</I>+<I>T</I>[ by <I>f</I>(<I>x</I>)=<I>expr</I> and periodic 
-of period <I>T</I>:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> <I>b</I><SUB><I>n</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>a</I>+<I>T</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><I>a</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>f</I>(<I>x</I>)sin(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2&#X3C0; <I>nx</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">)<I>dx</I></TD></TR>
-</TABLE><P>
-To simplify the computations, one should input <TT>assume(n,integer)</TT> 
-before calling <TT>fourier_bn</TT> to specify that <I>n</I> is an integer.<BR>
-<B>Examples</B> 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Let the function <I>f</I>, of period <I>T</I>=2, defined on [&#X2212;1;1[ by 
-<I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
-Input, to have the coefficient <I>b</I><SUB><I>n</I></SUB> (<I>n</I>&#X2260; 0) :
-<DIV CLASS="center"><TT>assume(n,integer);fourier_bn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,n,-1)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">4*(-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n/(pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
+<h4 id="sec205" class="subsubsection"><span style="font-family:monospace">fourier_bn</span></h4>
+<p><a id="hevea_default335"></a><a id="sec:fourier_bn"></a>
+<span style="font-family:monospace">fourier_bn</span> takes four or five arguments : an expression <span style="font-style:italic">expr</span>
+depending on a variable, the name of this variable (for example <span style="font-style:italic">x</span>), the 
+period <span style="font-style:italic">T</span>, an integer <span style="font-style:italic">n</span> and a real <span style="font-style:italic">a</span> (by default <span style="font-style:italic">a</span>=0).<br>
+<span style="font-family:monospace">fourier_bn(expr,x,T,n,a)</span> returns the Fourier coefficient <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub> of a 
+function <span style="font-style:italic">f</span> of variable <span style="font-style:italic">x</span> defined on [<span style="font-style:italic">a</span>,<span style="font-style:italic">a</span>+<span style="font-style:italic">T</span>) by <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">expr</span> and periodic 
+of period <span style="font-style:italic">T</span>:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td><td class="dcell"><span style="font-size:xx-large">&#X222B;</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">a</span>+<span style="font-style:italic">T</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">a</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)sin(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2&#X3C0; <span style="font-style:italic">nx</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td><td class="dcell">)<span style="font-style:italic">dx</span></td></tr>
+</table><p>
+To simplify the computations, one should input <span style="font-family:monospace">assume(n,integer)</span> 
+before calling <span style="font-family:monospace">fourier_bn</span> to specify that <span style="font-style:italic">n</span> is an integer.<br>
+<span style="font-weight:bold">Examples</span> 
+</p><ul class="itemize"><li class="li-itemize">
+Let the function <span style="font-style:italic">f</span>, of period <span style="font-style:italic">T</span>=2, defined on [&#X2212;1,1) by 
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+Input, to have the coefficient <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub> (<span style="font-style:italic">n</span>&#X2260; 0) :
+<div class="center"><span style="font-family:monospace">assume(n,integer);fourier_bn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,n,-1)</span></div>
 Output :
-<DIV CLASS="center"><TT>0</TT></DIV></LI><LI CLASS="li-itemize">Let the function <I>f</I>, of period <I>T</I>=2, defined on [&#X2212;1;1[ by
-<I>f</I>(<I>x</I>)=<I>x</I><SUP>3</SUP>.<BR>
-Input, to have the coefficient <I>b</I><SUB>1</SUB> :
-<DIV CLASS="center"><TT>fourier_bn(x</TT><CODE><TT>^</TT></CODE><TT>3,x,2,1,-1)</TT></DIV>
+<div class="center"><span style="font-family:monospace">0</span></div></li><li class="li-itemize">Let the function <span style="font-style:italic">f</span>, of period <span style="font-style:italic">T</span>=2, defined on [&#X2212;1,1) by
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>3</sup>.<br>
+Input, to have the coefficient <span style="font-style:italic">b</span><sub>1</sub> :
+<div class="center"><span style="font-family:monospace">fourier_bn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,x,2,1,-1)</span></div>
 Output :
-<DIV CLASS="center"><TT>(2*pi</TT><CODE><TT>^</TT></CODE><TT>2-12)/pi</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV>
-</LI></UL><H4 CLASS="subsubsection"><A NAME="toc13"></A><TT>fourier_cn</TT></H4><P><A NAME="@default336"></A><A NAME="sec:fourier_cn"></A>
-<TT>fourier_cn</TT> takes four or five arguments : an expression <I>expr</I>
-depending of a variable, the name of this variable (for example <I>x</I>), the 
-period <I>T</I>, an integer <I>n</I> and a real <I>a</I> (by default <I>a</I>=0).<BR>
-<TT>fourier_cn(expr,x,T,n,a)</TT> returns the Fourier coefficient <I>c</I><SUB><I>n</I></SUB> of a 
-function<I>f</I> of variable <I>x</I> defined on [<I>a</I>,<I>a</I>+<I>T</I>[ by <I>f</I>(<I>x</I>)=<I>expr</I> and periodic 
-of period <I>T</I>:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> <I>c</I><SUB><I>n</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>a</I>+<I>T</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><I>a</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>f</I>(<I>x</I>)<I>e</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&#X2212;2<I>i</I>&#X3C0; <I>nx</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="dcell">&nbsp;</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I></TD></TR>
-</TABLE><P>
+<div class="center"><span style="font-family:monospace">(2*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-12)/pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3</span></div>
+</li></ul>
+<h4 id="sec206" class="subsubsection"><span style="font-family:monospace">fourier_cn</span></h4>
+<p><a id="hevea_default336"></a><a id="sec:fourier_cn"></a>
+<span style="font-family:monospace">fourier_cn</span> takes four or five arguments : an expression <span style="font-style:italic">expr</span>
+depending of a variable, the name of this variable (for example <span style="font-style:italic">x</span>), the 
+period <span style="font-style:italic">T</span>, an integer <span style="font-style:italic">n</span> and a real <span style="font-style:italic">a</span> (by default <span style="font-style:italic">a</span>=0).<br>
+<span style="font-family:monospace">fourier_cn(expr,x,T,n,a)</span> returns the Fourier coefficient <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> of a 
+function<span style="font-style:italic">f</span> of variable <span style="font-style:italic">x</span> defined on [<span style="font-style:italic">a</span>,<span style="font-style:italic">a</span>+<span style="font-style:italic">T</span>) by <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">expr</span> and periodic 
+of period <span style="font-style:italic">T</span>:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td><td class="dcell"><span style="font-size:xx-large">&#X222B;</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">a</span>+<span style="font-style:italic">T</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">a</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&#X2212;2<span style="font-style:italic">i</span>&#X3C0; <span style="font-style:italic">nx</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td></tr>
+<tr><td class="dcell">&nbsp;</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span></td></tr>
+</table><p>
 To simplify the computations, one should
-input <TT>assume(n,integer)</TT> before calling <TT>fourier_cn</TT>
-to specify that <I>n</I> is an integer.<BR>
-<B>Examples</B>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Find the Fourier coefficients <I>c</I><SUB><I>n</I></SUB> of the periodic function <I>f</I> of
-period 2 and defined on [&#X2212;1;1[ by  <I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
-Input, to have <I>c</I><SUB>0</SUB> :
-<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,0,-1)</TT></DIV>
+input <span style="font-family:monospace">assume(n,integer)</span> before calling <span style="font-family:monospace">fourier_cn</span>
+to specify that <span style="font-style:italic">n</span> is an integer.<br>
+<span style="font-weight:bold">Examples</span>
+</p><ul class="itemize"><li class="li-itemize">
+Find the Fourier coefficients <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> of the periodic function <span style="font-style:italic">f</span> of
+period 2 and defined on [&#X2212;1,1) by  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+Input, to have <span style="font-style:italic">c</span><sub>0</sub> :
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,0,-1)</span></div>
 Output:
-<DIV CLASS="center"><TT>1/3</TT></DIV>
-Input, to have <I>c</I><SUB><I>n</I></SUB> :
-<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
-<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,n,-1)</TT></DIV>
+<div class="center"><span style="font-family:monospace">1/3</span></div>
+Input, to have <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,n,-1)</span></div>
 Output:
-<DIV CLASS="center"><TT>2*(-1)</TT><CODE><TT>^</TT></CODE><TT>n/(pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV></LI><LI CLASS="li-itemize">Find the Fourier coefficients <I>c</I><SUB><I>n</I></SUB> of the periodic function <I>f</I>, of 
-period 2, and defined on [0;2[ by  <I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
-Input, to have <I>c</I><SUB>0</SUB> :
-<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,0)</TT></DIV>
+<div class="center"><span style="font-family:monospace">2*(-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n/(pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div></li><li class="li-itemize">Find the Fourier coefficients <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> of the periodic function <span style="font-style:italic">f</span>, of 
+period 2, and defined on [0,2) by  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+Input, to have <span style="font-style:italic">c</span><sub>0</sub> :
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,0)</span></div>
 Output:
-<DIV CLASS="center"><TT>4/3</TT></DIV>
-Input, to have <I>c</I><SUB><I>n</I></SUB> :
-<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
-<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,n)</TT></DIV>
+<div class="center"><span style="font-family:monospace">4/3</span></div>
+Input, to have <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,n)</span></div>
 Output:
-<DIV CLASS="center"><TT>((2*i)*pi*n+2)/(pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV></LI><LI CLASS="li-itemize">Find the Fourier coefficients <I>c</I><SUB><I>n</I></SUB> of the periodic function <I>f</I> of 
-period 2.&#X3C0; and defined on [0;2.&#X3C0;[ by  <I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
-Input <A NAME="@default337"></A> :
-<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
-<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2*pi,n)</TT></DIV>
+<div class="center"><span style="font-family:monospace">((2*i)*pi*n+2)/(pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div></li><li class="li-itemize">Find the Fourier coefficients <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> of the periodic function <span style="font-style:italic">f</span> of 
+period 2&#X3C0; and defined on [0,2&#X3C0;) by  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+Input <a id="hevea_default337"></a> :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2*pi,n)</span></div>
 Output :
-<DIV CLASS="center"><TT>((2*i)*pi*n+2)/n</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
-If you don&#X2019;t specify <TT>assume(n,integer)</TT>, the output will not be 
+<div class="center"><span style="font-family:monospace">((2*i)*pi*n+2)/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
+If you don&#X2019;t specify <span style="font-family:monospace">assume(n,integer)</span>, the output will not be 
 simplified :
-<DIV CLASS="center"><TT>((2*i)*pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2*exp((-i)*n*2*pi)+2*pi*n*exp((-i)*n*2*pi)+</TT></DIV>
-<DIV CLASS="center"><TT>(-i)*exp((-i)*n*2*pi)+i)/(pi*n</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV>
+<div class="center"><span style="font-family:monospace">((2*i)*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*exp((-i)*n*2*pi)+2*pi*n*exp((-i)*n*2*pi)+</span></div>
+<div class="center"><span style="font-family:monospace">(-i)*exp((-i)*n*2*pi)+i)/(pi*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div>
 You might simplify this expression by replacing 
-<TT>exp((-i)*n*2*pi)</TT> by <TT>1</TT>, input :
-<DIV CLASS="center"><TT>subst(ans(),exp((-i)*n*2*pi)=1)</TT></DIV>
+<span style="font-family:monospace">exp((-i)*n*2*pi)</span> by <span style="font-family:monospace">1</span>, input :
+<div class="center"><span style="font-family:monospace">subst(ans(),exp((-i)*n*2*pi)=1)</span></div>
 Output :
-<DIV CLASS="center"><TT>((2*i)*pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2+2*pi*n+-i+i)/pi/n</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV>
-This expression is then simplified with <TT>normal</TT>, the final
+<div class="center"><span style="font-family:monospace">((2*i)*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*pi*n+-i+i)/pi/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3</span></div>
+This expression is then simplified with <span style="font-family:monospace">normal</span>, the final
 output is :
-<DIV CLASS="center"><TT>((2*i)*pi*n+2)/n</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
-Hence for <I>n</I> &#X2260; 0,  <I>c</I><SUB><I>n</I></SUB>=2<I>in</I>&#X3C0;+2/<I>n</I><SUP>2</SUP>.
-As shown in this example, it is better to input <TT>assume(n,integer)</TT> before calling <TT>fourier_cn</TT>.<BR>
-We must also compute <I>c</I><SUB><I>n</I></SUB> for <I>n</I>=0, input :
-<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2*pi,0)</TT></DIV>
+<div class="center"><span style="font-family:monospace">((2*i)*pi*n+2)/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
+Hence for <span style="font-style:italic">n</span> &#X2260; 0,  <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>=2<span style="font-style:italic">in</span>&#X3C0;+2/<span style="font-style:italic">n</span><sup>2</sup>.
+As shown in this example, it is better to input <span style="font-family:monospace">assume(n,integer)</span> before calling <span style="font-family:monospace">fourier_cn</span>.<br>
+We must also compute <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> for <span style="font-style:italic">n</span>=0, input :
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2*pi,0)</span></div>
 Output :
-<DIV CLASS="center"><TT>4*pi</TT><CODE><TT>^</TT></CODE><TT>2/3</TT></DIV>
-Hence for <I>n</I>= 0,  <I>c</I><SUB>0</SUB>=4.&#X3C0;<SUP>2</SUP>/3. 
-</LI></UL><P>
-<B>Remarks</B> :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Input <TT>purge(n)</TT><A NAME="@default338"></A> to remove the hypothesis done
-on <I>n</I>.
-</LI><LI CLASS="li-itemize">Input <TT>about(n)</TT><A NAME="@default339"></A> or <TT>assume(n)</TT><A NAME="@default340"></A>, to know 
-the hypothesis done on the variable <I>n</I>.
-</LI></UL><HR>
-<A HREF="cascmd_en166.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en168.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">4*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/3</span></div>
+Hence for <span style="font-style:italic">n</span>= 0,  <span style="font-style:italic">c</span><sub>0</sub>=4&#X3C0;<sup>2</sup>/3. 
+</li></ul><p>
+<span style="font-weight:bold">Remarks</span> :
+</p><ul class="itemize"><li class="li-itemize">
+Input <span style="font-family:monospace">purge(n)</span><a id="hevea_default338"></a> to remove the hypothesis done
+on <span style="font-style:italic">n</span>.
+</li><li class="li-itemize">Input <span style="font-family:monospace">about(n)</span><a id="hevea_default339"></a> or <span style="font-family:monospace">assume(n)</span><a id="hevea_default340"></a>, to know 
+the hypothesis done on the variable <span style="font-style:italic">n</span>.
+</li></ul>
+<hr>
+<a href="cascmd_en166.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en168.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

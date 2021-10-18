@@ -1,56 +1,56 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Procédé de Gramschmidt : gramschmidt</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr662.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr664.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc781">6.59.5</A>  Procédé de Gramschmidt : <TT>gramschmidt</TT></H3><P><A NAME="@default1204"></A>
-<TT>gramschmidt</TT> a un ou deux paramètres : 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Procédé de Gramschmidt : gramschmidt</title>
+</head>
+<body >
+<a href="cascmd_fr662.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr664.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec809" class="subsection">6.59.5  Procédé de Gramschmidt : <span style="font-family:monospace">gramschmidt</span></h3>
+<p><a id="hevea_default1204"></a>
+<span style="font-family:monospace">gramschmidt</span> a un ou deux paramètres : 
+</p><ul class="itemize"><li class="li-itemize">
 une matrice vue comme une liste de vecteurs lignes, 
 le produit scalaire ètant le produit scalaire canonique, ou
-</LI><LI CLASS="li-itemize">un vecteur contenant la base d’un espace vectoriel et une fonction qui 
-définit un produit scalaire.<BR>
-</LI></UL><P>
-<TT>gramschmidt</TT> donne une base orthonormale par rapport à ce produit 
-scalaire.<BR>
+</li><li class="li-itemize">un vecteur contenant la base d’un espace vectoriel et une fonction qui 
+définit un produit scalaire.<br>
+</li></ul><p>
+<span style="font-family:monospace">gramschmidt</span> donne une base orthonormale par rapport à ce produit 
+scalaire.<br>
 On tape :
-</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]]))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]]))</span></div><p>
 Ou on tape :
-</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]],dot))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]],dot))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[[(sqrt(3))/3,(sqrt(3))/3,(sqrt(3))/3],
+</p><div class="center"><span style="font-family:monospace">[[(sqrt(3))/3,(sqrt(3))/3,(sqrt(3))/3],
 [(-(sqrt(6)))/6,(-(sqrt(6)))/6,(sqrt(6))/3],
-[(-(sqrt(2)))/2,(sqrt(2))/2,0]]</TT></DIV><P>
-<B>Exemple</B><BR>
-Pour les polynômes de degré &lt;<I>n</I>, on considère le produit scalaire 
+[(-(sqrt(2)))/2,(sqrt(2))/2,0]]</span></div><p>
+<span style="font-weight:bold">Exemple</span><br>
+Pour les polynômes de degré &lt;<span style="font-style:italic">n</span>, on considère le produit scalaire 
 défini par : 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>.<I>Q</I>=</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>P</I>(<I>x</I>).<I>Q</I>(<I>x</I>)<I>dx</I> </TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>.<span style="font-style:italic">Q</span>=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">−1</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">Q</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">dx</span> </td></tr>
+</table><p>
 On tape :
-</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],(p,q)-&gt;integrate(p*q,x,-1,1))</TT></DIV><P>
-Ou on écrit la fonction <TT>p_scal</TT>, on tape :<BR>
-<TT>p_scal(p,q):=integrate(p*q,x,-1,1)</TT><BR>
+</p><div class="center"><span style="font-family:monospace">gramschmidt([1,1+x],(p,q)-&gt;integrate(p*q,x,-1,1))</span></div><p>
+Ou on écrit la fonction <span style="font-family:monospace">p_scal</span>, on tape :<br>
+<span style="font-family:monospace">p_scal(p,q):=integrate(p*q,x,-1,1)</span><br>
 et on tape :
-</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],p_scal)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">gramschmidt([1,1+x],p_scal)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[1/(sqrt(2)),(1+x-1)/sqrt(2/3)]</TT></DIV><HR>
-<A HREF="cascmd_fr662.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr664.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[1/(sqrt(2)),(1+x-1)/sqrt(2/3)]</span></div>
+<hr>
+<a href="cascmd_fr662.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr664.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

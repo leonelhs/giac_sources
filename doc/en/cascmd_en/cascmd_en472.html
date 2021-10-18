@@ -1,27 +1,40 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Draw a 2D vertical line : LineVert</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en471.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en473.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc534">3.5.3</A>  Draw a 2D vertical line : <TT>LineVert</TT></H3><P><A NAME="@default784"></A>
-<TT>LineVert</TT> takes as argument an expression <I>a</I>.<BR>
- <TT>LineVert</TT> draws the vertical line <I>x</I>=<I>a</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>2-d graph</title>
+</head>
+<body >
+<a href="cascmd_en471.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en473.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec562" class="subsection">3.2.1  2-d graph</h3>
+<p><a id="sec:plotfunc"></a>
+<span style="font-family:monospace">plotfunc(f(x),x)</span> draws the graph of <span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) for <span style="font-style:italic">x</span> in
+the default interval, 
+<span style="font-family:monospace">plotfunc(f(x),x=a..b)</span> draws the graph of <span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) for <span style="font-style:italic">a</span>&#X2264; <span style="font-style:italic">x</span>&#X2264; <span style="font-style:italic">b</span>.
+<span style="font-family:monospace">plotfunc</span> accepts an optional <code>xstep=...</code> argument to 
+specify the discretization step in <span style="font-style:italic">x</span>.<br>
 Input :
-</P><DIV CLASS="center"><TT>LineVert(1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">plotfunc(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotfunc(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2,a=-1..2)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>the line x=1</TT></DIV><HR>
-<A HREF="cascmd_en471.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en473.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">the graph of y=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotfunc(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2,x,xstep=1)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">a polygonal line which is a bad representation of y=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2 </span></div><p>
+It is also possible to specify the number of points used for the 
+representation of the function with <code>nstep=</code> instead of <code>xstep=</code>.
+For example, input :
+</p><div class="center"><span style="font-family:monospace">plotfunc(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2,x=-2..3,nstep=30)</span></div>
+<hr>
+<a href="cascmd_en471.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en473.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

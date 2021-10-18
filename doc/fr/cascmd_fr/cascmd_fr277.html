@@ -1,69 +1,69 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Substituer une valeur à une variable : subst substituer</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr276.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr278.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc350">6.14.21</A>  Substituer une valeur à une variable : <TT>subst substituer</TT></H3><P><A NAME="@default462"></A><A NAME="@default463"></A><A NAME="sec:subst"></A>
-<TT>subst</TT> a deux ou trois arguments : une expression dépendant 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Substituer une valeur à une variable : subst substituer</title>
+</head>
+<body >
+<a href="cascmd_fr276.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr278.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec356" class="subsection">6.14.21  Substituer une valeur à une variable : <span style="font-family:monospace">subst substituer</span></h3>
+<p><a id="hevea_default462"></a><a id="hevea_default463"></a><a id="sec:subst"></a>
+<span style="font-family:monospace">subst</span> a deux ou trois arguments : une expression dépendant 
 d’un paramètre et une égalité (paramètre=valeur de substitution) ou
 une expression dependant d’un paramètre , le paramètre et la valeur de 
 substitution.
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>subst</TT> effectue la substitution demandée dans l’expression à 
-condition que le paramètre ne soit pas affecté car <TT>subst</TT> évalue 
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">subst</span> effectue la substitution demandée dans l’expression à 
+condition que le paramètre ne soit pas affecté car <span style="font-family:monospace">subst</span> évalue 
 tout d’abord l’expression et remplace donc le paramètre (si il a été 
 affecté) par sa valeur sans tenir compte de la valeur de substitution donné
-par le deuxième paramètre.<BR>
+par le deuxième paramètre.<br>
 On tape :
-<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a=2)</TT></DIV> 
+<div class="center"><span style="font-family:monospace">subst(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,a=2)</span></div> 
 ou :
-<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a,2)</TT></DIV> 
-On obtient si la variable <TT>a</TT> n’est pas affectée :
-<DIV CLASS="center"><TT>5</TT></DIV> 
-Si la variable <TT>a</TT> est affectée, il faut taper auparavant 
-<TT>purge(a)</TT> pour obtenir <TT>5</TT>.<BR>
+<div class="center"><span style="font-family:monospace">subst(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,a,2)</span></div> 
+On obtient si la variable <span style="font-family:monospace">a</span> n’est pas affectée :
+<div class="center"><span style="font-family:monospace">5</span></div> 
+Si la variable <span style="font-family:monospace">a</span> est affectée, il faut taper auparavant 
+<span style="font-family:monospace">purge(a)</span> pour obtenir <span style="font-family:monospace">5</span>.<br>
 Lorsque l’on veut substituer plusieurs variables, pour eviter de faire 
 plusieurs substitutions à la suite, on met comme deuxième argument la
 liste de ces variables et comme troisième argument la liste de les valeurs 
 de substitution (ou encore on met comme deuxième argument la liste formée 
-des noms de variables <TT>=</TT> valeur de substitution).<BR>
+des noms de variables <span style="font-family:monospace">=</span> valeur de substitution).<br>
 On tape :
-<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a,b],[2,1])</TT></DIV> 
+<div class="center"><span style="font-family:monospace">subst(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+b,[a,b],[2,1])</span></div> 
 Ou on tape :
-<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a=2,b=1])</TT></DIV> 
-On obtient si les variables <TT>a</TT> et <TT>b</TT> ne sont pas affectées :
-<DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV> </LI><LI CLASS="li-itemize"><TT>subst</TT> permet aussi d’effectuer des changements de variables dans 
-une intégrale mais <TT>subst</TT> ne gère les changements de variable dans une 
-integrale que si le changement de variable est de la forme <TT>x=f(u)</TT>. Dans 
+<div class="center"><span style="font-family:monospace">subst(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+b,[a=2,b=1])</span></div> 
+On obtient si les variables <span style="font-family:monospace">a</span> et <span style="font-family:monospace">b</span> ne sont pas affectées :
+<div class="center"><span style="font-family:monospace">2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1</span></div> </li><li class="li-itemize"><span style="font-family:monospace">subst</span> permet aussi d’effectuer des changements de variables dans 
+une intégrale mais <span style="font-family:monospace">subst</span> ne gère les changements de variable dans une 
+integrale que si le changement de variable est de la forme <span style="font-family:monospace">x=f(u)</span>. Dans 
 ce cas il faut quoter l’intégrale pour que celle-ci ne 
-soit pas calculée si on utilise <TT>integrate</TT> ou bien il faut utiliser 
-la commande <TT>Int</TT>. Dans les deux cas il faut spécifier le nom 
-de la variable d’intégration même si celle-ci est <TT>x</TT>.<BR>
+soit pas calculée si on utilise <span style="font-family:monospace">integrate</span> ou bien il faut utiliser 
+la commande <span style="font-family:monospace">Int</span>. Dans les deux cas il faut spécifier le nom 
+de la variable d’intégration même si celle-ci est <span style="font-family:monospace">x</span>. <br>
 On tape :
-<DIV CLASS="center"><TT>subst(’integrate(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x,0,pi/2)’,x=sqrt(t))</TT></DIV>
+<div class="center"><span style="font-family:monospace">subst(’integrate(sin(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)*x,x,0,pi/2)’,x=sqrt(t))</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>subst(Int(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x,0,pi/2),x=sqrt(t))</TT></DIV>
+<div class="center"><span style="font-family:monospace">subst(Int(sin(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)*x,x,0,pi/2),x=sqrt(t))</span></div>
 On obtient
-<DIV CLASS="center"><TT>integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t,0,(pi/2)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV> 
+<div class="center"><span style="font-family:monospace">integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t,0,(pi/2)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div> 
 On tape :
-<DIV CLASS="center"><TT>subst(’integrate(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x)’,x=sqrt(t))</TT></DIV>
+<div class="center"><span style="font-family:monospace">subst(’integrate(sin(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)*x,x)’,x=sqrt(t))</span></div>
 Ou on tape :
-<DIV CLASS="center"><TT>subst(Int(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x),x=sqrt(t))</TT></DIV>
+<div class="center"><span style="font-family:monospace">subst(Int(sin(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)*x,x),x=sqrt(t))</span></div>
 On obtient
-<DIV CLASS="center"><TT>integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t)</TT></DIV> 
-</LI></UL><HR>
-<A HREF="cascmd_fr276.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr278.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t)</span></div> 
+</li></ul>
+<hr>
+<a href="cascmd_fr276.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr278.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

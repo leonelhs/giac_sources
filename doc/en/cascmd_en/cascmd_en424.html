@@ -1,40 +1,58 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Singular value decomposition : svd</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en423.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en425.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc474">2.48.6</A>  Singular value decomposition : <TT>svd</TT></H3><P><A NAME="@default705"></A>
-<TT>svd</TT> (singular value decomposition) takes as argument a numeric
-square matrix of size <I>n</I>.<BR>
-<TT>svd(A)</TT> returns an orthogonal matrix <I>U</I>, the diagonal <I>s</I> of a diagonal
-matrix <I>S</I> and an orthogonal matrix <I>Q</I> (<SUP><I>t</I></SUP><I>Q</I>*<I>Q</I>=<I>I</I>) such that :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>A</I>=<I>U</I>.<I>S</I>.<SUP><I>t</I></SUP><I>Q</I> </TD></TR>
-</TABLE><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Find the matrix of an isometry : mkisom</title>
+</head>
+<body >
+<a href="cascmd_en423.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en425.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec504" class="subsection">2.48.2  Find the matrix of an isometry : <span style="font-family:monospace">mkisom</span></h3>
+<p><a id="hevea_default705"></a>
+<span style="font-family:monospace">mkisom</span> takes as argument :
+</p><ul class="itemize"><li class="li-itemize">
+In dimension 3, the list of characteristic elements 
+(axis direction, angle for a rotation or normal to the plane for
+a symmetry) and <span style="font-family:monospace">+1</span> for a direct isometry or 
+<span style="font-family:monospace">-1</span> an indirect isometry.
+</li><li class="li-itemize">In dimension 2, a characteristic element (an angle or a vector) and 
+<span style="font-family:monospace">+1</span> for a direct isometry (rotation) or <span style="font-family:monospace">-1</span> for an
+indirect isometry (symmetry).
+</li></ul><p>
+<span style="font-family:monospace">mkisom</span> returns the matrix of the corresponding isometry.<br>
 Input :
-</P><DIV CLASS="center"><TT>svd([[1,2],[3,4]])</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[[-0.404553584834,-0.914514295677],[-0.914514295677, 0.404553584834]], [5.46498570422,0.365966190626], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">mkisom([[-1,2,-1],pi],1)</span></div><p>
+Output the matrix of the rotation of axis [&#X2212;1,2,&#X2212;1] and angle &#X3C0;:
+</p><div class="center"><span style="font-family:monospace">[[-2/3,-2/3,1/3],[-2/3,1/3,-2/3],[1/3,-2/3,-2/3]]</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>(U,s,Q):=svd([[3,5],[4,5]])</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[[-0.672988041811,-0.739653361771],[-0.739653361771, 0.672988041811]],[8.6409011028,0.578643354497], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</TT></DIV><P>
-Verification :
+</p><div class="center"><span style="font-family:monospace">mkisom([pi],-1)</span></div><p>
+Output the matrix of the symmetry with respect to <span style="font-style:italic">O</span> :
+</p><div class="center"><span style="font-family:monospace">[[-1,0,0],[0,-1,0],[0,0,-1]]</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>U*diag(s)*tran(Q)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[[3.0,5.0],[4.0,5.0]]</TT></DIV><HR>
-<A HREF="cascmd_en423.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en425.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">mkisom([1,1,1],-1)</span></div><p>
+Output the matrix of the symmetry with respect to the plane <span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>+<span style="font-style:italic">z</span>=0 :
+</p><div class="center"><span style="font-family:monospace">[[1/3,-2/3,-2/3],[-2/3,1/3,-2/3],[-2/3,-2/3,1/3]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">mkisom([[1,1,1],pi/3],-1)</span></div><p>
+Output the matrix of the product of a rotation of axis [1,1,1] and angle 
+&#X3C0;/3 and of a symmetry with respect to the plane <span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>+<span style="font-style:italic">z</span>=0:
+</p><div class="center"><span style="font-family:monospace">[[0,-1,0],[0,0,-1],[-1,0,0]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">mkisom(pi/2,1)</span></div><p>
+Output the matrix of the plane rotation of angle &#X3C0;/2 :
+</p><div class="center"><span style="font-family:monospace">[[0,-1],[1,0]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">mkisom([1,2],-1)</span></div><p>
+Output matrix of the plane symmetry with respect to the line 
+of equation <span style="font-style:italic">x</span>+2<span style="font-style:italic">y</span>=0:
+</p><div class="center"><span style="font-family:monospace">[[3/5,-4/5],[-4/5,-3/5]]</span></div>
+<hr>
+<a href="cascmd_en423.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en425.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

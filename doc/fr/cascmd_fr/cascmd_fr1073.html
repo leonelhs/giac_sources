@@ -1,59 +1,59 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La similitude : similarity similitude</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1072.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1074.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1258">11.14.6</A>  La similitude : <TT>similarity similitude</TT></H3><P><A NAME="@default2081"></A><A NAME="@default2082"></A><A NAME="sec:similitude3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr977.html#sec:similitude2">10.17.6</A> pour la géométrie plane et 
-<A HREF="cascmd_fr1016.html#sec:axe3">11.5.2</A> pour définir un axe.<BR>
-<TT>similitude</TT>, en géométrie 3-d, a trois ou quatre 
-arguments : une droite orientée par l’ordre de ses arguments ou par le 
-produit vectoriel des normales orientées des plans qui la définissent 
-(l’axe de rotation), un réel (la valeur du rapport <I>k</I> de la similitude), 
-un réel (la mesure <I>a</I> de l’angle de rotation en radians (ou degrés)) et 
-éventuellement l’objet géométrique à transformer.<BR>
-<B>Remarque</B> : si le rapport <I>k</I> est négatif, l’angle de la similitude 
-est alors de mesure −<I>a</I> radians (ou degrés).<BR>
-Lorsque <TT>similitude</TT> a trois arguments, c’est une fonction qui agit sur 
-un objet géométrique.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>L’inversion : inversion</title>
+</head>
+<body >
+<a href="cascmd_fr1072.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1074.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1296" class="subsection">11.14.7  L’inversion : <span style="font-family:monospace">inversion</span></h3>
+<p><a id="hevea_default2080"></a><a id="sec:inversion3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr977.html#sec%3Ainversion2">10.17.7</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">inversion</span>, en géométrie 3-d, a deux ou trois arguments : 
+un point (le centre de l’inversion), un réel (la valeur du rapport de 
+l’inversion) et éventuellement l’objet géométrique à transformer.<br>
+Lorsque <span style="font-family:monospace">inversion</span> a deux arguments, c’est une fonction qui agit sur un 
+objet géométrique.<br>
+Si <span style="font-family:monospace">inver:=inversion(C,k)</span> et <span style="font-family:monospace">A1:=inver(A)</span>,
+on a <span style="text-decoration:overline"><span style="font-style:italic">CA</span></span>*<span style="text-decoration:overline"><span style="font-style:italic">CA</span></span><span style="text-decoration:overline">1</span>=<span style="font-style:italic">k</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>s:=similitude(droite(point(0,0,0),point(1,1,1)), 2,2*pi/3)</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>s(point(0,0,1))</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>Le point (2,0,0) est tracé</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">inver:=inversion(point(0,0,0),2)</span></div><p>
+Puis :<br>
 On tape :
-</P><DIV CLASS="center"><TT>s(sqhere(point(1,0,0),1))</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>La sphère de centre (0,2,0) et de rayon 2</TT></DIV><P>
-Lorsque <TT>similitude</TT> a quatre arguments, <TT>similitude</TT> dessine et 
-renvoie le transformé du quatrième argument 
-dans la similitude d’axe le premier argument de rapport le deuxième 
-argument et d’angle le troisième argument.<BR>
+</p><div class="center"><span style="font-family:monospace">inver(point(1,2,-2))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le point (2/9,4/9,-4/9)</span></div><p> 
+On a en effet :<br>
+<span style="font-family:monospace">[2/9,4/9,-4/9]*[1,2,-2]=2</span> et les points (1,2,-2) et
+(2/9,4/9,-4/9) sont alignés avec le point (0,0,0) centre de l’nversion.<br>
+On tape 
+</p><div class="center"><span style="font-family:monospace">inver(sqhere(point(1,0,0),1))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le plan d’équation x=1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>similitude(droite(point(0,0,0),point(1,1,1)), 2,2*pi/3,point(0,0,1))</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>Le point (2,0,0) est tracé</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">inver(sqhere(point(1,0,0),1/2))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">La sphère de centre (8/3,0,0) et de rayon 4/3 (elle passe par les points (4/3,0,0) et (4,0,0))</span></div><p>
+Lorsque <span style="font-family:monospace">inversion</span> a trois arguments, <span style="font-family:monospace">inversion</span> dessine et renvoie 
+le transformé du troisième argument dans l’inversion de centre le premier 
+argument et de rapport le deuxième argument.<br>
+Si <span style="font-family:monospace">A1:=inversion(C,k,A)</span> on a <span style="text-decoration:overline"><span style="font-style:italic">CA</span></span>*<span style="text-decoration:overline"><span style="font-style:italic">CA</span></span><span style="text-decoration:overline">1</span>=<span style="font-style:italic">k</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>similitude(droite(point(0,0,0),point(1,1,1)), 2,2*pi/3,sqhere(point(1,0,0),1))</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>La sphère de centre (0,2,0) et de rayon 2</TT></DIV><HR>
-<A HREF="cascmd_fr1072.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1074.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">inversion(point(0,0,0),2,sphere(point(1,0,0),1))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le plan d’équation x=1</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">inversion(point(0,0,0),2,sphere(point(1,0,0),1/2))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">La sphère de centre (8/3,0,0) et de rayon 4/3</span></div>
+<hr>
+<a href="cascmd_fr1072.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1074.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

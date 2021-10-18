@@ -1,88 +1,89 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La covariance : covariance</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr726.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr728.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc865">8.2.1</A>  La covariance : <TT>covariance</TT></H3><P><A NAME="@default1307"></A>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La covariance : covariance</title>
+</head>
+<body >
+<a href="cascmd_fr726.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr728.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec893" class="subsection">8.2.1  La covariance : <span style="font-family:monospace">covariance</span></h3>
+<p><a id="hevea_default1307"></a>
 La covariance de deux variables aléatoires
-<I>X</I> et <I>Y</I> est :<BR>
-<I>cov</I>(<I>X</I>,<I>Y</I>)=<I>E</I>((<I>X</I>−<SPAN style="text-decoration:overline">X</SPAN>)(<I>Y</I>−Ȳ)).<BR>
-<TT>covariance</TT> a différentes sortes d’arguments :</P><P>- quand les effectifs sont égaux à 1,<BR>
- <TT>covariance</TT> a pour argument deux 
-listes de même longueur ou une matrice ayant deux colonnes.<BR>
-<TT>covariance</TT> calcule la covariance numérique des deux listes ou
-deux colonnes de cette matrice.<BR>
+<span style="font-style:italic">X</span> et <span style="font-style:italic">Y</span> est :<br>
+<span style="font-style:italic">cov</span>(<span style="font-style:italic">X</span>,<span style="font-style:italic">Y</span>)=<span style="font-style:italic">E</span>((<span style="font-style:italic">X</span>−<span style="text-decoration:overline">X</span>)(<span style="font-style:italic">Y</span>−Ȳ)).<br>
+<span style="font-family:monospace">covariance</span> a différentes sortes d’arguments :</p><p>- quand les effectifs sont égaux à 1,<br>
+ <span style="font-family:monospace">covariance</span> a pour argument deux 
+listes de même longueur ou une matrice ayant deux colonnes.<br>
+<span style="font-family:monospace">covariance</span> calcule la covariance numérique des deux listes ou
+deux colonnes de cette matrice.<br>
 On tape :
-</P><DIV CLASS="center"><TT>covariance([1,2,3,4],[1,4,9,16])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">covariance([1,2,3,4],[1,4,9,16])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>25/4</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">25/4</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>covariance([[1,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">covariance([[1,1],[2,4],[3,9],[4,16]])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>25/4</TT></DIV><P>
-Car on a :<BR>
-1/4*(1+8+27+64)-75/4=25/4<BR>
-On tape (on a <TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT>) :
-</P><DIV CLASS="center"><TT>covariance(A,A</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">25/4</span></div><p>
+Car on a :<br>
+1/4*(1+8+27+64)-75/4=25/4<br>
+On tape (on a <span style="font-family:monospace">A:=[0,1,2,3,4,5,6,7,8,9,10,11]</span>) :
+</p><div class="center"><span style="font-family:monospace">covariance(A,A</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1573/12</TT></DIV><P>- quand les effectifs sont différents de 1 :<BR>
-- si les couples <I>a</I>[<I>j</I>],<I>b</I>[<I>j</I>] ont pour 
-effectif <I>n</I>[<I>j</I>] (<I>j</I>=0..<I>p</I>−1), <TT>covariance</TT> a pour argument 
-trois listes <I>a</I>, <I>b</I>, <I>n</I> de même longueur <I>p</I>, ou 
-une matrice de trois colonnes <I>a</I>, 
-<I>b</I>, <I>n</I> et de <I>p</I> lignes [<I>a</I>[<I>j</I>],<I>b</I>[<I>j</I>],<I>n</I>[<I>j</I>]].<BR>
-<TT>covariance</TT> calcule la covariance numérique 
+</p><div class="center"><span style="font-family:monospace">1573/12</span></div><p>- quand les effectifs sont différents de 1 :<br>
+- si les couples <span style="font-style:italic">a</span>[<span style="font-style:italic">j</span>],<span style="font-style:italic">b</span>[<span style="font-style:italic">j</span>] ont pour 
+effectif <span style="font-style:italic">n</span>[<span style="font-style:italic">j</span>] (<span style="font-style:italic">j</span>=0..<span style="font-style:italic">p</span>−1), <span style="font-family:monospace">covariance</span> a pour argument 
+trois listes <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span>, <span style="font-style:italic">n</span> de même longueur <span style="font-style:italic">p</span>, ou 
+une matrice de trois colonnes <span style="font-style:italic">a</span>, 
+<span style="font-style:italic">b</span>, <span style="font-style:italic">n</span> et de <span style="font-style:italic">p</span> lignes [<span style="font-style:italic">a</span>[<span style="font-style:italic">j</span>],<span style="font-style:italic">b</span>[<span style="font-style:italic">j</span>],<span style="font-style:italic">n</span>[<span style="font-style:italic">j</span>]].<br>
+<span style="font-family:monospace">covariance</span> calcule la covariance numérique 
 des deux premières listes pondérées par la liste donnée comme dernier 
 argument ou 
-des deux colonnes de cette matrice pondérées par la troisiéme colonne.<BR>
+des deux colonnes de cette matrice pondérées par la troisiéme colonne.<br>
 On tape :
-</P><DIV CLASS="center"><TT>covariance([1,2,3,4],[1,4,9,16],[3,1,5,2])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">covariance([1,2,3,4],[1,4,9,16],[3,1,5,2])</span></div><p>
 Ou on tape :
-</P><DIV CLASS="center"><TT>covariance([[1,1,3],[2,4,1],[3,9,5],[4,16,2]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">covariance([[1,1,3],[2,4,1],[3,9,5],[4,16,2]])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>662/121</TT></DIV><P>- si les couples <I>a</I>[<I>j</I>],<I>b</I>[<I>k</I>] ont pour effectif <I>N</I>[<I>j</I>,<I>k</I>] (<I>j</I>=0..<I>p</I>−1,<I>k</I>=0..<I>q</I>−1), 
-<TT>covariance</TT> a pour argument deux listes <I>a</I>, <I>b</I> de longueurs respectives 
-<I>p</I> et <I>q</I> et une matrice <I>N</I> de <I>p</I> lignes et <I>q</I> colonnes ou encore,<BR>
+</p><div class="center"><span style="font-family:monospace">662/121</span></div><p>- si les couples <span style="font-style:italic">a</span>[<span style="font-style:italic">j</span>],<span style="font-style:italic">b</span>[<span style="font-style:italic">k</span>] ont pour effectif <span style="font-style:italic">N</span>[<span style="font-style:italic">j</span>,<span style="font-style:italic">k</span>] (<span style="font-style:italic">j</span>=0..<span style="font-style:italic">p</span>−1,<span style="font-style:italic">k</span>=0..<span style="font-style:italic">q</span>−1), 
+<span style="font-family:monospace">covariance</span> a pour argument deux listes <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span> de longueurs respectives 
+<span style="font-style:italic">p</span> et <span style="font-style:italic">q</span> et une matrice <span style="font-style:italic">N</span> de <span style="font-style:italic">p</span> lignes et <span style="font-style:italic">q</span> colonnes ou encore,<br>
 afin de pouvoir écrire les données de façon plaisante dans le tableur,
-<TT>covariance</TT> peut aussi avoir deux arguments, une matrice <I>M</I> et -1.<BR>
-<I>M</I> est alors un tableau à deux entrées égal à :<BR>
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>M</I>=</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>a</I> ∖ <I>b</I></TD><TD ALIGN=center NOWRAP><I>b</I>[0]</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP><I>b</I>[<I>q</I>−1]</TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>a</I>[0]</TD><TD ALIGN=center NOWRAP><I>N</I>[0,0]</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP><I>N</I>[0,<I>q</I>−1]</TD></TR>
-<TR><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP>...</TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>a</I>[<I>p</I>−1]</TD><TD ALIGN=center NOWRAP><I>N</I>[<I>p</I>−1,0]</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP><I>N</I>[<I>p</I>−1,<I>q</I>−1]</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE><P>
-<TT>covariance(a,b,N)</TT> ou <TT>covariance(M,-1)</TT> calcule la covariance 
-numérique des couples <I>a</I>[<I>j</I>],<I>b</I>[<I>k</I>] pondérés par <I>N</I><SUB><I>j</I>,<I>k</I></SUB>.<BR>
+<span style="font-family:monospace">covariance</span> peut aussi avoir deux arguments, une matrice <span style="font-style:italic">M</span> et -1.<br>
+<span style="font-style:italic">M</span> est alors un tableau à deux entrées égal à :<br>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">M</span>=</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">a</span> ∖ <span style="font-style:italic">b</span></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">b</span>[0]</td><td style="text-align:center;white-space:nowrap" >...</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">b</span>[<span style="font-style:italic">q</span>−1]</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">a</span>[0]</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">N</span>[0,0]</td><td style="text-align:center;white-space:nowrap" >...</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">N</span>[0,<span style="font-style:italic">q</span>−1]</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >...</td><td style="text-align:center;white-space:nowrap" >...</td><td style="text-align:center;white-space:nowrap" >...</td><td style="text-align:center;white-space:nowrap" >...</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">a</span>[<span style="font-style:italic">p</span>−1]</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">N</span>[<span style="font-style:italic">p</span>−1,0]</td><td style="text-align:center;white-space:nowrap" >...</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">N</span>[<span style="font-style:italic">p</span>−1,<span style="font-style:italic">q</span>−1]
+</td></tr>
+</table></td><td class="dcell">
+</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table><p>
+<span style="font-family:monospace">covariance(a,b,N)</span> ou <span style="font-family:monospace">covariance(M,-1)</span> calcule la covariance 
+numérique des couples <span style="font-style:italic">a</span>[<span style="font-style:italic">j</span>],<span style="font-style:italic">b</span>[<span style="font-style:italic">k</span>] pondérés par <span style="font-style:italic">N</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>covariance([1,2,3,4],[1,4,9,16],[[3,0,0,0],</TT></DIV><DIV CLASS="center"><TT>[0,1,0,0],[0,0,5,0],[0,0,0,2]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">covariance([1,2,3,4],[1,4,9,16],[[3,0,0,0],</span></div><div class="center"><span style="font-family:monospace">[0,1,0,0],[0,0,5,0],[0,0,0,2]])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>662/121</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">662/121</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>covariance([[b</TT><TT>∖</TT><TT>a,1,2,3,4],[1,3,0,0,0],</TT></DIV><DIV CLASS="center"><TT>[4,0,1,0,0],[9,0,0,5,0],[16,0,0,0,2]],-1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">covariance([[b</span>∖<span style="font-family:monospace">a,1,2,3,4],[1,3,0,0,0],</span></div><div class="center"><span style="font-family:monospace">[4,0,1,0,0],[9,0,0,5,0],[16,0,0,0,2]],-1)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>662/121</TT></DIV><HR>
-<A HREF="cascmd_fr726.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr728.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">662/121</span></div>
+<hr>
+<a href="cascmd_fr726.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr728.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

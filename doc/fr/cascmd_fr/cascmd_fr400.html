@@ -1,47 +1,47 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>PGCD de deux polynômes par l’algorithme d’Euclide : Gcd</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr399.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr401.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc488">6.29.8</A>  PGCD de deux polynômes par l’algorithme d’Euclide : <TT>Gcd</TT></H3><P><A NAME="@default750"></A> <A NAME="sec:Gcd"></A>
-<TT>Gcd</TT> est la forme inerte de <TT>gcd</TT>.<BR>
-<TT>Gcd</TT> renvoie le PGCD (plus grand commun diviseur) de deux 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>PGCD de deux polynômes par l’algorithme d’Euclide : Gcd</title>
+</head>
+<body >
+<a href="cascmd_fr399.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr401.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec512" class="subsection">6.29.8  PGCD de deux polynômes par l’algorithme d’Euclide : <span style="font-family:monospace">Gcd</span></h3>
+<p><a id="hevea_default750"></a> <a id="sec:Gcd"></a>
+<span style="font-family:monospace">Gcd</span> est la forme inerte de <span style="font-family:monospace">gcd</span>.<br>
+<span style="font-family:monospace">Gcd</span> renvoie le PGCD (plus grand commun diviseur) de deux 
 polynômes (ou d’une liste de polynômes ou d’une séquence de polynômes) 
-(voir <A HREF="cascmd_fr161.html#sec:igcd">6.7.2</A> pour le PGCD d’entiers), sans l’évaluer et
+(voir <a href="cascmd_fr161.html#sec%3Aigcd">6.7.2</a> pour le PGCD d’entiers), sans l’évaluer et
 cela permet de calculer le PGCD de deux polynômes à
-coefficients dans ℤ/<I>p</I>ℤ en utilisant la syntaxe Maple.<BR>
-<B>Attention</B> il faut être en mode Maple pour que cela soit efficace.<BR>
-On tape en mode <TT>Xcas</TT> :
-</P><DIV CLASS="center"><TT>Gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x)mod 5,(x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5x) mod 5)</TT></DIV><P>
+coefficients dans ℤ/<span style="font-style:italic">p</span>ℤ en utilisant la syntaxe Maple.<br>
+<span style="font-weight:bold">Attention</span> il faut être en mode Maple pour que cela soit efficace.<br>
+On tape en mode <span style="font-family:monospace">Xcas</span> :
+</p><div class="center"><span style="font-family:monospace">Gcd((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x)mod 5,(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5x) mod 5)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>gcd((1% 5)*x</TT><CODE><TT>^</TT></CODE><TT>2+(2% 5)*x,(1% 5)*x</TT><CODE><TT>^</TT></CODE><TT>2+(1% 5)*x)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">gcd((1% 5)*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(2% 5)*x,(1% 5)*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(1% 5)*x)</span></div><p> 
 puis on obtient :
-</P><DIV CLASS="center"><TT>(1% 5)*x</TT></DIV><P>
-Mais si on tape en mode <TT>Xcas</TT> :
-</P><DIV CLASS="center"><TT>Gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x),(x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5x)) mod 5</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">(1% 5)*x</span></div><p>
+Mais si on tape en mode <span style="font-family:monospace">Xcas</span> :
+</p><div class="center"><span style="font-family:monospace">Gcd((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x),(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5x)) mod 5</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(1% 5)*gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2++6*x+5x)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">(1% 5)*gcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2++6*x+5x)</span></div><p> 
 puis :
-</P><DIV CLASS="center"><TT>(1% 5)</TT></DIV><P>On tape en mode <TT>Maple</TT> :
-</P><DIV CLASS="center"><TT>Gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">(1% 5)</span></div><p>On tape en mode <span style="font-family:monospace">Maple</span> :
+</p><div class="center"><span style="font-family:monospace">Gcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2+x) mod 5</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">gcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x) mod 5</span></div><p> 
 On obtient :
-</P><DIV CLASS="center"><TT>x</TT></DIV><HR>
-<A HREF="cascmd_fr399.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr401.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">x</span></div>
+<hr>
+<a href="cascmd_fr399.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr401.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

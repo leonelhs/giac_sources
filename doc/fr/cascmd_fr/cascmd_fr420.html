@@ -1,52 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Construire un polynôme de n variables : genpoly</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr419.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr421.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc510">6.31.4</A>  Construire un polynôme de n variables : <TT>genpoly</TT></H3><P><A NAME="@default774"></A>
-<TT>genpoly</TT> a trois arguments : un polynôme <I>P</I> de <I>n</I>−1 variables, un entier <I>b</I> et le nom d’une variable <TT>var</TT>.<BR>
-<TT>genpoly</TT> renvoie le polynôme <I>Q</I> de <I>n</I> variables (celles de <I>P</I> et celle donnée dans l’argument), construit à partir de <I>P</I> pour avoir :<BR>
- <TT>subst(Q,var=b)=P</TT> et de plus
-les coefficients de <I>Q</I> sont dans l’intervalle ]−<I>b</I>/2  ;  <I>b</I>/2]<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Construire un polynôme de n variables : genpoly</title>
+</head>
+<body >
+<a href="cascmd_fr419.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr421.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec534" class="subsection">6.31.4  Construire un polynôme de n variables : <span style="font-family:monospace">genpoly</span></h3>
+<p><a id="hevea_default774"></a>
+<span style="font-family:monospace">genpoly</span> a trois arguments : un polynôme <span style="font-style:italic">P</span> de <span style="font-style:italic">n</span>−1 variables, un entier <span style="font-style:italic">b</span> et le nom d’une variable <span style="font-family:monospace">var</span>.<br>
+<span style="font-family:monospace">genpoly</span> renvoie le polynôme <span style="font-style:italic">Q</span> de <span style="font-style:italic">n</span> variables (celles de <span style="font-style:italic">P</span> et celle donnée dans l’argument), construit à partir de <span style="font-style:italic">P</span> pour avoir :<br>
+ <span style="font-family:monospace">subst(Q,var=b)=P</span> et de plus
+les coefficients de <span style="font-style:italic">Q</span> sont dans l’intervalle ]−<span style="font-style:italic">b</span>/2  ;  <span style="font-style:italic">b</span>/2]<br>
 On tape :
-</P><DIV CLASS="center"><TT>genpoly(61,6,x) </TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">genpoly(61,6,x) </span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2*x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1</TT></DIV><P>
-En effet, on a : 61=6<SUP>2</SUP>+4*6+1 mais les coefficients des puissances de 6 
+</p><div class="center"><span style="font-family:monospace">2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2*x+1</span></div><p>
+En effet, on a : 61=6<sup>2</sup>+4*6+1 mais les coefficients des puissances de 6 
 doivent être dans l’intervalle ]−3  ;  3] donc on écrit 
-61=2*6<SUP>2</SUP>−2*6+1<BR>
+61=2*6<sup>2</sup>−2*6+1<br>
 On tape :
-</P><DIV CLASS="center"><TT>genpoly(5,6,x) </TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">genpoly(5,6,x) </span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>x-1</TT></DIV><P>
-En effet : 5=6−1<BR>
+</p><div class="center"><span style="font-family:monospace">x-1</span></div><p>
+En effet : 5=6−1<br>
 On tape :
-</P><DIV CLASS="center"><TT>genpoly(7,6,x) </TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">genpoly(7,6,x) </span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>x+1</TT></DIV><P>
-En effet : 7=6+1<BR>
+</p><div class="center"><span style="font-family:monospace">x+1</span></div><p>
+En effet : 7=6+1<br>
 On tape :
-</P><DIV CLASS="center"><TT>genpoly(7*y+5,6,x) </TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">genpoly(7*y+5,6,x) </span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>x*y+x+y-1</TT></DIV><P>
-En effet : <I>x</I>*<I>y</I>+<I>x</I>+<I>y</I>−1=<I>y</I>(<I>x</I>+1)+(<I>x</I>−1)<BR>
+</p><div class="center"><span style="font-family:monospace">x*y+x+y-1</span></div><p>
+En effet : <span style="font-style:italic">x</span>*<span style="font-style:italic">y</span>+<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>−1=<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>+1)+(<span style="font-style:italic">x</span>−1)<br>
 On tape :
-</P><DIV CLASS="center"><TT>genpoly(7*y+5*z</TT><CODE><TT>^2</TT></CODE><TT>,6,x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">genpoly(7*y+5*z</span><code><span style="font-family:monospace">^2</span></code><span style="font-family:monospace">,6,x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>x*y+x*z+y-z</TT></DIV><P>
-En effet : <I>x</I>*<I>y</I>+<I>x</I>*<I>z</I>+<I>y</I>−<I>z</I>=<I>y</I>*(<I>x</I>+1)+<I>z</I>*(<I>x</I>−1)</P><HR>
-<A HREF="cascmd_fr419.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr421.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">x*y+x*z+y-z</span></div><p>
+En effet : <span style="font-style:italic">x</span>*<span style="font-style:italic">y</span>+<span style="font-style:italic">x</span>*<span style="font-style:italic">z</span>+<span style="font-style:italic">y</span>−<span style="font-style:italic">z</span>=<span style="font-style:italic">y</span>*(<span style="font-style:italic">x</span>+1)+<span style="font-style:italic">z</span>*(<span style="font-style:italic">x</span>−1)</p>
+<hr>
+<a href="cascmd_fr419.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr421.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

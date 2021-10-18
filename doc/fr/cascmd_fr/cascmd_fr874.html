@@ -1,45 +1,56 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Intercepter une erreur : try..catch</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr873.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr875.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1023">9.7.12</A>  Intercepter une erreur : <TT>try..catch</TT></H3><P><A NAME="@default1581"></A><A NAME="@default1582"></A>
-On fait le bloc d’instructions après <TT>try</TT> : en cas d’erreur 
-le message d’erreur est stocké dans la variable <TT>err</TT> sous forme d’une 
-chaine, et <TT>catch</TT> exécute le bloc d’instructions 
-après <TT>catch (err)</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Générer une erreur : throw error ERROR</title>
+</head>
+<body >
+<a href="cascmd_fr873.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr875.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1055" class="subsection">9.7.13  Générer une erreur : <span style="font-family:monospace">throw error ERROR</span></h3>
+<p><a id="hevea_default1580"></a><a id="hevea_default1581"></a><a id="hevea_default1582"></a>
+<span style="font-family:monospace">throw</span> ou <span style="font-family:monospace">error</span> ou <span style="font-family:monospace">ERROR</span> permet de générer une
+erreur en provoquant l’affichage d’une erreur.<br>
 On tape :
-</P><PRE CLASS="verbatim">try{A:=idn(2)*idn(3)} 
-catch(erreur) 
-{print("l'erreur est "+erreur)}
-</PRE><P>On obtient :
-</P><DIV CLASS="center"><TT>"l’erreur est * Invalid dimension"</TT></DIV><P>
-On tape :
-</P><PRE CLASS="verbatim">essai(x):={
-local y,err;
-try {y:=[[1,2]]+x;}
-catch (err){y:="l'erreur est "+err;} 
-return y;}
-</PRE><P>On tape :
-</P><DIV CLASS="center"><TT>essai([1])</TT></DIV><P>
+</p><pre class="verbatim">f(x):={
+if (type(x)!=DOM_INT)
+  throw(erreur);
+else
+  return x;
+} 
+</pre><p>
+puis
+</p><div class="center"><span style="font-family:monospace">f(1.2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>"l’erreur est + Bad Argument Value"</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>essai([[3,4]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">"erreur Error: Bad Argument Value"</span></div><p>
+puis
+</p><div class="center"><span style="font-family:monospace">f(12)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4,6]]</TT></DIV><HR>
-<A HREF="cascmd_fr873.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr875.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">12</span></div><p>
+On peut capter l’erreur grace à cette fonction <span style="font-family:monospace">f</span> que l’on utilise dans
+la fonction <span style="font-family:monospace">g</span> suivante :
+</p><pre class="verbatim">g(x):={
+try { f(x); } catch (err){ x:=0; }
+return x;
+} 
+</pre><p>
+puis
+</p><div class="center"><span style="font-family:monospace">g(1.2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+puis
+</p><div class="center"><span style="font-family:monospace">g(12)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">12</span></div><p>
+La fonction <span style="font-family:monospace">g(x)</span> renvoie, <span style="font-family:monospace">x</span> si <span style="font-family:monospace">x</span> est un entier,
+et <span style="font-family:monospace">0</span> sinon. </p>
+<hr>
+<a href="cascmd_fr873.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr875.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

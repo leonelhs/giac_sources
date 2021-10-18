@@ -1,38 +1,41 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour sortir d’une boucle : break</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr857.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr859.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1006">9.6.2</A>  Pour sortir d’une boucle : <TT>break</TT></H3><P><A NAME="@default1564"></A>
-<TT>break</TT> n’a pas d’argument ni parenthèse.<BR>
-<TT>break</TT> permet de sortir d’une boucle.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Pour ne pas faire la fin d’une boucle : continue</title>
+</head>
+<body >
+<a href="cascmd_fr857.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr859.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1038" class="subsection">9.6.3  Pour ne pas faire la fin d’une boucle : <span style="font-family:monospace">continue</span></h3>
+<p><a id="hevea_default1562"></a>
+<span style="font-family:monospace">continue</span> n’a pas d’argument ni parenthèse.<br>
+<span style="font-family:monospace">continue</span> dans une boucle, permet d’ignorer la fin de l’itération 
+et ainsi de passer directement à l’itération suivante.<br>
 On tape :
-</P><PRE CLASS="verbatim">testbreak(a,b):={
-local r;
-while (1==1){
-  if (b==0){break;} 
-  r:=irem(a,b);
-  a:=b;
-  b:=r;
+</p><pre class="verbatim">testcont(b):={
+local a;
+a:=10;
+while (a&gt;0) {
+a:=a-3; 
+if (a&gt;=b) {continue;} 
+print(a);
 }
-return a;
 }
-</PRE><P>puis on tape :
-</P><DIV CLASS="center"><TT>testbreak(4,0)</TT></DIV><P>
+</pre><p>
+puis on tape :
+</p><div class="center"><span style="font-family:monospace">testcont(4)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>4 car il y a eu l’interruption de la boucle while quand b==0</TT></DIV><HR>
-<A HREF="cascmd_fr857.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr859.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">a:1 et a:-2 écrit en bleu et 1 comme réponse</span></div><p>
+car <span style="font-family:monospace">a</span> est imprimé que si <span style="font-family:monospace">a&lt;b=4</span>
+</p>
+<hr>
+<a href="cascmd_fr857.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr859.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

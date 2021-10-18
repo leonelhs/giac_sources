@@ -1,45 +1,38 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction testant les sous-type du type DOM_LIST : subtype</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr828.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr830.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc975">9.4.5</A>  Fonction testant les sous-type du type DOM_LIST : <TT>subtype</TT></H3><P><A NAME="@default1491"></A>
-<TT>subtype</TT> est une fonction qui a un argument et qui renvoie :<BR>
-1 si cet argument est une séquence, et 0 sinon.<BR>
-2 si cet argument est un ensemble,<BR>
-10 si cet argument estun polynôme et<BR>
-0 sinon.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonction testant le type de son argument: getType</title>
+</head>
+<body >
+<a href="cascmd_fr828.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr830.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1007" class="subsection">9.4.6  Fonction testant le type de son argument: <span style="font-family:monospace">getType</span></h3>
+<p><a id="hevea_default1489"></a><a id="hevea_default1490"></a><a id="hevea_default1491"></a><a id="hevea_default1492"></a><a id="hevea_default1493"></a><a id="hevea_default1494"></a><a id="hevea_default1495"></a>
+<span style="font-family:monospace">getType</span> est une fonction qui a un argument et qui renvoie le
+type de cet argument par exemple :<br>
+ <span style="font-family:monospace">STR,EXPR,VAR,NONE,PIC,LIST,MAT,FUNC,NUM...</span>.<br>
+<span style="font-family:monospace">getType</span> ne renvoie pas la même chose que <span style="font-family:monospace">type</span>, c’est pour des 
+raisons de compatibilité.<br>
 On tape :
-</P><DIV CLASS="center"><TT>type(3,1,4)</TT></DIV><DIV CLASS="center"><TT>type(set[3,1,4])</TT></DIV><DIV CLASS="center"><TT>type(poly1[3,1,4])</TT></DIV><DIV CLASS="center"><TT>type([3,1,4])</TT></DIV><P>
-On obtient :</P><DIV CLASS="center"><TT>DOM_LIST</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>subtype(3,1,4)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">getType(3.14)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">NUM</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>subtype(set[3,1,4])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">getType(x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">VAR</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>subtype(poly1[3,1,4])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">getType(x+2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>10</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>subtype([3,1,4])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
-<A HREF="cascmd_fr828.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr830.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">EXPR</span></div>
+<hr>
+<a href="cascmd_fr828.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr830.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

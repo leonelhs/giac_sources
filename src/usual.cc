@@ -286,7 +286,7 @@ namespace giac {
 
   static string printasnot(const gen & g,const char * s,GIAC_CONTEXT){
     if (abs_calc_mode(contextptr)==38){
-      if (g.is_symb_of_sommet(at_and) ||g.is_symb_of_sommet(at_ou))
+      if (is_inequation(g) || g.is_symb_of_sommet(at_and) ||g.is_symb_of_sommet(at_ou))
 	return "NOT("+g.print(contextptr)+")";
       else
 	return "NOT "+g.print(contextptr);
@@ -1485,41 +1485,46 @@ namespace giac {
       return symbolic(at_program,gen(makevecteur(a,0,cos(b,contextptr)),_SEQ__VECT));
     bool doit=false,est_multiple;
     if (angle_radian(contextptr)){
-      if (simplify_sincosexp_pi && contains(e,cst_pi) && is_linear_wrt(e,cst_pi,a,b,contextptr) && !is_zero(a)){
-	if (b==0 && a.type==_FRAC && a._FRACptr->den==10 && a._FRACptr->num.type==_INT_)
-	  return sin(cst_pi/2-e,contextptr);
-	if (b==0 && a.type==_FRAC && a._FRACptr->den==5 && a._FRACptr->num.type==_INT_){
-	  int n=a._FRACptr->num.val % 10;
-	  if (n<0)
-	    n += 10;
-	  if (n>=5)
-	    n=10-n;
-	  gen sqrt5=sqrt(5,contextptr);
-	  gen cospi5=(sqrt5+1)/4;
-	  gen cos2pi5=(sqrt5-1)/4;
-	  if (n==1) return cospi5;
-	  if (n==2) return cos2pi5;
-	  if (n==3) return -cos2pi5;
-	  if (n==4) return -cospi5;
-	}
-	if (b==0 && a.type==_FRAC && a._FRACptr->den==8 && a._FRACptr->num.type==_INT_){
-	  int n=a._FRACptr->num.val % 16;
-	  if (n<0)
-	    n += 16;
-	  if (n>=8)
-	    n=16-n;
-	  if (n==1 || n==7){
-	    gen cospi8=sqrt(2+plus_sqrt2,contextptr)/2;
-	    if (n==1) return cospi8;
-	    if (n==7) return -cospi8;
+      if (simplify_sincosexp_pi && contains(e,cst_pi) && is_linear_wrt(e,cst_pi,a,b,contextptr)){
+	if (is_zero(a)){
+	  if (is_zero(b)) 
+	    return 1;
+	} else {
+	  if (b==0 && a.type==_FRAC && a._FRACptr->den==10 && a._FRACptr->num.type==_INT_)
+	    return sin(cst_pi/2-e,contextptr);
+	  if (b==0 && a.type==_FRAC && a._FRACptr->den==5 && a._FRACptr->num.type==_INT_){
+	    int n=a._FRACptr->num.val % 10;
+	    if (n<0)
+	      n += 10;
+	    if (n>=5)
+	      n=10-n;
+	    gen sqrt5=sqrt(5,contextptr);
+	    gen cospi5=(sqrt5+1)/4;
+	    gen cos2pi5=(sqrt5-1)/4;
+	    if (n==1) return cospi5;
+	    if (n==2) return cos2pi5;
+	    if (n==3) return -cos2pi5;
+	    if (n==4) return -cospi5;
 	  }
-	  gen cos3pi8=sqrt(2-plus_sqrt2,contextptr)/2;
-	  if (n==3) return cos3pi8;
-	  if (n==5) return -cos3pi8;
+	  if (b==0 && a.type==_FRAC && a._FRACptr->den==8 && a._FRACptr->num.type==_INT_){
+	    int n=a._FRACptr->num.val % 16;
+	    if (n<0)
+	      n += 16;
+	    if (n>=8)
+	      n=16-n;
+	    if (n==1 || n==7){
+	      gen cospi8=sqrt(2+plus_sqrt2,contextptr)/2;
+	      if (n==1) return cospi8;
+	      if (n==7) return -cospi8;
+	    }
+	    gen cos3pi8=sqrt(2-plus_sqrt2,contextptr)/2;
+	    if (n==3) return cos3pi8;
+	    if (n==5) return -cos3pi8;
+	  }
+	  est_multiple=is_multiple_of_12(a*gen(trig_deno/2),k);
+	  doit=true;
 	}
-	est_multiple=is_multiple_of_12(a*gen(trig_deno/2),k);
-	doit=true;
-      }
+      } // if (simplify_sincosexp...)
     }
     else {
       est_multiple=is_multiple_of_pi_over_12(e,k,contextptr);
@@ -1722,35 +1727,40 @@ namespace giac {
       return symbolic(at_program,gen(makevecteur(a,0,sin(b,contextptr)),_SEQ__VECT));
     bool doit=false,est_multiple;
     if (angle_radian(contextptr)){
-      if (simplify_sincosexp_pi && contains(e,cst_pi) && is_linear_wrt(e,cst_pi,a,b,contextptr) && !is_zero(a)){
-	if (b==0 && a.type==_FRAC && a._FRACptr->den==10 && a._FRACptr->num.type==_INT_)
-	  return cos(cst_pi/2-e,contextptr);
-	if (b==0 && a.type==_FRAC && a._FRACptr->den==5 && a._FRACptr->num.type==_INT_){
-	  int n=a._FRACptr->num.val % 10;
-	  if (n<0)
-	    n+=10;
-	  gen sqrt5=sqrt(5,contextptr);
-	  gen sinpi5=sqrt(-2*sqrt5+10,contextptr)/4;
-	  gen sin2pi5=sqrt(2*sqrt5+10,contextptr)/4;
-	  if (n==1 || n==4) return sinpi5;
-	  if (n==2 || n==3) return sin2pi5;
-	  if (n==6 || n==9) return -sinpi5;
-	  if (n==7 || n==8) return -sin2pi5;
-	}
-	if (b==0 && a.type==_FRAC && a._FRACptr->den==8 && a._FRACptr->num.type==_INT_){
-	  int n=a._FRACptr->num.val % 16;
-	  if (n<0)
+      if (simplify_sincosexp_pi && contains(e,cst_pi) && is_linear_wrt(e,cst_pi,a,b,contextptr)){
+	if (is_zero(a)){
+	  if (is_zero(b)) 
+	    return 0;
+	} else {
+	  if (b==0 && a.type==_FRAC && a._FRACptr->den==10 && a._FRACptr->num.type==_INT_)
+	    return cos(cst_pi/2-e,contextptr);
+	  if (b==0 && a.type==_FRAC && a._FRACptr->den==5 && a._FRACptr->num.type==_INT_){
+	    int n=a._FRACptr->num.val % 10;
+	    if (n<0)
+	      n+=10;
+	    gen sqrt5=sqrt(5,contextptr);
+	    gen sinpi5=sqrt(-2*sqrt5+10,contextptr)/4;
+	    gen sin2pi5=sqrt(2*sqrt5+10,contextptr)/4;
+	    if (n==1 || n==4) return sinpi5;
+	    if (n==2 || n==3) return sin2pi5;
+	    if (n==6 || n==9) return -sinpi5;
+	    if (n==7 || n==8) return -sin2pi5;
+	  }
+	  if (b==0 && a.type==_FRAC && a._FRACptr->den==8 && a._FRACptr->num.type==_INT_){
+	    int n=a._FRACptr->num.val % 16;
+	    if (n<0)
 	    n+=16;
-	  gen sinpi8=sqrt(2-plus_sqrt2,contextptr)/2;
-	  gen sin3pi8=sqrt(2+plus_sqrt2,contextptr)/2;
-	  if (n==1 || n==7) return sinpi8;
-	  if (n==3 || n==5) return sin3pi8;
-	  if (n==9 || n==15) return -sinpi8;
-	  if (n==11 || n==13) return -sin3pi8;
-	}
-	est_multiple=is_multiple_of_12(a*gen(trig_deno/2),k);
-	doit=true;
-      }
+	    gen sinpi8=sqrt(2-plus_sqrt2,contextptr)/2;
+	    gen sin3pi8=sqrt(2+plus_sqrt2,contextptr)/2;
+	    if (n==1 || n==7) return sinpi8;
+	    if (n==3 || n==5) return sin3pi8;
+	    if (n==9 || n==15) return -sinpi8;
+	    if (n==11 || n==13) return -sin3pi8;
+	  }
+	  est_multiple=is_multiple_of_12(a*gen(trig_deno/2),k);
+	  doit=true;
+	} 
+      } // if (simplify_sincospexp...)
     }
     else {
       est_multiple=is_multiple_of_pi_over_12(e,k,contextptr);
@@ -3598,6 +3608,7 @@ namespace giac {
       if (valeur.type==_STRNG){
 	if (indice.type!=_INT_ || a.type!=_STRNG || a._STRNGptr->empty())
 	  return gensizeerr(contextptr);
+	if (indice.val<0) indice+=(int) valeur._STRNGptr->size();
 	if (indice.val<0 || indice.val>=(int) valeur._STRNGptr->size())
 	  return gendimerr(contextptr);
 	if (in_place){
@@ -3734,10 +3745,14 @@ namespace giac {
 	v=*valeur._VECTptr;
 	vptr=&v;
       }
-      if (indice.is_symb_of_sommet(*at_interval)&& indice._SYMBptr->feuille.type==_VECT && indice._SYMBptr->feuille._VECTptr->size()==2){
+      if ( (indice.is_symb_of_sommet(*at_interval) || indice.is_symb_of_sommet(*at_deuxpoints))&& indice._SYMBptr->feuille.type==_VECT && indice._SYMBptr->feuille._VECTptr->size()==2){
 	gen deb=indice._SYMBptr->feuille._VECTptr->front();
 	gen fin=indice._SYMBptr->feuille._VECTptr->back();
-	if (!is_integral(deb) || !is_integral(fin) || deb.type!=_INT_ || fin.type!=_INT_ || deb.val<0 || fin.val<0 || deb.val>fin.val)
+	if (!is_integral(deb) || !is_integral(fin) || deb.type!=_INT_ || fin.type!=_INT_ )
+	  return gendimerr();
+	if (deb.val<0) deb.val+=int(vptr->size());
+	if (fin.val<0) fin.val+=int(vptr->size());
+	if (deb.val<0 || fin.val<0 || deb.val>fin.val)
 	  return gendimerr();
 	if (a.type==_VECT && a._VECTptr->size()!=fin.val-deb.val+1)
 	  return gendimerr(contextptr);
@@ -3758,6 +3773,8 @@ namespace giac {
 	return sto(gen(v,valeur.subtype),destination,in_place,contextptr);
       }
       if (indice.type!=_VECT){
+	if (indice.type==_INT_ && indice.val<0)
+	  indice += int(vptr->size());
 	if (indice.type!=_INT_ || indice.val<0 )
 	  return gentypeerr(gettext("Bad index ")+indice.print(contextptr));
 	// check size
@@ -3776,10 +3793,14 @@ namespace giac {
       iterateur it=indice._VECTptr->begin(),itend=indice._VECTptr->end();
       if (itend-it==2){
 	gen i2=*(it+1);
-	if (it->is_symb_of_sommet(*at_interval)&& it->_SYMBptr->feuille.type==_VECT && it->_SYMBptr->feuille._VECTptr->size()==2){
+	if ( (it->is_symb_of_sommet(*at_interval) ||it->is_symb_of_sommet(*at_deuxpoints) ) && it->_SYMBptr->feuille.type==_VECT && it->_SYMBptr->feuille._VECTptr->size()==2){
 	  gen deb=it->_SYMBptr->feuille._VECTptr->front();
 	  gen fin=it->_SYMBptr->feuille._VECTptr->back();
-	  if (!is_integral(deb) || !is_integral(fin) || deb.type!=_INT_ || fin.type!=_INT_ || deb.val<0 || fin.val<0 || deb.val>fin.val)
+	  if (!is_integral(deb) || !is_integral(fin) || deb.type!=_INT_ || fin.type!=_INT_ )
+	    return gendimerr(contextptr);
+	  if (deb.val<0) deb.val+=int(vptr->size());
+	  if (fin.val<0) fin.val+=int(vptr->size());
+	  if (deb.val<0 || fin.val<0 || deb.val>fin.val)
 	    return gendimerr(contextptr);
 	  if (a.type==_VECT && a._VECTptr->size()!=fin.val-deb.val+1)
 	    return gendimerr(contextptr);
@@ -3795,10 +3816,14 @@ namespace giac {
 	    for (int i=deb.val;i<=fin.val;++i)
 	      (*vptr)[i]=*(*vptr)[i]._VECTptr;
 	  }
-	  if (i2.is_symb_of_sommet(*at_interval) && i2._SYMBptr->feuille.type==_VECT && i2._SYMBptr->feuille._VECTptr->size()==2){
+	  if ( (i2.is_symb_of_sommet(*at_interval) || i2.is_symb_of_sommet(*at_deuxpoints)) && i2._SYMBptr->feuille.type==_VECT && i2._SYMBptr->feuille._VECTptr->size()==2){
 	    gen deb2=i2._SYMBptr->feuille._VECTptr->front();
 	    gen fin2=i2._SYMBptr->feuille._VECTptr->back();
-	    if (!is_integral(deb2) || !is_integral(fin2) || deb2.type!=_INT_ || fin2.type!=_INT_ || deb2.val<0 || fin2.val<0 || fin2.val>=cols )
+	    if (!is_integral(deb2) || !is_integral(fin2) || deb2.type!=_INT_ || fin2.type!=_INT_) 
+	      return gendimerr(contextptr);
+	    if (deb2.val<0) deb2.val+=cols;
+	    if (fin2.val<0) fin2.val+=cols;
+	    if (deb2.val<0 || fin2.val<0 || fin2.val>=cols )
 	      return gendimerr(contextptr);
 	    if (ckmatrix(a)){
 	      if (fin2.val-deb2.val+1!=a._VECTptr->front()._VECTptr->size())
@@ -3829,6 +3854,7 @@ namespace giac {
 	    }
 	  }
 	  else {
+	    if (i2.type==_INT_ && i2.val<0) i2.val += cols;
 	    if (i2.type!=_INT_ || i2.val<0 || i2.val>=cols)
 	      return gendimerr(contextptr);
 	    if (a.type==_VECT){
@@ -3844,17 +3870,22 @@ namespace giac {
 	    return valeur; // string2gen("Done",false);
 	  return sto(gen(v,valeur.subtype),destination,in_place,contextptr);
 	} // end first value interval
+	if (it->type==_INT_ && it->val<0) it->val += vptr->size();
 	if (it->type!=_INT_ || it->val<0)
 	  return gentypeerr(gettext("Bad index ")+indice.print(contextptr));
 	int i1=it->val;
-	if (i2.is_symb_of_sommet(*at_interval) && i2._SYMBptr->feuille.type==_VECT && i2._SYMBptr->feuille._VECTptr->size()==2){
+	if ( (i2.is_symb_of_sommet(*at_interval) || i2.is_symb_of_sommet(*at_deuxpoints)) && i2._SYMBptr->feuille.type==_VECT && i2._SYMBptr->feuille._VECTptr->size()==2){
 	  if (!ckmatrix(*vptr))
 	    return gendimerr(contextptr);
 	  if (!in_place)
 	    (*vptr)[i1]=*(*vptr)[i1]._VECTptr;
 	  gen deb2=i2._SYMBptr->feuille._VECTptr->front();
 	  gen fin2=i2._SYMBptr->feuille._VECTptr->back();
-	  if (!is_integral(deb2) || !is_integral(fin2) || deb2.type!=_INT_ || fin2.type!=_INT_ || deb2.val<0 || fin2.val <deb2.val || fin2.val>=vptr->front()._VECTptr->size())
+	  if (!is_integral(deb2) || !is_integral(fin2) || deb2.type!=_INT_ || fin2.type!=_INT_ )
+	    return gendimerr(contextptr);
+	  if (deb2.val<0) deb2.val += int(vptr->front()._VECTptr->size());
+	  if (fin2.val<0) fin2.val += int(vptr->front()._VECTptr->size());
+	  if (deb2.val<0 || fin2.val <deb2.val || fin2.val>=int(vptr->front()._VECTptr->size()))
 	    return gendimerr(contextptr);
 	  if (a.type==_VECT){
 	    for (int i=deb2.val;i<=fin2.val;++i)
@@ -3876,11 +3907,13 @@ namespace giac {
 	  empile.push_back(v);
 	gen tmp;
 	if (in_place){
-	  if ( it->val<0 || it->val>= (int)(vptr->size()) )
+	  if (it->val<0) it->val += (int)(vptr->size());
+	  if (it->val<0 || it->val>= (int)(vptr->size()) )
 	    return gendimerr(contextptr);
 	  tmp=(*vptr)[it->val];
 	}
 	else {
+	  if (it->val<0) it->val += (int)(v.size());
 	  if ( it->val<0 || it->val>= (int)(v.size()) )
 	    return gendimerr(contextptr);
 	  tmp=v[it->val];	  
@@ -4053,7 +4086,7 @@ namespace giac {
     if ( a.type==_STRNG && a.subtype==-1) return  a;
     if (a.type!=_VECT)
       return increment(a,1,false,false,contextptr);
-    if (a.type!=_VECT || a._VECTptr->size()!=2)
+    if (a._VECTptr->size()!=2)
       return gentypeerr(contextptr);
     return increment(a._VECTptr->front(),a._VECTptr->back(),false,false,contextptr);
   }
@@ -4426,7 +4459,9 @@ namespace giac {
 	  return chkmod(zero,a);
 	if (a.is_symb_of_sommet(at_neg) && b==a._SYMBptr->feuille)
 	  return chkmod(zero,b);
-	if (!b.is_symb_of_sommet(at_program))
+	if (!b.is_symb_of_sommet(at_program) 
+	    && !b.is_symb_of_sommet(at_plus)
+	    )
 	  return new_ref_symbolic(symbolic(at_plus,args));
       }
       if (idnt_symb_int(a) && plus_idnt_symb(b)){
@@ -4434,7 +4469,9 @@ namespace giac {
 	  return chkmod(zero,a);
 	if (a.is_symb_of_sommet(at_neg) && b==a._SYMBptr->feuille)
 	  return chkmod(zero,b);
-	if (!a.is_symb_of_sommet(at_program))
+	if (!a.is_symb_of_sommet(at_program) 
+	    && !a.is_symb_of_sommet(at_plus)
+	    )
 	  return new_ref_symbolic(symbolic(at_plus,args));
       }
       return operator_plus(a,b,contextptr);
@@ -4615,7 +4652,7 @@ namespace giac {
   }
   gen _pow(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
-    if (args.type!=_VECT)
+    if (args.type!=_VECT || is_undef(args))
       return args;
     vecteur & v = *args._VECTptr;
     if (v.size()!=2)
@@ -4839,7 +4876,11 @@ namespace giac {
     if (args.type!=_VECT)
       return symb_inferieur_strict(args);
     gen res=inferieur_strict(args._VECTptr->front(),args._VECTptr->back(),contextptr);
-    if (res.type==_INT_ && abs_calc_mode(contextptr)!=38)
+    if (res.type==_INT_ 
+#ifdef GIAC_HAS_STO_38
+	&& abs_calc_mode(contextptr)!=38
+#endif
+	)
       res.subtype=_INT_BOOLEAN;
     return res;
   }
@@ -5300,7 +5341,7 @@ namespace giac {
   }
   gen _and(const gen & arg,GIAC_CONTEXT){
     if ( arg.type==_STRNG && arg.subtype==-1) return  arg;
-    if (arg.type==_VECT && arg.subtype==_SEQ__VECT && arg._VECTptr->size()==2)
+    if (arg.type==_VECT && arg.subtype==_SEQ__VECT && arg._VECTptr->size()==2 && arg._VECTptr->front().type==_VECT)
       return apply(equaltosame(arg._VECTptr->front()).eval(eval_level(contextptr),contextptr),equaltosame(arg._VECTptr->back()).eval(eval_level(contextptr),contextptr),and2);
     gen args=apply(arg,equaltosame);
     if (args.type!=_VECT || args._VECTptr->empty())
@@ -5340,7 +5381,7 @@ namespace giac {
   }
   gen _ou(const gen & arg,GIAC_CONTEXT){
     if ( arg.type==_STRNG && arg.subtype==-1) return  arg;
-    if (arg.type==_VECT && arg.subtype==_SEQ__VECT && arg._VECTptr->size()==2)
+    if (arg.type==_VECT && arg.subtype==_SEQ__VECT && arg._VECTptr->size()==2 && arg._VECTptr->front().type==_VECT)
       return apply(equaltosame(arg._VECTptr->front()).eval(eval_level(contextptr),contextptr),equaltosame(arg._VECTptr->back()).eval(eval_level(contextptr),contextptr),ou2);
     gen args=apply(arg,equaltosame);
     if (args.type!=_VECT || args._VECTptr->empty())
@@ -8056,7 +8097,7 @@ namespace giac {
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if (g.type!=_VECT || g._VECTptr->size()!=2)
       return gensizeerr(contextptr);
-    gen & f =g._VECTptr->front();
+    gen f =g._VECTptr->front();
     if (is_equal(f))
       return symb_equal(_normalmod(makevecteur(f._SYMBptr->feuille[0],g._VECTptr->back()),contextptr),
 			_normalmod(makevecteur(f._SYMBptr->feuille[1],g._VECTptr->back()),contextptr));
@@ -8066,7 +8107,29 @@ namespace giac {
 	v[i]=_normalmod(makevecteur(v[i],g._VECTptr->back()),contextptr);
       return gen(v,f.subtype);
     }
-    gen res=normal(makemodquoted(f,g._VECTptr->back()),contextptr);
+    gen b=g._VECTptr->back();
+    static bool warnmod=true;
+    if (f.type==_MOD){
+      if (warnmod){
+	*logptr(contextptr) << "// Warning: a % b returns the class of a in Z/bZ. Use irem(a,b) for remainder" << endl;
+	warnmod=false;
+      }
+      f=*f._MODptr;
+      if (b.type==_MOD)
+	b=*b._MODptr;
+      if (b==0) return f;
+      return _irem(makesequence(f,b),contextptr);
+    }
+    if (b.type==_MOD){
+      if (warnmod){
+	*logptr(contextptr) << "// Warning: a % b returns the class of a in Z/bZ. Use irem(a,b) for remainder" << endl;
+	warnmod=false;
+      }
+      b=*b._MODptr;
+      if (b==0) return f;
+      return _irem(makesequence(f,b),contextptr);
+    }
+    gen res=normal(makemodquoted(f,b),contextptr);
     if (f.type==_VECT && res.type==_VECT)
       res.subtype=f.subtype;
     return res;
@@ -9112,11 +9175,12 @@ namespace giac {
       vecteur v;
       gen pi(1);
       for (int i=0;i<=ordre;){
-	v.push_back(plus_one/pi);
+	v.push_back(plus_one/pi/(i+shift_coeff));
 	v.push_back(0);
 	i += 2;
 	pi = -(i*(i+1))*pi;
       }
+      v.push_back(undef);
       return v;
     }
     if (!is_inf(lim_point))
@@ -9866,14 +9930,14 @@ namespace giac {
   const gen & grad2rad_g=grad2rad_g_;
 #else
     // Warning this does not work on ia64 with -O2
-  const define_alias_gen(alias_rad2deg_g,_DOUBLE_, (*(longlong *)&rad2deg_d) >> 8,(*(longlong *)&rad2deg_d)>>16);
+  const define_alias_gen(alias_rad2deg_g,_DOUBLE_, (*(ulonglong *)&rad2deg_d) >> 8,(*(ulonglong *)&rad2deg_d)>>16);
   const gen & rad2deg_g = *(const gen*) & alias_rad2deg_g;
-  const define_alias_gen(alias_deg2rad_g,_DOUBLE_, (*(longlong *)&deg2rad_d) >> 8,(*(longlong *)&deg2rad_d)>>16);
+  const define_alias_gen(alias_deg2rad_g,_DOUBLE_, (*(ulonglong *)&deg2rad_d) >> 8,(*(ulonglong *)&deg2rad_d)>>16);
   const gen & deg2rad_g = *(const gen*) & alias_deg2rad_g;
   //grad
-  const define_alias_gen(alias_rad2grad_g,_DOUBLE_, (*(longlong *)&rad2grad_d) >> 8,(*(longlong *)&rad2grad_d)>>16);
+  const define_alias_gen(alias_rad2grad_g,_DOUBLE_, (*(ulonglong *)&rad2grad_d) >> 8,(*(ulonglong *)&rad2grad_d)>>16);
   const gen & rad2grad_g = *(const gen*) & alias_rad2grad_g;
-  const define_alias_gen(alias_grad2rad_g, _DOUBLE_, (*(longlong *)&grad2rad_d) >> 8, (*(longlong *)&grad2rad_d) >> 16);
+  const define_alias_gen(alias_grad2rad_g, _DOUBLE_, (*(ulonglong *)&grad2rad_d) >> 8, (*(ulonglong *)&grad2rad_d) >> 16);
   const gen & grad2rad_g = *(const gen*)& alias_grad2rad_g;
 #endif
 

@@ -1,141 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les instructions copy et =< dans un programme </TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr838.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr840.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc985">9.4.15</A>  Les instructions <TT>copy</TT> et <TT>=&lt;</TT> dans un programme </H3><P><A NAME="@default1514"></A><A NAME="@default1515"></A><A NAME="sec:copie"></A>
-<TT>=&lt;</TT> est surtout utile quand on fait beaucoup de 
-modifications dans une liste ou matrice
-de grande taille, par exemple dans un programme.
-Mais attention, il faudra utiliser <TT>copy</TT> lors de 
-l’initialisation des variables listes ou matrices qui seront modifiées avec 
-<TT>=&lt;</TT> pour que les modifications se fassent sur la copie.<BR>
-Voir aussi <A HREF="cascmd_fr066.html#sec:progref">2.5.3</A> et <A HREF="cascmd_fr838.html#sec:diffaffectation">9.4.14</A>.<BR>
-<B>Attention</B><BR>
-Dans un programme si on met :
-</P><PRE CLASS="verbatim">local a;
-a:=[0,1,2,3,4];
-...
-a[3] =&lt; 33;
-</PRE><P>Cela modifie le programme lui-même et la ligne 
-<TT>a:=[0,1,2,3,4];</TT> est remplacée par <TT>a:=[0,1,2,33,4];</TT> dans
-le programme compilé.<BR>
-Donc dans un programme il faut écrire :
-</P><PRE CLASS="verbatim">local a;
-a:=copy([0,1,2,3,4]);
-...
-a[3] =&lt; 33;
-</PRE><P>ou
-</P><PRE CLASS="verbatim">local a,c;
-c:=[0,1,2,3,4];
-a:=copy(c);
-...
-a[3] =&lt; 33;
-</PRE><P>pour que ce soit la copie de <TT>[0,1,2,3,4]</TT> qui soit modifiée et non 
-la liste <TT>[0,1,2,3,4]</TT> elle-même.</P><P><B>Remarque</B><BR>
-On peut aussi utiliser les commandes <TT>makelist</TT>, <TT>seq</TT> ou <TT>$</TT>,
-par exemple :<BR>
-<TT>a:=makelist(n,n,0,4);</TT>
-ou<BR>
-<TT>a:=[n$(n=0..4)]</TT>;
-puis<BR>
-<TT>a[3] =&lt; 33;</TT>
-car <TT>makelist(n,n,0,4)</TT> ou <TT>[n$(n=0..4)]</TT> est une liste qui va
-se créer à chaque exécution du programme.</P><P><B>Exemple</B><BR>
-On veut écrire un programme qui renvoie les nombres entiers inférieurs ou 
-égaux à <I>n</I> et dont la somme des chiffres (en base 10) vaut 5.
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>L’affectation prefixée : sto Store</title>
+</head>
+<body >
+<a href="cascmd_fr838.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr840.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1017" class="subsection">9.4.16  L’affectation prefixée : <span style="font-family:monospace">sto Store</span></h3>
+<p><a id="hevea_default1513"></a><a id="hevea_default1514"></a>
+<span style="font-family:monospace">sto</span> (ou <span style="font-family:monospace">Store</span>) permet de stocker une valeur dans une 
+variable.<br>
+<span style="font-family:monospace">sto</span> (ou <span style="font-family:monospace">Store</span>) a deux arguments, la valeur à stocker et un nom de variable.<br>
+<span style="font-weight:bold">Attention</span><br>
+La variable doit être purgée avant l’utilisation de <span style="font-family:monospace">sto</span> 
+(ou <span style="font-family:monospace">Store</span>).<br>
 On tape :
-</P><PRE CLASS="verbatim">somme5(n):={
-local L,j,k;
-L:=seq(0,0);
-k:=0;
-for(j:=0;j&lt;=n;j++){
-if (sum(convert(j,base,10))==5){
-L[k]=&lt;j;
-k:=k+1;
-}
-}
-return L;
-}:;
-</PRE><P>On tape :
-</P><DIV CLASS="center"><TT>somme5(50)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sto(3,a)</span></div><p>
+ou :
+</p><div class="center"><span style="font-family:monospace">Store(3,a)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>5,14,23,32,41,50</TT></DIV><P>Dans cet exemple, il faut bien comprendre et faire l’initialisation de <TT>L</TT> 
-correctement.<BR>
-Dans ce programme, on a choisit d’avoir le résultat sous la forme d’une 
-séquence, et on a initialisé <TT>L</TT> avec <TT>L:=seq(0,0)</TT>.
-Si on avait mis <TT>L:=NULL</TT>, le programme n’aurait pas fonctionné
-correctement ! En effet, si on tape :
-</P><PRE CLASS="verbatim">fauxsom5(n):={
-local L,j,k;
-L:=NULL;
-k:=0;
-for(j:=0;j&lt;=n;j++){
-if (sum(convert(j,base,10))==5){
-L[k]=&lt;j;
-k:=k+1;
-}
-}
-return L;
-}:;
-</PRE><P>puis :
-</P><DIV CLASS="center"><TT>fauxsom5(30)</TT></DIV><P>
-on obtient :
-</P><DIV CLASS="center"><TT>5,14,23,32,41,50</TT></DIV><P>
-Cela semble juste..... 
-Mais, lors de l’exécution de <TT>fauxsom5(50)</TT>, au départ <TT>L</TT> pointe 
-sur la séquence <TT>NULL</TT>, puis cette séquence <TT>NULL</TT> est modifiée 
-et devient à la fin du programme <TT>5,14,23,32,41,50</TT> et le programme, si 
-on ne le recompile pas, a lui aussi été modifié est est devenu 
-</P><PRE CLASS="verbatim">fauxsom5(n):={
-local L,j,k;
-L:=5,14,23,32,41,50;
-k:=0;
-for(j:=0;j&lt;=n;j++){
-if (sum(convert(j,base,10))==5){
-L[k]=&lt;j;
-k:=k+1;
-}
-}
-return L;
-}:;
-</PRE><P>Si on tape maintenant :
-</P><DIV CLASS="center"><TT>fauxsom5(30)</TT></DIV><P>
-On obtient une séquence trop longue :
-</P><DIV CLASS="center"><TT>5,14,23,32,41,50</TT></DIV><P>
-alors que si on tape :
-</P><DIV CLASS="center"><TT>somme5(30)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">3 et la variable a contient 3</span></div><p>
+<span style="font-weight:bold">Remarque</span><br>
+On peut faire plusieurs affectations à la fois en utilisant les séquences 
+ou les listes.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">sto([1,2,3],[a1,a2,a3])</span></div><p>
+ou :
+</p><div class="center"><span style="font-family:monospace">Store([1,2,3],[a1,a2,a3])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>5,14,23</TT></DIV><P>
-<B>Régle</B><BR>
-Dans un programme, si on veut utiliser <TT>=&lt;</TT>
-pour modifier une liste <TT>L</TT> ou une séquence <TT>LL</TT>, il faut
-faire attention à l’initialisation.<BR>
-Par exemple, pour initialiser 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>L</TT> à la liste vide, on tape :<BR>
-<TT>L:=[seq(0,0)]</TT> ou <TT>L:=[0$0]</TT> ou <TT>L:=copy([])</TT> car 
-<TT>[seq(0,0)]</TT> ou <TT>[0$0]</TT> 
-désigne une liste qui va se créer à chaque exécution du programme.
-</LI><LI CLASS="li-itemize"><TT>LL</TT> à la séquence <TT>NULL</TT>, on tape :<BR>
-<TT>LL:=seq(0,0)]</TT> ou <TT>LL:=0$0</TT> ou <TT>LL:=copy(NULL)</TT> car 
-<TT>seq(0,0)</TT> ou <TT>0$0</TT> désigne une séquence qui va se créer à 
-chaque exécution du programme.
-</LI></UL><P>
-Il faut donc utiliser <TT>=&lt;</TT> avec précautions car tous les objets pointant 
-sur cette matrice seront modifiés. </P><HR>
-<A HREF="cascmd_fr838.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr840.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[1,2,3] et a1 contient 1, a2 contient 2, a3 contient 3</span></div>
+<hr>
+<a href="cascmd_fr838.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr840.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

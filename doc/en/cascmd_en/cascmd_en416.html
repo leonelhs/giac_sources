@@ -1,40 +1,48 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Smith normal form : ismith</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en415.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en417.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc464">2.46.13</A>  Smith normal form : <TT>ismith</TT></H3><P><A NAME="@default696"></A>
-<TT>ismith</TT> takes as argument a matrix with coefficients in
-&#X2124;.<BR>
-<TT>ismith</TT> returns three matrices <TT>U,B</TT> and <TT>V</TT> such 
-that <TT>B=U*A*V</TT>, <TT>U</TT> and <TT>V</TT> are invertible in &#X2124;, 
-<TT>B</TT> is diagonal, and <TT>B[i,i]</TT> divides <TT>B[i+1,i+1]</TT>.
-The coefficients <TT>B[i,i]</TT> are called 
-invariant factors, they are used to describe
-the structure of finite abelian groups.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Characteristic polynomial using Hessenberg algorithm :
+ pcar_hessenberg</title>
+</head>
+<body >
+<a href="cascmd_en415.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en417.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec495" class="subsection">2.47.7  Characteristic polynomial using Hessenberg algorithm :<br>
+ <span style="font-family:monospace">pcar_hessenberg</span></h3>
+<p><a id="hevea_default697"></a>
+<span style="font-family:monospace">pcar_hessenberg</span> takes as argument a square 
+matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span> and optionally the name of a symbolic variable.<br>
+<span style="font-family:monospace">pcar_hessenberg</span> returns the characteristic polynomial <span style="font-style:italic">P</span> of <span style="font-style:italic">A</span> written
+as the list of its coefficients if no variable was provided
+or written in its symbolic form with respect to the variable name given 
+as second argument, where
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=det(<span style="font-style:italic">xI</span>&#X2212;<span style="font-style:italic">A</span>) </td></tr>
+</table><p>
+The characteristic polynomial is computed using the Hessenberg algorithm
+(see e.g. Cohen) which is more efficient (<span style="font-style:italic">O</span>(<span style="font-style:italic">n</span><sup>3</sup>) deterministic) if 
+the coefficients of <span style="font-style:italic">A</span> are in a finite field or use a finite 
+representation like approximate numeric coefficients. Note however that
+this algorithm behaves badly if the coefficients are e.g. in &#X211A;.<br>
 Input :
-</P><DIV CLASS="center">
-<TT>A:=[[9,-36,30],[-36,192,-180],[30,-180,180]]; 
-U,B,V:=ismith(A)</TT>
-</DIV><P>
+</p><div class="center"><span style="font-family:monospace">pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]] % 37)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[[-3,0,1],[6,4,3],[20,15,12]],
-[[3,0,0],[0,12,0],[0,0,60]], 
-[[1,24,-30],[0,1,0],[0,0,1]] </TT>
-</DIV><P>
-The invariant factors are 3, 12 and 60.</P><HR>
-<A HREF="cascmd_en415.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en417.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[1 % 37 ,-6% 37,12 % 37,-8 % 37]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]] % 37,x)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-6 %37 *x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+12 % 37 *x-8 % 37</span></div><p>
+Hence, the characteristic polynomial of [[4,1,-2],[1,2,-1],[2,1,0]] in
+&#X2124;/37 &#X2124; is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>&#X2212;6<span style="font-style:italic">x</span><sup>2</sup>+12<span style="font-style:italic">x</span>&#X2212;8 </td></tr>
+</table>
+<hr>
+<a href="cascmd_en415.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en417.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

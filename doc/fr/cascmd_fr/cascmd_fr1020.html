@@ -1,52 +1,40 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Plan et droites parallèles : parallel parallele</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1196">11.5.6</A>  Plan et droites parallèles : <TT>parallel parallele</TT></H3><P><A NAME="@default1989"></A><A NAME="@default1990"></A><A NAME="sec:parallele3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr911.html#sec:parallele2">10.9.7</A> pour la géométrie plane.<BR>
-<TT>parallele</TT>, en géométrie 3-d, renvoie et dessine une droite 
-ou un plan selon ses arguments. Si ses arguments sont :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un point <I>A</I> et 1 droites <I>d</I>, <TT>parallele(A,d)</TT> renvoie et dessine la
-droite parallèle à la droite <I>d</I> passant par le point <I>A</I>,
-</LI><LI CLASS="li-itemize">une droite <I>dd</I> et une droite <I>d</I> non parallèles <TT>parallele(dd,d)</TT>
-renvoie et dessine le plan parallèle à la droite <I>d</I> passant par la 
-droite <I>dd</I>, 
-</LI><LI CLASS="li-itemize">un point <I>A</I> et un plan <I>P</I>, <TT>parallele(A,P)</TT>
-renvoie et dessine le plan parallèle au plan <I>P</I> passant par le point <I>A</I>,
-</LI><LI CLASS="li-itemize">un point <I>A</I> et 2 droites <I>d</I> et <I>dd</I> non parallèles,
-<TT>parallele(A,d,dd)</TT> renvoie et dessine le plan parallèle aux droites <I>d</I> 
-et <I>dd</I> passant par le point <I>A</I>.<BR>
-</LI></UL><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Plans (ou droites) perpendiculaires : perpendicular perpendiculaire</title>
+</head>
+<body >
+<a href="cascmd_fr1019.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1021.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1234" class="subsection">11.5.7  Plans (ou droites) perpendiculaires : <span style="font-family:monospace">perpendicular perpendiculaire</span></h3>
+<p><a id="hevea_default1988"></a><a id="hevea_default1989"></a><a id="sec:perpendi3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1021.html#sec%3Aorthogonal3">11.5.8</a> et, pour la géométrie plane 
+<a href="cascmd_fr911.html#sec%3Aperpendi2">10.9.8</a>.<br>
+<span style="font-family:monospace">perpendiculaire</span>, en géométrie 3-d, renvoie et dessine une 
+droite (resp un plan) si le 2-ième argument est une droite (resp un plan).<br>
+Plus précisemment, si ses arguments sont :
+</p><ul class="itemize"><li class="li-itemize">
+un point <span style="font-style:italic">A</span> et une droite <span style="font-style:italic">d</span>, <span style="font-family:monospace">perpendiculaire(A,d)</span> renvoie et 
+dessine la droite perpendiculaire à la droite <span style="font-style:italic">d</span> et passant par <span style="font-style:italic">A</span>,
+</li><li class="li-itemize">une droite <span style="font-style:italic">dd</span> et un plan <span style="font-style:italic">P</span>, <span style="font-family:monospace">perpendiculaire(dd,P)</span> renvoie et 
+dessine le plan perpendiculaire au plan <span style="font-style:italic">P</span> et passant par <span style="font-style:italic">dd</span>.<br>
+</li></ul><p> 
 On tape :
-</P><DIV CLASS="center"><TT>parallele(point(1,1,1),droite(point(0,0,0),point(0,0,1)))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">perpendiculaire(point(0,0,0),droite(point(1,0,0),point(0,1,0)))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>La droite d’équation x=1,y=1 est tracée</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">La droite d’équation y=x, z=0</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>parallele(droite(point(1,0,0),point(0,1,0)),droite(point(0,0,0),point(0,0,1)))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">perpendiculaire(droite([0,0,0],[1,1,0]),plan(point(1,0,0),point(0,1,0),point(0,0,1)))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x+y-1=0 est tracé</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>parallele(point(0,0,0),plan(point(1,0,0),point(0,1,0),point(0,0,1)))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x+y+z=0 est tracé</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>parallele(point(1,1,1),droite(point(0,0,0),point(0,0,1)),droite(point(1,0,0),point(0,1,0)))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x+y=2 est tracée</TT></DIV><HR>
-<A HREF="cascmd_fr1019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">Le plan d’équation x=y</span></div>
+<hr>
+<a href="cascmd_fr1019.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1021.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

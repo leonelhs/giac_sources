@@ -1,54 +1,50 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le triangle équilatèral dans l’espace : equilateral_triangle triangle_equilateral</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1031.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1033.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1210">11.7.4</A>  Le triangle équilatèral dans l’espace : <TT>equilateral_triangle triangle_equilateral</TT></H3><P><A NAME="@default2008"></A><A NAME="@default2009"></A><A NAME="sec:trianglequi3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr923.html#sec:trianglequi2">10.10.5</A> pour la géométrie plane.<BR>
-<TT>triangle_equilateral</TT>, en géométrie 3-d, a trois ou quatre 
-arguments.<BR>
-Description des arguments :<BR>
-- si il a trois arguments, ce sont 3 points : les 2 premiers sommets <I>A</I> et
-<I>B</I> du triangle et le troisième point définit le plan du triangle.<BR>
-<TT>triangle_equilateral(A,B,P)</TT> renvoie et trace dans le demi-plan <I>ABP</I> le 
-triangle équilatéral <I>ABC</I>
-mais sans définir le point <I>C</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Le carré dans l’espace : square carre</title>
+</head>
+<body >
+<a href="cascmd_fr1031.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1033.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1249" class="subsection">11.8.1  Le carré dans l’espace : <span style="font-family:monospace">square carre</span></h3>
+<p><a id="hevea_default2007"></a><a id="hevea_default2008"></a><a id="sec:carre3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr924.html#sec%3Acarre2">10.11.2</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">carre</span>, en géométrie 3-d, peut avoir de trois à cinq 
+arguments.<br>
+Les arguments sont :<br>
+- si il a trois arguments ce sont 3 points de l’espace : les 2 sommets du carré et le troisième point définit le demi-plan du carré.<br>
+<span style="font-family:monospace">carre(A,B,P)</span> renvoie et trace le carrè <span style="font-style:italic">ABCD</span> dans le demi-plan <span style="font-style:italic">ABP</span> contenant <span style="font-style:italic">P</span>, mais sans définir les points D et C.<br>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><DIV CLASS="center"><TT>Q:=point(0,0,-3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">A:=point(0,0,0)</span></div><div class="center"><span style="font-family:monospace">B:=point(3,3,3)</span></div><div class="center"><span style="font-family:monospace">P:=point(0,0,3)</span></div><div class="center"><span style="font-family:monospace">Q:=point(0,0,-3)</span></div><p>
 Puis on tape :
-</P><DIV CLASS="center"><TT>triangle_equilateral(A,B,P)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">carre(A,B,P)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABP,le triangle équilatèral de sommets A et B</TT></DIV><P>
-- si il a quatre arguments, le dernier argument est le nom d’une 
-variable qui servira à définir le troisième sommet
+</p><div class="center"><span style="font-family:monospace">Le carré de sommets A,B dans le demi-plan ABP</span></div><p>Puis on tape :
+</p><div class="center"><span style="font-family:monospace">carre(A,B,Q)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le carré de sommets A,B dans le demi-plan ABQ</span></div><p>
+- si il a cinq arguments, les 2 derniers paramètres sont le nom de deux 
+variables qui serviront à définir les deux autres sommets.
 On tape :
-</P><DIV CLASS="center"><TT>triangle_equilateral(A,B,P,C)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">carre(A,B,P,C,D)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABP, le triangle équilatèral de sommets A et B</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">Le carré de sommets A,B,C,D dans le demi-plan ABQ</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">simplify(coordonnees(C))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>[(-3*sqrt(6)+6)/4,(-3*sqrt(6)+6)/4,(3*sqrt(6)+3)/2]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">[3-3*sqrt(1/2),3-3*sqrt(1/2),3*sqrt(2)+3]</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>triangle_equilateral(A,B,Q,D)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">simplify(coordonnees(D))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABQ, le triangle équilatèral de sommets A et B</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[(3*sqrt(6)+6)/4,(3*sqrt(6)+6)/4,(-3*sqrt(6)+3)/2]</TT></DIV><HR>
-<A HREF="cascmd_fr1031.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1033.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[-3*sqrt(2),-3*sqrt(2),3*sqrt(2)]</span></div>
+<hr>
+<a href="cascmd_fr1031.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1033.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

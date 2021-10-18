@@ -1,61 +1,61 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer une expression en une fonction : unapply</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr291.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr293.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc368">6.17.2</A>  Transformer une expression en une fonction : <TT>unapply</TT></H3><P><A NAME="@default500"></A>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Transformer une expression en une fonction : unapply</title>
+</head>
+<body >
+<a href="cascmd_fr291.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr293.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec374" class="subsection">6.17.2  Transformer une expression en une fonction : <span style="font-family:monospace">unapply</span></h3>
+<p><a id="hevea_default500"></a>
 Pour transformer une expression en une fonction, on utilise la 
-commande <TT>unapply</TT>.<BR>
-<TT>unapply</TT> a deux arguments une expression et le nom d’une (ou des)
-variable(s).<BR>
-<TT>unapply</TT> renvoie une fonction définie à partir de cette expression et 
-de la (ou des) variable(s) donnée(s) en argument.</P><P><B>Attention</B> lorsqu’on définit une fonction,
+commande <span style="font-family:monospace">unapply</span>.<br>
+<span style="font-family:monospace">unapply</span> a deux arguments une expression et le nom d’une (ou des)
+variable(s).<br>
+<span style="font-family:monospace">unapply</span> renvoie une fonction définie à partir de cette expression et 
+de la (ou des) variable(s) donnée(s) en argument.</p><p><span style="font-weight:bold">Attention</span> lorsqu’on définit une fonction,
 le membre de droite de l’affectation n’est pas évalué,
-ainsi l’écriture <CODE>g:=x^2; f(x):=g</CODE>
-ne définit pas la fonction <I>f</I>: <I>x</I> → <I>x</I><SUP>2</SUP> mais la fonction
-<I>f</I>: <I>x</I> → <I>g</I>.<BR>
+ainsi l’écriture <code>g:=x^2; f(x):=g</code>
+ne définit pas la fonction <span style="font-style:italic">f</span>: <span style="font-style:italic">x</span> → <span style="font-style:italic">x</span><sup>2</sup> mais la fonction
+<span style="font-style:italic">f</span>: <span style="font-style:italic">x</span> → <span style="font-style:italic">g</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>g:= sin(x+1); f:=unapply(g,x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">g:= sin(x+1); f:=unapply(g,x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(sin(x+1), (x)-&gt;sin(x+1))</TT></DIV><P> 
-On a alors la variable <TT>g</TT> qui contient une expression symbolique 
-et la variable <TT>f</TT> qui contient une fonction.<BR>
+</p><div class="center"><span style="font-family:monospace">(sin(x+1), (x)-&gt;sin(x+1))</span></div><p> 
+On a alors la variable <span style="font-family:monospace">g</span> qui contient une expression symbolique 
+et la variable <span style="font-family:monospace">f</span> qui contient une fonction.<br>
 On tape :
-</P><DIV CLASS="center"><TT>unapply(exp(x+2),x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">unapply(exp(x+2),x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;exp(x+2)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">(x)-&gt;exp(x+2)</span></div><p> 
 On tape :
-</P><DIV CLASS="center"><TT>f:=unapply(lagrange([1,2,3],[4,8,12]),x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">f:=unapply(lagrange([1,2,3],[4,8,12]),x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;4+4*(x-1)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">(x)-&gt;4+4*(x-1)</span></div><p> 
 On tape :
-</P><DIV CLASS="center"><TT>f:=unapply(integrate(log(t),t,1,x),x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">f:=unapply(integrate(log(t),t,1,x),x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;x*log(x)-x+1</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">(x)-&gt;x*log(x)-x+1</span></div><p> 
 On tape :
-</P><DIV CLASS="center"><TT>f:=unapply(integrate(log(t),t,1,x),x)</TT></DIV><DIV CLASS="center"><TT>f(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">f:=unapply(integrate(log(t),t,1,x),x)</span></div><div class="center"><span style="font-family:monospace">f(x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>x*log(x)-x+1</TT></DIV><P>
-<B>Remarque</B>
-Pour définir, à partir d’une fonction de 2 variables <I>f</I>(<I>x</I>,<I>w</I>), la fonction
-<I>g</I> qui à <I>w</I> fait correspondre la fonction <I>g</I>(<I>w</I>) définie par :
-<I>g</I>(<I>w</I>)(<I>x</I>)=<I>f</I>(<I>x</I>,<I>w</I>), on utilise aussi <TT>unapply</TT>.<BR>
+</p><div class="center"><span style="font-family:monospace">x*log(x)-x+1</span></div><p>
+<span style="font-weight:bold">Remarque</span>
+Pour définir, à partir d’une fonction de 2 variables <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>), la fonction
+<span style="font-style:italic">g</span> qui à <span style="font-style:italic">w</span> fait correspondre la fonction <span style="font-style:italic">g</span>(<span style="font-style:italic">w</span>) définie par :
+<span style="font-style:italic">g</span>(<span style="font-style:italic">w</span>)(<span style="font-style:italic">x</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>), on utilise aussi <span style="font-family:monospace">unapply</span>.<br>
 On tape : 
-</P><DIV CLASS="center"><TT>f(x,w):=2*x+w</TT></DIV><DIV CLASS="center"><TT>g(w):=unapply(f(x,w),x)</TT></DIV><DIV CLASS="center"><TT>g(3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">f(x,w):=2*x+w</span></div><div class="center"><span style="font-family:monospace">g(w):=unapply(f(x,w),x)</span></div><div class="center"><span style="font-family:monospace">g(3)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>x-&gt;2</TT><TT>·</TT><TT> x+3</TT></DIV><HR>
-<A HREF="cascmd_fr291.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr293.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">x-&gt;2</span>·<span style="font-family:monospace"> x+3</span></div>
+<hr>
+<a href="cascmd_fr291.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr293.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,123 +1,105 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Modify an element or a row of a matrix : subsop</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en361.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en363.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc406">2.42.13</A>  Modify an element or a row of a matrix : <TT>subsop</TT></H3><P><A NAME="@default616"></A>
-<TT>subsop</TT> modifies an element or a row of a matrix.
-It is used mainly for <TT>Maple</TT> and <TT>MuPAD</TT> compatibility.
-Unlike <TT>:=</TT> or <TT>=&lt;</TT>,
-it does not require to store the matrix in a variable.<BR>
-<TT>subsop</TT> takes two or three arguments,
-<B>these arguments are permuted</B> in <TT>Maple</TT> mode.
-</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-Modify an element
-<UL CLASS="itemize"><LI CLASS="li-itemize">
-In <TT>Xcas</TT> mode, the first index is 0<BR>
-<TT>subsop</TT> has two (resp three) arguments: a matrix <TT>A</TT> and an 
-equality <TT>[r,c]=v</TT> (resp a matrix <TT>A</TT>, a list of index <TT>[r,c]</TT>,
-a value <TT>v</TT>).<BR>
-<TT>subsop</TT> replaces the element <TT>A[r,c]</TT> by <TT>v</TT>.<BR>
-Input in <TT>Xcas</TT> mode :
-<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[1,0]=3)</TT></DIV>
-Or :
-<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[1,0],3)</TT></DIV>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Extracting element(s) of a matrix : [] at</title>
+</head>
+<body >
+<a href="cascmd_en361.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en363.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec431" class="subsection">2.42.12  Extracting element(s) of a matrix : <span style="font-family:monospace">[] at</span></h3>
+<p><a id="hevea_default616"></a>
+Recall that a matrix is a list of lists with the same size.<br>
+Input : 
+</p><div class="center"><span style="font-family:monospace">A:=[[3,4,5],[1,2,6]]</span></div><p>
 Output :
-<DIV CLASS="center"><TT>[[4,5],[3,6]]</TT></DIV>
-<B>Remark</B><BR>
-If the matrix is stored in a variable, for example 
-<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[1,0]:=3</TT>
-which modifies <TT>A</TT> into the matrix<BR>
-<TT>[[4,5],[3,6]]</TT>.</LI><LI CLASS="li-itemize">In <TT>Mupad, TI</TT> mode, the first index is 1<BR>
-<TT>subsop</TT> has two (resp three) arguments: a matrix <TT>A</TT> and an 
-equality <TT>[r,c]=v</TT> (resp a matrix <TT>A</TT>, a list of index <TT>[r,c]</TT>,
-a value <TT>v</TT>).<BR>
-<TT>subsop</TT> replaces the element <TT>A[r,c]</TT> by <TT>v</TT>.<BR>
-Input in <TT>Mupad, TI</TT> mode :
-<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[2,1]=3)</TT></DIV>
-Or :
-<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[2,1],3)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">[[3,4,5],[1,2,6]]</span></div><p> 
+The prefixed function <span style="font-family:monospace">at</span> or the 
+index notation <span style="font-family:monospace">[...]</span> is used to access 
+to an element or a row or a column of a matrix:
+</p><ul class="itemize"><li class="li-itemize">
+To extract an element, put the matrix and then, between square 
+brackets put its row index, a comma, and its column index.
+In <span style="font-family:monospace">Xcas</span> mode the first index is 0, in other modes the first
+index is 1.<br>
+Input :
+<div class="center"><span style="font-family:monospace">[[3,4,5],[1,2,6]][0,1]</span></div>
+or :
+<div class="center"><span style="font-family:monospace">A[0,1]</span></div>
+or :
+<div class="center"><span style="font-family:monospace">A[0][1]</span></div>
+or :
+<div class="center"><span style="font-family:monospace">at(A,[0,1])</span></div>
 Output :
-<DIV CLASS="center"><TT>[[4,5],[3,6]]</TT></DIV>
-<B>Remark</B><BR>
-If the matrix is stored in a variable, for example 
-<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[2,1]:=3</TT> which
-modifies <TT>A</TT> into the matrix<BR>
-<TT>[[4,5],[3,6]]</TT>.</LI><LI CLASS="li-itemize">In <TT>Maple</TT> mode, 
-the arguments are permuted and the first index is 1<BR>
-<TT>subsop</TT> has two arguments: an equality <TT>[r,c]=v</TT> and a matrix 
-<TT>A</TT>.<BR>
-<TT>subsop</TT> replaces the element <TT>A[r,c]</TT> by <TT>v</TT>.<BR>
-Input in <TT>Maple</TT> mode
-<DIV CLASS="center"><TT>subsop([2,1]=3,[[4,5],[2,6]])</TT></DIV>
+<div class="center"><span style="font-family:monospace">4</span></div></li><li class="li-itemize">To extract a row of the matrix <span style="font-family:monospace">A</span>, 
+put the matrix and then, between 
+square brackets put the row index, input :
+<div class="center"><span style="font-family:monospace">[[3,4,5],[1,2,6]][0]</span></div>
+or :
+<div class="center"><span style="font-family:monospace">A[0]</span></div>
+or :
+<div class="center"><span style="font-family:monospace">at(A,0)</span></div>
 Output :
-<DIV CLASS="center"><TT>[[4,5],[3,6]]</TT></DIV>
-<B>Remark</B><BR>
-If the matrix is stored in a variable, for example 
-<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[2,1]:=3</TT> which
-modifies <TT>A</TT> into the matrix<BR>
-<TT>[[4,5],[3,6]]</TT>.
-</LI></UL></LI><LI CLASS="li-enumerate">Modify a row
-<UL CLASS="itemize"><LI CLASS="li-itemize">
-in <TT>Xcas</TT> mode, the first index is 0<BR>
-<TT>subsop</TT> takes two arguments : a matrix and an 
-equality (the index of the row to be modified, the <TT>=</TT> sign and the new 
-row value).<BR>
-Input in <TT>Xcas</TT> mode :
-<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],1=[3,3])</TT></DIV>
+<div class="center"><span style="font-family:monospace">[3,4,2]</span></div></li><li class="li-itemize">To extract a part of a row, put two arguments 
+between the square brackets : 
+the row index and an interval to designate the selected columns.<br>
+Input :
+<div class="center"><span style="font-family:monospace">A[1,0..2]</span></div>
 Output :
-<DIV CLASS="center"><TT>[[4,5],[3,3]]</TT></DIV>
-<B>Remark</B><BR>
-If the matrix is stored in a variable, for example 
-<TT>A:=[[4,5],[2,6]]</TT>, is is easier to input <TT>A[1]:=[3,3]</TT>
-which modifies <TT>A</TT> into the matrix<BR>
-<TT>[[4,5],[3,3]]</TT>.</LI><LI CLASS="li-itemize">In <TT>Mupad, TI</TT> mode, the first index is 1<BR>
-<TT>subsop</TT> takes two arguments : a matrix and an 
-equality (the index of the row to be modified, the <TT>=</TT> sign and the new 
-row value).<BR>
-Input in <TT>Mupad, TI</TT> mode :
-<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],2=[3,3])</TT></DIV>
+<div class="center"><span style="font-family:monospace">[1,2,6]</span></div>
+Input :
+<div class="center"><span style="font-family:monospace">A[1,1..2]</span></div>
 Output :
-<DIV CLASS="center"><TT>[[4,5],[3,3]]</TT></DIV>
-<B>Remark</B><BR>
-If the matrix is stored in a variable, for example 
-<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[2]:=[3,3]</TT> which modifies
-<TT>A</TT> into the matrix<BR>
-<TT>[[4,5],[3,3]]</TT>.</LI><LI CLASS="li-itemize">in <TT>Maple</TT> mode, the arguments are permuted and the first index
-is 1 :<BR>
-<TT>subsop</TT> takes two arguments : an 
-equality (the index of the row to be modified, the <TT>=</TT> sign and the new 
-row value) and a matrix.<BR>
-Input in <TT>Maple</TT> mode :
-<DIV CLASS="center"><TT>subsop(2=[3,3],[[4,5],[2,6]])</TT></DIV>
+<div class="center"><span style="font-family:monospace">[2,6]</span></div></li><li class="li-itemize">To extract a column of the matrix <span style="font-family:monospace">A</span>, first transpose
+<span style="font-family:monospace">A</span> (<span style="font-family:monospace">transpose(A)</span>) then extract the row like above.<br>
+Input :
+<div class="center"><span style="font-family:monospace">tran(A)[1]</span></div>
+or :
+<div class="center"><span style="font-family:monospace">at(tran(A),1)</span></div>
 Output :
-<DIV CLASS="center"><TT>[[4,5],[3,3]]</TT></DIV>
-<B>Remark</B><BR>
-If the matrix is stored in a variable, for example 
-<TT>A:=[[4,5],[2,6]]</TT>, it is easier to input <TT>A[2]:=[3,3]</TT> which modifies
-<TT>A</TT> into the matrix<BR>
-<TT>[[4,5],[3,3]]</TT>.
-</LI></UL>
-</LI></OL><P>
-<B>Remark</B><BR>
-Note also that <TT>subsop</TT> with a <TT>&#X2019;n=NULL&#X2019;</TT> argument 
-deletes row number <TT>n</TT>.
-In <TT>Xcas</TT> mode input :
-</P><DIV CLASS="center"><TT>subsop([[4,5],[2,6]],&#X2019;1=NULL&#X2019;)</TT></DIV><P>
+<div class="center"><span style="font-family:monospace">[4,2]</span></div></li><li class="li-itemize">To extract a part of a column of the matrix <span style="font-family:monospace">A</span> 
+as a list, put two arguments 
+between the square brackets : an index interval to 
+designate the selected rows and the column index.<br>
+Input :
+<div class="center"><span style="font-family:monospace">A[0..0,1]</span></div>
 Output :
-</P><DIV CLASS="center"><TT>[[4,5]]</TT></DIV><HR>
-<A HREF="cascmd_en361.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en363.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">[4]</span></div><p>This may be used to extract a full column, by specifying all the rows
+as an index interval.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">A[0..1,1]</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[4,2]</span></div></li><li class="li-itemize">To extract a sub-matrix of a matrix, put between the square brackets two 
+intervals : one interval for the selected rows and one interval for the 
+selected columns.<br>
+To define the matrix <span style="font-family:monospace">A</span>, input :
+<div class="center"><span style="font-family:monospace">A:=[[3,4,5],[1,2,6]]</span></div>
+Input :
+<div class="center"><span style="font-family:monospace">A[0..1,1..2]</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">[[4,5],[2,6]]</span></div>
+Input :
+<div class="center"><span style="font-family:monospace">A[0..1,1..1]</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">[[4],[2]]</span></div>
+<span style="font-weight:bold">Remark</span>
+If the second interval is omitted, the sub-matrix is made with the consecutive 
+rows given by the first interval.<br>
+Input :
+<div class="center"><span style="font-family:monospace">A[1..1]</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">[[1,2,6]]</span></div>
+</li></ul><p>You may also assign an element of a matrix using index notation,
+if you assign with <span style="font-family:monospace">:=</span> a new copy of the matrix is created
+and the element is modified, if you assign with <span style="font-family:monospace">=&lt;</span>,
+the matrix is modified in place.</p>
+<hr>
+<a href="cascmd_en361.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en363.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

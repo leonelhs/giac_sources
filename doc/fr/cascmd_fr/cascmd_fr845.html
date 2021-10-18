@@ -1,92 +1,64 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La boucle : for pour fpour</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr844.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr846.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc991">9.4.21</A>  La boucle : <TT>for pour fpour</TT></H3><P><A NAME="@default1536"></A><A NAME="@default1537"></A><A NAME="@default1538"></A><A NAME="@default1539"></A><A NAME="@default1540"></A><A NAME="@default1541"></A><A NAME="@default1542"></A>
-<TT>for</TT> et <TT>pour</TT> se sert d’une variable d’incrémentation par
-exemple <TT>j</TT> (doit être déclarée comme variable locale).<BR>
-<B>Première syntaxe</B><BR>
-On précise entre des parenthèses et en les séparant par 
-un point virgule, la valeur de départ, la condition d’arrêt
-et la façon dont on incrémente la variable d’incrémentation, puis on
-met un bloc d’instructions :<BR>
-<TT>for</TT> permet de faire plusieurs fois un bloc d’instructions selon
-la valeur de la variable d’incrémentation.<BR>
-<TT>for (j:=j1;j&lt;=j2;j:=j+3) {&lt;instructions&gt; }</TT><BR>
-Par exemple :<BR>
-<TT>S:=0;for (j:=3;j&lt;20;j:=j+3) {S:=S+j;}</TT><BR>
-<B>Deuxième syntaxe</B><BR>
-On commence par <TT>for</TT>, puis, on précise avec les mots <TT>from</TT>, <TT>to</TT>
-et <TT>step</TT>, la valeur de départ, la condition d’arrêt et la faç on 
-dont on incrémente cette variable d’incrémentation, puis on met les 
-instructions à effectuer entre <TT>do</TT> et <TT>end_for</TT> :<BR>
-<TT>for j from j1 to j2 step p do &lt;instructions&gt; end_for;</TT><BR>
-Ou on utilise sa traduction. On commence par <TT>pour</TT>, puis, on précise avec
-les mots <TT>de</TT>, <TT>jusque</TT> et <TT>pas</TT>, la valeur de départ, la 
-condition d’arrêt et la façon dont on incrémente cette variable 
-d’incrémentation, puis on met les instructions à effectuer entre <TT>faire</TT>
-et <TT>fpour</TT> :<BR>
-<TT>pour j de j1 jusque j2 pas p faire &lt;instructions&gt; fpour;</TT>
-Par exemple :<BR>
-<TT>S:=0;for j from 3 to 20 step 3 do S:=S+j; end_for;</TT><BR>
-<TT>S:=0;pour j de 3 jusque 20 pas 3 faire S:=S+j; fpour;</TT><BR>
-<B>Troisième syntaxe</B><BR>
-On peut à l’aide d’un ensemble, d’une liste ou d’une plage de valeurs <TT>A</TT>
-donner les différentes valeurs que doit prendre la variable d’incrémentation <TT>j</TT>
-en mettant :<BR>
-<TT>for j in A do ....end_for;</TT>.<BR>
-ou sa traduction :<BR>
-<TT>pour j in A faire &lt;instructions&gt; fpour;</TT>
-Par exemple lorsque <TT>j</TT> s’incrémente de 1:<BR>
-<TT>S:=0;for j in 1..5 do S:=S+j; end_for;</TT><BR>
-ou sa traduction<BR>
-<TT>S:=0;pour j in 1..5 faire S:=S+j; fpour;</TT><BR>
-lorsque <TT>j</TT> décrit un ensemble de valeurs :<BR>
-<TT>A:=[3,6,9,15,30,45];S:=0;for j in A do S:=S+j; end_for;</TT><BR>
-ou sa traduction<BR>
-<TT>A:=[3,6,9,15,30,45];S:=0;pour j in A faire S:=S+j; fpour;</TT><BR>
-ou<BR>
-<TT>A:=%</TT><TT>3,6,9,15,30,45%</TT><TT>;S:=0;for j in A do S:=S+j; end_for;</TT><BR>
-ou sa traduction<BR>
-<TT>A:=%</TT><TT>3,6,9,15,30,45%</TT><TT>;S:=0;pour j in A faire S:=S+j; fpour;</TT><BR>
-
-<B>Attention</B><BR>
- Ne pas choisir <TT>i</TT> comme variable d’incrémentation car
-<TT>i</TT> représente un nombre complexe !!!<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La fonction : seq</title>
+</head>
+<body >
+<a href="cascmd_fr844.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr846.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1023" class="subsection">9.4.22  La fonction : <span style="font-family:monospace">seq</span></h3>
+<p><a id="hevea_default1540"></a>
+Si <span style="font-family:monospace">seq</span> a 4 ou 5 arguments : une expression dépendant d’une 
+variable, le nom de cette variable, sa valeur de départ, sa valeur 
+d’arrivée, et éventuellement le pas(le pas vaut 1 par défaut).<br>
+<span style="font-family:monospace">seq</span> est une fonction qui permet
+de renvoyer la liste constituée par les différentes valeurs du premier 
+argument lorsque le deuxième argument varie selon les valeurs des arguments 
+suivants : valeur de départ, valeur d’arrivée, pas.<br>
+ <span style="font-family:monospace">seq(f(k),k,1,3)=[f(1),f(2),f(3)]</span> <br>
+<span style="font-family:monospace">seq(f(k),k,1,5,2)=[f(1),f(3),f(5)]</span> <br>
 On tape :
-</P><PRE CLASS="verbatim">somfor(n):={
-local j,s:=0;
-for (j:=1;j&lt;=n;j++){
-   s:=s+1/j;
-} 
-return s;
-}
-</PRE><PRE CLASS="verbatim">sompour(n):={
-local j,s:=0;
-pour j de 1 jusque n faire
-   s:=s+1/j;
-fpour 
-retourne s;
-}
-</PRE><P>puis:
-</P><DIV CLASS="center"><TT>somfor(5)</TT></DIV><P>
-ou 
-</P><DIV CLASS="center"><TT>sompour(5)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">seq(x+1,x,1,10,2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>137/60</TT></DIV><HR>
-<A HREF="cascmd_fr844.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr846.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[2,4,6,8,10]</span></div><p>
+Si <span style="font-family:monospace">seq</span> a 3 arguments : une expression dépendant d’une variable, le nom 
+de cette variable et une liste <span style="font-family:monospace">L</span>.<br>
+<span style="font-family:monospace">seq</span> est une fonction qui permet de renvoyer la liste constituée par les 
+images de <span style="font-family:monospace">L</span> par la fonction <span style="font-family:monospace">unapply(expression,variable)</span> ce qui est 
+équivalent à <span style="font-family:monospace">map(liste,unapply(expression,variable))</span>.
+On tape :
+</p><div class="center"><span style="font-family:monospace">seq(x+1,x,[3,4,7])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[4,5,8]</span></div><p>
+ <br>
+La fonction <span style="font-family:monospace">seq</span> est utile pour tracer une suite de points dans les
+écrans de géométrie.<br>
+<span style="font-weight:bold">Exemple</span><br>
+ On veut représenter les 10 premiers termes de la suite :<br>
+<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>=(1+1/<span style="font-style:italic">n</span>)<sup><span style="font-style:italic">n</span></sup>=<span style="font-style:italic">f</span>(<span style="font-style:italic">n</span>) par les points <span style="font-style:italic">n</span>+<span style="font-style:italic">i</span>*<span style="font-style:italic">f</span>(<span style="font-style:italic">n</span>).<br>
+On ouvre un écran de géomérie et on tape :
+</p><div class="center"><span style="font-family:monospace">f(n):=(1+1/n)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n</span></div><div class="center"><span style="font-family:monospace">seq(point(k+i*f(k)),k,1,10)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">On voit les points dans cet écran de géométrie</span></div><p>
+Si on tape:
+</p><div class="center"><span style="font-family:monospace">for (k:=1;k&lt;11;k++) {point(k+i*f(k));}</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">les points sont seulement dans l’écran </span><span style="font-family:monospace">DispG</span><span style="font-family:monospace"> qu’on 
+ouvre avec Cfg-&gt;Montrer-&gt;DispG ou avec DispG()</span></div><p>
+Mais si on ouvre un écran de géomérie et si on tape:
+</p><div class="center"><span style="font-family:monospace">L:=[];for (k:=1;k&lt;11;k++) {L:=append(L,point(k+i*f(k)));}:;L;</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">On voit les points dans cet écran de géomérie</span></div><p>On peut aussi utiliser la syntaxe comme avec Maple,
+<code>seq(2^k,k=0..8)</code>, en ajoutant éventuellement un pas
+<code>seq(2^k,k=0..8,1)</code></p>
+<hr>
+<a href="cascmd_fr844.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr846.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

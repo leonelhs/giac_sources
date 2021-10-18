@@ -1,102 +1,56 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le cercle et ses arcs : circle cercle</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr934.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr936.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1098">10.13.1</A>  Le cercle et ses arcs : <TT>circle cercle</TT></H3><P><A NAME="@default1814"></A><A NAME="@default1815"></A><A NAME="sec:cercle"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr936.html#sec:arc">10.13.2</A> pour les arcs de cercle.<BR>
-<B>Voir aussi :</B> <A HREF="index.html#sec:cercle3d">11.10</A> pour les cercles de la 
-géométrie 3-d.<BR>
-<TT>cercle</TT> a un ou deux arguments pour dessiner un cercle et de 
-quatre à six arguments pour dessiner un arc de cercle.<BR>
-Description des arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Avec un argument : l’argument de <TT>cercle</TT> est alors l’équation du 
-cercle ayant comme variables <I>x</I> et <I>y</I>, 
-</LI><LI CLASS="li-itemize">Avec deux arguments <TT>cercle</TT> désigne un cercle :<BR>
- Le premier argument est un point ou un nombre complexe considéré comme 
-l’affixe d’un point.<BR>
-C’est le deuxième argument qui détermine si on trace le cercle avec la 
-donnée de son centre et de son rayon (le deuxième argument est alors
-un nombre complexe de module le rayon) ou avec la donnée de son
-diamètre (le deuxième argument est un point).<BR>
-- <TT>cercle(C,r)</TT> où <TT>C</TT> est un point (ou un nombre complexe) et 
-<TT>r</TT> un nombre complexe, trace le cercle de centre <TT>C</TT> et de rayon le 
-module de <TT>r</TT>. Cela est utile, par exemple, pour avoir le cercle de 
-centre <TT>A</TT> qui passe par <TT>B</TT> on tape <TT>cercle(A,B-A)</TT>.<BR>
-- <TT>cercle(A,B)</TT> où <TT>A</TT> est un point ou un nombre complexe et 
-<TT>B</TT> un point, trace le cercle de diamètre <TT>AB</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Les arcs de cercle : arc</title>
+</head>
+<body >
+<a href="cascmd_fr934.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr936.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1136" class="subsection">10.13.2  Les arcs de cercle : <span style="font-family:monospace">arc</span></h3>
+<p><a id="hevea_default1813"></a><a id="sec:arc"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr934.html#sec%3Acercle">10.13.1</a> pour cercles et arcs de cercle.<br>
+<span style="font-family:monospace">arc</span> a de trois à cinq arguments : deux points <span style="font-family:monospace">A,B</span> (ou 
+deux nombres complexes <span style="font-family:monospace">a,b</span>) et un nombre réel α représentant
+la mesure de l’arc <span style="font-family:monospace">AB</span> en radians (−2*π ≤ α ≤ 2*π).
+le quatrième et le cinquième ne sont pas obligatoires et sont des noms de
+variables qui contiendront le centre et le rayon du cercle qui porte l’arc.<br>
+L’arc <span style="font-family:monospace">AB</span> est donc porté par le cercle de centre :
+(<span style="font-style:italic">a</span>+<span style="font-style:italic">b</span>)/2+<span style="font-style:italic">i</span>*(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>)/(2*tan(α/2)).<br>
+<span style="font-family:monospace">arc(A,B,</span>α<span style="font-family:monospace">)</span> est l’arc d’où l’on voit le segment <span style="font-family:monospace">AB</span> sous 
+l’angle −π+α/2 si 2π&gt;α&gt;0, ou sous 
+l’angle π+α/2 si −2π&lt;α&lt;0.<br>
+Pour avoir l’arc capable <span style="font-family:monospace">AB</span> de mesure β c’est à dire l’arc 
+d’où l’on voit le segment <span style="font-family:monospace">AB</span> sous l’angle −π&lt;β&lt;π il faut 
+taper :<br>
+<span style="font-family:monospace">arc(A,B,2*(-pi+</span>β<span style="font-family:monospace">))</span> si π&gt;β&gt;0 ou <br>
+<span style="font-family:monospace">arc(A,B,2*(pi+</span>β<span style="font-family:monospace">))</span> si −π&lt;β&lt;0 .<br>
+<span style="font-weight:bold">Attention</span>
+Le signe de α donne le sens de parcours de l’arc <span style="font-family:monospace">AB</span> par exemple,
+<span style="font-family:monospace">arc(A,B,3*pi/2)</span> et <span style="font-family:monospace">arc(A,B,-pi/2)</span> forment un cercle complet.<br>
 On tape :
-<DIV CLASS="center"><TT>cercle(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2-2*x-2*y)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">arc(1,i,pi/2)</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>Le cercle de centre 1+i et de rayon sqrt(2) est tracé</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">L’arc (1,i) du cercle de centre 0 et de rayon 1</span></div><p>
 On tape :
-<DIV CLASS="center"><TT>cercle(-1,i)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">arc(1,i,pi/2,C,r)</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>Le cercle de centre -1 et de rayon 1 est tracé</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">L’arc (1,i) du cercle de centre C=point(0) et de rayon r=1</span></div><p>
 On tape :
-<DIV CLASS="center"><TT>cercle(-1, point(i))</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">arc(2,2*i,pi,C,r)</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>Le cercle de diamétre -1,i</TT></DIV>
-<B>Attention</B>
-Il faut bien voir la différence entre :<BR>
-<TT>cercle(A,B-A)</TT>, <TT>cercle(A,B)</TT> et <TT>cercle(A,affixe(B)-A)</TT>.<BR>
-<TT>A:=point(1);B:=point(i/2);</TT>
-<TT>cercle(A,B-A)</TT> ou <TT>cercle(A,affixe(B-A))</TT> ou <TT>cercle(A,abs(B-A))</TT> 
-dessine le cercle de centre <TT>A</TT> passant par <TT>B</TT>,<BR>
-<TT>cercle(A,B))</TT> dessine le cercle de diamètre <TT>A,B</TT>,<BR>
-<TT>cercle(A,affixe(B)-A)</TT> dessine le cercle de diamètre <TT>A,C</TT> où
-<TT>C</TT> est le point d’affixe <TT>(-2+i)/2</TT>. En effet <TT>affixe(B)-A)</TT> 
-désigne un point <TT>C</TT> tel que :<BR>
-<TT>affixe(C)=affixe(B)-affixe(A)=i/2-1=(-2+i)/2</TT>.
-</LI><LI CLASS="li-itemize">Avec de quatre à six arguments, <TT>cercle</TT> désigne un arc de 
-cercle. Dans ce cas les deux premiers arguments déterminent le cercle qui 
-porte l’arc (voir ci-dessus) et les deux arguments suivants sont les angles 
-au centre des points qui délimitent l’arc et les deux derniers arguments 
-sont des noms de variables qui contiendront les points qui délimitent 
-l’arc. Le troisième et le quatrième argument sont les mesures des 
-angles au centre des points qui délimitent l’arc, ces angles sont mesurés
-en radians (ou en degrés) à partir de l’axe défini par les deux 
-premiers arguments si le deuxième argument est un point (définition du 
-cercle par son diamètre) ou de l’axe défini par son centre <I>C</I> et le 
-point <I>A</I>=<I>C</I>+<I>r</I> si le deuxième argument est un complexe égal à <I>r</I> 
-(définition du cercle par son centre et un complexe dont le module est 
-égal au rayon).<BR>
-Le cinquième et le sixième argument ne sont pas obligatoires et 
-servent à définir les extrémités de l’arc.<BR>
-On tape :
-<DIV CLASS="center"><TT>cercle(-1,1,0,pi/4,A,B)</TT></DIV>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-<DIV CLASS="center"><TT>L’arc AB (A=point(0) et B=point(</TT><TT>-1+√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>+<I>i</I>*√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>/2</TT><TT>)) du cercle de centre -1 et de rayon 1 est tracé</TT></DIV>
-En effet l’angle est compté à partir de l’axe (-1,0) et donc l’angle 0 
-est le point(0).<BR>
-On tape :
-<DIV CLASS="center"><TT>cercle(-1,i,0,pi/4,A,B)</TT></DIV>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-<DIV CLASS="center"><TT>L’arc AB (A=point(-1+i) et B=point(</TT><TT>-1-√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>+<I>i</I>*√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>/2</TT><TT>)) du cercle de centre -1 et de rayon 1 est tracé</TT></DIV>
-En effet, l’angle est compté à partir de l’axe (-1,i-1) et donc l’angle 0 
-est le point d’affixe i-1.<BR>
-On tape :
-<DIV CLASS="center"><TT>cercle(-1, point(i),0,pi/4,A,B)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>L’arc AB (A=point(i) et B=point(</TT><TT>-1+<I>i</I>*(1+√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2</TT><TT>)) du cercle de diamétre -1,i</TT></DIV>
-En effet, l’angle est compté à partir de l’axe (-1,i) et donc l’angle 0 est
-le point d’affixe i.
-</LI></UL><HR>
-<A HREF="cascmd_fr934.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr936.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">Le demi-cercle de centre C=point(1+i), de rayon r=sqrt(2) et allant du point(2) au point(2*i) dans le sens +</span></div><p>
+<span style="font-weight:bold">Remarque</span><br>
+Lorsque <span style="font-family:monospace">cercle</span> a quatre arguments, <span style="font-family:monospace">cercle</span> dessine aussi un arc de
+cercle (cf <a href="cascmd_fr934.html#sec%3Acercle">10.13.1</a>).
+</p>
+<hr>
+<a href="cascmd_fr934.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr936.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

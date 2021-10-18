@@ -195,13 +195,15 @@ Function {latex_save_DispG(const char * filename)} {return_type void
 
 Function {a_propos()} {return_type void
 } {
-  code {std::string s("xcas "); s+=VERSION; s+=" (c) 2000-14, Bernard Parisse, Renee De Graeve\\n";
+  code {std::string s("xcas "); s+=VERSION; s+=" (c) 2000-17, Bernard Parisse, Renee De Graeve\\n";
   s += "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html\\n";
   s += "If you like Xcas, please link your webpage to the above link to help other find it\\n";
   s += "Software licensed under the GPL, General Public License version 3.0 or later\\nSee the file COPYING in this package for more details\\nOr browse http://www.gnu.org\\n";
   s += "French documentation (c) Renee de Graeve\\n";
   s += "This documentation is freely redistribuable for non commercial purpose\\n";
+  s += "Giacpy module: Frederic Han\\n";
   s += "Math ML support, Xcas online: Jean-Pierre Branchard\\n";
+  s += "Optimization code: Luka Marohnić\\n";
   s += "OpenOffice interface: Christophe Devalland, Serge Moutou\\n";
   s += "Qcas interface: Loic Le Coq, Frederic Han\\n";
   s += "Androcas interface: Thomas Luka\\n";
@@ -209,6 +211,7 @@ Function {a_propos()} {return_type void
   s += "Tutorial (dxcas) with B. Ycart\\n";
   s += "Greek localization, Alkiviadis Akritas, Eugenia Kelepesi-Akritas, George Nasopoulos, Nikos Larisis\\n";
   s += "Spanish localization, Xavier Vidaux, J. Manrique Lopez\\n";
+  s += "English user guide contributions by Luka Marohnić and Jay Belanger\\n";
   s += "Debian package: Carlos Enrique Carleos Artime\\n";
   s += "Mac OS X port thanks to Jean-Yves Avenard and IREM Grenoble\\n";
   s += "Tablor by Guillaume Connan, Pgiac by Jean-Michel Sarlat\\n";
@@ -836,7 +839,7 @@ Function {load_autorecover_data()} {open
     if (f){
       fclose(f);
      // Xcas_Main_Window_->hide();
-     int n=fl_choice(gettext("Choose start mode"),gettext("Maple"),gettext("Xcas"),gettext("Other")),mm=-1; // n==0 maple, 1 xcas, 2 other
+     int n=fl_choice(gettext("Choose start mode"),gettext("Xcas (Python-ic)"),gettext("Xcas"),gettext("Other")),mm=-1; // n==0 maple, 1 xcas, 2 other
      if (n==2){
         mm=fl_choice(gettext("Choose start mode"),gettext("Turtle"),gettext("Spreadsheet"),gettext("Geometry"));
         if (mm==0) mm=7;
@@ -858,7 +861,7 @@ Function {load_autorecover_data()} {open
      configs += ",0";
      configs +=");xcas_mode(";
      if (n==0)
-      configs+='1'; 
+      configs+="256"; 
      else
       configs+='0';
      configs += ");xyztrange(-10.0,10.0,-10.0,10.0,-10.0,10.0,-10.0,10.0,-10.0,10.0,-1.4,1.1,1,0.0,1.0);";
@@ -2264,6 +2267,10 @@ giac::html_help_init("aide_cas",language(contextptr),true,true);}
           MenuItem Xcas_help_normald {
             label {normald: Normal density}
             xywh {35 35 100 20}
+          }
+          MenuItem Xcas_help_seq {
+            label {seq: list}
+            xywh {50 50 100 20}
           }
           MenuItem Xcas_help_rand {
             label {rand: random number}
@@ -4345,6 +4352,16 @@ if (argc>argstart){
 }
 else make_history();
   bool running=true;
+\#ifdef WIN32
+  static std::string windowname=std::string("Xcas ")+VERSION+" (win"+giac::print_INT_(8*sizeof(long))+")";
+\#else
+\#ifdef __APPLE__ 
+  static std::string windowname=std::string("Xcas ")+VERSION+" (osx"+giac::print_INT_(8*sizeof(long))+")";
+\#else
+  static std::string windowname=std::string("Xcas ")+VERSION+" (linux"+giac::print_INT_(8*sizeof(long))+")";
+\#endif
+\#endif
+  Xcas_Main_Window_->label(windowname.c_str());
   while (running){
     while (Xcas_Main_Window_->visible() || Xcas_Main_Window_->shown() ) {
       Fl::wait();
@@ -4357,7 +4374,8 @@ else make_history();
 
 Function {main(int argc,char ** argv)} {open return_type int
 } {
-  code {if (argc==2 && strlen(argv[1])==0)
+  code {
+if (argc==2 && strlen(argv[1])==0)
   argc=1;
 if (getenv("XCAS_AUTOSAVE_FOLDER")){
   xcas::autosave_folder=getenv("XCAS_AUTOSAVE_FOLDER");

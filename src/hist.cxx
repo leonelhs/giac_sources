@@ -112,13 +112,15 @@ void latex_save_DispG(const char * filename) {
 }
 
 void a_propos() {
-  std::string s("xcas "); s+=VERSION; s+=" (c) 2000-14, Bernard Parisse, Renee De Graeve\n";
+  std::string s("xcas "); s+=VERSION; s+=" (c) 2000-17, Bernard Parisse, Renee De Graeve\n";
     s += "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html\n";
     s += "If you like Xcas, please link your webpage to the above link to help other find it\n";
     s += "Software licensed under the GPL, General Public License version 3.0 or later\nSee the file COPYING in this package for more details\nOr browse http://www.gnu.org\n";
     s += "French documentation (c) Renee de Graeve\n";
     s += "This documentation is freely redistribuable for non commercial purpose\n";
+    s += "Giacpy module: Frederic Han\n";
     s += "Math ML support, Xcas online: Jean-Pierre Branchard\n";
+    s += "Optimization code: Luka Marohnić\n";
     s += "OpenOffice interface: Christophe Devalland, Serge Moutou\n";
     s += "Qcas interface: Loic Le Coq, Frederic Han\n";
     s += "Androcas interface: Thomas Luka\n";
@@ -126,6 +128,7 @@ void a_propos() {
     s += "Tutorial (dxcas) with B. Ycart\n";
     s += "Greek localization, Alkiviadis Akritas, Eugenia Kelepesi-Akritas, George Nasopoulos, Nikos Larisis\n";
     s += "Spanish localization, Xavier Vidaux, J. Manrique Lopez\n";
+    s += "English user guide contributions by Luka Marohnić and Jay Belanger\n";
     s += "Debian package: Carlos Enrique Carleos Artime\n";
     s += "Mac OS X port thanks to Jean-Yves Avenard and IREM Grenoble\n";
     s += "Tablor by Guillaume Connan, Pgiac by Jean-Michel Sarlat\n";
@@ -744,7 +747,7 @@ void load_autorecover_data() {
       if (f){
         fclose(f);
        // Xcas_Main_Window_->hide();
-       int n=fl_choice(gettext("Choose start mode"),gettext("Maple"),gettext("Xcas"),gettext("Other")),mm=-1; // n==0 maple, 1 xcas, 2 other
+       int n=fl_choice(gettext("Choose start mode"),gettext("Xcas (Python-ic)"),gettext("Xcas"),gettext("Other")),mm=-1; // n==0 maple, 1 xcas, 2 other
        if (n==2){
           mm=fl_choice(gettext("Choose start mode"),gettext("Turtle"),gettext("Spreadsheet"),gettext("Geometry"));
           if (mm==0) mm=7;
@@ -766,7 +769,7 @@ void load_autorecover_data() {
        configs += ",0";
        configs +=");xcas_mode(";
        if (n==0)
-        configs+='1'; 
+        configs+="256"; 
        else
         configs+='0';
        configs += ");xyztrange(-10.0,10.0,-10.0,10.0,-10.0,10.0,-10.0,10.0,-10.0,10.0,-1.4,1.1,1,0.0,1.0);";
@@ -2058,6 +2061,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Proba", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"binomial: Binomial distribution", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"normald: Normal density", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"seq: list", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"rand: random number", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"ranm: random vector/matrix", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"randmarkov: random Markov matrix or chain", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3146,7 +3150,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<330; i++)
+        for ( ; i<331; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;
@@ -5326,6 +5330,16 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   }
   else make_history();
     bool running=true;
+  #ifdef WIN32
+    static std::string windowname=std::string("Xcas ")+VERSION+" (win"+giac::print_INT_(8*sizeof(long))+")";
+  #else
+  #ifdef __APPLE__ 
+    static std::string windowname=std::string("Xcas ")+VERSION+" (osx"+giac::print_INT_(8*sizeof(long))+")";
+  #else
+    static std::string windowname=std::string("Xcas ")+VERSION+" (linux"+giac::print_INT_(8*sizeof(long))+")";
+  #endif
+  #endif
+    Xcas_Main_Window_->label(windowname.c_str());
     while (running){
       while (Xcas_Main_Window_->visible() || Xcas_Main_Window_->shown() ) {
         Fl::wait();

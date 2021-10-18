@@ -1,60 +1,57 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Tchebychev polynomials of first kind: tchebyshev1</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en229.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en231.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc258">2.26.4</A>  Tchebychev polynomials of first kind: <TT>tchebyshev1</TT></H3><P><A NAME="@default417"></A>
-<TT>tchebyshev1</TT> takes as argument an integer <I>n</I> and optionnally a 
-variable name (by default <I>x</I>).<BR>
-<TT>tchebyshev1</TT> returns the Tchebychev polynomial of first kind
-of degree <I>n</I>.<BR>
-The Tchebychev polynomial of first kind <I>T</I>(<I>n</I>,<I>x</I>) is defined by
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>T</I>(<I>n</I>,<I>x</I>)= cos(<I>n</I>.arccos(<I>x</I>)) </TD></TR>
-</TABLE><P>
-and verify the recurrence relation:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>T</I>(0,<I>x</I>)=1,    
-<I>T</I>(1,<I>x</I>)=<I>x</I>,    <I>T</I>(<I>n</I>,<I>x</I>)=2<I>xT</I>(<I>n</I>&#X2212;1,<I>x</I>)&#X2212;<I>T</I>(<I>n</I>&#X2212;2,<I>x</I>) </TD></TR>
-</TABLE><P>
-The polynomials <I>T</I>(<I>n</I>,<I>x</I>) are orthogonal for the scalar product
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&lt;<I>f</I>,<I>g</I>&gt;=</TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">&#X2212;1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1&#X2212;<I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I> </TD></TR>
-</TABLE><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Laguerre polynomials: laguerre</title>
+</head>
+<body >
+<a href="cascmd_en229.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en231.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec279" class="subsection">2.26.3  Laguerre polynomials: <span style="font-family:monospace">laguerre</span></h3>
+<p><a id="hevea_default417"></a>
+<span style="font-family:monospace">laguerre</span> takes as argument an integer <span style="font-style:italic">n</span> and optionally 
+a variable name (by default <span style="font-style:italic">x</span>) and a parameter name (by default <span style="font-style:italic">a</span>).<br>
+<span style="font-family:monospace">laguerre</span> returns the Laguerre polynomial of degree <span style="font-style:italic">n</span> and of 
+parameter <span style="font-style:italic">a</span>.<br>
+If <span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>) denotes the Laguerre polynomial of degree <span style="font-style:italic">n</span> and 
+parameter <span style="font-style:italic">a</span>, the following recurrence relation holds:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">L</span>(0,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)=1,   
+<span style="font-style:italic">L</span>(1,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)=1+<span style="font-style:italic">a</span>&#X2212;<span style="font-style:italic">x</span>,   
+<span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2<span style="font-style:italic">n</span>+<span style="font-style:italic">a</span>&#X2212;1&#X2212;<span style="font-style:italic">x</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>&#X2212;1,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)&#X2212;</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>+<span style="font-style:italic">a</span>&#X2212;1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>&#X2212;2,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>) </td></tr>
+</table><p>
+These polynomials are orthogonal for the scalar product
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&lt;<span style="font-style:italic">f</span>,<span style="font-style:italic">g</span>&gt;=</td><td class="dcell"><span style="font-size:xx-large">&#X222B;</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+&#X221E;</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">x</span><sup><span style="font-style:italic">a</span></sup><span style="font-style:italic">e</span><sup>&#X2212;<span style="font-style:italic">x</span></sup><span style="font-style:italic">dx</span> </td></tr>
+</table><p>
 Input :
-</P><DIV CLASS="center"><TT>tchebyshev1(4)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">laguerre(2)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>8*x</TT><CODE><TT>^</TT></CODE><TT>4+-8*x</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-2*a*x+3*a+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*x+2)/2</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>tchebyshev1(4,y)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">laguerre(2,y)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>8*y</TT><CODE><TT>^</TT></CODE><TT>4+-8*y</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
-Indeed
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>cos( 4.<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><I>Re</I>((cos(<I>x</I>)+<I>i</I>.sin(<I>x</I>))<SUP>4</SUP>) </TD></TR>
-<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>cos(<I>x</I>)<SUP>4</SUP>&#X2212;6.cos(<I>x</I>)<SUP>2</SUP>.(1&#X2212;cos(<I>x</I>)<SUP>2</SUP>)+((1&#X2212;cos(<I>x</I>)<SUP>2</SUP>)<SUP>2</SUP> </TD></TR>
-<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><I>T</I>(4,cos(<I>x</I>))</TD></TR>
-</TABLE></TD></TR>
-</TABLE><HR>
-<A HREF="cascmd_en229.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en231.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-2*a*y+3*a+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*y+2)/2</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">laguerre(2,y,b)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">(b</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-2*b*y+3*b+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*y+2)/2</span></div>
+<hr>
+<a href="cascmd_en229.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en231.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

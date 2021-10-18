@@ -1,227 +1,35 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les commandes d’affichage : display color affichage couleur</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr889.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr891.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1043">10.3.5</A>  Les commandes d’affichage : <TT>display color affichage couleur</TT></H3><P><A NAME="@default1663"></A><A NAME="@default1664"></A><A NAME="@default1665"></A><A NAME="@default1666"></A>
-<TT>affichage couleur</TT> peut avoir comme paramètre différentes valeurs, 
-reliées par <TT>+</TT>, permettant de gérer les attributs des graphiques à 
-venir d’une ligne de commandes normale (la commande est alors globale) ou de 
-gérer les attributs d’un objet graphique ou d’une légende (la commande est 
-alors locale).<BR>
-<B>Attention</B><BR>
-<TT>affichage(0)</TT> remet l’affichage par défaut : couleur noire, figure non 
-pleine, les points ont des légendes...</P><H4 CLASS="subsubsection"><A NAME="toc29"></A>Pour ne pas afficher le nom de l’objet</H4><P><A NAME="@default1667"></A>
-<TT>hidden_name</TT> est une valeur de paramètre de la commande <TT>affichage</TT>
-qui permet de ne pas afficher le nom de l’objet.
-On tape (ici la commande <TT>affichage</TT> est locale au point <TT>A</TT>) :
-</P><DIV CLASS="center"><TT>affichage(A:=point(1+i),hidden_name);B:=point(-1); D:=droite(A,B)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>A est dessiné sans son nom et B et la droite A,B sont dessinés avec leur nom</TT></DIV><P>
-On tape (ici la commande <TT>affichage</TT> est locale):
-</P><DIV CLASS="center"><TT>A:=point(1+i);B:=point(-1);affichage(D:=droite(A,B),hidden_name)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Les points A et B et leurs noms et la droite A,B dessinée sans son nom</TT></DIV><P>
-<B>Attention</B> NE PAS mettre <TT>affichage(hidden_name)</TT> comme commande 
-globale car après, aucun nom sera visible, et seule la commande 
-<TT>affichage(0)</TT> remettra l’affichage par défaut.</P><H4 CLASS="subsubsection"><A NAME="toc30"></A>Mettre de la couleur</H4><P><A NAME="@default1668"></A><A NAME="@default1669"></A><A NAME="@default1670"></A><A NAME="@default1671"></A><A NAME="@default1672"></A><A NAME="@default1673"></A><A NAME="@default1674"></A><A NAME="@default1675"></A>
-<A NAME="@default1676"></A><A NAME="@default1677"></A><A NAME="@default1678"></A><A NAME="@default1679"></A><A NAME="@default1680"></A><A NAME="@default1681"></A>
-Un entier entre 0 et 255 (ou un nom de couleur) représente une 
-couleur de la palette des couleurs que l’on peut voir avec le bouton des 
-couleurs de l’écran de géométrie et, un entier entre 256 et 381 
-représente les couleurs de l’arc en ciel. Pour voir les 
-couleurs de l’arc en ciel il suffit d’exécuter le programme suivant :
-</P><PRE CLASS="verbatim">arcenciel():={
-local j,C;
-C:=[];
-for (j:=256;j&lt;382;j++){
-C:=append(C,carre(j,j+1,couleur=j+rempli));
-}
-C;
-}
-</PRE><P>Pour voir l’arc en ciel, on tape <TT>a:=arcenciel():;</TT>, puis <TT>a</TT>
-pour voir toutes les couleurs (le numéro d’une couleur
-est alors égal à son abscisse) ou par exemple <TT>a[300-256]</TT>
-pour voir la couleur de numéro 300. </P><P>Autre méthode, on tape :<BR>
-<TT>ciel():={ local j;<BR>
-for (j:=0;j&lt;126;j++)<BR>
- carre(j,(j+1),affichage=rempli+256+j);}</TT>
-puis,<BR>
-<TT>ClrGraph;ciel()</TT> et on ouvre la fenêtre <TT>DispG</TT> avec le menu 
-<TT>Cfg</TT> sous menu <TT>Montrer</TT> puis <TT>DispG</TT>.
-On regle <TT>cfg</TT> de cette fenêtre en prenant <TT>WX-=-1</TT>, <TT>WX+=127</TT>,
-<TT>WY-=0</TT> et <TT>WY+=1</TT> et on voit ainsi les 126 couleurs 
-de l’arc en ciel !</P><P>La commande <TT>couleur</TT> ou <TT>affichage</TT> avec comme 
-paramètre un entier entre 0 et 381 (ou un nom de couleur) permet de 
-tracer un objet géométrique avec la couleur spécifiée.<BR>
-<TT>couleur</TT> ou <TT>affichage</TT> a un argument (resp deux arguments) : le nom 
-de la couleur ou l’entier désignant cette couleur (noir=0, rouge=1, vert=2, 
-jaune=3, bleu=4) (resp l’objet géométrique ou une légende et le nom de la couleur ou le numéro de la couleur).<BR>
-<B>Attention</B><A NAME="@default1682"></A><A NAME="@default1683"></A><A NAME="@default1684"></A><A NAME="@default1685"></A><BR>
-Le nom <TT>couleur</TT> ou <TT>affichage</TT> ou display ou <TT>color</TT> peut 
-aussi servir de paramètre optionnel 
-d’une commande graphique. Dans ce cas, le nom du paramètre optionnel (ici
-<TT>couleur</TT> ou <TT>affichage</TT> ou <TT>color</TT>) est suivi de <TT>=</TT> puis de
-la valeur de l’entier désignant la couleur, est 
-le paramètre que l’on passe comme argument supplémentaire
-dans les commandes graphiques.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>couleur(segment(0,1+i),rouge)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>segment(0,1+i,couleur=rouge)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le segment(0,1+i) est dessiné en rouge</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>couleur(point(1+i),2)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>point(1+i, couleur=2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point 1+i apparait avec une croix (x) verte</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>affichage(rouge)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>après cette instruction, les dessins resultant de commandes graphiques se feront en rouge</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>couleur(legende(1+i,"AA"),rouge)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>legende(1+i,"AA",couleur=rouge)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point(1+i) dessiné en rouge a comme légende rouge AA</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc31"></A>Pour dessiner une figure pleine</H4><P><A NAME="@default1686"></A><A NAME="@default1687"></A>
-<TT>rempli</TT> ou <TT>filled</TT> est une valeur de paramètre de la commande 
-<TT>affichage</TT> qui permet d e dessiner une figure pleine.
-On tape (ici la commande <TT>affichage</TT> est globale) :
-</P><DIV CLASS="center"><TT>affichage(rempli);carre(0,1+i);triangle(-1,0,-i);</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>le carre(0,1+i) plein et le triangle(-1,0,-i) plein</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc32"></A>Les différents affichages de points</H4><P>
-<A NAME="@default1688"></A><A NAME="@default1689"></A>
-<A NAME="@default1690"></A><A NAME="@default1691"></A>
-<A NAME="@default1692"></A><A NAME="@default1693"></A>
-<A NAME="@default1694"></A><A NAME="@default1695"></A>
-<A NAME="@default1696"></A><A NAME="@default1697"></A>
-<A NAME="@default1698"></A><A NAME="@default1699"></A>
-<A NAME="@default1700"></A>
-<A NAME="@default1701"></A><A NAME="@default1702"></A>
-<A NAME="@default1703"></A>
-<A NAME="@default1704"></A>
-<A NAME="@default1705"></A>
-<A NAME="@default1706"></A>
-<A NAME="@default1707"></A>
-<A NAME="@default1708"></A>
-<TT>couleur</TT> ou <TT>affichage</TT> peut avoir comme argument la forme de la 
-représentation des points 2-d à l’affichage. Ces formes peuvent avoir des 
-traits plus ou moins épais selon la valeur de <TT>n</TT> de 
-<TT>point_width_n</TT>.<BR>
-La représentation des points 3-d a comme forme un carré (c’est 
-<TT>point_carre</TT>) plus ou moins 
-gros selon la valeur de <TT>n</TT> de <TT>point_width_n</TT>.<BR>
-Les différentes options sont :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>point_losange</TT> ou <TT>rhombus_point</TT> pour représenter un point par un petit losange
-(◇),
-</LI><LI CLASS="li-itemize"><TT>point_carre</TT> ou <TT>square_point</TT> pour représenter un point par un petit carré 
-(□),
-</LI><LI CLASS="li-itemize"><TT>point_croix</TT> ou <TT>cross_point</TT> pour représenter un point par 
-une croix (×) c’est la représentation par défaut,
-</LI><LI CLASS="li-itemize"><TT>point_etoile</TT> ou <TT>star_point</TT> pour représenter un point par 
-une étoile (*),
-</LI><LI CLASS="li-itemize"><TT>point_plus</TT> ou <TT>plus_point</TT> pour représenter un point par le
-signe plus (+),
-</LI><LI CLASS="li-itemize"><TT>point_point</TT> pour représenter un point par un point (·).
-</LI><LI CLASS="li-itemize"><TT>point_triangle</TT> ou <TT>triangle_point</TT> pour représenter un 
-point par un triangle (△),
-</LI><LI CLASS="li-itemize"><TT>point_invisible</TT> ou <TT>invisible_point</TT> pour ne pas 
-représenter un point.
-</LI></UL><P>
-Les différentes épaisseurs sont :<BR>
-<TT>point_width_1</TT> ou <TT>epaisseur_point_1</TT>,<TT>point_width_2</TT> ou 
-<TT>epaisseur_point_2</TT>...<TT>point_width_8</TT> ou 
-<TT>epaisseur_point_8</TT><BR>
-<B>Attention</B><BR>
-<A NAME="@default1709"></A><A NAME="@default1710"></A><A NAME="@default1711"></A>
-Le nom <TT>couleur</TT> ou <TT>color</TT> ou <TT>affichage</TT> est aussi le nom d’un 
-paramètre que
-l’on passe comme argument supplémentaire dans les commandes géométriques 
-lorsqu’il est suivi de <TT>=</TT>, puis de la valeur d’un attribut puis de 
-<TT>+</TT>, puis de la valeur d’un autre attribut etc...<BR>
-On tape :
-</P><DIV CLASS="center"><TT>couleur(point(1+i),rouge+point_carre+point_width_3)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>point(1+i,affichage=rouge+point_carre+point_width_3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point (1+i) est dessiné en rouge à l’aide d’un petit carré</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>affichage(point_carre)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>après cette instruction, les points seront dessinés à l’aide d’un petit carré</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc33"></A>Les différents formes d’affichage des lignes</H4><P>
-<A NAME="@default1712"></A>
-<A NAME="@default1713"></A>
-<A NAME="@default1714"></A>
-<A NAME="@default1715"></A>
-<A NAME="@default1716"></A>
-<A NAME="@default1717"></A>
-<A NAME="@default1718"></A>
-<A NAME="@default1719"></A>
-<A NAME="@default1720"></A>
-<A NAME="@default1721"></A>
-<A NAME="@default1722"></A>
-<A NAME="@default1723"></A>
-<A NAME="@default1724"></A>
-<A NAME="@default1725"></A>
-<TT>couleur</TT> ou <TT>affichage</TT> peut avoir comme argument la forme de la 
-représentation des lignes à l’affichage.<BR>
-Les différentes options sont :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>solid_line</TT> ou <TT>ligne_trait_plein</TT> est un argument de 
-<TT>couleur</TT> et permet de 
-dessiner une ligne en trait plein (c’est la représentation par défaut),
-</LI><LI CLASS="li-itemize"><TT>dash_line</TT> ou <TT>ligne_tiret</TT> est un argument de <TT>couleur</TT> 
-et permet de dessiner
-une ligne en pointillé.
-</LI><LI CLASS="li-itemize"><TT>dashdot_line</TT> ou <TT>ligne_tiret_point</TT> est un argument de 
-<TT>couleur</TT> et permet de 
-dessiner une ligne avec un tiret et un point,
-</LI><LI CLASS="li-itemize"><TT>dashdotdot_line</TT> ou <TT>ligne_tiret_pointpoint</TT> est un argument 
-de <TT>couleur</TT> et permet de dessiner une ligne avec un tiret et deux points,
-</LI><LI CLASS="li-itemize"><TT>cap_flat_line</TT> ou <TT>ligne_chapeau_plat</TT> est un argument de 
-<TT>couleur</TT> et permet de dessiner une ligne plate,
-</LI><LI CLASS="li-itemize"><TT>cap_round_line</TT> ou <TT>ligne_chapeau_rond</TT> est un argument de 
-<TT>couleur</TT> et permet de dessiner une ligne tubulaire,
-</LI><LI CLASS="li-itemize"><TT>cap_square_line</TT> ou <TT>ligne_chapeau_carre</TT> est un argument de
-<TT>couleur</TT> et permet de dessiner une ligne à section carr’ee.
-</LI></UL><P>
-On tape :
-</P><DIV CLASS="center"><TT>couleur(segment(0,1+i),rouge+dash_line)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le segment (0,1+i) est dessiné en rouge en pointillé</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc34"></A>Les différentes épaisseurs d’affichage des lignes</H4><P><A NAME="@default1726"></A><A NAME="@default1727"></A><A NAME="@default1728"></A>
-<A NAME="@default1729"></A>
-<A NAME="@default1730"></A>
-<A NAME="@default1731"></A></P><P><TT>couleur</TT> ou <TT>affichage</TT> peut avoir comme argument 
-l’épaisseur de la représentation des lignes à l’affichage.<BR>
-Les différentes options d’épaisseurs sont :<BR>
-<TT>line_width_1</TT>, <TT>line_wdith_2</TT>,...<TT>line_width_8</TT> ou<BR>
-<TT>epaisseur_ligne_1</TT>, <TT>epaisseur_ligne_2</TT>,...<TT>epaisseur_ligne_8</TT>.<BR>
-<TT>line_width_n</TT> est un argument de <TT>couleur</TT> ou <TT>affichage</TT> et 
-permet de dessiner une ligne plus ou moins epaisse.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>couleur(droite(y=1),rouge+line_width_1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La droite (y=1) est dessinée en rouge et en trait fin</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>couleur(droite(y=2),rouge+line_width_7)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La droite (y=2) est dessinée en rouge et en trait très épais</TT></DIV><HR>
-<A HREF="cascmd_fr889.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr891.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Les points et les nombres complexes</title>
+</head>
+<body >
+<a href="cascmd_fr889.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr891.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1086" class="subsection">10.8.1  Les points et les nombres complexes</h3>
+<p><a id="sec:pointa2"></a>
+L’affixe d’un point en géométrie plane est un nombre complexe.<br>
+La commande <span style="font-family:monospace">point</span> a comme argument un nombre complexe <span style="font-style:italic">c</span> (ou un couple 
+de 2 nombres <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) et renvoie
+le point d’affixe <span style="font-style:italic">c</span> (ou d’affixe <span style="font-style:italic">a</span>+<span style="font-style:italic">ib</span>) tracé dans un écran graphique.<br>
+Certaines fonctions peuvent admettre comme argument soit un point, soit un 
+nombre complexe, mais quelquefois le résultat n’est pas le même.<br>
+<span style="font-weight:bold">Exemples</span><br>
+<span style="font-family:monospace">re(1+2*i)</span> renvoie <span style="font-family:monospace">1</span> <br>
+Si <span style="font-family:monospace">A:=point(1+2*i)</span>, <span style="font-family:monospace">re(A)</span> renvoie un point d’affixe <span style="font-family:monospace">1</span>, 
+et <span style="font-family:monospace">im(A)</span> renvoie un point d’affixe <span style="font-family:monospace">2*i</span> <br>
+<span style="font-family:monospace">cercle(1,1+i)</span> renvoie le cercle de centre le point d’affixe 1 et de
+rayon égal à √<span style="text-decoration:overline">2</span>=<span style="font-family:monospace">abs(1+i)</span>,<br>
+<span style="font-family:monospace">cercle(1,point(1+i))</span> renvoie le cercle de diamètre le point d’affixe 
+1 et le point d’affixe (1+i)</p>
+<hr>
+<a href="cascmd_fr889.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr891.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

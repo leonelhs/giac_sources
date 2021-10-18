@@ -3777,7 +3777,7 @@ namespace xcas {
     if (current_status){
       string mode_s="Config ";
       if (pack->url)
-	mode_s += remove_path(*pack->url);
+	mode_s += '\''+remove_path(*pack->url)+'\'';
       mode_s += " :";
 #ifdef IPAQ
       if (giac::approx_mode(ptr))

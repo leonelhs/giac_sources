@@ -670,7 +670,15 @@ namespace giac {
     }
 
     bool in_eval(int level,gen & evaled,const context * contextptr) const;
-    gen eval(int level,const context * contextptr) const;
+    inline gen eval(int level,const context * contextptr) const{
+      // CERR << "eval " << *this << " " << level << endl;
+      gen res;
+      // return in_eval(level,res,contextptr)?res:*this;
+      if (in_eval(level,res,contextptr))
+	return res;
+      else
+      return *this;
+    }
     // inline gen eval() const { return eval(DEFAULT_EVAL_LEVEL,context0); }
     bool in_evalf(int level,gen & evaled,const context * contextptr) const;
     gen evalf(int level,const context * contextptr) const;
@@ -685,7 +693,7 @@ namespace giac {
       // Copy before deleting because the target might be embedded in a
       // with a ptr_val.ref_count of a equals to 1
       // short int type_save=type; // short int subtype_save=subtype; 
-      * ((longlong *) this) = al;
+      * ((ulonglong *) this) = al;
       if (atype>_DOUBLE_ && atype!=_FLOAT_ 
 	  && (al >> 16)	){
 	ref_count_t * rc=(ref_count_t *)& ((ref_mpz_t *)(al>>16) )->ref_count;
@@ -721,7 +729,7 @@ namespace giac {
       _DOUBLE_val = a._DOUBLE_val;
       subtype=a.subtype;
 #else
-      * ((longlong *) this) = *((longlong * ) &a);
+      * ((ulonglong *) this) = *((ulonglong * ) &a);
 #endif
       __ZINTptr=a.__ZINTptr;
       type=a.type;

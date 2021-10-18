@@ -1,34 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Division by increasing power order : divpc</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en275.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en277.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc311">2.33.1</A>  Division by increasing power order : <TT>divpc</TT></H3><P><A NAME="@default475"></A>
-<TT>divpc</TT> takes three arguments : two polynomials
-expressions <I>A</I>, <I>B</I> depending on <I>x</I>,
-such that the constant term of <I>B</I> is not 0, and an integer <I>n</I>.<BR>
-<TT>divpc</TT> returns the quotient <I>Q</I> of the division of <I>A</I> by <I>B</I> 
-by increasing power order, with <TT>degree</TT>(<I>Q</I>)&#X2264; <I>n</I> or  <I>Q</I>=0.
-In other words, <I>Q</I> is the Taylor expansion at order <I>n</I> of
- <I>A</I>/<I>B</I> in the vicinity of <I>x</I>=0.<BR>
-Input :
-</P><DIV CLASS="center"><TT>divpc(1+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3,1+x</TT><CODE><TT>^</TT></CODE><TT>2,5)</TT></DIV><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Row reduction to echelon form in &#X2124;/p&#X2124; : Rref</title>
+</head>
+<body >
+<a href="cascmd_en275.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en277.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec331" class="subsection">2.32.7  Row reduction to echelon form in &#X2124;/<span style="font-style:italic">p</span>&#X2124; : <span style="font-family:monospace">Rref</span></h3>
+<p><a id="hevea_default475"></a>
+<span style="font-family:monospace">Rref</span> is the inert form of <span style="font-family:monospace">rref</span>.<br>
+<span style="font-family:monospace">Rref</span> returns <span style="font-family:monospace">rref</span> without
+evaluation. 
+It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to 
+find the row reduction to echelon form 
+of a matrix with coefficients in &#X2124;/<span style="font-style:italic">p</span>&#X2124; (see 
+also <a href="cascmd_en456.html#sec%3Arref">2.53.3</a>).<br>
+Example, solve in &#X2124;/13&#X2124;
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&#X23A7;<br>
+&#X23A8;<br>
+&#X23A9;</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >   <span style="font-style:italic">x</span> +   2 · <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >9 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3 · <span style="font-style:italic">x</span> +10 · <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >0 </td></tr>
+</table></td></tr>
+</table><p>
+Input in <span style="font-family:monospace">Xcas</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rref([[1,2,9] mod 13,[3,10,0] mod 13])</span></div><p> 
 Output :
-</P><DIV CLASS="center"><TT>-x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>3+1</TT></DIV><P>
-Note that this command does not work on polynomials written
-as list of coefficients.</P><HR>
-<A HREF="cascmd_en275.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en277.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">rref([[1%13, 2%13, 9%13],[3%13,10%13,0%13]])</span></div><p>
+you need to <span style="font-family:monospace">eval(ans())</span> to get :
+</p><div class="center"><span style="font-family:monospace">[[1%13,0%13,3%13],[0%13,1%13,3%13]]</span></div><p> 
+and conclude that <span style="font-family:monospace">x=3%13</span> and <span style="font-family:monospace">y=3%13</span>.<br>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rref([[1,2,9],[3,10,0],[3,11,1]]) mod 13</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[1,0,0],[0,1,0],[0,0,1]]</span></div>
+<hr>
+<a href="cascmd_en275.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en277.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

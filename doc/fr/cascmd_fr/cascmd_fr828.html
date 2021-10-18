@@ -1,73 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction testant le type de son argument: type</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr827.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr829.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc974">9.4.4</A>  Fonction testant le type de son argument: <TT>type</TT></H3><P><A NAME="@default1472"></A>
-<A NAME="@default1473"></A><A NAME="@default1474"></A><A NAME="@default1475"></A><A NAME="@default1476"></A><A NAME="@default1477"></A><A NAME="@default1478"></A><A NAME="@default1479"></A><A NAME="@default1480"></A><A NAME="@default1481"></A><A NAME="@default1482"></A><A NAME="@default1483"></A><A NAME="@default1484"></A><A NAME="@default1485"></A><A NAME="@default1486"></A><A NAME="@default1487"></A><A NAME="@default1488"></A><A NAME="@default1489"></A><A NAME="@default1490"></A>
-<TT>type</TT> est une fonction qui a un argument et qui renvoie le
-type de cet argument par exemple :<BR>
- 
-<TT>double ou DOM_FLOAT, integer ou DOM_INT, complex ou DOM_COMPLEX,</TT><BR>
-<TT>identifier ou DOM_IDENT, vector ou DOM_LIST, func ou DOM_FUNC</TT><BR>
-<TT>expression ou DOM_SYMBOLIC, rational ou DOM_RAT, string ou DOM_STRING</TT>.<BR>
-Il y a 20 types différents qui sont représentés par un entier entre 1 
-et 20.<BR>
-<TT>type</TT> permet de tester une erreur d’entrée.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonction testant les sous-type du type DOM_LIST : subtype</title>
+</head>
+<body >
+<a href="cascmd_fr827.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr829.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1006" class="subsection">9.4.5  Fonction testant les sous-type du type DOM_LIST : <span style="font-family:monospace">subtype</span></h3>
+<p><a id="hevea_default1488"></a>
+<span style="font-family:monospace">subtype</span> est une fonction qui a un argument et qui renvoie :<br>
+1 si cet argument est une séquence, et 0 sinon.<br>
+2 si cet argument est un ensemble, <br>
+10 si cet argument estun polynôme et <br>
+0 sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>type(3.14)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>double</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">type(3,1,4)</span></div><div class="center"><span style="font-family:monospace">type(set[3,1,4])</span></div><div class="center"><span style="font-family:monospace">type(poly1[3,1,4])</span></div><div class="center"><span style="font-family:monospace">type([3,1,4])</span></div><p>
+On obtient :</p><div class="center"><span style="font-family:monospace">DOM_LIST</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>type(3.14)+0</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">subtype(3,1,4)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>type(3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">subtype(set[3,1,4])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>integer</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">2</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>type(3)+0</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">subtype(poly1[3,1,4])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">10</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>type(3% 5)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">subtype([3,1,4])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>15</TT></DIV><P><B>Remarque : utilisation de type pour les graphes</B><BR>
-voir aussi <A HREF="index.html#sec:plot">3</A><BR>
-Si le graphe dépend d’une fonction utilisateur, il faut que la fonction soit 
-définie même lorsque le(s) paramètre(s) a (ont) une valeur formelle, ce 
-qui peut se faire en testant le type du paramètre, comme dans l’exemple 
-suivant, <I>f</I> est définie en testant du type du paramètre par :
-</P><PRE CLASS="verbatim">f(x):= {
-  if (type(x)==identifier) return 'f'(x); 
-  while(x&gt;0){ x--; } 
-  return x; 
-}:;
-</PRE><P>Ainsi <TT>f(x)</TT> renvoie <TT>f(x)</TT> et <TT>f(3.1)</TT> renvoie <TT>-0.9</TT>.<BR>
-ou bien<BR>
-</P><PRE CLASS="verbatim">g(x):= {   
-  if (type(x)!=vector) return 'g'(x); 
-  if (type(x)==identifier) return 'g'(x); 
-  while(x[0]&gt;0){x[0]:=x[0]-1; } 
-  return x; 
-}:;
-</PRE><P>Ainsi <TT>g(x)</TT> renvoie <TT>g(x)</TT>, <TT>g([x,y,z])</TT> renvoie <TT>g([x,y,z])</TT>
-et <TT>g([1.1,2,3])</TT> renvoie <TT>[-0.9,2,3]</TT>.<BR>
-Par exemple si <TT>G:=plotfunc(g(x)</TT>, le test permet d’utiliser le graphe <TT>G</TT> de <TT>g</TT> dans des commandes comme <TT>translation(1+i,G)</TT>...
-</P><HR>
-<A HREF="cascmd_fr827.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr829.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0</span></div>
+<hr>
+<a href="cascmd_fr827.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr829.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,75 +1,75 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Definir une fonction avec l’historique : as_function_of</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr298.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr300.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc376">6.18.6</A>  Definir une fonction avec l’historique : <TT>as_function_of</TT></H3><P><A NAME="@default557"></A>
-Si on a affecté une valeur à la variable <TT>a</TT> et si on 
-définit ensuite, dans une autre ligne d’entrée, la variable <TT>b</TT>, 
-à partir de <TT>a</TT>, on utilise <TT>c:=as_function_of(b,a)</TT> pour définir
-une fonction <TT>c</TT> vérifiant : <TT>c(a)=b</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Definir une fonction avec l’historique : as_function_of</title>
+</head>
+<body >
+<a href="cascmd_fr298.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr300.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec389" class="subsection">6.18.6  Definir une fonction avec l’historique : <span style="font-family:monospace">as_function_of</span></h3>
+<p><a id="hevea_default557"></a>
+Si on a affecté une valeur à la variable <span style="font-family:monospace">a</span> et si on 
+définit ensuite, dans une autre ligne d’entrée, la variable <span style="font-family:monospace">b</span>, 
+à partir de <span style="font-family:monospace">a</span>, on utilise <span style="font-family:monospace">c:=as_function_of(b,a)</span> pour définir
+une fonction <span style="font-family:monospace">c</span> vérifiant : <span style="font-family:monospace">c(a)=b</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>a:=sin(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">a:=sin(x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>sin(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sin(x)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>b:=sqrt(1+a</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">b:=sqrt(1+a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>b:=sqrt(1+sin(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">b:=sqrt(1+sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>c:=as_function_of(b,a)</TT></DIV><DIV CLASS="center"><TT>c(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">c:=as_function_of(b,a)</span></div><div class="center"><span style="font-family:monospace">c(x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(1+x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">sqrt(1+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>a:=2</TT></DIV><DIV CLASS="center"><TT>b:=1+a</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">a:=2</span></div><div class="center"><span style="font-family:monospace">b:=1+a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>b:=5</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">b:=5</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>c:=as_function_of(b,a)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">c:=as_function_of(b,a)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(a)-&gt;<BR>
-{ local NULL;<BR>
- return(sqrt(1+a</TT><CODE><TT>^</TT></CODE><TT>2));<BR>
-}</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">(a)-&gt; <br>
+{ local NULL;<br>
+ return(sqrt(1+a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2));<br>
+}</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>c(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">c(x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
-<B>Attention</B><BR>
- Si la variable <TT>b</TT> a été affectée 
-plusieurs fois c’est la première affectation de <TT>b</TT> après la 
-dernière affectation de <TT>a</TT> qui compte.<BR>
-On tape par exemple :<BR>
-<TT>a:=2</TT> puis<BR>
-<TT>b:=2*a+1</TT> puis<BR>
-<TT>b:=3*a+2</TT> puis<BR>
-<TT>c:=as_function_of(b,a)</TT><BR>
+</p><div class="center"><span style="font-family:monospace">1+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
+<span style="font-weight:bold">Attention</span><br>
+ Si la variable <span style="font-family:monospace">b</span> a été affectée 
+plusieurs fois c’est la première affectation de <span style="font-family:monospace">b</span> après la 
+dernière affectation de <span style="font-family:monospace">a</span> qui compte.<br>
+On tape par exemple :<br>
+<span style="font-family:monospace">a:=2</span> puis<br>
+<span style="font-family:monospace">b:=2*a+1</span> puis<br>
+<span style="font-family:monospace">b:=3*a+2</span> puis<br>
+<span style="font-family:monospace">c:=as_function_of(b,a)</span><br>
 On obtient :
-</P><DIV CLASS="center"><TT>(a)-&gt; {local NULL; return(2*a+1);}</TT></DIV><P>
-c’est à dire que <TT>c(x)</TT> vaut <TT>2*x+1</TT>.<BR>
-Mais si on tape par exemple :<BR>
-<TT>a:=2</TT> puis<BR>
-<TT>b:=2*a+1</TT> puis<BR>
-<TT>a:=2</TT> puis<BR>
-<TT>b:=3*a+2</TT> puis<BR>
-<TT>c:=as_function_of(b,a)</TT><BR>
+</p><div class="center"><span style="font-family:monospace">(a)-&gt; {local NULL; return(2*a+1);}</span></div><p>
+c’est à dire que <span style="font-family:monospace">c(x)</span> vaut <span style="font-family:monospace">2*x+1</span>. <br>
+Mais si on tape par exemple :<br>
+<span style="font-family:monospace">a:=2</span> puis<br>
+<span style="font-family:monospace">b:=2*a+1</span> puis<br>
+<span style="font-family:monospace">a:=2</span> puis<br>
+<span style="font-family:monospace">b:=3*a+2</span> puis<br>
+<span style="font-family:monospace">c:=as_function_of(b,a)</span><br>
 On obtient :
-</P><DIV CLASS="center"><TT>(a)-&gt; {local NULL; return(3*a+2);}</TT></DIV><P>
-c’est à dire que <TT>c(x)</TT> vaut <TT>3*x+2</TT>.<BR>
-Il est donc préférable de valider la ligne ou se trouve <TT>a</TT> avant de 
-définir le <TT>b</TT> qui convient. </P><HR>
-<A HREF="cascmd_fr298.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr300.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">(a)-&gt; {local NULL; return(3*a+2);}</span></div><p>
+c’est à dire que <span style="font-family:monospace">c(x)</span> vaut <span style="font-family:monospace">3*x+2</span>. <br>
+Il est donc préférable de valider la ligne ou se trouve <span style="font-family:monospace">a</span> avant de 
+définir le <span style="font-family:monospace">b</span> qui convient. </p>
+<hr>
+<a href="cascmd_fr298.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr300.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

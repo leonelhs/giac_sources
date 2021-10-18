@@ -1,55 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Gramschmidt orthonormalization : gramschmidt</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en428.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en430.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc480">2.49.4</A>  Gramschmidt orthonormalization : <TT>gramschmidt</TT></H3><P><A NAME="@default710"></A>
-<TT>gramschmidt</TT> takes one or two arguments : 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-a matrix viewed as a list of row vectors, 
-the scalar product being the canonical
-scalar product, or
-</LI><LI CLASS="li-itemize">a list of elements 
-that is a basis of a vector subspace, and a function that defines a scalar 
-product on this vector space.
-</LI></UL><P>
-<TT>gramschmidt</TT> returns an orthonormal basis for this scalar product.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>LU decomposition (for TI compatibility) : LU</title>
+</head>
+<body >
+<a href="cascmd_en428.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en430.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec510" class="subsection">2.49.5  LU decomposition (for TI compatibility) : <span style="font-family:monospace">LU</span></h3>
+<p><a id="hevea_default711"></a>
+<span style="font-family:monospace">LU</span> takes as argument a numeric
+square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span> and three variable names, <span style="font-family:monospace">var1</span>, 
+<span style="font-family:monospace">var2</span> and <span style="font-family:monospace">var3</span>.<br>
+<span style="font-family:monospace">LU(A,var1,var2,var3)</span> returns <span style="font-style:italic">P</span>, a permutation matrix, and stores :
+</p><ul class="itemize"><li class="li-itemize">
+a lower triangular matrix <span style="font-style:italic">L</span>, with 1 on the diagonal, in 
+<span style="font-family:monospace">var1</span>,
+</li><li class="li-itemize">an upper triangular matrix <span style="font-style:italic">U</span> in <span style="font-family:monospace">var2</span>,
+</li><li class="li-itemize">the permutation matrix <span style="font-style:italic">P</span>, result of the command <span style="font-family:monospace">LU</span>, in 
+<span style="font-family:monospace">var3</span>.
+</li></ul><p>
+These matrices are such that 
+</p><div class="center">
+the equation <span style="font-style:italic">A</span>*<span style="font-style:italic">x</span>=<span style="font-style:italic">B</span> is equivalent to <span style="font-style:italic">L</span>*<span style="font-style:italic">U</span>*<span style="font-style:italic">x</span>=<span style="font-style:italic">P</span>*<span style="font-style:italic">B</span>.
+</div><p>
 Input :
-</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]]))</TT></DIV><P>
-Or input :
-</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]],dot))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">LU([[3,5],[4,5]],L,U,P)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[[(sqrt(3))/3,(sqrt(3))/3,(sqrt(3))/3],[(-(sqrt(6)))/6,(-(sqrt(6)))/6,(sqrt(6))/3],[(-(sqrt(2)))/2,(sqrt(2))/2,0]]</TT></DIV><P>
-<B>Example</B><BR>
-We define a scalar product on the vector space of 
-polynomials by: 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>.<I>Q</I>=</TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">&#X2212;1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>P</I>(<I>x</I>).<I>Q</I>(<I>x</I>)<I>dx</I> </TD></TR>
-</TABLE><P>
+</p><div class="center"><span style="font-family:monospace">[[0,1],[1,0]]</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],(p,q)-&gt;integrate(p*q,x,-1,1))</TT></DIV><P>
-Or define the function <TT>p_scal</TT>, input :<BR>
-<TT>p_scal(p,q):=integrate(p*q,x,-1,1)</TT><BR>
-then input :
-</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],p_scal)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">L</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[1/(sqrt(2)),(1+x-1)/sqrt(2/3)]</TT></DIV><HR>
-<A HREF="cascmd_en428.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en430.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[[1,0],[0.75,1]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">U</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[4,5],[0,1.25]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">P</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[0,1],[1,0]]</span></div>
+<hr>
+<a href="cascmd_en428.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en430.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

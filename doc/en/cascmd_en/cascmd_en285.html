@@ -1,40 +1,38 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Definition : seq[] ()</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en284.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en286.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc322">2.35.1</A>  Definition : <TT>seq[] ()</TT></H3><P><A NAME="@default491"></A><A NAME="@default492"></A>
-A sequence is represented by 
-a sequence of elements separated by commas, without
-delimiters or with either <TT>( )</TT> or <TT>seq[...]</TT>
-as delimiters, for example
-</P><DIV CLASS="center">
-<TT>(1,2,3,4)</TT><BR>
-<TT>seq[1,2,3,4]</TT>
-</DIV><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Intervals defined by their center : center2interval</title>
+</head>
+<body >
+<a href="cascmd_en284.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en286.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec342" class="subsection">2.34.4  Intervals defined by their center : <span style="font-family:monospace">center2interval</span></h3>
+<p><a id="hevea_default491"></a>
+<span style="font-family:monospace">center2interval</span> takes as argument a vector <span style="font-family:monospace">V</span> of reals
+and optionally a real as second argument 
+(by default <span style="font-family:monospace">V[0]-(V[1]-V[0])/2</span>).<br>
+<span style="font-family:monospace">center2interval</span> returns a vector of intervals having 
+the real values of the first argument as centers, where
+the value of the second argument is
+the left boundary of the first interval.<br>
 Input :
-</P><DIV CLASS="center"><TT>A:=(1,2,3,4)</TT> or <TT>A:=seq[1,2,3,4]</TT></DIV><DIV CLASS="center"><TT>B:=(5,6,3,4)</TT> or <TT>B:=seq[5,6,3,4]</TT></DIV><P>
-<B>Remarks</B>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-The order of the elements of the sequence is significant.
-For example, if <TT>B:=(5,6,3,4)</TT> and <TT>C:=(3,4,5,6)</TT>, then
-<TT>B==C</TT> returns <TT>0</TT>.
-</LI><LI CLASS="li-itemize">(see also <A HREF="cascmd_en289.html#sec:seq">2.35.5</A>)<BR>
-<TT>seq([0,2])=(0,0)</TT> and <TT>seq([0,1,1,5])=[0,0,0,0,0]</TT> but<BR>
-<TT>seq[0,2]=(0,2)</TT> and <TT>seq[0,1,1,5]=(0,1,1,5)</TT>
-</LI></UL><HR>
-<A HREF="cascmd_en284.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en286.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">center2interval([3,5,8])</span></div><p>
+Or (since the default value is 3-(5-3)/2=2) :
+</p><div class="center"><span style="font-family:monospace">center2interval([3,5,8],2)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[2..4,4..6,6..10]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">center2interval([3,5,8],2.5)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[2.5..3.5,3.5..6.5,6.5..9.5]</span></div>
+<hr>
+<a href="cascmd_en284.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en286.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

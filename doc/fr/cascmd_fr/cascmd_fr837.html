@@ -1,47 +1,92 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’affectation par copie : copy</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr836.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr838.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc983">9.4.13</A>  L’affectation par copie : <TT>copy</TT></H3><P><A NAME="@default1510"></A>
-<TT>copy</TT> permet de cloner une liste, un vecteur
-ou une matrice, en général pour le stocker dans une 
-variable.<BR>
-<TT>copy</TT> a un argument, la liste (vecteur ou matrice) à cloner.<BR>
-<TT>A:= copy(B)</TT> recopie la liste (vecteur, matrice) B dans A.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Les différences entre :=, =&lt; et copy</title>
+</head>
+<body >
+<a href="cascmd_fr836.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr838.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1015" class="subsection">9.4.14  Les différences entre <span style="font-family:monospace">:=</span>, <span style="font-family:monospace">=&lt;</span> et <span style="font-family:monospace">copy</span></h3>
+<p><a id="hevea_default1508"></a><a id="hevea_default1509"></a><a id="hevea_default1510"></a><a id="sec:diffaffectation"></a>
+Attention, <span style="font-family:monospace">:=</span> et <span style="font-family:monospace">=&lt;</span> ne sont pas équivalents car <span style="font-family:monospace">=&lt;</span> modifie
+lélément d’une liste ou matrice par référence.</p><p>L’affectation <span style="font-family:monospace">=&lt;</span> ne diffère de <span style="font-family:monospace">:=</span> que si on modifie un 
+élément d’une liste (ou matrice) contenue dans une variable, par exemple si 
+<span style="font-family:monospace">A</span> contient la liste <span style="font-family:monospace">[0,1,2,3,4]</span> i.e. si on a tapé 
+<span style="font-family:monospace">A:=[0,1,2,3,4]</span> et que l’on
+veut modifier la valeur de <span style="font-family:monospace">A[3]</span> et changer <span style="font-family:monospace">3</span> en <span style="font-family:monospace">33</span>, on peut 
+écrire dans ce cas, <span style="font-family:monospace">A[3]:=33</span> ou <span style="font-family:monospace">A[3] =&lt; 33</span> mais ces deux 
+instructions sont différentes. 
+En effet <span style="font-family:monospace">A</span> pointe vers une liste car <span style="font-family:monospace">A:=[0,1,2,3,4]</span>, et 
+<span style="font-family:monospace">A[3] =&lt; 33</span> modifie cette liste en la liste <span style="font-family:monospace">[0,1,2,33,4]</span>, ainsi 
+toutes les variables de 
+<span style="font-family:monospace">Xcas</span> qui pointent vers cette liste seront modifiées. Alors qu’avec
+<span style="font-family:monospace">A[3]:=33</span> la liste est dupliquée, la copie est modifiée et <span style="font-family:monospace">A</span> 
+pointe vers la copie. Il faut donc utiliser <span style="font-family:monospace">=&lt;</span> avec précautions car 
+tous les objets pointant sur cette liste (ou matrice) 
+seront modifiés.<br>
+</p><ul class="itemize"><li class="li-itemize"> 
 On tape :
-</P><DIV CLASS="center"><TT>B:=copy([[4,5],[2,6]])</TT></DIV><P>
+<div class="center"><span style="font-family:monospace">A:=[0,1,2,3,4]</span></div>
+<div class="center"><span style="font-family:monospace">B:=A</span></div>
+<div class="center"><span style="font-family:monospace">A[3]=&lt;33</span></div>
+<div class="center"><span style="font-family:monospace">A,B</span></div>
 ou :
-</P><DIV CLASS="center"><TT>A:=[[4,5],[2,6]];B:=copy(A)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>A,B</TT></DIV><P>
+<div class="center"><span style="font-family:monospace">A:=[0,1,2,3,4]</span></div>
+<div class="center"><span style="font-family:monospace">B:=A</span></div>
+<div class="center"><span style="font-family:monospace">B[3]=&lt;33</span></div>
+<div class="center"><span style="font-family:monospace">A,B</span></div>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4,5],[2,6]],[[4,5],[2,6]]</TT></DIV><P>
-<B>Quand doit-on utiliser </B><B><TT>copy</TT></B><B> ?</B><BR>
-<TT>copy</TT> est surtout utile pour des listes ou des matrices qui 
-seront par la suite modifiées par référence avec <TT>=&lt;</TT>.<BR>
+<div class="center"><span style="font-family:monospace">[0,1,2,33,4],[0,1,2,33,4]</span></div>
+En effet la liste <span style="font-family:monospace">[0,1,2,3,4]</span> a été modifiée par
+l’instruction <span style="font-family:monospace">A[3]=&lt;33</span> (ou par <span style="font-family:monospace">B[3]=&lt;33</span>) en la liste
+<span style="font-family:monospace">[0,1,2,33,4]</span>. Les listes <span style="font-family:monospace">A</span> et <span style="font-family:monospace">B</span> 
+pointent sur cette liste donc <span style="font-family:monospace">A</span> et <span style="font-family:monospace">B</span> sont modifiées toutes les 
+deux.
+</li><li class="li-itemize">On tape :
+<div class="center"><span style="font-family:monospace">A:=[0,1,2,3,4]</span></div>
+<div class="center"><span style="font-family:monospace">B:=A</span></div>
+<div class="center"><span style="font-family:monospace">A[3]:=33</span></div>
+<div class="center"><span style="font-family:monospace">A,B</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">[0,1,2,33,4],[0,1,2,3,4]</span></div>
+car <span style="font-family:monospace">A[3]:=33</span> fait une copie de la liste <span style="font-family:monospace">[0,1,2,3,4]</span> et modifie 
+cette copie en <span style="font-family:monospace">[0,1,2,33,4]</span> puis <span style="font-family:monospace">A</span> pointe sur cette copie et cela ne modifie pas <span style="font-family:monospace">B</span>.
 On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV><DIV CLASS="center"><TT>B:=copy(A)</TT></DIV><P>
+<div class="center"><span style="font-family:monospace">A:=[0,1,2,3,4]</span></div>
+<div class="center"><span style="font-family:monospace">B:=A</span></div>
+<div class="center"><span style="font-family:monospace">B[3]:=33</span></div>
+<div class="center"><span style="font-family:monospace">A,B</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">[0,1,2,3,4],[0,1,2,33,4]</span></div>
+car <span style="font-family:monospace">B[3]:=33</span> fait une copie de la liste <span style="font-family:monospace">[0,1,2,3,4]</span> et modifie 
+cette copie en <span style="font-family:monospace">[0,1,2,33,4]</span> puis <span style="font-family:monospace">B</span> pointe sur cette copie et cela ne modifie pas <span style="font-family:monospace">A</span>.
+</li><li class="li-itemize">On tape :
+<div class="center"><span style="font-family:monospace">A:=[0,1,2,3,4]</span></div>
+<div class="center"><span style="font-family:monospace">B:=copy(A)</span></div>
 Puis, si on tape :
-</P><DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV><DIV CLASS="center"><TT>A,B</TT></DIV><P>
+<div class="center"><span style="font-family:monospace">A[3]=&lt;33</span></div>
+<div class="center"><span style="font-family:monospace">A,B</span></div>
 On obtient :
-</P><DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,3,4]</TT></DIV><P>
-Puis si on tape :
-</P><DIV CLASS="center"><TT>B[3]=&lt;55</TT></DIV><DIV CLASS="center"><TT>A,B</TT></DIV><P>
+<div class="center"><span style="font-family:monospace">[0,1,2,33,4],[0,1,2,3,4]</span></div>
+On tape :
+<div class="center"><span style="font-family:monospace">A:=[0,1,2,3,4]</span></div>
+<div class="center"><span style="font-family:monospace">B:=copy(A)</span></div>
+<div class="center"><span style="font-family:monospace">B[3]=&lt;33</span></div>
+<div class="center"><span style="font-family:monospace">A,B</span></div>
 On obtient :
-</P><DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,55,4]</TT></DIV><HR>
-<A HREF="cascmd_fr836.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr838.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">[0,1,2,3,4],[0,1,2,33,4]</span></div>
+En effet <span style="font-family:monospace">B</span> pointe sur la copie de <span style="font-family:monospace">A</span>, donc une modifiucation par 
+référence de <span style="font-family:monospace">A[3]</span> (resp<span style="font-family:monospace">B[3]</span>) ne modifie pas <span style="font-family:monospace">B</span> (resp 
+<span style="font-family:monospace">A</span>). 
+</li></ul>
+<hr>
+<a href="cascmd_fr836.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr838.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

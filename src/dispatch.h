@@ -73,6 +73,7 @@ namespace giac {
     _INT___VECT = _INT_*_DISPATCHBASE+_VECT,
     _INT___MAP = _INT_*_DISPATCHBASE+_MAP,
     _INT___REAL = _INT_*_DISPATCHBASE+_REAL,
+    _INT___FRAC = _INT_*_DISPATCHBASE+_FRAC,
     _ZINT__INT_ = _ZINT*_DISPATCHBASE+_INT_,
     _ZINT__ZINT =_ZINT*_DISPATCHBASE+_ZINT,
     _ZINT__CPLX = _ZINT*_DISPATCHBASE+_CPLX,
@@ -84,6 +85,7 @@ namespace giac {
     _ZINT__VECT = _ZINT*_DISPATCHBASE+_VECT,
     _ZINT__MAP = _ZINT*_DISPATCHBASE+_MAP,
     _ZINT__REAL = _ZINT*_DISPATCHBASE+_REAL,
+    _ZINT__FRAC = _ZINT*_DISPATCHBASE+_FRAC,
     _CPLX__INT_ = _CPLX*_DISPATCHBASE+_INT_,
     _CPLX__ZINT = _CPLX*_DISPATCHBASE+_ZINT,
     _CPLX__CPLX = _CPLX*_DISPATCHBASE+_CPLX,
@@ -184,6 +186,7 @@ namespace giac {
     _FRAC__FLOAT_ = _FRAC*_DISPATCHBASE+_FLOAT_,
     _FRAC__DOUBLE_ = _FRAC*_DISPATCHBASE+_DOUBLE_,
     _FRAC__INT_=  _FRAC*_DISPATCHBASE+_INT_,
+    _FRAC_ZINT=  _FRAC*_DISPATCHBASE+_ZINT,
     _FRAC__REAL=  _FRAC*_DISPATCHBASE+_REAL,
     _SPOL1__SPOL1 = _SPOL1*_DISPATCHBASE+_SPOL1,
     _EXT__EXT = _EXT*_DISPATCHBASE+_EXT,
@@ -538,8 +541,18 @@ namespace giac {
     _NEGINT=2*256+2,
     _NONPOSINT=3*256+2,
     _NONNEGINT=4*256+2,
+    _LP_BINARY=106,           //   * binary
+    _LP_BINARYVARIABLES=107,  //   * binaryvariables
+    _LP_DEPTHLIMIT=108,       //   * depthlimit
+    _LP_INTEGER=109,          //   * integer
+    _LP_INTEGERVARIABLES=110, //   * integervariables
+    _LP_MAXIMIZE=111,         //   * maximize
+    _LP_NONNEGATIVE=112,      //   * nonnegative
+    _LP_NONNEGINT=113,        //   * nonnegint
+    _LP_VARIABLES=114,        //   * variables
+    _LP_ASSUME=115,
   };
-
+	
   enum mupad_operator {
     _DELETE_OPERATOR=0,
     _PREFIX_OPERATOR=1,

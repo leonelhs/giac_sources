@@ -1,86 +1,86 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour transformer une chaîne en un nombre ou en une commande : expr</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr156.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr158.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc221">6.5.16</A>  Pour transformer une chaîne en un nombre ou en une commande : <TT>expr</TT></H3><P><A NAME="@default286"></A><A NAME="sec:expr1"></A>
-Voici , selon la chaîne, les transformations que fait <TT>expr</TT> :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>expr</TT> permet de transformer une chaîne de chiffres ou lettres
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Pour transformer une chaîne en un nombre ou en une commande : expr</title>
+</head>
+<body >
+<a href="cascmd_fr156.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr158.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec227" class="subsection">6.5.16  Pour transformer une chaîne en un nombre ou en une commande : <span style="font-family:monospace">expr</span></h3>
+<p><a id="hevea_default286"></a><a id="sec:expr1"></a>
+Voici , selon la chaîne, les transformations que fait <span style="font-family:monospace">expr</span> :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">expr</span> permet de transformer une chaîne de chiffres ou lettres
 en un nombre entier ayant comme écriture en base 8,ou 10 ou 16 cette chaîne
 de chiffres. Il faut bien sûr que l’écriture soit valide et représente 
-un nombre entier dans la base donnée : toutefois <TT>expr("019")</TT> renvoie
-le nombre décimale <TT>19.0</TT> (voir aussi <A HREF="cascmd_fr854.html#sec:expr2">9.5.5</A>).<BR>
-<B>Attention</B><BR>
-Si la chaîne commence par <TT>0x</TT>, <TT>expr</TT> transforme cette chaîne en 
-le nombre entier écrit en base 16, sinon,<BR>
-si la chaîne commence par 0, <TT>expr</TT> transforme cette chaîne en 
-le nombre entier écrit en base 8 et sinon<BR>
-<TT>expr</TT> transforme cette chaîne en le nombre entier écrit en base 10.<BR>
+un nombre entier dans la base donnée : toutefois <span style="font-family:monospace">expr("019")</span> renvoie
+le nombre décimale <span style="font-family:monospace">19.0</span> (voir aussi <a href="cascmd_fr853.html#sec%3Aexpr2">9.5.5</a>).<br>
+<span style="font-weight:bold">Attention</span><br>
+Si la chaîne commence par <span style="font-family:monospace">0x</span>, <span style="font-family:monospace">expr</span> transforme cette chaîne en 
+le nombre entier écrit en base 16, sinon,<br>
+si la chaîne commence par 0, <span style="font-family:monospace">expr</span> transforme cette chaîne en 
+le nombre entier écrit en base 8 et sinon<br>
+<span style="font-family:monospace">expr</span> transforme cette chaîne en le nombre entier écrit en base 10.<br>
 On tape :
-<DIV CLASS="center"><TT>expr("123")</TT></DIV>
+<div class="center"><span style="font-family:monospace">expr("123")</span></div>
 On obtient :
-<DIV CLASS="center"><TT>123</TT></DIV>
+<div class="center"><span style="font-family:monospace">123</span></div>
 On tape :
-<DIV CLASS="center"><TT>expr("0123")</TT></DIV>
+<div class="center"><span style="font-family:monospace">expr("0123")</span></div>
 On obtient :
-<DIV CLASS="center"><TT>83</TT></DIV>
-En effet : 1*8<SUP>2</SUP>+2*8+3=83
+<div class="center"><span style="font-family:monospace">83</span></div>
+En effet : 1*8<sup>2</sup>+2*8+3=83
 On tape :
-<DIV CLASS="center"><TT>expr("0x12f")</TT></DIV>
+<div class="center"><span style="font-family:monospace">expr("0x12f")</span></div>
 On obtient :
-<DIV CLASS="center"><TT>303</TT></DIV>
-En effet 1*16<SUP>2</SUP>+2*16+15=303<BR>
-<B>Remarque</B>
+<div class="center"><span style="font-family:monospace">303</span></div>
+En effet 1*16<sup>2</sup>+2*16+15=303<br>
+<span style="font-weight:bold">Remarque</span>
 On tape :
-<DIV CLASS="center"><TT>expr(char([48,50,56,56]))</TT></DIV>
+<div class="center"><span style="font-family:monospace">expr(char([48,50,56,56]))</span></div>
 On obtient un nombre flottant :
-<DIV CLASS="center"><TT>288.0</TT></DIV>
-En effet <TT>char([48,50,56,56])</TT> renvoie <TT>"0288"</TT>.<BR>
+<div class="center"><span style="font-family:monospace">288.0</span></div>
+En effet <span style="font-family:monospace">char([48,50,56,56])</span> renvoie <span style="font-family:monospace">"0288"</span>.<br>
 Or un nombre entier commençant par 0 est un nombre écrit en octal, du coup 
 il ne doit pas contenir de chiffre supérieur ou égal à 8. Ici le nombre
 a des chiffres égaux à 8, il est donc réinterprété (après détection
-d’erreur de saisie en octal) comme un nombre flottant.<BR>
+d’erreur de saisie en octal) comme un nombre flottant.<br>
 On tape :
-<DIV CLASS="center"><TT>expr(char([48,50,55,55]))</TT></DIV>
-On obtient un nombre exact car l’écriture <TT>"0277"</TT> est valide :
-<DIV CLASS="center"><TT>191</TT></DIV>
-En effet <TT>char([48,50,55,55])</TT> renvoie <TT>"0277"</TT> et <TT>0277</TT>
-est l’écriture en base 8 de <TT>191</TT> (7+8*7+64*2=191).<BR>
+<div class="center"><span style="font-family:monospace">expr(char([48,50,55,55]))</span></div>
+On obtient un nombre exact car l’écriture <span style="font-family:monospace">"0277"</span> est valide :
+<div class="center"><span style="font-family:monospace">191</span></div>
+En effet <span style="font-family:monospace">char([48,50,55,55])</span> renvoie <span style="font-family:monospace">"0277"</span> et <span style="font-family:monospace">0277</span>
+est l’écriture en base 8 de <span style="font-family:monospace">191</span> (7+8*7+64*2=191).<br>
 On tape :
-<DIV CLASS="center"><TT>expr(char([48,48,50,51]))</TT></DIV>
-On obtient un nombre exact car l’écriture <TT>"0023"</TT> est valide :
-<DIV CLASS="center"><TT>19</TT></DIV>
-En effet <TT>char([48,50,55,55])</TT> renvoie <TT>"0023"</TT> et <TT>0023</TT>
-est l’écriture en base 8 de <TT>19</TT> (3+2*8=19).</LI><LI CLASS="li-itemize"><TT>expr</TT> permet aussi de transformer une chaîne de chiffres 
-représentant un nombre décimal en ce nombre.<BR>
+<div class="center"><span style="font-family:monospace">expr(char([48,48,50,51]))</span></div>
+On obtient un nombre exact car l’écriture <span style="font-family:monospace">"0023"</span> est valide :
+<div class="center"><span style="font-family:monospace">19</span></div>
+En effet <span style="font-family:monospace">char([48,50,55,55])</span> renvoie <span style="font-family:monospace">"0023"</span> et <span style="font-family:monospace">0023</span>
+est l’écriture en base 8 de <span style="font-family:monospace">19</span> (3+2*8=19).</li><li class="li-itemize"><span style="font-family:monospace">expr</span> permet aussi de transformer une chaîne de chiffres 
+représentant un nombre décimal en ce nombre.<br>
 On tape :
-<DIV CLASS="center"><TT>expr("123.4567")</TT></DIV>
+<div class="center"><span style="font-family:monospace">expr("123.4567")</span></div>
 On obtient :
-<DIV CLASS="center"><TT>123.4567</TT></DIV>
+<div class="center"><span style="font-family:monospace">123.4567</span></div>
 On tape :
-<DIV CLASS="center"><TT>expr("123e-5")</TT></DIV>
+<div class="center"><span style="font-family:monospace">expr("123e-5")</span></div>
 On obtient :
-<DIV CLASS="center"><TT>0.00123</TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>expr</TT> permet aussi de transformer une chaîne de caractères 
-pouvant être interprétée comme une commande.<BR>
+<div class="center"><span style="font-family:monospace">0.00123</span></div>
+</li><li class="li-itemize"><span style="font-family:monospace">expr</span> permet aussi de transformer une chaîne de caractères 
+pouvant être interprétée comme une commande.<br>
 On tape :
-<DIV CLASS="center"><TT>expr("a:=1")</TT></DIV>
+<div class="center"><span style="font-family:monospace">expr("a:=1")</span></div>
 On obtient :
-<DIV CLASS="center"><TT>1 et, la variable a contient 1</TT></DIV>
-</LI></UL><HR>
-<A HREF="cascmd_fr156.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr158.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<div class="center"><span style="font-family:monospace">1 et, la variable a contient 1</span></div>
+</li></ul>
+<hr>
+<a href="cascmd_fr156.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr158.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

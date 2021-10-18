@@ -1,41 +1,32 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La perpendiculaire commune à deux droites 3-d : common_perpendicular perpendicu- laire_commune</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1022.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1024.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1199">11.5.9</A>  La perpendiculaire commune à deux droites 3-d : <TT>common_perpendicular perpendicu- laire_commune</TT></H3><P><A NAME="@default1994"></A><A NAME="@default1995"></A>
-<TT>perpendiculaire_commune</TT> a comme argument deux droites 
-<TT>D1</TT> et <TT>D2</TT>.<BR>
-<TT>perpendiculaire_commune(D1,D2)</TT> dessine la perpendiculaire commune des 
-droites <TT>D1</TT> et <TT>D2</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Le plan : plane plan</title>
+</head>
+<body >
+<a href="cascmd_fr1022.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1024.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1238" class="subsection">11.6.1  Le plan : <span style="font-family:monospace">plane plan</span></h3>
+<p><a id="hevea_default1993"></a><a id="hevea_default1994"></a>
+<span style="font-family:monospace">plan</span> a comme argument soit trois points, soit un point et une 
+droite, soit son équation cartésienne.<br>
+<span style="font-family:monospace">plan(A,B,C)</span> ou <span style="font-family:monospace">plan(A,droite(B,C))</span> (resp <span style="font-family:monospace">plan(a*x+b*y+c*z+d=0)</span>) trace le plan <span style="font-family:monospace">ABC</span> (resp le plan d’équation <span style="font-family:monospace">a*x+b*y+c*z+d=0</span>) dans l’espace 3-d.<br>
 On tape :
-</P><DIV CLASS="center"><TT>D1:=droite([1,1,0],[0,1,1]); D2:=droite([0,-1,0],[1,-1,1]);</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>perpendiculaire_commune(D1,D2)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">plan([0,0,5],[0,5,0],[5,0,0])</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">plan(x+y+z=5)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">plan([0,0,5],droite([0,5,0],[5,0,0]))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>La perpendiculaire commune aux deux droites D1 et D2</TT></DIV><P>
-Si on tape :
-</P><DIV CLASS="center"><TT>d:=perpendiculaire_commune(D1,D2);0</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>expr("pnt(pnt[line[point[1,0,-1],point[-1/3,-2/3,-1/3]],56,"d"])",0),0</TT></DIV><P>
-Ce qui veut dire que la perpendiculaire commune à D1 et D2 passe par les 
-points [1,0,-1] et [-1/3,-2/3,-1/3].<BR>
-Puis on tape :<BR>
-</P><DIV CLASS="center"><TT>equation(d)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2/3-2*x/3+4*y/3=0,-4/3-8*x/9-4*y/9-20*z/9=0</TT></DIV><HR>
-<A HREF="cascmd_fr1022.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1024.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">Le plan d’équation x+y+z=5</span></div>
+<hr>
+<a href="cascmd_fr1022.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1024.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

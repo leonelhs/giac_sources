@@ -156,7 +156,7 @@ void dealloc(struct Tgraph *graph);
 static int texmacs_counter= 0;
 
 
-#ifdef VISUALC
+#ifndef HAVE_LIBFLTK
 using namespace giac;
 #define STDIN_FILENO 0
 namespace xcas {
@@ -1101,7 +1101,7 @@ int main(int ARGC, char *ARGV[]){
     printf("Giac CAS for mupacs, released under the GPL license 3.0\n");
     printf("See http://www.gnu.org for license details\n");
     printf("May contain BSD licensed software parts (lapack, atlas, tinymt)\n");
-    printf("| (c) 2006, 2016 B. Parisse & al (giac), F.Maltey & al (mupacs) |\n");
+    printf("| (c) 2006, 2017 B. Parisse & al (giac), F.Maltey & al (mupacs) |\n");
     putchar(EMACS_DATA_END);
     bool prompt=true;
     for (int k=0;;++k) {
@@ -1293,7 +1293,7 @@ int main(int ARGC, char *ARGV[]){
     printf("|     Giac CAS for TeXmacs, released under the GPL license (3.0)    |\n");
     printf("|     See http://www.gnu.org for license details                    |\n");
     printf("|  May contain BSD licensed software parts (lapack, atlas, tinymt)  |\n");
-    printf("| (c) 2003,2016 B. Parisse & al (giac), J. van der Hoeven (TeXmacs) |\n");
+    printf("| (c) 2003,2017 B. Parisse & al (giac), J. van der Hoeven (TeXmacs) |\n");
     printf("--------------------------------------------------------------------\n");
     switch (giac::xcas_mode(contextptr)){
     case 0:
@@ -1504,7 +1504,7 @@ int main(int ARGC, char *ARGV[]){
     struct tms start, end;  
     using_history();
     cout << "Welcome to giac readline interface" << endl;
-    cout << "(c) 2001,2016 B. Parisse & others" << endl;
+    cout << "(c) 2001,2017 B. Parisse & others" << endl;
     cout << "Homepage http://www-fourier.ujf-grenoble.fr/~parisse/giac.html" << endl;
     cout << "Released under the GPL license 3.0 or above" << endl;
     cout << "See http://www.gnu.org for license details" << endl;

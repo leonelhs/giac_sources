@@ -1,66 +1,66 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Développement de Padé: pade</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr472.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr474.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc569">6.37.7</A>  Développement de Padé: <TT>pade</TT></H3><P><A NAME="@default848"></A>
-<TT>pade</TT> a 4 arguments 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Développement de Padé: pade</title>
+</head>
+<body >
+<a href="cascmd_fr472.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr474.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec593" class="subsection">6.37.7  Développement de Padé: <span style="font-family:monospace">pade</span></h3>
+<p><a id="hevea_default848"></a>
+<span style="font-family:monospace">pade</span> a 4 arguments 
+</p><ul class="itemize"><li class="li-itemize">
 une expression, 
-</LI><LI CLASS="li-itemize">le nom de la variable utilisée, 
-</LI><LI CLASS="li-itemize">un entier <I>n</I> ou un polynôme <I>N</I>,
-</LI><LI CLASS="li-itemize">un entier <I>p</I>.
-</LI></UL><P>
-<TT>pade</TT> renvoie une fraction rationnelle <I>P</I>/<I>Q</I> (avec le degré de <I>P</I>&lt;<I>p</I>)
-qui a, au voisinage de 0, le même développement de Taylor à l’ordre <I>n</I> 
-que l’expression, ou qui est égal à l’expression modulo <I>x</I><SUP><I>n</I>+1</SUP> (resp
-modulo <I>N</I>).<BR>
+</li><li class="li-itemize">le nom de la variable utilisée, 
+</li><li class="li-itemize">un entier <span style="font-style:italic">n</span> ou un polynôme <span style="font-style:italic">N</span>,
+</li><li class="li-itemize">un entier <span style="font-style:italic">p</span>.
+</li></ul><p>
+<span style="font-family:monospace">pade</span> renvoie une fraction rationnelle <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span> (avec le degré de <span style="font-style:italic">P</span>&lt;<span style="font-style:italic">p</span>)
+qui a, au voisinage de 0, le même développement de Taylor à l’ordre <span style="font-style:italic">n</span> 
+que l’expression, ou qui est égal à l’expression modulo <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span>+1</sup> (resp
+modulo <span style="font-style:italic">N</span>).<br>
 On tape :
-</P><DIV CLASS="center"><TT>pade(exp(x),x,5,3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pade(exp(x),x,5,3)</span></div><p>
 Ou on tape :
-</P><DIV CLASS="center"><TT>pade(exp(x),x,x</TT><CODE><TT>^</TT></CODE><TT>6,3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pade(exp(x),x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6,3)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(3*x</TT><CODE><TT>^</TT></CODE><TT>2+24*x+60)/(-x</TT><CODE><TT>^</TT></CODE><TT>3+9*x</TT><CODE><TT>^</TT></CODE><TT>2-36*x+60)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">(3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+24*x+60)/(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+9*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-36*x+60)</span></div><p>
 On vérifie en tapant :
-</P><DIV CLASS="center"><TT>taylor((3*x</TT><CODE><TT>^</TT></CODE><TT>2+24*x+60)/(-x</TT><CODE><TT>^</TT></CODE><TT>3+9*x</TT><CODE><TT>^</TT></CODE><TT>2-36*x+60))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">taylor((3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+24*x+60)/(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+9*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-36*x+60))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1+x+1/2*x</TT><CODE><TT>^</TT></CODE><TT>2+1/6*x</TT><CODE><TT>^</TT></CODE><TT>3+1/24*x</TT><CODE><TT>^</TT></CODE><TT>4+1/120*x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>6*order_size(x)</TT></DIV><P>
-On reconnait le développement de Taylor à l’ordre 5 de <TT>exp(x)</TT> au 
-voisinage de 0.<BR>
+</p><div class="center"><span style="font-family:monospace">1+x+1/2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1/6*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1/24*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1/120*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6*order_size(x)</span></div><p>
+On reconnait le développement de Taylor à l’ordre 5 de <span style="font-family:monospace">exp(x)</span> au 
+voisinage de 0.<br>
 On tape :
-</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,12,3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pade((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12+1),x,12,3)</span></div><p>
 Ou on tape :
-</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,x</TT><CODE><TT>^</TT></CODE><TT>13,3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pade((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12+1),x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">13,3)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>x+1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">x+1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,14,4)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pade((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12+1),x,14,4)</span></div><p>
 Ou on tape :
-</P><DIV CLASS="center"><TT>pade((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>12+1),x,x</TT><CODE><TT>^</TT></CODE><TT>15,4)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">pade((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12+1),x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15,4)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(-2*x</TT><CODE><TT>^</TT></CODE><TT>3-1)/(-x</TT><CODE><TT>^</TT></CODE><TT>11+x</TT><CODE><TT>^</TT></CODE><TT>10-x</TT><CODE><TT>^</TT></CODE><TT>9+x</TT><CODE><TT>^</TT></CODE><TT>8-x</TT><CODE><TT>^</TT></CODE><TT>7+x</TT><CODE><TT>^</TT></CODE><TT>6-x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>4- x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2+x-1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">(-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1)/(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">11+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">10-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">9+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">7+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4- x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x-1)</span></div><p>
 On vérifie en tapant :
-</P><DIV CLASS="center"><TT>series(ans(),x=0,15)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">series(ans(),x=0,15)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1+x-x</TT><CODE><TT>^</TT></CODE><TT>12</TT><TT>-x</TT><CODE><TT>^</TT></CODE><TT>13</TT><TT>+2x</TT><CODE><TT>^</TT></CODE><TT>15</TT><TT>+x</TT><CODE><TT>^</TT></CODE><TT>16</TT><TT>*order_size(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1+x-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12</span><span style="font-family:monospace">-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">13</span><span style="font-family:monospace">+2x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15</span><span style="font-family:monospace">+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">16</span><span style="font-family:monospace">*order_size(x)</span></div><p>
 puis en tapant :
-</P><DIV CLASS="center"><TT>series((x</TT><CODE><TT>^</TT></CODE><TT>15+x+1)/(</TT><CODE><TT>x^</TT></CODE><TT>12+1),x=0,15)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">series((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15+x+1)/(</span><code><span style="font-family:monospace">x^</span></code><span style="font-family:monospace">12+1),x=0,15)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1+x-x</TT><CODE><TT>^</TT></CODE><TT>12</TT><TT>-x</TT><CODE><TT>^</TT></CODE><TT>13</TT><TT>+x</TT><CODE><TT>^</TT></CODE><TT>15</TT><TT>+x</TT><CODE><TT>^</TT></CODE><TT>16</TT><TT>*order_size(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1+x-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">12</span><span style="font-family:monospace">-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">13</span><span style="font-family:monospace">+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">15</span><span style="font-family:monospace">+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">16</span><span style="font-family:monospace">*order_size(x)</span></div><p>
 Les deux expressions ont même développement de Taylor à l’ordre 14 au 
-voisinage de 0.</P><HR>
-<A HREF="cascmd_fr472.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr474.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+voisinage de 0.</p>
+<hr>
+<a href="cascmd_fr472.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr474.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

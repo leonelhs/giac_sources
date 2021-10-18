@@ -1,52 +1,52 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Functional derivative : function_diff</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en129.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en131.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc149">2.17.1</A>  Functional derivative : <TT>function_diff</TT></H3><P><A NAME="@default251"></A>
-<TT>function_diff</TT> takes a function as argument.<BR>
-<TT>function_diff</TT> returns the derivative function of this function.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Functional derivative : function_diff</title>
+</head>
+<body >
+<a href="cascmd_en129.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en131.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec157" class="subsection">2.17.1  Functional derivative : <span style="font-family:monospace">function_diff</span></h3>
+<p><a id="hevea_default251"></a>
+<span style="font-family:monospace">function_diff</span> takes a function as argument.<br>
+<span style="font-family:monospace">function_diff</span> returns the derivative function of this function.<br>
 Input :
-</P><DIV CLASS="center"><TT>function_diff(sin)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">function_diff(sin)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>(&#X2018; x&#X2018;)-&gt;cos(&#X2018; x&#X2018;)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">(&#X2018; x&#X2018;)-&gt;cos(&#X2018; x&#X2018;)</span></div><p> 
 Input :
-</P><DIV CLASS="center"><TT>function_diff(sin)(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">function_diff(sin)(x)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>cos(x)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">cos(x)</span></div><p> 
 Input :
-</P><DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2+x*cos(x)</TT></DIV><DIV CLASS="center"><TT>function_diff(f)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*cos(x)</span></div><div class="center"><span style="font-family:monospace">function_diff(f)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>(&#X2018; x&#X2018;)-&gt;2*&#X2018; x&#X2018;+cos(&#X2018; x&#X2018;)+&#X2018; x&#X2018;*(-(sin(&#X2018; x&#X2018;)))</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">(&#X2018; x&#X2018;)-&gt;2*&#X2018; x&#X2018;+cos(&#X2018; x&#X2018;)+&#X2018; x&#X2018;*(-(sin(&#X2018; x&#X2018;)))</span></div><p> 
 Input :
-</P><DIV CLASS="center"><TT>function_diff(f)(x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">function_diff(f)(x)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>cos(x)+x*(-(sin(x)))+2*x</TT></DIV><P> 
-To define the function <I>g</I> as <I>f</I>&#X2032;, input :<BR>
-</P><DIV CLASS="center"><TT>g:=function_diff(f)</TT></DIV><P>
-The <TT>function_diff</TT> instruction has the same effect as
-using the expression derivative in conjonction with <TT>unapply</TT> :
-</P><DIV CLASS="center"><TT>g:=unapply(diff(f(x),x),x)</TT></DIV><DIV CLASS="center"><TT>g(x)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">cos(x)+x*(-(sin(x)))+2*x</span></div><p> 
+To define the function <span style="font-style:italic">g</span> as <span style="font-style:italic">f</span>&#X2032;, input :<br>
+</p><div class="center"><span style="font-family:monospace">g:=function_diff(f)</span></div><p>
+The <span style="font-family:monospace">function_diff</span> instruction has the same effect as
+using the expression derivative in conjunction with <span style="font-family:monospace">unapply</span> :
+</p><div class="center"><span style="font-family:monospace">g:=unapply(diff(f(x),x),x)</span></div><div class="center"><span style="font-family:monospace">g(x)</span></div><p> 
 Output :
-</P><DIV CLASS="center"><TT>cos(x)+x*(-(sin(x)))+2*x</TT></DIV><P> 
-<B>Warning !!!</B><BR>
-In <TT>Maple</TT> mode, for compatibility,
-<TT>D</TT> may be used in place of <TT>function_diff</TT>.
+</p><div class="center"><span style="font-family:monospace">cos(x)+x*(-(sin(x)))+2*x</span></div><p> 
+<span style="font-weight:bold">Warning !!!</span><br>
+In <span style="font-family:monospace">Maple</span> mode, for compatibility,
+<span style="font-family:monospace">D</span> may be used in place of <span style="font-family:monospace">function_diff</span>.
 For this reason, it is impossible to assign a variable named 
-<TT>D</TT> in <TT>Maple</TT> mode (hence you can not name a 
-geometric object <TT>D</TT>).</P><HR>
-<A HREF="cascmd_en129.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en131.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<span style="font-family:monospace">D</span> in <span style="font-family:monospace">Maple</span> mode (hence you can not name a 
+geometric object <span style="font-family:monospace">D</span>).</p>
+<hr>
+<a href="cascmd_en129.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en131.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

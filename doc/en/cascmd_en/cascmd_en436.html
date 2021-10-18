@@ -1,41 +1,31 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Hessian matrix : hessian</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en435.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en437.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc488">2.50.3</A>  Hessian matrix : <TT>hessian</TT></H3><P><A NAME="@default722"></A>
-<TT>hessian</TT> takes two arguments : an 
-expression <I>F</I> of <I>n</I> real variables and a vector of these variable names.<BR>
-<TT>hessian</TT> returns the hessian matrix of <I>F</I>, that is the matrix of the 
-derivatives of order 2.<BR>
-<B>Example</B><BR>
-Find the hessian matrix of <I>F</I>(<I>x</I>,<I>y</I>,<I>z</I>)=2<I>x</I><SUP>2</SUP><I>y</I>&#X2212;<I>xz</I><SUP>3</SUP>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Graph of a conic : conique</title>
+</head>
+<body >
+<a href="cascmd_en435.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en437.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec518" class="subsection">2.50.5  Graph of a conic : <span style="font-family:monospace">conique</span></h3>
+<p><a id="hevea_default718"></a>
+<span style="font-family:monospace">conique</span> takes as argument the equation of a conic with
+respect to <span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>. You may also specify the names of the variables as
+second and third arguments or as a vector as second argument.<br>
+<span style="font-family:monospace">conique</span> draws this conic.<br>
 Input :
-</P><DIV CLASS="center"><TT>hessian(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3 , [x,y,z])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">conique(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x*y+2*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[[4*y,4*x,-(3*z</TT><CODE><TT>^</TT></CODE><TT>2)],[2*2*x,0,0],[-(3*z</TT><CODE><TT>^</TT></CODE><TT>2),0,x*3*2*z]]</TT></DIV><P>
-To have the hessian matrix at the critical points, first input :
-</P><DIV CLASS="center"><TT>solve(derive(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z]),[x,y,z])</TT></DIV><P> 
-Output is the critical points : 
-</P><DIV CLASS="center"><TT>[[0,y,0]]</TT></DIV><P>
-Then, to have the hessian matrix at this points, input : 
-</P><DIV CLASS="center"><TT>subst([[4*y,4*x,-(3*z</TT><CODE><TT>^</TT></CODE><TT>2)],[2*2*x,0,0], [-(3*z</TT><CODE><TT>^</TT></CODE><TT>2),0,6*x*z]],[x,y,z],[0,y,0])</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[[4*y,4*0,-(3*0</TT><CODE><TT>^</TT></CODE><TT>2)],[4*0,0,0],[-(3*0</TT><CODE><TT>^</TT></CODE><TT>2),0,6*0*0]]</TT></DIV><P>
-and after simplification :
-</P><DIV CLASS="center"><TT>[[4*y,0,0],[0,0,0],[0,0,0]]</TT></DIV><HR>
-<A HREF="cascmd_en435.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en437.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">the graph of the ellipsis of center -2+i and equation 2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x*y+2*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x=0</span></div><p>
+<span style="font-weight:bold">Remark</span> :<br>
+See also <span style="font-family:monospace">conique_reduite</span> for the parametric equation of the conic.</p>
+<hr>
+<a href="cascmd_en435.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en437.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

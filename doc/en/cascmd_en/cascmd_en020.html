@@ -1,49 +1,48 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>GCD : gcd igcd</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc28">2.6.2</A>  GCD : <TT>gcd igcd</TT></H3><P><A NAME="@default47"></A><A NAME="@default48"></A><A NAME="sec:igcd"></A>
-<TT>gcd</TT> or <TT>igcd</TT> denotes the gcd (greatest common divisor)
-of several integers (for polynomials see also <A HREF="cascmd_en214.html#sec:gcd">2.25.7</A>).<BR>
-<TT>gcd</TT> or <TT>igcd</TT> returns the <TT>GCD</TT> of all integers.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>GCD : gcd igcd</title>
+</head>
+<body >
+<a href="cascmd_en019.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en021.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec30" class="subsection">2.6.2  GCD : <span style="font-family:monospace">gcd igcd</span></h3>
+<p><a id="hevea_default47"></a><a id="hevea_default48"></a><a id="sec:igcd"></a>
+<span style="font-family:monospace">gcd</span> or <span style="font-family:monospace">igcd</span> denotes the gcd (greatest common divisor)
+of several integers (for polynomials, see also <a href="cascmd_en215.html#sec%3Agcd">2.25.7</a>).<br>
+<span style="font-family:monospace">gcd</span> or <span style="font-family:monospace">igcd</span> returns the <span style="font-family:monospace">GCD</span> of integers.<br>
 Input :
-</P><DIV CLASS="center"><TT>gcd(18,15)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">gcd(18,15)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">3</span></div><p> 
 Input :
-</P><DIV CLASS="center"><TT>gcd(18,15,21,36) </TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">gcd(18,15,21,36) </span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>gcd([18,15,21,36])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">gcd([18,15,21,36])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
 We can also put as parameters two lists of same size (or a matrix with 2 
-lines), in this case <TT>gcd</TT> returns the greatest common divisor of
-the elements with same index (or of the same column).
+rows), in this case <span style="font-family:monospace">gcd</span> returns the greatest common divisor of
+the elements with same index (or in the same column).<br>
 Input :
-</P><DIV CLASS="center"><TT>gcd([6,10,12],[21,5,8])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">gcd([6,10,12],[21,5,8])</span></div><p>
 or :
-</P><DIV CLASS="center"><TT>gcd([[6,10,12],[21,5,8]])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">gcd([[6,10,12],[21,5,8]])</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[3,5,4]</TT></DIV><P>
-<B>An example</B><BR>
-Find the greatest common divisor of 4<I>n</I>+1 and 5<I>n</I>+3 when <I>n</I> &#X2208; &#X2115;.<BR>
-Input :<BR>
-</P><DIV CLASS="center"><TT>f(n):=gcd(4*n+1,5*n+3)</TT></DIV><P>
-Then, input :<BR>
-</P><PRE CLASS="verbatim">  essai(n):={
+</p><div class="center"><span style="font-family:monospace">[3,5,4]</span></div><p>
+<span style="font-weight:bold">An example</span><br>
+Find the greatest common divisor of 4<span style="font-style:italic">n</span>+1 and 5<span style="font-style:italic">n</span>+3 when <span style="font-style:italic">n</span> &#X2208; &#X2115;.<br>
+Input :<br>
+</p><div class="center"><span style="font-family:monospace">f(n):=gcd(4*n+1,5*n+3)</span></div><p>
+Then, input :<br>
+</p><pre class="verbatim">  essai(n):={
     local j,a,L; 
     L:=NULL;
     for (j:=-n;j&lt;n;j++) {
@@ -54,18 +53,19 @@ Then, input :<BR>
     }
     return L;
   }
-</PRE><P>Then, input :<BR>
-</P><DIV CLASS="center"><TT>essai(20)</TT></DIV><P>
+</pre><p> 
+Then, input :<br>
+</p><div class="center"><span style="font-family:monospace">essai(20)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[-16,7],[-9,7],[-2,7],[5,7],[12,7],[19,7]</TT></DIV><P>
-So we have now to prove that :<BR>
-if <I>n</I>!=5+<I>k</I>*7 (for <I>k</I> &#X2208; &#X2124;), 4<I>n</I>+1 and 5<I>n</I>+3 are mutually prime,<BR>
-and<BR>
-if <I>n</I>=5+<I>k</I>*7 (for <I>k</I> &#X2208; &#X2124;), the greatest common divisor of 4<I>n</I>+1 
-and 5<I>n</I>+3 is 7.
-</P><HR>
-<A HREF="cascmd_en019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[-16,7],[-9,7],[-2,7],[5,7],[12,7],[19,7]</span></div><p>
+So we now have to prove that :<br>
+If <span style="font-style:italic">n</span>&#X2260;5+<span style="font-style:italic">k</span>*7 (for <span style="font-style:italic">k</span> &#X2208; &#X2124;), 4<span style="font-style:italic">n</span>+1 and 5<span style="font-style:italic">n</span>+3 are mutually prime,
+and <span style="font-style:italic">n</span>=5+<span style="font-style:italic">k</span>*7 (for <span style="font-style:italic">k</span> &#X2208; &#X2124;), then the greatest common divisor of 4<span style="font-style:italic">n</span>+1 
+and 5<span style="font-style:italic">n</span>+3 is 7.
+</p>
+<hr>
+<a href="cascmd_en019.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en021.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

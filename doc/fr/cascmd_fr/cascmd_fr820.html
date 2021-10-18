@@ -1,31 +1,139 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>La forme d’une fonction</title>
+</head>
+<body >
+<a href="cascmd_fr819.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr821.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec995" class="subsection">9.1.2  La forme d’une fonction</h3>
+<p><a id="hevea_default1446"></a><a id="hevea_default1447"></a>
+Une fonction renvoie une valeur : l’instruction <span style="font-family:monospace">return valeur;</span> ou 
+<span style="font-family:monospace">retourne valeur;</span> fait 
+sortir du programme et renvoie <span style="font-family:monospace">valeur</span>.<br>
+Une fonction a un nom (par exemple <span style="font-family:monospace">toto</span>), puis on met entre des
+parenthèses les arguments de la fonction (par exemple si 
+<span style="font-family:monospace">toto</span> a besion de deux paramètres <span style="font-family:monospace">a</span> et <span style="font-family:monospace">b</span> on met
+<span style="font-family:monospace">toto(a,b)</span>). On met ensuite <span style="font-family:monospace">:=</span> puis on met entre des accolades 
+(ou entre <span style="font-family:monospace">begin</span> et <span style="font-family:monospace">end</span>) <a id="hevea_default1448"></a><a id="hevea_default1449"></a> le 
+bloc qui définit la fonction c’est à dire
+la suite des instructions (chaque instuction se termine par <span style="font-family:monospace">;</span>) et 
+si l’algorithme définissant la fonction a besoin de 
+variables locales, ces variables devront être déclarées en mettant 
+au début du bloc <span style="font-family:monospace">local</span> <a id="hevea_default1450"></a> (ou <span style="font-family:monospace">var</span> <a id="hevea_default1451"></a>) puis, 
+les noms des variables locales séparés par des virgules puis, <span style="font-family:monospace">;</span> pour 
+terminer cette déclaration. Ces variables locales peuvent être 
+initialisées lors de leur déclaration.<br>
+On écrit par exemple :
+</p><pre class="verbatim">toto(a,b):={
+local q,r,s;
+&lt;instrucion-1&gt;;
+........... ;
+&lt;instrucion-n&gt;;
+return r;
+}
+</pre><p>
+ou
+</p><pre class="verbatim">toto(a,b):={
+var q,r,s;
+&lt;instrucion-1&gt;;
+........... ;
+&lt;instrucion-n&gt;;
+return r;
+}
+</pre><p>
+<span style="font-weight:bold">Attention</span> Les variables locales ne sont pas des variables formelles et 
+doivent toujours être affectèes dans le corps du programme : on ne 
+définira donc pas, les variables formelles, avec <span style="font-family:monospace">local</span> (ou <span style="font-family:monospace">var</span>).<br>
+Si on veut qu’une variable déclarèe avec <span style="font-family:monospace">local</span> (ou <span style="font-family:monospace">var</span>)soit 
+formelle (par ex <span style="font-family:monospace">a</span>), il faudra mettre dans le corps du programme soit 
+<span style="font-family:monospace">purge(a)</span> soit <span style="font-family:monospace">assume(a,symbol)</span>.<br>
+<span style="font-weight:bold">Exemple</span>
+</p><pre class="verbatim">kk(a):={
+local x,c;
+c:=4*a;
+return solve((x-c)^2-a=0,x);
+}:;
+f(a):={
+local x,c;
+c:=4*a;
+assume(x,symbol);
+return solve((x-c)^2-a=0,x);
+}:;
+g(a):={
+local c;
+c:=4*a;
+return solve((x-c)^2-a=0,x);
+}:;
+</pre><p>
+On tape :<br>
+<span style="font-family:monospace">kk(1),f(1),g(1)</span><br>
+On obtient :<br>
+<span style="font-family:monospace">list[],list[3,5],list[3,5]</span>
+Il ne faut pas tenir compte du message renvoyé pas <span style="font-family:monospace">Xcas</span> lors de la compilation :<br>
+"Attention: x, declarée(s) comme variable(s) globale(s) en compilant g"
+car dans <span style="font-family:monospace">solve</span> la variable <span style="font-family:monospace">x</span> est toujours symbolique.</p><p><span style="font-weight:bold">Remarque</span> on peut initialiser les variables locales en même temps que
+leur déclaration à condition de mettre des parenthèses, par exemple :<br>
+<span style="font-family:monospace">local (q:=1),(r:=0),s;</span></p><p><span style="font-weight:bold">Attention</span> Il est important de déclarer les variables locales car une
+variable globale est évaluée avant l’execution de la fonction qui s’en sert
+lorsque cette fonction est appelée par une autre fonction...on risque donc 
+d’avoir des ennuis si une fonction qui utilise une variable globale est 
+appelée par une autre fonction, par exemple :
+</p><pre class="verbatim">  truc(a,b):={
+    if (b!=0) {
+      r:=irem(a,b);
+    } else {
+      r:=b;
+    }
+    return r;
+  };
 
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le choix de l’éditeur</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr819.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr821.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc963">9.1.1</A>  Le choix de l’éditeur</H3><P>
-On écrit une fonction ou un programme dans l’éditeur de son choix : on
-peut utiliser les éditeurs de <TT>Xcas</TT> (que l’on ouvre avec <TT>Alt+p</TT>)
-pour écrire des petits programmes mais 
-il est préférable d’utiliser par exemple <TT>emacs</TT> pour écrire des 
-programmes plus conséquents. Dans ce cas, on sauve le programme dans un 
-fichier, par exemple <TT>toto.cas</TT>, puis dans la ligne de commande de 
-<TT>Xcas</TT> on tape :<BR>
-<TT>read("toto.cas")</TT> ou encore<BR>
-avec le menu <TT>Fich</TT> sous-menu <TT>Charger</TT> on sélectionne
-<TT>toto.cas</TT>. </P><HR>
-<A HREF="cascmd_fr819.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr821.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+machin(a,b):={
+local rr;
+rr:=truc(a,b);
+return rr;
+}
+</pre><p>
+L’exécution de <span style="font-family:monospace">truc(45,6)</span> ne pose pas de problème et renvoie <span style="font-family:monospace">3</span>,
+mais l’exécution de <span style="font-family:monospace">machin(45,6)</span> renvoie le message d’erreurs :<br>
+<span style="font-family:monospace">sto 3 not allowed! Error: Bad Argument Type</span><br>
+car lorsque <span style="font-family:monospace">truc</span> est appelé par <span style="font-family:monospace">machin</span> <span style="font-family:monospace">r</span> qui est une
+variable globale est evaluée et alors <span style="font-family:monospace">r:=irem(a,b)</span> n’est pas possible
+car <span style="font-family:monospace">r</span> vaut <span style="font-family:monospace">3</span>....<br>
+Il est donc important de tenir compte du message donné par <span style="font-family:monospace">Xcas</span>
+lors de la compilation de <span style="font-family:monospace">truc</span> :<br>
+<span style="font-family:monospace">//Parsing truc</span>
+<span style="font-family:monospace">//Warning, check that the following variables are global: r compiling truc</span>
+à condition que les variables signalées ne soient pas des variables 
+formelles. Voici comme exemple le programme qui donne la valeur de la suite de 
+Fibonnacci définie par <span style="font-style:italic">u</span><sub>0</sub>=<span style="font-style:italic">u</span>0,<span style="font-style:italic">u</span><sub>1</sub>=<span style="font-style:italic">u</span>1,<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+2</sub>=<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub>+<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>. Dans ce programme
+on utilise les variables formelles <span style="font-family:monospace">x,A,B</span> qui doivent être purgées.<br>
+On tape :
+</p><pre class="verbatim">u(n,uo,u1):={
+local L,a,b;
+//verifier que A,B,x ne sont pas affect\'ees
+[a,b]:=solve(x^2-x-1,x);
+L:=linsolve([A+B=uo,A*a+B*b=u1],[A,B]);
+return normal(L[0]*a^n+L[1]*b^n);
+};
+</pre><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">u(3,0,1)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">2</span></div><p>
+Dans ce programme, les variables <span style="font-family:monospace">x,A,B</span> ne doivent pas être 
+déclarées comme variables locales car ce sont des variables formelles : il 
+ne faut donc pas tenir compte lors de la compilation du warning :
+<span style="font-family:monospace">// Warning: x A B declared as global variable(s) compiling u</span>
+</p>
+<hr>
+<a href="cascmd_fr819.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr821.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

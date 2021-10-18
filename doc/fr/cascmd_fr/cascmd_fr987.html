@@ -1,45 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un carré : is_square est_carre</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr986.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr988.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1155">10.18.8</A>  Savoir si on a un carré : <TT>is_square est_carre</TT></H3><P><A NAME="@default1922"></A><A NAME="@default1923"></A><A NAME="sec:estcarre2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1065.html#sec:estcarre3">11.13.12</A> pour la géométrie 3-d.<BR>
-<TT>est_carre</TT> est une fonction booléenne ayant comme 
-argument quatre points ou un objet géométrique.<BR>
-<TT>est_carre</TT> vaut 1 si les quatre points forment un carré ou si l’objet 
-géométrique est un carré, et vaut 0 sinon.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Savoir si on a un losange : is_rhombus est_losange</title>
+</head>
+<body >
+<a href="cascmd_fr986.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr988.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1193" class="subsection">10.18.9  Savoir si on a un losange : <span style="font-family:monospace">is_rhombus est_losange</span></h3>
+<p><a id="hevea_default1921"></a><a id="hevea_default1922"></a><a id="sec:estlosange2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1065.html#sec%3Aestlosange3">11.13.13</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">est_losange</span> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<br>
+<span style="font-family:monospace">est_losange</span> vaut 1 (rep 2) si les quatre points forment un losange (resp un carré) ou si l’objet
+géométrique est un losange (resp un carré), et vaut 0 sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>est_carre(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_losange(1+i,-1+i,-1-i,1-i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>K:=carre(1+i,-1+i);est_carre(K)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">K:=losange(1+i,-1+i,pi/4);est_losange(K)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>K:=carre(1+i,-1+i,C,D);est_carre(K[0])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">K:=losange(1+i,-1+i,pi/4,C,D);est_losange(K[0])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-En effet <TT>K[0]</TT> désigne un carré car <TT>K</TT> est une liste composée
-d’un carré et de ses sommets <TT>C</TT> et <TT>D</TT>.<BR>
-Si on tape <TT>affixe(C,D)</TT>, on obtient <TT>-1-i,1-i</TT>.<BR>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+En effet <span style="font-family:monospace">K[0]</span> désigne un losange car <span style="font-family:monospace">K</span> est une liste composée
+d’un losange et de ses sommets <span style="font-family:monospace">C</span> et <span style="font-family:monospace">D</span>.<br>
+Si on tape <span style="font-family:monospace">normal(coordonnees(C,D))</span>, on obtient <span style="font-family:monospace">[-sqrt(2)-1,-sqrt(2)+1],[-sqrt(2)+1,-sqrt(2)+1]</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>est_carre(i,-1+i,-1-i,1-i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_losange(i,-1+i,-1-i,1-i)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
-<A HREF="cascmd_fr986.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr988.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0</span></div>
+<hr>
+<a href="cascmd_fr986.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr988.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

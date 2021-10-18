@@ -1,41 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tirage aléatoire sans remise de p objets parmi n : rand alea hasard</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr749.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr751.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc889">8.3.3</A>  Tirage aléatoire sans remise de p objets parmi n : <TT>rand alea hasard</TT></H3><P><A NAME="@default1354"></A><A NAME="@default1355"></A><A NAME="@default1356"></A>
-<TT>rand</TT> a dans ce cas, soit 2, soit 3 arguments.<BR>
- Si <TT>rand</TT> a 2 arguments : les arguments sont un entier <I>p</I> et une liste 
-<I>L</I> alors <TT>rand(p,L)</TT> renvoie, au hasard, <TT>p</TT> éléments de la liste 
-<TT>L</TT>.<BR>
- Si <TT>rand</TT> a 3 arguments : les arguments sont trois entiers 
-<TT>p,min,max</TT> alors
-<TT>rand(p,min,max)</TT> renvoie, au hasard, <TT>p</TT> entiers de 
-<TT>[min,..,max]</TT> 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Tirage selon une loi binomiale : randbinomial</title>
+</head>
+<body >
+<a href="cascmd_fr749.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr751.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec921" class="subsection">8.3.3  Tirage selon une loi binomiale : <span style="font-family:monospace">randbinomial</span></h3>
+<p><a id="hevea_default1354"></a>
+<span style="font-family:monospace">randbinomial(n,p)</span> renvoie au hasard des nombres entiers 
+répartis selon la loi binomiale <span style="font-style:italic">B</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>) de moyenne <span style="font-family:monospace">n*p</span> et d’écart 
+type <span style="font-family:monospace">sqrt(n*p*(1-p))</span>.<br>
+<span style="font-family:monospace">randbinomial(n,p)</span> a pour valeur le nombre de succès dans une suite de 
+<span style="font-family:monospace">n</span> tirages indépendants lorsque pour chaque tirage, un succès est de 
+probabilité <span style="font-family:monospace">p</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>rand(3,["r","r","r","r","v","v","v"])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>["r","r","v"]</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">randbinomial(10,0.6)</span></div><p>
+On obtient par exemple :
+</p><div class="center"><span style="font-family:monospace">4</span></div><p>
+ou on obtient par exemple :
+</p><div class="center"><span style="font-family:monospace">8</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>rand(2,1,10)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[3,7]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>rand(2,4,10)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[5,7]</TT></DIV><HR>
-<A HREF="cascmd_fr749.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr751.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">randbinomial(100,0.4)</span></div><p>
+On obtient par exemple :
+</p><div class="center"><span style="font-family:monospace">43</span></div>
+<hr>
+<a href="cascmd_fr749.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr751.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

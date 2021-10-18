@@ -1,62 +1,40 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Exact bounds for complex roots of a polynomial : 
-complexroot</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en243.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en245.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc275">2.29.1</A>  Exact bounds for complex roots of a polynomial :<BR>
-<TT>complexroot</TT></H3><P><A NAME="@default432"></A>
-<TT>complexroot</TT> takes 2 or 4 arguments : a polynomial and a real 
-number &#X454; and optionnally two complex numbers &#X3B1;,&#X3B2;.<BR>
-<TT>complexroot</TT> returns a list of vectors. 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-If <TT>complexroot</TT> has 2 arguments, 
-the elements of each vector are
-<UL CLASS="itemize"><LI CLASS="li-itemize">
-either an interval (the 
-boundaries of this interval are the opposite vertices of a rectangle with sides
-parallel to the axis and containing a complex root of the polynomial) and the 
-multiplicity of this root.<BR>
-Let the interval be [<I>a</I><SUB>1</SUB>+<I>ib</I><SUB>1</SUB>,<I>a</I><SUB>2</SUB>+<I>ib</I><SUB>2</SUB>] then |<I>a</I><SUB>1</SUB>&#X2212;<I>a</I><SUB>2</SUB>|&lt;&#X454;, 
-|<I>b</I><SUB>1</SUB>&#X2212;<I>b</I><SUB>2</SUB>|&lt;&#X454; and the root <I>a</I>+<I>ib</I> verifies 
-<I>a</I><SUB>1</SUB>&#X2264; <I>a</I> &#X2264; <I>a</I><SUB>2</SUB> and <I>b</I><SUB>1</SUB>&#X2264; <I>b</I> &#X2264; <I>b</I><SUB>2</SUB>.
-</LI><LI CLASS="li-itemize">or the value of an exact complex root of 
-the polynomial and the multiplicity of this root 
-</LI></UL>
-</LI><LI CLASS="li-itemize">If <TT>complexroot</TT> has 4 arguments, <TT>complexroot</TT> returns a list of
-vectors as above, but only for the roots lying in 
-the rectangle with sides parallel to the axis having &#X3B1;,&#X3B2; as
-opposite vertices.<BR>
-</LI></UL><P>
-To find the roots of <I>x</I><SUP>3</SUP>+1, input:
-</P><DIV CLASS="center"><TT>complexroot(x</TT><CODE><TT>^</TT></CODE><TT>3+1,0.1)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[[-1,1],[[(4-7*i)/8,(8-13*i)/16],1],[[(8+13*i)/16,(4+7*i)/8],1]]</TT></DIV><P>
-Hence, for <I>x</I><SUP>3</SUP>+1 :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
--1 is a root of multiplicity 1, 
-</LI><LI CLASS="li-itemize">1/2+i*<I>b</I> is a root of multiplicity 1 with &#X2212;7/8&#X2264; <I>b</I> &#X2264;
-&#X2212;13/16, 
-</LI><LI CLASS="li-itemize">1/2+i*<I>c</I> is a root of multiplicity 1 with 13/1&#X2264; <I>c</I> &#X2264;
-7/8.
-</LI></UL><P>
-To find the roots of <I>x</I><SUP>3</SUP>+1 lying inside the rectangle 
-of opposite vertices &#X2212;1,1+2*<I>i</I>, input:
-</P><DIV CLASS="center"><TT>complexroot(x</TT><CODE><TT>^</TT></CODE><TT>3+1,0.1,-1,1+2*i)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[[-1,1],[[(8+13*i)/16,(4+7*i)/8],1]]</TT></DIV><HR>
-<A HREF="cascmd_en243.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en245.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Partial fraction expansion : partfrac</title>
+</head>
+<body >
+<a href="cascmd_en243.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en245.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec295" class="subsection">2.28.9  Partial fraction expansion : <span style="font-family:monospace">partfrac</span></h3>
+<p><a id="hevea_default432"></a><a id="sec:convertparf"></a>
+<span style="font-family:monospace">partfrac</span> takes as argument a rational fraction.<br>
+<span style="font-family:monospace">partfrac</span> returns the partial fraction expansion of this rational 
+fraction.<br>
+The <span style="font-family:monospace">partfrac</span> command is equivalent to the <span style="font-family:monospace">convert</span> command with 
+<span style="font-family:monospace">parfrac</span> (or <span style="font-family:monospace">partfrac</span> or <span style="font-family:monospace">fullparfrac</span>) as option 
+(see also <a href="cascmd_en166.html#sec%3Aconvert">2.21.23</a>).<br>
+<span style="font-weight:bold">Example</span> :<br>
+Find the partial fraction expansion of :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>5</sup>&#X2212;2<span style="font-style:italic">x</span><sup>3</sup>+1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>4</sup>&#X2212;2<span style="font-style:italic">x</span><sup>3</sup>+2<span style="font-style:italic">x</span><sup>2</sup>&#X2212;2<span style="font-style:italic">x</span>+1</td></tr>
+</table></td></tr>
+</table><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">partfrac((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1)/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2*x+1))</span></div><p>
+Output in real mode :
+</p><div class="center"><span style="font-family:monospace">x+2-1/(2*(x-1))+(x-3)/(2*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)) </span></div><p>
+Output in complex mode:
+</p><div class="center"><span style="font-family:monospace">x+2+(-1+2*i)/((2-2*i)*((i)*x+1))+1/(2*(-x+1))+</span></div><div class="center"><span style="font-family:monospace">(-1-2*i)/((2-2*i)*(x+i))</span></div>
+<hr>
+<a href="cascmd_en243.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en245.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

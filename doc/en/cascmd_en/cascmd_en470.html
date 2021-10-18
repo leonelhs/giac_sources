@@ -1,68 +1,80 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Draw a line : line</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en469.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en471.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc532">3.5.1</A>  Draw a line : <TT>line</TT></H3><P><A NAME="@default782"></A><A NAME="sec:doite"></A>
-<B>See also :</B> <A >??</A> and <A >??</A> for line usage in 
-geometry and see <A >??</A> and <A >??</A> for axis.<BR>
-<TT>line</TT> takes as argument cartesian(s) equation(s) :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-in 2D: one line equation,
-</LI><LI CLASS="li-itemize">in 3D: two plane equations.
-</LI></UL><P>
-<TT>line</TT> defines and draws the corresponding line.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Individual attributes</title>
+</head>
+<body >
+<a href="cascmd_en469.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en471.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec559" class="subsection">3.1.1  Individual attributes</h3>
+<p><a id="hevea_default768"></a><a id="hevea_default769"></a>
+<a id="hevea_default770"></a><a id="hevea_default771"></a><a id="hevea_default772"></a><a id="hevea_default773"></a><a id="hevea_default774"></a><a id="hevea_default775"></a><a id="hevea_default776"></a><a id="hevea_default777"></a><a id="hevea_default778"></a>
+Graphic attributes are optional arguments of the
+form <span style="font-family:monospace">display=value</span>, they must be given
+as the last argument of a graphic instruction. Attributes
+are ordered in several categories: color, point shape, point width,
+line style, line thickness, legend value, position and presence. 
+In addition, surfaces may be filled or not, 3-d surfaces
+may be filled with a texture, 3-d objects may also have properties
+with respect to the light. 
+Attributes of different categories
+may be added, e.g. <br>
+<span style="font-family:monospace">plotfunc(</span><span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">y</span><sup>2</sup><span style="font-family:monospace">,[x,y],display=red+line_width_3+filled)</span>
+</p><ul class="itemize"><li class="li-itemize">
+Colors <span style="font-family:monospace">display=</span> or <span style="font-family:monospace">color=</span>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">black</span>, <span style="font-family:monospace">white</span>, <span style="font-family:monospace">red</span>, <span style="font-family:monospace">blue</span>, <span style="font-family:monospace">green</span>, 
+<span style="font-family:monospace">magenta</span>, <span style="font-family:monospace">cyan</span>, <span style="font-family:monospace">yellow</span>,
+</li><li class="li-itemize">a numeric value between 0 and 255,
+</li><li class="li-itemize">a numeric value between 256 and 256+7*16+14 for a color of the
+rainbow,
+</li><li class="li-itemize">any other numeric value smaller than 65535, the rendering
+is not guaranteed to be portable.
+</li></ul>
+</li><li class="li-itemize">Point shapes <span style="font-family:monospace">display=</span> one of the following value
+<span style="font-family:monospace">rhombus_point plus_point square_point cross_point 
+triangle_point star_point point_point invisible_point</span>
+</li><li class="li-itemize">Point width: <span style="font-family:monospace">display=</span> one of the following value
+<span style="font-family:monospace">point_width_n</span> where <span style="font-family:monospace">n</span> is an
+integer between 1 and 7
+</li><li class="li-itemize">Line thickness: <span style="font-family:monospace">thickness=n</span>
+or <span style="font-family:monospace">display=line_width_n</span> where <span style="font-family:monospace">n</span> is an
+integer between 1 and 7 or 
+</li><li class="li-itemize">Line shape: <span style="font-family:monospace">display=</span> one of the following values
+<span style="font-family:monospace">dash_line solid_line dashdot_line dashdotdot_line
+cap_flat_line cap_square_line cap_round_line </span>
+</li><li class="li-itemize">Legend, value: <span style="font-family:monospace">legend="legendname"</span>;
+position: <span style="font-family:monospace">display=</span> one of
+<span style="font-family:monospace">quandrant1 quadrant2 quadrant3 quadrant4</span>
+corresponding to the position of the legend of the object 
+(using the trigonometric plane conventions).
+The legend is not displayed if the attribute 
+<span style="font-family:monospace">display=hidden_name</span> is added
+</li><li class="li-itemize"><span style="font-family:monospace">display=filled</span> specifies that surfaces will be filled,
+</li><li class="li-itemize"><span style="font-family:monospace">gl_texture="picture_filename"</span> is used to fill 
+a surface with a texture. 
+Cf. the interface manual for a more complete
+description and for <span style="font-family:monospace">gl_material=</span> options.
+</li></ul><p>
+<span style="font-weight:bold">Examples</span><br>
 Input :
-</P><DIV CLASS="center"><TT>line(2*y+x-1=0)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>the line 2*y+x-1=0</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">polygon(-1,-i,1,2*i,legend="P")</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>line(y=1)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>the horizontal line y=1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">point(1+i,legend="hello")</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>line(x=1)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>the vertical line x=1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">A:=point(1+i);B:=point(-1);display(D:=droite(A,B),hidden_name)</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>line(x+2*y+z-1=0,z=2)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>the line x+2*y+1=0 in the plane z=2</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">color(segment(0,1+i),red)</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>line(y=1,x=1)</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>the vertical line crossing through (1,1,0)</TT></DIV><P>
-<B>Remark</B><BR>
-<TT>line</TT> defines an oriented line :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-when the 2D line is given by an equation, it is rewritten
-as "left_member-right_member=<TT>ax+by+c=0</TT>", this determinates
-its normal vector <TT>[a,b]</TT> and the orientation is given by the vector 
-<TT>[b,-a]</TT>) (or its orientation is defined by the 3D cross product of its
-normal vectors (with third coordinate 0) and the vector [0,0,1]).<BR>
-For example <TT>line(y=2*x)</TT> defines the line <TT>-2x+y=0</TT> with as direction 
-the vector <TT>[1,2]</TT> (or <TT>cross([-2,1,0],[0,0,1])</TT>=<TT>[1,2,0]</TT>).
-</LI><LI CLASS="li-itemize">when the 3D line is given by two plane equations, it&#X2019;s 
-direction is defined by the cross product of the normals to the planes 
-(where the plane equation is rewritten as
-"left_member-right_member=<TT>ax+by+cz+d=0</TT>", so that
-the normal is <TT>[a,b,c]</TT>).<BR>
-For example the <TT>line(x=y,y=z)</TT> is the line <TT>x-y=0,y-z=0</TT> and its
-direction is :<BR>
-<TT>cross([1,-1,0],[0,1,-1])</TT>=<TT>[1,1,1]</TT>.
-</LI></UL><HR>
-<A HREF="cascmd_en469.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en471.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">segment(0,1+i,color=red)</span></div>
+<hr>
+<a href="cascmd_en469.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en471.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

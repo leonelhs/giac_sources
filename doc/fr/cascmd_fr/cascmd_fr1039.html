@@ -1,56 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les polygones réguliers dans l’espace : isopolygon isopolygone</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1038.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1040.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1219">11.9.2</A>  Les polygones réguliers dans l’espace : <TT>isopolygon isopolygone</TT></H3><P><A NAME="@default2021"></A><A NAME="@default2022"></A><A NAME="sec:isopolygone3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr931.html#sec:isopolygone2">10.12.2</A> pour la géométrie plane.<BR>
-<TT>isopolygone</TT>, en géométrie 3-d, a quatre arguments.<BR>
-Déscription des arguments : 
-Le quatrième argument est un entier <I>n</I> et <I>abs</I>(<I>n</I>) représente le nombre 
-de côtés de l’isopolygone. Selon le signe de <I>n</I> on aura :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<I>n</I>&gt;0<BR>
-les 3 premiers arguments sont 3 points de l’espace : les 2 sommets 
-de l’isopolygone et le troisième point qui définit le plan de 
-l’isopolygone et l’orientation du plan.<BR>
-<TT>isopolygone(A,B,P,n)</TT> renvoie et trace l’isopolygone direct de
-sommets <I>A</I>, <I>B</I> et ayant <I>n</I> côtés dans le plan <I>ABP</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Les polygones quelconques dans l’espace : polygon polygone</title>
+</head>
+<body >
+<a href="cascmd_fr1038.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1040.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1257" class="subsection">11.9.3  Les polygones quelconques dans l’espace : <span style="font-family:monospace">polygon polygone</span></h3>
+<p><a id="hevea_default2020"></a><a id="hevea_default2021"></a><a id="sec:polygone3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr931.html#sec%3Apolygone2">10.12.3</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">polygone</span>, en géométrie 3-d, a comme argument un séquence 
+de points de l’espace qui sont les sommets du polygone.<br>
+<span style="font-family:monospace">polygone(A,B,C,D,E,F)</span> renvoie et trace le polygone <span style="font-style:italic">ABCDEF</span> 
+si les points <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>,<span style="font-style:italic">D</span>,<span style="font-style:italic">E</span>,<span style="font-style:italic">F</span> sont dans un même plan ou sinon trace la ligne
+polygonale fermée <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>,<span style="font-style:italic">D</span>,<span style="font-style:italic">E</span>,<span style="font-style:italic">F</span>,<span style="font-style:italic">A</span>.<br>
 On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">A:=point(0,0,0)</span></div><div class="center"><span style="font-family:monospace">B:=point(3,3,3)</span></div><div class="center"><span style="font-family:monospace">C:=point(0,0,3)</span></div><div class="center"><span style="font-family:monospace">D:=point(-3,-3,0)</span></div><div class="center"><span style="font-family:monospace">E:=point(-3,-3,-3)</span></div><p>
 Puis on tape :
-<DIV CLASS="center"><TT>isopolygone(A,B,P,5)</TT></DIV>
+</p><div class="center"><span style="font-family:monospace">polygone(A,B,C,D,E)</span></div><p>
 On obtient :
-<DIV CLASS="center"><TT>Dans le demi-plan ABP, un pentagone de sommets A et B</TT></DIV>
-</LI><LI CLASS="li-itemize"><I>n</I>&lt;0<BR>
-les 3 premiers arguments sont 3 points de l’espace : le centre et un
-sommet de l’isopolygone et le troisième point qui définit le plan de 
-l’isopolygone et l’orientation du plan.<BR>
-<TT>isopolygone(A,B,P,n)</TT> renvoie et trace l’isopolygone indirect de 
-centre <I>A</I> et de sommet <I>B</I> et ayant −<I>n</I> côtés dans le plan <I>ABP</I>.<BR>
-On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
-Puis on tape :
-<DIV CLASS="center"><TT>isopolygone(A,B,P,-5)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>Un pentagone de centre A et de sommet B non situé dans le demi-plan ABP</TT></DIV>
-</LI></UL><HR>
-<A HREF="cascmd_fr1038.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1040.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">Le polygone ABCDE dans le plan x=y</span></div>
+<hr>
+<a href="cascmd_fr1038.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1040.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

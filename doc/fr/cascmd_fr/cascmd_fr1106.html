@@ -1,53 +1,30 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour traduire un programme Xcas en C++</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1105.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1107.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1299">12.3.1</A>  Pour traduire un programme <TT>Xcas</TT> en <I>C</I><SUP>++</SUP></H3><P><A NAME="@default2126"></A><A NAME="@default2127"></A>
-Lorsqu’un programme <TT>Xcas</TT> (par exemple <TT>nomprog</TT>) a des variables typées, on pourra le traduire en <I>C</I><SUP>++</SUP> et le compiler grâce à la commande <TT>cpp</TT> suivi du nom du 
-programme (par exemple <TT>cpp(nomprog)</TT>)<BR>
-Cela va créer un fichier <TT>giac_nomprog.cpp</TT> et un fichier 
-<TT>libgiac_nomfichier.so</TT> sur le disque dur.<BR>
-<B>Attention</B> le nom du fichier doit avoir plus qu’une lettre.<BR>
-Par exemple :<BR>
-<TT>truc(n:integer):={return 2*n+1;}</TT> puis<BR>
-<TT>cpp(truc)</TT><BR>
-On obtient :<BR>
-<TT>1</TT><BR>
-et cela a créé sur le disque dur le fichier <TT>giac_truc.cpp</TT> qui est 
-un fichier <I>C</I><SUP>++</SUP> et le fichier <TT>libgiac_truc.so</TT> qui est 
-le fichier <I>C</I><SUP>++</SUP> compilé :<BR>
-Voici ce que contient <TT>giac_truc.cpp</TT> :
-</P><PRE CLASS="verbatim">#include &lt;giac/giac.h&gt;
-using namespace std;
-namespace giac {
-giac::gen truc(int n_i,const giac::context * contextptr){
-giac::makevecteur(return 2*n_i+1)
-}
-giac::gen _truc(const giac::gen &amp; g,const giac::context * contextptr){
-return truc(g,contextptr);
-}
-
-const string _truc_s("truc");
-unary_function_eval __truc(0,&amp;_truc,_truc_s);
-unary_function_ptr at_truc(&amp;__truc,0,true);
-}
-</PRE><P>La commande <TT>insmode(nomprog)</TT> utilisé dans une session <TT>Xcas</TT> va lire
-le module compilé <TT>libgiac_truc.so</TT> sur le disque dur.<BR>
-On peut alors utiliser le même nom <TT>nomprog</TT>) dans cette session <TT>Xcas</TT> 
-mais le programme sera plus efficace grâce à la compilation.</P><HR>
-<A HREF="cascmd_fr1105.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1107.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title></title>
+</head>
+<body >
+<a href="cascmd_fr1105.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<hr>
+<h4 id="sec1340" class="subsubsection">Le type <span style="font-family:monospace">gen</span></h4>
+<p>
+<span style="font-family:monospace">gen</span> est le type qui sert à représenter toutes les
+données de calcul formel : les fonctions de calcul formel travaillent sur des
+<span style="font-family:monospace">gen</span>.<br>
+Si g est de type <span style="font-family:monospace">gen</span> ( <span style="font-family:monospace">gen g;</span>), selon le type de <span style="font-family:monospace">g</span>,
+<span style="font-family:monospace">g.type</span> aura différentes valeurs qui sont :<br>
+<span style="font-family:monospace">_INT_</span> si <span style="font-family:monospace">g.val</span> est un entier de type <span style="font-family:monospace">int</span>,<br>
+<span style="font-family:monospace">_DOUBLE_</span> si <span style="font-family:monospace">g._DOUBLE_val</span> est un réel de type <span style="font-family:monospace">double</span><br>
+<span style="font-family:monospace">_SYMB</span> si <span style="font-family:monospace">g._SYMBptr</span> pointe sur un objet de type <span style="font-family:monospace">symbolique</span><br>
+<span style="font-family:monospace">_VECT</span> si <span style="font-family:monospace">g._VECTptr</span> pointe sur un vecteur de type <span style="font-family:monospace">vecteur</span><br>
+<span style="font-family:monospace">_ZINT</span> si <span style="font-family:monospace">g._ZINTptr</span> pointe sur un entier de type <span style="font-family:monospace">zint</span><br>
+<span style="font-family:monospace">_IDNT</span> si <span style="font-family:monospace">g._IDNTptr</span> pointe sur un identificateur de type <span style="font-family:monospace">idnt</span><br>
+<span style="font-family:monospace">_CPLX</span> si <span style="font-family:monospace">g._CPLXptr</span> pointe sur un complexe de type <span style="font-family:monospace">complexe</span></p><hr>
+<a href="cascmd_fr1105.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+</body>
+</html>

@@ -1,29 +1,36 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Matrix of a quadratic form : q2a</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en425.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en427.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc477">2.49.1</A>  Matrix of a quadratic form : <TT>q2a</TT></H3><P><A NAME="@default707"></A> 
-<TT>q2a</TT> takes two arguments : the symbolic expression
-of a quadratic form <I>q</I> and a
-vector of variable names.<BR>
-<TT>q2a</TT> returns the matrix <I>A</I> of <I>q</I>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>QR decomposition : qr</title>
+</head>
+<body >
+<a href="cascmd_en425.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en427.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec507" class="subsection">2.49.2  QR decomposition : <span style="font-family:monospace">qr</span></h3>
+<p><a id="hevea_default707"></a>
+<span style="font-family:monospace">qr</span> takes as argument a numeric
+square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span>.<br>
+<span style="font-family:monospace">qr</span> factorizes numerically 
+this matrix as <span style="font-style:italic">Q</span>*<span style="font-style:italic">R</span> where
+<span style="font-style:italic">Q</span> is an orthogonal matrix (<sup><span style="font-style:italic">t</span></sup><span style="font-style:italic">Q</span>*<span style="font-style:italic">Q</span>=<span style="font-style:italic">I</span>) and <span style="font-style:italic">R</span> is an upper triangular 
+matrix. 
+<span style="font-family:monospace">qr(A)</span> returns only <span style="font-family:monospace">R</span>, run <span style="font-family:monospace">Q=A*inv(R)</span> to get <span style="font-family:monospace">Q</span>.<br>
 Input :
-</P><DIV CLASS="center"><TT>q2a(2*x*y,[x,y])</TT></DIV><P>
-Output :
-</P><DIV CLASS="center"><TT>[[0,1],[1,0]]</TT></DIV><HR>
-<A HREF="cascmd_en425.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en427.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">qr([[3,5],[4,5]])</span></div><p>
+Output is the matrix <span style="font-family:monospace">R</span> :
+</p><div class="center"><span style="font-family:monospace">[[-5,-7],[0,-1]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">qr([[1,2],[3,4]])</span></div><p>
+Output is the matrix <span style="font-family:monospace">R</span> :
+</p><div class="center"><span style="font-family:monospace">[[-3.16227766017,-4.42718872424],[0,-0.632455532034]] </span></div>
+<hr>
+<a href="cascmd_en425.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en427.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

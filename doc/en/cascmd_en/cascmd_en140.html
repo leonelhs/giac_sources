@@ -1,111 +1,111 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Limites : limit</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en139.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en141.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc161">2.19.1</A>  Limites : <TT>limit</TT></H3><P><A NAME="@default268"></A><A NAME="sec:limit"></A></P><P><TT>limit</TT> compute the limit of an expression in a finite or infinite point.
-It is also possible with an optional argument to compute unidirectional
-limit (1 for right limit and -1 for left limit .<BR>
-<TT>limit</TT> takes three or four arguments :<BR>
-an expression, the name of a variable (for example <TT>x</TT>), the limit point 
-(for example <TT>a</TT>) and an optional argument, by default <TT>0</TT>, to 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Limits : limit</title>
+</head>
+<body >
+<a href="cascmd_en139.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en141.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec173" class="subsection">2.19.1  Limits : <span style="font-family:monospace">limit</span></h3>
+<p><a id="hevea_default268"></a><a id="sec:limit"></a></p><p><span style="font-family:monospace">limit</span> computes the limit of an expression at a finite or infinite point.
+It is also possible with an optional argument to compute a one-sided
+limit (1 for the right limit and -1 for the left limit).<br>
+<span style="font-family:monospace">limit</span> takes three or four arguments :<br>
+an expression, the name of a variable (for example <span style="font-family:monospace">x</span>), the limit point 
+(for example <span style="font-family:monospace">a</span>) and an optional argument, by default <span style="font-family:monospace">0</span>, to 
 indicate if the limit is unidirectional. 
 This argument is equal to 
-<TT>-1</TT> for a left limit (<TT>x&lt;a</TT>) or is equal to <TT>1</TT> 
-for a right limit (<TT>x&gt;a</TT>) or is equal to <TT>0</TT> for a limite.<BR>
-<TT>limit</TT> returns the limit of the expression when the variable (for example
-<TT>x</TT>) approachs the limit point (for example <TT>a</TT>).<BR>
-<B>Remark</B><BR>
-It is also possible to put <TT>x=a</TT> as argument instead of <TT>x,a</TT>, hence :
-<TT>limit</TT> takes also as arguments an expression depending of a variable, 
+<span style="font-family:monospace">-1</span> for a left limit (<span style="font-family:monospace">x&lt;a</span>) or is equal to <span style="font-family:monospace">1</span> 
+for a right limit (<span style="font-family:monospace">x&gt;a</span>) or is equal to <span style="font-family:monospace">0</span> for a limit.<br>
+<span style="font-family:monospace">limit</span> returns the limit of the expression when the variable (for example
+<span style="font-family:monospace">x</span>) approaches the limit point (for example <span style="font-family:monospace">a</span>).<br>
+<span style="font-weight:bold">Remark</span><br>
+It is also possible to put <span style="font-family:monospace">x=a</span> as argument instead of <span style="font-family:monospace">x,a</span>, hence :
+<span style="font-family:monospace">limit</span> takes also as arguments an expression depending of a variable, 
 an equality (variable =value of the limit point) and perhaps 1 or -1 to 
-indicate the direction.<BR>
+indicate the direction.<br>
 Input :
-</P><DIV CLASS="center"><TT>limit(1/x,x,0,-1)</TT></DIV><P>
-or
-</P><DIV CLASS="center"><TT>limit(1/x,x=0,-1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,-1)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0,-1)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>-(infinity)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">-(infinity)</span></div><p> 
 Input :
-</P><DIV CLASS="center"><TT>limit(1/x,x,0,1)</TT></DIV><P>
-or
-</P><DIV CLASS="center"><TT>limit(1/x,x=0,1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,1)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0,1)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>+(infinity)</TT></DIV><P> 
+</p><div class="center"><span style="font-family:monospace">+(infinity)</span></div><p> 
 Input :
-</P><DIV CLASS="center"><TT>limit(1/x,x,0,0)</TT></DIV><P>
-or
-</P><DIV CLASS="center"><TT>limit(1/x,x,0)</TT></DIV><P>
-or
-</P><DIV CLASS="center"><TT>limit(1/x,x=0)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,0)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>infinity</TT></DIV><P> 
-Hence, <TT>abs(1/x)</TT> approachs +&#X221E; when <I>x</I> approachs 0.</P><P><B>Exercises</B> :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Find for <I>n</I>&gt;2, the limit when <I>x</I> approachs 0 of :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>tan(<I>x</I>)&#X2212;tan(<I>nx</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">sin(<I>nx</I>)&#X2212;<I>n</I>sin(<I>x</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE>
+</p><div class="center"><span style="font-family:monospace">infinity</span></div><p> 
+Hence, <span style="font-family:monospace">abs(1/x)</span> approaches +&#X221E; when <span style="font-style:italic">x</span> approaches 0.</p><p><span style="font-weight:bold">Exercises</span> :
+</p><ul class="itemize"><li class="li-itemize">
+Find for <span style="font-style:italic">n</span>&gt;2, the limit when <span style="font-style:italic">x</span> approaches 0 of :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>tan(<span style="font-style:italic">x</span>)&#X2212;tan(<span style="font-style:italic">nx</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">sin(<span style="font-style:italic">nx</span>)&#X2212;<span style="font-style:italic">n</span>sin(<span style="font-style:italic">x</span>)</td></tr>
+</table></td></tr>
+</table>
 Input :
-<DIV CLASS="center"><TT>limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)</TT></DIV>
+<div class="center"><span style="font-family:monospace">limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)</span></div>
 Output :
-<DIV CLASS="center"><TT>2 </TT></DIV>
-</LI><LI CLASS="li-itemize">Find the limit when <I>x</I> approachs +&#X221E; of :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:4em;"></DIV></TD></TR>
-<TR><TD><FONT SIZE=7>&#X221A;</FONT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>+</TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:0em;"></DIV></TD></TR>
-<TR><TD><FONT SIZE=7>&#X221A;</FONT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=0 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>+</TD><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=0 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>x</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">&#X2212;</TD><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>x</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE> 
+<div class="center"><span style="font-family:monospace">2 </span></div>
+</li><li class="li-itemize">Find the limit when <span style="font-style:italic">x</span> approaches +&#X221E; of :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:4em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">&#X221A;</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:0em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">&#X221A;</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><span style="font-size:x-large">&#X221A;</span></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">&#X2212;</td><td class="dcell"><span style="font-size:x-large">&#X221A;</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
+</table></td></tr>
+</table> 
 Input :
-<DIV CLASS="center"><TT>limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)</TT></DIV>
+<div class="center"><span style="font-family:monospace">limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)</span></div>
 Output :
-<DIV CLASS="center"><TT>1/2 </TT></DIV>
-</LI><LI CLASS="li-itemize">Find the limit when <I>x</I> approachs 0 of :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+<I>x</I>+<I>x</I><SUP>2</SUP>/2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">&#X2212;exp(<I>x</I>/2)</TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">(1&#X2212;cos(<I>x</I>))sin(<I>x</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE> 
+<div class="center"><span style="font-family:monospace">1/2 </span></div>
+</li><li class="li-itemize">Find the limit when <span style="font-style:italic">x</span> approaches 0 of :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">&#X221A;</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+<span style="font-style:italic">x</span>+<span style="font-style:italic">x</span><sup>2</sup>/2</td></tr>
+</table></td><td class="dcell">&#X2212;exp(<span style="font-style:italic">x</span>/2)</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">(1&#X2212;cos(<span style="font-style:italic">x</span>))sin(<span style="font-style:italic">x</span>)</td></tr>
+</table></td></tr>
+</table> 
 Input :
-<DIV CLASS="center"><TT>limit((sqrt(1+x+x</TT><CODE><TT>^</TT></CODE><TT>2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)</TT></DIV>
+<div class="center"><span style="font-family:monospace">limit((sqrt(1+x+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)</span></div>
 Output :
-<DIV CLASS="center"><TT>-1/6 </TT></DIV>
-</LI></UL><P><B>Remark</B><BR>
-To compute limit, it is better sometimes to quote the first argument.<BR>
+<div class="center"><span style="font-family:monospace">-1/6 </span></div>
+</li></ul><p><span style="font-weight:bold">Remark</span><br>
+To compute limits, it is better sometimes to quote the first argument.<br>
 Input :
-</P><DIV CLASS="center"><TT>limit(&#X2019;(2*x-1)*exp(1/(x-1))&#X2019;,x=+infinity)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">limit(&#X2019;(2*x-1)*exp(1/(x-1))&#X2019;,x=+infinity)</span></div><p>
 Note that the first argument is quoted, because it is better that
-this argument is not simplified (i.e. not evaluated).<BR>
+this argument is not simplified (i.e. not evaluated).<br>
 Output :
-</P><DIV CLASS="center"><TT>+(infinity)</TT></DIV><HR>
-<A HREF="cascmd_en139.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en141.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">+(infinity)</span></div>
+<hr>
+<a href="cascmd_en139.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en141.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

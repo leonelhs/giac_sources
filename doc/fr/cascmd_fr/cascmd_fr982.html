@@ -1,34 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si 4 points sont cocycliques : is_concyclic est_cocyclique</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr981.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr983.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1150">10.18.3</A>  Savoir si 4 points sont cocycliques : <TT>is_concyclic est_cocyclique</TT></H3><P><A NAME="@default1912"></A><A NAME="@default1913"></A><A NAME="sec:estcocyclique"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1060.html#sec:estcocyclique3">11.13.7</A> et <A HREF="cascmd_fr1061.html#sec:estcospherique">11.13.8</A> pour la
-géométrie 3-d.<BR>
-<TT>is_concyclic</TT> ou <TT>est_cocyclique</TT> est une fonction 
-booléenne ayant comme argument une liste ou une séquence de points.<BR>
-<TT>est_cocyclique</TT> vaut 1 si les points sont cocycliques, et vaut 0 sinon.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Savoir si 1 point est à l’intérieur d’un polygone ou d’un cercle : is_inside est_dans</title>
+</head>
+<body >
+<a href="cascmd_fr981.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr983.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1188" class="subsection">10.18.4  Savoir si 1 point est à l’intérieur d’un polygone ou d’un cercle : <span style="font-family:monospace">is_inside est_dans</span></h3>
+<p><a id="hevea_default1911"></a><a id="hevea_default1912"></a>
+<span style="font-family:monospace">is_inside</span> ou <span style="font-family:monospace">est_dans</span> est une fonction 
+booléenne ayant comme argument un point et un polygone ou un cercle.<br>
+<span style="font-family:monospace">is_inside</span> ou <span style="font-family:monospace">est_dans</span> vaut 1 si le point est à l’intérieur 
+ou sur le bord du polygone ou du cercle, et vaut 0 sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>est_cocyclique(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_dans((point(0),cercle(-1,1))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>est_cocyclique(i,-1+i,-1-i,1-i)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_dans(point(2),polygone([1,2-i,3+i]))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
-<A HREF="cascmd_fr981.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr983.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">est_dans(point(1-i),triangle([1,2-i,3+i]))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div>
+<hr>
+<a href="cascmd_fr981.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr983.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

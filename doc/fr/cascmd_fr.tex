@@ -24446,7 +24446,7 @@ et/ou {\tt correlation}. Par exemple,
  {\tt logistic\_regression\_plot([1,2,4,6,8,7,5],0,2.0,correlation)}
 et {\tt R2=0.658961299812} s'inscrit sur le graphe.
 
-\section{Les fonctions al\'eatoires de {\tt Xcas}}\index{rand|textbf}\index{hasard|textbf}\index{alea|textbf}
+\section{Les fonctions al\'eatoires de {\tt Xcas}}
 \subsection{Pour initialiser les nombres al\'eatoires : {\tt srand randseed RandSeed}}\index{srand}\index{randseed}\index{RandSeed}
 \noindent{\tt srand} (ou {\tt randseed} ou {\tt RandSeed})  sert \`a 
 initialiser la suite des nommbres al\'eatoires que l'on obtient avec 
@@ -24471,7 +24471,7 @@ Ou on tape :
 On obtient par exemple :
 \begin{center}{\tt 10549905061234}\end{center}
 
-\subsection{Tirage \'equir\'eparti {\tt rand alea hasard}}\index{rand}\index{hasard}\index{alea}
+\subsection{Tirage \'equir\'eparti {\tt rand alea hasard}}\index{rand|textbf}\index{hasard|textbf}\index{alea|textbf}
 \subsubsection{Tirage \'equir\'eparti sur $[0,1[$ : {\tt rand() alea() hasard}}
 \noindent{\tt rand()} renvoie au hasard, de façon \'equiprobable, un nombre 
 r\'eel de $[0,1[$.\\
@@ -24569,7 +24569,7 @@ Ou on tape :
 On obtient par exemple :
 \begin{center}{\tt  8}\end{center}
 
-\subsection{Tirage al\'eatoire sans remise de p objets parmi n : {\tt rand alea hasard}}\index{rand}\index{hasard}\index{alea}
+\subsubsection{Tirage al\'eatoire sans remise de p objets parmi n : {\tt rand alea hasard}}\index{rand}\index{hasard}\index{alea}
 {\tt rand} a dans ce cas, soit 2, soit  3 arguments.\\
  Si {\tt rand} a  2 arguments : les arguments sont un entier $p$ et une liste 
 $L$ alors {\tt rand(p,L)} renvoie, au hasard, {\tt p} \'el\'ements de la liste 
@@ -24590,6 +24590,7 @@ On tape :
 \begin{center}{\tt rand(2,4,10)}\end{center}
 On obtient :
 \begin{center}{\tt [5,7]}\end{center}
+
 \subsection{Tirage selon une loi binomiale : {\tt randbinomial}}\index{randbinomial}
 \noindent{\tt randbinomial(n,p)} renvoie au hasard des nombres entiers 
 r\'epartis selon la loi binomiale $B(n,p)$ de moyenne {\tt n*p} et d'\'ecart 
@@ -24621,6 +24622,7 @@ On tape :
 \begin{center}{\tt randmultinomial([1/2,1/3,1/6],["R","V","B"])}\end{center}
 On obtient par exemple :
 \begin{center}{\tt "R"}\end{center}
+
 \subsection{Tirage selon une loi de Poisson : {\tt randpoisson}}\index{randpoisson}
 \noindent{\tt randpoisson($\lambda$)} renvoie au hasard des nombres entiers 
 r\'epartisselon la loi de Poisson  $P(\lambda)$ de moyenne {\tt $\lambda$} et 
@@ -34130,9 +34132,8 @@ On peut voir une image dans un rectangle d'un graphe 2d, ou coll\'e
 Par exemple la commande :\\
 \verb|rectangle(200,0,1/2,gl_texture="terre.jpg")|
 affiche dans le plan un rectangle (d\'efini par les points 200 et 0 de rapport 
-1/2) contenant l'image num\'eris\'ee dans le fichier \verb|terre.jpg|:\\
-\ \\
-\includegraphics[width=\textwidth]{terreex}\\
+1/2) contenant l'image num\'eris\'ee dans le fichier \verb|terre.jpg|:
+%\\ \ \\ \includegraphics[width=\textwidth]{terreex}\\
 Dans l'espace, on peut par exemple coller l'image sur une sph\`ere
 de centre l'origine et de rayon 1 par la commande :\\
 \verb|sphere([0,0,0],1, gl_material=[gl_texture,"terre.jpg"])|: \\

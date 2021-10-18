@@ -1,60 +1,61 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Tchebychev polynomial of second kind: tchebyshev2</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en230.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en232.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc259">2.26.5</A>  Tchebychev polynomial of second kind: <TT>tchebyshev2</TT></H3><P><A NAME="@default418"></A>
-<TT>tchebyshev2</TT> takes as argument an integer <I>n</I> and optionnally 
-a variable name (by default <I>x</I>).<BR>
-<TT>tchebyshev2</TT> returns the Tchebychev polynomial of second kind
-of degree <I>n</I>.<BR>
-The Tchebychev polynomial of second kind <I>U</I>(<I>n</I>,<I>x</I>) is defined by:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>U</I>(<I>n</I>,<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">sin((<I>n</I>+1).arccos(<I>x</I>))</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">sin(arccos(<I>x</I>))</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-or equivalently:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">sin((<I>n</I>+1)<I>x</I>)=sin(<I>x</I>)*<I>U</I>(<I>n</I>,cos(<I>x</I>))</TD></TR>
-</TABLE><P> 
-The <I>U</I>(<I>n</I>,<I>x</I>) verifies the recurrence relation:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>U</I>(0,<I>x</I>)=1,   
-<I>U</I>(1,<I>x</I>)=2<I>x</I>,   
-<I>U</I>(<I>n</I>,<I>x</I>)=2<I>xU</I>(<I>n</I>&#X2212;1,<I>x</I>)&#X2212;<I>U</I>(<I>n</I>&#X2212;2,<I>x</I>) </TD></TR>
-</TABLE><P>
-The polynomials <I>U</I>(<I>n</I>,<I>x</I>) are orthogonal for the scalar product
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&lt;<I>f</I>,<I>g</I>&gt;=</TD><TD CLASS="dcell"><FONT SIZE=6>&#X222B;</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">&#X2212;1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)</TD><TD CLASS="dcell"><FONT SIZE=5>&#X221A;</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1&#X2212;<I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I> </TD></TR>
-</TABLE><P>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Tchebychev polynomials of the first kind: tchebyshev1</title>
+</head>
+<body >
+<a href="cascmd_en230.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en232.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec280" class="subsection">2.26.4  Tchebychev polynomials of the first kind: <span style="font-family:monospace">tchebyshev1</span></h3>
+<p><a id="hevea_default418"></a>
+<span style="font-family:monospace">tchebyshev1</span> takes as argument an integer <span style="font-style:italic">n</span> and optionally a 
+variable name (by default <span style="font-style:italic">x</span>).<br>
+<span style="font-family:monospace">tchebyshev1</span> returns the Tchebychev polynomial of first kind
+of degree <span style="font-style:italic">n</span>.<br>
+The Tchebychev polynomial of first kind <span style="font-style:italic">T</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) is defined by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">T</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>)= cos(<span style="font-style:italic">n</span> arccos(<span style="font-style:italic">x</span>)) </td></tr>
+</table><p>
+and satisfy the recurrence relation:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">T</span>(0,<span style="font-style:italic">x</span>)=1,    
+<span style="font-style:italic">T</span>(1,<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span>,    <span style="font-style:italic">T</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>)=2<span style="font-style:italic">xT</span>(<span style="font-style:italic">n</span>&#X2212;1,<span style="font-style:italic">x</span>)&#X2212;<span style="font-style:italic">T</span>(<span style="font-style:italic">n</span>&#X2212;2,<span style="font-style:italic">x</span>) </td></tr>
+</table><p>
+The polynomials <span style="font-style:italic">T</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) are orthogonal for the scalar product
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&lt;<span style="font-style:italic">f</span>,<span style="font-style:italic">g</span>&gt;=</td><td class="dcell"><span style="font-size:xx-large">&#X222B;</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&#X2212;1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">&#X221A;</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1&#X2212;<span style="font-style:italic">x</span><sup>2</sup></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span> </td></tr>
+</table><p>
 Input :
-</P><DIV CLASS="center"><TT>tchebyshev2(3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">tchebyshev1(4)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>8*x</TT><CODE><TT>^</TT></CODE><TT>3+-4*x</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">8*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+-8*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1</span></div><p>
 Input :
-</P><DIV CLASS="center"><TT>tchebyshev2(3,y)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">tchebyshev1(4,y)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>8*y</TT><CODE><TT>^</TT></CODE><TT>3+-4*y</TT></DIV><P>
-Indeed:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">sin(4.<I>x</I>)=sin(<I>x</I>)*(8*cos(<I>x</I>)<SUP>3</SUP>&#X2212;4.cos(<I>x</I>))=sin(<I>x</I>)*<I>U</I>(3,cos(<I>x</I>)) </TD></TR>
-</TABLE><HR>
-<A HREF="cascmd_en230.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en232.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">8*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+-8*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1</span></div><p>
+Indeed
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >cos( 4 <span style="font-style:italic">x</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">Re</span>((cos(<span style="font-style:italic">x</span>)+<span style="font-style:italic">i</span> sin(<span style="font-style:italic">x</span>))<sup>4</sup>) </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >cos(<span style="font-style:italic">x</span>)<sup>4</sup>&#X2212;6.cos(<span style="font-style:italic">x</span>)<sup>2</sup> (1&#X2212;cos(<span style="font-style:italic">x</span>)<sup>2</sup>)+((1&#X2212;cos(<span style="font-style:italic">x</span>)<sup>2</sup>)<sup>2</sup> </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">T</span>(4,cos(<span style="font-style:italic">x</span>))
+</td></tr>
+</table></td></tr>
+</table>
+<hr>
+<a href="cascmd_en230.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en232.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

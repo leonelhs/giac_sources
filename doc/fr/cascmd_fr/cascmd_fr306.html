@@ -1,154 +1,156 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Primitive et intégrale définie : integrate Int integrer int integration</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr305.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr307.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc386">6.21.1</A>  Primitive et intégrale définie : <TT>integrate Int integrer int integration</TT></H3><P><A NAME="@default569"></A><A NAME="@default570"></A><A NAME="@default571"></A><A NAME="@default572"></A><A NAME="@default573"></A>
-<TT>integrate</TT> (ou <TT>int</TT>) permettent de calculer une 
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Primitive et intégrale définie : integrate Int integrer int integration</title>
+</head>
+<body >
+<a href="cascmd_fr305.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr307.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec403" class="subsection">6.21.1  Primitive et intégrale définie : <span style="font-family:monospace">integrate Int integrer int integration</span></h3>
+<p><a id="hevea_default569"></a><a id="hevea_default570"></a><a id="hevea_default571"></a><a id="hevea_default572"></a><a id="hevea_default573"></a>
+<span style="font-family:monospace">integrate</span> (ou <span style="font-family:monospace">int</span>) permettent de calculer une 
 primitive ou une intégrale définie. La seule différence entre ces deux 
-commandes est que <TT>integrate</TT> écrit avec le symbole ∫ 
-la réponse de la commande <TT>quest()</TT> qui suit l’évaluation de 
-<TT>integrate</TT>.<BR>
-Par contre <TT>Int</TT> renvoie <TT>integrate</TT> sans l’évaluer : c’est pour 
+commandes est que <span style="font-family:monospace">integrate</span> écrit avec le symbole ∫ 
+la réponse de la commande <span style="font-family:monospace">quest()</span> qui suit l’évaluation de 
+<span style="font-family:monospace">integrate</span>.<br>
+Par contre <span style="font-family:monospace">Int</span> renvoie <span style="font-family:monospace">integrate</span> sans l’évaluer : c’est pour 
 avoir la compatibilité avec Maple, lorsque l’on fait un calcul numérique 
-d’intégrales :<BR>
+d’intégrales :<br>
 On tape :
-</P><DIV CLASS="center"><TT>Int(exp(x),x,0,1))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">Int(exp(x),x,0,1))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>integrate(exp(x),x,0,1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">integrate(exp(x),x,0,1)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>int(exp(x),x,0,1))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">int(exp(x),x,0,1))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>exp(1)-1)</TT></DIV><P>On tape :
-</P><DIV CLASS="center"><TT>evalf(Int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">exp(1)-1)</span></div><p>On tape :
+</p><div class="center"><span style="font-family:monospace">evalf(Int(exp(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),x,0,1))</span></div><p>
 Ou on tape :
-</P><DIV CLASS="center"><TT>evalf(int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">evalf(int(exp(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),x,0,1))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1.46265174591</TT></DIV><P>
-<TT>integrate</TT> (ou <TT>int</TT> ou <TT>Int</TT>) a un, deux ou quatre arguments.<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-avec un argument qui est une expression de la variable <TT>x</TT>, (resp une
-fonction).<BR>
-<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors une expression qui est une 
-primitive de l’expression par rapport à la variable <TT>x</TT> (resp renvoie une
+</p><div class="center"><span style="font-family:monospace">1.46265174591</span></div><p>
+<span style="font-family:monospace">integrate</span> (ou <span style="font-family:monospace">int</span> ou <span style="font-family:monospace">Int</span>) a un, deux ou quatre arguments.<br>
+</p><ul class="itemize"><li class="li-itemize">
+avec un argument qui est une expression de la variable <span style="font-family:monospace">x</span>, (resp une
+fonction).<br>
+<span style="font-family:monospace">integrate</span> (ou <span style="font-family:monospace">int</span>) renvoie alors une expression qui est une 
+primitive de l’expression par rapport à la variable <span style="font-family:monospace">x</span> (resp renvoie une
 fonction primitive de la fonction donnée en argument)
 On tape :
-<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+<div class="center"><span style="font-family:monospace">integrate(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/3</span></div>
 On tape :
-<DIV CLASS="center"><TT>f(t):=t</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
-<DIV CLASS="center"><TT>g:=integrate(f)</TT></DIV>
+<div class="center"><span style="font-family:monospace">f(t):=t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
+<div class="center"><span style="font-family:monospace">g:=integrate(f)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>(t)-&gt;t</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
-<B>Remarque</B> Dans ce cas on peut aussi utiliser <TT>convert</TT> (ou sa 
-version infixée <TT>=&gt;</TT>) avec l’option <TT>int</TT>.<BR>
+<div class="center"><span style="font-family:monospace">(t)-&gt;t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/3</span></div>
+<span style="font-weight:bold">Remarque</span> Dans ce cas on peut aussi utiliser <span style="font-family:monospace">convert</span> (ou sa 
+version infixée <span style="font-family:monospace">=&gt;</span>) avec l’option <span style="font-family:monospace">int</span>. <br>
 On tape :
-<DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
-<DIV CLASS="center"><TT>g(x):=(f(x)=&gt;int)</TT></DIV>
+<div class="center"><span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
+<div class="center"><span style="font-family:monospace">g(x):=(f(x)=&gt;int)</span></div>
 ou 
-<DIV CLASS="center"><TT>g:=(f=&gt;int))</TT></DIV>
-</LI><LI CLASS="li-itemize">avec deux arguments qui sont :<BR>
- une expression et une variable,<BR>
-<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors une primitive de l’expression 
-par rapport à la variable donnée comme deuxième paramètre.<BR>
+<div class="center"><span style="font-family:monospace">g:=(f=&gt;int))</span></div>
+</li><li class="li-itemize">avec deux arguments qui sont :<br>
+ une expression et une variable,<br>
+<span style="font-family:monospace">integrate</span> (ou <span style="font-family:monospace">int</span>) renvoie alors une primitive de l’expression 
+par rapport à la variable donnée comme deuxième paramètre.<br>
 On tape :
-<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+<div class="center"><span style="font-family:monospace">integrate(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/3</span></div>
 On tape :
-<DIV CLASS="center"><TT>integrate(t</TT><CODE><TT>^</TT></CODE><TT>2,t)</TT></DIV>
+<div class="center"><span style="font-family:monospace">integrate(t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,t)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>t</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
-</LI><LI CLASS="li-itemize">avec quatre arguments qui sont :<BR>
-une expression, une variable et les bornes de l’intégrale définie,<BR>
-<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors la valeur de l’intégrale 
-définie.<BR>
+<div class="center"><span style="font-family:monospace">t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/3</span></div>
+</li><li class="li-itemize">avec quatre arguments qui sont :<br>
+une expression, une variable et les bornes de l’intégrale définie,<br>
+<span style="font-family:monospace">integrate</span> (ou <span style="font-family:monospace">int</span>) renvoie alors la valeur de l’intégrale 
+définie.<br>
 On tape :
-<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2,x,1,2)</TT></DIV>
+<div class="center"><span style="font-family:monospace">integrate(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,1,2)</span></div>
 On obtient :
-<DIV CLASS="center"><TT>7/3</TT></DIV>
+<div class="center"><span style="font-family:monospace">7/3</span></div>
 On tape :
-<DIV CLASS="center"><TT>integrate(1/(sin(x)+2),x,0,2*pi)</TT></DIV>
-On obtient après simplification (appel à <TT>simplify</TT>) :
-<DIV CLASS="center"><TT>2*pi*sqrt(3)/3</TT></DIV>
-</LI></UL><P>
-<B>Exercice 1</B><BR>
-Soit </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">+ln(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">)</TD></TR>
-</TABLE><P>
-Calculer une primitive de f.<BR>
+<div class="center"><span style="font-family:monospace">integrate(1/(sin(x)+2),x,0,2*pi)</span></div>
+On obtient après simplification (appel à <span style="font-family:monospace">simplify</span>) :
+<div class="center"><span style="font-family:monospace">2*pi*sqrt(3)/3</span></div>
+</li></ul><p>
+<span style="font-weight:bold">Exercice 1</span><br>
+Soit </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup>−1</td></tr>
+</table></td><td class="dcell">+ln(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>+1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>−1</td></tr>
+</table></td><td class="dcell">)</td></tr>
+</table><p>
+Calculer une primitive de f.<br>
 On tape :
-</P><DIV CLASS="center"><TT>int(x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1)))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">int(x/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)+ln((x+1)/(x-1)))</span></div><p>
 On obtient : 
-</P><DIV CLASS="center"><TT>x*log((x+1)/(x-1))+log(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+1/2*log(2*x</TT><CODE><TT>^</TT></CODE><TT>2/2-1)</TT></DIV><P>
-Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+</p><div class="center"><span style="font-family:monospace">x*log((x+1)/(x-1))+log(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)+1/2*log(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/2-1)</span></div><p>
+Si on a cocher <span style="font-family:monospace">Pas à pas</span> dans la configuration générale on a en 
 plus, en vert, le détail du calcul :
-</P><PRE CLASS="verbatim">Integration of x/(x^2-1): f(u)*u' where f=x-&gt;1/(x*2-1) and u=(x^2)/2
+</p><pre class="verbatim">Integration of x/(x^2-1): f(u)*u' where f=x-&gt;1/(x*2-1) and u=(x^2)/2
 Integrate rational fraction 1/(2*x-1)
 Integration of ln((x+1)/(x-1)) by part of u*v' where u=1 and v=ln((x+1)/(x-1))'
 Integrate rational fraction with denominator x^2-1=0
 roots are deduced from nth-roots of unity
-</PRE><P>Ou bien on définit la fonction <TT>f</TT> en tapant :<BR>
-</P><DIV CLASS="center"><TT>f(x):=x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1))</TT></DIV><P>
+</pre><p>
+Ou bien on définit la fonction <span style="font-family:monospace">f</span> en tapant :<br>
+</p><div class="center"><span style="font-family:monospace">f(x):=x/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)+ln((x+1)/(x-1))</span></div><p>
 puis on tape :
-</P><DIV CLASS="center"><TT>int(f(x))</TT></DIV><P>
-On obtient bien sûr le même résultat.<BR>
-<B>Attention</B><BR>
- Pour <TT>Xcas</TT>, <TT>log</TT> est égal à <TT>ln</TT> (logarithme népérien) 
-et <TT>log10</TT> est le logarithme en base 10.<BR>
-<B>Exercice 2</B><BR>
+</p><div class="center"><span style="font-family:monospace">int(f(x))</span></div><p>
+On obtient bien sûr le même résultat.<br>
+<span style="font-weight:bold">Attention</span><br>
+ Pour <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">log</span> est égal à <span style="font-family:monospace">ln</span> (logarithme népérien) 
+et <span style="font-family:monospace">log10</span> est le logarithme en base 10.<br>
+<span style="font-weight:bold">Exercice 2</span><br>
 Calculer :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>6</SUP>+2 · <I>x</I><SUP>4</SUP>+<I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>6</sup>+2 · <span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>2</sup></td></tr>
+</table></td><td class="dcell">  <span style="font-style:italic">dx</span> </td></tr>
+</table><p>
 On tape :
-</P><DIV CLASS="center"><TT>int(2/(x</TT><CODE><TT>^</TT></CODE><TT>6+2*x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">int(2/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6+2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2*((3*x</TT><CODE><TT>^</TT></CODE><TT>2+2)/(-(2*(x</TT><CODE><TT>^</TT></CODE><TT>3+x)))+-3/2*atan(x))</TT></DIV><P>
-Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+</p><div class="center"><span style="font-family:monospace">2*((3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2)/(-(2*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x)))+-3/2*atan(x))</span></div><p>
+Si on a cocher <span style="font-family:monospace">Pas à pas</span> dans la configuration générale on a en 
 plus, en vert, le détail du calcul :
-</P><PRE CLASS="verbatim">Integrate rational fraction 1/(x^3+x)^2
+</p><pre class="verbatim">Integrate rational fraction 1/(x^3+x)^2
 Partial fraction 1/(x^3+x)^2 -&gt; Hermite reduction -&gt; 
          integrate squarefree part -(3*x)/(2*x^3+2*x)
-</PRE><P><B>Exercice 3</B><BR>
+</pre><p>
+<span style="font-weight:bold">Exercice 3</span><br>
 Calculer :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">sin(<I>x</I>)+sin(2 · <I>x</I> )</TD></TR>
-</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
-</TABLE><P>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">sin(<span style="font-style:italic">x</span>)+sin(2 · <span style="font-style:italic">x</span> )</td></tr>
+</table></td><td class="dcell">  <span style="font-style:italic">dx</span> </td></tr>
+</table><p>
 On tape :
-</P><DIV CLASS="center"><TT>integrate(1/(sin(x)+sin(2*x )))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">integrate(1/(sin(x)+sin(2*x )))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(1/-3*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2-3)+1/12*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2))*2</TT></DIV><P> 
-Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+</p><div class="center"><span style="font-family:monospace">(1/-3*log((tan(x/2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-3)+1/12*log((tan(x/2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))*2</span></div><p> 
+Si on a cocher <span style="font-family:monospace">Pas à pas</span> dans la configuration générale on a en 
 plus, en vert, le détail du calcul :
-</P><PRE CLASS="verbatim">Integrate rational fraction of trigonometric 1/(sin(x)+sin(2*x)) by tan(x/2) change of variable, 
+</p><pre class="verbatim">Integrate rational fraction of trigonometric 1/(sin(x)+sin(2*x)) by tan(x/2) change of variable, 
               leading to integral of 1/((1+x^2)*((2*x)/(x^2+1)+(2*(1-x^2)/(x^2+1)*2*x)/(x^2+1)))
 Integrate rational fraction 1/((1+x^2)*((2*x)/(x^2+1)+(2*(1-x^2)/(x^2+1)*2*x)/(x^2+1))), 
                change of variable x=x^2
 Integrate rational fraction (-x-1)/(4*x^2-12*x)
-</PRE><HR>
-<A HREF="cascmd_fr305.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr307.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</pre>
+<hr>
+<a href="cascmd_fr305.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr307.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

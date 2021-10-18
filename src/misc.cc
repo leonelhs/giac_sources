@@ -1071,7 +1071,7 @@ namespace giac {
     int s=int(v.size());
     if (s<2)
       return gensizeerr(contextptr);
-    if (s>3 || v[1].is_symb_of_sommet(at_equal)){
+    if (s>3 || v[1].is_symb_of_sommet(at_equal) || (s==3 && v[2].type==_INT_)){
       p=_POLY1__VECT;
       p.subtype=_INT_MAPLECONVERSION;
       v.push_back(p);
@@ -1153,13 +1153,11 @@ namespace giac {
     double eps=epsilon(contextptr);
     if (g.type==_VECT && g._VECTptr->size()==2){
       gen gf=evalf_double(g._VECTptr->back(),1,contextptr);
+      if (is_integral(gf))
+	return gen2continued_fraction(g._VECTptr->front(),gf.val,contextptr);
       if (gf.type==_DOUBLE_){
 	eps=gf._DOUBLE_val;
 	g=evalf_double(g._VECTptr->front(),1,contextptr);
-      }
-      else {
-	if (g._VECTptr->back().type==_INT_)
-	  return gen2continued_fraction(g._VECTptr->front(),g._VECTptr->back().val,contextptr);
       }
     }
     g=evalf_double(g,1,contextptr);
@@ -4715,7 +4713,7 @@ static define_unary_function_eval (__simplex_reduce,&_simplex_reduce,_simplex_re
 	      cur_col=j;	    
 	    }
 	  }
-	  if (cur_col>=0){
+	  if (cur_col>=0 && is_one(mt[i][cur_col])){ // BUGFIX by Luka Marohnić: a proper check for idn line
 	    --counter;
 	    bfs[i]=mt[nc-1][cur_col];
 	  }
@@ -5077,6 +5075,8 @@ static define_unary_function_eval (__hamdist,&_hamdist,_hamdist_s);
 	  return graph;
 	// extract polygon
 	gen graphe=remove_at_pnt(graph);
+	if (graphe.type==_VECT && graphe._VECTptr->size()==2)
+	  graphe=symbolic(at_curve,makesequence(v.front(),graphe));
 	if (graphe.is_symb_of_sommet(at_curve) && graphe._SYMBptr->feuille.type==_VECT){
 	  vecteur & graphev=*graphe._SYMBptr->feuille._VECTptr;
 	  if (graphev.size()>1){
@@ -7318,8 +7318,12 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	    df2=limit(f2,xid,curx+1,0,contextptr);
 	  }
 	  else {
-	    dfx=limit(f1,xid,(curx+nextx)/2,0,contextptr);
-	    df2=limit(f2,xid,(curx+nextx)/2,0,contextptr);
+	    gen m=(curx+nextx)/2;
+	    if (in_domain(df,x,m,contextptr)){
+	      dfx=limit(f1,xid,m,0,contextptr);
+	      df2=limit(f2,xid,m,0,contextptr);
+	    }
+	    else dfx=df2=undef;
 	  }
 	}
       }
@@ -7327,28 +7331,38 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	purgenoassume(x,contextptr);
 	return 0;
       }
-      if (is_strictly_positive(dfx,contextptr)){
-#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
-	tvif.push_back(string2gen("↑",false));
-#else
-	tvif.push_back(string2gen("↗",false));
-#endif
-	tvidf.push_back(string2gen("+",false));
+      if (is_undef(dfx)){
+	tvif.push_back(string2gen("x",false));
+	tvidf.push_back(string2gen("x",false));
       }
       else {
+	if (is_strictly_positive(dfx,contextptr)){
 #if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
-	tvif.push_back(string2gen("↓",false));
+	  tvif.push_back(string2gen("↑",false));
 #else
-	tvif.push_back(string2gen("↘",false));
+	  tvif.push_back(string2gen("↗",false));
 #endif
-	tvidf.push_back(string2gen("-",false));
-      }
-      if (do_inflex){
-	if (is_strictly_positive(df2,contextptr)){
-	  tvidf2.push_back(string2gen("convex",false));
+	  tvidf.push_back(string2gen("+",false));
 	}
 	else {
-	  tvidf2.push_back(string2gen("concav",false));
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
+	  tvif.push_back(string2gen("↓",false));
+#else
+	  tvif.push_back(string2gen("↘",false));
+#endif
+	  tvidf.push_back(string2gen("-",false));
+	}
+      }
+      if (do_inflex){
+	if (is_undef(df2))
+	  tvidf2.push_back(string2gen("x",false));
+	else {
+	  if (is_strictly_positive(df2,contextptr)){
+	    tvidf2.push_back(string2gen("convex",false));
+	  }
+	  else {
+	    tvidf2.push_back(string2gen("concav",false));
+	  }
 	}
       }
       if (i<tvs-1 && equalposcomp(sing,nextx)){
@@ -7714,6 +7728,36 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   static const char _link2giac_s []="link2giac";
   static define_unary_function_eval (__link2giac,&_link2giac,_link2giac_s);
   define_unary_function_ptr5( at_link2giac ,alias_at_link2giac,&__link2giac,0,true);
+
+  gen _range(const gen & args,GIAC_CONTEXT){
+    gen g(args);
+    if (is_integral(g) && g.type==_INT_ && g.val>=0){
+      int n=g.val;
+      vecteur v(n);
+      for (int i=0;i<n;++i)
+	v[i]=i;
+      return v;
+    }
+    if (g.type==_VECT && g._VECTptr->size()>=2){
+      gen a=g._VECTptr->front(),b=(*g._VECTptr)[1],c=1;
+      if (g._VECTptr->size()==3)
+	c=g._VECTptr->back();
+      if (is_integral(a) && is_integral(b) && is_integral(c)){
+	int A=a.val,B=b.val,C=c.val;
+	if ( (A<=B && C>0) || (A>=B && C<0)){
+	  int s=std::ceil(double(B-A)/C);
+	  vecteur w(s);
+	  for (int i=0;i<s;++i)
+	    w[i]=A+i*C;
+	  return w;
+	}
+      }
+    }
+    return gensizeerr(contextptr);
+  }
+  static const char _range_s []="range";
+  static define_unary_function_eval (__range,&_range,_range_s);
+  define_unary_function_ptr5( at_range ,alias_at_range,&__range,0,true);
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

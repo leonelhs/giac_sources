@@ -1,53 +1,43 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_en.css">
-<TITLE>Linear system solving: linsolve</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_en452.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en454.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc507">2.52.6</A>  Linear system solving: <TT>linsolve</TT></H3><P><A NAME="@default744"></A>
-<TT>linsolve</TT> is used to solve a system of linear equations.<BR>
-<TT>linsolve</TT> has two arguments: a list of equations or
-expressions (in that case the convention is that the equation 
-is <I>expression</I> = 0), and a list of variable names.<BR>
-<TT>linsolve</TT> returns the solution of the system in a list.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_en.css">
+<title>Equation solving in &#X2102; : cSolve</title>
+</head>
+<body >
+<a href="cascmd_en452.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en454.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec537" class="subsection">2.52.7  Equation solving in &#X2102; : <span style="font-family:monospace">cSolve</span></h3>
+<p><a id="hevea_default744"></a>
+<span style="font-family:monospace">cSolve</span> takes two arguments and solves an equation or a system
+of polynomial equations.
+</p><ul class="itemize"><li class="li-itemize">
+solving an equation<br>
+<span style="font-family:monospace">cSolve</span> takes as arguments an equation between two expressions or an 
+expression (<span style="font-family:monospace">=0</span> is omitted), and a variable name (by default <span style="font-family:monospace">x</span>).<br>
+<span style="font-family:monospace">cSolve</span> solves this equation in &#X2102; even if you are in
+real mode.
+</li><li class="li-itemize">solving a system of polynomial equations<br>
+<span style="font-family:monospace">cSolve</span> takes as arguments two vectors : a vector of polynomial equations 
+and a vector of variable names. <br>
+<span style="font-family:monospace">cSolve</span> solves this equation system in &#X2102; even if you are in
+real mode.
+</li></ul><p>
 Input :
-</P><DIV CLASS="center"><TT>linsolve([2*x+y+z=1,x+y+2*z=1,x+2*y+z=4],[x,y,z])</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">cSolve(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1=3)</span></div><p>
 Output :
-</P><DIV CLASS="center"><TT>[1/-2,5/2,1/-2]</TT></DIV><P> 
-Which means that
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>=&#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">, <I>y</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">5</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">, <I>z</I>=&#X2212;</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD></TR>
-</TABLE><P>
-is the solution of the system :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">&#X23A7;<BR>
-&#X23AA;<BR>
-&#X23A8;<BR>
-&#X23AA;<BR>
-&#X23A9;</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>2<I>x</I>+<I>y</I>+<I>z</I></TD><TD ALIGN=left NOWRAP>=1</TD></TR>
-<TR><TD ALIGN=right NOWRAP><I>x</I>+<I>y</I>+2<I>z</I></TD><TD ALIGN=left NOWRAP>=1</TD></TR>
-<TR><TD ALIGN=right NOWRAP><I>x</I>+2<I>y</I>+<I>z</I></TD><TD ALIGN=left NOWRAP>=4</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD></TR>
-</TABLE><HR>
-<A HREF="cascmd_en452.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_en454.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">[sqrt(2),-(sqrt(2)),(i)*sqrt(2),-((i)*sqrt(2))]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">cSolve([-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y=2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y],[x,y])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[i,1],[-i,1]]</span></div>
+<hr>
+<a href="cascmd_en452.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en454.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

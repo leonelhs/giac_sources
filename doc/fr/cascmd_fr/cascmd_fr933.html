@@ -1,36 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La ligne polygonale : open_polygon polygone_ouvert</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr932.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr934.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1095">10.12.4</A>  La ligne polygonale : <TT>open_polygon polygone_ouvert</TT></H3><P><A NAME="@default1811"></A><A NAME="@default1812"></A><A NAME="sec:polygonou2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1041.html#sec:polygonou3">11.9.4</A> pour la géométrie 3-d.<BR>
-<TT>polygone_ouvert</TT>, en géométrie plane, a comme argument la 
-liste (ou la séquence) de <I>n</I> points ou de <I>n</I> nombres complexes représentant l’affixe de ces points.<BR>
-<TT>polygone_ouvert</TT> renvoie et trace la ligne polygonale ayant pour sommets 
-ces <I>n</I> points.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>polygone_ouvert(-1,-1+i/2,i,1+i,-i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La ligne polygonale de sommets -1,-1+i/2,i,1+i,-i</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>polygone_ouvert(makelist(x-&gt;exp(i*pi*x/3),0,5,1))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La ligne polygonale de sommets 1,</TT><TT>
-<I>e</I></TT><SUP><TT><I>i</I>π/3</TT></SUP><TT>, <I>e</I></TT><SUP><TT>2<I>i</I>π/3</TT></SUP><TT>, ..,
- <I>e</I></TT><SUP><TT>5<I>i</I>π/3</TT></SUP></DIV><HR>
-<A HREF="cascmd_fr932.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr934.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>L’enveloppe convexe de points du plan: convexhull</title>
+</head>
+<body >
+<a href="cascmd_fr932.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr934.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1133" class="subsection">10.12.5  L’enveloppe convexe de points du plan: <span style="font-family:monospace">convexhull</span></h3>
+<p>
+<a id="hevea_default1810"></a>
+L’instruction <span style="font-family:monospace">convexhull</span> calcule l’enveloppe convexe d’un
+ensemble de points du plan donné par des points ou des affixes
+de points, elle renvoie une liste de complexes affixes des sommets
+de l’enveloppe convexe. L’algorithme utilisé est le scan de Graham.
+On peut utiliser <code>polygone</code> sur le résultat de
+<code>convexhull</code> pour obtenir le tracé de l’enveloppe convexe.</p><p>Par exemple, on tape
+</p><div class="center">
+<span style="font-family:monospace">polygone(convexhull(0,1,1+i,1+2i,-1-i,1-3i,-2+i))</span>
+</div><p>
+pour obtenir l’enveloppe convexe des points d’affixe (0,0), (1,0),
+(1,1), (1,2), (-1,-1), (1,-3), (-2,1).</p>
+<hr>
+<a href="cascmd_fr932.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr934.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

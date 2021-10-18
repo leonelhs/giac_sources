@@ -1,45 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi normale : normal_cdf normald_cdf</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr767.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr769.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc908">8.4.12</A>  Fonction de répartition de la loi normale : <TT>normal_cdf normald_cdf</TT></H3><P><A NAME="@default1378"></A><A NAME="@default1379"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi normale centrée réduite,
-on a : <I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>normal_cdf(x)</TT> et<BR>
-<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)= <TT>normal_cdf(x,y)</TT> et<BR>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi normale de moyenne µ et 
-d’écart-type σ, on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>normal_cdf(</TT><TT>µ,σ</TT><TT>,x)</TT>.<BR>
-<I>Proba</I>(<I>x</I> ≤ <I>X</I> ≤ <I>y</I>)= <TT>normal_cdf(</TT><TT>µ,σ</TT><TT>,x,y)</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonction de répartition inverse normale : normal_icdf normald_icdf</title>
+</head>
+<body >
+<a href="cascmd_fr767.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr769.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec940" class="subsection">8.4.13  Fonction de répartition inverse normale : <span style="font-family:monospace">normal_icdf normald_icdf</span></h3>
+<p><a id="hevea_default1377"></a><a id="hevea_default1378"></a>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> suit une loi normale centrée 
+réduite, si on a <span style="font-family:monospace">normal_icdf(x)=h</span> c’est que l’on a :<br>
+ <span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">h</span>)<span style="font-family:monospace">=x=normal_cdf(h)</span>.<br>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> suit une loi normale de moyenne µ et 
+d’écart-type σ, si on a <span style="font-family:monospace">normal_icdf(</span>µ,σ<span style="font-family:monospace">,x)=h</span> 
+c’est que l’on a :<br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">h</span>)<span style="font-family:monospace">=x=normal_cdf(</span>µ,σ<span style="font-family:monospace">,h)</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>normal_cdf(1.96)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">normal_icdf(0.975)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.975002104852</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1.95996398454</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>normal_cdf(0,1.96)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">normal_icdf(1,2,0.495)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.475002104852</TT></DIV><P>
-car <TT>normal_cdf(0)=1/2</TT> et 0.975002104852-0.5=0.475002104852<BR>
+</p><div class="center"><span style="font-family:monospace">0.974933060984</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>normal_cdf(1,2,1.96)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">normal_icdf(1,2,normal_cdf(1,2,0.975))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.684386303484</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">0.975</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>normal_cdf(1,2,1.1,2.9)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">normal_cdf(1,2,normal_icdf(1,2,0.495))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.309005067853</TT></DIV><HR>
-<A HREF="cascmd_fr767.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr769.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0.495</span></div>
+<hr>
+<a href="cascmd_fr767.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr769.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

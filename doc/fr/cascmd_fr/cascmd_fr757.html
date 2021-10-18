@@ -1,35 +1,41 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Probabilité que X égale k lorsque X ∈ B(n,p) : binomial</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr756.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr758.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc897">8.4.1</A>  Probabilité que <I>X</I> égale <I>k</I> lorsque <I>X</I> ∈ <FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>) : <TT>binomial</TT></H3><P><A NAME="@default1366"></A>
-La probabilité pour que <I>X</I> égale <I>k</I> lorsque <I>X</I> ∈ <FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>) (<I>k</I> (0≤ <I>k</I> ≤ <I>n</I>) est nombre de succés lors de <I>n</I> tirages 
-indépendants (i.e.avec remise) de probabilité <I>p</I>) est égale à :<BR>
-<TT>binomial(n,k,p)=comb(n,k)*p</TT><CODE><TT>^</TT></CODE><TT>k*(1-p)</TT><CODE><TT>^</TT></CODE><TT>(n-k)</TT>.<BR>
-Le troisième paramètre est égal par défaut à 1, on a donc 
-dans ce cas :<BR>
-<TT>binomial(n,k)=comb(n,k)</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonction de répartition de la loi binomiale : binomial_cdf</title>
+</head>
+<body >
+<a href="cascmd_fr756.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr758.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec929" class="subsection">8.4.2  Fonction de répartition de la loi binomiale : <span style="font-family:monospace">binomial_cdf</span></h3>
+<p><a id="hevea_default1364"></a>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> suit une loi binomiale 
+<span style="color:red"><span style="font-style:italic">B</span></span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>), on a : <br>
+<span style="font-family:monospace">binomial_cdf(n,p,x)</span>=<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)= <br>
+<span style="font-family:monospace">binomial(n,0,p)+...+binomial(n,floor(x),p)</span>.<br>
+<span style="font-family:monospace">binomial_cdf(n,p,x,y)</span>=<span style="font-style:italic">Proba</span>(<span style="font-style:italic">x</span>≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>)= <br>
+<span style="font-family:monospace">binomial(n,ceil(x),p)+...+binomial(n,floor(y),p)</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>binomial(10,2,0.4)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial_cdf(4,0.5,2)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.120932352</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">0.6875</span></div><p>
+On peut vérifier que :
+</p><div class="center"><span style="font-family:monospace">binomial(4,0,0.5)+binomial(4,1,0.5)+binomial(4,2,0.5)</span></div><div class="center"><span style="font-family:monospace">=0.6875</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>binomial(4,2,0.5)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">binomial_cdf(2,0.3,1)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.375</TT></DIV><HR>
-<A HREF="cascmd_fr756.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr758.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0.91</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">binomial_cdf(2,0.3,1,2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.51</span></div>
+<hr>
+<a href="cascmd_fr756.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr758.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,80 +1,45 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’instruction conditionnelle : if then elif else end</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr842.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr844.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc989">9.4.19</A>  L’instruction conditionnelle : <TT>if then elif else end</TT></H3><P><A NAME="@default1529"></A>
-Lorsqu’il y a plusieurs <TT>if...else if...</TT> à la suite
-on peut aussi utiliser un <TT>elif</TT> qui est une écriture 
-condensée de <TT>else if</TT>. L’instruction <TT>elif</TT> permet une écriture
-plus lisible car un seul <TT>end</TT> suffit pour clore le <TT>if</TT>. 
-Le dernier <TT>elif</TT> peut comporter 
-ou ne pas comporter un <TT>else</TT>. Voici la syntaxe :<BR>
-<A NAME="@default1530"></A><A NAME="@default1531"></A><A NAME="@default1532"></A></P><P><TT>if (</TT><TT><EM>condition1</EM></TT><TT>) then<BR>
-</TT><TT><EM>action1</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition2</EM></TT><TT>) then<BR>
-</TT><TT><EM>action2</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition3</EM></TT><TT>) then<BR>
-</TT><TT><EM>action3</EM></TT><TT>;<BR>
-end</TT><BR>
-ou bien
-<TT>if (</TT><TT><EM>condition1</EM></TT><TT>) then<BR>
-</TT><TT><EM>action1</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition2</EM></TT><TT>) then<BR>
-</TT><TT><EM>action2</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition3</EM></TT><TT>) then<BR>
-</TT><TT><EM>action3</EM></TT><TT>;<BR>
-else 
-</TT><TT><EM>action4</EM></TT><TT>;<BR>
-end</TT><BR>
-On tape par exemple pour définir la fonction <TT>f</TT> définit par :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<I>f</I>(<I>x</I>)=8 si <I>x</I>&gt;8
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=4 si 4&lt;<I>x</I>≥ 8
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=2 si 2&lt;<I>x</I>≥ 4
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=1 si 0&lt;<I>x</I>≥ 2
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=0 si  <I>x</I>≤ 0
-</LI></UL><PRE CLASS="verbatim">f(a):= {
-  if a&gt;8 then 
-    return 8;
-  elif a&gt;4 then 
-    return 4;
-  elif a&gt;2 then 
-    return 2;
-  elif a&gt;0 then 
-    return 1;
-  elif a&lt;=0 then
-    return 0;
-  end;
-}:;
-</PRE><P>ou plutôt en utilisant un <TT>else</TT> à la place du dernier <TT>elif</TT>,
-on tape:
-</P><PRE CLASS="verbatim">f(a):= {
-  if a&gt;8 then 
-    return 8;
-  elif a&gt;4 then 
-    return 4;
-  elif a&gt;2 then 
-    return 2;
-  elif a&gt;0 then 
-    return 1;
-  else
-    return 0;
-  end;
-}:;
-</PRE><HR>
-<A HREF="cascmd_fr842.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr844.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>L’instruction conditionnelle : switch</title>
+</head>
+<body >
+<a href="cascmd_fr842.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr844.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1021" class="subsection">9.4.20  L’instruction conditionnelle : <span style="font-family:monospace">switch</span></h3>
+<p><a id="hevea_default1530"></a><a id="hevea_default1531"></a><a id="hevea_default1532"></a>
+<span style="font-family:monospace">switch</span> a comme paramètre une expression.<br>
+Selon la valeur de cette expression, marquée par <span style="font-family:monospace">case</span> (ou par 
+<span style="font-family:monospace">default</span>), <span style="font-family:monospace">switch</span> 
+permet de faire le bloc d’instructions correspondant à la valeur d’une 
+expression qui doit être une valeur entière.<br>
+On tape :
+</p><pre class="verbatim">opere(a,b,c):={
+switch(c) {
+  case 1 : {a:=a+b;break;} 
+  case 2 : {a:=a-b;break;} 
+  case 3 : {a:=a*b;break;} 
+  default : {a:=a^b;}
+}
+return a;
+}
+</pre><p>
+puis :
+</p><div class="center"><span style="font-family:monospace">opere(2,3,1)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">5</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">opere(2,3,2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">-1</span></div>
+<hr>
+<a href="cascmd_fr842.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr844.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

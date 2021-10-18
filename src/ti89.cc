@@ -92,6 +92,7 @@ namespace giac {
       if (v.size()==2 && is_integral((g1=eval(v[1],eval_level(contextptr),contextptr))) && g1.val>=0){
 	vecteur res;
 	int s=g1.val,l=eval_level(contextptr);
+	res.reserve(s);
 	gen v0=v[0];
 	for (int i=0;i<s;++i)
 	  res.push_back(eval(v0,l,contextptr));
@@ -1338,11 +1339,16 @@ namespace giac {
   }
   gen _exp2list(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
+    if (is_zero(g)) return vecteur(0);
     gen g1(g);
     if (!g1.is_symb_of_sommet(at_ou))
       g1=eval(g,eval_level(contextptr),contextptr);
     g1=remove_and(g1,at_ou);
-    return _rightapply(g1,contextptr);
+    g1=_rightapply(g1,contextptr);
+    if (g1.type!=_VECT)
+      return vecteur(1,g1);
+    else
+      return g1;
   }
   static const char _exp2list_s[]="exp2list";
   static define_unary_function_eval_quoted (__exp2list,&_exp2list,_exp2list_s);
@@ -1352,9 +1358,12 @@ namespace giac {
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT || g._VECTptr->size()!=2 )
       return gensizeerr(contextptr);
+    gen gf=g._VECTptr->front();
+    if (gf.type==_VECT && gf._VECTptr->empty())
+      return change_subtype(0,_INT_BOOLEAN);
     int x=xcas_mode(contextptr);
     xcas_mode(3,contextptr);
-    gen res=solvepostprocess(g._VECTptr->front(),g._VECTptr->back(),contextptr);
+    gen res=solvepostprocess(gf,g._VECTptr->back(),contextptr);
     xcas_mode(x,contextptr);
     return res;
   }

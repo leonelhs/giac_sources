@@ -1,33 +1,54 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi géométrique : geometric</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr788.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr790.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc929">8.4.33</A>  Densité de probabilité de la loi géométrique : <TT>geometric</TT></H3><P><A NAME="@default1408"></A>
-<TT>geometric</TT> a 2 paramètres : un réel <I>p</I> de ]0,1[ et un 
-entier <I>n</I>≥ 1.<BR>
-<TT>geometric(p,n)</TT> renvoie la densité de probabilité de la loi 
-géométrique à savoir : (1−<I>p</I>)<SUP><I>n</I>−1</SUP>*<I>p</I><BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Fonction de répartition de la loi géométrique : geometric_cdf</title>
+</head>
+<body >
+<a href="cascmd_fr788.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr790.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec961" class="subsection">8.4.34  Fonction de répartition de la loi géométrique : <span style="font-family:monospace">geometric_cdf</span></h3>
+<p><a id="hevea_default1406"></a>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> à valeur dans ℕ<sup>*</sup> suit une 
+loi géométrique de paramètre <span style="font-style:italic">p</span> (0&lt;<span style="font-style:italic">p</span>&lt;1), on a : <br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)= <span style="font-family:monospace">geometric_cdf(p,x)</span> avec <span style="font-style:italic">x</span>∈ ℕ<sup>*</sup>.<br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">x</span>≤ <span style="font-style:italic">X</span>≤ <span style="font-style:italic">y</span>)=<span style="font-family:monospace">geometric_cdf(r,x,y)</span> avec <span style="font-style:italic">x</span>∈ ℕ<sup>*</sup> et <span style="font-style:italic">y</span>∈ ℕ<sup>*</sup>.<br>
+On a :<br>
+<span style="font-family:monospace">geometric_cdf(p,x)</span> est égale à 
+ 1−(1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">x</span></sup> et <br>
+<span style="font-family:monospace">geometric_cdf(p,x,y)</span> est égale à :<br>
+ (1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">x</span>−1</sup>−(1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">y</span></sup><br>
 On tape :
-</P><DIV CLASS="center"><TT>geometric(0.2,3)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.2,3)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.128</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">0.488</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>geometric(0.5,5)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.2,5)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.03125</TT></DIV><HR>
-<A HREF="cascmd_fr788.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr790.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0.67232</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.2,3,5)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.18432</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.5,1)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.5</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.5,5)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.96875</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.5,1,5)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.46875</span></div>
+<hr>
+<a href="cascmd_fr788.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr790.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

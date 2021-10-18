@@ -1,44 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Calcul approché du nombre dérivé : nDeriv</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr107.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr109.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc158">4.3.2</A>  Calcul approché du nombre dérivé : <TT>nDeriv</TT></H3><P><A NAME="@default191"></A>
-<TT>nDeriv</TT> a comme arguments : une expression <TT>Xpr</TT>, le nom de
-la variable de cette expression (par défaut <TT>x</TT>), and <TT>h</TT> (par 
-défaut <TT>h=0.001</TT>).<BR>
-<TT>nDeriv(f(x),x,h)</TT> calcule de façon approchée la valeur de 
-la dérivée de l’expression <TT>f(x)</TT> au point <TT>x</TT> et renvoie :<BR>
-<TT>(f(x+h)-f(x+h))/2*h</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Calcul approché du nombre dérivé : nDeriv</title>
+</head>
+<body >
+<a href="cascmd_fr107.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr109.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec164" class="subsection">4.3.2  Calcul approché du nombre dérivé : <span style="font-family:monospace">nDeriv</span></h3>
+<p><a id="hevea_default191"></a>
+<span style="font-family:monospace">nDeriv</span> a comme arguments : une expression <span style="font-family:monospace">Xpr</span>, le nom de
+la variable de cette expression (par défaut <span style="font-family:monospace">x</span>), and <span style="font-family:monospace">h</span> (par 
+défaut <span style="font-family:monospace">h=0.001</span>).<br>
+<span style="font-family:monospace">nDeriv(f(x),x,h)</span> calcule de façon approchée la valeur de 
+la dérivée de l’expression <span style="font-family:monospace">f(x)</span> au point <span style="font-family:monospace">x</span> et renvoie :<br>
+<span style="font-family:monospace">(f(x+h)-f(x+h))/2*h</span>.<br>
 On tape :
-</P><DIV CLASS="center"><TT>nDeriv(x</TT><CODE><TT>^</TT></CODE><TT> 2,x)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">nDeriv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 2,x)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>((x+0.001)</TT><CODE><TT>^</TT></CODE><TT>2-(x+-0.001)</TT><CODE><TT>^</TT></CODE><TT>2)*500.0</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">((x+0.001)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-(x+-0.001)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)*500.0</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>subst(nDeriv(x</TT><CODE><TT>^</TT></CODE><TT> 2,x),x=1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">subst(nDeriv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 2,x),x=1)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">2</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>nDeriv(exp(x</TT><CODE><TT>^</TT></CODE><TT> 2),x,0.00001)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">nDeriv(exp(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 2),x,0.00001)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>(exp((x+1e-05)</TT><CODE><TT>^</TT></CODE><TT>2)-exp((x+-1e-05)</TT><CODE><TT>^</TT></CODE><TT>2))*50000</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">(exp((x+1e-05)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)-exp((x+-1e-05)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))*50000</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>subst(exp(nDeriv(x</TT><CODE><TT>^</TT></CODE><TT> 2),x,0.00001),x=1)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">subst(exp(nDeriv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 2),x,0.00001),x=1)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>5.43656365783</TT></DIV><P>
-On a <TT>2.0*e=5.43656365692</TT></P><HR>
-<A HREF="cascmd_fr107.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr109.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">5.43656365783</span></div><p>
+On a <span style="font-family:monospace">2.0*e=5.43656365692</span></p>
+<hr>
+<a href="cascmd_fr107.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr109.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

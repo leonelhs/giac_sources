@@ -1,45 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Orthogonalité de 2 droites ou 2 sphères : is_orthogonal est_orthogonal</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1057.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1059.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc1242">11.13.5</A>  Orthogonalité de 2 droites ou 2 sphères : <TT>is_orthogonal est_orthogonal</TT></H3><P><A NAME="@default2056"></A><A NAME="@default2057"></A><A NAME="sec:estortho3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr992.html#sec:estortho2">10.18.13</A> pour la géométrie plane et
-<A HREF="cascmd_fr1057.html#sec:estperp3">11.13.4</A> pour la perpendicularité 3-d.<BR>
-<TT>est_orthogonal</TT> est une fonction booléenne ayant comme 
-argument deux droites ou deux sphères ou une droite et un plan ou d
-eux plans.<BR>
- <TT>est_orthogonal</TT> vaut 1 si les deux droites ou les deux sphères (i.e
-si les plans tangents en leurs points d’intersection sont orthogonaux), 
-ou la droite et le plan ou les deux plans sont orthogonaux et vaut 0 sinon.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Savoir si 3 points sont alignés : is_collinear est_aligne</title>
+</head>
+<body >
+<a href="cascmd_fr1057.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1059.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1280" class="subsection">11.13.6  Savoir si 3 points sont alignés : <span style="font-family:monospace">is_collinear est_aligne</span></h3>
+<p><a id="hevea_default2055"></a><a id="hevea_default2056"></a><a id="sec:estaligne3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr980.html#sec%3Aestaligne2">10.18.2</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">est_aligne</span> est une fonction booléenne ayant comme 
+argument une liste ou une séquence de points.<br>
+<span style="font-family:monospace">est_aligne</span> vaut 1 si les points sont alignés, et vaut 0 sinon.<br>
 On tape :
-</P><DIV CLASS="center"><TT>est_orthogonal(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_aligne([2,0,0],[0,2,0],[1,1,0])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>est_orthogonal(droite([2,3,-2],[-1,-1,-1]), plan([-1,-1,-1],[-1,0,3],[-2,0,0]))</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">est_aligne([2,0,0],[0,2,0],[0,1,1])</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>est_orthogonal(plan([0,0,0],[1,2,-3],[1,1,-2]), plan([-1,-1,-1],[1,2,-3],[0,0,0]))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>est_orthogonal(sphere([0,0,0],sqrt(2)), sphere([2,0,0],sqrt(2)))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
-<A HREF="cascmd_fr1057.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr1059.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0</span></div>
+<hr>
+<a href="cascmd_fr1057.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1059.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -1,46 +1,34 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Complément à 1 de la fonction de répartition de la loi normale : UTPN</TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr769.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr771.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-<HR>
-<H3 CLASS="subsection"><A NAME="htoc910">8.4.14</A>  Complément à 1 de la fonction de répartition de la loi normale : <TT>UTPN</TT></H3><P><A NAME="@default1382"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi normale centrée réduite,
-on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPN(x)</TT>.<BR>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi normale de moyenne µ et 
-de variance <I>v</I>, on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPN(</TT><TT>µ</TT><TT>,v,x)</TT>.<BR>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Densité de probabilité de la loi de Student : student studentd</title>
+</head>
+<body >
+<a href="cascmd_fr769.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr771.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec942" class="subsection">8.4.15  Densité de probabilité de la loi de Student : <span style="font-family:monospace">student studentd</span></h3>
+<p><a id="hevea_default1380"></a><a id="hevea_default1381"></a>
+<span style="font-family:monospace">student(n,x)</span> est la densité de probabilité de la loi de Student ayant <span style="font-style:italic">n</span> degrés de liberté.<br>
+<span style="font-family:monospace">student(n,x)</span>, est égale à :
+ Γ(<span style="font-style:italic">n</span>+1/2)/Γ(<span style="font-style:italic">n</span>/2)√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><span style="text-decoration:overline">π</span>(1+<span style="font-style:italic">x</span><sup>2</sup>/<span style="font-style:italic">n</span>)<sup>−<span style="font-style:italic">n</span>−1/2</sup> <br>
+où Γ est définie pour <span style="font-style:italic">x</span>&gt;0 par 
+Γ(<span style="font-style:italic">x</span>)=∫<sub>0</sub><sup>∞</sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span></sup><span style="font-style:italic">t</span><sup><span style="font-style:italic">x</span>−1</sup> <span style="font-style:italic">dt</span><br>
 On tape :
-</P><DIV CLASS="center"><TT>UTPN(1.96)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">student(2,3)</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0249978951482</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">Gamma(3/2)*sqrt(11/2)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">-1*2/(sqrt(2*pi)*11)</span></div><p>
 On tape :
-</P><DIV CLASS="center"><TT>UTPN(1,4,1.96)</TT></DIV><P>
+</p><div class="center"><span style="font-family:monospace">evalf(student(2,3))</span></div><p>
 On obtient :
-</P><DIV CLASS="center"><TT>0.315613696516</TT></DIV><P>
-<B>Attention</B><BR>
-Les paramètres de <TT>UTPN</TT> sont la moyenne de <I>X</I>, la variance de <I>X</I>,
-et la valeur <I>x</I>, alors que,
-pour <TT>normal_cdf</TT> les paramètres sont la moyenne de <I>X</I>, l’écart-type 
-de <I>X</I> et la valeur <I>x</I>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>UTPN(1.96)+normal_cdf(1.96)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>UTPN(1,4,1.96)+normal_cdf(1,2,1.96)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
-<A HREF="cascmd_fr769.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<A HREF="cascmd_fr771.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
-</BODY>
-</HTML>
+</p><div class="center"><span style="font-family:monospace">0.0274101222343</span></div>
+<hr>
+<a href="cascmd_fr769.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr771.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>
