@@ -1269,27 +1269,29 @@ namespace xcas {
 	  }
 	}
 	if (f0.is_symb_of_sommet(giac::at_cercle) && f0._SYMBptr->feuille.type==giac::_VECT){
+	  if (f0._SYMBptr->feuille._VECTptr->size()==3 && ((*f0._SYMBptr->feuille._VECTptr)[2]!=giac::cst_two_pi || (*f0._SYMBptr->feuille._VECTptr)[1]!=0))
+	    return f0.print(contextptr);
 	  giac::gen centre,rayon;
 	  if (!giac::centre_rayon(f0,centre,rayon,true,0))
 	    return "cercle_error";
 	  if (!complex_mode(contextptr) && (centre.type<giac::_IDNT || centre.type==giac::_FRAC) )
-	    return "cercle(point("+giac::re(centre,contextptr).print(contextptr)+","+giac::im(centre,contextptr).print(contextptr)+"),"+rayon.print(contextptr)+")";
+	    return gettext("circle")+string("(point(")+giac::re(centre,contextptr).print(contextptr)+","+giac::im(centre,contextptr).print(contextptr)+"),"+rayon.print(contextptr)+")";
 	  else
-	    return "cercle(point("+centre.print(contextptr)+"),"+rayon.print(contextptr)+")";
+	    return gettext("circle")+string("(point(")+centre.print(contextptr)+"),"+rayon.print(contextptr)+")";
 	}
 	if (f0.type==giac::_VECT &&f0.subtype!=giac::_POINT__VECT){
-	  std::string s="polygone(";
+	  std::string s=gettext("polygon")+string("(");
 	  giac::const_iterateur it=f0._VECTptr->begin(),itend=f0._VECTptr->end();
 	  if ( itend-it==2){ 
 	    switch(f0.subtype){
 	    case giac::_LINE__VECT:
-	      s="droite(";
+	      s=gettext("line")+string("(");
 	      break;
 	    case giac::_HALFLINE__VECT:
-	      s="demi_droite(";
+	      s=gettext("half_line")+string("(");
 	      break;
 	    case giac::_GROUP__VECT:
-	      s="segment(";
+	      s=gettext("segment")+string("(");
 	      break;
 	    }
 	    if (f0.subtype==giac::_LINE__VECT && it->type!=giac::_VECT){ // 2-d line

@@ -7329,7 +7329,7 @@ namespace xcas {
 	  }
 	  else {
 	    string logs(gettext("Not registered\n"));
-	    logs += gettext("Parse error line ")+giac::print_INT_(giac::first_error_line(contextptr))+ gettext(" at ") +giac::error_token_name(contextptr);
+	    logs += gettext("Parse error line ")+giac::print_INT_(giac::first_error_line(contextptr))+ gettext(" column ")+print_INT_(giac::lexer_column_number(contextptr))+ gettext(" at ") +giac::error_token_name(contextptr);
 	    fl_alert("%s",logs.c_str());
 	  }
 	}
@@ -7355,7 +7355,7 @@ namespace xcas {
 	}
 	else {
 	  string logs(gettext("Not registered\n"));
-	  logs += gettext("Parse error line ")+giac::print_INT_(giac::first_error_line(contextptr))+ gettext(" at ") +giac::error_token_name(contextptr);
+	  logs += gettext("Parse error line ")+giac::print_INT_(giac::first_error_line(contextptr))+ gettext(" column ")+print_INT_(giac::lexer_column_number(contextptr))+ gettext(" at ") +giac::error_token_name(contextptr);
 	  fl_alert("%s",logs.c_str());
 	}
 	l->t->redraw();

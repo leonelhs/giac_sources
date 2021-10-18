@@ -1174,7 +1174,7 @@ namespace giac {
 	    gen m(id_m);
 	    tmpe=eval(rdiv(complex_subst(e*sqrt(argument,contextptr),argument,pow(m+sqrta*gen_x,2),contextptr),b-plus_two*sqrta*m,contextptr),1,contextptr);
 	    tmpe=ratnormal(complex_subst(tmpe,gen_x,rdiv(m*m-c,b-plus_two*sqrta*m,contextptr),contextptr),contextptr);
-	    tmpres=linear_integrate_nostep(tmpe,m,tmprem,intmode,contextptr);
+	    tmpres=linear_integrate_nostep(tmpe,m,tmprem,intmode | 2,contextptr);
 	    remains_to_integrate=remains_to_integrate+complex_subst(plus_two*tmprem,m,sqrt(argument,contextptr)-sqrta*gen_x,contextptr);
 	    res= alpha+complex_subst(plus_two*tmpres,m,sqrt(argument,contextptr)-sqrta*gen_x,contextptr);
 	    return true;
@@ -4703,10 +4703,11 @@ namespace giac {
     if (v.size()==1)
       v=gen2vecteur(eval(g,contextptr));
     if (v.size()<4){
-      if (type==0 && v.size()==3 && v[2].type==_VECT){
+      gen v2=eval(v[2],1,contextptr);
+      if (type==0 && v.size()==3 && v2.type==_VECT){
 	// for example seq(2^k,k,[1,2,5])
 	gen f=_unapply(makesequence(v[0],v[1]),contextptr);
-	return _map(makesequence(v[2],f),contextptr);
+	return _map(makesequence(v2,f),contextptr);
       }
       if (v.size()==3 && v[1].is_symb_of_sommet(at_equal) && v[1]._SYMBptr->feuille[1].is_symb_of_sommet(at_interval)){
 	gen f=v[1]._SYMBptr->feuille;

@@ -1942,7 +1942,7 @@ namespace xcas {
 	}
 	s+="\n";
 	if (strlen(locs->value())){
-	  s+="  local ";
+	  s+=python?"  # local ":"  local ";
 	  s+=locs->value();
 	  if (!python) s+=';';
 	  s+="\n  ";

@@ -485,7 +485,7 @@ namespace xcas {
       if (m)
 	m->_g=g;
       if (giac::first_error_line(contextptr))
-	*logptr(contextptr) << gettext("Syntax compatibility mode ") << print_program_syntax(xcas_mode(contextptr)) << gettext("\nParse error line ") << giac::first_error_line(contextptr) <<  gettext(" at ")  << giac::error_token_name(contextptr) ;
+	*logptr(contextptr) << gettext("Syntax compatibility mode ") << print_program_syntax(xcas_mode(contextptr)) << gettext("\nParse error line ") << giac::first_error_line(contextptr) + gettext(" column ")+print_INT_(giac::lexer_column_number(contextptr))+  gettext(" at ")  << giac::error_token_name(contextptr) ;
       return 1;
     }
     if (Equation * e = dynamic_cast<Equation *>(w)){
@@ -507,7 +507,7 @@ namespace xcas {
       if (ed)
 	ed->_g=g;
       if (giac::first_error_line(contextptr))
-	*logptr(contextptr) << gettext("Syntax compatibility mode ") << print_program_syntax(xcas_mode(contextptr)) << gettext("\nParse error line ") << giac::first_error_line(contextptr) <<  gettext(" at ")  << giac::error_token_name(contextptr) ;
+	*logptr(contextptr) << gettext("Syntax compatibility mode ") << print_program_syntax(xcas_mode(contextptr)) << gettext("\nParse error line ") << giac::first_error_line(contextptr) + gettext(" column ")+print_INT_(giac::lexer_column_number(contextptr))+  gettext(" at ")  << giac::error_token_name(contextptr) ;
       return 1;
     }
     if (Figure * f = dynamic_cast<Figure *>(w)){

@@ -3376,20 +3376,27 @@ namespace giac {
 	if (name[bl-2]=='_'){
 	  switch (name[bl-1]){
 	  case 'd':
-	    if (a.type!=_INT_ && a.type!=_DOUBLE_)
-	      return gensizeerr("Unable to coerce to double "+a.print(contextptr));
+	    if (a.type!=_INT_ && a.type!=_DOUBLE_ && a.type!=_FRAC)
+	      return gensizeerr(gettext("Unable to convert to float ")+a.print(contextptr));
 	    break;
+	  case 'f':
+	    if (a.type==_FRAC)
+	      break;
 	  case 'i': case 'l':
-	    if (a.type==_DOUBLE_ && a._DOUBLE_val<=RAND_MAX && a._DOUBLE_val>=-RAND_MAX)
-	      return sto(int(a._DOUBLE_val),b,in_place,contextptr);
+	    if (a.type==_DOUBLE_ && a._DOUBLE_val<=RAND_MAX && a._DOUBLE_val>=-RAND_MAX){
+	      int i=int(a._DOUBLE_val);
+	      if (i!=a._DOUBLE_val)
+		*logptr(contextptr) << gettext("Converting ") << a._DOUBLE_val << gettext(" to integer ") << i << endl;
+	      return sto(i,b,in_place,contextptr);
+	    }
 	    if (a.type!=_INT_){
 	      if (a.type!=_ZINT || mpz_sizeinbase(*a._ZINTptr,2)>62)
-		return gensizeerr("Unable to coerce to integer "+a.print(contextptr));
+		return gensizeerr(gettext("Unable to convert to integer ")+a.print(contextptr));
 	    }
 	    break;
 	  case 'v':
 	    if (a.type!=_VECT)
-	      return gensizeerr("Unable to convert to vector "+a.print(contextptr));
+	      return gensizeerr(gettext("Unable to convert to vector ")+a.print(contextptr));
 	    break;
 	  case 's':
 	    if (a.type!=_STRNG)
@@ -5221,7 +5228,7 @@ namespace giac {
     if ( (feuille.type!=_VECT) || (feuille._VECTptr->size()!=2) )
       return string(sommetstr)+('('+gen2string(feuille,format,contextptr)+')');
     vecteur & v=*feuille._VECTptr;
-    if (v.back().type!=_STRNG && (xcas_mode(contextptr) > 0 || abs_calc_mode(contextptr)==38)){
+    if (v.back().type!=_STRNG && array_start(contextptr)){ //(xcas_mode(contextptr) > 0 || abs_calc_mode(contextptr)==38)){
       gen indice;
       if (v.back().type==_VECT)
 	indice=v.back()+vecteur(v.size(),plus_one);
@@ -5241,7 +5248,7 @@ namespace giac {
     return printasat_(feuille,sommetstr,1,contextptr);
   }
   symbolic symb_at(const gen & a,const gen & b,GIAC_CONTEXT){
-    if (xcas_mode(contextptr) || abs_calc_mode(contextptr)==38){
+    if (array_start(contextptr)){ //xcas_mode(contextptr) || abs_calc_mode(contextptr)==38){
       gen bb;
       if (b.type==_VECT)
 	bb=b-vecteur(b._VECTptr->size(),plus_one);
@@ -5319,7 +5326,7 @@ namespace giac {
 	if (f.type==_VECT && f._VECTptr->size()==2){
 	  vecteur & w=*f._VECTptr;
 	  gen bb=w.front();
-	  if ((xcas_mode(contextptr) || abs_calc_mode(contextptr)==38)){
+	  if (array_start(contextptr)){ //(xcas_mode(contextptr) || abs_calc_mode(contextptr)==38)){
 	    if (bb.type==_VECT)
 	      bb=bb-vecteur(bb._VECTptr->size(),plus_one);
 	    else

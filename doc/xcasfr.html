@@ -1075,7 +1075,7 @@ onclick="var tmp=document.getElementById('tutoprog'); if (tmp.style.display=='no
   </tt><br>
   En syntaxe compatible Python<br>
   <tt>def f(x):<br>
-  &nbsp;&nbsp;local y,s<br>
+  &nbsp;&nbsp;# local y,s<br>
   &nbsp;&nbsp;if x &gt; 100000:<br>
   &nbsp;&nbsp;&nbsp;&nbsp;return "Nombre trop grand"<br>
   &nbsp;&nbsp;s=0<br>
@@ -1084,7 +1084,7 @@ onclick="var tmp=document.getElementById('tutoprog'); if (tmp.style.display=='no
   &nbsp;&nbsp;return s<br>
   </tt>
   <button class="bouton" onclick="UI.insert(UI.focused,'fonction f(x)\n  local y,s;\n  si x &gt; 100 alors retourne &quot;Nombre trop grand&quot; fsi;\n  s:=0;\n  pour y de 1 jusque x faire\n    s:=s+y^2;\n  fpour\n  retourne s;\nffonction:; ')">Tester (Xcas)</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'def f(x):\n  local y,s\n  if x > 100000:\n    return &quot;Nombre trop grand&quot;\n  s=0\n  for y in range(1,x):\n    s=s+y^2\n  return s\n')">Tester (Python)</button>
+  <button class="bouton" onclick="UI.insert(UI.focused,'def f(x):\n  # local y,s\n  if x > 100000:\n    return &quot;Nombre trop grand&quot;\n  s=0\n  for y in range(1,x):\n    s=s+y^2\n  return s\n')">Tester (Python)</button>
   <br>
   La commande <button class="bouton"  onmousedown="event.preventDefault()"
   onclick="UI.insert(UI.focused,'debug(')"><tt>debug</tt></button>
@@ -2603,7 +2603,7 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
       UI.insert(UI.focused,'def '+fc+'('+argu+'):');
       UI.indentline(UI.focused);
       if (loc.length!=0){
-        UI.insert(UI.focused,'\nlocal '+loc);
+        UI.insert(UI.focused,'\n# local '+loc);
         UI.indentline(UI.focused);
         UI.insert(UI.focused,'\n\nreturn '+ret);
         UI.indentline(UI.focused);

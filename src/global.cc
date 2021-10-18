@@ -175,7 +175,7 @@ namespace giac {
 #endif
 
 #if defined VISUALC || defined BESTA_OS
-#ifndef FREERTOS
+#if !defined FREERTOS && !defined HAVE_LIBMPIR 
   int R_OK=4;
 #endif
   int access(const char *path, int mode ){
@@ -1399,14 +1399,6 @@ extern "C" void Sleep(unsigned int miliSecond);
       _pl()._initialisation_done_=b;
   }
 
-  static std::string & _autoname_(){
-#ifdef GIAC_HAS_STO_38
-    static string * ans = new string("GA");
-#else
-    static string * ans = new string("A");
-#endif
-    return *ans;
-  }
   static int _calc_mode_=0; 
   int & calc_mode(GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
@@ -1420,6 +1412,14 @@ extern "C" void Sleep(unsigned int miliSecond);
     else
       return absint(_calc_mode_);
   }
+  static std::string & _autoname_(){
+#ifdef GIAC_HAS_STO_38
+    static string * ans = new string("GA");
+#else
+    static string * ans = new string("A");
+#endif
+    return *ans;
+  }
   void calc_mode(int b,GIAC_CONTEXT){
     if ( (b==38 || b==-38) && strcmp(_autoname_().c_str(),"GA")<0)
       autoname("GA",contextptr);
@@ -1427,6 +1427,13 @@ extern "C" void Sleep(unsigned int miliSecond);
       contextptr->globalptr->_calc_mode_=b;
     else
       _calc_mode_=b;
+  }
+
+  int array_start(GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr){
+      return (!contextptr->globalptr->_python_compat_ && (contextptr->globalptr->_xcas_mode_ || absint(contextptr->globalptr->_calc_mode_)==38))?1:0;
+    }
+    return (!_python_compat_ && (_xcas_mode_ || absint(_calc_mode_)==38))?1:0;
   }
 
   std::string autoname(GIAC_CONTEXT){
@@ -1471,6 +1478,26 @@ extern "C" void Sleep(unsigned int miliSecond);
       contextptr->globalptr->_autosimplify_=s;
     else
       _autosimplify_()=s;
+    return s;
+  }
+
+  static std::string & _lastprog_name_(){
+    static string * ans = new string("lastprog");
+    return *ans;
+  }
+  std::string lastprog_name(GIAC_CONTEXT){
+    std::string res;
+    if (contextptr && contextptr->globalptr )
+      res=contextptr->globalptr->_lastprog_name_;
+    else
+      res=_lastprog_name_();
+    return res;
+  }
+  std::string lastprog_name(const std::string & s,GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      contextptr->globalptr->_lastprog_name_=s;
+    else
+      _lastprog_name_()=s;
     return s;
   }
 
@@ -3377,6 +3404,7 @@ extern "C" void Sleep(unsigned int miliSecond);
      ptr->globalptr->_series_variable_name_=_series_variable_name_;
      ptr->globalptr->_series_default_order_=_series_default_order_;
      ptr->globalptr->_autosimplify_=_autosimplify_();
+     ptr->globalptr->_lastprog_name_=_lastprog_name_();
      ptr->globalptr->_angle_mode_=_angle_mode_;
      ptr->globalptr->_variables_are_files_=_variables_are_files_;
      ptr->globalptr->_bounded_function_no_=_bounded_function_no_;
@@ -3809,6 +3837,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     _autoname_="A";
 #endif
     _autosimplify_="regroup";
+    _lastprog_name_="lastprog";
     _format_double_="";
 #ifdef HAVE_LIBPTHREAD
     _mutexptr = new pthread_mutex_t;
@@ -5578,7 +5607,7 @@ unsigned int ConvertUTF8toUTF16 (
   }
 
   void convert_python(string & cur,GIAC_CONTEXT){
-    bool indexshift=xcas_mode(contextptr)!=0 || abs_calc_mode(contextptr)==38;
+    bool indexshift=array_start(contextptr); //xcas_mode(contextptr)!=0 || abs_calc_mode(contextptr)==38;
     bool instring=cur.size() && cur[0]=='"';
     for (int pos=1;pos<int(cur.size());++pos){
       char prevch=cur[pos-1],curch=cur[pos];
@@ -5727,7 +5756,11 @@ unsigned int ConvertUTF8toUTF16 (
 	if (instring)
 	  continue;
 	if (ch=='#'){
-	  cur=cur.substr(0,pos);
+	  // workaround to declare local variables
+	  if (cur.size()>pos+8 && (cur.substr(pos,8)=="# local " || cur.substr(pos,7)=="#local "))
+	    cur.erase(cur.begin()+pos);
+	  else
+	    cur=cur.substr(0,pos);
 	  pythonmode=true;
 	  break;
 	}
@@ -6025,6 +6058,8 @@ unsigned int ConvertUTF8toUTF16 (
     delete &symbolic_rootof_list();
     delete &proot_list();
     delete &galoisconj_list();
+    delete &_autoname_();
+    delete &_lastprog_name_();
     return 0;
   }
 
