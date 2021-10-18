@@ -121,7 +121,11 @@ namespace giac {
 
   // FIXME: make the replacement call for APPLE
   int system_no_deprecation(const char *command) {
+#ifdef _IOS_FIX_
+    return 0
+#else
     return system(command);
+#endif
   }
 
   double min_proba_time=10; // in seconds

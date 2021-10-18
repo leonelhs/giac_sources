@@ -97,7 +97,7 @@ namespace xcas {
   void xcas_color(int color,bool dim3){
     if (color>=0x100 && color<0x17e){
       int r,g,b;
-      arc_en_ciel(color-0x100,r,g,b);
+      arc_en_ciel(color-(0x100),r,g,b);
 #ifdef HAVE_LIBFLTK_GL
       if (dim3)
 	glColor3f(r/255.,g/255.,b/255.);
