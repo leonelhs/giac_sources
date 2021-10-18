@@ -292,6 +292,14 @@ namespace giac {
 	gen tmp=pow(v2,v0-1,contextptr)*pow(1-v2,v1-1,contextptr)*derive(v2,i,contextptr);
 	return tmp;
       }
+      if (vs==4 && s.sommet==at_sum){
+	gen v0=v[0],v1=v[1],v2=v[2],v3=v[3];
+	if (!is_zero(derive(v1,i,contextptr)) || !is_zero(derive(v2,i,contextptr)) || ! is_zero(derive(v3,i,contextptr)) )
+	  return gensizeerr("diff of sum with boundaries or mute variable depending on differentiation variable");
+	if (is_inf(v2) || is_inf(v3))
+	  *logptr(contextptr) << "Warning, assuming derivative commutes with infinite sum" << endl;
+	return _sum(makesequence(derive(v0,i,contextptr),v1,v2,v3),contextptr);
+      }
       if ( (vs==2 || (vs==3 && is_zero(v[2]))) && (s.sommet==at_upper_incomplete_gamma || s.sommet==at_lower_incomplete_gamma || s.sommet==at_Gamma)){
 	gen v0=v[0],v1=v[1]; 
 	if (!is_zero(derive(v0,i,contextptr)))

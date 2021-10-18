@@ -6,41 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’ellipse : ellipse</TITLE>
+<TITLE>La ligne polygonale : open_polygon polygone_ouvert</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr909.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr911.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1057">9.14.1</A>  L’ellipse : <TT>ellipse</TT></H3><P><A NAME="@default1762"></A><A NAME="sec:ellipse2"></A><B>Voir aussi :</B> <A HREF="cascmd_fr1009.html#sec:ellipse3">10.11.1</A> pour la géométrie 3-d.<BR>
-<TT>ellipse</TT>, en géométrie plane, a 1 ou 3 paramètres :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un paramètre : son équation de variables <I>x</I> et <I>y</I>. 
-<TT>ellipse(p(x,y))</TT> trace la conique d’équation <TT>p(x,y)=0</TT> si 
-<TT>p(x,y)</TT> est un polynôme de degré 2.
-</LI><LI CLASS="li-itemize">trois paramètres : ses deux foyers et un de ces points (ou son affixe 
-si cette affixe n’est pas 
-réelle) ou ses deux foyers et un réel (son demi-grand axe).<BR>
-<TT>ellipse(F1,F2,A)</TT> trace l’ellipse passant par <TT>A</TT> et de foyers 
-<TT>F1</TT> et <TT>F2</TT> ou,<BR>
-<TT>ellipse(F1,F2,a)</TT> où <TT>a</TT> est un nombre réel, trace l’ellipse 
-de foyers <TT>F1</TT> et <TT>F2</TT> et de demi-grand axe <TT>|a|</TT>.
-</LI></UL><P>
+<H3 CLASS="subsection"><A NAME="htoc1066">10.12.4</A>  La ligne polygonale : <TT>open_polygon polygone_ouvert</TT></H3><P><A NAME="@default1759"></A><A NAME="@default1760"></A><A NAME="sec:polygonou2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1018.html#sec:polygonou3">11.9.4</A> pour la géométrie 3-d.<BR>
+<TT>polygone_ouvert</TT>, en géométrie plane, a comme argument la 
+liste (ou la séquence) de <I>n</I> points ou de <I>n</I> nombres complexes représentant l’affixe de ces points.<BR>
+<TT>polygone_ouvert</TT> renvoie et trace la ligne polygonale ayant pour sommets 
+ces <I>n</I> points.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>ellipse(-i,i,1+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>polygone_ouvert(-1,-1+i/2,i,1+i,-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>L’ellipse de foyers -i, i et passant par 1+i</TT></DIV><P>
+</P><DIV CLASS="center"><TT>La ligne polygonale de sommets -1,-1+i/2,i,1+i,-i</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>ellipse(-i,i,sqrt(5)-1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>polygone_ouvert(makelist(x-&gt;exp(i*pi*x/3),0,5,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>L’ellipse de foyers -i, i et de demi-grand axe sqrt(5)-1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ellipse(x</TT><CODE><TT>^</TT></CODE><TT>2+2*y</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
-ou on tape :
-</P><DIV CLASS="center"><TT>ellipse(sqrt(2)/2,-sqrt(2)/2,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>L’ellipse de centre 0 et de demi-grand axe 1 et de foyers sqrt(2)/2 et -sqrt(2)/2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>La ligne polygonale de sommets 1,</TT><TT>
+<I>e</I></TT><SUP><TT><I>i</I>π/3</TT></SUP><TT>, <I>e</I></TT><SUP><TT>2<I>i</I>π/3</TT></SUP><TT>, ..,
+ <I>e</I></TT><SUP><TT>5<I>i</I>π/3</TT></SUP></DIV><HR>
 <A HREF="cascmd_fr909.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr911.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

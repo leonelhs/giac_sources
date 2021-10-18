@@ -6,62 +6,48 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Choisir l’algorithme du PGCD de deux polynômes : ezgcd heugcd modgcd psrgcd</TITLE>
+<TITLE>Quotient et reste euclidien : quorem divide</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr390.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr392.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc477">6.27.9</A>  Choisir l’algorithme du PGCD de deux polynômes : <TT>ezgcd heugcd modgcd psrgcd</TT></H3><P><A NAME="@default732"></A><A NAME="@default733"></A><A NAME="@default734"></A><A NAME="@default735"></A>
-<TT>ezgcd heugcd modgcd psrgcd</TT> désigne le PGCD (plus grand commun 
-diviseur) de deux polynômes (ou d’une liste de polynômes ou d’une 
-séquence de polynômes) de plusieurs variables.<BR>
-<TT>ezgcd</TT> est calculé avec l’algorithme ezgcd,<BR>
-<TT>heugcd</TT> est calculé avec l’algorithme dit du pgcd heuristique,<BR>
-<TT>modgcd</TT> est calculé avec l’algorithme modulaire,<BR>
-<TT>psrgcd</TT> est calculé avec l’algorithme du sous résultant.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x*y+y</TT><CODE><TT>^</TT></CODE><TT>2-1,x-y)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>ezgcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x*y+y</TT><CODE><TT>^</TT></CODE><TT>2-1,x-y)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>heugcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x*y+y</TT><CODE><TT>^</TT></CODE><TT>2-1,x-y)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>modgcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x*y+y</TT><CODE><TT>^</TT></CODE><TT>2-1,x-y)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>psrgcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x*y+y</TT><CODE><TT>^</TT></CODE><TT>2-1,x-y)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc478">6.28.6</A>  Quotient et reste euclidien : <TT>quorem divide</TT></H3><P><A NAME="@default729"></A><A NAME="@default730"></A><A NAME="sec:quorem"></A> 
+<TT>quorem</TT> (ou <TT>divide</TT>) donne la liste, du quotient et du reste
+de la division euclidienne (selon les puissances décroissantes) de deux 
+polynômes.<BR>
+On peut donner les polynômes soit par la liste de leurs coefficients selon 
+les puissances décroissantes, soit sous leurs formes symboliques et dans ce 
+cas la variable doit être rajoutée comme troisième argument (par défaut
+la variable est <TT>x</TT>).<BR>
+On tape pour avoir le quotient et le reste de la division de <I>x</I><SUP>3</SUP>+2<I>x</I>+4 par 
+<I>x</I><SUP>2</SUP>+<I>x</I>+2 :
+</P><DIV CLASS="center"><TT>quorem(x</TT><CODE><TT>^</TT></CODE><TT>3+2x+4,x</TT><CODE><TT>^</TT></CODE><TT>2+x+2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1 </TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>gcd((x+y-1)*(x+y+1),(x+y+1)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-ou
-On tape :
-</P><DIV CLASS="center"><TT>ezgcd((x+y-1)*(x+y+1),(x+y+1)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>heugcd((x+y-1)*(x+y+1),(x+y+1)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>modgcd((x+y-1)*(x+y+1),(x+y+1)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[x-1,x+6]</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>quorem([1,0,2,4],[1,1,2]) </TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x+y+1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1,-1],[1,6]]</TT></DIV><P>
+c’est à dire la liste des polynômes <TT>[poly1[1,-1],poly1[1,6]]</TT> donc le 
+quotient est le polynôme <TT>x-1</TT> et le reste est le polynôme <TT>x+6</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>psrgcd((x+y-1)*(x+y+1),(x+y+1)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>quorem(t</TT><CODE><TT>^</TT></CODE><TT>3+2t+4,t</TT><CODE><TT>^</TT></CODE><TT>2+t+2,t)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-x-y-1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[t-1,t+6]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>ezgcd((x+1)</TT><CODE><TT>^</TT></CODE><TT>4-y</TT><CODE><TT>^</TT></CODE><TT>4,(x+1-y)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>quorem(t</TT><CODE><TT>^</TT></CODE><TT>3+2t+4,t</TT><CODE><TT>^</TT></CODE><TT>2+t+2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"GCD not successfull Error: Bad Argument Value"</TT></DIV><P> 
-Mais si on tape :
-</P><DIV CLASS="center"><TT>gcd((x+1)</TT><CODE><TT>^</TT></CODE><TT>4-y</TT><CODE><TT>^</TT></CODE><TT>4,(x+1-y)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-ou 
-</P><DIV CLASS="center"><TT>heugcd((x+1)</TT><CODE><TT>^</TT></CODE><TT>4-y</TT><CODE><TT>^</TT></CODE><TT>4,(x+1-y)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-ou 
-</P><DIV CLASS="center"><TT>modgcd((x+1)</TT><CODE><TT>^</TT></CODE><TT>4-y</TT><CODE><TT>^</TT></CODE><TT>4,(x+1-y)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-ou 
-</P><DIV CLASS="center"><TT>psrgcd((x+1)</TT><CODE><TT>^</TT></CODE><TT>4-y</TT><CODE><TT>^</TT></CODE><TT>4,(x+1-y)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[(t</TT><CODE><TT>^</TT></CODE><TT>3+2*t+4)/(t</TT><CODE><TT>^</TT></CODE><TT>2+t+2),0]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>quorem(x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x-y+1 </TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[x,x-1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>quorem(t</TT><CODE><TT>^</TT></CODE><TT>3-1,t</TT><CODE><TT>^</TT></CODE><TT>2-1,t)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[t,t-1]</TT></DIV><HR>
 <A HREF="cascmd_fr390.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr392.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

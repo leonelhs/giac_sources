@@ -6,34 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Graphe de la régression logarithmique : 
-logarithmic_regression_plot</TITLE>
+<TITLE>Les batons du nuage de points : batons</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr709.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr711.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc831">7.2.14</A>  Graphe de la régression logarithmique :<BR>
-<TT>logarithmic_regression_plot</TT></H3><P><A NAME="@default1274"></A><A NAME="@default1275"></A><A NAME="@default1276"></A>
-Pour dessiner le graphe de la fonction logarithmique d’équation 
-<I>y</I>=<I>m</I> ln<I>x</I>+<I>b</I> qui approche au mieux les données, on utilise 
-<TT>logarithmic_regression_plot</TT>.<BR>
-<TT>logarithmic_regression_plot</TT> a les mêmes arguments que <TT>covariance</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc842">8.2.5</A>  Les batons du nuage de points : <TT>batons</TT></H3><P><A NAME="@default1271"></A>
+<TT>batons</TT> a pour arguments deux listes 
+ou une matrice ayant deux colonnes.<BR>
+<TT>batons</TT> permet de visualiser les segments qui relient l’axe des <I>x</I> au 
+nuage de points défini par l’argument.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>logarithmic_regression_plot([[1.0,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le graphe de la fonction logarithme d’équation </TT><TT><I>y</I>=10.1506450002</TT><TT>ln</TT><TT>(<I>x</I>)-0.564824055818</TT></DIV><P>
-car c’est la fonction logarithme d’équation :<BR>
-<I>y</I>=10.1506450002ln(<I>x</I>)−0.564824055818<BR>
-qui approche au mieux les données.<BR>
-<B>Remarque</B>
-On remarquera que l’équation de la courbe representée ainsi que la valeur 
-du coefficient de corrélation de ln(<I>X</I>),ln(<I>Y</I>) (si les données sont 
-<I>X</I>,<I>Y</I>)) sont écrits en bleu.<BR>
-Si on veut avoir l’équation et/ou le coefficient de corrélation sur le 
-dessin il faut rajouter comme dernier argument, l’option <TT>equation</TT> et/ou 
-<TT>correlation</TT>.</P><HR>
+</P><DIV CLASS="center"><TT>batons([[0,0],[1,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>batons([0,0],[1,1],[2,4],[3,9],[4,16])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>batons([0,1,2,3,4],[0,1,4,9,16])</TT></DIV><P>
+La fenêtre graphique s’ouvre automatiquement et on obtient le dessin des 5
+segments verticaux reliant l’axe des <I>x</I> aux 5 points ((0,0),...(4,16)), 
+à condition d’avoir défini correctement
+la configuration du graphique (menu <TT>Cfg</TT>).</P><HR>
 <A HREF="cascmd_fr709.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr711.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

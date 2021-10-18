@@ -6,79 +6,62 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les affectations infixées : => := =<</TITLE>
+<TITLE>Les entrées : input, saisir, Input, InputStr, saisir_chaine, textinput</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr803.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr805.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc933">8.4.12</A>  Les affectations infixées : <TT>=&gt; := =&lt;</TT></H3><P><A NAME="@default1442"></A><A NAME="@default1443"></A><A NAME="@default1444"></A>
-<TT>:= =&gt; =&lt;</TT> sont des opérateurs infixés qui permettent de 
-stocker une valeur dans une variable, mais leurs arguments de <TT>=&gt;</TT> et de
-<TT>:= =&lt;</TT> ne sont pas dans le même ordre !<BR>
-De plus <TT>:=</TT> et <TT>=&lt;</TT> n’ont pas le même effet lorsque le premier 
-argument est un élément d’une liste (ou matrice) contenu dans une variable.
-En effet, <TT>=&lt;</TT> modifie lélément d’une liste (ou matrice) par 
-référence (voir <A HREF="cascmd_fr806.html#sec:diffaffectation">8.4.14</A>)
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>=&gt;</TT> est la version infixée de <TT>sto</TT>.<BR>
-<TT>=&gt;</TT> stocke le premier argument dans la variable donnée comme deuxième 
-argument.<BR>
+<H3 CLASS="subsection"><A NAME="htoc944">9.4.2</A>  Les entrées : <TT>input, saisir, Input, InputStr, saisir_chaine, textinput</TT></H3><P><A NAME="@default1423"></A><A NAME="@default1424"></A><A NAME="@default1425"></A><A NAME="@default1426"></A><A NAME="@default1427"></A><A NAME="@default1428"></A>
+<TT>input, saisir, Input</TT> permettent de saisir des expressions et 
+<TT>InputStr, saisir_chaine, textinput</TT> permettent de saisir des chaines de
+caractères.
+<TT>input, saisir, Input</TT> et <TT>InputStr, saisir_chaine, textinput</TT> ont 
+comme argument le nom d’une variable (resp une séquence de noms de variables)
+ou une chaîne de caractères (chaîne donnant à l’utilisateur des 
+indications sur la valeur à entrer) et le nom d’une variable (resp une 
+séquence de chaînes 
+de caractères et une séquence de noms de variables).<BR>
+<TT>input, saisir, Input</TT> et InputStr, saisir_chaine, textinput ouvrent une
+fenêtre où on peut entrer la valeur de la variable donnée comme argument 
+et où on retrouve, comme légende, la chaîne de caractères mise dans 
+l’argument (si on la mise!!!).<BR>
+Avec <TT>input, Input, saisir</TT> on peut entrer des nombres ou des chaînes de 
+caractères (il faut alors mettre "...") ou des noms de variables 
+(sans mettre "...").<BR>
+Avec <TT>InputStr, textinput, saisir_chaine</TT> on ne peut entrer que des 
+chaînes de caractères, mais on n’a donc pas besoin de mettre "...".<BR>
 On tape :
-<DIV CLASS="center"><TT>4=&gt;a</TT></DIV>
-Ou on tape :
-<DIV CLASS="center"><TT>sto(4,a)</TT></DIV>
+</P><DIV CLASS="center"><TT>input(a)</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>input("a=?",a)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>4 et la variable a contient 4</TT></DIV></LI><LI CLASS="li-itemize"><TT>:=</TT> et <TT>=&lt;</TT> ont comme arguments, un nom de variable et la valeur
-à stocker. 
+</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer la valeur de </TT><TT>a</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>a:=4</TT></DIV>
-Ou on tape :
-<DIV CLASS="center"><TT>a=&lt;4)</TT></DIV>
+</P><DIV CLASS="center"><TT>12 dans cette fenêtre puis OK</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>a+3</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>4 et la variable a contient 4</TT></DIV>
+</P><DIV CLASS="center"><TT>15</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
-<DIV CLASS="center"><TT>B:=A</TT></DIV>
-puis par exemple pour modifier <TT>A[3]</TT>, on tape :
-<DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV>
-puis
-<DIV CLASS="center"><TT>A,B</TT></DIV>
+</P><DIV CLASS="center"><TT>input("polynome",p,"valeur",a)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,33,4]</TT></DIV>
-Les variables <TT>A</TT> et <TT>B</TT> contiennent toutes les deux la liste
-<TT>[0,1,2,33,4]</TT>, en effet :<BR>
-<TT>A:=[0,1,2,3,4]</TT> fait pointer <TT>A</TT> sur la liste <TT>[0,1,2,3,4]</TT>, 
-puis<BR>
-<TT>B:=A</TT> fait pointer <TT>B</TT> sur <TT>A</TT> donc sur la liste 
-<TT>[0,1,2,3,4]</TT>,<BR>
-<TT>A[3]=&lt;33</TT> modifie la liste pointée par <TT>A</TT> donc modifie la liste 
-<TT>[0,1,2,3,4]</TT> en la liste <TT>[0,1,2,33,4]</TT> et donc <TT>B</TT> est modifié.
-Il en serait de même si on avait mis <TT>B[3]=&lt;33</TT> au lieu de 
-<TT>A[3]=&lt;33</TT>, les variables <TT>A</TT> et <TT>B</TT> contiendraient toutes les 
-deux la liste <TT>[0,1,2,33,4]</TT>. 
-</LI></UL><P> 
-<B>Remarque</B><BR>
-On peut faire plusieurs affectations à la fois en utilisant les séquences 
-ou les listes.<BR>
+</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer les valeurs de </TT><TT>p</TT><TT> avec la légende "polynome" et de </TT><TT>a</TT><TT> avec la légende "valeur"</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>[a,b,c]:=[1,2,3]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>InputStr(a)</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>InputStr("reponse=",a)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,2,3]</TT></DIV><DIV CLASS="center"><TT>a contient 1, b contient 2 et c contient 3</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>(a,b,c):=(1,2,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer la valeur de </TT><TT>a</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>12 dans cette fenêtre puis OK</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>a+3</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(1,2,3)</TT></DIV><DIV CLASS="center"><TT>a contient 1, b contient 2 et c contient 3</TT></DIV><P>
-<B>Attention</B><BR>
-Si <TT>a</TT> contient <TT>5</TT> et que l’on tape :<BR>
-<TT>(a,b):=(2,a)</TT><BR>
-alors <TT>a</TT> contient <TT>2</TT> et <TT>b</TT> contient <TT>5</TT><BR>
-Si <TT>a</TT> contient <TT>1</TT> et que l’on tape :<BR>
-<TT>(a,b):=(2,a)</TT><BR>
-alors <TT>a</TT> contient <TT>2</TT> et <TT>b</TT> contient <TT>1</TT><BR>
-<TT>(a,b):=(b,a+b)</TT><BR>
-alors <TT>a</TT> contient <TT>1</TT> et <TT>b</TT> contient <TT>3</TT></P><HR>
+</P><DIV CLASS="center"><TT>123</TT></DIV><P>
+car <TT>a</TT> est la chaîne de catractères <TT>"12"</TT> et le <TT>"+"</TT> 
+concaténe les deux chaînes <TT>"12"</TT> et <TT>"3"</TT>.</P><HR>
 <A HREF="cascmd_fr803.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr805.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

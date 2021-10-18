@@ -6,22 +6,65 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Évaluer une primitive : preval</TITLE>
+<TITLE>Substituer une valeur à une variable (compatibilité Maple et Mupad) : subs</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr273.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr275.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc346">6.13.25</A>  Évaluer une primitive : <TT>preval</TT></H3><P><A NAME="@default460"></A>
-<TT>preval</TT> a trois paramètres : une expression <TT>F(x)</TT> dépendant de la variable <TT>x</TT>, et deux expressions <TT>a</TT> et <TT>b</TT>.<BR>
-<TT>preval</TT> effectue <TT>F(b)-F(a)</TT>.<BR>
- <TT>preval</TT> est utile pour calculer une intégrale définie à partir 
-d’une primitive : on calcule une primitive, puis on évalue cette primitive entre les deux bornes de l’intégrale.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>preval(x</TT><CODE><TT>^</TT></CODE><TT>2+x,2,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>6</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc347">6.14.23</A>  Substituer une valeur à une variable (compatibilité Maple et Mupad) : <TT>subs</TT></H3><P><A NAME="@default459"></A><A NAME="sec:subs"></A>
+En <TT>Maple</TT> et en <TT>Mupad</TT> la commande synonyme de <TT>subst</TT> 
+est <TT>subs</TT>, mais l’ordre des paramètres de <TT>subs</TT> n’est pas le même
+en <TT>Maple</TT> et en <TT>Mupad</TT>.<BR>
+Ainsi les arguments de <TT>subs</TT> sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+En mode <TT>Maple</TT>, la fonction <TT>subs</TT> a deux arguments : une 
+égalité (paramètre=valeur de substitution) et une expression 
+dépendant du paramètre.<BR>
+Pour faire plusieurs substitutions, <TT>subs</TT> a deux arguments : une liste 
+dégalité (paramètre=valeur de substitution) et une expression 
+dépendant de ces paramètres.<BR>
+</LI><LI CLASS="li-itemize">En mode <TT>Mupad</TT> ou <TT>Xcas</TT> ou <TT>TI</TT>, la fonction <TT>subs</TT> a deux ou trois 
+arguments : une expression dépendant d’un paramètre et une égalité 
+(paramètre=valeur de substitution) ou une expression dépendant d’un 
+paramètre, le paramètre et la valeur de substitution.<BR>
+Pour faire plusieurs substitutions, la fonction <TT>subs</TT> a deux ou trois 
+arguments : une expression dépendant de paramètres et une liste 
+d’égalité (paramètre=valeur de substitution) ou une expression 
+dépendant de paramètres, la liste des paramètres et la liste des valeurs
+de substitution.<BR>
+</LI></UL><P>
+<TT>subs</TT> effectue la substitution demandée dans l’expression à condition
+que le paramètre ne soit pas affecté car <TT>subs</TT> évalue tout d’abord 
+l’expression et remplace donc le paramètre par sa valeur sans tenir compte 
+de la valeur de substitution donnée par le deuxième paramètre.<BR>
+On tape en mode Maple :
+</P><DIV CLASS="center"><TT>subs(a=2,a</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+On obtient (si la variable <TT>a</TT> n’est pas affectée, sinon il faut taper 
+auparavant <TT>purge(a)</TT>):
+</P><DIV CLASS="center"><TT>5</TT></DIV><P> 
+Lorsque l’on veut substituer plusieurs variables :<BR>
+On tape, en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>subs([a=2,b=1],a</TT><CODE><TT>^</TT></CODE><TT>2+b)</TT></DIV><P> 
+On obtient (si les variables <TT>a</TT> et <TT>b</TT> ne sont pas affectées, sinon 
+il faut taper auparavant <TT>purge(a,b)</TT>):
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+On tape, en mode <TT>Mupad</TT> ou <TT>Xcas</TT> ou <TT>TI</TT> :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a=2)</TT></DIV><P> 
+ou :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a,2)</TT></DIV><P> 
+On obtient (si la variable <TT>a</TT> n’est pas affectée, sinon il faut taper 
+auparavant <TT>purge(a)</TT>) :
+</P><DIV CLASS="center"><TT>5</TT></DIV><P> 
+Lorsque l’on veut substituer plusieurs variables :<BR>
+On tape, dans les modes <TT>Mupad Xcas TI</TT> :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a=2,b=1])</TT></DIV><P> 
+ou on tape
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a,b],[2,1])</TT></DIV><P> 
+On obtient (si les variables <TT>a</TT> et <TT>b</TT> ne sont pas affectées, sinon 
+il faut taper auparavant <TT>purge(a,b)</TT>):
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><HR>
 <A HREF="cascmd_fr273.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr275.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

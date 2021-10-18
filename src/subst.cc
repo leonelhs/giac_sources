@@ -1290,7 +1290,7 @@ namespace giac {
       if (is_zero(w.back()))
 	continue;
       gen gg;
-      lcmdeno_converted(w,gg,contextptr);
+      lcmdeno(w,gg,contextptr); // lcmdeno_converted?
       // check that all coeff are integers
       const_iterateur jt=w.begin(),jtend=w.end();
       for (;jt!=jtend;++jt){
@@ -2134,7 +2134,7 @@ namespace giac {
   gen simplify(const gen & e_orig,GIAC_CONTEXT){
     if (e_orig.type<=_POLY || is_inf(e_orig) || has_num_coeff(e_orig))
       return e_orig;
-    gen e=e_orig;
+    gen e=simplifier(e_orig,contextptr);
     if (e.type==_FRAC)
       return _evalc(e_orig,contextptr);
     // ratnormal added for E:=2*exp(t/25)/(19+exp(t/25)); F:=simplifier(int(E,t)); 
@@ -2196,7 +2196,7 @@ namespace giac {
       gen e2=_texpand(v1,contextptr);
       if (e2.type==_VECT){
 	vecteur v2(loptab(e2,asinacosatan_tab));
-	if (v2.size()<s2){
+	if (int(v2.size())<s2){
 	  e2=simplify(e2,contextptr);
 	  if (e2.type==_VECT){
 	    e=subst(e,v1,e2,false,contextptr);

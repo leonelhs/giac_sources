@@ -6,54 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le triangle isocèle dans l’espace : isosceles_triangle triangle_isocele</TITLE>
+<TITLE>Plan et droites parallèles : parallel parallele</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr996.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr998.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1158">10.7.2</A>  Le triangle isocèle dans l’espace : <TT>isosceles_triangle triangle_isocele</TT></H3><P><A NAME="@default1939"></A><A NAME="@default1940"></A><A NAME="sec:triangleiso3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr888.html#sec:triangleiso2">9.10.3</A> pour la géométrie plane.<BR>
-<TT>triangle_isocele</TT>, en géométrie 3-d, a trois ou quatre 
-arguments.<BR>
-Description des arguments :<BR>
-- si il a trois arguments, ce sont : 3 points (les 2 premiers sommets <I>A</I> et
-<I>B</I> du triangle) et le troisième argument est soit un point <I>P</I>, soit une 
-liste formée par un point <I>P</I> et un réel <I>c</I> qui désigne la mesure en 
-radians (ou en degrés) de l’angle (<I>AB</I>,<I>AC</I>), l’angle (<I>AB</I>,<I>AP</I>) étant positif.<BR>
-Le point <I>P</I> définit le plan du triangle 
-ainsi que l’orientation de ce plan pour que l’angle (<I>AB</I>,<I>AP</I>) soit positif.<BR>
-<TT>triangle_isocele(A,B,P)</TT> renvoie et trace dans le plan <I>ABP</I> orienté 
-par <I>P</I> (l’angle (<I>AB</I>,<I>AP</I>) est positif)
-le triangle <I>ABC</I> isocèle de sommet <I>A</I> (<I>AB</I>=<I>AC</I>) et tel que l’angle 
-(<I>AB</I>,<I>AC</I>)=(<I>AB</I>,<I>AP</I>), sans définir le point <I>C</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc1167">11.5.6</A>  Plan et droites parallèles : <TT>parallel parallele</TT></H3><P><A NAME="@default1937"></A><A NAME="@default1938"></A><A NAME="sec:parallele3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr888.html#sec:parallele2">10.9.6</A> pour la géométrie plane.<BR>
+<TT>parallele</TT>, en géométrie 3-d, renvoie et dessine une droite 
+ou un plan selon ses arguments. Si ses arguments sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+un point <I>A</I> et 1 droites <I>d</I>, <TT>parallele(A,d)</TT> renvoie et dessine la
+droite parallèle à la droite <I>d</I> passant par le point <I>A</I>,
+</LI><LI CLASS="li-itemize">une droite <I>dd</I> et une droite <I>d</I> non parallèles <TT>parallele(dd,d)</TT>
+renvoie et dessine le plan parallèle à la droite <I>d</I> passant par la 
+droite <I>dd</I>, 
+</LI><LI CLASS="li-itemize">un point <I>A</I> et un plan <I>P</I>, <TT>parallele(A,P)</TT>
+renvoie et dessine le plan parallèle au plan <I>P</I> passant par le point <I>A</I>,
+</LI><LI CLASS="li-itemize">un point <I>A</I> et 2 droites <I>d</I> et <I>dd</I> non parallèles,
+<TT>parallele(A,d,dd)</TT> renvoie et dessine le plan parallèle aux droites <I>d</I> 
+et <I>dd</I> passant par le point <I>A</I>.<BR>
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>triangle_isocele(A,B,P)</TT></DIV><DIV CLASS="center"><TT>Dans le plan ABP, le triangle isocéle de sommets AB, d’angle </TT><TT>(<I>AB</I>,<I>AC</I>)=(<I>AB</I>,<I>AP</I>)</TT></DIV><P><TT>triangle_isocele(A,B,[P,c])</TT> renvoie et trace dans le plan <I>ABP</I> 
-orienté par <I>P</I> (l’angle (<I>AB</I>,<I>AP</I>) est positif) le triangle <I>ABC</I> isocèle de sommet <I>A</I> (<I>AB</I>=<I>AC</I>) et tel que l’angle 
-(<I>AB</I>,<I>AC</I>)=<I>c</I> radians (ou degrés), sans 
-définir le point <I>C</I>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>triangle_isocele(A,B,[P,3*pi/4])</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>Dans le plan ABP, le triangle isocéle de sommets AB, 
-d’angle </TT><TT>(<I>AB</I>,<I>AC</I>)=3*<I>pi</I>/4</TT></DIV><P>
-- si il a quatre arguments, le dernier argument est le nom d’une 
-variable qui servira à définir le troisième sommet.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>triangle_isocele(A,B,[P,3*pi/4],C)</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>Dans le plan ABP, le triangle isocéle de sommets AB, d’angle </TT><TT>(<I>AB</I>,<I>AC</I>)=3*<I>pi</I>/4</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>parallele(point(1,1,1),droite(point(0,0,0),point(0,0,1)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[(-3*sqrt(2)-3)/2,(-3*sqrt(2)-3)/2,(-3*sqrt(2)+6)/2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>La droite d’équation x=1,y=1 est tracée</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>parallele(droite(point(1,0,0),point(0,1,0)),droite(point(0,0,0),point(0,0,1)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le plan d’équation x+y-1=0 est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>parallele(point(0,0,0),plan(point(1,0,0),point(0,1,0),point(0,0,1)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le plan d’équation x+y+z=0 est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>parallele(point(1,1,1),droite(point(0,0,0),point(0,0,1)),droite(point(1,0,0),point(0,1,0)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le plan d’équation x+y=2 est tracée</TT></DIV><HR>
 <A HREF="cascmd_fr996.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr998.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

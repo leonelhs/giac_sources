@@ -6,82 +6,19 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Qu’est-ce qune expression</TITLE>
+<TITLE>Définition</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr249.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr251.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc322">6.13.1</A>  Qu’est-ce qune expression</H3><P>
-Il ne faut pas confondre expression et fonction.<BR>
-Une expression est une combinaison de nombres et de variables reliés par des 
-opérations alors qu’une fonction associe à une variable une expression.<BR>
-Par exemple :<BR>
-<CODE>a:=x^2+2*x+1</CODE> définit une expression et
-<CODE>b(x):=x^2+2*x+1</CODE> définit une fonction.<BR>
-On obtient la valeur de l’expression <CODE>a</CODE> en 0, avec
-<CODE>subst(a,x=0)</CODE> et la valeur de la fonction <CODE>b</CODE> en 0, 
-avec <CODE>b(0)</CODE>.<BR>
-On peut aussi considérer une expression comme un arbre.<BR>
-Par exemple, si <TT>A:=3+2*x/y</TT> ou si <TT>B:=sin(2x+3)</TT> on a :<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-le sommet de l’arbre <TT>A</TT> est l’opérateur <TT>’+’</TT> et le sommet de 
-l’arbre <TT>B</TT> est la fonction <TT>’sin’</TT>.<BR>
- On a :<BR>
-<TT>sommet(A)</TT> renvoie <TT>’+’</TT><BR>
- <TT>sommet(B)</TT> renvoie <TT>’sin’</TT>
-</LI><LI CLASS="li-itemize">les feuilles de l’arbre <TT>A</TT> sont <TT>3,2*x/y</TT> (car <TT>’+’</TT> est 
-un opérateur binaire) et la feuille de l’arbre <TT>B</TT> est <TT>2*x+3</TT> (car
-<TT>’sin’</TT> est une fonction d’une variable).<BR>
-On a :<BR>
-<TT>feuille(A)</TT> renvoie <TT>3,2*x/y</TT><BR>
-<TT>feuille(B)</TT> renvoie <TT>2*x+3</TT>
-</LI><LI CLASS="li-itemize">la feuille <TT>2*x/y</TT> est elle-même un arbre de sommet <TT>’*’</TT> etc...
-</LI><LI CLASS="li-itemize">Les variables <TT>A</TT> et <TT>B</TT> permettent de retrouver la structure 
-d’arbre en effet :<BR>
-<TT>A[0],A[1],A[2],A[2,0],A[2,1],A[2,2],A[2,3],A[2,3,0],A[2,3,1]</TT><BR>
-renvoie : <TT>’+’,3,2*x,’*’,2,x,1/y,’inv’,y</TT><BR>
-<TT>B[0],B[1,0],B[1,1],B[1,2],B[1,1,0],B[1,1,1],B[1,1,2]</TT><BR>
-renvoie : <TT>’sin’,’+’,2*x,3,’*’,2,x</TT><BR>
-</LI></UL><P>
-<B>Attention</B><BR>
-Si <TT>C:=2*x-y</TT> alors<BR>
-<TT>sommet(C)</TT> renvoie <TT>’+’</TT> et<BR>
-<TT>feuille(C)</TT> renvoie <TT>2*x,-y</TT><BR>
-car l’expression est <TT>C</TT> s’écrit <TT>2*x+(-y)</TT><BR>
-De même si <TT>D:=x/3</TT> alors<BR>
-<TT>sommet(D)</TT> renvoie <TT>’*’</TT> et<BR>
-<TT>feuille(C)</TT> renvoie <TT>x,1/3</TT><BR>
-car l’expression est <TT>D</TT> s’écrit <TT>x*1/3</TT><BR>
-On a alors :<BR>
-<TT>C[0],C[1],C[1,0],C[1,1],C[1,2],C[2],C[2,0],C[2,1]</TT><BR>
-renvoie : <TT>’+’,2*x,’*’,2,x,-y,’-’,y</TT> (<TT>’-’</TT> est le "moins" unaire).<BR>
-Et :<BR>
-<TT>D[0],D[1],D[2],D[2,0],D[2,1],B[1,1,2]</TT><BR>
-renvoie : <TT>’*’,x,1/3,’inv’,3</TT><BR>
-<B>Remarque </B><BR>
-Ce qui suit n’est valable que pour des programmeurs confirmés avec les 
-manipulations qui suivent, les erreurs sont faciles !<BR>
-On peut changer le sommet ou une feuille terminale en affectant l’une des 
-variables <TT>A[0],A[1],A[2],A[2,0],A[2,1],A[2,2],A[2,3],A[2,3,0],A[2,3,1]</TT><BR>
-ou <TT>B[0],B[1,0],B[1,1],B[1,2],B[1,1,0],B[1,1,1],B[1,1,2]</TT><BR>
-MAIS il faut faire cela avec prudence car le système ne fait pas de 
-vérifications et n’enverra pas de message d’erreurs.<BR>
-On tape :<BR>
-<TT>A:=3+2*x/y</TT><BR>
-<TT>A[0]:=’*’</TT>
-Et <TT>A</TT> renvoie <TT>6*x/y</TT>
-Maintenant :<TT>A[1]</TT> renvoie <TT>6</TT><BR>
-On peut taper :<BR>
-<TT>A[1]:=2+z</TT>
-Maintenant <TT>A</TT> renvoie <TT>(2+z)*x/y</TT><BR>
-On tape :<BR>
-<TT>B:=sin(2*x+3)</TT><BR>
-<TT>B[0]:=cos</TT>
-Et <TT>B</TT> renvoie <TT>cos(2*x+3)</TT>
-Puis, on tape :<BR>
-<TT>B[1,2]:=y</TT> et <TT>B</TT> renvoie <TT>cos(2*x+y)</TT></P><HR>
+<H3 CLASS="subsection"><A NAME="htoc322">6.13.1</A>  Définition</H3><P>
+Un nombre algébrique réel est un nombre réel qui est la racine d’un 
+polynôme à coefficients entiers.<BR>
+Un nombre algébrique complexe est un nombre complexe qui est la racine d’un 
+polynôme à coefficients des entiers de Gauss.<BR>
+</P><HR>
 <A HREF="cascmd_fr249.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr251.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

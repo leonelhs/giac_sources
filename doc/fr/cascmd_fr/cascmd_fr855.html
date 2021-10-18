@@ -6,35 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les commandes d’attributs</TITLE>
+<TITLE>Effacer les axes : switch_axes</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr854.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr856.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc991">9.3.2</A>  Les commandes d’attributs</H3><P>
-Les attributs des objets graphiques peuvent être définis par des commandes 
-qui sont :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>legend</TT> ou <TT>legende</TT>,
-</LI><LI CLASS="li-itemize"><TT>display</TT> ou <TT>affichage</TT> ou <TT>color</TT> ou <TT>couleur</TT> 
-</LI></UL><P>
-Les paramètres de ces commandes sont :<BR>
-<TT>objet_graphique,nom_de_l’attribut=valeur1+valeur2+...</TT><BR>
- et les valeurs 
-de cet attribut sont valables uniquement pour l’objet graphique spécifié.<BR>
-Par exemple :<BR>
-<TT>legende(point(1+i),"A",rouge,quadrant3,epaisseur_point_2)</TT><BR>
-<TT>affichage(point(1+i),rouge+epaisseur_point_6+point_carre)</TT><BR>
-<TT>affichage(point(1+i,legend="A"),epaisseur_point_2+point_carre)</TT></P><P><B>Remarque</B><BR>
-Si la commande <TT>display(..)</TT> ou <TT>affichage(...)</TT> est tapée dans une 
-ligne de commandes, on peut utiliser ces commandes avec comme paramètre<BR>
-<TT>valeur1+valeur2+...</TT> et<BR>
-alors la commande est globale pour tous les objets définis ensuite dans cette
-ligne de commandes. Il faut éviter d’utiliser ces commandes de cette 
-façon dans un écran de géométrie, car les attributs sont déjà 
-définis globalement dans <TT>cfg</TT> et le bouton des attributs.</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1001">10.2.2</A>  Effacer les axes : <TT>switch_axes</TT></H3><P><A NAME="@default1536"></A>
+<TT>switch_axes</TT> met ou enlève les axes de l’écran 
+géométrique.<BR>
+Vous pouvez aussi effacer les axes (resp les faire réapparaitre) en 
+cochant (resp décochant) <TT>Montrer les axes</TT> avec le bouton <TT>cfg</TT>
+de l’écran de géométrie.<BR>
+<TT>switch_axes</TT> a comme paramètres <TT>1</TT> pour mettre 
+les axes, <TT>0</TT> pour les enlever, ou aucun paramètre, dans ce cas, 
+<TT>Xcas</TT> met les axes, si ils n’y sont pas, et les enlève si ils y sont.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>switch_axes(0)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>L’effacement des axes de l’écran graphique</TT></DIV><P>
+On tape ensuite :
+</P><DIV CLASS="center"><TT>switch_axes()</TT></DIV><P>
+Ou
+</P><DIV CLASS="center"><TT>switch_axes(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le tracé des axes de l’écran graphique</TT></DIV><HR>
 <A HREF="cascmd_fr854.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr856.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

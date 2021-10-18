@@ -1646,11 +1646,11 @@ namespace giac {
 #endif
       }
       if (doit && ans/RAND_MAX<RAND_MAX){
-#ifdef __VISUALC__ // Visual C++?
-	typedef unsigned __int64 ulonglong ;
-#else
-	typedef unsigned long long ulonglong;
-#endif
+	//#ifdef __VISUALC__ // Visual C++?
+	// typedef unsigned __int64 ulonglong ;
+	// #else
+	// typedef unsigned long long ulonglong;
+	//#endif
 	std::vector<ulonglong> vars(a.dim);
 	vars[a.dim-1]=1;
 	for (int i=a.dim-2;i>=0;--i){
@@ -4234,6 +4234,8 @@ namespace giac {
   void lcmdeno(const polynome & p, gen & res){
     vector< monomial<gen> >::const_iterator it=p.coord.begin(),itend=p.coord.end();
     for (;it!=itend;++it){
+      if (it->value.type!=_FRAC)
+	continue;
       gen tmp=it->value,tmpden=1;
       while (tmp.type==_FRAC){
 	tmpden=tmpden*tmp._FRACptr->den;
@@ -4638,6 +4640,8 @@ namespace giac {
 	    if (is_zero(b)){
 	      gen extra_div=1;
 	      factor(Fb,Gb,v0,false,false,false,1,extra_div);
+	      if (is_one(v0.front().fact))
+		v0.erase(v0.begin());
 	      if (try_hensel_lift_factor(ptrans,Fb,v0,it->mult,ftrans)){
 		factorization::const_iterator it=ftrans.begin(),itend=ftrans.end();
 		for (;it!=itend;++it){
@@ -4668,9 +4672,8 @@ namespace giac {
       // convert to vector 
       modpoly Qtry(modularize(
 			      unmodularize(itfact)
-			      // env->moduloon?unmodularize(itfact):it->fact
-			      ,n,env)
-		   );
+			      //env->moduloon?unmodularize(itfact):it->fact
+			      ,n,env));
       if (is_undef(Qtry)){
 #ifndef NO_STDEXCEPT
 	setsizeerr();
@@ -6329,8 +6332,9 @@ namespace giac {
 	index_t::const_iterator it_tt=it->index.begin();
 	index_t::const_iterator it_ttend=it_tt+nvar,cur_it=cur_index.begin();
 	for (;it_tt!=it_ttend;++cur_it,++it_tt){
-	  if (*it_tt!=*cur_it)
+	  if (*it_tt!=*cur_it){
 	    return res;
+	  }
 	}
 	// same main variables powers, accumulate constants
 	res.coord.push_back(monomial<gen>(it->value,index_t(it->index.begin()+vsize,it->index.end())));

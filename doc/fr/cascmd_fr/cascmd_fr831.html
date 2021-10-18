@@ -6,54 +6,39 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Ouvrir le débuggeur : debug</TITLE>
+<TITLE>Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : #</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr830.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr832.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc963">8.7.1</A>  Ouvrir le débuggeur : <TT>debug</TT></H3><P><A NAME="@default1504"></A>
-<TT>debug</TT> a comme argument une fonction et ses arguments.<BR>
-<TT>debug</TT> ouvre l’écran de la fenêtre de mise au point (ou débugger)
-avec sa barre de boutons.
-On a la possibilité :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-d’exécuter le programme au pas
-à pas avec le bouton <TT>sst</TT><A NAME="@default1505"></A> qui inscrit la commande 
-<TT>sst()</TT> dans la ligne de commande,
-</LI><LI CLASS="li-itemize">de mettre des points d’arrêts (breakpoint) avec 
-<TT>break</TT> (ou la commande <TT>breakpoint</TT>), 
-</LI><LI CLASS="li-itemize">d’aller directement avec<TT>cont</TT> à une ligne 
-précise marquée par un point d’arrêt (ou la commande <TT>cont</TT>),
-</LI><LI CLASS="li-itemize">de voir avec <TT>watch</TT> les 
-variables que l’on désire surveiller (ou la commande <TT>watch</TT>),
-</LI><LI CLASS="li-itemize">d’exécuter au pas à pas 
-les instructions d’une fonction utilisateur avec <TT>dans</TT><A NAME="@default1506"></A> qui 
-inscrit la commande <TT>sst_in()</TT> dans la ligne de commande, ou encore 
-</LI><LI CLASS="li-itemize">de sortir brutalement du débuggeur avec <TT>tuer</TT> (ou la commande <TT>kill</TT>).
-</LI></UL><P>
-On tape par exemple :<BR>
- <TT>debug(pgcd(15,25))</TT>.<BR>
-Il faut bien sûr que le programme <TT>pgcd</TT> existe.<BR>
-Par exemple on a tapé :
-</P><PRE CLASS="verbatim">pgcd(a,b):={
-local r;
-while(b!=0) {
-r:=irem(a,b);
-a:=b;
-b:=r;
-}
-return a;
-}
-</PRE><P>Puis si on veut observer les variables <TT>a</TT> et <TT>b</TT>, on clique sur 
-<TT>watch</TT> : <TT>watch</TT> s’inscrit dans la ligne <TT>eval</TT> et on compléte
-cette ligne en <TT>watch(a)</TT> puis <TT>enter</TT>, puis on clique sur 
-<TT>watch</TT> et on compléte <TT>watch</TT> en <TT>watch(b)</TT> puis <TT>enter</TT>.<BR>
-Ensuite on clique sur <TT>sst</TT>, et on voit à chaque ètape (la ligne qui 
-est exécutée est en surbrillance) les valeurs de 
-<TT>a</TT> et <TT>b</TT> dans la zone située en dessous de la barre des boutons.
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc972">9.5.4</A>  Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : <TT>#</TT></H3><P><A NAME="@default1508"></A><A NAME="sec:diese"></A>
+<TT>#</TT> permet d’utiliser une chaîne de caractères comme nom de 
+variable ou comme nom de fonction ou comme nom d’instruction ou comme nom de 
+répertoire.<BR>
+<TT>#</TT> est surtout utile dans un programme.<BR>
+<TT>#</TT> a comme argument une chaîne ou le nom d’une variable qui contient 
+une chaîne ou une expression renvoyant une chaîne.<BR>
+<TT>#</TT> transforme la chaîne en une expression mais n’évalue pas cette
+expression. Donc,
+pour faire une affectation, on ne doit pas écrire <TT>#"a:=2"</TT>, mais on
+peut écrire <TT>#"a":=2</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr833.html#sec:expr">9.5.6</A>).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>a:="abc";#a:=3</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>#"abc":=3</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>La variable abc contient 3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>b:="ifactor";(#b)(54)</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>(#"ifactor")(54)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>#"ifactor(54)"</TT></DIV><P>On obtient :
+</P><DIV CLASS="center"><TT>ifactor(54)</TT></DIV><HR>
 <A HREF="cascmd_fr830.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr832.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

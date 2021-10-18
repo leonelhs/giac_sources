@@ -6,19 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Longueur d’une liste de listes : sizes</TITLE>
+<TITLE>Transformer une liste en séquence : op makesuite</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr504.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr506.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc604">6.40.16</A>  Longueur d’une liste de listes : <TT>sizes</TT></H3><P><A NAME="@default897"></A>
-<TT>sizes</TT> permet d’avoir la liste des longueurs d’une liste de listes.<BR>
+<H3 CLASS="subsection"><A NAME="htoc605">6.41.13</A>  Transformer une liste en séquence : <TT>op makesuite</TT></H3><P><A NAME="@default893"></A><A NAME="@default894"></A><A NAME="@default895"></A>
+<TT>op</TT> ou <TT>makesuite</TT> permet de transformer une liste en 
+séquence.<A NAME="sec:makesuiteop"></A><BR>
+<B>Remarque</B> :<BR>
+<TT>op</TT> est une fonction plus générale (cf <A HREF="cascmd_fr288.html#sec:op">6.17.3</A>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sizes([[3,4],[2]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>op([0,1,2])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>makesuite([0,1,2])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,1]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>(0,1,2)</TT></DIV><P>
+<B>Remarque</B>
+<TT>op</TT> transforme une liste <TT>L</TT> en séquence, donc <TT>op(op(L))</TT> est 
+équivalent à <TT>op(L)</TT>. Pour différencier une séquence de 
+longueur 1 de l’élément de cette séquence, <TT>Xcas</TT> affiche
+une séquence de longueur 1 avec les délimiteurs <TT>seq[ ]</TT>.
+Toutefois, l’évaluation d’une séquence de longueur 1 renvoie son 
+élément.
+</P><HR>
 <A HREF="cascmd_fr504.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr506.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

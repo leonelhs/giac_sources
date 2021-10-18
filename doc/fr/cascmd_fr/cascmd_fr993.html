@@ -6,36 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le plan tangent : tangent</TITLE>
+<TITLE>Définir une droite orientée en 3-d : line droite</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr992.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr994.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1153">10.6.3</A>  Le plan tangent : <TT>tangent</TT></H3><P><A NAME="@default1934"></A><A NAME="sec:tangent3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr880.html#sec:tangent">9.9.8</A> pour la géométrie plane et <A HREF="cascmd_fr094.html#sec:tangente">3.10.5</A> pour les tangentes à un graphe.<BR>
-<TT>tangent</TT> a comme argument un objet géométrique <TT>G</TT> et 
-un point <TT>A</TT> de <TT>G</TT>.<BR>
-<TT>tangent</TT> dessine le plan tangent à <TT>G</TT> passant par <TT>A</TT>.<BR>
-Lorsque <TT>G</TT> est un graphe, <TT>A</TT> peut être soit un point de <TT>G</TT>,
-soit la liste des coordonnées du projeté sur x0y du point de 
-contact.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>S:=sphere([0,0,0],3)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>tangent(S,[2,2,1])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le plan tangent à la surface sphère S au point [2,2,1]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>G:=plotfunc(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2,[x,y])</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>tangent(G,[2,2])</TT></DIV><P>
-Ou on tape car [2,2] est le projeté du point [2,2,8] qui se trouve sur le 
-graphe <I>z</I>=<I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP> (8=2<SUP>2</SUP>+2<SUP>2</SUP>) :
-</P><DIV CLASS="center"><TT>tangent(G,point([2,2,8]))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le plan tangent à la surface </TT><TT><I>z</I>=<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+<I>y</I></TT><SUP><TT>2</TT></SUP><TT> au point [2,2,8]</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc1163">11.5.2</A>  Définir une droite orientée en 3-d : <TT>line droite</TT></H3><P><A NAME="@default1931"></A><A NAME="@default1932"></A><A NAME="sec:axe3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr883.html#sec:axe2">10.9.1</A> pour la géométrie plane.<BR>
+<TT>droite</TT>, en géométrie 3-d, a comme argument deux points ou 
+deux équations de plans : <TT>a*x+by+cz+d=0</TT> et <TT>a’*x+b’y+c’z+d’=0</TT>.<BR>
+<B>Attention</B> l’ordre des arguments que l’on donne à droite est important 
+et un ordre différent change l’orientation !<BR>
+Si la droite est définie par deux points, ces points orientent la droite 
+selon leur position dans les arguments. Par exemple <TT>droite(A,B)</TT> définit
+une droite orientée par le vecteur <I>AB</I>.<BR>
+Si la droite est définie par deux 
+équations, on écrit ces équations sous la forme
+"membre_de_gauche-membre_de_droite=0" pour avoir les équations sous la
+forme <TT>a*x+by+c=0</TT> et <TT>a’*x+b’y+c’z+d’=0</TT>. Alors, le vecteur orientant 
+la droite est le produit vectoriel des 2 vecteurs normaux aux 2 plans definis 
+par les deux équations c’est à dire le vecteur orientant est
+<TT>cross([a,b,c],[a’,b’,c’])</TT>.
+Par exemple <TT>droite(x=2*y,y=3*z)</TT> est orientée par 
+<TT>cross([1,-2,0],[0,1,-3])</TT>=<TT>[6,3,1]</TT> et<BR>
+<TT>droite(y=3*z,x=2*y)</TT> est orientée par 
+<TT>cross([0,1,-3],[1,-2,0])</TT>=<TT>[-6,-3,-1]</TT> .
+</P><HR>
 <A HREF="cascmd_fr992.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr994.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

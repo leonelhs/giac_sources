@@ -6,28 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Graphe de la régression polynomiale : 
- polynomial_regression_plot</TITLE>
+<TITLE>Ligne polygonale : listplot plotlist</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr711.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr713.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc833">7.2.16</A>  Graphe de la régression polynomiale :<BR>
- <TT>polynomial_regression_plot</TT></H3><P><A NAME="@default1278"></A>
-Pour approcher les données par le grahe d’une fonction polynômiale de 
-degré ≤ <I>n</I> d’équation <I>y</I>=<I>a</I><SUB>0</SUB><I>x</I><SUP><I>n</I></SUP>+..+<I>a</I><SUB><I>n</I></SUB>, on utilise 
-<TT>polynomial_regression_plot</TT>.<BR>
-<TT>polynomial_regression_plot</TT> a les mêmes premiers arguments que 
-<TT>covariance</TT>, le dernier argument étant le degré du polynôme 
-renvoyé.<BR>
+<H3 CLASS="subsection"><A NAME="htoc844">8.2.7</A>  Ligne polygonale : <TT>listplot plotlist</TT></H3><P><A NAME="@default1274"></A><A NAME="@default1275"></A>
+<TT>listplot</TT> ou <TT>plotlist</TT> a pour argument une liste <TT>l</TT> ou 
+une matrice ayant deux colonnes.<BR>
+<TT>listplot</TT> ou <TT>plotlist</TT> permet de visualiser les segments reliant le 
+nuage de points ayant 
+pour abscisse <TT>[0,1,2...n]</TT> et pour ordonnée <TT>l</TT> ou pour coordonnées
+une ligne de la matrice. <TT>listplot</TT> ou <TT>plotlist</TT> relie par des 
+segments de droites, les différents points du nuage, mais sans réordonner 
+les points contrairement à <TT>polygonplot</TT> qui réordonne les points 
+selon leur abscisse puis les relie.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>polynomial_regression_plot([[1.0,1],[2,4],[3,9],[4,16]],3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le graphe de la fonction polynômiale de degré </TT><TT>≤ <I>n</I></TT><TT> d’équation </TT><TT><I>y</I>=<I>x</I></TT><SUP><TT>2</TT></SUP></DIV><P>
-car c’est la fonction polynômiale d’équation <I>y</I>=1*<I>x</I><SUP>2</SUP> qui approche au 
-mieux les données.</P><HR>
+</P><DIV CLASS="center"><TT>listplot([0,1,4,9,16])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>listplot([[0,0],[1,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
+La fenêtre graphique s’ouvre automatiquement et on obtient à condition d’avoir défini correctement la configuration du graphique (menu <TT>Cfg</TT>) :
+</P><DIV CLASS="center"><TT>le dessin des 5 points ((0,0),(1,1),...(4,16)) reliés par 4 segments</TT></DIV><P> 
+On tape si <I>A</I> est une matrice ayant 5 lignes et 2 colonnes :
+</P><DIV CLASS="center"><TT>A:=[[0,0],[1,1],[5,4],[3,9],[4,16]]</TT></DIV><DIV CLASS="center"><TT>listplot(A[0..4,0..1])</TT></DIV><P>
+La fenêtre graphique s’ouvre automatiquement et on obtient :
+</P><DIV CLASS="center"><TT>les 5 points reliés par 4 segments</TT></DIV><P> 
+<B>Bien voir</B> la différence entre :
+</P><DIV CLASS="center"><TT>listplot([[0,0],[1,1],[5,4],[3,9],[4,16]])</TT></DIV><DIV CLASS="center"><TT>polygonplot([[0,0],[1,1],[5,4],[3,9],[4,16]])</TT></DIV><P>
+<B>Attention</B><BR>
+<TT>listplot([0,1,2,3,4],[0,1,4,9,16])</TT> ou<BR>
+<TT>listplot([[0,1,2,3,4],[0,1,4,9,16]])</TT> n’est pas valide !</P><HR>
 <A HREF="cascmd_fr711.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr713.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

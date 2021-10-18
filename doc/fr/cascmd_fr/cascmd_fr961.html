@@ -6,24 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si 4 points forment un division harmonique : is_harmonic est_harmonique</TITLE>
+<TITLE>Savoir si on a un triangle équilatéral : is_equilateral est_equilateral</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr960.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr962.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1112">9.18.15</A>  Savoir si 4 points forment un division harmonique : <TT>is_harmonic est_harmonique</TT></H3><P><A NAME="@default1870"></A><A NAME="@default1871"></A>
-<TT>est_harmonique</TT> permet de savoir si 4 points forment un division harmonique.
-<TT>est_harmonique</TT> est une fonction booléenne ayant comme 
-arguments quatre points.<BR>
- <TT>est_harmonique</TT> vaut 1 si les 4 points forment un division harmonique et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1123">10.18.5</A>  Savoir si on a un triangle équilatéral : <TT>is_equilateral est_equilateral</TT></H3><P><A NAME="@default1864"></A><A NAME="@default1865"></A><A NAME="sec:estequilateral2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1039.html#sec:estequilateral3">11.13.9</A> pour la géométrie 3-d.<BR>
+<TT>est_equilateral</TT> est une fonction booléenne ayant comme 
+argument trois points ou un objet géométrique.<BR>
+<TT>est_equilateral</TT> vaut 1 si les trois points forment un triangle 
+équilatéral ou si l’objet géométrique est un triangle équilatéral,
+et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_harmonique(0,2,3/2,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_equilateral(0,2,1+i*sqrt(3))</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_harmonique(0,1+i,1,i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>T:=triangle_equilateral(0,2,C);est_equilateral(T[0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+En effet <TT>T[0]</TT> désigne un triangle car <TT>T</TT> est une liste composée 
+du triangle et de son sommet <TT>C</TT>.<BR>
+On tape <TT>affixe(C)</TT> et on obtient <TT>1+i*sqrt(3)</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>est_equilateral(1+i,-1+i,-1-i)</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr960.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>

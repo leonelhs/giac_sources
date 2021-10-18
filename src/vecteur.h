@@ -472,6 +472,8 @@ namespace giac {
 
   bool is_integer_vecteur(const vecteur & m);
   bool is_integer_matrice(const matrice & m);
+  bool is_mod_vecteur(const vecteur & m,std::vector<int> & v,int & p);
+  bool is_mod_matrice(const matrice & m,std::vector< std::vector<int> > & M,int & p);
 
   typedef void (*bezout_fonction)(const gen & a,const gen & b,gen & u,gen &v,gen &d);
 

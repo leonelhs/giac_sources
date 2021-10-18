@@ -21,7 +21,7 @@
   colorlinks=true,
   linkcolor=red,
   citecolor=green
-]{hyperref} 
+]{hyperref}
 
 %HEVEA\htmlfoot{Retour \`a la page personnelle de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse}{Bernard Parisse}.}
 %HEVEA\htmlhead{Retour \`a la page personnelle de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse}{Bernard Parisse}.}
@@ -471,13 +471,14 @@ On tape :
 {\tt L:=NULL;for k in  idivis(18) do L:=L,k\verb|^|2-3; end\_for}\\
 On obtient :\\
 {\tt -2,1,6,33,78,321}\\
-On tape :
-{\tt [1,2,3,6,9,18].*[L]}
+On tape  en utilisant {\tt .*} :\\
+{\tt [1,2,3,6,9,18].*[L]}\\
 On obtient :\\
-{\tt [-2,2,18,198,702,5778]}
+{\tt [-2,2,18,198,702,5778]}\\
+alors que {\tt [1,2,3,6,9,18]*[L]} renvoie {\tt 6696}\\
 donc $k=3$ est solution et donc :\\
 $u=(9+4\sqrt 5)^{1/3}$ et $v=(9-4\sqrt 5)^{1/3}$ sont les racines de 
-$X^2-3X+1=0$
+$X^2-3X+1=0$\\
 On tape :\\
 {\tt solve(x\verb|^|2-3x+1)}\\
 On obtient :\\
@@ -528,6 +529,91 @@ On tape (avec {\tt Digits:=30}) :\\
   9716024986949,291480749606796380809804976)}\\
 On obtient :\\
 {\tt sqrt(9716024986949)+9856989898997}
+\subsection{Exercices divers de r\'esolution d\'equations}
+{\bf R\'esoudre :}
+\begin{itemize}
+\item $x^2+2x+2=0$\\
+On tape :\\
+{\tt csolve(x\verb|^|2+2x+2=0)}\\
+Ou on tape si on a coch\'e {\tt Complexe} dans la configuration du CAS :\\
+{\tt solve(x\verb|^|2+2x+2=0)}\\
+On obtient :\\
+{\tt [-1-i,-1+i]}
+\item $x^4-6x^2+6=0$\\
+On tape :\\
+{\tt solve(x\verb|^|4-6x\verb|^|2+6=0)}\\
+On obtient si on a coch\'e {\tt Sqrt} dans la configuration du CAS :\\
+{\tt [-(sqrt(sqrt(3)+3)),-(sqrt(-(sqrt(3))+3)),\\
+sqrt(-(sqrt(3))+3),sqrt(sqrt(3)+3)]}
+\item $x^6-26x^5+250x^4-1160x^3+2749x^2-134x+1320=0$\\
+On tape :\\
+{\tt solve(x\verb|^|6-26x\verb|^|5+250x\verb|^|4-1160x\verb|^|3+2749x\verb|^|2-3134x+1320=0)}\\
+On obtient :\\
+{\tt [1,2,3,4,5,11]}
+\item $x^4-ax^3-6x^2+6ax^2+11x^2-11ax-6x+6=0$\\
+On tape :\\
+{\tt  solve(x\verb|^|4-a*x\verb|^|3-6*x\verb|^|3+6a*x\verb|^|2+11x\verb|^|2-11a*x-6x+6a=0)}\\
+On obtient :\\
+{\tt [3,2,1,a]}
+\item $x^4-\pi x^3-6x^2+6\pi x^2+11x^2-11\pi x-6x+6=0$\\
+On tape :\\
+{\tt solve(x\verb|^|4-pi*x\verb|^|3-6*x\verb|^|3+6*pi*x\verb|^|2+11x\verb|^|2-11*pi*x-6x+6*pi=0)}\\
+On obtient :\\
+{\tt [3,2,1,pi]}
+\item $x^5-3x-1=0$\\
+On tape :\\
+{\tt solve(x\verb|^|5-3x-1=0)}\\
+On obtient :\\
+Attention! Extension algébrique non implémentée pour les poly [1,0,0,0,-3,-1]\\
+{\tt [-1.2146480427,0.8029510011728015413e-1+1.328355109820654077*i,\\
+0.8029510011728015413e-1-1.328355109820654077*i,\\
+-0.3347341419433526871,1.388791984407254183]}
+\item $4\sin(x)^2\cos(x)^2+\cos(2x)^2=1$\\
+On simplifie, on tape :\\
+{\tt simplify(4*sin(x)\verb|^|2*cos(x)\verb|^|2+cos(2x)\verb|^|2-1)}\\
+On obtient :\\
+{\tt 0}\\
+On r\'esoud, on tape :\\
+{\tt solve(4*sin(x)\verb|^|2*cos(x)\verb|^|2+cos(2x)\verb|^|2=1)}\\
+On obtient si {\tt All\_trig\_sol} est coch\'e ou pas coch\'e dans la configuration du CAS :\\
+{\tt [x]}
+\item $4\cos(x)^3-3\cos(x)-\sin(2x)-\cos(3x)=0$\\
+On simplifie, on tape :\\
+{\tt simplify(4*cos(x)\verb|^|3-3*cos(x)-sin(2x)-cos(3x))}\\
+On obtient :\\
+{\tt -2*cos(x)*sin(x)}
+On r\'esoud, on tape :\\
+{\tt solve(4*cos(x)\verb|^|3-3*cos(x)-sin(2x)-cos(3x)=0)}\\
+On obtient si {\tt All\_trig\_sol} n'est pas coch\'e dans la configuration du CAS :\\
+{\tt [0,pi/2,-pi/2,pi]}\\
+On obtient si on a coch\'e {\tt All\_trig\_sol} dans la configuration du CAS :\\
+{\tt [2*n\_0*pi,(4*n\_1*pi+pi)/2,(4*n\_2*pi-pi)/2,2*n\_3*pi+pi]}
+\item $4\cos(x)\cos(2x)\cos(3x)=1$\\
+On tape :\\
+{\tt solve(4*cos(x)*cos(2x)*cos(3x)=1)}\\
+On obtient si {\tt All\_trig\_sol} n'est pas coch\'e dans la configuration du CAS :\\
+{\tt [pi/3,-pi/3,2*pi/3,-2*pi/3,pi/8,-pi/8,7*pi/8,-7*pi/8,\\
+3*pi/8,-3*pi/8,5*pi/8,-5*pi/8]}\\
+On obtient si on a coch\'e {\tt All\_trig\_sol} dans la configuration du CAS :\\
+{\tt [(6*n\_6*pi+pi)/3,(6*n\_6*pi-pi)/3,(6*n\_7*pi+2*pi)/3,\\
+(6*n\_7*pi-2*pi)/3,(16*n\_8*pi+pi)/8,(16*n\_8*pi-pi)/8,\\
+(16*n\_9*pi+7*pi)/8,(16*n\_9*pi-7*pi)/8,(16*n\_10*pi+3*pi)/8,\\
+(16*n\_10*pi-3*pi)/8,(16*n\_11*pi+5*pi)/8,(16*n\_11*pi-5*pi)/8]}
+\item le syst\`eme lin\'eaire :\\
+$[x+2y+3z=1,x+3y+2z=1,3x+y+2z=1]$\\
+On tape :\\
+{\tt linsolve([x+2y+3z=1,x+3y+2z=1,3x+y+2z=1],[x,y,z])}\\
+On obtient :\\
+{\tt [1/6,1/6,1/6]}
+\item le syst\`eme lin\'eaire :\\
+$[x+2y+3z=\pi+5,2x+3y+2z=2\pi+5,3x+\pi y+\pi z=5\pi]$\\
+On tape :\\
+{\tt linsolve([x+2y+3z=pi+5,2x+3y+2z=2*pi+5,3x+pi*y+pi*z=5*pi],[x,y,z])}\\
+On obtient :\\
+{\tt [pi,1,1]}
+\end{itemize}
+
+\chapter{\'Etude de fonctions}
 \section{Exercice : \'etude de $\displaystyle f(x)=\frac{2x^2-1}{6x^2+x-2}$}
 \begin{enumerate}
 \item Domaine de d\'efinition\\
@@ -600,6 +686,101 @@ On tape :\\
 On obtient :\\
 \includegraphics[width=\textwidth]{graphexo}
 \end{enumerate}
+\section{Exercice : \'etude de $\displaystyle f(x)=\acos(\sin(x))+\asin(\cos(x))$}
+%asin1
+\begin{enumerate}
+\item Domaine de d\'efinition et p\'eriode.\\
+\item Montrer que :\\
+$f(x+\pi)=f(\pi/2-x)=\pi-f(x)$.
+\item Graphe de $f$ et pr\'eciser son centre de sym\'etrie et son axe de sym\'etrie.
+\item Valeur de $f(x)$ sur $[0,\pi/2]$ et sur $\pi/2,\pi]$.
+\end{enumerate}
+
+{\bf Rappels}\\
+On a :\\
+$\sin(x)=\cos(\pi/2-x)$\\
+$\cos(x)=\sin(\pi/2-x)$\\
+$\sin(x+\pi)=-\sin(x)$\\
+$\cos(x+pi)=-\cos(x)$\\
+$\asin(x)$ est une bijection  de [-1,1] sur $[-\pi/2,\pi/2]$
+$\sin(\asin(x))=x$  et \\
+si $x\in [-\pi/2,\pi/2]$ alors $\asin(\sin(x))=x$\\
+$\acos(x)$ est une bijection  de [-1,1] sur $[0,\pi]$
+$\cos(\acos(x))=x$ et \\
+si $x\in [0,\pi]$ alors $\acos(\cos(x))=x$\\
+$\asin(-x)=-\asin(x)$\\
+$\acos(-x)=\pi-\acos(x)$\\
+$\asin(x)+\acos(x)=\pi/2$\\
+$\asin(x)'=1/\sqrt(1-x^2)$\\
+$\acos(x)'=-1/\sqrt(1-x^2)$\\
+
+{\bf La solution avec {\tt Xcas}}
+On tape :\\
+{\tt f(x):=acos(sin(x))+asin(cos(x))}\\
+donc \\
+{\tt f(x):=acos(cos(pi/2-x))+asin(sin(pi/2-x))}\\
+\begin{enumerate}
+\item $f(x+\pi)=f(\pi/2-x)=\pi-f(x)$.\\
+On tape :\\
+{\tt simplify(f(x+pi)+f(x))}\\
+On obtient :\\
+{\tt pi}\\
+En effet :\\
+{\tt f(x+pi)=acos(-sin(x))+asin(-cos(x))}\\
+et on a : \\
+$\acos(-\sin(x))=\pi-\acos(\sin(x))$\\
+$\asin(-\cos(x))=-\asin(\cos(x))$\\
+D'o\`u le r\`esultat.\\
+On tape :\\
+{\tt simplify(f(pi/2-x)+f(x))}\\
+On obtient :\\
+{\tt pi}\\
+En effet :\\
+{\tt f(pi/2-x)=acos(cos(x))+asin(sin(x))}\\
+et on a : \\
+$\acos(\sin(x))+\asin(\sin(x)=\pi/2$\\
+$\asin(\cos(x))+\acos(\cos(x))=\pi/2$\\
+D'o\`u le r\`esultat.
+
+\item Graphe de $f$.\\
+On tape :\\
+{\tt f(x):=acos(sin(x))+asin(cos(x))}\\
+{\tt plotfunc(f(x))}\\
+On obtient :\\
+\includegraphics[width=\textwidth]{graphexo}
+Le point $S(\pi/4,\pi/2$ est un centre de sym\'etrie car 
+on a  $f(x)+f(pi/2-x)=\pi$ donc les points $A(x,f(x)$ et $B(\pi/2-x,f(\pi/2-x)$
+sont 2 points de la courbe qui sont sym\'etriques par rapport \`a $S$.\\
+En effet $1/2*(x+\pi/2-x)=\pi/4$ et 
+$1/2*(f(x)+f(\pi/2-x))=\pi/2$.\\
+La droite d'\'equation $x=3\pi/4$ est un axe de sym\'etrie de la courbe.\\
+  En effet $f(x+\pi)=f(\pi/2-x)$ et donc les points
+$C(x+\pi,f(x+\pi)$ et $D(\pi/2-x,f(\pi/2-x)$ sont sym\'etriques par rapport \`a la droite  $x=3\pi/4$
+puisque $1/2*(x+\pi+\pi/2-x)=3\pi/4$
+
+\item Valeur de $f(x)$ sur $[0,\pi/2]$ et sur $\pi/2,\pi]$.
+On tape :\\
+{\tt assume(x>0 and x<pi/2)}\\
+{\tt simplify(f(x))}\\
+On obtient :\\
+{\tt pi-2*x}\\
+Si $x\in [0,\pi/2]$ on a $\pi/2-x\in [0,\pi/2]$ donc
+$f(x):=\acos(\cos(\pi/2-x))+\asin(\sin(\pi/2-x))=\pi-2x$
+On tape :\\
+{\tt assume(x>=pi/2 and x<=pi)}\\
+{\tt simplify(f(x))}\\
+On obtient :\\
+{\tt 0}\\
+Si $x\in [\pi/2,\pi]$ on a $x-\pi/2\in [0,\pi/2]$ donc
+$f(x):=\acos(\cos(\pi/2-x))+\asin(\sin(\pi/2-x))=$\\
+$\acos(\cos(x-\pi/2))-\asin(\sin(x-\pi/2-))=x-\pi/2-(x-\pi/2)=0$
+
+\end{enumerate}
+
+
+
+
+
 \chapter{Fonctions et \'equations en terminale scientifique}
 \section{\'Etude de $\displaystyle f(x)=\ln(\frac{x^2-4x+3}{1-x^2})$}
 \begin{enumerate}
@@ -656,6 +837,8 @@ affichage(droite(y=-x+1),2)}\\
 On obtient :\\
 \includegraphics[width=\textwidth]{graphexo1}
 \end{enumerate}
+
+
 \section{Calcul de d\'eriv\'ee n-i\`eme}
 \subsection{D\'eriv\'ee n-i\`eme de $\cos(x)^3+\sin(x)^3$}
 Calculer la deriv\'ee n-i\`eme de la fonction $f(x)=\cos(x)^3+\sin(x)^3$ en 
@@ -974,8 +1157,8 @@ On tape :\\
 On obtient :\\
 {\tt n*(n+1)/(k*(k-1)*(n-k+1))}\\
 Donc pour $k=2..n$ :\\
-$a(k,n+1)=\frac{(-1)^{n+1}n!(n+1)!}{k!(k-1)!(n-k+1)!}$
-On a donc montr\'e par r\'ecurrence que :
+$a(k,n+1)=\frac{(-1)^{n+1}n!(n+1)!}{k!(k-1)!(n-k+1)!}$\\
+On a donc montr\'e par r\'ecurrence que :\\
 $$g^(n)(x)=\sum_{k=1}^n\frac{(-1)^nn!(n-1)!}{k!(k-1)!(n-k)!}x^{-n-k}f^{(k)}(1/x)$$
 Si $f(x)=\exp(-x^2)$, on sait que :\\
 $f^{(k)}(1/x)=P_k(1/x)*\exp(-1/x^2)$
@@ -2225,7 +2408,338 @@ On obtient :\\
 {\tt [[-f+4,c+f+4,-c+4],[-c+f+4,4,c-f+4],[c+4,-c-f+4,f+4]]}\\
 Par exemple $f=1,c=3$, on obtient 
 {\tt [[3,8,1],[2,4,6],[7,0,5]]}
-\chapter{G\'eom\'etrie plane seconde et terminale}
+\chapter{D\'enombrement}
+\section{Nombre d'applications d'un ensemble fini dans un ensemble fini}
+Soient deux ensembles $E$ dans $F$ de cardinaux respectifs $p$ et $n$.
+Soit $\mathcal{A}(E,F)$ l'ensemble des applications de $E$ dans $F$.
+Soit $u(p,n)$ le nombre d'applications de $E$ dans $F$.
+On a :
+$u(p,1)=p$ car si $E={a}$ et $F={b_1,b_2..b_p}$ les applications de $E$ dans $F$
+ sont d\'efinies par :\\
+$f_j(a)=b_j)$ avec $1\leq j\leq p$\\
+On montre par r\'ecurrence que  $u(p,n)=p*u(p,n-1)$.\\
+En effet :\\
+si $E={a_1,a_2...a_n}$ et $E_1={a_2...a_n}$, une application de $E$ dans $F$ 
+est d\'efinie par une application de $E_1$ dans $F$ et par $f(a_1)=b_j$ pour
+$1\leq j\leq p$.\\
+Donc $u(p,n)=p^n$
+
+\section{Nombre d'injections d'un ensemble fini dans un ensemble fini : les arrangements}\index{perm}
+Soient deux ensembles $E$ dans $F$ de cardinaux respectifs $p$ et $n$ avec 
+$n\geq p$.\\
+Soit $\mathcal{I}(E,F)$ l'ensemble des injections de $E$ dans $F$.
+Soit $v(n,p)$ le nombre injections de $E$ dans $F$.
+On a :
+$v(n,1)=n$ car si $E={a}$ et $F={b_1,b_2..b_n}$ les injections de $E$ dans $F$
+ sont d\'efinies par :\\
+$f_j(a)=b_j)$ avec $1\leq j\leq n$\\
+On montre par r\'ecurrence que  $v(p,n)=(n-p+1)*v(p,n-1)$.\\
+En effet :\\
+si $E={a_1,a_2...a_p}$ et $E_1={a_2...a_p}$, une injection de $E$ dans $F$ 
+est d\'efinie par une injection de $f$ de $E_1$ dans $F$ et par 
+$f(a_1)\in F\setminus f(E_1)$.\\
+Comme $F\setminus f(E_1)$ a pour cardinal $n-(p-1)=n-p+1$ on a :\\
+$v(n,p)=(n-p+1)*v(n,p-1)$
+Donc $v(n,1)=n,v(n,2)=n(n-1),...,v(n,p)=n(n-1)...(n-p+1)$\\
+En utilisant la notation factorielle on a donc :
+$$v(n,p)=\frac{n!}{(n-p)!}$$
+{\bf D\'efinition} 
+$v(n,p)$ est le nombre d'arrangements sans r\'ep\'etition de $p$ objets pris 
+parmi $n$ objets ($p\leq n$).\\
+Avec {\tt Xcas} $v(n,p)$ se note {\tt perm(n,p)}.\\
+On tape :\\
+{\tt perm(n,p)}\\
+On obtient :
+{\tt (n!)/((n-p)!)}\\
+On tape :\\
+{\tt perm(6,3)}\\
+On obtient :
+{\tt 120}
+\section{Nombre de bijections d'un ensemble fini dans un ensemble fini : la factorielle }\index{factorial}
+Soient deux ensembles $E$ dans $F$ de m\^eme cardinaux $n$.\\
+Le nombre de bijections de $E$ dans $F$ est \'egal au nombre d'injections de $E$
+ dans $F$ car $E$ et $F$ ont le m\^eme nombre d\'el\'ements.\\
+Le nombre de bijections de $E$ dans $F$ est donc $1*2*..*n =n!$
+Avec {\tt Xcas} $v(n,p)$ se note {\tt perm(n,p)}.\\
+On tape :\\
+{\tt 6!}\\
+On obtient :
+{\tt 720}\\
+On tape :\\
+{\tt 3!}\\
+On obtient :
+{\tt 6}
+\section{Nombre de parties \`a $p$ \'el\'ements d'un ensemble \`a $n$ \'el\'ements : les combinaisons}\index{comb}
+Soit un ensemble $E$ de cardinal $n$ ($n\geq 1$) et soit un entier $p\leq n$.\\
+Soit $w(n,p)$ le nombre de parties de $E$ ayant $p$ \'el\'ements.\\
+Soit $f$ une injection de $I=[1,p]$ dans $E$ dans $f(I)$ est une partie de $E$
+qui a $p$ \'el\'ements.\\
+Soit $F$ l'application qui a  une injection $f$ de $I=[1,p]$ dans $E$ fait 
+correspondre $f(M)$ i.e. $F(f)=f(M)$.\\
+$F$ est surjective mais n'est pas injective car si:\\
+$F(f_1)=F(f_2)$ cela entraine $f_1(M)=f_2(M)$.\\
+Soit $f_1$ une injection de $I=[1,p]$ dans $E$ et $F=f_1(M)$. Donc $I$ et $F$ 
+sont de cardinal $p$.\\
+D'apr\`es le paragraphe pr\'ec\'edent, le nombre d'injections $f$ de 
+$I=[1,m]$ dans $E$ tel que $f(M)=F$ est $p!$ car ces injections sont des 
+bijection de $I$ dans $F$.
+Donc le nombre de parties de $E$ ayant $p$ \'el\'ements est \'egal au nombre d'injection de $I$ dans $E$ divis\'e par $p!$.\\
+Donc :
+$$w(n,p)=\frac{n!}{(n-p)!p!}$$
+On remarquera que la formule est encore valable pour $n=p=0$ puisque $w(0,0)=1$
+{\bf D\'efinition} 
+$w(n,p)$ est le nombre de combinaisons sans r\'ep\'etition de $p$ objets pris 
+parmi $n$ objets ($p\leq n$).\\
+Avec {\tt Xcas} $w(n,p)$ se note {\tt comb(n,p)}.\\
+On tape :\\
+{\tt simplify(comb(n,p))}\\
+On obtient :
+{\tt (n!)/((n-p)!*p!)}\\
+On tape :\\
+{\tt comb(6,3)}\\
+On obtient :
+{\tt 20}
+\section{Les combinaisons avec r\'ep\'etition}
+\subsection{La d\'efinition} 
+{\bf D\'efinition}\\
+Soit un ensemble $E$ de cardinal $n$ ($n\geq 1$) et soit un entier $p$.\\
+Le nombre d'ensemble ayant $p$ \'el\'ements de $E$, chaque \'el\'ement pouvant 
+\^etre est appel\'e combinaison avec r\'ep\'etition de $p$ \'el\'ements pris 
+parmi $n$.\\
+\subsection{Une d\'emonstration}
+Soit $c(n,p)$ le nombre de combinaisons avec r\'ep\'etition de $p$ \'el\'ements 
+pris parmi $n$.\\
+On va montrer que l'on a : $c(n,p)=${\tt comb(n+p-1,n-1)=comb(n+p-1,p)} \`a 
+l'aide de l'exercice suivant.\\
+{\bf Enonc\'e}\\
+Soient $O$ et $A$ 2 points tels que $OA=p$.\\ 
+1/ On suppose $p\geq n$. De combien de mani\`eres peut-on placer entre $O$ et $A$ ($O$ et $A$ exclus) $n-1$ points d'abscisse enti\`ere ?\\
+2/ {\bf Application} Nombre de solutions  de l'\'equation $x_1+x_2+...x_n=p$ :\\
+a/ lorsque les $x_i$  sont des entiers >0 et $p\geq n$.\\ 
+b/ lorsque les $x_i$  sont des entiers $\geq 0$\\
+3/ En d\'eduire la valeur de $c(n,p)$\\
+{\bf Solution}\\
+1/ Entre $O$ et $A$ ($O$ et $A$ exclus) il y a $p-1$ points.\\
+Donc on peut placer $n-1$ points d'abscisse enti\`ere de {\tt comb(p-1,n-1)}
+mani\`eres diff\'erentes.\\ 
+2/ a/ Pour r\'esoudre $x_1+x_2+...x_n=p$ lorsque les $x_i$  sont des entiers >0,
+on place $n-1$ points $M_1,M_2..M_{n-1}$ 
+d'abscisse enti\`ere $m_1,m_2..m_{n-1}$ entre $O$ et $A$ et on pose :\\
+$x_1=m_1,x_2=m_2-m_1,....x_{n-1}=m_{n-1}m_{n-2},x_n=p-m_{n-1}$\\
+On a alors $x_1+x_2+...x_n=p$.\\
+R\'eciproquement \`a chaque solution $x_1,x_2,...,x_n$  de $x_1+x_2+...x_n=p$ 
+lorsque les $x_i$ sont des entiers >0, il
+correspond $n-1$ points d'abscisse enti\`ere entre $O$ et $A$ ce sont :\\
+$M_1,M_2..M_{n-1}$ d'abscisse respective $x_1,x_1+x_2,...,\sum_{i=..n-1}x_i$.\\
+Le nombre de solution est donc {\tt comb(p-1,n-1)}
+b/ Pour r\'esoudre $x_1+x_2+...x_n=p$ lorsque les $x_i$ sont des entiers 
+$\geq 0$, on se ram\'ene au cas pr\'ec\'edent en posant :\\
+$y_i=x_i+1$ (si $x_i$ est un entier $\geq 0$, $y_i$ est un entier >0).\\
+\`A chaque solution de $x_1+x_2+...x_n=p$ o\`u les $x_i$ sont des entiers 
+$\geq 0$  correspond une solution de $y_1+y_2+...y_n=n+p$ o\`u les $y_i$ sont 
+des entiers >0 et on a  $n+p\geq n$.\\
+Donc le nombre de solutions de l'\'equation $x_1+x_2+...x_n=p$ lorsque les $x_i$
+sont des entiers $\geq 0$ est {\tt comb(n+p-1,n-1)=comb(n+p-1,p)}.\\
+3/ $c(n,p)$ est le nombre de combinaisons avec r\'ep\'etition de $p$ 
+\'el\'ements pris parmi $n$.
+Soient $a_1,a_2,...a_n$ les $n$ \'elements de $E$. Chaque combinaison avec 
+r\'ep\'etition de $p$ \'el\'ements pris parmi ces $n$ \'elements est 
+\`A chaque solution de $x_1,x_2,...x_n=p$ avec $x_i \geq 0$ pour $i=1..n$ 
+il correspond une combinaison avec r\'ep\'etition de $p$ \'el\'ements pris 
+parmi ces $n$ \'elements $a_i$ \`a savoir on a la combinaison qui correspond aux
+ $p$ \'elements :\\
+$x_1$ fois $a_1$,$x_2$ fois $a_2$,...$x_n$ fois $a_n$ (il y bien $p$ \'elements
+puisque $x_1,x_2,...x_n=p$. 
+R\'eciproquement \`a chaque combinaison avec 
+r\'ep\'etition de $p$ \'el\'ements pris parmi $a_1,a_2,...a_n$ il correspond
+une solution de $x_1,x_2,...x_n=p$ avec $x_i \geq 0$ pour $i=1..n$.
+Donc $c(n,p)=${\tt comb(n+p-1,n-1)=comb(n+p-1,p)} 
+\subsection{Autre d\'emonstration}
+Soient $a_1,a_2,...a_n$ les $n$ \'elements de $E$.\\
+1/ On cherche combien de fois l'\'el\'ement $a_1$ figure dans les $c(n,p)$ 
+combinaisons  avec r\'ep\'etition de $p$ \'el\'ements pris parmi ces $n$ 
+\'elements $a_i$ ($i=1..n$).\\
+Dans chaque combinaison il y a $p$ \'el\'ements donc en tout il y a :\\
+$p*c(n,p)$ \'el\'ements.\\
+Les $n$ \'el\'ements figurent le m\^eme nombre de fois donc :\\
+l'\'el\'ement $a_1$ figure $p*c(n,p)/n$ fois dans les $c(n,p)$ combinaisons\\
+et de m\^eme pour tout $i=1..n$, \\
+l'\'el\'ement $a_i$ figure $p*c(n,p)/n$  fois dans les $c(n,p)$ combinaisons.\\
+2/ Cherchons une relation entre $p*c(n,p)/n$ et $c(n,p-1)$
+Parmi les combinaisons \`a r\'ep\'etition, il y en a :\\
+$c(n-1,p)$={\tt comb(n+p-2,p)} qui ne contiennent pas $a_1$.\\
+Parmi les combinaisons \`a r\'ep\'etition, il y en a :\\
+$c(n,p-1)$={\tt comb(n+p-2,p-1)} qui  contiennent $a_1$ au moins une fois
+(car on a {\tt comb(n+p-2,p-1)+comb(n+p-2,p)=comb(n+p-1,p)})\\
+D'apr\`es 1/ l'\'el\'ement $a_1$ figure $(p-1)*c(n,p-1)/n$ fois dans les 
+$c(n,p-1)$ combinaisons\\
+Donc dans les $c(n,p)$ combinaisons il y a $c(n,p-1)$ combinaisons qui 
+contiennent $a_1$ au moins une fois.
+Cherchons le nombre de fois o\`u apparait $a_1$ parmi les combinaisons qui 
+contiennent $a_1$ au moins une fois. Ces combinaisons sont au nombre de 
+$c(n,p-1)$. Si on enl\`eve $a_1$ de ces combinaisons il reste une combinaison  
+avec r\'ep\'etition de $p-1$ \'el\'ements pris parmi ces $n$ 
+\'elements $a_i$ ($i=1..n$). On sait d'apr`es 1/ que 
+$a_1$ figure $(p-1)*c(n,p-1))/n$  fois dans les $c(n,p-1)$ combinaisons.
+Donc l'\'el\'ement $a_1$ figure $c(n,p-1)+(p-1)*c(n,p-1)/n$ fois dans les 
+$c(n,p)$ combinaisons.\\
+On a donc la relation :
+$$\frac{p*c(n,p)}{n}=c(n,p-1)+\frac{(p-1)*c(n,p-1)}{n}=\frac{(n+p-1)}{n}c(n,p-1)$$
+Donc puisque $c(n,1)=n$ :
+$$c(n,p)=\frac{(n+p-1)}{p}c(n,p-1)=...\frac{(n+p-1)..(n+1)}{p!}c(n,1)=\frac{(n+p-1)..(n+1)n}{p!}=\frac{(n+p-1)!}{(n-1)!p!}$$
+ donc on en d\'eduit que :\\
+$c(n,p)=${\tt comb(n+p-1,p)= comb(n+p-1,n-1)}\\
+{\bf Remarque}\\
+On a $c(n,0)+c(n,1)+...+c(n,p)=c(n+1,p)$\\ 
+On tape :\\
+{\tt sum(comb(n+k-1,n-1),k=0..p)-comb(n+p,n)}\\
+On obtient :\\
+{\tt 0}\\
+Par r\'ecurrence sur $p$ on a :\\
+$c(n,0)+c(n,1)=1+n=c(n+1,1)$\\
+si $c(n,0)+c(n,1)+...+c(n,p)=c(n+1,p)$ alors\\
+$c(n,0)+c(n,1)+...+c(n,p)+c(n,p+1)=c(n+1,p)+c(n,p+1)=$\\
+{\tt comb(n+p,p)+comb(n+p,p+1)=comb(n+p+1,p+1)}=$c(n+1,p+1)$\\
+ En effet prori\'et\'e de {\tt comb} :\\
+{\tt comb(n,p)=comb(n-1,p)+comb(n-1,p-1)} pour tout $n$ et $p\leq n$ donc\\
+{\tt comb(n+p,p)=comb(n+p-1,p)+comb(n+p-1,p-1)}
+
+\subsection{Exercice}
+Dans une patisserie il y 10 sortes de gateaux.\\
+De combien de mani\`eres peut-on en choisir 6 :\\
+a/ de sortes diff\'erentes,\\
+b/ de m\^eme sorte ou de sortes diff\'erentes,
+c/ de m\^eme sorte ou de sortes diff\'erentes dans le cas ou il ne reste que 3 gateaux d'une certaine sorte.
+{\bf Solution}\\
+a/ Il y a {\tt comb(10,6)=210} de choisir 6 gateaux de sortes diff\'erentes parmi 
+10 sortes.\\
+b/ Il y a {\tt comb(15,6)=5005} de choisir 6 gateaux de m\^eme sorte ou sortes 
+diff\'erentes parmi 10 sortes car ici $n=10$ et $p=6$.\\
+c/ si il ne este que 3 gateaux de la sorte $a_1$, il y a 
+{\tt comb(14,6)=3003} mani\`eres de prendre 6 gateaux sans la sorte $a_1$ 
+($n=9, p=6$ et $n+p-1=14$ i.e 9 sortes et 6 gateaux)\\
+{\tt comb(13,5)=1287} mani\`eres de prendre 6 gateaux dont 1 gateau de la sorte 
+$a_1$,($n=9, p=5$ et $n+p-1=13$)\\
+{\tt comb(12,4)=495} mani\`eres de prendre 6 gateaux dont 2 gateaux de la sorte 
+$a_1$,($n=9, p=4$ et $n+p-1=12$)\\
+{\tt comb(11,3)=165} mani\`eres de prendre 6 gateaux dont 3 gateaux de la sorte 
+$a_1$,($n=9, p=3$ et $n+p-1=11$)\\
+Donc il y a 3003+1287+495+165=4950 mani\`eres de prendre 6 gateaux de m\^eme sorte ou de sortes diff\'erentes dans le cas ou il ne reste que 3 gateaux d'une certaine sorte.\\
+V\'erifions :\\
+On a {\tt comb(10,2)=45} mani\`eres de prendre 6 gateaux dont 4 gateaux de la 
+sorte $a_1$,($n=9, p=2$)\\
+On a {\tt comb(9,1)=9} mani\`eres de prendre 6 gateaux dont 5 gateaux de la 
+sorte $a_1$,($n=9, p=1$)\\
+On a {\tt comb(9,0)=1} mani\`eres de prendre 6 gateaux dont 6 gateaux de la 
+sorte $a_1$,($n=9, p=0$)\\
+et on a bien : 4950 +55=5005.
+\section{Nombre de surjections d'un ensemble fini dans un ensemble fini}
+{\bf Exercice 1}
+Soient $E$ un ensemble ayant $p$ \'el\'ements et $F$ un ensemble ayant $q$ 
+\'el\'ements. On cherche le nombre de surjections de $E$ dans $F$.
+\begin{enumerate}
+\item Calculer $\sum_{A\subset E}(-1)^{Card(A)}$
+\item Soient $f$ une application de $E$ dans $F$ et $B$ une partie de 
+$F\setminus f(E)$.\\
+On pose : $S(f)=\sum_{B\subset F\setminus f(E)}(-1)^{Card(B)}$\\
+Montrer que :\\
+$S(f)=1$ si $f$ est surjective et $S(f)=0$ si $f$ n'est pas surjective. 
+\item En d\'eduire le nombre de surjections de $E$ dans $F$
+\end{enumerate}
+{\bf La solution}
+\begin{enumerate}
+\item Si $p=0$ alors $E=\emptyset$ donc $\sum_{A\subset E}(-1)^{Card(A)}=(-1)^0=1$\\
+Si $p\neq 0$ alors il y a {\tt comb(p,k)} sous-ensemble $A$ de $E$ qui ont $k$ 
+\'el\'ements $A$, 
+donc \\
+$\sum_{A\subset E}(-1)^{Card(A)}=\sum_{k=0}^pcomb(p,k)(-1)^{k}=(1-1)^p=0$ d'apr\`es
+ la formule du bin\^ome.
+\item Si $f$ est surjective $F\setminus f(E)=\emptyset$ donc $S(f)=1$ d'apr\`es ce
+qui pr\'ec\'ede.\\
+Si $f$ n'est pas surjective $F\setminus f(E)\neq \emptyset$ donc  $S(f)=0$ 
+d'apr\`es ce qui pr\'ec\'ede.\\
+\item Soit $\mathbb A(E,F)$ l'ensemble des applications de $E$ dans $F$.\\
+D'apr\`es ce qui pr\'ec\`ede le nombre de surjections de $E$ dans $F$ 
+est :\\
+$\sum_{f\in \mathbb A(E,F)}S(f)=\sum_{f\in \mathbb A(E,F)}\sum_{B\subset F\setminus f(E)}(-1)^{Card(B)}$\\
+Puisque $B\subset F\setminus f(E)$ est \'equivalent \`a 
+$B\cap f(E)=\emptyset$ donc est \'equivalent \`a $f(E)\subset F\setminus B$ 
+donc le nombre de surjections de $E$ dans $F$ est :\\
+$\sum_{B\subset F}\sum_{f\in\mathbb A(E,F\setminus B)} (-1)^{Card(B)}$=\\
+$\sum_{B\subset F\ \&\& \  Card(B)=k}(q-k)^p(-1)^{k}=\sum_{k=0}^q comb(q,k)(q-k)^p(-1)^{k}$\\
+En effet si  $Card(B)=k$. Il y a $(q-k)^p$ applications des $E$ dans $F\setminus B$ et il y a $comb(q,k)$ sous-ensemble de $F$ qui contient $k$ \'el\'ements.\\
+ Donc :
+$$S(f)=\sum_{k=0}^q(-1)^kcomb(q,k)(q-k)^p$$
+\end{enumerate}
+{\bf Exercice 2}
+1a/ Montrer que  pour tout $j=1..k$ on a :\\
+{\tt comb(p,j)*comb(p-j,k-j)=comb(p,k)*comb(k,j)}\\
+1b/ En d\'eduire que :
+$$\sum_{j=0}^k(-1)^jcomb(p,j)*comb(p-j,k-j)=0$$
+2/ Soit $S(n,p)$ le nombre de surjections d’un ensemble \`a $n$ \'el\'ements 
+sur un ensemble \`a $p$ \'el\'ements.\\
+En raisonnant, pour une application $f$ de $E$ dans $F$, sur le cardinal de 
+$f(E)$, \'etablir :
+$$p^n=S(n,p)+\sum_{k=1}^{p-1}comb(p,k)*S(n,p-k)$$
+3/ En d\'eduire que :
+$$S(n,p)=\sum_{k=0}^{p-1}(-1)^kcomb(p,k)*(p-k)^n$$
+4/ En utilisant $\phi(f) = \{f^{-1}(\{y\}) , y \in F \}$ de l’ensemble des 
+surjections de $E$ dans $F$ dans l’ensemble des partitions de $E$ ayant $p$
+parties, d\'eterminer le nombre de partitions
+d’un ensemble \`a $n$ \'el\'ements en $p$ parties ($1 \leq p \leq n$), not\'e
+$Pi(n,p)$.
+
+{\bf La solution}
+1a/  On d\'eveloppe les combinaisons ou on tape :\\
+{\tt normal(comb(p,j)*comb(p-j,k-j)-comb(p,k)*comb(k,j))}\\
+On obtient :\\
+{\tt 0}\\
+1b/ On remplace les combinaisons \`a l'aide de 1a/ et on \'ecrit le 
+d\'eveloppement de $(1-1)^k$ avec la formule du bin\^ome et on obtient :\\
+$0=(1-1)^k=\sum_{j=0}^k(-1)^jcomb(k,j)$ donc\\
+$comb(p,k)\sum_{j=0}^k(-1)^jcomb(k,j)=\sum_{j=0}^k(-1)^jcomb(p,k)comb(k,j)=\sum_{j=0}^k(-1)^jcomb(p,j)*comb(p-j,k-j)$\\
+2/ Il y a $p^n$ applications de $E$ dans $F$ et si $f$ est une application de 
+$E$ dans $F$ on note $k$ le cardinal de $f(E)$.  Pour $k$ fix\'e $f$ est alors 
+une surjection de $E$ dans $f(E)$ et il a {\tt S(n,k)} surjections\\
+il y a {\tt comb(p,1)*S(n,1)} applications de $E$ dans $F$ qui sont telles que 
+$k=1$ \\
+il y a {\tt comb(p,2)*S(n,2)} applications qui sont telles que $k=2$ \\
+....
+il y a {\tt comb(p,k)*S(n,k)} applications qui sont telles que $k=k$\\
+...
+il y a {\tt comb(p,p)*S(n,p)} applications qui sont telles que $k=p$\\
+d'o\`u la formule
+$p^n$={\tt sum( comb(p,k)*S(n,k),k=1..p)=S(n,p)+sum(comb(p,k)*S(n,k),k=1..p-1)}  \\
+3/ On va faire une combinaison de lignes qui fera disparaitre les \\
+{\tt S(n,k)} pour k!=p en se servant de 1b/ :\\
+{\tt sum($(-1)^i$comb(p,i)comb(p-i,k-i),i=0..k)=0}\\
+Les coefficients de S(n,p-k) sont si la 1iere ligne est la ligne 0:\\
+ligne 0  : {\tt comb(p,k)},\\
+ligne 1  : {\tt comb(p-1,k-1)}\\
+ligne 2  : {\tt comb(p-2,k-2)}\\
+...\\
+ligne i  : {\tt comb(p-i,k-i)},\\
+....\\
+ligne k : {\tt 1}\\
+on multiplie donc  \\
+la ligne 0 par 1=$(-1)^0$*{\tt comb(p,0)} \\
+la ligne 1 par -1*{\tt comb(p,1)} \\
+la ligne 2 par $(-1)^2$*{\tt comb(p,2)}\\
+....\\
+la ligne k par $(-1)^k${\tt comb(p,k)}\\
+...\\
+la ligne p-1 par $(-1)^{p-1}${\tt comb(p,p-1)}\\
+Puis on somme toutes les lignes et on obtient :\\
+{\tt sum($(-1)^k$comb(p,k)$(p-k)^n$,k=0..p-1)=S(n,p)} 
+4/ Chaque surjection de $E$ dans $F$ donne une partition de $E$ ayant $p$ 
+parties. Mais une partition de $E$ ayant $p$ parties d\'efinit $p!$ surjections
+donc le nombre de partitions de $E$ ayant $p$ \'el\'ements est {\tt S(n,p)/p!}\\
+V\'erifions \\
+{\tt S(n,2)}=$2^n-2$ et il y a $2^{n-1}-1$ partitions de $E$ ayant p parties.
+
+
+
+\section{Les nombres d'applications de E dans F}\chapter{G\'eom\'etrie plane seconde et terminale}
 \section{Les transformations planes}
 \subsection{La translation}
 {\bf D\'efinition}
@@ -4369,8 +4883,9 @@ On obtient :\\
 c) Lorsque $t$ tend vers $+\infty$, la taille de la population augmente et 
 tend vers 300 rongeurs puisque $f$ tend vers 3 lorsque $t$ tend vers $+\infty$.
 
+
 \chapter{Le Bac  Math\'ematiques 2010}
-\section{ EXERCICE 1 : (6 points)}
+\section{EXERCICE 1 : (6 points)}
 Commun  \`a  tous les candidats
 \subsection{L'\'enonc\'e}
 Les deux parties de cet exercice sont ind\'ependantes.\\
@@ -6147,7 +6662,7 @@ On tape:\\
 On obtient :\\
 {\tt -4*sin(x/2)\verb|^|2}\\
 On tape:\\
-{\tt tlin((2*cos((N+1)*x/2)*sin(N*x/2))}\\
+{\tt tlin((2*cos((N+1)*x/2)*sin(N*x/2)))}\\
 On obtient :\\
 {\tt sin((2*N*x+x)/2)-sin(x/2)}\\
 Donc on peut \'ecrire $s(x,N)$ de 4 mani\`eres :
@@ -11143,6 +11658,97 @@ On obtient  avec 35 chiffres significatifs :\\
 \includegraphics[width=\textwidth]{diffsuite4}
 
 \end{itemize}
+\section{Le modèle de Volterra Lotka}
+L’objectif de l’exercice est de mod\'eliser l’\'evolution de la population de 2
+ esp\`eces, avec des hypoth\`eses simples.
+\begin{itemize}
+\item  La premi\`ere esp\`ece est une proie. Elle dispose de ressources en 
+quantit\'e illimit\'ees
+\item  La seconde esp\`ece est un pr\'edateur. Sa seule ressource est la proie.
+\item  Les esp\`eces sont isol\'ees et n’interagissent qu’entre elles.
+\end{itemize}
+Le mod\`ele de Volterra Lotka discret est un mod\`ele d’\'evolution 
+correspondant \`a ces hypoth\`eses. \\
+Le temps est discr\'etis\'e. \`A chaque entier $n$, on associe le nombre 
+d’individus de la proie $l_n$ (pour lapin) et du pr\'edateur $r_n$ (pour renard)
+\`a la $n$ i\`eme \'etape. L’\'evolution suit les r\`egles suivantes :\\
+$l_0$ et $r_0$ sont les populations initiales et pour tout $n \in \N$ on a  :\\
+$l_{n+1}- l_n = \alpha l_n - \beta l_n r_n$\\
+$r_{n+1} - r_{ n} = \gamma l_{ n} r_{ n} - \delta r_{ n}$\\
+$\alpha, \beta, \gamma,  \delta$  sont des coefficients r\'eels strictement 
+positifs.
+\begin{enumerate}
+\item  Que se passe-t-il en l’absence de pr\'edateur ?
+\item  Que se passe-t-il en l’absence de proie ?
+\item  Donner en fonction des param\`etres une position d’\'equilibre du 
+syst\`eme.
+\item  Ecrire une fonction volterra(N,l0,r0,alpha,beta,gamma,delta) qui affiche à l’\'ecran les $N+1$ 
+premi\`eres valeurs des deux suites ($r_n$) et ($l_n$). L’affichage des valeurs doit se terminer si l’une des 
+esp\`eces s’\'eteint.
+\item  Modifier la fonction pr\'ec\'edente pour produire le dessin des $N$+1 premi\`eres 
+valeurs des deux suites. 
+le couple ($l_n$, $r_n$) sera consid\'er\'e comme un point. Les points seront reli\'es entre 
+eux par des segments.
+\item  Utilisez la fonction pr\'ec\'edente pour explorer le mod\`ele, en jouant sur ses 
+param\`etres.
+\item  Le mod\`ele de Volterra Lotka est un mod\`ele sans saturation (En l’absence de 
+pr\'edateur, la population des proies croit exponentiellement, ce qui traduit l’hypoth\`ese 
+de ressources illimit\'ees). 
+Proposez un mod\`ele avec saturation et simulez le.
+\end{enumerate}
+La solution avec {\tt Xcas}
+\begin{enumerate}
+\item  En l’absence de pr\'edateur on a pour tout $n \in \N$ $r_n=0$ donc :\\
+$l_{ n+1} =(1+ \alpha) l_n$ \\
+$l_n$ est une suite g\'eom\'etrique et $l_n=l_0(1+ \alpha)^n$ avec  $1+ \alpha)>1$.\\
+Donc  en l’absence de pr\'edateur, $l(n$ tend vers $+\infty$ quand $n$ tend vers $+\infty$
+\item  En l’absence de proie on a pour tout $n \in \N$ $l_n=0$ donc :\\
+$r_{ n+1} =(1- \delta) r_n$ \\
+$r_n$ est une suite g\'eom\'etrique et $r_n=r_0(1- \delta)^n$ avec  $1- \delta)<1$.
+Donc en l’absence de proie, $r(n$ tend vers $+\infty$ quand $n$ tend vers $0$
+\item  La position d’\'equilibre du syst\`eme se fait lorsque \`a partir d'un
+certain rang $n$, on a : $l_{ n+1} = l_n$ et $r_{ n+1} =r_n$.\\
+c'est \`a dire :\\
+$\alpha l_n - \beta l_n r_n =0$ et\\
+$\gamma l_{ n} r_{ n} - \delta r_{ n}=0$
+$$, $$
+On tape :\\
+{\tt assume(a>0)}\\
+{\tt assume(b>0)}\\
+{\tt assume(c>0)}\\
+{\tt assume(d>0)}\\
+{\tt normal(solve([x=(a+1)*x-b*x*y, y=c*x*y+(1-d)*y],[x,y]))}\\
+On obtient :\\
+{\tt [[0,0],[d/c,a/b]]}\\
+Donc une position d\'equilibre du syst\`eme est pour un rang $n$ :\\
+$l_n=d/c$ et $r_n=a/b$.\\
+On tape :\\
+{\tt factor(solve([(a+1)*x-b*x*y=d/c,y*(1-d)+c*x*y=a/b],[x,y]))}\\
+On obtient :\\
+{\tt [[d/c,a/b],[(d-1)/(c*(a+1)),(-a-1)/((d-1)*b)]]}\\
+ce qui veut dire que si $l_n=d/c$ et $r_n=a/b$ c'est que 
+$l_{n-1}=d/c$ et $r_{n-1}=a/b$ ou que \\
+$l_{n-1}=(d-1)/(c*(a+1))$ et $r_{n-1}=-(a+1)/((d-1)*b)$ 
+mais comme $l_n>=0$ et $r_n>=0$ cela entraine $d=1$ ce qui correspond \`a 
+l'absence de proie.
+\item  On tape :
+\begin{verbatim}
+volterra(N,l0,r0,a,b,c,d):={
+local l,r,n,la,L,k ;
+l:=l0;r:=r0;L:=NULL;
+L:=L,[l,r];  
+pour k de 1 jusque N faire
+la:=l;
+l:=l*(a+1)-b*l*r;
+r:=r*(1-d)+c*la*r;
+L:=L,[l,r];  
+si l<=0 ou r<=0 alors return L; fsi;
+fpour;
+return L;
+}:;
+\end{verbatim}
+
+\end{enumerate}
 \chapter{Les complexes}
 \section{Module et argument } 
 \subsection{L'\'enonc\'e}
@@ -13305,12 +13911,12 @@ $\sigma^2(X)$=179/42-25*25/14/14=631/588
 \subsection{D\'efinition}
 La loi binomiale n\'egative est une distribution de probabilit\'e 
 discr\`ete. Elle d\'epend de 2 param\`etres : un entier $n$ (le nombre de 
-succ\`es attendus) et un r\'eel $p$ de $]0,1[$ (la probabilité d'un succ\'es).\\
+succ\`es attendus) et un r\'eel $p$ de $]0,1[$ (la probabilit\'e d'un succ\'es).\\
 On la note  $\mathcal{N}eg\mathcal{B}in(n,p)$.\\  
 Elle permet de d\'ecrire la situation suivante : on fait une suite de tirages 
 ind\'ependants (avec pour chaque tirage, la probabilit\'e $p$ d'avoir un 
 succ\`es) jusqu'\`a obtenir $n$ succ\`es.
-La variable al\'eatoire représentant le nombre d'\'echecs qu'il a fallut avant 
+La variable al\'eatoire repr\'esentant le nombre d'\'echecs qu'il a fallut avant 
 d'avoir $n$ succ\`es, suit alors une loi binomiale n\'egative. \\
 Si on d\'efinit {\tt comb(n,k)} pour $n<0$ par {\tt comb(n,k)=n*(n-1)*..*(n-k-1)/k!}, alors
 Si $X \in \mathcal{N}eg\mathcal{B}in(n,p)$ ($n \in \N$ et $p \in ]0;1[$) alors

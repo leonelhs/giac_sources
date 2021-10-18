@@ -6,41 +6,79 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La fonction : seq</TITLE>
+<TITLE>Les affectations infixées : => := =<</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr813.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr815.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc943">8.4.22</A>  La fonction : <TT>seq</TT></H3><P><A NAME="@default1478"></A>
-<TT>seq</TT> n’est pas une instruction mais une fonction qui permet
-de renvoyer la liste constituée par les différentes valeurs du premier 
-argument lorsque le deuxième argument varie selon les valeurs des arguments 
-suivants : valeur de départ, valeur d’arrivée, pas (pas=1 par défaut).<BR>
-<TT>seq(f(k),k,1,3)=[f(1),f(2),f(3)]</TT><BR>
-<TT>seq(f(k),k,1,5,2)=[f(1),f(3),f(5)]</TT><BR>
-La fonction <TT>seq</TT> est utile pour tracer une suite de points dans les
-écrans de géométrie.<BR>
-<B>Exemple</B><BR>
- On veut représenter les 10 premiers termes de la suite :<BR>
-<I>u</I><SUB><I>n</I></SUB>=(1+1/<I>n</I>)<SUP><I>n</I></SUP>=<I>f</I>(<I>n</I>) par les points <I>n</I>+<I>i</I>*<I>f</I>(<I>n</I>).<BR>
-On ouvre un écran de géomérie et on tape :
-</P><DIV CLASS="center"><TT>f(n):=(1+1/n)</TT><CODE><TT>^</TT></CODE><TT>n</TT></DIV><DIV CLASS="center"><TT>seq(point(k+i*f(k)),k,1,10)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc954">9.4.12</A>  Les affectations infixées : <TT>=&gt; := =&lt;</TT></H3><P><A NAME="@default1456"></A><A NAME="@default1457"></A><A NAME="@default1458"></A>
+<TT>:= =&gt; =&lt;</TT> sont des opérateurs infixés qui permettent de 
+stocker une valeur dans une variable, mais leurs arguments de <TT>=&gt;</TT> et de
+<TT>:= =&lt;</TT> ne sont pas dans le même ordre !<BR>
+De plus <TT>:=</TT> et <TT>=&lt;</TT> n’ont pas le même effet lorsque le premier 
+argument est un élément d’une liste (ou matrice) contenu dans une variable.
+En effet, <TT>=&lt;</TT> modifie lélément d’une liste (ou matrice) par 
+référence (voir <A HREF="cascmd_fr816.html#sec:diffaffectation">9.4.14</A>)
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>=&gt;</TT> est la version infixée de <TT>sto</TT>.<BR>
+<TT>=&gt;</TT> stocke le premier argument dans la variable donnée comme deuxième 
+argument.<BR>
+On tape :
+<DIV CLASS="center"><TT>4=&gt;a</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>sto(4,a)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>On voit les points dans cet écran de géomérie</TT></DIV><P>
-Si on tape:
-</P><DIV CLASS="center"><TT>for (k:=1;k&lt;11;k++) {point(k+i*f(k));}</TT></DIV><P>
+<DIV CLASS="center"><TT>4 et la variable a contient 4</TT></DIV></LI><LI CLASS="li-itemize"><TT>:=</TT> et <TT>=&lt;</TT> ont comme arguments, un nom de variable et la valeur
+à stocker. 
+On tape :
+<DIV CLASS="center"><TT>a:=4</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>a=&lt;4)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>les points sont seulement dans l’écran </TT><TT>DispG</TT><TT> qu’on 
-ouvre avec Cfg-&gt;Montrer-&gt;DispG ou avec DispG()</TT></DIV><P>
-Mais si on ouvre un écran de géomérie et si on tape:
-</P><DIV CLASS="center"><TT>L:=[];for (k:=1;k&lt;11;k++) {L:=append(L,point(k+i*f(k)));}:;L;</TT></DIV><P>
+<DIV CLASS="center"><TT>4 et la variable a contient 4</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
+<DIV CLASS="center"><TT>B:=A</TT></DIV>
+puis par exemple pour modifier <TT>A[3]</TT>, on tape :
+<DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV>
+puis
+<DIV CLASS="center"><TT>A,B</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>On voit les points dans cet écran de géomérie</TT></DIV><P>On peut aussi utiliser la syntaxe comme avec Maple,
-<CODE>seq(2^k,k=0..8)</CODE>, en ajoutant éventuellement un pas
-<CODE>seq(2^k,k=0..8,1)</CODE>
-</P><HR>
+<DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,33,4]</TT></DIV>
+Les variables <TT>A</TT> et <TT>B</TT> contiennent toutes les deux la liste
+<TT>[0,1,2,33,4]</TT>, en effet :<BR>
+<TT>A:=[0,1,2,3,4]</TT> fait pointer <TT>A</TT> sur la liste <TT>[0,1,2,3,4]</TT>, 
+puis<BR>
+<TT>B:=A</TT> fait pointer <TT>B</TT> sur <TT>A</TT> donc sur la liste 
+<TT>[0,1,2,3,4]</TT>,<BR>
+<TT>A[3]=&lt;33</TT> modifie la liste pointée par <TT>A</TT> donc modifie la liste 
+<TT>[0,1,2,3,4]</TT> en la liste <TT>[0,1,2,33,4]</TT> et donc <TT>B</TT> est modifié.
+Il en serait de même si on avait mis <TT>B[3]=&lt;33</TT> au lieu de 
+<TT>A[3]=&lt;33</TT>, les variables <TT>A</TT> et <TT>B</TT> contiendraient toutes les 
+deux la liste <TT>[0,1,2,33,4]</TT>. 
+</LI></UL><P> 
+<B>Remarque</B><BR>
+On peut faire plusieurs affectations à la fois en utilisant les séquences 
+ou les listes.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>[a,b,c]:=[1,2,3]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,2,3]</TT></DIV><DIV CLASS="center"><TT>a contient 1, b contient 2 et c contient 3</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>(a,b,c):=(1,2,3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(1,2,3)</TT></DIV><DIV CLASS="center"><TT>a contient 1, b contient 2 et c contient 3</TT></DIV><P>
+<B>Attention</B><BR>
+Si <TT>a</TT> contient <TT>5</TT> et que l’on tape :<BR>
+<TT>(a,b):=(2,a)</TT><BR>
+alors <TT>a</TT> contient <TT>2</TT> et <TT>b</TT> contient <TT>5</TT><BR>
+Si <TT>a</TT> contient <TT>1</TT> et que l’on tape :<BR>
+<TT>(a,b):=(2,a)</TT><BR>
+alors <TT>a</TT> contient <TT>2</TT> et <TT>b</TT> contient <TT>1</TT><BR>
+<TT>(a,b):=(b,a+b)</TT><BR>
+alors <TT>a</TT> contient <TT>1</TT> et <TT>b</TT> contient <TT>3</TT></P><HR>
 <A HREF="cascmd_fr813.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr815.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

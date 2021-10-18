@@ -854,7 +854,11 @@ disponibles en particulier d\'ebuggueurs, ...)
 disponibles aujourd'hui est forc\'ement diff\'erent d'un syst\`eme 
 conçu il y a 20 ans)
 \end{itemize}
-Nous allons d'abord parler des calculatrices formelles
+Voyons quelques exemples, d'abord Giac, puis des syst\`emes 
+pour ordinateur où les ressources
+(par exemple m\'emoire) sont moins limit\'ees ce qui permet 
+d'utiliser des langages de programmation de plus haut niveau.
+On termine par les calculatrices formelles
 HP et TI des ann\'ees 2000\footnote{Les HP Prime utilisent Giac comme
   noyau de calcul formel, les TI Nspire CAS utilisent sans doute une
   version actualis\'ee du syst\`eme utilis\'e sur les TI 89, 92,
@@ -862,11 +866,89 @@ HP et TI des ann\'ees 2000\footnote{Les HP Prime utilisent Giac comme
 Ce sont des systèmes plutôt destinés à l'enseignement, soumis 
 \`a de fortes contraintes en termes de taille m\'emoire, et destinés
 à traiter des petits problèmes.
-Puis nous pr\'esenterons des syst\`emes pour ordinateur où les ressources
-(par exemple m\'emoire) sont moins limit\'ees ce qui permet 
-d'utiliser des langages de programmation de plus haut niveau.
 
-\subsubsection{Calculatrices formelles HP}
+
+\subsubsection{Maple, Mathematica, ...}
+Ces syst\`emes ont un noyau ferm\'e, au sens o\`u l'utilisateur n'a pas
+acc\`es du tout, ou en tout cas pas facilement, aux structures de donn\'ees
+de base. Je ne dispose donc pas d'information sur les structures de donn\'ees
+utilis\'ees par le noyau.
+
+L'interaction système-utilisateur se fait quasiment toujours en utilisant le
+langage de programmation propre au syst\`eme, langage interpr\'et\'e
+par le noyau du syst\`eme (ce qui ralentit l'exécution). Ces langages 
+utilisateurs sont essentiellement
+non typ\'es~: on travaille avec des variables du type générique sans pouvoir
+accéder aux types sous-jacents. On ne bénéficie en g\'en\'eral pas des
+v\'erifications faites lors de la compilation avec un langage typé,
+de plus ces systèmes ne sont pas toujours fourni avec de bon outils de 
+mise au point. Enfin ces langages ne sont pas standardisés d'un
+système à l'autre et il est en général impossible
+d'utiliser ces systèmes comme des librairies depuis un langage
+de programmation traditionnel. Leur intérêt principal réside donc
+dans une utilisation interactive en profitant de la librairie de 
+fonctions accessibles.
+
+\subsubsection{Giac/xcas}
+Il s'agit du système de calcul formel que j'implémente actuellement sous 
+forme d'une biblioth\`eque C++ (ce qui
+permettra aux programmes tiers d'utiliser beaucoup plus facilement du 
+calcul formel qu'avec les syst\`emes pr\'ec\'edents). L'objectif est 
+d'avoir un syst\`eme facile \`a programmer directement en C++, proche 
+du langage utilisateur, lui-m\^eme compatible avec Maple ou MuPAD, 
+tout cela sans trop perdre en performances comparativement aux
+librairies sp\'ecialis\'ees \'ecrites en C/C++. Ce qui explique un choix 
+de type g\'en\'erique (\verb=gen=) non orient\'e objet, avec un champ type 
+et soit une donn\'ee imm\'ediate (pour les nombres flottants par exemple), 
+soit un pointeur vers un objet du type correspondant au champ type pour 
+les donn\'ees de taille non fixe (on pourrait donc se
+contenter du langage C, mais le langage C++ permet de red\'efinir 
+les op\'erateurs sur des types utilisateurs ce qui
+am\'eliore consid\'erablement la lisibilit\'e du code source). 
+Les donn\'ees dynamiques ne sont pas dupliqu\'ees, Giac
+utilise un pointeur sur un compteur de r\'ef\'erence pour d\'etruire 
+ces donn\'ees lorsqu'elles ne sont plus r\'ef\'erenc\'ees.
+
+Les entiers en pr\'ecision arbitraire sont h\'erit\'es de la biblioth\`que
+GMP (\'ecrite en C) du projet GNU. Les flottants en pr\'ecision arbitraire
+utiliseront aussi GMP (plus précisément MPFR).
+Il y a un type fraction, structure C compos\'e d'un champ num\'erateur
+et d'un champ d\'enominateur, et un type nombre complexe.
+
+Les listes, vecteurs, matrices utilisent le type paramétré \verb|vector<>|
+de la librairie standard C++ (Standard Template Library).
+Les objets symboliques sont des structures compos\'es d'un champ sommet
+qui est une fonction prenant un argument de type \verb|gen|
+et renvoyant un r\'esultat
+de type \verb|gen|, et d'un champ feuille qui est de type \verb|gen|.
+Lorsqu'une fonction poss\`ede plusieurs arguments, ils sont rassembl\'es
+en une liste formant le champ feuille de l'objet symbolique.
+Les programmes sont aussi des objets symboliques, dont le champ
+sommet est la fonction évaluation d'un programme.
+Les listes sont aussi utilis\'ees pour repr\'esenter vecteurs, matrices
+et polyn\^omes en une variable en repr\'esentation dense, on peut
+y acc\'eder par valeur (\verb|:=|) ou par r\'ef\'erence
+(\verb|=<|). Ces polyn\^omes servent eux-m\^emes \'a repr\'esenter
+des \'el\'ements d'une 
+{\bf extension alg\'ebrique}\index{extension alg\'ebrique}\index{alg\'ebrique, extension}  de $\Q$ (vus comme
+un couple de polyn\^omes $P,Q$, o\`u $Q$ est un polynome minimal
+irr\'eductible \`a coefficients entiers, autrement dit $P,Q$ vaut $P(\alpha)$ 
+o\`u $Q(\alpha)=0$),
+ou des \'el\'ements d'un corps fini (comme ci-dessus, mais ici $Q$ est
+\`a coefficients dans $\Z/p\Z$ avec $p$ premier, cf. la commande \verb|GF|).
+Giac poss\'ede aussi un type pour les polyn\^omes
+en repr\'esentation creuse distribu\'ee en plusieurs
+ind\'etermin\'ees (cf. les commandes \verb|symb2poly| et \verb|poly2symb|).
+
+L'évaluation d'un objet symbolique se fait en regardant d'abord si
+la fonction au sommet doit évaluer ou non ses arguments (autoquote),
+on évalue les arguments si nécessaire puis on applique la fonction.
+
+Une hypthèse sur un paramètre est une valeur spéciale
+affectée au paramètre, valeur ignorée par la routine d'évaluation.
+
+
+\subsubsection{Calculatrices formelles HP48/49}
 Les langages utilis\'es pour programmer ces calculateurs sont l'assembleur
 et le RPL (Reverse Polish Lisp) adapt\'e \`a l'\'ecriture de code
 en m\'emoire morte tr\`es compact.
@@ -950,7 +1032,7 @@ décidé de réserver la variable globale \verb|INTEGERASSUME| à cet effet.
 Il n'y a pas de possibilité de faire des hypothèses ayant une portée
 locale.
 
-\subsubsection{Calculatrices formelles TI}
+\subsubsection{Calculatrices formelles TI92/89/Voyage 200}
 Le langage utilis\'e pour programmer ces calculatrices est le langage C
 (on peut aussi \'ecrire du code en assembleur pour ces calculatrices).
 On retrouve ici les diff\'erents types de donn\'ees regroup\'e en un
@@ -1002,85 +1084,6 @@ d'emp\^echer l'évaluation d'une sous-expression).
 On ne peut pas faire d'hypothèse globale sur un paramètre par
 contre on peut faire des hypothèses de type appartenance à un intervalle 
 ayant une portée locale.
-
-\subsubsection{Maple, Mathematica, ...}
-Ces syst\`emes ont un noyau ferm\'e, au sens o\`u l'utilisateur n'a pas
-acc\`es du tout, ou en tout cas pas facilement, aux structures de donn\'ees
-de base. Je ne dispose donc pas d'information sur les structures de donn\'ees
-utilis\'ees par le noyau.
-
-L'interaction système-utilisateur se fait quasiment toujours en utilisant le
-langage de programmation propre au syst\`eme, langage interpr\'et\'e
-par le noyau du syst\`eme (ce qui ralentit l'exécution). Ces langages 
-utilisateurs sont essentiellement
-non typ\'es~: on travaille avec des variables du type générique sans pouvoir
-accéder aux types sous-jacents. On ne bénéficie en g\'en\'eral pas des
-v\'erifications faites lors de la compilation avec un langage typé,
-de plus ces systèmes ne sont pas toujours fourni avec de bon outils de 
-mise au point. Enfin ces langages ne sont pas standardisés d'un
-système à l'autre et il est en général impossible
-d'utiliser ces systèmes comme des librairies depuis un langage
-de programmation traditionnel. Leur intérêt principal réside donc
-dans une utilisation interactive en profitant de la librairie de 
-fonctions accessibles.
-
-\subsubsection{Giac/xcas}
-Il s'agit du système de calcul formel que j'implémente actuellement sous 
-forme d'une biblioth\`eque C++ (ce qui
-permettra aux programmes tiers d'utiliser beaucoup plus facilement du 
-calcul formel qu'avec les syst\`emes pr\'ec\'edents). L'objectif est 
-d'avoir un syst\`eme facile \`a programmer directement en C++, proche 
-du langage utilisateur, lui-m\^eme compatible avec Maple ou MuPAD, 
-tout cela sans trop perdre en performances comparativement aux
-librairies sp\'ecialis\'ees \'ecrites en C/C++. Ce qui explique un choix 
-de type g\'en\'erique (\verb=gen=) non orient\'e objet, avec un champ type 
-et soit une donn\'ee imm\'ediate (pour les nombres flottants par exemple), 
-soit un pointeur vers un objet du type correspondant au champ type pour 
-les donn\'ees de taille non fixe (on pourrait donc se
-contenter du langage C, mais le langage C++ permet de red\'efinir 
-les op\'erateurs sur des types utilisateurs ce qui
-am\'eliore consid\'erablement la lisibilit\'e du code source). 
-Les donn\'ees dynamiques ne sont pas dupliqu\'ees, Giac
-utilise un pointeur sur un compteur de r\'ef\'erence pour d\'etruire 
-ces donn\'ees lorsqu'elles ne sont plus r\'ef\'erenc\'ees.
-
-Les entiers en pr\'ecision arbitraire sont h\'erit\'es de la biblioth\`que
-GMP (\'ecrite en C) du projet GNU. Les flottants en pr\'ecision arbitraire
-utiliseront aussi GMP (plus précisément MPFR).
-Il y a un type fraction, structure C compos\'e d'un champ num\'erateur
-et d'un champ d\'enominateur, et un type nombre complexe.
-
-Les listes, vecteurs, matrices utilisent le type paramétré \verb|vector<>|
-de la librairie standard C++ (Standard Template Library).
-Les objets symboliques sont des structures compos\'es d'un champ sommet
-qui est une fonction prenant un argument de type \verb|gen|
-et renvoyant un r\'esultat
-de type \verb|gen|, et d'un champ feuille qui est de type \verb|gen|.
-Lorsqu'une fonction poss\`ede plusieurs arguments, ils sont rassembl\'es
-en une liste formant le champ feuille de l'objet symbolique.
-Les programmes sont aussi des objets symboliques, dont le champ
-sommet est la fonction évaluation d'un programme.
-Les listes sont aussi utilis\'ees pour repr\'esenter vecteurs, matrices
-et polyn\^omes en une variable en repr\'esentation dense, on peut
-y acc\'eder par valeur (\verb|:=|) ou par r\'ef\'erence
-(\verb|=<|). Ces polyn\^omes servent eux-m\^emes \'a repr\'esenter
-des \'el\'ements d'une 
-{\bf extension alg\'ebrique}\index{extension alg\'ebrique}\index{alg\'ebrique, extension}  de $\Q$ (vus comme
-un couple de polyn\^omes $P,Q$, o\`u $Q$ est un polynome minimal
-irr\'eductible \`a coefficients entiers, autrement dit $P,Q$ vaut $P(\alpha)$ 
-o\`u $Q(\alpha)=0$),
-ou des \'el\'ements d'un corps fini (comme ci-dessus, mais ici $Q$ est
-\`a coefficients dans $\Z/p\Z$ avec $p$ premier, cf. la commande \verb|GF|).
-Giac poss\'ede aussi un type pour les polyn\^omes
-en repr\'esentation creuse distribu\'ee en plusieurs
-ind\'etermin\'ees (cf. les commandes \verb|symb2poly| et \verb|poly2symb|).
-
-L'évaluation d'un objet symbolique se fait en regardant d'abord si
-la fonction au sommet doit évaluer ou non ses arguments (autoquote),
-on évalue les arguments si nécessaire puis on applique la fonction.
-
-Une hypthèse sur un paramètre est une valeur spéciale
-affectée au paramètre, valeur ignorée par la routine d'évaluation.
 
 \subsection{Algorithmes et complexité.}
 On va présenter dans la suite quelques algorithmes que l'on peut
@@ -3488,7 +3491,7 @@ Pour travailler dans $\Z/n\Z[X]$~:
 \item avec \verb|Xcas| on utilise la notation \% comme en C, par
 exemple {\tt gcd(P \% 3, Q \% 3)}. On peut aussi utiliser la notation
 Maple en mode ``syntaxe Maple'' (cf. ci-dessous)
-\item avec Maple,
+\item en mode compatible Maple,
 on utilise les formes inertes des instructions (qui renvoient l'instruction
 non \'evalu\'ee), dont le nom est le m\^eme que le nom de commande
 habituel mais pr\'ec\'ed\'e par une majuscule, puis on indique
@@ -3498,6 +3501,8 @@ habituel mais pr\'ec\'ed\'e par une majuscule, puis on indique
 % de ce type (par exemple des polyn\^omes, cf. infra). Par exemple
 % \verb|poly(x^2+1,[x],IntMod(13))|. 
 \end{itemize}
+
+\pagebreak
 
 \subsection{Exercices PGCD}
 \begin{enumerate}
@@ -3526,16 +3531,15 @@ pour des polyn\^omes \`a une variable.
 \[ \int \frac{x^6+2}{(x^3+1)^2} \ dx \]
 On se ramène d'abord à une fraction propre (num\'erateur $N$ de degr\'e 
 inf\'erieur au d\'enominateur),
-Soit $P=X^3+1$, calculez le PGCD de $P$ et $P'$, puis
-deux polyn\^omes $U$ et $V$ tels que:
-\[ N=UP+VP' \]
+Soit $P=x^3+1$, calculez le PGCD de $P$ et $P'$, puis
+deux polyn\^omes $U$ et $V$ tels que $ N=UP+VP' $.
 On d\'ecompose alors l'int\'egrale en deux morceaux~:\\
 \[ \int \frac{N}{P^2}=\int \frac{U}{P}  + \int V \frac{P'}{P^2}  \]
 Faites une int\'egration par parties sur le deuxi\`eme terme
 et en d\'eduire la valeur de l'int\'egrale du d\'epart.
 
-\item \'Ecrire un programme mettant en oeuvre l'algorithme modulaire
-de calcul du PGCD.
+%\item \'Ecrire un programme mettant en oeuvre l'algorithme modulaire
+%de calcul du PGCD.
 
 \item \'Ecrire un programme qui d\'etermine le degr\'e probable du PGCD 
 par rapport \`a toutes les
@@ -3545,6 +3549,11 @@ sauf une.
 
 \item Calculer le pgcd par une m\'ethode modulaire de
 $(xy-x+1)(xy+x^2+1)$ et $(xy-x-y)(xy-x+1)$
+
+\item En utilisant uniquement l'instruction de calcul de PGCD
+d\'eterminer la multiplicit\'e maximale d'un facteur irr\'eductible
+de 
+$x^{14}-x^{13}-14x^{12}+12x^{11}+78x^{10}-54x^9-224x^8+116x^7+361x^6-129x^5-330x^4+72x^3+160x^2-16x-32$
 
 \end{enumerate}
 
@@ -3563,6 +3572,10 @@ a^{2}+b^{2}+c^{2} & = & 6 \\
 a+b+2c & = & 4
 \end{array}\right.
 \]
+\item D\'eterminer l'intersection de $xy=4$ et $ y^2=(x-3)(x^2-16)$,
+rep\'esenter graphiquement les courbes. Discuter la multiplicit\'e
+et le nombre d'intersections.\\
+M\^eme question pour $(x-2)^2+y^2=4$ et $y^2=(x-3)(x^2-16)$.
 \item Donner le d\'etail des calculs avec B\'ezout de la d\'ecomposition
 en \'el\'ements simples de~:
 \[ \frac{1}{(x^2-1)^2(x+2)}\]
@@ -3571,10 +3584,16 @@ enti\`eres de cette fraction en 0.
 \item Calculer 
 \[ \int \frac{1-x^2}{1+x^4} \ dx \]
 en utilisant le r\'esultant pour calculer les logarithmes.
-\item En utilisant uniquement l'instruction de calcul de PGCD
-d\'eterminer la multiplicit\'e maximale d'un facteur irr\'eductible
-de 
-$x^{14}-x^{13}-14x^{12}+12x^{11}+78x^{10}-54x^9-224x^8+116x^7+361x^6-129x^5-330x^4+72x^3+160x^2-16x-32$
+\item Courbe param\'etrique d\'ependant d'un param\`etre~:
+on consid\`ere la courbe $C_m$ d\'ependant du r\'eel $m$~:
+$$ x(t)=\frac{t+m}{t^2+1+m^2}, \quad y(t)=\frac{t^2}{t-m}$$
+Repr\'esenter la courbe pour quelques valeurs de $m$ (on pourra
+utiliser dans un niveau de g\'eom\'etrie, le menu Edit, Ajouter un
+param\`etre pour cr\'eer un curseur repr\'esentant $m$, puis 
+\verb|plotparam|). Donner l'\'equation cart\'esienne de $C_m$.
+D\'eterminer les valeurs de $m$ pour lesquelles
+la courbe admet un point singulier, repr\'esenter le graphe dans ce(s)
+cas et faire l'\'etude de la courbe.
 \end{enumerate}
 
 \subsection{Exercice (Bézout modulaire)}
@@ -3722,6 +3741,8 @@ $\frac{1}{f(x+j+1)}-\frac{1}{f(x+j)}$.
 \item \'Ecrire un programme effectuant ce calcul avec une fraction
 quelconque, lorsque cela est possible.
 \end{enumerate}
+
+\pagebreak
 
 \subsection{Exemple de correction de g\'eom\'etrie et r\'esultant}
 \begin{verbatim}
@@ -4875,7 +4896,11 @@ point d'abscisse $x=0$).
 
 Si on cherche les points o\`u le d\'enominateur en $t$ s'annule, on doit
 calculer  (pour $c\neq 0$ et en supposant que la fraction
-$\frac{-d-et}{ct^2+bt+a}$ est irr\'eductible)
+$\frac{-d-et}{ct^2+bt+a}$ est irr\'eductible\footnote{sinon, on 
+aura deux droites parce que le
+polyn\^ome $P(x,y)$ se factorise en produit de deux facteurs
+de degr\'e 1 dont $dx+ey$. Plus pr\'ecis\'ement, ce cas
+correspond \`a $t=-d/e$ racine de $ct^2+bt+a=0$})
 le discriminant\footnote{On peut aussi voir ce discriminant comme le
 d\'eterminant de la matrice de la forme quadratique associ\'ee} 
 de l'\'equation du second degr\'e
@@ -4893,16 +4918,14 @@ vers $-b/(2c)$ par la droite ou la gauche).
 \item si $b^2>4ac$, il y a deux racines distinctes $t_\pm$ , 
 donc deux valeurs de $t$ o\`u il faut faire une \'etude
 de branche infinie, on a alors une
-hyperbole\index{hyperbole}\footnote{on 
-peut aussi avoir deux droites si le
-polyn\^ome $P(x,y)$ se factorise en produit de deux facteurs
-de degr\'e 1.}
+hyperbole\index{hyperbole}
 avec 4 branches infinies et deux asymptotes parall\`eles \`a
 $y=t_\pm x$ (en effet le rapport $y/x=t$ tend bien
 vers $t_\pm$ et $y-t_\pm x$ a une limite car la racine au
 d\'enominateur de $x$ et $y$ est simple 
 donc elle se simplifie avec le num\'erateur)
 \end{itemize}
+ 
 {\bf Exercice}~: param\'etrer et faire l'\'etude des coniques~:\\
 $x^2+4y^2+2xy=4, x^2-3y^2+2xy=4$
 
@@ -6684,6 +6707,197 @@ tiers appliqu\'ee \`a la masse de glace sert \`a passer d'un volume
 \`a une surface pour repr\'esenter l'effet de la variation de volume
 de glace sur l'alb\'edo).
 
+
+\subsection{Equations différentielles (résolution numérique)}
+\subsubsection{Méthodes à un pas}
+On considère l'équation différentielle 
+$$y'=f(t,y), \quad t \in \R, \quad y(t) \in \R^d, y(0)=y_0$$ 
+o\`u $y(t)$ est la fonction inconnue cherchée
+et où $f$ est une fonction régulière de $t$ et $y$ (par exemple
+$C^1$ sur un domaine pour avoir existence et non recoupement des courbes
+int\'egrales dans ce domaine).  On cherche
+à approcher numériquement $y(t)$ pour $t>0$. 
+On présente ici des méthodes de résolution numérique à un pas,
+dont le principe consiste à discrétiser l'intervalle $[0,t]$ en des
+subdivisions en temps de petite taille $[0,t_1], [t_1,t_2], ..., 
+[t_{n-1},t_n=t]$. Si $y_i$ est une valeur approchée de $y(t_i)$
+la méthode à un pas se traduit par une relation de récurrence entre
+$y_i$ et $y_{i+1}$ qui reflète une méthode d'intégration
+approchée de
+$$ y(t_{i+1})=y(t_i)+\int_{t_i}^{t_{i+1}} f(t,y(t)) \ dt$$
+Par exemple, la méthode d'Euler explicite\index{Euler, m\'ethode d'} 
+utilise la méthode des
+rectangles à gauche
+$$ y_{i+1} = y_i + (t_{i+1}-t_i) f(t_i,y_i)=y_i+hf(t_i,y_i)$$
+o\`u $h=t_{i+1}-t_i$\footnote{Pour une m\'ethode \`a pas variable,
+le pas $h$ peut d\'ependre de $i$} 
+alors que la méthode d'Euler implicite utilise la méthode 
+des rectangles à droite
+$$ y_{i+1} = y_i + (t_{i+1}-t_i) f(t_{i+1},y_{i+1})=y_i+hf(t_{i}+h,y_{i+1})$$
+cette dernière relation nécéssite de résoudre une équation pour
+déterminer $y_{i+1}$ d'où son nom de méthode implicite.
+Plus g\'en\'eralement, la m\'ethode de r\'esolution revient \`a
+se donner une fonction $\Phi(t,y,h)$ et \`a poser~:
+$$ y_{i+1}=y_i+h\Phi(t_i,y_i,h)$$
+pour la m\'ethode d'Euler explicite, $\Phi(t,y,h)=f(t,y)$, pour
+la m\'ethode d'Euler implicite, $\Phi$ s'obtient en r\'esolvant une 
+\'equation (par exemple avec la m\'ethode du point fixe, pour $h$
+suffisamment petit).
+
+Lorsqu'on compare la solution de l'équation et une valeur
+approchée obtenue par une méthode à un pas, il faut distinguer 
+\begin{itemize}
+\item l'erreur locale (ou erreur de consistance)
+de la méthode qui est une majoration
+de $|y_1-y(t_1)|$ en fonction du pas $h=t_1-t_0$, on dit 
+qu'une méthode est d'ordre au moins $n$ si $|y_1-y(t_1)|\leq
+C_n h^{n+1}$ (cette notion est reli\'ee \`a l'ordre
+de la m\'ethode num\'erique d'int\'egration approch\'ee utilis\'ee).
+\item l'erreur globale de la méthode, qui accumule deux phénomènes,
+l'erreur locale à chaque pas et l'erreur sur la condition initiale
+pour les subdivisions $[t_i,t_{i+1}], i>0,$ cons\'equence des erreurs
+pr\'ec\'edentes (en pratique il faudrait aussi ajouter les erreurs
+d'arrondis et l'erreur
+\'eventuelle sur la condition initiale). Pour majorer cette erreur,
+il est nécessaire de supposer que la fonction $f$ est lipschitzienne
+par rapport à la variable $y$, l'erreur globale fera alors intervenir
+un terme en $e^{Ct}$ multiplié par l'erreur locale
+(accumulation exponentielle des erreurs au cours du temps).
+\end{itemize}
+Plus pr\'ecis\'ement, on a le r\'esultat suivant~:
+\begin{thm}
+Soit $y(t)$ la solution de $y'=f(t,y), y(t_0)=y_0$ sur $[t_0,T]$.
+On consid\'ere une m\'ethode de r\'esolution \`a un pas~:
+$$ y_{i+1}=y_i+h_i\Phi(t_i,y_i,h_i)$$ 
+Si la m\'ethode est d'ordre $p$, i.e. si pour $h=max(h_i)$ 
+l'erreur locale satisfait 
+$$|y(t) + h\Phi(t,y(t),h)-y(t+h)|\leq C_p h^{p+1}, \ quad \forall t \in [t_0,T], h \leq H $$ 
+et si la fonction $\Phi$ est 
+lipschitzienne en $y$ de constante $\Lambda$ pour $h\leq H$ et $y$ dans un 
+voisinage de la solution $y(t)$, 
+i.e. si
+$$ |\Phi(t,z,h)-\Phi(t,y,h)| \leq \Lambda |z-y| $$
+alors l'erreur globale v\'erifie
+$$ |y(t_n)-y_n| \leq h^p \frac{C_p}{\Lambda}
+(e^{\Lambda(t_n-t_0)}-1)$$
+\end{thm}
+Par exemple, pour Euler explicite, $\Phi(t,y,h)=f(t,y)$, la constante
+$\Lambda$ est la constante de Lipschitz de $f$, et on prendra pour
+$C_1$ un majorant de $\frac12|\partial_y f(t,y)|$ dans un voisinage de la
+solution $y(t)$ pour $t \in [t_0,t_n]$.
+
+Pour prouver ce r\'esultat, il faut d\'eterminer comment se propagent
+les erreurs locales introduites \`a chaque pas.
+Par exemple, on a une erreur locale au pas 1 $y(t_1)-y_1$ donc une
+condition initiale modifi\'ee pour le pas 2 $y_1$ au lieu de $y(t_1)$.
+Cette erreur se propage au pas 2 en une erreur 
+$$| y_1-y(t_1)+h_1(\Phi(t_1,y_1,h_1)-\Phi(t_1,y(t_1),h_1)| 
+\leq (1+h_1 \Lambda)|y_1-y(t_1)| \leq e^{h_1 \Lambda} |y_1-y(t_1)|$$
+De m\^eme aux pas suivants, donc au pas $n$ l'erreur locale au pas 1
+s'est propag\'ee en une erreur inf\'erieure ou \'egale \`a~
+$$ e^{h_{n-1} \Lambda}... e^{h_2 \Lambda} e^{h_1 \Lambda} |y_1-y(t_1)|
+= e^{\Lambda (t_n-t_0)} |y_1-y(t_1)| \leq C_ph_0^{p+1} e^{\Lambda (t_n-t_0)}$$
+Il faut ensuite sommer les erreurs locales propag\'ees de chaque pas
+$$ \sum_{i=0}^{n-1} C_p h_i^{p+1} e^{\Lambda (t_n-t_i)} 
+\leq C_p h^p \sum_{i=0}^{n-1} h_i e^{\Lambda (t_n-t_i)} $$
+Comme $e^{\Lambda(t_n-t)}$ est positive d\'ecroissante sur
+$[t_0,t_n]$, on peut majorer la somme par l'int\'egrale
+$$ C_p h^p \int_{t_0}^{t_n} e^{\Lambda (t_n-t)} \ dt $$
+d'o\`u le r\'esultat.
+
+On observe qu'on peut atteindre n'importe quelle pr\'ecision pourvu
+que $h$ soit suffisamment petit. Mais en pratique, ce n'est pas le cas.
+En effet, le th\'eor\`eme ne tient pas compte des erreurs d'arrondis.
+Si le pas est trop petit, les erreurs d'arrondi ne sont plus n\'egligeables,
+elles s'ajoutent aux erreurs locales et se propagent comme les erreurs
+locales avec amplification exponentielle.
+Il y a donc un pas optimal, et une pr\'ecision maximale que l'on peut
+atteindre.
+
+R\'ef\'erences~: Hairer, Demailly.
+
+\subsubsection{Méthodes de Runge-Kutta (explicites)}\index{Runge-Kutta}
+Ce sont des méthodes explicites qui 
+utilisent une méthode de Newton-Cotes pour approcher
+$\int f(t,y(t)) \ dt$ sur $[t_i,t_{i+1}]$.
+Pour simplifier les notations, notons $t_i=\alpha, t_{i+1}=\beta$,
+on a alors
+$$ \int_{\alpha}^{\beta} f(t,y(t)) 
+\equiv \sum_{k=0}^N \omega_k f(\alpha_k,y(\alpha_k)))$$
+Pour estimer la valeur de $f(\alpha_k,y(\alpha_k))$, il est nécessaire
+d'approcher $y(\alpha_k)$ ce qui se fait par une méthode
+de Newton-Cotes, en utilisant les estimations des
+valeurs des $y(\alpha_j), j<k$. On a 
+donc des méthodes de Newton-Cotes avec un sous-ensemble croissant
+de points d'interpolation, donc pour chaque valeur de $k$ une
+suite de coefficients $\omega_{j,k}, j<k$ correspondant \`a la
+m\'ethode de Newton-Cotes utilis\'ee. Il faut aussi indiquer la valeur de
+$\alpha_k$ en donnant un coefficient $c_k \in [0,1]$ tel que
+$$ \alpha_k = t_i + c_k (t_{i+1}-t_i) = t_i+c_k h$$
+
+En pratique on stocke un tableau dont les lignes donnent $c_k$ et les $c_k\omega_{j,k}, j<k$,
+et le calcul de $y(\alpha_k)$ se fait ligne par ligne
+$$ y(\alpha_{k}) \approx Y_{k}=y(\alpha_0) +
+ h \sum_{j=0}^{k-1} c_k\omega_{j,k} f(\alpha_j,y(\alpha_j)) $$.
+Par exemple pour la m\'ethode d'Euler explicite, il y a deux lignes
+contenant 0 et un seul coefficient~:
+$$ \begin{array}{ccc}
+0 &:&  \\
+1 &:& 1
+\end{array}
+$$.
+Pour la m\'ethode du point milieu, il y a trois lignes, la deuxi\`ere
+ligne exprime comment on estime $y(t_i+h/2)$, la troisi\`eme
+$y(t_{i+1})=y(t_i+h)$~:
+$$ \begin{array}{cccc}
+0 & : &  \\
+  \frac12 & : & \frac12 \\
+1 & : & 0 & 1
+\end{array}
+$$
+on a donc 
+$$y(t_i+\frac12h) \approx Y_1=y(t_i)+\frac12hf(t_i,y(t_i))$$
+$$y(t_i+h) \approx Y_2=y(t_i)+hf(t_i+\frac{h}{2},Y_1)=y(t_i)+hf(t_i+\frac{h}{2},y(t_i)+\frac{h}{2}f(t_i,y(t_i)))$$
+
+La suite des temps $\alpha_k$ est croissante, mais pas forcément
+de manière stricte, on peut avoir $\alpha_k=\alpha_{k+1}$, la valeur
+de $y(\alpha_k)$ n'étant pas estimée par la même méthode de Newton-Cotes
+que $y(\alpha_{k+1})$.
+La valeur des coefficients est ensuite déterminée pour obtenir un ordre
+le plus grand possible pour l'erreur locale (ce qui peut nécessiter
+la résolution de systèmes avec pas mal d'inconnues).
+
+Ainsi, la méthode RK4 utilise le tableau suivant
+$$
+\begin{array}{cccccc}
+0 & : & \\
+\frac12 & : & \frac12 \\
+\frac12 & : & 0 & \frac12 \\
+1 & : & 0 & 0 & 1 \\
+1 & : & \frac16 & \frac13 & \frac13 & \frac16
+\end{array}
+$$
+Ce qui se traduit par
+\begin{eqnarray*}
+ Y_1&=&y(t_0)+\frac{h}{2}f(t_0,y_0) \\
+Y_2&=&y(t_0)+\frac{h}{2}f(t_0+\frac{h}{2},Y_1) \\
+Y_3 &=& y(t_0)+h f(t_0+h,Y_2) \\
+Y_4 &=& y(t_0) + \frac{h}{6} \left(f(t_0,y(t_0))+
+  2f(t_0+\frac{h}{2},Y_1)+2f(t_0+\frac{h}{2},Y_2)+f(t_0+h,Y_3)\right)
+\end{eqnarray*}
+Les m\'ethodes de Newton-Cotes utilis\'ees sont les rectangles \`a
+gauche puis \`a droite pour estimer le point milieu, et la m\'ethode
+de Simpson (en prenant la moyenne des deux estimations pour le
+point milieu).
+On peut montrer qu'elle est d'ordre 4 (erreur locale en $O(h^5)$)
+
+Les méthodes de résolution numériques implémentées dans Xcas sont
+des méthodes explicites de Runge-Kutta emboitées avec pas adaptatif, 
+(le pas adaptatif est calcul\'e en estimant l'erreur 
+avec 2 méthodes emboitées RK4 et
+Prince-Dormand, cf. Hairer).
+
+
 \section{Introduction au calcul variationnel}
 La recherche de minimas/maximas est une des application 
 du calcul diff\'erentiel~: en dimension 1, la d\'eriv\'ee s'annule
@@ -7911,7 +8125,7 @@ du second sont racines du premier), donc est divisible par tout polynôme
 irréductible de degré inférieur ou égal à $d$ à coefficients dans $Z/p\Z$.
 Comme
 \begin{equation} \label{eq:cantor}
-T^{p^d}-T=T(T^{\frac{p^d-1}{2}}-1)(T^{\frac{p^d+1}{2}}-1)
+T^{p^d}-T=T(T^{\frac{p^d-1}{2}}-1)(T^{\frac{p^d-1}{2}}+1)
 \end{equation}
 et que ces trois facteurs sont premiers entre eux, on en déduit que tout 
 polynôme irréductible de degré inférieur ou égal à $d$ à coefficients dans 
@@ -8605,11 +8819,11 @@ d\'etails des calculs).
 \item \'Ecrire un programme calculant la suite de Sturm d'un polynôme
 supposé squarefree (on peut tester avec \verb|sqrfree|), en utilisant
 l'algorithme d'Euclide.
-\item Trouver les facteurs de degré 1 s'ils existent de
-$3x^5+25x^4+67x^3+77x^2+55x+13$ en remontant ses racines
-dans $\Z/pZ[X]$ pour $p$ premier bien choisi.
-\item Factoriser le polynôme $x^5+x+1$ par la méthode 
-de Berlekamp.
+\item Prendre un polyn\^ome de degr\'e 100 \`a coefficients
+al\'eatoires (\verb|randpoly|), le factoriser num\'eriquement
+(\verb|proot|) puis donner pour les premi\`eres racines
+approch\'ees renvoy\'ees des intervalles ou disques o\`u
+on peut certifier qu'il existe une racine.
 \item Calculer avec un logiciel les valeurs numériques des racines
 complexes de $P(x)=x^5+x+1$. Trouver les combinaisons de racines
 dont la somme est entière (aux arrondis près). En déduire la factorisation
@@ -8623,17 +8837,6 @@ et l'évaluation faite par la méthode de Horner.
 Trouver ensuite toutes les racines du polynôme en éliminant la
 racine trouvée (toujours avec Horner). Trouver les combinaisons
 de racines correspondant à un facteur à coefficients entiers.
-\item Même question pour les facteurs de degré 2 d'un polynôme à coefficients
-réels sans racines réelles en utilisant la méthode de Bairstow décrite
-ci-dessous.\\
-On cherche un facteur $F=x^2+sx+p$ de $P$, on calcule le quotient et le reste
-de la division $P=FQ+R$ par une méthode de type Horner, il s'agit de 
-rendre $R$ (vu comme un vecteur à 2 composantes) nul. On calcule
-donc $\partial_{s,p} R$ (en cherchant le quotient et le reste
-de $xQ$ et $Q$ par $F$, pourquoi?) et on pose~:
-\[(s,p)_{n+1}=(s,p)_n- \lambda (\partial_{s,p} R)^{-1} R (s,p)_n\]
-où $\lambda$ est un préfacteur compris entre 0 et 1 et ajusté à 1 
-lorsqu'on est proche du facteur.
 \item Soit $p$ un entier premier et $P$ un polynôme \`a
 coefficients dans $\Z/p\Z$. On a la relation
 \[ gcd(X^{p^k}-X,P) = \prod_{ f | P, \mbox{\small deg}(f) | k} f, 
@@ -8647,24 +8850,30 @@ $x^4+x+1$ sont irréductibles sur $\Z$?
 \item Utiliser les options ``verbose'' de votre logiciel de calcul formel
 pour factoriser $x^{202}+x^{101}+1$ et vérifiez que vous avez compris
 la méthode utilisée.
+\item Trouver les facteurs de degré 1 s'ils existent de
+$3x^5+25x^4+67x^3+77x^2+55x+13$ en remontant ses racines
+dans $\Z/pZ[X]$ pour $p$ premier bien choisi.
+\item Factoriser le polynôme $x^5+x+1$ par la méthode 
+de Berlekamp.
 \item Montrer que $2x+x^2y+x^3+2x^4+y^3+x^5$ est irréductible sur $\Z$
 sans utiliser l'instruction factor à 2 variables (on pourra factoriser 
 pour quelques valeurs de $x$ ou de $y$)
 
 \item Que se passe-t-il lorsqu'on ex\'ecute l'algorithme de Yun
 dans $\Z/n\Z$?
+\pagebreak
+\item Recherche des facteurs de degré 2 d'un polynôme à coefficients
+réels sans racines réelles en utilisant la méthode de Bairstow décrite
+ci-dessous.\\
+On cherche un facteur $F=x^2+sx+p$ de $P$, on calcule le quotient et le reste
+de la division $P=FQ+R$ par une méthode de type Horner, il s'agit de 
+rendre $R$ (vu comme un vecteur à 2 composantes) nul. On calcule
+donc $\partial_{s,p} R$ (en cherchant le quotient et le reste
+de $xQ$ et $Q$ par $F$, pourquoi?) et on pose~:
+\[(s,p)_{n+1}=(s,p)_n- \lambda (\partial_{s,p} R)^{-1} R (s,p)_n\]
+où $\lambda$ est un préfacteur compris entre 0 et 1 et ajusté à 1 
+lorsqu'on est proche du facteur.
 
-\item Déterminer les degrés des facteurs de $(x^3+x+1)(x^4+x+1)$ modulo 5
-et 7 (sans utiliser la commande factor). Peut-on en déduire que $x^3+x+1$ et
-$x^4+x+1$ sont irréductibles sur $\Z$?
-
-\item Utiliser les options ``verbose'' de votre logiciel de calcul formel
-pour factoriser $x^{202}+x^{101}+1$ et vérifiez que vous avez compris
-la méthode utilisée.
-\item Montrer que $2x+x^2y+x^3+2x^4+y^3+x^5$ est irréductible sur $\Z$
-sans utiliser directement l'instruction factor 
-(on pourra factoriser pour quelques
-valeurs de $x$ ou de $y$)
 
 \end{enumerate}
 
@@ -9831,7 +10040,48 @@ $n+1$ fois continument d\'erivable~
 On observe que cette majoration a la bonne puissance de $h$ sur
 les exemples déja traités, mais pas forcément le meilleur coefficient
 possible, parce que nous avons trait\'e le cas g\'en\'eral d'une
-m\'ethode d'ordre $n$.
+m\'ethode d'ordre $n$, et utilis\'e une majoration pas toujours
+optimale du reste. Pour obtenir la meilleure valeur possible de la
+constante, il faut exprimer le reste de la formule de Taylor sous
+forme int\'egrale et utiliser la forme pr\'ecise de la m\'ethode~:
+$$ f(t)=T_n(f)(t)+\int_\alpha^t \frac{(t-x)^n}{n!} f^{[n+1]}(x) \
+dx $$
+donc
+$$ \int_{\alpha}^{\beta} f- \int_{\alpha}^{\beta} T_{n}(f)
+= \int_{\alpha}^{\beta} \int_\alpha^t\frac{(t-x)^{n}}{n!} 
+f^{[n+1]}(x) \ dx \ dt
+= \int_{\alpha}^{\beta} \int_\alpha^\beta \frac{(t-x)_+^{n}}{n!} 
+f^{[n+1]}(x) \ dx \ dt
+$$
+o\`u $(t-x)_+=$max$(0,t-x)$. En intervertissant les deux int\'egrales
+(Fubini), on obtient~:
+\begin{eqnarray*} \int_{\alpha}^{\beta} f- \int_{\alpha}^{\beta} T_{n}(f)
+&=& \int_{\alpha}^{\beta} \int_\alpha^\beta \frac{(t-x)_+^{n}}{n!} 
+\ dt f^{[n+1]}(x) \ dx \\
+&=& \int_{\alpha}^{\beta} \int_x^\beta \frac{(t-x)_+^{n}}{n!} \ dt 
+f^{[n+1]}(x) \ dx\\
+&=& \int_{\alpha}^{\beta} \frac{(\beta-x)^{n+1}}{(n+1)!} f^{[n+1]}(x) \ dx
+\end{eqnarray*}
+D'autre part~:
+\begin{eqnarray*} I(f)-I(T_n(f)) &=&
+I\left( \int_\alpha^\beta \frac{(x-t)_+^{n}}{n!}  f^{[n+1]}(t) \ dt 
+  \right) \\
+& = &  \sum_{j=1}^k w_j 
+\int_\alpha^\beta \frac{(y_i-t)_+^{n}}{n!} f^{[n+1]}(t) \ dt 
+\end{eqnarray*}
+Donc~:
+$$ \int_{\alpha}^{\beta} f-I(f)
+= \int_{\alpha}^{\beta} 
+( \frac{(\beta-x)^{n+1}}{(n+1)!} -  \sum_{j=1}^k w_j \frac{(y_j-x)_+^{n}}{n!})
+f^{[n+1]}(x) \ dx
+$$
+On appelle noyau de P\'eano\index{P\'eano, noyau de} l'expression
+$$ N(x)=\frac{(\beta-x)^{n+1}}{(n+1)!} -  \sum_{j=1}^k w_j
+\frac{(y_j-x)_+^{n}}{n!}$$
+On a alors~:
+$$ |\int_{\alpha}^{\beta} f-I(f)|
+\leq \int_{\alpha}^{\beta} |N(x)| |f^{[n+1]}(x)| \ dx
+\leq M_{n+1} \int_{\alpha}^{\beta} |N(x)| \ dx$$
 
 \subsection{Simpson} \index{Simpson}
 Il s'agit de la méthode obtenue en approchant la fonction
@@ -9856,11 +10106,28 @@ de degré inférieur ou égal à 2 puisque l'approximation de Lagrange
 de $f$ est alors égale à $f$. On en déduit que la méthode de Simpson
 est d'ordre 3 (pas plus car la méthode
 de Simpson appliquée à l'intégrale de
-$t^4$ sur $[0,1]$ n'est pas exacte). On peut même améliorer (cf. par exemple
-Demailly) la constante générale de la section précédente pour la majoration
+$t^4$ sur $[0,1]$ n'est pas exacte). On peut améliorer
+la constante générale de la section précédente pour la majoration
 de l'erreur en~:
 \[ |\int_a^b f - I(f)| \leq \frac{h^4}{2880} (b-a) M_4 \]
-Cette méthode nécessite $2n+1$ évaluations de $f$ (le calcul
+En effet sur une subdivision \'el\'ementaire $[\alpha,\beta]$, 
+le noyau de P\'eano vaut~:
+\begin{eqnarray*}
+ N(x) &=&
+\frac{(\beta-x)^4}{4!} - \frac16 \frac{(\beta-x)_+^{3}}{3!}
+-\frac23 \frac{(\frac{\alpha+\beta}2-x)_+^{3}}{3!} - 
+\frac16 \frac{(\alpha-x)_+^{3}}{3!} \\
+& =&
+\frac{(\beta-x)^4}{4!} - \frac16 \frac{(\beta-x)^{3}}{3!}
+-\frac23 \frac{(\frac{\alpha+\beta}2-x)_+^{3}}{3!} 
+\end{eqnarray*}
+on observe que $N(x)\leq 0$ sur $[\alpha,\beta]$ \\
+\verb|N(x):=(1-x)^4/4!-1/6*(1-x)^3/3!-2/3/3!*max(0,1/2-x)^3|\\
+\verb|plot(N(x),x=0..1)|\\
+et son int\'egrale vaut $-1/2880(\beta-\alpha)^4$~:\\
+\verb|int(N(x),x=0..1/2)+int(N(x),x=1/2..1)|
+
+La méthode de Simpson nécessite $2n+1$ évaluations de $f$ (le calcul
 de $f$ est un point étant presque toujours 
 l'opération la plus couteuse en temps d'une
 méthode de quadrature), au lieu de $n$ pour les rectangles
@@ -9982,131 +10249,8 @@ sauf le point central), moins fine en $h^6$ (avec les points 1, 3, 5,
 $$ \epsilon_1=| I_{30}-I_{14}|,  \epsilon_2=| I_{30}-I_{6}|; 
 \epsilon = \epsilon_1 \left(\frac{\epsilon_1}{epsilon_2} \right)^2 $$
 
-\section{Equations différentielles (résolution numérique)}
-\subsection{Principe des méthodes à un pas}
-On considère l'équation différentielle 
-$$y'=f(t,y), \quad t \in \R, \quad y(t) \in \R^d, y(0)=y_0$$ 
-o\`u $y(t)$ est la fonction inconnue cherchée
-et où $f$ est une fonction régulière de $t$ et $y$ (par exemple
-$C^1$ sur un domaine pour avoir existence et non recoupement des courbes
-int\'egrales dans ce domaine).  On cherche
-à approcher numériquement $y(t)$ pour $t>0$. 
-On présente ici des méthodes de résolution numérique à un pas,
-dont le principe consiste à discrétiser l'intervalle $[0,t]$ en des
-subdivisions en temps de petite taille $[0,t_1], [t_1,t_2], ..., 
-[t_{n-1},t_n=t]$. Si $y_i$ est une valeur approchée de $y(t_i)$
-la méthode à un pas se traduit par une relation de récurrence entre
-$y_i$ et $y_{i+1}$ qui reflète une méthode d'intégration
-approchée de
-$$ y(t_{i+1})=y(t_i)+\int_{t_i}^{t_{i+1}} f(t,y(t)) \ dt$$
-Par exemple, la méthode d'Euler explicite\index{Euler, m\'ethode d'} utilise la méthode des
-rectangles à gauche
-$$ y_{i+1} = y_i + (t_{i+1}-t_i) f(t_i,y_i)$$
-alors que la méthode d'Euler implicite utilise la méthode 
-des rectangles à droite
-$$ y_{i+1} = y_i + (t_{i+1}-t_i) f(t_{i+1},y_{i+1})$$
-cette dernière relation nécéssite de résoudre une équation pour
-déterminer $y_{i+1}$ d'où son nom de méthode implicite.
-
-Lorsqu'on compare la solution de l'équation et une valeur
-approchée obtenue par une méthode à un pas, il faut distinguer 
-\begin{itemize}
-\item l'erreur locale de la méthode qui est une majoration
-de $|y_1-y(t_1)|$ en fonction du pas $h=t_1-t_0$, on dit 
-qu'une méthode est d'ordre au moins $n$ si $|y_1-y(t_1)|\leq Ch^{n+1}$
-\item l'erreur globale de la méthode, qui accumule deux phénomènes,
-l'erreur locale à chaque pas et l'erreur sur la condition initiale
-pour les subdivisions $[t_i,t_{i+1}], i>0$ cons\'equence des erreurs
-pr\'ec\'edentes. Pour majorer cette erreur,
-il est nécessaire de supposer que la fonction $f$ est lipschitzienne
-par rapport à la variable $y$, l'erreur globale fera alors intervenir
-un terme en $e^{Ct}$ multiplié par l'erreur locale
-(accumulation exponentielle des erreurs au cours du temps).
-\end{itemize}
-Pour plus de d\'etails, cf. Demailly ou Hairer.
-
-\subsection{Méthodes de Runge-Kutta (explicites)}\index{Runge-Kutta}
-Ce sont des méthodes explicites qui 
-utilisent une méthode de Newton-Cotes pour approcher
-$\int f(t,y(t)) \ dt$ sur $[t_i,t_{i+1}]$.
-Pour simplifier les notations, notons $t_i=\alpha, t_{i+1}=\beta$,
-on a alors
-$$ \int_{\alpha}^{\beta} f(t,y(t)) 
-\equiv \sum_{k=0}^N \omega_k f(\alpha_k,y(\alpha_k)))$$
-Pour estimer la valeur de $f(\alpha_k,y(\alpha_k))$, il est nécessaire
-d'approcher $y(\alpha_k)$ ce qui se fait par une méthode
-de Newton-Cotes, en utilisant les estimations des
-valeurs des $y(\alpha_j), j<k$. On a 
-donc des méthodes de Newton-Cotes avec un sous-ensemble croissant
-de points d'interpolation, donc pour chaque valeur de $k$ une
-suite de coefficients $\omega_{j,k}, j<k$ correspondant \`a la
-m\'ethode de Newton-Cotes utilis\'ee. Il faut aussi indiquer la valeur de
-$\alpha_k$ en donnant un coefficient $c_k \in [0,1]$ tel que
-$$ \alpha_k = t_i + c_k (t_{i+1}-t_i) = t_i+c_k h$$
-
-En pratique on stocke un tableau dont les lignes donnent $c_k$ et les $c_k\omega_{j,k}, j<k$,
-et le calcul de $y(\alpha_k)$ se fait ligne par ligne
-$$ y(\alpha_{k}) \approx Y_{k}=y(\alpha_0) +
- h \sum_{j=0}^{k-1} c_k\omega_{j,k} f(\alpha_j,y(\alpha_j)) $$.
-Par exemple pour la m\'ethode d'Euler explicite, il y a deux lignes
-contenant 0 et un seul coefficient~:
-$$ \begin{array}{ccc}
-0 &:&  \\
-1 &:& 1
-\end{array}
-$$.
-Pour la m\'ethode du point milieu, il y a trois lignes, la deuxi\`ere
-ligne exprime comment on estime $y(t_i+h/2)$, la troisi\`eme
-$y(t_{i+1})=y(t_i+h)$~:
-$$ \begin{array}{cccc}
-0 & : &  \\
-  \frac12 & : & \frac12 \\
-1 & : & 0 & 1
-\end{array}
-$$
-on a donc 
-$$y(t_i+\frac12h) \approx Y_1=y(t_i)+\frac12hf(t_i,y(t_i))$$
-$$y(t_i+h) \approx Y_2=y(t_i)+hf(t_i+\frac{h}{2},Y_1)=y(t_i)+hf(t_i+\frac{h}{2},y(t_i)+\frac{h}{2}f(t_i,y(t_i)))$$
-
-La suite des temps $\alpha_k$ est croissante, mais pas forcément
-de manière stricte, on peut avoir $\alpha_k=\alpha_{k+1}$, la valeur
-de $y(\alpha_k)$ n'étant pas estimée par la même méthode de Newton-Cotes
-que $y(\alpha_{k+1})$.
-La valeur des coefficients est ensuite déterminée pour obtenir un ordre
-le plus grand possible pour l'erreur locale (ce qui peut nécessiter
-la résolution de systèmes avec pas mal d'inconnues).
-
-Ainsi, la méthode RK4 utilise le tableau suivant
-$$
-\begin{array}{cccccc}
-0 & : & \\
-\frac12 & : & \frac12 \\
-\frac12 & : & 0 & \frac12 \\
-1 & : & 0 & 0 & 1 \\
-1 & : & \frac16 & \frac13 & \frac13 & \frac16
-\end{array}
-$$
-Ce qui se traduit par
-\begin{eqnarray*}
- Y_1&=&y(t_0)+\frac{h}{2}f(t_0,y_0) \\
-Y_2&=&y(t_0)+\frac{h}{2}f(t_0+\frac{h}{2},Y_1) \\
-Y_3 &=& y(t_0)+h f(t_0+h,Y_2) \\
-Y_4 &=& y(t_0) + \frac{h}{6} \left(f(t_0,y(t_0))+
-  2f(t_0+\frac{h}{2},Y_1)+2f(t_0+\frac{h}{2},Y_2)+f(t_0+h,Y_3)\right)
-\end{eqnarray*}
-Les m\'ethodes de Newton-Cotes utilis\'ees sont les rectangles \`a
-gauche puis \`a droite pour estimer le point milieu, et la m\'ethode
-de Simpson (en prenant la moyenne des deux estimations pour le
-point milieu).
-On peut montrer qu'elle est d'ordre 4 (erreur locale en $O(h^5)$)
-
-Les méthodes de résolution numériques implémentées dans Xcas sont
-des méthodes explicites de Runge-Kutta emboitées avec pas adaptatif, 
-(le pas adaptatif est calcul\'e en estimant l'erreur 
-avec 2 méthodes emboitées RK4 et
-Prince-Dormand, cf. Hairer).
-
 \section{Suites récurrentes et applications}
+\index{r\'ecurrence}\index{suite}
 Cette section comporte une première petite partie sur le calcul
 de l'expression exacte de suites récurrences (linéaires), puis
 une deuxième partie sur l'intérêt du calcul approché de limites
@@ -10119,10 +10263,11 @@ d'équations différentielles. On ne sait en général pas le résoudre, sauf
 pour certaines classes de suites, en particulier celles qui suivent
 une récurrence affine.
 
-\subsubsection{Récurrence affine}
+\subsubsection{Récurrence affine}\index{affine, r\'ecurrence}
+\index{lin\'eaire, r\'ecurrence}
 On peut toujours se ramener au cas d'une suite vectorielle dans $\R^d$
 vérifiant un récurrence à un cran~:
-\begin{equation} v_{n+1} = A v_n + B \label{eq:rec}
+\begin{equation} v_{n+1} = A v_n + B \label{eq:recaffine}
 \end{equation}
 où $A$ est une matrice indépendante de $n$, et $B$ un vecteur qui peut
 dépendre de $n$.
@@ -10131,7 +10276,7 @@ Par exemple pour une suite $u_n$ récurrente à deux crans
 on pose $v_n=(u_n,u_{n+1})$ qui vérifie alors~:
 \[ v_{n+1}= \left( \begin{array}{cc} 0 & 1 \\ b & a \end{array}\right) v_n + 
 \left( \begin{array}{c}0 \\ c\end{array}\right)\] 
-La solution générale de (\ref{eq:rec}) est la somme de la solution
+La solution générale de (\ref{eq:recaffine}) est la somme de la solution
 de l'équation homogène $v_{n+1}=Av_n$ et d'une solution particulière,
 solution que l'on sait calculer lorsque $B$ est combinaison linéaire
 d'un produit d'exponentielle par un polynôme en $n$.
@@ -10174,6 +10319,7 @@ que l'on peut résoudre efficacement avec
 la base de Newton (voir section ci-dessous).
 
 \subsubsection{Utilisation de la base de Newton si $A=I_d$ et $c=1$}
+\index{Newton, base de}
 Plutôt que d'exprimer les polynômes dans la base canonique, il est
 intéressant d'utiliser la base $1,n,n(n-1),n(n-1)(n-2),...,n(n-1)...(n-p+1)$.
 En effet (\ref{eq:recpart}) appliqué à $Q_{k+1} n(n-1)..(n-k)$ s'écrit
@@ -12299,7 +12445,7 @@ de taille plus petites que plusieurs centaines de lignes et colonnes.
 De m\^eme on peut gagner sur le calcul du polyn\^ome minimal en
 faisant des op\'erations de multiplication par bloc.
 
-\subsection{M\'ethodes it\'eratives alternatives au pivot}
+\subsection{Quelques m\'ethodes it\'eratives alternatives au pivot}
 \subsubsection{Jacobi, Gauss-Seidel, relaxation}\index{Jacobi} \index{Gauss-Seidel}
 Lorsqu'on a une matrice creuse (peu d'\'el\'ements non nuls),
 l'algorithme du pivot de Gauss a tendance \`a densifier rapidement
@@ -12312,19 +12458,18 @@ l'inverse d'une matrice $A=F+E$, avec $F$ facile \`a inverser (par
 exemple diagonale) et 
 $E$ petit en norme (et creuse), on peut \'ecrire~:
 $$ A^{-1}=(F+E)^{-1} =
-(F(I+F^{-1}E))^{-1}=(I-F^{-1}E+(F^{-1}E)^2+...)F^{-1}$$.
+(F(I+F^{-1}E))^{-1}=(I-F^{-1}E+(F^{-1}E)^2+...)F^{-1}$$
 De m\^eme pour r\'esoudre un syst\`eme lin\'eaire $Ax=b=Fx+Ex$,
 on consid\`ere la suite $Fx_{n+1}+Ex_n=b$ soit
-$$ x_{n+1}=F^{-1}(b-Ex_n), \quad x_0=0$$
+$$ x_{n+1}=F^{-1}b-F^{-1} E x_n, \quad x_0=0$$
 pour laquelle on v\'erifiera les hypoth\`eses du th\'eor\`eme du point
 fixe, ce qui revient \`a v\'erifier que la plus
 grande valeur singuli\`ere de $F^{-1}E$ est strictement plus petite que 1.
-Si la matrice $E$ n'est pas creuse, le proc\'ed\'e peut quand
-m\^eme avoir un int\'er\^et, les complexit\'es th\'eoriques du calcul
-de l'inverse et du produit de 2 matrices sont les m\^emes, mais en
-pratique le produit de matrices peut b\'en\'eficier beaucoup plus
-facilement d'optimisations utilisant des processeurs en parall\`ele.
-
+Si la matrice $E$ n'est pas creuse, le proc\'ed\'e est int\'eressant
+pour r\'esoudre un syst\`eme si $n$ est grand
+(puisque chaque it\'eration est en $O(n^2)$), mais pas pour le calcul de
+l'inverse.
+ 
 La m\'ethode de Jacobi utilise une matrice diagonale pour $F$, alors
 que la m\'ethode de Gauss-Seidel prend pour $F$ la partie triangulaire
 inf\'erieure de $A$ (diagonale comprise). Dans ce dernier
@@ -15648,8 +15793,7 @@ sont assez oppos\'ees\footnote{Ce qui est peut-\^etre une bonne chose,
 on peut le voir comme deux strat\'egies compl\'ementaires pour le
 calcul formel libre}~: Giac se contente de peu de ressources et cible le 
 public enseignement d\`es le lyc\'ee (calculatrices, geogebra) alors
-que W. Stein, le fondateur de Sage se tourne vers le cloud computing
-commercial~:
+que W. Stein, le fondateur de Sage se tourne vers le cloud computing~:
 ``Measured by the mission statement, Sage has overall failed. The core
 goal is to provide similar functionality to Magma (and [Maple,
 Mathematica Matlab]) across the board, and the Sage development model

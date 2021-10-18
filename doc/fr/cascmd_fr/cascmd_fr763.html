@@ -6,26 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de la loi de Cauchy : cauchy_icdf cauchyd_icdf</TITLE>
+<TITLE>Fonction de répartition de la loi gamma : gammad_cdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr762.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr764.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc886">7.4.38</A>  Fonction de répartition inverse de la loi de Cauchy : <TT>cauchy_icdf cauchyd_icdf</TT></H3><P><A NAME="@default1360"></A><A NAME="@default1361"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de Cauchy de paramètre <I>a</I> 
-et <I>b</I>, si on a <TT>cauchy_icdf(a,b,p)=h</TT> avec <I>p</I>∈ [0,1]
-c’est que l’on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=p=cauchy_cdf(a,b,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc897">8.4.28</A>  Fonction de répartition de la loi gamma : <TT>gammad_cdf</TT></H3><P><A NAME="@default1362"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi gamma de paramètre <I>a</I> et 
+<I>b</I>, on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>gammad_cdf(a,b,x)</TT>.<BR>
+<I>Proba</I>(<I>x</I> ≤ <I>X</I> ≤ <I>y</I>)= <TT>gammad_cdf(a,b,x,y)</TT>.<BR>
+On a :<BR>
+<TT>gammad_cdf(a,b,x)</TT> est égale à <TT>igamma(a,b*x,1)</TT> et<BR>
+<TT>gammad_cdf(a,b,x,y)</TT> est égale à <TT>igamma(a,b*y,1)-igamma(a,b*x,1)</TT>
+On rappelle que :<BR>
+<TT>igamma(a,x)</TT> est égale à <TT>int(e</TT><CODE><TT>^</TT></CODE><TT>-t*t</TT><CODE><TT>^</TT></CODE><TT>(a-1),t=0..x)</TT> (∫<SUB>0</SUB><SUP><I>x</I></SUP><I>e</I><SUP>−<I>t</I></SUP>*<I>t</I><SUP><I>a</I>−1</SUP><I>dt</I>) et que<BR>
+ <TT>igamma(a,x,1)</TT> est égale à <TT>igamma(a,x)/Gamma(a)</TT>
 On tape :
-</P><DIV CLASS="center"><TT>cauchy_icdf(2,3,0.23)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>gammad_cdf(2,1,0.53181160839)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1.40283204777</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>cauchy_icdf(2,3,0.44)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>gammad_cdf(2,1,1.67834699002)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.42771939334</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.500000000001</TT></DIV><HR>
 <A HREF="cascmd_fr762.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr764.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

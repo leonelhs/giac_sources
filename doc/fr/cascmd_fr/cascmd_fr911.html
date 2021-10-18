@@ -6,42 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’hyperbole : hyperbola hyperbole</TITLE>
+<TITLE>L’enveloppe convexe de points du plan: convexhull</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr910.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr912.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1058">9.14.2</A>  L’hyperbole : <TT>hyperbola hyperbole</TT></H3><P><A NAME="@default1763"></A><A NAME="@default1764"></A><A NAME="sec:hyperbole2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1010.html#sec:hyperbole3">10.11.2</A> pour la géométrie 3-d.<BR>
-<TT>hyperbole</TT>, en géométrie plane, a 1 ou 3 paramètres :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un paramètre : son équation de variables <I>x</I> et <I>y</I>. 
-<TT>hyperbole(p(x,y))</TT> trace la conique d’équation <TT>p(x,y)=0</TT> si 
-<TT>p(x,y)</TT> est un polynôme de degré 2.
-</LI><LI CLASS="li-itemize">trois paramètres : ses 
-deux foyers et un de ces points (ou son affixe si cette affixe n’est pas 
-réelle) ou ses deux foyers et un réel (son demi-grand axe).<BR>
-<TT>hyperbole(F1,F2,A)</TT> trace l’hyperbole passant par <TT>A</TT> et de foyers 
-<TT>F1</TT> et <TT>F2</TT> ou,<BR>
-<TT>hyperbole(F1,F2,a)</TT> où <TT>a</TT> est un nombre réel, trace l’hyperbole 
-de foyers <TT>F1</TT> et <TT>F2</TT> et de demi-grand axe <TT>|a|</TT>.
-</LI></UL><P>
-On tape :
-</P><DIV CLASS="center"><TT>hyperbole(-i,i,1+i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>L’hyperbole de foyers -i, i et passant par 1+i</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>hyperbole(-i,i,1/2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>L’hyperbole de foyers -i, i et de demi-grand axe 1/2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>hyperbole(x</TT><CODE><TT>^</TT></CODE><TT>2+2*y</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
-ou on tape :
-</P><DIV CLASS="center"><TT>hyperbole(sqrt(6)/2,-sqrt(6)/2,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>L’hyperbole de centre 0 et de demi-grand axe 1 et de foyers sqrt(6)/2 et -sqrt(6)/2</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc1067">10.12.5</A>  L’enveloppe convexe de points du plan: <TT>convexhull</TT></H3><P>
+<A NAME="@default1761"></A>
+L’instruction <TT>convexhull</TT> calcule l’enveloppe convexe d’un
+ensemble de points du plan donné par des points ou des affixes
+de points, elle renvoie une liste de complexes affixes des sommets
+de l’enveloppe convexe. L’algorithme utilisé est le scan de Graham.
+On peut utiliser <CODE>polygone</CODE> sur le résultat de
+<CODE>convexhull</CODE> pour obtenir le tracé de l’enveloppe convexe.</P><P>Par exemple, on tape
+</P><DIV CLASS="center">
+<TT>polygone(convexhull(0,1,1+i,1+2i,-1-i,1-3i,-2+i))</TT>
+</DIV><P>
+pour obtenir l’enveloppe convexe des points d’affixe (0,0), (1,0),
+(1,1), (1,2), (-1,-1), (1,-3), (-2,1).</P><HR>
 <A HREF="cascmd_fr910.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr912.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

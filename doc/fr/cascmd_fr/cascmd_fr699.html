@@ -6,51 +6,21 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Covariance et corrélation : covariance_correlation</TITLE>
+<TITLE>Regroupement de termes : accumulate_head_tail</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr698.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr700.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc820">7.2.3</A>  Covariance et corrélation : <TT>covariance_correlation</TT></H3><P><A NAME="@default1255"></A>
-<TT>covariance_correlation</TT> a les mêmes arguments que 
-<TT>covariance</TT> : si les effectifs sont égaux à 1,
-<TT>covariance_correlation</TT> a pour argument deux listes de même longueur ou
-une matrice ayant deux colonnes représentant deux variables aléatoires <I>X</I>
-et <I>Y</I> et sinon <TT>covariance_correlation</TT> a pour argument trois listes de 
-même longueur ou une matrice ayant trois colonnes représentant deux 
-variables aléatoires <I>X</I> et <I>Y</I> et la pondération de leurs effectifs ou 
-encore une matrice <I>M</I> et -1, où <I>M</I> donne la pondération de <I>X</I> (la 
-première colonne de <I>M</I> sans <I>M</I>[0,0]) et de <I>Y</I> (la première ligne de <I>M</I>
-sans <I>M</I>[0,0]).<BR>
-<TT>covariance_correlation</TT> renvoie la liste de la 
-covariance <I>cov</I>(<I>X</I>,<I>Y</I>) et du coefficient de corrélation linéaire ρ des
-deux variables aléatoires <I>X</I> et <I>Y</I>.<BR>
- On a ρ=<I>cov</I>(<I>X</I>,<I>Y</I>)/σ(<I>X</I>)σ(<I>Y</I>) où
-σ(<I>X</I>) (resp σ(<I>Y</I>)) désigne l’écart-type de <I>X</I> (resp<I>Y</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc830">8.1.11</A>  Regroupement de termes : <TT>accumulate_head_tail</TT></H3><P><A NAME="@default1255"></A>
+<TT>accumulate_head_tail</TT> permet de regrouper les premiers termes et les derniers termes d’une liste en les remplacant par leur somme.<BR>
+Les paramètres sont la liste, le nombre de termes que l’on regroupe au 
+début de la liste et le nombre de termes l’on regroupe en fin de la liste.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>covariance_correlation([[1,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>accumulate_head_tail([0,1,1,0,2,2,3,3,4,3,1,1],4,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[25/4,100/(4*sqrt(645))]</TT></DIV><P>
-On tape (on a <TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT>) :
-</P><DIV CLASS="center"><TT>covariance_correlation(A,A</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1573/12,18876/(572*sqrt(1173))]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>covariance_correlation([1,2,3,4],[1,4,9,16],[3,1,5,2])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>covariance_correlation([[1,1,3],[2,4,1],[3,9,5],[4,16,2]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[662/121,662/(180*sqrt(14))]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>covariance_correlation([1,2,3,4],[1,4,9,16],</TT></DIV><DIV CLASS="center"><TT>[[3,0,0,0],[0,1,0,0],[0,0,5,0],[0,0,0,2]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[662/121,662/(180*sqrt(14))]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>covariance_correlation([["b</TT><TT>∖</TT><TT>a",1,2,3,4],[1,3,0,0,0], [4,0,1,0,0],[9,0,0,5,0],[16,0,0,0,2]],-1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[662/121,662/(180*sqrt(14))]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[2,2,2,3,3,4,3,2]</TT></DIV><HR>
 <A HREF="cascmd_fr698.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr700.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

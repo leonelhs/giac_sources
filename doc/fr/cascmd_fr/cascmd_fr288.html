@@ -6,102 +6,62 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Définition d’une fonction</TITLE>
+<TITLE>Sommet et feuille d’une expression : sommet feuille op</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr287.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr289.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc364">6.17.3</A>  Définition d’une fonction</H3><H4 CLASS="subsubsection"><A NAME="toc7"></A>Définition d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ</H4><P>
-On tape pour définir la fonction <I>f</I> : (<I>x</I>)−&gt;<I>x</I>*sin(<I>x</I>) :
-</P><DIV CLASS="center"><TT>f(x):=x*sin(x)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc364">6.17.3</A>  Sommet et feuille d’une expression : <TT>sommet feuille op</TT></H3><P><A NAME="@default495"></A><A NAME="@default496"></A><A NAME="@default497"></A><A NAME="sec:op"></A>
+Un opérateur est une fonction infixée : par exemple ’+’ est un 
+opérateur et ’sin’ est une fonction.<BR>
+On peut représenter une expression par un arbre. Le sommet de l’arbre est 
+soit un opérateur, soit une fonction et les feuilles de l’arbre sont les 
+arguments de l’opérateur ou de la fonction (voir aussi <A HREF="cascmd_fr505.html#sec:makesuiteop">6.41.13</A>).<BR>
+La fonction <TT>sommet</TT> (resp <TT>feuille</TT> (ou <TT>op</TT>))
+renvoie le sommet (resp la liste des feuilles) d’une expression.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>sommet(sin(x+2))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>’sin’</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>sommet(x+2*y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>’+’</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>feuille(sin(x+2))</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>f:=x-&gt;x*sin(x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>op(sin(x+2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;x*sin(x)</TT></DIV><P>
-On tape pour définir la fonction <I>f</I> : (<I>x</I>,<I>y</I>)−&gt;<I>x</I>*sin(<I>y</I>) :
-</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>x+2</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>feuille(x+2*y)</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>f:=(x,y)-&gt;x*sin(y)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>op(x+2*y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(x,y)-&gt;x*sin(y)</TT></DIV><P>
-<B>Attention !!!</B> ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué.
-</P><H4 CLASS="subsubsection"><A NAME="toc8"></A>Définition d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ<SUP><I>q</I></SUP></H4><P>
-On tape pour définir la fonction <I>h</I> : (<I>x</I>,<I>y</I>)−&gt;(<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)) :
-</P><DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV><P>
-On tape pour définir la fonction <I>h</I> : (<I>x</I>,<I>y</I>)−&gt;[<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)] :
-</P><DIV CLASS="center"><TT>h(x,y):=[x*cos(y),x*sin(y)];</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>h:=(x,y)-&gt;[x*cos(y),x*sin(y)];</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>h(x,y):={[x*cos(y),x*sin(y)]};</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>h:=(x,y)-&gt;return[x*cos(y),x*sin(y)];</TT></DIV><P>
-Ou on tape 
-</P><DIV CLASS="center"><TT>h(x,y):={return [x*cos(y),x*sin(y)];}</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x,2*y) </TT></DIV><P> 
+<B>Remarque</B><BR>
+Lorsque l’utilisateur définit une fonction par un programme par exemple la
+fonction <TT>pgcd</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>pgcd(a,b):={local r; while (b!=0) {r:=irem(a,b);a:=b;b:=r;} return a;}</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>sommet(pgcd)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(x,y)-&gt;{return([x*cos(y),x*sin(y)]);}</TT></DIV><P>
-<B>Attention !!!</B> ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué.
-</P><H4 CLASS="subsubsection"><A NAME="toc9"></A>Définition d’une fonction de ℝ<SUP><I>p</I>−1</SUP> dans ℝ<SUP><I>q</I></SUP> à partir d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ<SUP><I>q</I></SUP></H4><P>
-On définit la fonction <I>f</I>(<I>x</I>,<I>y</I>)=<I>x</I>*sin(<I>y</I>), puis on veut définir la famille
-de fonctions dépendant du paramètre <I>t</I> par
-<I>g</I>(<I>t</I>)(<I>y</I>):=<I>f</I>(<I>t</I>,<I>y</I>).<BR>
-Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
-définir <I>g</I>(<I>t</I>) par <TT>g(t):=y-&gt;f(t,y)</TT> et on doit utiliser la commande
-<TT>unapply</TT>.<BR>
-On tape pour définir les fonctions <I>f</I>(<I>x</I>,<I>y</I>)=<I>x</I>sin(<I>y</I>) et <I>g</I>(<I>t</I>)=<I>y</I>−&gt;<I>f</I>(<I>t</I>,<I>y</I>) :
-</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y);g(t):=unapply(f(t,y),y)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>’program’</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[0]</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>((x,y)-&gt;x*sin(y), (t)-&gt;unapply(f(t,y),y))</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>g(2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(a,b)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[1]</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>y-&gt;2</TT><TT>·</TT><TT> sin(y)</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>g(2)(1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(0,0) ou (15,25) si l’on vient d’exécuter pgcd(15,25)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[2]</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT><TT>·</TT><TT> sin(1)</TT></DIV><P>On définit la fonction <I>h</I>(<I>x</I>,<I>y</I>)=(<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)), 
-puis on veut définir la famille de fonctions dépendant du paramètre <I>t</I> 
-par <I>k</I>(<I>t</I>)(<I>y</I>):=<I>h</I>(<I>t</I>,<I>y</I>).<BR>
-Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
-définir <I>k</I>(<I>t</I>) par <I>k</I>(<I>t</I>):=<I>y</I>−&gt;<I>h</I>(<I>x</I>,<I>y</I>) et on est obligé d’utiliser la 
-commande <TT>unapply</TT>.<BR>
-On tape pour définir la fonction <I>h</I>(<I>x</I>,<I>y</I>) :
-</P><DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV><P>
-On tape pour définir la fonction <I>k</I>(<I>t</I>) :
-</P><DIV CLASS="center"><TT>k(t):=unapply(h(x,t),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(t)-&gt;unapply(h(x,t),x)</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>k(2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;(x*cos(2),x*sin(2))</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>k(2)(1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(2*cos(1),2*sin(1))</TT></DIV><P>
-Ou encore
-On définit la fonction <I>h</I>(<I>x</I>,<I>y</I>)=[<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)], 
-puis on veut définir la famille de fonctions dépendant du paramètre <I>t</I> 
-par <I>k</I>(<I>t</I>)(<I>y</I>):=<I>h</I>(<I>t</I>,<I>y</I>).<BR>
-Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
-définir <I>k</I>(<I>t</I>) par <I>k</I>(<I>t</I>):=<I>y</I>−&gt;<I>h</I>(<I>x</I>,<I>y</I>) et on est obligé d’utiliser la 
-commande <TT>unapply</TT>.<BR>
-On tape pour définir la fonction <I>h</I>(<I>x</I>,<I>y</I>) :
-</P><DIV CLASS="center"><TT>h(x,y):={[x*cos(y),x*sin(y)]}</TT></DIV><P>
-On tape pour définir la fonction <I>k</I>(<I>t</I>) :
-</P><DIV CLASS="center"><TT>k(t):=unapply(h(x,t),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(t)-&gt;unapply(h(x,t),x)</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>k(2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;{[x*cos(2),x*sin(2)];}</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>k(2)(1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[2</TT><TT>·</TT><TT> cos(1),2</TT><TT>·</TT><TT> sin(1)]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le corps du programme : {local r;....return(a);}</TT></DIV><HR>
 <A HREF="cascmd_fr287.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr289.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,58 +6,63 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pente d’une droite et son affichage : slopeat, penteen et slopeatraw, penteenbrut</TITLE>
+<TITLE>La longueur d’un segment et son affichage : distanceat distanceen et distanceatraw distanceenbrut</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr932.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr934.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1082">9.16.13</A>  Pente d’une droite et son affichage : <TT>slopeat, penteen</TT> et <TT>slopeatraw, penteenbrut</TT></H3><P><A NAME="@default1821"></A><A NAME="@default1822"></A><A NAME="@default1823"></A><A NAME="@default1824"></A>
-<TT>slopeat</TT> ou <TT>penteen</TT> et <TT>slopeatraw</TT> ou 
-<TT>penteenbrut</TT> est une commande obtenue 
+<H3 CLASS="subsection"><A NAME="htoc1093">10.16.3</A>  La longueur d’un segment et son affichage : <TT>distanceat distanceen</TT> et <TT>distanceatraw distanceenbrut</TT></H3><P><A NAME="@default1803"></A><A NAME="@default1804"></A><A NAME="@default1805"></A><A NAME="@default1806"></A>
+<TT>distanceat</TT> ou <TT>distanceen</TT> et <TT>distanceatraw</TT> ou 
+<TT>distanceenbrut</TT> sont des commandes obtenues 
 lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
-<TT>Mode-&gt;Mesures-&gt;penteen</TT> ou <TT>Mode-&gt;Mesures-&gt;penteenbrut</TT>. Dans ce cas il
-faut que tous les objets désignés par la souris soient déjà nommés.<BR>
+<TT>Mode-&gt;Mesures-&gt;ditanceen</TT> ou <TT>Mode-&gt;Mesures-&gt;distanceenbrut</TT>. Dans ce 
+cas il faut que tous les objets, sauf les points, désignés par la souris 
+soient déjà nommés.<BR>
 On peut néammoins taper ces commandes dans une ligne de commande.<BR>
-<TT>slopeat</TT> ou <TT>penteen</TT> ont 2 arguments le nom d’une droite (ou d’un 
-segment) et 1 point (ou 1 nombre complexe qui est l’affixe d’un point).<BR>
-et <TT>slopeatraw</TT> ou <TT>penteenbrut</TT> ont 
-comme arguments une droite (ou un segment) et 1 point (ou 1 nombre complexe qui
-est l’affixe d’un point).<BR>
-<TT>slopeat</TT> ou <TT>penteen</TT> renvoie le point, calcule la pente de
-la droite (ou du segment) et affiche cette pente à l’endroit du point
-avec une légende. <B>Attention</B> <TT>slopeat</TT> ou <TT>penteen</TT>, il faut mettre le nom de la droite (ou du segment).<BR>
-<TT>slopeatraw</TT> ou <TT>penteenbrut</TT> renvoie le point, calcule la pente de
-la droite (ou du segment) et affiche cette pente à l’endroit du point.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>d:=droite(1,2i)</TT></DIV><DIV CLASS="center"><TT>penteen(d,i)</TT></DIV><P>
+<TT>distanceat</TT> ou <TT>distanceen</TT> a 3 arguments : le nom de 2 points et 1 point (ou l’affixe de ce point) ou encore le nom de 2 objets 
+géométriques et un point (ou l’affixe de ce point).<BR>
+<B>Attention</B> Il faut que les 2 premiers arguments soient des noms.<BR>
+<TT>distanceat</TT> ou <TT>distanceen</TT> renvoie le point donné en 3-ième 
+argument, calcule la longueur du segment défini par les deux premiers points 
+ou la distance entre les 2 objets géométriques et affiche à l’endroit du 
+3-ième point, cette longueur précédée d’une légende.<BR>
+On tape (on doit donnerle nom des objets) :
+</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);segment(A,B);</TT></DIV><DIV CLASS="center"><TT>distanceat(A,B,0.4i)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>distanceen(A,B,0.4i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"sd=-2" s’écrit au point(i)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>penteenbrut(droite(1,2i),i)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>penteenbrut(segment(1,2i),i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>AB=sqrt(5) s’écrit au point(0.4i)</TT></DIV><P>
+On tape (on doit donnerle nom des objets) :
+</P><DIV CLASS="center"><TT>C:=point(0);d:=droite(-1,1+i)</TT></DIV><DIV CLASS="center"><TT>distanceen(C,d,i/2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-2 s’écrit au point(i)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>d1:=droite(2y-x=3),2*i)</TT></DIV><DIV CLASS="center"><TT>penteen(d1,2*i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Cd=sqrt(5)/5 s’écrit au point(i/2)</TT></DIV><P>
+On tape (on doit donner le nom des objets) :
+</P><DIV CLASS="center"><TT>c:=cercle(0,1); d:=droite(-2,1+3i)</TT></DIV><DIV CLASS="center"><TT>distanceen(c,d,0)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"sd1=1/2’’ s’écrit au point(2*i) avec une légende</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cd=sqrt(2)-1 s’écrit au point(0)</TT></DIV><P><TT>distanceatraw</TT> ou <TT>distanceenbrut</TT> a comme argument trois 
+points (ou 2 points et 1 nombre complexe qui est l’affixe d’un point) ou encore
+2 objets géométriques et un point (ou l’affixe de ce point).<BR>
+<TT>distanceatraw</TT> ou <TT>distanceenbrut</TT> renvoie le point donné en 
+3-ième argument, calcule la longueur du segment défini par les deux 
+premiers points ou la distance entre les 2 ojets géométriques et affiche 
+cette longueur à l’endroit du 3-ième point.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>penteenbrut(droite(2y-x=3),2*i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);segment(A,B);</TT></DIV><DIV CLASS="center"><TT>distanceenbrut(A,B,0.4i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1/2 s’écrit au point(2*i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sqrt(5) s’écrit au point(0.4i)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>T:=tangente(plotfunc(sin(x)),pi/4)</TT></DIV><DIV CLASS="center"><TT>slopeat(T,i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>C:=point(0);d:=droite(-1,1+i)</TT></DIV><DIV CLASS="center"><TT>distanceenbrut(C,d,i/2)</TT></DIV><P>
+ou on tape (on n’est pas obligé de donner un nom aux objets) :
+</P><DIV CLASS="center"><TT>distanceenbrut(0,droite(-1,1+i),i/2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"sT=(sqrt(2))/2" s’écrit au point(i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sqrt(5)/5 s’écrit au point(i/2)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>penteenbrut(tangente(plotfunc(sin(x)),pi/4),i)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>penteenbrut(droite_tangente(sin(x),pi/4),i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(sqrt(2))/2 s’écrit au point(i)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>c:=cercle(0,1); d:=droite(-2,1+3i)</TT></DIV><DIV CLASS="center"><TT>distanceenbrut(c,d(-2,1+3i),0)</TT></DIV><P>
+ou on tape (on n’est pas obligé de donner un nom aux objets) :
+</P><DIV CLASS="center"><TT>distanceenbrut(cercle(0,1),droite(-2,1+3i),0)</TT></DIV><P>On obtient :
+</P><DIV CLASS="center"><TT>sqrt(2)-1 s’écrit au point(0)</TT></DIV><HR>
 <A HREF="cascmd_fr932.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr934.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

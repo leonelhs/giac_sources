@@ -6,43 +6,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Utilisation des instructions du debuggeur : cont halt kill</TITLE>
+<TITLE>Effacer l’ècran DispG depuis un programme : ClrGraph</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr838.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr840.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc971">8.7.9</A>  Utilisation des instructions du debuggeur : <TT>cont halt kill</TT></H3><P>
-Les instructions <TT>cont halt kill</TT> n’ont pas d’arguments.<BR>
-<TT>cont halt kill</TT> sont des instructions du debuggeur (voir ci-dessus).<BR>
-<TT>cont()</TT> et <TT>kill()</TT> s’utilisent uniquement dans une session de 
-debogage, quand le programme est arrêté. Typiquement, <TT>kill()</TT> 
-s’utilise quand on a vu où se trouve l’erreur, et que on va savoir corriger 
-le programme, et qu’il est donc inutile de continuer l’exécution du programme
-buggué.<BR>
-<TT>cont()</TT> s’utilise pour atteindre le point d’arrêt suivant.<BR>
-<TT>halt()</TT> peut être mis comme instruction dans le programme pour 
-programmer un point d’arrêt (cela évite de faire une commande 
-<TT>breakpoint</TT> avec un numéro de ligne)
-Par exemple on tape :
-</P><PRE CLASS="verbatim">testhalt(x):={
-  local y; 
-  y:=x;  
-  halt();  
-  return(y);  
-}
-</PRE><P>On tape :
-</P><DIV CLASS="center"><TT>debug(testhalt(5))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>l’ouverture du debuggeur et l’arrêt du programme</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc981">9.6.5</A>  Effacer l’ècran <TT>DispG</TT> depuis un programme : <TT>ClrGraph</TT></H3><P><A NAME="@default1516"></A>
+<TT>ClrGraph</TT> n’a pas d’arguments.<BR>
+<TT>ClrGraph</TT> permet d’ouvrir l’écran <TT>DispG</TT> depuis un programme.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cont() pour continuer le debugage ou kill() pour l’arrêter</TT></DIV><P>
-<B>Attention</B><BR>
-Si on tape juste <TT>testhalt(5)</TT> sans mettre <TT>debug</TT>, le debuggeur 
-s’ouvre mais, la liste des instructions formant le programme n’est pas
-affichée donc il vaut mieux faire <TT>debug(testhalt(5))</TT> puis enlever 
-les <TT>halt()</TT> quand le programme est au point.</P><HR>
+</P><DIV CLASS="center"><TT>ClrGraph()</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>ClrGraph</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>l’effacement de l’écran </TT><TT>DispG</TT></DIV><HR>
 <A HREF="cascmd_fr838.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr840.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,33 +6,65 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tableau de valeurs des termes d’une suite : tablefunc table_fonction</TITLE>
+<TITLE>Éliminer une (ou des) variable(s) dans une liste d’équations : eliminate</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr275.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr277.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc349">6.14.1</A>  Tableau de valeurs des termes d’une suite : <TT>tablefunc table_fonction</TT></H3><P><A NAME="@default462"></A><A NAME="@default463"></A>
-<TT>tablefunc</TT> ou <TT>table_fonction</TT> est une commande qui s’utilise à 
-l’intérieur d’un tableur (que l’on ouvre avec <TT>Alt+t</TT>) et qui .<BR>
-remplit deux colonnes donnant la table des valeurs d’une fonction.<BR>
-<TT>tablefunc(ex,n,n0,1)</TT>, où <TT>ex</TT> est une expression
-dépendant de <TT>n</TT>, remplira le tableur avec
-les valeurs de la suite <I>u</I><SUB><I>n</I></SUB>=<I>ex</I> pour <I>n</I>=<I>n</I>0, <I>n</I>0+1, <I>n</I>0+2,.....</P><P><B>Exemple</B> : Affichage des valeurs de <I>u</I><SUB><I>n</I></SUB>=sin(<I>n</I>)
-On ouvre un tableur avec <TT>Alt+t</TT>.<BR>
-Puis, on sélectionne une case du tableur (par exemple <TT>C0</TT>) et on tape 
-dans la ligne de commande du tableur : 
-</P><DIV CLASS="center"><TT>tablefunc(sin(n),n,0,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>deux colonnes : </TT><TT>n</TT><TT> et </TT><TT>sin(n)</TT></DIV><UL CLASS="itemize"><LI CLASS="li-itemize">
-dans la colonne <TT>n</TT> il y a la valeur du pas (qui doit être égal 
-à 1) et la valeur de <TT>n0</TT> (ici 0), puis une formule <TT>C2+C$1</TT> 
-qui a été recopiée vers le bas.</LI><LI CLASS="li-itemize">dans la colonne <TT>sin(n)</TT> il y a <TT>"Tablefunc"</TT>, puis une formule
-qui a été aussi recopiée vers le bas.<BR>
-Les valeurs de la suite <TT><I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>=</TT><TT>sin</TT><TT>(<I>n</I>)</TT> s’affichent alors en face des 
-<TT>n</TT> correspondants à partir de <TT>n=n0</TT> (ici 0).
-</LI></UL><HR>
+<H3 CLASS="subsection"><A NAME="htoc349">6.14.25</A>  Éliminer une (ou des) variable(s) dans une liste d’équations : <TT>eliminate</TT></H3><P><A NAME="@default461"></A>
+<TT>eliminate</TT> permet d’éliminer une ou plusieurs variables dans une liste 
+d’équations algébriques, équations algébriques qui sont verifiées par
+plusieurs variables.<BR>
+<TT>eliminate</TT> a 2 arguments :<BR>
+une liste d’équations <TT>L1</TT> et<BR>
+la variable ou la liste des variables à éliminer.<BR>
+<TT>eliminate</TT> renvoie la liste <TT>L2</TT> des équations qui sont vérifiées
+par les variables non éliminées et pour lesquelles <TT>=0</TT> est sous 
+entendu.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>eliminate([x=v0*t,y=y0-g*t</TT><CODE><TT>^</TT></CODE><TT>2],t)</TT></DIV><P> 
+On obtient si la variable <TT>t</TT> n’est pas affectée et si les autres 
+variables ne sont pas affectées (si les autres variables sont affectées, elles sont remplacées par leur valeurs ce qui modifie le résultat) :
+</P><DIV CLASS="center"><TT>[x</TT><CODE><TT>^</TT></CODE><TT>2*g-v0</TT><CODE><TT>^</TT></CODE><TT>2*y0+v0</TT><CODE><TT>^</TT></CODE><TT>2*y]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>eliminate([x=2*t,y=1-10*t</TT><CODE><TT>^</TT></CODE><TT>2,z=x+y-t],t)</TT></DIV><P> 
+On obtient si la variable <TT>t</TT> n’est pas affectée et si les 
+variables <TT>x,y,z</TT> ne sont pas affectées :
+</P><DIV CLASS="center"><TT>[x+2*y-2*z,-10*y</TT><CODE><TT>^</TT></CODE><TT>2+20*y*z-y-10*z</TT><CODE><TT>^</TT></CODE><TT>2+1]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>eliminate([x+y+z+t-2,x*y*t=1,x</TT><CODE><TT>^</TT></CODE><TT>2+t</TT><CODE><TT>^</TT></CODE><TT>2=z</TT><CODE><TT>^</TT></CODE><TT>2],[x,z])</TT></DIV><P> 
+On obtient si les variables <TT>x</TT> et <TT>z</TT> ne sont pas affectées et si 
+les autres variables ne sont pas affectées (si les autres variables sont 
+affectées, elles sont remplacées par leur valeurs ce qui modifie le 
+résultat) :
+</P><DIV CLASS="center"><TT>[y</TT><CODE><TT>^</TT></CODE><TT>3*t+2*y</TT><CODE><TT>^</TT></CODE><TT>2*t</TT><CODE><TT>^</TT></CODE><TT>2-4*y</TT><CODE><TT>^</TT></CODE><TT>2*t-4*y*t</TT><CODE><TT>^</TT></CODE><TT>2+4*y*t+2*y+2*t-4]</TT></DIV><P> 
+<B>Attention</B><BR>
+Si la réponse est <TT>[1]</TT> ou <TT>[-1]</TT>, cela veut dire que
+la ou les variables ne peuvent pas être élinminées.<BR>
+Si la réponse est <TT>[]</TT>, cela veut dire que certaines équations 
+déterminent les valeurs des variables à éliminer et que ces valeurs 
+vérifient toutes les équations.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>x:=2;y:=-5</TT></DIV><DIV CLASS="center"><TT>eliminate([x=2*t,y=1-10*t</TT><CODE><TT>^</TT></CODE><TT>2],t)</TT></DIV><P> 
+On obtient si la variable <TT>t</TT> n’est pas affectée :
+</P><DIV CLASS="center"><TT>[1]</TT></DIV><P> 
+On ne peut donc pas éliminer <TT>t</TT> des deux équations :<BR>
+2=2<I>t</I>,−5=1−10<I>t</I><SUP>2</SUP>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>x:=2;y:=-9</TT></DIV><DIV CLASS="center"><TT>eliminate([x=2*t,y=1-10*t</TT><CODE><TT>^</TT></CODE><TT>2],t)</TT></DIV><P> 
+On obtient si la variable <TT>t</TT> n’est pas affectée :
+</P><DIV CLASS="center"><TT>[]</TT></DIV><P> 
+En effet la première équation :<BR>
+2=2<I>t</I> donne <I>t</I>=1 et <I>t</I>=1 vérifie la deuxième équation −9=1−10<I>t</I><SUP>2</SUP>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>x:=2;y:=-9</TT></DIV><DIV CLASS="center"><TT>eliminate([x=2*t,y=1-10*t</TT><CODE><TT>^</TT></CODE><TT>2,z=x+y-t],t)</TT></DIV><P> 
+On obtient si la variable <TT>t</TT> n’est pas affectée :
+</P><DIV CLASS="center"><TT>[z+8]</TT></DIV><P> 
+En effet la première équation :<BR>
+2=2<I>t</I> donne <I>t</I>=1, <I>t</I>=1 vérifie la deuxième équation −9=1−10<I>t</I><SUP>2</SUP> et il
+reste la troisième équation <I>z</I>=2−9−1=−8 soit <I>z</I>+8=0.</P><HR>
 <A HREF="cascmd_fr275.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr277.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

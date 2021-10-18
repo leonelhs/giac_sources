@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Pour recréer ou créer une image : writergb</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr1080.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr1082.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1267">12.2.4</A>  Pour recréer ou créer une image : <TT>writergb</TT></H3><P><A NAME="@default2070"></A>
+<TT>writergb</TT> permet de stocker une image lue avec <TT>readrgb</TT> dans
+un fichier de suffixe <TT>.png</TT><BR>
+ou<BR>
+de créer une image et de la stocker dans un fichier de suffixe <TT>.png</TT>.<BR>
+On peut créer cette image avec des niveaux de gris ou avec des
+niveaux de différentes couleurs.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On posséde une variable (par exemple <TT>a</TT>) contenant une image lue
+avec <TT>readrgb</TT>.<BR>
+<TT>writergb</TT> a deux arguments : le nom du fichier dans lequel on veut stocker
+la nouvelle image et une liste contenant <TT>a[0]</TT> (liste contenant le nombre
+de canaux et les dimensions de la matrice des pixels de cette image), puis les
+couleurs de cette image qui sont les matrices <TT>a[1]</TT> pour la couleur rouge,
+<TT>a[2]</TT> pour la couleur verte, <TT>a[3]</TT> pour la transparence et <TT>a[4]</TT>
+pour la couleur bleu.<BR>
+La transparence permet de superposer plusieurs images : sa valeur va de 0 à
+255 (si la transparence vaut 0 c’est un cache !).<BR>
+On tape pour créer une image avec <TT>Xcas</TT> :
+<PRE CLASS="verbatim">affichage(rectangle(0,100,1/4),1+rempli);
+affichage(rectangle(100,200,1/4),2+rempli);
+affichage(rectangle(25*i,100+25*i,1/4),3+rempli);
+affichage(rectangle(100+25*i,200+25*i,1/4),4+rempli)
+</PRE>On obtient :<BR>
+<IMG SRC="cascmd_fr012.png"><BR>
+On sauve cette image (bouton <TT>M</TT> situé à gauche) sous le nom
+<TT>image1234</TT>, ce qui crèe :<BR>
+<TT>image1234.eps</TT>, <TT>image1234.jpg</TT>, <TT>image1234.png</TT>,
+<TT>image1234.pdf</TT>.
+On tape :
+<DIV CLASS="center"><TT>a:=readrgb("image1234.jpg")</TT></DIV>
+<DIV CLASS="center"><TT>a[0]</TT></DIV>
+On obtient : <TT>[4,363,908]</TT><BR>
+Puis on tape :
+<DIV CLASS="center"><TT>writergb("image2134.png",[a[0],a[2],a[1],a[3],a[4]])</TT></DIV>
+On obtient (le rouge est devenu vert et le vert est devenu rouge) :<BR>
+<IMG SRC="cascmd_fr013.png"><BR>
+Ou on tape dans un terminal :
+<DIV CLASS="center"><TT>gimp "image2134.png"</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>l’image de départ dans laquelle le rouge est devenu vert et le vert est devenu rouge</TT></DIV>
+Essayer de crèer une image :
+<DIV CLASS="center"><TT>writergb("essai1.png",[[4,2,2],[[255,0],[0,0]], [[0,255],[0,0]],[[255,125],[255,255]], [[0,0],[255,0]]])</TT></DIV>
+vous obtenez (avec un vert attenué du au 125 de la 3ième matrice):<BR>
+<IMG SRC="cascmd_fr014.png">
+ou encore essayer :
+<DIV CLASS="center"><TT>writergb("image1.png",[[4,2,3],[[255,0,255],[0,255,0]], [[0,0,255],[0,0,0]],[[255,125,125],[255,255,255]], [[0,0,0],[255,255,0]]])</TT></DIV>
+</LI><LI CLASS="li-itemize">On peut aussi créer et stocker des images, au format PNG avec une
+version simplifiée de la syntaxe : pas d’argument correspondant au nombre
+de canaux et aux dimensions de la matrice des pixels de cette image ni de
+matrice correspondant à la transparence.<BR>
+<TT>writergb</TT> a alors deux ou quatre arguments : le nom du fichier dans lequel
+on veut stocker la nouvelle image et la matrice des niveaux de gris des pixels,
+ou 3 matrices (du rouge, du vert et du bleu) donnant la couleur RGB des
+pixels.<BR>
+Par exemple :
+<DIV CLASS="center"><TT>writergb("image2.png",[[65,125],[185,200]])</TT></DIV>
+crée et affiche une image 2x2 pixels au format PNG en 4 niveaux de gris
+(0 noir, 255 blanc)
+<DIV CLASS="center"><TT>writergb("image3.png",[[255,250],[0,120]],[[0,255],[0,0]], [[0,0],[255,100]])</TT></DIV>
+crée et affiche une image 2x2 pixels au format PNG en RGBA avec 256 niveaux
+pour chaque couleur (rouge, bleu, vert). Ici la première ligne rouge, jaune 
+(mélange de rouge (240) et vert (255)) et la deuxième ligne est bleu,violet (mélange de rouge(120) et de bleu (100)).<BR>
+Essayez :
+<DIV CLASS="center"><TT>writergb("essai2.png",[[4,300,300],makemat(0,300,300), makemat(0,300,300), makemat(255,300,300), makemat(0,300,300)+idn(300)*255])</TT></DIV>
+<DIV CLASS="center"><TT>writergb("essai3.png",[[4,300,300],makemat(250,100,100)+ranm(100,100), makemat(0,100,100)+ranm(100,100), makemat(255,100,100), makemat(0,100,100)+ranm(100,100)])</TT></DIV>
+<B>Remarque</B><BR>
+Il y a 2 choses distinctes: le nombre de points de l’image numerisée et la 
+représentation graphique dans <TT>Xcas</TT> qui se fait dans un rectangle avec 
+des coordonnées. Dans [4,300,100] il y a 300 points horizontalement et 100 
+verticalement, si on met l’image dans un rectangle du plan, selon l’echelle 
+choisie pour le graphique horizontalement et verticalement, l’image 300x100 
+peut être toute petite ou très grande. Si c’est tres grand chaque point de 
+l’image numerisée originale sera représenté par un petit rectangle qui 
+occupera plusieurs pixels physiques sur l’écran.
+</LI></UL><HR>
+<A HREF="cascmd_fr1080.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr1082.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

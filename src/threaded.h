@@ -281,6 +281,7 @@ namespace giac {
     T_unsigned(const T & myg,const U & myu): g(myg),u(myu) {};
     T_unsigned(): g(0),u(0) {};
     bool operator == (const T_unsigned<T,U> & tu) const { return g==tu.g && u==tu.u; }
+    bool operator !=(const T_unsigned<T,U> & tu) const { return g==tu.g && u!=tu.u; }
   };
 
   // warning, < is > so that monomial ordering is ok after back-conversion

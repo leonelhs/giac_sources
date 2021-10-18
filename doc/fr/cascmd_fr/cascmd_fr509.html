@@ -6,146 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Trier : sort</TITLE>
+<TITLE>Concaténer deux listes ou une liste et un élément: concat 
+augment</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr508.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr510.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc608">6.40.20</A>  Trier : <TT>sort</TT></H3><P><A NAME="@default902"></A>
-<TT>sort</TT> a comme argument une liste ou une expression ou une chaine 
-de caractères.<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Pour une liste, <TT>sort</TT> renvoie la liste triée selon l’ordre 
-croissant.<BR>
+<H3 CLASS="subsection"><A NAME="htoc609">6.41.17</A>  Concaténer deux listes ou une liste et un élément: <TT>concat<BR>
+augment</TT></H3><P><A NAME="@default902"></A><A NAME="@default903"></A>
+<TT>concat</TT> (ou <TT>augment</TT>)
+concaténe deux listes, ou concaténe une liste et un élément.<BR>
 On tape :
-<DIV CLASS="center"><TT>sort([3,4,2])</TT></DIV>
+</P><DIV CLASS="center"><TT>concat([3,4,2],[1,2,4])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>augment([3,4,2],[1,2,4])</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>[2,3,4]</TT></DIV>
-<B>Remarque</B> Si la liste est une matrice (resp une liste de chaines 
-de caractères), <TT>sort</TT> renvoie la matrice dont 
-les lignes sont triées selon l’ordre croissant en triant les lignes selon 
-l’ordre [<I>a</I><SUB>0</SUB>,<I>a</I><SUB>1</SUB>,..<I>a</I><SUB><I>n</I></SUB>]&lt;[<I>b</I><SUB>0</SUB>,<I>b</I><SUB>1</SUB>,..<I>b</I><SUB><I>n</I></SUB>] si <I>a</I><SUB>0</SUB>&lt;<I>b</I><SUB>0</SUB> ou si il existe <I>k</I>≤ <I>n</I>
-tel que <I>a</I><SUB>0</SUB>=<I>b</I><SUB>0</SUB>,...<I>a</I><SUB><I>k</I>−1</SUB>&lt;<I>b</I><SUB><I>k</I>−1</SUB> et <I>a</I><SUB><I>k</I></SUB>&lt;<I>b</I><SUB><I>k</I></SUB> (resp la liste de chaines 
-de caractères triées par l’ordre lexicographique).<BR>
+</P><DIV CLASS="center"><TT>[3,4,2,1,2,4]</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>sort([[3,4,2],[4,2,3],[2,3,4],[2,4,3]])</TT></DIV>
+</P><DIV CLASS="center"><TT>concat([3,4,2],5)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>augment([3,4,2],5)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>[[2,3,4],[2,4,3],[3,4,2],[4,2,3]]</TT></DIV>
-Pour trier par ordre décroissant il faut mettre en second argument une 
-fonction de tri, par exemple on tape la fonction booléenne <TT>superoueg</TT> 
-qui renvoie <TT>1</TT> si <TT>L1&gt;=L2</TT> et <TT>0</TT> sinon :<BR>
-<PRE CLASS="verbatim">superoueg(L1,L2):={
-  local s,j;
-  s:=min(size(L1),size(L2))-1;
-  j:=0;
-  tantque L1[j]==L2[j] and j&lt;s faire
-    j:=j+1;
-  ftantque;
-  //si L2[j]&gt;L1[j] alors return 0 sinon return 1; fsi;
-  si [sort(L1[j],L2[j])]==[L1[j],L2[j]] alors 
-     return 0 
-    sinon 
-     return 1;
-  fsi;
-}:; 
-</PRE>On a remplacé <TT>L2[j]&gt;L1[j]</TT> par <TT>[sort(L1[j],L2[j])]==[L1[j],L2[j]]</TT>
-pour que <TT>superoueg</TT> soit aussi valable pour les chaines de caractères.
-On tape :
-<DIV CLASS="center"><TT>sort([[3,4,2],[4,2,3],[2,3,4],[2,4,3]],superoueg)</TT></DIV>
-ou on tape
-<DIV CLASS="center"><TT>sort([[3,4,2],[4,2,3],[2,3,4],[2,4,3]],(x,y)-&gt;superoueg(x,y))</TT></DIV>
+</P><DIV CLASS="center"><TT>[3,4,2,5]</TT></DIV><P>
+<B>Attention</B>
+</P><DIV CLASS="center"><TT>concat([[3,4,2]],[[1,2,4]])</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>[[2,3,4],[2,4,3],[3,4,2],[4,2,3]][[2,3,4],[2,4,3],[3,4,2],[4,2,3]]</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>sort(["dac","bac","sac","asc","cab"])</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>["asc","bac","cab","dac","sac"]</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>sort(["dac","bac","sac","asc","cab"],superoueg)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>["sac","dac","cab","bac","asc"]</TT></DIV>
-</LI><LI CLASS="li-itemize">Pour une expression, <TT>sort</TT> trie et collecte les termes égaux 
-dans les sommes et produits.<BR>
-On tape : 
-<DIV CLASS="center"><TT>sort(exp(2*ln(x))+x*y-x+y*x+2*x)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>2*x*y+exp(2*ln(x))+x</TT></DIV> 
-On tape : 
-<DIV CLASS="center"><TT>simplifier(exp(2*ln(x))+x*y-x+y*x+2*x)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+2*x*y+x</TT></DIV> 
-</LI></UL><P>
-<B>Remarque</B><BR>
-<TT>sort</TT> accepte un 
-2-ième argument après une liste qui est la fonction de tri, par
-exemple (x,y)-&gt;x&gt;y pour avoir la liste triée selon l’ordre décroissant.<BR>
-<B>Attention</B> 
-La fonction de tri <I>f</I> doit définir un ordre strict faible c’est à dire
-que 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<I>f</I>(<I>x</I>,<I>y</I>) est un fonction renvoyant 0 (faux) ou 1 (vrai) qui est
-toujours définie (<I>f</I> doit renvoyer 0 si 2 éléments ne sont
-pas comparables) et doit vérifier :
-</LI><LI CLASS="li-itemize"><I>f</I> doit définir une 
-relation transitive (si <I>f</I>(<I>x</I>,<I>y</I>) et <I>f</I>(<I>y</I>,<I>z</I>) sont vrais alors
-<I>f</I>(<I>x</I>,<I>z</I>) est vrai)
-</LI><LI CLASS="li-itemize">on ne peut pas avoir
-<I>f</I>(<I>x</I>,<I>y</I>) et <I>f</I>(<I>y</I>,<I>x</I>) vrai en même temps (antisymétrie
-<B>non réflexive</B>)
-</LI><LI CLASS="li-itemize"><I>f</I> ne définit pas forcément une relation
-d’ordre total, on peut avoir <I>f</I>(<I>x</I>,<I>y</I>) et <I>f</I>(<I>y</I>,<I>x</I>) simultanément
-faux.
-Si on définit la relation <I>E</I> par <I>x</I> <I>E</I> <I>y</I> est vrai lorsque 
-<I>f</I>(<I>x</I>,<I>y</I>) et <I>f</I>(<I>y</I>,<I>x</I>) sont simultanément faux
-alors <I>E</I> doit être une relation d’équivalence.
-</LI></UL><P>
-Sinon l’algorithme employé risque de boucler....
-Par exemple, on ne peut pas mettre comme
-fonction de tri : <TT>(x,y)-&gt;x[1]&gt;=y[1]</TT>. 
-On tape :
-</P><DIV CLASS="center"><TT>sort([3,4,2],(x,y)-&gt;x&gt;y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[4,3,2]</TT></DIV><P>
-<B>Pour trier des listes de listes</B><BR>
-<TT>sort</TT> trie les listes de listes par ordre croissant. 
-</P><DIV CLASS="center"><TT>sort([[1,3],[2,4],[2,3],[1,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,3],[1,4],[2,3],[2,4]]</TT></DIV><P>
-Pour un ordre différent, il faut mettre
-une fonction de tri comme 2ième argument.<BR>
-Par exemple :<BR>
-Si on veut trier par ordre décroissant la première colonne ou en cas 
-d’égalité par ordre décroissant la 2ième colonne (ordre 
-lexicographique).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>sort([[1,3],[2,4],[2,3],[1,4]],(x,y)-&gt;when(x[0]==y[0],x[1]&gt;y[1],x[0]&gt;y[0]))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[2,4],[2,3],[1,4],[1,3]]</TT></DIV><P>
-Et si on veut trier par ordre décroissant la 2ième
-colonne ou en cas d’égalité par ordre décroissant la première colonne.<BR>
- On tape :
-</P><DIV CLASS="center"><TT>sort([[1,3],[2,4],[2,3],[1,4]],<BR>
-(x,y)-&gt;when(x[1]==y[1],x[0]&gt;y[0],x[1]&gt;y[1]))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[2,4],[1,4],[2,3],[1,3]]</TT></DIV><P>
-<B>Attention</B> 
-Dans l’exemple précédent,
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-on ne peut pas mettre comme
-fonction de tri
-<TT>(x,y)-&gt;x[1]&gt;=y[1]</TT> car l’ordre n’est pas strict 
-</LI><LI CLASS="li-itemize">on peut mettre comme fonction de tri
-<TT>f:=(x,y)-&gt;x[1]&gt;y[1]</TT> bien que l’ordre ne soit pas total. 
-</LI></UL><P>
-Soient :<BR>
-<TT>L1:=[[1,2],[2,3],[4,3]]</TT><BR>
-<TT>L2:=[[1,2],[4,3],[2,3]]</TT><BR>
-Dans ce cas <TT>sort(L1,(x,y)-&gt;x[1]&gt;y[1])</TT> et
-<TT>sort(L2,(x,y)-&gt;x[1]&gt;y[1])</TT> renvoient des réponses
-différentes parce que l’ordre n’est pas total et que
-<TT>[2,3]</TT> et <TT>[4,3]</TT> sont considérés comme équivalents.</P><HR>
+</P><DIV CLASS="center"><TT>[[3,4,2,1,2,4]]</TT></DIV><HR>
 <A HREF="cascmd_fr508.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr510.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

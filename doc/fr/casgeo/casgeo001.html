@@ -12,7 +12,7 @@
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casgeo002.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc1">Chapitre 1</A>  Pour débuter en géométrie</H1><P>
+Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc1">Chapitre 1</A>  Pour débuter en géométrie</H1><P>
 Tapez <TT>Alt+g</TT> pour ouvrir un niveau de géométrie 2-d.<BR>
 Tapez <TT>Alt+h</TT> pour ouvrir un niveau de géométrie 3-d.<BR>
 Ou bien utilisez le menu
@@ -221,7 +221,7 @@ segment <I>AB</I> et cela même si on a tapé <TT>t:=element(-1..2)</TT> car pou
 <I>t</I>&lt;0 <TT>M</TT> restera en <TT>A</TT> et pour <I>t</I>&gt;0 <TT>M</TT> restera en <TT>B</TT>.
 </LI></UL><H3 CLASS="subsection"><A NAME="htoc16">1.4.6</A>  Fonctions s’appliquant à un point</H3><P><A NAME="@default10"></A><A NAME="@default11"></A><A NAME="@default12"></A><A NAME="@default13"></A><A NAME="@default14"></A><A NAME="@default15"></A><A NAME="@default16"></A><A NAME="@default17"></A><A NAME="@default18"></A><A NAME="@default19"></A><A NAME="sec:coordonnees"></A>
 Dans ce qui suit on suppose que l’on a défini deux points <TT>A</TT> et <TT>B</TT>
-et que Ox et Oy désignent les axes du repère défini dans 
+et que <I>Ox</I> et <I>Oy</I> désignent les axes du repère défini dans 
 la fenêtre d’initialisation graphique.<BR>
 <TT>re(A)</TT> désigne le point projection orthogonale de <TT>A</TT> sur Ox.<BR>
 <TT>im(A)</TT> désigne le point projection orthogonale de <TT>A</TT> sur Oy.<BR>
@@ -263,7 +263,7 @@ entièrement défini par son affixe qui est le nombre complexe égal
 à la différence de ces deux points :<BR>
 en effet la différence de deux points est un nombre complexe égal à la 
 différence des affixes de ces deux points, et ce nombre complexe représente un vecteur d’origine O.<BR>
-Exemples :<BR>
+<B>Exemples</B><BR>
 Si on a deux points <TT>A</TT> et <TT>B</TT> le vecteur <I>AB</I> sera désigné par le nombre complexe <TT>B-A</TT>.<BR>
 <TT>D:=C+A-B</TT> : <I>D</I> est un point tel que <I>ABCD</I> est un parallélogramme
 puisque <I>CD</I>=<I>BA</I> (<TT>D-C=A-B</TT>).<BR>
@@ -435,7 +435,7 @@ Pour définir un arc <I>AB</I> situé sur le cercle de diamètre <I>CD</I>, on t
 <TT>arccercle1(C,D,A,B):=</TT><BR>
 <TT>    cercle(C,D,arg(A-milieu(C,D)),arg(B-milieu(C,D)));</TT><BR>
 Pour définir un arc <I>AB</I> situé sur le cercle de centre <I>C</I> et de rayon <I>r</I>, on tape :<BR>
-<TT>arccercle2(C,r,A,B):=cercle(C,r,arg(A-C),arg(B-C));</TT></P><P>On se repotera à <A HREF="#sec:cercletri">1.10</A> pour les cercles inscrits, exinscrits
+<TT>arccercle2(C,r,A,B):=cercle(C,r,arg(A-C),arg(B-C));</TT></P><P>On se repotera à <A HREF="#sec:cercletri">1.12</A> pour les cercles inscrits, exinscrits
 et circonscrits à un triangle.
 </P><H3 CLASS="subsection"><A NAME="htoc22">1.4.12</A>  Fonctions s’appliquant à un cercle</H3><P><A NAME="@default28"></A><A NAME="@default29"></A>
 On suppose que l’on a défini un cercle <TT>C</TT>.<BR>
@@ -545,7 +545,7 @@ ou<BR>
 <TT>K:=barycentre([[A,2],[B,1],[C,-2],[D,3],[E,1]])</TT><BR>
 et <TT>K</TT> est le barycentre des points <TT>A,B,C,D,E</TT> affectés des 
 coefficients <TT>2,1,-2,3,1</TT>.<BR>
-<B>Activités</B><BR>
+<B>Activités 1</B><BR>
 Créer 4 points <TT>A,B,C,D</TT>.<BR>
 Définir l’isobarycentre de <TT>A,B,C,D</TT>, en utilisant les coordonnées.<BR>
 <B>Réponse</B><BR>
@@ -577,7 +577,117 @@ local s,d:=dim(L);
   si (s==0) alors return "pas defini" fsi;
 retourne sum(L[k+1]*L[k],k,0,d-2,2)/s;
 }
-</PRE><H3 CLASS="subsection"><A NAME="htoc29">1.5.4</A>  Bissectrice d’un angle</H3><P><A NAME="@default37"></A><A NAME="@default38"></A>
+</PRE><P><B>Activité 2 : Partager un triangle en 3 triangles de même aire</B><BR>
+Soit un triangle <I>ABC</I>. 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On cherche un point <I>P</I> intérieur au triangle <I>ABC</I> tel que les aires 
+des triangles <I>ABP</I>, <I>BCP</I> et <I>CAP</I> soient égales.<BR>
+Montrer que <I>P</I> est l’isobarycentre des points <I>A</I>,<I>B</I>,<I>C</I>.
+</LI><LI CLASS="li-itemize">On cherche un point <I>P</I> tel que les aires des triangles <I>ABP</I>, <I>BCP</I> et
+<I>CAP</I> soient proportionnelles à 1,2,3.
+Définir <I>P</I> à l’aide d’un barycentre des points <I>A</I>,<I>B</I>,<I>C</I>.
+</LI><LI CLASS="li-itemize">On cherche un point <I>P</I> tel que les aires des triangles <I>ABP</I>, <I>BCP</I> et
+<I>CAP</I> soient soient proportionnelles à <I>n</I>,<I>p</I>,<I>q</I>.
+Définir <I>P</I> à l’aide d’un barycentre des points <I>A</I>,<I>B</I>,<I>C</I>.
+</LI><LI CLASS="li-itemize">prolongement<BR>
+Peut-on toujours trouver un point <I>P</I> intérieur au quadrilatère convexe 
+<I>ABCD</I> qui partage ce quadrilatère en 4 triangles de même aire ?<BR>
+A quelle condition cela est-il possible ?
+</LI></UL><P>
+Avec <TT>Xcas</TT>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On tape :
+<PRE CLASS="verbatim">supposons(a=[2.6,-5,5,0.1]);
+supposons(b=[2,0,5,0.1]);
+supposons(c=[2.8,0,5,0.1]);
+A:=point(0);
+B:=point(b);
+C:=point(a+i*c);
+triangle(A,B,C);
+H:=projection(droite(B,C),A);
+H1:=point((H-A)*2/3);
+h:=hauteur(A,B,C);
+d1:=perpendiculaire(H1,h);
+d2:=droite(y=c/3);
+P:=inter_unique(d1,d2);
+segment(P,A,affichage=1);
+segment(P,B,affichage=1);
+segment(P,C,affichage=1);
+A1:=inter_unique(droite(C,B),droite(A,P));
+C1:=inter_unique(droite(A,B),droite(C,P));
+G:=isobarycentre(A,B,C):;
+</PRE>On obtient :<BR>
+<IMG SRC="casgeo001.png"><BR>
+On trouve :
+<I>P</I> est le <TT>point(1/3*a+1/3*b+(i)/3*c)</TT>,<BR>
+<I>A</I>1 est le <TT>point(1/2*a+1/2*b+(i)/2*c)</TT><BR>
+<I>C</I>1 est le <TT>point(1/2*b)</TT><BR>
+<I>G</I> est le <TT>point((b+a+(i)*c)/3)</TT><BR>
+Donc<BR>
+<I>A</I>1 est le milieu de <I>BC</I> et <I>C</I>1 est le milieu de <I>BC</I>
+<I>P</I> est l’isobarycentre des points <I>A</I>,<I>B</I>,<I>C</I>.
+</LI><LI CLASS="li-itemize"><I>P</I>, le barycentre de <I>C</I>,1, <I>A</I>,2, <I>B</I>,3 répond à la question.
+</LI><LI CLASS="li-itemize"><I>P</I>, le barycentre de <I>C</I>,<I>n</I>, <I>A</I>,<I>p</I>, <I>B</I>,<I>q</I> répond à la question.
+</LI><LI CLASS="li-itemize"><B>Lemme1</B><BR>
+<IMG SRC="casgeo002.png"><BR>
+Soit un triangle <I>OQR</I> et un point <I>M</I> sur le segment <I>OQ</I> alors
+aire de <I>OMR</I>=aire de <I>MQR</I> est équvalent à <I>M</I> est le milieu de <I>OQ</I>
+<B>Lemme2</B>
+Soit un quadrilatère <I>OPQR</I>.<BR>
+On note les parallèles <I>d</I>1 et <I>d</I>2à <I>OQ</I> et <I>h</I> la distance entre <I>d</I>1 et <I>d</I>2, alors :<BR>
+aire(<I>OPQR</I>)=longueur(<I>OQ</I>)*<I>h</I>/2.
+<B>Lemme3</B>
+Soit un quadrilatère <I>OPQR</I> alors:<BR>
+aire(<I>OPQ</I>)=aire(<I>OQR</I>) est équivalent à <I>OQ</I> passe par le milieu de <I>PR</I>.<BR>
+Les démonstrations sont èvidentes car l’aire d’un triangle est égale à :
+base*hauteur/2.<BR>
+Pour le Lemme1 :<BR>
+<I>OPR</I> (resp <I>PQR</I>) ont comme base <I>OP</I> (resp <I>PQ</I>) et la même hauteur.<BR>
+Pour le Lemme2 :<BR>
+évident si <I>OPQR</I> est convexe.<BR>
+sinon<BR>
+<IMG SRC="casgeo003.png"><BR>
+aire(<I>OPQR</I>)=aire(<I>OQR</I>)-aire(<I>OPQ</I>)=<BR>
+longueur(<I>OQ</I>)*(longueur(<I>RM</I>)-longueur(<I>PN</I>)/2=longueur(<I>OQ</I>)*h/2
+Pour le Lemme3 :<BR>
+<IMG SRC="casgeo004.png"><BR>
+<I>OPQ</I> et <I>OQR</I> ont comme base <I>OQ</I> donc<BR>
+aires égales est équivalent à même hauteur qui est équivalent à 
+<I>OQ</I> passe par le milieu de <I>PR</I>.<BR>
+Soit un quadrilatère convexe <I>ABCD</I>.<BR>
+<IMG SRC="casgeo005.png"><BR>
+On cherche tout d’abord un point <I>P</I> tel que :<BR>
+aire(<I>ABCP</I>)=aire(<I>APCD</I>).<BR>
+On mène par <I>B</I> et <I>D</I> les parallèles <I>d</I>1 et <I>d</I>2à <I>AC</I>.
+D’après le <TT>lemme 2</TT> <I>P</I> se trouve sur la parallèle équidistante à 
+<I>d</I>1 et <I>d</I>2.<BR>
+On veut aussi que :<BR>
+aire(<I>ADP</I>)=aire(<I>CDP</I>)<BR>
+La base commune est <I>DP</I>, d’après le <TT>lemme 3</TT>, <I>DP</I> passe par le milieu 
+<I>M</I> de <I>AC</I> i.e <I>D</I>,<I>P</I>,<I>M</I> sont align'es (c’est vrai sur la figure).<BR>
+aire(<I>ABP</I>)=aire(<I>CBP</I>)<BR>
+La base commune est <I>BP</I>, d’après le <TT>lemme 3</TT>, <I>BP</I> passe par le milieu 
+<I>M</I> de <I>AC</I> i.e <I>B</I>,<I>P</I>,<I>M</I> sont align'es (ce n’est pas vrai sur la figure).<BR>
+Donc, si les 4 aires sont égales, on a :
+<I>P</I> est en <I>M</I> ou <I>P</I> est différent de <I>M</I> et donc les points <I>D</I>,<I>P</I>,<I>M</I>,<I>B</I> sont 
+alignés.<BR>
+Si <I>P</I> est en <I>M</I>, <I>P</I> se trouve sur <I>AC</I> donc <I>AC</I> est la parallèle 
+équidistante à <I>d</I>1 et <I>d</I>2. Donc <I>AC</I> passe par le milieu de <I>BD</I>.<BR>
+Si <I>P</I> est différent de <I>M</I>, les points <I>D</I>,<I>P</I>,<I>M</I>,<I>B</I> sont alignés. Donc
+<I>BD</I> passe par le milieu <I>M</I> de <I>AC</I> et <I>P</I> est en <I>N</I> milieu de <I>BD</I>
+d’après le <TT>lemme 1</TT><BR>
+<TT>En résumé</TT>
+On peut un point <I>P</I> intérieur à un quadrilatère convexe <I>ABCD</I> qui 
+partage ce quadrilatère en 4 triangles de même aire si et seulement si l’une
+des diagonales de <I>ABCD</I> passe par le milieu de l’autre diagonale : <I>P</I> est 
+alors le milieu de la diagonale qui passe par le milieu de l’autre diagonale.
+<DIV CLASS="minipage">
+<IMG SRC="casgeo006.png">
+</DIV>
+<DIV CLASS="minipage">
+<IMG SRC="casgeo007.png">
+</DIV>
+</LI></UL><H3 CLASS="subsection"><A NAME="htoc29">1.5.4</A>  Bissectrice d’un angle</H3><P><A NAME="@default37"></A><A NAME="@default38"></A>
 Étant donné trois points <TT>A</TT>, <TT>B</TT> et <TT>C</TT> les commandes :<BR>
 <TT>bissectrice(A,B,C)</TT> trace la bissectrice intérieure de l’angle <I>A</I> du 
 triangle <I>ABC</I>.<BR>
@@ -649,7 +759,7 @@ On tape :<BR>
 la perpendiculaire, passant par A, à la droite BC.<BR>
 On tape :<BR>
 <TT>perpendiculaire(A,droite(B,C))</TT> ou,<BR>
-<TT>hauteur(A,B,C)</TT> (voir aussi <A HREF="#sec:droitetri">1.9</A>) ou,<BR>
+<TT>hauteur(A,B,C)</TT> (voir aussi <A HREF="#sec:droitetri">1.11</A>) ou,<BR>
 on utilise le nombre complexe <TT>i</TT> : <TT>droite(A,A+i*(C-B))</TT>.<BR>
 <B>Activité</B><BR>
 Créer un point <TT>A</TT> et une droite <TT>BC</TT> ne passant pas par <TT>A</TT>.<BR>
@@ -887,14 +997,14 @@ L:=inter(c2,p);
 t1:=parallele(L[0],droite(A,B),affichage=1);
 t2:=parallele(L[1],droite(A,B),affichage=1);
 </PRE>On obtient :<BR>
-<IMG SRC="casgeo001.png">
+<IMG SRC="casgeo008.png">
 </LI><LI CLASS="li-itemize">Si les 2 cercles ont des rayons différents, par exemple si :<BR>
 <TT>C1:=cercle(A,r1)</TT> et <TT>C2:=cercle(B,r2)</TT> avec <TT>r1&lt;r2</TT>.<BR>
 Si <TT>K1</TT> et <TT>K2</TT> sont les points de contact d’une tangente extérieure 
 commune à <TT>C1</TT> et <TT>C2</TT>, le quadrilatère <I>A</I>,<I>B</I>,<I>K</I>2,<I>K</I>1 est un trapèze
 rectangle que l’on peut partager en un rectangle <I>A</I>,<I>R</I>,<I>K</I>2,<I>K</I>1 et un triangle 
 rectangle <I>A</I>,<I>B</I>,<I>R</I>.<BR>
-<IMG SRC="casgeo002.png"><BR>
+<IMG SRC="casgeo009.png"><BR>
 Donc <I>R</I> se trouve sur le cercle de diamètre <I>AB</I> et sur le cercle de centre <I>B</I> et de rayon <I>r</I>2−<I>r</I>1.<BR>
 On tape :
 <PRE CLASS="verbatim">A:=point([-3.5,0.5],affichage=4);
@@ -914,7 +1024,7 @@ segment(B,T1,affichage=ligne_tiret_point);
 segment(B,T2,affichage=ligne_tiret_point);
 segment(A,B);
 </PRE>On obtient :<BR>
-<IMG SRC="casgeo003.png">
+<IMG SRC="casgeo010.png">
 </LI><LI CLASS="li-itemize">Avec un programme :<BR>
 Si <TT>C1:=cercle(A,r1)</TT> et <TT>C2:=cercle(B,r2)</TT> alors on doit avoir :<BR>
 <TT>longueur2(A,B)&gt;=(r2-r1)</TT><CODE><TT>^</TT></CODE><TT>2</TT>.<BR>
@@ -953,7 +1063,7 @@ Si les 2 cercles sont extérieurs, par exemple si :<BR>
 Si <TT>K1</TT> et <TT>K2</TT> sont les points de contact d’une tangente intérieure 
 commune à <TT>C1</TT> et <TT>C2</TT>, la parallèle à <I>K</I>1<I>K</I>2 menée par <I>A</I>
 coupe <I>BK</I>2 en <I>R</I>. On a <I>BR</I>=<I>r</I>2+<I>r</I>1 et le triangle <I>A</I>,<I>B</I>,<I>R</I> est rectangle en <I>R</I>.<BR>
-<IMG SRC="casgeo004.png"><BR>
+<IMG SRC="casgeo011.png"><BR>
 Donc <I>R</I> se trouve sur le cercle de diamètre <I>AB</I> et sur le cercle de centre <I>B</I> et de rayon <I>r</I>2−<I>r</I>1.<BR>
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 On tape dans un niveau de géométrie 2D :
@@ -974,7 +1084,7 @@ segment(B,L[0],affichage=ligne_tiret_point);
 segment(B,L[1],affichage=ligne_tiret_point);
 segment(A,B);
 </PRE>On obtient :<BR>
-<IMG SRC="casgeo005.png">
+<IMG SRC="casgeo012.png">
 </LI><LI CLASS="li-itemize">Avec un programme :<BR>
 Si <TT>C1:=cercle(A,r1)</TT> et <TT>C2:=cercle(B,r2)</TT> alors on doit avoir :<BR>
 <TT>longueur2(A,B)&gt;=(r2-r1)</TT><CODE><TT>^</TT></CODE><TT>2</TT>.<BR>
@@ -1053,33 +1163,167 @@ return [C1,C2,t1,t2,t3,t4];
 <TT>tangentei2c(point(0,0),1,point(-4,0),2);</TT><BR>
 On obtient :<BR>
 
-<IMG SRC="casgeo006.png"><BR>
+<IMG SRC="casgeo013.png"><BR>
 On tape :<BR>
 <TT>tangentei2c(point(0,0),1,point(-3,0),2);</TT><BR>
 On obtient :<BR>
 
-<IMG SRC="casgeo007.png"><BR>
+<IMG SRC="casgeo014.png"><BR>
 On tape :<BR>
 <TT>tangentei2c(point(0,0),1,point(-2,0),2);</TT><BR>
 On obtient :<BR>
 
-<IMG SRC="casgeo008.png"><BR>
+<IMG SRC="casgeo015.png"><BR>
 On tape :<BR>
 <TT>tangentei2c(point(0,0),1,point(-1,0),2)</TT><BR>
 On obtient :<BR>
 
-<IMG SRC="casgeo009.png"><BR>
+<IMG SRC="casgeo016.png"><BR>
 On tape :<BR>
 <TT>tangentei2c(point(0,0),1,point(-0.5,0),2)</TT><BR>
 On obtient :<BR>
+<IMG SRC="casgeo017.png"></P><H2 CLASS="section"><A NAME="toc6"></A><A NAME="htoc37">1.6</A>  Une construction plus difficile</H2><P>
+Soit un rectangle <I>ABCD</I> tel que <I>AB</I>=<I>a</I> et <I>AD</I>=<I>b</I>.<BR>
+On cherche les conditions que doivent vérifier <I>x</I> et <I>y</I> pour que l’on puisse
+construire un point <I>M</I>, de coordonnèes (<I>x</I>,<I>y</I>), à l’intérieur du 
+rectangle vérifiant :<BR>
+<I>MD</I>=3, <I>MC</I>=4 et <I>MB</I>=5.<BR>
+<IMG SRC="casgeo018.png"><BR>
+Si l’affixe de <I>M</I> est <I>m</I>+<I>i</I>*<I>n</I>, écrire les relations qui lient <I>m</I>,<I>n</I>,<I>a</I>,<I>b</I>.<BR>
+Faire la construction avec <TT>Xcas</TT>.<BR>
 
-<IMG SRC="casgeo010.png"></P><H2 CLASS="section"><A NAME="toc6"></A><A NAME="htoc37">1.6</A>  Les transformations</H2><P>
+On a donc :<BR>
+0≤ <I>m</I>≤ 3 et 0≤ <I>n</I>≤ 5<BR>
+On pose :<BR>
+<TT>M:=point(m+i*n)</TT><BR>
+<TT>A:=point(0)</TT><BR>
+<TT>B:=point(a)</TT><BR>
+<TT>C:=point(a+i*b)</TT><BR>
+<TT>D:=point(i*b)</TT><BR>
+On tape :<BR>
+<TT>longueur2(M,D)-9</TT><BR>
+On obtient :<BR>
+<TT>(m)</TT><CODE><TT>^</TT></CODE><TT>2+(-b+n)</TT><CODE><TT>^</TT></CODE><TT>2-9</TT><BR>
+On tape :<BR>
+<TT>longueur2(M,C)-16</TT><BR>
+On obtient :<BR>
+<TT>(-a+m)</TT><CODE><TT>^</TT></CODE><TT>2+(-b+n)</TT><CODE><TT>^</TT></CODE><TT>2-16</TT><BR>
+On tape :<BR>
+<TT>longueur2(M,B)-25</TT><BR>
+On obtient :<BR>
+<TT>n</TT><CODE><TT>^</TT></CODE><TT>2+(-a+m)</TT><CODE><TT>^</TT></CODE><TT>2-25</TT><BR>
+Donc <I>m</I>,<I>n</I>,<I>a</I>,<I>b</I> vérifient les équations :<BR>
+[(<I>m</I>)<SUP>2</SUP>+(−<I>b</I>+<I>n</I>)<SUP>2</SUP>=9,(−<I>a</I>+<I>m</I>)<SUP>2</SUP>+(−<I>b</I>+<I>n</I>)<SUP>2</SUP>=16,<I>n</I><SUP>2</SUP>+(−<I>a</I>+<I>m</I>)<SUP>2</SUP>=25]<BR>
+Donc :<BR>
+<I>m</I><SUP>2</SUP>+<I>n</I><SUP>2</SUP>=(<I>m</I>)<SUP>2</SUP>+(−<I>b</I>+<I>n</I>)<SUP>2</SUP>−((−<I>a</I>+<I>m</I>)<SUP>2</SUP>+(−<I>b</I>+<I>n</I>)<SUP>2</SUP>)+<I>n</I><SUP>2</SUP>+(−<I>a</I>+<I>m</I>)<SUP>2</SUP>=9−16+25=18<BR>
+Le point <I>M</I> se trouve donc sur le cercle <I>c</I> de centre <I>A</I> et de rayon 
+√<SPAN style="text-decoration:overline">18</SPAN>.
+Comme 0≤ <I>m</I>≤ 3 et que le point d’affixe 3+3*<I>i</I> est sur le cercle <I>c</I>, 
+on peut dire que <I>M</I> est sur l’arc π/4,π/2 (0≤ <I>n</I>≤ 5 sera 
+vérifié car √<SPAN style="text-decoration:overline">18</SPAN>&lt;5).<BR>
+On tape :
+</P><PRE CLASS="verbatim">A:=point(0);
+c:=cercle(0,3*sqrt(2),pi/4,pi/2);
+supposons(m=[2.7,0,3,0.1]);
+M:=point(m+i*sqrt(18-m^2));
+c1:=cercle(M,5);
+c2:=cercle(M,3);
+B:=inter_unique(droite(y=0),c1);
+D:=inter_unique(droite(x=0),c2);
+C:=inter_unique(droite(x=affixe(B)),droite(y=-i*affixe(D)));
+polygone(A,B,C,D);
+affixe(B),affixe(C);
+affichage(plotparam(u+sqrt(7+u^2)+i*(sqrt(18-u^2)+sqrt(9-u^2)),
+                    u=0..sqrt(9),tstep=0.1),1);
+trace(D);
+</PRE><P><IMG SRC="casgeo019.png">
+<B>Remarque</B><BR>
+Le problème est plus facile si on modifie les conditions.<BR>
+On cherche les conditions que doivent vérifier <I>x</I> et <I>y</I> pour que l’on puisse
+construire un point <I>M</I>, de coordonnèes (<I>x</I>,<I>y</I>), à l’intérieur du 
+rectangle vérifiant :<BR>
+<I>MD</I>=3, <I>MC</I>=5 et <I>MB</I>=4.<BR>
+On a alors :<BR>
+<I>x</I><SUP>2</SUP>+(<I>y</I>−<I>b</I>)<SUP>2</SUP>=9
+(<I>x</I>−<I>a</I>)<SUP>2</SUP>+(<I>y</I>−<I>b</I>)<SUP>2</SUP>=25
+(<I>x</I>−<I>a</I>)<SUP>2</SUP>+<I>y</I><SUP>2</SUP>=16
+Donc :<BR>
+<I>x</I><SUP>2</SUP>+(<I>y</I>−<I>b</I>)<SUP>2</SUP>−(<I>x</I>−<I>a</I>)<SUP>2</SUP>−(<I>y</I>−<I>b</I>)<SUP>2</SUP>+(<I>x</I>−<I>a</I>)<SUP>2</SUP>+<I>y</I><SUP>2</SUP>=<I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>=0
+Donc <I>x</I>=0, <I>y</I>=0 et <I>M</I> se trouve en <I>A</I>.<BR>
+Le rectangle a alors comme dimension <I>a</I>=4 et <I>b</I>=3. 
+</P><H2 CLASS="section"><A NAME="toc7"></A><A NAME="htoc38">1.7</A>  Une autre construction avec un triangle équilatéral</H2><P>
+Soit un triangle équilatéral <I>ABC</I> tel que <I>AB</I>=<I>a</I>.<BR>
+On cherche la valeur de <I>a</I> pour que l’on puisse
+construire un point <I>M</I> à l’intérieur du triangle <I>ABC</I> tel que
+<I>MA</I>=4, <I>MB</I>=5 et <I>MC</I>=3.<BR>
+Faire la construction de <I>ABC</I> et calculer les aires des 4 triangles :<BR>
+<I>ABC</I>, <I>ABM</I>, <I>ACM</I>, <I>BCM</I>.
+</P><DIV CLASS="center"><IMG SRC="casgeo020.png"></DIV><P>
+On pourra effectuer la rotation de centre <I>A</I> et d’angle π/3 qui 
+transforme <I>M</I> en <I>N</I>.<BR>
+
+<B>La solution</B><BR>
+Considérons la rotation de centre <I>A</I> et d’angle π/3 qui transforme <I>M</I> 
+en <I>N</I>.<BR>
+Le triangle <I>AMN</I> est isocèle de sommet <I>A</I> et on a :<BR>
+<I>MAN</I>=<I>MAC</I>+<I>CAN</I>=<I>MAC</I>+<I>BAM</I>=<I>BAC</I>=π/3<BR>
+Donc le triangle <I>AMN</I> est équilatéral et <I>MN</I>=4.<BR>
+Le triangle <I>CNM</I> a donc pour côtés : <I>CM</I>=3, <I>MN</I>=4, <I>CN</I>=5.<BR>
+Le triangle <I>CNM</I> est donc rectangle en <I>M</I>. et l’angle <I>CMA</I>=5π/6.<BR>
+On a donc puisque cos(5π/6)=−√<SPAN style="text-decoration:overline">3</SPAN>/2, <I>MC</I>=3 et <I>AM</I>=4 :<BR>
+<I>a</I><SUP>2</SUP>=<I>AC</I><SUP>2</SUP>=3<SUP>2</SUP>+4<SUP>2</SUP>−2*3*4*(−√<SPAN style="text-decoration:overline">3</SPAN>/2)=25+12√<SPAN style="text-decoration:overline">3</SPAN>.<BR>
+<B>La construction</B><BR>
+On tape :
+</P><PRE CLASS="verbatim">C:=point(3);
+A:=point(-4*sqrt(3)/2+4*i/2,affichage=quadrant2);
+B:=rotation(C,pi/3,A);
+triangle(A,B,C);
+M:=point(0);
+triangle_equilateral(A,M,N,affichage=1);
+segment(B,M);
+segment(C,M);
+</PRE><P>On obtient :<BR>
+<IMG SRC="casgeo021.png">
+On vérifie, on tape :<BR>
+<TT>normal(longueur(A,M),longueur(B,M))</TT><BR>
+On obtient :<BR>
+<TT>4,5</TT><BR>
+<B>Calcul des aires à l’aide d’un puzzle</B><BR>
+On considère 2 exemplaires du triangle équilatéral <I>ABC</I> défini 
+ci-dessus. On découpe un des exemplaires en 3 morceaux qui sont les triangles
+<I>ABM</I>, <I>BCM</I> et <I>AMC</I>. On obtient donc un puzzle avec les 4 pièces :<BR>
+<IMG SRC="casgeo022.png"><BR>
+On réalise alors avec ces 4 pièces l’octogone :<BR>
+<IMG SRC="casgeo023.png"><BR>
+On a tracé les segments joignant <I>M</I> au sommet de l’octogone.<BR>
+Cet octogone est compse de 3 triangles rectangles de côtés 3,4,5 et de 
+3 triangles èquilatéraux de côtés respectifs 3,4 et 5.
+On a donc si <I>S</I> est l’aire de <I>ABC</I> :<BR>
+2<I>S</I>=<I>a</I><SUP>2</SUP>√<SPAN style="text-decoration:overline">3</SPAN>/2=3*3*2+(9+16+25)√<SPAN style="text-decoration:overline">3</SPAN>/4=18+25√<SPAN style="text-decoration:overline">3</SPAN>/2<BR>
+Donc <I>S</I>=9+25√<SPAN style="text-decoration:overline">3</SPAN>/4 et on retrouve que <I>a</I><SUP>2</SUP>=25+12√<SPAN style="text-decoration:overline">3</SPAN><BR>
+Soient <I>s</I><SUB>1</SUB>,<I>s</I><SUB>2</SUB>,<I>s</I><SUB>3</SUB>,<I>s</I><SUB>4</SUB> les aires des triangles de couleurs 1 (rouge),2(vert),
+3(jaune),4(bleu).<BR>
+On va donc résoudre le système linéaire :<BR>
+[<I>s</I><SUB>1</SUB>−<I>s</I><SUB>2</SUB>−<I>s</I><SUB>3</SUB>−<I>s</I><SUB>4</SUB>=0,<I>s</I><SUB>2</SUB>+<I>s</I><SUB>3</SUB>=6+25√<SPAN style="text-decoration:overline">3</SPAN>/4,<I>s</I><SUB>2</SUB>+<I>s</I><SUB>4</SUB>=9√<SPAN style="text-decoration:overline">3</SPAN>/4+6,<I>s</I><SUB>3</SUB>+<I>s</I><SUB>4</SUB>=4√<SPAN style="text-decoration:overline">3</SPAN>+6]<BR>
+On tape :<BR>
+<TT>linsolve([s1-s2-s3-s4=0,s2+s3=6+25*sqrt(3)/4,<BR>
+s2+s4=9*sqrt(3)/4+6,s3+s4=4*sqrt(3)+6],[s1,s2,s3,s4])</TT><BR>
+On obtient :<BR>
+<TT>[(sqrt(3)*25+36)/4,(sqrt(3)*9+12)/4,sqrt(3)*4+3,3]</TT><BR>
+On a tapé pour obtenir l’octogone :
+</P><PRE CLASS="verbatim">triangle(A,B,C,affichage=1+rempli);
+triangle(A,C,N,affichage=2+rempli);
+P:=rotation(C,pi/3,M):;
+Q:=rotation(B,pi/3,M):;
+triangle(B,C,P,affichage=4+rempli))
+triangle(B,A,Q,affichage=3+rempli);
+</PRE><H2 CLASS="section"><A NAME="toc8"></A><A NAME="htoc39">1.8</A>  Les transformations</H2><P>
 Les transformations ci-dessous peuvent toujours être considérées, soit 
 comme des fonctions (les arguments sont les paramètres servant à définir 
 la transformation), soit comme agissant sur le dernier argument (les arguments 
 sont les paramètres servant à définir 
 la transformation et alorsl’objet géométrique à 
-transformer est mis comme dernier paramètre).</P><H3 CLASS="subsection"><A NAME="htoc38">1.6.1</A>  La translation</H3><P><A NAME="@default46"></A>
+transformer est mis comme dernier paramètre).</P><H3 CLASS="subsection"><A NAME="htoc40">1.8.1</A>  La translation</H3><P><A NAME="@default46"></A>
 Étant donné trois points <TT>A, B, C</TT> le point :<BR>
 <TT>translation(C-B,A)</TT> est le transformé du point <TT>A</TT> dans la 
 translation de vecteur <TT><I>BC</I></TT>.<BR>
@@ -1096,7 +1340,7 @@ Créer un point <TT>F</TT> à l’extérieur de ce polygone.<BR>
 Construire le polygone <TT>FGHJK</TT> translaté de <TT>ABCDE</TT> dans la translation de vecteur <TT><I>AF</I></TT>.<BR>
 Faites bouger le point <TT>A</TT> et observer.<BR>
 Faites bouger le point <TT>F</TT> et observer.
-</P><H3 CLASS="subsection"><A NAME="htoc39">1.6.2</A>  L’homothétie</H3><P><A NAME="@default47"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc41">1.8.2</A>  L’homothétie</H3><P><A NAME="@default47"></A>
 Étant donné deux points <TT>A, B</TT> et un nombre réel <I>k</I>, le point :<BR>
 <TT>homothetie(B,k,A)</TT> est le transformé du point <TT>A</TT> dans 
 l’homothétie de centre <TT>B</TT> et de rapport <I>k</I>.<BR>
@@ -1113,7 +1357,7 @@ Construire le polygone <TT>GHJKL</TT> homothétique de <TT>ABCDE</TT> dans
 l’homothétie de vecteur centre <TT>F</TT> et de rapport 2.<BR>
 Faites bouger le point <TT>A</TT> et observer.<BR>
 Faites bouger le point <TT>F</TT> et observer.
-</P><H3 CLASS="subsection"><A NAME="htoc40">1.6.3</A>  La symétrie droite et la symétrie point</H3><P><A NAME="@default48"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc42">1.8.3</A>  La symétrie droite et la symétrie point</H3><P><A NAME="@default48"></A>
 Étant donné trois points <TT>A, B, C</TT> le point :<BR>
 <TT>symetrie(droite(B,C),A)</TT> est le transformé du point <TT>A</TT> dans la
 symétrie par rapport à la droite <I>BC</I>,<BR>
@@ -1128,7 +1372,7 @@ On peut aussi comme exercice de programmation définir les fonctions
 On tape (<TT>A</TT> et <TT>M</TT> sont des points et <TT>d</TT> est une droite) :<BR>
 <TT>Symetrie_point((A,M)):=A+(A-M)</TT><BR>
 <TT>Symetrie_droite(d,M):= {local N:=inter_unique(Perpendiculaire(M,d),d);Symetrie_point(N,M);}</TT>
-</P><H3 CLASS="subsection"><A NAME="htoc41">1.6.4</A>  La rotation</H3><P><A NAME="@default49"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc43">1.8.4</A>  La rotation</H3><P><A NAME="@default49"></A>
 Étant donné deux points <TT>A, B</TT> et un réel <I>u</I>, le point :<BR>
 <TT>rotation(B,u,A)</TT> est le transformé du point <TT>A</TT> dans la 
 rotation de centre <TT>B</TT> et d’angle de mesure <I>u</I> radians (ou degrés selon 
@@ -1136,13 +1380,13 @@ la configuration du <TT>CAS</TT> menu <TT>Cfg-&gt;Configuration du CAS</TT>).<BR
 On a aussi <TT>r:=rotation(B,u)</TT> est la rotation de centre <TT>B</TT> et d’angle 
 de mesure <I>u</I> radians (ou degrés selon la Configuration du <TT>CAS</TT> menu
 <TT>Cfg</TT>).
-</P><H3 CLASS="subsection"><A NAME="htoc42">1.6.5</A>  La projection</H3><P><A NAME="@default50"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc44">1.8.5</A>  La projection</H3><P><A NAME="@default50"></A>
 Étant donné trois points <TT>A, B, C</TT> le point :<BR>
 <TT>projection(droite(B,C),A)</TT> est la projection orthogonale du point <TT>A</TT>
 sur la droite <I>BC</I>.<BR>
 On a aussi <TT>p:=projection(droite(B,C))</TT> est la projection orthogonale sur 
 la droite <I>BC</I>.
-</P><H3 CLASS="subsection"><A NAME="htoc43">1.6.6</A>  La similitude</H3><P><A NAME="@default51"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc45">1.8.6</A>  La similitude</H3><P><A NAME="@default51"></A>
 Étant donné deux points <TT>A, B</TT>, un réel <I>k</I> et un réel <I>u</I>, 
 le point :<BR>
 <TT>similitude(B,k,u,A)</TT> est le transformé du point <TT>A</TT> dans la 
@@ -1151,7 +1395,7 @@ similitude de centre <TT>B</TT>, de rapport <I>k</I> et d’angle mesure <I>u</I
 <TT>Cfg-&gt;Configuration du CAS</TT>).<BR>
 On a aussi <TT>s:=similitude(B,k,u)</TT> est la similitude de centre <TT>B</TT>, de 
 rapport <I>k</I> et d’angle mesure <I>u</I> radians (ou degrés selon la configuration 
-du <TT>CAS</TT> menu <TT>Cfg-&gt;Configuration du CAS</TT>).</P><H3 CLASS="subsection"><A NAME="htoc44">1.6.7</A>  L’inversion</H3><P><A NAME="@default52"></A>
+du <TT>CAS</TT> menu <TT>Cfg-&gt;Configuration du CAS</TT>).</P><H3 CLASS="subsection"><A NAME="htoc46">1.8.7</A>  L’inversion</H3><P><A NAME="@default52"></A>
 Étant donné deux points <TT>A, B</TT>, un réel <I>k</I> le point :<BR>
 <TT>inversion(C,k,A)</TT> est le transformé du point <TT>A</TT> dans l’inversion
 de centre <TT>C</TT>, de rapport <I>k</I>.<BR>
@@ -1161,8 +1405,7 @@ de centre <TT>C</TT>, de rapport <I>k</I>.<BR>
 <TT>inversion(C,k,M)</TT> est donc le point défini par:<BR>
 <TT>point(C+k*conj(inv(M-C)))</TT><BR>
 On a aussi <TT>inver:=inversion(C,k)</TT> est l’inversion de centre <TT>C</TT>, 
-de rapport <I>k</I>.<BR>
-</P><H2 CLASS="section"><A NAME="toc7"></A><A NAME="htoc45">1.7</A>  Les lieux géométriques</H2><P><A NAME="@default53"></A>
+de rapport <I>k</I>.</P><H2 CLASS="section"><A NAME="toc9"></A><A NAME="htoc47">1.9</A>  Les lieux géométriques</H2><P><A NAME="@default53"></A>
 L’instruction <TT>lieu</TT> permet de tracer le lieu d’un point <TT>M</TT>, lorsque 
 ce point <TT>M</TT> est fonction d’un point <TT>P</TT> pouvant se déplacer sur un 
 objet géométrique <TT>G</TT> et si on a défini <TT>P</TT> par 
@@ -1170,10 +1413,11 @@ objet géométrique <TT>G</TT> et si on a défini <TT>P</TT> par
  <B>Remarque</B> :<BR>
 Il faut que les paramètres de <TT>lieu</TT> soient des noms de variables.<BR>
 Donc pour obtenir le lieu d’un point <TT>M</TT>, il faut avoir défini 
-ce point par par une affectation à un nom de variable, par exemple 
+ce point par une affectation à un nom de variable, par exemple 
 <TT>M:=...</TT>.<BR>
 On écrit alors :<BR>
- <TT>lieu(M,P)</TT><BR>
+ <TT>lieu(M,P)</TT>
+</P><H3 CLASS="subsection"><A NAME="htoc48">1.9.1</A>  Des exemples de lieux</H3><P>
 <B>Exemple 1</B> :<BR>
 Lieu du centre de gravité du triangle <I>ABC</I> quand <I>A</I> se déplace
 sur une parallèle à <I>BC</I>.<BR>
@@ -1291,7 +1535,211 @@ orthocentre du triangle isocèle <I>PBC</I> (<I>P</I> sur la médiatrice de
 <I>BC</I> et sur la droite <I>D</I>). On peut à la main avoir assez facilement 
 l’équation de cette parabole ...mais trouver ce lieu en géométrie pure 
 est plus difficle!
-</P><H2 CLASS="section"><A NAME="toc8"></A><A NAME="htoc46">1.8</A>  Figures polygonales</H2><H3 CLASS="subsection"><A NAME="htoc47">1.8.1</A>  Le triangle</H3><P><A NAME="@default54"></A><A NAME="@default55"></A><A NAME="@default56"></A><A NAME="@default57"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc49">1.9.2</A>  D’autres exemples de lieux</H3><P>
+<B>Exemple 1</B> :<BR>
+Lieu du centre de gravité du triangle <I>ABC</I> quand <I>A</I> se déplace
+sur une parallèle à <I>BC</I>.<BR>
+Ici on cherche le lieu du centre de gravité du triangle <I>PBC</I> lorsque <I>P</I>
+se déplace sur la parallèle à <I>BC</I> passant par <I>A</I>.<BR>
+On clique pour obtenir trois points <TT>A, B, C</TT> et on tape :
+</P><PRE CLASS="verbatim">D:=parallele(A,droite(B,C)); 
+P:=element(D);
+G:=isobarycentre(P,B,C);  
+lieu(G,P);
+</PRE><P><TT>lieu(G,P)</TT> trace le lieu du point <TT>G</TT> en fonction de <TT>P</TT>.<BR>
+Si l’on veut pouvoir animée la figure on tape la liste des instructions 
+qui se trouve dans le fichier <TT>lieu1</TT>, on clique pour obtenir
+trois points <TT>A, B, C</TT> puis, on fait 
+<TT>Charger session</TT> du 
+menu <TT>Fich</TT> de <TT>Xcas</TT> et on selectionne <TT>lieu1</TT> du répértoire 
+<TT>examples/geo</TT> pour exécuter ce fichier) :<BR>
+Ou on clique pour créer trois points <TT>A, B, C</TT> et on tape :
+</P><PRE CLASS="verbatim">A:=point([-3,3/2,'affichage'=0]);
+B:=point([-1,-3/2,'affichage'=0]);
+C:=point([3,9/4,'affichage'=0]);
+D:=parallele(A,droite(B,C)); 
+P:=element(D);
+G:=isobarycentre(P,B,C);  
+lieu(G,P);
+</PRE><P>ainsi lorsqu’on déplace la barre verticale indiquant la valeur de <TT>t</TT>,
+on voit se déplacer les deux points <TT>P</TT> et <TT>G</TT> simultanément.<BR>
+<TT>lieu(G,P);</TT> renvoie droite(y=((15*x)/16+17/16))
+<B>Exemples 2 et 3</B> :<BR>
+Soient deux points <TT>A</TT> et <TT>B</TT> et <TT>C1</TT> le cercle 
+de diamètre <TT>A B</TT>. Soit <TT>O</TT> le centre de ce cercle et <TT>C</TT> un point variable de ce cercle.<BR>
+Soit <TT>N</TT> l’intersection de la tangente en <TT>C</TT>
+à <TT>C1</TT> avec la parallèle à <TT>AC</TT> passant par <TT>O</TT>.<BR>
+Trouver le lieu de <TT>N</TT> quand <TT>C</TT> varie.<BR>
+
+La liste des instructions pour trouver ce lieu se trouve dans le 
+fichier <TT>lieu2</TT>, on clique pour obtenir deux points <TT>A, B</TT> puis, on 
+fait <TT>Charger session</TT> du 
+menu <TT>Fich</TT> de <TT>Xcas</TT> et on selectionne <TT>lieu2</TT> du répértoire 
+<TT>examples/geo</TT> pour exécuter ce fichier.<BR>
+Ou on clique pour créer deux points <TT>A, B</TT> et on tape :
+</P><PRE CLASS="verbatim">C1:=cercle(A,B);
+O:=milieu(A,B);
+C:=element(C1);
+T:=tangent(C1,C);
+D2:=parallele(O,droite(A,C));
+M:=inter(T,D2);
+N:=M[0];
+lieu(N,C);
+</PRE><P><B>Attention</B> <TT>M</TT> est une liste ayant un seul élément et 
+on ne peut pas écrire <TT>lieu(M[0],C)</TT> car <TT>M[0]</TT> n’est pas un nom de 
+variable.<BR>
+On peut aussi écrire des instructions sans utiliser la fonction 
+<TT>tangent</TT> et en rajoutant <TT>t:=element(0..2*pi);</TT> (c’est le fichier 
+<TT>lieu3</TT>) :<BR>
+On clique pour créer deux points <TT>A, B</TT>.
+</P><PRE CLASS="verbatim">C1:=cercle(A,B);
+O:=milieu(A,B);
+C:=element(C1);
+D1:=perpendiculaire(C,droite(O,C));
+D2:=parallele(O,droite(A,C));
+M:=inter(D1,D2);
+N:=M[0];
+lieu(N,C);
+</PRE><P><TT>lieu(N,C)</TT> renvoie <TT>droite(y=((2*x)/3-5/6))</TT><BR>
+Les triangles <I>NOC</I> et <I>NOB</I> sont égaux car leurs angles <I>O</I> sont
+égaux à l’angle <I>CAB</I> et à l’angle <I>OCA</I>. 
+Donc <I>NB</I> est perpendiculaire à <I>AB</I>.<BR>
+La réciproque est évidente car si <TT>N</TT> se trouve sur la perpendiculaire
+à <TT>AB</TT> en <TT>B</TT>, on méne par <TT>N</TT> l’autre tangente au cercle pour
+définir le point <TT>C</TT>.<BR>
+ Les triangles rectangles <TT>NOC</TT> et <TT>NOB</TT> sont
+égaux et donc <TT>ON</TT> est parallèle à <TT>AC</TT>.<BR>
+<B>Exemple 4</B> :<BR>
+Une droite variable <TT>D1</TT> coupe les cotés <TT>AB,AC,BC</TT> du triangle 
+<TT>ABC</TT> en <TT>D,E,M</TT>.<BR>
+Les cercles circonscrits aux triangles <TT>BDM</TT> et <TT>ECM</TT> se coupent en 
+<TT>P</TT> et <TT>M</TT>. Trouver le lieu de <TT>P</TT> quand <TT>D1</TT> varie.<BR>
+On peut faire éxécuter le fichier <TT>lieu4</TT> (on clique pour obtenir trois points <TT>A, B, C</TT> puis on fait <TT>Charger session</TT> du 
+menu <TT>Fich</TT> de <TT>Xcas</TT> et on selectionne <TT>lieu4</TT> du répértoire 
+<TT>examples/geo</TT> pour exécuter ce fichier) ou,<BR>
+on clique pour obtenir trois points <TT>A, B, C</TT> et on tape :
+</P><PRE CLASS="verbatim"> 
+triangle(A,B,C);
+u:=element(-4..4);
+M:=element(droite(B,C),u);
+D:=element(droite(A,B));
+D1:=droite(D,M);
+E:=(inter(droite(A,C),D1))[0];
+C1:=circonscrit(B,D,M);
+C2:=circonscrit(E,C,M);
+L:=inter(C1,C2);
+if (affixe(L[0])==affixe(M)) {Q:=L[1];} else {Q:=L[0];};
+P:=Q;
+lieu(P,M);
+</PRE><P>On remarquera que l’on est obligé d’utiliser un point intermédiaire <TT>Q</TT>
+pour pouvoir définir <TT>P</TT> par une affectation.<BR>
+Le lieu de <I>P</I> est le cercle circonscrit au triangle <I>ABC</I> car l’angle
+l’angle <I>P</I> du triangle <I>PBC</I> est égal à l’angle <I>A</I>
+du triangle <I>ABC</I> en écrivant des égalités d’angles inscrits.<BR>
+<B>Exemple 5</B> :<BR>
+Lieu de l’orthocentre du triangle <I>ABC</I> quand <I>A</I> se déplace
+sur une parallèle à <I>BC</I>.<BR>
+Ici on cherche le lieu de l’orthocentre du triangle <I>MBC</I> lorsque <I>M</I>
+se déplace sur la parallèle à <I>BC</I> passant par <I>A</I>.<BR>
+On peut faire éxécuter le fichier <TT>lieu5</TT> (on clique pour obtenir
+trois points <TT>A, B, C</TT> puis, on fait <TT>Charger session</TT> du 
+menu <TT>Fich</TT> de <TT>Xcas</TT> et on selectionner <TT>lieu5</TT> du répértoire 
+<TT>examples/geo</TT> pour exécuter ce fichier) ou,<BR>
+on clique pour obtenir trois points <TT>A,B,C</TT> et on tape :
+</P><PRE CLASS="verbatim">D:=parallele(A,droite(B,C));
+M:=element(D);
+H:=(inter(perpendiculaire(M,droite(C,B)),
+          perpendiculaire(C,droite(M,B))))[0] ;
+lieu(H,M);
+</PRE><P>Le lieu est une parabole passant par <I>B</I> et <I>C</I> et de sommet <I>S</I>
+orthocentre du triangle isocèle <I>PBC</I> (<I>P</I> sur la médiatrice de 
+<I>BC</I> et sur la droite <I>D</I>). On peut à la main avoir assez facilement 
+l’équation de cette parabole ...mais trouver ce lieu en géométrie pure 
+est plus difficle!
+</P><H3 CLASS="subsection"><A NAME="htoc50">1.9.3</A>  Des exercices de lieux</H3><P>
+<B>Exercice1</B><BR>
+Soient 2 points fixes <I>A</I> et <I>B</I>.<BR>
+On considère l’ensemble Γ des cercles <I>c</I> passant par <I>A</I> et <I>B</I>.<BR>
+Pour <I>c</I> ∈ Γ, lieu des points <I>M</I> de <I>c</I> qui ont une tangente en <I>M</I>
+perpendiculaire à <I>AB</I>.<BR>
+On tape dans un niveau de géométrie 2d (version 1) :
+</P><PRE CLASS="verbatim">A:=point(-1);
+B:=point(1);
+P:=element(droite(x=0));
+c:=cercle(P,A-P);
+M:=translation(longueur(A,P),P);
+N:=translation(-longueur(A,P),P);
+lieu(M,P);
+lieu(N,P);
+</PRE><P>ou on tape dans un niveau de géométrie 2d (version 2) :
+</P><PRE CLASS="verbatim">A:=point(-1);
+B:=point(1);
+assume(u=[0,-5,5,0.1]));
+P:=element(droite(x=0),u);
+c:=cercle(P,sqrt(u^2+1));
+L:=inter(droite(y=u),c);
+M:=L[0];
+N:=L[1];
+lieu(M,u);
+lieu(N,u); 
+</PRE><P>Pour la version 1 (resp pour la version 2) <TT>lieu(M,P);</TT> (resp 
+<TT>lieu(M,u);</TT>) renvoie :<BR>
+<TT>plotparam((i)*‘ t‘+sqrt(1+(-‘ t‘)</TT><CODE><TT>^</TT></CODE><TT>2),‘ t‘=-10.0..10.0)</TT><BR>
+et pour la version 1 (resp pour la version 2) <TT>lieu(N,P);</TT> (resp 
+<TT>lieu(N,u);</TT>) renvoie :<BR>
+<TT>plotparam((i)*‘ t‘-sqrt(1+(-‘ t‘)</TT><CODE><TT>^</TT></CODE><TT>2),‘ t‘=-10.0..10.0)</TT><BR>
+et le dessin correspondant :<BR>
+<IMG SRC="casgeo024.png"><BR>
+
+On peut aussi taper en utilisant directement <TT>plotparam</TT> :
+</P><PRE CLASS="verbatim">supposons(u=[0,-5,5,0.1])
+P:=point(i*u)
+c:=cercle(P,sqrt(u^2+1));
+L:=inter(droite(y=u),c):;
+M:=L[0];N:=L[1];
+plotparam(affixe(M),u);
+plotparam(affixe(N),u);
+</PRE><P>On obtient le dessin ci-dessus.<BR>
+On tape :<BR>
+<TT>affixe(M)</TT><BR>
+On obtient :<BR>
+<TT>(i)*u+sqrt(u</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT><BR>
+On tape :<BR>
+<TT>affixe(N)</TT><BR>
+On obtient :<BR>
+<TT>(i)*u-sqrt(u</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT><BR>
+<B>Exercice2</B><BR>
+Soient un cercle <I>c</I> de centre <I>O</I> et 2 points fixes <I>A</I> et <I>B</I> situés sur un 
+diamètre de <I>c</I>.<BR>
+Soit un diamètre variable <I>PQ</I> de <I>c</I>.<BR>
+Lieu de <I>M</I> intersection de <I>AP</I> et <I>BQ</I>.<BR>
+On tape :
+</P><PRE CLASS="verbatim">c:=cercle(0,1)
+A:=point(-4);
+B:=point(-2);
+u:=element(-pi..pi);
+P:=element(c,u);
+Q:=-P;
+M:=inter_unique(droite(A,P),droite(B,Q));
+lieu(M,P)
+</PRE><P>On obtient :<BR>
+<TT>cercle(point(-8/3,0),1/3)</TT><BR>
+On tape :<BR>
+<TT>droite(A,0);segment(P,A);segment(M,Q)</TT><BR>
+<TT>segment(0,P);segment(M,point(-8/3))</TT><BR>
+On obtient le cercle homothétique de <I>c</I> dans l’homothétie de centre <I>A</I> et 
+de rapport ici 1/3.<BR>
+<IMG SRC="casgeo025.png"><BR>
+On a en effet en appliquant le théoréme de Ménélaüs au triangle <I>OAP</I> on a :<BR>
+<I>M</I>,<I>B</I>,<I>Q</I> alignés est équivalent à :
+ <SPAN style="text-decoration:overline"><I>MA</I></SPAN>/<SPAN style="text-decoration:overline"><I>MP</I></SPAN>· <SPAN style="text-decoration:overline"><I>QP</I></SPAN>/<SPAN style="text-decoration:overline"><I>QO</I></SPAN>· <SPAN style="text-decoration:overline"><I>BO</I></SPAN>/<SPAN style="text-decoration:overline"><I>BA</I></SPAN>=1<BR>
+On a  <SPAN style="text-decoration:overline"><I>QP</I></SPAN>/<SPAN style="text-decoration:overline"><I>QO</I></SPAN>=2.
+Si  <SPAN style="text-decoration:overline"><I>BA</I></SPAN>/<SPAN style="text-decoration:overline"><I>BO</I></SPAN>=<I>k</I> alors 
+ <SPAN style="text-decoration:overline"><I>MA</I></SPAN>/<SPAN style="text-decoration:overline"><I>MP</I></SPAN>=<I>k</I>/2 donc<BR>
+ <SPAN style="text-decoration:overline"><I>AP</I></SPAN>/<SPAN style="text-decoration:overline"><I>AM</I></SPAN>=1+<SPAN style="text-decoration:overline"><I>MP</I></SPAN>/<SPAN style="text-decoration:overline"><I>AM</I></SPAN>=1−2/<I>k</I>=<I>k</I>−2/<I>k</I><BR>
+Ce qui prouve que <I>M</I> se déduit de <I>P</I> dans l’homothétie de centre <I>A</I> et de rapport :  <I>k</I>/<I>k</I>−2<BR>
+Dans l’exemple on a <I>k</I>=−1 donc le rapport de l’homothétie est bien :  1/3
+</P><H2 CLASS="section"><A NAME="toc10"></A><A NAME="htoc51">1.10</A>  Figures polygonales</H2><H3 CLASS="subsection"><A NAME="htoc52">1.10.1</A>  Le triangle</H3><P><A NAME="@default54"></A><A NAME="@default55"></A><A NAME="@default56"></A><A NAME="@default57"></A>
 Étant donné trois points <TT>A</TT>, <TT>B</TT> et <TT>C</TT> les commandes 
 suivantes permettent de tracer des triangles :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
@@ -1366,7 +1814,7 @@ avec le cercle de diamètre <I>AB</I>,<BR>
 <TT>triangle(E1,A,B)</TT> trace le triangle <I>ABE</I>1<BR>
 <TT>triangle(E2,A,B)</TT> trace le triangle <I>ABE</I>2<BR>
 Ces deux triangles répondent à la question.
-</LI></UL><H3 CLASS="subsection"><A NAME="htoc48">1.8.2</A>  Les quadrilatères</H3><P><A NAME="@default58"></A><A NAME="@default59"></A><A NAME="@default60"></A><A NAME="@default61"></A>
+</LI></UL><H3 CLASS="subsection"><A NAME="htoc53">1.10.2</A>  Les quadrilatères</H3><P><A NAME="@default58"></A><A NAME="@default59"></A><A NAME="@default60"></A><A NAME="@default61"></A>
 Les commandes suivantes permettent de tracer des quadrilatères :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 Le quadrilatère quelconque :<BR>
@@ -1402,13 +1850,13 @@ On donne 3 points <I>A</I>,<I>B</I>,<I>C</I> et on construit le e parallélogram
 On a :<BR>
 <TT>parallelogramme(A,B,C)</TT> trace le parallélogramme <I>ABCD</I>.<BR>
 <TT>parallelogramme(A,B,C,D)</TT> trace le parallélogramme <I>ABCD</I> et met dans 
-<TT>D</TT> le point <I>D</I>.</LI></UL><H3 CLASS="subsection"><A NAME="htoc49">1.8.3</A>  Les polygones</H3><P><A NAME="@default62"></A>
+<TT>D</TT> le point <I>D</I>.</LI></UL><H3 CLASS="subsection"><A NAME="htoc54">1.10.3</A>  Les polygones</H3><P><A NAME="@default62"></A>
 Soient <I>n</I> points (ou <I>n</I> nombres complexes représentant l’affixe de ces points).<BR>
 <TT>polygone</TT> avec comme argument la liste ou la séquence de ces <I>n</I> points.<BR>
 <TT>polygone</TT> renvoie et trace le polygone ayant pour sommets ces <I>n</I> points.<BR>
 <TT>polygone(0,1,1+i,i)</TT> trace le carré de sommets 0,1,1+i,i.<BR>
 <TT>polygone(makelist(x-&gt;exp(i*pi*x/3),0,5,1))</TT> trace l’hexagone de centre 0 et de sommets 1,<I>e</I><SUP><I>i</I>*<I>pi</I>/3</SUP>...<I>e</I><SUP>5*<I>i</I>*<I>pi</I>/3</SUP>
-</P><H3 CLASS="subsection"><A NAME="htoc50">1.8.4</A>  Les sommets d’un polygone</H3><P><A NAME="@default63"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc55">1.10.4</A>  Les sommets d’un polygone</H3><P><A NAME="@default63"></A>
 Les commandes précédentes peuvent tracer des triangles ou des 
 quadrilatères sans avoir tous les sommets, mais on peut avoir besoin des 
 sommets de ces triangles ou de ces quadrilatères.<BR>
@@ -1427,7 +1875,7 @@ On tape :<BR>
 <TT>E:=sommets(T)[2]</TT><BR>
 <TT>F:=sommets(T)[3]</TT><BR>
 Ainsi, <I>ABEF</I> est un carré.
-</P><H3 CLASS="subsection"><A NAME="htoc51">1.8.5</A>  Activités : constructions de quadrilatères</H3><UL CLASS="itemize"><LI CLASS="li-itemize">
+</P><H3 CLASS="subsection"><A NAME="htoc56">1.10.5</A>  Activités : constructions de quadrilatères</H3><UL CLASS="itemize"><LI CLASS="li-itemize">
 Le parallélogramme<BR>
 <B>Activité</B><BR>
 Créer trois points <TT>A, B, C</TT>.<BR>
@@ -1481,7 +1929,7 @@ dans l’écran <TT>DispG</TT>, mais seule la valeur de la fonction (ce qui suit
 <TT>return</TT>) est tracée.
 </LI></UL><P>
 On peut ensuite vérifier avec la commande <TT>carre</TT>.
-</P><H3 CLASS="subsection"><A NAME="htoc52">1.8.6</A>  Un exercice sur la droite des milieux</H3><H4 CLASS="subsubsection">L’exercice</H4><P>
+</P><H3 CLASS="subsection"><A NAME="htoc57">1.10.6</A>  Un exercice sur la droite des milieux</H3><H4 CLASS="subsubsection">L’exercice</H4><P>
 Soit un quadrilatère quelconque <I>ABCD</I> et <I>M</I>,<I>N</I>, <I>P</I>, <I>Q</I> les milieux respectifs 
 de <I>AB</I>, <I>BC</I>, <I>CD</I>, <I>DA</I>.
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
@@ -1560,7 +2008,7 @@ Si <I>ABCD</I> est un rectangle alors <I>MNPQ</I> est un losange
 </LI></UL><P>
 Répondre par vrai ou faux en donnant des exemples lorsque la proposition est 
 fausse et une démonstration se référant à l’exercice lorsque la 
-proposition est vraie.</P><H3 CLASS="subsection"><A NAME="htoc53">1.8.7</A>  Les polygones réguliers : <TT>isopolygone</TT></H3><P><A NAME="@default64"></A>
+proposition est vraie.</P><H3 CLASS="subsection"><A NAME="htoc58">1.10.7</A>  Les polygones réguliers : <TT>isopolygone</TT></H3><P><A NAME="@default64"></A>
 <TT>isopolygone</TT> permet de tracer des polygones réguliers ayant <I>k</I> cotés.<BR>
 Les arguments sont :<BR>
 - soit deux sommets (deux points ou deux complexes) et le nombre de cotés 
@@ -1619,7 +2067,7 @@ B:=C;
 }
 return(l);
 };
-</PRE></LI></UL><H2 CLASS="section"><A NAME="toc9"></A><A NAME="htoc54">1.9</A>  Droites remarquables du triangle</H2><P><A NAME="@default65"></A><A NAME="@default66"></A><A NAME="@default67"></A><A NAME="@default68"></A><A NAME="@default69"></A><A NAME="sec:droitetri"></A>
+</PRE></LI></UL><H2 CLASS="section"><A NAME="toc11"></A><A NAME="htoc59">1.11</A>  Droites remarquables du triangle</H2><P><A NAME="@default65"></A><A NAME="@default66"></A><A NAME="@default67"></A><A NAME="@default68"></A><A NAME="@default69"></A><A NAME="sec:droitetri"></A>
 Étant donné trois points <TT>A</TT>, <TT>B</TT> et <TT>C</TT> les commandes suivantes
 permettent de tracer les droites remarquables du triangle <I>ABC</I> :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
@@ -1642,7 +2090,7 @@ Les médianes<BR>
 <TT>mediatrice(A,B)</TT> trace la médiatrice de <I>AB</I>,<BR>
 <TT>mediatrice(B,C)</TT> trace la médiatrice de <I>BC</I>,<BR>
 <TT>mediatrice(A,C)</TT> trace la médiatrice de <I>AC</I><BR>
-</LI></UL><H2 CLASS="section"><A NAME="toc10"></A><A NAME="htoc55">1.10</A>  Cercles remarquables du triangle</H2><P><A NAME="@default70"></A><A NAME="@default71"></A><A NAME="@default72"></A><A NAME="sec:cercletri"></A>
+</LI></UL><H2 CLASS="section"><A NAME="toc12"></A><A NAME="htoc60">1.12</A>  Cercles remarquables du triangle</H2><P><A NAME="@default70"></A><A NAME="@default71"></A><A NAME="@default72"></A><A NAME="sec:cercletri"></A>
 Étant donné trois points <TT>A</TT>, <TT>B</TT> et <TT>C</TT> les commandes 
 suivantes permettent de tracer les cercles remarquables du triangle <I>ABC</I> :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
@@ -1654,7 +2102,7 @@ Le cercle circonscrit<BR>
 <TT>exinscrit(A,B,C)</TT> trace le cercle exinscrit dans l’angle <I>A</I> du triangle <I>ABC</I>,<BR>
 <TT>exinscrit(B,A,C)</TT> trace le cercle exinscrit dans l’angle <I>B</I> du triangle <I>ABC</I>,<BR>
 <TT>exinscrit(C,B,A)</TT> trace le cercle exinscrit dans l’angle <I>C</I> du triangle <I>ABC</I>. 
-</LI></UL><H2 CLASS="section"><A NAME="toc11"></A><A NAME="htoc56">1.11</A>  Les fonctions booléennes</H2><UL CLASS="itemize"><LI CLASS="li-itemize">
+</LI></UL><H2 CLASS="section"><A NAME="toc13"></A><A NAME="htoc61">1.13</A>  Les fonctions booléennes</H2><UL CLASS="itemize"><LI CLASS="li-itemize">
 <TT>est_element</TT> pour savoir si un point appartient à un objet géométrique.<A NAME="@default73"></A><BR>
 <TT>est_element</TT> est une fonction booléenne ayant comme 
 argument un point et un objet géométrique.<BR>
@@ -1687,7 +2135,7 @@ orthogonaux.<A NAME="@default78"></A><BR>
 argument deux droites (resp deux cercles).<BR>
  <TT>est_orthogonal</TT> vaut 1 si les deux droites sont perpendiculaires 
 (resp les deux cercles sont orthogonaux), et vaut 0 sinon.
-</LI></UL><H2 CLASS="section"><A NAME="toc12"></A><A NAME="htoc57">1.12</A>  La géométrie du cercle</H2><H3 CLASS="subsection"><A NAME="htoc58">1.12.1</A>  Arc capable</H3><P><A NAME="@default79"></A>
+</LI></UL><H2 CLASS="section"><A NAME="toc14"></A><A NAME="htoc62">1.14</A>  La géométrie du cercle</H2><H3 CLASS="subsection"><A NAME="htoc63">1.14.1</A>  Arc capable</H3><P><A NAME="@default79"></A>
 <TT>arc</TT> permet de tracer un arc défini par deux points et la 
 mesure de son angle au centre α (−2π ≤ α ≤ 2π) le 
 signe de α donne le sens de parcours.<BR>
@@ -1739,7 +2187,7 @@ symétriques de <I>c</I> par rapport à <I>BC</I> (resp <I>AC</I>, <I>AB</I>) et
 Par des considérations d’angle on montre que l’angle <I>IbHIc</I>=π 
 (resp <I>IbHIa</I>=π
 donc que <I>H</I>,<I>Ia</I>,<I>Ib</I>,<I>Ic</I> sont alignés
-</LI></UL><H3 CLASS="subsection"><A NAME="htoc59">1.12.2</A>  Puissance d’un point par rapport à un cercle</H3><P><A NAME="@default80"></A>
+</LI></UL><H3 CLASS="subsection"><A NAME="htoc64">1.14.2</A>  Puissance d’un point par rapport à un cercle</H3><P><A NAME="@default80"></A>
 Si un point <I>A</I> est à une distance <I>d</I> du centre d’un cercle <I>C</I> de rayon 
 <I>r</I>, la puissance de <I>A</I> par rapport au cercle <I>C</I> est égale à <I>d</I><SUP>2</SUP>−<I>r</I><SUP>2</SUP>.
 On tape :<BR>
@@ -1756,7 +2204,7 @@ r:=rayon(C);
 d2:=longueur2(A,O);
 return(d2-r^2);
 };
-</PRE><H3 CLASS="subsection"><A NAME="htoc60">1.12.3</A>  Axe radical de deux cercles</H3><P><A NAME="@default81"></A>
+</PRE><H3 CLASS="subsection"><A NAME="htoc65">1.14.3</A>  Axe radical de deux cercles</H3><P><A NAME="@default81"></A>
 L’axe radical de deux cercles <I>C</I><SUB>1</SUB> et <I>C</I><SUB>2</SUB> est le lieu des points qui ont
 même puissance par rapport à <I>C</I><SUB>1</SUB> et à <I>C</I><SUB>2</SUB>
 On tape :<BR>
@@ -1776,7 +2224,7 @@ t:=-(r2^2-r1^2)/2/longueur2(O2,O1)+1/2;
 H:=O1+(O2-O1)*t;
 return(perpendiculaire(H,droite(O1,O2)));
 };
-</PRE><H2 CLASS="section"><A NAME="toc13"></A><A NAME="htoc61">1.13</A>  La division harmonique</H2><P><A NAME="@default82"></A>
+</PRE><H2 CLASS="section"><A NAME="toc15"></A><A NAME="htoc66">1.15</A>  La division harmonique</H2><P><A NAME="@default82"></A>
 Quatre points <I>A</I>, <I>B</I>, <I>C</I>, <I>D</I> sont en division harmonique si on a :<BR>
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
 <TR><TD ALIGN=center NOWRAP><I>CA</I></TD></TR>
@@ -1878,7 +2326,7 @@ D3:=droite(K,L,affichage=2);
 N:=affichage(inter(d0,D3)[0],1+epaisseur_point_2);
 </PRE><P>On obtient :<BR>
 
-<IMG SRC="casgeo011.png"></P><P><B>Autre réponse</B><BR>
+<IMG SRC="casgeo026.png"></P><P><B>Autre réponse</B><BR>
 On définit 3 points <I>A</I>,<I>B</I>,<I>C</I> non alignés.<BR>
 On définit les droites <I>d</I>1=<I>CA</I>, <I>d</I>2=<I>CB</I>, <I>d</I>3=<I>CM</I>.
 On peut alors tracer la droite <I>d</I>4 pour que le faisceau <I>d</I>1, <I>d</I>2, <I>d</I>3, <I>d</I>4
@@ -1901,8 +2349,8 @@ K:=inter(d3,D1)[0];
 L:=inter(cercle(B,K-B),D1)[1];
 d4:=droite(C,L,affichage=2);
 N:=affichage(inter(d0,d4)[0],1+epaisseur_point_2);
-</PRE><P><IMG SRC="casgeo012.png"></P><H2 CLASS="section"><A NAME="toc14"></A><A NAME="htoc62">1.14</A>  Polaires par rapport à deux droites</H2><P><A NAME="@default84"></A><A NAME="sec:polaire"></A>
-</P><H3 CLASS="subsection"><A NAME="htoc63">1.14.1</A>  Définition</H3><P>
+</PRE><P><IMG SRC="casgeo027.png"></P><H2 CLASS="section"><A NAME="toc16"></A><A NAME="htoc67">1.16</A>  Polaires par rapport à deux droites</H2><P><A NAME="@default84"></A><A NAME="sec:polaire"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc68">1.16.1</A>  Définition</H3><P>
 Le lieu des conjugués harmoniques d’un point <I>A</I> par rapport à deux droites
 <I>D</I>1,<I>D</I>2 est une droite <I>d</I> vérifiant :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
@@ -1911,7 +2359,7 @@ le faisceau (<I>OA</I>,<I>d</I>,<I>D</I>1,<I>D</I>2) est harmonique,
 </LI><LI CLASS="li-itemize">si <I>D</I>1 et <I>D</I>2 sont paralléles, la droite <I>d</I> est paralléle à <I>D</I>1
 et à <I>D</I>2, le faisceau (<I>d</I>′,<I>d</I>,<I>D</I>1,<I>D</I>2) est harmonique où <I>d</I>′ est la 
 paralléle à <I>D</I>1 passant par <I>A</I>.
-</LI></UL><H3 CLASS="subsection"><A NAME="htoc64">1.14.2</A>  Un lieu</H3><P>
+</LI></UL><H3 CLASS="subsection"><A NAME="htoc69">1.16.2</A>  Un lieu</H3><P>
 Soient un point <I>S</I> et trois points <I>A</I>,<I>I</I>,<I>J</I> alignés.
 Soit <I>M</I> un point variable de la droite <I>SI</I>. La droite <I>AM</I> coupe la droite 
 <I>SJ</I> en <I>N</I>.<BR>
@@ -1937,7 +2385,7 @@ L:=lieu(K,M):;
 affichage(L,4+epaisseur_ligne_2);
 B:=conj_harmonique(I,J,A);
 droite(S,B);
-</PRE><P><IMG SRC="casgeo013.png"></P><P>On remarque que si <I>B</I> est le conjugué harmonique de <I>A</I> par rapport à <I>I</I> 
+</PRE><P><IMG SRC="casgeo028.png"></P><P>On remarque que si <I>B</I> est le conjugué harmonique de <I>A</I> par rapport à <I>I</I> 
 et <I>J</I>, le lieu <I>L</I> de <I>K</I> est la droite <I>SB</I> . </P><H4 CLASS="subsubsection">La démonstration</H4><P>
 Le lieu de <I>K</I> est la polaire de <I>A</I> par rapport à <I>CE</I> et <I>FG</I>. En effet
 si <I>CE</I> et <I>FG</I> se coupent en <I>S</I>, si le point <I>L</I> est le conjugué 
@@ -1945,8 +2393,8 @@ harmonique de <I>A</I> par rapport à <I>I</I> et <I>J</I> et si le point <I>P</
 conjugué harmonique de <I>A</I> par rapport à <I>M</I> et <I>N</I>, la polaire de <I>A</I> par 
 rapport à <I>CE</I> et <I>FG</I> passe par <I>S</I>, <I>L</I> et <I>P</I>, et la polaire de <I>A</I> par 
 rapport à <I>IN</I> et <I>JM</I> passe par <I>K</I>, <I>L</I> et <I>P</I> donc, <I>K</I> se trouve sur la 
-polaire de <I>A</I> par rapport à <I>CE</I> et <I>FG</I>.</P><H2 CLASS="section"><A NAME="toc15"></A><A NAME="htoc65">1.15</A>  Pôles et polaires par rapport à un cercle ou une conique</H2><P><A NAME="@default85"></A><A NAME="sec:polairec"></A><A NAME="sec:polec"></A>
-</P><H3 CLASS="subsection"><A NAME="htoc66">1.15.1</A>  Définitions et propriétés</H3><P>
+polaire de <I>A</I> par rapport à <I>CE</I> et <I>FG</I>.</P><H2 CLASS="section"><A NAME="toc17"></A><A NAME="htoc70">1.17</A>  Pôles et polaires par rapport à un cercle ou une conique</H2><P><A NAME="@default85"></A><A NAME="sec:polairec"></A><A NAME="sec:polec"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc71">1.17.1</A>  Définitions et propriétés</H3><P>
 On dit que 2 points <I>A</I> et <I>B</I> sont conjugués par rapport à un cercle 
 ou une conique (<I>C</I>) si ils forment une division harmonique avec les points <I>E</I>
 et <I>F</I> où la droite <I>AB</I> coupe (<I>C</I>).<BR>
@@ -1959,7 +2407,7 @@ faire correspondre un point <I>A</I> qui admet <I>d</I> comme polaire par rappor
 (<I>C</I>) : on dit que <I>A</I> est le <B>pôle</B> de <I>d</I>.<BR>
 Si la conique est dégénérée en deux droites <I>OU</I> et <I>OV</I> chaque droite 
 passant par <I>O</I> est la polaire d’une infinité de points alignés avec <I>O</I>
-(cf <A HREF="#sec:polaire">1.14</A>).</P><H3 CLASS="subsection"><A NAME="htoc67">1.15.2</A>  Comment trouver l’équation de la polaire</H3><P>
+(cf <A HREF="#sec:polaire">1.16</A>).</P><H3 CLASS="subsection"><A NAME="htoc72">1.17.2</A>  Comment trouver l’équation de la polaire</H3><P>
 On va travailler en coordonnèes homogènes en dimension 2 :<BR>
 un point <I>M</I>(<I>x</I>,<I>y</I>) a pour coordonnèes homogènes <I>X</I>,<I>Y</I>,<I>T</I> avec 
 <I>x</I>=<I>X</I>/<I>T</I> et <I>y</I>=<I>Y</I>/<I>T</I>.<BR>
@@ -1976,7 +2424,7 @@ ou encore :
 </TABLE><P>
 ou encore :
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>M</I>*<I>Q</I>*<I>A</I>=0</TD></TR>
-</TABLE><H3 CLASS="subsection"><A NAME="htoc68">1.15.3</A>  Comment trouver les coordonnées du pôle</H3><P>
+</TABLE><H3 CLASS="subsection"><A NAME="htoc73">1.17.3</A>  Comment trouver les coordonnées du pôle</H3><P>
 <B>Définitions</B><BR>
 Une droite <I>d</I> d’équation <I>ux</I>+<I>vy</I>+<I>h</I>=0 a pour coordonnées tangentielles
 <I>u</I>,<I>v</I>,<I>h</I>.<BR>
@@ -1999,7 +2447,7 @@ d’équation <I>ux</I>+<I>vy</I>+<I>h</I>=0), le pôle de <I>d</I> par rapport
 </TABLE><P>
 ou encore si <I>Q</I>1=<I>det</I>(<I>Q</I>)*<I>inv</I>(<I>Q</I>)
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[<I>u</I><SUB><I>d</I></SUB>,<I>v</I><SUB><I>d</I></SUB>,<I>h</I><SUB><I>d</I></SUB>]*<I>Q</I>1</TD></TR>
-</TABLE><H3 CLASS="subsection"><A NAME="htoc69">1.15.4</A>  Un exemple</H3><P>
+</TABLE><H3 CLASS="subsection"><A NAME="htoc74">1.17.4</A>  Un exemple</H3><P>
 Soient la conique <I>C</I> définie par <I>x</I><SUP>2</SUP>+2<I>x</I>*<I>y</I>+2*<I>y</I><SUP>2</SUP>−2*<I>x</I>=0, la droite <I>d</I><SUB><I>b</I></SUB>
 d’équation <I>x</I>+3<I>y</I>−1=0 et <I>A</I> le point 2+<I>i</I>.<BR>
 Trouver la polaire <I>d</I><SUB><I>a</I></SUB> de <I>A</I> par rapport à <I>C</I> etle pôle <I>B</I> de <I>d</I><SUB><I>b</I></SUB> 
@@ -2066,8 +2514,8 @@ On tape :<BR>
 <TT>si1:=point(z1,affichage=4);i2:=point(z2,affichage=4);</TT><BR>
 On obtient :<BR>
 
-<IMG SRC="casgeo014.png"></P><H2 CLASS="section"><A NAME="toc16"></A><A NAME="htoc70">1.16</A>  Pôles et polaires par rapport à une sphère ou une quadrique</H2><P><A NAME="@default86"></A><A NAME="sec:polaireq"></A><A NAME="sec:poleq"></A>
-</P><H3 CLASS="subsection"><A NAME="htoc71">1.16.1</A>  Définitions et propriétés</H3><P>
+<IMG SRC="casgeo029.png"></P><H2 CLASS="section"><A NAME="toc18"></A><A NAME="htoc75">1.18</A>  Pôles et polaires par rapport à une sphère ou une quadrique</H2><P><A NAME="@default86"></A><A NAME="sec:polaireq"></A><A NAME="sec:poleq"></A>
+</P><H3 CLASS="subsection"><A NAME="htoc76">1.18.1</A>  Définitions et propriétés</H3><P>
 On dit que 2 points <I>A</I> et <I>B</I> sont conjugués par rapport à une sphère ou
 une quadrique (<I>S</I>) si ils forment une division harmonique avec les points <I>E</I>
 et <I>F</I> où la droite <I>AB</I> coupe (<I>S</I>).<BR>
@@ -2078,7 +2526,7 @@ les droites joignant <I>A</I> à un point de <I>T</I> forment un cône tangent
 à (<I>S</I>).<BR>
 Lorsque (<I>S</I>) est une sphère ou une quadrique propre, à tout plan <I>P</I> on
 peut faire correspondre un point <I>A</I> qui admet <I>P</I> comme polaire par rapport 
-à (<I>S</I>) : on dit que <I>A</I> est le <B>pôle</B> de <I>P</I>.</P><H3 CLASS="subsection"><A NAME="htoc72">1.16.2</A>  Comment trouver l’équation de la polaire</H3><P>
+à (<I>S</I>) : on dit que <I>A</I> est le <B>pôle</B> de <I>P</I>.</P><H3 CLASS="subsection"><A NAME="htoc77">1.18.2</A>  Comment trouver l’équation de la polaire</H3><P>
 On va travailler en coordonnèes homogènes :<BR>
 en dimension 3 : <I>X</I>,<I>Y</I>,<I>Z</I>,<I>T</I> avec <I>x</I>=<I>X</I>/<I>T</I>, <I>y</I>=<I>Y</I>/<I>T</I> et <I>z</I>=<I>Z</I>/<I>T</I>.<BR>
 Si l’équation de la quadrique est : 
@@ -2094,7 +2542,7 @@ ou encore :
 </TABLE><P>
 ou encore :
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>M</I>*<I>Q</I>*<I>A</I>=0</TD></TR>
-</TABLE><H3 CLASS="subsection"><A NAME="htoc73">1.16.3</A>  Comment trouver les coordonnées du pôle</H3><P>
+</TABLE><H3 CLASS="subsection"><A NAME="htoc78">1.18.3</A>  Comment trouver les coordonnées du pôle</H3><P>
 <B>Définitions</B><BR>
 Un plan <I>P</I> d’équation <I>ux</I>+<I>vy</I>+<I>wz</I>+<I>h</I>=0 a pour coordonnées tangentielles
 <I>u</I>,<I>v</I>,<I>w</I>,<I>h</I>.<BR>
@@ -2117,7 +2565,7 @@ d’équation <I>ux</I>+<I>vy</I>+<I>wz</I>+<I>h</I>=0), le pôle de <I>d</I> pa
 </TABLE><P>
 ou encore si <I>Q</I>1=<I>det</I>(<I>Q</I>)*<I>inv</I>(<I>Q</I>)
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">[<I>u</I><SUB><I>d</I></SUB>,<I>v</I><SUB><I>d</I></SUB>,<I>w</I><SUB><I>d</I></SUB><I>h</I><SUB><I>d</I></SUB>]*<I>Q</I>1</TD></TR>
-</TABLE><H3 CLASS="subsection"><A NAME="htoc74">1.16.4</A>  Un exemple</H3><P>
+</TABLE><H3 CLASS="subsection"><A NAME="htoc79">1.18.4</A>  Un exemple</H3><P>
 Soient la quadrique <I>S</I> définie par <I>x</I><SUP>2</SUP>+2<I>x</I>*<I>y</I>+2*<I>y</I><SUP>2</SUP>−2*<I>x</I>−2<I>y</I>+<I>z</I><SUP>2</SUP>=0, <I>A</I> le 
 point [2,−1,1], le plan <I>P</I><SUB><I>b</I></SUB> d’équation <I>x</I>+2<I>y</I>+<I>z</I>−2=0 et le plan 
 <I>P</I><SUB><I>c</I></SUB> d’équation <I>x</I>+3<I>y</I>+<I>z</I>−1=0.<BR>
@@ -2195,7 +2643,7 @@ plan(-y+z-1=0,affichage=jaune);
 affichage([CC,CC2],vert+epaisseur_ligne_7);
 a:=point([2,-1,1]);
 conetan();
-</PRE><P>On obtient :</P><P><IMG SRC="casgeo015.png"></P><H2 CLASS="section"><A NAME="toc17"></A><A NAME="htoc75">1.17</A>  Les coniques</H2><P><A NAME="@default87"></A><A NAME="@default88"></A><A NAME="@default89"></A>
+</PRE><P>On obtient :</P><P><IMG SRC="casgeo030.png"></P><H2 CLASS="section"><A NAME="toc19"></A><A NAME="htoc80">1.19</A>  Les coniques</H2><P><A NAME="@default87"></A><A NAME="@default88"></A><A NAME="@default89"></A>
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 L’ellipse<BR>
 <TT>ellipse(A,B,C)</TT> trace l’ellipse de foyers <TT>A</TT> et
@@ -2242,7 +2690,7 @@ trace le cercle de centre <TT>N[0]</TT> passant par <TT>C</TT> : il repond à la
 <TT>Q:=parabole(D,milieu(D,projection(E,D)))</TT> trace la parabole de foyer <I>D</I> 
 et de directrice <I>E</I>, elle passe par <I>N</I>. Cela prouve qu’il n’y a pas d’autres
 solutions.<BR>
-</P>Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
+</P>Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casgeo002.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 </BODY>

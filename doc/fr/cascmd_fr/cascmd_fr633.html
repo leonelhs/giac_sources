@@ -6,41 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Décomposition LU (compatible TI): LU</TITLE>
+<TITLE>Décomposition QR (compatible TI) : QR</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr632.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr634.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc743">6.51.6</A>  Décomposition LU (compatible TI): <TT>LU</TT></H3><P><A NAME="@default1153"></A>
-<TT>LU</TT> a comme argument une matrice carrée numérique d’ordre <I>n</I>
-et trois noms de variables : <TT>var1</TT>, <TT>var2</TT> et <TT>var3</TT>.<BR>
-<TT>LU(A,var1,var2,var3)</TT> renvoie <I>P</I> une matrice de permutation et met :<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-dans <TT>var1</TT>, <I>L</I> une matrice
-triangulaire inférieure avec des 1 sur sa diagonale,
-</LI><LI CLASS="li-itemize">dans <TT>var2</TT>, <I>U</I> une matrice triangulaire supérieure,
-</LI><LI CLASS="li-itemize">dans <TT>var3</TT>, la matrice de permutation <I>P</I> renvoyée.
-</LI></UL><P>
-Ces matrices sont telles que :<BR>
-l’équation <I>A</I>*<I>x</I>=<I>B</I> équivaut à <I>L</I>*<I>U</I>*<I>x</I>=<I>P</I>*<I>B</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc744">6.52.3</A>  Décomposition QR (compatible TI) : <TT>QR</TT></H3><P><A NAME="@default1153"></A>
+<TT>QR</TT> a comme argument une matrice carrée numérique <I>A</I> 
+d’ordre <I>n</I> et deux noms de variables : <TT>var1</TT> et <TT>var2</TT>.<BR>
+<TT>QR</TT> factorise numériquement cette matrice sous la forme <I>Q</I>*<I>R</I> où
+<I>Q</I> est une matrice orthogonale (<SUP><I>t</I></SUP><I>Q</I>*<I>Q</I>=<I>I</I>) et <I>R</I> est une matrice triangulaire supérieure.<BR>
+<TT>QR(A)</TT> renvoie <TT>R</TT>, met <TT>Q</TT> dans <TT>var1</TT>
+et met <TT>R</TT> dans <TT>var2</TT>.<BR>
+On a <TT>Q=A*inv(R)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>LU([[3,5],[4,5]],L,U,P)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[0,1],[1,0]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>L</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,0],[0.75,1]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>U</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[4,5],[0,1.25]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>P</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[0,1],[1,0]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>QR([[3,5],[4,5]],Q,R)</TT></DIV><P>
+On obtient la matrice <TT>R</TT> :
+</P><DIV CLASS="center"><TT>[[-5,-7],[0,-1]]</TT></DIV><HR>
 <A HREF="cascmd_fr632.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr634.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

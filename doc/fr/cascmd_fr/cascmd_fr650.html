@@ -6,23 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La divergence : divergence</TITLE>
+<TITLE>Le gradient : derive deriver diff grad</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr649.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr651.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc762">6.53.4</A>  La divergence : <TT>divergence</TT></H3><P><A NAME="@default1179"></A>
-<TT>divergence</TT> a deux paramètres : une expression <I>F</I> dependant de
-<I>n</I> variables rèelles et un vecteur de dimension
+<H3 CLASS="subsection"><A NAME="htoc763">6.54.1</A>  Le gradient : <TT>derive deriver diff grad</TT></H3><P><A NAME="@default1175"></A><A NAME="@default1176"></A><A NAME="@default1177"></A><A NAME="@default1178"></A><A NAME="sec:derive"></A><A NAME="@default1179"></A><A NAME="@default1180"></A>
+<TT>derive</TT> (ou <TT>diff</TT> ou <TT>grad</TT>) a deux paramètres : une 
+expression <I>F</I> dependant de <I>n</I> variables rèelles et un vecteur de dimension
 <I>n</I> indiquant le nom de ces variables.<BR>
-On a si <I>n</I>=3 :<BR>
- <TT>divergence([A,B,C],[x,y,z])</TT>=∂ <I>A</I>/∂ <I>x</I>+∂ <I>B</I>/∂ <I>y</I>+∂ <I>C</I>/∂ <I>z</I><BR>
+<TT>derive</TT> renvoie le gradient de <I>F</I> (<FONT COLOR=red><I>G</I></FONT><I>rad</I>(<I>F</I>)= [∂ <I>F</I>/∂ <I>x</I>,∂ <I>F</I>/∂ <I>y</I>,∂ <I>F</I>/∂ <I>z</I>] si <I>n</I>=3).<BR>
+<B>Exemple</B><BR>
+Déterminer le gradient de <I>F</I>(<I>x</I>,<I>y</I>,<I>z</I>)=2<I>x</I><SUP>2</SUP><I>y</I>−<I>xz</I><SUP>3</SUP>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>divergence([x*z,-y</TT><CODE><TT>^</TT></CODE><TT>2,2*x</TT><CODE><TT>^</TT></CODE><TT>y],[x,y,z])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>derive(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>diff(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>grad(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>z+-2*y</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[2*2*x*y-z</TT><CODE><TT>^</TT></CODE><TT>3,2*x</TT><CODE><TT>^</TT></CODE><TT>2,-(x*3*z</TT><CODE><TT>^</TT></CODE><TT>2)]</TT></DIV><P>
+On obtient après simplification avec <TT>normal(ans())</TT> :
+</P><DIV CLASS="center"><TT>[4*x*y-z</TT><CODE><TT>^</TT></CODE><TT>3,2*x</TT><CODE><TT>^</TT></CODE><TT>2,-(3*x*z</TT><CODE><TT>^</TT></CODE><TT>2)]</TT></DIV><P>
+Si on veut connaitre les points critiques de 
+<I>F</I>(<I>x</I>,<I>y</I>,<I>z</I>)=2<I>x</I><SUP>2</SUP><I>y</I>−<I>xz</I><SUP>3</SUP>, il suffit de taper :
+</P><DIV CLASS="center"><TT>solve(derive(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z]),[x,y,z])</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>[[0,y,0]]</TT></DIV><HR>
 <A HREF="cascmd_fr649.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr651.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

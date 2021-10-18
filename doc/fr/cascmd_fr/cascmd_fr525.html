@@ -6,34 +6,110 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Appliquer une fonction de 2 variables aux éléments de 2 listes : zip</TITLE>
+<TITLE>Produit indicé : product mul</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr524.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr526.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc624">6.40.36</A>  Appliquer une fonction de 2 variables aux éléments de 2 listes : <TT>zip</TT></H3><P><A NAME="@default933"></A>
-<TT>zip</TT> sert à appliquer une fonction de 2 variables aux 
-éléments de 2 listes.<BR>
+<H3 CLASS="subsection"><A NAME="htoc625">6.41.33</A>  Produit indicé : <TT>product mul</TT></H3><P><A NAME="@default930"></A><A NAME="@default931"></A>
+Voir aussi <A HREF="#sec:product">6.41.33</A>, <A HREF="cascmd_fr555.html#sec:product1">6.46.6</A> et <A HREF="cascmd_fr557.html#sec:product2">6.46.8</A>).
+</P><H4 CLASS="subsubsection"><A NAME="toc23"></A>Produit des valeurs d’une expression : <TT>product</TT></H4><P><A NAME="sec:product0"></A>
+<TT>product</TT> ou <TT>mul</TT> a 4 ou 5 arguments.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Avec 5 arguments <TT>product(Xpr,Var,a,b,p)</TT> ou 
+<TT>mul(Xpr,Var,a,b,p)</TT> renvoie le produit demandé c’est à dire renvoie 
+le produit des valeurs de l’expression <TT>Xpr</TT> quand la variable <TT>Var</TT> 
+va de <TT>a</TT> à <TT>b</TT> avec un pas égal à <TT>p</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>zip(’sum’,[a,b,c,d],[1,2,3,4])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[a+1,b+2,c+3,d+4]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>zip((x,y)-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2,[4,2,1],[3,5,1])</TT></DIV><P>
+<DIV CLASS="center"><TT>product(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,1,5,2)</TT></DIV>
 Ou on tape :
-</P><DIV CLASS="center"><TT>f:=(x,y)-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
-puis,
-</P><DIV CLASS="center"><TT>zip(f,[4,2,1],[3,5,1])</TT></DIV><P>
+<DIV CLASS="center"><TT>mul(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,1,5,2)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[25,29,2]</TT></DIV><P>
+<DIV CLASS="center"><TT>520</TT></DIV>
+En effet :<BR>
+2*10*26=520
+</LI><LI CLASS="li-itemize">Avec 4 arguments, <TT>product(Xpr,Var,a,b)</TT> ou <TT>mul(Xpr,Var,a,b)</TT>
+n’a pas la même valeur selon que <TT>a</TT> est plus petit ou égal à <TT>b</TT> ou non car on veut avoir l’égalité :<BR>
+ <TT>product(Xpr,Var,a,b)= product(Xpr,Var,a,c)*product(Xpr,Var,c+1,b)</TT>.<BR>
+ Aussi, lorsque le pas <TT>p</TT> n’est pas précisé on a :
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+si <TT>a</TT> est inférieur à <TT>b</TT>,<BR>
+<TT>product(Xpr,Var,a,b)</TT> renvoie le produit des valeurs de l’expression 
+<TT>Xpr</TT> quand la variable <TT>Var</TT> va de <TT>a</TT> à <TT>b</TT> avec un pas de 
+1 : cette syntaxe est 
+compatible avec Maple.<BR>
+Ainsi si <TT>a&lt;= b</TT> on a :<BR>
+<TT>product(Xpr,Var,a,b)</TT>=<TT>product(Xpr,Var,a,b,1)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>f:=(x,y)-&gt;[x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2,x+y]</TT></DIV><P>
-puis,
-</P><DIV CLASS="center"><TT>zip(f,[4,2,1],[3,5,1])</TT></DIV><P>
+<DIV CLASS="center"><TT>product(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,1,4)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>mul(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,1,4)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[[25,7],[29,7],[2,2]]</TT></DIV><HR>
+<DIV CLASS="center"><TT>1700</TT></DIV>
+En effet :<BR>
+2*5*10*17=1700<BR>
+</LI><LI CLASS="li-itemize">si <TT>a</TT> est supérieur à <TT>b+1</TT>,<BR>
+<TT>product(Xpr,Var,a,b)</TT> renvoie l’inverse du produit des valeurs de 
+l’expression <TT>Xpr</TT> quand la variable 
+<TT>Var</TT> va de <TT>b+1</TT> à <TT>a-1</TT> avec un pas <TT>1</TT> : cette syntaxe est 
+compatible avec Maple.<BR>
+On tape :
+<DIV CLASS="center"><TT>product(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,4,1)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>mul(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,4,1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1/50</TT></DIV>
+En effet :<BR>
+1/(5*10)=1/50<BR>
+</LI><LI CLASS="li-itemize">si <TT>a</TT> est égal à <TT>b+1</TT>,<BR>
+<TT>product(Xpr,Var,b+1,b)</TT> renvoie 1.<BR>
+On tape :
+<DIV CLASS="center"><TT>product(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,5,4)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>mul(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,5,4)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1</TT></DIV>
+</LI></UL>
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc24"></A>Produit des éléments d’une liste : <TT>product</TT></H4><P>
+Voir aussi <TT>.*</TT> (cf <A HREF="cascmd_fr539.html#sec:hadal">6.42.5</A>) et <TT>hadamard</TT> pour les 
+matrices (cf <A HREF="cascmd_fr557.html#sec:hadam">6.46.8</A>).<BR>
+<TT>product</TT> ou <TT>mul</TT> peut aussi avoir 1 ou 2 arguments :<BR>
+une liste de nombres réels (ou de décimaux) ou<BR>
+deux listes de même longueur.<BR>
+ (voir aussi <A HREF="#sec:product0">6.41.33</A>, <A HREF="cascmd_fr555.html#sec:product1">6.46.6</A> et <A HREF="cascmd_fr557.html#sec:product2">6.46.8</A>).
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si <TT>product</TT> ou <TT>mul</TT> a un argument <TT>l</TT>, <TT>product</TT> ou 
+<TT>mul</TT> 
+renvoie le produit des éléments de <TT>l</TT><A NAME="sec:product"></A>.<BR>
+On tape :
+<DIV CLASS="center"><TT>product([2,3,4])</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>mul([2,3,4])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>24</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>product([[2,3,4],[5,6,7]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[10,18,28]</TT></DIV>
+-</LI><LI CLASS="li-itemize">si <TT>product</TT> ou <TT>mul</TT> a deux arguments <TT>l1</TT> et <TT>l2</TT> 
+(qui sont deux listes ou deux matrices), <TT>product</TT> ou <TT>mul</TT> renvoie
+le produit terme à terme des éléments de <TT>l1</TT> et des éléments de
+<TT>l2</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>product([2,3,4],[5,6,7])</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>mul([2,3,4],[5,6,7])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[10,18,28]</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>product([[2,3,4],[5,6,7]],[[2,3,4],[5,6,7]])</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>mul([[2,3,4],[5,6,7]],[[2,3,4],[5,6,7]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[4,9,16],[25,36,49]]</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr524.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr526.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

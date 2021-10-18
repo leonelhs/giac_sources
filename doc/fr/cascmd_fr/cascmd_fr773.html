@@ -6,25 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Distribution de Kolmogorov-Smirnov : kolmogorovd</TITLE>
+<TITLE>Fonction de répartition inverse de la loi de Cauchy : cauchy_icdf cauchyd_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr772.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr774.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc896">7.4.48</A>  Distribution de Kolmogorov-Smirnov : <TT>kolmogorovd</TT></H3><P><A NAME="@default1380"></A>
-<TT>kolmogorovd(x)</TT> renvoie la distribution de Kolmogorov-Smirnov à
-savoir :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">1−2*</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+∞</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">(−1)<SUP><I>k</I>−1</SUP>exp(−<I>k</I><SUP>2</SUP><I>x</I><SUP>2</SUP>)</TD></TR>
-</TABLE><P>
+<H3 CLASS="subsection"><A NAME="htoc907">8.4.38</A>  Fonction de répartition inverse de la loi de Cauchy : <TT>cauchy_icdf cauchyd_icdf</TT></H3><P><A NAME="@default1374"></A><A NAME="@default1375"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi de Cauchy de paramètre <I>a</I> 
+et <I>b</I>, si on a <TT>cauchy_icdf(a,b,p)=h</TT> avec <I>p</I>∈ [0,1]
+c’est que l’on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=p=cauchy_cdf(a,b,h)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>kolmogorovd(1.36)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cauchy_icdf(2,3,0.23)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.950514123245</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>-1.40283204777</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>cauchy_icdf(2,3,0.44)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.42771939334</TT></DIV><HR>
 <A HREF="cascmd_fr772.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr774.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,21 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Dimension d’une matrice : dim</TITLE>
+<TITLE>Compter les éléments plus petits qu’une valeur donnée : 
+count_inf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr583.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr585.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc688">6.45.38</A>  Dimension d’une matrice : <TT>dim</TT></H3><P><A NAME="@default1075"></A>
-<TT>dim</TT> a comme argument une matrice <I>A</I>.<BR>
-<TT>dim</TT> renvoie la dimension de la matrice <I>A</I> sous la forme d’une liste
-formée par son nombre de lignes et par son nombre de colonnes.<BR>
+<H3 CLASS="subsection"><A NAME="htoc689">6.46.35</A>  Compter les éléments plus petits qu’une valeur donnée :<BR>
+<TT>count_inf</TT></H3><P><A NAME="@default1063"></A><A NAME="@default1064"></A><A NAME="@default1065"></A>
+<TT>count_inf</TT> a deux ou trois paramètres : une nombre et une 
+matrice (ou liste) réelle et éventuellement un paramètre 
+optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
+<TT>count_inf</TT> renvoie le nombre d’éléments de la 
+matrice (ou liste) qui sont strictement inférieurs au premier argument.<BR>
+Si il y a <TT>row</TT> (resp <TT>col</TT>) comme troisième paramètre 
+<TT>count_inf</TT> agit sur chaque ligne (resp colonne) de la matrice et renvoie 
+une liste.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>dim([[1,2,3],[3,4,5]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>count_inf(12,[2,12,45,3,7,78])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>count_inf(12,[[2,12],[45,3],[7,78]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,3]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>count_inf(12,[[2,12],[45,3],[7,78]],row)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,1,1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>count_inf(12,[[2,12],[45,3],[7,78]],col)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,1]</TT></DIV><HR>
 <A HREF="cascmd_fr583.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr585.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

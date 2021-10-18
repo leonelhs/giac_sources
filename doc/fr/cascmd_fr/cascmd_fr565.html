@@ -6,51 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Extraire une sous-matrice d’une matrice (compatibilité TI) : subMat</TITLE>
+<TITLE>Remplacer une partie d’une matrice ou d’un vecteur : REPLACE</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr564.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr566.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc669">6.45.19</A>  Extraire une sous-matrice d’une matrice (compatibilité TI) : <TT>subMat</TT></H3><P><A NAME="@default1030"></A>
-<TT>subMat</TT> a 5 arguments : une matrice <I>A</I>, et 4 entiers 
-<I>nl</I>1,<I>nc</I>1,<I>nl</I>2,<I>nc</I>2.
-Ces indices sont : <I>nl</I>1 est l’indice du début de ligne ,<I>nc</I>1 est l’indice 
-du début de colonne, <I>nl</I>2 est l’indice de fin de ligne et <I>nc</I>2 est l’indice
-de fin de colonne.<BR>
-<TT>subMat(A,nl1,nc1,nl2,nc2)</TT> extrait la sous-matrice de la matrice <TT>A</TT>
-de premier élément <TT>A[nl1,nc1]</TT> et de dernier élément 
-<TT>A[nl2,nc2]</TT>.<BR>
-On définit la matrice <TT>A</TT>, on tape :
-</P><DIV CLASS="center"><TT>A:=[[3,4,5],[1,2,6]]</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc670">6.46.16</A>  Remplacer une partie d’une matrice ou d’un vecteur : <TT>REPLACE</TT></H3><P><A NAME="@default1029"></A>
+<TT>REPLACE</TT> a comme argument une matrice <I>A</I> (resp un vecteur) et 
+une liste de 2 indices (resp 1 entier) et la matrice (resp le vecteur) qui doit
+être mis en remplacement à partir de ces 2 indices.<BR>
+<TT>REPLACE</TT> effectue ce remplacement en élaguant éventuellement la 
+matrice (resp le vecteur) si elle (resp il) est sur dimensionnée.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>subMat(A,0,1,1,2)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>subMat(A,[0,1],[1,2])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>REPLACE([[1,2,3],[4,5,6]],[0,1],[[5,6],[7,8]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4,5],[2,6]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1,5,6],[4,7,8]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>subMat(A,0,1,1,1)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>subMat(A,[0,1],[1,1])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>REPLACE([[1,2,3],[4,5,6]],[1,2],[[7,8],[9,0]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4],[2]]</TT></DIV><P>
-Par défaut <I>nl</I>1=0, <I>nc</I>1=0, <I>nl</I>2=nrows-1 et <I>nc</I>2=ncols-1<BR>
+</P><DIV CLASS="center"><TT>[[1,2,3],[4,5,7]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=[[3,4,5],[1,2,6]]</TT></DIV><DIV CLASS="center"><TT>subMat(A)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>REPLACE([4,1,-2,1,2,-1],2,[10,11])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[3,4,5],[1,2,6]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[4,1,10,11,2,-1]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>subMat(A,1)</TT></DIV><P>
-Ou :
-</P><DIV CLASS="center"><TT>subMat(A,1,0)</TT></DIV><P>
-Ou :
-</P><DIV CLASS="center"><TT>subMat(A,1,0,1)</TT></DIV><P>
-Ou :
-</P><DIV CLASS="center"><TT>subMat(A,1,0,1,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>REPLACE([4,1,-2,1,2,-1],1,[10,11,13])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,2,6]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[4,10,11,13,2,-1]</TT></DIV><HR>
 <A HREF="cascmd_fr564.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr566.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

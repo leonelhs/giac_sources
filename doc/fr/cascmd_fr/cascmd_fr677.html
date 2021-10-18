@@ -6,26 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Test de la présence d’une variable dans une expression : has</TITLE>
+<TITLE>Liste des variables : lname indets</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr676.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr678.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc794">6.58.5</A>  Test de la présence d’une variable dans une expression : <TT>has</TT></H3><P><A NAME="@default1223"></A>
-<TT>has</TT> a comme paramètre une expression et le nom d’une 
-variable.<BR>
-<TT>has</TT> renvoie <TT>1</TT>, ou <TT>0</TT>, selon que la variable est présente, 
-ou non présente, dans l’expression.<BR>
+<H3 CLASS="subsection"><A NAME="htoc795">6.59.2</A>  Liste des variables : <TT>lname indets</TT></H3><P><A NAME="@default1223"></A><A NAME="@default1224"></A>
+<TT>lname</TT> (ou <TT>indets</TT>) a comme paramètre une expression.<BR>
+<TT>lname</TT> (ou <TT>indets</TT>) renvoie un vecteur de composantes le nom des 
+variables symboliques utilisées dans cette expression.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>has(x*y*sin(x),y)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>lname(x*y*sin(x))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[x,y]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>has(x*y*sin(x),z)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a:=2;assume(b&gt;0);assume(c=3);</TT></DIV><DIV CLASS="center"><TT>lname(a*x</TT><CODE><TT>^</TT></CODE><TT>2+b*x+c)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[x,b,c]</TT></DIV><HR>
 <A HREF="cascmd_fr676.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr678.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

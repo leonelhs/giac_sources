@@ -102,7 +102,7 @@ namespace giac {
   // args = expression, antiderivative, variable, lower_bound, upper_bound
   gen _euler_mac_laurin(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_euler_mac_laurin ;
-  bool convert_to_euler_mac_laurin(const gen & g,gen & res,GIAC_CONTEXT);
+  bool convert_to_euler_mac_laurin(const gen & g,const identificateur &n,gen & res,GIAC_CONTEXT);
 
   // expansion of e at x=lim_point, order ordre, direction 0/1/-1
   // answer is in s

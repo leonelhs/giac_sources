@@ -6,42 +6,92 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les autres opérateurs de Xcas</TITLE>
+<TITLE>Valeurs d’une suite récurrente ou d’un système de suites récurrentes : rsolve</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr280.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr282.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc355">6.15.2</A>  Les autres opérateurs de <TT>Xcas</TT></H3><P><A NAME="@default475"></A><A NAME="@default476"></A><A NAME="@default477"></A><A NAME="@default478"></A><A NAME="@default479"></A><A NAME="@default480"></A><A NAME="@default481"></A><A NAME="@default482"></A> <A NAME="@default483"></A>
-<A NAME="@default484"></A><A NAME="@default485"></A><A NAME="@default486"></A>
+<H3 CLASS="subsection"><A NAME="htoc355">6.15.3</A>  Valeurs d’une suite récurrente ou d’un système de suites récurrentes : <TT>rsolve</TT></H3><P><A NAME="@default467"></A> <A NAME="sec:rsolve"></A>
+Voir aussi <TT>seqsolve</TT> <A HREF="cascmd_fr280.html#sec:seqsolve">6.15.2</A>.<BR>
+<TT>rsolve</TT> a comme argument la ou les relation(s) de récurrence, 
+le nom des variables utilisées et les valeurs de départ de la suite.</P><P>La relation de récurrence est :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>$ </TT> est la version infixée de <TT>seq</TT> par exemple :<BR>
-<TT>(2</TT><CODE><TT>^</TT></CODE><TT>k)$(k=0..3)= seq(2</TT><CODE><TT>^</TT></CODE><TT>k,k=0..3)=(1,2,4,8)</TT> (ne pas oublier 
-de parenthéser les arguments),
-</LI><LI CLASS="li-itemize"><TT>mod</TT> ou <TT>% </TT> pour définir un nombre modulaire,
-</LI><LI CLASS="li-itemize"><TT>@</TT> pour composer des fonctions par exemple :
-<TT>(f@g)(x)=f(g(x))</TT>,
-</LI><LI CLASS="li-itemize"><TT>@@ </TT> pour composer une fonction avec elle-même par exemple :<BR>
-<TT>(f@@3)(x)=f(f(f(x)))</TT>,
-</LI><LI CLASS="li-itemize"><TT>minus union intersect</TT> pour traduire la différence, l’union et 
-l’intersection de deux ensembles,
-</LI><LI CLASS="li-itemize"><TT>-&gt;</TT> pour définir une fonction,
-</LI><LI CLASS="li-itemize"><TT>:= ou =&gt;</TT> pour affecter une variable (c’est la version infixée de 
-<TT>sto</TT> avec l’ordre permuté des arguments pour <TT>:=</TT>), 
-par exemple : <TT>a:=2</TT> or <TT>2=&gt;a</TT> or <TT>sto(2,a)</TT>.
-</LI><LI CLASS="li-itemize"><TT>=&gt;</TT> permet aussi de faire des conversions d’unité et des 
-réécritures d’expressions, par exemples : <TT>3_m=&gt;_cm</TT>, 
-<TT>sin(x)=&gt;diff</TT>, <TT>sin(x)=&gt;exp</TT>, <TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1=&gt;*</TT> etc... 
-<TT>=&lt;</TT> pour stocker une expression dans une variable, avec une affectation 
-par référence (l’ordre des arguments est le même que pour <TT>:=</TT>)
-si la cible est un élément d’une matrice ou d’une liste.
-Ceci est plus rapide si on modifie les élèments d’une matrice ou d’une 
-liste existante de grande dimension, car on ne fait pas de copie.
-À utiliser avec précautions car tous les objets pointant sur cette matrice 
-seront modifiés. Dans un programme il faudra utiliser <TT>copy</TT> lors de 
-l’initialisation pour que les modifications se fassent sur la copie 
-(cf <A HREF="cascmd_fr807.html#sec:copie">8.4.15</A>)
+soit une partie homogène linéaire, la partie non homogène doit 
+être une combinaison linéaire de produit de polynôme en <I>n</I> par une suite
+géométrique en <I>n</I>. Par exemple <I>u</I><SUB><I>n</I>+1</SUB>=2<I>u</I><SUB><I>n</I></SUB>+<I>n</I>3<SUP><I>n</I></SUP>,
+</LI><LI CLASS="li-itemize">soit une fonction homographique. Par exemple 
+ <I>u</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>−1/<I>u</I><SUB><I>n</I></SUB>−2
+</LI></UL><P>
+<TT>rsolve</TT> renvoie alors une matrice dont les lignes sont les valeurs de la 
+suite en fonctions de <I>n</I>.</P><P><B>Remarques</B><BR>
+Contrairement à <TT>seqsolve</TT>, <TT>rsolve</TT> est plus malléable car
+avec <TT>rsolve</TT> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+la suite ne débute pas forcément par <TT>u(0)</TT>, 
+</LI><LI CLASS="li-itemize">on peut donner plusieurs valeurs de départ par exemple 
+<TT>u(0)^2=1</TT>, c’est pourquoi <TT>rsolve</TT> renvoie une liste,
+</LI><LI CLASS="li-itemize">on écrit la relation de récurrence comme en mathématiques.
+</LI></UL><P>
+<B>Exemples</B> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Valeurs de la suite <I>u</I><SUB>0</SUB>=3,  <I>u</I><SUB><I>n</I>+1</SUB>=2<I>u</I><SUB><I>n</I></SUB>+<I>n</I><BR>
+On tape : 
+<DIV CLASS="center"><TT>rsolve(u(n+1)=2u(n)+n,u(n),u(0)=3)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[-1+4*2^(n+1-1)-n]</TT></DIV> 
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>1</SUB><SUP>2</SUP>=1,   <I>u</I><SUB><I>n</I>+1</SUB>=2<I>u</I><SUB><I>n</I></SUB>+<I>n</I><BR>
+On tape : 
+<DIV CLASS="center"><TT>rsolve(u(n+1)=2u(n)+n,u(n),u(1)^2=1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[-1-(-3)/2*2^(n+1-1)-n,<BR>
+-1-(-1)/2*2^(n+1-1)-n]]</TT></DIV> 
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=3,  <I>u</I><SUB><I>n</I>+1</SUB>=2<I>u</I><SUB><I>n</I></SUB>+<I>n</I>3<SUP><I>n</I></SUP><BR>
+On tape : 
+<DIV CLASS="center"><TT>rsolve(u(n+1)=2u(n)+(n)*3^n,u(n),u(0)=3)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[-3*3^(n+1-1)+6*2^(n+1-1)+n*3^(n+1-1)]</TT></DIV> 
+</LI><LI CLASS="li-itemize">Valeurs de la suite  <I>u</I><SUB>0</SUB>=4, <I>u</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>−1/<I>u</I><SUB><I>n</I></SUB>−2<BR>
+On tape : 
+<DIV CLASS="center"><TT>rsolve(u(n+1)=(u(n)-1)/(u(n)-2),u(n),u(0)=4)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[((10*sqrt(5)+30)*((sqrt(5)-3)/2)</TT><CODE><TT>^</TT></CODE><TT>n+30*sqrt(5)-70)/ (20*((sqrt(5)-3)/2)</TT><CODE><TT>^</TT></CODE><TT>n+10*sqrt(5)-30)]</TT></DIV>
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=0,<I>u</I><SUB>1</SUB>=1,  <I>u</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>+<I>u</I><SUB><I>n</I>−1</SUB> pour <I>n</I>&gt;0.<BR>
+On tape : 
+<DIV CLASS="center"><TT>rsolve(u(n+1)=u(n)+u(n-1),u(n),u(0)=0,u(1)=1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[(5+sqrt(5))/10*((sqrt(5)+1)/2)^(n+1-1-1)+<BR>
+(5-sqrt(5))/10*((-sqrt(5)+1)/2)^(n+1-1-1)]</TT></DIV> 
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=0,<I>u</I><SUB>1</SUB>=1,  <I>u</I><SUB><I>n</I>+1</SUB>=2*<I>u</I><SUB><I>n</I></SUB>+<I>u</I><SUB><I>n</I>−1</SUB>+<I>n</I> pour <I>n</I>&gt;0.<BR>
+On tape : 
+<DIV CLASS="center"><TT>rsolve(u(n+1)=2*u(n)+u(n-1)+n,u(n),u(0)=0,u(1)=1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[(-1)/2-(-2-3*sqrt(2))/8*(sqrt(2)+1)^(n+1-1)-<BR>
+(-2+3*sqrt(2))/8*(-sqrt(2)+1)^(n+1-1)-1/2*n]</TT></DIV>
+Ou on tape :<BR>
+<TT>rsolve([u(n+1)=2*u(n)+v(n)+n,v(n+1)=u(n)],</TT><BR>
+<TT>[u(n),v(n)],u(0)=0,v(0)=1) </TT>
+On obtient :
+<DIV CLASS="center"><TT>[[(-1)/2-(-2-3*sqrt(2))/8*(sqrt(2)+1)^(n+1-1)-<BR>
+(-2+3*sqrt(2))/8*(-sqrt(2)+1)^(n+1-1)-1/2*n,<BR>
+-(-4+sqrt(2))/8*(sqrt(2)+1)^(n+1-1)-<BR>
+(-4-sqrt(2))/8*(-sqrt(2)+1)^(n+1-1)-1/2*n]]</TT></DIV></LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=0,<I>v</I><SUB>0</SUB>=1,  <I>u</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>+<I>v</I><SUB><I>n</I></SUB>, <I>v</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>−<I>v</I><SUB><I>n</I></SUB>,.<BR>
+On tape :<BR>
+<TT>rsolve([u(n+1)=u(n)+v(n),v(n+1)=u(n)-v(n)],</TT><BR>
+<TT>[u(n),v(n)],[u(0)=0,v(0)=1])</TT><BR>
+On obtient :
+<DIV CLASS="center"><TT>[[1/2*2^((n-1)/2)+1/2*(-(sqrt(2)))^(n-1),<BR>
+(-1+sqrt(2))/2*2^((n-1)/2)+<BR>
+(-1-sqrt(2))/2*(-(sqrt(2)))^(n-1)]]</TT></DIV> 
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=2,<I>v</I><SUB>0</SUB>=0,  <I>u</I><SUB><I>n</I>+1</SUB>=4*<I>v</I><SUB><I>n</I></SUB>+<I>n</I>+1, <I>v</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>,.<BR>
+On tape :<BR>
+<TT>rsolve([u(n+1)=4*v(n)+n+1,v(n+1)=u(n)],</TT><BR>
+<TT>[u(n),v(n)],[u(0)=2,v(0)=0])</TT><BR>
+On obtient :
+<DIV CLASS="center"><TT>[[(-8)/9+2*2^(n+1-1)-(-8)/9*(-1)^(n+1-1)*2^(n+1-1)-<BR>
+1/3*n,(-5)/9+2^(n+1-1)-4/9*(-1)^(n+1-1)*2^(n+1-1)-<BR>
+1/3*n]]</TT></DIV> 
 </LI></UL><HR>
 <A HREF="cascmd_fr280.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

@@ -6,21 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Complément à 1 de la fonction de répartition de la loi du χ2 : UTPC</TITLE>
+<TITLE>Fonction de répartition de la loi normale : normal_cdf normald_cdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr746.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr748.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc870">7.4.22</A>  Complément à 1 de la fonction de répartition de la loi du χ<SUP>2</SUP> : <TT>UTPC</TT></H3><P><A NAME="@default1337"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi du χ<SUP>2</SUP> ayant <I>n</I> degrés
-de liberté,
-on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPC(n,x)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc881">8.4.12</A>  Fonction de répartition de la loi normale : <TT>normal_cdf normald_cdf</TT></H3><P><A NAME="@default1337"></A><A NAME="@default1338"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi normale centrée réduite,
+on a : <I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>normal_cdf(x)</TT> et<BR>
+<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)= <TT>normal_cdf(x,y)</TT> et<BR>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi normale de moyenne µ et 
+d’écart-type σ, on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>normal_cdf(</TT><TT>µ,σ</TT><TT>,x)</TT>.<BR>
+<I>Proba</I>(<I>x</I> ≤ <I>X</I> ≤ <I>y</I>)= <TT>normal_cdf(</TT><TT>µ,σ</TT><TT>,x,y)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>UTPC(5,11)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal_cdf(1.96)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0513799834831</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.975002104852</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>normal_cdf(0,1.96)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.475002104852</TT></DIV><P>
+car <TT>normal_cdf(0)=1/2</TT> et 0.975002104852-0.5=0.475002104852<BR>
+On tape :
+</P><DIV CLASS="center"><TT>normal_cdf(1,2,1.96)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.684386303484</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>normal_cdf(1,2,1.1,2.9)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.309005067853</TT></DIV><HR>
 <A HREF="cascmd_fr746.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr748.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

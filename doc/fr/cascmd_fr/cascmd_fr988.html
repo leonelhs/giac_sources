@@ -6,33 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Plans (ou droites) perpendiculaires : perpendicular perpendiculaire</TITLE>
+<TITLE>Les points d’intersection de deux objets géométriques : inter</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr987.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr989.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1147">10.5.7</A>  Plans (ou droites) perpendiculaires : <TT>perpendicular perpendiculaire</TT></H3><P><A NAME="@default1925"></A><A NAME="@default1926"></A><A NAME="sec:perpendi3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr989.html#sec:orthogonal3">10.5.8</A> et, pour la géométrie plane 
-<A HREF="cascmd_fr879.html#sec:perpendi2">9.9.7</A>.<BR>
-<TT>perpendiculaire</TT>, en géométrie 3-d, renvoie et dessine une 
-droite (resp un plan) si le 2-ième argument est une droite (resp un plan).<BR>
-Plus précisemment, si ses arguments sont :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un point <I>A</I> et une droite <I>d</I>, <TT>perpendiculaire(A,d)</TT> renvoie et 
-dessine la droite perpendiculaire à la droite <I>d</I> et passant par <I>A</I>,
-</LI><LI CLASS="li-itemize">une droite <I>dd</I> et un plan <I>P</I>, <TT>perpendiculaire(dd,P)</TT> renvoie et 
-dessine le plan perpendiculaire au plan <I>P</I> et passant par <I>dd</I>.<BR>
-</LI></UL><P> 
+<H3 CLASS="subsection"><A NAME="htoc1157">11.4.4</A>  Les points d’intersection de deux objets géométriques : <TT>inter</TT></H3><P><A NAME="@default1922"></A><A NAME="sec:inter3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr874.html#sec:inter2">10.8.6</A> pour la géométrie plane.<BR>
+<TT>inter</TT> a 2 arguments qui sont deux objets géométriques.<BR>
+<TT>inter</TT> renvoie la liste des points (ou la courbe) d’intersection de ces 
+deux objets géométriques.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>perpendiculaire(point(0,0,0),droite(point(1,0,0),point(0,1,0)))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>LA:=inter(plan(point(0,1,1),point(1,0,1),point(1,1,0)),droite(point(0,0,0),point(1,1,1)))</TT></DIV><DIV CLASS="center"><TT>coordonnees(LA)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La droite d’équation y=x, z=0</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[2/3,2/3,2/3]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>perpendiculaire(droite([0,0,0],[1,1,0]),plan(point(1,0,0),point(0,1,0),point(0,0,1)))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>LB:=inter(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)))</TT></DIV><DIV CLASS="center"><TT>coordonnees(LB)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x=y</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))],[-(1/(sqrt(3))),-(1/(sqrt(3))),-(1/(sqrt(3)))]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>coordonnees(LB[0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1/(sqrt(3)),1/(sqrt(3))]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>coordonnees(LB[1])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-(1/(sqrt(3))),-(1/(sqrt(3))),-(1/(sqrt(3)))]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>C:=inter(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)),point([1/2,1,2,1/2]))</TT></DIV><DIV CLASS="center"><TT>coordonnees(C)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>LB:=inter(sphere(point(0,0,0),1),plan(point(0,0,0),point(1,0,0),point(1,1,0)))[0]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>un cercle</TT></DIV><HR>
 <A HREF="cascmd_fr987.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr989.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

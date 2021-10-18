@@ -6,37 +6,108 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Extraire des lignes ou des colonnes d’une matrice (compatibilité Maple) : row col</TITLE>
+<TITLE>Modifier un élément ou une ligne d’une matrice : subsop</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr562.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr564.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc667">6.45.17</A>  Extraire des lignes ou des colonnes d’une matrice (compatibilité Maple) : <TT>row col</TT></H3><P><A NAME="@default1026"></A><A NAME="@default1027"></A>
-<TT>row</TT> (resp <TT>col</TT>) permet d’extraire une ou plusieurs lignes 
-(resp colonnes) d’une matrice.<BR>
-<TT>row</TT> (resp <TT>col</TT>) a 2 arguments : une matrice <I>A</I>, et un entier <I>n</I> 
-ou un intervalle <I>n</I><SUB>1</SUB>..<I>n</I><SUB>2</SUB>.<BR>
-<TT>row</TT> (resp <TT>col</TT>) renvoie la ligne (resp colonne) d’indice <I>n</I> de la 
-matrice <I>A</I>, ou la séquence des lignes (resp colonnes) d’indice allant de 
-<I>n</I><SUB>1</SUB> à <I>n</I><SUB>2</SUB> de la matrice <I>A</I>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>row([[1,2,3],[4,5,6],[7,8,9]],1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc668">6.46.14</A>  Modifier un élément ou une ligne d’une matrice : <TT>subsop</TT></H3><P><A NAME="@default1027"></A>
+<TT>subsop</TT> permet de modifier un élément ou une ligne d’une 
+matrice sans avoir à stocker la matrice dans une variable.
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Modification d’un élément<BR>
+<TT>subsop</TT> a deux ou trois arguments.<BR>
+<B>Attention</B><BR>
+En mode <TT>Maple</TT> les arguments sont permutés.<BR>
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+En mode <TT>Xcas</TT>, les indices commence à 0 :<BR>
+<TT>subsop</TT> a deux (resp trois) arguments : une matrice <TT>A</TT> et une 
+égalité <TT>[r,c]=v</TT> (resp une matrice <TT>A</TT>, la liste des indices de 
+la ligne et de la colonne <TT>[r,c]</TT>, la nouvelle valeur <TT>v</TT>).<BR>
+On tape en mode <TT>Xcas</TT> :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[1,0]=3)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[1,0],3)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[4,5,6]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>row([[1,2,3],[4,5,6],[7,8,9]],0..1)</TT></DIV><P>
+<DIV CLASS="center"><TT>[[4,5],[3,6]]</TT></DIV>
+</LI><LI CLASS="li-itemize">En mode <TT>Mupad, TI</TT>, les indices commencent à 1 :<BR>
+<TT>subsop</TT> a deux (resp trois) arguments : une matrice <TT>A</TT> et une 
+égalité <TT>[r,c]=v</TT> (resp une matrice <TT>A</TT>, la liste des indices de 
+la ligne et de la colonne <TT>[r,c]</TT>, la nouvelle valeur <TT>v</TT>).<BR>
+On tape en mode <TT>Mupad, TI</TT> :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[2,1]=3)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],[2,1],3)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>([1,2,3],[4,5,6])</TT></DIV><P>
+<DIV CLASS="center"><TT>[[4,5],[3,6]]</TT></DIV>
+<B>Remarque</B><BR>
+Si la matrice a un nom par exemple :<BR>
+<TT>A:=[[4,5],[2,6]]</TT>, on peut taper directement <TT>A[2,1]:=3</TT> pour modifier
+<TT>A</TT> en la matrice <TT>[[4,5],[3,6]]</TT>.
+</LI><LI CLASS="li-itemize">En mode <TT>Maple</TT>, les arguments sont permutés et les indices 
+commencent à 1 :<BR>
+<TT>subsop</TT> a deux arguments : une égalité <TT>[r,c]=v</TT> et une matrice 
+<TT>A</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>col([[1,2,3],[4,5,6],[7,8,9]],1)</TT></DIV><P>
+<DIV CLASS="center"><TT>subsop([2,1]=3,[[4,5],[2,6]])</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,5,8]</TT></DIV><P>
+<DIV CLASS="center"><TT>[[4,5],[3,6]]</TT></DIV>
+<B>Remarque</B><BR>
+Si la matrice à un nom par exemple :<BR>
+<TT>A:=[[4,5],[2,6]]</TT>, on peut taper directement <TT>A[2,1]:=3</TT> pour modifier
+<TT>A</TT> en la matrice <TT>[[4,5],[3,6]]</TT>.
+</LI></UL>
+</LI><LI CLASS="li-enumerate">Modification d’une ligne<BR>
+<TT>subsop</TT> permet de modifier une ligne d’une matrice sans 
+avoir à stocker la matrice dans une variable.<BR>
+<TT>subsop</TT> a alors deux arguments :<BR>
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+En mode <TT>Xcas</TT>, les indices commence à 0 :<BR>
+<TT>subsop</TT> a deux arguments une matrice et une égalité, à savoir
+l’indice de la ligne à modifier,
+suivi du signe <TT>=</TT> puis la liste des nouvelles valeurs de cette ligne.<BR>
+On tape en mode <TT>Xcas</TT> :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],1=[3,3])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[4,5],[3,3]]</TT></DIV>
+<B>Remarque</B><BR>
+Si la matrice à un nom par exemple :<BR>
+<TT>A:=[[4,5],[2,6]]</TT>, on peut taper directement <TT>A[1]:=[3,3]</TT> pour 
+modifier <TT>A</TT> en la matrice <TT>[[4,5],[3,3]]</TT>.</LI><LI CLASS="li-itemize">En mode <TT>Mupad, TI</TT>, les indices commencent à 1 :<BR>
+<TT>subsop</TT> a deux arguments une matrice et une égalité, à savoir
+l’indice de la ligne à modifier,
+suivi du signe <TT>=</TT> puis la liste des nouvelles valeurs de cette ligne.<BR>
+On tape en mode <TT>Mupad, TI</TT> :
+<DIV CLASS="center"><TT>subsop([[4,5],[2,6]],2=[3,3])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[4,5],[3,3]]</TT></DIV>
+<B>Remarque</B><BR>
+Si la matrice à un nom par exemple :<BR>
+<TT>A:=[[4,5],[2,6]]</TT>, on peut taper directement <TT>A[2]:=[3,3]</TT> pour 
+modifier <TT>A</TT> en la matrice <TT>[[4,5],[3,3]]</TT>.</LI><LI CLASS="li-itemize">En mode <TT>Maple</TT> les arguments sont permutés et les indices 
+commencent à 1 :<BR>
+<TT>subsop</TT> a deux arguments une égalité, à savoir l’indice de la 
+ligne à modifier, suivi du signe <TT>=</TT> puis la liste des nouvelles valeurs 
+de cette ligne et une matrice.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>col([[1,2,3],[4,5,6],[7,8,9]],0..1)</TT></DIV><P>
+<DIV CLASS="center"><TT>subsop(2=[3,3],[[4,5],[2,6]])</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>([1,4,7],[2,5,8])</TT></DIV><HR>
+<DIV CLASS="center"><TT>[[4,5],[3,3]]</TT></DIV>
+<B>Remarque</B><BR>
+Si la matrice à un nom par exemple :<BR>
+<TT>A:=[[4,5],[2,6]]</TT>, on peut taper directement <TT>A[2]:=[3,3]</TT> pour 
+modifier <TT>A</TT> en la matrice <TT>[[4,5],[3,3]]</TT>.
+</LI></UL>
+</LI></OL><P>
+<B>Remarque</B><BR>
+On peut aussi supprimer la ligne <I>n</I> d’une matrice avec <TT>subsop</TT> 
+en mettant comme second argument <TT>’n=NULL’</TT>.<BR>
+On tape en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>subsop([[4,5],[2,6]],’1=NULL’)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[4,5]]</TT></DIV><HR>
 <A HREF="cascmd_fr562.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr564.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

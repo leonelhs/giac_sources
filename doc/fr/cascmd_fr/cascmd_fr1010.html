@@ -6,23 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’hyperbole dans l’espace : hyperbola hyperbole</TITLE>
+<TITLE>Le carré dans l’espace : square carre</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1009.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1011.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1175">10.11.2</A>  L’hyperbole dans l’espace : <TT>hyperbola hyperbole</TT></H3><P><A NAME="@default1964"></A><A NAME="@default1965"></A><A NAME="sec:hyperbole3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr911.html#sec:hyperbole2">9.14.2</A> pour la géométrie plane.<BR>
-<TT>hyperbole</TT>, en géométrie 3-d, a trois paramètres : ses 
-deux foyers et un de ces points non aligné avec les foyers.<BR>
-<TT>hyperbole(F1,F2,A)</TT> trace l’hyperbole passant par <TT>A</TT> et de foyers 
-<TT>F1</TT> et <TT>F2</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1183">11.8.1</A>  Le carré dans l’espace : <TT>square carre</TT></H3><P><A NAME="@default1958"></A><A NAME="@default1959"></A><A NAME="sec:carre3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr902.html#sec:carre2">10.11.2</A> pour la géométrie plane.<BR>
+<TT>carre</TT>, en géométrie 3-d, peut avoir de trois à cinq 
+arguments.<BR>
+Les arguments sont :<BR>
+- si il a trois arguments ce sont 3 points de l’espace : les 2 sommets du carré et le troisième point définit le demi-plan du carré.<BR>
+<TT>carre(A,B,P)</TT> renvoie et trace le carrè <I>ABCD</I> dans le demi-plan <I>ABP</I> contenant <I>P</I>, mais sans définir les points D et C.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>hyperbole(point(-1,0,0),point(1,0,0),point(1,1,1))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><DIV CLASS="center"><TT>Q:=point(0,0,-3)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>carre(A,B,P)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>L’hyperbole passant par (1,1,1), de foyers (-1,0,0) et (1,0,0)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le carré de sommets A,B dans le demi-plan ABP</TT></DIV><P>Puis on tape :
+</P><DIV CLASS="center"><TT>carre(A,B,Q)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le carré de sommets A,B dans le demi-plan ABQ</TT></DIV><P>
+- si il a cinq arguments, les 2 derniers paramètres sont le nom de deux 
+variables qui serviront à définir les deux autres sommets.
+On tape :
+</P><DIV CLASS="center"><TT>carre(A,B,P,C,D)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le carré de sommets A,B,C,D dans le demi-plan ABQ</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[3-3*sqrt(1/2),3-3*sqrt(1/2),3*sqrt(2)+3]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-3*sqrt(2),-3*sqrt(2),3*sqrt(2)]</TT></DIV><HR>
 <A HREF="cascmd_fr1009.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1011.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

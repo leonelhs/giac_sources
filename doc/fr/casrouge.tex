@@ -2028,7 +2028,6 @@ Si $P\times P$ est strictement sup\'erieur \`a $N$, on arr\^ete
 \end{enumerate}
 \subsection{\'Ecriture de l'algorithme}
 \begin{verbatim}
-
 Fonction crible(N)
 local TAB PREM I P
 // TAB et PREM sont des listes
@@ -2244,6 +2243,42 @@ return a(x-1,a(x,y-1));
 }
 \end{verbatim}
 Essayez {\tt a(4,1)=65533}, {\tt a(4,2)}....
+\chapter{Exercices simples}
+\section{Savoir si une liste est croissante}
+Une liste de taille 1 est croissante.\\
+Si la taille est de la liste {\tt l} est {\tt s} il faut faire attention que 
+les indices de  {\tt l} vont de {\tt 0} \`a {\tt s-1}. On compare donc 
+{\tt l[0]} et {\tt l[1]}, puis {\tt l[j-1]} et {\tt l[j]} donc
+on initialise {\tt j} \`a {\tt 1} et tantque {\tt j<s} on compare  
+{\tt l[j-1]} et {\tt l[j]} si ils ne sont pas dans le bon ordre on s'arr\^ete
+ sinon on augmente {\tt j} de 1.\\
+On \'ecrit :
+\begin{verbatim}
+est_crois(l):={
+local j,s;
+s:=size(l);
+j:=1;
+tantque j<s faire
+  si l[j-1]>l[j] alors return false fsi;
+  j:=j+1;
+ftantque;
+return true;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt est\_crois([1,2,0,4])}\\
+On obtient :\\
+{\tt faux}\\
+On tape :\\
+{\tt est\_crois([1,2,3,4])}\\
+On obtient :\\
+{\tt vrai}\\
+{\bf Exercice}\\
+\'Ecrire un programme qui renvoie :\\
+0 si la liste n'est pas moontone\\
+1 si la liste est croissante\\
+2 si la liste est d\'ecroissante\\
+3 si la liste est constante.
 \chapter{Les exercices d'algorithmiques au baccalaur\'eat s\'erie S}
 \section{Trois exercices classiques}
 \subsection{La s\'erie harmonique}
@@ -2523,7 +2558,7 @@ Mais en changeant le rep\`ere, on voit les points tels que point(97,9232)\\
 \ \\
 \includegraphics[width=\textwidth]{syracuse1}
 
-\section{En 2009 Centre \'etrangers}
+\section{En 2009 Centre \'etranger}
 On consid\`ere la fonction $f(x)=xe^x-1$ sur $\R$.
 \begin{itemize}
 \item Calculer $f(0$ et $f(1)$.
@@ -2605,7 +2640,39 @@ On tape :
 {\tt dichotomie(f,5)}\\
 On obtient :
 {\tt 0.567138671875,0.56714630127}
-
+{\bf Compl\'ements}
+Dans la fonction {\tt dichotomie} si dessus on a supposé que la fonction 
+{\tt f} avait un z\'ero sur ]0.0,1.0[. Voici une fonction {\tt dichotomie}
+plus g\'en\'erale que je nomme  {\tt dichotom}
+\begin{verbatim}
+dichotom(f,a,b,n):={
+  local m,p;
+  a:=evalf(a);b:=evalf(b);
+  si a>b alors m:=b;b:=a;a:=m; fsi;
+  p:=f(b)*f(a);
+  si p>0 alors return("f(",a,")*f(",b,")>0"); fsi;
+  DIGITS:=n+2;
+  tantque (b-a)>10.0^-n faire 
+    m:=(a+b)/2;
+    p:=f(a)*f(m);
+    si p>0 alors
+      a:=m;
+    sinon
+      b:=m;
+    fsi;
+  ftantque ;
+  retourne a,b;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt f(x):=x*exp(x)-1;}
+{\tt dichotom(f,0,1,15)}
+On obtient :\\
+{\tt 0.56714329040978351}\\
+On tape :\\
+{\tt dichotom(f,2,1,5)}
+On obtient :\\
+{\tt "f(",1.0,")*f(",2.0,")>0"}
 \section{En 2010 Am\'erique du sud}
 \begin{itemize}
 \item On consid\`ere l'algorithme :
@@ -4623,35 +4690,58 @@ ldiv:=concat(ldiv,[n,1]);
 return(ldiv);
 }
 \end{verbatim}
+
 \section{La liste des diviseurs}
 \subsection{Les programmes avec les \'el\`eves}
 L'algorithme na\"{i}f :\\
-{\tt \noindent pour i de 1 a n faire\\
-\hspace*{0.5cm} si (i divise n) alors\\
-\hspace*{1cm} afficher i\\
+{\tt \noindent pour j de 1 a n faire\\
+\hspace*{0.5cm} si (j divise n) alors\\
+\hspace*{1cm} afficher j\\
 \hspace*{0.5cm} fsi\\
 fpour}\\
 
 Les \'el\`eves remarquent que l'on peut avoir les diviseurs deux par deux.\\
-{\tt \noindent pour i de 1 a E($\sqrt{\mbox{n}}$) faire\\
-\hspace*{0.5cm} si (i divise n) alors\\
-\hspace*{1cm} afficher i, n/i \\
+{\tt \noindent pour j de 1 a E($\sqrt{\mbox{n}}$) faire\\
+\hspace*{0.5cm} si (j divise n) alors\\
+\hspace*{1cm} afficher j, n/j \\
 \hspace*{0.5cm} fsi\\
 fpour}\\
 Malheureusement, lorsque l'entier $n$ est le carr\'e de $p$, $p$ figure deux 
 fois dans l'affichage des diviseurs.\\
 On am\'eliore donc l'algorithme :\\
  
-{\tt \noindent 1  $\rightarrow$ i\\
-tantque i<$\sqrt{\mbox{n}}$ faire\\
-\hspace*{0.5cm} si (i divise n) alors\\
-\hspace*{1cm} afficher i, n/i \\
+{\tt \noindent 1  $\rightarrow$ j\\
+tantque j<$\sqrt{\mbox{n}}$ faire\\
+\hspace*{0.5cm} si (j divise n) alors\\
+\hspace*{1cm} afficher j, n/j \\
 \hspace*{0.5cm} fsi\\
-\hspace*{0.5cm} i+1 $\rightarrow$ i\\
+\hspace*{0.5cm} j+1 $\rightarrow$ j\\
 ftantque\\
-si i$\cdot$i=n alors\\
-\hspace*{0.5cm} afficher i\\
+si j$\cdot$j=n alors\\
+\hspace*{0.5cm} afficher j\\
 fsi}
+{\bf Remarque}
+Les programmes sont ensuite mis sur des calculatrices, c'est pourquoi les 
+algorithmes pr\'ec\'edents utilisent la commande {\tt afficher}. Si on veut 
+\'ecrire un programme avec {\tt Xcas} on fera une fonction : on mettera les 
+diviseurs dans une liste qui sera \`a la fin la valeur de la fonction en  
+utilisant la commande {\tt retourne} par exemple :
+\subsubsection{Traduction Xcas de l'algorithme na\"{i}f}
+\begin{verbatim}
+nbdivis(n):={
+local j, L,sn;
+L:=[];
+j:=1;
+sn:=sqrt(n)
+tantque j<sn faire
+si irem(n,j)==0 alors L:=concat(L,[j,n/j]); fsi;
+j:=j+1;
+ftantque;
+si j*j==n alors L:=append(L,j) fsi;
+retourne L;
+}:;
+\end{verbatim}
+
 \subsection{Le nombre de diviseurs d'un entier $n$}
 On d\'ecompose $n$ en facteurs premiers, puis on donne aux exposants de ces 
 facteurs premiers toutes les valeurs possibles. 
@@ -4717,7 +4807,7 @@ On modifie la liste {\tt L1} en lui concat\'enant la liste {\tt L2}, ainsi :\\
 ${\tt L1=\{1,A,A^2,...,A^a,B,B*A,B*A^2,...,B*A^a,...,B^b,B^b*A,B^b*A^2,...,B^b*A^a\}}$.\\
 Et ainsi de suite, jusqu'\`a avoir epuis\'e tous les diviseurs de {\tt N}.
 \subsubsection{Traduction Algorithmique}
-\noindent{\tt fonction NDIV1(N)\\
+\noindent{\tt fonction NDIV0(N)\\
 local D,L1,L2,K}\\
 ${\tt 2 => D}$\\
 ${\tt \{1\} => L1}$\\
@@ -4735,7 +4825,7 @@ ${\tt D+1=> D}$\\
 {\tt retourne(L1)}
 \subsubsection{Traduction Xcas}
 \begin{verbatim}
-ndiv1(n):={
+ndiv0(n):={
   local d,l1,l2,k;
   d:=2;
   l1:=[1];
@@ -4753,9 +4843,45 @@ ndiv1(n):={
   return(l1);
 }
 \end{verbatim}
-On peut am\'eliorer ce programme si on tient compte du fait qu'apr\`es
+On peut am\'eliorer ce programme en calculant {\tt l1*d\verb|^|k} au fur et 
+\`a mesure sans utiliser {\tt k}....\\
+On a en effet sur l'exemple pr\'ec\'edent $n=360=2^3*3^2*5$ :\\
+{\tt l1:=[1]};\\
+les puissances de 2 sont obtenus avec
+{\tt l2:=l1} on a alors {\tt l2:=[1]}\\
+{\tt l2:=l2*2;l1:=concat(l1,l2)} on a alors {\tt l2:=[2];l1:=[1,2]}\\
+{\tt l2:=l2*2;l1:=concat(l1,l2)} on a alors {\tt l2:=[4];l1:=[1,2,4]}\\ 
+{\tt l2:=l2*2;l1:=concat(l1,l2)} on a alors {\tt l2:=[8];l1:=[1,2,4,8]}\\ 
+les puissances de 3 sont obtenus avec
+{\tt l2:=l1} on a alors {\tt l2:=[1,2,4,8]}\\
+{\tt l2:=l2*3;l1:=concat(l1,l2)} on a alors {\tt l2:=[3,6,12,24];} {\tt l1:=[1,2,4,8,3,6,12,24]}\\ 
+{\tt l2:=l2*3;l1:=concat(l1,l2)} on a alors {\tt l2:=[9,18,36,72];} {\tt l1:=[1,2,4,8,3,6,12,24,9,18,36,72]}\\ 
+les puissances de 5 sont obtenus avec
+{\tt l2:=l1} on a alors {\tt l2:=[1,2,4,8,3,6,12,24,9,18,36,72]}\\
+{\tt l2:=l2*5;l1:=concat(l1,l2)} on a alors {\tt l2:=[5,10,20,40,15,30,60,120,45,90,180,360]}\\ 
+donc \\
+{\tt l1:=[1,2,4,8,3,6,12,24,9,18,36,72,5,10,20,40,15,30,60,120,45,90,180,360]}\\
+On tape :
+\begin{verbatim}
+ndiv1(n):={
+  local d,l1,l2;
+  d:=2;
+  l1:=[1];
+  while (n!=1) {
+    l2:=l1;
+    while (irem(n,d)==0) {
+      n:=iquo(n,d);
+      l2:=l2*d
+      l1:=concat(l1,l2);
+    }
+    d:=d+1;
+  }
+  return(l1);
+}:;
+\end{verbatim}
+On peut encore am\'eliorer ce programme si on tient compte du fait qu'apr\`es
 avoir \'eventuellement divis\'e {\tt N} par 2 autant de fois qu'on le pouvait,
- les diviseurs potentiels de {\tt N} sont impairs.\\ 
+les diviseurs potentiels de {\tt N} sont impairs.\\ 
 On remplace alors :\\
 ${\tt D+1 => D}$\\
 par :\\
@@ -4765,7 +4891,7 @@ ${\tt D+1 => D}$
 ${\tt D+2 => D}$
 {\tt fsi}\\
 
-On am\'eliore encore le programme pr\'ec\'edent en remarquant que,
+On am\'eliore le programme pr\'ec\'edent en remarquant que,
  si le diviseur potentiel {\tt D} est tel que ${\tt D>\sqrt N}$, c'est que 
 {\tt N} est premier ou vaut 1.
 On ne continue donc pas la recherche des diviseurs de {\tt N} et quand 
@@ -4810,6 +4936,147 @@ ${\tt si\ N \neq 1\ alors}$\\
 ${\tt concat(L1,L1*N) =>L1}$\\
 {\tt fsi}\\
 {\tt retourne(L1)}
+\subsubsection{Traductions Xcas des am\'eliorations}
+\begin{verbatim}
+ndivi(n):={
+  local d,l1,l2,k;
+  d:=2;
+  l1:=[1];
+  l2:=l1
+  while (irem(n,d)==0) {
+      n:=iquo(n,d);
+      l2:=l2*d
+      l1:=concat(l1,l2);
+    }
+  d:=3;
+   while (d<=sqrt(n) and n>1) {
+    l2:=l1;
+    while (irem(n,d)==0) {
+      n:=iquo(n,d);
+      l2:=l2*d
+      l1:=concat(l1,l2);
+    }
+    d:=d+2;
+  };
+  if (n!=1) {l1:=concat(l1,l1*n)};
+  return(l1);
+}:;
+\end{verbatim}
+Si on ne teste pas {\tt d<sqrt(n)}  le programme est plus simple :
+\begin{verbatim}
+ndivis(n):={
+  local d,l1,l2,k;
+  d:=2;
+  l1:=[1];
+  l2:=l1
+  while (irem(n,d)==0) {
+      n:=iquo(n,d);
+      l2:=l2*d
+      l1:=concat(l1,l2);
+    }
+  d:=3;
+   while (n>1) {
+    l2:=l1;
+    while (irem(n,d)==0) {
+      n:=iquo(n,d);
+      l2:=l2*d
+      l1:=concat(l1,l2);
+    }
+    d:=d+2;
+  };
+  return(l1);
+}:;
+\end{verbatim}
+Ou bien on utilise {\tt ifactors} : on obtient un programme plus rapide surtout
+lorsqu'il y a de grands facteurs premiers car la
+d\'ecomposition en facteurs premiers est optimis\'ee.\\ 
+{\tt ndivfact(n)} renvoie la liste des diviseurs de {\tt n} et la longueur de 
+cette liste.
+On calcule la longueur de cette liste en faisant le produit des exposants 
+augment\'es de 1. Par exemple si {\tt n=360}$=2^3*3^2*5$, la liste des diviseurs
+ de {\tt n=360} a comme longueur {\tt sd:=(3+1)*(2+1)*(1+1)}$=24$\\
+La liste {\tt l1} va contenir la liste des diviseurs et pour 
+chaque nouveau diviseur de $n$, la liste {\tt l2} contient les nouveaux 
+diviseurs qui doivent \^etre rajout\'es \`a {\tt l1}.\\
+Par exemple si {\tt n=360}
+au d\'ebut 
+{\tt l1:=[1]} et {\tt l2:=l1} \\
+{\tt d:=2} est un diviseur donc \\
+{\tt l2:=2*l2} i.e. {\tt l2:=[2]} et {\tt l1:=concat(l1,l2)} i.e. {\tt l1=[1,2]}\\
+{\tt d:=2} est encore un diviseur donc \\
+{\tt l2:=2*l2} i.e. {\tt l2:=[4]} et {\tt l1:=concat(l1,l2)} i.e. {\tt l1=[1,2,4]}\\
+{\tt d:=2} est encore un diviseur donc \\
+{\tt l2:=2*l2} i.e. {\tt l2:=[8]} et {\tt l1:=concat(l1,l2)} i.e. {\tt l1=[1,2,4,8]}\\
+On a \'epuiser le diviseur 2. On recopie {\tt l1} dans {\tt l2}\\
+{\tt l2:=l1} i.e. {\tt l2=[1,2,4,8]}\\
+le nouveau diviseur est 3 donc \\
+{\tt l2:=3*l2} i.e. {\tt l2:=[3,6,12,24]} et {\tt l1:=concat(l1,l2)} i.e. 
+{\tt l1=[1,2,4,3,6,12,24]}\\
+{\tt d:=3} est encore un diviseur donc \\
+{\tt l2:=3*l2} i.e. {\tt l2:=[9,18,36,72]} et {\tt l1:=concat(l1,l2)} i.e. 
+{\tt l1=[1,2,4,8,3,6,12,24,9,18,36,72]}\\
+On a \'epuiser le diviseur 3. On recopie {\tt l1} dans {\tt l2}\\
+{\tt l2:=l1} i.e. {\tt l2=[1,2,4,8,3,6,12,24,9,18,36,72]}
+le nouveau diviseur est 5 donc \\
+{\tt l2:=5*l2} i.e. {\tt l2:=[5,10,20,40,15,30,60,120,45,90,180,360]} et 
+{\tt l1:=concat(l1,l2)} i.e.\\
+{\tt l1=[1,2,4,8,3,6,12,24,9,18,36,72,5,10,20,40,15,30,60,120,45,90,180,360]}\\
+On a \'epuiser tous les diviseurs donc les diviseurs de 360 sont 
+{\tt l1=[1,2,4,8,3,6,12,24,9,18,36,72,5,10,20,40,15,30,60,120,45,90,180,360]}\\
+On tape :
+\begin{verbatim}
+ndivfact(n):={
+  local F,d,l1,l2,k,kd,sf,sd,j;
+  si n==0 alors retourne "erreur"; fsi;
+  si n<0 alors n:=-n; fsi;
+  F:=ifactors(n);
+  sf:=size(F)-1;
+  sd:=1;
+  pour k de 1 jusque sf pas 2 faire 
+   sd:=sd*(F[k]+1);
+  fpour;
+  k:=1;
+  l1:=[1];
+    while (k<=sf) {
+    l2:=l1;kd:=F[k];
+    d:=F[k-1];
+    pour j de 1 jusque kd faire
+      l2:=l2*d
+      l1:=concat(l1,l2);
+    fpour;
+  k:=k+2;
+  }; 
+  return l1,sd;
+  }:;
+\end{verbatim}
+Comparons les temps d'ex\'ecution sur 2 exemples.\\
+On tape :\\
+{\tt ndivis(30!);}\\
+On obtient :\\
+{\tt Temps mis pour l'évaluation: 7.53}\\
+On tape :\\
+{\tt ndivi(30!);}\\
+On obtient :\\
+{\tt Temps mis pour l'évaluation: 8.03}\\
+On tape :\\
+{\tt ndivfact(30!);}\\
+On obtient :\\
+{\tt Temps mis pour l'évaluation: 7.33}\\
+Mais si on tape :\\
+{\tt ndivis(30!*907);}\\
+On obtient :\\
+{\tt Temps mis pour l'évaluation: 19.28}\\
+On tape :\\
+{\tt ndivi(30!*907);}\\
+On obtient :\\
+{\tt Temps mis pour l'évaluation: 17.07}\\
+On tape :\\
+{\tt ndivfact(30!*907);}\\
+On obtient :\\
+{\tt Temps mis pour l'évaluation: 17.07}\\
+Donc dans le 1ier cas {\tt ndivis} va plus vite et dans le 2nd cas c'est
+{\tt ndivi} qui va plus vite.
+
 \section{La liste des diviseurs avec la d\'ecomposition en facteurs premiers}
 \subsection{\tt FPDIV}
 On utilise le programme {\tt factprem} (qui donne la liste des facteurs 
@@ -4899,7 +5166,8 @@ l1:=concat(l1,l2);
 return(l1);
 }
 \end{verbatim}
-\section{Calcul de $ A^P \  mod\ N$}\label {sec:puimod}
+
+\section{Calcul de $ A^P \  mod\ N$}\label{sec:puimod}
 \subsection{Traduction Algorithmique}
 -Premier algorithme\\
 On utilise deux variables locales PUIS et I.\\
@@ -5298,7 +5566,7 @@ Si on obtient $ K^{N-1} = 1 \  \bmod\  N$  pour 20 tirages successifs de $K$ on
 on dit alors que $N$ est pseudo-premier.\\
 Bien s\^ur cette m\'ethode est employ\'ee pour savoir  si de  grands nombres 
 sont pseudo-premiers mais on pr\'ef\'ere utiliser la m\'ethode de Miller-Rabin 
-(cf \ref{sec::miller})
+(cf \ref{sec:miller})
 qui est aussi une m\'ethode probabiliste mais qui donne $N$  premier avec une 
 probabilit\'e d'erreur plus faible (inf\'erieure \`a $(0.25)^{20}$ si on a 
 effectu\'e 20 tirages, soit, une erreur de l'ordre de $10^{-12}$). 
@@ -5346,7 +5614,7 @@ return(true);
 return(false);
 }
 \end{verbatim}
-\section{M\'ethode probabiliste  de Mr Miller-Rabin} \label{sec::miller}
+\section{M\'ethode probabiliste  de Mr Miller-Rabin} \label{sec:miller}
 \subsection{Un exemple}
 {\bf Rappel} Le th\'eor\`eme de Fermat :\\
 Si $n$ est premier et si $k$ est un entier quelconque alors $k^n=k \bmod n$.\\
@@ -6044,6 +6312,82 @@ On tape :\\
 {\tt horner([1,2,4],12)}\\
 On obtient :\\
 {\tt  172}
+\subsection{Un autre exercice et sa solution}
+Trouver le plus petit entier positif $n$, tel que $n$, $2n$, $3n$, $4n$, $5n$,
+ $6n$ contiennent exactement les mêmes chiffres.\\
+On tape la fonction bool\'eenne qui teste si les entiers $n$ et $m$ ont des 
+chiffres identiques.
+On se sert de la fonction {\tt string} qui transforme un entier en une chaine de caract\`eres, puis on 
+transforme cette chaine en la liste de ses caract\`eres ou en son code de Ascii, puis on 
+trie cette liste.\\
+On tape :
+\begin{verbatim}
+chiffreid(n,m):={
+local S1,S2,s1,s2,L1,L2,k;
+  S1:=string(n);s1:=size(S1);
+  S2:=string(m);s2:=size(S2);
+  si s1!=s2 alors retourne faux; fsi;
+  L1:=[sort(S1[k]$(k=0..s1-1))]; 
+  L2:=[sort(S2[k]$(k=0..s1-1))];
+  retourne L1==L2;
+}:;
+\end{verbatim}
+ou
+\begin{verbatim}
+chiffreid(n,m):={
+local S1,S2,s1,s2,L1,L2,k;
+  S1:=string(n);s1:=size(S1);
+  S2:=string(m);s2:=size(S2);
+  si s1!=s2 alors retourne faux; fsi;
+  L1:=sort(asc(S1)); 
+  L2:=sort(asc(S2));
+  retourne L1==L2;
+}:;
+\end{verbatim}On tape la fonction bool\'eenne qui teste si les entiers $n$, $2n$, $3n$, $4n$, 
+$5n$, $6n$ ont des chiffres identiques. Si cela est le cas on 
+sait que $n$ est divisible par 3 puisque la somme des chiffres de $n$ est \'egale la somme des chiffres 
+de $3n$.\\
+On tape :
+\begin{verbatim}
+chiffreid16(n):={
+  local k;
+  si irem(n,3)!=0 alors retourne faux; fsi;
+  pour k de 6 jusque 2 pas -1 faire 
+  si chiffreid(n,k*n)==faux alors retourne faux fsi;
+  fpour;
+  retourne vrai;
+  }:;
+\end{verbatim}
+On tape la fonction qui renvoie le plus petit entier positif $n$, tel que $n$, 
+$2n$, $3n$, $4n$, $5n$, $6n$ contiennent exactement les mêmes chiffres.\\
+On tape : 
+\begin{verbatim}
+ppchiffreid():={
+local n;
+n:=3;
+tantque chiffreid16(n)==faux faire 
+  n:=n+3;
+ ftantque;
+retourne n; 
+  }:;
+\end{verbatim}
+On tape :\\
+{\tt ppchiffreid()}\\
+On obtient :\\
+{\tt 142857}\\
+On v\'erifie :\\
+On tape :\\
+{\tt n:=142857;2*n;3*n;4*n;5*n;6*n}\\
+On obtient ;\\
+{\tt 142857,285714,428571,571428,714285,857142} 
+On peut changer le programme ci-dessus pour savoir qui est le $n$ suivant en 
+initialisant $n$ \`a 142860. On trouve alors 1428570.\\
+Puis on change \`a nouveau le programme ci-dessus pour savoir qui est le $n$ suivant en 
+initialisant $n$ \`a 1428573. On trouve alors 1429857.\\
+Puis par curiosit\'e, on cherche le suivant (mais c'est long !), on trouve 14285700.\\
+On a donc le d\'ebut de cette suite :
+{\tt 142857, 1428570, 1429857, 14285700, 14298570}
+
 \section{Savoir si le polyn\^ome $A$ est divisible par $B$}
 \subsection{Programmation de la fonction bool\'eenne {\tt estdivpoly}}
 On va \'ecrire la fonction r\'ecursive {\tt estdivpoly} qui a comme arguments, 
@@ -7887,7 +8231,7 @@ $4+1=5$ donc $A[5,4]=1$\\
 $5=5$ donc $A[5,5]=1$\\
 On a alors $p(j)=\sum_{k=0}^jA[j,k]$.\\
 On remarque donc :\\
-$A[0,0]=1$ et $A[j,0]=0$ (car $\lambda_m>0$ sauf pour $j=0$ puisque $p(0)=1$\\
+$A[0,0]=1$ et $A[j,0]=0$ (car $\lambda_m>0$ sauf pour $j=0$ puisque $p(0)=1$)\\
 $A[j,j]=1$ puisque $j=j$\\
 $A[j,1]=A[j-1,1]=1$ puisque $j=j-1+1=j-2+1+1=1+1...+1$\\
 $A[j,2]=A[j-2,1]+A[j-2,2]$ puisque $j=2+1+1+...=2+2+....$\\
@@ -8035,11 +8379,11 @@ On obtient
 On peut aussi pour avoir une relation de r\'ecurrence consid\'erer les 
 les partitions $P(n,p)$ de $n$ en une somme d'exactement $p$ \'el\'ements 
 $\lambda_1\geq ...\geq \lambda_p$>0. On dit alors :\\
-$P(n,p)$ =(nombre de partage de $n$ tels que $\lambda_p=1$)+(nombre de partage de $n$ tels que $\lambda_p>1$.\\
+$P(n,p)$ =(nombre de partage de $n$ tels que $\lambda_p=1$)+(nombre de partage de $n$ tels que $\lambda_p>1$).\\
 On a :\\
 (nombre de partage de $n$ tels que $\lambda_p=1$)=(nombre de partage de $n-1$ en
 $p-1$ $\lambda_j$)=$P(n-1,p-1)$\\
-(nombre de partage de $n$ tels que $\lambda_p>1$(nombre de partage de $n-p$ en
+(nombre de partage de $n$ tels que $\lambda_p>1$)=(nombre de partage de $n-p$ en
 $p$ $\lambda_j$)=$P(n-p,p)$\\
 $$P(n,p):=P(n-1,p-1)+P(n-p,p)$$ 
 avec $P(n,0)=0$, $P(n,n)=1$ et $P(n,p)=0$ si $p>n$\\
@@ -9170,7 +9514,7 @@ On obtient :{\tt 64*x\verb|^|7-112*x\verb|^|5+56*x\verb|^|3-7*x}
 \end{enumerate}
 
 \chapter{Codage}
-\section{Codage de Jules Cesar}\label {sec:Cesar}
+\section{Codage de Jules Cesar}\label{sec:Cesar}
 \subsection{Introduction}
 Le principe est simple : on \'ecrit un message en n'utilisant que les 26 
 lettres de l'alphabet et on le code en remplacant une lettre par une autre 
@@ -9181,10 +9525,11 @@ Pour pouvoir d\'ecoder, il faut que l'application $f$ ci-dessus soit
 bijective!\\
 Il parait que Jules C\'esar utilisait cette m\'ethode pour communiquer ses 
 ordres.
-\subsection{Codage par sym\'etrie point ou par rotation d'angle $\pi$}
+\subsection{Codage par sym\'etrie point ou par rotation d'angle $\pi$}\label{sec:symp}
 Une fa\c{c}on simple de coder est la suivante :\\
-on \'ecrit les lettres sur un cercle (de fa\c{c}on \'equir\'epartie) et on remplace 
-chaque lettre par la lettre sym\'etrique par rapport au centre du cercle :
+on \'ecrit les lettres sur un cercle (de fa\c{c}on \'equir\'epartie) et on 
+remplace chaque lettre par la lettre sym\'etrique par rapport au centre du 
+cercle :
 
 \includegraphics[width=9cm]{codage}
 
@@ -9197,8 +9542,7 @@ l'on n'\'ecrit pas les espaces). \\
 Pour cela on distribue une feuille sur laquelle figure quatre cercles divis\'es
 en 26 parties \'egales.\\
  On \'ecrit sur ce cercle les 26 lettres de l'alphabet et le codage consiste 
-\`a remplacer chaque lettre du message par la lettre diam\'etralement oppos\'ee sur 
-le cercle.\\
+\`a remplacer chaque lettre du message par la lettre diam\'etralement oppos\'eesur le cercle.\\
 Par exemple voici le message \`a coder selon cette m\'ethode :\\
 "BONJOURLESAMIS"\\
 Le  message \`a d\'ecoder est donc :\\
@@ -9242,26 +9586,26 @@ Combien de cahiers de 10000 lignes (200  pages de 50 lignes) vous faut-il ?
 Donner la longueur occup\'ee par ces cahiers dans une biblioth\`eque, si chaque
  cahier occupe 1 cm. 
 Combien y-a-t-il de codages involutifs possibles qui sont sans point double 
-(c'est \`adire de bijections $f$
+(c'est \`a dire de bijections $f$
 v\'erifiant $f=f^{-1}$ et $f(x)\neq x $ pour tout $x$)  ?\\
 Comment faire pour que la cl\'e du d\'ecodage soit simple ?
 \subsection{Travail dans  Z/26Z}
 Le codage de Jules C\'esar consiste \`a faire une sym\'etrie point ou encore 
 une rotation d'angle $\pi$.\\
-Si on num\'erote les lettres de 0 \`a 25, le codage consiste  donc \`a faire une 
-addition de 13 (modulo 26). 
-(voir figure \ref{symp}).\\
+Si on num\'erote les lettres de 0 \`a 25, le codage consiste  donc \`a faire 
+une addition de 13 (modulo 26). 
+(voir figure \ref{sec:symp}).\\
 {\bf Exemple}  :\\
 "BONJOUR" sera cod\'e par "OBAWBHE"
 
-\subsection{Codage par  rotation d'angle $\alpha=k*\pi/13$}
+\subsection{Codage par  rotation d'angle $\alpha=k*\pi/13$}\label{sec:rotn}
 Le principe est le m\^eme :\\
 on \'ecrit les lettres sur un cercle (de fa\c{c}on \'equir\'epartie) et on remplace 
 chaque lettre par la lettre obtenue par rotation d'angle 
 $\alpha=k*\pi/13\ (0\leq \ k\ \leq \ 25)$ (k est un entier).\\
 Si on num\'erote les lettres de 0 \`a 25,  le codage consiste  donc \`a faire subir
 \`a chaque lettre un d\'ecalage de {\tt k} c'est \`a dire \`a faire subir \`a son 
-num\'ero une addition de {\tt k} (modulo 26) (voir figure \ref{rotn}).\\
+num\'ero une addition de {\tt k} (modulo 26) (voir figure \ref{sec:rotn}).\\
 On remarquera que si le param\`etre de codage par rotation est {\tt k}, le 
 d\'ecodage sera un codage par rotation  de param\`etre {\tt -k} ou encore
  {\tt 26-k}.
@@ -9269,7 +9613,7 @@ d\'ecodage sera un codage par rotation  de param\`etre {\tt -k} ou encore
 \includegraphics[width=9cm]{codrot}
 %\begin{figure}[h t p d]
 %\centering\includegraphics{rot.eps}
-%\caption{Codage par rotation de $5*\pi/13$}\label{rotn}
+%\caption{Codage par rotation de $5*\pi/13$}\label{sec:rotn}
 %\end{figure}
 \section{\'Ecriture des programmes correspondants}
 \subsection{Passage d'une lettre \`a un entier entre  0 et 25}\index{asc}
@@ -9337,7 +9681,7 @@ return(n2c(decal(n,c2n(m))));
 \begin{figure}[h t p d]
 \centering
 %\includegraphics{sy.eps}
-\caption{Codage par sym\'etrie par rapport \`a Ox}\label{symd}
+\caption{Codage par sym\'etrie par rapport \`a Ox}\label{sec:symd}
 \end{figure}
 \subsection{Passage d'un entier k entre  0 et 25 \`a l'entier n-k mod 26}
 On reprend les proc\'edures {\tt c2n} et {\tt n2c} vues pr\'ec\'edemment :\\
@@ -9371,7 +9715,7 @@ return(n2c(sym(n,c2n(m))));
 \end{verbatim}
 {\bf Exemple} :\\
 Si on prend {\tt n=13} on r\'ealise une sym\'etrie par rapport \`a la droite {\tt Ox}
-(cf figure \ref{symd}).\\
+(cf figure \ref{sec:symd}).\\
 {\tt cesarsym(13,"BONJOUR")="MZAEZTW"}
 \section{Codage en utilisant une application affine}
 Comme pr\'ec\'edemment, on \'ecrit la proc\'edure {\tt c2n} qui transforme une cha\^{\i}ne
@@ -9958,14 +10302,14 @@ et {\tt char} g\'erent les cha\^{i}nes et les listes.\\
 On transforme donc le message (i.e une cha\^{i}ne de caract\`eres)
 en une liste {\tt l} de nombres avec {\tt asc(mess)}, puis on transforme cette 
 liste de nombres par l'application
-affine $ f(n)=a \times n+b\ (\bmod\ 96)$ en la liste {\tt mc}, puis on transformer la liste {\tt lc}
+affine $ f(n)=a \times n+b\ (\bmod\ 96)$ en la liste {\tt mc}, puis on 
+transformer la liste {\tt lc}
 des  nombres ainsi obtenus en une cha\^{i}ne de  caract\`eres 
 (avec {\tt char(lc)}, c'est ce que fait la fonction {\tt codm}).\\  
 Dans ce qui suit on a \'ecrit les fonctions :\\
 {\tt bonpara(para)} (avec {\tt para=[a,b]}) renvoie la liste des param\`etres 
 de d\'ecodage si le param\`etre {\tt a} est premier avec 96. 
-Cette fonction utilise la fonction {\tt decopara(para)} qui calcule les param\`etres 
-de d\'ecodage. 
+Cette fonction utilise la fonction {\tt decopara(para)} qui calcule les param\`etres de d\'ecodage. 
 \begin{verbatim}
 decopara(para):={
 //decopara permet de trouver les parametres de decodage
@@ -10238,7 +10582,7 @@ return(messcod);
 }
 \end{verbatim}
 Le d\'ecodage du message se fait aussi par la fonction {\tt codmess3}
-\section{Devoir \`a la maison}\label {dev}
+\section{Devoir \`a la maison}\label{sec:dev}
 On \'ecrit un message plus ou moins long selon le nombre d'\'el\`eves de la classe.
 Puis on le partage en groupement de 8 lettres.\\
 Chaque groupe de 8 lettres est ensuite cod\'e (lettre par lettre) \`a l'aide d'un chiffrement affine 
@@ -10326,7 +10670,614 @@ et  127.  \\
 130 &  &  & & & & & & &  & \\
 \hline
 \end{tabular}
+\section{Codage de Vigen\`ere}
+\subsection{Le principe du codage}
+On veut coder un message {\tt mess} qui n'utilise que les 26 lettres majuscules 
+de l'alphabet.\\
+Dans le codage de C\'esar \`a chaque caract\`ere correspond toujours le m\^eme 
+caract\`ere : c'est une fonction qui \`a une lettre de l'alphabet fait 
+correspondre une lettre de l'alphabet.\\
+Dans le codage de Vigen\`ere \`a un caract\`ere $cara$ du message correspond un 
+caract\`ere qui d\'epend de la position du caract\`ere $cara$ dans 
+le message : c'est une fonction $f$ de 2 variables qui \`a un entier $n$ 
+($0\leq n\leq 25$) et et \`a une lettre de l'alphabet fait correspondre une 
+lettre de l'alphabet. Cette correspondance se fait \`a l'aide d'une matrice  
+carr\'ee sym\'etrique de dimension 26 appel\'ee : carr\'e de Vigen\`ere.
+\subsection{Le carr\'e  de Vigen\`ere}
+On a {\tt asc("A")=65}. Si le rang de {\tt "A"} dans la liste alphab\'etique 
+est {\tt 0} alors le rang d'une lettre {\tt c} dans la liste alphab\'etique 
+est : {\tt op(asc(cara))-65}. Il faut utiliser la commande {\tt op} pour 
+transformer la liste de dimension 1 renvoy\'ee par {\tt asc} en un nombre.\\
+Si \`a une lettre on fait correspondre son rang dans la liste alphab\'etique, 
+au carr\'e de Vigen\`ere on peut faire correspondre la matrice carr\`ee de 
+dimension 26 :\\
+{\tt A[j,k]:=irem(j+k, 26)} pour {\tt j=0..25} et {\tt k=0..25}.\\
+R\'eciproquement si \`a un entier {\tt j} de l'intervalle 0..25] on fait 
+correspondre la lettre de rang {\tt j} dans la liste alphab\'etique, alors,
+\`a la matrice la matrice carr\`ee de dimension 26 {\tt A[j,k]:=irem(j+k, 26)} 
+on fait correspondre le  carr\'e de Vigen\`ere.\\
+On tape pour obtenir le carr\'e de Vigen\`ere {\tt CV} :\\
+{\tt CV:=makemat((j,k)->char(65+irem(j+k,26)),26,26)}\\
+On tape pour obtenir la fonction {\tt f} de codage :\\
+{\tt f(n,cara):=CV[n,op(asc(cara))-65]}\\
 
+{\bf Propri\'et\'es}
+La matrice {\tt A[j,k]:=irem(j+k, 26)} est sym\'etrique donc le carr\'e de 
+Vigen\`ere est sym\'etrique.\\
+Si connaissant {\tt j} et {\tt r}, on cherche {\tt k} pour que {\tt r=A[j,k]}, 
+alors on a {\tt k=A[26-j,r]=A[r,26-j]}.\\
+En effet, {\tt r=irem(j+k,26)} donc {\tt k=irem(r-j,26)=irem(r+26-j,26}.\\
+Donc si {\tt r=A[j,k]} alors {\tt k=A[26-j,r]=A[r,26-j]}.\\
+
+On peut utiliser le tableau \`a double entr\'ees ci-dessous pour coder \`a la 
+main :\\
+\begin{tabular}{|p{0.18cm}|*{26}{p{0.12cm}|}}
+\hline
+ &A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+\hline
+0&A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+1&B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A \\
+2&C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B \\
+3&D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C \\
+4&E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D \\
+5&F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E \\
+6&G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F \\
+7&H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G \\
+8&I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H \\
+9&J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I \\
+10&K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J \\
+11&L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K \\
+12&M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L \\
+13&N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M \\
+14&O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N \\
+15&P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O \\
+16&Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P \\
+17&R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q \\
+18&S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R \\
+19&T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S \\
+20&U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T \\
+21&V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U \\
+22&W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V \\
+23&X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W \\
+24&Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X \\
+25&Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y\\
+\hline
+\end{tabular}\\
+Si \`a une lettre on fait correspondre son rang dans la liste alphab\'etique, 
+au carr\'e de Vigen\`ere on peut faire correspondre la matrice :\\
+{\tt A[j,k]:=irem(j+k, 26)}.\\
+Ce carr\'e donne la valeur de la fonction {\tt f} du codage qui est :
+{\tt f(0,"D")="D"} (ligne 0 et colonne 3) et {\tt f(2,"D")="F"} (ligne 2 et 
+colonne 3) pour coder par exemple les {\tt "D"} de {\tt "DINDON"} (Attention 
+les indices commencent \`a 0). \\
+Ainsi {\tt "BONJOUR"} sera cod\'e par :\\
+{\tt f("B",0)+f("O",1)+f("N",2)+f("J",3)+f("O",4)+f("U",5)+f("R",6)} \\
+c'est \`a dire {\tt "BPPMSZX"}
+On pourra voir le programme qui code, d\'ecode avec ou sans cl\'e en
+\ref{sec:coddecod}.
+\subsection{Le programme du codage lettre par lettre}
+On utilise {\tt CV} dans le programme.\\
+On veut coder la lettre {\tt c} qui est d'indice {\tt j} dans le message.
+Cette lettre {\tt c} est de rang {\tt op(asc(c))-65} dans l'alphabet.\\
+Il faut donc chercher dans le tableau {\tt CV} la lettre d'indice ligne 
+{\tt irem(j,26)} et d'indice colonne {\tt op(asc(c))-65}.\\
+Par exemple si on cherche \`a coder {\tt "O"} d'indice 4 du message (la 5i\`eme lettre du message \`a coder).\\ 
+{\tt "O"} a comme rang {\tt op(asc("O"))-65=14} dans l'alphabet ({\tt "O"} 
+est la 15i\`eme lettre de l'alphabet).\\ 
+Le codage est donc la lettre situ\'ee dans la ligne d'indice {\tt irem(4,26)=4} 
+(ligne d\'ebutant par {\tt "E"}) et dans la colonne {\tt 14}  du tableau 
+{\tt CV}.\\ 
+{\tt "O"} a donc pour code {\tt CV[4,14]="S"} car :\\
+\begin{tabular}{|*{26}{p{0.12cm}|}}
+\hline
+E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D \\
+\hline
+\end{tabular}\\
+On tape :
+\begin{verbatim}
+f(n,cara):=CV[irem(n,26),op(asc(cara))-65]:;
+CV:=makemat((j,k)->char(65+irem(j+k,26)),26,26):;
+codage(str):={
+local j,k,c,s,code,CV;
+s:=size(str);
+CV:=makemat((j,k)->char(65+irem(j+k,26)),26,26):;
+code:="";
+pour j de 0 jusque s-1 faire
+c:=str[j];
+code:=code+CV[irem(j,26),op(asc(c))-65];
+//code:=code+f(j,c);
+fpour;
+return code;
+}:;
+\end{verbatim}
+On peut aussi ne pas utiliser {\tt CV} :\\
+On veut coder la lettre {\tt c} qui est d'indice {\tt j} dans le message.
+Cette lettre {\tt c} est de rang {\tt op(asc(c))-65} dans l'alphabet.\\
+Dans le tableau {\tt CV} la lettre qui commence la ligne d'indice 
+{\tt irem(j,26)} est {\tt char(irem(j,26))+65} et a comme code  ASCII
+{\tt irem(j,26)+65}.\\
+La lettre de cette ligne situ\'ee \`a la colonne d'indice {\tt op(asc(c))-65} a 
+donc comme rang {\tt k:=irem(op(asc(c))-65+irem(j,26),26)} dans l'alphabet.\\
+La lettre de codage de {\tt c} est donc char(k+65).\\
+Par exemple si on cherche \`a coder {\tt "O"} d'indice 4 du message (la 5i\`eme lettre du message \`a coder).\\ 
+{\tt "O"} a comme rang {\tt op(asc("O"))-65=14} dans l'alphabet ({\tt "O"} 
+est la 15i\`eme lettre de l'alphabet).\\ 
+Le codage est donc la lettre situ\'ee dans la ligne d'indice {\tt irem(4,26)=4} 
+(ligne d\'ebutant par {\tt "E"} ayant comme rang {\tt 4} dans l'alphabet) et 
+dans la colonne {\tt 14}  c'est donc la lettre {\tt "S"} de rang {\tt 4+14=18} 
+de l'alphabet (car {\tt "S"} est la 19i\`eme lettre de l'alphabet).\\
+ Attention si la somme des 2 indices se fait modulo 26 car cette somme est 
+l'indice d'une lettre de l'alphabet et cette somme  ne doit pas d\'epasser 25,
+ c'est pourquoi {\tt k:=irem(op(asc(c))-65+irem(j,26),26)}.\\
+{\tt "O"} a donc pour code {\tt "S"}.\\
+On tape :
+\begin{verbatim}
+codage(str):={
+local j,k,c,s,code;
+s:=size(str);
+code:="";
+pour j de 0 jusque s-1 faire
+c:=str[j];
+k:=irem(op(asc(c))-65+irem(j,26),26);
+code:=code+char(k+65);
+fpour;
+return code;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt codage("BONJOURBONJOURBONJOURBONJOUR")}\\
+On obtient :\\
+{\tt "BPPMSZXIWWTZGEPDDAGNLWKKHNUS"}
+\subsection{Le programme du d\'ecodage lettre par lettre}
+On utilise {\tt CV} dans le programme :\\
+Si la lettre \`a d\'echiffrer {\tt c}  est d'indice {\tt j} dans le message \`a 
+d\'ecoder, il faut chercher l'indice de la lettre {\tt c} sur la ligne 
+d'indice {\tt irem(j,26)]} et trouver son indice {\tt k} dans cette ligne sans 
+utiliser la fonction {\tt member}.\\ 
+Propri\'et\'e de la matrice {\tt CV} :\\
+On remarque que si pour $j\in 0..25$ et $l\in\  "A".."Z"$ on d\'efinit :\\
+{\tt f(j,l):=CV[op(asc(l))-65,irem(j,26)]}\\
+{\tt g(j,l):=CV[irem(26-j,26),op(asc(l))-65]}\\
+alors \\
+{\tt f(j,g(j,l))=l}\\
+Autrement dit si la lettre {\tt c}  est d'indice {\tt j} dans 
+le message cod\'e alors la lettre d'indice {\tt j} dans 
+le message non cod\'e est CV[irem(26-j,26),op(asc(c))-65].\\
+Par exemple si on cherche \`a d\'echiffrer
+{\tt "S"} d'indice 4 (la 5i\`eme lettre du message \`a d\'ecoder), il faut 
+chercher l'indice de {\tt "S"} dans la ligne d'indice 4. La lettre cherch\`ee a 
+donc comme indices dans {\tt CV} :\\ 
+{\tt [irem(26-4,26), op(asc("S"))-65]=[22,18]}.\\
+ C'est donc {\tt CV[22,18]="O"}.\\
+On tape :
+\begin{verbatim}
+g(n,cara):=CV[irem(26-n,26),op(asc(cara))-65]:;
+CV:=makemat((j,k)->char(65+irem(j+k,26)),26,26):;
+decodage(str):={
+local j,k,c,s,mess,CV;
+s:=size(str);
+CV:=makemat((j,k)->char(65+irem(j+k,26)),26,26):;
+mess:="";
+pour j de 0 jusque s-1 faire
+c:=str[j];
+//mess:=mess+g(j,c);
+mess:=mess+CV[irem(26-j,26),op(asc(c))-65]
+fpour;
+return mess;
+}:;
+\end{verbatim}
+On peut aussi ne pas utiliser {\tt CV}.\\
+Si la lettre \`a d\'echiffrer {\tt c}  est d'indice {\tt j} dans le message \`a 
+d\'ecoder, il faut chercher la lettre {\tt c} sur la ligne 
+d'indice {\tt irem(j,26)]} et trouver son indice {\tt k} dans cette ligne sans 
+utiliser la fonction {\tt member}.\\ 
+Il suffit donc de faire la diff\'erence modulo 26, entre le rang de la 
+lettre {\tt c} dans l'alphabet ({\tt op(asc(c))-65}) et l'indice 
+{\tt irem(j,26)} soit :\\
+{\tt irem(op(asc(c))-65-irem(j,26),26)=irem(op(asc(c))-65-j,26)}.\\
+Par exemple si on cherche \`a d\'echiffrer
+{\tt "S"} d'indice 4 dans le message (la 5i\`eme lettre du message \`a 
+d\'ecoder), il faut chercher l'indice de {\tt "S"} dans la ligne d'indice 4 
+d\'ebutant par{\tt "E"} :\\
+\begin{tabular}{|*{26}{p{0.12cm}|}}
+\hline
+E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D \\
+\hline
+\end{tabular}\\ 
+L'indice de {\tt "S"} dans la ligne d'indice 4 d\'ebutant par{\tt "E"} est 
+donc :\\
+{\tt irem(op(asc("S"))-65-4,26)=irem(18-4,26)=14}.\\
+La lettre cherch\`ee a donc comme rang {\tt 14} dans l'alphabet.\\
+C'est donc {\tt char(14+65)="O"}.\\
+On tape :
+\begin{verbatim}
+decodage1(str):={
+local j,k,c,s,mess;
+s:=size(str);
+mess:="";
+pour j de 0 jusque s-1 faire
+c:=str[j];
+k:=irem(op(asc(c))-65-j,26);
+mess:=mess+char(k+65);
+fpour;
+return mess;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt decodage("BPPMSZXIWWTZGEPDDAGNLWKKHNUS")}\\
+On obtient :\\
+{\tt "BONJOURBONJOURBONJOURBONJOUR"}
+\subsection{Le codage de Vigen\`ere avec une cl\'e}
+On voit qu'il est facile de faire le d\'ecodage d'un message si on ne donne
+ pas une cl\'e.\\
+La cl\'e est un mot qui va nous servir \`a coder le message.\\
+Prenons comme exemple une cl\'e simple : "XCAS".\\
+Si le message \`a coder est "BONJOUR", on \'ecrit "XCAS" plusieurs fois sous le 
+mot \`a coder :\\
+{\tt "BONJOUR"}\\
+{\tt "XCASXCA"}\\
+puis, on utilise seulement le moceau du carr\'e de Vigen\`ere qui correspond
+\`a la cl\`e \'a savoir que les lignes qui commencent par "X","C","A","S":\\
+\begin{tabular}{|p{0.12cm}|*{26}{p{0.12cm}|}}
+\hline
+ &A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+\hline
+0&X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W \\
+1&C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B \\
+2&A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+3&S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R \\
+\hline
+\end{tabular}\\
+Pour coder "BONJOUR", on code "B" avec "Y", (ligne 0 d\'ebutant par "X" et 
+colonne "B"), "O" avec "Q"  (ligne 1 d\'ebutant par "A" et colonne "O"), "N" 
+avec "N", "J" avec "B", "O" avec "L", "U" avec "W" et "R" avec "R".\\ 
+Le codage de "BONJOUR" est donc "YQNBLWR".\\
+\subsection{Le programme du tableau de Vigen\`ere avec une cl\'e}
+Voici le programme qui donne en fonction de la cl\'e utilis\'ee, la matrice 
+extraite de la matrice {\tt CV} i.e. le carr\'e de Vigen\`ere.\\
+ On tape :
+\begin{verbatim}
+TVAC(cle):={
+local sc,VAC,CV;
+sc:=size(cle);
+CV:=makemat((j,k)->char(65+irem(j+k,26)),26,26);
+VAC:=makemat(0,sc,26);
+pour j de 0 jusque sc-1 faire
+VAC[j]:=CV[op(asc(cle[j])-65)];
+fpour;
+return VAC;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt TVAC("XCAS")}\\
+On obtient :\\
+\begin{tabular}{|*{26}{p{0.12cm}|}}
+\hline
+X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W \\
+C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B \\
+A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R \\
+\hline
+\end{tabular}
+\subsection{Le programme du codage}
+On peut utiliser la fonction {\tt TVAC} pour programmer le codage de Vigen\`ere 
+avec une cl\'e.\\
+On veut coder la lettre {\tt c} qui est d'indice {\tt j} dans le message.
+Cette lettre {\tt c} est de rang {\tt op(asc(c))-65} dans l'alphabet.\\
+Il faut donc chercher dans le tableau {\tt VAC} la lettre d'indice ligne 
+{\tt irem(j,sc)} et d'indice colonne {\tt op(asc(c))-65} .\\
+Par exemple si la cl\'e est {\tt "XCAS"} et que l'on cherche \`a coder
+{\tt "O"} d'indice 4 du message (la 5i\`eme lettre du message \`a coder).\\ 
+{\tt "O"} a comme rang {\tt op(asc("O"))-65=14} dans l'alphabet ({\tt "O"} 
+est la 15i\`eme lettre de l'alphabet).\\ 
+Le codage est donc la lettre situ\'ee dans la ligne d'indice {\tt irem(4,4)=0} 
+(ligne d\'ebutant par {\tt "X"}) et dans la colonne {\tt 14}  du tableau 
+{\tt VAC}.\\ 
+{\tt "O"} a donc pour code {\tt VAC[0,14]="L"} car :\\
+\begin{tabular}{|*{26}{p{0.12cm}|}}
+\hline
+X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W \\
+\hline
+\end{tabular}\\
+On tape :
+\begin{verbatim}
+codagec0(str,cle):={
+local j,k,c,s,sc,VAC,code;
+s:=size(str);
+VAC:=TVAC(cle);
+sc:=size(cle);
+code:="";
+pour j de 0 jusque s-1 faire
+c:=str[j];
+code:=code+VAC[irem(j,sc),op(asc(c))-65];
+fpour;
+return code;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt codagec0("BONJOUR","XCAS")}\\
+On obtient :\\
+{\tt "YQNBLWR"}\\
+On tape :\\
+{\tt codagec0("BONJOURBONJOUR","XCAS")}\\
+On obtient :\\
+{\tt "YQNBLWRTLPJGRT"}\\
+
+On peut aussi n'utiliser que le carr\'e de Vigen\`ere {\tt CV} pour coder.\\
+On veut coder la lettre {\tt c} qui est d'indice {\tt j} dans le message.
+Cette lettre {\tt c} est de rang {\tt op(asc(c))-65} dans l'alphabet.\\
+Il faut donc chercher dans le tableau {\tt CV} la lettre situ\'ee dans la ligne 
+d\'ebutant par {\tt cle[irem(j,sc)]} qui est d'indice 
+{\tt op(asc(cle[irem(j,sc)])-65)} et d'indice colonne {\tt op(asc(c))-65}.\\
+Par exemple si la cl\'e est {\tt "XCAS"} et que l'on cherche \`a coder
+{\tt "O"} d'indice 4 du message (la 5i\`eme lettre du message \`a coder).\\ 
+{\tt "O"} a comme rang {\tt op(asc("O"))-65=14} dans l'alphabet ({\tt "O"} 
+est la 15i\`eme lettre de l'alphabet et {\tt 14} est l'indice colonne de 
+{\tt "O"} du tableau CV).\\ 
+Le codage est donc la lettre situ\'ee dans le tableau {\tt CV} \`a la ligne 
+d'indice {\tt 23} ({\tt 23} est obtenu avec
+{\tt op(asc(cle[irem(4,4)])-65)=op(asc(cle[0]))-65})
+  et \`a la colonne d'indice {\tt 14}.\\
+{\tt "O"} a donc pour code {\tt CV[23,14]="L"}.\\
+On tape : 
+\begin{verbatim})
+codagec1(str,cle):={
+local j,k,c,s,sc,code,CV;
+s:=size(str);
+sc:=size(cle);
+CV:=makemat((j,k)->char(65+irem(j+k,26)),26,26);
+code:="";
+pour j de 0 jusque s-1 faire
+c:=str[j];
+code:=code+CV[op(asc(cle[irem(j,sc)]))-65,op(asc(c))-65];
+fpour;
+return code;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt codagec1("BONJOUR","XCAS")}\\
+On obtient :\\
+{\tt "YQNBLWR"}\\
+On tape :\\
+{\tt codagec1("BONJOURBONJOUR","XCAS")}\\
+On obtient :\\
+{\tt "YQNBLWRTLPJGRT"}\\
+On tape :\\
+{\tt codagec1("BONJOURBONJOURBONJOURBONJOUR","XCAS")}\\
+On obtient :\\
+{\tt "YQNBLWRTLPJGRTBGKLOMODOFGQUJ"}
+
+\subsection{Le programme du d\'ecodage}
+Comme pour le codage on peut utiliser la fonction {\tt TVAC} pour programmer le 
+d\'ecodage de Vigen\`ere avec une cl\'e.\\
+Si la lettre \`a d\'echiffrer {\tt c}  est d'indice {\tt j} dans le message \`a 
+d\'ecoder, il faut chercher l'indice de la lettre {\tt c} sur la ligne 
+d\'ebutant par la lettre {\tt cle[irem(j,sc)]=VAC[0,irem(j,sc)]} et trouver 
+son indice {\tt k}  dans cette ligne sans utiliser la fonction {\tt member}. 
+Il suffit donc de faire la diff\'erence modulo 26, entre le code ASCII de la 
+lettre {\tt c} et celui de la lettre {\tt VAC[0,irem(j,sc)]}.\\
+Par exemple si la cl\'e est {\tt "XCAS"} et que l'on cherche \`a d\'echiffrer
+{\tt "L"} d'indice 4 (la 5i\`eme lettre du message \`a d\'ecoder), il faut 
+chercher l'indice de {\tt "L"} dans la ligne d\'ebutant par {\tt VAC[0,0]="X"} 
+({\tt "X"} est {\tt VAC[0,0]}) :\\
+\begin{tabular}{|*{26}{p{0.12cm}|}}
+\hline
+X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W \\
+\hline
+\end{tabular}
+On a :\\
+{\tt VAC[0,0]=VAC[0,0]="X"}
+{\tt asc("L")=[76]} et {\tt asc("X")=[88]}\\
+{\tt op(asc("L"))=76} et {\tt op(asc("X"))=88}\\
+{\tt op(asc("L"))-op(asc("X"))=-12}\\
+L'indice de {\tt "L"} dans la ligne est donc {\tt irem(-12,26)=14} et\\
+{\tt char(14+65)="O"}.
+Le d\'ecodage de {\tt "L"} d'indice 4 dans le message \`a 
+d\'ecoder est donc {\tt "O"} lorsque la cl\'e est {\tt "XCAS"}.\\
+On tape :
+\begin{verbatim}
+decodagec0(str,cle):={
+local j,k,c,s,sc,VAC,mess;
+s:=size(str);
+sc:=size(cle);
+VAC:=TVAC(cle);
+mess:="";
+pour j de 0 jusque s-1 faire
+c:=str[j];
+//k:=member(c,VAC[irem(j,sc)])-1;
+//k:=irem(op(asc(c))-op(asc(cle[irem(j,sc)])),26);
+k:=irem(op(asc(c))-op(asc(VAC[0,irem(j,sc)])),26);
+mess:=mess+char(k+65);
+fpour;
+return mess;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt decodagec0("YQNBLWR","XCAS")}\\
+On obtient :\\
+{\tt "BONJOUR"}
+On tape :\\
+{\tt decodagec0("YQNBLWRTLPJGRT","XCAS")}\\
+On obtient :\\
+{\tt "BONJOURBONJOUR"}
+On tape :\\
+{\tt decodagec0("CYCPAQGKE","CHAISE")}\\
+On obtient :\\
+{\tt "ARCHIMEDE"}\\
+Comme pour le codage on peut n'utiliser que le carr\'e de Vigen\`ere {\tt CV} 
+pour d\'ecoder.\\
+On tape :
+\begin{verbatim}
+decodagec1(str,cle):={
+local j,k,c,s,sc,VAC,mess,CV;
+s:=size(str);
+sc:=size(cle);
+CV:=makemat((j,k)->char(65+irem(j+k,26)),26,26):;
+mess:="";
+pour j de 0 jusque s-1 faire
+c:=str[j];
+//mess:=mess+CV[26-op(asc(cle[irem(j,sc)]))+65,op(asc(c))-65];
+k:=irem(op(asc(c))-op(asc(cle[irem(j,sc)])),26);
+mess:=mess+char(k+65);
+fpour;
+return mess;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt decodagec("YQNBLWR","XCAS")}\\
+On obtient :\\
+{\tt "BONJOUR"}
+On tape :\\
+{\tt decodagec("YQNBLWRTLPJGRT","XCAS")}\\
+On obtient :\\
+{\tt "BONJOURBONJOUR"}
+On tape :\\
+{\tt decodagec("CYCPAQGKE","CHAISE")}\\
+On obtient :\\
+{\tt "ARCHIMEDE"}\\
+{\bf Remarque}\\
+Lorsqu'on code avec le carr\'e de Vigen\`ere c'est comme si on avait choisit 
+comme cl\'e les 26 lettres de l'alphabet.\\
+Pour passer des programmes de codage et de d\'ecodage sans cl\'e avec les 
+ programmes de codage et de d\'ecodage avec cl\'e qui n'utilise  que CV, il 
+suffit de remplacer l'indice {\tt j} de la lettre \`a coder par 
+{\tt jc:=op(asc(cle[irem(j,sc)]))-65} o\`u {\tt sc} repr\'esente la longueur de
+ la cl\'e.\\
+Pour le codage on remplace :\\
+{\tt code:=code+CV[irem(j,26),op(asc(c))-65];}\\
+par :\\
+{\tt code:=code+CV[op(asc(cle[irem(j,sc)]))-65,op(asc(c))-65];}\\
+comme {\tt 0<=jc=op(asc(cle[irem(j,sc)]))-65<=25} il est inutile de chercher le 
+reste de sa division par 26.\\
+Pour le d\'ecodage on remplace :\\
+{\tt mess:=mess+CV[irem(26-j,26),op(asc(c))-65];}\\
+par :\\
+{\tt mess:=mess+CV[26-op(asc(cle[irem(j,sc)]))+65,op(asc(c))-65];}
+ici encore le reste de de la division par 26 de {\tt 26-jc} est inutile !
+\subsection{Peut-on d\'ecrypter sans connaitre la cl\'e ?}
+Dans ce type de codage dit polyalphab\'etiques, on ne peut pas utiliser 
+l'analyse des fr\'equences puisqu peusqu'un m\^eme caract\`ere peut \^etre 
+cod\'e par des caract\`eres diff\'erents.\\
+Mais le britannique Ch Babbage au 19 i\`eme siecle a trouv\'e la parade.\\
+Si on a choisit une cl\'e de 4 lettres, chaque caract\`ere peut \^etre 
+cod\'e par au plus 4 caract\`eres diff\'erents.\\
+Si le texte est suffisamment long, on peut essayer de rep\'erer dans le texte 
+cod\'e les mots qui se rep\'etent et d'en d\'eduire le nombre de lettres de la 
+cl\'e.\\
+Par exemple :\\
+{\tt codagec1("BONJOURBONJOURBONJOURBONJOURBONJOUR","XCAS")}\\
+renvoie \\
+{\tt "YQNBLWRTLPJGRTBGKLOMODOFGQUJYQNBLWR"}\\
+On remarque que le premier et le dernier {\tt "BONJOUR"} sont cod\'es de la 
+m\^eme fa\c{c}on et qu'entre  2 {\tt "Y"}  y a 27 lettres, 28 est donc 
+un multiple du nombre de lettres de la cl\'e......
+Si on a plusieurs r\'ep\'etitions le nombre de lettres de la cl\'e est un 
+diviseur commun du nombre de lettre +1 qui s\'epare ces r\'ep\'etitions.\\
+Si le  nombre de lettres de la cl\'e est 4 il reste alors \`a d\'ecoder 4 
+chiffrements monoalphab\'etiques ....
+\subsection{Exercice : codage et d\'ecodage globalement}
+\subsubsection{Codage sans une cl\'e}
+Au lieu de coder ou de d\'ecoder lettre par lettre on va le faire globalement
+{\tt ordres(mess):=asc(mess)-[65\$(k=1..size(mess))];}
+{\tt transfCV(L):=[irem(j+L[j],26)\$(j=0..size(L)-1)];}\\
+{\tt codeA(LT):=[char(LT[j]+65)\$(j=0..size(LT)-1)];}\\
+{\tt mot(L):=ifte(L==[],"",L[0]+mot(tail(L)));}\\
+Par exemple :\\
+{\tt L:=ordres(("BONJOURBONJOURBONJOURBONJOURBONJOUR")}\\
+renvoie \\
+{\tt [1,14,13,9,14,20,17,1,14,13,9,14,20,17,1,14,13,9,14,20,17,1,14,13,9,14,20,17]}\\
+{\tt LT:=transfCV(L)}\\
+renvoie \\
+{\tt [1,15,15,12,18,25,23,8,22,22,19,25,6,4,15,3,3,0,6,13,11,22,10,10,7,13,20,18]}\\
+{\tt LA:=codeA(LT)}\\
+renvoie \\
+{\tt ["B","P","P","M","S","Z","X","I","W","W","T","Z","G","E","P","D","D","A","G","N","L","W","K","K","H","N","U","S"]}\\
+{\tt messcode:=mot(LA)}\\
+renvoie \\
+{\tt "BPPMSZXIWWTZGEPDDAGNLWKKHNUS"}
+
+\subsubsection{D\'ecodage sans une cl\'e}
+Il suffit de transformer {\tt transfCV} en {\tt transgCV} en utilisant la fonction $g$ inverse de $f$ :\\
+{\tt transgCV(L):=[irem(26-j+L[j],26)\$(j=0..size(L)-1)];}
+Par exemple :\\
+{\tt Lde:=ordres("BPPMSZXIWWTZGEPDDAGNLWKKHNUS")}
+renvoie
+{\tt [1,15,15,12,18,25,23,8,22,22,19,25,6,4,15,3,3,0,6,13,11,22,10,10,7,13,20,18]}
+{\tt LTde:=transgCV(Lde)}\\
+renvoie \\
+{\tt [1,14,13,9,14,20,17,1,14,13,9,14,20,17,1,14,13,9,14,20,17,1,14,13,9,14,20,17]}\\
+{\tt mot(codeA(LTde))}\\
+renvoie \\
+{\tt "BONJOURBONJOURBONJOURBONJOUR"}
+\subsubsection{Codage avec une cl\'e}
+{\tt ordres(mess):=asc(mess)-[65\$(k=1..size(mess))];}
+{\tt transfCVcle(L,cle):=[irem((ordres(cle))[irem(j,size(cle))]+L[j],26)\$(j=0..size(L)-1)];}\\
+{\tt codeA(LT):=[char(LT[j]+65)\$(j=0..size(LT)-1)];}\\
+{\tt mot(L):=ifte(L==[],"",L[0]+mot(tail(L)));}\\
+Par exemple :\\
+{\tt L:=ordres(("BONJOURBONJOURBONJOURBONJOURBONJOUR")}\\
+renvoie \\
+{\tt [1,14,13,9,14,20,17,1,14,13,9,14,20,17,1,14,13,9,14,20,17,1,14,13,9,14,20,17]}\\
+{\tt LTcle:=transfCVcle(L,"XCAS"}\\
+renvoie \\
+{\tt [24,16,13,1,11,22,17,19,11,15,9,6,17,19,1,6,10,11,14,12,14,3,14,5,6,16,20,9]}\\
+{\tt LAcle:=codeA(LTcle)}\\
+renvoie \\
+{\tt ["Y","Q","N","B","L","W","R","T","L","P","J","G","R","T","B","G","K","L","O","M","O","D","O","F","G","Q","U","J"]}\\
+{\tt messcodecle:=mot(LAcle)}\\
+renvoie \\
+{\tt "YQNBLWRTLPJGRTBGKLOMODOFGQUJ"}
+\subsubsection{D\'ecodage avec une cl\'e}
+Il suffit de transformer {\tt transfCVcle} en {\tt transgCVcle} en utilisant la fonction $g$ inverse de $f$ :\\
+{\tt transgCVcle(L,cle):=[irem(26-(ordres(cle))[irem(j,size(cle))]+L[j],26)\$(j=0..size(L)-1)];}
+Par exemple :\\
+{\tt Ldecle:=ordres("YQNBLWRTLPJGRTBGKLOMODOFGQUJ")}
+renvoie
+{\tt [24,16,13,1,11,22,17,19,11,15,9,6,17,19,1,6,10,11,14,12,14,3,14,5,6,16,20,9]}
+{\tt LTdecle:=transgCVcle(Ldecle,"XCAS")}\\
+renvoie \\
+{\tt [1,14,13,9,14,20,17,1,14,13,9,14,20,17,1,14,13,9,14,20,17,1,14,13,9,14,20,17]}\\
+{\tt mot(codeA(LTde))}\\
+renvoie \\
+{\tt "BONJOURBONJOURBONJOURBONJOUR"}
+\subsubsection{Le programme  qui code et d\'ecode avec ou sans cl\'e}\label{sec:coddecod}
+Soit un message {\tt mess} qui n'utilise que les 26 lettres majuscules de 
+l'alphabet.
+Voici le programme d\'efinitif qui code (si {\tt n>0}), qui d\'ecode (si 
+{\tt n<0}) avec une cl\'e ou sans cl\'e (si {\tt cle=""}).
+On \'ecrit la proc\'edure r\'ecursive {\tt mot} qui \`a une liste de 
+caract\`eres renvoie le mot form\'e par ses caract\`eres.
+\begin{verbatim}
+mot(L):=ifte(L==[],"",L[0]+mot(tail(L)));
+codage(mess,cle,n):={
+local s,sc,messc,messcT,messTL;
+  si (n==0) alors retourne "erreur n!=0" fsi;
+  si (cle=="") alors cle:=char((65+j)$(j=0..25)); fsi;
+  s:=size(mess);
+  sc:=size(cle);
+  messc:=asc(mess)-[65$ s];
+  clec:=asc(cle)-[65$ sc];
+  messcT:=[irem(sign(n)*clec[irem(j,sc)]+messc[j],26)$(j=0..s-1)];
+  messTL:=[char(messcT[j]+65)$(j=0..s-1)];
+  retourne mot(messTL);
+}:;
+\end{verbatim}
+On tape :\\
+{\tt codage("BONJOURBONJOURBONJOURBONJOUR","",1)}\\
+On obtient :\\
+{\tt "BPPMSZXIWWTZGEPDDAGNLWKKHNUS"}\\
+On tape :\\
+{\tt codage("BPPMSZXIWWTZGEPDDAGNLWKKHNUS","",-1)}\\
+On obtient :\\
+{\tt "BONJOURBONJOURBONJOURBONJOUR"}\\
+On tape :\\
+{\tt codage("BONJOURBONJOURBONJOURBONJOUR","XCAS",1)}\\
+On obtient :\\
+{\tt "YQNBLWRTLPJGRTBGKLOMODOFGQUJ"}\\
+On tape :\\
+{\tt codage("YQNBLWRTLPJGRTBGKLOMODOFGQUJ","XCAS",-1)}\\
+On obtient :\\
+{\tt "BONJOURBONJOURBONJOURBONJOUR"}
 \section{Codage RSA}
 \subsection{Le principe du codage avec cl\'e publique et cl\'e secr\`ete}
 On suppose que l'on dispose d'un annuaire de cl\'es (ce sont les cl\'es 
@@ -11588,22 +12539,34 @@ On peut ensuite continuer \`a appliquer la m\^eme m\'ethode \`a $v_k$.\\
 {\bf Exercice}\\
 Utiliser cette m\'ethode pour calculer num\'eriquement :
 $\displaystyle\sum_{k=0}^\infty\frac{1}{(k+1)^2}$.\\
-On va faire "\`a la main " trois acc\'el\'erations successives.\\
+On va faire "\`a la main" trois acc\'el\'erations successives.\\
 On pose :\\
 $\displaystyle u_k =\frac{1}{(k+1)^2}$
 \begin{itemize}
 \item 1-i\`ere acc\'el\'eration :\\
+$\displaystyle u_k =\frac{1}{(k+1)^2}\sim \frac{1}{k^2}$ donc on pose \\
 $\displaystyle v_k=u_k -\frac{1}{(k+1)(k+2)}$, et donc\\ 
 $\displaystyle v_k=\frac{1}{(k+1)^2(k+2)}$\\
+puisque 
+$\displaystyle \frac{1}{(k+1)(k+2)}=\frac{1}{(k+1)}-\frac{1}{(k+2)}$, on a :\\
+$\sum_{k=0}^\infty\frac{1}{(k+1)(k+2)}=1$ donc\\
 $\displaystyle\sum_{k=0}^\infty u_k=1+\sum_{k=0}^\infty v_k$
 \item 2-i\`eme acc\'el\'eration :\\
+$\displaystyle v_k=\frac{1}{(k+1)^2(k+2)} \sim \frac{1}{k^3}$ donc on pose \\
 $\displaystyle w_k=v_k -\frac{1}{(k+1)(k+2)(k+3)}$, et donc\\ 
 $\displaystyle w_k=\frac{2}{(k+1)^2(k+2)(k+3)}$\\
+puisque 
+$\displaystyle \frac{2}{(k+1)(k+2)(k+3)}=\frac{1}{(k+1)(k+2)}-\frac{1}{(k+2)(k+3)}$, on a :\\
+$\sum_{k=0}^\infty\frac{1}{(k+1)(k+2)(k+3)}=\frac{1}{2*2!}=\frac{1}{4}$ donc\\
 $\displaystyle\sum_{k=0}^\infty u_k=1+\frac{1}{2\cdot 2!}+\sum_{k=0}^\infty w_k$
 \item 3-i\`eme acc\'el\'eration :\\
+$\displaystyle w_k=\frac{2}{(k+1)^2(k+2)(k+3)}\sim \frac{2}{k^4}$ donc on pose\\
 $\displaystyle t_k=w_k -\frac{2}{(k+1)(k+2)(k+3)(k+4)}$, et donc \\
 $\displaystyle t_k=\frac{6}{(k+1)^2(k+2)(k+3)(k+4)}$\\
-$\displaystyle\sum_{k=0}^\infty u_k=1+\frac{2}{2\cdot 2!}+\frac{2}{3\cdot 3!}+\sum_{k=0}^\infty t_k$
+puisque 
+$\displaystyle \frac{3}{(k+1)(k+2)(k+3)(k+4)}=\frac{1}{(k+1)(k+2)(k+3)}-\frac{1}{(k+2)(k+3)(k+4)}$, on a :\\
+$\sum_{k=0}^\infty\frac{2}{(k+1)(k+2)(k+3)(k+4)}=\frac{2}{3*3!}=\frac{1}{18}$ donc\\
+$\displaystyle\sum_{k=0}^\infty u_k=1+\frac{1}{2* 2!}+\frac{2}{3*3!}+\sum_{k=0}^\infty t_k$
 \end{itemize}
 On tape :\\
 {\tt u(k):=1/(k+1)\verb|^|2}\\
@@ -11618,18 +12581,26 @@ que :\\
 $\displaystyle S=\sum_{k=0}^\infty\frac{1}{(k+1)^2}=\frac{\pi^2}{6}\simeq 1.64493406685$\\
 On tape :\\
 {\tt serie\_sum(u,0,200)}\\
+ou\\
+{\tt evalf(sum(1/(k+1)\verb|^|2,k=0..200))}\\
 On obtient $S$ \`a $5*10^{-3}$ pr\'es (1 d\'ecimale exacte) :\\
 {\tt 1.63997129788}\\
 On tape :\\
 {\tt 1+serie\_sum(v,0,200)}\\
+ou\\
+{\tt evalf(1+sum(1/((k+1)\verb|^|2*(k+2)),k=0..200))}\\
 On obtient  $S$ \`a $1.25*10^{-5}$ pr\'es (4 d\'ecimales exactes) :\\
 {\tt 1.64492179293}\\
 On tape :\\
 {\tt 1+1/4+serie\_sum(w,0,200)}\\
+ou\\
+{\tt evalf(1+1/4+sum(2/((k+1)\verb|^|2*(k+2)*(k+3)),k=0..200))}\\
 On obtient $S$ \`a $8.3*10^{-8}$ pr\'es (5 d\'ecimales exactes) :\\
 {\tt 1.64493398626}\\
 On tape :\\
 {\tt 1+1/4+1/9+serie\_sum(t,0,200)}\\
+ou\\
+{\tt evalf(1+1/4+1/9+sum(6/((k+1)\verb|^|2*(k+2)*(k+3)*(k+4)),k=0..200))}\\
 On obtient $S$ \`a $9.2*10^{-10}$ pr\'es (8 d\'ecimales exactes) :\\
 {\tt 1.64493406596}\\
 
@@ -12330,6 +13301,38 @@ On tape :
 {\tt Digits:=24;}\\
 {\tt evalf(euler\_gamma)}\\
 On obtient : {\tt 0.5772156649015328606065119}
+\section{Polyn\^omes de Bernstein}
+\subsection{D\'efinition et th\'eor\`eme}
+{\bf D\'efinition}\\
+Le $n$i\`eme polyn\^omes de Bernstein associ\'e \`a $f$ continuesur [0,1] est :
+$$B_n(f)(t)=\sum_{p=0}^ncomb(n,p)f(\frac{p}{n})(1-t)^{n-p}t^p$$
+{\bf Th\'eor\`eme}\\
+Si $f$ est continue la suite $B_n(f)$ converge uniform\'ement vers $f$ dans 
+$I=[0,1]$.\\
+\subsection{Le programme}
+bernstein(f,n,t) approche uniformement $f$ continue sur [0,1].\\
+On tape :
+\begin{verbatim}
+bernstein(f,n,t):={
+retourne sum(comb(n,p)*f(p/n)*(1-t)^(n-p)*t^p,p=0..n);
+  }:;
+
+\end{verbatim}
+bernab(f,n,t,a,b) approche uniformement $f$ continue sur [0,1].\\
+On tape :
+\begin{verbatim}
+bernab(f,n,t,a,b):={
+ retourne  sum(comb(n,p)*f(a*(1-p/n)+b*p/n)*(b-t)^(n-p)*(t-a)^p/(b-a)^n,p=0..n)
+   }:;
+\end{verbatim}
+On tape :\\
+{\tt plotfunc([bernstein(sin,12,x),sin(x)],x)}\\
+On obtient :\\
+{\tt Un graphe proche de sin(x) sur 0,1}\\
+On tape :\\
+{\tt plotfunc([bernstein(sin,12,x,-pi/2,pi/2),sin(x)],x)}\\
+On obtient :\\
+{\tt Un graphe proche de sin(x) sur -pi/2,pi/2}
 \section{D\'eveloppements asymptotiques et s\'eries divergentes}
 Un d\'eveloppement asymptotique est une g\'en\'eralisation d'un d\'eveloppement de Taylor, par 
 exemple lorsque le point de d\'eveloppement est en l'infini. De nombreuses fonctions ayant
@@ -16625,7 +17628,8 @@ print(m);
 motex(tail(m));
 }
 \end{verbatim}
-\subsection{Les palindromes}
+\section{Les palindromes}
+\subsection{Les phrases palindromes}
 \'Etant donn\'e une phrase, on veut \'ecrire cette phrase en l'\'ecrivant de 
 droite \`a gauche.
 On \'ecrira :\\
@@ -16658,6 +17662,196 @@ s:=size(ph)-1;
 return concat(ph[s],palindrome(saufdernier(ph)));
 }
 \end{verbatim} 
+\subsection{Nombre et valeur palindromique d’un entier}
+Un entier $n$ est un palindrome s’il est identique \`a son palindrome qui est 
+le nombre obtenu en écrivant $n$ de droite \`a gauche.\\
+Par exemple 12321 est un palindrome.\\
+Pour tout entier $n$ , on consid\`ere l’algorithme suivant :
+\begin{enumerate}
+\item si l’entier $n$ est un palindrome on s’arrête,
+\item sinon on ajoute à l’entier son palindrome (l’entier écrit à l’envers) 
+et on retourne à l’étape 1.
+\end{enumerate}
+Par exemple : 687,687+786=1473,1473+3741=5214,5214+4125=9339.\\
+On appelle nombre palindromique d’un entier $n$ le nombre Npal($n$) d’\'etapes 
+n\'ecessaire pour obtenir unpalindrome.\\
+Par exemple : Npal(12321)=0, Npal(687)=3.\\
+On appelle valeur palindromique d’un entier $n$ la valeur Vpal(n) du palindrome
+final.\\
+Par exemple : Vpal(12321)=12321, Vpal(687)=9339.\\
+\begin{enumerate}
+\item[$a)$] \'Etant donn\'e un entier $n$, \'ecrire une fonction {\tt palind} 
+qui renvoie le palindrome de $n$.
+\item[$b)$] \'Etant donn\'e un entier $n$, \'ecrire une fonction {\tt vnpalind} 
+qui renvoie la liste constitu\'ee de $n$, de sa valeur palindromique et de son 
+nombre palindromique.\\
+{\bf Attention}\\
+L’arrêt du processus est une conjecture. Pr\'evoir un contr\^ole stoppant la 
+boucle au del\`a de $p$ \'etapes et renvoyant alors la liste .
+\item[$c)$] Explorer pour $p=300$ le cas des 100 premiers entiers (non nuls). 
+\item[$d)$] Quels sont les entiers qui n'ont pas obtenu de nombre palindrome parmi les 1000 premiers entiers ?
+\end{enumerate}
+\begin{itemize}
+\item[$a)$]
+Soit $m$ le palindrome de $n$.\\
+Le 1ier chiffre de $m$ est le reste de la division de $n$ par 10.\\
+Le 2nd  chiffre de $m$ est le reste de {\tt iquo(n,10)} par 10.\\
+On utilise ici la commande {\tt iquorem}.\\
+On tape :
+\begin{verbatim}
+palind(n):={
+  local r,m;
+  m:=0;
+  tantque n>=10 faire
+    n,r:=iquorem(n,10);
+    m:=10*m+r;
+  ftantque;
+  m:=10*m+n;
+  retourne m;
+  }:;
+\end{verbatim}
+On tape :\\
+{\tt palind(89)}\\
+On obtient :\\
+{\tt 98}\\
+On tape :\\
+{\tt palind(123456789)}\\
+On obtient :\\
+{\tt 987654321}
+\item[$b)$]
+On tape :
+\begin{verbatim}
+vnpalind(n,p):={
+  local j,m,n0;
+  m:=palind(n);
+  j:=0;
+  n0:=n;
+  tantque n!=m and j<p faire
+    n:=n+m;
+    j:=j+1;
+    m:=palind(n);
+  ftantque;
+  si j==p and m!=palind(n+m) alors return [n0]; fsi;
+  return [n0,m,j];
+  }:;
+\end{verbatim}
+On tape :\\
+{\tt vnpalind(86,50)}\\
+On obtient :\\
+{\tt [86,1111,3]}\\
+On tape :\\
+{\tt vnpalind(89,50)}\\
+On obtient :\\
+{\tt [89,8813200023188,24]}
+\item[$c)$]
+On tape :
+\begin{verbatim}
+lvnpalind():={
+local L,n;
+L:=NULL;
+pour n de 1 jusque 100 faire
+L:=L,vnpalind(n,300);
+fpour;
+retourne L;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt lvnpalind()}\\
+On obtient :
+\begin{verbatim}
+[1,1,0],[2,2,0],[3,3,0],[4,4,0],[5,5,0],[6,6,0],
+[7,7,0],[8,8,0],[9,9,0],[10,11,1],[11,11,0],
+[12,33,1],[13,44,1],[14,55,1],[15,66,1],[16,77,1],
+[17,88,1],[18,99,1],[19,121,2],[20,22,1],[21,33,1],
+[22,22,0],[23,55,1],[24,66,1],[25,77,1],[26,88,1],
+[27,99,1],[28,121,2],[29,121,1],[30,33,1],[31,44,1],
+[32,55,1],[33,33,0],[34,77,1],[35,88,1],[36,99,1],
+[37,121,2],[38,121,1],[39,363,2],[40,44,1],[41,55,1],
+[42,66,1],[43,77,1],[44,44,0],[45,99,1],[46,121,2],
+[47,121,1],[48,363,2],[49,484,2],[50,55,1],[51,66,1],
+[52,77,1],[53,88,1],[54,99,1],[55,55,0],[56,121,1],
+[57,363,2],[58,484,2],[59,1111,3],[60,66,1],[61,77,1],
+[62,88,1],[63,99,1],[64,121,2],[65,121,1],[66,66,0],
+[67,484,2],[68,1111,3],[69,4884,4],[70,77,1],[71,88,1],
+[72,99,1],[73,121,2],[74,121,1],[75,363,2],[76,484,2],
+[77,77,0],[78,4884,4],[79,44044,6],[80,88,1],[81,99,1],
+[82,121,2],[83,121,1],[84,363,2],[85,484,2],[86,1111,3],
+[87,4884,4],[88,88,0],[89,8813200023188,24],[90,99,1],
+[91,121,2],[92,121,1],[93,363,2],[94,484,2],[95,1111,3],
+[96,4884,4],[97,44044,6],[98,8813200023188,24],[99,99,0],
+[100,101,1]
+\end{verbatim}
+\item[$d)$]
+On tape :
+\begin{verbatim}
+pbvnpalind():={
+  local L,n;
+  L:=NULL;
+  pour n de 1 jusque 1000 faire
+    si vnpalind(n,300)==[n] alors L:=L,n fsi;  
+  fpour;
+  retourne L;
+}:;
+\end{verbatim}
+On tape :\\
+{\tt pbvnpalind()}\\
+On obtient :\\
+{\tt 196,295,394,493,592,689,691,788,790,879,887,978,986}\\
+On peut aussi \'ecrire le programme qui donne la suite des transform\'es de 
+$n$ par l'algorithme en au plus $p$ \'etapes.\\    
+On tape :
+\begin{verbatim}
+tracevnpalind(n,p):={
+  local L,k,m;
+  L:=n;
+  m:=palind(n);
+  k:=0;
+  tantque n!=m and k<p faire
+    n:=n+m;
+    k:=k+1;
+    L:=L,n
+    m:=palind(n);
+  ftantque;
+  return L;
+  }:;
+\end{verbatim}
+On tape :\\
+{\tt tracevnpalind(196,25)}\\
+On obtient :\\
+{\tt 196,887,1675,7436,13783,52514,94039,187088,1067869,\\
+10755470,18211171,35322452,60744805,111589511,\\
+227574622,454050344,897100798,1794102596,\\
+8746117567,16403234045,70446464506,130992928913,\\
+450822227944,900544455998,1800098901007,8801197801088}\\
+On tape :\\
+{\tt tracevnpalind(986,25)}\\
+On obtient :\\
+{\tt 986,1675,7436,13783,52514,94039,187088,1067869,\\
+10755470,18211171,35322452,60744805,111589511,\\
+227574622,454050344,897100798,1794102596,8746117567,\\
+16403234045,70446464506,130992928913,450822227944,\\
+900544455998,1800098901007,8801197801088,17602285712176}\\
+On tape :\\
+{\tt tracevnpalind(1585,25)}\\
+On obtient :\\
+{\tt 1585,7436,13783,52514,94039,187088,1067869,10755470,\\
+18211171,35322452,60744805,111589511,227574622,\\
+454050344,897100798,1794102596,8746117567,\\
+16403234045,70446464506,130992928913,450822227944,\\
+900544455998,1800098901007,8801197801088,\\
+17602285712176,84724043932847}\\
+On tape :\\
+{\tt tracevnpalind(1997,25)}\\
+On obtient :\\
+{\tt 1997,9988,18887,97768,184547,930028,1750067,9350638,\\
+17711177,94822948,179745797,977293768,1844686547,\\
+9301551028,17503102067,93523232638,177146465177,\\
+948711106948,1798312224797,9772534363768,18446168716547,\\
+93007954881028,175026800851067,935184809471638,\\
+1771359717953177,9484956897484948}
+\end{itemize}
+
+
 \section{Les dessins r\'ecursifs}
 \subsection{Les segments}
 \begin{enumerate}
@@ -17391,14 +18585,35 @@ On tape dans un niveau \'editeur de programmes (que l'on ouvre avec
 {\tt Alt+p}), puis on le teste et on le valide avec {\tt OK} :
 \begin{verbatim}
 //tour(1,2,3,4) (tour de hanoi)
-//depacement des p disques de a vers b en passant par c
+//depacement des p disques (de numero 1..p du plus petit au plus grand) 
+//de a vers b en passant par c
 tour(a,b,c,p) :={
   if (p==0) return 0;
   tour(a,c,b,p-1);
-  print("deplacer le disque ",p," de ", a , " vers", b);
+  print("deplacer le disque "+p+" de "+ a + " vers "+ b);
   tour(c,b,a,p-1);
   return 0;
-}
+}:;
+\end{verbatim} 
+On tape :\\
+{\tt tour(1,2,3,4)}\\
+On obtient :
+\begin{verbatim}
+deplacer le disque 1 de 1 vers 3
+deplacer le disque 2 de 1 vers 2
+deplacer le disque 1 de 3 vers 2
+deplacer le disque 3 de 1 vers 3
+deplacer le disque 1 de 2 vers 1
+deplacer le disque 2 de 2 vers 3
+deplacer le disque 1 de 1 vers 3
+deplacer le disque 4 de 1 vers 2
+deplacer le disque 1 de 3 vers 2
+deplacer le disque 2 de 3 vers 1
+deplacer le disque 1 de 2 vers 1
+deplacer le disque 3 de 3 vers 2
+deplacer le disque 1 de 1 vers 3
+deplacer le disque 2 de 1 vers 2
+deplacer le disque 1 de 3 vers 2
 \end{verbatim} 
 \section{Les permutations}
 \subsection{Les permutations circulaires}

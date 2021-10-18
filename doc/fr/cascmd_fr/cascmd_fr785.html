@@ -6,59 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>studentt</TITLE>
+<TITLE>Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney wilcoxonp</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr784.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr786.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc909">7.5.3</A>  <TT>studentt</TT></H3><P><A NAME="@default1391"></A>
-<TT>studentt</TT> a pour arguments :
-</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-la liste [<I>ns</I>, <I>ne</I>] où <I>ns</I> est le nombre de succès lorsqu’on fait
-<I>ne</I> essais, ou la liste [<I>m</I>,<I>t</I>] où <I>m</I> est la moyenne et <I>t</I> la taille de
-l’échantillon, ou la liste des données de l’échantillon,
-</LI><LI CLASS="li-enumerate">la proportion de succés ou la moyenne de la population ou une liste de données d’un échantillon témoin,
-</LI><LI CLASS="li-enumerate">l’écart-type (cet argument est optionnel si des données sont fournies,
-il est déduit des données),
-</LI><LI CLASS="li-enumerate">l’hypothèse alternative H1 <CODE>'!='</CODE> ou <CODE>&lt;</CODE> ou <CODE>&gt;</CODE>,
-</LI><LI CLASS="li-enumerate">le niveau de confiance, cet argument est optionnel (valeur par défaut 0.05)
-</LI></OL><P>
-<TT>studentt</TT> réalise le test <I>Z</I> d’hypothèses pour une loi de student.
-On utilise de préférence le test <TT>studentt</TT> plutôt que <TT>normalt</TT> 
-lorsque la taille de l’échantillon est petite.<BR>
-<TT>studentt</TT> renvoie <TT>0</TT> ou <TT>1</TT> et affiche un résumé du test.<BR>
+<H3 CLASS="subsection"><A NAME="htoc919">8.4.50</A>  Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney <TT>wilcoxonp</TT></H3><P>
+<A NAME="@default1396"></A>
+<TT>wilcoxonp</TT> a comme argument 1 ou 2 entiers.<BR>
+<TT>wilcoxonp</TT> renvoie le polynôme donnant la distribution du test de Wilcoxon ou de Mann-Whitney pour 1 ou 2 échantillon(s).
 On tape :
-</P><DIV CLASS="center"><TT>studentt([10,20],.5,.02,’!=’,0.1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>wilcoxonp(4)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
-avec en vert le résumé du test :<BR>
-*** TEST RESULT 0 ***<BR>
-Summary T-Test null hypothesis mu1=mu2, alt. hyp. mu1!=mu2.<BR>
-Test returns 0 if probability to observe data is less than 0.1<BR>
-(null hyp. mu1=mu2 rejected with less than alpha probability error)<BR>
-Test returns 1 otherwise (can not reject null hypothesis)<BR>
-Data mean mu1=10, population mean mu2=0.5, degrees of freedom 20<BR>
-alpha level 0.1, multiplier*stddev/sqrt(sample size)= 1.32534*0.02/4.47214<BR>
-Le test a échoué, il y a donc moins d’une chance sur 10 que le nombre de 
-succès soit de 10 pour 20 essais avec une proportion attendue de 0.5 et un 
-écart-type de 0.02, on rejette l’hypothèse <I>H</I>0.<BR>
+</P><DIV CLASS="center"><TT>poly1[1/16,1/16,1/16,1/8,1/8,1/8,1/8,1/8,1/16,1/16,1/16]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>studentt([0.48,20],0.5,0.1,’&lt;’)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>wilcoxonp(7,5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P> 
-avec en vert le résumé du test :<BR>
-*** TEST RESULT 1 ***<BR>
-Summary T-Test null hypothesis mu1=mu2, alt. hyp. mu1&lt;mu2.<BR>
-Test returns 0 if probability to observe data is less than 0.05<BR>
-(null hyp. mu1=mu2 rejected with less than alpha probability error)<BR>
-Test returns 1 otherwise (can not reject null hypothesis)<BR>
-Data mean mu1=0.48, population mean mu2=0.5, degrees of freedom 20<BR>
-alpha level 0.05, multiplier*stddev/sqrt(sample size)= 1.72472*0.1/4.47214.
-Ici le test réussit, on ne peut pas exclure (au seuil de confiance 0.05)
-l’observation d’une proportion de 0.48 avec 20 essais pour une proportion 
-théorique de 0.5 et un écart-type de 0.1 </P><HR>
+</P><DIV CLASS="center"><TT>poly1[1/792,1/792,1/396,1/264,5/792,7/792,5/396,13/792,<BR>
+17/792,7/264,13/396,5/132,35/792,13/264,43/792,23/396,2/33,<BR>
+49/792,49/792,2/33,23/396,43/792,13/264,35/792,5/132,13/396,<BR>
+7/264,17/792,13/792,5/396,7/792,5/792,1/264,1/396,1/792,1/792]</TT></DIV><HR>
 <A HREF="cascmd_fr784.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr786.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

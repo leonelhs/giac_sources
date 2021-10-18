@@ -6,28 +6,57 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le cercle (compatibilité TI): Circle</TITLE>
+<TITLE>Le rectangle : rectangle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr903.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr905.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1050">9.13.3</A>  Le cercle (compatibilité TI): <TT>Circle</TT></H3><P><A NAME="@default1751"></A>
-<TT>Circle</TT> a quatre arguments : les coordonnées du centre 
-(<I>xc</I>,<I>yc</I>), la valeur du rayon <I>r</I> et 0 ou 1 (par défaut 1).<BR>
-Si le quatrième paramètre est 1 ou est différent de zéro, 
-<TT>Circle</TT> dessine le cercle de centre (<I>xc</I>,<I>yc</I>) et de rayon <I>r</I>,<BR>
-Si le quatrième paramètre est 0, <TT>Circle</TT> efface le cercle de centre 
-(<I>xc</I>,<I>yc</I>) et de rayon <I>r</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1059">10.11.4</A>  Le rectangle : <TT>rectangle</TT></H3><P><A NAME="@default1748"></A><A NAME="sec:rectangle2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1012.html#sec:rectangle3">11.8.3</A> pour la géométrie 3-d.<BR>
+<TT>rectangle</TT>, en géométrie plane, peut avoir de trois à 
+cinq arguments.<BR>
+Description des arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si il a trois arguments ce sont : deux points (ou deux
+nombres complexes représentant l’affixe de ces points) et un nombre réel
+<I>k</I> non nul.<BR>
+<TT>rectangle(A,B,k)</TT> renvoie et trace le rectangle <I>ABCD</I> tel que :<BR>
+<I>AD</I>=|<I>k</I>|*<I>AB</I> et (<I>AB</I>,<I>AD</I>)=(<I>k</I>/|<I>k</I>|)*π/2,<BR>
+c’est à dire tel que :<BR>
+<I>affixe</I>(<I>D</I>)=<I>affixe</I>(<I>A</I>)+<I>k</I>*exp(<I>i</I>*π/2)*(<I>affixe</I>(<I>B</I>)−<I>affixe</I>(<I>A</I>))
+mais sans définir les points <I>C</I> et <I>D</I>.<BR>
+<B>Remarque</B> Si <I>k</I> est complexe, on a :<BR>
+<I>affixe</I>(<I>D</I>)=<I>affixe</I>(<I>A</I>)+<I>k</I>*exp(<I>i</I>*π/2)*(<I>affixe</I>(<I>B</I>)−<I>affixe</I>(<I>A</I>)) et on peut ainsi se
+retrouver avec le tracé d’un parallélogramme.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>Circle(-1,0,2,1)</TT></DIV><P>
+<DIV CLASS="center"><TT>rectangle(0,1+i,1/2)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le cercle de centre -1, de rayon 2 est tracé</TT></DIV><P>
+<DIV CLASS="center"><TT>Le rectangle de sommets 0,1+i,1/2+3*i/2,-1/2+i/2</TT></DIV>
 On tape :
-</P><DIV CLASS="center"><TT>Circle(-1,0,2,0)</TT></DIV><P>
+<DIV CLASS="center"><TT>rectangle(0,1+i,-1/2)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le cercle de centre -1, de rayon 2 est effacé</TT></DIV><HR>
+<DIV CLASS="center"><TT>Le rectangle de sommets 0,1+i,3/2+i/2,1/2-i/2</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>rectangle(0,1,1+i)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>Le parallélogramme de sommets 0,1,i,-1+i car </TT><TT>-1+<I>i</I>=(1+<I>i</I>)*</TT><TT>exp</TT><TT>(<I>i</I>*π/2)</TT></DIV>
+</LI><LI CLASS="li-itemize">si il a cinq arguments les 2 derniers paramètres sont les noms de deux 
+variables qui serviront à définir les 2 derniers sommets.<BR>
+On tape :
+<DIV CLASS="center"><TT>rectangle(0,1+i,-1/2,G,H)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>Le rectangle de sommets 0,1+i,3/2+i/2,1/2-i/2</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>normal(affixe(G))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(3+i)/2</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>normal(affixe(H))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(1-i)/2</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr903.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr905.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

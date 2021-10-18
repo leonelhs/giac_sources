@@ -6,43 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si des éléments sont conjugués : is_conjugate est_conjugue</TITLE>
+<TITLE>Savoir si 1 point est à l’intérieur d’un polygone ou d’un cercle : is_inside est_dans</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr959.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr961.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1111">9.18.14</A>  Savoir si des éléments sont conjugués : <TT>is_conjugate est_conjugue</TT></H3><P><A NAME="@default1868"></A><A NAME="@default1869"></A>
-<TT>est_conjugue</TT> permet de savoir si 4 points sont conjugués ou 
-si 2 points ou 2 droites ou 1 droite et 1 point sont conjugués par rapport 
-à un cercle ou deux droites.<BR>
-<TT>est_conjugue</TT> est une fonction booléenne ayant comme 
-arguments deux points (resp deux droites ou un cercle) suivi de deux points ou 
-de deux droites ou d’une droite et d’un point.<BR>
- <TT>est_conjugue</TT> vaut 1 si les arguments sont conjugués, et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1122">10.18.4</A>  Savoir si 1 point est à l’intérieur d’un polygone ou d’un cercle : <TT>is_inside est_dans</TT></H3><P><A NAME="@default1862"></A><A NAME="@default1863"></A>
+<TT>is_inside</TT> ou <TT>est_dans</TT> est une fonction 
+booléenne ayant comme argument un point et un polygone ou un cercle.<BR>
+<TT>is_inside</TT> ou <TT>est_dans</TT> vaut 1 si le point est à l’intérieur 
+ou sur le bord du polygone ou du cercle, et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_conjugue(cercle(0,1+i),point(1-i),point(3+i))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_dans((point(0),cercle(-1,1))</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_conjugue(cercle(0,1),point((1+i)/2),droite(1+i,2))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>est_conjugue(cercle(0,1),droite(1+i,2),point((1+i)/2))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_dans(point(2),polygone([1,2-i,3+i]))</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_conjugue(cercle(0,1),droite(1+i,2), droite((1+i)/2,0))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_dans(point(1-i),triangle([1,2-i,3+i]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>est_conjugue(point(1+i),point(3+i),point(i),point(i+3/2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>est_conjugue(droite(0,1+i),droite(2,3+i), droite(3,4+i),droite(3/2,5/2+i))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr959.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr961.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

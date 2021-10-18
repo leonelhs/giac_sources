@@ -6,41 +6,48 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les points d’intersection de deux objets géométriques : inter</TITLE>
+<TITLE>Généralités sur les attributs</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr863.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr865.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1005">9.8.6</A>  Les points d’intersection de deux objets géométriques : <TT>inter</TT></H3><P><A NAME="@default1680"></A><A NAME="sec:inter2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr978.html#sec:inter3">10.4.4</A> pour la géométrie 3-d.<BR>
-<TT>inter</TT> a soit 2 arguments soit 3 arguments.
+<H3 CLASS="subsection"><A NAME="htoc1011">10.3.1</A>  Généralités sur les attributs</H3><P>
+Les attributs des objets graphiques peuvent être définis par des commandes 
+ou avec des paramètres optionnels qui sont soit globaux soit locaux.<BR>
+Certains arguments optionnels, comme <TT>titre, labels</TT>, sont globaux, ils
+sont mis au début d’une ligne de commandes ayant comme dernière instruction
+une instruction graphique et sont applicables à toutes les instructions 
+graphiques de cette ligne de commandes. Par 
+exemple :<BR>
+<TT>titre="A et son conjugué B";A:=point(1+i);B:=point(1-i)</TT>.<BR>
+Ils sont déscrits ci-après.<BR>
+Certains noms comme <TT>affichage, couleur, legende</TT> peuvent être des 
+noms de commandes ou des noms de paramètres optionnels :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <TT>inter</TT> a 2 arguments qui sont deux objets géométriques.<BR>
-<TT>inter</TT> renvoie la liste des points d’intersection de ces deux objets 
-géométriques.<BR>
-</LI><LI CLASS="li-itemize">si <TT>inter</TT> a 2 arguments qui sont deux objets géométriques et 
-un point.<BR>
-<TT>inter</TT> renvoie le point d’intersection de ces deux objets géométriques
-le plus proche du point donné comme troisième argument.
-</LI></UL><P>
-On tape en géométrie plane :
-</P><DIV CLASS="center"><TT>A:=inter(droite(0,1+i),droite(1,i))[0]</TT></DIV><P>
+Les commandes s’appliquent à l’objet graphique mis comme 
+argument ou, s’il n’y a pas d’arguments, modifient les attributs par défaut 
+qui seront utilisés pour les instructions graphiques qui suivent.<BR>
+On tape :
+<DIV CLASS="center"><TT>couleur(rouge)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe 1/2+i/2 est tracé avec une croix et est noté A</TT></DIV><P>
-On tape en géométrie plane :
-</P><DIV CLASS="center"><TT>B:=inter(cercle(0,1),droite(1,i))[0]</TT></DIV><DIV CLASS="center"><TT>C:=inter(cercle(0,1),droite(1,i))[1]</TT></DIV><P>
+<DIV CLASS="center"><TT>1 et toutes les commandes graphiques sans paramètre optionnel de couleur seront dessinées en rouge</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>couleur(triangle(-1-i,1,1+i),bleu)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté B</TT></DIV><DIV CLASS="center"><TT>Le point d’affixe 1 est tracé avec une croix et est noté C</TT></DIV><P>
-On tape en géométrie plane :
-</P><DIV CLASS="center"><TT>L:=inter(cercle(0,1),droite(1,i))</TT></DIV><P>
+<DIV CLASS="center"><TT>le triangle(-1-i,1,1+i) est dessiné en bleu</TT></DIV></LI><LI CLASS="li-itemize">Il y a deux sortes d’attributs: les attributs globaux qui sont partagés
+par toutes les commandes graphiques affichées dans un même écran 
+graphique et les attributs individuels.<BR>
+On tape (attribut individuel):
+<DIV CLASS="center"><TT>triangle(0,1,1+i,couleur=bleu)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Les points d’affixe i et 1 sont tracés avec une croix et sont notés L</TT></DIV><P>
-On tape en géométrie plane :
-</P><DIV CLASS="center"><TT>D:=inter(cercle(0,1),droite(1,i),point(1/2))</TT></DIV><P>
+<DIV CLASS="center"><TT>le triangle(0,1,1+i) dessiné en bleu</TT></DIV>
+On tape (attribut global):
+<DIV CLASS="center"><TT>titre="medianes";triangle(-1-i,1,1+i); mediane(-1-i,1,1+i); mediane(1,-1-i,1+i); mediane(1+i,1,-1-i)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe 1 est tracé avec une croix et est noté D</TT></DIV><HR>
+<DIV CLASS="center"><TT>le titre "medianes" pour le triangle(0,1,1+i) et ses médianes</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr863.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr865.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

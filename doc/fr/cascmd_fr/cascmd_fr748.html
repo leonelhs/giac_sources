@@ -6,35 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi de Fisher-Snédécor : fisher fisherd snedecor snedecord</TITLE>
+<TITLE>Fonction de répartition inverse normale : normal_icdf normald_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr747.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr749.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc871">7.4.23</A>  Densité de probabilité de la loi de Fisher-Snédécor : <TT>fisher fisherd snedecor snedecord</TT></H3><P><A NAME="@default1338"></A><A NAME="@default1339"></A><A NAME="@default1340"></A><A NAME="@default1341"></A>
-<TT>fisher(n1,n2,x)</TT> ou <TT>snedecor(n1,n2,x)</TT> est a densité
-de probabilité de la loi de Fisher-Snédécor ayant <TT>n1,n2</TT> degrés
-de liberté.<BR>
-<TT>fisher(n1,n2,x)</TT>, vaut pour <I>x</I>≥ 0 :<BR>
- <I>n</I>1/<I>n</I>2<SUP><I>n</I>1/2</SUP>Γ(<I>n</I>1+<I>n</I>2/2)/Γ(<I>n</I>1/2)Γ(<I>n</I>2/2)<I>x</I><SUP><I>n</I>1−2/2</SUP>(1+(<I>n</I>1/<I>n</I>2) <I>x</I>)<SUP>−<I>n</I>1−<I>n</I>2/2</SUP><BR>
-où Γ est définie pour <I>x</I>&gt;0 par 
-Γ(<I>x</I>)=∫<SUB>0</SUB><SUP>∞</SUP><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>x</I>−1</SUP> <I>dt</I><BR>
+<H3 CLASS="subsection"><A NAME="htoc882">8.4.13</A>  Fonction de répartition inverse normale : <TT>normal_icdf normald_icdf</TT></H3><P><A NAME="@default1339"></A><A NAME="@default1340"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi normale centrée 
+réduite, si on a <TT>normal_icdf(x)=h</TT> c’est que l’on a :<BR>
+ <I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=normal_cdf(h)</TT>.<BR>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi normale de moyenne µ et 
+d’écart-type σ, si on a <TT>normal_icdf(</TT><TT>µ,σ</TT><TT>,x)=h</TT> 
+c’est que l’on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=normal_cdf(</TT><TT>µ,σ</TT><TT>,h)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>fisher(5,3,2.5)</TT></DIV><P>
-Oo on tape :
-</P><DIV CLASS="center"><TT>snedecor(5,3,2.5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal_icdf(0.975)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.10131184472</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1.95996398454</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>fisher(4,2,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal_icdf(1,2,0.495)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>8/27</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.974933060984</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>fisher(4,2,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal_icdf(1,2,normal_cdf(1,2,0.975))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>8/27</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.975</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>normal_cdf(1,2,normal_icdf(1,2,0.495))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.495</TT></DIV><HR>
 <A HREF="cascmd_fr747.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr749.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,62 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le point en géométrie plane : point</TITLE>
+<TITLE>Avoir du papier avec des lignes : papier_ligne 
+line_paper</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr859.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr861.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1001">9.8.2</A>  Le point en géométrie plane : <TT>point</TT></H3><P><A NAME="@default1672"></A><A NAME="sec:point2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr975.html#sec:point3">10.4.1</A> <TT>point</TT> en géométrie 3-d.<BR>
-Pour obtenir un point il suffit d’être en mode <TT>point</TT> et de cliquer avec
-la souris (bouton gauche) pour qu’un point s’affiche avec un nom.<BR>
-Ce nom est crée automatiquement : <TT>A</TT> puis <TT>B</TT> etc...<BR>
-On peut aussi utiliser la commande <TT>point</TT> :<BR>
-<TT>point</TT> a comme argument un nombre complexe ou un couple de 2 
-nombres réels représentant ses coordonnées rectangulaires (pour définir un point par ses coordonnées polaires il faut utiliser <TT>polar_point</TT> ou 
-<TT>point_polaire</TT>.<BR>
-<B>Attention</B><BR>
-Si <TT>a,b</TT> est un couple de 2 nombres complexes dont 1 n’est pas réel, 
-<TT>K:=point(a,b)</TT> renvoie 2 points de même nom (ici <TT>K</TT>) l’un d’affixe
-<TT>a</TT>, l’autre d’affixe <TT>b</TT>.<BR>
-Lorsque <TT>a,b</TT> est un couple de 2 nombres réels, <TT>A:=point(a,b)</TT>
-renvoie et dessine le point ayant pour affixe <TT>a+ib</TT>.<BR>
-<TT>point</TT> renvoie et dessine le point ayant pour 
-affixe son argument. Ce point aura la forme choisie par la commande 
-<TT>affichage</TT> : par défaut il aura la forme d’une croix et il aura la forme
-d’un point si on a tapé <TT>affichage(point_point)</TT>. 
+<H3 CLASS="subsection"><A NAME="htoc1006">10.2.7</A>  Avoir du papier avec des lignes : <TT>papier_ligne<BR>
+line_paper</TT></H3><P><A NAME="@default1545"></A><A NAME="@default1546"></A>
+<TT>papier_ligne</TT> permet d’avoir du papier avec des lignes 
+espacées de <I>ux</I> sur l’axe des <I>x</I> et faisant un angle <I>t</I> avec 
+l’horizontale.<BR>
+<TT>papier_ligne</TT> a 2, 3 ou 4 arguments : l’unité <TT>ux</TT> sur l’axe des 
+<I>x</I>, l’angle <TT>t</TT> formé par l’axe des <I>y</I> et des <I>x</I> et éventuellement 
+<TT>x=xmin..xmax,y=ymin..ymax</TT> pour avoir ces lignes dans le rectangle
+<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
+les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
+Vous avez la possibilité d’enlever les axes orthonormés en utilisant
+le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>point(1+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>papier_ligne(0.6,pi/3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe 1+i est tracé avec une croix</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>A:=point(-2,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>des lignes espacées de 0.6 sur l’axe des </TT><TT><I>x</I></TT><TT> et faisant un angle de </TT><TT>π/3</TT><TT> avec </TT><TT><I>Ox</I></TT><TT> dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT><TT> </TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>papier_ligne(0.6,pi/3,x=-2..3,y=-1..2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe -2+i est tracé avec une croix et est noté A</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>point(-2,i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Les 2 points d’affixe -2 et i sont tracés avec une croix</TT></DIV><P>
-<B>Remarque</B>
-Lorqu’on fait une affectation par exemple <TT>A:=point(-2+i)</TT> cela a pour 
-effet de stocker le <TT>point(-2+i)</TT> dans la variable <TT>A</TT>, d’ouvrir un 
-écran graphique si on n’est pas dans un niveau de géométrie et de dessiner
-le point avec une croix et de lui mettre comme légende le nom qui est situé
-à gauche de <TT>:=</TT> ici <TT>A</TT>.<BR>
-Si on fait plusieurs affectations avec un seul signe <TT>:=</TT> par exemple :<BR>
-<TT>A,B:=point(-2+i),point(2+i)</TT> la variable <TT>A</TT> contient le
-<TT>point(-2+i)</TT>, la variable <TT>B</TT> contient <TT>point(-2+i)</TT> mais
-les deux points auront le même nom : <TT>A,B</TT> et on ne pourra pas deplacer 
-ces points en mode <TT>pointeur</TT>. Pour éviter cela on doit 
-taper sur des niveaux séparés :<BR>
-<TT>L:=point(-2+i),point(2+i):;A:=L[0];B:=L[1]</TT><BR>
-<B>Autre exemple</B><BR>
-<TT>LL:=point(-2,i):;C:=LL[0];D:=LL[1]</TT> définit le point <TT>C</TT>
-d’affixe -2 et le point <TT>D</TT> d’affixe i (car l’affixe de <TT>D</TT> n’est pas 
-réel !).<BR>
-</P><HR>
+</P><DIV CLASS="center"><TT>des lignes espacées de 0.6 sur l’axe des </TT><TT><I>x</I></TT><TT> et faisant un angle de </TT><TT>π/3</TT><TT> avec </TT><TT><I>Ox</I></TT><TT> dans le rectangle </TT><TT>[-2,3]×[-1,2]</TT>
+</DIV><HR>
 <A HREF="cascmd_fr859.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr861.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

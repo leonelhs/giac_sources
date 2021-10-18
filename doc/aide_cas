@@ -1,13 +1,24 @@
+# batons
+1 Dessine pour k=0..nrows, les segments (xk,0)-(xk,yk) où xk=élément ligne k colonne 0 et yk=élément ligne k colonne j (j=1..ncols).
+2 Draws for k=0..nrows, the segments (xk,0)-(xk,yk) where xk=element row k column 0 and yk=element row k column j (j=1..ncols).
+0 Mtrx
+-1 polygonplot
+-2 scatterplot
+-3 listplot
+batons([1,3],[2,5],[3,2])
+batons([[1,3],[2,5],[3,2]])
+batons([1,2,3],[3,5,2])
+
 # ()
-1 () est utilisé pour donner une valeur à une fonction ou pour substituer des valeurs dans une expression.
-2 
+1 () renvoie la valeur d'une fonction ou permet de substituer des valeurs dans une expression.
+2 () returns the value of a function or substitutes values in an expression
 0 
 -1 subst
 -2 ->
 -3 :=
- Expr:=x+2y+3z;Expr(x=1,y=2)
  f(x,y,z):=x+2y+3z;f(1,2,z)
  f:=(x,y,z)->x+2y+3z;f(1,2,z)
+ g:=x+2y+3z;g(x=1,y=2)
 
 # REDIM redim
 1 Redimensionne selon n1,n2 une matrice (resp vecteur) soit en la raccourcissant, soit en l'augmentant avec des 0.
@@ -5638,15 +5649,6 @@ polygonscatterplot([[1,2,3],[2,0,1],[-1,2,3]])
 -3 listplot
 scatterplot([[1,2,3],[2,0,1],[-1,2,3]])
 
-# batons 
-1 Dessine pour k=0..nrows, les segments (xk,0)-(xk,yk) où xk=élément ligne k colonne 0 et yk=élément ligne k colonne j (j=1..ncols).
-2 Draws for k=0..nrows, the segments (xk,0)-(xk,yk) where xk=element row k column 0 and yk=element row k column j (j=1..ncols).
-0 Mtrx
--1 polygonplot
--2 scatterplot
--3 listplot
-batons([1,3],[2,5],[3,2])
-
 # user_operator
 1 Définition d'un opérateur binaire et renvoie 0 (échec) ou 1 (succès).
 2 Definition of an binary operator and returns 0 (failure) or 1(success).
@@ -5755,33 +5757,40 @@ Circle(0,1,1,1)
 version()
 
 # seq
-1 Renvoie la séquence (2 ou 3 arg) ou la liste (4 ou 5 arg) obtenue lorsque var varie entre a et b (pas=p) dans Xpr (ou on répète n fois l'expression Xpr).
-2 Returns the sequence (2 or 3 arg) or the list (4 or 5 arg) obtained when var go from a to b (step p) in Xpr (or the Xpr is repeated n times).
+1 Renvoie la séquence (2 ou 3 arg) ou la liste (4 ou 5 arg) obtenue lorsque var varie entre a et b (pas=p) dans Xpr (ou on répète n fois l'expression Xpr ou on obtient la sequence des r\'eels entre a et b par pas de p).
+2 Returns the sequence (2 or 3 arg) or the list (4 or 5 arg) obtained when var go from a to b (step p) in Xpr (or the Xpr is repeated n times or returns the sequence of reals from a to b (step p)).
 3 Devuelve la secuencia (2 o 3 arg) o la lista (4 o 5 arg) obtenida cuando var va desde a hasta b (paso=p) en Xpr (o la expresión Xpr es repetida n veces).
 4 Επιστρέφει την ακολουθία (2 ή 3 ορίσματα) ή τη λίστα (4 ή 5 ορίσματα) που αποκτιέται όταν το var μεταβάλλεται από a έως b (με βήμα p) στην παράσταση (ή η παράσταση επαναλαμβάνεται n φορές).
-0 Expr(Xpr),Intg(n)||Var(var),[Intg(a)],[Intg(b)],[Intg(p)]
+0 Expr(Xpr)||Int(a..b),Intg(n)||Var(var)||Real(p),[Intg(a)],[Intg(b)],[Real(p)]
 -1 $
 -2 makelist
-seq(2^k,k,0,8)
-seq(2^k,k,0,8,2)
+seq(0.3,4)
 seq(t,4)
 seq(0,0)
 seq(2^k,k=0..8)
 seq(2^k,k=0..8,2)
 seq(2^k,k,0..8)
+seq(0.3..2,0.2)
+seq(2^k,k,0,8)
+seq(2^k,k,0,8,2)
+[seq(0.3..2,0.2)] 
 
 # $
 1 Version infixée de seq.
 2 Infixed version of seq.
 3 Versión infijo de seq.
 4 Εντεθειμένη εκδοχή του seq.
-0 (Expr(var)),(Var(var)=Int(a..b)) or Intg(n)
+0 (Expr(var)||Int(a..b)),(Var(var)=Int(a..b))||Intg(n)||Real(p)
 -1 seq
 -2 makelist
+ 0.3$4
  t$4
  0$0
- 2$4
  (2^k)$(k=0..3)
+ [(2^k)$(k=0..3)]
+ (0.3..2)$0.2
+ (k^2)$(k=(1..10)$2)
+ [k^2,k^3]$(k=1..10)
 
 # roots
 1 Renvoie une matrice ayant 2 colonnes et dont les lignes sont les racines du polynôme avec leur multiplicité (pour 1 variable).
@@ -6081,16 +6090,18 @@ parallelogram(point(0,0,0),point(3,3,3),point(0,0,3))
 parallelogram(point(0,0,0),point(3,3,3),point(0,0,3),D)
 
 # subs
-1 Équivalent de subst sauf en mode Maple où les arguments sont permutés, dans ce cas choisir alors l'exemple 2.
-2 Equivalent of subst except in maple_mode where the arguments are switched over, in this case choose the second example.
-3 Equivalente a subst excepto en modo Maple, donde los argumentos son permutados, en este caso escoge el segundo ejemplo.
+1 Équivalent de subst sauf en mode Maple où les arguments sont permutés, en mode Maple choisir l'exemple 2.
+2 Equivalent of subst except in maple_mode where the arguments are switched over, in maple_mode choose the second example.
+3 Equivalente a subst excepto en modo Maple, donde los argumentos son permutados, en modo Maple escoge el segundo ejemplo.
 4 Ισοδύναμη της subst με εξαίρεση την λειτουργία maple, όπου τα ορίσματα αντιμετατίθονται, και στην οποία περίπτωση επιλέγουμε το δεύτερο παράδειγμα.
 0 Expr or Var=value,Var=value or Expr
 -1 subst
 -2 maple_mode
 -3 algsubs
+-4 ()
 subs(1/(4+x^2),x=2)
 subs(x=2,1/(4+x^2))
+ f:=1/(4+x^2);f(x=2)
 
 # simult
 1 Renvoie la matrice dont la colonne d'indice k est solution de A*X=colonne d'indice k de B (=B[0..nl-1,k..k] avec nl=nombre de ligne de B).
@@ -10582,7 +10593,10 @@ linsolve([x+y+z=1,x-y=2,2*x-z=3],[x,y,z])
 linsolve([m*x+y=a,x+m*y=b],[x,y])
 linsolve([x+y-z-1,x-y+1,x-y-z-1]%2,[x,y,z])
 linsolve([[3,4],[1,2]],[0,1])
- p,l,u:=lu([[3,4],[1,2]]); linsolve(p,l,u,[0,1])
+ p,l,u:=lu([[3,4],[1,2]]); linsolve(p,l,u,[0,1]) 
+linsolve([2*x+y+z=1,x+y+2*z=1,x+2*y+z=4],[x,y,z])
+linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
+ p,l,u:=lu([[2,1,1],[1,1,2],[1,2,1]]);linsolve(p,l,u,[1,1,4])
 
 # thickness epaisseur
 1 Option (compatibilité Maple) d'une commande graphique pour définir l'épaisseur des traits.
@@ -12766,11 +12780,13 @@ sto("salut",b)
 -1 eval
 -2 algsubs
 -3 subs
+-4 ()
 subst(1/(4+x^2),x=2)
 subst(1/(x^2+y^2),x=2,y=3)
 subst(1/(x^2+y^2+z^2),[x=2,y=3,z=1])
 subst(x-2/(4+x^2),x=1)
 subst('integrate(sin(x^2)*x,x)',x=sqrt(t))
+ f:=1/(x^2+y^2;f(x=2,y=3)
 
 # sum somme add
 1 Somme discrète (avec 4 ou 2 arguments renvoie la somme de a à b si a<=b ou de l'opposé de la somme de b+1 à a-1 si a>b+1 ou 0 si a=b+1) ou la primitive discrète ou la somme des éléments d'une liste (ou séquence)
@@ -13053,6 +13069,9 @@ tangent(plotfunc(sin(x)),3*pi/4)
 tangent(plotfunc(sin(x)),point(3*pi/4+i*sqrt(2)/2))
 tangent(plotfunc(x^2+y^2,[x,y]),[2,2])
 tangent(plotfunc(x^2+y^2,[x,y]),point([2,2,8]))
+tangent(plotparam(3*exp(t/2)*exp(i*t),t),7)
+tangent(plotpolar(3*exp(t/2),t),7)
+ equation(tangente([2*cos(t),2*sin(t),3*t],t))
 
 # tchebyshev1
 1 Renvoie le n-ième polynôme de Tchebychev de première espèce.
@@ -14490,7 +14509,6 @@ in_ideal(x+y,[y^2,x^2+2*x*y],[x,y])
 normalt([10,30],.5,.02,'!=',0.1)
 normalt([0.48,50],0.5,0.1,'<')
 
-
 # studentt
 1 Test T d'hypothèses /loi Student : arg1=[succes,essais] ou [moyenne, taille] ou données, arg2=proportion ou moyenne population ou données, arg3 optionnel si données=sigma, arg4 alternative '!=' ou '>' ou '<', arg5 optionnel confiance alpha.
 2 T-Test/Student law: arg1=[success,trial] or [mean,sample size] or data, arg2=proportion or data, arg3 optional if data=sigma, arg4 alternative '!=' or '>' or '<', arg5 optional alpha confidence level.
@@ -14502,13 +14520,16 @@ studentt([10,20],.5,.02,'!=',0.1)
 studentt([0.48,20],0.5,0.1,'<')
 
 # osculating_circle
-1 Cercle osculateur a la courbe C au point M
+1 Cercle osculateur à la courbe plane C au point M
 2 Osculating circle at point M to the curve C
 0 Curve,Point
 -1 curvature
 -2 evolute
 osculating_circle(plot(x^2),point(1,1))
 osculating_circle([t,t^2],t)
+osculating_circle([t,t^2],t,1)
+osculating_circle([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)
+osculating_circle([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)
 
 # curvature
 1 Courbure de la courbe C au point M
@@ -14518,18 +14539,23 @@ osculating_circle([t,t^2],t)
 -2 evolute
 curvature(plot(x^2),point(1,1))
 curvature([t,t^2],t)
+curvature([t,t^2],t,1)
+curvature([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)
+curvature([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)
+ trigcos(curvature([2*cos(t),2*sin(t),3*t],t))
 
 # evolute
-1 Courbe developpee d'une courbe C
+1 Courbe développée d'une courbe C
 2 Evolute of a curve C
 0 Curve
 -1 curvature
 -2 osculating_circle
 evolute(plot(x^2))
 evolute([t,t^2],t)
+evolute([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)
 
 # wilcoxont
-1 Test de Wilcoxon ou de Mann-Whitney pour 1 echantillon et une mediane ou 2 echantillons
+1 Test de Wilcoxon ou de Mann-Whitney pour 1 échantillon et une médiane ou 2 échantillons
 2 Wilcoxon or Mann-Whitney test for one sample and a median or 2 samples
 0 List,List || Real,[Func],[Real]
 -1 wilcoxonp
@@ -14565,3 +14591,4 @@ wilcoxons([1, 3, 4, 5, 7, 8, 8, 12, 15, 17] , 10)
 0 Int,Int,Int
 dayofweek(21,4,2014)
 dayofweek(15,10,1582)
+

@@ -6,25 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le plan : plane plan</TITLE>
+<TITLE>Point défini comme barycentre de n points : barycenter barycentre</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr990.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr992.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1151">10.6.1</A>  Le plan : <TT>plane plan</TT></H3><P><A NAME="@default1930"></A><A NAME="@default1931"></A>
-<TT>plan</TT> a comme argument soit trois points, soit un point et une 
-droite, soit son équation cartésienne.<BR>
-<TT>plan(A,B,C)</TT> ou <TT>plan(A,droite(B,C))</TT> (resp <TT>plan(a*x+b*y+c*z+d=0)</TT>) trace le plan <TT>ABC</TT> (resp le plan d’équation <TT>a*x+b*y+c*z+d=0</TT>) dans l’espace 3-d.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1160">11.4.7</A>  Point défini comme barycentre de <I>n</I> points : <TT>barycenter barycentre</TT></H3><P><A NAME="@default1927"></A><A NAME="@default1928"></A><A NAME="sec:barycentre3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr878.html#sec:barycentre2">10.8.10</A> pour la géométrie plane et
+<A HREF="cascmd_fr249.html#sec:baryc">6.12.10</A>.<BR>
+<TT>barycentre</TT> ou <TT>barycenter</TT>, , en géométrie 3-d, a comme 
+argument des listes de longueur 2 (resp une matrice ayant deux colonnes) :<BR>
+le premier élément de la liste <I>j</I> (resp le <I>j</I>ième élément de la 
+première colonne de la matrice) contient le point <I>A</I><SUB><I>j</I></SUB>, le deuxième 
+élément de la liste <I>j</I> (resp le <I>j</I>ième élément de la deuxième 
+colonne) contient le coefficient réel α<SUB><I>j</I></SUB> affecté à <I>A</I><SUB><I>j</I></SUB>.<BR>
+<TT>barycentre</TT> ou <TT>barycenter</TT> renvoie et trace le point qui est le 
+barycentre des points <I>A</I><SUB><I>j</I></SUB> affectés des coefficients réels
+α<SUB><I>j</I></SUB> lorsque ∑α<SUB><I>j</I></SUB> ≠ 0.<BR>
+Si ∑α<SUB><I>j</I></SUB> = 0, <TT>barycentre</TT> ou <TT>barycenter</TT> renvoie une 
+erreur.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>plan([0,0,5],[0,5,0],[5,0,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>barycentre([point(1,4,0),1],[point(1,-2,0),1])</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>plan(x+y+z=5)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>plan([0,0,5],droite([0,5,0],[5,0,0]))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>barycentre([[point(1,4,0),1],[point(1,-2,0),1]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x+y+z=5</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le point (1,1,0) est tracé</TT></DIV><HR>
 <A HREF="cascmd_fr990.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr992.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

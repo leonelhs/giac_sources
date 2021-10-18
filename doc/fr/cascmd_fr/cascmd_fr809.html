@@ -6,52 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’affectation d’une égalité : assign</TITLE>
+<TITLE>Fonction testant le type de son argument: compare</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr808.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr810.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc938">8.4.17</A>  L’affectation d’une égalité : <TT>assign</TT></H3><P><A NAME="@default1453"></A><A NAME="@default1454"></A><A NAME="@default1455"></A>
-<TT>assign</TT> permet de stocker une valeur dans une variable.<BR>
-<TT>assign</TT> a un ou deux arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un argument : une égalité entre un nom de variable et la 
-valeur à stocker, ou une listed’égalité entre des noms de variable et les
-valeurs à stocker, 
-</LI><LI CLASS="li-itemize">deux arguments : un nom de variable et la valeur à stocker.<BR>
-</LI></UL><P>
-<B>Attention</B><BR>
-La variable doit être purgée avant l’utilisation de <TT>assign</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc949">9.4.7</A>  Fonction testant le type de son argument: <TT>compare</TT></H3><P><A NAME="@default1448"></A>
+<TT>compare</TT> est une fonction qui a deux arguments et qui renvoie 
+<TT>1</TT> si ses arguments ont des types différents ou
+ou si ses arguments sont de même type et sont mis dans l’ordre croissant,
+et qui renvoie <TT>0</TT> sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>assign(a,3)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>assign(a=3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>compare(1,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3 et la variable a contient 3</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>assign([a1=1,a2=2,a3=3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>compare(2,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,2,3] et a1 contient 1, a2 contient 2 et a3 contient 3</TT></DIV><P>
-<B>Remarque</B>
-<TT>assign</TT> sert surtout en mode Maple, voici un exemple :
-On tape en mode Maple :
-</P><DIV CLASS="center"><TT>purge(a,b)</TT></DIV><DIV CLASS="center"><TT>sol:=solve([a+b=1,a-b=3],[a,b])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[a=2,b=(-1)]</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>assign(sol)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>compare("3","a")</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,-1] et ainsi a contient 2 et b contient -1 </TT></DIV><P> 
-en mode <TT>Xcas</TT> la même suite d’instructions donnent :
-</P><DIV CLASS="center"><TT>sol:=solve([a+b=1,a-b=3],[a,b])</TT></DIV><P>
-On obtient la liste des solution donc ici une matrice 1×1 :
-</P><DIV CLASS="center"><TT>[[2,-1]]</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>[a,b]:=sol[0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>compare("a",3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,-1] et ainsi a contient 2 et b contient -1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>compare(3,"a")</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>compare("a",3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+En effet on a :
+<TT>type(3)=DOM_INT=2</TT> et <TT>type("a")=DOM_STRING=12</TT>
+</P><HR>
 <A HREF="cascmd_fr808.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr810.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,42 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Approximation rationnelle : float2rational exact</TITLE>
+<TITLE>Liste des variables et des expressions algébriques : algvar</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr678.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr680.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc796">6.58.7</A>  Approximation rationnelle : <TT>float2rational exact</TT></H3><P><A NAME="@default1225"></A><A NAME="@default1226"></A>
-<TT>float2rational</TT> (ou <TT>exact</TT>) a comme paramètre une 
-expression numérique réelle.<BR>
-<TT>float2rational</TT> donne une approximation rationnelle de tous les nombres 
-décimaux <I>r</I> contenus dans l’expression à 
-moins de <TT>epsilon</TT> c’està dire 
-|<I>r</I>−<TT>float2rational</TT>(<I>r</I>)|&lt;є où є est définit par
-<TT>epsilon</TT> dans la configuration du <TT>cas</TT> (menu <TT>Cfg</TT> , ou 
-commande <TT>cas_setup</TT>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc797">6.59.4</A>  Liste des variables et des expressions algébriques : <TT>algvar</TT></H3><P><A NAME="@default1226"></A>
+<TT>algvar</TT> a comme paramètre une expression.<BR>
+<TT>algvar</TT> renvoie un vecteur de composantes le nom des variables 
+symboliques, par ordre d’extension algebriques, utilisées dans cette 
+expression.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>float2rational(1.5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>algvar(y+x*sqrt(z))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3/2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[y,x],[z]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>float2rational(1.414)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>algvar(y*sqrt(x)*sqrt(z))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>707/500</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[y],[z],[x]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>float2rational(0.156381102937*2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>algvar(y*sqrt(x*z))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>5144/16447</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[y],[x,z]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>float2rational(1.41421356237)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>algvar(y+x*sqrt(z)+y*sin(x))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>114243/80782</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>float2rational(1.41421356237</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[x,y,sin(x)],[z]]</TT></DIV><HR>
 <A HREF="cascmd_fr678.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr680.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

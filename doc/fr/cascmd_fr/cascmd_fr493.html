@@ -6,26 +6,63 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Extraire une sous-liste d’une liste : mid</TITLE>
+<TITLE>Les différentes listes</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr492.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr494.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc592">6.40.4</A>  Extraire une sous-liste d’une liste : <TT>mid</TT></H3><P><A NAME="@default876"></A><A NAME="sec:mid"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr492.html#sec:at">6.40.3</A> la fonction <TT>at</TT>.<BR>
-<TT>mid</TT> pour extraire une sous-liste d’une liste<A NAME="@default877"></A>.<BR>
-<TT>mid</TT> a trois paramètres : la liste, l’indice du début de la 
-sous-liste et la longueur de la sous-liste.<BR>
-<B>Attention !</B> l’indice du premier élément est 0.<BR>
+<H3 CLASS="subsection"><A NAME="htoc593">6.41.1</A>  Les différentes listes</H3><P>
+Une liste peut contenir des listes (c’est le cas des matrices) et peut
+désigner un vecteur (liste des coordonnées) ou un polynôme (liste des
+coefficients des puissances décroissantes), 
+alors que une séquence est plate car on ne peut pas avoir un élément 
+d’une séquence qui soit une séquence.<BR>
+ L’ordre est important dans une liste alors que l’ordre n’a pas d’importance 
+pour un ensemble, il peut y avoir plusieurs fois le même objet dans une liste
+alors que chaque objet est unique dans un ensemble.</P><P>Dans les réponses de <TT>Xcas</TT>, 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+les coordonnées d’un vecteur sont parenthésées avec <TT>[</TT> et
+<TT>]</TT>, 
+</LI><LI CLASS="li-itemize">une matrice avec [ et ], 
+</LI><LI CLASS="li-itemize">un polynôme avec <TT>[]</TT> et <TT>[]</TT>,
+</LI><LI CLASS="li-itemize">un ensemble avec <B>[</B> et <B>]</B>.
+</LI></UL><P>
+Un vecteur peut donc être représentés par une liste contenant les 
+composantes du vecteur (on met les composantes du vecteur entre crochets).<BR>
+<B>Attention !</B><BR>
+Pour accéder à un élément d’une liste, on tape son indice entre des 
+crochets pour des indices qui commencent à 0<BR>
+ou bien<BR>
+on tape son indice entre des doubles crochets pour des indices qui commencent 
+à 1.<BR>
+Pour toutes les autres fonctions de <TT>Xcas</TT> (autres que l’accés à un 
+élément), l’indice du premier élément est 0.<BR>
+<B>Exemple</B><BR>
 On tape :
-</P><DIV CLASS="center"><TT>mid([0,1,2,3,4,5],2,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1,2,3]</TT></DIV><P>
-<B>Attention</B>, la commande <TT>mid</TT> ne peut pas être utilisée pour les
-séquences : il faut utiliser <TT>(0,1,2,3,4,5)[2..3]</TT>, syntaxe valable aussi
-pour les listes (voir ci-dessus). 
+<TT>L:=[2,5,1,3]</TT><BR>
+<TT>L[1]</TT><BR>
+On obtient :<BR>
+<TT>5</TT><BR>
+On tape :
+<TT>L[[1]]</TT><BR>
+On obtient :<BR>
+<TT>2</TT><BR>
+On tape :
+<TT>L:=[2,5,1,3]</TT><BR>
+<TT>L[1]:=4</TT><BR>
+<TT>L</TT><BR>
+On obtient :<BR>
+<TT>[2,4,1,3]</TT><BR>
+On tape :
+<TT>L:=[2,5,1,3]</TT><BR>
+<TT>L[[1]]:=4</TT><BR>
+<TT>L</TT><BR>
+On obtient :<BR>
+<TT>[4,5,1,3]</TT><BR>
+Pour dessiner ou définir un vecteur géométrique voir <A HREF="cascmd_fr887.html#sec:vecteur2">10.9.5</A> 
+et <A HREF="cascmd_fr996.html#sec:vecteur3">11.5.5</A>.
 </P><HR>
 <A HREF="cascmd_fr492.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

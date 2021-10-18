@@ -57,7 +57,7 @@ namespace giac {
     gen t(s);
     if (s==x){
 #ifdef GIAC_HAS_STO_38
-      t=identificateur("_s38");
+      t=identificateur("s38_");
 #else
       t=identificateur(" t");
 #endif
@@ -90,7 +90,7 @@ namespace giac {
       res = _integrate(gen(makevecteur(res,t,0,t),_SEQ__VECT),contextptr);
       res += _integrate(gen(makevecteur(f/pow(-x,i),x,0,plus_inf),_SEQ__VECT),contextptr);
     }
-    _purge(t,contextptr);
+    purgenoassume(t,contextptr);
     if (s==x)
       res=subst(res,t,x,false,contextptr);
     return ratnormal(res);
@@ -194,7 +194,7 @@ namespace giac {
       vecteur varx(lvarx(coeff,x));
       int varxs=varx.size();
       if (!varxs){ // Dirac function
-	res += coeff*exp(expb,contextptr)*symbolic(at_Dirac,x+expa);
+	res += coeff*exp(expb,contextptr)*symbolic(at_Dirac,laplace_var+expa);
 	continue;
       }
       if ( (varxs>1) || (varx.front()!=x) ) {
@@ -395,7 +395,7 @@ namespace giac {
     v.clear();
     gen f(f_orig),a,b,cur_y(y);
 #ifdef GIAC_HAS_STO_38
-    identificateur t("_t38");
+    identificateur t("t38_");
 #else
     identificateur t(" t");
 #endif
@@ -669,7 +669,7 @@ namespace giac {
       return gensizeerr(contextptr);
     vecteur v;
 #ifdef GIAC_HAS_STO_38
-    identificateur t("_t38");
+    identificateur t("t38_");
 #else
     identificateur t(" t");
 #endif
@@ -706,7 +706,7 @@ namespace giac {
 	      return gensizeerr("Invalid second member");
 	    cl=vecteur(n);
 	  }
-	  if (cl.type!=_VECT || cl._VECTptr->size()!=n)
+	  if (cl.type!=_VECT || int(cl._VECTptr->size())!=n)
 	    return gensizeerr("Invalid second member");	    
 	  for (int i=0;i<n;++i){
 	    parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
@@ -726,6 +726,56 @@ namespace giac {
       v.pop_back();
       if (derive(v,x,contextptr)==vecteur(n+1,zero)){
 	// Yes!
+	// simpler general solution for small order generic lin diffeq with cst coeff/squarefree case
+	if (n<=3){
+	  vecteur rac=solve(horner(v,x,contextptr),x,1,contextptr);
+	  comprim(rac);
+	  if (n==2 && rac.size()==1){
+	    parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
+	    parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
+	    gen sol = exp(rac.front()*x,contextptr)*(parameters[parameters.size()-2]*x+parameters.back());
+	    gen part=_integrate(makesequence(-cst/v.front()*exp(-rac.front()*x,contextptr),x),contextptr)*x+_integrate(makesequence(cst/v.front()*x*exp(-rac.front()*x,contextptr),x),contextptr);
+	    part=simplify(part*exp(rac.front()*x,contextptr),contextptr);
+	    return sol+part;
+	  }
+	  if (int(rac.size())==n){
+	    gen sol; bool reel=true;
+	    for (int j=0;j<n;){
+	      if (j<n-1 && is_zero(ratnormal(rac[j]-conj(rac[j+1],contextptr)),contextptr)){
+		gen racr,raci;
+		reim(rac[j],racr,raci,contextptr);
+		if (is_strictly_positive(-raci,contextptr))
+		  raci=-raci;
+		parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
+		parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
+		sol += exp(racr*x,contextptr)*(parameters[parameters.size()-2]*cos(raci*x,contextptr)+parameters[parameters.size()-1]*sin(raci*x,contextptr));
+		j+=2;
+		continue;
+	      }
+	      if (reel && !is_zero(im(rac[j],contextptr)))
+		reel=false;
+	      parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
+	      sol += parameters.back()*exp(rac[j]*x,contextptr);
+	      j++;
+	    }
+	    if (derive(cst,x,contextptr)==0 && !is_zero(v.back())) return sol-cst/v.back();
+	    // variation des constantes
+	    gen M_=_vandermonde(rac,contextptr),part=0;
+	    if (ckmatrix(M_)){
+	      matrice M=*M_._VECTptr;
+	      vecteur c(n);
+	      c[n-1]=-_trig2exp(cst,contextptr)/v.front();
+	      c=linsolve(mtran(M),c,contextptr);
+	      for (unsigned i=0;i<c.size();++i){
+		part += _integrate(makesequence(_lin(c[i]*exp(-rac[i]*x,contextptr),contextptr),x),contextptr)*exp(rac[i]*x,contextptr);
+	      }
+	      if (reel && is_zero(im(cst,contextptr)))
+		part=re(part,contextptr);
+	      part=simplify(part,contextptr);
+	    }
+	    return sol+part;
+	  }
+	} // end n<=3
 	gen laplace_cst=_laplace(makesequence(-cst,x,t),contextptr);
 	if (!is_undef(laplace_cst)){
 	  vecteur lopei=mergevecteur(lop(laplace_cst,at_Ei),lop(laplace_cst,at_integrate));
@@ -905,19 +955,28 @@ namespace giac {
 	f=quotesubst(*it,makevecteur(x,y),makevecteur(tplus*x,tplus*y),contextptr);
 	f=normal(f-*it,contextptr);
 	if (is_zero(f)){
-	  *logptr(contextptr) << gettext("Homogeneous") << endl;
+	  *logptr(contextptr) << gettext("Homogeneous differential equation") << endl;
 	  tmpsto=sto(doubleassume_and(vecteur(2,0),0,1,false,contextptr),x,contextptr);
 	  if (is_undef(tmpsto))
 	    return tmpsto;
 	  f=normal(quotesubst(*it,y,tplus*x,contextptr)-tplus,contextptr);
-	  _purge(x,contextptr);
+	  purgenoassume(x,contextptr);
 	  // y=tx -> t'x=f
 	  // Singular solutions f(t)=0
-	  vecteur singuliere(multvecteur(x,solve(f,t,3,contextptr)));
+	  vecteur singuliere(multvecteur(x,solve(f,t,complex_mode(contextptr) + 2,contextptr)));
 	  sol=mergevecteur(sol,singuliere);
 	  // Non singular: t'/f(t)=1/x
 	  gen pr=parameters.back()*_simplify(exp(integrate_without_lnabs(inv(f,contextptr),t,contextptr),contextptr),contextptr);
-	  sol.push_back(gen(makevecteur(pr,t*pr),_CURVE__VECT));
+	  // Try to find t in x=pr
+	  vecteur v=protect_solve(x-pr,t,1,contextptr);
+	  if (!v.empty() && !is_undef(v)){
+	    *logptr(contextptr) << "solve(" << pr << "=" << x << "," << t << ") returned " << v << ".\nIf solutions were missed consider paramplot(" << makevecteur(pr,t*pr) << "," << t << ")" << endl;
+	    for (unsigned j=0;j<v.size();++j){
+	      sol.push_back(x*v[j]);
+	    }
+	  }
+	  else
+	    sol.push_back(gen(makevecteur(pr,t*pr),_CURVE__VECT));
 	  continue;
 	}
 	// exact? y'=*it=f(x,y) -> N dy + M dx=0 where -M/N=y'
@@ -1113,7 +1172,7 @@ namespace giac {
     gen t(s);
     if (s==x){
 #ifdef GIAC_HAS_STO_38
-      t=identificateur("_z38");
+      t=identificateur("z38_");
 #else
       t=identificateur(" tztrans");
 #endif
@@ -1122,7 +1181,7 @@ namespace giac {
       return gensizeerr(contextptr);
     gen tmp=expand(f*pow(t,-x,contextptr),contextptr);
     gen res=_sum(gen(makevecteur(tmp,x,0,plus_inf),_SEQ__VECT),contextptr);
-    _purge(t,contextptr);
+    purgenoassume(t,contextptr);
     if (s==x)
       res=subst(res,t,x,false,contextptr);
     return ratnormal(res);
@@ -1161,7 +1220,7 @@ namespace giac {
     gen t(s);
     if (s==x){
 #ifdef GIAC_HAS_STO_38
-      t=identificateur("_s38");
+      t=identificateur("s38_");
 #else
       t=identificateur(" tinvztrans");
 #endif

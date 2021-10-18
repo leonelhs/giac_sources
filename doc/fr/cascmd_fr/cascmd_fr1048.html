@@ -6,22 +6,47 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Surface définie par une équation paramétrique : paramplot</TITLE>
+<TITLE>La rotation : rotation</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1047.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1049.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1217">10.15.6</A>  Surface définie par une équation paramétrique : <TT>paramplot</TT></H3><P><A NAME="@default2026"></A>
-<TT>paramplot</TT> a comme arguments la liste formée de l’équation 
-paramétrique d’une surface et de la liste des paramètres utilisés.<BR>
-<TT>paramplot([f(u,v),g(u,v),h(u,v)],[u,v])</TT> dessine la surface 
-d’équation paramétrique : <TT>x=f(u,v),y=g(u,v),z=h(u,v)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1227">11.14.4</A>  La rotation : <TT>rotation</TT></H3><P><A NAME="@default2026"></A><A NAME="sec:rotation3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr952.html#sec:rotation2">10.17.4</A> pour la géométrie plane et 
+<A HREF="cascmd_fr993.html#sec:axe3">11.5.2</A> pour définir un axe.<BR>
+<TT>rotation</TT>, en géométrie 3-d, a deux ou trois arguments.<BR>
+ Lorsque <TT>rotation</TT> a deux arguments ce sont : une droite orientée par 
+l’ordre de ses arguments ou par le produit vectoriel des normales orientées 
+des plans qui la définissent (l’axe de rotation) et un réel (la mesure de 
+l’angle de rotation). 
+<TT>rotation</TT> est alors une fonction qui agit sur un objet géométrique 
+(point, droite etc...)<BR>
 On tape :
-</P><DIV CLASS="center"><TT>paramplot([u*cos(v),u*sin(v),u],[u,v])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le dessin du cône de sommet l’origine, d’axe 0z et contenant le cercle définit par </TT><TT><I>x</I></TT><SUP><TT>2</TT></SUP><TT>+<I>y</I></TT><SUP><TT>2</TT></SUP><TT>=1</TT><TT> et </TT><TT><I>z</I>=1</TT><TT>.</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>r:=rotation(droite(point(0,0,0),point(1,1,1)),2*pi/3)</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>r(point(0,0,1))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>Le point (1,0,0) est tracé</TT></DIV><P>
+Lorsque <TT>rotation</TT> a trois arguments, ce sont : une droite orientée par 
+l’ordre de ses arguments ou par le produit vectoriel des normales orientées 
+des plans qui la définissent (l’axe de rotation), un réel (la mesure de 
+l’angle de rotation) et l’objet 
+géométrique à transformer; <TT>rotation</TT> dessine et renvoie alors
+le transformé du troisième argument dans la rotation d’axe le premier 
+argument et d’angle de mesure le deuxième argument.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>rotation(droite(point(0,0,0),point(1,1,1)),2*pi/3, point(0,0,1))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>Le point (1,0,0) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>rotation(droite(point(0,0,0),point(1,1,1)), 2*pi/3, droite(point(1,0,0),point(0,1,0)))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>La droite passant par (0,1,0) et (0,0,1)</TT></DIV><HR>
 <A HREF="cascmd_fr1047.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1049.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

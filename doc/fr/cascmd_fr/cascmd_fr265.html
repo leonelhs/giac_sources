@@ -6,34 +6,39 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Développer et simplifier : normal</TITLE>
+<TITLE>Zéros complexe d’une expression : cZeros</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr264.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr266.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc337">6.13.16</A>  Développer et simplifier : <TT>normal</TT></H3><P><A NAME="@default449"></A>
-<TT>normal</TT> a comme paramètre une expression.<BR>
-<TT>normal</TT> renvoie l’expression développée et simplifiée.<BR>
-On tape : 
-</P><DIV CLASS="center"><TT>normal(x+3*x+5*4/x)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc338">6.14.14</A>  Zéros complexe d’une expression : <TT>cZeros</TT></H3><P><A NAME="@default447"></A>
+<TT>cZeros</TT> a comme paramètre une expression.<BR>
+<TT>cZeros</TT> renvoie la liste des éléments complexes qui annulent 
+l’expression.<BR>
+<B>Remarque</B><BR>
+Différence entre <TT>zeros</TT> et <TT>cZeros</TT> :
+En mode complexe <TT>zeros</TT> renvoie le même résultat que <TT>cZeros</TT> 
+(pour <TT>cZeros</TT> que l’on soit en mode complexe ou réel cela importe peu).
+Ainsi, si on ne veut pas que le résultat dépende du mode, pour avoir les 
+solutions complexes il est préférable d’utiliser <TT>cZeros</TT>.<BR>
+On tape en mode réel ou complexe: 
+</P><DIV CLASS="center"><TT>cZeros(x</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>(4*x</TT><CODE><TT>^</TT></CODE><TT>2+20)/x</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>[-2*i,2*i]</TT></DIV><P> 
 On tape : 
-</P><DIV CLASS="center"><TT>normal((x-1)*(x+1))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cZeros(ln(x)</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT></DIV><P> 
-<B>Attention</B> <TT>normal</TT> est moins efficace que <TT>simplify</TT> et on est 
-quelquefois obligé de faire plusieurs fois la commande <TT>normal</TT>.<BR>
+</P><DIV CLASS="center"><TT>[exp(sqrt(2)),exp(-(sqrt(2)))]</TT></DIV><P> 
 On tape : 
-</P><DIV CLASS="center"><TT>normal(3-54*sqrt(1/162))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cZeros(ln(y)</TT><CODE><TT>^</TT></CODE><TT>2-2,y)</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>(-9*sqrt(2)+9)/3</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[exp(sqrt(2)),exp(-(sqrt(2)))]</TT></DIV><P> 
 On tape : 
-</P><DIV CLASS="center"><TT>normal((-9*sqrt(2)+9)/3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cZeros(x*(exp(x))</TT><CODE><TT>^</TT></CODE><TT>2-2*x-2*(exp(x))</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>-(3*sqrt(2))+3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[log(sqrt(2)),log(-sqrt(2)),2]]</TT></DIV><HR>
 <A HREF="cascmd_fr264.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr266.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

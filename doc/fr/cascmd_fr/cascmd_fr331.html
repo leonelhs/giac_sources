@@ -6,22 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Simplifier en privilégiant les sinus : trigsin</TITLE>
+<TITLE>Transformer les expressions trigonomètriques et hyperboliques en tan(x/2) et en exp(x): halftan_hyp2exp</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr330.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr332.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc413">6.23.23</A>  Simplifier en privilégiant les sinus : <TT>trigsin</TT></H3><P><A NAME="@default625"></A>
-<TT>trigsin</TT> a comme argument une expression trigonométrique.<BR>
-<TT>trigsin</TT> simplifie cette expression à l’aide des formules :<BR>
-sin(<I>x</I>)<SUP>2</SUP>+cos(<I>x</I>)<SUP>2</SUP>=1,  tan(<I>x</I>)=sin(<I>x</I>)/cos(<I>x</I>) et en
-privilégiant les sinus.<BR>
+<H3 CLASS="subsection"><A NAME="htoc414">6.24.20</A>  Transformer les expressions trigonomètriques et hyperboliques en tan(x/2) et en exp(x): <TT>halftan_hyp2exp</TT></H3><P><A NAME="@default624"></A>
+<TT>halftan_hyp2exp</TT> a comme argument une expression 
+trigonométrique ou hyperbolique.<BR>
+<TT>halftan_hyp2exp</TT> transforme les sin(<I>x</I>), cos(<I>x</I>) et  tan(<I>x</I>) 
+contenus dans l’expression en fonction de tan(<I>x</I>/2) et 
+de exp(<I>x</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>trigsin(sin(x)</TT><CODE><TT>^</TT></CODE><TT>4+cos(x)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>halftan_hyp2exp(tan(x)+tanh(x))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sin(x)</TT><CODE><TT>^</TT></CODE><TT>4-sin(x)</TT><CODE><TT>^</TT></CODE><TT>2+2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>(2*tan(x/2))/((1-(tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2))+(((exp(x))</TT><CODE><TT>^</TT></CODE><TT>2-1))/ (((exp(x))</TT><CODE><TT>^</TT></CODE><TT>2+1))</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>halftan_hyp2exp(sin(x)</TT><CODE><TT>^</TT></CODE><TT>2+cos(x)</TT><CODE><TT>^</TT></CODE><TT>2-sinh(x)</TT><CODE><TT>^</TT></CODE><TT>2+cosh(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+On obtient, après simplification avec <TT>normal(ans())</TT> :
+</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr330.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr332.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

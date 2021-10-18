@@ -6,36 +6,214 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynôme de Laguerre : laguerre</TITLE>
+<TITLE>Résultant de deux polynômes : resultant</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr403.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr405.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc491">6.28.3</A>  Polynôme de Laguerre : <TT>laguerre</TT></H3><P><A NAME="@default749"></A>
-<TT>laguerre</TT> a comme argument un entier <I>n</I> et eventuellement le 
-nom de la variable (<I>x</I> par défaut) et du paramètre (<I>a</I> par défaut).<BR>
-<TT>laguerre</TT> renvoie le polynôme de Laguerre de degré <I>n</I> et de paramètre <I>a</I>.<BR>
-Le polynôme de Laguerre de degré <I>n</I> de paramètre <I>a</I> noté <I>L</I>(<I>n</I>,<I>a</I>,<I>x</I>) 
-vérifie les relations :<BR>
-<I>L</I>(0,<I>a</I>,<I>x</I>)=1<BR>
-<I>L</I>(1,<I>a</I>,<I>x</I>)=1+<I>a</I>−<I>x</I><BR>
-<I>L</I>(<I>n</I>,<I>a</I>,<I>x</I>)=2<I>n</I>+<I>a</I>−1−<I>x</I>/<I>n</I><I>L</I>(<I>n</I>−1,<I>a</I>,<I>x</I>)−<I>n</I>+<I>a</I>−1/<I>n</I><I>L</I>(<I>n</I>−2,<I>a</I>,<I>x</I>)<BR>
-Ces polynômes sont orthogonaux pour le produit scalaire :<BR>
-&lt;<I>f</I>,<I>g</I>&gt;=∫<SUB>0</SUB><SUP>+∞</SUP><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)<I>x</I><SUP><I>a</I></SUP><I>e</I><SUP>−<I>x</I></SUP><I>dx</I><BR>
+<H3 CLASS="subsection"><A NAME="htoc491">6.28.19</A>  Résultant de deux polynômes : <TT>resultant</TT></H3><P><A NAME="@default748"></A>
+<TT>resultant</TT> a comme arguments deux polynômes.<BR>
+<TT>resultant</TT> renvoie le résultant des deux polynômes.<BR>
+Le résultant est le déterminant de la matrice <I>S</I> de Sylvester.<BR>
+Pour les deux polynômes <I>A</I>(<I>x</I>)=∑<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>n</I></SUP> <I>a</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP> et 
+<I>B</I>(<I>x</I>)=∑<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>m</I></SUP><I>b</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP>, la matrice <I>S</I> de Sylvester est une matrice 
+carrée de dimensiom <I>m</I>+<I>n</I> dont les <I>m</I> premières lignes sont composées à
+partir des coefficients de <I>A</I>(<I>x</I>) :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB>00</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>01</SUB>=<I>a</I><SUB><I>n</I>−1</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>0<I>n</I>)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>10</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>11</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>1<I>n</I></SUB>=<I>a</I><SUB>1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>1(<I>n</I>+1)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>−1)0</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>−1)1</SUB>=0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>−1)<I>n</I></SUB>=<I>a</I><SUB><I>m</I>−1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>−1)(<I>n</I>+1)</SUB>=<I>a</I><SUB><I>m</I>−2</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>a</I><SUB>0</SUB> </TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
+et les <I>n</I> lignes suivantes sont composées de la même façon à partir des coefficients de <I>B</I>(<I>x</I>) :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>0</SUB>=<I>b</I><SUB><I>m</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>1</SUB>=<I>b</I><SUB><I>m</I>−1</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>mm</I></SUB>=<I>b</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>−1)0</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>−1)1</SUB>=0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>−1)<I>m</I></SUB>=<I>b</I><SUB><I>n</I>−1</SUB></TD><TD ALIGN=center NOWRAP><I>b</I><SUB><I>n</I>−2</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>b</I><SUB>0</SUB> </TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
 On tape :
-</P><DIV CLASS="center"><TT>laguerre(2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>resultant(x</TT><CODE><TT>^</TT></CODE><TT>3-p*x+q,3*x</TT><CODE><TT>^</TT></CODE><TT>2-p,x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(a</TT><CODE><TT>^</TT></CODE><TT>2+-2*a*x+3*a+x</TT><CODE><TT>^</TT></CODE><TT>2+-4*x+2)/2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>laguerre(2,y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(a</TT><CODE><TT>^</TT></CODE><TT>2+-2*a*y+3*a+y</TT><CODE><TT>^</TT></CODE><TT>2+-4*y+2)/2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>laguerre(2,y,b)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1/2*b</TT><CODE><TT>^</TT></CODE><TT>2+-b*y+3/2*b+1/2*y</TT><CODE><TT>^</TT></CODE><TT>2-2*y+1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>-4*p</TT><CODE><TT>^</TT></CODE><TT>3--27*q</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>On cherche si il existe 2 polynômes <I>U</I>(<I>x</I>)=<I>x</I>+β (de degré 1) et 
+<I>V</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>+<I>x</I>+є (de degré 2) pour
+que <I>U</I>(<I>x</I>)*(<I>x</I><SUP>3</SUP>−<I>p</I>*<I>x</I>+<I>q</I>)+<I>V</I>(<I>x</I>)*(3*<I>x</I><SUP>2</SUP>−<I>p</I>)=1<BR>
+On doit donc résoudre un système linéaire de 5 équations à 5 inconnues
+qui sont α,...δ,η (Attention ! є=1<I>e</I>−10).<BR>
+On tape :<BR>
+<TT>symb2poly((alpha*x+beta)*(x</TT><CODE><TT>^</TT></CODE><TT>3-p*x+q)+(gamma*x</TT><CODE><TT>^</TT></CODE><TT>2+delta*x+<BR>
+eta)*(3*x</TT><CODE><TT>^</TT></CODE><TT>2-p),x)</TT><BR>
+On obtient :<BR>
+<TT>poly1[alpha+3*gamma,beta+3*delta,-alpha*p-p*gamma+3*eta,<BR>
+alpha*q-beta*p-p*delta,beta*q-p*eta]</TT><BR>
+La matrice <I>A</I> de ce système est donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>A</I>=</TD><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>3</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>3</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>−<I>p</I></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−<I>p</I></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>3</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>q</I></TD><TD ALIGN=center NOWRAP>−<I>p</I></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−<I>p</I></TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP><I>q</I></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−<I>p</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
+la matrice <I>S</I> de Sylvester est la transposée de <I>A</I>:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>S</I>=</TD><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−<I>p</I></TD><TD ALIGN=center NOWRAP><I>q</I></TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−<I>p</I></TD><TD ALIGN=center NOWRAP><I>q</I></TD></TR>
+<TR><TD ALIGN=center NOWRAP>3</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−<I>p</I></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>3</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−<I>p</I></TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>3</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−<I>p</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
+On a <TT>det(A)=det(S)=-4*p</TT><CODE><TT>^</TT></CODE><TT>3+27*q</TT><CODE><TT>^</TT></CODE><TT>2</TT><BR>
+En fait on résout <I>UP</I>+<I>VQ</I>=<I>C</I> avec <I>C</I> quelconque tel que deg(<I>C</I>)&lt;deg(<I>P</I>)+deg(<I>Q</I>) i.e. on cherche <I>U</I> et <I>V</I> tel que deg(<I>U</I>)&lt;deg(<I>Q</I>) et deg(<I>V</I>)&lt;deg(<I>P</I>) 
+(inegalites strictes) vérifiant <I>UP</I>+<I>VQ</I>=1. Lorsque le système est de Cramer,
+il y a une solution unique et ca correspond en arithmétique à <I>P</I> et <I>Q</I> 
+premiers entre eux (et réciproquement). 
+Donc si det(<I>A</I>)=det(<I>S</I>) est non nul, <I>U</I> et <I>V</I> existent et sont uniques donc 
+les 2 polynômes <I>x</I><SUP>3</SUP>−<I>p</I>*<I>x</I>+<I>q</I> et 3*<I>x</I><SUP>2</SUP>−<I>p</I> sont premiers entre eux et 
+réciproquement si les 2 
+polynômes <I>x</I><SUP>3</SUP>−<I>p</I>*<I>x</I>+<I>q</I> et 3*<I>x</I><SUP>2</SUP>−<I>p</I> sont premiers entre eux <I>U</I> et <I>V</I> tel que deg(<I>U</I>)&lt;deg(<I>Q</I>) et deg(<I>V</I>)&lt;deg(<I>P</I>)
+existent et sont uniques donc det(<I>A</I>)=det(<I>S</I>) est non nul.<BR>
+Donc si ce déterminant est nul les 2 
+polynômes <I>x</I><SUP>3</SUP>−<I>p</I>*<I>x</I>+<I>q</I> et 3*<I>x</I><SUP>2</SUP>−<I>p</I> ne sont pas premiers entre eux.<BR>
+<B>Remarque</B><BR>
+On a : discriminant(P)=<TT>resultant(P,P’)/lcoeff(P)</TT>.</P><P><B>Un exemple d’utilisation du résultant</B><BR>
+Soient 2 points fixes <I>F</I>1 et <I>F</I>2 et un point variable <I>A</I> sur le cercle de 
+centre <I>F</I>1 et de rayon 2<I>a</I>.
+On veut trouver l’équation cartésienne du lieu des points <I>M</I> intersection 
+de <I>F</I>1<I>A</I> et de la médiatrice de <I>F</I>2<I>A</I> : on a <I>MF</I>1+<I>MF</I>2=<I>MF</I>1+<I>MA</I>=<I>F</I>1<I>A</I>=2<I>a</I> donc <I>M</I> 
+décrit une ellipse de foyers <I>F</I>1 et <I>F</I>2 et de grand axe 2<I>a</I>.<BR>
+Choisisons comme repère orthonormé celui de centre <I>F</I>1 et d’axe <I>Ox</I> 
+porté par le vecteur <I>F</I>1<I>F</I>2. On a :<BR>
+<I>A</I>= (2<I>a</I>cos(θ);2<I>a</I>sin(θ)) où θ est l’angle (<I>Ox</I>,<I>OA</I>).
+On choisit comme paramètre <I>t</I>=tan(θ/2) pour que les coordonnées de 
+<I>A</I> soient une fonction rationnelle du paramètre <I>t</I>. On a donc :<BR>
+ <I>A</I>=(<I>ax</I>;<I>ay</I>)=(2<I>a</I>1−<I>t</I><SUP>2</SUP>/1+<I>t</I><SUP>2</SUP>;2<I>a</I>2<I>t</I>/1+<I>t</I><SUP>2</SUP>)<BR>
+On pose <I>F</I>1<I>F</I>2=2<I>c</I> et on note <I>I</I> le milieu de <I>AF</I>2. On a :<BR>
+<I>F</I>2=(2<I>c</I>,0) et<BR>
+ <I>I</I>=(<I>c</I>+<I>ax</I>/2;<I>ay</I>/2)=(<I>c</I>+<I>a</I>1−<I>t</I><SUP>2</SUP>/1+<I>t</I><SUP>2</SUP>;<I>a</I>2<I>t</I>1−<I>t</I><SUP>2</SUP>/1+<I>t</I><SUP>2</SUP>)<BR>
+<I>IM</I> est perpendiculaire à <I>AF</I>2 donc <I>M</I>=(<I>x</I>;<I>y</I>) vérifie l’équation 
+<I>eq</I>1=0 avec :<BR>
+<I>eq</I>1:=(<I>x</I>−<I>ix</I>)*(<I>ax</I>−2*<I>c</I>)+(<I>y</I>−<I>iy</I>)*<I>ay</I><BR>
+<I>M</I>=(<I>x</I>;<I>y</I>) est sur <I>F</I>1<I>A</I> donc <I>M</I> vérifie l’équation <I>eq</I>2=0 avec :<BR>
+<I>eq</I>2:=<I>y</I>/<I>x</I>−<I>ay</I>/<I>ax</I><BR>
+On a :<BR>
+<TT>resultant(eq1,eq2,t)</TT> est un polynôme <I>eq</I>3 en <I>x</I> et <I>y</I>, <I>eq</I>3 est 
+indépendant de <I>t</I> et il existe des polynômes en <I>t</I>, <I>U</I> et <I>V</I> tels que :
+<I>U</I>(<I>t</I>)*<I>eq</I>1+<I>V</I>(<I>t</I>)*<I>eq</I>2=<I>eq</I>3.<BR>
+On tape :<BR>
+<TT>ax:=2*a*(1-t</TT><CODE><TT>^</TT></CODE><TT>2)/(1+t</TT><CODE><TT>^</TT></CODE><TT>2);ay:=2*a*2*t/(1+t</TT><CODE><TT>^</TT></CODE><TT>2);</TT><BR>
+<TT>ix:=(ax+2*c)/2; iy:=(ay/2)</TT><BR>
+<TT>eq1:=(x-ix)*(ax-2*c)+(y-iy)*ay</TT><BR>
+<TT>eq2:=y/x-ay/ax</TT><BR>
+<TT>factor(resultant(eq1,eq2,t))</TT><BR>
+On obtient comme résultant :<BR>
+<TT>-(64</TT><TT>·</TT><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2)</TT><TT>·</TT><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>a</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>c</TT><CODE><TT>^</TT></CODE><TT>2+-2</TT><TT>·</TT><TT>x</TT><TT>·</TT><TT>a</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>c+2</TT><TT>·</TT><TT>x</TT><TT>·</TT><TT>c</TT><CODE><TT>^</TT></CODE><TT>3-a</TT><CODE><TT>^</TT></CODE><TT>4+<BR>
+2</TT><TT>·</TT><TT>a</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>c</TT><CODE><TT>^</TT></CODE><TT>2+a</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT> y</TT><CODE><TT>^</TT></CODE><TT>2-c</TT><CODE><TT>^</TT></CODE><TT>4))</TT><BR>
+Le facteur <TT>-64</TT><TT>·</TT><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2)</TT> ne s’annule jamais donc 
+l’équation du lieu est :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>2</SUP><I>a</I><SUP>2</SUP>−<I>x</I><SUP>2</SUP><I>c</I><SUP>2</SUP>+−2<I>xa</I><SUP>2</SUP><I>c</I>+2<I>xc</I><SUP>3</SUP>−<I>a</I><SUP>4</SUP>+2<I>a</I><SUP>2</SUP><I>c</I><SUP>2</SUP>+<I>a</I><SUP>2</SUP><I>y</I><SUP>2</SUP>−<I>c</I><SUP>4</SUP>=0</TD></TR>
+</TABLE><P>
+En prenant l’origine du repère en <I>O</I> milieu de <I>F</I>1<I>F</I>2, on retrouve 
+l’équation cartésienne de l’ellipse. Pour faire ce changement d’origine, 
+on a <I>F</I>1<I>M</I>=<I>F</I>1<I>O</I>+<I>OM</I>, donc on 
+tape :<BR>
+<TT>normal(subst(x</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>a</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>c</TT><CODE><TT>^</TT></CODE><TT>2+-2</TT><TT>·</TT><TT> x</TT><TT>·</TT><TT>a</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>c+2</TT><TT>·</TT><TT>x</TT><TT>·</TT><TT>c</TT><CODE><TT>^</TT></CODE><TT>3-a</TT><CODE><TT>^</TT></CODE><TT>4+<BR>
+2</TT><TT>·</TT><TT>a</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>c</TT><CODE><TT>^</TT></CODE><TT>2+a</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>y</TT><CODE><TT>^</TT></CODE><TT>2-c</TT><CODE><TT>^</TT></CODE><TT>4,[x,y]=[c+X,Y]))</TT><BR>
+On obtient :<BR>
+<TT>-c</TT><CODE><TT>^</TT></CODE><TT>2*X</TT><CODE><TT>^</TT></CODE><TT>2+c</TT><CODE><TT>^</TT></CODE><TT>2*a</TT><CODE><TT>^</TT></CODE><TT>2+X</TT><CODE><TT>^</TT></CODE><TT>2*a</TT><CODE><TT>^</TT></CODE><TT>2-a</TT><CODE><TT>^</TT></CODE><TT>4+a</TT><CODE><TT>^</TT></CODE><TT>2*Y</TT><CODE><TT>^</TT></CODE><TT>2</TT><BR>
+ou encore si on pose <I>b</I><SUP>2</SUP>=<I>a</I><SUP>2</SUP>−<I>c</I><SUP>2</SUP><BR>
+<TT>normal(subst(-c</TT><CODE><TT>^</TT></CODE><TT>2*X</TT><CODE><TT>^</TT></CODE><TT>2+c</TT><CODE><TT>^</TT></CODE><TT>2*a</TT><CODE><TT>^</TT></CODE><TT>2+X</TT><CODE><TT>^</TT></CODE><TT>2*a</TT><CODE><TT>^</TT></CODE><TT>2-a</TT><CODE><TT>^</TT></CODE><TT>4+a</TT><CODE><TT>^</TT></CODE><TT>2*Y</TT><CODE><TT>^</TT></CODE><TT>2,<BR>
+c</TT><CODE><TT>^</TT></CODE><TT>2=a</TT><CODE><TT>^</TT></CODE><TT>2-b</TT><CODE><TT>^</TT></CODE><TT>2))</TT><BR>
+On obtient :<BR>
+<TT>-a</TT><CODE><TT>^</TT></CODE><TT>2*b</TT><CODE><TT>^</TT></CODE><TT>2+a</TT><CODE><TT>^</TT></CODE><TT>2*Y</TT><CODE><TT>^</TT></CODE><TT>2+b</TT><CODE><TT>^</TT></CODE><TT>2*X</TT><CODE><TT>^</TT></CODE><TT>2</TT><BR>
+c’est à dire après division par <I>a</I><SUP>2</SUP><I>b</I><SUP>2</SUP>, <I>M</I> vérifie l’équation :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>X</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>Y</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>b</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">=1</TD></TR>
+</TABLE><P><B>Un autre exemple d’utilisation du résultant</B><BR>
+Soient 2 points fixes <I>F</I>1 et <I>F</I>2 et un point variable <I>A</I> sur le cercle de 
+centre <I>F</I>1 et de rayon 2<I>a</I>.
+On veut trouver l’équation cartésienne de l’enveloppe de la médiatrice <I>D</I>
+de <I>F</I>2<I>A</I> (on sait que la médiatrice de <I>F</I>2<I>A</I> est tangente à l’ellipse de 
+foyers <I>F</I>1 et <I>F</I>2 et de grand axe 2<I>a</I>).<BR>
+Choisisons comme repère orthonormé celui de centre <I>F</I>1 et d’axe <I>Ox</I> 
+porté par le vecteur <I>F</I>1<I>F</I>2. On a :<BR>
+<I>A</I>= (2<I>a</I>cos(θ);2<I>a</I>sin(θ)) où θ est l’angle (<I>Ox</I>,<I>OA</I>).
+On choisit comme paramètre <I>t</I>=tan(θ/2) pour que les coordonnées de 
+<I>A</I> soient une fonction rationnelle du paramètre <I>t</I>. On a donc :<BR>
+ <I>A</I>=(<I>ax</I>;<I>ay</I>)=(2<I>a</I>1−<I>t</I><SUP>2</SUP>/1+<I>t</I><SUP>2</SUP>;2<I>a</I>2<I>t</I>/1+<I>t</I><SUP>2</SUP>)<BR>
+On pose <I>F</I>1<I>F</I>2=2<I>c</I> et on note <I>I</I> le milieu de <I>AF</I>2. On a :<BR>
+<I>F</I>2=(2<I>c</I>,0) et<BR>
+ <I>I</I>=(<I>c</I>+<I>ax</I>/2;<I>ay</I>/2)=(<I>c</I>+<I>a</I>1−<I>t</I><SUP>2</SUP>/1+<I>t</I><SUP>2</SUP>;<I>a</I>2<I>t</I>1−<I>t</I><SUP>2</SUP>/1+<I>t</I><SUP>2</SUP>)<BR>
+<I>D</I> est perpendiculaire à <I>AF</I>2 donc <I>D</I> a pour équation :
+<I>eq</I>1=0 avec :<BR>
+<I>eq</I>1:=(<I>x</I>−<I>ix</I>)*(<I>ax</I>−2*<I>c</I>)+(<I>y</I>−<I>iy</I>)*<I>ay</I><BR>
+L’enveloppe de <I>D</I> est donc le lieu de <I>M</I> intersection de <I>D</I> et de <I>D</I>′ 
+d’équation <I>eq</I>2=0 avec <I>eq</I>2:=<I>diff</I>(<I>eq</I>1,<I>t</I>).<BR>
+On tape :<BR>
+<TT>ax:=2*a*(1-t</TT><CODE><TT>^</TT></CODE><TT>2)/(1+t</TT><CODE><TT>^</TT></CODE><TT>2);ay:=2*a*2*t/(1+t</TT><CODE><TT>^</TT></CODE><TT>2);</TT><BR>
+<TT>ix:=(ax+2*c)/2; iy:=(ay/2)</TT><BR>
+<TT>eq1:=normal((x-ix)*(ax-2*c)+(y-iy)*ay)</TT><BR>
+<TT>eq2:=normal(diff(eq1,t))</TT><BR>
+<TT>factor(resultant(eq1,eq2,t))</TT><BR>
+On obtient comme résultant :<BR>
+<TT>(-(64</TT><TT>·</TT><TT> a</TT><CODE><TT>^</TT></CODE><TT>2))</TT><TT>·</TT><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2)</TT><TT>·</TT><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>a</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>c</TT><CODE><TT>^</TT></CODE><TT>2+-2</TT><TT>·</TT><TT>x</TT><TT>·</TT><TT>a</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>c+2</TT><TT>·</TT><TT>x</TT><TT>·</TT><TT>c</TT><CODE><TT>^</TT></CODE><TT>3-<BR>
+a</TT><CODE><TT>^</TT></CODE><TT>4+2</TT><TT>·</TT><TT>a</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>c</TT><CODE><TT>^</TT></CODE><TT>2+a</TT><CODE><TT>^</TT></CODE><TT>2</TT><TT>·</TT><TT>y</TT><CODE><TT>^</TT></CODE><TT>2-c</TT><CODE><TT>^</TT></CODE><TT>4)</TT><BR>
+Le facteur <TT>-64</TT><TT>·</TT><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2)</TT> ne s’annule jamais donc l’équation du 
+lieu est :<BR>
+<I>x</I><SUP>2</SUP><I>a</I><SUP>2</SUP>−<I>x</I><SUP>2</SUP><I>c</I><SUP>2</SUP>+−2<I>xa</I><SUP>2</SUP><I>c</I>+2<I>xc</I><SUP>3</SUP>−<I>a</I><SUP>4</SUP>+2<I>a</I><SUP>2</SUP><I>c</I><SUP>2</SUP>+<I>a</I><SUP>2</SUP><I>y</I><SUP>2</SUP>−<I>c</I><SUP>4</SUP>=0<BR>
+En prenant l’origine du repère en <I>O</I> milieu de <I>F</I>1<I>F</I>2, on retrouve comme
+précédemment l’équation cartésienne de l’ellipse :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>X</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>Y</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>b</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">=1</TD></TR>
+</TABLE><HR>
 <A HREF="cascmd_fr403.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr405.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

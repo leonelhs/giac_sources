@@ -6,34 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Définir une droite orientée en 3-d : line droite</TITLE>
+<TITLE>Tracer les vecteurs unitaires : vecteur_unitaire_Ox_3d Ox_3d_unit_vector, vecteur_unitaire_Oy_3d Oy_3d_unit_vector, vecteur_unitaire_Oz_3d Oz_3d_unit_vector</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr982.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr984.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1142">10.5.2</A>  Définir une droite orientée en 3-d : <TT>line droite</TT></H3><P><A NAME="@default1917"></A><A NAME="@default1918"></A><A NAME="sec:axe3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr873.html#sec:axe2">9.9.1</A> pour la géométrie plane.<BR>
-<TT>droite</TT>, en géométrie 3-d, a comme argument deux points ou 
-deux équations de plans : <TT>a*x+by+cz+d=0</TT> et <TT>a’*x+b’y+c’z+d’=0</TT>.<BR>
-<B>Attention</B> l’ordre des arguments que l’on donne à droite est important 
-et un ordre différent change l’orientation !<BR>
-Si la droite est définie par deux points, ces points orientent la droite 
-selon leur position dans les arguments. Par exemple <TT>droite(A,B)</TT> définit
-une droite orientée par le vecteur <I>AB</I>.<BR>
-Si la droite est définie par deux 
-équations, on écrit ces équations sous la forme
-"membre_de_gauche-membre_de_droite=0" pour avoir les équations sous la
-forme <TT>a*x+by+c=0</TT> et <TT>a’*x+b’y+c’z+d’=0</TT>. Alors, le vecteur orientant 
-la droite est le produit vectoriel des 2 vecteurs normaux aux 2 plans definis 
-par les deux équations c’est à dire le vecteur orientant est
-<TT>cross([a,b,c],[a’,b’,c’])</TT>.
-Par exemple <TT>droite(x=2*y,y=3*z)</TT> est orientée par 
-<TT>cross([1,-2,0],[0,1,-3])</TT>=<TT>[6,3,1]</TT> et<BR>
-<TT>droite(y=3*z,x=2*y)</TT> est orientée par 
-<TT>cross([0,1,-3],[1,-2,0])</TT>=<TT>[-6,-3,-1]</TT> .
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1151">11.3.1</A>  Tracer les vecteurs unitaires : <TT>vecteur_unitaire_Ox_3d Ox_3d_unit_vector</TT>, <TT>vecteur_unitaire_Oy_3d Oy_3d_unit_vector</TT>, <TT>vecteur_unitaire_Oz_3d Oz_3d_unit_vector</TT></H3><P><A NAME="@default1908"></A> <A NAME="@default1909"></A><A NAME="@default1910"></A> <A NAME="@default1911"></A><A NAME="@default1912"></A> <A NAME="@default1913"></A>
+<TT>vecteur_unitaire_Ox_3d(), Ox_3d_unit_vector()</TT> trace le vecteur unitaire de l’axe des <I>x</I> de écran de géométrie 3-d.<BR>
+<TT>vecteur_unitaire_Oy_3d(), Oy_3d_unit_vector()</TT> trace le vecteur unitaire de l’axe des <I>y</I> de écran de géométrie 3-d.<BR>
+<TT>vecteur_unitaire_Oz_3d(), Oz_3d_unit_vector()</TT> trace le vecteur unitaire de l’axe des <I>z</I> de écran de géométrie 3-d.<BR>
+Vous pouvez effacer les axes (resp les faire réapparaitre) en 
+cochant (resp décochant) <TT>Montrer les axes</TT> avec le bouton <TT>cfg</TT>
+de l’écran de géométrie.<BR>
+Ces commandes n’ont pas de paramètre. On peut toutefois rajouter une 
+légende avec la commande <TT>legende</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>vecteur_unitaire_Ox_3d(),legende(point([1,0,0]),"i",vert)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le vecteur unitaire de l’axe des </TT><TT><I>x</I></TT><TT> de écran de géométrie 3-d avec </TT><TT><I>i</I></TT><TT> écrit en vert</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>vecteur_unitaire_Oy_3d(),legende(point([0,1,0]),"j",vert)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le vecteur unitaire de l’axe des </TT><TT><I>y</I></TT><TT> de écran de géométrie 3-d avec </TT><TT><I>j</I></TT><TT> écrit en vert</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>vecteur_unitaire_Oz_3d(),legende(point([0,0,1]),"k",vert)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le vecteur unitaire de l’axe des </TT><TT><I>z</I></TT><TT> de écran de géométrie 3-d avec </TT><TT><I>k</I></TT><TT> écrit en vert</TT></DIV><HR>
 <A HREF="cascmd_fr982.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr984.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

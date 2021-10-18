@@ -6,37 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un triangle rectangle ou si on a un rectangle : is_rectangle est_rectangle</TITLE>
+<TITLE>L’homothétie : homothety homothetie</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr952.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr954.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1104">9.18.7</A>  Savoir si on a un triangle rectangle ou si on a un rectangle : <TT>is_rectangle est_rectangle</TT></H3><P><A NAME="@default1854"></A><A NAME="@default1855"></A><A NAME="sec:estrectangle2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1031.html#sec:estrectangle3">10.13.11</A> pour la géométrie 3-d.<BR>
-<TT>est_rectangle</TT> est une fonction booléenne ayant comme 
-argument trois ou quatre points ou un objet géométrique.<BR>
-<TT>est_rectangle</TT> vaut 1 (resp 2 ou 3) si les trois points forment un triangle rectangle, l’angle droit étant
-désigné par le premier (resp second, troisième) argument ou si l’objet géométrique est un triangle rectangle,<BR>
-<TT>est_rectangle</TT> vaut 1 (resp 2) si les quatre points forment un rectangle
-(resp un carré) ou si 
-l’objet géométrique est un rectangle (resp un carré), et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1114">10.17.5</A>  L’homothétie : <TT>homothety homothetie</TT></H3><P><A NAME="@default1850"></A><A NAME="@default1851"></A><A NAME="sec:homothetie2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1049.html#sec:homothetie3">11.14.5</A> pour la géométrie 3-d.<BR>
+<TT>homothetie</TT>, en géométrie plane, a deux ou trois arguments  :
+un point (le centre de l’homothétie), un réel (la valeur du rapport de 
+l’homothétie) et éventuellement l’objet géométrique à transformer.<BR>
+Lorsque <TT>homothetie</TT> a deux arguments, c’est une fonction qui agit sur 
+un objet géométrique.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_rectangle(1,1+i,i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>h:=homothetie(i,2)</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>h(1+i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point 2+i tracé avec une croix (x) noire</TT></DIV><P>
+Lorsque <TT>homothetie</TT> a trois arguments, <TT>homothetie</TT> dessine et 
+renvoie le transformé du troisième argument dans l’homothétie de centre
+le premier argument et de rapport le deuxième argument.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_rectangle(1+i,-2+i,-2-i,1-i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>homothetie(i,2,1+i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point 2+i tracé avec une croix (x) noire</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>R:=rectangle(-2-i,1-i,3,C,D);est_rectangle(R[0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>homothetie(i,2,cercle(1+i,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-En effet <TT>R[0]</TT> désigne un rectangle car <TT>R</TT> est une liste composée
-du rectangle et de ses sommets <TT>C</TT> et <TT>D</TT>.<BR>
-</P><HR>
+</P><DIV CLASS="center"><TT>Le cercle de centre 2+i et de rayon 2</TT></DIV><P>
+<B>Remarque</B><BR>
+Lorsque la valeur du rapport de l’homothétie est un nombre complexe <I>k</I> non 
+réel <TT>homothetie(A,k)</TT> est la similitude de centre le point <TT>A</TT>, de 
+rapport <TT>abs(k)</TT> et d’angle <TT>arg(k)</TT>. </P><HR>
 <A HREF="cascmd_fr952.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr954.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

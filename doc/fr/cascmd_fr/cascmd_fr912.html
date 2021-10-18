@@ -6,44 +6,95 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La parabole : parabola parabole</TITLE>
+<TITLE>Le cercle et ses arcs : circle cercle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr911.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr913.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1059">9.14.3</A>  La parabole : <TT>parabola parabole</TT></H3><P><A NAME="@default1765"></A><A NAME="@default1766"></A><A NAME="sec:parabole2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1011.html#sec:parabole3">10.11.3</A> pour la géométrie 3-d.<BR>
-<TT>parabole</TT>, en géométrie plane, a 1 ou 2 paramètres :
+<H3 CLASS="subsection"><A NAME="htoc1069">10.13.1</A>  Le cercle et ses arcs : <TT>circle cercle</TT></H3><P><A NAME="@default1762"></A><A NAME="@default1763"></A><A NAME="sec:cercle"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr913.html#sec:arc">10.13.2</A> pour les arcs de cercle.<BR>
+<B>Voir aussi :</B> <A HREF="index.html#sec:cercle3d">11.10</A> pour les cercles de la 
+géométrie 3-d.<BR>
+<TT>cercle</TT> a un ou deux arguments pour dessiner un cercle et de 
+quatre à six arguments pour dessiner un arc de cercle.<BR>
+Description des arguments :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un paramètre : son équation de variables <I>x</I> et <I>y</I>. 
-<TT>parabole(p(x,y))</TT> trace la conique d’équation <TT>p(x,y)=0</TT> si 
-<TT>p(x,y)</TT> est un polynôme de degré 2.
-</LI><LI CLASS="li-itemize">deux paramètres : deux 
-points (ou leurs affixes si la deuxième affixe n’est pas réelle), 
-représentant son foyer et son sommet ou encore un point (le sommet) ou 
-l’affixe de son sommet et un nombre réel <TT>c</TT>.<BR>
-<TT>parabole(F,S)</TT> renvoie et dessine la parabole de foyer <TT>F</TT> et de sommet <TT>S</TT>.<BR>
-<TT>parabole(S,c)</TT> renvoie et dessine la parabole de sommet <TT>S(xS+i*yS)</TT> 
-et d’équation <I>y</I>=<I>yS</I>+<I>c</I>*(<I>x</I>−<I>xS</I>)<SUP>2</SUP>. Il faut savoir que si <I>p</I> est le paramètre de la parabole, on a <I>FS</I>=<I>p</I>/2 et <I>c</I>=1/(2*<I>p</I>).<BR>
-</LI></UL><P>
+Avec un argument : l’argument de <TT>cercle</TT> est alors l’équation du 
+cercle ayant comme variables <I>x</I> et <I>y</I>, 
+</LI><LI CLASS="li-itemize">Avec deux arguments <TT>cercle</TT> désigne un cercle :<BR>
+ Le premier argument est un point ou un nombre complexe considéré comme 
+l’affixe d’un point.<BR>
+C’est le deuxième argument qui détermine si on trace le cercle avec la 
+donnée de son centre et de son rayon (le deuxième argument est alors
+un nombre complexe de module le rayon) ou avec la donnée de son
+diamètre (le deuxième argument est un point).<BR>
+- <TT>cercle(C,r)</TT> où <TT>C</TT> est un point (ou un nombre complexe) et 
+<TT>r</TT> un nombre complexe, trace le cercle de centre <TT>C</TT> et de rayon le 
+module de <TT>r</TT>. Cela est utile, par exemple, pour avoir le cercle de 
+centre <TT>A</TT> qui passe par <TT>B</TT> on tape <TT>cercle(A,B-A)</TT>.<BR>
+- <TT>cercle(A,B)</TT> où <TT>A</TT> est un point ou un nombre complexe et 
+<TT>B</TT> un point, trace le cercle de diamètre <TT>AB</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>parabole(0,i)</TT></DIV><P>
+<DIV CLASS="center"><TT>cercle(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2-2*x-2*y)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>La parabole de foyer 0 et de sommet i</TT></DIV><P>
+<DIV CLASS="center"><TT>Le cercle de centre 1+i et de rayon sqrt(2) est tracé</TT></DIV>
 On tape :
-</P><DIV CLASS="center"><TT>parabole(0,1)</TT></DIV><P>
+<DIV CLASS="center"><TT>cercle(-1,i)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>La parabole de sommet 0 et déquation </TT><TT><I>y</I>=<I>x</I></TT><SUP><TT>2</TT></SUP></DIV><P>
+<DIV CLASS="center"><TT>Le cercle de centre -1 et de rayon 1 est tracé</TT></DIV>
 On tape :
-</P><DIV CLASS="center"><TT>parabole(x</TT><CODE><TT>^</TT></CODE><TT>2-y-1)</TT></DIV><P>
-ou on tape :
-</P><DIV CLASS="center"><TT>parabole(-i,1)</TT></DIV><P>
-ou on tape :
-</P><DIV CLASS="center"><TT>parabole(i,-i)</TT></DIV><P>
+<DIV CLASS="center"><TT>cercle(-1, point(i))</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>La parabole de sommet -i et de foyers i</TT></DIV><HR>
+<DIV CLASS="center"><TT>Le cercle de diamétre -1,i</TT></DIV>
+<B>Attention</B>
+Il faut bien voir la différence entre :<BR>
+<TT>cercle(A,B-A)</TT>, <TT>cercle(A,B)</TT> et <TT>cercle(A,affixe(B)-A)</TT>.<BR>
+<TT>A:=point(1);B:=point(i/2);</TT>
+<TT>cercle(A,B-A)</TT> ou <TT>cercle(A,affixe(B-A))</TT> ou <TT>cercle(A,abs(B-A))</TT> 
+dessine le cercle de centre <TT>A</TT> passant par <TT>B</TT>,<BR>
+<TT>cercle(A,B))</TT> dessine le cercle de diamètre <TT>A,B</TT>,<BR>
+<TT>cercle(A,affixe(B)-A)</TT> dessine le cercle de diamètre <TT>A,C</TT> où
+<TT>C</TT> est le point d’affixe <TT>(-2+i)/2</TT>. En effet <TT>affixe(B)-A)</TT> 
+désigne un point <TT>C</TT> tel que :<BR>
+<TT>affixe(C)=affixe(B)-affixe(A)=i/2-1=(-2+i)/2</TT>.
+</LI><LI CLASS="li-itemize">Avec de quatre à six arguments, <TT>cercle</TT> désigne un arc de 
+cercle. Dans ce cas les deux premiers arguments déterminent le cercle qui 
+porte l’arc (voir ci-dessus) et les deux arguments suivants sont les angles 
+au centre des points qui délimitent l’arc et les deux derniers arguments 
+sont des noms de variables qui contiendront les points qui délimitent 
+l’arc. Le troisième et le quatrième argument sont les mesures des 
+angles au centre des points qui délimitent l’arc, ces angles sont mesurés
+en radians (ou en degrés) à partir de l’axe défini par les deux 
+premiers arguments si le deuxième argument est un point (définition du 
+cercle par son diamètre) ou de l’axe défini par son centre <I>C</I> et le 
+point <I>A</I>=<I>C</I>+<I>r</I> si le deuxième argument est un complexe égal à <I>r</I> 
+(définition du cercle par son centre et un complexe dont le module est 
+égal au rayon).<BR>
+Le cinquième et le sixième argument ne sont pas obligatoires et 
+servent à définir les extrémités de l’arc.<BR>
+On tape :
+<DIV CLASS="center"><TT>cercle(-1,1,0,pi/4,A,B)</TT></DIV>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+<DIV CLASS="center"><TT>L’arc AB (A=point(0) et B=point(</TT><TT>-1+√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>+<I>i</I>*√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>/2</TT><TT>)) du cercle de centre -1 et de rayon 1 est tracé</TT></DIV>
+En effet l’angle est compté à partir de l’axe (-1,0) et donc l’angle 0 
+est le point(0).<BR>
+On tape :
+<DIV CLASS="center"><TT>cercle(-1,i,0,pi/4,A,B)</TT></DIV>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+<DIV CLASS="center"><TT>L’arc AB (A=point(-1+i) et B=point(</TT><TT>-1-√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>+<I>i</I>*√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>/2</TT><TT>)) du cercle de centre -1 et de rayon 1 est tracé</TT></DIV>
+En effet, l’angle est compté à partir de l’axe (-1,i-1) et donc l’angle 0 
+est le point d’affixe i-1.<BR>
+On tape :
+<DIV CLASS="center"><TT>cercle(-1, point(i),0,pi/4,A,B)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>L’arc AB (A=point(i) et B=point(</TT><TT>-1+<I>i</I>*(1+√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2</TT><TT>)) du cercle de diamétre -1,i</TT></DIV>
+En effet, l’angle est compté à partir de l’axe (-1,i) et donc l’angle 0 est
+le point d’affixe i.
+</LI></UL><HR>
 <A HREF="cascmd_fr911.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr913.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

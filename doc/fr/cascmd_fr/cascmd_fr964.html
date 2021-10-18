@@ -6,28 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Point divisant un segment dans le rapport k : division_point point_div</TITLE>
+<TITLE>Savoir si on a un carré : is_square est_carre</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr963.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr965.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1116">9.19.1</A>  Point divisant un segment dans le rapport <I>k</I> : <TT>division_point point_div</TT></H3><P><A NAME="@default1876"></A><A NAME="@default1877"></A>
-<TT>point_div</TT> a trois arguments : deux points (ou deux nombres complexes
-<I>a</I> et <I>b</I>) et un nombre complexe <I>k</I>.<BR>
-<TT>point_div</TT> renvoie et dessine le point d’affixe <I>z</I> tel que :<BR>
-<I>z</I>−<I>a</I>/<I>z</I>−<I>b</I>=<I>k</I>
+<H3 CLASS="subsection"><A NAME="htoc1126">10.18.8</A>  Savoir si on a un carré : <TT>is_square est_carre</TT></H3><P><A NAME="@default1870"></A><A NAME="@default1871"></A><A NAME="sec:estcarre2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1042.html#sec:estcarre3">11.13.12</A> pour la géométrie 3-d.<BR>
+<TT>est_carre</TT> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<BR>
+<TT>est_carre</TT> vaut 1 si les quatre points forment un carré ou si l’objet 
+géométrique est un carré, et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>point_div(i,2+i,3+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_carre(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>pnt((5+4*i)/(2+i),0) et le dessin de ce point</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>point_div(point(i),point(2+i),3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>K:=carre(1+i,-1+i);est_carre(K)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>pnt(3+i,0) et le dessine de ce point</TT></DIV><P>
-<B>Remarque</B> : 0 représente la couleur du point.
-</P><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>K:=carre(1+i,-1+i,C,D);est_carre(K[0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+En effet <TT>K[0]</TT> désigne un carré car <TT>K</TT> est une liste composée
+d’un carré et de ses sommets <TT>C</TT> et <TT>D</TT>.<BR>
+Si on tape <TT>affixe(C,D)</TT>, on obtient <TT>-1-i,1-i</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>est_carre(i,-1+i,-1-i,1-i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr963.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr965.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

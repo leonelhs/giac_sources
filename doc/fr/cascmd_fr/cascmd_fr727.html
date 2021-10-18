@@ -6,34 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi binomiale : binomial_cdf</TITLE>
+<TITLE>Pour initialiser les nombres aléatoires : srand randseed RandSeed</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr726.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr728.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc850">7.4.2</A>  Fonction de répartition de la loi binomiale : <TT>binomial_cdf</TT></H3><P><A NAME="@default1312"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale 
-<FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>), on a :<BR>
-<TT>binomial_cdf(n,p,x)</TT>=<I>Proba</I>(<I>X</I> ≤ <I>x</I>)=<BR>
-<TT>binomial(n,0,p)+...+binomial(n,floor(x),p)</TT>.<BR>
-<TT>binomial_cdf(n,p,x,y)</TT>=<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)=<BR>
-<TT>binomial(n,ceil(x),p)+...+binomial(n,floor(y),p)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc860">8.3.1</A>  Pour initialiser les nombres aléatoires : <TT>srand randseed RandSeed</TT></H3><P><A NAME="@default1304"></A><A NAME="@default1305"></A><A NAME="@default1306"></A>
+<TT>srand</TT> (ou <TT>randseed</TT> ou <TT>RandSeed</TT>) sert à 
+initialiser la suite des nommbres aléatoires que l’on obtient avec 
+<TT>rand()</TT> ou avec <TT>randnorm()</TT>.<BR>
+<TT>RandSeed</TT> a toujours un argument entier, alors que <TT>randseed</TT> ou 
+<TT>srand</TT> peut ne pas avoir d’arguments (dans ce cas le générateur 
+aléatoire est intialisé avec l’horloge du système).<BR>
+Ainsi, <TT>srand(n)</TT> (ou <TT>randseed(n)</TT> ou <TT>RandSeed(n)</TT>) avec <TT>n</TT> 
+entier sert à initialiser la suite des nommbres aléatoires pour que l’on 
+puisse obtenir la même suite aléatoire avec <TT>rand()</TT> ou avec 
+<TT>randnorm()</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(4,0.5,2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.6875</TT></DIV><P>
-On peut vérifier que :
-</P><DIV CLASS="center"><TT>binomial(4,0,0.5)+binomial(4,1,0.5)+binomial(4,2,0.5)</TT></DIV><DIV CLASS="center"><TT>=0.6875</TT></DIV><P>
+</P><DIV CLASS="center"><TT>srand</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>1054990506</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(2,0.3,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>srand(121054990506)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.91</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(2,0.3,1,2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.51</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>121054990506</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>RandSeed(10549905061234)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>10549905061234</TT></DIV><HR>
 <A HREF="cascmd_fr726.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr728.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

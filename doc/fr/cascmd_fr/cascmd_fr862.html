@@ -6,23 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le point en polaire en géométrie plane : polar_point point_polaire</TITLE>
+<TITLE>Avoir du papier triangulé : papier_triangule 
+triangle_paper</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr861.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr863.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1003">9.8.4</A>  Le point en polaire en géométrie plane : <TT>polar_point point_polaire</TT></H3><P><A NAME="@default1674"></A><A NAME="@default1675"></A>
-<TT>polar_point(r,t)</TT> ou <TT>point_polaire(r,t)</TT> renvoie le point (en 2D) 
-de coordonnées polaires les arguments <TT>r</TT> et <TT>t</TT> c’est à dire le 
-point d’affixe <TT>r*exp(i*t)</TT>.
-On tape :
-</P><DIV CLASS="center"><TT>polar_point(2,pi/4)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>point_polaire(2,pi/4)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1008">10.2.9</A>  Avoir du papier triangulé : <TT>papier_triangule<BR>
+triangle_paper</TT></H3><P><A NAME="@default1549"></A><A NAME="@default1550"></A>
+<TT>papier_triangule</TT> permet d’avoir du papier triangulé c’est 
+à dire de tracer un reseau triangulaire d’angle <I>t</I>.<BR>
+<TT>papier_pointe</TT> a 3,4 ou 5 arguments : l’unité <TT>ux</TT> sur l’axe des 
+<I>x</I>, l’angle <TT>t</TT> et l’unité <TT>uy</TT> sur l’axe des <I>y</I> et éventuellement
+<TT>x=xmin..xmax,y=ymin..ymax</TT> pour avoir ces lignes dans le rectangle
+<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
+les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
+Vous avez la possibilité d’enlever les axes orthonormés en utilisant
+le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
+On tape pour avoir un réseau triangulaire :
+</P><DIV CLASS="center"><TT>papier_triangule(1,pi/2,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le tracé du point d’affixe 2*exp(i*pi/4)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le reseau formé par des moitiés de carrés et dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><P>
+On tape pour avoir un reseau triangulaire :
+</P><DIV CLASS="center"><TT>papier_triangule(1,pi/3,sqrt(3)/2,x=-2..3,y=-1..2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le reseau formé par des triangles équilatéraux dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><HR>
 <A HREF="cascmd_fr861.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr863.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

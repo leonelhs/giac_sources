@@ -6,22 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Échanger deux colonnes : colSwap swapcol colswap</TITLE>
+<TITLE>Multiplier une ligne par une expression : mRow et scale SCALE</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr571.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr573.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc676">6.45.26</A>  Échanger deux colonnes : <TT>colSwap swapcol colswap</TT></H3><P><A NAME="@default1043"></A><A NAME="@default1044"></A><A NAME="@default1045"></A>
-<TT>rowSwap</TT> a trois arguments : une matrice <I>A</I> et deux entiers <I>n</I>1
-et <I>n</I>2.<BR>
-<TT>rowSwap</TT> renvoie la matrice obtenue en échangeant dans <I>A</I> les lignes 
-<I>n</I>1 et <I>n</I>2.<BR>
+<H3 CLASS="subsection"><A NAME="htoc677">6.46.23</A>  Multiplier une ligne par une expression : <TT>mRow</TT> et <TT>scale SCALE</TT></H3><P><A NAME="@default1038"></A><A NAME="@default1039"></A><A NAME="@default1040"></A>
+<TT>mRow</TT> a trois arguments : une expression, une matrice <I>A</I> et un 
+entier <I>n</I>.<BR>
+<TT>scale</TT> (ou <TT>SCALE</TT>) a trois arguments : une matrice <I>A</I>, une expression
+et un entier <I>n</I>.<BR>
+<B>Attention à l’ordre des arguments !</B><BR>
+<TT>mRow</TT> et <TT>scale</TT> (ou <TT>SCALE</TT>)
+renvoie la matrice obtenue en remplacant dans <I>A</I> la ligne <I>n</I>
+par la multiplication de la ligne <I>n</I> par l’expression.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>colSwap([[1,2],[3,4]],0,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>mRow(12,[[1,2],[3,4]],1)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>scale([[1,2],[3,4]],12,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[2,1],[4,3]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1,2],[36,48]]</TT></DIV><HR>
 <A HREF="cascmd_fr571.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr573.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

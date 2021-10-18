@@ -6,21 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Regroupement de termes : accumulate_head_tail</TITLE>
+<TITLE>L’écart-type : stddev ecart_type</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr689.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr691.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc810">7.1.11</A>  Regroupement de termes : <TT>accumulate_head_tail</TT></H3><P><A NAME="@default1242"></A>
-<TT>accumulate_head_tail</TT> permet de regrouper les premiers termes et les derniers termes d’une liste en les remplacant par leur somme.<BR>
-Les paramètres sont la liste, le nombre de termes que l’on regroupe au 
-début de la liste et le nombre de termes l’on regroupe en fin de la liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc821">8.1.2</A>  L’écart-type : <TT>stddev ecart_type</TT></H3><P><A NAME="@default1243"></A><A NAME="@default1244"></A>
+<TT>stddev</TT> calcule l’écart-type numérique des éléments 
+d’une liste (ou de chaque colonne d’une matrice).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>accumulate_head_tail([0,1,1,0,2,2,3,3,4,3,1,1],4,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>stddev(A)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,2,2,3,3,4,3,2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>sqrt(143/12)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>stddev([[1,2],[3,4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,1]</TT></DIV><P>
+<TT>stddev</TT> calcule l’écart-type numérique des éléments d’une 
+liste pondérée par une autre liste donnée comme deuxième argument.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>stddev(A,A)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(65/9)</TT></DIV><HR>
 <A HREF="cascmd_fr689.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr691.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

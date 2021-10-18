@@ -6,41 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Décomposition de Cholesky : cholesky</TITLE>
+<TITLE>Forme normale de Smith : ismith</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr627.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr629.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc738">6.51.1</A>  Décomposition de Cholesky : <TT>cholesky</TT></H3><P><A NAME="@default1147"></A>
-<TT>cholesky</TT> a pour argument une matrice carrée symétrique 
-<TT>M</TT> definie positive.<BR>
-<TT>cholesky</TT> renvoie une matrice symbolique (ou numérique) <TT>P</TT>
-triangulaire inférieure telle que :<BR>
-<TT>tran(P)*P=M</TT><BR>
+<H3 CLASS="subsection"><A NAME="htoc737">6.50.14</A>  Forme normale de Smith : <TT>ismith</TT></H3><P><A NAME="@default1148"></A>
+<TT>ismith</TT> a comme argument une matrice à coefficient dans 
+ℤ.<BR>
+<TT>ismith</TT> renvoie les matrices <TT>U,B</TT> et <TT>V</TT> tels que <TT>U</TT> et 
+<TT>V</TT> sont inversibles dans ℤ, <TT>B</TT> est diagonale avec
+<TT>B[i,i]</TT> divise <TT>B[i+1,i+1]</TT> et on a <TT>B=U*A*V</TT>.<BR>
+Les <TT>B[i,i]</TT> s’appellent facteurs invariants et permettent entre
+autre de trouver la structure des groupes abéliens de type fini.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cholesky([[1,1],[1,5]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=[[9,-36,30],[-36,192,-180],[30,-180,180]]; U,B,V:=ismith(A)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,0],[1,2]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>cholesky([[3,1],[1,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[sqrt(3),0],[(sqrt(3))/3,(sqrt(33))/3]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>cholesky([[1,1],[1,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,0],[1,sqrt(3)]]</TT></DIV><P>
-<B>Attention</B> Si la matrice argument <I>A</I> n’est pas une matrice symétrique,
-<TT>cholesky</TT> ne renvoie pas d’erreur, mais <TT>cholesky</TT> 
-utilise la matrice symétrique <I>B</I> associée à la forme quadratique <I>q</I> provenant
-de la forme bilinéaire associée à <I>A</I>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>cholesky([[1,-1],[-1,4]])</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>cholesky([[1,-3],[1,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,0],[-1,sqrt(3)]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[-3,0,1],[6,4,3],[20,15,12]],
+[[3,0,0],[0,12,0],[0,0,60]], 
+[[1,24,-30],[0,1,0],[0,0,1]]</TT>
+</DIV><P>
+Les facteurs invariants sont 3, 12 et 60.</P><HR>
 <A HREF="cascmd_fr627.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr629.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,47 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le triangle équilatèral dans l’espace : equilateral_triangle triangle_equilateral</TITLE>
+<TITLE>Droite orthogonale à un plan et plan orthogonal à une droite : orthogonal</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr998.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1000.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1160">10.7.4</A>  Le triangle équilatèral dans l’espace : <TT>equilateral_triangle triangle_equilateral</TT></H3><P><A NAME="@default1942"></A><A NAME="@default1943"></A><A NAME="sec:trianglequi3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr890.html#sec:trianglequi2">9.10.5</A> pour la géométrie plane.<BR>
-<TT>triangle_equilateral</TT>, en géométrie 3-d, a trois ou quatre 
-arguments.<BR>
-Description des arguments :<BR>
-- si il a trois arguments, ce sont 3 points : les 2 premiers sommets <I>A</I> et
-<I>B</I> du triangle et le troisième point définit le plan du triangle.<BR>
-<TT>triangle_equilateral(A,B,P)</TT> renvoie et trace dans le demi-plan <I>ABP</I> le 
-triangle équilatéral <I>ABC</I>
-mais sans définir le point <I>C</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1169">11.5.8</A>  Droite orthogonale à un plan et plan orthogonal à une droite : <TT>orthogonal</TT></H3><P><A NAME="@default1941"></A><A NAME="sec:orthogonal3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr998.html#sec:perpendi3">11.5.7</A> et, pour la géométrie plane 
+<A HREF="cascmd_fr889.html#sec:perpendi2">10.9.7</A>.<BR>
+<TT>orthogonal</TT>, en géométrie 3-d, renvoie et dessine une droite 
+(resp un plan) si le 2-ième argument est un plan (resp une droite). Plus 
+précisemment, si ses arguments sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+une droite <I>dd</I> et une droite <I>d</I>, <TT>orthogonal(dd,d)</TT> renvoie et 
+dessine un plan orthogonal à la droite <I>d</I> et passant par <I>dd</I>,
+</LI><LI CLASS="li-itemize">un point <I>A</I> et un plan <I>P</I>, <TT>orthogonal(A,P)</TT> renvoie et dessine
+une droite orthogonale au plan <I>P</I> et passant par <I>A</I>.<BR>
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><DIV CLASS="center"><TT>Q:=point(0,0,-3)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>triangle_equilateral(A,B,P)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>orthogonal(point(0,0,0),droite(point(1,0,0),point(0,1,0)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABP,le triangle équilatèral de sommets A et B</TT></DIV><P>
-- si il a quatre arguments, le dernier argument est le nom d’une 
-variable qui servira à définir le troisième sommet
+</P><DIV CLASS="center"><TT>Le plan d’équation y=x</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>triangle_equilateral(A,B,P,C)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>orthogonal(point(0,0,0),plan(point(1,0,0),point(0,1,0),point(0,0,1)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABP, le triangle équilatèral de sommets A et B</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[(-3*sqrt(6)+6)/4,(-3*sqrt(6)+6)/4,(3*sqrt(6)+3)/2]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>triangle_equilateral(A,B,Q,D)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABQ, le triangle équilatèral de sommets A et B</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[(3*sqrt(6)+6)/4,(3*sqrt(6)+6)/4,(-3*sqrt(6)+3)/2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>La droite d’équation x=y=z</TT></DIV><HR>
 <A HREF="cascmd_fr998.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1000.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

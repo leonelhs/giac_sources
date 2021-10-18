@@ -6,39 +6,48 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Complément à 1 de la fonction de répartition de la loi normale : UTPN</TITLE>
+<TITLE>Probabilité que X égale k lorsque X ∈ NegBin(n,p) : negbinomial</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr738.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr740.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc862">7.4.14</A>  Complément à 1 de la fonction de répartition de la loi normale : <TT>UTPN</TT></H3><P><A NAME="@default1327"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi normale centrée réduite,
-on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPN(x)</TT>.<BR>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi normale de moyenne µ et 
-de variance <I>v</I>, on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPN(</TT><TT>µ</TT><TT>,v,x)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc873">8.4.4</A>  Probabilité que <I>X</I> égale <I>k</I> lorsque <I>X</I> ∈ <FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>) : <TT>negbinomial</TT></H3><P><A NAME="@default1328"></A>
+La loi binomiale négative est une distribution de probabilité 
+discrète. Elle dépend de 2 paramètres : un entier <I>n</I> (le nombre de 
+succès attendus) et un réel <I>p</I> de ]0,1[ (la probabilité d’un succés).<BR>
+On la note <FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>).<BR>
+Elle permet de décrire la situation suivante : on fait une suite de tirages 
+indépendants (avec pour chaque tirage, la probabilité <I>p</I> d’avoir un 
+succès) jusqu’à obtenir <I>n</I> succès.
+La variable aléatoire représentant le nombre d’échecs qu’il a fallut avant 
+d’avoir <I>n</I> succès, suit alors une loi binomiale négative.<BR>
+ Cette loi est aussi connue sous le nom de loi de Pascal en l’honneur de 
+Blaise Pascal et de loi de Polya, en l’honneur de George Pólya.<BR>
+<TT>negbinomial(n,p,k)=comb</TT>(<I>n</I>+<I>k</I>−1,<I>k</I>)*<I>p</I><SUP><I>n</I></SUP>*(1−<I>p</I>)<SUP><I>k</I></SUP> pour <I>k</I>=0,1,2..
+La loi se généralise pour deux paramètres <I>r</I> et <I>p</I>, où <I>r</I> peut 
+prendre des valeurs réelles strictement positives. On a alors :<BR>
+<TT>negbinomial(r,p)=</TT> Γ(<I>r</I>+<I>k</I>)/<I>k</I>! Γ(<I>r</I>) <I>p</I><SUP><I>r</I></SUP> <I>q</I><SUP><I>k</I></SUP><BR>
+<B>Remarque</B><BR>
+Si on définit <TT>comb(n,k)</TT> pour <I>n</I>&lt;0 par <TT>comb(n,k)=n*(n-1)*..*(n-k-1)/k!</TT>, alors
+Si <I>X</I> ∈ <FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>) (<I>n</I> ∈ ℕ et <I>p</I> ∈ [0;1]) alors
+<TT><I>Proba</I>(<I>X</I>=<I>k</I>)=<I>p</I></TT><SUP><TT><I>n</I></TT></SUP><TT>*(<I>p</I>-1)</TT><SUP><TT><I>k</I></TT></SUP><TT>*<I>comb</I>(-<I>n</I>,<I>k</I>)</TT>
+ce qui justifie le nom de loi binomiale négative et qui facilite le calcul de
+l’espérance (égale à <I>n</I>(1−<I>p</I>)/<I>p</I>) et de la variance (égale à 
+<I>n</I>(1−<I>p</I>)/<I>p</I><SUP>2</SUP>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>UTPN(1.96)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>negbinomial(10,12,0.4)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0249978951482</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.0670901607617</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>UTPN(1,4,1.96)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>negbinomial(4,2,0.5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.315613696516</TT></DIV><P>
-<B>Attention</B><BR>
-Les paramètres de <TT>UTPN</TT> sont la moyenne de <I>X</I>, la variance de <I>X</I>,
-et la valeur <I>x</I>, alors que,
-pour <TT>normal_cdf</TT> les paramètres sont la moyenne de <I>X</I>, l’écart-type 
-de <I>X</I> et la valeur <I>x</I>.<BR>
+</P><DIV CLASS="center"><TT>0.15625</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>UTPN(1.96)+normal_cdf(1.96)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>UTPN(1,4,1.96)+normal_cdf(1,2,1.96)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>negbinomial(1,2,0.4)</TT></DIV><P>
+On obtient 0.6<SUP>2</SUP>*0.4 soit:
+</P><DIV CLASS="center"><TT>0.144</TT></DIV><HR>
 <A HREF="cascmd_fr738.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr740.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

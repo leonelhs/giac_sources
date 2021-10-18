@@ -6,39 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La trace d’un objet géométrique: trace</TITLE>
+<TITLE>Ces droites sont en faisceau ? is_harmonic_line_bundle est_faisceau_droite</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr971.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr973.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1125">9.20.3</A>  La trace d’un objet géométrique: <TT>trace</TT></H3><P><A NAME="@default1893"></A><A NAME="sec:tracegeo"></A> 
-<TT>trace</TT> a comme arguments un objet géométrique qui dépend ou non d’un
-paramètre (voir aussi <TT>trace</TT> d’une matrice <A HREF="cascmd_fr589.html#sec:tracemat">6.46.3</A>).<BR>
-<TT>trace</TT> dessine la trace de cet objet géométrique lorsqu’on fait varier
-le paramètre ou lorsqu’on fait bouger cet objet géométrique en mode 
-<TT>Pointeur</TT>.<BR>
-<B>Exemple</B>
-Trouver le lieu géométrique des points du plan équidistants d’une droite
-<I>D</I> et d’un point <I>F</I>. Pour cela on construit un point <I>H</I> sur la droite <I>D</I> et
-la droite <I>T</I> perpendiculaire à <I>D</I> en <I>H</I>. <I>M</I> de <I>T</I> équidistant de <I>F</I> 
-et de <I>H</I>.<BR>
-On ouvre un niveau de géométrie (<TT>Alt+g</TT>), puis on tape les instructions suivantes en mettant une instruction par ligne.<BR>
-On tape :<BR>
-<TT>A:=point(-3-i);</TT><BR>
-<TT>B:=point(1/2+2*(i));</TT><BR>
-<TT>D:=droite(A,B,’couleur’=0);</TT><BR>
-<TT>F:=point(4/3,1/2,’couleur’=0);</TT><BR>
-<TT>assume(a=[0.7,-5,5,0.1]);</TT><BR>
-<TT>H:=element(D,a)</TT><BR>
-<TT>T:=perpendiculaire(H,D)</TT><BR>
-<TT>M:=inter_unique(mediatrice(H,F),T);</TT><BR>
-<TT>trace(M);</TT><BR>
-puis on fait bouger le curseur <TT>a</TT> et on obtient la trace de <TT>M</TT>.</P><P><B>Remarque</B>
-Pour effacer les traces ou pour rajouter des traces ou pour les activer ou les
-desactiver il faut utiliser le menu <TT>Trace</TT> du bouton <TT>M</TT> situé 
-à droite de l’écran de géométrie. </P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1134">10.18.16</A>  Ces droites sont en faisceau ? <TT>is_harmonic_line_bundle est_faisceau_droite</TT></H3><P><A NAME="@default1886"></A><A NAME="@default1887"></A>
+<TT>est_faisceau_droite</TT> a comme argument une liste de droites.<BR>
+ <TT>est_faisceau_droite</TT> renvoie :<BR>
+1 si ces droites sont concourantes en un point,<BR>
+2 si ces droites sont parallèles,<BR>
+3 si ces droites sont confondues,<BR>
+et 0 sinon.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>est_faisceau_droite([droite(0,1+i),droite(0,2+i), droite(0,3+i),droite(0,1)])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr971.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr973.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

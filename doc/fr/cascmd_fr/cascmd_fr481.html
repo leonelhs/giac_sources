@@ -6,20 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour extraire une sous-séquence d’une séquence : []</TITLE>
+<TITLE>Définition : seq[] ()</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr480.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr482.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc578">6.38.4</A>  Pour extraire une sous-séquence d’une séquence : <TT>[]</TT></H3><P><A NAME="@default857"></A><A NAME="@default858"></A>
-Pour extraire une sous-séquence d’une séquence, on tape entre des crochets
-l’indice de début, puis <TT>..</TT> et l’indice de fin de la sous-séquence.<BR>
+<H3 CLASS="subsection"><A NAME="htoc579">6.39.1</A>  Définition : <TT>seq[] ()</TT></H3><P><A NAME="@default856"></A><A NAME="@default857"></A>
+Une séquence est une suite d’éléments séparés par une
+virgule et parenthésées par <TT>( )</TT> ou on utilise le mot reservé 
+<TT>seq[...]</TT> donc on écrit :<BR>
+<TT>(1,2,3,4)</TT> ou<BR>
+<TT>seq[1,2,3,4]</TT><BR>
 On tape :
-</P><DIV CLASS="center"><TT>(0,1,2,3,4)[1..3]</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(1,2,3)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>A:=(1,2,3,4)</TT> ou <TT>A:=seq[1,2,3,4]</TT></DIV><DIV CLASS="center"><TT>B:=(5,6,3,4)</TT> ou <TT>B:=seq[5,6,3,4]</TT></DIV><P>
+<B>Attention!</B><BR>
+ l’ordre est important :
+si <TT>B:=(5,6,3,4)</TT> et <TT>C:=(3,4,5,6)</TT> la réponse de <TT>B==C</TT> est 
+<TT>0</TT>.<BR>
+<B>Attention!</B> (voir <A HREF="cascmd_fr485.html#sec:seq">6.39.5</A>)<BR>
+<TT>seq([0,2])=(0,0)</TT> et <TT>seq([0,k,1,5])=[0,0,0,0,0]</TT> alors que<BR>
+<TT>seq[0,2]=(0,2)</TT> et <TT>seq[0,k,1,5]=(0,k,1,5)</TT></P><HR>
 <A HREF="cascmd_fr480.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr482.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

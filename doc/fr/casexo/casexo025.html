@@ -6,467 +6,427 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="casexo.css">
-<TITLE>Utilisation des sommes de Riemann avec Xcas</TITLE>
+<TITLE>Des calculs de différentes sommes</TITLE>
 </HEAD>
 <BODY >
 <A HREF="casexo024.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casexo026.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc374">Chapitre 25</A>  Utilisation des sommes de Riemann avec <TT>Xcas</TT></H1><H2 CLASS="section"><A NAME="toc135"></A><A NAME="htoc375">25.1</A>  Sommes de Riemann et définition de l’intégrale</H2><H3 CLASS="subsection"><A NAME="htoc376">25.1.1</A>  Deux théorèmes</H3><P>
-Soit [<I>a</I>,<I>b</I>] un segment de ℝ. </P><P><TT>Rappel</TT> : Intégrale d’une fonction en escalier φ sur [<I>a</I>,<I>b</I>]<BR>
-L’intégrale d’une fonction en escalier φ de [<I>a</I>,<I>b</I>]
-dans ℝ ou ∑(1./<I>n</I>,<I>n</I>=1..20000)<I>mathbb</I> <I>C</I> notée
-∫<SUB><I>a</I></SUB><SUP><I>b</I></SUP> φ<SUB><I>n</I></SUB> est égale à :<BR>
-∑<SUB><I>j</I>=1</SUB><SUP><I>n</I></SUP> (<I>a</I><SUB><I>j</I></SUB> −<I>a</I><SUB><I>j</I>−1</SUB>)*λ<SUB><I>j</I></SUB><BR>
-où λ<SUB><I>j</I></SUB> est la valeur 
-constante prise par φ<SUB><I>j</I></SUB>  sur ]<I>a</I><SUB><I>j</I>−1</SUB>,<I>a</I><SUB><I>j</I></SUB>[.<BR>
-
-Soit <I>f</I> une application continue par 
-morceaux de [<I>a</I>,<I>b</I>] dans ℝ ou ℂ.</P><P><TT>Théorème 1</TT><BR>
-<I>f</I> est la limite uniforme d’une suite φ<SUB><I>n</I></SUB> de fonctions en escalier sur 
-[<I>a</I>,<I>b</I>].<BR>
-
-<TT>Théorème 2 et définition de l’intégrale</TT><BR>
-Si φ<SUB><I>n</I></SUB> est une suite de fonctions en escalier sur [<I>a</I>,<I>b</I>] qui converge 
-uniformément vers <I>f</I> sur [<I>a</I>,<I>b</I>], alors la suite ∫<SUB><I>a</I></SUB><SUP><I>b</I></SUP> φ<SUB><I>n</I></SUB> 
-converge et cette limite ne depend pas de la suite φ<SUB><I>n</I></SUB> choisie pourvu 
-que cette suite φ<SUB><I>n</I></SUB> converge uniformément vers <I>f</I> sur [<I>a</I>,<I>b</I>].<BR>
-Cette limite est appelée <TT>intégrale de </TT><TT><I>f</I></TT><TT> sur [a,b]</TT> et est notée
-∫<SUB><I>a</I></SUB><SUP><I>b</I></SUP> <I>f</I> ou encore ∫<SUB><I>a</I></SUB><SUP><I>b</I></SUP> <I>f</I>(<I>t</I>) <I>dt</I>.
-</P><H3 CLASS="subsection"><A NAME="htoc377">25.1.2</A>  Sommes de Riemann</H3><P>
-Soit (<I>a</I><SUB><I>j</I></SUB>)<SUB><I>j</I> ∈ [0,<I>n</I>]</SUB> une subdivision de [<I>a</I>,<I>b</I>].</P><P><TT>Définition</TT><BR>
-On appelle <TT>sommes de Riemann</TT> de <I>f</I> associée à la subdivision 
-(<I>a</I><SUB><I>j</I></SUB>)<SUB><I>j</I> ∈ [0,<I>n</I>]</SUB> toutes les sommes de la forme :<BR>
-∑<SUB><I>j</I>=1</SUB><SUP><I>n</I></SUP> <I>f</I>(<I>t</I><SUB><I>j</I></SUB>)*(<I>a</I><SUB><I>j</I></SUB>−<I>a</I><SUB><I>j</I>−1</SUB>)<BR>
-où <I>t</I><SUB><I>j</I></SUB> est un élément de 
-[<I>a</I><SUB><I>j</I>−1</SUB>,<I>a</I><SUB><I>j</I></SUB>] pour tout <I>j</I> ∈ [1,<I>n</I>].<BR>
-
-Soit (<I>a</I><SUB><I>j</I></SUB>)<SUB><I>j</I> ∈ [0,<I>n</I>]</SUB> une subdivision régulière de [<I>a</I>,<I>b</I>] c’est à
-dire  <I>a</I><SUB><I>j</I></SUB>=<I>a</I>+<I>j</I>*<I>b</I>−<I>a</I>/<I>n</I> pour <I>j</I> ∈ [0,<I>n</I>] . </P><P><TT>Propriété</TT><BR>
+Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc367">Chapitre 25</A>  Des calculs de différentes sommes</H1><H2 CLASS="section"><A NAME="toc137"></A><A NAME="htoc368">25.1</A>  La fonction <TT>sum</TT> de <TT>Xcas</TT></H2><P>
+Cette fonction permet de calculer :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+la somme d’une liste ou d’une séquence<BR>
+<TT>sum(n$(n=1..5))=sum(n$(n=5..1))=15</TT>, 
+</LI><LI CLASS="li-itemize">une somme ayant une primitive discréte. Par exemple<BR>
+<TT>sum(n,n=1..5)=15</TT> mais <TT>sum(n,n=5..1)=-9=-sum(n,n=2..4)</TT> et<BR>
+<TT>sum(n,n)=(n</TT><CODE><TT>^</TT></CODE><TT>2-n)/2=F(n)</TT> qui est la primitive discréte de <TT>n</TT>
+(<TT>sum(n,n=1..5)=F(5+1)-F(1)</TT>),
+</LI><LI CLASS="li-itemize">d’autres sommes en particulier de sommes avec un pas (quand il y a un 
+pas le pas est le 5ième argument et il n’y a pas de différence entre 
+<TT>sum(xpr,n,a,b,2)=sum(xpr,n,b,a,2)</TT>. Par exemple<BR>
+<TT>sum(n,n,1,5,2)=sum(n,n,5,1,2)=sum(n,n,1,5,-2)=sum(n,n,5,1,-2)=9</TT>
+</LI></UL><P>
+Voici quelques exercices...</P><H2 CLASS="section"><A NAME="toc138"></A><A NAME="htoc369">25.2</A>  Calcul de ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I><SUP><I>p</I></SUP> pour <I>p</I>=1,2,3</H2><H3 CLASS="subsection"><A NAME="htoc370">25.2.1</A>  Calcul de <I>s</I><SUB>1</SUB>(<I>n</I>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I>)</H3><P>
 On a :<BR>
-   <I>a</I><SUB><I>j</I></SUB>−<I>a</I><SUB><I>j</I>−1</SUB>=<I>b</I>−<I>a</I>/<I>n</I> pour <I>j</I> ∈ [1,<I>n</I>].<BR>
-et donc<BR>
- ∫<SUB><I>a</I></SUB><SUP><I>b</I></SUP> <I>f</I>(<I>t</I>) <I>dt</I>=lim<SUB><I>n</I> → +∞</SUB><I>b</I>−<I>a</I>/<I>n</I>∑<SUB><I>j</I>=1</SUB><SUP><I>n</I></SUP> <I>f</I>(<I>t</I><SUB><I>j</I></SUB>)=lim<SUB><I>n</I> → +∞</SUB><I>b</I>−<I>a</I>/<I>n</I>∑<SUB><I>j</I>=1</SUB><SUP><I>n</I>−1</SUP> <I>f</I>(<I>t</I><SUB><I>j</I></SUB>)<BR>
-où <I>t</I><SUB><I>j</I></SUB> est un élément de 
-[<I>a</I><SUB><I>j</I>−1</SUB>,<I>a</I><SUB><I>j</I></SUB>] pour tout <I>j</I> ∈ [1,<I>n</I>] 
-(par ex <I>t</I><SUB><I>j</I></SUB>=<I>a</I><SUB><I>j</I>−1</SUB> ou <I>t</I><SUB><I>j</I></SUB>= <I>a</I><SUB><I>j</I></SUB>).
-</P><H2 CLASS="section"><A NAME="toc136"></A><A NAME="htoc378">25.2</A>  Les fonctions de <TT>Xcas</TT> utilisées</H2><P>
-Voici les fonctions de <TT>Xcas</TT> qui vous seront utiles dans ces exercices.<BR>
-<TT>sum_riemann(xpr(n,k),[n,k])</TT> renvoie au voisinage de
-<TT><I>n</I>=+∞</TT> un équivalent de <TT>∑</TT><SUB><TT><I>k</I>=1</TT></SUB><SUP><TT><I>n</I></TT></SUP><TT> <I>xpr</I>(<I>n</I>,<I>k</I>)</TT> ou de 
-<TT>∑</TT><SUB><TT><I>k</I>=0</TT></SUB><SUP><TT><I>n</I>-1</TT></SUP><TT> <I>xpr</I>(<I>n</I>,<I>k</I>)</TT> ou de <TT>∑</TT><SUB><TT><I>k</I>=1</TT></SUB><SUP><TT><I>n</I>-1</TT></SUP><TT> <I>xpr</I>(<I>n</I>,<I>k</I>)</TT> 
-lorsque la somme considérée est une somme de Riemann associée à une 
-fonction continue sur [0,1] ou répond 
-<TT>"ce n’est probablement pas une somme de Riemann"</TT> quand 
-la recherche a été infructueuse.<BR>
-<B>Remarque</B> : lorsque la fonction <I>f</I> est seulement continue sur ]0,1] 
-(resp sur [0,1[ ou sur ]0,1[)
-et que <I>int</I><SUB>0</SUB><SUP>1</SUP><I>f</I>(<I>x</I>)<I>dx</I> converge on a encore ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 1/<I>n</I>*<I>f</I>(<I>k</I>/<I>n</I>) 
-(resp  ∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP> 1/<I>n</I>*<I>f</I>(<I>k</I>/<I>n</I>) ou  ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP> 1/<I>n</I>*<I>f</I>(<I>k</I>/<I>n</I>)) 
-tend vers <I>int</I><SUB>0</SUB><SUP>1</SUP><I>f</I>(<I>x</I>)<I>dx</I> quand <I>n</I>−&gt;+∞.<BR>
-<TT>integrate(xpr(x),x,a,b)</TT> calcule l’intégrale de l’expression 
-<TT>xpr(x)</TT> entre <TT>a</TT> et <TT>b</TT>.<BR>
-<TT>partfrac(n(x)/d(x))</TT> décompose en éléments simples la fraction 
-rationnelle <TT>n(x)/d(x)</TT>.
-</P><H2 CLASS="section"><A NAME="toc137"></A><A NAME="htoc379">25.3</A>  Exercices</H2><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate"> 
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>2</SUP>/<I>n</I><SUP>3</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.
-</LI><LI CLASS="li-enumerate">Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>3</SUP>/<I>n</I><SUP>4</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.
-</LI><LI CLASS="li-enumerate">Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(1/<I>n</I>+1+1/<I>n</I>+2+...+1/<I>n</I>+<I>n</I>).<BR>
-Déterminer un équivalent de <I>S</I><SUB><I>n</I></SUB>==∑<SUB><I>k</I>=<I>n</I>+1</SUB><SUP>2*<I>n</I></SUP> 1/<I>k</I><SUP><I>p</I></SUP> lorsque <I>p</I>∈ ℝ−{1}
-</LI><LI CLASS="li-enumerate">Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(<I>n</I>/<I>n</I><SUP>2</SUP>+1<SUP>2</SUP>+<I>n</I>/<I>n</I><SUP>2</SUP>+2<SUP>2</SUP>+...+<I>n</I>/<I>n</I><SUP>2</SUP>+<I>n</I><SUP>2</SUP>).
-</LI><LI CLASS="li-enumerate">Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>n</I>+<I>k</I>/<I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.
-</LI><LI CLASS="li-enumerate">Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 32<I>n</I><SUP>3</SUP>/16<I>n</I><SUP>4</SUP>−<I>k</I><SUP>4</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.
-</LI></OL><H2 CLASS="section"><A NAME="toc138"></A><A NAME="htoc380">25.4</A>  Corrections des exercices</H2><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate"> 
- <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>2</SUP>/<I>n</I><SUP>3</SUP>=1/<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> (<I>k</I>/<I>n</I>)<SUP>2</SUP><BR>
-<I>S</I><SUB><I>n</I></SUB> est une somme de Riemann de la fonction <I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP> sur [0,1].<BR>
-On a :<BR>
- lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>=∫<SUB>0</SUB><SUP>1</SUP> <I>x</I><SUP>2</SUP> <I>dx</I><BR>
-On tape :<BR>
-<TT><I>sum</I>_<I>riemann</I>(<I>k</I></TT><SUP><TT>2</TT></SUP><TT>/<I>n</I></TT><SUP><TT>3</TT></SUP><TT>,[<I>n</I>,<I>k</I>])</TT><BR>
-On obtient :<BR>
-<TT> </TT><TT>1/3</TT><BR>
-Donc <TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">lim</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I> → +∞</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>S</I><SUB><I>n</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-Pour vérifier on tape :<BR>
-<TT><I>integrate</I>(<I>x</I></TT><SUP><TT>2</TT></SUP><TT>,<I>x</I>,0,1)</TT><BR>
-On obtient :<BR>
-<TT> </TT><TT>1/3</TT><BR>
-</LI><LI CLASS="li-enumerate"> <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>3</SUP>/<I>n</I><SUP>4</SUP>=1/<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> (<I>k</I>/<I>n</I>)<SUP>3</SUP>.<BR>
-<I>S</I><SUB><I>n</I></SUB> est une somme de Riemann de la fonction <I>f</I>(<I>x</I>)=<I>x</I><SUP>3</SUP> sur [0,1].<BR>
-On a :<BR>
- lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>=∫<SUB>0</SUB><SUP>1</SUP> <I>x</I><SUP>3</SUP> <I>dx</I><BR>
-On tape :<BR>
-<TT><I>sum</I>_<I>riemann</I>(<I>k</I></TT><SUP><TT>3</TT></SUP><TT>/<I>n</I></TT><SUP><TT>4</TT></SUP><TT>,[<I>n</I>,<I>k</I>])</TT><BR>
-On obtient :<BR>
-<TT> </TT><TT>1/4</TT><BR>
-Donc <TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">lim</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I> → +∞</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>S</I><SUB><I>n</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-Pour vérifier on tape :<BR>
-<TT><I>integrate</I>(<I>x</I></TT><SUP><TT>3</TT></SUP><TT>,<I>x</I>,0,1)</TT><BR>
-On obtient :<BR>
-<TT> </TT><TT>1/4</TT><BR>
-</LI><LI CLASS="li-enumerate">Soit  <I>U</I><SUB><I>n</I></SUB>=(1/<I>n</I>+1+1/<I>n</I>+2+...+1/<I>n</I>+<I>n</I>)=∑<SUB><I>k</I>=<I>n</I>+1</SUB><SUP>2*<I>n</I></SUP> 1/<I>k</I>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 1/<I>n</I>+<I>k</I>=1/<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 1/1+<I>k</I>/<I>n</I><BR>
-<I>U</I><SUB><I>n</I></SUB> est une somme de Riemann de la fonction  <I>f</I>(<I>x</I>)=1/1+<I>x</I> sur [0,1] (ou de la fonction  <I>g</I>(<I>x</I>)=1/<I>x</I> sur [1,2]).<BR>
-On a :<BR>
- lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>=∫<SUB>0</SUB><SUP>1</SUP>1/1+<I>x</I> <I>dx</I>=
-∫<SUB>1</SUB><SUP>2</SUP>1/<I>x</I> <I>dx</I>.<BR>
-On tape :<BR>
-<TT><I>sum</I>_<I>riemann</I>(1/(<I>n</I>+<I>k</I>),[<I>n</I>,<I>k</I>])</TT><BR>
-On obtient :<BR>
-<TT><I>log</I>(2)</TT><BR>
-Donc <TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">lim</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I> → +∞</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>U</I><SUB><I>n</I></SUB>=ln(2)</TD></TR>
-</TABLE>
-Pour vérifier on tape :<BR>
-<TT><I>integrate</I>(1/(1+<I>x</I>),<I>x</I>,0,1)</TT> ou <TT><I>integrate</I>(1/<I>x</I>,<I>x</I>,1,2)</TT><BR>
-On obtient :<BR>
-<TT><I>log</I>(2)</TT><BR>
-Pour avoir un équivalent de  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=<I>n</I>+1</SUB><SUP>2*<I>n</I></SUP> 1/<I>k</I><SUP><I>p</I></SUP> on tape :<BR>
-<TT><I>sum</I>_<I>riemann</I>(1/(<I>n</I>+<I>k</I>)</TT><SUP><TT><I>p</I></TT></SUP><TT>,[<I>n</I>,<I>k</I>])</TT><BR>
-on obtient <TT>"ce n’est probablement pas une somme de riemann"</TT><BR>
-car le paramètre <TT><I>p</I></TT> n’est pas bien géré.<BR>
- On tape alors :<BR>
-<TT><I>sum</I>_<I>riemann</I>(1/(<I>n</I>+<I>k</I>)</TT><SUP><TT>2</TT></SUP><TT>,[<I>n</I>,<I>k</I>])</TT><BR>
-on obtient <TT>1/2/n</TT><BR>
-<TT><I>sum</I>_<I>riemann</I>(1/(<I>n</I>+<I>k</I>)</TT><SUP><TT>3</TT></SUP><TT>,[<I>n</I>,<I>k</I>])</TT><BR>
-on obtient <TT>3*1/8/<I>n</I></TT><SUP><TT>2</TT></SUP> (ou encore 3/4/(2*<I>n</I><SUP>2</SUP>))<BR>
-<TT><I>sum</I>_<I>riemann</I>(1/(<I>n</I>+<I>k</I>)</TT><SUP><TT>4</TT></SUP><TT>,[<I>n</I>,<I>k</I>])</TT><BR>
-on obtient <TT>7*1/24/<I>n</I></TT><SUP><TT>3</TT></SUP> (ou encore 7/8/(3*<I>n</I><SUP>3</SUP>))<BR>
-L’équivalent de  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=<I>n</I>+1</SUB><SUP>2*<I>n</I></SUP> 1/<I>k</I><SUP><I>p</I></SUP> semble donc être 
-2<SUP><I>p</I>−1</SUP>−1/2<SUP><I>p</I>−1</SUP>*(<I>p</I>−1)*<I>n</I><SUP><I>p</I>−1</SUP>
-</LI><LI CLASS="li-enumerate">Soit  <I>S</I><SUB><I>n</I></SUB>=(<I>n</I>/<I>n</I><SUP>2</SUP>+1<SUP>2</SUP>+<I>n</I>/<I>n</I><SUP>2</SUP>+2<SUP>2</SUP>+...+<I>n</I>/<I>n</I><SUP>2</SUP>+<I>n</I><SUP>2</SUP>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>n</I>/<I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP>=1/<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 1/1+(<I>k</I>/<I>n</I>)<SUP>2</SUP><BR>
-<I>S</I><SUB><I>n</I></SUB> est une somme de Riemann de la fonction  <I>f</I>(<I>x</I>)=1/1+<I>x</I><SUP>2</SUP> sur [0,1].<BR>
-On a :<BR>
- lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>=∫<SUB>0</SUB><SUP>1</SUP>1/1+<I>x</I><SUP>2</SUP> <I>dx</I>.<BR>
-On tape :<BR>
-<TT><I>sum</I>_<I>riemann</I>(<I>n</I>/(<I>n</I></TT><SUP><TT>2</TT></SUP><TT>+<I>k</I></TT><SUP><TT>2</TT></SUP><TT>),[<I>n</I>,<I>k</I>])</TT><BR>
-On obtient :<BR>
-<TT>π/4</TT><BR>
-Donc <TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">lim</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I> → +∞</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>S</I><SUB><I>n</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">π</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-Pour vérifier on tape :<BR>
-<TT><I>integrate</I>(1/(1+<I>x</I></TT><SUP><TT>2</TT></SUP><TT>),<I>x</I>,0,1)</TT><BR>
-On obtient :<BR>
-<TT>π/4</TT><BR>
-</LI><LI CLASS="li-enumerate"> <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>n</I>+<I>k</I>/<I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP>=1/<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 1+<I>k</I>/<I>n</I>/1+(<I>k</I>/<I>n</I>)<SUP>2</SUP>.<BR>
-<I>S</I><SUB><I>n</I></SUB> est une somme de Riemann de la fonction  <I>f</I>(<I>x</I>)=1+<I>x</I>/1+<I>x</I><SUP>2</SUP> sur [0,1].<BR>
-On a :<BR>
- lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>=∫<SUB>0</SUB><SUP>1</SUP>1+<I>x</I>/1+<I>x</I><SUP>2</SUP> <I>dx</I>.<BR>
-On tape :<BR>
-<TT><I>sum</I>_<I>riemann</I>((<I>n</I>+<I>k</I>)/(<I>n</I></TT><SUP><TT>2</TT></SUP><TT>+<I>k</I></TT><SUP><TT>2</TT></SUP><TT>),[<I>n</I>,<I>k</I>])</TT><BR>
-On obtient :<BR>
-<TT> </TT><TT>2*<I>log</I>(2)+ π/4</TT><BR>
-Donc <TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">lim</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I> → +∞</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>S</I><SUB><I>n</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2*ln(2)+ π</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-Pour vérifier on tape :<BR>
-<TT><I>integrate</I>((1+<I>x</I>)/(1+<I>x</I></TT><SUP><TT>2</TT></SUP><TT>),<I>x</I>,0,1)</TT><BR>
-On obtient :<BR>
-<TT> </TT><TT>2*<I>log</I>(2)+ π/4</TT><BR>
-</LI><LI CLASS="li-enumerate"> <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 32<I>n</I><SUP>3</SUP>/16<I>n</I><SUP>4</SUP>−<I>k</I><SUP>4</SUP>=1/<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 32/16−(<I>k</I>/<I>n</I>)<SUP>4</SUP>.<BR>
-<I>S</I><SUB><I>n</I></SUB> est une somme de Riemann de la fonction  <I>f</I>(<I>x</I>)=32/16−<I>x</I><SUP>4</SUP> sur [0,1].<BR>
-On a :<BR>
- lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>=∫<SUB>0</SUB><SUP>1</SUP>32/16−<I>x</I><SUP>4</SUP> <I>dx</I>.<BR>
-On tape :<BR>
-<TT><I>sum</I>_<I>riemann</I>(32*<I>n</I></TT><SUP><TT>3</TT></SUP><TT>/(16*<I>n</I></TT><SUP><TT>4</TT></SUP><TT>-<I>k</I></TT><SUP><TT>4</TT></SUP><TT>),[<I>n</I>,<I>k</I>])</TT><BR>
-On obtient :<BR>
-<TT>2*<I>atan</I>(1/2)+<I>log</I>(3)</TT><BR>
-Donc <TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">lim</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I> → +∞</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>S</I><SUB><I>n</I></SUB>=2*arctan(1/2)+ln(3)</TD></TR>
-</TABLE>
-Pour vérifier on tape :<BR>
-<TT><I>integrate</I>(32/(16-<I>x</I></TT><SUP><TT>4</TT></SUP><TT>),<I>x</I>,0,1)</TT><BR>
-On obtient :<BR>
-<TT>2*<I>atan</I>(1/2)+<I>log</I>(3)</TT><BR>
-Si on veut savoir comment cette intégrale a été calculée on 
-décompose en éléments simples  32/16−<I>X</I><SUP>2</SUP> en posant <I>X</I>=<I>x</I><SUP>2</SUP>, 
-on tape :<BR>
-<TT><I>partfrac</I>(32/(16-<I>X</I></TT><SUP><TT>2</TT></SUP><TT>))</TT><BR>
-On obtient :<BR>
-<TT>4/(<I>X</I>+4)+4/(-<I>X</I>+4)</TT><BR>
-Puis on tape :
-<TT><I>integrate</I>(4/(<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+4),<I>x</I>,0,1)</TT> et on obtient :
-<TT>2*<I>atan</I>(1/2)</TT><BR>
-Puis on tape :
-<TT><I>integrate</I>(4/(-<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+4),<I>x</I>,0,1)</TT> et on obtient :
-<TT><I>log</I>(3)</TT><BR>
-</LI></OL><H2 CLASS="section"><A NAME="toc139"></A><A NAME="htoc381">25.5</A>  Autres exercices</H2><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate"> 
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I>/<I>n</I><SUP>2</SUP> sin(<I>k</I>π/<I>n</I>).<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>sum</I>_<I>riemann</I>(<I>k</I>/<I>n</I></TT><SUP><TT>2</TT></SUP><TT>*<I>sin</I>(<I>k</I>*<I>pi</I>/<I>n</I>),[<I>n</I>,<I>k</I>])</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT>1</TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT>π</TT></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-En effet l’intégrale  ∫<SUB>0</SUB><SUP>1</SUP> <I>x</I> sin(π <I>x</I>)<I>dx</I> vaut
- 1/π.<BR>
- On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>int</I>(<I>x</I>*<I>sin</I>(<I>pi</I>*<I>x</I>),<I>x</I>,0,1)</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT>1</TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT>π</TT></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-</LI><LI CLASS="li-enumerate">Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 1/<I>n</I> sin(<I>k</I>*<I>x</I>/<I>n</I>).<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>sum</I>_<I>riemann</I>(1/<I>n</I>*<I>sin</I>(<I>k</I>*<I>x</I>/<I>n</I>),[<I>n</I>,<I>k</I>])</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT>-<I>cos</I>(<I>x</I>)+1</TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT><I>x</I></TT></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-En effet  ∫<SUB>0</SUB><SUP>1</SUP> sin(<I>t</I>* <I>x</I>)<I>dt</I> =  −cos(<I>t</I>*<I>x</I>)/<I>x</I>|<SUB><I>t</I>=1</SUB> +cos(<I>t</I>*<I>x</I>)/<I>x</I>|<SUB><I>t</I>=0</SUB>=−cos(<I>x</I>)+1/<I>x</I>.<BR>
- On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>int</I>(<I>sin</I>(<I>t</I>*<I>x</I>),<I>t</I>,0,1)</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT>-<I>cos</I>(<I>x</I>)</TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT><I>x</I></TT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TT>+</TT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT>1</TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT><I>x</I></TT></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-</LI><LI CLASS="li-enumerate">Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>2</SUP>/<I>n</I><SUP>2</SUP> sin(<I>k</I>π/<I>n</I>).<BR>
-Trouver un equivalent de <I>S</I><SUB><I>n</I></SUB> quand <I>n</I> → +∞.<BR>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>sum</I>_<I>riemann</I>(<I>k</I></TT><SUP><TT>2</TT></SUP><TT>/<I>n</I></TT><SUP><TT>2</TT></SUP><TT>*<I>sin</I>(<I>k</I>*<I>pi</I>/<I>n</I>),[<I>n</I>,<I>k</I>])</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT><I>pi</I></TT><SUP><TT>2</TT></SUP><TT>*<I>n</I>-4*<I>n</I></TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT><I>pi</I></TT><SUP><TT>3</TT></SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-En effet l’intégrale  ∫<SUB>0</SUB><SUP>1</SUP> <I>x</I><SUP>2</SUP> sin(π <I>x</I>)<I>dx</I> vaut
-π<SUP>2</SUP>−4/π<SUP>3</SUP> et <I>S</I><SUB><I>n</I></SUB> est le produit de <I>n</I> par une somme
-de Riemann de cette intégrale.<BR>
- On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>normal</I>(<I>int</I>(<I>x</I></TT><SUP><TT>2</TT></SUP><TT>*<I>sin</I>(<I>pi</I>*<I>x</I>),<I>x</I>,0,1))</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT>π</TT><SUP><TT>2</TT></SUP><TT>-4</TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT>π</TT><SUP><TT>3</TT></SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-<I>S</I><SUB><I>n</I></SUB> est donc équivalente à  <I>n</I>*π<SUP>2</SUP>−4/π<SUP>3</SUP>
-quand <I>n</I> → +∞. 
-</LI><LI CLASS="li-enumerate">Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> sin(π/<I>n</I>)/2+cos(<I>k</I>π/<I>n</I>).<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>sum</I>_<I>riemann</I>(<I>sin</I>(<I>pi</I>/<I>n</I>)/(2+<I>cos</I>(<I>k</I>*<I>pi</I>/<I>n</I>)),[<I>n</I>,<I>k</I>])</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT>0</TT></TD></TR>
-</TABLE>
-En effet l’intégrale  ∫<SUB>0</SUB><SUP>1</SUP> 1/2+cos(π <I>x</I>)<I>dx</I> vaut
-1/π et <I>S</I><SUB><I>n</I></SUB> est le produit de <I>n</I>sin(π/<I>n</I>) par une 
-somme de Riemann de cette intégrale.<BR>
- On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>int</I>(1/(2+<I>cos</I>(<I>pi</I>*<I>x</I>)),<I>x</I>,0,1)</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT>0</TT></TD></TR>
-</TABLE>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>limit</I>(<I>n</I>*<I>sin</I>(<I>pi</I>/<I>n</I>),<I>n</I>=+<I>infinity</I>)</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>pi</I></TT></TD></TR>
-</TABLE>
-La limite de <I>S</I><SUB><I>n</I></SUB> est donc 0 (0*π=0) quand <I>n</I> → +∞.
-</LI><LI CLASS="li-enumerate">Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 1/√<SPAN style="text-decoration:overline"><I>k</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>sum</I>_<I>riemann</I>(1/<I>sqrt</I>(<I>k</I></TT><SUP><TT>2</TT></SUP><TT>+<I>n</I></TT><SUP><TT>2</TT></SUP><TT>),[<I>n</I>,<I>k</I>])</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>-<I>log</I>(</TT></TD><TD CLASS="dcell"><TT><FONT SIZE=5>√</FONT></TT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD ALIGN=center NOWRAP><TT>2</TT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TT>-1)</TT></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-En effet l’intégrale  ∫<SUB>0</SUB><SUP>1</SUP> <I>dx</I>/√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> vaut 
-−(ln(√<SPAN style="text-decoration:overline">2</SPAN>−1))π.<BR>
- On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>int</I>(1/<I>sqrt</I>(1+<I>x</I></TT><SUP><TT>2</TT></SUP><TT>),<I>x</I>,0,1)</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>-(<I>log</I>(</TT></TD><TD CLASS="dcell"><TT><FONT SIZE=5>√</FONT></TT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD ALIGN=center NOWRAP><TT>2</TT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TT>-1))</TT></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-</LI><LI CLASS="li-enumerate">Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>n</I>/<I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP><I>t</I><SUP>2</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>sum</I>_<I>riemann</I>(<I>n</I>/(<I>k</I></TT><SUP><TT>2</TT></SUP><TT>*<I>t</I></TT><SUP><TT>2</TT></SUP><TT>+<I>n</I></TT><SUP><TT>2</TT></SUP><TT>),[<I>n</I>,<I>k</I>])</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>atan</I>(<I>t</I></TT><SUP><TT>2</TT></SUP><TT>/<I>abs</I>(<I>t</I>))/<I>abs</I>(<I>t</I>)</TT></TD></TR>
-</TABLE>
-En effet l’intégrale  ∫<SUB>0</SUB><SUP>1</SUP> <I>dx</I>/<I>x</I><SUP>2</SUP>*<I>t</I><SUP>2</SUP>+1 vaut
-arctan(|<I>t</I>|)/|<I>t</I>|.<BR>
- On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>int</I>(1/(<I>x</I></TT><SUP><TT>2</TT></SUP><TT>*<I>t</I></TT><SUP><TT>2</TT></SUP><TT>+1),<I>x</I>,0,1)</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>atan</I>(</TT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT><I>t</I></TT><SUP><TT>2</TT></SUP></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT><I>abs</I>(<I>t</I>)</TT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TT>)</TT></TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT><I>abs</I>(<I>t</I>)</TT></TD></TR>
-</TABLE></TD></TR>
-</TABLE></LI></OL><H2 CLASS="section"><A NAME="toc140"></A><A NAME="htoc382">25.6</A>  Somme et produit se ramenant à des sommes de Riemann</H2><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate"> 
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP> 1/√<SPAN style="text-decoration:overline"><I>k</I>(<I>n</I>−<I>k</I>)</SPAN>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>sum</I>_<I>riemann</I>(1/<I>sqrt</I>(<I>k</I>*(<I>n</I>-<I>k</I>)),[<I>n</I>,<I>k</I>])</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>pi</I></TT></TD></TR>
-</TABLE>
-En effet l’intégrale  ∫<SUB>0</SUB><SUP>1</SUP> <I>dx</I>/√<SPAN style="text-decoration:overline"><I>x</I>*(1−<I>x</I>)</SPAN> est 
-convergente vers π.<BR>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>int</I>(1/(<I>sqrt</I>(<I>x</I>*(1-<I>x</I>))),<I>x</I>,0,1)</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT><I>pi</I></TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT>2</TT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TT>+</TT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT><I>pi</I></TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT>2</TT></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-</LI><LI CLASS="li-enumerate">Soit  <I>P</I><SUB><I>n</I></SUB>=1/<I>n</I>(∏<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> (<I>k</I>+<I>n</I>))<SUP>1/<I>n</I></SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>P</I><SUB><I>n</I></SUB>.<BR>
-On a :<BR>
-ln(<I>P</I><SUB><I>n</I></SUB>)=−ln(<I>n</I>)+1/<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>ln(<I>k</I>+<I>n</I>)=1/<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>ln(1+<I>k</I>/<I>n</I>)<BR>
-On tape :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>sum</I>_<I>riemann</I>(1/<I>n</I>*</TT><TT>ln</TT><TT>(1+<I>k</I>/<I>n</I>),[<I>n</I>,<I>k</I>])</TT></TD></TR>
-</TABLE>
-On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT>2*<I>log</I>(2)-1</TT></TD></TR>
-</TABLE>
-Donc  lim<SUB><I>n</I> → +∞</SUB> <I>P</I><SUB><I>n</I></SUB>=exp(2*ln(2)−1)=4/<I>e</I>
-</LI></OL><H2 CLASS="section"><A NAME="toc141"></A><A NAME="htoc383">25.7</A>   Calcul d’une intégrale à l’aide d’une somme de Riemann</H2><P>
-Soit  <I>P</I><SUB><I>n</I></SUB>=∏<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> sin(<I>k</I>π/2<I>n</I>).<BR>
-1/ Montrer que :<BR>
- ∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>(1−cos(<I>k</I>*π/<I>n</I>))=<I>n</I>/2<SUP><I>n</I>−1</SUP>.<BR>
-2/ En déduire que :<BR>
- ∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>(sin(<I>k</I>*π/2<I>n</I>))=√<SPAN style="text-decoration:overline"><I>n</I></SPAN>/2<SUP><I>n</I>−1</SUP>.<BR>
-3/ Dèterminer la limite de 
- π/2<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP> ln(sin(<I>k</I>*π/2<I>n</I>)) quand <I>n</I> tend vers +∞.<BR>
-4/ Montrer que l’intégrale <I>I</I>=∫<SUB>0</SUB><SUP>π/2</SUP>ln(sin(<I>x</I>))<I>dx</I> est convergente et calculer sa valeur à l’aide des sommes de Riemann.<BR>
-5/ Retrouver ce résultat en considérant <I>J</I>=∫<SUB>0</SUB><SUP>π/2</SUP>ln(cos(<I>x</I>))<I>dx</I> et en montrant que <I>I</I>=<I>J</I>=<I>I</I>+<I>J</I>/2<BR>
-
-1/ On a :<BR>
- ∏<SUB><I>k</I>=0</SUB><SUP>2<I>n</I>−1</SUP>(<I>z</I>−exp(<I>i</I>*<I>k</I>*π/<I>n</I>))=<I>z</I><SUP>2<I>n</I></SUP>−1=<BR>
- (<I>z</I>−1)(<I>z</I>−exp(<I>i</I>*π))∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>(<I>z</I>−exp(<I>i</I>*<I>k</I>*π/<I>n</I>))(<I>z</I>−exp(<I>i</I>*(2*<I>n</I>−<I>k</I>)*π/<I>n</I>)) donc<BR>
- ∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>(<I>z</I>−exp(<I>i</I>*<I>k</I>*π/<I>n</I>))(<I>z</I>−exp(<I>i</I>*(2*<I>n</I>−<I>k</I>)*π/<I>n</I>))=<BR>
- <I>z</I><SUP>2<I>n</I></SUP>−1/(<I>z</I>−1)(<I>z</I>−exp(<I>i</I>*π))=(<I>z</I><SUP>2</SUP>)<SUP><I>n</I></SUP>−1/(<I>z</I><SUP>2</SUP>−1)=1+<I>z</I>+<I>z</I><SUP>2</SUP>+...<I>z</I><SUP>2<I>n</I>−2</SUP><BR>
-
-En faisant tendre <I>z</I> vers 1 on en déduit que :<BR>
- ∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>(1−exp(<I>i</I>*<I>k</I>*π/<I>n</I>))(1−exp(<I>i</I>*(2*<I>n</I>−<I>k</I>)*π/<I>n</I>))=<I>n</I><BR>
-On a  1−exp(<I>i</I>*(2*<I>n</I>−<I>k</I>)*π/<I>n</I>)=1−exp(−<I>i</I>*<I>k</I>*π/<I>n</I>) et :<BR>
-(1−exp(<I>i</I>*<I>k</I>*π/<I>n</I>))(1−exp(−<I>i</I>*<I>k</I>*π/<I>n</I>))=2−2cos(<I>k</I>*π/<I>n</I>)<BR>
-Donc :<BR>
- ∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>2−2cos(<I>k</I>*π/<I>n</I>)=<I>n</I><BR>
-ou encore :<BR>
- ∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>1−cos(<I>k</I>*π/<I>n</I>)=<I>n</I>/2<SUP><I>n</I>−1</SUP><BR>
-On a :<BR>
- (sin(<I>k</I>*π/2<I>n</I>))<SUP>2</SUP>=1/2(1−cos(<I>k</I>*π/<I>n</I>))<BR>
-Donc :<BR>
- ∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>(sin(<I>k</I>*π/2<I>n</I>))<SUP>2</SUP>=1/2<SUP><I>n</I>−1</SUP>*<I>n</I>/2<SUP><I>n</I>−1</SUP><BR>
-Ou encore puisque sin(<I>k</I>*π/2<I>n</I>)&gt;0 pour tout <I>k</I>=1..(<I>n</I>−1) :<BR>
- ∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>sin(<I>k</I>*π/2<I>n</I>)=√<SPAN style="text-decoration:overline"><I>n</I></SPAN>/2<SUP><I>n</I>−1</SUP><BR>
-On a :<BR>
- π/2<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP> ln(sin(<I>k</I>*π/2<I>n</I>))=
-π/2<I>n</I>ln(∏<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP>sin(<I>k</I>*π/2<I>n</I>))=
-π/2<I>n</I>ln(√<SPAN style="text-decoration:overline"><I>n</I></SPAN>/2<SUP><I>n</I>−1</SUP>)<BR>
-On tape
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>limit</I>(<I>pi</I>/2/<I>n</I>*<I>ln</I>(<I>sqrt</I>(<I>n</I>)/2</TT><SUP><TT><I>n</I>-1</TT></SUP><TT>),<I>n</I>=+<I>infinity</I>)</TT></TD></TR>
-</TABLE><P>
-On obtient :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>-(</TT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TT><I>pi</I>*<I>log</I>(2)</TT></TD></TR>
-<TR><TD CLASS="hbar"><TT></TT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TT>2</TT></TD></TR>
-</TABLE></TD><TD CLASS="dcell">)</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-4/ ∫<SUB>0</SUB><SUP>π/2</SUP>ln(sin(<I>x</I>))<I>dx</I> est convergente en 0 car :<BR>
-0&lt;−ln(sin(<I>x</I>))&lt;1/√<SPAN style="text-decoration:overline"><I>x</I></SPAN> au voisinage de 0 (lim<SUB><I>x</I>−&gt;0</SUB>√<SPAN style="text-decoration:overline"><I>x</I></SPAN> *ln(sin(<I>x</I>))=0) et ∫<SUB>0</SUB><SUP>1</SUP> <I>dx</I>/√<SPAN style="text-decoration:overline"><I>x</I></SPAN>  est convergente en 0.<BR>
-Or  π/2<I>n</I>∑<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP> ln(sin(<I>k</I>*π/2<I>n</I>))
-est la somme de Riemann associée à <I>I</I>
-donc :<BR>
- ∫<SUB>0</SUB><SUP>π/2</SUP>ln(sin(<I>x</I>))<I>dx</I>=−(ln(2)/2)<BR>
-5/ <I>J</I> est convergente en π/2 car, avec le changement de variables 
-<I>x</I>=π/2−<I>u</I>, on a :<BR>
- ∫<SUB>0</SUB><SUP><I>a</I></SUP>ln(cos(<I>x</I>))<I>dx</I>=∫<SUB>π/2−<I>a</I></SUB><SUP>π/2</SUP>ln(sin(<I>x</I>))<I>dx</I><BR>
-donc<BR>
- <I>I</I>=<I>J</I>=(<I>I</I>+<I>J</I>)/2=1/2∫<SUB>0</SUB><SUP>π/2</SUP>ln(sin(<I>x</I>)*cos(<I>x</I>))<I>dx</I>=<BR>
- 1/2∫<SUB>0</SUB><SUP>π/2</SUP>(ln(sin(2*<I>x</I>))−ln(2))<I>dx</I>=<BR>
- <I>I</I>/2−1/2∫<SUB>0</SUB><SUP>π/2</SUP>ln(2)<I>dx</I>=<I>I</I>/2−ln(2)/4<BR>
-en effet<BR>
- ∫<SUB>0</SUB><SUP>π/2</SUP>ln(sin(2*<I>x</I>))<I>dx</I>=1/2∫<SUB>0</SUB><SUP>π</SUP>ln(sin(<I>u</I>))<I>du</I>=
-1/2(∫<SUB>0</SUB><SUP>π/2</SUP>ln(sin(<I>u</I>))<I>du</I>+∫<SUB>π/2</SUB><SUP>π</SUP>ln(sin(<I>u</I>))<I>du</I>)=
-1/2(∫<SUB>0</SUB><SUP>π/2</SUP>ln(sin(<I>u</I>))<I>du</I>−∫<SUB>π/2</SUB><SUP>0</SUP>ln(sin(π−<I>t</I>))<I>dt</I>)=1/2(<I>I</I>+<I>I</I>)=<I>I</I><BR>
-Donc </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>I</I>=−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">π</TD></TR>
+2*<I>s</I><SUB>1</SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I>)+∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>n</I>+1−<I>k</I>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>n</I>+1)=<I>n</I>(<I>n</I>+1)<BR>
+Donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUB>0</SUB>(<I>n</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>(<I>n</I>+1)</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">ln(2)</TD></TR>
-</TABLE>Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
+</TABLE></TD></TR>
+</TABLE><P>
+On peut aussi remarquer que :<BR>
+<I>p</I>(<I>p</I>+1)/2−(<I>p</I>−1)<I>p</I>/2=<I>p</I><BR>
+On dit que le polynôme <I>x</I>(<I>x</I>−1)/2 est la primitive discrète du polynôme
+<I>x</I>
+On a donc :<BR>
+2<I>s</I><SUB>1</SUB>=∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>2<I>p</I>=∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>(<I>p</I>(<I>p</I>+1)−(<I>p</I>−1)<I>p</I>)=<I>n</I>(<I>n</I>+1)<BR>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>sum(k,k=1..n)</TT><BR>
+On obtient :<BR>
+<TT>(n*(n+1))/2</TT>
+<B>Remarque</B><BR>
+On peut en déduire le calcul de <I>s</I>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>(2<I>k</I>−1)).<BR>
+On a en effet :<BR>
+<I>s</I>=2∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I>−<I>n</I>=<I>n</I>*(<I>n</I>+1)−<I>n</I>=<I>n</I><SUP>2</SUP><BR>
+On aurait aussi pu remarquer que :<BR>
+2<I>p</I>−1=(<I>p</I>+1)(<I>p</I>−1)−<I>p</I>(<I>p</I>−2)<BR>
+Donc que la primitive discète du polynôme
+2<I>x</I>−1 est le polynôme <I>x</I>(<I>x</I>−2).<BR>
+On a donc :<BR>
+<I>s</I>=∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>2<I>p</I>−1=∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>(<I>p</I><SUP>2</SUP>−(<I>p</I>−1)<SUP>2</SUP>)=<I>n</I><SUP>2</SUP><BR>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>normal(sum(2k-1,k=1..n))</TT><BR>
+On obtient :<BR>
+<TT>n</TT><CODE><TT>^</TT></CODE><TT>2</TT></P><H3 CLASS="subsection"><A NAME="htoc371">25.2.2</A>  Calcul de <I>s</I><SUB>2</SUB>(<I>n</I>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I><SUP>2</SUP></H3><P>
+On a :<BR>
+1<SUP>3</SUP>=1<BR>
+2<SUP>3</SUP>=1<SUP>3</SUP>+3*1<SUP>2</SUP>+3*1+1<BR>
+....<BR>
+<I>k</I><SUP>3</SUP>=(<I>k</I>−1)<SUP>3</SUP>+3*(<I>k</I>−1)<SUP>2</SUP>+3*(<I>k</I>−1)+1<BR>
+(<I>k</I>+1)<SUP>2</SUP>=<I>k</I><SUP>3</SUP>+3*<I>k</I><SUP>2</SUP>+3*<I>k</I>+1<BR>
+....<BR>
+<I>n</I><SUP>3</SUP>=(<I>n</I>−1)<SUP>3</SUP>+3*(<I>n</I>−1)<SUP>2</SUP>+3*(<I>n</I>−1)+1<BR>
+(<I>n</I>+1)<SUP>3</SUP>=<I>n</I><SUP>3</SUP>+3*<I>n</I><SUP>2</SUP>+3*<I>n</I>+1<BR>
+En sommant tous les termes :<BR>
+(<I>n</I>+1)<SUP>3</SUP>=3*∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I><SUP>2</SUP>+3∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I>+<I>n</I>=3<I>s</I><SUB>2</SUB>+3<I>n</I>(<I>n</I>+1)/2+<I>n</I>+1<BR>
+Donc :<BR>
+3<I>s</I><SUB>2</SUB>(<I>n</I>)=(<I>n</I>+1)((<I>n</I>+1)<SUP>2</SUP>−3<I>n</I>/2−<I>n</I>−1)=(<I>n</I>+1)(2<I>n</I><SUP>2</SUP>+<I>n</I>)/2
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUB>2</SUB>(<I>n</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>(<I>n</I>+1)(2*<I>n</I>+1)</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On peut aussi remarquer que :<BR>
+<I>p</I>(<I>p</I>+1)*(2<I>p</I>+1)/6−(<I>p</I>−1)*<I>p</I>*(2<I>p</I>−1)/6=<I>p</I><SUP>2</SUP><BR>
+Donc que la primitive discète du polynôme
+<I>x</I><SUP>2</SUP> est le polynôme <I>x</I>(<I>x</I>−1)(2<I>x</I>−1)/6.<BR>
+On a donc :<BR>
+6<I>s</I><SUB>2</SUB>=∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>6<I>p</I><SUP>2</SUP>=∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>(<I>p</I>(<I>p</I>+1)(2<I>p</I>+1)−(<I>p</I>−1)<I>p</I>(2<I>p</I>−1))=<I>n</I>(<I>n</I>+1)(2*<I>n</I>+1)<BR>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>factor(sum(k</TT><CODE><TT>^</TT></CODE><TT>2,k=1..n))</TT><BR>
+On obtient :<BR>
+<TT>n*(n+1)*(2*n+1)/6</TT>
+</P><H3 CLASS="subsection"><A NAME="htoc372">25.2.3</A>  Calcul de <I>s</I><SUB>3</SUB>(<I>n</I>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I><SUP>3</SUP></H3><P>
+On a :<BR>
+1<SUP>4</SUP>=1<BR>
+2<SUP>4</SUP>=1<SUP>4</SUP>+4*1<SUP>3</SUP>+6*1<SUP>2</SUP>+4+1<BR>
+....<BR>
+<I>k</I><SUP>4</SUP>=(<I>k</I>−1)<SUP>4</SUP>+4*(<I>k</I>−1)<SUP>3</SUP>+6*(<I>k</I>−1)<SUP>2</SUP>+4*(<I>k</I>−1)+1<BR>
+(<I>k</I>+1)<SUP>4</SUP>=<I>k</I><SUP>4</SUP>+4*<I>k</I><SUP>3</SUP>+6*<I>k</I><SUP>2</SUP>+4*<I>k</I>+1<BR>
+....<BR>
+(<I>n</I>+1)<SUP>4</SUP>=<I>n</I><SUP>4</SUP>+4*<I>n</I><SUP>3</SUP>+6<I>n</I><SUP>2</SUP>+4*<I>n</I>+1<BR>
+Donc :<BR>
+(<I>n</I>+1)<SUP>4</SUP>=<I>n</I><SUP>4</SUP>+4<I>s</I><SUB>3</SUB>(<I>n</I>)+6<I>s</I><SUB>2</SUB>(<I>n</I>)+4<I>s</I><SUB>1</SUB>(<I>n</I>)+<I>n</I>
+Donc :
+4<I>s</I><SUB>3</SUB>(<I>n</I>)= (<I>n</I>+1)<SUP>4</SUP>−<I>n</I>*(<I>n</I>+1)*(2*<I>n</I>+1)−2<I>n</I>(<I>n</I>+1)−<I>n</I>−1=(<I>n</I>+1)((<I>n</I>+1)<SUP>3</SUP>−<I>n</I>(2*<I>n</I>+1)−2<I>n</I>−1)<BR>
+4<I>s</I><SUB>3</SUB>(<I>n</I>)=(<I>n</I>+1)<SUP>2</SUP>((<I>n</I>+1)<SUP>2</SUP>−(2*<I>n</I>+1))=(<I>n</I>+1)<SUP>2</SUP><I>n</I><SUP>2</SUP>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUB>3</SUB>(<I>n</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP>(<I>n</I>+1)<SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On peut aussi remarquer que :<BR>
+<I>p</I><SUP>2</SUP>*(<I>p</I>+1)<SUP>2</SUP>/4−(<I>p</I>−1)<SUP>2</SUP>*<I>p</I><SUP>2</SUP>/4=<I>p</I><SUP>3</SUP><BR>
+Donc la primitive discète du polynôme
+<I>x</I><SUP>3</SUP> est le polynôme (<I>x</I>−1)<SUP>2</SUP><I>x</I><SUP>2</SUP>/4.<BR>
+On a donc :<BR>
+4<I>s</I><SUB>3</SUB>=∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>4<I>p</I><SUP>3</SUP>=∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>(<I>p</I><SUP>2</SUP>(<I>p</I>+1)<SUP>2</SUP>−(<I>p</I>−1)<SUP>2</SUP><I>p</I><SUP>2</SUP>)=<I>n</I><SUP>2</SUP>(<I>n</I>+1)<SUP>2</SUP><BR>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>factor(sum(k</TT><CODE><TT>^</TT></CODE><TT>3,k=1..n))</TT><BR>
+On obtient :<BR>
+<TT>(n</TT><CODE><TT>^</TT></CODE><TT>2*(n+1)</TT><CODE><TT>^</TT></CODE><TT>2)/4</TT>
+</P><H2 CLASS="section"><A NAME="toc139"></A><A NAME="htoc373">25.3</A>  Primitive discrète d’un polynôme</H2><H3 CLASS="subsection"><A NAME="htoc374">25.3.1</A>  Comment trouver la primitive discrète d’un polynôme</H3><P>
+Soit <I>P</I> un polynôme de degré <I>d</I>.<BR>
+On veut calculer pour tout entier <I>n</I> ∈ ℕ les sommes :
+ ∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>P</I>(<I>k</I>)<BR>
+On cherche donc une primitive discrète de <I>P</I> c’est à dire une fonction <I>f</I>
+telle qu’on ait pour tout <I>x</I> ∈ ℝ <I>f</I>(<I>x</I>+1)−<I>f</I>(<I>x</I>)=<I>P</I>(<I>x</I>).<BR>
+Cela entraine que pour tout entier <I>n</I> ∈ ℕ on a :<BR>
+ <I>f</I>(<I>n</I>+1)−<I>f</I>(0)=∑<SUB><I>k</I>=<I>p</I></SUB><SUP><I>n</I></SUP><I>P</I>(<I>k</I>).<BR>
+Donc pour tout entier <I>n</I> ∈ ℕ on doit avoir  <I>f</I>(<I>n</I>+1)−<I>f</I>(<I>n</I>)=<I>P</I>(<I>n</I>)
+On cherche si <I>P</I> a comme primitive discrète un polynôme <I>Q</I>.
+Si c’est le cas le polynôme <I>Q</I> doit vérifier : 
+<I>Q</I>(<I>x</I>+1)−<I>Q</I>(<I>x</I>)=<I>P</I>(<I>x</I>) avec <I>P</I> un polynôme de degré <I>d</I> donc <I>Q</I> est défini 
+à une constante près et est de degré <I>d</I>+1. Donc <I>Q</I> est 
+entièrement défini par <I>d</I>+2 valeurs qui sont par exemple :<BR>
+<I>Q</I>(0)=0=<I>q</I><SUB>0</SUB>
+<I>Q</I>(1)=<I>P</I>(0)=<I>q</I><SUB>1</SUB><BR>
+<I>Q</I>(2)=<I>P</I>(0)+<I>P</I>(1)=<I>q</I><SUB>2</SUB><BR>
+<I>Q</I>(3)=<I>P</I>(0)+<I>P</I>(1)+<I>P</I>(2)=<I>q</I><SUB>3</SUB><BR>
+.....<BR>
+<I>Q</I>(<I>d</I>+1)=<I>P</I>(0)+<I>P</I>(1)+...+<I>P</I>(<I>d</I>)=<I>q</I><SUB><I>d</I>+1</SUB><BR>
+On calcule <I>q</I><SUB>0</SUB>,<I>q</I><SUB>1</SUB>...,<I>q</I><SUB><I>d</I>+1</SUB> et on définit <I>Q</I> comme étant le polynôme
+d’interpolation de Lagrange des points (<I>k</I>,<I>p</I><SUB><I>k</I></SUB>) pour <I>k</I>=0..<I>d</I>+1.<BR>
+Soit <I>R</I> le polynôme définit par <I>R</I>(<I>x</I>)=<I>Q</I>(<I>x</I>+1)−<I>Q</I>(<I>x</I>).<BR>
+Puisque <I>Q</I> est de degré <I>d</I>+1, on en déduit que <I>R</I> est de degré <I>d</I>.<BR>
+Comme  <I>Q</I>(<I>k</I>+1)−<I>Q</I>(<I>k</I>)=<I>P</I>(<I>k</I>) pour <I>k</I>=0..<I>d</I>, on a :<BR>
+<I>R</I>(<I>k</I>)=<I>P</I>(<I>k</I>) pour <I>k</I>=0..<I>d</I>.<BR>
+<I>R</I> et <I>P</I> ont même degré <I>d</I> et ils sont égaux en <I>d</I>+1 valeurs donc :<BR>
+pour tout <I>x</I> ∈ ℝ on a <I>P</I>(<I>x</I>)=<I>R</I>(<I>x</I>)=<I>Q</I>(<I>x</I>+1)−<I>Q</I>(<I>x</I>).<BR>
+Donc <I>Q</I> est bien une primitive discrète de <I>P</I>.</P><H3 CLASS="subsection"><A NAME="htoc375">25.3.2</A>  Reprenons les exemples précédents</H3><P>
+Cherchons la primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><BR>
+La primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I> est égale au
+polynôme de d’interpolation de Lagrange des points :<BR>
+(0,0), (1,0), (2,1).<BR>
+On tape :<BR>
+<TT>factor(lagrange([0,1,2],[0,0,1]))</TT><BR>
+On obtient :<BR>
+<TT>(x*(x-1))/2x</TT><BR>
+Cherchons la primitive discrète de <I>P</I>(<I>x</I>)=2*<I>x</I>−1<BR>
+La primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><SUP>2</SUP> est égale au
+polynôme de d’interpolation de Lagrange des points :<BR>
+(0,0), (1,−1), (2,0).<BR>
+On tape :<BR>
+<TT>factor(lagrange([0,1,2],[0,-1,0]))</TT><BR>
+On obtient :<BR>
+<TT>x*(x-2)</TT><BR>
+Cherchons la primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
+La primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><SUP>2</SUP> est égale au polynôme de 
+d’interpolation de Lagrange des points :<BR>
+(0,0), (1,0), (2,1), (3,5).<BR>
+On tape :<BR>
+<TT>factor(lagrange([0,1,2,3],[0,0,1,5]))</TT><BR>
+On obtient :<BR>
+<TT>(x*(x-1)*(2*x-1))/6</TT><BR>
+Cherchons la primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><SUP>3</SUP>.<BR>
+La primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><SUP>3</SUP> est égale au polynôme de 
+d’interpolation de Lagrange des points :<BR>
+(0,0), (1,0), (2,1), (3,9), (4,36).<BR>
+On tape :<BR>
+<TT>factor(lagrange([0,1,2,3,4],[0,0,1,9,36]))</TT><BR>
+On obtient :<BR>
+<TT>(x</TT><CODE><TT>^</TT></CODE><TT>2*(x-1)</TT><CODE><TT>^</TT></CODE><TT>2)/4</TT>
+Cherchons la primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><SUP>4</SUP>.<BR>
+La primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><SUP>4</SUP> est égale au polynôme de 
+d’interpolation de Lagrange des points :<BR>
+(0,0), (1,0), (2,1), (3,17), (4,98), (5,354).<BR>
+On tape :<BR>
+<TT>factor(lagrange([0,1,2,3,4,5],[0,0,1,17,98,354]))</TT><BR>
+On obtient :<BR>
+<TT>(x*(x-1)*(2*x-1)*(3*x</TT><CODE><TT>^</TT></CODE><TT>2-3*x-1))/30</TT><BR>
+On en déduit le calcul de <I>s</I><SUB>4</SUB>(<I>n</I>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I><SUP>4</SUP> :<BR>
+On tape :<BR>
+<TT>factor(subst((x*(x-1)*(2*x-1)*(3*x</TT><CODE><TT>^</TT></CODE><TT>2-3*x-1))/30,x=n+1))</TT><BR>
+On obtient :<BR>
+<TT>(n*(n+1)*(2*n+1)*(3*n</TT><CODE><TT>^</TT></CODE><TT>2+3*n-1))/30</TT><BR>
+<I>s</I><SUB>4</SUB>(<I>n</I>)=<I>n</I>*(<I>n</I>+1)*(2*<I>n</I>+1)*(3*<I>n</I><SUP>2</SUP>+3*<I>n</I>−1)/30
+Ou on tape :<BR>
+<TT>factor(sum(k</TT><CODE><TT>^</TT></CODE><TT>4,k=1..n))</TT><BR>
+On obtient :<BR>
+<TT>(n*(n+1)*(2*n+1)*(3*n</TT><CODE><TT>^</TT></CODE><TT>2+3*n-1))/30</TT>
+</P><H3 CLASS="subsection"><A NAME="htoc376">25.3.3</A>  Exercice</H3><P>
+Calculer   ∑<SUB><I>k</I>=4</SUB><SUP>10</SUP><I>k</I><SUP>2</SUP>+2*<I>k</I>−1 
+et   ∑<SUB><I>k</I>=4+√<SPAN style="text-decoration:overline">2</SPAN></SUB><SUP>10+√<SPAN style="text-decoration:overline">2</SPAN></SUP><I>k</I><SUP>2</SUP>+2*<I>k</I>−1<BR>
+Cherchons la primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>+2<I>x</I>−1.<BR>
+La primitive discrète de <I>P</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>+2<I>x</I>−1 est égale au polynôme de 
+d’interpolation de Lagrange des points :<BR>
+(0,0), (1,−1), (2,1), (3,8).<BR>
+On tape :<BR>
+<TT>factor(lagrange([0,1,2,3],[0,-1,1,8]))</TT><BR>
+On obtient :<BR>
+<TT>(x*(2*x</TT><CODE><TT>^</TT></CODE><TT>2+3*x-11))/6</TT><BR>
+On tape :<BR>
+<TT>f(x):=(x*(2*x</TT><CODE><TT>^</TT></CODE><TT>2+3*x-11))/6</TT><BR>
+Ou on tape directement pour définir <TT>f</TT> :<BR>
+<TT>f:=unapply(factor(lagrange([0,1,2,3],[0,-1,1,8])),x)</TT><BR>
+On tape :<BR>
+<TT>f(11)-f(4)</TT><BR>
+On obtient :<BR>
+<TT>462</TT><BR>
+On vérifie :<BR>
+On tape :<BR>
+<TT>sum(k</TT><CODE><TT>^</TT></CODE><TT>2+2*k-1,k=4..10)</TT><BR>
+On obtient :<BR>
+<TT>462</TT><BR>
+On tape :<BR>
+<TT>normal(f(11+sqrt(2))-f(4+sqrt(2)))</TT><BR>
+On obtient :<BR>
+<TT>112*sqrt(2)+476</TT><BR>
+On vérifie :<BR>
+On tape :<BR>
+<TT>normal(sum(k</TT><CODE><TT>^</TT></CODE><TT>2+2*k-1,k=4+sqrt(2)..10+sqrt(2)))</TT><BR>
+On obtient :<BR>
+<TT>112*sqrt(2)+476</TT></P><H2 CLASS="section"><A NAME="toc140"></A><A NAME="htoc377">25.4</A>  Calcul de ∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>k</I><SUP><I>p</I></SUP>comb(<I>n</I>,<I>k</I>) pour <I>p</I>=0,1,2,3</H2><H3 CLASS="subsection"><A NAME="htoc378">25.4.1</A>  Calcul de <I>s</I><SUB>0</SUB>(<I>n</I>)=∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP>comb(<I>n</I>,<I>k</I>)</H3><P>
+On sait que :<BR>
+(<I>a</I>+<I>b</I>)<SUP><I>n</I></SUP>=∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP>comb(<I>n</I>,<I>k</I>)<I>a</I><SUP><I>k</I></SUP><I>b</I><SUP><I>n</I>−<I>k</I></SUP><BR>
+donc<BR>
+<I>s</I><SUB>0</SUB>(<I>n</I>)=∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP>comb(<I>n</I>,<I>k</I>)=(1+1)<SUP><I>n</I></SUP>=2<SUP><I>n</I></SUP><BR>
+Donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUB>0</SUB>(<I>n</I>)=2<SUP><I>n</I></SUP></TD></TR>
+</TABLE><P>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>sum(comb(n,k),k=0..n)</TT><BR>
+On obtient :<BR>
+<TT>2</TT><CODE><TT>^</TT></CODE><TT>n</TT></P><H3 CLASS="subsection"><A NAME="htoc379">25.4.2</A>  Calcul de <I>s</I><SUB>1</SUB>(<I>n</I>)=∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>k</I>*comb(<I>n</I>,<I>k</I>)</H3><P>
+On sait que :<BR>
+comb(<I>n</I>,<I>k</I>)=<I>n</I>!/<I>k</I>!(<I>n</I>−<I>k</I>)!<BR>
+Donc :<BR>
+<I>k</I>*comb(<I>n</I>,<I>k</I>)=<I>n</I>*comb(<I>n</I>−1,<I>k</I>−1)<BR>
+On a :<BR>
+<I>s</I><SUB>1</SUB>(<I>n</I>)=∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>k</I>*comb(<I>n</I>,<I>k</I>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I>*comb(<I>n</I>,<I>k</I>)=<BR>
+<I>n</I>*∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>comb(<I>n</I>−1,<I>k</I>−1)=<I>n</I>*∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP>comb(<I>n</I>−1,<I>k</I>)=<I>n</I>*2<SUP><I>n</I>−1</SUP><BR>
+Donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUB>1</SUB>(<I>n</I>)=<I>n</I>*2<SUP><I>n</I>−1</SUP></TD></TR>
+</TABLE><P>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>sum(k*comb(n,k),k=0..n)</TT><BR>
+On obtient :<BR>
+<TT>n*2</TT><CODE><TT>^</TT></CODE><TT>(n-1)</TT>
+</P><H3 CLASS="subsection"><A NAME="htoc380">25.4.3</A>  Calcul de <I>s</I><SUB>2</SUB>(<I>n</I>)=∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>k</I><SUP>2</SUP>*comb(<I>n</I>,<I>k</I>)</H3><P>
+On sait que :<BR>
+comb(<I>n</I>,<I>k</I>)=<I>n</I>!/<I>k</I>!(<I>n</I>−<I>k</I>)! et<BR>
+∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>k</I>*comb(<I>n</I>,<I>k</I>)=<I>n</I>*2<SUP><I>n</I>−1</SUP><BR>
+Donc :<BR>
+<I>k</I><SUP>2</SUP>*comb(<I>n</I>,<I>k</I>)=<I>n</I>*<I>k</I>*comb(<I>n</I>−1,<I>k</I>−1)
+On a :<BR>
+<I>s</I><SUB>2</SUB>(<I>n</I>)=∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>k</I><SUP>2</SUP>*comb(<I>n</I>,<I>k</I>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I><SUP>2</SUP>*comb(<I>n</I>,<I>k</I>)=<BR>
+<I>n</I>*∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I>*comb(<I>n</I>−1,<I>k</I>−1)=<I>n</I>*∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP>(<I>k</I>+1)*comb(<I>n</I>−1,<I>k</I>)=<BR>
+<I>n</I>*∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP><I>k</I>*comb(<I>n</I>−1,<I>k</I>)+<I>n</I>*∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP>comb(<I>n</I>−1,<I>k</I>)=<BR>
+<I>n</I>*(<I>n</I>−1)*2<SUP><I>n</I>−2</SUP>+<I>n</I>*2<SUP><I>n</I>−1</SUP>=<I>n</I>(<I>n</I>+1)2<SUP><I>n</I>−2</SUP>=<I>n</I>(<I>s</I><SUB>(</SUB><I>n</I>−1)+<I>s</I><SUB>0</SUB>(<I>n</I>−1))<BR>
+Donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUB>2</SUB>(<I>n</I>)=<I>n</I>(<I>n</I>+1)2<SUP><I>n</I>−2</SUP></TD></TR>
+</TABLE><P>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>s2:=sum(k</TT><CODE><TT>^</TT></CODE><TT>2*comb(n,k),k=0..n)</TT><BR>
+<TT>factor(subst(s2,2</TT><CODE><TT>^</TT></CODE><TT>(n-1),2*2</TT><CODE><TT>^</TT></CODE><TT>(n-2)))</TT>
+On obtient :<BR>
+<TT>n*(n+1)*2</TT><CODE><TT>^</TT></CODE><TT>(n-2)</TT>
+</P><H3 CLASS="subsection"><A NAME="htoc381">25.4.4</A>  Calcul de ∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>k</I><SUP>3</SUP>*comb(<I>n</I>,<I>k</I>)</H3><P>
+On sait que :<BR>
+comb(<I>n</I>,<I>k</I>)=<I>n</I>!/<I>k</I>!(<I>n</I>−<I>k</I>)! et<BR>
+∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>k</I><SUP>2</SUP>*comb(<I>n</I>,<I>k</I>)=<I>n</I>(<I>n</I>+1)2<SUP><I>n</I>−2</SUP><BR>
+Donc :<BR>
+<I>s</I><SUB>3</SUB>(<I>n</I>)=<I>k</I><SUP>3</SUP>*comb(<I>n</I>,<I>k</I>)=<I>n</I>*<I>k</I><SUP>2</SUP>*comb(<I>n</I>−1,<I>k</I>−1)
+On a :<BR>
+∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>k</I><SUP>3</SUP>*comb(<I>n</I>,<I>k</I>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I><SUP>3</SUP>*comb(<I>n</I>,<I>k</I>)=<BR>
+<I>n</I>*∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP><I>k</I><SUP>2</SUP>*comb(<I>n</I>−1,<I>k</I>−1)=<I>n</I>*∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP>(<I>k</I>+1)<SUP>2</SUP>*comb(<I>n</I>−1,<I>k</I>)=<BR>
+<I>n</I>(<I>s</I><SUB>2</SUB>(<I>n</I>−1)+2*<I>s</I><SUB>1</SUB>(<I>n</I>−1)+<I>s</I><SUB>0</SUB>(<I>n</I>−1))=<BR>
+<I>n</I>(<I>n</I>(<I>n</I>−1)*2<SUP><I>n</I>−3</SUP>+2(<I>n</I>−1)2<SUP><I>n</I>−2</SUP>+2<SUP><I>n</I>−1</SUP>)=<I>n</I>(<I>n</I>(<I>n</I>−1)+4(<I>n</I>−1)+4)2<SUP><I>n</I>−3</SUP>=<I>n</I><SUP>2</SUP>(<I>n</I>+3)2<SUP><I>n</I>−3</SUP><BR>
+Donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I><SUB>3</SUB>(<I>n</I>)=<I>n</I><SUP>2</SUP>(<I>n</I>+3)2<SUP><I>n</I>−3</SUP></TD></TR>
+</TABLE><P>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>s3:=sum(k</TT><CODE><TT>^</TT></CODE><TT>3*comb(n,k),k=0..n)</TT><BR>
+<TT>factor(subst(subst(s3,2</TT><CODE><TT>^</TT></CODE><TT>(n-2),2</TT><CODE><TT>^</TT></CODE><TT>(n-3)*2),2</TT><CODE><TT>^</TT></CODE><TT>(n-1),2</TT><CODE><TT>^</TT></CODE><TT>(n-3)*4))</TT><BR>
+On obtient :<BR>
+<TT>n</TT><CODE><TT>^</TT></CODE><TT>2*(n+3)*2</TT><CODE><TT>^</TT></CODE><TT>(n-3)</TT>
+</P><H2 CLASS="section"><A NAME="toc141"></A><A NAME="htoc382">25.5</A>  Calcul de ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>f</I>(<I>k</I>)</H2><H3 CLASS="subsection"><A NAME="htoc383">25.5.1</A>  Calcul de ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>k</I>(<I>k</I>+1)</H3><P>
+On remarque que :<BR>
+1/<I>k</I>(<I>k</I>+1)=1/<I>k</I>−1/<I>k</I>+1<BR>
+Donc que :<BR>
+<I>s</I>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>k</I>(<I>k</I>+1)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>k</I>−1/<I>k</I>+1=1−1/<I>n</I>+1=<I>n</I>/<I>n</I>+1<BR>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>normal(sum(1/(k*(k+1)),k=1..n))</TT><BR>
+On obtient :<BR>
+<TT>n/(n+1)</TT></P><H3 CLASS="subsection"><A NAME="htoc384">25.5.2</A>  Calcul de <I>s</I>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/(2<I>k</I>−1)(2<I>k</I>+1)</H3><P>
+On remarque que :<BR>
+2/(2<I>k</I>−1)(2<I>k</I>+1)=1/2<I>k</I>−1−1/2<I>k</I>+1<BR>
+Donc que :<BR>
+2<I>s</I>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/(2<I>k</I>−1)(2<I>k</I>+1)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/2<I>k</I>−1−1/2<I>k</I>+1=1−1/2<I>n</I>+1=2<I>n</I>/2<I>n</I>+1<BR>
+Donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<I>n</I>+1</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>normal(sum(1/((2k-1)*(2k+1)),k=1..n))</TT><BR>
+On obtient :<BR>
+<TT>n/(2n+1)</TT></P><H3 CLASS="subsection"><A NAME="htoc385">25.5.3</A>  Calcul de ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>k</I>(<I>k</I>+2)</H3><P>
+On remarque que :<BR>
+2/(<I>k</I>)(<I>k</I>+2)=1/<I>k</I>−1/<I>k</I>+2<BR>
+Donc que :<BR>
+ 2<I>s</I>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>k</I>(<I>k</I>+2)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>k</I>−1/<I>k</I>+2=∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>1/<I>p</I>−∑<SUB><I>p</I>=3</SUB><SUP><I>n</I>+2</SUP>1/<I>p</I>=1+1/2−1/<I>n</I>+1−1/<I>n</I>+2=3*<I>n</I><SUP>2</SUP>+5*<I>n</I>/2*<I>n</I><SUP>2</SUP>+6*<I>n</I>+4<BR>
+Donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">3*<I>n</I><SUP>2</SUP>+5*<I>n</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">4*<I>n</I><SUP>2</SUP>+12*<I>n</I>+8</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>normal(sum(1/(k*(k+2)),k=1..n))</TT><BR>
+On obtient :<BR>
+<TT>(3*n</TT><CODE><TT>^</TT></CODE><TT>2+5*n)/(4*n</TT><CODE><TT>^</TT></CODE><TT>2+12*n+8)</TT></P><H3 CLASS="subsection"><A NAME="htoc386">25.5.4</A>  Calcul de ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>k</I>(<I>k</I>+1)(<I>k</I>+2)</H3><P>
+On tape :
+<TT>partfrac(1/(k*(k+1)*(k+2)),k)</TT><BR>
+On obtient :<BR>
+<TT>1/(k*2)-1/(k+1)+1/((k+2)*2)</TT><BR>
+Donc :<BR>
+2*<I>s</I>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>k</I>−1/(<I>k</I>+1)−(1/(<I>k</I>+1)−1/(<I>k</I>+2))=<BR>
+∑<SUB><I>p</I>=1</SUB><SUP><I>n</I></SUP>1/<I>p</I>−1/(<I>p</I>+1)−∑<SUB><I>k</I>=2</SUB><SUP><I>n</I>+1</SUP>1/<I>p</I>−1/(<I>p</I>+1)=<BR>
+2<I>s</I>=1−1/2−1/<I>n</I>+1+1/(<I>n</I>+2)=(<I>n</I><SUP>2</SUP>+3*<I>n</I>)/(2*<I>n</I><SUP>2</SUP>+6*<I>n</I>+4)
+Donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>s</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP>+3*<I>n</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">4*<I>n</I><SUP>2</SUP>+12*<I>n</I>+8</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+Avec <TT>Xcas</TT>, on tape :<BR>
+<TT>normal(sum(1/(k*(k+2)),k=1..n))</TT><BR>
+On obtient :<BR>
+<TT>(n</TT><CODE><TT>^</TT></CODE><TT>2+3*n)/(4*n</TT><CODE><TT>^</TT></CODE><TT>2+12*n+8)</TT>)</P><H2 CLASS="section"><A NAME="toc142"></A><A NAME="htoc387">25.6</A>  Des calculs de sommes avec un programme</H2><P>
+On veut savoir si la convergence d’une série est lente ou rapide, par exemple 
+savoir combien il faut de termes pour que
+∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/<I>k</I>&gt;10.<BR>
+On peut taper :<BR>
+<TT>sum(1./n,n=1..20000)</TT><BR>
+On obtient :<BR>
+<TT>0.1048072821722932757281444e2</TT><BR>
+ou faire un calcul exact plus long :<BR>
+<TT>s:=sum(1/n,n=1..20000)</TT><BR>
+On obtient :<BR>
+<TT>Integer_too_large_for_display/Integer_too_large_for_display</TT>
+On tape alors :<BR>
+<TT>evalf(s)</TT><BR>
+On obtient :<BR>
+<TT>0.1048072821722932757281444e2</TT>
+On veut voir l’incidence qu’il y a sur la précision et sur le temmps 
+d’exécution selon que l’on commence à faire la somme par le plus petit 
+indice ou par le plus grand indice ou faire la somme avec une procédure 
+récursive.<BR>
+On suppose <I>a</I>≤ <I>b</I> sinon on échange <I>a</I> et <I>b</I>.
+</P><PRE CLASS="verbatim">//som1 fait la somme de a jusque b 
+som1(u,a,b):={
+local k,c,s;
+si b&lt;a alors c:=b;b:=a;a:=c;fsi;
+s:=0;
+pour k de a jusque b faire
+s:=s+u(k);
+fpour;
+return s;
+}
+:;
+//som2 fait la somme de b jusque a
+som2(u,a,b):={
+local k,c,s;
+si b&lt;a alors c:=b;b:=a;a:=c;fsi;
+s:=0;
+pour k de b jusque a pas -1 faire
+s:=s+u(k);
+fpour;
+return s;
+}
+:;
+//som3 fait la somme recusivement en partageant en 2
+som3(u,a,b):={
+local k,c,s;
+si a&gt;b alors return som3(u,b,a); fsi;
+si a==b alors return u(a); fsi;
+si b==a+1 alors return u(a)+u(b); fsi; 
+c:=floor((a+b)/2);
+return som3(u,a,c)+som3(u,c+1,b);
+}:;
+</PRE><P>On pose :<BR>
+<TT>u(n):=1/n</TT><BR>
+et<BR>
+<TT>v(n):=1./n</TT></P><P>Pour faire des calculs exacts, on tape :<BR>
+<TT>evalf(som1(u,1,100000))</TT> (Evaluation time: 22.6)<BR>
+<TT>evalf(som2(u,1,100000))</TT> (Evaluation time: 33.24)<BR>
+<TT>evalf(som3(u,1,100000))</TT> (Evaluation time: 29.92)<BR>
+On obtient avec 24 digits :<BR>
+<TT>0.1209014612986342794736320e2</TT><BR>
+Le résultat est bien sûr le même car les calculs sont faits de façon
+exacte et seule la réponse est donnée de façon approchée. <TT>som1</TT> est plus rapide car on ajoute au début des fractions qui 
+ont un petit dénominateur, <TT>som2</TT> est plus lente car on ajoute au 
+toujours des fractions qui ont un grand dénominateur et <TT>som3</TT> est 
+intermédiaire mais plutot plus lente car on fait appel à <TT>som3(u,c+1,b)</TT>
+où on ajoute des fractions qui ont un grand dénominateur à
+<TT>som3(u,a,c)</TT> qui elle aussi comporte des termes ayant un grand 
+dénominateur.</P><P>Pour faire des calculs approchés, on tape :<BR>
+<TT>som1(v,1,100000)</TT><BR>
+On obtient avec 24 digits (Evaluation time: 7.14) :<BR>
+<TT>0.1209014612986342794736311e2</TT><BR>
+<TT>som2(v,1,100000)</TT><BR>
+On obtient avec 24 digits (Evaluation time: 7.16) :<BR>
+<TT>0.1209014612986342794736294e2</TT><BR>
+<TT>som3(v,1,100000)</TT><BR>
+On obtient avec 24 digits (Evaluation time: 30.74) :<BR>
+<TT>0.1209014612986342794736320e2</TT><BR>
+La procédure récursive est nettement plus longue à exécuter mais par 
+contre elle donne un meilleur résultat.
+</P>Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
 <A HREF="casexo024.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casexo026.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

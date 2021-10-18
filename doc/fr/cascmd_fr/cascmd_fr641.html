@@ -6,30 +6,21 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Algorithme du gradient conjugué : conjugate_gradient</TITLE>
+<TITLE>Matrice d’une forme quadratique : q2a</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr640.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr642.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc752">6.52.4</A>  Algorithme du gradient conjugué : <TT>conjugate_gradient</TT></H3><P><A NAME="@default1162"></A>
-<TT>conjugate_gradient(A,y,x0,eps)</TT> met en œuvre l’algorithme du gradient 
-conjugué pour résoudre <I>A</I>*<I>x</I>=<I>y</I> à <I>eps</I> près, lorsque <I>A</I> est une 
-matrice symétrique définie positive et <I>x</I><SUB>0</SUB> une solution initiale 
-approchée optionnelle.<BR>
+<H3 CLASS="subsection"><A NAME="htoc753">6.53.1</A>  Matrice d’une forme quadratique : <TT>q2a</TT></H3><P><A NAME="@default1163"></A> 
+<TT>q2a</TT> a deux arguments : une forme quadratique <I>q</I> et le 
+vecteur de composantes les variables utilisées.<BR>
+<TT>q2a</TT> renvoie la matrice <I>A</I> associée à <I>q</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>q2a(2*x*y,[x,y])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[5/9,-1/9]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0.555,-0.11]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-10)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0.555555555556,-0.111111111111]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[0,1],[1,0]]</TT></DIV><HR>
 <A HREF="cascmd_fr640.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr642.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

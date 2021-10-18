@@ -6,31 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Généralités</TITLE>
+<TITLE>Orthogonalité de 2 droites ou 2 sphères : is_orthogonal est_orthogonal</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1034.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1036.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1203">10.14.1</A>  Généralités</H3><P>
-Les transformations ci-dessous :<BR>
-<TT>translation, rotation, homothetie, similitude, symetrie, inversion</TT>,
-<TT>projection</TT><BR>
-peuvent toujours être considérées, soit 
-comme des fonctions (les arguments sont les paramètres servant à définir 
-la transformation), soit comme agissant sur le dernier argument (les premiers
-arguments sont les paramètres servant à définir la transformation et 
-l’objet géométrique à transformer est mis comme dernier paramètre).<BR>
-L’objet géométrique à transformer peut être de tout type comme point, 
-droite, plan, polygone, polyèdre, cercle (en 3-d un cercle est considéré 
-comme une courbe paramétrée), courbe paramétrée, sphère, 
-surface etc...<BR>
-Par exemple si <TT>P</TT> est l’objet géométrique à transformer on peut 
-avoir :<BR>
-<TT>P:=point(1,1,1)</TT> ou <TT>P:=droite(z=0,x=1)</TT> ou <TT>P:=plan(z=0)</TT>
-ou <TT>P:=sphere(point(1,1,1),1)</TT> ou <TT>P:=plotfunc(x2-y2,[x,y])</TT> ou <TT>P:=demi_cone([0,0,0],[0,0,1],pi/6)</TT>
-etc...</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1213">11.13.5</A>  Orthogonalité de 2 droites ou 2 sphères : <TT>is_orthogonal est_orthogonal</TT></H3><P><A NAME="@default2004"></A><A NAME="@default2005"></A><A NAME="sec:estortho3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr969.html#sec:estortho2">10.18.13</A> pour la géométrie plane et
+<A HREF="cascmd_fr1034.html#sec:estperp3">11.13.4</A> pour la perpendicularité 3-d.<BR>
+<TT>est_orthogonal</TT> est une fonction booléenne ayant comme 
+argument deux droites ou deux sphères ou une droite et un plan ou d
+eux plans.<BR>
+ <TT>est_orthogonal</TT> vaut 1 si les deux droites ou les deux sphères (i.e
+si les plans tangents en leurs points d’intersection sont orthogonaux), 
+ou la droite et le plan ou les deux plans sont orthogonaux et vaut 0 sinon.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>est_orthogonal(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>est_orthogonal(droite([2,3,-2],[-1,-1,-1]), plan([-1,-1,-1],[-1,0,3],[-2,0,0]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>est_orthogonal(plan([0,0,0],[1,2,-3],[1,1,-2]), plan([-1,-1,-1],[1,2,-3],[0,0,0]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>est_orthogonal(sphere([0,0,0],sqrt(2)), sphere([2,0,0],sqrt(2)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr1034.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1036.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

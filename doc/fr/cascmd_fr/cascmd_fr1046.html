@@ -6,24 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La sphère : sphere</TITLE>
+<TITLE>La translation : translation</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1045.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1047.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1215">10.15.4</A>  La sphère : <TT>sphere</TT></H3><P><A NAME="@default2024"></A>
-<TT>sphere </TT> a comme argument soit deux points (le diamètre de la 
-sphère) soit un point et un réel (son centre et son rayon).<BR>
-<TT>sphere(A,B)</TT> (resp <TT>sphere(A,r)</TT>) trace la sphère de diamètre 
-<TT>AB</TT> (resp centre <TT>A</TT> et de rayon <TT>r</TT>) dans l’espace 3-d.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1225">11.14.2</A>  La translation : <TT>translation</TT></H3><P><A NAME="@default2023"></A><A NAME="sec:translation3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr950.html#sec:translation2">10.17.2</A> pour la géométrie plane.<BR>
+<TT>translation</TT>, en géométrie 3-d, a un ou deux arguments : 
+le vecteur de translation donné par la liste de ses coordonnées et 
+éventuellement l’objet géométrique à transformer.<BR>
+Lorsque <TT>translation</TT> a un argument, c’est une fonction qui agit sur un 
+objet géométrique.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sphere([-2,0,0],[2,0,0])</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>sphere([0,0,0],2) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>t:=translation([1,1,1])</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>t(point(1,2,3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La sphère de centre l’origine et de rayon 2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le point (2,3,4) est tracé</TT></DIV><P>
+Lorsque <TT>translation</TT> a deux arguments, <TT>translation</TT> dessine et 
+renvoie le transformé du deuxième argument dans la translation de vecteur 
+le premier argument.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>translation([1,1,1], point(1,2,3))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (2,3,4) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>translation([1,1,1],droite([0,0,0],[1,2,3]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>La droite passant par les points (1,1,1) et (2,3,4)</TT></DIV><HR>
 <A HREF="cascmd_fr1045.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1047.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

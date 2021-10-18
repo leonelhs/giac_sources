@@ -411,7 +411,7 @@ namespace giac {
     vecteur & v =*f._VECTptr;
     vecteur vars=rm_checktype(gen2vecteur(v[0]),contextptr),res1,res2(1,undef),res3,res4;
     for (unsigned i=0;i<vars.size();++i){
-      if (equalposcomp(vars,vars[i])!=i+1)
+      if (equalposcomp(vars,vars[i])!=int(i+1))
 	res += gettext("// Warning, duplicate argument name: ")+vars[i].print(contextptr)+'\n';
     }
     gen prog=v.back();
@@ -1004,7 +1004,7 @@ namespace giac {
 #if !defined(WIN32) && defined HAVE_PTHREAD_H
     if (contextptr){
       // CERR << &slevel << " " << thread_param_ptr(contextptr)->stackaddr << endl;
-      if ( ((unsigned long) &res) < ((unsigned long) thread_param_ptr(contextptr)->stackaddr)+8192){
+      if ( ((size_t) &res) < ((size_t) thread_param_ptr(contextptr)->stackaddr)+8192){
 	gensizeerr(gettext("Too many recursion levels"),res); 
 	return res;
       }
@@ -3590,7 +3590,7 @@ namespace giac {
       if (nstep.type!=_INT_ || nstep.val<0 || nstep.val>LIST_SIZE_LIMIT)
 	return gendimerr(contextptr);
       vecteur res;
-      for (unsigned i=0;i<=nstep.val;++i){
+      for (unsigned i=0;int(i)<=nstep.val;++i){
 	res.push_back(a1);
 	a1 += b1;
       }
@@ -5179,7 +5179,7 @@ namespace giac {
 	    bool pos; // pos should be true after next call since zn is > 0
 	    zint2simpldoublpos(zn,a,b,pos,d.val,contextptr);
 	    if (pos){
-	      if (n==1)
+	      if (0 && n==1)
 		wi=b*pow(fast_divide_by_icontent(f0,z/a),f._VECTptr->back(),contextptr);
 	      else
 		wi=b*pow(a,inv(d,contextptr),contextptr)*pow(fast_divide_by_icontent(f0,z),f._VECTptr->back(),contextptr);
@@ -5740,7 +5740,7 @@ namespace giac {
   }
 
   // TI89/92 function/program translate
-#ifdef WIN32
+#if defined(WIN32) || defined(BESTA_OS)
 #define BUFFER_SIZE 16384
 #endif
 

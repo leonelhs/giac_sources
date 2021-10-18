@@ -13,7 +13,7 @@
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascas015.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H1 CLASS="chapter"><A NAME="htoc236">Chapitre 14</A>  Pour s’amuser avec des dessins récursifs</H1><H2 CLASS="section"><A NAME="toc85"></A><A NAME="htoc237">14.1</A>  Les sapins</H2><PRE CLASS="verbatim">sapin(x,y):={
+<H1 CLASS="chapter"><A NAME="htoc223">Chapitre 14</A>  Pour s’amuser avec des dessins récursifs</H1><H2 CLASS="section"><A NAME="toc78"></A><A NAME="htoc224">14.1</A>  Les sapins</H2><PRE CLASS="verbatim">sapin(x,y):={
  DispG();
  if (abs(x-y)&lt;0.5) {segment(x,y); return 0;}
  sapin(x,x+(y-x)*0.5*exp(i));
@@ -55,7 +55,7 @@ On tape :
     L:=L,sapin1(z0,z0+v*exp(i*t)*0.5,t);
     L:=L,sapin1(z0,z0+v*exp(-i*t)*0.5,t); 
     }:;
-</PRE><H2 CLASS="section"><A NAME="toc86"></A><A NAME="htoc238">14.2</A>  Les fleurs</H2><PRE CLASS="verbatim">fleur(x,y):={
+</PRE><H2 CLASS="section"><A NAME="toc79"></A><A NAME="htoc225">14.2</A>  Les fleurs</H2><PRE CLASS="verbatim">fleur(x,y):={
  DispG();
  if (abs(x-y)&lt;0.5) {segment(x,y);cercle(y,(y-x)*0.3); return 0;}
  segment(x,y);cercle(y,(y-x)*0.3);cercle(y,(y-x)*0.2);
@@ -65,7 +65,7 @@ On tape :
 </PRE><P>On tape :<BR>
 <TT>fleur(0,5*i)</TT><BR>
 On obtient le dessin dans <TT>DispG</TT>.
-</P><H2 CLASS="section"><A NAME="toc87"></A><A NAME="htoc239">14.3</A>  L’anémone</H2><PRE CLASS="verbatim">anemone(a,n,c):={
+</P><H2 CLASS="section"><A NAME="toc80"></A><A NAME="htoc226">14.3</A>  L’anémone</H2><PRE CLASS="verbatim">anemone(a,n,c):={
 local L;
 L:=NULL;
 L:=L,cercle(a+i*n,n);
@@ -77,7 +77,7 @@ retourne affichage(L,c+rempli),cercle(a,n/2,affichage=rempli+0);
 </PRE><P>On tape :<BR>
 <TT>anemone(0,5*i)</TT><BR>
 On obtient 
-</P><H2 CLASS="section"><A NAME="toc88"></A><A NAME="htoc240">14.4</A>  La tulipe</H2><PRE CLASS="verbatim">tulipe(a,n,c):={
+</P><H2 CLASS="section"><A NAME="toc81"></A><A NAME="htoc227">14.4</A>  La tulipe</H2><PRE CLASS="verbatim">tulipe(a,n,c):={
 local L;
 L:=L,cercle(a+i*n,n,3.15,6.4);
 L:=L,cercle(a+i*n-n,n,-0.1,1.58);
@@ -88,7 +88,7 @@ retourne affichage(L,c+rempli);
 </PRE><P>On tape :<BR>
 <TT>tulipe(0,5*i)</TT><BR>
 On obtient 
-</P><H2 CLASS="section"><A NAME="toc89"></A><A NAME="htoc241">14.5</A>  Les bouquets de fleurs</H2><P>
+</P><H2 CLASS="section"><A NAME="toc82"></A><A NAME="htoc228">14.5</A>  Les bouquets de fleurs</H2><P>
 Ici on veut avoir le dessin comme réponse, on met donc toute la suite des 
 instructions graphiques dans une liste <TT>L</TT> qui sera retournée comme 
 réponse.<BR>
@@ -127,7 +127,7 @@ On tape :<BR>
 <TT>fleurs3(0,5*i),fleurs3(0,3+4*i),fleurs1(14,14+6*i),fleurs1(14,19+6*i),
 legende(8.2+7i,"BONNE "),legende(8.2+5i,"ANNEE"),legende(8.4+3i,"2011")</TT><BR>
 
-</P><H2 CLASS="section"><A NAME="toc90"></A><A NAME="htoc242">14.6</A>  La fougère</H2><P>
+</P><H2 CLASS="section"><A NAME="toc83"></A><A NAME="htoc229">14.6</A>  La fougère</H2><P>
 Ce n’est pas un dessin récursif, mais c’est une une suite d’itérées. 
 Pour obtenir cette fougère, on va itérer un système de fonctions avec 
 poids aléatoires.
@@ -177,8 +177,8 @@ return P;
 <TT>affichage(2+point_point);fougere1(10,10000)</TT><BR>
 On obtient :<BR>
 
-<IMG SRC="cascas150.png">
-</P><H2 CLASS="section"><A NAME="toc91"></A><A NAME="htoc243">14.7</A>  Une autre fougère</H2><P>
+<IMG SRC="cascas121.png">
+</P><H2 CLASS="section"><A NAME="toc84"></A><A NAME="htoc230">14.7</A>  Une autre fougère</H2><P>
 Une application affine <I>f</I> de ℝ<SUP>2</SUP> dans ℝ<SUP>2</SUP> est définie par une matrice carrée <I>A</I> de dimension 2 et par un vecteur colonne <I>U</I> de de ℝ<SUP>2</SUP>, on a :<BR>
 <I>f</I>(<I>X</I>)=<I>A</I>*<I>X</I>+<I>U</I> pour tout vecteur colonne <I>X</I> de ℝ<SUP>2</SUP>.<BR>
 Pour faire cette nouvelle fougère, on fera comme précédemment les 
@@ -238,7 +238,7 @@ return P;
 </PRE><P>On tape :
 <TT>affichage(2+point_point);fougere2(3000)</TT><BR>
 On obtient :<BR>
-<IMG SRC="cascas151.png">
+<IMG SRC="cascas122.png">
 <B>Remarque</B>
 Ces 2 fougères sont sensiblement les mêmes : la première est décrite en 
 coordonnèes homogènes. Voici le programme <TT>fougere3</TT>
@@ -271,7 +271,7 @@ fpour;
 return P;
 }
 :;
-</PRE><H2 CLASS="section"><A NAME="toc92"></A><A NAME="htoc244">14.8</A>  Le choux-fleur</H2><H3 CLASS="subsection"><A NAME="htoc245">14.8.1</A>  L’énoncé</H3><P>
+</PRE><H2 CLASS="section"><A NAME="toc85"></A><A NAME="htoc231">14.8</A>  Le choux-fleur</H2><H3 CLASS="subsection"><A NAME="htoc232">14.8.1</A>  L’énoncé</H3><P>
 Soit la suite de fonctions <I>f</I><SUB><I>n</I></SUB> de [0;1] dans ℝ définie par :<BR>
 pour <I>n</I>=1 :
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I><SUB>1</SUB>(<I>x</I>)=
@@ -343,7 +343,7 @@ obtenus etc....<BR>
 Écrire un programme qui dessine les segments obtenus au bout de <I>n</I> fois 
 (mais pas les dessins intermédiaires). On remarquera que l’on obtient ainsi 
 le graphe de <I>S</I><SUB><I>n</I></SUB>.
-</LI></OL><H3 CLASS="subsection"><A NAME="htoc246">14.8.2</A>  La correction</H3><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+</LI></OL><H3 CLASS="subsection"><A NAME="htoc233">14.8.2</A>  La correction</H3><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
 On définit la fonction <TT>f(n,x)</TT> :
 <PRE CLASS="verbatim">f(n,x):={
 si x&lt;=1/2 alors
@@ -353,7 +353,7 @@ si n==1 alors return 1-x;sinon return f(n,x-1/2); fsi;
 }:;
 </PRE></LI><LI CLASS="li-enumerate">On tape :
 <TT>plotfunc(f(4,x),x=0..1,affichage=1)</TT><BR>
-On obtient :<P><IMG SRC="cascas152.png"></P></LI><LI CLASS="li-enumerate">On définit la fonction <TT>S(n,x)</TT> :
+On obtient :<P><IMG SRC="cascas123.png"></P></LI><LI CLASS="li-enumerate">On définit la fonction <TT>S(n,x)</TT> :
 <PRE CLASS="verbatim">S(n,x):={
 local j,s;
 pour j de 1 jusque n faire
@@ -374,15 +374,15 @@ return s;
 }:;
 </PRE>On tape :
 <TT>chouxfleur(point(0),point(1),10)</TT><BR>
-On obtient :<P><IMG SRC="cascas153.png">
-</P></LI></OL><H2 CLASS="section"><A NAME="toc93"></A><A NAME="htoc247">14.9</A>  Les arbres</H2><H3 CLASS="subsection"><A NAME="htoc248">14.9.1</A>  Un arbre</H3><PRE CLASS="verbatim">arbre(x,y):={
+On obtient :<P><IMG SRC="cascas124.png">
+</P></LI></OL><H2 CLASS="section"><A NAME="toc86"></A><A NAME="htoc234">14.9</A>  Les arbres</H2><H3 CLASS="subsection"><A NAME="htoc235">14.9.1</A>  Un arbre</H3><PRE CLASS="verbatim">arbre(x,y):={
  DispG();
  if (abs(x-y)&lt;0.2) {segment(x,y); return 0;}
  segment(x,(x+y)/2);
  arbre((x+y)/2,(x+y)/2+(y-x)*0.5*exp(i*0.5));
  arbre((x+y)/2,(x+y)/2+(y-x)*0.5*exp(-i*0.5));
 }
-</PRE><H3 CLASS="subsection"><A NAME="htoc249">14.9.2</A>  Un arbre moins déplumé</H3><PRE CLASS="verbatim">arbre2(x,y):={
+</PRE><H3 CLASS="subsection"><A NAME="htoc236">14.9.2</A>  Un arbre moins déplumé</H3><PRE CLASS="verbatim">arbre2(x,y):={
  DispG();
  if (abs(x-y)&lt;0.2) {segment(x,y); return 0;}
  segment(x,(x+y)/2);
@@ -391,7 +391,7 @@ On obtient :<P><IMG SRC="cascas153.png">
  arbre2((x+y)/2,(x+y)/2+(y-x)*0.5*exp(i));
  arbre2((x+y)/2,(x+y)/2+(y-x)*0.5*exp(-i));
 }
-</PRE><H3 CLASS="subsection"><A NAME="htoc250">14.9.3</A>  Un arbre epineux</H3><PRE CLASS="verbatim">arbre3(x,y):={
+</PRE><H3 CLASS="subsection"><A NAME="htoc237">14.9.3</A>  Un arbre epineux</H3><PRE CLASS="verbatim">arbre3(x,y):={
  DispG();
  if (abs(x-y)&lt;0.2) {segment(x,y); return 0;}
  segment(x,(x+y)*0.5);
@@ -400,7 +400,7 @@ On obtient :<P><IMG SRC="cascas153.png">
  arbre3((x+y)/2,(x+y)/2+(y-x)*0.5*exp(i));
  arbre3((x+y)/2,(x+y)/2+(y-x)*0.5*exp(-i));
 }
-</PRE><H3 CLASS="subsection"><A NAME="htoc251">14.9.4</A>  Le bouquet final</H3><PRE CLASS="verbatim">bouquet(x,y):={
+</PRE><H3 CLASS="subsection"><A NAME="htoc238">14.9.4</A>  Le bouquet final</H3><PRE CLASS="verbatim">bouquet(x,y):={
  DispG();
  if (abs(x-y)&lt;0.2) {segment(x,y); return 0;}
  segment(x,(x+y)*0.5);
@@ -409,7 +409,7 @@ On obtient :<P><IMG SRC="cascas153.png">
  bouquet((x+y)/2,(x+y)/2+(y-x)*0.5*exp(i));
  bouquet((x+y)/2,(x+y)/2+(y-x)*0.5*exp(-i));
  bouquet((x+y)/2,(x+y)/2+(y-x)*0.5);
-</PRE><H2 CLASS="section"><A NAME="toc94"></A><A NAME="htoc252">14.10</A>  Un exercice tiré des olympiades</H2><H3 CLASS="subsection"><A NAME="htoc253">14.10.1</A>  L’énoncé</H3><P>
+</PRE><H2 CLASS="section"><A NAME="toc87"></A><A NAME="htoc239">14.10</A>  Un exercice tiré des olympiades</H2><H3 CLASS="subsection"><A NAME="htoc240">14.10.1</A>  L’énoncé</H3><P>
 On modélise la croissance d’un arbre de la manière suivante :
 au départ il est composé d’un tronc vertical <I>AB</I> de longueur l, au bout 
 d’un an ce tronc donne naissance a 2 branches <I>BC</I> et <I>BD</I> vérifiant :
@@ -420,7 +420,7 @@ processus.
 Faire le dessin de l’arbre au bout de 3 ans<BR>
 Si on ne tient pas compte de la durée de vie de l’arbre, quelle est la 
 limite de sa taille ?</P><P>Avec <TT>Xcas</TT> on pourra exécuter <TT>arbre.xws</TT> pour avoir la correction.
-</P><H3 CLASS="subsection"><A NAME="htoc254">14.10.2</A>  Le dessin</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc241">14.10.2</A>  Le dessin</H3><P>
 Pour faire le dessin on écrit une procédure récursive <TT>arbre</TT> 
 qui renvoie 0 quand elle se termine et qui a comme paramètres :
 <TT>A</TT> le point de plantation, <TT>l</TT> la longueur du tronc <TT>AB</TT>, <TT>t</TT>
@@ -437,7 +437,7 @@ On verra le dessin dans l’écran <TT>DispG</TT> (<TT>session-&gt;montrer-&gt;D
     } 
     return 0;
   }:;
-</PRE><H3 CLASS="subsection"><A NAME="htoc255">14.10.3</A>  La taille</H3><P>
+</PRE><H3 CLASS="subsection"><A NAME="htoc242">14.10.3</A>  La taille</H3><P>
 Pour connaitre la taille de l’arbre au bout de <TT>n</TT> années, on écrit une
 procédure récursive <TT>harbre</TT> qui a les mêmes paramètres que la 
 procédure récursive <TT>arbre</TT> et qui renvoie l’ordonnée exacte du point
@@ -482,7 +482,7 @@ On tape :
 <TT>hauteur_arbre(i,1.0,pi/2,1)</TT>
 On obtient au bout de 5s:<BR>
 <TT>2.62707432586</TT><BR>
-</P><H3 CLASS="subsection"><A NAME="htoc256">14.10.4</A>  La limite de la taille</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc243">14.10.4</A>  La limite de la taille</H3><P>
 Seulement, cela ne nous donne qu’une valeur approchée de la limite de cette 
 hauteur.<BR>
 Pour connaitre la taille maximum <I>h</I> de l’arbre, il faut remarquer que :<BR>

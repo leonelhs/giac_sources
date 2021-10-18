@@ -6,34 +6,60 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Résidu d’une expression en un point : residue</TITLE>
+<TITLE>Développement limité : taylor</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr460.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr462.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc555">6.35.5</A>  Résidu d’une expression en un point : <TT>residue</TT></H3><P><A NAME="@default824"></A>
-<TT>residue</TT> a comme argument une expression dépendant d’une variable, 
-le nom de cette variable et un complexe <I>a</I> ou bien une expression dépendant 
-d’une variable et l’égalité : nom_de_variable=<I>a</I>.
-<TT>residue</TT> renvoie le résidu de cette exppression au point <I>a</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc556">6.36.2</A>  Développement limité : <TT>taylor</TT></H3><P><A NAME="@default821"></A><A NAME="@default822"></A> <A NAME="@default823"></A>
+<TT>taylor</TT> peut avoir de un à quatre paramètres si on veut une
+écriture avec reste et de un à cinq paramètres si on ne veut pas mettre 
+le reste :<BR>
+l’expression à développer, <TT>x=a</TT> (par défaut <TT>x=0</TT>), l’ordre du 
+développement (par défaut <TT>5</TT>), ou encore :<BR>
+l’expression à développer, <TT>x</TT>, l’ordre du développement (par 
+défaut <TT>5</TT>) et le point au voisinage duquel on veut le développement 
+(par défaut <TT>0</TT>).<BR>
+Si on veut un développement de Taylor sans mettre le reste il faut utiliser 
+comme dernier paramètre l’option <TT>polynom</TT>.<BR>
+<B>Remarque</B> on peut aussi mettre <TT>x,</TT><TT><I>a</I></TT><TT>,</TT><TT><I>n</I></TT> au lieu de 
+<TT>x=</TT><TT><I>a</I></TT><TT>,</TT><TT><I>n</I></TT><BR>
+<TT>taylor</TT> renvoie un polynôme en <TT>x-a</TT>, plus un reste que <TT>Xcas</TT> 
+écrit :<BR>
+<TT>(x-a)</TT><CODE><TT>^</TT></CODE><TT>n*order_size(x-a)</TT><BR>
+cela signifie que l’on a un développement limité à l’ordre <I>n</I>−1 
+(ou à l’ordre <I>p</I>&lt;<I>n</I>). 
+En effet <TT>order_size</TT> désigne une fonction telle que,
+quelque soit <TT><I>r</I></TT> positif :<BR>
+<TT>x</TT><CODE><TT>^</TT></CODE><TT>r*order_size(x)</TT> tend vers zéro quand <TT>x</TT> tend vers zéro.<BR>
+ Par exemple, les fonctions constantes, la fonction log (ou ln), sont 
+des fonctions <TT>order_size</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>residue(cos(x)/x</TT><CODE><TT>^</TT></CODE><TT>3,x,0)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>residue(cos(x)/x</TT><CODE><TT>^</TT></CODE><TT>3,x=0)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>taylor(sin(x),x=1,2)</TT></DIV><P>
+Ou on tape (attention à l’ordre des arguments !) :
+</P><DIV CLASS="center"><TT>taylor(sin(x),x,2,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(-1)/2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sin(1)+cos(1)*(x-1)+(-(1/2*sin(1)))*(x-1)</TT><CODE><TT>^</TT></CODE><TT>2+ (x-1)</TT><CODE><TT>^</TT></CODE><TT>3*order_size(x-1)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>int(exp(i*t)/(2*exp(i*t)-1),t=0..2*pi)</TT></DIV><P>
-On obtient :<BR>
-Searching int of 1/(2*<I>t</I>−1) where <I>t</I> is on the unit circle, using residues
-</P><DIV CLASS="center"><TT>(2*pi)/2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>taylor(sin(x),x=1,2,polynom)</TT></DIV><P>
+On obtient un polynôme :
+</P><DIV CLASS="center"><TT>sin(1)+cos(1)*(x-1)+(-(1/2*sin(1)))*(x-1)</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+<B>Attention!!!</B><BR>
+L’ordre que l’algorithme utilise pour les développements limités peut 
+être plus petit que celui demandé : l’ordre peut diminuer si il y des
+compensations par exemple :
+développement de <I>x</I><SUP>3</SUP>+sin(<I>x</I>)<SUP>3</SUP>/<I>x</I>−sin(<I>x</I>) 
+au voisinage de <TT>x=0</TT><BR>
 On tape :
-</P><DIV CLASS="center"><TT>int(exp(2*i*t)/(2*exp(i*t)-1))</TT><CODE><TT>^</TT></CODE><TT>2,t=0..2*pi)</TT></DIV><P>
-On obtient :<BR>
-Searching int of <I>t</I>/(4*<I>t</I><SUP>2</SUP>−4*<I>t</I>+1) where <I>t</I> is on the unit circle, using residues
-</P><DIV CLASS="center"><TT>(2*pi)/4</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>taylor(x</TT><CODE><TT>^</TT></CODE><TT>3+sin(x)</TT><CODE><TT>^</TT></CODE><TT>3/(x-sin(x)))</TT></DIV><P>
+On obtient seulement un développement à l’ordre 2 :
+</P><DIV CLASS="center"><TT>6+-27/10*x</TT><CODE><TT>^2</TT></CODE><TT>+x</TT><CODE><TT>^</TT></CODE><TT>3*order_size(x)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>taylor(x</TT><CODE><TT>^</TT></CODE><TT>3+sin(x)</TT><CODE><TT>^</TT></CODE><TT>3/(x-sin(x)),x=0,7)</TT></DIV><P>
+On obtient seulement un développement à l’ordre 4 :
+</P><DIV CLASS="center"><TT>6+-27/10*x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3+711/1400*x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>5*order_size(x)</TT></DIV><HR>
 <A HREF="cascmd_fr460.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr462.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

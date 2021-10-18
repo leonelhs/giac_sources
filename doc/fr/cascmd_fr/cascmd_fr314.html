@@ -6,24 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Simplifier : simplify simplifier</TITLE>
+<TITLE>Linéariser une expression trigonométrique : tlin 
+lineariser_trigo</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr313.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr315.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc396">6.23.6</A>  Simplifier : <TT>simplify simplifier</TT></H3><P><A NAME="@default606"></A><A NAME="@default607"></A>
-<TT>simplify</TT> simplifie l’expression de façon automatique.<BR>
-Comme toutes simplifications automatiques, il ne faut pas s’attendre à des 
-miracles et pourtant...<BR>
+<H3 CLASS="subsection"><A NAME="htoc397">6.24.3</A>  Linéariser une expression trigonométrique : <TT>tlin<BR>
+lineariser_trigo</TT></H3><P><A NAME="@default601"></A><A NAME="@default602"></A>
+<TT>tlin</TT> a comme argument une expression trigonométrique.<BR>
+<TT>tlin</TT> linéarise cette expression en fonction de sin(<I>n</I>.<I>x</I>) et cos(<I>n</I>.<I>x</I>).<BR>
+<B>Exemples</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Linéariser cos(<I>x</I>)*cos(<I>y</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>simplify((sin(3*x)+sin(7*x))/sin(5*x))</TT></DIV><P>
+<DIV CLASS="center"><TT>tlin(cos(x)*cos(y))</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
-<B>Attention</B> <TT>simplify</TT> est plus efficace qu’en on est en mode 
-<TT>radian</TT> (pour cela on coche <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> ou bien on tape <TT>angle_radian:=1</TT>).</P><HR>
+<DIV CLASS="center"><TT>1/2*cos(x-y)+1/2*cos(x+y)</TT></DIV>
+</LI><LI CLASS="li-itemize">Linéariser cos(<I>x</I>)<SUP>3</SUP>.<BR>
+On tape :
+<DIV CLASS="center"><TT>tlin(cos(x)</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>3/4*cos(x)+1/4*cos(3*x)</TT></DIV>
+</LI><LI CLASS="li-itemize">Linéariser 4cos(<I>x</I>)<SUP>2</SUP>−2.<BR>
+On tape :
+<DIV CLASS="center"><TT>tlin(4*cos(x)</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>2*cos(2*x)</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr313.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr315.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

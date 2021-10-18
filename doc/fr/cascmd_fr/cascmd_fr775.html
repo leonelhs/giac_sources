@@ -6,28 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney wilcoxonp</TITLE>
+<TITLE>Fonction de répartition de la loi uniforme : uniform_cdf uniformd_cdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr774.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr776.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc898">7.4.50</A>  Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney <TT>wilcoxonp</TT></H3><P>
-<A NAME="@default1382"></A>
-<TT>wilcoxonp</TT> a comme argument 1 ou 2 entiers.<BR>
-<TT>wilcoxonp</TT> renvoie le polynôme donnant la distribution du test de Wilcoxon ou de Mann-Whitney pour 1 ou 2 échantillon(s).
+<H3 CLASS="subsection"><A NAME="htoc909">8.4.40</A>  Fonction de répartition de la loi uniforme : <TT>uniform_cdf uniformd_cdf</TT></H3><P><A NAME="@default1378"></A><A NAME="@default1379"></A>
+Lorsqu’une variable aléatoire <I>X</I> à valeur dans [<I>a</I>,<I>b</I>] suit une loi 
+uniforme de paramètre <I>a</I> et <I>b</I>, on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>x</I>)=<TT>uniform_cdf(a,b,x)</TT> avec <I>x</I>∈ [<I>a</I>,<I>b</I>].<BR>
+<I>Proba</I>(<I>x</I>≤ <I>X</I>≤ <I>y</I>)=<TT>uniform_cdf(a,b,x,y)</TT> avec <I>x</I>∈ [0,1] et <I>y</I>∈ [0,1].<BR>
+On a :<BR>
+<TT>uniform_cdf(a,b,x)</TT> est égale à : 
+ <I>x</I>−<I>a</I>/<I>b</I>−<I>a</I> et<BR>
+<TT>uniform_cdf(a,b,x,y)</TT> est égale à :
+ <I>y</I>−<I>x</I>/<I>b</I>−<I>a</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>wilcoxonp(4)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>uniform_cdf(2,4,3.2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>poly1[1/16,1/16,1/16,1/8,1/8,1/8,1/8,1/8,1/16,1/16,1/16]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.6</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>wilcoxonp(7,5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>uniform_cdf(2,3,2.5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>poly1[1/792,1/792,1/396,1/264,5/792,7/792,5/396,13/792,<BR>
-17/792,7/264,13/396,5/132,35/792,13/264,43/792,23/396,2/33,<BR>
-49/792,49/792,2/33,23/396,43/792,13/264,35/792,5/132,13/396,<BR>
-7/264,17/792,13/792,5/396,7/792,5/792,1/264,1/396,1/792,1/792]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.5</TT></DIV><HR>
 <A HREF="cascmd_fr774.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr776.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

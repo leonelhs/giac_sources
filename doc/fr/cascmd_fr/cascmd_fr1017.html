@@ -6,36 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’équation paramétrique d’un objet géométrique : parameq</TITLE>
+<TITLE>Les polygones quelconques dans l’espace : polygon polygone</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1016.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1018.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1183">10.12.6</A>  L’équation paramétrique d’un objet géométrique : <TT>parameq</TT></H3><P><A NAME="@default1976"></A><A NAME="sec:parameq3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr920.html#sec:parameq2">9.15.8</A> pour la géométrie plane.<BR>
-<TT>parameq</TT>, en géométrie 3-d, permet d’avoir l’équation
-paramétrique fonction du paramètre <TT>t</TT> ou des paramètres <TT>u</TT> et 
-<TT>v</TT>, d’un objet géométrique.<BR>
-<B>Attention</B> !!! il faut auparavant purger ces variables en tapant par 
-exemple : <TT>purge(t,u,v)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1191">11.9.3</A>  Les polygones quelconques dans l’espace : <TT>polygon polygone</TT></H3><P><A NAME="@default1971"></A><A NAME="@default1972"></A><A NAME="sec:polygone3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr909.html#sec:polygone2">10.12.3</A> pour la géométrie plane.<BR>
+<TT>polygone</TT>, en géométrie 3-d, a comme argument un séquence 
+de points de l’espace qui sont les sommets du polygone.<BR>
+<TT>polygone(A,B,C,D,E,F)</TT> renvoie et trace le polygone <I>ABCDEF</I> 
+si les points <I>A</I>,<I>B</I>,<I>C</I>,<I>D</I>,<I>E</I>,<I>F</I> sont dans un même plan ou sinon trace la ligne
+polygonale fermée <I>A</I>,<I>B</I>,<I>C</I>,<I>D</I>,<I>E</I>,<I>F</I>,<I>A</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>parameq(droite(point(0,1,0),point(1,2,3)))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>C:=point(0,0,3)</TT></DIV><DIV CLASS="center"><TT>D:=point(-3,-3,0)</TT></DIV><DIV CLASS="center"><TT>E:=point(-3,-3,-3)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>polygone(A,B,C,D,E)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[-t+1,-t+2,-3*t+3]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>parameq(sphere(point(0,1,0),2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>point[2*cos(u)*cos(v),1+2*cos(u)*sin(v),2*sin(u)]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>normal(parameq(ellipse(point(-1,1,1),point(1,1,1), point(0,1,2))))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[sqrt(2)*cos(t),1,sin(t)+1]</TT></DIV><P>
-On peut vérifier, on tape :
-</P><DIV CLASS="center"><TT>plotparam([sqrt(2)*cos(t),1,sin(t)+1],t=0..2*pi);</TT></DIV><DIV CLASS="center"><TT>F1:=point(-1,1,1);F2:=point(1,1,1);M:=point(0,1,2)</TT></DIV><P>
-On obtient l’ellipse, ces 2 foyers <I>F</I><SUB>1</SUB> et <I>f</I>−2 et le point <I>M</I> sur l’ellipse.
-</P><HR>
+</P><DIV CLASS="center"><TT>Le polygone ABCDE dans le plan x=y</TT></DIV><HR>
 <A HREF="cascmd_fr1016.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1018.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

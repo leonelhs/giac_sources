@@ -2585,7 +2585,7 @@ namespace giac {
       tmp=e2r(ee,l,contextptr);
       for (unsigned k=0;k<L.size();++k){
 	gen Lk=ggb_var(L[k]);
-	_purge(Lk,contextptr);
+	purgenoassume(Lk,contextptr);
       }
       if (is_undef(tmp)){
 	*logptr(contextptr) << gettext("Unable to build a single algebraic extension for simplifying. Trying rational simplification only.") << endl;

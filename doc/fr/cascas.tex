@@ -4551,8 +4551,8 @@ $130(1+342i)=-i(1-i)(1+2i)^2(1-5i)(1+28i)(1+44i)$
 \item Soit $f(x)=\atan(x)+\atan(\frac{1}{x})$.\\
 D\'eterminer le domaine de d\'efinition de $f$.\\
 Calculer $f'(x)$ puis montrer que :
-$$\atan(x)+\atan(\frac{1}{x})=\frac{\pi}{2} \mbox{ si } x>0$$
-$$\atan(x)+\atan(\frac{1}{x})=-\frac{\pi}{2} \mbox{ si } x<0$$
+$$\atan(x)+\atan(\frac{1}{x})=\frac{\pi}{2} \mbox{ si} x>0$$
+$$\atan(x)+\atan(\frac{1}{x})=-\frac{\pi}{2} \mbox{ si} xx0$$
 \item Soit $g(x)=\atan(\frac{x+a}{1-ax})-\atan(x)$ pour $a\in \R$
 D\'eterminer le domaine de d\'efinition de $g$.\\
 Calculer $g'(x)$ puis montrer que :\\
@@ -5883,8 +5883,8 @@ $\sqrt 6$ est l'hypot\'enuse d'un triangle rectangle de c\^ot\'e 2 et
 $\sqrt 2$ (puisque $6=4+2=2^2+(\sqrt 2)^2=(\sqrt 6)^2$.\\
 On utilise la formule :\\
 $4*\sqrt 2+(2-\sqrt 2)^2=6$ et\\
-On consid\`ere la droite $D$ d'\'equation $y=-\sqrt 2*x+2$ (c'est la droite
-portant l'hypot\'enuse du triangle $0,\sqrt 2,2*i$.\\
+On consid\`ere la droite $D$ d'\'equation $y=-\sqrt 2x+2$ (c'est la droite
+portant l'hypot\'enuse du triangle $0,\sqrt 2,2$.\\
 Puisque le point de coordonn\'ees $(1,2-\sqrt 2)$ est sur la droite $D$, on 
 peut d\'ecouper le rectangle selon les 5 morceaux ci-dessous.\\
 Voici ce puzzle fait avec ces 5 morceaux mais on remarquera qu'il suffit de 
@@ -5899,8 +5899,7 @@ T3:=triangle(3+2*i,1+(2-sqrt(2))*i,3+(2-sqrt(2))*i):;
 affichage(T3,3+rempli);
 T4:=triangle(2i,1+(2-sqrt(2))*i,1+2i):; 
 affichage(T4,4+rempli);
-T5:=polygone(1+(2-sqrt(2))*i,sqrt(2),1+sqrt(2),
-             1+sqrt(2)+(2-sqrt(2))*i):; 
+T5:=polygone(1+(2-sqrt(2))*i,sqrt(2),1+sqrt(2),1+sqrt(2)+(2-sqrt(2))*i):; 
 affichage(T5,5+rempli);
 T6:=carre(1+sqrt(2),3):;
 affichage(T6,6+rempli);
@@ -5972,11 +5971,11 @@ $\sqrt 6$ est l'hypot\'enuse d'un triangle rectangle de c\^ot\'e 1 et
 $\sqrt 5$ (puisque $6=1+5=1^2+(\sqrt 5)^2=(\sqrt 6)^2$.\\
 On utilise la formule :\\
 $2*\sqrt 5+(\sqrt 5-1)^2=6$ et\\
-Dans le rectangle de c\^ot\'es 1 et $2*\sqrt 5$, on d\'ecoupe 4 triangles rectangles qui ont des 
+Dans le rectangle $2*\$sqrt 5$, on d\'ecoupe 4 triangles rectangles qui ont des 
 c\^ot\'es de l'angle droit de longueur et 1 et $\sqrt 5$. \\
 Il reste ensuite \`a d\'ecouper le rectangle $(3-\sqrt 5)*2$ en 3 morceaux pour
 en faire un carr\'e selon la m\'ethode de la section \ref{sec:carreab}.\\
-Rappelons ce d\'ecoupage sur cet exemple.\\
+rappelons ce d\'ecoupage sur cet exemple.\\
 On tape :
 \begin{verbatim}
 b:=2;a:=3-sqrt(5);
@@ -6100,9 +6099,9 @@ Le carr\'e reconstitu\'e a pour c\^ot\'e $\sqrt{a^2+a}$ unit\'es.\\
 $\sqrt{a^2+a}$ est l'hypot\'enuse d'un triangle rectangle de c\^ot\'e $a$ et 
 $\sqrt a$ (puisque $a^2+a=a^2+(\sqrt a)^2=(\sqrt {a^2+a})^2$.\\
 On utilise la formule :\\
-$2a*\sqrt a+(a-\sqrt a)^2=a^2+a$\\
-On consid\`ere la droite $D$ d'\'equation $y=-\sqrt a x+a$ (c'est la droite
-portant l'hypot\'enuse du triangle $0,\sqrt a,a*i$\\.
+$2a*\sqrt a+(a-\sqrt a)^2=a^2+a$ et\\
+On consid\`ere la droite $D$ d'\'equation $y=-\sqrt ax+a$ (c'est la droite
+portant l'hypot\'enuse du triangle $0,\sqrt a,a$\\.
 Puisque le point de coordonn\'ees $(1,a-\sqrt a)$ est sur la droite $D$, on 
 peut d\'ecouper le rectangle selon les 5 morceaux ci-dessous.\\
 Voici ce puzzle fait avec ces 5 morceaux mais on remarquera qu'il suffit de 
@@ -6471,433 +6470,8 @@ affichage(translation(3.5*i-2*sqrt(6),T4),4+rempli);
 \end{verbatim}
 On obtient :\\
 \includegraphics[width=10cm]{carresqrt66}
-
-\section{Puzzle transformant une croix de St Andr\'e en un carr\`e}
-On tape :
-\begin{verbatim}
-C:=polygone(i,0,1,-i+1,-i+2,2,3,3+i ,2+i,2+2*i,1+2*i,1+i);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=8cm]{puzzlecroix0}\\
-Comment transformer cette croix en un carr\'e ?\\
-Le polygone {\tt C} a une aire de 5 carr\'es de c\^ot\'e 1 unit\'e.\\
-Donc {\tt C} se transforme en un carr\'e de c\^ot\'e $\sqrt 5$ unit\'es.
-$\sqrt 5$ est l'hypot\'enuse d'un triangle rectangle de c\^ot\'es 1 unit\'e
-et 2 unit\'es.\\
-On tape :
-\begin{verbatim}
-C;
-carre(0,1-2i);
-segment(1-i,1-2*i);
-segment(2+i,3/2+2*i);
-segment(1/2-i,1-i);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=11cm]{puzzlecroix1}\\
-{\bf Le puzzle}\\
-On tape :
-\begin{verbatim}
-C1:=polygone(0,1,-i+1,-i+2,2,5/2,2+i):;
-affichage(C1,1+rempli);
-C2:=polygone(2+i,3/2+2*i,1+2*i,1+i,i,0):;
-affichage(C2,2+rempli);
-C3:=triangle(2+i,2+2*i,3/2+2*i):;
-affichage(C3,3+rempli);
-C4:=polygone(2+i,5/2,3,3+i):;
-affichage(C4,4+rempli);
-affichage(translation(7/2+i,C1),1+rempli);
-affichage(translation(7/2+i+1-2*i,C2),2+rempli);
-affichage(translation(7/2+i-1-3*i,C3),3+rempli);
-affichage(translation(7/2+i-2-i,C4),4+rempli);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=\textwidth]{puzzlecroix2}
-\section{Puzzle transformant une autre croix en un carr\`e}
-On tape :
-\begin{verbatim}
-P:=polygone(i,0,1,-i+1,-i+2,-2*i+2,-2*i+3,-i+3,-i+4,
-4,5,5+i,4+i,4+2*i,3+2*i,3+3*i,2+3*i,2+2*i,1+2*i,1+i);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=8cm]{puzzlecroix3}\\
-Comment transformer cette croix en un carr\'e ?\\
-Le polygone {\tt P} a une aire de 13 carr\'es de c\^ot\'e 1 unit\'e.\\
-Donc {\tt P} se transforme en un carr\'e de c\^ot\'e $\sqrt{13}$ unit\'es.
-$\sqrt{13}$ est l'hypot\'enuse d'un triangle rectangle de c\^ot\'es 2 unit\'es
-et 3 unit\'es.\\
-On tape :
-\begin{verbatim}
-P;
-carre(-i,3-3*i);
-segment(2+2*i,2+2/3+3*i);
-segment(3-2*i,3-3*i);
-segment(3-2*i,3+2/3-2*i);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=8cm]{puzzlecroix4}\\
-{\bf Le puzzle}\\
-On tape :
-\begin{verbatim}
-P1:=polygone(2/3,1,,-i+1,-i+2,-2*i+2,
--2*i+3,-i+3,-i+4,4,5,2+2*i):;
-affichage(P1,1+rempli);
-P2:=polygone(5,5+i,4+i,
-4+2*i,3+2*i,3+3*i,
-2+2/3+3*i,2+2*i):;
-affichage(P2,2+rempli);
-P3:=triangle(2+3*i,2+2/3+3*i,2+2*i):;
-affichage(P3,3+rempli);
-P4:=polygone(2+2*i,1+2*i,1+i,i,0,2/3):;
-affichage(P4,4+rempli):
-affichage(translation(6+i,P1),1+rempli);
-affichage(translation(6+i-2-3*i,P2),2+rempli);
-affichage(translation(6+i+1-5*i,P3),3+rempli);
-affichage(translation(6+i+3-2*i,P4),4+rempli);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=\textwidth]{puzzlecroix5}
-
-\section{Puzzle transformant encore une autre croix en un carr\`e}
-On tape :
-\begin{verbatim}
-polygone(i,0,1,-i+1,-2*i+1,-2*i+2,
--2*i+2,2,3,3+i,2+i,2+2*i,1+2*i,1+i);
-\end{verbatim}
-On obtient :\\
-\begin{center}\includegraphics[width=8cm]{puzzlecroix6}\end{center}
-%\includegraphics[width=\textwidth]{puzzlecroix6}\\
-Comment transformer cette croix en un carr\'e ?
-\subsection{Une premi\`ere fa\c{c}on}
-Cette croix a une aire de 6 carr\'es de c\^ot\'e 1 unit\'e.\\
-Donc elle se transforme en un carr\'e de c\^ot\'e $\sqrt 6$ unit\'es.
-Pour cela on passe par l'interm\'ediaire d'un rectangle de c\^ot\'es  1 unit\'e
-et 6 unit\'es.\\
-On tape :
-\begin{verbatim}
-polygone(i,0,1,-i+1,-2*i+1,-2*i+2, 
-         -2*i+2,2,3,3+i,2+i,2+2*i,1+2*i,1+i);
-rectangle(5-3*i,6-3*i,6);
-carre(5+3*i-sqrt(6)*i,5+sqrt(6)+3*i-sqrt(6)*i);
-segment(5-3*i,5+sqrt(6)+3*i);
-segment(7+3*i,7+2*i);
-segment(5+i,6+i);
-segment(5+2*i,6+2*i);
-segment(1,1+i);
-segment(2,2+i);
-A:=point(i*(3-sqrt(6))+sqrt(6)+4);
-B:=point(7+i*(2*sqrt(6)-3));
-simplify(B-A),simplify(A-E);
-segment(i*(3-2*sqrt(6))+ sqrt(6)+3,5+i*(3-2*sqrt(6)));
-segment(4*i-sqrt(6)*i+1,4*i-sqrt(6)*i+2);
-D:=point(2+sqrt(6)*i-2*i);
-E:=point(6+i*(sqrt(6)-3));
-segment(1-2*i,2+(sqrt(6)-2)*i);
-segment(i*(4-2*sqrt(6))+ sqrt(6)-1,1+i*(4-2*sqrt(6)));
-C:=point(i*(4-2*sqrt(6))+sqrt(6))-1;
-F:=point(2+i*(4-sqrt(6)));
-\end{verbatim}
-On obtient 6 pi\`eces :\\
-\includegraphics[width=\textwidth]{puzzlecroix7}\\
-{\bf Le puzzle}\\
-On tape :
-\begin{verbatim}
-L1:=carre(0,1):;
-affichage(L1,1+rempli);
-L2:=polygone(1-2*i,2-2*i,D):;
-affichage(L2,2+rempli);
-L3:=polygone(1+i*(4-sqrt(6.)),2+i*(4-sqrt(6.)),2+2*i,1+2*i):;
-affichage(L3,3+rempli);
-L4:=polygone(C,D,F,1+i*(4-sqrt(6.)),i*(4-2*sqrt(6.))+1):;
-affichage(L4,4+rempli);
-L5:=triangle(1-2*i,C,1+i*(4-2*sqrt(6.))):; 
-affichage(L5,5+rempli);
-L6:=carre(2,3):;
-affichage(L6,6+rempli);
-affichage(translation(4-i,L1),1+rempli);
-affichage(translation(2,L6),6+rempli);
-affichage(translation(A-point(2),L2),2+rempli);
-affichage(translation(3-3*i,L3),3+rempli);
-affichage(translation((A-C)-1-2*i,L4),4+rempli);
-affichage(translation(5+i*(2*sqrt(6)-3),L5),5+rempli);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=\textwidth]{puzzlecroix8}
-
-\subsection{Une deuxi\`eme fa\c{c}on}
-Cette croix a une aire de 6 carr\'es de c\^ot\'e 1 unit\'e.\\
-Donc elle se transforme en un carr\'e de c\^ot\'e $\sqrt 6$ unit\'es.
-Pour cela on passe par l'interm\'ediaire d'un rectangle de c\^ot\'es  2 unit\'es
-et 3 unit\'es.\\
-On tape :
-\begin{verbatim}
-Q:=polygone(i,0,1,-i+1,-2*i+1,-2*i+2, -2*i+2,2,3,3+i,2+i,2+2*i,
-            1+2*i,1+i):;
-segment(2-2/sqrt(6)-2*i,2-i):;
-segment(1+(2-sqrt(6))*i,3-2/sqrt(6)+i):;
-segment(1-i,2-i):;
-segment(1,1+i):;
-Q1:=polygone(1+(2-sqrt(6.))*i,3-2/sqrt(6.)+i,2+i, 2+2*i,1+2*i):;
-affichage(Q1,1+rempli);
-Q2:=polygone(3-2/sqrt(6.)+i,1+(2-sqrt(6.))*i, 1-i,2-i,2,3,3+i):;
-affichage(Q2,2+rempli);
-Q3:=polygone(1-i,1-2*i,2-2/sqrt(6.)-2*i,2-i):;
-affichage(Q3,3+rempli);
-Q5:=triangle(2+i*(sqrt(6.)-4),4-sqrt(6.)+i*(sqrt(6.)-4),2-i):;
-affichage(Q5,5+rempli);
-Q6:=polygone(2-2*i,2+i*(sqrt(6.)-4),4-sqrt(6.)+i*(sqrt(6.)-4),
-             2-2/sqrt(6.)-2*i):;  ;
-affichage(Q6,6+rempli);
-Q4:=carre(0,1):;
-affichage(Q4,4+rempli);
-affichage(translation(5/2,Q1),1+rempli);
-affichage(translation(1+3*i+5/2,Q5),5+rempli);
-affichage(translation(1+3*i+5/2,Q3),3+rempli);
-affichage(translation(5/2,Q2),2+rempli);
-affichage(translation(1+3*i+5/2,Q6),6+rempli);
-affichage(translation(2-i+5/2,Q4),4+rempli);
-affichage(translation(6,Q2),2+rempli);
-affichage(translation(2-i+6,Q4),4+rempli);
-affichage(translation(1+3*i+6,Q6),6+rempli);
-affichage(translation(3-sqrt(6)+sqrt(6)*i+6,Q3),3+rempli);
-affichage(translation(2-sqrt(6)+(sqrt(6)-3)*i+6,Q1),1+rempli);
-affichage(translation(-1+(3-sqrt(6))*i+6,Q5),5+rempli);
-\end{verbatim}
-On obtient 6 pi\`eces :\\
-\includegraphics[width=\textwidth]{pusslecroix9}
-
-\section{Puzzle transformant une croix de Lorraine en un carr\`e}
-\subsection{Un puzzle en 9 pi\`eces}
-On tape :
-\begin{verbatim}
-L:=0,-i,-2*i,-3*i,1-3*i,1-2*i,1-i,1,2,3,3+i,2+i,1+i,1+2*i;
-L:=L,2+2*i,2+3*i,1+3*i,1+4*i,4*i,3*i,-1+3*i,-1+2*i,2*i,i;
-L:=L,-1+i,-2+i,-2,-1;
-papier_quadrille(1,pi/2,1);
-C:=polygone(L):;
-affichage(C,1+epaisseur_ligne_2);
-carre(1-2*i,4);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=\textwidth]{puzzlecroix10}\\
-Comment transformer cette croix en un carr\'e ?\\
-Le polygone {\tt C} a une aire de 13 carr\'es de c\^ot\'e 1 unit\'e.\\
-Donc {\tt C} se transforme en un carr\'e de c\^ot\'e $\sqrt{13}$ unit\'es.
-$\sqrt{13}$ est l'hypot\'enuse d'un triangle rectangle de c\^ot\'es 2 unit\'es
-et 3 unit\'es. On a 13=1+4*(2*3/2) et donc ce carr\'e est form\'e par 1 carr\'e
-de c\^ot\'e  1 unit\'e et par 4 triangles rectangles de c\^ot\'es 2 unit\'es
-et 3 unit\'es.\\
-
-Voici un d\'ecoupage en 9 pi\`eces.\\
-On tape :
-\begin{verbatim}
-affichage(C,1+epaisseur_ligne_1);
-carre(1-2*i,4);
-R1:=polygone(0,-i/2,1-2*i,1,3,3+i,1+i,1+2*i,2+2*i,
-             2+3*i,5/3*i,i,-1+i,-1/3):;
-affichage(R1,1+rempli);
-R2:=polygone(5/3*i,2+3*i,1+3*i,1+4*i,4*i,3*i):;
-affichage(R2,2+rempli);
-R3:=carre(-1+2*i,2*i):;
-affichage(R3,3+rempli);
-R4:=polygone(-i/2,-2*i,1-2*i):;
-affichage(R4,4+rempli);
-R5:=polygone(-2*i,-3*i,1/2-3*i,1-8*i/3,1-2*i):;
-affichage(R5,5+rempli);
-R0:=polygone(1/2-3*i,1-3*i,1-8*i/3):;
-affichage(R0,80+rempli);
-R6:=polygone(-1/3,-1+i,-4/3+i,-4/3):;
-affichage(R6,6+rempli);
-R7:=triangle(-2,-4/3,-2+i):;
-affichage(R7,47+rempli);
-R8:=triangle(-4/3,-4/3+i,-2+i):;
-affichage(R8,68+rempli);
-\end{verbatim}
-On obtient 9 pi\`eces:\\
-\includegraphics[width=\textwidth]{puzzlecroix11}\\
-On tape :
-\begin{verbatim}
-affichage(R0,80+rempli);
-affichage(R1,1+rempli);
-affichage(R2,2+rempli);
-affichage(R3,3+rempli);
-affichage(R4,4+rempli);
-affichage(R5,5+rempli);
-affichage(R6,6+rempli);
-affichage(R7,47+rempli);
-affichage(R8,68+rempli);
-carre(5-i,8+i);
-affichage(translation(4+i,R1),1+rempli);
-affichage(translation(6-2*i,R3),3+rempli);
-affichage(translation(6+3*i,R5),5+rempli);
-affichage(translation(13/3+i,R6),6+rempli);
-affichage(translation(5+2*i,rotation(-2*i,-pi/2,R4)),4+rempli);
-affichage(translation(5-2*i,rotation(4*i,pi/2,R2)),2+rempli);
-affichage(translation(3+4*i,rotation(1-3*i,pi/2,R0)),80+rempli);
-affichage(translation(6+2*i,rotation(-2,pi/2,R7)),47+rempli);
-affichage(translation(25/3,rotation(-4/3+i,pi/2,R8)),68+rempli);
-\end{verbatim}
-On obtient la croix et le carr\'e form\'es avec ces 9 pi\`eces :\\
-\includegraphics[width=\textwidth]{puzzlecroix12}\\
-\subsection{Un autre d\'ecoupage en 9 pi\`eces}
-Voici un autre d\'ecoupage en 9 pi\`eces.\\
-On tape :
-\begin{verbatim}
-affichage(C,1+epaisseur_ligne_1);
-carre(5-i,8+i);//carre(1-2*i,4);
-V1:=polygone(0,-i/2,1-2*i,1,3,3+i,1+i,1+2*i,2+2*i,
-             2+3*i,5/3*i,i,-1+i,-1/3):;
-affichage(V1,1+rempli);
-V2:=polygone(5/3*i,2+3*i,-1+3*i,-1+2*i,2*i):;
-affichage(V2,2+rempli);
-V3:=carre(3*i,1+3*i):;
-affichage(V3,3+rempli);
-V4:=polygone(-i/2,-2*i,1-2*i):;
-affichage(V4,4+rempli);
-V5:=polygone(-2*i,-3*i,1/2-3*i,1-8*i/3,1-2*i):;
-affichage(V5,5+rempli);
-V0:=polygone(1/2-3*i,1-3*i,1-8*i/3):;
-affichage(V0,80+rempli);
-V6:=polygone(-1/3,-1+i,-4/3+i,-4/3):;
-affichage(V6,6+rempli);
-V7:=triangle(-2,-4/3,-2+i):;
-affichage(V7,47+rempli);
-V8:=triangle(-4/3,-4/3+i,-2+i):;
-affichage(V8,68+rempli);
-affichage(translation(4+i,V1),1+rempli);
-affichage(translation(6-2*i,V2),2+rempli);
-affichage(translation(5-i,V3),3+rempli);
-affichage(translation(7+3*i,V4),4+rempli);
-affichage(translation(6+4*i,rotation(-2*i,pi/2,V5)),5+rempli);
-affichage(translation(7-4*i/3,rotation(-1+i,-pi/2,V6)),6+rempli);
-affichage(translation(3+4*i,rotation(1-3*i,pi/2,V0)),80+rempli);
-affichage(translation(6+2*i,rotation(-2,pi/2,V7)),47+rempli);
-affichage(translation(22/3+2*i,rotation(-4/3+i,-pi,V8)),68+rempli);
-\end{verbatim}
-On obtient 9 pi\`eces ou 12 pi\`eces si on coupe la pi\`ece rouge en 4 selon 
-les traits noirs correspondant aux segments :\\
-\begin{verbatim}
-segment(i,1+i);
-segment(4+2*i,5+2*i);
-segment(1,1+i);
-segment(5+i,5+2*i);
-segment(2,2+i);
-segment(6+i,6+2*i);
-\end{verbatim}
-\includegraphics[width=\textwidth]{puzzlecroix13}\\
-Cette d\'ecompostion en 12 pi\`eces met en \'evidence que le carr\'e est
-compos\'e de les 4 triangles rectangles 2*3 qui entourent le carr\'e central
-unit\'e.\\
-\subsection{Un puzzle en 8 pi\`eces}
-Pour avoir les  pi\`eces et leurs affichages, on tape :
-\begin{verbatim}
-H1:=polygone(0,1,1-i,2-i,2-2*i,4/3-2*i):;;
-affichage(translation(-2+4*i,H1),1+rempli);
-H2:=polygone(0,1,1-i,2/3-i):;;
-affichage(translation(-2+13*i/6,H2),2+rempli);
-H3:=polygone(0,1/3,i/2):;;
-affichage(translation(-3/2+2*i/3,H3),3+rempli);
-H4:=polygone(0,5/3,1+i,i/3):;;
-affichage(translation(2+3*i,H4),4+rempli);
-H5:=polygone(0,i,-1+i,-1+2*i,2*i,3*i,4/3+i,1+i,1,2,1-2*i/3,-4*i/3,-i,-5/3-i,-2-i/2,-2):;;
-affichage(translation(7/6+i,H5),5+rempli);
-H6:=polygone(0,1,1+3*i,7*i/3):;;
-affichage(translation(10/3,H6),6+rempli);
-affichage(translation(-3/2,H3),68+rempli);
-H7:=polygone(0,1,1+i/3,1/2+i/3):;;
-affichage(translation(-1/2+4*i/3,H7),47+rempli);
-\end{verbatim}
-On obtient :\\
-
-\includegraphics[width=\textwidth]{puzzlecroix16}
-{\bf Exercice}\\
- Avec ces pi\`eces :
-faire la croix de lorraine, puis faire un carr\'e.\\
-
-Pour faire le puzzle de la croix et du carr\'e, on tape :
-\begin{verbatim}
-affichage(H5,5+rempli);
-affichage(translation(3*i,H1),1+rempli);
-affichage(translation(-11/3*i,H6),6+rempli);
-affichage(translation(-4*i,H7),47+rempli);
-affichage(translation(-11*i/3,rotation(0,-pi/2,H3)),68+rempli);
-affichage(translation(-2-i,H3),3+rempli);
-affichage(translation(1-i,H4),4+rempli);
-affichage(translation(2,H2),2+rempli);
-affichage(translation(6+3*i,rotation(0,-pi/2,H1)),1+rempli);
-affichage(translation(6,H5),5+rempli);
-affichage(translation(6,rotation(0,pi/2,H6)),6+rempli);
-affichage(translation(4,rotation(0,pi,H3)),3+rempli);
-affichage(translation(3+i,H7),47+rempli);
-affichage(translation(4+4*i/3,rotation(0,pi/2,H3)),68+rempli);
-affichage(translation(8,rotation(0,pi,H2)),2+rempli);
-affichage(translation(6-i,rotation(0,pi,H4)),4+rempli);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=\textwidth]{puzzlecroix17}
-\subsection{Un autre puzzle en 8 pi\`eces}
-Pour avoir les  pi\`eces, on tape :
-\begin{verbatim}
-S1:=triangle(0,sqrt(13.),i):;
-S2:=triangle(0,13-3*sqrt(13.),(sqrt(13.)-3)*i):;
-S3:=polygone(0,-5+2*sqrt(13.),-5+2*sqrt(13.)+i*(sqrt(13.)-3),
-             8-2*sqrt(13.)+i,i):;
-S4:=polygone(0,3,3+i,2+i,2+2*i,1+2*i,1+i,i):;
-S5:=polygone(0,sqrt(13.)-1,sqrt(13.)-1+i,i):;
-S6:=carre(0,1):;
-S7:=polygone(0,4-sqrt(13.),4-sqrt(13.)+i,i):; 
-S8:=polygone(0,sqrt(13.)-3,sqrt(13.)-3+i,i):;
-\end{verbatim}
-Pour les afficher, on tape :
-\begin{verbatim}
-affichage(translation(-6+3*i,S1),1+rempli);;
-affichage(translation(-2+3.5*i,S2),2+rempli);;
-affichage(translation(-6-i,S3),3+rempli);;
-affichage(translation(-3+i,S4),4+rempli);;
-affichage(translation(-6+i,S5),5+rempli);;
-affichage(translation(-1-i,S6),6+rempli);;
-affichage(translation(-2-i,S7),47+rempli);;
-affichage(translation(-3-i,S8),68+rempli);;
-\end{verbatim}
-Voici l'affichage des pi\`eces :\\
-
-\includegraphics[width=\textwidth]{puzzlecroix14}\\
-Ces pi\`eces sont form\'ees en transformant le rectangle 1*13 et un carr\'e de 
-c\^ot\'e $\sqrt{13}$ selon la m\'ethde de la section \ref{sec:carreab}.\\ 
-
-{\bf Exercice}\\
- Avec ces pi\`eces :
-faire la croix de lorraine, puis faire un carr\'e.\\
-
-Pour faire le puzzle de la croix et du carr\'e, on tape :
-\begin{verbatim}
-S3:=polygone(0,-5+2*sqrt(13.),-5+2*sqrt(13.)+i*(sqrt(13.)-3),
-             8-2*sqrt(13.)+i,i):;
-S8:=polygone(0,sqrt(13.)-3,sqrt(13.)-3+i,i):;
-affichage(S4,4+rempli);
-affichage(translation(1-i,S6),6+rempli);
-affichage(translation(3*sqrt(13)-9-2*i,S2),2+rempli);
-affichage(translation(-4+sqrt(13)-2*i,S3),3+rempli);
-affichage(translation(-1-2*i,S8),68+rempli);
-affichage(translation(4-i,rotation(0,pi,S1)),1+rempli);;
-affichage(translation(1-2*i,rotation(0,-pi/2,S7)),47+rempli);
-affichage(translation(11/2-2*i,S5),5+rempli);
-affichage(translation(9/2+i,rotation(0,-pi/2,S4)),4+rempli);;
-affichage(translation(4-sqrt(13)+5+1/2,S3),3+rempli);;
-affichage(translation(4+1/2+i,S2),2+rempli);;
-affichage(translation(sqrt(13)+4+1/2+(sqrt(13)-2)*i,
-          rotation(0,pi,S1)),1+rempli);
-affichage(translation(6+1/2-i,S6),6+rempli);
-affichage(translation(7+1/2-i,S8),68+rempli);
-affichage(translation(5+1/2,S7),47+rempli);
-affichage(translation(3*sqrt(13)-9-2*i,S2),2+rempli);
-affichage(translation(2-5*i,rotation(0,pi/2,S5)),5+rempli);
-\end{verbatim}
-On obtient :\\
-
-\includegraphics[width=\textwidth]{puzzlecroix15}\\
-
 \section{La quadrature d'un triangle \'equilat\'eral}
-\subsection{Le carr\'e, le rectangle $1*\sqrt3$ et le triangle \'equilat\'eral avec 8 et 6é pi\`eces}
+\subsection{Le carr\'e, le rectangle $1*\sqrt3$ et le triangle \'equilat\'eral avec 8 et 6 pi\`eces}
 On peut transformer un rectangle de dimension $a*b$ en un triangle isoc\`ele 
 \`a l'aide de 4 pi\`eces : 2 triangles rectangles et 2 trap\`ezes rectangles.\\
 Le triangle est obtenu en faisant subir au triangle $LDU$ (resp $NUA$) une 
@@ -7208,12 +6782,9 @@ P1:=symetrie(M,P):;
 Q:=point(2+i*l):;
 R:=rotation(M,pi/3,Q):;
 L:=quadrilatere(M,2,Q,R,affichage=4+rempli); 
-L:=L,affichage(rotation(M,t1,quadrilatere(0,M,R,i*(2-l))),
-               1+rempli); 
-L:=L,affichage(rotation(Q,-t3,quadrilatere(Q,2+2*i,1+2i,R)),
-               3+rempli); 
-L:=L,affichage(translation((P1-P)*t2,triangle(i*(2-l),2i,1+2i)),
-               2+rempli);
+L:=L,affichage(rotation(M,t1,quadrilatere(0,M,R,i*(2-l))),1+rempli); 
+L:=L,affichage(rotation(Q,-t3,quadrilatere(Q,2+2*i,1+2i,R)),3+rempli); 
+L:=L,affichage(translation((P1-P)*t2,triangle(i*(2-l),2i,1+2i)),2+rempli);
 return L;
 }:;
 \end{verbatim}
@@ -7391,12 +6962,11 @@ m\'ethode vue en section \ref{sec:carreab}.\\
 Avec 6 pi\`eces on peut passer de l'hexagone au carr\'e via le rectangle.\\
 On tape :
 \begin{verbatim}
-a:=sqrt(3*sqrt(3.)/2);
-b:=sqrt(3.)/2;
+a:=sqrt(3*sqrt(3)/2);
+b:=sqrt(3)/2;
 d:=droite(3,3-a+i*b):;
 Q:=inter_unique(droite(y=b),d):;
 R:=inter_unique(droite(x=a),d):;
-S:=inter_unique(droite(y=2*b*(x-2)),d):;
 P1:=polygone(R,Q,1/2+i*b,1,a):;
 affichage(P1,1+rempli);
 P2:=polygone(R,a,2,S):;
@@ -7424,94 +6994,6 @@ affichage(translation(i+i*(a-b)-3+a,P5),5+rempli);
 \end{verbatim}
 On obtient :\\
 \includegraphics[width=\textwidth]{carrehexa}
-\section{L'hexagone et le carr\'e}
-Voila la solution de Paul-Jean Busshop (1799-1877) pour transformer en 5 
-pi\`eces un hexagone r\'egulier en carr\'e sans passer par le rectangle.\\
-Soit un hexagone de co\'e 1. Son aire vaut donc {\tt 3*sqrt(3)/2} et le carr\'e
-a donc comme cot\'e {\tt c:=sqrt(3*sqrt(3)/2)}. \\
-Busshop transforme l'hexagone en un parall\'elogramme regroupant ses 2 
-moiti\'es puis dessine le carr\'e de c\^ot\'e {\tt c} de fa\c{c}on  \`a ce que
-les 2 droites form\'ees par deux c\^ot\'es parall\`eles du carr\'e passe par 
-les sommets de la base du parall\'elogramme. 
-
-On tape :
-\begin{verbatim}
-isopolygone(0,1,6);
-isopolygone(3/2+i*sqrt(3)/2,5/2+i*sqrt(3)/2,6);
-C1:=cercle(-1/2+i*sqrt(3)/2,point(5/2+i*sqrt(3)/2)):;
-affichage(C1,2);
-C2:=cercle(point(5/2+i*sqrt(3)/2),c):;
-affichage(C2,2);
-B:=inter_unique(C1,C2,i);
-A:=point(5/2+i*sqrt(3)/2);
-carre(A,B,C,D);
-segment(B,point(-1/2+i*sqrt(3)/2));
-segment(i*sqrt(3),3+i*sqrt(3));
-segment(A,A-3);
-E:=inter_unique(droite(B,C),droite(i*sqrt(3),1+i*sqrt(3)));
-F:=inter_unique(droite(C,D),droite(y=sqrt(3)/2));
-G:=inter_unique(droite(y=sqrt(3)/2),parallele(D,droite(y=sqrt(3)*x)));
-H:=inter_unique(droite(A,B),droite(y=sqrt(3)));
-affichage(parallele(D,droite(y=sqrt(3)*x)),3);
-\end{verbatim}
-On obtient le carr\'e {\tt ABCD} et les points utiles ainsi que leurs 
-constructions (en vert) :\\
-\includegraphics[width=\textwidth]{puzzlehex}\\
-
-On d\'efinit les pi\`eces du puzzle, on tape :
-\begin{verbatim}
-P1:=polygone(A,H,1+i*sqrt(3.),3/2+i*sqrt(3)/2):;
-affichage(P1,1+rempli);
-P2:=polygone(3/2+i*sqrt(3)/2,1+i*sqrt(3),E,C,F):;
-affichage(P2,2+rempli);
-P3:=polygone(A,G,D):;
-affichage(P3,3+rempli);
-P4:=polygone(D,G,F):;
-affichage(P4,4+rempli);
-P5:=polygone(B,E,H):;
-affichage(P5,5+rempli);
-isopolygone(3,4,6):;
-affichage(translation(-3/2-i*sqrt(3.)/2+3,evalf(P1)),1+rempli);
-affichage(translation(3,evalf(P2)),2+rempli);
-affichage(translation(evalf(3+i*sqrt(3)-affixe(G)),evalf(P3)),3+rempli);
-affichage(translation(evalf(point(4)-D),evalf(P4)),4+rempli);
-affichage(translation(point(5/2+i*sqrt(3)/2)-E,evalf(P5)),5+rempli);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=\textwidth]{puzzlehex1}
-\section{L'octa\`edre et le carr\'e}
-On tape :
-\begin{verbatim}
-O:=isopolygone(0,1,8):;O;
-E:=point(1+(1+i)*sqrt(2)/2);
-F:=point((1+i)*sqrt(2)/2+2);
-c:=sqrt(2*sqrt(2)+2);;
-carre(E,F,G,H);
-isopolygone(1+i+(1+i)*sqrt(2)/2,(1+i)*sqrt(2)/2+2+i,8);
-isopolygone(2+sqrt(2),3+sqrt(2),8);
-I:=point(1/2+i*(1/2+sqrt(2)/2));
-J:=point(1/2+i*sqrt(2)*(cos(pi/8)-1)));
-isopolygone(I+2*h*exp(i*pi/4),J+2*h*exp(i*pi/4),-8):;;
-isopolygone(I,J,-8);
-d2:=droite(J+2*R*i,rotation(I,-pi/4,J)):;d2;
-d1:=droite(J,rotation(I,3*pi/4,J)):; d1;
-d3:=droite(rotation(I,pi/4,J), rotation(I,-pi/2,J)):;d3;
-d4:=droite(rotation(I,pi/2,J), rotation(I,-3*pi/4,J)):;d4;
-B:=inter_unique(d1,d3);
-M:=evalf(inter_unique(d2,d3));
-A:=translation(evalf(c*(A-J)/abs(A-J)),evalf(B));
-carre(A,B,C,D);
-K:=inter_unique(droite(B,C),droite(E,point(1)));
-L:=inter_unique(droite(D,C),droite(F,point(2+sqrt(2)))))));
-N:=point(1+2*i*h);
-affichage(K,1+epaisseur_point_2);
-
-
-\end{verbatim}
-On obtient :\\
-
-
-
 \chapter{Pour s'amuser avec les probabilit\'es}
 \section{Les anniversaires de 3 personnes}
 Trois amis sont n\`es une m\^eme ann\`ee de 365 jours.\\
@@ -8154,33 +7636,20 @@ de choisir $A,Q,B$ align\'es.\\
 Le dessin avec {\tt Xcas} :\\
 On clique deux points {\tt A} \`a gauche de $x=-1$ et {\tt B} \`a droite 
 de $x=1$.
+\begin{verbatim}
+D1:=droite(-1,-1+i);
+D2:=droite(1,1+i);
+R:=translation(2,A);
+Q:=inter(droite(B,R),D2)[0];
+P:=translation(-2,Q);
+segment(A,P);
+segment(Q,P);
+segment(R,B);
+segment(R,A);
+\end{verbatim}
 On peut ensuite faire bouger les points {\tt A} ou {\tt B} et visualiser les 
 trajets {\tt APQB} et {\tt ARQB}.  
-On tape par exemple :
-\begin{verbatim}
-A:=point([-5/2,1,'affichage'=0]);
-B:=point([5,-2,'affichage'=0]);
-D1:=droite(-1,-1+i):;D1;
-D2:=droite(1,1+i):;D2;
-R:=translation(2,A);
-polygone_ouvert(A,R,Q,affichage=1);
-segment(R,B,affichage=ligne_tiret_point+ 4);
-d:=mediatrice(R,B);
-Q:=inter_unique(d,D2);
-P:=translation(-2,Q);
-polygone_ouvert(A,P,Q,B);
-supposons(a=[-2.86,-5,5,0.01]);
-p:=point(-1+i*a);
-q:=point(1+i*a);
-polygone_ouvert(A,p,q,B);
-segment(R,q,affichage=1);
-legende(-6+4i,"Ap="+string(evalf(longueur(A,p))));
-legende(-6+3i,"Bq="+string(evalf(longueur(B,q))));
-\end{verbatim}
-On peut ensuite faire bouger les points {\tt p} et {\tt q} et visualiser les 
-trajets {\tt ApqB} et {\tt ARqB}.  
-On obtient :\\
-\includegraphics[width=\textwidth]{pont3}
+
 \subsection{Comment placer deux ponts}
 Deux villages assimil\'es \`a deux points $A$ et $B$ sont situ\'es de part et 
 d'autre de deux rivi\`eres, l'une est  assimil\'ee \`a deux droites 
@@ -8255,7 +7724,7 @@ minimiser la distance {\tt AM+MN+NB} lorsque {\tt M}$\in${\tt d1} et
 Les deux droites d\'efinissent quatre portions de plan (I,II,III,IV) 
 (I et III \'etant oppos\'es par le sommet). 
 Il y a plusieurs cas \`a distinguer et selon la position de {\tt A} et {\tt B}
-par rapport \`a ces portions de plan. Selon les cas, pour trouver la solution 
+par rapport \`a ces portions de plan. Selon les cas pour trouver la solution 
 il faut tracer  le sym\'etrique {\tt A1} de {\tt A} par
 rapport \`a {\tt d1} et le sym\'etrique {\tt B2} de {\tt B} par
 rapport \`a {\tt d2}, puis tracer soit {\tt AB}, soit {\tt AB2},
@@ -8284,19 +7753,15 @@ Un point {\tt M} se d\'eplace sur le cercle  {\tt C} de centre {\tt O} et de
 rayon {\tt 1}. On choisit {\tt A} et {\tt B} pour que la droite {\tt AB}
 ne coupe pas le cercle {\tt C}.\\
 On cherche dans ce cas, \`a minimiser le trajet {\tt AMB}.\\ 
-{\bf On fait une simulation avec {\tt Xcas}}\\
- On va faire appara\^{i}tre sur le m\^eme \'ecran, le dessin 
+Avec {\tt Xcas} on va faire appara\^{i}tre sur le m\^eme \'ecran, le dessin 
 g\'eom\'etrique et le graphe de la fonction {\tt longueur(AM)+longueur(MB)-2}
 lorsque {\tt M} varie (on enl\`eve {\tt 2} pour pouvoir voir 
 le graphe en entier).\\
 On r\'egle la fen\^etre graphique pour voir :\\
 ${\tt [-3.5,6.5] \times [-1,4.4] }$\\
-On clique sur deux points pour d\'efinir {\tt A} et {\tt B} (par exemple
-{\tt A:=point(-3,-2);B:=point(1,-2);}).\\
+On clique sur deux points pour d\'efinir {\tt A} et {\tt B}.\\
 On tape :\\
 \begin{verbatim}
-A:=point(-3,-2);
-B:=point(1,-2);
 C:=cercle(0,1);
 t:=element(0..2*pi);
 M:=point(exp(i*t)); // ou M:=element(C,t);
@@ -8308,13 +7773,11 @@ exbissectrice(M,A,B)
 \end{verbatim}
 Ensuite lorsque l'on fait bouger {\tt t} les points {\tt M} et {\tt N} bougent,
 l'un sur le cercle {\tt C}, l'autre sur le graphe {\tt G} et l'on peut voir que
-le minimum est atteint quand la bissectrice int\'erieure de l'angle 
-${\tt \widehat{AMB}}$ passe par {\tt O}.\\
-On obtient :\\
-\includegraphics[width=\textwidth]{minamb}\\
+le minimum est atteint quand la bissectrice de l'angle {\tt M} passe par 
+{\tt O}.\\
 On peut aussi faire varier {\tt B} pour voir ce qu'il se passe quand la droite 
 {\tt AB} coupe {\tt C} c'est \`a dire quand la solution est evidente...\\
-{\bf Cas particulier}\\
+{\bf Cas particulier}
 On peut d\'emontrer que lorsque le triangle {\tt OAB} est isoc\'ele de sommet 
 {\tt O} le point {\tt M} du cercle {\tt C} qui rend le trajet {\tt AM+MB} 
 minimum se trouve sur la bissectrice int\'erieure de l'angle 
@@ -8326,149 +7789,9 @@ Soient {\tt I} le milieu de {\tt N1N2} et {\tt J} le milieu de {\tt AB}.
 Les points  {\tt O, I, M, J} sont tous sur la m\'ediatrice de {\tt AB} et 
 puisque  {\tt JI>JM} ({\tt I} milieu de la corde {\tt N1N2} et 
  {\tt J} milieu de l'arc {\tt N1N2}) et on en d\'eduit que {\tt AI>AM}.\\
-Puisque ${\tt \overrightarrow{AN1} +\overrightarrow{AN2}=2\overrightarrow{AI}}$,
- d'apr\'es l'in\'egalit\'e triangulaire on a {\tt 2AI<AN1+AN2}. Donc
-{\tt AM+MB=2AM<2AI<AN1+AN2} ce qui prouve que {\tt AM+MB} est minimum.\\
-{\bf Cas g\'en\'eral}\\
-Soient un cercle {\tt C} de centre {\tt O}, une droite {\tt d} ext\'ereure au 
-cercle {\tt C} et 2 points  {\tt A} et {\tt B} sur la droite {\tt d}.
-On cherche un point {\tt M} sur le cercle {\tt C} pour que {\tt AM+BM} soit 
-minimum.\\
-On sait que le lieu des points {\tt M} tel que  {\tt MA+MB=2a} (pour {\tt a} 
-constant) est une ellipse de foyers {\tt A} et {\tt B} dont la normale en 
-{\tt M} est la bissectrice int\'erieure de l'angle ${\tt \widehat{AMB}}$.\\
-Soit {\tt M} sur le cercle {\tt C}, {\tt MA+MB} sera minimum lorsque l'ellipse 
-de foyers {\tt A} et {\tt B} et passant par {\tt M} sera tangente au cercle 
-{\tt C}, c'est \`a dire lorsque l'ellipse et le cercle {\tt C} auront la
-m\^eme normale au point {\tt M}. La normale en {\tt M} au cercle {\tt C} de 
-centre {\tt O} est {\tt OM}, la normale en {\tt M} \`a l'ellipse de foyer 
-{\tt A} et {\tt B} est la bissectrice int\'erieure de l'angle 
-${\tt \widehat{AMB}}$.
-Donc l'ellipse sera tangente au cercle quand la bissectrice int\'erieure de 
-l'angle ${\tt \widehat{AMB}}$ passe par {\tt O}.\\
-Lorsque la bissectrice int\'erieure de l'angle 
-${\tt \widehat{AMB}}$ passe par {\tt O}, son intersection avec le cercle donne 
-la position de  2 points {\tt M} qui donneront le maximum et le minimum du 
-trajet {\tt MA+MB}.\\
-La construction de $M$ n'est pas facile. On choisit un syst\`eme de 
-coordonn\'ees pour avoir $M$ sur le cercle de centre $O$ et de rayon 1 et
-$AB$ parall\`ele \`a l'axe des $x$.\\
-On tape par exemple :
-\begin{verbatim}
-supposons(a=[2.0,-5,5,0.1]);
-supposons(c=[0.6,-3.2,3.2,0.1]);
-O:=point(0);
-M:=point(exp(i*c));
-cercle(0,1);
-A:=point(2,a);
-B:=point(5,a);
-segment(M,A);
-segment(M,B);
-d:=bissectrice(M,A,B);
-\end{verbatim}
-En faisant bouger {\tt c} pour que {\tt d} passe par {\tt O}, on obtient 
- pour {\tt a=2}  : {\tt c=0.6}.\\
-\includegraphics[width=\textwidth]{mabow}
-\begin{center}\includegraphics[width=10cm]{mabo}\end{center}
-On tape :\\
-{\tt Eq:=simplify(equation(d))}\\
-{\tt fsolve(subst(Eq,[x,y],[0,0]),c,0}
-On obtient comme valeur de {\tt c} pour {\tt a=2} :\\
-{\tt 0.605888470356}
-\subsection{Encore un trajet \`a minimiser MA+MB+MC}
-Soient trois points {\tt A,B,C} dans le plan. On cherche le point {\tt M} qui 
-minimise le trajet{\tt MA+MB+MC}.\\
-On sait que le lieu des points {\tt M} tel que  {\tt MA+MB=2a} (pour {\tt a} 
-constant) est une ellipse de foyers {\tt A} et {\tt B} dont la normale en 
-{\tt M} est la bissectrice int\'erieure de l'angle ${\tt \widehat{AMB}}$.\\
-Si le point {\tt M} r\'ealise le minimum, {\tt MA+MB+MC} sera minimum lorsque 
-{\tt C} sera situ\'e sur la bissectrice int\'erieure de l'angle 
-${\tt \widehat{AMB}}$ puisque cette bissectrice est la normale \`a l'ellipse de
-foyers {\tt A} et {\tt B} et passant par {\tt M}.\\
-Donc ${\tt \widehat{BMC}=\widehat{CMA}}$\\ 
-De m\^eme, si le point {\tt M} r\'ealise le minimum, {\tt MA+MB+MC} sera 
-minimum lorsque {\tt A} sera situ\'e sur la bissectrice int\'erieure de l'angle 
-${\tt \widehat{BMC}}$ puisque cette bissectrice est la normale \`a l'ellipse de
-foyers {\tt B} et {\tt C} et passant par {\tt M}.\\
-Donc ${\tt \widehat{CMA}=\widehat{AMB}}$\\
-Si {\tt M} est \`a l'int\'erieur du triangle {\tt ABC}, on en d\'eduit que :\\
-${\tt \widehat{BMC}=\widehat{CMA}=\widehat{AMB}=2*\pi/3}$\\ 
-\includegraphics[width=\textwidth]{mabc1}\\
-Pour qu'un tel point existe il faut que le triangle $ABC$ ne poss\`ede pas un 
-angle de mesure de plus de $2*\pi/3$ radians.\\
-{\bf On fait une simulation avec {\tt Xcas}}\\
-On fait le dessin en tapant par exemple :
-\begin{verbatim}
-A:=point([-3,-2,'affichage'=0]);
-B:=point([1,-2,'affichage'=0]);
-a:=element((-5) .. 5,0.8,0.1);
-b:=element((-5) .. 5,-1.7,0.1);
-c:=element(0 .. 5,2.8,0.1);
-C:=point(3,c);;
-M:=point(a,b);
-L(A,B,C,a,b):=evalf(longueur(A,point(a,b))+
-      longueur(B,point(a,b))+longueur(C,point(a,b)));;
-G:=plotfunc(L(A,B,C,x,b)-8,x);;
-N:=element(G,a);;
-bissectrice(M,A,B);;
-exbissectrice(M,A,B);
-droite(B,B+exp(i*pi/3));
-arc(B,A,2*pi/3);
-arc(C,B,2*pi/3);
-arc(A,C,2*pi/3);
-\end{verbatim}
-On obtient pour (a,b,c)=(0.8,1.7,2.8) :\\
-\includegraphics[width=\textwidth]{mabc}\\
-{\bf La solution}\\
-Soient {\tt A:=point(xa,ya):;B:=point(xb,yb):;C:=point(xc,yc):;},
-{\tt M:=point(x,y):;} et la fonction $f$ de $\R^2$ dans $\R$ qui \`a $x,y$ fait 
-correspondre $MA+MB+MC$.\\
-On a :\\
-{\tt f(x,y):=longueur(M,A)+longueur(M,B)+longueur(M,C)}.\\
-Cherchons les points critiques de $f$ c'est \`a dire les points o\`u 
-son gradient :\\
-{\tt grad(f(x,y),[x,y])} s'annule.\\
-On tape pour avoir le gradient de {\tt longueur(M,A)} lorsque $M!=A$ :\\
- {\tt grad(longueur(M,A)),[x,y])}\\
-On obtient :\\
-{\tt [(x-xa)/sqrt((x-xa)\verb|^|2+(y-ya)\verb|^|2),(y-xa)/sqrt((x-xa)\verb|^|2+(y-ya)\verb|^|2)]}\\
-c'est \`a dire le vecteur $\overrightarrow{AM}/|AM|$ qui est norme 1.\\
-Donc si $M!=A$ et $M!=B$ et $M!=C$, le gradient de $f$ existe et est \'egal 
-\`a est la somme de 3 vecteurs de norme 1.\\
-Ce gradient s'annule si :\\
-$\overrightarrow{MA}/|MA|+\overrightarrow{MB}/|MB|+\overrightarrow{MC}/|MC|=0$\\
-c'est \`a dire lorsque les vecteurs 
-$\overrightarrow{MA},\overrightarrow{MB},\overrightarrow{MC}$
-font entre eux un angle de $2\pi/3$.\\
-On en d\'eduit que si les angles du triangle sont inf\'erieurs \`a $2\pi/3$, 
-le point $M$ qui r\'ealise le minimum de $MA+MB+MC$ est l'intersection des arcs
-capables $AB$, $AC$, $BC$ d'angle $2\pi/3$.\\
-On tape :
-\begin{verbatim}
-B:=point(0);
-C:=point(2);
-A:=point(5/2+i*4);
-triangle(A,B,C);
-g1:=arc(B,A,2*pi/3):;g1;
-g2:=arc(C,B,2*pi/3):;g2;
-g3:=arc(A,C,2*pi/3):;g3;
-M:=inter_unique(g1,g2);
-\end{verbatim}
-On obtient :\\
-\includegraphics[width=\textwidth]{mabc2}\\
-Si un des angles du triangle est sup\'erieur \`a $2\pi/3$, les arcs 
-{\tt g1,g2,g3} ne sont pas concourants et donc le point $M$ qui r\'ealise le 
-minimum de $MA+MB+MC$ se trouve soit en $A$, soit en $B$ soit en $C$.\\
- En effet lorsque le point $M$ r\'ealise le minimum de $MA+MB+MC$ c'est que $M$ 
-est soit un point critique de $f$, lorsque $f$ est 
-d\'erivable, soit un point o\`u $f$ n'est pas d\'erivable.\\ 
-Supposons que l'angle $c=(\overrightarrow{CA},\overrightarrow{CB})$ du triangle 
-$ABC$ soit sup\'erieur \`a $2\pi/3$.\\
-On a $\cos(c)<0$ et $AB^2=AC^2+BC^2-2*AC*BC*\cos(c)$
-donc $AB>AC$ et $AB>BC$ donc $BC+AC<BC+AB$ et $BC+AC<AB+AC$ \\
-Donc le point qui r\'ealise le minimum se trouve en $C$.\\
-\includegraphics[width=\textwidth]{mabc3}
-
+${\tt \overrightarrow{AN1} +\overrightarrow{AN2}=2\overrightarrow{AI}}$ et 
+donc d'apr\'es l'in\'egalit\'e triangulaire on a {\tt 2AI<AN1+AN2} et donc \\
+{\tt AM+MB=2AM<2AI<AN1+AN2} ce qui prouve que {\tt AM+MB} est minimum.
 \section{Des probl\`emes de construction}
 \subsection{Construire un triangle connaissant $a$, $b$ et $m$ la longueur de la bissectrice de l'angle des c\^ot\'es $a$ et $b$}
 Soit un triangle $ABC$ et $CM$ la bissectrice int\'erieure de l'angle $C$.\\
@@ -8549,10 +7872,48 @@ $CM1=m$ et $B1D=m\frac{a+b}{b}$.\\
 en rouge le triangle $ABC$ et $M$ le pied de la bissectrice int\'erieure de 
 l'angle $C$ et \\
 {\tt normal(longueur(C,M))} renvoie $m$.
+\subsection{Comment placer un pont}
+Deux villages assimil\'es \`a deux points $A$ et $B$ sont situ\'es de part et 
+d'autre d'une rivi\`ere assimil\'ee \`a deux droites parall\`eles $D1$ et $D2$.
+O\`u doit-on placer un pont $PQ$ sur la rivi\`ere pour que $AP=QB$, lorsque $PQ$
+est perpendiculaire aux berges et $P$ est sur la berge du c\^ot\'e de $A$ ?\\
+On remarque que $\overrightarrow{PQ}$ est constant et a pour norme
+\'egal \`a la largeur de la rivi\`ere. Soit $R$ le translat\'e de $A$ dans la translation de vecteur $\overrightarrow{PQ}$. \\
+On a $\overrightarrow{AR}=\overrightarrow{PQ}$ donc $APQR$ est un 
+parall\'elogramme. 
+Donc $AP=RQ$. On veut avoir $AP=BQ$ donc il faut que $RQ=Bq$ c'est \`a dire que $Q$ se trouve sur la m\'ediatrice de $RB$. Donc $Q$ est l'intersection de la 
+m\'ediatrice de $RB$ avec la berge se trouvant du c\^ot\'e de $B$.\\
+Le dessin avec {\tt Xcas} :\\
+On clique deux points {\tt A} \`a gauche de $x=-1$ et {\tt B} \`a droite 
+de $x=1$, par exemple :
+\begin{verbatim}
+A:=point([-5/2,1,'affichage'=0]);
+B:=point([5,-2,'affichage'=0]);
+D1:=droite(-1,-1+i):;D1;
+D2:=droite(1,1+i):;D2;
+R:=translation(2,A);
+polygone_ouvert(A,R,Q,affichage=1);
+segment(R,B,affichage=ligne_tiret_point+ 4);
+d:=mediatrice(R,B);
+Q:=inter_unique(d,D2);
+P:=translation(-2,Q);
+polygone_ouvert(A,P,Q,B);
+supposons(a=[-2.86,-5,5,0.01]);
+p:=point(-1+i*a);
+q:=point(1+i*a);
+polygone_ouvert(A,p,q,B);
+segment(R,q,affichage=1);
+legende(-6+4i,"Ap="+string(evalf(longueur(A,p))));
+legende(-6+3i,"Bq="+string(evalf(longueur(B,q))));
+\end{verbatim}
+On peut ensuite faire bouger les points {\tt p} et {\tt q} et visualiser les 
+trajets {\tt ApqB} et {\tt ARqB}.  
+On obtient :\\
+\includegraphics[width=\textwidth]{pont3}
 
 \section{Une transformation}
 Quelles sont les transformations du plan qui transforme toute droite en une 
-droite parall\`ele ?\\
+droite parall\`ele ?
 Ce qui veut dire que, si on connait un point {\tt A} et son transform\'e 
 {\tt A1}, le transform\'e  {\tt B1} de {\tt B}, est sur la parall\`ele \`a la 
 {\tt droite(A,B)} passant par {\tt A1}.
@@ -9480,107 +8841,6 @@ On tape :\\
 On obtient :\\
 \includegraphics[width=\textwidth]{ujf}
 
-\section{Un quasi cristal}
-Sur le pourtour d'un d\'ecagone on trace des pentagones, puis des \'etoiles 
-\`a 5 branches, puis un tour de d\'ecagones avec ses pentagones puis des 
-\'etoiles et un tour de d\'ecagones avec ses pentagones.\\
-La fonction {\tt etoile} a comme pram\`etres :\\
-{\tt a} est l'affixe de son centre,\\
-{\tt r} est le rayon de son cercle circonscrit,\\
-{\tt k} est l'angle en radian que fait une branche de l'\'etoile avec l'horizontale.\\
-On tape : 
-\begin{verbatim}
-etoile(a,r,k):={
- local  A,j,L,s1; 
- A:= point(a+r*cos(2*pi/5)/cos(pi/5)*exp(i*k+i*pi/5));
- L:=NULL;
- s1:=[segment(a+r*exp(i*k),A),segment(A,a+r*exp(i*k+i*2*pi/5))];
- pour j de 0 jusque 4 faire
-   L:=L,s1
-   s1:=rotation(a,2*pi/5,s1);  
-     fpour;
- return L;
- }:;
-\end{verbatim}
-La fonction {\tt tour} dessine des pentagones sur le pourtour d'un d\'ecagone.\\
-{\tt tour} a comme pram\`etres :\\
-{\tt a} est l'affixe du centre du d\'ecagone,\\
-{\tt R} est le rayon de son cercle circonscrit,\\
-{\tt k} est l'angle en radian que fait un sommet du d\'ecagone avec l'horizontale.\\
-On tape : 
-\begin{verbatim}
-tour(a,R,k):={
-  local c,r,j,L,l,ret,aet;
-  c:=2*R*sin(pi/10);
-  r:=c/2/sin(pi/5);
-  l:=2*r*sin(2*pi/5);
-  ret:=r*sin(2*pi/5)/sin(pi/5);
-  aet:=R*cos(pi/10)+r*cos(pi/5)+r*cos(2*pi/5)+ret*cos(pi/5);
-  L:=NULL;
-  pour j de 0 jusque 9 faire
-   L:=L,isopolygone(a+R*exp(i*k+i*pi*j/5)*exp(i*pi/5),
-                    a+R*exp(i*k+i*pi*j/5),5);
-   fpour;
-  return L;
-}:;
-\end{verbatim}
-La fonction {\tt touret} dessine un tour de pentagones, un tour d'\'etoiles,
-un tour fait avec tour, un tour d'\'etoiles et enfin un tour fait avec tour.\\
-{\tt touret} a les m\^emes param\`etres que {\tt tour}\\
-Pour les variables locales on a :\\
-{\tt R} : rayon du d\'ecagone\\
-{\tt r} : rayon des pentagones\\
-{\tt ret} : rayon des \'etoiles\\
-{\tt l} est la distance entre le sommet 0 et le sommet 2 du pentagone.\\
-{\tt aet} distance du centre du d\'ecagone au centre d'une \'etoile.\\
-On tape : 
-\begin{verbatim}
-touret(a,R,k):={
-local c,r,j,L,l,ret,aet;
-L:=NULL;
-c:=2*R*sin(pi/10);
-r:=c/2/sin(pi/5.);
-l:=2*r*sin(2*pi/5.);
-ret:=r*sin(2*pi/5.)/sin(pi/5.);
-aet:=R*cos(pi/10.)+r*cos(pi/5.)+r*cos(2*pi/5.)+ret*cos(pi/5.);
-pour j de 0 jusque 9 faire
- L:=L,isopolygone(a+R*exp(i*k+i*pi*j/5)*exp(i*pi/5),
-                  a+R*exp(i*k+i*pi*j/5),5);
- L:=L,etoile(a+aet*exp(i*pi/10.+j*i*pi/5.),ret,pi/10.+j*pi/5.);
- L:=L,tour(a+(2*(R+c)+l)*exp(i*j*pi/5.),R,k);
- L:=L,tour(a+(4*R+3*c+l)*exp(i*j*pi/5.),R,k);
- L:=L,etoile(a+(4*R+3*c+l)*exp(i*j*pi/5.)+
-           aet*exp(i*7*pi/10+j*i*pi/5.),ret,7*pi/10.+j*pi/5.);
-fpour;
-return L;
-}:;
-\end{verbatim}
-On tape :\\
-{\tt etoile(-35,2,0),tour(-25,2,0),touret(0,2,0)}\\
-On obtient :\\
-
-\includegraphics[width=\textwidth]{quasicristal0}\\
-
-On tape pour faire un quasi-cristal :
-\begin{verbatim}
-R:=2;
-c:=2*R*sin(pi/10);
-r:=c/2/sin(pi/5.);
-l:=2*r*sin(2*pi/5.);
-ret:=r*sin(2*pi/5.)/sin(pi/5.);
-aet:=R*cos(pi/10.)+r*cos(pi/5.)+r*cos(2*pi/5.)+ret*cos(pi/5.);
-touret(0,2,0);tour(2*(R+c)+l,2,0);tour((2*(R+c)+l)*exp(i*pi/5.),2,0);
-tour(4*R+3*c+l,2,0);tour((4*R+3*c+l)*exp(i*pi/5.),2,0);
-tour(4*R+3*c+l+(sqrt(5)+3)*exp(2*i*pi/5.),2,0);
-touret((6*R+5*c+2*l),2,0);
-touret((6*R+5*c+2*l)+(6*R+5*c+2*l)*exp(2*i*pi/5.),2,0);
-touret((6*R+5*c+2*l)*exp(3*i*pi/5.),2,0);
-touret(2*(6*R+5*c+2*l)*cos(pi/5.)*exp(2*i*pi/5.),2,0);
-tour((6*R+5*c+2*l)/cos(3*pi/10.)*exp(3*i*pi/10.)/2,2,pi/10.);
-\end{verbatim}
-On obtient :\\
-
-\includegraphics[width=\textwidth]{quasicristal}
 \section{Puzzle : remplir un d\'ecagone avec des losanges}
 \begin{verbatim}
 deca(O1,O2):={

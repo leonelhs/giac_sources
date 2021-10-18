@@ -6,47 +6,20 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Générer une erreur : throw error ERROR</TITLE>
+<TITLE>Instruction du debuggeur : rmwatch</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr842.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr844.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc975">8.7.13</A>  Générer une erreur : <TT>throw error ERROR</TT></H3><P><A NAME="@default1518"></A><A NAME="@default1519"></A><A NAME="@default1520"></A>
-<TT>throw</TT> ou <TT>error</TT> ou <TT>ERROR</TT> permet de générer une
-erreur en provoquant l’affichage d’une erreur.<BR>
-On tape :
-</P><PRE CLASS="verbatim">f(x):={
-if (type(x)!=DOM_INT)
-  throw(erreur);
-else
-  return x;
-} 
-</PRE><P>puis
-</P><DIV CLASS="center"><TT>f(1.2)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc986">9.7.3</A>  Instruction du debuggeur : <TT>rmwatch</TT></H3><P><A NAME="@default1522"></A>
+<TT>rmwatch</TT> a comme argument le nom des variables que l’on ne
+désire plus surveiller.<BR>
+On tape par exemple :
+</P><DIV CLASS="center"><TT>rmwatch(a,b)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"erreur Error: Bad Argument Value"</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>f(12)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>12</TT></DIV><P>
-On peut capter l’erreur grace à cette fonction <TT>f</TT> que l’on utilise dans
-la fonction <TT>g</TT> suivante :
-</P><PRE CLASS="verbatim">g(x):={
-try { f(x); } catch (err){ x:=0; }
-return x;
-} 
-</PRE><P>puis
-</P><DIV CLASS="center"><TT>g(1.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>g(12)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>12</TT></DIV><P>
-La fonction <TT>g(x)</TT> renvoie, <TT>x</TT> si <TT>x</TT> est un entier,
-et <TT>0</TT> sinon. </P><HR>
+</P><DIV CLASS="center"><TT>l’évolution de a et de b lors du déroulement du programmen’est plus visible</TT></DIV><HR>
 <A HREF="cascmd_fr842.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr844.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

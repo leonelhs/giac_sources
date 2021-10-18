@@ -6,38 +6,39 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Suites de Sturm et nombre de de changements de signe de P sur ]a; b] : sturm</TITLE>
+<TITLE>Résolution polynômiale de au+bv=c : abcuv</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr396.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr398.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc483">6.27.15</A>  Suites de Sturm et nombre de de changements de signe de <I>P</I> sur ]<I>a</I>; <I>b</I>] : <TT>sturm</TT></H3><P><A NAME="@default742"></A>
-<TT>sturm</TT> a deux ou quatre paramètres : une expression 
-polynômiale <I>P</I> ou une fraction rationnelle <I>P</I>/<I>Q</I> et le nom de la variable ou
-une expression polynômiale <I>P</I>, le nom de la variable et deux nombres <I>a</I> et
-<I>b</I>.</P><P>Lorsqu’il y a 2 paramètres <TT>sturm</TT> renvoie la liste des suites de Sturm 
-et de leur multiplicité pour <I>P</I> ou pour <I>P</I> et pour <I>Q</I> (<TT>sturm</TT> est 
-alors identique à <TT>sturmseq</TT>).</P><P>Lorsqu’il y a 4 paramètres <TT>sturm</TT>, se comporte comme <TT>sturmab</TT> : 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>a</I> et <I>b</I> sont réels, <TT>sturm</TT> renvoie le nombre de changements 
-de signe de <I>P</I> sur ]<I>a</I>; <I>b</I>] 
-</LI><LI CLASS="li-itemize">si <I>a</I> ou <I>b</I> est complexe, <TT>sturm</TT> renvoie le nombre de racines 
-complexes à l’intérieur du rectangle de sommets opposés <I>a</I> et <I>b</I>. 
-</LI></UL><P> 
+<H3 CLASS="subsection"><A NAME="htoc484">6.28.12</A>  Résolution polynômiale de au+bv=c : <TT>abcuv</TT></H3><P><A NAME="@default741"></A>
+Il s’agit encore de l’identité de Bézout.<BR>
+<TT>abcuv</TT> résout l’équation polynômiale
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>C</I>(<I>x</I>)=<I>U</I>(<I>x</I>)*<I>A</I>(<I>x</I>)+<I>V</I>(<I>x</I>)*<I>B</I>(<I>x</I>) </TD></TR>
+</TABLE><P>
+dans laquelle les inconnues sont les polynômes <I>U</I> et <I>V</I> et les paramètres
+sont les trois polynômes, <I>A</I>, <I>B</I>, <I>C</I> où <I>C</I> doit être un multiple du PGCD 
+de <I>A</I> et <I>B</I>.<BR>
+<TT>abcuv</TT> a comme argument 3 expressions polynômiales <I>A</I>, <I>B</I>, <I>C</I> et le nom 
+de leur variable (par défaut <I>x</I>) (resp 3 listes représentant les 
+coefficients par puissances décroisantes de 3 polynômes <I>A</I>, <I>B</I>, <I>C</I>).
+<TT>abcuv</TT> renvoie la liste de 2 expressions polynômiales <I>U</I> et <I>V</I> (resp 
+de 2 listes quisont les coefficients par puissances décroisantes de <I>U</I> et 
+<I>V</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sturm(2*x</TT><CODE><TT>^</TT></CODE><TT>3+2,x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>abcuv(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1 ,x</TT><CODE><TT>^</TT></CODE><TT>2-1,x+1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,[[1,0,0,1],[3,0,0],-9],1]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[1/2,1/-2]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>sturm((2*x</TT><CODE><TT>^</TT></CODE><TT>3+2)/(x+2),x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>abcuv(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1 ,x</TT><CODE><TT>^</TT></CODE><TT>2-1,x</TT><CODE><TT>^</TT></CODE><TT>3+1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,[[1,0,0,1],[3,0,0],-9],1,[[1,2],1]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[1/2*x</TT><CODE><TT>^</TT></CODE><TT>2+1/-2*x+1/2,-1/2*x</TT><CODE><TT>^</TT></CODE><TT>2-1/-2*x-1/2]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>sturm(x</TT><CODE><TT>^</TT></CODE><TT>2*(x</TT><CODE><TT>^</TT></CODE><TT>3+2),x,-2,0)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>abcuv([1,2,1],[1,0,-1],[1,0,0,1])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[poly1[1/2,1/-2,1/2],poly1[1/-2,1/2,1/-2]]</TT></DIV><HR>
 <A HREF="cascmd_fr396.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr398.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

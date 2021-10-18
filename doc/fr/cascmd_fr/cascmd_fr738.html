@@ -6,37 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse normale : normal_icdf normald_icdf</TITLE>
+<TITLE>Fonction de répartition inverse de la loi binomiale: binomial_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr737.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr739.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc861">7.4.13</A>  Fonction de répartition inverse normale : <TT>normal_icdf normald_icdf</TT></H3><P><A NAME="@default1325"></A><A NAME="@default1326"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi normale centrée 
-réduite, si on a <TT>normal_icdf(x)=h</TT> c’est que l’on a :<BR>
- <I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=normal_cdf(h)</TT>.<BR>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi normale de moyenne µ et 
-d’écart-type σ, si on a <TT>normal_icdf(</TT><TT>µ,σ</TT><TT>,x)=h</TT> 
-c’est que l’on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=normal_cdf(</TT><TT>µ,σ</TT><TT>,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc872">8.4.3</A>  Fonction de répartition inverse de la loi binomiale: <TT>binomial_icdf</TT></H3><P><A NAME="@default1327"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale <FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>),
+si on a :<BR>
+<TT>binomial_icdf(n,p,x)=h</TT> c’est que<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>h</I>)=<I>x</I>=<TT>binomial_cdf(n,p,h)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>normal_icdf(0.975)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>binomial_icdf(4,0.5,0.9)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.95996398454</TT></DIV><P>
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>normal_icdf(1,2,0.495)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>binomial_icdf(2,0.3,0.95)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.974933060984</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>normal_icdf(1,2,normal_cdf(1,2,0.975))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.975</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>normal_cdf(1,2,normal_icdf(1,2,0.495))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.495</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr737.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr739.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

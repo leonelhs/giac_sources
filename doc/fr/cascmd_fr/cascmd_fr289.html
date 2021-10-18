@@ -6,24 +6,60 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Composition de fonctions : @</TITLE>
+<TITLE>Les fonctions ayant plusieurs usages</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr288.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr290.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc365">6.17.4</A>  Composition de fonctions : <TT>@</TT></H3><P><A NAME="@default541"></A>
-La composition de fonctions se fait avec <TT>Xcas</TT> grâce à l’opérateur 
-<TT>@</TT> qui est infixé.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>(sq@sin+id)(x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(sin(x))</TT><CODE><TT>^</TT></CODE><TT>2+x</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>(sin@sin)(pi/2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>sin(1)</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc366">6.18.1</A>  Les fonctions ayant plusieurs usages</H3><H4 CLASS="subsubsection"><A NAME="toc4"></A><TT>+</TT> et <TT>-</TT></H4><P><A NAME="@default498"></A><A NAME="@default499"></A><A NAME="@default500"></A><A NAME="@default501"></A>
+<TT>+</TT> (resp <TT>-</TT>) est une fonction infixée et <TT>’+’</TT> 
+(resp <TT>’-’</TT>) est une fonction préfixée. Elle renvoie un résultat qui 
+dépend de la nature de ses arguments.<BR>
+Voici des exemples avec <TT>+</TT> (seul le dernier exemple n’est pas utilisable 
+avec <TT>-</TT>) :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On tape (1,2)+(3,4) ou (1,2,3)+4=1+2+3+4 ou’+’(1,2,3,4), on obtient 10,
+</LI><LI CLASS="li-itemize">On tape 1+i+2+3*i ou ’+’(1,i,2,3*i), on obtient 3+4*i,
+</LI><LI CLASS="li-itemize">On tape [1,2,3]+[4,1] ou [1,2,3]+[4,1,0] ou ’+’([1,2,3],[4,1]), on 
+obtient [5,3,3],
+</LI><LI CLASS="li-itemize">On tape [1,2]+[3,4] ou ’+’([1,2],[3,4]), on obtient [4,6], 
+</LI><LI CLASS="li-itemize">On tape [[1,2],[3,4]]+ [[1,2],[3,4]], on obtient [[2,4],[6,8]],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]+4 ou ’+’([1,2,3],4), on obtient poly1[1,2,7],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]+(4,1) ou ’+’([1,2,3],4,1), on obtient poly1[1,2,8],
+</LI><LI CLASS="li-itemize">On tape "bon"+"jour" ou ’+’("bon","jour"), on obtient "bonjour".
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc5"></A><TT>*</TT></H4><P><A NAME="@default502"></A><A NAME="@default503"></A>
+<TT>*</TT> est une fonction infixée et <TT>’*’</TT> 
+est une fonction préfixée. Elle renvoie un résultat qui 
+dépend de la nature de ses arguments.<BR>
+Voici des exemples avec <TT>*</TT> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On tape (1,2)*(3,4) ou (1,2,3)*4 ou 1*2*3*4 ou ’*’(1,2,3,4), on obtient 
+24,
+</LI><LI CLASS="li-itemize">On tape 1*i*2*3*i ou ’*’(1,i,2,3*i), on obtient -6,
+</LI><LI CLASS="li-itemize">On tape [10,2,3]*[4,1] ou [10,2,3]*[4,1,0] ou ’+’([10,2,3],[4,1]), 
+on obtient 42 (produit scalaire),
+</LI><LI CLASS="li-itemize">On tape [1,2]*[3,4] ou ’*’([1,2],[3,4]), on obtient 11 (produit scalaire),
+</LI><LI CLASS="li-itemize">On tape [[1,2],[3,4]]* [[1,2],[3,4]], on obtient [[7,10],[15,22]],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]*4=’*’([1,2,3],4), on obtient [4,8,12],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]*(4,2)ou ’*’([1,2,3],4,2), on obtient [1,2,3]*8=[8,16,24],
+</LI><LI CLASS="li-itemize">On tape (1,2)+i*(2,3), on obtient 1+2+i*2*3=3+6*i.
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc6"></A><TT>/</TT></H4><P><A NAME="@default504"></A><A NAME="@default505"></A>
+<TT>/</TT> est une fonction infixée et <TT>’/’</TT> 
+est une fonction préfixée. Elle renvoie un résultat qui 
+dépend de la nature de ses arguments.<BR>
+Voici des exemples avec <TT>/</TT> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On tape [10,2,3]/[4,1], on obtient invalid dim,
+</LI><LI CLASS="li-itemize">On tape [1,2]/[3,4] ou ’/’([1,2],[3,4]), on obtient [1/3,1/2], 
+</LI><LI CLASS="li-itemize">On tape 1/[[1,2],[3,4]], on obtient [[-2,1],[3/2,(-1)/2]],
+</LI><LI CLASS="li-itemize">On tape [[1,2],[3,4]]*1/ [[1,2],[3,4]], on obtient [[1,0],[0,1]],
+</LI><LI CLASS="li-itemize">On tape [[1,2],[3,4]]/ [[1,2],[3,4]], on obtient [[1,1],[1,1]] (division
+terme à terme),
+</LI><LI CLASS="li-itemize">On tape [1,2,3]*4 ou ’*’([1,2,3],4), on obtient [4,8,12],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]/(4,2) ou ’*’([1,2,3],4,2)=[1,2,3]*8, on obtient [8,16,24].
+</LI></UL><HR>
 <A HREF="cascmd_fr288.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr290.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

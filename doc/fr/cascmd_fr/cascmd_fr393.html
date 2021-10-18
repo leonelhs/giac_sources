@@ -6,47 +6,40 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Idendité de Bézout : egcd gcdex</TITLE>
+<TITLE>PGCD de deux polynômes par l’algorithme d’Euclide : Gcd</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr392.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr394.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc479">6.27.11</A>  Idendité de Bézout : <TT>egcd gcdex</TT></H3><P><A NAME="@default737"></A><A NAME="@default738"></A>
-Il s’agit de l’identité de Bézout pour les polynômes (Extended Greatest 
-Common Divisor).<BR>
-<TT>egcd</TT> a 2 ou 3 arguments: les polynômes <I>A</I> and <I>B</I> qui sont, 
-soit sous la forme d’expressions d’une variable, (si la variable n’est pas
-spécifiée c’est <I>x</I>), soit donné par la liste de leurs coefficients par 
-ordre de puissances décroissantes.<BR>
-Etant donnés 2 polynômes <I>A</I>(<I>x</I>),<I>B</I>(<I>x</I>), <TT>egcd</TT> ou <TT>gcdex</TT> renvoie 
-3 polynômes <TT>[U(x),V(x),D(x)]</TT> vérifiant :
-</P><DIV CLASS="center"><TT>U(x)*A(x)+V(x)*B(x)=D(x)=PGCD(A(x),B(x))</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>egcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc480">6.28.8</A>  PGCD de deux polynômes par l’algorithme d’Euclide : <TT>Gcd</TT></H3><P><A NAME="@default733"></A> <A NAME="sec:Gcd"></A>
+<TT>Gcd</TT> est la forme inerte de <TT>gcd</TT>.<BR>
+<TT>Gcd</TT> renvoie le PGCD (plus grand commun diviseur) de deux 
+polynômes (ou d’une liste de polynômes ou d’une séquence de polynômes) 
+(voir <A HREF="cascmd_fr161.html#sec:igcd">6.7.2</A> pour le PGCD d’entiers), sans l’évaluer et
+cela permet de calculer le PGCD de deux polynômes à
+coefficients dans ℤ/<I>p</I>ℤ en utilisant la syntaxe Maple.<BR>
+<B>Attention</B> il faut être en mode Maple pour que cela soit efficace.<BR>
+On tape en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>Gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x)mod 5,(x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5x) mod 5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,-1,2*x+2]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>egcd([1,2,1],[1,0,-1])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>gcd((1% 5)*x</TT><CODE><TT>^</TT></CODE><TT>2+(2% 5)*x,(1% 5)*x</TT><CODE><TT>^</TT></CODE><TT>2+(1% 5)*x)</TT></DIV><P> 
+puis on obtient :
+</P><DIV CLASS="center"><TT>(1% 5)*x</TT></DIV><P>
+Mais si on tape en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>Gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x),(x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5x)) mod 5</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1],[-1],[2,2]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>egcd(t</TT><CODE><TT>^</TT></CODE><TT>2+2*t+1,t</TT><CODE><TT>^</TT></CODE><TT>2-1,t)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(1% 5)*gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2++6*x+5x)</TT></DIV><P> 
+puis :
+</P><DIV CLASS="center"><TT>(1% 5)</TT></DIV><P>On tape en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>Gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,-1,2*t+2]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>egcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-x+2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2+x) mod 5</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>[x-2,-x+3,4]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>egcd([1,-2,1],[1,-1,2])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,-2],[-1,3],[4]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>egcd(t</TT><CODE><TT>^</TT></CODE><TT>2-2*t+1,t</TT><CODE><TT>^</TT></CODE><TT>2-t+2,t)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[t-2,-t+3,4]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>x</TT></DIV><HR>
 <A HREF="cascmd_fr392.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr394.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

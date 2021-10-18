@@ -6,23 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Sortie dans une petite fenêtre : output Output</TITLE>
+<TITLE>Les commentaires : comment //</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr802.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr804.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc932">8.4.11</A>  Sortie dans une petite fenêtre : <TT>output Output</TT></H3><P><A NAME="@default1440"></A><A NAME="@default1441"></A>
-<TT>output</TT> ou <TT>Output</TT> a comme argument une séquence de chaîne de caractères ou de noms de variables.<BR>
-<TT>output</TT> ou <TT>Output</TT> écrit les chaînes de caractères et le contenu
-des variables dans une petite fenêtre (la même que celle qui s’ouvre lors 
-d’un <TT>input</TT>).
-Cela permet donc d’inclure un <TT>output</TT> dans un <TT>input</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>input(output("Calcul de p(a)"),"polynome",p,"valeur",a)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc943">9.4.1</A>  Les commentaires : <TT>comment //</TT></H3><P><A NAME="@default1421"></A><A NAME="@default1422"></A>
+<TT>comment</TT> a comme argument une chaine de caractère (il faut 
+mettre les <TT>"</TT>) alors que <TT>//</TT> n’a pas besion des <TT>"</TT> mais doit se
+terminer par un retour à la ligne : cela veut veut dire que l’argument de 
+<TT>comment</TT> ou ce qui se trouve entre <TT>//</TT> et le retour à la ligne 
+n’est pas pris en compte par le programme et que c’est un commentaire.<BR>
+On tape le programme dans <TT>un éditeur de programmes</TT> puis on le valide avec le bouton <TT>OK</TT> :
+</P><DIV CLASS="center"><TT>f(x):={comment("f:R-&gt;R</TT><CODE><TT>^</TT></CODE><TT>2")<BR>
+return [x+1,x-1];}</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>f(x):={//f:R-&gt;R</TT><CODE><TT>^</TT></CODE><TT>2<BR>
+return [x+1,x-1];}</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre ayant pour titre </TT><TT>Calcul de p(a)</TT><TT>, où on peut entrer la valeur de </TT><TT>p</TT><TT> (par exemple x-&gt;x+1) et </TT><TT>a</TT><TT> (par exemple 2)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>la définition commentée de la fonction f(x)=[x+1,x-1] </TT></DIV><HR>
 <A HREF="cascmd_fr802.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr804.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,53 +6,86 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Comatrice : adjoint_matrix</TITLE>
+<TITLE>Polynôme caractéristique : pcar charpoly</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr620.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr622.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc729">6.49.10</A>  Comatrice : <TT>adjoint_matrix</TT></H3><P><A NAME="@default1139"></A>
-La comatrice de <I>A</I> est une matrice <I>B</I> telle que <I>A</I>* <I>B</I>=det(<I>A</I>)* <I>I</I>.<BR>
-<TT>adjoint_matrix </TT> a comme argument une matrice carrée <I>A</I> d’ordre <I>n</I>.<BR>
-<TT>adjoint_matrix </TT> renvoie une liste composée des coefficients du
-polynôme caractéristique <I>P</I> de <I>A</I>, d’une liste contenant les coefficients matriciels d’un polynôme <I>Q</I> tel que <I>Q</I>(<I>x</I>) soit la comatrice de <I>A</I>−<I>x</I>* <I>I</I> au signe près si <I>n</I> est pair!<BR>
-On a :<BR>
-<I>P</I>(<I>x</I>)=(−1)<SUP><I>n</I></SUP>* det(<I>A</I>−<I>x</I>* <I>I</I>) et <I>P</I>(<I>A</I>)−<I>P</I>(<I>x</I>)* <I>I</I>=(<I>A</I>−<I>x</I>* <I>I</I>)* <I>Q</I>(<I>x</I>)<BR>
-En effet le polynôme à coefficients matriciels <I>P</I>(<I>A</I>)−<I>P</I>(<I>x</I>)* <I>I</I>  est divisible
-par <I>A</I>−<I>x</I>* <I>I</I> car il s’annule pour <I>x</I>=<I>A</I> :<BR>
-<I>P</I>(<I>A</I>)=0, on a donc  <I>P</I>(<I>A</I>)−<I>P</I>(<I>x</I>)* <I>I</I> = −<I>P</I>(<I>x</I>)* <I>I</I> = (<I>A</I>−<I>x</I>* <I>I</I>)* <I>Q</I>(<I>x</I>).<BR>
-<I>Q</I>(<I>x</I>) est donc la comatrice de <I>A</I>−<I>x</I>* <I>I</I> au signe près si <I>n</I> est pair, 
-puisque :<BR>
- (<I>A</I>−<I>x</I>* <I>I</I>)* <I>Q</I>(<I>x</I>)= −<I>P</I>(<I>x</I>)* <I>I</I>=(−1)<SUP><I>n</I>+1</SUP>* det(<I>A</I>−<I>x</I>* <I>I</I>).<BR>
-On a alors <I>Q</I>(<I>x</I>) = <I>I</I>* <I>x</I><SUP><I>n</I>−1</SUP>+...+<I>B</I><SUB>0</SUB>  où <I>B</I><SUB>0</SUB>= est la comatrice de <I>A</I> (au signe près si <I>n</I> est pair!) puisque <I>Q</I>(0)=<I>B</I><SUB>0</SUB> et <I>A</I>* <I>Q</I>(0)=(−1)<SUP><I>n</I>+1</SUP>det(<I>A</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc730">6.50.7</A>  Polynôme caractéristique : <TT>pcar charpoly</TT></H3><P><A NAME="@default1135"></A><A NAME="@default1136"></A><A NAME="@default1137"></A><A NAME="@default1138"></A>
+<A NAME="@default1139"></A><A NAME="@default1140"></A>
+<TT>pcar</TT> (ou <TT>charpoly</TT>) a un (resp deux)
+argument(s).<BR>
+<TT>pcar</TT> (ou <TT>charpoly</TT>) a comme argument une matrice <I>A</I> 
+d’ordre <I>n</I> (resp une matrice <I>A</I> d’ordre <I>n</I> et un nom de variable
+formelle).<BR>
+<TT>pcar</TT> (ou <TT>charpoly</TT>) renvoie le polynôme caractéristique <I>P</I> de <I>A</I> écrit selon la 
+liste de ses coefficients (resp le polynôme caractéristique <I>P</I> de <I>A</I> 
+écrit sous forme symbolique en utilisant le nom de variable donnée en 
+argument).<BR>
+Le polynôme caractéristique <I>P</I> de <I>A</I> est défini par
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>x</I>)=det(<I>x</I>.<I>I</I>−<I>A</I>)</TD></TR>
+</TABLE><P>
 On tape :
-</P><DIV CLASS="center"><TT>adjoint_matrix([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,-6,12,-8],[[[1,0,0],[0,1,0],[0,0,1]],[[-2,1,-2], [1,-4,-1],[2,1,-6]],[[1,-2,3],[-2,4,2],[-3,-2,7]]]]</TT></DIV><P>
-Donc le polynôme caractéristique est :<BR>
-<I>x</I><SUP>3</SUP>−6*<I>x</I><SUP>2</SUP>+12*<I>x</I>−8<BR>
-Le déterminant de <I>A</I> est égal à −<I>P</I>(0) donc à 8<BR>
-La comatrice de <I>A</I> est égale à <I>Q</I>(0) donc à :<BR>
-[[1,−2,3],[−2,4,2],[−3,−2,7]]<BR>
-L’inverse de <I>A</I> est donc :<BR>
- 1/8*[[1,−2,3],[−2,4,2],[−3,−2,7]]<BR>
-La comatrice de <I>A</I>−<I>x</I> * <I>I</I> est donc :<BR>
-[[<I>x</I><SUP>2</SUP>−2<I>x</I>+1,<I>x</I>−2,−2<I>x</I>+3],[<I>x</I>−2,<I>x</I><SUP>2</SUP>−4<I>x</I>+4,−<I>x</I>+2],[2<I>x</I>−3,<I>x</I>−2,<I>x</I><SUP>2</SUP>−6<I>x</I>+7]]<BR>
+</P><DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV><P>
+Donc le polynôme caractéristique de [[4,1,-2],[1,2,-1],[2,1,0]]
+est 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>3</SUP>−6<I>x</I><SUP>2</SUP>+12<I>x</I>−8 </TD></TR>
+</TABLE><P> 
+On peut aussi avoir la forme symbolique en tapant :<BR>
+ <TT>normal(poly2symb([1,-6,12,-8]))</TT>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>adjoint_matrix([[4,1],[1,2]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>purge(X):;pcar([[4,1,-2],[1,2,-1],[2,1,0]],X)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,-6,7],[[[1,0],[0,1]],[[-2,1],[1,-4]]]]</TT></DIV><P>
-Donc le polynôme caractéristique est :<BR>
- <I>x</I><SUP>2</SUP>−6*<I>x</I>+7<BR>
-Le déterminant de <I>A</I> est égal à +<I>P</I>(0) donc à 7<BR>
-La comatrice de <I>A</I> est égale à <I>Q</I>(0) donc à :<BR>
- −[[−2,1],[1,−4]].<BR>
-L’inverse de <I>A</I> est donc :<BR>
- −1/7*[[−2,1],[1,−4]].<BR>
-La comatrice de <I>A</I>−<I>x</I>* <I>I</I> est donc :<BR>
- −[[<I>x</I>−2,1],[1,<I>x</I>−4]].</P><HR>
+</P><DIV CLASS="center"><TT>X</TT><CODE><TT>^</TT></CODE><TT>3-6*X</TT><CODE><TT>^</TT></CODE><TT>2+12*X-8</TT></DIV><P>
+On peut spécifier par un argument optionnel l’algorithme utilisé
+pour faire ce calcul, parmi :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<CODE>lagrange</CODE> : calcul par interpolation de Lagrange, en
+donnant à <I>x</I> les valeurs comprises entre 0 et la dimension.<BR>
+On tape :
+<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],lagrange)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>x*((x-1)*(-x+5)-7)+8</TT></DIV>
+et après simplification :
+<DIV CLASS="center"><TT>-x</TT><CODE><TT>^</TT></CODE><TT>3+6*x</TT><CODE><TT>^</TT></CODE><TT>2-12*x+8</TT></DIV>
+</LI><LI CLASS="li-itemize"><CODE>hessenberg</CODE> : calcul par réduction sous forme
+tri-diagonale puis formule de récurrence, efficace sur
+un corps fini.<BR>
+On tape :
+<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],hessenberg)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV>
+</LI><LI CLASS="li-itemize"><CODE>fadeev</CODE> : calcul simultané du polynôme
+caractéristique et de la comatrice de <I>xI</I>−<I>A</I>
+On tape :
+<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],fadeev)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV>
+</LI><LI CLASS="li-itemize"><CODE>pmin</CODE> : calcul du polynôme minimal relatif à un
+vecteur pris au hasard, c’est le polynôme caractéristique 
+s’il est de degré maximal.<BR>
+On tape :
+<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],pmin)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV>
+</LI></UL><P>
+Pour les matrices à coefficients entiers, l’algorithme utilisé par
+défaut est modulaire, on calcule le polynôme caractéristique
+modulo plusieurs nombres premiers, soit par le polynôme minimal,
+soit par Hessenberg, et on reconstruit par les restes chinois
+coefficient par coefficient. Le test d’arrêt est probabiliste,
+lorsque le polynôme reconstruit ne varie plus pour des nombres
+premiers dont le produit est supérieur à l’inverse de
+la valeur de <CODE>proba_epsilon</CODE> (que l’on peut modifier
+dans la configuration du cas). Si <CODE>proba_epsilon</CODE> est nul,
+le résultat est déterministe (une majoration à priori des
+coefficients est alors utilisée). Dans tous les cas, le temps
+de calcul est en <I>O</I>(<I>n</I>4ln(<I>n</I>)), mais il est plus rapide avec la méthode
+probabiliste.</P><HR>
 <A HREF="cascmd_fr620.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr622.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

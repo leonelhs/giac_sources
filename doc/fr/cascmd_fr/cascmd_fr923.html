@@ -6,63 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La longueur d’un segment et son affichage : distanceat distanceen et distanceatraw distanceenbrut</TITLE>
+<TITLE>L’affixe d’un point ou d’un vecteur : affix affixe</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr922.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr924.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1072">9.16.3</A>  La longueur d’un segment et son affichage : <TT>distanceat distanceen</TT> et <TT>distanceatraw distanceenbrut</TT></H3><P><A NAME="@default1789"></A><A NAME="@default1790"></A><A NAME="@default1791"></A><A NAME="@default1792"></A>
-<TT>distanceat</TT> ou <TT>distanceen</TT> et <TT>distanceatraw</TT> ou 
-<TT>distanceenbrut</TT> sont des commandes obtenues 
-lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
-<TT>Mode-&gt;Mesures-&gt;ditanceen</TT> ou <TT>Mode-&gt;Mesures-&gt;distanceenbrut</TT>. Dans ce 
-cas il faut que tous les objets, sauf les points, désignés par la souris 
-soient déjà nommés.<BR>
-On peut néammoins taper ces commandes dans une ligne de commande.<BR>
-<TT>distanceat</TT> ou <TT>distanceen</TT> a 3 arguments : le nom de 2 points et 1 point (ou l’affixe de ce point) ou encore le nom de 2 objets 
-géométriques et un point (ou l’affixe de ce point).<BR>
-<B>Attention</B> Il faut que les 2 premiers arguments soient des noms.<BR>
-<TT>distanceat</TT> ou <TT>distanceen</TT> renvoie le point donné en 3-ième 
-argument, calcule la longueur du segment défini par les deux premiers points 
-ou la distance entre les 2 objets géométriques et affiche à l’endroit du 
-3-ième point, cette longueur précédée d’une légende.<BR>
-On tape (on doit donnerle nom des objets) :
-</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);segment(A,B);</TT></DIV><DIV CLASS="center"><TT>distanceat(A,B,0.4i)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>distanceen(A,B,0.4i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>AB=sqrt(5) s’écrit au point(0.4i)</TT></DIV><P>
-On tape (on doit donnerle nom des objets) :
-</P><DIV CLASS="center"><TT>C:=point(0);d:=droite(-1,1+i)</TT></DIV><DIV CLASS="center"><TT>distanceen(C,d,i/2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Cd=sqrt(5)/5 s’écrit au point(i/2)</TT></DIV><P>
-On tape (on doit donner le nom des objets) :
-</P><DIV CLASS="center"><TT>c:=cercle(0,1); d:=droite(-2,1+3i)</TT></DIV><DIV CLASS="center"><TT>distanceen(c,d,0)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>cd=sqrt(2)-1 s’écrit au point(0)</TT></DIV><P><TT>distanceatraw</TT> ou <TT>distanceenbrut</TT> a comme argument trois 
-points (ou 2 points et 1 nombre complexe qui est l’affixe d’un point) ou encore
-2 objets géométriques et un point (ou l’affixe de ce point).<BR>
-<TT>distanceatraw</TT> ou <TT>distanceenbrut</TT> renvoie le point donné en 
-3-ième argument, calcule la longueur du segment défini par les deux 
-premiers points ou la distance entre les 2 ojets géométriques et affiche 
-cette longueur à l’endroit du 3-ième point.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1082">10.15.1</A>  L’affixe d’un point ou d’un vecteur : <TT>affix affixe</TT></H3><P><A NAME="@default1781"></A><A NAME="@default1782"></A>
+<TT>affixe</TT> est une fonction ayant comme 
+argument un point ou un vecteur ou les coordonnées d’un point ou d’un 
+vecteur 2-d.<BR>
+<TT>affixe</TT> renvoie l’affixe du point ou du vecteur :<BR>
+- si le point <TT>A</TT> a pour coordonnées cartésiennes (<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>A</I></SUB>),
+<TT>affixe(A)</TT> renvoie <I>x</I><SUB><I>A</I></SUB>+<I>i</I>*<I>y</I><SUB><I>A</I></SUB>,<BR>
+- si le point <TT>B</TT> a pour coordonnées cartésiennes (<I>x</I><SUB><I>B</I></SUB>,<I>y</I><SUB><I>B</I></SUB>),
+<TT>affixe(A-B)</TT> ou <TT>affixe(vecteur(B,A))</TT> renvoie <I>x</I><SUB><I>A</I></SUB>−<I>x</I><SUB><I>B</I></SUB>+<I>i</I>*(<I>y</I><SUB><I>A</I></SUB>−<I>y</I><SUB><I>B</I></SUB>) (car <TT>A-B</TT> désigne 
+le vecteur <I>BA</I>) et <TT>cooedonnees(vecteur(B,A))</TT> renvoie 
+[<I>x</I><SUB><I>A</I></SUB>+<I>iy</I><SUB><I>A</I></SUB>,<I>x</I><SUB><I>B</I></SUB>+<I>i</I>*<I>y</I><SUB><I>B</I></SUB>].<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);segment(A,B);</TT></DIV><DIV CLASS="center"><TT>distanceenbrut(A,B,0.4i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>affixe(point(i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(5) s’écrit au point(0.4i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>i</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>C:=point(0);d:=droite(-1,1+i)</TT></DIV><DIV CLASS="center"><TT>distanceenbrut(C,d,i/2)</TT></DIV><P>
-ou on tape (on n’est pas obligé de donner un nom aux objets) :
-</P><DIV CLASS="center"><TT>distanceenbrut(0,droite(-1,1+i),i/2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>affixe(point(i)-point(1+2*i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(5)/5 s’écrit au point(i/2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>c:=cercle(0,1); d:=droite(-2,1+3i)</TT></DIV><DIV CLASS="center"><TT>distanceenbrut(c,d(-2,1+3i),0)</TT></DIV><P>
-ou on tape (on n’est pas obligé de donner un nom aux objets) :
-</P><DIV CLASS="center"><TT>distanceenbrut(cercle(0,1),droite(-2,1+3i),0)</TT></DIV><P>On obtient :
-</P><DIV CLASS="center"><TT>sqrt(2)-1 s’écrit au point(0)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>-1-i</TT></DIV><HR>
 <A HREF="cascmd_fr922.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr924.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

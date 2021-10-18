@@ -6,20 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Opposé d’un intervalle</TITLE>
+<TITLE>Plages de valeurs définies par leur centre : center2interval</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr468.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr470.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc565">6.37.3</A>  Opposé d’un intervalle</H3><P>
-L’opposé d’un intervalle est un intervalle qui a pour borne inférieure (resp
-supérieure) l’opposé de la borne supérieure du (resp inférieure).<BR>
+<H3 CLASS="subsection"><A NAME="htoc565">6.37.4</A>  Plages de valeurs définies par leur centre : <TT>center2interval</TT></H3><P><A NAME="@default840"></A>
+<TT>center2interval</TT> a comme argument un vecteur <TT>V</TT> de réels
+et éventuellement un réel comme deuxième argument (par défaut 
+<TT>(3*V[0]-V[1])/2</TT>).<BR>
+<TT>center2interval</TT> renvoie un vecteur d’intervalles ayant pour centres 
+les réels de l’argument : ces intervalles sont définis en 
+commençant par la valeur donnée par le deuxième argument.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>-i[2,3]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>center2interval([3,5,8],2)</TT></DIV><P>
+Ou on tape car la valeur par défaut vaut (3*3-5)/2=2 :
+</P><DIV CLASS="center"><TT>center2interval([3,5,8])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>i[-3.0000000000000,-2.0000000000000]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[2..4,4..6,6..10]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>center2interval([3,5,8],2.5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2.5..3.5,3.5..6.5,6.5..9.5]</TT></DIV><HR>
 <A HREF="cascmd_fr468.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr470.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

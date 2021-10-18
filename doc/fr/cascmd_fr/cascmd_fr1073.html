@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Exercice 3 prolongement de l’exercice 2</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr1072.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr1074.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1256">11.18.3</A>  Exercice 3 prolongement de l’exercice 2</H3><P>
+Soit <TT>SABCD</TT> une pyramide de sommet <TT>S</TT> dont la base <TT>ABCD</TT> est un 
+losange de centre <TT>O</TT> et tel que <TT>SO</TT> est perpendiculaire au plan 
+<TT>ABCD</TT>.<BR>
+Le plan passant par <TT>C</TT> et perpendiculaire à <TT>SA</TT> coupe <TT>SA</TT>,
+<TT>SB</TT>, <TT>SC</TT> respectivement en <TT>M</TT>, <TT>N</TT> et <TT>P</TT>.<BR>
+Montrer que <TT>NP</TT> est parallèle à <TT>BD</TT>.<BR>
+Pour faire la démonstration avec <TT>Xcas</TT>, on peut taper en supposant que 
+le plan du losange est le plan Oxy et que lepoint A est sur Ox, on tape alors 
+puisque les diagonales d’un losange sont perpendiculaires en leur milieu :
+</P><PRE CLASS="verbatim">// demo exo3
+A:=point(a,0,0);
+B:=point(0,b,0);
+C:=point(-a,0,0);
+D:=point(0,-b,0);
+S:=point(0,0,c);
+Q:=perpendiculaire(C,droite(S,A));
+M:=head(inter(Q,droite(S,A)));
+N:=normal(head(inter(Q,droite(S,B))));
+P:=normal(head(inter(Q,droite(S,D))));
+est_parallele(droite(D,B),droite(N,P));
+</PRE><P>On obtient :<BR>
+<TT>1</TT><BR>
+La démonstration géométrique :<BR>
+Les triangles <TT>0BS</TT> et <TT>0DS </TT> rectangles en <TT>0</TT> sont 
+égaux puisque <TT>OB=0D</TT> en tant que demi diagonale d’un losange.<BR>
+Donc les arêtes <TT>SB</TT> et <TT>SD</TT> sont égales ainsi
+les triangles <TT>SAB</TT> et <TT>SAD</TT> ont 3 cotés égaux ; ils sont donc
+égaux.<BR>
+Les triangles <TT>MSN</TT> et <TT>MSP</TT> rectangles en <TT>M</TT> sont égaux 
+(même côté <TT>MS</TT> et leurs angles <TT>S</TT> sont égaux), donc
+<TT>SN=SP</TT>.<BR>
+Puisque <TT>SB=SD</TT>, on a donc :<BR>
+<TT> </TT><TT><I>SN</I>/<I>SB</I></TT><TT>=</TT><TT><I>SP</I>/<I>SD</I></TT><BR>
+ce qui montre d’après le théorème de Thalès que 
+<TT>NP</TT> est parallèle à <TT>BD</TT>.</P><HR>
+<A HREF="cascmd_fr1072.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr1074.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

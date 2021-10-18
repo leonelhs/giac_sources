@@ -6,25 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Division selon les puissances croissantes : divpc</TITLE>
+<TITLE>Déterminant d’une matrice de Z/pZ : Det</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr456.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr458.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc551">6.35.1</A>  Division selon les puissances croissantes : <TT>divpc</TT></H3><P><A NAME="@default818"></A>
-<TT>divpc</TT> a trois arguments : deux polynômes  <I>A</I>(<I>x</I>), <I>B</I>(<I>x</I>) 
-(avec <I>B</I>(0) ≠ 0) et un entier <I>n</I>.<BR>
-<TT>divpc</TT> renvoie le quotient <I>Q</I>(<I>x</I>) de la division de <I>A</I>(<I>x</I>) par <I>B</I>(<I>x</I>) 
-selon les puissances croissantes avec <TT>degree</TT>(<I>Q</I>)≤ <I>n</I> ou  <I>Q</I>=0.<BR>
-<I>Q</I>(<I>x</I>) est donc le développement limité, d’ordre <I>n</I>, de  <I>A</I>(<I>x</I>)/<I>B</I>(<I>x</I>) au voisinage de <I>x</I>=0.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>divpc(1+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3,1+x</TT><CODE><TT>^</TT></CODE><TT>2,5)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc551">6.35.5</A>  Déterminant d’une matrice de Z/pZ : <TT>Det</TT></H3><P><A NAME="@default817"></A>
+<TT>Det</TT> est la forme inerte de <TT>det</TT>.<BR>
+<TT>Det</TT> a pour argument une matrice <I>A</I> de <I>Z</I>/<I>pZ</I>.<BR>
+<TT>Det</TT> renvoie <TT>det</TT> sans l’évaluer. Ensuite, <TT>det</TT>
+calcule, dans <I>Z</I>/<I>pZ</I>, le déterminant de la matrice <I>A</I>.<BR>
+On tape en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>Det([[1,2,9] mod 13,[3,10,0] mod 13,[3,11,1] mod 13])</TT></DIV><P> 
+Ou on tape en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>Det([[1,2,9],[3,10,0],[3,11,1]] mod 13)</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>-x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>3+1</TT></DIV><P>
-<B>Attention !!!</B> cette commande ne marche pas si les polynômes sont 
-écrits avec la liste de leurs coefficients.</P><HR>
+</P><DIV CLASS="center"><TT>det([[1% 13,2% 13,-4% 13],[3% 13,-3% 13,0% 13], [3% 13,-2% 13,1% 13]])</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>5% 13</TT></DIV><P> 
+donc, dans ℤ/13ℤ, le déterminant de la matrice 
+<I>A</I>=[[1, 2, 9],[3,10,0],[3,11,1]] est <TT>5% 13</TT> (on a <TT>det(A)=31</TT>).<BR>
+<B>Attention</B> <TT>Det</TT> est surtout utile en mode <TT>Maple</TT>.<BR>
+On tape alors en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>Det([[1,2,9],[3,10,0],[3,11,1]]) mod 13</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>5</TT></DIV><HR>
 <A HREF="cascmd_fr456.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr458.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

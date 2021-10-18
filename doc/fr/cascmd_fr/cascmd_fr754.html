@@ -6,26 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de la loi gamma : gammad_icdf</TITLE>
+<TITLE>Densité de probabilité de la loi du χ2 : chisquare chisquared</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr753.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr755.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc877">7.4.29</A>  Fonction de répartition inverse de la loi gamma : <TT>gammad_icdf</TT></H3><P><A NAME="@default1349"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi gamma de paramètre <I>a</I> et 
-<I>b</I>, si on a <TT>gammad_icdf(a,b,x)=h</TT> 
-c’est que l’on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=gammad_cdf(a,b,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc888">8.4.19</A>  Densité de probabilité de la loi du χ<SUP>2</SUP> : <TT>chisquare chisquared</TT></H3><P><A NAME="@default1347"></A><A NAME="@default1348"></A>
+<TT>chisquare(n,x)</TT> est la densité de probabilité de la loi du χ<SUP>2</SUP> ayant <I>n</I> degrés de liberté.<BR>
+ <TT>chisquare(n,x)</TT>, est égale à 
+ 1/2<SUP><I>n</I>/2</SUP>Γ(<I>n</I>/2) <I>x</I><SUP><I>n</I>/2−1</SUP><I>e</I><SUP>−<I>x</I>/2</SUP> où Γ est définie pour <I>x</I>&gt;0 par 
+Γ(<I>x</I>)=∫<SUB>0</SUB><SUP>∞</SUP><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>x</I>−1</SUP> <I>dt</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>gammad_icdf(2,1,0.5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>chisquare(5,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.67834699002</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sqrt(2)*2*exp(-1)/(Gamma(5/2)*sqrt(2)*2</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>gammad_icdf(2,1,0.1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>evalf(chisquare(5,2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.53181160839</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.138369165807</TT></DIV><HR>
 <A HREF="cascmd_fr753.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr755.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

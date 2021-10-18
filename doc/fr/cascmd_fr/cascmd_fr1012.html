@@ -6,22 +6,55 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’abscisse d’un point 3-d : abscissa abscisse</TITLE>
+<TITLE>Le rectangle dans l’espace : rectangle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1011.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1013.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1178">10.12.1</A>  L’abscisse d’un point 3-d : <TT>abscissa abscisse</TT></H3><P><A NAME="@default1968"></A><A NAME="@default1969"></A><A NAME="sec:abscisse3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr914.html#sec:abscisse2">9.15.2</A> pour la géométrie plane.<BR>
-<TT>abscisse</TT>, en géométrie 3-d, est une fonction ayant comme 
-argument un point 3-d.<BR>
-<TT>abscisse</TT> renvoie l’abscisse dd ce point.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1185">11.8.3</A>  Le rectangle dans l’espace : <TT>rectangle</TT></H3><P><A NAME="@default1962"></A><A NAME="sec:rectangle3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr904.html#sec:rectangle2">10.11.4</A> pour la géométrie plane.<BR>
+<TT>rectangle</TT>, en géométrie 3-d, peut avoir de trois à cinq 
+arguments.<BR>
+Les arguments sont :<BR>
+- si il a trois arguments ce sont : 2 points (les 2 sommets du rectangle) et 
+le troisième argument est soit un point <I>P</I> soit la
+liste formée par un point <I>P</I> et un nombre réel <I>k</I> non nul.<BR>
+Le point <I>P</I> définit le plan du rectangle et l’orientation de ce plan.<BR>
+<TT>rectangle(A,B,P)</TT> renvoie et trace dans le plan <I>ABP</I>, le rectangle 
+<I>ABCD</I> tel que :<BR>
+<I>AD</I>=<I>AP</I> et (<I>AB</I>,<I>AD</I>)=π/2, 
+mais sans définir les points <I>C</I> et <I>D</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>abscisse(point([1,2,3]))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>rectangle(A,B,P)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le rectangle de sommets </TT></DIV><P><TT>rectangle(A,B,[P,k])</TT> renvoie et trace dans le plan <I>ABP</I>, le rectangle 
+<I>ABCD</I> tel que :<BR>
+<I>AD</I>=|<I>k</I>|*<I>AB</I> et (<I>AB</I>,<I>AD</I>)=(<I>k</I>/|<I>k</I>|)*π/2, 
+mais sans définir les points <I>C</I> et <I>D</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>rectangle(A,B,[P,1/2])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le rectangle de sommets </TT></DIV><P>
+- si il a cinq arguments, les 2 derniers paramètres sont les noms de deux 
+variables qui serviront à définir les 2 derniers sommets.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>rectangle(A,B,P,C,D)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le rectangle de sommets </TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[(-sqrt(6)+6)/2,(-sqrt(6)+6)/2,sqrt(6)+3]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[(-(sqrt(6)))/2,(-(sqrt(6)))/2,sqrt(6)]</TT></DIV><HR>
 <A HREF="cascmd_fr1011.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1013.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

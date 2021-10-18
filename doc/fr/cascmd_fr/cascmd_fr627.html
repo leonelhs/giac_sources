@@ -6,50 +6,48 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Trouver la matrice d’une isométrie : mkisom</TITLE>
+<TITLE>Forme normale de Hermite : ihermite</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr626.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr628.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc736">6.50.2</A>  Trouver la matrice d’une isométrie : <TT>mkisom</TT></H3><P><A NAME="@default1146"></A>
-<TT>mkisom</TT> a comme argument :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-En dimension 3, la liste des éléments caractéristiques (vecteur 
-directeur de l’axe et angle de la rotation ou vecteur de la normale au plan de 
-symétrie) et <TT>+1</TT> ou <TT>-1</TT> (<TT>+1</TT> pour les isométries directes et
-<TT>-1</TT> pour les indirectes).
-</LI><LI CLASS="li-itemize">En dimension 2, l’élément caractéristique (un angle ou un vecteur) 
-et <TT>+1</TT> ou <TT>-1</TT> (<TT>+1</TT> pour les isométries directes et <TT>-1</TT> 
-pour les indirectes).
-</LI></UL><P>
-<TT>mkisom</TT> renvoie la matrice de l’isométrie définie par les arguments.<BR>
+<H3 CLASS="subsection"><A NAME="htoc736">6.50.13</A>  Forme normale de Hermite : <TT>ihermite</TT></H3><P><A NAME="@default1147"></A>
+<TT>ihermite</TT> a comme argument une matrice à coefficient dans 
+ℤ.<BR>
+<TT>ihermite</TT> renvoie les matrices <TT>U</TT> et <TT>B</TT> tels que <TT>U</TT> 
+est inversible dans ℤ, <TT>B</TT> est triangulaire supérieure et 
+vérifie : <TT>B=U*A</TT>.<BR>
+Pour faire cela on effectue la réduction sous forme échelonnée (de type 
+Gauss) d’une matrice d’entiers en utilisant uniquement des opérations
+de lignes inversibles dans les entiers, en d’autres termes si <TT>A</TT>
+est la matrice originale, on calcule une matrice <TT>U</TT> inversible dans 
+ℤ
+et une matrice <TT>B</TT> triangulaire superieure telles que
+<TT>B = U*A</TT>.<BR>
+De plus les coefficients au-dessus de la diagonale de <TT>A</TT> sont en module
+inferieurs au pivot de la colonne divisé par 2. Puisque <TT>det(U) = 1</TT>,
+on passe aussi de <TT>B</TT> a <TT>A</TT> uniquement avec des
+manipulations de ligne a coefficients entiers.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>mkisom([[-1,2,-1],pi],1)</TT></DIV><P>
-On obtient la matrice d’une rotation d’axe [−1,2,−1] et d’angle π:
-</P><DIV CLASS="center"><TT>[[-2/3,-2/3,1/3],[-2/3,1/3,-2/3],[1/3,-2/3,-2/3]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>mkisom([pi],-1)</TT></DIV><P>
-On obtient la matrice d’une symétrie par rapport à <I>O</I> :
-</P><DIV CLASS="center"><TT>[[-1,0,0],[0,-1,0],[0,0,-1]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>mkisom([1,1,1],-1)</TT></DIV><P>
-On obtient la matrice d’une symétrie par rapport au plan <I>x</I>+<I>y</I>+<I>z</I>=0 :
-</P><DIV CLASS="center"><TT>[[1/3,-2/3,-2/3],[-2/3,1/3,-2/3],[-2/3,-2/3,1/3]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>mkisom([[1,1,1],pi/3],-1)</TT></DIV><P>
-On obtient la matrice produit d’une rotation d’axe [1,1,1] et d’angle 
-π/3 et d’une symétrie par rapport au plan <I>x</I>+<I>y</I>+<I>z</I>=0:
-</P><DIV CLASS="center"><TT>[[0,-1,0],[0,0,-1],[-1,0,0]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>mkisom(pi/2,1)</TT></DIV><P>
-On obtient la matrice en dimension 2, de la rotation plane d’angle π/2 :
-</P><DIV CLASS="center"><TT>[[0,-1],[1,0]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>mkisom([1,2],-1)</TT></DIV><P>
-On obtient la matrice en dimension 2, de la symétrie plane par rapport à la droite d’équation <I>x</I>+2<I>y</I>=0 :
-</P><DIV CLASS="center"><TT>[[3/5,-4/5],[-4/5,-3/5]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>A:=[[9,-36,30],[-36,192,-180],[30,-180,180]]; U,B:=ihermite(A)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[9,-36,30],[-36,192,-180],[30,-180,180]], [[13,9,7],[6,4,3],[20,15,12]],[[3,0,30],[0,12,0],[0,0,60]]</TT></DIV><P><B>Application: Calcul d’une Z-base d’un noyau</B><BR>
+Soit <TT>M</TT> la matrice dont on cherche le noyau.<BR>
+Soit <TT>U,A:=ihermite(transpose(M))</TT>.<BR>
+On a <TT>A=U*transpose(M)</TT> donc <TT>transpose(A)=M*transpose(U)</TT>.<BR>
+Les colonnes nulles de <TT>transpose(A)</TT> correspondent donc aux colonnes 
+de <TT>transpose(U)</TT> qui sont dans <TT>Ker(M)</TT>. Ainsi, les lignes nulles de 
+<TT>A</TT> correspondent aux lignes de <TT>U</TT> qui sont dans <TT>Ker(M)</TT>.<BR>
+ <B>Exemple</B><BR>
+Si <TT>M:=[[1,4,7],[2,5,8],[3,6,9]]</TT><BR>
+<TT>U,A:=ihermite(tran(M))</TT> renvoie :<BR>
+<TT>U:=[[-3,1,0],[4,-1,0],[-1,2,-1]]</TT> et<BR>
+<TT>A:=[[1,-1,-3],[0,3,6],[0,0,0]]</TT><BR>
+<TT>A[2]=[0,0,0]</TT> donc une base de <TT>Ker(M)</TT> est composée de 
+<TT>U[2]=[-1,2,-1]</TT>.<BR>
+On vérifie que l’a bien <TT>M*U[2]=[0,0,0]</TT>.</P><HR>
 <A HREF="cascmd_fr626.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr628.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,64 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les différentes listes</TITLE>
+<TITLE>Union de deux ensembles ou de deux listes : union</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr489.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr491.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc589">6.40.1</A>  Les différentes listes</H3><P>
-Une liste peut contenir des listes (c’est le cas des matrices) et peut
-désigner un vecteur (liste des coordonnées) ou un polynôme (liste des
-coefficients des puissances décroissantes), 
-alors que une séquence est plate car on ne peut pas avoir un élément 
-d’une séquence qui soit une séquence.<BR>
- L’ordre est important dans une liste alors que l’ordre n’a pas d’importance 
-pour un ensemble, il peut y avoir plusieurs fois le même objet dans une liste
-alors que chaque objet est unique dans un ensemble.</P><P>Dans les réponses de <TT>Xcas</TT>, 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-les coordonnées d’un vecteur sont parenthésées avec <TT>[</TT> et
-<TT>]</TT>, 
-</LI><LI CLASS="li-itemize">une matrice avec [ et ], 
-</LI><LI CLASS="li-itemize">un polynôme avec <TT>[]</TT> et <TT>[]</TT>,
-</LI><LI CLASS="li-itemize">un ensemble avec <B>[</B> et <B>]</B>.
-</LI></UL><P>
-Un vecteur peut donc être représentés par une liste contenant les 
-composantes du vecteur (on met les composantes du vecteur entre crochets).<BR>
-<B>Attention !</B><BR>
-Pour accéder à un élément d’une liste, on tape son indice entre des 
-crochets pour des indices qui commencent à 0<BR>
-ou bien<BR>
-on tape son indice entre des doubles crochets pour des indices qui commencent 
-à 1.<BR>
-Pour toutes les autres fonctions de <TT>Xcas</TT> (autres que l’accés à un 
-élément), l’indice du premier élément est 0.<BR>
-<B>Exemple</B><BR>
-On tape :
-<TT>L:=[2,5,1,3]</TT><BR>
-<TT>L[1]</TT><BR>
-On obtient :<BR>
-<TT>5</TT><BR>
-On tape :
-<TT>L[[1]]</TT><BR>
-On obtient :<BR>
-<TT>2</TT><BR>
-On tape :
-<TT>L:=[2,5,1,3]</TT><BR>
-<TT>L[1]:=4</TT><BR>
-<TT>L</TT><BR>
-On obtient :<BR>
-<TT>[2,4,1,3]</TT><BR>
-On tape :
-<TT>L:=[2,5,1,3]</TT><BR>
-<TT>L[[1]]:=4</TT><BR>
-<TT>L</TT><BR>
-On obtient :<BR>
-<TT>[4,5,1,3]</TT><BR>
-Pour dessiner ou définir un vecteur géométrique voir <A HREF="cascmd_fr877.html#sec:vecteur2">9.9.5</A> 
-et <A HREF="cascmd_fr986.html#sec:vecteur3">10.5.5</A>.
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc589">6.40.3</A>  Union de deux ensembles ou de deux listes : <TT>union</TT></H3><P><A NAME="@default872"></A>
+<TT>union</TT> renvoie l’ensemble qui est l’union de deux ensembles ou 
+de deux listes.<BR>
+ <TT>union</TT> est un opérateur infixé.<BR>
+On tape : 
+</P><DIV CLASS="center"><TT>set[1,2,3,4] union set[5,6,3,4]</TT></DIV><P>
+Ou on tape : 
+</P><DIV CLASS="center"><TT>% {1,2,3,4% } union % {5,6,3,4% }</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT><B>[</B></TT><TT>1,2,3,4,5,6</TT><TT><B>]</B></TT></DIV><P>
+On tape : 
+</P><DIV CLASS="center"><TT>[1,2,3] union [2,5,6]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT><B>[</B></TT><TT>1,2,3,5,6</TT><TT><B>]</B></TT></DIV><HR>
 <A HREF="cascmd_fr489.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr491.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

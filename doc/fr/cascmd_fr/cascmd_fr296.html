@@ -6,127 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Primitive et intégrale définie : integrate Int integrer int integration</TITLE>
+<TITLE>Calcul du taux d’accroissement : taux_accroissement</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr295.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr297.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc374">6.19.1</A>  Primitive et intégrale définie : <TT>integrate Int integrer int integration</TT></H3><P><A NAME="@default552"></A><A NAME="@default553"></A><A NAME="@default554"></A><A NAME="@default555"></A><A NAME="@default556"></A>
-<TT>integrate</TT> (ou <TT>int</TT>) permettent de calculer une 
-primitive ou une intégrale définie. La seule différence entre ces deux 
-commandes est que <TT>integrate</TT> écrit avec le symbole ∫ 
-la réponse de la commande <TT>quest()</TT> qui suit l’évaluation de 
-<TT>integrate</TT>.<BR>
-Par contre <TT>Int</TT> renvoie <TT>integrate</TT> sans l’évaluer : c’est pour 
-avoir la compatibilité avec Maple, lorsque l’on fait un calcul numérique 
-d’intégrales :<BR>
+<H3 CLASS="subsection"><A NAME="htoc374">6.19.2</A>  Calcul du taux d’accroissement : <TT>taux_accroissement</TT></H3><P><A NAME="@default546"></A>
+<TT>taux_accroissement</TT> calcule le taux d’accroissement d’une 
+expression lorsque la variable passe d’une valeur à une autre. Par défaut 
+la variable est égale à <TT>x</TT>.<BR>
+Permet d’introduire la notion de nombre dérivé.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>Int(exp(x),x,0,1))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>integrate(exp(x),x,0,1)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>int(exp(x),x,0,1))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>exp(1)-1)</TT></DIV><P>On tape :
-</P><DIV CLASS="center"><TT>evalf(Int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>taux_accroissement(x</TT><CODE><TT>^</TT></CODE><TT>2,1,2)</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>evalf(int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>taux_accroissement(y</TT><CODE><TT>^</TT></CODE><TT>2,y,1,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.46265174591</TT></DIV><P>
-<TT>integrate</TT> (ou <TT>int</TT> ou <TT>Int</TT>) a un, deux ou quatre arguments.<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-avec un argument qui est une expression de la variable <TT>x</TT>, (resp une
-fonction).<BR>
-<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors une expression qui est une 
-primitive de l’expression par rapport à la variable <TT>x</TT> (resp renvoie une
-fonction primitive de la fonction donnée en argument)
+</P><DIV CLASS="center"><TT>3</TT></DIV><P> 
 On tape :
-<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+</P><DIV CLASS="center"><TT>taux_accroissement(x</TT><CODE><TT>^</TT></CODE><TT>2,1,1+h)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>taux_accroissement(y</TT><CODE><TT>^</TT></CODE><TT>2,y,1,1+h)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+</P><DIV CLASS="center"><TT>((1+h)</TT><CODE><TT>^</TT></CODE><TT>2-1)/(1+h-1)</TT></DIV><P> 
+Après simplification, on obtient :
+</P><DIV CLASS="center"><TT>h+2</TT></DIV><P> 
 On tape :
-<DIV CLASS="center"><TT>f(t):=t</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
-<DIV CLASS="center"><TT>g:=integrate(f)</TT></DIV>
+</P><DIV CLASS="center"><TT>limit(taux_accroissement(x</TT><CODE><TT>^</TT></CODE><TT>2,1,1+h),h,0)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>(t)-&gt;t</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
-<B>Remarque</B> Dans ce cas on peut aussi utiliser <TT>convert</TT> (ou sa 
-version infixée <TT>=&gt;</TT>) avec l’option <TT>int</TT>.<BR>
-On tape :
-<DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
-<DIV CLASS="center"><TT>g(x):=(f(x)=&gt;int)</TT></DIV>
-ou 
-<DIV CLASS="center"><TT>g:=(f=&gt;int))</TT></DIV>
-</LI><LI CLASS="li-itemize">avec deux arguments qui sont :<BR>
- une expression et une variable,<BR>
-<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors une primitive de l’expression 
-par rapport à la variable donnée comme deuxième paramètre.<BR>
-On tape :
-<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>integrate(t</TT><CODE><TT>^</TT></CODE><TT>2,t)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>t</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
-</LI><LI CLASS="li-itemize">avec quatre arguments qui sont :<BR>
-une expression, une variable et les bornes de l’intégrale définie,<BR>
-<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors la valeur de l’intégrale 
-définie.<BR>
-On tape :
-<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2,x,1,2)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>7/3</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>integrate(1/(sin(x)+2),x,0,2*pi)</TT></DIV>
-On obtient après simplification (appel à <TT>simplify</TT>) :
-<DIV CLASS="center"><TT>2*pi*sqrt(3)/3</TT></DIV>
-</LI></UL><P>
-<B>Exercice 1</B><BR>
-Soit </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">+ln(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">)</TD></TR>
-</TABLE><P>
-Calculer une primitive de f.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>int(x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1)))</TT></DIV><P>
-On trouve : 
-</P><DIV CLASS="center"><TT>x*log((x+1)/(x-1))+log(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+1/2*log(2*x</TT><CODE><TT>^</TT></CODE><TT>2/2-1)</TT></DIV><P>
-Ou bien on définit la fonction <TT>f</TT> en tapant :<BR>
-</P><DIV CLASS="center"><TT>f(x):=x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1))</TT></DIV><P>
-puis on tape :
-</P><DIV CLASS="center"><TT>int(f(x))</TT></DIV><P>
-On obtient bien sûr le même résultat.<BR>
-<B>Attention</B><BR>
- Pour <TT>Xcas</TT>, <TT>log</TT> est égal à <TT>ln</TT> (logarithme népérien) 
-et <TT>log10</TT> est le logarithme en base 10.<BR>
-<B>Exercice 2</B><BR>
-Calculer :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>6</SUP>+2 · <I>x</I><SUP>4</SUP>+<I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
-</TABLE><P>
-On tape :
-</P><DIV CLASS="center"><TT>int(2/(x</TT><CODE><TT>^</TT></CODE><TT>6+2*x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><P>
-On trouve :
-</P><DIV CLASS="center"><TT>2*((3*x</TT><CODE><TT>^</TT></CODE><TT>2+2)/(-(2*(x</TT><CODE><TT>^</TT></CODE><TT>3+x)))+-3/2*atan(x))</TT></DIV><P>
-<B>Exercice 3</B><BR>
-Calculer :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">sin(<I>x</I>)+sin(2 · <I>x</I> )</TD></TR>
-</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
-</TABLE><P>
-On tape :
-</P><DIV CLASS="center"><TT>integrate(1/(sin(x)+sin(2*x )))</TT></DIV><P>
-On trouve :
-</P><DIV CLASS="center"><TT>(1/-3*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2-3)+1/12*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2))*2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr295.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr297.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

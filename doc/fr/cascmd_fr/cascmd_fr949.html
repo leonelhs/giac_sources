@@ -6,27 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si 4 points sont cocycliques : is_concyclic est_cocyclique</TITLE>
+<TITLE>Généralités</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr948.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr950.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1100">9.18.3</A>  Savoir si 4 points sont cocycliques : <TT>is_concyclic est_cocyclique</TT></H3><P><A NAME="@default1846"></A><A NAME="@default1847"></A><A NAME="sec:estcocyclique"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1027.html#sec:estcocyclique3">10.13.7</A> et <A HREF="cascmd_fr1028.html#sec:estcospherique">10.13.8</A> pour la
-géométrie 3-d.<BR>
-<TT>is_concyclic</TT> ou <TT>est_cocyclique</TT> est une fonction 
-booléenne ayant comme argument une liste ou une séquence de points.<BR>
-<TT>est_cocyclique</TT> vaut 1 si les points sont cocycliques, et vaut 0 sinon.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>est_cocyclique(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>est_cocyclique(i,-1+i,-1-i,1-i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc1110">10.17.1</A>  Généralités</H3><P>
+Les transformations ci-dessous :<BR>
+<TT>translation, rotation, homothetie, similitude, symetrie</TT>, 
+<TT>projection, inversion</TT><BR>
+peuvent toujours être considérées, soit 
+comme des fonctions (les arguments sont les paramètres servant à définir 
+la transformation), soit comme agissant sur le dernier argument (les premiers
+arguments sont les paramètres servant à définir la transformation et 
+l’objet géométrique à transformer est mis comme dernier paramètre).<BR>
+L’objet géométrique à transformer peut être de tout type comme point, 
+droite, cercle, polygone, courbe paramètrèe, graphe de fonctions etc...
+Par exemple si <TT>P</TT> est l’objet géométrique à transformer on peut 
+avoir :<BR>
+<TT>P:=point(1+i)</TT> ou <TT>P:=droite(x=1)</TT> ou <TT>P:=plan(z=0)</TT> ou<BR>
+<TT>P:=cercle(point(1,1),1)</TT> ou <TT>P:=plotfunc(x2-2)</TT> etc...</P><HR>
 <A HREF="cascmd_fr948.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr950.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,35 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’affectation prefixée : sto Store</TITLE>
+<TITLE>Fonction testant le type de son argument: getType</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr807.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr809.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc937">8.4.16</A>  L’affectation prefixée : <TT>sto Store</TT></H3><P><A NAME="@default1451"></A><A NAME="@default1452"></A>
-<TT>sto</TT> (ou <TT>Store</TT>) permet de stocker une valeur dans une 
-variable.<BR>
-<TT>sto</TT> (ou <TT>Store</TT>) a deux arguments, la valeur à stocker et un nom de variable.<BR>
-<B>Attention</B><BR>
-La variable doit être purgée avant l’utilisation de <TT>sto</TT> 
-(ou <TT>Store</TT>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc948">9.4.6</A>  Fonction testant le type de son argument: <TT>getType</TT></H3><P><A NAME="@default1441"></A><A NAME="@default1442"></A><A NAME="@default1443"></A><A NAME="@default1444"></A><A NAME="@default1445"></A><A NAME="@default1446"></A><A NAME="@default1447"></A>
+<TT>getType</TT> est une fonction qui a un argument et qui renvoie le
+type de cet argument par exemple :<BR>
+ <TT>STR,EXPR,VAR,NONE,PIC,LIST,MAT,FUNC,NUM...</TT>.<BR>
+<TT>getType</TT> ne renvoie pas la même chose que <TT>type</TT>, c’est pour des 
+raisons de compatibilité.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sto(3,a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>Store(3,a)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>getType(3.14)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3 et la variable a contient 3</TT></DIV><P>
-<B>Remarque</B><BR>
-On peut faire plusieurs affectations à la fois en utilisant les séquences 
-ou les listes.<BR>
+</P><DIV CLASS="center"><TT>NUM</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>sto([1,2,3],[a1,a2,a3])</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>Store([1,2,3],[a1,a2,a3])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>getType(x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,2,3] et a1 contient 1, a2 contient 2, a3 contient 3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>VAR</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>getType(x+2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>EXPR</TT></DIV><HR>
 <A HREF="cascmd_fr807.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr809.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,29 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Sous-expression d’une expression : part</TITLE>
+<TITLE>Substituer dans une expression, une expression algébrique par une variable : algsubs</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr274.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr276.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc347">6.13.26</A>  Sous-expression d’une expression : <TT>part</TT></H3><P><A NAME="@default461"></A>
-<TT>part</TT> a deux arguments : une expression et un entier <I>n</I>.<BR>
-<TT>part</TT> évalue l’expression puis renvoie la <I>n</I>-ième sous-expression de 
-l’expression.<BR>
+<H3 CLASS="subsection"><A NAME="htoc348">6.14.24</A>  Substituer dans une expression, une expression algébrique par une variable : <TT>algsubs</TT></H3><P><A NAME="@default460"></A>
+<TT>algsubs</TT> permet de substituer dans une expression, une expression 
+algébrique par une autre expression algébrique.<BR>
+<TT>algsubs</TT> a 2 arguments :<BR>
+une équation entre 2 expressions algébriques <TT>Xpr1=Xpr2</TT> et<BR>
+une expression dans laquelle <TT>algsubs</TT> remplacera l’expression algébrique
+<TT>Xpr1</TT> par <TT>Xpr2</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>part(x</TT><CODE><TT>^</TT></CODE><TT>2+x+1,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>algsubs(x</TT><CODE><TT>^</TT></CODE><TT>2=u,1+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>4)</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>x</TT></DIV><P>
+</P><DIV CLASS="center"><TT>u</TT><CODE><TT>^</TT></CODE><TT>2+u+1</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>part(x</TT><CODE><TT>^</TT></CODE><TT>2+(x+1)*(y-2)+2,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>algsubs(a*b/c=d, 2*a*b</TT><CODE><TT>^</TT></CODE><TT>2/c)</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>(x+1)*(y-2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>2*b*d</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>part((x+1)*(y-2)/2,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>algsubs(2a=p</TT><CODE><TT>^</TT></CODE><TT>2-q</TT><CODE><TT>^</TT></CODE><TT>2,algsubs(2c=p</TT><CODE><TT>^</TT></CODE><TT>2+q</TT><CODE><TT>^</TT></CODE><TT>2,c</TT><CODE><TT>^</TT></CODE><TT>2-a</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>y-2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>p</TT><CODE><TT>^</TT></CODE><TT>2*q</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr274.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr276.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

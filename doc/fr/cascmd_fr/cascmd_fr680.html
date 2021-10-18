@@ -6,41 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La moyenne : mean moyenne</TITLE>
+<TITLE>Test de la présence d’une variable dans une expression : has</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr679.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr681.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc800">7.1.1</A>  La moyenne : <TT>mean moyenne</TT></H3><P><A NAME="@default1228"></A> <A NAME="@default1229"></A>
-<TT>mean</TT> calcule la moyenne numérique des éléments d’une 
-liste (ou de chaque colonne d’une matrice).<BR>
+<H3 CLASS="subsection"><A NAME="htoc798">6.59.5</A>  Test de la présence d’une variable dans une expression : <TT>has</TT></H3><P><A NAME="@default1227"></A>
+<TT>has</TT> a comme paramètre une expression et le nom d’une 
+variable.<BR>
+<TT>has</TT> renvoie <TT>1</TT>, ou <TT>0</TT>, selon que la variable est présente, 
+ou non présente, dans l’expression.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>mean(A)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>has(x*y*sin(x),y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>11/2</TT></DIV><P>
-En effet (0+1+...+11)=66 et 66/12=11/2<BR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>mean([[1,2],[3,4]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>has(x*y*sin(x),z)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,3]</TT></DIV><P>
-En effet (1+3)/2=2 et (2+4)/2=3.<BR>
-<TT>mean</TT> calcule la moyenne numérique des éléments d’une 
-liste (respectivement de chaque colonne d’une matrice) pondérée par une liste (respectivement
-matrice) de même taille donnée comme deuxième argument.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>mean(A,A)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>23/3</TT></DIV><P>
-En effet : 1*1+2*2+..11*11=23*12*11/6=23*2*11 et 1+2+..11=66 donc:<BR>
-<TT>mean(A,A)</TT>=23*2*11/66=23/3<BR>
-On tape :
-</P><DIV CLASS="center"><TT>mean([[1,2],[3,4]],[[1,2],[3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[5/2,10/3]</TT></DIV><P>
-En effet : (1*1+3*3)/(1+3)=5/2 et (2*2+4*4)/(2+4)=10/3
-</P><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr679.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr681.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

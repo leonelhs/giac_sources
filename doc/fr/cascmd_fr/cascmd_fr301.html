@@ -6,15 +6,187 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Changement de variables : subst substituer</TITLE>
+<TITLE>Somme indicée finie et infinie et primitive discrète : sum</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr300.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr302.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc379">6.19.6</A>  Changement de variables : <TT>subst substituer</TT></H3><P>
-On se reportera à la commande <TT>subst</TT> de la section <A HREF="cascmd_fr270.html#sec:subst">6.13.21</A>. </P><HR>
+<H3 CLASS="subsection"><A NAME="htoc380">6.20.3</A>  Somme indicée finie et infinie et primitive discrète : <TT>sum</TT></H3><P><A NAME="@default560"></A>
+<TT>sum</TT> a deux, quatre ou cinq arguments :<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Avec 5 arguments <TT>sum(Xpr,Var,a,b,p)</TT> renvoie la somme demandée 
+c’est à dire renvoie la somme des valeurs de l’expression <TT>Xpr</TT> quand la 
+variable <TT>Var</TT> va de <TT>a</TT> à <TT>b</TT> avec un pas égal à <TT>p</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,1,5,1)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,1,5)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,5,1,1)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,5,1,-1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>60</TT></DIV>
+En effet :<BR>
+2+5+10+17+26=60<BR>
+On tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,1,5,2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>38</TT></DIV>
+En effet :<BR>
+2+10+26=38
+</LI><LI CLASS="li-itemize">Avec 4 ou 2 arguments, <TT>sum(Xpr,Var,a,b)</TT> ou <TT>sum(Xpr,Var=a..b)</TT>
+n’a pas la même valeur selon que <TT>a</TT> est plus petit ou égal à <TT>b</TT>
+ou non, car on veut avoir l’égalité :<BR>
+ <TT>sum(Xpr,Var,a,b)=sum(Xpr,Var,a,c)+sum(Xpr,Var,c+1,b)</TT>.<BR>
+ Aussi, lorsque le pas <TT>p</TT> n’est pas précisé on a :
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+si <TT>a</TT> est inférieur à <TT>b</TT>,<BR>
+<TT>sum(Xpr,Var,a,b)</TT> renvoie la somme des valeurs de l’expression 
+<TT>Xpr</TT> quand la variable <TT>Var</TT> va de <TT>a</TT> à <TT>b</TT> avec un pas de 
+<TT>1</TT> : cette syntaxe est compatible avec Maple.<BR>
+Ainsi si <TT>a&lt;= b</TT> on a :<BR>
+<TT>sum(Xpr,Var,a,b)</TT>=<TT>sum(Xpr,Var,a,b,1)</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,1,5)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x=1..5)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>60</TT></DIV>
+En effet :<BR>
+2+5+10+17+26=60
+</LI><LI CLASS="li-itemize">si <TT>a</TT> est supérieur à <TT>b+1</TT>,<BR>
+<TT>sum(Xpr,Var,a,b)</TT> renvoie l’opposé de la somme des valeurs de 
+l’expression <TT>Xpr</TT> quand la variable 
+<TT>Var</TT> va de <TT>b+1</TT> à <TT>a-1</TT> avec un pas de <TT>1</TT> : cette syntaxe 
+est compatible avec Maple.<BR>
+On tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,5,1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>-32</TT></DIV>
+En effet :<BR>
+−(5+10+17)=−32
+<B>Attention</B> on n’obtient pas la même chose si on précise le pas 
+(avec <I>p</I>=1 ou <I>p</I>=−1)<BR>
+On tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,5,1,-1)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,5,1,1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>60</TT></DIV>
+Car on a :<BR>
+2+5+10+17+26=60<BR>
+On tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,4,1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>-15</TT></DIV>
+En effet :<BR>
+−(5+10)=−15
+</LI><LI CLASS="li-itemize">si <TT>a</TT> est égal à <TT>b+1</TT>,<BR>
+<TT>sum(Xpr,Var,b+1,b)</TT> renvoie 0.<BR>
+On tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,5,4)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>sum(x</TT><CODE><TT>^</TT></CODE><TT>2+1,x=5..4)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0</TT></DIV>
+</LI></UL>
+</LI><LI CLASS="li-itemize">si <TT>sum</TT> a deux arguments :<BR>
+<TT>sum</TT> a comme premier argument une expression (par exemple <I>f</I>(<I>x</I>))
+d’une variable (par exemple <I>x</I>) qui est donnée comme deuxième argument.<BR>
+<TT>sum</TT> renvoie la primitive discrète de cette expression, c’est à dire 
+la fonction <I>G</I> verifiant <I>G</I>(<I>x</I>+1)−<I>G</I>(<I>x</I>)=<I>f</I>(<I>x</I>).<BR>
+On tape :
+<DIV CLASS="center"><TT>sum(x,x)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2-x)/2</TT></DIV>
+Donc :<BR>
+4+5+...19=(20<CODE>^</CODE>2−20)/2−(4<CODE>^</CODE>2−4)/2=190−6=184
+On tape :
+<DIV CLASS="center"><TT>sum(1/(x*(x+1)),x)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>-1/x</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>sum(cos(p*x),p)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(-cos(p*x)*cos(x)+cos(p*x)-sin(p*x)*sin(x))/(2*cos(x)-2)</TT></DIV>
+</LI></UL><P>
+<B>Autes Exemples</B><BR>
+On tape :
+</P><DIV CLASS="center"><TT>sum(k,k,2,6) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>20</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sum(k,k,7,2) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-18</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sum(k,k,3,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sum(1,k,-2,n) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>n+1+2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>normal(sum(2*k-1,k,1,n))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>n</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sum(1/(n</TT><CODE><TT>^</TT></CODE><TT>2),n,1,10)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1968329/1270080</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>sum(1/(n</TT><CODE><TT>^</TT></CODE><TT>2),n,1,+(infinity)) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>pi</TT><CODE><TT>^</TT></CODE><TT>2/6</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sum((-1)</TT><CODE><TT>^</TT></CODE><TT>n/(2*n+1)!,n,0,+(infinity))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sin(1))</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sum(1/(3*n)!,n,0,+(infinity)) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(2*cos((sqrt(3))/2)*exp(1/-2)+exp(1))/3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sum(1/(n*2</TT><CODE><TT>^</TT></CODE><TT>n),n,1,+(infinity)) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-(ln(1/2))</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sum((-1)</TT><CODE><TT>^</TT></CODE><TT>n/(2*n+1),n,0,+(infinity)) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>pi/4</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>assume(x&gt;0 &amp;&amp; x&lt;1);<BR>
+sum(x</TT><CODE><TT>^</TT></CODE><TT>(2*n)/(2*n+1),n,0,+(infinity))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x,(-ln(-x+1)+ln(x+1))/(2*x)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sum(1/(n</TT><CODE><TT>^</TT></CODE><TT>3-n),n,2,10)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>27/110</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>sum(1/(n</TT><CODE><TT>^</TT></CODE><TT>3-n),n,1,+(infinity)) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1/4</TT></DIV><P>
+Pour justifier ce résultat on décompose <TT>1/(<I>n</I></TT><CODE><TT>^</TT></CODE><TT>3-<I>n</I>)</TT>, on tape :
+</P><DIV CLASS="center"><TT>partfrac(1/(n</TT><CODE><TT>^</TT></CODE><TT>3-n)) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1/(2*(n+1))-1/n+1/(2*(n-1))</TT></DIV><P>
+Donc quand on fait la somme de <TT>2</TT> à <TT>N</TT> on a :<BR>
+ ∑<SUB><I>n</I>=2</SUB><SUP><I>N</I></SUP> −1/<I>n</I>=−∑<SUB><I>n</I>=1</SUB><SUP><I>N</I>−1</SUP> 1/<I>n</I>+1=−1/2−∑<SUB><I>n</I>=2</SUB><SUP><I>N</I>−2</SUP> 1/<I>n</I>+1−1/<I>N</I><BR>
+ 1/2*∑<SUB><I>n</I>=2</SUB><SUP><I>N</I></SUP> 1/<I>n</I>−1=1/2*(∑<SUB><I>n</I>=0</SUB><SUP><I>N</I>−2</SUP> 1/<I>n</I>+1)=1/2*(1+1/2+∑<SUB><I>n</I>=2</SUB><SUP><I>N</I>−2</SUP>1/<I>n</I>+1)<BR>
+ 1/2*∑<SUB><I>n</I>=2</SUB><SUP><I>N</I></SUP> 1/<I>n</I>+1=1/2*(∑<SUB><I>n</I>=2</SUB><SUP><I>N</I>−2</SUP> 1/<I>n</I>+1+1/<I>N</I>+1/<I>N</I>+1)<BR>
+les termes ∑<SUB><I>n</I>=2</SUB><SUP><I>N</I>−2</SUP> se détruisent et il reste :<BR>
+  −1/2+1/2*(1+1/2)−1/<I>N</I>+1/2*(1/<I>N</I>+1/<I>N</I>+1)=1/4−1/2<I>N</I>(<I>N</I>+1)<BR>
+d’ou les résultat précédents :<BR>
+- pour <I>N</I>=10 la somme vaut : 1/4−1/220=27/110<BR>
+- pour <I>N</I>=+∞ la somme vaut : 1/4 car  1/2<I>N</I>(<I>N</I>+1) 
+tend vers zéro quand <I>N</I> tend vers l’infini.<BR>
+
+</P><HR>
 <A HREF="cascmd_fr300.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr302.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

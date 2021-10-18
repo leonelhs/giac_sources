@@ -6,25 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Évaluation numérique : evalf</TITLE>
+<TITLE>Liste des variables et des expressions : lvar</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr677.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr679.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc795">6.58.6</A>  Évaluation numérique : <TT>evalf</TT></H3><P><A NAME="@default1224"></A>
-<TT>evalf</TT> a comme paramètre une expression ou une matrice.<BR>
-<TT>evalf</TT> renvoie la valeur numérique de
-l’expression ou de la matrice.<BR>
+<H3 CLASS="subsection"><A NAME="htoc796">6.59.3</A>  Liste des variables et des expressions : <TT>lvar</TT></H3><P><A NAME="@default1225"></A><A NAME="sec:lvar"></A>
+<TT>lvar</TT> a comme paramètre une expression.<BR>
+<TT>lvar</TT> renvoie un vecteur de composantes les noms de variables et des 
+expressions dont cette expression dépend rationnellement.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>evalf(sqrt(2))</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>lvar(x*y*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2+ln(x)*cos(y))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.41421356237</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[x,y,sin(x)]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>evalf([[1,sqrt(2)],[0,1]])</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>lvar(x*y*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1.0,1.41421356237],[0.0,1.0]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[x,y,sin(x),ln(x),cos(y)]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lvar(y+x*sqrt(z)+y*sin(x))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[y,x,sqrt(z),sin(x)]</TT></DIV><HR>
 <A HREF="cascmd_fr677.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr679.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

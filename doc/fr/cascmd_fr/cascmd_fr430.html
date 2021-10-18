@@ -6,21 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Coefficients d’une fraction rationnelle définie par ses racines et ses pôles : fcoeff</TITLE>
+<TITLE>Valeurs exactes des racines rationnelles d’un polynôme : rationalroot</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr429.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr431.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc521">6.32.2</A>  Coefficients d’une fraction rationnelle définie par ses racines et ses pôles : <TT>fcoeff</TT></H3><P><A NAME="@default779"></A>
-<TT>fcoeff</TT> a comme argument un vecteur de composantes les racines et
-les pôles d’une fraction rationnelle <I>F</I>(<I>x</I>) suivis de leur multiplicité.<BR>
-<TT>fcoeff</TT> renvoie la fraction rationnelle <I>F</I>(<I>x</I>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>fcoeff([1,2,0,3,2,-1]) </TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc521">6.32.7</A>  Valeurs exactes des racines rationnelles d’un polynôme : <TT>rationalroot</TT></H3><P><A NAME="@default778"></A>
+<TT>rationalroot</TT> a 1 ou 3 arguments : un polynôme et 
+éventuellement deux réels α,β.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Si <TT>rationalroot</TT> a 1 argument, <TT>rationalroot</TT> renvoie la liste 
+formée par la valeur des racines rationnelles du polynôme sans
+indiquer la multiplicité de ces racines.
+</LI><LI CLASS="li-itemize">Si <TT>rationalroot</TT> a 3 arguments, <TT>rationalroot</TT> ne renvoie que 
+les racines rationnelles situées dans l’intervalle [α,β].
+</LI></UL><P>
+On tape pour avoir les racines rationnelles de 2*<I>x</I><SUP>3</SUP>−3*<I>x</I><SUP>2</SUP>−8*<I>x</I>+12 :
+</P><DIV CLASS="center"><TT>rationalroot(2*x</TT><CODE><TT>^</TT></CODE><TT>3-3*x</TT><CODE><TT>^</TT></CODE><TT>2-8*x+12)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(x-1)</TT><CODE><TT>^</TT></CODE><TT>2*x</TT><CODE><TT>^</TT></CODE><TT>3/(x-2)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[2,3/2,-2]</TT></DIV><P> 
+On tape pour avoir les racines rationnelles de 2*<I>x</I><SUP>3</SUP>−3*<I>x</I><SUP>2</SUP>−8*<I>x</I>+12 dans 
+[1;2] :
+</P><DIV CLASS="center"><TT>rationalroot(2*x</TT><CODE><TT>^</TT></CODE><TT>3-3*x</TT><CODE><TT>^</TT></CODE><TT>2-8*x+12,1,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,3/2]</TT></DIV><P> 
+On tape pour avoir les racines rationnelles de 2*<I>x</I><SUP>3</SUP>−3*<I>x</I><SUP>2</SUP>+8*<I>x</I>−12 :
+</P><DIV CLASS="center"><TT>rationalroot(2*x</TT><CODE><TT>^</TT></CODE><TT>3-3*x</TT><CODE><TT>^</TT></CODE><TT>2+8*x-12)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[3/2]</TT></DIV><P> 
+On tape pour avoir les racines rationnelles de 2*<I>x</I><SUP>3</SUP>−3*<I>x</I><SUP>2</SUP>+8*<I>x</I>−12 :
+</P><DIV CLASS="center"><TT>rationalroot(2*x</TT><CODE><TT>^</TT></CODE><TT>3-3*x</TT><CODE><TT>^</TT></CODE><TT>2+8*x-12)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[3/2]</TT></DIV><P> 
+On tape pour avoir les racines rationnelles de 
+(3*<I>x</I>−2)<SUP>2</SUP>*(2<I>x</I>+1))=18*<I>x</I><SUP>3</SUP>−15*<I>x</I><SUP>2</SUP>−4*<I>x</I>+4 :
+</P><DIV CLASS="center"><TT>rationalroot(18*x</TT><CODE><TT>^</TT></CODE><TT>3-15*x</TT><CODE><TT>^</TT></CODE><TT>2-4*x+4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[(-1)/2,2/3]</TT></DIV><HR>
 <A HREF="cascmd_fr429.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr431.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

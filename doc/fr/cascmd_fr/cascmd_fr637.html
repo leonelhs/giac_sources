@@ -6,52 +6,40 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Recherche d’une base de vecteurs courts d’un réseau : lll</TITLE>
+<TITLE>Valeurs singulières (compatible HP) : SVL svl</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr636.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr638.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc747">6.51.10</A>  Recherche d’une base de vecteurs courts d’un réseau : <TT>lll</TT></H3><P><A NAME="@default1158"></A>
-<TT>lll</TT> a comme argument une matrice inversible <I>M</I> à coefficients entiers.<BR>
-<TT>lll</TT> renvoie (<I>S</I>,<I>A</I>,<I>L</I>,<I>O</I>) :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<I>S</I> a comme lignes une base courte du reseau engendré par les 
-lignes de <I>M</I>,
-</LI><LI CLASS="li-itemize"><I>A</I> est la matrice de passage de la base courte à la base définie 
-par les lignes de <I>M</I> (<I>A</I>*<I>M</I>=<I>S</I>),
-</LI><LI CLASS="li-itemize"><I>L</I> est une matrice triangulaire inférieure dont les coefficients sont 
-de module plus petits que 1/2,
-</LI><LI CLASS="li-itemize"><I>O</I> est une matrice dont les lignes sont orthogonales et on a <I>L</I>*<I>O</I>=<I>S</I>.
-</LI></UL><P>Si en dimension 2, un vecteur du réseau a comme coordonnées [<I>a</I>,<I>b</I>] dans 
-la base définie par <I>M</I> et a comme coordonnées [<I>a</I>1,<I>b</I>1] dans la base 
-courte définie par <I>S</I> c’est à dire si [<I>a</I>,<I>b</I>]*<I>M</I>=[<I>a</I>1,<I>b</I>1]*<I>S</I>, alors :<BR>
-[<I>a</I>,<I>b</I>]=[<I>a</I>1,<I>b</I>1]*<I>A</I><BR>
-[<I>a</I>1,<I>b</I>1]*<I>S</I>=[<I>a</I>1,<I>b</I>1]*<I>A</I>*<I>M</I>=[<I>a</I>,<I>b</I>]*<I>M</I> et<BR>
-[<I>a</I>,<I>b</I>]*<I>M</I>=[<I>a</I>,<I>b</I>]*<I>A</I><SUP>−1</SUP>*<I>S</I>=[<I>a</I>1,<I>b</I>1]*<I>S</I><BR>
+<H3 CLASS="subsection"><A NAME="htoc748">6.52.7</A>  Valeurs singulières (compatible HP) : <TT>SVL svl</TT></H3><P><A NAME="@default1158"></A><A NAME="@default1159"></A>
+<TT>SVL</TT> ou <TT>svl</TT> a comme argument une matrice carrée numérique d’ordre 
+<I>n</I>.<BR>
+<TT>SVL(A)</TT> renvoie les valeurs singulières de <I>A</I>.<BR>
+Les valeurs singulières de <I>A</I> sont les racines carrées positives des 
+valeurs propres de <I>A</I>*<I>trn</I>(<I>A</I>). Ainsi lorsque <I>A</I> est symétrique, les valeurs 
+singulières de <I>A</I> sont les valeurs absolues de ses valeurs propres.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>(S,A,L,O):=lll([[2,1],[1,2]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>SVL([[1,2],[3,4]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>svl([[1,2],[3,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[-1,1],[2,1]],[[-1,1],[1,0]],[[1,0],[1/-2,1]],[[-1,1],[3/2,3/2]]</TT></DIV><P>
-Donc :<BR>
-<TT>S=[[-1,1],[2,1]]</TT><BR>
-<TT>A=[[-1,1],[1,0]]</TT><BR>
-<TT>L=[[1,0],[1/-2,1]]</TT><BR>
-<TT>O=[[-1,1],[3/2,3/2]]</TT><BR>
-
-On a comme ancienne base : <TT>v1=[2,1], v2=[1,2]</TT> et<BR>
-comme base courte : <TT>w1=[-1,1], w2=[2,1]</TT>.<BR>
-Puisque <TT>w1=-v1+v2</TT> et <TT>w2=v1</TT> on a<BR>
-<TT>A:=[[-1,1],[1,0]]</TT>, <TT>A*M==S</TT> et <TT>L*O==S</TT>.<BR>
+</P><DIV CLASS="center"><TT>[0.365966190626,5.46498570422]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>(S,A,L,O):=lll([[3,2,1],[1,2,3],[2,3,1]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>evalf(sqrt(eigenvals([[1,2],[3,4]]*[[1,3],[2,4]])))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>S=[[-1,1,0],[-1,-1,2],[3,2,1]] </TT></DIV><DIV CLASS="center"><TT>A= [[-1,0,1],[0,1,-1],[1,0,0]]</TT></DIV><DIV CLASS="center"><TT>L= [[1,0,0],[0,1,0],[(-1)/2,(-1)/2,1]]</TT></DIV><DIV CLASS="center"><TT>O= [[-1,1,0],[-1,-1,2],[2,2,2]]</TT></DIV><P>
-si on tape :<BR>
-<TT>M:=[[3,2,1],[1,2,3],[2,3,1]]</TT><BR>
-On a :<BR>
-<TT>A*M==S</TT> et <TT>L*O==S</TT></P><HR>
+</P><DIV CLASS="center"><TT>[5.46498570422,0.365966190626]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>SVL([[1,4],[4,1]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>svl([[1,4],[4,1]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[5.0,3.0]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>abs(eigenvals([[1,4],[4,1]]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[5,3]</TT></DIV><HR>
 <A HREF="cascmd_fr636.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr638.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,114 +6,75 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Limites : limit limite</TITLE>
+<TITLE>Longueur d’un arc de courbe : arcLen</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr304.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr306.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc385">6.21.1</A>  Limites : <TT>limit limite</TT></H3><P><A NAME="@default568"></A><A NAME="@default569"></A><A NAME="sec:limit"></A>
-<TT>limit</TT> permet de calculer <B>à condition d’être en radians</B> la limite d’une expression en un point fini (ou 
-infini). En utilisant un paramètre supplementaire, on peut indiquer si on
-cherche une limite par valeurs supérieures ou par 
-valeurs inférieures (1 pour dire "par valeurs supérieures" et -1 pour dire 
-"par valeurs inférieures").<BR>
-<TT>limit</TT> a trois ou quatre arguments :<BR>
-une expression, le nom de la variable (par exemple <TT>x</TT>), le point limite 
-(par exemple <TT>a</TT>) et un argument optionnel qui indique si la limite est 
-unidirectionnelle ou bidirectionnelle (par défaut <TT>0</TT>). 
-Cet argument est égal à 
-<TT>-1</TT> pour une limite à gauche (<TT>x&lt;a</TT>) ou est égal à <TT>1</TT> 
-pour une limite à droite (<TT>x&gt;a</TT>) ou à <TT>0</TT> pour une limite.<BR>
-L’argument optionnel est donc utilisé lorsque l’on veut calculer une limite 
-à droite (+1) ou une limite à gauche (-1).<BR>
-<TT>limit</TT> renvoie la limite demandée (si elle existe !).<BR>
-<B>Remarque</B><BR>
-On peut aussi mettre comme argument <TT>x=a</TT> à la place de <TT>x,a</TT> donc :
-<TT>limit</TT> a aussi comme arguments une expression dépendant d’une variable, 
-une égalité (variable =la valeur où l’on veut calculer la limite) et 
-éventuellement 1 ou -1 pour indiquer la direction.<BR>
-<B>Autre remarque</B><A NAME="@default570"></A><BR>
-si on tape <TT>limit((-1)</TT><CODE><TT>^</TT></CODE><TT>n,n=inf)</TT>, alors <TT>Xcas</TT> répond
-<TT>bounded_function(5)</TT> ce qui veut dire que la fonction est bornée mais 
-qu’elle n’a pas de limite à l’infini.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>limit(1/x,x,0,-1)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>limit(1/x,x=0,-1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-(infinity)</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>limit(1/x,x,0,1)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>limit(1/x,x=0,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>+(infinity)</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>limit(1/x,x,0,0)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>limit(1/x,x,0)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>limit(1/x,x=0)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>infinity</TT></DIV><P> 
-cela veut dire que <TT>abs(1/x)</TT> tend vers +∞ 
-quand <I>x</I> tend vers 0.<BR>
-<B>Exercices :</B>
+<H3 CLASS="subsection"><A NAME="htoc384">6.20.7</A>  Longueur d’un arc de courbe : <TT>arcLen</TT></H3><P><A NAME="@default564"></A><A NAME="seclongarc"></A>
+<TT>arcLen</TT> a soit 1 soit quatre paramètres.<BR>
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Trouver pour <I>n</I>&gt;2, la limite quand <I>x</I> tend vers 0 de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>tan(<I>x</I>)−tan(<I>nx</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">sin(<I>nx</I>)−<I>n</I>sin(<I>x</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE>
+le paramètre est soit un cercle ou un arc de cercle, soit un polygone.<BR>
+ On tape
+<DIV CLASS="center"><TT>arcLen(cercle(0,1,0,pi/2))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>pi/4</TT></DIV>
+On tape
+<DIV CLASS="center"><TT>arcLen(hexagone(0,1))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>6</TT></DIV>
+</LI><LI CLASS="li-itemize">les 4 paramètres sont :une expression <I>expr</I> (resp une 
+liste de 2 expressions [<I>expr</I>1,<I>expr</I>2]), le nom d’un paramètre et deux valeurs 
+<I>a</I> et <I>b</I> de ce paramètre.<BR>
+<TT>arcLen</TT> calcule la longueur de l’arc de courbe définie par l’équation
+<I>y</I>=<I>f</I>(<I>x</I>)=<I>expr</I> (resp par <I>x</I>=<I>expr</I>1,<I>y</I>=<I>expr</I>2) pour les valeurs du paramètre 
+comprises entre <I>a</I> et <I>b</I>.<BR>
+On a donc <TT>arcLen(f(x),x,a,b)=</TT> :<BR>
+<TT>integrate(sqrt(diff(f(x),x)</TT><CODE><TT>^</TT></CODE><TT>2+1),x,a,b)</TT><BR>
+ou<BR>
+<TT>integrate(sqrt(diff(x(t),t)</TT><CODE><TT>^</TT></CODE><TT>2+diff(y(t),t)</TT><CODE><TT>^</TT></CODE><TT>2),t,a,b)</TT>.<BR>
+</LI></UL><P>
+<B>Exemples</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Calculer la longueur de l’arc de cercle <I>AB</I> (avec <I>A</I>=(0,0) et 
+<I>B</I>=(0,1)) et d’angle au centre π/2.<BR>
+On tape
+<DIV CLASS="center"><TT>arcLen(arc(0,1,pi/2))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>sqrt(2)*pi/4</TT></DIV>
+</LI><LI CLASS="li-itemize">Calculer le périmètre du triangle <I>ABC</I> (avec <I>A</I>=(0,0), <I>B</I>=(0,1) et
+<I>C</I>=(1,1)).<BR>
+On tape
+<DIV CLASS="center"><TT>arcLen(triangle(0,1,1+i))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>sqrt(2)+2</TT></DIV>
+On tape
+
+On obtient :
+
+</LI><LI CLASS="li-itemize">Calculer la longueur de l’arc de parabole <I>y</I>=<I>x</I><SUP>2</SUP> pour <I>x</I> allant de 0 
+à <I>x</I>=1.<BR>
+ On tape
+<DIV CLASS="center"><TT>arcLen(x</TT><CODE><TT>^</TT></CODE><TT>2,x,0,1)</TT></DIV>
+ou
+<DIV CLASS="center"><TT>arcLen([t,t</TT><CODE><TT>^</TT></CODE><TT>2],t,0,1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(sqrt(5))/2-ln(sqrt(5)-2)/4</TT></DIV> 
+</LI><LI CLASS="li-itemize">Calculer la longueur de l’arc de la courbe <I>y</I>=cosh(<I>x</I>) pour <I>x</I> allant 
+de 0 à <I>x</I>=ln(2).<BR>
 On tape :
-<DIV CLASS="center"><TT>limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)</TT></DIV>
+<DIV CLASS="center"><TT>arcLen(cosh(x),x,0,log(2))</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>2 </TT></DIV>
-</LI><LI CLASS="li-itemize">Trouver la limite quand <I>x</I> tend vers +∞ de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:4em;"></DIV></TD></TR>
-<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>+</TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:0em;"></DIV></TD></TR>
-<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=0 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=0 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>x</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>x</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE> 
-On tape :
-<DIV CLASS="center"><TT>limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)</TT></DIV>
+<DIV CLASS="center"><TT>3/4</TT></DIV>
+</LI><LI CLASS="li-itemize">Calculer la longueur de l’arc de cercle <I>x</I>=cos(<I>t</I>),<I>y</I>=sin(<I>t</I>) pour <I>t</I> 
+allant de 0 à <I>t</I>=2*π.<BR>
+ On tape 
+<DIV CLASS="center"><TT>arcLen([cos(t),sin(t)],t,0,2*pi)</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>1/2 </TT></DIV>
-</LI><LI CLASS="li-itemize">Trouver la limite quand <I>x</I> tend vers 0 de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+<I>x</I>+<I>x</I><SUP>2</SUP>/2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">−exp(<I>x</I>/2)</TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">(1−cos(<I>x</I>))sin(<I>x</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE> 
-On tape :
-<DIV CLASS="center"><TT>limit((sqrt(1+x+x</TT><CODE><TT>^</TT></CODE><TT>2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>-1/6 </TT></DIV>
-</LI></UL><P>Pour calculer quelquefois des limites plus aisément, il peut être 
-judicieux de quoter le premier argument.<BR>
-On tape par exemple :
-</P><DIV CLASS="center"><TT>limit(’(2*x-1)*exp(1/(x-1))’,x=+infinity)</TT></DIV><P>
-On remarquera que l’on a quoté ici le premier argument pour qu’il ne soit 
-pas évalué c’est à dire pour qu’il ne soit pas simplifié.<BR>
-On obtient :
-</P><DIV CLASS="center"><TT>+(infinity)</TT></DIV><HR>
+<DIV CLASS="center"><TT>2*pi</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr304.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr306.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

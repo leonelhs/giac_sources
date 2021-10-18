@@ -6,63 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le losange dans l’espace : rhombus losange</TITLE>
+<TITLE>Le plan : plane plan</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1000.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1002.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1163">10.8.2</A>  Le losange dans l’espace : <TT>rhombus losange</TT></H3><P><A NAME="@default1946"></A><A NAME="@default1947"></A> <A NAME="sec:losange3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr893.html#sec:losange2">9.11.3</A> pour la géométrie plane.<BR>
-<TT>losange</TT>, en géométrie 3-d, peut avoir de trois à cinq 
-arguments.<BR>
-Les arguments sont :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si il a trois arguments ce sont : 2 points (les 2 premiers sommets du 
-losange) et le troisième argument est soit un point <I>P</I>, soit une liste 
-formée par un point <I>P</I> et un nombre réel <I>a</I>. Le point <I>P</I> définit le 
-plan du losange et l’orientation de ce plan.<BR>
-On a :<BR>
-- <TT>losange(A,B,P)</TT> renvoie et trace dans le plan <I>ABP</I>, le losange <I>ABCD</I> 
-tel que :<BR>
-<I>AB</I>,<I>AD</I>)=<I>AB</I>,<I>AP</I>), mais sans définir les points <I>C</I> et <I>D</I>.<BR>
-- <TT>losange(A,B,[P,a])</TT> renvoie et trace dans le plan <I>ABP</I>, le losange <I>ABCD</I>
-tel que :<BR>
-<I>AB</I>,<I>AD</I>)=<I>a</I> radians (ou degrés), mais sans 
-définir les points <I>C</I> et <I>D</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1172">11.6.1</A>  Le plan : <TT>plane plan</TT></H3><P><A NAME="@default1944"></A><A NAME="@default1945"></A>
+<TT>plan</TT> a comme argument soit trois points, soit un point et une 
+droite, soit son équation cartésienne.<BR>
+<TT>plan(A,B,C)</TT> ou <TT>plan(A,droite(B,C))</TT> (resp <TT>plan(a*x+b*y+c*z+d=0)</TT>) trace le plan <TT>ABC</TT> (resp le plan d’équation <TT>a*x+b*y+c*z+d=0</TT>) dans l’espace 3-d.<BR>
 On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
-Puis on tape :
-<DIV CLASS="center"><TT>losange(A,B,P)</TT></DIV>
+</P><DIV CLASS="center"><TT>plan([0,0,5],[0,5,0],[5,0,0])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>plan(x+y+z=5)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>plan([0,0,5],droite([0,5,0],[5,0,0]))</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à </TT><TT><I>BAP</I></TT><TT>, dans le plan </TT><TT><I>ABP</I></TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
-Puis on tape :
-<DIV CLASS="center"><TT>losange(A,B,[P,pi/3])</TT></DIV>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à pi/3, dans le plan </TT><TT><I>ABP</I></TT></DIV>
-</LI><LI CLASS="li-itemize">si il a quatre ou cinq arguments, les derniers paramètres sont les 
-noms des variables qui serviront à définir les derniers sommets.<BR>
-On tape :
-<DIV CLASS="center"><TT>losange(A,B,[P,pi/3],C,D)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I>,<I>C</I>,<I>D</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à pi/3, dans le plan </TT><TT><I>ABP</I></TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[(-3*sqrt(6)+18)/4,(-3*sqrt(6)+18)/4,(3*sqrt(6)+9)/2]</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[(-3*sqrt(6)+6)/4,(-3*sqrt(6)+6)/4,(3*sqrt(6)+3)/2]</TT></DIV>
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>Le plan d’équation x+y+z=5</TT></DIV><HR>
 <A HREF="cascmd_fr1000.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1002.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

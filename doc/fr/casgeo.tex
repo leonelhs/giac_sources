@@ -268,7 +268,7 @@ $t<0$ {\tt M} restera en {\tt A} et pour $t>0$ {\tt M} restera en  {\tt B}.
 \end{itemize}
 \subsection{Fonctions s'appliquant \`a un point}\index{re}\index{im}\index{affixe}\index{abscisse}\index{ordonnee}\index{coordonnees}\index{milieu}\index{longueur}\index{isobbarycentre}\index{longueur2}\label{sec:coordonnees}
 Dans ce qui suit on suppose que l'on a d\'efini deux points {\tt A} et {\tt B}
-et que Ox et Oy d\'esignent les axes du rep\`ere d\'efini dans 
+et que $Ox$ et $Oy$ d\'esignent les axes du rep\`ere d\'efini dans 
 la fen\^etre d'initialisation graphique.\\
 {\tt re(A)} d\'esigne le point projection orthogonale de {\tt A} sur Ox.\\
 {\tt im(A)} d\'esigne le point projection orthogonale de {\tt A} sur Oy.\\
@@ -309,7 +309,7 @@ enti\`erement d\'efini par son affixe qui est le nombre complexe \'egal
  \`a la diff\'erence de ces deux points :\\
 en effet la diff\'erence de deux points est un nombre complexe \'egal \`a la 
 diff\'erence des affixes de ces deux points, et ce nombre complexe repr\'esente un vecteur d'origine O.\\
-Exemples :\\
+{\bf Exemples}\\
 Si on a deux points {\tt A} et {\tt B} le vecteur $\overrightarrow {AB}$ sera d\'esign\'e par le nombre complexe {\tt B-A}.\\
 {\tt D:=C+A-B} : $D$ est un point tel que  $ABCD$ est un parall\'elogramme
 puisque $\overrightarrow {CD}=\overrightarrow {BA}$ ({\tt D-C=A-B}).\\  
@@ -605,7 +605,7 @@ ou\\
 {\tt K:=barycentre([[A,2],[B,1],[C,-2],[D,3],[E,1]])}\\
 et {\tt K} est le barycentre des points {\tt A,B,C,D,E} affect\'es des 
 coefficients {\tt 2,1,-2,3,1}.\\
-{\bf Activit\'es}\\
+{\bf Activit\'es 1}\\
 Cr\'eer 4 points {\tt A,B,C,D}.\\
 D\'efinir l'isobarycentre de {\tt A,B,C,D}, en utilisant les coordonn\'ees.\\
 {\bf R\'eponse}\\
@@ -638,7 +638,122 @@ local s,d:=dim(L);
 retourne sum(L[k+1]*L[k],k,0,d-2,2)/s;
 }
 \end{verbatim}
-
+{\bf Activit\'e 2 : Partager un triangle en 3 triangles de m\^eme aire}\\
+Soit un triangle $ABC$. 
+\begin{itemize}
+\item On cherche un point $P$ int\'erieur au triangle $ABC$ tel que les aires 
+des triangles $ABP$, $BCP$ et $CAP$ soient \'egales.\\
+Montrer que $P$ est l'isobarycentre des points $A,B,C$.
+ \item On cherche un point $P$ tel que les aires des triangles $ABP$, $BCP$ et
+$CAP$ soient proportionnelles \`a 1,2,3.
+D\'efinir $P$ \`a l'aide d'un barycentre des points $A,B,C$.
+\item On cherche un point $P$ tel que les aires des triangles $ABP$, $BCP$ et
+$CAP$ soient soient proportionnelles \`a $n,p,q$.
+D\'efinir $P$ \`a l'aide d'un barycentre des points $A,B,C$.
+\item prolongement\\
+Peut-on toujours trouver un point $P$ int\'erieur au quadrilat\`ere convexe 
+$ABCD$ qui partage ce quadrilat\`ere en 4 triangles de m\^eme aire ?\\
+A quelle condition cela est-il possible ?
+\end{itemize}
+Avec {\tt Xcas}
+\begin{itemize}
+\item 
+On tape :
+\begin{verbatim}
+supposons(a=[2.6,-5,5,0.1]);
+supposons(b=[2,0,5,0.1]);
+supposons(c=[2.8,0,5,0.1]);
+A:=point(0);
+B:=point(b);
+C:=point(a+i*c);
+triangle(A,B,C);
+H:=projection(droite(B,C),A);
+H1:=point((H-A)*2/3);
+h:=hauteur(A,B,C);
+d1:=perpendiculaire(H1,h);
+d2:=droite(y=c/3);
+P:=inter_unique(d1,d2);
+segment(P,A,affichage=1);
+segment(P,B,affichage=1);
+segment(P,C,affichage=1);
+A1:=inter_unique(droite(C,B),droite(A,P));
+C1:=inter_unique(droite(A,B),droite(C,P));
+G:=isobarycentre(A,B,C):;
+\end{verbatim}
+On obtient :\\
+\includegraphics[width=\textwidth]{barycentre}\\
+On trouve :
+$P$ est le {\tt point(1/3*a+1/3*b+(i)/3*c)},\\
+$A1$ est le {\tt point(1/2*a+1/2*b+(i)/2*c)}\\
+$C1$ est le {\tt point(1/2*b)}\\
+$G$ est le {\tt point((b+a+(i)*c)/3)}\\
+Donc \\
+$A1$ est le milieu de $BC$ et $C1$ est le milieu de $BC$
+$P$ est l'isobarycentre des points $A,B,C$.
+\item $P$, le barycentre de $C,1$, $A,2$, $B,3$ r\'epond \`a la question.
+\item $P$, le barycentre de $C,n$, $A,p$, $B,q$ r\'epond \`a la question.
+\item %partager.xws
+{\bf Lemme1}\\
+\includegraphics[width=\textwidth]{partager1}\\
+Soit un triangle $OQR$ et un point $M$ sur le segment $OQ$ alors
+aire de $OMR$=aire de $MQR$ est \'equvalent \`a $M$ est le milieu de $OQ$
+{\bf Lemme2}
+Soit un quadrilat\`ere  $OPQR$.\\
+On note  les parall\`eles $d1$ et $d2$\`a $OQ$  et $h$ la distance entre $d1$ et $d2$, alors :\\
+aire($OPQR$)=longueur($OQ$)*$h/2$.
+{\bf Lemme3}
+Soit un quadrilat\`ere $OPQR$ alors:\\
+aire($OPQ$)=aire($OQR$) est \'equivalent \`a $OQ$ passe par le milieu de $PR$.\\
+Les d\'emonstrations sont \`evidentes car l'aire d'un triangle est \'egale \`a :
+base*hauteur/2.\\
+Pour le Lemme1 :\\
+$OPR$ (resp $PQR$) ont comme base $OP$ (resp $PQ$) et la m\^eme hauteur.\\
+Pour le Lemme2 :\\
+\'evident si $OPQR$ est convexe.\\
+sinon\\
+\includegraphics[width=\textwidth]{partager2}\\
+aire($OPQR$)=aire($OQR$)-aire($OPQ$)=\\
+longueur($OQ$)*(longueur($RM$)-longueur($PN$)/2=longueur($OQ$)*h/2
+Pour le Lemme3 :\\
+\includegraphics[width=\textwidth]{partager3}\\
+$OPQ$ et $OQR$ ont comme base $OQ$ donc \\
+aires \'egales est \'equivalent \`a m\^eme hauteur qui est \'equivalent \`a 
+$OQ$ passe par le milieu de $PR$.\\
+Soit un quadrilat\`ere convexe $ABCD$.\\
+\includegraphics[width=10cm]{partager}\\
+On cherche tout d'abord un point $P$ tel que :\\
+aire($ABCP$)=aire($APCD$).\\
+On m\`ene par $B$ et $D$ les parall\`eles $d1$ et $d2$\`a $AC$.
+D'apr\`es le {\tt lemme 2} $P$ se trouve sur la parall\`ele \'equidistante \`a 
+$d1$ et $d2$.\\
+On veut aussi que :\\
+aire($ADP$)=aire($CDP$)\\
+La base commune est $DP$, d'apr\`es le {\tt lemme 3}, $DP$ passe par le milieu 
+$M$ de $AC$ i.e $D,P,M$ sont align\`'es (c'est vrai sur la figure).\\
+aire($ABP$)=aire($CBP$)\\
+La base commune est $BP$, d'apr\`es le {\tt lemme 3}, $BP$ passe par le milieu 
+$M$ de $AC$ i.e $B,P,M$ sont align\`'es (ce n'est pas vrai sur la figure).\\
+Donc, si les 4 aires sont \'egales, on a :
+$P$ est en $M$ ou $P$ est diff\'erent de $M$ et donc les points $D,P,M,B$ sont 
+align\'es.\\
+Si $P$ est en $M$, $P$ se trouve sur $AC$ donc $AC$ est la parall\`ele 
+\'equidistante \`a $d1$ et $d2$. Donc $AC$ passe par le milieu de $BD$.\\ 
+Si $P$ est diff\'erent de $M$, les points $D,P,M,B$ sont align\'es. Donc
+$BD$ passe par le milieu $M$ de $AC$ et $P$ est en $N$ milieu de $BD$
+d'apr\`es le {\tt lemme 1}\\
+{\tt En r\'esum\'e}
+On peut un point $P$ int\'erieur \`a un quadrilat\`ere convexe $ABCD$ qui 
+partage ce quadrilat\`ere en 4 triangles de m\^eme aire si et seulement si l'une
+des diagonales de $ABCD$ passe par le milieu de l'autre diagonale : $P$ est 
+alors le milieu de la diagonale qui passe par le milieu de l'autre diagonale.
+\noindent
+\begin{minipage}[h]{7cm}
+\includegraphics[width=\textwidth]{partager4}
+\end{minipage}
+\begin{minipage}[h]{7cm}
+\includegraphics[width=\textwidth]{partager5}
+\end{minipage}
+\end{itemize}
 \subsection{Bissectrice d'un angle}\index{bissectrice}\index{exbissectrice}
 \'Etant donn\'e trois points {\tt A}, {\tt B} et {\tt C} les commandes :\\
 {\tt bissectrice(A,B,C)} trace la bissectrice int\'erieure de l'angle $A$ du  
@@ -1168,9 +1283,148 @@ On obtient :\\
 On tape :\\
 {\tt tangentei2c(point(0,0),1,point(-0.5,0),2)}\\
 On obtient :\\
-
 \includegraphics[width=\textwidth]{tangente0}
 
+\section{Une construction plus difficile}
+Soit un rectangle $ABCD$ tel que $AB=a$ et $AD=b$.\\
+On cherche les conditions que doivent v\'erifier $x$ et $y$ pour que l'on puisse
+construire un point $M$, de coordonn\`ees $(x,y)$, \`a l'int\'erieur du 
+rectangle v\'erifiant :\\
+$MD=3$, $MC=4$ et $MB=5$.\\ 
+\includegraphics[width=\textwidth]{rect345}\\
+Si l'affixe de $M$ est $m+i*n$, \'ecrire les relations qui lient $m,n,a,b$.\\
+Faire la construction avec {\tt Xcas}.\\
+
+On a donc :\\
+$0\leq m\leq 3$ et $0\leq n\leq 5$\\
+On pose :\\
+{\tt M:=point(m+i*n)}\\
+{\tt A:=point(0)}\\
+{\tt B:=point(a)}\\
+{\tt C:=point(a+i*b)}\\
+{\tt D:=point(i*b)}\\
+On tape :\\
+{\tt longueur2(M,D)-9}\\
+On obtient :\\
+{\tt (m)\verb|^|2+(-b+n)\verb|^|2-9}\\
+On tape :\\
+{\tt longueur2(M,C)-16}\\
+On obtient :\\
+{\tt (-a+m)\verb|^|2+(-b+n)\verb|^|2-16}\\
+On tape :\\
+{\tt longueur2(M,B)-25}\\
+On obtient :\\
+{\tt n\verb|^|2+(-a+m)\verb|^|2-25}\\
+Donc $m,n,a,b$ v\'erifient les \'equations :\\
+$[(m)^2+(-b+n)^2=9,(-a+m)^2+(-b+n)^2=16,n^2+(-a+m)^2=25]$\\
+Donc :\\
+$m^2+n^2=(m)^2+(-b+n)^2-((-a+m)^2+(-b+n)^2)+n^2+(-a+m)^2=9-16+25=18$\\
+Le point $M$ se trouve donc sur le cercle $c$ de centre $A$ et de rayon 
+$\sqrt{18}$.\
+Comme $0\leq m\leq 3$ et que le point d'affixe $3+3*i$ est sur le cercle $c$, 
+on peut dire que  $M$ est sur l'arc $\pi/4,\pi/2$ ($0\leq n\leq 5$ sera 
+v\'erifi\'e car $\sqrt{18}<5$).\\
+On tape :
+\begin{verbatim}
+A:=point(0);
+c:=cercle(0,3*sqrt(2),pi/4,pi/2);
+supposons(m=[2.7,0,3,0.1]);
+M:=point(m+i*sqrt(18-m^2));
+c1:=cercle(M,5);
+c2:=cercle(M,3);
+B:=inter_unique(droite(y=0),c1);
+D:=inter_unique(droite(x=0),c2);
+C:=inter_unique(droite(x=affixe(B)),droite(y=-i*affixe(D)));
+polygone(A,B,C,D);
+affixe(B),affixe(C);
+affichage(plotparam(u+sqrt(7+u^2)+i*(sqrt(18-u^2)+sqrt(9-u^2)),
+                    u=0..sqrt(9),tstep=0.1),1);
+trace(D);
+\end{verbatim}
+\includegraphics[width=\textwidth]{recta345}
+{\bf Remarque}\\
+Le probl\`eme est plus facile si on modifie les conditions.\\ 
+On cherche les conditions que doivent v\'erifier $x$ et $y$ pour que l'on puisse
+construire un point $M$, de coordonn\`ees $(x,y)$, \`a l'int\'erieur du 
+rectangle v\'erifiant :\\
+$MD=3$, $MC=5$ et $MB=4$.\\ 
+On a alors :\\
+$x^2+(y-b)^2=9$
+$(x-a)^2+(y-b)^2=25$
+$(x-a)^2+y^2=16$
+Donc :\\
+$x^2+(y-b)^2-(x-a)^2-(y-b)^2+(x-a)^2+y^2=x^2+y^2=0$
+Donc $x=0$, $y=0$ et $M$ se trouve en $A$.\\
+Le rectangle a alors comme dimension $a=4$ et $b=3$. 
+\section{Une autre construction avec un triangle \'equilat\'eral}
+Soit un triangle \'equilat\'eral $ABC$ tel que $AB=a$.\\
+On cherche la valeur de $a$ pour que l'on puisse
+construire un point $M$ \`a l'int\'erieur du triangle $ABC$ tel que
+$MA=4$, $MB=5$ et $MC=3$.\\ 
+Faire la construction de $ABC$ et calculer les aires des 4 triangles :\\
+$ABC$, $ABM$, $ACM$, $BCM$.
+\begin{center}\includegraphics[width=8cm]{equi345}\end{center}
+On pourra effectuer la rotation de centre $A$ et d'angle $\pi/3$ qui 
+transforme $M$ en $N$.\\
+
+{\bf La solution}\\
+Consid\'erons la rotation de centre $A$ et d'angle $\pi/3$ qui transforme $M$ 
+en $N$.\\
+Le triangle $AMN$ est isoc\`ele de sommet $A$ et on a :\\
+$\widehat{MAN}=\widehat{MAC}+\widehat{CAN}=\widehat{MAC}+\widehat{BAM}=\widehat{BAC}=\pi/3$\\
+Donc le triangle $AMN$ est \'equilat\'eral et $MN=4$.\\
+Le triangle $CNM$ a donc pour c\^ot\'es  : $CM=3$, $MN=4$, $CN=5$.\\
+Le triangle $CNM$  est donc rectangle en $M$. et l'angle $\widehat{CMA}=5\pi/6$.\\
+On a donc puisque $\cos(5\pi/6)=-\sqrt 3/2$, $MC=3$ et $AM=4$ :\\
+$a^2=AC^2=3^2+4^2-2*3*4*(-\sqrt 3/2)=25+12\sqrt 3$.\\
+{\bf La construction}\\
+On tape :
+\begin{verbatim}
+C:=point(3);
+A:=point(-4*sqrt(3)/2+4*i/2,affichage=quadrant2);
+B:=rotation(C,pi/3,A);
+triangle(A,B,C);
+M:=point(0);
+triangle_equilateral(A,M,N,affichage=1);
+segment(B,M);
+segment(C,M);
+\end{verbatim}
+On obtient :\\
+\includegraphics[width=\textwidth]{equi345c}
+On v\'erifie, on tape :\\
+{\tt normal(longueur(A,M),longueur(B,M))}\\
+On obtient :\\
+{\tt 4,5}\\
+{\bf Calcul des aires \`a l'aide d'un puzzle}\\
+On consid\`ere 2 exemplaires du triangle \'equilat\'eral $ABC$ d\'efini 
+ci-dessus. On d\'ecoupe un des exemplaires en 3 morceaux qui sont les triangles
+$ABM$, $BCM$ et  $AMC$. On obtient donc un puzzle avec les 4 pi\`eces :\\ 
+\includegraphics[width=\textwidth]{equi345p}\\
+On r\'ealise alors avec ces 4 pi\`eces l'octogone :\\
+\includegraphics[width=\textwidth]{equi345pp}\\
+On a trac\'e les segments joignant $M$ au sommet de l'octogone.\\
+Cet octogone est compse de 3 triangles rectangles de c\^ot\'es 3,4,5 et de 
+3 triangles \`equilat\'eraux de c\^ot\'es respectifs 3,4 et 5.
+On a donc si $S$ est l'aire de $ABC$ :\\
+$2S=a^2\sqrt 3/2=3*3*2+(9+16+25)\sqrt 3/4=18+25\sqrt 3/2$\\
+Donc $S=9+25\sqrt 3/4$ et on retrouve que $a^2=25+12\sqrt 3$\\
+Soient $s_1,s_2,s_3,s_4$ les aires des triangles de couleurs 1 (rouge),2(vert),
+3(jaune),4(bleu).\\
+On va donc r\'esoudre le syst\`eme lin\'eaire :\\
+$[s_1-s_2-s_3-s_4=0,s_2+s_3=6+25\sqrt 3/4,s_2+s_4=9\sqrt 3/4+6,s_3+s_4=4\sqrt 3+6]$\\
+On tape :\\
+{\tt linsolve([s1-s2-s3-s4=0,s2+s3=6+25*sqrt(3)/4,\\s2+s4=9*sqrt(3)/4+6,s3+s4=4*sqrt(3)+6],[s1,s2,s3,s4])}\\
+On obtient :\\
+{\tt [(sqrt(3)*25+36)/4,(sqrt(3)*9+12)/4,sqrt(3)*4+3,3]}\\
+On a tap\'e pour obtenir l'octogone :
+\begin{verbatim}
+triangle(A,B,C,affichage=1+rempli);
+triangle(A,C,N,affichage=2+rempli);
+P:=rotation(C,pi/3,M):;
+Q:=rotation(B,pi/3,M):;
+triangle(B,C,P,affichage=4+rempli))
+triangle(B,A,Q,affichage=3+rempli);
+\end{verbatim}
 \section{Les transformations}
 Les transformations ci-dessous peuvent toujours \^etre consid\'er\'ees, soit 
 comme des fonctions (les arguments sont les param\`etres servant \`a d\'efinir 
@@ -1263,7 +1517,8 @@ ${\tt \overline{CA1}*\overline{CA}=2}$.\\
 {\tt inversion(C,k,M)} est donc le point d\'efini par:\\
 {\tt point(C+k*conj(inv(M-C)))}\\
 On a aussi {\tt inver:=inversion(C,k)} est l'inversion de centre  {\tt C}, 
-de rapport $k$.\\
+de rapport $k$.
+
 \section{Les lieux g\'eom\'etriques}\index{lieu}
 L'instruction {\tt lieu} permet de tracer le lieu d'un point {\tt M}, lorsque 
 ce point {\tt M} est fonction d'un point {\tt P} pouvant se d\'eplacer sur un 
@@ -1272,10 +1527,11 @@ objet g\'eom\'etrique {\tt G} et si on a d\'efini {\tt P} par
  {\bf Remarque} :\\
 Il faut que les param\`etres de {\tt lieu} soient des noms de variables.\\
 Donc pour obtenir le lieu d'un point {\tt M}, il faut avoir d\'efini 
-ce point par par une affectation \`a un nom de variable, par exemple 
+ce point par une affectation \`a un nom de variable, par exemple 
 {\tt M:=...}.\\
 On \'ecrit alors :\\
-  {\tt lieu(M,P)}\\
+  {\tt lieu(M,P)}
+\subsection{Des exemples de lieux}
 {\bf Exemple 1} :\\
 Lieu du centre de gravit\'e du triangle $ABC$ quand $A$ se d\'eplace
 sur une parall\`ele \`a $BC$.\\ 
@@ -1404,6 +1660,230 @@ orthocentre du triangle isoc\`ele $PBC$ ($P$ sur la m\'ediatrice de
 $BC$ et sur la droite $D$). On peut \`a la main avoir assez facilement 
 l'\'equation de cette parabole ...mais trouver ce lieu en g\'eom\'etrie pure 
 est plus difficle!
+\subsection{D'autres exemples de lieux}
+{\bf Exemple 1} :\\
+Lieu du centre de gravit\'e du triangle $ABC$ quand $A$ se d\'eplace
+sur une parall\`ele \`a $BC$.\\ 
+Ici on cherche le lieu du centre de gravit\'e du triangle $PBC$ lorsque $P$
+ se d\'eplace sur la parall\`ele \`a $BC$  passant par $A$.\\
+On clique pour obtenir trois points  {\tt A, B, C} et on tape :
+\begin{verbatim}
+D:=parallele(A,droite(B,C)); 
+P:=element(D);
+G:=isobarycentre(P,B,C);  
+lieu(G,P);
+\end{verbatim}
+{\tt lieu(G,P)} trace le lieu du point {\tt G} en fonction de {\tt P}.\\
+Si l'on veut pouvoir anim\'ee la figure on tape la liste des instructions 
+qui se trouve dans le fichier {\tt lieu1}, on clique pour obtenir
+ trois points  {\tt A, B, C} puis, on fait 
+{\tt Charger session} du 
+menu {\tt Fich} de {\tt Xcas} et on selectionne {\tt lieu1} du r\'ep\'ertoire 
+{\tt examples/geo} pour ex\'ecuter ce fichier) :\\
+Ou on clique pour cr\'eer trois points {\tt A, B, C} et on tape :
+\begin{verbatim}
+A:=point([-3,3/2,'affichage'=0]);
+B:=point([-1,-3/2,'affichage'=0]);
+C:=point([3,9/4,'affichage'=0]);
+D:=parallele(A,droite(B,C)); 
+P:=element(D);
+G:=isobarycentre(P,B,C);  
+lieu(G,P);
+\end{verbatim}
+ainsi lorsqu'on d\'eplace la barre verticale indiquant la valeur de {\tt t},
+on voit se d\'eplacer les deux points {\tt P} et {\tt G} simultan\'ement.\\
+{\tt lieu(G,P);} renvoie droite(y=((15*x)/16+17/16))
+{\bf Exemples 2 et 3} :\\
+Soient deux points  {\tt A} et {\tt  B} et {\tt C1} le cercle 
+de diam\`etre {\tt A B}. Soit {\tt O} le centre de ce cercle et {\tt C} un point variable de ce cercle.\\
+Soit {\tt N} l'intersection de la tangente en {\tt C}
+\`a {\tt C1} avec la parall\`ele \`a {\tt AC} passant par {\tt O}.\\
+Trouver le lieu de {\tt N} quand {\tt C} varie.\\
+
+La liste des instructions pour trouver ce lieu se trouve dans le 
+fichier {\tt lieu2}, on clique pour obtenir deux points  {\tt A, B} puis, on 
+fait {\tt Charger session} du 
+menu {\tt Fich} de {\tt Xcas} et on selectionne {\tt lieu2} du r\'ep\'ertoire 
+{\tt examples/geo} pour ex\'ecuter ce fichier.\\
+Ou on clique pour cr\'eer deux points {\tt A, B} et on tape :
+\begin{verbatim}
+C1:=cercle(A,B);
+O:=milieu(A,B);
+C:=element(C1);
+T:=tangent(C1,C);
+D2:=parallele(O,droite(A,C));
+M:=inter(T,D2);
+N:=M[0];
+lieu(N,C);
+\end{verbatim}
+{\bf Attention} {\tt M} est une liste ayant un seul \'el\'ement et 
+on ne peut pas \'ecrire {\tt lieu(M[0],C)} car {\tt M[0]} n'est pas un nom de 
+variable.\\
+On peut aussi \'ecrire des instructions  sans utiliser la fonction 
+{\tt tangent} et en rajoutant {\tt t:=element(0..2*pi);} (c'est le fichier 
+{\tt lieu3}) :\\
+On clique pour cr\'eer deux points {\tt A, B}.
+\begin{verbatim}
+C1:=cercle(A,B);
+O:=milieu(A,B);
+C:=element(C1);
+D1:=perpendiculaire(C,droite(O,C));
+D2:=parallele(O,droite(A,C));
+M:=inter(D1,D2);
+N:=M[0];
+lieu(N,C);
+\end{verbatim}
+{\tt lieu(N,C)} renvoie {\tt droite(y=((2*x)/3-5/6))}\\
+Les triangles $NOC$ et $NOB$ sont \'egaux car leurs angles $\widehat{O}$ sont
+\'egaux \`a l'angle $\widehat{CAB}$  et \`a l'angle $\widehat{OCA}$. 
+Donc $NB$ est perpendiculaire \`a $AB$.\\
+La r\'eciproque est \'evidente car si {\tt N} se trouve sur la perpendiculaire
+ \`a {\tt AB} en {\tt B}, on m\'ene par {\tt N} l'autre tangente au cercle pour
+ d\'efinir le point {\tt C}.\\
+ Les triangles rectangles {\tt NOC} et {\tt NOB} sont
+ \'egaux et donc {\tt ON} est parall\`ele \`a {\tt AC}.\\ 
+{\bf Exemple 4} :\\
+Une droite variable {\tt D1} coupe les cot\'es {\tt AB,AC,BC} du triangle 
+{\tt ABC} en {\tt D,E,M}.\\
+Les cercles circonscrits aux triangles {\tt BDM} et {\tt ECM} se coupent en 
+{\tt P} et {\tt M}. Trouver le lieu de {\tt P} quand {\tt D1} varie.\\
+On peut faire \'ex\'ecuter le fichier {\tt lieu4} (on clique pour obtenir trois points  {\tt A, B, C} puis on fait {\tt Charger session} du 
+menu {\tt Fich} de {\tt Xcas} et on selectionne {\tt lieu4} du r\'ep\'ertoire 
+{\tt examples/geo} pour ex\'ecuter ce fichier) ou,\\
+on clique pour obtenir trois points  {\tt A, B, C} et on tape :
+\begin{verbatim} 
+triangle(A,B,C);
+u:=element(-4..4);
+M:=element(droite(B,C),u);
+D:=element(droite(A,B));
+D1:=droite(D,M);
+E:=(inter(droite(A,C),D1))[0];
+C1:=circonscrit(B,D,M);
+C2:=circonscrit(E,C,M);
+L:=inter(C1,C2);
+if (affixe(L[0])==affixe(M)) {Q:=L[1];} else {Q:=L[0];};
+P:=Q;
+lieu(P,M);
+\end{verbatim}
+On remarquera que l'on est oblig\'e d'utiliser un point interm\'ediaire {\tt Q}
+pour pouvoir d\'efinir {\tt P} par une affectation.\\
+Le lieu de $P$ est le cercle circonscrit au triangle $ABC$ car l'angle
+l'angle $\widehat{P}$ du triangle $PBC$ est \'egal \`a l'angle $\widehat{A}$
+du triangle $ABC$ en \'ecrivant des \'egalit\'es d'angles inscrits.\\
+{\bf Exemple 5} :\\
+Lieu de l'orthocentre du triangle $ABC$ quand $A$ se d\'eplace
+sur une parall\`ele \`a $BC$.\\ 
+Ici on cherche le lieu de l'orthocentre du triangle $MBC$ lorsque $M$
+ se d\'eplace sur la parall\`ele \`a $BC$  passant par $A$.\\
+On peut faire \'ex\'ecuter le fichier {\tt lieu5} (on clique pour obtenir
+ trois points  {\tt A, B, C} puis, on fait {\tt Charger session} du 
+menu {\tt Fich} de {\tt Xcas} et on selectionner {\tt lieu5} du r\'ep\'ertoire 
+{\tt examples/geo} pour ex\'ecuter ce fichier) ou,\\
+on clique pour obtenir trois points  {\tt A,B,C} et on tape :
+\begin{verbatim}
+D:=parallele(A,droite(B,C));
+M:=element(D);
+H:=(inter(perpendiculaire(M,droite(C,B)),
+          perpendiculaire(C,droite(M,B))))[0] ;
+lieu(H,M);
+\end{verbatim}
+Le lieu est une parabole passant par $B$ et $C$ et de sommet $S$
+orthocentre du triangle isoc\`ele $PBC$ ($P$ sur la m\'ediatrice de 
+$BC$ et sur la droite $D$). On peut \`a la main avoir assez facilement 
+l'\'equation de cette parabole ...mais trouver ce lieu en g\'eom\'etrie pure 
+est plus difficle!
+\subsection{Des exercices de lieux}
+{\bf Exercice1}\\
+Soient 2 points fixes $A$ et $B$.\\
+On consid\`ere l'ensemble $\Gamma$ des cercles $c$ passant par $A$ et $B$.\\
+Pour $c \in \Gamma$, lieu des points $M$ de $c$ qui ont une tangente en $M$
+perpendiculaire \`a $AB$.\\
+On tape dans un niveau de g\'eom\'etrie 2d (version 1) :
+\begin{verbatim}
+A:=point(-1);
+B:=point(1);
+P:=element(droite(x=0));
+c:=cercle(P,A-P);
+M:=translation(longueur(A,P),P);
+N:=translation(-longueur(A,P),P);
+lieu(M,P);
+lieu(N,P);
+\end{verbatim}
+ou on tape  dans un niveau de g\'eom\'etrie 2d (version 2) :
+\begin{verbatim}
+A:=point(-1);
+B:=point(1);
+assume(u=[0,-5,5,0.1]));
+P:=element(droite(x=0),u);
+c:=cercle(P,sqrt(u^2+1));
+L:=inter(droite(y=u),c);
+M:=L[0];
+N:=L[1];
+lieu(M,u);
+lieu(N,u); 
+\end{verbatim}
+Pour la version 1 (resp pour la version 2) {\tt lieu(M,P);} (resp 
+{\tt lieu(M,u);}) renvoie :\\
+{\tt plotparam((i)*` t`+sqrt(1+(-` t`)\verb|^|2),` t`=-10.0..10.0)}\\
+et pour la version 1 (resp pour la version 2) {\tt lieu(N,P);} (resp 
+{\tt lieu(N,u);}) renvoie :\\
+{\tt plotparam((i)*` t`-sqrt(1+(-` t`)\verb|^|2),` t`=-10.0..10.0)}\\
+et le dessin correspondant :\\
+\includegraphics[width=\textwidth]{lieu0}\\
+
+On peut aussi taper en utilisant directement {\tt plotparam} :
+\begin{verbatim}
+supposons(u=[0,-5,5,0.1])
+P:=point(i*u)
+c:=cercle(P,sqrt(u^2+1));
+L:=inter(droite(y=u),c):;
+M:=L[0];N:=L[1];
+plotparam(affixe(M),u);
+plotparam(affixe(N),u);
+\end{verbatim}
+On obtient le dessin ci-dessus.\\
+%\includegraphics[width=\textwidth]{lieu2}\\
+On tape :\\
+{\tt affixe(M)}\\
+On obtient :\\
+{\tt (i)*u+sqrt(u\verb|^|2+1)}\\
+On tape :\\
+{\tt affixe(N)}\\
+On obtient :\\
+{\tt (i)*u-sqrt(u\verb|^|2+1)}\\
+{\bf Exercice2}\\
+Soient un cercle $c$ de centre $O$ et 2 points fixes $A$ et $B$ situ\'es sur un 
+diam\`etre de $c$.\\
+Soit un diam\`etre variable $PQ$ de $c$.\\
+Lieu de $M$ intersection de $AP$ et $BQ$.\\
+On tape :
+\begin{verbatim}
+c:=cercle(0,1)
+A:=point(-4);
+B:=point(-2);
+u:=element(-pi..pi);
+P:=element(c,u);
+Q:=-P;
+M:=inter_unique(droite(A,P),droite(B,Q));
+lieu(M,P)
+\end{verbatim}
+On obtient :\\
+{\tt cercle(point(-8/3,0),1/3)}\\
+On tape :\\
+{\tt droite(A,0);segment(P,A);segment(M,Q)}\\
+{\tt segment(0,P);segment(M,point(-8/3))}\\
+On obtient le cercle homoth\'etique de $c$ dans l'homoth\'etie de centre $A$ et 
+de rapport ici 1/3.\\
+\includegraphics[width=\textwidth]{lieu1}\\
+On a en effet en appliquant le th\'eor\'eme de M\'en\'ela\"us au triangle $OAP$ on a :\\
+$M,B,Q$ align\'es est \'equivalent \`a :
+$\displaystyle \frac{\overline{MA}}{\overline{MP}}\cdot \frac{\overline{QP}}{\overline{QO}}\cdot \frac{\overline{BO}}{\overline{BA}}=1$\\
+On a $\displaystyle \frac{\overline{QP}}{\overline{QO}}=2$.
+Si $\displaystyle \frac{\overline{BA}}{\overline{BO}}=k$ alors 
+$\displaystyle \frac{\overline{MA}}{\overline{MP}}=\frac{k}{2}$ donc \\
+$\displaystyle \frac{\overline{AP}}{\overline{AM}}=1+\frac{\overline{MP}}{\overline{AM}}=1-\frac{2}{k}=\frac{k-2}{k}$\\
+Ce qui prouve que $M$ se d\'eduit de $P$ dans l'homoth\'etie de centre $A$ et de rapport : $\displaystyle \frac{k}{k-2}$\\
+Dans l'exemple on a $k=-1$ donc le rapport de l'homoth\'etie est bien : $\displaystyle \frac{1}{3}$
 \section{Figures polygonales}
 \subsection{Le triangle}\index{triangle}\index{triangle\_isocele}\index{triangle\_equilateral}\index{triangle\_rectangle}
 \'Etant donn\'e trois points {\tt A}, {\tt B} et {\tt C} les commandes 
@@ -1485,6 +1965,7 @@ avec le cercle de diam\`etre $AB$,\\
 {\tt triangle(E2,A,B)} trace le triangle $ABE2$\\
 Ces deux triangles r\'epondent \`a la question.
 \end{itemize}
+
 \subsection{Les quadrilat\`eres}\index{carre}\index{losange}\index{quadrilatere}\index{rectangle}
 Les commandes suivantes permettent de tracer des quadrilat\`eres :
 \begin{itemize}
@@ -7277,7 +7758,6 @@ On obtient :\\
 
 Voici des arbres :
 \begin{verbatim}
-//Voici des arbres....arbre1(0,2*i)
 arbre1(x,y):={
  local L;
  L:=NULL;
@@ -7287,7 +7767,12 @@ arbre1(x,y):={
  L:=L,arbre1((x+y)/2,(x+y)/2+(y-x)*0.5*exp(-i*0.5));
 return L;
 }:;
-//et des arbres moins deplumes arbre2(0,2*i)
+\end{verbatim}
+On tape : {\tt arbre1(0,2*i)}\\
+On obtient :\\
+\includegraphics[width=\textwidth]{arbre1}\\
+et des arbres moins d\'eplum\'es :
+\begin{verbatim}
 arbre2(x,y):={
  local L;
  L:=NULL;
@@ -7299,7 +7784,12 @@ arbre2(x,y):={
  L:=L,arbre2((x+y)/2,(x+y)/2+(y-x)*0.5*exp(-i));
 return L;
 }:;
-//un epineux  arbre3(0,2*i)
+\end{verbatim}
+On tape : {\tt arbre2(0,2*i)}\\
+On obtient :\\
+\includegraphics[width=\textwidth]{arbre2}\\
+et un epineux :
+\begin{verbatim}
 arbre3(x,y):={
  local L;
  L:=NULL;
@@ -7312,18 +7802,10 @@ arbre3(x,y):={
 return L;
 }:;
 \end{verbatim}
-On tape : {\tt arbre1(0,2*i)}\\
-On obtient :\\
-\includegraphics[width=\textwidth]{arbre1}\\
-
-On tape : {\tt arbre2(0,2*i)}\\
-On obtient :\\
-\includegraphics[width=\textwidth]{arbre2}\\
-
 On tape : {\tt arbre3(0,2*i)}\\
 On obtient :\\
 \includegraphics[width=\textwidth]{arbre3}\\
-
+\ \\
 Voici des foug\`eres :
 \begin{verbatim}
 //une fougere par ex fougere(-2*i,2*i)

@@ -33,7 +33,8 @@ namespace giac {
   vecteur find_singularities(const gen & e,const identificateur & x,int cplxmode,GIAC_CONTEXT);
   vecteur protect_find_singularities(const gen & e,const identificateur & x,int cplxmode,GIAC_CONTEXT);
   // isolate_mode & 1 is complex_mode, isolate_mode & 2 is 0 for principal sol
-  vecteur solve(const gen & e,const identificateur & x,int isolate_mode,GIAC_CONTEXT);
+  vecteur protect_solve(const gen & e,const identificateur & x,int isolate_mode,GIAC_CONTEXT);
+ vecteur solve(const gen & e,const identificateur & x,int isolate_mode,GIAC_CONTEXT);
   vecteur solve(const gen & e,const gen & x,int isolate_mode,GIAC_CONTEXT);
   vecteur solve(const vecteur & v,bool complex_mode,GIAC_CONTEXT); // v is a 1-d dense polynomial
   void solve(const gen & e,const identificateur & x,vecteur &v,int isolate_mode,GIAC_CONTEXT);

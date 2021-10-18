@@ -108,7 +108,6 @@ La version \`a jour se r\'ecup\`ere sur ;\\
 %$\talloblong \ \talloblong$ et les ensembles avec $\llbracket \ \rrbracket$.
 %\index{$\Delta$\footnote{{\bf Selon le style on a une} commande {\bf ou une} {\sl option} {\bf ou une} {\tt valeur}}}
 
-
 \section{Style de l'index et notations}
 \subsection{Notes concernant l'index de ce manuel}
 \index{$\Re$@Note\_index\footnote{{\bf Dans l'index, selon le style on a une} 
@@ -654,20 +653,26 @@ revenir \`a l'\'etat pr\'ec\'edent le regroupement).
 \begin{itemize}
 \item
 {\tt Configuration du CAS} permet de configurer le calcul formel (idem que le 
-bouton "ligne d'\'etat"  situ\'e entre {\tt Save} et {\tt Stop}),
+bouton "ligne d'\'etat"  situ\'e entre {\tt Save} et {\tt Stop}).
+C'est dans la configuration g\'en\'erale que l'on peut d\'ecider de faire 
+certains calculs du CAS en pas \`a pas : pour cela il faut avoir cocher 
+{\tt Pas \`a pas}.
+
 \item
 {\tt Configuration graphique} permet de configurer le graphique par d\'efaut~: 
 vous pouvez aussi avoir une configuration sp\'ecifique pour chaque graphique 
 avec le bouton {\tt cfg} du graphique, mais cela ne changera pas la 
-configuration par d\'efaut,
+configuration par d\'efaut.
 \item
 {\tt Configuration generale} permet de d\'eterminer la taille des caract\`eres,
 le navigateur, si on veut une aide automatique ou pas , le format de 
 l'impression et de cocher ou pas {\tt Paysage} (si cette case est coch\'ee 
 l'impression se fera selon la largeur de la feuille, si elle n'est pas coch\'ee
 l'impression se fera selon la hauteur de la feuille), le nombre de lignes et
-de colonnes du tableur, et aussi le nombre d'appels r\'ecursifs autoris\'es, 
-
+de colonnes du tableur, et aussi le nombre d'appels r\'ecursifs autoris\'es. 
+C'est dans la configuration g\'en\'erale que l'on peut d\'ecider de faire 
+certains calculs du CAS en pas \`a pas : pour cela il faut avoir cocher 
+{\tt Pas \`a pas}.
 \item
 {\tt Mode (syntax)} permet de travailler avec une syntaxe  {\tt Xcas} (qui est 
 de type {\tt C}), soit  avec une syntaxe Maple ou TI ou MuPad ou Tortue,
@@ -7392,7 +7397,50 @@ Ou on tape :
 \begin{center}{\tt affixe(barycentre([[1+i,2],[1-i,1]]))}\end{center}
 On obtient :
 \begin{center}{\tt (3+i)/3}\end{center}
-
+\section{Les nombres alg\'ebriques}
+\subsection{D\'efinition}
+Un nombre alg\'ebrique r\'eel est un nombre r\'eel qui est la racine d'un 
+polyn\^ome \`a coefficients entiers.\\
+Un nombre alg\'ebrique complexe est un nombre complexe qui est la racine d'un 
+polyn\^ome \`a coefficients des entiers de Gauss.\\
+\subsection{Polyn\^ome minimal d'un nombre alg\'ebrique : {\tt pmin}}\index{pmin}
+\noindent {\tt pmin} a comme argument {\tt a} un nombre alg\'ebrique r\'eel 
+(resp complexe).\\
+{\tt pmin} renvoie le polyn\^ome de plus petit degr\'e ayant comme coefficients 
+des entiers qui admet {\tt a} comme racine.\\
+On tape :
+\begin{center}{\tt pmin(sqrt(2)+sqrt(3))}\end{center}
+On obtient :
+\begin{center}{\tt poly1[1,0,-10,0,1]}\end{center}
+On tape :
+\begin{center}{\tt pmin(sqrt(2)+sqrt(3),x)}\end{center}
+On obtient :
+\begin{center}{\tt x\verb|^|4-10*x\verb|^|2+1}\end{center}
+En effet $(\sqrt 2+\sqrt 3)^2=5+2\sqrt 6$ et donc :\\
+$((\sqrt 2+\sqrt 3)^2-5)^2=24$ donc \\
+$(\sqrt 2+\sqrt 3)^4-10(\sqrt 2+\sqrt 3)^2+1=0$
+On tape :
+\begin{center}{\tt pmin(sqrt(2)+i*sqrt(3))}\end{center}
+On obtient :
+\begin{center}{\tt poly1[1,0,2,0,25]}\end{center}
+On tape :
+\begin{center}{\tt pmin(sqrt(2)+i*sqrt(3),x)}\end{center}
+On obtient :
+\begin{center}{\tt x\verb|^|4-4*i*x\verb|^|2-100}\end{center}
+En effet $(\sqrt 2+i\sqrt 3)^2=-1+2i\sqrt 6$ et donc :\\
+$((\sqrt 2+i\sqrt 3)^2+1)^2=-24$  donc \\
+$(\sqrt 2+i\sqrt 3)^4+2(\sqrt 2+i\sqrt 3)^2)+25=0$
+On tape :
+\begin{center}{\tt pmin(sqrt(2)+2*i)}\end{center}
+On obtient :
+\begin{center}{\tt poly1[1,0,4,0,36] }\end{center}
+On tape :
+\begin{center}{\tt pmin(sqrt(2)+2*i,x)}\end{center}
+On obtient :
+\begin{center}{\tt x\verb|^|4+4*x\verb|^|2+36}\end{center}
+En effet $(\sqrt 2+2*i)^2=(4*i)*sqrt(2)-2$ et donc :\\
+$((\sqrt 2+2*i)^2+2)^2=-32$  donc \\
+$(\sqrt 2+2*i)^4+4(\sqrt 2+2*i)^2+36+0$
 \section{Les expressions alg\'ebriques}
 \subsection{Qu'est-ce qune expression}
 Il ne faut pas confondre expression et fonction.\\
@@ -7766,12 +7814,30 @@ On obtient :
 \begin{center}{\tt [0]}\end{center} 
 
 \subsection{Factorisation : {\tt factor factoriser}}\index{factor|textbf}\index{factoriser|textbf}\label{sec:factore}
-\noindent{\tt =>*} est la version postfix\'ee de {\tt factor}.\\
+\noindent
 {\tt factor} ou {\tt factoriser} a comme param\`etre une expression.\\
 {\tt factor} ou {\tt factoriser} factorise cette  expression sur le corps de 
 ses coefficients si {\tt Complex} et {\tt Sqrt} sont d\'ecoch\'es dans 
 l'\'ecran de configuration du {\tt CAS}.\\
-{\bf Remarque} On peut aussi utiliser {\tt convert}  avec l'option {\tt '*'}
+On tape :
+\begin{center}{\tt factor(x\verb|^|2-x-2)}\end{center}
+On obtient :
+\begin{center}{\tt (x-2)*(x+1)}\end{center} 
+On tape :
+\begin{center}{\tt factor(x\verb|^|2-2)}\end{center}
+On obtient si {\tt Sqrt} est d\'ecoch\'e dans la configjuration du CAS :
+\begin{center}{\tt factor(x\verb|^|2-2)}\end{center} 
+On obtient si {\tt Sqrt} est coch\'e dans la configjuration du CAS :
+\begin{center}{\tt (x-(sqrt(2)))*(x+sqrt(2))}\end{center} 
+{\tt factor} ou {\tt factoriser} avec un 2i\`eme argument est fait pour factoriser sur une extension algebrique, d\'etermin\'ee par ce 2i\`eme argument. \\
+On tape :
+\begin{center}{\tt factor((x\verb|^|2-2)*(x\verb|^|2-3),sqrt(3))}\end{center}
+On obtient si {\tt Sqrt} est d\'ecoch\'e dans la configjuration du CAS :
+\begin{center}{\tt (x\verb|^|2-2)*(x-sqrt(3))*(x+sqrt(3))}\end{center} 
+
+{\bf Remarque}
+{\tt =>*} est la version postfix\'ee de {\tt factor}.\\ 
+On peut aussi utiliser {\tt convert}  avec l'option {\tt '*'}
 ou sa version infix\'ee{\tt =>} avec l'option {\tt *} :
 On tape :
 \begin{center}{\tt x\verb|^|2-x-2=>*}\end{center}
@@ -7779,9 +7845,16 @@ Ou on tape :
 \begin{center}{\tt convert(x\verb|^|2-x-2,'*')}\end{center}
 On obtient :
 \begin{center}{\tt (x-2)*(x+1)}\end{center} 
+On tape :
+\begin{center}{\tt x\verb|^|2-x-2=>*}\end{center}
+Ou on tape :
+\begin{center}{\tt convert(x\verb|^|2-x-2,'*')}\end{center}
+On obtient :
+\begin{center}{\tt (x-2)*(x+1)}\end{center} 
+
 {\bf Exemples} :
 \begin{enumerate}
-\item Factoriser dans $\mathbb Z$ (on doit d\'ecoche {\tt Complex} dans 
+\item Factoriser dans $\mathbb Z$ (on doit d\'ecoch\'e {\tt Complex} dans 
 l'\'ecran de configuration du {\tt CAS}) :
 $$x^4-1$$
 On tape :
@@ -8097,6 +8170,25 @@ Ou on tape :
 On obtient
 \begin{center}{\tt integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t)}\end{center} 
 \end{itemize}
+\subsection{Pour substituer plus simplement une valeur \`a une variable dans une expression : {\tt ()}}\index{()}
+Lorsque l'on veut donner dans une expression de plusieurs variables (par 
+exemple {\tt Expr:=x+2y+3z}) une valeur \`a certaines variables (par exemple 
+{\tt x,y}) on peut le faire de diff\'erentes fa\c{c}ons.
+On tape par exemple {\tt xpr:=x+2y+3z}, puis :
+On utilise {\tt subst}, on tape :
+\begin{itemize}
+\item {\tt subst(subst(Expr,x=1),y=2)} 
+\item {\tt subst(Expr,[x=1,y=2])} 
+\item {\tt subst(Expr,[x,y],[1,2])} 
+\end{itemize}
+On n'utilise pas {\tt subst} mais une \'ecriture simplifi\'ee proche d'une
+\'ecriture fonctionnelle :
+\begin{itemize}
+\item {\tt Expr(x=1,y=2)} 
+\item {\tt Expr([x,y],[1,2])} 
+\end{itemize}
+On obtient dans tous les cas :
+{\tt 5+3*z}
 
 \subsection{Substituer une valeur \`a une variable (compatibilit\'e Maple et Mupad) : {\tt subs}}\index{subs}\label{sec:subs}
 \noindent En {\tt Maple} et en {\tt Mupad} la commande synonyme de {\tt subst} 
@@ -9181,9 +9273,15 @@ On tape :
 \begin{center}{\tt  (x*y \verb|^|2*z\verb|^|3+x*y*z,z)'}\end{center}
 ou on tape :
 \begin{center}{\tt  diff(x*y \verb|^|2*z\verb|^|3+x*y*z,z)}\end{center}
-
 On obtient :
 \begin{center}{\tt x*y\verb|^|2*3*z\verb|^|2+x*y}\end{center}
+Si on a cocher {\ Pas \`a pas} dans la configuration g\'en\'erale on a en plus, en vert,
+le d\'etail du calcul :
+\begin{verbatim}
+Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=x*y^2*z^3,x*y*z
+Derivative of a power: (z^3)'=3*z'*(z)^(3-1)
+\end{verbatim}
 \item Soit à calculer les 3 deriv\'ees partielles premi\`eres de $x*y^2*z^3+x*y*z$.\\
 On tape :
 \begin{center}{\tt  (x*y\verb|^|2*z\verb|^|3+x*y,[x,y,z])'}\end{center}
@@ -9191,6 +9289,16 @@ Ou on tape :
 \begin{center}{\tt  diff(x*y\verb|^|2*z\verb|^|3+x*y,[x,y,z])}\end{center}
 On obtient :
 \begin{center}{\tt [y\verb|^|2*z\verb|^|3+y*z, x*2*y*z\verb|^|3+x*z, x*y\verb|^|2*3*z\verb|^|2+x*y]}\end{center}
+Si on a cocher {\ Pas \`a pas} dans la configuration g\'en\'erale on a en plus, en vert,
+le d\'etail du calcul :
+\begin{verbatim}
+Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=x*y^2*z^3,x*y
+Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=x*y^2*z^3,x*y
+Derivative of a power: (y^2)'=2*y'*(y)^(2-1)
+Derivative of a power: (z^3)'=3*z'*(z)^(3-1)
+\end{verbatim}
 \item Soit à calculer :
 $$\frac {\partial^3 (x.y^2.z^3+x.y.z)}{\partial y\partial^2 z}$$
 On tape :
@@ -9199,6 +9307,17 @@ Ou on tape :
 \begin{center}{\tt  diff(x*y \verb|^|2*z\verb|^|3+x*y*z,y,z\$2)}\end{center}
 On obtient :
 \begin{center}{\tt 12*x*y*z}\end{center}
+Si on a cocher {\tt Pas \`a pas} dans la configuration g\'en\'erale on a en 
+plus, en vert, le d\'etail du calcul :
+\begin{verbatim}
+Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=x*y^2*z^3,x*y*z
+Derivative of a power: (y^2)'=2*y'*(y)^(2-1)
+Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=2*x*y*z^3,x*z
+Derivative of a power: (z^3)'=3*z'*(z)^(3-1)
+Derivative of a power: (z^2)'=2*z'*(z)^(2-1)
+\end{verbatim}
 \end{itemize}
 
 \subsubsection{Deriv\'ee et deriv\'ee partielle d'ordre $n$ : {\tt diff derive deriver}}\index{\$}
@@ -9341,8 +9460,17 @@ Soit $$f(x)=\frac {x}{x^2-1}+\ln(\frac {x+1}{x-1})$$
 Calculer une primitive  de f.\\
 On tape :
 \begin{center}{\tt int(x/(x\verb|^|2-1)+ln((x+1)/(x-1)))}\end{center}
-On trouve : 
+On obtient : 
 \begin{center}{\tt x*log((x+1)/(x-1))+log(x\verb|^|2-1)+1/2*log(2*x\verb|^|2/2-1)}\end{center}
+Si on a cocher {\tt Pas \`a pas} dans la configuration g\'en\'erale on a en 
+plus, en vert, le d\'etail du calcul :
+\begin{verbatim}
+Integration of x/(x^2-1): f(u)*u' where f=x->1/(x*2-1) and u=(x^2)/2
+Integrate rational fraction 1/(2*x-1)
+Integration of ln((x+1)/(x-1)) by part of u*v' where u=1 and v=ln((x+1)/(x-1))'
+Integrate rational fraction with denominator x^2-1=0
+roots are deduced from nth-roots of unity
+\end{verbatim}
 Ou bien on d\'efinit la fonction {\tt f} en tapant :\\
 \begin{center}{\tt f(x):=x/(x\verb|^|2-1)+ln((x+1)/(x-1))}\end{center}
 puis on tape :
@@ -9356,15 +9484,31 @@ Calculer :
 $$\int \frac {2}{x^6+2 \cdot x^4+x^2} \ dx $$
 On tape :
 \begin{center}{\tt int(2/(x\verb|^|6+2*x\verb|^|4+x\verb|^|2))}\end{center}
-On trouve :
+On  obtient :
 \begin{center}{\tt 2*((3*x\verb|^|2+2)/(-(2*(x\verb|^|3+x)))+-3/2*atan(x))}\end{center}
+Si on a cocher {\tt Pas \`a pas} dans la configuration g\'en\'erale on a en 
+plus, en vert, le d\'etail du calcul :
+\begin{verbatim}
+Integrate rational fraction 1/(x^3+x)^2
+Partial fraction 1/(x^3+x)^2 -> Hermite reduction -> 
+         integrate squarefree part -(3*x)/(2*x^3+2*x)
+\end{verbatim}
 {\bf Exercice 3}\\
 Calculer :
 $$\int \frac {1}{\sin(x)+\sin(2 \cdot x )} \ dx $$
 On tape :
 \begin{center}{\tt integrate(1/(sin(x)+sin(2*x )))}\end{center}
-On trouve :
+On  obtient :
  \begin{center}{\tt (1/-3*log((tan(x/2))\verb|^|2-3)+1/12*log((tan(x/2))\verb|^|2))*2}\end{center} 
+Si on a cocher {\tt Pas \`a pas} dans la configuration g\'en\'erale on a en 
+plus, en vert, le d\'etail du calcul :
+\begin{verbatim}
+Integrate rational fraction of trigonometric 1/(sin(x)+sin(2*x)) by tan(x/2) change of variable, 
+              leading to integral of 1/((1+x^2)*((2*x)/(x^2+1)+(2*(1-x^2)/(x^2+1)*2*x)/(x^2+1)))
+Integrate rational fraction 1/((1+x^2)*((2*x)/(x^2+1)+(2*(1-x^2)/(x^2+1)*2*x)/(x^2+1))), 
+               change of variable x=x^2
+Integrate rational fraction (-x-1)/(4*x^2-12*x)
+\end{verbatim}
 \subsection{Primitive et intégrale d\'efinie : {\tt risch}}\index{risch}
 \noindent{\tt risch}  calcule une primitive ou une int\'egrale d\'efinie par
 l'algorithme de Risch.\\
@@ -10488,9 +10632,14 @@ Voici la liste des diff\'erentes options :
 \item {\tt string} convertit une expression en une cha\^{i}ne comme si on 
 appelait directement {\tt string}.
 %\item {\tt matrix} convertit une expression en une matrice.
-\item {\tt list} convertit un polyn\^ome en une liste(cf \ref{sec:convertpolyl}).
-\item {\tt polynom} convertit un d\'eveloppement de Taylor  ou une liste
+\item {\tt list} convertit un polyn\^ome en une liste (cf \ref{sec:convertpolyl}).
+\item {\tt polynom} convertit un d\'eveloppement de Taylor ou une liste
 en un polyn\^ome (cf \ref{sec:convertpoly} et  \ref{sec:convertpolyp}).
+Avec la syntaxe simplifi\'ee, \\
+{\tt taylor(sin(x),x=0,5,polynom)} est identique 
+\`a {\tt convert(taylor(sin(x),x=0,5),polynom)} et \\
+{\tt series(sin(x),x=0,5,polynom)} est identique \`a
+{\tt convert(series(sin(x),x=0,5),polynom)}. 
 \item {\tt parfrac} ou {\tt partfrac} ou {\tt fullparfrac} ou {\tt '+'}
 convertit une fraction rationnelle en \'el\'ements simples comme si on 
 utilisait directement {\tt partfrac}(\ref{sec:convertparf}). \`A noter : il ne 
@@ -11800,8 +11949,11 @@ On remarquera que le polyn\^ome renvoy\'e est r\'eduit au m\^eme
 d\'enominateur.
 
 \subsection{Convertir un d\'eveloppement limit\'e en polyn\^ome : {\tt convert convertir}}\index{convert}\index{convertir}\index{polynom@{\sl polynom}|textbf}\label{sec:convertpoly}
-\noindent{\tt convert}, avec l'option {\tt polynom}, permet de convertir un 
-d\'eveloppement de Taylor en  un polyn\^ome.\\
+\noindent Pour convertir  un d\'eveloppement limit\'e en polyn\^ome on peut 
+utiliser {\tt convert}, avec l'option {\tt polynom} qui permet de convertir un 
+d\'eveloppement de Taylor en  un polyn\^ome ou bien utiliser la syntaxe 
+simplifi\'ee de la commande {\tt taylor} ou {\tt series} qui admettent comme 
+dernier param\`etre l'option {\tt polynom}.\\
 {\tt convert} est utile pour transformer un d\'eveloppement limit\'e en 
 polyn\^ome : par exemple pour faire le trac\'e d'une fonction et de ses 
 polyn\^omes de Taylor. \\
@@ -11811,10 +11963,14 @@ et l'option {\tt polynom}.\\
 l'ordre $n$  (on supprime le reste).\\
 On tape :
 \begin{center}{\tt convert(taylor(sin(x)),polynom)}\end{center}
+Ou on tape :
+\begin{center}{\tt taylor(sin(x),x=0,5,polynom)}\end{center}
 On obtient :
 \begin{center}{\tt x+1/-6*x\verb|^|3+1/120*\verb|x^|5+x\verb|^|6*0}\end{center}
 On tape :
 \begin{center}{\tt convert(series(sin(x),x=0,6),polynom)}\end{center}
+Ou on tape :
+\begin{center}{\tt series(sin(x),x=0,5,polynom)}\end{center}
 On obtient :
 \begin{center}{\tt x+1/-6*x\verb|^|3+1/120*\verb|x^|5+x\verb|^|7*0}\end{center}
 
@@ -14215,13 +14371,17 @@ On obtient :
 {\bf Attention !!!} cette commande ne marche pas si les polyn\^omes sont 
 \'ecrits avec la liste de leurs coefficients.
 
-\subsection{D\'eveloppement limit\'e : {\tt taylor}}\index{taylor}\index{order\_size|textbf} 
-\noindent{\tt taylor} peut avoir de un \`a quatre param\`etres :\\
+\subsection{D\'eveloppement limit\'e : {\tt taylor}}\index{taylor}\index{order\_size|textbf} \index{polynom}
+\noindent{\tt taylor} peut avoir de un \`a quatre param\`etres si on veut une
+\'ecriture avec reste et de un \`a cinq param\`etres si on ne veut pas mettre 
+le reste :\\
 l'expression \`a d\'evelopper, {\tt x=a} (par d\'efaut {\tt x=0}), l'ordre du 
 d\'eveloppement (par d\'efaut {\tt 5}), ou encore :\\
 l'expression \`a d\'evelopper,  {\tt x}, l'ordre du d\'eveloppement (par 
 d\'efaut {\tt 5}) et le point au voisinage duquel on veut le d\'eveloppement 
 (par d\'efaut {\tt 0}).\\
+Si on veut un d\'eveloppement de Taylor sans mettre le reste il faut utiliser 
+comme dernier param\`etre l'option {\tt polynom}.\\
 {\bf Remarque} on peut aussi mettre {\tt x,$a$,$n$} au lieu de 
 {\tt x=$a$,$n$}\\
 {\tt taylor} renvoie un polyn\^ome en {\tt x-a}, plus un reste que {\tt Xcas} 
@@ -14240,6 +14400,10 @@ Ou on tape (attention \`a l'ordre des arguments !) :
 \begin{center}{\tt taylor(sin(x),x,2,1)}\end{center}
 On obtient :
 \begin{center}{\tt sin(1)+cos(1)*(x-1)+(-(1/2*sin(1)))*(x-1)\verb|^|2+ (x-1)\verb|^|3*order\_size(x-1)}\end{center}
+On tape :
+\begin{center}{\tt taylor(sin(x),x=1,2,polynom)}\end{center}
+On obtient un polyn\^ome :
+\begin{center}{\tt sin(1)+cos(1)*(x-1)+(-(1/2*sin(1)))*(x-1)\verb|^|2}\end{center}
 {\bf Attention!!!}\\
 L'ordre que l'algorithme utilise pour les d\'eveloppements limit\'es peut 
 \^etre plus petit que celui demand\'e : l'ordre peut diminuer si il y des
@@ -14255,14 +14419,17 @@ On tape :
 On obtient seulement un d\'eveloppement \`a l'ordre 4 :
 \begin{center}{\tt 6+-27/10*x\verb|^|2+x\verb|^|3+711/1400*x\verb|^|4+x\verb|^|5*order\_size(x)}\end{center}
 
-\subsection{D\'eveloppement limit\'e : {\tt series}}\index{series}\index{order\_size} 
+\subsection{D\'eveloppement limit\'e : {\tt series}}\index{series}\index{order\_size}\index{polynom} 
 \noindent{\tt series} permet de faire le d\'eveloppement limit\'e d'une 
 expression au voisinage d'un point \`a un ordre donn\'e.\\
-{\tt series} peut avoir de un \`a quatre param\`etres :\\
+{\tt series} peut avoir de un \`a quatre param\`etres si on veut une \'ecriture
+avec reste et de un \`a cinq param\`etres si on ne veut pas mettre le reste  :\\
 l'expression \`a d\'evelopper, {\tt x=a} (par d\'efaut {\tt x=0}), 
 l'ordre du d\'eveloppement (par d\'efaut {\tt 5}), la direction {\tt -1, 1}
 (pour un  d\'eveloppement unidirectionel)  ou  {\tt 0} (pour un  
 d\'eveloppement bidirectionel)  (par d\'efaut {\tt 0}).\\
+Si on veut un d\'eveloppement limit\'e sans mettre le reste il faut utiliser 
+comme dernier param\`etre l'option {\tt polynom}.\\
 {\bf Remarque} on peut aussi mettre {\tt x,$a$,$n$} au lieu de 
 {\tt x=$a$,$n$}\\
 {\tt series} renvoie un polyn\^ome en {\tt x-a}, plus un reste que {\tt Xcas} 
@@ -14280,13 +14447,23 @@ L'ordre que l'algorithme utilise pour les d\'eveloppements limit\'es peut
 \^etre plus petit que celui demand\'e : l'ordre peut diminuer si il y a des
  compensations (voir les exemples qui suivent)
 \begin{itemize}
+\item  d\'eveloppement au voisinage de {\tt x=0} de $\sin(x)/x$\\
+On tape :
+\begin{center}{\tt series(sin(x)/x)}\end{center}
+On obtient :
+\begin{center}{\tt 1-x\verb|^|2/6+x\verb|^|4/120+x\verb|^|6*order\_size(x)}\end{center}
+On tape :
+\begin{center}{\tt series(sin(x)/x),polynom)}\end{center}
+On obtient seulement le polyn\^ome le d\'eveloppement \`a l'ordre 5 
+mais sans reste:
+\begin{center}{\tt1-x\verb|^|2/6+x\verb|^|4/120 }\end{center}
 \item  d\'eveloppement au voisinage de {\tt x=0}\\
-Donner le d\'eveloppement de $\displaystyle\frac{x^3+\sin(x)^3}{x-\sin(x)}$ 
+Donner le d\'eveloppement de $\displaystyle x^3+\frac{\sin(x)^3}{x-\sin(x)}$ 
 au voisinage de {\tt x=0}\\
 On tape :
 \begin{center}{\tt series(x\verb|^|3+sin(x)\verb|^|3/(x-sin(x)))}\end{center}
-On obtient seulement un d\'eveloppement \`a l'ordre 2 :
-\begin{center}{\tt 6+-27/10*x\verb|^2|+x\verb|^|3*order\_size(x)}\end{center}
+On obtient :
+\begin{center}{\tt 6+-27/10*x\verb|^|2+x\verb|^|3+711*x\verb|^|4/1400+x\verb|^|6*order\_size(x)}\end{center}
 On tape :
 \begin{center}{\tt series(x\verb|^|3+sin(x)\verb|^|3/(x-sin(x)),x=0,7)}\end{center}
 On obtient seulement un d\'eveloppement \`a l'ordre 4 :
@@ -14662,7 +14839,7 @@ On obtient :
 \section{Les s\'equences}
 \subsection{D\'efinition : {\tt seq[]  ()}}\index{seq[]}\index{()}
 Une s\'equence est une suite d'\'el\'ements s\'epar\'es par une
-virgule et  parenth\'es\'es par {\tt ( )} ou on utilise le mot reserv\'e 
+virgule et parenth\'es\'ees par {\tt ( )} ou on utilise le mot reserv\'e 
 {\tt seq[...]} donc  on \'ecrit :\\
 {\tt (1,2,3,4)} ou\\
 {\tt seq[1,2,3,4]}\\
@@ -14674,8 +14851,8 @@ On tape :
 si {\tt B:=(5,6,3,4)} et {\tt C:=(3,4,5,6)} la r\'eponse de {\tt B==C} est 
 {\tt 0}.\\
 {\bf Attention!} (voir \ref{sec:seq})\\
-{\tt seq([0,2])=(0,0)} et {\tt seq([0,1,1,5])=[0,0,0,0,0]} alors que \\
-{\tt seq[0,2]=(0,2)} et {\tt seq[0,1,1,5]=(0,1,1,5)}
+{\tt seq([0,2])=(0,0)} et {\tt seq([0,k,1,5])=[0,0,0,0,0]} alors que \\
+{\tt seq[0,2]=(0,2)} et {\tt seq[0,k,1,5]=(0,k,1,5)}
 
 \subsection{Concat\'ener deux s\'equences : {\tt ,}}\index{,}
 La concat\'enation de deux s\'equences est simple puisqu'il suffit d'\'ecrire
@@ -14727,13 +14904,38 @@ la possibilit\'e de mettre un param\`etre de saut) ou encore \`a l'aide de
 trois arguments ($j,a,b$) ou de quatre arguments ($j,a,b,p$) (syntaxe {\tt TI}
 avec la possibilit\'e de mettre $p$ comme param\`etre de saut).
 \begin{itemize}
-\item {\bf Syntaxe}  {\tt Maple}\\
+\item {\bf Syntaxe} simplifi\'ee {\tt Xcas}\\
+{\tt seq} a deux arguments un intervalle de r\'eels $a..b$ et un r\'eel $p$ (le pas)
+{\tt seq} renvie la s\'equence des r\'eels entre $a$ et $b$ par pas de $p$.\\
+ {\tt \$}  a les m\^eme arguments mais est une fonction infix\'ee et 
+il faut parenth\'eser les arguments.\\
+On tape :
+\begin{center}{\tt seq(1..3,0.2)}\end{center}
+Ou on tape :
+\begin{center}{\tt (1..3)\$0.2}\end{center}
+On obtient :
+\begin{center}{\tt (1,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0)}\end{center}
+On tape :
+\begin{center}{\tt seq(1..3,2/10)}\end{center}
+Ou on tape :
+\begin{center}{\tt (1..3)\$(2/10)}\end{center}
+On obtient :
+\begin{center}{\tt (1,6/5,7/5,8/5,9/5,2,11/5,12/5,13/5,14/5,3)}\end{center}
+Pour avoir une liste il suffit de rajouter des crochets :\\
+On tape :
+\begin{center}{\tt [seq(1..3,0.2)}]\end{center}
+Ou on tape :
+\begin{center}{\tt [(1..3)\$0.2]}\end{center}
+On obtient :
+\begin{center}{\tt [1,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0]}\end{center}
+
+\item {\bf Syntaxe} compatible {\tt Maple}\\
 {\tt seq} a deux arguments une expression d\'ependant d'un 
 param\`etre (par exemple $j$) et $j=a..b$ o\`u $a$ et $b$ sont des nombres 
 r\'eels  (ou une expression constante et un nombre $n$). On peut
 ajouter pour {\tt seq} un troisi\`eme argument, le pas (1 par d\'efaut).\\
 {\tt \$}  a les m\^eme arguments mais est une fonction infix\'ee et 
-il faut parenth\'eser les arguments.\\
+il faut parenth\'eser les arguments et le pas vaut toujours 1.\\
 {\tt seq} (ou {\tt \$}) d\'efinit la s\'equence obtenue en remplacant dans 
 l'expression $j$ par $a$, $a+1$..$b$ si $b>a$ et par $a$, $a-1$..$b$ si $b<a$
  (ou {\tt seq} renvoie la s\'equence form\'ee par $n$ fois la constante).\\
@@ -14743,7 +14945,33 @@ $a..b$ o\`u $a$ et $b$ sont des nombres r\'eels, ou \\
 {\tt seq} d\'efinit la s\'equence obtenue en remplacant dans 
 l'expression $j$ par $a$, $a+1$..$b$ si $b>a$ et par $a$, $a-1$..$b$ si $b<a$
 le pas est donc soit \'egal \`a 1, soit \'egal \`a -1.\\
-\item {\bf Syntaxe}  {\tt TI}\\
+On tape :
+\begin{center}{\tt seq(0.4,5)}\end{center}
+Ou on tape :
+\begin{center}{\tt 0.4\$5}\end{center}
+On obtient :
+\begin{center}{\tt 0.4,0.4,0.4,0.4,0.4)}\end{center}
+On tape :
+\begin{center}{\tt seq(2*k+1,k=1..5)}\end{center}
+Ou on tape :
+\begin{center}{\tt (2*k+1)\$(k=1..5)}\end{center}
+On obtient :
+\begin{center}{\tt (3,5,7,9,11)}\end{center}
+On tape :
+\begin{center}{\tt seq(2*k+1,k=1..10,2)}\end{center}
+Ou on tape :
+\begin{center}{\tt (2*k+1)\$(k=(1..10\$2))}\end{center}
+On obtient :
+\begin{center}{\tt (3,7,11,15,19)}\end{center}
+Pour avoir une liste il suffit de rajouter des crochets :\\
+On tape :
+\begin{center}{\tt [seq(2*k+1,k=1..5)]}]\end{center}
+Ou on tape :
+\begin{center}{\tt [(2*k+1)\$(k=1..5)]}\end{center}
+On obtient :
+\begin{center}{\tt [3,5,7,9,11]}\end{center}
+
+\item {\bf Syntaxe} compatible  {\tt TI}\\
 -{\tt seq} a quatre arguments une expression d\'ependant d'un 
 param\`etre (par exemple $j$), le nom du param\`etre (par exemple $j$), puis 
 $a$ et $b$ o\`u $a$ et $b$ sont des nombres r\'eels. {\tt seq} d\'efinit la 
@@ -15756,7 +15984,7 @@ On tape :
 On obtient :
 \begin{center}{\tt  [0,1,0]}\end{center}
 {\bf Remarque}\\
-Les deux paramètres de {\tt count\_eq} ne sont pas forcément numériques :
+Les deux paramètres de {\tt count\_eq} ne sont pas forcément numériques :\\
 {\tt count\_eq(ab,[[-ab,1,ab,1,ab,-3],[-ab,1,ab,1,ab,-3]])} renvoie 4 si la 
 variable {\tt ab} n'est pas affect\'ee, mais renverra 6 si il y a {\tt 0} dans 
  {\tt ab}\\
@@ -16318,11 +16546,8 @@ En effet : {\tt x=3, y=4, z=5} et $ 50=|x|^2+|y|^2+|z|^2$.
 \index{.+|textbf}
 La somme terme \`a terme de deux listes se fait avec l'op\'erateur infix\'e
 {\tt +} ou {\tt .+} et aussi avec l'op\'erateur prefix\'e {\tt '+'}.\\
-Si les deux listes n'ont pas la m\^eme longueur la liste la plus petit est 
+Si les deux listes n'ont pas la m\^eme longueur la liste la plus petite est 
 compl\'et\'ee par des z\'eros.\\
-Bien voir la diff\'erence avec les s\'equences car si l'op\'erateur infix\'e
-{\tt +} a comme arguments deux s\'equences, il renvoie la somme des termes des
-deux s\'equences.\\
 On tape :
 \begin{center}{\tt [1,2,3]+[4,3,5]}\end{center}
 Ou on tape :
@@ -16342,6 +16567,54 @@ Ou on tape :
 On obtient :
 \begin{center}{\tt [5,5,8,4,5,6]}\end{center}
 {\bf Attention}\\
+Il y a une diff\'erence entre  l'op\'erateur infix\'e
+{\tt +} et {\tt .+}.\\
+L'op\'erateur infix\'e {\tt .+} et {\tt +}  (ou de l'op\'erateur prefix\'e 
+{\tt '+'}) peuvent aussi avoir comme param\`etres une liste $L$ (resp une 
+matrice $M$) et un r\'eel $a$.\\
+Dans ce cas il ne renvoie pas la m\^eme chose :
+\begin{itemize}
+\item {\tt L .+ a} (resp {\tt M .+ a}) renvoie la liste (resp la matrice) 
+obtenue en ajoutant {\tt a} \`a chaque \'el\'ement de la liste {\tt L} (resp 
+\`a chaque \'el\'ement de la matrice {\tt M}).\\
+On tape :
+\begin{center}{\tt [1,2,3,4].+5}\end{center}
+On obtient :
+\begin{center}{\tt [6,7,8,9]}\end{center}
+On tape :
+\begin{center}{\tt [[1,2],[3,4]].+5}\end{center}
+On obtient :
+\begin{center}{\tt [[6,7],[8,9]]}\end{center}
+\item {\tt L + a} (resp {\tt M + a})(ou {\tt '+'(L, a)} (resp {\tt '+'(M ,a)})
+renvoie la liste (resp la matrice) obtenue en 
+ajoutant {\tt a} au dernier \'el\'ement de la liste {\tt L} (resp \`a la 
+diagonale de la matrice {\tt M}) :
+On tape :
+\begin{center}{\tt [1,2,3,4,5,6]+4}\end{center}
+On obtient, car la liste est consid\`er\'ee comme les coefficients d'un 
+polyn\^ome :
+\begin{center}{\tt [1,2,3,4,5,10]}\end{center}
+On tape :
+\begin{center}{\tt [[1,2],[3,4]]+5}\end{center}
+On obtient :
+\begin{center}{\tt [[6,2],[3,9]]}\end{center}
+
+\end{itemize}
+{\bf Bien voir aussi la diff\'erence avec les s\'equences}\\
+ Si l'op\'erateur infix\'e {\tt +} a comme arguments deux s\'equences $S_1$ et 
+$S_2$, il renvoie la somme des termes de la s\'equence $S_1,S_2$ et \\
+si l'op\'erateur infix\'e {\tt .+} a comme arguments deux s\'equences $S_1$ et 
+$S_2$,, il renvoie la somme $S_1[0]+S_2[size(S_2-1]$.\\
+On tape :
+\begin{center}{\tt (1,2,3)+(4,5,16)}\end{center}
+On obtient :
+\begin{center}{\tt 31}\end{center}
+On tape :
+\begin{center}{\tt (1,2,3) .+ (4,5,16)}\end{center}
+On obtient:
+\begin{center}{\tt 17}\end{center}
+
+{\bf Attention}\\
 Quand l'op\'erateur {\tt +} est pr\'efix\'e il doit \^etre quot\'e c'est
 \`a dire \'ecrit {\tt '+'}.\\
 Si on tape :
@@ -16350,8 +16623,8 @@ On tape :
 On obtient, car la liste est consid\`er\'ee comme les coefficients d'un 
 polyn\^ome :
 \begin{center}{\tt [1,2,3,4,5,10]}\end{center}
-\subsection{Diff\'erence terme \`a terme de deux listes : {\tt - .-}}\index{-|textbf}
-\index{.-|textbf}
+
+\subsection{Diff\'erence terme \`a terme de deux listes : {\tt - .-}}\index{-|textbf}\index{.-|textbf}
 La diff\'erence terme \`a terme de deux listes se fait avec l'op\'erateur 
 infix\'e {\tt -} ou {\tt .-} et aussi avec l'op\'erateur prefix\'e {\tt '-'}.\\
 Si les deux listes n'ont pas la m\^eme longueur la liste la plus petit est 
@@ -16362,7 +16635,7 @@ sommes des termes de chacune des s\'equences.\\
 On tape :
 \begin{center}{\tt [1,2,3]-[4,3,5]}\end{center}
 Ou on tape :
-\begin{center}{\tt [1,2,3] .+ [4,3,5]}\end{center}
+\begin{center}{\tt [1,2,3] .- [4,3,5]}\end{center}
 Ou on tape :
 \begin{center}{\tt '-'([1,2,3],[4,3,5])}\end{center}
 Ou on tape :
@@ -16371,7 +16644,56 @@ On obtient :
 \begin{center}{\tt [-3,-1,-2]}\end{center}
 {\bf Attention}\\
 Quand l'op\'erateur {\tt -} est pr\'efix\'e il doit \^etre quot\'e c'est
-\`a dire \'ecrit {\tt '-'}.
+\`a dire \'ecrit {\tt '-'}.\\
+{\bf Attention}\\
+Il y a une diff\'erence entre  l'op\'erateur infix\'e
+{\tt -} et {\tt .-}.\\
+L'op\'erateur infix\'e {\tt .-} et {\tt -}  (ou de l'op\'erateur prefix\'e 
+{\tt '-'}) peuvent aussi avoir comme param\`etres une liste $L$ (resp une 
+matrice $M$) et un r\'eel $a$.\\
+Dans ce cas il ne renvoie pas la m\^eme chose :
+\begin{itemize}
+\item {\tt L .- a} (resp {\tt M .- a}) renvoie la liste (resp la matrice) 
+obtenue en supprimant {\tt a} \`a chaque \'el\'ement de la liste {\tt L} (resp 
+\`a chaque \'el\'ement de la matrice {\tt M}).\\
+On tape :
+\begin{center}{\tt [1,2,3,4].-5}\end{center}
+On obtient :
+\begin{center}{\tt [-4,-3,-2,-1]}\end{center}
+On tape :
+\begin{center}{\tt [[1,2],[3,4]].-5}\end{center}
+On obtient :
+\begin{center}{\tt [[-4,-3],[-2,-1]]}\end{center}
+\item {\tt L - a} (resp {\tt M - a})(ou {\tt '-'(L, a)} (resp {\tt '-'(M ,a)})
+renvoie la liste (resp la matrice) obtenue en 
+enlevant {\tt a} au dernier \'el\'ement de la liste {\tt L} (resp \`a la 
+diagonale de la matrice {\tt M}) :
+On tape :
+\begin{center}{\tt [1,2,3,4,5,6]-4}\end{center}
+On obtient, car la liste est consid\`er\'ee comme les coefficients d'un 
+polyn\^ome :
+\begin{center}{\tt [1,2,3,4,5,2]}\end{center}
+On tape :
+\begin{center}{\tt [[1,2],[3,4]]-5}\end{center}
+On obtient :
+\begin{center}{\tt [[-4,2],[3,-1]]}\end{center}
+\end{itemize}
+{\bf Bien voir aussi la diff\'erence avec les s\'equences}\\
+ Si l'op\'erateur 
+infix\'e {\tt *} a comme arguments deux s\'equences $S_1$ et $S_2$, il renvoie 
+de la diff\'erence entre la somme des termes de la s\'equence $S_1$ et la somme
+des termes de la s\'equence $S_2$ et \\
+si l'op\'erateur infix\'e {\tt .-} a comme arguments deux s\'equences $S_1$ et 
+$S_2$,, il renvoie la diff\'erence $S_1[0]-S_2[size(S_2-1]$.\\
+On tape :
+\begin{center}{\tt (1,2,3)-(4,5,16)}\end{center}
+On obtient (6-25) :
+\begin{center}{\tt -19}\end{center}
+On tape :
+\begin{center}{\tt (1,2,3) .- (4,5,16)}\end{center}
+On obtient:
+\begin{center}{\tt -16}\end{center}
+
 
 \subsection{Produit terme \`a terme de deux listes : {\tt .*}}\index{.*|textbf}\label{sec:hadal}
 Voir aussi \ref{sec:hadami}, {\tt hadamard} pour les matrices (cf \ref{sec:hadam}) et
@@ -17865,6 +18187,8 @@ d\'enominateurs
 \item \verb|bareiss|~: l'algorithme de Gauss-Bareiss est utilis\'e
 (r\'eduction sans fraction et division par le pivot de 
 l'\'etape pr\'ec\'edente).
+\item \verb|linsolve|~: algorithme p-adique (pour une matrice
+à coefficients entiers).
 \item \verb|minor_det|~: l'algorithme utilis\'e est le d\'eveloppement
 des mineurs. Ceci n\'ecessite $2^n$ op\'erations, mais est parfois
 plus rapide que les autres algorithmes pour des matrices de taille
@@ -20519,16 +20843,18 @@ On obtient :
 
 \subsection{R\'esoudre un syst\`eme lin\'eaire : {\tt linsolve\\ resoudre\_systeme\_lineaire}}\index{linsolve}\index{resoudre\_systeme\_lineaire}
 \noindent{\tt linsolve} permet de r\'esoudre un syst\`eme d'\'equations 
-lin\'eaires o\`u chaque \'equation est de la forme $Xpr = 0$ o\`u $Xpr$ est une expression.\\
+lin\'eaires o\`u chaque \'equation est de la forme $Xpr = 0$ o\`u $Xpr$ est 
+une expression. Si vous avez coch\'e {\tt Pas \`a pas} dans la configuration 
+g\'en\'erale, vous avez le d\'etail des calculs. \\
 {\tt linsolve} a comme param\`etres la liste des \'equations et la liste des 
-variables.
+variables.\\
 {\tt linsolve} renvoie une liste qui est solution du syst\`eme d'\'equations.\\
 {\tt linsolve} permet de r\'esoudre aussi un syst\`eme d'\'equations 
 lin\'eaires dans $\Z/n\Z$.
 On tape :
 \begin{center}{\tt linsolve([2*x+y+z=1,x+y+2*z=1,x+2*y+z=4],[x,y,z])}\end{center}
 On obtient :
-\begin{center}{\tt  [1/-2,5/2,1/-2]}\end{center} 
+\begin{center}{\tt  [-1/2,5/2,1-/2]}\end{center} 
 donc 
 \[ x=-\frac{1}{2}, y=\frac{5}{2}, z=-\frac{1}{2} \] 
 sont solutions du syst\`eme :
@@ -20541,6 +20867,24 @@ x+2y+z &=4
 \end{array}
 \right.
 $$ 
+Si on a coch\'e {\tt Pas \`a pas} dans la configuration g\'en\'erale, on obtient
+ \'ecrit en vert :\\
+\begin{verbatim}
+Matrix [[1,1,2,-1],[0,1,-1,-3],[0,-1,-3,1]]
+Row operation L2 <- (1)*L1-(1)*L2
+Matrix [[1,0,3,2],[0,1,-1,-3],[0,-1,-3,1]]
+Row operation L2 <- (1)*L3-(-1)*L2
+Matrix [[1,0,3,2],[0,1,-1,-3],[0,0,-4,-2]]
+Reducing column 3 using pivot -4 at row 3
+Matrix [[1,0,3,2],[0,1,-1,-3],[0,0,-4,-2]]
+Row operation L3 <- (-4)*L1-(3)*L3
+Matrix [[-4,0,0,-2],[0,1,-1,-3],[0,0,-4,-2]]
+Row operation L3 <- (-4)*L2-(-1)*L3
+End reduction [[-4,0,0,-2],[0,-4,0,10],[0,0,-4,-2]]
+\end{verbatim}
+puis on obtient la r\'eponse :
+\begin{center}{\tt  [-1/2,5/2,1-/2]}\end{center} 
+
 On tape :
 \begin{center}{\tt linsolve([2*x+y+z-1,x+y+2*z-1,x+2*y+z-4]\%3,[x,y,z])}\end{center}
 On obtient :
@@ -20557,6 +20901,11 @@ $$
 \end{array}
 \right.
 $$ 
+%Si on a coch\'e {\tt Pas \`a pas} dans la configuration g\'en\'erale, on a \'ecrit en vert :\\
+%\begin{verbatim}\end{verbatim}
+%puis on obtient la r\'eponse :
+%\begin{center}{\tt  [1 \% 3,1 \% 3,1 \% 3]}\end{center} 
+
 \subsection{Norme minimale d'un syst\`eme lin\'eaire : {\tt LSQ}}\index{LSQ}
 \noindent{\tt LSQ} a pour arguments une matrice {\tt A} et un vecteur (rep une 
 matrice) {\tt B} qui repr\'esentent le (resp les) syst\`eme(s) lin\'eaire(s) 
@@ -21174,7 +21523,7 @@ donn\`ee comme deuxi\`eme argument.\\
 variable le troisi\`eme argument ou par d\'efaut le second argument ou par d\'efaut $x$.\\
 {\bf Attention} le second argument est le nom de la variable du premier argument
 et est ausi le nom de la variable du r\'esultat lorsqu'il n'y a pas de 
-3-i\`eme argument, par exemple :{\tt laplace(sin(x),t)} renvoie {\tt sin(x)/t}   
+3-i\`eme argument, par exemple :{\tt laplace(sin(x),t)} renvoie {\tt sin(x)/t}.   
 
 On utilise la transform\'ee de Laplace ({\tt laplace}) et la transform\'ee
 de Laplace inverse ({\tt ilaplace} ou {\tt invlaplace}) pour r\'esoudre des \'equations 
@@ -21496,6 +21845,188 @@ On tape :
 On obtient :
 \begin{center}{\tt 3}\end{center}
 Donc le 1ier octobre 2014 \'etait un mercredi.
+
+\chapter{Propri\'et\'es m\'etriques des courbes planes ou gauches}
+\section{Tangente et plans tangents}
+Soit une courbe $\Gamma$ lieu des points $M=M(t)$ de coordonn\'ees 
+$x(t),y(t),z(t)$ dans un rep\`ere orthonorm\'e $Oxyz$.\\
+Le vecteur directeur de la tangente \`a $\Gamma$ est le premier vecteur 
+$T=\displaystyle \frac{d^pM}{dt^p}$ qui ne soit pas nul.\\
+\`A chaque tangente  en $M$ on associe :\\
+une infinit\'e de plans tangents qui sont les plans contenant $T$ et\\
+une infinit\'e de normales qui sont toutes perpendiculaires  en $M$ \`a $T$ et 
+qui forment le plan normal en $M$.\\
+\section{Place de la courbe par rapport \`a un plan tangent}
+Comment se place la courbe par rapport \`a un certain plan $\Pi$ tangent en $M$
+\`a $\Gamma$ ?
+Soit $N$ la normale qui est perpendiculaire \`a $\Pi$ en $M$.\\
+Soit $M_1$ un point de $\Gamma$ et $m_1$ la projection de $M_1$ sur $T$.\\
+$Mm_1$ a le sens de $\displaystyle(t_1-t)^p\frac{d^pM}{dt^p}$ ($\displaystyle \frac{d^pM}{dt^p}$ \'etant le premier vecteur deriv\'e de $OM$ non nul.\\
+$M_1$ est dans la m\^eme r\'egion par rapport \`a $Pi$ que le vecteur
+$\displaystyle(t_1-t)^q\frac{d^qM}{dt^q}$ o\`u $\displaystyle(t_1-t)^q\frac{d^qM}{dt^q}$ est la premi\`ere des d\'eriv\'ees suivantes qui soit non nulles et non situ\'es dans $Pi$ 
+
+\section{Notion d'abscisse curviligne : {\tt }}\index{}
+Soit une courbe $\Gamma$ lieu des points $M=M(t)$ de coordonn\'ees 
+$x(t),y(t),z(t)$ dans un rep\`ere orthonorm\'e $Oxyz$.\\
+On suppose que $x(t),y(t),z(t)$  sonr continues , d\'erivables et \`a 
+d\'eriv\'ees continues.\\
+On note $\displaystyle \frac{dM}{dt}$ le vecteur de coordonn\'ees 
+$x'(t),y'(t),z'(t)$ qui est un vecteur tangent \`a $\Gamma$ quelque soit $t$.\\
+On introduit un nouveau param\'etre $s$ pour $\Gamma$ pour que 
+$\displaystyle \frac{dM}{ds}$ soit unitaire c'est \`a dire tel que :\\
+$ds^2=dx^2+dy^2+dz^2$\\
+Cette relation d\'efinie da d\'eriv\'ee de $s$ par rapport \`a $t$ au signe 
+pr\`es :\\
+$\displaystyle \frac{ds}{dt}=\sqrt{x'(t)^2+y'(t)^2+z'(t)^2}$ si on oriente 
+$\Gamma$ selon les $t$ croissants,\\
+$\displaystyle \frac{ds}{dt}=-\sqrt{x'(t)^2+y'(t)^2+z'(t)^2}$ si on oriente 
+$\Gamma$ selon les $t$ d\'ecroissants.\\
+On appelle {\bf abscisse curviligne} \`a partir de l'origine $M_0=M(t_0)$, la 
+fonction $s(t)$ ayant pour d\'eriv\'ee :
+$\displaystyle \frac{ds}{dt}=\sqrt{x'(t)^2+y'(t)^2+z'(t)^2}$ (ou $\displaystyle \frac{ds}{dt}=-\sqrt{x'(t)^2+y'(t)^2+z'(t)^2}$ selon l'orientation choisie)
+et telle que $s(t_0)=0$.\\
+La tangente orient\'ee de $\Gamma$ au point $M$ est alors :\\
+$\tau=\displaystyle \frac{dM}{ds}$ qui est le vecteur :\\
+en coordonn\'ees cart\'esiennes :
+$\displaystyle \tau=(\frac{dx}{ds},\frac{dy}{ds},\frac{dz}{ds})$.\\
+en coordonn\'ees semi-polaires
+$\displaystyle \tau=(\frac{d\rho}{ds},\frac{\rho d\theta}{ds},\frac{dz}{ds})$.
+\section{Le plan osculateur}
+Soit une courbe $\Gamma$ lieu des points $M=M(t)$ de coordonn\'ees 
+$x(t),y(t),z(t)$ dans un rep\`ere orthonorm\'e $Oxyz$.\\
+Le vecteur directeur de la tangente \`a $\Gamma$ est le premier vecteur 
+$\displaystyle \frac{d^pM}{dt^p}$ qui ne soit pas nul.\\
+Consid\'erons le cas le plus courant o\`u 
+$\displaystyle \frac{dM}{dt}$ et $\displaystyle \frac{d^2M}{dt^2}$ sont non 
+nuls et non colin\'eaires.
+Le {\bf plan osculateur} est le plan  des deux vecteurs 
+$\displaystyle \frac{dM}{dt}$ et $\displaystyle \frac{d^2M}{dt^2}$ et plus 
+g\'en\'eralement le plan  des deux premiers vecteurs :
+$\displaystyle \frac{d^pM}{dt^p}$ et $\displaystyle \frac{d^{p+h}M}{dt^{p+h}}$ qui
+ ne sont ni nuls et ni colin\'eaires.\\
+{\bf Remarque} Le plan osculateur comme la tangente ne d\'epend pas du 
+param\`etre utilis\'e.\\
+Le vecteur $\displaystyle \frac{d^2M}{ds^2}=\frac{d\tau}{ds}$ est donc dans le
+ plan osculateur et il est orthogonal \`a $\tau$.
+On appelle {\bf normale principale} l'intersection du plan normal (plan 
+perpendiculaire \`a la tangente $\tau$) et du plan osculateur.\\
+Soit $n$ le vecteur unitaire de la normale principale orient\'ee dans le sens 
+de la concavit\'e i.e. selon $\frac{d\tau}{ds}$
+\section{Courbure et Cercle osculateur: {\tt curvature, courbure}}\index{curvature}\index{courbure}
+\subsection{Premi\`ere formule de Frenet}
+On \'etudie le vecteur $\displaystyle \frac{d^2M}{ds^2}=\frac{d\tau}{ds}$.\\
+$\displaystyle \frac{d^2M}{ds^2}$ est situ\'e dans le plan osculateur et est 
+situ\'e par rapport \`a un plan non osculateur selon la concavit\'e de $\Gamma$.
+$\displaystyle \frac{d^2M}{ds^2}$ est perpendiculaire \`a $\tau$ puisque
+$\tau$ est unitaire.\\
+Soit $n$ le vecteur unitaire de la normale principale orient\'ee dans le sens 
+de la concavit\'e i.e. selon $\frac{d\tau}{ds}$, il exite  un scalaire positif 
+$R$ tel que :
+$$\displaystyle \frac{d\tau}{ds}=\frac{n}{R}$$
+On dit que $R$ est le {\bf rayon de courbure} de $\Gamma$ en $M$ et on appelle 
+{\bf centre de courbure} de $\Gamma$ en $M$, le point $C$ d\'efini par :\\
+$MC=Rn$\\
+La courbure de $\Gamma$ au point $M$ est \'egale \`a $\frac{1}{R}$.
+\subsection{Courbure : {\tt curvature, courbure}}\index{curvature}\index{courbure}
+\subsection{Cercle osculateur : {\tt osculating\_circle}}
+\index{cercle\_osculateur}\index{osculating\_circle}
+On appelle cercle osculateur en $M$ \`a $\Gamma$, la limite du cercle passant 
+par $M$ et tangent en $M_0$ \`a $\Gamma$, quand $M$ tend vers $M_0$ en 
+d\'ecrivant $\Gamma$.\\
+Le centre du cercle osculateur en $M$ \`a $\Gamma$ est le centre de courbure au
+point $M$ de $\Gamma$.\\
+\subsection{Applications}
+Trouver la courbure et le centre de courbure de la spirale logarithmique :\\
+$\rho=3e^{\theta/2}$ en un point $M$ de coordonn\'ees :\\
+$\rho\cos(\theta),\rho\sin(\theta)$ et \\
+en un point $M_0$ de coordonn\'ees :\\
+$3e^{7/2}\cos(7),3e^{7/2}\sin(7)$.\\
+On tape :\\
+{\tt trigcos(courbure([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t))}\\
+On obtient le rayon de courbure au point $M$ d'affixe 
+$3*\exp(1/2)*(\cos(1)+i*\sin(1))$:\\
+{\tt 2*sqrt(5)/(15*exp(t/2))}\\
+On tape pour avoir le rayon de courbure au point $M_0$ d'affixe 
+$3*\exp(7/2)*(\cos(7)+i*\sin(7))$:\\
+{\tt trigcos(courbure([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7))}\\
+On obtient :\\
+{\tt 2*sqrt(5)/(15*exp(7/2))}\\
+Pour avoir l'\'equation du cercle osculateur en $M$, on tape :\\
+{\tt trigcos(equation(cercle\_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)))}\\
+On obtient :\\
+{\tt x\verb|^|2+y\verb|^|2+9*exp(t/2)\verb|^|2/4+3*x*exp(t/2)*sin(t)-3*y*exp(t/2)*cos(t)=(45*exp(t/2)\verb|^|2/4)}\\
+Pour avoir l'\'equation du cercle osculateur en $M_0$, on tape :\\
+{\tt trigcos(equation(cercle\_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)))}\\
+On obtient :\\
+{\tt x\verb|^|2+y\verb|^|2+9*exp(7/2)\verb|^|2/4+3*x*exp(7/2)*sin(7)-3*y*exp(7/2)*cos(7)=(45*exp(7/2)\verb|^|2/4)}\\
+Pour avoir l'affixe du centre du cercle osculateur en $M$, on tape :\\
+{\tt affixe(centre(cercle\_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)))}\\
+On obtient :\\
+{\tt (3*i)*exp(t/2)*cos(t)/2-3*exp(t/2)*sin(t)/2)}\\
+Pour avoir l'affixe du centre  du cercle osculateur en $M_0$, on tape :\\
+{\tt affixe(centre(cercle\_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)))}\\
+On obtient :\\
+{\tt (3*i)*exp(7/2)*cos(7)/2-3*exp(7/2)*sin(7)/2}\\
+On tape :\\
+{\tt plotparam(3*exp(t/2)*(cos(t)+i*sin(t)));}\\
+{\tt M0:=point(3*exp(7/2)*(cos(7)+i*sin(7)));}\\
+{\tt C:=centre(cercle\_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7));}\\
+{\tt cercle\_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7,affichage=1)}\\
+{\tt segment(C,M0)}\\
+{\tt tangente(plotparam(3*exp(t/2)*exp(i*t),t),7);}\\
+{\tt demi\_droite(0,M0);}\\
+{\tt demi\_droite(0,C);}\\
+On obtient :\\
+\includegraphics[width=\textwidth]{courbure}
+\section{Torsion }
+\subsection{Tri\`edre de Frenet}
+Aux vecteurs $\tau=\displaystyle \frac{dM}{ds}$ et $n$ on ajoute le vecteur
+initaire $b=\tau \wedge n$ : le tri\`edre de Frenet en un point $M$ de 
+$\Gamma$ est le tri\`edre $\tau, n, b$ ($\tau$ est la tangente $n$ est la 
+normale principale et $b$ est la binormale (c'est la perpendiculaire au plan 
+osculateur).
+\subsection{Deuxi\`eme et troisi\`eme formule de Frenet}
+En d\'erivant $b=\tau \wedge n$ on obtient :\\
+$\displaystyle \frac{db}{ds}=\tau \wedge \frac{dn}{ds}$\\
+$\displaystyle \frac{db}{ds}$ estdonc parall\`ele \`a $n$ car orthogonal \`a 
+$\tau$ et \`a $b$.
+Donc il existe un scalaire $T$ appel\'e rayon de torsion de $\Gamma$ au point 
+$M$ tel que :
+$$ \frac{db}{ds}= \frac{n}{T}$$
+c'est la premi\`ere formule de Frenet.\\
+On a aussi :\\
+$n=b\wedge \tau$  donc en d\'erivant on a :\\
+$\displaystyle \frac{dn}{ds}=\frac{db}{ds} \wedge\tau +b\wedge \frac{d\tau}{ds}$\\
+$\displaystyle \frac{dn}{ds}=\frac{n}{T} \wedge\tau +b\wedge \frac{n}{R}$\\
+ou encore :
+$$\frac{dn}{ds}=-\frac{\tau}{R}-\frac{b}{T}$$
+c'est la deuxi\`erme formule de Frenet.\\
+La torsion de  de $\Gamma$ au point $M$ est \'egale \`a $\frac{1}{T}$.
+\section{Cas des courbes planes}
+Lorsque $\Gamma$ est une courbe du plan $Oxy$ : son plan osculateur est le plan $Oxy$.\\
+La torsion d'une courbe plane est nulle.\\
+Soit $\alpha$ l'angle $(Ox,\tau$. On a alors :\\
+$\displaystyle \frac{1}{R}\frac{d\alpha}{ds}$ et donc :\\
+$\displaystyle \frac{ds}{d\alpha}=R$\\
+Soit $\nu$ tel que $(\tau \nu)=\pi/2$, on a ;\\
+$d\tau =\nu d\alpha$ et si $c$ est le centre de courbure en $M$ on  a :\\
+$MC=\displaystyle \frac{ds}{d\alpha}\nu$
+\section{D\'evelopp\'ee d'une courbe plane : {\tt evolute}}\index{evolute}\index{developpee}
+On appelle d\'evelopp\'ee d'une courbe plane $\Gamma$, le lieu des centres de 
+courbure de  $\Gamma$ : c'est aussi l'enveloppe de ses normales.
+{\bf Exemple}\\
+Trouver la d\'evelopp\'ee de la spirale logarithmique :\\
+$\rho=3e^{\theta/2}$.\\
+On tape :\\
+{\tt developpee([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,affichage=2))}\\
+On obtient :\\
+\includegraphics[width=\textwidth]{courbure1}
+\section{D\'eveloppante d'une courbe plane}
+On appelle d\'eveloppante d'une courbe plane  $\Gamma$ les courbes admettant 
+ $\Gamma$ comme d\'evelopp\'ee.
+
+
+
 \chapter{Les fonctions de statistique}\label{sec:stat}
 \section{Les fonctions de {\tt Xcas} de statistique \`a 1 variable}
 On va d\'ecrire les diff\'erentes fonctions statistiques sur un exemple :\\
@@ -21831,10 +22362,11 @@ On tape :
 On obtient par exemple :
 \begin{center}{\tt [[1,0.1648],[2,0.1703],[3,0.1667],[4,0.1671],[5,0.1727],[6,0.1584]]]}\end{center}
 
-\subsection{Les fr\'equences cumul\'ees : {\tt cumulated\_frequencies frequences\_cumulees}}\index{cumulated\_frequencies|textbf}\index{frequences\_cumulees|textbf}
+\subsection{Les fr\'equences cumul\'ees : {\tt cumulated\_frequencies \\
+frequences\_cumulees}}\index{cumulated\_frequencies|textbf}\index{frequences\_cumulees|textbf}
 \noindent{\tt cumulated\_frequencies} ou {\tt frequences\_cumulees} a comme 
 argument une liste ou une matrice ayant 2 colonnes ou plus de 2 colonnes.\\
-Lorsque {\tt cumulated\_frequencies} a comme argument une liste, 
+Si {\tt cumulated\_frequencies} a comme argument une liste, 
 {\tt cumulated\_frequencies} renvoie le diagramme des fr\'equences cumul\'ees
 des valeurs de cette liste.\\
 On tape :
@@ -21851,7 +22383,7 @@ sous fome d'intervalles $a_{j-1}..a_j$,
 \item la deuxi\`eme colonne repr\'esente soit les effectifs $n_j$, soit les
  fr\'equences $f_j$ des valeurs $b_j$ ou des classes $a_{j-1}..a_j$.
 \end{itemize}
-Lorsque {\tt cumulated\_frequencies} a comme argument une matrice ayant  plus 
+Si {\tt cumulated\_frequencies} a comme argument une matrice ayant  plus 
 de 2colonnes, c'est que l'on veut comparer plusieus effectis correspondant \`a 
 plusieurs s\'eries de m\^emes valeurs.\\
 Les lignes sont alors : \\
@@ -22130,9 +22662,27 @@ points d\'efini par l'argument.\\
 On tape :
 \begin{center}{\tt scatterplot([[0,0],[1,1],[2,4],[3,9],[4,16]])}\end{center}
 Ou on tape :
+\begin{center}{\tt scatterplot([0,0],[1,1],[2,4],[3,9],[4,16])}\end{center}
+Ou on tape :
 \begin{center}{\tt scatterplot([0,1,2,3,4],[0,1,4,9,16])}\end{center}
 La fen\^etre graphique s'ouvre automatiquement et on obtient le dessin des 
-5 points ((0,0),...(4,16)), \`a condition d'avoir d\'efini correctement
+ 5 points ((0,0),...(4,16)), \`a condition d'avoir d\'efini correctement
+la configuration du graphique (menu {\tt Cfg}).
+
+\subsection{Les batons du nuage de points : {\tt batons}}\index{batons}
+\noindent{\tt batons} a pour arguments deux listes 
+ou une matrice ayant deux colonnes.\\
+{\tt batons} permet de visualiser les segments qui relient l'axe des $x$ au 
+nuage de points d\'efini par l'argument.\\
+On tape :
+\begin{center}{\tt batons([[0,0],[1,1],[2,4],[3,9],[4,16]])}\end{center}
+Ou on tape :
+\begin{center}{\tt batons([0,0],[1,1],[2,4],[3,9],[4,16])}\end{center}
+Ou on tape :
+\begin{center}{\tt batons([0,1,2,3,4],[0,1,4,9,16])}\end{center}
+La fen\^etre graphique s'ouvre automatiquement et on obtient le dessin des 5
+segments verticaux reliant l'axe des $x$ aux 5 points ((0,0),...(4,16)), 
+\`a condition d'avoir d\'efini correctement
 la configuration du graphique (menu {\tt Cfg}).
 
 \subsection{Ligne polygonale : {\tt polygonplot ligne\_polygonale}}\index{polygonplot}\index{ligne\_polygonale}
@@ -23026,7 +23576,8 @@ On obtient :
 param\`etre {\tt mu}, c'est \`a dire de moyenne {\tt mu} et d'\'ecart-type 
 {\tt mu}, on a :\\
 $Proba(X \leq x)$={\tt poisson\_cdf( mu,x)} avec $X\in \mathcal P(mu)$. et\\
-$Proba(x1\leq X \leq x2)$={\tt poisson\_cdf(mu,x1,x2)=poisson\_cdf(mu,x1)+...+poisson\_cdf(mu,x2)} c'est \`a dire :\\
+$Proba(x1\leq X \leq x2)$={\tt poisson\_cdf(mu,x1,x2)=\\
+poisson\_cdf(mu,x1)+...+poisson\_cdf(mu,x2)} c'est \`a dire :\\
 {\tt poisson\_cdf(mu,x1,x2)=poisson\_cdf(mu,x2)-poisson\_cdf(mu,x1-1)}\\
 {\tt poisson\_cdf(mu,x)} est la fonction de r\'epartition de 
 la loi de Poisson de param\`etre {\tt mu},
@@ -23760,11 +24311,9 @@ On obtient :
 \begin{center}{\tt 18}\end{center}
 \subsection{Test de Wilcoxon ou de Mann-Whitney {\tt wilcoxont}}
 \index{wilcoxont}
-\noindent{\tt wilcoxont} a comme argument 1 \'echantillon et une
-valeur de m\'ediane 
-ou 2 \'echantillons et peut avoir un ou deux arguments suppl\'ementaires
-une fonction \verb|>| ou \verb|<| pour un test unilat\'eral
-et un r\'eel compris entre 0 et 1 (niveau de confiance, par d\'efaut 0.05).\\
+\noindent{\tt wilcoxont} a comme argument 1 \'echantillon et une m\'ediane ou 2
+ \'echantillons et peut avoir comme 3i\`eme argument une fonction et  comme 
+4i\`eme argument un r\'eel.\\
 {\tt wilcoxont} renvoie le test de Wilcoxon ou de Mann-Whitney pour 
 1 \'echantillon et une m\'ediane ou 2 \'echantillons
  On tape :
@@ -26828,6 +27377,9 @@ Si on tape :
 \begin{center}{\tt B:=eval(B,2))}\end{center}
 On obtient :
 \begin{center}{\tt Le point 1+i est marqu\'e d'une croix et n'a pas de nom}\end{center}
+
+
+
 \section{Comment faire une d\'emonstration : {\tt assume}}\index{assume}
 Pour pouvoir faire une d\'emonstration en g\'eom\'etrie, il suffit de demander 
 au calcul formel de faire les calculs, en choisisant bien les param\`etres du 
@@ -26885,7 +27437,8 @@ la souris (bouton gauche) pour qu'un point s'affiche avec un nom.\\
 Ce nom est cr\'ee automatiquement : {\tt A} puis {\tt B} etc...\\
 On peut aussi utiliser la commande {\tt point} :\\
 \noindent{\tt point} a comme argument un nombre complexe ou un couple de 2 
-nombres r\'eels repr\'esentant ses coordonn\'ees rectangulaires (pour d\'efinir un point par ses coordonn\'ees polaires il faut utiliser {\tt polar\_point} ou 
+nombres r\'eels repr\'esentant ses coordonn\'ees rectangulaires (pour d\'efinir
+un point par ses coordonn\'ees polaires il faut utiliser {\tt polar\_point} ou 
 {\tt point\_polaire}.\\
 {\bf Attention} \\
 Si {\tt a,b} est un couple de 2 nombres complexes dont 1 n'est pas r\'eel, 
@@ -26899,14 +27452,25 @@ affixe son argument. Ce point  aura la forme choisie par la commande
 d'un point si on a tap\'e {\tt affichage(point\_point)}.  
 On tape :
 \begin{center}{\tt point(1+i)}\end{center}
+Ou on tape :
+\begin{center}{\tt point(1,1)}\end{center}
+Ou on tape :
+\begin{center}{\tt point([1,1])}\end{center}
 On obtient :
 \begin{center}{\tt Le point d'affixe 1+i est trac\'e avec une croix}\end{center}
 On tape :
+\begin{center}{\tt A:=point(-2+i)}\end{center}
+Ou on tape :
 \begin{center}{\tt A:=point(-2,1)}\end{center}
+Ou on tape :
+\begin{center}{\tt A:=point([-2,1])}\end{center}
 On obtient :
 \begin{center}{\tt Le point d'affixe -2+i est trac\'e avec une croix et est not\'e A}\end{center}
+{\bf Attention}\\
 On tape :
 \begin{center}{\tt point(-2,i)}\end{center}
+Ou on tape :
+\begin{center}{\tt point([-2,i])}\end{center}
 On obtient :
 \begin{center}{\tt Les 2 points d'affixe -2 et i sont trac\'es avec une croix}\end{center}
 {\bf Remarque}
@@ -28957,8 +29521,8 @@ L'objet g\'eom\'etrique \`a transformer peut \^etre de tout type comme  point,
 droite, cercle, polygone, courbe param\`etr\`ee, graphe de fonctions etc...
 Par exemple si {\tt P} est  l'objet g\'eom\'etrique \`a transformer on peut 
 avoir :\\
-{\tt P:=point(1+i)} ou {\tt P:=droite(x=1)} ou {\tt P:=plan(z=0)}
-ou {\tt P:=cercle(point(1,1),1)} ou {\tt P:=plotfunc(x2-2)} etc...
+{\tt P:=point(1+i)} ou {\tt P:=droite(x=1)} ou {\tt P:=plan(z=0)} ou\\ 
+{\tt P:=cercle(point(1,1),1)} ou {\tt P:=plotfunc(x2-2)} etc...
 
 \subsection{La translation : {\tt translation}}\index{translation|textbf}\label{sec:translation2}
 {\bf Voir aussi :} \ref{sec:translation3} pour la g\'eom\'etrie 3-d.\\
@@ -31322,9 +31886,9 @@ comme une courbe param\'etr\'ee), courbe param\'etr\'ee, sph\`ere,
 surface etc...\\
 Par exemple si {\tt P} est  l'objet g\'eom\'etrique \`a transformer on peut 
 avoir :\\
-{\tt P:=point(1,1,1)} ou {\tt P:=droite(z=0,x=1)} ou {\tt P:=plan(z=0)}
-ou {\tt P:=sphere(point(1,1,1),1)} ou {\tt P:=plotfunc(x2-y2,[x,y])} ou {\tt P:=demi\_cone([0,0,0],[0,0,1],pi/6)}
-etc...
+{\tt P:=point(1,1,1)} ou {\tt P:=droite(z=0,x=1)} ou {\tt P:=plan(z=0)} ou\\
+{\tt P:=sphere(point(1,1,1),1)} ou {\tt P:=plotfunc(x2-y2,[x,y])} ou\\ 
+{\tt P:=demi\_cone([0,0,0],[0,0,1],pi/6)} etc...
 
 \subsection{La translation : {\tt translation}}\index{translation}\label{sec:translation3}
 {\bf Voir aussi :} \ref{sec:translation2} pour la g\'eom\'etrie plane.\\
@@ -31990,16 +32554,16 @@ ${\tt \displaystyle \frac{SN}{SB}=\frac{SP}{SD}}$\\
 ce qui montre d'apr\`es le th\'eor\`eme de Thal\`es que 
 {\tt NP} est parall\`ele \`a {\tt BD}.
 
-\chapter{Commandes multim\'edia.}
+\chapter{Commandes multim\'edia}
 \section{Son}
-
 \subsection{Lecture d'un fichier wav : {\tt readwav}}\index{readwav}
 La commande {\tt readwav} permet de lire un fichier son stock\'e
 au format WAV (extension de fichier {\tt .wav}), on stocke en g\'en\'eral
-le r\'esultat dans une variable, par exemple 
-{\tt s:=readwav("sound.wav")} lit le fichier \verb|sound.wav|
-et place le vecteur r\'esultat dans la variable \verb|s|. Le vecteur
-renvoy\'e est compos\'e de~:
+le r\'esultat dans une variable, par exemple :\\
+{\tt s:=readwav("sound.wav")} \\
+lit le fichier \verb|sound.wav| et place le vecteur r\'esultat dans la variable
+\verb|s|.\\
+Le vecteur renvoy\'e est compos\'e de~:
 \begin{itemize}
 \item une liste donnant le format d\'echantillonage du son~:
 le nombre de canaux (en g\'en\'eral 1 pour mono ou 2 pour st\'er\'eo),
@@ -32013,74 +32577,75 @@ le nombre de canaux.
 \end{itemize}
 Ainsi si \verb|s[0]| vaut \verb|[1,16,44100,88200]| on a un
 enregistrement d'une seconde sur un canal en 16 bits, un son de
-qualit\'e CD. On a alors \verb|size(s)==2| (1+nombre de canaux),
-et \verb|size(s[1])==44100|
+qualit\'e CD.\\
+On a alors \verb|size(s)==2| (1+nombre de canaux), et \verb|size(s[1])==44100|.
 
-\subsection{\'Ecriture d'un fichier wav : {\tt
-    writewav}}\index{writewav}
+\subsection{\'Ecriture d'un fichier wav : {\tt writewav}}\index{writewav}
 La commande {\tt writewav} effectue l'\'ecriture d'une donn\'ee de
 type son dans un fichier au format WAV sur le disque dur. Elle est
-donc inverse de la commande {\tt readwav}. On passe en argument
-le nom du fichier et les donn\'ees son. On peut soit utiliser le
-m\^eme format que celui renvoy\'e par la commande {\tt readwav},
-soit pour un son mono utilisant les valeurs des param\`etres 
-par d\'efaut (16 bits, 44100 Hz) 
-donner uniquement la liste des donn\'ees num\'eriques
-du son sur le canal.
-Par exemple la commande 
-\verb|writewav("la.wav",2^14*(sin(2*pi*440*soundsec(1))))|
+donc inverse de la commande {\tt readwav}.\\
+On passe en argument le nom du fichier et les donn\'ees son.\\
+On peut soit utiliser le m\^eme format que celui renvoy\'e par la commande 
+{\tt readwav}, soit pour un son mono utilisant les valeurs des param\`etres par
+d\'efaut (16 bits, 44100 Hz) donner uniquement la liste des donn\'ees 
+num\'eriques du son sur le canal.\\
+Par exemple la commande :\\
+\verb|writewav("la.wav",2^14*(sin(2*pi*440*soundsec(1))))|\\
 sauvegarde dans le fichier de nom \verb|la.wav|, un son pur
 de fr\'equence 440 Hz (un la), \'echantillon\'e 44100 fois par seconde.
 
-\subsection{\'Ecouter un son num\'eris\'e {\tt
-    playsnd}}\index{playsnd}
+\subsection{\'Ecouter un son num\'eris\'e {\tt playsnd}}\index{playsnd}
 La commande {\tt playsnd} ex\'ecut\'ee sur une machine locale
 permet d'\'ecouter le son correspondant aux donn\'ees num\'eris\'ees
 pass\'ees en argument, par exemple lues avec la commande {\tt readwav}
 ou g\'en\'er\'ees par des op\'erations sur le r\'esultat de la
-commande {\tt soundsec}. Les arguments sont soit au format de
-la commande {\tt readwav}, soit la liste des donn\'ees num\'eriques
-\'echantillonn\'ees pour un son mono utilisant les
+commande {\tt soundsec}.\\
+Les arguments sont soit au format de la commande {\tt readwav}, soit la liste 
+des donn\'ees num\'eriques \'echantillonn\'ees pour un son mono utilisant les
 param\`etres par d\'efaut (1 canal, 16 bits, 44100 Hz).
 
-\subsection{Pr\'eparer une donn\'ee de son num\'eris\'ee {\tt
-    soundsec}} \index{soundsec}
+\subsection{Pr\'eparer une donn\'ee de son num\'eris\'ee {\tt soundsec}} \index{soundsec}
 La commande {\tt soundsec} pr\'epare une donn\'ee de son pour un canal
 dont la dur\'ee en secondes est pass\'ee en argument. On peut passer en
-argument optionnel la fr\'equence d'\'echantillonage.
+argument optionnel la fr\'equence d'\'echantillonage.\\
 Par exemple {\tt soundsec(2.5)} pr\'epare une donn\'ee son de 2.5
 secondes \'echantillon\'ee \`a la fr\'equence par d\'efaut de 44100Hz,
 alors que {\tt soundsec(1,22050) } pr\'epare une donn\'ee son de 1
-secondes \'echantillon\'ee \`a la fr\'equence de 22050Hz.
-
+secondes \'echantillon\'ee \`a la fr\'equence de 22050Hz.\\
 Le r\'esultat de {\tt soundsec} est un vecteur, dont le $i$-i\`eme
 \'el\'ement est le temps correspondant \`a l'indice $i$. On lui
-applique en g\'en\'eral des op\'erations, par exemple
-\verb|sin(2*pi*440*soundsec(1.3))| pour avoir une sinuso\"ide
-de fr\'equence 440 \'echantillonn\'ee 44100 fois par seconde
-pendant 1.3 seconde.
+applique en g\'en\'eral des op\'erations, par exemple \\
+\verb|sin(2*pi*440*soundsec(1.3))| \\
+pour avoir une sinuso\"ide de fr\'equence 440 \'echantillonn\'ee 44100 fois 
+par seconde pendant 1.3 seconde.
 
-\section{Comment lire et cr\'eer une image} 
+\section{Comment lire et cr\'eer une image}
 \subsection{Qu'est-ce qu'une image ?}
 Pour {\tt Xcas} une image est une liste {\tt a} de 5 \'el\'ements :
 \begin{itemize}
 \item {\tt a[0]} est une liste de 3 \'el\'ements : le nombre de canaux (3 ou 4)
-et le nombre de lignes $n$ et de colonnes $p$ utilis\'es pour la dimension de 
+et le nombre de lignes $n$ et de colonnes $p$ utilis\'es pour la dimension de
 l'image,
 \item {\tt a[1]} correspond au canal rouge : c'est une matrice $n,p$ de nombres
 entiers entre 0 et 255,
 \item {\tt a[2]} correspond au canal vert : c'est une matrice $n,p$ de nombres
 entiers entre 0 et 255,
-\item {\tt a[3]} correspond au canal pour la transparence : c'est une matrice 
+\item {\tt a[3]} correspond au canal pour la transparence : c'est une matrice
 $n,p$ de nombres entiers entre 0 et 255,
 \item {\tt a[4]} correspond au canal bleu : c'est une matrice $n,p$ de nombres
-entiers entre 0 et 255,
+entiers entre 0 et 255.
 \end{itemize}
-
+Pour creer d'autres couleurs que rouge, vert, bleu au pixel ligne i colonne j, 
+il faut donner des valeurs non nulles en ligne i colonne j des 1ere, 2eme et 
+4eme matrices, plus la valeur est grande plus la composante rouge, vert, bleu 
+sera importante.\\
+Par exemple :\\
+{\tt }
 \subsection{Pour lire une image : {\tt readrgb}}\index{readrgb}
-\noindent{\tt readrgb} peut lire un fichier contenant une image. Ce fichier 
+\noindent{\tt readrgb} peut lire un fichier contenant une image. Ce fichier
 peut \^etre un fichier {\tt .jpg} ou {\tt .png} ou {\tt .gif}.\\
-{\tt readrgb} renvoie [[nombre\_canaux,largeur,hauteur],rouge,vert,transparence,bleu] o\`u rouge,vert,transparence,bleu sont des matrices.\\ 
+{\tt readrgb} renvoie [[nombre\_canaux,largeur,hauteur],Rouge,Vert,
+Transparence,Bleu] o\`u Rouge,Vert,Transparence,Bleu sont des matrices.\\
 On tape :
 \begin{center}{\tt a:=readrgb("image.jpg")}\end{center}
 On obtient :
@@ -32088,65 +32653,94 @@ On obtient :
 
 \subsection{Pour visualiser une image}
 On peut voir une image dans un rectangle d'un graphe 2d, ou coll\'e
-\`a une surface d'un graphe 3d.
-Par exemple la commande
+\`a une surface d'un graphe 3d.\\
+Par exemple la commande :\\
 \verb|rectangle(200,0,1/2,gl_texture="terre.jpg")|
-affiche dans le plan un rectangle (d\'efini par les points 200 et 0
-de rapport 1/2) 
-contenant l'image num\'eris\'ee dans le fichier \verb|terre.jpg|.
+affiche dans le plan un rectangle (d\'efini par les points 200 et 0 de rapport 
+1/2) contenant l'image num\'eris\'ee dans le fichier \verb|terre.jpg|:\\
+\ \\
+\includegraphics[width=\textwidth]{terreex}\\
 Dans l'espace, on peut par exemple coller l'image sur une sph\`ere
-de centre l'origine et de rayon 1 par la commande
-\verb|sphere([0,0,0],1, gl_material=[gl_texture,"terre.jpg"])|
-
+de centre l'origine et de rayon 1 par la commande :\\
+\verb|sphere([0,0,0],1, gl_material=[gl_texture,"terre.jpg"])|: \\
+%\includegraphics[width=\textwidth]{terrex}
 \subsection{Pour  recr\'eer ou cr\'eer une image : {\tt writergb}}\index{writergb}
 \noindent{\tt writergb} permet de stocker une image lue avec {\tt readrgb} dans
-un fichier de suffixe {\tt .png}.\\
-ou \\ 
-de cr\'eer une image et de la stocker dans un fichier de suffixe {\tt .png}.
-On peut cr\'eer cette image avec des niveaux de gris ou des 
-niveaux des  diff\'erentes couleurs. 
+un fichier de suffixe {\tt .png}\\
+ou \\
+de cr\'eer une image et de la stocker dans un fichier de suffixe {\tt .png}.\\
+On peut cr\'eer cette image avec des niveaux de gris ou avec des
+niveaux de diff\'erentes couleurs.
 \begin{itemize}
-\item On poss\'ede une variable (par exemple {\tt a}) contenant une image lue 
+\item On poss\'ede une variable (par exemple {\tt a}) contenant une image lue
 avec {\tt readrgb}. \\
-{\tt writergb} a deux arguments : le nom du fichier dans lequel on veut stocker 
-la nouvelle image et une liste contenant {\tt a[0]} (liste contenant le nombre 
-de canaux et les dimensions de la matrice des pixels de cette image), puis les 
+{\tt writergb} a deux arguments : le nom du fichier dans lequel on veut stocker
+la nouvelle image et une liste contenant {\tt a[0]} (liste contenant le nombre
+de canaux et les dimensions de la matrice des pixels de cette image), puis les
 couleurs de cette image qui sont les matrices {\tt a[1]} pour la couleur rouge,
 {\tt a[2]} pour la couleur verte, {\tt a[3]} pour la transparence et {\tt a[4]}
 pour la couleur bleu.\\
-La transparence permet de superposer plusieurs images : sa valeur va de 0 \`a 
+La transparence permet de superposer plusieurs images : sa valeur va de 0 \`a
 255 (si la transparence vaut 0 c'est un cache !).\\
+On tape pour cr\'eer une image avec {\tt Xcas} :
+\begin{verbatim}
+affichage(rectangle(0,100,1/4),1+rempli);
+affichage(rectangle(100,200,1/4),2+rempli);
+affichage(rectangle(25*i,100+25*i,1/4),3+rempli);
+affichage(rectangle(100+25*i,200+25*i,1/4),4+rempli)
+\end{verbatim}
+On obtient :\\
+\includegraphics[width=\textwidth]{image1234}\\
+On sauve  cette image (bouton {\tt M} situ\'e \`a gauche) sous le nom
+{\tt image1234}, ce qui cr\`ee :\\
+{\tt image1234.eps},  {\tt image1234.jpg}, {\tt image1234.png},
+{\tt image1234.pdf}.
 On tape :
-\begin{center}{\tt a:=readrgb("image.jpg")}\end{center}
+\begin{center}{\tt a:=readrgb("image1234.jpg")}\end{center}
+\begin{center}{\tt a[0]}\end{center}
+On obtient : {\tt [4,363,908]}\\
 Puis on tape :
-\begin{center}{\tt writergb("imagevrb.png",[a[0],a[2],a[1],a[3],a[4]])}\end{center}
-Puis on tape :
-\begin{center}{\tt gimp "imagevrb.png"}\end{center}
+\begin{center}{\tt writergb("image2134.png",[a[0],a[2],a[1],a[3],a[4]])}\end{center}
+On obtient (le rouge est devenu vert et le vert est devenu rouge) :\\
+\includegraphics[width=\textwidth]{image2134}\\
+Ou on tape dans un terminal :
+\begin{center}{\tt gimp "image2134.png"}\end{center}
 On obtient :
 \begin{center}{\tt l'image de d\'epart dans laquelle le rouge est devenu vert et le vert est devenu rouge}\end{center}
 Essayer de cr\`eer une image :
-\begin{center}{\tt writergb("essai.png",[[4,2,2],[[255,0],[0,0]], [[0,255],[0,0]],[[255,125],[255,255]], [[0,0],[255,0]]])}\end{center}
+\begin{center}{\tt writergb("essai1.png",[[4,2,2],[[255,0],[0,0]], [[0,255],[0,0]],[[255,125],[255,255]], [[0,0],[255,0]]])}\end{center}
 vous obtenez (avec un vert attenu\'e du au 125 de la 3i\`eme matrice):\\
 \includegraphics[width=\textwidth]{writergb1}
-ou encore essayer :\\
+ou encore essayer :
 \begin{center}{\tt writergb("image1.png",[[4,2,3],[[255,0,255],[0,255,0]], [[0,0,255],[0,0,0]],[[255,125,125],[255,255,255]], [[0,0,0],[255,255,0]]])}\end{center}
-\item On peut aussi cr\'eer et stocker des images, au format PNG avec une 
-version simplifi\'ee de la syntaxe : pas d'argument correspondant au nombre 
-de canaux et aux dimensions de la matrice des pixels de cette image ni de 
+\item On peut aussi cr\'eer et stocker des images, au format PNG avec une
+version simplifi\'ee de la syntaxe : pas d'argument correspondant au nombre
+de canaux et aux dimensions de la matrice des pixels de cette image ni de
 matrice correspondant \`a la transparence.\\
 {\tt writergb} a alors deux ou quatre arguments : le nom du fichier dans lequel
 on veut stocker la nouvelle image et la matrice des niveaux de gris des pixels,
-ou 3 matrices (du rouge, du vert et du bleu) donnant la couleur RGB des 
+ou 3 matrices (du rouge, du vert et du bleu) donnant la couleur RGB des
 pixels.\\
-Par exemple :\\
-\begin{center}{\tt writergb("image.png",[[255,0],[0,255]])}\end{center}
-cr\'ee et affiche une image 2x2 pixels au format PNG en 256 niveaux de gris 
+Par exemple :
+\begin{center}{\tt writergb("image2.png",[[65,125],[185,200]])}\end{center}
+cr\'ee et affiche une image 2x2 pixels au format PNG en 4 niveaux de gris
 (0 noir, 255 blanc)
-\begin{center}{\tt writergb("image.png",[[255,0],[0,0]],[[0,255],[0,0]], [[0,0],[255,0]])}\end{center}
-cr\'ee et affiche une image 2x2 pixels au format PNG en RGBA avec 256 niveaux 
-pour chaque couleur (rouge, bleu, vert). Ici la premi\`ere ligne rouge,vert et la deuxi\`eme ligne est bleu,noir.
+\begin{center}{\tt writergb("image3.png",[[255,250],[0,120]],[[0,255],[0,0]], [[0,0],[255,100]])}\end{center}
+cr\'ee et affiche une image 2x2 pixels au format PNG en RGBA avec 256 niveaux
+pour chaque couleur (rouge, bleu, vert). Ici la premi\`ere ligne rouge, jaune 
+(m\'elange de rouge (240) et vert (255)) et la deuxi\`eme ligne est bleu,violet (m\'elange de rouge(120) et de bleu (100)).\\
 Essayez :
-\begin{center}{\tt writergb("essai.png",[[4,300,300],makemat(0,300,300), makemat(0,300,300), makemat(255,300,300), makemat(0,300,300)+idn(300)*255])}\end{center}
+\begin{center}{\tt writergb("essai2.png",[[4,300,300],makemat(0,300,300), makemat(0,300,300), makemat(255,300,300), makemat(0,300,300)+idn(300)*255])}\end{center}
+\begin{center}{\tt writergb("essai3.png",[[4,300,300],makemat(250,100,100)+ranm(100,100), makemat(0,100,100)+ranm(100,100), makemat(255,100,100), makemat(0,100,100)+ranm(100,100)])}\end{center}
+{\bf Remarque}\\
+Il y a 2 choses distinctes: le nombre de points de l'image numeris\'ee et la 
+repr\'esentation graphique dans {\tt Xcas} qui se fait dans un rectangle avec 
+des coordonn\'ees. Dans [4,300,100] il y a 300 points horizontalement et 100 
+verticalement, si on met l'image dans un rectangle du plan, selon l'echelle 
+choisie pour le graphique horizontalement et verticalement, l'image 300x100 
+peut \^etre toute petite ou tr\`es grande. Si c'est tres grand chaque point de 
+l'image numeris\'ee originale sera repr\'esent\'e par un petit rectangle qui 
+occupera plusieurs pixels physiques sur l'\'ecran.
 \end{itemize}
 
 \chapter{Utilisation de  {\tt giac} \`a l'int\'erieur d'un programme}
@@ -32469,3 +33063,81 @@ On obtient :
 \begin{center}{\tt 4}\end{center}
 En effet : $\max(|a_{j,k}|)=4$
 
+\section{Comment lire et cr\'eer une image}
+\subsection{Qu'est-ce qu'une image ?}
+Pour {\tt Xcas} une image est une liste {\tt a} de 5 \'el\'ements :
+\begin{itemize}
+\item {\tt a[0]} est une liste de 3 \'el\'ements : le nombre de canaux (3 ou 4)
+et le nombre de lignes $n$ et de colonnes $p$ utilis\'es pour la dimension de 
+l'image,
+\item {\tt a[1]} correspond au canal rouge : c'est une matrice $n,p$ de nombres
+entiers entre 0 et 255,
+\item {\tt a[2]} correspond au canal vert : c'est une matrice $n,p$ de nombres
+entiers entre 0 et 255,
+\item {\tt a[3]} correspond au canal pour la transparence : c'est une matrice 
+$n,p$ de nombres entiers entre 0 et 255,
+\item {\tt a[4]} correspond au canal bleu : c'est une matrice $n,p$ de nombres
+entiers entre 0 et 255,
+\end{itemize}
+
+\subsection{Pour lire une image : {\tt readrgb}}\index{readrgb}
+\noindent{\tt readrgb} peut lire un fichier contenant une image. Ce fichier 
+peut \^etre un fichier {\tt .jpg} ou {\tt .png} ou {\tt .gif}.\\
+{\tt readrgb} renvoie [[nombre\_canaux,largeur,hauteur],rouge,vert,transparence,bleu] o\`u rouge,vert,transparence,bleu sont des matrices.\\ 
+On tape :
+\begin{center}{\tt a:=readrgb("image.jpg")}\end{center}
+On obtient :
+\begin{center}{\tt une liste de 5 \'el\'ements qui sont [4,20,10] suivi de 4 matrices de dimension 20,10 qui indiquent o\`u sont situ\'e les couleurs rouge,vert,transparence,bleu]}\end{center}
+
+\subsection{Pour  recr\'eer ou cr\'eer une image : {\tt writergb}}\index{writergb}
+\noindent{\tt writergb} permet de stocker une image lue avec {\tt readrgb} dans
+un fichier de suffixe {\tt .png}.\\
+ou \\ 
+de cr\'eer une image et de la stocker dans un fichier de suffixe {\tt .png}.
+On peut cr\'eer cette image avec des niveaux de gris ou des 
+niveaux des  diff\'erentes couleurs. 
+\begin{itemize}
+\item On poss\'ede une variable (par exemple {\tt a}) contenant une image lue 
+avec {\tt readrgb}. \\
+{\tt writergb} a deux arguments : le nom du fichier dans lequel on veut stocker 
+la nouvelle image et une liste contenant {\tt a[0]} (liste contenant le nombre 
+de canaux et les dimensions de la matrice des pixels de cette image), puis les 
+couleurs de cette image qui sont les matrices {\tt a[1]} pour la couleur rouge,
+{\tt a[2]} pour la couleur verte, {\tt a[3]} pour la transparence et {\tt a[4]}
+pour la couleur bleu.\\
+La transparence permet de superposer plusieurs images : sa valeur va de 0 \`a 
+255 (si la transparence vaut 0 c'est un cache !).\\
+On tape :
+\begin{center}{\tt a:=readrgb("image.jpg")}\end{center}
+Puis on tape :
+\begin{center}{\tt writergb("imagevrb.png",[a[0],a[2],a[1],a[3],a[4]])}\end{center}
+Puis on tape :
+\begin{center}{\tt gimp "imagevrb.png"}\end{center}
+On obtient :
+\begin{center}{\tt l'image de d\'epart dans laquelle le rouge est devenu vert et le vert est devenu rouge}\end{center}
+Essayer de cr\`eer une image :
+\begin{center}{\tt writergb("essai.png",[[4,2,2],[[255,0],[0,0]], [[0,255],[0,0]],[[255,125],[255,255]], [[0,0],[255,0]]])}\end{center}
+vous obtenez (avec un vert attenu\'e du au 125 de la 3i\`eme matrice):\\
+\includegraphics[width=\textwidth]{writergb1}
+ou encore essayer :\\
+\begin{center}{\tt writergb("image1.png",[[4,2,3],[[255,0,255],[0,255,0]], [[0,0,255],[0,0,0]],[[255,125,125],[255,255,255]], [[0,0,0],[255,255,0]]])}\end{center}
+\item On peut aussi cr\'eer et stocker des images, au format PNG avec une 
+version simplifi\'ee de la syntaxe : pas d'argument correspondant au nombre 
+de canaux et aux dimensions de la matrice des pixels de cette image ni de 
+matrice correspondant \`a la transparence.\\
+{\tt writergb} a alors deux ou quatre arguments : le nom du fichier dans lequel
+on veut stocker la nouvelle image et la matrice des niveaux de gris des pixels,
+ou 3 matrices (du rouge, du vert et du bleu) donnant la couleur RGB des 
+pixels.\\
+Par exemple :\\
+\begin{center}{\tt writergb("image.png",[[255,0],[0,255]])}\end{center}
+cr\'ee et affiche une image 2x2 pixels au format PNG en 256 niveaux de gris 
+(0 noir, 255 blanc)
+\begin{center}{\tt writergb("image.png",[[255,0],[0,0]],[[0,255],[0,0]], [[0,0],[255,0]])}\end{center}
+cr\'ee et affiche une image 2x2 pixels au format PNG en RGBA avec 256 niveaux 
+pour chaque couleur (rouge, bleu, vert). Ici la premi\`ere ligne rouge,vert et la deuxi\`eme ligne est bleu,noir.
+Essayez :
+\begin{center}{\tt writergb("essai3.png",[[4,300,300],makemat(0,300,300), makemat(0,300,300), makemat(255,300,300), makemat(0,300,300)+idn(300)*255])}\end{center}
+et
+\begin{center}{\tt writergb("essai4.png",[[4,300,300],makemat(250,100,100)+ranm(100,100), makemat(0,100,100)+ranm(100,100), makemat(255,100,100), makemat(0,100,100)+ranm(100,100)])}\end{center}
+\end{itemize}

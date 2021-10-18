@@ -6,21 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Mise en facteur de xn dans un polynôme : factor_xn</TITLE>
+<TITLE>Coefficient du terme de plus haut degré d’un polynôme : lcoeff</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr361.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr363.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc447">6.26.14</A>  Mise en facteur de <I>x</I><SUP><I>n</I></SUP> dans un polynôme : <TT>factor_xn</TT></H3><P><A NAME="@default691"></A>
-<TT>factor_xn</TT> a comme argument un polynôme <TT>P</TT>.<BR>
-<TT>factor_xn</TT> renvoie le polynôme <TT>P</TT> dans lequel on a mis en facteur 
-<I>x</I><SUP><I>n</I></SUP> où <I>n</I> est le degré de <TT>P</TT> (<TT>n=degree(P)</TT>).<BR>
- On tape :
-</P><DIV CLASS="center"><TT>factor_xn(-x</TT><CODE><TT>^</TT></CODE><TT>4+3)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc448">6.27.11</A>  Coefficient du terme de plus haut degré d’un polynôme : <TT>lcoeff</TT></H3><P><A NAME="@default689"></A>
+<TT>lcoeff</TT> a comme argument un polynôme donné sous 
+forme symbolique ou par la liste de ses coefficients.<BR>
+<TT>lcoeff</TT> renvoie le coefficient de plus haut degré de ce polynôme 
+(<TT>lcoeff</TT>=leading coefficient).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>lcoeff([2,1,-1,0])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4*(-1+3*x</TT><CODE><TT>^</TT></CODE><TT>-4)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lcoeff(3*x</TT><CODE><TT>^</TT></CODE><TT>2+5*x,x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lcoeff(3*x</TT><CODE><TT>^</TT></CODE><TT>2+5*x*y</TT><CODE><TT>^</TT></CODE><TT>2,y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>5*x</TT></DIV><HR>
 <A HREF="cascmd_fr361.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr363.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

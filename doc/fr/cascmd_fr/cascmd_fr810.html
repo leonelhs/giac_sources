@@ -6,68 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’instruction conditionnelle : if then else end, si alors sinon fsi</TITLE>
+<TITLE>Les sorties : print, Disp, afficher</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr809.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr811.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc939">8.4.18</A>  L’instruction conditionnelle : <TT>if then else end, si alors sinon fsi</TT></H3><P><A NAME="@default1456"></A><A NAME="@default1457"></A><A NAME="@default1458"></A><A NAME="@default1459"></A><A NAME="@default1460"></A><A NAME="@default1461"></A><A NAME="@default1462"></A><A NAME="@default1463"></A>
-<TT>if</TT> est suivi d’un booléen entre des parenthèses.<BR>
-<TT>if</TT> permet de faire, ou de ne pas faire, un bloc d’instructions, selon la 
-valeur de ce booléen.<BR>
-<TT>if</TT> utilisé avec <TT>else</TT> permet de choisir de faire, soit un bloc 
-d’instructions, soit un autre bloc d’instructions , selon la valeur du 
-booléen.<BR>
-<TT>fi</TT> est suivi d’un booléen et de <TT>then</TT>.<BR>
-Selon la valeur de ce booléen <TT>if</TT> permet de faire, ou de ne pas faire, 
-les instructions situées entre <TT>else</TT> et <TT>end</TT>.<BR>
-Selon la valeur de ce booléen <TT>if</TT> utilisé avec <TT>else</TT> permet de 
-choisir de faire, soit 
-les instructions situées entre <TT>then</TT> et <TT>else</TT>, soit les 
-instructions situées entre <TT>else</TT> et <TT>end</TT>.<BR>
-<TT>si</TT> est suivi d’un booléen et de <TT>alors</TT>.<BR>
-Selon la valeur de ce booléen <TT>si</TT> permet de faire, ou de ne pas faire, 
-les instructions situées entre <TT>alors</TT> et <TT>fsi</TT>.<BR>
-Selon la valeur de ce booléen <TT>si</TT> utilisé avec <TT>sinon</TT> permet de 
-choisir de faire, soit 
-les instructions situées entre <TT>alors</TT> et <TT>sinon</TT>, soit les 
-instructions situées entre <TT>sinon</TT> et <TT>fsi</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc950">9.4.8</A>  Les sorties : <TT>print, Disp, afficher</TT></H3><P><A NAME="@default1449"></A><A NAME="@default1450"></A><A NAME="@default1451"></A>
+<TT>print</TT> (ou <TT>Disp</TT> ou <TT>afficher</TT>) a comme argument une séquence 
+de chaîne de caractères ou de noms de variables.<BR>
+<TT>print</TT> (ou <TT>Disp</TT> ou <TT>afficher</TT>) écrit en bleu les chaînes de
+caractères et le contenu des variables dans l’écran situé avant la 
+réponse.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>a:=3;b:=2;</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a:=12</TT></DIV><P>
 puis :
-</P><DIV CLASS="center"><TT>if (a&gt;b) {a:=a+5;b:=a-b;}</TT></DIV><P>
+</P><DIV CLASS="center"><TT>print("a=",a)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>6</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>a:=3;b:=2;</TT></DIV><P>
-puis :</P><DIV CLASS="center"><TT>if a&gt;b then a:=a+5;b:=a-b;end</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>6</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>a:=3;b:=2;</TT></DIV><P>
-puis :</P><DIV CLASS="center"><TT>si a&gt;b alors a:=a+5;b:=a-b;fsi</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>6</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>maxi(a,b):={if (a&gt;b) {return a;} else {return b;}}</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>maxi(2,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>maxi(a,b):={if a&gt;b then return a; else return b;end}</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>maxi(2,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>maxi(a,b):={si a&gt;b alors retourne a; sinon retourne b;fsi}</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>maxi(2,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>"a=",12 écrit en bleu et la réponse est 1</TT></DIV><HR>
 <A HREF="cascmd_fr809.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr811.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

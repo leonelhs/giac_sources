@@ -6,30 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice compagnon d’un polynôme : companion</TITLE>
+<TITLE>Polynôme caractéristique d’une matrice creuse de grande dimension: pcar_hessenberg</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr621.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr623.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc730">6.49.11</A>  Matrice compagnon d’un polynôme : <TT>companion</TT></H3><P><A NAME="@default1140"></A><A NAME="sec:compagne"></A>
-<TT>companion</TT> a comme argument un polynôme <I>P</I> unitaire et le nom 
-de sa variable.<BR>
-<TT>companion</TT> renvoie la matrice qui a pour polynôme caractéristique le
-polynôme <I>P</I>.<BR>
-Si <I>P</I>(<I>x</I>)=<I>x</I><SUP><I>n</I></SUP>+<I>a</I><SUB><I>n</I>−1</SUB><I>x</I><SUP><I>n</I>−1</SUP>+...+<I>a</I>−1<I>x</I>+<I>a</I><SUB>0</SUB>,
-cette matrice est égale à la matrice unité d’ordre <I>n</I>−1 bordée par
-[0,0..,0,−<I>a</I><SUB>0</SUB>] comme première ligne, et par
-[−<I>a</I><SUB>0</SUB>,−<I>a</I><SUB>1</SUB>,....,−<I>a</I><SUB><I>n</I>−1</SUB>] comme dernière colonne.<BR>
+<H3 CLASS="subsection"><A NAME="htoc731">6.50.8</A>  Polynôme caractéristique d’une matrice creuse de grande dimension: <TT>pcar_hessenberg</TT></H3><P><A NAME="@default1141"></A>
+<TT>pcar_hessenberg</TT> a comme argument une matrice <I>A</I> d’ordre <I>n</I>.<BR>
+<TT>pcar_hessenberg</TT> renvoie le polynôme caractéristique <I>P</I> de <I>A</I> 
+calculé selon la méthode de Hessenberg (lorsque les coefficients de <I>A</I> 
+sont dans un corps fini ou sont à représentation finie) et définit 
+par :<BR>
+<I>P</I>(<I>x</I>)=(−1)<SUP><I>n</I></SUP>.det(<I>A</I>−<I>x</I>.<I>I</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>companion(x</TT><CODE><TT>^</TT></CODE><TT>2+5x-7,x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[0,7],[1,-5]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>companion(x</TT><CODE><TT>^</TT></CODE><TT>4+3x</TT><CODE><TT>^</TT></CODE><TT>3+2x</TT><CODE><TT>^</TT></CODE><TT>2+4x-1,x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[0,0,0,1],[1,0,0,-4],[0,1,0,-2],[0,0,1,-3]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV><P>
+Donc le polynôme caractéristique de [[4,1,-2],[1,2,-1],[2,1,0]] est :<BR>
+<I>x</I><SUP>3</SUP>−6<I>x</I><SUP>2</SUP>+12<I>x</I>−8.</P><HR>
 <A HREF="cascmd_fr621.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr623.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

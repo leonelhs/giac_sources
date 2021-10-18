@@ -6,22 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer les arccos en arctan : acos2atan</TITLE>
+<TITLE>Rassembler les sinus et les cosinus de même angle : tcollect tCollect rassembler_trigo</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr315.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr317.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc398">6.23.8</A>  Transformer les arccos en arctan : <TT>acos2atan</TT></H3><P><A NAME="@default609"></A>
-<TT>acos2atan</TT> a comme argument une expression trigonométrique.<BR>
-<TT>acos2atan</TT> transforme cette expression en remplaçant :<BR>
-arccos(<I>x</I>) par 
- π/2−arctan(<I>x</I>/√<SPAN style="text-decoration:overline">1−<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc399">6.24.5</A>  Rassembler les sinus et les cosinus de même angle : <TT>tcollect tCollect rassembler_trigo</TT></H3><P><A NAME="@default605"></A><A NAME="@default606"></A><A NAME="@default607"></A>
+<TT>tcollect</TT> ou <TT>tCollect</TT> a comme argument une expression 
+trigonométrique.<BR>
+<TT>tcollect</TT> linéarise cette expression en fonction de sin(<I>n</I>.<I>x</I>) et cos(<I>n</I>.<I>x</I>) puis rassemble les sinus et les cosinus de même angle.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>acos2atan(acos(x))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>tcollect(sin(x)+cos(x))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>pi/2-atan(x/sqrt(1-x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>sqrt(2)*cos(x-pi/4)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>tcollect(2*sin(x)*cos(x)+cos(2*x))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(2)*cos(2*x-pi/4)</TT></DIV><HR>
 <A HREF="cascmd_fr315.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr317.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,28 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les points et les nombres complexes</TITLE>
+<TITLE>Avoir du papier pointé : papier_pointe dot_paper</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr858.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr860.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1000">9.8.1</A>  Les points et les nombres complexes</H3><P><A NAME="sec:pointa2"></A>
-L’affixe d’un point en géométrie plane est un nombre complexe.<BR>
-La commande <TT>point</TT> a comme argument un nombre complexe <I>c</I> (ou un couple 
-de 2 nombres <I>a</I>,<I>b</I>) et renvoie
-le point d’affixe <I>c</I> (ou d’affixe <I>a</I>+<I>ib</I>) tracé dans un écran graphique.<BR>
-Certaines fonctions peuvent admettre comme argument soit un point, soit un 
-nombre complexe, mais quelquefois le résultat n’est pas le même.<BR>
-<B>Exemples</B><BR>
-<TT>re(1+2*i)</TT> renvoie <TT>1</TT><BR>
-Si <TT>A:=point(1+2*i)</TT>, <TT>re(A)</TT> renvoie un point d’affixe <TT>1</TT>, 
-et <TT>im(A)</TT> renvoie un point d’affixe <TT>2*i</TT><BR>
-<TT>cercle(1,1+i)</TT> renvoie le cercle de centre le point d’affixe 1 et de
-rayon égal à √<SPAN style="text-decoration:overline">2</SPAN>=<TT>abs(1+i)</TT>,<BR>
-<TT>cercle(1,point(1+i))</TT> renvoie le cercle de diamètre le point d’affixe 
-1 et le point d’affixe (1+i)</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1005">10.2.6</A>  Avoir du papier pointé : <TT>papier_pointe dot_paper</TT></H3><P><A NAME="@default1543"></A><A NAME="@default1544"></A>
+<TT>papier_pointe</TT> permet d’avoir du papier pointé c’est à dire
+de tracer un reseau de points sur des droites horizontales et sur des droites
+de pente tan(<I>t</I>).<BR>
+<TT>papier_pointe</TT> a 3,4 ou 5 arguments : l’unité <TT>ux</TT> sur l’axe des 
+<I>x</I>, l’angle <TT>t</TT> et l’unité 
+<TT>uy</TT> sur l’axe des <I>y</I> et éventuellement <TT>x=xmin..xmax,y=ymin..ymax</TT>
+pour n’avoir que des points dans le rectangle
+<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
+les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
+Vous avez la possibilité d’enlever les axes orthonormés en utilisant
+le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
+On tape pour avoir les sommets d’un réseau :
+</P><DIV CLASS="center"><TT>papier_pointe(0.6,pi/2,0.6)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le pointage de tous les sommets du reseau formé par des carrés dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>papier_pointe(1,pi/3,sqrt(3)/2,x=-2..3,y=-1..2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le pointage de tous les sommets du reseau formé par des triangles équilatéraux dans le rectangle </TT><TT>[-2,3]×[-1,2]</TT></DIV><HR>
 <A HREF="cascmd_fr858.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr860.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

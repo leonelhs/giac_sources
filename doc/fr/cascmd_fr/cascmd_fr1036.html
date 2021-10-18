@@ -6,37 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La translation : translation</TITLE>
+<TITLE>Savoir si 3 points sont alignés : is_collinear est_aligne</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1035.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1037.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1204">10.14.2</A>  La translation : <TT>translation</TT></H3><P><A NAME="@default2009"></A><A NAME="sec:translation3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr940.html#sec:translation2">9.17.2</A> pour la géométrie plane.<BR>
-<TT>translation</TT>, en géométrie 3-d, a un ou deux arguments : 
-le vecteur de translation donné par la liste de ses coordonnées et 
-éventuellement l’objet géométrique à transformer.<BR>
-Lorsque <TT>translation</TT> a un argument, c’est une fonction qui agit sur un 
-objet géométrique.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1214">11.13.6</A>  Savoir si 3 points sont alignés : <TT>is_collinear est_aligne</TT></H3><P><A NAME="@default2006"></A><A NAME="@default2007"></A><A NAME="sec:estaligne3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr958.html#sec:estaligne2">10.18.2</A> pour la géométrie plane.<BR>
+<TT>est_aligne</TT> est une fonction booléenne ayant comme 
+argument une liste ou une séquence de points.<BR>
+<TT>est_aligne</TT> vaut 1 si les points sont alignés, et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>t:=translation([1,1,1])</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>t(point(1,2,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_aligne([2,0,0],[0,2,0],[1,1,0])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point (2,3,4) est tracé</TT></DIV><P>
-Lorsque <TT>translation</TT> a deux arguments, <TT>translation</TT> dessine et 
-renvoie le transformé du deuxième argument dans la translation de vecteur 
-le premier argument.<BR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>translation([1,1,1], point(1,2,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_aligne([2,0,0],[0,2,0],[0,1,1])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point (2,3,4) est tracé</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>translation([1,1,1],droite([0,0,0],[1,2,3]))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La droite passant par les points (1,1,1) et (2,3,4)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr1035.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1037.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

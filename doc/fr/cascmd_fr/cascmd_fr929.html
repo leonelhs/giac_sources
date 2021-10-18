@@ -6,63 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’aire d’un polygone et son affichage : areaat aireen et areaatraw aireenbrut</TITLE>
+<TITLE>L’équation cartésienne d’un objet géométrique : equation</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr928.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr930.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1078">9.16.9</A>  L’aire d’un polygone et son affichage : <TT>areaat aireen</TT> et <TT>areaatraw aireenbrut</TT></H3><P><A NAME="@default1807"></A><A NAME="@default1808"></A><A NAME="@default1809"></A><A NAME="@default1810"></A>
-<TT>areaat</TT> ou <TT>aireen</TT> et <TT>areaatraw</TT> ou <TT>aireenbrut</TT> 
-sont des commandes obtenues 
-lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
-<TT>Mode-&gt;Mesures-&gt;aireen</TT> ou <TT>Mode-&gt;Mesures-&gt;airenbrut</TT>. Dans ce cas il 
-faut que tous les objets désignés par la souris soient déjà nommés.<BR>
-On peut néammoins taper ces commandes dans une ligne de commande.<BR>
-
-<TT>areaat</TT> ou <TT>aireen</TT> et <TT>areaatraw</TT> ou <TT>aireenbrut</TT> ont comme 
-arguments un cercle ou un polygone étoilé par rapport à son premier 
-sommet et 1 point (ou 1 nombre complexe qui est l’affixe d’un point).<BR>
-<TT>areaat</TT> ou <TT>aireen</TT> renvoie le point, calcule l’aire du cercle ou 
-polygone étoilé par rapport à son premier sommet et affiche cette aire 
-à l’endroit du point avec une légende. <B>Attention</B> Il faut que le cercle
-ou le polygone ait un nom.<BR>
-<TT>areaatraw</TT> ou <TT>aireenbrut</TT> renvoie le point, calcule l’aire du cercle 
-ou du polygone étoilé par rapport à son premier sommet et affiche cette 
-aire à l’endroit du point.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1088">10.15.7</A>  L’équation cartésienne d’un objet géométrique : <TT>equation</TT></H3><P><A NAME="@default1793"></A><A NAME="sec:equation2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1026.html#sec:equation3">11.12.5</A> pour la géométrie 3-d.<BR>
+<TT>equation</TT> permet d’avoir l’équation cartésienne d’un objet
+géométrique.<BR>
+<B>Attention</B> !!! il faut auparavant purger les variables <TT>x</TT> et 
+<TT>y</TT> en tapant <TT>purge(x)</TT> et <TT>purge(y)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>t:=triangle(0,1,i)</TT></DIV><DIV CLASS="center"><TT>aireen(t,(1+i)/2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>equation(droite(-1,i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1/2 s’écrit au point(1+i)/2 avec la légende</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x-y)=-1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>aireenbrut(triangle(0,1,i),(1+i)/2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>equation(cercle(-1,i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1/2 s’écrit au point(1+i)/2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>cc:=cercle(0,2)</TT></DIV><DIV CLASS="center"><TT>aireen(cc,2.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>4*pi s’écrit au point(2.2) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>aireenbrut(cercle(0,2),2.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>4*pi s’écrit au point(2.2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>c:=carre(0,2)</TT></DIV><DIV CLASS="center"><TT>aireen(c,2.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>4 s’écrit au point(2.2) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>aireenbrut(carre(0,2),2.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>4 s’écrit au point(2.2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>h:=hexagone(0,1)</TT></DIV><DIV CLASS="center"><TT>aireen(h,1.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3*sqrt(3)/2 s’écrit au point(1.2) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>aireenbrut(hexagone(0,1),1.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3*sqrt(3)/2 s’écrit au point(1.2)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>((x+1)</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2)=1</TT></DIV><P>
+qui est l’équation du cercle de centre -1 et de rayon le module de <TT>i</TT>.
+</P><HR>
 <A HREF="cascmd_fr928.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr930.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

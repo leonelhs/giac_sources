@@ -6,28 +6,77 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour ne pas évaluer une expression : quote hold ou ’</TITLE>
+<TITLE>Pour changer le niveau dévaluation : eval_level</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr253.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr255.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc326">6.13.5</A>  Pour ne pas évaluer une expression : <TT>quote hold ou ’</TT></H3><P><A NAME="@default427"></A><A NAME="@default428"></A><A NAME="@default429"></A>
-Si on ne veut pas qu’une expression soit évaluée dans un calcul, il faut 
-la quoter, soit avec <TT>’</TT>, soit à l’aide de la fonction <TT>quote</TT> (ou 
-<TT>hold</TT>).<BR>
-<B>Remarque</B>
-Lorsqu’on tape par exemple <TT>a:=quote(a)</TT> (ou <TT>a:=hold(a)</TT>) 
-cela a pour effet de purger la variable <TT>a</TT> et cette instruction renvoie 
-la valeur de cette variable (ou les hypothèses faites sur cette variable).<BR>
-Donc <TT>a:=quote(a)</TT> est synonyme de <TT>purge(a)</TT> (c’est pour avoir la compatibilité Maple).<BR>
+<H3 CLASS="subsection"><A NAME="htoc327">6.14.3</A>  Pour changer le niveau dévaluation : <TT>eval_level</TT></H3><P><A NAME="@default426"></A>
+On peut alors avoir différentes évaluation d’une variable selon le niveau
+<I>n</I> dévaluation demandé : ce nombre <I>n</I> est le nombre de la case <TT>eval</TT>
+de la configuration du CAS qui représente le nombre maximum d’évaluations 
+récursives en mode interactif (cf <A HREF="cascmd_fr020.html#sec:configcas">1.6.1</A>). On peut changer ce 
+nombre avec <TT>eval_level</TT> qui a comme argument l’entier <I>n</I>&gt;0.<BR>
+<TT>eval_level()</TT> renvoie la valeur de <TT>eval</TT> de la configuration du 
+CAS.<BR>
+<TT>eval_level(0)</TT> met la valeur de <TT>eval</TT> de la configuration du 
+CAS à 0 et du coup plus rien ne sera évalué. On peut revenir en 
+situation normale en changeant la valeur de <TT>eval</TT> de la configuration du 
+CAS.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>a:=2;quote(2+3*a)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>a:=2;’2+3*a’</TT></DIV><P>
+</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>eval_level(1)</TT></DIV><P>
+puis
+</P><DIV CLASS="center"><TT>a,b,c</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(2,2+3.a)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>b+1,c+1,3</TT></DIV><P>
+et <TT>eval</TT> de la configuration du CAS vaut 1.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>eval_level(2)</TT></DIV><P>
+puis
+</P><DIV CLASS="center"><TT>a,b,c</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>c+1+1,4,3</TT></DIV><P>
+et <TT>eval</TT> de la configuration du CAS vaut 2.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>eval_level(3)</TT></DIV><P>
+puis
+</P><DIV CLASS="center"><TT>a,b,c</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>5,4,3</TT></DIV><P>
+et <TT>eval</TT> de la configuration du CAS vaut 3.<BR>
+On tape ensuite :
+</P><DIV CLASS="center"><TT>eval_level()</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+ce qui veut dire que <TT>eval</TT> de la configuration du CAS vaut 3.<BR>
+<B>Remarque</B><BR>
+ On peut préciser le niveau dévaluation d’une variable sans changer la 
+configuration du CAS en utilisant <TT>eval</TT> avec 2 arguments une expression et 
+son niveau d’évaluation.
+On tape :
+</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
+puis
+</P><DIV CLASS="center"><TT>eval(a,0),eval(a,1),eval(a,2),eval(a,3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>a,b+1,c+1+1,5</TT></DIV><P>
+<B>Attention</B><BR>
+<TT>eval_level</TT> est fait pour être exécuté seul, sinon il y aura 
+forcément des effets de frontière entre la valeur du niveau d’évaluation 
+utilisé pour les commandes de la ligne (en principe le prćdent) et la 
+nouvelle valeur qui s’appliquera après. Si on tape :<BR>
+</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
+puis sur un même niveau :
+</P><DIV CLASS="center"><TT>eval_level(3);a,b,c</TT></DIV><P>
+si <TT>eval</TT> de configuration du CAS vaut 1 alors <TT>a,b,c</TT> seront 
+évalués au niveau 1, puis <TT>eval</TT> de configuration du CAS vaudra 3.</P><HR>
 <A HREF="cascmd_fr253.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr255.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

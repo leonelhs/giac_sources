@@ -6,21 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Instruction du debuggeur : cont</TITLE>
+<TITLE>Pour sortir d’une boucle : break</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr835.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr837.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc968">8.7.6</A>  Instruction du debuggeur : <TT>cont</TT></H3><P><A NAME="@default1511"></A>
-<TT>cont</TT> n’a pas d’argument.<BR>
-<TT>cont()</TT> est une instruction du debuggeur et permet de continuer un 
-programme arrêté, par un point d’arrêt, dans le debuggeur.<BR>
+<H3 CLASS="subsection"><A NAME="htoc978">9.6.2</A>  Pour sortir d’une boucle : <TT>break</TT></H3><P><A NAME="@default1513"></A>
+<TT>break</TT> n’a pas d’argument ni parenthèse.<BR>
+<TT>break</TT> permet de sortir d’une boucle.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cont()</TT></DIV><P>
+</P><PRE CLASS="verbatim">testbreak(a,b):={
+local r;
+while (1==1){
+  if (b==0){break;} 
+  r:=irem(a,b);
+  a:=b;
+  b:=r;
+}
+return a;
+}
+</PRE><P>puis on tape :
+</P><DIV CLASS="center"><TT>testbreak(4,0)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le déroulement du programme jusqu’au prochain point d’arrêt</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>4 car il y a eu l’interruption de la boucle while quand b==0</TT></DIV><HR>
 <A HREF="cascmd_fr835.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr837.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,21 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de Student : student_icdf</TITLE>
+<TITLE>Probabilité que X égale [k0,k1..kj]+K lorsque X suit une loi multinomiale de probabilité [p0,p1,..pj]=P : multinomial</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr741.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr743.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc865">7.4.17</A>  Fonction de répartition inverse de Student : <TT>student_icdf</TT></H3><P><A NAME="@default1331"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de Student ayant <I>n</I>
-degrés de liberté, si on a <TT>student_icdf(n,x)=h</TT> c’est que :<BR>
- <I>Proba</I>(<I>X</I> ≤ <I>h</I>)=<TT>x=student_cdf(n,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc876">8.4.7</A>  Probabilité que <I>X</I> égale [<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>]+<I>K</I> lorsque <I>X</I> suit une loi multinomiale de probabilité [<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>]=<I>P</I> : <TT>multinomial</TT></H3><P><A NAME="@default1331"></A>
+La probabilité pour que <I>X</I> égale <I>K</I>=[<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>]
+(avec <I>k</I><SUB>0</SUB>+..+<I>k</I><SUB><I>j</I></SUB>=<I>n</I>) lorsque <I>X</I> suit une loi multinomiale de probabilité 
+<I>P</I>=[<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>] (avec <I>p</I><SUB>0</SUB>+..+<I>p</I><SUB><I>j</I></SUB>=1) est :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>multinomial</I>(<I>n</I>,<I>P</I>,<I>K</I>)=</TT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>!</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">(<I>k</I><SUB>0</SUB>!<I>k</I><SUB>1</SUB>!..<I>k</I><SUB><I>j</I></SUB>!)</TD></TR>
+</TABLE></TD><TD CLASS="dcell">*(<I>p</I><SUB>0</SUB><SUP><I>k</I><SUB>0</SUB></SUP> <I>p</I><SUB>1</SUB><SUP><I>k</I><SUB>1</SUB></SUP>..<I>p</I><SUB><I>j</I></SUB><SUP><I>k</I><SUB><I>j</I></SUB></SUP>)</TD></TR>
+</TABLE><P>
+<B>Remarque</B>
+<TT>multinomial(n,P,K)</TT> avec <I>P</I>=[<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>] et <I>K</I>=[<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>] renvoie
+<I>n</I>!/(<I>k</I><SUB>0</SUB>!<I>k</I><SUB>1</SUB>!..<I>k</I><SUB><I>j</I></SUB>!)*(<I>p</I><SUB>0</SUB><SUP><I>k</I><SUB>0</SUB></SUP> <I>p</I><SUB>1</SUB><SUP><I>k</I><SUB>1</SUB></SUP>..<I>p</I><SUB><I>j</I></SUB><SUP><I>k</I><SUB><I>j</I></SUB></SUP>) même si 
+<I>p</I><SUB>0</SUB>+..+<I>p</I><SUB><I>j</I></SUB>≠ 1 mais renvoie une erreur si <I>k</I><SUB>0</SUB>+..+<I>k</I><SUB><I>j</I></SUB>≠ <I>n</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>student_icdf(5,0.95)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>multinomial(10,[0.2,0.3,0.5],[3,2,5])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2.01504837333</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.0567</TT></DIV><P>
+On vérifie :<BR>
+10!/(3!*2!*5!)*0.2<SUP>3</SUP>*0.3<SUP>2</SUP>*0.5<SUP>5</SUP>=0.0567.<BR>
+Donc la probabilité d’obtenir [3,2,5] (3 fois l’objet ayant la probabilité 
+0.2 d’être tiré, 2 fois l’objet ayant la probabilité 0.3 d’être tiré 
+et 5 fois l’objet ayant la probabilité 0.5 d’être tiré) lors de 10 
+tirages d’un objet parmi ces 3 objets est 0.0567.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>multinomial(4,[0.5,0.5],[2,2])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>binomial(4,2,0.5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.375</TT></DIV><HR>
 <A HREF="cascmd_fr741.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr743.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

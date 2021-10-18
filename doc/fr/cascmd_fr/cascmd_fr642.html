@@ -6,49 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Procédé de Gramschmidt : gramschmidt</TITLE>
+<TITLE>Transformer une matrice en une forme quadratique : a2q</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr641.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr643.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc753">6.52.5</A>  Procédé de Gramschmidt : <TT>gramschmidt</TT></H3><P><A NAME="@default1163"></A>
-<TT>gramschmidt</TT> a un ou deux paramètres : 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-une matrice vue comme une liste de vecteurs lignes, 
-le produit scalaire ètant le produit scalaire canonique, ou
-</LI><LI CLASS="li-itemize">un vecteur contenant la base d’un espace vectoriel et une fonction qui 
-définit un produit scalaire.<BR>
-</LI></UL><P>
-<TT>gramschmidt</TT> donne une base orthonormale par rapport à ce produit 
-scalaire.<BR>
+<H3 CLASS="subsection"><A NAME="htoc754">6.53.2</A>  Transformer une matrice en une forme quadratique : <TT>a2q</TT></H3><P><A NAME="@default1164"></A>
+<TT>a2q</TT> a deux arguments : une matrice symétrique <I>A</I> 
+représentant une forme quadratique <I>q</I> et le vecteur de composantes les 
+variables utilisées.<BR>
+<TT>a2q</TT> renvoie la forme quadratique <I>q</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]]))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]],dot))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a2q([[0,1],[1,0]],[x,y])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[(sqrt(3))/3,(sqrt(3))/3,(sqrt(3))/3],
-[(-(sqrt(6)))/6,(-(sqrt(6)))/6,(sqrt(6))/3],
-[(-(sqrt(2)))/2,(sqrt(2))/2,0]]</TT></DIV><P>
-<B>Exemple</B><BR>
-Pour les polynômes de degré &lt;<I>n</I>, on considère le produit scalaire 
-défini par : 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>.<I>Q</I>=</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>P</I>(<I>x</I>).<I>Q</I>(<I>x</I>)<I>dx</I> </TD></TR>
-</TABLE><P>
+</P><DIV CLASS="center"><TT>2*x*y</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],(p,q)-&gt;integrate(p*q,x,-1,1))</TT></DIV><P>
-Ou on écrit la fonction <TT>p_scal</TT>, on tape :<BR>
-<TT>p_scal(p,q):=integrate(p*q,x,-1,1)</TT><BR>
-et on tape :
-</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],p_scal)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a2q([[1,2],[2,4]],[x,y]) </TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1/(sqrt(2)),(1+x-1)/sqrt(2/3)]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+4*x*y+4*y</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr641.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr643.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

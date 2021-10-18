@@ -13,10 +13,10 @@
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascas012.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H1 CLASS="chapter"><A NAME="htoc171">Chapitre 11</A>  Pour s’amuser en géométrie plane</H1><H2 CLASS="section"><A NAME="toc69"></A><A NAME="htoc172">11.1</A>  Des problèmes de plus court trajet</H2><P>
+<H1 CLASS="chapter"><A NAME="htoc159">Chapitre 11</A>  Pour s’amuser en géométrie plane</H1><H2 CLASS="section"><A NAME="toc63"></A><A NAME="htoc160">11.1</A>  Des problèmes de plus court trajet</H2><P>
 Les problème de plus court trajet sont souvent difficiles...
 En voici quelques uns plutôt faciles. 
-</P><H3 CLASS="subsection"><A NAME="htoc173">11.1.1</A>  Comment placer un pont</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc161">11.1.1</A>  Comment placer un pont</H3><P>
 Deux villages assimilés à deux points <I>A</I> et <I>B</I> sont situés de part et 
 d’autre d’une rivière assimilée à deux droites parallèles <I>D</I>1 et <I>D</I>2.
 Où doit-on placer un pont <I>PQ</I> (perpendiculairement aux berges) sur la 
@@ -31,32 +31,17 @@ de choisir <I>A</I>,<I>Q</I>,<I>B</I> alignés.<BR>
 Le dessin avec <TT>Xcas</TT> :<BR>
 On clique deux points <TT>A</TT> à gauche de <I>x</I>=−1 et <TT>B</TT> à droite 
 de <I>x</I>=1.
-On peut ensuite faire bouger les points <TT>A</TT> ou <TT>B</TT> et visualiser les 
-trajets <TT>APQB</TT> et <TT>ARQB</TT>. 
-On tape par exemple :
-</P><PRE CLASS="verbatim">A:=point([-5/2,1,'affichage'=0]);
-B:=point([5,-2,'affichage'=0]);
-D1:=droite(-1,-1+i):;D1;
-D2:=droite(1,1+i):;D2;
+</P><PRE CLASS="verbatim">D1:=droite(-1,-1+i);
+D2:=droite(1,1+i);
 R:=translation(2,A);
-polygone_ouvert(A,R,Q,affichage=1);
-segment(R,B,affichage=ligne_tiret_point+ 4);
-d:=mediatrice(R,B);
-Q:=inter_unique(d,D2);
+Q:=inter(droite(B,R),D2)[0];
 P:=translation(-2,Q);
-polygone_ouvert(A,P,Q,B);
-supposons(a=[-2.86,-5,5,0.01]);
-p:=point(-1+i*a);
-q:=point(1+i*a);
-polygone_ouvert(A,p,q,B);
-segment(R,q,affichage=1);
-legende(-6+4i,"Ap="+string(evalf(longueur(A,p))));
-legende(-6+3i,"Bq="+string(evalf(longueur(B,q))));
-</PRE><P>On peut ensuite faire bouger les points <TT>p</TT> et <TT>q</TT> et visualiser les 
-trajets <TT>ApqB</TT> et <TT>ARqB</TT>. 
-On obtient :<BR>
-<IMG SRC="cascas085.png">
-</P><H3 CLASS="subsection"><A NAME="htoc174">11.1.2</A>  Comment placer deux ponts</H3><P>
+segment(A,P);
+segment(Q,P);
+segment(R,B);
+segment(R,A);
+</PRE><P>On peut ensuite faire bouger les points <TT>A</TT> ou <TT>B</TT> et visualiser les 
+trajets <TT>APQB</TT> et <TT>ARQB</TT>. </P><H3 CLASS="subsection"><A NAME="htoc162">11.1.2</A>  Comment placer deux ponts</H3><P>
 Deux villages assimilés à deux points <I>A</I> et <I>B</I> sont situés de part et 
 d’autre de deux rivières, l’une est assimilée à deux droites 
 parallèles <I>D</I>1 et <I>D</I>2 et l’autre est assimilée à deux droites 
@@ -94,7 +79,7 @@ ou <TT>B</TT> pour voir que :<BR>
 <I>BQ</I>=<I>BP</I>4=largeur de l’autre rivière<BR>
 <I>AP</I>1+<I>P</I>1<I>P</I>2+<I>P</I>2<I>P</I>3+<I>P</I>3<I>P</I>4+<I>P</I>4<I>B</I>=<I>AR</I>+<I>RP</I>2+<I>P</I>2<I>P</I>3+<I>P</I>3<I>Q</I>+<I>QB</I>=<I>AR</I>+<I>RQ</I>+<I>QB</I><BR>
  et comprendre comment on fait la construction des deux ponts. 
-</P><H3 CLASS="subsection"><A NAME="htoc175">11.1.3</A>  Minimiser <I>AMB</I> avec <I>M</I> sur une droite</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc163">11.1.3</A>  Minimiser <I>AMB</I> avec <I>M</I> sur une droite</H3><P>
 Soient une droite <TT>d</TT> et deux points <TT>A</TT> et <TT>B</TT>. On veut 
 minimiser la distance <TT>AM+MB</TT> lorsque <TT>M</TT>∈<TT>d</TT>.<BR>
 Si les deux points sont de part et d’autre de <TT>d</TT>, c’est facile on trace 
@@ -120,19 +105,19 @@ segment(N,B);
 segment(C,N);
 </PRE><P>On peut ensuite faire bouger les points <TT>N</TT> ou <TT>B</TT> et visualiser les 
 trajets <TT>AMB</TT> et <TT>AMC</TT> en les comparant à <TT>ANB</TT> et <TT>ANC</TT>. 
-</P><H3 CLASS="subsection"><A NAME="htoc176">11.1.4</A>  Minimiser AMNB avec M et N chacun sur une droite</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc164">11.1.4</A>  Minimiser AMNB avec M et N chacun sur une droite</H3><P>
 Soient deux droites <TT>d1, d2</TT> et deux points <TT>A</TT> et <TT>B</TT>. On veut 
 minimiser la distance <TT>AM+MN+NB</TT> lorsque <TT>M</TT>∈<TT>d1</TT> et 
 <TT>N</TT>∈<TT>d2</TT>.<BR>
 Les deux droites définissent quatre portions de plan (I,II,III,IV) 
 (I et III étant opposés par le sommet). 
 Il y a plusieurs cas à distinguer et selon la position de <TT>A</TT> et <TT>B</TT>
-par rapport à ces portions de plan. Selon les cas, pour trouver la solution 
+par rapport à ces portions de plan. Selon les cas pour trouver la solution 
 il faut tracer le symétrique <TT>A1</TT> de <TT>A</TT> par
 rapport à <TT>d1</TT> et le symétrique <TT>B2</TT> de <TT>B</TT> par
 rapport à <TT>d2</TT>, puis tracer soit <TT>AB</TT>, soit <TT>AB2</TT>,
 soit <TT>A1B</TT>, soit <TT>A1B2</TT>. 
-</P><H3 CLASS="subsection"><A NAME="htoc177">11.1.5</A>  Minimiser AMNB avec M et N sur une droite d en imposant MN=L</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc165">11.1.5</A>  Minimiser AMNB avec M et N sur une droite d en imposant MN=L</H3><P>
 Ici le vecteur <I>MN</I> est constant car il est parallèle à
 <I>d</I> il est de longueur constante <I>L</I> est a la même direction que le vecteur 
 <I>ab</I> où <I>a</I> et <I>b</I> sont les projection orthogonales de <I>A</I> 
@@ -148,25 +133,21 @@ comme intersection de <I>RB</I> et de <I>d</I>.
 </LI><LI CLASS="li-itemize"><I>B</I> et <I>A</I> sont d’un même côté de <I>d</I>. Il suffit de construire le
 symétrique <I>B</I>1 de <I>B</I> par rapport à <I>d</I>, puis de choisir <I>N</I> 
 comme intersection de <I>RB</I>1 et de <I>d</I>.
-</LI></UL><H3 CLASS="subsection"><A NAME="htoc178">11.1.6</A>  Un trajet difficile : minimiser AMB avec M sur un cercle</H3><P>
+</LI></UL><H3 CLASS="subsection"><A NAME="htoc166">11.1.6</A>  Un trajet difficile : minimiser AMB avec M sur un cercle</H3><P>
 Soient deux points <TT>A</TT> et <TT>B</TT>.<BR>
 Un point <TT>M</TT> se déplace sur le cercle <TT>C</TT> de centre <TT>O</TT> et de 
 rayon <TT>1</TT>. On choisit <TT>A</TT> et <TT>B</TT> pour que la droite <TT>AB</TT>
 ne coupe pas le cercle <TT>C</TT>.<BR>
 On cherche dans ce cas, à minimiser le trajet <TT>AMB</TT>.<BR>
-<B>On fait une simulation avec </B><B><TT>Xcas</TT></B><BR>
- On va faire apparaître sur le même écran, le dessin 
+Avec <TT>Xcas</TT> on va faire apparaître sur le même écran, le dessin 
 géométrique et le graphe de la fonction <TT>longueur(AM)+longueur(MB)-2</TT>
 lorsque <TT>M</TT> varie (on enlève <TT>2</TT> pour pouvoir voir 
 le graphe en entier).<BR>
 On régle la fenêtre graphique pour voir :<BR>
 <TT>[-3.5,6.5] × [-1,4.4] </TT><BR>
-On clique sur deux points pour définir <TT>A</TT> et <TT>B</TT> (par exemple
-<TT>A:=point(-3,-2);B:=point(1,-2);</TT>).<BR>
+On clique sur deux points pour définir <TT>A</TT> et <TT>B</TT>.<BR>
 On tape :<BR>
-</P><PRE CLASS="verbatim">A:=point(-3,-2);
-B:=point(1,-2);
-C:=cercle(0,1);
+</P><PRE CLASS="verbatim">C:=cercle(0,1);
 t:=element(0..2*pi);
 M:=point(exp(i*t)); // ou M:=element(C,t);
 L(A,B,t):=evalf(longueur(A,exp(i*t))+longueur(B,exp(i*t)));
@@ -176,13 +157,11 @@ bissectrice(M,A,B);
 exbissectrice(M,A,B)
 </PRE><P>Ensuite lorsque l’on fait bouger <TT>t</TT> les points <TT>M</TT> et <TT>N</TT> bougent,
 l’un sur le cercle <TT>C</TT>, l’autre sur le graphe <TT>G</TT> et l’on peut voir que
-le minimum est atteint quand la bissectrice intérieure de l’angle 
-<TT><I>AMB</I></TT> passe par <TT>O</TT>.<BR>
-On obtient :<BR>
-<IMG SRC="cascas086.png"><BR>
+le minimum est atteint quand la bissectrice de l’angle <TT>M</TT> passe par 
+<TT>O</TT>.<BR>
 On peut aussi faire varier <TT>B</TT> pour voir ce qu’il se passe quand la droite 
 <TT>AB</TT> coupe <TT>C</TT> c’est à dire quand la solution est evidente...<BR>
-<B>Cas particulier</B><BR>
+<B>Cas particulier</B>
 On peut démontrer que lorsque le triangle <TT>OAB</TT> est isocéle de sommet 
 <TT>O</TT> le point <TT>M</TT> du cercle <TT>C</TT> qui rend le trajet <TT>AM+MB</TT> 
 minimum se trouve sur la bissectrice intérieure de l’angle 
@@ -194,142 +173,10 @@ Soient <TT>I</TT> le milieu de <TT>N1N2</TT> et <TT>J</TT> le milieu de <TT>AB</
 Les points <TT>O, I, M, J</TT> sont tous sur la médiatrice de <TT>AB</TT> et 
 puisque <TT>JI&gt;JM</TT> (<TT>I</TT> milieu de la corde <TT>N1N2</TT> et 
 <TT>J</TT> milieu de l’arc <TT>N1N2</TT>) et on en déduit que <TT>AI&gt;AM</TT>.<BR>
-Puisque <TT><I>AN</I>1 +<I>AN</I>2=2<I>AI</I></TT>,
-d’aprés l’inégalité triangulaire on a <TT>2AI&lt;AN1+AN2</TT>. Donc
-<TT>AM+MB=2AM&lt;2AI&lt;AN1+AN2</TT> ce qui prouve que <TT>AM+MB</TT> est minimum.<BR>
-<B>Cas général</B><BR>
-Soient un cercle <TT>C</TT> de centre <TT>O</TT>, une droite <TT>d</TT> extéreure au 
-cercle <TT>C</TT> et 2 points <TT>A</TT> et <TT>B</TT> sur la droite <TT>d</TT>.
-On cherche un point <TT>M</TT> sur le cercle <TT>C</TT> pour que <TT>AM+BM</TT> soit 
-minimum.<BR>
-On sait que le lieu des points <TT>M</TT> tel que <TT>MA+MB=2a</TT> (pour <TT>a</TT> 
-constant) est une ellipse de foyers <TT>A</TT> et <TT>B</TT> dont la normale en 
-<TT>M</TT> est la bissectrice intérieure de l’angle <TT><I>AMB</I></TT>.<BR>
-Soit <TT>M</TT> sur le cercle <TT>C</TT>, <TT>MA+MB</TT> sera minimum lorsque l’ellipse 
-de foyers <TT>A</TT> et <TT>B</TT> et passant par <TT>M</TT> sera tangente au cercle 
-<TT>C</TT>, c’est à dire lorsque l’ellipse et le cercle <TT>C</TT> auront la
-même normale au point <TT>M</TT>. La normale en <TT>M</TT> au cercle <TT>C</TT> de 
-centre <TT>O</TT> est <TT>OM</TT>, la normale en <TT>M</TT> à l’ellipse de foyer 
-<TT>A</TT> et <TT>B</TT> est la bissectrice intérieure de l’angle 
-<TT><I>AMB</I></TT>.
-Donc l’ellipse sera tangente au cercle quand la bissectrice intérieure de 
-l’angle <TT><I>AMB</I></TT> passe par <TT>O</TT>.<BR>
-Lorsque la bissectrice intérieure de l’angle 
-<TT><I>AMB</I></TT> passe par <TT>O</TT>, son intersection avec le cercle donne 
-la position de 2 points <TT>M</TT> qui donneront le maximum et le minimum du 
-trajet <TT>MA+MB</TT>.<BR>
-La construction de <I>M</I> n’est pas facile. On choisit un système de 
-coordonnées pour avoir <I>M</I> sur le cercle de centre <I>O</I> et de rayon 1 et
-<I>AB</I> parallèle à l’axe des <I>x</I>.<BR>
-On tape par exemple :
-</P><PRE CLASS="verbatim">supposons(a=[2.0,-5,5,0.1]);
-supposons(c=[0.6,-3.2,3.2,0.1]);
-O:=point(0);
-M:=point(exp(i*c));
-cercle(0,1);
-A:=point(2,a);
-B:=point(5,a);
-segment(M,A);
-segment(M,B);
-d:=bissectrice(M,A,B);
-</PRE><P>En faisant bouger <TT>c</TT> pour que <TT>d</TT> passe par <TT>O</TT>, on obtient 
-pour <TT>a=2</TT> : <TT>c=0.6</TT>.<BR>
-<IMG SRC="cascas087.png">
-</P><DIV CLASS="center"><IMG SRC="cascas088.png"></DIV><P>
-On tape :<BR>
-<TT>Eq:=simplify(equation(d))</TT><BR>
-<TT>fsolve(subst(Eq,[x,y],[0,0]),c,0</TT>
-On obtient comme valeur de <TT>c</TT> pour <TT>a=2</TT> :<BR>
-<TT>0.605888470356</TT>
-</P><H3 CLASS="subsection"><A NAME="htoc179">11.1.7</A>  Encore un trajet à minimiser MA+MB+MC</H3><P>
-Soient trois points <TT>A,B,C</TT> dans le plan. On cherche le point <TT>M</TT> qui 
-minimise le trajet<TT>MA+MB+MC</TT>.<BR>
-On sait que le lieu des points <TT>M</TT> tel que <TT>MA+MB=2a</TT> (pour <TT>a</TT> 
-constant) est une ellipse de foyers <TT>A</TT> et <TT>B</TT> dont la normale en 
-<TT>M</TT> est la bissectrice intérieure de l’angle <TT><I>AMB</I></TT>.<BR>
-Si le point <TT>M</TT> réalise le minimum, <TT>MA+MB+MC</TT> sera minimum lorsque 
-<TT>C</TT> sera situé sur la bissectrice intérieure de l’angle 
-<TT><I>AMB</I></TT> puisque cette bissectrice est la normale à l’ellipse de
-foyers <TT>A</TT> et <TT>B</TT> et passant par <TT>M</TT>.<BR>
-Donc <TT><I>BMC</I></TT><TT>=</TT><TT><I>CMA</I></TT><BR>
-De même, si le point <TT>M</TT> réalise le minimum, <TT>MA+MB+MC</TT> sera 
-minimum lorsque <TT>A</TT> sera situé sur la bissectrice intérieure de l’angle 
-<TT><I>BMC</I></TT> puisque cette bissectrice est la normale à l’ellipse de
-foyers <TT>B</TT> et <TT>C</TT> et passant par <TT>M</TT>.<BR>
-Donc <TT><I>CMA</I></TT><TT>=</TT><TT><I>AMB</I></TT><BR>
-Si <TT>M</TT> est à l’intérieur du triangle <TT>ABC</TT>, on en déduit que :<BR>
-<TT><I>BMC</I></TT><TT>=</TT><TT><I>CMA</I></TT><TT>=</TT><TT><I>AMB</I></TT><TT>=2*π/3</TT><BR>
-<IMG SRC="cascas089.png"><BR>
-Pour qu’un tel point existe il faut que le triangle <I>ABC</I> ne possède pas un 
-angle de mesure de plus de 2*π/3 radians.<BR>
-<B>On fait une simulation avec </B><B><TT>Xcas</TT></B><BR>
-On fait le dessin en tapant par exemple :
-</P><PRE CLASS="verbatim">A:=point([-3,-2,'affichage'=0]);
-B:=point([1,-2,'affichage'=0]);
-a:=element((-5) .. 5,0.8,0.1);
-b:=element((-5) .. 5,-1.7,0.1);
-c:=element(0 .. 5,2.8,0.1);
-C:=point(3,c);;
-M:=point(a,b);
-L(A,B,C,a,b):=evalf(longueur(A,point(a,b))+
-      longueur(B,point(a,b))+longueur(C,point(a,b)));;
-G:=plotfunc(L(A,B,C,x,b)-8,x);;
-N:=element(G,a);;
-bissectrice(M,A,B);;
-exbissectrice(M,A,B);
-droite(B,B+exp(i*pi/3));
-arc(B,A,2*pi/3);
-arc(C,B,2*pi/3);
-arc(A,C,2*pi/3);
-</PRE><P>On obtient pour (a,b,c)=(0.8,1.7,2.8) :<BR>
-<IMG SRC="cascas090.png"><BR>
-<B>La solution</B><BR>
-Soient <TT>A:=point(xa,ya):;B:=point(xb,yb):;C:=point(xc,yc):;</TT>,
-<TT>M:=point(x,y):;</TT> et la fonction <I>f</I> de ℝ<SUP>2</SUP> dans ℝ qui à <I>x</I>,<I>y</I> fait 
-correspondre <I>MA</I>+<I>MB</I>+<I>MC</I>.<BR>
-On a :<BR>
-<TT>f(x,y):=longueur(M,A)+longueur(M,B)+longueur(M,C)</TT>.<BR>
-Cherchons les points critiques de <I>f</I> c’est à dire les points où 
-son gradient :<BR>
-<TT>grad(f(x,y),[x,y])</TT> s’annule.<BR>
-On tape pour avoir le gradient de <TT>longueur(M,A)</TT> lorsque <I>M</I>!=<I>A</I> :<BR>
- <TT>grad(longueur(M,A)),[x,y])</TT><BR>
-On obtient :<BR>
-<TT>[(x-xa)/sqrt((x-xa)</TT><CODE><TT>^</TT></CODE><TT>2+(y-ya)</TT><CODE><TT>^</TT></CODE><TT>2),(y-xa)/sqrt((x-xa)</TT><CODE><TT>^</TT></CODE><TT>2+(y-ya)</TT><CODE><TT>^</TT></CODE><TT>2)]</TT><BR>
-c’est à dire le vecteur <I>AM</I>/|<I>AM</I>| qui est norme 1.<BR>
-Donc si <I>M</I>!=<I>A</I> et <I>M</I>!=<I>B</I> et <I>M</I>!=<I>C</I>, le gradient de <I>f</I> existe et est égal 
-à est la somme de 3 vecteurs de norme 1.<BR>
-Ce gradient s’annule si :<BR>
-<I>MA</I>/|<I>MA</I>|+<I>MB</I>/|<I>MB</I>|+<I>MC</I>/|<I>MC</I>|=0<BR>
-c’est à dire lorsque les vecteurs 
-<I>MA</I>,<I>MB</I>,<I>MC</I>
-font entre eux un angle de 2π/3.<BR>
-On en déduit que si les angles du triangle sont inférieurs à 2π/3, 
-le point <I>M</I> qui réalise le minimum de <I>MA</I>+<I>MB</I>+<I>MC</I> est l’intersection des arcs
-capables <I>AB</I>, <I>AC</I>, <I>BC</I> d’angle 2π/3.<BR>
-On tape :
-</P><PRE CLASS="verbatim">B:=point(0);
-C:=point(2);
-A:=point(5/2+i*4);
-triangle(A,B,C);
-g1:=arc(B,A,2*pi/3):;g1;
-g2:=arc(C,B,2*pi/3):;g2;
-g3:=arc(A,C,2*pi/3):;g3;
-M:=inter_unique(g1,g2);
-</PRE><P>On obtient :<BR>
-<IMG SRC="cascas091.png"><BR>
-Si un des angles du triangle est supérieur à 2π/3, les arcs 
-<TT>g1,g2,g3</TT> ne sont pas concourants et donc le point <I>M</I> qui réalise le 
-minimum de <I>MA</I>+<I>MB</I>+<I>MC</I> se trouve soit en <I>A</I>, soit en <I>B</I> soit en <I>C</I>.<BR>
- En effet lorsque le point <I>M</I> réalise le minimum de <I>MA</I>+<I>MB</I>+<I>MC</I> c’est que <I>M</I> 
-est soit un point critique de <I>f</I>, lorsque <I>f</I> est 
-dérivable, soit un point où <I>f</I> n’est pas dérivable.<BR>
-Supposons que l’angle <I>c</I>=(<I>CA</I>,<I>CB</I>) du triangle 
-<I>ABC</I> soit supérieur à 2π/3.<BR>
-On a cos(<I>c</I>)&lt;0 et <I>AB</I><SUP>2</SUP>=<I>AC</I><SUP>2</SUP>+<I>BC</I><SUP>2</SUP>−2*<I>AC</I>*<I>BC</I>*cos(<I>c</I>)
-donc <I>AB</I>&gt;<I>AC</I> et <I>AB</I>&gt;<I>BC</I> donc <I>BC</I>+<I>AC</I>&lt;<I>BC</I>+<I>AB</I> et <I>BC</I>+<I>AC</I>&lt;<I>AB</I>+<I>AC</I><BR>
-Donc le point qui réalise le minimum se trouve en <I>C</I>.<BR>
-<IMG SRC="cascas092.png"></P><H2 CLASS="section"><A NAME="toc70"></A><A NAME="htoc180">11.2</A>  Des problèmes de construction</H2><H3 CLASS="subsection"><A NAME="htoc181">11.2.1</A>  Construire un triangle connaissant <I>a</I>, <I>b</I> et <I>m</I> la longueur de la bissectrice de l’angle des côtés <I>a</I> et <I>b</I></H3><P>
+<TT><I>AN</I>1 +<I>AN</I>2=2<I>AI</I></TT> et 
+donc d’aprés l’inégalité triangulaire on a <TT>2AI&lt;AN1+AN2</TT> et donc<BR>
+<TT>AM+MB=2AM&lt;2AI&lt;AN1+AN2</TT> ce qui prouve que <TT>AM+MB</TT> est minimum.
+</P><H2 CLASS="section"><A NAME="toc64"></A><A NAME="htoc167">11.2</A>  Des problèmes de construction</H2><H3 CLASS="subsection"><A NAME="htoc168">11.2.1</A>  Construire un triangle connaissant <I>a</I>, <I>b</I> et <I>m</I> la longueur de la bissectrice de l’angle des côtés <I>a</I> et <I>b</I></H3><P>
 Soit un triangle <I>ABC</I> et <I>CM</I> la bissectrice intérieure de l’angle <I>C</I>.<BR>
 On pose <I>a</I>=<I>CB</I>, <I>b</I>=<I>CA</I> et <I>m</I>=<I>CM</I>. Calculer en fonction de <I>a</I> et <I>b</I>.<BR>
 On se donne trois longueurs <I>a</I>, <I>b</I> et <I>m</I>. On veut construire le triangle 
@@ -346,7 +193,7 @@ C:=point(0);
 d:=bissectrice(C,A,B);
 M:=inter_unique(droite(A;N),d)
 </PRE><P>On obtient :
-<IMG SRC="cascas093.png">
+<IMG SRC="cascas065.png">
 0n pose : <I>a</I>=<I>CB</I>, <I>b</I>=<I>CA</I>, <I>m</I>=<I>CM</I>, <I>x</I>=<I>AM</I> et <I>y</I>=<I>BM</I><BR>
 Puisque <I>CM</I> est la bissectrice de l’angle <I>C</I> on a :<BR>
  <I>x</I>/<I>y</I>=<I>b</I>/<I>a</I>
@@ -397,15 +244,51 @@ d:=bissectrice(C,A,B);
 M:=inter_unique(d,droite(A,B),affichage=1);
 normal(longueur(C,M));
 </PRE><P>On obtient :<BR>
-<IMG SRC="cascas094.png"><BR>
+<IMG SRC="cascas066.png"><BR>
 On voit :<BR>
 en noir la construction de la longueur <I>m</I><I>a</I>+<I>b</I>/<I>b</I> (on a 
 <I>CM</I>1=<I>m</I> et <I>B</I>1<I>D</I>=<I>m</I><I>a</I>+<I>b</I>/<I>b</I>.<BR>
 en rouge le triangle <I>ABC</I> et <I>M</I> le pied de la bissectrice intérieure de 
 l’angle <I>C</I> et<BR>
-<TT>normal(longueur(C,M))</TT> renvoie <I>m</I>.</P><H2 CLASS="section"><A NAME="toc71"></A><A NAME="htoc182">11.3</A>  Une transformation</H2><P>
+<TT>normal(longueur(C,M))</TT> renvoie <I>m</I>.
+</P><H3 CLASS="subsection"><A NAME="htoc169">11.2.2</A>  Comment placer un pont</H3><P>
+Deux villages assimilés à deux points <I>A</I> et <I>B</I> sont situés de part et 
+d’autre d’une rivière assimilée à deux droites parallèles <I>D</I>1 et <I>D</I>2.
+Où doit-on placer un pont <I>PQ</I> sur la rivière pour que <I>AP</I>=<I>QB</I>, lorsque <I>PQ</I>
+est perpendiculaire aux berges et <I>P</I> est sur la berge du côté de <I>A</I> ?<BR>
+On remarque que <I>PQ</I> est constant et a pour norme
+égal à la largeur de la rivière. Soit <I>R</I> le translaté de <I>A</I> dans la translation de vecteur <I>PQ</I>.<BR>
+On a <I>AR</I>=<I>PQ</I> donc <I>APQR</I> est un 
+parallélogramme. 
+Donc <I>AP</I>=<I>RQ</I>. On veut avoir <I>AP</I>=<I>BQ</I> donc il faut que <I>RQ</I>=<I>Bq</I> c’est à dire que <I>Q</I> se trouve sur la médiatrice de <I>RB</I>. Donc <I>Q</I> est l’intersection de la 
+médiatrice de <I>RB</I> avec la berge se trouvant du côté de <I>B</I>.<BR>
+Le dessin avec <TT>Xcas</TT> :<BR>
+On clique deux points <TT>A</TT> à gauche de <I>x</I>=−1 et <TT>B</TT> à droite 
+de <I>x</I>=1, par exemple :
+</P><PRE CLASS="verbatim">A:=point([-5/2,1,'affichage'=0]);
+B:=point([5,-2,'affichage'=0]);
+D1:=droite(-1,-1+i):;D1;
+D2:=droite(1,1+i):;D2;
+R:=translation(2,A);
+polygone_ouvert(A,R,Q,affichage=1);
+segment(R,B,affichage=ligne_tiret_point+ 4);
+d:=mediatrice(R,B);
+Q:=inter_unique(d,D2);
+P:=translation(-2,Q);
+polygone_ouvert(A,P,Q,B);
+supposons(a=[-2.86,-5,5,0.01]);
+p:=point(-1+i*a);
+q:=point(1+i*a);
+polygone_ouvert(A,p,q,B);
+segment(R,q,affichage=1);
+legende(-6+4i,"Ap="+string(evalf(longueur(A,p))));
+legende(-6+3i,"Bq="+string(evalf(longueur(B,q))));
+</PRE><P>On peut ensuite faire bouger les points <TT>p</TT> et <TT>q</TT> et visualiser les 
+trajets <TT>ApqB</TT> et <TT>ARqB</TT>. 
+On obtient :<BR>
+<IMG SRC="cascas067.png"></P><H2 CLASS="section"><A NAME="toc65"></A><A NAME="htoc170">11.3</A>  Une transformation</H2><P>
 Quelles sont les transformations du plan qui transforme toute droite en une 
-droite parallèle ?<BR>
+droite parallèle ?
 Ce qui veut dire que, si on connait un point <TT>A</TT> et son transformé 
 <TT>A1</TT>, le transformé <TT>B1</TT> de <TT>B</TT>, est sur la parallèle à la 
 <TT>droite(A,B)</TT> passant par <TT>A1</TT>.
@@ -462,7 +345,7 @@ on tape :
 t:=element(-2..5);
 A1:=element(droite(A,O),t);
 B1:=inter_droite(parallele(A1,droite(A,B)),parallele(B,droite(A,A1)));
-</PRE>puis on fait bouger <TT>t</TT> et <TT>B</TT>.</LI></UL><H2 CLASS="section"><A NAME="toc72"></A><A NAME="htoc183">11.4</A>  L’inverseur de Peaucellier</H2><P>
+</PRE>puis on fait bouger <TT>t</TT> et <TT>B</TT>.</LI></UL><H2 CLASS="section"><A NAME="toc66"></A><A NAME="htoc171">11.4</A>  L’inverseur de Peaucellier</H2><P>
 Charles Peaucellier est un général français (1832-1913).<BR>
 On appelle inverseur tout système articulé qui permet de tracer 
 mécaniquement la figure inverse d’une figure plane donnée.
@@ -473,7 +356,7 @@ de longueur <I>d</I> avec <I>d</I>≥ <I>a</I>. Le point <I>O</I> est fixe.<BR>
 Quand on fait bouger <I>A</I> et <I>B</I>, les points <I>M</I> et <I>N</I> restent alignés avec 
 <I>O</I> et sont inverses l’un de l’autre dans l’inversion de centre <I>O</I> et de 
 puissance <I>d</I><SUP>2</SUP>−<I>a</I><SUP>2</SUP> .
-</P><H3 CLASS="subsection"><A NAME="htoc184">11.4.1</A>  Observation lorsque <I>M</I> décrit un cercle passant par <I>O</I></H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc172">11.4.1</A>  Observation lorsque <I>M</I> décrit un cercle passant par <I>O</I></H3><P>
 On suppose que <I>O</I> est à l’origine, que <I>d</I>=3, <I>a</I>=2 et que <I>M</I> reste sur le 
 cercle de centre 1 et de rayon 1.<BR>
 On tape dans un écran de géométrie :
@@ -491,11 +374,11 @@ N:=symetrie(droite(A,B),M);
 L:=lieu(N,M);
 quadrilatere(A,M,B,N,affichage=1);
 </PRE><P>On obtient :
-</P><DIV CLASS="center"><IMG SRC="cascas095.png"></DIV><P>
+</P><DIV CLASS="center"><IMG SRC="cascas068.png"></DIV><P>
 On se met en mode <TT>Pointeur</TT> et on déplace <I>M</I> qui décrit le cercle. 
 Le losange se déforme et <I>N</I> se déplace sur la droite inverse du cercle 
 dans l’inversion de centre <I>O</I> et de puissance  5/2
-</P><H3 CLASS="subsection"><A NAME="htoc185">11.4.2</A>  Démonstration</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc173">11.4.2</A>  Démonstration</H3><P>
 Les points <I>M</I> et <I>N</I> restent alignés avec <I>O</I> car <I>O</I>,<I>M</I> et <I>N</I> sont 
 équidistants de <I>A</I> et <I>B</I>, ils sont donc sur la médiatrice de <I>AB</I>.<BR>
 La puissance de <I>O</I> par rapport au cercle de centre <I>A</I> et de rayon <I>AM</I>=<I>AN</I>=<I>a</I> 
@@ -506,7 +389,7 @@ Le transformé du cercle de centre 1 et de rayon 1 par l’inversion de centre
 Cette droite a pour équation  <I>x</I>=5/2 puisque le point 
 du cercle d’abscisse 2 se transforme en le point de l’axe des <I>x</I> d’abscisse 
  5/2.
-</P><H2 CLASS="section"><A NAME="toc73"></A><A NAME="htoc186">11.5</A>  Un pavage</H2><H3 CLASS="subsection"><A NAME="htoc187">11.5.1</A>  Construction d’un pavage invariant par des translations</H3><P>
+</P><H2 CLASS="section"><A NAME="toc67"></A><A NAME="htoc174">11.5</A>  Un pavage</H2><H3 CLASS="subsection"><A NAME="htoc175">11.5.1</A>  Construction d’un pavage invariant par des translations</H3><P>
 Soient 5 points <TT>A,B,C,E,F</TT>, On construit 3 points <TT>D,G,H</TT> par 
 translation : <TT>D</TT> (resp <TT>G</TT>) est le transformé de <TT>A</TT> (resp 
 <TT>E</TT>) dans la translation de vecteur <TT>BC</TT> et <TT>H</TT> est le 
@@ -528,7 +411,7 @@ nodisp(P1:=translation(B-A,P0));
 P1;
 translation(B-C,[P0,P1]);
 </PRE><P>vous pouvez faire bouger les points <TT>A,B,C,E,F</TT>
-</P><H3 CLASS="subsection"><A NAME="htoc188">11.5.2</A>  Avec un quadrilatère quelconque</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc176">11.5.2</A>  Avec un quadrilatère quelconque</H3><P>
 Tout quadrilatère plan non croisé pave le plan.<BR>
 Le pavé de base est <TT>Q:=quadrilatere(A,B,C,D)</TT>
 </P><H4 CLASS="subsubsection">Avec un script</H4><P>
@@ -587,7 +470,7 @@ nodisp(P0:=polygone(A,E,M,E1,B,F,N,F1,C,G,O,G1,D,H,P,H1,A));
 P0;
 translation(A-C,P0);
 </PRE><P>vous pouvez faire bouger les points <TT>A,B,C,D,E,F,G,H</TT>.<BR>
-</P><H3 CLASS="subsection"><A NAME="htoc189">11.5.3</A>  Avec une animation</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc177">11.5.3</A>  Avec une animation</H3><P>
 On peut aussi écrire le programme <TT>pavage</TT> dans un éditeur de 
 programmes qui va réaliser à partir du quadrilatère <I>A</I>,<I>B</I>,<I>C</I>,<I>D</I>, un pavage 
 de <I>l</I> lignes et de <I>c</I> colonnes :
@@ -641,7 +524,7 @@ déformation se fasse automatiquement, on utilise le menu
 <TT>M-&gt;Animation-&gt;Creer animation</TT> pour créer l’animation (on vous demande 
 combien vous voulez d’images (<TT>frame</TT>) différentes), la vitesse de 
 défilement est définie par <TT>cfg-&gt;animate</TT>.
-</P><H3 CLASS="subsection"><A NAME="htoc190">11.5.4</A>  Construction d’un pavage triangulaire</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc178">11.5.4</A>  Construction d’un pavage triangulaire</H3><P>
 Le pavé de base est <TT>P0=polygone([A,E,B,F,C,H,J,G])</TT>
 Pour vous convaincre on va exécuter le script suivant qui se trouve dans
 le fichier <TT>pavage3.cxx</TT> :
@@ -662,7 +545,7 @@ nodisp(P2:=rotation(A,4*pi/3,P0));
 translation(B-J,[P0,P1,P2]);
 translation(B-rotation(A,2*pi/3,J),[P0,P1,P2]);
 </PRE><P>vous pouvez faire bouger les points <TT>A,B,E,F</TT>
-</P><H3 CLASS="subsection"><A NAME="htoc191">11.5.5</A>  Construction d’un pavage carre</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc179">11.5.5</A>  Construction d’un pavage carre</H3><P>
 Le pavé de base est <TT>P0=polygone([A,E,B,F,C,H,J,G])</TT>
 Pour vous convaincre on va exécuter le script suivant qui se trouve dans
 le fichier <TT>pavage4.cxx</TT> :
@@ -684,7 +567,7 @@ nodisp(P3:=rotation(A,3*pi/2,P0));
 translation(B-J,[P0,P1,P2,P3]);
 translation(2*(B-A),[P0,P1,P2,P3]);
 translation(B-rotation(A,pi,J),[P0,P1,P2,P3]);
-</PRE><P>vous pouvez faire bouger les points <TT>A,B,E,F</TT></P><H2 CLASS="section"><A NAME="toc74"></A><A NAME="htoc192">11.6</A>  Le pentagone, sin(π/5), sin(2π/5), cos(π/5 et cos(2π/5)</H2><H3 CLASS="subsection"><A NAME="htoc193">11.6.1</A>  Calcul exact de sin(2π/5) et de cos(2π/5)</H3><P>
+</PRE><P>vous pouvez faire bouger les points <TT>A,B,E,F</TT></P><H2 CLASS="section"><A NAME="toc68"></A><A NAME="htoc180">11.6</A>  Le pentagone, sin(π/5), sin(2π/5), cos(π/5 et cos(2π/5)</H2><H3 CLASS="subsection"><A NAME="htoc181">11.6.1</A>  Calcul exact de sin(2π/5) et de cos(2π/5)</H3><P>
 Si <I>a</I>=exp(2<I>i</I>π/5)=cos(2π/5)+<I>i</I>sin(2π/5),on a :<BR>
 <I>a</I><SUP>5</SUP>−1=(<I>a</I>−1)(<I>a</I><SUP>4</SUP>+<I>a</I><SUP>3</SUP>+<I>a</I><SUP>2</SUP>+<I>a</I>+1)=0.<BR>
 Comme <I>a</I>≠ 1, on a <I>a</I> vérifie :<BR>
@@ -739,7 +622,7 @@ Comme <I>a</I>=exp(2<I>i</I>π/5)=cos(2π/5)+<I>i</I>sin(2π/5), on a <I>re</I>(
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
 </TABLE></TD></TR>
-</TABLE><H3 CLASS="subsection"><A NAME="htoc194">11.6.2</A>  Calcul exact de sin(π/5) et de cos(π/5)</H3><P>
+</TABLE><H3 CLASS="subsection"><A NAME="htoc182">11.6.2</A>  Calcul exact de sin(π/5) et de cos(π/5)</H3><P>
 On déduit de ce qui précède les valeurs de cos(π/5) et de 
 sin(π/5) puisque :<BR>
 cos(2π/5)=2cos(π/5)<SUP>2</SUP>−1 et cos(2π/5)=1−2sin(π/5)<SUP>2</SUP>.<BR>
@@ -770,7 +653,7 @@ Donc :
 <TR><TD CLASS="dcell" ALIGN="center">8</TD></TR>
 </TABLE></TD></TR>
 </TABLE></TD><TD CLASS="dcell"> </TD></TR>
-</TABLE><H3 CLASS="subsection"><A NAME="htoc195">11.6.3</A>  Construction du pentagone comme avec la règle et le compas</H3><P>
+</TABLE><H3 CLASS="subsection"><A NAME="htoc183">11.6.3</A>  Construction du pentagone comme avec la règle et le compas</H3><P>
 On tape :
 </P><PRE CLASS="verbatim">R:=1;
 C:=cercle(0,R);
@@ -795,7 +678,7 @@ T:=point(R);
 S:=inter(C,c3,T);
 polygone(T,M,P,Q,S,affichage=1);
 </PRE><P>On obtient :<BR>
-<IMG SRC="cascas096.png"><BR>
+<IMG SRC="cascas069.png"><BR>
 On trouve aussi que <TT>longueur2(A,I)</TT> vaut :<BR>
 <TT>(-1-(-4*sqrt(5))/20)</TT><CODE><TT>^</TT></CODE><TT>2+(-(-2*sqrt(5)+10)/20)</TT><CODE><TT>^</TT></CODE><TT>2</TT><BR>
 On tape :<BR>
@@ -810,7 +693,7 @@ On obtient:<BR>
 c’est la vaeur de sin(π/5)<SUP>2</SUP><BR>
 <I>P</I> a donc comme coordonnèes : (−cos(π/5);sin(π/5))<BR>
 Donc le polygone <I>T</I>,<I>M</I>,<I>P</I>,<I>Q</I>,<I>S</I> est bien un pentagone régulier.
-</P><H2 CLASS="section"><A NAME="toc75"></A><A NAME="htoc196">11.7</A>  Des étoiles à 5 branches</H2><H3 CLASS="subsection"><A NAME="htoc197">11.7.1</A>  Une étoile à 5 branches</H3><P>
+</P><H2 CLASS="section"><A NAME="toc69"></A><A NAME="htoc184">11.7</A>  Des étoiles à 5 branches</H2><H3 CLASS="subsection"><A NAME="htoc185">11.7.1</A>  Une étoile à 5 branches</H3><P>
 On cherche tout d’abord la liste des sommets du polygone étoile à 5 
 branches: les pointes (resp les creux) se déduisent par rotation d’angle 
 2*π/5. On définit ainsi les sommets d’un polygone puis, on 
@@ -832,7 +715,7 @@ cos(π/5)=(1+√<SPAN style="text-decoration:overline">5</SPAN>)/4<BR>
 donc on a :<BR>
 <I>l</I>:=<I>r</I>(3−√<SPAN style="text-decoration:overline">(</SPAN>5))/2<BR>
 On a :
-(√<SPAN style="text-decoration:overline">5</SPAN>−1)/2∼ 0.61803398875</P><P><IMG SRC="cascas097.png"></P><P>On tape :
+(√<SPAN style="text-decoration:overline">5</SPAN>−1)/2∼ 0.61803398875</P><P><IMG SRC="cascas070.png"></P><P>On tape :
 </P><PRE CLASS="verbatim">etoil(z0,r,a):={
   local j,l,somet,p,L,pa;
   z0:=evalf(z0);r:=evalf(r);a:=evalf(a);
@@ -854,10 +737,10 @@ etoile(z0,r,a):={
 <TT>etoile(3,2,pi/5)</TT><BR>
 On obtient :<BR>
 
-<IMG SRC="cascas098.png"></P><H3 CLASS="subsection"><A NAME="htoc198">11.7.2</A>  Une étoile faite d’étoiles</H3><P>
+<IMG SRC="cascas071.png"></P><H3 CLASS="subsection"><A NAME="htoc186">11.7.2</A>  Une étoile faite d’étoiles</H3><P>
 On veut faire le dessin :<BR>
 
-<IMG SRC="cascas099.png"></P><P>Si le rayon de l’étoile centrale est <I>R</I> et celui de l’étoile suivante est 
+<IMG SRC="cascas072.png"></P><P>Si le rayon de l’étoile centrale est <I>R</I> et celui de l’étoile suivante est 
 <I>r</I> on a la relation :
 <I>r</I>*sin(2*π/5)=<I>R</I>*sin(π/5) (<I>R</I>∼ 1.61803398875*<I>r</I>)<BR>
 et on a trouvé que les sommets en "creux" sont situés sur un cercle de 
@@ -933,7 +816,7 @@ nl:=evalf(r*cos(2*pi/7)/cos(pi/7));
   }
   return L;
 }:;
-</PRE><H3 CLASS="subsection"><A NAME="htoc199">11.7.3</A>  Le logo de <TT>Xcas</TT></H3><P>
+</PRE><H3 CLASS="subsection"><A NAME="htoc187">11.7.3</A>  Le logo de <TT>Xcas</TT></H3><P>
 Le logo de <TT>Xcas</TT> est obtenu en tapant :
 </P><PRE CLASS="verbatim">etoilo(z0,r,a):={
   local j,l,somet,p,L,pa;
@@ -1010,8 +893,8 @@ Calcul formel
 </LI><LI CLASS="li-itemize">Langage de programmation
 </LI><LI CLASS="li-itemize">Documentation
 </LI></UL><P>
-<IMG SRC="cascas100.png">
-</P><H3 CLASS="subsection"><A NAME="htoc200">11.7.4</A>  La carte de visite de <TT>Xcas</TT></H3><P>
+<IMG SRC="cascas073.png">
+</P><H3 CLASS="subsection"><A NAME="htoc188">11.7.4</A>  La carte de visite de <TT>Xcas</TT></H3><P>
 Voici ce qu’il faut taper pour avoir la carte de visite de <TT>Xcas</TT> :
 </P><PRE CLASS="verbatim">logoxcas(0,0.9,pi/14,264);
 legende(-2.2+3i,": le couteau suisse des mathematiques");
@@ -1028,8 +911,8 @@ rectangle(-5-2.2i,5-2.2i,5/8.5);
 affichage([lx(-4+3.2i,0.2),lc(-3.5+3.1i,0.2),la(-3+3.2i,0.2),
            ls(-2.5+3.1i,0.2)],epaisseur_ligne_3);
 </PRE><P>On obtient :<BR>
-<IMG SRC="cascas101.png">
-</P><H3 CLASS="subsection"><A NAME="htoc201">11.7.5</A>  La carte de Noel de <TT>Xcas</TT></H3><P>
+<IMG SRC="cascas074.png">
+</P><H3 CLASS="subsection"><A NAME="htoc189">11.7.5</A>  La carte de Noel de <TT>Xcas</TT></H3><P>
 Voici ce qu’il faut taper pour avoir la carte de Noel de <TT>Xcas</TT> :
 </P><PRE CLASS="verbatim">lx(z0,r):={ 
   return(segment(z0+r*(-1-i),z0+r*(1+i)),
@@ -1187,9 +1070,9 @@ Puis on tape :
 <TT>cartev3()</TT><BR>
 On obtient une carte de Noel.<BR>
 
-</P><H3 CLASS="subsection"><A NAME="htoc202">11.7.6</A>  Encore des étoiles à 5 branches</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc190">11.7.6</A>  Encore des étoiles à 5 branches</H3><P>
 On veut réaliser :<BR>
-<IMG SRC="cascas102.png"><BR>
+<IMG SRC="cascas075.png"><BR>
 Pour cela, on va utiliser le programme précédent :
 </P><PRE CLASS="verbatim">//z0 centre, r rayon de l'etoile, 
 //a argument d'un "sommet en creux" de l'etoile
@@ -1211,7 +1094,7 @@ etoile(z0,r,a):={
 
 </PRE><P>et les calculs précédents et écrire la procédure <TT>etoil10</TT> de 
 paramètre <TT>c</TT> le centre de l’étoile pour dessiner :<BR>
-<IMG SRC="cascas103.png"><BR>
+<IMG SRC="cascas076.png"><BR>
 On pose :<BR>
 <I>a</I>:=2*cos(π/5)=sin(2*π/5)/sin(π/5)≃ 1.61803398875<BR>
 et on a :<BR>
@@ -1224,7 +1107,7 @@ Soit la figure ci-dessous :<BR>
 branches) de côté <I>AB</I> et de rayon <I>r</I>=<I>OA</I>.
 Si on peut mettre 10 étoiles de rayon <I>r</I> sur le cercle de rayon ρ=<I>IO</I> 
 c’est que l’angle <I>AIB</I>=π/10 :<BR>
-<IMG SRC="cascas104.png"><BR>
+<IMG SRC="cascas077.png"><BR>
 On cherche la relation qui existe entre <I>IO</I>=ρ et <I>r</I>=<I>OA</I>.<BR>
 On a :
 <I>AB</I>=2*<I>r</I>*sin(π/5) et <I>IA</I>=ρ+<I>r</I> donc :<BR>
@@ -1249,7 +1132,7 @@ On obtient :<BR>
 <TT>etoil5(b*exp(i*k*2*pi/5))$(k=0..4),etoil(0,b*cr,0)</TT><BR>
 On obtient :<BR>
 
-<IMG SRC="cascas105.png"><BR>
+<IMG SRC="cascas078.png"><BR>
 
 On peut ainsi faire une sorte de pavage mais on est obligé de ruser pour qu’il
 n’y ait pas de chevauchement :<BR>
@@ -1285,8 +1168,8 @@ return etoil10(c+b*exp(i*k*2*pi/5+i*t))$(k=n+1..n+4),
 </PRE><P>On tape :<BR>
 <TT>etoils5(0,0),(etoils15(2*b*sin(3*pi/10)*exp(i*pi/5+2*i*k*pi/5),pi/5,k))$(k=0..4)</TT><BR>
 On obtient :<BR>
-<IMG SRC="cascas106.png">
-</P><H3 CLASS="subsection"><A NAME="htoc203">11.7.7</A>  Le logo de <TT>l’UJF</TT></H3><PRE CLASS="verbatim">arcpoly(z0,r,a,b):={
+<IMG SRC="cascas079.png">
+</P><H3 CLASS="subsection"><A NAME="htoc191">11.7.7</A>  Le logo de <TT>l’UJF</TT></H3><PRE CLASS="verbatim">arcpoly(z0,r,a,b):={
 local L;
 return seq(z0+r*exp(i*t),t=a..b,0.05),z0+r*exp(i*b);
 }:;
@@ -1311,100 +1194,7 @@ return(L);
 </PRE><P>On tape :<BR>
 <TT>ujf(0,1)</TT><BR>
 On obtient :<BR>
-<IMG SRC="cascas107.png"></P><H2 CLASS="section"><A NAME="toc76"></A><A NAME="htoc204">11.8</A>  Un quasi cristal</H2><P>
-Sur le pourtour d’un décagone on trace des pentagones, puis des étoiles 
-à 5 branches, puis un tour de décagones avec ses pentagones puis des 
-étoiles et un tour de décagones avec ses pentagones.<BR>
-La fonction <TT>etoile</TT> a comme pramètres :<BR>
-<TT>a</TT> est l’affixe de son centre,<BR>
-<TT>r</TT> est le rayon de son cercle circonscrit,<BR>
-<TT>k</TT> est l’angle en radian que fait une branche de l’étoile avec l’horizontale.<BR>
-On tape : 
-</P><PRE CLASS="verbatim">etoile(a,r,k):={
- local  A,j,L,s1; 
- A:= point(a+r*cos(2*pi/5)/cos(pi/5)*exp(i*k+i*pi/5));
- L:=NULL;
- s1:=[segment(a+r*exp(i*k),A),segment(A,a+r*exp(i*k+i*2*pi/5))];
- pour j de 0 jusque 4 faire
-   L:=L,s1
-   s1:=rotation(a,2*pi/5,s1);  
-     fpour;
- return L;
- }:;
-</PRE><P>La fonction <TT>tour</TT> dessine des pentagones sur le pourtour d’un décagone.<BR>
-<TT>tour</TT> a comme pramètres :<BR>
-<TT>a</TT> est l’affixe du centre du décagone,<BR>
-<TT>R</TT> est le rayon de son cercle circonscrit,<BR>
-<TT>k</TT> est l’angle en radian que fait un sommet du décagone avec l’horizontale.<BR>
-On tape : 
-</P><PRE CLASS="verbatim">tour(a,R,k):={
-  local c,r,j,L,l,ret,aet;
-  c:=2*R*sin(pi/10);
-  r:=c/2/sin(pi/5);
-  l:=2*r*sin(2*pi/5);
-  ret:=r*sin(2*pi/5)/sin(pi/5);
-  aet:=R*cos(pi/10)+r*cos(pi/5)+r*cos(2*pi/5)+ret*cos(pi/5);
-  L:=NULL;
-  pour j de 0 jusque 9 faire
-   L:=L,isopolygone(a+R*exp(i*k+i*pi*j/5)*exp(i*pi/5),
-                    a+R*exp(i*k+i*pi*j/5),5);
-   fpour;
-  return L;
-}:;
-</PRE><P>La fonction <TT>touret</TT> dessine un tour de pentagones, un tour d’étoiles,
-un tour fait avec tour, un tour d’étoiles et enfin un tour fait avec tour.<BR>
-<TT>touret</TT> a les mêmes paramètres que <TT>tour</TT><BR>
-Pour les variables locales on a :<BR>
-<TT>R</TT> : rayon du décagone<BR>
-<TT>r</TT> : rayon des pentagones<BR>
-<TT>ret</TT> : rayon des étoiles<BR>
-<TT>l</TT> est la distance entre le sommet 0 et le sommet 2 du pentagone.<BR>
-<TT>aet</TT> distance du centre du décagone au centre d’une étoile.<BR>
-On tape : 
-</P><PRE CLASS="verbatim">touret(a,R,k):={
-local c,r,j,L,l,ret,aet;
-L:=NULL;
-c:=2*R*sin(pi/10);
-r:=c/2/sin(pi/5.);
-l:=2*r*sin(2*pi/5.);
-ret:=r*sin(2*pi/5.)/sin(pi/5.);
-aet:=R*cos(pi/10.)+r*cos(pi/5.)+r*cos(2*pi/5.)+ret*cos(pi/5.);
-pour j de 0 jusque 9 faire
- L:=L,isopolygone(a+R*exp(i*k+i*pi*j/5)*exp(i*pi/5),
-                  a+R*exp(i*k+i*pi*j/5),5);
- L:=L,etoile(a+aet*exp(i*pi/10.+j*i*pi/5.),ret,pi/10.+j*pi/5.);
- L:=L,tour(a+(2*(R+c)+l)*exp(i*j*pi/5.),R,k);
- L:=L,tour(a+(4*R+3*c+l)*exp(i*j*pi/5.),R,k);
- L:=L,etoile(a+(4*R+3*c+l)*exp(i*j*pi/5.)+
-           aet*exp(i*7*pi/10+j*i*pi/5.),ret,7*pi/10.+j*pi/5.);
-fpour;
-return L;
-}:;
-</PRE><P>On tape :<BR>
-<TT>etoile(-35,2,0),tour(-25,2,0),touret(0,2,0)</TT><BR>
-On obtient :<BR>
-
-<IMG SRC="cascas108.png"><BR>
-
-On tape pour faire un quasi-cristal :
-</P><PRE CLASS="verbatim">R:=2;
-c:=2*R*sin(pi/10);
-r:=c/2/sin(pi/5.);
-l:=2*r*sin(2*pi/5.);
-ret:=r*sin(2*pi/5.)/sin(pi/5.);
-aet:=R*cos(pi/10.)+r*cos(pi/5.)+r*cos(2*pi/5.)+ret*cos(pi/5.);
-touret(0,2,0);tour(2*(R+c)+l,2,0);tour((2*(R+c)+l)*exp(i*pi/5.),2,0);
-tour(4*R+3*c+l,2,0);tour((4*R+3*c+l)*exp(i*pi/5.),2,0);
-tour(4*R+3*c+l+(sqrt(5)+3)*exp(2*i*pi/5.),2,0);
-touret((6*R+5*c+2*l),2,0);
-touret((6*R+5*c+2*l)+(6*R+5*c+2*l)*exp(2*i*pi/5.),2,0);
-touret((6*R+5*c+2*l)*exp(3*i*pi/5.),2,0);
-touret(2*(6*R+5*c+2*l)*cos(pi/5.)*exp(2*i*pi/5.),2,0);
-tour((6*R+5*c+2*l)/cos(3*pi/10.)*exp(3*i*pi/10.)/2,2,pi/10.);
-</PRE><P>On obtient :<BR>
-
-<IMG SRC="cascas109.png">
-</P><H2 CLASS="section"><A NAME="toc77"></A><A NAME="htoc205">11.9</A>  Puzzle : remplir un décagone avec des losanges</H2><PRE CLASS="verbatim">deca(O1,O2):={
+<IMG SRC="cascas080.png"></P><H2 CLASS="section"><A NAME="toc70"></A><A NAME="htoc192">11.8</A>  Puzzle : remplir un décagone avec des losanges</H2><PRE CLASS="verbatim">deca(O1,O2):={
 local R,l,L,A,k;
 R:=longueur(O1,O2);
 l:=2*R*sin(pi/10);
@@ -1450,15 +1240,15 @@ return L;
 <TT>penta2(point(0),point(1));</TT><BR>
 On obtient :<BR>
 
-<IMG SRC="cascas110.png"><BR>
+<IMG SRC="cascas081.png"><BR>
 Cela permet de remplir un décagone avec des losanges en joignant à la souris
 les points du dessin ci-dessus.<BR>
-<IMG SRC="cascas111.png"><BR>
+<IMG SRC="cascas082.png"><BR>
 Puis de colorer le dessin avec la souris :<BR>
 choisir le mode quadrilatere (Polygones-&gt;quadrilatere) et comme attribut de 
 l’objet le dessin plein (cliquer sur l’ellipse rempli et la couleur), 
 on obtient :<BR>
-<IMG SRC="cascas112.png"><BR>
+<IMG SRC="cascas083.png"><BR>
 Voisi les programmes de différents remplissages :
 </P><PRE CLASS="verbatim">vasa1(O1,O2):={
 local L0,L1,L2,k,P,Q;
@@ -1560,15 +1350,15 @@ return P,Q;
 <TT>vasa3((2*sin(pi/10)+1)*exp(-i*pi/5),2*sin(pi/10)*exp(-i*pi/5)),</TT><BR>
 <TT>vasa7((2*sin(pi/10)+1)*exp(2*i*pi/5)-1,2*sin(pi/10)*exp(2*i*pi/5)-1)</TT><BR>
 On obtient :<BR>
-<IMG SRC="cascas113.png">
-</P><H2 CLASS="section"><A NAME="toc78"></A><A NAME="htoc206">11.10</A>  Les deux hélices</H2><P>
+<IMG SRC="cascas084.png">
+</P><H2 CLASS="section"><A NAME="toc71"></A><A NAME="htoc193">11.9</A>  Les deux hélices</H2><P>
 Ce problème aète donné aux olympiades académiques de 2005.
-</P><H3 CLASS="subsection"><A NAME="htoc207">11.10.1</A>  Le problème</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc194">11.9.1</A>  Le problème</H3><P>
 Un avion modèle réduit possède deux hélices de même longueur qui 
 tournent dans un même plan perpendiculaire à leurs axes, et à la même 
 vitesse. 
 Comment choisir la distance entre leurs axes <I>a</I> et l’angle de départ <I>b</I> des
-2 hélices pour que les deux hélices puissent tourner sans se heurter ?</P><H3 CLASS="subsection"><A NAME="htoc208">11.10.2</A>  La modélisation avec <TT>Xcas</TT></H3><P>
+2 hélices pour que les deux hélices puissent tourner sans se heurter ?</P><H3 CLASS="subsection"><A NAME="htoc195">11.9.2</A>  La modélisation avec <TT>Xcas</TT></H3><P>
 On suppose les hélices de centres <TT>O1,O2</TT> et de longueur 2.
 On choisit comme paramètres, la 
 distance <TT>a</TT> des centres des 2 hélices, et la mesure <TT>b</TT> de l’angle 
@@ -1607,7 +1397,7 @@ b:=element(0..pi,pi/3);
 h2:=seq(segment(a+exp(i*(t+pi)),a+exp(i*t)),
         t=b..2*pi+b,pi/24):;
 animation(h2);
-</PRE><H3 CLASS="subsection"><A NAME="htoc209">11.10.3</A>  Le raisonnement</H3><P>
+</PRE><H3 CLASS="subsection"><A NAME="htoc196">11.9.3</A>  Le raisonnement</H3><P>
 Il y a des cas simples :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 lorsque <I>a</I>≤ 1 on est sûr que les 2 hélices se touchent 

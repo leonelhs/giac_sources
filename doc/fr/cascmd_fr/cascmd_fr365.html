@@ -6,64 +6,21 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Factorisation sur les entiers : collect</TITLE>
+<TITLE>Mise en facteur de xn dans un polynôme : factor_xn</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr364.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr366.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc450">6.26.17</A>  Factorisation sur les entiers : <TT>collect</TT></H3><P><A NAME="@default694"></A>
-<TT>collect</TT> a comme paramètre un polynôme ou une liste de 
-polynômes et éventuellement <TT>sqrt(n)</TT>.<BR>
-<TT>collect</TT> factorise le polynôme (ou les polynômes de la liste) sur les
-entiers lorsque les coefficients du polynôme sont entiers ou sur 
-ℚ(√<SPAN style="text-decoration:overline">(</SPAN><I>n</I>)), si les coefficients du polynôme sont dans
-ℚ(√<SPAN style="text-decoration:overline">(</SPAN><I>n</I>)) ou si <TT>sqrt(n)</TT> est le second argument.<BR>
-.
-Exemples :<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Factoriser sur les entiers : 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>2</SUP>−4</TD></TR>
-</TABLE>
-On tape :
-<DIV CLASS="center"><TT>collect(x</TT><CODE><TT>^</TT></CODE><TT>2-4)</TT></DIV>
-On trouve en mode réel :
-<DIV CLASS="center"><TT>(x-2)*(x+2)</TT></DIV></LI><LI CLASS="li-itemize">Factoriser sur les entiers : 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>2</SUP>+4</TD></TR>
-</TABLE>
-On tape :
-<DIV CLASS="center"><TT>collect(x</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV>
-On obtient en mode réel :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+4</TT></DIV>
-On obtient en mode complexe :
-<DIV CLASS="center"><TT>(x+2*i)*(x-2*i)</TT></DIV></LI><LI CLASS="li-itemize">Factoriser sur les entiers : 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>2</SUP>−2</TD></TR>
-</TABLE>
-On tape :
-<DIV CLASS="center"><TT>collect(x</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV>
+<H3 CLASS="subsection"><A NAME="htoc451">6.27.14</A>  Mise en facteur de <I>x</I><SUP><I>n</I></SUP> dans un polynôme : <TT>factor_xn</TT></H3><P><A NAME="@default693"></A>
+<TT>factor_xn</TT> a comme argument un polynôme <TT>P</TT>.<BR>
+<TT>factor_xn</TT> renvoie le polynôme <TT>P</TT> dans lequel on a mis en facteur 
+<I>x</I><SUP><I>n</I></SUP> où <I>n</I> est le degré de <TT>P</TT> (<TT>n=degree(P)</TT>).<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>factor_xn(-x</TT><CODE><TT>^</TT></CODE><TT>4+3)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV>
-Mais si on tape :
-<DIV CLASS="center"><TT>collect(sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>2-2))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>sqrt(2)*(x-sqrt(2))*(x+sqrt(2))</TT></DIV>
-</LI><LI CLASS="li-itemize">Factorier sur les entiers : 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>3</SUP>−2<I>x</I><SUP>2</SUP>+1 et <I>x</I><SUP>2</SUP>−<I>x</I></TD></TR>
-</TABLE>
-On tape :
-<DIV CLASS="center"><TT>collect([x</TT><CODE><TT>^</TT></CODE><TT>3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1,x</TT><CODE><TT>^</TT></CODE><TT>2-x])</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[(x-1)*(x</TT><CODE><TT>^</TT></CODE><TT>2-x-1),x*(x-1)]</TT></DIV>
-Mais si on tape :
-<DIV CLASS="center"><TT>collect((x</TT><CODE><TT>^</TT></CODE><TT>3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1)*sqrt(5))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>sqrt(5)*(x+(-(sqrt(5))-1)/2)*(x-1)*(x+(sqrt(5)-1)/2)</TT></DIV>
-Ou si on tape :
-<DIV CLASS="center"><TT>collect(x</TT><CODE><TT>^</TT></CODE><TT>3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1,sqrt(5))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>(x+(-(sqrt(5))-1)/2)*(x-1)*(x+(sqrt(5)-1)/2)</TT></DIV>
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4*(-1+3*x</TT><CODE><TT>^</TT></CODE><TT>-4)</TT></DIV><HR>
 <A HREF="cascmd_fr364.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr366.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

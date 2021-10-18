@@ -6,33 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Avoir du papier triangulé : papier_triangule 
-triangle_paper</TITLE>
+<TITLE>Intercepter une erreur : try..catch</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr851.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr853.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc987">9.2.9</A>  Avoir du papier triangulé : <TT>papier_triangule<BR>
-triangle_paper</TT></H3><P><A NAME="@default1535"></A><A NAME="@default1536"></A>
-<TT>papier_triangule</TT> permet d’avoir du papier triangulé c’est 
-à dire de tracer un reseau triangulaire d’angle <I>t</I>.<BR>
-<TT>papier_pointe</TT> a 3,4 ou 5 arguments : l’unité <TT>ux</TT> sur l’axe des 
-<I>x</I>, l’angle <TT>t</TT> et l’unité <TT>uy</TT> sur l’axe des <I>y</I> et éventuellement
-<TT>x=xmin..xmax,y=ymin..ymax</TT> pour avoir ces lignes dans le rectangle
-<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
-les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
-Vous avez la possibilité d’enlever les axes orthonormés en utilisant
-le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
-On tape pour avoir un réseau triangulaire :
-</P><DIV CLASS="center"><TT>papier_triangule(1,pi/2,1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc995">9.7.12</A>  Intercepter une erreur : <TT>try..catch</TT></H3><P><A NAME="@default1530"></A><A NAME="@default1531"></A>
+On fait le bloc d’instructions après <TT>try</TT> : en cas d’erreur 
+le message d’erreur est stocké dans la variable <TT>err</TT> sous forme d’une 
+chaine, et <TT>catch</TT> exécute le bloc d’instructions 
+après <TT>catch (err)</TT>.<BR>
+On tape :
+</P><PRE CLASS="verbatim">try{A:=idn(2)*idn(3)} 
+catch(erreur) 
+{print("l'erreur est "+erreur)}
+</PRE><P>On obtient :
+</P><DIV CLASS="center"><TT>"l’erreur est * Invalid dimension"</TT></DIV><P>
+On tape :
+</P><PRE CLASS="verbatim">essai(x):={
+local y,err;
+try {y:=[[1,2]]+x;}
+catch (err){y:="l'erreur est "+err;} 
+return y;}
+</PRE><P>On tape :
+</P><DIV CLASS="center"><TT>essai([1])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le reseau formé par des moitiés de carrés et dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><P>
-On tape pour avoir un reseau triangulaire :
-</P><DIV CLASS="center"><TT>papier_triangule(1,pi/3,sqrt(3)/2,x=-2..3,y=-1..2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>"l’erreur est + Bad Argument Value"</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>essai([[3,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le reseau formé par des triangles équilatéraux dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[4,6]]</TT></DIV><HR>
 <A HREF="cascmd_fr851.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr853.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

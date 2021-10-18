@@ -6,22 +6,121 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’isobarycentre de n points : isobarycenter isobarycentre</TITLE>
+<TITLE>Les lieux : locus lieu</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr979.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr981.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1138">10.4.6</A>  L’isobarycentre de <I>n</I> points : <TT>isobarycenter isobarycentre</TT></H3><P><A NAME="@default1911"></A><A NAME="@default1912"></A><A NAME="sec:isobarycentre3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr867.html#sec:isobarycentre2">9.8.9</A> pour la géométrie plane.<BR>
-<TT>isobarycentre</TT>, en géométrie 3-d, a comme argument la liste 
-ou la séquence de <I>n</I> points.<BR>
-<TT>isobarycentre</TT> renvoie et trace un point qui est l’isobarycentre de ces <I>n</I> points.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>isobarycentre(point(1,4,0),point(1,-2,0))</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1144">10.20.1</A>  Les lieux : <TT>locus lieu</TT></H3><P><A NAME="@default1903"></A><A NAME="@default1904"></A><A NAME="sec:lieudroite"></A> 
+<TT>lieu</TT> permet de tracer le lieu d’un point qui dépend d’un autre
+point qui doit être défini avec la fonction <TT>element</TT> et <TT>lieu</TT> 
+permet aussi de tracer l’enveloppe d’une droite qui dépend d’un
+point qui doit être défini avec la fonction <TT>element</TT> (voir aussi <TT>enveloppe</TT> pour l’enveloppe d’une famille de droites qui dépendent d’un 
+paramètre <A HREF="cascmd_fr981.html#sec:envelope">10.20.2</A>).<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+lieu d’un point.<BR>
+<TT>lieu</TT> a 2 à 4 arguments.<BR>
+Les deux premiers argument sont deux noms de variables :<BR>
+le premier argument est le nom du point dont on veut 
+connaitre le lieu et ce point est fonction du deuxième argument,<BR>
+le deuxième argument est le nom du point qui se déplace sur une courbe 
+<TT>C</TT> et qui doit être défini par <TT>element(C)</TT>.<BR>
+On peut préciser éventuellement en troisième argument l’intervalle où 
+se trouve le paramètre <TT>t</TT> utilisé pour le paramétrage de <TT>C</TT>
+lorsque le deuxième argument décrit <TT>C</TT> et en quatrième argument
+préciser la valeur de <TT>tstep</TT>.<BR>
+<B>Remarque</B><BR>
+Pour connaitre le paramétrage de la courbe <TT>C</TT> on utilise la commande
+<TT>parameq(C)</TT>.<BR>
+
+<TT>lieu</TT> dessine le lieu du premier argument quand le deuxième argument se 
+déplace selon ce que l’on a spécifié comme argument de <TT>element</TT>.<BR>
+<B>L’algorithme</B><BR>
+Si on cherche le lieu de <I>N</I> lorsque <I>M</I> se déplace sur une courbe <I>C</I>,
+l’algorithme cherche les niveaux qui se trouvent entre le niveau où se trouve
+la définition de <I>M</I> et celui où se trouve la définition de <I>N</I> et 
+choisit un paramétrage rationnel de la courbe où <I>M</I> se déplace, puis 
+effectue les calculs de ces niveaux intermédiaires, puis trace une courbe 
+paramétrée <TT>X(t)+i*Y(t)</TT> qui dépend du <I>t</I> défini dans <TT>cfg</TT>, 
+puis affiche l’équation du lieu par le calcul de 
+<TT>resultant(X(t)-x,Y(t)-y,t)</TT>.<BR>
+Il ne faut donc pas avoir d’autres instructions <TT>lieu</TT> dans les 
+instructions intermédiaires.<BR>
+<B>Conseils</B><BR>
+ Il faut avoir le moins possible d’instructions entre 
+la définition de <I>M</I> et l’instruction <TT>lieu</TT>.<BR>
+ On tape, pour avoir le lieu du centre de gravité <I>G</I> du triangle de sommets
+<I>A</I> point(-1), <I>B</I> point(1) et <I>P</I> lorsque <I>P</I> décrit la droite d’équation 
+<I>y</I>=1 :
+<DIV CLASS="center"><TT>P:=element(droite(i,1+i))</TT></DIV>
+<DIV CLASS="center"><TT>G:=isobarycentre(-1,1,P)</TT></DIV>
+<DIV CLASS="center"><TT>lieu(G,P)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point (1,1,0) est tracé</TT></DIV><HR>
+<DIV CLASS="center"><TT>La droite parallèle à l’axe des x passant par i/3</TT></DIV>
+<B>Attention</B><BR>
+Il faut régler correctement le paramètre <I>t</I>, c’est à dire les valeurs 
+<TT>t-</TT> et <TT>t+</TT> de la fenêtre de configuration graphique
+pour avoir le lieu entièrement!!!
+On tape, pour avoir le lieu du centre de gravité <I>G</I> du triangle de sommets
+<I>A</I> point(-1), <I>B</I> point(1) et <I>P</I> lorsque <I>P</I> décrit le segment 
+[-3+i; 3+i]. Pour connaitre le paramétrage de la droite 
+<TT>d:=droite(i,1+i)</TT> on utilise <TT>parameq(d)</TT> :
+<DIV CLASS="center"><TT>d:=droite(i,1+i):;parameq(d)</TT></DIV>
+On obtient comme paramétrage :
+<DIV CLASS="center"><TT>t+i</TT></DIV>
+<DIV CLASS="center"><TT>P:=element(d)</TT></DIV>
+<DIV CLASS="center"><TT>G:=isobarycentre(-1,1,P)</TT></DIV>
+<DIV CLASS="center"><TT>lieu(G,P,t=-3..3)</TT></DIV>
+<DIV CLASS="center"><TT>plotparam(t+i,t=-3..3);triangle(-1,1,P)</TT></DIV>
+On obtient comme lieu :
+<DIV CLASS="center"><TT>Le segment [-1+i/3; 1+i/3]</TT></DIV>
+On peut préciser la valeur de <TT>tstep</TT> en quatrième argument, 
+on tape :<BR>
+<DIV CLASS="center"><TT>lieu(G,P,t=-3..3,tstep=0.1)</TT></DIV>
+</LI><LI CLASS="li-itemize">enveloppe d’une droite fonction d’un point qui se déplace sur une courbe.<BR>
+<TT>lieu</TT> a comme arguments deux noms de variables : le premier 
+argument est le nom de la droite dont on veut connaitre l’enveloppe et cette 
+droite est fonction du deuxième argument. Le deuxième argument est le nom 
+du point qui se déplace et qui doit être défini avec la fonction
+<TT>element</TT>.<BR>
+<TT>lieu</TT> dessine l’enveloppe du premier argument quand le deuxième 
+argument se déplace selon ce que l’on a spécifié comme argument de 
+<TT>element</TT>.<BR>
+On tape, pour avoir le l’enveloppe de la médiatrice de <I>FH</I> lorsque <I>H</I> 
+décrit la droite d’équation <I>x</I>=0 :
+<DIV CLASS="center"><TT>F:=point(1)</TT></DIV>
+<DIV CLASS="center"><TT>H:=element(droite(x=0))</TT></DIV>
+<DIV CLASS="center"><TT>d:=mediatrice(F,H)</TT></DIV>
+<DIV CLASS="center"><TT>lieu(d,H)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>La parabole de foyer F et de directrice l’axe des y dont l’èquation est 2*x-y</TT><CODE><TT>^</TT></CODE><TT>2-1=0</TT></DIV>
+</LI><LI CLASS="li-itemize">enveloppe d’une droite donnée par une équation dépendant d’un paramètre (voir aussi la commande <TT>enveloppe</TT> <A HREF="cascmd_fr981.html#sec:envelope">10.20.2</A>),<BR>
+Dans ce cas, il faut dire que la paramètre est l’affixe d’un point de la 
+droite <I>y</I>=0.<BR>
+Par exemple, enveloppe d’une famille de droites d’équation
+<I>y</I>+<I>x</I>tan(<I>t</I>)−2sin(<I>t</I>)=0 lorsque <I>t</I>∈ ℝ. (cf <A >??</A>)<BR>
+On tape :
+<DIV CLASS="center"><TT>H:=element(droite(y=0));</TT></DIV>
+<DIV CLASS="center"><TT>D:=droite(y+x*tan(affixe(M))-2*sin(affixe(M)))</TT></DIV>
+<DIV CLASS="center"><TT>lieu(D,H)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>L’astroide d’équation paramérique 2*cos(t)</TT><CODE><TT>^</TT></CODE><TT>3+2*i*sin(t)</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV>
+Si on veut l’enveloppe lorsque <I>t</I>=0..π, on tape :<BR>
+<DIV CLASS="center"><TT>lieu(D,H,t=0..pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>La partie au dessus de </TT><TT><I>y</I>=0</TT><TT> de l’astroide d’équation paramérique 2*cos(t)</TT><CODE><TT>^</TT></CODE><TT>3+2*i*sin(t)</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV>
+On peut aussi chercher l’intersection de <TT>D</TT> et de <TT>E</TT> (voir leur définition ci-dessous) pour avoir l’équation paramétrique du lieu.
+<DIV CLASS="center"><TT>D:=y+x*tan(t)-2*sin(t)</TT></DIV>
+<DIV CLASS="center"><TT>E:=diff(D,t)</TT></DIV>
+<DIV CLASS="center"><TT>M:=linsolve([D=0,E=0],[x,y])</TT></DIV>
+<DIV CLASS="center"><TT>P:=plotparam(affixe(M))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>L’astroide d’équation paramérique 2*cos(t)</TT><CODE><TT>^</TT></CODE><TT>3+2*i*sin(t)</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV>
+en effet <TT>simplify(M)</TT> renvoie :<BR>
+<TT>[2*cos(t)</TT><CODE><TT>^</TT></CODE><TT>3,2*sin(t)</TT><CODE><TT>^</TT></CODE><TT>3]</TT>
+</LI></UL><HR>
 <A HREF="cascmd_fr979.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr981.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

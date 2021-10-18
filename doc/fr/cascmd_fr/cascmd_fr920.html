@@ -6,32 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’équation paramétrique d’un objet géométrique : parameq</TITLE>
+<TITLE>L’ellipse : ellipse</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr919.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr921.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1068">9.15.8</A>  L’équation paramétrique d’un objet géométrique : <TT>parameq</TT></H3><P><A NAME="@default1780"></A><A NAME="sec:parameq2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1017.html#sec:parameq3">10.12.6</A> pour la géométrie 3-d.<BR>
-<TT>parameq</TT>, en géométrie plane, permet d’avoir l’équation
-paramétrique d’un objet géométrique sous la forme du nombre complexe 
-<I>x</I>(<I>t</I>)+<I>i</I>*<I>y</I>(<I>t</I>).<BR>
-<B>Attention</B> !!! il faut auparavant purger la variable <TT>t</TT> en tapant :
-<TT>purge(t)</TT> ou <TT>t:=’t’</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1078">10.14.1</A>  L’ellipse : <TT>ellipse</TT></H3><P><A NAME="@default1776"></A><A NAME="sec:ellipse2"></A><B>Voir aussi :</B> <A HREF="cascmd_fr1019.html#sec:ellipse3">11.11.1</A> pour la géométrie 3-d.<BR>
+<TT>ellipse</TT>, en géométrie plane, a 1 ou 3 paramètres :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+un paramètre : son équation de variables <I>x</I> et <I>y</I>. 
+<TT>ellipse(p(x,y))</TT> trace la conique d’équation <TT>p(x,y)=0</TT> si 
+<TT>p(x,y)</TT> est un polynôme de degré 2.
+</LI><LI CLASS="li-itemize">trois paramètres : ses deux foyers et un de ces points (ou son affixe 
+si cette affixe n’est pas 
+réelle) ou ses deux foyers et un réel (son demi-grand axe).<BR>
+<TT>ellipse(F1,F2,A)</TT> trace l’ellipse passant par <TT>A</TT> et de foyers 
+<TT>F1</TT> et <TT>F2</TT> ou,<BR>
+<TT>ellipse(F1,F2,a)</TT> où <TT>a</TT> est un nombre réel, trace l’ellipse 
+de foyers <TT>F1</TT> et <TT>F2</TT> et de demi-grand axe <TT>|a|</TT>.
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>parameq(droite(-1,i))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>ellipse(-i,i,1+i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-t+(1-t)*(i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>L’ellipse de foyers -i, i et passant par 1+i</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>parameq(cercle(-1,i))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>ellipse(-i,i,sqrt(5)-1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1+exp(i*t)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>L’ellipse de foyers -i, i et de demi-grand axe sqrt(5)-1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>normal(parameq(ellipse(-1,1,i)))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>ellipse(x</TT><CODE><TT>^</TT></CODE><TT>2+2*y</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+ou on tape :
+</P><DIV CLASS="center"><TT>ellipse(sqrt(2)/2,-sqrt(2)/2,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(2)*cos(t)+(i)*sin(t)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>L’ellipse de centre 0 et de demi-grand axe 1 et de foyers sqrt(2)/2 et -sqrt(2)/2</TT></DIV><HR>
 <A HREF="cascmd_fr919.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr921.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

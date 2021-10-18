@@ -6,47 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi de Weibull : weibull_cdf weibulld_cdf</TITLE>
+<TITLE>Densité de probabilité de la loi de Cauchy : cauchy cauchyd</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr770.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr772.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc894">7.4.46</A>  Fonction de répartition de la loi de Weibull : <TT>weibull_cdf weibulld_cdf</TT></H3><P><A NAME="@default1376"></A><A NAME="@default1377"></A>
-Lorsqu’une variable aléatoire <I>X</I> à valeur dans ℝ<SUP>+</SUP> suit une 
-loi de Weibull de paramètres réels <I>k</I>,λ strictement positifs et 
-θ positif ou nul (par défaut θ=0), on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>weibull_cdf(k,lambda,theta,x)</TT> avec <I>x</I>∈ ℝ<SUP>+</SUP>.<BR>
-<I>Proba</I>(<I>x</I>≤ <I>X</I>≤ <I>y</I>)=<TT>weibull_cdf(k,lambda,theta,x,y)</TT> avec <I>x</I>∈ ℝ<SUP>+</SUP> 
-et <I>y</I>∈ ℝ<SUP>+</SUP>.<BR>
-On a :<BR>
-<TT>weibull_cdf(k,lambda,theta,x)</TT> est égale à 
- 1−exp(−(<I>x</I>−θ/λ)<SUP><I>k</I></SUP>) et<BR>
-<TT>weibull_cdf(k,lambda,theta,x,y)</TT> est égale à :<BR>
- exp(−(<I>x</I>−θ/λ)<SUP><I>k</I></SUP>)−exp(−(<I>y</I>−θ/λ)<SUP><I>k</I></SUP>)<BR>
+<H3 CLASS="subsection"><A NAME="htoc905">8.4.36</A>  Densité de probabilité de la loi de Cauchy : <TT>cauchy cauchyd</TT></H3><P><A NAME="@default1370"></A><A NAME="@default1371"></A>
+<TT>cauchyd</TT> a 1 ou 3 paramètres : deux réels <I>a</I>,<I>b</I> strictement positifs 
+(par défaut <I>a</I>=0 et <I>b</I>=1) et un réel <I>x</I>.<BR>
+<TT>cauchyd(a,b,x)</TT> renvoie la densité de probabilité de la loi de Cauchy
+à savoir :<BR>
+<TT>cauchy(x)</TT>= 1/(<I>x</I><SUP>2</SUP>+1)*<I>pi</I><BR>
+<TT>cauchy(a,b,x)</TT>= <I>b</I>/((<I>x</I>−<I>a</I>)<SUP>2</SUP>+<I>b</I><SUP>2</SUP>)*<I>pi</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2,3,5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cauchyd(0.3)</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2,3,0,5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cauchyd(0,1,0.3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1-exp(-25/9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.292027418517</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2,3,1.9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cauchyd(2,1,3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.330424340391</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1/(2*pi)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2.2,1.5,0.4,1.9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cauchy(2.2,1.5,0.8)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.632120558829</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2.2,1.5,0.4,1.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.221853318885</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2.2,1.5,0.4,1.2,1.9)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.410267239944</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.113412073462</TT></DIV><HR>
 <A HREF="cascmd_fr770.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr772.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

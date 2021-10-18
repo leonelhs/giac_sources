@@ -6,64 +6,128 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction testant le type de son argument: type</TITLE>
+<TITLE>chisquaret</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr795.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr797.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc925">8.4.4</A>  Fonction testant le type de son argument: <TT>type</TT></H3><P><A NAME="@default1416"></A>
-<A NAME="@default1417"></A><A NAME="@default1418"></A><A NAME="@default1419"></A><A NAME="@default1420"></A><A NAME="@default1421"></A><A NAME="@default1422"></A><A NAME="@default1423"></A><A NAME="@default1424"></A><A NAME="@default1425"></A>
-<TT>type</TT> est une fonction qui a un argument et qui renvoie le
-type de cet argument par exemple :<BR>
- <TT>DOM_FLOAT,DOM_INT,DOM_COMPLEX,..,DOM_IDENT,DOM_LIST,<BR>
-DOM_SYMBOLIC,DOM_RAT,..DOM_SYMBOLIC,DOM_STRING</TT>.<BR>
-Il y a 20 types différents qui sont représentés par un entier entre 1 
-et 20.<BR>
-<TT>type</TT> permet de tester une erreur d’entrée.<BR>
+<H3 CLASS="subsection"><A NAME="htoc931">8.5.4</A>  <TT>chisquaret</TT></H3><P><A NAME="@default1406"></A>
+<TT>chisquaret</TT> a pour arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+la liste des données d’un échantillon,
+</LI><LI CLASS="li-itemize">une loi de distribution ou la liste des données d’un autre
+échantillon,
+</LI><LI CLASS="li-itemize">les paramètres de cette loi de distribution ou les paramètres : 
+<TT>classes</TT> suivi de <TT>class_min</TT> et de <TT>class_dim</TT>.
+</LI></UL><P>
+<TT>chisquaret</TT> est le test du Chi2 d’adéquation entre 2 (or n)
+échantillons ou entre un échantillon et une loi de distribution 
+(multinomiale ou donnée par une fonction).<BR>
+<TT>chisquaret</TT> renvoie la valeur <I>d</I><SUP>2</SUP> de la statistique <I>D</I><SUP>2</SUP> où :<BR>
+ <I>D</I><SUP>2</SUP>=∑<SUB><I>j</I>=1</SUB><SUP><I>k</I></SUP>(<I>n</I><SUB><I>j</I></SUB>−<I>e</I><SUB><I>j</I></SUB>)<SUP>2</SUP>/<I>e</I><SUB><I>j</I></SUB> avec<BR>
+<I>k</I> est le nombre de classes de l’échantillon, <I>n</I><SUB>1</SUB>...<I>n</I><SUB><I>k</I></SUB> les effectifs de
+chaque classe de l’échantillon et <I>e</I><SUB>1</SUB>,..,<I>e</I><SUB><I>k</I></SUB> sont les
+effectifs théoriques (si chaque valeur <I>x</I><SUB><I>j</I></SUB> est obtenue avec la 
+probabilité théorique <I>p</I><SUB><I>j</I></SUB> on a <I>e</I><SUB><I>j</I></SUB>=<I>np</I><SUB><I>j</I></SUB>)
 On tape :
-</P><DIV CLASS="center"><TT>type(3.14)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>chisquaret([57,54])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>DOM_FLOAT</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.0810810810811</TT></DIV><P>
+avec en vert le résumé du test :<BR>
+On suppose que les données sont des effectifs de classes, adéquation à la
+distribution uniforme.<BR>
+Adéquation d’un échantillon à une distribution discrète
+Résultat du test du Chi2 0.0810810810811.<BR>
+On rejette l’adéquation si supérieur à <TT>chisquare_icdf(1,0.95)</TT> qui
+vaut <TT>3.84145882069</TT> or <TT>chisquare_icdf(1,1-alpha)</TT> si alpha!=5%.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>type(3.14)+0</TT></DIV><P>
+</P><DIV CLASS="center"><TT>chisquaret([1,1,1,1,1,0,0,1,0,0,1,1,1,0,1,1,0,1,1,0,0,0,0],[.4,.6])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.115942028986</TT></DIV><P>
+avec en vert le résumé du test :<BR>
+Adéquation d’un échantillon à une distribution discrète<BR>
+Résultat du test du Chi2 0.115942028986,<BR>
+On rejette l’adéquation si supérieur à <TT>chisquare_icdf(1,0.95)</TT> qui
+vaut <TT>3.84145882069</TT> or <TT>chisquare_icdf(1,1-alpha)</TT> si alpha!=5%.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>type(3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>chisquaret(ranv(1000,binomial,10,.5),binomial)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>DOM_INT</TT></DIV><P>
+</P><DIV CLASS="center"><TT>?</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>type(3)+0</TT></DIV><P>
+</P><DIV CLASS="center"><TT>chisquaret(ranv(1000,binomial,10,.5),binomial,11,.5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>?</TT></DIV><P>
+On régle dans la configuration graphique les valeurs de <TT>class_min</TT> et 
+de <TT>class_dim</TT> à -2 et 0.25 et on tape :
+</P><DIV CLASS="center"><TT>L:=ranv(1000,normald,0,.2)</TT></DIV><DIV CLASS="center"><TT>chisquaret(L,normald)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>chisquaret(L,normald,classes,-2,.25)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>3.7961112714</TT></DIV><P>
+avec en vert le résumé du test :<BR>
+Densité normale, estimation de la moyenne et de l’ecart-type par les données0.00109620704977 0.201224413347<BR>
+Adéquation d’un échantillon à <TT>normald_cdf(.00109620704977,0.201224413347)</TT>, résultat du test du Chi2 3.7961112714,<BR>
+On rejette l’adéquation si supérieur à <TT>chisquare_icdf(4,0.95)</TT> qui
+vaut <TT>9.48772903678</TT> ou <TT>chisquare_icdf(4,1-alpha)</TT> si alpha!=5%.<BR>
+Vérifions :<BR>
 On tape :
-</P><DIV CLASS="center"><TT>type(3% 5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>size(classes(L))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>size(classes(L,-2,.25))</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>6</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>C:=classes(L)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>C:=classes(L,-2,.25)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>[[(-0.75) .. -0.5,3],[(-0.5) .. -0.25,113],[(-0.25) .. 0,382],[0 .. 0.25,393],[0.25 .. 0.5,102],[0.5 .. 0.75,7]]</TT></DIV><P>
+On a bien : <I>n</I>=3+113+382+393+102+7=1000<BR>
+On compare cette distribution empirique <I>L</I> à une distribution théorique
+d’effectifs <I>e</I><SUB>1</SUB>,..,<I>e</I><SUB><I>k</I></SUB> (si chaque valeur <I>x</I><SUB><I>j</I></SUB> est obtenue avec la 
+probabilité théorique <I>p</I><SUB><I>j</I></SUB> on a <I>e</I><SUB><I>j</I></SUB>=<I>np</I><SUB><I>j</I></SUB>).<BR>
+Calculons la valeur <I>d</I><SUP>2</SUP> de la statistique :<BR>
+ <I>D</I><SUP>2</SUP>=∑<SUB><I>j</I>=1</SUB><SUP><I>k</I></SUP>(<I>n</I><SUB><I>j</I></SUB>−<I>e</I><SUB><I>j</I></SUB>)<SUP>2</SUP>/<I>e</I><SUB><I>j</I></SUB><BR>
+On estimer les paramètres µ et σ à partir de l’échantillon 
+(µ par la moyenne <I>m</I> de l’échantillon et σ par <I>s</I>√<SPAN style="text-decoration:overline"><I>n</I>/<I>n</I>−1</SPAN> où <I>s</I> est l’écart-type de l’échantillon et <I>n</I> vaut ici 1000) :<BR>
+On tape :
+</P><DIV CLASS="center"><TT>mu:=mean(L);s:=stddev(L)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>0.00109620704977,0.201123775974</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sigma:=s*sqrt(1000/999)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>0.201224413347</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>p1:=normal_cdf(mu,sigma,-0.75,-0.50)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>15</TT></DIV><P><B>Remarque : utilisation de type pour les graphes</B><BR>
-voir aussi <A HREF="index.html#sec:plot">3</A><BR>
-Si le graphe dépend d’une fonction utilisateur, il faut que la fonction soit 
-définie même lorsque le(s) paramètre(s) a (ont) une valeur formelle, ce 
-qui peut se faire en testant le type du paramètre, comme dans l’exemple 
-suivant, <I>f</I> est définie en testant du type du paramètre par :
-</P><PRE CLASS="verbatim">f(x):= {
-  if (type(x)==DOM_IDENT) return 'f'(x); 
-  while(x&gt;0){ x--; } 
-  return x; 
-}:;
-</PRE><P>Ainsi <TT>f(x)</TT> renvoie <TT>f(x)</TT> et <TT>f(3.1)</TT> renvoie <TT>-0.9</TT>.<BR>
-ou bien<BR>
-</P><PRE CLASS="verbatim">g(x):= {   
-  if (type(x)!=DOM_LIST) return 'g'(x); 
-  if (type(x)==DOM_IDENT) return 'g'(x); 
-  while(x[0]&gt;0){x[0]:=x[0]-1; } 
-  return x; 
-}:;
-</PRE><P>Ainsi <TT>g(x)</TT> renvoie <TT>g(x)</TT>, <TT>g([x,y,z])</TT> renvoie <TT>g([x,y,z])</TT>
-et <TT>g([1.1,2,3])</TT> renvoie <TT>[-0.9,2,3]</TT>.<BR>
-Par exemple si <TT>G:=plotfunc(g(x)</TT>, le test permet d’utiliser le graphe <TT>G</TT> de <TT>g</TT> dans des commandes comme <TT>translation(1+i,G)</TT>...
-</P><HR>
+</P><DIV CLASS="center"><TT>0.00628817561212</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>p2:=normal_cdf(mu,sigma,-0.5,-0.25)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.0996616023075</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>p3:=normal_cdf(mu,sigma,-0.25,0)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.391782175726</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>p4:=normal_cdf(mu,sigma,0,0.25)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.394119790487</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>p5:=normal_cdf(mu,sigma,0.25,0.5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.101472226962</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>p6:=normal_cdf(mu,sigma,0.5,0.75)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.00648235374944</TT></DIV><P>
+On calcule la valeur <I>d</I><SUP>2</SUP> de la statistique <I>D</I><SUP>2</SUP>, on tape :
+</P><DIV CLASS="center"><TT>P:=[p1,p2,p3,p4,p5,p6]:;</TT></DIV><DIV CLASS="center"><TT>sum((C[k,1]-P[k]*1000)</TT><CODE><TT>^</TT></CODE><TT>2/(P[k]*1000),k=0..5)</TT></DIV><P>
+On obtient bien :
+</P><DIV CLASS="center"><TT>3.79611127141</TT></DIV><HR>
 <A HREF="cascmd_fr795.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr797.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

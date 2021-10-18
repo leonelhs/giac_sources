@@ -6,75 +6,136 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="casexo.css">
-<TITLE>Les limites</TITLE>
+<TITLE>La roue hexagonale ou isopolygonale</TITLE>
 </HEAD>
 <BODY >
 <A HREF="casexo018.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casexo020.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc304">Chapitre 19</A>  Les limites</H1><H2 CLASS="section"><A NAME="toc109"></A><A NAME="htoc305">19.1</A>  Un exercice sur limite et développement limité</H2><H3 CLASS="subsection"><A NAME="htoc306">19.1.1</A>  L’énoncé</H3><P>
-1/ Trouver le développement limité à l’ordre 4 autour de zéro de :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=cos(sin(<I>x</I>))</TD></TR>
-</TABLE><P>.
-2/ Calculer :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">lim</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−&gt;0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>f</I>(<I>x</I>)−<I>e</I><SUP>−<I>x</I><SUP>2</SUP></SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-3/ Soit <I>g</I> définie sur ]0;+∞ par :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>g</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>(<I>f</I>(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>(</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>x</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">)−1)</TD></TR>
-</TABLE><P>
-Montrer que <I>g</I> admet une asymptote oblique au voisinage de +∞ et en 
-donner une équation.
-</P><H3 CLASS="subsection"><A NAME="htoc307">19.1.2</A>  La solution avec <TT>Xcas</TT></H3><P>
-1/ On tape :<BR>
-<TT>taylor(cos(sin(x)))</TT><BR>
-On obtient :<BR>
-<TT>1+(x</TT><CODE><TT>^</TT></CODE><TT>2)/-2+(5*x</TT><CODE><TT>^</TT></CODE><TT>4)/24+</TT><CODE><TT>x^</TT></CODE><TT>6*order_size(x)</TT><BR>
-donc le développement limité à l’ordre 4 autour de zéro de 
-<I>f</I>(<I>x</I>)=cos(sin(<I>x</I>)) est :<BR>
-<TT>1+(x</TT><CODE><TT>^</TT></CODE><TT>2)/-2+(5*x</TT><CODE><TT>^</TT></CODE><TT>4)/24+</TT><CODE><TT>x^</TT></CODE><TT>5*</TT><TT>є</TT><TT>(x)</TT><BR>
-2/ On tape :<BR>
-<TT>limit((cos(sin(x))-exp(-x</TT><CODE><TT>^</TT></CODE><TT>2))/x</TT><CODE><TT>^</TT></CODE><TT>2,x=0)</TT><BR>
-On obtient :<BR>
-<TT>1/2</TT><BR>
-3/ On tape :<BR>
-<TT>f(x):=cos(sin(x))</TT><BR>
-Puis, on tape :<BR>
-<TT>series(x</TT><CODE><TT>^</TT></CODE><TT>2*(f(1/sqrt(x))-1),x=+infinity,4)</TT><BR>
-On obtient :<BR>
-<TT>x/-2+5/24+(order_size(1/x))/x</TT><BR>
-Donc <I>g</I> admet une asymptote oblique au voisinage de +∞ déquation :<BR>
-<I>y</I>=−<I>x</I>/2+5/24</P><H2 CLASS="section"><A NAME="toc110"></A><A NAME="htoc308">19.2</A>  Des calculs de limite</H2><P>
+Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc295">Chapitre 19</A>  La roue hexagonale ou isopolygonale</H1><P>
+Un polygone régulier roule sur l’axe des <I>x</I>.
+Tracer la trajectoire d’un sommet <I>A</I>.<BR>
+Exprimer la distance parcourue par le 
+point <I>A</I> quand la "roue" a fait un tour complet.
+</P><H2 CLASS="section"><A NAME="toc106"></A><A NAME="htoc296">19.1</A>  La roue hexagonale</H2><P>
+Avec <TT>Xcas</TT> on pourra exécuter <TT>hexagone.xws</TT> pour avoir la 
+correction.</P><P>On peut chercher la liste <TT>S</TT> des affixes des sommets de l”hexagone
+lorsque <TT>A</TT> est en <TT>0</TT> et <TT>B</TT> est en <TT>1</TT>, puis utiliser
+<TT>polygone(S)</TT> ou utiliser directement <TT>hexagone(0,1)</TT> ou
+<TT>isopolygone(0,1,6)</TT>.<BR>
+Lorsque la "roue" a fait un tour complet, le point <TT>A</TT> décrit 6 arcs de 
+cercle et on met dans <TT>L</TT> les extrémités de ces arcs (le dernier arc 
+est de rayon nul donc on peut dire que la trajectoire est formée de 5 arcs). 
+Pour calculer ces extrémités on tape :<BR>
+<TT>a:=normal(affixe(rotation(1,-pi/3,0)));</TT><BR>
+<TT>b:=normal(affixe(rotation(2,-pi/3,a)))</TT>,<BR>
+puis on complète par symétrie par rapport à <I>x</I>=3<BR>
+<TT>AL</TT> est la liste de ces 5 arcs lorsque la "roue" a fait un tour complet.<BR>
+<TT>BL</TT> est la liste <TT>AL</TT> translatée : on a ainsi la trajectoire du 
+point <TT>A</TT> lorsque la "roue" a fait 2 tours complets.<BR>
+On définit <TT>Hs</TT> la figure formée par l’hexagone de centre <TT>O</TT>
+et le segment <TT>AO</TT> : on visualise ainsi le point <TT>A</TT>.<BR>
+Pour faire une animation on va créer la liste <TT>LH</TT> contenant plusieurs 
+positions de <TT>Hs</TT> obtenues par deux rotations de centre 1 d’angle −π/6
+et −π/3, deux rotations de centre 2 d’angle −π/6 et −π/3 etc...
+On obtient ainsi une liste de 12 éléments.<BR>
 On tape :
-</P><PRE CLASS="verbatim">limit((1-cos(x))*sin(x)^2/(x^3*ln(x+1)),x,0);
-limit(sqrt(x^2+x+1)-sqrt(x^2+1),x,+infinity);
-limit((x^n-y^n)/(x-y),x,t);
-limit((x+1)/sqrt((x+1)/(x-1)),x,+infinity);
-limit((1-2*x)/(x^2+x-2),x,1);
-limit(exp(x*exp(-x)/(exp(-x)+exp(-2*x^2/(x+1))))/x,
-      x,+infinity);
-limit((exp(x*exp(-x)/(exp(-x)+exp(-2*x^2/(x+1))))-
-      exp(x))/x,x,+infinity);
-</PRE><H2 CLASS="section"><A NAME="toc111"></A><A NAME="htoc309">19.3</A>  Des calculs de développements limités</H2><P>
-On tape :
-</P><PRE CLASS="verbatim">series(cos(x)/exp(x),x,0,4);
-series(ln(cos(x)),x,0,4);
-series(atan(x*y)+1-exp(x+y),x,1/2,2);
-series(cos(x)*exp(2*x+1),x,0,4);
-series(sin(sin(x)),x,0,7);
-</PRE>Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
+</P><PRE CLASS="verbatim">L:=[0,1/2+i*sqrt(3)/2,2+i*sqrt(3),4+i*sqrt(3),11/2+i*sqrt(3)/2,6];
+affichage((AL:=seq(arc(L[k],L[k+1],-pi/3),k,0,4)),hidden_name);
+affichage((BL:=translation(6,AL)),hidden_name);
+Hs:=[isopolygone(0,1,6),segment(0,(1+i*sqrt(3))/2)];
+LH:=[Hs];
+for (j:=0;j&lt;12;j++){LH:=concat(LH,[rotation(j+1,-pi/6,LH[2*j]),rotation(j+1,-pi/3,LH[2*j])])}:;
+affichage((A:=seq(arc(L[k],L[k+1],-pi/3),k,0,4)),hidden_name);
+affichage((B:=translation(6,A)),hidden_name);
+animation(LH);
+</PRE><P>Le point <I>A</I> décrit des 6 arcs de cercles qui sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+un arc de rayon 1 et d’angle au centre π/3 donc de longueur π/3, 
+</LI><LI CLASS="li-itemize">un arc de rayon <I>r</I><SUP>2</SUP>=(−2+1/2)<SUP>2</SUP>+(√<SPAN style="text-decoration:overline">(</SPAN>3)/2)<SUP>2</SUP>=3 et d’angle au centre 
+π/3 donc de longueur π√<SPAN style="text-decoration:overline">3</SPAN>/3, 
+</LI><LI CLASS="li-itemize">un arc de rayon 2 et d’angle au centre π/3 donc de longueur 
+2π/3, 
+</LI><LI CLASS="li-itemize">un arc de rayon √<SPAN style="text-decoration:overline">3</SPAN> et d’angle au centre π/3 donc de 
+longueur π√<SPAN style="text-decoration:overline">3</SPAN>/3, 
+</LI><LI CLASS="li-itemize">un arc de rayon 1 et d’angle au centre π/3 donc de longueur π/3, 
+</LI><LI CLASS="li-itemize">un arc de rayon 0 et d’angle au centre π/3 donc de longueur 0.
+</LI></UL><P>
+donc la distance parcourue par le point <I>A</I> quand la ‘"roue" a fait un tour 
+complet est π(4+2√<SPAN style="text-decoration:overline">3</SPAN>)/3.<BR>
+On peut aussi calculer cette longueur à l’aide d’une boucle.
+On tape :<BR>
+<TT>dist:=0;</TT><BR>
+<TT>for (k:=0;k&lt;5;k++){arc(L[k],L[k+1],-pi/3,C,R);<BR>
+            dist:=dist+R*pi/3;};</TT><BR>
+<TT>normal(dist)</TT>
+</P><H2 CLASS="section"><A NAME="toc107"></A><A NAME="htoc297">19.2</A>  La roue isopolygonale</H2><P>
+Avec <TT>Xcas</TT> on pourra exécuter <TT>rouepoly.xws</TT> pour avoir la 
+correction.</P><P>On va écrire des procédures de param‘etre <TT>n</TT> qui représente le 
+nombre de côtés de l’isopolygône.<BR>
+<TT>Lsarc(n)</TT> renvoie la liste des sommets des arcs qui forment la 
+trajectoire de <TT>A</TT>.<BR>
+<TT>Lpoly(n)</TT> renvoie la liste des positions successives de la figure formée
+par <TT>P</TT> l’isopolgône de centre <TT>O</TT>, et <TT>S</TT> le segment 
+<TT>OA</TT>. On pourra ainsi faire facilement une animation.<BR>
+<TT>tracerarc(n)</TT> ou <TT>tracer(n)</TT> trace la trajectoire lorsque
+la "roue" a fait 2 tours complets.
+<TT>longtrajet(n)</TT> renvoie la longueur d’une arche : le résultat est 
+approché, mais on peut supprimer <TT>evalf</TT> pour avoir un résultat exact 
+lorsque <TT>n=3,4,6</TT>.</P><P>On tape :
+</P><PRE CLASS="verbatim">  Lsarc(n):={
+    local L,j;
+    L:=[point(0)];
+    for (j:=1;j&lt;n;j++){
+      L:=concat(L,normal(rotation(j,-2*pi/n,L[j-1])));
+    }
+    return(L);
+  };
+
+Lpoly(n):={
+local LP,j,P,S;
+P:=normal(isopolygone(0,1,n));
+S:=segment(0,evalf(1/2+i/2/tan(pi/n)));
+LP:=[[P,S]];
+for (j:=0;j&lt;2*n;j++){
+LP:=concat(LP,[rotation(j+1,evalf(-pi/n),LP[2*j]),
+           rotation(j+1,evalf(-2*pi/n),LP[2*j])]);
+}
+return LP;
+};
+
+tracerarc(n):={
+  local A,B,Ls;
+  Ls:=evalf(Lsarc(n));
+  A:=seq(arc(Ls[k],Ls[k+1],evalf(-2*pi/n)),k,0,n-2);
+  B:=translation(n,A);
+  return concat(A,B);
+};
+
+//ou encore
+tracer(n):={
+  local A,B,j,Ls;
+  Ls:=evalf(Lsarc(n));
+  A:=[arc(Ls[0],Ls[1],evalf(-2*pi/n))];
+  for (j:=1;j&lt;n-1;j++){
+    A:=concat(A,arc(Ls[j],Ls[j+1],-2*pi/n));
+  }
+  B:=translation(n,A);
+  return(A,B)
+};
+
+longtrajet(n):={
+local dist,k,C,R;
+dist:=0
+for (k:=0;k&lt;(n-1);k++){
+  arc((Lsarc(n))[k],(Lsarc(n))[k+1],-pi/3,C,R);
+  dist:=evalf(dist+R*pi/3);
+};
+return normal(dist);
+}
+</PRE><P>On tape par exemple, pour avoir une animation :<BR>
+<TT>tracerarc(5);animation(Lpoly(5))</TT></P>Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
 <A HREF="casexo018.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casexo020.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,29 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La ligne polygonale : open_polygon polygone_ouvert</TITLE>
+<TITLE>Le triangle équilatèral : equilateral_triangle triangle_equilateral</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr899.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr901.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1045">9.12.4</A>  La ligne polygonale : <TT>open_polygon polygone_ouvert</TT></H3><P><A NAME="@default1745"></A><A NAME="@default1746"></A><A NAME="sec:polygonou2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1008.html#sec:polygonou3">10.9.4</A> pour la géométrie 3-d.<BR>
-<TT>polygone_ouvert</TT>, en géométrie plane, a comme argument la 
-liste (ou la séquence) de <I>n</I> points ou de <I>n</I> nombres complexes représentant l’affixe de ces points.<BR>
-<TT>polygone_ouvert</TT> renvoie et trace la ligne polygonale ayant pour sommets 
-ces <I>n</I> points.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1054">10.10.5</A>  Le triangle équilatèral : <TT>equilateral_triangle</TT> <TT>triangle_equilateral</TT></H3><P><A NAME="@default1742"></A><A NAME="@default1743"></A><A NAME="sec:trianglequi2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1009.html#sec:trianglequi3">11.7.4</A> pour la géométrie 3-d.<BR>
+<TT>triangle_equilateral</TT>, en géométrie plane, a deux ou trois
+arguments.<BR>
+Description des arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si il a deux arguments, ce sont: 2 points ou 2 nombres complexes 
+représentant l’affixe de ces points (ou encore une liste de 2 points ou de 
+2 complexes).<BR>
+<TT>triangle_equilateral(A,B)</TT> renvoie et trace le triangle 
+équilatéral direct <I>ABC</I> mais sans définir le point <I>C</I>. 
 On tape :
-</P><DIV CLASS="center"><TT>polygone_ouvert(-1,-1+i/2,i,1+i,-i)</TT></DIV><P>
+<DIV CLASS="center"><TT>equilateral_triangle(0,2)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>La ligne polygonale de sommets -1,-1+i/2,i,1+i,-i</TT></DIV><P>
+<DIV CLASS="center"><TT>le triangle équilatèral de sommets les points d’affixe 0,2,1+i*sqrt(3)</TT></DIV>
+Pour définir le troisième sommet <I>C</I>, on peut donner un nom 
+au triangle (par exemple <I>T</I>) et utiliser la commande <TT>sommets(T)</TT> qui 
+renvoie la liste des sommets de <I>T</I>. 
+On définira alors <TT>C:= sommets(T)[2]</TT> mais il est plus simple de rajouter
+<I>C</I> le nom du dernier sommet comme troisième argument.<BR>
+</LI><LI CLASS="li-itemize">si il a trois arguments, le dernier argument est le nom d’une 
+variable qui servira à définir et à tracer le troisième sommet avec sa 
+légende.
 On tape :
-</P><DIV CLASS="center"><TT>polygone_ouvert(makelist(x-&gt;exp(i*pi*x/3),0,5,1))</TT></DIV><P>
+<DIV CLASS="center"><TT>equilateral_triangle(0,2,C)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>La ligne polygonale de sommets 1,</TT><TT>
-<I>e</I></TT><SUP><TT><I>i</I>π/3</TT></SUP><TT>, <I>e</I></TT><SUP><TT>2<I>i</I>π/3</TT></SUP><TT>, ..,
- <I>e</I></TT><SUP><TT>5<I>i</I>π/3</TT></SUP></DIV><HR>
+<DIV CLASS="center"><TT>le triangle équilatèral de sommets les points d’affixe 0,2,1+i*sqrt(3)</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>normal(affixe(C))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1+i*sqrt(3)</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr899.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr901.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

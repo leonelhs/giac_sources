@@ -1,4 +1,5 @@
 // -*- mode:C++ ; compile-command: "g++ -I.. -g -c help.cc -Wall" -*-
+#define _SCL_SECURE_NO_WARNINGS
 #include "giacPCH.h"
 
 #include "path.h"
@@ -97,7 +98,7 @@ namespace giac {
     int l=s.size();
     if ( (l>2) && (s[0]=='\'') && (s[l-1]=='\'') )
       s=s.substr(1,l-2);
-    static_help_t h={s.c_str(),0,0,0,0};
+    static_help_t h={s.c_str(),{0,0,0,0},0,0,0};
     std::pair<const static_help_t *,const static_help_t *> p=equal_range(static_help,static_help+static_help_size,h,static_help_sort());
     if (p.first!=p.second && p.first!=static_help+static_help_size){
       howto=p.first->cmd_howto[lang-1];
@@ -318,7 +319,7 @@ namespace giac {
     vector<int> cur_l, new_l(lt+1,0);
     for (int j=0;j<=lt;++j)
       cur_l.push_back(-j);
-    vector<int>::iterator newbeg=new_l.begin(),newend=new_l.end(),newit;
+    vector<int>::iterator newbeg=new_l.begin(),newend=new_l.end(),newit=newbeg;
     vector<int>::iterator curbeg=cur_l.begin(),curit;//curend=cur_l.end(),
     for (int i=0;i<ls;++i){
       newit=newbeg;
@@ -975,7 +976,7 @@ namespace giac {
     string xcasroot;
     if (getenv("XCAS_ROOT")){
       xcasroot=string(getenv("XCAS_ROOT"));
-      if (xcasroot.empty())
+      if (xcasroot.empty()) 
 	xcasroot="/";
       if (xcasroot[xcasroot.size()-1]!='/')
 	xcasroot+='/';

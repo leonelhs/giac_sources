@@ -13,7 +13,7 @@
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casgeo010.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc148">Chapitre 9</A>  Un exemple traité avec un programme iteratif puis récursif</H1><H2 CLASS="section"><A NAME="toc48"></A><A NAME="htoc149">9.1</A>  La suite des triangles semblables à ABC</H2><H3 CLASS="subsection"><A NAME="htoc150">9.1.1</A>  Avec un programme iteratif</H3><P>
+Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc153">Chapitre 9</A>  Un exemple traité avec un programme iteratif puis récursif</H1><H2 CLASS="section"><A NAME="toc50"></A><A NAME="htoc154">9.1</A>  La suite des triangles semblables à ABC</H2><H3 CLASS="subsection"><A NAME="htoc155">9.1.1</A>  Avec un programme iteratif</H3><P>
 À partir d’un triangle <TT>ABC</TT>, on trace le triangle <TT>ACC1</TT>
 semblable au triangle <TT>ABC</TT>. Puis, on recommence le même processus avec 
 le triangle <TT>ACC1</TT> on obtient le triangle <TT>AC1C2</TT> etc...
@@ -49,7 +49,7 @@ for (j:=1;j&lt;=n;j++){
 <TT>spirale(A,B,C,5)</TT><BR>
 On obtient la suite de 6 triangles :<BR>
 
-<IMG SRC="casgeo060.png"><BR>
+<IMG SRC="casgeo075.png"><BR>
  
 On peut écrire un programme légèrement diffèrent pour ne pas faire deux fois le même trait.<BR>
 On trace le triangle <TT>ABC</TT> puis on ne trace dans la boucle que les 2 
@@ -68,7 +68,7 @@ for (j:=1;j&lt;=n;j++){
 }
 retourne L;
 }:;
-</PRE><H3 CLASS="subsection"><A NAME="htoc151">9.1.2</A>  Avec un programme récursif</H3><P>
+</PRE><H3 CLASS="subsection"><A NAME="htoc156">9.1.2</A>  Avec un programme récursif</H3><P>
 On peut voir la récusivité de 2 façons :<BR>
 1/ la procédure récursive <TT>spiraler(A,B,C,n)</TT><BR>
 <TT>spiraler(A,B,C,0)</TT> est le triangle(A,B,C) et<BR>
@@ -144,7 +144,7 @@ if (n&gt;0) {
    } else 
  L:=triangle(A,B,C);
 }:;
-</PRE><H2 CLASS="section"><A NAME="toc49"></A><A NAME="htoc152">9.2</A>  La double suite des triangles semblables à ABC</H2><P>
+</PRE><H2 CLASS="section"><A NAME="toc51"></A><A NAME="htoc157">9.2</A>  La double suite des triangles semblables à ABC</H2><P>
 À partir d’un triangle <TT>ABC</TT>, on trace le triangle <TT>ACC1</TT>
 semblable au triangle <TT>ABC</TT>. Puis, on recommence le même processus avec 
 le triangle <TT>ACC1</TT> on obtient le triangle <TT>AC1C2</TT> etc...
@@ -154,7 +154,7 @@ le triangle <TT>ABB1</TT> on obtient le triangle <TT>AB1B2</TT> etc..<BR>
 Écrire un programme <TT>Xcas</TT> qui déssine la suite des <TT>n</TT> 
 triangles :<BR>
 <TT>ACC1</TT>, <TT>AC1C2</TT>,...<TT>AC(n-1)Cn</TT>,<TT>ABB1</TT>, <TT>AB1B2</TT>,...<TT>AB(n-1)Bn</TT>
-</P><H3 CLASS="subsection"><A NAME="htoc153">9.2.1</A>  Avec un programme iteratif</H3><PRE CLASS="verbatim">//a partir d'un triangle ABC on trace son semblable sur 
+</P><H3 CLASS="subsection"><A NAME="htoc158">9.2.1</A>  Avec un programme iteratif</H3><PRE CLASS="verbatim">//a partir d'un triangle ABC on trace son semblable sur 
 //AC etc...n fois, on trace aussi le semblable du triangle ABC
 // sur AB etc...(aussi n fois).
 spirale2(A,B,C,n):={
@@ -182,7 +182,7 @@ retourne L;
 <TT>spirale2(A,B,C,5)</TT><BR>
 On obtient la suite de 11 triangles :<BR>
 
-<IMG SRC="casgeo061.png"><BR>
+<IMG SRC="casgeo076.png"><BR>
 pour faire le même dessin mais sans repasser sur le même trait, on tape :
 </P><PRE CLASS="verbatim">//meme dessin que spirale2(A,B,C,n) mais sans repasser sur le meme trait
 spirales2(A,B,C,n):={
@@ -206,7 +206,7 @@ for (j:=1;j&lt;=n;j++){
  };
  retourne L;
 }:;
-</PRE><H3 CLASS="subsection"><A NAME="htoc154">9.2.2</A>  Avec un programme récursif</H3><P>
+</PRE><H3 CLASS="subsection"><A NAME="htoc159">9.2.2</A>  Avec un programme récursif</H3><P>
 Cette fois on a une seule façon de voir le dessin récursif :
 <TT>spiralers2(A,B,C,0)</TT> c’est le triangle(A,B,C) 
 si n&gt;0, <TT>spiralers2(A,B,C,n)</TT> est formé des segments ACn et C(n-1)Cn, de 
@@ -268,7 +268,7 @@ spiraler2s(A,B,C,s,n):={
 }:;
 </PRE><P>On clique sur 3 points <TT>ABC</TT> (triangle <TT>ABC</TT> direct) puis on tape :<BR>
 <TT>spiraler2s(A,B,C,1,5);spiraler2s(A,B,C,-1,5)</TT><BR>
-On obtient la suite de 11 triangles.</P>Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
+On obtient la suite de 11 triangles.</P>Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
 <A HREF="casgeo008.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casgeo010.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

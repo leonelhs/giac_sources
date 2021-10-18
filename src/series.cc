@@ -679,15 +679,23 @@ namespace giac {
     }
     vecteur l;
     lvar(v,l);
-    int l_size(l.size());
+    //int l_size(l.size());
     vecteur w;
-    w.reserve(2*l_size);
+    w.reserve(2*v.size());
     gen common=1,f,num,den;
     // compute lcm of denominators in common
     vecteur::iterator it=v.begin(),itend=v.end();
     for (;it!=itend;++it){
-      f=e2r(*it,l,contextptr);
-      fxnd(f,num,den);
+      if (is_integer(*it)){
+	num=*it; den=1;
+      }
+      else {
+	if (it->type==_FRAC && is_integer(it->_FRACptr->num) && is_integer(it->_FRACptr->den))
+	  f=*it;
+	else
+	  f=e2r(*it,l,contextptr);
+	fxnd(f,num,den);
+      }
       w.push_back(num);
       w.push_back(den);
       // replace common by lcm of common and den
@@ -708,7 +716,10 @@ namespace giac {
     e=r2sym(common,l,contextptr);
     it=v.begin();
     for (int i=0;it!=itend;++it,i=i+2){
-      *it=r2sym(w[i]*rdiv(common,w[i+1],contextptr),l,contextptr);
+      if (it->type==_FRAC && is_integer(it->_FRACptr->num) && is_integer(it->_FRACptr->den))
+	*it=w[i]*rdiv(common,w[i+1],contextptr);
+      else
+	*it=r2sym(w[i]*rdiv(common,w[i+1],contextptr),l,contextptr);
     }
   }
 
@@ -1410,6 +1421,30 @@ namespace giac {
       // fixme: multiargs disabled, should return a vecteur of series_exp
       if (temp__SYMB.sommet != at_of && temp__SYMB.feuille.type==_VECT){
 	int nargs=temp__SYMB.feuille._VECTptr->size();
+	if (nargs==4 && temp__SYMB.sommet==at_sum){
+	  vecteur & tempfv=*temp__SYMB.feuille._VECTptr;
+	  gen k=tempfv[1],lo=tempfv[2],up=tempfv[3];
+	  if (contains(k,x)){
+	    invalidserieserr(gettext("Summation variable must be != from series expansion variable"));
+	    return false;
+	  }
+	  if (k.type!=_IDNT || derive(lo,x,contextptr)!=0 || derive(up,x,contextptr)!=0)
+	    return false; // setsizeerr();
+	  sparse_poly1 p;
+	  if (!in_series__SPOL1(tempfv[0],x,lvx,lvx_s,ordre,direction,p,contextptr))
+	    return false;
+	  // sum lvx_s
+	  sparse_poly1::iterator it=p.begin(),itend=p.end();
+	  for (;it!=itend;++it){
+	    if (is_undef(it->coeff))
+	      break;
+	    it->coeff=_sum(makesequence(it->coeff,k,lo,up),contextptr);
+	  }
+	  lvx_s.push_back(p);
+	  continue;
+	  invalidserieserr(gettext("taylor of sum not implemented"));
+	  return false;
+	}
 	if (temp__SYMB.sommet==at_euler_mac_laurin){
 	  if (nargs!=5){
 	    invalidserieserr(gettext("Integral must be definite"));
@@ -1424,63 +1459,21 @@ namespace giac {
 	  if (k.type!=_IDNT)
 	    return false; // setsizeerr();
 	  // find upper and lower bound limit
-	  gen lower=tempfv[3],upper=tempfv[4];
-	  gen limlo=limit(lower,x,0,1,contextptr);
-	  gen limup=limit(upper,x,0,1,contextptr);
-	  gen f=tempfv[0],F=tempfv[1];
-	  gen flim=limit(f,x,0,1,contextptr);
-	  gen Flim=limit(F,x,0,1,contextptr);
-	  gen eff=sum(flim,x,limlo,limup,contextptr);
-	  if (is_inf(eff)){
-	    *logptr(contextptr) << gettext("Limit of divergent sum not implemented yet") << endl;
-	    return false;
-	  }
-	  // euler 1st part sum(f(n,k),k,lim(lower),lower-1)
-	  // euler 2nd part sum(f(n,k),k,upper+1,lim(upper)
-	  // euler 3rd part sum(f(n.k)-flim(k),lim(lower),lim(upper))
-	  // first add integral part
-	  if (is_zero(flim))
-	    eff += preval(F,k,lower,upper,contextptr);
-	  else {
-	    if (lower!=limlo)
-	      eff += -preval(F,k,limlo,lower-1,contextptr);
-	    if (upper!=limup)
-	      eff += -preval(F,k,upper+1,limup,contextptr);
-	    eff += preval(F-Flim,k,limlo,limup,contextptr);
-	  }
-	  // then f part
-	  if (is_zero(flim))
-	    eff += (limit(f,*k._IDNTptr,limlo,0,contextptr)+limit(f,*k._IDNTptr,limup,0,contextptr) )/2 ;
-	  else {
-	    if (lower!=limlo)
-	      eff += (-limit(f,*k._IDNTptr,limlo,0,contextptr)-limit(f,*k._IDNTptr,lower-1,0,contextptr))/2;
-	    if (upper!=limup)
-	      eff += (-limit(f,*k._IDNTptr,upper+1,0,contextptr)-limit(f,*k._IDNTptr,limup,0,contextptr))/2;
-	    eff += (limit(f-flim,*k._IDNTptr,limlo,0,contextptr)+limit(f-flim,*k._IDNTptr,limup,0,contextptr))/2;
-	  }
-	  // then Bernoulli part
+	  gen lower=tempfv[3],upper=tempfv[4],f=tempfv[0],F=tempfv[1];
 	  gen fdiff=derive(f,k,contextptr);
-	  gen flimdiff=derive(f,k,contextptr);
-	  if (is_undef(fdiff) || is_undef(flimdiff))
+	  // first add integral part
+	  gen eff = preval(F,k,lower,upper,contextptr);
+	  eff += (limit(f,*k._IDNTptr,upper,-1,contextptr)+limit(f,*k._IDNTptr,lower,1,contextptr))/2;
+	  // then Bernoulli part
+	  if (is_undef(fdiff))
 	    return false;
 	  for (int i=1;i<ordre;i++){
-	    gen add;
-	    if (is_zero(flim))
-	      add = -limit(fdiff,*k._IDNTptr,limlo,0,contextptr)+limit(fdiff,*k._IDNTptr,limup,0,contextptr);
-	    else {
-	      if (lower!=limlo)
-		add += limit(fdiff,*k._IDNTptr,limlo,0,contextptr)-limit(fdiff,*k._IDNTptr,lower-1,0,contextptr);
-	      if (upper!=limup)
-		add += limit(fdiff,*k._IDNTptr,upper+1,0,contextptr)-limit(fdiff,*k._IDNTptr,limup,0,contextptr);
-	      add += -limit(fdiff-flimdiff,*k._IDNTptr,limlo,0,contextptr)+limit(fdiff-flimdiff,*k._IDNTptr,limup,0,contextptr);
-	    }
+	    gen add= limit(fdiff,*k._IDNTptr,upper,-1,contextptr)-limit(fdiff,*k._IDNTptr,lower,1,contextptr);
 	    add=add*bernoulli(2*i)/factorial(2*i);
 	    eff += add; // fdiff flimdiff 2 fois
 	    fdiff=derive(fdiff,k,contextptr);
 	    fdiff=ratnormal(derive(fdiff,k,contextptr));
-	    flimdiff=derive(flimdiff,k,contextptr);
-	    flimdiff=ratnormal(derive(flimdiff,k,contextptr));
-	    if (is_undef(fdiff) || is_undef(flimdiff))
+	    if (is_undef(fdiff))
 	      return false;
 	  }
 	  // must do a recursive call since eff may contain new functions
@@ -2004,14 +1997,26 @@ namespace giac {
   }
   */
 
-  static bool check_bounded(const gen & g){
+  static int check_bounded(const gen & g,GIAC_CONTEXT){
     vecteur v=loptab(g,sincostan_tab);
     int vs=v.size();
+    vecteur w;
     for (int i=0;i<vs;++i){
       if (v[i].type==_SYMB && v[i]._SYMBptr->feuille.type==_SPOL1)
-	return true;
+	w.push_back(v[i]);
     }
-    return false;
+    if (w.empty())
+      return 0;
+    for (unsigned i=0;i<w.size();++i){
+      vecteur lv=lvarxwithinv(g,w[i],contextptr);
+      if (lv.empty())
+	continue;
+      if (lv.size()>=2 || lv[0]!=w[i]){
+	//gensizeerr("Unable to handle "+g.print(contextptr));
+	return -1;
+      }
+    }
+    return 1;
   }
 
   // specialization 
@@ -2079,8 +2084,13 @@ namespace giac {
 	}
 	if (v[i].is_symb_of_sommet(at_sum)){
 	  gen tmp;
-	  if (!convert_to_euler_mac_laurin(v[i],tmp,contextptr))
-	    return gensizeerr(gettext("Unable to convert sum to Euler Mac-Laurin")+v[i].print(contextptr));
+	  if (v[i]._SYMBptr->feuille.type==_VECT && v[i]._SYMBptr->feuille._VECTptr->size()==4){
+	    vecteur & vv=*v[i]._SYMBptr->feuille._VECTptr;
+	    if (derive(vv[2],x,contextptr)==0 && derive(vv[2],x,contextptr)==0)
+	      continue;
+	  }
+	  if (!convert_to_euler_mac_laurin(v[i],x,tmp,contextptr))
+	    return gensizeerr(gettext("Unable to convert sum to Euler Mac-Laurin ")+v[i].print(contextptr));
 	  v1.push_back(v[i]);
 	  v2.push_back(tmp);
 	}
@@ -2181,10 +2191,19 @@ namespace giac {
     sparse_poly1 p;
     if (!mrv_lead_term(e_copy,x,coeff,mrv_var,exponent,p,mrv_begin_order,contextptr,false) || is_undef(coeff))
       return gensizeerr("Limit: Max order reached or unable to make series expansion");
+    // check added for limit((tan(x)-x)/x^3,x=inf)
+    for (unsigned i=0;i<p.size();++i){
+      if (check_bounded(p[i].coeff,contextptr)==-1)
+	return gensizeerr("Unable to handle "+p[i].coeff.print(contextptr));
+    }
     if (ck_is_strictly_positive(exponent,contextptr))
       return 0;
-    if (is_zero(exponent))
-      return check_bounded(coeff)?bounded_function(contextptr):coeff;
+    if (is_zero(exponent)){
+      int l=check_bounded(coeff,contextptr);
+      if (l==-1)
+	return gensizeerr("Unable to handle "+coeff.print(contextptr));
+      return l==1?bounded_function(contextptr):coeff;
+    }
     // check sign of coeff, if coeff depends on x first find equivalent
     gen essai=subst(coeff,x,plus_inf,false,contextptr);
     if (is_undef(essai) || is_zero(essai) || (essai==unsigned_inf)){
@@ -2204,7 +2223,10 @@ namespace giac {
       return minus_inf;
     // ? FIXME: if essai=cos(<pi,-1>)+i*sin(<pi,-1>) unsigned_inf better
     // limit((-2)^n,n,inf)
-    return check_bounded(essai)?undef:unsigned_inf;
+    int l=check_bounded(essai,contextptr);
+    if (l==-1)
+      return gensizeerr("Unable to handle "+essai.print(contextptr));
+    return l==1?undef:unsigned_inf;
     /* 
     essai=eval(subst(essai,sincosinf,vecteur(sincosinf.size(),undef)));
     if (is_undef(essai))
@@ -2372,7 +2394,10 @@ namespace giac {
 	if (contains(p.front().coeff,x)){
 	  return gensizeerr(gettext("Try unidirectional series"));
 	}
-	return check_bounded(p.front().coeff)?bounded_function(contextptr):p.front().coeff;
+	int l=check_bounded(p.front().coeff,contextptr);
+	if (l==-1)
+	  return gensizeerr("Unable to handle "+p.front().coeff.print(contextptr));
+	return l==1?bounded_function(contextptr):p.front().coeff;
       }
       return gensizeerr(gettext("Series internal bug"));
     }
@@ -2782,7 +2807,7 @@ namespace giac {
       return quotedlimit(G,*vx_var._IDNTptr,0,0,contextptr);
     gen e=v[1];
     if (s==2){
-      if (calc_mode(contextptr)==1)
+      if (calc_mode(contextptr)==1 && !v[1].is_symb_of_sommet(at_equal))
 	return _limit(makesequence(G,ggb_var(G),e),contextptr);
       if (e.type==_IDNT)
 	return quotedlimit(G,*e._IDNTptr,0,0,contextptr);
@@ -3122,26 +3147,27 @@ namespace giac {
   static define_unary_function_eval (__euler_mac_laurin,&_euler_mac_laurin,_euler_mac_laurin_s);
   define_unary_function_ptr5( at_euler_mac_laurin ,alias_at_euler_mac_laurin,&__euler_mac_laurin,0,true);
 
-  bool convert_to_euler_mac_laurin(const gen & g,gen & res,GIAC_CONTEXT){
+  bool convert_to_euler_mac_laurin(const gen & g,const identificateur & n,gen & res,GIAC_CONTEXT){
     if (g.is_symb_of_sommet(at_sum)){
       gen & f = g._SYMBptr->feuille;
       if (f.type!=_VECT || f._VECTptr->size()!=4)
 	return false;
+      gen l=in_limit((f[3]-f[2])/n,n,plus_inf,1,contextptr);
+      if (is_zero(l) || is_undef(l) || is_inf(l))
+	return false;
       // check that the expression to be summed has a derivative
-      // which is a o(expression) as x -> inf
-      gen & f0=f._VECTptr->front();
+      // which is a o(expression) as n -> inf
+      gen f0=f._VECTptr->front();
       gen x =f[1];
       if (x.type!=_IDNT){
 	*logptr(contextptr) << gettext("Unable to convert to euler mac laurin");
 	return false;
       }
-      gen f0prime=derive(f0,x,contextptr);
-      if (is_undef(f0prime)) return false;
-      gen l=in_limit(f0prime/f0,*x._IDNTptr,plus_inf,1,contextptr);
+      gen f0prime=derive(f0,x,contextptr), f03=derive(f0prime,x,contextptr);
+      f03=derive(f03,x,contextptr);
+      if (is_undef(f03)) return false;
+      l=in_limit(f03/f0prime,n,plus_inf,1,contextptr);
       if (!is_zero(l))
-	return false;
-      l=in_limit(f0prime/f0*(f[3]-f[2]),*x._IDNTptr,plus_inf,1,contextptr);
-      if (is_zero(l) || is_undef(l) || is_inf(l))
 	return false;
       gen remains;
       gen F0=integrate_gen_rem(f0,x,remains,contextptr);
@@ -3154,7 +3180,7 @@ namespace giac {
     vecteur w=v;
     int s=v.size();
     for (int i=0;i<s;++i){
-      if (!convert_to_euler_mac_laurin(v[i],w[i],contextptr))
+      if (!convert_to_euler_mac_laurin(v[i],n,w[i],contextptr))
 	return false;
     }
     res=subst(g,v,w,false,contextptr);

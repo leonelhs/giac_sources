@@ -85,7 +85,7 @@ int my_sprintf(char * s, const char * format, ...);
 #ifdef __x86_64__
 #define alias_type ulonglong
 #else
-typedef unsigned long alias_type;
+#define alias_type size_t
 #endif
 
 #if defined(RTOS_THREADX) || defined(BESTA_OS) || defined(EMCC) || defined NSPIRE
@@ -117,8 +117,8 @@ typedef unsigned long alias_type;
 #define define_unary_function_eval_taylor_index(u,name,ptr,derive,taylors,name_s) const alias_unary_function_eval name={name_s,derive,taylors,0,0,0,ptr,u}
 #define define_unary_function_eval_taylor2_index(u,name,ptr,derive,taylors,name_s,printptr,texprintptr) const alias_unary_function_eval name={name_s,derive,taylors,printptr,texprintptr,0,ptr,u}
 
-#define define_partial_derivative_onearg_unary_function_ptr(name,fcn) const unsigned long name=(const unsigned long) &fcn
-#define define_partial_derivative_onearg_genop(name,name_s,genop) const alias_unary_function_eval name##unary_function_eval={name_s,0,taylor,0,0,0,genop,0}; const unsigned long name##unary_function_ptr = (const unsigned long)(&name##unary_function_eval); const unsigned long name=(const unsigned long) &name##unary_function_ptr
+#define define_partial_derivative_onearg_unary_function_ptr(name,fcn) const size_t name=(const size_t) &fcn
+#define define_partial_derivative_onearg_genop(name,name_s,genop) const alias_unary_function_eval name##unary_function_eval={name_s,0,taylor,0,0,0,genop,0}; const size_t name##unary_function_ptr = (const size_t)(&name##unary_function_eval); const size_t name=(const size_t) &name##unary_function_ptr
 
 #else //  NO_UNARY_FUNCTION_COMPOSE
 
@@ -151,7 +151,7 @@ typedef unsigned long alias_type;
 #ifdef __x86_64__
 #define define_unary_function_ptr(name,alias_name,ptr) const ulonglong alias_name = (ulonglong)(ptr); const unary_function_ptr * const name = (const unary_function_ptr *) &alias_name
 #else
-#define define_unary_function_ptr(name,alias_name,ptr) const unsigned long alias_name = (unsigned long)(ptr); const unary_function_ptr * const name = (const unary_function_ptr *) &alias_name
+#define define_unary_function_ptr(name,alias_name,ptr) const size_t alias_name = (size_t)(ptr); const unary_function_ptr * const name = (const unary_function_ptr *) &alias_name
 #endif
 
 #ifdef DOUBLEVAL 
@@ -163,13 +163,13 @@ typedef unsigned long alias_type;
 #ifdef __x86_64__
 #define define_unary_function_ptr5(name,alias_name,ptr,quoted,token) const ulonglong alias_name = ulonglong(ptr); const unary_function_ptr * const name = (const unary_function_ptr *) &alias_name;
 #else
-#define define_unary_function_ptr5(name,alias_name,ptr,quoted,token) const unsigned long alias_name = (unsigned long)(ptr); const unary_function_ptr * const name = (const unary_function_ptr *) &alias_name;
+#define define_unary_function_ptr5(name,alias_name,ptr,quoted,token) const size_t alias_name = (size_t)(ptr); const unary_function_ptr * const name = (const unary_function_ptr *) &alias_name;
 #endif
 #else
 #ifdef __x86_64__
 #define define_unary_function_ptr5(name,alias_name,ptr,quoted,token) static const unary_function_ptr alias_name##_(ptr,quoted,token); const ulonglong alias_name=(ulonglong)ptr; const unary_function_ptr * const name = &alias_name##_;
 #else
-#define define_unary_function_ptr5(name,alias_name,ptr,quoted,token) static const unary_function_ptr alias_name##_(ptr,quoted,token); const unsigned long alias_name=(unsigned long)ptr; const unary_function_ptr * const name = &alias_name##_;
+#define define_unary_function_ptr5(name,alias_name,ptr,quoted,token) static const unary_function_ptr alias_name##_(ptr,quoted,token); const size_t alias_name=(size_t)ptr; const unary_function_ptr * const name = &alias_name##_;
 #endif
 #endif
 
@@ -189,7 +189,7 @@ typedef unsigned __int64 ulonglong ;
 #define _SECURE_SCL 0
 #endif
 #ifndef _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS 1
+#define _CRT_SECURE_NO_WARNINGS
 #endif
 #ifndef _CRT_NONSTDC_NO_DEPRECATE
 #define _CRT_NONSTDC_NO_DEPRECATE 1
@@ -206,7 +206,10 @@ typedef unsigned long long ulonglong;
 #endif // __x86_64__
 
 // do not define PSEUDO_MOD if a negative unsigned longlong >> 63 is != 0xffffffffffffffff
+#if defined(FIR) && !(defined(IOS) || defined(__ANDROID__))
 #define PSEUDO_MOD 
+#endif
+
 #endif // __VISUALC__
 
 

@@ -6,75 +6,54 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La droite et la droite orientée en géométrie plane : line droite</TITLE>
+<TITLE>Un des points d’intersection de deux objets géométriques : single_inter inter_unique inter_droite 
+line_inter</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr872.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr874.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1015">9.9.1</A>  La droite et la droite orientée en géométrie plane : <TT>line droite</TT></H3><P><A NAME="@default1698"></A><A NAME="@default1699"></A><A NAME="sec:droite2"></A><A NAME="@default1700"></A><A NAME="@default1701"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr090.html#sec:droite">3.10.1</A> et<A HREF="cascmd_fr982.html#sec:droite3">10.5.1</A> pour la géométrie
-3-d et <A HREF="cascmd_fr932.html#sec:pente">9.16.12</A> pour avoir la valeur de la pente d’une droite.<BR>
-<TT>droite</TT>, en géométrie plane, a comme argument deux points (ou
-deux nombres complexes représentant l’affixe de ces points) ou une liste de 
-deux points (ou de deux complexes) ou a comme argument un point et 
-<TT>pente=m</TT> ou a comme argument un point et son vecteur directeur
-<TT>[u1,u2]</TT> ou encore une équation de droite de la forme a*x+by+c=0.<BR>
-<TT>droite</TT> renvoie et trace la droite définie par les deux arguments.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1025">10.8.5</A>  Un des points d’intersection de deux objets géométriques : <TT>single_inter inter_unique inter_droite<BR>
+line_inter</TT></H3><P><A NAME="@default1690"></A><A NAME="@default1691"></A><A NAME="@default1692"></A><A NAME="@default1693"></A><A NAME="sec:interdroite2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr987.html#sec:interdroite3">11.4.3</A> pour la géométrie 3-d.<BR>
+<TT>inter_unique</TT> ou <TT>inter_droite</TT> a 2 ou 3 arguments qui 
+sont deux objets géométriques et éventuellement un 3ième argument qui 
+est soit un point soit une liste de points.<BR>
+<TT>inter_unique</TT> renvoie l’un des points d’intersection de ces deux objets
+géométriques. Si on a mis un point <TT>A</TT> (ou son affixe) comme troisième
+argument <TT>inter_unique</TT> renvoie le point d’intersection le plus proche de 
+<TT>A</TT> et si on a mis une liste de points <TT>L</TT> (ou une liste d’affixe) 
+comme troisième argument <TT>inter_unique</TT> renvoie le point d’intersection
+qui ne se trouve pas dans la liste <TT>L</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>droite(0,1+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=inter_unique(droite(0,1+i),droite(1,i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La droite d’équation y=x est tracée</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point d’affixe 1/2+i/2 est tracé avec une croix et est noté A</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>droite(1+i,pente=1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>B:=inter_unique(cercle(0,1),droite(-1,i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La droite d’équation y=x est tracée</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté B</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>droite(1+i,[3,3])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>B1:=inter_unique(cercle(0,1),droite(-1,i),[i])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La droite d’équation y=x est tracée</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point d’affixe -1 est tracé avec une croix et est noté B1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>droite(y-x=0)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>B2:=inter_unique(cercle(0,1),droite(-1,1+2*i),1+2*i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La droite d’équation y=x est tracée</TT></DIV><P>
-<B>Remarque : l’orientation de la droite</B><BR>
-<A NAME="sec:axe2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr983.html#sec:axe3">10.5.2</A> pour la géométrie 3-d.<BR>
-<TT>droite</TT> définit une droite orientée :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Lorsque la droite est donnée par deux points, son orientation
-est définie par l’ordre des points donnés en argument.
-Par exemple <TT>droite(A,B)</TT> définit une droite orientée par le vecteur 
-<I>AB</I>.<BR>
-</LI><LI CLASS="li-itemize">Lorsque c’est une équation qui définit la droite on écrit 
-l’équation sous la forme :"membre_de_gauche-membre_de_droite=0" pour 
-avoir une équation de la droite de la forme <TT>a*x+by+c=0</TT> et alors le 
-vecteur orientant la droite est
-<TT>[b,-a]</TT> ou encore son orientation
-est définie par le produit vectoriel 3-d de son vecteur normal (de cote 0) et 
-de [0,0,1]. Par exemple <TT>droite(y=2*x)</TT> est orientée par <TT>[1,2]</TT> car 
-son équation est <TT>-2*x+y=0</TT> et
-<TT>cross([-2,1,0],[0,0,1])</TT>=<TT>[1,2,0]</TT>. 
-</LI><LI CLASS="li-itemize">Lorsque la droite est donnée par un point <I>A</I> et sa pente <I>m</I>, son 
-orientation est définie par le vecteur <I>AB</I> avec <I>B</I>=<I>A</I>+1+<I>i</I>*<I>m</I>.
-</LI><LI CLASS="li-itemize">Lorsque la droite est donnée par un point <I>A</I> et son vecteur directeur,
-son orientation est définie par le vecteur directeur.
-</LI></UL><P>
-<B>Attention</B><BR>
-Si on veut tracer la droite en couleur en utilisant un argument 
-supplémentaire par exemple,
-<TT>couleur=1</TT>, il faut impérativement que cet argument soit le 
-troisième argument : donc si la droite est définie par une liste il faut 
-transformer cette liste en une séquence avec <TT>op</TT>, par exemple, on tape :
-</P><PRE CLASS="verbatim">A:=point(0,0);
-B:=point(2,1);
-C1:=cercle(A,B-A);
-C2:=cercle(B,A-B);
-droite(op(inter(C1,C2)),couleur=1)
-</PRE><P>alors que <TT>droite(inter(C1,C2),’couleur’=1)</TT> vous répondra 
-<TT>"Invalid dimension"</TT>
-</P><HR>
+</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté B2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>C:=inter_unique(cercle(1,sqrt(2)),cercle(0,1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté C</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>C1:=inter_unique(cercle(1,sqrt(2)),cercle(0,1),[i])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point d’affixe -i est tracé avec une croix et est noté C1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>C2:=inter_unique(cercle(1,sqrt(2)),cercle(0,1),i/2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté C2</TT></DIV><HR>
 <A HREF="cascmd_fr872.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr874.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

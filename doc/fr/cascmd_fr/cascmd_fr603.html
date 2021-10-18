@@ -6,148 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Écriture matricielle et algorithme du simplexe</TITLE>
+<TITLE>Espace engendré par les colonnes d’une matrice : colspace</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr602.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr604.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc709">6.47.2</A>  Écriture matricielle et algorithme du simplexe</H3><P>
-Un simplexe est une portion de ℝ<SUP><I>n</I></SUP> délimitée par des 
-hyperplans.<BR>
-L’algorithme du simplexe sert à maximiser une fonction linéaire
-sous des contraintes d’égalité ou d’inégalité linéaire.
-Le principe de l’algorithme consiste à trouver un sommet du simplexe
-défini par les contraintes, puis à sélectionner une arête
-et la suivre jusqu’au sommet suivant, la sélection se faisant
-de sorte à ne jamais diminuer la valeur de la fonction linéaire.
-On effectue donc les étapes suivantes
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-réécrire les contraintes impliquant une seule variable
-sous la forme <I>x</I><SUB><I>k</I></SUB> ≥ 0, éliminer si possible par pivot de Gauss
-les variables sans contraintes (ou ajouter des variables). À la fin de cette
-étape, on doit avoir pour contraintes que toutes les composantes des
-éléments du simplexe sont positives.
-</LI><LI CLASS="li-itemize">transformer si nécessaire les contraintes d’inégalité
-restante en égalité (par ajout de variables d’écart) avec un
-second membre positif,
-</LI><LI CLASS="li-itemize">construire un sommet s’il en existe (ce qui dans les cas
-non évidents se fait en optimisant une fonction artificielle),
-</LI><LI CLASS="li-itemize">passer de sommet à sommet.
-</LI></UL><P>
-Un sommet va être caractérisé dans la suite par ses composantes
-nulles et ses composantes non nulles. La représentation matricielle
-associée à un sommet des contraintes d’égalité
-fait apparaitre une sous-matrice identité dans les
-colonnes correspondant aux composantes non nulles du sommet. 
-Par exemple, si on part du problème, chercher :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(2<I>x</I>+<I>y</I>−<I>z</I>+4)  lorsque 
-</TD><TD CLASS="dcell">⎧<BR>
-⎪<BR>
-⎨<BR>
-⎪<BR>
-⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>x</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>1 </TD></TR>
-<TR><TD ALIGN=right NOWRAP><I>y</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
-<TR><TD ALIGN=right NOWRAP><I>x</I>+3<I>y</I>−<I>z</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
-<TR><TD ALIGN=right NOWRAP>2<I>x</I>−<I>y</I>+<I>z</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>8</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> 
-</TD></TR>
-</TABLE><P>
-on pose <I>x</I>=1−<I>X</I>, <I>y</I>=<I>Y</I>+2, donc on cherche :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(−2<I>X</I>+<I>Y</I>−<I>z</I>+8)  lorsque 
-</TD><TD CLASS="dcell">⎧<BR>
-⎪<BR>
-⎨<BR>
-⎪<BR>
-⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>X</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
-<TR><TD ALIGN=right NOWRAP><I>Y</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
-<TR><TD ALIGN=right NOWRAP>1−<I>X</I>+3(<I>Y</I>+2)−<I>z</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
-<TR><TD ALIGN=right NOWRAP>2(1−<I>X</I>)−(<I>Y</I>+2)+<I>z</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>8</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> 
-</TD></TR>
-</TABLE><P>
-puis on élimine <I>z</I> par la contrainte d’égalité <I>z</I>=5−<I>X</I>+3<I>Y</I> et on cherche :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(−2<I>X</I>+<I>Y</I>−(5−<I>X</I>+3<I>Y</I>)+8)   lorsque 
-</TD><TD CLASS="dcell">⎧<BR>
-⎪<BR>
-⎨<BR>
-⎪<BR>
-⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>X</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
-<TR><TD ALIGN=right NOWRAP><I>Y</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
-<TR><TD ALIGN=right NOWRAP>−2<I>X</I>−<I>Y</I>+ 5−<I>X</I>+3<I>Y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>8</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> 
-</TD></TR>
-</TABLE><P>
-cela revient donc à chercher :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(−<I>X</I>−2<I>Y</I>+3)   lorsque 
-</TD><TD CLASS="dcell">⎧<BR>
-⎨<BR>
-⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>(<I>X</I>,<I>Y</I>)</TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
-<TR><TD ALIGN=right NOWRAP>−3<I>X</I> +2<I>Y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>3</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> 
-</TD></TR>
-</TABLE><P>
-Il faut ici ajouter une variable d’écart <I>t</I> ≥ 0 pour
-transformer la dernière inégalité en égalité :<BR>
-on pose <I>t</I>=3−(−3<I>X</I> +2<I>Y</I>) et on a alors<BR>
-<I>t</I> ≥ 0 et −3<I>X</I> +2<I>Y</I>+<I>t</I>=3 est équivalent à −3<I>X</I> +2<I>Y</I> ≤ 3, et 
-cela donne un sommet de départ évident.
-La matrice correspondant à ces conditions est alors la ligne
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(−3, 2, 1, 3 ) </TD></TR>
-</TABLE><P>
-le sommet de départ associé est (<I>X</I>,<I>Y</I>,<I>t</I>)=(0,0,3) 
-la sous-matrice identité utilise la 3ème colonne (<I>t</I> est le coefficient
-non nul).
-On pourrait passer le coefficient non nul en 2ème colonne
-(sommet (<I>X</I>,<I>Y</I>,<I>t</I>)=(0,3/2,0)) en réécrivant l’égalité sous la forme
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(−3/2, 1, 1/2, 3/2 ) </TD></TR>
-</TABLE><P>
-mais on ne pourrait passer le coefficient non nul en 1ère colonne
-(il n’y a en effet que 2 sommets à ce simplexe).<BR>
-Avec <TT>Xcas</TT>, on tape : 
-</P><DIV CLASS="center"><TT>simplex_reduce([[-3,2]],[3],[-1,-2])</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc709">6.47.14</A>  Espace engendré par les colonnes d’une matrice : <TT>colspace</TT></H3><P><A NAME="@default1108"></A>
+<TT>colspace</TT> a comme argument la matrice <I>A</I> d’une application linéaire <I>f</I> dans la base canonique.<BR>
+<TT>colspace</TT> renvoie une matrice dont les colonnes sont des vecteurs formant 
+une base de l’espace 
+engendré par les colonnes de <I>A</I>.<BR>
+<TT>colspace</TT> peut avoir un deuxième argument, le nom d’une variable qui 
+donnera la dimension de l’espace engendré par les colonnes de <I>A</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>colspace([[1,1,2],[2,1,3],[3,1,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(0,[0,0,3],[[-3,2,1,3],[1,2,0,0]])</TT></DIV><P>En général, 
-le passage d’un sommet à un autre sommet consiste alors à effectuer
-une opération de réduction de Gauss qui fait sortir une colonne
-et entrer une autre colonne dans les composantes non nulles du sommet,
-ce qui revient à déplacer la sous-matrice identité. On doit
-prendre garde à effectuer l’opération de réduction de Gauss
-en conservant la positivité du membre de droite des contraintes
-de l’égalité, et ce sans diminuer la valeur de la fonction
-à optimiser. Pour pouvoir réaliser cette dernière condition,
-on augmente la matrice des contraintes
-d’égalité par une ligne formée des opposés des coefficients 
-de la fonction à maximiser, sauf en dernière colonne (on y met
-le coefficient constant de la fonction à maximiser). Dans l’exemple
-ce serait
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎛<BR>
-⎜<BR>
-⎝</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>−3</TD><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>3 </TD></TR>
-<TR><TD ALIGN=center NOWRAP> 1</TD><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>3</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎞<BR>
-⎟<BR>
-⎠</TD></TR>
-</TABLE><P>
-On crée (si nécessaire) des zéros dans cette dernière
-ligne dans les colonnes correspondant à la sous-matrice identité
-(donc aux composantes non nulles du sommet), de sorte que le
-coefficient constant de la ligne (après cette réduction)
-représente la valeur de la fonction à optimiser en ce sommet.
-Plus générallement pour un point du simplexe, 
-au cours de la réduction la somme de la fonction à maximiser et
-du produit scalaire des coordonnés du point avec cette dernière
-ligne (privé du dernier coefficient) vaut le dernier coefficient.
-On aura donc un sommet réalisant le maximum si tous les coefficients
-de la ligne sont positifs (sauf le dernier). C’est le cas ici, le
-maximum est 3, atteint pour <I>X</I>=<I>Y</I>=0 (donc <I>x</I>=1, <I>y</I>=2 et <I>z</I>=5).</P><P>L’instruction <TT>simplex_reduce</TT> de <TT>Xcas</TT> applique l’algorithme
-du simplexe dans deux situations distinctes : soit le problème
-est posé sous forme “canonique” et on lui donne 3 arguments
-(cf. infra), soit on lui donne un seul argument qui doit être
-une matrice “associée à un sommet” au sens de ce paragraphe.</P><HR>
+</P><DIV CLASS="center"><TT>[[-1,0],[0,-1],[1,-2]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>colspace([[1,1,2],[2,1,3],[3,1,4]],dimension)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[-1,0],[0,-1],[1,-2]]</TT></DIV><P>
+Puis, on tape :
+</P><DIV CLASS="center"><TT>dimension</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr602.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr604.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

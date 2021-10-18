@@ -6,31 +6,76 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Vecteurs propres : egv eigenvectors eigenvects eigVc</TITLE>
+<TITLE>Norme : COND cond</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr613.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr615.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc722">6.49.3</A>  Vecteurs propres : <TT>egv eigenvectors eigenvects eigVc</TT></H3><P><A NAME="@default1124"></A><A NAME="@default1125"></A><A NAME="@default1126"></A><A NAME="@default1127"></A>
-<TT>egv</TT> (ou <TT>eigenvectors eigenvects eigVc</TT>) a comme argument 
-une matrice <I>A</I> d’ordre <I>n</I>.<BR>
-<TT>egv</TT> (ou <TT>eigenvectors eigenvects eigVc</TT>) renvoie la matrice de 
-passage d’une matrice diagonalisable (les colonnes du résultat sont les 
-vecteurs propres de la matrice résultat).<BR>
+<H3 CLASS="subsection"><A NAME="htoc722">6.49.5</A>  Norme : <TT>COND cond</TT></H3><P><A NAME="@default1122"></A><A NAME="@default1123"></A>
+<TT>COND</TT> ou <TT>cond</TT> a a deux arguments : une matrice <TT>A</TT> 
+inversible et <TT>1</TT> ou <TT>2</TT> ou <TT>inf</TT> et par défaut <TT>1</TT>.<BR>
+<TT>COND</TT> renvoie le nombre de condition de cette matrice <TT>A</TT> c’est à 
+dire :<BR>
+||| <I>A</I>|| *||| <I>A</I><SUP>−1</SUP>||| où ||| ||| désigne la 
+norme triple d’une matrice inversible qui est subordonnée à <I>l</I><SUB>1</SUB> 
+(resp <I>l</I><SUB>2</SUB> ou <I>l</I><SUP>∞</SUP>) si il n’y a pas de second argument ou si le 
+second argument est <TT>1</TT> (resp <TT>2</TT> ou <TT>inf</TT>)
+On a donc :<BR>
+<TT>COND(A)</TT> ou <TT>cond(A)</TT> ou <TT>cond(A,1)</TT> renvoie le nombre de 
+condition de <TT>A</TT> pour la norme <I>l</I><SUB>1</SUB>,<BR>
+<TT>COND(A,2)</TT> ou <TT>cond(A,2)</TT> renvoie le nombre de condition de <TT>A</TT> 
+pour la norme <I>l</I><SUB>2</SUB>.<BR>
+<TT>COND(A,inf)</TT> ou <TT>cond(A,inf)</TT> renvoie le nombre de condition de 
+<TT>A</TT> pour la norme <I>l</I><SUP>∞</SUP>.<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+La norme triple de la matrice <TT>A</TT> subordonnée à <I>l</I><SUB>1</SUB> est 
+<TT>colnorm</TT> qui est :<BR>
+<TT>max(sum(abs(A[j,k]),j=0..size(A)-1)$(k=0..size(A)-1))</TT> i.e. le 
+maximum des sommes des valeurs absolues des éléments situés sur
+les colonnes de la matrice.<BR>
+<TT>COND(A)</TT> ou <TT>cond(A)</TT> ou <TT>cond(A,1)</TT> renvoie donc :<BR>
+<TT>colnorm(A)*colnorm(inv(A))</TT>.
+</LI><LI CLASS="li-itemize">La norme triple de la matrice <TT>A</TT> subordonnée à <I>l</I><SUB>2</SUB> est 
+<TT>max(SVL(A))</TT> :<BR>
+c’est la plus grande valeur singulière de <TT>A</TT> i.e la 
+plus grande valeur de la racine carrée des valeurs propres de <TT>A*trn(A)</TT>.<BR>
+<TT>COND(A,2)</TT> ou <TT>cond(A,2)</TT> renvoie donc :<BR>
+<TT>max(SVL(A))*max(SVL(inv(A)))</TT>
+</LI><LI CLASS="li-itemize">La norme triple de la matrice <TT>A</TT> subordonnée à <I>l</I><SUP>∞</SUP> est 
+<TT>rownorm</TT> qui est :<BR>
+<TT>max(sum(abs(A[j,k]),k=0..size(A)-1)$(j=0..size(A)-1))</TT> i.e. le 
+maximum des sommes des valeurs absolues des éléments situés sur
+les lignes de la matrice.<BR>
+<TT>COND(A,inf)</TT> ou <TT>cond(A,inf)</TT> renvoie donc :<BR>
+<TT>rownorm(A)*rownorm(inv(A))</TT>.
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>egv([[1,1,3],[1,3,1],[3,1,1]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>COND([[1,2,3],[3,-9,6],[4,5,6]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[-1,1,1],[2,1,0],[-1,1,-1]] </TT></DIV><P>
+</P><DIV CLASS="center"><TT>27.8518518519</TT></DIV><P>
+En effet, si <TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT> on tape :<BR>
+<TT>colnorm(B),colnorm(inv(B)),colnorm(B)*colnorm(inv(B)) </TT><BR>
+On obtient :<BR>
+<TT>16,47/27,752/27</TT> et 752/27≃27.8518518519<BR>
 On tape :
-</P><DIV CLASS="center"><TT>egv([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>COND([[1,2,3],[3,-9,6],[4,5,6]],2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"Not diagonalizable at eigenvalue 2"</TT></DIV><P>
-En mode complexe on tape :
-</P><DIV CLASS="center"><TT>egv([[2,0,0],[0,2,-1],[2,1,2]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>14.807741389</TT></DIV><P>
+En effet, si <TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT> on tape :<BR>
+<TT>max(SVL(B)),max(SVL(inv(B))),max(SVL(B))*max(SVL(inv(B)))</TT><BR>
+ On obtient :<BR>
+<TT>11.2449175989,1.31683858585,14.807741389</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>COND([[1,2,3],[3,-9,6],[4,5,6]],inf)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0,1,0],[-1,-2,-1],[i,0,-i]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>28</TT></DIV><P>
+En effet, si <TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT> on tape :<BR>
+<TT>rownorm(B),rownorm(inv(B)),rownorm(B)*rownorm(inv(B))</TT><BR>
+On obtient :<BR>
+<TT>18,14/9,28</TT>
+</P><HR>
 <A HREF="cascmd_fr613.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr615.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,46 +6,82 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le produit scalaire : scalar_product dotprod dot dotP * scalar_Product produit_scalaire</TITLE>
+<TITLE>Différence terme à terme de deux listes : - .-</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr537.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr539.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc638">6.41.7</A>  Le produit scalaire : <TT>scalar_product dotprod dot dotP * scalar_Product produit_scalaire</TT></H3><P><A NAME="@default959"></A><A NAME="@default960"></A><A NAME="@default961"></A><A NAME="@default962"></A><A NAME="@default963"></A><A NAME="@default964"></A><A NAME="@default965"></A>
-<TT>*</TT>, opérateur infixé, calcule le produit scalaire des deux vecteurs
-dont les composantes sont données en argument.<BR>
-<TT>dot</TT> ou <TT>dotP</TT> ou <TT>dotprod</TT> ou <TT>scalar_product</TT> ou 
-<TT>scalarProduct</TT> calcule le produit scalaire des deux vecteurs
-dont les composantes sont données en argument.<BR>
+<H3 CLASS="subsection"><A NAME="htoc639">6.42.4</A>  Différence terme à terme de deux listes : <TT>- .-</TT></H3><P><A NAME="@default959"></A><A NAME="@default960"></A>
+La différence terme à terme de deux listes se fait avec l’opérateur 
+infixé <TT>-</TT> ou <TT>.-</TT> et aussi avec l’opérateur prefixé <TT>’-’</TT>.<BR>
+Si les deux listes n’ont pas la même longueur la liste la plus petit est 
+complétée par des zéros.<BR>
+Bien voir la différence avec les séquences car si l’opérateur infixé
+<TT>-</TT> a comme arguments deux séquences, il renvoie la différence des 
+sommes des termes de chacune des séquences.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>dot([1,2,3],[4,3,5])</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>scalar_product([1,2,3],[4,3,5])</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>produit_scalaire([1,2,3],[4,3,5])</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>produit_scalaire(vecteur([1,2,3]),vecteur([4,3,5]))</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>[1,2,3]*[4,3,5]</TT></DIV><P>
-ou encore :
-</P><DIV CLASS="center"><TT>’*’([1,2,3],[4,3,5])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[1,2,3]-[4,3,5]</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>[1,2,3] .- [4,3,5]</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>’-’([1,2,3],[4,3,5])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>’-’([[1,2,3],[4,3,5]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>25</TT></DIV><P>
-En effet <TT>25=1*4+2*3+3*5</TT>.<BR>
+</P><DIV CLASS="center"><TT>[-3,-1,-2]</TT></DIV><P>
 <B>Attention</B><BR>
-Le produit de deux listes de longueur <I>n</I> renvoie le prduit scalaire de deux 
-vecteurs de ℝ<SUP><I>n</I></SUP> mais une liste élevée au carré renvoie la liste
-des carrées terme à terme :
+Quand l’opérateur <TT>-</TT> est préfixé il doit être quoté c’est
+à dire écrit <TT>’-’</TT>.<BR>
+<B>Attention</B><BR>
+Il y a une différence entre l’opérateur infixé
+<TT>-</TT> et <TT>.-</TT>.<BR>
+L’opérateur infixé <TT>.-</TT> et <TT>-</TT> (ou de l’opérateur prefixé 
+<TT>’-’</TT>) peuvent aussi avoir comme paramètres une liste <I>L</I> (resp une 
+matrice <I>M</I>) et un réel <I>a</I>.<BR>
+Dans ce cas il ne renvoie pas la même chose :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>L .- a</TT> (resp <TT>M .- a</TT>) renvoie la liste (resp la matrice) 
+obtenue en supprimant <TT>a</TT> à chaque élément de la liste <TT>L</TT> (resp 
+à chaque élément de la matrice <TT>M</TT>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>[1,2,3]*[1,2,3]</TT></DIV><P>
+<DIV CLASS="center"><TT>[1,2,3,4].-5</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>25</TT></DIV><P>
+<DIV CLASS="center"><TT>[-4,-3,-2,-1]</TT></DIV>
 On tape :
-</P><DIV CLASS="center"><TT>[1,2,3]</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+<DIV CLASS="center"><TT>[[1,2],[3,4]].-5</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,4,9]</TT></DIV><HR>
+<DIV CLASS="center"><TT>[[-4,-3],[-2,-1]]</TT></DIV>
+</LI><LI CLASS="li-itemize"><TT>L - a</TT> (resp <TT>M - a</TT>)(ou <TT>’-’(L, a)</TT> (resp <TT>’-’(M ,a)</TT>)
+renvoie la liste (resp la matrice) obtenue en 
+enlevant <TT>a</TT> au dernier élément de la liste <TT>L</TT> (resp à la 
+diagonale de la matrice <TT>M</TT>) :
+On tape :
+<DIV CLASS="center"><TT>[1,2,3,4,5,6]-4</TT></DIV>
+On obtient, car la liste est considèrée comme les coefficients d’un 
+polynôme :
+<DIV CLASS="center"><TT>[1,2,3,4,5,2]</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>[[1,2],[3,4]]-5</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[-4,2],[3,-1]]</TT></DIV>
+</LI></UL><P>
+<B>Bien voir aussi la différence avec les séquences</B><BR>
+ Si l’opérateur 
+infixé <TT>*</TT> a comme arguments deux séquences <I>S</I><SUB>1</SUB> et <I>S</I><SUB>2</SUB>, il renvoie 
+de la différence entre la somme des termes de la séquence <I>S</I><SUB>1</SUB> et la somme
+des termes de la séquence <I>S</I><SUB>2</SUB> et<BR>
+si l’opérateur infixé <TT>.-</TT> a comme arguments deux séquences <I>S</I><SUB>1</SUB> et 
+<I>S</I><SUB>2</SUB>,, il renvoie la différence <I>S</I><SUB>1</SUB>[0]−<I>S</I><SUB>2</SUB>[<I>size</I>(<I>S</I><SUB>2</SUB>−1].<BR>
+On tape :
+</P><DIV CLASS="center"><TT>(1,2,3)-(4,5,16)</TT></DIV><P>
+On obtient (6-25) :
+</P><DIV CLASS="center"><TT>-19</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>(1,2,3) .- (4,5,16)</TT></DIV><P>
+On obtient:
+</P><DIV CLASS="center"><TT>-16</TT></DIV><HR>
 <A HREF="cascmd_fr537.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr539.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

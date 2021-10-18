@@ -6,26 +6,214 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’inverse de la transformée de Fourier rapide : ifft</TITLE>
+<TITLE>Les coefficients de Fourier : fourier_an et fourier_bn ou fourier_cn</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr337.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr339.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc421">6.24.4</A>  L’inverse de la transformée de Fourier rapide : <TT>ifft</TT></H3><P><A NAME="@default658"></A>
-<TT>ifft</TT> a comme argument une liste <TT>[<I>b</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>b</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT>
-(ou une séquence) où <TT>N</TT> est une puissance de deux.<BR>
-<TT>ifft</TT> renvoie la liste <TT>[<I>a</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>a</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT> tel que :<BR>
-<TT><I>fft</I>([<I>a</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>a</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>])=[<I>b</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>b</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>ifft([2,-1-i,0,-1+i])</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc422">6.25.1</A>  Les coefficients de Fourier : <TT>fourier_an</TT> et <TT>fourier_bn</TT> ou <TT>fourier_cn</TT></H3><P> <A NAME="@default652"></A>
+Si la fonction <I>f</I> est continue par morceaux sur ℝ, et est 
+périodique de période <I>T</I>, alors aux points de continuité de <I>f</I> on a :<BR>
+ </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=<I>a</I><SUB>0</SUB>+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+∞</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>a</I><SUB><I>n</I></SUB> cos(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2π <I>nx</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">)+<I>b</I><SUB><I>n</I></SUB> sin(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2π <I>nx</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">)</TD></TR>
+</TABLE><P>
+ou 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+∞</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=−∞</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>c</I><SUB><I>n</I></SUB> <I>e</I></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2<I>i</I>π <I>nx</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>T</I></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="dcell">&nbsp;</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+où les coefficients <I>a</I><SUB><I>n</I></SUB>, <I>b</I><SUB><I>n</I></SUB>, <I>n</I>∈ <I>N</I>, (ou <I>c</I><SUB><I>n</I></SUB>, <I>n</I> ∈ <I>Z</I>) sont les 
+coefficients de Fourier de <I>f</I> et se calculent avec les fonctions :<BR>
+<TT>fourier_an</TT> et <TT>fourier_bn</TT> ou <TT>fourier_cn</TT>. 
+</P><H4 CLASS="subsubsection"><A NAME="toc16"></A><TT>fourier_an</TT></H4><P><A NAME="@default653"></A><A NAME="sec:fourier_an"></A>
+<TT>fourier_an</TT> a quatre ou cinq paramètres : une expression 
+<I>Xpr</I> dependant d’une variable, le nom de la variable (par exemple <I>x</I>), 
+la période <I>T</I>, un entier <I>n</I> et <I>a</I> (<I>a</I> vaut 0 par défaut).<BR>
+<TT>fourier_an(Xpr,x,T,n,a)</TT> renvoie le coefficient de Fourier <I>a</I><SUB><I>n</I></SUB> 
+d’une fonction de variable <I>x</I> définie sur [<I>a</I>,<I>a</I>+<I>T</I>[ par <I>f</I>(<I>x</I>)=<I>Xpr</I> et 
+périodique de période <I>T</I>.<BR>
+Si <I>f</I> est continue par morceaux 
+<TT>fourier_an(Xpr,x,T,n,a)</TT> renvoie  <I>a</I><SUB><I>n</I></SUB>=2/<I>T</I>∫<SUB><I>a</I></SUB><SUP><I>a</I>+<I>T</I></SUP><I>f</I>(<I>x</I>)cos(2π <I>nx</I> /<I>T</I>)<I>dx</I><BR>
+Si l’on veut que les calculs soient simplifiés il faut dire que <I>n</I> est un 
+entier en tapant <TT>assume(n,integer)</TT>.<BR>
+<B>Exemples</B> 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+</LI><LI CLASS="li-itemize">Soit la fonction <I>f</I>, de période <I>T</I>=2π, définie sur 
+[−π;π[ par <I>f</I>(<I>x</I>)=1+cos(<I>x</I>)+sin(<I>x</I>).<BR>
+On tape, pour avoir son coefficient <I>a</I><SUB>0</SUB> :
+<DIV CLASS="center"><TT>fourier_an(1+cos(x)+sin(x),x,2*pi,0,-pi)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[0.0, 1.0, 1.0, 0.0]</TT></DIV><P>
-Comme pour la <TT>fft</TT>, on peut travailler sur un corps fini en
-indiquant une
-racine <I>N</I>-ième primitive de l’unité en 2ième argument
-et <I>p</I> en 3ième argument de <TT>ifft</TT>.</P><HR>
+<DIV CLASS="center"><TT>1</TT></DIV>
+On tape, pour avoir son coefficient <I>a</I><SUB>1</SUB> :
+<DIV CLASS="center"><TT>fourier_an(1+cos(x)+sin(x),x,2*pi,1,-pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1</TT></DIV>
+On tape, pour avoir son coefficient <I>a</I><SUB><I>n</I></SUB> (<I>n</I>≠ 0 et <I>n</I>≠ 1) :
+<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV> 
+<DIV CLASS="center"><TT>fourier_bn(1+cos(x)+sin(x),x,2*pi,n,-pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0</TT></DIV>
+</LI><LI CLASS="li-itemize">Soit la fonction <I>f</I>, de période <I>T</I>=2, définie sur [−1;1[ par 
+<I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
+ On tape, pour avoir son coefficient <I>a</I><SUB>0</SUB> :
+<DIV CLASS="center"><TT>fourier_an(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,0,-1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1/3</TT></DIV>
+On tape, pour avoir son coefficient <I>a</I><SUB><I>n</I></SUB> (<I>n</I>≠ 0) :
+<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV> 
+<DIV CLASS="center"><TT>fourier_an(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,n,-1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>4*(-1)</TT><CODE><TT>^</TT></CODE><TT>n/(pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc17"></A><TT>fourier_bn</TT></H4><P><A NAME="@default654"></A><A NAME="sec:fourier_bn"></A>
+<TT>fourier_bn</TT> a quatre ou cinq paramètres : une expression 
+<I>Xpr</I> dependant d’une variable, le nom de la variable (par exemple <I>x</I>), la 
+période <I>T</I>, un entier <I>n</I> et <I>a</I> (<I>a</I> vaut 0 par défaut).<BR>
+<TT>fourier_bn(Xpr,x,T,n,a)</TT> renvoie le coefficient de Fourier <I>b</I><SUB><I>n</I></SUB> d’une 
+fonction de variable <I>x</I> définie sur [<I>a</I>,<I>a</I>+<I>T</I>[ par <I>f</I>(<I>x</I>)=<I>Xpr</I> et périodique 
+de période <I>T</I>.<BR>
+Si <I>f</I> est continue par morceaux <TT>fourier_bn(Xpr,x,T,n,a)</TT> renvoie :<BR>
+ <I>b</I><SUB><I>n</I></SUB>=2/<I>T</I>∫<SUB><I>a</I></SUB><SUP><I>a</I>+<I>T</I></SUP><I>f</I>(<I>x</I>)sin(2π <I>nx</I>/<I>T</I>)<I>dx</I><BR>
+Si l’on veut que les calculs soient simplifiés il faut dire que <I>n</I> est un entier en tapant <TT>assume(n,integer)</TT>.<BR>
+<B>Exemples</B> 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Soit la fonction <I>f</I>, de période <I>T</I>=2π, définie sur [−π;π[ 
+par 
+<I>f</I>(<I>x</I>)=1+cos(<I>x</I>)+sin(<I>x</I>).<BR>
+On tape, pour avoir son coefficient <I>b</I><SUB>1</SUB> :
+<DIV CLASS="center"><TT>fourier_bn(1+cos(x)+sin(x),x,2*pi,1,-pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1</TT></DIV>
+On tape, pour avoir son coefficient <I>b</I><SUB><I>n</I></SUB> (<I>n</I>≠ 1) :
+<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
+<DIV CLASS="center"><TT>fourier_bn(1+cos(x)+sin(x),x,2*pi,n,-pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0</TT></DIV>
+</LI><LI CLASS="li-itemize">Soit la fonction <I>f</I>, de période <I>T</I>=2, définie sur [−1;1[ par 
+<I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
+On tape, pour avoir son coefficient <I>b</I><SUB><I>n</I></SUB> (<I>n</I>≠ 0) :
+<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
+<DIV CLASS="center"><TT>fourier_bn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,n,-1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0</TT></DIV>
+</LI><LI CLASS="li-itemize">Soit la fonction <I>f</I>, de période <I>T</I>=2, définie sur [−1;1[ par 
+<I>f</I>(<I>x</I>)=<I>x</I><SUP>3</SUP>.<BR>
+On tape, pour avoir son coefficient <I>b</I><SUB>1</SUB> :
+<DIV CLASS="center"><TT>fourier_bn(x</TT><CODE><TT>^</TT></CODE><TT>3,x,2,1,-1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(2*pi</TT><CODE><TT>^</TT></CODE><TT>2-12)/pi</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV>
+On tape, pour avoir son coefficient <I>b</I><SUB><I>n</I></SUB> :
+<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
+<DIV CLASS="center"><TT>fourier_bn(x</TT><CODE><TT>^</TT></CODE><TT>3,x,2,n,-1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(-2*n</TT><CODE><TT>^</TT></CODE><TT>2*pi</TT><CODE><TT>^</TT></CODE><TT>2*(-1)</TT><CODE><TT>^</TT></CODE><TT>n+12*(-1)</TT><CODE><TT>^</TT></CODE><TT>n)/(n</TT><CODE><TT>^</TT></CODE><TT>3*pi</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV>
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc18"></A><TT>fourier_cn</TT></H4><P><A NAME="@default655"></A><A NAME="sec:fourier_cn"></A>
+<TT>fourier_cn</TT> a quatre ou cinq paramètres : une expression 
+<I>Xpr</I>, le nom de la variable (par exemple <I>x</I>), la période <I>T</I>, un entier 
+<I>n</I> et <I>a</I> (<I>a</I> vaut 0 par défaut).<BR>
+<TT>fourier_cn(Xpr,x,T,n,a)</TT> renvoie le coefficient de Fourier <I>c</I><SUB><I>n</I></SUB> d’une 
+fonction de variable <I>x</I> définie sur [<I>a</I>,<I>a</I>+<I>T</I>[ par <I>f</I>(<I>x</I>)=<I>Xpr</I> et périodique 
+de période <I>T</I>.<BR>
+Si <I>f</I>(<I>x</I>)=<I>Xpr</I> est continue par morceaux sur ℝ,
+<TT>fourier_cn(Xpr,x,T,n,a)</TT> renvoie 
+ <I>c</I><SUB><I>n</I></SUB>=1/<I>T</I>∫<SUB><I>a</I></SUB><SUP><I>a</I>+<I>T</I></SUP><I>f</I>(<I>x</I>)<I>e</I><SUP>−2<I>i</I>π <I>nx</I>/<I>T</I></SUP><I>dx</I><BR>
+<B>Exemples</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Soit la fonction <I>f</I>, de période <I>T</I>=2π, définie sur [−π;π[ 
+par <I>f</I>(<I>x</I>)=1+cos(<I>x</I>)+sin(<I>x</I>).<BR>
+On tape, pour avoir son coefficient <I>c</I><SUB>0</SUB> :
+<DIV CLASS="center"><TT>fourier_cn(1+cos(x)+sin(x),x,2*pi,0,-pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1</TT></DIV>
+On tape, pour avoir son coefficient <I>c</I><SUB>1</SUB> :
+<DIV CLASS="center"><TT>fourier_cn(1+cos(x)+sin(x),x,2*pi,1,-pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(1-i)/2</TT></DIV>
+On tape, pour avoir son coefficient <I>c</I><SUB>−1</SUB> :
+<DIV CLASS="center"><TT>fourier_cn(1+cos(x)+sin(x),x,2*pi,-1,-pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(1+i)/2</TT></DIV>
+On tape, pour avoir son coefficient <I>c</I><SUB><I>n</I></SUB> (<I>n</I>≠ 0 et <I>n</I>≠ ± 1) :
+<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
+<DIV CLASS="center"><TT>fourier_cn(1+cos(x)+sin(x),x,2*pi,n,-pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0</TT></DIV>
+</LI><LI CLASS="li-itemize">Déterminer les coefficients <I>c</I><SUB><I>n</I></SUB> de Fourier de la fonction <I>f</I> 
+périodique de période 2 et définie sur [−1;1[ par  <I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
+On tape, pour avoir <I>c</I><SUB>0</SUB> :
+<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,0,-1)</TT></DIV>
+On obtient:
+<DIV CLASS="center"><TT>1/3</TT></DIV>
+On tape, pour avoir <I>c</I><SUB><I>n</I></SUB> :
+<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
+<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,n,-1)</TT></DIV>
+On obtient:
+<DIV CLASS="center"><TT>2*(-1)</TT><CODE><TT>^</TT></CODE><TT>n/(pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV></LI><LI CLASS="li-itemize">Déterminer les coefficients <I>c</I><SUB><I>n</I></SUB> de Fourier de la fonction <I>f</I> 
+périodique de période 2 et définie sur [0;2[ par  <I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
+On tape, pour avoir <I>c</I><SUB>0</SUB> :
+<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,0)</TT></DIV>
+On obtient:
+<DIV CLASS="center"><TT>4/3</TT></DIV>
+On tape, pour avoir <I>c</I><SUB><I>n</I></SUB> :
+<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
+<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2,n)</TT></DIV>
+On obtient:
+<DIV CLASS="center"><TT>((2*i)*pi*n+2)/(pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+</LI><LI CLASS="li-itemize">Déterminer les coefficients <I>c</I><SUB><I>n</I></SUB> de Fourier de la fonction <I>f</I> 
+périodique de période 2π, et définie sur [0;2π[ par <I>f</I>(<I>x</I>)=<I>x</I><SUP>2</SUP>.<BR>
+On tape <A NAME="@default656"></A> :
+<DIV CLASS="center"><TT>assume(n,integer)</TT></DIV>
+<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2*pi,n)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>((2*i)*pi*n+2)/n</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+Si on ne met pas <TT>assume(n,integer)</TT> on obtient une expression non 
+simplifiée :
+<DIV CLASS="center"><TT>((2*i)*pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2*exp((-i)*n*2*pi)+2*pi*n*exp((-i)*n*2*pi)+</TT></DIV>
+<DIV CLASS="center"><TT>(-i)*exp((-i)*n*2*pi)+i)/(pi*n</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV>
+que l’on peut simplifier en remplacant <TT>exp((-i)*n*2*pi)</TT> par <TT>1</TT> :
+<DIV CLASS="center"><TT>subst(ans(),exp((-i)*n*2*pi)=1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>((2*i)*pi</TT><CODE><TT>^</TT></CODE><TT>2*n</TT><CODE><TT>^</TT></CODE><TT>2+2*pi*n+-i+i)/pi/n</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV>
+expression que l’on peut simplifier avec <TT>normal</TT> et on trouve finalement :
+<DIV CLASS="center"><TT>((2*i)*pi*n+2)/n</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+Il est donc préférable d’écrire <TT>assume(n,integer)</TT>.<BR>
+Donc si <I>n</I> ≠ 0 on a :<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>c</I><SUB><I>n</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2*<I>i</I>*<I>n</I>*π+2</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP></TD></TR>
+</TABLE></TD></TR>
+</TABLE> 
+Puis on tape :
+<DIV CLASS="center"><TT>fourier_cn(x</TT><CODE><TT>^</TT></CODE><TT>2,x,2*pi,0)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>4*pi</TT><CODE><TT>^</TT></CODE><TT>2/3</TT></DIV>
+Donc si <I>n</I>= 0 on a :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>c</I><SUB>0</SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">4.π<SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
+</TABLE></TD></TR>
+</TABLE> 
+</LI></UL><P>
+Remarque :<BR>
+Lorsque l’on ne veut plus considérer <I>n</I> comme un entier on doit taper :<BR>
+<TT>purge(n)</TT><A NAME="@default657"></A>.<BR>
+ Pour connaître les hypothéses faites sur une variable, par exemple <I>n</I>,
+on tape :<BR>
+<TT>about(n)</TT><A NAME="@default658"></A></P><HR>
 <A HREF="cascmd_fr337.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr339.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

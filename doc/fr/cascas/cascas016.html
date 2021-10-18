@@ -13,7 +13,7 @@
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascas017.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H1 CLASS="chapter"><A NAME="htoc276">Chapitre 16</A>  Les jeux</H1><H2 CLASS="section"><A NAME="toc98"></A><A NAME="htoc277">16.1</A>  Un jeu</H2><P>
+<H1 CLASS="chapter"><A NAME="htoc263">Chapitre 16</A>  Les jeux</H1><H2 CLASS="section"><A NAME="toc91"></A><A NAME="htoc264">16.1</A>  Un jeu</H2><P>
 On considère le jeu suivant :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 Le joueur tire au hasard un nombre entre 1 et 10. Ce nombre est son gain,
@@ -60,7 +60,7 @@ jeu102(L):={
  retourne evalf(g/100);
 }:;
 </PRE><P>À vous de trouver la meilleure stratégie !
-</P><H2 CLASS="section"><A NAME="toc99"></A><A NAME="htoc278">16.2</A>  Le Master-Mind</H2><H3 CLASS="subsection"><A NAME="htoc279">16.2.1</A>  La règle du jeu</H3><P>
+</P><H2 CLASS="section"><A NAME="toc92"></A><A NAME="htoc265">16.2</A>  Le Master-Mind</H2><H3 CLASS="subsection"><A NAME="htoc266">16.2.1</A>  La règle du jeu</H3><P>
 L’ordinateur sera ici le codificateur : il choisit une combinaison de 4 
 couleurs, différentes ou non, parmi les 6 disponibles numérotées de 0 
 à 5 (noir, rouge, vert, jaune, bleu, magenta). Par exemple (0,5,2,5)<BR>
@@ -72,7 +72,7 @@ ne se trouvant pas à la bonne place. Avec l’exemple il répond 1N et 1B.<BR>
 Le joueur peut faire au plus <I>nc</I> propositions (en général <I>nc</I>=10).<BR>
 <B>Variante</B> On peut permettre une septième couleur de numéro 6 (cyan)
 mais le codificateur ne peut pas choisir la combinaison (6,6,6,6). 
-</P><H3 CLASS="subsection"><A NAME="htoc280">16.2.2</A>  Le programme du Master-Mind</H3><PRE CLASS="verbatim">masterm(nc):={
+</P><H3 CLASS="subsection"><A NAME="htoc267">16.2.2</A>  Le programme du Master-Mind</H3><PRE CLASS="verbatim">masterm(nc):={
 local L,R,R0,n,j,N,B,a;
 L:=[alea(6)$(j=1..4)];
 n:=0;
@@ -92,7 +92,7 @@ afficher(R0+", "+N+" N, "+(B-N)+" B");
 }
 return ("perdu " , L); 
 }:;
-</PRE><H3 CLASS="subsection"><A NAME="htoc281">16.2.3</A>  Le programme de la variante du Master-Mind</H3><P>
+</PRE><H3 CLASS="subsection"><A NAME="htoc268">16.2.3</A>  Le programme de la variante du Master-Mind</H3><P>
 Il faut vérifier que la liste choisie n’est pas (6,6,6,6) avec la 
 fonction :<BR>
 <TT>nonconst(L,6)</TT> ci dessous :
@@ -125,7 +125,7 @@ afficher(R0+", "+N+" N, "+(B-N)+" B");
 return ("perdu " , L); 
 }
 :;
-</PRE><H3 CLASS="subsection"><A NAME="htoc282">16.2.4</A>  Le mastermind avec les couleurs</H3><P>
+</PRE><H3 CLASS="subsection"><A NAME="htoc269">16.2.4</A>  Le mastermind avec les couleurs</H3><P>
 Le joueur devra maintenant taper les couleurs (ou juste sa première lettre)
 qu’il choisit (entourée de ‘<TT>"</TT>). On tape pour transformer la liste des 
 couleurs en la liste de leur code.
@@ -202,7 +202,7 @@ L2C(L,n+2,0,0);
 return afficher(("perdu " , L));
 }:;
 </PRE><P>A vous de programmer la variante avec les couleurs !
-</P><H2 CLASS="section"><A NAME="toc100"></A><A NAME="htoc283">16.3</A>  Les 4 dés du jeu de Win</H2><P>
+</P><H2 CLASS="section"><A NAME="toc93"></A><A NAME="htoc270">16.3</A>  Les 4 dés du jeu de Win</H2><P>
 On considère les 4 dés suivants :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 les faces du dé <TT>A</TT> ont comme points : <TT>0,0,4,4,4,4</TT>, 
@@ -283,7 +283,7 @@ On obtient :<BR>
 <TT>[836,1564]</TT><BR>
 0n a 836/2400.,1564/2400.∼ 0.348333333333,0.651666666667 soit environ 
 1/3,2/3.
-</P><H2 CLASS="section"><A NAME="toc101"></A><A NAME="htoc284">16.4</A>  Un jeu de cartes</H2><P>
+</P><H2 CLASS="section"><A NAME="toc94"></A><A NAME="htoc271">16.4</A>  Un jeu de cartes</H2><P>
 Un joueur reçoit 4 cartes d’un jeu de 32 cartes. 
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 si il a un carré il reçoit 5082 euros

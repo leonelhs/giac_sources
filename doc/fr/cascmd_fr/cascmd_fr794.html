@@ -6,62 +6,55 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les entrées : input, saisir, Input, InputStr, saisir_chaine, textinput</TITLE>
+<TITLE>normalt</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr793.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr795.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc923">8.4.2</A>  Les entrées : <TT>input, saisir, Input, InputStr, saisir_chaine, textinput</TT></H3><P><A NAME="@default1409"></A><A NAME="@default1410"></A><A NAME="@default1411"></A><A NAME="@default1412"></A><A NAME="@default1413"></A><A NAME="@default1414"></A>
-<TT>input, saisir, Input</TT> permettent de saisir des expressions et 
-<TT>InputStr, saisir_chaine, textinput</TT> permettent de saisir des chaines de
-caractères.
-<TT>input, saisir, Input</TT> et <TT>InputStr, saisir_chaine, textinput</TT> ont 
-comme argument le nom d’une variable (resp une séquence de noms de variables)
-ou une chaîne de caractères (chaîne donnant à l’utilisateur des 
-indications sur la valeur à entrer) et le nom d’une variable (resp une 
-séquence de chaînes 
-de caractères et une séquence de noms de variables).<BR>
-<TT>input, saisir, Input</TT> et InputStr, saisir_chaine, textinput ouvrent une
-fenêtre où on peut entrer la valeur de la variable donnée comme argument 
-et où on retrouve, comme légende, la chaîne de caractères mise dans 
-l’argument (si on la mise!!!).<BR>
-Avec <TT>input, Input, saisir</TT> on peut entrer des nombres ou des chaînes de 
-caractères (il faut alors mettre "...") ou des noms de variables 
-(sans mettre "...").<BR>
-Avec <TT>InputStr, textinput, saisir_chaine</TT> on ne peut entrer que des 
-chaînes de caractères, mais on n’a donc pas besoin de mettre "...".<BR>
-On tape :
-</P><DIV CLASS="center"><TT>input(a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>input("a=?",a)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc929">8.5.2</A>  <TT>normalt</TT></H3><P><A NAME="@default1404"></A>
+<TT>normalt</TT> a pour arguments :
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+la liste [<I>ns</I>, <I>ne</I>] où <I>ns</I> est le nombre de succès lorsqu’on fait
+<I>ne</I> essais, ou la liste [<I>m</I>,<I>t</I>] où <I>m</I> est la moyenne et <I>t</I> la taille de
+l’échantillon, ou la liste des données de l’échantillon
+</LI><LI CLASS="li-enumerate">la proportion de succés ou la moyenne de la population ou une liste de données d’un échantillon témoin
+</LI><LI CLASS="li-enumerate">l’écart-type (cet argument est optionnel si des données sont fournies,
+il est déduit des données)
+</LI><LI CLASS="li-enumerate">l’hypothèse alternative H1 <CODE>'!='</CODE> ou <CODE>&lt;</CODE> ou <CODE>&gt;</CODE>
+</LI><LI CLASS="li-enumerate">le niveau de confiance, cet argument est optionnel (valeur par défaut 0.05)
+</LI></OL><P>
+<TT>normalt</TT> réalise le test <I>Z</I> d’hypothèses pour une loi normale.<BR>
+<TT>normalt</TT> renvoie <TT>0</TT> ou <TT>1</TT> et affiche un résumé du test.</P><P><B>Exemple 1</B> : on tape :
+</P><DIV CLASS="center"><TT>normalt([10,30],.5,.02,’!=’,0.1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer la valeur de </TT><TT>a</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>12 dans cette fenêtre puis OK</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>a+3</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+avec en vert le résumé du test :<BR>
+*** TEST RESULT 0 ***<BR>
+Summary Z-Test null hypothesis mu1=mu2, alt. hyp. mu1!=mu2.<BR>
+Test returns 0 if probability to observe data is less than 0.1<BR>
+(null hyp. mu1=mu2 rejected with less than alpha probability error)<BR>
+Test returns 1 otherwise (can not reject null hypothesis)<BR>
+Data mean mu1=10, population mean mu2=0.5<BR>
+alpha level 0.1, multiplier*stddev/sqrt(sample size)= 1.64485*0.02/5.47723<BR>
+Le test a échoué, il y a donc moins d’une chance sur 10 que le nombre de 
+succès soit de 10 pour 30 essais avec une proportion attendue de 0.5 et un 
+écart-type de 0.02, on rejette l’hypothèse <I>H</I>0.</P><P><B>Exemple 2</B> : on tape :
+</P><DIV CLASS="center"><TT>normalt([0.48,50],0.5,0.1,’&lt;’)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>15</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>input("polynome",p,"valeur",a)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer les valeurs de </TT><TT>p</TT><TT> avec la légende "polynome" et de </TT><TT>a</TT><TT> avec la légende "valeur"</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>InputStr(a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>InputStr("reponse=",a)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer la valeur de </TT><TT>a</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>12 dans cette fenêtre puis OK</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>a+3</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>123</TT></DIV><P>
-car <TT>a</TT> est la chaîne de catractères <TT>"12"</TT> et le <TT>"+"</TT> 
-concaténe les deux chaînes <TT>"12"</TT> et <TT>"3"</TT>.</P><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+avec en vert le résumé du test :<BR>
+*** TEST RESULT 1 ***<BR>
+Summary Z-Test null hypothesis mu1=mu2, alt. hyp. mu1&lt;mu2.<BR>
+Test returns 0 if probability to observe data is less than 0.05<BR>
+(null hyp. mu1=mu2 rejected with less than alpha probability error)<BR>
+Test returns 1 otherwise (ca<TT>class_min</TT>n not reject null hypothesis)<BR>
+Data mean mu1=0.48, population mean mu2=0.5<BR>
+alpha level 0.05, multiplier*stddev/sqrt(sample size)= 1.64485*0.1/7.07107<BR>
+Ici le test réussit, on ne peut pas exclure (au seuil de confiance 0.05)
+l’observation d’une proportion de 0.48 avec 50 essais pour une proportion 
+théorique de 0.5 et un écart-type de 0.1 </P><HR>
 <A HREF="cascmd_fr793.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr795.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

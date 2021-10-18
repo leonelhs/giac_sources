@@ -6,22 +6,40 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le demi-cône : half_cone demi_cone</TITLE>
+<TITLE>Savoir si on a un parallélogramme : is_parallelogram est_parallelogramme</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1043.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1045.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1213">10.15.2</A>  Le demi-cône : <TT>half_cone demi_cone</TT></H3><P><A NAME="@default2020"></A><A NAME="@default2021"></A>
-<TT>demi_cone</TT> a comme argument un point <TT>A</TT>, une direction
-<TT>v</TT> et un réel <TT>t</TT>.<BR>
-<TT>demi_cone(A,v,t)</TT> dessine un demi-cône de sommet <TT>A</TT>, direction 
-<TT>v</TT> et de demi-angle au sommet <TT>t</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1222">11.13.14</A>  Savoir si on a un parallélogramme : <TT>is_parallelogram est_parallelogramme</TT></H3><P><A NAME="@default2021"></A><A NAME="@default2022"></A><A NAME="sec:estparalelo3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr966.html#sec:estparalelo2">10.18.10</A> pour la géométrie plane.<BR>
+<TT>est_parallelogramme</TT> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<BR>
+<TT>est_parallelogramme</TT> vaut 1 (resp 2, 3, 4) si les quatre points sont 
+coplanaires et forment un parallélogramme (resp un losange, un rectangle, un 
+carré) ou si l’objet géométrique est un parallélogramme (resp un losange,
+un rectangle, un carré), et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>demi_cone([0,1,0],[0,0,1],pi/3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_parallelogramme([0,0,0],[2,0,0],[3,1,0],[1,1,0])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le demi-cône supérieur d’axe paralléle à 0z passant par [0,1,0] et de demi-angle au sommet égal à </TT><TT>π/3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>K:=parallelogramme([0,0,0],[2,0,0],[1,1,0]);est_parallelogramme(K)</TT></DIV><P>
+<TT>K</TT> est le parallélogramme <TT>ABCD</TT> de sommets [0,0,0],[2,0,0],[3,1,0],
+[1,1,0].
+On tape :
+</P><DIV CLASS="center"><TT>est_parallelogramme([-1,0,0],[0,1,0],[2,0,0],[0,-1,0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+<B>Attention</B><BR>
+On doit taper :
+</P><DIV CLASS="center"><TT>K:=parallelogramme([0,0,0],[2,0,0],[1,1,0],D); est_parallelogramme(K[0])</TT></DIV><P>
+Pour obtenir :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+car K est une liste composée d’un parallélogramme et du point D.
+</P><HR>
 <A HREF="cascmd_fr1043.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1045.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

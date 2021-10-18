@@ -6,45 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour utiliser une chaîne comme un nombre : expr</TITLE>
+<TITLE>L’instruction conditionnelle : switch</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr821.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr823.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc952">8.5.5</A>  Pour utiliser une chaîne comme un nombre : <TT>expr</TT></H3><P><A NAME="@default1495"></A><A NAME="sec:expr2"></A>
-<TT>expr</TT> permet d’utiliser une chaîne de chiffres ne 
-commençant pas par un zéro comme un nombre entier écrit en base 10
-ou une chaîne de chiffres comportant un point comme un nombre 
-décimal écrit en base 10.<BR>
+<H3 CLASS="subsection"><A NAME="htoc962">9.4.20</A>  L’instruction conditionnelle : <TT>switch</TT></H3><P><A NAME="@default1482"></A><A NAME="@default1483"></A><A NAME="@default1484"></A>
+<TT>switch</TT> a comme paramètre une expression.<BR>
+Selon la valeur de cette expression, marquée par <TT>case</TT> (ou par 
+<TT>default</TT>), <TT>switch</TT> 
+permet de faire le bloc d’instructions correspondant à la valeur d’une 
+expression qui doit être une valeur entière.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>expr("123")+1</TT></DIV><P>
+</P><PRE CLASS="verbatim">opere(a,b,c):={
+switch(c) {
+  case 1 : {a:=a+b;break;} 
+  case 2 : {a:=a-b;break;} 
+  case 3 : {a:=a*b;break;} 
+  default : {a:=a^b;}
+}
+return a;
+}
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>opere(2,3,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>124</TT></DIV><P>
+</P><DIV CLASS="center"><TT>5</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>expr("45.67")+2.12</TT></DIV><P>
+</P><DIV CLASS="center"><TT>opere(2,3,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>47.79</TT></DIV><P>
-<TT>expr</TT> permet d’utiliser une chaîne de chiffres ne comportant 
-pas de <TT>8</TT>, ni de <TT>9</TT>, et commençant
-par un zéro comme un nombre entier écrit en base <TT>8</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>expr("0123")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>83</TT></DIV><P>
-En effet 1*8<SUP>2</SUP>+2*8+3=83<BR>
-<B>Remarque</B>:<BR>
- Si on tape <TT>expr("018")</TT> on obtient le nombre décimale <TT>18.0</TT>.<BR>
-<TT>expr</TT> permet d’utiliser une chaîne contenant des chiffres et 
-les lettres <TT>a,b,c,d,e,f</TT>, et commençant par <TT>0x</TT> comme un nombre entier écrit en base 16.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>expr("0x12f")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>303</TT></DIV><P>
-En effet 1*16<SUP>2</SUP>+2*16+15=303
-Voir aussi <A HREF="cascmd_fr157.html#sec:expr1">6.5.16</A>
-</P><HR>
+</P><DIV CLASS="center"><TT>-1</TT></DIV><HR>
 <A HREF="cascmd_fr821.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr823.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

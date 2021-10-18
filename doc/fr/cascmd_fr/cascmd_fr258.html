@@ -6,38 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Multiplier par la quantité conjuguée : mult_conjugate multiplier_conjugue</TITLE>
+<TITLE>Distributivité : expand fdistrib developper</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr257.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr259.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc330">6.13.9</A>  Multiplier par la quantité conjuguée : <TT>mult_conjugate multiplier_conjugue</TT></H3><P><A NAME="@default435"></A> <A NAME="@default436"></A>
-<TT>mult_conjugate</TT> a comme argument une expression avec un 
-dénominateur ou un numérateur comportant des racines carrées :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>mult_conjugate</TT> a comme argument une expression avec un 
-dénominateur comportant des racines carrées.<BR>
-<TT>mult_conjugate</TT> multiplie le numérateur et le dénominateur
-de cette expression par la quantité conjuguée du dénominateur.
-</LI><LI CLASS="li-itemize"><TT>mult_conjugate</TT> a comme argument une expression avec un 
-dénominateur ne comportant pas de racines carrées.<BR>
-<TT>mult_conjugate</TT> multiplie le numérateur et le dénominateur de cette 
-expression par la quantité conjuguée du numérateur. 
-</LI></UL><P>
-On tape :
-</P><DIV CLASS="center"><TT>mult_conjugate((2+sqrt(2))/(2+sqrt(3)))</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc331">6.14.7</A>  Distributivité : <TT>expand fdistrib developper</TT></H3><P><A NAME="@default432"></A><A NAME="@default433"></A><A NAME="@default434"></A>
+Si on veut effectuer, sur une expression, la distributivité de la 
+multiplication par rapport à l’addition on utilise la fonction <TT>expand</TT> 
+ou <TT>developper</TT> ou <TT>fdistib</TT>.<BR>
+Ou on tape :
+</P><DIV CLASS="center"><TT>developper((x+1)*(x-2))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>expand((x+1)*(x-2))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>fdistrib((x+1)*(x-2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(2+sqrt(2))*(2-sqrt(3))/((2+sqrt(3))*(2-sqrt(3)))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-x-2</TT></DIV><P> 
+<B>Remarque</B> On peut aussi utiliser <TT>convert</TT> avec l’option <TT>’+’</TT>
+ou sa version infixée<TT>=&gt;</TT> avec l’option <TT>+</TT> :
 On tape :
-</P><DIV CLASS="center"><TT>mult_conjugate((2+sqrt(2))/(sqrt(2)+sqrt(3)))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x+1)*(x-2)=&gt;+</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>convert((x+1)*(x-2),’+’)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(2+sqrt(2))*(-sqrt(2)+sqrt(3))/</TT></DIV><DIV CLASS="center"><TT>((sqrt(2)+sqrt(3))*(-sqrt(2)+sqrt(3)))</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>mult_conjugate((2+sqrt(2))/2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(2+sqrt(2))*(2-sqrt(2))/(2*(2-sqrt(2)))</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-x-2</TT></DIV><HR>
 <A HREF="cascmd_fr257.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr259.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

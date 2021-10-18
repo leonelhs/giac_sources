@@ -6,54 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer une expression en une fonction : unapply</TITLE>
+<TITLE>Les autres opérateurs de Xcas</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr283.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr285.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc359">6.16.2</A>  Transformer une expression en une fonction : <TT>unapply</TT></H3><P><A NAME="@default492"></A>
-Pour transformer une expression en une fonction, on utilise la 
-commande <TT>unapply</TT>.<BR>
-<TT>unapply</TT> a deux arguments une expression et le nom d’une (ou des)
-variable(s).<BR>
-<TT>unapply</TT> renvoie une fonction définie à partir de cette expression et 
-de la (ou des) variable(s) donnée(s) en argument.</P><P><B>Attention</B> lorsqu’on définit une fonction,
-le membre de droite de l’affectation n’est pas évalué,
-ainsi l’écriture <CODE>g:=x^2; f(x):=g</CODE>
-ne définit pas la fonction <I>f</I>: <I>x</I> → <I>x</I><SUP>2</SUP> mais la fonction
-<I>f</I>: <I>x</I> → <I>g</I>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>g:= sin(x+1); f:=unapply(g,x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(sin(x+1), (x)-&gt;sin(x+1))</TT></DIV><P> 
-On a alors la variable <TT>g</TT> qui contient une expression symbolique 
-et la variable <TT>f</TT> qui contient une fonction.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>unapply(exp(x+2),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;exp(x+2)</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>f:=unapply(lagrange([1,2,3],[4,8,12]),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;4+4*(x-1)</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>f:=unapply(integrate(log(t),t,1,x),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;x*log(x)-x+1</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>f:=unapply(integrate(log(t),t,1,x),x)</TT></DIV><DIV CLASS="center"><TT>f(x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x*log(x)-x+1</TT></DIV><P>
-<B>Remarque</B>
-Pour définir, à partir d’une fonction de 2 variables <I>f</I>(<I>x</I>,<I>w</I>), la fonction
-<I>g</I> qui à <I>w</I> fait correspondre la fonction <I>g</I>(<I>w</I>) définie par :
-<I>g</I>(<I>w</I>)(<I>x</I>)=<I>f</I>(<I>x</I>,<I>w</I>), on utilise aussi <TT>unapply</TT>.<BR>
-On tape : 
-</P><DIV CLASS="center"><TT>f(x,w):=2*x+w</TT></DIV><DIV CLASS="center"><TT>g(w):=unapply(f(x,w),x)</TT></DIV><DIV CLASS="center"><TT>g(3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x-&gt;2</TT><TT>·</TT><TT> x+3</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc359">6.16.2</A>  Les autres opérateurs de <TT>Xcas</TT></H3><P><A NAME="@default477"></A><A NAME="@default478"></A><A NAME="@default479"></A><A NAME="@default480"></A><A NAME="@default481"></A><A NAME="@default482"></A><A NAME="@default483"></A><A NAME="@default484"></A> <A NAME="@default485"></A>
+<A NAME="@default486"></A><A NAME="@default487"></A><A NAME="@default488"></A>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>$ </TT> est la version infixée de <TT>seq</TT> par exemple :<BR>
+<TT>(2</TT><CODE><TT>^</TT></CODE><TT>k)$(k=0..3)= seq(2</TT><CODE><TT>^</TT></CODE><TT>k,k=0..3)=(1,2,4,8)</TT> (ne pas oublier 
+de parenthéser les arguments),
+</LI><LI CLASS="li-itemize"><TT>mod</TT> ou <TT>% </TT> pour définir un nombre modulaire,
+</LI><LI CLASS="li-itemize"><TT>@</TT> pour composer des fonctions par exemple :
+<TT>(f@g)(x)=f(g(x))</TT>,
+</LI><LI CLASS="li-itemize"><TT>@@ </TT> pour composer une fonction avec elle-même par exemple :<BR>
+<TT>(f@@3)(x)=f(f(f(x)))</TT>,
+</LI><LI CLASS="li-itemize"><TT>minus union intersect</TT> pour traduire la différence, l’union et 
+l’intersection de deux ensembles,
+</LI><LI CLASS="li-itemize"><TT>-&gt;</TT> pour définir une fonction,
+</LI><LI CLASS="li-itemize"><TT>:= ou =&gt;</TT> pour affecter une variable (c’est la version infixée de 
+<TT>sto</TT> avec l’ordre permuté des arguments pour <TT>:=</TT>), 
+par exemple : <TT>a:=2</TT> or <TT>2=&gt;a</TT> or <TT>sto(2,a)</TT>.
+</LI><LI CLASS="li-itemize"><TT>=&gt;</TT> permet aussi de faire des conversions d’unité et des 
+réécritures d’expressions, par exemples : <TT>3_m=&gt;_cm</TT>, 
+<TT>sin(x)=&gt;diff</TT>, <TT>sin(x)=&gt;exp</TT>, <TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1=&gt;*</TT> etc... 
+<TT>=&lt;</TT> pour stocker une expression dans une variable, avec une affectation 
+par référence (l’ordre des arguments est le même que pour <TT>:=</TT>)
+si la cible est un élément d’une matrice ou d’une liste.
+Ceci est plus rapide si on modifie les élèments d’une matrice ou d’une 
+liste existante de grande dimension, car on ne fait pas de copie.
+À utiliser avec précautions car tous les objets pointant sur cette matrice 
+seront modifiés. Dans un programme il faudra utiliser <TT>copy</TT> lors de 
+l’initialisation pour que les modifications se fassent sur la copie 
+(cf <A HREF="cascmd_fr817.html#sec:copie">9.4.15</A>)
+</LI></UL><HR>
 <A HREF="cascmd_fr283.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr285.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

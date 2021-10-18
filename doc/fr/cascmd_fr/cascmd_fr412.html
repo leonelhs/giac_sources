@@ -6,25 +6,61 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Numérateur après simplification : numer</TITLE>
+<TITLE>Test d’appartenance d’un polynôme ou d’une liste de polynômes à un idéal donné par une base de Groebner : in_ideal</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr411.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr413.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc501">6.30.2</A>  Numérateur après simplification : <TT>numer</TT></H3><P><A NAME="@default757"></A><A NAME="sec:numer"></A>
-<TT>numer</TT> a comme argument une fraction 
-rationnelle et renvoie le numérateur de cette fraction simplifiée (voir 
-aussi <A HREF="cascmd_fr197.html#sec:inumer">6.9.3</A>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>numer((x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(x-1)) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x+1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>numer((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x+1</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc501">6.30.3</A>  Test d’appartenance d’un polynôme ou d’une liste de polynômes à un idéal donné par une base de Groebner : <TT>in_ideal</TT></H3><P><A NAME="@default756"></A>
+<TT>in_ideal</TT> a trois (ou quatre) arguments : un polynôme ou d’une 
+liste de polynômes, une liste donnant une base de Groebner, la liste des 
+variables des polynômes.<BR>
+On peut donner des arguments supplémentaires à <TT>in_ideal</TT> comme
+pour <TT>gbasis</TT> (<TT>plex</TT>(par défaut),<TT>tdeg</TT>,<TT>plex</TT>...cf. <A HREF="cascmd_fr410.html#sec:gbasis">6.30.1</A>), c’est d’ailleurs
+nécessaire si on a calculé une base de Gröbner avec un ordre différent 
+de celui par défaut (qui est l’ordre lexicographique pur <TT>plex</TT>), dans ce
+cas <TT>in_ideal</TT> doit utiliser le même ordre.<BR>
+<TT>in_ideal</TT> teste si le polynôme ou les polynômes du 1ier argument sont
+dans l’idéal engendré par la base de Groebner,par rapport à une liste de 
+variables et renvoie <TT>vrai</TT> ou <TT>faux</TT> ou une liste composée de 
+<TT>vrai</TT> ou de <TT>faux</TT>.<BR>
+On tape :
+</P><DIV CLASS="center">
+<CODE>in_ideal((x+y)^2,[y^2,x^2+2*x*y],[x,y])</CODE>
+</DIV><P>
+On obtient
+</P><DIV CLASS="center">
+<CODE>[vrai]</CODE>
+</DIV><P>
+On tape :
+</P><DIV CLASS="center">
+<CODE>in_ideal([(x+y)^2,x+y],[y^2,x^2+2*x*y],[x,y])</CODE>
+</DIV><P>
+On obtient
+</P><DIV CLASS="center">
+<CODE>[vrai,faux]</CODE>
+</DIV><P>
+On tape :
+</P><DIV CLASS="center">
+<CODE>in_ideal(x+y,[y^2,x^2+2*x*y],[x,y])</CODE>
+</DIV><P>
+On obtient
+</P><DIV CLASS="center">
+<CODE>[faux]</CODE>
+</DIV><P>
+On tape :
+</P><DIV CLASS="center">
+|gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1],|<BR>
+<CODE>[x1,x2,x3],tdeg)</CODE>
+<CODE>in_ideal([(x1+x2+x3)^3,x1+x2+x3],[x1+x2+x3,-x2^2-x2*x3-x3^2,x3^3-1],</CODE><BR>
+<CODE>[x1,x2,x3],tdeg)</CODE>
+</DIV><P>
+On obtient
+</P><DIV CLASS="center">
+<CODE>[vrai,vrai]</CODE>
+</DIV><HR>
 <A HREF="cascmd_fr411.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr413.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

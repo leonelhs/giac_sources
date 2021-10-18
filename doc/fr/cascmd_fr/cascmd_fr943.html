@@ -6,41 +6,58 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’homothétie : homothety homothetie</TITLE>
+<TITLE>Pente d’une droite et son affichage : slopeat, penteen et slopeatraw, penteenbrut</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr942.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr944.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1093">9.17.5</A>  L’homothétie : <TT>homothety homothetie</TT></H3><P><A NAME="@default1836"></A><A NAME="@default1837"></A><A NAME="sec:homothetie2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1039.html#sec:homothetie3">10.14.5</A> pour la géométrie 3-d.<BR>
-<TT>homothetie</TT>, en géométrie plane, a deux ou trois arguments  :
-un point (le centre de l’homothétie), un réel (la valeur du rapport de 
-l’homothétie) et éventuellement l’objet géométrique à transformer.<BR>
-Lorsque <TT>homothetie</TT> a deux arguments, c’est une fonction qui agit sur 
-un objet géométrique.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1103">10.16.13</A>  Pente d’une droite et son affichage : <TT>slopeat, penteen</TT> et <TT>slopeatraw, penteenbrut</TT></H3><P><A NAME="@default1835"></A><A NAME="@default1836"></A><A NAME="@default1837"></A><A NAME="@default1838"></A>
+<TT>slopeat</TT> ou <TT>penteen</TT> et <TT>slopeatraw</TT> ou 
+<TT>penteenbrut</TT> est une commande obtenue 
+lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
+<TT>Mode-&gt;Mesures-&gt;penteen</TT> ou <TT>Mode-&gt;Mesures-&gt;penteenbrut</TT>. Dans ce cas il
+faut que tous les objets désignés par la souris soient déjà nommés.<BR>
+On peut néammoins taper ces commandes dans une ligne de commande.<BR>
+<TT>slopeat</TT> ou <TT>penteen</TT> ont 2 arguments le nom d’une droite (ou d’un 
+segment) et 1 point (ou 1 nombre complexe qui est l’affixe d’un point).<BR>
+et <TT>slopeatraw</TT> ou <TT>penteenbrut</TT> ont 
+comme arguments une droite (ou un segment) et 1 point (ou 1 nombre complexe qui
+est l’affixe d’un point).<BR>
+<TT>slopeat</TT> ou <TT>penteen</TT> renvoie le point, calcule la pente de
+la droite (ou du segment) et affiche cette pente à l’endroit du point
+avec une légende. <B>Attention</B> <TT>slopeat</TT> ou <TT>penteen</TT>, il faut mettre le nom de la droite (ou du segment).<BR>
+<TT>slopeatraw</TT> ou <TT>penteenbrut</TT> renvoie le point, calcule la pente de
+la droite (ou du segment) et affiche cette pente à l’endroit du point.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>h:=homothetie(i,2)</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>h(1+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>d:=droite(1,2i)</TT></DIV><DIV CLASS="center"><TT>penteen(d,i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point 2+i tracé avec une croix (x) noire</TT></DIV><P>
-Lorsque <TT>homothetie</TT> a trois arguments, <TT>homothetie</TT> dessine et 
-renvoie le transformé du troisième argument dans l’homothétie de centre
-le premier argument et de rapport le deuxième argument.<BR>
+</P><DIV CLASS="center"><TT>"sd=-2" s’écrit au point(i)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>homothetie(i,2,1+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>penteenbrut(droite(1,2i),i)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>penteenbrut(segment(1,2i),i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point 2+i tracé avec une croix (x) noire</TT></DIV><P>
+</P><DIV CLASS="center"><TT>-2 s’écrit au point(i)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>homothetie(i,2,cercle(1+i,1))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>d1:=droite(2y-x=3),2*i)</TT></DIV><DIV CLASS="center"><TT>penteen(d1,2*i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le cercle de centre 2+i et de rayon 2</TT></DIV><P>
-<B>Remarque</B><BR>
-Lorsque la valeur du rapport de l’homothétie est un nombre complexe <I>k</I> non 
-réel <TT>homothetie(A,k)</TT> est la similitude de centre le point <TT>A</TT>, de 
-rapport <TT>abs(k)</TT> et d’angle <TT>arg(k)</TT>. </P><HR>
+</P><DIV CLASS="center"><TT>"sd1=1/2’’ s’écrit au point(2*i) avec une légende</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>penteenbrut(droite(2y-x=3),2*i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1/2 s’écrit au point(2*i)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>T:=tangente(plotfunc(sin(x)),pi/4)</TT></DIV><DIV CLASS="center"><TT>slopeat(T,i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>"sT=(sqrt(2))/2" s’écrit au point(i)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>penteenbrut(tangente(plotfunc(sin(x)),pi/4),i)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>penteenbrut(droite_tangente(sin(x),pi/4),i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(sqrt(2))/2 s’écrit au point(i)</TT></DIV><HR>
 <A HREF="cascmd_fr942.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr944.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

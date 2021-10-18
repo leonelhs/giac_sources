@@ -6,35 +6,40 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un triangle isocéle : is_isosceles est_isocele</TITLE>
+<TITLE>La mesure d’un angle : angle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1029.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1031.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1197">10.13.10</A>  Savoir si on a un triangle isocéle : <TT>is_isosceles est_isocele</TT></H3><P><A NAME="@default2000"></A><A NAME="@default2001"></A><A NAME="sec:estisocele3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr952.html#sec:estisocele2">9.18.6</A> pour la géométrie plane.<BR>
-<TT>est_isocele</TT> est une fonction booléenne ayant comme 
-argument trois points ou un objet géométrique.<BR>
-<TT>est_isocele</TT> vaut 1 (resp 2, 3) si les trois points forment un 
-triangle isocéle ou si l’objet géométrique est un triangle isocéle dont
-le sommet de l’angle portant les deux cotés égaux est désigné par le 
-premier (resp second, troisième) argument, ou vaut 4 si les trois points 
-forment un triangle équilatéral, ou si l’objet géométrique est un 
-triangle équilatéral, et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1207">11.12.9</A>  La mesure d’un angle : <TT>angle</TT></H3><P><A NAME="@default1995"></A><A NAME="sec:angle3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr935.html#sec:angle2">10.16.5</A> pour la géométrie plane.<BR>
+<TT>angle</TT> a comme argument trois points ou deux droites coplanaires
+ou une droite et un plan.<BR>
+<TT>angle</TT> renvoie la mesure en radians (ou en degrés) de :<BR>
+soit de l’angle non orienté de sommet le premier argument, le deuxième 
+argument se trouve sur le premier coté de l’angle et le troisième argument
+se trouve sur le deuxiéme coté,<BR>
+soit de l’angle des deux droites coplanaires<BR>
+soit de l’angle de la droite et du plan.<BR>
+Ainsi <TT>angle(A,B,C)</TT> désigne la mesure de l’angle en radians (ou en 
+degrés) de (<I>AB</I>,<I>AC</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_isocele([2,0,0],[0,0,0],[0,2,0])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>angle((point(0,0,0),point(1,0,0),point(0,0,1)))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>pi/4</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>T:=triangle_isocele([0,0,0],[2,2,0],[2,2,2]); est_isocele(T)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>angle(droite([0,0,0],[1,1,0]),droite([0,0,0],[1,1,1]))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>acos(2/(sqrt(6)))</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_isocele([1,1,0],[-1,1,0],[-1,0,0])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>angle(droite([0,0,0],[1,1,0]),plan(x+y+z=0))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>acos(2/(sqrt(6)))</TT></DIV><HR>
 <A HREF="cascmd_fr1029.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1031.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

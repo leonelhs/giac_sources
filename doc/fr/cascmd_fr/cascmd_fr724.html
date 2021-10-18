@@ -6,25 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tirage selon une loi exponentielle : randexp</TITLE>
+<TITLE>Graphe de la régression puissance : 
+ power_regression_plot</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr723.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr725.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc846">7.3.8</A>  Tirage selon une loi exponentielle : <TT>randexp</TT></H3><P><A NAME="@default1307"></A>
-<TT>randexp(a)</TT> renvoie au hasard 
-des nombres répartis selon la loi exponentielle de paramètre <TT>a</TT>
-positif.<BR>
-La densité de probabilité est proportionnelle à exp(−<I>a</I>*<I>t</I>) et on a :<BR>
-Proba(<I>X</I>≤ <I>t</I>)=<I>a</I>∫<SUB>0</SUB><SUP><I>t</I></SUP>exp(−<I>a</I>*<I>u</I>)<I>du</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc856">8.2.19</A>  Graphe de la régression puissance :<BR>
+ <TT>power_regression_plot</TT></H3><P><A NAME="@default1294"></A><A NAME="@default1295"></A><A NAME="@default1296"></A>
+Pour approcher les données par le graphe d’une fonction puissance 
+d’équation <I>y</I>=<I>bx</I><SUP><I>m</I></SUP>, on utilise <TT>power_regression_plot</TT>.<BR>
+<TT>power_regression_plot</TT> a les mêmes arguments que <TT>covariance</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>randexp(1)</TT></DIV><P>
-On obtient par exemple :
-</P><DIV CLASS="center"><TT>0.310153677284</TT></DIV><P>
-ou on obtient par exemple :
-</P><DIV CLASS="center"><TT>0.776007926195</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>power_regression_plot([[1.0,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le graphe de la fonction puissance d’équation </TT><TT><I>y</I>=1*<I>x</I></TT><SUP><TT>2</TT></SUP></DIV><P>
+car c’est la fonction puissance d’équation <I>y</I>=1*<I>x</I><SUP>2</SUP> qui approche au mieux 
+les données.
+<B>Remarque</B>
+On remarquera que l’équation de la courbe representée ainsi que la valeur 
+du coefficient de corrélation des données sont écrits en bleu.<BR>
+Si on veut avoir l’équation et/ou le coefficient de corrélation sur le 
+dessin il faut rajouter comme dernier argument, l’option <TT>equation</TT> et/ou 
+<TT>correlation</TT>.</P><HR>
 <A HREF="cascmd_fr723.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr725.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -1713,6 +1713,17 @@ namespace giac {
     if ( g0.type==_STRNG && g0.subtype==-1) return  g0;
     if (g0.type!=_VECT || g0._VECTptr->empty())
       return gentypeerr(contextptr);
+    if (g0._VECTptr->back()==0){
+      gen g=g0._VECTptr->front();
+      if (!ckmatrix(g))
+	return _linfnorm(g,contextptr);
+      vecteur & v =*g._VECTptr;
+      gen res=0;
+      for (unsigned i=0;i<v.size();++i){
+	res=max(res,linfnorm(v[i],contextptr),contextptr);
+      }
+      return res;
+    }
     if (g0._VECTptr->back()==1)
       return _l1norm(g0._VECTptr->front(),contextptr);
     if (g0._VECTptr->back()==2)
@@ -2078,8 +2089,10 @@ namespace giac {
     gen partial_sum;
     for (int i=0;i<s;++i){
       partial_sum=partial_sum+freq[i];
-      if (!is_zero(partial_sum) && is_greater(partial_sum,sigma,contextptr))
+      if (!is_zero(partial_sum) && is_strictly_greater(partial_sum,sigma,contextptr))
 	return data[i];
+      if (partial_sum==sigma && i<s)
+	return (data[i]+data[i+1])/2;
     }
     return undef;
   }
@@ -3748,7 +3761,7 @@ static define_unary_function_eval (__histogram,&_histogram,_histogram_s);
   gen _cumulated_frequencies(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     gen g0(g);
-    double class_min=class_minimum,class_s=class_size;
+    double class_min=class_minimum;//,class_s=class_size;
     if (g0.type==_VECT && g0.subtype==_SEQ__VECT && g0._VECTptr->size()==2){
       vecteur v = *g._VECTptr;
       gen tmp=evalf_double(v[1],1,contextptr);
@@ -5260,13 +5273,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     if (!is_squarematrix(A) || b.type!=_VECT)
       return gensizeerr(contextptr);
     int n=A._VECTptr->size();
-    if (n!=b._VECTptr->size())
+    if (n!=int(b._VECTptr->size()))
       return gensizeerr(contextptr);
     vecteur x0(n);
     gen eps;
     if (s>=3){
       if (v[2].type==_VECT){
-	if (v[2]._VECTptr->size()!=n)
+	if (int(v[2]._VECTptr->size())!=n)
 	  return gensizeerr(contextptr);
 	x0=*v[2]._VECTptr;
 	if (s>3)

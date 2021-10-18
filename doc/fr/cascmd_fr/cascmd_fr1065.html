@@ -6,27 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Écriture d’un fichier wav : writewav</TITLE>
+<TITLE>Les arêtes : line_segments aretes</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1064.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1066.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1239">11.1.2</A>  Écriture d’un fichier wav : <TT>writewav</TT></H3><P><A NAME="@default2052"></A>
-La commande <TT>writewav</TT> effectue l’écriture d’une donnée de
-type son dans un fichier au format WAV sur le disque dur. Elle est
-donc inverse de la commande <TT>readwav</TT>. On passe en argument
-le nom du fichier et les données son. On peut soit utiliser le
-même format que celui renvoyé par la commande <TT>readwav</TT>,
-soit pour un son mono utilisant les valeurs des paramètres 
-par défaut (16 bits, 44100 Hz) 
-donner uniquement la liste des données numériques
-du son sur le canal.
-Par exemple la commande 
-<CODE>writewav("la.wav",2^14*(sin(2*pi*440*soundsec(1))))</CODE>
-sauvegarde dans le fichier de nom <CODE>la.wav</CODE>, un son pur
-de fréquence 440 Hz (un la), échantilloné 44100 fois par seconde.</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1246">11.16.7</A>  Les arêtes : <TT>line_segments aretes</TT></H3><P><A NAME="@default2053"></A><A NAME="@default2054"></A>
+<TT>aretes</TT> a comme argument un <TT>polygone</TT> ou un 
+<TT>polyedre</TT>.<BR>
+<TT>aretes</TT> dessine et renvoie la liste des arêtes du polyèdre.<BR>
+ Une arête est un segment.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>aretes(polyedre([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))[1]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>le dessin du segment (-2,0,0),(2,0,0) et dans l’historique 
+on a pnt(pnt[group[[-2,0,0],[2,0,0]],0])</TT></DIV><HR>
 <A HREF="cascmd_fr1064.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1066.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

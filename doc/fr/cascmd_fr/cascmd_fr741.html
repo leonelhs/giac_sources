@@ -6,32 +6,39 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi de Student : student_cdf</TITLE>
+<TITLE>Fonction de répartition inverse de la loi binomiale négative : negbinomial_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr740.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr742.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc864">7.4.16</A>  Fonction de répartition de la loi de Student : <TT>student_cdf</TT></H3><P><A NAME="@default1330"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de Student ayant <I>n</I> degrés 
-de liberté, on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>student_cdf(n,x)</TT>.<BR>
-<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)= <TT>student_cdf(n,x,y)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc875">8.4.6</A>  Fonction de répartition inverse de la loi binomiale négative : <TT>negbinomial_icdf</TT></H3><P><A NAME="@default1330"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale négative
+<FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>), lorsqu’on a 
+<TT>negbinomial_icdf(n,p,x)=h</TT> c’est que<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>h</I>)=<I>x</I>=<TT>negbinomial_cdf(n,p,h)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>student_cdf(5,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>negbinomial_icdf(4,0.5,0.9)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.949030260585</TT></DIV><P>
+</P><DIV CLASS="center"><TT>8</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>student_cdf(5,-2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>negbinomial_icdf(2,0.3,0.95)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0509697394149</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>student_cdf(5,-2,2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.89806052117</TT></DIV><P>
-car 0.949030260585−0.0509697394149=0.89806052117
-</P><HR>
+</P><DIV CLASS="center"><TT>12</TT></DIV><P>
+<B>Les programmes naifs pour calculer les fonctiond précédentes</B><BR>
+</P><PRE CLASS="verbatim">negbino(n,p,k):=comb(-n,k)*p^n*(p-1)^k;
+negbin(n,p,k):=comb(n+k-1,k)*p^n*(1-p)^k;
+negbi(n,p,k):=(n+k-1)!/k!/(n-1)!*p^n*(1-p)^k;
+negbino_cdf(n,p,x):=sum(negbi(n,p,k),k=0..floor(x));
+negbino_icdf(n,p,x):={
+ local k:=0;
+ tantque negbino_cd(n,p,k)&lt;x faire
+   k:=k+1;
+   ftantque;
+   return k;
+   }:;
+</PRE><HR>
 <A HREF="cascmd_fr740.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr742.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

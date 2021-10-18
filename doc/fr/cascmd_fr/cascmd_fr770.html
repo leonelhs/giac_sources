@@ -6,32 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi de Weibull : weibull weibulld</TITLE>
+<TITLE>Fonction de répartition inverse de la loi géométrique : geometric_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr769.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr771.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc893">7.4.45</A>  Densité de probabilité de la loi de Weibull : <TT>weibull weibulld</TT></H3><P><A NAME="@default1374"></A><A NAME="@default1375"></A>
-<TT>weibulld</TT> a 3 ou 4 paramètres : deux réels <I>k</I>,λ strictement positifs et 1 ou 2 réels θ, <I>x</I> positif ou nul (par défaut θ=0).<BR>
-<TT>weibull(k,lambda,theta,x)</TT> renvoie la densité de probabilité de la 
-loi de Weibull à savoir :<BR>
- <I>k</I>/λ(<I>x</I>−θ/λ)<SUP><I>k</I>−1</SUP>*exp(−(<I>x</I>−θ/λ)<SUP><I>k</I></SUP>)<BR>
+<H3 CLASS="subsection"><A NAME="htoc904">8.4.35</A>  Fonction de répartition inverse de la loi géométrique : <TT>geometric_icdf</TT></H3><P><A NAME="@default1369"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi géométrique de paramètre
+<I>p</I> (0&lt;<I>p</I>&lt;1), si on a <TT>geometric_icdf(p,x)=h</TT> avec <I>x</I>∈ [0,1]
+c’est que l’on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=geometric_cdf(p,h)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>weibull(2,1,3)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>weibull(2,1,0,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>geometric_icdf(0.2,0.488)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>6/exp(9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>weibull(2.2,1.5,0.8)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull(2.2,1.5,0.0,0.8)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull(2.2,1.5,0.4,1.2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>geometric_icdf(0.5,0.5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.536773868051</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr769.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr771.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,24 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Partie primitive d’un polynôme : primpart</TITLE>
+<TITLE>Évaluation d’un polynôme : peval polyEval</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr363.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr365.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc449">6.26.16</A>  Partie primitive d’un polynôme : <TT>primpart</TT></H3><P><A NAME="@default693"></A>
-<TT>primpart</TT> a comme argument un polynôme <TT>P</TT> donné sous 
-forme symbolique ou par la liste de ses coefficients.<BR>
-<TT>primpart</TT> renvoie le polynôme <TT>P</TT> divisé par le PGCD 
-(plus grand commun diviseur) de ses coefficients.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>primpart(6x</TT><CODE><TT>^</TT></CODE><TT>2-3x+9)</TT></DIV><P>
-ou:
-</P><DIV CLASS="center"><TT>primpart([6,-3,9],x))</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc450">6.27.13</A>  Évaluation d’un polynôme : <TT>peval polyEval</TT></H3><P><A NAME="@default691"></A>
+<A NAME="@default692"></A>
+<TT>peval</TT> ou <TT>polyEval</TT> a comme argument un polynôme 
+<TT>p</TT> donné par la liste de ses coefficients et un réel <TT>a</TT>.<BR>
+<TT>peval</TT> ou <TT>polyEval</TT> renvoie la valeur numérique ou exacte de 
+<TT>p(a)</TT>.<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>peval([1,0,-1],sqrt(2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2*x</TT><CODE><TT>^</TT></CODE><TT>2-x+3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>sqrt(2)*sqrt(2)-1</TT></DIV><P> 
+Puis :
+</P><DIV CLASS="center"><TT>normal(sqrt(2)*sqrt(2)-1)</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>peval([1,0,-1],1.4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.96</TT></DIV><HR>
 <A HREF="cascmd_fr363.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr365.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -215,6 +215,22 @@ namespace giac {
     return 0;
   }
 
+  bool has_sparse_poly1(const gen & g){
+    if (g.type==_SPOL1)
+      return true;
+    if (g.type==_VECT){
+      vecteur & v=*g._VECTptr;
+      for (size_t i=0;i<v.size();++i){
+	if (has_sparse_poly1(v[i]))
+	  return true;
+      }
+      return false;
+    }
+    if (g.type==_SYMB)
+      return has_sparse_poly1(g._SYMBptr->feuille);
+    return false;
+  }
+
   // residue of g at x=a
   gen residue(const gen & g_,const gen & x,const gen & a,GIAC_CONTEXT){
     if (x.type!=_IDNT)
@@ -249,7 +265,7 @@ namespace giac {
 	gen e1=s[i].exponent+1;
 	if (is_strictly_positive(e1,contextptr)){
 	  gen res=s[i].coeff;
-	  if (is_zero(derive(res,x,contextptr)))
+	  if (!has_sparse_poly1(res) && is_zero(derive(res,x,contextptr)))
 	    return 0;
 	  return gensizeerr(gettext("Non holomorphic function ")+g.print(contextptr)+" at "+x.print(contextptr)+"="+a.print(contextptr));
 	}
@@ -749,7 +765,7 @@ namespace giac {
 	    if (is_real(v[i],contextptr)){
 	      res=undef; // singularity on the real axis
 	      *logptr(contextptr) << gettext("Warning: pole at ") << v[i] << endl;
-	      _purge(gt,contextptr);
+	      purgenoassume(gt,contextptr);
 	      return false;
 	    }
 	    if (is_positive(im(v[i],contextptr),contextptr)){
@@ -761,7 +777,7 @@ namespace giac {
 	  if (s && !nresidue) // e.g. int(1/(x^2+a^2),x,0,inf)
 	    return false;
 	  res = normal(2*cst_i*cst_pi*res,contextptr);
-	  _purge(gt,contextptr);
+	  purgenoassume(gt,contextptr);
 	  return true;
 	}
 	if (typeint==2){
@@ -774,7 +790,7 @@ namespace giac {
 	    else
 	      res=undef;
 	  }
-	  _purge(gt,contextptr);
+	  purgenoassume(gt,contextptr);
 	  return true;
 	}
 	if (!assume_t_in_ab(gt,-cst_pi,0,true,true,contextptr))
@@ -789,7 +805,7 @@ namespace giac {
 	  for (int i=0;i<s;++i){
 	    if (is_real(v[i],contextptr)){
 	      res=undef; // singularity on the real axis
-	      _purge(gt,contextptr);
+	      purgenoassume(gt,contextptr);
 	      return true;
 	    }
 	    if (is_positive(-im(v[i],contextptr),contextptr)){
@@ -798,7 +814,7 @@ namespace giac {
 	    }
 	  }
 	  res = normal(2*cst_i*cst_pi*res,contextptr);
-	  _purge(gt,contextptr);
+	  purgenoassume(gt,contextptr);
 	  return true;
 	}
 #ifndef NO_STDEXCEPT
@@ -1042,7 +1058,7 @@ namespace giac {
 	  // simplify g on 0..inf
 	  assumesymbolic(symb_superieur_egal(x,0),0,contextptr);
 	  gen g1=eval(g,1,contextptr);
-	  _purge(x,contextptr);
+	  purgenoassume(x,contextptr);
 	  if (g1!=eval(g,1,contextptr)){
 	    res=2*_integrate(makesequence(g1,x,0,plus_inf),contextptr);
 	    return true;
@@ -1351,7 +1367,10 @@ namespace giac {
       if (is_admissible_poly(s,intstep,lcoeffs,decals,contextptr)){
 	gen lcoeff=r2e(lcoeffs,v,contextptr);
 	identificateur idx(" sumw"); // identificateur idx(" x"); // 
-	gen gx(idx);
+	gen gx(idx); // ("` sumw`",contextptr); 
+	// parser instead of temporary otherwise bug with a:=1; ZT(f,z):=sum(f(n)/z^n,n,0,inf); ZT(k->c^k,z);  ZT;
+	// otherwise while purge(gx) happens, the string `sumw` is destroyed
+	// and the global map is not sorted correctly anymore
 	if (!assume_t_in_ab(gx,0,1,true,true,contextptr))
 	  return false;
 	// R must be the product of degree(R) consecutive terms
@@ -1359,13 +1378,13 @@ namespace giac {
 	if (r==1){
 	  vecteur Rv=iroots(R);
 	  if (Rv.size()!=1){
-	    _purge(gx,contextptr);
+	    purgenoassume(gx,contextptr);
 	    return false;
 	  }
 	  gen R0=Rv[0];
 	  if (is_strictly_greater(R0,a,contextptr)){
 	    res=undef;
-	    _purge(gx,contextptr);
+	    purgenoassume(gx,contextptr);
 	    return true;
 	  }
 	  // Q=Q/R.coord.front().value;
@@ -1399,7 +1418,7 @@ namespace giac {
 	    if (est_reel)
 	      res=re(res,contextptr);
 	    res=ratnormal(res);
-	    _purge(gx,contextptr);
+	    purgenoassume(gx,contextptr);
 	    return true;
 	  }
 	}
@@ -1411,7 +1430,7 @@ namespace giac {
 	  // R0 = -Rv[1]/Rv[0] - (r-1)/2
 	  gen R0=-Rv[1]/Rv[0]-gen(r-1)/gen(2);
 	  if (R0.type!=_INT_){
-	    _purge(gx,contextptr);
+	    purgenoassume(gx,contextptr);
 	    return false;
 	  }
 	  // check that Rv = cst*product(r*x-(R0+j),j=0..r-1)
@@ -1420,13 +1439,13 @@ namespace giac {
 	    test=operator_times(test,makevecteur(r,-(R0+j)),0);
 	  }
 	  if (Rv[0]*test!=test[0]*Rv){
-	    _purge(gx,contextptr);
+	    purgenoassume(gx,contextptr);
 	    return false;
 	  }
 	  int r0=R0.val;
 	  if (r0>r*a.val){
 	    res=undef;
-	    _purge(gx,contextptr);
+	    purgenoassume(gx,contextptr);
 	    return true;
 	  }
 	  Rc=Rv[0]/pow(gen(r),r)*Rc;
@@ -1470,7 +1489,7 @@ namespace giac {
 	    if (est_reel)
 	      res=re(res,contextptr);
 	    res=ratnormal(res);
-	    _purge(gx,contextptr);
+	    purgenoassume(gx,contextptr);
 	    return true;
 	  }
 	}
@@ -1495,7 +1514,7 @@ namespace giac {
 	    if (est_reel)
 	      res=re(res,contextptr);
 	    res=ratnormal(res);
-	    _purge(gx,contextptr);
+	    purgenoassume(gx,contextptr);
 	    return true;
 	  }
 	}
@@ -1527,7 +1546,7 @@ namespace giac {
 	    return in_sumab(g,x,a_orig,b_orig,res,testi,false,contextptr);
 	  }
 	}
-	if (i==vp.size())
+	if (i==int(vp.size()))
 	  return true;
       }
     }
@@ -1570,6 +1589,7 @@ namespace giac {
       return true;
     }
     bool Hyper=is_hypergeometric(g,*x._IDNTptr,v,p,q,r,contextptr);
+    // g(x+1)/g(x) as p(x+1)/p(x)*q(x)/r(x+1) 
     if (Hyper){
       // Newton binomial: sum_{x=a}^{b} comb(b-a,x-a)*p^x = (p+1)^(b-a)*p^a
       // n=b-a
@@ -1580,6 +1600,17 @@ namespace giac {
       // sum_{x=a}^{b} comb(b-a,j*x-j*a)*p^x
       // 
       gen Q=r2sym(q,v,contextptr),R=r2sym(r,v,contextptr),Qa,Qb,Ra,Rb;
+      if (a.type==_INT_ && b==plus_inf && p.lexsorted_degree()==0 && r.coord.size()==1 && q+r==0){
+	// gen coeff=inv(r.coord.front().value,contextptr);
+	int pui=r.lexsorted_degree();
+	// coeff*sum((-1)^k/k^pui,k,a,inf)
+	// if a is even set res=0, if a is odd set res=-1/a^pui and a++
+	res=0; R=inv(R,contextptr);
+	// add sum(1/k^pui,k,a,inf)
+	// -> 2*sum(1/(2*k)^pui,k,a/2,inf)=2^(1-pui)*sum(1/k^pui,k,a/2,inf)
+	res = res - _sum(makesequence(R,x,a,plus_inf),contextptr) + pow(2,1-pui,contextptr)*_sum(makesequence(R,x,(a.val+1)/2,plus_inf),contextptr);
+	return true;
+      }
       gen n=b-a;
       if (is_linear_wrt(Q,x,Qa,Qb,contextptr) && is_linear_wrt(R,x,Ra,Rb,contextptr)){
 	// Q/R=(Qa*x+Qb)/(Ra*x+Rb)=(-Qa/Ra)*(-x-Qb/Qa)/(x+Rb/Ra)
@@ -1634,7 +1665,7 @@ namespace giac {
       polynome s,Q,R;
       // limit of q/r at infinity must be 0
       gen test=r2e(q,v,contextptr)/r2e(r,v,contextptr);
-      test=test*test-1;
+      test=ratnormal(test*test-1);
       if (is_zero(test)){
 	res=_limit(gen(makevecteur(g,x,plus_inf),_SEQ__VECT),contextptr);
 	if (!is_zero(res)){

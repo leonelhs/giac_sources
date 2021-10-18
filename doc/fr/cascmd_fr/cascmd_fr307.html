@@ -6,83 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Développer une expression transcendante et trigonométrique : texpand tExpand developper_transcendant</TITLE>
+<TITLE>Tableau de valeurs et graphe : tablefunc table_fonction et plotfunc</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr306.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr308.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc388">6.22.1</A>  Développer une expression transcendante et trigonométrique : <TT>texpand tExpand developper_transcendant</TT></H3><P><A NAME="@default573"></A><A NAME="@default574"></A><A NAME="@default575"></A>
-<TT>texpand</TT> ou <TT>tExpand</TT> a comme argument une expression 
-transcendante et trigonométrique.<BR>
-<TT>texpand</TT> ou <TT>tExpand</TT> est la généralisation de <TT>expexpand</TT>, 
-<TT>lnexpand</TT> et <TT>trigexpand</TT> car elle développe les expressions 
-transcendantes et trigonométriques.<BR>
-<TT>texpand</TT> ou <TT>tExpand</TT> permet, par exemple, de transformer ln(<I>x</I><SUP><I>n</I></SUP>) 
-en <I>n</I>ln(<I>x</I>), exp(<I>x</I>)<SUP><I>n</I></SUP> en exp(<I>nx</I>) et sin(2<I>x</I>) en 2sin(<I>x</I>)cos(<I>x</I>).<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>texpand</TT> ou <TT>tExpand</TT> a comme argument une expression 
-transcendante et trigonométrique.<BR>
-<B>Exemple</B> :<BR>
-Développer exp(<I>x</I>+<I>y</I>)+cos(<I>x</I>+<I>y</I>)+ln(3<I>x</I><SUP>2</SUP>).<BR>
-On tape :
-<DIV CLASS="center"><TT>texpand(exp(x+y)+cos(x+y)+ln(3*x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>cos(x)*cos(y)-sin(x)*sin(y)+exp(x)*exp(y)+ ln(3)+2*ln(x)</TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>texpand</TT> ou <TT>tExpand</TT> a comme argument une expression 
-trigonométrique.<BR>
-<TT>texpand</TT> ou <TT>tExpand</TT> développe cette expression en fonction de sin(<I>x</I>) et cos(<I>x</I>).<BR>
-<B>Exemples</B> 
-<OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-Développer cos(<I>x</I>+<I>y</I>).<BR>
-On tape :
-<DIV CLASS="center"><TT>texpand(cos(x+y))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>cos(x)*cos(y)-sin(x)*sin(y)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Développer cos(3<I>x</I>).<BR>
-On tape :
-<DIV CLASS="center"><TT>texpand(cos(3*x))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT> 3-3*cos(x)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Développer  sin(3*<I>x</I>)+sin(7*<I>x</I>)/sin(5*<I>x</I>).<BR>
-On tape :
-<DIV CLASS="center"><TT>texpand((sin(3*x)+sin(7*x))/sin(5*x))</TT></DIV>
-On obtient
-<DIV CLASS="center"><TT>(4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-1)*(sin(x)/(16*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4- 12*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2+1))/sin(x)+(64*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>6- 80*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4+24*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2- 1)*sin(x)/ (16*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4-12*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2+1)/sin(x)</TT></DIV>
-Et, après une simplification en tapant <TT>normal(ans())</TT>, on obtient :
-<DIV CLASS="center"><TT>4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV>
-</LI></OL>
-</LI><LI CLASS="li-itemize"><TT>texpand</TT> ou <TT>tExpand</TT> a comme argument une expression 
-transcendante.<BR>
-<TT>texpand</TT> ou <TT>tExpand</TT> développe cette expression.<BR>
-<B>Exemples</B> 
-<OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-Développer exp(<I>x</I>+<I>y</I>).<BR>
-On tape :
-<DIV CLASS="center"><TT>texpand(exp(x+y))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>exp(x)*exp(y)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Développer ln(<I>x</I>+<I>y</I>).<BR>
-On tape :
-<DIV CLASS="center"><TT>texpand(log(x*y))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>log(x)+log(y)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Développer ln(<I>x</I><SUP><I>n</I></SUP>).<BR>
-<DIV CLASS="center"><TT>texpand(ln(x</TT><CODE><TT>^</TT></CODE><TT>n))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>n*ln(x)</TT></DIV>
-</LI><LI CLASS="li-enumerate">Développer ln((<I>e</I><SUP>2</SUP>)+exp(2*ln(2))+<I>exp</I>(ln(3)+ln(2))).<BR>
-On tape :
-<DIV CLASS="center"><TT>texpand(log(e</TT><CODE><TT>^</TT></CODE><TT>2)+exp(2*log(2))+exp(log(3)+log(2)))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>6+3*2</TT></DIV>
-Ou on tape :
-<DIV CLASS="center"><TT>texpand(log(e</TT><CODE><TT>^</TT></CODE><TT>2)+exp(2*log(2)))+ lncollect(exp(log(3)+log(2)))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>12</TT></DIV>
-</LI></OL>
-</LI></UL><HR>
+<H3 CLASS="subsection"><A NAME="htoc387">6.21.2</A>  Tableau de valeurs et graphe : <TT>tablefunc table_fonction</TT> et <TT>plotfunc</TT></H3><P><A NAME="@default567"></A> <A NAME="@default568"></A><A NAME="@default569"></A> 
+On peut avoir, dans le tableur, les différentes valeurs d’une expression 
+<I>f</I>(<I>x</I>) pour <I>x</I>=<I>x</I><SUB>0</SUB>, <I>x</I><SUB>0</SUB>+<I>h</I>,...., grâce à la commande :<BR>
+<TT><I>tablefunc</I>(<I>f</I>(<I>x</I>),<I>x</I>,<I>x</I></TT><SUB><TT>0</TT></SUB><TT>,<I>h</I>)</TT> ou <TT><I>tablefunc</I>(<I>f</I>(<I>x</I>),<I>x</I>)</TT>.<BR>
+ Dans ce cas les
+valeurs de départ <TT><I>x</I></TT><SUB><TT>0</TT></SUB> et le pas <TT><I>h</I></TT>, valent par défaut :
+<TT><I>x</I></TT><SUB><TT>0</TT></SUB><TT>=-5.0</TT> et <TT><I>h</I>=1.0</TT>.<BR>
+On ouvre un tableur avec <TT>Alt+t</TT>.<BR>
+Puis, on sélectionne une case du tableur (par exemple <TT>C0</TT>) et pour 
+avoir une table de <TT>"sinus"</TT>, on tape, dans la ligne de commande du 
+tableur : 
+</P><DIV CLASS="center"><TT>tablefunc(sin(x),x)</TT></DIV><P>
+On obtient deux colonnes <TT>x</TT> et <TT>sin(x)</TT> :<BR>
+- dans la colonne <TT>x</TT> il y a la valeur du pas <TT>h</TT> (1.0) et le départ
+de l’évaluation numérique (-5.0), puis une formule, par exemple 
+<TT>=C2+C$1</TT> qui a été recopiée vers le bas.<BR>
+- dans la colonne <TT>sin(x)</TT> il y a 
+<TT>"Tablefunc"</TT> puis une formule, par exemple <TT>=evalf(subst(D$0,C$0,C2))</TT>, qui a été aussi recopiée vers le bas.<BR>
+Les valeurs de <TT>sin(x)</TT> s’affichent alors en face des <TT>x</TT> 
+correspondants.<BR>
+On peut bien sûr changer le pas ou la valeur de départ ou encore remplacer 
+<TT>sin(x)</TT> par <TT>cos(x)</TT> en changeant la valeur de la cellule 
+correspondante.<BR>
+La représentation graphique se fait avec la commande :<BR>
+<TT>plotfunc</TT> pour cela voir <A HREF="cascmd_fr086.html#sec:plotfunc">3.7.1</A>.</P><HR>
 <A HREF="cascmd_fr306.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr308.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

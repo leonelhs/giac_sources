@@ -6,37 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’instruction conditionnelle : switch</TITLE>
+<TITLE>Les sorties de ab : printpow</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr811.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr813.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc941">8.4.20</A>  L’instruction conditionnelle : <TT>switch</TT></H3><P><A NAME="@default1468"></A><A NAME="@default1469"></A><A NAME="@default1470"></A>
-<TT>switch</TT> a comme paramètre une expression.<BR>
-Selon la valeur de cette expression, marquée par <TT>case</TT> (ou par 
-<TT>default</TT>), <TT>switch</TT> 
-permet de faire le bloc d’instructions correspondant à la valeur d’une 
-expression qui doit être une valeur entière.<BR>
-On tape :
-</P><PRE CLASS="verbatim">opere(a,b,c):={
-switch(c) {
-  case 1 : {a:=a+b;break;} 
-  case 2 : {a:=a-b;break;} 
-  case 3 : {a:=a*b;break;} 
-  default : {a:=a^b;}
-}
-return a;
-}
-</PRE><P>puis :
-</P><DIV CLASS="center"><TT>opere(2,3,1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc952">9.4.10</A>  Les sorties de <I>a</I><SUP><I>b</I></SUP> : <TT>printpow</TT></H3><P><A NAME="@default1453"></A>
+L’instruction <TT>printpow</TT> modifie la façon dont les puissances sont 
+affichées en mode texte ou après une commande <TT>print</TT>.<BR>
+<TT>printpow</TT> a comme argument soit <TT>0</TT>, soit <TT>1</TT>, soit <TT>-1</TT>.<BR>
+<TT>printpow(0)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture mathématique 
+<TT>a</TT><CODE><TT>^</TT></CODE><TT>b</TT>.<BR>
+<TT>printpow(1)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture en langage C
+<TT>pow(a,b)</TT>.<BR>
+<TT>printpow(-1)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture d’autres langages
+<TT>a**b</TT>.<BR>
+De plus ces 3 syntaxes sont admises en input.<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>printpow(0)</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>5</TT></DIV><P>
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>3 écrit en bleu et 8 comme
+réponse</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>opere(2,3,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>printpow(1)</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT> 3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>pow(2,3) écrit en bleu et 8 comme
+réponse</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>printpow(-1)</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2**3 écrit en bleu et 8 comme
+réponse</TT></DIV><HR>
 <A HREF="cascmd_fr811.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr813.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

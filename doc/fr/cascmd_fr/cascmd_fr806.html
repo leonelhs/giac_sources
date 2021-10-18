@@ -6,85 +6,64 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les différences entre :=, =< et copy</TITLE>
+<TITLE>Fonction testant le type de son argument: type</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr805.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr807.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc935">8.4.14</A>  Les différences entre <TT>:=</TT>, <TT>=&lt;</TT> et <TT>copy</TT></H3><P><A NAME="@default1446"></A><A NAME="@default1447"></A><A NAME="@default1448"></A><A NAME="sec:diffaffectation"></A>
-Attention, <TT>:=</TT> et <TT>=&lt;</TT> ne sont pas équivalents car <TT>=&lt;</TT> modifie
-lélément d’une liste ou matrice par référence.</P><P>L’affectation <TT>=&lt;</TT> ne diffère de <TT>:=</TT> que si on modifie un 
-élément d’une liste (ou matrice) contenue dans une variable, par exemple si 
-<TT>A</TT> contient la liste <TT>[0,1,2,3,4]</TT> i.e. si on a tapé 
-<TT>A:=[0,1,2,3,4]</TT> et que l’on
-veut modifier la valeur de <TT>A[3]</TT> et changer <TT>3</TT> en <TT>33</TT>, on peut 
-écrire dans ce cas, <TT>A[3]:=33</TT> ou <TT>A[3] =&lt; 33</TT> mais ces deux 
-instructions sont différentes. 
-En effet <TT>A</TT> pointe vers une liste car <TT>A:=[0,1,2,3,4]</TT>, et 
-<TT>A[3] =&lt; 33</TT> modifie cette liste en la liste <TT>[0,1,2,33,4]</TT>, ainsi 
-toutes les variables de 
-<TT>Xcas</TT> qui pointent vers cette liste seront modifiées. Alors qu’avec
-<TT>A[3]:=33</TT> la liste est dupliquée, la copie est modifiée et <TT>A</TT> 
-pointe vers la copie. Il faut donc utiliser <TT>=&lt;</TT> avec précautions car 
-tous les objets pointant sur cette liste (ou matrice) 
-seront modifiés.<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize"> 
+<H3 CLASS="subsection"><A NAME="htoc946">9.4.4</A>  Fonction testant le type de son argument: <TT>type</TT></H3><P><A NAME="@default1430"></A>
+<A NAME="@default1431"></A><A NAME="@default1432"></A><A NAME="@default1433"></A><A NAME="@default1434"></A><A NAME="@default1435"></A><A NAME="@default1436"></A><A NAME="@default1437"></A><A NAME="@default1438"></A><A NAME="@default1439"></A>
+<TT>type</TT> est une fonction qui a un argument et qui renvoie le
+type de cet argument par exemple :<BR>
+ <TT>DOM_FLOAT,DOM_INT,DOM_COMPLEX,..,DOM_IDENT,DOM_LIST,<BR>
+DOM_SYMBOLIC,DOM_RAT,..DOM_SYMBOLIC,DOM_STRING</TT>.<BR>
+Il y a 20 types différents qui sont représentés par un entier entre 1 
+et 20.<BR>
+<TT>type</TT> permet de tester une erreur d’entrée.<BR>
 On tape :
-<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
-<DIV CLASS="center"><TT>B:=A</TT></DIV>
-<DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV>
-<DIV CLASS="center"><TT>A,B</TT></DIV>
-ou :
-<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
-<DIV CLASS="center"><TT>B:=A</TT></DIV>
-<DIV CLASS="center"><TT>B[3]=&lt;33</TT></DIV>
-<DIV CLASS="center"><TT>A,B</TT></DIV>
+</P><DIV CLASS="center"><TT>type(3.14)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,33,4]</TT></DIV>
-En effet la liste <TT>[0,1,2,3,4]</TT> a été modifiée par
-l’instruction <TT>A[3]=&lt;33</TT> (ou par <TT>B[3]=&lt;33</TT>) en la liste
-<TT>[0,1,2,33,4]</TT>. Les listes <TT>A</TT> et <TT>B</TT> 
-pointent sur cette liste donc <TT>A</TT> et <TT>B</TT> sont modifiées toutes les 
-deux.
-</LI><LI CLASS="li-itemize">On tape :
-<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
-<DIV CLASS="center"><TT>B:=A</TT></DIV>
-<DIV CLASS="center"><TT>A[3]:=33</TT></DIV>
-<DIV CLASS="center"><TT>A,B</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,3,4]</TT></DIV>
-car <TT>A[3]:=33</TT> fait une copie de la liste <TT>[0,1,2,3,4]</TT> et modifie 
-cette copie en <TT>[0,1,2,33,4]</TT> puis <TT>A</TT> pointe sur cette copie et cela ne modifie pas <TT>B</TT>.
+</P><DIV CLASS="center"><TT>DOM_FLOAT</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
-<DIV CLASS="center"><TT>B:=A</TT></DIV>
-<DIV CLASS="center"><TT>B[3]:=33</TT></DIV>
-<DIV CLASS="center"><TT>A,B</TT></DIV>
+</P><DIV CLASS="center"><TT>type(3.14)+0</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>[0,1,2,3,4],[0,1,2,33,4]</TT></DIV>
-car <TT>B[3]:=33</TT> fait une copie de la liste <TT>[0,1,2,3,4]</TT> et modifie 
-cette copie en <TT>[0,1,2,33,4]</TT> puis <TT>B</TT> pointe sur cette copie et cela ne modifie pas <TT>A</TT>.
-</LI><LI CLASS="li-itemize">On tape :
-<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
-<DIV CLASS="center"><TT>B:=copy(A)</TT></DIV>
-Puis, si on tape :
-<DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV>
-<DIV CLASS="center"><TT>A,B</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,3,4]</TT></DIV>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
-<DIV CLASS="center"><TT>B:=copy(A)</TT></DIV>
-<DIV CLASS="center"><TT>B[3]=&lt;33</TT></DIV>
-<DIV CLASS="center"><TT>A,B</TT></DIV>
+</P><DIV CLASS="center"><TT>type(3)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>[0,1,2,3,4],[0,1,2,33,4]</TT></DIV>
-En effet <TT>B</TT> pointe sur la copie de <TT>A</TT>, donc une modifiucation par 
-référence de <TT>A[3]</TT> (resp<TT>B[3]</TT>) ne modifie pas <TT>B</TT> (resp 
-<TT>A</TT>). 
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>DOM_INT</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>type(3)+0</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>type(3% 5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>15</TT></DIV><P><B>Remarque : utilisation de type pour les graphes</B><BR>
+voir aussi <A HREF="index.html#sec:plot">3</A><BR>
+Si le graphe dépend d’une fonction utilisateur, il faut que la fonction soit 
+définie même lorsque le(s) paramètre(s) a (ont) une valeur formelle, ce 
+qui peut se faire en testant le type du paramètre, comme dans l’exemple 
+suivant, <I>f</I> est définie en testant du type du paramètre par :
+</P><PRE CLASS="verbatim">f(x):= {
+  if (type(x)==DOM_IDENT) return 'f'(x); 
+  while(x&gt;0){ x--; } 
+  return x; 
+}:;
+</PRE><P>Ainsi <TT>f(x)</TT> renvoie <TT>f(x)</TT> et <TT>f(3.1)</TT> renvoie <TT>-0.9</TT>.<BR>
+ou bien<BR>
+</P><PRE CLASS="verbatim">g(x):= {   
+  if (type(x)!=DOM_LIST) return 'g'(x); 
+  if (type(x)==DOM_IDENT) return 'g'(x); 
+  while(x[0]&gt;0){x[0]:=x[0]-1; } 
+  return x; 
+}:;
+</PRE><P>Ainsi <TT>g(x)</TT> renvoie <TT>g(x)</TT>, <TT>g([x,y,z])</TT> renvoie <TT>g([x,y,z])</TT>
+et <TT>g([1.1,2,3])</TT> renvoie <TT>[-0.9,2,3]</TT>.<BR>
+Par exemple si <TT>G:=plotfunc(g(x)</TT>, le test permet d’utiliser le graphe <TT>G</TT> de <TT>g</TT> dans des commandes comme <TT>translation(1+i,G)</TT>...
+</P><HR>
 <A HREF="cascmd_fr805.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr807.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

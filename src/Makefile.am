@@ -68,7 +68,7 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	hist.fl hist.h hist.cxx hist.menus\
 	renee.cc renee.h cas2.cc README.ipaq README.WIN   \
 	readme.doc latex.bat xdvi.bat dvips.bat xcasfr.bat xcases.bat \
-	xcasfr.sh xcases.sh xcasen.sh mkstat mkhist update.sh update.bat \
+	xcasfr.sh xcases.sh xcasen.sh mkstat mkhist mkdyn update.sh update.bat \
 	giac.pl cas2html.cc all_global_var find_global_var.cc static_init \
 	Fl_GDI_Printer.cxx  Fl_PS_Printer.cxx Fl_Gl_Choice.H \
 	casce.cc xcasce.cc xcasctrl.cc casctrl.cc \
@@ -77,7 +77,7 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	config.h.iphone Makefile.iphone \
 	f2c.h clapack.h blaswrap.h mklocal64 pnt_gen \
 	giac.i runme.java javascript.cxx giacjs.i giacjs.js README.javascript \
-	Makefile.jni README.jni README.nacl mkdylib mkgiacpy
+	Makefile.jni README.jni README.nacl mkdylib mkgiacpy giac_wrap.cxx
 
 bin_SCRIPTS = pgiac
 

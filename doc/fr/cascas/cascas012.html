@@ -13,12 +13,12 @@
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascas013.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H1 CLASS="chapter"><A NAME="htoc210">Chapitre 12</A>  Pour s’amuser en géométrie dans l’espace</H1><H2 CLASS="section"><A NAME="toc79"></A><A NAME="htoc211">12.1</A>  Un patron du cube avec une animation</H2><P>
+<H1 CLASS="chapter"><A NAME="htoc197">Chapitre 12</A>  Pour s’amuser en géométrie dans l’espace</H1><H2 CLASS="section"><A NAME="toc72"></A><A NAME="htoc198">12.1</A>  Un patron du cube avec une animation</H2><P>
 On peut montrer qu’il y a 35 hexominos non superposoables (figure formèe par 
 6 carrés ayant au moins une arrête en commun) et que parmi ces 35 hexominos
 il y en a 11 qui peuvent être le patron d’un cube.<BR>
 Ce sont :<BR>
-<IMG SRC="cascas114.png"><BR>
+<IMG SRC="cascas085.png"><BR>
 
 Pour faire le dessin ci-dessus on a tapé :<BR>
 </P><PRE CLASS="verbatim">patron(a):={
@@ -100,15 +100,15 @@ d’axe <TT>line(B,C)</TT> pour <TT>B3,C3</TT>, donc<BR>
 <TT>[B3,C3]:=rotation(line(B,C),t,[point(1,0,1),point(1,1,1)])</TT><BR>
 d’axe <TT>line(D,A)</TT> pour <TT>A3,D3</TT> donc :<BR>
 <TT>[D3,A3]:=rotation(line(D,A),t,[point(0,1,1),point(0,0,1)])</TT>
-<IMG SRC="cascas115.png">
+<IMG SRC="cascas086.png">
 Puis, on tape :
 <TT>L1:=seq([cubeani(t)],t=0..1.57,0.1):;</TT><BR>
 <TT>L2:=seq([cubeani(t)],t=1.57..0,-0.1):;</TT><BR>
 <TT>animation(L1,L2)</TT>
-</P><H2 CLASS="section"><A NAME="toc80"></A><A NAME="htoc212">12.2</A>  Les pliages pour construire des deltaèdres</H2><P>
+</P><H2 CLASS="section"><A NAME="toc73"></A><A NAME="htoc199">12.2</A>  Les pliages pour construire des deltaèdres</H2><P>
 Selon les deltaèdres à construire, on aura besoin de pièces identiques 
 à la pièce élémentaire et aussi de pièces symétriques à la pièce élémentaire.
-</P><H3 CLASS="subsection"><A NAME="htoc213">12.2.1</A>  Le rectangle de base</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc200">12.2.1</A>  Le rectangle de base</H3><P>
 La pièce élémentaire se fait avec un rectangle de dimension
 <I>a</I>× <I>a</I>√<SPAN style="text-decoration:overline">3</SPAN>.<BR>
 On peut obtenir 2 rectanges de cette dimension par pliage :
@@ -119,34 +119,34 @@ situé sur cette médiatrice pour obtenir un triangle équilatéral <I>ABC</I>.
 </LI><LI CLASS="li-itemize">On enlève la bande horizontale au dessus de <I>C</I>.
 </LI><LI CLASS="li-itemize">On coupe selon la médiatrice pour obtenir 2 rectangles identiques 
 ayant les bonnes proportions.
-</LI></UL><H3 CLASS="subsection"><A NAME="htoc214">12.2.2</A>  Le pliage du rectangle</H3><H4 CLASS="subsubsection">Fabrication de la pièce élémentaire</H4><P>
+</LI></UL><H3 CLASS="subsection"><A NAME="htoc201">12.2.2</A>  Le pliage du rectangle</H3><H4 CLASS="subsubsection">Fabrication de la pièce élémentaire</H4><P>
 Prendre un rectangle <I>ABCD</I> de dimension <I>a</I>× <I>a</I>√<SPAN style="text-decoration:overline">3</SPAN>.<BR>
 Voilà comment on procède :</P><DIV CLASS="minipage">
 On améne <I>A</I> en <I>C</I> pour former le pli <I>G</I>1<I>G</I>2
 </DIV><P>
  
 </P><DIV CLASS="minipage">
-<IMG SRC="cascas116.png">
+<IMG SRC="cascas087.png">
 </DIV><DIV CLASS="minipage">
 On améne <I>C</I> en <I>G</I>1 selon le pli <I>C</I>1<I>G</I>2 et
 <I>A</I> en <I>G</I>2 selon le pli <I>G</I>1<I>C</I>2
 </DIV><P>
  
 </P><DIV CLASS="minipage">
-<IMG SRC="cascas117.png">
+<IMG SRC="cascas088.png">
 </DIV><DIV CLASS="minipage">
 On obtient :
 </DIV><P>
  
 </P><DIV CLASS="minipage">
-<IMG SRC="cascas118.png">
+<IMG SRC="cascas089.png">
 </DIV><DIV CLASS="minipage">
 On plie selon <I>C</I>1<I>G</I>1 pour cacher le petit triangle vert sous le rabat <I>CC</I>1<I>G</I>2.<BR>
 On plie selon <I>C</I>2<I>G</I>2 pour cacher le petit triangle vert sous le rabat <I>AC</I>2<I>G</I>1.
 </DIV><P>
  
 </P><DIV CLASS="minipage">
-<IMG SRC="cascas119.png">
+<IMG SRC="cascas090.png">
 </DIV><DIV CLASS="minipage">
 On retourne la pièce et on effectue les plis :<BR>
 <I>M</I>1<I>G</I>1, <I>M</I>1<I>M</I>2, <I>M</I>2<I>G</I>2 et on obtient la pièce élémentaire formées de 
@@ -154,7 +154,7 @@ On retourne la pièce et on effectue les plis :<BR>
 </DIV><P>
  
 </P><DIV CLASS="minipage">
-<IMG SRC="cascas120.png">
+<IMG SRC="cascas091.png">
 </DIV><P><BR>
 Les triangles situés à chaque bout seront appelés : <B>languettes</B> et
 les triangles du centre seront appelés : <B>pochettes</B>.
@@ -172,8 +172,8 @@ Début de la construction :<BR>
 </DIV><P>
  
 </P><DIV CLASS="minipage">
-<IMG SRC="cascas121.png">
-</DIV><H3 CLASS="subsection"><A NAME="htoc215">12.2.3</A>  Les Deltaèdres</H3><P> 
+<IMG SRC="cascas092.png">
+</DIV><H3 CLASS="subsection"><A NAME="htoc202">12.2.3</A>  Les Deltaèdres</H3><P> 
 Pour construire :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 Le tétraèdre régulier (4 faces) il faut 
@@ -195,13 +195,13 @@ Le tétraèdre régulier (4 faces) il faut
 </LI><LI CLASS="li-itemize">L’étoile de Kepler (60 faces constituées par les faces des 20
 tétraèdres réguliers construits sur les faces de l’icosaèdre) 
 il faut 30 pièces identiques.
-</LI></UL><H3 CLASS="subsection"><A NAME="htoc216">12.2.4</A>  Activité en classe</H3><P>
+</LI></UL><H3 CLASS="subsection"><A NAME="htoc203">12.2.4</A>  Activité en classe</H3><P>
 Refaire les opérations de pliage et montrer qu’une pièce 
 élémentaire est constituée de 4 triangles équilatéraux (le pli 
 <I>G</I>1<I>G</I>2 est la médiatrice de <I>AC</I> et <I>ABC</I> étant la moitié d’un triangle 
 équilatéral, <I>G</I>2 est le centre de gravité de ce triangle 
 équilatéral etc...).
-</P><H2 CLASS="section"><A NAME="toc81"></A><A NAME="htoc217">12.3</A>  Le rhomboèdre</H2><H3 CLASS="subsection"><A NAME="htoc218">12.3.1</A>  La définition et la construction avec <TT>Xcas</TT></H3><P>
+</P><H2 CLASS="section"><A NAME="toc74"></A><A NAME="htoc204">12.3</A>  Le rhomboèdre</H2><H3 CLASS="subsection"><A NAME="htoc205">12.3.1</A>  La définition et la construction avec <TT>Xcas</TT></H3><P>
 On veut construire le rhomboèdre <I>AB</I>,<I>AD</I>,<I>AF</I>
 On construit un rhomboèdre dont les faces sont des losanges de côtés de 
 longueur <I>l</I> et ayant un angle égal à <I>a</I> avec 0≤ <I>a</I>≤ 2π/3.<BR>
@@ -263,7 +263,7 @@ retourne  normal([coordonnees(I),coordonnees(J),coordonnees(K)]);
   M1:=A+tran(P)*coordonnees(M);
   retourne rhomboedre1(A,l,M1,a);
 }:;
-</PRE><H3 CLASS="subsection"><A NAME="htoc219">12.3.2</A>  Activité en classe</H3><P>
+</PRE><H3 CLASS="subsection"><A NAME="htoc206">12.3.2</A>  Activité en classe</H3><P>
 Construire avec du carton un rhomboèdre : chaque groupe de 6 élèves 
 choisit de faire un rhomboèdre à partir d’un losange donné par son angle
 aigu (le même losange peut donner lieu à la construction de 2 
@@ -271,7 +271,7 @@ rhomboèdres).<BR>
 Faire faire ensuite le dessin dans <TT>Xcas</TT> en prenant comme paramètre un 
 angle du losange (on pourra suggérer de choisir la représentation de 
 <TT>rhomboedre0</TT>).
-</P><H2 CLASS="section"><A NAME="toc82"></A><A NAME="htoc220">12.4</A>  Le dodécaèdre rhombique</H2><H3 CLASS="subsection"><A NAME="htoc221">12.4.1</A>  La définition à partir d’un cube</H3><P>
+</P><H2 CLASS="section"><A NAME="toc75"></A><A NAME="htoc207">12.4</A>  Le dodécaèdre rhombique</H2><H3 CLASS="subsection"><A NAME="htoc208">12.4.1</A>  La définition à partir d’un cube</H3><P>
 Pour tracer facilement le dodécaèdre rhombique en perspective cavalière, 
 il faut tout d’abord tracer un cube de centre <I>O</I>, puis tracer les 6
 symétriques <I>S</I>0<SUB><I>j</I></SUB> de <I>O</I> par rapport au centre <I>O</I><SUB><I>j</I></SUB> des faces 
@@ -282,7 +282,7 @@ Le dodécaèdre rhombique est le solide qui a 12
 faces en forme de losanges et 14 sommets qui sont les 8 sommets du cube et les 
 6 symétriques <I>S</I>0<SUB><I>j</I></SUB> de <I>O</I> par rapport au centre <I>O</I><SUB><I>j</I></SUB> des faces du cube
 (<I>j</I>=1..6).
-</P><H3 CLASS="subsection"><A NAME="htoc222">12.4.2</A>  La définition et la construction avec <TT>Xcas</TT></H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc209">12.4.2</A>  La définition et la construction avec <TT>Xcas</TT></H3><P>
 Le dodécaèdre rhombique est un polyèdre ayant 12 faces et 14 sommets. 
 Chaque face est ègale à un même losange.<BR>
 Le dodécaèdre rhombique a 6 sommets d’ordre 4 (sommet commun á 4 
@@ -299,7 +299,7 @@ initiaux. Mais pour le dodécaèdre rhombique ces losanges doivent être
 On suppose qu’une face est un losange de côté <I>l</I> et d’angle aigu <I>a</I>.<BR>
 Montrons que tan(<I>a</I>)=2√<SPAN style="text-decoration:overline">2</SPAN>.<BR>
 Considérons la pointe de sommet <I>S</I> qui accolle 4 losanges.<BR>
-<IMG SRC="cascas122.png"><BR>
+<IMG SRC="cascas093.png"><BR>
 Elle est constituée par les 4 losanges 
 <I>SAA</I>−1<I>B</I>, <I>SBB</I><SUB>1</SUB><I>C</I>, <I>SCC</I><SUB>1</SUB><I>D</I>, <I>SDD</I><SUB>1</SUB><I>A</I> où <I>SABCD</I> est une pyramide de hauteur
 <I>h</I> et de base carrée <I>ABCD</I> ((<I>AC</I>/2)<SUP>2</SUP>=<I>l</I><SUP>2</SUP>−<I>h</I><SUP>2</SUP> et <I>AB</I>=<I>AC</I>/√<SPAN style="text-decoration:overline">2</SPAN>) et 
@@ -368,12 +368,12 @@ polyedre(SS,AA,BB,CC,DD);
 polygone(AA,A1,BB,B1,CC,C1,DD,D1,AA);
 }:;
 </PRE><P>On obtient en cachant les faces :<BR>
-<IMG SRC="cascas123.png"></P><H3 CLASS="subsection"><A NAME="htoc223">12.4.3</A>  Activité en classe</H3><P>
+<IMG SRC="cascas094.png"></P><H3 CLASS="subsection"><A NAME="htoc210">12.4.3</A>  Activité en classe</H3><P>
 Trouver les dimensions du losange qui sera les faces du 
 dodécaèdre rhombique.
 Faire la construction d’un tel losange et construire le polyèdre avec du 
 carton puisavec <TT>Xcas</TT>.<BR>
-</P><H3 CLASS="subsection"><A NAME="htoc224">12.4.4</A>  Le graphe du dodécaèdre rhombique</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc211">12.4.4</A>  Le graphe du dodécaèdre rhombique</H3><P>
 On tape :
 </P><PRE CLASS="verbatim">L:=[0,5,5+5*i,5*i,1+i,3+i,3+3*i,1+3*i,2+2*i,4+2*i,
     4+4*i,2+4*i,2+3*i,3+2*i]];
@@ -388,7 +388,7 @@ segment(L[2],L[6]);
 segment(L[3],L[11]);
 segment(L[3],L[7]);
 </PRE><P>On obtient :<BR>
-<IMG SRC="cascas124.png"><BR>
+<IMG SRC="cascas095.png"><BR>
 Le squelette ou le graphe de ce dodécaèdre rhombique n’est pas hamiltonien
 i.e. il n’existe pas de chemin qui en empruntant les arêtes, passe une fois 
 et une seule par chaque sommet. En effet chaque sommet d’ordre 4 n’est relié 
@@ -404,7 +404,7 @@ le déforme pour que ce soit le cas. En rajoutant 1 sommet on obtient <I>N</I>�
 faces supplémentaires, 1 sommet supplémentaires et <I>N</I> arêtes 
 supplémentaires donc <I>F</I>+<I>S</I>−<I>A</I>=<I>cste</I>. Pour un tétraèdre on a 4 faces,
 4 sommet et 6 arêtes donc <I>cste</I>=2
-</P><H3 CLASS="subsection"><A NAME="htoc225">12.4.5</A>  Le patron du dodécaèdre rhombique</H3><PRE CLASS="verbatim">losange_dode(A,B):={
+</P><H3 CLASS="subsection"><A NAME="htoc212">12.4.5</A>  Le patron du dodécaèdre rhombique</H3><PRE CLASS="verbatim">losange_dode(A,B):={
   local C,D,l,a;
   a:=atan(2*sqrt(2));
   D:=rotation(A,a,B);
@@ -436,7 +436,7 @@ L:==op(L),op(L1),op(L2)
 </PRE><P>On tape :<BR>
 <TT>a:=atan(2*sqrt(2));patron_dodeca(point(0),point(exp(-i*a/2)))</TT><BR>
 On obtient :<BR>
-<IMG SRC="cascas125.png"><BR>
+<IMG SRC="cascas096.png"><BR>
 On peut aussi faire tracer ce patron par la tortue : avec la tortue il faut 
 travailler en degrés.<BR>
 On tape :<BR>
@@ -465,8 +465,8 @@ repete(3,loss(l,a));
 </PRE><P>On tape :<BR>
 <TT>patron(30)</TT><BR>
 On obtient :<BR>
-<IMG SRC="cascas126.png"><BR>
-</P><H2 CLASS="section"><A NAME="toc83"></A><A NAME="htoc226">12.5</A>  Le triacontaèdre rhombique</H2><H3 CLASS="subsection"><A NAME="htoc227">12.5.1</A>  La définition et la construction avec <TT>Xcas</TT></H3><P>
+<IMG SRC="cascas097.png"><BR>
+</P><H2 CLASS="section"><A NAME="toc76"></A><A NAME="htoc213">12.5</A>  Le triacontaèdre rhombique</H2><H3 CLASS="subsection"><A NAME="htoc214">12.5.1</A>  La définition et la construction avec <TT>Xcas</TT></H3><P>
 Le triacontaèdre rhombique est un polyèdre qui a 30 faces. Ses faces sont 
 des losanges d’or (le rapport des diagonales est égal au nombre d’or) de 
 petit angle atan(2) radians soit environ 63.4349488229 degrés 
@@ -497,7 +497,7 @@ losange(A,B,angle(A,M,N),C,D);
 P:=point(sqrt(5));
 losange(A,P,atan(2),Q);
 </PRE><P>On obtient :<BR>
-<IMG SRC="cascas127.png">
+<IMG SRC="cascas098.png">
 </P><H4 CLASS="subsubsection">L’angle dièdre du triacontaèdre</H4><P>
 Soit <I>D</I> un sommet de degré 3 du triacontaèdre. Ce sommet est relié à 
 un triangle équilatèral <I>ABC</I> par les 3 arêtes <I>DA</I>,<I>DB</I>,<I>DC</I>.<BR>
@@ -591,7 +591,7 @@ local C,D,E,F,G,l,L1,L2,a,b,j,los;
 </PRE><P>On tape :<BR>
 <TT>a:=atan(2.);patron_triaconta(point(0),point(exp(-i*a/2)))</TT><BR>
 On obtient :<BR>
-<IMG SRC="cascas128.png"><BR>
+<IMG SRC="cascas099.png"><BR>
 
 </P><H4 CLASS="subsubsection">La construction du triacontaèdre avec du carton</H4><P>
 Il faut débuter la construction du triacontaèdre en accolant 5 losanges pour
@@ -619,7 +619,7 @@ retourne L;
 </PRE><P>On tape :<BR>
 <TT>vuedessus(0,-2*i)</TT><BR>
 On obtient :<BR>
-<IMG SRC="cascas129.png">
+<IMG SRC="cascas100.png">
 </P><H4 CLASS="subsubsection">La construction du triacontaèdre avec <TT>Xcas</TT></H4><P>
 On peut faire le dessin dans l’écran de géométrie 3D.<BR>
 On prend un losange de côté <I>a</I>√<SPAN style="text-decoration:overline">5</SPAN>. 
@@ -642,7 +642,7 @@ Calcul de la diagonale <I>BD</I><SUP>2</SUP> lorsque <I>AB</I><SUP>2</SUP>=5<I>a
 et de base le pentagone de côté <I>BD</I>. Cette pyramide a pour arête 
 <I>AB</I>=<I>a</I>√<SPAN style="text-decoration:overline">5</SPAN> et calculons le rayon <I>r</I>=<I>OB</I> du cercle circonscrit à ce 
 pentagone.<BR>
-<IMG SRC="cascas130.png"><BR>
+<IMG SRC="cascas101.png"><BR>
 On a :<BR>
 <I>BD</I>=2<I>r</I>sin(π/5)<BR>
 On sait que cos(2π/5)=(√<SPAN style="text-decoration:overline">5</SPAN>−1)/4 donc on tape :<BR>
@@ -680,7 +680,7 @@ Donc tan(2<I>b</I>+<I>c</I>)=0.
 Donc si <I>AO</I> est vertical, il en est de même de <I>A</I><SUB>1</SUB><I>C</I><SUB>1</SUB>. Ainsi les losanges 
 qui relient 2 calottes de sommets opposés <I>S</I><SUB>1</SUB><I>S</I><SUB>2</SUB> ont des côtés 
 parrallèles à <I>S</I><SUB>1</SUB><I>S</I><SUB>2</SUB>.<BR>
-<DIV CLASS="center"><IMG SRC="cascas131.png"></DIV>
+<DIV CLASS="center"><IMG SRC="cascas102.png"></DIV>
 </LI></UL><P>
 On tape pour voir les 2 calottes et la tranche du milieu :
 </P><PRE CLASS="verbatim">S1:=point(0,0,5.5):;S1;
@@ -710,9 +710,9 @@ LL4:=losange(C4,C5,C7):; LL3:=losange(C4,C6,C5):;
 affichage(rotation(droite(S1,S2),2*k*pi/5,LL4)$(k=0..4),0);
 affichage(rotation(droite(S1,S2),2*k*pi/5,LL3)$(k=0..4),0);
 </PRE><P>On obtient les 2 calottes et la tranche du milieu :<BR>
-<IMG SRC="cascas132.png"><BR>
-<IMG SRC="cascas133.png"><BR>
-<IMG SRC="cascas134.png"><BR>
+<IMG SRC="cascas103.png"><BR>
+<IMG SRC="cascas104.png"><BR>
+<IMG SRC="cascas105.png"><BR>
 On peut remarquer que si <I>A</I> et <I>B</I> sont des sommets opposés et si <I>P</I><SUB><I>A</I></SUB> et
 <I>P</I><SUB><I>B</I></SUB> sont les plans perpendiculaires à <I>AB</I> passant respectivement par <I>A</I> 
 et <I>B</I> alors les autres sommets des losanges sont disposés sur des cercles 
@@ -722,7 +722,7 @@ C’est à dire que <I>AB</I>=<I>a</I>(5+√<SPAN style="text-decoration:overlin
 de <I>a</I>(5+√<SPAN style="text-decoration:overline">5</SPAN>).<BR>
 Ses différents sommets sont sur des cercles de rayon : 
 0, 2<I>a</I>, 4<I>a</I>cos(π/5), 4<I>a</I>cos(π/5), 4<I>a</I>cos(π/5), 4<I>a</I>cos(π/5), 2<I>a</I>, 0.<BR>
-<IMG SRC="cascas135.png"><BR>
+<IMG SRC="cascas106.png"><BR>
 
 Pour faire le triacontaèdre il reste à rassembler 
 les 2 calottes et la tranche du milieu. Pour cela il suffit de changer les 
@@ -755,7 +755,7 @@ L5:=losange(D[k],G[k],G[k+1])$(k=0..3);
 LL5:=losange(D[4],G[4],G[0],AAA):;
 coordonnees(AAA);L5:=L5,LL5[0]:;
 affichage(L5[k],1+epaisseur_ligne_2)$(k=0..4);
-</PRE><P><IMG SRC="cascas136.png"><BR>
+</PRE><P><IMG SRC="cascas107.png"><BR>
 Les coordonnées de <I>AAA</I> sont (0,0,−4−√<SPAN style="text-decoration:overline">5</SPAN>). Donc si une pointe a comme 
 coordonnéees 0,0,1 les coordonnées de la pointe 
 opposée est [0,0,−4−√<SPAN style="text-decoration:overline">5</SPAN>].<BR>
@@ -803,7 +803,7 @@ segment(LA[0],LA[1]), segment(LA[6],LA[7]);
 segment(LA[8],LA[9]), segment(LA[14],LA[15]);
  segment(LA[10],LA[11]), segment(LA[12],LA[13]);
 </PRE><P>On obtient :<BR>
-<IMG SRC="cascas137.png"><BR>
+<IMG SRC="cascas108.png"><BR>
 
 Le squelette de ce triacontaèdre n’est pas hamiltonien
 i.e. il n’existe pas de chemin qui en empruntant les arêtes, passe une fois 
@@ -813,7 +813,7 @@ qu’à des sommets d’ordre 5. Donc le chemin ne peut passer qu’en alternant
 sommet d’ordre 3, sommet d’ordre 5, sommet d’ordre 3 etc...Comme il y a 12 
 sommets d’ordre 5 et 20 sommets d’ordre 3, un chemin passant une fois 
 et une seule par chaque sommet n’existe pas. 
-</P><H3 CLASS="subsection"><A NAME="htoc228">12.5.2</A>  Activité en classe</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc215">12.5.2</A>  Activité en classe</H3><P>
 Faire faire le patron du losange de base de côté √<SPAN style="text-decoration:overline">5</SPAN> aux èlèves 
 pour obtenir 30 losanges (c’est parfait pour une classe de 30 élèves !).<BR>
 Faire le montage avec du scotch pour obtenir le triacontaèdre.<BR>
@@ -849,7 +849,7 @@ segment(S1,B2);
 segment(S2,B1);
 polygone(S,A,B1,B2,S3,N,S2,S1);
 </PRE><P>On obtient :<BR>
-<IMG SRC="cascas138.png">
+<IMG SRC="cascas109.png">
 Un exemple d’exercice:<BR>
 On a dit :
 "Il faut débuter la construction du triacontaèdre en accolant 5 losanges
@@ -867,7 +867,7 @@ cos(<I>x</I>)=−cos(α).<BR>
 Donc l’autre angle <I>x</I> du losange vaut <I>x</I>=π−α<BR>
 Donc le vide peut être comblé par un losange d’angles 
 α=atan(2) et π−α.
-</P><H2 CLASS="section"><A NAME="toc84"></A><A NAME="htoc229">12.6</A>  La forme géométrique d’une molécule dans l’espace</H2><H3 CLASS="subsection"><A NAME="htoc230">12.6.1</A>  Présentation du problème</H3><P>
+</P><H2 CLASS="section"><A NAME="toc77"></A><A NAME="htoc216">12.6</A>  La forme géométrique d’une molécule dans l’espace</H2><H3 CLASS="subsection"><A NAME="htoc217">12.6.1</A>  Présentation du problème</H3><P>
 Ce qui suit a été inspiré d’une épreuve à l’oral de l’agrégation
 externe de Mathématiques session 2008 dont voila le lien :<BR>
  http://agreg.dnsalias.org/Textes/pub2008-C2.pdf<BR>
@@ -878,7 +878,7 @@ différentes liaisons.<BR>
 Nous étudions ici la forme des molécules du cyclohexane et du glucose.
 Nous allons commencer tout d’abord par un lemme utile pour l’étude de ces 
 2 cas.
-</P><H3 CLASS="subsection"><A NAME="htoc231">12.6.2</A>  Un lemme</H3><P>
+</P><H3 CLASS="subsection"><A NAME="htoc218">12.6.2</A>  Un lemme</H3><P>
 Pour étudier la forme de la molécule du cyclohexane, on a besoin de 
 résoudre le système en <I>u</I>,<I>v</I>,<I>w</I> de la forme :
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>R</I>(<I>u</I>,<I>v</I>)=0,<I>R</I>(<I>v</I>,<I>w</I>)=0,<I>R</I>(<I>u</I>,<I>w</I>)=0</TD></TR>
@@ -981,13 +981,13 @@ c:=eta*w^2+delta;
 Eq:=normal(alpha1*c^2+beta1*(b^2-2*c*a)+ gamma1*c*a+
     delta1*a^2);
 solve(Eq=0,w);
-</PRE><H3 CLASS="subsection"><A NAME="htoc232">12.6.3</A>  Molécule du cyclohexane</H3><P>
+</PRE><H3 CLASS="subsection"><A NAME="htoc219">12.6.3</A>  Molécule du cyclohexane</H3><P>
 On choisit ici la molécule du cyclohexane constituée de 6 atomes de
 carbone et dans la modélisation ci-dessous, on ne prend en compte que les 
 liaisons entre les atomes constituant le cycle, et non celles avec les atomes 
 voisins du cycle.<BR>
 Pour la molécule du cyclohexane la chimie nous impose :
-</P><DIV CLASS="center"><IMG SRC="cascas139.png"></DIV><P>
+</P><DIV CLASS="center"><IMG SRC="cascas110.png"></DIV><P>
 Le triangle <I>ACE</I> est équilatéral et les triangles <I>ABC</I>, <I>CDE</I>, <I>EFA</I> sont 
 isocèles avec <I>AB</I>=<I>AC</I>=<I>DC</I>=<I>DE</I>=<I>FE</I>=<I>FA</I>=1 unité de longueur et les angles <I>B</I>, 
 <I>D</I>, <I>F</I> de ces triangles ainsi que les angles <I>FAB</I>, 
@@ -1004,7 +1004,7 @@ solutions admettant des symétries mais on verra qu’il y beaucoup d’autres
 solutions.<BR>
  On peut commencer par faire un modèle en carton du problème (les traits 
 marquent les pliures).<BR>
-<IMG SRC="cascas140.png"><BR>
+<IMG SRC="cascas111.png"><BR>
 et on améne en coincidence :<BR>
 <I>CDD</I> avec <I>CD</I> en pliant selon <I>BC</I> et <I>EC</I>,<BR>
  <I>EFF</I> avec <I>EF</I> en pliant selon <I>ED</I> et <I>EA</I>, et<BR>
@@ -1043,7 +1043,7 @@ un triangle équilatéral et du fait de la symétrie du cycle, si on regarde
 la vue de dessus, on voit que <I>BDF</I> forme avec <I>ACE</I> une étoile à 6 
 branches.<BR>
 La vue de dessus :<BR>
-<IMG SRC="cascas141.png">
+<IMG SRC="cascas112.png">
 les 2 plans 
 <I>ACE</I> et <I>BDF</I> sont parallèles et distant de <I>z</I><SUB><I>B</I></SUB>=<I>h</I>.<BR>
 Donc si on pose :<BR>
@@ -1073,7 +1073,7 @@ triangle(point(0,0,0),point(l/2,l*sqrt(3)/2,0),
 triangle(point(cos(a1),-l*sqrt(3)/6,h),point(l,l*sqrt(3)/3,h),
          point(0,l*sqrt(3)/3,h),affichage=4);
 </PRE>On obtient (en rouge le triangle <I>ACE</I> et en bleu le triangle <I>BDF</I>) :<BR>
-<IMG SRC="cascas142.png">
+<IMG SRC="cascas113.png">
 </LI><LI CLASS="li-itemize"><I>F</I> et <I>D</I> sont au dessus du plan <I>ACE</I> et <I>B</I> est en dessous de ce plan.<BR>
 Cherchons les coordonnées de <I>B</I> lorsque les angles des plans <I>CDE</I>, 
 <I>EFA</I> avec le plan <I>ACE</I> sont égaux et lorsque <I>B</I> a une cote négative.<BR>
@@ -1108,7 +1108,7 @@ Ce qui donne comme coordonnèes des points <I>B</I> qui sont les solutions :<BR>
 <TT>[0.814115518356,-0.142077142237,-0.563054178943]</TT><BR>
 puisque <TT>evalf(cos(a1))</TT> renvoie <TT>0.814115518356</TT><BR>
 et on obtient :<BR>
-<IMG SRC="cascas143.png"><BR>
+<IMG SRC="cascas114.png"><BR>
 Le point <TT>SB0:=point(cos(a1),l*sqrt(3)/6,h)</TT> 
 (<I>h</I>:=√<SPAN style="text-decoration:overline">sin</SPAN><SPAN style="text-decoration:overline">(<I>a</I>1)</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">−</SPAN><SPAN style="text-decoration:overline">cos</SPAN><SPAN style="text-decoration:overline">(<I>a</I>1)</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">/3</SPAN>) est le point <TT>B</TT> trouvé 
 précédemment et correspond à <TT>B0</TT> du plan médiateur de <I>AC</I> et la 
@@ -1160,7 +1160,7 @@ segment(point(l,l*sqrt(3)/3,h),B1,affichage=2);
 segment(B1,point(0,l*sqrt(3)/3,h),affichage=2);
 </PRE>On obtient (en rouge le triangle <I>ACE</I>, en bleu le segment <I>FD</I> et en vert les 
 segments <I>DB</I> et <I>FB</I>) :<BR>
-<IMG SRC="cascas144.png">
+<IMG SRC="cascas115.png">
 </LI></UL><H4 CLASS="subsubsection">Solution analytique de la forme du cyclohexane</H4><P>
 Voilà ce qu suggère le texte de l’épreuve de modélisation de 
 l’agrégation pour trouver les coordonnées de <I>B</I>, <I>D</I> et <I>F</I>.<BR>
@@ -1407,13 +1407,13 @@ Donc on retrouve les solutions :<BR>
 et <I>w</I>=<I>w</I><SUB><I>k</I></SUB> avec <I>w</I><SUB><I>k</I></SUB> solution de <TT>solve(subst(R,u,uj))=0,w)</TT> et<BR>
 <I>u</I>,<I>v</I>≠ <I>u</I>,<I>w</I> lorsque <I>u</I> et <I>v</I> sont les solutions différentes dépendant 
 de <I>w</I> de <TT>solve(R=0,u)</TT>
-Il reste a regarder quand ces solutions sont réelles.</P><H3 CLASS="subsection"><A NAME="htoc233">12.6.4</A>  La molécule de glucose</H3><P>
+Il reste a regarder quand ces solutions sont réelles.</P><H3 CLASS="subsection"><A NAME="htoc220">12.6.4</A>  La molécule de glucose</H3><P>
 On choisit ici la molécule de glucose qui est constituée de 6 atomes (un 
 atome d’oxygène et 5 atomes de carbone) et dans la modélisation ci-dessous, 
 nous ne prenons en compte que les liaisons entre les atomes constituant le 
 cycle, et non celles avec les atomes voisins du cycle.<BR>
 Pour la molécule de glucose la chimie nous impose :<BR>
-<IMG SRC="cascas145.png"><BR>
+<IMG SRC="cascas116.png"><BR>
 <I>L</I><SUB>1</SUB>=<I>AB</I>=<I>AF</I>=1.43 Angström,<BR>
 <I>L</I><SUB>2</SUB>=<I>BC</I>=<I>CD</I>=<I>DE</I>=<I>EF</I>=1.54 Angström<BR>
 <I>t</I><SUB>1</SUB>=<I>BAF</I>=106*π/180 radians<BR>
@@ -1458,7 +1458,7 @@ triangles qui bordent <I>ACE</I> il y a 3 triangles isocèles (<I>CBDD</I>, <I>C
 et 2 triangles (<I>ABC</I> et <I>AFE</I>) de cotés 5 cm et 4.64 cm et d’angle 
 109 degrés.<BR>
 Le modéle :<BR>
- <IMG SRC="cascas146.png"><BR>
+ <IMG SRC="cascas117.png"><BR>
 
 Puis, on forme la molécule en amenant en coincidence :<BR>
 <I>CDD</I> avec <I>CD</I> en pliant selon <I>BC</I> et <I>EC</I>, <I>EFF</I> avec <I>EF</I> en pliant selon 
@@ -1471,7 +1471,7 @@ semble plus judicieux de se placer dans le repère orthonormé direct :<BR>
 <I>HA</I> où <I>H</I> est le milieu de <I>CE</I>.<BR>
 
 Voici les notations :<BR>
-<IMG SRC="cascas147.png"><BR>
+<IMG SRC="cascas118.png"><BR>
 On tape :
 </P><PRE CLASS="verbatim">L1:=1.43;L2:=1.54;
 t1:=106*pi/180.;
@@ -1493,7 +1493,7 @@ molécule est formée de façon à ce que <I>B</I> et <I>D</I> soient symétriqu
 par rapport au plan médiateur de <I>CF</I> et on suppose <I>z</I><SUB>0</SUB>&gt;0.<BR>
 Pour cela nous projetons la molécule de glucose 3d symétrique sur le plan
 <I>ACE</I> et sur le plan médiateur de <I>CE</I>.</P><P><B>Faisons maintenant une projection sur le plan </B><B><I>ACE</I></B><BR>
-<IMG SRC="cascas148.png"><BR>
+<IMG SRC="cascas119.png"><BR>
 <I>B</I> se projette en <I>N</I> sur <I>AC</I> et on a <I>AN</I>=<I>L</I>1cos(<I>a</I><SUB>3</SUB>)<BR>
 <I>B</I> se projette en <I>B</I><SUB><I>p</I></SUB> sur le plan <I>ACE</I> et <I>B</I><SUB><I>p</I></SUB><I>N</I> est perpendiculaire 
 à <I>AC</I> (c’est le théorème des 3 perpendiculaires)<BR>
@@ -1528,7 +1528,7 @@ hauteur :<BR>
   <I>h</I><SUB>4</SUB>=√<SPAN style="text-decoration:overline"><I>l</I></SPAN><SUB><SPAN style="text-decoration:overline">2</SPAN></SUB><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">−<I>l</I></SPAN><SUB><SPAN style="text-decoration:overline">4</SPAN></SUB><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">/4</SPAN> donc<BR>
  <I>D</I> est aussi sur le cercle de centre <I>M</I> et de rayon <I>h</I><SUB>4</SUB>.<BR>
 On fait la figure dans le plan médiateur avec comme repère <I>Hyz</I>.<BR>
-<IMG SRC="cascas149.png"><BR>
+<IMG SRC="cascas120.png"><BR>
 On tape :
 </P><PRE CLASS="verbatim">H:=point(0);
 A:=point(l3);
@@ -1831,7 +1831,7 @@ On retrouve les valeurs précédentes qui étaient meilleures:<BR>
 <TT>[2.62981213076,2.62981213076,-1.42146544175]</TT> pour lesquelles<BR>
 <I>P</I>,<I>Q</I>,<I>R</I>=-6.62367938276e-11,-6.89368562234e-11,-6.89368562234e-11<BR>
 <TT>[2.62981213076,2.62981213076,4.24267305313]</TT> pour lesquelles<BR>
-<I>P</I>,<I>Q</I>,<I>R</I>=-6.62367938276e-11,1.35003119794e-11,1.35003119794e-11</P><H3 CLASS="subsection"><A NAME="htoc234">12.6.5</A>  Les commandes des figures</H3><P> 
+<I>P</I>,<I>Q</I>,<I>R</I>=-6.62367938276e-11,1.35003119794e-11,1.35003119794e-11</P><H3 CLASS="subsection"><A NAME="htoc221">12.6.5</A>  Les commandes des figures</H3><P> 
 <B>Pour le cyclohexane</B>
 le modéle en carton<BR>
 Pour avoir le modéle on tape dans un niveau de géométrie 2d :

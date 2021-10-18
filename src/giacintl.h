@@ -7,8 +7,10 @@
 
 #include "first.h"
 
+#ifndef FIR
 #if (defined(__APPLE__) && !defined(INT128)) || defined(__FreeBSD__)
 #include <libintl.h>
+#endif
 #endif
 
 #ifdef HAVE_GETTEXT

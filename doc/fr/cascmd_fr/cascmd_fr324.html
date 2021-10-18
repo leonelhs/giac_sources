@@ -6,21 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer cos(x) en sin(x)/tan(x) : cos2sintan</TITLE>
+<TITLE>Transformer les exponentielles complexes en sin et en cos : sincos exp2trig</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr323.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr325.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc406">6.23.16</A>  Transformer cos(x) en sin(x)/tan(x) : <TT>cos2sintan</TT></H3><P><A NAME="@default618"></A>
-<TT>cos2sintan</TT> a comme argument une expression trigonométrique.<BR>
-<TT>cos2sintan</TT> transforme cette expression en remplaçant :<BR>
-cos(<I>x</I>) par  sin(<I>x</I>)/tan(<I>x</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc407">6.24.13</A>  Transformer les exponentielles complexes en sin et en cos : <TT>sincos exp2trig</TT></H3><P><A NAME="@default616"></A><A NAME="@default617"></A>
+<TT>sincos</TT> ou <TT>exp2trig</TT> a comme argument une expression 
+contenant des exponentielles complexes.<BR>
+<TT>sincos</TT> ou <TT>exp2trig</TT> transforme cette expression en fonction de 
+sin(<I>x</I>) et de cos(<I>x</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cos2sintan(cos(2*x))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sincos(exp(i*x))</TT></DIV><P>
+On obtient si <TT>Variables_complex</TT> n’est pas coché dans la configuration du CAS :
+</P><DIV CLASS="center"><TT>cos(x)+i*sin(x)</TT></DIV><P>
+On obtient si <TT>Variables_complex</TT> est coché dans la configuration du CAS :
+</P><DIV CLASS="center"><TT>exp(im(x))*(cos(re(x))+(i)*sin(re(x)))</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>exp2trig(exp(-i*x))</TT></DIV><P>
+On obtient si <TT>Variables_complex</TT> n’est pas coché dans la configuration du CAS :
+</P><DIV CLASS="center"><TT>cos(x)-i*sin(x)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>simplify(sincos(((i)*(exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>2-i)/(2*exp((i)*x))))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>simplify(exp2trig(((i)*(exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>2-i)/(2*exp((i)*x))))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sin(2*x)/tan(2*x)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>-sin(x)</TT></DIV><HR>
 <A HREF="cascmd_fr323.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr325.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

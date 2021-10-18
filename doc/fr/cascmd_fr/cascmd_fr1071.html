@@ -6,63 +6,68 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour recréer ou créer une image : writergb</TITLE>
+<TITLE>Exercice 1</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1070.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1072.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1246">11.2.4</A>  Pour recréer ou créer une image : <TT>writergb</TT></H3><P><A NAME="@default2056"></A>
-<TT>writergb</TT> permet de stocker une image lue avec <TT>readrgb</TT> dans
-un fichier de suffixe <TT>.png</TT>.<BR>
-ou<BR>
-de créer une image et de la stocker dans un fichier de suffixe <TT>.png</TT>.
-On peut créer cette image avec des niveaux de gris ou des 
-niveaux des différentes couleurs. 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-On posséde une variable (par exemple <TT>a</TT>) contenant une image lue 
-avec <TT>readrgb</TT>.<BR>
-<TT>writergb</TT> a deux arguments : le nom du fichier dans lequel on veut stocker 
-la nouvelle image et une liste contenant <TT>a[0]</TT> (liste contenant le nombre 
-de canaux et les dimensions de la matrice des pixels de cette image), puis les 
-couleurs de cette image qui sont les matrices <TT>a[1]</TT> pour la couleur rouge,
-<TT>a[2]</TT> pour la couleur verte, <TT>a[3]</TT> pour la transparence et <TT>a[4]</TT>
-pour la couleur bleu.<BR>
-La transparence permet de superposer plusieurs images : sa valeur va de 0 à 
-255 (si la transparence vaut 0 c’est un cache !).<BR>
-On tape :
-<DIV CLASS="center"><TT>a:=readrgb("image.jpg")</TT></DIV>
-Puis on tape :
-<DIV CLASS="center"><TT>writergb("imagevrb.png",[a[0],a[2],a[1],a[3],a[4]])</TT></DIV>
-Puis on tape :
-<DIV CLASS="center"><TT>gimp "imagevrb.png"</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>l’image de départ dans laquelle le rouge est devenu vert et le vert est devenu rouge</TT></DIV>
-Essayer de crèer une image :
-<DIV CLASS="center"><TT>writergb("essai.png",[[4,2,2],[[255,0],[0,0]], [[0,255],[0,0]],[[255,125],[255,255]], [[0,0],[255,0]]])</TT></DIV>
-vous obtenez (avec un vert attenué du au 125 de la 3ième matrice):<BR>
-<IMG SRC="cascmd_fr009.png">
-ou encore essayer :<BR>
-<DIV CLASS="center"><TT>writergb("image1.png",[[4,2,3],[[255,0,255],[0,255,0]], [[0,0,255],[0,0,0]],[[255,125,125],[255,255,255]], [[0,0,0],[255,255,0]]])</TT></DIV>
-</LI><LI CLASS="li-itemize">On peut aussi créer et stocker des images, au format PNG avec une 
-version simplifiée de la syntaxe : pas d’argument correspondant au nombre 
-de canaux et aux dimensions de la matrice des pixels de cette image ni de 
-matrice correspondant à la transparence.<BR>
-<TT>writergb</TT> a alors deux ou quatre arguments : le nom du fichier dans lequel
-on veut stocker la nouvelle image et la matrice des niveaux de gris des pixels,
-ou 3 matrices (du rouge, du vert et du bleu) donnant la couleur RGB des 
-pixels.<BR>
-Par exemple :<BR>
-<DIV CLASS="center"><TT>writergb("image.png",[[255,0],[0,255]])</TT></DIV>
-crée et affiche une image 2x2 pixels au format PNG en 256 niveaux de gris 
-(0 noir, 255 blanc)
-<DIV CLASS="center"><TT>writergb("image.png",[[255,0],[0,0]],[[0,255],[0,0]], [[0,0],[255,0]])</TT></DIV>
-crée et affiche une image 2x2 pixels au format PNG en RGBA avec 256 niveaux 
-pour chaque couleur (rouge, bleu, vert). Ici la première ligne rouge,vert et la deuxième ligne est bleu,noir.
-Essayez :
-<DIV CLASS="center"><TT>writergb("essai.png",[[4,300,300],makemat(0,300,300), makemat(0,300,300), makemat(255,300,300), makemat(0,300,300)+idn(300)*255])</TT></DIV>
-</LI></UL><HR>
+<H3 CLASS="subsection"><A NAME="htoc1254">11.18.1</A>  Exercice 1</H3><P>
+Soit <TT>SABCD</TT> une pyramide de sommet <TT>S</TT> dont la base <TT>ABCD</TT> est un 
+parallélogramme de centre <TT>O</TT>.<BR>
+Soient <TT>M</TT> et <TT>N</TT> les milieux respectifs de <TT>SA</TT> et <TT>SD</TT>.<BR>
+Montrer que les plans <TT>OMN</TT> et <TT>SBC</TT> sont parallèles.<BR>
+Pour faire la figure, on tape :
+</P><PRE CLASS="verbatim">// dessin exo1
+A:=point(2,2,0);
+B:=point(-2,2,0);
+C:=point(-3,-2,0);
+D:=point(1,-2,0);
+S:=point(0,0,4);
+polyedre(S,A,B,C,D);
+M:=milieu(S,A);
+N:=milieu(S,D);
+O:=milieu(A,C);
+P:=plan(O,M,N);
+Q:=plan(S,B,C);
+est_parallele(P,Q);
+</PRE><P>Pour faire la démonstration avec <TT>Xcas</TT>, on tape :
+</P><PRE CLASS="verbatim">// demo exo1
+A:=point(a,b,c);
+B:=point(d,e,f);
+D:=point(u,v,w);
+C:=B+(D-A);
+//S:=isobarycentre(A,B,C,D)+t*cross(B-A,D-A);
+S:=point(k,l,m);
+M:=milieu(S,A);
+N:=milieu(S,D);
+O:=milieu(A,C);
+P:=plan(O,M,N);
+Q:=plan(S,B,C);
+est_parallele(P,Q);
+</PRE><P>On obtient :
+<TT>1</TT><BR>
+ce qui veut dire que les plans <TT>P</TT> et <TT>Q</TT> sont parallèles.<BR>
+ 
+La démonstration géométrique :<BR>
+Soit <TT>R</TT> le milieu de <TT>AB</TT>.<BR>
+On a :<BR>
+<TT>M</TT> est le milieu de <TT>SA </TT> et <TT>N</TT> est le milieu de <TT>SD</TT>, donc
+<TT>MN</TT> est parallèle à <TT>AD</TT> et <TT>2*MN=AD</TT><BR>
+<TT>M</TT> est le milieu de <TT>SA </TT> et <TT>R</TT> est le milieu de <TT>AB</TT>, donc
+<TT>MR</TT> est parallèle à <TT>SB</TT> et <TT>2*MR=SB</TT><BR>
+<TT>O</TT> est le milieu de <TT>AC </TT> et <TT>R</TT> est le milieu de <TT>AB</TT>, donc
+<TT>OR</TT> est parallèle à <TT>CB</TT> et <TT>2*OR=CB</TT><BR>
+ou encore :<BR>
+<TT>2*<I>MN</I>=<I>AD</I></TT><BR>
+<TT>2*<I>MR</I>=<I>SB</I></TT><BR>
+<TT>2*<I>OR</I>=<I>CB</I></TT><BR>
+La base <TT>ABCD</TT> est un parallélogramme donc :<BR>
+<TT><I>overrightarrow</I></TT><TT><I>AD</I></TT><TT>=<I>BC</I></TT><BR>
+On en déduit que <TT>MNOR</TT> est un parallélogramme dont le plan est 
+parallèle à la face <TT>SBC</TT>.
+</P><HR>
 <A HREF="cascmd_fr1070.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1072.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

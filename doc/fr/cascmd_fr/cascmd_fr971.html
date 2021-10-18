@@ -6,41 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les enveloppes : envelope enveloppe</TITLE>
+<TITLE>Savoir si 4 points forment un division harmonique : is_harmonic est_harmonique</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr970.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr972.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1124">9.20.2</A>  Les enveloppes : <TT>envelope enveloppe</TT></H3><P><A NAME="@default1891"></A><A NAME="@default1892"></A> <A NAME="sec:envelope"></A>
-<TT>enveloppe</TT> a 2 arguments : une expression <I>Xpr</I> dépendant de 3
-variables <I>x</I>,<I>y</I>,<I>t</I> (resp <I>u</I>,<I>v</I>,<I>t</I>) et <I>t</I> (resp le vecteur [<I>u</I>,<I>v</I>,<I>t</I>]).<BR>
-Les equations <I>Xpr</I>=0 sont considérées comme les 
-équations de courbes de paramètre <I>t</I>.<BR>
-<TT>enveloppe</TT> renvoie l’enveloppe de ces courbes lorsque <I>t</I> varie.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1133">10.18.15</A>  Savoir si 4 points forment un division harmonique : <TT>is_harmonic est_harmonique</TT></H3><P><A NAME="@default1884"></A><A NAME="@default1885"></A>
+<TT>est_harmonique</TT> permet de savoir si 4 points forment un division harmonique.
+<TT>est_harmonique</TT> est une fonction booléenne ayant comme 
+arguments quatre points.<BR>
+ <TT>est_harmonique</TT> vaut 1 si les 4 points forment un division harmonique et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>enveloppe(y+x*tan(t)-2*sin(t),t)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_harmonique(0,2,3/2,3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>enveloppe(v+u*tan(t)-3*sin(t),[u,v,t))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_harmonique(0,1+i,1,i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
-<B>Remarque</B>
-Si on a une famille de droites <TT>d</TT> qui dépendent d’un paramètre 
-<TT>a</TT>, on peut utiliser soit <TT>enveloppe(equation(d,a))</TT> soit 
-la commande <TT>lieu</TT> (voir <A HREF="cascmd_fr970.html#sec:lieudroite">9.20.1</A>).<BR>
-Voici un exemple simple : enveloppe de la tangente à un cercle.<BR>
-On tape :
-</P><PRE CLASS="verbatim">c:=cercle(0,2):;
-assume(a:=1);
-A:=element(c,a);
-d:=tangente(cercle(0,2),A);
-</PRE><P>Puis soit:
-</P><DIV CLASS="center"><TT>enveloppe(equation(d),a)</TT></DIV><P> 
-soit :
-</P><DIV CLASS="center"><TT>lieu(d,A)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr970.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr972.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,68 +6,102 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Definir une fonction avec l’historique : as_function_of</TITLE>
+<TITLE>Définition d’une fonction</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr290.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr292.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc367">6.17.6</A>  Definir une fonction avec l’historique : <TT>as_function_of</TT></H3><P><A NAME="@default543"></A>
-Si on a affecté une valeur à la variable <TT>a</TT> et si on 
-définit ensuite, dans une autre ligne d’entrée, la variable <TT>b</TT>, 
-à partir de <TT>a</TT>, on utilise <TT>c:=as_function_of(b,a)</TT> pour définir
-une fonction <TT>c</TT> vérifiant : <TT>c(a)=b</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>a:=sin(x)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc368">6.18.3</A>  Définition d’une fonction</H3><H4 CLASS="subsubsection"><A NAME="toc7"></A>Définition d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ</H4><P>
+On tape pour définir la fonction <I>f</I> : (<I>x</I>)−&gt;<I>x</I>*sin(<I>x</I>) :
+</P><DIV CLASS="center"><TT>f(x):=x*sin(x)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=x-&gt;x*sin(x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sin(x)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>b:=sqrt(1+a</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x)-&gt;x*sin(x)</TT></DIV><P>
+On tape pour définir la fonction <I>f</I> : (<I>x</I>,<I>y</I>)−&gt;<I>x</I>*sin(<I>y</I>) :
+</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=(x,y)-&gt;x*sin(y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>b:=sqrt(1+sin(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>c:=as_function_of(b,a)</TT></DIV><DIV CLASS="center"><TT>c(x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x,y)-&gt;x*sin(y)</TT></DIV><P>
+<B>Attention !!!</B> ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué.
+</P><H4 CLASS="subsubsection"><A NAME="toc8"></A>Définition d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ<SUP><I>q</I></SUP></H4><P>
+On tape pour définir la fonction <I>h</I> : (<I>x</I>,<I>y</I>)−&gt;(<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)) :
+</P><DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV><P>
+On tape pour définir la fonction <I>h</I> : (<I>x</I>,<I>y</I>)−&gt;[<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)] :
+</P><DIV CLASS="center"><TT>h(x,y):=[x*cos(y),x*sin(y)];</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>h:=(x,y)-&gt;[x*cos(y),x*sin(y)];</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>h(x,y):={[x*cos(y),x*sin(y)]};</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>h:=(x,y)-&gt;return[x*cos(y),x*sin(y)];</TT></DIV><P>
+Ou on tape 
+</P><DIV CLASS="center"><TT>h(x,y):={return [x*cos(y),x*sin(y)];}</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(1+x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>a:=2</TT></DIV><DIV CLASS="center"><TT>b:=1+a</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x,y)-&gt;{return([x*cos(y),x*sin(y)]);}</TT></DIV><P>
+<B>Attention !!!</B> ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué.
+</P><H4 CLASS="subsubsection"><A NAME="toc9"></A>Définition d’une fonction de ℝ<SUP><I>p</I>−1</SUP> dans ℝ<SUP><I>q</I></SUP> à partir d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ<SUP><I>q</I></SUP></H4><P>
+On définit la fonction <I>f</I>(<I>x</I>,<I>y</I>)=<I>x</I>*sin(<I>y</I>), puis on veut définir la famille
+de fonctions dépendant du paramètre <I>t</I> par
+<I>g</I>(<I>t</I>)(<I>y</I>):=<I>f</I>(<I>t</I>,<I>y</I>).<BR>
+Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
+définir <I>g</I>(<I>t</I>) par <TT>g(t):=y-&gt;f(t,y)</TT> et on doit utiliser la commande
+<TT>unapply</TT>.<BR>
+On tape pour définir les fonctions <I>f</I>(<I>x</I>,<I>y</I>)=<I>x</I>sin(<I>y</I>) et <I>g</I>(<I>t</I>)=<I>y</I>−&gt;<I>f</I>(<I>t</I>,<I>y</I>) :
+</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y);g(t):=unapply(f(t,y),y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>b:=5</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>c:=as_function_of(b,a)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>((x,y)-&gt;x*sin(y), (t)-&gt;unapply(f(t,y),y))</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>g(2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(a)-&gt;<BR>
-{ local NULL;<BR>
- return(sqrt(1+a</TT><CODE><TT>^</TT></CODE><TT>2));<BR>
-}</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>c(x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>y-&gt;2</TT><TT>·</TT><TT> sin(y)</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>g(2)(1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
-<B>Attention</B><BR>
- Si la variable <TT>b</TT> a été affectée 
-plusieurs fois c’est la première affectation de <TT>b</TT> après la 
-dernière affectation de <TT>a</TT> qui compte.<BR>
-On tape par exemple :<BR>
-<TT>a:=2</TT> puis<BR>
-<TT>b:=2*a+1</TT> puis<BR>
-<TT>b:=3*a+2</TT> puis<BR>
-<TT>c:=as_function_of(b,a)</TT><BR>
+</P><DIV CLASS="center"><TT>2</TT><TT>·</TT><TT> sin(1)</TT></DIV><P>On définit la fonction <I>h</I>(<I>x</I>,<I>y</I>)=(<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)), 
+puis on veut définir la famille de fonctions dépendant du paramètre <I>t</I> 
+par <I>k</I>(<I>t</I>)(<I>y</I>):=<I>h</I>(<I>t</I>,<I>y</I>).<BR>
+Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
+définir <I>k</I>(<I>t</I>) par <I>k</I>(<I>t</I>):=<I>y</I>−&gt;<I>h</I>(<I>x</I>,<I>y</I>) et on est obligé d’utiliser la 
+commande <TT>unapply</TT>.<BR>
+On tape pour définir la fonction <I>h</I>(<I>x</I>,<I>y</I>) :
+</P><DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV><P>
+On tape pour définir la fonction <I>k</I>(<I>t</I>) :
+</P><DIV CLASS="center"><TT>k(t):=unapply(h(x,t),x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(a)-&gt; {local NULL; return(2*a+1);}</TT></DIV><P>
-c’est à dire que <TT>c(x)</TT> vaut <TT>2*x+1</TT>.<BR>
-Mais si on tape par exemple :<BR>
-<TT>a:=2</TT> puis<BR>
-<TT>b:=2*a+1</TT> puis<BR>
-<TT>a:=2</TT> puis<BR>
-<TT>b:=3*a+2</TT> puis<BR>
-<TT>c:=as_function_of(b,a)</TT><BR>
+</P><DIV CLASS="center"><TT>(t)-&gt;unapply(h(x,t),x)</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>k(2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(a)-&gt; {local NULL; return(3*a+2);}</TT></DIV><P>
-c’est à dire que <TT>c(x)</TT> vaut <TT>3*x+2</TT>.<BR>
-Il est donc préférable de valider la ligne ou se trouve <TT>a</TT> avant de 
-définir le <TT>b</TT> qui convient. </P><HR>
+</P><DIV CLASS="center"><TT>(x)-&gt;(x*cos(2),x*sin(2))</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>k(2)(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(2*cos(1),2*sin(1))</TT></DIV><P>
+Ou encore
+On définit la fonction <I>h</I>(<I>x</I>,<I>y</I>)=[<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)], 
+puis on veut définir la famille de fonctions dépendant du paramètre <I>t</I> 
+par <I>k</I>(<I>t</I>)(<I>y</I>):=<I>h</I>(<I>t</I>,<I>y</I>).<BR>
+Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
+définir <I>k</I>(<I>t</I>) par <I>k</I>(<I>t</I>):=<I>y</I>−&gt;<I>h</I>(<I>x</I>,<I>y</I>) et on est obligé d’utiliser la 
+commande <TT>unapply</TT>.<BR>
+On tape pour définir la fonction <I>h</I>(<I>x</I>,<I>y</I>) :
+</P><DIV CLASS="center"><TT>h(x,y):={[x*cos(y),x*sin(y)]}</TT></DIV><P>
+On tape pour définir la fonction <I>k</I>(<I>t</I>) :
+</P><DIV CLASS="center"><TT>k(t):=unapply(h(x,t),x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(t)-&gt;unapply(h(x,t),x)</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>k(2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x)-&gt;{[x*cos(2),x*sin(2)];}</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>k(2)(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2</TT><TT>·</TT><TT> cos(1),2</TT><TT>·</TT><TT> sin(1)]</TT></DIV><HR>
 <A HREF="cascmd_fr290.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr292.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

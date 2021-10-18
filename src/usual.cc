@@ -212,7 +212,7 @@ namespace giac {
 #endif
 #endif
     for (char c='a';c<='z';c++){
-      _purge(gen(string(1,c),contextptr),contextptr);
+      purgenoassume(gen(string(1,c),contextptr),contextptr);
     }
     return args;
   }
@@ -229,7 +229,7 @@ namespace giac {
     const_iterateur it=v.begin(),itend=v.end();
     for (;it!=itend;++it){
       if (it->type==_IDNT && (*it!=cst_pi) )
-	_purge(*it,contextptr);
+	purgenoassume(*it,contextptr);
     }
     return g;
   }
@@ -267,7 +267,7 @@ namespace giac {
   define_partial_derivative_onearg_genop(D_at_id,"D_at_id",_constant_one);
   static const char _id_s []="id";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3 (__id,&_id,(unsigned long)&D_at_idunary_function_ptr,_id_s);
+  static define_unary_function_eval3 (__id,&_id,(size_t)&D_at_idunary_function_ptr,_id_s);
 #else
   static define_unary_function_eval3 (__id,&_id,D_at_id,_id_s);
 #endif
@@ -301,7 +301,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_neg,"D_at_neg",_neg);
   static const char _neg_s []="-";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (4,__neg,&_neg,(unsigned long)&D_at_negunary_function_ptr,_neg_s);
+  static define_unary_function_eval3_index (4,__neg,&_neg,(size_t)&D_at_negunary_function_ptr,_neg_s);
 #else
   static define_unary_function_eval3_index (4,__neg,&_neg,D_at_neg,_neg_s);
 #endif
@@ -405,6 +405,8 @@ namespace giac {
       return 0;
     if (is_minus_one(e))
       return cst_i*cst_pi;
+    if (is_integer(e) && is_strictly_positive(-e,contextptr))
+      return cst_i*cst_pi+ln(-e,contextptr);
     if (is_undef(e))
       return e;
     if ( (e==unsigned_inf) || (e==plus_inf))
@@ -444,7 +446,7 @@ namespace giac {
   }
   define_partial_derivative_onearg_genop( D_at_ln,"D_at_ln",&d_ln);
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (18,__ln,&giac::ln,(unsigned long)&D_at_lnunary_function_ptr,_ln_s);
+  static define_unary_function_eval3_index (18,__ln,&giac::ln,(size_t)&D_at_lnunary_function_ptr,_ln_s);
 #else
   static define_unary_function_eval3_index (18,__ln,&giac::ln,D_at_ln,_ln_s);
 #endif
@@ -510,7 +512,7 @@ namespace giac {
   }
   define_partial_derivative_onearg_genop(D_at_log10,"D_at_log10",&d_log10);
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3 (__log10,&giac::log10,(unsigned long)&D_at_log10unary_function_ptr,_log10_s);
+  static define_unary_function_eval3 (__log10,&giac::log10,(size_t)&D_at_log10unary_function_ptr,_log10_s);
 #else
   static define_unary_function_eval3 (__log10,&giac::log10,D_at_log10,_log10_s);
 #endif
@@ -704,7 +706,7 @@ namespace giac {
   }
   static const char _atan_s []="atan";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor_index (42,__atan,&giac::atan,(unsigned long)&D_at_atanunary_function_ptr,&taylor_atan,_atan_s);
+  static define_unary_function_eval_taylor_index (42,__atan,&giac::atan,(size_t)&D_at_atanunary_function_ptr,&taylor_atan,_atan_s);
 #else
   static define_unary_function_eval_taylor_index (42,__atan,&giac::atan,D_at_atan,&taylor_atan,_atan_s);
 #endif
@@ -865,7 +867,7 @@ namespace giac {
     return "e^{"+gen2tex(g,contextptr)+"}";
   }
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor2_index(16,__exp,&giac::exp,(unsigned long)&D_at_expunary_function_ptr,&taylor_exp,_exp_s,0,&texprintasexp);
+  static define_unary_function_eval_taylor2_index(16,__exp,&giac::exp,(size_t)&D_at_expunary_function_ptr,&taylor_exp,_exp_s,0,&texprintasexp);
 #else
   static define_unary_function_eval_taylor2_index(16,__exp,&giac::exp,D_at_exp,&taylor_exp,_exp_s,0,&texprintasexp);
 #endif
@@ -1235,7 +1237,7 @@ namespace giac {
     return "\\sqrt{"+gen2tex(g,contextptr)+"}";
   }
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval5 (__sqrt,&giac::sqrt,(unsigned long)&D_at_sqrtunary_function_ptr,_sqrt_s,&printassqrt,&texprintassqrt);
+  static define_unary_function_eval5 (__sqrt,&giac::sqrt,(size_t)&D_at_sqrtunary_function_ptr,_sqrt_s,&printassqrt,&texprintassqrt);
 #else
   static define_unary_function_eval5 (__sqrt,&giac::sqrt,D_at_sqrt,_sqrt_s,&printassqrt,&texprintassqrt);
 #endif
@@ -1255,7 +1257,7 @@ namespace giac {
   static const char _sq_s []="sq";
   // static string texprintassq(const gen & g,const char * s,GIAC_CONTEXT){  return gen2tex(g,contextptr)+"^2";}
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (158,__sq,(const gen_op_context)giac::_sq,(unsigned long)&D_at_squnary_function_ptr,_sq_s);
+  static define_unary_function_eval3_index (158,__sq,(const gen_op_context)giac::_sq,(size_t)&D_at_squnary_function_ptr,_sq_s);
 #else
   static define_unary_function_eval3_index (158,__sq,(const gen_op_context)giac::_sq,D_at_sq,_sq_s);
 #endif
@@ -1464,7 +1466,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_cos," D_at_cos",d_cos);
   static const char _cos_s []="cos";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (34,__cos,&giac::cos,(unsigned long)&D_at_cosunary_function_ptr,_cos_s);
+  static define_unary_function_eval3_index (34,__cos,&giac::cos,(size_t)&D_at_cosunary_function_ptr,_cos_s);
 #else
   static define_unary_function_eval3_index (34,__cos,&giac::cos,D_at_cos,_cos_s);
 #endif
@@ -1669,7 +1671,7 @@ namespace giac {
   static const char _sin_s []="sin";
   define_partial_derivative_onearg_genop( D_at_sin," D_at_sin",&d_sin);
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (32,__sin,&giac::sin,(unsigned long)&D_at_sinunary_function_ptr,_sin_s);
+  static define_unary_function_eval3_index (32,__sin,&giac::sin,(size_t)&D_at_sinunary_function_ptr,_sin_s);
 #else
   static define_unary_function_eval3_index (32,__sin,&giac::sin,D_at_sin,_sin_s);
 #endif
@@ -1807,7 +1809,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_tan," D_at_tan",&d_tan);
   static const char _tan_s []="tan";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (36,__tan,&giac::tan,(unsigned long)&D_at_tanunary_function_ptr,_tan_s);
+  static define_unary_function_eval3_index (36,__tan,&giac::tan,(size_t)&D_at_tanunary_function_ptr,_tan_s);
 #else
   static define_unary_function_eval3_index (36,__tan,&giac::tan,D_at_tan,_tan_s);
 #endif
@@ -1821,7 +1823,7 @@ namespace giac {
     // return cst_i*ln(sqrt(x*x-1,contextptr)+x,contextptr)+cst_pi_over_2;
   }
   gen asin(const gen & e0,GIAC_CONTEXT){
-    if (abs_calc_mode(contextptr)==38 && !complex_mode(contextptr) && (e0.type<=_POLY || e0.type==_FLOAT_) && (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr)))
+    if (calc_mode(contextptr)==38 && !complex_mode(contextptr) && (e0.type<=_POLY || e0.type==_FLOAT_) && (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr)))
       return gensizeerr(contextptr);
     if (e0.type==_FLOAT_){
       if (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr))
@@ -2007,7 +2009,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_asin," D_at_asin",&d_asin);
   static const char _asin_s []="asin";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor_index( 38,__asin,&giac::asin,(unsigned long)&D_at_asinunary_function_ptr,&taylor_asin,_asin_s);
+  static define_unary_function_eval_taylor_index( 38,__asin,&giac::asin,(size_t)&D_at_asinunary_function_ptr,&taylor_asin,_asin_s);
 #else
   static define_unary_function_eval_taylor_index( 38,__asin,&giac::asin,D_at_asin,&taylor_asin,_asin_s);
 #endif
@@ -2017,7 +2019,7 @@ namespace giac {
     return symbolic(at_acos,e);
   }
   gen acos(const gen & e0,GIAC_CONTEXT){
-    if (abs_calc_mode(contextptr)==38 && !complex_mode(contextptr) && (e0.type<=_POLY || e0.type==_FLOAT_) && (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr)))
+    if (calc_mode(contextptr)==38 && !complex_mode(contextptr) && (e0.type<=_POLY || e0.type==_FLOAT_) && (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr)))
       return gensizeerr(contextptr);
     if (e0.type==_FLOAT_ && is_positive(e0+1,contextptr) && is_positive(1-e0,contextptr)){
 #ifdef BCD
@@ -2110,7 +2112,7 @@ namespace giac {
   }
   static const char _acos_s []="acos";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor_index( 40,__acos,&acos,(unsigned long)&D_at_acosunary_function_ptr,&taylor_acos,_acos_s);
+  static define_unary_function_eval_taylor_index( 40,__acos,&acos,(size_t)&D_at_acosunary_function_ptr,&taylor_acos,_acos_s);
 #else
   static define_unary_function_eval_taylor_index( 40,__acos,&giac::acos,D_at_acos,&taylor_acos,_acos_s);
 #endif
@@ -2171,7 +2173,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_sinh," D_at_sinh",&d_at_sinh);
   static const char _sinh_s []="sinh";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (44,__sinh,&giac::sinh,(unsigned long)&D_at_sinhunary_function_ptr,_sinh_s);
+  static define_unary_function_eval3_index (44,__sinh,&giac::sinh,(size_t)&D_at_sinhunary_function_ptr,_sinh_s);
 #else
   static define_unary_function_eval3_index (44,__sinh,&giac::sinh,D_at_sinh,_sinh_s);
 #endif
@@ -2233,7 +2235,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_cosh,"D_at_cosh",giac::sinh);
   static const char _cosh_s []="cosh";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (46,__cosh,&giac::cosh,(unsigned long)&D_at_coshunary_function_ptr,_cosh_s);
+  static define_unary_function_eval3_index (46,__cosh,&giac::cosh,(size_t)&D_at_coshunary_function_ptr,_cosh_s);
 #else
   static define_unary_function_eval3_index (46,__cosh,&giac::cosh,D_at_cosh,_cosh_s);
 #endif
@@ -2297,7 +2299,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_tanh," D_at_tanh",&d_tanh);
   static const char _tanh_s []="tanh";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (48,__tanh,&giac::tanh,(unsigned long)&D_at_tanhunary_function_ptr,_tanh_s);
+  static define_unary_function_eval3_index (48,__tanh,&giac::tanh,(size_t)&D_at_tanhunary_function_ptr,_tanh_s);
 #else
   static define_unary_function_eval3_index (48,__tanh,&giac::tanh,D_at_tanh,_tanh_s);
 #endif
@@ -2346,7 +2348,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_asinh," D_at_asinh",&d_asinh);
   static const char _asinh_s []="asinh";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (50,__asinh,&giac::asinh,(unsigned long)&D_at_asinhunary_function_ptr,_asinh_s);
+  static define_unary_function_eval3_index (50,__asinh,&giac::asinh,(size_t)&D_at_asinhunary_function_ptr,_asinh_s);
 #else
   static define_unary_function_eval3_index (50,__asinh,&giac::asinh,D_at_asinh,_asinh_s);
 #endif
@@ -2397,7 +2399,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_acosh," D_at_acosh",&d_acosh);
   static const char _acosh_s []="acosh";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (52,__acosh,&giac::acosh,(unsigned long)&D_at_acoshunary_function_ptr,_acosh_s);
+  static define_unary_function_eval3_index (52,__acosh,&giac::acosh,(size_t)&D_at_acoshunary_function_ptr,_acosh_s);
 #else
   static define_unary_function_eval3_index (52,__acosh,&giac::acosh,D_at_acosh,_acosh_s);
 #endif
@@ -2452,7 +2454,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_atanh," D_at_atanh",&d_atanh);
   static const char _atanh_s []="atanh";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3_index (54,__atanh,&giac::atanh,(unsigned long)&D_at_atanhunary_function_ptr,_atanh_s);
+  static define_unary_function_eval3_index (54,__atanh,&giac::atanh,(size_t)&D_at_atanhunary_function_ptr,_atanh_s);
 #else
   static define_unary_function_eval3_index (54,__atanh,&giac::atanh,D_at_atanh,_atanh_s);
 #endif
@@ -2479,7 +2481,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_quote," D_at_quote",&quote);
   static const char _quote_s []="quote";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval5_quoted (__quote,&giac::quote,(unsigned long)&D_at_quoteunary_function_ptr,_quote_s,&printasquote,0);
+  static define_unary_function_eval5_quoted (__quote,&giac::quote,(size_t)&D_at_quoteunary_function_ptr,_quote_s,&printasquote,0);
 #else
   static define_unary_function_eval5_quoted (__quote,&giac::quote,D_at_quote,_quote_s,&printasquote,0);
 #endif
@@ -2492,7 +2494,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_unquote," D_at_unquote",(const gen_op_context)unquote);
   static const char _unquote_s []="unquote";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3 (__unquote,(const gen_op_context)giac::unquote,(unsigned long)&D_at_unquoteunary_function_ptr,_unquote_s);
+  static define_unary_function_eval3 (__unquote,(const gen_op_context)giac::unquote,(size_t)&D_at_unquoteunary_function_ptr,_unquote_s);
 #else
   static define_unary_function_eval3 (__unquote,(const gen_op_context)giac::unquote,D_at_unquote,_unquote_s);
 #endif
@@ -2507,7 +2509,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_order_size," D_at_order_size",order_size);
   static const char _order_size_s []="order_size";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3 (__order_size,&giac::order_size,(unsigned long)&D_at_order_sizeunary_function_ptr,_order_size_s);
+  static define_unary_function_eval3 (__order_size,&giac::order_size,(size_t)&D_at_order_sizeunary_function_ptr,_order_size_s);
 #else
   static define_unary_function_eval3 (__order_size,&giac::order_size,D_at_order_size,_order_size_s);
 #endif
@@ -2580,7 +2582,7 @@ namespace giac {
   static const char _sign_s []="sign";
   define_partial_derivative_onearg_genop( D_at_sign,"D_at_sign",_constant_zero);
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __sign,_sign,(unsigned long)&D_at_signunary_function_ptr,&taylor_sign,_sign_s);
+  static define_unary_function_eval_taylor( __sign,_sign,(size_t)&D_at_signunary_function_ptr,&taylor_sign,_sign_s);
 #else
   static define_unary_function_eval_taylor( __sign,_sign,D_at_sign,&taylor_sign,_sign_s);
 #endif
@@ -2611,7 +2613,7 @@ namespace giac {
   }
   define_partial_derivative_onearg_genop( D_at_abs,"D_at_abs",d_abs);
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor_index(20, __abs,&_abs,(unsigned long)&D_at_absunary_function_ptr,&taylor_abs,_abs_s);
+  static define_unary_function_eval_taylor_index(20, __abs,&_abs,(size_t)&D_at_absunary_function_ptr,&taylor_abs,_abs_s);
 #else
   static define_unary_function_eval_taylor_index(20, __abs,&_abs,D_at_abs,&taylor_abs,_abs_s);
 #endif
@@ -2940,10 +2942,14 @@ namespace giac {
 #endif
       }
       gen aa(a),error;
-      if (strcmp(b._IDNTptr->id_name,string_pi)==0 || strcmp(b._IDNTptr->id_name,string_infinity)==0 || strcmp(b._IDNTptr->id_name,string_undef)==0)
+      if (strcmp(b._IDNTptr->id_name,string_pi)==0 || strcmp(b._IDNTptr->id_name,string_infinity)==0 || strcmp(b._IDNTptr->id_name,string_undef)==0 
+#ifdef GIAC_HAS_STO_38
+	  || b._IDNTptr->id_name[0]=='_' 
+#endif
+	  )
 	return gensizeerr(b.print(contextptr)+": reserved word");
       if (a==b)
-	return _purge(b,contextptr);
+	return purgenoassume(b,contextptr);
       gen ans(aa);
       if ( (a.type==_SYMB) && (a._SYMBptr->sommet==at_parameter)){
 	gen inter=a._SYMBptr->feuille,debut,fin,saut;
@@ -3715,14 +3721,14 @@ namespace giac {
     return gensizeerr(contextptr);
   }
   static void purge_assume(const gen & a,GIAC_CONTEXT){
-    if (a.type==_SYMB && (a._SYMBptr->sommet==at_and || a._SYMBptr->sommet==at_et || a._SYMBptr->sommet==at_ou || a._SYMBptr->sommet==at_oufr || a._SYMBptr->sommet==at_inferieur_strict || a._SYMBptr->sommet==at_inferieur_egal || a._SYMBptr->sommet==at_superieur_egal || a._SYMBptr->sommet==at_superieur_strict) ){
+    if (a.type==_SYMB && (a._SYMBptr->sommet==at_and || a._SYMBptr->sommet==at_et || a._SYMBptr->sommet==at_ou || a._SYMBptr->sommet==at_oufr || a._SYMBptr->sommet==at_inferieur_strict || a._SYMBptr->sommet==at_inferieur_egal || a._SYMBptr->sommet==at_superieur_egal || a._SYMBptr->sommet==at_superieur_strict || a._SYMBptr->sommet==at_equal) ){
       purge_assume(a._SYMBptr->feuille,contextptr);
       return;
     }
     if (a.type==_VECT && !a._VECTptr->empty())
       purge_assume(a._VECTptr->front(),contextptr);
     else
-      _purge(a,contextptr);
+      purgenoassume(a,contextptr);
   }
   gen giac_assume(const gen & a,GIAC_CONTEXT){
     if ( (a.type==_VECT) && (a._VECTptr->size()==2) ){
@@ -3968,11 +3974,19 @@ namespace giac {
     }
     gen prod(operator_times(a,b,contextptr));
     */
+    if (debug_infolevel>2)
+      CERR << clock() << " begin _prod" << endl;
     for (;it!=itend;++it){
       if ( (it->type==_SYMB) && (it->_SYMBptr->sommet==at_inv) && (it->_SYMBptr->feuille.type!=_VECT) )
 	prod = rdiv(prod,it->_SYMBptr->feuille,contextptr);
-      else
-	prod = operator_times(prod,*it,contextptr);
+      else {
+	if (prod.type==_INT_ && prod.val==1)
+	  prod=*it;
+	else
+	  prod = operator_times(prod,*it,contextptr);
+      }
+      if (debug_infolevel>2)
+	CERR << clock() << " in _prod" << endl;
     }
     return prod;
   }
@@ -5465,7 +5479,7 @@ namespace giac {
   }
   static const char _floor_s []="floor";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __floor,&giac::_floor,(unsigned long)&D_at_signunary_function_ptr,&taylor_floor,_floor_s);
+  static define_unary_function_eval_taylor( __floor,&giac::_floor,(size_t)&D_at_signunary_function_ptr,&taylor_floor,_floor_s);
 #else
   static define_unary_function_eval_taylor( __floor,&giac::_floor,D_at_sign,&taylor_floor,_floor_s);
 #endif
@@ -5519,7 +5533,7 @@ namespace giac {
   }
   static const char _ceil_s []="ceil";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __ceil,&giac::_ceil,(unsigned long)&D_at_signunary_function_ptr,&taylor_ceil,_ceil_s);
+  static define_unary_function_eval_taylor( __ceil,&giac::_ceil,(size_t)&D_at_signunary_function_ptr,&taylor_ceil,_ceil_s);
 #else
   static define_unary_function_eval_taylor( __ceil,&giac::_ceil,D_at_sign,&taylor_ceil,_ceil_s);
 #endif
@@ -5596,7 +5610,7 @@ namespace giac {
   }
   static const char _round_s []="round";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __round,&giac::_round,(unsigned long)&D_at_signunary_function_ptr,&taylor_round,_round_s);
+  static define_unary_function_eval_taylor( __round,&giac::_round,(size_t)&D_at_signunary_function_ptr,&taylor_round,_round_s);
 #else
   static define_unary_function_eval_taylor( __round,&giac::_round,D_at_sign,&taylor_round,_round_s);
 #endif
@@ -6545,7 +6559,7 @@ namespace giac {
   }
   static const char _lnGamma_minus_s []="lnGamma_minus";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __lnGamma_minus,&_lnGamma_minus,(unsigned long)&D_at_lnGamma_minusunary_function_ptr,&taylor_lnGamma_minus,_lnGamma_minus_s);
+  static define_unary_function_eval_taylor( __lnGamma_minus,&_lnGamma_minus,(size_t)&D_at_lnGamma_minusunary_function_ptr,&taylor_lnGamma_minus,_lnGamma_minus_s);
 #else
   static define_unary_function_eval_taylor( __lnGamma_minus,&_lnGamma_minus,D_at_lnGamma_minus,&taylor_lnGamma_minus,_lnGamma_minus_s);
 #endif
@@ -6754,7 +6768,7 @@ namespace giac {
   }
   static const char _Gamma_s []="Gamma";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __Gamma,&_Gamma,(unsigned long)&D_at_Gammaunary_function_ptr,&taylor_Gamma,_Gamma_s);
+  static define_unary_function_eval_taylor( __Gamma,&_Gamma,(size_t)&D_at_Gammaunary_function_ptr,&taylor_Gamma,_Gamma_s);
 #else
   static define_unary_function_eval_taylor( __Gamma,&_Gamma,D_at_Gamma,&taylor_Gamma,_Gamma_s);
 #endif
@@ -6986,7 +7000,7 @@ namespace giac {
   }
   static const char _Psi_minus_ln_s []="Psi_minus_ln";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __Psi_minus_ln,&_Psi_minus_ln,(unsigned long)&D_at_Psi_minus_lnunary_function_ptr,&taylor_Psi_minus_ln,_Psi_minus_ln_s);
+  static define_unary_function_eval_taylor( __Psi_minus_ln,&_Psi_minus_ln,(size_t)&D_at_Psi_minus_lnunary_function_ptr,&taylor_Psi_minus_ln,_Psi_minus_ln_s);
 #else
   static define_unary_function_eval_taylor( __Psi_minus_ln,&_Psi_minus_ln,D_at_Psi_minus_ln,&taylor_Psi_minus_ln,_Psi_minus_ln_s);
 #endif
@@ -7179,7 +7193,7 @@ namespace giac {
   }
   static const char _Psi_s []="Psi";
 #ifdef GIAC_HAS_STO_38
-  define_unary_function_eval_taylor (__Psi,&_Psi,(unsigned long)&D_at_Psiunary_function_ptr,&taylor_Psi,_Psi_s);
+  define_unary_function_eval_taylor (__Psi,&_Psi,(size_t)&D_at_Psiunary_function_ptr,&taylor_Psi,_Psi_s);
 #else
   define_unary_function_eval_taylor (__Psi,&_Psi,D_at_Psi,&taylor_Psi,_Psi_s);
 #endif
@@ -7401,7 +7415,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_Zeta," D_at_Zeta",&d_Zeta);
   static const char _Zeta_s []="Zeta";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __Zeta,&_Zeta,(unsigned long)&D_at_Zetaunary_function_ptr,&taylor_Zeta,_Zeta_s);
+  static define_unary_function_eval_taylor( __Zeta,&_Zeta,(size_t)&D_at_Zetaunary_function_ptr,&taylor_Zeta,_Zeta_s);
 #else
   static define_unary_function_eval_taylor( __Zeta,&_Zeta,D_at_Zeta,&taylor_Zeta,_Zeta_s);
 #endif
@@ -7422,7 +7436,7 @@ namespace giac {
   }
   static const char _Eta_s []="Eta";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3 (__Eta,&_Eta,(unsigned long)&D_at_Etaunary_function_ptr,_Eta_s);
+  static define_unary_function_eval3 (__Eta,&_Eta,(size_t)&D_at_Etaunary_function_ptr,_Eta_s);
 #else
   static define_unary_function_eval3 (__Eta,&_Eta,D_at_Eta,_Eta_s);
 #endif
@@ -7460,7 +7474,7 @@ namespace giac {
   }
   static const char _erfs_s []="erfs";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __erfs,&_erfs,(unsigned long)&D_at_erfsunary_function_ptr,&taylor_erfs,_erfs_s);
+  static define_unary_function_eval_taylor( __erfs,&_erfs,(size_t)&D_at_erfsunary_function_ptr,&taylor_erfs,_erfs_s);
 #else
   static define_unary_function_eval_taylor( __erfs,&_erfs,D_at_erfs,&taylor_erfs,_erfs_s);
 #endif
@@ -7731,7 +7745,7 @@ namespace giac {
   }
   static const char _erf_s []="erf";
 #ifdef GIAC_HAS_STO_38
-  define_unary_function_eval_taylor( __erf,&_erf,(unsigned long)&D_at_erfunary_function_ptr,&taylor_erf,_erf_s);
+  define_unary_function_eval_taylor( __erf,&_erf,(size_t)&D_at_erfunary_function_ptr,&taylor_erf,_erf_s);
 #else
   define_unary_function_eval_taylor( __erf,&_erf,D_at_erf,&taylor_erf,_erf_s);
 #endif
@@ -7773,7 +7787,7 @@ namespace giac {
   }
   static const char _erfc_s []="erfc";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3 (__erfc,&_erfc,(unsigned long)&D_at_erfcunary_function_ptr,_erfc_s);
+  static define_unary_function_eval3 (__erfc,&_erfc,(size_t)&D_at_erfcunary_function_ptr,_erfc_s);
 #else
   static define_unary_function_eval3 (__erfc,&_erfc,D_at_erfc,_erfc_s);
 #endif
@@ -8175,7 +8189,7 @@ namespace giac {
   }
   static const char _SiCi_f_s []="SiCi_f";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __SiCi_f,&_SiCi_f,(unsigned long)&D_at_SiCi_funary_function_ptr,&taylor_SiCi_f,_SiCi_f_s);
+  static define_unary_function_eval_taylor( __SiCi_f,&_SiCi_f,(size_t)&D_at_SiCi_funary_function_ptr,&taylor_SiCi_f,_SiCi_f_s);
 #else
   static define_unary_function_eval_taylor( __SiCi_f,&_SiCi_f,D_at_SiCi_f,&taylor_SiCi_f,_SiCi_f_s);
 #endif
@@ -8219,7 +8233,7 @@ namespace giac {
   }
   static const char _SiCi_g_s []="SiCi_g";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __SiCi_g,&_SiCi_g,(unsigned long)&D_at_SiCi_gunary_function_ptr,&taylor_SiCi_g,_SiCi_g_s);
+  static define_unary_function_eval_taylor( __SiCi_g,&_SiCi_g,(size_t)&D_at_SiCi_gunary_function_ptr,&taylor_SiCi_g,_SiCi_g_s);
 #else
   static define_unary_function_eval_taylor( __SiCi_g,&_SiCi_g,D_at_SiCi_g,&taylor_SiCi_g,_SiCi_g_s);
 #endif
@@ -8282,7 +8296,7 @@ namespace giac {
   }
   static const char _Si_s []="Si";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __Si,&_Si,(unsigned long)&D_at_Siunary_function_ptr,&taylor_Si,_Si_s);
+  static define_unary_function_eval_taylor( __Si,&_Si,(size_t)&D_at_Siunary_function_ptr,&taylor_Si,_Si_s);
 #else
   static define_unary_function_eval_taylor( __Si,&_Si,D_at_Si,&taylor_Si,_Si_s);
 #endif
@@ -8335,7 +8349,7 @@ namespace giac {
   }
   static const char _Ci_s []="Ci";
 #ifdef GIAC_HAS_STO_38
-  define_unary_function_eval_taylor( __Ci,&_Ci,(unsigned long)&D_at_Ciunary_function_ptr,&taylor_Ci,_Ci_s);
+  define_unary_function_eval_taylor( __Ci,&_Ci,(size_t)&D_at_Ciunary_function_ptr,&taylor_Ci,_Ci_s);
 #else
   define_unary_function_eval_taylor( __Ci,&_Ci,D_at_Ci,&taylor_Ci,_Ci_s);
 #endif
@@ -8380,7 +8394,7 @@ namespace giac {
   }
   static const char _Ci0_s []="Ci0";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __Ci0,&_Ci0,(unsigned long)&D_at_Ci0unary_function_ptr,&taylor_Ci0,_Ci0_s);
+  static define_unary_function_eval_taylor( __Ci0,&_Ci0,(size_t)&D_at_Ci0unary_function_ptr,&taylor_Ci0,_Ci0_s);
 #else
   static define_unary_function_eval_taylor( __Ci0,&_Ci0,D_at_Ci0,&taylor_Ci0,_Ci0_s);
 #endif
@@ -8419,7 +8433,7 @@ namespace giac {
   }
   static const char _Ei_f_s []="Ei_f";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __Ei_f,&_Ei_f,(unsigned long)&D_at_Ei_funary_function_ptr,&taylor_Ei_f,_Ei_f_s);
+  static define_unary_function_eval_taylor( __Ei_f,&_Ei_f,(size_t)&D_at_Ei_funary_function_ptr,&taylor_Ei_f,_Ei_f_s);
 #else
   static define_unary_function_eval_taylor( __Ei_f,&_Ei_f,D_at_Ei_f,&taylor_Ei_f,_Ei_f_s);
 #endif
@@ -8773,7 +8787,7 @@ namespace giac {
   }
   static const char _Ei_s []="Ei";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor (__Ei,&_Ei,(unsigned long)&D_at_Eiunary_function_ptr,&taylor_Ei,_Ei_s);
+  static define_unary_function_eval_taylor (__Ei,&_Ei,(size_t)&D_at_Eiunary_function_ptr,&taylor_Ei,_Ei_s);
 #else
   static define_unary_function_eval_taylor (__Ei,&_Ei,D_at_Ei,&taylor_Ei,_Ei_s);
 #endif
@@ -8817,7 +8831,7 @@ namespace giac {
   }
   static const char _Ei0_s []="Ei0";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval_taylor( __Ei0,&_Ei0,(unsigned long)&D_at_Ei0unary_function_ptr,&taylor_Ei0,_Ei0_s);
+  static define_unary_function_eval_taylor( __Ei0,&_Ei0,(size_t)&D_at_Ei0unary_function_ptr,&taylor_Ei0,_Ei0_s);
 #else
   static define_unary_function_eval_taylor( __Ei0,&_Ei0,D_at_Ei0,&taylor_Ei0,_Ei0_s);
 #endif
@@ -8848,7 +8862,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_Dirac," D_at_Dirac",&d_Dirac);
   static const char _Dirac_s []="Dirac";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3 (__Dirac,&_Dirac,(unsigned long)&D_at_Diracunary_function_ptr,_Dirac_s);
+  static define_unary_function_eval3 (__Dirac,&_Dirac,(size_t)&D_at_Diracunary_function_ptr,_Dirac_s);
 #else
   static define_unary_function_eval3 (__Dirac,&_Dirac,D_at_Dirac,_Dirac_s);
 #endif
@@ -8868,7 +8882,7 @@ namespace giac {
   }
   static const char _Heaviside_s []="Heaviside";
 #ifdef GIAC_HAS_STO_38
-  static define_unary_function_eval3 (__Heaviside,&_Heaviside,(unsigned long)&D_Heavisideunary_function_ptr,_Heaviside_s);
+  static define_unary_function_eval3 (__Heaviside,&_Heaviside,(size_t)&D_Heavisideunary_function_ptr,_Heaviside_s);
 #else
   static define_unary_function_eval3 (__Heaviside,&_Heaviside,D_Heaviside,_Heaviside_s);
 #endif
@@ -9225,13 +9239,13 @@ namespace giac {
 
   const define_tab2_alias_gen(alias_rad2deg_e_tab,_INT_,0,180,_SYMB,0,&inv_pi_symb);
   const define_alias_ref_vecteur2(rad2deg_e_refv,alias_rad2deg_e_tab);
-  const define_alias_ref_symbolic( rad2deg_e_symb ,(unsigned long)&_prod,_VECT,_SEQ__VECT,&rad2deg_e_refv);
+  const define_alias_ref_symbolic( rad2deg_e_symb ,(size_t)&_prod,_VECT,_SEQ__VECT,&rad2deg_e_refv);
   const define_alias_gen(alias_rad2deg_e,_SYMB,0,&rad2deg_e_symb);
   const gen & rad2deg_e = *(const gen *)&alias_rad2deg_e;
 
   const define_tab2_alias_gen(alias_deg2rad_e_tab,_IDNT,0,&ref_pi,_SYMB,0,&inv_180_symb);
   const define_alias_ref_vecteur2(deg2rad_e_refv,alias_deg2rad_e_tab);
-  const define_alias_ref_symbolic( deg2rad_e_symb ,(unsigned long)&__prod,_VECT,_SEQ__VECT,&deg2rad_e_refv);
+  const define_alias_ref_symbolic( deg2rad_e_symb ,(size_t)&__prod,_VECT,_SEQ__VECT,&deg2rad_e_refv);
   const define_alias_gen(alias_deg2rad_e,_SYMB,0,&deg2rad_e_symb);
   const gen & deg2rad_e = *(const gen *)&alias_deg2rad_e;
 

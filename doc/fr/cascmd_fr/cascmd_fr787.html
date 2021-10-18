@@ -6,49 +6,50 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>kolmogorovt</TITLE>
+<TITLE>Test de Wilcoxon ou de Mann-Whitney wilcoxont</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr786.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr788.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc911">7.5.5</A>  <TT>kolmogorovt</TT></H3><P><A NAME="@default1393"></A>
-<TT>kolmogorovt</TT> a pour arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-la liste des données d’un échantillon,
-</LI><LI CLASS="li-itemize">une loi de distribution ou la liste des données d’un autre
-échantillon,
-</LI><LI CLASS="li-itemize">les paramètres de cette loi de distribution.
-</LI></UL><P>
-<TT>kolmogorovt</TT> est le test de Kolmogorov-Smirnov d’adéquation à une loi 
-de distribution <B>continue</B>, entre 2 échantillons l1 l2 (loi inconnue 
-supposée continue) ou entre 1 échantillon l1 et une loi continue.<BR>
-<TT>kolmogorovt</TT> renvoie 3 valeurs préfixées, <I>D</I> est la valeur brute de 
-la statistique, <I>K</I> vaut <I>D</I>√<SPAN style="text-decoration:overline"><I>n</I></SPAN> où <I>n</I> est la taille de l’échantillon
-(ou <I>D</I>√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUB><SPAN style="text-decoration:overline">1</SPAN></SUB><SPAN style="text-decoration:overline"> <I>n</I></SPAN><SUB><SPAN style="text-decoration:overline">2</SPAN></SUB><SPAN style="text-decoration:overline">/(<I>n</I></SPAN><SUB><SPAN style="text-decoration:overline">1</SPAN></SUB><SPAN style="text-decoration:overline">+<I>n</I></SPAN><SUB><SPAN style="text-decoration:overline">2</SPAN></SUB><SPAN style="text-decoration:overline">)</SPAN> si on teste l’adéquation de 2 échantillons
-de tailles <I>n</I><SUB>1</SUB> et <I>n</I><SUB>2</SUB>), <I>K</I> tend vers
-la distribution de Kolmogorov-Smirnov <CODE>kolmogorovd</CODE>
-lorsque <I>n</I> tend vers l’infini, la 3ième valeur est 1-<CODE>kolmogorovd</CODE>(<I>K</I>)
-qui est d’autant plus proche de 1 que l’adéquation est bonne (on rejettera
-donc l’hypothèse nulle - qui est l’adéquation - lorsque cette dernière 
-valeur est proche de 0). Le menu
-Aide, Exemples, probas, kolmogorov donne une illustration de ce test :
-on teste l’adéquation d’un vecteur aléatoire tiré selon une loi
-avec cette même loi: on fait le calcul de la statistique <I>K</I> pour 200 tirages
-et on représente graphiquement le cumul de fréquences avec la distribution
-de KS sur le même graphique (cela marche bien pour les deux premières
-lois qui sont continues, mais pas pour la troisième loi qui est discrète)<BR>
+<H3 CLASS="subsection"><A NAME="htoc921">8.4.52</A>  Test de Wilcoxon ou de Mann-Whitney <TT>wilcoxont</TT></H3><P>
+<A NAME="@default1398"></A>
+<TT>wilcoxont</TT> a comme argument 1 échantillon et une médiane ou 2
+échantillons et peut avoir comme 3ième argument une fonction et comme 
+4ième argument un réel.<BR>
+<TT>wilcoxont</TT> renvoie le test de Wilcoxon ou de Mann-Whitney pour 
+1 échantillon et une médiane ou 2 échantillons
 On tape :
-</P><DIV CLASS="center"><TT>kolmogorovt(randvector(100,normald,0,1),normald(0,1))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>["D=",0.104642990054,"K=",1.04642990054, "1-kolmogorovd(K)=",0.223512817343]</TT></DIV><P>
-On ne peut pas rejeter l’adéquation car <TT>1-kolmogorovd(K)</TT> est n’est pas
-proche de zéro.</P><P>On tape :
-</P><DIV CLASS="center"><TT>kolmogorovt(randvector(100,normald,0,1),student(2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>["D=",0.158026574028,"K=",1.58026574028, "1-kolmogorovd(K)=",0.0135504875564]</TT></DIV><P>
-On rejette l’adéquation car <TT>1-kolmogorovd(K)</TT> est proche de zéro.</P><HR>
+</P><DIV CLASS="center"><TT>wilcoxont([1,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20])</TT></DIV><P>
+On obtient en vert :<BR>
+<TT>Mann-Whitney 2-sample test, H0 same Median, H1 &lt;&gt;</TT><BR>
+<TT>ranksum 81.5, shifted ranksum 26.5</TT><BR>
+<TT>u1=73.5 ,u2=26.5, u=min(u1,u2)=26.5</TT><BR>
+<TT>Limit value to reject H0 23</TT><BR>
+<TT>P-value 316/4199 (0.0752560133365), alpha=0.05 H0 not rejected</TT><BR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>wilcoxont([1,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20],0.3)</TT></DIV><P>
+On obtient en vert :<BR>
+<TT>Mann-Whitney 2-sample test, H0 same Median, H1 &lt;&gt;</TT><BR>
+<TT>ranksum 81.5, shifted ranksum 26.5</TT><BR>
+<TT>u1=73.5 ,u2=26.5, u=min(u1,u2)=26.5</TT><BR>
+<TT>Limit value to reject H0 35</TT><BR>
+<TT>P-value 316/4199 (0.0752560133365), alpha=0.01 H0 rejected</TT><BR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>wilcoxont([1,3,4,5,7,8,8,12,15,17],10,’&gt;’)</TT></DIV><P>
+On obtient en vert :<BR>
+<TT>Wilcoxon 1-sample test, H0 Median=10, H1 M&gt;10</TT><BR>
+<TT>Wilcoxon statistic: 18, p-value: 0.8388671875, confidence level: 0.05</TT><BR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>wilcoxont([1,3,4,5,7,8,8,12,15,17] ,10,’&gt;’,0.05)</TT></DIV><P>
+On obtient en vert :<BR>
+<TT>Wilcoxon 1-sample test, H0 Median=10, H1 M&gt;10</TT><BR>
+<TT>Wilcoxon statistic: 18, p-value: 0.8388671875, confidence level: 0.05</TT><BR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr786.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr788.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

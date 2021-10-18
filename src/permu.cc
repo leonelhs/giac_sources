@@ -861,14 +861,19 @@ namespace giac {
     if (args.type!=_VECT)  
       return gentypeerr(contextptr);
     vecteur v(*args._VECTptr);
-    int n=v.size();
+    int n=v.size(),m=n;
+    if (n==2 && v[1].type==_INT_ && v[0].type==_VECT){
+      m=v[1].val;
+      v=*v[0]._VECTptr;
+      n=v.size();
+    }
     vecteur c; 
     vecteur l(n); 
     for (int j=0;j<n;j++){
       l[j]=1;
     }
     c.push_back(l);
-    for (int k=1;k<n;k++){
+    for (int k=1;k<m;k++){
       for (int j=0;j<n;j++){
 	l[j]=l[j]*v[j];
       }

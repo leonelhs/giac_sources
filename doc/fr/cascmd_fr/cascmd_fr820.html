@@ -6,35 +6,68 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour écrire des sorties dans un fichier : fopen fprint fclose</TITLE>
+<TITLE>L’instruction conditionnelle : if then else end, si alors sinon fsi</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr819.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr821.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc950">8.5.3</A>  Pour écrire des sorties dans un fichier : <TT>fopen fprint fclose</TT></H3><P><A NAME="@default1491"></A><A NAME="@default1492"></A><A NAME="@default1493"></A>
-Voici les commandes pour ecrire dans un fichier :<BR>
-<TT>f:=fopen("essai")</TT> crèe un fichier du nom spécifié ici <TT>essai</TT> 
-(et donc l’efface si celui-ci existait déjà) et lui associer la variable 
-<TT>f</TT>.<BR>
-<TT>fprint(f,12)</TT> écrit 12 dans le fichier <TT>essai</TT>.<BR>
-<TT>fclose(f)</TT> ferme le fichier <TT>essai</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc960">9.4.18</A>  L’instruction conditionnelle : <TT>if then else end, si alors sinon fsi</TT></H3><P><A NAME="@default1470"></A><A NAME="@default1471"></A><A NAME="@default1472"></A><A NAME="@default1473"></A><A NAME="@default1474"></A><A NAME="@default1475"></A><A NAME="@default1476"></A><A NAME="@default1477"></A>
+<TT>if</TT> est suivi d’un booléen entre des parenthèses.<BR>
+<TT>if</TT> permet de faire, ou de ne pas faire, un bloc d’instructions, selon la 
+valeur de ce booléen.<BR>
+<TT>if</TT> utilisé avec <TT>else</TT> permet de choisir de faire, soit un bloc 
+d’instructions, soit un autre bloc d’instructions , selon la valeur du 
+booléen.<BR>
+<TT>fi</TT> est suivi d’un booléen et de <TT>then</TT>.<BR>
+Selon la valeur de ce booléen <TT>if</TT> permet de faire, ou de ne pas faire, 
+les instructions situées entre <TT>else</TT> et <TT>end</TT>.<BR>
+Selon la valeur de ce booléen <TT>if</TT> utilisé avec <TT>else</TT> permet de 
+choisir de faire, soit 
+les instructions situées entre <TT>then</TT> et <TT>else</TT>, soit les 
+instructions situées entre <TT>else</TT> et <TT>end</TT>.<BR>
+<TT>si</TT> est suivi d’un booléen et de <TT>alors</TT>.<BR>
+Selon la valeur de ce booléen <TT>si</TT> permet de faire, ou de ne pas faire, 
+les instructions situées entre <TT>alors</TT> et <TT>fsi</TT>.<BR>
+Selon la valeur de ce booléen <TT>si</TT> utilisé avec <TT>sinon</TT> permet de 
+choisir de faire, soit 
+les instructions situées entre <TT>alors</TT> et <TT>sinon</TT>, soit les 
+instructions situées entre <TT>sinon</TT> et <TT>fsi</TT>.<BR>
 On tape :
-</P><PRE CLASS="verbatim">testfprint(nom):={
- local a,f;
- a:=[];
- f:=fopen(nom);
- for (k:=1;k&lt;11;k++){
- fprint(f,k);
- }
- fclose(f);
- return a;
- }
-</PRE><P>puis :
-</P><DIV CLASS="center"><TT>testfprint("toto")</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a:=3;b:=2;</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>if (a&gt;b) {a:=a+5;b:=a-b;}</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>la création d’un fichier "toto" dans lequel il y a 12345678910</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>6</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>a:=3;b:=2;</TT></DIV><P>
+puis :</P><DIV CLASS="center"><TT>if a&gt;b then a:=a+5;b:=a-b;end</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>6</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>a:=3;b:=2;</TT></DIV><P>
+puis :</P><DIV CLASS="center"><TT>si a&gt;b alors a:=a+5;b:=a-b;fsi</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>6</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>maxi(a,b):={if (a&gt;b) {return a;} else {return b;}}</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>maxi(2,3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>maxi(a,b):={if a&gt;b then return a; else return b;end}</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>maxi(2,3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>maxi(a,b):={si a&gt;b alors retourne a; sinon retourne b;fsi}</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>maxi(2,3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
 <A HREF="cascmd_fr819.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr821.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

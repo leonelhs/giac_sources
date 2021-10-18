@@ -6,33 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour ne pas faire la fin d’une boucle : continue</TITLE>
+<TITLE>Modifier l’ordre d’exécution des instructions : label goto</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr826.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr828.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc958">8.6.3</A>  Pour ne pas faire la fin d’une boucle : <TT>continue</TT></H3><P><A NAME="@default1500"></A>
-<TT>continue</TT> n’a pas d’argument ni parenthèse.<BR>
-<TT>continue</TT> dans une boucle, permet d’ignorer la fin de l’itération 
-et ainsi de passer directement à l’itération suivante.<BR>
+<H3 CLASS="subsection"><A NAME="htoc967">9.4.25</A>  Modifier l’ordre d’exécution des instructions : <TT>label goto</TT></H3><P><A NAME="@default1501"></A><A NAME="@default1502"></A>
+<TT>label</TT> permet de repérer une instruction dans un programme par 
+un nom de variable.<BR>
+<TT>goto</TT> permet de modifier l’ordre d’exécution des instructions, en
+exécutant les instructions du programme à partir d’une instruction 
+repérée par un label.<BR>
+<TT>label</TT> a comme arguments, une suite de caractères : par exemple <TT>label(truc)</TT> ou <TT>label(1)</TT>.<BR>
+<TT>goto</TT> a comme arguments un nom de label: par exemple <TT>goto(truc)</TT> ou <TT>goto(1)</TT>.<BR>
 On tape :
-</P><PRE CLASS="verbatim">testcont(b):={
-local a;
-a:=10;
-while (a&gt;0) {
-a:=a-3; 
-if (a&gt;=b) {continue;} 
-print(a);
+</P><PRE CLASS="verbatim">essai(eps):={
+local s,j;
+s:=0;
+j:=0;
+label(truc);
+j:=j+1;
+s:=s+1/j;
+if (1/j&gt;=eps) goto(truc);
+print(s);
+return 0;
 }
-}
-</PRE><P>puis on tape :
-</P><DIV CLASS="center"><TT>testcont(4)</TT></DIV><P>
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>essai(0.2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>a:1 et a:-2 écrit en bleu et 1 comme réponse</TT></DIV><P>
-car <TT>a</TT> est imprimé que si <TT>a&lt;b=4</TT>
-</P><HR>
+</P><DIV CLASS="center"><TT>s:137/60 écrit en bleu, puis 0 comme réponse</TT></DIV><HR>
 <A HREF="cascmd_fr826.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr828.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

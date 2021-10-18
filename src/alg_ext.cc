@@ -1330,7 +1330,7 @@ namespace giac {
       giac_assume(symbolic(at_and,makevecteur(symb_superieur_egal(var,range[0]),symb_inferieur_egal(var,range[1]))),contextptr);
       w=solve(df,var,2,contextptr);
       if (savevar==var)
-	_purge(var,contextptr);
+	purgenoassume(var,contextptr);
       else
 	sto(savevar,var,contextptr);
     }

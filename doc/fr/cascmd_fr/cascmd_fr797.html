@@ -6,24 +6,49 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction testant si le type de son argument est une séquence : subtype</TITLE>
+<TITLE>kolmogorovt</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr796.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr798.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc926">8.4.5</A>  Fonction testant si le type de son argument est une séquence : <TT>subtype</TT></H3><P><A NAME="@default1426"></A>
-<TT>subtype</TT> est une fonction qui a un argument et qui renvoie 1 si
-cet argument est une séquence et 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc932">8.5.5</A>  <TT>kolmogorovt</TT></H3><P><A NAME="@default1407"></A>
+<TT>kolmogorovt</TT> a pour arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+la liste des données d’un échantillon,
+</LI><LI CLASS="li-itemize">une loi de distribution ou la liste des données d’un autre
+échantillon,
+</LI><LI CLASS="li-itemize">les paramètres de cette loi de distribution.
+</LI></UL><P>
+<TT>kolmogorovt</TT> est le test de Kolmogorov-Smirnov d’adéquation à une loi 
+de distribution <B>continue</B>, entre 2 échantillons l1 l2 (loi inconnue 
+supposée continue) ou entre 1 échantillon l1 et une loi continue.<BR>
+<TT>kolmogorovt</TT> renvoie 3 valeurs préfixées, <I>D</I> est la valeur brute de 
+la statistique, <I>K</I> vaut <I>D</I>√<SPAN style="text-decoration:overline"><I>n</I></SPAN> où <I>n</I> est la taille de l’échantillon
+(ou <I>D</I>√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUB><SPAN style="text-decoration:overline">1</SPAN></SUB><SPAN style="text-decoration:overline"> <I>n</I></SPAN><SUB><SPAN style="text-decoration:overline">2</SPAN></SUB><SPAN style="text-decoration:overline">/(<I>n</I></SPAN><SUB><SPAN style="text-decoration:overline">1</SPAN></SUB><SPAN style="text-decoration:overline">+<I>n</I></SPAN><SUB><SPAN style="text-decoration:overline">2</SPAN></SUB><SPAN style="text-decoration:overline">)</SPAN> si on teste l’adéquation de 2 échantillons
+de tailles <I>n</I><SUB>1</SUB> et <I>n</I><SUB>2</SUB>), <I>K</I> tend vers
+la distribution de Kolmogorov-Smirnov <CODE>kolmogorovd</CODE>
+lorsque <I>n</I> tend vers l’infini, la 3ième valeur est 1-<CODE>kolmogorovd</CODE>(<I>K</I>)
+qui est d’autant plus proche de 1 que l’adéquation est bonne (on rejettera
+donc l’hypothèse nulle - qui est l’adéquation - lorsque cette dernière 
+valeur est proche de 0). Le menu
+Aide, Exemples, probas, kolmogorov donne une illustration de ce test :
+on teste l’adéquation d’un vecteur aléatoire tiré selon une loi
+avec cette même loi: on fait le calcul de la statistique <I>K</I> pour 200 tirages
+et on représente graphiquement le cumul de fréquences avec la distribution
+de KS sur le même graphique (cela marche bien pour les deux premières
+lois qui sont continues, mais pas pour la troisième loi qui est discrète)<BR>
 On tape :
-</P><DIV CLASS="center"><TT>subtype(3,1,4)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>kolmogorovt(randvector(100,normald,0,1),normald(0,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>subtype[3,1,4]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>["D=",0.104642990054,"K=",1.04642990054, "1-kolmogorovd(K)=",0.223512817343]</TT></DIV><P>
+On ne peut pas rejeter l’adéquation car <TT>1-kolmogorovd(K)</TT> est n’est pas
+proche de zéro.</P><P>On tape :
+</P><DIV CLASS="center"><TT>kolmogorovt(randvector(100,normald,0,1),student(2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>["D=",0.158026574028,"K=",1.58026574028, "1-kolmogorovd(K)=",0.0135504875564]</TT></DIV><P>
+On rejette l’adéquation car <TT>1-kolmogorovd(K)</TT> est proche de zéro.</P><HR>
 <A HREF="cascmd_fr796.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr798.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

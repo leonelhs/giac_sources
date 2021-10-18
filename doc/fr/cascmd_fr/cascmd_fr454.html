@@ -6,33 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Déterminant d’une matrice de Z/pZ : Det</TITLE>
+<TITLE>Reste euclidien : Rem</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr453.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr455.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc547">6.34.5</A>  Déterminant d’une matrice de Z/pZ : <TT>Det</TT></H3><P><A NAME="@default815"></A>
-<TT>Det</TT> est la forme inerte de <TT>det</TT>.<BR>
-<TT>Det</TT> a pour argument une matrice <I>A</I> de <I>Z</I>/<I>pZ</I>.<BR>
-<TT>Det</TT> renvoie <TT>det</TT> sans l’évaluer. Ensuite, <TT>det</TT>
-calcule, dans <I>Z</I>/<I>pZ</I>, le déterminant de la matrice <I>A</I>.<BR>
-On tape en mode <TT>Xcas</TT> :
-</P><DIV CLASS="center"><TT>Det([[1,2,9] mod 13,[3,10,0] mod 13,[3,11,1] mod 13])</TT></DIV><P> 
-Ou on tape en mode <TT>Xcas</TT> :
-</P><DIV CLASS="center"><TT>Det([[1,2,9],[3,10,0],[3,11,1]] mod 13)</TT></DIV><P> 
+<H3 CLASS="subsection"><A NAME="htoc548">6.35.2</A>  Reste euclidien : <TT>Rem</TT></H3><P><A NAME="@default814"></A>
+<TT>Rem</TT> est la forme inerte de <TT>rem</TT>.<BR>
+<TT>Rem</TT> renvoie <TT>rem</TT>, le reste de la division euclidienne de deux 
+polynômes sans l’évaluer.<BR>
+On utilise <TT>Rem</TT> et <TT>mod</TT> pour calculer en mode <TT>Maple</TT> le 
+reste de la division euclidienne de deux polynômes à coefficients dans 
+ℤ/<I>p</I>ℤ.<BR>
+On tape, en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>Rem((x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>2+1) mod 13,(2*x</TT><CODE><TT>^</TT></CODE><TT>2+4) mod 13)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>det([[1% 13,2% 13,-4% 13],[3% 13,-3% 13,0% 13], [3% 13,-2% 13,1% 13]])</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>5% 13</TT></DIV><P> 
-donc, dans ℤ/13ℤ, le déterminant de la matrice 
-<I>A</I>=[[1, 2, 9],[3,10,0],[3,11,1]] est <TT>5% 13</TT> (on a <TT>det(A)=31</TT>).<BR>
-<B>Attention</B> <TT>Det</TT> est surtout utile en mode <TT>Maple</TT>.<BR>
-On tape alors en mode <TT>Maple</TT> :
-</P><DIV CLASS="center"><TT>Det([[1,2,9],[3,10,0],[3,11,1]]) mod 13</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rem((x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>2+1)% 13,(2*x</TT><CODE><TT>^</TT></CODE><TT>2+4)% 13)</TT></DIV><P>
+puis en utilisant <TT>eval(ans())</TT>, on obtient :
+</P><DIV CLASS="center"><TT>(-2% 13)*x+-1% 13</TT></DIV><P>
+<B>Attention</B> <TT>Rem</TT> est surtout utile en mode <TT>Maple</TT>.<BR>
+On tape alors, en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>Rem(x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>2+1,2*x</TT><CODE><TT>^</TT></CODE><TT>2+4) mod 13</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>5</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>(-2)*x-1</TT></DIV><P>
+On tape, en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>Rem(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1*x</TT></DIV><HR>
 <A HREF="cascmd_fr453.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr455.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

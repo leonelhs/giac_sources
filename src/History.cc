@@ -1730,10 +1730,12 @@ namespace xcas {
     pos=focus(Xcas_input_focus);
     if (pos==-1)
       pos=_sel_begin;
-    bool usepos=false;
+    bool usepos=false,dbg=false;
+    if (xcas::Xcas_Debug_Window && xcas::Xcas_Debug_Window->shown())
+      dbg=true;
     if (pos<0)
       pos=update_pos;
-    else
+    else 
       usepos=(dynamic_cast<Equation *>(Xcas_input_focus)==0);
     _sel_begin=savepos;
     fprintf(f,"// xcas version=%s fontsize=%i font=%i currentlevel=%i\n",VERSION,labelsize(),labelfont(),pos);
@@ -1765,6 +1767,8 @@ namespace xcas {
       if (Fl_Input_ * ptr=dynamic_cast<Fl_Input_*>(Fl::focus()))
 	ptr->position(ptr->position(),ptr->position());
     }
+    if (dbg)
+      Fl::focus(xcas::Xcas_Debug_Window);
     if (scroller){
 #ifdef _HAVE_FL_UTF8_HDR_
       scroller->scroll_to(0,yscrollerpos);
@@ -1920,7 +1924,7 @@ namespace xcas {
     string sn=get_path(urlname);
     if (!sn.empty()){
 #ifndef HAVE_NO_CWD
-      // _cd(string2gen(sn,false),contextptr);
+      //_cd(string2gen(sn,false),contextptr);
       chdir(sn.c_str());
 #endif
     }
@@ -3819,7 +3823,7 @@ namespace xcas {
     // box(FL_FLAT_BOX);
     _bordersize=labelsize();
     autosave_filename = autosave_folder+"xcas_auto_";
-    unsigned long ul=(unsigned long) this;
+    size_t ul=(size_t) this;
     autosave_filename += print_INT_(ul);
     autosave_filename += ".xws";
     scroll = new Fl_Scroll(X,Y+L,W,H-L);

@@ -6,52 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La similitude : similarity similitude</TITLE>
+<TITLE>Savoir si on a un triangle isocéle : is_isosceles est_isocele</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1039.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1041.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1208">10.14.6</A>  La similitude : <TT>similarity similitude</TT></H3><P><A NAME="@default2015"></A><A NAME="@default2016"></A><A NAME="sec:similitude3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr944.html#sec:similitude2">9.17.6</A> pour la géométrie plane et 
-<A HREF="cascmd_fr983.html#sec:axe3">10.5.2</A> pour définir un axe.<BR>
-<TT>similitude</TT>, en géométrie 3-d, a trois ou quatre 
-arguments : une droite orientée par l’ordre de ses arguments ou par le 
-produit vectoriel des normales orientées des plans qui la définissent 
-(l’axe de rotation), un réel (la valeur du rapport <I>k</I> de la similitude), 
-un réel (la mesure <I>a</I> de l’angle de rotation en radians (ou degrés)) et 
-éventuellement l’objet géométrique à transformer.<BR>
-<B>Remarque</B> : si le rapport <I>k</I> est négatif, l’angle de la similitude 
-est alors de mesure −<I>a</I> radians (ou degrés).<BR>
-Lorsque <TT>similitude</TT> a trois arguments, c’est une fonction qui agit sur 
-un objet géométrique.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1218">11.13.10</A>  Savoir si on a un triangle isocéle : <TT>is_isosceles est_isocele</TT></H3><P><A NAME="@default2014"></A><A NAME="@default2015"></A><A NAME="sec:estisocele3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr962.html#sec:estisocele2">10.18.6</A> pour la géométrie plane.<BR>
+<TT>est_isocele</TT> est une fonction booléenne ayant comme 
+argument trois points ou un objet géométrique.<BR>
+<TT>est_isocele</TT> vaut 1 (resp 2, 3) si les trois points forment un 
+triangle isocéle ou si l’objet géométrique est un triangle isocéle dont
+le sommet de l’angle portant les deux cotés égaux est désigné par le 
+premier (resp second, troisième) argument, ou vaut 4 si les trois points 
+forment un triangle équilatéral, ou si l’objet géométrique est un 
+triangle équilatéral, et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>s:=similitude(droite(point(0,0,0),point(1,1,1)), 2,2*pi/3)</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>s(point(0,0,1))</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>Le point (2,0,0) est tracé</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_isocele([2,0,0],[0,0,0],[0,2,0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>s(sqhere(point(1,0,0),1))</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>La sphère de centre (0,2,0) et de rayon 2</TT></DIV><P>
-Lorsque <TT>similitude</TT> a quatre arguments, <TT>similitude</TT> dessine et 
-renvoie le transformé du quatrième argument 
-dans la similitude d’axe le premier argument de rapport le deuxième 
-argument et d’angle le troisième argument.<BR>
+</P><DIV CLASS="center"><TT>T:=triangle_isocele([0,0,0],[2,2,0],[2,2,2]); est_isocele(T)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>similitude(droite(point(0,0,0),point(1,1,1)), 2,2*pi/3,point(0,0,1))</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>Le point (2,0,0) est tracé</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>similitude(droite(point(0,0,0),point(1,1,1)), 2,2*pi/3,sqhere(point(1,0,0),1))</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>La sphère de centre (0,2,0) et de rayon 2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>est_isocele([1,1,0],[-1,1,0],[-1,0,0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr1039.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1041.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

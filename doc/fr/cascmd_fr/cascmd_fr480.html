@@ -6,28 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour accéder à un élément d’une séquence : []</TITLE>
+<TITLE>Convertir un nombre en un intervalle : convert</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr479.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr481.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc577">6.38.3</A>  Pour accéder à un élément d’une séquence : <TT>[]</TT></H3><P><A NAME="@default855"></A><A NAME="@default856"></A>
-Pour accéder à un élément d’une séquence, on tape l’indice de cet 
-élément entre des crochets pour des indices qui commencent à 0<BR>
-ou bien<BR>
-on tape son indice entre des doubles crochets pour des indices qui commencent 
-à 1.<BR>
+<H3 CLASS="subsection"><A NAME="htoc577">6.38.11</A>  Convertir un nombre en un intervalle : <TT>convert</TT></H3><P><A NAME="@default855"></A>
+<TT>convert</TT> a deux ou trois paramètres : une expression symbolique,
+le mot reservé <TT>interval</TT> et eventuellement un entier <I>n</I>&gt;15 pour donner 
+le nombre de chiffres significatifs désirés.<BR>
+<TT>convert</TT> renvoie le plus petit intervalle dans lequel se trouve la valeur 
+de l’expression ou la valeur 
+de l’expression ????????.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>(0,1,2)[1]</TT></DIV><P>
-On obtient car l’indice du premier élément est 0 :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-<B>Ou bien</B><BR>
+</P><DIV CLASS="center"><TT>convert(sin(3)+1,interval)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>i[1.1411200080599,1.1411200080599]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>(0,1,2)[[1]]</TT></DIV><P>
-On obtient car l’indice du premier élément est 1 :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>convert(sin(3)+1,interval,20)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>i[1.1411200080598672221,1.1411200080598672221]</TT></DIV><HR>
 <A HREF="cascmd_fr479.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr481.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

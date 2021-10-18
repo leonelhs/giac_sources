@@ -6,86 +6,96 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynôme caractéristique : pcar charpoly</TITLE>
+<TITLE>Matrice de Jordan rationnelle : rat_jordan</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr617.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr619.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc726">6.49.7</A>  Polynôme caractéristique : <TT>pcar charpoly</TT></H3><P><A NAME="@default1131"></A><A NAME="@default1132"></A><A NAME="@default1133"></A><A NAME="@default1134"></A>
-<A NAME="@default1135"></A><A NAME="@default1136"></A>
-<TT>pcar</TT> (ou <TT>charpoly</TT>) a un (resp deux)
-argument(s).<BR>
-<TT>pcar</TT> (ou <TT>charpoly</TT>) a comme argument une matrice <I>A</I> 
-d’ordre <I>n</I> (resp une matrice <I>A</I> d’ordre <I>n</I> et un nom de variable
-formelle).<BR>
-<TT>pcar</TT> (ou <TT>charpoly</TT>) renvoie le polynôme caractéristique <I>P</I> de <I>A</I> écrit selon la 
-liste de ses coefficients (resp le polynôme caractéristique <I>P</I> de <I>A</I> 
-écrit sous forme symbolique en utilisant le nom de variable donnée en 
-argument).<BR>
-Le polynôme caractéristique <I>P</I> de <I>A</I> est défini par
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>x</I>)=det(<I>x</I>.<I>I</I>−<I>A</I>)</TD></TR>
-</TABLE><P>
-On tape :
-</P><DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV><P>
-Donc le polynôme caractéristique de [[4,1,-2],[1,2,-1],[2,1,0]]
-est 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>3</SUP>−6<I>x</I><SUP>2</SUP>+12<I>x</I>−8 </TD></TR>
-</TABLE><P> 
-On peut aussi avoir la forme symbolique en tapant :<BR>
- <TT>normal(poly2symb([1,-6,12,-8]))</TT>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>purge(X):;pcar([[4,1,-2],[1,2,-1],[2,1,0]],X)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>X</TT><CODE><TT>^</TT></CODE><TT>3-6*X</TT><CODE><TT>^</TT></CODE><TT>2+12*X-8</TT></DIV><P>
-On peut spécifier par un argument optionnel l’algorithme utilisé
-pour faire ce calcul, parmi :
+<H3 CLASS="subsection"><A NAME="htoc727">6.50.4</A>  Matrice de Jordan rationnelle : <TT>rat_jordan</TT></H3><P><A NAME="@default1132"></A>
+<TT>rat_jordan</TT> a comme argument une matrice <I>A</I> d’ordre <I>n</I> à 
+coefficients rationnels.<BR>
+<TT>rat_jordan</TT> renvoie :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<CODE>lagrange</CODE> : calcul par interpolation de Lagrange, en
-donnant à <I>x</I> les valeurs comprises entre 0 et la dimension.<BR>
-On tape :
-<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],lagrange)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>x*((x-1)*(-x+5)-7)+8</TT></DIV>
-et après simplification :
-<DIV CLASS="center"><TT>-x</TT><CODE><TT>^</TT></CODE><TT>3+6*x</TT><CODE><TT>^</TT></CODE><TT>2-12*x+8</TT></DIV>
-</LI><LI CLASS="li-itemize"><CODE>hessenberg</CODE> : calcul par réduction sous forme
-tri-diagonale puis formule de récurrence, efficace sur
-un corps fini.<BR>
-On tape :
-<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],hessenberg)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV>
-</LI><LI CLASS="li-itemize"><CODE>fadeev</CODE> : calcul simultané du polynôme
-caractéristique et de la comatrice de <I>xI</I>−<I>A</I>
-On tape :
-<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],fadeev)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV>
-</LI><LI CLASS="li-itemize"><CODE>pmin</CODE> : calcul du polynôme minimal relatif à un
-vecteur pris au hasard, c’est le polynôme caractéristique 
-s’il est de degré maximal.<BR>
-On tape :
-<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],pmin)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV>
+en mode <TT>Xcas</TT>, <TT>Mupad</TT> ou <TT>TI</TT><BR>
+une séquencee composée de deux matrices : une matrice 
+de changement de base <I>P</I>, suivie de la matrice de Jordan <I>J</I> associée à 
+<I>A</I> si celle-ci est rationnelle ou de la matrice dont les blocs de Jordan sont 
+remplacés par les matrices compagnons associées au facteur non 
+rationnellement reductible du polynôme caractéristique de <I>A</I> (c’est la 
+matrice la plus reduite à coefficient dans le corps de <I>A</I>, ou le corps 
+complexifié de <I>A</I> si on est en mode complexe).<BR>
+</LI><LI CLASS="li-itemize">en mode <TT>Maple</TT><BR>
+ la matrice de Jordan <I>J</I> associée à <I>A</I> si celle-ci est rationnelle ou de
+la matrice dont les blocs de Jordan sont remplacés par les matrices compagnons
+associées au facteur non rationnellement reductible du polynôme 
+caractéristique de <I>A</I>. On peut cependant obtenir la matrice de changement de
+base <I>P</I>, dans une variable passée en second argument, par exemple 
+<DIV CLASS="center"> <TT>rat_jordan([[1,0,0],[1,2,-1],[0,0,1]],’P’)</TT>
+</DIV>
 </LI></UL><P>
-Pour les matrices à coefficients entiers, l’algorithme utilisé par
-défaut est modulaire, on calcule le polynôme caractéristique
-modulo plusieurs nombres premiers, soit par le polynôme minimal,
-soit par Hessenberg, et on reconstruit par les restes chinois
-coefficient par coefficient. Le test d’arrêt est probabiliste,
-lorsque le polynôme reconstruit ne varie plus pour des nombres
-premiers dont le produit est supérieur à l’inverse de
-la valeur de <CODE>proba_epsilon</CODE> (que l’on peut modifier
-dans la configuration du cas). Si <CODE>proba_epsilon</CODE> est nul,
-le résultat est déterministe (une majoration à priori des
-coefficients est alors utilisée). Dans tous les cas, le temps
-de calcul est en <I>O</I>(<I>n</I>4ln(<I>n</I>)), mais il est plus rapide avec la méthode
-probabiliste.</P><HR>
+On a :<BR>
+<I>J</I>=<I>P</I><SUP>−1</SUP><I>AP</I> avec <I>J</I> est à coefficients rationnels.<BR>
+<B>Remarques</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+La syntaxe <TT>Maple</TT> est aussi valable dans les autres modes, par 
+exemple, en mode <TT>Xcas</TT>, on tape :
+<DIV CLASS="center"> <TT>rat_jordan([[4,1,1],[1,4,1],[1,1,4]],’P’)</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>[[1,-1,1/2],[1,0,-1],[1,1,1/2]]</TT></DIV>
+puis <TT>P</TT> renvoie :
+<DIV CLASS="center"> <TT>[[6,0,0],[0,3,0],[0,0,3]]</TT></DIV>,
+</LI><LI CLASS="li-itemize">Les coefficients de <I>P</I> et de <I>J</I> appartiennent au corps des 
+coefficients de <I>A</I>.<BR>
+Par exemple, en mode <TT>Xcas</TT>, on tape :
+<DIV CLASS="center"> <TT>rat_jordan([[1,0,1],[0,2,-1],[1,-1,1]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>[[1,1,2],[0,0,-1],[0,1,2]],[[0,0,-1],[1,0,-3],[0,1,4]]</TT></DIV>
+On tape (on met <TT>-pcar(...)</TT> car l’argument de <TT>companion</TT> doit être un polynôme unitaire (cf <A HREF="cascmd_fr625.html#sec:compagne">6.50.11</A>)
+<DIV CLASS="center"><TT>companion(-pcar([[1,0,1],[0,2,-1],[1,-1,1]],x),x)</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>[[0,0,-1],[1,0,-3],[0,1,4]]</TT></DIV>
+On tape :
+<DIV CLASS="center"> <TT>rat_jordan([[1,0,0],[0,1,1],[1,1,-1]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>[[-1,0,0],[1,1,1],[0,0,1]],[[1,0,0],[0,0,2],[0,1,0]]</TT></DIV>
+On tape :
+<DIV CLASS="center"> <TT>factor(pcar([[1,0,0],[0,1,1],[1,1,-1]],x))</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>-(x-1)*(x</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV>
+On tape :
+<DIV CLASS="center"> <TT>companion((x</TT><CODE><TT>^</TT></CODE><TT>2-2),x)</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>[[0,2],[1,0]]</TT></DIV></LI><LI CLASS="li-itemize">Lorsque <I>A</I> est symétrique et a des valeurs propres d’ordre multiple,
+<TT>Xcas</TT> renvoie des vecteurs propres orthogonaux mais pas forcément 
+normés i.e. <TT>tran(P)*P</TT> est une matrice diagonale de diagonale le carré
+de la norme des vecteurs propres.<BR>
+On tape :
+<DIV CLASS="center"><TT>rat_jordan([[4,1,1],[1,4,1],[1,1,4]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[1,-1,1/2],[1,0,-1],[1,1,1/2]],[[6,0,0],[0,3,0],[0,0,3]]</TT></DIV>
+</LI></UL><P>
+On tape en mode <TT>Xcas</TT>, <TT>Mupad</TT> et <TT>TI</TT>:
+</P><DIV CLASS="center"><TT>rat_jordan([[1,0,0],[1,2,-1],[0,0,1]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[0,1,0],[1,0,1],[0,1,1]],[[2,0,0],[0,1,0],[0,0,1]] </TT></DIV><P>
+On tape en mode <TT>Xcas</TT>, <TT>Mupad</TT> et <TT>TI</TT>:
+</P><DIV CLASS="center"><TT>rat_jordan([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[[1,2,1],[0,1,0],[1,2,0]],[[2,1,0],[0,2,1],[0,0,2]]]</TT></DIV><P>
+En mode complexe et en mode <TT>Xcas</TT>, <TT>Mupad</TT> et <TT>TI</TT>, on tape :
+</P><DIV CLASS="center"><TT>rat_jordan([[2,0,0],[0,2,-1],[2,1,2]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,0,0],[-2,-1,-1],[0,-i,i]],[[2,0,0],[0,2-i,0],[0,0,2+i]]</TT></DIV><P>
+On tape en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>rat_jordan([[1,0,0],[1,2,-1],[0,0,1]],’P’)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[2,0,0],[0,1,0],[0,0,1]]</TT></DIV><P>
+puis on tape :
+</P><DIV CLASS="center"><TT>P)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[0,1,0],[1,0,1],[0,1,1]]</TT></DIV><HR>
 <A HREF="cascmd_fr617.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr619.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

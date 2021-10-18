@@ -6,29 +6,47 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Changer les paramètres de la fenêtre graphique : xyztrange</TITLE>
+<TITLE>Générer une erreur : throw error ERROR</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr852.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr854.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc988">9.2.10</A>  Changer les paramètres de la fenêtre graphique : <TT>xyztrange</TT></H3><P><A NAME="@default1537"></A>
-<TT>xyztrange</TT> met ou enlève les axes de l’écran 
-géométrique. <TT>xyztrange</TT> a 15 paramètres ce sont des paramètres 
-que l’on peut définir dans l’écran de la configuration du graphique. On 
-ouvre cet écran avec la configuration graphique (voir <A HREF="cascmd_fr021.html#sec:configgeo">1.6.2</A>).<BR>
-On tape ou plutôt on utilise le menu <TT>Cfg</TT> :
-</P><DIV CLASS="center"><TT>xyztrange(-5,5,-5,2,-10,10,-1,6,-5,5,-1.2384,2,1,0,1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc996">9.7.13</A>  Générer une erreur : <TT>throw error ERROR</TT></H3><P><A NAME="@default1532"></A><A NAME="@default1533"></A><A NAME="@default1534"></A>
+<TT>throw</TT> ou <TT>error</TT> ou <TT>ERROR</TT> permet de générer une
+erreur en provoquant l’affichage d’une erreur.<BR>
+On tape :
+</P><PRE CLASS="verbatim">f(x):={
+if (type(x)!=DOM_INT)
+  throw(erreur);
+else
+  return x;
+} 
+</PRE><P>puis
+</P><DIV CLASS="center"><TT>f(1.2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La fenêtre visible est [-5;5]*[-1.2834;2]</TT></DIV><P>
-<B>Attention</B> à la différence entre "fenêtre de calcul" et "fenêtre 
-visible" : si la fenêtre de calcul est plus grande, on pourra aller voir ce 
-qui se passe "ailleurs" avec les flèches faisant parties des boutons de 
-l’écran géométrique.<BR>
-De plus, si on a demandé un repère orthonormé en cliquant sur
-⊥, la fenêtre visible demandée sera contenue dans ce qui est 
-réellement visible. </P><HR>
+</P><DIV CLASS="center"><TT>"erreur Error: Bad Argument Value"</TT></DIV><P>
+puis
+</P><DIV CLASS="center"><TT>f(12)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>12</TT></DIV><P>
+On peut capter l’erreur grace à cette fonction <TT>f</TT> que l’on utilise dans
+la fonction <TT>g</TT> suivante :
+</P><PRE CLASS="verbatim">g(x):={
+try { f(x); } catch (err){ x:=0; }
+return x;
+} 
+</PRE><P>puis
+</P><DIV CLASS="center"><TT>g(1.2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+puis
+</P><DIV CLASS="center"><TT>g(12)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>12</TT></DIV><P>
+La fonction <TT>g(x)</TT> renvoie, <TT>x</TT> si <TT>x</TT> est un entier,
+et <TT>0</TT> sinon. </P><HR>
 <A HREF="cascmd_fr852.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr854.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

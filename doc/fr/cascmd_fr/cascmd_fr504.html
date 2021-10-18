@@ -6,24 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Longueur d’une liste : size nops length</TITLE>
+<TITLE>Modifier un élément d’une liste : subsop</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr503.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr505.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc603">6.40.15</A>  Longueur d’une liste : <TT>size nops length</TT></H3><P><A NAME="@default894"></A><A NAME="@default895"></A><A NAME="@default896"></A>
-<TT>size</TT> ou <TT>nops</TT> ou <TT>length</TT> renvoie la longueur d’une 
-liste (ou d’une chaîne).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>nops([3,4,2])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>size([3,4,2])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>length([3,4,2])</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc604">6.41.12</A>  Modifier un élément d’une liste : <TT>subsop</TT></H3><P><A NAME="@default892"></A>
+<TT>subsop</TT> permet de modifier un élément dans une liste sans 
+avoir à la mettre dans une variable.<BR>
+<B>Remarque</B> Si le second argument est <TT>’k=NULL’</TT>, l’élément d’indice
+<TT>k</TT> est enlevé de la liste.<BR>
+On tape en mode <TT>Xcas</TT> (les indices commencent à 0) :
+</P><DIV CLASS="center"><TT>subsop([0,1,2],1=5)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>L:=[0,1,2];L[1]:=5</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[0,5,2]</TT></DIV><P>
+On tape en mode <TT>Xcas</TT> (les indices commencent à 0) 
+</P><DIV CLASS="center"><TT>subsop([0,1,2],’1=NULL’)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0,2]</TT></DIV><P>
+On tape en mode <TT>Mupad TI</TT> (les indices commencent à 1) :
+</P><DIV CLASS="center"><TT>subsop([0,1,2],2=5)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>L:=[0,1,2];L[2]:=5</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0,5,2]</TT></DIV><P>
+<B>Attention</B>, en mode <TT>Maple</TT> les arguments sont permutés et les 
+indices commencent à 1.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>subsop(2=5,[0,1,2])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>L:=[0,1,2];L[2]:=5</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0,5,2]</TT></DIV><HR>
 <A HREF="cascmd_fr503.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr505.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

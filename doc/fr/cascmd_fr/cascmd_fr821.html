@@ -6,39 +6,73 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : #</TITLE>
+<TITLE>L’instruction conditionnelle : if then elif else end</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr820.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr822.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc951">8.5.4</A>  Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : <TT>#</TT></H3><P><A NAME="@default1494"></A><A NAME="sec:diese"></A>
-<TT>#</TT> permet d’utiliser une chaîne de caractères comme nom de 
-variable ou comme nom de fonction ou comme nom d’instruction ou comme nom de 
-répertoire.<BR>
-<TT>#</TT> est surtout utile dans un programme.<BR>
-<TT>#</TT> a comme argument une chaîne ou le nom d’une variable qui contient 
-une chaîne ou une expression renvoyant une chaîne.<BR>
-<TT>#</TT> transforme la chaîne en une expression mais n’évalue pas cette
-expression. Donc,
-pour faire une affectation, on ne doit pas écrire <TT>#"a:=2"</TT>, mais on
-peut écrire <TT>#"a":=2</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr823.html#sec:expr">8.5.6</A>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>a:="abc";#a:=3</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>#"abc":=3</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La variable abc contient 3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>b:="ifactor";(#b)(54)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>(#"ifactor")(54)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>#"ifactor(54)"</TT></DIV><P>On obtient :
-</P><DIV CLASS="center"><TT>ifactor(54)</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc961">9.4.19</A>  L’instruction conditionnelle : <TT>if then elif else end</TT></H3><P><A NAME="@default1478"></A>
+Lorsqu’il y a plusieurs <TT>if...else if...</TT> à la suite
+on peut aussi utiliser un <TT>elif</TT> qui est une écriture 
+condensée de <TT>else if</TT>. L’instruction <TT>elif</TT> permet une écriture
+plus lisible car un seul <TT>end</TT> suffit pour clore le <TT>if</TT>. 
+Le dernier <TT>elif</TT> peut comporter 
+ou ne pas comporter un <TT>else</TT>. Voici la syntaxe :<BR>
+<A NAME="@default1479"></A><A NAME="@default1480"></A><A NAME="@default1481"></A></P><P><TT>if (</TT><TT><EM>condition1</EM></TT><TT>) then<BR>
+</TT><TT><EM>action1</EM></TT><TT>;<BR>
+elif (</TT><TT><EM>condition2</EM></TT><TT>) then<BR>
+</TT><TT><EM>action2</EM></TT><TT>;<BR>
+elif (</TT><TT><EM>condition3</EM></TT><TT>) then<BR>
+</TT><TT><EM>action3</EM></TT><TT>;<BR>
+end</TT><BR>
+ou bien
+<TT>if (</TT><TT><EM>condition1</EM></TT><TT>) then<BR>
+</TT><TT><EM>action1</EM></TT><TT>;<BR>
+elif (</TT><TT><EM>condition2</EM></TT><TT>) then<BR>
+</TT><TT><EM>action2</EM></TT><TT>;<BR>
+elif (</TT><TT><EM>condition3</EM></TT><TT>) then<BR>
+</TT><TT><EM>action3</EM></TT><TT>;<BR>
+else 
+</TT><TT><EM>action4</EM></TT><TT>;<BR>
+end</TT><BR>
+On tape par exemple pour définir la fonction <TT>f</TT> définit par :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<I>f</I>(<I>x</I>)=8 si <I>x</I>&gt;8
+</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=4 si 4&lt;<I>x</I>≥ 8
+</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=2 si 2&lt;<I>x</I>≥ 4
+</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=1 si 0&lt;<I>x</I>≥ 2
+</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=0 si  <I>x</I>≤ 0
+</LI></UL><PRE CLASS="verbatim">f(a):= {
+  if a&gt;8 then 
+    return 8;
+  elif a&gt;4 then 
+    return 4;
+  elif a&gt;2 then 
+    return 2;
+  elif a&gt;0 then 
+    return 1;
+  elif a&lt;=0 then
+    return 0;
+  end;
+}:;
+</PRE><P>ou plutôt en utilisant un <TT>else</TT> à la place du dernier <TT>elif</TT>,
+on tape:
+</P><PRE CLASS="verbatim">f(a):= {
+  if a&gt;8 then 
+    return 8;
+  elif a&gt;4 then 
+    return 4;
+  elif a&gt;2 then 
+    return 2;
+  elif a&gt;0 then 
+    return 1;
+  else
+    return 0;
+  end;
+}:;
+</PRE><HR>
 <A HREF="cascmd_fr820.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr822.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

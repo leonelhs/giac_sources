@@ -6,280 +6,343 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="casexo.css">
-<TITLE>Exercices de probabilités</TITLE>
+<TITLE>Les équations différentielles résolubles</TITLE>
 </HEAD>
 <BODY >
 <A HREF="casexo027.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casexo029.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc398">Chapitre 28</A>  Exercices de probabilités</H1><H2 CLASS="section"><A NAME="toc154"></A><A NAME="htoc399">28.1</A>  Loi géométrique</H2><H3 CLASS="subsection"><A NAME="htoc400">28.1.1</A>  Exercice</H3><P>
-Une urne contient 5 boules blanches et 5 boules rouges. On les tire une à
-une avec remise jusqu’à ce que l’on obtienne une boule blanche.
-Soit <I>X</I> la variable aléatoire "rang de la première boule blanche".
-Déterminer la loi de <I>X</I>, son espérance et sa variance.<BR>
-
-<I>X</I> suit une loi géométrique de paramètre <I>p</I>=1/2.<BR>
-On a :<BR>
-<I>Proba</I>(<I>X</I>=<I>n</I>)=(1−<I>p</I>)<SUP><I>n</I>−1</SUP>*<I>p</I>=1/2<SUP><I>n</I></SUP><BR>
-On a bien :<BR>
-∑<SUB><I>k</I>=1</SUB><SUP>+∞</SUP> 1/2<SUP><I>k</I></SUP>=1/2*
-∑<SUB><I>k</I>=0</SUB><SUP>+∞</SUP>1/2<SUP><I>k</I>−1</SUP>=1/2*2=1<BR>
-La fonction de répartition de <I>X</I> est :<BR>
-<I>F</I>(<I>n</I>)=<I>Proba</I>(<I>X</I>≤ <I>n</I>)=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>1/2<SUP><I>k</I></SUP>=1−1/2<SUP><I>n</I>+1</SUP><BR>
-On sait que :
-<I>E</I>(<I>X</I>)=1/<I>p</I>=2<BR>
-σ<SUP>2</SUP>(<I>X</I>)=1/<I>p</I>=2<BR>
-On vérifie avec <TT>Xcas</TT> :<BR>
-<TT>sum(k/2</TT><CODE><TT>^</TT></CODE><TT>k,k=0..inf)</TT> renvoie 2<BR>
-<I>E</I>(<I>X</I><SUP>2</SUP>)=1/<I>p</I>=2<BR>
-On vérifie avec <TT>Xcas</TT> :<BR>
-<TT>sum(k</TT><CODE><TT>^</TT></CODE><TT>2/2</TT><CODE><TT>^</TT></CODE><TT>k,k=0..inf)</TT> renvoie 6<BR>
-donc σ<SUP>2</SUP>(<I>X</I>)=<I>E</I>(<I>X</I><SUP>2</SUP>)−<I>E</I>(<I>X</I>)<SUP>2</SUP>=2<BR>
-</P><H3 CLASS="subsection"><A NAME="htoc401">28.1.2</A>  Exercice variante non géométrique</H3><P>
-Une urne contient 5 boules blanches et 5 boules rouges. On les tire une à
-une sans remise jusqu’à ce que l’urne soit vide.<BR>
-Soit <I>X</I> la variable aléatoire "rang de la première boule blanche".
-Déterminer la loi de <I>X</I>, son espérance et sa variance. </P><P>La loi de Bernouilli que l’on repète n’est pas la même car on ne remet 
-pas les boules dans l’urne : ce n’est donc pas une loi géométrique.
-Trouver la loi de <I>X</I> c’est trouver :
-<I>Proba</I>(<I>X</I>=<I>n</I>) puis sa fonction de repartition <I>F</I>.<BR>
-<I>X</I> ne peut prendre que les valeurs 1,2,3,4,5,6.<BR>
-On a (on fait les calculs avec <B>Xcas</B>) :<BR>
-<I>Proba</I>(<I>X</I>=1)=5/10=1/2 (car on a 10 boules dont 5 blanches)<BR>
-<I>Proba</I>(<I>X</I>=2)=1/2*5/9=5/18=comb(5,1)/comb(10,1)*5/9 (car au 2ième tirage il 
-reste 9 boules dont 5 blanches)<BR>
-<I>Proba</I>(<I>X</I>=3)=1/2*4/9*5/8=5/36=comb(5,2)/comb(10,2)*5/8 (car au 3ième tirage 
-il reste 8 boules dont 5 blanches)<BR>
-<I>Proba</I>(<I>X</I>=4)=1/2*4/9*3/8*5/7=5/84=comb(5,3)/comb(10,3)*5/7<BR>
-<I>Proba</I>(<I>X</I>=5)=1/2*4/9*3/8*2/7*5/6=5/252=comb(5,4)/comb(10,4)*5/6<BR>
-<I>Proba</I>(<I>X</I>=6)=1/2*4/9*3/8*2/7*1/6*5/5=1/252=comb(5,5)/comb(10,5)*5/5<BR>
-On a la formule :
-<I>Proba</I>(<I>X</I>=<I>n</I>)=<I>comb</I>(5,<I>n</I>−1)/<I>comb</I>(10,<I>n</I>−1)*5/(11−<I>n</I>)
-Donc :<BR>
-<I>F</I>(1)=1/2<BR>
-<I>F</I>(2)=1/2+5/18=7/9<BR>
-<I>F</I>(3)=7/9+5/36 =11/12<BR>
-<I>F</I>(4)=11/12+5/84=41/42<BR>
-<I>F</I>(5)=41/42+5/252=251/252<BR>
-<I>F</I>(6)=251/252+1/252=1<BR>
-On vérifie avec <B>Xcas</B> par exemple :<BR>
-<TT>sum(comb(5,n-1)/comb(10,n-1)*5/(11-n),n=1..2)</TT> renvoie <TT>7/9</TT><BR>
-<TT>sum(comb(5,n-1)/comb(10,n-1)*5/(11-n),n=1..2)</TT> renvoie <TT>41/42</TT><BR>
-<I>E</I>(<I>X</I>)=1/2+5/9+5/12+4/21+25/252+6/252=25/14<BR>
-<I>E</I>(<I>X</I><SUP>2</SUP>)=1/2+10/9+15/12+16/21+125/252+36/252=179/42<BR>
-σ<SUP>2</SUP>(<I>X</I>)=179/42-25*25/14/14=631/588
-</P><H2 CLASS="section"><A NAME="toc155"></A><A NAME="htoc402">28.2</A>  La loi négbinomiale</H2><H3 CLASS="subsection"><A NAME="htoc403">28.2.1</A>  Définition</H3><P>
-La loi binomiale négative est une distribution de probabilité 
-discrète. Elle dépend de 2 paramètres : un entier <I>n</I> (le nombre de 
-succès attendus) et un réel <I>p</I> de ]0,1[ (la probabilité d’un succés).<BR>
-On la note <FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>).<BR>
-Elle permet de décrire la situation suivante : on fait une suite de tirages 
-indépendants (avec pour chaque tirage, la probabilité <I>p</I> d’avoir un 
-succès) jusqu’à obtenir <I>n</I> succès.
-La variable aléatoire représentant le nombre d’échecs qu’il a fallut avant 
-d’avoir <I>n</I> succès, suit alors une loi binomiale négative.<BR>
-Si on définit <TT>comb(n,k)</TT> pour <I>n</I>&lt;0 par <TT>comb(n,k)=n*(n-1)*..*(n-k-1)/k!</TT>, alors
-Si <I>X</I> ∈ <FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>) (<I>n</I> ∈ ℕ et <I>p</I> ∈ ]0;1[) alors
-<TT><I>Proba</I>(<I>X</I>=<I>k</I>)=<I>p</I></TT><SUP><TT><I>n</I></TT></SUP><TT>*(<I>p</I>-1)</TT><SUP><TT><I>k</I></TT></SUP><TT>*<I>comb</I>(-<I>n</I>,<I>k</I>)</TT>
-ce qui justifie le nom de loi binomiale négative et qui facilite le calcul de
-l’espérance (égale à <I>n</I>(1−<I>p</I>)/<I>p</I>) et de la variance (égale à 
-<I>n</I>(1−<I>p</I>)/<I>p</I><SUP>2</SUP>).<BR>
-</P><H3 CLASS="subsection"><A NAME="htoc404">28.2.2</A>  Exercice</H3><P>
-Dans un pays imaginaire on impose aux familles d’avoir des enfants jusquà la
-naissance d’un garçon et de ne plus avoir d’enfants après 
-la naissance de ce garçon.<BR>
-Est-ce que cette loi favorise la naissance des filles ?
-On répondra à cette question en supposant que dans ce pays :
+Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc400">Chapitre 28</A>  Les équations différentielles résolubles</H1><H2 CLASS="section"><A NAME="toc151"></A><A NAME="htoc401">28.1</A>  Équation linéaire à coefficients constant du 2ième ordre</H2><P>
+Ce sont les équations de la forme <I>ay</I>″+<I>by</I>′+<I>cy</I>=<I>f</I>(<I>x</I>)</P><H2 CLASS="section"><A NAME="toc152"></A><A NAME="htoc402">28.2</A>  Équation linéaire en <I>y</I> et <I>y</I>′ du 1ier ordre</H2><P>
+La solution générale de l’équation complète est égale à la somme
+solution générale de l’équation sans second membre et d’une solution 
+particulière.
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-la probabilité d’avoir un garçon est égale à 0.5 et qu’une 
-famille peut avoir un nombre infini d’enfants.
-</LI><LI CLASS="li-itemize">la probabilité d’avoir un garçon est égale à 0.5 et qu’une 
-famille ne peut pas avoir plus de 10 enfants.
-</LI><LI CLASS="li-itemize">la probabilité d’avoir un garçon est égale à <I>p</I> (par exemple 
-<I>p</I>=105/205=21/41) et qu’une famille ne peut pas avoir plus de <I>n</I> enfants (par
-exemple <I>n</I>=10).
-</LI></UL><P>
-<B>Une solution</B>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Soit <I>X</I> la variable aléatoire égale au nombre de filles d’une 
-famille. <I>X</I> suit une loi négbinomiale <FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(1,0.5) 
-Donc <I>E</I>(<I>X</I>)=(1−0.5)/0.5=1.<BR>
-Soit <I>Y</I> la variable aléatoire égale au nombre de 
-garçons d’une famille. <I>Y</I> est constant et on a <I>Y</I>=1 donc <I>E</I>(<I>Y</I>)=1
-Donc cette loi ne favorise pas la naissance des filles ni celle des garçons.
-</LI><LI CLASS="li-itemize">Soit <I>X</I> la variable aléatoire égale au nombre de filles d’une 
-famille. Notons <I>p</I>=1/2.<BR>
-On a <I>p</I>=1−<I>p</I> donc :<BR>
-<I>Proba</I>(<I>X</I>=0)=<I>p</I><BR>
-<I>Proba</I>(<I>X</I>=1)=<I>p</I><SUP>2</SUP><BR>
-....<BR>
-<I>Proba</I>(<I>X</I>=<I>k</I>)=<I>p</I><SUP><I>k</I>+1</SUP> pour <I>k</I>=0..9<BR>
-<I>Proba</I>(<I>X</I>=10)=<I>p</I><SUP>10</SUP><BR>
-Donc :<BR>
-<I>E</I>(<I>X</I>)=∑<SUB><I>k</I>=0</SUB><SUP>9</SUP><I>kp</I><SUP><I>k</I>+1</SUP>+10*<I>p</I><SUP>10</SUP><BR>
-On peut faire en exercice le calcul de ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>(<I>ka</I><SUP><I>k</I>−1</SUP> en dérivant 
-∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP><I>a</I><SUP><I>k</I></SUP>=(<I>a</I><SUP>(</SUP><I>n</I>+1)−1)/(<I>a</I>−1).<BR>
-On obtient :<BR>
-∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP>(<I>ka</I><SUP><I>k</I>−1</SUP>=(<I>n</I>*<I>a</I><SUP><I>n</I>+1</SUP>−(<I>n</I>+1)*<I>a</I><SUP><I>n</I></SUP>+1)/(<I>a</I>−1)<SUP>2</SUP><BR>
-Calculons avec <TT>Xcas</TT> ∑<SUB><I>k</I>=0</SUB><SUP>9</SUP><I>kp</I><SUP><I>k</I>+1</SUP>+10*<I>p</I><SUP>10</SUP>, on tape :<BR>
-<TT>p:=1/2</TT><BR>
-<TT>sum(k*p</TT><CODE><TT>^</TT></CODE><TT>(k+1),k=0..9)+10*p</TT><CODE><TT>^</TT></CODE><TT>10</TT><BR>
-On obtient :<BR>
-<TT>1023/1024</TT><BR>
-On a bien :<BR>
-<I>p</I><SUP>2</SUP>∑<SUB><I>k</I>=0</SUB><SUP><I>n</I></SUP>(<I>kp</I><SUP><I>k</I>−1</SUP>=<I>p</I><SUP>2</SUP>(9<I>p</I><SUP>10</SUP>−10<I>p</I><SUP>9</SUP>+1)/<I>p</I><SUP>2</SUP>+10*<I>p</I><SUP>10</SUP>=19*<I>p</I><SUP>10</SUP>−10*<I>p</I><SUP>9</SUP>+1=<I>p</I><SUP>10</SUP>*(19−20)+1=1−<I>p</I><SUP>10</SUP>=1023/1024
-Avec <TT>evalf</TT> on obtient :<BR>
-<TT>0.990234375</TT><BR>
-Soit <I>Y</I> la variable aléatoire égale au nombre de 
-garçons d’une famille.<BR>
-On a :<BR>
-<I>Proba</I>(<I>Y</I>=0)=<I>p</I><SUP>10</SUP><BR>
-<I>Proba</I>(<I>Y</I>=1)=1−<I>p</I><SUP>10</SUP><BR>
-Donc :<BR>
-<I>E</I>(<I>Y</I>)=1−<I>p</I><SUP>10</SUP>
+Résoudre :<BR>
+2<I>xy</I>′+<I>y</I>−3<I>x</I><SUP>2</SUP>=0<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
 On tape :<BR>
-<TT>1-p</TT><CODE><TT>^</TT></CODE><TT>10</TT><BR>
+<TT>normal(desolve(2*x*y’+y-3*x</TT><CODE><TT>^</TT></CODE><TT>2))</TT><BR>
 On obtient :<BR>
-<TT>1023/1024</TT><BR>
-Avec <TT>evalf</TT> on obtient :<BR>
-<TT>0.990234375</TT><BR>
-Donc cette loi ne favorise pas la naissance des filles ni celle des garçons.</LI><LI CLASS="li-itemize">Soit <I>X</I> la variable aléatoire égale au nombre de filles d’une 
-famille. Notons <I>p</I> la probabilité d’avoir un garçon.<BR>
-On a :<BR>
-<I>Proba</I>(<I>X</I>=0)=<I>p</I><BR>
-<I>Proba</I>(<I>X</I>=1)=<I>p</I>(1−<I>p</I>)<BR>
-....<BR>
-<I>Proba</I>(<I>X</I>=<I>k</I>)=<I>p</I>(1−<I>p</I>)<SUP><I>k</I></SUP> pour <I>k</I>=0..<I>n</I>−1<BR>
-<I>Proba</I>(<I>X</I>=<I>n</I>)=(1−<I>p</I>)<SUP><I>n</I></SUP><BR>
-Donc :<BR>
-<I>E</I>(<I>X</I>)=∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP>(<I>kp</I>(1−<I>p</I>)<SUP><I>k</I></SUP>)+<I>n</I>(1−<I>p</I>)<SUP><I>n</I></SUP><BR>
-Calculons ∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP>(<I>kp</I>(1−<I>p</I>)<SUP><I>k</I></SUP>)+<I>n</I>(1−<I>p</I>)<SUP><I>n</I></SUP>, on tape :<BR>
-<TT>EX:=simplify(sum(k*p*(1-p)</TT><CODE><TT>^</TT></CODE><TT>k,k=0..n-1)+1n*(1-p)</TT><CODE><TT>^</TT></CODE><TT>n)</TT><BR>
-On obtient :<BR>
-<TT>(p*(1-p)</TT><CODE><TT>^</TT></CODE><TT>n-p-(1-p)</TT><CODE><TT>^</TT></CODE><TT>n+1)/p</TT><BR>
-Donc :<BR>
-<I>E</I>(<I>X</I>)=1−<I>p</I>/<I>p</I>(1−(1−<I>p</I>)<CODE>^</CODE><I>n</I>)<BR>
-Soit <I>Y</I> la variable aléatoire égale au nombre de 
-garçons d’une famille.<BR>
-On a :<BR>
-<I>Proba</I>(<I>Y</I>=0)=(1−<I>p</I>)<SUP><I>n</I></SUP><BR>
-<I>Proba</I>(<I>Y</I>=1)=1−(1−<I>p</I>)<SUP><I>n</I></SUP><BR>
-Donc :<BR>
-<I>E</I>(<I>Y</I>)=1−(1−<I>p</I>)<SUP><I>n</I></SUP><BR>
-On a donc :
-<I>E</I>(<I>X</I>+<I>Y</I>)=<I>E</I>(<I>X</I>)+<I>E</I>(<I>Y</I>)=1−(1−<I>p</I>)<SUP><I>n</I></SUP>)/<I>p</I><BR>
-Donc :<BR>
-<I>E</I>(<I>X</I>)/<I>E</I>(<I>X</I>+<I>Y</I>)=1−<I>p</I> et <I>E</I>(<I>Y</I>)/<I>E</I>(<I>X</I>+<I>Y</I>)=<I>p</I><BR>
-Donc cette loi ne change pas rien quant aux nombres de naissances de filles et 
-de garçons.<BR>
-<B>Application numérique</B><BR>
-On tape :<BR>
-<TT>p:=21/41</TT><BR>
-<TT>(1-p)*(1-(1-p)</TT><CODE><TT>^</TT></CODE><TT>10)/p</TT><BR>
-On obtient <I>E</I>(<I>X</I>) :<BR>
-<TT>12773732676335620/13422659310152401</TT><BR>
-Avec <TT>evalf</TT> on obtient <I>E</I>(<I>X</I>) :<BR>
-<TT>0.951654391367</TT><BR>
-<TT>1-(1-p)</TT><CODE><TT>^</TT></CODE><TT>10</TT><BR>
-On obtient <I>E</I>(<I>Y</I>) :<BR>
-<TT>13412419310152401/13422659310152401</TT><BR>
-Avec <TT>evalf</TT> on obtient <I>E</I>(<I>Y</I>) :<BR>
-<TT>0.999237110936</TT><BR>
-On tape (calcul de <I>E</I>(<I>X</I>)+<I>E</I>(<I>Y</I>)) :<BR>
-<TT>12773732676335620/13422659310152401+13412419310152401/13422659310152401</TT>
-On obtient :<BR>
-<TT>638686633816781/327381934393961</TT><BR>
-On tape (calcul de <I>E</I>(<I>X</I>)/(<I>E</I>(<I>X</I>)+<I>E</I>(<I>Y</I>))) :<BR>
-<TT>12773732676335620/13422659310152401/(638686633816781/327381934393961)</TT><BR>
-On obtient :<BR>
-<TT>20/41</TT><BR>
-On retrouve la probabilité 1−<I>p</I>.
-On tape (calcul de <I>E</I>(<I>Y</I>)/(<I>E</I>(<I>X</I>)+<I>E</I>(<I>Y</I>))) :<BR>
-<TT>13412419310152401/13422659310152401/(638686633816781/327381934393961)</TT><BR>
-On obtient :<BR>
-<TT>21/41</TT><BR>
-On retrouve la probabilité <I>p</I>.<BR>
-Donc cette loi ne change pas rien quant aux nombres de naissances de filles et 
-de garçons.
-</LI></UL><H2 CLASS="section"><A NAME="toc156"></A><A NAME="htoc405">28.3</A>  La loi uniforme</H2><H2 CLASS="section"><A NAME="toc157"></A><A NAME="htoc406">28.4</A>  La loi uniforme</H2><H3 CLASS="subsection"><A NAME="htoc407">28.4.1</A>  Définition</H3><H3 CLASS="subsection"><A NAME="htoc408">28.4.2</A>  Exercice1</H3><P>
-On considère un point aléatoire <I>M</I> uniformément réparti sur le disque 
-de centre <I>O</I> et de rayon <I>R</I> c’est à dire que la probabilité pour que <I>M</I> 
-appartienne à un domaine <I>G</I> du disque est proportionnelle à l’aire de <I>G</I>.</P><P>On a donc <I>Proba</I>(<I>x</I>∈ <I>G</I>)=(aire de <I>G</I>)/(<I>R</I><SUP>2</SUP>).<BR>
-Étude de la variable aléatoire <I>X</I>=<I>OM</I><BR>
-
-<I>X</I> varie de 0 à <I>R</I> et la fonction de répartition de <I>X</I> est donc :<BR>
-<I>F</I>(<I>x</I>)=0 si <I>x</I>≤ 0<BR>
-<I>F</I>(<I>x</I>)=π <I>x</I><SUP>2</SUP>/π <I>R</I><SUP>2</SUP>=<I>x</I><SUP>2</SUP>/<I>R</I><SUP>2</SUP>= si 0&lt;<I>x</I> ≤ <I>R</I><BR>
-<I>F</I>(<I>x</I>)=1 si <I>x</I> &gt; <I>R</I><BR>
-La densité de probabilité est donc :<BR>
-<I>f</I>(<I>x</I>)=0 si <I>x</I>≤ 0 ou <I>x</I>&gt; <I>R</I><BR>
-<I>f</I>(<I>x</I>)=2<I>x</I>/<I>R</I><SUP>2</SUP> si 0&lt;<I>x</I>≤ <I>R</I><BR>
-L’éspérance de <I>X</I> est :<BR>
-<I>E</I>(<I>X</I>)=∫<SUB>0</SUB><SUP><I>R</I></SUP><I>xf</I>(<I>x</I>)<I>dx</I>=∫<SUB>0</SUB><SUP><I>R</I></SUP>2<I>x</I><SUP>2</SUP>/<I>R</I><SUP>2</SUP><I>dx</I>=2<I>R</I>/3
-On calcule <I>E</I>(<I>X</I><SUP>2</SUP>) :
-<I>E</I>(<I>X</I><SUP>2</SUP>)=∫<SUB>0</SUB><SUP><I>R</I></SUP><I>x</I><SUP>2</SUP><I>f</I>(<I>x</I>)<I>dx</I>=∫<SUB>0</SUB><SUP><I>R</I></SUP>2<I>x</I><SUP>3</SUP>/<I>R</I><SUP>2</SUP><I>dx</I>=<I>R</I><SUP>2</SUP>/2
-La variance de <I>X</I> est :<BR>
-σ<SUP>2</SUP>(<I>X</I>)=<I>E</I>(<I>X</I><SUP>2</SUP>)−<I>E</I>(<I>X</I>)<SUP>2</SUP>=<I>R</I><SUP>2</SUP>/2−4<I>R</I><SUP>2</SUP>/9=<I>R</I><SUP>2</SUP>/18
-</P><H3 CLASS="subsection"><A NAME="htoc409">28.4.3</A>  Exercice2</H3><P>
-Soit la variable aléatoire à 2 dimensions (<I>X</I>,<I>Y</I>) uniformément distribué
-sur le quart de disque <I>D</I> de centre <I>O</I>, de rayon <I>R</I> situé dans le quart de
-plan <I>x</I>&gt;0 et <I>y</I>&gt;0.<BR>
-On demande la fonction de répartition de (<I>X</I>,<I>Y</I>).<BR>
-La probabilité pour que <I>M</I>=(<I>x</I>,<I>y</I>) appartienne à un domaine <I>G</I> du quart de
-disque <I>D</I> est proportionnelle à l’aire de <I>G</I>.<BR>
-
-Pour calculer la fonction de répartition, on va calculer :
-l’aire <I>A</I> du quart de disque : <I>A</I>=π <I>R</I><SUP>2</SUP>/4 et<BR>
-l’aire <I>AS</I><SUB><I>a</I></SUB> du secteur :
-<I>S</I><SUB><I>a</I></SUB>={(<I>x</I>,<I>y</I>)∈ <I>D</I> : <I>a</I>&lt;<I>x</I>&lt;<I>R</I>} qui est aussi l’aire du secteur 
-{(<I>x</I>,<I>y</I>)∈ <I>D</I> : <I>a</I>&lt;<I>y</I>&lt;<I>R</I>}.<BR>
-Soit α l’angle <I>OxM</I> où <I>M</I> est le point du quart de cercle d’abscisse 
-<I>x</I>. 
-On a :
-α=  acos (<I>x</I>/<I>R</I>)
-aire de <I>S</I><SUB><I>a</I></SUB>=<I>AS</I><SUB><I>a</I></SUB>=α <I>R</I><SUP>2</SUP>/2−<I>x</I>√<SPAN style="text-decoration:overline">(</SPAN><I>R</I><SUP>2</SUP>−<I>ax</I><SUP>2</SUP>)/2
-<I>X</I> et <I>Y</I> varient de 0 à <I>R</I> et la fonction de répartition de <I>X</I>,<I>Y</I> est 
+<TT>((5*sqrt(x)*c_0+3*x</TT><CODE><TT>^</TT></CODE><TT>3)*1/5)/x </TT><BR>
+</LI><LI CLASS="li-itemize">Résoudre :<BR>
+<I>y</I>′*√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>−<I>y</I>=<I>x</I>+√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+On résoud l’équation sans second membre :<BR>
+<I>y</I>′/<I>y</I>=1/√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+On trouve :<BR>
+<I>y</I>=<I>c</I>*exp(  asinh (<I>x</I>))=<I>c</I>*(√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>+<I>x</I>)
+Puis on fait varier la constante <I>c</I> :<BR>
+<I>y</I>′=<I>c</I>′*exp(  asinh (<I>x</I>))+<I>c</I>*exp(  asinh (<I>x</I>))*1/√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
 donc :<BR>
-<I>F</I>(<I>x</I>,<I>y</I>)=0 si <I>x</I>≤ 0 ou <I>y</I>≤ 0<BR>
-<I>F</I>(<I>x</I>,<I>y</I>)=1 si <I>x</I>≥ <I>R</I> et <I>y</I>≥ <I>R</I><BR>
-<I>F</I>(<I>x</I>,<I>y</I>)=4<I>xy</I>/π <I>R</I><SUP>2</SUP>/<I>A</I> si <I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>≤ <I>R</I><SUP>2</SUP><BR>
-<I>F</I>(<I>x</I>,<I>y</I>)=(π <I>R</I><SUP>2</SUP>/4−<I>AS</I><SUB><I>x</I></SUB>)/<I>A</I> si <I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>&gt; <I>R</I><SUP>2</SUP> et <I>x</I>≤ <I>R</I> et <I>y</I>≥ <I>R</I><BR>
-<I>F</I>(<I>x</I>,<I>y</I>)=(π <I>R</I><SUP>2</SUP>/4−<I>AS</I><SUB><I>y</I></SUB>)/<I>A</I> si <I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>&gt; <I>R</I><SUP>2</SUP> et <I>x</I>≥ <I>R</I> et <I>y</I>≤ <I>R</I><BR>
- 
-<I>F</I>(<I>x</I>,<I>y</I>)=(4<I>xy</I>/π <I>R</I><SUP>2</SUP>−<I>AS</I><SUB><I>x</I></SUB>−<I>AS</I><SUB><I>y</I></SUB>)/<I>A</I> si <I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>&gt; <I>R</I><SUP>2</SUP> et <I>x</I>&lt;<I>R</I> et <I>y</I>&lt;<I>R</I>
-</P><PRE CLASS="verbatim">F(x,y,R):={
-  local a,b,AS,BS,A;
-  si type(x)!=DOM_FLOAT ou  type(y)!=DOM_FLOAT alors 
-    retourne 'F'(x,y,R); 
-  fsi;
-  si x&lt;=0 ou y&lt;=0 alors retourne 0; fsi;
-  si x&gt;=R et y&gt;=R alors retourne 1; fsi;
-  A:=pi*R^2/4;
-  si (x^2+y^2&lt;=R^2) alors retourne x*y/A; fsi;
-  si x^2+y^2&gt;R^2 et x&lt;R et y&gt;R alors 
-    a:=acos(x/R); 
-    AS:=a*R^2/2-x*sqrt(R^2-x^2)/2;
-    retourne (pi*R^2/4-AS)/A; 
-  fsi;
-  si x^2+y^2&gt;R^2 et y&lt;R et x&gt;R alors 
-    a:=acos(y/R); 
-    AS:=a*R^2/2-y*sqrt(R^2-y^2)/2;
-    retourne (pi*R^2/4-AS)/A; 
-  fsi;
-  si x^2+y^2&gt;R^2 et x&lt;R et y&lt;R alors 
-    a:=acos(x/R); b:=acos(y/R); 
-    AS:=a*R^2/2-x*sqrt(R^2-x^2)/2;
-    BS:=b*R^2/2-y*sqrt(R^2-y^2)/2;
-    retourne (pi*R^2/4-AS-BS)/A; 
-  fsi;
-}:;
-</PRE><P>On tape :<BR>
-<TT>plotfunc(F(x,y,1),[x=-1..2,y=-1..2]);</TT><BR>
-<TT>affichage(plotparam([x,sqrt(1-x</TT><CODE><TT>^</TT></CODE><TT>2),0],x=0..1),
-4+epaisseur_ligne_2)</TT><BR>
-On obtient :
-</P><DIV CLASS="center"><IMG SRC="casexo111.png"></DIV>Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
+<I>y</I>′*√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>−<I>y</I>=<I>c</I>′*exp(  asinh (<I>x</I>))*√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=<I>c</I>′*(<I>x</I>+√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>)*√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+On obtient <I>c</I>′ :
+<I>c</I>′=(<I>x</I>+√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>)*exp(−  asinh (<I>x</I>))/√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=1/√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>
+donc :<BR>
+<I>c</I>′=1/√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+On intègre :<BR>
+<I>c</I>=  asinh (<I>x</I>)+<I>k</I>=−(ln(√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>−<I>x</I>))+<I>k</I><BR>
+On a donc :<BR>
+<I>y</I>=(  asinh (<I>x</I>)+<I>k</I>)*(√<SPAN style="text-decoration:overline"><I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN>+<I>x</I>)=(−ln(√<SPAN style="text-decoration:overline">1+<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>−<I>x</I>)+<I>k</I>)*(√<SPAN style="text-decoration:overline"><I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN>+<I>x</I>)<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>normal(desolve(y’*sqrt(1+x</TT><CODE><TT>^</TT></CODE><TT>2)-y=x+sqrt(1+x</TT><CODE><TT>^</TT></CODE><TT>2),y))</TT><BR>
+On obtient :<BR>
+<TT>(sqrt(x</TT><CODE><TT>^</TT></CODE><TT>2+1)+x)*c_0+(-sqrt(x</TT><CODE><TT>^</TT></CODE><TT>2+1)-x)*<BR>
+ln(abs(sqrt(x</TT><CODE><TT>^</TT></CODE><TT>2+1)-x))</TT>
+</LI></UL><H2 CLASS="section"><A NAME="toc153"></A><A NAME="htoc403">28.3</A>  Équation du 1ier ordre avec facteur intégrant</H2><P>
+Ce sont les équations différentielles qui peuvent être multipliées
+par <I>f</I>(<I>x</I>) de façon à obtenir une différentielle totale.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Résoudre :<BR>
+<I>xy</I>′−<I>y</I>=0 soit <I>xdy</I>−<I>ydx</I>=0<BR>
+On multiplie par <I>f</I>(<I>x</I>)=1/<I>x</I><SUP>2</SUP> pour que l’équation différentielle soit la
+différentielle totale de la fonction <I>F</I>(<I>x</I>,<I>y</I>)=<I>y</I>/<I>x</I>.<BR>
+Donc <I>y</I>=<I>kx</I>.<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>normal(desolve(x*y’-y))</TT><BR>
+On obtient :<BR>
+<TT>c_0*x</TT><BR>
+
+</LI><LI CLASS="li-itemize">Résoudre :<BR>
+2<I>xyy</I>′+<I>x</I><SUP>2</SUP>−<I>y</I><SUP>2</SUP>+<I>a</I><SUP>2</SUP>=0<BR>
+On multiplie par <I>f</I>(<I>x</I>) pour que l’équation différentielle soit la
+différentielle totale de la fonction <I>F</I>. La fonction
+<I>f</I>(<I>x</I>) doit vérifier pour cela :<BR>
+<I>d</I>(2<I>xyf</I>(<I>x</I>))/<I>dx</I>=<I>d</I>((<I>x</I><SUP>2</SUP>−<I>y</I><SUP>2</SUP>+<I>a</I><SUP>2</SUP>)<I>f</I>(<I>x</I>))/<I>dy</I><BR>
+cela donne :<BR>
+2<I>yf</I>(<I>x</I>)+2<I>xyf</I>′(<I>x</I>)=<I>f</I>(<I>x</I>)(−2<I>y</I>)<BR>
+ou encore :<BR>
+<I>xf</I>′(<I>x</I>)+2<I>f</I>(<I>x</I>)=0<BR>
+donc <I>f</I>(<I>x</I>)=1/<I>x</I><SUP>2</SUP> est un facteur integrant et l’équation différentielle 
+est la differentielle totale de <I>F</I> qui vérifie :<BR>
+<I>dF</I>(<I>x</I>,<I>y</I>)/<I>dy</I>=2<I>y</I>/<I>x</I>.<BR>
+ Donc <I>F</I>(<I>x</I>,<I>y</I>)=<I>y</I><SUP>2</SUP>/<I>x</I>+<I>g</I>(<I>x</I>) et<BR>
+−<I>y</I><SUP>2</SUP>/<I>x</I><SUP>2</SUP>+<I>g</I>′(<I>x</I>)=(<I>x</I><SUP>2</SUP>−<I>y</I><SUP>2</SUP>+<I>a</I><SUP>2</SUP>)/<I>x</I><SUP>2</SUP><BR>
+donc <I>g</I>′(<I>x</I>)=1+<I>a</I><SUP>2</SUP>/<I>x</I><SUP>2</SUP> soit <I>g</I>(<I>x</I>)=<I>x</I>−<I>a</I><SUP>2</SUP>/<I>x</I><BR>
+Puisque <I>dF</I>=0, on en déduit que :<BR>
+<I>F</I>(<I>x</I>,<I>y</I>)=<I>y</I><SUP>2</SUP>/<I>x</I>+<I>x</I>−<I>a</I><SUP>2</SUP>/<I>x</I>=(<I>y</I><SUP>2</SUP>+<I>x</I><SUP>2</SUP>−<I>a</I><SUP>2</SUP>)/<I>x</I>=<I>c</I>_0<BR>
+Donc les solutions sont :<BR>
+<I>y</I>=√<SPAN style="text-decoration:overline">(</SPAN>−<I>x</I><SUP>2</SUP>+<I>a</I><SUP>2</SUP>+<I>c</I>_0*<I>x</I>) et <I>y</I>=−√<SPAN style="text-decoration:overline">(</SPAN>−<I>x</I><SUP>2</SUP>+<I>a</I><SUP>2</SUP>+<I>c</I>_0*<I>x</I>)<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>normal(exp2pow(desolve(2*x*y*y’+x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2+a</TT><CODE><TT>^</TT></CODE><TT>2)))</TT><BR>
+On obtient :<BR>
+<TT>[sqrt(a</TT><CODE><TT>^</TT></CODE><TT>2-c_1*x-x</TT><CODE><TT>^</TT></CODE><TT>2),-(sqrt(a</TT><CODE><TT>^</TT></CODE><TT>2-c_1*x-x</TT><CODE><TT>^</TT></CODE><TT>2))]</TT></LI></UL><H2 CLASS="section"><A NAME="toc154"></A><A NAME="htoc404">28.4</A>  Équation homogène du premier ordre résoluble en <I>y</I>′</H2><P>
+Pour les équations homogènes du premier ordre non résoluble en <I>y</I> voir
+<A HREF="#sec:homog">28.7</A>.<BR>
+Les équations homogènes du premier ordre résoluble en <I>y</I> sont de la 
+forme <I>a</I>(<I>x</I>,<I>y</I>)*<I>y</I>′=<I>b</I>(<I>x</I>,<I>y</I>) où <I>a</I>(<I>x</I>,<I>y</I>) et <I>b</I>(<I>x</I>,<I>y</I>) sont des fonctions 
+homogènes de même degré <I>p</I> (<I>a</I>(<I>t</I>*<I>x</I>,<I>t</I>*<I>y</I>)=<I>t</I><SUP><I>p</I></SUP>*<I>a</I>(<I>x</I>,<I>y</I>) et 
+<I>b</I>(<I>t</I>*<I>x</I>,<I>t</I>*<I>y</I>)=<I>t</I><SUP><I>p</I></SUP>*<I>b</I>(<I>x</I>,<I>y</I>)).<BR>
+Pour résoudre les équations homogènes on pose <I>y</I>/<I>x</I>=<I>t</I>. 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize"> 
+Résoudre :<BR>
+2<I>xyy</I>′+<I>x</I><SUP>2</SUP>−<I>y</I><SUP>2</SUP>=0<BR>
+On pose <I>y</I>=<I>t</I>*<I>x</I>.<BR>
+On a : <I>dy</I>/<I>dx</I>=<I>x</I>*<I>dt</I>/<I>dx</I>+<I>t</I> donc :<BR>
+2*<I>t</I>*(<I>x</I>*<I>dt</I>/<I>dx</I>+<I>t</I>)+1−<I>t</I><SUP>2</SUP>=0 soit à résoudre :<BR>
+2*<I>t</I>*<I>x</I>*<I>dt</I>+(1+<I>t</I><SUP>2</SUP>)<I>dx</I>=0<BR>
+On obtient une équation à variables séparées :<BR>
+2*<I>t</I>*<I>dt</I>/(1+<I>t</I><SUP>2</SUP>)=−<I>dx</I>/<I>x</I>.<BR>
+Donc <I>x</I>=<I>k</I>/(<I>t</I><SUP>2</SUP>+1) et <I>y</I>=<I>k</I>*<I>t</I>/(<I>t</I><SUP>2</SUP>+1).<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>normal(desolve(2*x*y*y’+x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2))</TT><BR>
+On obtient :<BR>
+<TT>[(-i)*x,(i)*x,pnt[c_0/(‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2+1),(‘ t‘*c_0)/(‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2+1)]]</TT><BR>
+où ‘ t‘ est le paramétrage.<BR>
+
+</LI><LI CLASS="li-itemize">Résoudre :<BR>
+<I>xy</I>′−<I>y</I>−√<SPAN style="text-decoration:overline"><I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>y</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=0
+On pose <I>y</I>=<I>t</I>*<I>x</I>.
+On a : <I>dy</I>/<I>dx</I>=<I>x</I>*<I>dt</I>/<I>dx</I>+<I>t</I> donc :<BR>
+<I>x</I><SUP>2</SUP>*<I>dt</I>/<I>dx</I>+<I>x</I>*<I>t</I>−<I>x</I>*<I>t</I>−√<SPAN style="text-decoration:overline"><I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">*<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=0<BR>
+√<SPAN style="text-decoration:overline"><I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">*<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=|<I>x</I>|*√<SPAN style="text-decoration:overline">1+<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> soit à résoudre :<BR>
+<I>x</I>*<I>dt</I>−√<SPAN style="text-decoration:overline">1+<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>*<I>dx</I>=0 si <I>x</I>&gt;0<BR>
+<I>x</I>*<I>dt</I>+√<SPAN style="text-decoration:overline">1+<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>*<I>dx</I>=0 si <I>x</I>&lt;0<BR>
+ou encore<BR>
+|<I>x</I>|<I>t</I>′=√<SPAN style="text-decoration:overline">1+<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+donc =<I>dx</I>/|<I>x</I>|=<I>signe</I>(<I>x</I>)*<I>dx</I>/<I>x</I>=<I>dt</I>/√<SPAN style="text-decoration:overline">(</SPAN>1+<I>t</I><SUP>2</SUP>)<BR>
+Donc :<BR>
+Si <I>x</I>&gt;0 on a : <I>x</I>=<I>k</I>*(<I>t</I>+√<SPAN style="text-decoration:overline">(</SPAN>1+<I>t</I><SUP>2</SUP>)); <I>y</I>=<I>k</I>*<I>t</I>*(<I>t</I>+√<SPAN style="text-decoration:overline">(</SPAN>1+<I>t</I><SUP>2</SUP>)) avec <I>k</I>&gt;0<BR>
+Si <I>x</I>&lt;0 on a : <I>x</I>=<I>k</I>/(<I>t</I>+√<SPAN style="text-decoration:overline">(</SPAN>1+<I>t</I><SUP>2</SUP>)); <I>y</I>=<I>k</I>*<I>t</I>/(<I>t</I>+√<SPAN style="text-decoration:overline">(</SPAN>1+<I>t</I><SUP>2</SUP>)) avec <I>k</I>&lt;0<BR>
+Si <I>x</I>&gt;0 on a : (<I>x</I>/<I>k</I>−<I>t</I>)<SUP>2</SUP>=1+<I>t</I><SUP>2</SUP><BR>
+ 2<I>kxt</I>=<I>k</I><SUP>2</SUP>*<I>x</I><SUP>2</SUP>−1 ou encore<BR>
+<I>y</I>=<I>kx</I><SUP>2</SUP>/2−1/(2<I>k</I>)
+Si <I>x</I>&lt;0 on a : (<I>k</I>/<I>x</I>−<I>t</I>)<SUP>2</SUP>=1+<I>t</I><SUP>2</SUP><BR>
+2<I>kt</I>/<I>x</I>=<I>k</I><SUP>2</SUP>/<I>x</I><SUP>2</SUP>−1 ou encore<BR>
+<I>y</I>=<I>k</I>/2−<I>x</I><SUP>2</SUP>/(2<I>k</I>)<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>normal(desolve(x*y’-y-sqrt(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2)))</TT><BR>
+On obtient :<BR>
+<TT>[(-i)*x,(i)*x,pnt[(sqrt(‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2+1)+‘ t‘)*c_0,(‘ t‘*sqrt(‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2+1)+‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2)*c_0]]</TT><BR>
+où ‘ t‘ est le paramétrage. 
+</LI><LI CLASS="li-itemize">Résoudre :<BR>
+3<I>x</I><SUP>3</SUP><I>y</I>′−(3<I>x</I><SUP>2</SUP>−<I>y</I><SUP>2</SUP>)<I>y</I>=0<BR>
+On pose <I>t</I>=<I>y</I>/<I>x</I> et on obtient :<BR>
+<I>y</I>′=<I>t</I>−<I>t</I><SUP>3</SUP>/3=<I>dy</I>/<I>dx</I>=<I>t</I>+<I>x</I>*<I>dt</I>/<I>dx</I> donc :<BR>
+<I>dx</I>/<I>x</I>=−3*<I>dt</I>/(<I>t</I><SUP>3</SUP>) et <I>y</I>=<I>t</I>*<I>x</I>
+<I>x</I>=<I>k</I>*exp(3/(2*<I>t</I><SUP>2</SUP>)) <I>et</I> <I>y</I>=<I>k</I>*<I>t</I>*exp(3/(2*<I>t</I><SUP>2</SUP>))<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>normal(desolve(3*x</TT><CODE><TT>^</TT></CODE><TT>3*diff(y)=((3*x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2)*y),y))</TT><BR>
+On obtient :<BR>
+<TT>[0,pnt[c_0*exp(3/(‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2*2)),‘ t‘*c_0*exp(3/(‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2*2))]]</TT><BR>
+où ‘ t‘ est le paramétrage. </LI><LI CLASS="li-itemize">Résoudre :<BR>
+<I>x</I>+<I>y</I>*<I>y</I>′=√<SPAN style="text-decoration:overline"><I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>y</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>
+On pose :<BR>
+<I>t</I>=<I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP><BR>
+On a :<BR>
+<I>dt</I>/<I>dx</I>=2<I>x</I>+2<I>ydy</I>/<I>dx</I> donc<BR>
+<I>dt</I>/<I>dx</I>=2√<SPAN style="text-decoration:overline"><I>t</I></SPAN><BR>
+donc <I>dx</I>=<I>dt</I>/(2√<SPAN style="text-decoration:overline"><I>t</I></SPAN>)<BR>
+<I>x</I>+<I>k</I>=√<SPAN style="text-decoration:overline"><I>t</I></SPAN>, <I>y</I>=<I>s</I>*√<SPAN style="text-decoration:overline"><I>t</I>−<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=<I>s</I>*√<SPAN style="text-decoration:overline">2*<I>k</I>*√</SPAN><SPAN style="text-decoration:overline"><I>t</I></SPAN><SPAN style="text-decoration:overline">−<I>k</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> avec <I>s</I>=± 1.<BR>
+On a donc :<BR>
+<I>y</I>=<I>s</I>*√<SPAN style="text-decoration:overline">2*<I>k</I>*(<I>x</I>+<I>k</I>)−<I>k</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=<I>s</I>*√<SPAN style="text-decoration:overline">2*<I>k</I>*<I>x</I>+<I>k</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> avec <I>s</I>=± 1, <I>k</I>+2<I>x</I>&gt;0 et 
+<I>k</I>+<I>x</I>&gt;0,<BR>
+
+Ou bien on pose <I>y</I>/<I>x</I>=<I>t</I> donc <I>dy</I>/<I>dx</I>=<I>t</I>+<I>x</I>*<I>dt</I>/<I>dx</I><BR>
+On a <I>x</I>+<I>y</I>*<I>y</I>′=√<SPAN style="text-decoration:overline"><I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>y</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> :<BR>
+<I>x</I>+<I>tx</I>(<I>t</I>+<I>x</I>*<I>dt</I>/<I>dx</I>)=|<I>x</I>|*√<SPAN style="text-decoration:overline">1+<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+Après simplification par <I>x</I> :<BR>
+<I>t</I>*<I>x</I>*<I>dt</I>/<I>dx</I>=<I>s</I>*√<SPAN style="text-decoration:overline">1+<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>−1−<I>t</I><SUP>2</SUP><BR>
+<I>tdt</I>/(<I>s</I>*√<SPAN style="text-decoration:overline">1+<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>−(1+<I>t</I><SUP>2</SUP>))=<I>dx</I>/<I>x</I><BR>
+Pour <I>x</I>&gt;0, <I>s</I>=1 et on a<BR>
+ln((−4<I>t</I><SUP>2</SUP>−8−8√<SPAN style="text-decoration:overline"><I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN>)/(2<I>t</I><SUP>2</SUP>))=ln(<I>x</I>/<I>k</I>)<BR>
+Donc :<BR>
+<I>x</I>=<I>k</I>(−4<I>t</I><SUP>2</SUP>−8−8√<SPAN style="text-decoration:overline"><I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN>)/(2<I>t</I><SUP>2</SUP>)<BR>
+<I>y</I>=<I>k</I>(−4<I>t</I><SUP>2</SUP>−8−8√<SPAN style="text-decoration:overline"><I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN>)/(2<I>t</I>)<BR>
+Pour <I>x</I>&lt;0, <I>s</I>=−1 et on a<BR>
+ln((−4<I>t</I><SUP>2</SUP>−8+8√<SPAN style="text-decoration:overline"><I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN>)/(2<I>t</I><SUP>2</SUP>))=ln(<I>x</I>/<I>k</I>)<BR>
+Donc :<BR>
+<I>x</I>=<I>k</I>(−4<I>t</I><SUP>2</SUP>−8+8√<SPAN style="text-decoration:overline"><I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN>)/(2<I>t</I><SUP>2</SUP>)<BR>
+<I>y</I>=<I>k</I>(−4<I>t</I><SUP>2</SUP>−8+8√<SPAN style="text-decoration:overline"><I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN>)/(2<I>t</I>)<BR>
+<P><B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>desolve(x+y*y’=sqrt(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2),y)</TT><BR>
+On obtient :<BR>
+<TT>[(i)*x,(-i)*x,0,pnt[c_0/(sqrt(‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2+1)-1),(‘ t‘*c_0)/(sqrt(‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2+1)-1)]]</TT><BR>
+où ‘ t‘ est le paramétrage. 
+</P></LI></UL><H2 CLASS="section"><A NAME="toc155"></A><A NAME="htoc405">28.5</A>  Équation de Bernoulli</H2><P>
+Les équations de Bernoulli sont de la forme <I>a</I>(<I>x</I>)<I>y</I>′+<I>b</I>(<I>x</I>)<I>y</I>=<I>c</I>(<I>x</I>)<I>y</I><SUP><I>n</I></SUP> et se 
+résolvent en posant <I>u</I>=1/<I>y</I><SUP><I>n</I>−1</SUP>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Résoudre :<BR>
+<I>xy</I>′+2<I>y</I>+<I>xy</I><SUP>2</SUP><BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>simplify(desolve(x*y’+2*y+x*y</TT><CODE><TT>^</TT></CODE><TT>2,y))</TT><BR>
+On obtient :<BR>
+<TT>[1/(x</TT><CODE><TT>^</TT></CODE><TT>2*c_0-x)]</TT></LI><LI CLASS="li-itemize">Résoudre :<BR>
+<I>xy</I>′−2<I>y</I>=<I>xy</I><SUP>3</SUP><BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>simplify(desolve(x*diff(y)-2*y=(x*y</TT><CODE><TT>^</TT></CODE><TT>3),y))</TT><BR>
+On obtient :<BR>
+<TT>[(-(x</TT><CODE><TT>^</TT></CODE><TT>2*sqrt(-10*x</TT><CODE><TT>^</TT></CODE><TT>5+25*c_0)))/(2*x</TT><CODE><TT>^</TT></CODE><TT>5-5*c_0)]</TT>
+</LI></UL><H2 CLASS="section"><A NAME="toc156"></A><A NAME="htoc406">28.6</A>  Équation à variables séparées</H2><P>
+Les équations à variables séparées sont de la forme <I>a</I>(<I>y</I>)<I>dy</I>=<I>b</I>(<I>x</I>)<I>dx</I> et 
+se résolvent en intégrant chaque membre.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Résoudre :<BR>
+<I>x</I>*<I>y</I>′*ln(<I>x</I>)−(3*ln(<I>x</I>)+1)*<I>y</I><BR>
+On a :<BR>
+<I>dy</I>/<I>y</I>=(3*ln(<I>x</I>)+1)<I>dx</I>/(ln(<I>x</I>)*<I>x</I>)=3/<I>x</I>+1/(ln(<I>x</I>)*<I>x</I>) et<BR>
+ln(<I>y</I>/<I>k</I>)=3*ln(<I>x</I>)+ln(ln(<I>x</I>))=ln(<I>x</I><SUP>3</SUP>*ln(<I>x</I>))<BR>
+donc<BR>
+<I>y</I>=<I>k</I>*<I>x</I><SUP>3</SUP>*ln(<I>x</I>)<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>normal(desolve(x*y’*log(x)-(3*log(x)+1)*y,y))</TT><BR>
+On obtient :<BR>
+<TT>c_0*x</TT><CODE><TT>^</TT></CODE><TT>3*ln(x)</TT><BR>
+
+</LI><LI CLASS="li-itemize">Résoudre :<BR>
+<I>y</I>′=2*√<SPAN style="text-decoration:overline"><I>y</I></SPAN><BR>
+On a :<BR>
+<I>dy</I>/(2√<SPAN style="text-decoration:overline">)</SPAN> <I>y</I>=<I>dx</I><BR>
+donc<BR>
+√<SPAN style="text-decoration:overline"><I>y</I></SPAN>=<I>x</I>+<I>k</I><BR>
+ou encore :<BR>
+<I>y</I>=(<I>x</I>+<I>k</I>)<SUP>2</SUP><BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>desolve(y’=2*sqrt(y),y)</TT><BR>
+On obtient :<BR>
+<TT>[((2*x-c_0)</TT><CODE><TT>^</TT></CODE><TT>2)/4]</TT>
+</LI></UL><H2 CLASS="section"><A NAME="toc157"></A><A NAME="htoc407">28.7</A>  Équation non résoluble en <I>y</I>′</H2><P><A NAME="sec:homog"></A>
+On sait résoudre si l’équation est : 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+incomplète en <I>x</I><BR>
+c’est à dire l’équation est de la forme <I>F</I>(<I>y</I>,<I>y</I>′)=0
+</LI><LI CLASS="li-itemize">incomplète en <I>y</I><BR>
+c’est à dire l’équation est de la forme <I>F</I>(<I>x</I>,<I>y</I>′)=0
+</LI><LI CLASS="li-itemize">homogéne en <I>x</I> et <I>y</I> et non résoluble en <I>y</I>′<BR>
+c’est à dire l’équation est de la forme <I>F</I>(<I>y</I>/<I>x</I>,<I>y</I>′)=0 aprés division par 
+une puissance convenable de <I>x</I>.
+</LI><LI CLASS="li-itemize">de la forme <I>y</I>=<I>x</I>*<I>y</I>′+<I>f</I>(<I>y</I>′) c’est à dire est une équation de 
+Clairaut : pour la résolution voir <A HREF="#sec:Clairaut">28.8</A>
+</LI></UL><P>
+On sait résoudre ces équations à condition de trouver un paramétrage de
+de la courbe <I>F</I>(<I>X</I>,<I>Y</I>)=0 par <I>X</I>=<I>f</I>(<I>t</I>),<I>Y</I>=<I>g</I>(<I>t</I>).<BR>
+On pose alors :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Équation incomplète en <I>x</I><BR>
+ <I>y</I>=<I>f</I>(<I>t</I>),<I>dy</I>/<I>dx</I>=<I>g</I>(<I>t</I>)
+</LI><LI CLASS="li-itemize">Équation incomplète en <I>y</I><BR>
+<I>x</I>=<I>f</I>(<I>t</I>),<I>dy</I>/<I>dx</I>=<I>g</I>(<I>t</I>)
+</LI><LI CLASS="li-itemize">Équation homogéne en <I>x</I> et <I>y</I> et non résoluble en <I>y</I>′<BR>
+<I>y</I>/<I>x</I>=<I>f</I>(<I>t</I>),<I>dy</I>/<I>dx</I>=<I>g</I>(<I>t</I>)
+</LI></UL><UL CLASS="itemize"><LI CLASS="li-itemize">
+Résoudre :<BR>
+<I>y</I><SUP>2</SUP>+<I>y</I>′<SUP>2</SUP>=1<BR>
+On pose :<BR>
+<I>y</I>′=<I>t</I> <I>et</I> <I>y</I>=√<SPAN style="text-decoration:overline">1−<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> ou <I>y</I>=−√<SPAN style="text-decoration:overline">1−<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+<I>dy</I>=−<I>s</I>*<I>t</I>*<I>dt</I>/√<SPAN style="text-decoration:overline">1−<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> avec <I>s</I>=± 1<BR>
+<I>dx</I>=<I>dy</I>/<I>t</I>=−<I>s</I>*<I>dt</I>/√<SPAN style="text-decoration:overline">1−<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+<I>x</I>=−<I>s</I>*  asin (<I>t</I>)+<I>k</I> avec <I>k</I>=<I>cste</I> donc<BR>
+<I>s</I>*<I>x</I>+<I>k</I>=  asin (<I>t</I>) et sin(<I>s</I>*<I>x</I>+<I>k</I>)=<I>t</I><BR>
+<I>y</I>=<I>s</I>*√<SPAN style="text-decoration:overline">1−<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> donc <I>y</I>=<I>s</I>*√<SPAN style="text-decoration:overline">1−</SPAN><SPAN style="text-decoration:overline">sin</SPAN><SPAN style="text-decoration:overline">(<I>s</I>*<I>x</I>+<I>k</I>)</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=± cos(<I>s</I>*<I>x</I>+<I>k</I>)<SUP>2</SUP>)<BR>
+les solutions sont donc :<BR>
+ [cos(<I>x</I>+<I>k</I><SUB>1</SUB>),−cos(<I>x</I>+<I>k</I><SUB>2</SUB>)]
+</LI><LI CLASS="li-itemize">Résoudre :<BR>
+<I>y</I><SUP>2</SUP>+<I>y</I>′<SUP>2</SUP>=1,<I>y</I>(0)=1/2<BR>
+si <I>y</I>(0)=1/2 on a <I>k</I>=<I>pi</I>/3 et cos(<I>x</I>+<I>pi</I>/3)=sin(<I>pi</I>/6−<I>x</I>)<BR>
+les solutions sont donc :<BR>
+ [cos(<I>x</I>+<I>pi</I>/3)=sin(<I>pi</I>/6−<I>x</I>),−cos(<I>x</I>+2*<I>pi</I>/3)=sin(<I>pi</I>/6+<I>x</I>)]<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>desolve(y</TT><CODE><TT>^</TT></CODE><TT>2+y’</TT><CODE><TT>^</TT></CODE><TT>2=1,y)</TT><BR>
+On obtient :<BR>
+<TT>[sin(-c_0+x),sin(-c_0-x)]</TT><BR>
+On tape :<BR>
+<TT>desolve([y</TT><CODE><TT>^</TT></CODE><TT>2+y’</TT><CODE><TT>^</TT></CODE><TT>2=1,y(0)=1/2],y)</TT><BR>
+On obtient :<BR>
+<TT>[sin(pi/6+x),sin(pi/6-x)]</TT><BR>
+
+</LI><LI CLASS="li-itemize">Résoudre :<BR>
+(<I>y</I>+<I>y</I>′)<SUP>4</SUP>+<I>y</I>′+3*<I>y</I><BR>
+On pose :<BR>
+<I>y</I>+<I>y</I>′=2<I>t</I> ce qui donne :<BR>
+<I>y</I>=−<I>t</I>−8<I>t</I><SUP>4</SUP> et <I>dy</I>/<I>dx</I>=2<I>t</I>−<I>y</I>=3<I>t</I>+8<I>t</I><SUP>4</SUP> soit <I>dx</I>=<I>dy</I>/(3<I>t</I>+8<I>t</I><SUP>4</SUP>)<BR>
+on a donc :<BR>
+<I>dy</I>/<I>dt</I>=−1−32<I>t</I><SUP>3</SUP> et <I>dx</I>=(−1−32<I>t</I><SUP>3</SUP>)/(3<I>t</I>+8<I>t</I><SUP>4</SUP>) <I>dt</I><BR>
+On tape :<BR>
+<TT>int((-1-32*t</TT><CODE><TT>^</TT></CODE><TT>3)/(3*t+8*t</TT><CODE><TT>^</TT></CODE><TT>4),t)</TT><BR>
+On obtient :<BR>
+<TT>(ln(1/(abs(t)</TT><CODE><TT>^</TT></CODE><TT>3*abs(8*t</TT><CODE><TT>^</TT></CODE><TT>3+3)</TT><CODE><TT>^</TT></CODE><TT>11)))/9</TT><BR>
+donc<BR>
+<I>x</I>=−(<I>ln</I>(<I>abs</I>(<I>t</I>)<SUP>3</SUP>*<I>abs</I>(8*<I>t</I><SUP>3</SUP>+3)<SUP>1</SUP>1))/9+<I>k</I> et<BR>
+<I>y</I>=−<I>t</I>−8*<I>t</I><SUP>4</SUP><BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>desolve((y+diff(y))</TT><CODE><TT>^</TT></CODE><TT>4+diff(y)+3*y,y)</TT><BR>
+Mais on n’obtient pas de résultat.</LI><LI CLASS="li-itemize">Résoudre :<BR>
+<I>y</I>′<SUP>2</SUP>=4*<I>sqrt</I>(<I>y</I>)<BR>
+On a :<BR>
+<I>y</I>′=2*<I>y</I><SUP>1/4</SUP><BR>
+2*<I>y</I><SUP>(3/4)</SUP>/3=<I>x</I>+<I>k</I>
+Donc :<BR>
+<I>y</I>=(3(<I>x</I>+<I>k</I>)/2)<SUP>(4/3)</SUP>=exp(4/3*ln(3(<I>x</I>+<I>k</I>)/2))<BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>desolve((diff(y))</TT><CODE><TT>^</TT></CODE><TT>2=(4*sqrt(y)),y)</TT><BR>
+On obtient :<BR>
+<TT>[exp(4*ln(((-48*c_0+96*x)</TT><CODE><TT>^</TT></CODE><TT>(1/3))/4)),...]</TT>
+</LI></UL><H2 CLASS="section"><A NAME="toc158"></A><A NAME="htoc408">28.8</A>  Équation de Clairaut</H2><P> <A NAME="sec:Clairaut"></A>
+C’est une équation de la forme <I>y</I>=<I>x</I>*<I>y</I>′+<I>f</I>(<I>y</I>′) que l’on résout en posant 
+<I>y</I>′=<I>dy</I>/<I>dx</I>=<I>t</I>. On a donc <I>y</I>=<I>t</I>*<I>x</I>+<I>f</I>(<I>t</I>),(<I>x</I>+<I>f</I>′(<I>t</I>))*<I>dt</I>=0.<BR>
+Donc l’intégrale générale est <I>t</I>=<I>m</I>=<I>cste</I> et <I>x</I>=−<I>f</I>′(<I>t</I>),<I>y</I>=−<I>t</I>*<I>f</I>′(<I>t</I>)+<I>f</I>(<I>t</I>).<BR>
+Cela définit une infinité de droites <I>D</I><SUB><I>m</I></SUB> d’équation <I>y</I>=<I>mx</I>+<I>f</I>(<I>m</I>) 
+(<I>m</I>∈ ℝ) et l’intégrale singulière <I>x</I>=−<I>f</I>′(<I>t</I>),<I>y</I>=−<I>t</I>*<I>f</I>′(<I>t</I>)+<I>f</I>(<I>t</I>)
+qui est l’enveloppe des droites <I>D</I><SUB><I>m</I></SUB>.<BR>
+Résoudre :<BR>
+<I>y</I>−<I>xy</I>′=√<SPAN style="text-decoration:overline"><I>a</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>b</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">*<I>y</I>′</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+On pose <I>y</I>′=<I>dy</I>/<I>dx</I>=<I>t</I> et <I>f</I>(<I>t</I>)=√<SPAN style="text-decoration:overline"><I>a</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>b</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">*<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>.<BR>
+On a :<BR>
+<I>f</I>′(<I>t</I>)=<I>b</I><SUP>2</SUP>*<I>t</I>/√<SPAN style="text-decoration:overline"><I>a</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>b</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">*<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+donc comme solution les droites :
+<I>y</I>=<I>m</I>*<I>x</I>+√<SPAN style="text-decoration:overline"><I>a</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>b</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">*<I>m</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+et comme intégrale singulière :<BR>
+<I>x</I>=−<I>b</I><SUP>2</SUP>*<I>t</I>/√<SPAN style="text-decoration:overline"><I>a</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>b</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">*<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>,<I>y</I>=−<I>b</I><SUP>2</SUP>*<I>t</I><SUP>2</SUP>/√<SPAN style="text-decoration:overline"><I>a</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>b</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">*<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>+√<SPAN style="text-decoration:overline"><I>a</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>b</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">*<I>t</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+<B>Avec </B><B><TT>Xcas</TT></B><BR>
+On tape :<BR>
+<TT>desolve(y-x*diff(y)=sqrt(a</TT><CODE><TT>^</TT></CODE><TT>2+b</TT><CODE><TT>^</TT></CODE><TT>2*diff(y)</TT><CODE><TT>^</TT></CODE><TT>2),y)</TT><BR>
+On obtient :<BR>
+<TT>[c_0*x+sqrt(a</TT><CODE><TT>^</TT></CODE><TT>2+b</TT><CODE><TT>^</TT></CODE><TT>2*c_0</TT><CODE><TT>^</TT></CODE><TT>2),
+[-((sqrt(a</TT><CODE><TT>^</TT></CODE><TT>2+b</TT><CODE><TT>^</TT></CODE><TT>2*‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2)*‘ t‘*b</TT><CODE><TT>^</TT></CODE><TT>2)/(‘
+t‘</TT><CODE><TT>^</TT></CODE><TT>2*b</TT><CODE><TT>^</TT></CODE><TT>2+a</TT><CODE><TT>^</TT></CODE><TT>2)), (sqrt(a</TT><CODE><TT>^</TT></CODE><TT>2+b</TT><CODE><TT>^</TT></CODE><TT>2*‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2)*a</TT><CODE><TT>^</TT></CODE><TT>2)/(‘ t‘</TT><CODE><TT>^</TT></CODE><TT>2*b</TT><CODE><TT>^</TT></CODE><TT>2+a</TT><CODE><TT>^</TT></CODE><TT>2)]] </TT><BR>
+On peut dessiner les solutions avec <TT>Xcas</TT>, on tape :
+</P><PRE CLASS="verbatim">assume(a=[1,0,5]);
+assume(b=[1,0,5]);
+assume(m=[1,-5,5]);
+droite(y=m*x+sqrt(a^2+b^2*m^2));
+plotparam(-b^2*t/sqrt(a^2+b^2*t^2)+
+  i*(-b^2*t^2/sqrt(a^2+b^2*t^2)+sqrt(a^2+b^2*t^2)),t);
+</PRE>Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
 <A HREF="casexo027.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casexo029.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,31 +6,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tester si un élément est dans une liste : contains</TITLE>
+<TITLE>Sélectionner des éléments d’une liste : select</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr514.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr516.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc614">6.40.26</A>  Tester si un élément est dans une liste : <TT>contains</TT></H3><P><A NAME="@default910"></A>
-<TT>contains</TT> a deux paramètres : une liste (ou un ensemble) 
-<TT>L</TT> et un élément <TT>c</TT>.<BR>
-<TT>contains</TT> est une fonction qui teste si l’élément <TT>c</TT>
-est dans la liste <TT>L</TT>.<BR>
- <TT>contains</TT> renvoie <TT>0</TT> si <TT>c</TT> n’est 
-pas dans <TT>L</TT>, et sinon renvoie :<BR>
-<TT>1+"l’indice de sa première apparition"</TT>.<BR>
-<B>Attention</B>, à l’ordre des paramètres, c’est pour des raisons de 
-compatibilité !<BR>
+<H3 CLASS="subsection"><A NAME="htoc615">6.41.23</A>  Sélectionner des éléments d’une liste : <TT>select</TT></H3><P><A NAME="@default911"></A>
+<TT>select</TT> a deux paramètres : une fonction booléenne <TT>f</TT>
+et une liste <TT>L</TT>.<BR>
+<TT>select</TT> sélectionne les éléments <TT>c</TT> de la liste <TT>L</TT>, qui
+vérifie <TT>f(c)=true</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>contains([0,1,2,3,4,2],2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>select(x-&gt;(x&gt;=2),[0,1,2,3,4,5])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>contains(% {0,1,2,3,4,2% },2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[2,3,4,5]</TT></DIV><HR>
 <A HREF="cascmd_fr514.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr516.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

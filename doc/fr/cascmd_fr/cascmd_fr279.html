@@ -6,55 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tableau de valeurs et graphe d’une suite récurrente : tableseq table_suite et plotseq graphe_suite</TITLE>
+<TITLE>Tableau de valeurs des termes d’une suite : tablefunc table_fonction</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr278.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr280.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc352">6.14.4</A>  Tableau de valeurs et graphe d’une suite récurrente : <TT>tableseq table_suite</TT> et <TT>plotseq graphe_suite</TT></H3><P><A NAME="@default466"></A><A NAME="@default467"></A><A NAME="@default468"></A><A NAME="@default469"></A>
-<TT>tableseq</TT> ou <TT>table_suite</TT> est une commande qui s’utilise à 
+<H3 CLASS="subsection"><A NAME="htoc353">6.15.1</A>  Tableau de valeurs des termes d’une suite : <TT>tablefunc table_fonction</TT></H3><P><A NAME="@default464"></A><A NAME="@default465"></A>
+<TT>tablefunc</TT> ou <TT>table_fonction</TT> est une commande qui s’utilise à 
 l’intérieur d’un tableur (que l’on ouvre avec <TT>Alt+t</TT>) et qui .<BR>
-remplit une colonne avec <TT><I>u</I></TT><SUB><TT>0</TT></SUB><TT>,  <I>u</I></TT><SUB><TT><I>n</I>+1</TT></SUB><TT>=<I>f</I>(<I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>)</TT> (récurrence sur un 
-terme) ou plus générallement 
-<I>u</I><SUB>0</SUB>,...,<I>u</I><SUB><I>k</I></SUB>,   <I>u</I><SUB><I>n</I>+<I>k</I>+1</SUB>=<I>f</I>(<I>u</I><SUB><I>n</I></SUB>,<I>u</I><SUB><I>n</I>+1</SUB>,...,<I>u</I><SUB><I>n</I>+<I>k</I></SUB>).
-<TT>tableseq</TT> ou <TT>table_suite</TT> remplit une colonne à partir de la 
-cellule sélectionnée ou à partir de
-<TT>0</TT> si c’est le nom de la colonne qui est sélectionnée.<BR>
-Voir aussi <TT>plotseq</TT> (section <A HREF="index.html#sec:plotseq">3.19</A>) pour la représentation 
-graphique des suites récurrentes.</P><P><B>Exemples</B> :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Affichage des valeurs de la suite <I>u</I><SUB>0</SUB>=3.5,  <I>u</I><SUB><I>n</I></SUB>=sin(<I>u</I><SUB><I>n</I>−1</SUB>)<BR>
+remplit deux colonnes donnant la table des valeurs d’une fonction.<BR>
+<TT>tablefunc(ex,n,n0,1)</TT>, où <TT>ex</TT> est une expression
+dépendant de <TT>n</TT>, remplira le tableur avec
+les valeurs de la suite <I>u</I><SUB><I>n</I></SUB>=<I>ex</I> pour <I>n</I>=<I>n</I>0, <I>n</I>0+1, <I>n</I>0+2,.....</P><P><B>Exemple</B> : Affichage des valeurs de <I>u</I><SUB><I>n</I></SUB>=sin(<I>n</I>)
 On ouvre un tableur avec <TT>Alt+t</TT>.<BR>
-Puis, on sélectionne une case du tableur (par exemple <TT>B0</TT>) et pour 
-avoir les valeurs de <I>u</I><SUB>0</SUB>=3.5,  <I>u</I><SUB><I>n</I></SUB>=sin(<I>u</I><SUB><I>n</I>−1</SUB>), on tape, 
+Puis, on sélectionne une case du tableur (par exemple <TT>C0</TT>) et on tape 
 dans la ligne de commande du tableur : 
-<DIV CLASS="center"><TT>tableseq(sin(u),u,4)</TT></DIV>
+</P><DIV CLASS="center"><TT>tablefunc(sin(n),n,0,1)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>une colonne contenant sin(n), n, 3.5 
-et une formule evalf(subst(B$0,B$1,B2))</TT>
-</DIV> 
-Les valeurs de la suite
-<TT><I>u</I></TT><SUB><TT>0</TT></SUB><TT>=4, <I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>=<I>sin</I>(<I>u</I></TT><SUB><TT><I>n</I>-1</TT></SUB><TT>)</TT> s’affichent dans la colonne <TT>B</TT>.<BR>
-
-</LI><LI CLASS="li-itemize">Affichage des valeurs de la suite de Fibonacci
-<I>u</I><SUB>0</SUB>=1, <I>u</I><SUB>1</SUB>=1  <I>u</I><SUB><I>n</I>+2</SUB>=<I>u</I><SUB><I>n</I></SUB>+<I>u</I><SUB><I>n</I>+1</SUB><BR>
-Après avoir selectionné <TT>B0</TT>, on tape, dans la ligne de 
-commande du tableur :
-<DIV CLASS="center"><TT>tableseq(x+y,[x,y],[1,1])</TT></DIV>
-On obtient, les premiers termes de la suite de Fibonacci :
-<DIV CLASS="center"><TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=left NOWRAP><TT>ligne</TT></TD><TD ALIGN=left NOWRAP><TT>B</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>x+y</TT></TD><TD ALIGN=left NOWRAP><TT>&nbsp;</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>1</TT></TD><TD ALIGN=left NOWRAP><TT>x</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>2</TT></TD><TD ALIGN=left NOWRAP><TT>y</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>3</TT></TD><TD ALIGN=left NOWRAP><TT>1</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>4</TT></TD><TD ALIGN=left NOWRAP><TT>1</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>5</TT></TD><TD ALIGN=left NOWRAP><TT>2</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>..</TT></TD><TD ALIGN=left NOWRAP><TT>..</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>7</TT></TD><TD ALIGN=left NOWRAP><TT>5</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>..</TT></TD><TD ALIGN=left NOWRAP><TT>..</TT></TD></TR>
-</TABLE></DIV>
+</P><DIV CLASS="center"><TT>deux colonnes : </TT><TT>n</TT><TT> et </TT><TT>sin(n)</TT></DIV><UL CLASS="itemize"><LI CLASS="li-itemize">
+dans la colonne <TT>n</TT> il y a la valeur du pas (qui doit être égal 
+à 1) et la valeur de <TT>n0</TT> (ici 0), puis une formule <TT>C2+C$1</TT> 
+qui a été recopiée vers le bas.</LI><LI CLASS="li-itemize">dans la colonne <TT>sin(n)</TT> il y a <TT>"Tablefunc"</TT>, puis une formule
+qui a été aussi recopiée vers le bas.<BR>
+Les valeurs de la suite <TT><I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>=</TT><TT>sin</TT><TT>(<I>n</I>)</TT> s’affichent alors en face des 
+<TT>n</TT> correspondants à partir de <TT>n=n0</TT> (ici 0).
 </LI></UL><HR>
 <A HREF="cascmd_fr278.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

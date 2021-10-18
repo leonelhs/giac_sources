@@ -12,7 +12,7 @@
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casexo002.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc1">Chapitre 1</A>  Fonctions et expressions en seconde</H1><P>
+Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<H1 CLASS="chapter"><A NAME="htoc1">Chapitre 1</A>  Fonctions et expressions en seconde</H1><P>
 <B>Objectifs</B>
 S’entrainer à lire, écrire, interprêter et simplifier des 
 expressions.<BR>
@@ -440,13 +440,14 @@ On tape :
 <TT>L:=NULL;for k in idivis(18) do L:=L,k</TT><CODE><TT>^</TT></CODE><TT>2-3; end_for</TT><BR>
 On obtient :<BR>
 <TT>-2,1,6,33,78,321</TT><BR>
-On tape :
-<TT>[1,2,3,6,9,18].*[L]</TT>
+On tape en utilisant <TT>.*</TT> :<BR>
+<TT>[1,2,3,6,9,18].*[L]</TT><BR>
 On obtient :<BR>
-<TT>[-2,2,18,198,702,5778]</TT>
+<TT>[-2,2,18,198,702,5778]</TT><BR>
+alors que <TT>[1,2,3,6,9,18]*[L]</TT> renvoie <TT>6696</TT><BR>
 donc <I>k</I>=3 est solution et donc :<BR>
 <I>u</I>=(9+4√<SPAN style="text-decoration:overline">5</SPAN>)<SUP>1/3</SUP> et <I>v</I>=(9−4√<SPAN style="text-decoration:overline">5</SPAN>)<SUP>1/3</SUP> sont les racines de 
-<I>X</I><SUP>2</SUP>−3<I>X</I>+1=0
+<I>X</I><SUP>2</SUP>−3<I>X</I>+1=0<BR>
 On tape :<BR>
 <TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>2-3x+1)</TT><BR>
 On obtient :<BR>
@@ -495,75 +496,89 @@ On tape (avec <TT>Digits:=30</TT>) :<BR>
 9716024986949,291480749606796380809804976)</TT><BR>
 On obtient :<BR>
 <TT>sqrt(9716024986949)+9856989898997</TT>
-</P><H2 CLASS="section"><A NAME="toc4"></A><A NAME="htoc14">1.4</A>  Exercice : étude de  <I>f</I>(<I>x</I>)=2<I>x</I><SUP>2</SUP>−1/6<I>x</I><SUP>2</SUP>+<I>x</I>−2</H2><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-Domaine de définition<BR>
+</P><H3 CLASS="subsection"><A NAME="htoc14">1.3.6</A>  Exercices divers de résolution déquations</H3><P>
+<B>Résoudre :</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<I>x</I><SUP>2</SUP>+2<I>x</I>+2=0<BR>
 On tape :<BR>
-<TT>solve(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2)</TT><BR>
+<TT>csolve(x</TT><CODE><TT>^</TT></CODE><TT>2+2x+2=0)</TT><BR>
+Ou on tape si on a coché <TT>Complexe</TT> dans la configuration du CAS :<BR>
+<TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>2+2x+2=0)</TT><BR>
 On obtient :<BR>
-<TT>[(-2)/3,1/2]</TT><BR>
-Donc <I>f</I> est définie sur ℝ−{−2/3,1/2}
-</LI><LI CLASS="li-enumerate">Dérivée<BR>
+<TT>[-1-i,-1+i]</TT>
+</LI><LI CLASS="li-itemize"><I>x</I><SUP>4</SUP>−6<I>x</I><SUP>2</SUP>+6=0<BR>
 On tape :<BR>
-<TT>factor(diff((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2))</TT><BR>
-On obtient :<BR>
-<TT>(2*x</TT><CODE><TT>^</TT></CODE><TT>+4*x+1)/((2*x-1)</TT><CODE><TT>^</TT></CODE><TT>2*(3*x+2)</TT><CODE><TT>^</TT></CODE><TT>2)</TT><BR>
+<TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>4-6x</TT><CODE><TT>^</TT></CODE><TT>2+6=0)</TT><BR>
+On obtient si on a coché <TT>Sqrt</TT> dans la configuration du CAS :<BR>
+<TT>[-(sqrt(sqrt(3)+3)),-(sqrt(-(sqrt(3))+3)),<BR>
+sqrt(-(sqrt(3))+3),sqrt(sqrt(3)+3)]</TT>
+</LI><LI CLASS="li-itemize"><I>x</I><SUP>6</SUP>−26<I>x</I><SUP>5</SUP>+250<I>x</I><SUP>4</SUP>−1160<I>x</I><SUP>3</SUP>+2749<I>x</I><SUP>2</SUP>−134<I>x</I>+1320=0<BR>
 On tape :<BR>
-<TT>normal(solve(2*x</TT><CODE><TT>^</TT></CODE><TT>+4*x+1))</TT><BR>
+<TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>6-26x</TT><CODE><TT>^</TT></CODE><TT>5+250x</TT><CODE><TT>^</TT></CODE><TT>4-1160x</TT><CODE><TT>^</TT></CODE><TT>3+2749x</TT><CODE><TT>^</TT></CODE><TT>2-3134x+1320=0)</TT><BR>
 On obtient :<BR>
-<TT>[(-sqrt(2)-2)/2,(sqrt(2)-2)/2]</TT><BR>
+<TT>[1,2,3,4,5,11]</TT>
+</LI><LI CLASS="li-itemize"><I>x</I><SUP>4</SUP>−<I>ax</I><SUP>3</SUP>−6<I>x</I><SUP>2</SUP>+6<I>ax</I><SUP>2</SUP>+11<I>x</I><SUP>2</SUP>−11<I>ax</I>−6<I>x</I>+6=0<BR>
 On tape :<BR>
-<TT>evalf([(-sqrt(2)-2)/2,(sqrt(2)-2)/2])</TT><BR>
+<TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>4-a*x</TT><CODE><TT>^</TT></CODE><TT>3-6*x</TT><CODE><TT>^</TT></CODE><TT>3+6a*x</TT><CODE><TT>^</TT></CODE><TT>2+11x</TT><CODE><TT>^</TT></CODE><TT>2-11a*x-6x+6a=0)</TT><BR>
 On obtient :<BR>
-<TT>[-1.70710678119,-0.292893218813]</TT><BR>
+<TT>[3,2,1,a]</TT>
+</LI><LI CLASS="li-itemize"><I>x</I><SUP>4</SUP>−π <I>x</I><SUP>3</SUP>−6<I>x</I><SUP>2</SUP>+6π <I>x</I><SUP>2</SUP>+11<I>x</I><SUP>2</SUP>−11π <I>x</I>−6<I>x</I>+6=0<BR>
 On tape :<BR>
-<TT>subst((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2),x=-1.70710678119)</TT><BR>
+<TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>4-pi*x</TT><CODE><TT>^</TT></CODE><TT>3-6*x</TT><CODE><TT>^</TT></CODE><TT>3+6*pi*x</TT><CODE><TT>^</TT></CODE><TT>2+11x</TT><CODE><TT>^</TT></CODE><TT>2-11*pi*x-6x+6*pi=0)</TT><BR>
 On obtient :<BR>
-<TT>0.35044026276</TT><BR>
+<TT>[3,2,1,pi]</TT>
+</LI><LI CLASS="li-itemize"><I>x</I><SUP>5</SUP>−3<I>x</I>−1=0<BR>
 On tape :<BR>
-<TT>subst((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2),x=-0.292893218813)</TT><BR>
+<TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>5-3x-1=0)</TT><BR>
 On obtient :<BR>
-<TT>0.465886267852</TT><BR>
-<I>f</I> a donc deux extremum en ≃ (-1.71,0.35) et (-0.29,0.47)<BR>
-Donc <I>f</I> est :<BR>
-croissante sur ]−∞;(−√<SPAN style="text-decoration:overline">2</SPAN>−2)/2]<BR>
-décroissante sur [(−√<SPAN style="text-decoration:overline">2</SPAN>−2)/2; −2/3[<BR>
-décroissante sur ]−2/3;(√<SPAN style="text-decoration:overline">2</SPAN>−2)/2]<BR>
-croissante sur [(√<SPAN style="text-decoration:overline">2</SPAN>−2)/;1/2[<BR>
-croissante sur ]1/2;+∞[</LI><LI CLASS="li-enumerate">Branches infinies<BR>
+Attention! Extension algébrique non implémentée pour les poly [1,0,0,0,-3,-1]<BR>
+<TT>[-1.2146480427,0.8029510011728015413e-1+1.328355109820654077*i,<BR>
+0.8029510011728015413e-1-1.328355109820654077*i,<BR>
+-0.3347341419433526871,1.388791984407254183]</TT>
+</LI><LI CLASS="li-itemize">4sin(<I>x</I>)<SUP>2</SUP>cos(<I>x</I>)<SUP>2</SUP>+cos(2<I>x</I>)<SUP>2</SUP>=1<BR>
+On simplifie, on tape :<BR>
+<TT>simplify(4*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2*cos(x)</TT><CODE><TT>^</TT></CODE><TT>2+cos(2x)</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT><BR>
+On obtient :<BR>
+<TT>0</TT><BR>
+On résoud, on tape :<BR>
+<TT>solve(4*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2*cos(x)</TT><CODE><TT>^</TT></CODE><TT>2+cos(2x)</TT><CODE><TT>^</TT></CODE><TT>2=1)</TT><BR>
+On obtient si <TT>All_trig_sol</TT> est coché ou pas coché dans la configuration du CAS :<BR>
+<TT>[x]</TT>
+</LI><LI CLASS="li-itemize">4cos(<I>x</I>)<SUP>3</SUP>−3cos(<I>x</I>)−sin(2<I>x</I>)−cos(3<I>x</I>)=0<BR>
+On simplifie, on tape :<BR>
+<TT>simplify(4*cos(x)</TT><CODE><TT>^</TT></CODE><TT>3-3*cos(x)-sin(2x)-cos(3x))</TT><BR>
+On obtient :<BR>
+<TT>-2*cos(x)*sin(x)</TT>
+On résoud, on tape :<BR>
+<TT>solve(4*cos(x)</TT><CODE><TT>^</TT></CODE><TT>3-3*cos(x)-sin(2x)-cos(3x)=0)</TT><BR>
+On obtient si <TT>All_trig_sol</TT> n’est pas coché dans la configuration du CAS :<BR>
+<TT>[0,pi/2,-pi/2,pi]</TT><BR>
+On obtient si on a coché <TT>All_trig_sol</TT> dans la configuration du CAS :<BR>
+<TT>[2*n_0*pi,(4*n_1*pi+pi)/2,(4*n_2*pi-pi)/2,2*n_3*pi+pi]</TT>
+</LI><LI CLASS="li-itemize">4cos(<I>x</I>)cos(2<I>x</I>)cos(3<I>x</I>)=1<BR>
 On tape :<BR>
-<TT>limit((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2),x=inf)</TT><BR>
-On obtient :<BR>
-<TT>1/3</TT><BR>
+<TT>solve(4*cos(x)*cos(2x)*cos(3x)=1)</TT><BR>
+On obtient si <TT>All_trig_sol</TT> n’est pas coché dans la configuration du CAS :<BR>
+<TT>[pi/3,-pi/3,2*pi/3,-2*pi/3,pi/8,-pi/8,7*pi/8,-7*pi/8,<BR>
+3*pi/8,-3*pi/8,5*pi/8,-5*pi/8]</TT><BR>
+On obtient si on a coché <TT>All_trig_sol</TT> dans la configuration du CAS :<BR>
+<TT>[(6*n_6*pi+pi)/3,(6*n_6*pi-pi)/3,(6*n_7*pi+2*pi)/3,<BR>
+(6*n_7*pi-2*pi)/3,(16*n_8*pi+pi)/8,(16*n_8*pi-pi)/8,<BR>
+(16*n_9*pi+7*pi)/8,(16*n_9*pi-7*pi)/8,(16*n_10*pi+3*pi)/8,<BR>
+(16*n_10*pi-3*pi)/8,(16*n_11*pi+5*pi)/8,(16*n_11*pi-5*pi)/8]</TT>
+</LI><LI CLASS="li-itemize">le système linéaire :<BR>
+[<I>x</I>+2<I>y</I>+3<I>z</I>=1,<I>x</I>+3<I>y</I>+2<I>z</I>=1,3<I>x</I>+<I>y</I>+2<I>z</I>=1]<BR>
 On tape :<BR>
-<TT>limit((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2),x=-inf)</TT><BR>
+<TT>linsolve([x+2y+3z=1,x+3y+2z=1,3x+y+2z=1],[x,y,z])</TT><BR>
 On obtient :<BR>
-<TT>1/3</TT><BR>
-Donc  <I>y</I>=1/3 est asymptote.<BR>
+<TT>[1/6,1/6,1/6]</TT>
+</LI><LI CLASS="li-itemize">le système linéaire :<BR>
+[<I>x</I>+2<I>y</I>+3<I>z</I>=π+5,2<I>x</I>+3<I>y</I>+2<I>z</I>=2π+5,3<I>x</I>+π <I>y</I>+π <I>z</I>=5π]<BR>
 On tape :<BR>
-<TT>limit((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2),x=-2/3,-1)</TT><BR>
+<TT>linsolve([x+2y+3z=pi+5,2x+3y+2z=2*pi+5,3x+pi*y+pi*z=5*pi],[x,y,z])</TT><BR>
 On obtient :<BR>
-<TT>-infinity</TT><BR>
-On tape :<BR>
-<TT>limit((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2),x=-2/3,1)</TT><BR>
-On obtient :<BR>
-<TT>+(infinity)</TT><BR>
-Donc  <I>x</I>=−2/3 est asymptote.<BR>
-On tape :<BR>
-<TT>limit((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2),x=1/2,-1)</TT><BR>
-On obtient :<BR>
-<TT>+infinity</TT><BR>
-On tape :<BR>
-<TT>limit((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2),x=1/2,1)</TT><BR>
-On obtient :<BR>
-<TT>-infinity</TT><BR>
-Donc  <I>x</I>=1/2 est asymptote.
-</LI><LI CLASS="li-enumerate">Graphe<BR>
-On tape :<BR>
-<TT>plotfunc((2x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(6x</TT><CODE><TT>^</TT></CODE><TT>2+x-2),x=-8..8),</TT><BR>
-<TT>affichage(droite(x=1/2),droite(x=-2/3),droite(y=1/3),1)</TT><BR>
-On obtient :<BR>
-<IMG SRC="casexo003.png">
-</LI></OL>Retour &#XE0; la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
+<TT>[pi,1,1]</TT>
+</LI></UL>Retour à la page personnelle de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse">Bernard Parisse</A>.<HR>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="casexo002.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 </BODY>

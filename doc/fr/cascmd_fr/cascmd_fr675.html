@@ -6,29 +6,63 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Liste des variables et des expressions : lvar</TITLE>
+<TITLE>Transformée en z inverse d’une fraction rationnelle, la fonction invztrans : invztrans</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr674.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr676.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc792">6.58.3</A>  Liste des variables et des expressions : <TT>lvar</TT></H3><P><A NAME="@default1221"></A><A NAME="sec:lvar"></A>
-<TT>lvar</TT> a comme paramètre une expression.<BR>
-<TT>lvar</TT> renvoie un vecteur de composantes les noms de variables et des 
-expressions dont cette expression dépend rationnellement.<BR>
+<H3 CLASS="subsection"><A NAME="htoc792">6.58.2</A>  Transformée en z inverse d’une fraction rationnelle, la fonction <I>invztrans</I> : <TT>invztrans</TT></H3><P><A NAME="@default1220"></A>
+<TT>invztrans</TT> a un ou trois arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+une fraction rationnelle donnée par son expression en utilisant la 
+variable <I>x</I> et <I>x</I> sera aussi le nom de la variable utilisée dans la 
+fonction renvoyée par, <TT>ztrans</TT>,
+</LI><LI CLASS="li-itemize">trois arguments une fraction rationnelle donnée par son expression, le 
+nom de la variable utilisée pour définir cette expression (paz exemple la 
+variable <I>z</I>), et le nom de la variable utilisée dans la fonction renvoyée 
+par <TT>invztrans</TT> (par exemple <I>n</I>).
+</LI></UL><P> 
+<TT>invztrans</TT> calcule la transformée en <I>z</I> inverse de la fraction 
+rationnelle donnée en argument.<BR>
+On a par définition :<BR>
+si <I>invztrans</I>(<I>R</I><SUB><I>x</I></SUB>)=<I>a</I><SUB><I>x</I></SUB> on a 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>R</I><SUB><I>x</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP><I>n</I></SUP></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+si <I>a</I><SUB><I>n</I></SUB>=<I>invztrans</I>(<I>R</I><SUB><I>z</I></SUB>,<I>z</I>,<I>n</I>) on a 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>R</I><SUB><I>z</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>z</I><SUP><I>n</I></SUP></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
 On tape :
-</P><DIV CLASS="center"><TT>lvar(x*y*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2+ln(x)*cos(y))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>invztrans(x/(x-1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x,y,sin(x)]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>lvar(x*y*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>invztrans(z/(z-1),z,n)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x,y,sin(x),ln(x),cos(y)]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On a en effet :
+<I>z</I>/(<I>z</I>−1)=1/1−1/<I>z</I>=1+1/<I>z</I>+1/<I>z</I><SUP>2</SUP>+1/<I>z</I><SUP>3</SUP>+1/<I>z</I><SUP>4</SUP>+..=∑<SUB><I>n</I>=0</SUB><SUP><I>inf</I></SUP>1/<I>z</I><SUP><I>n</I></SUP> 
 On tape :
-</P><DIV CLASS="center"><TT>lvar(y+x*sqrt(z)+y*sin(x))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>invztrans(x/(x-1)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[y,x,sqrt(z),sin(x)]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>x</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>invztrans(z/(z-1)</TT><CODE><TT>^</TT></CODE><TT>2,z,n)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>n</TT></DIV><HR>
 <A HREF="cascmd_fr674.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr676.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
