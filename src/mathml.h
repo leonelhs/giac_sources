@@ -29,6 +29,7 @@ namespace giac {
   extern const char mathml_preamble[];
   extern const char mathml_end[];
   class gen;  
+  extern const unary_function_ptr * const  at_mathml;
   gen _mathml(const gen & g,GIAC_CONTEXT);
   gen _spread2mathml(const gen & g,GIAC_CONTEXT);
   std::string spread2mathml(const matrice & m,int formule,GIAC_CONTEXT);

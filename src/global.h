@@ -292,8 +292,8 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
     // inherited constructors
     dbgprint_vector() : std::imvector<T>::imvector() { };
     dbgprint_vector(const T * b,const T * e) : std::imvector<T>::imvector(b,e) { };
-    dbgprint_vector(int i) : std::imvector<T>::imvector(i) { };
-    dbgprint_vector(int i,const T & t) : std::imvector<T>::imvector(i,t) { };
+    dbgprint_vector(size_t i) : std::imvector<T>::imvector(i) { };
+    dbgprint_vector(size_t i,const T & t) : std::imvector<T>::imvector(i,t) { };
     // ~dbgprint_vector() { };
     // inherited destructors
     void dbgprint() const { COUT << *this << std::endl; }
@@ -307,8 +307,8 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
     dbgprint_vector(const typename std::vector<T>::const_iterator & b,const typename std::vector<T>::const_iterator & e) : std::vector<T>::vector(b,e) { };
 #endif
     dbgprint_vector(const T * b,const T * e) : std::vector<T>::vector(b,e) { };
-    dbgprint_vector(int i) : std::vector<T>::vector(i) { };
-    dbgprint_vector(int i,const T & t) : std::vector<T>::vector(i,t) { };
+    dbgprint_vector(size_t i) : std::vector<T>::vector(i) { };
+    dbgprint_vector(size_t i,const T & t) : std::vector<T>::vector(i,t) { };
     // ~dbgprint_vector() { };
     // inherited destructors
     void dbgprint() const { COUT << *this << std::endl; }
@@ -319,10 +319,10 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   public:
     // inherited constructors
     std_matrix() : std::vector< dbgprint_vector<T> >::vector() { };
-    std_matrix(int i) : std::vector< dbgprint_vector<T> >::vector(i) { };
-    std_matrix(int i,const dbgprint_vector<T> & v) : std::vector< dbgprint_vector<T> >::vector(i,v) { };
-    std_matrix(int i,int j) : std::vector< dbgprint_vector<T> >::vector(i,dbgprint_vector<T>(j)) { };
-    std_matrix(int i,int j,const T & t) : std::vector< dbgprint_vector<T> >::vector(i,dbgprint_vector<T>(j,t)) { };
+    std_matrix(size_t i) : std::vector< dbgprint_vector<T> >::vector(i) { };
+    std_matrix(size_t i,const dbgprint_vector<T> & v) : std::vector< dbgprint_vector<T> >::vector(i,v) { };
+    std_matrix(size_t i,size_t j) : std::vector< dbgprint_vector<T> >::vector(i,dbgprint_vector<T>(j)) { };
+    std_matrix(size_t i,size_t j,const T & t) : std::vector< dbgprint_vector<T> >::vector(i,dbgprint_vector<T>(j,t)) { };
     // ~dbgprint_vector() { };
     // inherited destructors
     std_matrix<T> transpose() const {

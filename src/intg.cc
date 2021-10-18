@@ -2604,6 +2604,30 @@ namespace giac {
     return res;
   }
 
+  gen min2abs(const gen & g,GIAC_CONTEXT){
+    if (g.type!=_VECT || g._VECTptr->size()!=2)
+      return symbolic(at_min,g);
+    gen a=g._VECTptr->front(),b=g._VECTptr->back();
+    return (a+b-abs(a-b,contextptr))/2;
+  }
+
+  gen max2abs(const gen & g,GIAC_CONTEXT){
+    if (g.type!=_VECT || g._VECTptr->size()!=2)
+      return symbolic(at_min,g);
+    gen a=g._VECTptr->front(),b=g._VECTptr->back();
+    return (a+b+abs(a-b,contextptr))/2;
+  }
+
+  gen rewrite_minmax(const gen & e,GIAC_CONTEXT){
+    vector<const unary_function_ptr *> vu;
+    vu.push_back(at_min); 
+    vu.push_back(at_max); 
+    vector <gen_op_context> vv;
+    vv.push_back(min2abs);
+    vv.push_back(max2abs);
+    return subst(e,vu,vv,false,contextptr);
+  }
+
   gen integrate_id(const gen & e,const identificateur & x,GIAC_CONTEXT){
     if (e.type==_VECT){
       vecteur w;
@@ -2614,6 +2638,7 @@ namespace giac {
     }
     gen remains_to_integrate;
     gen ee=rewrite_hyper(e,contextptr);
+    ee=rewrite_minmax(ee,contextptr);
     gen res=_simplifier(linear_integrate(ee,x,remains_to_integrate,contextptr),contextptr);
     if (is_zero(remains_to_integrate))
       return res;
@@ -2630,6 +2655,7 @@ namespace giac {
       return w;
     }
     gen ee=rewrite_hyper(e,contextptr),tmprem;
+    ee=rewrite_minmax(ee,contextptr);
     gen res=linear_integrate(ee,x,tmprem,contextptr);
     remains_to_integrate=remains_to_integrate+tmprem;
     return res;
@@ -3392,7 +3418,8 @@ namespace giac {
 #endif
 
   // nmax=max number of subdivisions (may be 1000 or more...)
-  bool tegral(const gen & f,const gen & x,const gen & a,const gen &b,const gen & eps,int nmax,gen & value,GIAC_CONTEXT){
+  bool tegral(const gen & f,const gen & x,const gen & a_,const gen &b_,const gen & eps,int nmax,gen & value,GIAC_CONTEXT){
+    gen a=evalf(a_,1,contextptr),b=evalf(b_,1,contextptr);
     // adaptive integration, cf. Hairer
     gen i30,i30abs,err,maxerr,ERR,I30ABS;
     int maxerrpos;

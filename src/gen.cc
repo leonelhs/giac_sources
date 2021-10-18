@@ -14469,7 +14469,16 @@ namespace giac {
       else
 	g=gen(v,g.subtype);
     }
+    bool push=!g.is_symb_of_sommet(at_mathml);
+    if (push){
+      history_in(&C).push_back(g);
+      // COUT << "hin " << g << endl;
+    }
     g=protecteval(g,1,&C);
+    if (push){
+      history_out(&C).push_back(g);
+      // COUT << "hout " << g << endl;
+    }
 #endif
 #ifdef EMCC
     // compile with -s LEGACY_GL_EMULATION=1

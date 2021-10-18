@@ -60,7 +60,9 @@
 #if defined HAVE_SYS_TIME_H && !defined VISUALC13
 #include <time.h>
 #else
+#ifndef VISUALC13
 #define clock_t int
+#endif
 #define clock() 0
 #endif
 
@@ -2733,7 +2735,7 @@ namespace giac {
 		const T & reduce){
     if (vars.empty())
       return it->g;
-    int dim=vars.size()-1,nterms;
+    int dim=int(vars.size())-1,nterms;
     if (dim!=int(v.size())){
 #ifndef NO_STDEXCEPT
       throw(std::runtime_error("Invalid dimension"));

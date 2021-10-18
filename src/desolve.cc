@@ -122,7 +122,7 @@ namespace giac {
     if (args.type!=_VECT)
       return laplace(args,vx_var,vx_var,contextptr);
     vecteur & v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return laplace( v[0],v[1],v[1],contextptr);
     if (s!=3)
@@ -205,7 +205,7 @@ namespace giac {
       if (is_strictly_positive(expa,contextptr))
 	*logptr(contextptr) << gettext("Warning, exponential x coeff is positive ") << expa << endl;
       vecteur varx(lvarx(coeff,x));
-      int varxs=varx.size();
+      int varxs=int(varx.size());
       if (!varxs){ // Dirac function
 	res += coeff*exp(expb,contextptr)*symbolic(at_Dirac,laplace_var+expa);
 	continue;
@@ -221,10 +221,10 @@ namespace giac {
       alg_lvar(makevecteur(coeff,axb),l);
       gen glap=e2r(laplace_var,l,contextptr);
       if (glap.type!=_POLY)  return gensizeerr(gettext("desolve.cc/pf_ilaplace"));
-      int s=l.front()._VECTptr->size();
+      int s=int(l.front()._VECTptr->size());
       if (!s){
 	l.erase(l.begin());
-	s=l.front()._VECTptr->size();
+	s=int(l.front()._VECTptr->size());
       }
       gen r=e2r(coeff,l,contextptr);
       gen r_num,r_den;
@@ -305,7 +305,7 @@ namespace giac {
       }
       vecteur ipnumv=polynome2poly1(ipnum,1);
       gen deno=r2e(ipden,l,contextptr);
-      int nums=ipnumv.size();
+      int nums=int(ipnumv.size());
       for (int i=0;i<nums;++i){
 	gen tmp = rdiv(r2e(ipnumv[i],lprime,contextptr),deno,contextptr);
 	tmp = tmp*symbolic(at_Dirac,(i==nums-1)?laplace_var:gen(makevecteur(laplace_var,nums-1-i),_SEQ__VECT));
@@ -337,7 +337,7 @@ namespace giac {
     if (args.type!=_VECT)
       return ilaplace(args,vx_var,vx_var,contextptr);
     vecteur & v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return ilaplace( v[0],v[1],v[1],contextptr);
     if (s!=3)
@@ -662,7 +662,7 @@ namespace giac {
       // take laplace transform
       // p*Y-Y(0)+bsura*Y+csura=0
       // (p+bsura)*Y=Y(0)-csura
-      int n=a._VECTptr->size();
+      int n=int(a._VECTptr->size());
       if (!ckmatrix(a) || !ckmatrix(b))
 	return gensizeerr(contextptr);
       gen inva=inv(a,contextptr);
@@ -713,7 +713,7 @@ namespace giac {
       gen & b=v[1];
       gen & c=v[2];
       if (ckmatrix(a)){
-	c=_tran(c,contextptr)[a._VECTptr->size()-1];
+	c=_tran(c,contextptr)[int(a._VECTptr->size())-1];
       }
       result=desolve_lin1(a,b,c,x,parameters,contextptr);
       return true;
@@ -882,7 +882,7 @@ namespace giac {
 	b=_coeff(makesequence(b,x),contextptr);
 	c=_coeff(makesequence(c,x),contextptr);
 	if (a.type==_VECT && b.type==_VECT && c.type==_VECT){
-	  int A=a._VECTptr->size()-1,B=b._VECTptr->size()-1,C=c._VECTptr->size()-1,N=-1;
+	  int A=int(a._VECTptr->size())-1,B=int(b._VECTptr->size())-1,C=int(c._VECTptr->size())-1,N=-1;
 	  if (C==B-1){
 	    gen n=-c._VECTptr->front()/b._VECTptr->front();
 	    if (n.type==_INT_ && n.val>N){
@@ -915,21 +915,21 @@ namespace giac {
 	      m[i]=vecteur(N+1);
 	    // a*y''
 	    for (int i=0;i<a._VECTptr->size();++i){
-	      int j=a._VECTptr->size()-i-1;
+	      int j=int(a._VECTptr->size())-i-1;
 	      for (int k=2;k<=N;++k){
 		(*m[j+k-2]._VECTptr)[k] += k*(k-1)*a[i];
 	      }
 	    }
 	    // b*y'
 	    for (int i=0;i<b._VECTptr->size();++i){
-	      int j=b._VECTptr->size()-i-1;
+	      int j=int(b._VECTptr->size())-i-1;
 	      for (int k=1;k<=N;++k){
 		(*m[j+k-1]._VECTptr)[k] += k*b[i];
 	      }
 	    }
 	    // c*y
 	    for (int i=0;i<c._VECTptr->size();++i){
-	      int j=c._VECTptr->size()-i-1;
+	      int j=int(c._VECTptr->size())-i-1;
 	      for (int k=0;k<=N;++k){
 		(*m[j+k]._VECTptr)[k] += c[i];
 	      }
@@ -1390,7 +1390,7 @@ namespace giac {
       return _desolve(makesequence(args,vx,vy),contextptr);
     }
     vecteur v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     for (int i=0;i<s;++i){
       v[i]=apply(v[i],point2vecteur,contextptr);
     }
@@ -1462,7 +1462,7 @@ namespace giac {
     if (args.type!=_VECT)
       return ztrans(args,vx_var,vx_var,contextptr);
     vecteur & v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return ztrans( v[0],v[1],v[1],contextptr);
     if (s!=3)
@@ -1490,7 +1490,7 @@ namespace giac {
 #endif
     }
     vecteur varx(lvarx(f,x));
-    int varxs=varx.size();
+    int varxs=int(varx.size());
     gen res;
     if (varxs==0)
       res=f*symb_when(t,1,0);
@@ -1508,10 +1508,10 @@ namespace giac {
       lprime.front()=cdr_VECT(*(lprime.front()._VECTptr));
       gen glap=e2r(s,l,contextptr);
       if (glap.type!=_POLY)  return gensizeerr(gettext("desolve.cc/invztrans"));
-      int dim=l.front()._VECTptr->size();
+      int dim=int(l.front()._VECTptr->size());
       if (!dim){
 	l.erase(l.begin());
-	dim=l.front()._VECTptr->size();
+	dim=int(l.front()._VECTptr->size());
       }
       gen r=e2r(res,l,contextptr);
       res=0;
@@ -1588,7 +1588,7 @@ namespace giac {
     if (args.type!=_VECT)
       return invztrans(args,vx_var,vx_var,contextptr);
     vecteur & v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return invztrans( v[0],v[1],v[1],contextptr);
     if (s!=3)

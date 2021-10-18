@@ -177,7 +177,7 @@ namespace giac {
     int n=decimal_digits(contextptr);
     if (n<12) n=12;
     double eps=std::pow(0.1,n);
-    int rprec=n*3.3;
+    int rprec=int(n*3.3);
     vecteur a=proot(v,eps,rprec);
     return in_select_root(a,is_real(v,contextptr),contextptr);
   }
@@ -287,7 +287,7 @@ namespace giac {
   static vecteur replace_ext(const vecteur & v,const vecteur &ext,const gen & g,GIAC_CONTEXT){
     vecteur res;
     const_iterateur it=v.begin(),itend=v.end();
-    res.reserve(itend-it);
+    res.reserve(int(itend-it));
     for (;it!=itend;++it){
       gen numtmp=*it,dentmp=1;
       if (it->type==_FRAC){
@@ -313,7 +313,7 @@ namespace giac {
   gen common_minimal_POLY(const gen & ga,const gen & gb, gen & a,gen & b,int & k,GIAC_CONTEXT){
     const vecteur & va=*ga._VECTptr;
     const vecteur & vb=*gb._VECTptr;
-    int na=va.size()-1,nb=vb.size()-1;
+    int na=int(va.size()-1),nb=int(vb.size()-1);
     if (nb==1){
       k=0;
       vecteur un(2,zero);
@@ -384,7 +384,7 @@ namespace giac {
 	    vecteur rac2=proot(v2,1e-12);
 	    if (!rac2.empty() && !is_undef(rac2)){
 	      gen theta2=in_select_root(rac2,is_real(v2,contextptr),contextptr);
-	      int racs=rac1.size();
+	      int racs=int(rac1.size());
 	      for (int i=0;i<racs;++i){
 		gen r1=rac1[i],K;
 		if (r1==theta1)
@@ -426,7 +426,7 @@ namespace giac {
 	    vecteur rac2=real_proot(v2,1e-12,contextptr);
 	    if (!rac2.empty() && !is_undef(rac2)){
 	      gen theta2=_max(rac2,contextptr);
-	      int racs=rac.size();
+	      int racs=int(rac.size());
 	      for (int i=0;i<racs;++i){
 		gen r1=rac[i],K;
 		if (r1==theta1)
@@ -584,7 +584,7 @@ namespace giac {
 
   // Find an evaluation point for p at b where pb=p[b] is squarefree
   bool find_good_eval(const polynome & F,polynome & Fb,vecteur & b){
-    int Fdeg=F.lexsorted_degree(),nvars=b.size();
+    int Fdeg=F.lexsorted_degree(),nvars=int(b.size());
     gen Fg;
     int essai=0;
     for (;;++essai){
@@ -646,7 +646,7 @@ namespace giac {
 	return gensizeerr(gettext("alg_ext.cc/common_EXT"));
       b__VECT=*(b._EXTptr+1);
     }
-    int as=a__VECT._VECTptr->size(),bs=b__VECT._VECTptr->size();
+    int as=int(a__VECT._VECTptr->size()),bs=int(b__VECT._VECTptr->size());
     if (bs>as)
       return common_EXT(b,a,l,contextptr);
     if (as==3 && bs==3 && is_one(a[0]) && is_one(b[0]) && is_zero(a[1]) && is_zero(b[1]) && a[2]==-b[2]){ // sqrt(X) and sqrt(-X)
@@ -665,7 +665,7 @@ namespace giac {
     // this is done by approximation if possible
     // or by choosing the factor of lowest degree
     // this way we update b__VECT
-    int min_deg=b__VECT._VECTptr->size();
+    int min_deg=int(b__VECT._VECTptr->size());
     factorization::const_iterator f_it=f.begin(),f_itend=f.end();
     bool trouve=false;
     if (f_itend-f_it==1)
@@ -1030,7 +1030,7 @@ namespace giac {
       if (it->type==_VECT){
 	const_iterateur jt=it->_VECTptr->begin(),jtend=it->_VECTptr->end();
 	vecteur tmpres;
-	tmpres.reserve(jtend-jt);
+	tmpres.reserve(int(jtend-jt));
 	for (;jt!=jtend;++jt){
 	  if (jt->type==_POLY){
 	    tmp=polynome2poly1(*(jt->_POLYptr),1);
@@ -1133,7 +1133,7 @@ namespace giac {
     if ( g_orig.type!=_VECT || g_orig._VECTptr->size()<3 )
       return gensizeerr(contextptr);
     vecteur v(*g_orig._VECTptr);
-    int s=v.size();
+    int s=int(v.size());
     gen P(v[0]),x(vx_var),a,b;
     if (s==3){ a=v[1]; b=v[2]; } 
     else { 
@@ -1178,7 +1178,7 @@ namespace giac {
     if (g.type!=_VECT || (g.type==_VECT && g.subtype!=_SEQ__VECT) )
       return sturm(g,zero,contextptr);
     vecteur & v = *g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return sturm(v.front(),v.back(),contextptr);
     if (s==4)
@@ -1365,7 +1365,7 @@ namespace giac {
       // FIXME: check if var is quoted, otherwise it will be erased
       gen savevar=var;
       if (var._IDNTptr->in_eval(1,var,savevar,contextptr))
-	;
+	1;
       giac_assume(symbolic(at_and,makevecteur(symb_superieur_egal(var,range[0]),symb_inferieur_egal(var,range[1]))),contextptr);
       w=solve(df,var,2,contextptr);
       if (savevar==var)
@@ -1389,7 +1389,7 @@ namespace giac {
     recompute_minmax(vecteur(1,range[1]),range,expr,var,resmin,resmax,xmin,xmax,-1,contextptr);
     // Singularities
     vecteur ws=find_singularities(expr,*var._IDNTptr,0,contextptr);
-    int wss=ws.size();
+    int wss=int(ws.size());
     w.clear();
     for (int i=0;i<wss;++i){
       if (ws[i]!=range[0] && ws[i]!=range[1])
@@ -1489,7 +1489,7 @@ namespace giac {
     // search for a sqrt inside v: sign(a+b*sqrt(c))=
     // = sign(a) if a^2-c*b^2 > 0, 
     // = sign(b) if a^2-c*b^2 < 0
-    int s=v.size();
+    int s=int(v.size());
     if (!s)
       return fastsign(g,contextptr);
     gen v0(v[0]);
@@ -1602,7 +1602,7 @@ namespace giac {
     if (g.is_symb_of_sommet(at_prod)){
       gen &f=g._SYMBptr->feuille;
       vecteur v(gen2vecteur(f));
-      int s=v.size();
+      int s=int(v.size());
       vecteur w;
       int res=1,currentsign;
       // remove cst coeffs and exp/

@@ -1028,11 +1028,9 @@ namespace giac {
       if ( (mys.feuille._VECTptr->back()==minus_one_half ) || 
 	   (mys.feuille._VECTptr->back()==fraction(minus_one,plus_two) ) )
 	return "<mfrac><mn>1</mn><msqrt>"+gen2mathml(mys.feuille._VECTptr->front(),contextptr)+"</msqrt></mfrac>";
-      string s_bra="<msup><mfenced open=\"(\" close=\")\"><mrow>"+gen2mathml((*(mys.feuille._VECTptr))[0],contextptr)
-    +"</mrow></mfenced><mrow>"+gen2mathml((*(mys.feuille._VECTptr))[1],contextptr)
-	+"</mrow></msup>";
-      string s_no_bra= "<msup><mrow> "+gen2mathml((*(mys.feuille._VECTptr))[0],contextptr) 
-	+"</mrow><mrow>"+gen2mathml((*(mys.feuille._VECTptr))[1],contextptr)+"</mrow></msup>";
+      string s0=gen2mathml((*(mys.feuille._VECTptr))[0],contextptr),s1=gen2mathml((*(mys.feuille._VECTptr))[1],contextptr);
+      string s_bra="<msup><mfenced open=\"(\" close=\")\"><mrow>("+s0+")</mrow></mfenced><mrow>"+s1+"</mrow></msup>";
+      string s_no_bra= "<msup><mrow> "+s0+"</mrow><mrow>"+s1+"</mrow></msup>";
       if (mys.feuille._VECTptr->front().type==_SYMB){
 
 	symbolic mantisse(*mys.feuille._VECTptr->front()._SYMBptr);

@@ -151,7 +151,8 @@ namespace std {
     ~imvector() { 
       _destroy();
     }
-    imvector(unsigned n,const _Tp & value=_Tp()){
+    imvector(size_t n_,const _Tp & value=_Tp()){
+      unsigned n=unsigned(n_);
       _alloc(n); 
       _Tp * _end_immediate_vect=_taille>0?_begin_immediate_vect:(_Tp *)_tab;
       for (unsigned i=0;i<n;++_end_immediate_vect,++i){
@@ -213,10 +214,10 @@ namespace std {
     size_t capacity() const { return _taille<0?(sizeof(int)*IMMEDIATE_VECTOR)/sizeof(_Tp):_endalloc_immediate_vect-_begin_immediate_vect;}
     _Tp & front() { return *begin(); }
     _Tp & back() { return *rbegin(); }
-    _Tp & operator [](unsigned i) { return *(begin()+i); }
+    _Tp & operator [](size_t i) { return *(begin()+i); }
     const _Tp & front() const { return *begin(); }
     const _Tp & back() const { return *rbegin(); }
-    const _Tp & operator [](unsigned i) const { return *(begin()+i); }
+    const _Tp & operator [](size_t i) const { return *(begin()+i); }
     void push_back(const _Tp & p0){ 
       _Tp p(p0); 
       // create a copy since p0 may be scratched 
@@ -264,8 +265,9 @@ namespace std {
       _taille=0;
     }
     bool empty() const { return _taille==0 || _taille==immvector_max; }
-    void reserve(unsigned n){ if (_abs(_taille)<n) _realloc(n); }
-    void resize(unsigned n,const _Tp &value=_Tp()){ 
+    void reserve(size_t n){ if (_abs(_taille)<n) _realloc(int(n)); }
+    void resize(size_t n_,const _Tp &value=_Tp()){ 
+      unsigned n=unsigned(n_);
       if (_taille!=immvector_max && _abs(_taille)>=n) {
 	// clear elements from _begin()+n to _end()
 	_Tp * ptr = begin()+n;
@@ -321,12 +323,12 @@ namespace std {
 	  *b=x;
 	  return b;
 	}
-	int pos=b-((_Tp *) _tab);
+	int pos=int(b-((_Tp *) _tab));
 	_realloc(_abs(_taille)?2*(-_taille):1);
 	b=_begin_immediate_vect+pos;
       }
       if (int(_abs(_taille))==_endalloc_immediate_vect-_begin_immediate_vect){
-	int pos=b-_begin_immediate_vect;
+	int pos=int(b-_begin_immediate_vect);
 	_realloc(_abs(_taille)?2*_taille:1);
 	b=_begin_immediate_vect+pos;
       }
@@ -363,7 +365,8 @@ namespace std {
       memcpy(&w,this,sizeof(imvector<_Tp>));
       memcpy(this,(void *)ch,sizeof(imvector<_Tp>));
     }
-    void assign(unsigned n,const _Tp & value=_Tp()){
+    void assign(size_t n_,const _Tp & value=_Tp()){
+      unsigned n=unsigned(n_);
       _realloc(n);
       _taille=_taille>0?(n?n:immvector_max):-n;
       unsigned i=0;
@@ -476,7 +479,8 @@ namespace std {
     
   vector():_begin(0),_end(0),_endalloc(0) {}
     ~vector() { if (_begin) delete [] _begin; }
-    vector(unsigned n,const _Tp & value=_Tp()){
+    vector(size_t n_,const _Tp & value=_Tp()){
+      unsigned n=unsigned(n_);
       _alloc(n); 
       for (;_end!=_endalloc;++_end){
 	*_end =value;
@@ -511,10 +515,10 @@ namespace std {
     size_t capacity() const { return _endalloc-_begin;}
     _Tp & front() { return *_begin; }
     _Tp & back() { return *(_end-1); }
-    _Tp & operator [](unsigned i) { return *(_begin+i); }
+    _Tp & operator [](size_t i) { return *(_begin+i); }
     const _Tp & front() const { return *_begin; }
     const _Tp & back() const { return *(_end-1); }
-    const _Tp & operator [](unsigned i) const { return *(_begin+i); }
+    const _Tp & operator [](size_t i) const { return *(_begin+i); }
     void push_back(const _Tp & p){ 
       if (_endalloc==_end){
 	unsigned n = unsigned(_end-_begin);
@@ -526,9 +530,10 @@ namespace std {
     _Tp pop_back(){ --_end; return *_end; }
     void clear(){ _end=_begin;}
     bool empty() const { return _end==_begin; }
-    void reserve(unsigned n){ if (_endalloc-_begin<int(n)) _realloc(n); }
-    void resize(unsigned n,const _Tp &value=_Tp()){ 
-      if (_end-_begin>=(int)n) _end=_begin+n;
+    void reserve(size_t n){ if (_endalloc-_begin<int(n)) _realloc(int(n)); }
+    void resize(size_t n_,const _Tp &value=_Tp()){ 
+      int n=int(n_);
+      if (_end-_begin>=n) _end=_begin+n;
       else {
 	_realloc(n);
 	for (;_end!=_endalloc;++_end){
@@ -583,7 +588,8 @@ namespace std {
       tmp=_end; _end=w._end; w._end=tmp;
       tmp=_endalloc; _endalloc=w._endalloc; w._endalloc=tmp;
     }
-    void assign(unsigned n,const _Tp & value=_Tp()){
+    void assign(size_t n_,const _Tp & value=_Tp()){
+      unsigned n=unsigned(n_);
       _realloc(n);
       _end = _begin +n;
       for (_Tp * ptr=_begin;ptr!=_end;++ptr){

@@ -370,7 +370,7 @@ namespace giac {
       }
     }
     index_m(const index_t & i){
-      int s=i.size();
+      int s=int(i.size());
       if (s<=POLY_VARS){
 	taille=2*s+1;
 	deg_t * target=direct,*end=direct+s;
@@ -388,7 +388,7 @@ namespace giac {
     index_m(size_t s){
       if (int(s)<=POLY_VARS){
 	riptr=0;
-	taille=2*s+1;
+	taille=2*int(s)+1;
 #if (HAS_POLY_VARS_OTHER==1)
 	* (size_t *) other =0;
 #endif
@@ -405,12 +405,12 @@ namespace giac {
       }
       else {
 	// taille=0;
-	riptr=new ref_index_t(s);
+	riptr=new ref_index_t(int(s));
       }
     }
     index_m(index_t::const_iterator it,index_t::const_iterator itend){
       if (itend-it<=POLY_VARS){
-	taille=2*(itend-it)+1;
+	taille=2*int(itend-it)+1;
 	deg_t * target = direct;
 	for (;it!=itend;++it,++target){
 	  *target=*it;
