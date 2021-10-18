@@ -1065,7 +1065,7 @@ namespace giac {
 	  }
 	}
 	return false;
-      }
+      } // end b==plus_inf (a is still minus_inf)
       // subst x by x+b, check parity: even -> 1/2 int(-inf,+inf)
       gen gb=subst(g,x,x+b,false,contextptr);
       int eo=is_even_odd(gb,x,contextptr);
@@ -1093,9 +1093,87 @@ namespace giac {
 	}
       }
       return false;
-    }
+    } // end a==minus_inf
     if (b==plus_inf){
       gen ga=subst(g,x,x+a,false,contextptr);
+      // additional check for int(t^n/(exp(alpha*t)-1),t,0,inf)=n!/alpha^(n+1)*Zeta(n+1)
+      vecteur vax=rlvarx(ga,x);
+      if (vax.size()==2 && vax.front()==x && vax.back().is_symb_of_sommet(at_exp)){
+	gen expo=vax.back(),expo_a,expo_b;
+	if (is_linear_wrt(expo._SYMBptr->feuille,x,expo_a,expo_b,contextptr) && is_strictly_positive(expo_a,contextptr)){
+	  gen gand=_fxnd(ga,contextptr);
+	  if (gand.type==_VECT && gand._VECTptr->size()==2){
+	    gen gan=gand._VECTptr->front(),gad=gand._VECTptr->back(),gad_a,gad_b;
+	    // gad must be a power of expo-exp(expo_b), starting with linear
+	    if (rlvarx(gan,x).size()==1 && is_linear_wrt(gad,expo,gad_a,gad_b,contextptr)){
+	      // gad=gad_a*(expo+gad_b/gad_a)
+	      gen test=ratnormal(gad_a*exp(expo_b,contextptr)+gad_b);
+	      if (is_zero(test)){
+		// -1/gad_b*int(gan/(exp(expo_a*t)-1),t,0,inf)
+		gen ganv=_coeff(makesequence(gan,x),contextptr);
+		if (ganv.type==_VECT && !ganv._VECTptr->empty() && is_zero(ganv._VECTptr->back())){
+		  res=0;
+		  vecteur v=*ganv._VECTptr;
+		  gen facti=pow(expo_a,-2,contextptr);
+		  for (int i=1;i<v.size();++i){
+		    gen coeff=v[v.size()-i-1];
+		    if (!is_zero(coeff))
+		      res += coeff*facti*Zeta(i+1,contextptr);
+		    facti=facti*gen(i+1)/expo_a;
+		  }
+		  res=ratnormal(-res/gad_b);
+		  return true;
+		}
+	      } // end if is_zero(test)
+	    } // end if (rlvarx(gan,x).size()==1
+	  } // end if gand.type==_VECT
+	  identificateur t(" tintgab");
+	  gen y(t);
+	  ga=subst(ga,expo,y,false,contextptr);
+	  vecteur f=factors(ga,x,contextptr); // Factor then split factors
+	  gen xfact(plus_one),yfact(plus_one);
+	  if (separate_variables(f,x,y,xfact,yfact,contextptr)){
+	    // yfact must be a fraction with denominator a power of expo-exp(expo_b)
+	    gen y0=exp(expo_b,contextptr);
+	    gen expofact=_fxnd(yfact,contextptr);
+	    if (expofact.type==_VECT && expofact._VECTptr->size()==2){
+	      gen exponum=expofact._VECTptr->front(),expoden=expofact._VECTptr->back();
+	      int n=_degree(makesequence(expoden,y),contextptr).val;
+	      gen coeffden=ratnormal(expoden/pow(y-y0,n,contextptr));
+	      if (n>1 && is_zero(derive(coeffden,y,contextptr))){
+		// 1/expoden*xfact*exponum(y)/(y-1)^n, y'=expo_a*y
+		gen additional=_quorem(makesequence(exponum,pow(y-1,n-1),y),contextptr);
+		exponum=additional[1];
+		gen xfactc=_coeff(makesequence(xfact,x),contextptr);
+		if (xfactc.type==_VECT && !xfactc._VECTptr->empty()){
+		  vecteur & xfactv=*xfactc._VECTptr;
+		  // check cancellation of xfact at 0 at least order n
+		  bool check=true;
+		  for (int i=1;i<=n;++i){
+		    if (xfactv[xfactv.size()-i]!=0){
+		      check=false;
+		      break;
+		    }
+		  }
+		  if (check){
+		    // reduce degree by integration by part
+		    // int(P(t)*Q(e^at)/(e^at-1)^n=
+		    // int( (1/(n-1)*P'/a-P)*Q(e^at)+1/(n-1)P*Q'(e^at))/(e^at-1)^(n-1)
+		    gen int1=(derive(xfact,x,contextptr)/((n-1)*expo_a)-xfact)*subst(exponum/pow(y-1,n-1,contextptr),y,exp(expo_a*x,contextptr),false,contextptr);
+		    int1=_integrate(makesequence(int1,x,0,plus_inf),contextptr);
+		    gen int2=xfact/gen(n-1)*subst(derive(exponum,y,contextptr)/pow(y-1,n-1,contextptr),y,exp(expo_a*x,contextptr),false,contextptr);
+		    int2=_integrate(makesequence(int2,x,0,plus_inf),contextptr);
+		    gen int3=xfact*subst(additional[0]/(y-1),y,exp(expo_a*x,contextptr),false,contextptr);
+		    int3=_integrate(makesequence(int3,x,0,plus_inf),contextptr);
+		    res=(int1+int2+int3)/coeffden;
+		    return true;
+		  }
+		}
+	      }
+	    }
+	  }
+	} // end if (is_linear_wrt(expo...))
+      } // end varx.size()==2
       int eo=is_even_odd(ga,x,contextptr);
       if (eo==1){ 
 	vecteur singu=find_singularities(g,*x._IDNTptr,0 /* real singularities*/,contextptr);

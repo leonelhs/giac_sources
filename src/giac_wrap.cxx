@@ -28938,7 +28938,7 @@ SWIGEXPORT jboolean JNICALL Java_javagiac_giacJNI_convert_1to_1euler_1mac_1lauri
     return 0;
   } 
   arg3 = *(giac::context **)&jarg3; 
-  result = (bool)giac::convert_to_euler_mac_laurin((giac::gen const &)*arg1,*arg2,arg3);
+  result = false; //(bool)giac::convert_to_euler_mac_laurin((giac::gen const &)*arg1,*arg2,arg3);
   jresult = (jboolean)result; 
   return jresult;
 }

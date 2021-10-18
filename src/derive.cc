@@ -384,6 +384,14 @@ namespace giac {
       gen arg=s.feuille._VECTptr->back();
       gen darg=derive(arg,i,contextptr);
       if (!is_one(darg)){
+	if (darg.type==_VECT){
+	  gen res=0;
+	  for (int i=0;i<int(darg._VECTptr->size());++i){
+	    gen fprime=symbolic(at_derive,makesequence(f,i));
+	    res += darg[i]*symbolic(at_of,makesequence(fprime,arg));
+	  }
+	  return res;
+	}
 	// f(arg)'=arg'*f'(arg)
 	gen fprime=symbolic(at_derive,f);
 	return darg*symbolic(at_of,makesequence(fprime,arg));
@@ -518,6 +526,8 @@ namespace giac {
       return symb_equal(derive(e._SYMBptr->feuille[0],vars,contextptr),
 			derive(e._SYMBptr->feuille[1],vars,contextptr));
     switch (vars.type){
+    case _INT_:
+      return symbolic(at_derive,makesequence(e,vars));
     case _IDNT:
       return derive(e,*vars._IDNTptr,contextptr);
     case _VECT:
@@ -666,7 +676,28 @@ namespace giac {
 
   gen _grad(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
-    if (args.type!=_VECT || args._VECTptr->size()!=2)
+    if (args.type!=_VECT)
+      return gensizeerr(contextptr);
+    if (args._VECTptr->size()==3){
+      gen opt=args._VECTptr->back();
+      if (opt.is_symb_of_sommet(at_equal) && (opt._SYMBptr->feuille[0]==at_coordonnees || (opt._SYMBptr->feuille[0].type==_INT_ && opt._SYMBptr->feuille[0].val==_COORDS))){
+	gen coord=(*args._VECTptr)[1];
+	gen res=_derive(makesequence(args._VECTptr->front(),coord),contextptr);
+	if (res.type==_VECT){
+	  vecteur resv=*res._VECTptr;
+	  if (opt._SYMBptr->feuille[1]==at_sphere && resv.size()==3){
+	    resv[1]=resv[1]/coord[0];
+	    resv[2]=resv[2]/(coord[0]*sin(coord[1],contextptr));
+	    return resv;
+	  }
+	  if (opt._SYMBptr->feuille[1]==at_cylindre && resv.size()>=2){
+	    resv[1]=resv[1]/coord[0];
+	    return resv;
+	  }
+	}
+      }
+    }
+    if (args._VECTptr->size()!=2)
       return gensizeerr(contextptr);
     return _derive(args,contextptr);
   }

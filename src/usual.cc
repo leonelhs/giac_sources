@@ -652,6 +652,13 @@ namespace giac {
       return -atan(-e,contextptr);
     if (is_equal(e))
       return apply_to_equal(e,atan,contextptr);
+    vecteur v1(loptab(e,sincostan_tab));
+    if (v1.size()>1){
+      gen e1=ratnormal(_trigtan(e,contextptr));
+      if (loptab(e1,sincostan_tab).size()<=1)
+	return atan(e1,contextptr);
+    }
+    // if (e.is_symb_of_sommet(at_inv)) return sign(e._SYMBptr->feuille,contextptr)*cst_pi/2-atan(e._SYMBptr->feuille,contextptr);
     if (e.is_symb_of_sommet(at_tan)){
       gen tmp=cst_pi;
       if (!angle_radian(contextptr))
@@ -7130,7 +7137,48 @@ namespace giac {
       res2 *= z;
       res1 += res2;
       if (sub)
-	return res0-res1;
+	return res1-res0;
+      else
+	return res1;
+    }
+    if (x.type==_CPLX){
+      gen c=evalf_double(x,1,contextptr);
+      complex<double> z(c._CPLXptr->_DOUBLE_val,(c._CPLXptr+1)->_DOUBLE_val);
+      // z<=0 , psi(z)=pi*cotan(pi*z)-psi(1-z)
+      // z>0, psi(z)=psi(z+1)-1/z
+      // until x>10, 
+      complex<double> res0=0,res1=0,res2=0;
+      bool sub=false;
+      if (c._CPLXptr->_DOUBLE_val<0){
+	res0=M_PI/std::tan(M_PI*z);
+	z=1.0-z;
+	sub=true;
+      }
+      for (;z.real()<10;z+=1){
+	res1 -= 1.0/z;
+      }
+      // ln(x)-1/2/x-1/12*1/x^2+1/120*1/x^4-1/252*1/x^6+1/240*1/x^8-1/132*1/x^10+691/32760*1/x^12-1/12*1/x^14
+      res1 += std::log(z);
+      z=1.0/z;
+      res1 -= z/2.0;
+      z=z*z;
+      res2 = -z/12.0;
+      res2 *= z;
+      res2 += 691./32760.;
+      res2 *= z;
+      res2 -= 1./132.;
+      res2 *= z;
+      res2 += 1./240.;
+      res2 *= z;
+      res2 -= 1./252.;
+      res2 *= z;
+      res2 += 1./120.;
+      res2 *= z;
+      res2 -= 1./12.;
+      res2 *= z;
+      res1 += res2;
+      if (sub)
+	return res1-res0;
       else
 	return res1;
     }
@@ -7141,13 +7189,100 @@ namespace giac {
 #endif
     return symbolic(at_Psi,x);
   }
+
+  gen cot_psi_cache(int n,GIAC_CONTEXT){
+    static vecteur cot_cache;
+    if (cot_cache.size()>n)
+      return cot_cache[n];
+    if (cot_cache.empty())
+      cot_cache.push_back(_cot(cst_pi*vx_var,contextptr));
+    while (cot_cache.size()<=n)
+      cot_cache.push_back(ratnormal(derive(cot_cache.back(),vx_var,contextptr)));
+    return cot_cache[n];
+  }
+  double bernoulli_tab[]={1.000000000000000,-0.50000000000000000,0.1666666666666667,0.0000000000000000,-0.3333333333333333e-1,0.0000000000000000,0.2380952380952381e-1,0.0000000000000000,-0.3333333333333333e-1,0.0000000000000000,0.7575757575757576e-1,0.0000000000000000,-0.2531135531135531,0.0000000000000000,1.166666666666667,0.0000000000000000,-7.092156862745098,0.0000000000000000,0.5497117794486216e2,0.0000000000000000,-0.5291242424242424e3,0.0000000000000000,0.6192123188405797e4,0.0000000000000000,-0.8658025311355311e5,0.0000000000000000,0.1425517166666667e7,0.0000000000000000,-0.2729823106781609e8,0.0000000000000000,0.6015808739006424e9};
+  gen evalf_Psi(const gen & x,int n,GIAC_CONTEXT){
+    if (n==0)
+      return Psi(x,contextptr);
+    // |z|<1, Psi(1+z,n)=(-1)^(n+1)*n!*(Zeta(n+1)-(n+1)*Zeta(n+2)*z+(n+1)*(n+2)/2!*Zeta(n+3)*z^2-...)
+    // or (-1)^(n+1)*n!*sum((z+k)^(-n-1),k,0,inf)
+    // |z|->inf outside R^-: (-1)^(n+1)*((n-1)!/z^n+n!/2/z^(n+1)+sum(bernoulli(2*k)*(2*k+n-1)!/(2*k)!/z^(2k+n),k,1,inf))
+    // recurrence Psi(z,n)=Psi(z+1,n)-(-1)^n*n!*z^(-n-1)
+    // reflection Psi(1-z,n)+(-1)^(n+1)Psi(z,n)=(-1)^n*pi*cotan(pi*z)^{[n]}
+    if (x.type==_DOUBLE_){
+      double d=x._DOUBLE_val;
+      if (d<=0){
+	if (d==int(d))
+	  return unsigned_inf;
+	gen res=evalf_Psi(1-d,n,contextptr);
+	gen tmp=cot_psi_cache(n,contextptr);
+	tmp=subst(tmp,vx_var,d,false,contextptr);
+	if (n%2)
+	  res=-M_PI*tmp-res;
+	else
+	  res=res-M_PI*tmp;
+	return res;
+      }
+      // d>0
+      double res=0;
+      for (;d<10+n;++d){
+	res += std::pow(d,-n-1);
+      }
+      res = n*res;
+      double zn=std::pow(d,-n); // (n-1)!/z^n
+      double tmp=zn;
+      zn=n*zn/(2*d);
+      tmp=zn+tmp;
+      zn=(n+1)*zn/d;
+      for (int k=1;k<15;++k){
+	tmp=tmp+bernoulli_tab[2*k]*zn;
+	zn=(2*k+n)*(2*k+n+1)/(d*d*(2*k+1)*(2*k+2))*zn;
+      }
+      double factn=evalf_double(factorial(n-1),1,contextptr)._DOUBLE_val;
+      res=factn*(res+tmp);
+      if (n%2) return res; else return -res;
+    }
+    if (x.type==_CPLX){
+      gen c=evalf_double(x,1,contextptr);
+      double d=c._CPLXptr->_DOUBLE_val,i=(c._CPLXptr+1)->_DOUBLE_val;
+      if (d<=0){
+	gen res=evalf_Psi(1-x,n,contextptr);
+	gen tmp=cot_psi_cache(n,contextptr);
+	tmp=subst(tmp,vx_var,c,false,contextptr);
+	if (n%2)
+	  res=-M_PI*tmp-res;
+	else
+	  res=res-M_PI*tmp;
+	return res;
+      }
+      // Re(x)>0
+      complex<double> z(d,i),res=0;
+      for (;d<10+n;++d,z+=1){
+	res += std::pow(z,-n-1);
+      }
+      res = double(n)*res;
+      complex<double> zn=std::pow(z,-n); // (n-1)!/z^n
+      complex<double> tmp=zn;
+      zn=double(n)*zn/(2.0*z);
+      tmp=zn+tmp;
+      zn=(n+1.0)*zn/z;
+      for (int k=1;k<15;++k){
+	tmp=tmp+bernoulli_tab[2*k]*zn;
+	zn=(2.0*k+n)*(2.0*k+n+1.0)/(z*z*(2.0*k+1.0)*(2.0*k+2.0))*zn;
+      }
+      double factn=evalf_double(factorial(n-1),1,contextptr)._DOUBLE_val;
+      res=factn*(res+tmp);
+      if (n%2) return res; else return -res;
+    }
+    return undef;
+  }
   // n-th derivative of digamma function
   gen Psi(const gen & x,int n,GIAC_CONTEXT){
     if (n<-1)
       return gensizeerr(contextptr);
     if (n==-1)
       return Gamma(x,contextptr);
-    if (is_positive(-x,contextptr))
+    if (is_integer(x) && is_positive(-x,contextptr))
       return unsigned_inf;
     if (is_one(x)){
       if (n%2)
@@ -7155,13 +7290,20 @@ namespace giac {
       else
 	return -Zeta(n+1,contextptr)*factorial(n);
     }
+    if (x==plus_one_half && n>=1){
+      gen res=factorial(n);
+      if (n%2==0)
+	res=-res;
+      res=res*(pow(2,n+1,contextptr)-1);
+      return res*Zeta(n+1,contextptr);
+    }
     if (x==plus_inf)
       return zero;
     if (is_undef(x))
       return x;
     if (is_inf(x))
       return undef;
-    if (!n)
+    if (!n) 
       return Psi(x,contextptr);
     if ( (x.type==_INT_) && (x.val<10000) ){
       identificateur tt(" t");
@@ -7170,10 +7312,15 @@ namespace giac {
       else
 	return -factorial(n)*(Zeta(n+1,contextptr)-sum_loop(pow(tt,-n-1),tt,1,x.val-1,contextptr));
     }
-#ifdef HAVE_LIBGSL
-    if (x.type==_DOUBLE_)
-      return gsl_sf_psi_n(n,x._DOUBLE_val);
+    if (x.type==_DOUBLE_ || x.type==_CPLX){
+      gen d=evalf_Psi(x,n,contextptr);
+      return d;
+#if 0 //def HAVE_LIBGSL // for check only
+      double val=gsl_sf_psi_n(n,x._DOUBLE_val);
+      CERR << d << " " << val << endl;
+      return d;
 #endif 
+    }
     return symbolic(at_Psi,gen(makevecteur(x,n),_SEQ__VECT));
   }
   gen _Psi(const gen & args,GIAC_CONTEXT) {

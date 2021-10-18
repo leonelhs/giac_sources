@@ -8193,13 +8193,14 @@ namespace giac {
     return makevecteur(g);
   }
 
-  gen unitpow(const gen & g,const gen & exponent){
-    if (is_zero(exponent))
+  gen unitpow(const gen & g,const gen & exponent_){
+    gen exponent=evalf_double(exponent_,1,context0);
+    if (exponent.type!=_DOUBLE_)
+      return gensizeerr(gettext("Invalid unit exponent")+exponent.print());
+    if (std::abs(exponent._DOUBLE_val)<1e-6)
       return plus_one;
     if (is_one(exponent))
       return g;
-    if (evalf_double(exponent,1,context0).type!=_DOUBLE_)
-      return gensizeerr(gettext("Invalid unit exponent")+exponent.print());
     return symbolic(at_pow,gen(makevecteur(g,exponent),_SEQ__VECT));
   }
   gen mksa_reduce(const gen & g,GIAC_CONTEXT){
@@ -8300,7 +8301,7 @@ namespace giac {
 	else
 	  vw=subvecteur(v,w);
 	for (int i=1;i<5;++i){
-	  if (vw[i]==zero)
+	  if (is_greater(1e-6,abs(vw[i],contextptr),contextptr))
 	    continue;
 	  if (pos){
 	    pos=0;

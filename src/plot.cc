@@ -5456,7 +5456,7 @@ namespace giac {
 #if 1 // def WIN32
     COUT << "// " << args ;
     string s;
-    cin >> s;
+    CIN >> s;
     if (vs==4)
       res=string2gen(s,false);
     else

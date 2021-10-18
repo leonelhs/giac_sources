@@ -4657,8 +4657,7 @@ unsigned int ConvertUTF8toUTF16 (
   const char invalid_name[]="Invalid name";
 
 #ifdef USTL    
-    void update_lexer_localization(const std::vector<int> & v,ustl::map<std::string,std::string> &lexer_map,ustl::multimap<std::string,giac::localized_string> &back_lexer_map){
-    }
+  // void update_lexer_localization(const std::vector<int> & v,ustl::map<std::string,std::string> &lexer_map,ustl::multimap<std::string,giac::localized_string> &back_lexer_map){}
 #else
     void update_lexer_localization(const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,giac::localized_string> &back_lexer_map){
       lexer_map.clear();
@@ -4720,6 +4719,8 @@ unsigned int ConvertUTF8toUTF16 (
       }
     }
 #endif
+
+#ifndef NSPIRE
 
 #include "input_parser.h" 
 
@@ -5138,6 +5139,8 @@ unsigned int ConvertUTF8toUTF16 (
     const size_t * const builtin_lexer_functions_=0;
 
 #endif
+
+#endif // NSPIRE
 
   gen make_symbolic(const gen & op,const gen & args){
     return symbolic(*op._FUNCptr,args);

@@ -345,6 +345,7 @@ namespace giac {
   extern const unary_function_ptr * const  at_ordonnee;
 
   gen _cote(const gen & args,GIAC_CONTEXT);
+  extern const unary_function_ptr * const  at_coordonnees;
   gen _coordonnees(const gen & args,GIAC_CONTEXT);
   gen _coordonnees_polaires(const gen & args,GIAC_CONTEXT);
   gen _coordonnees_rectangulaires(const gen & args,GIAC_CONTEXT);

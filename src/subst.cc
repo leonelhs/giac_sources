@@ -2198,7 +2198,27 @@ namespace giac {
 	vecteur v2(loptab(e2,asinacosatan_tab));
 	if (int(v2.size())<s2){
 	  e2=simplify(e2,contextptr);
-	  if (e2.type==_VECT){
+	  if (e2.type==_VECT && e2!=v1){
+	    e=subst(e,v1,e2,false,contextptr);
+	    return simplify(e,contextptr);
+	  }
+	}
+      }
+      if (s1>1){
+	// retry with trigtan/trigcos/trigsin/halftan
+	e2=recursive_normal(_trigtan(e,contextptr),contextptr);
+	if (int(loptab(e2,sincostan_tab).size())<s1)
+	  return simplify(e2,contextptr);
+	e2=recursive_normal(_trigcos(e,contextptr),contextptr);
+	if (int(loptab(e2,sincostan_tab).size())<s1)
+	  return simplify(e2,contextptr);
+	e2=recursive_normal(_trigsin(e,contextptr),contextptr);
+	if (int(loptab(e2,sincostan_tab).size())<s1)
+	  return simplify(e2,contextptr);
+	e2=_halftan(v1,contextptr);
+	if (e2.type==_VECT){
+	  vecteur w1(loptab(e2,sincostan_tab));
+	  if (w1.size()<v1.size()){
 	    e=subst(e,v1,e2,false,contextptr);
 	    return simplify(e,contextptr);
 	  }

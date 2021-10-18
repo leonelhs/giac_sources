@@ -1803,6 +1803,8 @@ namespace giac {
 
   gen _INT(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
+    if (g.type==_VECT)
+      return apply(g,_INT,contextptr);
     if (g.type==_CPLX)
       return _INT(*g._CPLXptr,contextptr)+cst_i*_INT(*(g._CPLXptr+1),contextptr);
     if (is_positive(g,contextptr))
