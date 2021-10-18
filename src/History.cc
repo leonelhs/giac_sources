@@ -1806,7 +1806,7 @@ namespace xcas {
     return res;
   }
 
-  string casio2xws(const char * s,int ss,int l){
+  string casio2xws(const char * s,int ss,int l,GIAC_CONTEXT){
     int pos=0;
 #if 0
     ofstream of("log.xws");
@@ -1818,26 +1818,32 @@ namespace xcas {
 #endif
 #endif
     int x=49,y=87,w=626,h=l+1;
-    const char * ptr=s;
+    unsigned const char * ptr=(unsigned const char*)s;
     int L=((ptr[0]*256+ptr[1])*256+ptr[2])*256+ptr[3]; ptr+=4; pos+=4;
-    char bufscript[L+1];
-    strncpy(bufscript,ptr,L); ptr+=L; pos+=L;
-    bufscript[L]=0;
-    int dh=5+h*(1+count(bufscript,'\n'));
+    char buf_mode[L+1];
+    strncpy(buf_mode,(const char *)ptr,L); ptr+=L; pos+=L;
+    buf_mode[L]=0;
+#if 1
+    python_compat(0,contextptr);
+    gen vars(buf_mode,contextptr);
+    vars=eval(vars,1,contextptr);
+#else
+    int dh=5+h*(1+count(buf_mode,'\n'));
     of << "// fltk 7Fl_Tile " << x << " " << y << " "<< w << " " << dh << endl;
     of << "[" << endl;
     of << "// fltk N4xcas16Xcas_Text_EditorE "<< x << " " << y << " "<< w << " " << dh << " " << h << " " << 0 << endl;
     y += dh;
-    of << L << " ," << endl << bufscript << "," << endl << "]\n,\n";
-    L=((ptr[0]*256+ptr[1])*256+ptr[2])*256+ptr[3]; ptr+=4; pos+=L;
-    char bufmode[L+1];
-    strncpy(bufmode,ptr,L); ptr+=L; pos+=L;
-    bufmode[L]=0;
-    dh=50+h*(1+count(bufmode,'\n'));
+    of << L << " ," << endl << buf_mode << "," << endl << "]\n,\n";
+#endif
+    L=((ptr[0]*256+ptr[1])*256+ptr[2])*256+ptr[3]; ptr+=4; 
+    char buf_script[L+1];
+    strncpy(buf_script,(const char *)ptr,L); ptr+=L; pos+=L;
+    buf_script[L]=0;
+    int dh=50+h*(1+count(buf_script,'\n'));
     of << "// fltk 7Fl_Tile " << x << " " << y << " "<< w << " " << dh << endl;
     of << "[" << endl;
     of << "// fltk N4Xcas7EditeurE "<< x << " " << y << " "<< w << " " << dh << " " << h << " " << 0 << endl;
-    of << L << " ," << endl << bufmode << "," <<endl << "]\n,\n";
+    of << L << " ," << endl << buf_script << "," <<endl << "]\n,\n";
     y += dh;
     for (;pos<ss;){
       L=ptr[0]*256+ptr[1]; ptr+=2; pos+=2;
@@ -1846,7 +1852,7 @@ namespace xcas {
       int type=ptr[2]; ptr+=4; pos+=4;
       char buf_[L+1];
       char * buf=buf_;
-      strncpy(buf,ptr,L); ptr+=L; pos+=L;
+      strncpy(buf,(const char *)ptr,L); ptr+=L; pos+=L;
       buf[L]=0;
       dh=5+h*(1+count(buf,'\n'));
       bool comment=false;
@@ -2126,7 +2132,7 @@ namespace xcas {
       new_url((remove_extension(urlname)+".xws").c_str());
     }
     if (casio && ss>4){
-      s=casio2xws(s.c_str(),POS,fontsize);
+      s=casio2xws(s.c_str(),POS,fontsize,contextptr);
       new_url((remove_extension(urlname)+".xws").c_str());
     }
     bool res= _insert(this,s.c_str(),s.size(),before_position);

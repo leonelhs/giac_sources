@@ -1664,7 +1664,12 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (UI.python_mode) s += (UI.python_mode+'&'); else s += '0&';
     var cur = $id('mathoutput').firstChild;
     var i = 0;
+    var savepy=UI.python_mode;
+    if (savepy)
+      UI.caseval_noautosimp('python_compat(0)');
     var casiovars=UI.caseval_noautosimp('VARS(-1)');
+    if (savepy)
+      UI.caseval_noautosimp('python_compat('+savepy+')');
     casiovars += ';python_compat('+UI.python_mode+');angle_radian('+ ($id('config').angle_mode.checked?1:0)+');';
     var casioscript="",casioin=[];
     for (; cur; i++) {
@@ -1734,8 +1739,9 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
           // s += '+' + tmp.replace('&&',' and ','g') + '&';
           var tmp = field.firstChild.value;
 	  if (start==-1){ // Casio export
-	    if (tmp.indexOf('\n')!=-1)
-	      casioscript += tmp;
+	    if (tmp.indexOf('\n')!=-1 &&
+		(tmp.indexOf('def')!=-1 || tmp.indexOf('nction')!=-1 || tmp.indexOf('{')!=-1))
+	      casioscript += tmp+'\n';
 	    else {
 	      casioin.push(tmp);
 	      if (field.nextSibling){

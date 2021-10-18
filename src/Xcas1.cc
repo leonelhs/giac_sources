@@ -1034,7 +1034,18 @@ namespace xcas {
 	  return res;
 	}
       }
-      if (evaled_g.type == _VECT && graph_output_type(evaled_g)){
+      int tt;
+      if (evaled_g.type == _VECT && (tt=graph_output_type(evaled_g)) ){
+	if (tt==4){
+	  // Fl_Tile * g = new Fl_Tile(w->x(),w->y(),w->w(),max(130,w->w()/3));
+	  // g->labelsize(w->labelsize());
+	  Turtle * tu = new Turtle(w->x(),w->y(),w->w(),max(130,w->w()/3));
+	  tu->turtleptr=&turtle_stack(contextptr);
+	  //g->end();
+	  //change_group_fontsize(g,w->labelsize());
+	  //return g;
+	  return tu;
+	}
 	Fl_Tile * g = new Fl_Tile(w->x(),w->y(),w->w(),max(130,w->w()/3));
 	g->labelsize(w->labelsize());
 	Graph2d3d * tmp;
@@ -2138,6 +2149,13 @@ namespace xcas {
 	next_line_nonl(s,L,line,i);
 	tableur_load(res->table,line,x,y,w,h);
 	return res;
+      }
+      pos=tmp.find("Turtle");
+      if (pos>0 && pos<tmps){ 
+	Turtle * tu=new Turtle(x,y,w,h);
+	tu->turtleptr=&turtle_stack(context0);
+	next_line(s,L,line,i); // skip []
+	return tu;
       }
       pos=tmp.find("Fl_Scrollbar");
       if (pos>0 && pos<tmps){ 
