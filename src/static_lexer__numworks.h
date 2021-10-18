@@ -685,6 +685,7 @@
 *((size_t *) at_getKey),
 *((size_t *) at_getNum),
 *((size_t *) at_getType),
+*((size_t *) at_getKey),
 *((size_t *) at_get_pixel),
 *((size_t *) at_ggb_ang),
 *((size_t *) at_ggbalt),

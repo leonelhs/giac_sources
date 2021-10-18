@@ -3438,12 +3438,24 @@ namespace xcas {
       if (key==KEY_SHIFT_LEFT) { gr.left((gr.window_xmax-gr.window_xmin)/2); }
       if (key==KEY_CTRL_RIGHT) { gr.right((gr.window_xmax-gr.window_xmin)/5); }
       if (key==KEY_SHIFT_RIGHT) { gr.right((gr.window_xmax-gr.window_xmin)/5); }
-      if (key==KEY_CHAR_PLUS) { gr.zoom(0.7);}
-      if (key==KEY_CHAR_MINUS){ gr.zoom(1/0.7); }
-      if (key==KEY_CHAR_PMINUS){ gr.zoomy(1/0.7); }
-      if (key==KEY_CHAR_MULT){ gr.autoscale(); }
-      if (key==KEY_CHAR_DIV) { gr.orthonormalize(); }
-      if (key==KEY_CTRL_VARS) {gr.show_axes=!gr.show_axes;}
+      if (key==KEY_CHAR_PLUS) {
+	gr.zoom(0.7);
+      }
+      if (key==KEY_CHAR_MINUS){
+	gr.zoom(1/0.7);
+      }
+      if (key==KEY_CHAR_PMINUS){
+	gr.zoomy(1/0.7);
+      }
+      if (key==KEY_CHAR_MULT){
+	gr.autoscale();
+      }
+      if (key==KEY_CHAR_DIV) {
+	gr.orthonormalize();
+      }
+      if (key==KEY_CTRL_VARS) {
+	gr.show_axes=!gr.show_axes;
+      }
     }
     // aborttimer = Timer_Install(0, check_execution_abort, 100); if (aborttimer > 0) { Timer_Start(aborttimer); }
     return ;
