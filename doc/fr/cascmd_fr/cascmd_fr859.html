@@ -6,33 +6,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Avoir du papier pointé : papier_pointe dot_paper</TITLE>
+<TITLE>Avoir un arrêt momentané : WAIT</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr858.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr860.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1005">10.2.6</A>  Avoir du papier pointé : <TT>papier_pointe dot_paper</TT></H3><P><A NAME="@default1543"></A><A NAME="@default1544"></A>
-<TT>papier_pointe</TT> permet d’avoir du papier pointé c’est à dire
-de tracer un reseau de points sur des droites horizontales et sur des droites
-de pente tan(<I>t</I>).<BR>
-<TT>papier_pointe</TT> a 3,4 ou 5 arguments : l’unité <TT>ux</TT> sur l’axe des 
-<I>x</I>, l’angle <TT>t</TT> et l’unité 
-<TT>uy</TT> sur l’axe des <I>y</I> et éventuellement <TT>x=xmin..xmax,y=ymin..ymax</TT>
-pour n’avoir que des points dans le rectangle
-<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
-les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
-Vous avez la possibilité d’enlever les axes orthonormés en utilisant
-le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
-On tape pour avoir les sommets d’un réseau :
-</P><DIV CLASS="center"><TT>papier_pointe(0.6,pi/2,0.6)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le pointage de tous les sommets du reseau formé par des carrés dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1007">9.7.11</A>  Avoir un arrêt momentané : <TT>WAIT</TT></H3><P><A NAME="@default1545"></A>
+<TT>WAIT</TT> est une instruction qui permet de suspendre l’exécution 
+d’un programme.<BR>
+<TT>WAIT</TT> a comme argument le temps de pause en secondes.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>papier_pointe(1,pi/3,sqrt(3)/2,x=-2..3,y=-1..2)</TT></DIV><P>
+<TT>a:=21;b:=5</TT> puis,
+</P><DIV CLASS="center"><TT>print(a);WAIT(3);print(b);</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le pointage de tous les sommets du reseau formé par des triangles équilatéraux dans le rectangle </TT><TT>[-2,3]×[-1,2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>21 s’écrit en bleu, un arrêt de 3 secondes, puis 5 s’écrit en bleu et on a (1,0,1) comme réponse</TT></DIV><HR>
 <A HREF="cascmd_fr858.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr860.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

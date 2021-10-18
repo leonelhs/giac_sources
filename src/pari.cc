@@ -1049,6 +1049,31 @@ namespace giac {
     return true;
   }
 
+  bool pari_galoisconj(const gen & g,vecteur & w,GIAC_CONTEXT){
+    if (check_pari_mutex())
+      return false;
+    gen res;
+    pthread_cleanup_push(pari_cleanup, (void *) pari_mutex_ptr);
+
+    res=in_pari(makesequence(string2gen("nfgaloisconj",false),g),contextptr);
+
+    if (pari_mutex_ptr) pthread_mutex_unlock(pari_mutex_ptr);    
+    pthread_cleanup_pop(0);
+    if (res.type!=_VECT)
+      return false;
+    w=*res._VECTptr;
+    gen gp=_symb2poly(makesequence(g,vx_var),contextptr);
+    for (int i=0;i<int(w.size());++i){
+      gen tmp=w[i];
+      tmp=_symb2poly(makesequence(tmp,vx_var),contextptr);
+      gen d=1;
+      if (tmp.type==_VECT)
+	lcmdeno(*tmp._VECTptr,d,contextptr);
+      w[i]=symb_rootof(tmp,gp,contextptr)/d;
+    }
+    return true;
+  }
+  
 
 #ifndef NO_NAMESPACE_GIAC
 }
@@ -1092,6 +1117,10 @@ namespace giac {
     return false;
   }
 
+  bool pari_galoisconj(const gen & g,vecteur & w,GIAC_CONTEXT){
+    return false;
+  }
+  
   gen _pari(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     return pari_error();

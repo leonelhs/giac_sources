@@ -6,20 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Ouvrir l’ècran DispG depuis un programme : DispG</TITLE>
+<TITLE>Pour écrire des sorties dans un fichier : fopen fprint fclose</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr837.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr839.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc980">9.6.4</A>  Ouvrir l’ècran <TT>DispG</TT> depuis un programme : <TT>DispG</TT></H3><P><A NAME="@default1515"></A><A NAME="sec:dispg"></A>
-<TT>DispG</TT> n’a pas d’arguments.<BR>
-<TT>DispG;</TT> permet d’ouvrir l’écran <TT>DispG</TT> depuis un programme.<BR>
-On tape (ne pas mettre de parenthèses) :
-</P><DIV CLASS="center"><TT>DispG;</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc984">9.5.3</A>  Pour écrire des sorties dans un fichier : <TT>fopen fprint fclose</TT></H3><P><A NAME="@default1521"></A><A NAME="@default1522"></A><A NAME="@default1523"></A>
+Voici les commandes pour ecrire dans un fichier :<BR>
+<TT>f:=fopen("essai")</TT> crèe un fichier du nom spécifié ici <TT>essai</TT> 
+(et donc l’efface si celui-ci existait déjà) et lui associer la variable 
+<TT>f</TT>.<BR>
+<TT>fprint(f,12)</TT> écrit 12 dans le fichier <TT>essai</TT>.<BR>
+<TT>fclose(f)</TT> ferme le fichier <TT>essai</TT>.<BR>
+On tape :
+</P><PRE CLASS="verbatim">testfprint(nom):={
+ local a,f;
+ a:=[];
+ f:=fopen(nom);
+ for (k:=1;k&lt;11;k++){
+ fprint(f,k);
+ }
+ fclose(f);
+ return a;
+ }
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>testfprint("toto")</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>l’ouverture de l’écran </TT><TT>DispG</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>la création d’un fichier "toto" dans lequel il y a 12345678910</TT></DIV><HR>
 <A HREF="cascmd_fr837.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr839.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

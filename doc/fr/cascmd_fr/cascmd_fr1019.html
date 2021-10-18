@@ -6,23 +6,63 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’ellipse dans l’espace : ellipse</TITLE>
+<TITLE>Le losange dans l’espace : rhombus losange</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1018.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1020.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1195">11.11.1</A>  L’ellipse dans l’espace : <TT>ellipse</TT></H3><P><A NAME="@default1977"></A><A NAME="sec:ellipse3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr920.html#sec:ellipse2">10.14.1</A> pour la géométrie plane.<BR>
-<TT>ellipse</TT>, en géométrie 3-d, a trois paramètres : ses deux
-foyers et un de ces points non aligné avec les foyers.<BR>
-<TT>ellipse(F1,F2,A)</TT> trace l’ellipse passant par <TT>A</TT> et de foyers 
-<TT>F1</TT> et <TT>F2</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1197">11.8.2</A>  Le losange dans l’espace : <TT>rhombus losange</TT></H3><P><A NAME="@default1976"></A><A NAME="@default1977"></A> <A NAME="sec:losange3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr911.html#sec:losange2">10.11.3</A> pour la géométrie plane.<BR>
+<TT>losange</TT>, en géométrie 3-d, peut avoir de trois à cinq 
+arguments.<BR>
+Les arguments sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si il a trois arguments ce sont : 2 points (les 2 premiers sommets du 
+losange) et le troisième argument est soit un point <I>P</I>, soit une liste 
+formée par un point <I>P</I> et un nombre réel <I>a</I>. Le point <I>P</I> définit le 
+plan du losange et l’orientation de ce plan.<BR>
+On a :<BR>
+- <TT>losange(A,B,P)</TT> renvoie et trace dans le plan <I>ABP</I>, le losange <I>ABCD</I> 
+tel que :<BR>
+<I>AB</I>,<I>AD</I>)=<I>AB</I>,<I>AP</I>), mais sans définir les points <I>C</I> et <I>D</I>.<BR>
+- <TT>losange(A,B,[P,a])</TT> renvoie et trace dans le plan <I>ABP</I>, le losange <I>ABCD</I>
+tel que :<BR>
+<I>AB</I>,<I>AD</I>)=<I>a</I> radians (ou degrés), mais sans 
+définir les points <I>C</I> et <I>D</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>ellipse(point(-1,0,0),point(1,0,0),point(1,1,1))</TT></DIV><P>
+<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
+<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
+<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
+Puis on tape :
+<DIV CLASS="center"><TT>losange(A,B,P)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>L’ellipse passant par (1,1,1), de foyers (-1,0,0) et (1,0,0)</TT></DIV><HR>
+<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à </TT><TT><I>BAP</I></TT><TT>, dans le plan </TT><TT><I>ABP</I></TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
+<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
+<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
+Puis on tape :
+<DIV CLASS="center"><TT>losange(A,B,[P,pi/3])</TT></DIV>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à pi/3, dans le plan </TT><TT><I>ABP</I></TT></DIV>
+</LI><LI CLASS="li-itemize">si il a quatre ou cinq arguments, les derniers paramètres sont les 
+noms des variables qui serviront à définir les derniers sommets.<BR>
+On tape :
+<DIV CLASS="center"><TT>losange(A,B,[P,pi/3],C,D)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I>,<I>C</I>,<I>D</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à pi/3, dans le plan </TT><TT><I>ABP</I></TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[(-3*sqrt(6)+18)/4,(-3*sqrt(6)+18)/4,(3*sqrt(6)+9)/2]</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[(-3*sqrt(6)+6)/4,(-3*sqrt(6)+6)/4,(3*sqrt(6)+3)/2]</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr1018.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1020.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

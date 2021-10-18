@@ -6,21 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice d’une forme quadratique : q2a</TITLE>
+<TITLE>Décomposition QR (compatible TI) : QR</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr640.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr642.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc753">6.53.1</A>  Matrice d’une forme quadratique : <TT>q2a</TT></H3><P><A NAME="@default1163"></A> 
-<TT>q2a</TT> a deux arguments : une forme quadratique <I>q</I> et le 
-vecteur de composantes les variables utilisées.<BR>
-<TT>q2a</TT> renvoie la matrice <I>A</I> associée à <I>q</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc757">6.57.3</A>  Décomposition QR (compatible TI) : <TT>QR</TT></H3><P><A NAME="@default1168"></A>
+<TT>QR</TT> a comme argument une matrice carrée numérique <I>A</I> 
+d’ordre <I>n</I> et deux noms de variables : <TT>var1</TT> et <TT>var2</TT>.<BR>
+<TT>QR</TT> factorise numériquement cette matrice sous la forme <I>Q</I>*<I>R</I> où
+<I>Q</I> est une matrice orthogonale (<SUP><I>t</I></SUP><I>Q</I>*<I>Q</I>=<I>I</I>) et <I>R</I> est une matrice triangulaire supérieure.<BR>
+<TT>QR(A)</TT> renvoie <TT>R</TT>, met <TT>Q</TT> dans <TT>var1</TT>
+et met <TT>R</TT> dans <TT>var2</TT>.<BR>
+On a <TT>Q=A*inv(R)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>q2a(2*x*y,[x,y])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[0,1],[1,0]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>QR([[3,5],[4,5]],Q,R)</TT></DIV><P>
+On obtient la matrice <TT>R</TT> :
+</P><DIV CLASS="center"><TT>[[-5,-7],[0,-1]]</TT></DIV><HR>
 <A HREF="cascmd_fr640.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr642.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

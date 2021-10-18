@@ -43,6 +43,7 @@ namespace giac {
 
   gen checkanglemode(GIAC_CONTEXT){
     if (!angle_radian(contextptr)) 
+      //grad
       return gensizeerr(gettext("This function works only in radian mode"));
     return 0;
   }
@@ -111,22 +112,39 @@ namespace giac {
       return g;
     return g*gen(180)/cst_pi;
   }
+  //grad (next few commands
+  gen angletorad(const gen & g,GIAC_CONTEXT){
+    if (angle_radian(contextptr)) 
+      return g;
+    else if(angle_degree(contextptr))
+    return g*deg2rad_e;
+    else
+      return g*grad2rad_e;
+  }
+  gen radtoangle(const gen & g,GIAC_CONTEXT){
+    if(angle_radian(contextptr))
+      return g;
+    else if(angle_degree(contextptr))
+    return g*gen(180)/cst_pi;
+    else
+      return g*gen(200)/cst_pi;
+  }
   gen sin2exp(const gen & e,GIAC_CONTEXT){
-    gen a=exp(cst_i*degtorad(e,contextptr),contextptr);
+    gen a=exp(cst_i*angletorad(e,contextptr),contextptr);
     return rdiv(a-inv(a,contextptr),plus_two*cst_i,contextptr);
   }
   gen cos2exp(const gen & e,GIAC_CONTEXT){
-    gen a=exp(cst_i*degtorad(e,contextptr),contextptr);
+    gen a=exp(cst_i*angletorad(e,contextptr),contextptr);
     return rdiv(a+inv(a,contextptr),plus_two,contextptr);
   }
   gen tan2exp(const gen & e,GIAC_CONTEXT){
-    gen a=pow(exp(cst_i*degtorad(e,contextptr),contextptr),2);
+    gen a=pow(exp(cst_i*angletorad(e,contextptr),contextptr),2);
     return rdiv(a-plus_one,cst_i*(a+plus_one),contextptr);
   }
 
   gen exp2sincos(const gen & e,GIAC_CONTEXT){
     gen a=re(e,contextptr),b=im(e,contextptr); 
-    return exp(a,contextptr)*(cos(radtodeg(b,contextptr),contextptr)+cst_i*sin(radtodeg(b,contextptr),contextptr));
+    return exp(a,contextptr)*(cos(radtoangle(b,contextptr),contextptr)+cst_i*sin(radtoangle(b,contextptr),contextptr));
   }
 
   gen tantosincos(const gen & e,GIAC_CONTEXT){
@@ -146,13 +164,19 @@ namespace giac {
   gen asintoacos(const gen & e,GIAC_CONTEXT){
     if (angle_radian(contextptr)) 
       return cst_pi_over_2-acos(e,contextptr);
-    else
+    else if(angle_degree(contextptr))
       return 90-acos(e,contextptr);
+    //grad
+    else
+      return 100 - acos(e, contextptr);
   }
 
   gen acostoasin(const gen & e,GIAC_CONTEXT){
     if (angle_radian(contextptr)) 
       return cst_pi_over_2-asin(e,contextptr);
+    else if(angle_degree(contextptr))
+      return 90-asin(e,0);
+    //grad
     else
       return 90-asin(e,0);
   }
@@ -174,17 +198,20 @@ namespace giac {
   }
 
   gen asin2ln(const gen & g_orig,GIAC_CONTEXT){
-    gen g=degtorad(g_orig,contextptr);
+    //grad
+    gen g=angletorad(g_orig,contextptr);
     return cst_i*ln(g+sqrt(pow(g,2)-1,contextptr),contextptr)+cst_pi_over_2;
   }
 
   gen acos2ln(const gen & g_orig,GIAC_CONTEXT){
-    gen g=degtorad(g_orig,contextptr);
+    //grad
+    gen g=angletorad(g_orig,contextptr);
     return -cst_i*ln(g+sqrt(pow(g,2)-1,contextptr),contextptr);
   }
 
   gen atan2ln(const gen & g_orig,GIAC_CONTEXT){
-    gen g=degtorad(g_orig,contextptr);
+    //grad
+    gen g=angletorad(g_orig,contextptr);
     return rdiv(cst_i*ln(rdiv(cst_i+g,cst_i-g),contextptr),plus_two,contextptr);
   }
 
@@ -362,7 +389,7 @@ namespace giac {
 
   static gen subst_integrate(const gen & e,const gen & i,const gen & newi,bool quotesubst,int intg,GIAC_CONTEXT){
     vecteur v=*e._SYMBptr->feuille._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if ( (s>1) && (v[1]==i) ){
       vecteur l(*_lname(newi,contextptr)._VECTptr);
       if (!l.empty() && l.front()==cst_pi)
@@ -398,7 +425,7 @@ namespace giac {
 
   static gen subst_derive(const gen & e,const gen & i,const gen & newi,bool quotesubst,GIAC_CONTEXT){
     vecteur & v=*e._SYMBptr->feuille._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if ( (s==2) && (v[1]==i) ){
       vecteur l(*_lname(newi,contextptr)._VECTptr);
       if (l.empty())
@@ -532,7 +559,7 @@ namespace giac {
 
   static int multisubst_vect(const gen & e,vecteur & res,const gen & x,const vecteur & xval,GIAC_CONTEXT){
     const vecteur & v = *e._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     std::vector<vecteur> vi(s) ;
     std::vector<int> mi(s);
     int m=0;
@@ -679,7 +706,7 @@ namespace giac {
     const gen & itg=*it;
     if (g==itg)
       return 1;
-    int n=itend-it;
+    int n=int(itend-it);
     if (n<2)
       return 0;
     n /= 2;
@@ -700,7 +727,7 @@ namespace giac {
     if (g==*it)
       return 1;
     if (g==*(itend-1))
-      return itend-it;
+      return int(itend-it);
     if (islesscomplexthanf(g,*it) || islesscomplexthanf(*(itend-1),g))
       return 0;
     return findpos(it,itend,g);
@@ -712,11 +739,11 @@ namespace giac {
       if (i[k].type!=_IDNT && i[k].type!=_SYMB && !is_zero(i[k]-newi[k]))
 	*logptr(contextptr) << gettext("Warning, replacing ") << i[k] << gettext(" by ") << newi[k] << gettext(", a substitution variable should perhaps be purged.") << endl;
     }
-    int is=i.size();
+    int is=int(i.size());
     if (i.size()<2)
       return;
     // set same size, required for mrv substition in series.cc
-    for (int j=newi.size();j<is;++j)
+    for (int j=int(newi.size());j<is;++j)
       newi.push_back(i[j]);
     matrice atrier=mtran(makevecteur(i,newi));
     gen_sort_f(atrier.begin(),atrier.end(),first_sort);
@@ -989,6 +1016,7 @@ namespace giac {
   define_unary_function_ptr5( at_hyp2exp ,alias_at_hyp2exp,&__hyp2exp,0,true);
 
   gen sincos(const gen & e,GIAC_CONTEXT){
+    //grad
     if (angle_radian(contextptr)){
       gen tmp=subst(e,tan_tab,tan2sincos_tab,true,contextptr);
       tmp=_pow2exp(tmp,contextptr);
@@ -1013,6 +1041,7 @@ namespace giac {
   define_unary_function_ptr5( at_sincos ,alias_at_sincos,&__sincos,0,true);
 
   gen trig2exp(const gen & e,GIAC_CONTEXT){
+    //grad
     if (angle_radian(contextptr))
       return subst(e,sincostan_tab,trig2exp_tab,false,contextptr);
     else
@@ -1178,7 +1207,7 @@ namespace giac {
     gen g(g_orig),res(plus_one);
     vecteur v(lop(lvar(g),at_ln));
     v.insert(v.begin(),cst_pi);
-    int s=v.size();
+    int s=int(v.size());
     identificateur t(" t");
     for (int i=0;i<s;++i){
       gen gt=quotesubst(g,v[i],t,contextptr);
@@ -1216,7 +1245,7 @@ namespace giac {
     gen d;
     lcmdeno_converted(v,d,contextptr);
     gen cl=v.back();
-    int n=wrt.size();
+    int n=int(wrt.size());
     vecteur res(n),mat;
     polynome p;
     if (cl.type<_POLY){
@@ -1309,7 +1338,7 @@ namespace giac {
     matrice noyau=mker(mat,contextptr);
     // try each row of noyau that has a non-zero last coeff
     // since the first row coeff is -1 all coeff must be rationals
-    int ns=noyau.size();
+    int ns=int(noyau.size());
     for (int i=0;i<ns;++i){
       vecteur & w=*noyau[i]._VECTptr;
       if (is_zero(w.back()))
@@ -1368,11 +1397,11 @@ namespace giac {
     w.push_back(a);
     vecteur l(lidnt(w));
     if (!l.empty()){ // check for random values of the variables
-      vecteur lval=vranm(l.size(),0,0); 
+      vecteur lval=vranm(int(l.size()),0,0); 
       // should be improved to take care of assumptions and avoid bad eval points
       w=subst(w,l,lval,false,contextptr);
     }
-    int s=w.size();
+    int s=int(w.size());
     matrice test(s);
     gen precision=1<<30; // 2^30
     for (int i=0;i<s;i++){
@@ -1445,7 +1474,7 @@ namespace giac {
       return g;
     vecteur v(*_lname(evalf(g,1,contextptr),contextptr)._VECTptr);
     gen gg(g);
-    int s=v.size();
+    int s=int(v.size());
     for (int i=0;i<s;++i){
       vecteur w;
       gen point=0;
@@ -1510,7 +1539,7 @@ namespace giac {
     if (is_algebraic_extension(a)){
       vecteur coeffs;
       if (ext_relation(a,extargs,vars,coeffs,contextptr)){
-	int s=coeffs.size()-1;
+	int s=int(coeffs.size())-1;
 	for (int i=0;i<s;++i){
 	  res = res + coeffs[i]*lnextargs[i];
 	}
@@ -1520,7 +1549,7 @@ namespace giac {
 	res=ln(r2e(a,vars,contextptr),contextptr);
       return res;
     }
-    int p=primeargs.size();
+    int p=int(primeargs.size());
     for (int j=0;j<p;++j){
       for (k=0;;++k){
 	gen gp=primeargs[j];
@@ -1551,7 +1580,7 @@ namespace giac {
   static gen simplifylnarg(const gen & g,GIAC_CONTEXT){
     gen res;
     vecteur l(lvar(g));
-    int s=l.size();
+    int s=int(l.size());
     fraction f(sym2r(g,l,contextptr));
     gen nf,df;
     fxnd(f,nf,df);
@@ -1577,7 +1606,7 @@ namespace giac {
   }
   static gen simplifylnexp(const gen & g,GIAC_CONTEXT){
     vecteur l(lop(g,at_ln));
-    int s=l.size();
+    int s=int(l.size());
     if (!s)
       return g;
     vecteur lsub;
@@ -1700,7 +1729,7 @@ namespace giac {
 
   gen simplifyfactorial(const gen & g,GIAC_CONTEXT){
     vecteur l(lop(g,at_factorial));
-    int s=l.size();
+    int s=int(l.size());
     if (s<2)
       return g;
     // look if difference of arguments in l are integers
@@ -1751,7 +1780,7 @@ namespace giac {
 
   gen simplifypsi(const gen & g,GIAC_CONTEXT){
     vecteur l(lop(g,at_Psi));
-    int s=l.size();
+    int s=int(l.size());
     if (s<2)
       return g;
     // look if difference of arguments in l are integers
@@ -1842,7 +1871,7 @@ namespace giac {
     // analyse of args of ln
     g=simplifylnexp(g,contextptr);
     vecteur l(lop(g,at_ln));
-    int s=l.size();
+    int s=int(l.size());
     if (s>1){
       vecteur argln(s);
       for (int i=0;i<s;++i)
@@ -1899,7 +1928,7 @@ namespace giac {
     }
     // analyse of arguments of exp:
     l=lop(g,at_exp);
-    s=l.size();
+    s=int(l.size());
     if (!s)
       return recursive_normal(g,contextptr); 
     // recursively simplify inside exp
@@ -1913,7 +1942,7 @@ namespace giac {
     lvar(newl,vars);
     vecteur ln_vars(lop(newl,at_ln));
     vecteur independant(*e2r(ln_vars,vars,contextptr)._VECTptr);
-    int n_ln=independant.size();
+    int n_ln=int(independant.size());
     independant.push_back(e2r(cst_i*cst_pi,vars,contextptr));
     matrice m;
     for (int i=0;i<s;++i){
@@ -1928,9 +1957,9 @@ namespace giac {
     // we do the substitution l by exp[newl] in g
     // and we return normal(g)
     // First make m a rectangular array
-    int c=m.back()._VECTptr->size(),r=m.size();
+    int c=int(m.back()._VECTptr->size()),r=int(m.size());
     for (int i=0;i<r;++i){
-      int ms=m[i]._VECTptr->size();
+      int ms=int(m[i]._VECTptr->size());
       if (ms<c)
 	m[i]=mergevecteur(*m[i]._VECTptr,vecteur(c-ms,zero));
     }
@@ -2228,7 +2257,7 @@ namespace giac {
     }
     if (!vabs.empty() && debug_infolevel)
       *logptr(contextptr) << gettext("simplify preserving ") << vabs << endl;
-    int s=vabs.size();
+    int s=int(vabs.size());
     vabs2=vecteur(s);
     for (int i=0;i<s;++i){
       // vabs2[i]=identificateur(" "+vabs[i].print(contextptr));
@@ -2238,7 +2267,7 @@ namespace giac {
     e=quotesubst(e,vabs,vabs2,contextptr);
     // check for the presence of trig/atrig functions
     vecteur v1(loptab(e,sincostan_tab));
-    int s1=v1.size(),s2=loptab(e,asinacosatan_tab).size();
+    int s1=int(v1.size()),s2=int(loptab(e,asinacosatan_tab).size());
     if (s1&&s2){
       // retry with e texpanded
       gen e2=_texpand(v1,contextptr);
@@ -2280,7 +2309,7 @@ namespace giac {
 	unsigned count=0;
 	for (unsigned i=0;i<v2.size();++i){
 	  if (v2[i].is_symb_of_sommet(at_asin)||v2[i].is_symb_of_sommet(at_acos))
-	    count+=lidnt(v2[i]).size();
+	    count+=int(lidnt(v2[i]).size());
 	}
 	if (count>1)
 	  return e;
@@ -2310,7 +2339,7 @@ namespace giac {
     if (s1){
       gen g1=normal(trigcos(reg,contextptr),contextptr)+cst_i*normal(trigcos(img,contextptr),contextptr);
       gen g2=normal(trigsin(reg,contextptr),contextptr)+cst_i*normal(trigsin(img,contextptr),contextptr);
-      int g1s=lvar(g1).size(), g2s=lvar(g2).size();
+      int g1s=int(lvar(g1).size()), g2s=int(lvar(g2).size());
       if (g1s!=g2s)
 	return g1s<g2s?g1:g2;
       g1s=taille(g1,RAND_MAX),g2s=taille(g2,RAND_MAX);
@@ -2334,7 +2363,7 @@ namespace giac {
       return symbolic(at_program,makesequence(var,0,_simplify(res,contextptr)));
     if (args.type==_VECT){
       vecteur & v =*args._VECTptr;
-      int vs=v.size();
+      int vs=int(v.size());
       if ( (vs==2 || vs==3) && args.subtype==_SEQ__VECT && args[1].type==_VECT && !ckmatrix(args) && !ckmatrix(args._VECTptr->back())){
 	// simplify with side relations
 	return _greduce(args,contextptr);
@@ -2510,7 +2539,7 @@ namespace giac {
     vecteur v;
     tlin(args,v,contextptr);
     // v= [coeff, sin/cos/1]
-    int s=v.size();
+    int s=int(v.size());
     vector<int> deja;
     gen res,argu;
     for (int i=1;i<s;i+=2){
@@ -2734,7 +2763,7 @@ namespace giac {
     l.erase(l.begin());
     vecteur nv(gen2vecteur(r2e(polynome2poly1(n,1),l,contextptr)));
     vecteur dv(gen2vecteur(r2e(polynome2poly1(d,1),l,contextptr)));
-    int ns=nv.size(),ds=dv.size();
+    int ns=int(nv.size()),ds=int(dv.size());
     int n1=ns-ds;
     return pow(x,n1)*symb_horner(nv,x,ns-1)/symb_horner(dv,x,ds-1);
   }
@@ -2790,7 +2819,7 @@ namespace giac {
     v_in.clear();
     v_out.clear();
     vecteur v1(lop(g,at_pow));
-    int n=v1.size();
+    int n=int(v1.size());
     for (int i=0;i<n;++i){
       gen & tmp =v1[i]._SYMBptr->feuille;
       if (tmp.type!=_VECT)
@@ -2894,7 +2923,7 @@ namespace giac {
     if (args.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s<2)
       return gensizeerr(contextptr);
     gen & f=v[s-1];
@@ -2930,6 +2959,7 @@ namespace giac {
   static gen rectangular2polar(const gen & g,const context * contextptr){
     gen args=remove_at_pnt(g);
     gen module=abs(args,contextptr),argument=arg(args,contextptr);
+    module=normal(module,contextptr);
     if (is_zero(argument))
       return module;
     gen res=module*symbolic(at_exp,cst_i*argument);

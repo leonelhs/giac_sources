@@ -6,30 +6,79 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Évaluer une expression sous la forme d’une chaîne : string</TITLE>
+<TITLE>La boucle : while et tantque</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr833.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr835.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc975">9.5.7</A>  Évaluer une expression sous la forme d’une chaîne : <TT>string</TT></H3><P><A NAME="@default1511"></A>
-<TT>string</TT> évalue une expression et renvoie sa valeur sous la 
-forme d’une chaîne de caractères.<BR>
-On peut aussi utiliser la concaténation de l’expression avec une chaîne 
-vide.<BR>
+<H3 CLASS="subsection"><A NAME="htoc979">9.4.24</A>  La boucle : <TT>while</TT> et <TT>tantque</TT></H3><P><A NAME="@default1513"></A><A NAME="@default1514"></A><A NAME="@default1515"></A><A NAME="@default1516"></A>
+<TT>while</TT> et <TT>tantque</TT> permettent de faire plusieurs fois des
+instructions.<BR>
+<TT>while</TT> est suivi d’un booléen mis entre des parenthèses et d’un bloc 
+d’instructions. <TT>while</TT> permet de faire plusieurs fois ce bloc 
+d’instructions tant que la valeur de ce booléen est vrai.<BR>
+<TT>tantque</TT> est suivi d’un booléen, de <TT>faire</TT> d’instructions puis de
+<TT>ftantque</TT>. <TT>tantque</TT> permet de faire plusieurs fois les instructions 
+situèes entre <TT>faire</TT> et <TT>ftantque</TT> tant que la valeur de ce 
+booléen est vrai.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>string(ifactor(6))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ifactor(6)+""</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>""+ifactor(6)</TT></DIV><P>
+</P><PRE CLASS="verbatim">somwhile(eps):={
+local s,j;
+s:=0;
+j:=1;
+while (1/j&gt;=eps){
+ s:=s+1/j;
+ j:=j+1;
+}
+return s;
+}
+</PRE><P>Ou on tape :
+</P><PRE CLASS="verbatim">somtantque(eps):={
+local s,j;
+s:=0;
+j:=1;
+tantque 1/j&gt;=eps faire
+ s:=s+1/j;
+ j:=j+1;
+ftantque
+retourne s;
+}
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>somwhile(0.2)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>somantque(0.2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"2*3"</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>string(quote(ifactor(6)))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>137/60</TT></DIV><P>
+<B>Remarque</B><BR>
+ On peut aussi écrire un <TT>while</TT> avec un <TT>for</TT> :<BR>
+<TT>while (&lt;condition&gt;)</TT><TT>&lt;instructions&gt;</TT> est équivalent à :<BR>
+<TT>for (;&lt;condition&gt;;)</TT><TT>&lt;instructions&gt;</TT><BR>
+On aurait donc pu écrire :
+</P><PRE CLASS="verbatim">somwhilefor(eps):={
+local s,j;
+s:=0;
+j:=1;
+for (;1/j&gt;=eps;){
+ s:=s+1/j;
+ j:=j+1;
+}
+return s;
+}
+</PRE><P>ou encore
+</P><PRE CLASS="verbatim">somforwhile(eps):={
+local s,j;
+s:=0;
+for (j:=1;1/j&gt;=eps;j++){
+ s:=s+1/j;
+}
+return s;
+}
+</PRE><P>On tape :
+</P><DIV CLASS="center"><TT>somwhile(0.1);somforwhile(0.1);somwhilefor(0.1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"ifactor(6)"</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>7129/2520,7129/2520,7129/2520</TT></DIV><HR>
 <A HREF="cascmd_fr833.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr835.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

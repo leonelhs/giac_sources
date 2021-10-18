@@ -6,39 +6,66 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Supprimer des éléments d’une liste : remove</TITLE>
+<TITLE>Trier une liste selon l’ordre croissant : SortA et sorta</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr515.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr517.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc616">6.41.24</A>  Supprimer des éléments d’une liste : <TT>remove</TT></H3><P><A NAME="@default912"></A>
-<TT>remove</TT> a deux paramètres : une fonction booléenne <TT>f</TT> et
-une liste <TT>L</TT>.<BR>
-<TT>remove</TT> enlève les éléments <TT>c</TT> de la liste <TT>L</TT>, qui
-vérifie <TT>f(c)=true</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc616">6.41.21</A>  Trier une liste selon l’ordre croissant : <TT>SortA et sorta</TT></H3><P><A NAME="@default911"></A><A NAME="@default912"></A>
+<B>Attention</B> <TT>SortA</TT> et <TT>sorta</TT> ne sont pas des synonymes : 
+<TT>SortA</TT> s’utilise avec la syntaxe TI i.e. sans avoir besoin
+de mettre des parenthèses et modifie la valeur de l’argument alors que 
+<TT>sorta</TT> s’utilise comme des fonctions normales de <TT>Xcas</TT> (parenthèses
+obligatoires et sans changer l’argument !).<BR>
+<TT>SortA</TT> ou <TT>sorta</TT> a comme argument une liste, une séquence ou une 
+matrice.<BR>
+<TT>SortA</TT> ou <TT>sorta</TT> renvoie la liste ou la séquence triée selon 
+l’ordre croissant.<BR>
+Si l’argument est une matrice, <TT>SortA</TT> ou <TT>sorta</TT> trie la 1-ière 
+ligne de la matrice selon l’ordre croissant, et reporte les manœuvres de 
+tri de la 1-ière ligne sur les autres lignes c’est à dire le tri conserve 
+les colonnes de la matrice.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>remove(x-&gt;(x&gt;=2),[0,1,2,3,4,5])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sorta([3,4,2])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortA([3,4,2])</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>SortA [3,4,2]</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>SortA 3,4,2</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0,1]</TT></DIV><P>
-<B>Remarque</B> Pour faire la même chose avec une chaine de catactère, 
-par exemple, enlever tous les "a" d’une chaine :<BR>
+</P><DIV CLASS="center"><TT>[2,3,4]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>ord("a")</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sorta([[3,4,2],[6,4,5]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortA([[3,4,2],[6,4,5]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortA [[3,4,2],[6,4,5]]</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortA [3,4,2],[6,4,5]</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>97</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[2,3,4],[5,6,4]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>f(chn):={local l:=length(chn)-1;
-return remove(x-&gt;(ord(x)==97),seq(chn[k],k,0,l));}</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>f("abracadabra")</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=[[3,4,2],[6,4,5]]</TT></DIV><DIV CLASS="center"><TT>SortA(A)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>["b","r","c","d","b","r"]</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>char(ord(["b","r","c","d","b","r"]))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[2,3,4],[5,6,4]]</TT></DIV><P>
+et maintenant <TT>A</TT> vaut <TT>[[2,3,4],[5,6,4]]</TT>
+Mais, on tape :
+</P><DIV CLASS="center"><TT>A:=[[3,4,2],[6,4,5]]</TT></DIV><DIV CLASS="center"><TT>sorta(A)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"brcdbr"</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[2,3,4],[5,6,4]]</TT></DIV><P>
+et maintenant <TT>A</TT> vaut toujours <TT>[[3,4,2],[6,4,5]]</TT></P><P><B>Attention</B>
+La syntaxe sans parenthèse peut vous jouer des tours !<BR>
+Par exemple, on tape :<BR>
+<TT>L1:=[1,3,2];L2:=[2,3,1];</TT><BR>
+<TT>SortA L1,SortA L2</TT><BR>
+On obtient la matrice !:
+<TT>[[1,2,3],[3,2,1]]</TT><BR>
+qui est le résultat de :<BR>
+<TT>SortA(L1,SortA(L2))</TT>
+</P><HR>
 <A HREF="cascmd_fr515.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr517.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,27 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Addition dans ℤ/pℤ ou dans ℤ/pℤ[x] : +</TITLE>
+<TITLE>Racines et pôles exacts d’une fraction rationnelle : froot</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr434.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr436.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc528">6.34.2</A>  Addition dans ℤ/<I>p</I>ℤ ou dans ℤ/<I>p</I>ℤ[<I>x</I>] : <TT>+</TT></H3><P><A NAME="@default784"></A>
-Pour réaliser une addition dans ℤ/<I>p</I>ℤ, on utilise le <TT>+</TT> habituel 
-et, pour les polynômes de ℤ/<I>p</I>ℤ[<I>x</I>], on utilise le <TT>+</TT> habituel et la 
-commande <TT>normal</TT><A NAME="@default785"></A> pour simplifier.<BR>
-Pour les entiers dans ℤ/<I>p</I>ℤ, on tape :
-</P><DIV CLASS="center"><TT>3% 13+10% 13</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc527">6.33.1</A>  Racines et pôles exacts d’une fraction rationnelle : <TT>froot</TT></H3><P><A NAME="@default784"></A>
+<TT>froot</TT> a comme argument une fraction rationnelle <I>F</I>(<I>x</I>).<BR>
+<TT>froot</TT> renvoie un vecteur de composantes les racines et les pôles de 
+<I>F</I>(<I>x</I>) suivis de leur multiplicité.<BR>
+<TT>Xcas</TT> renvoie les valeurs exactes de ces racines ou pôles quand cela est
+possible et sinon renvoie leur valeurs numériques.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>froot((x</TT><CODE><TT>^</TT></CODE><TT>5-2*x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>3)/(x-2)) </TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0%13</TT></DIV><P>
-Pour les polynômes à coefficients dans ℤ/<I>p</I>ℤ, on tape :
-</P><DIV CLASS="center"><TT>normal(11% 13*x+5% 13+8% 13*x+6% 13)</TT></DIV><P> 
-ou encore 
-</P><DIV CLASS="center"><TT>normal((11*x+5 )% 13+(8*x+6)% 13)</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>[1,2,0,3,2,-1]</TT></DIV><P>
+donc pour  <I>F</I>(<I>x</I>)=<I>x</I><SUP>5</SUP>−2.<I>x</I><SUP>4</SUP>+<I>x</I><SUP>3</SUP>/<I>x</I>−2 :<BR>
+1 est racine double,<BR>
+0 est racine triple et<BR>
+2 est un pôle d’ordre 1.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>froot((x</TT><CODE><TT>^</TT></CODE><TT>3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1)/(x-2)) </TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(6%13)*x+-2% 13</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[1,1,(1+sqrt(5))/2,1,(1-sqrt(5))/2,1,2,-1]</TT></DIV><P>
+Remarque : pour avoir les racines et les pôles complexes il faut avoir 
+coché <TT>Complexe</TT> dans la configuration du <TT>cas</TT> (bouton donnant la 
+ligne d’état).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>froot((x</TT><CODE><TT>^</TT></CODE><TT>2+1)/(x-2)) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-i,1,i,1,2,-1]</TT></DIV><HR>
 <A HREF="cascmd_fr434.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr436.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

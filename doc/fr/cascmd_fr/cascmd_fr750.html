@@ -6,27 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi de Student : student studentd</TITLE>
+<TITLE>Probabilité que X égale [k0,k1..kj]+K lorsque X suit une loi multinomiale de probabilité [p0,p1,..pj]=P : multinomial</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr749.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr751.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc884">8.4.15</A>  Densité de probabilité de la loi de Student : <TT>student studentd</TT></H3><P><A NAME="@default1342"></A><A NAME="@default1343"></A>
-<TT>student(n,x)</TT> est la densité de probabilité de la loi de Student ayant <I>n</I> degrés de liberté.<BR>
-<TT>student(n,x)</TT>, est égale à :
- Γ(<I>n</I>+1/2)/Γ(<I>n</I>/2)√<SPAN style="text-decoration:overline"><I>n</I>π</SPAN>(1+<I>x</I><SUP>2</SUP>/<I>n</I>)<SUP>−<I>n</I>−1/2</SUP><BR>
-où Γ est définie pour <I>x</I>&gt;0 par 
-Γ(<I>x</I>)=∫<SUB>0</SUB><SUP>∞</SUP><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>x</I>−1</SUP> <I>dt</I><BR>
+<H3 CLASS="subsection"><A NAME="htoc889">8.4.7</A>  Probabilité que <I>X</I> égale [<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>]+<I>K</I> lorsque <I>X</I> suit une loi multinomiale de probabilité [<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>]=<I>P</I> : <TT>multinomial</TT></H3><P><A NAME="@default1347"></A>
+La probabilité pour que <I>X</I> égale <I>K</I>=[<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>]
+(avec <I>k</I><SUB>0</SUB>+..+<I>k</I><SUB><I>j</I></SUB>=<I>n</I>) lorsque <I>X</I> suit une loi multinomiale de probabilité 
+<I>P</I>=[<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>] (avec <I>p</I><SUB>0</SUB>+..+<I>p</I><SUB><I>j</I></SUB>=1) est :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>multinomial</I>(<I>n</I>,<I>P</I>,<I>K</I>)=</TT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>!</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">(<I>k</I><SUB>0</SUB>!<I>k</I><SUB>1</SUB>!..<I>k</I><SUB><I>j</I></SUB>!)</TD></TR>
+</TABLE></TD><TD CLASS="dcell">*(<I>p</I><SUB>0</SUB><SUP><I>k</I><SUB>0</SUB></SUP> <I>p</I><SUB>1</SUB><SUP><I>k</I><SUB>1</SUB></SUP>..<I>p</I><SUB><I>j</I></SUB><SUP><I>k</I><SUB><I>j</I></SUB></SUP>)</TD></TR>
+</TABLE><P>
+<B>Remarque</B>
+<TT>multinomial(n,P,K)</TT> avec <I>P</I>=[<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>] et <I>K</I>=[<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>] renvoie
+<I>n</I>!/(<I>k</I><SUB>0</SUB>!<I>k</I><SUB>1</SUB>!..<I>k</I><SUB><I>j</I></SUB>!)*(<I>p</I><SUB>0</SUB><SUP><I>k</I><SUB>0</SUB></SUP> <I>p</I><SUB>1</SUB><SUP><I>k</I><SUB>1</SUB></SUP>..<I>p</I><SUB><I>j</I></SUB><SUP><I>k</I><SUB><I>j</I></SUB></SUP>) même si 
+<I>p</I><SUB>0</SUB>+..+<I>p</I><SUB><I>j</I></SUB>≠ 1 mais renvoie une erreur si <I>k</I><SUB>0</SUB>+..+<I>k</I><SUB><I>j</I></SUB>≠ <I>n</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>student(2,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>multinomial(10,[0.2,0.3,0.5],[3,2,5])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Gamma(3/2)*sqrt(11/2)</TT><CODE><TT>^</TT></CODE><TT>-1*2/(sqrt(2*pi)*11)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.0567</TT></DIV><P>
+On vérifie :<BR>
+10!/(3!*2!*5!)*0.2<SUP>3</SUP>*0.3<SUP>2</SUP>*0.5<SUP>5</SUP>=0.0567.<BR>
+Donc la probabilité d’obtenir [3,2,5] (3 fois l’objet ayant la probabilité 
+0.2 d’être tiré, 2 fois l’objet ayant la probabilité 0.3 d’être tiré 
+et 5 fois l’objet ayant la probabilité 0.5 d’être tiré) lors de 10 
+tirages d’un objet parmi ces 3 objets est 0.0567.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>evalf(student(2,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>multinomial(4,[0.5,0.5],[2,2])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>binomial(4,2,0.5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0274101222343</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.375</TT></DIV><HR>
 <A HREF="cascmd_fr749.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr751.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

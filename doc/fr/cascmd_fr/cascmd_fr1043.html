@@ -6,35 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un losange : is_rhombus est_losange</TITLE>
+<TITLE>Orthogonalité de 2 droites ou 2 sphères : is_orthogonal est_orthogonal</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1042.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1044.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1221">11.13.13</A>  Savoir si on a un losange : <TT>is_rhombus est_losange</TT></H3><P><A NAME="@default2019"></A><A NAME="@default2020"></A><A NAME="sec:estlosange3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr965.html#sec:estlosange2">10.18.9</A> pour la géométrie plane.<BR>
-<TT>est_losange</TT> est une fonction booléenne ayant comme 
-argument quatre points ou un objet géométrique.<BR>
-<TT>est_losange</TT> vaut 1 (rep 2) si les quatre points sont coplanaires et 
-forment un losange (resp un carré) ou si l’objet géométrique est un losange
-(resp un carré), et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1226">11.13.5</A>  Orthogonalité de 2 droites ou 2 sphères : <TT>is_orthogonal est_orthogonal</TT></H3><P><A NAME="@default2020"></A><A NAME="@default2021"></A><A NAME="sec:estortho3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr977.html#sec:estortho2">10.18.13</A> pour la géométrie plane et
+<A HREF="cascmd_fr1042.html#sec:estperp3">11.13.4</A> pour la perpendicularité 3-d.<BR>
+<TT>est_orthogonal</TT> est une fonction booléenne ayant comme 
+argument deux droites ou deux sphères ou une droite et un plan ou d
+eux plans.<BR>
+ <TT>est_orthogonal</TT> vaut 1 si les deux droites ou les deux sphères (i.e
+si les plans tangents en leurs points d’intersection sont orthogonaux), 
+ou la droite et le plan ou les deux plans sont orthogonaux et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_losange([2,0,0],[0,1,0],[-2,0,0],[0,-1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_orthogonal(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>K:=losange([0,0,0],[2,0,0],[[0,0,1],pi/4]);est_losange(K)</TT></DIV><P>
-<TT>K</TT> est le losange <TT>ABCD</TT> de sommets [0,0,0],[2,0,0],
-[sqrt(2)+2,0,sqrt(2)],[sqrt(2),0,sqrt(2)], il est situé dans le plan 
-[0,0,0],[2,0,0],[0,0,1] et l’angle <TT>BAD</TT> vaut pi/4.<BR>
+</P><DIV CLASS="center"><TT>est_orthogonal(droite([2,3,-2],[-1,-1,-1]), plan([-1,-1,-1],[-1,0,3],[-2,0,0]))</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_losange([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_orthogonal(plan([0,0,0],[1,2,-3],[1,1,-2]), plan([-1,-1,-1],[1,2,-3],[0,0,0]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>est_orthogonal(sphere([0,0,0],sqrt(2)), sphere([2,0,0],sqrt(2)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr1042.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1044.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

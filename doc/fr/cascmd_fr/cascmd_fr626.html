@@ -6,286 +6,96 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Réduction de Hessenberg d’une matrice : hessenberg</TITLE>
+<TITLE>Matrice de Jordan rationnelle : rat_jordan</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr625.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr627.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc735">6.50.12</A>  Réduction de Hessenberg d’une matrice : <TT>hessenberg</TT></H3><P><A NAME="@default1145"></A>
-<TT>hessenberg</TT> a comme premier argument une matrice <I>A</I> et comme 
-deuxième argument 0, -1 ou -2 ou <I>n</I>&gt;1 et <I>n</I> premier (par défaut 0).<BR>
-<TT>hessenberg</TT> renvoie la matrice <I>P</I> de passage et la matrice <I>B</I> semblable 
-à <I>A</I> dont les coefficients sous-sous-diagonaux sont nuls. On dit que <I>B</I> est 
-une matrice de Hessenberg et on a <I>B</I>=<I>P</I><SUP>−1</SUP><I>AP</I> ou <I>B</I>∼ <I>P</I><SUP>−1</SUP><I>AP</I> selon le<BR>
-deuxième argument.
+<H3 CLASS="subsection"><A NAME="htoc740">6.55.4</A>  Matrice de Jordan rationnelle : <TT>rat_jordan</TT></H3><P><A NAME="@default1147"></A>
+<TT>rat_jordan</TT> a comme argument une matrice <I>A</I> d’ordre <I>n</I> à 
+coefficients rationnels.<BR>
+<TT>rat_jordan</TT> renvoie :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Avec un seul argument ou comme deuxième argument 0, les calculs sont 
-exacts.<BR>
-On tape :
-<DIV CLASS="center"><TT>hessenberg([[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1], [2,-1,-1,3,1],[2,-1,1,1,2]])</TT></DIV>
-ou
-<DIV CLASS="center"><TT>hessenberg([[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1], [2,-1,-1,3,1],[2,-1,1,1,2]],0)</TT></DIV>
+en mode <TT>Xcas</TT>, <TT>Mupad</TT> ou <TT>TI</TT><BR>
+une séquencee composée de deux matrices : une matrice 
+de changement de base <I>P</I>, suivie de la matrice de Jordan <I>J</I> associée à 
+<I>A</I> si celle-ci est rationnelle ou de la matrice dont les blocs de Jordan sont 
+remplacés par les matrices compagnons associées au facteur non 
+rationnellement reductible du polynôme caractéristique de <I>A</I> (c’est la 
+matrice la plus reduite à coefficient dans le corps de <I>A</I>, ou le corps 
+complexifié de <I>A</I> si on est en mode complexe).<BR>
+</LI><LI CLASS="li-itemize">en mode <TT>Maple</TT><BR>
+ la matrice de Jordan <I>J</I> associée à <I>A</I> si celle-ci est rationnelle ou de
+la matrice dont les blocs de Jordan sont remplacés par les matrices compagnons
+associées au facteur non rationnellement reductible du polynôme 
+caractéristique de <I>A</I>. On peut cependant obtenir la matrice de changement de
+base <I>P</I>, dans une variable passée en second argument, par exemple 
+<DIV CLASS="center"> <TT>rat_jordan([[1,0,0],[1,2,-1],[0,0,1]],’P’)</TT>
+</DIV>
+</LI></UL><P>
+On a :<BR>
+<I>J</I>=<I>P</I><SUP>−1</SUP><I>AP</I> avec <I>J</I> est à coefficients rationnels.<BR>
+<B>Remarques</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+La syntaxe <TT>Maple</TT> est aussi valable dans les autres modes, par 
+exemple, en mode <TT>Xcas</TT>, on tape :
+<DIV CLASS="center"> <TT>rat_jordan([[4,1,1],[1,4,1],[1,1,4]],’P’)</TT></DIV>
 On obtient :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1/2</TD><TD ALIGN=center NOWRAP>1/4</TD><TD ALIGN=center NOWRAP>1</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">,
-</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>3</TD><TD ALIGN=center NOWRAP>8</TD><TD ALIGN=center NOWRAP>5</TD><TD ALIGN=center NOWRAP>5/2</TD><TD ALIGN=center NOWRAP>2</TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1/2</TD><TD ALIGN=center NOWRAP>(−5)/4</TD><TD ALIGN=center NOWRAP>−1</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>3/2</TD><TD ALIGN=center NOWRAP>2</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>13/8</TD><TD ALIGN=center NOWRAP>7/2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE>
-On a en effet si :<BR>
-<TT>A:=[[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1],</TT><BR>
-<TT> [2,-1,-1,3,1],[2,-1,1,1,2]]</TT><BR>
-<TT>P,B:= hessenberg(A,0)</TT><BR>
-<TT>pcar(A)=pcar(B)=[1,-10,13,71,-50,-113]</TT><BR>
-<TT>inv(P)*A*P</TT> est égal à <TT>B</TT></LI><LI CLASS="li-itemize">Avec comme deuxième argument -1, les calculs sont approchés et la 
-matrice <I>B</I> est triangulaire.<BR>
+<DIV CLASS="center"> <TT>[[1,-1,1/2],[1,0,-1],[1,1,1/2]]</TT></DIV>
+puis <TT>P</TT> renvoie :
+<DIV CLASS="center"> <TT>[[6,0,0],[0,3,0],[0,0,3]]</TT></DIV>,
+</LI><LI CLASS="li-itemize">Les coefficients de <I>P</I> et de <I>J</I> appartiennent au corps des 
+coefficients de <I>A</I>.<BR>
+Par exemple, en mode <TT>Xcas</TT>, on tape :
+<DIV CLASS="center"> <TT>rat_jordan([[1,0,1],[0,2,-1],[1,-1,1]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>[[1,1,2],[0,0,-1],[0,1,2]],[[0,0,-1],[1,0,-3],[0,1,4]]</TT></DIV>
+On tape (on met <TT>-pcar(...)</TT> car l’argument de <TT>companion</TT> doit être un polynôme unitaire (cf <A HREF="cascmd_fr633.html#sec:compagne">6.55.11</A>)
+<DIV CLASS="center"><TT>companion(-pcar([[1,0,1],[0,2,-1],[1,-1,1]],x),x)</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>[[0,0,-1],[1,0,-3],[0,1,4]]</TT></DIV>
 On tape :
-<DIV CLASS="center"><TT>hessenberg([[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1], [2,-1,-1,3,1],[2,-1,1,1,2]],-1)</TT></DIV>
-On obtient (on donne le résultat avec 2 digits) :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>0.73</TD><TD ALIGN=center NOWRAP>−0.057</TD><TD ALIGN=center NOWRAP>−0.42</TD><TD ALIGN=center NOWRAP>−0.17</TD><TD ALIGN=center NOWRAP>−0.51</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0.25</TD><TD ALIGN=center NOWRAP>−0.53</TD><TD ALIGN=center NOWRAP>0.72</TD><TD ALIGN=center NOWRAP>−0.38</TD><TD ALIGN=center NOWRAP>−0.048</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0.35</TD><TD ALIGN=center NOWRAP>−0.44</TD><TD ALIGN=center NOWRAP>−0.3</TD><TD ALIGN=center NOWRAP>0.19</TD><TD ALIGN=center NOWRAP>0.74</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0.34</TD><TD ALIGN=center NOWRAP>0.68</TD><TD ALIGN=center NOWRAP>0.17</TD><TD ALIGN=center NOWRAP>−0.46</TD><TD ALIGN=center NOWRAP>0.43</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0.41</TD><TD ALIGN=center NOWRAP>0.25</TD><TD ALIGN=center NOWRAP>0.44</TD><TD ALIGN=center NOWRAP>0.76</TD><TD ALIGN=center NOWRAP>−0.063</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">
-,
-</TD></TR>
-</TABLE>
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>6.7</TD><TD ALIGN=center NOWRAP>8.7<I>e</I>−15</TD><TD ALIGN=center NOWRAP>−2<I>e</I>−13</TD><TD ALIGN=center NOWRAP>2.7<I>e</I>−14</TD><TD ALIGN=center NOWRAP>−1.4<I>e</I>−13</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>4.6</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>−1.9</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>1.7</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>−0.0</TD><TD ALIGN=center NOWRAP>−1.2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE>
-On a en effet si :<BR>
-<TT>A:=[[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1],</TT><BR>
-<TT> [2,-1,-1,3,1],[2,-1,1,1,2]]</TT><BR>
-<TT>P,B:= hessenberg(A,-1)</TT><BR>
-<TT>inv(P)*A*P</TT> est égal à <TT>B</TT> en calcul numérique.<BR>
-<B>Remarque</B><A NAME="@default1146"></A><BR>
-<TT>hessenberg(A,-1)</TT> est identique à <TT>SCHUR(A)</TT> qui est une commande 
-<TT>Xcas</TT> compatible avec les calculatrices HP.</LI><LI CLASS="li-itemize">Avec comme deuxième argument -2, les calculs sont approchés et la 
-matrice <I>P</I> est orthogonale et la matrice <I>B</I> a ses
-coefficients sous-sous-diagonaux nuls.<BR>
+<DIV CLASS="center"> <TT>rat_jordan([[1,0,0],[0,1,1],[1,1,-1]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>[[-1,0,0],[1,1,1],[0,0,1]],[[1,0,0],[0,0,2],[0,1,0]]</TT></DIV>
 On tape :
-<DIV CLASS="center"><TT>hessenberg([[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1], [2,-1,-1,3,1],[2,-1,1,1,2]],-2)</TT></DIV>
-On obtient (on donne le résultat avec 2 digits) :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0.5</TD><TD ALIGN=center NOWRAP>−0.75</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−0.43</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0.5</TD><TD ALIGN=center NOWRAP>0.45</TD><TD ALIGN=center NOWRAP>−0.71</TD><TD ALIGN=center NOWRAP>−0.21</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0.5</TD><TD ALIGN=center NOWRAP>−0.15</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0.85</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0.5</TD><TD ALIGN=center NOWRAP>0.45</TD><TD ALIGN=center NOWRAP>0.71</TD><TD ALIGN=center NOWRAP>−0.21</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">
-,
-</TD></TR>
-</TABLE>
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>3.0</TD><TD ALIGN=center NOWRAP>4</TD><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>1.6<I>e</I>−14</TD><TD ALIGN=center NOWRAP>5.4<I>e</I>−14</TD></TR>
-<TR><TD ALIGN=center NOWRAP>4</TD><TD ALIGN=center NOWRAP>2.2</TD><TD ALIGN=center NOWRAP>0.83</TD><TD ALIGN=center NOWRAP>0.0</TD><TD ALIGN=center NOWRAP>0.0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0.83</TD><TD ALIGN=center NOWRAP>0.75</TD><TD ALIGN=center NOWRAP>1.7</TD><TD ALIGN=center NOWRAP>−1.4<I>e</I>−14</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1.7</TD><TD ALIGN=center NOWRAP>0.5</TD><TD ALIGN=center NOWRAP>2</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>3.5</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE>
-On a en effet si :<BR>
-<TT>A:=[[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1],</TT><BR>
-<TT> [2,-1,-1,3,1],[2,-1,1,1,2]]</TT><BR>
-<TT>P,B:= hessenberg(A,-2)</TT><BR>
-<TT>inv(P)*A*P</TT> est égal à <TT>B</TT> et <TT>inv(P)</TT> est égal à <TT>tr(P)</TT> en calcul numérique.
-</LI><LI CLASS="li-itemize">Avec comme deuxième argument <I>n</I>&gt;1 et <I>n</I> premier, les calculs sont modulo <I>n</I> et la 
-matrice <I>B</I> est triangulaire.<BR>
+<DIV CLASS="center"> <TT>factor(pcar([[1,0,0],[0,1,1],[1,1,-1]],x))</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>-(x-1)*(x</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV>
 On tape :
-<DIV CLASS="center"><TT>hessenberg([[3,2,2,2,2],[2,1,2,-1,-1],[2,2,1,-1,1], [2,-1,-1,3,1],[2,-1,1,1,2]],13)</TT></DIV>
-On obtient 
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0 </TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0 </TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−12</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0 </TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>66</TD><TD ALIGN=center NOWRAP>−6</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0 </TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>131</TD><TD ALIGN=center NOWRAP>−12</TD><TD ALIGN=center NOWRAP>4</TD><TD ALIGN=center NOWRAP>1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">,
-</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>3</TD><TD ALIGN=center NOWRAP>−5</TD><TD ALIGN=center NOWRAP>−8</TD><TD ALIGN=center NOWRAP>10</TD><TD ALIGN=center NOWRAP>2 </TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>7</TD><TD ALIGN=center NOWRAP>−5</TD><TD ALIGN=center NOWRAP>−1 </TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>−5</TD><TD ALIGN=center NOWRAP>−11 </TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>7</TD><TD ALIGN=center NOWRAP>−5</TD><TD ALIGN=center NOWRAP>−12 </TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>10</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE>
-</LI></UL><HR>
+<DIV CLASS="center"> <TT>companion((x</TT><CODE><TT>^</TT></CODE><TT>2-2),x)</TT></DIV>
+On obtient :
+<DIV CLASS="center"> <TT>[[0,2],[1,0]]</TT></DIV></LI><LI CLASS="li-itemize">Lorsque <I>A</I> est symétrique et a des valeurs propres d’ordre multiple,
+<TT>Xcas</TT> renvoie des vecteurs propres orthogonaux mais pas forcément 
+normés i.e. <TT>tran(P)*P</TT> est une matrice diagonale de diagonale le carré
+de la norme des vecteurs propres.<BR>
+On tape :
+<DIV CLASS="center"><TT>rat_jordan([[4,1,1],[1,4,1],[1,1,4]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[1,-1,1/2],[1,0,-1],[1,1,1/2]],[[6,0,0],[0,3,0],[0,0,3]]</TT></DIV>
+</LI></UL><P>
+On tape en mode <TT>Xcas</TT>, <TT>Mupad</TT> et <TT>TI</TT>:
+</P><DIV CLASS="center"><TT>rat_jordan([[1,0,0],[1,2,-1],[0,0,1]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[0,1,0],[1,0,1],[0,1,1]],[[2,0,0],[0,1,0],[0,0,1]] </TT></DIV><P>
+On tape en mode <TT>Xcas</TT>, <TT>Mupad</TT> et <TT>TI</TT>:
+</P><DIV CLASS="center"><TT>rat_jordan([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[[1,2,1],[0,1,0],[1,2,0]],[[2,1,0],[0,2,1],[0,0,2]]]</TT></DIV><P>
+En mode complexe et en mode <TT>Xcas</TT>, <TT>Mupad</TT> et <TT>TI</TT>, on tape :
+</P><DIV CLASS="center"><TT>rat_jordan([[2,0,0],[0,2,-1],[2,1,2]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,0,0],[-2,-1,-1],[0,-i,i]],[[2,0,0],[0,2-i,0],[0,0,2+i]]</TT></DIV><P>
+On tape en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>rat_jordan([[1,0,0],[1,2,-1],[0,0,1]],’P’)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[2,0,0],[0,1,0],[0,0,1]]</TT></DIV><P>
+puis on tape :
+</P><DIV CLASS="center"><TT>P)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[0,1,0],[1,0,1],[0,1,1]]</TT></DIV><HR>
 <A HREF="cascmd_fr625.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr627.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

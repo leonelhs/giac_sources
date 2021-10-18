@@ -6,41 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les enveloppes : envelope enveloppe</TITLE>
+<TITLE>Ces cercles sont-ils en faisceau : is_harmonic_circle_bundle est_faisceau_cercle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr980.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr982.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1145">10.20.2</A>  Les enveloppes : <TT>envelope enveloppe</TT></H3><P><A NAME="@default1905"></A><A NAME="@default1906"></A> <A NAME="sec:envelope"></A>
-<TT>enveloppe</TT> a 2 arguments : une expression <I>Xpr</I> dépendant de 3
-variables <I>x</I>,<I>y</I>,<I>t</I> (resp <I>u</I>,<I>v</I>,<I>t</I>) et <I>t</I> (resp le vecteur [<I>u</I>,<I>v</I>,<I>t</I>]).<BR>
-Les equations <I>Xpr</I>=0 sont considérées comme les 
-équations de courbes de paramètre <I>t</I>.<BR>
-<TT>enveloppe</TT> renvoie l’enveloppe de ces courbes lorsque <I>t</I> varie.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1148">10.18.17</A>  Ces cercles sont-ils en faisceau : <TT>is_harmonic_circle_bundle est_faisceau_cercle</TT></H3><P><A NAME="@default1904"></A><A NAME="@default1905"></A>
+<TT>est_faisceau_cercle</TT> a comme argument une liste de cercles.<BR>
+ <TT>est_faisceau_cercle</TT> renvoie :<BR>
+1 si ces cercles forment un faisceau (c’est à dire si ils ont 2 à 2 le 
+même axe radical),<BR>
+2 si ces cercles sont concentriques,<BR>
+3 si ces cercles sont confondus,<BR>
+et 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>enveloppe(y+x*tan(t)-2*sin(t),t)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_faisceau_cercle([cercle(0,i),cercle(4,i), cercle(0,point(1/2))])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>enveloppe(v+u*tan(t)-3*sin(t),[u,v,t))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
-<B>Remarque</B>
-Si on a une famille de droites <TT>d</TT> qui dépendent d’un paramètre 
-<TT>a</TT>, on peut utiliser soit <TT>enveloppe(equation(d,a))</TT> soit 
-la commande <TT>lieu</TT> (voir <A HREF="cascmd_fr980.html#sec:lieudroite">10.20.1</A>).<BR>
-Voici un exemple simple : enveloppe de la tangente à un cercle.<BR>
-On tape :
-</P><PRE CLASS="verbatim">c:=cercle(0,2):;
-assume(a:=1);
-A:=element(c,a);
-d:=tangente(cercle(0,2),A);
-</PRE><P>Puis soit:
-</P><DIV CLASS="center"><TT>enveloppe(equation(d),a)</TT></DIV><P> 
-soit :
-</P><DIV CLASS="center"><TT>lieu(d,A)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr980.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr982.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

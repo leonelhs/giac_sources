@@ -6,32 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer une liste en séquence : op makesuite</TITLE>
+<TITLE>Avoir la liste permutée à partir de son n-ième élément : rotate</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr504.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr506.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc605">6.41.13</A>  Transformer une liste en séquence : <TT>op makesuite</TT></H3><P><A NAME="@default893"></A><A NAME="@default894"></A><A NAME="@default895"></A>
-<TT>op</TT> ou <TT>makesuite</TT> permet de transformer une liste en 
-séquence.<A NAME="sec:makesuiteop"></A><BR>
-<B>Remarque</B> :<BR>
-<TT>op</TT> est une fonction plus générale (cf <A HREF="cascmd_fr288.html#sec:op">6.17.3</A>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc605">6.41.10</A>  Avoir la liste permutée à partir de son n-ième élément : <TT>rotate</TT></H3><P><A NAME="@default894"></A>
+<TT>rotate</TT> a comme argument une liste et un nombre entier relatif 
+(par défaut <TT>n=-1</TT>).<BR>
+<TT>rotate</TT> renvoie :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si <TT>n&gt;0</TT>, la liste obtenue en permuttant les <TT>n</TT> premiers 
+éléments avec la fin de la liste,
+</LI><LI CLASS="li-itemize">si <TT>n&lt;0</TT> en permuttant les <TT>-n</TT> derniers 
+éléments avec le début de la liste. Par défaut <TT>n=-1</TT> et on met le dernier
+élément en premier.<BR>
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>op([0,1,2])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>makesuite([0,1,2])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rotate([0,1,2,3,4])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(0,1,2)</TT></DIV><P>
-<B>Remarque</B>
-<TT>op</TT> transforme une liste <TT>L</TT> en séquence, donc <TT>op(op(L))</TT> est 
-équivalent à <TT>op(L)</TT>. Pour différencier une séquence de 
-longueur 1 de l’élément de cette séquence, <TT>Xcas</TT> affiche
-une séquence de longueur 1 avec les délimiteurs <TT>seq[ ]</TT>.
-Toutefois, l’évaluation d’une séquence de longueur 1 renvoie son 
-élément.
-</P><HR>
+</P><DIV CLASS="center"><TT>[4,0,1,2,3]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>rotate([0,1,2,3,4],2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,3,4,0,1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>rotate([0,1,2,3,4],-2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[3,4,0,1,2]</TT></DIV><HR>
 <A HREF="cascmd_fr504.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr506.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

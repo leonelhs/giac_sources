@@ -33,7 +33,7 @@ namespace giac {
     smatrix(const matrice & m_,const std::vector< std::vector<int> > & v):m(m_),pos(v) {};
     smatrix(){};
     void dbgprint() const;
-    int size() const { return giacmin(m.size(),pos.size()); }
+    int size() const { return giacmin(int(m.size()),int(pos.size())); }
     int ncols() const;
   };
 
@@ -43,7 +43,7 @@ namespace giac {
     fmatrix(const std::vector< std::vector<giac_double> > & m_,const std::vector< std::vector<int> > & v):m(m_),pos(v) {};
     fmatrix(){};
     void dbgprint() const;
-    int size() const { return giacmin(m.size(),pos.size()); }
+    int size() const { return giacmin(int(m.size()),int(pos.size())); }
     int ncols() const;
   };
 

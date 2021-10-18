@@ -6,39 +6,85 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : #</TITLE>
+<TITLE>La boucle : for pour fpour</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr830.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr832.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc972">9.5.4</A>  Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : <TT>#</TT></H3><P><A NAME="@default1508"></A><A NAME="sec:diese"></A>
-<TT>#</TT> permet d’utiliser une chaîne de caractères comme nom de 
-variable ou comme nom de fonction ou comme nom d’instruction ou comme nom de 
-répertoire.<BR>
-<TT>#</TT> est surtout utile dans un programme.<BR>
-<TT>#</TT> a comme argument une chaîne ou le nom d’une variable qui contient 
-une chaîne ou une expression renvoyant une chaîne.<BR>
-<TT>#</TT> transforme la chaîne en une expression mais n’évalue pas cette
-expression. Donc,
-pour faire une affectation, on ne doit pas écrire <TT>#"a:=2"</TT>, mais on
-peut écrire <TT>#"a":=2</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr833.html#sec:expr">9.5.6</A>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc976">9.4.21</A>  La boucle : <TT>for pour fpour</TT></H3><P><A NAME="@default1501"></A><A NAME="@default1502"></A><A NAME="@default1503"></A><A NAME="@default1504"></A><A NAME="@default1505"></A><A NAME="@default1506"></A><A NAME="@default1507"></A>
+<TT>for</TT> et <TT>pour</TT> se sert d’une variable d’incrémentation par
+exemple <TT>j</TT> (doit être déclarée comme variable locale).<BR>
+<B>Première syntaxe</B><BR>
+On précise entre des parenthèses et en les séparant par 
+un point virgule, la valeur de départ, la condition d’arrêt
+et la façon dont on incrémente la variable d’incrémentation, puis on
+met un bloc d’instructions :<BR>
+<TT>for</TT> permet de faire plusieurs fois un bloc d’instructions selon
+la valeur de la variable d’incrémentation.<BR>
+<TT>for (j:=j1;j&lt;=j2;j:=j+3) {&lt;instructions&gt; }</TT><BR>
+Par exemple :<BR>
+<TT>S:=0;for (j:=3;j&lt;20;j:=j+3) {S:=S+j;}</TT><BR>
+<B>Deuxième syntaxe</B><BR>
+On commence par <TT>for</TT>, puis, on précise avec les mots <TT>from</TT>, <TT>to</TT>
+et <TT>step</TT>, la valeur de départ, la condition d’arrêt et la faç on 
+dont on incrémente cette variable d’incrémentation, puis on met les 
+instructions à effectuer entre <TT>do</TT> et <TT>end_for</TT> :<BR>
+<TT>for j from j1 to j2 step p do &lt;instructions&gt; end_for;</TT><BR>
+Ou on utilise sa traduction. On commence par <TT>pour</TT>, puis, on précise avec
+les mots <TT>de</TT>, <TT>jusque</TT> et <TT>pas</TT>, la valeur de départ, la 
+condition d’arrêt et la façon dont on incrémente cette variable 
+d’incrémentation, puis on met les instructions à effectuer entre <TT>faire</TT>
+et <TT>fpour</TT> :<BR>
+<TT>pour j de j1 jusque j2 pas p faire &lt;instructions&gt; fpour;</TT>
+Par exemple :<BR>
+<TT>S:=0;for j from 3 to 20 step 3 do S:=S+j; end_for;</TT><BR>
+<TT>S:=0;pour j de 3 jusque 20 pas 3 faire S:=S+j; fpour;</TT><BR>
+<B>Troisième syntaxe</B><BR>
+On peut à l’aide d’un ensemble, d’une liste ou d’une plage de valeurs <TT>A</TT>
+donner les différentes valeurs que doit prendre la variable d’incrémentation <TT>j</TT>
+en mettant :<BR>
+<TT>for j in A do ....end_for;</TT>.<BR>
+ou sa traduction :<BR>
+<TT>pour j in A faire &lt;instructions&gt; fpour;</TT>
+Par exemple lorsque <TT>j</TT> s’incrémente de 1:<BR>
+<TT>S:=0;for j in 1..5 do S:=S+j; end_for;</TT><BR>
+ou sa traduction<BR>
+<TT>S:=0;pour j in 1..5 faire S:=S+j; fpour;</TT><BR>
+lorsque <TT>j</TT> décrit un ensemble de valeurs :<BR>
+<TT>A:=[3,6,9,15,30,45];S:=0;for j in A do S:=S+j; end_for;</TT><BR>
+ou sa traduction<BR>
+<TT>A:=[3,6,9,15,30,45];S:=0;pour j in A faire S:=S+j; fpour;</TT><BR>
+ou<BR>
+<TT>A:=%</TT><TT>3,6,9,15,30,45%</TT><TT>;S:=0;for j in A do S:=S+j; end_for;</TT><BR>
+ou sa traduction<BR>
+<TT>A:=%</TT><TT>3,6,9,15,30,45%</TT><TT>;S:=0;pour j in A faire S:=S+j; fpour;</TT><BR>
+
+<B>Attention</B><BR>
+ Ne pas choisir <TT>i</TT> comme variable d’incrémentation car
+<TT>i</TT> représente un nombre complexe !!!<BR>
 On tape :
-</P><DIV CLASS="center"><TT>a:="abc";#a:=3</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>#"abc":=3</TT></DIV><P>
+</P><PRE CLASS="verbatim">somfor(n):={
+local j,s:=0;
+for (j:=1;j&lt;=n;j++){
+   s:=s+1/j;
+} 
+return s;
+}
+</PRE><PRE CLASS="verbatim">sompour(n):={
+local j,s:=0;
+pour j de 1 jusque n faire
+   s:=s+1/j;
+fpour 
+retourne s;
+}
+</PRE><P>puis:
+</P><DIV CLASS="center"><TT>somfor(5)</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>sompour(5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La variable abc contient 3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>b:="ifactor";(#b)(54)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>(#"ifactor")(54)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>#"ifactor(54)"</TT></DIV><P>On obtient :
-</P><DIV CLASS="center"><TT>ifactor(54)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>137/60</TT></DIV><HR>
 <A HREF="cascmd_fr830.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr832.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

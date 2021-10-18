@@ -6,129 +6,53 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformée de Laplace et transformée de Laplace inverse : laplace ilaplace invlaplace</TITLE>
+<TITLE>Réduction de Gauss d’une matrice : ref</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr672.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr674.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc789">6.57.2</A>  Transformée de Laplace et transformée de Laplace inverse : <TT>laplace ilaplace invlaplace</TT></H3><P><A NAME="@default1216"></A><A NAME="@default1217"></A><A NAME="@default1218"></A><A NAME="sec:lap"></A>
-<TT>laplace</TT> et <TT>ilaplace</TT> (ou <TT>invlaplace</TT>) ont 1, 2 ou 3 arguments :<BR>
-l’expression que l’on transforme et éventuellement le nom de 2 variables.<BR>
-L’expression est une expression de la variable courante 
-(ici <I>x</I>) ou l’expression que l’on transforme est une expression de la variable
-donnèe comme deuxième argument.<BR>
-<TT>laplace</TT> est la transformée de Laplace de l’expression donnée comme
-argument et <TT>ilaplace</TT> (ou <TT>invlaplace</TT>) est la transformée de
-Laplace inverse de l’expression donnée comme argument. Le résultat de 
-<TT>laplace</TT> et <TT>ilaplace</TT> (ou <TT>invlaplace</TT>) est une expression de 
-variable le troisième argument ou par défaut le second argument ou par défaut <I>x</I>.<BR>
-<B>Attention</B> le second argument est le nom de la variable du premier argument
-et est ausi le nom de la variable du résultat lorsqu’il n’y a pas de 
-3-ième argument, par exemple :<TT>laplace(sin(x),t)</TT> renvoie <TT>sin(x)/t</TT>. </P><P>On utilise la transformée de Laplace (<TT>laplace</TT>) et la transformée
-de Laplace inverse (<TT>ilaplace</TT> ou <TT>invlaplace</TT>) pour résoudre des équations 
-différentielles linéaires à coefficients constants, par exemple :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I> ′ ′ +<I>p</I>. <I>y</I> ′+<I>q</I>. <I>y</I>  = <I>f</I>(<I>x</I>)</TD></TR>
-</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>(0)=<I>a</I>  <I>y</I>′(0)=<I>b</I></TD></TR>
-</TABLE><P>
-En notant <FONT COLOR=red><I>L</I></FONT> la transformée de Laplace, on a les relations 
-suivantes :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+∞</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>e</I><SUP>−<I>x</I>.<I>u</I></SUP><I>y</I>(<I>u</I>)<I>du</I> </TD></TR>
+<H3 CLASS="subsection"><A NAME="htoc793">6.61.2</A>  Réduction de Gauss d’une matrice : <TT>ref</TT></H3><P><A NAME="@default1217"></A><A NAME="ref"></A> <A NAME="sec:ref"></A>
+<TT>ref</TT> permet de résoudre un système d’équations linéaires 
+que l’on écrit sous forme matricielle :
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+Le paramètre de <TT>ref</TT> est la "matrice augmentée" du système (celle 
+formée par la matrice <TT>A</TT> du système et ayant comme dernier vecteur 
+colonne le second membre <TT>B</TT>).<BR>
+Le résultat est une matrice <TT>[A1,B1]</TT> : <TT>A1</TT> a des zéros 
+au dessous de sa diagonale et les solutions de :
+</P><DIV CLASS="center"><TT>A1*X=B1</TT></DIV><P> 
+sont les mêmes que celles de : 
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+<TT>ref</TT> peut travailler dans ℤ/<I>p</I>ℤ.<BR>
+Par exemple, soit à résoudre le système dans ℝ et dans ℤ/5ℤ:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>−2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
 </TABLE></TD></TR>
-<TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT><SUP>−1</SUP>(<I>g</I>)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2<I>i</I>π</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">&nbsp;</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><I>C</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>e</I><SUP><I>z</I>.<I>x</I></SUP><I>g</I>(<I>z</I>)<I>dz</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-où  <I>C</I> est une courbe fermée contenant les pôles de <TT>g</TT>.<BR>
-<TT>laplace</TT> :<BR>
-On tape :
-</P><DIV CLASS="center"><TT>laplace(sin(x))</TT></DIV><P>
-ici on ne précise pas la variable, alors l’expression que l’on transforme 
-L’expression (ici sin(<I>x</I>)) est une expression de la variable courante 
-(ici <I>x</I>) et la transformée sera aussi une fonction de la variable <I>x</I>.<BR>
-On obtient:
-</P><DIV CLASS="center"><TT>1/(x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>laplace(sin(t),t)</TT></DIV><P>
-ici on précise le nom de la variable de la fonction que l’on transforme (ici 
-<I>t</I>) et ce nom de variable sera utilisé pour la transformée de Laplace.<BR>
-On obtient:
-</P><DIV CLASS="center"><TT>1/(t</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>laplace(sin(t),t,s)</TT></DIV><P>
-ici on précise le nom de la variable de la fonction que l’on transforme (ici
-<I>t</I>) et le nom de la variable que l’on désire avoir pour la transformée de 
-Laplace (ici <I>s</I>).<BR>
-On obtient:
-</P><DIV CLASS="center"><TT>1/(s</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
-<TT>ilaplace</TT> ou <TT>invlaplace</TT> :<BR>
-On tape :
-</P><DIV CLASS="center"><TT>ilaplace(1/(x</TT><CODE><TT>^</TT></CODE><TT>2+1))</TT></DIV><P>
-On obtient:
-</P><DIV CLASS="center"><TT>sin(x)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ilaplace(1/(t</TT><CODE><TT>^</TT></CODE><TT>2+1),t)</TT></DIV><P>
-On obtient:
-</P><DIV CLASS="center"><TT>sin(t)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ilaplace(1/(t</TT><CODE><TT>^</TT></CODE><TT>2+1),t,x)</TT></DIV><P>
-On obtient:
-</P><DIV CLASS="center"><TT>sin(x)</TT></DIV><P>On utilise les propriétés suivantes :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>′)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>−<I>y</I>(0)+<I>x</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>) </TD></TR>
-<TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>″)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>−<I>y</I>′(0)+<I>x</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>′)(<I>x</I>) </TD></TR>
-<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>−<I>y</I>′(0)−<I>x</I>.<I>y</I>(0)+<I>x</I><SUP>2</SUP>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-On a donc si <I>y</I> ′ ′(<I>x</I>) +<I>p</I>. <I>y</I> ′(<I>x</I>)+<I>q</I>. <I>y</I>(<I>x</I>)  = <I>f</I>(<I>x</I>) :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>f</I>)(<I>x</I>)</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP><FONT COLOR=red><I>L</I></FONT>(<I>y</I>″+<I>p</I>.<I>y</I>′+<I>q</I>.<I>y</I>)(<I>x</I>) </TD></TR>
-<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>−<I>y</I>′(0)−<I>x</I>.<I>y</I>(0)+<I>x</I><SUP>2</SUP>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)−<I>p</I>.<I>y</I>(0)+<I>p</I>.<I>x</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>))+<I>q</I>.<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>) </TD></TR>
-<TR><TD ALIGN=right NOWRAP>&nbsp;</TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>(<I>x</I><SUP>2</SUP>+<I>p</I>.<I>x</I>+<I>q</I>).<FONT COLOR=red><I>L</I></FONT>(<I>y</I>)(<I>x</I>)−<I>y</I>′(0)−(<I>x</I>+<I>p</I>).<I>y</I>(0)</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-soit, si <I>a</I>=<I>y</I>(0) et <I>b</I>=<I>y</I>′(0) :<BR>
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT COLOR=red><I>L</I></FONT><I>aplace</I>(<I>f</I>)(<I>x</I>)=(<I>x</I><SUP>2</SUP>+<I>p</I>.<I>x</I>+<I>q</I>).<FONT COLOR=red><I>L</I></FONT><I>aplace</I>(<I>y</I>)(<I>x</I>)−(<I>x</I>+<I>p</I>).<I>a</I>−<I>b</I></TD></TR>
-</TABLE><P>
-La solution est alors :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>(<I>x</I>)=
-<FONT COLOR=red><I>L</I></FONT><SUP>−1</SUP>((<FONT COLOR=red><I>L</I></FONT>(<I>f</I>)(<I>x</I>)+(<I>x</I>+<I>p</I>).<I>a</I> +<I>b</I>)/(<I>x</I><SUP>2</SUP>+<I>p</I>.<I>x</I>+<I>q</I>))
-</TD></TR>
-</TABLE><P>
-Exemple :<BR>
-Résoudre :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I>′ ′ −6. <I>y</I>′+9. <I>y</I>  = <I>x</I>. <I>e</I><SUP>3. <I>x</I></SUP>,
-    <I>y</I>(0)=<I>c</I>_0,    <I>y</I>′(0)=<I>c</I>_1
-</TD></TR>
-</TABLE><P>
-Ici, <I>p</I>=−6, <I>q</I>=9.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>laplace(x*exp(3*x))</TT></DIV><P>
+</TABLE><P> 
+On tape pour résoudre le système dans ℝ :
+</P><DIV CLASS="center"><TT>ref([[3,1,-2],[3,2,2]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1/(x</TT><CODE><TT>^</TT></CODE><TT> 2-6*x+9)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ilaplace((1/(x</TT><CODE><TT>^</TT></CODE><TT>2-6*x+9)+(x-6)*c_0+c_1)/(x</TT><CODE><TT>^</TT></CODE><TT>2-6*x+9))</TT></DIV><P>
-On obtient 
-</P><DIV CLASS="center"><TT>(216*x</TT><CODE><TT>^</TT></CODE><TT>3-3888*x*c_0+1296*x*c_1+1296*c_0)*exp(3*x)/1296</TT></DIV><P>
-après simplification et factorisation (commande <TT>factor</TT>) la solution 
-<I>y</I> s’écrit :
-</P><DIV CLASS="center"><TT>(-18*c_0*x+6*c_0+x</TT><CODE><TT>^</TT></CODE><TT>3+6*x*c_1)*exp(3*x)/6</TT></DIV><P>
-On peut bien sûr taper directement :
-</P><DIV CLASS="center"><TT>desolve(y’’-6*y’+9*y=x*exp(3*x),y)</TT></DIV><P>
-On obtient bien :
-</P><DIV CLASS="center"><TT>exp(3*x)*(-18*c_0*x+6*c_0+x</TT><CODE><TT>^</TT></CODE><TT>3+6*x*c_1)/6</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1,1/3,-2/3],[0,1,4]]</TT></DIV><P>
+cela signifie donc que :<BR>
+ <I>y</I>=4 et <I>x</I>=−2 sont solutions du système.
+On tape pour résoudre le système dans ℤ/5ℤ :
+</P><DIV CLASS="center"><TT>ref([[3,1,-2],[3,2,2]]%5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1 % 5,2 % 5,1 % 5],[0 % 5,1 % 5,-1 % 5]]</TT></DIV><P>
+cela signifie donc que :<BR>
+ <I>y</I>=−1%5 et <I>x</I>=3%5 sont solutions du système.</P><P><B>Remarque</B><BR>
+Lorsque le nombre de colonnes est égal au nombre de lignes +1
+<TT>ref</TT> ne divise pas par le pivot de la derniere colonne, par exemple, on 
+tape :
+</P><DIV CLASS="center"><TT>ref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[1,0,0,1,-a4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[0,0,0,0,a1-a2+a3-a4]]</TT></DIV><P>
+Ainsi on peut savoir que si <TT>a1-a2+a3-a4</TT> n’est pas nul, il n’y a pas de 
+solution. </P><HR>
 <A HREF="cascmd_fr672.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr674.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,43 +6,56 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Produit de Hadamard : hadamard product</TITLE>
+<TITLE>Définir une matrice : matrix</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr556.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr558.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc662">6.46.8</A>  Produit de Hadamard : <TT>hadamard product</TT></H3><P><A NAME="@default1019"></A><A NAME="@default1020"></A><A NAME="sec:product2"></A><A NAME="sec:hadam"></A>
-Voir aussi <TT>.*</TT> pour les listes (cf <A HREF="cascmd_fr539.html#sec:hadal">6.42.5</A>)<BR>
-<TT>hadamard</TT> (ou <TT>product</TT>) a comme arguments deux matrices <I>A</I> et <I>B</I> 
-de même ordre.<BR>
-<TT>product</TT> est une fonction plus générale (voir aussi <A HREF="cascmd_fr525.html#sec:product">6.41.33</A>
-et <A HREF="cascmd_fr555.html#sec:product1">6.46.6</A>).<BR>
-<TT>hadamard</TT> (ou <TT>product</TT>) renvoie la matrice constituée par le 
-produit terme à terme des éléments de <I>A</I> et <I>B</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc662">6.46.4</A>  Définir une matrice : <TT>matrix</TT></H3><P><A NAME="@default1019"></A>
+<TT>matrix</TT> a 1,2 ou 3 arguments.
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+1 argument qui est une table définissant une matrice creuse 
+(cf <A HREF="index.html#sec:matrix">6.51</A>) et <TT>matrix</TT> renvoie la matrice correspondante.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>hadamard([[1, 2],[3,4]],[[5, 6],[7, 8]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[5,12],[21,32]]</TT></DIV><P>
-Si on tape :
-</P><DIV CLASS="center"><TT>hadamard([1,2],[3,4])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>hadamard([[1,2],[3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>5*sqrt(5)</TT></DIV><P>
-Ici [1,2],[3,4] n’est pas considéré comme 2 vecteurs (car le produit de 
-Hadamard ne marche que sur des matrices) mais comme une matrice à 2 lignes.<BR>
-<TT>hadamard</TT> calcule prend le produit des normes des vecteurs colonnes et des
-vecteurs lignes et renvoie le plus petit des 2 :<BR>
-√<SPAN style="text-decoration:overline">1+4</SPAN>*√<SPAN style="text-decoration:overline">9+16</SPAN>=5√<SPAN style="text-decoration:overline">5</SPAN> qui est plus petit que 
-√<SPAN style="text-decoration:overline">1+9</SPAN>**√<SPAN style="text-decoration:overline">4+16</SPAN>=10√<SPAN style="text-decoration:overline">2</SPAN>.<BR>
-Mais si on tape :<BR>
-</P><DIV CLASS="center"><TT>product([1,2],[3,4])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>product([[1,2],[3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[3,8]</TT></DIV><HR>
+<DIV CLASS="center"><TT>purge(A)</TT></DIV>
+<DIV CLASS="center"><TT>A:=table((0,0)=1,(4,4)=4)</TT></DIV>
+<DIV CLASS="center"><TT>matrix(A)</TT></DIV>
+On obtient 
+<DIV CLASS="center"><TT>[[1,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,4]]</TT></DIV>
+</LI><LI CLASS="li-enumerate">2 arguments qui sont deux entiers <I>n</I> et <I>p</I> et <TT>matrix</TT> renvoie la 
+matrice nulle de dimension <I>n</I> × <I>p</I>.<BR>
+On tape :
+<DIV CLASS="center"><TT>matrix(3,4)</TT></DIV>
+On obtient 
+<DIV CLASS="center"><TT>[[0,0,0,0],[0,0,0,0],[0,0,0,0]]</TT></DIV>
+</LI><LI CLASS="li-enumerate">3 arguments qui sont
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+deux entiers <I>n</I> et <I>p</I>.
+</LI><LI CLASS="li-itemize">une fonction de deux variables <TT>j</TT> et <TT>k</TT> égale à la valeur 
+de <I>a</I><SUB><I>j</I>,<I>k</I></SUB> (<TT>j</TT> représente un numéro de ligne et <TT>k</TT> un numéro 
+de colonne).
+<TT>matrix</TT> renvoie la matrice de coefficients 
+<I>a</I><SUB><I>j</I>,<I>k</I></SUB> (<I>j</I>=0..<I>n</I>−1 et <I>k</I>=0..<I>p</I>−1) de dimension <I>n</I> × <I>p</I> si on est en 
+Mode (syntaxe) <TT>xcas</TT> ou renvoie la matrice de coefficients 
+<I>a</I><SUB><I>j</I>,<I>k</I></SUB> (<I>j</I>=1..<I>n</I> et <I>k</I>=1..<I>p</I>) de dimension <I>n</I> × <I>p</I> si on est en Mode 
+(syntaxe) <TT>maple, mupad, ti89/92</TT>.<BR>
+
+On tape :
+<DIV CLASS="center"><TT>matrix(4,3,(j,k)-&gt;j+k)</TT></DIV>
+ou on définit la fonction <I>h</I> par : <TT>h(j,k):=j+k</TT> et,<BR>
+ on tape :
+<DIV CLASS="center"><TT>matrix(4,3,h)</TT></DIV>
+On obtient en Mode (syntaxe) <TT>Xcas</TT>:
+<DIV CLASS="center"><TT>[[0,1,2],[1,2,3],[2,3,4],[3,4,5]]</TT></DIV>
+On obtient en Mode (syntaxe) <TT>maple, mupad, ti89/92</TT>:
+<DIV CLASS="center"><TT>[[2,3,4],[3,4,5],[4,5,6],[5,6,7]]</TT></DIV>
+<B>Attention !</B> à l’ordre des variables dans la définition de <I>a</I><SUB><I>j</I>,<I>k</I></SUB> et
+à <I>j</I> and <I>k</I> qui partent de <TT>0</TT> si on est en Mode (syntaxe) <TT>xcas</TT> 
+et qui partent de <TT>1</TT> si on est en Mode (syntaxe) <TT>maple, mupad, ti89/92</TT>
+</LI></UL> 
+</LI></OL><HR>
 <A HREF="cascmd_fr556.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr558.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

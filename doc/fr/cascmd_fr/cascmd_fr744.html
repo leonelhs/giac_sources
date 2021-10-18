@@ -6,31 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de Poisson : poisson_cdf</TITLE>
+<TITLE>Probabilité que X égale k lorsque X ∈ B(n,p) : binomial</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr743.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr745.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc878">8.4.9</A>  Fonction de répartition de Poisson : <TT>poisson_cdf</TT></H3><P><A NAME="@default1333"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de Poisson de 
-paramètre <TT>mu</TT>, c’est à dire de moyenne <TT>mu</TT> et d’écart-type 
-<TT>mu</TT>, on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>x</I>)=<TT>poisson_cdf( mu,x)</TT> avec <I>X</I>∈ <FONT COLOR=red><I>P</I></FONT>(<I>mu</I>). et<BR>
-<I>Proba</I>(<I>x</I>1≤ <I>X</I> ≤ <I>x</I>2)=<TT>poisson_cdf(mu,x1,x2)=<BR>
-poisson_cdf(mu,x1)+...+poisson_cdf(mu,x2)</TT> c’est à dire :<BR>
-<TT>poisson_cdf(mu,x1,x2)=poisson_cdf(mu,x2)-poisson_cdf(mu,x1-1)</TT><BR>
-<TT>poisson_cdf(mu,x)</TT> est la fonction de répartition de 
-la loi de Poisson de paramètre <TT>mu</TT>,
+<H3 CLASS="subsection"><A NAME="htoc883">8.4.1</A>  Probabilité que <I>X</I> égale <I>k</I> lorsque <I>X</I> ∈ <FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>) : <TT>binomial</TT></H3><P><A NAME="@default1341"></A>
+La probabilité pour que <I>X</I> égale <I>k</I> lorsque <I>X</I> ∈ <FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>) (<I>k</I> (0≤ <I>k</I> ≤ <I>n</I>) est nombre de succés lors de <I>n</I> tirages 
+indépendants (i.e.avec remise) de probabilité <I>p</I>) est égale à :<BR>
+<TT>binomial(n,k,p)=comb(n,k)*p</TT><CODE><TT>^</TT></CODE><TT>k*(1-p)</TT><CODE><TT>^</TT></CODE><TT>(n-k)</TT>.<BR>
+Le troisième paramètre est égal par défaut à 1, on a donc 
+dans ce cas :<BR>
+<TT>binomial(n,k)=comb(n,k)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>poisson_cdf(10.0,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>binomial(10,2,0.4)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0103360506759</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.120932352</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>poisson_cdf(10.0,3,10)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>binomial(4,2,0.5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.572703699517</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.375</TT></DIV><HR>
 <A HREF="cascmd_fr743.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr745.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

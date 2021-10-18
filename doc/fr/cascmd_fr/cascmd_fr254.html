@@ -6,77 +6,52 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour changer le niveau dévaluation : eval_level</TITLE>
+<TITLE>Polynôme minimal d’un nombre algébrique : pmin</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr253.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr255.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc327">6.14.3</A>  Pour changer le niveau dévaluation : <TT>eval_level</TT></H3><P><A NAME="@default426"></A>
-On peut alors avoir différentes évaluation d’une variable selon le niveau
-<I>n</I> dévaluation demandé : ce nombre <I>n</I> est le nombre de la case <TT>eval</TT>
-de la configuration du CAS qui représente le nombre maximum d’évaluations 
-récursives en mode interactif (cf <A HREF="cascmd_fr020.html#sec:configcas">1.6.1</A>). On peut changer ce 
-nombre avec <TT>eval_level</TT> qui a comme argument l’entier <I>n</I>&gt;0.<BR>
-<TT>eval_level()</TT> renvoie la valeur de <TT>eval</TT> de la configuration du 
-CAS.<BR>
-<TT>eval_level(0)</TT> met la valeur de <TT>eval</TT> de la configuration du 
-CAS à 0 et du coup plus rien ne sera évalué. On peut revenir en 
-situation normale en changeant la valeur de <TT>eval</TT> de la configuration du 
-CAS.<BR>
+<H3 CLASS="subsection"><A NAME="htoc326">6.13.2</A>  Polynôme minimal d’un nombre algébrique : <TT>pmin</TT></H3><P><A NAME="@default427"></A>
+<TT>pmin</TT> a comme argument <TT>a</TT> un nombre algébrique réel 
+(resp complexe).<BR>
+<TT>pmin</TT> renvoie le polynôme de plus petit degré ayant comme coefficients 
+des entiers qui admet <TT>a</TT> comme racine.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>eval_level(1)</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>a,b,c</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pmin(sqrt(2)+sqrt(3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>b+1,c+1,3</TT></DIV><P>
-et <TT>eval</TT> de la configuration du CAS vaut 1.<BR>
+</P><DIV CLASS="center"><TT>poly1[1,0,-10,0,1]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>eval_level(2)</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>a,b,c</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pmin(sqrt(2)+sqrt(3),x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>c+1+1,4,3</TT></DIV><P>
-et <TT>eval</TT> de la configuration du CAS vaut 2.<BR>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4-10*x</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+En effet (√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>=5+2√<SPAN style="text-decoration:overline">6</SPAN> et donc :<BR>
+((√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>−5)<SUP>2</SUP>=24 donc<BR>
+(√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>4</SUP>−10(√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>+1=0
 On tape :
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pmin(sqrt(2)+i*sqrt(3))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>poly1[1,0,2,0,25]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>eval_level(3)</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>a,b,c</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pmin(sqrt(2)+i*sqrt(3),x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>5,4,3</TT></DIV><P>
-et <TT>eval</TT> de la configuration du CAS vaut 3.<BR>
-On tape ensuite :
-</P><DIV CLASS="center"><TT>eval_level()</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
-ce qui veut dire que <TT>eval</TT> de la configuration du CAS vaut 3.<BR>
-<B>Remarque</B><BR>
- On peut préciser le niveau dévaluation d’une variable sans changer la 
-configuration du CAS en utilisant <TT>eval</TT> avec 2 arguments une expression et 
-son niveau d’évaluation.
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4-4*i*x</TT><CODE><TT>^</TT></CODE><TT>2-100</TT></DIV><P>
+En effet (√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>=−1+2<I>i</I>√<SPAN style="text-decoration:overline">6</SPAN> et donc :<BR>
+((√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>+1)<SUP>2</SUP>=−24 donc<BR>
+(√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>4</SUP>+2(√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>)+25=0
 On tape :
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>eval(a,0),eval(a,1),eval(a,2),eval(a,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pmin(sqrt(2)+2*i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>a,b+1,c+1+1,5</TT></DIV><P>
-<B>Attention</B><BR>
-<TT>eval_level</TT> est fait pour être exécuté seul, sinon il y aura 
-forcément des effets de frontière entre la valeur du niveau d’évaluation 
-utilisé pour les commandes de la ligne (en principe le prćdent) et la 
-nouvelle valeur qui s’appliquera après. Si on tape :<BR>
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
-puis sur un même niveau :
-</P><DIV CLASS="center"><TT>eval_level(3);a,b,c</TT></DIV><P>
-si <TT>eval</TT> de configuration du CAS vaut 1 alors <TT>a,b,c</TT> seront 
-évalués au niveau 1, puis <TT>eval</TT> de configuration du CAS vaudra 3.</P><HR>
+</P><DIV CLASS="center"><TT>poly1[1,0,4,0,36] </TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>pmin(sqrt(2)+2*i,x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4+4*x</TT><CODE><TT>^</TT></CODE><TT>2+36</TT></DIV><P>
+En effet (√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>2</SUP>=(4*<I>i</I>)*<I>sqrt</I>(2)−2 et donc :<BR>
+((√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>2</SUP>+2)<SUP>2</SUP>=−32 donc<BR>
+(√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>4</SUP>+4(√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>2</SUP>+36+0
+</P><HR>
 <A HREF="cascmd_fr253.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr255.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

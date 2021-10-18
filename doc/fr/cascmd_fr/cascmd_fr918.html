@@ -6,22 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Puissance d’un point par rapport à un cercle : powerpc puissance</TITLE>
+<TITLE>La ligne polygonale : open_polygon polygone_ouvert</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr917.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr919.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1075">10.13.7</A>  Puissance d’un point par rapport à un cercle : <TT>powerpc puissance</TT></H3><P><A NAME="@default1772"></A><A NAME="@default1773"></A> 
-Si un point <I>A</I> est à une distance <I>d</I> du centre d’un cercle <I>C</I> de rayon 
-<I>r</I>, la puissance de <I>A</I> par rapport au cercle <I>C</I> est égale à <I>d</I><SUP>2</SUP>−<I>r</I><SUP>2</SUP>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1079">10.12.4</A>  La ligne polygonale : <TT>open_polygon polygone_ouvert</TT></H3><P><A NAME="@default1775"></A><A NAME="@default1776"></A><A NAME="sec:polygonou2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1026.html#sec:polygonou3">11.9.4</A> pour la géométrie 3-d.<BR>
+<TT>polygone_ouvert</TT>, en géométrie plane, a comme argument la 
+liste (ou la séquence) de <I>n</I> points ou de <I>n</I> nombres complexes représentant l’affixe de ces points.<BR>
+<TT>polygone_ouvert</TT> renvoie et trace la ligne polygonale ayant pour sommets 
+ces <I>n</I> points.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>puissance(cercle(0,1+i),3+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>polygone_ouvert(-1,-1+i/2,i,1+i,-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>8</TT></DIV><P>
-En effet : <I>r</I>=√<SPAN style="text-decoration:overline">2</SPAN> et <I>d</I>=√<SPAN style="text-decoration:overline">10</SPAN> donc <I>d</I><SUP>2</SUP>−<I>r</I><SUP>2</SUP>=8
-</P><HR>
+</P><DIV CLASS="center"><TT>La ligne polygonale de sommets -1,-1+i/2,i,1+i,-i</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>polygone_ouvert(makelist(x-&gt;exp(i*pi*x/3),0,5,1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>La ligne polygonale de sommets 1,</TT><TT>
+<I>e</I></TT><SUP><TT><I>i</I>π/3</TT></SUP><TT>, <I>e</I></TT><SUP><TT>2<I>i</I>π/3</TT></SUP><TT>, ..,
+ <I>e</I></TT><SUP><TT>5<I>i</I>π/3</TT></SUP></DIV><HR>
 <A HREF="cascmd_fr917.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr919.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

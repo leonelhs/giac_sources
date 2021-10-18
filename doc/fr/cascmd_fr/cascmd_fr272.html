@@ -6,62 +6,52 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Substituer une valeur à une variable : subst substituer</TITLE>
+<TITLE>Pour réécrire les résultats selon son choix : autosimplify</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr271.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr273.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc345">6.14.21</A>  Substituer une valeur à une variable : <TT>subst substituer</TT></H3><P><A NAME="@default456"></A><A NAME="@default457"></A><A NAME="sec:subst"></A>
-<TT>subst</TT> a deux ou trois arguments : une expression dépendant 
-d’un paramètre et une égalité (paramètre=valeur de substitution) ou
-une expression dependant d’un paramètre , le paramètre et la valeur de 
-substitution.
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>subst</TT> effectue la substitution demandée dans l’expression à 
-condition que le paramètre ne soit pas affecté car <TT>subst</TT> évalue 
-tout d’abord l’expression et remplace donc le paramètre (si il a été 
-affecté) par sa valeur sans tenir compte de la valeur de substitution donné
-par le deuxième paramètre.<BR>
-On tape :
-<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a=2)</TT></DIV> 
-ou :
-<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a,2)</TT></DIV> 
-On obtient si la variable <TT>a</TT> n’est pas affectée :
-<DIV CLASS="center"><TT>5</TT></DIV> 
-Si la variable <TT>a</TT> est affectée, il faut taper auparavant 
-<TT>purge(a)</TT> pour obtenir <TT>5</TT>.<BR>
-Lorsque l’on veut substituer plusieurs variables, pour eviter de faire 
-plusieurs substitutions à la suite, on met comme deuxième argument la
-liste de ces variables et comme troisième argument la liste de les valeurs 
-de substitution (ou encore on met comme deuxième argument la liste formée 
-des noms de variables <TT>=</TT> valeur de substitution).<BR>
-On tape :
-<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a,b],[2,1])</TT></DIV> 
-Ou on tape :
-<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a=2,b=1])</TT></DIV> 
-On obtient si les variables <TT>a</TT> et <TT>b</TT> ne sont pas affectées :
-<DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV> </LI><LI CLASS="li-itemize"><TT>subst</TT> permet aussi d’effectuer des changements de variables dans 
-une intégrale mais <TT>subst</TT> ne gère les changements de variable dans une 
-integrale que si le changement de variable est de la forme <TT>x=f(u)</TT>. Dans 
-ce cas il faut quoter l’intégrale pour que celle-ci ne 
-soit pas calculée si on utilise <TT>integrate</TT> ou bien il faut utiliser 
-la commande <TT>Int</TT>. Dans les deux cas il faut spécifier le nom 
-de la variable d’intégration même si celle-ci est <TT>x</TT>.<BR>
-On tape :
-<DIV CLASS="center"><TT>subst(’integrate(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x,0,pi/2)’,x=sqrt(t))</TT></DIV>
-Ou on tape :
-<DIV CLASS="center"><TT>subst(Int(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x,0,pi/2),x=sqrt(t))</TT></DIV>
-On obtient
-<DIV CLASS="center"><TT>integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t,0,(pi/2)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV> 
-On tape :
-<DIV CLASS="center"><TT>subst(’integrate(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x)’,x=sqrt(t))</TT></DIV>
-Ou on tape :
-<DIV CLASS="center"><TT>subst(Int(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x),x=sqrt(t))</TT></DIV>
-On obtient
-<DIV CLASS="center"><TT>integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t)</TT></DIV> 
-</LI></UL><HR>
+<H3 CLASS="subsection"><A NAME="htoc345">6.14.18</A>  Pour réécrire les résultats selon son choix : <TT>autosimplify</TT></H3><P><A NAME="@default456"></A>
+<TT>autosimplify</TT> a pour argument une commande (comme <TT>factor</TT>, 
+<TT>simplify</TT> ...) qui sera utilisée pour réécrire les résultats dans 
+<TT>Xcas</TT> (la valeur de l’argument de <TT>autosimplify</TT> au lancement est 
+<TT>regroup</TT>).<BR>
+Si on ne veut pas de simplifications automatique il faudra taper au début de 
+la session : <TT>autosimplify(nop)</TT>.<BR>
+Si on veut changer le mode de simplification en cours de session il faudra que
+le nouveau <TT>autosimplify(...)</TT> se trouve seul sur une ligne. 
+On tape en début de session : 
+</P><DIV CLASS="center"><TT>autosimplify(1)</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>autosimplify(regroup)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT></DIV><P> 
+On tape sur une ligne : 
+</P><DIV CLASS="center"><TT>autosimplify(factor)</TT></DIV><P>
+Puis on tape : 
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x-1)*(x+1)</TT></DIV><P> 
+On tape : 
+</P><DIV CLASS="center"><TT>autosimplify(nop)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>autosimplify()</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>autosimplify(0)</TT></DIV><P>
+Puis on tape : 
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P> 
+On tape : 
+</P><DIV CLASS="center"><TT>autosimplify(regroup)</TT></DIV><P>
+Puis on tape : 
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+On obtient comme en début de session :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT></DIV><HR>
 <A HREF="cascmd_fr271.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr273.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

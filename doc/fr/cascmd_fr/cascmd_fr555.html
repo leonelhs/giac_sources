@@ -6,21 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Multiplication des éléments d’une même colonne d’une matrice : product</TITLE>
+<TITLE>Création par multi-affectation</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr554.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr556.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc660">6.46.6</A>  Multiplication des éléments d’une même colonne d’une matrice : <TT>product</TT></H3><P><A NAME="@default1016"></A><A NAME="sec:product1"></A>
-<TT>product</TT> a comme argument une matrice <I>A</I>.<BR>
-<TT>product</TT> renvoie la liste des produits des éléments d’une même
-colonne de la matrice <I>A</I> (voir aussi <A HREF="cascmd_fr525.html#sec:product">6.41.33</A> et <A HREF="cascmd_fr557.html#sec:product2">6.46.8</A>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>product([[1,2],[3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[3,8]</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc660">6.46.2</A>  Création par multi-affectation</H3><P>
+La multi-affectation permet faire comme son nom l’indique plusieurs 
+affectation on une seule fois.<BR>
+Pour définir des matrices creuses avec une table voir <A HREF="index.html#sec:matrix">6.51</A>.<BR>
+Par exemple on veut définir la matrice <I>M</I> carrée d’odre 3 ayant [1,2,3] 
+sur la diagonale.<BR>
+On tape :<BR>
+<TT>M:=matrix(3,3);</TT><BR>
+On obtient :<BR>
+<TT>[[0,0,0],[0,0,0],[0,0,0]]</TT><BR>
+On tape :<BR>
+<TT>M[0..2,0..2]:=[1,2,3]</TT><BR>
+On obtient :<BR>
+<TT>[[1,0,0],[0,2,0],[0,0,3]]</TT><BR>
+Si on veut modifier <TT>M</TT> pour que sa dernière colonne soit égale à 
+[4,5,6],on tape :<BR>
+<TT>M[0..2,2]:=[4,5,6]</TT>
+On obtient :<BR>
+<TT>[[1,0,4],[0,2,5],[0,0,6]]</TT></P><HR>
 <A HREF="cascmd_fr554.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr556.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

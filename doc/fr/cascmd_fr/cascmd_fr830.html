@@ -6,35 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour écrire des sorties dans un fichier : fopen fprint fclose</TITLE>
+<TITLE>L’instruction conditionnelle : switch</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr829.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr831.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc971">9.5.3</A>  Pour écrire des sorties dans un fichier : <TT>fopen fprint fclose</TT></H3><P><A NAME="@default1505"></A><A NAME="@default1506"></A><A NAME="@default1507"></A>
-Voici les commandes pour ecrire dans un fichier :<BR>
-<TT>f:=fopen("essai")</TT> crèe un fichier du nom spécifié ici <TT>essai</TT> 
-(et donc l’efface si celui-ci existait déjà) et lui associer la variable 
-<TT>f</TT>.<BR>
-<TT>fprint(f,12)</TT> écrit 12 dans le fichier <TT>essai</TT>.<BR>
-<TT>fclose(f)</TT> ferme le fichier <TT>essai</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc975">9.4.20</A>  L’instruction conditionnelle : <TT>switch</TT></H3><P><A NAME="@default1498"></A><A NAME="@default1499"></A><A NAME="@default1500"></A>
+<TT>switch</TT> a comme paramètre une expression.<BR>
+Selon la valeur de cette expression, marquée par <TT>case</TT> (ou par 
+<TT>default</TT>), <TT>switch</TT> 
+permet de faire le bloc d’instructions correspondant à la valeur d’une 
+expression qui doit être une valeur entière.<BR>
 On tape :
-</P><PRE CLASS="verbatim">testfprint(nom):={
- local a,f;
- a:=[];
- f:=fopen(nom);
- for (k:=1;k&lt;11;k++){
- fprint(f,k);
- }
- fclose(f);
- return a;
- }
+</P><PRE CLASS="verbatim">opere(a,b,c):={
+switch(c) {
+  case 1 : {a:=a+b;break;} 
+  case 2 : {a:=a-b;break;} 
+  case 3 : {a:=a*b;break;} 
+  default : {a:=a^b;}
+}
+return a;
+}
 </PRE><P>puis :
-</P><DIV CLASS="center"><TT>testfprint("toto")</TT></DIV><P>
+</P><DIV CLASS="center"><TT>opere(2,3,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>la création d’un fichier "toto" dans lequel il y a 12345678910</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>5</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>opere(2,3,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-1</TT></DIV><HR>
 <A HREF="cascmd_fr829.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr831.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

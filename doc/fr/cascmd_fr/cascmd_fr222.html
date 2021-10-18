@@ -6,20 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Permutation aléatoire : randperm</TITLE>
+<TITLE>Les derivées de la fonction DiGamma : Psi</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr221.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr223.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc292">6.11.1</A>  Permutation aléatoire : <TT>randperm</TT></H3><P><A NAME="@default391"></A>
-<TT>randperm</TT> a comme argument un entier <I>n</I>.<BR>
-<TT>randperm</TT> renvoie une permutation aléatoire de [0..<I>n</I>−1].<BR>
+<H3 CLASS="subsection"><A NAME="htoc291">6.10.17</A>  Les derivées de la fonction DiGamma : <TT>Psi</TT></H3><P><A NAME="@default390"></A>
+<TT>Psi</TT> a comme arguments un réel <I>a</I> et un entier <I>n</I>
+(par défault <I>n</I>=0).<BR>
+<TT>Psi</TT> est la valeur de la <I>n</I>-ième dérivée de la fonction DiGamma
+au point <I>a</I>.<BR>
+La fonction DiGamma est la dérivée de ln(Γ(<I>x</I>)).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>randperm(3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Psi(3,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,0,1]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>pi</TT><CODE><TT>^</TT></CODE><TT>2/6-5/4</TT></DIV><P>
+On peut ommettre le paramètre <I>n</I> lorsque <I>n</I>=0.<BR>
+Lorsque
+<TT>Psi</TT> a comme seul paramètre un nombre <I>a</I>,
+<TT>Psi</TT> renvoie la valeur de la fonction DiGamma au point <I>a</I> :<BR>
+on a donc <TT>Psi(a,0)=Psi(a)</TT>.<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>Psi(3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Psi(1)+3/2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>evalf(Psi(3))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>.922784335098</TT></DIV><HR>
 <A HREF="cascmd_fr221.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr223.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

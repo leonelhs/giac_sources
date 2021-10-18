@@ -6,25 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si 2 droites 2-d sont perpendiculaires : is_perpendicular est_perpendiculaire</TITLE>
+<TITLE>Savoir si 1 point est à l’intérieur d’un polygone ou d’un cercle : is_inside est_dans</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr967.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr969.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1130">10.18.12</A>  Savoir si 2 droites 2-d sont perpendiculaires : <TT>is_perpendicular est_perpendiculaire</TT></H3><P><A NAME="@default1878"></A><A NAME="@default1879"></A><A NAME="sec:estperp2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1034.html#sec:estperp3">11.13.4</A> pour la géométrie 3-d.<BR>
-<TT>est_perpendiculaire</TT>, en géométrie plane, est une 
-fonction booléenne ayant comme argument deux droites.<BR>
- <TT>est_perpendiculaire</TT> vaut 1 si les deux droites sont perpendiculaires,
-et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1135">10.18.4</A>  Savoir si 1 point est à l’intérieur d’un polygone ou d’un cercle : <TT>is_inside est_dans</TT></H3><P><A NAME="@default1878"></A><A NAME="@default1879"></A>
+<TT>is_inside</TT> ou <TT>est_dans</TT> est une fonction 
+booléenne ayant comme argument un point et un polygone ou un cercle.<BR>
+<TT>is_inside</TT> ou <TT>est_dans</TT> vaut 1 si le point est à l’intérieur 
+ou sur le bord du polygone ou du cercle, et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_perpendiculaire(droite(0,1+i),droite(i,1))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_dans((point(0),cercle(-1,1))</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_perpendiculaire(droite(0,1+i),droite(1+i,1))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_dans(point(2),polygone([1,2-i,3+i]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>est_dans(point(1-i),triangle([1,2-i,3+i]))</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr967.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>

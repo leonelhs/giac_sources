@@ -6,20 +6,73 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Probabilité pour que X égale k lorsque X∈ P(µ) : poisson</TITLE>
+<TITLE>Matrice aléatoire : ranm randmatrix randMat</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr742.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr744.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc877">8.4.8</A>  Probabilité pour que <I>X</I> égale <I>k</I> lorsque <I>X</I>∈ <FONT COLOR=red><I>P</I></FONT>(µ) : <TT>poisson</TT></H3><P><A NAME="@default1332"></A>
-La densité de probabilité de la loi de Poisson de paramètre <TT>mu</TT>, c’est à dire de moyenne <TT>mu</TT> et d’écart-type <TT>mu</TT> est :<BR>
-<TT>poisson(mu,k)= exp(-mu)*mu</TT><CODE><TT>^</TT></CODE><TT>k/k!</TT>=<I>Proba</I>(<I>X</I>=<I>k</I>) avec <I>X</I>∈ <FONT COLOR=red><I>P</I></FONT>(<I>mu</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc881">8.3.9</A>  Matrice aléatoire : <TT>ranm randmatrix randMat</TT></H3><P><A NAME="@default1338"></A><A NAME="sec:ranm3"></A><A NAME="@default1339"></A><A NAME="@default1340"></A>
+<TT>ranm</TT> (ou <TT>randmatrix</TT> ou <TT>randMat</TT>) (voir aussi <A HREF="cascmd_fr386.html#sec:ranm1">6.27.32</A> et <A HREF="cascmd_fr548.html#sec:ranm2">6.45.3</A>) peut avoir comme argument :<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+un entier <TT>s</TT>, dans ce cas <TT>ranm</TT> renvoie une liste 
+de longueur <TT>s</TT> dont les éléments sont des entiers pris au hasard 
+de façon équiprobable dans :<BR>
+ <TT>[-99,-98,...,98,99]</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>poisson(10.0,9)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.125110035721</TT></DIV><HR>
+<DIV CLASS="center"><TT>ranm(5)</TT></DIV>
+On obtient par exemple :
+<DIV CLASS="center"><TT>[-40,27,4,-1,94]</TT></DIV>
+</LI><LI CLASS="li-itemize">deux entiers <TT>n,p</TT>, dans ce cas <TT>ranm</TT> renvoie une 
+matrice de <TT>n</TT> lignes et <TT>p</TT> colonnes dont les éléments sont
+des entiers pris au hasard de façon équiprobable dans <TT>[-99,-98,...,98,99]</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>ranm(2,3)</TT></DIV>
+On obtient par exemple :
+<DIV CLASS="center"><TT>[[-32,53,-44],[10,-4,25]]</TT></DIV>
+</LI><LI CLASS="li-itemize">deux entiers <TT>n,p</TT> et un entier relatif <TT>a</TT>, dans ce 
+cas <TT>ranm</TT> renvoie une matrice de <TT>n</TT> lignes et <TT>p</TT> colonnes dont 
+les éléments sont des entiers pris au hasard de façon équiprobable 
+dans <TT>[0;a[</TT> (ou <TT>]a;0]</TT> si <TT>a</TT> est négatif)<BR>
+On tape :
+<DIV CLASS="center"><TT>ranm(2,3,10)</TT></DIV>
+On obtient par exemple :
+<DIV CLASS="center"><TT>[[8,3,7],[7,9,1]]</TT></DIV>
+</LI><LI CLASS="li-itemize">deux entiers <TT>n,p</TT> et un intervalle <TT>a..b</TT>, dans ce cas 
+<TT>ranm</TT> renvoie une matrice de <TT>n</TT> lignes et <TT>p</TT> colonnes dont les 
+éléments sont des réels pris au hasard de façon équiprobable dans 
+<TT>[a;b[</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>ranm(2,3,0..1)</TT></DIV>
+On obtient par exemple :
+<DIV CLASS="center"><TT>[[0.840187716763,0.394382926635,0.783099223394],</TT></DIV>
+<DIV CLASS="center"><TT>[0.798440033104,0.911647357512,0.197551369201]] </TT></DIV>
+</LI><LI CLASS="li-itemize">deux entiers <TT>n,p</TT> et une fonction aléatoire de <TT>Xcas</TT> qu’il 
+faut quoter, dans ce cas 
+<TT>ranm</TT> renvoie une matrice de <TT>n</TT> lignes et <TT>p</TT> colonnes dont 
+les éléments sont pris au hasard selon la fonction donnée en 
+troisième argument.<BR>
+Les fonctions données en troisième argument qui doivent être 
+quoter, peuvent être :<BR>
+<TT>’rand(n)’</TT><BR>
+<TT>’binomial(n,p)’</TT> ou <TT>binomial,n,p</TT> ou<TT>’randbinomial(n,p)’</TT><BR>
+<TT>’multinomial(P,K)’</TT> ou <TT>multinomial,P,K</TT> ou <TT>’randmultinomial(P,K)’</TT><BR>
+<TT>’poisson(</TT><TT>λ</TT><TT>)’</TT> ou <TT>poisson, </TT><TT>λ</TT> ou <TT>’randpoisson(</TT><TT>λ</TT><TT>)’</TT><BR>
+<TT>’normald(</TT><TT>µ</TT><TT>,</TT><TT>σ</TT><TT>)’</TT> ou <TT>normald,</TT><TT>µ</TT><TT>,</TT><TT>σ</TT> ou <TT>’randnorm(</TT><TT>µ</TT><TT>,</TT><TT>σ</TT><TT>)’</TT><BR>
+<TT>’exp(a)’</TT> ou <TT>exp,a</TT> ou <TT>’randexp(a)’</TT><BR>
+<TT>’fisher(n,m)’</TT> ou <TT>fisher,n,m</TT> ou <TT>’randfisher(n,m)’</TT><BR>
+On tape :
+<DIV CLASS="center"><TT>ranm(3,2,’rand(3)’)</TT></DIV>
+ou
+<DIV CLASS="center"><TT>ranm(3,2,3)</TT></DIV>
+On obtient par exemple :
+<DIV CLASS="center"><TT>[[2,1],[0,0],[1,0]]</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>ranm(1,2,’randnorm(0,1)’)</TT></DIV>
+On obtient par exemple :
+<DIV CLASS="center"><TT>[[1.37439065645,-1.33195982697]]</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr742.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr744.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

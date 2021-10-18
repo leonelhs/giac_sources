@@ -6,38 +6,20 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Intercepter une erreur : try..catch</TITLE>
+<TITLE>Instruction du debuggeur : breakpoint</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr851.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr853.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc995">9.7.12</A>  Intercepter une erreur : <TT>try..catch</TT></H3><P><A NAME="@default1530"></A><A NAME="@default1531"></A>
-On fait le bloc d’instructions après <TT>try</TT> : en cas d’erreur 
-le message d’erreur est stocké dans la variable <TT>err</TT> sous forme d’une 
-chaine, et <TT>catch</TT> exécute le bloc d’instructions 
-après <TT>catch (err)</TT>.<BR>
-On tape :
-</P><PRE CLASS="verbatim">try{A:=idn(2)*idn(3)} 
-catch(erreur) 
-{print("l'erreur est "+erreur)}
-</PRE><P>On obtient :
-</P><DIV CLASS="center"><TT>"l’erreur est * Invalid dimension"</TT></DIV><P>
-On tape :
-</P><PRE CLASS="verbatim">essai(x):={
-local y,err;
-try {y:=[[1,2]]+x;}
-catch (err){y:="l'erreur est "+err;} 
-return y;}
-</PRE><P>On tape :
-</P><DIV CLASS="center"><TT>essai([1])</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1000">9.7.4</A>  Instruction du debuggeur : <TT>breakpoint</TT></H3><P><A NAME="@default1539"></A>
+<TT>breakpoint</TT> a comme argument le numéro de la ligne où l’on 
+veut un point d’arrêt.<BR>
+On tape par exemple :
+</P><DIV CLASS="center"><TT>breakpoint(4)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"l’erreur est + Bad Argument Value"</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>essai([[3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[4,6]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>cont() provoquera le déroulement du programme et un arrêt à la ligne 4</TT></DIV><HR>
 <A HREF="cascmd_fr851.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr853.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

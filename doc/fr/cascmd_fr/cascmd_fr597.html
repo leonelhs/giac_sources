@@ -6,61 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice équivalente : changebase</TITLE>
+<TITLE>Opérations</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr596.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr598.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc703">6.47.8</A>  Matrice équivalente : <TT>changebase</TT></H3><P><A NAME="@default1100"></A>
-<TT>changebase</TT> a comme argument une matrice <I>A</I> et une matrice de changement de base <I>P</I>.<BR>
-<TT>changebase</TT> renvoie la matrice <I>B</I> telle que <I>B</I>=<I>P</I><SUP>−1</SUP><I>AP</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc707">6.51.2</A>  Opérations</H3><P>
+On peut faire toutes les opérations matricielles sur les tables définissant 
+des matrices creuses.<BR>
+Soient <I>A</I> et <I>B</I> définit par :
+</P><DIV CLASS="center"><TT>purge(A); A[0..2,0..2]:=[1,2,3]</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0)=1,(1,1)=2,(2,2)=3)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>changebase([[1,2],[3,4]],[[1,0],[0,1]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,2],[3,4]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>purge(B);B[0..1,1..2]:=[1,2];B[0..2,0]:=5</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0)=5,(0,1)=1,(1,0)=5,(1,2)=2,(2,0)=5)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>changebase([[1,1],[0,1]],[[1,2],[3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[-5,-8],[9/2,7]]</TT></DIV><P>
-En effet :<BR>
- </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>1</TD><TD ALIGN=right NOWRAP>2</TD></TR>
-<TR><TD ALIGN=right NOWRAP>3</TD><TD ALIGN=right NOWRAP>4</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><SUP>−1</SUP>*</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>1</TD><TD ALIGN=right NOWRAP>1</TD></TR>
-<TR><TD ALIGN=right NOWRAP>0</TD><TD ALIGN=right NOWRAP>1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">*</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>1</TD><TD ALIGN=right NOWRAP>2</TD></TR>
-<TR><TD ALIGN=right NOWRAP>3</TD><TD ALIGN=right NOWRAP>4</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">=</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>−5</TD><TD ALIGN=right NOWRAP>−8</TD></TR>
-<TR><TD ALIGN=right NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">9</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD ALIGN=right NOWRAP>7</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE><P>.</P><HR>
+</P><DIV CLASS="center"><TT>A+B</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0) = 6,(0,1) = 1,(1,0) = 5,
+(1,1) = 2,(1,2) = 2,(2,0) = 5,(2,2) = 3)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>A*B</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0)=5,(0,1)=1,(1,0)=10,(1,2)=4,(2,0)=15)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>2*A)</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0) = 2,(1,1) = 4,(2,2) = 6)</TT></DIV><P>
+On tape :
+</P><P>
+On obtient : :
+</P><HR>
 <A HREF="cascmd_fr596.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr598.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

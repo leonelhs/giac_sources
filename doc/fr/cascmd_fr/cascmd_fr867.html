@@ -6,102 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Mettre une légende : legende</TITLE>
+<TITLE>Avoir du papier pointé : papier_pointe dot_paper</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr866.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr868.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1014">10.3.4</A>  Mettre une légende : <TT>legende</TT></H3><P><A NAME="@default1605"></A>
-<A NAME="@default1606"></A><A NAME="@default1607"></A><A NAME="@default1608"></A><A NAME="@default1609"></A>
-<TT>legende</TT> a deux ou trois paramètres :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-le 1er paramètre est un point (ou son affixe) ou une liste de 2 
-entiers. Cet argument permet de savoir où l’on doit mettre la 
-légende : soit à partir du point soit à partir de la position en pixels 
-donnée par la liste de 2 coordonnées entières (en partant du coin en haut
-à gauche et les y dirigés vers le bas).
-</LI><LI CLASS="li-itemize">le 2ième paramètre
-est la légende (soit une chaîne de caractères, soit le nom d’une 
-variable : dans ce cas <TT>legende</TT> affiche le contenu de la variable),
-</LI><LI CLASS="li-itemize">éventuellement un 3ième paramètre pour indiquer le quadrant dans 
-lequel il faut mettre la légende et dont la valeur est :<BR>
-<TT>quadrant1,quadrant2,quadrant3,quadrant4</TT><BR>
- (par défaut c’est <TT>quadrant1</TT>). 
-</LI></UL><P>
-<TT>legende</TT> met la chaîne de caractères à cet endroit donné.
-situé en haut à gauche et les <I>y</I> sont dirigés vers le bas).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>legende(1+i,"bonjour")</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1018">10.2.6</A>  Avoir du papier pointé : <TT>papier_pointe dot_paper</TT></H3><P><A NAME="@default1559"></A><A NAME="@default1560"></A>
+<TT>papier_pointe</TT> permet d’avoir du papier pointé c’est à dire
+de tracer un reseau de points sur des droites horizontales et sur des droites
+de pente tan(<I>t</I>).<BR>
+<TT>papier_pointe</TT> a 3,4 ou 5 arguments : l’unité <TT>ux</TT> sur l’axe des 
+<I>x</I>, l’angle <TT>t</TT> et l’unité 
+<TT>uy</TT> sur l’axe des <I>y</I> et éventuellement <TT>x=xmin..xmax,y=ymin..ymax</TT>
+pour n’avoir que des points dans le rectangle
+<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
+les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
+Vous avez la possibilité d’enlever les axes orthonormés en utilisant
+le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
+On tape pour avoir les sommets d’un réseau :
+</P><DIV CLASS="center"><TT>papier_pointe(0.6,pi/2,0.6)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point 1+i et "bonjour" écrit à partir du point 1+i dans le premier quadrant</TT>
-</DIV><P>
+</P><DIV CLASS="center"><TT>Le pointage de tous les sommets du reseau formé par des carrés dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>legende(1+i,"bonjour",quadrant4)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>legende(1+i,quadrant4,"bonjour")</TT></DIV><P>
+</P><DIV CLASS="center"><TT>papier_pointe(1,pi/3,sqrt(3)/2,x=-2..3,y=-1..2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point 1+i et "bonjour" écrit dans le quatrième quadrant du point 1+i</TT>
-</DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>legende([30,20],"bonjour")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>"bonjour" écrit à partir du point en pixels x=30 et y=20</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>legende([30,20],"bonjour",quadrant4)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>"bonjour" écrit à partir du point en pixels x=30 et y=20
-dans le quatrième quadrant</TT></DIV><P>
-Pour mettre une légende à un angle voir <A HREF="cascmd_fr935.html#sec:angle2">10.16.5</A><BR>
-<B>Attention</B><A NAME="@default1610"></A><A NAME="@default1611"></A><BR>
-Le nom <TT>legend</TT> (ou <TT>legende</TT>) peut servir de paramètre 
-global pour mettre en légende le nom des unités sur les axes. Dans ce 
-cas, <TT>legende</TT>) est suivi de <TT>=</TT> puis d’un vecteur composé de 2 
-chaines qui sont le nom des unités (on met une chaine vide si on ne veut plus
-avoir l’unité).
-Le nom <TT>legend</TT> (ou <TT>legende</TT>) peut aussi servir de 
-paramètre local qui sera le paramètre 
-optionnel d’une commande <TT>point</TT> ou d’une commande traçant un polygone 
-(<TT>triangle...polygone</TT>). Dans ce cas, la légende s’inscrit au niveau du 
-point ou au niveau du milieu du côté reliant le dernier au premier sommet 
-du polygone. Le nom du paramètre optionnel (ici unité).
-Le nom <TT>legend</TT> ou <TT>legende</TT>) est suivi de 
-<TT>=</TT> puis de la légende (soit une chaine de caractères, soit un nom de 
-variable contenant une chaine de caractères) est le paramètre que l’on 
-passe comme argument supplémentaire dans les commandes graphiques.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>legende=["mn","kg"]</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-6<I>mn</I> 6<I>mn</I></TT><TT> selon l’axe des </TT><TT><I>x</I></TT><TT> et </TT><TT>-5<I>kg</I> 5<I>kg</I></TT><TT> selon l’axe des </TT><TT><I>y</I></TT>
-</DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>point(1+i,legende="bonjour")</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>a:="bonjour";point(1+i,legende=a)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point 1+i et "bonjour" écrit au point 1+i</TT>
-</DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>polygone(-1,-i,1,2*i,legende="P")</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>a:="P";polygone(-1,-i,1,2*i,legende=P)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le polygone -1,-i,1,2*i et "P" écrit au point -1/2+i</TT>
-</DIV><P>
-<B>Remarque</B><BR>
-Pour mettre une legende a un angle on utilise <TT>angle</TT> avec comme dernier 
-paramàtre une chaine vide (dans ce cas un petit arc désignera l’angle) ou 
-une chaine que sera la legende (dans ce cas un petit arc et la chaine 
-désignera l’angle) par exemple :<BR>
-<TT>angle(0,1,1+i,"")</TT> ou <TT>angle(0,1,1+i,"a")</TT> trace l’angle et<BR>
-<TT>angle(0,1,1+i,"")[0]</TT> ou <TT>angle(0,1,1+i,"a")[0]</TT> renvoie π/4.
-Mais <B>Attention</B> <TT>angle(0,1,1+i,"")</TT> ou <TT>angle(0,1,1+i,"a")</TT> renvoie
-une figure géométrique i.e. le trac'e de l’angle. Donc si vous voulez que 
-<TT>a</TT> désigne la valeur de l’angle et avoir aussi le dessin 
-il faut taper par exemple :<BR>
-<TT>a:=angle(0,1,1+i);</TT> et <TT>angle(0,1,1+i,"a")</TT>
-</P><HR>
+</P><DIV CLASS="center"><TT>Le pointage de tous les sommets du reseau formé par des triangles équilatéraux dans le rectangle </TT><TT>[-2,3]×[-1,2]</TT></DIV><HR>
 <A HREF="cascmd_fr866.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr868.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

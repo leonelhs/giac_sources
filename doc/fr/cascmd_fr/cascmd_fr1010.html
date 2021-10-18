@@ -6,43 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le carré dans l’espace : square carre</TITLE>
+<TITLE>Le plan médiateur : perpen_bisector mediatrice</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1009.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1011.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1183">11.8.1</A>  Le carré dans l’espace : <TT>square carre</TT></H3><P><A NAME="@default1958"></A><A NAME="@default1959"></A><A NAME="sec:carre3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr902.html#sec:carre2">10.11.2</A> pour la géométrie plane.<BR>
-<TT>carre</TT>, en géométrie 3-d, peut avoir de trois à cinq 
-arguments.<BR>
-Les arguments sont :<BR>
-- si il a trois arguments ce sont 3 points de l’espace : les 2 sommets du carré et le troisième point définit le demi-plan du carré.<BR>
-<TT>carre(A,B,P)</TT> renvoie et trace le carrè <I>ABCD</I> dans le demi-plan <I>ABP</I> contenant <I>P</I>, mais sans définir les points D et C.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1186">11.6.2</A>  Le plan médiateur : <TT>perpen_bisector mediatrice</TT></H3><P><A NAME="@default1962"></A><A NAME="@default1963"></A><A NAME="sec:mediatrice3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr901.html#sec:mediatrice2">10.9.11</A> pour la géométrie plane.<BR>
+<TT>mediatrice</TT>, en géométrie 3-d, a comme argument un segment ou 
+deux points <TT>A</TT> et <TT>B</TT>.<BR>
+<TT>mediatrice(A,B)</TT> trace le plan médiateur du segment <TT>(A,B</TT>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><DIV CLASS="center"><TT>Q:=point(0,0,-3)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>carre(A,B,P)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>mediatrice(point([0,0,0]),point([4,4,4]))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>mediatrice(segment([0,0,0],[4,4,4]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le carré de sommets A,B dans le demi-plan ABP</TT></DIV><P>Puis on tape :
-</P><DIV CLASS="center"><TT>carre(A,B,Q)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le carré de sommets A,B dans le demi-plan ABQ</TT></DIV><P>
-- si il a cinq arguments, les 2 derniers paramètres sont le nom de deux 
-variables qui serviront à définir les deux autres sommets.
-On tape :
-</P><DIV CLASS="center"><TT>carre(A,B,P,C,D)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le carré de sommets A,B,C,D dans le demi-plan ABQ</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[3-3*sqrt(1/2),3-3*sqrt(1/2),3*sqrt(2)+3]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[-3*sqrt(2),-3*sqrt(2),3*sqrt(2)]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le plan médiateur du segment [0,0,0],[4,4,4]</TT></DIV><HR>
 <A HREF="cascmd_fr1009.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1011.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

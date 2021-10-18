@@ -6,22 +6,59 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le cylindre : cylinder cylindre</TITLE>
+<TITLE>La symétrie par rapport à un plan, une droite ou un point : reflection symetrie</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1054.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1056.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1235">11.15.3</A>  Le cylindre : <TT>cylinder cylindre</TT></H3><P><A NAME="@default2036"></A><A NAME="@default2037"></A>
-<TT>cylindre</TT> a comme argument un point <TT>A</TT>, une direction 
-<TT>v</TT> et un réel <TT>r</TT>.<BR>
-<TT>cylindre(A,v,r)</TT> dessine un cylindre d’axe (<TT>A</TT>,<TT>v</TT>) et de rayon 
-<TT>r</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1239">11.14.3</A>  La symétrie par rapport à un plan, une droite ou un point : <TT>reflection symetrie</TT></H3><P><A NAME="@default2040"></A><A NAME="@default2041"></A><A NAME="sec:symetrie3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr959.html#sec:symetrie2">10.17.3</A> pour la géométrie plane.<BR>
+<TT>symetrie</TT>, en géométrie 3-d, a un ou deux arguments : un
+point ou une droite ou un plan et éventuellement l’objet géométrique à 
+transformer.<BR>
+Lorsque <TT>symetrie</TT> a un argument, c’est une fonction qui agit sur un 
+objet géométrique : quand le premier argument est un point il s’agit de la 
+symétrie par rapport à ce point, quand le premier argument est une droite 
+il s’agit de la symétrie par rapport à cette droite et quand le premier 
+argument est un plan il s’agit de la symétrie par rapport à ce plan.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cylindre([0,1,0],[0,0,1],3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>s:=symetrie(point(1,1,1))</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>s(point(-1,2,4))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le cylindre d’axe paralléle à 0z passant par [0,1,0] et de rayon 3 (le cercle de base est dans x0y et a pour equation </TT><TT><I>x</I></TT><SUP><TT>2</TT></SUP><TT>+(<I>y</I>-1)</TT><SUP><TT>2</TT></SUP><TT>=9</TT><TT>)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le point (3,0,-2) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sd:=symetrie(droite([1,1,0],[-1,-3,0]))</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>sd(point(-1,2,4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,-4) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sp:=symetrie(plan([1,1,0],[-1,-3,0],[1,1,1]))</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>sp(point(-1,2,4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,4) est tracé</TT></DIV><P>
+Lorsque <TT>symetrie</TT> a deux arguments, <TT>symetrie</TT> dessine et renvoie le 
+transformé du deuxième argument dans la symétrie définie par le 
+premier argument : quand le premier argument est un point il s’agit de la 
+symétrie par rapport à ce point, quand le premier argument est une droite 
+il s’agit de la symétrie par rapport à cette droite et quand le premier 
+argument est un plan il s’agit de la symétrie par rapport à ce plan.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>symetrie(point(1,1,1),point(-1,2,4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,-2) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>symetrie(droite([1,1,0],[-1,-3,0]),point(-1,2,4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,-4) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sp:=symetrie(plan([1,1,0],[-1,-3,0],[1,1,1]),point(-1,2,3))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,4) est tracé</TT></DIV><HR>
 <A HREF="cascmd_fr1054.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1056.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

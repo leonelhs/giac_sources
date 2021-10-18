@@ -6,35 +6,121 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Reste euclidien : Rem</TITLE>
+<TITLE>Construction d’un corps de Galois : GF</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr453.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr455.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc548">6.35.2</A>  Reste euclidien : <TT>Rem</TT></H3><P><A NAME="@default814"></A>
-<TT>Rem</TT> est la forme inerte de <TT>rem</TT>.<BR>
-<TT>Rem</TT> renvoie <TT>rem</TT>, le reste de la division euclidienne de deux 
-polynômes sans l’évaluer.<BR>
-On utilise <TT>Rem</TT> et <TT>mod</TT> pour calculer en mode <TT>Maple</TT> le 
-reste de la division euclidienne de deux polynômes à coefficients dans 
-ℤ/<I>p</I>ℤ.<BR>
-On tape, en mode <TT>Xcas</TT> :
-</P><DIV CLASS="center"><TT>Rem((x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>2+1) mod 13,(2*x</TT><CODE><TT>^</TT></CODE><TT>2+4) mod 13)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc547">6.34.18</A>  Construction d’un corps de Galois : <TT>GF</TT></H3><P><A NAME="@default813"></A>
+Dans sa forme la plus simple,
+<TT>GF</TT> a comme arguments un nombre premier <I>p</I> et un entier <I>n</I>&gt;1
+ou la puissance d’un nombre premier <I>p</I><SUP><I>n</I></SUP> et un argument optionnel qui
+est le nom de variable choisi pour le générateur du corps 
+(la variable doit être purgée au préalable).<BR>
+<TT>GF</TT> crée un corps de Galois de caractéristique <I>p</I> et ayant <I>p</I><SUP><I>n</I></SUP> 
+éléments, les éléments du corps sont alors 0 et les puissances de
+0 à <I>p</I><SUP><I>n</I></SUP>−2 du générateur. Le corps lui-même est stocké dans une variable
+libre (par défaut <I>K</I>, cette variable est affichée par le système, 
+en même temps que le nom du générateur
+et de la variable libre, par défaut <I>k</I>, 
+servant à représenter les élements du corps
+comme le quotient ℤ/<I>p</I>ℤ[<I>k</I>]/<I>P</I>(<I>k</I>) où <I>P</I> est un polynôme irréductible
+et primitif).<BR>
+Par exemple :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<CODE>GF(3,5)</CODE> ou <CODE>GF(3^5)</CODE>
+crée un corps ayant 3<SUP>5</SUP>  éléments dont le générateur
+est <CODE>g</CODE> (ou <CODE>h</CODE>, ... si <I>g</I> est affectée). On peut créer un
+élément du corps en prenant un polynôme en fonction de <I>g</I>, par
+exemple <I>g</I><SUP>10</SUP>+5<I>g</I>+1.
+</LI><LI CLASS="li-itemize"><CODE>GF(2,8,a)</CODE> crée un corps ayant 2<SUP>8</SUP> éléments, et utilise
+la variable <CODE>a</CODE> pour en désigner le générateur (attention, faire
+<CODE>purge(a)</CODE> auparavant si nécessaire). 
+</LI><LI CLASS="li-itemize">La commande <CODE>pmin</CODE> permet de connaitre le polynôme minimal
+d’un élément du corps.
+</LI></UL><P>
+On peut ensuite créer des polynômes ou des matrices
+ayant des coefficients dans le corps, et les manipuler
+avec les instructions habituelles <CODE>+ - * / inv sqrt</CODE>,
+<CODE>quo, rem, quorem, diff, factor, gcd. egcd, ...</CODE> par exemple :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<CODE>GF(3,5,b); A:=[[1,b],[b,1]]; inv(A)</CODE> calcule l’inverse
+d’une matrice à coefficients dans le corps à 3<SUP>5</SUP> éléments
+</LI><LI CLASS="li-itemize"><CODE>GF(5,3,c); p:=x^2-c-1; factor(p)</CODE> factorise le polynôme
+<I>p</I> comme polynôme à coefficients dans le corps à 5<SUP>3</SUP> éléments,
+on en déduit une valeur de racine carrée de <I>c</I>+1.
+</LI><LI CLASS="li-itemize"><CODE>p:=randpoly(x,5,g); q:=diff(p); gcd(p,q)</CODE> génere un
+polynôme à coefficients aléatoires puis calcule sa dérivée et
+le PGCD ce qui permet de savoir si <CODE>p</CODE> a des racines multiples.
+</LI></UL><P>
+Il y a encore quelques limitations dues à une implémentation incomplète
+de certains algorithmes (par exemple factorisation à plusieurs variables
+lorsque le polynôme n’est pas unitaire).</P><P>Dans sa forme la plus complète (mais plus difficile à manipuler
+et moins lisible),
+les éléments de ce corps et le corps lui-même sont représentés par 
+<TT>GF(...)</TT> où <TT>...</TT> est une séquence composée de :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+la caractéristique <I>p</I> (<I>px</I>=0),
+</LI><LI CLASS="li-itemize">le polynôme minimal irréductible (primitif s’il est
+créé par giac) engendrant un
+idéal <I>I</I> dans ℤ/<I>p</I>ℤ[<I>X</I>], le corps de Galois est alors le quotient
+de ℤ/<I>p</I>ℤ[<I>X</I>] par <I>I</I>,
+</LI><LI CLASS="li-itemize">le nom de la variable du polynôme, par défaut <TT>x</TT>,
+</LI><LI CLASS="li-itemize">un polynôme (un reste modulo le polynôme minimal) pour désigner
+un élément du corps (ces éléments ont une représentation additive)
+ou <TT>undef</TT> pour désigner tout le corps qui est le quotient des 
+polynômes à coefficients dans <I>Z</I>/<I>pZ</I> par <I>I</I>.
+</LI></UL><P>
+Habituellement on donne un nom au corps crée (par exemple <TT>G:=GF(p,n)</TT>), 
+afin de construire un élément particulier du groupe à partir d’un 
+polynôme de ℤ/<I>p</I>ℤ[<I>X</I>], on écrira par
+exemple <TT>G(x</TT><CODE><TT>^</TT></CODE><TT>3+x)</TT>. Notez que <TT>G(x)</TT>
+est un générateur du groupe multiplicatif <TT><I>G</I></TT><SUP><TT>*</TT></SUP> lorsque
+le polynôme minimal est généré par giac.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>G:=GF(2,8)</TT></DIV><P>
+On obtient (par exemple) :
+</P><DIV CLASS="center"><TT>GF(2,k</TT><CODE><TT>^</TT></CODE><TT>8-k</TT><CODE><TT>^</TT></CODE><TT>7-k</TT><CODE><TT>^</TT></CODE><TT>6-k-1,k,undef)</TT></DIV><P>
+Le corps <I>G</I> a 2<SUP>8</SUP>=256 éléments et <I>g</I>=<I>G</I>(<I>k</I>) engendre le groupe 
+multiplicatif de ce corps ({ 1,<I>g</I>,<I>g</I><SUP>2</SUP>,...<I>g</I><SUP>254</SUP> }).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>K(k</TT><CODE><TT>^</TT></CODE><TT>9)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>rem((x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>2+1)% 13,(2*x</TT><CODE><TT>^</TT></CODE><TT>2+4)% 13)</TT></DIV><P>
-puis en utilisant <TT>eval(ans())</TT>, on obtient :
-</P><DIV CLASS="center"><TT>(-2% 13)*x+-1% 13</TT></DIV><P>
-<B>Attention</B> <TT>Rem</TT> est surtout utile en mode <TT>Maple</TT>.<BR>
-On tape alors, en mode <TT>Maple</TT> :
-</P><DIV CLASS="center"><TT>Rem(x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>2+1,2*x</TT><CODE><TT>^</TT></CODE><TT>2+4) mod 13</TT></DIV><P>
+</P><DIV CLASS="center"><TT>g</TT><CODE><TT>^</TT></CODE><TT>6+g</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>K(k)</TT><CODE><TT>^</TT></CODE><TT>255</TT></DIV><P>
+On obtient 1.
+Comme vous pouvez le constater sur les exemples précédents, lorsque l’on 
+travaille avec le même corps, les réponses
+contiennent des informations redondantes. C’est pourquoi la définition d’un 
+corps peut avoir un troisième argument : le nom du générateur
+ou une liste contenant deux noms 
+ou trois noms de variable formelle, (le nom de l’indéterminée du polynôme
+irréductible et le nom du corps de Galois que l’on doit mettre entre quote 
+pour que ces variables ne soient pas évaluées ainsi que le nom
+du générateur). Cela permet d’obtenir un 
+affichage plus compact des éléments du corps.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>G:=GF(2,2,[’w’,’G’]):; G(w</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(-2)*x-1</TT></DIV><P>
-On tape, en mode <TT>Maple</TT> :
-</P><DIV CLASS="center"><TT>Rem(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x,x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Done, G(w+1)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>G(w</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1*x</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>G(1)</TT></DIV><P>
+Les éléments de <TT>GF(2,2)</TT> sont donc :
+<TT>0,1,w,w</TT><CODE><TT>^</TT></CODE><TT>2=w+1</TT>.</P><P>On peut enfin indiquer quel polynôme irréductible on souhaite
+utiliser, en l’indiquant en 2-ième paramètre (au lieu de <I>n</I>), 
+par exemple :
+</P><DIV CLASS="center"><CODE>G:=GF(2,w^8+w^6+w^3+w^2+1,['w','G'])</CODE></DIV><P>
+Si on donne un polynôme irréductible non primitif, <TT>Xcas</TT> l’indique et
+propose un remplacement par un 
+polynôme primitif, par exemple :
+</P><DIV CLASS="center"><CODE>G:=GF(2,w^8+w^7+w^5+w+1,['w','G'])</CODE></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><CODE>G:=GF(2,w^8-w^6-w^3-w^2-1,['w','G'],undef)</CODE></DIV><HR>
 <A HREF="cascmd_fr453.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr455.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -1,0 +1,2153 @@
+<!DOCTYPE HTML>
+<html id="fulldocument" manifest="xcas.appcache">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>
+Session_Xcas
+</title>
+
+<style>
+.emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+canvas.emscripten { border: 1px solid black; }
+textarea.emscripten { font-family: monospace; width: 100%; }
+div.emscripten { text-align: center; }
+</style>
+
+<style id="document_style">
+input[type="number"] {
+   width:40px;
+}
+.outdiv {
+width: 410px;
+max-height: 200px;
+  overflow: auto;
+}
+.filenamecss {
+width:120px;
+height:20px
+}
+.historyinput {
+width:400px;
+}
+</style>
+
+</head>
+
+<body>
+<script language="javascript">
+  var ua = window.navigator.userAgent;
+  var old_ie = ua.indexOf('MSIE ');
+  var new_ie = ua.indexOf('Trident/');
+  if ((old_ie > -1) || (new_ie > -1) || window.chrome){
+ (function () {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src  = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+  document.getElementsByTagName("head")[0].appendChild(script);
+})();
+}
+</script>
+
+<div id="startup">
+  <b>During load time</b>, the tutorial is displayed. Once Xcas is
+  ready (this will take more than one minute the first time, at most
+  a few seconds the next times), the tutorial will be hidden.
+  You can display it again by clicking on the Tutorial button.
+</div>
+
+<span id="apropos" style="display:none">
+This is a demo interface to a full web-based CAS engine.
+This CAS does not need any server,
+all the computations are done locally with the javascript
+engine of your browser (requires Firefox version 19 or later,
+or Safari,
+the latest version of Firefox is recommended for good performances).
+The code of the CAS is 12M, it is downloaded once
+(giac.js javascript 
+  compiled from native <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/emgiac.tgz">Giac/Xcas</a> by emscripten).
+  The javascript code is at least 2 times slower than the native 
+code, and sometimes much much slower (e.g. more than 15 times slower
+for computing a Groebner basis like cyclic7). Most of the time
+it is however fast enough (that would justify a better interface...),
+but it is recommended to run large computations with
+  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac.html">Xcas</a>!
+<br>
+  Giac/Xcas, (c) B. Parisse, R. De Graeve, Institut Fourier,
+Université de Grenoble I., licensed under the GPL3, for commercial
+licenses contact us.
+Program editor <a href="http://codemirror.net">CodeMirror</a>,
+Initial Mathml and SVG code by J.P. Branchard.
+<br>
+<button onclick="parentNode.style.display='none'">Hide</button>
+<hr>
+</span>
+
+<form id="config" style="display:none" onsubmit="setTimeout(function(){
+  UI.set_config();
+}); return false">
+<b>Configuration</b>
+<table>
+  <tr>
+    <td>
+      Digits:<input type="number" name="digits_mode" title="Number of decimal digits (if &gt; 14 multiprecision, slower computation)" value=12>
+    </td>
+    <td>
+      Autosimplify: <input type="number" name="autosimp_level"
+  title="0: none, 1: minimum, 2: maximum" value=1 max=2 min=0>
+    </td>
+    <td>
+Radians <input type="checkbox" name="angle_mode" title="Check for radians, uncheck for degrees" checked>
+Complex <input type="checkbox" name="complex_mode" title="Check for default base field = complexes">
+      √ <input type="checkbox" name="sqrt_mode" title="Check : always factor degree 2 polynomials">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      2d <input type="checkbox" name="prettyprint"
+      title="Check for pretty print" checked>
+      Q/A on same line <input type="checkbox" name="qa"
+  title="Check to display commands and results on the same level">
+      History <input type="number" name="history_width" value=1000
+        title="Max history width">
+      x <input type="number" name="history_height" value=400
+  title="Max history height">      
+    </td>
+    <td>
+      Output <input type="number" name="outdiv_width" value=410
+  title="Max width for an output field">
+      x <input type="number" name="outdiv_height" value=200
+  title="Max height for an output field">      
+    </td>
+  </tr>
+  <tr>
+    <td colspan=3>
+      Documentation <input type="checkbox" name="online_doc"
+  title="Check for online doc (if Xcas is not installed)">online
+      <input type="text" name="doc_path" size="60"
+  value="/usr/share/giac/doc/en/cascmd_en/"
+  title="Documentation path (appropriate for linux, on mac add /Applications)">
+      </td>
+    </tr>
+  </table>
+<input type="button" value="cancel" onclick="form.style.display='none';  UI.focused.focus();">
+  <input type="submit" value="ok">
+  <hr>
+</form>
+  
+<span id="manuels" style="display:none">
+  Xcas manuals <button
+  onclick="document.getElementById('manuels').style.display='none';">Hide</button>
+  <ul>
+    <li> Reference :
+  <a href="file:///usr/share/giac/doc/en/cascmd_en/index.html"
+    target="_blank">hard disk</a>,
+  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/en/cascmd_en/index.html"
+  target="_blank">Internet</a>,
+    </li>
+  </ul>
+  </span>
+  
+<table>
+  <tr>
+    <th rowspan=2>
+<button onclick="if(document.getElementById('apropos').style.display=='none')
+  document.getElementById('apropos').style.display='block';
+  else document.getElementById('apropos').style.display='none';"
+title="Show/hide informations about Xcas in your browser">
+<img WIDTH="64" HEIGHT="64" SRC="logo.png" alt="Xcas">
+</button>
+      </th>
+      <td>
+	
+<button title="Click here to append a saved session to the current history" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Insert</button>
+<form id="loadfile" style="display:none">
+<input id="loadfileinput" accept=".xw" type="file" onchange="UI.loadfile(this.files);document.getElementById('loadfile').style.display='none'">
+<input type="text" value="cancel" onclick="form.style.display='none'">
+<input type="submit" value="ok" style="display:none">
+</form>
+    <span id="history1" style="visibility:hidden">
+<button title="Click here to export the session as a HTML file (filename in the next text field)" onclick='UI.savesession(1);'>Export</button>
+<button title="Click here to save the session (filename in the next text field)" onclick='UI.savesession(0);'>Save</button>
+<textarea id="outputfilename" class="filenamecss"
+	style="font-size:large" title="Filename. If you want to overwrite files with Firefox, check Ask always... in Settings, General, Download">session</textarea>
+<span id='thelink'></span>
+	</span>
+    </td>
+    <td id="history2" style="visibility:hidden">
+      &nbsp;&nbsp;<b>History</b>
+      <button onclick="UI.exec(document.getElementById('mathoutput'),0)"
+title="Evaluate all levels">Eval</button>
+<button onclick="UI.show_answers(true)" title="Show answers">+</button>
+<button onclick="UI.show_answers(false)" title="Hide answers">-</button>
+<button onclick="UI.erase_all(document.getElementById('mathoutput'))"
+title="Move all levels to trash">Clear</button>
+    </td>
+  </tr>
+<tr>
+  <td>
+<button 
+  onclick="if(document.getElementById('help').style.display=='none')
+  document.getElementById('help').style.display='block';
+  else document.getElementById('help').style.display='none';"
+title="Show or hide tutorial">Tutorial</button>
+<button 
+  onclick="document.getElementById('manuels').style.display='block';"
+title="Show or hide the list of manuals">Manuals</button>
+    <button onclick="document.getElementById('config').style.display='inline'" title="Change configuration">Configure</button>
+    <span id="history3" style="visibility:hidden">
+&nbsp;&nbsp;<b>Trash</b>
+<button onclick="UI.restoretrash()" title="Restore history levels from trash">Restaurer</button>
+<button onclick="UI.emptytrash()" title="Empty trash">Empty</button>
+    </span>
+</td>
+<td id="history4" style="visibility:hidden">
+&nbsp;&nbsp;<b>Variables</b>
+<button onclick="UI.addhelp(' ','VARS(1)')" title="Show list of variables/values">List</button>
+<button onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Erase content for all variables">Erase</button>
+  <b>Help</b>  <button onclick="helpoutput.innerHTML=''">Clear</button>
+  </td>
+</tr>
+</table>
+  
+<div id="divhelpoutput" style="max-height: 200px; overflow:auto">
+<table id="helpoutput" title="Aide"
+  style="max-width:1000px "></table>
+</div>
+
+<div id="divoutput" style="max-height: 400px; overflow:auto">
+<table id="mathoutput" contextmenu="cmdmenu" title="History"
+  style="max-width:1000px "></table>
+</div>
+
+
+<table border="0" align="center" summary="" id="keyboard" style="display:none">
+  <tr>
+    <td>  
+      <input type="button" style="width:30;height:30"
+  onmousedown="event.preventDefault()" onClick="UI.focused.focus(); UI.moveCaret(UI.focused,-1)" value=" ← "
+  title="Move caret to the left (useful for tablets)">
+      <input type="button" style="width:30;height:30"
+  onmousedown="event.preventDefault()" onClick="UI.focused.focus(); UI.moveCaret(UI.focused,1)" value=" → "
+  title="Move caret to the right (useful for tablets)">
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_,"
+  value="," onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,',')" title="Comma is a separator inside vectors">  
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_left_paren" value="(" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'(')">  
+      <input type="button" style="width:30;height:30"
+      name="add_right_paren" value=")"
+      onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,')')">
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_e"
+  value="e" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'e')" title="e is either exponential basis or separator between mantissa and exponent in a floating point number">  
+      <input type="button" style="width:30;height:30" name="add_7" value="7" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'7')">  
+      <input type="button" style="width:30;height:30" name="add_8" value="8" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'8')">  
+      <input type="button" style="width:30;height:30" name="add_9" value="9" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'9')">  
+      <input type="button" style="width:30;height:30" name="add_/"
+  value="/" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'/')" title="Division. Type // for a comment">  
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_sqrt"
+  value="√" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sqrt(')" title="square root">        
+      <input type="button" style="width:30;height:30" name="add_sin"
+  value="sin" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sin(')" title="sine function, type asin for arcinus">        
+    </td>
+    <td>
+      <input type="button" style="width:50;height:30"
+  name="add_factor" value="factor"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'factor(')" title="Factorization, for example factor(x^4-1). Run cfactor for factorization over C">        
+      <input type="button" style="width:50;height:30" name="add_solve"
+  value="solve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'solve(')"
+  title="Solve equation or expression=0 wrt 1 or more variables, for example solve(x^4-1=0) or solve(y^3-1,y) or solve([x^2-y^2=1,x+y=3],[x,y]). Run csolve for solving over C.">        
+      <input type="button" style="width:50;height:30" name="add_limit"
+  value="limit" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'limit(')" title="limit of an expression if a variable tends to a limit point, for example limit(sin(x)/x,x,0). With an optional 4th parameter equal to 1 or -1 returns a right or left limit.">        
+      <input type="button" style="width:55;height:30" name="add_plot"
+  value="plotfunc" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotfunc(')"
+  title="Graphe of an expression, for example plotfunc(sin(x),x=-5..5,xstep=0.1)">  
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:30;height:30" name="select_button" value="sel" onmousedown="event.preventDefault()" onClick="UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Selectionne la ligne de commande">  
+      <input type="button" style="width:30;height:30" name="add_x" value="x" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'x')" title="x">  
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30"
+      name="add_semi" value=";" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,' ;')"
+  title="Semicolumn must be used at the end of instructions inside programs or to evaluate several instructions once.">
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30"
+  name="add_left_[" value="[" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'[')"
+  title="[ is an open delimiter for vectors, lists and matrices, for example [1,2,3] or [[1,2],[3,4]]">  
+      <input type="button" style="width:30;height:30" name="add_right_]"
+      value="]" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,']')" title="End delimiter for lists, vectors and matrices">
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_pi" value="π" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'pi')">
+      <input type="button" style="width:30;height:30" name="add_4" value="4" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'4')">  
+      <input type="button" style="width:30;height:30" name="add_5" value="5" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'5')">  
+      <input type="button" style="width:30;height:30" name="add_6" value="6" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'6')">  
+      <input type="button" style="width:30;height:30" name="add_*" value="*" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'*')">  
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_exp"
+  value="exp" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'exp(')" title="Exponential function">   
+      <input type="button" style="width:30;height:30" name="add_cos"
+  value="cos" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'cos(')" title="cosine function, type acos for arccosinus">        
+    </td>
+    <td>
+      <input type="button" style="width:50;height:30"
+  name="add_normal" value="normal"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'normal(')" title="normal expands an expression, for example normal((x+1)^6)">        
+      <input type="button" style="width:50;height:30"
+  name="add_fsolve" value="fsolve"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'fsolve(')" title="fsolve solves numerically an equation or system, for example fsolve(cos(x)=x,x=0..5) or fsolve(cos(x),x=0.0)">        
+      <input type="button" style="width:50;height:30"
+  name="add_series" value="series"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(')" title="series computes the Taylor expansion of an expression as a variable tends to a limit-point, for example series(sin(x),x=0,5,polynom). Without polynom, a remainder term is returned. For unidirectional expansion, add 1 or -1 before polynom">        
+      <input type="button" style="width:55;height:30"
+  name="add_plotparam" value="plotparam"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotparam(')" title="Parametric plot, for exemple plotparam([cos(t),sin(t)],t=0..2*pi,tstep=0.1)">  
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:30;height:30" name="copy_button" value="col."
+      onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.selection)" title="Copy last selected commandline to focus.">  
+      <input type="button" style="width:30;height:30" name="add_y"
+  value="y" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'y')" title="y">  
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_:="
+  value=":=" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,' :=')" title=":= is the affectation operator, for example a:=pi/2; sin(a)">
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30"
+  name="add_left_{" value="{" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'{')"
+  title="{ is an opening bloc delimiter in programs">  
+      <input type="button" style="width:30;height:30" name="add_right_}"
+      value="}" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'}')" title="} is a closing bloc delimiter in programs">
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_i"
+  value="i" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'i')" title="Complex number square root of -1">
+      <input type="button" style="width:30;height:30" name="add_1" value="1" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'1')">  
+      <input type="button" style="width:30;height:30" name="add_2" value="2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'2')">  
+      <input type="button" style="width:30;height:30" name="add_3" value="3" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'3')">  
+      <input type="button" style="width:30;height:30" name="add_-" value="-" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'-')">  
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_ln"
+  value="ln" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'ln(')" title="Neperian logarithme (base e)">        
+      <input type="button" style="width:30;height:30" name="add_tan"
+  value="tan" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tan(')" title="tangent function, type atan for arctangente">        
+    </td>    
+    <td>
+      <input type="button" style="width:50;height:30"
+  name="add_simplify" value="simplify"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'simplify(')" title="Tries to simplify an expression, for example simplify(sin(3x)/sin(x)). On failure, try ratnormal, normal or a precise rewrite command.">        
+      <input type="button" style="width:50;height:30"
+  name="add_desolve" value="desolve"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'desolve(')" title="Solve differential equation, for example desolve(y''+y=0), desolve(y'+y=0,y(0)=1)">        
+      <input type="button" style="width:50;height:30"
+  name="add_purge" value="purge"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'purge(')" title="Clear content of one or more variables, for example purge(a) or purge(a,b,c)">        
+      <input type="button" style="width:55;height:30"
+  name="add_plotpolar" value="plotpolar"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotpolar(')" title="Polar plot, for example plotpolar(exp(r),r=-3..3)">  
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:30;height:30" name="kbd_backspace"
+  value="⌫" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Remove one character">  
+      <input type="button" style="width:30;height:30" name="add_t"
+  value="t" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'t')" title="t">  
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add-=" value="=" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'=')">
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_'" value="'" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\'')">
+      <input type="button" style="width:30;height:30" name="add__" value="_" onClick ="UI.insert(UI.focused,'_')">  
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_∞" value="∞" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'∞')" title="+∞. Note that infinity is unsigned complex infinity.">
+      <input type="button" style="width:30;height:30" name="add_%" value="%" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'%')" title="Sert a calculer dans Z/nZ, for example (3 % 7)^6">  
+      <input type="button" style="width:30;height:30" name="add_0" value="0" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'0')">  
+      <input type="button" style="width:30;height:30" name="add_." value="." onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'.')">  
+      <input type="button" style="width:30;height:30" name="add_+" value="+" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'+')">  
+    </td>
+    <td>
+      <input type="button" style="width:30;height:30" name="add_^" value="^" onClick ="UI.insert(UI.focused,'^')">  
+      <input type="button" style="width:30;height:30" name="add_!" value="!" onClick ="UI.insert(UI.focused,'!')">  
+    </td>    
+    <td>
+      <input type="button" style="width:28;height:30" name="add_inv"
+  value="1/" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'inv(')" title="inverse">        
+      <input type="button" style="width:28;height:30" name="add_sum"
+  value="∑" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sum(')" title="Sum of an expression for a variable between two boundaries, for example ∑(k,k,1,n) or ∑(1/n^2,n,1,inf)">  
+      <input type="button" style="width:40;height:30"
+  name="add_rsolve" value="rsolve"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'rsolve(')" title="Solve a recurrence relation, for example rsolve(u(n+2)=u(n+1)+u(n),u(n),[u(0)=1,u(1)=1])">        
+      <input type="button" style="width:28;height:30" name="add_diff"
+  value="∂" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'diff(')" title="Derivative of an expression. For a function f, for example f(x):=sin(x^2), the derivative of f is f', for example g:=f' or f'(2)">        
+      <input type="button" style="width:28;height:30"
+  name="add_integrate" value="∫" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'int(')"
+  title="Integral computation, for example ∫(x^2*sin(x)*exp(x),x) or ∫(1/(x^4+1),x,0,inf)">        
+      <input type="button" style="width:45;height:30" name="add_log10"
+  value="log10" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'log10(')" title="Base 10 logarithm">        
+    </td>
+  </tr>
+</table>
+<br>
+  <span contextmenu="cmdmenu" title="F1: help on keyword before caret. Right-click (Firefox): commands menu">
+ <b>Command :</b>
+ <button style="height:25px" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Short online help and examples for a command, or completion suggestions">?</button>
+&nbsp;&nbsp;
+<button onclick="UI.eval_cmdline()" style="color:green;height:25px" title="Eval commandline">
+ok</button>
+&nbsp;&nbsp;
+  <button style="height:25px" 
+  onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else document.getElementById('keyboard').style.display='inline';UI.focused.focus();"
+  title="Show or hide scientific keyboard">keyboard</button>
+&nbsp;&nbsp;
+   <button style="height:25px" onclick="cmentree.setValue('//'+cmentree.getValue()); cmentree.focus();" title="Comment">//</button>
+&nbsp;&nbsp;
+<button style="height:25px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Add a slider">Slider</button>
+<textarea name="entree" id="entree" size=60></textarea>
+</span>
+<hr>
+
+<span id="help">
+A typical Xcas session will consist in entering commandlines that will
+appear in the history. Sometimes you will also edit an already entered
+command and reevaluate it.
+<button
+onclick="document.getElementById('help').style.display='none';">Hide tutorial</button>
+<br>
+The screen is divided in
+<ul>
+  <li> A panel of buttons to load a session, see manuals and
+  configure. Once the history is non empty, additional buttons appear:
+  save or export session, a link that you can hit to clone a session
+  (for example if your session crashed) or copy/paste, history/trash
+  and variables handling.
+  </li>
+  <li> The history (empty when you start) divided into levels. You can
+  move level up and down (button at the left). You can edit a level
+  and reevaluate it (press Enter). You can move one level to the
+  trash (press backspace button at the right), and empty the trash
+  or recover levels in the trash (panel of buttons above).
+  </li>
+  <li> A commandline with buttons that will help you fill the
+  commandline. You can show the scientific keyboard (press the
+  keyboard button), then move the mouse near a button to have
+  a short explanation on the corresponding command. You can enter
+  the beginning of a command then press Tab or hit the ? button, this
+  will show completions in the history. If you entered a valid Xcas command,
+  a short online help will be displayed with examples, hit the
+  corresponding buttons to copy one example, modify arguments and hit
+  Enter to run the commandline. Additionnaly, in Firefox, right-click will show a
+  menu of many Xcas commands. See also <a href="#examples">below</a>
+  for a few examples.
+  </li>
+  <li> A last line of buttons that show or hide a program editor, the
+  3d graph canvas, and the console.
+  </li>
+</ul>
+
+<a name="examples"><b>Examples of input:</b></a> 
+<ul>
+  <li> Algebra : You can expand an expression with
+  <button onclick="Module.insert(entree,'normal(')"><tt>normal</tt></button>
+  for example <button
+  onclick="Module.insert(entree,'(x+1)^4')"><tt>(x+1)^4</tt></button>.
+  Conversely,
+  <button
+  onmousedown="event.preventDefault()" onClick="Module.insert(entree,'factor(')"><tt>factor(</tt></button>
+  or <button
+  onmousedown="event.preventDefault()" onClick="Module.insert(entree,'cfactor(')"><tt>cfactor(</tt>)</button>
+  factors an expression (like <button
+  onmousedown="event.preventDefault()" onClick="Module.insert(entree,'x^4-1')"><tt>x^4-1</tt></button>)
+  over Q or Q[i]. 
+    <br> <tt>simplify(sin(3x)/sin(x)); gcd(x^4-1,x^3-1) </tt>
+  </li>
+  <li> Solve equations :
+    <tt> solve(x^2-3*x+2=0); csolve(x^2=2*i);
+  solve([x+y=1,x-y=3],[x,y]) </tt>
+  </li>
+  <li>Calculus :
+    <tt> f(x):=sin(x^2):; f(sqrt(pi)); f'(2); f'(y) 
+    <br> int(1/(x^4-1)); int(1/(x^4+1)^4,x,0,+infinity) 
+  <br> limit(sin(x)/x,x=0); series(sin(x),x=0,5);</tt>
+  </li>
+  <li> Linear algebra :
+    <tt> A:=[[1,2],[3,4]]; inv(A); det(A-x*idn(A)); A[0,0]; rref(A);
+  eigenvalues(A); eigenvectors(A);</tt>
+  </li>
+  <li> Plots :
+  <tt>plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])
+  <br> plotfunc(x^2-y^2,[x=-2..2,y=-2..2]); plane(z=0,color=cyan+filled);
+  </tt>
+</ul>
+
+</span>
+
+<table border="0" align="left" summary="">
+  <tr>
+    <td>
+      <button onclick="if(document.getElementById('progform').style.display=='none'){
+      document.getElementById('progform').style.display='block';
+      document.getElementById('boutons_prog').style.display='block';
+     }      
+     else {
+      document.getElementById('progform').style.display='none';
+      document.getElementById('boutons_prog').style.display='none';
+     }"
+  title="Show or hide program editor">Editor :</button>
+      <span id="boutons_prog" style="display:none">
+   <button onclick="UI.insert(UI.focused,'// ')" title="Comment">//</button>
+      <button onclick="
+      if(document.getElementById('assistant_prog').style.display=='none')
+      document.getElementById('assistant_prog').style.display='block';
+      else
+  document.getElementById('assistant_prog').style.display='none';">New function</button>
+      <button onclick="UI.insert(UI.focused,'if then else fi;\n  ')">Test</button>
+      <button onclick="UI.insert(UI.focused,'for from to do \n    \n  od;\n  ')">For loop</button>
+      <button onclick="UI.insert(UI.focused,'while do\n    \n end;\n  ')">while</button>
+      </span>
+      <div id="assistant_prog" style="display:none">
+	  <b>New function</b>
+	  <button onclick="UI.insert(cmprog,'function '+document.getElementById('funcname').value+'('+document.getElementById('argsname').value+'){\n  local '+document.getElementById('localvars').value+';\n  \n  return '+document.getElementById('returnedvar').value+';\n}:;\n');document.getElementById('assistant_prog').style.display='none';">Create</button> <button onclick="document.getElementById('assistant_prog').style.display='none'">Cancel</button><br>
+	  function name <textarea id="funcname" rows=1>f</textarea><br>
+	  list of arguments <textarea id="argsname" rows=1>x,y</textarea><br>
+	  local variables <textarea id="localvars" rows=1>z</textarea><br>
+	  returned value <textarea id="returnedvar" rows=1>z</textarea>
+      </div>
+    </td>
+    <td><button onclick="
+      if(document.getElementById('boutons_3d').style.display=='none'){
+      document.getElementById('boutons_3d').style.display='inherit';
+      document.getElementById('canvas').style.display='inherit';
+      }
+      else {
+      document.getElementById('boutons_3d').style.display='none';
+      document.getElementById('canvas').style.display='none';
+      }"
+      title="Show or hide 3d graph">3d Graph</button>
+      <span id="boutons_3d" style="display:none">
+      <button onclick="UI.giac_renderer('-')">out</button>
+      <button onclick="UI.giac_renderer('+')">in</button>
+      <button onclick="UI.giac_renderer('l')"> ← </button>
+      <button onclick="UI.giac_renderer('r')"> → </button>
+      <button onclick="UI.giac_renderer('u')"> ↑ </button>
+      <button onclick="UI.giac_renderer('d')"> ↓ </button>
+      </span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <form id="progform" onsubmit="setTimeout(function() {
+      UI.set_locale();
+      Module.print('  '+UI.caseval(prog.value));prog.focus();});
+      return false">
+      <input type="submit" value="ok">
+     <textarea name="prog" id="prog" rows=10 cols=60>
+      </textarea>
+      </form>
+    </td>
+    <td> 
+      <canvas id='canvas' width=0 height=0
+  onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"
+  onmouseup="UI.canvas_pushed=false;"
+   >
+      </canvas>
+    </td>
+  </tr>
+</table>
+
+
+<div class="emscripten" id="status">Downloading...</div>
+<div class="emscripten">
+  <progress value="0" max="100" id="progress" hidden=1></progress>  
+</div>
+
+<button onclick="if(document.getElementById('output').style.display=='none'){
+      document.getElementById('output').style.display='inherit';
+      }
+      else {
+      document.getElementById('output').style.display='none';
+      }"
+>Console</button>
+<textarea class="emscripten" id="output" rows="5"
+cols="80" title="Console"></textarea>
+
+
+<menu type="context" id="cmdmenu">
+  <menu label="Expressions">
+<menuitem label="factor" onclick="UI.insert(UI.focused,'factor(')"></menuitem>
+<menuitem label="simplify" onclick="UI.insert(UI.focused,'simplify(')"></menuitem>
+<menuitem label="subst"  onclick="UI.insert(UI.focused,'subst(')"></menuitem>
+  <menu label="Exp et ln">
+<menuitem label="exp2pow: exp(n*ln(x)) -> x^n" onclick="UI.insert(UI.focused,'exp2pow(')"></menuitem>
+<menuitem label="hyp2exp: hyperbolic to exp" onclick="UI.insert(UI.focused,'hyp2exp(')"></menuitem>
+<menuitem label="expexpand: expand exp" onclick="UI.insert(UI.focused,'expexpand(')"></menuitem>
+<menuitem label="lin: linearize exp" onclick="UI.insert(UI.focused,'lin(')"></menuitem>
+<menuitem label="lncollect: regroup log" onclick="UI.insert(UI.focused,'lncollect(')"></menuitem>
+<menuitem label="lnexpand: expand log" onclick="UI.insert(UI.focused,'lnexpand(')"></menuitem>
+<menuitem label="powexpand: expand ^" onclick="UI.insert(UI.focused,'powexpand(')"></menuitem>
+<menuitem label="pow2exp: ^ -> exp" onclick="UI.insert(UI.focused,'pow2exp(')"></menuitem>
+  </menu>
+  <menu label="Trigonometry">
+<menuitem label="trigexpand: expand sin,cos,tan" onclick="UI.insert(UI.focused,'trigexpand(')"></menuitem>
+<menuitem label="tlin: linearization (trigonometry)" onclick="UI.insert(UI.focused,'tlin(')"></menuitem>
+<menuitem label="tcollect: regroup cos and sin" onclick="UI.insert(UI.focused,'tcollect(')"></menuitem>
+<menuitem label="halftan: in terms of tan(x sur 2)" onclick="UI.insert(UI.focused,'halftan(')"></menuitem>
+<menuitem label="cos2sintan: cos -> sin over tan" onclick="UI.insert(UI.focused,'cos2sintan(')"></menuitem>
+<menuitem label="sin2costan: sin -> cos*tan" onclick="UI.insert(UI.focused,'sin2costan(')"></menuitem>
+<menuitem label="tan2sincos: tan -> sin over cos" onclick="UI.insert(UI.focused,'tan2sincos(')"></menuitem>
+<menuitem label="tan2cossin2: tan -> cos, sin 2*angle" onclick="UI.insert(UI.focused,'tan2cossin2(')"></menuitem>
+<menuitem label="tan2sincos2: tan -> sin. cos 2*angle" onclick="UI.insert(UI.focused,'tan2sincos2(')"></menuitem>
+<menuitem label="trigcos: sin^2 -> 1-cos^2" onclick="UI.insert(UI.focused,'trigcos(')"></menuitem>
+<menuitem label="trigsin: cos^2 -> 1-sin^2" onclick="UI.insert(UI.focused,'trigsin(')"></menuitem>
+<menuitem label="trigtan: cos^2 et sin^2 -> tan^2" onclick="UI.insert(UI.focused,'trigtan(')"></menuitem>
+<menuitem label="shift_phase" onclick="UI.insert(UI.focused,'shift_phase(')"></menuitem>
+<menuitem label="exp2trig: exp(i*x) -> cos(x)+i*sin(x)" onclick="UI.insert(UI.focused,'exp2trig(')"></menuitem>
+<menuitem label="trig2exp: cos and sin -> exp(i*angle)" onclick="UI.insert(UI.focused,'trig2exp(')"></menuitem>
+<menuitem label="tsimplify: simplify transcendent" onclick="UI.insert(UI.focused,'tsimplify(')"></menuitem>
+<menuitem label="texpand: expand trig, exp, ln" onclick="UI.insert(UI.focused,'texpand(')"></menuitem>
+<menuitem label="atrig2ln: trig inverse -> complex ln" onclick="UI.insert(UI.focused,'atrig2ln(')"></menuitem>
+<menuitem label="acos2asin: acos -> asin" onclick="UI.insert(UI.focused,'acos2asin(')"></menuitem>
+<menuitem label="acos2atan: acos -> atan" onclick="UI.insert(UI.focused,'acos2atan(')"></menuitem>
+<menuitem label="asin2acos: asin -> acos" onclick="UI.insert(UI.focused,'asin2acos(')"></menuitem>
+<menuitem label="asin2atan: asin -> atan" onclick="UI.insert(UI.focused,'asin2atan(')"></menuitem>
+<menuitem label="atan2acos: atan -> acos" onclick="UI.insert(UI.focused,'atan2acos(')"></menuitem>
+<menuitem label="atan2asin: atan -> asin"  onclick="UI.insert(UI.focused,'atan2asin(')"></menuitem>
+  </menu>
+  <menu label="Rational">
+<menuitem label="collect" onclick="UI.insert(UI.focused,'collect(')"></menuitem>
+<menuitem label="normal" onclick="UI.insert(UI.focused,'normal(')"></menuitem>
+<menuitem label="eval" onclick="UI.insert(UI.focused,'eval(')"></menuitem>
+<menuitem label="equal2diff" onclick="UI.insert(UI.focused,'equal2diff(')"></menuitem>
+<menuitem label="f2nd" onclick="UI.insert(UI.focused,'f2nd(')"></menuitem>
+<menuitem label="ratnormal" onclick="UI.insert(UI.focused,'ratnormal(')"></menuitem>
+<menuitem label="reorder: variables" onclick="UI.insert(UI.focused,'reorder(')"></menuitem>
+<menuitem label="partfrac: partial fraction" onclick="UI.insert(UI.focused,'partfrac(')"></menuitem>
+<menuitem label="cpartfrac: partial fraction over C" onclick="UI.insert(UI.focused,'cpartfrac(')"></menuitem>
+<menuitem label="simp2" onclick="UI.insert(UI.focused,'simp2(')"></menuitem>
+<menuitem label="collect" onclick="UI.insert(UI.focused,'regroup(')"></menuitem>
+<menuitem label="factor" onclick="UI.insert(UI.focused,'factor(')"></menuitem>
+<menuitem label="expand" onclick="UI.insert(UI.focused,'expand(')"></menuitem>
+<menuitem label="simplify" onclick="UI.insert(UI.focused,'simplify(')"></menuitem>
+<menuitem label="mult_conjugate" onclick="UI.insert(UI.focused,'mult_conjugate(')"></menuitem>
+<menuitem label="mult_c_conjugate"  onclick="UI.insert(UI.focused,'mult_c_conjugate(')"></menuitem>
+  </menu>
+  <menu label="Reals">
+<menuitem label="epsilon2zero" onclick="UI.insert(UI.focused,'epsilon2zero(')"></menuitem>
+<menuitem label="evalf: approx evaluation" onclick="UI.insert(UI.focused,'evalf(')"></menuitem>
+<menuitem label="float2rational"
+  onclick="UI.insert(UI.focused,'float2rational(')"></menuitem>
+  </menu>
+  </menu>
+
+  <menu label="Solve">
+<menuitem label="linsolve: linear system" onclick="UI.insert(UI.focused,'linsolve(')"></menuitem>
+<menuitem label="solve: equation or system" onclick="UI.insert(UI.focused,'solve(')"></menuitem>
+<menuitem label="fsolve: numerically" onclick="UI.insert(UI.focused,'fsolve(')"></menuitem>
+<menuitem label="newton: solve by Newton method" onclick="UI.insert(UI.focused,'newton(')"></menuitem>
+<menuitem label="csolve: solve over C" onclick="UI.insert(UI.focused,'csolve(')"></menuitem>
+<menuitem label="desolve: solve differential eq." onclick="UI.insert(UI.focused,'desolve(')"></menuitem>
+<menuitem label="rsolve: solve recurrence relation" onclick="UI.insert(UI.focused,'rsolve(')"></menuitem>
+<menuitem label="odesolve: numerical diff. eq." onclick="UI.insert(UI.focused,'odesolve(')"></menuitem>
+<menuitem label="greduce: reduction mod gbasis" onclick="UI.insert(UI.focused,'greduce(')"></menuitem>
+<menuitem label="gbasis: Groebner basis" onclick="UI.insert(UI.focused,'gbasis(')"></menuitem>
+  </menu>
+  <menu label="Calculus">
+<menuitem label="limit" onclick="UI.insert(UI.focused,'limit(')"></menuitem>
+<menuitem label="series: Taylor expansion" onclick="UI.insert(UI.focused,'series(')"></menuitem>
+<menuitem label="diff: derivative" onclick="UI.insert(UI.focused,'diff(')"></menuitem>
+<menuitem label="ibpdv: integration by parts" onclick="UI.insert(UI.focused,'ibpdv(')"></menuitem>
+<menuitem label="ibpu: integration by parts" onclick="UI.insert(UI.focused,'ibpu(')"></menuitem>
+<menuitem label="integrate: antiderivative" onclick="UI.insert(UI.focused,'integrate(')"></menuitem>
+<menuitem label="preval: antiderivative evaluation" onclick="UI.insert(UI.focused,'preval(')"></menuitem>
+<menuitem label="sum: discret sum" onclick="UI.insert(UI.focused,'sum(')"></menuitem>
+<menuitem label="curl" onclick="UI.insert(UI.focused,'curl(')"></menuitem>
+<menuitem label="diff: gradient" onclick="UI.insert(UI.focused,'gradient(')"></menuitem>
+<menuitem label="divergence: " onclick="UI.insert(UI.focused,'divergence(')"></menuitem>
+<menuitem label="hessian: " onclick="UI.insert(UI.focused,'hessian(')"></menuitem>
+<menuitem label="laplacian: " onclick="UI.insert(UI.focused,'laplacian(')"></menuitem>
+<menuitem label="potential: scalar potential" onclick="UI.insert(UI.focused,'potential(')"></menuitem>
+<menuitem label="vpotential: vector potential"  onclick="UI.insert(UI.focused,'vpotential(')"></menuitem>
+  <menu label="Transformations">
+<menuitem label="fft: Fast Fourier Transform" onclick="UI.insert(UI.focused,'fft(')"></menuitem>
+<menuitem label="fourier_an: an coeff" onclick="UI.insert(UI.focused,'fourier_an(')"></menuitem>
+<menuitem label="fourier_bn: bn coeff" onclick="UI.insert(UI.focused,'fourier_bn(')"></menuitem>
+<menuitem label="fourier_cn: cn coeff" onclick="UI.insert(UI.focused,'fourier_cn(')"></menuitem>
+<menuitem label="ifft: inverse fft" onclick="UI.insert(UI.focused,'ifft(')"></menuitem>
+<menuitem label="ilaplace: inverse Laplace" onclick="UI.insert(UI.focused,'ilaplace(')"></menuitem>
+<menuitem label="laplace: transform"
+  onclick="UI.insert(UI.focused,'laplace(')"></menuitem>
+  </menu>
+  </menu>
+  
+  <menu label="Integers">
+    <menuitem label="euler: indicatrix" onclick="UI.insert(UI.focused,'euler(')"></menuitem>
+    <menuitem label="fracmod: a mod p to n and d" onclick="UI.insert(UI.focused,'fracmod(')"></menuitem>
+    <menuitem label="gcd: greatest common divisor"  onclick="UI.insert(UI.focused,'gcd(')"></menuitem>
+    <menuitem label="iabcuv: a,b,c to u,v such that au+bv=c"  onclick="UI.insert(UI.focused,'iabcuv(')"></menuitem>
+    <menuitem label="ichinrem: chinese remainder over Z"  onclick="UI.insert(UI.focused,'ichinrem(')"></menuitem>
+    <menuitem label="idivis: integer divisors"  onclick="UI.insert(UI.focused,'idivis(')"></menuitem>
+    <menuitem label="iegcd: extended GCD over Z"  onclick="UI.insert(UI.focused,'iegcd(')"></menuitem>
+    <menuitem label="ifactor: integer factorization"  onclick="UI.insert(UI.focused,'ifactor(')"></menuitem>
+    <menuitem label="ifactors: factors and multiplicities"  onclick="UI.insert(UI.focused,'ifactors(')"></menuitem>
+    <menuitem label="iquo: quotient (integer division)"  onclick="UI.insert(UI.focused,'iquo(')"></menuitem>
+    <menuitem label="iquorem: quotient and remainder"  onclick="UI.insert(UI.focused,'iquorem(')"></menuitem>
+    <menuitem label="irem: remainder"  onclick="UI.insert(UI.focused,'irem(')"></menuitem>
+    <menuitem label="is_prime: primality testing"  onclick="UI.insert(UI.focused,'is_prime(')"></menuitem>
+    <menuitem label="is_pseudoprime"  onclick="UI.insert(UI.focused,'is_pseudoprime(')"></menuitem>
+    <menuitem label="lcm"  onclick="UI.insert(UI.focused,'lcm(')"></menuitem>
+    <menuitem label="mod: class of a in Z over nZ"  onclick="UI.insert(UI.focused,'mod(')"></menuitem>
+    <menuitem label="nextprime"  onclick="UI.insert(UI.focused,'nextprime(')"></menuitem>
+    <menuitem label="nprimes: # of prime numbers <="  onclick="UI.insert(UI.focused,'prevprime(')"></menuitem>
+    <menuitem label="pa2b2"  onclick="UI.insert(UI.focused,'pa2b2(')"></menuitem>
+    <menuitem label="powmod: fast power"  onclick="UI.insert(UI.focused,'powmod(')"></menuitem>
+    <menuitem label="prevprime"  onclick="UI.insert(UI.focused,'prevprime(')"></menuitem>
+    <menuitem label="smod: symmetric remainder"  onclick="UI.insert(UI.focused,'smod(')"></menuitem>
+  </menu>
+  <menu label="Polynomials">
+    <menu label="Base">
+<menuitem label="canonical_form" onclick="UI.insert(UI.focused,'canonical_form(')"></menuitem>
+<menuitem label="cfactor: factorization over C" onclick="UI.insert(UI.focused,'cfactor(')"></menuitem>
+<menuitem label="coeff: coefficients list" onclick="UI.insert(UI.focused,'coeff(')"></menuitem>
+<menuitem label="cyclotomic" onclick="UI.insert(UI.focused,'cyclotomic(')"></menuitem>
+<menuitem label="degree" onclick="UI.insert(UI.focused,'degree(')"></menuitem>
+<menuitem label="expand" onclick="UI.insert(UI.focused,'expand(')"></menuitem>
+<menuitem label="factor_xn" onclick="UI.insert(UI.focused,'factor_xn(')"></menuitem>
+<menuitem label="factor" onclick="UI.insert(UI.focused,'factor(')"></menuitem>
+<menuitem label="factors: factors list" onclick="UI.insert(UI.focused,'factors(')"></menuitem>
+<menuitem label="fcoeff" onclick="UI.insert(UI.focused,'fcoeff(')"></menuitem>
+<menuitem label="froot" onclick="UI.insert(UI.focused,'froot(')"></menuitem>
+<menuitem label="genpoly: P(a) -> P" onclick="UI.insert(UI.focused,'genpoly(')"></menuitem>
+<menuitem label="lcoeff: leading coefficient" onclick="UI.insert(UI.focused,'lcoeff(')"></menuitem>
+<menuitem label="normal: form" onclick="UI.insert(UI.focused,'normal(')"></menuitem>
+<menuitem label="pcoeff: roots -> coefficients" onclick="UI.insert(UI.focused,'pcoeff(')"></menuitem>
+<menuitem label="peval: P,a -> P(a)" onclick="UI.insert(UI.focused,'peval(')"></menuitem>
+<menuitem label="proot: coefficients -> roots" onclick="UI.insert(UI.focused,'proot(')"></menuitem>
+<menuitem label="poly2symb" onclick="UI.insert(UI.focused,'poly2symb(')"></menuitem>
+<menuitem label="randpoly: random polynomial" onclick="UI.insert(UI.focused,'randpoly(')"></menuitem>
+<menuitem label="symb2poly" onclick="UI.insert(UI.focused,'symb2poly(')"></menuitem>
+<menuitem label="tcoeff: lowest degree coefficient" onclick="UI.insert(UI.focused,'tcoeff(')"></menuitem>
+<menuitem label="valuation" onclick="UI.insert(UI.focused,'valuation(')"></menuitem>
+  </menu>
+  <menu label="Arithmetic">
+<menuitem label="abcuv: a,b,c -> u,v where au+bv=c" onclick="UI.insert(UI.focused,'abcuv(')"></menuitem>
+<menuitem label="chinrem: chinese remainder over Q[X]" onclick="UI.insert(UI.focused,'chinrem(')"></menuitem>
+<menuitem label="divis: divisors in Q[X]" onclick="UI.insert(UI.focused,'divis(')"></menuitem>
+<menuitem label="divpc: ascending power division" onclick="UI.insert(UI.focused,'divpc(')"></menuitem>
+<menuitem label="egcd: Bezout polynomials" onclick="UI.insert(UI.focused,'egcd(')"></menuitem>
+<menuitem label="factor" onclick="UI.insert(UI.focused,'factor(')"></menuitem>
+<menuitem label="gcd" onclick="UI.insert(UI.focused,'gcd(')"></menuitem>
+<menuitem label="horner: P,a -> P(a)" onclick="UI.insert(UI.focused,'horner(')"></menuitem>
+<menuitem label="lagrange: interpolation" onclick="UI.insert(UI.focused,'lagrange(')"></menuitem>
+<menuitem label="lcm" onclick="UI.insert(UI.focused,'lcm(')"></menuitem>
+<menuitem label="normal" onclick="UI.insert(UI.focused,'normal(')"></menuitem>
+<menuitem label="ptayl: Taylor for polynomials" onclick="UI.insert(UI.focused,'ptayl(')"></menuitem>
+<menuitem label="quo: quotient (euclidean division)" onclick="UI.insert(UI.focused,'quo(')"></menuitem>
+<menuitem label="quorem: quotient and remainder" onclick="UI.insert(UI.focused,'quorem(')"></menuitem>
+<menuitem label="rem: remainder" onclick="UI.insert(UI.focused,'rem(')"></menuitem>
+<menuitem label="resultant" onclick="UI.insert(UI.focused,'resultant(')"></menuitem>
+<menuitem label="spline" onclick="UI.insert(UI.focused,'spline(')"></menuitem>
+<menuitem label="sturm: sequence" onclick="UI.insert(UI.focused,'sturm(')"></menuitem>
+<menuitem label="sturmab: roots number" onclick="UI.insert(UI.focused,'sturmab(')"></menuitem>
+  </menu>
+  <menu label="Orthogonal">
+<menuitem label="hermite" onclick="UI.insert(UI.focused,'hermite(')"></menuitem>
+<menuitem label="laguerre" onclick="UI.insert(UI.focused,'laguerre(')"></menuitem>
+<menuitem label="legendre" onclick="UI.insert(UI.focused,'legendre(')"></menuitem>
+<menuitem label="tchebyshev1" onclick="UI.insert(UI.focused,'tchebyshev1(')"></menuitem>
+<menuitem label="tchebyshev2" onclick="UI.insert(UI.focused,'tchebyshev2(')"></menuitem>
+  </menu>
+    </menu>
+  <menu label="Linear algebra">
+    <menu label="Vectors">
+<menuitem label="abs: " onclick="UI.insert(UI.focused,'abs(')"></menuitem>
+<menuitem label="cross" onclick="UI.insert(UI.focused,'cross(')"></menuitem>
+<menuitem label="dot: product" onclick="UI.insert(UI.focused,'dot(')"></menuitem>
+<menuitem label="l1norm: sum of |x_i|" onclick="UI.insert(UI.focused,'l1norm(')"></menuitem>
+<menuitem label="l2norm: euclidean norm" onclick="UI.insert(UI.focused,'l2norm(')"></menuitem>
+<menuitem label="maxnorm: max norm" onclick="UI.insert(UI.focused,'maxnorm(')"></menuitem>
+      </menu>
+      <menu label="Matrice">
+<menuitem label="hadamard: product" onclick="UI.insert(UI.focused,'hadamard(')"></menuitem>
+<menuitem label="hilbert: matrix" onclick="UI.insert(UI.focused,'hilbert(')"></menuitem>
+<menuitem label="identity: matrix" onclick="UI.insert(UI.focused,'identity(')"></menuitem>
+<menuitem label="makemat" onclick="UI.insert(UI.focused,'makemat(')"></menuitem>
+<menuitem label="ncols: columns number" onclick="UI.insert(UI.focused,'ncols(')"></menuitem>
+<menuitem label="nrows: rows number" onclick="UI.insert(UI.focused,'nrows(')"></menuitem>
+<menuitem label="ranm: random matrix" onclick="UI.insert(UI.focused,'ranm(')"></menuitem>
+<menuitem label="syst2mat: system matrix" onclick="UI.insert(UI.focused,'syst2mat(')"></menuitem>
+<menuitem label="vandermonde: matrix" onclick="UI.insert(UI.focused,'vandermonde(')"></menuitem>
+<menuitem label="trace" onclick="UI.insert(UI.focused,'trace(')"></menuitem>
+<menuitem label="trn: transconjugate" onclick="UI.insert(UI.focused,'trn(')"></menuitem>
+<menuitem label="tran: transposed" onclick="UI.insert(UI.focused,'tran(')"></menuitem>
+<menuitem label="l1norm: triple l1 norm" onclick="UI.insert(UI.focused,'l1norm(')"></menuitem>
+<menuitem label="l2norm: triple l2 norm" onclick="UI.insert(UI.focused,'l2norm(')"></menuitem>
+<menuitem label="linfnorm: triple l inf norm" onclick="UI.insert(UI.focused,'linfnorm(')"></menuitem>
+<menuitem label="frobenius_norm" onclick="UI.insert(UI.focused,'frobenius_norm(')"></menuitem>
+	</menu>
+	<menu label="Gauss">
+<menuitem label="basis" onclick="UI.insert(UI.focused,'basis(')"></menuitem>
+<menuitem label="changebase: A,P -> P^-1*A*P" onclick="UI.insert(UI.focused,'changebase(')"></menuitem>
+<menuitem label="det: determinant" onclick="UI.insert(UI.focused,'det(')"></menuitem>
+<menuitem label="det_minor: by minor expansion" onclick="UI.insert(UI.focused,'det_minor(')"></menuitem>
+<menuitem label="inv: inverse" onclick="UI.insert(UI.focused,'inv(')"></menuitem>
+<menuitem label="ibasis: intersection vector space" onclick="UI.insert(UI.focused,'ibasis)')"></menuitem>
+<menuitem label="ihermite: Hermite form over Z" onclick="UI.insert(UI.focused,'ihermite(')"></menuitem>
+<menuitem label="ismith: Smith form over Z" onclick="UI.insert(UI.focused,'ismith(')"></menuitem>
+<menuitem label="ker" onclick="UI.insert(UI.focused,'ker(')"></menuitem>
+<menuitem label="image" onclick="UI.insert(UI.focused,'image(')"></menuitem>
+<menuitem label="linsolve: solve linear system" onclick="UI.insert(UI.focused,'linsolve(')"></menuitem>
+<menuitem label="rank" onclick="UI.insert(UI.focused,'rank(')"></menuitem>
+<menuitem label="rref: reduction to echelon form" onclick="UI.insert(UI.focused,'rref(')"></menuitem>
+<menuitem label="simplex_reduce" onclick="UI.insert(UI.focused,'simplex_reduce(')"></menuitem>
+<menuitem label="cond: condition number" onclick="UI.insert(UI.focused,'cond(')"></menuitem>
+	  </menu>
+	  <menu label="Diagonalization">
+<menuitem label="adjoint_matrix" onclick="UI.insert(UI.focused,'adjoint_matrix(')"></menuitem>
+<menuitem label="companion" onclick="UI.insert(UI.focused,'companion(')"></menuitem>
+<menuitem label="egv: eigenvectors P" onclick="UI.insert(UI.focused,'egv(')"></menuitem>
+<menuitem label="egvl: D=P^-1*A*P" onclick="UI.insert(UI.focused,'egvl(')"></menuitem>
+<menuitem label="eigenvalues" onclick="UI.insert(UI.focused,'eigenvalues(')"></menuitem>
+<menuitem label="hessenberg: factorization" onclick="UI.insert(UI.focused,'hessenberg(')"></menuitem>
+<menuitem label="jordan: form" onclick="UI.insert(UI.focused,'jordan(')"></menuitem>
+<menuitem label="pcar: characteristic polynomial" onclick="UI.insert(UI.focused,'pcar(')"></menuitem>
+<menuitem label="pcar_hessenberg" onclick="UI.insert(UI.focused,'pcar_hessenberg(')"></menuitem>
+<menuitem label="pmin: minimal polynomial" onclick="UI.insert(UI.focused,'pmin(')"></menuitem>
+<menuitem label="svl: singular values" onclick="UI.insert(UI.focused,'svl(')"></menuitem>
+	    </menu>
+	    <menu label="Factorization">
+<menuitem label="cholesky" onclick="UI.insert(UI.focused,'cholesky(')"></menuitem>
+<menuitem label="lll" onclick="UI.insert(UI.focused,'lll(')"></menuitem>
+<menuitem label="lu: P*A=L*U" onclick="UI.insert(UI.focused,'lu(')"></menuitem>
+<menuitem label="qr: A=Q*R" onclick="UI.insert(UI.focused,'qr(')"></menuitem>
+<menuitem label="svd: singular value decomposition" onclick="UI.insert(UI.focused,'svd(')"></menuitem>
+	      </menu>
+	      <menu label="Iterations">
+<menuitem label="jacobi_linsolve" onclick="UI.insert(UI.focused,'jacobi_linsolve(')"></menuitem>
+<menuitem label="gauss_seidel_linsolve" onclick="UI.insert(UI.focused,'gauss_seidel_linsolve(')"></menuitem>
+<menuitem label="conjugate_gradient" onclick="UI.insert(UI.focused,'conjugate_gradient(')"></menuitem>
+		</menu>
+		<menu label="Quadratic forms">
+<menuitem label="a2q: matrix -> quad. form" onclick="UI.insert(UI.focused,'a2q(')"></menuitem>
+<menuitem label="gauss: decomposition + and - of squares" onclick="UI.insert(UI.focused,'gauss(')"></menuitem>
+<menuitem label="gramschmidt: orthonormalization" onclick="UI.insert(UI.focused,'gramschmidt(')"></menuitem>
+<menuitem label="q2a: quad. form -> matrix" onclick="UI.insert(UI.focused,'q2a(')"></menuitem>
+		  </menu>
+		  <menu label="Isom&eacute;tries">		  
+<menuitem label="isom: isometry elements" onclick="UI.insert(UI.focused,'isom(')"></menuitem>
+<menuitem label="mkisom: create an isometry" onclick="UI.insert(UI.focused,'mkisom(')"></menuitem>
+		    </menu>
+		    </menu>
+<menu label="Geometry">
+<menu label="Points">
+  <menuitem label="barycenter" onclick="UI.insert(UI.focused,'barycenter(')"></menuitem>
+<menuitem label="center" onclick="UI.insert(UI.focused,'center(')"></menuitem>
+<menuitem label="element" onclick="UI.insert(UI.focused,'element(')"></menuitem>
+<menuitem label="single_inter: 1st intersection point" onclick="UI.insert(UI.focused,'single_inter(')"></menuitem>
+<menuitem label="inter: list of intersections" onclick="UI.insert(UI.focused,'inter(')"></menuitem>
+<menuitem label="isobarycenter" onclick="UI.insert(UI.focused,'isobarycenter(')"></menuitem>
+<menuitem label="midpoint" onclick="UI.insert(UI.focused,'midpoint(')"></menuitem>
+<menuitem label="orthocenter" onclick="UI.insert(UI.focused,'orthocenter(')"></menuitem>
+<menuitem label="point" onclick="UI.insert(UI.focused,'point(')"></menuitem>
+<menuitem label="point2d: random point" onclick="UI.insert(UI.focused,'point2d(')"></menuitem>
+<menuitem label="point3d: random point" onclick="UI.insert(UI.focused,'point3d(')"></menuitem>
+<menuitem label="vertices" onclick="UI.insert(UI.focused,'vertices(')"></menuitem>
+  </menu>
+  <menu label="Lines">
+<menuitem label="line_segments" onclick="UI.insert(UI.focused,'line_segments(')"></menuitem>
+<menuitem label="bisector" onclick="UI.insert(UI.focused,'bisector(')"></menuitem>
+<menuitem label="halfline" onclick="UI.insert(UI.focused,'halfline(')"></menuitem>
+<menuitem label="line" onclick="UI.insert(UI.focused,'line(')"></menuitem>
+<menuitem label="envelope" onclick="UI.insert(UI.focused,'envelope(')"></menuitem>
+<menuitem label="exbisector" onclick="UI.insert(UI.focused,'exbisector(')"></menuitem>
+<menuitem label="altitude" onclick="UI.insert(UI.focused,'altitude(')"></menuitem>
+<menuitem label="inter: list of intersection points" onclick="UI.insert(UI.focused,'inter(')"></menuitem>
+<menuitem label="locus" onclick="UI.insert(UI.focused,'locus(')"></menuitem>
+<menuitem label="LineTan: tangent to graph" onclick="UI.insert(UI.focused,'LineTan(')"></menuitem>
+<menuitem label="median" onclick="UI.insert(UI.focused,'median(')"></menuitem>
+<menuitem label="perpen_bisector" onclick="UI.insert(UI.focused,'perpen_bisector(')"></menuitem>
+<menuitem label="parallel" onclick="UI.insert(UI.focused,'parallel(')"></menuitem>
+<menuitem label="perpendicular" onclick="UI.insert(UI.focused,'perpendicular(')"></menuitem>
+<menuitem label="orthogonal" onclick="UI.insert(UI.focused,'orthogonal(')"></menuitem>
+<menuitem label="common_perpendicular" onclick="UI.insert(UI.focused,'common_perpendicular(')"></menuitem>
+<menuitem label="segment" onclick="UI.insert(UI.focused,'segment(')"></menuitem>
+<menuitem label="tangent" onclick="UI.insert(UI.focused,'tangent(')"></menuitem>
+<menuitem label="vector: graphic representation" onclick="UI.insert(UI.focused,'vector(')"></menuitem>
+<menuitem label="plotfunc" onclick="UI.insert(UI.focused,'plotfunc(')"></menuitem>
+<menuitem label="Ox_2d_unit_vector" onclick="UI.insert(UI.focused,'Ox_2d_unit_vector(')"></menuitem>
+<menuitem label="Oy_2d_unit_vector" onclick="UI.insert(UI.focused,'Oy_2d_unit_vector(')"></menuitem>
+<menuitem label="Ox_3d_unit_vector" onclick="UI.insert(UI.focused,'Ox_3d_unit_vector(')"></menuitem>
+<menuitem label="Oy_3d_unit_vector" onclick="UI.insert(UI.focused,'Oy_3d_unit_vector(')"></menuitem>
+<menuitem label="Oz_3d_unit_vector" onclick="UI.insert(UI.focused,'Oz_3d_unit_vector(')"></menuitem>
+<menuitem label="frame_2d" onclick="UI.insert(UI.focused,'frame_2d(')"></menuitem>
+<menuitem label="frame_3d" onclick="UI.insert(UI.focused,'frame_3d(')"></menuitem>
+  </menu>
+  <menu label="Polygons">
+<menuitem label="triangle" onclick="UI.insert(UI.focused,'triangle(')"></menuitem>
+<menuitem label="equilateral_triangle" onclick="UI.insert(UI.focused,'equilateral_triangle(')"></menuitem>
+<menuitem label="isosceles_triangle" onclick="UI.insert(UI.focused,'isosceles_triangle(')"></menuitem>
+<menuitem label="right_triangle" onclick="UI.insert(UI.focused,'right_triangle(')"></menuitem>
+<menuitem label="square" onclick="UI.insert(UI.focused,'square(')"></menuitem>
+<menuitem label="rhombus" onclick="UI.insert(UI.focused,'rhombus(')"></menuitem>
+<menuitem label="parallelogram" onclick="UI.insert(UI.focused,'parallelogram(')"></menuitem>
+<menuitem label="quadrilateral" onclick="UI.insert(UI.focused,'quadrilateral(')"></menuitem>
+<menuitem label="rectangle" onclick="UI.insert(UI.focused,'rectangle(')"></menuitem>
+<menuitem label="convexhull" onclick="UI.insert(UI.focused,'convexhull(')"></menuitem>
+<menuitem label="hexagon" onclick="UI.insert(UI.focused,'hexagon(')"></menuitem>
+<menuitem label="isopolygon" onclick="UI.insert(UI.focused,'isopolygon(')"></menuitem>
+<menuitem label="polygon" onclick="UI.insert(UI.focused,'polygon(')"></menuitem>
+<menuitem label="open_polygon" onclick="UI.insert(UI.focused,'open_polygon(')"></menuitem>
+  </menu>
+  <menu label="Conics, circles">
+<menuitem label="arc" onclick="UI.insert(UI.focused,'arc(')"></menuitem>
+<menuitem label="circle" onclick="UI.insert(UI.focused,'circle(')"></menuitem>
+<menuitem label="circumcircle" onclick="UI.insert(UI.focused,'circumcircle(')"></menuitem>
+<menuitem label="excircle" onclick="UI.insert(UI.focused,'excircle(')"></menuitem>
+<menuitem label="incircle" onclick="UI.insert(UI.focused,'incircle(')"></menuitem>
+<menuitem label="osculating_circle" onclick="UI.insert(UI.focused,'osculating_circle(')"></menuitem>
+<menuitem label="circle" onclick="UI.insert(UI.focused,'circle(')"></menuitem>
+<menuitem label="ellipse" onclick="UI.insert(UI.focused,'ellipse(')"></menuitem>
+<menuitem label="hyperbola" onclick="UI.insert(UI.focused,'hyperbola(')"></menuitem>
+<menuitem label="parabola" onclick="UI.insert(UI.focused,'parabola(')"></menuitem>
+<menuitem label="conic" onclick="UI.insert(UI.focused,'conic(')"></menuitem>
+  </menu>
+  <menu label="Surfaces">
+<menuitem label="quadric" onclick="UI.insert(UI.focused,'quadric(')"></menuitem>
+<menuitem label="cone" onclick="UI.insert(UI.focused,'cone(')"></menuitem>
+<menuitem label="cylinder" onclick="UI.insert(UI.focused,'cylinder(')"></menuitem>
+<menuitem label="half_cone" onclick="UI.insert(UI.focused,'half_cone(')"></menuitem>
+<menuitem label="plane" onclick="UI.insert(UI.focused,'plane(')"></menuitem>
+<menuitem label="sphere" onclick="UI.insert(UI.focused,'sphere(')"></menuitem>
+<menuitem label="plotfunc" onclick="UI.insert(UI.focused,'plotfunc(')"></menuitem>
+<menuitem label="perpen_bisector" onclick="UI.insert(UI.focused,'perpen_bisector(')"></menuitem>
+<menuitem label="tangent" onclick="UI.insert(UI.focused,'tangent(')"></menuitem>
+  </menu>
+  <menu label="Solids">
+<menuitem label="cube" onclick="UI.insert(UI.focused,'cube(')"></menuitem>
+<menuitem label="pyramid" onclick="UI.insert(UI.focused,'pyramid(')"></menuitem>
+<menuitem label="prism" onclick="UI.insert(UI.focused,'prism(')"></menuitem>
+<menuitem label="parallelepiped" onclick="UI.insert(UI.focused,'parallelepiped(')"></menuitem>
+<menuitem label="polyhedron" onclick="UI.insert(UI.focused,'polyhedron(')"></menuitem>
+<menuitem label="tetrahedron" onclick="UI.insert(UI.focused,'tetrahedron(')"></menuitem>
+<menuitem label="centered_tetrahedron" onclick="UI.insert(UI.focused,'centered_tetrahedron(')"></menuitem>
+<menuitem label="centered_cube" onclick="UI.insert(UI.focused,'centerd_cube(')"></menuitem>
+<menuitem label="octahedron" onclick="UI.insert(UI.focused,'octahedron(')"></menuitem>
+<menuitem label="dodecahedron" onclick="UI.insert(UI.focused,'dodecahedron(')"></menuitem>
+<menuitem label="icosahedron"  onclick="UI.insert(UI.focused,'icosahedron(')"></menuitem>
+  
+<menuitem label="abs" onclick="UI.insert(UI.focused,'abs(')"></menuitem>
+<menuitem label="abscissa" onclick="UI.insert(UI.focused,'abscissa(')"></menuitem>
+<menuitem label="affix" onclick="UI.insert(UI.focused,'affix(')"></menuitem>
+<menuitem label="area" onclick="UI.insert(UI.focused,'area(')"></menuitem>
+<menuitem label="angle" onclick="UI.insert(UI.focused,'angle(')"></menuitem>
+<menuitem label="arg" onclick="UI.insert(UI.focused,'arg(')"></menuitem>
+<menuitem label="coordinates" onclick="UI.insert(UI.focused,'coordinates(')"></menuitem>
+<menuitem label="reduced_conic" onclick="UI.insert(UI.focused,'reduced_conic(')"></menuitem>
+  </menu>
+  <menu label="Measures">
+  <menuitem label="curvature" onclick="UI.insert(UI.focused,'curvature(')"></menuitem>
+<menuitem label="cote" onclick="UI.insert(UI.focused,'cote(')"></menuitem>
+<menuitem label="equation: cartesian" onclick="UI.insert(UI.focused,'equation(')"></menuitem>
+<menuitem label="extract_measure" onclick="UI.insert(UI.focused,'extract_measure(')"></menuitem>
+<menuitem label="distance" onclick="UI.insert(UI.focused,'distamce(')"></menuitem>
+<menuitem label="distance2" onclick="UI.insert(UI.focused,'distance2(')"></menuitem>
+<menuitem label="ordinate" onclick="UI.insert(UI.focused,'ordinate(')"></menuitem>
+<menuitem label="parameq: parametric equation" onclick="UI.insert(UI.focused,'parameq(')"></menuitem>
+<menuitem label="slope" onclick="UI.insert(UI.focused,'slope(')"></menuitem>
+<menuitem label="perimeter" onclick="UI.insert(UI.focused,'perimeter(')"></menuitem>
+<menuitem label="reduced_quadric" onclick="UI.insert(UI.focused,'reduced_quadric(')"></menuitem>
+<menuitem label="radius" onclick="UI.insert(UI.focused,'radius(')"></menuitem>
+<menuitem label="scalar_product" onclick="UI.insert(UI.focused,'scalar_product(')"></menuitem>
+  </menu>
+  <menu label="Transformations">
+  <menuitem label="homothety" onclick="UI.insert(UI.focused,'homothety(')"></menuitem>
+<menuitem label="inversion" onclick="UI.insert(UI.focused,'inversion(')"></menuitem>
+<menuitem label="projection" onclick="UI.insert(UI.focused,'projection(')"></menuitem>
+<menuitem label="rotation" onclick="UI.insert(UI.focused,'rotation(')"></menuitem>
+<menuitem label="similarity" onclick="UI.insert(UI.focused,'similarity(')"></menuitem>
+<menuitem label="reflection" onclick="UI.insert(UI.focused,'reflection(')"></menuitem>
+<menuitem label="translation" onclick="UI.insert(UI.focused,'translation(')"></menuitem>
+  </menu>
+  <menu label="Properties">
+  <menuitem label="is_collinear" onclick="UI.insert(UI.focused,'is_collinear(')"></menuitem>
+<menuitem label="is_concyclic" onclick="UI.insert(UI.focused,'is_concyclic(')"></menuitem>
+<menuitem label="is_coplanar" onclick="UI.insert(UI.focused,'is_coplanar(')"></menuitem>
+<menuitem label="is_element" onclick="UI.insert(UI.focused,'is_element(')"></menuitem>
+<menuitem label="is_parallel" onclick="UI.insert(UI.focused,'is_parallel(')"></menuitem>
+<menuitem label="is_orthogonal" onclick="UI.insert(UI.focused,'is_orthogonal(')"></menuitem>
+<menuitem label="is_equilateral" onclick="UI.insert(UI.focused,'is_equilateral(')"></menuitem>
+<menuitem label="is_isosceles" onclick="UI.insert(UI.focused,'is_isosceles(')"></menuitem>
+<menuitem label="is_rectangle" onclick="UI.insert(UI.focused,'is_rectangle(')"></menuitem>
+<menuitem label="is_square" onclick="UI.insert(UI.focused,'is_square(')"></menuitem>
+<menuitem label="is_rhombus" onclick="UI.insert(UI.focused,'is_rhombus(')"></menuitem>
+<menuitem label="is_parallelogram" onclick="UI.insert(UI.focused,'is_parallelogram(')"></menuitem>
+<menuitem label="is_conjugate" onclick="UI.insert(UI.focused,'is_conjugate(')"></menuitem>
+<menuitem label="is_harmonic_circle_bundle" onclick="UI.insert(UI.focused,'is_harmonic_circle_bundle (')"></menuitem>
+<menuitem label="is_harmonic_line_bundle" onclick="UI.insert(UI.focused,'is_harmonic_line_bundle (')"></menuitem>
+  </menu>
+  <menu label="Display">
+<menuitem label="display" onclick="UI.insert(UI.focused,'display')"></menuitem>
+<menuitem label="hidden_name" onclick="UI.insert(UI.focused,'hidden_name')"></menuitem>
+<menuitem label="filled" onclick="UI.insert(UI.focused,'filled')"></menuitem>
+<menuitem label="white" onclick="UI.insert(UI.focused,'whilte')"></menuitem>
+<menuitem label="black" onclick="UI.insert(UI.focused,'black')"></menuitem>
+<menuitem label="red" onclick="UI.insert(UI.focused,'red')"></menuitem>
+<menuitem label="green" onclick="UI.insert(UI.focused,'green')"></menuitem>
+<menuitem label="blue" onclick="UI.insert(UI.focused,'blue')"></menuitem>
+<menuitem label="yellow" onclick="UI.insert(UI.focused,'yellow')"></menuitem>
+<menuitem label="magenta" onclick="UI.insert(UI.focused,'magenta')"></menuitem>
+<menuitem label="cyan" onclick="UI.insert(UI.focused,'cyan')"></menuitem>
+<menuitem label="solid_line" onclick="UI.insert(UI.focused,'ligne_trait_plein(')"></menuitem>
+<menuitem label="dash_line" onclick="UI.insert(UI.focused,'ligne_tiret(')"></menuitem>
+<menuitem label="dashdot_line" onclick="UI.insert(UI.focused,'ligne_tiret_point(')"></menuitem>
+<menuitem label="dashdotdot_line" onclick="UI.insert(UI.focused,'ligne_tiret_pointpoint(')"></menuitem>
+<menuitem label="cap_flat_line" onclick="UI.insert(UI.focused,'ligne_chapeau_plat(')"></menuitem>
+<menuitem label="cap_round_line" onclick="UI.insert(UI.focused,'ligne_chapeau_rond(')"></menuitem>
+<menuitem label="cap_square_line" onclick="UI.insert(UI.focused,'ligne_chapeau_carre(')"></menuitem>
+<menuitem label="line_width_1" onclick="UI.insert(UI.focused,'line_width_1')"></menuitem>
+<menuitem label="line_width_2" onclick="UI.insert(UI.focused,'line_width_2')"></menuitem>
+<menuitem label="line_width_3" onclick="UI.insert(UI.focused,'line_width_3')"></menuitem>
+<menuitem label="line_width_4" onclick="UI.insert(UI.focused,'line_width_4')"></menuitem>
+<menuitem label="line_width_5" onclick="UI.insert(UI.focused,'line_width_5')"></menuitem>
+<menuitem label="line_width_6" onclick="UI.insert(UI.focused,'line_width_6')"></menuitem>
+<menuitem label="line_width_7" onclick="UI.insert(UI.focused,'line_width_7')"></menuitem>
+<menuitem label="rhombus_point" onclick="UI.insert(UI.focused,'rhombus_point')"></menuitem>
+<menuitem label="plus_point" onclick="UI.insert(UI.focused,'plus_point')"></menuitem>
+<menuitem label="square_point" onclick="UI.insert(UI.focused,'square_point')"></menuitem>
+<menuitem label="cross_point" onclick="UI.insert(UI.focused,'cross_point')"></menuitem>
+<menuitem label="triangle_point" onclick="UI.insert(UI.focused,'triangle_point')"></menuitem>
+<menuitem label="star_point" onclick="UI.insert(UI.focused,'star_point')"></menuitem>
+<menuitem label="point_point" onclick="UI.insert(UI.focused,'point_point')"></menuitem>
+<menuitem label="point_width_1" onclick="UI.insert(UI.focused,'point_width_1')"></menuitem>
+<menuitem label="point_width_2" onclick="UI.insert(UI.focused,'point_width_2')"></menuitem>
+<menuitem label="point_width_3" onclick="UI.insert(UI.focused,'point_width_3')"></menuitem>
+<menuitem label="point_width_4" onclick="UI.insert(UI.focused,'point_width_4')"></menuitem>
+<menuitem label="point_width_5" onclick="UI.insert(UI.focused,'point_width_5')"></menuitem>
+<menuitem label="point_width_6" onclick="UI.insert(UI.focused,'point_width_6')"></menuitem>
+<menuitem label="point_width_7" onclick="UI.insert(UI.focused,'point_width_7')"></menuitem>
+<menuitem label="quadrant1" onclick="UI.insert(UI.focused,'quadrant1')"></menuitem>
+<menuitem label="quadrant2" onclick="UI.insert(UI.focused,'quadrant2')"></menuitem>
+<menuitem label="quadrant3" onclick="UI.insert(UI.focused,'quadrant3')"></menuitem>
+<menuitem label="quadrant4"  onclick="UI.insert(UI.focused,'quadrant4')"></menuitem>
+  </menu>
+  
+  <menu label="Advanced">
+<menuitem label="radical_axis" onclick="UI.insert(UI.focused,'radical_axis(')"></menuitem>
+<menuitem label="cross_ratio" onclick="UI.insert(UI.focused,'cross_ratio(')"></menuitem>
+<menuitem label="pole" onclick="UI.insert(UI.focused,'pole(')"></menuitem>
+<menuitem label="polar" onclick="UI.insert(UI.focused,'polar(')"></menuitem>
+<menuitem label="reciprocation" onclick="UI.insert(UI.focused,'reciprocation(')"></menuitem>
+<menuitem label="harmonic_conjugate" onclick="UI.insert(UI.focused,'harmonic_conjugate(')"></menuitem>
+<menuitem label="harmonic_division" onclick="UI.insert(UI.focused,'harmonic_division(')"></menuitem>
+<menuitem label="powerpc" onclick="UI.insert(UI.focused,'powerpc(')"></menuitem>
+<menuitem label="evolute" onclick="UI.insert(UI.focused,'evolute(')"></menuitem>
+  </menu>
+  </menu>
+  <menu label="Graphs">
+<menuitem label="plot" onclick="UI.insert(UI.focused,'plot(')"></menuitem>
+<menuitem label="plotcontour: isolevel" onclick="UI.insert(UI.focused,'plotcontour(')"></menuitem>
+<menuitem label="plotfield: tangent field" onclick="UI.insert(UI.focused,'plotfield(')"></menuitem>
+<menuitem label="plotfunc" onclick="UI.insert(UI.focused,'plotfunc(')"></menuitem>
+<menuitem label="plotimplicit" onclick="UI.insert(UI.focused,'plotimplicit(')"></menuitem>
+<menuitem label="plotode: integral curve" onclick="UI.insert(UI.focused,'plotode(')"></menuitem>
+<menuitem label="plotparam" onclick="UI.insert(UI.focused,'plotparam(')"></menuitem>
+<menuitem label="plotpolar" onclick="UI.insert(UI.focused,'plotpolar(')"></menuitem>
+<menuitem label="plotseq: recurrent sequence plot" onclick="UI.insert(UI.focused,'plotseq(')"></menuitem>
+<menuitem label="plotproba: probabilistic plot" onclick="UI.insert(UI.focused,'plotproba(')"></menuitem>
+  </menu>
+  
+</menu>
+
+<script src="FileSaver.js"></script>
+
+<script src="codemirror.js"></script>
+  <link rel="stylesheet" href="codemirror.css">
+  <script src="xcasmode.js"></script>
+  <script src="matchbrackets.js"></script>
+  <style type="text/css">
+  .CodeMirror {border: 1px solid black; height:auto;}
+  dt {font-family: monospace; color: #666;}
+  </style>
+  
+  <script type='text/javascript'>
+  var UI ={
+  docprefix:"http://www-fourier.ujf-grenoble.fr/%7eparisse/giac/doc/en/cascmd_en/",
+  base_url:"http://www-fourier.ujf-grenoble.fr/%7eparisse/",
+  usemathjax:false,
+  prettyprint:true,
+  qa:false,
+  focused:entree,
+  usecm:true,
+  histcount:0,
+  selection:'',
+  langue:-1,
+  canvas_lastx:0,
+  canvas_lasty:0,
+  canvas_pushed:false,
+  browser_type: function(){
+   var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+   var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+   var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+   var isChrome = !!window.chrome && !isOpera;              // Chrome 1+
+   var isIE = /*@cc_on!@*/false || !!document.documentMode; // At least IE6
+   if (isFirefox) return 1;
+   if (isSafari) return 2;
+   if (isChrome) return 3;
+   if (isIE) return 4;
+   if (isOpera) return 5;
+   return 0;
+  },
+  lowercase1: function(text){
+   var value=text;
+   if (value.length && value.charCodeAt(0)>64 && value.charCodeAt(0)<90)
+     value = value.substr(0,1).toLowerCase()+value.substr(1,value.length-1);
+   return value;
+  },
+  caseval: function(text){
+   var docaseval = Module.cwrap('_ZN4giac7casevalEPKc',  'string', ['string']);
+   var value=text;
+   var n=value.search(';');
+   if (n<0 || n>=value.length)
+     value='add_autosimplify('+value+')';
+     var s,err;
+     try {s=docaseval(value); } catch(err){ }
+      // Module.print(text+ ' '+s);
+      return s;
+  },
+  ckenter: function(event,field){
+    var key = event.keyCode;
+    if (key != 13 || event.shiftKey) return true;
+    UI.reeval(field,'');
+    return false;
+  },
+  link: function(start){
+   var s=UI.makelink(start);
+   if (s.length>0){
+     s = UI.base_url+"xcasen.html#"+s;
+     //Module.print(s);
+     document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Clone</a>';
+   }
+  },
+  makelink: function(start){
+    var s='';
+    var cur=document.getElementById('mathoutput').firstChild;
+    var i=0;
+    for (;cur;i++){
+     if (i>=start){
+       var field=cur.firstChild;
+       field=field.firstChild;
+       field=UI.skip_buttons(field);
+       var fs=field.innerHTML;
+       if (fs.length>5){
+         var fs1=fs.substr(0,5);
+         if (fs1=="<form") {
+          //Module.print(fs);
+          var pos1=fs.search("<input");
+          fs=fs.substr(pos1,fs.length-pos1);
+          var pos1=fs.search("value=");
+          pos1 += 7;
+          fs=fs.substr(pos1,fs.length-pos1);
+          var pos2=fs.search("\"");
+          fs1=fs.substr(0,pos2); // cursor name
+          var pos1=fs.search("value=");
+          pos1 += 7;
+          fs=fs.substr(pos1,fs.length-pos1);
+          var pos2=fs.search("\"");
+          fs1 += ','+fs.substr(0,pos2); // current value
+          var pos1=fs.search("value="); 
+          pos1 += 7;
+          fs=fs.substr(pos1,fs.length-pos1);
+          var pos1=fs.search("value=");
+          pos1 += 7;
+          fs=fs.substr(pos1,fs.length-pos1);
+          var pos2=fs.search("\"");
+          fs1 += ','+fs.substr(0,pos2); // min
+          var pos1=fs.search("value=");
+          pos1 += 7;
+          fs=fs.substr(pos1,fs.length-pos1);
+          var pos1=fs.search("value=");
+          pos1 += 7;
+          fs=fs.substr(pos1,fs.length-pos1);
+          var pos1=fs.search("value=");
+          pos1 += 7;
+          fs=fs.substr(pos1,fs.length-pos1);
+          var pos2=fs.search("\"");
+          fs1 += ','+fs.substr(0,pos2); //max
+          var pos1=fs.search("value=");
+          pos1 += 7;
+          fs=fs.substr(pos1,fs.length-pos1);
+          var pos2=fs.search("\"");
+          fs1 += ','+fs.substr(0,pos2); // step
+          s += '*' + fs1 +'&';
+          cur=cur.nextSibling;
+          continue;
+         }
+       }
+       var pos=fs.search("<textarea");
+       if (pos>=0 && pos<fs.length){
+         s += '+'+field.firstChild.value.replace('\n', ' ', 'g')+'&';
+         cur=cur.nextSibling;
+         continue;
+       }
+       pos = fs.search("UI.addhelp");
+       if (pos>=0 && pos<fs.length){ cur=cur.nextSibling; continue;}
+       s += '+//'+fs+'&';
+     }
+     cur=cur.nextSibling;
+   }
+   s=s.replace(/\"/g,'%22');
+   return s;
+  },
+  canvas_mousemove:function(event,no){
+    if (UI.canvas_pushed){
+      // Module.print(event.clientX);
+      if (UI.canvas_lastx!=event.clientX){
+        if (event.clientX>UI.canvas_lastx)
+          UI.giac_renderer('r'+no);
+        else
+          UI.giac_renderer('l'+no);
+        UI.canvas_lastx=event.clientX;
+      }
+      if (UI.canvas_lasty!=event.clientY){
+        if (event.clientY>UI.canvas_lasty)
+          UI.giac_renderer('d'+no);
+        else
+          UI.giac_renderer('u'+no);
+        UI.canvas_lasty=event.clientY;
+      }
+    }
+  },
+  set_config_width:function(){
+   var form=document.getElementById('config');
+   var hw=form.history_width.value;
+   document.getElementById('mathoutput').style.maxWidth=hw;
+   document.getElementById('divoutput').style.maxHeight=form.history_height.value;
+   var w=form.outdiv_width.value;
+   if (w>hw-300) w=hw-300;
+   var hi=hw-w-200;
+   if (!UI.qa){ hi=hw-200; w=hi; }
+   s='input[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+form.outdiv_height.value+'px;  overflow: auto;}\n.filenamecss {width:120px;height:20px}\n.historyinput {width:'+hi+'px;}';
+   var st=document.getElementById('document_style');
+   st.innerHTML=s;
+  },
+  set_config:function(){
+   var form=document.getElementById('config');
+   if (form.qa.checked) UI.qa=true; else UI.qa=false;
+   UI.set_config_width();
+   var s;
+   if (form.online_doc.checked)
+     UI.docprefix=UI.base_url+'giac/doc/en/cascmd_en/';
+   else
+     UI.docprefix="file://"+form.doc_path.value;
+   if (form.prettyprint.checked) UI.prettyprint=true; else UI.prettyprint=false;
+   UI.caseval("autosimplify("+form.autosimp_level.value+")");
+   //Module.print(st.innerHTML);
+   s='Digits:=';
+   s += form.digits_mode.value;
+   s += '; angle_radian:=';
+   if (form.angle_mode.checked) s += 1; else s += 0;
+   s += '; complex_mode(';
+   if (form.complex_mode.checked) s += 1; else s += 0;
+   s += '); with_sqrt(';
+   if (form.sqrt_mode.checked) s += 1; else s += 0;
+   s += ');';
+   // Module.print(s);
+   UI.addhelp(' ',s);
+   document.getElementById('config').style.display='none';
+   UI.focused.focus();
+  },
+  savesession:function(i){
+    var s;
+    if (i==1){
+      s=document.getElementById("fulldocument").innerHTML;
+      s='<html id="fulldocument" manifest="xcas.appcache">'+s+'</html>';
+    }
+    else {
+      s=document.getElementById("mathoutput").innerHTML;
+    }
+    var blob = new Blob([s], {type: "text/plain;charset=utf-8"});
+    filename=document.getElementById("outputfilename").value;
+    if (i==1) filename += ".html"; else filename += ".xw";
+    saveAs(blob,filename);
+  },
+  show_history123:function(){
+    document.getElementById('history1').style.visibility='visible';
+    document.getElementById('history2').style.visibility='visible';
+    document.getElementById('history3').style.visibility='visible';
+    document.getElementById('history4').style.visibility='visible';
+  },
+  loadfile:function(oFiles){
+    var nFiles = oFiles.length;
+    for (var nFileId = 0; nFileId < nFiles; nFileId++) {
+      // Module.print(oFiles[nFileId].name);
+      var reader = new FileReader();
+      reader.readAsText(oFiles[nFileId]);
+      var s;
+      reader.onloadend = function(e){		
+	s = e.target.result;
+        if (s.length>7 && s.substr(0,7)=='<tbody>'){
+         UI.show_history123();
+         document.getElementById("mathoutput").innerHTML += s;
+         if (confirm('Evaluate history levels?'))
+           UI.exec(document.getElementById('mathoutput'),0);
+         // Module.print(s);
+	}
+	else alert('Format de document invalide');
+	UI_focused.focus();
+      }
+    }
+  },
+  show_level_answers: function(level,b){
+    var cur=level.firstChild;
+    cur=cur.firstChild;
+    cur=UI.skip_buttons(cur); 
+    var s=cur.innerHTML;
+    var pos=s.search("<textarea");
+    if (pos<0 || pos>=s.length) return;
+    cur=cur.nextSibling; // skip entry field
+    if (b)
+      cur.style.display='inherit';
+    else
+      cur.style.display='none';
+  },
+  show_answers: function(b){
+   var out=document.getElementById('mathoutput');
+   var cur=out.firstChild;
+   while (cur){
+     UI.show_level_answers(cur,b);
+     cur=cur.nextSibling;
+   }
+   UI.focused.focus();
+  },
+  is_alphan:function(c){
+    return (c>=48 && c<=57) || (c>=65 && c<=91) || (c>=97 && c<=123);
+  },
+  erase_button:function(){
+    return '<td><button onclick=\'UI.erase(this)\' title="move level to the trash">⌫</button></td></tr>';
+  },
+  move_buttons:function(){
+   var s='<tr onmouseenter="UI.switch_buttons(this,true)" onmouseleave="UI.switch_buttons(this,false)">';
+   s += '<td><button onclick=\'UI.moveup(this)\' title="move level up">↑</button></td>';
+   s += '<td><button onclick=\'UI.movedown(this)\' title="move level down">↓</button></td>';
+   return s;
+  },
+   skip_buttons:function(field){
+     return field.nextSibling.nextSibling;
+   },
+  addplotfunc:function(){
+  },
+  paramname:97,
+  curseurhtml:function(name,mini,maxi,step,value){
+   var s=UI.move_buttons();
+   s += '<td colspan=3><form onsubmit="setTimeout(function() { rangename.value=valname.value; rangename.step=stepname.value; valname.step=stepname.value;rangename.min=minname.value; rangename.max=maxname.value;UI.eval_below(name.form,name.value,rangename.value);}); return false;">';
+   s += '<input type="text" name="name" size="1" value=\''+name+'\'>';
+   s += '='+'<input type="number" name="valname" onchange="valname.innerHTML=valname.value" value=\''+value+'\' step=\''+step+'\'>';
+   s += '<input type="submit" value="ok">'
+   s += '&nbsp;<input type="number" name="minname" value=\''+mini+'\' step=\''+step+'\'>';
+   s += '<input type="range" name="rangename" onclick="valname.value=value;UI.eval_below(form,form.name.value,value);" value='+value+' min='+mini+' max='+maxi+' step=' + step +'>';
+   s += '<input type="number" name="maxname" value=\''+maxi+'\' step=\''+step+'\'>&nbsp;';
+   s += '(step <input type="number" name="stepname" value=\''+step+'\' step=\''+step/100+'\'>)';
+   s += '&nbsp;<input type="button" value="--" onclick="valname.value -= 10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+   s += '&nbsp;<input type="button" value="-" onclick="valname.value -= stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+   s += '&nbsp;<input type="button" value="+" onclick="valname.value -= -stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+   s += '&nbsp;<input type="button" value="++" onclick="valname.value -= -10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+   s += '</form></td>';
+   s += UI.erase_button();
+   return s;
+  },
+  addcurseur: function(name,value,mini,maxi,step){
+   UI.show_history123();
+   UI.caseval(name+':='+value);
+   var s=UI.curseurhtml(name,mini,maxi,step,value);
+   var out=document.getElementById('mathoutput');
+   //Module.print(s);
+   out.innerHTML += s;
+   UI.scrollatend(out.parentNode);
+   UI.link(0);
+   UI.focused.focus();
+  },
+  exec_history: function(){alert('Historique!');},
+  set_focused: function(field){ UI.focused=field;},
+  svg_counter:0,
+  savesvg: function(field){
+    var s=field.innerHTML;
+    s='<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>\n'+s;
+    var blob = new Blob([s], {type: "text/plain;charset=utf-8"});
+    filename=document.getElementById("outputfilename").value;
+    ++UI.svg_counter;
+    filename += UI.svg_counter+".svg";
+    saveAs(blob,filename);
+  },
+   zoom: function(field,scale){
+   var prev=field.parentNode.previousSibling.lastChild;
+   var ps=prev.innerHTML;
+   if (ps.length>22 && ps.substr(0,17)==' <canvas id=\"gl3d'){
+     ps=ps.substr(18,7);
+     var pos=ps.search('"');
+     if (pos>0 && pos<7){
+       ps=ps.substr(0,pos);
+       if (scale>1) UI.giac_renderer('+'+ps); else UI.giac_renderer('-'+ps);
+       return;
+     }
+   }
+   if (prev.firstChild) prev=prev.firstChild;
+   // firstChild not required with all browsers
+   var box = prev.viewBox.baseVal;
+    var w=box.width/1.2,h=box.height/1.2;
+    var x=box.x+w/10,y=box.y+h/10;
+    //Module.print('current w/h '+w+','+h);
+    var cx=x+w/2,cy=y+h/2; // center
+    w=scale*w; h=scale*h; // new scales
+    // Module.print('new center'+cx+','+cy);
+    // Module.print('new w/h'+w+','+h);
+    x=cx-w/2; y=cy-h/2;
+    cx=x+w; cy=y+h;
+    // reeval commandline with gl_x=x..cx and gl_y=y..cy
+    prefix='gl_x='+x+'..'+cx+';gl_y='+y+'..'+cy+';';
+   //Module.print(prev.parentNode.parentNode.previousSibling.innerHTML);
+   //Module.print(prefix);
+   if (prev.parentNode.previousSibling){
+     //Module.print(prev.parentNode.parentNode.firstChild.innerHTML);
+     UI.reeval(prev.parentNode.parentNode.firstChild,prefix);
+   }
+   else
+    UI.reeval(prev.parentNode.parentNode.previousSibling.firstChild,prefix);
+  },
+  eval_cmdline: function(){
+  var value=cmentree.getValue();
+  UI.eval_cmdline1(value,true);
+  },
+  eval_cmdline1:function(value,docaseval){
+   UI.set_locale();
+   // value=UI.lowercase1(value);
+   var out;
+  // suppress leading non ascii char
+  var n=0;
+  for (;n<value.length;n++){
+    if (value.charCodeAt(n)>32) break;
+  }
+  value=value.substr(n,value.length-n);
+  for (n=value.length-1;n>=0;n--){
+    if (value.charCodeAt(n)>32) break;
+  }
+  value=value.substr(0,n+1);
+  cmentree.setValue(value);
+  var s=' ';
+  if (value.length >= 2 && value.substr(0,2)=='//'){
+   out=value;
+  } else {
+    if (docaseval){
+      out=UI.caseval(value); 
+      if (out.substr(1,4)=='<svg' || out.substr(0,5)=='gl3d '){
+        s=out; out='Done_svg';
+      }
+    else {
+        if (UI.prettyprint){
+         if (UI.usemathjax)
+           s='latex(quote('+out+'))';
+         else
+           s='mathml(quote('+out+'),1)'; //Module.print(s);
+         s=UI.caseval(s);
+        } else s=out;
+      }
+    }
+    else { out=' Non evalue '; s=out; }
+  }
+  var add=UI.addinput(value,out,s);
+  //var s=UI.caseval('mathml(quote('+value+'),1)');
+  //add += '&nbsp;&nbsp;'+s.substr(1,s.length-2);
+  //Module.print(value+'  ->  '+out);
+  cmentree.focus();
+  cmentree.execCommand('selectAll');
+  //document.getElementById('canvas').focus();
+  var mathoutput=document.getElementById('mathoutput');
+  var tr=document.createElement("TABLE"); 
+  tr.innerHTML += add;
+  mathoutput.appendChild(tr.firstChild);
+  // mathoutput.innerHTML += add;
+  UI.render_canvas(mathoutput.lastChild);
+  UI.scrollatend(mathoutput.parentNode);
+  UI.link(0);
+  if (UI.prettyprint && UI.usemathjax && UI.histcount>0)
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub,'"hist'+(UI.histcount-1)+'"']);
+  },
+  set_locale: function(){
+  if (UI.langue==-1){
+    var out=UI.caseval('set_langage(0);');
+    UI.langue=1;
+  }
+ },
+  switch_buttons: function(field,onoff){
+    var f=field.firstChild;
+    if (onoff) f.style.visibility='visible'; else f.style.visibility='hidden';
+    f=f.nextSibling;
+    if (onoff) f.style.visibility='visible'; else f.style.visibility='hidden';
+    f=field.lastChild;
+    if (onoff) f.style.visibility='visible'; else f.style.visibility='hidden';
+  },
+  exec: function(field,start){
+  UI.set_locale();
+  var cur=field.firstChild;
+  var i=0;
+  for (;cur;i++){
+   if (i>=start)
+     UI.eval_level(cur);
+   cur=cur.nextSibling;
+   }
+   UI.focused.focus();
+  },
+  eval_below: function(field,name,value){
+  //Module.print(name+':='+value);
+  UI.caseval(name+':='+value);
+  var cur=field.parentNode.parentNode.parentNode;
+  cur=cur.nextSibling;
+  //Module.print(cur.innerHTML);
+  for (;cur;){
+   UI.eval_level(cur);
+   cur=cur.nextSibling;
+  }
+  },
+ editcomment : function(field){
+   var prev=field.parentNode.previousSibling;
+   var s=prev.innerHTML;
+   s='<td colspan="2"><textarea rows="2" columns="60">'+s+'</textarea>';
+   s+='<button onclick="UI.editcomment_end(this)">ok</button></td>';
+   prev.innerHTML=s;
+   field.parentNode.style.display='none';
+ },
+ editcomment_end: function(field){
+  var prev=field.previousSibling;
+  var s='<td colspan="2" onclick="UI.editcomment(this)">'+prev.value+'</td>';
+  var par=field.parentNode;
+  par.innerHTML=s;
+  var l1=par.nextSibling;
+  l1.style.display='block';
+ },
+  eval: function(text,textin){
+   UI.set_locale();
+   var out=UI.caseval(text);
+   var s=' ';
+   if (out.substr(1,4)=='<svg' || out.substr(0,5)=='gl3d '){
+     // Module.print(text+' -> Done');
+     s=out; out='Done_svg';
+   }
+   else {
+     // Module.print(text+' -> '+out);
+     if (UI.prettyprint){
+      if (UI.usemathjax)
+        s=UI.caseval('latex(quote('+out+'))');
+      else
+      s=UI.caseval('mathml(quote('+out+'),1)');
+     } else s=out;
+   }
+   s=UI.addinput(textin,out,s);
+   return s;
+  },
+  render_canvas:function(field){
+   // return; // does not work, 
+   var n=field.id;
+   if (n && n.length>5 && n.substr(0,5)=='gl3d_'){
+    Module.print(n);
+    var n3d=n.substr(5,n.length-5);
+   //Module.print(n3d);
+    //Module.canvas=document.getElementById(n);
+    UI.giac_renderer(n3d);
+    //Module.canvas=document.getElementById('canvas');
+    return;
+   }
+   var f=field.firstChild;
+   for (;f;f=f.nextSibling){
+     UI.render_canvas(f);
+   }
+  },
+  reeval: function(field,prefix){
+  //field=field.previousSibling;
+  var s=field.value;
+  var par=field.parentNode;
+  par=par.parentNode;
+  s=UI.eval(prefix+s,s);
+  par.innerHTML=s;
+  UI.render_canvas(par);
+  UI.link(0);
+  if (UI.prettyprint && UI.usemathjax && UI.histcount>0)
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub,'"hist'+(UI.histcount-1)+'"']);
+  par.focus();
+  },
+  eval_level: function(field){
+   // ? use cur.nodeType instead of search?
+   var s=field.innerHTML;
+   var pos=s.search("<textarea");
+   if (pos<0 || pos>=s.length){
+    pos=s.search("<form");
+    if (pos>0 && pos<s.length){
+      var level=field.firstChild;
+      var cur=level.firstChild;
+      cur=UI.skip_buttons(cur);
+      //Module.print(cur.innerHTML);
+       cur=cur.firstChild;
+       // Module.print(cur.name.value+':='+cur.rangename.value);
+       UI.caseval(cur.name.value+':='+cur.rangename.value);
+       var s=UI.curseurhtml(cur.name.value,cur.minname.value,cur.maxname.value,cur.stepname.value,cur.valname.value);
+       level.innerHTML=s;
+    }
+    return;
+  }
+    var cur=field.firstChild;
+    cur=cur.firstChild;
+    cur=UI.skip_buttons(cur);
+    cur=cur.firstChild;
+    var s=cur.value;
+    s=UI.eval(s,s);
+    field.innerHTML=s;
+    UI.render_canvas(field);
+    if (UI.prettyprint && UI.usemathjax )
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub,field]);
+  },
+  before: function(field){
+  var s='';
+  while ((field=field.previousSibling)){
+    s += field.innerHTML;
+  }
+   return s;
+  },
+  after: function(field){
+  var s='';
+  while ((field=field.nextSibling)){
+    s += field.innerHTML;
+  }
+   return s;
+  },
+addcomment: function(text){
+         UI.show_history123();
+  var s=UI.move_buttons();
+  s += '<td colspan="2">'+text.substr(2,text.length-2)+'</td>';
+  s += '<td> <button onclick="UI.editcomment(this);">edit</td>';
+  s += UI.erase_button();
+  return s;
+  },
+  prepare_cm: function(txt,h,cm){
+  cm.setSize(null,h+20);
+  cm.on("focus",function(cm){ UI.set_focused(cm); });
+  cm.on("blur",function(cmf) {
+  if (cmf.getSelection().length > 0){UI.selection=cmf.getSelection();}
+  cmf.toTextArea();
+  });
+  cm.setOption("extraKeys", {
+   Enter: function(cm){
+     var txt=cm.getTextArea();
+     cm.toTextArea();
+     UI.reeval(txt,'');
+   },
+  F1: function(cm) {
+    UI.completion(cm);
+   },
+  Tab: function(cm) {
+    UI.completion(cm);
+    //cm.toTextArea();
+   }
+  });
+  var pos=txt.selectionStart;
+  cm.setCursor({line:0,ch:pos}); cm.refresh();
+  },
+  count_newline: function(text){
+   var k=0,r=0;
+   for (;k<text.length;++k){
+     if (text.charCodeAt(k)==10)
+       ++r;
+   }
+   return r;
+  },
+  addinput: function(textin,textout,mathmlout){
+  if (textout.length>=12 && textout.substr(0,12)=='Done_graphic') document.getElementById('boutons_3d').style.display='inherit';
+  if (textin.length > 2 && textin.substr(0,2)=='//') return UI.addcomment(textin);
+         UI.show_history123();
+// document.getElementById('mathoutput').style.listStyleType = 'none';
+  var s=UI.move_buttons();
+  if (textin.charCodeAt(0)==63)
+    s += '<td colspan="2">'+UI.renderhelp(textout)+'</td><td>';
+  else {
+    var is_svg=mathmlout.substr(1,4)=='<svg';
+    var is_3d=mathmlout.substr(0,5)=='gl3d ';
+      if (UI.qa)
+      s += '<td>';
+    else
+      s += '<td colspan=2>';	
+    s += '<textarea class="historyinput" ';
+    if (is_svg && UI.qa) s+='rows=8 style="font-size:large"';
+    else s += 'style="height:'+(20+16*UI.count_newline(textin))+'px; font-size:large"';
+    s += ' title="Shift-Enter: newline, Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm){var h=offsetHeight;var cm=CodeMirror.fromTextArea(this,{ matchBrackets: true}); UI.prepare_cm(this,h,cm); UI.set_focused(cm);} else UI.set_focused(this);" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">'+textin+'</textarea>';
+// (navigator.userAgent.match(/Android/i) ||  navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i))
+    if (UI.qa) s += '</td>'; 
+    if (is_svg || is_3d){
+      if (UI.qa) s += '<td>'; else s+='<br>';
+      if (is_svg)
+        s += '<div style="text-align:center">'+mathmlout.substr(1,mathmlout.length-2)+'</div></td>';
+      else {
+	var n3d=mathmlout.substr(5,mathmlout.length-5);
+	// Module.print(n3d);
+	if (0)
+	s += '<div style="text-align:center"> 3d </div></td>';
+	else s += '<div style="text-align:center"> <canvas id="gl3d_'+n3d+'" onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;" onmouseup="UI.canvas_pushed=false;" onmousemove="UI.canvas_mousemove(event,'+n3d+')" width=400 height=250></canvas></div></td>';
+      }
+      s += '<td><button onclick="UI.zoom(this,1.414)">out</button><br>';
+      s += '<button onclick="UI.zoom(this.previousSibling,0.707)">in</button><br>';
+      if (is_svg) s += '<button onclick="UI.savesvg(parentNode.previousSibling)">save</button>';
+      s += '</td>';
+    }
+    else {
+      if (UI.qa) s += '<td>';
+      s += '<div style="color:blue; text-align:center" title="Double click: see in text mode (useful for copy-paste)" class="outdiv" ondblclick="nextSibling.style.display=\'inherit\';this.nextSibling.select();UI.selection=nextSibling.value;this.style.display=\'none\';this.nextSibling.nextSibling.style.display=\'inherit\';" id="hist'+UI.histcount+'">';
+      UI.histcount++;
+      if (UI.prettyprint){
+       if (UI.usemathjax)
+        s += '$$'+mathmlout.substr(1,mathmlout.length-2)+'$$';
+       else
+        s += mathmlout.substr(1,mathmlout.length-2);
+      } else s += mathmlout;
+      s += '</div>';
+      s += '<textarea class="outdiv" onfocus="UI.set_focused(this)" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);" style="display:none">'+textout+'</textarea>';
+      s += '<button style="display:none" onclick="previousSibling.previousSibling.style.display=\'block\'; previousSibling.style.display=\'none\';this.style.display=\'none\'">cancel</button>';
+      s += '</td>';
+      s += '<td><button onclick=\'UI.insert(UI.focused,"evalf('+textin+')")\' title="Find approx. value" style="color:blue">~</button></td>';
+    }
+  }
+  s += UI.erase_button();
+  return s;
+},
+giac_renderer: function(text){
+var gr = Module.cwrap('_ZN4giac13giac_rendererEPKc','number', ['string']);
+gr(text);
+},
+  completion:function(cm){
+     var pos=cm.getCursor();
+     var s=cm.getLine(pos.line);
+     // skip at cursor
+     var k=pos.ch;
+     for (;k>0;k--){
+       var c=s.charCodeAt(k);
+       if (UI.is_alphan(c))
+         break;
+     }
+     var kend=k;
+     for (;k>=0;k--){
+       var c=s.charCodeAt(k);
+       if (!UI.is_alphan(c))
+         break;
+     }
+     for (;k<kend;k++){
+       var c=s.charCodeAt(k+1);
+       if (c>64) break;
+     }
+     //Module.print(s); Module.print(k); Module.print(kend);
+     s=s.substr(k+1,kend-k);
+     if (s.length<2){ UI.insert(UI.focused,'?'); return;}
+     cm.setSelection({line: pos.line,ch:k+1},{line:pos.line, ch:pos.ch});
+     UI.addhelp('?',s);
+  },      
+  isie:false,    
+  scrollatend:function(field){
+    if (!UI.isie)
+      field.scrollTop=field.scrollHeight;    
+  },    
+  addhelp: function(prefixe,text){
+  var input=prefixe+text;
+  var out=UI.eval(input,input);
+  var add=out;
+  var helpoutput=document.getElementById('helpoutput');
+  helpoutput.innerHTML += add;  
+  UI.scrollatend(helpoutput.parentNode); // focus at end
+  UI.focused.focus();
+  },
+  renderhelp: function(text){
+  var s=text.substr(1,text.length-2);
+  var pos0=s.search("</b>");
+  var found=(s.substr(pos0+7,20)!="Best match has score");
+  var lh=s.substr(3,pos0-3);
+  if (found)
+    lh=' (<a href="'+UI.docprefix+eval('longhelpen.'+lh)+'" target="_blank">+ de d&eacute;tails</a>)';
+  //Module.print(lh);
+  var sorig=s;  
+  pos1=s.search("<br>");
+  if (pos1<0) return sorig;
+  var explication=s.substr(0,pos1);
+  s=s.substr(pos1+4,s.length-pos1-4);
+  pos1=s.search("<br>");
+  if (pos1<0) return sorig;
+  var syntaxe=s.substr(0,pos1);
+  s=s.substr(pos1+4,s.length-pos1-4);
+  pos1=s.search("<br>");
+  if (pos1<0) return sorig;
+  var voiraussi=s.substr(0,pos1);
+  var examples=s.substr(pos1+4,s.length-pos1-4);
+  if (found)
+    s = explication+lh+'<br><tt>'+syntaxe+'</tt><br>See also: ';
+  else
+    s = explication.substr(0,pos0);
+  while (true){
+    pos1=voiraussi.search(',');
+    if (pos1 < 0) break;
+    var cmd=voiraussi.substr(0,pos1);
+    if (found)
+      s += '<button onmousedown="event.preventDefault()" onclick="UI.addhelp(\'?\',\''+cmd+'\')">'+cmd+'</button>';
+    else
+      s += '<button onmousedown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+cmd+'(\')">'+cmd+'</button>';
+    voiraussi = voiraussi.substr(pos1+1,voiraussi.length-pos1-1);
+  }
+  if (found)
+    s += '<button onmousedown="event.preventDefault()" onclick="UI.addhelp(\'?\',\''+voiraussi+'\')">'+voiraussi+'</button>';
+  else 
+    s += '<button onmousedown="event.preventDefault()" onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+voiraussi+'(\')">'+voiraussi+'</button>';
+  pos1=examples.search(';');
+  if (pos1>=0){
+   s += '<br>Examples: ';
+   while (true){
+    pos1=examples.search(';');
+    if (pos1<0) break;
+    var cmd=examples.substr(0,pos1);
+    cmd=cmd.replace(/>/g,'&gt;');
+    cmd=cmd.replace(/</g,'&lt;');
+    s += '<button onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+cmd+'\')">'+cmd+'</button>';
+    examples = examples.substr(pos1+1,examples.length-pos1-1);
+   }
+  }
+  s += '<button onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+examples+'\')">'+examples+'</button>';
+  return s;
+  },
+getsel:function(field){
+ var startPos = field.selectionStart;
+var endPos = field.selectionEnd;
+    var selectedText = field.value.substring(startPos, endPos);
+  return selectedText;
+  },
+moveCaret: function(field, charCount) {
+  if (field.type!="textarea"){
+    var pos=field.getCursor();
+    pos.ch = pos.ch+charCount;
+    field.setCursor(pos);
+    field.refresh();
+    return;
+  }
+  var pos=field.selectionStart;
+  pos = pos+charCount;
+  if (pos<0) pos=0;
+  if (pos>field.value.length) pos=field.value.length;
+  field.setSelectionRange(pos,pos);
+  },
+  erase: function(field){
+  var par=field.parentNode;
+  par=par.parentNode;
+  par.style.visibility='hidden';
+  UI.focused.focus();
+  //par=par.parentNode;
+  //var list = par.parentNode;
+  //list.removeChild(par);
+  },
+  erase_all_warn:1,
+  erase_all: function(field){
+    var cur=field.firstChild;
+    while (cur){
+     cur.firstChild.style.visibility='hidden';
+     cur=cur.nextSibling;
+    }
+    if (UI.erase_all_warn==1){
+     alert('Click on Trash restore to cancel. Click on Trash empty to confirm');
+     UI.erase_all_warn=0;
+    }
+    cmentree.focus();
+  },
+  restoretrash:function(){
+  var hist=document.getElementById('mathoutput');
+  var cur=hist.firstChild;
+  while (cur){
+    if (cur.firstChild.style.visibility=='hidden')
+      cur.firstChild.style.visibility='visible';
+    cur=cur.nextSibling;
+  }
+  },
+  emptytrash:function(){
+  var hist=document.getElementById('mathoutput');
+  var cur=hist.firstChild;
+  while (cur){
+    var nxt=cur.nextSibling;
+    if (cur.firstChild.style.visibility=='hidden')
+      hist.removeChild(cur);
+    cur=nxt;
+  }
+  },
+updatelevel: function(field){
+  var pos=field.selectionStart;
+  field.innerHTML=field.value;
+  if (pos>=0 && pos<field.value.length)
+    field.setSelectionRange(pos,pos);
+},
+  moveup: function(field){
+  var par=field.parentNode;
+  par=par.parentNode;
+  par=par.parentNode;
+  var prev=par.previousSibling;
+  var list = par.parentNode;
+  list.removeChild(par);
+  list.insertBefore(par,prev);
+  UI.focused.focus();
+  },
+  movedown: function(field){
+  var par=field.parentNode;
+  par=par.parentNode;
+  par=par.parentNode;
+  var nxt=par.nextSibling;
+  nxt=nxt.nextSibling;
+  var list = par.parentNode;
+  list.removeChild(par);
+  list.insertBefore(par,nxt);
+  },
+  backspace: function(field){
+    field.focus();
+    if (field.type!="textarea"){
+      var start=field.getCursor('from');
+      var end=field.getCursor('to');
+      if (end.line!=start.line || end.ch!=start.ch)
+        field.replaceSelection('');
+      else {
+        var c=start.ch; var l=start.line;
+        if (c>0) c--; else l--;
+        if (start.line>=0) field.replaceRange('',{line: l,ch:c},end);
+      }
+    } else {
+      var pos = field.selectionStart;
+      var s=field.value;
+      if (pos>0){
+        field.value = s.substring(0, pos-1)+s.substring(pos,s.length);
+        pos--;
+        if (pos<0) pos=0;
+        if (pos>field.value.length) pos=field.value.length;
+        field.setSelectionRange(pos,pos);
+      }
+    }
+  },
+insert: function(myField, myValue) {
+ myField.focus();
+ if (myField.type!="textarea"){
+  myField.replaceSelection(myValue);
+ }
+ else {
+  var pos=myField.selectionStart;
+  pos=pos+myValue.length;
+  //IE support
+  if (document.selection) {
+    myField.focus();
+    var sel = document.selection.createRange();
+    sel.text = myValue;
+  }
+  //MOZILLA and others
+  else {
+    var startPos = myField.selectionStart;
+    var endPos = myField.selectionEnd;
+    if (myField.selectionStart || myField.selectionStart == '0') {
+        myField.value = myField.value.substring(0, startPos)
+            + myValue
+            + myField.value.substring(endPos, myField.value.length);
+    } else {
+        myField.value += myValue;
+    }
+  }
+  myField.setSelectionRange(pos,pos);
+  }
+}
+  }; // closing UI={
+  // remove existing codemirror field
+  prog=document.getElementById('prog');
+  if (prog && prog.nextSibling){
+    prog.parentNode.removeChild(prog.nextSibling);
+  }
+  if (entree && entree.nextSibling){
+    entree.parentNode.removeChild(entree.nextSibling);
+  }
+  cmentree=CodeMirror.fromTextArea(entree,{
+    matchBrackets: true,
+    lineNumbers: true,
+    viewportMargin: Infinity
+  });
+  // cmentree.setSize(window.innerWidth-20,40);
+  cmentree.on("focus",function(cm){ UI.set_focused(cm); });
+  cmentree.on("blur",function(cm) { if (cm.getSelection().length > 0){UI.selection=cm.getSelection();} });
+  cmentree.setValue(entree.value);
+  cmentree.setOption("extraKeys", {
+   Enter: function(cm){
+     UI.eval_cmdline();
+   },
+  F1: function(cm) {
+     UI.completion(cm);
+   },
+  Tab: function(cm) {
+     UI.completion(cm);
+   }
+  });
+  cmentree.focus();
+  cmprog = CodeMirror.fromTextArea(prog,{
+    lineNumbers: true,
+    matchBrackets: true,
+  });
+  //cmprog.setSize(400, 240);
+  if (prog.value=='      ') cmprog.setValue(''); else cmprog.setValue(prog.value);
+  document.getElementById('canvas').onmousemove=function(event){ UI.canvas_mousemove(event,'');};
+  document.getElementById('progform').style.display='none';
+  document.getElementById('output').style.display='none';
+  document.getElementById("config").reset();
+  cmprog.on("focus",function(cm){UI.set_focused(cm); });
+  cmprog.on("blur",function(cm){ if (cm.getSelection().length > 0){ UI.selection=cm.getSelection();} });
+  // connect to canvas  
+ var Module = {
+        preRun: [],
+        postRun: [],
+        print: (function() {
+          var element = document.getElementById('output');
+          element.value = ''; // clear browser cache
+          return function(text) {
+            // These replacements are necessary if you render to raw HTML
+            //text = text.replace(/&/g, "&amp;");
+            //text = text.replace(/</g, "&lt;");
+            //text = text.replace(/>/g, "&gt;");
+            //text = text.replace('\n', '<br>', 'g');
+            element.style.display='inherit';
+            element.value += text + "\n";
+    element.scrollTop = 99999; // focus on bottom
+          };
+        })(),
+        printErr: function(text) {
+          if (0) { // XXX disabled for safety typeof dump == 'function') {
+            dump(text + '\n'); // fast, straight to the real console
+          } else {
+            console.log(text);
+          }
+        },
+        canvas: document.getElementById('canvas'),
+        setStatus: function(text) {
+          if (Module.setStatus.interval) clearInterval(Module.setStatus.interval);
+          var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+          var statusElement = document.getElementById('status');
+          var progressElement = document.getElementById('progress');
+          if (m) {
+            text = m[1];
+            progressElement.value = parseInt(m[2])*100;
+            progressElement.max = parseInt(m[4])*100;
+            progressElement.hidden = false;
+          } else {
+            progressElement.value = null;
+            progressElement.max = null;
+            progressElement.hidden = true;
+          }
+          statusElement.innerHTML = text;
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparation... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'Telechargements termines.');
+        }
+      };
+      Module.setStatus('Preparing (may take 1 or 2 minutes the first time)');
+    </script>      
+  <script src="giac.js" async></script>
+<script src="longhelp.js"></script>
+
+<script language="javascript">
+// En ajoutant async a la fin de script src=giac.js on accelere les chargements
+// de la page nue (cache), mais pas si il y a un lien
+window.onload = function(e){
+  //UI.caseval('abc(x=0); [x, y]; z+1;');
+  var form=document.getElementById('config');
+  var hw=window.innerWidth-50;
+  if (hw>=1000){ UI.qa=true; form.qa.checked=true;}
+  form.history_width.value=hw;
+  form.outdiv_width.value=Math.floor(hw/2);
+  UI.set_config_width();
+  var ua = window.navigator.userAgent;
+  var old_ie = ua.indexOf('MSIE ');
+  var new_ie = ua.indexOf('Trident/');
+  if (window.chrome) UI.prettyprint=false;
+  if ((old_ie > -1) || (new_ie > -1)) UI.isie=true;
+  var bt=UI.browser_type();
+  if (UI.isie || (bt!=1 && bt!=2)){
+    UI.usemathjax=true;
+    var alertmsg="Consider switching to Firefox for faster results and better rendering";
+    if (UI.isie) alertmsg="3d does not work with Internet Explorer. "+alertmsg;
+    alert(alertmsg);
+  }
+ document.getElementById('apropos').style.display='none';
+ document.getElementById('help').style.display='none';
+ document.getElementById('startup').style.display='none';
+ console.log("window.onload");
+ var hist=document.getElementById('mathoutput');
+ var doexec=false;
+ var asked=false;
+ if (hist.firstChild){
+  asked=true;
+  if (confirm('Evaluate history levels?')) {
+   doexec=true;
+  }
+  // else {alert('Historique non execute');}
+ }
+ var hashParams = window.location.hash.substr(1).split('&');
+ // substr(1) to remove the `#`
+ for(var i = 0; i < hashParams.length; i++){
+    var s = hashParams[i];
+    if (s.length && s.charAt(0)=='+'){
+       if (!asked) doexec=true;
+       UI.eval_cmdline1(s.substr(1),false);
+       continue;
+    }
+    if (s.length && s.charAt(0)=='*'){
+       if (!asked) doexec=true;
+       var pos=s.search(',');
+       var name=s.substr(1,pos-1);
+       // Module.print(name);
+       s=s.substr(pos+1,s.length-pos-1);
+       pos=s.search(',');
+       var value=s.substr(0,pos);
+       // Module.print(value);
+       s=s.substr(pos+1,s.length-pos-1);
+       pos=s.search(',');
+       var mini=s.substr(0,pos);
+       // Module.print(mini);
+       s=s.substr(pos+1,s.length-pos-1);
+       pos=s.search(',');
+       var maxi=s.substr(0,pos);
+       // Module.print(maxi);
+       s=s.substr(pos+1,s.length-pos-1);
+       UI.addcurseur(name,value,mini,maxi,s);
+       continue;
+    }
+    var p = s.split('=');
+    if (p[0]=='') continue;
+    if (p[0]=='entree' || p[0]=='cmentree'){
+      cmentree.setValue( decodeURIComponent(p[1]));
+      continue;
+    }
+    if (p[0]=='prog' || p[0]=='cmprog'){
+      cmprog.setValue( decodeURIComponent(p[1]));
+      continue;
+    }
+    document.getElementById(p[0]).value = decodeURIComponent(p[1]);
+ } // end for (i=...)
+ if (doexec) UI.exec(hist,0);
+}
+</script>
+
+</body>
+</html>
+

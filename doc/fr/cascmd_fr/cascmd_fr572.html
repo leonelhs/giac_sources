@@ -6,28 +6,51 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Multiplier une ligne par une expression : mRow et scale SCALE</TITLE>
+<TITLE>Extraire une sous-matrice d’une matrice (compatibilité TI) : subMat</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr571.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr573.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc677">6.46.23</A>  Multiplier une ligne par une expression : <TT>mRow</TT> et <TT>scale SCALE</TT></H3><P><A NAME="@default1038"></A><A NAME="@default1039"></A><A NAME="@default1040"></A>
-<TT>mRow</TT> a trois arguments : une expression, une matrice <I>A</I> et un 
-entier <I>n</I>.<BR>
-<TT>scale</TT> (ou <TT>SCALE</TT>) a trois arguments : une matrice <I>A</I>, une expression
-et un entier <I>n</I>.<BR>
-<B>Attention à l’ordre des arguments !</B><BR>
-<TT>mRow</TT> et <TT>scale</TT> (ou <TT>SCALE</TT>)
-renvoie la matrice obtenue en remplacant dans <I>A</I> la ligne <I>n</I>
-par la multiplication de la ligne <I>n</I> par l’expression.<BR>
+<H3 CLASS="subsection"><A NAME="htoc679">6.48.3</A>  Extraire une sous-matrice d’une matrice (compatibilité TI) : <TT>subMat</TT></H3><P><A NAME="@default1042"></A>
+<TT>subMat</TT> a 5 arguments : une matrice <I>A</I>, et 4 entiers 
+<I>nl</I>1,<I>nc</I>1,<I>nl</I>2,<I>nc</I>2.
+Ces indices sont : <I>nl</I>1 est l’indice du début de ligne ,<I>nc</I>1 est l’indice 
+du début de colonne, <I>nl</I>2 est l’indice de fin de ligne et <I>nc</I>2 est l’indice
+de fin de colonne.<BR>
+<TT>subMat(A,nl1,nc1,nl2,nc2)</TT> extrait la sous-matrice de la matrice <TT>A</TT>
+de premier élément <TT>A[nl1,nc1]</TT> et de dernier élément 
+<TT>A[nl2,nc2]</TT>.<BR>
+On définit la matrice <TT>A</TT>, on tape :
+</P><DIV CLASS="center"><TT>A:=[[3,4,5],[1,2,6]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>mRow(12,[[1,2],[3,4]],1)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>scale([[1,2],[3,4]],12,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>subMat(A,0,1,1,2)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>subMat(A,[0,1],[1,2])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,2],[36,48]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[4,5],[2,6]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>subMat(A,0,1,1,1)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>subMat(A,[0,1],[1,1])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[4],[2]]</TT></DIV><P>
+Par défaut <I>nl</I>1=0, <I>nc</I>1=0, <I>nl</I>2=nrows-1 et <I>nc</I>2=ncols-1<BR>
+On tape :
+</P><DIV CLASS="center"><TT>A:=[[3,4,5],[1,2,6]]</TT></DIV><DIV CLASS="center"><TT>subMat(A)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[3,4,5],[1,2,6]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>subMat(A,1)</TT></DIV><P>
+Ou :
+</P><DIV CLASS="center"><TT>subMat(A,1,0)</TT></DIV><P>
+Ou :
+</P><DIV CLASS="center"><TT>subMat(A,1,0,1)</TT></DIV><P>
+Ou :
+</P><DIV CLASS="center"><TT>subMat(A,1,0,1,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,2,6]]</TT></DIV><HR>
 <A HREF="cascmd_fr571.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr573.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

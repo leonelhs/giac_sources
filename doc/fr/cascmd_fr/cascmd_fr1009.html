@@ -6,47 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le triangle équilatèral dans l’espace : equilateral_triangle triangle_equilateral</TITLE>
+<TITLE>Le plan : plane plan</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1008.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1010.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1181">11.7.4</A>  Le triangle équilatèral dans l’espace : <TT>equilateral_triangle triangle_equilateral</TT></H3><P><A NAME="@default1956"></A><A NAME="@default1957"></A><A NAME="sec:trianglequi3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr900.html#sec:trianglequi2">10.10.5</A> pour la géométrie plane.<BR>
-<TT>triangle_equilateral</TT>, en géométrie 3-d, a trois ou quatre 
-arguments.<BR>
-Description des arguments :<BR>
-- si il a trois arguments, ce sont 3 points : les 2 premiers sommets <I>A</I> et
-<I>B</I> du triangle et le troisième point définit le plan du triangle.<BR>
-<TT>triangle_equilateral(A,B,P)</TT> renvoie et trace dans le demi-plan <I>ABP</I> le 
-triangle équilatéral <I>ABC</I>
-mais sans définir le point <I>C</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1185">11.6.1</A>  Le plan : <TT>plane plan</TT></H3><P><A NAME="@default1960"></A><A NAME="@default1961"></A>
+<TT>plan</TT> a comme argument soit trois points, soit un point et une 
+droite, soit son équation cartésienne.<BR>
+<TT>plan(A,B,C)</TT> ou <TT>plan(A,droite(B,C))</TT> (resp <TT>plan(a*x+b*y+c*z+d=0)</TT>) trace le plan <TT>ABC</TT> (resp le plan d’équation <TT>a*x+b*y+c*z+d=0</TT>) dans l’espace 3-d.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><DIV CLASS="center"><TT>Q:=point(0,0,-3)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>triangle_equilateral(A,B,P)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>plan([0,0,5],[0,5,0],[5,0,0])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>plan(x+y+z=5)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>plan([0,0,5],droite([0,5,0],[5,0,0]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABP,le triangle équilatèral de sommets A et B</TT></DIV><P>
-- si il a quatre arguments, le dernier argument est le nom d’une 
-variable qui servira à définir le troisième sommet
-On tape :
-</P><DIV CLASS="center"><TT>triangle_equilateral(A,B,P,C)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABP, le triangle équilatèral de sommets A et B</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[(-3*sqrt(6)+6)/4,(-3*sqrt(6)+6)/4,(3*sqrt(6)+3)/2]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>triangle_equilateral(A,B,Q,D)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABQ, le triangle équilatèral de sommets A et B</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[(3*sqrt(6)+6)/4,(3*sqrt(6)+6)/4,(-3*sqrt(6)+3)/2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le plan d’équation x+y+z=5</TT></DIV><HR>
 <A HREF="cascmd_fr1008.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1010.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

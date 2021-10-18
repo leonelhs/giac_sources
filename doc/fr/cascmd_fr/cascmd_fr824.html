@@ -6,41 +6,85 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La fonction : seq</TITLE>
+<TITLE>Les différences entre :=, =< et copy</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr823.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr825.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc964">9.4.22</A>  La fonction : <TT>seq</TT></H3><P><A NAME="@default1492"></A>
-<TT>seq</TT> n’est pas une instruction mais une fonction qui permet
-de renvoyer la liste constituée par les différentes valeurs du premier 
-argument lorsque le deuxième argument varie selon les valeurs des arguments 
-suivants : valeur de départ, valeur d’arrivée, pas (pas=1 par défaut).<BR>
-<TT>seq(f(k),k,1,3)=[f(1),f(2),f(3)]</TT><BR>
-<TT>seq(f(k),k,1,5,2)=[f(1),f(3),f(5)]</TT><BR>
-La fonction <TT>seq</TT> est utile pour tracer une suite de points dans les
-écrans de géométrie.<BR>
-<B>Exemple</B><BR>
- On veut représenter les 10 premiers termes de la suite :<BR>
-<I>u</I><SUB><I>n</I></SUB>=(1+1/<I>n</I>)<SUP><I>n</I></SUP>=<I>f</I>(<I>n</I>) par les points <I>n</I>+<I>i</I>*<I>f</I>(<I>n</I>).<BR>
-On ouvre un écran de géomérie et on tape :
-</P><DIV CLASS="center"><TT>f(n):=(1+1/n)</TT><CODE><TT>^</TT></CODE><TT>n</TT></DIV><DIV CLASS="center"><TT>seq(point(k+i*f(k)),k,1,10)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc969">9.4.14</A>  Les différences entre <TT>:=</TT>, <TT>=&lt;</TT> et <TT>copy</TT></H3><P><A NAME="@default1476"></A><A NAME="@default1477"></A><A NAME="@default1478"></A><A NAME="sec:diffaffectation"></A>
+Attention, <TT>:=</TT> et <TT>=&lt;</TT> ne sont pas équivalents car <TT>=&lt;</TT> modifie
+lélément d’une liste ou matrice par référence.</P><P>L’affectation <TT>=&lt;</TT> ne diffère de <TT>:=</TT> que si on modifie un 
+élément d’une liste (ou matrice) contenue dans une variable, par exemple si 
+<TT>A</TT> contient la liste <TT>[0,1,2,3,4]</TT> i.e. si on a tapé 
+<TT>A:=[0,1,2,3,4]</TT> et que l’on
+veut modifier la valeur de <TT>A[3]</TT> et changer <TT>3</TT> en <TT>33</TT>, on peut 
+écrire dans ce cas, <TT>A[3]:=33</TT> ou <TT>A[3] =&lt; 33</TT> mais ces deux 
+instructions sont différentes. 
+En effet <TT>A</TT> pointe vers une liste car <TT>A:=[0,1,2,3,4]</TT>, et 
+<TT>A[3] =&lt; 33</TT> modifie cette liste en la liste <TT>[0,1,2,33,4]</TT>, ainsi 
+toutes les variables de 
+<TT>Xcas</TT> qui pointent vers cette liste seront modifiées. Alors qu’avec
+<TT>A[3]:=33</TT> la liste est dupliquée, la copie est modifiée et <TT>A</TT> 
+pointe vers la copie. Il faut donc utiliser <TT>=&lt;</TT> avec précautions car 
+tous les objets pointant sur cette liste (ou matrice) 
+seront modifiés.<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize"> 
+On tape :
+<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
+<DIV CLASS="center"><TT>B:=A</TT></DIV>
+<DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV>
+<DIV CLASS="center"><TT>A,B</TT></DIV>
+ou :
+<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
+<DIV CLASS="center"><TT>B:=A</TT></DIV>
+<DIV CLASS="center"><TT>B[3]=&lt;33</TT></DIV>
+<DIV CLASS="center"><TT>A,B</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>On voit les points dans cet écran de géomérie</TT></DIV><P>
-Si on tape:
-</P><DIV CLASS="center"><TT>for (k:=1;k&lt;11;k++) {point(k+i*f(k));}</TT></DIV><P>
+<DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,33,4]</TT></DIV>
+En effet la liste <TT>[0,1,2,3,4]</TT> a été modifiée par
+l’instruction <TT>A[3]=&lt;33</TT> (ou par <TT>B[3]=&lt;33</TT>) en la liste
+<TT>[0,1,2,33,4]</TT>. Les listes <TT>A</TT> et <TT>B</TT> 
+pointent sur cette liste donc <TT>A</TT> et <TT>B</TT> sont modifiées toutes les 
+deux.
+</LI><LI CLASS="li-itemize">On tape :
+<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
+<DIV CLASS="center"><TT>B:=A</TT></DIV>
+<DIV CLASS="center"><TT>A[3]:=33</TT></DIV>
+<DIV CLASS="center"><TT>A,B</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>les points sont seulement dans l’écran </TT><TT>DispG</TT><TT> qu’on 
-ouvre avec Cfg-&gt;Montrer-&gt;DispG ou avec DispG()</TT></DIV><P>
-Mais si on ouvre un écran de géomérie et si on tape:
-</P><DIV CLASS="center"><TT>L:=[];for (k:=1;k&lt;11;k++) {L:=append(L,point(k+i*f(k)));}:;L;</TT></DIV><P>
+<DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,3,4]</TT></DIV>
+car <TT>A[3]:=33</TT> fait une copie de la liste <TT>[0,1,2,3,4]</TT> et modifie 
+cette copie en <TT>[0,1,2,33,4]</TT> puis <TT>A</TT> pointe sur cette copie et cela ne modifie pas <TT>B</TT>.
+On tape :
+<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
+<DIV CLASS="center"><TT>B:=A</TT></DIV>
+<DIV CLASS="center"><TT>B[3]:=33</TT></DIV>
+<DIV CLASS="center"><TT>A,B</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>On voit les points dans cet écran de géomérie</TT></DIV><P>On peut aussi utiliser la syntaxe comme avec Maple,
-<CODE>seq(2^k,k=0..8)</CODE>, en ajoutant éventuellement un pas
-<CODE>seq(2^k,k=0..8,1)</CODE>
-</P><HR>
+<DIV CLASS="center"><TT>[0,1,2,3,4],[0,1,2,33,4]</TT></DIV>
+car <TT>B[3]:=33</TT> fait une copie de la liste <TT>[0,1,2,3,4]</TT> et modifie 
+cette copie en <TT>[0,1,2,33,4]</TT> puis <TT>B</TT> pointe sur cette copie et cela ne modifie pas <TT>A</TT>.
+</LI><LI CLASS="li-itemize">On tape :
+<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
+<DIV CLASS="center"><TT>B:=copy(A)</TT></DIV>
+Puis, si on tape :
+<DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV>
+<DIV CLASS="center"><TT>A,B</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,3,4]</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
+<DIV CLASS="center"><TT>B:=copy(A)</TT></DIV>
+<DIV CLASS="center"><TT>B[3]=&lt;33</TT></DIV>
+<DIV CLASS="center"><TT>A,B</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[0,1,2,3,4],[0,1,2,33,4]</TT></DIV>
+En effet <TT>B</TT> pointe sur la copie de <TT>A</TT>, donc une modifiucation par 
+référence de <TT>A[3]</TT> (resp<TT>B[3]</TT>) ne modifie pas <TT>B</TT> (resp 
+<TT>A</TT>). 
+</LI></UL><HR>
 <A HREF="cascmd_fr823.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr825.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

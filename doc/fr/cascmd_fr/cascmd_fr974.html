@@ -6,27 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Point divisant un segment dans le rapport k : division_point point_div</TITLE>
+<TITLE>Savoir si on a un parallélogramme : is_parallelogram est_parallelogramme</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr973.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr975.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1137">10.19.1</A>  Point divisant un segment dans le rapport <I>k</I> : <TT>division_point point_div</TT></H3><P><A NAME="@default1890"></A><A NAME="@default1891"></A>
-<TT>point_div</TT> a trois arguments : deux points (ou deux nombres complexes
-<I>a</I> et <I>b</I>) et un nombre complexe <I>k</I>.<BR>
-<TT>point_div</TT> renvoie et dessine le point d’affixe <I>z</I> tel que :<BR>
-<I>z</I>−<I>a</I>/<I>z</I>−<I>b</I>=<I>k</I>
+<H3 CLASS="subsection"><A NAME="htoc1141">10.18.10</A>  Savoir si on a un parallélogramme : <TT>is_parallelogram est_parallelogramme</TT></H3><P><A NAME="@default1890"></A><A NAME="@default1891"></A><A NAME="sec:estparalelo2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1052.html#sec:estparalelo3">11.13.14</A> pour la géométrie 3-d.<BR>
+<TT>est_parallelogramme</TT> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<BR>
+<TT>est_parallelogramme</TT> vaut 1 (resp 2, 3, 4) si les quatre points forment
+un parallélogramme (resp un losange, un rectangle, un carré) ou si l’objet 
+géométrique est un parallélogramme (resp un losange, un rectangle, 
+un carré), et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>point_div(i,2+i,3+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_parallelogramme(i,-1+i,-1-i,1-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>pnt((5+4*i)/(2+i),0) et le dessin de ce point</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>point_div(point(i),point(2+i),3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_parallelogramme(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>pnt(3+i,0) et le dessine de ce point</TT></DIV><P>
-<B>Remarque</B> : 0 représente la couleur du point.
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>Q:=quadrilatere(1+i,-1+i,-1-i,1-i);est_parallelogramme(Q)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>4</TT></DIV><P>
+<B>Attention</B><BR>
+On doit taper :
+</P><DIV CLASS="center"><TT>P:=parallelogramme(-1-i,1-i,i,D);est_parallelogramme(P[0])</TT></DIV><P>
+Pour obtienir :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+En effet c’est <TT>P[0]</TT> qui désigne un parallélogramme car <TT>P</TT> est 
+une liste composée d’un parallélogramme et de son dernier sommet <TT>D</TT>.<BR>
+Si on tape <TT>affixe(D))</TT>, on obtient <TT>-2+i</TT>.<BR>
+
 </P><HR>
 <A HREF="cascmd_fr973.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

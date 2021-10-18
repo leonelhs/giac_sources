@@ -6,32 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour substituer plus simplement une valeur à une variable dans une expression : ()</TITLE>
+<TITLE>Simplifier à l’aide de fractions rationnelles : ratnormal</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr272.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr274.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc346">6.14.22</A>  Pour substituer plus simplement une valeur à une variable dans une expression : <TT>()</TT></H3><P><A NAME="@default458"></A>
-Lorsque l’on veut donner dans une expression de plusieurs variables (par 
-exemple <TT>Expr:=x+2y+3z</TT>) une valeur à certaines variables (par exemple 
-<TT>x,y</TT>) on peut le faire de différentes façons.
-On tape par exemple <TT>xpr:=x+2y+3z</TT>, puis :
-On utilise <TT>subst</TT>, on tape :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>subst(subst(Expr,x=1),y=2)</TT> 
-</LI><LI CLASS="li-itemize"><TT>subst(Expr,[x=1,y=2])</TT> 
-</LI><LI CLASS="li-itemize"><TT>subst(Expr,[x,y],[1,2])</TT> 
-</LI></UL><P>
-On n’utilise pas <TT>subst</TT> mais une écriture simplifiée proche d’une
-écriture fonctionnelle :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>Expr(x=1,y=2)</TT> 
-</LI><LI CLASS="li-itemize"><TT>Expr([x,y],[1,2])</TT> 
-</LI></UL><P>
-On obtient dans tous les cas :
-<TT>5+3*z</TT></P><HR>
+<H3 CLASS="subsection"><A NAME="htoc346">6.14.19</A>  Simplifier à l’aide de fractions rationnelles : <TT>ratnormal</TT></H3><P><A NAME="@default457"></A>
+<TT>ratnormal</TT> simplifie l’expression sous forme de fraction 
+irréductible.<BR>
+On tape : 
+</P><DIV CLASS="center"><TT>ratnormal((x</TT><CODE><TT>^</TT></CODE><TT>3-1)/(x</TT><CODE><TT>^</TT></CODE><TT>2-1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+x+1)/(x+1)</TT></DIV><P> 
+On tape : 
+</P><DIV CLASS="center"><TT>ratnormal((-2x</TT><CODE><TT>^</TT></CODE><TT>3+3x</TT><CODE><TT>^</TT></CODE><TT>2+5x-6)/(x</TT><CODE><TT>^</TT></CODE><TT>2-2x+1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(-2*x</TT><CODE><TT>^</TT></CODE><TT>2+x+6)/(x-1)</TT></DIV><HR>
 <A HREF="cascmd_fr272.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr274.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,29 +6,44 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Dessiner un diagramme en camembert : camembert</TITLE>
+<TITLE>Les déciles : quantile</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr704.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr706.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc836">8.1.17</A>  Dessiner un diagramme en camembert : <TT>camembert</TT></H3><P><A NAME="@default1265"></A>
-<TT>camembert</TT> permet de dessiner un diagramme en camembert d’une série 
-statistique à 1 variable.<BR>
-<TT>camembert</TT> a comme argument une matrice à 2 colonnes
-contenant en 1ère colonne les noms et en 2ème colonne les valeurs.<BR>
+<H3 CLASS="subsection"><A NAME="htoc841">8.1.9</A>  Les déciles : <TT>quantile</TT></H3><P><A NAME="@default1269"></A>
+<TT>quantile(L,p)</TT> où <TT>L</TT> est la série statistique et <TT>p</TT> un 
+réel de [0,1[, indique la valeur du caractère à partir de laquelle 
+la fréquence cumulée de <TT>L</TT> atteint ou dépasse <TT>p</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>camembert([["France",6],["Allemagne",12],["Suisse",5]])</TT></DIV><P>
-La fenêtre graphique s’ouvre automatiquement et on obtient le dessin d’un 
-camembert coupé selon 3 parts colorées avec comme légende :<BR>
-</P><DIV CLASS="center"><TT>France 26,09% , Allemagne 52.17% , Suisse 21.74% </TT>
-</DIV><P>
-On peut faire plusieurs camemberts sur le même graphique.<BR>
-On tape : 
-</P><DIV CLASS="center"><TT>camembert([[2,"xyz","abc"],["A",2,5],["B",5,6],["C",7,7]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><IMG SRC="cascmd_fr010.png"></DIV><HR>
+</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>quantile(A,0.1)</TT></DIV><P>
+On obtient le premier décile :
+</P><DIV CLASS="center"><TT>1.0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>quantile(A,0.25)</TT></DIV><P>
+On obtient le premier quartile :
+</P><DIV CLASS="center"><TT>2.0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>quantile(A,0.5)</TT></DIV><P>
+On obtient la médiane :
+</P><DIV CLASS="center"><TT>5.0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>quantile(A,0.75)</TT></DIV><P>
+On obtient le troisième quartile :
+</P><DIV CLASS="center"><TT>8.0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>quantile(A,0.9)</TT></DIV><P>
+On obtient le neuvième décile :
+</P><DIV CLASS="center"><TT>10.0</TT></DIV><P>
+<TT>quantile(l1,l2,p)</TT> calcule le quantile spécifié par le dernier 
+argument des éléments de la liste <TT>l1</TT> pondérée par la liste 
+<TT>l2</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>quantile(A,A,0.25)</TT></DIV><P>
+On obtient le premier quartile de la liste <TT>A</TT> pondérée par <TT>A</TT> :
+</P><DIV CLASS="center"><TT>6</TT></DIV><HR>
 <A HREF="cascmd_fr704.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr706.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

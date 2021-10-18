@@ -6,54 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Un des points d’intersection de deux objets géométriques : single_inter inter_unique inter_droite 
-line_inter</TITLE>
+<TITLE>Les commandes d’attributs</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr872.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr874.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1025">10.8.5</A>  Un des points d’intersection de deux objets géométriques : <TT>single_inter inter_unique inter_droite<BR>
-line_inter</TT></H3><P><A NAME="@default1690"></A><A NAME="@default1691"></A><A NAME="@default1692"></A><A NAME="@default1693"></A><A NAME="sec:interdroite2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr987.html#sec:interdroite3">11.4.3</A> pour la géométrie 3-d.<BR>
-<TT>inter_unique</TT> ou <TT>inter_droite</TT> a 2 ou 3 arguments qui 
-sont deux objets géométriques et éventuellement un 3ième argument qui 
-est soit un point soit une liste de points.<BR>
-<TT>inter_unique</TT> renvoie l’un des points d’intersection de ces deux objets
-géométriques. Si on a mis un point <TT>A</TT> (ou son affixe) comme troisième
-argument <TT>inter_unique</TT> renvoie le point d’intersection le plus proche de 
-<TT>A</TT> et si on a mis une liste de points <TT>L</TT> (ou une liste d’affixe) 
-comme troisième argument <TT>inter_unique</TT> renvoie le point d’intersection
-qui ne se trouve pas dans la liste <TT>L</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>A:=inter_unique(droite(0,1+i),droite(1,i))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe 1/2+i/2 est tracé avec une croix et est noté A</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>B:=inter_unique(cercle(0,1),droite(-1,i))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté B</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>B1:=inter_unique(cercle(0,1),droite(-1,i),[i])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe -1 est tracé avec une croix et est noté B1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>B2:=inter_unique(cercle(0,1),droite(-1,1+2*i),1+2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté B2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>C:=inter_unique(cercle(1,sqrt(2)),cercle(0,1))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté C</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>C1:=inter_unique(cercle(1,sqrt(2)),cercle(0,1),[i])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe -i est tracé avec une croix et est noté C1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>C2:=inter_unique(cercle(1,sqrt(2)),cercle(0,1),i/2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté C2</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc1025">10.3.2</A>  Les commandes d’attributs</H3><P>
+Les attributs des objets graphiques peuvent être définis par des commandes 
+qui sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>legend</TT> ou <TT>legende</TT>,
+</LI><LI CLASS="li-itemize"><TT>display</TT> ou <TT>affichage</TT> ou <TT>color</TT> ou <TT>couleur</TT> 
+</LI></UL><P>
+Les paramètres de ces commandes sont :<BR>
+<TT>objet_graphique,nom_de_l’attribut=valeur1+valeur2+...</TT><BR>
+ et les valeurs 
+de cet attribut sont valables uniquement pour l’objet graphique spécifié.<BR>
+Par exemple :<BR>
+<TT>legende(point(1+i),"A",rouge,quadrant3,epaisseur_point_2)</TT><BR>
+<TT>affichage(point(1+i),rouge+epaisseur_point_6+point_carre)</TT><BR>
+<TT>affichage(point(1+i,legend="A"),epaisseur_point_2+point_carre)</TT></P><P><B>Remarque</B><BR>
+Si la commande <TT>display(..)</TT> ou <TT>affichage(...)</TT> est tapée dans une 
+ligne de commandes, on peut utiliser ces commandes avec comme paramètre<BR>
+<TT>valeur1+valeur2+...</TT> et<BR>
+alors la commande est globale pour tous les objets définis ensuite dans cette
+ligne de commandes. Il faut éviter d’utiliser ces commandes de cette 
+façon dans un écran de géométrie, car les attributs sont déjà 
+définis globalement dans <TT>cfg</TT> et le bouton des attributs.</P><HR>
 <A HREF="cascmd_fr872.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr874.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

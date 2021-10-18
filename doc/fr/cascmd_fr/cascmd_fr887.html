@@ -6,56 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le vecteur en géométrie plane : vector vecteur</TITLE>
+<TITLE>Le centre d’un cercle : centre center</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr886.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr888.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1040">10.9.5</A>  Le vecteur en géométrie plane : <TT>vector vecteur</TT></H3><P><A NAME="@default1720"></A><A NAME="@default1721"></A><A NAME="sec:vecteur2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr996.html#sec:vecteur3">11.5.5</A> pour la géométrie 3-d.<BR>
-<TT>vecteur</TT>, en géométrie plane, a comme arguments soit :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-deux points <I>A</I>,<I>B</I> ou deux nombres complexes représentant l’affixe de 
-ces points ou deux listes représentant les coordonnées de ces points.<BR>
-<TT>vecteur</TT> définit et dessine le vecteur <I>AB</I>
-</LI><LI CLASS="li-itemize">un point <I>A</I> (ou un nombre complexe représentant l’affixe de ce point 
-ou une liste représentant les coordonnées de ce point) et un vecteur <I>V</I> 
-(définition récursive).<BR>
-<TT>vecteur</TT> définit et dessine le vecteur <I>AB</I> tel que
-<I>AB</I>=<I>V</I>. Si <TT>W:=vecteur(A,V)</TT>, alors le 
-point <TT>B</TT> tel que <I>AB</I>=<I>V</I> est 
-<TT>point(W[1,1])</TT> ou <TT>point(coordonnees(V)+coordonnees(A))</TT> ou 
-<TT>A+(affixe(V)[1]-affixe(V)[0])</TT>.
-</LI></UL><P>
+<H3 CLASS="subsection"><A NAME="htoc1044">10.8.11</A>  Le centre d’un cercle : <TT>centre center</TT></H3><P><A NAME="@default1719"></A><A NAME="@default1720"></A>
+<TT>centre</TT> ou <TT>center</TT> a comme argument le nom d’un cercle (voir
+la définition du cercle <A HREF="cascmd_fr920.html#sec:cercle">10.13.1</A>).<BR>
+<TT>centre</TT> ou <TT>center</TT> renvoie et trace le centre de ce cercle.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>vecteur(point(-1),point(i))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>vecteur(-1,i)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>vecteur([-1,0],[0,1])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>C:=centre(cercle(0,point(2*i)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le tracé du vecteur d’origine -1 et d’extrémité i</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté C</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>V:=vecteur(point(-1),point(i))</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>vecteur(point(-1+i),V)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>vecteur(-1+i,V)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>vecteur([-1,1],V)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>point([-1,1],coordonnees(V))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>M:=centre(cercle(point(1+i),1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le tracé du vecteur d’origine -1+i et d’extrémité 2*i</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>D:=point([-1,1]+coordonnees(V))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>D le point(2*i)</TT></DIV><P>
-<B>Remarque</B><BR>
-En calcul formel, on travaille sur la liste des coordonnées des vecteurs que 
-l’on obtient avec la commande <TT>coordonnees</TT> (cf <A HREF="cascmd_fr926.html#sec:coordonnees2">10.15.4</A>).</P><HR>
+</P><DIV CLASS="center"><TT>Le point d’affixe 1+i est tracé avec une croix et est noté M</TT></DIV><HR>
 <A HREF="cascmd_fr886.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr888.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

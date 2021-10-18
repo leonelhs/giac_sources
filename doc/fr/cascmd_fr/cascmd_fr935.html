@@ -6,62 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La mesure d’un angle : angle</TITLE>
+<TITLE>Les coordonnées rectangulaire d’un point : rectangular_coordinates coordonnees_rectangulaires</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr934.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr936.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1095">10.16.5</A>  La mesure d’un angle : <TT>angle</TT></H3><P><A NAME="@default1809"></A>
-<A NAME="sec:angle2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1030.html#sec:angle3">11.12.9</A> pour la géométrie 3-d.<BR>
-<TT>angle</TT> a comme argument trois points (ou trois nombres 
-complexes qui sont l’affixe de ces points) ou 2 points et une droite et 
-éventuellement une chaine de caractères pour afficher un petit arc de 
-cercle avec ce symbole en légende afin de représenter l’angle sur la figure
-(l’arc est remplacé par le symbole quart de carre si l’angle vaut pi/2 ou 
--pi/2).<BR>
-<TT>angle</TT> renvoie la mesure (en radians ou en degrés) de 
-l’angle orienté de sommet le premier argument, le deuxième argument se 
-trouve sur le premier coté de l’angle et le troisième argument se 
-trouve sur le deuxiéme coté.<BR>
-<B>Remarque</B><BR>
-Si le troisième argument est une droite, cette droite donne la direction 
-du 2ième côté de l’angle.
-Ainsi :<BR>
-<TT>angle(A,B,C)</TT> désigne la mesure de l’angle en radians (ou en 
-degrés) de (<I>AB</I>,<I>AC</I>).<BR>
-<TT>angle(A,B,C,"")</TT> trace l’angle (<I>AB</I>,<I>AC</I>) avec comme légende un petit arc orienté.<BR>
-<TT>angle(A,B,C,"a")</TT> trace l’angle (<I>AB</I>,<I>AC</I>) avec comme légende un petit arc orienté noté <I>a</I>.<BR>
-<TT>angle(A,B,C,"")[0]</TT> ou <TT>angle(A,B,C,"a")[0]</TT> désigne la mesure de 
-l’angle en radians (ou en degrés) de 
-(<I>AB</I>,<I>AC</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc1099">10.15.5</A>  Les coordonnées rectangulaire d’un point : <TT>rectangular_coordinates coordonnees_rectangulaires</TT></H3><P><A NAME="@default1805"></A><A NAME="@default1806"></A>
+<TT>rectangular_coordinates</TT> ou <TT>coordonnees_rectangulaires</TT>
+renvoie la liste de l’abscisse et de l’ordonnée d’un point donné par la 
+liste de ses coordonnées polaires.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>angle(0,1,1+i) </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>pi/4</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>angle(0,1,1+i,"") </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>[pi/4,cercle(point(0,0),1/5)]</TT></DIV><P>
-et l’angle est repéré par un arc de cercle sans légende.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>angle(0,1,1+i,"a")</TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>[pi/4,cercle(point(0,0),1/5)]</TT></DIV><P>
-et l’angle est repéré par un arc de cercle avec <TT>a</TT> comme
-légende.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>angle(0,1,i,"a") </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>[pi/2,polygone(point(1/5,0),point(1/5,1/5),point(0,1/5),point(0,1/5))]</TT></DIV><P>
-et l’angle droit est repéré par un quart de carré avec <TT>a</TT> 
-comme légende.</P><HR>
+</P><DIV CLASS="center"><TT>coordonnees_rectangulaires(2,pi/4)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees_rectangulaires(polar_point(2,pi/4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2/(sqrt(2)),2/(sqrt(2))]</TT></DIV><HR>
 <A HREF="cascmd_fr934.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr936.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

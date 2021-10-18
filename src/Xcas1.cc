@@ -1314,6 +1314,60 @@ namespace xcas {
     return w;
   }
 
+  std::string widget_html5(const Fl_Widget * o){
+    string res;
+    const giac::context * contextptr = get_context(o);
+    // Add here code for specific widgets
+    if (const Tableur_Group * t = dynamic_cast<const Tableur_Group *>(o)){
+      Flv_Table_Gen * g=t->table;
+      matrice m=g->m;
+      res = replace(gen(m,_SPREAD__VECT).print(contextptr),'\n',' ');
+      return '+'+res+'&';
+    }
+    if (const Figure * f = dynamic_cast<const Figure *>(o)){
+      res = widget_html5(f->geo->hp);
+      return res;
+    }
+    if (const Logo * l=dynamic_cast<const Logo *>(o)){
+      res = widget_html5(l->hp);
+      return res;
+    }
+    if (const Editeur * ed=dynamic_cast<const Editeur *>(o)){
+      string s=unlocalize(ed->value());
+      res = replace(s,'\n',' ');
+      return '+'+res+'&';
+    }
+    if (const Xcas_Text_Editor * ed=dynamic_cast<const Xcas_Text_Editor *>(o)){
+      string s=unlocalize(ed->value());
+      res = replace(s,'\n',' ');
+      return '+'+res+'&';
+    }
+    if (const Fl_Input_ * i=dynamic_cast<const Fl_Input_ *>(o)){
+      string s=i->value();
+      if ( dynamic_cast<const Multiline_Input_tab *>(i) )
+	s=unlocalize(s);
+      if (s.empty())
+	return s;
+      res = replace(s,'\n',' ');
+      return '+'+res+'&' ;
+    }
+    if (const Fl_Group * g=dynamic_cast<const Fl_Group *>(o)){
+      int ypos=0;
+      // call widget_sprint on children
+      int n=g->children();
+      for (int i=0;i<n;++i){
+	Fl_Widget * wid=g->child(i);
+	res += widget_html5(wid);
+      }
+      return res;
+    }
+    if (const Gen_Value_Slider *g=dynamic_cast<const Gen_Value_Slider *>(o)){
+      res = string(g->label())+","+print_DOUBLE_(g->value())+","+print_DOUBLE_(g->minimum())+","+print_DOUBLE_(g->maximum())+","+print_DOUBLE_(g->Fl_Valuator::step());
+      return '*'+res+'&';
+    }
+    return res ;
+  }
+
   std::string widget_sprint(const Fl_Widget * o){
     string res;
     const giac::context * contextptr = get_context(o);

@@ -6,25 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Définition d’une plage de valeurs : a1..a2</TITLE>
+<TITLE>Développement réciproque d’un développement en séries en 0 : revert</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr465.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr467.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc562">6.37.1</A>  Définition d’une plage de valeurs : <TT>a1..a2</TT></H3><P><A NAME="@default830"></A>
-Un intervalle est défini par deux nombres séparés par <TT>..</TT> on 
-écrit :<BR>
-<TT>1..3</TT> ou<BR>
-<TT>1.2..sqrt(2)</TT><BR>
+<H3 CLASS="subsection"><A NAME="htoc561">6.36.4</A>  Développement réciproque d’un développement en séries en 0 : <TT>revert</TT></H3><P><A NAME="@default831"></A> 
+<TT>revert</TT> a comme argument une expression qui est le début du 
+développement en séries en 0 d’une fonction <I>f</I>.<BR>
+<TT>revert</TT> renvoie le développement en séries en 0 de <I>g</I>(<I>f</I>(0)+<I>x</I>) où
+<I>g</I> vérifie <I>g</I>(<I>f</I>(<I>x</I>))=<I>x</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=1..4</TT></DIV><DIV CLASS="center"><TT>B:=1.2..sqrt(2)</TT></DIV><P>
-<B>Attention!</B><BR>
- l’ordre est important :
-si <TT>B:=2..3</TT> et <TT>C:=3..2</TT> la réponse de <TT>B==C</TT> est 
-<TT>0</TT>.
-</P><HR>
+</P><DIV CLASS="center"><TT>revert(x+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x-x</TT><CODE><TT>^</TT></CODE><TT>2+2*x</TT><CODE><TT>^</TT></CODE><TT>3-6*x</TT><CODE><TT>^</TT></CODE><TT>4</TT></DIV><P>
+En effet la fonction <I>f</I> vérifie :
+<I>f</I>(0)=0, <I>f</I>′(0)=1, <I>f</I>"(0)=2,<I>f</I>′"(0)=0,<I>f</I><SUP>(4)</SUP>(0)=24 et si <I>g</I>(<I>f</I>(<I>x</I>))=<I>x</I> on en 
+déduit en dérivant cette identité que :
+<I>g</I>(0)=0,<I>g</I>′(0)=1/<I>f</I>′(0)=1,<I>g</I>″(0)=−2,<I>g</I>‴(0)=12, <I>g</I><SUP>(4)</SUP>(0)=−15*8−24=−144=−24*6
+On tape le début du développement en 0 de exp(<I>x</I>) :
+</P><DIV CLASS="center"><TT>revert(1+x+x</TT><CODE><TT>^</TT></CODE><TT>2/2+x</TT><CODE><TT>^</TT></CODE><TT>3/6+x</TT><CODE><TT>^</TT></CODE><TT>4/14)</TT></DIV><P>
+On obtient le début du développement en <I>x</I>=0 de ln(1+<I>x</I>) :
+</P><DIV CLASS="center"><TT>x-x</TT><CODE><TT>^</TT></CODE><TT>2/2+2*x</TT><CODE><TT>^</TT></CODE><TT>3/3-x</TT><CODE><TT>^</TT></CODE><TT>4/4</TT></DIV><HR>
 <A HREF="cascmd_fr465.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr467.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

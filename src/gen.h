@@ -144,7 +144,7 @@ namespace giac {
     volatile ref_count_t ref_count;
     mpz_t z;
     ref_mpz_t():ref_count(1) {mpz_init(z);}
-    ref_mpz_t(size_t nbits):ref_count(1) {mpz_init2(z,nbits);}
+    ref_mpz_t(size_t nbits):ref_count(1) {mpz_init2(z,int(nbits));}
     ref_mpz_t(const mpz_t & Z): ref_count(1) { mpz_init_set(z,Z); }
     ~ref_mpz_t() { mpz_clear(z); }
   };
@@ -419,13 +419,14 @@ namespace giac {
   struct alias_unary_function_eval;
   struct unary_function_ptr {
 #ifdef NO_UNARY_FUNCTION_COMPOSE
-    const unary_function_eval * _ptr;
+    // const unary_function_eval * _ptr;
+    size_t _ptr;
     // int quoted; // will be used to avoid evaluation of args by eval
     // constructors
     // lexer_register is true to add dynamically the function name
     // to the list of functions names recognized by the lexer
     unary_function_ptr():_ptr(0) {} ;
-    unary_function_ptr(const unary_function_eval * myptr):_ptr(myptr) {} ;
+    unary_function_ptr(const unary_function_eval * myptr):_ptr((size_t)myptr) {} ;
     // unary_function_ptr(const unary_function_eval * myptr,int parser_token);
     unary_function_ptr(const unary_function_eval * myptr,int myquoted,int parser_token);
     // unary_function_ptr(const alias_unary_function_eval * myptr,int parser_token);
@@ -563,7 +564,7 @@ namespace giac {
 	setsizeerr(gettext("Pointer out of range"));
 #endif
       * ((ulonglong *) this) = __POINTERptr << 16;
-      subtype=subt;
+      subtype=(signed char)subt;
       type=_POINTER_;
     };
 #else
@@ -584,6 +585,7 @@ namespace giac {
       control_c();
 #endif
     };
+    gen(long i);
     gen(longlong i);
 #ifdef INT128
     gen(int128_t i);
@@ -733,7 +735,7 @@ namespace giac {
   class vectpoly:public std::vector<polynome> {
   public:
     vectpoly():std::vector<polynome>::vector() {};
-    vectpoly(int i,const polynome & p):std::vector<polynome>::vector(i,p) {};
+    vectpoly(size_t i,const polynome & p):std::vector<polynome>::vector(i,p) {};
     void dbgprint(){  
 #ifndef NSPIRE
       CERR << *this << std::endl; 

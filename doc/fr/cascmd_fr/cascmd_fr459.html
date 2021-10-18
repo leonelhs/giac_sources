@@ -6,41 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Résolution d’un système linéaire de ℤ/pℤ : Rref</TITLE>
+<TITLE>Factorisation dans ℤ/pℤ[x] : Factor</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr458.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr460.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc553">6.35.7</A>  Résolution d’un système linéaire de ℤ/<I>p</I>ℤ : <TT>Rref</TT></H3><P><A NAME="@default819"></A>
-<TT>Rref</TT> renvoie <TT>rref</TT> sans l’évaluer. Ensuite, <TT>rref</TT>
-résout, dans ℤ/<I>p</I>ℤ, un système d’équations linéaires de la forme :
-<I>Ax</I>=<I>B</I> (voir aussi <A HREF="cascmd_fr666.html#sec:rrefp">6.56.3</A>).<BR>
-Résoudre dans ℤ/13ℤ
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
-⎨<BR>
-⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>   <I>x</I> +   2 · <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>9 </TD></TR>
-<TR><TD ALIGN=left NOWRAP>3 · <I>x</I> +10 · <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>0 </TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-On tape :
-</P><DIV CLASS="center"><TT>Rref([[1,2,9] mod 13,[3,10,0] mod 13])</TT></DIV><P> 
-Ou on tape :
-</P><DIV CLASS="center"><TT>Rref([[1,2,9],[3,10,0]] mod 13)</TT></DIV><P> 
-Ou on tape :
-</P><DIV CLASS="center"><TT>Rref([[1,2,9]% 13,[3,10,0]% 13])</TT></DIV><P> 
-Ou on tape :
-</P><DIV CLASS="center"><TT>Rref([[1,2,9],[3,10,0]]% 13)</TT></DIV><P> 
+<H3 CLASS="subsection"><A NAME="htoc553">6.35.4</A>  Factorisation dans ℤ/<I>p</I>ℤ[<I>x</I>] : <TT>Factor</TT></H3><P><A NAME="@default820"></A>
+<TT>Factor</TT> a comme argument un polynôme.<BR>
+<TT>Factor</TT> renvoie <TT>factor</TT> sans l’évaluer. Ensuite, <TT>factor</TT>
+factorise ce polynôme dans ℤ/<I>p</I>ℤ[<I>x</I>] à condition que 
+l’on ait <I>p</I> premier.<BR>
+On tape en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>Factor((-3*x</TT><CODE><TT>^</TT></CODE><TT>3+5*x</TT><CODE><TT>^</TT></CODE><TT>2-5*x+4)% 13)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>rref([[1% 13, 2% 13, 9% 13],[3% 13,10% 13,0% 13]])</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>[[1% 13,0% 13,3% 13],[0% 13,1% 13,3% 13]]</TT></DIV><P> 
-ce qui veut dire que <TT>x=3% 13</TT> et <TT>y=3% 13</TT>.<BR>
-<B>Attention</B> en mode <TT>Maple</TT> on tape :
-</P><DIV CLASS="center"><TT>Rref([[1,2,9],[3,10,0],[3,11,1]]) mod 13</TT></DIV><P>
+</P><DIV CLASS="center"><TT>factor((-3*x</TT><CODE><TT>^</TT></CODE><TT>3+5*x</TT><CODE><TT>^</TT></CODE><TT>2-5*x+4)% 13)</TT></DIV><DIV CLASS="center"><TT>((1% 13)*x+-6% 13)*((-3% 13)*x</TT><CODE><TT>^</TT></CODE><TT>2+-5% 13)</TT></DIV><P>
+<B>Attention</B> <TT>Factor</TT> est surtout utile en mode <TT>Maple</TT>.<BR>
+On tape alors en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>Factor(-3*x</TT><CODE><TT>^</TT></CODE><TT>3+5*x</TT><CODE><TT>^</TT></CODE><TT>2-5*x+4) mod 13</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,0,0],[0,1,0],[0,0,1]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>-3*(1*x-6)*(1*x</TT><CODE><TT>^</TT></CODE><TT>2+6)</TT></DIV><HR>
 <A HREF="cascmd_fr458.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr460.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

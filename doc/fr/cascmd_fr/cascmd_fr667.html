@@ -6,58 +6,20 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Résolution de A*X=B : simult</TITLE>
+<TITLE>Transformer une équation en une liste : equal2list</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr666.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr668.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc782">6.56.4</A>  Résolution de A*X=B : <TT>simult</TT></H3><P><A NAME="@default1207"></A>
-<TT>simult</TT> permet de résoudre un système d’équations 
-linéaires (resp plusieurs systèmes d’équations linéaires qui ne 
-diffèrent que par leur second membre).<BR>
-On écrit le (rep les) système(s) sous forme matricielle 
-(voir aussi <A HREF="cascmd_fr450.html#sec:rrefm">6.34.17</A>) :
-</P><DIV CLASS="center"><TT>A*X=b (resp A*X=B)</TT></DIV><P>
-Les paramètres de <TT>simult</TT> sont la matrice <TT>A</TT> du système et le 
-vecteur colonne (i.e. une matrice d’une colonne) <TT>b</TT> formé par le second 
-membre du système à résoudre (resp la matrice <TT>B</TT> dont les colonnes 
-sont les vecteurs <TT>b</TT> des second membres des systèmes à résoudre).<BR>
-Le résultat est un vecteur colonne solution du système (resp une matrice 
-dont les colonnes sont les solutions des différents systèmes).<BR>
-Par exemple, soit à résoudre le système :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
-⎨<BR>
-⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>−2 </TD></TR>
-<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
-</TABLE></TD></TR>
-</TABLE><P> 
+<H3 CLASS="subsection"><A NAME="htoc786">6.60.3</A>  Transformer une équation en une liste : <TT>equal2list</TT></H3><P><A NAME="@default1204"></A>
+<TT>equal2list</TT> a comme paramètre une équation.<BR>
+<TT>equal2list</TT> renvoie la liste formée par les deux membres de l’équation.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>simult([[3,1],[3,2]],[[-2],[2]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>equal2list(2x-1=3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[-2],[4]]</TT></DIV><P>
-cela signifie donc que :<BR>
-<I>x</I>=−2 et <I>y</I>=4 sont solutions du système.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>simult([[3,1],[3,2]],[[-2,1],[2,2]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[-2,0],[4,1]]</TT></DIV><P>
-cela signifie donc que :<BR>
-<I>x</I>=−2 et <I>y</I>=4 sont solutions du système
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
-⎨<BR>
-⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>−2 </TD></TR>
-<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-et que <I>x</I>=0 et <I>y</I>=1 sont solutions du système
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
-⎨<BR>
-⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>1 </TD></TR>
-<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
-</TABLE></TD></TR>
-</TABLE><HR>
+</P><DIV CLASS="center"><TT>[2*x-1,3]</TT></DIV><HR>
 <A HREF="cascmd_fr666.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr668.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

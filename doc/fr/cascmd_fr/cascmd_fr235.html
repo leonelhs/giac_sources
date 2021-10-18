@@ -6,27 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Signature d’une permutation : signature</TITLE>
+<TITLE>Produit d’un cycle et d’une permutation : c1op2</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr234.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr236.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc305">6.11.14</A>  Signature d’une permutation : <TT>signature</TT></H3><P><A NAME="@default404"></A>
-<TT>signature</TT> a comme argument une permutation.<BR>
-<TT>signature</TT> renvoie la signature de la permutation donnée en argument.<BR>
-La signature d’une permutation vaut :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-1 si elle peut se décomposer en un produit pair de transpositions,
-</LI><LI CLASS="li-itemize">-1 si elle peut se décomposer en un produit impair de transpositions.
-</LI></UL><P>
-La signature d’un cycle d’ordre <I>k</I> est : (−1)<SUP><I>k</I>+1</SUP>.<BR>
- On tape :
-</P><DIV CLASS="center"><TT>signature([3,4,5,2,0,1])</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc305">6.11.11</A>  Produit d’un cycle et d’une permutation : <TT>c1op2</TT></H3><P><A NAME="@default404"></A>
+<TT>c1op2</TT> a comme arguments un cycle et une permutation.<BR>
+<TT>c1op2</TT> renvoie la permutation obtenue par la composition :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">1<SUP>er</SUP>arg ∘ 2<SUP>ième</SUP> arg</TD></TR>
+</TABLE><P> 
+On tape :
+</P><DIV CLASS="center"><TT>c1op2([3,4,5],[2,0,1,4,3,5])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1</TT></DIV><P>
-En effet <TT>permu2cycles([3,4,5,2,0,1])=[[0,3,2,5,1,4]]</TT>.
+</P><DIV CLASS="center"><TT>[2,0,1,5,4,3]</TT></DIV><P>
+<B>Attention</B><BR>
+C’est la permutation donnée comme deuxième argument qui est 
+effectuée la première.
 </P><HR>
 <A HREF="cascmd_fr234.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

@@ -6,44 +6,51 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Nombre de changements de signe sur ]a; b] : sturmab</TITLE>
+<TITLE>Les restes chinois : chinrem</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr400.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr402.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc488">6.28.16</A>  Nombre de changements de signe sur ]<I>a</I>; <I>b</I>] : <TT>sturmab</TT></H3><P><A NAME="@default745"></A>
-<TT>sturmab</TT> a quatre paramètres : une expression polynômiale 
-<I>P</I>, le nom de la variable et deux nombres <I>a</I> et <I>b</I>.
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>a</I> et <I>b</I> sont réels,
-<TT>sturmab</TT> renvoie soit un nombre strictement positif qui
-est le nombre de changements de signe de <I>P</I> sur ]<I>a</I>; <I>b</I>],
-soit 0 si <I>P</I> reste de signe constant positif ou nul sur ]<I>a</I>; <I>b</I>],
-soit -1 si <I>P</I> reste de signe constant négatif ou nul sur ]<I>a</I>; <I>b</I>].
-Ainsi, <TT>sturmab</TT> permet d’avoir le nombre de racines sur [<I>a</I>,<I>b</I>[
-du polynôme <I>P</I>/<I>G</I> avec <I>G</I>=gcd(<I>P</I>,diff(<I>P</I>)).
-</LI><LI CLASS="li-itemize">si <I>a</I> ou <I>b</I> est complexe, le nombre de racines complexes à 
-l’intérieur du rectangle de sommets opposés <I>a</I> et <I>b</I>.
-</LI></UL><P> 
+<H3 CLASS="subsection"><A NAME="htoc488">6.28.13</A>  Les restes chinois : <TT>chinrem</TT></H3><P><A NAME="@default746"></A>
+<TT>chinrem</TT> a comme argument deux listes ayant chacun comme 
+composantes deux polynômes éventuellement donnés par la liste de leurs 
+coefficients par ordre décroissant.<BR>
+<TT>chinrem</TT> renvoie une liste de composantes deux polynômes.<BR>
+<TT>chinrem([A,R],[B,Q])</TT> renvoie la liste des polynômes 
+<TT>P</TT> et <TT>S</TT> vérifiant :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>S</I>=<I>R</I>.<I>Q</I>,     <I>P</I>=<I>A</I> (mod <I>R</I> ), <I>P</I>=<I>B</I> (mod <I>Q</I> ) </TD></TR>
+</TABLE><P>
+Il existe toujours une solution 
+<TT>P</TT> si <TT>R</TT> et <TT>Q</TT> sont premiers entre eux, et toutes les
+solutions sont congrues modulo <TT>S=R*Q</TT><BR>
+Trouver les solutions <I>P</I>(<I>x</I>) de :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>⎧<BR>
+⎨<BR>
+⎩</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>P</I>(<I>x</I>)=</TT></TD><TD ALIGN=left NOWRAP><TT><I>x</I> </TT></TD><TD ALIGN=right NOWRAP><TT>mod</TT><TT> (<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+1)</TT></TD></TR>
+<TR><TD ALIGN=right NOWRAP><TT><I>P</I>(<I>x</I>)=</TT></TD><TD ALIGN=left NOWRAP><TT><I>x</I>-1 </TT></TD><TD ALIGN=right NOWRAP><TT>mod</TT><TT> (<I>x</I></TT><SUP><TT>2</TT></SUP><TT>-1) </TT></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
 On tape :
-</P><DIV CLASS="center"><TT>sturmab(x</TT><CODE><TT>^</TT></CODE><TT>2*(x</TT><CODE><TT>^</TT></CODE><TT>3+2),x,-2,0)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>chinrem([[1,0],[1,0,1]],[[1,-1],[1,0,-1]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1/-2,1,1/-2],[1,0,0,0,-1]]</TT></DIV><P>
+ou on tape :
+</P><DIV CLASS="center"><TT>chinrem([x,x</TT><CODE><TT>^</TT></CODE><TT>2+1],[x-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1/-2*x</TT><CODE><TT>^</TT></CODE><TT>2+x+1/-2,x</TT><CODE><TT>^</TT></CODE><TT>4-1]</TT></DIV><P>
+donc  <I>P</I>(<I>x</I>)=−<I>x</I><SUP>2</SUP>−2.<I>x</I>+1/2  (mod  <I>x</I><SUP>4</SUP>−1)<BR>
+Autre exemple :<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sturmab(x</TT><CODE><TT>^</TT></CODE><TT>3-1,x,-2-i,5+3i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>chinrem([[1,2],[1,0,1]],[[1,1],[1,1,1]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>sturmab(x</TT><CODE><TT>^</TT></CODE><TT>3-1,x,-i,5+3i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[-1,-1,0,1],[1,1,2,1,1]]</TT></DIV><P>
+ou on tape :
+</P><DIV CLASS="center"><TT>chinrem([x+2,x</TT><CODE><TT>^</TT></CODE><TT>2+1],[x+1,x</TT><CODE><TT>^</TT></CODE><TT>2+x+1])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-<B>Attention!!!!</B><BR>
- <I>P</I> doit être donné par son expression symbolique et, si on tape :<BR>
-<TT>sturmab([1,0,0,2,0,0],x,-2,0)</TT>,<BR>
-on obtient :<BR>
-<TT>Bad argument type</TT>.</P><HR>
+</P><DIV CLASS="center"><TT>[-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2+1,x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>3+2*x</TT><CODE><TT>^</TT></CODE><TT>2+x+1]</TT></DIV><HR>
 <A HREF="cascmd_fr400.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr402.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

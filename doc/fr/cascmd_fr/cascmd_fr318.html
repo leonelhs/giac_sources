@@ -6,21 +6,57 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer les arccos en arcsin : acos2asin</TITLE>
+<TITLE>Augmenter la phase de π/2 dans les expressions trigonométriques : shift_phase</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr317.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr319.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc401">6.24.7</A>  Transformer les arccos en arcsin : <TT>acos2asin</TT></H3><P><A NAME="@default610"></A>
-<TT>acos2asin</TT> a comme argument une expression trigonométrique.<BR>
-<TT>acos2asin</TT> transforme cette expression en remplaçant :<BR>
-arccos(<I>x</I>) par  π/2−arcsin(<I>x</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc401">6.24.4</A>  Augmenter la phase de π/2 dans les expressions trigonométriques : <TT>shift_phase</TT></H3><P><A NAME="@default606"></A><A NAME="@default607"></A> 
+<TT>shift_phase</TT> a comme argument une expression trigonométrique.<BR>
+<TT>shift_phase</TT> permet d’augmenter la phase de π/2 dans les 
+expressions trigonométriques une fois que la simplification automatique a eu
+lieu.
 On tape :
-</P><DIV CLASS="center"><TT>acos2asin(acos(x)+asin(x))</TT></DIV><P>
-On obtient après simplification :
-</P><DIV CLASS="center"><TT>pi/2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>shift_phase(x+sin(x))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x-cos((pi+2*x)/2)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>shift_phase(x+cos(x))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x-+sin((pi+2*x)/2)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>shift_phase(x+tan(x))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x+1/(tan((pi+2*x)/2))</TT></DIV><P>
+Si on ne veut pas que l’expression soit évaluée (i.e. qu’il n’y ait pas de 
+simplification automatique), il faut quoter l’argument. 
+On tape :
+</P><DIV CLASS="center"><TT>shift_phase(’sin(x+pi/2)’)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-(cos(pi+x))</TT></DIV><P>
+Mais si on tape sans quoter le sinus :
+</P><DIV CLASS="center"><TT>shift_phase(sin(x+pi/2))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sin((pi+2*x)/2)</TT></DIV><P>
+car <TT>sin(x+pi/2)</TT> est évaluée (i.e. simplifiée) en <TT>cos(x)</TT> avant
+que la commande <TT>shift_phase</TT> ne soit appelée et ensuite 
+<TT>shift_phase(cos(x))</TT> renvoie <TT>sin((pi+2*x)/2)</TT>.
+<B>Exercice</B><BR>
+Calcul de ∑<SUB><I>n</I>=1</SUB><SUP>+∞</SUP>sin(<I>n</I>*<I>x</I>)/<I>n</I><BR>
+On tape :<BR>
+<TT>normal(sum((sin(n*x))/n,n=1..+infinity))</TT><BR>
+On obtient :<BR>
+<TT>-atan((sin(x))/(cos(x)-1))</TT><BR>
+On tape :<BR>
+<TT>normal(shift_phase(halftan(atan(sin(x)/(-cos(x)+1)))))</TT><BR>
+On obtient :<BR>
+<TT>pi*floor(((pi+x)/2)/pi+1/2)+(-1)/2*pi+(-1)/2*x</TT><BR>
+si on tape :<BR>
+<TT>tsimplify(atan((sin(x))/(-cos(x)+1)))</TT><BR>
+On obtient car <TT>tsimplify</TT> n’est pas rigoureux vis a vis des 2<I>k</I>π :<BR>
+<TT>-1/2*pi-1/2*x</TT></P><HR>
 <A HREF="cascmd_fr317.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr319.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

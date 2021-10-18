@@ -6,34 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Noyau d’une application linéaire : Nullspace</TITLE>
+<TITLE>Déterminant d’une matrice creuse : det_minor</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr601.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr603.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc708">6.47.13</A>  Noyau d’une application linéaire : <TT>Nullspace</TT></H3><P><A NAME="@default1107"></A>
-<B>Attention</B> <TT>Nullspace</TT> n’est utilisable qu’en mode Maple 
-(bouton donnant la ligne d’état puis <TT>Prog style</TT> et choisir <TT>Maple</TT> 
-puis <TT>OK</TT>).<BR>
-<TT>Nullspace</TT> est la forme inerte de <TT>nullspace</TT>.<BR>
-<TT>Nullspace</TT> a comme argument la matrice d’une 
-application linéaire <I>f</I> dans la base canonique.<BR>
-<TT>Nullspace</TT>) suivi de <TT>mod p</TT>renvoie une liste de vecteurs formant une 
-base du noyau de <I>f</I> calculés dans ℤ/<I>p</I>ℤ[<I>X</I>].<BR>
+<H3 CLASS="subsection"><A NAME="htoc713">6.52.5</A>  Déterminant d’une matrice creuse : <TT>det_minor</TT></H3><P><A NAME="@default1112"></A>
+<TT>det_minor</TT> a comme argument une matrice <I>A</I>.<BR>
+<TT>det_minor</TT> renvoie le déterminant de la matrice <I>A</I> calculé à 
+l’aide du développement du déterminant selon la première ligne en
+utilisant l’algorithme de Laplace.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>Nullspace([[1,1,2],[2,1,3],[3,1,4]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>det_minor([[1,2],[3,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>nullspace([[1,1,2],[2,1,3],[3,1,4]])</TT></DIV><P>
-On tape (en mode Maple) :
-</P><DIV CLASS="center"><TT>Nullspace([[1,2],[3,1]]) mod 5</TT></DIV><P>
+</P><DIV CLASS="center"><TT>-2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>det_minor(idn(3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,-1]</TT></DIV><P>
-En mode <TT>Xcas</TT> la commande équivalent est :
-</P><DIV CLASS="center"><TT>nullspace([[1,2],[3,1]] % 5)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[2% 5,-1]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr601.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr603.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

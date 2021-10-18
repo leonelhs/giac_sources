@@ -6,24 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le choix de l’éditeur</TITLE>
+<TITLE>Chaine de Markov : markov</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr798.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr800.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc936">9.1.1</A>  Le choix de l’éditeur</H3><P>
-On écrit une fonction ou un programme dans l’éditeur de son choix : on
-peut utiliser les éditeurs de <TT>Xcas</TT> (que l’on ouvre avec <TT>Alt+p</TT>)
-pour écrire des petits programmes mais 
-il est préférable d’utiliser par exemple <TT>emacs</TT> pour écrire des 
-programmes plus conséquents. Dans ce cas, on sauve le programme dans un 
-fichier, par exemple <TT>toto.cas</TT>, puis dans la ligne de commande de 
-<TT>Xcas</TT> on tape :<BR>
-<TT>read("toto.cas")</TT> ou encore<BR>
-avec le menu <TT>Fich</TT> sous-menu <TT>Charger</TT> on sélectionne
-<TT>toto.cas</TT>. </P><HR>
+<H3 CLASS="subsection"><A NAME="htoc938">8.4.56</A>  Chaine de Markov : <TT>markov</TT></H3><P><A NAME="@default1418"></A>
+<TT>markov(M)</TT> calcule des éléments caractéristiques d’une 
+matrice de transition d’une chaine de Markov <TT>M</TT>.<BR>
+<TT>markov(M)</TT> renvoie la liste des suites d’états
+récurrents positifs, la liste des probabilités stationnaires 
+correspondantes, la liste des autres composantes fortement connexes, la liste 
+des probabilités de finir sur les états récurrents positifs.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>markov([[0,0,1/2,0,1/2],[0,0,1,0,0],[1/4,1/4,0,1/4,1/4], [0,0,1/2,0,1/2],[0,0,0,0,1]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[4]],[[0,0,0,0,1]],[[3,1,2,0]],[[1],[1],[1],[1],[1]]</TT></DIV><HR>
 <A HREF="cascmd_fr798.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr800.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,49 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le vecteur en 3-d : vecteur</TITLE>
+<TITLE>Les points d’intersection de deux objets géométriques : inter</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr995.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr997.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1166">11.5.5</A>  Le vecteur en 3-d : <TT>vecteur</TT></H3><P><A NAME="@default1936"></A>
-<A NAME="sec:vecteur3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr887.html#sec:vecteur2">10.9.5</A> pour la géométrie plane.<BR>
-<TT>vecteur</TT>, en géométrie 3-d, a comme arguments soit :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-une liste représentant les coordonnées d’un point <I>A</I>.<BR>
-<TT>vecteur</TT> définit et dessine le vecteur <I>OA</I> où <I>O</I> est l’origine du repère.
-</LI><LI CLASS="li-itemize">deux points <I>A</I>,<I>B</I> ou deux listes représentant les coordonnées de ces 
-points.<BR>
-<TT>vecteur</TT> définit et dessine le vecteur <I>AB</I>
-</LI><LI CLASS="li-itemize">un point <I>A</I> (ou une liste représentant les coordonnées de ce point) 
-et un vecteur <I>V</I> (définition récursive).<BR>
-<TT>vecteur</TT> définit et dessine le vecteur <I>AB</I> tel que
-<I>AB</I>=<I>V</I>.
-</LI></UL><P>
+<H3 CLASS="subsection"><A NAME="htoc1170">11.4.4</A>  Les points d’intersection de deux objets géométriques : <TT>inter</TT></H3><P><A NAME="@default1938"></A><A NAME="sec:inter3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr882.html#sec:inter2">10.8.6</A> pour la géométrie plane.<BR>
+<TT>inter</TT> a 2 arguments qui sont deux objets géométriques.<BR>
+<TT>inter</TT> renvoie la liste des points (ou la courbe) d’intersection de ces 
+deux objets géométriques.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>vecteur([1,2,3])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>LA:=inter(plan(point(0,1,1),point(1,0,1),point(1,1,0)),droite(point(0,0,0),point(1,1,1)))</TT></DIV><DIV CLASS="center"><TT>coordonnees(LA)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le tracé du vecteur d’origine [0,0,0] et d’extrémité [1,2,3]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[2/3,2/3,2/3]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>vecteur(point([-1,0,0]),point([0,1,2]))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>vecteur([-1,0,0],[0,1,2])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>LB:=inter(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)))</TT></DIV><DIV CLASS="center"><TT>coordonnees(LB)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le tracé du vecteur d’origine [-1,0,0] et d’extrémité [0,1,2]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))],[-(1/(sqrt(3))),-(1/(sqrt(3))),-(1/(sqrt(3)))]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>V:=vecteur([-1,0,0],[0,1,2])</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>vecteur(point([-1,2,0]),V)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>vecteur([-1,2,0],V)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>coordonnees(LB[0])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le tracé du vecteur d’origine [-1,2,0] et d’extrémité [0,3,2]</TT></DIV><P>
-<B>Remarque</B><BR>
-En calcul formel, on travaille sur la liste des coordonnées des vecteurs que 
-l’on obtient avec la commande <TT>coordonnees</TT> (cf <A HREF="cascmd_fr1025.html#sec:coordonnees3">11.12.4</A>).</P><HR>
+</P><DIV CLASS="center"><TT>[1/(sqrt(3)),1/(sqrt(3))]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>coordonnees(LB[1])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-(1/(sqrt(3))),-(1/(sqrt(3))),-(1/(sqrt(3)))]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>C:=inter(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)),point([1/2,1,2,1/2]))</TT></DIV><DIV CLASS="center"><TT>coordonnees(C)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>LB:=inter(sphere(point(0,0,0),1),plan(point(0,0,0),point(1,0,0),point(1,1,0)))[0]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>un cercle</TT></DIV><HR>
 <A HREF="cascmd_fr995.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr997.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

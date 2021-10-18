@@ -6,23 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Sortie dans une petite fenêtre : output Output</TITLE>
+<TITLE>Fonction testant si une touche est pressée : getKey</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr812.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr814.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc953">9.4.11</A>  Sortie dans une petite fenêtre : <TT>output Output</TT></H3><P><A NAME="@default1454"></A><A NAME="@default1455"></A>
-<TT>output</TT> ou <TT>Output</TT> a comme argument une séquence de chaîne de caractères ou de noms de variables.<BR>
-<TT>output</TT> ou <TT>Output</TT> écrit les chaînes de caractères et le contenu
-des variables dans une petite fenêtre (la même que celle qui s’ouvre lors 
-d’un <TT>input</TT>).
-Cela permet donc d’inclure un <TT>output</TT> dans un <TT>input</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc958">9.4.3</A>  Fonction testant si une touche est pressée : <TT>getKey</TT></H3><P><A NAME="@default1445"></A>
+<TT>getKey</TT> est une fonction qui n’a pas d’argument et qui renvoie le
+code <TT>ASCII</TT> de la touche pressée dans l’écran <TT>xterm</TT> de la
+fenêtre du terminal ou <TT>0</TT> si aucune touche n’est pressée dans cet 
+écran .<BR>
 On tape :
-</P><DIV CLASS="center"><TT>input(output("Calcul de p(a)"),"polynome",p,"valeur",a)</TT></DIV><P>
+</P><PRE CLASS="verbatim">testkey():={
+local a;
+while (1==1) {
+a:=getKey();
+if (a!=0) break;
+}
+return a;
+}
+</PRE><P>puis:
+</P><DIV CLASS="center"><TT>testkey()</TT></DIV><P>
+puis:
+</P><DIV CLASS="center"><TT>A</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre ayant pour titre </TT><TT>Calcul de p(a)</TT><TT>, où on peut entrer la valeur de </TT><TT>p</TT><TT> (par exemple x-&gt;x+1) et </TT><TT>a</TT><TT> (par exemple 2)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>65</TT></DIV><HR>
 <A HREF="cascmd_fr812.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr814.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

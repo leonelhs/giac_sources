@@ -6,169 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Intégration par parties : integrer_par_parties_dv ibpdv et integrer_par_parties_u ibpu</TITLE>
+<TITLE>Primitive et intégrale définie : risch</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr302.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr304.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc382">6.20.5</A>  Intégration par parties : <TT>integrer_par_parties_dv ibpdv</TT> et <TT>integrer_par_parties_u ibpu</TT></H3><H4 CLASS="subsubsection"><A NAME="toc14"></A><TT>ibpdv</TT></H4><P><A NAME="@default562"></A>
-<TT>ibpdv</TT> permet de chercher une primitive (ou de calculer une 
-intégrale définie) d’une expression de la forme <I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>).<BR>
-<TT>ibpdv</TT> a deux paramètres pour les primitives et cinq paramètres pour 
-les intégrales définies :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-soit une expression de la forme
-<I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>) et <I>v</I>(<I>x</I>) (ou une liste de deux expressions 
-[<I>F</I>(<I>x</I>), <I>u</I>(<I>x</I>)*<I>v</I>′(<I>x</I>)] et <I>v</I>(<I>x</I>)),
-</LI><LI CLASS="li-itemize">soit une expression de la forme
-<I>g</I>(<I>x</I>) et 0 (ou une liste de deux expressions [<I>F</I>(<I>x</I>), <I>g</I>(<I>x</I>)] et 0).
-</LI><LI CLASS="li-itemize">pour les intégrales définies, il faut rajouter trois autres 
-paramètres : le nom de la variable et les bornes. 
-</LI></UL><P>
-Lorsque <TT>ibpdv</TT> a 2 arguments <TT>ibpdv</TT> renvoie :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>v</I>(<I>x</I>) ≠ 0, une liste formée de <I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>) (ou une liste formée de <I>F</I>(<I>x</I>)+<I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>) et de 
-−<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>)),
-</LI><LI CLASS="li-itemize">si le deuxième argument est nul, une primitive de 
-<I>g</I>(<I>x</I>) (le premier argument) (ou <I>F</I>(<I>x</I>)+une primitive de <I>g</I>(<I>x</I>)) :<BR>
-donc, <TT>ibpdv(g(x),0)</TT> renvoie une primitive <TT>G(x)</TT> de <TT>g(x)</TT> ou<BR>
-<TT>ibpdv([F(x),g(x)],0)</TT> renvoie <TT>F(x)+G(x)</TT> où <TT>diff(G(x))=g(x)</TT>.
-</LI></UL><P>
-C’est à dire <TT>ibpdv</TT> renvoie les termes que l’on doit calculer quand on 
-fait une intégration par parties, en faisant éventuellement plusieurs 
-<TT>ibpdv</TT> à la suite.<BR>
-Ainsi, lorsque l’on vient d’utiliser la commande <TT>ibpdv(u(x)*v’(x),v(x))</TT>, 
-il reste alors
-à calculer l’intégrale du deuxième terme puis à 
-faire la somme avec le premier terme pour obtenir une primitive de <I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>): pour cela on peut utiliser à nouveau la commande <TT>ibpdv</TT> avec comme 
-premier paramètre la liste obtenue et comme deuxième paramètre un 
-nouveau <I>v</I>(<I>x</I>) (ou 0 pour terminer l’intégration).<BR>
+<H3 CLASS="subsection"><A NAME="htoc382">6.20.2</A>  Primitive et intégrale définie : <TT>risch</TT></H3><P><A NAME="@default562"></A>
+<TT>risch</TT> calcule une primitive ou une intégrale définie par
+l’algorithme de Risch.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>ibpdv(ln(x),x) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>risch(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x.ln(x),-1]</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>ibpdv([x.ln(x),-1],0) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-x+x.ln(x)</TT></DIV><P>Lorsque <TT>ibpdv</TT> a 5 arguments <TT>ibpdv(u(x)*v’(x),v(x),x,a,b)</TT> ou
-<TT>ibpdv([F(x),u(x)*v’(x),v(x),x,a,b)</TT> renvoie :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>v</I>(<I>x</I>) ≠ 0, une liste formée de <I>u</I>(<I>b</I>).<I>v</I>(<I>b</I>)−<I>u</I>(<I>a</I>).<I>v</I>(<I>a</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>) (ou une liste formée de <I>F</I>(<I>b</I>)+<I>u</I>(<I>b</I>).<I>v</I>(<I>b</I>)−<I>F</I>(<I>a</I>)−<I>u</I>(<I>a</I>).<I>v</I>(<I>a</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>)),
-</LI><LI CLASS="li-itemize">si le deuxième argument est nul, <TT>ibpdv(g(x),0,x,a,b)</TT>
-renvoie <I>G</I>(<I>b</I>)−<I>G</I>(<I>a</I>) où <I>G</I>(<I>x</I>) est une primitive du premier argument 
-<I>g</I>(<I>x</I>) et<BR>
-<TT>ibpdv([F(x),g(x)],0,x,a,b)</TT>
-renvoie <I>F</I>(<I>x</I>)+<I>G</I>(<I>b</I>)−<I>G</I>(<I>a</I>) où <I>G</I>(<I>x</I>) est une primitive de 
-<I>g</I>(<I>x</I>)) de façon à pouvoir faire plusieurs <TT>ibpdv</TT> à la suite.
-</LI></UL><P>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>ibpdv(ln(x),x,x,2,3) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>risch(x</TT><CODE><TT>^</TT></CODE><TT>2,x,0,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[3*ln(3)-2*ln(2),-1]</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>ibpdv([3*ln(3)-2*ln(2),-1],0,x,2,3) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-1+3*ln(3)-2*ln(2)</TT></DIV><P>
-<B>Remarque</B><BR>
- Lorsque le premier paramètre de <TT>ibpdv</TT> est une liste de deux
-éléments, <TT>ibpdv</TT> n’agit que sur le dernier élément de cette 
-liste et ajoute le terme intégré au premier élément de la liste 
-(de façon à pouvoir faire plusieurs <TT>ibpdv</TT> à la suite).<BR>
-On a par exemple :<BR>
-<TT>ibpdv((log(x))</TT><CODE><TT>^</TT></CODE><TT>2,x) = [x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))]</TT><BR>
-il reste à intégrer <TT>-(2*log(x))</TT>, on utilise <TT>ibpdv(ans(),x)</TT> ou 
-on tape :<BR>
-<TT>ibpdv([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))],x)</TT><BR>
-On obtient :<BR>
-<TT>[x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2]</TT><BR>
-et il reste à intégrer <TT>2</TT>, on utilise <TT>ibpdv(ans(),0)</TT> :<BR>
-<TT>ibpdv([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2],0)</TT>.<BR>
-On obtient :
-<TT>x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x)))+2*x</TT>
-</P><H4 CLASS="subsubsection"><A NAME="toc15"></A><TT>ibpu</TT></H4><P><A NAME="@default563"></A>
-<TT>ibpu</TT> permet de chercher une primitive (ou de calculer une 
-intégrale définie) d’une expression de la forme <I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>).<BR>
-<TT>ibpu</TT> a deux paramètres pour les primitives et cinq paramètres pour 
-les intégrales définies : 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-soit une expression de la forme 
-<I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>) et <I>u</I>(<I>x</I>) (ou une liste de deux expressions [<I>F</I>(<I>x</I>), <I>u</I>(<I>x</I>)*<I>v</I>′(<I>x</I>)] 
-et <I>u</I>(<I>x</I>)),
-</LI><LI CLASS="li-itemize">soit une expression de la forme 
-<I>g</I>(<I>x</I>) et 0 (ou une liste de deux expressions [<I>F</I>(<I>x</I>), <I>g</I>(<I>x</I>)] 
-et 0).
-</LI><LI CLASS="li-itemize">pour les intégrales définies, il faut rajouter trois autres 
-paramètres : le nom de la variable et les bornes. 
-</LI></UL><P>
-Lorsque <TT>ibpu</TT> a 2 arguments <TT>ibpu</TT> renvoie :
-<TT>ibpu</TT> renvoie :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>u</I>(<I>x</I>) ≠ 0, une liste formée de <I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>) et de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>) 
-(ou une liste formée de <I>F</I>(<I>x</I>)+<I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>) et de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>)),
-</LI><LI CLASS="li-itemize">si le deuxième argument est nul, une primitive de
-<I>g</I>(<I>x</I>) (le premier argument) 
-(ou <I>F</I>(<I>x</I>)+une primitive de <I>g</I>(<I>x</I>)):<BR>
-<TT>ibpu(g(x),0)</TT> renvoie <TT>G(x)</TT> où <TT>diff(G(x))=g(x)</TT> ou<BR>
- <TT>ibpu([F(x),g(x)],0)</TT> renvoie <TT>F(x)+G(x)</TT> où <TT>diff(G(x))=g(x)</TT>.
-</LI></UL><P>
-c’est à dire <TT>ibpu</TT> renvoie les termes que l’on doit calculer quand on 
-fait une intégration par parties, en faisant éventuellement plusieurs 
-<TT>ibpu</TT> à la suite.<BR>
-Ainsi, lorsque l’on vient d’utiliser la commande <TT>ibpu(u(x)*v’(x),u(x))</TT>, 
-il reste à calculer l’intégrale du deuxième terme puis à faire la somme 
-avec le premier terme pour obtenir une primitive de <I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>). Pour cela, 
-on peut utiliser à nouveau la commande <TT>ibpu</TT> avec comme 
-premier paramètre la liste obtenue et comme deuxième paramètre un 
-nouveau <I>u</I>(<I>x</I>) (ou 0 pour terminer l’intégration).<BR>
+</P><DIV CLASS="center"><TT>1/3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>ibpu(ln(x),ln(x)) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>risch(exp(-x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x.ln(x),-1]</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>ibpu([x.ln(x),-1],0) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-x+x.ln(x)</TT></DIV><P>Lorsque <TT>ibpu</TT> a 5 arguments <TT>ibpu(u(x)*v’(x),u(x),x,a,b)</TT> ou
-<TT>ibpu([F(x),u(x)*v’(x)],u(x),x,a,b)</TT> renvoie :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>u</I>(<I>x</I>) ≠ 0, une liste formée de <I>u</I>(<I>b</I>).<I>v</I>(<I>b</I>)−<I>u</I>(<I>a</I>).<I>v</I>(<I>a</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>) (ou une liste formée de <I>F</I>(<I>b</I>)+<I>u</I>(<I>b</I>).<I>v</I>(<I>b</I>)−<I>F</I>(<I>a</I>)−<I>u</I>(<I>a</I>).<I>v</I>(<I>a</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>)),
-</LI><LI CLASS="li-itemize">si le deuxième argument est nul, <TT>ibpu(g(x),0,x,a,b)</TT>
-renvoie <I>G</I>(<I>b</I>)−<I>G</I>(<I>a</I>) où <I>G</I>(<I>x</I>) une primitive de 
-<I>g</I>(<I>x</I>) (le premier argument) (ou <TT>ibpu([F(x),g(x)],0,x,a,b)</TT>)
-renvoie <I>F</I>(<I>x</I>)+<I>G</I>(<I>b</I>)−<I>G</I>(<I>a</I>) où <I>G</I>(<I>x</I>) est une primitive de 
-<I>g</I>(<I>x</I>)) de façon à pouvoir faire plusieurs <TT>ibpu</TT> à la suite.
-</LI></UL><P>
-On tape :
-</P><DIV CLASS="center"><TT>ibpu(ln(x),ln(x),x,2,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[3*ln(3)-2*ln(2),-1]</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>ibpu([3*ln(3)-2*ln(2),-1],0,x,2,3) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-1+3*ln(3)-2*ln(2)</TT></DIV><P>
-<B>Remarque</B><BR>
-Lorsque le premier paramètre de <TT>ibpu</TT> est une liste de deux 
-éléments, <TT>ibpu</TT> n’agit que sur le dernier élément de cette liste 
-et ajoute le terme intégré au premier élément de la liste (de façon à 
-pouvoir faire plusieurs <TT>ibpu</TT> à la suite).<BR>
-
-On a par exemple :<BR>
-<TT>ibpu((log(x))</TT><CODE><TT>^</TT></CODE><TT>2,log(x)) = [x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))]</TT><BR>
-il reste à intégrer <TT>-(2*log(x))</TT>, on utilise <TT>ibpu(ans(),log(x))</TT> 
-ou on tape:<BR>
-<TT>ibpu([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))],log(x))</TT><BR>
-On obtient :<BR>
-<TT>[x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2]</TT><BR>
-et il reste à intégrer <TT>2</TT>, on utilise <TT>ibpu(ans(),0)</TT> :<BR>
-<TT>ibpu([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2],0)</TT>.<BR>
-On obtient :
-<TT>x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x)))+2*x</TT></P><HR>
+</P><DIV CLASS="center"><TT>∫</TT><TT> exp(x</TT><CODE><TT>^</TT></CODE><TT>2) dx</TT></DIV><P>
+ce qui signifie que exp(−<I>x</I><SUP>2</SUP>) n’a pas de primitive exprimable avec des 
+fonctions connues.</P><HR>
 <A HREF="cascmd_fr302.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr304.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

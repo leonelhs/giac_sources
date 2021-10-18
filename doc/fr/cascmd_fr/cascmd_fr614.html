@@ -6,76 +6,148 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Norme : COND cond</TITLE>
+<TITLE>Écriture matricielle et algorithme du simplexe</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr613.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr615.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc722">6.49.5</A>  Norme : <TT>COND cond</TT></H3><P><A NAME="@default1122"></A><A NAME="@default1123"></A>
-<TT>COND</TT> ou <TT>cond</TT> a a deux arguments : une matrice <TT>A</TT> 
-inversible et <TT>1</TT> ou <TT>2</TT> ou <TT>inf</TT> et par défaut <TT>1</TT>.<BR>
-<TT>COND</TT> renvoie le nombre de condition de cette matrice <TT>A</TT> c’est à 
-dire :<BR>
-||| <I>A</I>|| *||| <I>A</I><SUP>−1</SUP>||| où ||| ||| désigne la 
-norme triple d’une matrice inversible qui est subordonnée à <I>l</I><SUB>1</SUB> 
-(resp <I>l</I><SUB>2</SUB> ou <I>l</I><SUP>∞</SUP>) si il n’y a pas de second argument ou si le 
-second argument est <TT>1</TT> (resp <TT>2</TT> ou <TT>inf</TT>)
-On a donc :<BR>
-<TT>COND(A)</TT> ou <TT>cond(A)</TT> ou <TT>cond(A,1)</TT> renvoie le nombre de 
-condition de <TT>A</TT> pour la norme <I>l</I><SUB>1</SUB>,<BR>
-<TT>COND(A,2)</TT> ou <TT>cond(A,2)</TT> renvoie le nombre de condition de <TT>A</TT> 
-pour la norme <I>l</I><SUB>2</SUB>.<BR>
-<TT>COND(A,inf)</TT> ou <TT>cond(A,inf)</TT> renvoie le nombre de condition de 
-<TT>A</TT> pour la norme <I>l</I><SUP>∞</SUP>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc726">6.53.2</A>  Écriture matricielle et algorithme du simplexe</H3><P>
+Un simplexe est une portion de ℝ<SUP><I>n</I></SUP> délimitée par des 
+hyperplans.<BR>
+L’algorithme du simplexe sert à maximiser une fonction linéaire
+sous des contraintes d’égalité ou d’inégalité linéaire.
+Le principe de l’algorithme consiste à trouver un sommet du simplexe
+défini par les contraintes, puis à sélectionner une arête
+et la suivre jusqu’au sommet suivant, la sélection se faisant
+de sorte à ne jamais diminuer la valeur de la fonction linéaire.
+On effectue donc les étapes suivantes
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-La norme triple de la matrice <TT>A</TT> subordonnée à <I>l</I><SUB>1</SUB> est 
-<TT>colnorm</TT> qui est :<BR>
-<TT>max(sum(abs(A[j,k]),j=0..size(A)-1)$(k=0..size(A)-1))</TT> i.e. le 
-maximum des sommes des valeurs absolues des éléments situés sur
-les colonnes de la matrice.<BR>
-<TT>COND(A)</TT> ou <TT>cond(A)</TT> ou <TT>cond(A,1)</TT> renvoie donc :<BR>
-<TT>colnorm(A)*colnorm(inv(A))</TT>.
-</LI><LI CLASS="li-itemize">La norme triple de la matrice <TT>A</TT> subordonnée à <I>l</I><SUB>2</SUB> est 
-<TT>max(SVL(A))</TT> :<BR>
-c’est la plus grande valeur singulière de <TT>A</TT> i.e la 
-plus grande valeur de la racine carrée des valeurs propres de <TT>A*trn(A)</TT>.<BR>
-<TT>COND(A,2)</TT> ou <TT>cond(A,2)</TT> renvoie donc :<BR>
-<TT>max(SVL(A))*max(SVL(inv(A)))</TT>
-</LI><LI CLASS="li-itemize">La norme triple de la matrice <TT>A</TT> subordonnée à <I>l</I><SUP>∞</SUP> est 
-<TT>rownorm</TT> qui est :<BR>
-<TT>max(sum(abs(A[j,k]),k=0..size(A)-1)$(j=0..size(A)-1))</TT> i.e. le 
-maximum des sommes des valeurs absolues des éléments situés sur
-les lignes de la matrice.<BR>
-<TT>COND(A,inf)</TT> ou <TT>cond(A,inf)</TT> renvoie donc :<BR>
-<TT>rownorm(A)*rownorm(inv(A))</TT>.
+réécrire les contraintes impliquant une seule variable
+sous la forme <I>x</I><SUB><I>k</I></SUB> ≥ 0, éliminer si possible par pivot de Gauss
+les variables sans contraintes (ou ajouter des variables). À la fin de cette
+étape, on doit avoir pour contraintes que toutes les composantes des
+éléments du simplexe sont positives.
+</LI><LI CLASS="li-itemize">transformer si nécessaire les contraintes d’inégalité
+restante en égalité (par ajout de variables d’écart) avec un
+second membre positif,
+</LI><LI CLASS="li-itemize">construire un sommet s’il en existe (ce qui dans les cas
+non évidents se fait en optimisant une fonction artificielle),
+</LI><LI CLASS="li-itemize">passer de sommet à sommet.
 </LI></UL><P>
-On tape :
-</P><DIV CLASS="center"><TT>COND([[1,2,3],[3,-9,6],[4,5,6]])</TT></DIV><P>
+Un sommet va être caractérisé dans la suite par ses composantes
+nulles et ses composantes non nulles. La représentation matricielle
+associée à un sommet des contraintes d’égalité
+fait apparaitre une sous-matrice identité dans les
+colonnes correspondant aux composantes non nulles du sommet. 
+Par exemple, si on part du problème, chercher :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(2<I>x</I>+<I>y</I>−<I>z</I>+4)  lorsque 
+</TD><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>x</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>1 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>y</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>x</I>+3<I>y</I>−<I>z</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>2<I>x</I>−<I>y</I>+<I>z</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>8</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+on pose <I>x</I>=1−<I>X</I>, <I>y</I>=<I>Y</I>+2, donc on cherche :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(−2<I>X</I>+<I>Y</I>−<I>z</I>+8)  lorsque 
+</TD><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>X</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>Y</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>1−<I>X</I>+3(<I>Y</I>+2)−<I>z</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=left NOWRAP>2 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>2(1−<I>X</I>)−(<I>Y</I>+2)+<I>z</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>8</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+puis on élimine <I>z</I> par la contrainte d’égalité <I>z</I>=5−<I>X</I>+3<I>Y</I> et on cherche :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(−2<I>X</I>+<I>Y</I>−(5−<I>X</I>+3<I>Y</I>)+8)   lorsque 
+</TD><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><I>X</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP><I>Y</I></TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>−2<I>X</I>−<I>Y</I>+ 5−<I>X</I>+3<I>Y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>8</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+cela revient donc à chercher :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">max(−<I>X</I>−2<I>Y</I>+3)   lorsque 
+</TD><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>(<I>X</I>,<I>Y</I>)</TD><TD ALIGN=center NOWRAP>≥</TD><TD ALIGN=left NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=right NOWRAP>−3<I>X</I> +2<I>Y</I></TD><TD ALIGN=center NOWRAP>≤</TD><TD ALIGN=left NOWRAP>3</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> 
+</TD></TR>
+</TABLE><P>
+Il faut ici ajouter une variable d’écart <I>t</I> ≥ 0 pour
+transformer la dernière inégalité en égalité :<BR>
+on pose <I>t</I>=3−(−3<I>X</I> +2<I>Y</I>) et on a alors<BR>
+<I>t</I> ≥ 0 et −3<I>X</I> +2<I>Y</I>+<I>t</I>=3 est équivalent à −3<I>X</I> +2<I>Y</I> ≤ 3, et 
+cela donne un sommet de départ évident.
+La matrice correspondant à ces conditions est alors la ligne
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(−3, 2, 1, 3 ) </TD></TR>
+</TABLE><P>
+le sommet de départ associé est (<I>X</I>,<I>Y</I>,<I>t</I>)=(0,0,3) 
+la sous-matrice identité utilise la 3ème colonne (<I>t</I> est le coefficient
+non nul).
+On pourrait passer le coefficient non nul en 2ème colonne
+(sommet (<I>X</I>,<I>Y</I>,<I>t</I>)=(0,3/2,0)) en réécrivant l’égalité sous la forme
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(−3/2, 1, 1/2, 3/2 ) </TD></TR>
+</TABLE><P>
+mais on ne pourrait passer le coefficient non nul en 1ère colonne
+(il n’y a en effet que 2 sommets à ce simplexe).<BR>
+Avec <TT>Xcas</TT>, on tape : 
+</P><DIV CLASS="center"><TT>simplex_reduce([[-3,2]],[3],[-1,-2])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>27.8518518519</TT></DIV><P>
-En effet, si <TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT> on tape :<BR>
-<TT>colnorm(B),colnorm(inv(B)),colnorm(B)*colnorm(inv(B)) </TT><BR>
-On obtient :<BR>
-<TT>16,47/27,752/27</TT> et 752/27≃27.8518518519<BR>
-On tape :
-</P><DIV CLASS="center"><TT>COND([[1,2,3],[3,-9,6],[4,5,6]],2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>14.807741389</TT></DIV><P>
-En effet, si <TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT> on tape :<BR>
-<TT>max(SVL(B)),max(SVL(inv(B))),max(SVL(B))*max(SVL(inv(B)))</TT><BR>
- On obtient :<BR>
-<TT>11.2449175989,1.31683858585,14.807741389</TT><BR>
-On tape :
-</P><DIV CLASS="center"><TT>COND([[1,2,3],[3,-9,6],[4,5,6]],inf)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>28</TT></DIV><P>
-En effet, si <TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT> on tape :<BR>
-<TT>rownorm(B),rownorm(inv(B)),rownorm(B)*rownorm(inv(B))</TT><BR>
-On obtient :<BR>
-<TT>18,14/9,28</TT>
-</P><HR>
+</P><DIV CLASS="center"><TT>(0,[0,0,3],[[-3,2,1,3],[1,2,0,0]])</TT></DIV><P>En général, 
+le passage d’un sommet à un autre sommet consiste alors à effectuer
+une opération de réduction de Gauss qui fait sortir une colonne
+et entrer une autre colonne dans les composantes non nulles du sommet,
+ce qui revient à déplacer la sous-matrice identité. On doit
+prendre garde à effectuer l’opération de réduction de Gauss
+en conservant la positivité du membre de droite des contraintes
+de l’égalité, et ce sans diminuer la valeur de la fonction
+à optimiser. Pour pouvoir réaliser cette dernière condition,
+on augmente la matrice des contraintes
+d’égalité par une ligne formée des opposés des coefficients 
+de la fonction à maximiser, sauf en dernière colonne (on y met
+le coefficient constant de la fonction à maximiser). Dans l’exemple
+ce serait
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell">
+</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>−3</TD><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>3 </TD></TR>
+<TR><TD ALIGN=center NOWRAP> 1</TD><TD ALIGN=center NOWRAP>2</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>3</TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+</TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
+On crée (si nécessaire) des zéros dans cette dernière
+ligne dans les colonnes correspondant à la sous-matrice identité
+(donc aux composantes non nulles du sommet), de sorte que le
+coefficient constant de la ligne (après cette réduction)
+représente la valeur de la fonction à optimiser en ce sommet.
+Plus générallement pour un point du simplexe, 
+au cours de la réduction la somme de la fonction à maximiser et
+du produit scalaire des coordonnés du point avec cette dernière
+ligne (privé du dernier coefficient) vaut le dernier coefficient.
+On aura donc un sommet réalisant le maximum si tous les coefficients
+de la ligne sont positifs (sauf le dernier). C’est le cas ici, le
+maximum est 3, atteint pour <I>X</I>=<I>Y</I>=0 (donc <I>x</I>=1, <I>y</I>=2 et <I>z</I>=5).</P><P>L’instruction <TT>simplex_reduce</TT> de <TT>Xcas</TT> applique l’algorithme
+du simplexe dans deux situations distinctes : soit le problème
+est posé sous forme “canonique” et on lui donne 3 arguments
+(cf. infra), soit on lui donne un seul argument qui doit être
+une matrice “associée à un sommet” au sens de ce paragraphe.</P><HR>
 <A HREF="cascmd_fr613.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr615.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

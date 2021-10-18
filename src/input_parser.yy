@@ -399,10 +399,10 @@ exp	: T_NUMBER		{$$ = $1;}
           $$=symbolic(*$1._FUNCptr,makevecteur(symb_sto($3,$2),$6,symb_sto(symb_plus($2,$4),$2),symb_bloc($8))); 
         }
 	| T_FOR {$$ = gen(*$1._FUNCptr,4);}
-	| T_DO prg_suite T_BLOC_END { 
+	/* | T_DO prg_suite T_BLOC_END { 
           if ($3.type==_INT_ && $3.val && $3.val!=2 && $3.val!=9) giac_yyerror(scanner,"missing loop end delimiter");
            vecteur v=makevecteur(zero,plus_one,zero,symb_bloc($2)); $$=symbolic(*$1._FUNCptr,v); 
-         }
+         } */
 	| T_REPEAT prg_suite T_UNTIL exp { 
         vecteur v=gen2vecteur($2);
         v.push_back(symb_ifte(equaltosame($4),symbolic(at_break,zero),0));

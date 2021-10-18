@@ -6,42 +6,86 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Reconnaitre une isométrie : isom</TITLE>
+<TITLE>Polynôme caractéristique : pcar charpoly</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr628.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr630.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc739">6.51.1</A>  Reconnaitre une isométrie : <TT>isom</TT></H3><P><A NAME="@default1149"></A>
-<TT>isom</TT> a comme argument la matrice d’une application linéaire 
-en dimension 2 ou 3.<BR>
-<TT>isom</TT> renvoie :
+<H3 CLASS="subsection"><A NAME="htoc743">6.55.7</A>  Polynôme caractéristique : <TT>pcar charpoly</TT></H3><P><A NAME="@default1150"></A><A NAME="@default1151"></A><A NAME="@default1152"></A><A NAME="@default1153"></A>
+<A NAME="@default1154"></A><A NAME="@default1155"></A>
+<TT>pcar</TT> (ou <TT>charpoly</TT>) a un (resp deux)
+argument(s).<BR>
+<TT>pcar</TT> (ou <TT>charpoly</TT>) a comme argument une matrice <I>A</I> 
+d’ordre <I>n</I> (resp une matrice <I>A</I> d’ordre <I>n</I> et un nom de variable
+formelle).<BR>
+<TT>pcar</TT> (ou <TT>charpoly</TT>) renvoie le polynôme caractéristique <I>P</I> de <I>A</I> écrit selon la 
+liste de ses coefficients (resp le polynôme caractéristique <I>P</I> de <I>A</I> 
+écrit sous forme symbolique en utilisant le nom de variable donnée en 
+argument).<BR>
+Le polynôme caractéristique <I>P</I> de <I>A</I> est défini par
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>(<I>x</I>)=det(<I>x</I>.<I>I</I>−<I>A</I>)</TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV><P>
+Donc le polynôme caractéristique de [[4,1,-2],[1,2,-1],[2,1,0]]
+est 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>3</SUP>−6<I>x</I><SUP>2</SUP>+12<I>x</I>−8 </TD></TR>
+</TABLE><P> 
+On peut aussi avoir la forme symbolique en tapant :<BR>
+ <TT>normal(poly2symb([1,-6,12,-8]))</TT>).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>purge(X):;pcar([[4,1,-2],[1,2,-1],[2,1,0]],X)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>X</TT><CODE><TT>^</TT></CODE><TT>3-6*X</TT><CODE><TT>^</TT></CODE><TT>2+12*X-8</TT></DIV><P>
+On peut spécifier par un argument optionnel l’algorithme utilisé
+pour faire ce calcul, parmi :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si l’application linéaire est une isométrie directe,<BR>
-la liste des éléments caractéristiques et <TT>+1</TT>
-</LI><LI CLASS="li-itemize">si l’application linéaire est une isométrie indirecte,<BR>
-la liste des éléments caractéristiques et <TT>-1</TT> 
-</LI><LI CLASS="li-itemize">si l’application linéaire n’est pas une isométrie,<BR>
-<TT>[0]</TT>.
+<CODE>lagrange</CODE> : calcul par interpolation de Lagrange, en
+donnant à <I>x</I> les valeurs comprises entre 0 et la dimension.<BR>
+On tape :
+<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],lagrange)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>x*((x-1)*(-x+5)-7)+8</TT></DIV>
+et après simplification :
+<DIV CLASS="center"><TT>-x</TT><CODE><TT>^</TT></CODE><TT>3+6*x</TT><CODE><TT>^</TT></CODE><TT>2-12*x+8</TT></DIV>
+</LI><LI CLASS="li-itemize"><CODE>hessenberg</CODE> : calcul par réduction sous forme
+tri-diagonale puis formule de récurrence, efficace sur
+un corps fini.<BR>
+On tape :
+<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],hessenberg)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV>
+</LI><LI CLASS="li-itemize"><CODE>fadeev</CODE> : calcul simultané du polynôme
+caractéristique et de la comatrice de <I>xI</I>−<I>A</I>
+On tape :
+<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],fadeev)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV>
+</LI><LI CLASS="li-itemize"><CODE>pmin</CODE> : calcul du polynôme minimal relatif à un
+vecteur pris au hasard, c’est le polynôme caractéristique 
+s’il est de degré maximal.<BR>
+On tape :
+<DIV CLASS="center"><TT>pcar([[4,1,-2],[1,2,-1],[2,1,0]],pmin)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV>
 </LI></UL><P>
-On tape :
-</P><DIV CLASS="center"><TT>isom([[0,0,1],[0,1,0],[1,0,0]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,0,-1],-1]</TT></DIV><P>
-ce qui veut dire que cette isométrie est une symétrie par rapport au plan 
-<I>x</I> − <I>z</I> = 0.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>isom(sqrt(2)/2*[[1,-1],[1,1]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[pi/4,1]</TT></DIV><P>
-cette isométrie est donc une rotation plane d’angle  π/4.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>isom([[0,0,1],[0,1,0],[0,0,1]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0]</TT></DIV><P>
-ce qui veut dire que ce n’est pas une isométrie.
-</P><HR>
+Pour les matrices à coefficients entiers, l’algorithme utilisé par
+défaut est modulaire, on calcule le polynôme caractéristique
+modulo plusieurs nombres premiers, soit par le polynôme minimal,
+soit par Hessenberg, et on reconstruit par les restes chinois
+coefficient par coefficient. Le test d’arrêt est probabiliste,
+lorsque le polynôme reconstruit ne varie plus pour des nombres
+premiers dont le produit est supérieur à l’inverse de
+la valeur de <CODE>proba_epsilon</CODE> (que l’on peut modifier
+dans la configuration du cas). Si <CODE>proba_epsilon</CODE> est nul,
+le résultat est déterministe (une majoration à priori des
+coefficients est alors utilisée). Dans tous les cas, le temps
+de calcul est en <I>O</I>(<I>n</I>4ln(<I>n</I>)), mais il est plus rapide avec la méthode
+probabiliste.</P><HR>
 <A HREF="cascmd_fr628.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr630.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

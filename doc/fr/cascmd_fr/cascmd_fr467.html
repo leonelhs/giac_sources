@@ -6,46 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour accéder aux bornes d’une plage de valeurs : left gauche right droit</TITLE>
+<TITLE>Résidu d’une expression en un point : residue</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr466.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr468.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc563">6.37.2</A>  Pour accéder aux bornes d’une plage de valeurs : <TT>left gauche right droit</TT></H3><P><A NAME="@default831"></A><A NAME="@default832"></A><A NAME="@default833"></A><A NAME="@default834"></A><A NAME="@default835"></A><A NAME="@default836"></A> <A NAME="@default837"></A><A NAME="@default838"></A>
-<TT>left</TT> (resp <TT>right</TT>) a comme argument un intervalle.<BR>
-<TT>left</TT> (resp <TT>right</TT>) permet d’accéder à la partie 
-gauche (resp droite) de l’intervalle.<BR>
+<H3 CLASS="subsection"><A NAME="htoc562">6.36.5</A>  Résidu d’une expression en un point : <TT>residue</TT></H3><P><A NAME="@default832"></A>
+<TT>residue</TT> a comme argument une expression dépendant d’une variable, 
+le nom de cette variable et un complexe <I>a</I> ou bien une expression dépendant 
+d’une variable et l’égalité : nom_de_variable=<I>a</I>.
+<TT>residue</TT> renvoie le résidu de cette exppression au point <I>a</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>(3..5)[0]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>residue(cos(x)/x</TT><CODE><TT>^</TT></CODE><TT>3,x,0)</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>sommet(3..5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>residue(cos(x)/x</TT><CODE><TT>^</TT></CODE><TT>3,x=0)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>’..’</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(-1)/2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>left(3..5)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>(3..5)[1]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>feuille(3..5)[0]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>op(3..5)[0]</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+</P><DIV CLASS="center"><TT>int(exp(i*t)/(2*exp(i*t)-1),t=0..2*pi)</TT></DIV><P>
+On obtient :<BR>
+Searching int of 1/(2*<I>t</I>−1) where <I>t</I> is on the unit circle, using residues
+</P><DIV CLASS="center"><TT>(2*pi)/2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>right(3..5)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>(2..5)[2]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>feuille(3..5)[1]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>op(3..5)[1]</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>5</TT></DIV><P>
-<B>Remarque</B><BR>
-<TT>left</TT> et <TT>right</TT> permettent aussi d’accéder aux membres d’une 
-équation (par exemple <TT>left(2*x+1=x+2)</TT> renvoie <TT>2*x+1</TT>).</P><HR>
+</P><DIV CLASS="center"><TT>int(exp(2*i*t)/(2*exp(i*t)-1))</TT><CODE><TT>^</TT></CODE><TT>2,t=0..2*pi)</TT></DIV><P>
+On obtient :<BR>
+Searching int of <I>t</I>/(4*<I>t</I><SUP>2</SUP>−4*<I>t</I>+1) where <I>t</I> is on the unit circle, using residues
+</P><DIV CLASS="center"><TT>(2*pi)/4</TT></DIV><HR>
 <A HREF="cascmd_fr466.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr468.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

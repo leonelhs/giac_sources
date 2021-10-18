@@ -6,30 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Algorithme du gradient conjugué : conjugate_gradient</TITLE>
+<TITLE>Décomposition LU (compatible TI): LU</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr643.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr645.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc756">6.53.4</A>  Algorithme du gradient conjugué : <TT>conjugate_gradient</TT></H3><P><A NAME="@default1166"></A>
-<TT>conjugate_gradient(A,y,x0,eps)</TT> met en œuvre l’algorithme du gradient 
-conjugué pour résoudre <I>A</I>*<I>x</I>=<I>y</I> à <I>eps</I> près, lorsque <I>A</I> est une 
-matrice symétrique définie positive et <I>x</I><SUB>0</SUB> une solution initiale 
-approchée optionnelle.<BR>
+<H3 CLASS="subsection"><A NAME="htoc760">6.57.6</A>  Décomposition LU (compatible TI): <TT>LU</TT></H3><P><A NAME="@default1172"></A>
+<TT>LU</TT> a comme argument une matrice carrée numérique d’ordre <I>n</I>
+et trois noms de variables : <TT>var1</TT>, <TT>var2</TT> et <TT>var3</TT>.<BR>
+<TT>LU(A,var1,var2,var3)</TT> renvoie <I>P</I> une matrice de permutation et met :<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+dans <TT>var1</TT>, <I>L</I> une matrice
+triangulaire inférieure avec des 1 sur sa diagonale,
+</LI><LI CLASS="li-itemize">dans <TT>var2</TT>, <I>U</I> une matrice triangulaire supérieure,
+</LI><LI CLASS="li-itemize">dans <TT>var3</TT>, la matrice de permutation <I>P</I> renvoyée.
+</LI></UL><P>
+Ces matrices sont telles que :<BR>
+l’équation <I>A</I>*<I>x</I>=<I>B</I> équivaut à <I>L</I>*<I>U</I>*<I>x</I>=<I>P</I>*<I>B</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>LU([[3,5],[4,5]],L,U,P)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[5/9,-1/9]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[0,1],[1,0]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>L</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0.555,-0.11]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1,0],[0.75,1]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-10)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>U</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0.555555555556,-0.111111111111]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[4,5],[0,1.25]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>P</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[0,1],[1,0]]</TT></DIV><HR>
 <A HREF="cascmd_fr643.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr645.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,38 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Définir une matrice : matrix</TITLE>
+<TITLE>Multiplier une ligne par une expression : mRow et scale SCALE</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr579.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr581.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc685">6.46.31</A>  Définir une matrice : <TT>matrix</TT></H3><P><A NAME="@default1055"></A>
-<TT>matrix</TT> a trois arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-deux entiers <I>n</I> et <I>p</I>.
-</LI><LI CLASS="li-itemize">une fonction de deux variables <TT>j</TT> et <TT>k</TT> égale à la valeur 
-de <I>a</I><SUB><I>j</I>,<I>k</I></SUB> (<TT>j</TT> représente un numéro de ligne et <TT>k</TT> un numéro 
-de colonne).
-</LI></UL><P> 
-<TT>matrix</TT> renvoie la matrice de coefficients 
-<I>a</I><SUB><I>j</I>,<I>k</I></SUB> (<I>j</I>=0..<I>n</I>−1 et <I>k</I>=0..<I>p</I>−1) de dimension <I>n</I> × <I>p</I> si on est en 
-Mode (syntaxe) <TT>xcas</TT> ou renvoie la matrice de coefficients 
-<I>a</I><SUB><I>j</I>,<I>k</I></SUB> (<I>j</I>=1..<I>n</I> et <I>k</I>=1..<I>p</I>) de dimension <I>n</I> × <I>p</I> si on est en Mode 
-(syntaxe) <TT>maple, mupad, ti89/92</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc688">6.49.8</A>  Multiplier une ligne par une expression : <TT>mRow</TT> et <TT>scale SCALE</TT></H3><P><A NAME="@default1051"></A><A NAME="@default1052"></A><A NAME="@default1053"></A>
+<TT>mRow</TT> a trois arguments : une expression, une matrice <I>A</I> et un 
+entier <I>n</I>.<BR>
+<TT>scale</TT> (ou <TT>SCALE</TT>) a trois arguments : une matrice <I>A</I>, une expression
+et un entier <I>n</I>.<BR>
+<B>Attention à l’ordre des arguments !</B><BR>
+<TT>mRow</TT> et <TT>scale</TT> (ou <TT>SCALE</TT>)
+renvoie la matrice obtenue en remplacant dans <I>A</I> la ligne <I>n</I>
+par la multiplication de la ligne <I>n</I> par l’expression.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>matrix(4,3,(j,k)-&gt;j+k)</TT></DIV><P>
-ou on définit la fonction <I>h</I> par : <TT>h(j,k):=j+k</TT> et,<BR>
- on tape :
-</P><DIV CLASS="center"><TT>matrix(4,3,h)</TT></DIV><P>
-On obtient en Mode (syntaxe) <TT>xcas</TT>:
-</P><DIV CLASS="center"><TT>[[0,1,2],[1,2,3],[2,3,4],[3,4,5]]</TT></DIV><P>
-On obtient en Mode (syntaxe) <TT>maple, mupad, ti89/92</TT>:
-</P><DIV CLASS="center"><TT>[[2,3,4],[3,4,5],[4,5,6],[5,6,7]]</TT></DIV><P><B>Attention !</B> à l’ordre des variables dans la définition de <I>a</I><SUB><I>j</I>,<I>k</I></SUB> et
-à <I>j</I> and <I>k</I> qui partent de <TT>0</TT> si on est en Mode (syntaxe) <TT>xcas</TT> 
-et qui partent de <TT>1</TT> si on est en Mode (syntaxe) <TT>maple, mupad, ti89/92</TT> 
-.</P><HR>
+</P><DIV CLASS="center"><TT>mRow(12,[[1,2],[3,4]],1)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>scale([[1,2],[3,4]],12,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,2],[36,48]]</TT></DIV><HR>
 <A HREF="cascmd_fr579.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr581.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

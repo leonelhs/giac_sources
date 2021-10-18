@@ -6,34 +6,54 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La perpendiculaire commune à deux droites 3-d : common_perpendicular perpendicu- laire_commune</TITLE>
+<TITLE>Définir une droite 3-d : line droite</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr999.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1001.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1170">11.5.9</A>  La perpendiculaire commune à deux droites 3-d : <TT>common_perpendicular perpendicu- laire_commune</TT></H3><P><A NAME="@default1942"></A><A NAME="@default1943"></A>
-<TT>perpendiculaire_commune</TT> a comme argument deux droites 
-<TT>D1</TT> et <TT>D2</TT>.<BR>
-<TT>perpendiculaire_commune(D1,D2)</TT> dessine la perpendiculaire commune des 
-droites <TT>D1</TT> et <TT>D2</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1175">11.5.1</A>  Définir une droite 3-d : <TT>line droite</TT></H3><P><A NAME="@default1945"></A><A NAME="@default1946"></A><A NAME="sec:droite3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr090.html#sec:droite">3.10.1</A> et<A HREF="cascmd_fr891.html#sec:droite2">10.9.1</A> pour la géométrie 
+plane.<BR>
+<TT>droite</TT>, en géométrie 3-d, a comme argument deux points ou 
+un point et son vecteur directeur ou deux équations de plans.<BR>
+<TT>droite</TT> renvoie et trace la droite définit par ses arguments.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>D1:=droite([1,1,0],[0,1,1]); D2:=droite([0,-1,0],[1,-1,1]);</TT></DIV><P>
+</P><DIV CLASS="center"><TT>droite([0,3,0],point([3,0,3]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le tracé de la droite passant par les points de coordonnèes [0,3,0] et [3,0,3] </TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>droite([0,3,0],[3,0,3])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le tracé de la droite passant par le point de coordonnèes [0,3,0] et de vecteur directeur [3,0,3] donc passant par le point de coordonnées [3,3,3]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>droite(x=y,y=z)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le tracé de la droite intersection des plans x=y et y=z</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>point3d(A,B)</TT></DIV><P>
 Puis on tape :
-</P><DIV CLASS="center"><TT>perpendiculaire_commune(D1,D2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>droite(A,B)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La perpendiculaire commune aux deux droites D1 et D2</TT></DIV><P>
-Si on tape :
-</P><DIV CLASS="center"><TT>d:=perpendiculaire_commune(D1,D2);0</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>expr("pnt(pnt[line[point[1,0,-1],point[-1/3,-2/3,-1/3]],56,"d"])",0),0</TT></DIV><P>
-Ce qui veut dire que la perpendiculaire commune à D1 et D2 passe par les 
-points [1,0,-1] et [-1/3,-2/3,-1/3].<BR>
-Puis on tape :<BR>
-</P><DIV CLASS="center"><TT>equation(d)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2/3-2*x/3+4*y/3=0,-4/3-8*x/9-4*y/9-20*z/9=0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le tracé de la droite AB</TT></DIV><P>
+<B>Remarque</B><BR>
+<TT>droite</TT> définit une droite orientée :<BR>
+Lorsque la droite est donnée par deux points, son orientation
+est définie par l’ordre des points donnés en argument.
+Par exemple <TT>droite(A,B)</TT> définit une droite orientée par le vecteur 
+<I>AB</I>.<BR>
+Lorsque la droite est donnée par 1 point et son vecteur directeur, son 
+orientation est définie par le vecteur directeur donné en argument.
+Par exemple <TT>droite(A,[u1,u2,u3])</TT> définit une droite orientée par le 
+vecteur [<I>u</I>1,<I>u</I>2,<I>u</I>3].<BR>
+Lorsque la droite est donnée par deux équations de plans, son orientation
+est définie par le produit vectoriel des normales aux plans (en mettant les 
+équations des plans sous la forme " membredegauche-membrededroite=0" on
+détermine les normales orientées de ces plans).
+Par exemple <TT>droite(x=y,y=z)</TT> est orientée par 
+<TT>cross([1,-1,0],[0,1,-1])</TT>=<TT>[1,1,1]</TT>.
+</P><HR>
 <A HREF="cascmd_fr999.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1001.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

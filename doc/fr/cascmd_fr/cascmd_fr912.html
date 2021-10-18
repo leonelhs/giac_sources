@@ -6,94 +6,56 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le cercle et ses arcs : circle cercle</TITLE>
+<TITLE>Le rectangle : rectangle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr911.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr913.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1069">10.13.1</A>  Le cercle et ses arcs : <TT>circle cercle</TT></H3><P><A NAME="@default1762"></A><A NAME="@default1763"></A><A NAME="sec:cercle"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr913.html#sec:arc">10.13.2</A> pour les arcs de cercle.<BR>
-<B>Voir aussi :</B> <A HREF="index.html#sec:cercle3d">11.10</A> pour les cercles de la 
-géométrie 3-d.<BR>
-<TT>cercle</TT> a un ou deux arguments pour dessiner un cercle et de 
-quatre à six arguments pour dessiner un arc de cercle.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1072">10.11.4</A>  Le rectangle : <TT>rectangle</TT></H3><P><A NAME="@default1764"></A><A NAME="sec:rectangle2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1020.html#sec:rectangle3">11.8.3</A> pour la géométrie 3-d.<BR>
+<TT>rectangle</TT>, en géométrie plane, peut avoir de trois à 
+cinq arguments.<BR>
 Description des arguments :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Avec un argument : l’argument de <TT>cercle</TT> est alors l’équation du 
-cercle ayant comme variables <I>x</I> et <I>y</I>, 
-</LI><LI CLASS="li-itemize">Avec deux arguments <TT>cercle</TT> désigne un cercle :<BR>
- Le premier argument est un point ou un nombre complexe considéré comme 
-l’affixe d’un point.<BR>
-C’est le deuxième argument qui détermine si on trace le cercle avec la 
-donnée de son centre et de son rayon (le deuxième argument est alors
-un nombre complexe de module le rayon) ou avec la donnée de son
-diamètre (le deuxième argument est un point).<BR>
-- <TT>cercle(C,r)</TT> où <TT>C</TT> est un point (ou un nombre complexe) et 
-<TT>r</TT> un nombre complexe, trace le cercle de centre <TT>C</TT> et de rayon le 
-module de <TT>r</TT>. Cela est utile, par exemple, pour avoir le cercle de 
-centre <TT>A</TT> qui passe par <TT>B</TT> on tape <TT>cercle(A,B-A)</TT>.<BR>
-- <TT>cercle(A,B)</TT> où <TT>A</TT> est un point ou un nombre complexe et 
-<TT>B</TT> un point, trace le cercle de diamètre <TT>AB</TT>.<BR>
+si il a trois arguments ce sont : deux points (ou deux
+nombres complexes représentant l’affixe de ces points) et un nombre réel
+<I>k</I> non nul.<BR>
+<TT>rectangle(A,B,k)</TT> renvoie et trace le rectangle <I>ABCD</I> tel que :<BR>
+<I>AD</I>=|<I>k</I>|*<I>AB</I> et (<I>AB</I>,<I>AD</I>)=(<I>k</I>/|<I>k</I>|)*π/2,<BR>
+c’est à dire tel que :<BR>
+<I>affixe</I>(<I>D</I>)=<I>affixe</I>(<I>A</I>)+<I>k</I>*exp(<I>i</I>*π/2)*(<I>affixe</I>(<I>B</I>)−<I>affixe</I>(<I>A</I>))
+mais sans définir les points <I>C</I> et <I>D</I>.<BR>
+<B>Remarque</B> Si <I>k</I> est complexe, on a :<BR>
+<I>affixe</I>(<I>D</I>)=<I>affixe</I>(<I>A</I>)+<I>k</I>*exp(<I>i</I>*π/2)*(<I>affixe</I>(<I>B</I>)−<I>affixe</I>(<I>A</I>)) et on peut ainsi se
+retrouver avec le tracé d’un parallélogramme.<BR>
 On tape :
-<DIV CLASS="center"><TT>cercle(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2-2*x-2*y)</TT></DIV>
+<DIV CLASS="center"><TT>rectangle(0,1+i,1/2)</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>Le cercle de centre 1+i et de rayon sqrt(2) est tracé</TT></DIV>
+<DIV CLASS="center"><TT>Le rectangle de sommets 0,1+i,1/2+3*i/2,-1/2+i/2</TT></DIV>
 On tape :
-<DIV CLASS="center"><TT>cercle(-1,i)</TT></DIV>
+<DIV CLASS="center"><TT>rectangle(0,1+i,-1/2)</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>Le cercle de centre -1 et de rayon 1 est tracé</TT></DIV>
+<DIV CLASS="center"><TT>Le rectangle de sommets 0,1+i,3/2+i/2,1/2-i/2</TT></DIV>
 On tape :
-<DIV CLASS="center"><TT>cercle(-1, point(i))</TT></DIV>
+<DIV CLASS="center"><TT>rectangle(0,1,1+i)</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>Le cercle de diamétre -1,i</TT></DIV>
-<B>Attention</B>
-Il faut bien voir la différence entre :<BR>
-<TT>cercle(A,B-A)</TT>, <TT>cercle(A,B)</TT> et <TT>cercle(A,affixe(B)-A)</TT>.<BR>
-<TT>A:=point(1);B:=point(i/2);</TT>
-<TT>cercle(A,B-A)</TT> ou <TT>cercle(A,affixe(B-A))</TT> ou <TT>cercle(A,abs(B-A))</TT> 
-dessine le cercle de centre <TT>A</TT> passant par <TT>B</TT>,<BR>
-<TT>cercle(A,B))</TT> dessine le cercle de diamètre <TT>A,B</TT>,<BR>
-<TT>cercle(A,affixe(B)-A)</TT> dessine le cercle de diamètre <TT>A,C</TT> où
-<TT>C</TT> est le point d’affixe <TT>(-2+i)/2</TT>. En effet <TT>affixe(B)-A)</TT> 
-désigne un point <TT>C</TT> tel que :<BR>
-<TT>affixe(C)=affixe(B)-affixe(A)=i/2-1=(-2+i)/2</TT>.
-</LI><LI CLASS="li-itemize">Avec de quatre à six arguments, <TT>cercle</TT> désigne un arc de 
-cercle. Dans ce cas les deux premiers arguments déterminent le cercle qui 
-porte l’arc (voir ci-dessus) et les deux arguments suivants sont les angles 
-au centre des points qui délimitent l’arc et les deux derniers arguments 
-sont des noms de variables qui contiendront les points qui délimitent 
-l’arc. Le troisième et le quatrième argument sont les mesures des 
-angles au centre des points qui délimitent l’arc, ces angles sont mesurés
-en radians (ou en degrés) à partir de l’axe défini par les deux 
-premiers arguments si le deuxième argument est un point (définition du 
-cercle par son diamètre) ou de l’axe défini par son centre <I>C</I> et le 
-point <I>A</I>=<I>C</I>+<I>r</I> si le deuxième argument est un complexe égal à <I>r</I> 
-(définition du cercle par son centre et un complexe dont le module est 
-égal au rayon).<BR>
-Le cinquième et le sixième argument ne sont pas obligatoires et 
-servent à définir les extrémités de l’arc.<BR>
+<DIV CLASS="center"><TT>Le parallélogramme de sommets 0,1,i,-1+i car </TT><TT>-1+<I>i</I>=(1+<I>i</I>)*</TT><TT>exp</TT><TT>(<I>i</I>*π/2)</TT></DIV>
+</LI><LI CLASS="li-itemize">si il a cinq arguments les 2 derniers paramètres sont les noms de deux 
+variables qui serviront à définir les 2 derniers sommets.<BR>
 On tape :
-<DIV CLASS="center"><TT>cercle(-1,1,0,pi/4,A,B)</TT></DIV>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-<DIV CLASS="center"><TT>L’arc AB (A=point(0) et B=point(</TT><TT>-1+√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>+<I>i</I>*√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>/2</TT><TT>)) du cercle de centre -1 et de rayon 1 est tracé</TT></DIV>
-En effet l’angle est compté à partir de l’axe (-1,0) et donc l’angle 0 
-est le point(0).<BR>
-On tape :
-<DIV CLASS="center"><TT>cercle(-1,i,0,pi/4,A,B)</TT></DIV>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-<DIV CLASS="center"><TT>L’arc AB (A=point(-1+i) et B=point(</TT><TT>-1-√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>+<I>i</I>*√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>/2</TT><TT>)) du cercle de centre -1 et de rayon 1 est tracé</TT></DIV>
-En effet, l’angle est compté à partir de l’axe (-1,i-1) et donc l’angle 0 
-est le point d’affixe i-1.<BR>
-On tape :
-<DIV CLASS="center"><TT>cercle(-1, point(i),0,pi/4,A,B)</TT></DIV>
+<DIV CLASS="center"><TT>rectangle(0,1+i,-1/2,G,H)</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>L’arc AB (A=point(i) et B=point(</TT><TT>-1+<I>i</I>*(1+√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>)/2</TT><TT>)) du cercle de diamétre -1,i</TT></DIV>
-En effet, l’angle est compté à partir de l’axe (-1,i) et donc l’angle 0 est
-le point d’affixe i.
+<DIV CLASS="center"><TT>Le rectangle de sommets 0,1+i,3/2+i/2,1/2-i/2</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>normal(affixe(G))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(3+i)/2</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>normal(affixe(H))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(1-i)/2</TT></DIV>
 </LI></UL><HR>
 <A HREF="cascmd_fr911.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

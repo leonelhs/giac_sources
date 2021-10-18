@@ -6,30 +6,61 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Troncature d’ordre n : truncate</TITLE>
+<TITLE>Calcul avec les racines exactes d’un polynôme : rootof</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr376.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr378.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc463">6.27.26</A>  Troncature d’ordre <I>n</I> : <TT>truncate</TT></H3><P><A NAME="@default707"></A>
-<TT>truncate</TT> permet de tronquer un polynôme à un ordre donné 
-<TT>truncate</TT> est utile quand on fait des développements limités à 
-la main, ou pour transformer un développement limité en polynôme.<BR>
-<TT>truncate</TT> a deux arguments : un polynôme et un entier <TT>n</TT>.<BR>
-<TT>truncate</TT> renvoie le polynôme tronqué à l’ordre <TT>n</TT> (pas de 
-termes d’ordre supérieur ou égal à <TT>n+1</TT>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc463">6.27.23</A>  Calcul avec les racines exactes d’un polynôme : <TT>rootof</TT></H3><P><A NAME="@default706"></A>
+Soient <I>P</I> et <I>Q</I> deux polynômes donnés par la liste de leurs coefficients
+alors, <TT>rootof(P,Q)</TT> désigne la valeur <I>P</I>(α) où α 
+est la "plus grande" racine de <I>Q</I> (on compare d’abord les parties réelles et 
+en cas dégalité on compare les parties imaginaires).<BR>
+On peut alors faire des calculs avec cette valeur.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>truncate((1+x+x</TT><CODE><TT>^</TT></CODE><TT>2/2)</TT><CODE><TT>^</TT></CODE><TT>3,4)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal(rootof([1,0],[1,2,-3]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(9*x</TT><CODE><TT>^</TT></CODE><TT>4+16*x</TT><CODE><TT>^</TT></CODE><TT>3+18*x</TT><CODE><TT>^</TT></CODE><TT>2+12*x+4)/4</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+en effet <I>x</I><SUP>2</SUP>+2<I>x</I>−3=(<I>x</I>−1)(<I>x</I>+3) a comme plus grande racine 1.<BR>
+
+<B>Autre exemple</B><BR>
+Soit α la plus grande racine en norme de <I>Q</I>(<I>x</I>)=<I>x</I><SUP>4</SUP>+10<I>x</I><SUP>2</SUP>+1.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Calculer 
+ 1/α<BR>
+ On tape :
+<DIV CLASS="center"><TT>normal(1/rootof([1,0],[1,0,10,0,1]))</TT></DIV>
+car <I>P</I>(<I>x</I>)=<I>x</I> est représenté par [1,0].<BR>
+On obtient :
+<DIV CLASS="center"><TT>rootof([[-1,0,-10,0],[1,0,10,0,1]])</TT></DIV>
+ce qui veut dire que :<BR>
+ 1/α=−(α)<SUP>3</SUP>−10.α<BR>
+</LI><LI CLASS="li-itemize">Calculer (α)<SUP>2</SUP>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>truncate(series(sin(x)),4)</TT></DIV><P>
+<DIV CLASS="center"><TT>normal(rootof([1,0],[1,0,10,0,1])</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+On a α=<TT>rootof([1,0],[1,0,10,0,1])</TT> car <I>P</I>(<I>x</I>)=<I>x</I> est représenté par [1,0], et pour avoir α<SUP>2</SUP>, on élève α au carré.<BR>
 On obtient :
-</P><DIV CLASS="center"><TT>(-x</TT><CODE><TT>^</TT></CODE><TT>3-(-6)*x)/6</TT></DIV><P>
-On remarquera que le polynôme renvoyé est réduit au même 
-dénominateur.</P><HR>
+<DIV CLASS="center"><TT>-5-2*sqrt(6)</TT></DIV>
+ou pour avoir α<SUP>2</SUP> directement, on tape :
+<DIV CLASS="center"><TT>normal(rootof([1,0,0],[1,0,10,0,1])</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+car <I>P</I>(<I>x</I>)=<I>x</I><SUP>2</SUP> est représenté par [1,0,0].<BR>
+On obtient :
+<DIV CLASS="center"><TT>-5-2*sqrt(6)</TT></DIV>
+</LI></UL><P>
+Ce résultat peut se vérifier puisque l’on a une équation bicarrée 
+de discriminant réduit 25−1=24=4*6.
+On tape :
+</P><DIV CLASS="center"><TT>csolve(x</TT><CODE><TT>^</TT></CODE><TT>4+10x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[(i)*sqrt(-2*sqrt(6)+5),(-i)*sqrt(-2*sqrt(6)+5),<BR>
+(i)*sqrt(2*sqrt(6)+5),(-i)*sqrt(2*sqrt(6)+5)]</TT></DIV><P>
+Donc α=<I>i</I>*√<SPAN style="text-decoration:overline">2*√</SPAN><SPAN style="text-decoration:overline">6</SPAN><SPAN style="text-decoration:overline">+5</SPAN><BR>
+On tape :
+</P><DIV CLASS="center"><TT>((i)*sqrt(2*sqrt(6)+5))</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-5-2*sqrt(6)</TT></DIV><HR>
 <A HREF="cascmd_fr376.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr378.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

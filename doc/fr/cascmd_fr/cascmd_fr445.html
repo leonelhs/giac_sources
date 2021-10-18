@@ -6,56 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer un entier en sa fraction modulo p : fracmod iratrecon</TITLE>
+<TITLE>Puissance dans ℤ/pℤ et dans ℤ/pℤ[x] : ^</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr444.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr446.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc538">6.34.12</A>  Transformer un entier en sa fraction modulo <I>p</I> : <TT>fracmod iratrecon</TT></H3><P><A NAME="@default800"></A><A NAME="@default801"></A>
-<TT>fracmod</TT> (ou <TT>iratrecon</TT> pour compatibilité Maple) a deux 
-arguments, un entier <TT>n</TT> (ou une expression
-entière) et un nombre entier <TT>p</TT>.<BR>
-<TT>fracmod</TT> renvoie une fraction <TT>a/b</TT> vérifiant :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>p</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> &lt; <I>a</I> ≤ </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>p</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">,   
-0 ≤ <I>b</I> &lt; </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>p</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">,    
-<I>n</I> × <I>b</I> =<I>a</I> (mod <I>p</I> ) </TD></TR>
-</TABLE><P>
-En d’autres termes <I>n</I>=<I>a</I>/<I>b</I>(mod <I>p</I> ).<BR>
+<H3 CLASS="subsection"><A NAME="htoc538">6.34.9</A>  Puissance dans ℤ/<I>p</I>ℤ et dans ℤ/<I>p</I>ℤ[<I>x</I>] : <TT>^</TT></H3><P><A NAME="@default798"></A><A NAME="sec:powZp"></A>
+Pour calculer <TT>a</TT> à la puissance <TT>n</TT> dans ℤ/<I>p</I>ℤ on utilise 
+l’opérateur <CODE>^</CODE>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>fracmod(3,13) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>(5% 13)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1/4</TT></DIV><P>
-En effet on a :
-<TT>-1/4 mod 13</TT> renvoie <TT>3 % 13</TT> i.e.<BR>
-3*−4=−12=1 (mod 13) donc 3% 13=−1/4% 13.
+</P><DIV CLASS="center"><TT>-1% 13</TT></DIV><P>
+Pour calculer <TT>A</TT> à la puissance <TT>n</TT> dans ℤ/<I>p</I>ℤ[<I>x</I>] on utilise 
+l’opérateur <CODE><TT>^</TT></CODE> et la
+commande <TT>normal</TT><A NAME="@default799"></A>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>fracmod(13,121) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal(((2*x+1)% 13)</TT><CODE><TT>^</TT></CODE><TT>5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-4/9</TT></DIV><P>
-En effet on a :
-<TT>-4/9 mod 121</TT> renvoie <TT>13 % 121</TT> i.e.<BR>
-:
-13×−9=−117=4 (mod 121) donc 13% 121=−4/9% 121.</P><HR>
+</P><DIV CLASS="center"><TT>(6% 13)*x</TT><CODE><TT>^</TT></CODE><TT>5+(2% 13)*x</TT><CODE><TT>^</TT></CODE><TT>4+(2% 13)*x</TT><CODE><TT>^</TT></CODE><TT>3+(1% 13)*x</TT><CODE><TT>^</TT></CODE><TT>2+(-3% 13)*x+1% 13</TT></DIV><P>
+car :<BR>
+ 10=−3  (mod 13)    40=1 (mod 13)   80=2  (mod 13)  32=6 (mod 13). </P><HR>
 <A HREF="cascmd_fr444.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr446.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

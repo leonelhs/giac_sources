@@ -6,48 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Généralités sur les attributs</TITLE>
+<TITLE>Tracer les vecteurs unitaires : vecteur_unitaire_Ox_2d Ox_2d_unit_vector, vecteur_unitaire_Oy_2d, Oy_2d_unit_vector</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr863.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr865.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1011">10.3.1</A>  Généralités sur les attributs</H3><P>
-Les attributs des objets graphiques peuvent être définis par des commandes 
-ou avec des paramètres optionnels qui sont soit globaux soit locaux.<BR>
-Certains arguments optionnels, comme <TT>titre, labels</TT>, sont globaux, ils
-sont mis au début d’une ligne de commandes ayant comme dernière instruction
-une instruction graphique et sont applicables à toutes les instructions 
-graphiques de cette ligne de commandes. Par 
-exemple :<BR>
-<TT>titre="A et son conjugué B";A:=point(1+i);B:=point(1-i)</TT>.<BR>
-Ils sont déscrits ci-après.<BR>
-Certains noms comme <TT>affichage, couleur, legende</TT> peuvent être des 
-noms de commandes ou des noms de paramètres optionnels :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Les commandes s’appliquent à l’objet graphique mis comme 
-argument ou, s’il n’y a pas d’arguments, modifient les attributs par défaut 
-qui seront utilisés pour les instructions graphiques qui suivent.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1015">10.2.3</A>  Tracer les vecteurs unitaires : <TT>vecteur_unitaire_Ox_2d Ox_2d_unit_vector</TT>, <TT>vecteur_unitaire_Oy_2d</TT>, <TT>Oy_2d_unit_vector</TT></H3><P><A NAME="@default1553"></A> <A NAME="@default1554"></A><A NAME="@default1555"></A> <A NAME="@default1556"></A>
+<TT>vecteur_unitaire_Ox_2d(), Ox_2d_unit_vector()</TT> trace le vecteur unitaire de l’axe des <I>x</I> de écran de géométrie 2-d.<BR>
+<TT>vecteur_unitaire_Oy_2d(), Oy_2d_unit_vector()</TT> trace le vecteur unitaire de l’axe des <I>y</I> de écran de géométrie 2-d.<BR>
+Vous pouvez effacer les axes (resp les faire réapparaitre) en 
+cochant (resp décochant) <TT>Montrer les axes</TT> avec le bouton <TT>cfg</TT>
+de l’écran de géométrie.<BR>
+Ces commandes n’ont pas de paramètre. On peut mettre une légende avec la 
+commande <TT>legende</TT>.<BR>
 On tape :
-<DIV CLASS="center"><TT>couleur(rouge)</TT></DIV>
+</P><DIV CLASS="center"><TT>vecteur_unitaire_Ox_2d(),legende(1,"u",vert,quadrant4)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>1 et toutes les commandes graphiques sans paramètre optionnel de couleur seront dessinées en rouge</TT></DIV>
+</P><DIV CLASS="center"><TT>Le vecteur unitaire de l’axe des </TT><TT><I>x</I></TT><TT> de écran de géométrie 2-davec </TT><TT><I>u</I></TT><TT> écrit en vert</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>couleur(triangle(-1-i,1,1+i),bleu)</TT></DIV>
+</P><DIV CLASS="center"><TT>vecteur_unitaire_Oy_2d(),legende(i,"v",vert,quadrant2)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>le triangle(-1-i,1,1+i) est dessiné en bleu</TT></DIV></LI><LI CLASS="li-itemize">Il y a deux sortes d’attributs: les attributs globaux qui sont partagés
-par toutes les commandes graphiques affichées dans un même écran 
-graphique et les attributs individuels.<BR>
-On tape (attribut individuel):
-<DIV CLASS="center"><TT>triangle(0,1,1+i,couleur=bleu)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>le triangle(0,1,1+i) dessiné en bleu</TT></DIV>
-On tape (attribut global):
-<DIV CLASS="center"><TT>titre="medianes";triangle(-1-i,1,1+i); mediane(-1-i,1,1+i); mediane(1,-1-i,1+i); mediane(1+i,1,-1-i)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>le titre "medianes" pour le triangle(0,1,1+i) et ses médianes</TT></DIV>
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>Le vecteur unitaire de l’axe des </TT><TT><I>y</I></TT><TT> de écran de géométrie 2-d avec </TT><TT><I>v</I></TT><TT> écrit en vert</TT></DIV><HR>
 <A HREF="cascmd_fr863.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr865.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

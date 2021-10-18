@@ -6,34 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour utiliser une chaîne comme nom de commande : expr</TITLE>
+<TITLE>La boucle : repeat until et repeter jusqua</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr832.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr834.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc974">9.5.6</A>  Pour utiliser une chaîne comme nom de commande : <TT>expr</TT></H3><P><A NAME="@default1510"></A><A NAME="sec:expr"></A>
-<TT>expr</TT> permet d’utiliser une chaîne de caractères comme une 
-commande.<BR>
-<TT>expr</TT> est surtout utile dans un programme.<BR>
-<TT>expr</TT> a comme argument une chaîne de caractères pouvant être 
-interprétée comme une commande (ou le nom d’une 
-variable qui contient une chaîne ou une expression renvoyant une chaîne).<BR>
-<TT>expr</TT> transforme la chaîne en une expression, puis évalue cette 
-expression :<BR>
-pour faire une affectation, on ne doit pas écrire <TT>expr("a"):=2</TT>, mais on
-doit écrire <TT>expr("a:=2")</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr831.html#sec:diese">9.5.4</A>)<BR>
+<H3 CLASS="subsection"><A NAME="htoc978">9.4.23</A>  La boucle : <TT>repeat until</TT> et <TT>repeter jusqua</TT></H3><P><A NAME="@default1509"></A><A NAME="@default1510"></A><A NAME="@default1511"></A><A NAME="@default1512"></A>
+<TT>repeat</TT> et <TT>repeter</TT> permettent de faire plusieurs fois des
+instructions.<BR>
+<TT>repeat</TT> est suivi d’instructions, de <TT>until</TT> et d’un booléen.<BR>
+<TT>repeter</TT> est suivi d’instructions, de <TT>jusqua</TT> et d’un booléen.<BR>
+ <TT>repeat until</TT> et <TT>repeter jusqua</TT> permettent de faire plusieurs fois 
+ces instructions jusquà ce que la valeur de ce booléen soit vraie.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>expr("c:=1")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La variable c contient 1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>a:="ifactor(54)";expr(a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>expr("ifactor(54)")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><HR>
+</P><PRE CLASS="verbatim">repeat
+saisir("Entrez a&gt;1",a);
+until a&gt;4;
+</PRE><P>Ou on tape :
+</P><PRE CLASS="verbatim">repeter
+saisir("Entrez a&gt;4",a);
+jusqua a&gt;1;
+</PRE><P>Cela aura pour effet de redemander la valeur de <I>a</I> jusqu’à ce qu’elle soit 
+strictement supérieur à 4. 
+</P><HR>
 <A HREF="cascmd_fr832.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr834.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

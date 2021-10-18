@@ -47,9 +47,11 @@ namespace giac {
   gen _suppress(const gen & args,GIAC_CONTEXT);
   gen _valuation(const gen & args,GIAC_CONTEXT);
   gen _degree(const gen & args,GIAC_CONTEXT);
+  gen _total_degree(const gen & args,GIAC_CONTEXT);
   gen _lcoeff(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_lcoeff ;
   extern const unary_function_ptr * const  at_set_language ;
+  extern const unary_function_ptr * const  at_float ;
 
   gen _tcoeff(const gen & args,GIAC_CONTEXT);
   gen _sqrfree(const gen & args,GIAC_CONTEXT);

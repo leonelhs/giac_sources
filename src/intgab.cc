@@ -258,7 +258,7 @@ namespace giac {
 	return res;
       }
       sparse_poly1 s=series__SPOL1(g,*x._IDNTptr,a,ordre,0,contextptr);
-      int n=s.size();
+      int n=int(s.size());
       if (n && (is_undef(s[0].coeff) || is_undef(s[0].exponent)))
 	continue; // stop the loop, try a larger order
       for (int i=0;i<n;++i){
@@ -289,7 +289,7 @@ namespace giac {
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if (args.type!=_VECT) return gensizeerr(contextptr);
     vecteur v(*args._VECTptr);
-    int s=v.size();
+    int s=int(v.size());
     if (s==2){
       if (is_equal(v[1])){
 	vecteur & w=*v[1]._SYMBptr->feuille._VECTptr;
@@ -324,7 +324,7 @@ namespace giac {
   gen _singular(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     vecteur v(gen2vecteur(args));
-    int s=v.size();
+    int s=int(v.size());
     if (s==1){
       v.push_back(vx_var);
       ++s;
@@ -359,10 +359,10 @@ namespace giac {
     l.push_back(x); // insure x is the main var
     l=vecteur(1,l);
     alg_lvar(e,l);
-    int s=l.front()._VECTptr->size();
+    int s=int(l.front()._VECTptr->size());
     if (!s){
       l.erase(l.begin());
-      s=l.front()._VECTptr->size();
+      s=int(l.front()._VECTptr->size());
     }
     if (!s)
       return false;
@@ -452,7 +452,7 @@ namespace giac {
 	index_t decal(vX.size());
 	decal[0]=-Dval;
 	Dp=Dp.shift(decal);
-	polynome XQd(gen(1),vX.size()),U(vX.size()),V(vX.size()),C(vX.size());
+	polynome XQd(gen(1),int(vX.size())),U(int(vX.size())),V(int(vX.size())),C(int(vX.size()));
 	decal[0]=Dval;
 	XQd=XQd.shift(decal);
 	Tabcuv(Dp,XQd,R,U,V,C); // C*Np=Dp*U+X^Dval*V
@@ -472,7 +472,7 @@ namespace giac {
       if (is_undef(dp)) return false;
       dp=gcd(re(dp,contextptr),im(dp,contextptr),contextptr);
       vecteur vdp=factors(dp,XX,contextptr);
-      int vdps=vdp.size();
+      int vdps=int(vdp.size());
       for (int i=0;i<vdps;i+=2){
 	if (sturmab(vdp[i],XX,-1,1,contextptr)>0){
 	  res=undef;
@@ -489,7 +489,7 @@ namespace giac {
 	return true;
       }
       // check that each factor has degree 1
-      polynome D1(gen(1),vX.size());
+      polynome D1(gen(1),int(vX.size()));
       factorization::const_iterator f_it=fd.begin(),f_itend=fd.end();
       for (;f_it!=f_itend;++f_it){
 	if (f_it->fact.degree(0)>1){
@@ -523,7 +523,7 @@ namespace giac {
       vecteur v=singular(xfact,x,contextptr);
       if (!v.empty() && is_undef(v.front()))
 	return false;
-      int s=v.size();
+      int s=int(v.size());
       for (int i=0;i<s;++i){
 	gen coeff=0,vi=v[i];
 	if (is_real(vi,contextptr)){
@@ -571,7 +571,7 @@ namespace giac {
       bool estreel=is_zero(im(A,contextptr))&&is_zero(im(P,contextptr));
       vecteur lv(1,x);
       lvar(P,lv);
-      int lvs=lv.size();
+      int lvs=int(lv.size());
       for (int i=0;i<lvs;++i){
 	gen tmp=derive(lv[i],x,contextptr);
 	if (!is_zero(tmp) && !is_one(tmp))
@@ -595,7 +595,7 @@ namespace giac {
       if (!rA.empty() && is_undef(rA))
 	return false;
       vecteur Pv=factors(P,x,contextptr);
-      int Pvs=Pv.size()/2;
+      int Pvs=int(Pv.size()/2);
       for (int Pi=0;Pi<Pvs;++Pi){
 	gen somme_residus=0;
 	P=Pv[2*Pi];
@@ -618,7 +618,7 @@ namespace giac {
 	// for im<=0, contour is C+, 
 	// for roots of P take +residue(ln(x-r)*A)
 	// for poles of P take -residue(ln(x-r)*A)
-	int rAs=rA.size(),rPs=rP.size();
+	int rAs=int(rA.size()),rPs=int(rP.size());
 	for (int i=0;i<rAs;++i){
 	  gen racineA=rA[i];
 	  bool residucplus=ck_is_positive(im(racineA,contextptr),contextptr);
@@ -688,7 +688,7 @@ namespace giac {
 	  return false;
 	gen tmp=xfactint*subst(Xfact,X,expx,false,contextptr);
 	gen somme_residus;
-	int rAs=rA.size(),rPs=rP.size();
+	int rAs=int(rA.size()),rPs=int(rP.size());
 	for (int i=0;i<rAs;++i){
 	  gen rac=rA[i];
 	  // adjust imaginary part
@@ -765,7 +765,7 @@ namespace giac {
 	  vecteur v=singular(geff,x,contextptr);
 	  if (is_undef(v))
 	    return false;
-	  int s=v.size(),nresidue=0;
+	  int s=int(v.size()),nresidue=0;
 	  for (int i=0;i<s;++i){
 	    if (is_real(v[i],contextptr)){
 	      res=undef; // singularity on the real axis
@@ -806,7 +806,7 @@ namespace giac {
 	  vecteur v=singular(g,x,contextptr);
 	  if (is_undef(v))
 	    return false;
-	  int s=v.size();
+	  int s=int(v.size());
 	  for (int i=0;i<s;++i){
 	    if (is_real(v[i],contextptr)){
 	      res=undef; // singularity on the real axis
@@ -1085,7 +1085,7 @@ namespace giac {
       }
       vecteur v;
       rlvarx(gb,x,v);
-      int vs=v.size();
+      int vs=int(v.size());
       for (int i=0;i<vs;++i){
 	if (v[i].is_symb_of_sommet(at_ln)){
 	  gen f=v[i]._SYMBptr->feuille,a,b;
@@ -1194,7 +1194,7 @@ namespace giac {
       }
       vecteur v;
       rlvarx(ga,x,v);
-      int vs=v.size();
+      int vs=int(v.size());
       for (int i=0;i<vs;++i){
 	if (v[i].is_symb_of_sommet(at_ln)){
 	  gen f=v[i]._SYMBptr->feuille,a,b;
@@ -1216,10 +1216,20 @@ namespace giac {
     gen gm=subst(g0,x,b,false,contextptr)+subst(g0,x,a,false,contextptr);
     if (!has_evalf(gm,gabd,1,contextptr) || is_zero(gabd))
       gm=simplify(gm,contextptr);
+    if (is_constant_wrt(g,x,contextptr)){
+      res=g*(b-a);
+      return true;
+    }
     int eo=0;
     if (is_zero(gab) || is_zero(gm) ){
-      gm=subst(g,x,x+(a+b)/2,false,contextptr);
+      gm=subst(g0,x,x+(a+b)/2,false,contextptr);
       eo=is_even_odd(gm,x,contextptr);
+    }
+    if (eo==1){
+      if (!intgab(g0,x,a,(a+b)/2,res,contextptr))
+	return false;
+      res=2*res;
+      return true;
     }
     if (eo==2){
 #if 0 // set to 1 if you want to check for singularities before returning 0
@@ -1255,7 +1265,7 @@ namespace giac {
 	vecteur v;
 	rlvarx(g,x,v);
 	islesscomplexthanf_sort(v.begin(),v.end());
-	int i,s=v.size();
+	int i,s=int(v.size());
 	if (s>=2){
 	  gen v0,alpha,beta,alphacur,betacur,gof,periode,periodecur;
 	  for (i=0;i<s;++i){
@@ -1318,7 +1328,7 @@ namespace giac {
 	      vecteur w=singular(subst(gof,x,tmpid,false,contextptr),tmpid,contextptr);
 	      if (is_undef(w))
 		return false;
-	      int s=w.size();
+	      int s=int(w.size());
 	      gen somme_residues=0;
 	      for (int i=0;i<s;++i){
 #ifdef TIMEOUT
@@ -1394,7 +1404,7 @@ namespace giac {
   // if decals[i] is an integer, multiply by x^(-1-decals[i]), int
   // and mult by x^decals[i]
   static bool in_sumab_int(gen & tmp1,const gen & gx,const vecteur & decals,const gen & lcoeff,GIAC_CONTEXT){
-    int nstep=decals.size();
+    int nstep=int(decals.size());
     gen coeff=lcoeff;
     gen remains;
     for (int i=0;i<nstep;++i){
@@ -1611,7 +1621,8 @@ namespace giac {
   }
 
   static bool in_sumab(const gen & g,const gen & x,const gen & a_orig,const gen & b_orig,gen & res,bool testi,bool dopartfrac,GIAC_CONTEXT){
-    if (x.type!=_IDNT || angle_radian(contextptr)==false)
+    //grad
+    if (x.type!=_IDNT || !angle_radian(contextptr)) //if not in radians, exit
       return false;
     if (is_zero(g)){
       res=zero;
@@ -1802,7 +1813,7 @@ namespace giac {
 	// if root is integer it must not be inside a..b
 	// the sum of residues of v + sum(g,n=-inf..inf, n not in v) will be 0
 	gen somme_residus;
-	int vs=v.size();
+	int vs=int(v.size());
 	gen correc=0;
 	for (int i=0;i<vs;++i){
 	  gen vi=v[i];
@@ -1844,7 +1855,7 @@ namespace giac {
       return false;
     if (g.is_symb_of_sommet(at_plus)){
       vecteur argv=gen2vecteur(g._SYMBptr->feuille);
-      int args=argv.size(),i;
+      int args=int(argv.size()),i;
       res=0;
       gen tmp;
       for (i=0;i<args;++i){

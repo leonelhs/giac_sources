@@ -6,35 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si des droites ou/et plans sont perpendiculaires is_perpendicular est_perpendiculaire</TITLE>
+<TITLE>L’équation cartésienne d’un objet géométrique : equation</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1033.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1035.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1212">11.13.4</A>  Savoir si des droites ou/et plans sont perpendiculaires <TT>is_perpendicular</TT> <TT>est_perpendiculaire</TT></H3><P><A NAME="@default2002"></A><A NAME="@default2003"></A><A NAME="sec:estperp3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr968.html#sec:estperp2">10.18.12</A> pour la géométrie plane et 
-<A HREF="cascmd_fr1035.html#sec:estortho3">11.13.5</A> pour l’orthogonalité 3-d.<BR>
-<TT>est_perpendiculaire</TT>, en géométrie 3-d, teste si deux droites ou, si
-une droite et un plan ou, si deux plans sont perpendiculaires.<BR>
-En 3-d, deux droites perpendiculaires sont coplanaires et orthogonales.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1216">11.12.5</A>  L’équation cartésienne d’un objet géométrique : <TT>equation</TT></H3><P><A NAME="@default2005"></A><A NAME="sec:equation3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr937.html#sec:equation2">10.15.7</A> pour la géométrie plane.<BR>
+<TT>equation</TT> permet d’avoir l’équation cartésienne d’un objet
+géométrique.<BR>
+<B>Attention</B> !!! il faut auparavant purger les variables <TT>x</TT> et 
+<TT>y</TT> en tapant <TT>purge(x)</TT> et <TT>purge(y)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_perpendiculaire(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>equation(droite(point(0,1,0),point(1,2,3)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x-y+1=0,3*x+3*y-2*z=0)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_coplanaire(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>equation(sphere(point(0,1,0),2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>P:=plan([0,0,0],[1,2,-3],[1,1,-2])</TT></DIV><DIV CLASS="center"><TT>S:=plan([-1,-1,-1],[1,2,-3],[0,0,0])</TT></DIV><DIV CLASS="center"><TT>est_perpendiculaire(P,S)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>dd:=droite([2,3,-2],[-1,-1,-1])</TT></DIV><DIV CLASS="center"><TT>est_perpendiculaire(dd,P)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2+-2*y+z</TT><CODE><TT>^</TT></CODE><TT>2-3=0</TT></DIV><P>
+qui est l’équation de la sphère de centre (0,1,0) et de rayon <TT>2</TT>.</P><HR>
 <A HREF="cascmd_fr1033.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1035.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

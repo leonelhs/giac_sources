@@ -6,44 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La translation : translation</TITLE>
+<TITLE>Pente d’une droite : slope pente</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr949.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr951.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1111">10.17.2</A>  La translation : <TT>translation</TT></H3><P><A NAME="@default1846"></A><A NAME="sec:translation2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1046.html#sec:translation3">11.14.2</A> pour la géométrie 3-d.<BR>
-<TT>translation</TT>, en géométrie plane, a un ou deux arguments : 
-le vecteur de translation donné par un vecteur géométrique ou par la 
-liste de ses coordonnées ou par son affixe (la
-différence de deux points ou un nombre complexe)
-et éventuellement l’objet géométrique à transformer.<BR>
-Lorsque <TT>translation</TT> a un argument, c’est une fonction qui agit sur un 
-objet géométrique.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1115">10.16.12</A>  Pente d’une droite : <TT>slope pente</TT></H3><P><A NAME="@default1847"></A><A NAME="@default1848"></A>
+<A NAME="@default1849"></A><A NAME="@default1850"></A><A NAME="sec:pente"></A>
+<TT>slope pente</TT> est soit une commande soit un attribut de la 
+commande <TT>droite</TT> pour cela voir <A HREF="cascmd_fr891.html#sec:droite2">10.9.1</A><BR>
+Lorsque <TT>slope pente</TT> est une commande son argument est une droite ou un 
+segment ou deux points ou deux nombres complexes.<BR>
+ <TT>slope pente</TT> renvoie la pente de la droite définie par le segment ou par 
+les 2 points ou leurs affixes.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>t:=translation(1+i)</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>t(-2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pente(droite(1,2i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pente(segment(1,2i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pente(point(1),point(2i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pente(1,2i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point -1+i tracé avec une croix (x) noire</TT></DIV><P>
-Lorsque <TT>translation</TT> a deux arguments, <TT>translation</TT> dessine et 
-renvoie le transformé du deuxième argument dans la translation de vecteur le premier argument.<BR>
+</P><DIV CLASS="center"><TT>-2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>translation([1,1],-2)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>A:=point(1);B:=point(2+i);translation(vecteur(A,B),-2)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>translation(1+i,-2)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>A:=point(1);B:=point(2+i);translation(B-A,-2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pente(droite(2y-x=3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point -1+i tracé avec une croix (x) noire</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1/2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>translation(1+i,droite(-2,-i))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pente(tangente(plotfunc(sin(x)),pi/4))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pente(droite_tangente(sin(x),pi/4))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La droite passant par -1+i et 1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>(sqrt(2))/2</TT></DIV><HR>
 <A HREF="cascmd_fr949.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr951.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

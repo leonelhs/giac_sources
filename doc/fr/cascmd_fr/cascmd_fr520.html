@@ -6,47 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Nombre d’éléments ayant une valeur donnée : count_eq</TITLE>
+<TITLE>Tester si un élément est dans une liste : member</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr519.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr521.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc620">6.41.28</A>  Nombre d’éléments ayant une valeur donnée : <TT>count_eq</TT></H3><P><A NAME="@default918"></A><A NAME="@default919"></A>
-<A NAME="@default920"></A>
-<TT>count_eq</TT> a deux ou trois et paramètres : une nombre et une 
-liste (ou une matrice) et dans le cas où le deuxième paramètre est une 
-matrice, un argument optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
-<TT>count_eq</TT> renvoie le nombre d’éléments de la liste (ou de la matrice)
-qui sont égaux au premier argument. Dans le cas où il y a un argument 
-optionnel <TT>row</TT> (resp <TT>col</TT>) <TT>count_eq</TT> agit sur chacune des 
-lignes (resp colonnes) de la matrice et renvoie alors une liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc620">6.41.25</A>  Tester si un élément est dans une liste : <TT>member</TT></H3><P><A NAME="@default917"></A>
+<TT>member</TT> a deux paramètres : un élément <TT>c</TT> et une liste
+(ou un ensemble) <TT>L</TT>.<BR>
+<TT>member</TT> est une fonction qui teste si l’élément <TT>c</TT> est dans la 
+liste <TT>L</TT>.<BR>
+ <TT>member</TT> renvoie <TT>0</TT> si <TT>c</TT> n’est pas dans <TT>L</TT>, et sinon renvoie :<BR>
+<TT>1+"l’indice de sa première apparition"</TT>.<BR>
+<B>Attention</B> à l’ordre des paramètres, c’est pour des raisons de
+compatibilité !<BR>
 On tape :
-</P><DIV CLASS="center"><TT>count_eq(12,[2,12,45,3,7,78])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>count_eq(12,[[2,12,45],[3,7,78]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>member(2,[0,1,2,3,4,2])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>count_eq(12,[[2,12,45],[3,7,78]],row)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>member(2,% {0,1,2,3,4,2% })</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,0]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>count_eq(12,[[2,12,45],[3,7,78]],col)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0,1,0]</TT></DIV><P>
-<B>Remarque</B><BR>
-Les deux paramètres de <TT>count_eq</TT> ne sont pas forcément numériques :<BR>
-<TT>count_eq(ab,[[-ab,1,ab,1,ab,-3],[-ab,1,ab,1,ab,-3]])</TT> renvoie 4 si la 
-variable <TT>ab</TT> n’est pas affectée, mais renverra 6 si il y a <TT>0</TT> dans 
-<TT>ab</TT><BR>
-<TT>count_eq("ab",["ab",1,"ab",1,"ab",-3])</TT> renvoie 3.
-Attention !!!<BR>
-si la variable <TT>ab</TT> n’est pas affectée,<BR>
-<TT>count_eq(ab+1-1,[[-ab,1,ab,1,ab,-3],[-ab,1,ab,1,ab,-3]])</TT> renvoie 4,<BR>
-mais
-<TT>count_eq(ab+1,[-ab,1,ab+1,1,1+ab,-3])</TT> renvoie 1.</P><HR>
+</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
 <A HREF="cascmd_fr519.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr521.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

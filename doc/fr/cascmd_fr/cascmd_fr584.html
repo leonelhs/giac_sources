@@ -6,38 +6,46 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Compter les éléments plus petits qu’une valeur donnée : 
-count_inf</TITLE>
+<TITLE>Faire une matrice avec une liste de matrices : blockmatrix</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr583.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr585.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc689">6.46.35</A>  Compter les éléments plus petits qu’une valeur donnée :<BR>
-<TT>count_inf</TT></H3><P><A NAME="@default1063"></A><A NAME="@default1064"></A><A NAME="@default1065"></A>
-<TT>count_inf</TT> a deux ou trois paramètres : une nombre et une 
-matrice (ou liste) réelle et éventuellement un paramètre 
-optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
-<TT>count_inf</TT> renvoie le nombre d’éléments de la 
-matrice (ou liste) qui sont strictement inférieurs au premier argument.<BR>
-Si il y a <TT>row</TT> (resp <TT>col</TT>) comme troisième paramètre 
-<TT>count_inf</TT> agit sur chaque ligne (resp colonne) de la matrice et renvoie 
-une liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc692">6.49.12</A>  Faire une matrice avec une liste de matrices : <TT>blockmatrix</TT></H3><P><A NAME="@default1063"></A>
+<TT>blockmatrix</TT> a comme arguments deux entiers <I>n</I>,<I>m</I> et une 
+liste de longueur <I>n</I>*<I>m</I> formée de matrices (de même dimension <I>p</I> × <I>q</I> 
+ou de taille différentes : les <I>m</I> premières matrices ont le même nombre
+de lignes et forment un bloc de <I>c</I> colonnes, les <I>m</I> suivantes ont le même 
+nombre de lignes et forment un bloc de <I>c</I> colonnes, etc... ). On forme ainsi 
+<I>n</I> blocs de <I>c</I> colonnes.<BR>
+<TT>blockmatrix</TT> renvoie la matrice de <I>c</I> colonnes obtenue en mettant ces 
+<I>n</I> blocs les uns sous les autres. Si les matrices de 
+l’argument ont même dimension <I>p</I> × <I>q</I>, la matrice résultat a pour 
+dimension <I>p</I>*<I>n</I> × <I>q</I>*<I>m</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[2,12,45,3,7,78])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[[2,12],[45,3],[7,78]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>blockmatrix(2,3,[idn(2),idn(2),idn(2), idn(2),idn(2),idn(2)])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1,0,1,0,1,0],[0,1,0,1,0,1], [1,0,1,0,1,0],[0,1,0,1,0,1]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[[2,12],[45,3],[7,78]],row)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>blockmatrix(3,2,[idn(2),idn(2), idn(2),idn(2),idn(2),idn(2)])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,1,1]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1,0,1,0],[0,1,0,1], [1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[[2,12],[45,3],[7,78]],col)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>blockmatrix(2,2,[idn(2),newMat(2,3), newMat(3,2),idn(3)])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,1]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1,0,0,0,0],[0,1,0,0,0],[0,0,1,0,0], [0,0,0,1,0],[0,0,0,0,1]] </TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>blockmatrix(3,2,[idn(1),newMat(1,4), newMat(2,3),idn(2),newMat(1,2),[[1,1,1]]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,0,0,0,0],[0,0,0,1,0],[0,0,0,0,1],[0,0,1,1,1]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>A:=[[1,1],[1,1]];B:=[[1],[1]]</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>blockmatrix(2,3,[2*A,3*A,4*A,5*B,newMat(2,4),6*B])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[2,2,3,3,4,4],[2,2,3,3,4,4], [5,0,0,0,0,6],[5,0,0,0,0,6]]</TT></DIV><HR>
 <A HREF="cascmd_fr583.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr585.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,29 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Séparation des variables : split</TITLE>
+<TITLE>Distributivité : expand fdistrib developper</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr260.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr262.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc334">6.14.10</A>  Séparation des variables : <TT>split</TT></H3><P><A NAME="@default438"></A>
-<TT>split</TT> a deux arguments : une expression dépendant de deux 
-variables et la liste de ces deux variables.<BR>
-Si l’expression est factorisable avec deux facteurs qui ne dependent chacun que
-d’une des 2 variables, <TT>split</TT> renvoie une liste formée par ces deux 
-facteurs et sinon renvoie la liste <TT>[0]</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>split((x+1)*(y-2),[x,y])</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc334">6.14.7</A>  Distributivité : <TT>expand fdistrib developper</TT></H3><P><A NAME="@default435"></A><A NAME="@default436"></A><A NAME="@default437"></A>
+Si on veut effectuer, sur une expression, la distributivité de la 
+multiplication par rapport à l’addition on utilise la fonction <TT>expand</TT> 
+ou <TT>developper</TT> ou <TT>fdistib</TT>.<BR>
 Ou on tape :
-</P><DIV CLASS="center"><TT>split(x*y-2*x+y-2,[x,y])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>developper((x+1)*(x-2))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>expand((x+1)*(x-2))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>fdistrib((x+1)*(x-2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x+1,y-2]</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-x-2</TT></DIV><P> 
+<B>Remarque</B> On peut aussi utiliser <TT>convert</TT> avec l’option <TT>’+’</TT>
+ou sa version infixée<TT>=&gt;</TT> avec l’option <TT>+</TT> :
 On tape :
-</P><DIV CLASS="center"><TT>split(x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2-1,[x,y])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x+1)*(x-2)=&gt;+</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>convert((x+1)*(x-2),’+’)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-x-2</TT></DIV><HR>
 <A HREF="cascmd_fr260.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr262.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -134,6 +134,7 @@ namespace xcas {
   int Xcas_pack_insert(xcas::History_Pack * pack,const char * chaine,int length,int before_position);
   Fl_Widget * widget_load(const std::string & s,int L,int & i,const giac::context *,int widgetw=0);
   std::string widget_sprint(const Fl_Widget * o);
+  std::string widget_html5(const Fl_Widget * o);
 
   void cb_Insert_ItemName(Fl_Widget * w , void*) ;
 

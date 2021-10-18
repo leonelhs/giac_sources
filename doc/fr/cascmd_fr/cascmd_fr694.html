@@ -6,25 +6,57 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Différentes valeurs statistiques : quartiles</TITLE>
+<TITLE>Applications</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr693.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr695.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc825">8.1.6</A>  Différentes valeurs statistiques : <TT>quartiles</TT></H3><P><A NAME="@default1250"></A>
-<TT>quartiles</TT> renvoie la matrice colonne formée par : le minimum, 
-le premier quartile, la médiane, le troisième quartile et le maximum des 
-éléments d’une liste.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>quartiles(A)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[0.0],[2.0],[5.0],[8.0],[11.0]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>quartiles(A,A)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1,6,8,10,11]</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc824">7.5.4</A>  Applications</H3><P>
+Trouver la courbure et le centre de courbure de la spirale logarithmique :<BR>
+ρ=3<I>e</I><SUP>θ/2</SUP> en un point <I>M</I> de coordonnées :<BR>
+ρcos(θ),ρsin(θ) et<BR>
+en un point <I>M</I><SUB>0</SUB> de coordonnées :<BR>
+3<I>e</I><SUP>7/2</SUP>cos(7),3<I>e</I><SUP>7/2</SUP>sin(7).<BR>
+On tape :<BR>
+<TT>trigcos(courbure([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t))</TT><BR>
+On obtient le rayon de courbure au point <I>M</I> d’affixe 
+3*exp(1/2)*(cos(1)+<I>i</I>*sin(1)):<BR>
+<TT>2*sqrt(5)/(15*exp(t/2))</TT><BR>
+On tape pour avoir le rayon de courbure au point <I>M</I><SUB>0</SUB> d’affixe 
+3*exp(7/2)*(cos(7)+<I>i</I>*sin(7)):<BR>
+<TT>trigcos(courbure([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7))</TT><BR>
+On obtient :<BR>
+<TT>2*sqrt(5)/(15*exp(7/2))</TT><BR>
+Pour avoir l’équation du cercle osculateur en <I>M</I>, on tape :<BR>
+<TT>trigcos(equation(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)))</TT><BR>
+On obtient :<BR>
+<TT>x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2+9*exp(t/2)</TT><CODE><TT>^</TT></CODE><TT>2/4+3*x*exp(t/2)*sin(t)-3*y*exp(t/2)*cos(t)=(45*exp(t/2)</TT><CODE><TT>^</TT></CODE><TT>2/4)</TT><BR>
+Pour avoir l’équation du cercle osculateur en <I>M</I><SUB>0</SUB>, on tape :<BR>
+<TT>trigcos(equation(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)))</TT><BR>
+On obtient :<BR>
+<TT>x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2+9*exp(7/2)</TT><CODE><TT>^</TT></CODE><TT>2/4+3*x*exp(7/2)*sin(7)-3*y*exp(7/2)*cos(7)=(45*exp(7/2)</TT><CODE><TT>^</TT></CODE><TT>2/4)</TT><BR>
+Pour avoir l’affixe du centre du cercle osculateur en <I>M</I>, on tape :<BR>
+<TT>affixe(centre(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)))</TT><BR>
+On obtient :<BR>
+<TT>(3*i)*exp(t/2)*cos(t)/2-3*exp(t/2)*sin(t)/2)</TT><BR>
+Pour avoir l’affixe du centre du cercle osculateur en <I>M</I><SUB>0</SUB>, on tape :<BR>
+<TT>affixe(centre(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)))</TT><BR>
+On obtient :<BR>
+<TT>(3*i)*exp(7/2)*cos(7)/2-3*exp(7/2)*sin(7)/2</TT><BR>
+On tape :<BR>
+<TT>plotparam(3*exp(t/2)*(cos(t)+i*sin(t)));</TT><BR>
+<TT>M0:=point(3*exp(7/2)*(cos(7)+i*sin(7)));</TT><BR>
+<TT>C:=centre(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7));</TT><BR>
+<TT>cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7,affichage=1)</TT><BR>
+<TT>segment(C,M0)</TT><BR>
+<TT>tangente(plotparam(3*exp(t/2)*exp(i*t),t),7);</TT><BR>
+<TT>demi_droite(0,M0);</TT><BR>
+<TT>demi_droite(0,C);</TT><BR>
+On obtient :<BR>
+<IMG SRC="cascmd_fr007.png">
+</P><HR>
 <A HREF="cascmd_fr693.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr695.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

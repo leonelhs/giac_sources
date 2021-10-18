@@ -6,57 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Augmenter la phase de π/2 dans les expressions trigonométriques : shift_phase</TITLE>
+<TITLE>Les différentes fonctions trigonométriques</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr314.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr316.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc398">6.24.4</A>  Augmenter la phase de π/2 dans les expressions trigonométriques : <TT>shift_phase</TT></H3><P><A NAME="@default603"></A><A NAME="@default604"></A> 
-<TT>shift_phase</TT> a comme argument une expression trigonométrique.<BR>
-<TT>shift_phase</TT> permet d’augmenter la phase de π/2 dans les 
-expressions trigonométriques une fois que la simplification automatique a eu
-lieu.
-On tape :
-</P><DIV CLASS="center"><TT>shift_phase(x+sin(x))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x-cos((pi+2*x)/2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>shift_phase(x+cos(x))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x-+sin((pi+2*x)/2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>shift_phase(x+tan(x))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x+1/(tan((pi+2*x)/2))</TT></DIV><P>
-Si on ne veut pas que l’expression soit évaluée (i.e. qu’il n’y ait pas de 
-simplification automatique), il faut quoter l’argument. 
-On tape :
-</P><DIV CLASS="center"><TT>shift_phase(’sin(x+pi/2)’)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-(cos(pi+x))</TT></DIV><P>
-Mais si on tape sans quoter le sinus :
-</P><DIV CLASS="center"><TT>shift_phase(sin(x+pi/2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>sin((pi+2*x)/2)</TT></DIV><P>
-car <TT>sin(x+pi/2)</TT> est évaluée (i.e. simplifiée) en <TT>cos(x)</TT> avant
-que la commande <TT>shift_phase</TT> ne soit appelée et ensuite 
-<TT>shift_phase(cos(x))</TT> renvoie <TT>sin((pi+2*x)/2)</TT>.
-<B>Exercice</B><BR>
-Calcul de ∑<SUB><I>n</I>=1</SUB><SUP>+∞</SUP>sin(<I>n</I>*<I>x</I>)/<I>n</I><BR>
-On tape :<BR>
-<TT>normal(sum((sin(n*x))/n,n=1..+infinity))</TT><BR>
-On obtient :<BR>
-<TT>-atan((sin(x))/(cos(x)-1))</TT><BR>
-On tape :<BR>
-<TT>normal(shift_phase(halftan(atan(sin(x)/(-cos(x)+1)))))</TT><BR>
-On obtient :<BR>
-<TT>pi*floor(((pi+x)/2)/pi+1/2)+(-1)/2*pi+(-1)/2*x</TT><BR>
-si on tape :<BR>
-<TT>tsimplify(atan((sin(x))/(-cos(x)+1)))</TT><BR>
-On obtient car <TT>tsimplify</TT> n’est pas rigoureux vis a vis des 2<I>k</I>π :<BR>
-<TT>-1/2*pi-1/2*x</TT></P><HR>
+<H3 CLASS="subsection"><A NAME="htoc398">6.24.1</A>  Les différentes fonctions trigonométriques</H3><P><A NAME="sec:trigo"></A>
+<TT>sin</TT> <A NAME="@default588"></A> désigne la fonction sinus,<BR>
+<TT>cos</TT> <A NAME="@default589"></A> désigne la fonction cosinus,<BR>
+<TT>tan</TT> <A NAME="@default590"></A> désigne la fonction tangente (<TT>tan(x)= sin(x)/cos(x)</TT>),<BR>
+<TT>cot</TT> <A NAME="@default591"></A> désigne la fonction cotangente (<TT>cot(x)= cos(x)/sin(x)</TT>),<BR>
+<TT>sec</TT> <A NAME="@default592"></A> désigne la fonction sécante (<TT>sec(x)= 1/cos(x)</TT>),<BR>
+<TT>csc</TT> <A NAME="@default593"></A> désigne la fonction cosécante (<TT>csc(x) = 1/sin(x)</TT>),<BR>
+<TT>asin</TT> ou <TT>arcsin</TT><A NAME="@default594"></A><A NAME="@default595"></A>, <TT>acos</TT> ou <TT>arccos</TT><A NAME="@default596"></A><A NAME="@default597"></A>, <TT>atan</TT> ou <TT>arctan</TT><A NAME="@default598"></A><A NAME="@default599"></A>, <TT>acot</TT><A NAME="@default600"></A>, <TT>asec</TT><A NAME="@default601"></A>, <TT>acsc</TT><A NAME="@default602"></A>
+désignent les fonctions réciproques des fonctions précédentes.<BR>
+On a :<BR>
+<TT>asec(x) = acos(1/x)</TT>,<BR>
+<TT>acsc(x) = asin(1/x)</TT>,<BR>
+<TT>acot(x) = atan(1/x)</TT>. 
+</P><HR>
 <A HREF="cascmd_fr314.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr316.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

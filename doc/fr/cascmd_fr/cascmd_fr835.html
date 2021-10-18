@@ -6,43 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Définir une fonction ayant un nombre variable d’arguments : args</TITLE>
+<TITLE>Modifier l’ordre d’exécution des instructions : label goto</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr834.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr836.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc977">9.6.1</A>  Définir une fonction ayant un nombre variable d’arguments : <TT>args</TT></H3><P><A NAME="@default1512"></A>
-<TT>args</TT> ou <TT>args(NULL)</TT> renvoie la liste des arguments d’une 
-fonction sous forme d’une liste :
-l’élément d’indice <TT>0</TT> est la fonction, les suivants sont les
-arguments passés à la fonction.
-Cela permet de travailler avec des fonctions ayant un nombre d’arguments
-non fixé a l’avance.<BR>
-<B>Remarque</B> on ne peut pas mettre <TT>args()</TT> mais <TT>args</TT> ou 
-<TT>args(NULL)</TT> (<TT>NULL</TT> est obligatoire) 
-on peut aussi utiliser <TT>(args)[0]</TT> pour désigner la fonction, 
-<TT>(args)[1]</TT> pour désigner le nom du premier argument... mais il ne 
-faut pas oublier les parenthèses autour de <TT>args</TT>!<BR>
+<H3 CLASS="subsection"><A NAME="htoc980">9.4.25</A>  Modifier l’ordre d’exécution des instructions : <TT>label goto</TT></H3><P><A NAME="@default1517"></A><A NAME="@default1518"></A>
+<TT>label</TT> permet de repérer une instruction dans un programme par 
+un nom de variable.<BR>
+<TT>goto</TT> permet de modifier l’ordre d’exécution des instructions, en
+exécutant les instructions du programme à partir d’une instruction 
+repérée par un label.<BR>
+<TT>label</TT> a comme arguments, une suite de caractères : par exemple <TT>label(truc)</TT> ou <TT>label(1)</TT>.<BR>
+<TT>goto</TT> a comme arguments un nom de label: par exemple <TT>goto(truc)</TT> ou <TT>goto(1)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>testargs():={ local y; y:=args; return y[1];}</TT></DIV><DIV CLASS="center"><TT>testargs(12,5)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>12</TT></DIV><P>
-On tape :
-</P><PRE CLASS="verbatim">somme():={
- local s,a;
- a:=args;
- s:=0;
- for (k:=1;k&lt;size(a);k++){
- s:=s+a[k];
- }
- return s;
- }
+</P><PRE CLASS="verbatim">essai(eps):={
+local s,j;
+s:=0;
+j:=0;
+label(truc);
+j:=j+1;
+s:=s+1/j;
+if (1/j&gt;=eps) goto(truc);
+print(s);
+return 0;
+}
 </PRE><P>puis :
-</P><DIV CLASS="center"><TT>somme(1,2,3,4)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>essai(0.2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>10</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>s:137/60 écrit en bleu, puis 0 comme réponse</TT></DIV><HR>
 <A HREF="cascmd_fr834.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr836.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -52,7 +52,7 @@ namespace giac {
   // "unary" version
   gen _moyal(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
-    int s=args._VECTptr->size();
+    int s=int(args._VECTptr->size());
     if (s!=4) return gensizeerr(gettext("moyal.cc/_moyal"));
     return moyal( (*(args._VECTptr))[0],(*(args._VECTptr))[1],(*(args._VECTptr))[2],(*(args._VECTptr))[3]);
   }
@@ -157,12 +157,12 @@ namespace giac {
     if (args.type!=_VECT)
       return symbolic(at_Beta,args);
     vecteur v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s>2 && (v[0].type==_DOUBLE_ || v[1].type==_DOUBLE_ || v[2].type==_DOUBLE_ || v[0].type==_REAL || v[1].type==_REAL || v[2].type==_REAL)){
       gen tmp=evalf_double(v,1,contextptr);
       if (tmp.type==_VECT)
 	v=*tmp._VECTptr;
-      s=v.size();
+      s=int(v.size());
     }
     if ( (s==3 || s==4) && v[0].type==_DOUBLE_ && v[1].type==_DOUBLE_ && v[2].type==_DOUBLE_ ){
       return incomplete_beta(v[0]._DOUBLE_val,v[1]._DOUBLE_val,v[2]._DOUBLE_val, s==4 && !is_zero(v[3]) );
@@ -187,7 +187,7 @@ namespace giac {
     if (args.type!=_VECT)
       return symbolic(at_upper_incomplete_gamma,args);
     vecteur v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s>=2 && (v[0].type==_DOUBLE_ || v[1].type==_DOUBLE_)){
       v[0]=evalf_double(v[0],1,contextptr);
       v[1]=evalf_double(v[1],1,contextptr);
@@ -222,7 +222,7 @@ namespace giac {
     if (args.type!=_VECT)
       return symbolic(at_polygamma,args);
     vecteur v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (args.subtype==_SEQ__VECT && s==2)
       return _Psi(makesequence(v[1],v[0]),contextptr);
     return symbolic(at_polygamma,args);
@@ -268,7 +268,7 @@ namespace giac {
     if (args.type!=_VECT)
       return erfc(args/plus_sqrt2,contextptr)/2;
     vecteur & v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s!=3 || is_zero(v[1]))
       return gensizeerr(contextptr);
     return erfc((v[2]-v[0])/sqrt(2*v[1],contextptr),contextptr)/2;
@@ -318,7 +318,7 @@ namespace giac {
     if (v[1].type==_VECT){
       if (!is_squarematrix(v[1]))
 	return gendimerr(contextptr);
-      int n=v[1]._VECTptr->size();
+      int n=int(v[1]._VECTptr->size());
       vecteur w(n);
       for (int i=0;i<n;++i)
 	w[i]=randNorm(contextptr);
@@ -408,7 +408,7 @@ namespace giac {
     if (g.type!=_VECT)
       return normald(0,1,g,contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return symbolic(at_normald,g);
     if (s==3)
@@ -443,7 +443,7 @@ namespace giac {
     if (g.type!=_VECT)
       return normal_cdf(g,contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return normal_cdf(v[1],contextptr)-normal_cdf(v[0],contextptr); 
     if (s==3)
@@ -559,7 +559,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2){
       if (is_strictly_positive(v[1],contextptr) && is_strictly_greater(1,v[1],contextptr))
 	return symbolic(at_binomial,g); // inert form for binomial pseudo-random generation
@@ -568,8 +568,11 @@ namespace giac {
 	return _factorial(v[0],contextptr)/(_factorial(v[1],contextptr)*_factorial(v[0]-v[1],contextptr));
       return comb(v[0],v[1],contextptr);
     }
-    if (s==3)
+    if (s==3){
+      if (0 && calc_mode(contextptr)==1)
+	return binomial(v[0],v[2],v[1],contextptr);	
       return binomial(v[0],v[1],v[2],contextptr);
+    }
     return gensizeerr(contextptr);
   }
   static const char _binomial_s []="binomial";
@@ -585,7 +588,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3){
       gen n=v[0],K=v[1],P=v[2];
       if (!is_zero(1-_plus(P,contextptr),contextptr))
@@ -593,7 +596,7 @@ namespace giac {
       if (_plus(K,contextptr)!=n || K.type!=_VECT || P.type!=_VECT || K._VECTptr->size()!=P._VECTptr->size())
 	return gensizeerr(contextptr);
       vecteur k=*K._VECTptr,p=*P._VECTptr;
-      unsigned s=k.size();
+      unsigned s=unsigned(k.size());
       gen res=_factorial(n,contextptr);
       for (unsigned i=0;i<s;++i){
 	res=res/_factorial(k[i],contextptr);
@@ -647,7 +650,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2) return symbolic(at_negbinomial,g); // for random
     if (s==3){
       gen r=v[0],p=v[1],k=v[2];
@@ -671,7 +674,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3){
       gen n=v[0],p=v[1],k=v[2];
       return _Beta(makesequence(n,k+1,p,1),contextptr);
@@ -691,7 +694,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3){
       gen R=v[0],P=evalf_double(v[1],1,contextptr),T=v[2];
       if (!is_integral(R) || R.val<=0 || P._DOUBLE_val<=0 || P._DOUBLE_val>=1)
@@ -803,7 +806,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3){
       if (v[2].type==_IDNT)
 	return symbolic(at_binomial_cdf,makesequence(v[0],v[1],v[2]));
@@ -900,7 +903,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return binomial_icdf(v[0],v[1],v[2],contextptr);
     if (s==4)
@@ -932,7 +935,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s<2 
 	|| s>2 // 3
 	)
@@ -971,7 +974,7 @@ namespace giac {
     if (g.type!=_VECT)
       return symbolic(at_poisson,g);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return poisson(v[0],v[1],contextptr);
     return gensizeerr(contextptr);
@@ -1041,7 +1044,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return poisson_cdf(v[0],v[1],contextptr);
     if (s==3)
@@ -1161,7 +1164,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return poisson_icdf(v[0],v[1],contextptr);
     if (s==3)
@@ -1188,7 +1191,7 @@ namespace giac {
       return symbolic(at_studentd,g);
     }
     vecteur v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2){
       if (v[1].type==_DOUBLE_ || v[1].type==_FLOAT_)
 	return evalf(student(v[0],v[1],contextptr),1,contextptr);
@@ -1319,7 +1322,7 @@ namespace giac {
     if (args.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s!=2)
       return gensizeerr(contextptr);
     return UTPT(v[0],v[1],contextptr);
@@ -1355,7 +1358,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return student_cdf(v[0],minus_inf,v[1],contextptr);
     if (s==3)
@@ -1391,7 +1394,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return student_icdf(v[0],v[1],contextptr);
     if (s==3)
@@ -1420,7 +1423,7 @@ namespace giac {
       return symbolic(at_chisquared,g);
     }
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return chisquare(v[0],v[1],contextptr);
     return gensizeerr(contextptr);
@@ -1497,7 +1500,7 @@ namespace giac {
     if (args.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s!=2)
       return gensizeerr(contextptr);
     return UTPC(v[0],v[1],contextptr);
@@ -1514,7 +1517,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return chisquare_cdf(v[0],0,v[1],contextptr);
     if (s==3)
@@ -1564,7 +1567,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return chisquare_icdf(v[0],v[1],contextptr);
     if (s==3)
@@ -1591,7 +1594,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2){
       if (abs_calc_mode(contextptr)==38)
 	return symbolic(at_fisher,g);
@@ -1683,7 +1686,7 @@ namespace giac {
     if (args.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*args._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s!=3)
       return gensizeerr(contextptr);
     return UTPF(v[0],v[1],v[2],contextptr);
@@ -1712,7 +1715,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return snedecor_cdf(v[0],v[1],v[2],contextptr);
     if (s==4)
@@ -1768,7 +1771,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return snedecor_icdf(v[0],v[1],v[2],contextptr);
     if (s==4)
@@ -1799,7 +1802,7 @@ namespace giac {
     if (g.type!=_VECT)
       return cauchy(0,1,g,contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return symbolic(at_cauchyd,g);
     if (s==3)
@@ -1822,7 +1825,7 @@ namespace giac {
     if (g.type!=_VECT)
       return cauchy_cdf(0,1,g,contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return cauchy_cdf(v[0],v[1],v[2],contextptr);
     if (s==4)
@@ -1845,7 +1848,7 @@ namespace giac {
     if (g.type!=_VECT)
       return cauchy_icdf(0,1,g,contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return cauchy_icdf(v[0],v[1],v[2],contextptr);
     if (s==4)
@@ -1869,7 +1872,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return symbolic(at_weibulld,g);
     if (s==3)
@@ -1895,7 +1898,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return weibull_cdf(v[0],v[1],0,v[2],contextptr);
     if (s==4)
@@ -1922,7 +1925,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return weibull_icdf(v[0],v[1],0,v[2],contextptr);
     if (s==4)
@@ -1949,7 +1952,7 @@ namespace giac {
     if (g.type!=_VECT)
       return betad(0,1,g,contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return symbolic(at_betad,g);
     if (s==3)
@@ -1966,7 +1969,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return _Beta(makesequence(v[0],v[1],v[2],1),contextptr);
     if (s==4)
@@ -2025,7 +2028,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return betad_icdf(v[0],v[1],v[2],contextptr);
     if (s==4)
@@ -2048,7 +2051,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gammad(0,1,g,contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return symbolic(at_gammad,g);
     if (s==3)
@@ -2065,7 +2068,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return _lower_incomplete_gamma(makesequence(v[0],v[1]*v[2],1),contextptr);
     if (s==4)
@@ -2115,7 +2118,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return gammad_icdf(v[0],v[1],v[2],contextptr);
     if (s==4)
@@ -2131,7 +2134,7 @@ namespace giac {
     if (g.type!=_VECT)
       return 1;
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==0)
       return symbolic(at_uniformd,makesequence(0,1));
     if (s==2)
@@ -2152,7 +2155,7 @@ namespace giac {
     if (g.type!=_VECT)
       return g;
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return (v[2]-v[0])/(v[1]-v[0]);
     if (s==4)
@@ -2171,7 +2174,7 @@ namespace giac {
     if (g.type!=_VECT)
       return g;
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==3)
       return v[0]+v[2]*(v[1]-v[0]);
     if (s==4)
@@ -2190,7 +2193,7 @@ namespace giac {
     if (g.type!=_VECT)
       return symbolic(at_exponentiald,g);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return v[0]*exp(-v[0]*v[1],contextptr);
     return gensizeerr(contextptr);
@@ -2207,7 +2210,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return 1-exp(-v[0]*v[1],contextptr);
     if (s==3)
@@ -2227,7 +2230,7 @@ namespace giac {
     if (g.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return -ln(1-v[1],contextptr)/v[0];
     if (s==3)
@@ -2253,7 +2256,7 @@ namespace giac {
     if (g.type!=_VECT)
       return symbolic(at_geometric,g);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return geometric(v[0],v[1],contextptr);
     return gensizeerr(contextptr);
@@ -2274,7 +2277,7 @@ namespace giac {
     if (g.type!=_VECT)
       return symbolic(at_geometric_cdf,g);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return geometric_cdf(v[0],v[1],contextptr);
     if (s==3)
@@ -2294,7 +2297,7 @@ namespace giac {
     if (g.type!=_VECT)
       return symbolic(at_geometric_icdf,g);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s==2)
       return geometric_icdf(v[0],v[1],contextptr);
     if (s==3)
@@ -2404,7 +2407,7 @@ namespace giac {
     if (x.type!=_VECT || !convert(*x._VECTptr,X,true))
       return gensizeerr(contextptr);
     sort(X.begin(),X.end());
-    int n=X.size();
+    int n=int(X.size());
     double cumulx=0,d=0,dcur,invn=1./n,ks;
     if (nd){
       gen f=cdf(nd);
@@ -2459,7 +2462,7 @@ namespace giac {
     if (y.type!=_VECT || !convert(*y._VECTptr,Y,true))
       return gensizeerr(contextptr);
     sort(Y.begin(),Y.end());
-    int m=Y.size();
+    int m=int(Y.size());
     double cumuly=0,invm=1./m;
     int i=0,j=0;
     while (i<n && j<m){
@@ -2494,8 +2497,8 @@ namespace giac {
   gen wilcoxons(const vecteur & x,const gen & m_,GIAC_CONTEXT){
     if (m_.type==_VECT){
       vecteur & y=*m_._VECTptr;
-      int n=y.size();
-      int m=x.size();
+      int n=int(y.size());
+      int m=int(x.size());
       vecteur xm;
       for (int i=0;i<n;++i){
 	xm.push_back(makevecteur(y[i],i));
@@ -2630,13 +2633,13 @@ namespace giac {
     }
     if (alpha.type!=_DOUBLE_ || alpha._DOUBLE_val<=0 || alpha._DOUBLE_val>=1)
       return gensizeerr(gettext("Invalid confidence level"));
-    int n=x._VECTptr->size();
+    int n=int(x._VECTptr->size());
     if (m.type==_VECT){
       // if (typetest!=0) return gensizeerr(gettext("H1 must be <> for Mann-Whitney test"));
       gen w=wilcoxons(*m._VECTptr,x,contextptr);
       if (w.type!=_DOUBLE_)
 	return gensizeerr(contextptr);
-      int N=m._VECTptr->size(),M=x._VECTptr->size();
+      int N=int(m._VECTptr->size()),M=int(x._VECTptr->size());
       gen combMN=comb(M+N,N);
       *logptr(contextptr) << "Mann-Whitney 2-sample test, H0 same Median, H1 ";
       if (typetest==0) *logptr(contextptr) << "<>";
@@ -2655,16 +2658,16 @@ namespace giac {
       vecteur & v = *p._VECTptr;
       gen P=0,Q=0;
       for (double i=0;i<=W;++i){
-	P += v[i];
+	P += v[int(i)];
       }
       P=P/combMN;
       if (typetest==0){
 	gen seuil=combMN*alpha/2;
 	int um(-1);
 	for (double i=0;i<M*N;++i){
-	  Q += v[i];
+	  Q += v[int(i)];
 	  if (um==-1 && typetest==0 && is_greater(Q,seuil,contextptr))
-	    um=i-1;
+	    um=int(i)-1;
 	}
 	*logptr(contextptr) << "Limit value to reject H0 " << um << endl;
 	P=2*P;
@@ -2759,7 +2762,7 @@ namespace giac {
       return;
     }
     z.clear();
-    z.reserve(giacmax(x.size(),y.size()));
+    z.reserve(giacmax(int(x.size()),int(y.size())));
     vector<int>::const_iterator it=x.begin(),itend=x.end(),jt=y.begin(),jtend=y.end();
     for (;it!=itend&& jt!=jtend;++it,++jt)
       z.push_back(*it+*jt);
@@ -2836,14 +2839,14 @@ namespace giac {
 	vector< vector<int> > M(2);
 	M[0]=vecteur_2_vector_int(*x._VECTptr);
 	M[1]=vecteur_2_vector_int(*y._VECTptr);
-	unsigned s=v.size();
+	unsigned s=unsigned(v.size());
 	for (int j=2;j<int(s);++j){
 	  if (v[j].type!=_VECT || !is_integer_vecteur(*v[j]._VECTptr))
 	    return gensizeerr(contextptr);
 	  M.push_back(vecteur_2_vector_int(*v[j]._VECTptr));
 	}
 	vector< vector<int> > effX(s);
-	int k=M[0].size();
+	int k=int(M[0].size());
 	if (k!=int(M[1].size())){
 	  // build effectifs for x and y
 	  int m=giacmin(M[0]),ma=giacmax(M[0]);
@@ -2888,9 +2891,9 @@ namespace giac {
       // check y
       if (y.type!=_VECT || y._VECTptr->size()<2)
 	return gensizeerr(contextptr);
-      int J=y._VECTptr->size();
+      int J=int(y._VECTptr->size());
       vector<int> X=vecteur_2_vector_int(*x._VECTptr);
-      int N=X.size();
+      int N=int(X.size());
       gen res=0;
       if (N==J){ // X is directly the effectifs
 	N=0;
@@ -2943,7 +2946,7 @@ namespace giac {
 	  minX=0;
 	  eff=X;
 	  efftotal=somme(eff);
-	  Xclasses=X.size();
+	  Xclasses=int(X.size());
 	  gen m1=0,m2=0;
 	  for (unsigned i=1;i<X.size();++i){
 	    m1 += double(i)*X[i];
@@ -2964,7 +2967,7 @@ namespace giac {
       vecteur w(v.begin()+2,v.end());
       if (y.type==_SYMB)
 	w=gen2vecteur(y._SYMBptr->feuille);
-      int s=w.size();
+      int s=int(w.size());
       if (s>nargs || s<nargs-2)
 	return gendimerr(contextptr);
       int dof = nargs-s; // adjust number of degree of freedom
@@ -3015,7 +3018,7 @@ namespace giac {
 	default:
 	  return gendimerr(contextptr);
 	} // end switch
-	s=w.size();
+	s=int(w.size());
       } // end 2 paramters to estimate
       if (s==nargs-1){ // 1 params estimation
 	switch (nd){
@@ -3042,7 +3045,7 @@ namespace giac {
 	default:
 	  return gensizeerr(contextptr);
 	}
-	s=w.size();
+	s=int(w.size());
       }
       w.push_back(0); // last argument of the distribution
       gen loi;
@@ -3090,7 +3093,7 @@ namespace giac {
 	m=*x._VECTptr;
       else
 	m=effectifs(*x._VECTptr,classmin,classsize,contextptr);
-      dof=m.size()-dof;
+      dof=int(m.size())-dof;
       if (dof<2)
 	return gensizeerr(gettext("Not enough degree of freedom with default values. Add classes,classmin,classsize parameters"));
       efftotal=0.0;
@@ -3151,7 +3154,7 @@ namespace giac {
       return gensizeerr(contextptr);
     bool proportion=false,data0=false,data1=MU1.type==_VECT;
     if (data1){
-      n1=MU1._VECTptr->size();
+      n1=double(MU1._VECTptr->size());
       dof = int(n1)-1; // mean estimated from data
       gen tmp=_mean(MU1,contextptr);
       if (tmp.type!=_DOUBLE_)
@@ -3164,7 +3167,7 @@ namespace giac {
 	return gensizeerr(contextptr);
       mu1=MU1._DOUBLE_val;
     }
-    if ( (n0=v0.size())==2 && is_integer(v0[1])){
+    if ( (n0=double(v0.size()))==2 && is_integer(v0[1])){
       gen v00=evalf_double(v0[0],1,contextptr);
       if (v00.type!=_DOUBLE_)
 	return gensizeerr(contextptr);
@@ -3353,7 +3356,7 @@ namespace giac {
     if (g.type!=_VECT || g._VECTptr->empty() || !(nd=is_distribution(g._VECTptr->front())) )
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
-    int s=v.size();
+    int s=int(v.size());
     if (s!=distrib_nargs(nd)+1)
       return gensizeerr(contextptr);
     gen t(identificateur("t"));
@@ -3417,11 +3420,11 @@ namespace giac {
     if (g.type!=_VECT || g._VECTptr->empty())
       return gensizeerr(contextptr);
     vecteur w=*g._VECTptr;
-    int s=w.size();
+    int s=int(w.size());
     if (!(nd=is_distribution(w.front()))){
       if (g.subtype!=_SEQ__VECT){
 	w=gen2vecteur(_sort(g,contextptr));
-	s=w.size();
+	s=int(w.size());
 	vecteur res;
 	for (int i=0;i<s;++i){
 	  res.push_back(makevecteur(w[i],gen(i)/gen(s)));
@@ -3438,7 +3441,7 @@ namespace giac {
 	if (m.front()._VECTptr->size()!=2)
 	  return gensizeerr(contextptr);
 	gen_sort_f(m.begin(),m.end(),first_ascend_sort);
-	s=m.size();
+	s=int(m.size());
 	double tot=0,cur=0;
 	for (int i=0;i<s;++i){
 	  if (m[i][1].type!=_DOUBLE_)
@@ -3471,7 +3474,7 @@ namespace giac {
       if (s!=2 || w0.type!=_VECT || !convert(*w0._VECTptr,D,false))
 	return gensizeerr(contextptr);
       sort(D.begin(),D.end());
-      s=D.size();
+      s=int(D.size());
       if (w[1]!=at_plot){
 	gen tmp=evalf_double(w[1],1,contextptr);
 	if (tmp.type!=_DOUBLE_)
@@ -3557,7 +3560,7 @@ namespace giac {
     if (g.type!=_VECT || g._VECTptr->empty())
       return gensizeerr(contextptr);
     vecteur w=*g._VECTptr;
-    int s=w.size();
+    int s=int(w.size());
     if (!(nd=is_distribution(w.front()))){
       if (g.subtype!=_SEQ__VECT || s!=2)
 	return gensizeerr(contextptr);

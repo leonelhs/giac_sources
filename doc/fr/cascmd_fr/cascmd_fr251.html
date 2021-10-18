@@ -6,52 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynôme minimal d’un nombre algébrique : pmin</TITLE>
+<TITLE>Multiplier par le complexe conjugué : mult_c_conjugate multiplier_conjugue_complexe</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr250.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr252.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc323">6.13.2</A>  Polynôme minimal d’un nombre algébrique : <TT>pmin</TT></H3><P><A NAME="@default424"></A>
-<TT>pmin</TT> a comme argument <TT>a</TT> un nombre algébrique réel 
-(resp complexe).<BR>
-<TT>pmin</TT> renvoie le polynôme de plus petit degré ayant comme coefficients 
-des entiers qui admet <TT>a</TT> comme racine.<BR>
+<H3 CLASS="subsection"><A NAME="htoc322">6.12.9</A>  Multiplier par le complexe conjugué : <TT>mult_c_conjugate multiplier_conjugue_complexe</TT></H3><P><A NAME="@default423"></A> <A NAME="@default424"></A>
+Si une expression a un dénominateur complexe,
+<TT>mult_c_conjugate</TT> multiplie le numérateur et le 
+dénominateur de cette expression par le complexe conjugué du
+dénominateur.<BR>
+Si une expression n’a pas de dénominateur complexe,
+<TT>mult_c_conjugate</TT> multiplie le numérateur et le 
+dénominateur de cette expression par le complexe conjugué du numérateur.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+sqrt(3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>mult_c_conjugate((2+i)/(2+3*i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>poly1[1,0,-10,0,1]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(2+i)*(2+3*(-i))/((2+3*(i))*(2+3*(-i)))</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+sqrt(3),x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>mult_c_conjugate((2+i)/2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4-10*x</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
-En effet (√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>=5+2√<SPAN style="text-decoration:overline">6</SPAN> et donc :<BR>
-((√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>−5)<SUP>2</SUP>=24 donc<BR>
-(√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>4</SUP>−10(√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>+1=0
-On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+i*sqrt(3))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>poly1[1,0,2,0,25]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+i*sqrt(3),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4-4*i*x</TT><CODE><TT>^</TT></CODE><TT>2-100</TT></DIV><P>
-En effet (√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>=−1+2<I>i</I>√<SPAN style="text-decoration:overline">6</SPAN> et donc :<BR>
-((√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>+1)<SUP>2</SUP>=−24 donc<BR>
-(√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>4</SUP>+2(√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>)+25=0
-On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>poly1[1,0,4,0,36] </TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+2*i,x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4+4*x</TT><CODE><TT>^</TT></CODE><TT>2+36</TT></DIV><P>
-En effet (√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>2</SUP>=(4*<I>i</I>)*<I>sqrt</I>(2)−2 et donc :<BR>
-((√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>2</SUP>+2)<SUP>2</SUP>=−32 donc<BR>
-(√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>4</SUP>+4(√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>2</SUP>+36+0
-</P><HR>
+</P><DIV CLASS="center"><TT>(2+i)*(2+-i)/(2*(2+-i))</TT></DIV><HR>
 <A HREF="cascmd_fr250.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr252.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

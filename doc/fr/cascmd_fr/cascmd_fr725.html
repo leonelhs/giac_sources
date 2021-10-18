@@ -6,74 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Régression logistique : logistic_regression</TITLE>
+<TITLE>Régression exponentielle : exponential_regression</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr724.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr726.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc857">8.2.20</A>  Régression logistique : <TT>logistic_regression</TT></H3><P><A NAME="@default1297"></A>
-Les courbes logistiques sont des courbes dont léquation <I>y</I>=<I>y</I>(<I>x</I>) sont
-solutions d’une équation différentielle de la forme :<BR>
-<I>y</I>′/<I>y</I>=<I>a</I>*<I>y</I>+<I>b</I> et <I>y</I><SUB>0</SUB>=<I>y</I>(<I>x</I><SUB>0</SUB>) avec <I>a</I>&lt;0 et <I>b</I>&gt;0.<BR>
-Les solutions sont de la forme : <I>y</I>(<I>x</I>)=<I>C</I>/(1+exp(−α (<I>x</I>−<I>x</I><SUB>0</SUB>−<I>k</I>)
-avec <I>C</I>=−<I>b</I>/<I>a</I>, α=−<I>b</I> et <I>y</I><SUB>0</SUB>=(−<I>b</I>/<I>a</I>)/(1+exp(−<I>b</I>*<I>k</I>) soit<BR>
-<I>k</I>=−1/<I>b</I>*(<I>ln</I>(−((<I>a</I>*<I>y</I>0+<I>b</I>)/(<I>a</I>*<I>y</I>0))))
-Pour vérifier, on peut taper :
-</P><DIV CLASS="center"><TT>normal(desolve(y’/y=a*y+b)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(-b*exp(-(b*c_0-b*x)))/(a*exp(-(b*c_0-b*x))-1)</TT></DIV><P>Puis on peut taper :
-</P><DIV CLASS="center"><TT>normal(desolve([y’/y=a*y+b,y(x0)=y0],y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[(-b*exp(b*x-b*x0+ln(y0/(a*y0+b))))/(a*exp(b*x-b*x0+ln(y0/(a*y0+b)))-1)]</TT></DIV><P>
-On a donc :
-<I>c</I><SUB>0</SUB>=<I>x</I><SUB>0</SUB>−ln(<I>y</I><SUB>0</SUB>/(<I>a</I>*<I>y</I><SUB>0</SUB>+<I>b</I>))/<I>b</I>
-Donc, en multipliant le numérateur et dénominateur de <I>y</I>(<I>x</I>) par 
-exp(<I>b</I>*<I>c</I>_0−<I>b</I>*<I>x</I>) on a :<BR>
-<I>y</I>(<I>x</I>)=(−<I>b</I>/(exp(<I>b</I>*<I>c</I>_0−<I>b</I>*<I>x</I>)*<I>a</I>*<I>exp</I>(−(<I>b</I>*<I>c</I>_0−<I>b</I>*<I>x</I>))−1)
-soit <I>y</I>(<I>x</I>)=−<I>b</I>/(<I>a</I>−exp(<I>b</I>*(<I>x</I>−<I>c</I><SUB>0</SUB>)))=(−<I>b</I>/(<I>a</I>*(1−exp(<I>b</I>*(<I>x</I>−<I>c</I><SUB>0</SUB>))/<I>a</I>))<BR>
-On a 1/<I>a</I>=−exp(−<I>ln</I>(−<I>a</I>)) car <I>a</I>&lt;0
-donc <I>y</I>(<I>x</I>)=(−<I>b</I>/<I>a</I>)*(1/(1+exp(<I>b</I>*(<I>x</I>−<I>c</I><SUB>0</SUB>)−ln(−<I>a</I>)))
-qui est bien la forme annoncée.</P><P>Lorsque on connait les valeurs de <I>f</I>′ en <I>x</I>=<I>x</I><SUB>0</SUB>,<I>x</I><SUB>0</SUB>+1....<I>x</I><SUB>0</SUB>+<I>n</I>, on cherche
-une fonction logistique <I>y</I>(<I>x</I>) tel que <I>y</I>′(<I>x</I>) approche au mieux les 
-différentes valeurs de <I>f</I>′(<I>x</I>).</P><P><TT>logistic_regression</TT> a comme paramètres :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-une liste <TT>L</TT> qui contient les valeurs de <I>y</I>′ pour 
-<I>x</I>=<I>x</I><SUB>0</SUB>,<I>x</I><SUB>0</SUB>+1....<I>x</I><SUB>0</SUB>+<I>n</I>,
-</LI><LI CLASS="li-itemize">la valeur de <TT>x0</TT> de <I>x</I><SUB>0</SUB>
-</LI><LI CLASS="li-itemize">la valeur <TT>y0</TT> de <I>y</I>(<I>x</I><SUB>0</SUB>) lorsqu’on la connait sinon <TT>Xcas</TT>
-arrive à l’estimer...
-</LI></UL><P>
-<TT>logistic_regression(L,x0,y0</TT> renvoie les fonctions <TT>y(x)</TT> et
-<TT>y’(x)</TT>, la constante <TT>C</TT>, <TT>y1M</TT> et <TT>xM</TT> avec <TT>y1M</TT>
-est la valeur <TT>y’(xM)</TT> qui est le maximum de <I>y</I>′ obtenu en <I>x</I>=<I>xM</I>, et 
-enfin le coefficient de correlation linéaire <TT>R</TT> de <I>Y</I>=<I>y</I>′/<I>y</I> en fonction 
-de <I>y</I> avec la droite <I>Y</I>=<I>a</I>*<I>y</I>+<I>b</I>.<BR>
-À partir de la liste <TT>L</TT>, <TT>Xcas</TT> calcule la liste <TT>Ly</TT> en 
-utilisant la formule <I>y</I>(<I>t</I>+1)−<I>y</I>(<I>t</I>)=<I>y</I>′(<I>t</I>), donc, on a 
-<TT>Ly=[y0,y0+y0’,y0+y0’+y1’,....]</TT>. Puis <TT>Xcas</TT> fait une régression 
-linéaire de <TT>L/Ly</TT> en fonction de <TT>Ly</TT> pour avoir les valeurs de 
-<I>a</I> et <I>b</I> (<I>y</I>′/<I>y</I>=<I>a</I>*<I>y</I>+<I>b</I> et <I>y</I><SUB>0</SUB>=<I>y</I>(<I>x</I><SUB>0</SUB>)) puis touve la solution de cette 
-équation différentielle 
+<H3 CLASS="subsection"><A NAME="htoc862">8.2.12</A>  Régression exponentielle : <TT>exponential_regression</TT></H3><P><A NAME="@default1299"></A>
+Pour approcher les données par une fonction exponnentielle d’équation 
+<I>y</I>=<I>be</I><SUP><I>mx</I></SUP>=<I>ba</I><SUP><I>x</I></SUP>, on utilise <TT>exponential_regression</TT> qui 
+renvoie le couple (<I>a</I>,<I>b</I>).<BR>
+<TT>exponential_regression</TT> a les mêmes arguments que <TT>covariance</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>logistic_regression([0.0,1.0,2.0,3.0,4.0],0,1)</TT></DIV><P>On obtient avec écrit en bleu la signification des valeurs renvoyées :
-</P><DIV CLASS="center"><TT>[(-17.77)/(1+exp(-0.496893925384*x+2.82232341488+3.14159265359*i)), (-2.48542227469)/(1+cosh(-0.496893925384*x+2.82232341488+3.14159265359*i)), -17.77,-1.24271113735,5.67993141131+6.32246138079*i, 0.307024935856] </TT></DIV><P>On tape :
-</P><DIV CLASS="center"><TT>evalf(logistic_regression([1,2,4,6,8,7,5],0,2))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>evalf(exponential_regression([[1,1],[2,4],[3,9],[4,16]]))</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>logistic_regression(evalf([1,2,4,6,8,7,5]),0,2.0))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>evalf(exponential_regression([1,2,3,4],[1,4,9,16]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[64.8358166583/(1.0+exp(-0.551746244591*x+2.95837880348)), 14.4915280084/(1.0+cosh(-0.551746244591*x+2.95837880348)), 64.8358166583,7.24576400418,5.36184674112,-0.81176431297]</TT></DIV><P>Pour retouver la valeur -0.81176431297 du coefficient de corrélation, 
-on tape :<BR>
-<TT>L:=[1,2,4,6,8,7,5];</TT><BR>
-<TT>y0:=2.0;</TT><BR>
-<TT>Ly:=makelist(y0,1,size(L))+cumSum(L)</TT><BR>
+</P><DIV CLASS="center"><TT>2.49146187923,0.5</TT></DIV><P>
+c’est donc la fonction exponentielle d’équation <I>y</I>=0.5*(2.49146187923)<SUP><I>x</I></SUP>
+qui approche au mieux les données.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>X:=[0,1,2,3,4,5,6,7,8,9,10]</TT></DIV><DIV CLASS="center"><TT>Y:=[7.3,9.53,12.47,16.3,21.24,27.73,36.22,47.31,</TT></DIV><DIV CLASS="center"><TT>61.78,80.68,105]</TT></DIV><DIV CLASS="center"><TT>exponential_regression(X,Y)</TT></DIV><P>
 On obtient :
-<TT>[3,5,9,15,23,30,35]</TT><BR>
-puis<BR>
-<TT>correlation(L/Ly,Ly)</TT> qui renvoie<BR>
-<TT>-0.81176431297</TT>
-</P><HR>
+</P><DIV CLASS="center"><TT>1.30568684451,7.30853268031</TT></DIV><P>
+c’est donc la fonction exponentielle d’équation <I>y</I>=7.3*(1.3)<SUP><I>x</I></SUP> 
+qui approche au mieux les données.
+On vérifie en tapant :<BR>
+</P><DIV CLASS="center"><TT>e</TT><CODE><TT>^</TT></CODE><TT>[linear_regression(X,ln(Y))]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.30568684451,7.30853268031</TT></DIV><HR>
 <A HREF="cascmd_fr724.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr726.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

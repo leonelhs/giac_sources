@@ -6,271 +6,147 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Somme de Riemann : sum_riemann</TITLE>
+<TITLE>Primitive et intégrale définie : integrate Int integrer int integration</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr301.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr303.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc381">6.20.4</A>  Somme de Riemann : <TT>sum_riemann</TT></H3><P><A NAME="@default561"></A>
-<TT>sum_riemann</TT> a deux arguments : une expression <TT>Xpr</TT>
-dépendant de deux variables et la liste des noms de ces deux variables.<BR>
-<TT>sum_riemann(Xpr(n,k),[n,k])</TT> renvoie un équivalent, au 
-voisinage de <I>n</I>=+∞, de ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>Xpr</I>(<I>n</I>,<I>k</I>) ou de 
- ∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP> <I>Xpr</I>(<I>n</I>,<I>k</I>) ou de  ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP> <I>Xpr</I>(<I>n</I>,<I>k</I>), 
-lorsque la somme considérée est une somme de Riemann associée à une 
-fonction continue sur [0,1] ou répond quand la recherche a été 
-infructueuse <TT>"ce n’est probablement pas une somme de Riemann"</TT> .<BR>
+<H3 CLASS="subsection"><A NAME="htoc381">6.20.1</A>  Primitive et intégrale définie : <TT>integrate Int integrer int integration</TT></H3><P><A NAME="@default557"></A><A NAME="@default558"></A><A NAME="@default559"></A><A NAME="@default560"></A><A NAME="@default561"></A>
+<TT>integrate</TT> (ou <TT>int</TT>) permettent de calculer une 
+primitive ou une intégrale définie. La seule différence entre ces deux 
+commandes est que <TT>integrate</TT> écrit avec le symbole ∫ 
+la réponse de la commande <TT>quest()</TT> qui suit l’évaluation de 
+<TT>integrate</TT>.<BR>
+Par contre <TT>Int</TT> renvoie <TT>integrate</TT> sans l’évaluer : c’est pour 
+avoir la compatibilité avec Maple, lorsque l’on fait un calcul numérique 
+d’intégrales :<BR>
+On tape :
+</P><DIV CLASS="center"><TT>Int(exp(x),x,0,1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>integrate(exp(x),x,0,1)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>int(exp(x),x,0,1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>exp(1)-1)</TT></DIV><P>On tape :
+</P><DIV CLASS="center"><TT>evalf(Int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>evalf(int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.46265174591</TT></DIV><P>
+<TT>integrate</TT> (ou <TT>int</TT> ou <TT>Int</TT>) a un, deux ou quatre arguments.<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+avec un argument qui est une expression de la variable <TT>x</TT>, (resp une
+fonction).<BR>
+<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors une expression qui est une 
+primitive de l’expression par rapport à la variable <TT>x</TT> (resp renvoie une
+fonction primitive de la fonction donnée en argument)
+On tape :
+<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>f(t):=t</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+<DIV CLASS="center"><TT>g:=integrate(f)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(t)-&gt;t</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+<B>Remarque</B> Dans ce cas on peut aussi utiliser <TT>convert</TT> (ou sa 
+version infixée <TT>=&gt;</TT>) avec l’option <TT>int</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+<DIV CLASS="center"><TT>g(x):=(f(x)=&gt;int)</TT></DIV>
+ou 
+<DIV CLASS="center"><TT>g:=(f=&gt;int))</TT></DIV>
+</LI><LI CLASS="li-itemize">avec deux arguments qui sont :<BR>
+ une expression et une variable,<BR>
+<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors une primitive de l’expression 
+par rapport à la variable donnée comme deuxième paramètre.<BR>
+On tape :
+<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>integrate(t</TT><CODE><TT>^</TT></CODE><TT>2,t)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>t</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+</LI><LI CLASS="li-itemize">avec quatre arguments qui sont :<BR>
+une expression, une variable et les bornes de l’intégrale définie,<BR>
+<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors la valeur de l’intégrale 
+définie.<BR>
+On tape :
+<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2,x,1,2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>7/3</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>integrate(1/(sin(x)+2),x,0,2*pi)</TT></DIV>
+On obtient après simplification (appel à <TT>simplify</TT>) :
+<DIV CLASS="center"><TT>2*pi*sqrt(3)/3</TT></DIV>
+</LI></UL><P>
 <B>Exercice 1</B><BR>
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>2</SUP>/<I>n</I><SUP>3</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
+Soit </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+ln(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">)</TD></TR>
+</TABLE><P>
+Calculer une primitive de f.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(k</TT><CODE><TT>^</TT></CODE><TT>2/n</TT><CODE><TT>^</TT></CODE><TT>3,[n,k])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1/3</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>2</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>3</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>2</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>x</I><SUP>2</SUP><I>dx</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
+</P><DIV CLASS="center"><TT>int(x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1)))</TT></DIV><P>
+On obtient : 
+</P><DIV CLASS="center"><TT>x*log((x+1)/(x-1))+log(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+1/2*log(2*x</TT><CODE><TT>^</TT></CODE><TT>2/2-1)</TT></DIV><P>
+Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+plus, en vert, le détail du calcul :
+</P><PRE CLASS="verbatim">Integration of x/(x^2-1): f(u)*u' where f=x-&gt;1/(x*2-1) and u=(x^2)/2
+Integrate rational fraction 1/(2*x-1)
+Integration of ln((x+1)/(x-1)) by part of u*v' where u=1 and v=ln((x+1)/(x-1))'
+Integrate rational fraction with denominator x^2-1=0
+roots are deduced from nth-roots of unity
+</PRE><P>Ou bien on définit la fonction <TT>f</TT> en tapant :<BR>
+</P><DIV CLASS="center"><TT>f(x):=x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1))</TT></DIV><P>
+puis on tape :
+</P><DIV CLASS="center"><TT>int(f(x))</TT></DIV><P>
+On obtient bien sûr le même résultat.<BR>
+<B>Attention</B><BR>
+ Pour <TT>Xcas</TT>, <TT>log</TT> est égal à <TT>ln</TT> (logarithme népérien) 
+et <TT>log10</TT> est le logarithme en base 10.<BR>
 <B>Exercice 2</B><BR>
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>3</SUP>/<I>n</I><SUP>4</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
+Calculer :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>6</SUP>+2 · <I>x</I><SUP>4</SUP>+<I>x</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
+</TABLE><P>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(k</TT><CODE><TT>^</TT></CODE><TT>3/n</TT><CODE><TT>^</TT></CODE><TT>4,[n,k])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>int(2/(x</TT><CODE><TT>^</TT></CODE><TT>6+2*x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1/4</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>3</SUP></TD></TR>
+</P><DIV CLASS="center"><TT>2*((3*x</TT><CODE><TT>^</TT></CODE><TT>2+2)/(-(2*(x</TT><CODE><TT>^</TT></CODE><TT>3+x)))+-3/2*atan(x))</TT></DIV><P>
+Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+plus, en vert, le détail du calcul :
+</P><PRE CLASS="verbatim">Integrate rational fraction 1/(x^3+x)^2
+Partial fraction 1/(x^3+x)^2 -&gt; Hermite reduction -&gt; 
+         integrate squarefree part -(3*x)/(2*x^3+2*x)
+</PRE><P><B>Exercice 3</B><BR>
+Calculer :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>4</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>3</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>3</SUP></TD></TR>
-</TABLE></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">sin(<I>x</I>)+sin(2 · <I>x</I> )</TD></TR>
+</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
 </TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>x</I><SUP>3</SUP><I>dx</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-<B>Exercice 3</B><BR>
-Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(1/<I>n</I>+1+1/<I>n</I>+2+...+1/<I>n</I>+<I>n</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(1/(n+k),[n,k])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>integrate(1/(sin(x)+sin(2*x )))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>log(2)</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>+<I>k</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+(<I>k</I>/<I>n</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+<I>x</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=ln(1+1)=ln(2)</TD></TR>
-</TABLE><P>
-<B>Exercice 4</B><BR>
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 32<I>n</I><SUP>3</SUP>/16<I>n</I><SUP>4</SUP>−<I>k</I><SUP>4</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(32*n</TT><CODE><TT>^</TT></CODE><TT>3/(16*n</TT><CODE><TT>^</TT></CODE><TT>4-k</TT><CODE><TT>^</TT></CODE><TT>4),[n,k])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2*atan(1/2)+log(3)</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">32<I>n</I><SUP>3</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">16<I>n</I><SUP>4</SUP>−<I>k</I><SUP>4</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">32</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">16−(<I>k</I>/<I>n</I>)<SUP>4</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">32</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">16−<I>x</I><SUP>4</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−2</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>+4</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-qui vaut donc ln(3)−ln(2)+ln(2)−ln(1)+2  atan (1/2)=ln(3)+2  atan (1/2)<BR>
-<B>Exercice 5</B><BR>
-Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(<I>n</I>/<I>n</I><SUP>2</SUP>+1<SUP>2</SUP>+<I>n</I>/<I>n</I><SUP>2</SUP>+2<SUP>2</SUP>+...+<I>n</I>/<I>n</I><SUP>2</SUP>+<I>n</I><SUP>2</SUP>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(n/(n</TT><CODE><TT>^</TT></CODE><TT>2+k</TT><CODE><TT>^</TT></CODE><TT>2),[n,k])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>pi/4</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+(<I>k</I>/<I>n</I>)<SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+<I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=  atan (1)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">π</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-<B>Exercice 6</B><BR>
-Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(1/√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>+1/√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+2</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>+...+1/√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(1/sqrt(n</TT><CODE><TT>^</TT></CODE><TT>2+k</TT><CODE><TT>^</TT></CODE><TT>2),[n,k])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-ln(sqrt(2)-1)</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+(<I>k</I>/<I>n</I>)<SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+<I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=ln(1+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+1<SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">−ln(0+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+0<SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=ln(1+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD></TR>
-</TABLE></TD></TR>
-</TABLE><HR>
+</P><DIV CLASS="center"><TT>(1/-3*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2-3)+1/12*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2))*2</TT></DIV><P> 
+Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+plus, en vert, le détail du calcul :
+</P><PRE CLASS="verbatim">Integrate rational fraction of trigonometric 1/(sin(x)+sin(2*x)) by tan(x/2) change of variable, 
+              leading to integral of 1/((1+x^2)*((2*x)/(x^2+1)+(2*(1-x^2)/(x^2+1)*2*x)/(x^2+1)))
+Integrate rational fraction 1/((1+x^2)*((2*x)/(x^2+1)+(2*(1-x^2)/(x^2+1)*2*x)/(x^2+1))), 
+               change of variable x=x^2
+Integrate rational fraction (-x-1)/(4*x^2-12*x)
+</PRE><HR>
 <A HREF="cascmd_fr301.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr303.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

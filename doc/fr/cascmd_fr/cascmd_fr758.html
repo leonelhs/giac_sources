@@ -6,35 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi de Fisher-Snédécor : fisher fisherd snedecor snedecord</TITLE>
+<TITLE>Densité de probabilité de la loi de Student : student studentd</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr757.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr759.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc892">8.4.23</A>  Densité de probabilité de la loi de Fisher-Snédécor : <TT>fisher fisherd snedecor snedecord</TT></H3><P><A NAME="@default1352"></A><A NAME="@default1353"></A><A NAME="@default1354"></A><A NAME="@default1355"></A>
-<TT>fisher(n1,n2,x)</TT> ou <TT>snedecor(n1,n2,x)</TT> est a densité
-de probabilité de la loi de Fisher-Snédécor ayant <TT>n1,n2</TT> degrés
-de liberté.<BR>
-<TT>fisher(n1,n2,x)</TT>, vaut pour <I>x</I>≥ 0 :<BR>
- <I>n</I>1/<I>n</I>2<SUP><I>n</I>1/2</SUP>Γ(<I>n</I>1+<I>n</I>2/2)/Γ(<I>n</I>1/2)Γ(<I>n</I>2/2)<I>x</I><SUP><I>n</I>1−2/2</SUP>(1+(<I>n</I>1/<I>n</I>2) <I>x</I>)<SUP>−<I>n</I>1−<I>n</I>2/2</SUP><BR>
+<H3 CLASS="subsection"><A NAME="htoc897">8.4.15</A>  Densité de probabilité de la loi de Student : <TT>student studentd</TT></H3><P><A NAME="@default1358"></A><A NAME="@default1359"></A>
+<TT>student(n,x)</TT> est la densité de probabilité de la loi de Student ayant <I>n</I> degrés de liberté.<BR>
+<TT>student(n,x)</TT>, est égale à :
+ Γ(<I>n</I>+1/2)/Γ(<I>n</I>/2)√<SPAN style="text-decoration:overline"><I>n</I>π</SPAN>(1+<I>x</I><SUP>2</SUP>/<I>n</I>)<SUP>−<I>n</I>−1/2</SUP><BR>
 où Γ est définie pour <I>x</I>&gt;0 par 
 Γ(<I>x</I>)=∫<SUB>0</SUB><SUP>∞</SUP><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>x</I>−1</SUP> <I>dt</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>fisher(5,3,2.5)</TT></DIV><P>
-Oo on tape :
-</P><DIV CLASS="center"><TT>snedecor(5,3,2.5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>student(2,3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.10131184472</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Gamma(3/2)*sqrt(11/2)</TT><CODE><TT>^</TT></CODE><TT>-1*2/(sqrt(2*pi)*11)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>fisher(4,2,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>evalf(student(2,3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>8/27</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>fisher(4,2,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>8/27</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.0274101222343</TT></DIV><HR>
 <A HREF="cascmd_fr757.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr759.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,28 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La fonction de répartition de la loi de Fisher-Snédécor : fisher_cdf snedecor_cdf</TITLE>
+<TITLE>Fonction de répartition de la loi de Student : student_cdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr758.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr760.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc893">8.4.24</A>  La fonction de répartition de la loi de Fisher-Snédécor : <TT>fisher_cdf snedecor_cdf</TT></H3><P><A NAME="@default1356"></A><A NAME="@default1357"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de 
-Fisher-Snédécor ayant degrés de liberté <I>n</I>1,<I>n</I>2, on a :<BR>
- <I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>fisher_cdf(n1,n2,x)=snedecor_cdf(n1,n2,x)</TT>.<BR>
-<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)= <TT>fisher_cdf(n1,n2,x,y)=snedecor_cdf(n1,n2,x,y)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc898">8.4.16</A>  Fonction de répartition de la loi de Student : <TT>student_cdf</TT></H3><P><A NAME="@default1360"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi de Student ayant <I>n</I> degrés 
+de liberté, on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>student_cdf(n,x)</TT>.<BR>
+<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)= <TT>student_cdf(n,x,y)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>fisher_cdf(5,3,9)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>snedecor_cdf(5,3,9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>student_cdf(5,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.949898927032</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.949030260585</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>fisher_cdf(3,5,9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>student_cdf(5,-2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.981472898262</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.0509697394149</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>student_cdf(5,-2,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.89806052117</TT></DIV><P>
+car 0.949030260585−0.0509697394149=0.89806052117
+</P><HR>
 <A HREF="cascmd_fr758.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr760.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

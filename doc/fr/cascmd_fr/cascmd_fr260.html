@@ -6,38 +6,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Multiplier par la quantité conjuguée : mult_conjugate multiplier_conjugue</TITLE>
+<TITLE>Pour forcer à évaluer une expression : unquote</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr259.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr261.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc333">6.14.9</A>  Multiplier par la quantité conjuguée : <TT>mult_conjugate multiplier_conjugue</TT></H3><P><A NAME="@default436"></A> <A NAME="@default437"></A>
-<TT>mult_conjugate</TT> a comme argument une expression avec un 
-dénominateur ou un numérateur comportant des racines carrées :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>mult_conjugate</TT> a comme argument une expression avec un 
-dénominateur comportant des racines carrées.<BR>
-<TT>mult_conjugate</TT> multiplie le numérateur et le dénominateur
-de cette expression par la quantité conjuguée du dénominateur.
-</LI><LI CLASS="li-itemize"><TT>mult_conjugate</TT> a comme argument une expression avec un 
-dénominateur ne comportant pas de racines carrées.<BR>
-<TT>mult_conjugate</TT> multiplie le numérateur et le dénominateur de cette 
-expression par la quantité conjuguée du numérateur. 
-</LI></UL><P>
-On tape :
-</P><DIV CLASS="center"><TT>mult_conjugate((2+sqrt(2))/(2+sqrt(3)))</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc333">6.14.6</A>  Pour forcer à évaluer une expression : <TT>unquote</TT></H3><P><A NAME="@default434"></A>
+Si on veut qu’une expression quotée soit évaluée dans un calcul, il faut
+utiliser la fonction <TT>unquote</TT>.<BR>
+Par exemple dans une affectation, la variable est quotée c’est à dire non
+évaluée.<BR>
+ On peut forcer son évaluation pour cela on tape :
+</P><DIV CLASS="center"><TT>purge(b);a:=b;unquote(a):=3</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(2+sqrt(2))*(2-sqrt(3))/((2+sqrt(3))*(2-sqrt(3)))</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>mult_conjugate((2+sqrt(2))/(sqrt(2)+sqrt(3)))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(2+sqrt(2))*(-sqrt(2)+sqrt(3))/</TT></DIV><DIV CLASS="center"><TT>((sqrt(2)+sqrt(3))*(-sqrt(2)+sqrt(3)))</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>mult_conjugate((2+sqrt(2))/2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(2+sqrt(2))*(2-sqrt(2))/(2*(2-sqrt(2)))</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>a et b contiennent 3</TT></DIV><HR>
 <A HREF="cascmd_fr259.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr261.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

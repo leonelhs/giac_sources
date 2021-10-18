@@ -6,37 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un triangle rectangle ou si on a un rectangle : is_rectangle est_rectangle</TITLE>
+<TITLE>L’inversion : inversion</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr962.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr964.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1125">10.18.7</A>  Savoir si on a un triangle rectangle ou si on a un rectangle : <TT>is_rectangle est_rectangle</TT></H3><P><A NAME="@default1868"></A><A NAME="@default1869"></A><A NAME="sec:estrectangle2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1041.html#sec:estrectangle3">11.13.11</A> pour la géométrie 3-d.<BR>
-<TT>est_rectangle</TT> est une fonction booléenne ayant comme 
-argument trois ou quatre points ou un objet géométrique.<BR>
-<TT>est_rectangle</TT> vaut 1 (resp 2 ou 3) si les trois points forment un triangle rectangle, l’angle droit étant
-désigné par le premier (resp second, troisième) argument ou si l’objet géométrique est un triangle rectangle,<BR>
-<TT>est_rectangle</TT> vaut 1 (resp 2) si les quatre points forment un rectangle
-(resp un carré) ou si 
-l’objet géométrique est un rectangle (resp un carré), et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1129">10.17.7</A>  L’inversion : <TT>inversion</TT></H3><P><A NAME="@default1870"></A><A NAME="sec:inversion2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1059.html#sec:inversion3">11.14.7</A> pour la géométrie 3-d.<BR>
+<TT>inversion</TT>, en géométrie plane, a deux ou trois arguments : 
+un point (le centre de l’inversion), un réel (la valeur du rapport de 
+l’inversion) et éventuellement l’objet géométrique à transformer.<BR>
+Lorsque <TT>inversion</TT> a deux arguments, c’est une fonction qui agit sur un 
+objet géométrique.<BR>
+Si <TT>inver:=inversion(C,k)</TT> et <TT>A1:=inver(A)</TT>,
+on a <SPAN style="text-decoration:overline"><I>CA</I></SPAN>*<SPAN style="text-decoration:overline"><I>CA</I>1</SPAN>=<I>k</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_rectangle(1,1+i,i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>inver:=inversion(i,2)</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>inver(cercle(1+i,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>La droite verticale d’équation x=1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_rectangle(1+i,-2+i,-2-i,1-i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>inver(cercle(1+i,1/2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le cercle de centre 8/3+i et de rayon 4/3, il passe par le 
+point 4+i</TT></DIV><P>
+Lorsque <TT>inversion</TT> a trois arguments, <TT>inversion</TT> dessine et renvoie 
+le transformé du troisième argument dans l’inversion de centre le premier 
+argument et de rapport le deuxième argument.<BR>
+Si <TT>A1:=inversion(C,k,A)</TT> on a <SPAN style="text-decoration:overline"><I>CA</I></SPAN>*<SPAN style="text-decoration:overline"><I>CA</I>1</SPAN>=<I>k</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>R:=rectangle(-2-i,1-i,3,C,D);est_rectangle(R[0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>inversion(i,2,cercle(1+i,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-En effet <TT>R[0]</TT> désigne un rectangle car <TT>R</TT> est une liste composée
-du rectangle et de ses sommets <TT>C</TT> et <TT>D</TT>.<BR>
-</P><HR>
+</P><DIV CLASS="center"><TT>La droite verticale d’équation x=1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>inversion(i,2,cercle(1+i,1/2))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le cercle de centre 8/3+i et de rayon 4/3 (il passe par le point 4+i)</TT></DIV><HR>
 <A HREF="cascmd_fr962.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr964.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

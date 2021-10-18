@@ -6,20 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Instruction du debuggeur : breakpoint</TITLE>
+<TITLE>Pour sortir d’une boucle : break</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr843.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr845.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc987">9.7.4</A>  Instruction du debuggeur : <TT>breakpoint</TT></H3><P><A NAME="@default1523"></A>
-<TT>breakpoint</TT> a comme argument le numéro de la ligne où l’on 
-veut un point d’arrêt.<BR>
-On tape par exemple :
-</P><DIV CLASS="center"><TT>breakpoint(4)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc991">9.6.2</A>  Pour sortir d’une boucle : <TT>break</TT></H3><P><A NAME="@default1529"></A>
+<TT>break</TT> n’a pas d’argument ni parenthèse.<BR>
+<TT>break</TT> permet de sortir d’une boucle.<BR>
+On tape :
+</P><PRE CLASS="verbatim">testbreak(a,b):={
+local r;
+while (1==1){
+  if (b==0){break;} 
+  r:=irem(a,b);
+  a:=b;
+  b:=r;
+}
+return a;
+}
+</PRE><P>puis on tape :
+</P><DIV CLASS="center"><TT>testbreak(4,0)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>cont() provoquera le déroulement du programme et un arrêt à la ligne 4</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>4 car il y a eu l’interruption de la boucle while quand b==0</TT></DIV><HR>
 <A HREF="cascmd_fr843.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr845.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

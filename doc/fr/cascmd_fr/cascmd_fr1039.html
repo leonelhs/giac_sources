@@ -6,28 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un triangle équilatéral : is_equilateral est_equilateral</TITLE>
+<TITLE>Savoir si 1 objet géométrique est sur un objet graphique : is_element est_element</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1038.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1040.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1217">11.13.9</A>  Savoir si on a un triangle équilatéral : <TT>is_equilateral est_equilateral</TT></H3><P><A NAME="@default2012"></A><A NAME="@default2013"></A><A NAME="sec:estequilateral3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr961.html#sec:estequilateral2">10.18.5</A> pour la géométrie plane.<BR>
-<TT>est_equilateral</TT> est une fonction booléenne ayant comme 
-argument trois points ou un objet géométrique.<BR>
-<TT>est_equilateral</TT> vaut 1 si les trois points forment un triangle 
-équilatéral ou si l’objet géométrique est un triangle équilatéral,
-et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1222">11.13.1</A>  Savoir si 1 objet géométrique est sur un objet graphique : <TT>is_element est_element</TT></H3><P><A NAME="@default2012"></A><A NAME="@default2013"></A><A NAME="sec:estelement3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr965.html#sec:estelement2">10.18.1</A> pour la géométrie plane.<BR>
+<TT>est_element(a,A)</TT> teste si l’objet géométrique <TT>a</TT> est
+contenu dans l’objet géométrique <TT>A</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>T:=triangle_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0]); est_equilateral(T)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>P:=plan([0,0,0],[1,2,-3],[1,1,-2])</TT></DIV><DIV CLASS="center"><TT>est_element(point(2,3,-5),P)</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_equilateral([2,0,0],[0,2,0],[1,1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>dd:=droite([2,3,-2],[-1,-1,-1])</TT></DIV><DIV CLASS="center"><TT>R:=plan([-1,-1,-1],[1,2,-3],[1,1,-2])</TT></DIV><DIV CLASS="center"><TT>est_element(dd,R)</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr1038.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>

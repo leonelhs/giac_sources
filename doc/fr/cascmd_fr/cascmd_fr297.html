@@ -6,40 +6,68 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction dérivée d’une fonction : function_diff 
-fonction_derivee</TITLE>
+<TITLE>Definir une fonction avec l’historique : as_function_of</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr296.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr298.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc375">6.19.3</A>  Fonction dérivée d’une fonction : <TT>function_diff<BR>
-fonction_derivee</TT></H3><P><A NAME="@default547"></A><A NAME="@default548"></A>
-<TT>function_diff</TT> a comme argument une fonction.<BR>
-<TT>function_diff</TT> renvoie la fonction dérivée de cette fonction.<BR>
+<H3 CLASS="subsection"><A NAME="htoc374">6.18.6</A>  Definir une fonction avec l’historique : <TT>as_function_of</TT></H3><P><A NAME="@default548"></A>
+Si on a affecté une valeur à la variable <TT>a</TT> et si on 
+définit ensuite, dans une autre ligne d’entrée, la variable <TT>b</TT>, 
+à partir de <TT>a</TT>, on utilise <TT>c:=as_function_of(b,a)</TT> pour définir
+une fonction <TT>c</TT> vérifiant : <TT>c(a)=b</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>function_diff(sin)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a:=sin(x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(‘ x‘)-&gt;cos(‘ x‘)</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>sin(x)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>function_diff(sin)(x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>b:=sqrt(1+a</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>cos(x)</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>b:=sqrt(1+sin(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2+x*cos(x)</TT></DIV><DIV CLASS="center"><TT>function_diff(f)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>c:=as_function_of(b,a)</TT></DIV><DIV CLASS="center"><TT>c(x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(‘ x‘)-&gt;2*‘ x‘+cos(‘ x‘)+‘ x‘*(-(sin(‘ x‘)))</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>sqrt(1+x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>function_diff(f)(x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a:=2</TT></DIV><DIV CLASS="center"><TT>b:=1+a</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>cos(x)+x*(-(sin(x)))+2*x</TT></DIV><P> 
-<B>Attention !!!</B><BR>
-Lorsqu’on est en mode <TT>Maple</TT>, pour des raisons de compatibilité,
-on peut aussi utiliser <TT>D</TT> à la place de <TT>function_diff</TT> et c’est 
-pourquoi en géométrie on ne pourra pas avoir d’objet géométrique ayant
-comme nom <TT>D</TT>, lorsqu’on est en mode <TT>Maple</TT>.
-</P><HR>
+</P><DIV CLASS="center"><TT>b:=5</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>c:=as_function_of(b,a)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(a)-&gt;<BR>
+{ local NULL;<BR>
+ return(sqrt(1+a</TT><CODE><TT>^</TT></CODE><TT>2));<BR>
+}</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>c(x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+<B>Attention</B><BR>
+ Si la variable <TT>b</TT> a été affectée 
+plusieurs fois c’est la première affectation de <TT>b</TT> après la 
+dernière affectation de <TT>a</TT> qui compte.<BR>
+On tape par exemple :<BR>
+<TT>a:=2</TT> puis<BR>
+<TT>b:=2*a+1</TT> puis<BR>
+<TT>b:=3*a+2</TT> puis<BR>
+<TT>c:=as_function_of(b,a)</TT><BR>
+On obtient :
+</P><DIV CLASS="center"><TT>(a)-&gt; {local NULL; return(2*a+1);}</TT></DIV><P>
+c’est à dire que <TT>c(x)</TT> vaut <TT>2*x+1</TT>.<BR>
+Mais si on tape par exemple :<BR>
+<TT>a:=2</TT> puis<BR>
+<TT>b:=2*a+1</TT> puis<BR>
+<TT>a:=2</TT> puis<BR>
+<TT>b:=3*a+2</TT> puis<BR>
+<TT>c:=as_function_of(b,a)</TT><BR>
+On obtient :
+</P><DIV CLASS="center"><TT>(a)-&gt; {local NULL; return(3*a+2);}</TT></DIV><P>
+c’est à dire que <TT>c(x)</TT> vaut <TT>3*x+2</TT>.<BR>
+Il est donc préférable de valider la ligne ou se trouve <TT>a</TT> avant de 
+définir le <TT>b</TT> qui convient. </P><HR>
 <A HREF="cascmd_fr296.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr298.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

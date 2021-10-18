@@ -6,44 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le triangle isocèle : isosceles_triangle triangle_isocele</TITLE>
+<TITLE>Les tangentes à un objet géométrique plan : tangent</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr897.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr899.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1052">10.10.3</A>  Le triangle isocèle : <TT>isosceles_triangle triangle_isocele</TT></H3><P><A NAME="@default1738"></A><A NAME="@default1739"></A><A NAME="sec:triangleiso2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1007.html#sec:triangleiso3">11.7.2</A> pour la géométrie 3-d.<BR>
-
-<TT>triangle_isocele</TT>, en géométrie plane, a trois ou quatre 
-arguments.<BR>
-Description des arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si il a trois arguments, ce sont : 2 points <I>A</I> et <I>B</I> 
-(ou 2 nombres complexes représentant l’affixe de ces points)
-et un réel qui désigne la mesure en radians (ou en degrés) de l’angle (<I>AB</I>,<I>AC</I>).<BR>
-<TT>triangle_isocele(A,B,c)</TT> renvoie et trace le triangle <I>ABC</I> isocèle de 
-sommet <I>A</I> (<I>AB</I>=<I>AC</I>) et tel que l’angle 
-(<I>AB</I>,<I>AC</I>)=<I>c</I> radians (ou degrés), sans 
-définir le point <I>C</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc1056">10.9.8</A>  Les tangentes à un objet géométrique plan : <TT>tangent</TT></H3><P><A NAME="@default1742"></A><A NAME="sec:tangent"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1011.html#sec:tangent3">11.6.3</A> pour la géométrie 3-d et
+<A HREF="cascmd_fr094.html#sec:tangente">3.10.5</A> pour les tangentes à un graphe.<BR>
+<TT>tangent</TT> peut avoir comme arguments :<BR>
+- un objet géométrique <I>G</I> et un point <I>A</I> ou,<BR>
+- un point <I>A</I> défini par <TT>element</TT> dont les paramètres sont, un 
+objet géométrique <I>G</I> et un réel représentant la valeur du 
+paramètre de l’équation paramétrique de <I>G</I>.<BR>
+<TT>tangent</TT> renvoie une liste de droites et dessine ces droites qui sont 
+les tangentes à cet objet géométrique <I>G</I> et qui passent par le point 
+<I>A</I>.<BR>
 On tape :
-<DIV CLASS="center"><TT>triangle_isocele(i,1,-3*pi/4)</TT></DIV>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-<DIV CLASS="center"><TT>Le triangle isocéle de sommets -1, i, </TT><TT>-√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>+i</TT></DIV>
-</LI><LI CLASS="li-itemize">si il a quatre arguments, le dernier argument est le nom d’une 
-variable qui servira à définir le troisième sommet.<BR>
-On tape :
-<DIV CLASS="center"><TT>triangle_isocele(i,1,-3*pi/4,C)</TT></DIV>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-<DIV CLASS="center"><TT>Le triangle isocéle de sommets -1, i, </TT><TT> -√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT>+i</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>normal(affixe(C))</TT></DIV>
+</P><DIV CLASS="center"><TT>tangent(cercle(0,1),point(1+i))</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>-sqrt(2)+i</TT></DIV>
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>La droite d’équation x=1 et la droite d’équation y=1 </TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>tangent(element(cercle(0,1),1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>La tangente au cercle de centre 0 et de rayon 1, au point d’affixe exp(i)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>tangent(circle(i,1+i),point((1+i*sqrt(3))*2))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2 tangentes au cercle de centre i et de rayon </TT><TT>√</TT><TT><SPAN style="text-decoration:overline">2</SPAN></TT><TT> issues du point((1+i*sqrt(3))*2)</TT></DIV><HR>
 <A HREF="cascmd_fr897.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr899.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

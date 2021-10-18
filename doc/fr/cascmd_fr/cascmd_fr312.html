@@ -6,27 +6,79 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les différentes fonctions trigonométriques</TITLE>
+<TITLE>Limite et intégrale</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr311.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr313.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc395">6.24.1</A>  Les différentes fonctions trigonométriques</H3><P><A NAME="sec:trigo"></A>
-<TT>sin</TT> <A NAME="@default585"></A> désigne la fonction sinus,<BR>
-<TT>cos</TT> <A NAME="@default586"></A> désigne la fonction cosinus,<BR>
-<TT>tan</TT> <A NAME="@default587"></A> désigne la fonction tangente (<TT>tan(x)= sin(x)/cos(x)</TT>),<BR>
-<TT>cot</TT> <A NAME="@default588"></A> désigne la fonction cotangente (<TT>cot(x)= cos(x)/sin(x)</TT>),<BR>
-<TT>sec</TT> <A NAME="@default589"></A> désigne la fonction sécante (<TT>sec(x)= 1/cos(x)</TT>),<BR>
-<TT>csc</TT> <A NAME="@default590"></A> désigne la fonction cosécante (<TT>csc(x) = 1/sin(x)</TT>),<BR>
-<TT>asin</TT> ou <TT>arcsin</TT><A NAME="@default591"></A><A NAME="@default592"></A>, <TT>acos</TT> ou <TT>arccos</TT><A NAME="@default593"></A><A NAME="@default594"></A>, <TT>atan</TT> ou <TT>arctan</TT><A NAME="@default595"></A><A NAME="@default596"></A>, <TT>acot</TT><A NAME="@default597"></A>, <TT>asec</TT><A NAME="@default598"></A>, <TT>acsc</TT><A NAME="@default599"></A>
-désignent les fonctions réciproques des fonctions précédentes.<BR>
-On a :<BR>
-<TT>asec(x) = acos(1/x)</TT>,<BR>
-<TT>acsc(x) = asin(1/x)</TT>,<BR>
-<TT>acot(x) = atan(1/x)</TT>. 
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc393">6.22.2</A>  Limite et intégrale</H3><P><A NAME="@default576"></A> <A NAME="@default577"></A> 
+On ne donne ici que deux exemple :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Déterminer la limite quand <I>a</I> tend vers l’infini de :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>a</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> <I>dx</I></TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>limit(integrate(1/(x</TT><CODE><TT>^</TT></CODE><TT>2),x,2,a),a,+(infinity))</TT></DIV>
+On obtient (vérifier que <TT>a</TT> est formelle sinon faire <TT>purge(a)</TT>) :
+<DIV CLASS="center"><TT>1/2</TT></DIV>
+En effet ∫<SUB>2</SUB><SUP><I>a</I></SUP> 1/<I>x</I><SUP>2</SUP> <I>dx</I>=1/2−1/<I>a</I><BR>
+Donc ∫<SUB>2</SUB><SUP><I>a</I></SUP> 1/<I>x</I><SUP>2</SUP> <I>dx</I> tend vers 1/2 quand <I>a</I> tend vers l’infini.
+</LI><LI CLASS="li-itemize">Déterminer la limite quand <I>a</I> tend vers l’infini de :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>a</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">2</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> (</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+ln(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">)) <I>dx</I></TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>limit(integrate(x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+log((x+1)/(x-1)),x,2,a),</TT></DIV> 
+<DIV CLASS="center"><TT>a,+(infinity))</TT></DIV> 
+On obtient (vérifier que <TT>a</TT> est formelle sinon faire <TT>purge(a)</TT>):
+<DIV CLASS="center"><TT>+(infinity)</TT></DIV>
+En effet :<BR>
+ ∫<SUB>2</SUB><SUP><I>a</I></SUP> <I>x</I>/<I>x</I><SUP>2</SUP>−1 <I>dx</I>=1/2(ln(<I>a</I><SUP>2</SUP>−1)−ln(3)) et<BR>
+ ∫<SUB>2</SUB><SUP><I>a</I></SUP> ln(<I>x</I>+1/<I>x</I>−1) <I>dx</I>=<I>ln</I>(<I>a</I>+1)+<I>ln</I>(<I>a</I>−1)+<I>a</I>*<I>ln</I>(<I>a</I>+1/<I>a</I>−1)−3ln(3)
+Donc quand <I>a</I> tend vers +∞ l’intégrale tend vers +∞.
+</LI><LI CLASS="li-itemize">Déterminer la limite quand <I>a</I> tend vers 0 de :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">3<I>a</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><I>a</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">cos(<I>x</I>)/<I>x</I> <I>dx</I> </TD></TR>
+</TABLE>
+<DIV CLASS="center"><TT>limit(int(cos(x)/x,x,a,3a),a,0)</TT></DIV> 
+On obtient (vérifier que <TT>a</TT> est formelle sinon faire <TT>purge(a)</TT>):
+<DIV CLASS="center"><TT>ln(3)</TT></DIV>
+Pour trouver cette limite on encadre cos(<I>x</I>)/<I>x</I> car on ne connait pas 
+la primitive de cos(<I>x</I>)/<I>x</I>.<BR>
+On sait que :<BR>
+1−2sin<SUP>2</SUP><I>x</I>/2=cos(<I>x</I>)≤ 1 et<BR>
+sin<SUP>2</SUP><I>x</I>/2≤ <I>x</I><SUP>2</SUP>/4 donc,<BR>
+1−<I>x</I><SUP>2</SUP>/2=cos(<I>x</I>)≤ 1 et<BR>
+1/<I>x</I>−<I>x</I>/2≤ cos(<I>x</I>)/<I>x</I>≤ 1/<I>x</I><BR>
+Donc :<BR>
+∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>(1/<I>x</I>−<I>x</I>/2) <I>dx</I> ≤ ∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>cos(<I>x</I>)/<I>x</I> <I>dx</I>≤ ∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>1/<I>x</I> <I>dx</I>.<BR>
+ln(3)−9<I>a</I><SUP>2</SUP>/4+<I>a</I><SUP>2</SUP>/4 ≤ ∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>cos(<I>x</I>)/<I>x</I> <I>dx</I>≤ ln(3).<BR>
+Donc ∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>cos(<I>x</I>)/<I>x</I> <I>dx</I> tend vers ln(3) quand <I>a</I> tend vers 0.
+</LI></UL><HR>
 <A HREF="cascmd_fr311.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr313.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,63 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’aire d’un polygone et son affichage : areaat aireen et areaatraw aireenbrut</TITLE>
+<TITLE>Remarques générales sur l’affichage des mesures</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr938.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr940.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1099">10.16.9</A>  L’aire d’un polygone et son affichage : <TT>areaat aireen</TT> et <TT>areaatraw aireenbrut</TT></H3><P><A NAME="@default1821"></A><A NAME="@default1822"></A><A NAME="@default1823"></A><A NAME="@default1824"></A>
-<TT>areaat</TT> ou <TT>aireen</TT> et <TT>areaatraw</TT> ou <TT>aireenbrut</TT> 
-sont des commandes obtenues 
-lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
-<TT>Mode-&gt;Mesures-&gt;aireen</TT> ou <TT>Mode-&gt;Mesures-&gt;airenbrut</TT>. Dans ce cas il 
-faut que tous les objets désignés par la souris soient déjà nommés.<BR>
-On peut néammoins taper ces commandes dans une ligne de commande.<BR>
-
-<TT>areaat</TT> ou <TT>aireen</TT> et <TT>areaatraw</TT> ou <TT>aireenbrut</TT> ont comme 
-arguments un cercle ou un polygone étoilé par rapport à son premier 
-sommet et 1 point (ou 1 nombre complexe qui est l’affixe d’un point).<BR>
-<TT>areaat</TT> ou <TT>aireen</TT> renvoie le point, calcule l’aire du cercle ou 
-polygone étoilé par rapport à son premier sommet et affiche cette aire 
-à l’endroit du point avec une légende. <B>Attention</B> Il faut que le cercle
-ou le polygone ait un nom.<BR>
-<TT>areaatraw</TT> ou <TT>aireenbrut</TT> renvoie le point, calcule l’aire du cercle 
-ou du polygone étoilé par rapport à son premier sommet et affiche cette 
-aire à l’endroit du point.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>t:=triangle(0,1,i)</TT></DIV><DIV CLASS="center"><TT>aireen(t,(1+i)/2)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1104">10.16.1</A>  Remarques générales sur l’affichage des mesures</H3><P><A NAME="@default1811"></A><A NAME="@default1812"></A><A NAME="@default1813"></A><A NAME="@default1814"></A><A NAME="@default1815"></A><A NAME="@default1816"></A>
+Les commandes concernant les mesures et se terminant pas <TT>en</TT> ou <TT>at</TT>
+(resp <TT>enbrut</TT> ou <TT>atraw</TT>) gérent l’affichage de ces mesures en un 
+point (qui est le dernier argument de ces commandes) avec une 
+légende succinte (resp sans légende). Si on préfère une légende plus 
+sophistiquée il faut utiliser la commande <TT>legende</TT> ou <TT>affichage</TT>
+avec <TT>legende</TT> comme argument.
+On tape par exemple : 
+</P><DIV CLASS="center"><TT>C:=carre(0,1);a:=aire(C);p:=perimetre(C)</TT></DIV><DIV CLASS="center"><TT>legend(1+i,"aire(C)="+string(a))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1/2 s’écrit au point(1+i)/2 avec la légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>aireenbrut(triangle(0,1,i),(1+i)/2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>aire(C)=1 s’écrit au d’affixe 1+i</TT></DIV><P>
+puis, on tape :
+</P><DIV CLASS="center"><TT>affichage(legend(1,"perimetre(C)="+string(p)),vert)</TT></DIV><P>On obtient :
+</P><DIV CLASS="center"><TT>perimetre(C)=4 s’écrit en vert au point 1</TT></DIV><P>
+alors que si on tape :
+</P><DIV CLASS="center"><TT>aireen(C,1+i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1/2 s’écrit au point(1+i)/2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>cc:=cercle(0,2)</TT></DIV><DIV CLASS="center"><TT>aireen(cc,2.2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>aC=1 s’écrit au d’affixe 1+i</TT></DIV><P>
+puis, si on tape :
+</P><DIV CLASS="center"><TT>perimetreen(C,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>4*pi s’écrit au point(2.2) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>aireenbrut(cercle(0,2),2.2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pC=4 s’écrit au d’affixe 1</TT></DIV><P>
+ou bien si on tape :
+</P><DIV CLASS="center"><TT>aireenbrut(C,1+i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>4*pi s’écrit au point(2.2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>c:=carre(0,2)</TT></DIV><DIV CLASS="center"><TT>aireen(c,2.2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1 s’écrit au d’affixe 1+i</TT></DIV><P>
+puis, si on tape :
+</P><DIV CLASS="center"><TT>perimetreenbrut(C,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>4 s’écrit au point(2.2) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>aireenbrut(carre(0,2),2.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>4 s’écrit au point(2.2)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>h:=hexagone(0,1)</TT></DIV><DIV CLASS="center"><TT>aireen(h,1.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3*sqrt(3)/2 s’écrit au point(1.2) avec une légende</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>aireenbrut(hexagone(0,1),1.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3*sqrt(3)/2 s’écrit au point(1.2)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>4 s’écrit au d’affixe 1</TT></DIV><HR>
 <A HREF="cascmd_fr938.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr940.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

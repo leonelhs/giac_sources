@@ -6,37 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Nombre d’éléments inférieurs à une valeur : count_inf</TITLE>
+<TITLE>Tester si un élément est dans une liste : contains</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr520.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr522.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc621">6.41.29</A>  Nombre d’éléments inférieurs à une valeur : <TT>count_inf</TT></H3><P><A NAME="@default921"></A><A NAME="@default922"></A>
-<A NAME="@default923"></A>
-<TT>count_inf</TT> a deux ou trois paramètres : une nombre et une 
-liste (ou une matrice) et dans le cas où le deuxième paramètre est une 
-matrice, un argument optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
-<TT>count_inf</TT> renvoie le nombre d’éléments de la liste (ou de la 
-matrice) qui sont strictement inférieurs au premier argument. 
-Dans le cas où il y a un argument 
-optionnel <TT>row</TT> (resp <TT>col</TT>) <TT>count_inf</TT> agit sur chacune des 
-lignes (resp colonnes) de la matrice et renvoie alors une liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc621">6.41.26</A>  Tester si un élément est dans une liste : <TT>contains</TT></H3><P><A NAME="@default918"></A>
+<TT>contains</TT> a deux paramètres : une liste (ou un ensemble) 
+<TT>L</TT> et un élément <TT>c</TT>.<BR>
+<TT>contains</TT> est une fonction qui teste si l’élément <TT>c</TT>
+est dans la liste <TT>L</TT>.<BR>
+ <TT>contains</TT> renvoie <TT>0</TT> si <TT>c</TT> n’est 
+pas dans <TT>L</TT>, et sinon renvoie :<BR>
+<TT>1+"l’indice de sa première apparition"</TT>.<BR>
+<B>Attention</B>, à l’ordre des paramètres, c’est pour des raisons de 
+compatibilité !<BR>
 On tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[2,12,45,3,7,78])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[[2,12,45],[3,7,78]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>contains([0,1,2,3,4,2],2)</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[[2,12,45],[3,7,78]],row)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>contains(% {0,1,2,3,4,2% },2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,2]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[[2,12,45],[3,7,78]],col)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[2,1,0]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
 <A HREF="cascmd_fr520.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr522.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

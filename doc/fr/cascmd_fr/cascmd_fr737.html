@@ -6,34 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi binomiale : binomial_cdf</TITLE>
+<TITLE>Tirage aléatoire sans remise de p objets parmi n : rand alea hasard</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr736.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr738.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc871">8.4.2</A>  Fonction de répartition de la loi binomiale : <TT>binomial_cdf</TT></H3><P><A NAME="@default1326"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale 
-<FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>), on a :<BR>
-<TT>binomial_cdf(n,p,x)</TT>=<I>Proba</I>(<I>X</I> ≤ <I>x</I>)=<BR>
-<TT>binomial(n,0,p)+...+binomial(n,floor(x),p)</TT>.<BR>
-<TT>binomial_cdf(n,p,x,y)</TT>=<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)=<BR>
-<TT>binomial(n,ceil(x),p)+...+binomial(n,floor(y),p)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc875">8.3.3</A>  Tirage aléatoire sans remise de p objets parmi n : <TT>rand alea hasard</TT></H3><P><A NAME="@default1329"></A><A NAME="@default1330"></A><A NAME="@default1331"></A>
+<TT>rand</TT> a dans ce cas, soit 2, soit 3 arguments.<BR>
+ Si <TT>rand</TT> a 2 arguments : les arguments sont un entier <I>p</I> et une liste 
+<I>L</I> alors <TT>rand(p,L)</TT> renvoie, au hasard, <TT>p</TT> éléments de la liste 
+<TT>L</TT>.<BR>
+ Si <TT>rand</TT> a 3 arguments : les arguments sont trois entiers 
+<TT>p,min,max</TT> alors
+<TT>rand(p,min,max)</TT> renvoie, au hasard, <TT>p</TT> entiers de 
+<TT>[min,..,max]</TT> 
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(4,0.5,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rand(3,["r","r","r","r","v","v","v"])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.6875</TT></DIV><P>
-On peut vérifier que :
-</P><DIV CLASS="center"><TT>binomial(4,0,0.5)+binomial(4,1,0.5)+binomial(4,2,0.5)</TT></DIV><DIV CLASS="center"><TT>=0.6875</TT></DIV><P>
+</P><DIV CLASS="center"><TT>["r","r","v"]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(2,0.3,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rand(2,1,10)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.91</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[3,7]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(2,0.3,1,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rand(2,4,10)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.51</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[5,7]</TT></DIV><HR>
 <A HREF="cascmd_fr736.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr738.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

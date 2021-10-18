@@ -6,49 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les arcs de cercle : arc</TITLE>
+<TITLE>Le parallélogramme : parallelogram parallelogramme</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr912.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr914.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1070">10.13.2</A>  Les arcs de cercle : <TT>arc</TT></H3><P><A NAME="@default1764"></A><A NAME="sec:arc"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr912.html#sec:cercle">10.13.1</A> pour cercles et arcs de cercle.<BR>
-<TT>arc</TT> a de trois à cinq arguments : deux points <TT>A,B</TT> (ou 
-deux nombres complexes <TT>a,b</TT>) et un nombre réel α représentant
-la mesure de l’arc <TT>AB</TT> en radians (−2*π ≤ α ≤ 2*π).
-le quatrième et le cinquième ne sont pas obligatoires et sont des noms de
-variables qui contiendront le centre et le rayon du cercle qui porte l’arc.<BR>
-L’arc <TT>AB</TT> est donc porté par le cercle de centre :
-(<I>a</I>+<I>b</I>)/2+<I>i</I>*(<I>b</I>−<I>a</I>)/(2*tan(α/2)).<BR>
-<TT>arc(A,B,</TT><TT>α</TT><TT>)</TT> est l’arc d’où l’on voit le segment <TT>AB</TT> sous 
-l’angle −π+α/2 si 2π&gt;α&gt;0, ou sous 
-l’angle π+α/2 si −2π&lt;α&lt;0.<BR>
-Pour avoir l’arc capable <TT>AB</TT> de mesure β c’est à dire l’arc 
-d’où l’on voit le segment <TT>AB</TT> sous l’angle −π&lt;β&lt;π il faut 
-taper :<BR>
-<TT>arc(A,B,2*(-pi+</TT><TT>β</TT><TT>))</TT> si π&gt;β&gt;0 ou<BR>
-<TT>arc(A,B,2*(pi+</TT><TT>β</TT><TT>))</TT> si −π&lt;β&lt;0 .<BR>
-<B>Attention</B>
-Le signe de α donne le sens de parcours de l’arc <TT>AB</TT> par exemple,
-<TT>arc(A,B,3*pi/2)</TT> et <TT>arc(A,B,-pi/2)</TT> forment un cercle complet.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1073">10.11.5</A>  Le parallélogramme : <TT>parallelogram parallelogramme</TT></H3><P><A NAME="@default1765"></A><A NAME="@default1766"></A><A NAME="sec:parallelo2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1021.html#sec:parallelo3">11.8.4</A> pour la géométrie 3-d.<BR>
+<TT>parallelogramme</TT>, en géométrie plane, a trois arguments ou 
+quatre arguments.<BR>
+Description des arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si il a trois arguments ce sont : trois points (ou trois
+nombres complexes représentant l’affixe de ces points).<BR>
+<TT>parallelogramme(A,B,C)</TT> renvoie et trace le parallélogramme <I>ABCD</I> tel 
+que : <I>AD</I>=<I>BC</I>
+mais sans définir le point <I>D</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>arc(1,i,pi/2)</TT></DIV><P>
+<DIV CLASS="center"><TT>parallelogramme(0,1,2+i)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>L’arc (1,i) du cercle de centre 0 et de rayon 1</TT></DIV><P>
+<DIV CLASS="center"><TT>Le parallélogramme de sommets 0,1,2+i,1+i</TT></DIV>
 On tape :
-</P><DIV CLASS="center"><TT>arc(1,i,pi/2,C,r)</TT></DIV><P>
+<DIV CLASS="center"><TT>parallelogramme(1,0,-1+i)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>L’arc (1,i) du cercle de centre C=point(0) et de rayon r=1</TT></DIV><P>
+<DIV CLASS="center"><TT>Le parallélogramme de sommets 1,0,-1+i,i</TT></DIV>
+</LI><LI CLASS="li-itemize">si il a quatre arguments le dernier paramètre est le nom d’une 
+variable qui servira à définir le sommet manquant.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>arc(2,2*i,pi,C,r)</TT></DIV><P>
+<DIV CLASS="center"><TT>parallelogramme(0,1,2+i,F)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le demi-cercle de centre C=point(1+i), de rayon r=sqrt(2) et allant du point(2) au point(2*i) dans le sens +</TT></DIV><P>
-<B>Remarque</B><BR>
-Lorsque <TT>cercle</TT> a quatre arguments, <TT>cercle</TT> dessine aussi un arc de
-cercle (cf <A HREF="cascmd_fr912.html#sec:cercle">10.13.1</A>).
-</P><HR>
+<DIV CLASS="center"><TT>Le parallélogramme de sommets 0,1,2+i,1+i et le point F d’affixe 1+i</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>normal(affixe(F))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1+i</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr912.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr914.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

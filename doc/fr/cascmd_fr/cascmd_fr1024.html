@@ -6,21 +6,49 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La cote d’un point 3-d : cote</TITLE>
+<TITLE>Les polygones réguliers dans l’espace : isopolygon isopolygone</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1023.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1025.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1201">11.12.3</A>  La cote d’un point 3-d : <TT>cote</TT></H3><P><A NAME="@default1986"></A>
-<TT>cote</TT> est une fonction ayant comme 
-argument un point 3-d.<BR>
-<TT>cote</TT> renvoie la cote de ce point.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1203">11.9.2</A>  Les polygones réguliers dans l’espace : <TT>isopolygon isopolygone</TT></H3><P><A NAME="@default1985"></A><A NAME="@default1986"></A><A NAME="sec:isopolygone3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr916.html#sec:isopolygone2">10.12.2</A> pour la géométrie plane.<BR>
+<TT>isopolygone</TT>, en géométrie 3-d, a quatre arguments.<BR>
+Déscription des arguments : 
+Le quatrième argument est un entier <I>n</I> et <I>abs</I>(<I>n</I>) représente le nombre 
+de côtés de l’isopolygone. Selon le signe de <I>n</I> on aura :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<I>n</I>&gt;0<BR>
+les 3 premiers arguments sont 3 points de l’espace : les 2 sommets 
+de l’isopolygone et le troisième point qui définit le plan de 
+l’isopolygone et l’orientation du plan.<BR>
+<TT>isopolygone(A,B,P,n)</TT> renvoie et trace l’isopolygone direct de
+sommets <I>A</I>, <I>B</I> et ayant <I>n</I> côtés dans le plan <I>ABP</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cote(point([1,2,3]))</TT></DIV><P>
+<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
+<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
+<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
+Puis on tape :
+<DIV CLASS="center"><TT>isopolygone(A,B,P,5)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+<DIV CLASS="center"><TT>Dans le demi-plan ABP, un pentagone de sommets A et B</TT></DIV>
+</LI><LI CLASS="li-itemize"><I>n</I>&lt;0<BR>
+les 3 premiers arguments sont 3 points de l’espace : le centre et un
+sommet de l’isopolygone et le troisième point qui définit le plan de 
+l’isopolygone et l’orientation du plan.<BR>
+<TT>isopolygone(A,B,P,n)</TT> renvoie et trace l’isopolygone indirect de 
+centre <I>A</I> et de sommet <I>B</I> et ayant −<I>n</I> côtés dans le plan <I>ABP</I>.<BR>
+On tape :
+<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
+<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
+<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
+Puis on tape :
+<DIV CLASS="center"><TT>isopolygone(A,B,P,-5)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>Un pentagone de centre A et de sommet B non situé dans le demi-plan ABP</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr1023.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1025.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

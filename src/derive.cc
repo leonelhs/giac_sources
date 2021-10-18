@@ -102,7 +102,7 @@ namespace giac {
       if (s.feuille.type!=_VECT)
 	return derive(s.feuille,i,contextptr);
       vecteur::const_iterator iti=s.feuille._VECTptr->begin(),itend=s.feuille._VECTptr->end();
-      int taille=itend-iti;
+      int taille=int(itend-iti);
       if (taille==2)
 	return derive(*iti,i,contextptr)+derive(*(iti+1),i,contextptr);
       vecteur v;
@@ -127,7 +127,7 @@ namespace giac {
       if (s.feuille.type!=_VECT)
 	return derive(s.feuille,i,contextptr);
       vecteur::const_iterator itbegin=s.feuille._VECTptr->begin(),itj,iti,itend=s.feuille._VECTptr->end();
-      int taille=itend-itbegin;
+      int taille=int(itend-itbegin);
       // does not work because of is_linear_wrt e.g. for cos(3*pi/4)
       // if (taille==2) return derive(*itbegin,i,contextptr)*(*(itbegin+1))+(*itbegin)*derive(*(itbegin+1),i,contextptr);
       vecteur v,w;
@@ -263,7 +263,7 @@ namespace giac {
     }
     if (s.feuille.type==_VECT){
       vecteur v=*s.feuille._VECTptr;
-      int vs=v.size();
+      int vs=int(v.size());
       if (vs>=3 && (s.sommet==at_ifte || s.sommet==at_when) ){
 	for (int j=1;j<vs;++j){
 	  gen & tmp=v[j];
@@ -326,7 +326,7 @@ namespace giac {
       if (s.feuille.type!=_VECT)
 	return (*s.sommet.ptr()->D)(1)(s.feuille,contextptr)*derive(s.feuille,i,contextptr);
       // multiargs operators
-      int taille=s.feuille._VECTptr->size();
+      int taille=int(s.feuille._VECTptr->size());
       vecteur v;
       v.reserve(taille);
       vecteur::const_iterator iti=s.feuille._VECTptr->begin(),itend=s.feuille._VECTptr->end();
@@ -349,7 +349,7 @@ namespace giac {
       if (s.feuille.type!=_VECT)
 	return s.feuille;
       vecteur v=*s.feuille._VECTptr;
-      int nargs=v.size();
+      int nargs=int(v.size());
       if (nargs<=1)
 	return s.feuille;
       if (nargs==2 && is_equal(v[1])){
@@ -575,7 +575,7 @@ namespace giac {
     // multi-index derivation
     if (nderiv.type!=_VECT ||
 	vars.type!=_VECT)  return gensizeerr(gettext("derive.cc/derive"));
-    int s=nderiv._VECTptr->size();
+    int s=int(nderiv._VECTptr->size());
     if (s!=signed(vars._VECTptr->size()))  return gensizeerr(gettext("derive.cc/derive"));
     int j=0;
     gen ecopie(e);
@@ -623,11 +623,11 @@ namespace giac {
       res=derive(res,var,contextptr);
       return symbolic(at_program,makesequence(var,0,res));
     }
-    int s=v.size();
+    int s=int(v.size());
     if (s==2){
       if (v[1].type==_VECT && v[1].subtype==_SEQ__VECT){
 	vecteur & w=*v[1]._VECTptr;
-	int ss=w.size();
+	int ss=int(w.size());
 	gen res=v[0];
 	for (int i=0;i<ss;++i)
 	  res=ratnormal(derive(res,w[i],contextptr));
@@ -718,6 +718,134 @@ namespace giac {
   static const char _grad_s []="grad";
   static define_unary_function_eval_quoted (__grad,&_grad,_grad_s);
   define_unary_function_ptr5( at_grad ,alias_at_grad,&__grad,_QUOTE_ARGUMENTS,true);
+
+  gen critical(const gen & g,bool extrema_only,GIAC_CONTEXT){
+    gen arg,var;
+    if (g.type!=_VECT){
+      arg=g;
+      var=ggb_var(arg);
+    }
+    else {
+      if (g.subtype!=_SEQ__VECT || g._VECTptr->size()<2)
+	return gensizeerr(contextptr);
+      arg=g._VECTptr->front();
+      var=(*g._VECTptr)[1];
+    }
+    gen d=_derive(makesequence(arg,var),contextptr);
+    gen deq=_equal(makesequence(d,0*var),contextptr);
+    gprintf(step_extrema1,gettext("Critical points for %gen: solving %gen with respect to %gen"),makevecteur(arg,deq,var),contextptr);
+    // *logptr(contextptr) << "Critical points for "<< arg <<": solving " << deq << " with respect to " << var << endl;
+    int c=calc_mode(contextptr);
+    calc_mode(0,contextptr);
+    gen s=_solve(makesequence(deq,var),contextptr);
+    calc_mode(c,contextptr);
+    vecteur ls=lidnt(s);
+    for (int i=0;i<int(ls.size());++i){
+      if (ls[i]==var || (var.type==_VECT && equalposcomp(*var._VECTptr,ls[i])))
+	return gensizeerr("solve error while finding critical points");
+    }
+    if (s.type==_VECT){
+      vecteur res;
+      gen d2=_derive(makesequence(d,var),contextptr);
+      gprintf(step_extrema2,gettext("Hessian %gen"),makevecteur(d2),contextptr);
+      // *logptr(contextptr) << "Hessian " << d2 << endl;
+      vecteur v=*s._VECTptr;
+      int vs=int(v.size());
+      for (int i=0;i<vs;++i){
+	gen g=subst(d2,var,v[i],false,contextptr);
+	gprintf(step_extrema3,gettext("Hessian at %gen : % gen"),makevecteur(v[i],g),contextptr);
+	// *logptr(contextptr) << "Hessian at " << v[i] << ": " << g << endl;
+	if (ckmatrix(g)){
+	  g=evalf(g,1,contextptr);
+	  if (g.type!=_VECT || !is_numericm(*g._VECTptr,true)){
+	    gprintf(step_extrema4,gettext("%gen critical point (unknown type)"),makevecteur(v[i]),contextptr);
+	    // *logptr(contextptr) << v[i] << " critical point (unknown type)" << endl;
+	    continue;
+	  }
+	  vecteur w=megvl(*g._VECTptr,contextptr);
+	  if (!ckmatrix(w)){
+	    gprintf(step_extrema4,gettext("%gen critical point (unknown type)"),makevecteur(v[i]),contextptr);
+	    // *logptr(contextptr) << v[i] << " critical point (unknown type)" << endl;
+	    continue;
+	  }
+	  int j=0,ws=int(w.size());
+	  for (;j<ws;++j){
+	    if (is_zero(w[0][0])){
+	      gprintf(step_extrema5,gettext("%gen critical point (0 as eigenvalue) %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
+	      // *logptr(contextptr) << v[i] << " critical point (0 as eigenvalue) " << _diag(w,contextptr) << endl;
+	      break;
+	    }
+	    if (is_positive(-w[0][0]*w[j][j],contextptr)){
+	      gprintf(step_extrema5,gettext("%gen saddle point (2 eigenvalues with oppositie sign) %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
+	      // *logptr(contextptr) << v[i] << " saddle point (2 eigenvalues with opposite sign) " << _diag(w,contextptr) << endl;
+	      break;
+	    }
+	  }
+	  if (j==ws){
+	    res.push_back(v[i]);
+	    if (is_positive(w[0][0],contextptr)){
+	      gprintf(step_extrema6,gettext("%gen local minimum %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
+	      // *logptr(contextptr) << v[i] << " local minimum " << _diag(w,contextptr) << endl;
+	    }
+	    else {
+	      gprintf(step_extrema6,gettext("%gen local maximum %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
+	      // *logptr(contextptr) << v[i] << " local maximum " << _diag(w,contextptr) << endl;
+	    }
+	  }
+	  continue;
+	} // end multi-dimension
+	int d=2;
+	gen curd=d2;
+	if (is_zero(g)){
+	  for (++d;d< NEWTON_DEFAULT_ITERATION;++d){
+	    curd=ratnormal(_derive(makesequence(curd,var),contextptr));
+	    g=subst(curd,var,v[i],false,contextptr);
+	    if (!is_zero(g))
+	      break;
+	  }
+	}
+	if (d%2==0 && is_strictly_positive(g,contextptr)){
+	  gprintf(step_extrema7,gettext("%gen local minimum"),makevecteur(v[i]),contextptr);
+	  // *logptr(contextptr) << v[i] << " local minimum" << endl;
+	  res.push_back(v[i]);
+	  continue;
+	}
+	if (d%2==0 && is_strictly_positive(-g,contextptr)){
+	  gprintf(step_extrema7,gettext("%gen local maximum"),makevecteur(v[i]),contextptr);
+	  // *logptr(contextptr) << v[i] << " local maximum" << endl;
+	  res.push_back(v[i]);
+	  continue;
+	}
+	if (d==NEWTON_DEFAULT_ITERATION){
+	  gprintf(step_extrema4,gettext("%gen critical point (unknown type)"),makevecteur(v[i]),contextptr);
+	  //*logptr(contextptr) << v[i] << " critical point (unknown type)" << endl;
+	}
+	else {
+	  gprintf(step_extrema8,gettext("%gen inflection point"),makevecteur(v[i]),contextptr);
+	  // *logptr(contextptr) << v[i] << " inflection point" << endl;
+	}
+      }
+      if (extrema_only)
+	return res;
+      else
+	return s;
+    }
+    else
+      return s;
+  }
+  gen _extrema(const gen & g,GIAC_CONTEXT){
+    return critical(g,true,contextptr);
+  }
+  static const char _extrema_s []="extrema";
+  static define_unary_function_eval_quoted (__extrema,&_extrema,_extrema_s);
+  define_unary_function_ptr5( at_extrema ,alias_at_extrema,&__extrema,_QUOTE_ARGUMENTS,true);
+
+  gen _critical(const gen & g,GIAC_CONTEXT){
+    return critical(g,false,contextptr);
+  }
+  static const char _critical_s []="critical";
+  static define_unary_function_eval_quoted (__critical,&_critical,_critical_s);
+  define_unary_function_ptr5( at_critical ,alias_at_critical,&__critical,_QUOTE_ARGUMENTS,true);
 
   // FIXME: This should not use any temporary identifier
   // Should define the identity operator and write again all rules here

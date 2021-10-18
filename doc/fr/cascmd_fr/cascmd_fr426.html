@@ -6,30 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Encadrement exact des racines réelles d’un polynôme : VAS</TITLE>
+<TITLE>Décomposition en éléments simples sur C : cpartfrac</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr425.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr427.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc517">6.32.3</A>  Encadrement exact des racines réelles d’un polynôme : <TT>VAS</TT></H3><P><A NAME="@default774"></A>
-<TT>VAS(P)</TT> renvoie une liste d’intervalles d’isolation des racines réelles 
-de<TT>P</TT> par l’algorithme de Vincent-Akritas-Strzebonski. Cela ne fait que 
-calculer des intervalles d’isolation des racines.<BR>
-On tape :<BR>
-<TT>VAS(x</TT><CODE><TT>^</TT></CODE><TT>3-7*x+7)</TT><BR>
-On obtient :<BR>
-<TT>[[-4,0],[1,3/2],[3/2,2]]</TT><BR>
-On tape :<BR>
-<TT>VAS(x</TT><CODE><TT>^</TT></CODE><TT>5+2*x</TT><CODE><TT>^</TT></CODE><TT>4-6*x</TT><CODE><TT>^</TT></CODE><TT>3-7*x</TT><CODE><TT>^</TT></CODE><TT>2+7*x+7)</TT><BR>
-On obtient :<BR>
-<TT>[[-5,-1],-1,[1,3/2],[3/2,2]]</TT><BR>
-On tape :<BR>
-<TT>VAS(x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+2)</TT><BR>
-On obtient :<BR>
-<TT>[[-3,0],1,[1,3]]</TT>
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc516">6.31.10</A>  Décomposition en éléments simples sur C : <TT>cpartfrac</TT></H3><P><A NAME="@default775"></A>
+<TT>cpartfrac</TT> a comme argument une fraction rationnelle.<BR>
+<TT>cpartfrac</TT> renvoie sa décomposition en éléments simples sur C que 
+l’on soit en mode réel ou complexe.<BR>
+<B>Exemple</B> :<BR>
+Décomposer en éléments simples la fraction rationnelle :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>5</SUP>−2<I>x</I><SUP>3</SUP>+1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>4</SUP>−2<I>x</I><SUP>3</SUP>+2<I>x</I><SUP>2</SUP>−2<I>x</I>+1</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On utilise la commande <TT>cpartfrac</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>cpartfrac((x</TT><CODE><TT>^</TT></CODE><TT>5-2*x</TT><CODE><TT>^</TT></CODE><TT>3+1)/(x</TT><CODE><TT>^</TT></CODE><TT>4-2*x</TT><CODE><TT>^</TT></CODE><TT>3+2*x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1))</TT></DIV><P>
+On obtient en mode réel ou en mode complexe :
+</P><DIV CLASS="center"><TT>x+2+(-1+2*i)/((2-2*i)*((i)*x+1))+1/(2*(-x+1))+</TT></DIV><DIV CLASS="center"><TT>(-1-2*i)/((2-2*i)*(x+i))</TT></DIV><HR>
 <A HREF="cascmd_fr425.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr427.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

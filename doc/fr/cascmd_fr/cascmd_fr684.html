@@ -6,15 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Courbure : curvature, courbure</TITLE>
+<TITLE>Négliger les petites valeurs : epsilon2zero</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr683.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr685.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc809">7.5.2</A>  Courbure : <TT>curvature, courbure</TT></H3><P><A NAME="@default1235"></A><A NAME="@default1236"></A>
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc807">6.64.1</A>  Négliger les petites valeurs : <TT>epsilon2zero</TT></H3><P>
+<A NAME="@default1237"></A> <A NAME="sec:epsilon2zero"></A>
+<TT>epsilon2zero</TT> a comme paramètre une expression de <TT>x</TT>.<BR>
+<TT>epsilon2zero</TT> renvoie l’expression où les valeurs plus petites que 
+<TT>epsilon</TT> ont été remplacées par zéro dans l’expression non 
+évaluée.<BR>
+La valeur de <TT>epsilon</TT><A NAME="@default1238"></A> peut être changé dans la 
+configuration du <TT>cas</TT> (par défaut <TT>epsilon=1e-10</TT>).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>epsilon2zero(1e-13+x) </TT></DIV><P>
+On obtient (avec <TT>epsilon=1e-10</TT>) :
+</P><DIV CLASS="center"><TT>0+x</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>epsilon2zero((1e-13+x)*100000) </TT></DIV><P>
+On obtient (avec <TT>epsilon=1e-10</TT>) :
+</P><DIV CLASS="center"><TT>(0+x)*100000</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>epsilon2zero(0.001+x) </TT></DIV><P>
+On obtient (avec <TT>epsilon=0.0001</TT>) :
+</P><DIV CLASS="center"><TT>0.001+x</TT></DIV><HR>
 <A HREF="cascmd_fr683.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr685.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

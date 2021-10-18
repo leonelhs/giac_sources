@@ -6,32 +6,62 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Substituer dans une expression, une expression algébrique par une variable : algsubs</TITLE>
+<TITLE>Substituer une valeur à une variable : subst substituer</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr274.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr276.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc348">6.14.24</A>  Substituer dans une expression, une expression algébrique par une variable : <TT>algsubs</TT></H3><P><A NAME="@default460"></A>
-<TT>algsubs</TT> permet de substituer dans une expression, une expression 
-algébrique par une autre expression algébrique.<BR>
-<TT>algsubs</TT> a 2 arguments :<BR>
-une équation entre 2 expressions algébriques <TT>Xpr1=Xpr2</TT> et<BR>
-une expression dans laquelle <TT>algsubs</TT> remplacera l’expression algébrique
-<TT>Xpr1</TT> par <TT>Xpr2</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc348">6.14.21</A>  Substituer une valeur à une variable : <TT>subst substituer</TT></H3><P><A NAME="@default459"></A><A NAME="@default460"></A><A NAME="sec:subst"></A>
+<TT>subst</TT> a deux ou trois arguments : une expression dépendant 
+d’un paramètre et une égalité (paramètre=valeur de substitution) ou
+une expression dependant d’un paramètre , le paramètre et la valeur de 
+substitution.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>subst</TT> effectue la substitution demandée dans l’expression à 
+condition que le paramètre ne soit pas affecté car <TT>subst</TT> évalue 
+tout d’abord l’expression et remplace donc le paramètre (si il a été 
+affecté) par sa valeur sans tenir compte de la valeur de substitution donné
+par le deuxième paramètre.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>algsubs(x</TT><CODE><TT>^</TT></CODE><TT>2=u,1+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>4)</TT></DIV><P> 
-On obtient :
-</P><DIV CLASS="center"><TT>u</TT><CODE><TT>^</TT></CODE><TT>2+u+1</TT></DIV><P> 
+<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a=2)</TT></DIV> 
+ou :
+<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a,2)</TT></DIV> 
+On obtient si la variable <TT>a</TT> n’est pas affectée :
+<DIV CLASS="center"><TT>5</TT></DIV> 
+Si la variable <TT>a</TT> est affectée, il faut taper auparavant 
+<TT>purge(a)</TT> pour obtenir <TT>5</TT>.<BR>
+Lorsque l’on veut substituer plusieurs variables, pour eviter de faire 
+plusieurs substitutions à la suite, on met comme deuxième argument la
+liste de ces variables et comme troisième argument la liste de les valeurs 
+de substitution (ou encore on met comme deuxième argument la liste formée 
+des noms de variables <TT>=</TT> valeur de substitution).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>algsubs(a*b/c=d, 2*a*b</TT><CODE><TT>^</TT></CODE><TT>2/c)</TT></DIV><P> 
-On obtient :
-</P><DIV CLASS="center"><TT>2*b*d</TT></DIV><P> 
+<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a,b],[2,1])</TT></DIV> 
+Ou on tape :
+<DIV CLASS="center"><TT>subst(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a=2,b=1])</TT></DIV> 
+On obtient si les variables <TT>a</TT> et <TT>b</TT> ne sont pas affectées :
+<DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV> </LI><LI CLASS="li-itemize"><TT>subst</TT> permet aussi d’effectuer des changements de variables dans 
+une intégrale mais <TT>subst</TT> ne gère les changements de variable dans une 
+integrale que si le changement de variable est de la forme <TT>x=f(u)</TT>. Dans 
+ce cas il faut quoter l’intégrale pour que celle-ci ne 
+soit pas calculée si on utilise <TT>integrate</TT> ou bien il faut utiliser 
+la commande <TT>Int</TT>. Dans les deux cas il faut spécifier le nom 
+de la variable d’intégration même si celle-ci est <TT>x</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>algsubs(2a=p</TT><CODE><TT>^</TT></CODE><TT>2-q</TT><CODE><TT>^</TT></CODE><TT>2,algsubs(2c=p</TT><CODE><TT>^</TT></CODE><TT>2+q</TT><CODE><TT>^</TT></CODE><TT>2,c</TT><CODE><TT>^</TT></CODE><TT>2-a</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><P> 
-On obtient :
-</P><DIV CLASS="center"><TT>p</TT><CODE><TT>^</TT></CODE><TT>2*q</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
+<DIV CLASS="center"><TT>subst(’integrate(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x,0,pi/2)’,x=sqrt(t))</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>subst(Int(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x,0,pi/2),x=sqrt(t))</TT></DIV>
+On obtient
+<DIV CLASS="center"><TT>integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t,0,(pi/2)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV> 
+On tape :
+<DIV CLASS="center"><TT>subst(’integrate(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x)’,x=sqrt(t))</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>subst(Int(sin(x</TT><CODE><TT>^</TT></CODE><TT>2)*x,x),x=sqrt(t))</TT></DIV>
+On obtient
+<DIV CLASS="center"><TT>integrate(sin(t)*sqrt(t)*1/2*1/t*sqrt(t),t)</TT></DIV> 
+</LI></UL><HR>
 <A HREF="cascmd_fr274.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr276.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

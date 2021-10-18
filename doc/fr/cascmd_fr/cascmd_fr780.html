@@ -6,32 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi de Weibull : weibull weibulld</TITLE>
+<TITLE>Fonction de répartition de la loi de Cauchy : cauchy_cdf cauchyd_cdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr779.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr781.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc914">8.4.45</A>  Densité de probabilité de la loi de Weibull : <TT>weibull weibulld</TT></H3><P><A NAME="@default1388"></A><A NAME="@default1389"></A>
-<TT>weibulld</TT> a 3 ou 4 paramètres : deux réels <I>k</I>,λ strictement positifs et 1 ou 2 réels θ, <I>x</I> positif ou nul (par défaut θ=0).<BR>
-<TT>weibull(k,lambda,theta,x)</TT> renvoie la densité de probabilité de la 
-loi de Weibull à savoir :<BR>
- <I>k</I>/λ(<I>x</I>−θ/λ)<SUP><I>k</I>−1</SUP>*exp(−(<I>x</I>−θ/λ)<SUP><I>k</I></SUP>)<BR>
+<H3 CLASS="subsection"><A NAME="htoc919">8.4.37</A>  Fonction de répartition de la loi de Cauchy : <TT>cauchy_cdf cauchyd_cdf</TT></H3><P><A NAME="@default1388"></A><A NAME="@default1389"></A>
+Lorsqu’une variable aléatoire <I>X</I> à valeur dans ℝ suit une loi de Cauchy
+de paramètre <I>a</I> et <I>b</I>, on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>cauchy_cdf(a,b,x)</TT> avec <I>x</I>∈ ℝ.<BR>
+<I>Proba</I>(<I>x</I>≤ <I>X</I>≤ <I>y</I>)=<TT>cauchy_cdf(a,b,x,y)</TT> avec <I>x</I>∈ ℝ et <I>y</I>∈ ℝ.<BR>
+On a :<BR>
+<TT>cauchy_cdf(a,b,x)</TT> est égale à 
+ 1/2+1/π<I>atan</I>(<I>x</I>−<I>a</I>/<I>b</I>) et<BR>
+<TT>cauchy_cdf(a,b,x,y)</TT> est égale à :<BR>
+ 1/π(<I>atan</I>(<I>y</I>−<I>a</I>/<I>b</I>)−<I>atan</I>(<I>x</I>−<I>a</I>/<I>b</I>))<BR>
 On tape :
-</P><DIV CLASS="center"><TT>weibull(2,1,3)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>weibull(2,1,0,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cauchy_cdf(2,3,1.4)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>6/exp(9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.437167041811</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>weibull(2.2,1.5,0.8)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull(2.2,1.5,0.0,0.8)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull(2.2,1.5,0.4,1.2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cauchy_cdf(2,3,-1.9)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.536773868051</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.20871440016</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>cauchy_cdf(2,3,-1.9,1.4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.228452641651</TT></DIV><HR>
 <A HREF="cascmd_fr779.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr781.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

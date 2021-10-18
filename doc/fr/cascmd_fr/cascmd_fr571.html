@@ -6,22 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Ajouter une ligne à une autre : rowAdd</TITLE>
+<TITLE>Extraire des lignes ou des colonnes d’une matrice (compatibilité Maple) : row col</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr570.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr572.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc676">6.46.22</A>  Ajouter une ligne à une autre : <TT>rowAdd</TT></H3><P><A NAME="@default1037"></A>
-<TT>rowAdd</TT> a trois arguments : une matrice <I>A</I> et deux entiers <I>n</I>1 
-et <I>n</I>2.<BR>
-<TT>rowAdd</TT> renvoie la matrice obtenue en remplacant dans <I>A</I> la ligne <I>n</I>2
-par la somme des lignes <I>n</I>1 et <I>n</I>2.<BR>
+<H3 CLASS="subsection"><A NAME="htoc678">6.48.2</A>  Extraire des lignes ou des colonnes d’une matrice (compatibilité Maple) : <TT>row col</TT></H3><P><A NAME="@default1040"></A><A NAME="@default1041"></A>
+<TT>row</TT> (resp <TT>col</TT>) permet d’extraire une ou plusieurs lignes 
+(resp colonnes) d’une matrice.<BR>
+<TT>row</TT> (resp <TT>col</TT>) a 2 arguments : une matrice <I>A</I>, et un entier <I>n</I> 
+ou un intervalle <I>n</I><SUB>1</SUB>..<I>n</I><SUB>2</SUB>.<BR>
+<TT>row</TT> (resp <TT>col</TT>) renvoie la ligne (resp colonne) d’indice <I>n</I> de la 
+matrice <I>A</I>, ou la séquence des lignes (resp colonnes) d’indice allant de 
+<I>n</I><SUB>1</SUB> à <I>n</I><SUB>2</SUB> de la matrice <I>A</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>rowAdd([[1,2],[3,4]],0,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>row([[1,2,3],[4,5,6],[7,8,9]],1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,2],[4,6]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[4,5,6]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>row([[1,2,3],[4,5,6],[7,8,9]],0..1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>([1,2,3],[4,5,6])</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>col([[1,2,3],[4,5,6],[7,8,9]],1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,5,8]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>col([[1,2,3],[4,5,6],[7,8,9]],0..1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>([1,4,7],[2,5,8])</TT></DIV><HR>
 <A HREF="cascmd_fr570.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr572.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

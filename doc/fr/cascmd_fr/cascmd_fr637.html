@@ -6,40 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Valeurs singulières (compatible HP) : SVL svl</TITLE>
+<TITLE>Reconnaitre une isométrie : isom</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr636.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr638.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc748">6.52.7</A>  Valeurs singulières (compatible HP) : <TT>SVL svl</TT></H3><P><A NAME="@default1158"></A><A NAME="@default1159"></A>
-<TT>SVL</TT> ou <TT>svl</TT> a comme argument une matrice carrée numérique d’ordre 
-<I>n</I>.<BR>
-<TT>SVL(A)</TT> renvoie les valeurs singulières de <I>A</I>.<BR>
-Les valeurs singulières de <I>A</I> sont les racines carrées positives des 
-valeurs propres de <I>A</I>*<I>trn</I>(<I>A</I>). Ainsi lorsque <I>A</I> est symétrique, les valeurs 
-singulières de <I>A</I> sont les valeurs absolues de ses valeurs propres.<BR>
+<H3 CLASS="subsection"><A NAME="htoc752">6.56.1</A>  Reconnaitre une isométrie : <TT>isom</TT></H3><P><A NAME="@default1164"></A>
+<TT>isom</TT> a comme argument la matrice d’une application linéaire 
+en dimension 2 ou 3.<BR>
+<TT>isom</TT> renvoie :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si l’application linéaire est une isométrie directe,<BR>
+la liste des éléments caractéristiques et <TT>+1</TT>
+</LI><LI CLASS="li-itemize">si l’application linéaire est une isométrie indirecte,<BR>
+la liste des éléments caractéristiques et <TT>-1</TT> 
+</LI><LI CLASS="li-itemize">si l’application linéaire n’est pas une isométrie,<BR>
+<TT>[0]</TT>.
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>SVL([[1,2],[3,4]])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>svl([[1,2],[3,4]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>isom([[0,0,1],[0,1,0],[1,0,0]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0.365966190626,5.46498570422]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1,0,-1],-1]</TT></DIV><P>
+ce qui veut dire que cette isométrie est une symétrie par rapport au plan 
+<I>x</I> − <I>z</I> = 0.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>evalf(sqrt(eigenvals([[1,2],[3,4]]*[[1,3],[2,4]])))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>isom(sqrt(2)/2*[[1,-1],[1,1]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[5.46498570422,0.365966190626]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[pi/4,1]</TT></DIV><P>
+cette isométrie est donc une rotation plane d’angle  π/4.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>SVL([[1,4],[4,1]])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>svl([[1,4],[4,1]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>isom([[0,0,1],[0,1,0],[0,0,1]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[5.0,3.0]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>abs(eigenvals([[1,4],[4,1]]))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[5,3]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[0]</TT></DIV><P>
+ce qui veut dire que ce n’est pas une isométrie.
+</P><HR>
 <A HREF="cascmd_fr636.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr638.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

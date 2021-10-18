@@ -6,38 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Faire une matrice avec deux matrices : augment concat</TITLE>
+<TITLE>Remplacer une partie d’une matrice ou d’un vecteur : replace</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr577.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr579.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc683">6.46.29</A>  Faire une matrice avec deux matrices : <TT>augment concat</TT></H3><P><A NAME="@default1052"></A><A NAME="@default1053"></A>
-<TT>augment</TT> ou <TT>concat</TT> concaténe deux matrices <I>A</I> et <I>B</I> 
-ayant le même nombre de lignes (resp de colonnes) c’est à dire 
-<TT>augment</TT> ou <TT>concat</TT> fabrique une
-matrice ayant même nombre de lignes (resp de colonnes) que <I>A</I> et <I>B</I> en 
-accolant <I>A</I> et <I>B</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc686">6.49.6</A>  Remplacer une partie d’une matrice ou d’un vecteur : <TT>replace</TT></H3><P><A NAME="@default1049"></A>
+<TT>replace</TT> a comme argument une matrice <I>A</I> (resp un vecteur) et 
+une liste de 2 indices (resp 1 entier) et la matrice (resp le vecteur) qui doit
+être mis en remplacement à partir de ces 2 indices.<BR>
+<TT>replace</TT> effectue ce remplacement en élaguant éventuellement la 
+matrice (resp le vecteur) si elle (resp il) est sur dimensionnée.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>augment([[3,4,5],[2,1,0]],[[1,2],[4,5]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>replace([[1,2,3],[4,5,6]],[1,1],[[5,6],[7,8]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[3,4,5,1,2],[2,1,0,4,5]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[5,6,3],[7,8,6]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>augment([[3,4],[2,1],[0,1]],[[1,2],[4,5]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>replace([[1,2,3],[4,5,6]],[1,2],[[7,8,10],[9,0,11]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[3,4],[2,1],[0,1],[1,2],[4,5]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1,7,8],[4,9,0]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>augment([[3,4,2]],[[1,2,4]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>replace([1,2,3,4],2,[5,6])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[3,4,2,1,2,4]]</TT></DIV><P>
-Quand les deux matrices <I>A</I> et <I>B</I> ont le même nombre de lignes que de 
-colonnes, <TT>augment</TT> fabrique une matrice ayant même nombre de lignes 
-que <I>A</I> et <I>B</I> en accolant <I>A</I> et <I>B</I>.<BR>
+</P><DIV CLASS="center"><TT>[1,5,6,4]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>augment([[3,4],[2,1]],[[1,2],[4,5]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>replace([1,2,3,4],2,[5,6,7,8])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[3,4,1,2],[2,1,4,5]]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[1,5,6,7]</TT></DIV><HR>
 <A HREF="cascmd_fr577.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr579.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

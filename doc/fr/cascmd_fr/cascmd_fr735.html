@@ -6,73 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice aléatoire : ranm randmatrix randMat</TITLE>
+<TITLE>Pour initialiser les nombres aléatoires : srand randseed RandSeed</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr734.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr736.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc868">8.3.9</A>  Matrice aléatoire : <TT>ranm randmatrix randMat</TT></H3><P><A NAME="@default1322"></A><A NAME="sec:ranm3"></A><A NAME="@default1323"></A><A NAME="@default1324"></A>
-<TT>ranm</TT> (ou <TT>randmatrix</TT> ou <TT>randMat</TT>) (voir aussi <A HREF="cascmd_fr383.html#sec:ranm1">6.27.32</A> et <A HREF="cascmd_fr545.html#sec:ranm2">6.45.3</A>) peut avoir comme argument :<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un entier <TT>s</TT>, dans ce cas <TT>ranm</TT> renvoie une liste 
-de longueur <TT>s</TT> dont les éléments sont des entiers pris au hasard 
-de façon équiprobable dans :<BR>
- <TT>[-99,-98,...,98,99]</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc873">8.3.1</A>  Pour initialiser les nombres aléatoires : <TT>srand randseed RandSeed</TT></H3><P><A NAME="@default1320"></A><A NAME="@default1321"></A><A NAME="@default1322"></A>
+<TT>srand</TT> (ou <TT>randseed</TT> ou <TT>RandSeed</TT>) sert à 
+initialiser la suite des nommbres aléatoires que l’on obtient avec 
+<TT>rand()</TT> ou avec <TT>randnorm()</TT>.<BR>
+<TT>RandSeed</TT> a toujours un argument entier, alors que <TT>randseed</TT> ou 
+<TT>srand</TT> peut ne pas avoir d’arguments (dans ce cas le générateur 
+aléatoire est intialisé avec l’horloge du système).<BR>
+Ainsi, <TT>srand(n)</TT> (ou <TT>randseed(n)</TT> ou <TT>RandSeed(n)</TT>) avec <TT>n</TT> 
+entier sert à initialiser la suite des nommbres aléatoires pour que l’on 
+puisse obtenir la même suite aléatoire avec <TT>rand()</TT> ou avec 
+<TT>randnorm()</TT>.<BR>
 On tape :
-<DIV CLASS="center"><TT>ranm(5)</TT></DIV>
+</P><DIV CLASS="center"><TT>srand</TT></DIV><P>
 On obtient par exemple :
-<DIV CLASS="center"><TT>[-40,27,4,-1,94]</TT></DIV>
-</LI><LI CLASS="li-itemize">deux entiers <TT>n,p</TT>, dans ce cas <TT>ranm</TT> renvoie une 
-matrice de <TT>n</TT> lignes et <TT>p</TT> colonnes dont les éléments sont
-des entiers pris au hasard de façon équiprobable dans <TT>[-99,-98,...,98,99]</TT>.<BR>
+</P><DIV CLASS="center"><TT>1054990506</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>ranm(2,3)</TT></DIV>
+</P><DIV CLASS="center"><TT>srand(121054990506)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>121054990506</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>RandSeed(10549905061234)</TT></DIV><P>
 On obtient par exemple :
-<DIV CLASS="center"><TT>[[-32,53,-44],[10,-4,25]]</TT></DIV>
-</LI><LI CLASS="li-itemize">deux entiers <TT>n,p</TT> et un entier relatif <TT>a</TT>, dans ce 
-cas <TT>ranm</TT> renvoie une matrice de <TT>n</TT> lignes et <TT>p</TT> colonnes dont 
-les éléments sont des entiers pris au hasard de façon équiprobable 
-dans <TT>[0;a[</TT> (ou <TT>]a;0]</TT> si <TT>a</TT> est négatif)<BR>
-On tape :
-<DIV CLASS="center"><TT>ranm(2,3,10)</TT></DIV>
-On obtient par exemple :
-<DIV CLASS="center"><TT>[[8,3,7],[7,9,1]]</TT></DIV>
-</LI><LI CLASS="li-itemize">deux entiers <TT>n,p</TT> et un intervalle <TT>a..b</TT>, dans ce cas 
-<TT>ranm</TT> renvoie une matrice de <TT>n</TT> lignes et <TT>p</TT> colonnes dont les 
-éléments sont des réels pris au hasard de façon équiprobable dans 
-<TT>[a;b[</TT>.<BR>
-On tape :
-<DIV CLASS="center"><TT>ranm(2,3,0..1)</TT></DIV>
-On obtient par exemple :
-<DIV CLASS="center"><TT>[[0.840187716763,0.394382926635,0.783099223394],</TT></DIV>
-<DIV CLASS="center"><TT>[0.798440033104,0.911647357512,0.197551369201]] </TT></DIV>
-</LI><LI CLASS="li-itemize">deux entiers <TT>n,p</TT> et une fonction aléatoire de <TT>Xcas</TT> qu’il 
-faut quoter, dans ce cas 
-<TT>ranm</TT> renvoie une matrice de <TT>n</TT> lignes et <TT>p</TT> colonnes dont 
-les éléments sont pris au hasard selon la fonction donnée en 
-troisième argument.<BR>
-Les fonctions données en troisième argument qui doivent être 
-quoter, peuvent être :<BR>
-<TT>’rand(n)’</TT><BR>
-<TT>’binomial(n,p)’</TT> ou <TT>binomial,n,p</TT> ou<TT>’randbinomial(n,p)’</TT><BR>
-<TT>’multinomial(P,K)’</TT> ou <TT>multinomial,P,K</TT> ou <TT>’randmultinomial(P,K)’</TT><BR>
-<TT>’poisson(</TT><TT>λ</TT><TT>)’</TT> ou <TT>poisson, </TT><TT>λ</TT> ou <TT>’randpoisson(</TT><TT>λ</TT><TT>)’</TT><BR>
-<TT>’normald(</TT><TT>µ</TT><TT>,</TT><TT>σ</TT><TT>)’</TT> ou <TT>normald,</TT><TT>µ</TT><TT>,</TT><TT>σ</TT> ou <TT>’randnorm(</TT><TT>µ</TT><TT>,</TT><TT>σ</TT><TT>)’</TT><BR>
-<TT>’exp(a)’</TT> ou <TT>exp,a</TT> ou <TT>’randexp(a)’</TT><BR>
-<TT>’fisher(n,m)’</TT> ou <TT>fisher,n,m</TT> ou <TT>’randfisher(n,m)’</TT><BR>
-On tape :
-<DIV CLASS="center"><TT>ranm(3,2,’rand(3)’)</TT></DIV>
-ou
-<DIV CLASS="center"><TT>ranm(3,2,3)</TT></DIV>
-On obtient par exemple :
-<DIV CLASS="center"><TT>[[2,1],[0,0],[1,0]]</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>ranm(1,2,’randnorm(0,1)’)</TT></DIV>
-On obtient par exemple :
-<DIV CLASS="center"><TT>[[1.37439065645,-1.33195982697]]</TT></DIV>
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>10549905061234</TT></DIV><HR>
 <A HREF="cascmd_fr734.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr736.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

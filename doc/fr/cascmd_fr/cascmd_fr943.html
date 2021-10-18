@@ -6,58 +6,62 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pente d’une droite et son affichage : slopeat, penteen et slopeatraw, penteenbrut</TITLE>
+<TITLE>La mesure d’un angle : angle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr942.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr944.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1103">10.16.13</A>  Pente d’une droite et son affichage : <TT>slopeat, penteen</TT> et <TT>slopeatraw, penteenbrut</TT></H3><P><A NAME="@default1835"></A><A NAME="@default1836"></A><A NAME="@default1837"></A><A NAME="@default1838"></A>
-<TT>slopeat</TT> ou <TT>penteen</TT> et <TT>slopeatraw</TT> ou 
-<TT>penteenbrut</TT> est une commande obtenue 
-lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
-<TT>Mode-&gt;Mesures-&gt;penteen</TT> ou <TT>Mode-&gt;Mesures-&gt;penteenbrut</TT>. Dans ce cas il
-faut que tous les objets désignés par la souris soient déjà nommés.<BR>
-On peut néammoins taper ces commandes dans une ligne de commande.<BR>
-<TT>slopeat</TT> ou <TT>penteen</TT> ont 2 arguments le nom d’une droite (ou d’un 
-segment) et 1 point (ou 1 nombre complexe qui est l’affixe d’un point).<BR>
-et <TT>slopeatraw</TT> ou <TT>penteenbrut</TT> ont 
-comme arguments une droite (ou un segment) et 1 point (ou 1 nombre complexe qui
-est l’affixe d’un point).<BR>
-<TT>slopeat</TT> ou <TT>penteen</TT> renvoie le point, calcule la pente de
-la droite (ou du segment) et affiche cette pente à l’endroit du point
-avec une légende. <B>Attention</B> <TT>slopeat</TT> ou <TT>penteen</TT>, il faut mettre le nom de la droite (ou du segment).<BR>
-<TT>slopeatraw</TT> ou <TT>penteenbrut</TT> renvoie le point, calcule la pente de
-la droite (ou du segment) et affiche cette pente à l’endroit du point.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1108">10.16.5</A>  La mesure d’un angle : <TT>angle</TT></H3><P><A NAME="@default1825"></A>
+<A NAME="sec:angle2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1038.html#sec:angle3">11.12.9</A> pour la géométrie 3-d.<BR>
+<TT>angle</TT> a comme argument trois points (ou trois nombres 
+complexes qui sont l’affixe de ces points) ou 2 points et une droite et 
+éventuellement une chaine de caractères pour afficher un petit arc de 
+cercle avec ce symbole en légende afin de représenter l’angle sur la figure
+(l’arc est remplacé par le symbole quart de carre si l’angle vaut pi/2 ou 
+-pi/2).<BR>
+<TT>angle</TT> renvoie la mesure (en radians ou en degrés) de 
+l’angle orienté de sommet le premier argument, le deuxième argument se 
+trouve sur le premier coté de l’angle et le troisième argument se 
+trouve sur le deuxiéme coté.<BR>
+<B>Remarque</B><BR>
+Si le troisième argument est une droite, cette droite donne la direction 
+du 2ième côté de l’angle.
+Ainsi :<BR>
+<TT>angle(A,B,C)</TT> désigne la mesure de l’angle en radians (ou en 
+degrés) de (<I>AB</I>,<I>AC</I>).<BR>
+<TT>angle(A,B,C,"")</TT> trace l’angle (<I>AB</I>,<I>AC</I>) avec comme légende un petit arc orienté.<BR>
+<TT>angle(A,B,C,"a")</TT> trace l’angle (<I>AB</I>,<I>AC</I>) avec comme légende un petit arc orienté noté <I>a</I>.<BR>
+<TT>angle(A,B,C,"")[0]</TT> ou <TT>angle(A,B,C,"a")[0]</TT> désigne la mesure de 
+l’angle en radians (ou en degrés) de 
+(<I>AB</I>,<I>AC</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>d:=droite(1,2i)</TT></DIV><DIV CLASS="center"><TT>penteen(d,i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>"sd=-2" s’écrit au point(i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>angle(0,1,1+i) </TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du 
+<TT>cas</TT> (bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>pi/4</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>penteenbrut(droite(1,2i),i)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>penteenbrut(segment(1,2i),i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-2 s’écrit au point(i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>angle(0,1,1+i,"") </TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du 
+<TT>cas</TT> (bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>[pi/4,cercle(point(0,0),1/5)]</TT></DIV><P>
+et l’angle est repéré par un arc de cercle sans légende.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>d1:=droite(2y-x=3),2*i)</TT></DIV><DIV CLASS="center"><TT>penteen(d1,2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>"sd1=1/2’’ s’écrit au point(2*i) avec une légende</TT></DIV><P>
+</P><DIV CLASS="center"><TT>angle(0,1,1+i,"a")</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du 
+<TT>cas</TT> (bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>[pi/4,cercle(point(0,0),1/5)]</TT></DIV><P>
+et l’angle est repéré par un arc de cercle avec <TT>a</TT> comme
+légende.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>penteenbrut(droite(2y-x=3),2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1/2 s’écrit au point(2*i)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>T:=tangente(plotfunc(sin(x)),pi/4)</TT></DIV><DIV CLASS="center"><TT>slopeat(T,i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>"sT=(sqrt(2))/2" s’écrit au point(i)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>penteenbrut(tangente(plotfunc(sin(x)),pi/4),i)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>penteenbrut(droite_tangente(sin(x),pi/4),i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(sqrt(2))/2 s’écrit au point(i)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>angle(0,1,i,"a") </TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du 
+<TT>cas</TT> (bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>[pi/2,polygone(point(1/5,0),point(1/5,1/5),point(0,1/5),point(0,1/5))]</TT></DIV><P>
+et l’angle droit est repéré par un quart de carré avec <TT>a</TT> 
+comme légende.</P><HR>
 <A HREF="cascmd_fr942.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr944.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

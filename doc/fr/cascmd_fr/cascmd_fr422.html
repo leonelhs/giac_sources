@@ -6,35 +6,21 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Décomposition en éléments simples : partfrac =>+</TITLE>
+<TITLE>Simplifier : simp2</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr421.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr423.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc512">6.31.9</A>  Décomposition en éléments simples : <TT>partfrac =&gt;+</TT></H3><P><A NAME="@default767"></A><A NAME="@default768"></A><A NAME="sec:convertparf"></A><A NAME="@default769"></A><A NAME="@default770"></A>
-<TT>=&gt;+</TT> est la version postfixée de <TT>partfrac</TT>
-<TT>partfrac</TT> a comme argument une fraction rationnelle.<BR>
-<TT>partfrac</TT> renvoie sa décomposition en éléments simples.<BR>
-<B>Exemple</B> :<BR>
-Décomposer en éléments simples la fraction rationnelle :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>5</SUP>−2<I>x</I><SUP>3</SUP>+1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>4</SUP>−2<I>x</I><SUP>3</SUP>+2<I>x</I><SUP>2</SUP>−2<I>x</I>+1</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-On utilise la commande <TT>partfrac</TT> ou <TT>=&gt;+</TT>.<BR>
-On peut aussi utiliser <TT>convert</TT> avec l’option <TT>parfrac</TT> ou
-<TT>partfrac</TT> ou <TT>fullparfrac</TT> (voir aussi <A HREF="cascmd_fr337.html#sec:convert">6.24.26</A>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>5-2*x</TT><CODE><TT>^</TT></CODE><TT>3+1)/(x</TT><CODE><TT>^</TT></CODE><TT>4-2*x</TT><CODE><TT>^</TT></CODE><TT>3+2*x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1)=&gt;+</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>partfrac((x</TT><CODE><TT>^</TT></CODE><TT>5-2*x</TT><CODE><TT>^</TT></CODE><TT>3+1)/(x</TT><CODE><TT>^</TT></CODE><TT>4-2*x</TT><CODE><TT>^</TT></CODE><TT>3+2*x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1))</TT></DIV><P>
-On obtient en mode réel:
-</P><DIV CLASS="center"><TT>x+2-1/(2*(x-1))+(x-3)/(2*(x</TT><CODE><TT>^</TT></CODE><TT>2+1)) </TT></DIV><P>
-On obtient en mode complexe :
-</P><DIV CLASS="center"><TT>x+2+1/((x-1)*-2)+(1-3*i)/((x+i)*4)+(1+3*i)/((x-i)*4)</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc512">6.31.6</A>  Simplifier : <TT>simp2</TT></H3><P><A NAME="@default768"></A><A NAME="sec:simp2"></A>
+<TT>simp2</TT> a comme paramètre deux polynômes (ou deux entiers voir <A HREF="cascmd_fr200.html#sec:isimp2">6.9.6</A>).
+Ces deux polynômes sont considèrés comme représentant une fraction rationnelle.<BR>
+<TT>simp2</TT> renvoie la fraction rationnelle simplifiée sous la forme d’une liste de deux polynômes.<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>simp2(x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[x</TT><CODE><TT>^</TT></CODE><TT>2+x+1,x+1]</TT></DIV><HR>
 <A HREF="cascmd_fr421.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr423.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

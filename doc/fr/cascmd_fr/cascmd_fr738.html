@@ -6,26 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de la loi binomiale: binomial_icdf</TITLE>
+<TITLE>Tirage selon une loi binomiale : randbinomial</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr737.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr739.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc872">8.4.3</A>  Fonction de répartition inverse de la loi binomiale: <TT>binomial_icdf</TT></H3><P><A NAME="@default1327"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale <FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>),
-si on a :<BR>
-<TT>binomial_icdf(n,p,x)=h</TT> c’est que<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)=<I>x</I>=<TT>binomial_cdf(n,p,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc876">8.3.4</A>  Tirage selon une loi binomiale : <TT>randbinomial</TT></H3><P><A NAME="@default1332"></A>
+<TT>randbinomial(n,p)</TT> renvoie au hasard des nombres entiers 
+répartis selon la loi binomiale <I>B</I>(<I>n</I>,<I>p</I>) de moyenne <TT>n*p</TT> et d’écart 
+type <TT>sqrt(n*p*(1-p))</TT>.<BR>
+<TT>randbinomial(n,p)</TT> a pour valeur le nombre de succès dans une suite de 
+<TT>n</TT> tirages indépendants lorsque pour chaque tirage, un succès est de 
+probabilité <TT>p</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_icdf(4,0.5,0.9)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+</P><DIV CLASS="center"><TT>randbinomial(10,0.6)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>4</TT></DIV><P>
+ou on obtient par exemple :
+</P><DIV CLASS="center"><TT>8</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_icdf(2,0.3,0.95)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>randbinomial(100,0.4)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>43</TT></DIV><HR>
 <A HREF="cascmd_fr737.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr739.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

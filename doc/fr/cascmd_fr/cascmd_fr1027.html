@@ -6,36 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’équation paramétrique d’un objet géométrique : parameq</TITLE>
+<TITLE>L’ellipse dans l’espace : ellipse</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1026.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1028.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1204">11.12.6</A>  L’équation paramétrique d’un objet géométrique : <TT>parameq</TT></H3><P><A NAME="@default1990"></A><A NAME="sec:parameq3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr930.html#sec:parameq2">10.15.8</A> pour la géométrie plane.<BR>
-<TT>parameq</TT>, en géométrie 3-d, permet d’avoir l’équation
-paramétrique fonction du paramètre <TT>t</TT> ou des paramètres <TT>u</TT> et 
-<TT>v</TT>, d’un objet géométrique.<BR>
-<B>Attention</B> !!! il faut auparavant purger ces variables en tapant par 
-exemple : <TT>purge(t,u,v)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1208">11.11.1</A>  L’ellipse dans l’espace : <TT>ellipse</TT></H3><P><A NAME="@default1993"></A><A NAME="sec:ellipse3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr928.html#sec:ellipse2">10.14.1</A> pour la géométrie plane.<BR>
+<TT>ellipse</TT>, en géométrie 3-d, a trois paramètres : ses deux
+foyers et un de ces points non aligné avec les foyers.<BR>
+<TT>ellipse(F1,F2,A)</TT> trace l’ellipse passant par <TT>A</TT> et de foyers 
+<TT>F1</TT> et <TT>F2</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>parameq(droite(point(0,1,0),point(1,2,3)))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>ellipse(point(-1,0,0),point(1,0,0),point(1,1,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[-t+1,-t+2,-3*t+3]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>parameq(sphere(point(0,1,0),2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>point[2*cos(u)*cos(v),1+2*cos(u)*sin(v),2*sin(u)]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>normal(parameq(ellipse(point(-1,1,1),point(1,1,1), point(0,1,2))))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[sqrt(2)*cos(t),1,sin(t)+1]</TT></DIV><P>
-On peut vérifier, on tape :
-</P><DIV CLASS="center"><TT>plotparam([sqrt(2)*cos(t),1,sin(t)+1],t=0..2*pi);</TT></DIV><DIV CLASS="center"><TT>F1:=point(-1,1,1);F2:=point(1,1,1);M:=point(0,1,2)</TT></DIV><P>
-On obtient l’ellipse, ces 2 foyers <I>F</I><SUB>1</SUB> et <I>f</I>−2 et le point <I>M</I> sur l’ellipse.
-</P><HR>
+</P><DIV CLASS="center"><TT>L’ellipse passant par (1,1,1), de foyers (-1,0,0) et (1,0,0)</TT></DIV><HR>
 <A HREF="cascmd_fr1026.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1028.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

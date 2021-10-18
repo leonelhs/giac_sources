@@ -6,27 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Intersection de deux ensembles, de deux listes : intersect</TITLE>
+<TITLE>Définition : set[]</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr490.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr492.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc590">6.40.4</A>  Intersection de deux ensembles, de deux listes : <TT>intersect</TT></H3><P><A NAME="@default873"></A>
-<TT>intersect</TT> renvoie l’ensemble qui est l’intersection de deux 
-ensembles ou de deux listes.<BR>
- <TT>intersect</TT> est un opérateur infixé.<BR>
+<H3 CLASS="subsection"><A NAME="htoc590">6.40.1</A>  Définition : <TT>set[]</TT></H3><P><A NAME="@default872"></A><A NAME="@default873"></A>
+Un ensemble est un ensemble d’éléments séparés par une
+virgule et parenthésés par
+<TT>% { % }</TT>, ou on utilise le mot reservé <TT>set[]</TT>, on écrit :<BR>
+<TT>% {1,2,3,4% }</TT> ou<BR>
+<TT>set[1,2,3,4]</TT><BR>
+L’ensemble vide s’écrira <TT>%{%}</TT> ou <TT>set[]</TT><BR>
+En réponse on utilise <B>[</B> et <B>]</B> comme délimiteurs pour 
+distinguer les ensembles des listes.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>set[1,2,3,4] intersect set[5,6,3,4]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>% {1,2,3,4% } intersect % {5,6,3,4% }</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=% {1,2,3,4% }</TT> ou <TT>A:=set[1,2,3,4]</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT><B>[</B></TT><TT>3,4</TT><TT><B>]</B></TT></DIV><P>
+</P><DIV CLASS="center"><TT><B>[</B></TT><TT>1,2,3,4</TT><TT><B>]</B></TT><TT> </TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>[1,2,3,4] intersect [5,6,3,4]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>B:=% {5,5,6,3,4% }</TT> ou <TT>B:=set[5,5,6,3,4]</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT><B>[</B></TT><TT>3,4</TT><TT><B>]</B></TT></DIV><HR>
+</P><DIV CLASS="center"><TT><B>[</B></TT><TT>5,6,3,4</TT><TT><B>]</B></TT><TT> </TT></DIV><P>
+<B>Attention!</B><BR>
+ L’ordre n’est pas important et il n’y a que des éléments différents :
+si <TT>B:=% {5,5,6,3,4% }</TT> et <TT>C:=% {3,4,5,3,6% }</TT> la réponse de 
+<TT>B==C</TT> est <TT>1</TT>.
+</P><HR>
 <A HREF="cascmd_fr490.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr492.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

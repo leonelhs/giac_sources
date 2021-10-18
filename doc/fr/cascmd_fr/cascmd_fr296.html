@@ -6,36 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Calcul du taux d’accroissement : taux_accroissement</TITLE>
+<TITLE>Puissance n-ième de composition d’une fonction : @@</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr295.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr297.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc374">6.19.2</A>  Calcul du taux d’accroissement : <TT>taux_accroissement</TT></H3><P><A NAME="@default546"></A>
-<TT>taux_accroissement</TT> calcule le taux d’accroissement d’une 
-expression lorsque la variable passe d’une valeur à une autre. Par défaut 
-la variable est égale à <TT>x</TT>.<BR>
-Permet d’introduire la notion de nombre dérivé.<BR>
+<H3 CLASS="subsection"><A NAME="htoc373">6.18.5</A>  Puissance <I>n</I>-ième de composition d’une fonction : <TT>@@</TT></H3><P><A NAME="@default547"></A>
+La puissance n-ième de composition d’une fonction se fait avec <TT>Xcas</TT>
+grâce à l’opérateur <TT>@@</TT> qui est infixé.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>taux_accroissement(x</TT><CODE><TT>^</TT></CODE><TT>2,1,2)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>taux_accroissement(y</TT><CODE><TT>^</TT></CODE><TT>2,y,1,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(sin@@3)(x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>sin(sin(sin(x)))</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>taux_accroissement(x</TT><CODE><TT>^</TT></CODE><TT>2,1,1+h)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>taux_accroissement(y</TT><CODE><TT>^</TT></CODE><TT>2,y,1,1+h)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(sin@@2)(pi/2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>((1+h)</TT><CODE><TT>^</TT></CODE><TT>2-1)/(1+h-1)</TT></DIV><P> 
-Après simplification, on obtient :
-</P><DIV CLASS="center"><TT>h+2</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>limit(taux_accroissement(x</TT><CODE><TT>^</TT></CODE><TT>2,1,1+h),h,0)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>sin(1)</TT></DIV><HR>
 <A HREF="cascmd_fr295.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr297.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

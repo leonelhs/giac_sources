@@ -6,54 +6,21 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer le format interne dense récursif en une écriture polynômiale : poly2symb r2e</TITLE>
+<TITLE>Écrire avec des exponentielles complexes : tsimplify</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr353.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr355.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc440">6.27.3</A>  Transformer le format interne dense récursif en une écriture polynômiale : <TT>poly2symb r2e</TT></H3><P><A NAME="@default673"></A><A NAME="@default674"></A>
-<TT>r2e</TT> ou <TT>poly2symb</TT> a comme argument la liste
-des coefficients par puissances décroissantes d’un polynôme et un nom de 
-variable formelle (par défaut <TT>x</TT>) (resp la liste récursive (c’est le 
-format interne dense récursif) des coefficients par puissances 
-décroissantes d’un polynôme et la séquence des variables formelles tel 
-que <TT>x,y,z</TT> (par exemple <TT>[]</TT>[[1,0],[2,3]],<TT>[]</TT><TT>[]</TT>4,0<TT>[]</TT>,5<TT>[]</TT><TT>[]</TT> représente le polynôme <I>x</I>(<I>yz</I>+2<I>z</I>+3)+4<I>yz</I>+5) car
-<TT>[]</TT>,<TT>[]</TT> sert de parenthèsages)<BR>
+<H3 CLASS="subsection"><A NAME="htoc439">6.26.9</A>  Écrire avec des exponentielles complexes : <TT>tsimplify</TT></H3><P><A NAME="@default673"></A>
+<TT>tsimplify</TT> simplifie toutes les expressions en les transformant
+en exponentielles complexes.<BR>
+On n’utilise <TT>tsimplify</TT> qu’en dernier ressort.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>r2e([1,0,-1],x)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>r2e([1,0,-1])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>poly2symb([1,0,-1],x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>tsimplify((sin(7*x)+sin(3*x))/sin(5*x))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x*x-1</TT></DIV><P>
-Ou on peut aussi taper :
-</P><DIV CLASS="center"><TT>r2e(%%%{1,[2]%%%}+%%%{-1,[0]%%%},[x])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>r2e([1,0,-1],x)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>r2e([1,0,-1])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>poly2symb([1,0,-1],x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x*x-1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>normal(poly2symb([[[1,0],[2,3]],[[4,0],5]],x,y,z))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>normal(r2e([[[1,0],[2,3]],[[4,0],5]],x,y,z))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x*y*z+2*x*z+3*x+4*y*z+5</TT></DIV><P>
-<B>Remarque</B><BR>
-Si en deuxième argument on met une valeur <I>a</I> (resp <I>a</I>,<I>b</I>,<I>c</I>), on obtient la 
-valeur du polynôme en <I>x</I>=<I>a</I> (resp en <I>x</I>=<I>a</I>, <I>y</I>=<I>b</I> et <I>z</I>=<I>c</I>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>poly2symb([[[1,0],[2,3]],[[4,0],5]],1,1,1)</TT></DIV><P>
-On obtient car 1+2+3+4+5=15 :
-</P><DIV CLASS="center"><TT>15</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>((exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>4+1)/(exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>2 </TT></DIV><HR>
 <A HREF="cascmd_fr353.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr355.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

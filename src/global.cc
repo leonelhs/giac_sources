@@ -20,6 +20,11 @@
  */
 
 using namespace std;
+#ifdef HAVE_SSTREAM
+#include <sstream>
+#else
+#include <strstream>
+#endif
 #include "global.h"
 // #include <time.h>
 #ifndef BESTA_OS
@@ -576,6 +581,21 @@ extern "C" void Sleep(unsigned int miliSecond);
       _eval_abs_=b;
   }
 
+  static bool _eval_equaltosto_=true;
+  bool & eval_equaltosto(GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      return contextptr->globalptr->_eval_equaltosto_;
+    else
+      return _eval_equaltosto_;
+  }
+
+  void eval_equaltosto(bool b,GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      contextptr->globalptr->_eval_equaltosto_=b;
+    else
+      _eval_equaltosto_=b;
+  }
+
   static bool _all_trig_sol_=false; 
   bool & all_trig_sol(GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
@@ -734,11 +754,12 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   static int _angle_mode_=0;
-  bool angle_radian(GIAC_CONTEXT){
-    if (contextptr && contextptr->globalptr )
-      return contextptr->globalptr->_angle_mode_==0;
+  bool angle_radian(GIAC_CONTEXT)
+  {
+    if(contextptr && contextptr->globalptr)
+      return contextptr->globalptr->_angle_mode_ == 0;
     else
-      return _angle_mode_==0;
+      return _angle_mode_ == 0;
   }
 
   void angle_radian(bool b,GIAC_CONTEXT){
@@ -748,7 +769,40 @@ extern "C" void Sleep(unsigned int miliSecond);
       _angle_mode_=(b?0:1);
   }
 
-  int & angle_mode(GIAC_CONTEXT){
+  bool angle_degree(GIAC_CONTEXT)
+  {
+    if(contextptr && contextptr->globalptr)
+      return contextptr->globalptr->_angle_mode_ == 1;
+    else
+      return _angle_mode_ == 1;
+  }
+
+  int get_mode_set_radian(GIAC_CONTEXT)
+  {
+    int mode;
+    if(contextptr && contextptr->globalptr)
+    {
+      mode = contextptr->globalptr->_angle_mode_;
+      contextptr->globalptr->_angle_mode_ = 0;
+    }
+    else
+    {
+      mode = _angle_mode_;
+      _angle_mode_ = 0;
+    }
+    return mode;
+  }
+
+  void angle_mode(int b, GIAC_CONTEXT)
+  {
+    if(contextptr && contextptr->globalptr)
+      contextptr->globalptr->_angle_mode_ = b;
+    else
+      _angle_mode_ = b;
+  }
+
+  int & angle_mode(GIAC_CONTEXT)
+  {
     if (contextptr && contextptr->globalptr )
       return contextptr->globalptr->_angle_mode_;
     else
@@ -1499,6 +1553,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   int MAX_PRINTABLE_ZINT=10000;
   int MAX_RECURSION_LEVEL=9;
   int GBASIS_DETERMINISTIC=20;
+
   const int BUFFER_SIZE=512;
 #else
   int CALL_LAPACK=1111;
@@ -1546,6 +1601,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #else
   int PROOT_FACTOR_MAXDEG=30;
 #endif
+  int ABS_NBITS_EVALF=1000;
 
   // used by WIN32 for the path to the xcas directory
   string & xcasroot(){
@@ -2522,7 +2578,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   bool check_file_path(const string & s){
-    int ss=s.size(),i;
+    int ss=int(s.size()),i;
     for (i=0;i<ss;++i){
       if (s[i]==' ')
 	break;
@@ -2532,7 +2588,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     if (!ch || name[0]=='/')
       return is_file_available(name.c_str());
     string path;
-    int l=strlen(ch);
+    int l=int(strlen(ch));
     for (i=0;i<l;++i){
       if (ch[i]==':'){
 	if (!path.empty()){
@@ -2604,7 +2660,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       if (with_firefox)
 	s2=s1;
       else {
-	int t=s1.size();
+	int t=int(s1.size());
 	for (int i=0;i<t;++i){
 	  if (s1[i]=='/')
 	    s2+="\\";
@@ -2618,7 +2674,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       // s = s.substr(0,5)+"C:\\\\xcas\\\\"+s2;
     }
     // Remove # trailing part of URL
-    int ss=s.size();
+    int ss=int(s.size());
     for (--ss;ss>0;--ss){
       if (s[ss]=='#' || s[ss]=='.' || s[ss]=='/' )
 	break;
@@ -2693,7 +2749,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       if (res[0]!='/')
 	res=giac_aide_dir()+res;
       // Remove # trailing part of URL
-      int ss=res.size();
+      int ss=int(res.size());
       for (--ss;ss>0;--ss){
 	if (res[ss]=='#' || res[ss]=='.' || res[ss]=='/' )
 	  break;
@@ -2757,7 +2813,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     vector<int>::const_iterator it=v.begin(),itend=v.end();
     for (;it!=itend;++it)
       if (*it==i)
-	return it-v.begin()+1;
+	return int(it-v.begin())+1;
     return 0;
   }
 
@@ -2765,7 +2821,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     vector<short int>::const_iterator it=v.begin(),itend=v.end();
     for (;it!=itend;++it)
       if (*it==i)
-	return it-v.begin()+1;
+	return int(it-v.begin())+1;
     return 0;
   }
 
@@ -2856,7 +2912,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   void update_completions(){
     if (vector_completions_ptr()){
       vector_completions_ptr()->clear();
-      int n=vector_aide_ptr()->size();
+      int n=int(vector_aide_ptr()->size());
       for (int k=0;k<n;++k){
 	vector_completions_ptr()->push_back((*vector_aide_ptr())[k].cmd_name);
       }
@@ -2886,7 +2942,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 	    }
 	  }
 	}
-	int s = vector_aide_ptr()->size();
+	int s = int(vector_aide_ptr()->size());
 	for (int j=0;j<s;++j){
 	  aide a=(*vector_aide_ptr())[j];
 	  it=back_lexer_localization_map().find(a.cmd_name);
@@ -2913,7 +2969,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     if (int pos=equalposcomp(lexer_localization_vector(),i)){
       if (vector_aide_ptr()){
 	vector<aide> nv;
-	int s=vector_aide_ptr()->size();
+	int s=int(vector_aide_ptr()->size());
 	for (int j=0;j<s;++j){
 	  if ((*vector_aide_ptr())[j].language!=i)
 	    nv.push_back((*vector_aide_ptr())[j]);
@@ -2933,8 +2989,8 @@ extern "C" void Sleep(unsigned int miliSecond);
       }
       --pos;
       lexer_localization_vector().erase(lexer_localization_vector().begin()+pos);
-      update_lexer_localization(lexer_localization_vector(),lexer_localization_map(),back_lexer_localization_map(),contextptr);
-    }
+      update_lexer_localization(lexer_localization_vector(), lexer_localization_map(), back_lexer_localization_map(), contextptr);
+	}
   }
 
   int string2lang(const string & s){
@@ -3081,7 +3137,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   string add_extension(const string & s,const string & ext,const string & def){
     if (s.empty())
       return def+"."+ext;
-    int i=s.size();
+    int i=int(s.size());
     for (--i;i>0;--i){
       if (s[i]=='.')
 	break;
@@ -3178,6 +3234,7 @@ extern "C" void Sleep(unsigned int miliSecond);
      ptr->globalptr->_expand_re_im_=_expand_re_im_;
      ptr->globalptr->_do_lnabs_=_do_lnabs_;
      ptr->globalptr->_eval_abs_=_eval_abs_;
+     ptr->globalptr->_eval_equaltosto_=_eval_equaltosto_;
      ptr->globalptr->_complex_mode_=_complex_mode_;
      ptr->globalptr->_try_parse_i_=_try_parse_i_;
      ptr->globalptr->_specialtexprint_double_=_specialtexprint_double_;
@@ -3244,7 +3301,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #ifdef HAVE_LIBPTHREAD
       pthread_mutex_lock(&context_list_mutex);
 #endif
-      int s=context_list().size();
+      int s=int(context_list().size());
       for (int i=s-1;i>0;--i){
 	if (context_list()[i]==this){
 	  context_list().erase(context_list().begin()+i);
@@ -3285,7 +3342,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif /// HAVE_NO_SYS_TIMES_H
 
   string remove_filename(const string & s){
-    int l=s.size();
+    int l=int(s.size());
     for (;l;--l){
       if (s[l-1]=='/')
 	break;
@@ -3437,7 +3494,8 @@ extern "C" void Sleep(unsigned int miliSecond);
     return ans;
   }
 
-  giac::gen thread_eval(const giac::gen & g,int level,context * contextptr,void (* wait_0001)(context *) ){
+  giac::gen thread_eval(const giac::gen & g_,int level,context * contextptr,void (* wait_0001)(context *) ){
+    gen g=equaltosto(g_,contextptr);
     /* launch a new thread for evaluation only,
        no more readqueue, readqueue is done by the "parent" thread
        Ctrl-C will kill the "child" thread
@@ -3585,7 +3643,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #ifdef BCD
 		     _bcd_decpoint_('.'|('E'<<16)|(' '<<24)),_bcd_mantissa_(12+(15<<8)), _bcd_flags_(0),_bcd_printdouble_(false),
 #endif
-		     _expand_re_im_(true), _do_lnabs_(true), _eval_abs_(true),_integer_mode_(true),_complex_mode_(false), _complex_variables_(false), _increasing_power_(false), _approx_mode_(false), _variables_are_files_(false), _local_eval_(true), 
+		     _expand_re_im_(true), _do_lnabs_(true), _eval_abs_(true),_eval_equaltosto_(true),_integer_mode_(true),_complex_mode_(false), _complex_variables_(false), _increasing_power_(false), _approx_mode_(false), _variables_are_files_(false), _local_eval_(true), 
 		     _withsqrt_(true), 
 		     _show_point_(true),  _io_graph_(true),
 		     _all_trig_sol_(false),
@@ -3640,6 +3698,7 @@ _prog_eval_level_val(1), _eval_level(DEFAULT_EVAL_LEVEL), _rand_seed(123457),_ma
      _expand_re_im_=g._expand_re_im_;
      _do_lnabs_=g._do_lnabs_;
      _eval_abs_=g._eval_abs_;
+     _eval_equaltosto_=g._eval_equaltosto_;
      _complex_mode_=g._complex_mode_;
      _complex_variables_=g._complex_variables_;
      _increasing_power_=g._increasing_power_;
@@ -3921,7 +3980,7 @@ unsigned int ConvertUTF16toUTF8 (
     target += bytesToWrite;
     }
 
-    unsigned int length = target - targetStart;
+    unsigned int length = int(target - targetStart);
     return length;
 }
 
@@ -4055,7 +4114,7 @@ unsigned int ConvertUTF8toUTF16 (
     }
     }
 
-    unsigned int length = target - targetStart;
+    unsigned int length = unsigned(target - targetStart);
     return length;
 }
 
@@ -4135,7 +4194,7 @@ unsigned int ConvertUTF8toUTF16 (
   wchar_t * utf82unicode(const char * idname){
     if (!idname)
       return 0;
-    int l=strlen(idname);
+    int l=int(strlen(idname));
     wchar_t * wname=new wchar_t[l+1];
     utf82unicode(idname,wname,l);
     return wname;
@@ -4153,7 +4212,7 @@ unsigned int ConvertUTF8toUTF16 (
   char * unicode2utf8(const wchar_t * idname){
     if (!idname)
       return 0;
-    int l=wcslen(idname);
+    int l=int(wcslen(idname));
     char * name=new char[4*l+1];
     unicode2utf8(idname,name,l);
     return name;
@@ -4311,9 +4370,55 @@ unsigned int ConvertUTF8toUTF16 (
     return false;
   }
 
+
   bool archive_save(void * f,const gen & g,GIAC_CONTEXT){
     return archive_save(f,g,(size_t (*)(void const* p, size_t nbBytes,size_t NbElements, void *file))fwrite,contextptr);
   }
+
+#ifdef GIAC_HAS_STO_38
+  // return true/false to tell if s is recognized. return the appropriate gen if true
+  int lexerCompare(void const *a, void const *b) { 
+    charptr_gen_unary const * ptr=(charptr_gen_unary const *)b;
+    const char * aptr=(const char *) a;
+    return strcmp(aptr, ptr->s); 
+  }
+
+  bool casbuiltin(const char *s, gen &g){
+    // binary search in builtin_lexer_functions
+#if 1 // def SMARTPTR64
+    int n=builtin_lexer_functions_number; 
+    charptr_gen_unary const * f = (charptr_gen_unary const *)bsearch(s, builtin_lexer_functions, n, sizeof(builtin_lexer_functions[0]), lexerCompare);
+    if (f != NULL) {
+      g = 0;
+      int pos = int(f - builtin_lexer_functions);
+      size_t val = builtin_lexer_functions_[pos];
+      unary_function_ptr * at_val = (unary_function_ptr *)val;
+      g = at_val;
+      if (builtin_lexer_functions[pos]._FUNC_%2){
+#ifdef SMARTPTR64
+	unary_function_ptr tmp=*at_val;
+	tmp._ptr+=1;
+	g=tmp;
+#else
+	g._FUNC_ +=1;
+#endif // SMARTPTR64
+      }
+      return true;
+    }
+#else
+    charptr_gen_unary const * f = (charptr_gen_unary const *)bsearch(s, builtin_lexer_functions, builtin_lexer_functions_number, sizeof(builtin_lexer_functions[0]), lexerCompare);
+    if (f != NULL) {
+      g = gen(0);
+      int pos=f - builtin_lexer_functions;
+      *(size_t *)(&g) = builtin_lexer_functions_[pos] + f->_FUNC_;
+      g = gen(*g._FUNCptr);
+      return true;
+    }
+#endif
+    return false;
+  }
+
+#endif
 
   // restore a gen from an opened file
   gen archive_restore(void * f,size_t readfunc(void * p, size_t nbBytes,size_t NbElements, void *file),GIAC_CONTEXT){
@@ -4372,8 +4477,9 @@ unsigned int ConvertUTF8toUTF16 (
 	return undef;
       if (index>0){
 	const unary_function_ptr * aptr=archive_function_tab();
-	if (index<archive_function_tab_length)
+	if (index<archive_function_tab_length){
 	  g=symbolic(aptr[index-1],fe);
+	}
 	else
 	  g=fe; // ERROR
       }
@@ -4408,6 +4514,10 @@ unsigned int ConvertUTF8toUTF16 (
 	  }
 #else	  
 	  if (builtin_lexer_functions_){
+#ifdef GIAC_HAS_STO_38
+	    if (!casbuiltin(ch,res))
+	      res=0;
+#else
 	    std::pair<charptr_gen *,charptr_gen *> p=equal_range(builtin_lexer_functions_begin(),builtin_lexer_functions_end(),std::pair<const char *,gen>(ch,0),tri);
 	    if (p.first!=p.second && p.first!=builtin_lexer_functions_end()){
 	      res = p.first->second;
@@ -4415,6 +4525,7 @@ unsigned int ConvertUTF8toUTF16 (
 	      res=gen(int(builtin_lexer_functions_[p.first-builtin_lexer_functions_begin()]+p.first->second.val));
 	      res=gen(*res._FUNCptr);
 	    }
+#endif
 	  }
 #endif 
 	}
@@ -4476,6 +4587,8 @@ unsigned int ConvertUTF8toUTF16 (
     _all_trig_sol_=on;
     _withsqrt_=!on;
     _calc_mode_=on?1:0;
+    _eval_equaltosto_=on?0:1;
+    eval_equaltosto(on?0:1,contextptr);
     decimal_digits(on?13:12,contextptr);
     all_trig_sol(on,contextptr);
     withsqrt(!on,contextptr);
@@ -4536,7 +4649,7 @@ unsigned int ConvertUTF8toUTF16 (
 
   bool unarchive_session(const gen & g,int level,const gen & replace,GIAC_CONTEXT,bool with_history){
     int l;
-    if (g.type!=_VECT || (l=g._VECTptr->size())<4)
+    if (g.type!=_VECT || (l=int(g._VECTptr->size()))<4)
       return false;
     vecteur v=*g._VECTptr;
     if (v[2].type!=_VECT || v[3].type!=_VECT || (v[2]._VECTptr->size()!=v[3]._VECTptr->size() && v[2]._VECTptr->size()!=v[3]._VECTptr->size()+1))
@@ -4690,7 +4803,7 @@ unsigned int ConvertUTF8toUTF16 (
     string s;
     int pos=0;
     for (unsigned i=0;i<v.size();++i){
-      int p=format.find("%gen",pos);
+      int p=int(format.find("%gen",pos));
       if (p<0 || p>=int(format.size()))
 	break;
       s += format.substr(pos,p-pos);
@@ -4711,75 +4824,98 @@ unsigned int ConvertUTF8toUTF16 (
 #ifdef USTL    
   // void update_lexer_localization(const std::vector<int> & v,ustl::map<std::string,std::string> &lexer_map,ustl::multimap<std::string,giac::localized_string> &back_lexer_map){}
 #else
-  void update_lexer_localization(const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,giac::localized_string> &back_lexer_map,GIAC_CONTEXT){
-      lexer_map.clear();
-      back_lexer_map.clear();
-      int s=v.size();
-      for (int i=0;i<s;++i){
-	int lang=v[i];
-	if (lang>=1 && lang<=4){
-	  std::string doc=find_doc_prefix(lang);
-	  std::string file=giac::giac_aide_dir()+doc+"keywords";
-	  //COUT << "keywords " << file << endl;
-	  std::string giac_kw,local_kw;
-	  size_t l;
-	  char * line = (char *)malloc(1024);
-	  ifstream f(file.c_str());
-	  if (f.good()){
-	    if (debug_infolevel)
-	      COUT << "// Using keyword file " << file << endl;
-	    for (;;){
-	      f.getline(line,1023,'\n');
-	      l=strlen(line);
-	      if (f.eof()){
-		f.close();
-		break;
-	      }
-	      if (l>3 && line[0]!='#'){
-		if (line[l-1]=='\n')
-		  --l;
-		// read giac keyword
-		size_t j;
-		giac_kw="";
-		for (j=0;j<l;++j){
-		  if (line[j]==' ')
-		    break;
-		  giac_kw += line[j];
-		}
-		// read corresponding local keywords
-		local_kw="";
-		for (++j;j<l;++j){
-		  if (line[j]==' '){
-		    if (!local_kw.empty()){
+  vecteur * keywords_vecteur_ptr(){
+    static vecteur v;
+    return &v;
+  }
+
+  static void in_update_lexer_localization(istream & f,int lang,const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,giac::localized_string> &back_lexer_map,GIAC_CONTEXT){
+    char * line = (char *)malloc(1024);
+    std::string giac_kw,local_kw;
+    size_t l;
+    for (;;){
+      f.getline(line,1023,'\n');
+      l=strlen(line);
+      if (f.eof()){
+	break;
+      }
+      if (l>3 && line[0]!='#'){
+	if (line[l-1]=='\n')
+	  --l;
+	// read giac keyword
+	size_t j;
+	giac_kw="";
+	for (j=0;j<l;++j){
+	  if (line[j]==' ')
+	    break;
+	  giac_kw += line[j];
+	}
+	// read corresponding local keywords
+	local_kw="";
+	vecteur * keywordsptr=keywords_vecteur_ptr();
+	for (++j;j<l;++j){
+	  if (line[j]==' '){
+	    if (!local_kw.empty()){
 #ifdef EMCC
-		      sto(gen(giac_kw,contextptr),gen(local_kw,contextptr),contextptr);
+	      gen localgen(gen(local_kw,contextptr));
+	      keywordsptr->push_back(localgen);
+	      sto(gen(giac_kw,contextptr),localgen,contextptr);
 #else
-		      lexer_map[local_kw]=giac_kw;
-		      back_lexer_map.insert(pair<string,localized_string>(giac_kw,localized_string(lang,local_kw)));
+	      lexer_map[local_kw]=giac_kw;
+	      back_lexer_map.insert(pair<string,localized_string>(giac_kw,localized_string(lang,local_kw)));
 #endif
-		    }
-		    local_kw="";
-		  }
-		  else
-		    local_kw += line[j];
-		}
-		if (!local_kw.empty()){
-#ifdef EMCC
-		      sto(gen(giac_kw,contextptr),gen(local_kw,contextptr),contextptr);
-#else
-		  lexer_map[local_kw]=giac_kw;
-		  back_lexer_map.insert(pair<string,localized_string>(giac_kw,localized_string(lang,local_kw)));
-#endif
-		}
-	      }
 	    }
-	    free(line);
-	  } // if (f)
+	    local_kw="";
+	  }
+	  else
+	    local_kw += line[j];
+	}
+	if (!local_kw.empty()){
+#ifdef EMCC
+	  gen localgen(gen(local_kw,contextptr));
+	  keywordsptr->push_back(localgen);
+	  sto(gen(giac_kw,contextptr),localgen,contextptr);
+#else
+	  lexer_map[local_kw]=giac_kw;
+	  back_lexer_map.insert(pair<string,localized_string>(giac_kw,localized_string(lang,local_kw)));
+#endif
+	}
+      }
+    }
+    free(line);
+  }
+	    
+  void update_lexer_localization(const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,giac::localized_string> &back_lexer_map,GIAC_CONTEXT){
+    lexer_map.clear();
+    back_lexer_map.clear();
+    int s=int(v.size());
+    for (int i=0;i<s;++i){
+      int lang=v[i];
+      if (lang>=1 && lang<=4){
+	std::string doc=find_doc_prefix(lang);
+	std::string file=giac::giac_aide_dir()+doc+"keywords";
+	//COUT << "keywords " << file << endl;
+	ifstream f(file.c_str());
+	if (f.good()){
+	  in_update_lexer_localization(f,lang,v,lexer_map,back_lexer_map,contextptr);
+	  // COUT << "// Using keyword file " << file << endl;
+	} // if (f)
+	else {
+	  if (lang==1){
+#ifdef HAVE_SSTREAM
+      istringstream f(
+#else
+      istrstream f(
+#endif
+		   "# enter couples\n# giac_keyword translation\n# for example, to define integration as a translation for integrate \nintegrate integration\neven est_pair\nodd est_impair\n# geometry\nbarycenter barycentre\nisobarycenter isobarycentre\nmidpoint milieu\nline_segments aretes\nmedian_line mediane\nhalf_line demi_droite\nparallel parallele\nperpendicular perpendiculaire\ncommon_perpendicular perpendiculaire_commune\nenvelope enveloppe\nequilateral_triangle triangle_equilateral\nisosceles_triangle triangle_isocele\nright_triangle triangle_rectangle\nlocus lieu\ncircle cercle\nconic conique\nreduced_conic conique_reduite\nquadric quadrique\nreduced_quadric quadrique_reduite\nhyperbola hyperbole\ncylinder cylindre\nhalf_cone demi_cone\nline droite\nplane plan\nparabola parabole\nrhombus losange\nsquare carre\nhexagon hexagone\npyramid pyramide\nquadrilateral quadrilatere\nparallelogram parallelogramme\northocenter orthocentre\nexbisector exbissectrice\nparallelepiped parallelepipede\npolyhedron polyedre\ntetrahedron tetraedre\ncentered_tetrahedron tetraedre_centre\ncentered_cube cube_centre\noctahedron octaedre\ndodecahedron dodecaedre\nicosahedron icosaedre\nbisector bissectrice\nperpen_bisector mediatrice\naffix affixe\naltitude hauteur\ncircumcircle circonscrit\nexcircle exinscrit\nincircle inscrit\nis_prime est_premier\nis_equilateral est_equilateral\nis_rectangle est_rectangle\nis_parallel est_parallele\nis_perpendicular est_perpendiculaire\nis_orthogonal est_orthogonal\nis_collinear est_aligne\nis_concyclic est_cocyclique\nis_element est_element\nis_included est_inclus\nis_coplanar est_coplanaire\nis_isosceles est_isocele\nis_square est_carre\nis_rhombus est_losange\nis_parallelogram est_parallelogramme\nis_conjugate est_conjugue\nis_harmonic_line_bundle est_faisceau_droite\nis_harmonic_circle_bundle est_faisceau_cercle\nis_inside est_dans\narea aire\nperimeter perimetre\ndistance longueur\ndistance2 longueur2\nareaat aireen\nslopeat penteen\nangleat angleen\nperimeterat perimetreen\ndistanceat distanceen\nareaatraw aireenbrut\nslopeatraw penteenbrut\nangleatraw angleenbrut\nperimeteratraw perimetreenbrut\ndistanceatraw distanceenbrut\nextract_measure extraire_mesure\ncoordinates coordonnees\nabscissa abscisse\nordinate ordonnee\ncenter centre\nradius rayon\npowerpc puissance\nvertices sommets\npolygon polygone\nisopolygon isopolygone\nopen_polygon polygone_ouvert\nhomothety homothetie\nsimilarity similitude\n# affinity affinite\nreflection symetrie\nreciprocation polaire_reciproque\nscalar_product produit_scalaire\n# solid_line ligne_trait_plein\n# dash_line ligne_tiret\n# dashdot_line ligne_tiret_point\n# dashdotdot_line ligne_tiret_pointpoint\n# cap_flat_line ligne_chapeau_plat\n# cap_round_line ligne_chapeau_rond\n# cap_square_line ligne_chapeau_carre\n# line_width_1 ligne_epaisseur_1\n# line_width_2 ligne_epaisseur_2\n# line_width_3 ligne_epaisseur_3\n# line_width_4 ligne_epaisseur_4\n# line_width_5 ligne_epaisseur_5\n# line_width_6 ligne_epaisseur_6\n# line_width_7 ligne_epaisseur_7\n# line_width_8 ligne_epaisseur_8\n# rhombus_point point_losange\n# plus_point point_plus\n# square_point point_carre\n# cross_point point_croix\n# triangle_point point_triangle\n# star_point point_etoile\n# invisible_point point_invisible\n# point_width_1 point_epaisseur_1\n# point_width_2 point_epaisseur_2\n# point_width_3 point_epaisseur_3\n# point_width_4 point_epaisseur_4\n# point_width_5 point_epaisseur_5\n# point_width_6 point_epaisseur_6\n# point_width_7 point_epaisseur_7\n# point_width_8 point_epaisseur_8\ncross_ratio birapport\nradical_axis axe_radical\npolar polaire\npolar_point point_polaire\npolar_coordinates coordonnees_polaires\nrectangular_coordinates coordonnees_rectangulaires\nharmonic_conjugate conj_harmonique\nharmonic_division div_harmonique\ndivision_point point_div\n# harmonic_division_point point_division_harmonique\ndisplay affichage\nvertices_abc sommets_abc\nvertices_abca sommets_abca\nline_inter inter_droite\nsingle_inter inter_unique\ncolor couleur\nlegend legende\nis_harmonic est_harmonique\nbar_plot diagramme_batons\nbarplot diagrammebatons\nhistogram histogramme\nprism prisme\nis_cospherical est_cospherique\ndot_paper papier_pointe\ngrid_paper papier_quadrille\nline_paper papier_ligne\ntriangle_paper papier_triangule\nvector vecteur\nplotarea tracer_aire\nplotproba graphe_probabiliste\nmult_c_conjugate mult_conjugue_C\nmult_conjugate mult_conjugue\ncanonical_form forme_canonique\ntrue vrai\nfalse faux\n#or ou\n#and et\n#not non\nibpu integrer_par_parties_u\nibpdv integrer_par_parties_dv\nwhen quand\nslope pente\ntablefunc table_fonction\ntableseq table_suite\nfsolve resoudre_numerique\ninput saisir\nprint afficher\nassume supposons\nabout domaine\nbreakpoint point_arret\nwatch montrer\nrmwatch ne_plus_montrer\nrmbreakpoint suppr_point_arret\nrand alea\nInputStr saisir_chaine\nfilled rempli\nhidden_name nom_cache\nblack noir\nwhite blanc\nred rouge\nblue bleu\nyellow jaune\ngreen vert\nOx_2d_unit_vector vecteur_unitaire_Ox_2d\nOy_2d_unit_vector vecteur_unitaire_Oy_2d\nOx_3d_unit_vector vecteur_unitaire_Ox_3d\nOy_3d_unit_vector vecteur_unitaire_Oy_3d\nOz_3d_unit_vector vecteur_unitaire_Oz_3d\nframe_2d repere_2d\nframe_3d repere_3d\n# areaplot tracer_aire\nrsolve resoudre_recurrence\nassume supposons\nrealproot racines\nbounded_function fonction_bornee\nsort trier\ncumulated_frequencies frequences_cumulees\nfrequencies frequences\nnormald loi_normale\nregroup regrouper\nosculating_circle cercle_osculateur\ncurvature courbure\nevolute developpee\n");
+	    in_update_lexer_localization(f,1,v,lexer_map,back_lexer_map,contextptr);
+	  }
 	  else
 	    CERR << "// Unable to find keyword file " << file << endl;
 	}
       }
     }
+  }
 #endif
 
 #ifndef NSPIRE
@@ -4836,7 +4972,7 @@ unsigned int ConvertUTF8toUTF16 (
 	  lexer_functions()[s].subtype=parser_token-256;
       }
       // If s is a library function name (with ::), update the library
-      int ss=strlen(s),j=0;
+      int ss=int(strlen(s)),j=0;
       for (;j<ss-1;++j){
 	if (s[j]==':' && s[j+1]==':')
 	  break;
@@ -4879,9 +5015,9 @@ unsigned int ConvertUTF8toUTF16 (
 	check38=false;
       if (s.size()==1){
 #ifdef GIAC_HAS_STO_38
-	if (s[0]>='A' && s[0]<='Z'){
+	if (0 && s[0]>='a' && s[0]<='z'){
 	  index_status(contextptr)=1; 
-	  res=*tab_one_letter_idnt[s[0]-'A'];
+	  res=*tab_one_letter_idnt[s[0]-'a'];
 	  return T_SYMBOL;
 	}
 	if (check38 && s[0]>='a' && s[0]<='z' && calc_mode(contextptr)==38)
@@ -4944,10 +5080,21 @@ unsigned int ConvertUTF8toUTF16 (
 #else
 #ifndef NSPIRE_NEWLIB
 	  res=0;
-	  int pos=p.first-builtin_lexer_functions_begin();
+	  int pos=int(p.first-builtin_lexer_functions_begin());
 	  size_t val=builtin_lexer_functions_[pos];
 	  unary_function_ptr * at_val=(unary_function_ptr *)val;
 	  res=at_val;
+#ifdef GIAC_HAS_STO_38
+	  if (builtin_lexer_functions[pos]._FUNC_%2){
+#ifdef SMARTPTR64
+	    unary_function_ptr tmp=*at_val;
+	    tmp._ptr+=1;
+	    res=tmp;
+#else
+	    res._FUNC_ +=1;
+#endif // SMARTPTR64
+	  }
+#endif // GIAC_HAS_STO_38
 #else // keep this code, required for the nspire otherwise evalf(pi)=reboot
 	  res=gen(int(builtin_lexer_functions_[p.first-builtin_lexer_functions_begin()]+p.first->second.val));
 	  res=gen(*res._FUNCptr);
@@ -5164,7 +5311,7 @@ unsigned int ConvertUTF8toUTF16 (
       if (!ans){
 	ans = new charptr_gen[builtin_lexer_functions_number];
 	for (unsigned i=0;i<builtin_lexer_functions_number;i++){
-	  charptr_gen tmp={builtin_lexer_functions[i].s,builtin_lexer_functions[i]._FUNC_};
+	  charptr_gen tmp; tmp.first=builtin_lexer_functions[i].s; tmp.second=builtin_lexer_functions[i]._FUNC_;
 	  tmp.second.subtype=builtin_lexer_functions[i].subtype;
 	  ans[i]=tmp;
 	}

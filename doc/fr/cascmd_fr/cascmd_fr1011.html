@@ -6,63 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le losange dans l’espace : rhombus losange</TITLE>
+<TITLE>Le plan tangent : tangent</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1010.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1012.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1184">11.8.2</A>  Le losange dans l’espace : <TT>rhombus losange</TT></H3><P><A NAME="@default1960"></A><A NAME="@default1961"></A> <A NAME="sec:losange3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr903.html#sec:losange2">10.11.3</A> pour la géométrie plane.<BR>
-<TT>losange</TT>, en géométrie 3-d, peut avoir de trois à cinq 
-arguments.<BR>
-Les arguments sont :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si il a trois arguments ce sont : 2 points (les 2 premiers sommets du 
-losange) et le troisième argument est soit un point <I>P</I>, soit une liste 
-formée par un point <I>P</I> et un nombre réel <I>a</I>. Le point <I>P</I> définit le 
-plan du losange et l’orientation de ce plan.<BR>
-On a :<BR>
-- <TT>losange(A,B,P)</TT> renvoie et trace dans le plan <I>ABP</I>, le losange <I>ABCD</I> 
-tel que :<BR>
-<I>AB</I>,<I>AD</I>)=<I>AB</I>,<I>AP</I>), mais sans définir les points <I>C</I> et <I>D</I>.<BR>
-- <TT>losange(A,B,[P,a])</TT> renvoie et trace dans le plan <I>ABP</I>, le losange <I>ABCD</I>
-tel que :<BR>
-<I>AB</I>,<I>AD</I>)=<I>a</I> radians (ou degrés), mais sans 
-définir les points <I>C</I> et <I>D</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1187">11.6.3</A>  Le plan tangent : <TT>tangent</TT></H3><P><A NAME="@default1964"></A><A NAME="sec:tangent3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr898.html#sec:tangent">10.9.8</A> pour la géométrie plane et <A HREF="cascmd_fr094.html#sec:tangente">3.10.5</A> pour les tangentes à un graphe.<BR>
+<TT>tangent</TT> a comme argument un objet géométrique <TT>G</TT> et 
+un point <TT>A</TT> de <TT>G</TT>.<BR>
+<TT>tangent</TT> dessine le plan tangent à <TT>G</TT> passant par <TT>A</TT>.<BR>
+Lorsque <TT>G</TT> est un graphe, <TT>A</TT> peut être soit un point de <TT>G</TT>,
+soit la liste des coordonnées du projeté sur x0y du point de 
+contact.<BR>
 On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
+</P><DIV CLASS="center"><TT>S:=sphere([0,0,0],3)</TT></DIV><P>
 Puis on tape :
-<DIV CLASS="center"><TT>losange(A,B,P)</TT></DIV>
+</P><DIV CLASS="center"><TT>tangent(S,[2,2,1])</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à </TT><TT><I>BAP</I></TT><TT>, dans le plan </TT><TT><I>ABP</I></TT></DIV>
+</P><DIV CLASS="center"><TT>Le plan tangent à la surface sphère S au point [2,2,1]</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV>
-<DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV>
-<DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV>
+</P><DIV CLASS="center"><TT>G:=plotfunc(x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2,[x,y])</TT></DIV><P>
 Puis on tape :
-<DIV CLASS="center"><TT>losange(A,B,[P,pi/3])</TT></DIV>
-On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
-(bouton donnant la ligne d’état) :
-<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à pi/3, dans le plan </TT><TT><I>ABP</I></TT></DIV>
-</LI><LI CLASS="li-itemize">si il a quatre ou cinq arguments, les derniers paramètres sont les 
-noms des variables qui serviront à définir les derniers sommets.<BR>
-On tape :
-<DIV CLASS="center"><TT>losange(A,B,[P,pi/3],C,D)</TT></DIV>
+</P><DIV CLASS="center"><TT>tangent(G,[2,2])</TT></DIV><P>
+Ou on tape car [2,2] est le projeté du point [2,2,8] qui se trouve sur le 
+graphe <I>z</I>=<I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP> (8=2<SUP>2</SUP>+2<SUP>2</SUP>) :
+</P><DIV CLASS="center"><TT>tangent(G,point([2,2,8]))</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>Le losange de sommets </TT><TT><I>A</I>,<I>B</I>,<I>C</I>,<I>D</I></TT><TT> et d’angle </TT><TT><I>A</I></TT><TT> égal à pi/3, dans le plan </TT><TT><I>ABP</I></TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[(-3*sqrt(6)+18)/4,(-3*sqrt(6)+18)/4,(3*sqrt(6)+9)/2]</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[(-3*sqrt(6)+6)/4,(-3*sqrt(6)+6)/4,(3*sqrt(6)+3)/2]</TT></DIV>
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>Le plan tangent à la surface </TT><TT><I>z</I>=<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+<I>y</I></TT><SUP><TT>2</TT></SUP><TT> au point [2,2,8]</TT></DIV><HR>
 <A HREF="cascmd_fr1010.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1012.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

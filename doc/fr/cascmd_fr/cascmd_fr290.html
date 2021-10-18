@@ -6,73 +6,54 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les fonctions usuelles</TITLE>
+<TITLE>Transformer une expression en une fonction : unapply</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr289.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr291.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc367">6.18.2</A>  Les fonctions usuelles</H3><P>
-<TT>max</TT><A NAME="@default506"></A> d’une séquence ou d’une liste de réels renvoie leur maximum,<BR>
-<TT>min</TT><A NAME="@default507"></A> d’une séquence ou d’une liste de réels renvoie leur minimum,<BR>
-<TT>abs</TT><A NAME="@default508"></A> d’un réel renvoie sa valeur absolue,<BR>
-<TT>sign</TT><A NAME="@default509"></A> d’un réel renvoie son signe (+1 si il est 
-positif, 0 si il est nul et -1 si il est négatif),<BR>
-<TT>floor</TT><A NAME="@default510"></A> d’un réel renvoie sa partie entière,<BR>
-<TT>round</TT><A NAME="@default511"></A> d’un réel renvoie l’entier le plus proche,<BR>
-<TT>ceil</TT> ou <TT>ceiling</TT><A NAME="@default512"></A><A NAME="@default513"></A> d’un 
-réel renvoie sa partie entière plus un,<BR>
-<TT>frac</TT><A NAME="@default514"></A> (ou <TT>fPart</TT><A NAME="@default515"></A>) d’un réel 
-renvoie sa partie fractionnaire,<BR>
-<TT>trunc</TT><A NAME="@default516"></A> d’un réel renvoie l’entier égal au réel 
-argument sans sa partie fractionnaire ou le réel tronqué à <I>n</I> 
-décimales,<BR>
-<TT>iPart</TT><A NAME="@default517"></A>) d’un réel renvoie le réel égal au réel
-argument sans sa partie fractionnaire,<BR>
-<TT>id</TT><A NAME="@default518"></A> désigne la fonction identité,<BR>
-<TT>sq</TT><A NAME="@default519"></A> désigne la fonction carrée,<BR>
-<TT>sqrt</TT><A NAME="@default520"></A> désigne la fonction racine carrée,<BR>
-<TT>surd</TT><A NAME="@default521"></A> désigne la fonction puissance 1/<I>n</I>,<BR>
-<TT>exp</TT><A NAME="@default522"></A> désigne la fonction exponentielle,<BR>
-<TT>log</TT><A NAME="@default523"></A> ou <TT>ln</TT><A NAME="@default524"></A> désigne la fonction logarithme népérien,<BR>
-<TT>log10</TT><A NAME="@default525"></A> désigne la fonction logarithme à base 
-dix,<BR>
-<TT>logb</TT><A NAME="@default526"></A> désigne la fonction logarithme à base 
-donnée comme deuxième argument : 
-<TT>logb(7,10)=log10(7)=log(7)/log(10)</TT>,<BR>
-<TT>alog10</TT><A NAME="@default527"></A> désigne la fonction anti-logarithme à 
-base dix : c’est la fonction <I>x</I>−&gt;10<SUP><I>x</I></SUP>.<BR>
-<TT>sinh</TT><A NAME="@default528"></A> désigne la fonction sinus hyperbolique,<BR>
-<TT>cosh</TT><A NAME="@default529"></A> désigne la fonction cosinus hyperbolique,<BR>
-<TT>tanh</TT><A NAME="@default530"></A> désigne la fonction tangente hyperbolique,<BR>
-<TT>asinh</TT> ou <TT>arcsinh</TT><A NAME="@default531"></A><A NAME="@default532"></A> (respectivement <TT>acosh</TT> ou <TT>arccosh</TT><A NAME="@default533"></A><A NAME="@default534"></A>, <TT>atanh</TT> ou <TT>arctanh</TT><A NAME="@default535"></A><A NAME="@default536"></A>)
-désigne la fonction réciproque de <TT>sinh</TT> (respectivement 
-<TT>cosh</TT>, <TT>tanh</TT>)<BR>
-<TT>sin, cos, tan, cot, sec, csc</TT> et 
-<TT>asin</TT> (ou <TT>arcsin</TT>)<A NAME="@default537"></A><A NAME="@default538"></A>,<TT>acos</TT>
-(ou <TT>arccos</TT>)<A NAME="@default539"></A><A NAME="@default540"></A>, <TT>atan</TT> (ou 
-<TT>arctan</TT>)<A NAME="@default541"></A><A NAME="@default542"></A>, <TT>acot, asec, acsc</TT> 
-pour les fonctions trigonométriques et pour leurs fonctions réciproques (on
-se reportera à la section <A HREF="cascmd_fr312.html#sec:trigo">6.24.1</A> pour les commandes les concernant).
+<H3 CLASS="subsection"><A NAME="htoc366">6.17.2</A>  Transformer une expression en une fonction : <TT>unapply</TT></H3><P><A NAME="@default497"></A>
+Pour transformer une expression en une fonction, on utilise la 
+commande <TT>unapply</TT>.<BR>
+<TT>unapply</TT> a deux arguments une expression et le nom d’une (ou des)
+variable(s).<BR>
+<TT>unapply</TT> renvoie une fonction définie à partir de cette expression et 
+de la (ou des) variable(s) donnée(s) en argument.</P><P><B>Attention</B> lorsqu’on définit une fonction,
+le membre de droite de l’affectation n’est pas évalué,
+ainsi l’écriture <CODE>g:=x^2; f(x):=g</CODE>
+ne définit pas la fonction <I>f</I>: <I>x</I> → <I>x</I><SUP>2</SUP> mais la fonction
+<I>f</I>: <I>x</I> → <I>g</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>normal(surd(8,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>g:= sin(x+1); f:=unapply(g,x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(sin(x+1), (x)-&gt;sin(x+1))</TT></DIV><P> 
+On a alors la variable <TT>g</TT> qui contient une expression symbolique 
+et la variable <TT>f</TT> qui contient une fonction.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>normal(surd(-8,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>unapply(exp(x+2),x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x)-&gt;exp(x+2)</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>normal(8</TT><CODE><TT>^</TT></CODE><TT>(1/3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>f:=unapply(lagrange([1,2,3],[4,8,12]),x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x)-&gt;4+4*(x-1)</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>simplify((-8)</TT><CODE><TT>^</TT></CODE><TT>(1/3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>f:=unapply(integrate(log(t),t,1,x),x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(i)*sqrt(3)+1</TT></DIV><P>
-car <TT>Xcas</TT> prend <I>i</I>π comme détermination de ln(−1) et
-<I>i</I>π/3 comme détermination de ln((−1)<SUP>1/3</SUP>) </P><HR>
+</P><DIV CLASS="center"><TT>(x)-&gt;x*log(x)-x+1</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>f:=unapply(integrate(log(t),t,1,x),x)</TT></DIV><DIV CLASS="center"><TT>f(x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x*log(x)-x+1</TT></DIV><P>
+<B>Remarque</B>
+Pour définir, à partir d’une fonction de 2 variables <I>f</I>(<I>x</I>,<I>w</I>), la fonction
+<I>g</I> qui à <I>w</I> fait correspondre la fonction <I>g</I>(<I>w</I>) définie par :
+<I>g</I>(<I>w</I>)(<I>x</I>)=<I>f</I>(<I>x</I>,<I>w</I>), on utilise aussi <TT>unapply</TT>.<BR>
+On tape : 
+</P><DIV CLASS="center"><TT>f(x,w):=2*x+w</TT></DIV><DIV CLASS="center"><TT>g(w):=unapply(f(x,w),x)</TT></DIV><DIV CLASS="center"><TT>g(3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x-&gt;2</TT><TT>·</TT><TT> x+3</TT></DIV><HR>
 <A HREF="cascmd_fr289.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr291.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

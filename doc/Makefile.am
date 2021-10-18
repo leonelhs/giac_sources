@@ -1,6 +1,7 @@
 SUBDIRS = 	en es fr el local pt zh de
 DIST_SUBDIRS = 	en es fr el local pt zh de
-EXTRA_DIST = aide_cas README index.html dxcas/* pari/*
+XCASHTML = xcasfr.html xcasen.html codemirror.css codemirror.js xcasmode.js giac.js matchbrackets.js FileSaver.js logo.png longhelp.js giac.tex giacfr.tex test.tex testfr.tex test.html testfr.html
+EXTRA_DIST = aide_cas README index.html $(XCASHTML) dxcas/* pari/*
 
 dist_pkgdata_DATA = aide_cas
 dist_doc_DATA = README index.html
@@ -8,6 +9,9 @@ dist_doc_DATA = README index.html
 install-exec-hook: 
 	$(install_sh) -d $(DESTDIR)$(prefix)/share/giac/doc/dxcas
 	$(install_sh) -d $(DESTDIR)$(prefix)/share/giac/doc/pari
+	for dd in $(XCASHTML); do \
+	  $(INSTALL_DATA) $(top_srcdir)/doc/$$dd $(DESTDIR)$(prefix)/share/giac/doc/ ; \
+	done
 	$(INSTALL_DATA) $(top_srcdir)/doc/dxcas/* $(DESTDIR)$(prefix)/share/giac/doc/dxcas
 	$(INSTALL_DATA) $(top_srcdir)/doc/pari/* $(DESTDIR)$(prefix)/share/giac/doc/pari
 	$(INSTALL_DATA) $(top_srcdir)/doc/index.html $(DESTDIR)$(prefix)/share/giac/doc/

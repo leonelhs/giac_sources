@@ -6,22 +6,52 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Surface définie par une équation paramétrique : paramplot</TITLE>
+<TITLE>La similitude : similarity similitude</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1057.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1059.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1238">11.15.6</A>  Surface définie par une équation paramétrique : <TT>paramplot</TT></H3><P><A NAME="@default2040"></A>
-<TT>paramplot</TT> a comme arguments la liste formée de l’équation 
-paramétrique d’une surface et de la liste des paramètres utilisés.<BR>
-<TT>paramplot([f(u,v),g(u,v),h(u,v)],[u,v])</TT> dessine la surface 
-d’équation paramétrique : <TT>x=f(u,v),y=g(u,v),z=h(u,v)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1242">11.14.6</A>  La similitude : <TT>similarity similitude</TT></H3><P><A NAME="@default2045"></A><A NAME="@default2046"></A><A NAME="sec:similitude3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr962.html#sec:similitude2">10.17.6</A> pour la géométrie plane et 
+<A HREF="cascmd_fr1001.html#sec:axe3">11.5.2</A> pour définir un axe.<BR>
+<TT>similitude</TT>, en géométrie 3-d, a trois ou quatre 
+arguments : une droite orientée par l’ordre de ses arguments ou par le 
+produit vectoriel des normales orientées des plans qui la définissent 
+(l’axe de rotation), un réel (la valeur du rapport <I>k</I> de la similitude), 
+un réel (la mesure <I>a</I> de l’angle de rotation en radians (ou degrés)) et 
+éventuellement l’objet géométrique à transformer.<BR>
+<B>Remarque</B> : si le rapport <I>k</I> est négatif, l’angle de la similitude 
+est alors de mesure −<I>a</I> radians (ou degrés).<BR>
+Lorsque <TT>similitude</TT> a trois arguments, c’est une fonction qui agit sur 
+un objet géométrique.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>paramplot([u*cos(v),u*sin(v),u],[u,v])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le dessin du cône de sommet l’origine, d’axe 0z et contenant le cercle définit par </TT><TT><I>x</I></TT><SUP><TT>2</TT></SUP><TT>+<I>y</I></TT><SUP><TT>2</TT></SUP><TT>=1</TT><TT> et </TT><TT><I>z</I>=1</TT><TT>.</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>s:=similitude(droite(point(0,0,0),point(1,1,1)), 2,2*pi/3)</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>s(point(0,0,1))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>Le point (2,0,0) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>s(sqhere(point(1,0,0),1))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>La sphère de centre (0,2,0) et de rayon 2</TT></DIV><P>
+Lorsque <TT>similitude</TT> a quatre arguments, <TT>similitude</TT> dessine et 
+renvoie le transformé du quatrième argument 
+dans la similitude d’axe le premier argument de rapport le deuxième 
+argument et d’angle le troisième argument.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>similitude(droite(point(0,0,0),point(1,1,1)), 2,2*pi/3,point(0,0,1))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>Le point (2,0,0) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>similitude(droite(point(0,0,0),point(1,1,1)), 2,2*pi/3,sqhere(point(1,0,0),1))</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>La sphère de centre (0,2,0) et de rayon 2</TT></DIV><HR>
 <A HREF="cascmd_fr1057.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1059.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

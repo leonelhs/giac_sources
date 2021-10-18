@@ -6,31 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un carré : is_square est_carre</TITLE>
+<TITLE>Savoir si des droites ou/et plans sont perpendiculaires is_perpendicular est_perpendiculaire</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1041.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1043.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1220">11.13.12</A>  Savoir si on a un carré : <TT>is_square est_carre</TT></H3><P><A NAME="@default2017"></A><A NAME="@default2018"></A><A NAME="sec:estcarre3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr964.html#sec:estcarre2">10.18.8</A> pour la géométrie plane.<BR>
-<TT>est_carre</TT> est une fonction booléenne ayant comme 
-argument quatre points ou un objet géométrique.<BR>
-<TT>est_carre</TT> vaut 1 si les quatre points sont coplanaires et forment un 
-carré ou si l’objet géométrique est un carré, et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1225">11.13.4</A>  Savoir si des droites ou/et plans sont perpendiculaires <TT>is_perpendicular</TT> <TT>est_perpendiculaire</TT></H3><P><A NAME="@default2018"></A><A NAME="@default2019"></A><A NAME="sec:estperp3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr976.html#sec:estperp2">10.18.12</A> pour la géométrie plane et 
+<A HREF="cascmd_fr1043.html#sec:estortho3">11.13.5</A> pour l’orthogonalité 3-d.<BR>
+<TT>est_perpendiculaire</TT>, en géométrie 3-d, teste si deux droites ou, si
+une droite et un plan ou, si deux plans sont perpendiculaires.<BR>
+En 3-d, deux droites perpendiculaires sont coplanaires et orthogonales.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_carre([2,2,0],[-2,2,0],[-2,-2,0],[2,-2,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_perpendiculaire(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>est_coplanaire(droite([2,3,-2],[-1,-1,-1]), droite([1,0,0],[1,2,8]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>P:=plan([0,0,0],[1,2,-3],[1,1,-2])</TT></DIV><DIV CLASS="center"><TT>S:=plan([-1,-1,-1],[1,2,-3],[0,0,0])</TT></DIV><DIV CLASS="center"><TT>est_perpendiculaire(P,S)</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>K:=carre([0,0,0],[2,0,0],[0,0,1]);est_carre(K)</TT></DIV><P>
-<TT>K</TT> est le carre de sommets [0,0,0],[2,0,0],[2,0,2],[0,0,2] (il est situé
-dans le plan [0,0,0],[2,0,0],[0,0,1]).<BR>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>est_carre([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>dd:=droite([2,3,-2],[-1,-1,-1])</TT></DIV><DIV CLASS="center"><TT>est_perpendiculaire(dd,P)</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr1041.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>

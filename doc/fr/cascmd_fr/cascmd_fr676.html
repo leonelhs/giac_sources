@@ -6,33 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Négliger les petites valeurs : epsilon2zero</TITLE>
+<TITLE>Étape de la réduction de Gauss-Jordan d’une matrice : pivot</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr675.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr677.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc794">6.59.1</A>  Négliger les petites valeurs : <TT>epsilon2zero</TT></H3><P>
-<A NAME="@default1221"></A> <A NAME="sec:epsilon2zero"></A>
-<TT>epsilon2zero</TT> a comme paramètre une expression de <TT>x</TT>.<BR>
-<TT>epsilon2zero</TT> renvoie l’expression où les valeurs plus petites que 
-<TT>epsilon</TT> ont été remplacées par zéro dans l’expression non 
-évaluée.<BR>
-La valeur de <TT>epsilon</TT><A NAME="@default1222"></A> peut être changé dans la 
-configuration du <TT>cas</TT> (par défaut <TT>epsilon=1e-10</TT>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc796">6.61.5</A>  Étape de la réduction de Gauss-Jordan d’une matrice : <TT>pivot</TT></H3><P><A NAME="@default1223"></A><A NAME="sec:pivot"></A>
+<TT>pivot</TT> a trois arguments : une matrice de <I>n</I> lignes et <I>p</I> 
+colonnes et deux entiers <I>l</I> et <I>c</I> vérifiant : 0≤ <I>l</I>&lt;<I>n</I> et 0≤ <I>c</I>&lt;<I>p</I>.<BR>
+<TT>pivot(A,l,c)</TT> renvoie la matrice obtenue en créant des zéros dans
+la colonne <TT>c</TT> de <TT>A</TT>, avec la méthode de Gauss-Jordan, en 
+utilisant comme pivot l’élément <TT>A[l,c]</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>epsilon2zero(1e-13+x) </TT></DIV><P>
-On obtient (avec <TT>epsilon=1e-10</TT>) :
-</P><DIV CLASS="center"><TT>0+x</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pivot([[1,2],[3,4],[5,6]],1,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[-2,0],[3,4],[2,0]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>epsilon2zero((1e-13+x)*100000) </TT></DIV><P>
-On obtient (avec <TT>epsilon=1e-10</TT>) :
-</P><DIV CLASS="center"><TT>(0+x)*100000</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>epsilon2zero(0.001+x) </TT></DIV><P>
-On obtient (avec <TT>epsilon=0.0001</TT>) :
-</P><DIV CLASS="center"><TT>0.001+x</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>pivot([[1,2],[3,4],[5,6]],0,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,2],[2,0],[4,0]]</TT></DIV><HR>
 <A HREF="cascmd_fr675.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr677.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

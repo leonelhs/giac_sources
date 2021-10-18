@@ -6,59 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La symétrie par rapport à un plan, une droite ou un point : reflection symetrie</TITLE>
+<TITLE>Savoir si on a un triangle équilatéral : is_equilateral est_equilateral</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1046.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1048.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1226">11.14.3</A>  La symétrie par rapport à un plan, une droite ou un point : <TT>reflection symetrie</TT></H3><P><A NAME="@default2024"></A><A NAME="@default2025"></A><A NAME="sec:symetrie3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr951.html#sec:symetrie2">10.17.3</A> pour la géométrie plane.<BR>
-<TT>symetrie</TT>, en géométrie 3-d, a un ou deux arguments : un
-point ou une droite ou un plan et éventuellement l’objet géométrique à 
-transformer.<BR>
-Lorsque <TT>symetrie</TT> a un argument, c’est une fonction qui agit sur un 
-objet géométrique : quand le premier argument est un point il s’agit de la 
-symétrie par rapport à ce point, quand le premier argument est une droite 
-il s’agit de la symétrie par rapport à cette droite et quand le premier 
-argument est un plan il s’agit de la symétrie par rapport à ce plan.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1230">11.13.9</A>  Savoir si on a un triangle équilatéral : <TT>is_equilateral est_equilateral</TT></H3><P><A NAME="@default2028"></A><A NAME="@default2029"></A><A NAME="sec:estequilateral3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr969.html#sec:estequilateral2">10.18.5</A> pour la géométrie plane.<BR>
+<TT>est_equilateral</TT> est une fonction booléenne ayant comme 
+argument trois points ou un objet géométrique.<BR>
+<TT>est_equilateral</TT> vaut 1 si les trois points forment un triangle 
+équilatéral ou si l’objet géométrique est un triangle équilatéral,
+et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>s:=symetrie(point(1,1,1))</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>s(point(-1,2,4))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>T:=triangle_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0]); est_equilateral(T)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point (3,0,-2) est tracé</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>sd:=symetrie(droite([1,1,0],[-1,-3,0]))</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>sd(point(-1,2,4))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_equilateral([2,0,0],[0,2,0],[1,1,0])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point (3,0,-4) est tracé</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>sp:=symetrie(plan([1,1,0],[-1,-3,0],[1,1,1]))</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>sp(point(-1,2,4))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point (3,0,4) est tracé</TT></DIV><P>
-Lorsque <TT>symetrie</TT> a deux arguments, <TT>symetrie</TT> dessine et renvoie le 
-transformé du deuxième argument dans la symétrie définie par le 
-premier argument : quand le premier argument est un point il s’agit de la 
-symétrie par rapport à ce point, quand le premier argument est une droite 
-il s’agit de la symétrie par rapport à cette droite et quand le premier 
-argument est un plan il s’agit de la symétrie par rapport à ce plan.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>symetrie(point(1,1,1),point(-1,2,4))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point (3,0,-2) est tracé</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>symetrie(droite([1,1,0],[-1,-3,0]),point(-1,2,4))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point (3,0,-4) est tracé</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>sp:=symetrie(plan([1,1,0],[-1,-3,0],[1,1,1]),point(-1,2,3))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point (3,0,4) est tracé</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr1046.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1048.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

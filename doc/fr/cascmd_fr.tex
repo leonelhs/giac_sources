@@ -5998,8 +5998,7 @@ $$
 \begin{array}{rl} x=&3\ (\bmod\ 5)\\ 
 x=&9\ (\bmod\ 13) 
 \end{array}
-\right.}
-$$
+\right.}$$
 On tape :
 \begin{center}{\tt ichinrem([3,5],[9,13])}\end{center}
 ou on tape :
@@ -6212,15 +6211,19 @@ On obtient :
 \noindent{\tt comb} (ou {\tt nCr}) a comme param\`etre deux entiers positifs
 {\tt n} et {\tt p}.\\
 {\tt comb(n,p)} ou {\tt nCr(n,p)} calcule $C_n^p$.\\
-On a :$C_n^p=\frac{n!}{p!(n-p)!}=\frac{n(n-1)...(n-p+1)}{p!}$.\\
+On a :
+$$C_n^p=\frac{n!}{p!(n-p)!}=\frac{n(n-1)...(n-p+1)}{p!}$$
 On tape :
 \begin{center}{\tt comb(5,2)}\end{center}
 On obtient :
 \begin{center}{\tt 10}\end{center}
 {\bf Remarque 1}\\
-On peut d\'efinir {\tt comb} (ou {\tt nCr}) avec comme 
-param\`etre {\tt n} entier n\'egatif et {\tt p} entier positif par :\\
-{\tt comb(n,p)=}$\frac{n(n-1)...(n-p+1)}{p!}$
+Si $n$ est un entier positif et $p$ un entier n\'egatif alors :\\
+{\tt comb(n,p)=nCr(n,p)=0}.\\
+Par exemple {\tt comb(5,-2)=nCr(5,-2)=0}.\\
+Mais, on peut d\'efinir {\tt comb} (ou {\tt nCr}) avec comme 
+param\`etres {\tt n} entier n\'egatif et {\tt p} entier positif par :\\
+{\tt comb(n,p)=}$\displaystyle \frac{n(n-1)...(n-p+1)}{p!}$\\
 On tape :
 \begin{center}{\tt comb(-5,2)}\end{center}
 On obtient :
@@ -6235,8 +6238,16 @@ En effet $-5*-6*-7/6=-35$\\
 On a aussi {\tt binomial(n,p)=comb(n,p)} lorsque {\tt n} et {\tt p} sont deux 
 entiers positifs mais {\tt binomial} peut admettre un param\`etre 
 suppl\'ementaire et dans ce cas {\tt binomial(n,p,a)} calcule 
-$C_n^p*a^p*(1-a)^{n-p}$.
-
+$C_n^p*a^p*(1-a)^{n-p}$.\\
+{\bf Remarque 3 : Relation avec la fonction $\Gamma$}\\
+On a :\\
+{\tt comb(n,p)=Gamma(1+n)/(Gamma(1+p)*Gamma(1+n-p))}\\
+Quand $n$ est un entier n\'egatif {\tt Gamma(1+n)} est infini et on a :\\
+{\tt comb(n,p)=limit(Gamma(1+x)/(Gamma(1+p)*Gamma(1+x-p),x,n)}.\\
+Par exemple, on tape :\\
+{\tt comb(-5,3),limit(Gamma(1+x)/(Gamma(1+3)*Gamma(1+x-3)),x,-5)}\\
+On obtient : \\
+{\tt (-35,-35)}
 \subsection{Les arrangements : {\tt perm nPr}}\index{perm}\index{nPr}
 \noindent{\tt perm} ou {\tt nPr} a comme param\`etre deux entiers $n$ et $p$.\\
 {\tt perm(n,p)} ou {\tt nPr(n,p)} calcule $A_n^p$.\\
@@ -6488,7 +6499,7 @@ et on obtient :\\
 {\tt 9976/6961}
 
 \subsection{Le $n^{i\`eme}$ nombre de Bernoulli : {\tt bernoulli}}\index{bernoulli}
-\noindent {\tt bernoulli} a comme argument un entier $n$.\\
+\noindent Si {\tt bernoulli} a comme argument un entier $n$ alors :\\
 {\tt bernoulli} renvoie le $n^{i\`eme}$ nombre de Bernoulli $B(n)$.\\
 On a :
 $$\frac{t}{e^t-1}=\sum_{n=0}^{+\infty} \frac{B(n)}{n!}t^n$$
@@ -6499,9 +6510,38 @@ $$\int_0^1B_k(x)dx=0$$
 On a alors :\\
 $B(n)=B_n(0)$\\
 On tape :
+\begin{center}{\tt bernoulli(3)}\end{center}
+On obtient :
+\begin{center}{\tt 0}\end{center}
+On tape :
 \begin{center}{\tt bernoulli(6)}\end{center}
 On obtient :
 \begin{center}{\tt 1/42}\end{center}
+
+\subsection{Le polyn\^ome de Bernoulli : {\tt bernoulli}}\index{bernoulli}
+\noindent Si {\tt bernoulli} a deux arguments un entier $n$ et le nom d'une variable alors :\\
+{\tt bernoulli(n,x)} renvoie le {\tt n}-i\`eme polyn\^ome de Bernoulli en 
+fonction de {\tt x}. \\
+On rappelle que les polyn\^omes de Bernoulli $B_k$ sont d\'efinis par :
+$$B_0=1$$
+$$B_k{'}(x)=kB_{k-1}(x) \int_0^1B_k(x)dx=0$$
+On a alors :\\
+$B(n)=B_n(0)$\\
+$B_1{'}(x)=B_{0}(x)=1$ \mbox{ et } $\int_0^1B_1(x)dx=0$ donc :
+$$B_1(x)=x-1/2$$
+$B_2{'}(x)=2B_{1}(x)=2x-1$ et $\int_0^1B_2(x)dx=0$ donc 
+$$B_2(x)=x^2-x+1/6$$
+$B_3{'}(x)=3B_{2}(x)=3x^2-3x+1/2$ et $\int_0^1B_3(x)dx=0$ donc 
+$$B_3(x)=x^3-3*x^2/2+x/2$$
+....\\
+On tape :
+\begin{center}{\tt bernoulli(3,x)}\end{center}
+On obtient :
+\begin{center}{\tt x\verb|^|3-3*x\verb|^|2/2+x/2}\end{center}
+On tape :
+\begin{center}{\tt bernoulli(6,x)}\end{center}
+On obtient :
+\begin{center}{\tt x\verb|^|6-3*x\verb|^|5+5*x\verb|^|4/2-x\verb|^|2/2+1/42}\end{center}
 
 \subsection{Accès aux fonctions de PARI/GP: commande {\tt pari}}\index{pari}
 La commande {\tt pari} sans argument exporte les fonctions de pari
@@ -6719,6 +6759,16 @@ Donc :\\
 $a^4*Ei(a,1)-4!*Ei(a,4)=exp(-a)*(a^3-a^2+2a-3!)$\\
 $a^5*Ei(a,1)+5!*Ei(a,4)=exp(-a)*(a^4-a^3+2a^2-3!a+4!)$\\
 etc...
+\subsection{La fonction logarithme integral $Li$ : {\tt Li}}\index{Li}
+\noindent{\tt Li} a comme argument un nombre complexe $a$.\\ 
+{\tt Li} calcule les valeurs de la fonction $Li$ au point $a$.\\
+On a par d\'efinition :
+\[ Li(x)=Ei(\ln(x))\int_{t=0}^{\exp(x)}\frac{1}{\ln(t)} dt \]
+On tape :
+\begin{center}{\tt Li(2.)}\end{center}
+On obtient :
+\begin{center}{\tt 1.04516378012}\end{center}
+
 \subsection{La fonction cosinus integral $Ci$ : {\tt Ci}}\index{Ci}
 \noindent{\tt Ci} a comme argument un nombre  complexe $a$.\\ 
 {\tt Ci} calcule les valeurs de la fonction $Ci$ au point $a$.\\
@@ -6866,15 +6916,23 @@ On v\'erifie en tapant :\\
 {\tt normal\_cdf(1)=0.841344746069}
 
 \subsection{La fonction $\Gamma$ : {\tt Gamma}}\index{Gamma}
-\noindent{\tt Gamma} a comme argument un nombre $a$.\\
+\noindent{\tt Gamma} a comme argument 1 ou 2 arguments.\\
+Avec 1 argument : un nombre r\'eel $a$.\\
 {\tt Gamma} calcule les valeurs de la fonction $\Gamma$ au point $a$.\\
 On a par d\'efinition :\\
-$$\Gamma(a)=\int_0^{+\infty}e^{-t}t^{a-1}dt, \mbox{ si } a>0$$
-et on utilise la formule : 
-$$\Gamma(a+1)=a*\Gamma(a) \mbox{ si } a \mbox{ n'est pas un entier negatif}$$
-Donc : 
+Si $a$ est un r\'eel strictement positif ,
+ $$\Gamma(a)=\int_0^{+\infty}e^{-t}t^{a-1}dt$$
+car $\int_0^{+\infty}e^{-t}t^{a-1}dt$ est convergente si $a>0$,\\
+et si $a$ est un r\'eel strictement n\'egatif on d\'efinit $\Gamma(a)$ en 
+utilisant la formule : 
+$$\Gamma(a)=\frac{\Gamma(a+1)}{a}$$
+Par exemple on a :\\
+$\Gamma(0.7)=1.29805533265=-0.3*\Gamma(-0.3)=-0.3*-1.3*\Gamma(-1.3)$\\
+{\bf Remarques} \\
+Si $a$ est un entier negatif ou nul, on a $\Gamma(a)=+\infty$.\\
+On a pour $n \in \N$ : $\Gamma(n+1)=n!$ car :
 $$\Gamma(1)=1$$
-$$ \Gamma(a+1)=a*\Gamma(a)$$
+$$ \Gamma(n+1)=n*\Gamma(n)$$
 et ainsi :
 $$\Gamma(n+1)=n!$$
 On tape :
@@ -6899,14 +6957,54 @@ On tape :
 On obtient :
 \begin{center}{\tt 3.32834700679}\end{center}
 En effet :\\
- {\tt Gamma(0.7)=-0.3*Gamma(-0.3)=(-0.3)*(-1.3)*Gamma(-1.3)}
+ {\tt Gamma(0.7)=-0.3*Gamma(-0.3)=(-0.3)*(-1.3)*Gamma(-1.3)}\\
 
-\subsection{La fonction $\gamma$ incomplète: {\tt igamma}}\index{igamma}
-\noindent{\tt igamma} a 2 ou 3 arguments, un nombre $a>0$ et un nombre $x$ et 
-\'eventuellement 1 comme 3-i\`eme argument si on veut que la fonction soit 
-r\'egularis\'ee (i.e. divis\'ee par {\tt Gamma(a)}.\\
-{\tt igamma} est la fonction $\gamma$ qui est la fonction $\Gamma$ incompl\`ete
-de param\`etres $a$ et $x$.\\
+Avec 2 arguments : les nombres $a$ et $b\geq 0$.\\
+{\tt Gamma(a,b)} calcule les valeurs de la fonction $\gamma$ sup\'erieure qui 
+a aussi comme nom {\tt ugamma}.\\
+On a par d\'efinition :\\
+$$\Gamma(a,b)=\int_b^{+\infty}e^{-t}t^{a-1}dt, \mbox{ si } \ b\geq 0$$
+On tape :
+\begin{center}{\tt Gamma(3,2)}\end{center}
+On obtient :
+\begin{center}{\tt 10/exp(2)}\end{center}
+On tape :
+\begin{center}{\tt Gamma(3.,2)}\end{center}
+On obtient :
+\begin{center}{\tt 1.35335283237}\end{center}
+On tape :
+\begin{center}{\tt Gamma(-1.3,2)}\end{center}
+On obtient :
+\begin{center}{\tt 0.0142127568837}\end{center}
+ On tape :
+\begin{center}{\tt Gamma(1.3,2.5)}\end{center}
+On obtient :
+\begin{center}{\tt 0.118686060676}\end{center}
+
+\subsection{La fonction $\gamma$ sup\'erieure : {\tt ugamma}}\index{ugamma}
+\noindent{\tt ugamma} a 2  arguments, un nombre $a$ et un nombre $b\geq 0$.\\ 
+{\tt ugamma(a,b)} renvoie la fonction $\gamma$ sup\'erieure :\\
+$$\int_b^{+\infty}e^{-t}t^{a-1}dt$$.\\
+On tape :
+\begin{center}{\tt ugamma(3.,2)}\end{center}
+On obtient :
+\begin{center}{\tt 1.35335283237}\end{center}
+On tape :
+\begin{center}{\tt ugamma(-1.3,2)}\end{center}
+On obtient :
+\begin{center}{\tt 0.0142127568837}\end{center}
+ On tape :
+\begin{center}{\tt ugamma(1.3,2.5)}\end{center}
+On obtient :
+\begin{center}{\tt 0.118686060676}\end{center}
+
+
+\subsection{La fonction $\gamma$ incomplète : {\tt igamma}}\index{igamma}
+\noindent{\tt igamma} a 2 ou 3 arguments, un nombre $a>0$ et un nombre r\'eel 
+$x$ et \'eventuellement 1 comme 3-i\`eme argument si on veut que la fonction 
+soit r\'egularis\'ee (i.e. divis\'ee par {\tt Gamma(a)}.\\
+{\tt igamma} est la  fonction $\gamma$ incompl\`ete
+de param\`etres $a>0$ et $x$.\\
 On a par d\'efinition :\\
 {\tt igamma(a,x)}=$\gamma(a,x)=\int_0^xe^{-t}t^{a-1}dt, \mbox{ si } a>0$
 On tape :
@@ -6928,10 +7026,9 @@ On obtient :
 \begin{center}{\tt 5.99998077768}\end{center}
 On tape :
 \begin{center}{\tt igamma(4.0,20.0,1)}\end{center}
-On obtient :
+On obtient {\tt igamma(4.0,20.0)/Gamma(4)} :
 \begin{center}{\tt 0.99999679628}\end{center}
 car {\tt Gamma(4)=6} et {\tt 5.99998077768/6=0.99999679628}
-%On tape :\begin{center}{\tt igamma(1/2)}\end{center}
 
 \subsection{La fonction $\beta$ : {\tt Beta}}\index{Beta}
 \noindent{\tt Beta} a comme argument deux r\'eels $a,b$ ou trois r\'eels 
@@ -10603,7 +10700,7 @@ On obtient :
  et apr\`es simplification avec {\tt normal} on a :
 \begin{center}{\tt (2*tan(x)\verb|^|4+3*tan(x)\verb|^|2+2)/(tan(x)\verb|^|4+2*tan(x))\verb|^|2+1)}\end{center}
 
-\subsection{R\'eecriture d'une expression avec diff\'erentes options : {\tt convert convertir =>}}\index{convert|textbf}\index{convertir|textbf}\index{=>}\index{sin@{\sl sin}}\index{cos@{\sl cos}}\index{sincos@{\sl sincos}|textbf}\index{exp@{\sl exp}}\index{tan@{\sl tan}|textbf}\index{ln@{\sl ln}}\index{expln@{\sl expln}|textbf}\index{string@{\sl string}|textbf}\index{matrix@{\sl matrix}|textbf}\index{polynom@{\sl polynom}}\index{parfrac@{\sl parfrac}|textbf}\index{partfrac@{\sl partfrac}|textbf}\index{fullparfrac@{\sl fullparfrac}|textbf}\label{sec:convert}\index{diff@{\sl diff}|textbf}\index{int@{\sl int}|textbf}\index{'*'@{\sl '*'}|textbf}\index{'+'@{\sl '+'}|textbf}
+\subsection{R\'eecriture d'une expression avec diff\'erentes options : {\tt convert convertir =>}}\index{convert|textbf}\index{convertir|textbf}\index{=>}\index{sin@{\sl sin}}\index{cos@{\sl cos}}\index{sincos@{\sl sincos}|textbf}\index{exp@{\sl exp}}\index{tan@{\sl tan}|textbf}\index{ln@{\sl ln}}\index{expln@{\sl expln}|textbf}\index{string@{\sl string}|textbf}\index{polynom@{\sl polynom}}\index{parfrac@{\sl parfrac}|textbf}\index{partfrac@{\sl partfrac}|textbf}\index{fullparfrac@{\sl fullparfrac}|textbf}\label{sec:convert}\index{diff@{\sl diff}|textbf}\index{int@{\sl int}|textbf}\index{'*'@{\sl '*'}|textbf}\index{'+'@{\sl '+'}|textbf}\index{sin@{\sl array}}
 \noindent{\tt =>} est la version infix\'ee de {\tt convert}.\\
 {\tt convert} a deux arguments une expression et une option.\\
 {\tt convert} r\'eecrit cette expression en fonction de l'option.\\
@@ -10631,7 +10728,6 @@ Voici la liste des diff\'erentes options :
 {\tt trig2exp}.
 \item {\tt string} convertit une expression en une cha\^{i}ne comme si on 
 appelait directement {\tt string}.
-%\item {\tt matrix} convertit une expression en une matrice.
 \item {\tt list} convertit un polyn\^ome en une liste (cf \ref{sec:convertpolyl}).
 \item {\tt polynom} convertit un d\'eveloppement de Taylor ou une liste
 en un polyn\^ome (cf \ref{sec:convertpoly} et  \ref{sec:convertpolyp}).
@@ -10648,6 +10744,18 @@ faut pas quoter {\tt +} avec {\tt =>}.
 comme si on utilisait directement {\tt diff}.
 \item {\tt int} calcule l'int\'egrale d'une expression ou d'une fonction comme 
 si on utilisait directement {\tt int}.
+\item {\tt array} convertit une table en une matrice (cf \ref{sec:table} et \ref{sec:matrix}).\\
+On d\'efinit par exemple une matrice creuse par exemple :\\
+On tape :\\
+{\tt A[0..4,0..4]:=[1,2,3,4,5];} ce qui d\'efinit {\tt A} comme une table.\\
+{\tt a:=convert(A,array)}\\
+On obtient :\\
+{\tt [[1,0,0,0,0],[0,2,0,0,0],[0,0,3,0,0],[0,0,0,4,0],[0,0,0,0,5]]}\\
+On tape :\\
+{\tt B[0..3,1..4]:=[1,2,3,4]} ce qui d\'efinit {\tt B} comme une table.\\
+{\tt b:=convert(B,array)}\\
+On obtient :\\
+{\tt [[0,1,0,0,0],[0,0,2,0,0],[0,0,0,3,0],[0,0,0,0,4]]}
 \end{itemize}
 {\tt convert} permet aussi :
 \begin{itemize}
@@ -12039,15 +12147,71 @@ On tape :
 On obtient :
 \begin{center}{\tt [68,-21,56]}\end{center}
 
-\subsection{Interpolation de Lagrange : {\tt lagrange interp}}\index{lagrange}\index{interp}
-\noindent{\tt lagrange} a comme argument deux listes de longueur {\tt n} ou une
- matrice de deux lignes et {\tt n} colonnes et eventuellement le 
-nom de la variable {\tt var} (par d\'efaut {\tt x}):\\
-la premi\`ere liste (ou ligne) correspond à des valeurs d'abscisses $x_k$, et 
-la deuxi\`eme liste (ou ligne) correspond 
-à des valeurs d'ordonn\'ees $y_k$ pour $k$ allant de 1 \`a {\tt n}.\\
+\subsection{Interpolation de Lagrange : {\tt lagrange interp}}\index{lagrange}\index{interp}\index{lagrange@{\sl lagrange}}
+\noindent
+Selon le dernier param\`etre on a :
+\begin{enumerate}
+\item {\tt lagrange} permet d'interpoler une fonction $f$ aux points 
+d'abscisses $x_k$ ($k=0..n-1$) par un polyn\^ome de degr\'e $n-1$ : c'est le 
+polyn\^ome d'interpolation de Lagrange.\\
+{\tt lagrange} renvoie ce polyn\^ome soit sous forme symbolique, soit selon la 
+liste de ses coefficients (le dernier param\`etre doit \^etre alors le nom de 
+la variable choisie ou {\tt []}).
+\item {\tt lagrange} effectue aussi le calcul des diff\'erences divis\'ees du 
+polyn\^ome de Lagrange (le dernier param\`etre est alors {\tt lagrange}).
+\end{enumerate}
+\begin{enumerate}
+\item Polyn\^ome d'interpolation de Lagrange\\
+{\tt lagrange} a 1, 2 ou 3 arguments :
+\begin{itemize}
+\item deux listes de longueur {\tt n} (ou une matrice de deux lignes et {\tt n}
+colonnes) et eventuellement le nom de la variable {\tt var} (par d\'efaut 
+{\tt x}) pour que le  polyn\^ome soit sous forme symbolique ou eventuellement 
+une liste vide ({\tt []}) pour que le  polyn\^ome soit selon la liste de ses 
+coefficients.\\
+La premi\`ere liste (ou ligne) correspond \`a des valeurs d'abscisses $x_k$, et 
+La deuxi\`eme liste (ou ligne) correspond \`a des valeurs d'ordonn\'ees $y_k$ 
+pour $k$ allant de 0 \`a {\tt n-1},
+\item une liste de longueur {\tt n} correspondant aux valeurs d'abscisses $x_k$ 
+et une fonction $f$ et eventuellement {\tt []} ou le nom de la variable 
+{\tt var} (par d\'efaut {\tt x}).\\
+ Les valeurs des ordonn\'ees sont alors $y_k=f(x_k)$ pour $k=0..n-1$.\\
 {\tt lagrange} renvoie une expression polyn\^omiale {\tt P(var)} de degr\'e 
-{\tt n-1} tel que $P(x_k)=y_k$.\\
+{\tt n-1} tel que $P(x_k)=y_k$ ($k=0..n-1$) ou la liste des coefficients de
+ {\tt P} (selon les puissances d\'ecroissantes) c'est \`a dire l'\'ecriture 
+liste du polyn\^ome de degr\'e {\tt n-1} tel que $P(x_k)=y_k$ ($k=0..n-1$).\\
+\end{itemize}
+\item Diff\'erences divis\'ees du polyn\^ome de Lagrange\\
+{\tt lagrange} a comme argument deux listes de longueur {\tt n} (ou une matrice
+de deux lignes et {\tt n} colonnes) et comme dernier argument l'option 
+{\sl lagrange} de la commande {\tt lagrange}.\\
+{\tt lagrange} renvoie la liste des diff\'erences divis\'ees :\\
+$[\alpha_0...\alpha_{n-1}]$.\\
+{\bf D\'efinition de $\alpha_0..\alpha_{n-1}$}\\
+On a :\\
+$P(x)=\alpha_0+\alpha_1(x-x_0)+...+\alpha_{n-1}(x-x_0)(x-x_1)...(x-x_{n-2})$\\
+On a alors :\\
+$\alpha_0=P(x_0)=f(x_0)$\\
+$\displaystyle \alpha_1=\frac{f(x_1)-f(x_0)}{x_1-x_0}$\\
+Le calcul des $\alpha_k$ se fait par r\'ecurrence.\\
+{\bf Notations}\\
+On note :\\
+$\alpha_k=f[x_0..x_k]$\\
+$P_k$ le polyn\^ome de lagrange qui interpole $f$ en $[x_0..x_k]$, donc \\
+$P_k(x)=\alpha_0+\alpha_1(x-x_0)+...+\alpha_{k}(x-x_0)(x-x_1)...(x-x_{k-1})$\\
+$Q_k$ le polyn\^ome de lagrange qui interpole $f$ en $[x_1..x_{k+1}]$, donc\\
+$Q_k(x)=\beta_0+\beta_1(x-x_1)+...+\beta_{k}(x-x_1)(x-x_2)...(x-x_{k})$\\
+$\beta_0=f[x_1]$, $\beta_1=f[x_1x_2]$, $\beta_{k}=f[x_1..x_{k+1}]$
+{\bf Propri\'et\'es}\\
+On a :\\
+$\displaystyle P_{k+1}(x)=\frac{(x_{k+1}-x)P_k(x)+(x-x_0)Q_k(x)}{x_{k+1}-x_0}$\\
+et\\
+$\alpha_{k+1}$ est le {\tt lcoeff} de $P_{k+1}$ ({\tt lcoeff(P)} est le 
+coefficient du terme de plus haut degr\'e (dominant=leading)) donc\\
+$\alpha_{k+1}$=({\tt lcoeff}($Q_{k}$)-{\tt lcoeff}($P_{k}$))/($x_{k+1}-x_0$)\\
+$\alpha_{k+1}=(\beta_{k}-\alpha_{k})/(x_{k+1}-x_0)$
+ce qui donne l'algorithme calculant les diff\'erences divis\'ees.
+\end{enumerate}
 On tape :
 \begin{center}{\tt lagrange([[1,3],[0,1]])}\end{center}
 Ou on tape :
@@ -12060,7 +12224,58 @@ On tape :
 \begin{center}{\tt lagrange([1,3],[0,1],y)}\end{center}
 On obtient :
 \begin{center}{\tt (y-1)/2}\end{center}
-{\bf Attention}
+On tape :
+\begin{center}{\tt lagrange([1,3],[0,1],[])}\end{center}
+On obtient :
+\begin{center}{\tt [1/2,-1/2]}\end{center}
+qui est l'\'ecriture liste du polyn\^ome {\tt x/2-1/2}\\
+On tape :
+\begin{center}{\tt lagrange([1,3],[0,1],lagrange)}\end{center}
+On obtient :
+\begin{center}{\tt [0,1/2]}\end{center}
+en effet :$P(x)=(x-1)/2=0+1/2(x-1)$\\
+On tape :
+\begin{center}{\tt lagrange([0,1,2],[1,2,-1])}\end{center}
+On obtient :
+\begin{center}{\tt 1+3*x-2*x\verb|^|2}\end{center}
+On tape :
+\begin{center}{\tt lagrange([0,1,2],[1,2,-1],[])}\end{center}
+On obtient :
+\begin{center}{\tt [-2,3,1]}\end{center}
+qui est l'\'ecriture liste du polyn\^ome {\tt -2*x\verb|^|2+3x+1}\\
+On tape :
+\begin{center}{\tt lagrange([0,1,2],[1,2,-1],lagrange)}\end{center}
+On obtient :
+\begin{center}{\tt [1,1,-2]}\end{center}
+en effet :$P(x)=1+x(1+(x-1)*(-2))=1+x-2x(x-1)=-2x^2+3x+1$\\
+On tape :
+\begin{center}{\tt f(x):=exp(x)-1}\end{center}
+\begin{center}{\tt lagrange([-1,0,1],[f(-1),f(0),f(1)])}\end{center}
+ou
+\begin{center}{\tt lagrange([-1,0,1],[1/e-1,0,e-1])}\end{center}
+ou
+\begin{center}{\tt lagrange([-1,0,1],f)}\end{center}
+On obtient apr\`es simplification et lin\'earisation du num\'erateur :
+\begin{center}{\tt (-x+x\verb|^|2+(x+x\verb|^|2)*exp(2)-2*x\verb|^|2*exp(1))/(2*exp(1))}\end{center}
+On tape :
+\begin{center}{\tt lagrange([0,1,2],[1,exp(1),exp(2)],[])}\end{center}
+On obtient :\\
+\begin{center}{\tt [(1-2*exp(1)+exp(1)\verb|^|2)/2,(-3+4*exp(1)-exp(1)\verb|^|2)/2,1]}\end{center}
+On tape :
+\begin{center}{\tt lagrange([0,1,2],[1,exp(1),exp(2)],lagrange)}\end{center}
+ou 
+\begin{center}{\tt lagrange([0,1,2],exp,lagrange)}\end{center}
+On obtient :\\
+\begin{center}{\tt [1,exp(1)-1,(exp(1)-1)\verb|^|2/2]}\end{center}
+On a en effet :\\
+$P(x)=1+x((exp(1)-1)+(x-1)(exp(1)-1)^2/2)$\\
+On a bien $P(0)=1$, $P(1)=e-1$, $P(2)=1+2(e-1+e^2/2-e+1/2)=1-2+1+e^2=e^2$\\  
+Si on applique l'algorithme :\\
+$f[x_0]=\alpha_0=1$, $f[x_1]=\beta_0=e$, $f[x_2]=\gamma_0=e^2$,\\
+$f[x_0x_1]=\alpha_1=(\beta_0-\alpha_0)/(1-0)=e-1$,\\
+$f[x_1x_2]=\beta_1=(\gamma_0-\beta_0)/(1-0)=e^2-e$,\\
+$f[x_1x_2x_3]=\alpha_2=(\beta_1-\alpha_1)/(2-0)=(e^2-2e+1)/2$\\
+{\bf Attention}\\
 {\tt lagrange([1,2],[3,4],y)} ne renvoie pas une fonction mais une expression.
 mais on peut d\'efinir une fonction en mettant :\\
 {\tt f(x):=lagrange([1,2],[3,4],x)} ou\\
@@ -12901,18 +13116,23 @@ Pour les deux polyn\^omes $A(x)=\sum_{i=0}^{i=n} a_ix^i$ et
 $B(x)=\sum_{i=0}^{i=m}b_ix^i$, la  matrice $S$ de Sylvester est une matrice 
 carr\'ee de dimensiom $m+n$ dont les $m$ premi\`eres lignes sont  compos\'ees à
 partir des coefficients de $A(x)$ :
-$$\left(\begin{array}{ccccccc}
+$$
+\left(\begin{array}{ccccccc}
 s_{00}=a_n & s_{01}=a_{n-1}& \cdots & s_{0n)}=a_0 & 0 & \cdots & 0\\
 s_{10}=0 & s_{11}=a_{n}& \cdots & s_{1n}=a_1 & s_{1(n+1)}=a_0 & \cdots & 0\\
 \vdots &\vdots &\vdots &\ddots &\vdots &\ddots &\vdots\\
-s_{(m-1)0}=0 & s_{(m-1)1}=0& \cdots & s_{(m-1)n}=a_{m-1} & s_{(m-1)(n+1)}=a_{m-2} & \cdots&a_0 
-\end{array}\right)$$
-et les $n$ lignes  suivantes sont compos\'ees de la m\^eme façon à partir des coefficients de $B(x)$ :
-$$\left(\begin{array}{ccccccc}
+s_{(m-1)0}=0 & s_{(m-1)1}=0& \cdots & s_{(m-1)n}=a_{m-1} & s_{(m-1)(n+1)}=a_{m-2} & \cdots& a_0
+\end{array}\right)
+$$
+et les $n$ lignes  suivantes sont compos\'ees de la m\^eme façon à partir des 
+coefficients de $B(x)$ :
+$$
+\left(\begin{array}{ccccccc}
 s_{m0}=b_m & s_{m1}=b_{m-1}& \cdots & s_{mm}=b_0 & 0 & \cdots & 0\\
 \vdots &\vdots &\vdots &\ddots &\vdots &\ddots &\vdots\\
-s_{(m+n-1)0}=0 & s_{(m+n-1)1}=0& \cdots & s_{(m+n-1)m}=b_{n-1}  & b_{n-2}  &\cdots&b_0 
-\end{array}\right)$$
+s_{(m+n-1)0}=0 & s_{(m+n-1)1}=0& \cdots & s_{(m+n-1)m}=b_{n-1}  & b_{n-2}  &\cdots& b_0 
+\end{array}\right)
+$$
 On tape :
 \begin{center}{\tt resultant(x\verb|^|3-p*x+q,3*x\verb|^|2-p,x)}\end{center}
 On obtient :
@@ -12928,12 +13148,13 @@ On tape :\\
 On obtient :\\
 {\tt poly1[alpha+3*gamma,beta+3*delta,-alpha*p-p*gamma+3*eta,\\alpha*q-beta*p-p*delta,beta*q-p*eta]}\\
 La matrice $A$ de ce syst\`eme est donc :
-$$A=\left(\begin{array}{ccccc}
-1&0&3&0&0\\
-0&1&0&3&0\\
--p&0&-p&0&3\\
-q&-p&0&-p&0\\
-0&q&0&0&-p
+$$
+A=\left(\begin{array}{ccccc}
+1 & 0 & 3 & 0 & 0\\
+0 & 1 & 0 & 3 & 0\\
+-p & 0 & -p & 0 & 3\\
+q & -p & 0 & -p & 0\\
+0 & q & 0 & 0 & -p
 \end{array}\right)$$
 la matrice $S$ de Sylvester est la transpos\'ee de $A$:
 $$S=\left(\begin{array}{ccccc}
@@ -12944,14 +13165,17 @@ $$S=\left(\begin{array}{ccccc}
 0&0&3&0&-p
 \end{array}\right)$$
 On a {\tt det(A)=det(S)=-4*p\verb|^|3+27*q\verb|^|2}\\
-En fait on r\'esout $UP+VQ=C$ avec $C$ quelconque tel que deg($C$)<deg($P$)+deg($Q$) i.e. on cherche $U$ et $V$ tel que deg($U$)<deg($Q$) et deg($V$)<deg($P$) 
+En fait on r\'esout $UP+VQ=C$ 
+avec $C$ quelconque tel que deg($C$)<deg($P$)+deg($Q$) i.e. 
+on cherche $U$ et $V$ tel que deg($U$)<deg($Q$) et deg($V$)<deg($P$) 
 (inegalites strictes) v\'erifiant $UP+VQ=1$. Lorsque le syst\`eme est de Cramer,
 il y a une solution unique et ca correspond en arithm\'etique \`a $P$ et $Q$ 
-premiers entre eux (et r\'eciproquement). \
+premiers entre eux (et r\'eciproquement).\\
 Donc si det($A$)=det($S$) est non nul, $U$ et $V$ existent et sont uniques donc 
 les 2 polyn\^omes $x^3-p*x+q$ et $3*x^2-p$ sont premiers entre eux et 
 r\'eciproquement si les 2 
-polyn\^omes $x^3-p*x+q$ et $3*x^2-p$ sont premiers entre eux $U$ et $V$ tel que deg($U$)<deg($Q$) et deg($V$)<deg($P$)
+polyn\^omes $x^3-p*x+q$ et $3*x^2-p$ sont premiers entre eux $U$ et $V$ tel que
+ deg($U$)<deg($Q$) et deg($V$)<deg($P$)
 existent  et sont uniques donc det($A$)=det($S$) est non nul.\\
 Donc si ce d\'eterminant est nul les 2 
 polyn\^omes $x^3-p*x+q$ et $3*x^2-p$ ne sont pas premiers entre eux.\\
@@ -15551,16 +15775,22 @@ On obtient :
 \begin{center}{\tt [[3,4],1,2]}\end{center}
 
 \subsection{Trier : {\tt sort}}\index{sort}
-\noindent{\tt sort} a comme argument une liste ou une expression ou une chaine 
-de caract\`eres.\\
+\noindent{\tt sort} a comme argument une liste de nombres ou une matrice
+ou une liste de chaines de caract\`eres ou une expression.\\
+lorsque le 1ier argument est une liste, {\tt sort} accepte comme 2-i\`eme 
+argument une fonction de tri $f$ qui doit d\'efinir un ordre strict faible ( par
+exemple (x,y)->x>y pour avoir la liste tri\'ee selon l'ordre d\'ecroissant).\\
+\begin{enumerate}
+\item {\bf Avec 1 argument}\\
 \begin{itemize}
-\item Pour une liste, {\tt sort} renvoie la liste tri\'ee selon l'ordre 
-croissant.\\
+\item Pour une liste, {\tt sort} renvoie les \'el\'ements de la liste tri\'es 
+selon l'ordre croissant.\\
 On tape :
-\begin{center}{\tt sort([3,4,2])}\end{center}
+\begin{center}{\tt sort([1,3,4,3,2])}\end{center}
 On obtient :
-\begin{center}{\tt [2,3,4]}\end{center}
-{\bf Remarque} Si la liste est une matrice (resp une liste de chaines 
+\begin{center}{\tt [1,2,3,3,4]}\end{center}
+\item Pour une matrice ou une liste de chaines de caract\`eres\\
+Si la liste est une matrice (resp une liste de chaines 
 de caract\`eres), {\tt sort} renvoie la matrice dont 
 les lignes sont tri\'ees selon l'ordre croissant en triant les lignes selon 
 l'ordre $[a_0,a_1,..a_n]<[b_0,b_1,..b_n]$ si $a_0<b_0$ ou si il existe $k\leq n$
@@ -15570,43 +15800,20 @@ On tape :
 \begin{center}{\tt sort([[3,4,2],[4,2,3],[2,3,4],[2,4,3]])}\end{center}
 On obtient :
 \begin{center}{\tt [[2,3,4],[2,4,3],[3,4,2],[4,2,3]]}\end{center}
-Pour trier par ordre d\'ecroissant il faut mettre en second argument une 
-fonction de tri, par exemple on tape la fonction bool\'eenne {\tt superoueg} 
-qui renvoie {\tt 1} si {\tt L1>=L2} et {\tt 0} sinon :\\
-\begin{verbatim}
-superoueg(L1,L2):={
-  local s,j;
-  s:=min(size(L1),size(L2))-1;
-  j:=0;
-  tantque L1[j]==L2[j] and j<s faire
-    j:=j+1;
-  ftantque;
-  //si L2[j]>L1[j] alors return 0 sinon return 1; fsi;
-  si [sort(L1[j],L2[j])]==[L1[j],L2[j]] alors 
-     return 0 
-    sinon 
-     return 1;
-  fsi;
-}:; 
-\end{verbatim}
-On a remplac\'e {\tt L2[j]>L1[j]} par {\tt [sort(L1[j],L2[j])]==[L1[j],L2[j]]}
-pour que {\tt superoueg} soit aussi valable pour les chaines de caract\`eres.
 On tape :
-\begin{center}{\tt sort([[3,4,2],[4,2,3],[2,3,4],[2,4,3]],superoueg)}\end{center}
-ou on tape
-\begin{center}{\tt sort([[3,4,2],[4,2,3],[2,3,4],[2,4,3]],(x,y)->superoueg(x,y))}\end{center}
+\begin{center}{\tt sort(["assertion","aberrant","arret"])}\end{center}
 On obtient :
-\begin{center}{\tt [[2,3,4],[2,4,3],[3,4,2],[4,2,3]][[2,3,4],[2,4,3],[3,4,2],[4,2,3]]}\end{center}
+\begin{center}{\tt ["aberrant","arret","assertion"]}\end{center}
 On tape :
 \begin{center}{\tt sort(["dac","bac","sac","asc","cab"])}\end{center}
 On obtient :
 \begin{center}{\tt ["asc","bac","cab","dac","sac"]}\end{center}
-On tape :
-\begin{center}{\tt sort(["dac","bac","sac","asc","cab"],superoueg)}\end{center}
-On obtient :
-\begin{center}{\tt ["sac","dac","cab","bac","asc"]}\end{center}
 \item Pour une expression, {\tt sort} trie et collecte les termes égaux 
 dans les sommes et produits.\\
+On tape :
+\begin{center}{\tt sort(y*2*x+x*y+y*x)}\end{center}
+On obtient :
+\begin{center}{\tt 4*x*y}\end{center}
 On tape :  
 \begin{center}{\tt sort(exp(2*ln(x))+x*y-x+y*x+2*x)}\end{center}
 On obtient :
@@ -15616,60 +15823,53 @@ On tape :
 On obtient :
 \begin{center}{\tt x\verb|^|2+2*x*y+x}\end{center}  
 \end{itemize}
-{\bf Remarque}\\
-{\tt sort} accepte un 
-2-i\`eme argument apr\`es une liste qui est la fonction de tri, par
-exemple (x,y)->x>y pour avoir la liste tri\'ee selon l'ordre d\'ecroissant.\\
-{\bf Attention} 
-La fonction de tri $f$ doit d\'efinir un ordre strict faible c'est \`a dire
-que 
+\item {\bf Avec 2 arguments}\\
+Le deuxi\`eme argument doit \^etre une fonction de tri $f$ qui doit d\'efinir 
+un ordre strict faible sinon l'algorithme employ\'e  risque de boucler....
+c'est \`a dire que  :\\
+$f(x,y)$ est un fonction toujours d\'efinie renvoyant 0 (faux) ou 1 (vrai) .\\
+$f$  doit renvoyer 0 si 2 \'el\'ements ne sont pas comparables et doit 
+v\'erifier~:
 \begin{itemize}
-\item 
-$f(x,y)$ est un fonction renvoyant 0 (faux) ou 1 (vrai) qui est
-toujours d\'efinie ($f$ doit renvoyer 0 si 2 \'el\'ements ne sont
-pas comparables) et doit v\'erifier~:
 \item $f$ doit d\'efinir une 
 relation transitive (si $f(x,y)$ et $f(y,z)$ sont vrais alors
 $f(x,z)$ est vrai)
 \item on ne peut pas avoir
-$f(x,y)$ et $f(y,x)$ vrai en m\^eme temps (antisym\'etrie
-{\bf non r\'eflexive})
+$f(x,y)$ et $f(y,x)$ vrai en m\^eme temps et $f(x,x)$ est faux (ce que l'on 
+appelle une antisym\'etrie {\bf non r\'eflexive})
 \item $f$ ne d\'efinit pas forc\'ement une relation
-d'ordre total, on peut avoir $f(x,y)$ et $f(y,x)$ simultan\'ement
-faux.
+d'ordre total, on peut avoir $f(x,y)$ et $f(y,x)$ simultan\'ement faux.\\
 Si on d\'efinit la relation $E$ par $x\ E\ y$ est vrai lorsque 
 $f(x,y)$ et $f(y,x)$ sont simultan\'ement faux
 alors $E$ doit \^etre une relation d'\'equivalence.
 \end{itemize}
-Sinon l'algorithme employ\'e  risque de boucler....
 Par exemple, on ne peut pas mettre comme
 fonction de tri : {\tt (x,y)->x[1]>=y[1]}. 
 On tape :
 \begin{center}{\tt sort([3,4,2],(x,y)->x>y)}\end{center}
 On obtient :
 \begin{center}{\tt [4,3,2]}\end{center}
-{\bf Pour trier des listes de listes}\\
-{\tt sort} trie les listes de listes par ordre croissant. 
-\begin{center}{\tt
-sort([[1,3],[2,4],[2,3],[1,4]])}\end{center}
+
+{\bf Exemples pour trier des listes de listes}\\
+Avec un seul argument, {\tt sort} trie les listes de listes par ordre croissant.
+\begin{center}{\tt sort([[1,3],[2,4],[2,3],[1,4]])}\end{center}
 On obtient :
 \begin{center}{\tt [[1,3],[1,4],[2,3],[2,4]]}\end{center}
 Pour un ordre diff\'erent, il faut mettre
 une fonction de tri comme 2i\`eme argument.\\
-Par exemple :\\
-Si on veut trier par ordre d\'ecroissant la premi\`ere colonne ou en cas 
+Par exemple :
+\begin{enumerate}
+\item Si on veut trier par ordre d\'ecroissant la premi\`ere colonne ou en cas 
 d'\'egalit\'e par ordre d\'ecroissant la 2i\`eme colonne (ordre 
-lexicographique).\\
+lexicographique pour les 2 premi\`eres colonnes).\\
 On tape :
-\begin{center}{\tt
-sort([[1,3],[2,4],[2,3],[1,4]],(x,y)->when(x[0]==y[0],x[1]>y[1],x[0]>y[0]))}\end{center}
+\begin{center}{\tt sort([[1,3],[2,4],[2,3],[1,4]], \\(x,y)->when(x[0]==y[0],x[1]>y[1],x[0]>y[0]))}\end{center}
 On obtient :
 \begin{center}{\tt [[2,4],[2,3],[1,4],[1,3]]}\end{center}
-Et si on veut trier par ordre d\'ecroissant la 2i\`eme
+\item Si on veut trier par ordre d\'ecroissant la 2i\`eme
 colonne ou en cas d'\'egalit\'e par ordre d\'ecroissant la premi\`ere colonne.\\
  On tape :
-\begin{center}{\tt
-sort([[1,3],[2,4],[2,3],[1,4]],\\(x,y)->when(x[1]==y[1],x[0]>y[0],x[1]>y[1]))}\end{center}
+\begin{center}{\tt sort([[1,3],[2,4],[2,3],[1,4]],\\(x,y)->when(x[1]==y[1],x[0]>y[0],x[1]>y[1]))}\end{center}
 On obtient :
 \begin{center}{\tt [[2,4],[1,4],[2,3],[1,3]]}\end{center}
 {\bf Attention} 
@@ -15684,10 +15884,52 @@ fonction de tri
 Soient :\\
 {\tt L1:=[[1,2],[2,3],[4,3]]}\\  
 {\tt L2:=[[1,2],[4,3],[2,3]]}\\ 
-Dans ce cas {\tt sort(L1,(x,y)->x[1]>y[1])} et
-{\tt sort(L2,(x,y)->x[1]>y[1])} renvoient des r\'eponses
+Dans ce cas :\\
+{\tt sort(L1,(x,y)->x[1]>y[1])} et\\
+{\tt sort(L2,(x,y)->x[1]>y[1])} \\
+renvoient des r\'eponses
 diff\'erentes parce que l'ordre n'est pas total et que
-{\tt [2,3]} et {\tt [4,3]} sont consid\'er\'es comme \'equivalents.
+{\tt [2,3]} et {\tt [4,3]} sont consid\'er\'es comme \'equivalents.\\
+\end{enumerate}
+{\bf Exemple pour trier par ordre lexicographique des matrices ou des chaines de caract\`eres}\\
+Pour trier par ordre lexicographique des matrices ou des chaines de 
+caract\`eres, il faut mettre en second argument comme fonction de tri, par 
+exemple, la fonction bool\'eenne {\tt super} ci-dessous : \\
+Si {\tt L1} et {\tt L2} sont 2 listes ou 2 chaines de caract\`eres alors
+{\tt super(L1,L2)} renvoie {\tt 1} si {\tt L1>L2} et {\tt 0} sinon.\\ 
+On tape :
+\begin{verbatim}
+super(L1,L2):={
+  local s,j;
+  s:=min(size(L1),size(L2))-1;
+  j:=0;
+  tantque L1[j]==L2[j] and j<s faire
+    j:=j+1;
+  ftantque;
+  //si L2[j]>=L1[j] alors return 0 sinon return 1; fsi;
+  si [sort(L1[j],L2[j])]==[L1[j],L2[j]] alors 
+     return 0 
+    sinon 
+     return 1;
+  fsi;
+}:; 
+\end{verbatim}
+On a remplac\'e {\tt L2[j]>=L1[j]} par {\tt [sort(L1[j],L2[j])]==[L1[j],L2[j]]}
+pour que {\tt super} soit aussi valable pour les chaines de caract\`eres.\\
+On tape :
+\begin{center}{\tt sort(["dac","bac","sac","asc","cab"],super)}\end{center}
+ou on tape
+\begin{center}{\tt sort(["dac","bac","sac","asc","cab"],(x,y)->super(x,y))}\end{center}
+On obtient :
+\begin{center}{\tt ["sac","dac","cab","bac","asc"]}\end{center}
+On tape :
+\begin{center}{\tt sort([[3,4,2],[4,2,3],[2,3,4],[2,4,3]],super)}\end{center}
+ou on tape
+\begin{center}{\tt sort([[3,4,2],[4,2,3],[2,3,4],[2,4,3]],(x,y)->super(x,y))}\end{center}
+On obtient :
+\begin{center}{\tt [[2,3,4],[2,4,3],[3,4,2],[4,2,3]][[2,3,4],[2,4,3],[3,4,2],[4,2,3]]}\end{center}
+\end{enumerate}
+
 
 \subsection{Trier une liste selon l'ordre croissant : {\tt SortA et sorta}}\index{SortA}\index{sorta}
 \noindent{\bf Attention} {\tt SortA} et {\tt sorta} ne sont pas des synonymes : 
@@ -16193,13 +16435,14 @@ ou une liste {\tt L}. {\tt of(f,E)} renvoie {\tt f(E)} et {\tt of(f,L)} renvoie
 {\tt f(x)} est traduit en interne par {\tt of(f,x)}. On peut donc utiliser 
 directement {\tt f(x)}, 
 \item {\tt apply} a 2 param\`etres une fonction {\tt f} et une liste {\tt L}. 
-{\tt apply(f,L)} renvoie {\tt [f(L[0]),f(L[1]),...f(L[size(L)-1])]}.
+{\tt apply(f,L)} renvoie {\tt [f(L[0]),f(L[1]),...f(L[size(L)-1])]}.\\
 {\bf Attention}\\
 {\tt apply} r\`epond {\tt []} si le deuxi\`eme \'el\'ement 
 n'est pas  une liste.\\
 \item  {\tt map} a 2 param\`etres une expression {\tt E} ou une liste {\tt L} 
-et une fonction {\tt f}.  {\tt map(E,f)} renvoie {\tt f(E)} et {\tt map(L,f)} 
-renvoie {\tt [f(L[0]),f(L[1]),...f(L[size(L)-1])]}.\\
+et une fonction {\tt f}.\\
+{\tt map(E,f)} renvoie {\tt f(E)} et \\
+{\tt map(L,f)} renvoie {\tt [f(L[0]),f(L[1]),...f(L[size(L)-1])]}.\\
 {\bf Attention} \`a l'ordre des param\`etres qui n'est pas 
 le m\^eme pour {\tt map} et pour {\tt apply} , c'est pour des raisons de 
 compatibilit\'e!!!.\\
@@ -16764,7 +17007,7 @@ On obtient :
 En effet : 
 $-5=2*2-3*3$, $ 10=-1*2+4*3$, $ -5=1*3-2*4$.
 
-\section{Fonctions utiles pour les statistiques : {\tt mean moyenne, variance, stddev ecart\_type, stddevp, ecart\_type\_population, stdDev, median, quantile, quartiles, quartile1, quartile3, boxwhisker, moustache}}\index{mean} \index{stddev}\index{variance}\index{median} \index{moyenne}\index{ecart\_type}\index{stddevp}\index{stdDev}\index{ecart\_type\_population}\index{quantile}\index{moustache}\index{boxwhisker}\index{quartiles}\index{quartile1}\index{quartile3}\label{sec:statlist}
+\section{Fonctions utiles pour les statistiques : {\tt mean moyenne,variance, stddev ecart\_type, stddevp ecart\_type\_population, stdDev, median, quantile, quartiles, quartile1, quartile3, boxwhisker, moustache}}\index{mean} \index{stddev}\index{variance}\index{median} \index{moyenne}\index{ecart\_type}\index{stddevp}\index{stdDev}\index{ecart\_type\_population}\index{quantile}\index{moustache}\index{boxwhisker}\index{quartiles}\index{quartile1}\index{quartile3}\label{sec:statlist}
 Voir aussi \ref{sec:statmat} and \ref{sec:stat}.\\
 Fonctions utiles pour les statistiques dont les donn'ees sont des 
 listes :
@@ -16863,14 +17106,20 @@ Voir aussi ces fonctions pour les matrices \`a la section \ref{sec:statmat} et
 pour les listes pond\'er\'ees au chapitre \ref{sec:stat}.
 
 \section{Les tableaux indic\'es par des cha\^{i}nes : {\tt table}}\index{table}
+\index{matrix}\index{convert}\index{array @ {\sl array}}\label{sec:table}
 Une table est une liste indic\'ee par quelque chose de plus g\'en\'eral que des
 entiers.\\
 Une table peut \^etre utilis\'ee, par exemple, pour stocker des num\`eros de 
 t\'el\'ephone indic\'es par des noms.\\
 Dans  {\tt Xcas}, les indices d'une table peuvent \^etre n'importe quels objets
-de {\tt Xcas}. L'acc\'es se fait par un algorithme qui trie par {\tt type} puis
+de {\tt Xcas}. \\
+L'acc\'es se fait par un algorithme qui trie par {\tt type} puis
 utilise l'ordre de chaque type (par exemple $<$ pour le type num\'erique, 
 l'ordre lexicographique pour les chaines etc...).\\
+Par exemple pour d\'efinir une table repr\'esentant une matrice creuse, on 
+peut mettre des indices doubles entre des parenth\`eses. La commande 
+{\tt matrix} permet de transformer une table ainsi d\'efinie en une matrice.\\ 
+ Inversement {\tt table} permet de transformer une matrice en une table.
 {\tt table} a comme argument une liste ou une s\'equence d'\'egalit\'e de la 
 forme :\\
 {\tt "nom\_index"=valeur\_element}.\\
@@ -16885,7 +17134,36 @@ On tape :
 \begin{center}{\tt T[3]}\end{center}
 On obtient :
 \begin{center}{\tt -10}\end{center}
-{\bf Exemple}
+Pour d\'efinir une matrice creuse par une table, on tape par exemple :\\ 
+\begin{center}{\tt B:=table([1,2] = 12,[2,3] = 13,[3,4] = 14)}\end{center}
+Ou on tape de fa\c{c}on plus simple, on peut d\'efinir la variable 
+{\tt B} \`a l'aide d'une multi-affectation, \`a condition que la variable 
+{\tt B} soit purg\'ee :
+\begin{center}{\tt purge(B)}\end{center}
+\begin{center}{\tt B[1..3,2..4]:=[12..14]}\end{center}
+On tape :
+\begin{center}{\tt B[1,2]}\end{center}
+On obtient :
+\begin{center}{\tt 12}\end{center}
+{\bf Attention}\\
+ {\tt B} n'est pas une matrice mais une table ! On obtient facilement une 
+matrice \`a partir de {\tt B} avec {\tt convert(B,array)} ou {\tt matrix(B)}.\\
+On tape :
+\begin{center}{\tt B}\end{center}
+On obtient :
+\begin{center}{\tt table([1,2] = 12,[2,3] = 13,[3,4] = 14)}\end{center}
+On tape :
+\begin{center}{\tt b:=convert(B,array)}\end{center}
+Ou on tape de fa\c{c}on plus simple :
+\begin{center}{\tt b:=matrix(B)}\end{center}
+On obtient :
+\begin{center}{\tt[[0,0,0,0,0],[0,0,12,0,0],[0,0,0,13,0],[0,0,0,0,14]]}\end{center}
+{\bf Remarque}\\
+On peut faire toutes les op\'erations matricielles sur les tables par exemple :\\
+{\tt B*B, B+B}\\
+{\bf Ne pas oublier} de faire {\tt purge(B)} avant de d\'efinir la variable 
+{\tt B} \`a l'aide d'une multi-affectation.\\ 
+{\bf Exemple}\\
 On veut coder les lettres "a","b",.."z" par 1,2,....26.\\
 On tape :\\
 {\tt alphab:="abcdefghijklmnopqrstuvwxyz";}\\
@@ -16924,6 +17202,7 @@ Dans les r\'eponses de {\tt Xcas}, les  matrices sont parenth\'es\'ees  avec
 {\bf []}. Par exemple, {\bf [}1,2,3{\bf ]} d\'esigne la matrice [[1,2,3]] qui a une seule ligne, alors que [1,2,3] d\'esigne la liste [1,2,3].\\
 Dans ce document, on utilise la notation habituelle ( [[1,2,3]]) pour les 
 matrices renvoy\'ees comme r\'eponses.
+
 \subsection{Matrice identit\'e : {\tt idn identity}}\index{idn}\index{identity}
 \noindent{\tt idn} a comme argument un entier $n$.\\
 {\tt idn} renvoie la matrice identit\'e d'ordre $n$.\\
@@ -16935,6 +17214,7 @@ On tape :
 \begin{center}{\tt idn(3)}\end{center}
 On obtient :
 \begin{center}{\tt  [[1,0,0],[0,1,0],[0,0,1]]}\end{center}
+
 \subsection{Matrice de z\'eros : {\tt newMat matrix}}\index{newMat}\index{matrix}
 \noindent{\tt newMat(n,p)} ou {\tt matrix(n,p)} renvoie la matrice de {\tt n} 
 lignes et de {\tt p} colonnes form\'ee par des z\'eros.\\
@@ -16944,6 +17224,9 @@ lignes et de {\tt p} colonnes form\'ee par des z\'eros.\\
 \begin{center}{\tt matrix(4,3)}\end{center}
 On obtient :
 \begin{center}{\tt[[0,0,0],[0,0,0],[0,0,0],[0,0,0]]}\end{center}
+{\bf Remarque}\\
+{\tt matrix} sert aussi \`a d\'efinir une matrice et \`a transformer une table 
+en une matrice (par ex {\tt matrix(n,p,(i,j)->i+j)} et si {\tt A:=table((0,0)=1,(4,4)=4)} alors {\tt matrix(A)} transforme {\tt A} en une matrice).
 
 \subsection{Matrice al\'eatoire : {\tt ranm randMat randmatrix}}\index{ranm|textbf}\index{randMat|textbf}\index{randmatrix|textbf}\label{sec:ranm2}\index{binomial@{\sl binomial}}\index{multinomial@{\sl multinomial}}\index{poisson@{\sl poisson}}\index{normald@{\sl normald}}\index{exponential@{\sl exponential}}\index{fisher@{\sl fisher}}
 \noindent{\tt ranm} ou {\tt randMat} ou {\tt randmatrix} a comme argument un 
@@ -17044,7 +17327,71 @@ On tape :
 On obtient :
 \begin{center}{\tt  [[1,0],[0,4]]}\end{center}
 
-\subsection{Bloc de Jordan : {\tt JordanBlock}}\index{JordanBlock}
+\subsection{Matrice triangulaire inf\'erieure ou sup\'erieure associ\'ee \`a une matrice : {\tt diag}}\index{diag}\index{right@{\sl right}|textbf}\index{left@{\sl left}|textbf}\index{lu@{\sl lu}|textbf}
+\noindent{\tt diag} peut avoir 1 ,2 ou 3 arguments.\\
+\begin{enumerate}
+\item Avec 1 argument qui est soit une liste soit une matrice\\
+\begin{itemize}
+\item une liste {\tt l}, {\tt diag(l)} renvoie la matrice diagonale de  diagonale {\tt l}.\\
+On tape :
+\begin{center}{\tt diag([1,4])}\end{center}
+On obtient :
+\begin{center}{\tt  [[1,0],[0,4]]}\end{center}
+\item une matrice {\tt A}, {\tt diag(A)} renvoie la diagonale de {\tt A}.\\
+On tape :
+\begin{center}{\tt diag([[1,2],[3,4]])}\end{center}
+On obtient :
+\begin{center}{\tt  [1,4]}\end{center}
+\end{itemize}
+\item Avec 2 arguments qui sont une matrice et une option\\
+\begin{itemize}
+\item {\tt diag(A,left)} renvoie la matrice triangulaire inf\'erieure {\tt L}
+form\'ee par la partie gauche large de {\tt A} ({\tt L[j,k]=0} si {\tt k>j} et 
+{\tt L[j,k]=A[j,k]} si {\tt k<=j}).\\
+On tape :
+\begin{center}{\tt diag([[1,2],[3,4]],left)}\end{center}
+On obtient :
+\begin{center}{\tt  [[1,0],[3,4]]}\end{center}
+On tape :
+\begin{center}{\tt diag([[1,2,3],[4,5,6],[7,8,9]],left)}\end{center}
+On obtient :
+\begin{center}{\tt  [[1,0,0],[4,5,0],[7,8,9]]}\end{center}
+\item {\tt diag(A,right)} renvoie la matrice triangulaire sup\'erieure {\tt U}
+form\'ee par la partie droite large de {\tt A} ({\tt L[j,k]=0} si {\tt k<j} et 
+{\tt L[j,k]=A[j,k]} si {\tt k>=j}).\\
+On tape :
+\begin{center}{\tt diag([[1,2],[3,4]],right)}\end{center}
+On obtient :
+\begin{center}{\tt  [[1,2],[0,4]]}\end{center}
+On tape :
+\begin{center}{\tt diag([[1,2,3],[4,5,6],[7,8,9]],right)}\end{center}
+On obtient :
+\begin{center}{\tt  [[1,2,3],[0,5,6],[0,0,9]]}\end{center}
+\item {\tt diag(A,lu)} renvoie 3 parties de {\tt A} : la partie gauche stricte, la diagonale et la partie  droite stricte. 
+On tape :
+\begin{center}{\tt diag([[1,2],[3,4]],lu)}\end{center}
+On obtient :
+\begin{center}{\tt  [[0,0],[3,0]],[1,4],[[0,2],[0,0]] }\end{center}
+On tape :
+\begin{center}{\tt diag([[1,2,3],[4,5,6],[7,8,9]],lu)}\end{center}
+On obtient :
+\begin{center}{\tt [[0,0,0],[4,0,0],[7,8,0]],[1,5,9],[[0,2,3],[0,0,6],[0,0,0]] }\end{center}
+\end{itemize}
+\item  Avec 3 arguments qui sont 3 listes de dimension {\tt n-1}, {\tt n} et 
+{\tt n-1}\\
+{\tt diag(l,d,u)} renvoie la matrice tridiagonale de dimension {\tt [n,n]} et 
+de diagonales principales {\tt l,d,u}.\\
+On tape :
+\begin{center}{\tt diag([1,2],[3,4,5],[6,7]])}\end{center}
+On obtient :
+\begin{center}{\tt [[3,6,0],[1,4,7],[0,2,5]] }\end{center}
+On tape :
+\begin{center}{\tt diag([1,2,3],[4,5,6,7],[8,9,10]])}\end{center}
+On obtient :
+\begin{center}{\tt [[4,8,0,0],[1,5,9,0],[0,2,6,10],[0,0,3,7]] }\end{center}
+\end{enumerate}
+
+ \subsection{Bloc de Jordan : {\tt JordanBlock}}\index{JordanBlock}
 \noindent {\tt JordanBlock} a comme argument une expression $a$ et un entier 
 $n$.\\
 {\tt JordanBlock} renvoie une matrice carr\'ee d'ordre $n$ avec $a$
@@ -17053,6 +17400,7 @@ On tape :
 \begin{center}{\tt JordanBlock(7,3)}\end{center}
 On obtient :
 \begin{center}{\tt [[7,1,0],[0,7,1],[0,0,7]]}\end{center}
+
 \subsection{Matrice de Hilbert : {\tt hilbert}}\index{hilbert}
 \noindent{\tt hilbert} a comme argument un entier $n$.\\
 {\tt hilbert} renvoie la matrice de Hilbert.\\
@@ -17074,280 +17422,107 @@ On tape :
 On obtient (si {\tt a} n'est pas affect\'e) :
 \begin{center}{\tt  [[1,1,1],[a,2,3],[a*a,4,9]]}\end{center}
 
-\section{Cr\'eation et arithm\'etique des matrices}
-\subsection{Pour \'evaluer une matrice : {\tt evalm}}\index{evalm}
-\noindent {\tt evalm} sert \`a \'evaluer une matrice en mode Maple, par contre
- {\tt Xcas} 
-\'evalue toujours les matrices, sans avoir besoin de la commande {\tt evalm}.\\
+\section{Cr\'eation des matrices et extraction d'\'el\'ements}
+\subsection{Cr\'eation et modification par affectation}
+On peut donner un nom \`a une matrice par une affectation, par exemple :\\
+{\tt A:=[[1,2,6],[3,4,8],[1,0,1]]}\\
+On a alors acc\'es :
+\`a ses \'el\'ements, par exemple {\tt A[0,1]} renvoie {\tt 2}\\
+\`a ses lignes, par exemple {\tt A[0]} renvoie {\tt [1,2,6]}\\
+\`a ses colonnes, par exemple {\tt A[0..2,1]} renvoie {\tt [2,4,0]}\\
+On peut aussi changer la valeurs d'un de ses \'el\'ements, par exemple :\\
+{\tt A[0,1]:=5} 
+Ainsi {\tt A} est la matrice {\tt [[1,5,6],[3,4,8],[1,0,1]]}\\ 
+On a alors acc\'es \`a des sous-matrices, par exemple :\\ 
+{\tt A[1..2]}  renvoie {\tt [[3,4,8],[1,0,1]]}
+{\tt A[0..2,1..2]}  renvoie {\tt [[2,6],[4,8],[0,1]]}
+{\tt A[0..1,1..2]}  renvoie {\tt [[2,6],[4,8]]}
 
-\subsection{Addition et soustraction de deux matrices : {\tt + - .+ .-}}\index{+}\index{-}\index{.+}\index{.-}  
-\noindent L'addition (resp la soustraction) de deux matrices se fait \`a l'aide
-de l'op\'erateur infix\'e {\tt +} ou {\tt .+} (resp {\tt -} ou {\tt .-}).\\
-On tape :
-\begin{center}{\tt [[1,2],[3,4]] + [[5,6],[7,8]]}\end{center}
-On obtient :
-\begin{center}{\tt [[6,8],[10,12]]}\end{center}
-On tape :
-\begin{center}{\tt [[1,2],[3,4]] - [[5,6],[7,8]]}\end{center}
-On obtient :
-\begin{center}{\tt [[-4,-4],[-4,-4]]}\end{center}
-{\bf Remarque}\\
- {\tt +} peut aussi \^etre pr\'efix\'e, dans ce cas il doit \^etre quot\'e.\\
-On tape :
-\begin{center}{\tt '+'([[1,2],[3,4]],[[5,6],[7,8]],[[2,2],[3,3]])}\end{center}
-On obtient :
-\begin{center}{\tt [[8,10],[13,15]]}\end{center}
+\subsection{Cr\'eation par multi-affectation}
+La multi-affectation permet faire comme son nom l'indique plusieurs 
+affectation on une seule fois.\\
+Pour d\'efinir des matrices creuses avec une table voir \ref{sec:matrix}.\\
+Par exemple on veut d\'efinir la matrice $M$ carr\'ee d'odre 3 ayant [1,2,3] 
+sur la diagonale. \\
+On tape :\\
+{\tt M:=matrix(3,3);}\\
+On obtient :\\
+{\tt [[0,0,0],[0,0,0],[0,0,0]]}\\
+On tape :\\
+{\tt M[0..2,0..2]:=[1,2,3]}\\
+On obtient :\\
+{\tt [[1,0,0],[0,2,0],[0,0,3]]}\\
+Si on veut modifier {\tt M} pour que sa derni\`ere colonne soit \'egale \`a 
+[4,5,6],on tape :\\
+{\tt M[0..2,2]:=[4,5,6]}
+On obtient :\\
+{\tt [[1,0,4],[0,2,5],[0,0,6]]}
 
-\subsection{Multiplication de deux matrices : {\tt * \&*}}\index{*}\index{\&*}
-\noindent La multiplication de deux matrices se fait \`a l'aide de 
-l'op\'erateur infix\'e {\tt *} (ou {\tt \&*}).\\
-On tape :
-\begin{center}{\tt [[1,2],[3,4]] * [[5,6],[7,8]]}\end{center}
-Ou on tape :
-\begin{center}{\tt [[1,2],[3,4]] \&* [[5,6],[7,8]]}\end{center}
-On obtient :
-\begin{center}{\tt [[19,22],[43,50]]}\end{center}
-
-\subsection{Addition des \'el\'ements d'une m\^eme colonne d'une matrice : {\tt sum}}\index{sum} 
-\noindent {\tt sum} a comme argument une matrice $A$.\\
-{\tt sum} renvoie la liste dont les \'el\'ements sont les sommes des 
-\'el\'ements de chaque colonne de la matrice $A$.\\
-On tape :
-\begin{center}{\tt sum([[1,2],[3,4]])}\end{center}
-On obtient :
-\begin{center}{\tt [4,6]}\end{center}
-
-\subsection{Somme cumul\'ee des \'el\'ements d'une m\^eme colonne d'une matrice : {\tt cumSum}}\index{cumSum} 
-\noindent {\tt cumSum} a comme argument une matrice $A$.\\
-{\tt cumSum} renvoie la matrice dont les colonnes sont les sommes cumul\'ees 
-des\'el\'ements d'une m\^eme  colonne de la matrice $A$.\\
-On tape :
-\begin{center}{\tt cumSum([[1,2],[3,4],[5,6]])}\end{center}
-On obtient :
-\begin{center}{\tt [[1,2],[4,6],[9,12]]}\end{center}
-puisque les sommes cumul\'ees sont  1, 1+3=4, 1+3+5=9 et 2, 2+4=6, 2+4+6=12.
-
-\subsection{Multiplication des \'el\'ements d'une m\^eme colonne d'une matrice : {\tt product}}\index{product}\label{sec:product1}
-\noindent {\tt product} a comme argument une matrice $A$.\\
-{\tt product} renvoie la liste des produits des \'el\'ements d'une m\^eme
- colonne de la matrice $A$ (voir aussi \ref{sec:product} et \ref{sec:product2}).\\
-On tape :
-\begin{center}{\tt product([[1,2],[3,4]])}\end{center}
-On obtient :
-\begin{center}{\tt [3,8]}\end{center}
-
-\subsection{El\'evation d'une matrice \`a une puissance enti\`ere :\ \^{ } \ \&\^{ }}\index{\^{ }|textbf}\index{\&\^{ }}
-L'\'el\'evation d'une matrice \`a une puissance se fait \`a l'aide de 
-l'op\'erateur infix\'e {\tt \verb|^|} (ou {\tt \&\verb|^|}).\\
-On tape :
-\begin{center}{\tt [[1,2],[3,4]] \verb|^| 5}\end{center}
-Ou on tape :
-\begin{center}{\tt [[1,2],[3,4]] \&\verb|^| 5}\end{center}
-On obtient :
-\begin{center}{\tt [[1069,1558],[2337,3406]]}\end{center}
-On tape :
-\begin{center}{\tt normal([[1,2],[3,4]] \verb|^| n)}\end{center}
-Ou on tape :
-\begin{center}{\tt normal([[1,2],[3,4]] \&\verb|^| n)}\end{center}
-On obtient :
-\begin{center}{\tt [[(11-sqrt(33))/22*((sqrt(33)+5)/2)\cir n+(11+sqrt(33))/22*((-sqrt(33)+5)/2)\cir n,(2*sqrt(33))/33*((sqrt(33)+5)/2)\cir n+(-2*sqrt(33))/33*((-sqrt(33)+5)/2)\cir n],[(sqrt(33))/11*((sqrt(33)+5)/2)\cir n+(-(sqrt(33)))/11*((-sqrt(33)+5)/2)\cir n,(11+sqrt(33))/22*((sqrt(33)+5)/2)\cir n+(11-sqrt(33))/22*((-sqrt(33)+5)/2)\cir n]]}\end{center}
-
-\subsection{Produit de Hadamard : {\tt hadamard product}}\index{hadamard}\index{product}\label{sec:product2}\label{sec:hadam}
-\noindent Voir aussi {\tt .*} pour les listes (cf \ref{sec:hadal})\\
-{\tt hadamard} (ou {\tt product}) a comme arguments deux matrices $A$ et $B$ 
-de m\^eme ordre.\\
-{\tt product} est une fonction plus g\'en\'erale (voir aussi \ref{sec:product}
-et \ref{sec:product1}).\\
-{\tt hadamard} (ou {\tt product}) renvoie la matrice constitu\'ee par le 
-produit terme à terme des \'el\'ements de  $A$ et $B$.\\ 
-On tape :
-\begin{center}{\tt hadamard([[1, 2],[3,4]],[[5, 6],[7, 8]])}\end{center}
-On obtient :
-\begin{center}{\tt [[5,12],[21,32]]}\end{center}
-Si on tape :
-\begin{center}{\tt hadamard([1,2],[3,4])}\end{center}
-ou
-\begin{center}{\tt hadamard([[1,2],[3,4]])}\end{center}
-On obtient :
-\begin{center}{\tt 5*sqrt(5)}\end{center}
-Ici [1,2],[3,4] n'est pas considéré comme 2 vecteurs (car le produit de 
-Hadamard ne marche que sur des matrices) mais comme une matrice à 2 lignes.\\
-{\tt hadamard} calcule prend le produit des normes des vecteurs colonnes et des
-vecteurs lignes et renvoie le plus petit des 2 :\\
-$\sqrt{1+4}*\sqrt{9+16}=5\sqrt 5$ qui est plus petit que 
-$\sqrt{1+9}**\sqrt{4+16}=10\sqrt 2$.\\
-Mais si on tape :\\
-\begin{center}{\tt product([1,2],[3,4])}\end{center}
-ou
-\begin{center}{\tt product([[1,2],[3,4]])}\end{center}
-On obtient :
-\begin{center}{\tt [3,8]}\end{center}
-\subsection{Produit de Hadamard (version infix\'ee): {\tt .*}}\index{.*}
-\label{sec:hadami}
-\noindent Voir aussi \ref{sec:hadal} et \ref{sec:hadam}.\\
-{\tt .*} a comme arguments deux matrices ou deux listes $A$ et $B$ de 
-m\^eme ordre.\\
-{\tt  .*} est un op\'erateur infix\'e qui renvoie la matrice ou la liste 
-constitu\'ee par le produit terme à terme des \'el\'ements de  $A$ et $B$.\\ 
-On tape :
-\begin{center}{\tt [[1, 2],[3,4]] .* [[5, 6],[7, 8]]}\end{center}
-On obtient :
-\begin{center}{\tt [[5,12],[21,32]]}\end{center}
-
-\subsection{Division de Hadamard (version infix\'ee): {\tt ./}}\index{./}
-\noindent{\tt ./} a comme arguments deux matrices ou deux listes $A$ et $B$ de 
-m\^eme ordre.\\
-{\tt  ./} est un op\'erateur infix\'e qui renvoie la matrice ou la liste 
-constitu\'ee par la division terme à terme des \'el\'ements de  $A$ et $B$.\\ 
-On tape :
-\begin{center}{\tt [[1, 2],[3,4]] ./ [[5, 6],[7, 8]]}\end{center}
-On obtient :
-\begin{center}{\tt [[1/5,1/3],[3/7,1/2]]}\end{center}
-
-\subsection{Puissance de Hadamard (version infix\'ee): {\tt .\^{ }}}\index{.\^{ }}
-\noindent{\tt .\verb|^|} a comme arguments une matrices $A$ et un nombre r\'eel $b$.\\
-{\tt  .\verb|^|} est un op\'erateur infix\'e qui renvoie la matrice constitu\'ee par 
-les puissances $b$ de chaque \'el\'ement de $A$.\\ 
-On tape :
-\begin{center}{\tt [[1, 2],[3,4]] .\verb|^| 2}\end{center}
-On obtient :
-\begin{center}{\tt [[1,4],[9,16]]}\end{center}
-
-\subsection{Extraire un ou des \'el\'ement(s) d'une matrice : {\tt at}}\index{at}
-Un matrice est une liste de listes de m\^eme longueur.\\
-On tape : 
-\begin{center}{\tt A:=[[3,4,5],[1,2,6]]}\end{center}
-On obtient :
-\begin{center}{\tt [[3,4,5],[1,2,6]]}\end{center} 
+\subsection{Faire une matrice avec une fonction : {\tt makemat}}\index{makemat}
+\noindent{\tt makemat} a trois arguments : 
 \begin{itemize}
-\item Pour obtenir un \'el\'ement, on met deux arguments entre des crochets :
- l'indice de la ligne et l'indice de la colonne s\'epar\'e par une virgule si 
-on veut que les indices commencent \`a 0.\\
- On tape :
-\begin{center}{\tt [[3,4,5],[1,2,6]][1,2]}\end{center}
-ou
-\begin{center}{\tt A[1,2]}\end{center}
-ou
-\begin{center}{\tt A[1][2]}\end{center}
-ou
-\begin{center}{\tt at(A,[1,2])}\end{center}
-On obtient :
-\begin{center}{\tt 6}\end{center}
-{\bf Ou bien}
-On tape des doubles crochets ou des parenth\`eses si on veut que les indices 
-commencent \`a 1 :
-\begin{center}{\tt [[3,4,5],[1,2,6]][[1,2]]}\end{center}
-ou
-\begin{center}{\tt A[[1,2]]}\end{center}
-ou
-\begin{center}{\tt A[[1]][[2]]}\end{center}
-ou
-\begin{center}{\tt [[3,4,5],[1,2,6]](1,2)}\end{center}
-ou\begin{center}{\tt A(1,2)}\end{center}
-ou
-\begin{center}{\tt A(1)(2)}\end{center}
-On obtient :
-\begin{center}{\tt 4}\end{center}
-
-\item Pour obtenir une ligne de la matrice {\tt A}, on met l'indice de la 
-ligne entre des crochets, on tape:
-\begin{center}{\tt  [[3,4,5],[1,2,6]][1]}\end{center}
-ou
-\begin{center}{\tt A[1]}\end{center}
-ou
-\begin{center}{\tt at(A,1)}\end{center}
-On obtient :
-\begin{center}{\tt [1,2,6]}\end{center}
-{\bf Ou bien}
-On tape des doubles crochets ou des parenth\`eses si on veut que les indices 
-commencent \`a 1 :
-\begin{center}{\tt [[3,4,5],[1,2,6]][[1]]}\end{center}
-ou
-\begin{center}{\tt A[[1]]}\end{center}
-ou 
-\begin{center}{\tt [[3,4,5],[1,2,6]](1)}\end{center}
-ou
-\begin{center}{\tt A(1)}\end{center}
-On obtient :
-\begin{center}{\tt [3,4,5]}\end{center}
-\item Pour obtenir une sous-ligne de la matrice {\tt A}, on met deux arguments 
-entre des crochets : l'indice de la ligne et un 
-intervalle pour d\'esigner les indices des colonnes formant la sous-ligne.\\
- On tape :
-\begin{center}{\tt A[1,0..2]}\end{center}
-On obtient :
-\begin{center}{\tt [1,2,6]}\end{center}
-On tape :
-\begin{center}{\tt A[1,1..2]}\end{center}
-On obtient :
-\begin{center}{\tt [2,6]}\end{center}
-\item Pour obtenir, sous la forme d'une liste, une colonne de la matrice 
-{\tt A}, on utilise {\tt tran(A)} qui d\'esigne la transpos\'ee de {\tt A} et 
-on tape l'indice de la colonne entre des crochets si les indices commencent 
-\`a 0 :
-\begin{center}{\tt tran([[3,4,5],[1,2,6]])[[1]]}\end{center}
-ou
-\begin{center}{\tt tran(A)[1]}\end{center}
-ou
-\begin{center}{\tt at(tran(A),1)}\end{center}
-On obtient :
-\begin{center}{\tt [4,2]}\end{center}
-{\bf Ou bien}
-On tape  l'indice de la colonne entre des doubles crochets ou des parenth\`eses
-si on veut que les indices commencent \`a 1 :
-\begin{center}{\tt tran([[3,4,5],[1,2,6]])[[1]]}\end{center}
-ou
-\begin{center}{\tt tran(A)[[1]]}\end{center}
-ou
-\begin{center}{\tt tran([[3,4,5],[1,2,6]])(1)}\end{center}
-ou
-\begin{center}{\tt tran(A)(1)}\end{center}
-On obtient :
-\begin{center}{\tt [3,1]}\end{center}
-
-ou encore on met deux arguments entre des crochets : un intervalle pour 
-d\'esigner toutes les lignes et l'indice de la colonne.\\
-On tape :
-\begin{center}{\tt A[0..1,1]}\end{center}
-On obtient :
-\begin{center}{\tt [4,2]}\end{center}
-\item Pour avoir une liste repr\'esentant une sous-colonne, on met deux 
-arguments entre des crochets : un intervalle pour 
-d\'esigner les indices des lignes formant la sous-colonne et l'indice de la 
-colonne.\\
-On tape :
-\begin{center}{\tt A[0..0,1]}\end{center}
-On obtient :
-\begin{center}{\tt [4]}\end{center}
-Cela peut \^etre utiliser pour extraire une colonne, en mettant comme premier 
-indice, l'intervalle d\'esignant toutes les lignes.\\
-On tape :
-\begin{center}{\tt A[0..1,1]}\end{center}
-On obtient :
-\begin{center}{\tt [4,2]}\end{center}
-
-\item Pour extraire une sous-matrice d'une matrice, on met deux arguments entre
-des crochets : un intervalle pour d\'esigner les lignes et un intervalle pour 
-d\'esigner les colonnes.\\
-On d\'efinit la matrice {\tt A}, on tape :
-\begin{center}{\tt A:=[[3,4,5],[1,2,6]]}\end{center}
-On tape :
-\begin{center}{\tt A[0..1,1..2]}\end{center}
-On obtient :
-\begin{center}{\tt [[4,5],[2,6]]}\end{center}
-On tape :
-\begin{center}{\tt A[0..1,1..1]}\end{center}
-On obtient :
-\begin{center}{\tt [[4],[2]]}\end{center}
-{\bf Remarque}\\
-Si on veut une sous matrice constitu\'ee de lignes cons\'ecutives compl\`etes,
-on peut ommettre le deuxi\`eme argument et ne  mettre que l'intervalle 
-pour d\'esigner les lignes entre des crochets.\\ 
-On tape :
-\begin{center}{\tt A[1..1]}\end{center}
-On obtient :
-\begin{center}{\tt [[1,2,6]]}\end{center}
+\item  une fonction de deux variables {\tt j} et {\tt k} \'egale \`a la valeur 
+de $a_{j,k}$ ({\tt j} repr\'esente un num\'ero de ligne et {\tt k} un num\'ero 
+de colonne et ces indices commencent `=\`a 0), 
+\item  deux entiers $n$ et $p$.
 \end{itemize}
+{\tt makemat} renvoie la matrice de coefficients $a_{j,k}$ 
+($j=0..n-1$ et $k=0..p-1$) de dimension $n \times p$.\\
+On tape :
+\begin{center}{\tt makemat((j,k)->j+k,4,3)}\end{center}
+ou on tape pour d\'efinir la fonction  $h$ : 
+\begin{center}{\tt h(j,k):=j+k}\end{center}
+puis, on tape :
+\begin{center}{\tt makemat(h,4,3)}\end{center}
+On obtient :
+\begin{center}{\tt[[0,1,2],[1,2,3],[2,3,4],[3,4,5]]}\end{center}
+{\bf Attention !}  \`a la dimension et aux indices qui partent de 0 quelquesoit
+le mode choisi.
+
+\subsection{D\'efinir une matrice : {\tt matrix}}\index{matrix|textbf}
+\noindent{\tt matrix} a 1,2 ou 3 arguments.
+\begin{enumerate}
+\item 1 argument qui est une table d\'efinissant une matrice creuse 
+(cf \ref{sec:matrix}) et {\tt matrix} renvoie la matrice correspondante.\\
+On tape :
+\begin{center}{\tt purge(A)}\end{center}
+\begin{center}{\tt A:=table((0,0)=1,(4,4)=4)}\end{center}
+\begin{center}{\tt matrix(A)}\end{center}
+On obtient 
+\begin{center}{\tt [[1,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,4]]}\end{center}
+\item 2 arguments qui sont deux entiers $n$ et $p$  et {\tt matrix} renvoie la 
+matrice nulle de dimension $n \times p$.\\
+On tape :
+\begin{center}{\tt matrix(3,4)}\end{center}
+On obtient 
+\begin{center}{\tt [[0,0,0,0],[0,0,0,0],[0,0,0,0]]}\end{center}
+\item 3 arguments qui sont
+\begin{itemize}
+\item  deux entiers $n$ et $p$.
+\item  une fonction de deux variables {\tt j} et {\tt k} \'egale \`a la valeur 
+de $a_{j,k}$ ({\tt j} repr\'esente un num\'ero de ligne et {\tt k} un num\'ero 
+de colonne).
+{\tt matrix} renvoie la matrice de coefficients 
+$a_{j,k}$ ($j=0..n-1$ et $k=0..p-1$) de dimension $n \times p$ si on est en 
+Mode (syntaxe) {\tt xcas} ou  renvoie la matrice de coefficients 
+$a_{j,k}$ ($j=1..n$ et $k=1..p$) de dimension $n \times p$ si on est en Mode 
+(syntaxe) {\tt maple, mupad, ti89/92}.\\
+
+On tape :
+\begin{center}{\tt matrix(4,3,(j,k)->j+k)}\end{center}
+ou on d\'efinit la fonction  $h$ par : {\tt h(j,k):=j+k} et,\\
+ on tape :
+\begin{center}{\tt matrix(4,3,h)}\end{center}
+On obtient en Mode (syntaxe) {\tt Xcas}:
+\begin{center}{\tt [[0,1,2],[1,2,3],[2,3,4],[3,4,5]]}\end{center}
+On obtient en Mode (syntaxe) {\tt maple, mupad, ti89/92}:
+\begin{center}{\tt [[2,3,4],[3,4,5],[4,5,6],[5,6,7]]}\end{center}
+{\bf Attention !} \`a l'ordre des variables dans la d\'efinition de $a_{j,k}$ et
+\`a  $j$ and $k$ qui partent de {\tt 0} si on est en Mode (syntaxe) {\tt xcas} 
+et qui partent de {\tt 1} si on est en Mode (syntaxe) {\tt maple, mupad, ti89/92}
+\end{itemize} 
+\end{enumerate}
+
 \subsection{Modifier un \'el\'ement ou une ligne d'une matrice contenue dans une variable : {\tt :=} et {\tt =<}}\index{=<}\index{\tt :=}
 Si la matrice a un nom, on peut assigner un \'el\'ement d'une matrice en 
 utilisant son indice entour\'e de crochets si les indices commencent \`a 0 et 
@@ -17445,6 +17620,347 @@ On tape :\\
 On obtient :\\
 {\tt [[4,5],[3,7]],[[4,5],[2,6]]}
 
+\section{Arithm\'etique des matrices}
+\subsection{Pour \'evaluer une matrice : {\tt evalm}}\index{evalm}
+\noindent {\tt evalm} sert \`a \'evaluer une matrice en mode Maple, par contre
+ {\tt Xcas} 
+\'evalue toujours les matrices, sans avoir besoin de la commande {\tt evalm}.\\
+
+\subsection{Addition et soustraction de deux matrices : {\tt + - .+ .-}}\index{+}\index{-}\index{.+}\index{.-}  
+\noindent L'addition (resp la soustraction) de deux matrices se fait \`a l'aide
+de l'op\'erateur infix\'e {\tt +} ou {\tt .+} (resp {\tt -} ou {\tt .-}).\\
+On tape :
+\begin{center}{\tt [[1,2],[3,4]] + [[5,6],[7,8]]}\end{center}
+On obtient :
+\begin{center}{\tt [[6,8],[10,12]]}\end{center}
+On tape :
+\begin{center}{\tt [[1,2],[3,4]] - [[5,6],[7,8]]}\end{center}
+On obtient :
+\begin{center}{\tt [[-4,-4],[-4,-4]]}\end{center}
+{\bf Remarque}\\
+ {\tt +} peut aussi \^etre pr\'efix\'e, dans ce cas il doit \^etre quot\'e.\\
+On tape :
+\begin{center}{\tt '+'([[1,2],[3,4]],[[5,6],[7,8]],[[2,2],[3,3]])}\end{center}
+On obtient :
+\begin{center}{\tt [[8,10],[13,15]]}\end{center}
+
+\subsection{Multiplication de deux matrices : {\tt * \&*}}\index{*}\index{\&*}
+\noindent La multiplication de deux matrices se fait \`a l'aide de 
+l'op\'erateur infix\'e {\tt *} (ou {\tt \&*}).\\
+On tape :
+\begin{center}{\tt [[1,2],[3,4]] * [[5,6],[7,8]]}\end{center}
+Ou on tape :
+\begin{center}{\tt [[1,2],[3,4]] \&* [[5,6],[7,8]]}\end{center}
+On obtient :
+\begin{center}{\tt [[19,22],[43,50]]}\end{center}
+
+\subsection{Addition des \'el\'ements d'une m\^eme colonne d'une matrice : {\tt sum}}\index{sum} 
+\noindent {\tt sum} a comme argument une matrice $A$.\\
+{\tt sum} renvoie la liste dont les \'el\'ements sont les sommes des 
+\'el\'ements de chaque colonne de la matrice $A$.\\
+On tape :
+\begin{center}{\tt sum([[1,2],[3,4]])}\end{center}
+On obtient :
+\begin{center}{\tt [4,6]}\end{center}
+
+\subsection{Somme cumul\'ee des \'el\'ements d'une m\^eme colonne d'une matrice : {\tt cumSum}}\index{cumSum} 
+\noindent {\tt cumSum} a comme argument une matrice $A$.\\
+{\tt cumSum} renvoie la matrice dont les colonnes sont les sommes cumul\'ees 
+des\'el\'ements d'une m\^eme  colonne de la matrice $A$.\\
+On tape :
+\begin{center}{\tt cumSum([[1,2],[3,4],[5,6]])}\end{center}
+On obtient :
+\begin{center}{\tt [[1,2],[4,6],[9,12]]}\end{center}
+puisque les sommes cumul\'ees sont  1, 1+3=4, 1+3+5=9 et 2, 2+4=6, 2+4+6=12.
+
+\subsection{Multiplication des \'el\'ements d'une m\^eme colonne d'une matrice : {\tt product}}\index{product}\label{sec:product1}
+\noindent {\tt product} a comme argument une matrice $A$.\\
+{\tt product} renvoie la liste des produits des \'el\'ements d'une m\^eme
+ colonne de la matrice $A$ (voir aussi \ref{sec:product} et \ref{sec:product2}).\\
+On tape :
+\begin{center}{\tt product([[1,2],[3,4]])}\end{center}
+On obtient :
+\begin{center}{\tt [3,8]}\end{center}
+
+\subsection{El\'evation d'une matrice \`a une puissance enti\`ere :\ \^{ } \ \&\^{ }}\index{\^{ }|textbf}\index{\&\^{ }}
+L'\'el\'evation d'une matrice \`a une puissance se fait \`a l'aide de 
+l'op\'erateur infix\'e {\tt \verb|^|} (ou {\tt \&\verb|^|}).\\
+On tape :
+\begin{center}{\tt [[1,2],[3,4]] \verb|^| 5}\end{center}
+Ou on tape :
+\begin{center}{\tt [[1,2],[3,4]] \&\verb|^| 5}\end{center}
+On obtient :
+\begin{center}{\tt [[1069,1558],[2337,3406]]}\end{center}
+On tape :
+\begin{center}{\tt normal([[1,2],[3,4]] \verb|^| n)}\end{center}
+Ou on tape :
+\begin{center}{\tt normal([[1,2],[3,4]] \&\verb|^| n)}\end{center}
+On obtient :
+\begin{center}{\tt [[(11-sqrt(33))/22*((sqrt(33)+5)/2)\cir n+(11+sqrt(33))/22*((-sqrt(33)+5)/2)\cir n,\\(2*sqrt(33))/33*((sqrt(33)+5)/2)\cir n+(-2*sqrt(33))/33*((-sqrt(33)+5)/2)\cir n],}\end{center}
+\begin{center}{\tt [(sqrt(33))/11*((sqrt(33)+5)/2)\cir n+(-(sqrt(33)))/11*((-sqrt(33)+5)/2)\cir n,\\(11+sqrt(33))/22*((sqrt(33)+5)/2)\cir n+(11-sqrt(33))/22*((-sqrt(33)+5)/2)\cir n]]}\end{center}
+
+\subsection{Produit de Hadamard : {\tt hadamard product}}\index{hadamard}\index{product}\label{sec:product2}\label{sec:hadam}
+\noindent Voir aussi {\tt .*} pour les listes (cf \ref{sec:hadal})\\
+{\tt hadamard} (ou {\tt product}) a comme arguments deux matrices $A$ et $B$ 
+de m\^eme ordre.\\
+{\tt product} est une fonction plus g\'en\'erale (voir aussi \ref{sec:product}
+et \ref{sec:product1}).\\
+{\tt hadamard} (ou {\tt product}) renvoie la matrice constitu\'ee par le 
+produit terme à terme des \'el\'ements de  $A$ et $B$.\\ 
+On tape :
+\begin{center}{\tt hadamard([[1, 2],[3,4]],[[5, 6],[7, 8]])}\end{center}
+On obtient :
+\begin{center}{\tt [[5,12],[21,32]]}\end{center}
+Si on tape :
+\begin{center}{\tt hadamard([1,2],[3,4])}\end{center}
+ou
+\begin{center}{\tt hadamard([[1,2],[3,4]])}\end{center}
+On obtient :
+\begin{center}{\tt 5*sqrt(5)}\end{center}
+Ici [1,2],[3,4] n'est pas considéré comme 2 vecteurs (car le produit de 
+Hadamard ne marche que sur des matrices) mais comme une matrice à 2 lignes.\\
+{\tt hadamard} calcule prend le produit des normes des vecteurs colonnes et des
+vecteurs lignes et renvoie le plus petit des 2 :\\
+$\sqrt{1+4}*\sqrt{9+16}=5\sqrt 5$ qui est plus petit que 
+$\sqrt{1+9}**\sqrt{4+16}=10\sqrt 2$.\\
+Mais si on tape :\\
+\begin{center}{\tt product([1,2],[3,4])}\end{center}
+ou
+\begin{center}{\tt product([[1,2],[3,4]])}\end{center}
+On obtient :
+\begin{center}{\tt [3,8]}\end{center}
+\subsection{Produit de Hadamard (version infix\'ee): {\tt .*}}\index{.*}
+\label{sec:hadami}
+\noindent Voir aussi \ref{sec:hadal} et \ref{sec:hadam}.\\
+{\tt .*} a comme arguments deux matrices ou deux listes $A$ et $B$ de 
+m\^eme ordre.\\
+{\tt  .*} est un op\'erateur infix\'e qui renvoie la matrice ou la liste 
+constitu\'ee par le produit terme à terme des \'el\'ements de  $A$ et $B$.\\ 
+On tape :
+\begin{center}{\tt [[1, 2],[3,4]] .* [[5, 6],[7, 8]]}\end{center}
+On obtient :
+\begin{center}{\tt [[5,12],[21,32]]}\end{center}
+
+\subsection{Division de Hadamard (version infix\'ee): {\tt ./}}\index{./}
+\noindent{\tt ./} a comme arguments deux matrices ou deux listes $A$ et $B$ de 
+m\^eme ordre.\\
+{\tt  ./} est un op\'erateur infix\'e qui renvoie la matrice ou la liste 
+constitu\'ee par la division terme à terme des \'el\'ements de  $A$ et $B$.\\ 
+On tape :
+\begin{center}{\tt [[1, 2],[3,4]] ./ [[5, 6],[7, 8]]}\end{center}
+On obtient :
+\begin{center}{\tt [[1/5,1/3],[3/7,1/2]]}\end{center}
+
+\subsection{Puissance de Hadamard (version infix\'ee): {\tt .\^{ }}}\index{.\^{ }}
+\noindent{\tt .\verb|^|} a comme arguments une matrices $A$ et un nombre r\'eel $b$.\\
+{\tt  .\verb|^|} est un op\'erateur infix\'e qui renvoie la matrice constitu\'ee par 
+les puissances $b$ de chaque \'el\'ement de $A$.\\ 
+On tape :
+\begin{center}{\tt [[1, 2],[3,4]] .\verb|^| 2}\end{center}
+On obtient :
+\begin{center}{\tt [[1,4],[9,16]]}\end{center}
+
+\section{Extraire des \'el\'ement(s) ou des sous-matrices d'une matrice}
+\subsection{Extraire un ou des \'el\'ement(s) d'une matrice : {\tt at}}\index{at}
+Un matrice est une liste de listes de m\^eme longueur.\\
+On tape : 
+\begin{center}{\tt A:=[[3,4,5],[1,2,6]]}\end{center}
+On obtient :
+\begin{center}{\tt [[3,4,5],[1,2,6]]}\end{center} 
+\begin{itemize}
+\item Pour obtenir un \'el\'ement, on met deux arguments entre des crochets :
+ l'indice de la ligne et l'indice de la colonne s\'epar\'e par une virgule si 
+on veut que les indices commencent \`a 0.\\
+ On tape :
+\begin{center}{\tt [[3,4,5],[1,2,6]][1,2]}\end{center}
+ou
+\begin{center}{\tt A[1,2]}\end{center}
+ou
+\begin{center}{\tt A[1][2]}\end{center}
+ou
+\begin{center}{\tt at(A,[1,2])}\end{center}
+On obtient :
+\begin{center}{\tt 6}\end{center}
+{\bf Ou bien}
+On tape des doubles crochets ou des parenth\`eses si on veut que les indices 
+commencent \`a 1 :
+\begin{center}{\tt [[3,4,5],[1,2,6]][[1,2]]}\end{center}
+ou
+\begin{center}{\tt A[[1,2]]}\end{center}
+ou
+\begin{center}{\tt A[[1]][[2]]}\end{center}
+ou
+\begin{center}{\tt [[3,4,5],[1,2,6]](1,2)}\end{center}
+ou\begin{center}{\tt A(1,2)}\end{center}
+ou
+\begin{center}{\tt A(1)(2)}\end{center}
+On obtient :
+\begin{center}{\tt 4}\end{center}
+
+\item Pour obtenir une ligne de la matrice {\tt A}, on met l'indice de la 
+ligne entre des crochets, on tape:
+\begin{center}{\tt  [[3,4,5],[1,2,6]][1]}\end{center}
+ou
+\begin{center}{\tt A[1]}\end{center}
+ou
+\begin{center}{\tt at(A,1)}\end{center}
+On obtient :
+\begin{center}{\tt [1,2,6]}\end{center}
+{\bf Ou bien}
+Si on veut que les indices commencent \`a 1, on tape des doubles crochets ou 
+des parenth\`eses :
+\begin{center}{\tt [[3,4,5],[1,2,6]][[1]]}\end{center}
+ou
+\begin{center}{\tt A[[1]]}\end{center}
+ou 
+\begin{center}{\tt [[3,4,5],[1,2,6]](1)}\end{center}
+ou
+\begin{center}{\tt A(1)}\end{center}
+On obtient :
+\begin{center}{\tt [3,4,5]}\end{center}
+\item Pour obtenir une sous-ligne de la matrice {\tt A}, on met deux arguments 
+entre des crochets : l'indice de la ligne et un 
+intervalle pour d\'esigner les indices des colonnes formant la sous-ligne.\\
+ On tape :
+\begin{center}{\tt A[1,0..2]}\end{center}
+On obtient :
+\begin{center}{\tt [1,2,6]}\end{center}
+On tape :
+\begin{center}{\tt A[1,1..2]}\end{center}
+On obtient :
+\begin{center}{\tt [2,6]}\end{center}
+\item Pour obtenir, sous la forme d'une liste, une colonne de la matrice 
+{\tt A}, on utilise {\tt tran(A)} qui d\'esigne la transpos\'ee de {\tt A} et 
+on tape l'indice de la colonne entre des crochets si les indices commencent 
+\`a 0 :
+\begin{center}{\tt tran([[3,4,5],[1,2,6]])[[1]]}\end{center}
+ou
+\begin{center}{\tt tran(A)[1]}\end{center}
+ou
+\begin{center}{\tt at(tran(A),1)}\end{center}
+On obtient :
+\begin{center}{\tt [4,2]}\end{center}
+{\bf Ou bien}
+On tape  l'indice de la colonne entre des doubles crochets ou des parenth\`eses
+si on veut que les indices commencent \`a 1 :
+\begin{center}{\tt tran([[3,4,5],[1,2,6]])[[1]]}\end{center}
+ou
+\begin{center}{\tt tran(A)[[1]]}\end{center}
+ou
+\begin{center}{\tt tran([[3,4,5],[1,2,6]])(1)}\end{center}
+ou
+\begin{center}{\tt tran(A)(1)}\end{center}
+On obtient :
+\begin{center}{\tt [3,1]}\end{center}
+
+ou encore on met deux arguments entre des crochets : un intervalle pour 
+d\'esigner toutes les lignes et l'indice de la colonne.\\
+On tape :
+\begin{center}{\tt A[0..1,1]}\end{center}
+On obtient :
+\begin{center}{\tt [4,2]}\end{center}
+\item Pour avoir une liste repr\'esentant une sous-colonne, on met deux 
+arguments entre des crochets : un intervalle pour 
+d\'esigner les indices des lignes formant la sous-colonne et l'indice de la 
+colonne.\\
+On tape :
+\begin{center}{\tt A[0..0,1]}\end{center}
+On obtient :
+\begin{center}{\tt [4]}\end{center}
+Cela peut \^etre utiliser pour extraire une colonne, en mettant comme premier 
+indice, l'intervalle d\'esignant toutes les lignes.\\
+On tape :
+\begin{center}{\tt A[0..1,1]}\end{center}
+On obtient :
+\begin{center}{\tt [4,2]}\end{center}
+
+\item Pour extraire une sous-matrice d'une matrice, on met deux arguments entre
+des crochets : un intervalle pour d\'esigner les lignes et un intervalle pour 
+d\'esigner les colonnes.\\
+On d\'efinit la matrice {\tt A}, on tape :
+\begin{center}{\tt A:=[[3,4,5],[1,2,6]]}\end{center}
+On tape :
+\begin{center}{\tt A[0..1,1..2]}\end{center}
+On obtient :
+\begin{center}{\tt [[4,5],[2,6]]}\end{center}
+On tape :
+\begin{center}{\tt A[0..1,1..1]}\end{center}
+On obtient :
+\begin{center}{\tt [[4],[2]]}\end{center}
+{\bf Remarque}\\
+Si on veut une sous matrice constitu\'ee de lignes cons\'ecutives compl\`etes,
+on peut ommettre le deuxi\`eme argument et ne  mettre que l'intervalle 
+pour d\'esigner les lignes entre des crochets.\\ 
+On tape :
+\begin{center}{\tt A[1..1]}\end{center}
+On obtient :
+\begin{center}{\tt [[1,2,6]]}\end{center}
+\end{itemize}
+\subsection{Extraire des lignes ou des colonnes d'une matrice (compatibilit\'e Maple) : {\tt row col}}\index{row}\index{col}
+\noindent{\tt row} (resp {\tt col}) permet d'extraire une ou plusieurs lignes 
+(resp colonnes) d'une matrice.\\
+{\tt row} (resp {\tt col}) a 2 arguments : une matrice $A$, et un entier $n$ 
+ou un intervalle $n_1..n_2$.\\
+{\tt row} (resp {\tt col}) renvoie la ligne (resp colonne) d'indice $n$ de la 
+matrice $A$, ou la s\'equence des lignes (resp colonnes) d'indice allant de 
+$n_1$ \`a $n_2$ de la matrice $A$.\\
+On tape :
+\begin{center}{\tt row([[1,2,3],[4,5,6],[7,8,9]],1)}\end{center}
+On obtient :
+\begin{center}{\tt [4,5,6]}\end{center}
+On tape :
+\begin{center}{\tt row([[1,2,3],[4,5,6],[7,8,9]],0..1)}\end{center}
+On obtient :
+\begin{center}{\tt ([1,2,3],[4,5,6])}\end{center}
+On tape :
+\begin{center}{\tt  col([[1,2,3],[4,5,6],[7,8,9]],1)}\end{center}
+On obtient :
+\begin{center}{\tt [2,5,8]}\end{center}
+On tape :
+\begin{center}{\tt  col([[1,2,3],[4,5,6],[7,8,9]],0..1)}\end{center}
+On obtient :
+\begin{center}{\tt ([1,4,7],[2,5,8])}\end{center}
+\subsection{Extraire une sous-matrice d'une matrice (compatibilit\'e TI) : {\tt subMat}}\index{subMat}
+\noindent{\tt subMat} a 5 arguments : une matrice $A$, et 4 entiers 
+$nl1,nc1,nl2,nc2$.
+Ces indices sont : $nl1$ est l'indice du d\'ebut de ligne ,$nc1$ est l'indice 
+du d\'ebut de colonne, $nl2$ est l'indice de fin de ligne et $nc2$ est l'indice
+de fin de colonne.\\    
+{\tt subMat(A,nl1,nc1,nl2,nc2)} extrait la sous-matrice de la matrice {\tt A}
+ de premier \'el\'ement {\tt A[nl1,nc1]} et de dernier \'el\'ement 
+{\tt A[nl2,nc2]}. \\
+On d\'efinit la matrice {\tt A}, on tape :
+\begin{center}{\tt A:=[[3,4,5],[1,2,6]]}\end{center}
+On tape :
+\begin{center}{\tt subMat(A,0,1,1,2)}\end{center}
+ou
+\begin{center}{\tt subMat(A,[0,1],[1,2])}\end{center}
+On obtient :
+\begin{center}{\tt [[4,5],[2,6]]}\end{center}
+On tape :
+\begin{center}{\tt subMat(A,0,1,1,1)}\end{center}
+ou
+\begin{center}{\tt subMat(A,[0,1],[1,1])}\end{center}
+On obtient :
+\begin{center}{\tt [[4],[2]]}\end{center}
+Par d\'efaut $nl1=0$, $nc1=0$, $nl2$=nrows-1 et $nc2$=ncols-1\\
+On tape :
+\begin{center}{\tt A:=[[3,4,5],[1,2,6]]}\end{center}
+\begin{center}{\tt  subMat(A)}\end{center}
+On obtient :
+\begin{center}{\tt [[3,4,5],[1,2,6]]}\end{center}
+On tape :
+\begin{center}{\tt  subMat(A,1)}\end{center}
+Ou :
+\begin{center}{\tt  subMat(A,1,0)}\end{center}
+Ou :
+\begin{center}{\tt  subMat(A,1,0,1)}\end{center}
+Ou :
+\begin{center}{\tt  subMat(A,1,0,1,2)}\end{center}
+On obtient :
+\begin{center}{\tt [[1,2,6]]}\end{center}
+
+\section{Modifier une matrice}
 \subsection{Modifier un \'el\'ement ou une ligne d'une matrice : {\tt subsop}}\index{subsop|textbf}
 \noindent {\tt subsop} permet de modifier un \'el\'ement ou une ligne d'une 
 matrice sans avoir \`a stocker la matrice dans une variable.
@@ -17587,30 +18103,6 @@ On obtient :
 \begin{center}{\tt [4,10,11,13,2,-1]}\end{center}
 
 
-\subsection{Extraire des lignes ou des colonnes d'une matrice (compatibilit\'e Maple) : {\tt row col}}\index{row}\index{col}
-\noindent{\tt row} (resp {\tt col}) permet d'extraire une ou plusieurs lignes 
-(resp colonnes) d'une matrice.\\
-{\tt row} (resp {\tt col}) a 2 arguments : une matrice $A$, et un entier $n$ 
-ou un intervalle $n_1..n_2$.\\
-{\tt row} (resp {\tt col}) renvoie la ligne (resp colonne) d'indice $n$ de la 
-matrice $A$, ou la s\'equence des lignes (resp colonnes) d'indice allant de 
-$n_1$ \`a $n_2$ de la matrice $A$.\\
-On tape :
-\begin{center}{\tt row([[1,2,3],[4,5,6],[7,8,9]],1)}\end{center}
-On obtient :
-\begin{center}{\tt [4,5,6]}\end{center}
-On tape :
-\begin{center}{\tt row([[1,2,3],[4,5,6],[7,8,9]],0..1)}\end{center}
-On obtient :
-\begin{center}{\tt ([1,2,3],[4,5,6])}\end{center}
-On tape :
-\begin{center}{\tt  col([[1,2,3],[4,5,6],[7,8,9]],1)}\end{center}
-On obtient :
-\begin{center}{\tt [2,5,8]}\end{center}
-On tape :
-\begin{center}{\tt  col([[1,2,3],[4,5,6],[7,8,9]],0..1)}\end{center}
-On obtient :
-\begin{center}{\tt ([1,4,7],[2,5,8])}\end{center}
 
 \subsection{Supprimer des lignes ou des colonnes d'une matrice : \\{\tt delrows delcols}}\index{delrows}\index{delcols}
 \noindent{\tt delrows} (resp {\tt delcols}) permet de supprimer une ou 
@@ -17637,45 +18129,6 @@ On tape :
 On obtient :
 \begin{center}{\tt [[3],[6],[9]]}\end{center}
 
-\subsection{Extraire une sous-matrice d'une matrice (compatibilit\'e TI) : {\tt subMat}}\index{subMat}
-\noindent{\tt subMat} a 5 arguments : une matrice $A$, et 4 entiers 
-$nl1,nc1,nl2,nc2$.
-Ces indices sont : $nl1$ est l'indice du d\'ebut de ligne ,$nc1$ est l'indice 
-du d\'ebut de colonne, $nl2$ est l'indice de fin de ligne et $nc2$ est l'indice
-de fin de colonne.\\    
-{\tt subMat(A,nl1,nc1,nl2,nc2)} extrait la sous-matrice de la matrice {\tt A}
- de premier \'el\'ement {\tt A[nl1,nc1]} et de dernier \'el\'ement 
-{\tt A[nl2,nc2]}. \\
-On d\'efinit la matrice {\tt A}, on tape :
-\begin{center}{\tt A:=[[3,4,5],[1,2,6]]}\end{center}
-On tape :
-\begin{center}{\tt subMat(A,0,1,1,2)}\end{center}
-ou
-\begin{center}{\tt subMat(A,[0,1],[1,2])}\end{center}
-On obtient :
-\begin{center}{\tt [[4,5],[2,6]]}\end{center}
-On tape :
-\begin{center}{\tt subMat(A,0,1,1,1)}\end{center}
-ou
-\begin{center}{\tt subMat(A,[0,1],[1,1])}\end{center}
-On obtient :
-\begin{center}{\tt [[4],[2]]}\end{center}
-Par d\'efaut $nl1=0$, $nc1=0$, $nl2$=nrows-1 et $nc2$=ncols-1\\
-On tape :
-\begin{center}{\tt A:=[[3,4,5],[1,2,6]]}\end{center}
-\begin{center}{\tt  subMat(A)}\end{center}
-On obtient :
-\begin{center}{\tt [[3,4,5],[1,2,6]]}\end{center}
-On tape :
-\begin{center}{\tt  subMat(A,1)}\end{center}
-Ou :
-\begin{center}{\tt  subMat(A,1,0)}\end{center}
-Ou :
-\begin{center}{\tt  subMat(A,1,0,1)}\end{center}
-Ou :
-\begin{center}{\tt  subMat(A,1,0,1,2)}\end{center}
-On obtient :
-\begin{center}{\tt [[1,2,6]]}\end{center}
 
 \subsection{Redimensionner une matrice ou un vecteur : {\tt redim}}\index{redim}
 \noindent {\tt redim} a comme argument une matrice $A$ (resp un vecteur) et une liste de 2 entiers (resp 1 entier).\\
@@ -17869,54 +18322,7 @@ On tape :
 \begin{center}{\tt  augment([[3,4],[2,1]],[[1,2],[4,5]])}\end{center}
 On obtient :
 \begin{center}{\tt [[3,4,1,2],[2,1,4,5]]]}\end{center}
-\subsection{Faire une matrice avec une fonction : {\tt makemat}}\index{makemat}
-\noindent{\tt makemat} a trois arguments : 
-\begin{itemize}
-\item  une fonction de deux variables {\tt j} et {\tt k} \'egale \`a la valeur 
-de $a_{j,k}$ ({\tt j} repr\'esente un num\'ero de ligne et {\tt k} un num\'ero 
-de colonne et ces indices commencent `=\`a 0), 
-\item  deux entiers $n$ et $p$.
-\end{itemize}
-{\tt makemat} renvoie la matrice de coefficients $a_{j,k}$ 
-($j=0..n-1$ et $k=0..p-1$) de dimension $n \times p$.\\
-On tape :
-\begin{center}{\tt makemat((j,k)->j+k,4,3)}\end{center}
-ou on tape pour d\'efinir la fonction  $h$ : 
-\begin{center}{\tt h(j,k):=j+k}\end{center}
-puis, on tape :
-\begin{center}{\tt makemat(h,4,3)}\end{center}
-On obtient :
-\begin{center}{\tt[[0,1,2],[1,2,3],[2,3,4],[3,4,5]]}\end{center}
-{\bf Attention !}  \`a la dimension et aux indices qui partent de 0 quelquesoit
-le mode choisi.
 
-\subsection{D\'efinir une matrice : {\tt matrix}}\index{matrix}
-\noindent{\tt matrix} a trois arguments :
-\begin{itemize}
-\item  deux entiers $n$ et $p$.
-\item  une fonction de deux variables {\tt j} et {\tt k} \'egale \`a la valeur 
-de $a_{j,k}$ ({\tt j} repr\'esente un num\'ero de ligne et {\tt k} un num\'ero 
-de colonne).
-\end{itemize} 
-{\tt matrix} renvoie la matrice de coefficients 
-$a_{j,k}$ ($j=0..n-1$ et $k=0..p-1$) de dimension $n \times p$ si on est en 
-Mode (syntaxe) {\tt xcas} ou  renvoie la matrice de coefficients 
-$a_{j,k}$ ($j=1..n$ et $k=1..p$) de dimension $n \times p$ si on est en Mode 
-(syntaxe) {\tt maple, mupad, ti89/92}.\\
-On tape :
-\begin{center}{\tt matrix(4,3,(j,k)->j+k)}\end{center}
-ou on d\'efinit la fonction  $h$ par : {\tt h(j,k):=j+k} et,\\
- on tape :
-\begin{center}{\tt matrix(4,3,h)}\end{center}
-On obtient en Mode (syntaxe) {\tt xcas}:
-\begin{center}{\tt [[0,1,2],[1,2,3],[2,3,4],[3,4,5]]}\end{center}
-On obtient en Mode (syntaxe) {\tt maple, mupad, ti89/92}:
-\begin{center}{\tt [[2,3,4],[3,4,5],[4,5,6],[5,6,7]]}\end{center}
-
-{\bf Attention !} \`a l'ordre des variables dans la d\'efinition de $a_{j,k}$ et
-\`a  $j$ and $k$ qui partent de {\tt 0} si on est en Mode (syntaxe) {\tt xcas} 
-et qui partent de {\tt 1} si on est en Mode (syntaxe) {\tt maple, mupad, ti89/92} 
-.
 
 \subsection{Rajouter une colonne \`a une matrice : {\tt border}}\index{border}
 \noindent{\tt border} a comme argument une matrice {\tt A} de dimension $p*q$ 
@@ -17934,6 +18340,8 @@ On tape :
 \begin{center}{\tt border([[1,2,3,4],[4,5,6,8],[7,8,9,10]],[1,3,5])}\end{center}
 On obtient :
 \begin{center}{\tt  [[1,2,3,4,1],[4,5,6,8,3],[7,8,9,10,5]]}\end{center}
+
+\section{Pour compter...}
 \subsection{Compter les \'el\'ements d'une matrice v\'erifiant une propri\'et\'e : {\tt count}}\index{count}\index{row@{\sl row}}\index{col@{\sl col}}
 \noindent{\tt count} a deux ou trois param\`etres : une fonction r\'eelle 
 {\tt f} et une matrice r\'eelle {\tt A} de dimension {\tt p*q} (resp une liste 
@@ -18118,15 +18526,93 @@ ou
 On obtient :
 \begin{center}{\tt  2}\end{center}
 \subsection{Nombre de colonnes : {\tt coldim colDim ncols}}\index{coldim}\index{colDim}\index{ncols}
-\noindent{\tt coldim} (ou {\tt colDim} ou {\tt ncols}) a comme argument une matrice $A$.\\
-{\tt coldim} (ou {\tt colDim} ou {\tt ncols}) renvoie le nombre de colonnes de la matrice $A$.\\
+\noindent{\tt coldim} (ou {\tt colDim} ou {\tt ncols}) a comme argument une 
+matrice $A$.\\
+{\tt coldim} (ou {\tt colDim} ou {\tt ncols}) renvoie le nombre de colonnes de 
+la matrice $A$.\\
 On tape :
 \begin{center}{\tt coldim([[1,2,3],[3,4,5]])}\end{center}
 ou
 \begin{center}{\tt ncols([[1,2,3],[3,4,5]])}\end{center}
 On obtient :
 \begin{center}{\tt  3}\end{center}
-
+\section{D\'efinition des matrices creuses : {\tt  matrix}}\index{convert}\index{matrix}\index{table}\index{array@{\sl array}}\label{sec:matrix}
+\subsection{D\'efinition}
+Pour d\'efinir une matrice creuse i.e. une matrice de grande taille ayant 
+peu de coefficients non nuls on peut tout d'abord d\'efinir une table puis on 
+transforme cette table en une matrice par la commande {\tt  matrix}.\\
+On tape :\\
+{\tt A:=table((0,0)=1,(1,1)=2,(2,2)=3,(3,3)=4,(4,4)=5)}\\
+Ou plus simplement en utilisant une multi-affectation \`a condition que la 
+variable soit purg\'ee.\\
+Ou on tape :\\
+{\tt purge(A)}\\
+{\tt A[0..4,0..4]:=[1,2,3,4,5]}\\
+On obtient :\\
+{\tt table((0,0)=1,(1,1)=2,(2,2)=3,(3,3)=4,(4,4)=5)}\\
+On tape :\\
+{\tt purge(B)}\\
+{\tt B[0..3,1..4]:=[1,2,3,4];}\\
+On obtient :\\
+{\tt table((0,1)=1,(1,2)=2,(2,3)=3,(3,4)=4)}
+On peut ajouter des \'el\'ements \`a cette table plus tard, \'eventuellement 
+apr\`es avoir fait des op\'erations dessus.\\ 
+On tape :\\
+{\tt B [0..2,0]:=5}\\
+On obtient :\\
+{\tt table((0,1)=1,(1,2)=2,(2,3)=3,(3,4)=4)\\
+(0,0)=5,(0,1)=5,(0,2)=5}\\
+On convertit ensuite ces tables avec la fonction {\tt convert} avec comme option
+ {\sl array} ou avec la commande {\tt matrix}.\\
+Pour convertir une matrice en une table on utilise la commande {\tt table}.\\
+On tape :\\
+{\tt a:=convert(A,array)}\\
+Ou on tape :\\
+{\tt a:=matrix(A)}\\
+On obtient :\\
+{\tt [[1,0,0,0,0],[0,2,0,0,0],[0,0,3,0,0],[0,0,0,4,0],[0,0,0,0,5]]}\\
+On tape :\\
+{\tt b:=convert(B,array)}\\
+Ou on tape :\\
+{\tt b:=matrix(B)}\\
+On obtient :\\
+{\tt [[0,1,0,0,0],[0,0,2,0,0],[0,0,0,3,0],[0,0,0,0,4]]}\\
+On peut continuer \`a modifier {\tt B}, on tape par exemple:\\
+{\tt B[0..4,0]:=5}\\
+{\tt b:=convert(B,array)} (ou {\tt b:=matrix(B)}\\ 
+On obtient :\\
+{\tt [[5,1,0,0,0],[5,0,2,0,0],[5,0,0,3,0],[5,0,0,0,4],[5,0,0,0,0]]}\\
+On tape :\\
+{\tt C:=table(b)}\\
+On a alors {\tt C==B}.
+\subsection{Op\'erations}
+On peut faire toutes les op\'erations matricielles sur les tables d\'efinissant 
+des matrices creuses.\\
+Soient $A$ et $B$ d\'efinit par :
+\begin{center}{\tt purge(A); A[0..2,0..2]:=[1,2,3]}\end{center}
+On obtient : :
+\begin{center}{\tt table((0,0)=1,(1,1)=2,(2,2)=3)}\end{center}
+On tape :
+\begin{center}{\tt purge(B);B[0..1,1..2]:=[1,2];B[0..2,0]:=5}\end{center}
+On obtient : :
+\begin{center}{\tt table((0,0)=5,(0,1)=1,(1,0)=5,(1,2)=2,(2,0)=5)}\end{center}
+On tape :
+\begin{center}{\tt A+B}\end{center}
+On obtient : :
+\begin{center}{\tt table((0,0) = 6,(0,1) = 1,(1,0) = 5,
+(1,1) = 2,(1,2) = 2,(2,0) = 5,(2,2) = 3)}\end{center}
+On tape :
+\begin{center}{\tt A*B}\end{center}
+On obtient : :
+\begin{center}{\tt table((0,0)=5,(0,1)=1,(1,0)=10,(1,2)=4,(2,0)=15)}\end{center}
+On tape :
+\begin{center}{\tt 2*A)}\end{center}
+On obtient : :
+\begin{center}{\tt table((0,0) = 2,(1,1) = 4,(2,2) = 6)}\end{center}
+On tape :
+\begin{center}{\tt }\end{center}
+On obtient : :
+\begin{center}{\tt }\end{center}
 \section{Alg\`ebre lin\'eaire}
 \subsection{Transpos\'ee d'une matrice : {\tt tran transpose}}\index{tran}\index{transpose}
 \noindent{\tt tran} ou {\tt transpose} a comme argument une matrice $A$.\\
@@ -19650,40 +20136,43 @@ $$
 \subsection{Forme normale de Hermite : {\tt ihermite}}\index{ihermite}
 \noindent {\tt ihermite} a comme argument une matrice \`a coefficient dans 
 $\mathbb Z$.\\
-{\tt ihermite} renvoie les matrices {\tt U} et {\tt B} tels que {\tt U} 
-est inversible dans  $\mathbb Z$, {\tt B} est triangulaire sup\'erieure et 
-v\'erifie : {\tt B=U*A}.\\
+{\tt ihermite} renvoie les matrices {\tt B} et {\tt U} tels que {\tt B} 
+est inversible dans  $\mathbb Z$, {\tt U} est triangulaire sup\'erieure et 
+v\'erifie : {\tt U=B*A}.\\
 Pour faire cela on effectue la r\'eduction sous forme \'echelonn\'ee (de type 
 Gauss) d'une matrice d'entiers en utilisant uniquement des op\'erations
 de lignes inversibles dans les entiers, en d'autres termes si {\tt A}
-est la matrice originale, on calcule une matrice {\tt U} inversible dans 
-$\mathbb Z$
-et une matrice {\tt B} triangulaire superieure telles que
-{\tt B = U*A}.\\
+est la matrice de d\'epart, on calcule une matrice {\tt B} inversible dans 
+$\mathbb Z$ et une matrice {\tt U} triangulaire sup\'erieure telles que
+{\tt U = B*A}.\\
 De plus les coefficients au-dessus de la diagonale de {\tt A} sont en module
-inferieurs au pivot de la colonne divis\'e par 2. Puisque {\tt det(U) = 1},
-on passe aussi de {\tt B} a {\tt A} uniquement avec des
-manipulations de ligne a coefficients entiers.\\
+inf\'erieurs au pivot de la colonne divis\'e par 2. Puisque {\tt det(B) = 1},
+on passe aussi de {\tt U} \`a {\tt A} uniquement avec des
+manipulations de ligne \`a coefficients entiers.\\
 On tape :
-\begin{center}{\tt A:=[[9,-36,30],[-36,192,-180],[30,-180,180]]; U,B:=ihermite(A)}\end{center}
+\begin{center}{\tt A:=[[9,-36,30],[-36,192,-180],[30,-180,180]];B,U:=ihermite(A)}\end{center}
 On obtient :
 \begin{center}{\tt [[9,-36,30],[-36,192,-180],[30,-180,180]], [[13,9,7],[6,4,3],[20,15,12]],[[3,0,30],[0,12,0],[0,0,60]]}\end{center}
+On v\'erifie :
+\begin{center}{\tt det(B),B*A}\end{center}
+renvoie :
+\begin{center}{\tt 1,[[3,0,30],[0,12,0],[0,0,60]]}\end{center}
 
 {\bf Application: Calcul d'une Z-base d'un noyau}\\
 Soit {\tt M} la matrice dont on cherche le noyau. \\
-Soit {\tt U,A:=ihermite(transpose(M))}.\\
-On a {\tt A=U*transpose(M)} donc {\tt transpose(A)=M*transpose(U)}.\\
-Les colonnes nulles de {\tt transpose(A)} correspondent donc aux colonnes 
-de {\tt transpose(U)} qui sont dans {\tt Ker(M)}. Ainsi, les lignes nulles de 
-{\tt A} correspondent aux lignes de {\tt U}  qui sont dans {\tt Ker(M)}.\\ 
+Soit {\tt A,U:=ihermite(transpose(M))}.\\
+On a {\tt U=A*transpose(M)} donc {\tt transpose(U)=M*transpose(A)}.\\
+Les colonnes nulles de {\tt transpose(U)} correspondent donc aux colonnes 
+de {\tt transpose(A)} qui sont dans {\tt Ker(M)}. Ainsi, les lignes nulles de 
+{\tt U} correspondent aux lignes de {\tt A}  qui sont dans {\tt Ker(M)}.\\ 
  {\bf Exemple}\\
 Si {\tt  M:=[[1,4,7],[2,5,8],[3,6,9]]}\\
-{\tt  U,A:=ihermite(tran(M))} renvoie :\\
-{\tt  U:=[[-3,1,0],[4,-1,0],[-1,2,-1]]} et \\
-{\tt A:=[[1,-1,-3],[0,3,6],[0,0,0]]}\\
-{\tt A[2]=[0,0,0]} donc une base de {\tt Ker(M)} est compos\'ee de 
-{\tt U[2]=[-1,2,-1]}.\\
-On v\'erifie que l'a bien {\tt  M*U[2]=[0,0,0]}.
+{\tt  A,U:=ihermite(tran(M))} renvoie :\\
+{\tt  A:=[[-3,1,0],[4,-1,0],[-1,2,-1]]} et \\
+{\tt U:=[[1,-1,-3],[0,3,6],[0,0,0]]}\\
+{\tt U[2]=[0,0,0]} donc une base de {\tt Ker(M)} est compos\'ee de 
+{\tt A[2]=[-1,2,-1]}.\\
+On v\'erifie que l'a bien {\tt  M*A[2]=[0,0,0]}.
 
 \subsection{Forme normale de Smith : {\tt ismith}}\index{ismith}
 \noindent {\tt ismith} a comme argument une matrice \`a coefficient dans 
@@ -20846,13 +21335,24 @@ On obtient :
 lin\'eaires o\`u chaque \'equation est de la forme $Xpr = 0$ o\`u $Xpr$ est 
 une expression. Si vous avez coch\'e {\tt Pas \`a pas} dans la configuration 
 g\'en\'erale, vous avez le d\'etail des calculs. \\
-{\tt linsolve} a comme param\`etres la liste des \'equations et la liste des 
-variables.\\
+{\tt linsolve} a comme param\`etres :\\
+soit la liste des \'equations et la liste des variables,\\
+soit la matrice du syst\`eme et le second membre sous la forme d'une liste,\\
+soit les matrice $p,l,u$ r\'esultant de la d\'ecomposition {\tt lu} de la 
+matrice du syst\`eme et le second membre sous la forme d'une liste.\\
 {\tt linsolve} renvoie une liste qui est solution du syst\`eme d'\'equations.\\
 {\tt linsolve} permet de r\'esoudre aussi un syst\`eme d'\'equations 
-lin\'eaires dans $\Z/n\Z$.
+lin\'eaires dans $\Z/n\Z$.\\
+{\bf Remarque}\\
+Lorsqu'on a \`a r\'esoudre plusieurs syst\`emes d'\'equations qui ne 
+diff\`erent que par leur second membre, on a int\'er\^et \`a utiliser une 
+d\'ecompsition {\tt lu}.\\
 On tape :
 \begin{center}{\tt linsolve([2*x+y+z=1,x+y+2*z=1,x+2*y+z=4],[x,y,z])}\end{center}
+Ou on tape :
+\begin{center}{\tt linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])}\end{center}
+Ou on tape :
+\begin{center}{\tt p,l,u:=lu([[2,1,1],[1,1,2],[1,2,1]]);linsolve(p,l,u,[1,1,4])}\end{center}
 On obtient :
 \begin{center}{\tt  [-1/2,5/2,1-/2]}\end{center} 
 donc 
@@ -20906,15 +21406,15 @@ $$
 %puis on obtient la r\'eponse :
 %\begin{center}{\tt  [1 \% 3,1 \% 3,1 \% 3]}\end{center} 
 
-\subsection{Norme minimale d'un syst\`eme lin\'eaire : {\tt LSQ}}\index{LSQ}
-\noindent{\tt LSQ} a pour arguments une matrice {\tt A} et un vecteur (rep une 
+\subsection{Norme minimale d'un syst\`eme lin\'eaire : {\tt LSQ lsq}}\index{lsq}\index{LSQ}
+\noindent{\tt LSQ} ou {\tt lsq} a pour arguments une matrice {\tt A} et un vecteur (rep une 
 matrice) {\tt B} qui repr\'esentent le (resp les) syst\`eme(s) lin\'eaire(s) 
 {\tt A*X=B} si {\tt B} est un vecteur (resp une matrice).\\
-{\tt LSQ(A,B)} calcule la norme minimale selon la m\'ethode des moindres 
-carr\'es du syst\`eme lin\'eaire {\tt A*X=B} sur- ou sous-d\'etermin\'e
-c'est pour estimer la solution d'un syst\`eme lin\'eaire {\tt A*X=B} (si {\tt B}
-est un vecteur) ou des syst\`emes lin\'eaires {\tt A*X=B} (si {\tt B} est une 
-matrice) pour :
+{\tt LSQ(A,B)} ou {\tt lsq(A,B)} calcule la norme minimale selon la m\'ethode 
+des moindres carr\'es du syst\`eme lin\'eaire {\tt A*X=B} sur- ou 
+sous-d\'etermin\'e c'est pour estimer la solution d'un syst\`eme lin\'eaire 
+{\tt A*X=B} (si {\tt B} est un vecteur) ou des syst\`emes lin\'eaires 
+{\tt A*X=B} (si {\tt B} est une matrice) pour :
 \begin{itemize}
 \item un syst\`eme sur-d\'etermin\'e (on a plus de lignes que de colonnes)
 \begin{itemize}
@@ -21057,10 +21557,10 @@ int\'egrant,
 \item les \'equations diff\'erentielles de Bernoulli 
 ($a(x)y'+b(x)y=c(x)y^n$),
 \item les \'equations diff\'erentielles de Clairaut ($y=x*y'+f(y')$).
+\item les \'equations diff\'erentielles de Lagrange ($y=a(y')x+b(y')$).
 \item les syst\`emes diff\'erentiels lin\'eaires \`a coefficients constants
 ($[y'=[[1,2],[2,1]]*y+[x,x+1],y(0)=[1,2]])$).
 \end{itemize}
-
 Les param\`etres de {\tt desolve}: 
 \begin{itemize}
 \item  quand l'\'equation diff\'erentielle est du premier ordre, que la 
@@ -21076,8 +21576,6 @@ la liste form\'ee par l'\'equation diff\'erentielle et de la  relation
 $y(x_0)=y_0$ qui  donne la condition initiale et comme 2nd argument l'inconnue  $y$, par exemple\\ 
 {\tt desolve([y'+x*y=0,y(0)=1],y)}\\
 {\tt desolve([y''+2*y'+y,y(0)=1,y'(0)=0],y])}
-
-
 \item quand la variable est  $x$ et l'inconnue n'est pas $y$ :\\
 les param\`etres sont : l'\'equation diff\'erentielle (ou
 la liste form\'ee par l'\'equation diff\'erentielle et les conditions 
@@ -21095,13 +21593,12 @@ Dans l'\'equation diff\'erentielle $y$ s'\'ecrit $y$ et $y'$ s'\'ecrit
 $y'$ et $y"$ s'\'ecrit $y''$ car on d\'erive par rapport \`a la 
 variable $x$. Par exemple : {\tt desolve(y''+2*y'+y,y)} et
 {\tt desolve([y''+2*y'+y,y(0)=1,y'(0)=0],y)}.
-
 \item quand la variable n'est pas $x$ (par exemple $t$.) et l'inconnue est ou 
 n'est pas $y$:  \\
 les param\`etres sont : l'\'equation diff\'erentielle (ou la liste form\'ee par
 l'\'equation diff\'erentielle et les conditions initiales), la variable $t$
 et l'inconnue $z$ ou l'inconnue $z(t)$ (la variable est alors $t$ et 
-l'inconnue est $y$).\\
+l'inconnue est $z$).\\
 Dans l'\'equation diff\'erentielle,  $y$ s'\'ecrit $y$ et $y'$ s'\'ecrit  
 $y'$ et $y"$ s'\'ecrit $y''$ car on d\'erive par rapport \`a la 
 variable que l'on a sp\'ecifi\'ee ; on peut aussi \'ecrire  $y$ sous la forme
@@ -21123,7 +21620,6 @@ Lorsqu'il n'y a pas de conditions initiales (ou une seule condition initiale
 pour une \'equation du second ordre), {\tt desolve} renvoie la solution 
 \'ecrite avec des constantes d'int\'egration~: {\tt c\_0, c\_1} o\`u 
 {\tt y(0)=c\_0} et {\tt y'(0)=c\_1} ou renvoie une liste des solutions.\\ 
-
 \item quand on a un syst\`eme diff\'erentiel lin\'eaire \`a coefficients 
 constants les param\`etres sont :\\
 \begin{itemize}
@@ -21145,7 +21641,14 @@ et\\
 {\tt desolve([z'=[[1,2],[2,1]]*z+[t,t+1],z(0)=[1,2]],t,z)} ou\\
 {\tt desolve([z'=[[1,2],[2,1]]*z+[t,t+1],z(0)=[1,2]],z(t))}
 \end{itemize}
+\item {\bf Si vous avez trouv\'e une solution particuli\`ere} vous pouvez la 
+donner en la mettant comme valeur de $y$ (ou de $z$) :\\
+Par exemple si $f_0(x)$ est une solution on \'ecrira ;\\
+{\tt desolve(y'+y=2*exp(x),y=exp(x))}\\
+ou\\
+{\tt desolve(z'+z=2*exp(x),z=exp(x))}\\
 \end{itemize}
+
 {\bf Exemples}
 \begin{itemize}
 \item Exemples de r\'esolution d'une \'equation diff\'erentielle lin\'eaire \`a
@@ -21162,7 +21665,7 @@ On trouve :
 \begin{center}{\tt  c\_0*cos(x)+(x+2*c\_1)*sin(x)/2}\end{center}
 {\tt c\_0, c\_1} sont les constantes d'int\'egration : {\tt y(0)=c\_0} et 
 {\tt y'(0)=c\_1}.\\ 
-ou bien si la variable n'est pas {\tt x} mais {\tt t}, on tape : 
+ ou bien si la variable n'est pas {\tt x} mais {\tt t}, on tape : 
 \begin{center}{\tt desolve(derive(derive(y(t),t),t)+y(t)=cos(t),t,y)}\end{center}
 ou encore
 \begin{center}{\tt desolve(derive(derive(y(t),t),t)+y(t)=cos(t),[t,y])}\end{center}
@@ -32194,17 +32697,39 @@ On obtient :
 \begin{center}{\tt Le dessin du c\^one de sommet l'origine, d'axe 0z et contenant le cercle d\'efinit par $x^2+y^2=1$ et $z=1$.}\end{center}
 
 \section{Les solides}
-\subsection{Le cube : {\tt cube}}\index{cube}
+\subsection{Le cube : {\tt cube}}\index{cube}\index{sommets}\index{faces}
 \noindent{\tt cube} a comme argument trois points {\tt A,B,C}.\\
-{\tt cube} dessine le cube direct de coté {\tt AB} dont une face est dans le {\tt plan(A,B,C)}.\\
+{\tt cube} dessine le cube direct de coté {\tt AB} dont une face est dans le 
+{\tt plan(A,B,C)} (le triangle {\tt A,B,C} doit \^etre direct lorsqu'on oriente
+le plan {\tt A,B,C} par le vecteur {\tt AE}, {\tt E} \'etant le sommet du cube 
+v\'erifiant {\tt AE} perpendiculaire au plan {\tt A,B,C}).\\
 On tape :
-\begin{center}{\tt cube([0,0,0],[0,4,0],[0,0,1])}\end{center}
+\begin{center}{\tt C1:=cube([0,0,0],[0,4,0],[0,0,1]);}\end{center}
+\begin{center}{\tt c1,c2,c3,c4,c5,c6,c7,c8:=sommets(C1)}\end{center}
+\begin{center}{\tt faces(C1)}\end{center}
 On obtient :
-\begin{center}{\tt Le cube de sommets [0,0,0],[4,0,0], [0,4,0],[0,0,4]...}\end{center}
+\begin{center}{\tt le cube de sommets c1=point(0,0,0),c2=point(0,4,0),c3=point(0,4,4),c4=point(0,0,4),c5=point(4,0,0),c6=point(4,4,0),c7=point(4,4,4),c8=point(4,0,4)}\end{center}
+\begin{center}{\tt Les sommets c1,c2,c4 sont dans le sens direct lorsque le plan c1,c2,c4 est orienté par le vecteur c1c5}\end{center}
+\begin{center}{\tt [[0,0,0],[0,4,0],[0,4,4],[0,0,4]],}\end{center}
+\begin{center}{\tt [[4,0,0],[4,4,0],[4,4,4],[4,0,4]],}\end{center}
+\begin{center}{\tt [[0,0,0],[4,0,0],[4,0,4],[0,0,4]],}\end{center}
+\begin{center}{\tt [[0,0,0],[0,4,0],[4,4,0],[4,0,0]],}\end{center}
+\begin{center}{\tt [[0,4,0],[0,4,4],[4,4,4],[4,4,0]],}\end{center}
+\begin{center}{\tt [[0,0,4],[4,0,4],[4,4,4],[0,4,4]]}\end{center}
 On tape :
-\begin{center}{\tt cube([0,0,0],[0,4,0],[0,0,-1])}\end{center}
+\begin{center}{\tt C2:=cube([0,0,0],[0,4,0],[0,0,-1])}\end{center}
+\begin{center}{\tt a1,a2,a3,a4,a5,a6,a7,a8:=sommets(C2)}\end{center}
 On obtient :
 \begin{center}{\tt Le cube sym\'etrique du pr\'ec\'edent par rapport \`a 0y}\end{center}
+\begin{center}{\tt les sommets de C2 sont a1=point(0,0,0),a2=point(0,4,0),a3=point(0,4,-4),a4=point(0,0,-4),a5=point(-4,0,0),a6=point(-4,4,0),a7=point(-4,4,-4),a8=point(-4,0,-4)}\end{center}
+\begin{center}{\tt Les sommets a1,a2,a4 sont dans le sens direct lorsque le plan a1,a2,a4 est orienté par le vecteur a1a5}\end{center}
+On tape :
+\begin{center}{\tt c:=cube([0,0,0],[1,0,0],[0,1,0])}\end{center}
+\begin{center}{\tt b1,b2,b4,b3,b5,b6,b7,b8:=sommets(c); }\end{center}
+On obtient :
+\begin{center}{\tt b1 le point(0,0,0),b2 le point(1,0,0),b4 le point(0,1,0) }\end{center}
+\begin{center}{\tt Les sommets b1,b2,b4 sont dans le sens direct lorsque le plan b1,b2,b4 est orienté par le vecteur b1b5}\end{center}
+
 \subsection{Le t\'etra\`edre : {\tt tetrahedron pyramid tetraedre pyramide}}\index{tetraedre}\index{pyramide}\index{pyramid}\index{tetrahedron} 
 \noindent{\tt tetraedre} ou {\tt pyramide} a 3 ou 4 arguments qui sont les 
 points {\tt A,B,C} ou les points {\tt A,B,C,D}.\\
@@ -32232,6 +32757,11 @@ On tape :
 On obtient :
 \begin{center}{\tt un cube de sommet l'origine et dont 3 faces sont contenues dans les plans du rep\`ere}\end{center}
 On tape :
+\begin{center}{\tt p:=parallelepipede([0,0,0],[5,0,0],[0,3,0],[0,0,2]);}\end{center}
+\begin{center}{\tt c1,c2,c3,c4,c5,c6,c7,c8:=sommets(p); }\end{center}
+On obtient :
+\begin{center}{\tt un parallélépipède de sommets c1 le point(0,0,0), c2 le point(5,0,0),c3 le point(5,3,0), c4 le point(0,3,0), c5 le point(0,0,2), c6 le point(5,0,2), c7 le point(5,3,2), c8 le point(0,3,2)}\end{center}
+On tape :
 \begin{center}{\tt parallelepipede([0,0,0],[3,2,0],[0,3,2],[2,0,3])}\end{center}
 On obtient :
 \begin{center}{\tt Un parall\'el\'epip\`ede}\end{center}
@@ -32253,15 +32783,35 @@ On tape :
 \begin{center}{\tt polyedre([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2])}\end{center}
 On obtient :
 \begin{center}{\tt Le tetra\`edre de sommets [-2,0,0],[2,0,0],[0,2,0],[0,0,2]}\end{center}
+\subsection{Les sommets : {\tt sommets}}\index{sommets}
+\noindent{\tt sommets} a comme argument un {\tt polyedre}.\\
+Dans un niveau de g\'eom\'etrie 3d, {\tt sommets}  dessine et renvoie la liste des  sommets du poly\`edre.\\
+Dans une ligne de commande, {\tt sommets}  dessine les sommets du poly\`edre.\\
+ Un  sommet est un vecteur de $\R^3$.\\ 
+On tape dans un niveau de g\'eom\'etrie 3d :
+\begin{center}{\tt sommets(polyedre([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))}\end{center}
+On obtient :
+\begin{center}{\tt Le dessin des sommets et dans l'historique on a les coordonn\'ees de ces sommets [-2,0,0]}\end{center}
+On tape  dans un niveau de g\'eom\'etrie 3d :
+\begin{center}{\tt sommets(polyedre([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))[1]}\end{center}
+On obtient :
+\begin{center}{\tt Le dessin d'un sommet et dans l'historique on a les coordonn\'ees de ce sommets [-2,0,0]}\end{center}
 \subsection{Les faces : {\tt faces}}\index{faces}
 \noindent{\tt faces} a comme argument un {\tt polyedre}.\\
-{\tt faces}  dessine et renvoie la liste des faces du poly\`edre.\\
- Une face est une matrice 
-de $n$ lignes et 3 colonnes dont les lignes sont les sommets de la face.\\ 
-On tape :
-\begin{center}{\tt faces(polyedre([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))[1]}\end{center}
+Dans un niveau de g\'eom\'etrie 3d, {\tt faces} dessine et renvoie la liste des
+ faces du poly\`edre.\\
+Dans une ligne de commande, {\tt faces} renvoie la liste des faces du 
+poly\`edre.\\ 
+Une face est une matrice de $n$ lignes et 3 colonnes dont les lignes sont les 
+sommets de la face.\\ 
+On tape dans un niveau de g\'eom\'etrie 3d :
+\begin{center}{\tt faces(polyedre([1,-1,0],[1,1,0],[0,0,2],[0,0,-2],[-1,1,0],[-1,-1,0]))}\end{center}
 On obtient :
-\begin{center}{\tt Le dessin d'une face et dans l'historique on a [[0,0,0],[-2,0,0],[2,0,0],[0,0,2]] }\end{center}
+\begin{center}{\tt le dessin et les coordonn\'ees des 3 sommets des 8 faces}\end{center}
+On tape dans un niveau de g\'eom\'etrie 3d :
+\begin{center}{\tt faces(polyedre([0,-1,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))[1]}\end{center}
+On obtient :
+\begin{center}{\tt le dessin et [0,-1,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]}\end{center}
 
 \subsection{Les ar\^etes : {\tt line\_segments aretes}}\index{aretes}\index{line\_segments}
 \noindent{\tt aretes} a comme argument un {\tt polygone} ou un 

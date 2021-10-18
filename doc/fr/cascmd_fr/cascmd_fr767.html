@@ -6,25 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de la loi beta : betad_icdf</TITLE>
+<TITLE>La fonction de répartition de la loi de Fisher-Snédécor : fisher_cdf snedecor_cdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr766.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr768.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc901">8.4.32</A>  Fonction de répartition inverse de la loi beta : <TT>betad_icdf</TT></H3><P><A NAME="@default1366"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi beta de paramètre 
-<I>a</I> et <I>b</I>, si on a <TT>betad_icdf(a,b,x)=h</TT> c’est que l’on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=betad_cdf(a,b,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc906">8.4.24</A>  La fonction de répartition de la loi de Fisher-Snédécor : <TT>fisher_cdf snedecor_cdf</TT></H3><P><A NAME="@default1372"></A><A NAME="@default1373"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi de 
+Fisher-Snédécor ayant degrés de liberté <I>n</I>1,<I>n</I>2, on a :<BR>
+ <I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>fisher_cdf(n1,n2,x)=snedecor_cdf(n1,n2,x)</TT>.<BR>
+<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)= <TT>fisher_cdf(n1,n2,x,y)=snedecor_cdf(n1,n2,x,y)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>betad_icdf(2,3,0.1808)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>fisher_cdf(5,3,9)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>snedecor_cdf(5,3,9)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.949898927032</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>betad_icdf(2,3,0.9963)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>fisher_cdf(3,5,9)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.9</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.981472898262</TT></DIV><HR>
 <A HREF="cascmd_fr766.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr768.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

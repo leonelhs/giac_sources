@@ -6,46 +6,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Compter les éléments d’une matrice vérifiant une propriété : count</TITLE>
+<TITLE>Échanger deux lignes : rowSwap swaprow rowswap</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr581.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr583.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc687">6.46.33</A>  Compter les éléments d’une matrice vérifiant une propriété : <TT>count</TT></H3><P><A NAME="@default1057"></A><A NAME="@default1058"></A><A NAME="@default1059"></A>
-<TT>count</TT> a deux ou trois paramètres : une fonction réelle 
-<TT>f</TT> et une matrice réelle <TT>A</TT> de dimension <TT>p*q</TT> (resp une liste 
-réelle <TT>l</TT> de longueur <TT>n</TT>) et éventuellement un paramètre 
-optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
-<TT>count</TT> applique la fonction aux éléments de la 
-matrice (ou liste) et en renvoie la somme, c’est à dire,<BR>
-<TT>count</TT> renvoie <TT>f(A[0,0])+..f(A[p-1,q-1])</TT>
-(resp <TT>f(l[0])+..f(l[n])</TT>).<BR>
-Si il y a <TT>row</TT> (resp <TT>col</TT>) comme troisième paramètre <TT>count</TT>
-agit sur chaque ligne (resp colonne) de la matrice et renvoie une liste.<BR>
-Si <TT>f</TT> est une fonction boolénne <TT>count</TT> renvoie le nombre 
-d’éléments de la matrice (ou liste) pour lesquels la fonction boolénne 
-est vraie.<BR>
+<H3 CLASS="subsection"><A NAME="htoc690">6.49.10</A>  Échanger deux lignes : <TT>rowSwap swaprow rowswap</TT></H3><P><A NAME="@default1057"></A><A NAME="@default1058"></A><A NAME="@default1059"></A>
+<TT>rowSwap</TT> a trois arguments : une matrice <I>A</I> et deux entiers <I>n</I>1
+et <I>n</I>2.<BR>
+<TT>rowSwap</TT> renvoie la matrice obtenue en échangeant dans <I>A</I> les lignes 
+<I>n</I>1 et <I>n</I>2.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>count((x)-&gt;x,[[2,12],[45,3],[7,78]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rowSwap([[1,2],[3,4]],0,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>147</TT></DIV><P>
-car on a : 2+12+45+3+7+78=147.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>count((x)-&gt;x,[[2,12],[45,3],[7,78]],row)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[14,48,85]</TT></DIV><P>
-car on a : 2+12=14,45+3=48,7+78=85.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>count((x)-&gt;x,[[2,12],[45,3],[7,78]],col)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[54,93]</TT></DIV><P>
-car on a : 2+45+7=54, 12+3+78=93.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>count(x-&gt;x&lt;10,[[2,12],[45,3],[7,78]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[3,4],[1,2]]</TT></DIV><HR>
 <A HREF="cascmd_fr581.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr583.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -1,0 +1,118 @@
+% Pour compiler ce fichier, vous devez d'abord installer
+% hevea: http://hevea.inria.fr
+% giac.tex: http://www-fourier.ujf-grenoble.fr/~parisse/giac/giac.tex
+% copier hevea.sty dans le repertoire courant
+% ensuite vous pouvez tester avec la commande hevea test 
+\documentclass[a4paper,11pt]{article}
+%\textwidth 11,8 cm
+%\textheight 17 cm
+\textheight 23 cm
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{makeidx}
+\usepackage{times}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{latexsym}
+\usepackage{graphicx}
+%\usepackage{pst-plot}
+\usepackage{ifpdf}
+\ifpdf
+ \usepackage[pdftex,colorlinks]{hyperref}
+\else
+ \usepackage[ps2pdf,
+            breaklinks=true,
+            colorlinks=true,
+            linkcolor=red,
+            citecolor=green
+            ]{hyperref}
+\fi
+
+\input{giacfr.tex}
+%HEVEA\htmlfoot{Retour \`a la page principale de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse/giac_fr.html}{Giac/Xcas}.}
+%HEVEA\htmlhead{Retour \`a la page principale de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse/giac_fr.html}{Giac/Xcas}.}
+
+
+\newtheorem{thm}{Théorème}
+\newtheorem{defn}[thm]{D\'efinition}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lemma}[thm]{Lemme}
+\newtheorem{example}[thm]{Exemple}
+
+
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\tr}{\mbox{tr\,}}
+
+
+\title {Exemple d'utilisation de giac dans un fichier \LaTeX.}
+\author{B. Parisse\\Institut Fourier\\UMR 5582 du CNRS
+\\Université de Grenoble I}
+
+\date{Juillet 2015}
+
+
+\begin{document}
+\maketitle
+
+Ce source \LaTeX\ illustre l'utilisation du moteur de calcul formel Giac
+lorsqu'on le compile en HTML avec {\tt hevea} (test\'e avec \verb|hevea 2.23|).
+La commande \verb|\loadgiacjs| ou \verb|\loadgiacjsonline|
+doit figurer une fois dans le document, selon que l'on va utiliser le moteur
+de calcul \verb|giac.js| depuis une installation de Xcas sur le disque dur
+ou par t\'el\'echargement sur le serveur de l'Institut Fourier.
+%\loadgiacjs
+\loadgiacjsonline
+
+Une commande en ligne avec r\'eponse en mode texte ou sous forme de graphique 2d 
+avec \verb|\giacinput|, ici \verb|\giacinput{factor(x^4-1)}|~:\\
+\giacinput{factor(x^4-1)}\\
+La m\^eme avec un argument de style optionnel de la ligne de commande\\ 
+\verb|\giacinput[style="width:200px;height:20px;font-size:large"]{plot(sin(x))}|\\
+\giacinput[style="width:200px;height:20px;font-size:large"]{plot(sin(x))}
+
+Un bouton avec une commande qui sera appliqu\'ee \`a un argument avec
+\verb|\giaccmd|, ici \verb|\giaccmd{factor}{x^4-1}|~:\\
+\giaccmd{factor}{x^4-1}\\
+accepte aussi un argument de style optionnel~:
+\giaccmd[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}
+
+La m\^eme chose avec un programme ou tout autre commande de plusieurs lignes
+avec \verb|\begin{giacprog}...\end{giacprog}|~:
+\begin{giacprog}
+f(x):={
+  local y;
+  si x<0 alors y:=-x; sinon y=x; fsi;
+  return y;
+}
+\end{giacprog}
+
+Une commande en ligne avec r\'eponse en MathML avec
+\verb|\giacinputmath{}| ou \verb|\giaccmdmath{}{}|~:
+\giacinputmath{factor(x^10-1)}
+\giacinputmath[style="width:200px;height:20px;font-size:large"]{factor(x^10-1)}
+\giaccmdmath{factor}{x^4-1}
+\giaccmdmath[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}
+
+Une commande hors-ligne avec r\'eponse en MathML
+avec \verb|\giacinputbigmath{}| ou \verb|\giaccmdbigmath{}{}|~:
+\giacinputbigmath{factor(x^100-1)}
+\giacinputbigmath[style="width:600px;height:20px;font-size:large"]{factor(x^100-1)}
+\giaccmdbigmath{factor}{x^100-1}
+\giaccmdbigmath[style="width:600px;height:20px;font-size:large"]{factor}{x^100-1}
+
+Un lien vers Xcas au Soleil (appellation faisant r\'ef\'erence aux
+applications dans les nuages qui n\'ecessitent beaucoup plus de
+ressources serveur)
+\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+1,2&+[1,2]&+{1,2}&+poly1[1,2]&+idn(3)&}
+
+Un curseur
+\giacslider{a}{-5}{5}{0.1}{0}{plot(sin(a*x))}
+\end{document}

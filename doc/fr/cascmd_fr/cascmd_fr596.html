@@ -6,20 +6,62 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice adjointe : trn</TITLE>
+<TITLE>Définition</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr595.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr597.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc702">6.47.7</A>  Matrice adjointe : <TT>trn</TT></H3><P><A NAME="@default1099"></A>
-<TT>trn</TT> a comme argument une matrice <I>A</I>.<BR>
-<TT>trn</TT> renvoie la matrice adjointe (transposée de la conjuguée) de <I>A</I>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>trn([[i, 1+i],[1, 1-i]])</TT></DIV><P>
-On obtient après simplification:
-</P><DIV CLASS="center"><TT>[[-i,1],[1-i,1+i]]</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc706">6.51.1</A>  Définition</H3><P>
+Pour définir une matrice creuse i.e. une matrice de grande taille ayant 
+peu de coefficients non nuls on peut tout d’abord définir une table puis on 
+transforme cette table en une matrice par la commande <TT>matrix</TT>.<BR>
+On tape :<BR>
+<TT>A:=table((0,0)=1,(1,1)=2,(2,2)=3,(3,3)=4,(4,4)=5)</TT><BR>
+Ou plus simplement en utilisant une multi-affectation à condition que la 
+variable soit purgée.<BR>
+Ou on tape :<BR>
+<TT>purge(A)</TT><BR>
+<TT>A[0..4,0..4]:=[1,2,3,4,5]</TT><BR>
+On obtient :<BR>
+<TT>table((0,0)=1,(1,1)=2,(2,2)=3,(3,3)=4,(4,4)=5)</TT><BR>
+On tape :<BR>
+<TT>purge(B)</TT><BR>
+<TT>B[0..3,1..4]:=[1,2,3,4];</TT><BR>
+On obtient :<BR>
+<TT>table((0,1)=1,(1,2)=2,(2,3)=3,(3,4)=4)</TT>
+On peut ajouter des éléments à cette table plus tard, éventuellement 
+après avoir fait des opérations dessus.<BR>
+On tape :<BR>
+<TT>B [0..2,0]:=5</TT><BR>
+On obtient :<BR>
+<TT>table((0,1)=1,(1,2)=2,(2,3)=3,(3,4)=4)<BR>
+(0,0)=5,(0,1)=5,(0,2)=5</TT><BR>
+On convertit ensuite ces tables avec la fonction <TT>convert</TT> avec comme option
+<I><FONT COLOR=maroon>array</FONT></I> ou avec la commande <TT>matrix</TT>.<BR>
+Pour convertir une matrice en une table on utilise la commande <TT>table</TT>.<BR>
+On tape :<BR>
+<TT>a:=convert(A,array)</TT><BR>
+Ou on tape :<BR>
+<TT>a:=matrix(A)</TT><BR>
+On obtient :<BR>
+<TT>[[1,0,0,0,0],[0,2,0,0,0],[0,0,3,0,0],[0,0,0,4,0],[0,0,0,0,5]]</TT><BR>
+On tape :<BR>
+<TT>b:=convert(B,array)</TT><BR>
+Ou on tape :<BR>
+<TT>b:=matrix(B)</TT><BR>
+On obtient :<BR>
+<TT>[[0,1,0,0,0],[0,0,2,0,0],[0,0,0,3,0],[0,0,0,0,4]]</TT><BR>
+On peut continuer à modifier <TT>B</TT>, on tape par exemple:<BR>
+<TT>B[0..4,0]:=5</TT><BR>
+<TT>b:=convert(B,array)</TT> (ou <TT>b:=matrix(B)</TT><BR>
+On obtient :<BR>
+<TT>[[5,1,0,0,0],[5,0,2,0,0],[5,0,0,3,0],[5,0,0,0,4],[5,0,0,0,0]]</TT><BR>
+On tape :<BR>
+<TT>C:=table(b)</TT><BR>
+On a alors <TT>C==B</TT>.
+</P><HR>
 <A HREF="cascmd_fr595.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr597.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

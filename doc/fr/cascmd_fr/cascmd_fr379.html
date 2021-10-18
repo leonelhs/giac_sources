@@ -6,22 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Convertir un polynôme de n variables en une liste : convert convertir</TITLE>
+<TITLE>Coefficients d’un polynôme défini par ses racines : pcoeff pcoef</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr378.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr380.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc465">6.27.28</A>  Convertir un polynôme de <I>n</I> variables en une liste : <TT>convert convertir</TT></H3><P><A NAME="@default711"></A><A NAME="@default712"></A><A NAME="@default713"></A><A NAME="sec:convertpolyl"></A>
-<TT>convert</TT>, avec l’option <TT>list</TT>, permet de convertir un
-polynôme de <I>n</I> variables en une liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc465">6.27.25</A>  Coefficients d’un polynôme défini par ses racines : <TT>pcoeff pcoef</TT></H3><P><A NAME="@default708"></A><A NAME="@default709"></A>
+<TT>pcoeff</TT> (ou <TT>pcoef</TT>) a comme argument, une liste de 
+composantes les racines d’un polynôme <I>P</I>.<BR>
+<TT>pcoeff</TT> (ou <TT>pcoef</TT>) renvoie une liste de composantes, les 
+coefficients du polynôme unitaire <I>P</I> (par ordre décroissant).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>p:=symb2poly((x+y)</TT><CODE><TT>^</TT></CODE><TT>2,[x,y])</TT></DIV><DIV CLASS="center"><TT>l:=convert(p,list)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>l:=convert(p)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pcoef([1,2,0,0,3])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,[2,0]],[2,[1,1]],[1,[0,2]]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[1,-6,11,-6,0,0]</TT></DIV><P>
+c’est à dire (<I>x</I>−1)(<I>x</I>−2)(<I>x</I><SUP>2</SUP>)(<I>x</I>−3)=<I>x</I><SUP>5</SUP>−6<I>x</I><SUP>4</SUP>+11<I>x</I><SUP>3</SUP>−6<I>x</I><SUP>2</SUP>.</P><HR>
 <A HREF="cascmd_fr378.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr380.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

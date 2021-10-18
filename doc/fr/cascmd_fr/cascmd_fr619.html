@@ -6,157 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice de passage et matrice de Jordan : jordan</TITLE>
+<TITLE>Norme d’une matrice avec la norme des lignes : rownorm 
+rowNorm</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr618.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr620.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc728">6.50.5</A>  Matrice de passage et matrice de Jordan : <TT>jordan</TT></H3><P><A NAME="@default1133"></A>
-<TT>jordan</TT> a comme argument une matrice <I>A</I> d’ordre <I>n</I>.<BR>
-<TT>jordan</TT> renvoie 
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-en mode <TT>Xcas</TT> (il faut être en mode complexe c’est à dire avoir
-coché <TT>Complexe</TT> dans la configuration 
-de CAS lorsqu’il y a des valeurs propres complexes), <TT>Mupad</TT> ou <TT>TI</TT><BR>
-une séquencee composée de
-deux matrices : une matrice de changement de base <I>P</I> de colonnes les vecteurs 
-propres et caractéristiques de <I>A</I>, suivie de la matrice de 
-Jordan <I>J</I> associée à <I>A</I> dans la nouvelle base,
-</LI><LI CLASS="li-itemize">en mode <TT>Maple</TT><BR>
- la matrice de Jordan <I>J</I> associée à <I>A</I> dans la nouvelle base. On peut 
-cependant obtenir la matrice de changement de base <I>P</I>, dans une variable 
-passée en second argument, par exemple 
-<DIV CLASS="center"> <TT>jordan([[1,0,0],[0,1,1],[1,1,-1]],’P’)</TT>
-</DIV>
-</LI></UL><P>
-On a :<BR>
-<I>J</I>=<I>P</I><SUP>−1</SUP><I>AP</I>.<BR>
-<B>Remarques</B>
-Pour <TT>rat_jordan</TT> :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-La syntaxe <TT>Maple</TT> est aussi valable dans les autres modes, par 
-exemple, en mode <TT>Xcas</TT>, on tape :
-<DIV CLASS="center"> <TT>rat_jordan([[4,1,1],[1,4,1],[1,1,4]],’P’)</TT>
-</DIV>
-On obtient :
-<DIV CLASS="center"> <TT>[[1,-1,1/2],[1,0,-1],[1,1,1/2]]</TT>
-</DIV>
-puis <TT>P</TT> renvoie :
-<DIV CLASS="center"> <TT>[[6,0,0],[0,3,0],[0,0,3]]</TT>
-</DIV>,
+<H3 CLASS="subsection"><A NAME="htoc732">6.54.2</A>  Norme d’une matrice avec la norme des lignes : <TT>rownorm</TT><BR>
+<TT>rowNorm</TT></H3><P><A NAME="@default1127"></A><A NAME="@default1128"></A>
+<TT>rownorm</TT> (ou <TT>rowNorm</TT>) a comme argument une matrice <I>A</I>.<BR>
+<TT>rownorm</TT> (ou <TT>rowNorm</TT>) renvoie max<SUB><I>k</I></SUB>(∑<SUB><I>j</I></SUB> |<I>a</I><SUB><I>j</I>,<I>k</I></SUB>|) si 
+l’argument est <I>A</I>=<I>a</I><SUB><I>j</I>,<I>k</I></SUB>.<BR>
 On tape :
-<DIV CLASS="center"> <TT>rat_jordan([[-1,1,0],[0,-1,1],[1,0,-1]])</TT>
-</DIV>
+</P><DIV CLASS="center"><TT>rownorm([[1,2],[3,-4]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>rowNorm([[1,2],[3,-4]])</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"> <TT>[[1,1,-1],[1,0,-1],[1,-1,2]],[[0,0,0],[0,0,-3],[0,1,-3]]</TT>
-</DIV>
-On tape (en mode complexe) :
-<DIV CLASS="center"> <TT>jordan([[-1,1,0],[0,-1,1],[1,0,-1]])</TT>
-</DIV>
-On obtient :
-<DIV CLASS="center"> <TT>[[1,(-i)*sqrt(3)-1,(i)*sqrt(3)-1],[1,2,2], 
-[1,(i)*sqrt(3)-1, (-i)*sqrt(3)-1]], [[0,0,0],
-[0,((i)*sqrt(3)-3)/2,0],[0,0,((-i)*sqrt(3)-3)/2]]</TT>
-</DIV>
-</LI><LI CLASS="li-itemize">Lorsque <I>A</I> est symétrique et a des valeurs propres d’ordre multiple,
-<TT>Xcas</TT> renvoie des vecteurs propres orthogonaux (pas forcément normés 
-i.e. <TT>tran(P)*P</TT>) et une matrice diagonale ayant pour diagonale le carré 
-de la norme des vecteurs propres. 
-par exemple :
-<DIV CLASS="center"> <TT>rat_jordan([[4,1,1],[1,4,1],[1,1,4]])</TT>
-</DIV>
-renvoie :
-<DIV CLASS="center"> <TT>[[1,-1,1/2],[1,0,-1],[1,1,1/2]],[[6,0,0],[0,3,0],[0,0,3]]</TT>
-</DIV>
-</LI></UL><P>
-Pour avoir la matrice de Jordan de :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD></TR>
-<TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE><P>
-on tape en mode <TT>Xcas</TT>, <TT>Mupad</TT> et <TT>TI</TT> :
-</P><DIV CLASS="center"><TT>jordan([[1,0,0],[0,1,1],[1,1,-1]])</TT></DIV><P>
-On obtient :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>−1</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>1</TD></TR>
-<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">−1</TD></TR>
-</TABLE></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">−</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">−1 </TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">, 
-</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD></TR>
-<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">−</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">
-</TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE><P>
-On tape en mode <TT>Maple</TT> :
-</P><DIV CLASS="center"><TT>jordan([[1,0,0],[0,1,1],[1,1,-1]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,0,0],[0,-(sqrt(2)),0],[0,0,sqrt(2)]]</TT></DIV><P>
-On tape en mode <TT>Maple</TT> :
-</P><DIV CLASS="center"><TT>jordan([[1,0,0],[0,1,1],[1,1,-1]],’P’)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,0,0],[0,-(sqrt(2)),0],[0,0,sqrt(2)]]</TT></DIV><P>
-puis on tape :
-</P><DIV CLASS="center"><TT>P)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[-1,0,0],[1,1,1],[0,-sqrt(2)-1,sqrt(2)-1]]</TT></DIV><P>
-On tape en mode <TT>Xcas</TT>, <TT>Mupad</TT> et <TT>TI</TT>:
-</P><DIV CLASS="center"><TT>jordan([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[[1,2,1],[0,1,0],[1,2,0]],[[2,1,0],[0,2,1],[0,0,2]]]</TT></DIV><P>
-En mode complexe et en mode <TT>Xcas</TT>, <TT>Mupad</TT> et <TT>TI</TT>, on tape :
-</P><DIV CLASS="center"><TT>jordan([[2,0,0],[0,2,-1],[2,1,2]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,0,0],[-2,-1,-1],[0,i,-i]],[[2,0,0],[0,2+i,0],[0,0,2-i]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>7</TT></DIV><P>
+En effet : max(1+2,3+4)=7</P><HR>
 <A HREF="cascmd_fr618.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr620.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

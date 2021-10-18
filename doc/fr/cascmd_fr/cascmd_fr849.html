@@ -6,43 +6,54 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Utilisation des instructions du debuggeur : cont halt kill</TITLE>
+<TITLE>Ouvrir le débuggeur : debug</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr848.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr850.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc992">9.7.9</A>  Utilisation des instructions du debuggeur : <TT>cont halt kill</TT></H3><P>
-Les instructions <TT>cont halt kill</TT> n’ont pas d’arguments.<BR>
-<TT>cont halt kill</TT> sont des instructions du debuggeur (voir ci-dessus).<BR>
-<TT>cont()</TT> et <TT>kill()</TT> s’utilisent uniquement dans une session de 
-debogage, quand le programme est arrêté. Typiquement, <TT>kill()</TT> 
-s’utilise quand on a vu où se trouve l’erreur, et que on va savoir corriger 
-le programme, et qu’il est donc inutile de continuer l’exécution du programme
-buggué.<BR>
-<TT>cont()</TT> s’utilise pour atteindre le point d’arrêt suivant.<BR>
-<TT>halt()</TT> peut être mis comme instruction dans le programme pour 
-programmer un point d’arrêt (cela évite de faire une commande 
-<TT>breakpoint</TT> avec un numéro de ligne)
-Par exemple on tape :
-</P><PRE CLASS="verbatim">testhalt(x):={
-  local y; 
-  y:=x;  
-  halt();  
-  return(y);  
+<H3 CLASS="subsection"><A NAME="htoc997">9.7.1</A>  Ouvrir le débuggeur : <TT>debug</TT></H3><P><A NAME="@default1534"></A>
+<TT>debug</TT> a comme argument une fonction et ses arguments.<BR>
+<TT>debug</TT> ouvre l’écran de la fenêtre de mise au point (ou débugger)
+avec sa barre de boutons.
+On a la possibilité :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+d’exécuter le programme au pas
+à pas avec le bouton <TT>sst</TT><A NAME="@default1535"></A> qui inscrit la commande 
+<TT>sst()</TT> dans la ligne de commande,
+</LI><LI CLASS="li-itemize">de mettre des points d’arrêts (breakpoint) avec 
+<TT>break</TT> (ou la commande <TT>breakpoint</TT>), 
+</LI><LI CLASS="li-itemize">d’aller directement avec<TT>cont</TT> à une ligne 
+précise marquée par un point d’arrêt (ou la commande <TT>cont</TT>),
+</LI><LI CLASS="li-itemize">de voir avec <TT>watch</TT> les 
+variables que l’on désire surveiller (ou la commande <TT>watch</TT>),
+</LI><LI CLASS="li-itemize">d’exécuter au pas à pas 
+les instructions d’une fonction utilisateur avec <TT>dans</TT><A NAME="@default1536"></A> qui 
+inscrit la commande <TT>sst_in()</TT> dans la ligne de commande, ou encore 
+</LI><LI CLASS="li-itemize">de sortir brutalement du débuggeur avec <TT>tuer</TT> (ou la commande <TT>kill</TT>).
+</LI></UL><P>
+On tape par exemple :<BR>
+ <TT>debug(pgcd(15,25))</TT>.<BR>
+Il faut bien sûr que le programme <TT>pgcd</TT> existe.<BR>
+Par exemple on a tapé :
+</P><PRE CLASS="verbatim">pgcd(a,b):={
+local r;
+while(b!=0) {
+r:=irem(a,b);
+a:=b;
+b:=r;
 }
-</PRE><P>On tape :
-</P><DIV CLASS="center"><TT>debug(testhalt(5))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>l’ouverture du debuggeur et l’arrêt du programme</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>cont() pour continuer le debugage ou kill() pour l’arrêter</TT></DIV><P>
-<B>Attention</B><BR>
-Si on tape juste <TT>testhalt(5)</TT> sans mettre <TT>debug</TT>, le debuggeur 
-s’ouvre mais, la liste des instructions formant le programme n’est pas
-affichée donc il vaut mieux faire <TT>debug(testhalt(5))</TT> puis enlever 
-les <TT>halt()</TT> quand le programme est au point.</P><HR>
+return a;
+}
+</PRE><P>Puis si on veut observer les variables <TT>a</TT> et <TT>b</TT>, on clique sur 
+<TT>watch</TT> : <TT>watch</TT> s’inscrit dans la ligne <TT>eval</TT> et on compléte
+cette ligne en <TT>watch(a)</TT> puis <TT>enter</TT>, puis on clique sur 
+<TT>watch</TT> et on compléte <TT>watch</TT> en <TT>watch(b)</TT> puis <TT>enter</TT>.<BR>
+Ensuite on clique sur <TT>sst</TT>, et on voit à chaque ètape (la ligne qui 
+est exécutée est en surbrillance) les valeurs de 
+<TT>a</TT> et <TT>b</TT> dans la zone située en dessous de la barre des boutons.
+</P><HR>
 <A HREF="cascmd_fr848.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr850.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

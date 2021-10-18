@@ -6,21 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Axe radical de deux cercles : radical_axis axe_radical</TITLE>
+<TITLE>L’enveloppe convexe de points du plan: convexhull</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr918.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr920.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1076">10.13.8</A>  Axe radical de deux cercles : <TT>radical_axis axe_radical</TT></H3><P><A NAME="@default1774"></A><A NAME="@default1775"></A>
-L’axe radical de deux cercles <I>C</I><SUB>1</SUB> et <I>C</I><SUB>2</SUB> est le lieu des points qui ont
-même puissance par rapport à <I>C</I><SUB>1</SUB> et à <I>C</I><SUB>2</SUB>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>axe_radical(cercle(0,1+i),cercle(1,1+i)))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le tracé de la droite x=1/2</TT></DIV><P>
-En effet : la droite x=1/2 est la médiatrice du segment [0;1]</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1080">10.12.5</A>  L’enveloppe convexe de points du plan: <TT>convexhull</TT></H3><P>
+<A NAME="@default1777"></A>
+L’instruction <TT>convexhull</TT> calcule l’enveloppe convexe d’un
+ensemble de points du plan donné par des points ou des affixes
+de points, elle renvoie une liste de complexes affixes des sommets
+de l’enveloppe convexe. L’algorithme utilisé est le scan de Graham.
+On peut utiliser <CODE>polygone</CODE> sur le résultat de
+<CODE>convexhull</CODE> pour obtenir le tracé de l’enveloppe convexe.</P><P>Par exemple, on tape
+</P><DIV CLASS="center">
+<TT>polygone(convexhull(0,1,1+i,1+2i,-1-i,1-3i,-2+i))</TT>
+</DIV><P>
+pour obtenir l’enveloppe convexe des points d’affixe (0,0), (1,0),
+(1,1), (1,2), (-1,-1), (1,-3), (-2,1).</P><HR>
 <A HREF="cascmd_fr918.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr920.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

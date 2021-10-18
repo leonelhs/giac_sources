@@ -31,7 +31,7 @@
 #if defined VISUALC || defined BESTA_OS 
 typedef long pid_t;
 #else // VISUALC
-#if !defined(__MINGW_H) && !defined(BESTA_OS) && !defined(NSPIRE) && !defined(__ANDROID__) && !defined(NSPIRE_NEWLIB)
+#if !defined(__MINGW_H) && !defined(BESTA_OS) && !defined(NSPIRE) && !defined(__ANDROID__) && !defined(NSPIRE_NEWLIB) && !defined(OSX) && !defined(IOS)
 #include "wince_replacements.h"
 #endif
 #ifdef __MINGW_H
@@ -251,6 +251,7 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   extern int MAX_RECURSION_LEVEL;
   extern int GBASIS_DETERMINISTIC;
   extern int PROOT_FACTOR_MAXDEG;
+  extern int ABS_NBITS_EVALF;
   extern volatile bool ctrl_c,interrupted;
   void ctrl_c_signal_handler(int signum);
 #ifdef TIMEOUT
@@ -292,8 +293,8 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
     // inherited constructors
     dbgprint_vector() : std::imvector<T>::imvector() { };
     dbgprint_vector(const T * b,const T * e) : std::imvector<T>::imvector(b,e) { };
-    dbgprint_vector(int i) : std::imvector<T>::imvector(i) { };
-    dbgprint_vector(int i,const T & t) : std::imvector<T>::imvector(i,t) { };
+    dbgprint_vector(size_t i) : std::imvector<T>::imvector(i) { };
+    dbgprint_vector(size_t i,const T & t) : std::imvector<T>::imvector(i,t) { };
     // ~dbgprint_vector() { };
     // inherited destructors
     void dbgprint() const { COUT << *this << std::endl; }
@@ -307,8 +308,8 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
     dbgprint_vector(const typename std::vector<T>::const_iterator & b,const typename std::vector<T>::const_iterator & e) : std::vector<T>::vector(b,e) { };
 #endif
     dbgprint_vector(const T * b,const T * e) : std::vector<T>::vector(b,e) { };
-    dbgprint_vector(int i) : std::vector<T>::vector(i) { };
-    dbgprint_vector(int i,const T & t) : std::vector<T>::vector(i,t) { };
+    dbgprint_vector(size_t i) : std::vector<T>::vector(i) { };
+    dbgprint_vector(size_t i,const T & t) : std::vector<T>::vector(i,t) { };
     // ~dbgprint_vector() { };
     // inherited destructors
     void dbgprint() const { COUT << *this << std::endl; }
@@ -319,17 +320,17 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   public:
     // inherited constructors
     std_matrix() : std::vector< dbgprint_vector<T> >::vector() { };
-    std_matrix(int i) : std::vector< dbgprint_vector<T> >::vector(i) { };
-    std_matrix(int i,const dbgprint_vector<T> & v) : std::vector< dbgprint_vector<T> >::vector(i,v) { };
-    std_matrix(int i,int j) : std::vector< dbgprint_vector<T> >::vector(i,dbgprint_vector<T>(j)) { };
-    std_matrix(int i,int j,const T & t) : std::vector< dbgprint_vector<T> >::vector(i,dbgprint_vector<T>(j,t)) { };
+    std_matrix(size_t i) : std::vector< dbgprint_vector<T> >::vector(i) { };
+    std_matrix(size_t i,const dbgprint_vector<T> & v) : std::vector< dbgprint_vector<T> >::vector(i,v) { };
+    std_matrix(size_t i,size_t j) : std::vector< dbgprint_vector<T> >::vector(i,dbgprint_vector<T>(j)) { };
+    std_matrix(size_t i,size_t j,const T & t) : std::vector< dbgprint_vector<T> >::vector(i,dbgprint_vector<T>(j,t)) { };
     // ~dbgprint_vector() { };
     // inherited destructors
     std_matrix<T> transpose() const {
       if (std::vector< dbgprint_vector<T> >::empty())
 	return *this;
-      int n=std::vector< dbgprint_vector<T> >::size();
-      int m=std::vector< dbgprint_vector<T> >::front().dbgprint_vector<T>::size();
+      int n=int(std::vector< dbgprint_vector<T> >::size());
+      int m=int(std::vector< dbgprint_vector<T> >::front().dbgprint_vector<T>::size());
       std_matrix<T> res(m,n);
       typename std_matrix<T>::const_iterator it=std::vector< dbgprint_vector<T> >::begin();
       for (int i=0;i<n;++i,++it){
@@ -365,6 +366,8 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   // vecteurs and dense 1-d polynomilas
 
   typedef dbgprint_vector<gen> vecteur; // debugging support
+
+  vecteur * keywords_vecteur_ptr(); // idnt assigned to a commandname for localization, like mediatrice for perpen_bissector
 
   class context;
   
@@ -495,6 +498,7 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
     bool _expand_re_im_;
     bool _do_lnabs_;
     bool _eval_abs_;
+    bool _eval_equaltosto_;
     bool _integer_mode_;
     bool _complex_mode_;
     bool _complex_variables_;
@@ -664,6 +668,9 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   bool & eval_abs(GIAC_CONTEXT);
   void eval_abs(bool b,GIAC_CONTEXT);
 
+  bool & eval_equaltosto(GIAC_CONTEXT);
+  void eval_equaltosto(bool b,GIAC_CONTEXT);
+
   bool & complex_variables(GIAC_CONTEXT);
   void complex_variables(bool b,GIAC_CONTEXT);
 
@@ -696,8 +703,11 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   std::vector<logo_turtle> & turtle_stack(GIAC_CONTEXT);
 
   int & angle_mode(GIAC_CONTEXT);
-  void angle_radian(bool b,GIAC_CONTEXT);
+  int get_mode_set_radian(GIAC_CONTEXT);
+  void angle_mode(int m,GIAC_CONTEXT);
   bool angle_radian(GIAC_CONTEXT);
+  void angle_radian(bool b,GIAC_CONTEXT);
+  bool angle_degree(GIAC_CONTEXT);
 
   bool & show_point(GIAC_CONTEXT);
   void show_point(bool b,GIAC_CONTEXT);

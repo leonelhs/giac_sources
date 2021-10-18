@@ -413,10 +413,16 @@ namespace giac {
     _7VAR_ORDER=7, // GROEBNER_VARS==15 : double revlex 7 params at end, 7 variables
     _11VAR_ORDER=11, // GROEBNER_VARS==15 : 3 params at end, 11 variables
     // use negative values for RUR
+    _16VAR_ORDER=16, // 16 variables to eliminate
+    _32VAR_ORDER=32, // 32 variables to eliminate
+    _64VAR_ORDER=64, // 64 variables to eliminate
     _RUR_REVLEX=-4,
     _RUR_3VAR=-3,
     _RUR_7VAR=-7,
     _RUR_11VAR=-11,
+    _RUR_16VAR=-16,
+    _RUR_32VAR=-32,
+    _RUR_64VAR=-64,
   };
 
   enum int_subtypes {
@@ -561,6 +567,14 @@ namespace giac {
     step_rrefpivot=22,
     step_rrefpivot0=23,
     step_rrefend=24,
+    step_extrema1=25,
+    step_extrema2=26,
+    step_extrema3=27,
+    step_extrema4=28,
+    step_extrema5=29,
+    step_extrema6=30,
+    step_extrema7=31,
+    step_extrema8=32,
   };
 
 #ifndef NO_NAMESPACE_GIAC

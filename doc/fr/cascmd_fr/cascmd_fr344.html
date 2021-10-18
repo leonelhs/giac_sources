@@ -6,25 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Développer les exponentielles : expexpand</TITLE>
+<TITLE>L’inverse de la transformée de Fourier rapide : ifft</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr343.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr345.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc429">6.26.2</A>  Développer les exponentielles : <TT>expexpand</TT></H3><P><A NAME="@default662"></A>
-<TT>expexpand</TT> a comme argument une expression contenant des 
-exponentielles.<BR>
-<TT>expexpand</TT> développe cette expression.<BR>
+<H3 CLASS="subsection"><A NAME="htoc428">6.25.4</A>  L’inverse de la transformée de Fourier rapide : <TT>ifft</TT></H3><P><A NAME="@default663"></A>
+<TT>ifft</TT> a comme argument une liste <TT>[<I>b</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>b</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT>
+(ou une séquence) où <TT>N</TT> est une puissance de deux.<BR>
+<TT>ifft</TT> renvoie la liste <TT>[<I>a</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>a</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT> tel que :<BR>
+<TT><I>fft</I>([<I>a</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>a</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>])=[<I>b</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>b</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>expexpand(exp(3*x))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>ifft([2,-1-i,0,-1+i])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>exp(x)</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>expexpand(exp(3*x)+exp(2*x+2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>exp(x)</TT><CODE><TT>^</TT></CODE><TT>3+exp(x)</TT><CODE><TT>^</TT></CODE><TT>2*exp(2)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[0.0, 1.0, 1.0, 0.0]</TT></DIV><P>
+Comme pour la <TT>fft</TT>, on peut travailler sur un corps fini en
+indiquant une
+racine <I>N</I>-ième primitive de l’unité en 2ième argument
+et <I>p</I> en 3ième argument de <TT>ifft</TT>.</P><HR>
 <A HREF="cascmd_fr343.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr345.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

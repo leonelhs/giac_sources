@@ -6,20 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Instruction du debuggeur : rmbreakpoint</TITLE>
+<TITLE>Pour ne pas faire la fin d’une boucle : continue</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr844.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr846.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc988">9.7.5</A>  Instruction du debuggeur : <TT>rmbreakpoint</TT></H3><P><A NAME="@default1524"></A>
-<TT>rmbreakpoint</TT> a comme argument le numéro de la ligne où l’on 
-ne veut plus un point d’arrêt.<BR>
-On tape par exemple :
-</P><DIV CLASS="center"><TT>rmbreakpoint(4)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc992">9.6.3</A>  Pour ne pas faire la fin d’une boucle : <TT>continue</TT></H3><P><A NAME="@default1530"></A>
+<TT>continue</TT> n’a pas d’argument ni parenthèse.<BR>
+<TT>continue</TT> dans une boucle, permet d’ignorer la fin de l’itération 
+et ainsi de passer directement à l’itération suivante.<BR>
+On tape :
+</P><PRE CLASS="verbatim">testcont(b):={
+local a;
+a:=10;
+while (a&gt;0) {
+a:=a-3; 
+if (a&gt;=b) {continue;} 
+print(a);
+}
+}
+</PRE><P>puis on tape :
+</P><DIV CLASS="center"><TT>testcont(4)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le point d’arrêt à la ligne 4 a été effacé</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>a:1 et a:-2 écrit en bleu et 1 comme réponse</TT></DIV><P>
+car <TT>a</TT> est imprimé que si <TT>a&lt;b=4</TT>
+</P><HR>
 <A HREF="cascmd_fr844.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr846.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

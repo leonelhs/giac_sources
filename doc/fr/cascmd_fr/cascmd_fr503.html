@@ -6,39 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Avoir la liste permutée à partir de son n-ième élément : shift</TITLE>
+<TITLE>Partie droite et gauche d’une liste : droit ou right, gauche ou left</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr502.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr504.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc603">6.41.11</A>  Avoir la liste permutée à partir de son n-ième élément : <TT>shift</TT></H3><P><A NAME="@default891"></A>
-<TT>shift</TT> a comme argument une liste et un nombre entier relatif 
-(par défaut <TT>n=-1</TT>).<BR>
-<TT>shift</TT> renvoie :
+<H3 CLASS="subsection"><A NAME="htoc603">6.41.8</A>  Partie droite et gauche d’une liste : <TT>droit ou right, gauche ou left</TT></H3><P><A NAME="@default889"></A><A NAME="@default890"></A><A NAME="@default891"></A><A NAME="@default892"></A>
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <TT>n&gt;0</TT> la liste obtenue en remplaçant les <TT>n</TT> premiers 
-éléments de la liste par <TT>undef</TT>, puis en en permuttant ces <TT>n</TT>
-premiers éléments avec la fin de la liste,
-</LI><LI CLASS="li-itemize">si <TT>n&lt;0</TT> en remplaçant les 
-<TT>-n</TT> derniers éléments de la liste par <TT>undef</TT>, puis en permuttant les 
-<TT>-n</TT> derniers éléments avec le début de la liste. Par défaut 
-(<TT>n=-1</TT>) le premier élément vaut <TT>undef</TT> et il est suivi par la liste 
-privée de son dernier élément.
-</LI></UL><P>
-On tape :
-</P><DIV CLASS="center"><TT>shift([0,1,2,3,4])</TT></DIV><P>
+<TT>droit(l,n)</TT> ou <TT>right(l,n)</TT> renvoie les <I>n</I> derniers éléments
+d’une liste <TT>l</TT>.<BR>
+ On tape :
+<DIV CLASS="center"><TT>droit([0,1,2,3,4,5,6,7,8],4)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>right([0,1,2,3,4,5,6,7,8],4)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[undef,0,1,2,3]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>shift([0,1,2,3,4],2)</TT></DIV><P>
+<DIV CLASS="center"><TT>[5,6,7,8] </TT></DIV>
+</LI><LI CLASS="li-itemize"><TT>gauche(l,n)</TT> ou <TT>left(l,n)</TT> renvoie les <I>n</I> premiers éléments
+d’une liste <TT>l</TT>.<BR>
+ On tape :
+<DIV CLASS="center"><TT>gauche([0,1,2,3,4,5,6,7,8],3)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>left([0,1,2,3,4,5,6,7,8],3)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,3,4,undef,undef]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>shift([0,1,2,3,4],-2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[undef,undef,0,1,2]</TT></DIV><HR>
+<DIV CLASS="center"><TT>[0,1,2]</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr502.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr504.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

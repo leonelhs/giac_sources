@@ -6,86 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les coordonnées d’un point, d’un vecteur ou d’une droite 3-d : coordinates coordonnees</TITLE>
+<TITLE>Les polygones quelconques dans l’espace : polygon polygone</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1024.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1026.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1202">11.12.4</A>  Les coordonnées d’un point, d’un vecteur ou d’une droite 3-d : <TT>coordinates coordonnees</TT></H3><P><A NAME="@default1987"></A><A NAME="@default1988"></A><A NAME="sec:coordonnees3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr926.html#sec:coordonnees2">10.15.4</A> pour la géométrie plane.<BR>
-<TT>coordonnees</TT>, en géométrie 3-d, est une fonction ayant 
-comme argument un point ou un vecteur ou une droite 3-d.<BR>
-<TT>coordonnees</TT> renvoie la liste de l’abscisse, de l’ordonnée et de la cote
-du point ou du vecteur ou renvoie une matrice de 2 lignes qui donnent 
-l’abscisse, l’ordonnée et la cote de 2 points de la droite orientée.<BR>
-On a :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si le point <TT>A</TT> a pour coordonnées cartésiennes 
-(<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>A</I></SUB>,<I>z</I><SUB><I>A</I></SUB>),<BR>
- <TT>coordonnees(A)</TT> renvoie [<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>A</I></SUB>,<I>z</I><SUB><I>A</I></SUB>], 
-</LI><LI CLASS="li-itemize">si le point <TT>B</TT> a pour coordonnées cartésiennes 
-(<I>x</I><SUB><I>B</I></SUB>,<I>y</I><SUB><I>B</I></SUB>,<I>z</I><SUB><I>B</I></SUB>),<BR>
- <TT>coordonnees(vecteur(A,B))</TT> ou <TT>B-A</TT> renvoie<BR>
-[<I>x</I><SUB><I>B</I></SUB>−<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>B</I></SUB>−<I>y</I><SUB><I>A</I></SUB>,<I>z</I><SUB><I>B</I></SUB>−<I>z</I><SUB><I>A</I></SUB>]<BR>
-car <TT>B-A</TT> désigne les coordonnées du 
-vecteur <I>AB</I>,
-</LI><LI CLASS="li-itemize">si le vecteur <TT>V</TT> a pour coordonnées cartésiennes 
-(<I>x</I><SUB><I>V</I></SUB>,<I>y</I><SUB><I>V</I></SUB>,<I>z</I><SUB><I>V</I></SUB>),<BR>
- <TT>coordonnees(V)</TT> ou <TT>coordonnees(vecteur(A,V))</TT> renvoie<BR>
-[<I>x</I><SUB><I>V</I></SUB>,<I>y</I><SUB><I>V</I></SUB>,<I>z</I><SUB><I>V</I></SUB>],
-</LI><LI CLASS="li-itemize">si une droite <TT>d</TT> est définie par deux points <TT>A</TT> et <TT>B</TT>,<BR>
-<TT>coordonnees(d)</TT> renvoie <TT>[coordonnees(A),coordonnees(B)]</TT>,
-</LI><LI CLASS="li-itemize">si une droite <TT>d</TT> est définie par son équation,<BR>
-<TT>coordonnees(d)</TT> renvoie <TT>[coordonnees(A),coordonnees(B)]</TT> où <TT>A</TT>
-et <TT>B</TT> sont deux points de la droite <TT>d</TT>, le vecteur <TT>AB</TT> ayant 
-même orientation que <TT>d</TT>.
-</LI></UL><P>
+<H3 CLASS="subsection"><A NAME="htoc1204">11.9.3</A>  Les polygones quelconques dans l’espace : <TT>polygon polygone</TT></H3><P><A NAME="@default1987"></A><A NAME="@default1988"></A><A NAME="sec:polygone3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr917.html#sec:polygone2">10.12.3</A> pour la géométrie plane.<BR>
+<TT>polygone</TT>, en géométrie 3-d, a comme argument un séquence 
+de points de l’espace qui sont les sommets du polygone.<BR>
+<TT>polygone(A,B,C,D,E,F)</TT> renvoie et trace le polygone <I>ABCDEF</I> 
+si les points <I>A</I>,<I>B</I>,<I>C</I>,<I>D</I>,<I>E</I>,<I>F</I> sont dans un même plan ou sinon trace la ligne
+polygonale fermée <I>A</I>,<I>B</I>,<I>C</I>,<I>D</I>,<I>E</I>,<I>F</I>,<I>A</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>coordonnees(point([1,2,3]))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>coordonnees(point(1,2,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>C:=point(0,0,3)</TT></DIV><DIV CLASS="center"><TT>D:=point(-3,-3,0)</TT></DIV><DIV CLASS="center"><TT>E:=point(-3,-3,-3)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>polygone(A,B,C,D,E)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,2,3]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>coordonnees(vecteur(point([1,2,3]),point([2,4,7])))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>coordonnees(vecteur(point(1,2,3),point(2,4,7)))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>coordonnees(vecteur([1,2,3],[2,4,7])))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>coordonnees(vecteur([1,2,4])))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>coordonnees(vecteur([1,2,3],vecteur([1,2,4])))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>point([2,4,7])-point([1,2,3])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1,2,4]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>d:=droite(point(-1,1,0),point(1,2,3))</TT></DIV><DIV CLASS="center"><TT>coordonnees(d)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[-1,1,0],[1,2,3]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>d:=droite(x-2*y+3=0,6*x+3*y-5*z+3=0)</TT></DIV><DIV CLASS="center"><TT>coordonnees(d)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[-1,1,0],[9,6,15]]</TT></DIV><P>
-<B>Attention</B><BR>
-<TT>coordonnees</TT> peut aussi avoir comme argument une séquence ou une liste
-de points. <TT>coordonnees</TT> renvoie alors la séquence ou la liste des
-listes des coordonnées de ces points, par exemple :<BR>
-<TT>coordonnees(point([0,1,2]),point([1,2,4]))</TT><BR>
-renvoie la séquence :<BR>
-<TT>[0,1,2],[1,2,4]</TT><BR>
-et<BR>
-<TT>coordonnees([point([0,1,2]),point([1,2,4])])</TT><BR>
- renvoie la matrice :<BR>
-<TT>[[0,1,2],[1,2,4]]</TT> mais<BR>
-<TT>coordonnees([1,2,4])</TT><BR>
- renvoie la matrice :<BR>
-<TT>[[1,0],[2,0],[4,0]]</TT><BR>
- car <TT>[1,2,4]</TT> est considéré comme la liste de
-3 points d’affixe <TT>1</TT>, <TT>2</TT> et <TT>4</TT>.</P><HR>
+</P><DIV CLASS="center"><TT>Le polygone ABCDE dans le plan x=y</TT></DIV><HR>
 <A HREF="cascmd_fr1024.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1026.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

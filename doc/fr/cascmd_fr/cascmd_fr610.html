@@ -6,25 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Norme de Frobenius d’une matrice : frobenius_norm</TITLE>
+<TITLE>Noyau d’une application linéaire : Nullspace</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr609.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr611.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc718">6.49.1</A>  Norme de Frobenius d’une matrice : <TT>frobenius_norm</TT></H3><P><A NAME="@default1111"></A><A NAME="sec:fnormm"></A>
-<TT>frobenius_norm</TT> a comme argument une matrice <I>A</I> 
-(voir aussi <A HREF="cascmd_fr535.html#sec:l2normv">6.42.1</A>).<BR>
-<TT>frobenius_norm</TT> renvoie la norme de Frobenius de <I>A</I> i.e.<BR>
- √<SPAN style="text-decoration:overline">∑</SPAN><SUB><SPAN style="text-decoration:overline"><I>j</I>,<I>k</I></SPAN></SUB><SPAN style="text-decoration:overline"> <I>a</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>j</I>,<I>k</I></SPAN></SUB><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> si l’argument est <I>A</I>=<I>a</I><SUB><I>j</I>,<I>k</I></SUB>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc721">6.52.13</A>  Noyau d’une application linéaire : <TT>Nullspace</TT></H3><P><A NAME="@default1122"></A>
+<B>Attention</B> <TT>Nullspace</TT> n’est utilisable qu’en mode Maple 
+(bouton donnant la ligne d’état puis <TT>Prog style</TT> et choisir <TT>Maple</TT> 
+puis <TT>OK</TT>).<BR>
+<TT>Nullspace</TT> est la forme inerte de <TT>nullspace</TT>.<BR>
+<TT>Nullspace</TT> a comme argument la matrice d’une 
+application linéaire <I>f</I> dans la base canonique.<BR>
+<TT>Nullspace</TT>) suivi de <TT>mod p</TT>renvoie une liste de vecteurs formant une 
+base du noyau de <I>f</I> calculés dans ℤ/<I>p</I>ℤ[<I>X</I>].<BR>
 On tape :
-</P><DIV CLASS="center"><TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT></DIV><P>
-puis,
-</P><DIV CLASS="center"><TT>frobenius_norm(B)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Nullspace([[1,1,2],[2,1,3],[3,1,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(217)</TT></DIV><P>
-En effet : √<SPAN style="text-decoration:overline">1+4+9+9+81+36+16+25+36</SPAN>=√<SPAN style="text-decoration:overline">217</SPAN>≃ 14.7309198627</P><HR>
+</P><DIV CLASS="center"><TT>nullspace([[1,1,2],[2,1,3],[3,1,4]])</TT></DIV><P>
+On tape (en mode Maple) :
+</P><DIV CLASS="center"><TT>Nullspace([[1,2],[3,1]]) mod 5</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,-1]</TT></DIV><P>
+En mode <TT>Xcas</TT> la commande équivalent est :
+</P><DIV CLASS="center"><TT>nullspace([[1,2],[3,1]] % 5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2% 5,-1]</TT></DIV><HR>
 <A HREF="cascmd_fr609.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr611.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

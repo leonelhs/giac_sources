@@ -6,21 +6,39 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Complément à 1 de la fonction de répartition de la loi du χ2 : UTPC</TITLE>
+<TITLE>Complément à 1 de la fonction de répartition de la loi normale : UTPN</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr756.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr758.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc891">8.4.22</A>  Complément à 1 de la fonction de répartition de la loi du χ<SUP>2</SUP> : <TT>UTPC</TT></H3><P><A NAME="@default1351"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi du χ<SUP>2</SUP> ayant <I>n</I> degrés
-de liberté,
-on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPC(n,x)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc896">8.4.14</A>  Complément à 1 de la fonction de répartition de la loi normale : <TT>UTPN</TT></H3><P><A NAME="@default1357"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi normale centrée réduite,
+on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPN(x)</TT>.<BR>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi normale de moyenne µ et 
+de variance <I>v</I>, on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPN(</TT><TT>µ</TT><TT>,v,x)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>UTPC(5,11)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>UTPN(1.96)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0513799834831</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.0249978951482</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>UTPN(1,4,1.96)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.315613696516</TT></DIV><P>
+<B>Attention</B><BR>
+Les paramètres de <TT>UTPN</TT> sont la moyenne de <I>X</I>, la variance de <I>X</I>,
+et la valeur <I>x</I>, alors que,
+pour <TT>normal_cdf</TT> les paramètres sont la moyenne de <I>X</I>, l’écart-type 
+de <I>X</I> et la valeur <I>x</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>UTPN(1.96)+normal_cdf(1.96)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>UTPN(1,4,1.96)+normal_cdf(1,2,1.96)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr756.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr758.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

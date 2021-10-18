@@ -6,68 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’instruction conditionnelle : if then else end, si alors sinon fsi</TITLE>
+<TITLE>Les sorties de ab : printpow</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr819.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr821.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc960">9.4.18</A>  L’instruction conditionnelle : <TT>if then else end, si alors sinon fsi</TT></H3><P><A NAME="@default1470"></A><A NAME="@default1471"></A><A NAME="@default1472"></A><A NAME="@default1473"></A><A NAME="@default1474"></A><A NAME="@default1475"></A><A NAME="@default1476"></A><A NAME="@default1477"></A>
-<TT>if</TT> est suivi d’un booléen entre des parenthèses.<BR>
-<TT>if</TT> permet de faire, ou de ne pas faire, un bloc d’instructions, selon la 
-valeur de ce booléen.<BR>
-<TT>if</TT> utilisé avec <TT>else</TT> permet de choisir de faire, soit un bloc 
-d’instructions, soit un autre bloc d’instructions , selon la valeur du 
-booléen.<BR>
-<TT>fi</TT> est suivi d’un booléen et de <TT>then</TT>.<BR>
-Selon la valeur de ce booléen <TT>if</TT> permet de faire, ou de ne pas faire, 
-les instructions situées entre <TT>else</TT> et <TT>end</TT>.<BR>
-Selon la valeur de ce booléen <TT>if</TT> utilisé avec <TT>else</TT> permet de 
-choisir de faire, soit 
-les instructions situées entre <TT>then</TT> et <TT>else</TT>, soit les 
-instructions situées entre <TT>else</TT> et <TT>end</TT>.<BR>
-<TT>si</TT> est suivi d’un booléen et de <TT>alors</TT>.<BR>
-Selon la valeur de ce booléen <TT>si</TT> permet de faire, ou de ne pas faire, 
-les instructions situées entre <TT>alors</TT> et <TT>fsi</TT>.<BR>
-Selon la valeur de ce booléen <TT>si</TT> utilisé avec <TT>sinon</TT> permet de 
-choisir de faire, soit 
-les instructions situées entre <TT>alors</TT> et <TT>sinon</TT>, soit les 
-instructions situées entre <TT>sinon</TT> et <TT>fsi</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>a:=3;b:=2;</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc965">9.4.10</A>  Les sorties de <I>a</I><SUP><I>b</I></SUP> : <TT>printpow</TT></H3><P><A NAME="@default1469"></A>
+L’instruction <TT>printpow</TT> modifie la façon dont les puissances sont 
+affichées en mode texte ou après une commande <TT>print</TT>.<BR>
+<TT>printpow</TT> a comme argument soit <TT>0</TT>, soit <TT>1</TT>, soit <TT>-1</TT>.<BR>
+<TT>printpow(0)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture mathématique 
+<TT>a</TT><CODE><TT>^</TT></CODE><TT>b</TT>.<BR>
+<TT>printpow(1)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture en langage C
+<TT>pow(a,b)</TT>.<BR>
+<TT>printpow(-1)</TT> écrit <I>a</I><SUP><I>b</I></SUP> selon l’écriture d’autres langages
+<TT>a**b</TT>.<BR>
+De plus ces 3 syntaxes sont admises en input.<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>printpow(0)</TT></DIV><P>
 puis :
-</P><DIV CLASS="center"><TT>if (a&gt;b) {a:=a+5;b:=a-b;}</TT></DIV><P>
+</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>6</TT></DIV><P>
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>3 écrit en bleu et 8 comme
+réponse</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>a:=3;b:=2;</TT></DIV><P>
-puis :</P><DIV CLASS="center"><TT>if a&gt;b then a:=a+5;b:=a-b;end</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>6</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>a:=3;b:=2;</TT></DIV><P>
-puis :</P><DIV CLASS="center"><TT>si a&gt;b alors a:=a+5;b:=a-b;fsi</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>6</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>maxi(a,b):={if (a&gt;b) {return a;} else {return b;}}</TT></DIV><P>
+</P><DIV CLASS="center"><TT>printpow(1)</TT></DIV><P>
 puis :
-</P><DIV CLASS="center"><TT>maxi(2,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT> 3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pow(2,3) écrit en bleu et 8 comme
+réponse</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>maxi(a,b):={if a&gt;b then return a; else return b;end}</TT></DIV><P>
+</P><DIV CLASS="center"><TT>printpow(-1)</TT></DIV><P>
 puis :
-</P><DIV CLASS="center"><TT>maxi(2,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>print(2</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>maxi(a,b):={si a&gt;b alors retourne a; sinon retourne b;fsi}</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>maxi(2,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>2**3 écrit en bleu et 8 comme
+réponse</TT></DIV><HR>
 <A HREF="cascmd_fr819.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr821.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

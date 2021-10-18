@@ -6,28 +6,39 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Graphe de la régression polynomiale : 
- polynomial_regression_plot</TITLE>
+<TITLE>Interpolation linéaire : linear_interpolate</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr721.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr723.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc854">8.2.17</A>  Graphe de la régression polynomiale :<BR>
- <TT>polynomial_regression_plot</TT></H3><P><A NAME="@default1292"></A>
-Pour approcher les données par le grahe d’une fonction polynômiale de 
-degré ≤ <I>n</I> d’équation <I>y</I>=<I>a</I><SUB>0</SUB><I>x</I><SUP><I>n</I></SUP>+..+<I>a</I><SUB><I>n</I></SUB>, on utilise 
-<TT>polynomial_regression_plot</TT>.<BR>
-<TT>polynomial_regression_plot</TT> a les mêmes premiers arguments que 
-<TT>covariance</TT>, le dernier argument étant le degré du polynôme 
-renvoyé.<BR>
+<H3 CLASS="subsection"><A NAME="htoc859">8.2.9</A>  Interpolation linéaire : <TT>linear_interpolate</TT></H3><P><A NAME="@default1294"></A>
+É tant donné une matrice à 2 lignes donnant
+les coordonnées de points : apres avoir ordonné les abcisses de ces points,
+ces points définissent une ligne polygonale.
+On veut avoir les coordonnées des points de cette ligne pour des points
+définis de maniere régulière.<BR>
+<TT>linear_interpolate</TT> a 4 arguments, une matrice <TT>A</TT> à 2 lignes donnant
+les coordonnées des points d’une ligne polygonale, la valeur minimum des x 
+(<TT>xmin</TT>), la valeur maximum des x (<TT>xmax</TT>) et le pas (<TT>xstep</TT>).<BR>
+<TT>linear_interpolate</TT> renvoie les coordonnées des points de la ligne 
+polygonale pour x variant de <TT>xmin</TT> à <TT>xmax</TT> avec un pas ègal à 
+<TT>xstep</TT>.<BR>
+<B>Remarque</B> on doit avoir <TT>xmin</TT> et <TT>xmax</TT> dans l’intervalle 
+<TT>[min(A[0]);max(A[0])]</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>polynomial_regression_plot([[1.0,1],[2,4],[3,9],[4,16]],3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>linear_interpolate([[1,2,6,9],[3,4,6,12]],1,9,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le graphe de la fonction polynômiale de degré </TT><TT>≤ <I>n</I></TT><TT> d’équation </TT><TT><I>y</I>=<I>x</I></TT><SUP><TT>2</TT></SUP></DIV><P>
-car c’est la fonction polynômiale d’équation <I>y</I>=1*<I>x</I><SUP>2</SUP> qui approche au 
-mieux les données.</P><HR>
+</P><DIV CLASS="center"><TT>[[1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0],[3.0,4.0,4.5,5.0,5.5,6.0,8.0,10.0,12.0]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>linear_interpolate([[1,2,6,9],[3,4,6,12]],2,7,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[2.0,3.0,4.0,5.0,6.0,7.0],[4.0,4.5,5.0,5.5,6.0,8.0]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>linear_interpolate([[1,2,9,6],[3,4,6,12]],1,9,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0],[3.0,4.0,6.0,8.0,10.0,12.0,10.0,8.0,6.0]]</TT></DIV><HR>
 <A HREF="cascmd_fr721.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr723.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

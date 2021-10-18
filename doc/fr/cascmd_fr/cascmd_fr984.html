@@ -6,24 +6,57 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tracer un repère : repere_3d frame_3d</TITLE>
+<TITLE>Division harmonique : harmonic_division div_harmonique</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr983.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr985.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1152">11.3.2</A>  Tracer un repère : <TT>repere_3d frame_3d</TT></H3><P><A NAME="@default1914"></A> <A NAME="@default1915"></A>
-<TT>repere_2d() frame_2d()</TT> trace le repère de écran de 
-géométrie 2-d.<BR>
-Vous pouvez effacer les axes (resp les faire réapparaitre) en 
-cochant (resp décochant) <TT>Montrer les axes</TT> avec le bouton <TT>cfg</TT>
-de l’écran de géométrie.<BR>
-Ces commandes n’ont pas de paramètre.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1152">10.19.3</A>  Division harmonique : <TT>harmonic_division div_harmonique</TT></H3><P><A NAME="@default1910"></A><A NAME="@default1911"></A>
+Quatre points alignés <I>A</I>, <I>B</I>, <I>C</I>, <I>D</I> sont en division harmonique 
+si on a :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>CA</I></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>CB</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">=−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>DA</I></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>DB</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">=<I>k</I></TD></TR>
+</TABLE><P>
+On dit aussi que <I>C</I> et <I>D</I> divisent le segment <I>AB</I> dans le rapport <I>k</I> et que
+le point <I>D</I> est le conjugué harmonique de <I>C</I> par rapport à <I>A</I> et <I>B</I>
+ou plus rapidement <I>D</I> est le conjugué harmonique de <I>A</I>,<I>B</I>,<I>C</I>.<BR>
+Quatre droites concourantes ou parallèles <I>d</I>1, <I>d</I>2, <I>d</I>3, <I>d</I>4 sont 
+en division harmonique si elles déterminent sur chaque droite sécante une
+division harmonique. On dit aussi que <I>d</I>1, <I>d</I>2, <I>d</I>3, <I>d</I>4 forment un
+faisceau harmonique.<BR>
+<TT>div_harmonique</TT> a comme arguments 3 points alignés ou leur 3 affixes
+(resp 3 droites concourantes ou parallèles) et le nom d’une variable.<BR>
+<TT>div_harmonique</TT> affecte le dernier argument pour que l’on obtienne une 
+division harmonique et renvoie la liste des 4 points (resp des 4 
+droites) et dessine les points (resp les droites).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>repere_3d()</TT></DIV><P>
+</P><DIV CLASS="center"><TT>div_harmonique(0,2,3/2,D)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le repère de écran de géométrie 3-d</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[0,2,3/2,pnt(3,0,"D")] et seul le point </TT><TT><I>D</I></TT><TT> est dessiné</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>div_harmonique(point(0),point(2),point(3/2),D)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[pnt(0,0),pnt(2,0),pnt(3/2,0), pnt(3,0,"D")] et les 4 points sont dessinés</TT></DIV><P>
+<B>Remarque</B> : 0 représente la couleur du point.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>div_harmonique(droite(i,0),droite(i,1+i), droite(i,3+2*(i)),D)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[pnt([[i,0],0]),pnt([[i,1+i],0]), pnt([[i,3+2*i],0]),pnt([[i,-3+2*i],0,"D"])] et les 4 droites sont dessinées</TT></DIV><HR>
 <A HREF="cascmd_fr983.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr985.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

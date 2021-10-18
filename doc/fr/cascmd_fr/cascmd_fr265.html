@@ -6,39 +6,122 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Zéros complexe d’une expression : cZeros</TITLE>
+<TITLE>Factorisation : factor factoriser</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr264.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr266.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc338">6.14.14</A>  Zéros complexe d’une expression : <TT>cZeros</TT></H3><P><A NAME="@default447"></A>
-<TT>cZeros</TT> a comme paramètre une expression.<BR>
-<TT>cZeros</TT> renvoie la liste des éléments complexes qui annulent 
-l’expression.<BR>
-<B>Remarque</B><BR>
-Différence entre <TT>zeros</TT> et <TT>cZeros</TT> :
-En mode complexe <TT>zeros</TT> renvoie le même résultat que <TT>cZeros</TT> 
-(pour <TT>cZeros</TT> que l’on soit en mode complexe ou réel cela importe peu).
-Ainsi, si on ne veut pas que le résultat dépende du mode, pour avoir les 
-solutions complexes il est préférable d’utiliser <TT>cZeros</TT>.<BR>
-On tape en mode réel ou complexe: 
-</P><DIV CLASS="center"><TT>cZeros(x</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV><P> 
+<H3 CLASS="subsection"><A NAME="htoc338">6.14.11</A>  Factorisation : <TT>factor factoriser</TT></H3><P><A NAME="@default442"></A><A NAME="@default443"></A><A NAME="sec:factore"></A>
+<TT>factor</TT> ou <TT>factoriser</TT> a comme paramètre une expression.<BR>
+<TT>factor</TT> ou <TT>factoriser</TT> factorise cette expression sur le corps de 
+ses coefficients si <TT>Complex</TT> et <TT>Sqrt</TT> sont décochés dans 
+l’écran de configuration du <TT>CAS</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>2-x-2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[-2*i,2*i]</TT></DIV><P> 
-On tape : 
-</P><DIV CLASS="center"><TT>cZeros(ln(x)</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>(x-2)*(x+1)</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV><P>
+On obtient si <TT>Sqrt</TT> est décoché dans la configjuration du CAS :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV><P> 
+On obtient si <TT>Sqrt</TT> est coché dans la configjuration du CAS :
+</P><DIV CLASS="center"><TT>(x-(sqrt(2)))*(x+sqrt(2))</TT></DIV><P> 
+<TT>factor</TT> ou <TT>factoriser</TT> avec un 2ième argument est fait pour factoriser sur une extension algebrique, déterminée par ce 2ième argument.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>factor((x</TT><CODE><TT>^</TT></CODE><TT>2-2)*(x</TT><CODE><TT>^</TT></CODE><TT>2-3),sqrt(3))</TT></DIV><P>
+On obtient si <TT>Sqrt</TT> est décoché dans la configjuration du CAS :
+</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2-2)*(x-sqrt(3))*(x+sqrt(3))</TT></DIV><P><B>Remarque</B>
+<TT>=&gt;*</TT> est la version postfixée de <TT>factor</TT>.<BR>
+On peut aussi utiliser <TT>convert</TT> avec l’option <TT>’*’</TT>
+ou sa version infixée<TT>=&gt;</TT> avec l’option <TT>*</TT> :
+On tape :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-x-2=&gt;*</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>convert(x</TT><CODE><TT>^</TT></CODE><TT>2-x-2,’*’)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[exp(sqrt(2)),exp(-(sqrt(2)))]</TT></DIV><P> 
-On tape : 
-</P><DIV CLASS="center"><TT>cZeros(ln(y)</TT><CODE><TT>^</TT></CODE><TT>2-2,y)</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>(x-2)*(x+1)</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-x-2=&gt;*</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>convert(x</TT><CODE><TT>^</TT></CODE><TT>2-x-2,’*’)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[exp(sqrt(2)),exp(-(sqrt(2)))]</TT></DIV><P> 
-On tape : 
-</P><DIV CLASS="center"><TT>cZeros(x*(exp(x))</TT><CODE><TT>^</TT></CODE><TT>2-2*x-2*(exp(x))</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>(x-2)*(x+1)</TT></DIV><P><B>Exemples</B> :
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Factoriser dans ℤ (on doit décoché <TT>Complex</TT> dans 
+l’écran de configuration du <TT>CAS</TT>) :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>4</SUP>−1</TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4-1)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4-1=&gt;*</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[[log(sqrt(2)),log(-sqrt(2)),2]]</TT></DIV><HR>
+<DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+1)*(x+1)*(x-1)</TT></DIV>
+Les coefficients sont entiers donc la factorisation se fera avec des 
+polynômes à coefficients entiers.<BR>
+</LI><LI CLASS="li-enumerate">Factoriser dans ℂ :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>4</SUP>−1</TD></TR>
+</TABLE>
+Pour avoir une factorisation complexe, on coche <TT>Complex</TT> dans l’écran de
+configuration du <TT>CAS</TT> (bouton donnant la ligne d’état) on tape :
+<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4-1)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4-1=&gt;*</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(x-1)*(x+1)*(x+i)*(x-i)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Factoriser dans ℤ (on doit décoche <TT>Complex</TT> dans 
+l’écran de configuration du <TT>CAS</TT>) :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>4</SUP>+1</TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4+1)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4+1=&gt;*</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4+1</TT></DIV>
+car  <I>x</I><SUP>4</SUP>+1 ne se fatorise pas sur les entiers.<BR>
+</LI><LI CLASS="li-enumerate">Factoriser sur les entiers de Gauss :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>4</SUP>+1</TD></TR>
+</TABLE>
+Si l’on veut une factorisation sur les entiers de Gauss, on coche <TT>Complex</TT>
+dans l’écran de configuration du <TT>CAS</TT> (bouton donnant la ligne 
+d’état), on tape :<BR>
+<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4+1)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4+1=&gt;*</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+i)*(x</TT><CODE><TT>^</TT></CODE><TT>2+-i)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Factoriser dans ℝ :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>4</SUP>+1</TD></TR>
+</TABLE>
+Si l’on veut une factorisation réelle, afin de connaitre le réel qui sert
+dans la factorisation, on coche <TT>Complex</TT> dans l’écran de configuration 
+du <TT>CAS</TT> et on tape tout d’abord :<BR>
+<DIV CLASS="center"><TT>solve(x</TT><CODE><TT>^</TT></CODE><TT>4+1,x)</TT></DIV><A NAME="@default444"></A><A NAME="@default445"></A>
+On obtient :
+<DIV CLASS="center"><TT>[sqrt(2)/2+(i)*sqrt(2)/2,sqrt(2)/2+(i)*(-(sqrt(2)/2)),</TT></DIV>
+<DIV CLASS="center"><TT>-sqrt(2)/2+(i)*sqrt(2)/2,-sqrt(2)/2+(i)*(-(sqrt(2)/2))]</TT></DIV>
+On voit que les racines dépendent de √<SPAN style="text-decoration:overline">2</SPAN> donc on tape :
+<DIV CLASS="center"><TT>factor(sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>4+1))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>2+sqrt(2)*x+1)*(x</TT><CODE><TT>^</TT></CODE><TT>2+(-(sqrt(2)))*x+1)</TT></DIV>
+Ou bien on tape :
+<DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4+1,sqrt(2)))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+sqrt(2)*x+1)*(x</TT><CODE><TT>^</TT></CODE><TT>2+(-(sqrt(2)))*x+1)</TT></DIV>
+<B>Remarques</B><BR>
+Si on coche <TT>Sqrt</TT> dans la configuration du <TT>CAS</TT>, les trinômes du 
+second degré (et seulement du second degré) seront factorisés même si 
+les facteurs ne sont pas dans le corps de base des coefficients.<BR>
+Pour factoriser dans ℂ l’expression <I>x</I><SUP>4</SUP>+1, il faut cocher
+<TT>Complex</TT> et <TT>Sqrt</TT> dans l’écran de configuration du <TT>CAS</TT> et 
+taper :<BR>
+<TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4+1)</TT><BR>
+ou taper (avec juste <TT>Sqrt</TT> coché) :<BR>
+<TT>cfactor(x</TT><CODE><TT>^</TT></CODE><TT>4+1)</TT> (cf <TT>cfactor</TT>).
+</LI></OL><HR>
 <A HREF="cascmd_fr264.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr266.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

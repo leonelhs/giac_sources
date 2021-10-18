@@ -6,57 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Division harmonique : harmonic_division div_harmonique</TITLE>
+<TITLE>Savoir si 2 droites 2-d sont perpendiculaires : is_perpendicular est_perpendiculaire</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr975.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr977.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1139">10.19.3</A>  Division harmonique : <TT>harmonic_division div_harmonique</TT></H3><P><A NAME="@default1894"></A><A NAME="@default1895"></A>
-Quatre points alignés <I>A</I>, <I>B</I>, <I>C</I>, <I>D</I> sont en division harmonique 
-si on a :<BR>
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>CA</I></TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>CB</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>DA</I></TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>DB</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=<I>k</I></TD></TR>
-</TABLE><P>
-On dit aussi que <I>C</I> et <I>D</I> divisent le segment <I>AB</I> dans le rapport <I>k</I> et que
-le point <I>D</I> est le conjugué harmonique de <I>C</I> par rapport à <I>A</I> et <I>B</I>
-ou plus rapidement <I>D</I> est le conjugué harmonique de <I>A</I>,<I>B</I>,<I>C</I>.<BR>
-Quatre droites concourantes ou parallèles <I>d</I>1, <I>d</I>2, <I>d</I>3, <I>d</I>4 sont 
-en division harmonique si elles déterminent sur chaque droite sécante une
-division harmonique. On dit aussi que <I>d</I>1, <I>d</I>2, <I>d</I>3, <I>d</I>4 forment un
-faisceau harmonique.<BR>
-<TT>div_harmonique</TT> a comme arguments 3 points alignés ou leur 3 affixes
-(resp 3 droites concourantes ou parallèles) et le nom d’une variable.<BR>
-<TT>div_harmonique</TT> affecte le dernier argument pour que l’on obtienne une 
-division harmonique et renvoie la liste des 4 points (resp des 4 
-droites) et dessine les points (resp les droites).<BR>
+<H3 CLASS="subsection"><A NAME="htoc1143">10.18.12</A>  Savoir si 2 droites 2-d sont perpendiculaires : <TT>is_perpendicular est_perpendiculaire</TT></H3><P><A NAME="@default1894"></A><A NAME="@default1895"></A><A NAME="sec:estperp2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1042.html#sec:estperp3">11.13.4</A> pour la géométrie 3-d.<BR>
+<TT>est_perpendiculaire</TT>, en géométrie plane, est une 
+fonction booléenne ayant comme argument deux droites.<BR>
+ <TT>est_perpendiculaire</TT> vaut 1 si les deux droites sont perpendiculaires,
+et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>div_harmonique(0,2,3/2,D)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_perpendiculaire(droite(0,1+i),droite(i,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0,2,3/2,pnt(3,0,"D")] et seul le point </TT><TT><I>D</I></TT><TT> est dessiné</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>div_harmonique(point(0),point(2),point(3/2),D)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_perpendiculaire(droite(0,1+i),droite(1+i,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[pnt(0,0),pnt(2,0),pnt(3/2,0), pnt(3,0,"D")] et les 4 points sont dessinés</TT></DIV><P>
-<B>Remarque</B> : 0 représente la couleur du point.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>div_harmonique(droite(i,0),droite(i,1+i), droite(i,3+2*(i)),D)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[pnt([[i,0],0]),pnt([[i,1+i],0]), pnt([[i,3+2*i],0]),pnt([[i,-3+2*i],0,"D"])] et les 4 droites sont dessinées</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr975.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr977.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

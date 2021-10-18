@@ -6,21 +6,54 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Regroupement de termes : accumulate_head_tail</TITLE>
+<TITLE>L’écart-type de la population : ecart_type_population stddevp stdDev</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr698.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr700.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc830">8.1.11</A>  Regroupement de termes : <TT>accumulate_head_tail</TT></H3><P><A NAME="@default1255"></A>
-<TT>accumulate_head_tail</TT> permet de regrouper les premiers termes et les derniers termes d’une liste en les remplacant par leur somme.<BR>
-Les paramètres sont la liste, le nombre de termes que l’on regroupe au 
-début de la liste et le nombre de termes l’on regroupe en fin de la liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc835">8.1.3</A>  L’écart-type de la population : <TT>ecart_type_population stddevp stdDev</TT></H3><P><A NAME="@default1261"></A><A NAME="@default1262"></A><A NAME="@default1263"></A>
+<TT>stddevp</TT> (ou <TT>stdDev</TT>) a comme argument une (ou deux) liste(s) :<BR>
+<TT>stddevp(l)</TT> calcule une estimation l’écart-type numérique de la 
+population dont est issu l’échantillon décrit par les éléments de la 
+liste <TT>l</TT>, de longueur <TT>n</TT>, donnée en argument (<TT>size(l)=n</TT> et 
+<TT>n</TT> doit être grand). On a :<BR>
+<TT>stddevp(l)</TT><CODE><TT>^</TT></CODE><TT>2=n/(n-1)* stddev(l)</TT><CODE><TT>^</TT></CODE><TT>2</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>accumulate_head_tail([0,1,1,0,2,2,3,3,4,3,1,1],4,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>stddevp(A)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,2,2,3,3,4,3,2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>sqrt(13)</TT></DIV><P>
+En effet :
+<TT>n=size(A)=12</TT> et <TT>12/11*stddev(A)</TT><CODE><TT>^</TT></CODE><TT>2=12/11*143/12=13</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>stddevp([[1,2],[3,4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[sqrt(2),sqrt(2)]</TT></DIV><P><BR>
+<TT>stddevp(l1,l2)</TT> calcule l’écart-type numérique de la population dont 
+est issu l’échantillon décrit par les éléments d’une 
+liste <TT>l1</TT> pondérée par une autre liste <TT>l2</TT> donnée comme
+deuxième argument.<BR>
+On a :<BR>
+<TT>stddevp(l1,l2)</TT><CODE><TT>^</TT></CODE><TT>2=n/(n-1)* stddev(l1,l2)</TT><CODE><TT>^</TT></CODE><TT>2</TT> si <TT>n</TT> est la
+taille de l’échantillon c’est à dire si <TT>n</TT> est la somme de la liste 
+<TT>l2</TT> (<TT>sum(l2)=n</TT>).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>stddevp(A,A)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(22/3)</TT></DIV><P>
+En effet <TT>sum(A)=66</TT> et
+ 22/3=66/65*65/9
+<B>Remarque</B>
+<TT>stddev</TT> est l’écart type après division par <TT>n</TT> (taille de 
+l’échantillon) alors que <TT>stddevp</TT> et son synonyme <TT>stdDev</TT> (nom de 
+commande TI) est divisé par 
+<TT>n-1</TT> et donne l’estimateur non biaisé de l’écart-type d’une population
+à partir de l’écart-type calculé avec un échantillon (la division
+par <TT>n-1</TT> permet de supprimer le biais).<BR>
+Pour la variance nous ne donnons qu’une commande (division par <TT>n</TT>),
+mais il est très facile de définir une "variance d’échantillon"
+en prenant le carré de l’écart-type <TT>stddevp</TT>.</P><HR>
 <A HREF="cascmd_fr698.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr700.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

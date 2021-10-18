@@ -628,7 +628,7 @@ namespace giac {
 
   // solve triangular lower inf system l*y=b
   bool sparse_linsolve_l(const gen_map & l,const vecteur & b,vecteur & y){
-    int n=b.size();
+    int n=int(b.size());
     y.resize(n);
     std::vector<sparse_line_begin_t> L;
     find_line_begin(l.begin(),l.end(),L);
@@ -656,12 +656,12 @@ namespace giac {
   }
 
   bool sparse_linsolve_l(const fmatrix & l,const std::vector<giac_double> & b,std::vector<giac_double> & y){
-    int n=b.size();
+    int n=int(b.size());
     y.resize(n);
     for (int i=0;i<n;++i){
       const std::vector<int> & posi=l.pos[i];
       const std::vector<giac_double> & li = l.m[i];
-      double res=b[i]; int s=posi.size(); bool ok=false;
+      double res=b[i]; int s=int(posi.size()); bool ok=false;
       for (int j=0;j<s;++j){
 	int pos=posi[j];
 	if (pos>i)
@@ -682,7 +682,7 @@ namespace giac {
 
   // solve triangular upper system u*x=b
   bool sparse_linsolve_u(const gen_map & u,const vecteur & b,vecteur & x){
-    int n=b.size();
+    int n=int(b.size());
     x.resize(n);
     std::vector<sparse_line_begin_t> U;
     find_line_begin(u.begin(),u.end(),U);
@@ -935,7 +935,7 @@ namespace giac {
   }
 
   gen sparse_conjugate_gradient(const smatrix & A,const vecteur & b_orig,const vecteur & x0,double eps,int maxiter,GIAC_CONTEXT){
-    int n=b_orig.size();
+    int n=int(b_orig.size());
     vecteur tmp(n);
     sparse_mult(A,x0,tmp);
     vecteur b=subvecteur(b_orig,tmp);
@@ -962,7 +962,7 @@ namespace giac {
   }
 
   std::vector<giac_double> sparse_conjugate_gradient(const fmatrix & A,const std::vector<giac_double> & b_orig,const std::vector<giac_double> & x0,double eps,int maxiter,GIAC_CONTEXT){
-    int n=b_orig.size();
+    int n=int(b_orig.size());
     std::vector<giac_double> tmp(n);
     sparse_mult(A,x0,tmp);
     std::vector<giac_double> b;
@@ -1005,7 +1005,7 @@ namespace giac {
 
   // Ax=b where A=D+B, Dx_{n+1}=b-B*x_n
   gen sparse_jacobi_linsolve(const smatrix & A,const vecteur & b_orig,const vecteur & x0,double eps,int maxiter,GIAC_CONTEXT){
-    int n=A.m.size();
+    int n=int(A.m.size());
     smatrix B;
     vecteur D(n);
     vecteur b=*evalf_double(b_orig,1,contextptr)._VECTptr;
@@ -1147,7 +1147,7 @@ namespace giac {
 
   // Ax=b where A=D+B, Dx_{n+1}=b-B*x_n
   std::vector<giac_double> sparse_jacobi_linsolve(const fmatrix & A,const std::vector<giac_double> & b_orig,const std::vector<giac_double> & x0,double eps,int maxiter,GIAC_CONTEXT){
-    int n=A.m.size();
+    int n=int(A.m.size());
     fmatrix B;
     std::vector<giac_double> D(n);
     std::vector<giac_double> b=b_orig;
@@ -1205,7 +1205,7 @@ namespace giac {
   // or (-omega*E+D)*x_{n+1}=omega*b+(omega*F+D*(1-omega))*x_n
   // or (I-omega*D^-1*E)x_{n+1}=omega*D^-1*b+((1-omega)*I+omega*D^-1*F)*x_n
   gen sparse_gauss_seidel_linsolve(const smatrix & A,const vecteur & b_orig,const vecteur & x0,double omega,double eps,int maxiter,GIAC_CONTEXT){
-    int n=A.m.size();
+    int n=int(A.m.size());
     double invomega=1/omega;
     smatrix L,U;
     vecteur b=*evalf_double(b_orig,1,contextptr)._VECTptr;
@@ -1256,7 +1256,7 @@ namespace giac {
   // Ax=b where A=L+D+U, (D+L)x_{n+1}=b-U*x_n (Gauss-Seidel for omega==1)
   // or (L+D/omega)*x_{n+1}=b-(U+D*(1-1/omega))*x_n
   std::vector<giac_double> sparse_gauss_seidel_linsolve(const fmatrix & A,const std::vector<giac_double> & b_orig,const std::vector<giac_double> & x0,double omega,double eps,int maxiter,GIAC_CONTEXT){
-    int n=A.m.size();
+    int n=int(A.m.size());
     double bn=l2norm(b_orig);
 #if 1
     // Wikipedia notations

@@ -6,52 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’inversion : inversion</TITLE>
+<TITLE>Savoir si on a un losange : is_rhombus est_losange</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1050.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1052.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1230">11.14.7</A>  L’inversion : <TT>inversion</TT></H3><P><A NAME="@default2031"></A><A NAME="sec:inversion3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr955.html#sec:inversion2">10.17.7</A> pour la géométrie plane.<BR>
-<TT>inversion</TT>, en géométrie 3-d, a deux ou trois arguments : 
-un point (le centre de l’inversion), un réel (la valeur du rapport de 
-l’inversion) et éventuellement l’objet géométrique à transformer.<BR>
-Lorsque <TT>inversion</TT> a deux arguments, c’est une fonction qui agit sur un 
-objet géométrique.<BR>
-Si <TT>inver:=inversion(C,k)</TT> et <TT>A1:=inver(A)</TT>,
-on a <SPAN style="text-decoration:overline"><I>CA</I></SPAN>*<SPAN style="text-decoration:overline"><I>CA</I>1</SPAN>=<I>k</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1234">11.13.13</A>  Savoir si on a un losange : <TT>is_rhombus est_losange</TT></H3><P><A NAME="@default2035"></A><A NAME="@default2036"></A><A NAME="sec:estlosange3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr973.html#sec:estlosange2">10.18.9</A> pour la géométrie plane.<BR>
+<TT>est_losange</TT> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<BR>
+<TT>est_losange</TT> vaut 1 (rep 2) si les quatre points sont coplanaires et 
+forment un losange (resp un carré) ou si l’objet géométrique est un losange
+(resp un carré), et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>inver:=inversion(point(0,0,0),2)</TT></DIV><P>
-Puis :<BR>
+</P><DIV CLASS="center"><TT>est_losange([2,0,0],[0,1,0],[-2,0,0],[0,-1,0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>inver(point(1,2,-2))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>K:=losange([0,0,0],[2,0,0],[[0,0,1],pi/4]);est_losange(K)</TT></DIV><P>
+<TT>K</TT> est le losange <TT>ABCD</TT> de sommets [0,0,0],[2,0,0],
+[sqrt(2)+2,0,sqrt(2)],[sqrt(2),0,sqrt(2)], il est situé dans le plan 
+[0,0,0],[2,0,0],[0,0,1] et l’angle <TT>BAD</TT> vaut pi/4.<BR>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point (2/9,4/9,-4/9)</TT></DIV><P> 
-On a en effet :<BR>
-<TT>[2/9,4/9,-4/9]*[1,2,-2]=2</TT> et les points (1,2,-2) et
-(2/9,4/9,-4/9) sont alignés avec le point (0,0,0) centre de l’nversion.<BR>
-On tape 
-</P><DIV CLASS="center"><TT>inver(sqhere(point(1,0,0),1))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x=1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>inver(sqhere(point(1,0,0),1/2))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_losange([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La sphère de centre (8/3,0,0) et de rayon 4/3 (elle passe par les points (4/3,0,0) et (4,0,0))</TT></DIV><P>
-Lorsque <TT>inversion</TT> a trois arguments, <TT>inversion</TT> dessine et renvoie 
-le transformé du troisième argument dans l’inversion de centre le premier 
-argument et de rapport le deuxième argument.<BR>
-Si <TT>A1:=inversion(C,k,A)</TT> on a <SPAN style="text-decoration:overline"><I>CA</I></SPAN>*<SPAN style="text-decoration:overline"><I>CA</I>1</SPAN>=<I>k</I>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>inversion(point(0,0,0),2,sphere(point(1,0,0),1))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x=1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>inversion(point(0,0,0),2,sphere(point(1,0,0),1/2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La sphère de centre (8/3,0,0) et de rayon 4/3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr1050.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1052.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,67 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Interpolation de Lagrange : lagrange interp</TITLE>
+<TITLE>Polynômes aléatoires : randpoly randPoly</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr383.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr385.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc470">6.27.33</A>  Interpolation de Lagrange : <TT>lagrange interp</TT></H3><P><A NAME="@default721"></A><A NAME="@default722"></A>
-<TT>lagrange</TT> a comme argument deux listes de longueur <TT>n</TT> ou une
-matrice de deux lignes et <TT>n</TT> colonnes et eventuellement le 
-nom de la variable <TT>var</TT> (par défaut <TT>x</TT>):<BR>
-la première liste (ou ligne) correspond à des valeurs d’abscisses <I>x</I><SUB><I>k</I></SUB>, et 
-la deuxième liste (ou ligne) correspond 
-à des valeurs d’ordonnées <I>y</I><SUB><I>k</I></SUB> pour <I>k</I> allant de 1 à <TT>n</TT>.<BR>
-<TT>lagrange</TT> renvoie une expression polynômiale <TT>P(var)</TT> de degré 
-<TT>n-1</TT> tel que <I>P</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc470">6.27.30</A>  Polynômes aléatoires : <TT>randpoly randPoly</TT></H3><P><A NAME="@default720"></A><A NAME="@default721"></A>
+<TT>randpoly</TT> (ou <TT>randPoly</TT>) a deux paramètres le nom d’une 
+variable (par défaut <TT>x</TT>) et un entier <TT>n</TT> (en fait l’ordre des paramètres n’est pas important).<BR>
+<TT>randpoly</TT> renvoie un polynôme de variable le premier paramètre (ou
+<TT>x</TT>), de degré le deuxième paramètre et dont les coefficients sont 
+des entiers aléatoires équirépartis sur -99..+99.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>lagrange([[1,3],[0,1]])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>lagrange([1,3],[0,1])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x-1)/2</TT></DIV><P>
-en effet pour <I>x</I>=1 on a <I>x</I>−1/2=0  et pour <I>x</I>=3 on a 
-<I>x</I>−1/2=1.<BR>
+</P><DIV CLASS="center"><TT>randpoly(t,4)</TT></DIV><P>
+On obtient par exemple:
+</P><DIV CLASS="center"><TT>-8*t</TT><CODE><TT>^</TT></CODE><TT>4-87*t</TT><CODE><TT>^</TT></CODE><TT>3-52*t</TT><CODE><TT>^</TT></CODE><TT>2+94*t+80</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>lagrange([1,3],[0,1],y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(y-1)/2</TT></DIV><P>
-<B>Attention</B>
-<TT>lagrange([1,2],[3,4],y)</TT> ne renvoie pas une fonction mais une expression.
-mais on peut définir une fonction en mettant :<BR>
-<TT>f(x):=lagrange([1,2],[3,4],x)</TT> ou<BR>
-<TT>f(y):=lagrange([1,2],[3,4],y)</TT> et alors<BR>
-<TT>f(4)</TT> renvoie <TT>6</TT> car <TT>f(x)=x+2</TT>)<BR>
-Bien voir la différence entre :<BR>
-<TT>g(x):=lagrange([1,2],[3,4])</TT> et<BR>
-<TT>f(x):=lagrange([1,2],[3,4],x)</TT>.<BR>
-<TT>g(x):=lagrange([1,2],[3,4])</TT> ne definit pas une fonction,
-par exemple, <TT>g(2)=x-1+3</TT> alors que <TT>f(2)=4</TT>.<BR>
-Ceci dit, la définition of <TT>f</TT> n’est pas efficace car le polynôme sera 
-recalculé depuis le
-début à chaque appel de <TT>f</TT> (quand on définit une fonction le membre 
-de droite n’est pas évalué, l’évaluation est faite seulement quand on 
-appelle <TT>f</TT>).<BR>
-Pour être efficace il faut utiliser <TT>unapply</TT>:<BR>
-<TT>f:=unapply(lagrange([1,2],[3,4]),x)</TT> ou<BR>
-<TT>f:=unapply(lagrange([1,2],[3,4],y),y)</TT>
-<B>Exercice</B>
-Soient <I>f</I>(<I>x</I>) = 1/<I>x</I>, <I>x</I><SUB>0</SUB>=2 <I>x</I><SUB>1</SUB> = 2.5 et <I>x</I><SUB>2</SUB> =4.
-On demande de calculer le polynôme <I>L</I> d’interpolation de Lagrange et sa 
-valeur en <I>x</I>=3 et <I>x</I>=4.5.<BR>
-On tape :<BR>
-<TT>f(x):=1/x</TT><BR>
-<TT>L:=unapply(normal(lagrange([2,2.5,4],[f(2),f(2.5),f(4)])),x)</TT><BR>
-On obtient :<BR>
-<TT>x-&gt;0.05*x</TT><CODE><TT>^</TT></CODE><TT>2-0.425*x+1.15</TT><BR>
-On tape :<BR>
-<TT>L(3),L(4.5)</TT><BR>
-On obtient :<BR>
-<TT>0.325,0.25</TT>
-</P><HR>
+</P><DIV CLASS="center"><TT>randpoly(4)</TT></DIV><P>
+On obtient par exemple:
+</P><DIV CLASS="center"><TT>70*x</TT><CODE><TT>^</TT></CODE><TT>4-46*x</TT><CODE><TT>^</TT></CODE><TT>3-7*x</TT><CODE><TT>^</TT></CODE><TT>2-24*x+52</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>randpoly(4,u)</TT></DIV><P>
+On obtient par exemple:
+</P><DIV CLASS="center"><TT>2*u</TT><CODE><TT>^</TT></CODE><TT>4+33*u</TT><CODE><TT>^</TT></CODE><TT>3-6*u</TT><CODE><TT>^</TT></CODE><TT>2-92*u-12</TT></DIV><HR>
 <A HREF="cascmd_fr383.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr385.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

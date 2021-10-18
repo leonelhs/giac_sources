@@ -6,25 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le plan : plane plan</TITLE>
+<TITLE>Définir une droite orientée en 3-d : line droite</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1000.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1002.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1172">11.6.1</A>  Le plan : <TT>plane plan</TT></H3><P><A NAME="@default1944"></A><A NAME="@default1945"></A>
-<TT>plan</TT> a comme argument soit trois points, soit un point et une 
-droite, soit son équation cartésienne.<BR>
-<TT>plan(A,B,C)</TT> ou <TT>plan(A,droite(B,C))</TT> (resp <TT>plan(a*x+b*y+c*z+d=0)</TT>) trace le plan <TT>ABC</TT> (resp le plan d’équation <TT>a*x+b*y+c*z+d=0</TT>) dans l’espace 3-d.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>plan([0,0,5],[0,5,0],[5,0,0])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>plan(x+y+z=5)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>plan([0,0,5],droite([0,5,0],[5,0,0]))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x+y+z=5</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc1176">11.5.2</A>  Définir une droite orientée en 3-d : <TT>line droite</TT></H3><P><A NAME="@default1947"></A><A NAME="@default1948"></A><A NAME="sec:axe3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr891.html#sec:axe2">10.9.1</A> pour la géométrie plane.<BR>
+<TT>droite</TT>, en géométrie 3-d, a comme argument deux points ou 
+deux équations de plans : <TT>a*x+by+cz+d=0</TT> et <TT>a’*x+b’y+c’z+d’=0</TT>.<BR>
+<B>Attention</B> l’ordre des arguments que l’on donne à droite est important 
+et un ordre différent change l’orientation !<BR>
+Si la droite est définie par deux points, ces points orientent la droite 
+selon leur position dans les arguments. Par exemple <TT>droite(A,B)</TT> définit
+une droite orientée par le vecteur <I>AB</I>.<BR>
+Si la droite est définie par deux 
+équations, on écrit ces équations sous la forme
+"membre_de_gauche-membre_de_droite=0" pour avoir les équations sous la
+forme <TT>a*x+by+c=0</TT> et <TT>a’*x+b’y+c’z+d’=0</TT>. Alors, le vecteur orientant 
+la droite est le produit vectoriel des 2 vecteurs normaux aux 2 plans definis 
+par les deux équations c’est à dire le vecteur orientant est
+<TT>cross([a,b,c],[a’,b’,c’])</TT>.
+Par exemple <TT>droite(x=2*y,y=3*z)</TT> est orientée par 
+<TT>cross([1,-2,0],[0,1,-3])</TT>=<TT>[6,3,1]</TT> et<BR>
+<TT>droite(y=3*z,x=2*y)</TT> est orientée par 
+<TT>cross([0,1,-3],[1,-2,0])</TT>=<TT>[-6,-3,-1]</TT> .
+</P><HR>
 <A HREF="cascmd_fr1000.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1002.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

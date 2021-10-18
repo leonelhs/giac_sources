@@ -6,24 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Aire d’un polygone : area aire</TITLE>
+<TITLE>L’équation paramétrique d’un objet géométrique : parameq</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr937.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr939.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1098">10.16.8</A>  Aire d’un polygone : <TT>area aire</TT></H3><P><A NAME="@default1819"></A><A NAME="@default1820"></A>
-<TT>aire</TT> calcule l’aire d’un cercle ou d’un polygone étoilé par
-rapport à son premier sommet.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1102">10.15.8</A>  L’équation paramétrique d’un objet géométrique : <TT>parameq</TT></H3><P><A NAME="@default1810"></A><A NAME="sec:parameq2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1035.html#sec:parameq3">11.12.6</A> pour la géométrie 3-d.<BR>
+<TT>parameq</TT>, en géométrie plane, permet d’avoir l’équation
+paramétrique d’un objet géométrique sous la forme du nombre complexe 
+<I>x</I>(<I>t</I>)+<I>i</I>*<I>y</I>(<I>t</I>).<BR>
+<B>Attention</B> !!! il faut auparavant purger la variable <TT>t</TT> en tapant :
+<TT>purge(t)</TT> ou <TT>t:=’t’</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>aire(triangle(0,1,i))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>parameq(droite(-1,i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1/2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>-t+(1-t)*(i)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>aire(carre(0,2))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>parameq(cercle(-1,i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>4</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>-1+exp(i*t)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>normal(parameq(ellipse(-1,1,i)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sqrt(2)*cos(t)+(i)*sin(t)</TT></DIV><HR>
 <A HREF="cascmd_fr937.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr939.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

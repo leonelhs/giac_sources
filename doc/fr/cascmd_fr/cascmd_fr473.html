@@ -6,20 +6,60 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Produit de 2 intervalles</TITLE>
+<TITLE>Définition : i[]</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr472.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr474.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc570">6.38.4</A>  Produit de 2 intervalles</H3><P>
-Le produit de 2 intervalles est un intervalle qui a pour borne inférieure 
-(resp supérieure) le produit des bornes inférieures (resp supérieures).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>i[1,4]*i[2,3]</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc570">6.38.1</A>  Définition : <TT>i[]</TT></H3><P><A NAME="@default845"></A>
+Un intervalle est un ensemble de 2 nombres flottants de <I>n</I>≥ 15 chiffres
+significatifs séparés par une virgule et parenthésés par <TT>i[]</TT>.<BR>
+On utilise le mot reservé <TT>i[]</TT>), on écrit pour désigner l’intervalle
+[1,13/11] : <TT>i[1,13/11]</TT>.<BR>
+L’intervalle vide s’écrira <TT>i[]</TT><BR>
+Par exemple, on tape :<BR>
+</P><DIV CLASS="center"><TT>i[1,13/11]</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>i[2.0000000000000,0.12000000000000e2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>i[1.0000000000000,1.1818181818182]</TT></DIV><P>
+<B>Remarque</B>
+Si <TT>a&gt;b</TT> alors <TT>i[a,b]</TT> renvoie<BR>
+<TT>i[evalf(b,15)-epsilon,evalf(a,15)+epsilon]</TT> avec <TT>epsilon</TT>
+Par exemple, on tape :<BR>
+</P><DIV CLASS="center"><TT>i[pi,sqrt(3)]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>i[1.7320508075689,3.1415926535898]</TT></DIV><P>
+<B>Autre notation</B>
+On peut aussi désigner un intervalle par un nombre décimal <TT>a</TT> suivi 
+d’un point d’interrogation. Si la partie décimale de <TT>a</TT> contient <TT>n</TT>
+chiffres , l’intervalle a pour milieu <TT>a</TT> et pour longueur 2*10<SUP>−<I>n</I></SUP> 
+Par exemple, on tape :<BR>
+<TT>0.123?</TT><BR>
+On obtient :<BR>
+<TT>i[0.122,0.123]</TT><BR>
+On tape :
+<TT>789.123456?</TT><BR>
+On obtient :<BR>
+<TT>i[0.789123455e3,0.789123457e3]</TT><BR>
+<B>Attention</B><BR>
+On tape :
+</P><DIV CLASS="center"><TT>a:=i[1,13/11]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>i[1.0000000000000,1.1818181818182]</TT></DIV><DIV CLASS="center"><TT>b:=i[1,13/11]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>i[1.0000000000000,1.1818181818182]</TT></DIV><DIV CLASS="center"><TT>a==b</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>faux</TT></DIV><P>
+En fait, <TT>a</TT> ou <TT>b</TT> représente un nombre décimal entre 1 et 
+1.1818181818182 car l’intervalle sert à donner une approximation du nombre 
+<TT>a</TT> ou <TT>b</TT> i.e <TT>a</TT> et <TT>b</TT> sont dans le même intervalle.<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>b:=i[pi,pi+10</TT><CODE><TT>^</TT></CODE><TT>-5]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>i[3.1415926535898,3.1416026535898]</TT></DIV><P>
+En fait <TT>b</TT> représentent un nombre décimal entre 3.1415926535898 et 3.1416026535898. 
+</P><HR>
 <A HREF="cascmd_fr472.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr474.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

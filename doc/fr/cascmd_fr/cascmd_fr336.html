@@ -6,23 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Simplifier en privilégiant les tangentes : trigtan</TITLE>
+<TITLE>Transformer une expression trigonométrique en des exponentielles complexes: trig2exp</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr335.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr337.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc419">6.24.25</A>  Simplifier en privilégiant les tangentes : <TT>trigtan</TT></H3><P><A NAME="@default629"></A>
-<TT>trigtan</TT> a comme argument une expression trigonométrique.<BR>
-<TT>trigtan</TT> simplifie cette expression à l’aide des formules :<BR>
-sin(<I>x</I>)<SUP>2</SUP>+cos(<I>x</I>)<SUP>2</SUP>=1,  tan(<I>x</I>)=sin(<I>x</I>)/cos(<I>x</I>) et en privilégiant les tangentes.<BR>
+<H3 CLASS="subsection"><A NAME="htoc419">6.24.22</A>  Transformer une expression trigonométrique en des exponentielles complexes: <TT>trig2exp</TT></H3><P><A NAME="@default629"></A>
+<TT>trig2exp</TT> a comme argument une expression trigonométrique.<BR>
+<TT>trig2exp</TT> transforme les fonctions trigonométriques en exponentielles 
+complexes <SPAN STYLE="font-variant:small-caps">sans</SPAN> linéariser.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>trigtan(sin(x)</TT><CODE><TT>^</TT></CODE><TT>4+cos(x)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>trig2exp(tan(x))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>((tan(x))</TT><CODE><TT>^</TT></CODE><TT>2/(1+(tan(x))</TT><CODE><TT>^</TT></CODE><TT>2))</TT><CODE><TT>^</TT></CODE><TT>2+1/(1+(tan(x)</TT><CODE><TT>^</TT></CODE><TT>2)+1</TT></DIV><P>
-et après simplification avec <TT>normal</TT> on a :
-</P><DIV CLASS="center"><TT>(2*tan(x)</TT><CODE><TT>^</TT></CODE><TT>4+3*tan(x)</TT><CODE><TT>^</TT></CODE><TT>2+2)/(tan(x)</TT><CODE><TT>^</TT></CODE><TT>4+2*tan(x))</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>((exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>2-1)/((i)*((exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>2+1))</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>trig2exp(sin(x))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(exp((i)*x)-1/(exp((i)*x)))/(2*i)</TT></DIV><HR>
 <A HREF="cascmd_fr335.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr337.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

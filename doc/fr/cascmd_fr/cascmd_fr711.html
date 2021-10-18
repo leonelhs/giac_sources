@@ -6,31 +6,91 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Ligne polygonale : polygonplot ligne_polygonale</TITLE>
+<TITLE>Les fréquences cumulées : cumulated_frequencies 
+frequences_cumulees</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr710.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr712.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc843">8.2.6</A>  Ligne polygonale : <TT>polygonplot ligne_polygonale</TT></H3><P><A NAME="@default1272"></A><A NAME="@default1273"></A>
-<TT>polygonplot</TT> a pour arguments deux listes ou une matrice 
-ayant deux colonnes.<BR>
-<TT>polygonplot</TT> permet de visualiser les segments de droites reliant les 
-différents points du nuage de points définis par 
-l’argument et ordonnés selon les abscisses croissantes. Si vous voulez que 
-les points soient reliés dans l’ordre donnés il faut utiliser 
-<TT>listplot</TT><BR>
+<H3 CLASS="subsection"><A NAME="htoc847">8.1.15</A>  Les fréquences cumulées : <TT>cumulated_frequencies<BR>
+frequences_cumulees</TT></H3><P><A NAME="@default1278"></A><A NAME="@default1279"></A>
+<TT>cumulated_frequencies</TT> ou <TT>frequences_cumulees</TT> a comme 
+argument une liste ou une matrice ayant 2 colonnes ou plus de 2 colonnes.<BR>
+Si <TT>cumulated_frequencies</TT> a comme argument une liste, 
+<TT>cumulated_frequencies</TT> renvoie le diagramme des fréquences cumulées
+des valeurs de cette liste.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>polygonplot([[0,0],[1,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
-Ou on tape car les points seront ordonnés selon les abscisses croissantes :
-</P><DIV CLASS="center"><TT>polygonplot([[2,4],[0,0],[3,9],[1,1],[4,16]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cumulated_frequencies([1,2,1,1,2,1,2,4,3,3])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>le diagramme des fréquences cumulées des valeurs de cette liste i.e. polygone_ouvert(0,1+i*0.4,2+i*0.7,3+i*0.9,4+i)</TT></DIV><P>
+Lorsque <TT>cumulated_frequencies</TT> a comme argument une matrice ayant 2 
+colonnes :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+la première colonne représente les différentes valeurs prises,
+soit sous forme discrétes <I>b</I><SUB><I>j</I></SUB> (les <I>b</I><SUB><I>j</I></SUB> sont équiréparties selon 
+<TT>class_size</TT> défini avec la configuration graphique) soit
+sous fome d’intervalles <I>a</I><SUB><I>j</I>−1</SUB>..<I>a</I><SUB><I>j</I></SUB>,
+</LI><LI CLASS="li-itemize">la deuxième colonne représente soit les effectifs <I>n</I><SUB><I>j</I></SUB>, soit les
+fréquences <I>f</I><SUB><I>j</I></SUB> des valeurs <I>b</I><SUB><I>j</I></SUB> ou des classes <I>a</I><SUB><I>j</I>−1</SUB>..<I>a</I><SUB><I>j</I></SUB>.
+</LI></UL><P>
+Si <TT>cumulated_frequencies</TT> a comme argument une matrice ayant plus 
+de 2colonnes, c’est que l’on veut comparer plusieus effectis correspondant à 
+plusieurs séries de mêmes valeurs.<BR>
+Les lignes sont alors :<BR>
+[<I>a</I><SUB><I>j</I>−1</SUB>..<I>a</I><SUB><I>j</I></SUB>,<I>n</I><SUB><I>j</I></SUB>] ou [<I>a</I><SUB><I>j</I>−1</SUB>..<I>a</I><SUB><I>j</I></SUB>,<I>f</I><SUB><I>j</I></SUB>] ou [<I>a</I><SUB><I>j</I>−1</SUB>..<I>a</I><SUB><I>j</I></SUB>,<I>n</I>1<SUB><I>j</I></SUB>,<I>n</I>2<SUB><I>j</I></SUB>] ou
+[<I>a</I><SUB><I>j</I>−1</SUB>..<I>a</I><SUB><I>j</I></SUB>,<I>f</I>1<SUB><I>j</I></SUB>,<I>f</I>2<SUB><I>j</I></SUB>] ou [<I>b</I><SUB><I>j</I></SUB>,<I>n</I><SUB><I>j</I></SUB>] ou [<I>b</I><SUB><I>j</I></SUB>,<I>f</I><SUB><I>j</I></SUB>] etc...<BR>
+<TT>cumulated_frequencies</TT> permet de visualiser le diagramme des 
+fréquences cumulées : ce sont les segments de droites qui joignent les 
+points d’abscisse <I>a</I><SUB><I>j</I></SUB> et d’ordonnée <I>f</I><SUB>1</SUB>+..+<I>f</I><SUB><I>j</I></SUB> (<I>a</I><SUB><I>j</I></SUB> est la borne 
+supérieure d’une classe, <I>f</I><SUB><I>j</I></SUB> est la fréquence de la classe 
+[<I>a</I><SUB><I>j</I>−1</SUB>;<I>a</I><SUB><I>j</I></SUB>] et donc <I>f</I><SUB>1</SUB>+..+<I>f</I><SUB><I>j</I></SUB> est la fréquence cumulée de <I>a</I><SUB><I>j</I></SUB>)<BR>
+Si on a des valeurs discrétes elles sont considérées 
+comme étant le centre de la classe.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>cumulated_frequencies([[1.5..1.65,50],</TT></DIV><DIV CLASS="center"><TT>[1.65..1.7,20],[1.7..1.8,30]])</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>polygonplot([0,1,2,3,4],[0,1,4,9,16])</TT></DIV><P>
-La fenêtre graphique s’ouvre automatiquement et on obtient le dessin des 
-4 segments reliant les 5 points ((0,0),...(4,16)), 
-à condition d’avoir défini correctement
-la configuration du graphique (menu <TT>Cfg</TT>).</P><HR>
+</P><DIV CLASS="center"><TT>cumulated_frequencies([[1.5..1.65,0.5],</TT></DIV><DIV CLASS="center"><TT>[1.65..1.7,0.2],[1.7..1.8,0.3]])</TT></DIV><P>
+La fenêtre graphique s’ouvre automatiquement et on obtient le diagramme 
+cumulatif des fréquences de :<BR>
+<TT>[[1.5..1.65,50],[1.65..1.7,20],[1.7..1.8,30]]</TT><BR>
+à condition d’avoir 
+défini correctement la configuration du graphique (menu <TT>Cfg</TT>).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>cumulated_frequencies([[1.5..1.65,50,30],</TT></DIV><DIV CLASS="center"><TT>[1.65..1.7,20,50],[1.7..1.8,30,20]])</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>cumulated_frequencies([[1.5..1.65,0.5,0.3],</TT></DIV><DIV CLASS="center"><TT>[1.65..1.7,0.2,0.5],[1.7..1.8,0.3,0.2]])</TT></DIV><P>
+La fenêtre graphique s’ouvre automatiquement et on obtient les diagrammes 
+cumulatifs des fréquences, avec des couleurs différentes, de :<BR>
+<TT>[[1.5..1.65,50],[1.65..1.7,20],[1.7..1.8,30]]</TT> et de<BR>
+<TT>[[1.5..1.65,30],[1.65..1.7,50],[1.7..1.8,20]]</TT><BR>
+à condition d’avoir défini correctement la configuration du graphique 
+(menu <TT>Cfg</TT>).<BR>
+<B>Remarque</B><BR>
+Pour avoir les fréquences cumulées d’une liste de valeurs, on peut aussi
+transformer cette liste en une matrice ayant 2 colonnes (valeurs,effectifs) 
+avec la commande <TT>classes</TT> :<BR>
+On tape :<BR>
+<TT>L:=[(rand(6)+1)$(k=1..100)]</TT><BR>
+<TT>CL1:=classes(L)</TT><BR>
+On obtient :<BR>
+<TT>[[1.0..2.0,15],[2.0..3.0,22],[3.0..4.0,23],[4.0..5.0,17], [5.0..6.0,8],[6.0..7.0,15]]</TT><BR>
+Ou on tape :<BR>
+<TT>L:=[(rand(6)+1)$(k=1..100)]</TT><BR>
+<TT>CL2:=classes(L,0.5,1)</TT><BR>
+On obtient :<BR>
+<TT>[[0.5..1.5,15],[1.5..2.5,22],[2.5..3.5,23],[3.5..4.5,17], [4.5..5.5,8],[5.5..6.5,15]]</TT><BR>
+On tape :<BR>
+<TT>cumulated_frequencies(CL1)</TT><BR>
+On obtient :<BR>
+<TT>le graphe des fréquences cumulées de CL1 allant de 1 à 7</TT><BR>
+Ou on tape :<BR>
+<TT>cumulated_frequencies(CL2)</TT><BR>
+On obtient :<BR>
+<TT>le graphe des fréquences cumulées de CL2 allant de 0.5 à 6.5 et sera
+donc décalé par rapport au précédent</TT>
+</P><HR>
 <A HREF="cascmd_fr710.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr712.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

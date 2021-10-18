@@ -6,41 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Somme cumulée des éléments d’une liste : cumSum</TITLE>
+<TITLE>Nombre d’éléments inférieurs à une valeur : count_inf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr523.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr525.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc624">6.41.32</A>  Somme cumulée des éléments d’une liste : <TT>cumSum</TT></H3><P><A NAME="@default929"></A>
-<TT>cumSum</TT> a comme paramètre <TT>l</TT> une liste (ou une séquence) 
-de nombres réels ou de décimaux ou de chaîne de caractères.<BR>
-<TT>cumSum</TT> renvoie la liste (ou la séquence) de même longueur que <TT>l</TT>
-avec comme <I>k</I>-ième élément la somme (ou la concaténation) des 
-éléments <TT><I>l</I>[0],..,<I>l</I>[<I>k</I>]</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc624">6.41.29</A>  Nombre d’éléments inférieurs à une valeur : <TT>count_inf</TT></H3><P><A NAME="@default925"></A><A NAME="@default926"></A>
+<A NAME="@default927"></A>
+<TT>count_inf</TT> a deux ou trois paramètres : une nombre et une 
+liste (ou une matrice) et dans le cas où le deuxième paramètre est une 
+matrice, un argument optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
+<TT>count_inf</TT> renvoie le nombre d’éléments de la liste (ou de la 
+matrice) qui sont strictement inférieurs au premier argument. 
+Dans le cas où il y a un argument 
+optionnel <TT>row</TT> (resp <TT>col</TT>) <TT>count_inf</TT> agit sur chacune des 
+lignes (resp colonnes) de la matrice et renvoie alors une liste.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cumSum(sqrt(2),3,4,5,6)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>count_inf(12,[2,12,45,3,7,78])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>count_inf(12,[[2,12,45],[3,7,78]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(2),3+sqrt(2),3+sqrt(2)+4,3+sqrt(2)+4+5,</TT></DIV><DIV CLASS="center"><TT>3+sqrt(2)+4+5+6</TT></DIV><P>
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>normal(cumSum(sqrt(2),3,4,5,6))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>count_inf(12,[[2,12,45],[3,7,78]],row)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(2),sqrt(2)+3,sqrt(2)+7,sqrt(2)+12,sqrt(2)+18</TT></DIV><P>On tape :
-</P><DIV CLASS="center"><TT>cumSum(1.2,3,4.5,6)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1.2,4.2,8.7,14.7</TT></DIV><P>
-On tape :</P><DIV CLASS="center"><TT>cumSum([0,1,2,3,4])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0,1,3,6,10]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[1,2]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>cumSum("a","b","c","d")</TT></DIV><P>
+</P><DIV CLASS="center"><TT>count_inf(12,[[2,12,45],[3,7,78]],col)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>"a","ab","abc","abcd"</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>cumSum("a","ab","abc","abcd")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>"a","aab","aababc","aababcabcd"</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[2,1,0]</TT></DIV><HR>
 <A HREF="cascmd_fr523.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr525.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

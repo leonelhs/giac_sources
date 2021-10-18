@@ -6,23 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le milieu d’un segment : midpoint milieu</TITLE>
+<TITLE>Les enveloppes : envelope enveloppe</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr988.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr990.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1158">11.4.5</A>  Le milieu d’un segment : <TT>midpoint milieu</TT></H3><P><A NAME="@default1923"></A><A NAME="@default1924"></A><A NAME="sec:milieu3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr876.html#sec:milieu2">10.8.8</A> pour la géométrie plane.<BR>
-<TT>milieu</TT>, en géométrie 3-d, a comme argument 2 points ou une 
-liste de 2 points.<BR>
-<TT>milieu</TT> renvoie et dessine le point milieu du segment défini par ces 
-deux points.<BR>
- On tape :
-</P><DIV CLASS="center"><TT>milieu(point(1,4,0),point(1,-2,0))</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1158">10.20.2</A>  Les enveloppes : <TT>envelope enveloppe</TT></H3><P><A NAME="@default1921"></A><A NAME="@default1922"></A> <A NAME="sec:envelope"></A>
+<TT>enveloppe</TT> a 2 arguments : une expression <I>Xpr</I> dépendant de 3
+variables <I>x</I>,<I>y</I>,<I>t</I> (resp <I>u</I>,<I>v</I>,<I>t</I>) et <I>t</I> (resp le vecteur [<I>u</I>,<I>v</I>,<I>t</I>]).<BR>
+Les equations <I>Xpr</I>=0 sont considérées comme les 
+équations de courbes de paramètre <I>t</I>.<BR>
+<TT>enveloppe</TT> renvoie l’enveloppe de ces courbes lorsque <I>t</I> varie.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>enveloppe(y+x*tan(t)-2*sin(t),t)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point(1,1,0) est tracé</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>enveloppe(v+u*tan(t)-3*sin(t),[u,v,t))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
+<B>Remarque</B>
+Si on a une famille de droites <TT>d</TT> qui dépendent d’un paramètre 
+<TT>a</TT>, on peut utiliser soit <TT>enveloppe(equation(d,a))</TT> soit 
+la commande <TT>lieu</TT> (voir <A HREF="cascmd_fr988.html#sec:lieudroite">10.20.1</A>).<BR>
+Voici un exemple simple : enveloppe de la tangente à un cercle.<BR>
+On tape :
+</P><PRE CLASS="verbatim">c:=cercle(0,2):;
+assume(a:=1);
+A:=element(c,a);
+d:=tangente(cercle(0,2),A);
+</PRE><P>Puis soit:
+</P><DIV CLASS="center"><TT>enveloppe(equation(d),a)</TT></DIV><P> 
+soit :
+</P><DIV CLASS="center"><TT>lieu(d,A)</TT></DIV><HR>
 <A HREF="cascmd_fr988.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr990.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

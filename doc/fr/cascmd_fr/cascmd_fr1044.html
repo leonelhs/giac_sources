@@ -6,40 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un parallélogramme : is_parallelogram est_parallelogramme</TITLE>
+<TITLE>Savoir si 3 points sont alignés : is_collinear est_aligne</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1043.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1045.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1222">11.13.14</A>  Savoir si on a un parallélogramme : <TT>is_parallelogram est_parallelogramme</TT></H3><P><A NAME="@default2021"></A><A NAME="@default2022"></A><A NAME="sec:estparalelo3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr966.html#sec:estparalelo2">10.18.10</A> pour la géométrie plane.<BR>
-<TT>est_parallelogramme</TT> est une fonction booléenne ayant comme 
-argument quatre points ou un objet géométrique.<BR>
-<TT>est_parallelogramme</TT> vaut 1 (resp 2, 3, 4) si les quatre points sont 
-coplanaires et forment un parallélogramme (resp un losange, un rectangle, un 
-carré) ou si l’objet géométrique est un parallélogramme (resp un losange,
-un rectangle, un carré), et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1227">11.13.6</A>  Savoir si 3 points sont alignés : <TT>is_collinear est_aligne</TT></H3><P><A NAME="@default2022"></A><A NAME="@default2023"></A><A NAME="sec:estaligne3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr966.html#sec:estaligne2">10.18.2</A> pour la géométrie plane.<BR>
+<TT>est_aligne</TT> est une fonction booléenne ayant comme 
+argument une liste ou une séquence de points.<BR>
+<TT>est_aligne</TT> vaut 1 si les points sont alignés, et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_parallelogramme([0,0,0],[2,0,0],[3,1,0],[1,1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_aligne([2,0,0],[0,2,0],[1,1,0])</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>K:=parallelogramme([0,0,0],[2,0,0],[1,1,0]);est_parallelogramme(K)</TT></DIV><P>
-<TT>K</TT> est le parallélogramme <TT>ABCD</TT> de sommets [0,0,0],[2,0,0],[3,1,0],
-[1,1,0].
-On tape :
-</P><DIV CLASS="center"><TT>est_parallelogramme([-1,0,0],[0,1,0],[2,0,0],[0,-1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_aligne([2,0,0],[0,2,0],[0,1,1])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
-<B>Attention</B><BR>
-On doit taper :
-</P><DIV CLASS="center"><TT>K:=parallelogramme([0,0,0],[2,0,0],[1,1,0],D); est_parallelogramme(K[0])</TT></DIV><P>
-Pour obtenir :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-car K est une liste composée d’un parallélogramme et du point D.
-</P><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr1043.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1045.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

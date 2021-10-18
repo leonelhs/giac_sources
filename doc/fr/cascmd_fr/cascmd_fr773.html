@@ -6,26 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de la loi de Cauchy : cauchy_icdf cauchyd_icdf</TITLE>
+<TITLE>Densité de probabilité de la loi beta : betad</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr772.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr774.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc907">8.4.38</A>  Fonction de répartition inverse de la loi de Cauchy : <TT>cauchy_icdf cauchyd_icdf</TT></H3><P><A NAME="@default1374"></A><A NAME="@default1375"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de Cauchy de paramètre <I>a</I> 
-et <I>b</I>, si on a <TT>cauchy_icdf(a,b,p)=h</TT> avec <I>p</I>∈ [0,1]
-c’est que l’on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=p=cauchy_cdf(a,b,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc912">8.4.30</A>  Densité de probabilité de la loi beta : <TT>betad</TT></H3><P><A NAME="@default1380"></A>
+<TT>betad</TT> a 3 paramètres : deux réels <I>a</I>,<I>b</I> strictement positifs
+et un réel <I>x</I> de [0,1].<BR>
+<TT>betad(a,b,x)</TT> renvoie la densité de probabilité de la loi beta à 
+savoir :<BR>
+Γ(<I>a</I>+<I>b</I>)*<I>x</I><SUP>(</SUP><I>a</I>−1)*(1−<I>x</I>)<SUP>(</SUP><I>b</I>−1)/(Γ(<I>a</I>)*Γ(<I>b</I>))<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cauchy_icdf(2,3,0.23)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>betad(2,1,0.3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1.40283204777</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.6</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>cauchy_icdf(2,3,0.44)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>betad(2.2,1.5,0.8)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.42771939334</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1.46143068876</TT></DIV><HR>
 <A HREF="cascmd_fr772.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr774.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

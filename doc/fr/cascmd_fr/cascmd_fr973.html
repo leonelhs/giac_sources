@@ -6,25 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Ces cercles sont-ils en faisceau : is_harmonic_circle_bundle est_faisceau_cercle</TITLE>
+<TITLE>Savoir si on a un losange : is_rhombus est_losange</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr972.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr974.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1135">10.18.17</A>  Ces cercles sont-ils en faisceau : <TT>is_harmonic_circle_bundle est_faisceau_cercle</TT></H3><P><A NAME="@default1888"></A><A NAME="@default1889"></A>
-<TT>est_faisceau_cercle</TT> a comme argument une liste de cercles.<BR>
- <TT>est_faisceau_cercle</TT> renvoie :<BR>
-1 si ces cercles forment un faisceau (c’est à dire si ils ont 2 à 2 le 
-même axe radical),<BR>
-2 si ces cercles sont concentriques,<BR>
-3 si ces cercles sont confondus,<BR>
-et 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1140">10.18.9</A>  Savoir si on a un losange : <TT>is_rhombus est_losange</TT></H3><P><A NAME="@default1888"></A><A NAME="@default1889"></A><A NAME="sec:estlosange2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1051.html#sec:estlosange3">11.13.13</A> pour la géométrie 3-d.<BR>
+<TT>est_losange</TT> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<BR>
+<TT>est_losange</TT> vaut 1 (rep 2) si les quatre points forment un losange (resp un carré) ou si l’objet
+géométrique est un losange (resp un carré), et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_faisceau_cercle([cercle(0,i),cercle(4,i), cercle(0,point(1/2))])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_losange(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>K:=losange(1+i,-1+i,pi/4);est_losange(K)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>K:=losange(1+i,-1+i,pi/4,C,D);est_losange(K[0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+En effet <TT>K[0]</TT> désigne un losange car <TT>K</TT> est une liste composée
+d’un losange et de ses sommets <TT>C</TT> et <TT>D</TT>.<BR>
+Si on tape <TT>normal(coordonnees(C,D))</TT>, on obtient <TT>[-sqrt(2)-1,-sqrt(2)+1],[-sqrt(2)+1,-sqrt(2)+1]</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>est_losange(i,-1+i,-1-i,1-i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr972.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr974.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

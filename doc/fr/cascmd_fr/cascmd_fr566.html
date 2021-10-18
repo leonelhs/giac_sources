@@ -6,37 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Extraire des lignes ou des colonnes d’une matrice (compatibilité Maple) : row col</TITLE>
+<TITLE>Produit de Hadamard : hadamard product</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr565.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr567.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc671">6.46.17</A>  Extraire des lignes ou des colonnes d’une matrice (compatibilité Maple) : <TT>row col</TT></H3><P><A NAME="@default1030"></A><A NAME="@default1031"></A>
-<TT>row</TT> (resp <TT>col</TT>) permet d’extraire une ou plusieurs lignes 
-(resp colonnes) d’une matrice.<BR>
-<TT>row</TT> (resp <TT>col</TT>) a 2 arguments : une matrice <I>A</I>, et un entier <I>n</I> 
-ou un intervalle <I>n</I><SUB>1</SUB>..<I>n</I><SUB>2</SUB>.<BR>
-<TT>row</TT> (resp <TT>col</TT>) renvoie la ligne (resp colonne) d’indice <I>n</I> de la 
-matrice <I>A</I>, ou la séquence des lignes (resp colonnes) d’indice allant de 
-<I>n</I><SUB>1</SUB> à <I>n</I><SUB>2</SUB> de la matrice <I>A</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc672">6.47.8</A>  Produit de Hadamard : <TT>hadamard product</TT></H3><P><A NAME="@default1034"></A><A NAME="@default1035"></A><A NAME="sec:product2"></A><A NAME="sec:hadam"></A>
+Voir aussi <TT>.*</TT> pour les listes (cf <A HREF="cascmd_fr542.html#sec:hadal">6.42.5</A>)<BR>
+<TT>hadamard</TT> (ou <TT>product</TT>) a comme arguments deux matrices <I>A</I> et <I>B</I> 
+de même ordre.<BR>
+<TT>product</TT> est une fonction plus générale (voir aussi <A HREF="cascmd_fr528.html#sec:product">6.41.33</A>
+et <A HREF="cascmd_fr564.html#sec:product1">6.47.6</A>).<BR>
+<TT>hadamard</TT> (ou <TT>product</TT>) renvoie la matrice constituée par le 
+produit terme à terme des éléments de <I>A</I> et <I>B</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>row([[1,2,3],[4,5,6],[7,8,9]],1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>hadamard([[1, 2],[3,4]],[[5, 6],[7, 8]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[4,5,6]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>row([[1,2,3],[4,5,6],[7,8,9]],0..1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[5,12],[21,32]]</TT></DIV><P>
+Si on tape :
+</P><DIV CLASS="center"><TT>hadamard([1,2],[3,4])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>hadamard([[1,2],[3,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>([1,2,3],[4,5,6])</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>col([[1,2,3],[4,5,6],[7,8,9]],1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>5*sqrt(5)</TT></DIV><P>
+Ici [1,2],[3,4] n’est pas considéré comme 2 vecteurs (car le produit de 
+Hadamard ne marche que sur des matrices) mais comme une matrice à 2 lignes.<BR>
+<TT>hadamard</TT> calcule prend le produit des normes des vecteurs colonnes et des
+vecteurs lignes et renvoie le plus petit des 2 :<BR>
+√<SPAN style="text-decoration:overline">1+4</SPAN>*√<SPAN style="text-decoration:overline">9+16</SPAN>=5√<SPAN style="text-decoration:overline">5</SPAN> qui est plus petit que 
+√<SPAN style="text-decoration:overline">1+9</SPAN>**√<SPAN style="text-decoration:overline">4+16</SPAN>=10√<SPAN style="text-decoration:overline">2</SPAN>.<BR>
+Mais si on tape :<BR>
+</P><DIV CLASS="center"><TT>product([1,2],[3,4])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>product([[1,2],[3,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,5,8]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>col([[1,2,3],[4,5,6],[7,8,9]],0..1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>([1,4,7],[2,5,8])</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[3,8]</TT></DIV><HR>
 <A HREF="cascmd_fr565.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr567.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

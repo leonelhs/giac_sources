@@ -6,30 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’écart-type : stddev ecart_type</TITLE>
+<TITLE>Approximation rationnelle : float2rational exact</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr689.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr691.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc821">8.1.2</A>  L’écart-type : <TT>stddev ecart_type</TT></H3><P><A NAME="@default1243"></A><A NAME="@default1244"></A>
-<TT>stddev</TT> calcule l’écart-type numérique des éléments 
-d’une liste (ou de chaque colonne d’une matrice).<BR>
+<H3 CLASS="subsection"><A NAME="htoc813">6.64.7</A>  Approximation rationnelle : <TT>float2rational exact</TT></H3><P><A NAME="@default1245"></A><A NAME="@default1246"></A>
+<TT>float2rational</TT> (ou <TT>exact</TT>) a comme paramètre une 
+expression numérique réelle.<BR>
+<TT>float2rational</TT> donne une approximation rationnelle de tous les nombres 
+décimaux <I>r</I> contenus dans l’expression à 
+moins de <TT>epsilon</TT> c’està dire 
+|<I>r</I>−<TT>float2rational</TT>(<I>r</I>)|&lt;є où є est définit par
+<TT>epsilon</TT> dans la configuration du <TT>cas</TT> (menu <TT>Cfg</TT> , ou 
+commande <TT>cas_setup</TT>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>stddev(A)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>float2rational(1.5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(143/12)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>3/2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>stddev([[1,2],[3,4]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>float2rational(1.414)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,1]</TT></DIV><P>
-<TT>stddev</TT> calcule l’écart-type numérique des éléments d’une 
-liste pondérée par une autre liste donnée comme deuxième argument.<BR>
+</P><DIV CLASS="center"><TT>707/500</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>stddev(A,A)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>float2rational(0.156381102937*2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sqrt(65/9)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>5144/16447</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>float2rational(1.41421356237)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>114243/80782</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>float2rational(1.41421356237</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr689.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr691.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

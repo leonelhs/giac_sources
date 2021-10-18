@@ -6,36 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La matrice hessienne : hessian</TITLE>
+<TITLE>Algorithme du gradient conjugué : conjugate_gradient</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr651.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr653.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc765">6.54.3</A>  La matrice hessienne : <TT>hessian</TT></H3><P><A NAME="@default1182"></A>
-<TT>hessian</TT> a deux paramètres : une expression <I>F</I> dependant de 
-<I>n</I> variables rèelles et un vecteur de dimension
-<I>n</I> indiquant le nom de ces variables.<BR>
-<TT>hessian</TT> renvoie la hessienne de <I>F</I> qui est la matrice des dérivées 
-d’ordre 2.<BR>
-<B>Exemple</B><BR>
-Déterminer la hessienne de <I>F</I>(<I>x</I>,<I>y</I>,<I>z</I>)=2<I>x</I><SUP>2</SUP><I>y</I>−<I>xz</I><SUP>3</SUP>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc769">6.58.4</A>  Algorithme du gradient conjugué : <TT>conjugate_gradient</TT></H3><P><A NAME="@default1181"></A>
+<TT>conjugate_gradient(A,y,x0,eps)</TT> met en œuvre l’algorithme du gradient 
+conjugué pour résoudre <I>A</I>*<I>x</I>=<I>y</I> à <I>eps</I> près, lorsque <I>A</I> est une 
+matrice symétrique définie positive et <I>x</I><SUB>0</SUB> une solution initiale 
+approchée optionnelle.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>hessian(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3 , [x,y,z])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4*y,4*x,-(3*z</TT><CODE><TT>^</TT></CODE><TT>2)],[2*2*x,0,0],[-(3*z</TT><CODE><TT>^</TT></CODE><TT>2),0,x*3*2*z]]</TT></DIV><P>
-Pour avoir la hessienne aux points critiques on tape tout d’abord :
-</P><DIV CLASS="center"><TT>solve(derive(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z]),[x,y,z])</TT></DIV><P> 
-pour avoir les points critiques.<BR>
-On obtient : 
-</P><DIV CLASS="center"><TT>[[0,y,0]]</TT></DIV><P>
-Puis, on calcule la hessienne en ces points, on tape : 
-</P><DIV CLASS="center"><TT>subst([[4*y,4*x,-(3*z</TT><CODE><TT>^</TT></CODE><TT>2)],[2*2*x,0,0], [-(3*z</TT><CODE><TT>^</TT></CODE><TT>2),0,6*x*z]],[x,y,z],[0,y,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[5/9,-1/9]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4*y,4*0,-(3*0</TT><CODE><TT>^</TT></CODE><TT>2)],[4*0,0,0],[-(3*0</TT><CODE><TT>^</TT></CODE><TT>2),0,6*0*0]]</TT></DIV><P>
-et après simplification :
-</P><DIV CLASS="center"><TT>[[4*y,0,0],[0,0,0],[0,0,0]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[0.555,-0.11]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-10)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0.555555555556,-0.111111111111]</TT></DIV><HR>
 <A HREF="cascmd_fr651.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr653.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

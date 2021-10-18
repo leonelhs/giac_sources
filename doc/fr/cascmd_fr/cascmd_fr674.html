@@ -6,69 +6,157 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformée en z d’une suite, la fonction ztrans : ztrans</TITLE>
+<TITLE>Réduction de Gauss-Jordan : rref gaussjord</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr673.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr675.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc791">6.58.1</A>  Transformée en <I>z</I> d’une suite, la fonction <I>ztrans</I> : <TT>ztrans</TT></H3><P><A NAME="@default1219"></A>
-<TT>ztrans</TT> a un ou trois arguments :
+<H3 CLASS="subsection"><A NAME="htoc794">6.61.3</A>  Réduction de Gauss-Jordan : <TT>rref gaussjord</TT></H3><P><A NAME="@default1218"></A><A NAME="@default1219"></A><A NAME="sec:rrefp"></A><A NAME="@default1220"></A><A NAME="@default1221"></A>
+<TT>rref</TT> permet de résoudre un système d’équations linéaires que l’on écrit sous forme matricielle (voir aussi <A HREF="cascmd_fr453.html#sec:rrefm">6.34.17</A>) :
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+<TT>rref</TT> a un ou deux paramètres.<BR>
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-une suite donnée par son terme général <I>a</I><SUB><I>x</I></SUB> : la 
-variable utilisée pour définir le terme général est <I>x</I> et <I>x</I> sera 
-aussi le nom de la variable utilisée dans la fonction renvoyée par 
-<TT>ztrans</TT>
-</LI><LI CLASS="li-itemize">une suite donnée par son terme général <I>a</I><SUB><I>n</I></SUB>, le 
-nom de la variable utilisée pour définir ce terme général (ici <I>n</I>) et
-le nom de la variable utilisée dans la fonction renvoyée par <TT>ztrans</TT>
-(par exemple <I>z</I>).
-</LI></UL><P> 
-<TT>ztrans</TT> calcule la transformée en <I>z</I> de la suite donnée en argument.<BR>
-On a par définition :<BR>
-si <I>f</I>(<I>x</I>)=<I>ztrans</I>(<I>a</I><SUB><I>x</I></SUB>) on a 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP><I>n</I></SUP></TD></TR>
+Si <TT>rref</TT> n’a qu’un paramètre, ce paramètre est
+la "matrice augmentée" du système (celle 
+formée par la matrice <TT>A</TT> du système et ayant comme dernier vecteur 
+colonne le second membre <TT>B</TT>).<BR>
+Le résultat est une matrice <TT>[A1,B1]</TT> : <TT>[A1,B1]</TT> a des zéros de 
+part et d’autre de sa diagonale et des 1 sur sa diagonale et les solutions de :
+<DIV CLASS="center"><TT>A1*X=B1</TT></DIV> 
+sont les mêmes que celles de : 
+<DIV CLASS="center"><TT>A*X=B</TT></DIV>
+<TT>rref</TT> peut travailler dans ℤ/<I>p</I>ℤ.<BR>
+Par exemple, soit à résoudre le système dans ℝ et dans ℤ/5ℤ:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>−2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
 </TABLE></TD></TR>
+</TABLE> 
+On tape pour résoudre le système dans ℝ:
+<DIV CLASS="center"><TT>rref([[3,1,-2],[3,2,2]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[1,0,-2],[0,1,4]]</TT></DIV>
+cela signifie donc que :<BR>
+<I>x</I>=−2 et <I>y</I>=4 sont solutions du système.<BR>
+On tape pour résoudre le système dans ℤ/5ℤ:
+<DIV CLASS="center"><TT>rref([[3,1,-2],[3,2,2]]%5)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[1 % 5,0,-2 % 5],[0,1 % 5,-1 % 5]]</TT></DIV>
+cela signifie donc que :<BR>
+<I>x</I>=−2%5 et <I>y</I>=−1%5 sont solutions du système.</LI><LI CLASS="li-itemize">Si <TT>rref</TT> a deux paramètres, le deuxième paramètre est un 
+entier <I>k</I> qui permet de ne faire Gauss-Jordan que sur les <I>k</I> premières 
+colonnes ou est l’option <TT>conserver_pivot</TT> ou <TT>keep_pivot</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>rref([[3,1,-2,1],[3,2,2,2]],1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[3,1,-2,1],[0,1,4,1]]</TT></DIV>
+L’option <TT>conserver_pivot</TT> ou <TT>keep_pivot</TT> permet de ne pas diviser 
+par les pivots, cela pour éviter de diviser par des pivots nuls.<BR>
+par exemple, 
+pour résoudre le système dans ℝ et dans ℤ/2ℤ:
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP> <I>z</I><SUB>1</SUB> + <I>z</I><SUB>2</SUB></TD><TD ALIGN=left NOWRAP>= <I>a</I><SUB>1</SUB></TD></TR>
+<TR><TD ALIGN=right NOWRAP> <I>z</I><SUB>2</SUB> + <I>z</I><SUB>3</SUB></TD><TD ALIGN=left NOWRAP>= <I>a</I><SUB>2</SUB></TD></TR>
+<TR><TD ALIGN=right NOWRAP> <I>z</I><SUB>3</SUB> + <I>z</I><SUB>4</SUB></TD><TD ALIGN=left NOWRAP>= <I>a</I><SUB>3</SUB></TD></TR>
+<TR><TD ALIGN=right NOWRAP> <I>z</I><SUB>4</SUB> + <I>z</I><SUB>1</SUB></TD><TD ALIGN=left NOWRAP>= <I>a</I><SUB>4</SUB></TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+</TD></TR>
+</TABLE>
+On tape pour résoudre le système dans ℝ :
+<DIV CLASS="center"><TT>A:=syst2mat([z1+z2=a1,z2+z3=a2,z3+z4=a3,z4+z1=a4],
+[z1,z2,z3,z4])</TT></DIV>
+puis, 
+<DIV CLASS="center"><TT>rref(A,keep_pivot)</TT></DIV>
+ou bien, on tape directement :
+<DIV CLASS="center"><TT>rref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],
+[1,0,0,1,-a4]],keep_pivot)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[a1-a2+a3-a4,0,0,a1-a2+a3-a4,0],
+[0,a1-a2+a3-a4,0,-a1+a2-a3+a4,0],
+[0,0,a1-a2+a3-a4,a1-a2+a3-a4,0],
+[0,0,0,0,a1-a2+a3-a4]]</TT></DIV><P><B>Remarque</B><BR>
+Lorsque le nombre de colonnes est égal au nombre de lignes +1
+<TT>rref</TT> ne divise pas par le pivot de la derniere colonne, par exemple, 
+pour résoudre le système :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP> <I>z</I><SUB>1</SUB> + <I>z</I><SUB>2</SUB></TD><TD ALIGN=left NOWRAP>= <I>a</I><SUB>1</SUB></TD></TR>
+<TR><TD ALIGN=right NOWRAP> <I>z</I><SUB>2</SUB> + <I>z</I><SUB>3</SUB></TD><TD ALIGN=left NOWRAP>= <I>a</I><SUB>2</SUB></TD></TR>
+<TR><TD ALIGN=right NOWRAP> <I>z</I><SUB>3</SUB> + <I>z</I><SUB>4</SUB></TD><TD ALIGN=left NOWRAP>= <I>a</I><SUB>3</SUB></TD></TR>
+<TR><TD ALIGN=right NOWRAP> <I>z</I><SUB>4</SUB> + <I>z</I><SUB>1</SUB></TD><TD ALIGN=left NOWRAP>= <I>a</I><SUB>4</SUB></TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+</TD></TR>
 </TABLE><P>
-si <I>f</I>(<I>z</I>)=<I>ztrans</I>(<I>a</I><SUB><I>n</I></SUB>,<I>n</I>,<I>z</I>) on a 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>z</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>z</I><SUP><I>n</I></SUP></TD></TR>
+On tape :
+</P><DIV CLASS="center"><TT>A:=syst2mat([z1+z2=a1,z2+z3=a2,z3+z4=a3,z4+z1=a4],
+[z1,z2,z3,z4])</TT></DIV><DIV CLASS="center"><TT>rref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],
+[1,0,0,1,-a4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,0,0,1,0],[0,1,0,-1,0],[0,0,1,1,0],
+[0,0,0,0,a1-a2+a3-a4]]</TT></DIV><P>
+Ainsi on peut savoir que si <TT>a1-a2+a3-a4</TT> n’est pas nul, il n’y a pas de 
+solution. 
+Puis, on tape :
+</P><DIV CLASS="center"><TT>rref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],
+[1,0,0,1,-a4]],3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,0,0,1,-a1+a2-a3],[0,1,0,-1,-a2+a3],[0,0,1,1,-a3],
+[0,0,0,0,1]]</TT></DIV><P>
+ou encore si on remplace <TT>a4</TT> par <TT>a1-a2+a3</TT>, on tape :
+</P><DIV CLASS="center"><TT>rref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],
+[1,0,0,1,-a1+a2-a3]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1,0,0,1,-a1+a2-a3],[0,1,0,-1,-a2+a3],[0,0,1,1,-a3],
+[0,0,0,0,0]]</TT></DIV><P>
+On peut aussi taper :
+</P><DIV CLASS="center"><TT>rref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],
+[1,0,0,1,-a4]],3,keep_pivot)</TT></DIV><P>
+On obtient tout de suite:
+</P><DIV CLASS="center"><TT>[[1,0,0,1,-a1+a2-a3],[0,1,0,-1,-a2+a3],[0,0,1,1,-a3],
+[0,0,0,0,a1-a2+a3-a4]]</TT></DIV><P>
+Donc, les solutions lorsque <TT>a1-a2+a3-a4=0</TT> sont :<BR>
+<TT>z1=a1-a2+a3-z4, z2=a2-a3+z4, z3=a3-z4, z4=z4</TT>.<BR>
+On tape pour résoudre le système dans ℤ/2ℤ : 
+</P><DIV CLASS="center"><TT>rref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],
+[1,0,0,1,-a4]]%2,3,keep_pivot)</TT></DIV><P>
+On obtient :<BR>
+<TT>[[1 % 2,0,0,1 % 2,(1 % 2)*a1+(1 % 2)*a2+(1 % 2)*a3],</TT><BR>
+<TT>[0,1 % 2,0,1 % 2,(1 % 2)*a2+(1 % 2)*a3],[0,0,1 % 2,1 % 2,(1 % 2)*a3],</TT><BR>
+<TT>[0,0,0,0,(1 % 2)*a1+(1 % 2)*a2+(1 % 2)*a3+(1 % 2)*a4]]</TT><BR>
+Donc lorsque <TT>(a1+a2+a3+a4=0%2)</TT>, les solutions dans ℤ/2ℤ sont :<BR>
+<TT>z1=a1+a2+a3+z4%2, z2=a2+a3+z4%2, z3=a3+z4%2, z4=(1 % 2)*z4</TT>.
+</P></LI><LI CLASS="li-itemize"><TT>rref</TT> permet aussi de résoudre plusieurs systèmes
+d’équations linéaires qui ne diffèrent que par leur second membre. 
+On écrit alors les second membres comme les colonnes d’une matrice.<BR>
+On tape :
+<DIV CLASS="center"><TT>rref([[3,1,-2,1],[3,2,2,2]])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[1,0,-2,0],[0,1,4,1]]</TT></DIV>
+cela signifie donc que :<BR>
+<I>x</I>=−2 et <I>y</I>=4 sont solutions du système
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>−2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
 </TABLE></TD></TR>
-</TABLE><P>
-On tape :
-</P><DIV CLASS="center"><TT>ztrans(1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x/(x-1)</TT></DIV><P>
-On a en effet :<BR>
-=∑<SUB><I>n</I>=0</SUB><SUP><I>inf</I></SUP>1/<I>x</I><SUP><I>n</I></SUP>=1/1−1/<I>x</I>=<I>x</I>/<I>x</I>−1<BR>
-On tape :
-</P><DIV CLASS="center"><TT>ztrans(1,n,z)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>z/(z-1)</TT></DIV><P>
-On a en effet :<BR>
-1+1/<I>z</I>+1/<I>z</I><SUP>2</SUP>+1/<I>z</I><SUP>3</SUP>+1/<I>z</I><SUP>4</SUP>+..=∑<SUB><I>n</I>=0</SUB><SUP><I>inf</I></SUP>1/<I>z</I><SUP><I>n</I></SUP>=1/1−1/<I>z</I>=<I>z</I>/(<I>z</I>−1)<BR>
-On tape :
-</P><DIV CLASS="center"><TT>ztrans(x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x/(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ztrans(n,n,z)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>z/(z</TT><CODE><TT>^</TT></CODE><TT>2-2*z+1)</TT></DIV><P>
-On a en effet :
-1/<I>z</I>−1=∑<SUB><I>n</I>=1</SUB><SUP><I>inf</I></SUP>1/<I>z</I><SUP><I>n</I></SUP><BR>
-1/(<I>z</I>−1)<SUP>2</SUP>=−(1/(<I>z</I>−1))′=∑<SUB><I>n</I>=1</SUB><SUP><I>inf</I></SUP><I>n</I>/<I>z</I><SUP><I>n</I>−1</SUP><BR>
-Donc <I>z</I>/(<I>z</I>−1)<SUP>2</SUP>=∑<SUB><I>n</I>=1</SUB><SUP><I>inf</I></SUP><I>n</I>/<I>z</I><SUP><I>n</I></SUP></P><HR>
+</TABLE>
+et que <I>x</I>=0 et <I>y</I>=1 sont solutions du système
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>1 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+</TD></TR>
+</TABLE>
+</LI></UL><HR>
 <A HREF="cascmd_fr673.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr675.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

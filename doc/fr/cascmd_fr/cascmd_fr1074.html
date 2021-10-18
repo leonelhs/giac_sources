@@ -6,36 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Lecture d’un fichier wav : readwav</TITLE>
+<TITLE>Les arêtes : line_segments aretes</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1073.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1075.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1259">12.1.1</A>  Lecture d’un fichier wav : <TT>readwav</TT></H3><P><A NAME="@default2065"></A>
-La commande <TT>readwav</TT> permet de lire un fichier son stocké
-au format WAV (extension de fichier <TT>.wav</TT>), on stocke en général
-le résultat dans une variable, par exemple :<BR>
-<TT>s:=readwav("sound.wav")</TT><BR>
-lit le fichier <CODE>sound.wav</CODE> et place le vecteur résultat dans la variable
-<CODE>s</CODE>.<BR>
-Le vecteur renvoyé est composé de :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-une liste donnant le format déchantillonage du son :
-le nombre de canaux (en général 1 pour mono ou 2 pour stéréo),
-le nombre de bits (en général 16), la fréquence
-d’échantillonage (44100 pour un son de qualité CD),
-et le nombre d’octets des données (hors en-tête), soit
-le nombre de secondes multiplié par la fréquence
-d’échantillonage multiplié par le nombre de bits/8 multiplié par
-le nombre de canaux.
-</LI><LI CLASS="li-itemize">pour chaque canal, la liste des données numériques du son
-</LI></UL><P>
-Ainsi si <CODE>s[0]</CODE> vaut <CODE>[1,16,44100,88200]</CODE> on a un
-enregistrement d’une seconde sur un canal en 16 bits, un son de
-qualité CD.<BR>
-On a alors <CODE>size(s)==2</CODE> (1+nombre de canaux), et <CODE>size(s[1])==44100</CODE>.</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1260">11.16.8</A>  Les arêtes : <TT>line_segments aretes</TT></H3><P><A NAME="@default2072"></A><A NAME="@default2073"></A>
+<TT>aretes</TT> a comme argument un <TT>polygone</TT> ou un 
+<TT>polyedre</TT>.<BR>
+<TT>aretes</TT> dessine et renvoie la liste des arêtes du polyèdre.<BR>
+ Une arête est un segment.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>aretes(polyedre([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))[1]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>le dessin du segment (-2,0,0),(2,0,0) et dans l’historique 
+on a pnt(pnt[group[[-2,0,0],[2,0,0]],0])</TT></DIV><HR>
 <A HREF="cascmd_fr1073.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1075.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

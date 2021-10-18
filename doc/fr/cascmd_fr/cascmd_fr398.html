@@ -6,51 +6,44 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les restes chinois : chinrem</TITLE>
+<TITLE>PPCM de deux polynômes : lcm</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr397.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr399.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc485">6.28.13</A>  Les restes chinois : <TT>chinrem</TT></H3><P><A NAME="@default742"></A>
-<TT>chinrem</TT> a comme argument deux listes ayant chacun comme 
-composantes deux polynômes éventuellement donnés par la liste de leurs 
-coefficients par ordre décroissant.<BR>
-<TT>chinrem</TT> renvoie une liste de composantes deux polynômes.<BR>
-<TT>chinrem([A,R],[B,Q])</TT> renvoie la liste des polynômes 
-<TT>P</TT> et <TT>S</TT> vérifiant :<BR>
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>S</I>=<I>R</I>.<I>Q</I>,     <I>P</I>=<I>A</I> (mod <I>R</I> ), <I>P</I>=<I>B</I> (mod <I>Q</I> ) </TD></TR>
-</TABLE><P>
-Il existe toujours une solution 
-<TT>P</TT> si <TT>R</TT> et <TT>Q</TT> sont premiers entre eux, et toutes les
-solutions sont congrues modulo <TT>S=R*Q</TT><BR>
-Trouver les solutions <I>P</I>(<I>x</I>) de :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TT>⎧<BR>
-⎨<BR>
-⎩</TT></TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP><TT><I>P</I>(<I>x</I>)=</TT></TD><TD ALIGN=left NOWRAP><TT><I>x</I> </TT></TD><TD ALIGN=right NOWRAP><TT>mod</TT><TT> (<I>x</I></TT><SUP><TT>2</TT></SUP><TT>+1)</TT></TD></TR>
-<TR><TD ALIGN=right NOWRAP><TT><I>P</I>(<I>x</I>)=</TT></TD><TD ALIGN=left NOWRAP><TT><I>x</I>-1 </TT></TD><TD ALIGN=right NOWRAP><TT>mod</TT><TT> (<I>x</I></TT><SUP><TT>2</TT></SUP><TT>-1) </TT></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
+<H3 CLASS="subsection"><A NAME="htoc485">6.28.10</A>  PPCM de deux polynômes : <TT>lcm</TT></H3><P><A NAME="@default742"></A><A NAME="sec:lcm"></A>
+<TT>lcm</TT> désigne le PPCM (plus petit commun multiple) de deux 
+polynômes pouvant avoir plusieurs variables et aussi le PPCM d’une liste de 
+polynômes ou d’une séquence de polynômes pouvant avoir plusieurs 
+variables (voir <A HREF="cascmd_fr164.html#sec:ilcm">6.7.5</A> pour le PPCM d’entiers).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>chinrem([[1,0],[1,0,1]],[[1,-1],[1,0,-1]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>lcm(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1/-2,1,1/-2],[1,0,0,0,-1]]</TT></DIV><P>
-ou on tape :
-</P><DIV CLASS="center"><TT>chinrem([x,x</TT><CODE><TT>^</TT></CODE><TT>2+1],[x-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1/-2*x</TT><CODE><TT>^</TT></CODE><TT>2+x+1/-2,x</TT><CODE><TT>^</TT></CODE><TT>4-1]</TT></DIV><P>
-donc  <I>P</I>(<I>x</I>)=−<I>x</I><SUP>2</SUP>−2.<I>x</I>+1/2  (mod  <I>x</I><SUP>4</SUP>−1)<BR>
-Autre exemple :<BR>
+</P><DIV CLASS="center"><TT>(x+1)*(x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>chinrem([[1,2],[1,0,1]],[[1,1],[1,1,1]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>lcm(x,x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>lcm([x,x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[-1,-1,0,1],[1,1,2,1,1]]</TT></DIV><P>
-ou on tape :
-</P><DIV CLASS="center"><TT>chinrem([x+2,x</TT><CODE><TT>^</TT></CODE><TT>2+1],[x+1,x</TT><CODE><TT>^</TT></CODE><TT>2+x+1])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+x)*(x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>A:=z</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(y</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(x</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><DIV CLASS="center"><TT>B:=x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>3*z+(-(y</TT><CODE><TT>^</TT></CODE><TT>3))*z+x</TT><CODE><TT>^</TT></CODE><TT>3*z-z</TT></DIV><DIV CLASS="center"><TT>D:=lcm(A,B)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2+1,x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>3+2*x</TT><CODE><TT>^</TT></CODE><TT>2+x+1]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>(x*y*z-x*z+y*z-z)*(x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>3*z+(-(y</TT><CODE><TT>^</TT></CODE><TT>3))*z+x</TT><CODE><TT>^</TT></CODE><TT>3*z-z)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(A)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(y-1)*(y+1)*(x-1)*(x+1)*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(B)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+x+1)*(x-1)*(y+1)*(y</TT><CODE><TT>^</TT></CODE><TT>2-y+1)*z</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(D)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x-1)*(x+1)*(x</TT><CODE><TT>^</TT></CODE><TT>2+x+1)*(y-1)*(y+1)*(y</TT><CODE><TT>^</TT></CODE><TT>2-y+1)*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr397.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr399.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

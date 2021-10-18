@@ -6,33 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Avoir du papier triangulé : papier_triangule 
-triangle_paper</TITLE>
+<TITLE>Effacer l’écran DispG : erase</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr861.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr863.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1008">10.2.9</A>  Avoir du papier triangulé : <TT>papier_triangule<BR>
-triangle_paper</TT></H3><P><A NAME="@default1549"></A><A NAME="@default1550"></A>
-<TT>papier_triangule</TT> permet d’avoir du papier triangulé c’est 
-à dire de tracer un reseau triangulaire d’angle <I>t</I>.<BR>
-<TT>papier_pointe</TT> a 3,4 ou 5 arguments : l’unité <TT>ux</TT> sur l’axe des 
-<I>x</I>, l’angle <TT>t</TT> et l’unité <TT>uy</TT> sur l’axe des <I>y</I> et éventuellement
-<TT>x=xmin..xmax,y=ymin..ymax</TT> pour avoir ces lignes dans le rectangle
-<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
-les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
-Vous avez la possibilité d’enlever les axes orthonormés en utilisant
-le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
-On tape pour avoir un réseau triangulaire :
-</P><DIV CLASS="center"><TT>papier_triangule(1,pi/2,1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1013">10.2.1</A>  Effacer l’écran <TT>DispG</TT> : <TT>erase</TT></H3><P><A NAME="@default1551"></A>
+<TT>erase</TT> n’a pas d’argument.<BR>
+On rappelle que l’écran <TT>DispG</TT> est l’écran sur lequel est 
+enregistré toutes les commandes graphiques
+depuis le début de la session, sans distinction de niveau. Il
+permet en particulier de visualiser les affichages graphiques
+intermédiaires d’un programme (en effet seuls les objets graphiques
+renvoyés par <TT>return</TT> ou <TT>retourne</TT> peuvent être affichés en
+réponse dans un niveau où on exécute un programme).<BR>
+<TT>erase</TT> efface l’écran <TT>DispG</TT> et influe sur la commande 
+<TT>graph2tex</TT> car seules les sorties graphiques faites postérieurement à 
+la commande <TT>erase()</TT> sont prises en compte par la commande 
+<TT>graph2tex</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>erase</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>erase()</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le reseau formé par des moitiés de carrés et dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><P>
-On tape pour avoir un reseau triangulaire :
-</P><DIV CLASS="center"><TT>papier_triangule(1,pi/3,sqrt(3)/2,x=-2..3,y=-1..2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le reseau formé par des triangles équilatéraux dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>L’effacement de l’écran DispG et efface l’historique 
+interne des graphiques</TT></DIV><P>
+<B>Remarque</B><BR>
+<TT>erase</TT> n’efface pas un écran de géométrie, en effet on n’a pas 
+besoin d’effacer un écran de géométrie car soit on change ses
+commandes d’entrée, soit on ouvre un autre écran de géométrie pour 
+faire une nouvelle figure.</P><HR>
 <A HREF="cascmd_fr861.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr863.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,33 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les polynômes à plusieurs variables</TITLE>
+<TITLE>Transformer exp(n*ln(x)) en puissance : exp2pow</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr352.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr354.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc439">6.27.2</A>  Les polynômes à plusieurs variables</H3><P> <A NAME="@default672"></A>
-Un monôme de plusieurs variables peut être représenté :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-soit par son expression symbolique (par exemple 3<I>x</I><SUP>2</SUP><I>y</I>), 
-</LI><LI CLASS="li-itemize">soit par son coefficent et la liste des puissances de ses variables 
-(selon la liste de ses variables) que l’on parenthése avec <TT>%%%{</TT> et
-<TT>%%%}</TT> : c’est le format interne creux distribué : par exemple
-<TT>symb2poly(3x</TT><CODE><TT>^</TT></CODE><TT>2*y,[x,y])</TT> renvoie <TT>%%%{3,[2,1]%%%}</TT> qui
-représente 3<I>x</I><SUP>2</SUP><I>y</I> si la liste des variables est <TT>[x,y]</TT>,
-</LI><LI CLASS="li-itemize">soit par la liste des coefficients de la première variable,
-coefficients qui sont eux-mêmes des polynômes qui seront donnés sous la 
-forme la liste des coefficients de la deuxième variable etc... et
-que l’on parenthése avec <TT>[]</TT>,<TT>[]</TT> : c’est le format 
-interne dense récursif : par exemple <TT>symb2poly(3x</TT><CODE><TT>^</TT></CODE><TT>2*y,x,y)</TT> 
-renvoie <TT>[]</TT><TT>[]</TT>3,0<TT>[]</TT>,0,0<TT>[]</TT> qui représente 3<I>x</I><SUP>2</SUP><I>y</I> si 
-les variables sont <TT>x,y</TT>.
-</LI></UL><P>
-Un polynôme de plusieurs variables est représenté par la somme de 
-ses monômes.
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc438">6.26.8</A>  Transformer exp(n*ln(x)) en puissance : <TT>exp2pow</TT></H3><P><A NAME="@default672"></A>
+<TT>exp2pow</TT> permet de transformer une expression de la forme 
+exp(<I>n</I>*ln(<I>x</I>)) en une puissance de <I>x</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>exp2pow(exp(n*ln(x)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>n</TT></DIV><P>
+Bien voir la différence avec <TT>lncollect</TT> :<BR>
+<TT>lncollect(exp(n*ln(x))) = exp(n*ln(x))</TT><BR>
+<TT>lncollect(exp(2*ln(x))) = exp(2*ln(x))</TT><BR>
+<TT>exp2pow(exp(2*ln(x)))= x</TT><CODE><TT>^</TT></CODE><TT>2 </TT><BR>
+Mais :<BR>
+<TT>lncollect(exp(ln(x)+ln(x))) = x</TT><CODE><TT>^</TT></CODE><TT>2</TT><BR>
+<TT>exp2pow(exp(ln(x)+ln(x))) = x</TT><CODE><TT>^</TT></CODE><TT>(1+1)</TT></P><HR>
 <A HREF="cascmd_fr352.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr354.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
