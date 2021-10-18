@@ -541,8 +541,10 @@ namespace xcas {
 	  return; // moved from below otherwise after debugging STOP button is always on
       }
     }
+    bool lock=true; // added because DispG freeze in linux
     if (Xcas_DispG_Window){
       if (show_xcas_dispg){
+	lock=false;
 	if (show_xcas_dispg & 2){
 	  if (!Xcas_DispG_Window->visible())
 	    Xcas_DispG->autoscale();
@@ -566,13 +568,13 @@ namespace xcas {
     }
     ++initialized;
     if (initialized % 5){
-      Fl::unlock();
+      if (lock) Fl::unlock();
 #ifdef WIN32
       usleep(10000);
 #else
       usleep(1000);
 #endif
-      Fl::lock();
+      if (lock) Fl::lock();
       return;
     }
     if (!initialized && initialize_function)
@@ -1058,7 +1060,7 @@ namespace xcas {
 	change_group_fontsize(g,w->labelsize());
 	return g;
       }
-      if (evaled_g.is_symb_of_sommet(at_pnt) || anim){
+      if (is_pnt_or_pixon(evaled_g) || anim){
 	Fl_Tile * g = new Fl_Tile(w->x(),w->y(),w->w(),max(130,w->w()/3));
 	g->labelsize(w->labelsize());
 	Graph2d3d * res;

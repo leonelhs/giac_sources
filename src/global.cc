@@ -2883,6 +2883,8 @@ extern "C" void Sleep(unsigned int miliSecond);
       browser="mozilla";
       if (!access("/usr/bin/dillo",R_OK))
 	browser="dillo";
+      if (!access("/usr/bin/chromium",R_OK))
+	browser="chromium";
       if (!access("/usr/bin/firefox",R_OK))
 	browser="firefox";
 #endif
@@ -2896,7 +2898,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     ++i;
     string browsersub=browser.substr(i,bs-i);
     if (s[0]!='\'') s='\''+s+'\'';
-    if (browsersub=="mozilla" || browsersub=="mozilla-bin" || browsersub=="firefox" ){
+    if (browsersub=="mozilla" || browsersub=="mozilla-bin" || browsersub=="firefox" || browsersub=="chromium"){
       s="if ! "+browser+" -remote \"openurl("+s+")\" ; then "+browser+" "+s+" & fi &";
     }
     else
@@ -3564,6 +3566,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     ptr->stackaddr=0;
     thread_eval_status(0,contextptr);
     pthread_exit(0);
+    return 0;
   }
 
   // create a new thread for evaluation of g at level level in context
@@ -4986,6 +4989,7 @@ unsigned int ConvertUTF8toUTF16 (
     "mathml",
     "mult_c_conjugate",
     "mult_conjugate",
+    "multiplier_conjugue",
     "nodisp",
     "normal",
     "op",
@@ -5661,7 +5665,8 @@ unsigned int ConvertUTF8toUTF16 (
 	  continue;
 	}
       }
-      if (curch==']' && (prevch==':' || prevch==',')){
+      if ( (curch==']' && (prevch==':' || prevch==',')) ||
+	   (curch==',' && prevch==':') ){
 	cur[pos-1]='.';
 	cur.insert(cur.begin()+pos,'.');
 	++pos;
@@ -5730,6 +5735,8 @@ unsigned int ConvertUTF8toUTF16 (
   // elif ...: -> elif ... then [nothing in stack]
   // ? support for try except
   std::string python2xcas(const std::string & s_orig,GIAC_CONTEXT){
+    if (xcas_mode(contextptr)>0)
+      return s_orig;
     // quick check for python-like syntax: search line ending with :
     int first=0,sss=s_orig.size();
     first=s_orig.find("maple_mode");

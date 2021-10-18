@@ -77,6 +77,7 @@ var UI ={
       UI.moveCaretUpDown(UI.focused,-1);
       UI.indentline(UI.focused);
     }
+    UI.focused.focus();
     document.getElementById('assistant_pour').style.display='none';
     document.getElementById('assistant_boucle').style.display='none';
   },
@@ -96,6 +97,7 @@ var UI ={
       UI.indentline(UI.focused);
       UI.moveCaretUpDown(UI.focused,1);
     }
+    UI.focused.focus();
     document.getElementById('assistant_tantque').style.display='none';
     document.getElementById('assistant_boucle').style.display='none';
   },
@@ -124,7 +126,12 @@ var UI ={
 	UI.insert(UI.focused,'\n'+tmp);
       } else { UI.insert(UI.focused,' sinon '+tmp);UI.insert(UI.focused,' fsi;\n'); }
     }
+    else {
+      if (!UI.python_mode)
+	UI.insert(UI.focused,' fsi;\n');
+    }
     UI.indentline(UI.focused);UI.funcoff();
+    UI.focused.focus();
     document.getElementById('assistant_test').style.display='none';
   },
   assistant_prog_ok:function(){
@@ -159,6 +166,7 @@ var UI ={
       }
     }
     document.getElementById('assistant_prog').style.display='none';
+    UI.focused.focus();
   },
   assistant_seq_ok:function(){UI.focused=UI.savefocused;var tmp='seq('+document.getElementById('seqexpr').value+','+document.getElementById('seqvarname').value+','+document.getElementById('seqvarmin').value+','+document.getElementById('seqvarmax').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('seqvarstep').value; if(tmp.length) UI.insert(UI.focused,','+tmp); UI.insert(UI.focused,')');document.getElementById('assistant_seq').style.display='none';},
   assistant_plot_polar:function(){UI.focused=UI.savefocused;var tmp='plotpolar('+document.getElementById('plotpolarexpr').value+','+document.getElementById('plotpolarvarname').value+','+document.getElementById('plotpolarvarmin').value+','+document.getElementById('plotpolarvarmax').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('plotpolarvarstep').value; if(tmp.length) UI.insert(UI.focused,',tstep='+tmp); UI.insert(UI.focused,')');document.getElementById('assistant_plotpolar').style.display='none';},
@@ -211,7 +219,7 @@ var UI ={
     if (tableur) UI.matrix2spreadsheet(); else UI.spreadsheet2matrix(false);
     var field=document.getElementById('matr_span0_0');
     UI.sheet_onfocus(field); 
-    UI.set_focus('matr_span0_0');
+    //UI.set_focus('matr_span0_0');
   },
   sheet_rowadd:function(n){
     var field=document.getElementById('matr_nrows');
@@ -384,10 +392,10 @@ var UI ={
 	if (UI.assistant_matr_textarea>0)
 	  s+='<td class="matrixcell"><textarea class="matrixcell" \
 onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this); return false;" \
-onclick="UI.focused=this;" onblur="style.display=\'none\';nextSibling.style.display=\'inline\'" onfocus="nextSibling.style.display=\'none\'" \
+onclick="UI.focused=this;" onblur="UI.sheet_blur(this)" onfocus="nextSibling.style.display=\'none\';UI.focused=this;" \
 id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);" id="matr_span'+i+'_'+j+'"></div></td>';
 	else
-	  s+='<td class="matrixcell" onclick="UI.sheet_onfocus(lastChild);"><input class="matrixcell" onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this); return false;" onclick="UI.focused=this;" onblur="style.display=\'none\';nextSibling.style.display=\'inline\'" onfocus="nextSibling.style.display=\'none\'" id="matr_case'+i+'_'+j+'" value="'+oldval+'" /><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);"  id="matr_span'+i+'_'+j+'"></div></td>';
+	  s+='<td class="matrixcell" onclick="UI.sheet_onfocus(lastChild);"><input class="matrixcell" onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this); return false;" onclick="UI.focused=this;" onblur="UI.sheet_blur(this)" onfocus="nextSibling.style.display=\'none\';UI.focused=this;" id="matr_case'+i+'_'+j+'" value="'+oldval+'" /><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);"  id="matr_span'+i+'_'+j+'"></div></td>';
       }
       s += '</tr>\n';
     }
@@ -397,6 +405,10 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     if (document.getElementById('matr_or_sheet').checked){ UI.matrix2spreadsheet();}
     //console.log(mydiv.innerHTML);
     //mydiv.style.display='none';
+  },
+  sheet_blur:function(field){
+    //UI.cb_matr_enter(field); return;
+    //field.style.display='none'; field.nextSibling.style.display='inline';
   },
   cb_matr_enter:function(field){
     var s='csv2gen("'+field.value+'",string)';
@@ -644,8 +656,8 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	  var n=form.confiance_n.value,p=form.confiance_p.value;
 	  var coeff='1/2';
 	  if (n>100) coeff='sqrt('+(n/(n-1)*p*(1-p))+')';
-	  tmp='p:='+p+';sigma:='+coeff+'*normald_icdf(0,1,'+(1-alpha/2)+')/sqrt('+n+');';
-	  tmp +='[p-sigma,p+sigma];';
+	  tmp='p:='+p+';n:='+n+';alpha:='+alpha+';\ndelta_p:='+coeff+'*normald_icdf(0,1,(1-alpha/2))/sqrt(n);';
+	  tmp +='\n[p-delta_p,p+delta_p];';
 	  if (n*p<5 || n*(1-p)<5) tmp="Erreur : n*p et n*(1-p) doivent etre plus grand que 5"; 
 	  UI.insert(UI.focused,tmp);
 	  return;
@@ -701,7 +713,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     form.matr_ncols.max=UI.assistant_matr_maxncols;
     form.matr_nrows.max=UI.assistant_matr_maxnrows;
     if (form.matr_formule.checked){
-      document.getElementById('matr_formulediv').style.display='block';
+      document.getElementById('matr_formulediv').style.display='inline';
       UI.set_focus('matr_expr');
       document.getElementById('matr').style.display='none';
     } else {
@@ -770,7 +782,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       document.getElementById('add_:').value="!";
       document.getElementById('add_semi').value="\"";
       document.getElementById('add-=').value="_";
-      document.getElementById('add_infer').value=">";
+      // document.getElementById('add_infer').value=">";
       document.getElementById('add_sqrt').value="^2";
       document.getElementById('add_/').value="%";
       document.getElementById('add_pi').value="∞";
@@ -788,36 +800,21 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       document.getElementById('add_:').value=UI.python_mode?':':':=';
       document.getElementById('add_semi').value=";";
       document.getElementById('add-=').value="=";
-      document.getElementById('add_infer').value="<";
+      // document.getElementById('add_infer').value="<";
       document.getElementById('add_sqrt').value="√";
       document.getElementById('add_/').value="/";
       document.getElementById('add_pi').value="π";
     }
   },
-  switchcm:function(){
-    if (UI.usecm){
-      if (cmentree==entree){
-	// cmentree may be released with cmentree.toTextArea();
-	cmentree=CodeMirror.fromTextArea(entree,{
-	  matchBrackets: true,
-	  lineNumbers: true,
-	  viewportMargin: Infinity
-	});
-	//console.log(entree.type);
-	//cmentree.setSize(window.innerWidth-20,40);
-	cmentree.options.indentUnit=UI.python_mode?UI.python_indent:2; 
-	cmentree.on("focus",function(cm){ UI.set_focused(cm); });
-	cmentree.on("blur",function(cm) { if (cm.getSelection().length > 0){UI.selection=cm.getSelection();} });
-	cmentree.setValue(entree.value);
-	UI.changefontsize(cmentree,18);
-	UI.codemirror_setoptions(cmentree);
-      } // if (UI.usecm)
-    } else { if (cmentree!=entree) cmentree.toTextArea(); cmentree=entree; }
-    cmentree.focus();
-  },
   codemirror_setoptions:function(cmentree){
+    UI.setoption_mode(cmentree);
     cmentree.setOption("extraKeys", {
       Enter: function(cm){
+        //UI.set_editline(cmentree,false);
+	UI.eval_cmdline();
+      },
+      "Ctrl-Enter": function(cm){
+        //UI.set_editline(cmentree,false);
 	UI.eval_cmdline();
       },
       Backspace: function(cm){
@@ -830,6 +827,39 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	UI.indentline(cm);
       },
     });
+  },
+  switchcm:function(){
+    if (UI.usecm){
+      if (cmentree==entree){
+	// cmentree may be released with cmentree.toTextArea();
+	cmentree=CodeMirror.fromTextArea(entree,{
+	  matchBrackets: true,
+	  lineNumbers: true,
+	  viewportMargin: Infinity
+	});
+	UI.setoption_mode(cmentree);
+	//console.log(entree.type);
+	//cmentree.setSize(window.innerWidth-20,40);
+	cmentree.options.indentUnit=UI.python_mode?UI.python_indent:2; 
+	cmentree.on("focus",function(cm){ UI.set_focused(cm); UI.set_config_width();});
+	cmentree.on("blur",function(cm) { if (cm.getSelection().length > 0){UI.selection=cm.getSelection();} });
+	cmentree.setValue(entree.value);
+	UI.changefontsize(cmentree,18);
+	UI.codemirror_setoptions(cmentree);
+      } // if (UI.usecm)
+    } else { if (cmentree!=entree) cmentree.toTextArea(); cmentree=entree; }
+    cmentree.focus();
+  },
+  setoption_mode:function(cmentree){
+    if (!UI.usecm) return;
+    if (UI.python_mode){
+      //console.log('Python mode');
+      cmentree.setOption("mode", "python");
+    }
+    else {
+      //console.log('Xcas mode');
+      cmentree.setOption("mode", "simplemode");
+    }
   },
   kbdonfuncoff:function() {
     UI.savefocused=UI.focused;
@@ -869,7 +899,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	aString += "<button onclick=\"UI.restorefrom('"+tmp.substr(1,pos-1)+"')\">"+tmpname+"</button>\n";
       }
     }
-    aString += "<button onclick=document.getElementById('loadfile_cookie').innerHTML=''>annuler</button>\n"
+    aString += "<button onclick=document.getElementById('loadfile_cookie').innerHTML=''>&#x274C;</button>\n"
     //console.log(aString);
     return aString;
   },
@@ -987,7 +1017,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     var s,err;
     try {s=docaseval(value); } catch(err){ }
     // Module.print(text+ ' '+s);
-    callback(s,args);
+    return callback(s,args);
   },
   history_cm:0,
   ckenter: function(event,field){
@@ -995,7 +1025,29 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     var key = event.keyCode;
     if (key==13 && event.shiftKey){UI.insert(field,'\n');  UI.indentline(field); return false;}
     if (key != 13 || event.shiftKey) return true;
-    UI.reeval(field,'');
+    UI.reeval(field,'',true);
+    return false;
+  },
+  ckenter_comment: function(event,field){
+    //console.log(event.keyCode,event.shiftKey);
+    var key = event.keyCode;
+    if (key != 13 || !event.ctrlKey) return true;
+    UI.editcomment_end(field.nextSibling);
+    var par=field.parentNode;
+    par=par.parentNode;
+    par=par.parentNode;
+    par=par.parentNode.nextSibling;
+    if (par==null) cmentree.focus(); 
+    else {
+      par=par.firstChild.firstChild.nextSibling.nextSibling;
+      par=par.firstChild;
+      if (par.style.display=='none'){ // commentaire
+	par=par.nextSibling;
+	par.click();
+      }
+      else
+	par.focus();
+    }
     return false;
   },
   restoresession: function(chaine,hist,asked,doexec){
@@ -1059,14 +1111,23 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	continue;
       }
       if (p[0]=='codemirror'){
-	if (p[1]=='0') { document.getElementById('config').usecm.checked=false;  UI.set_config();}
-	if (p[1]=='1') { document.getElementById('config').usecm.checked=true;  UI.set_config();}
+	if (p[1]=='0') { document.getElementById('config').usecm.checked=false;  UI.set_config(false);}
+	if (p[1]=='1') { document.getElementById('config').usecm.checked=true;  UI.set_config(false);}
+	continue;
+      }
+      if (p[0]=='python'){
+	var form=document.getElementById('config');
+	if (p[1]=='0'){ form.python_mode.checked=false;}
+	if (p[0]=='1'){ form.python_mode.checked=true;}
+	UI.python_mode=form.python_mode.checked;
+	UI.setoption_mode(cmentree);
 	continue;
       }
       document.getElementById(p[0]).value = decodeURIComponent(p[1]);
     } // end for (i=...)
     if (doexec){ UI.exec(hist,0); }
     if (clearcmd) cmentree.setValue('');
+    if (hist.firstChild!=null) hist.firstChild.scrollIntoView();
   },
   link: function(start){
     var s=UI.makelink(start);
@@ -1074,10 +1135,15 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.createCookie('xcas_session',s,365);
     if (s.length>0){
       var smail = UI.base_url+"xcasfr.html#exec&"+s;
+      var s2 = "xcasfr.html#exec&"+s;
       s = UI.base_url+"xcasfr.html#"+s;
       //Module.print(s);
-      document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Cloner</a>';
-      document.getElementById('themailto').innerHTML='<a href="mailto:?subject=session Xcas&body=Bonjour%0d%0aVeuillez suivre ce lien : <'+UI.rewritestring(smail)+'>">E-mail</a>';
+      if (window.location.href.substr(0,4)=='file' && !UI.detectmob()){
+	document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Clone</a> <a href="'+s2+'" target="_blank">local</a>';
+      }
+      else
+	document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Clone</a>';
+      document.getElementById('themailto').innerHTML='<a href="mailto:?subject=session Xcas&body=Bonjour%0d%0aVeuillez suivre ce lien : <'+UI.rewritestring(smail)+'>">Mail</a>';
     }
   },
   rewritestring: function(s){
@@ -1093,7 +1159,8 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     return res;
   },
   makelink: function(start){
-    var s='';
+    var s='python=';
+    if (UI.python_mode) s+='1&'; else s+='0&';
     var cur=document.getElementById('mathoutput').firstChild;
     var i=0;
     for (;cur;i++){
@@ -1104,6 +1171,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	var fs=field.innerHTML;
 	if (fs.length>6 && fs.substr(0,6)=="<span "){ // comment
 	  fs=field.firstChild.firstChild.value;
+	  fs=fs.replace(/\n/g,'%0a');
 	  //console.log(fs);
 	}
 	if (fs.length>5){
@@ -1201,7 +1269,8 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       document.getElementById('progbuttons').style.display='none';
       var tab=['boucle','seq','rand','series','int','sum','limit','plotfunc','plotparam',
 	       'plotpolar','plotimplicit','plotfield','tabvar','test','prog','solve',
-	       'rsolve','diff','matr','suites','desolve','rewrite_trig'];
+	       'rsolve','diff','matr','suites','arit','geo','linalg','rewrite',
+	       'graph','calculus'];
       var s=tab.length,k;
       for (k=0;k<s;++k){
 	var tmp=document.getElementById('assistant_'+tab[k]);
@@ -1217,31 +1286,56 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     var form=document.getElementById('config');
     form.style.display='inline';
   },
+  editline:false,
+  set_editline:function(field,b){
+    UI.editline=b;
+    if (field){
+      if (field.parentNode)
+	field=field.parentNode;
+      else field=field.getTextArea().parentNode;
+    }
+    if (field){
+      //UI.switch_buttons(field,true);
+      field=field.firstChild;
+      field=field.nextSibling;
+      if (field.CodeMirror)
+	field=field.nextSibling;
+      //console.log(b,field.id);
+      if (field && field.id=="")
+	field.style.display=b?'inline':'none';
+    }
+  },
   set_config_width:function(){
     var form=document.getElementById('config');
     var hw=window.innerWidth,hh=window.innerHeight;
     if (hw>=1000){ hw=hw-50; UI.focusaftereval=true;}
     if (hw<=500){ UI.focusaftereval=false; document.getElementById('exportbutton').style.display='none';}
     form.outdiv_width.value=Math.floor(hw/2);
-    document.getElementById('mathoutput').style.maxWidth=hw;
-    document.getElementById('divoutput').style.maxHeight=hh;
+    document.getElementById('mathoutput').style.maxWidth=hw+'px';
+    var mh=Math.floor(hh*.61);
+    if (UI.detectmob() && UI.editline) mh=Math.floor(hh*.8);
+    //console.log('set_config_width hh',document.getElementById('divoutput').style.maxHeight,mh);
+    document.getElementById('divoutput').style.maxHeight=mh+'px';
     var w=form.outdiv_width.value,h;
     // Module.print(hw);Module.print(w);
     if (w>hw-300) w=hw-300;
-    var hi=hw-w-200;
+    var hi=hw-w-153;
     if (!UI.qa){ hi=hw-130; w=hi; }
     var hb=29; if (hh>=400) hb=32; if (hh>=500) hb=34; if (hh>600) hb=37;
-    s='h1,h2,h3 { display:inline; font-size:1em;}\ninput[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+form.outdiv_height.value+'px;  overflow: auto;}\n.filenamecss {width:120px;height:20px}\n.historyinput {width:'+hi+'px;}\n.bouton{height:'+hb+'px;}';
+    mh=form.outdiv_height.value;
+    var cms=mh-2*hb; // codemirror scrollbar max height
+    if (UI.focused==cmentree) cms=Math.floor(hw*.67);
+    s='h1,h2,h3 { display:inline; font-size:1em;}\ninput[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+mh+'px;  overflow: auto;}\n.filenamecss {width:80px;height:20px}\n.historyinput {width:'+hi+'px;}\n.bouton{vertical-align:bottom; height:'+hb+'px;}\n.CodeMirror-scroll {height:auto; max-height:'+cms+'px;}\n.CodeMirror {border: 1px solid black;  height:auto; min-width:'+hi+'px;}\n  dt {font-family: monospace; color: #666;}';
     // console.log(s);// Module.print(s);
     var st=document.getElementById('document_style');
     st.innerHTML=s;
-    var kbd_l=["add_newline","add_infer","add_left_par","add_right_par",
+    var kbd_l=["add_newline","add_infer","add_super","add_left_par","add_right_par",
 	       "add_i","add_7" ,"add_8" ,"add_9" ,"add_/",
 	       "add_semi" ,"add_abc" ,"add_pi" ,
 	       "add_4" ,"add_5" ,"add_6" ,"add_*" ,"add_beg","add_end","add_:",
 	       "add_,","add_xtn","add_1" ,"add_2" ,
 	       "add_3" ,"add_-" ,"copy_button" ,"curseur_up","add-=" ,
-	       "add_backspace","add_ln","add_e","add_0" ,"add_." ,
+	       "add_dosel","add_ln","add_e","add_0" ,"add_." ,
 	       "add_+" ,"curseur_down" ,"shift_key" ,"add_sin" ,"add_cos",
 	       "add_tan","add_sqrt","add_^"];
     var kbd_a=["add_alpha_a","add_alpha_b","add_alpha_c","add_alpha_d","add_alpha_e",
@@ -1250,14 +1344,12 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	       "add_alpha_h","add_alpha_l","add_alpha_p","add_alpha_t","add_alpha_w","add_alpha_z",
 	       "add_alpha_i","add_alpha_m","add_alpha_q","add_alpha_{","add_alpha_}",
 	       "add_alpha_space","add_alpha_"];
-    var kbd_cmd=["button_ok","button_help","button_123","button_util","button_cmd",
-		 "button_gauche","button_droit","select_button"];
-    var kbd_math=["add_simplify" ,"add_matr",
-		  "add_factor" ,"add_stats","add_tableur","open_rewritetrig","add_solve","add_polar",
-		  "add_mathcomment","add_rand" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
-		  "add_integrate" ,"add_limit","add_series","add_seq","add_tabvar","add_plot",
-		  "add_plotparam" ,"add_plotfield","add_plotimplicit","add_curseur"];
-    var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
+    var kbd_math=["add_arit" ,"add_matr","add_graph","add_calculus",
+		  "add_linalg" ,"add_stats","add_tableur","add_rewritetrig","add_solve",
+		  "add_mathcomment","add_rand" ,"add_geo","add_rsolve" ,
+		  "add_seq","add_tabvar",
+		  "add_curseur"];
+    var kbd_prog=["add_//","add_nlprog","add_listechaine","add_tortue","add_test",
 		  "add_boucle","add_function","add_debug","add_efface","add_avance",
 		  "add_recule","add_tourne_gauche","add_tourne_droite",
 		  "add_pas_de_cote","add_saute","add_crayon","add_rond","add_disque",
@@ -1274,10 +1366,6 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     }
     w=Math.floor(hw/9)-1; if (w<30) w=30; w=w+"px"; 
     h=Math.floor(hh/20); if (h<35) h=35; h=h+"px"; // console.log(hw,w,hh,h);
-    for (var i=0;i<kbd_cmd.length;i++){
-      document.getElementById(kbd_cmd[i]).style.width=w;
-      document.getElementById(kbd_cmd[i]).style.height=h;
-    }
     for (var i=0;i<kbd_prog.length;i++){
       document.getElementById(kbd_prog[i]).style.width=w;
       document.getElementById(kbd_prog[i]).style.height=h;
@@ -1309,7 +1397,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       if (UI.withworker) alert('Session redemarree (variables remises a 0).');
       UI.withworker=false;
     }
-    if (UI.withworker) document.getElementById('stop_button').style.visibility='visible'; else document.getElementById('stop_button').style.visibility='hidden';
+    if (UI.withworker) document.getElementById('stop_button').style.display='inline'; else document.getElementById('stop_button').style.display='none';
     UI.caseval("autosimplify("+form.autosimp_level.value+")");
     //Module.print(st.innerHTML);
     s='Digits:=';
@@ -1328,7 +1416,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     // Module.print(s);
     return s;
   },
-  set_config:function(){
+  set_config:function(setcm_mode){ // b==true if we set cmentree
     var form=document.getElementById('config');
     UI.canvas_w=form.canvas_w.value;
     UI.canvas_h=form.canvas_h.value;
@@ -1341,6 +1429,9 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.createCookie('xcas_angle_radian',form.angle_mode.checked?1:-1,10000);
     UI.createCookie('xcas_python_mode',form.python_mode.checked?1:-1,10000);
     UI.python_mode=form.python_mode.checked;
+    if (setcm_mode){
+      UI.setoption_mode(cmentree);
+    }      
     document.getElementById('add_//').value=UI.python_mode?'#':'//';
     if (!UI.kbdshift) document.getElementById('add_:').value=UI.python_mode?':':':=';
     if (cmentree.type!='textarea') cmentree.options.indentUnit=UI.python_mode?UI.python_indent:2; 
@@ -1438,14 +1529,20 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
   is_alphan:function(c){
     return (c>=48 && c<=57) || (c>=65 && c<=91) || (c>=97 && c<=123) || c==95;
   },
-  erase_button:function(){
-    return '<td><button class="bouton" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">del</button></td></tr>';
+  erase_button:function(newline){
+    var s='<td><button class="bouton" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">&#x232b;</button>';
+    /* if (newline)
+       s+='<br>';
+       s +='<button class="bouton" onclick=\'UI.reeval(UI.focused,"",false)\'>ok</button>';
+    */
+    s += '</td></tr>';
+    return s;
   },
   move_buttons:function(newline){
     var s='<tr onmouseenter="UI.switch_buttons(this,true)" onmouseleave="if (!UI.fixeddel) UI.switch_buttons(this,false)">';
     // s += '<td>&bull;</td>'; // f=f.nextSibling in switch_buttons
     if (newline)
-      s += '<td><button style="width:20px;height:30px;" onclick="UI.moveup(this)" title="d&eacute;placer vers le haut">↑</button><br><button style="width:20px;height:30px;" onclick="UI.movedown(this)" title="d&eacute;placer vers la bas">↓</button></td><td></td>';
+      s += '<td><button style="width:20px;height:28px;" onclick="UI.moveup(this)" title="d&eacute;placer vers le haut">↑</button><br><button style="width:20px;height:28px;" onclick="UI.movedown(this)" title="d&eacute;placer vers la bas">↓</button></td><td></td>';
     else
       s += '<td><button style="width:20px;height:16px;" onclick="UI.moveup(this)" title="d&eacute;placer vers le haut">↑</button><button style="width:20px;height:16px;" onclick="UI.movedown(this)" title="d&eacute;placervers la bas">↓</button></td><td><button style="width:20px;height:16px;" onclick="for (var i=0;i<5;i++) UI.moveup(this)" title="d&eacute;placer de 5 vers le haut">↑↑</button><button style="width:20px;height:16px;" onclick="for (var i=0;i<5;i++) UI.movedown(this)" title="d&eacute;placer de 5  vers la bas">↓↓</button></td>';
     return s;
@@ -1460,20 +1557,24 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     var s=UI.move_buttons(!UI.qa);
     s += '<td colspan=3>';
     s += '<form onsubmit="setTimeout(function() { rangename.value=valname.value; rangename.step=stepname.value; valname.step=stepname.value;rangename.min=minname.value; rangename.max=maxname.value;UI.eval_below(name.form,name.value,rangename.value);}); return false;">';
-    s += '<input class="bouton" type="text" name="name" size="1" value=\''+name+'\'>';
-    s += '='+'<input class="bouton" type="number" name="valname" onchange="valname.innerHTML=valname.value" value=\''+value+'\' step=\''+step+'\'>';
-    s += '<input class="bouton" type="submit" value="ok">'
-    s += '&nbsp;<input class="bouton" type="number" name="minname" value=\''+mini+'\' step=\''+step+'\'>';
-    s += '<input class="bouton" type="range" name="rangename" onclick="valname.value=value;UI.eval_below(form,form.name.value,value);" value='+value+' min='+mini+' max='+maxi+' step=' + step +'>';
-    s += '<input class="bouton" type="number" name="maxname" value=\''+maxi+'\' step=\''+step+'\'>&nbsp;';
-    s += '(pas <input class="bouton" type="number" name="stepname" value=\''+step+'\' step=\''+step/100+'\'>)';
-    s += '&nbsp;<input style="height:30px" type="button" value="--" onclick="valname.value -= 10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
-    s += '&nbsp;<input style="height:30px" type="button" value="- " onclick="valname.value -= stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
-    s += '&nbsp;<input style="height:30px" type="button" value="+ " onclick="valname.value -= -stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
-    s += '&nbsp;<input style="height:30px" type="button" value="++" onclick="valname.value -= -10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+    s += '<input class="curseur" type="text" name="name" size="1" value=\''+name+'\'>';
+    s += '='+'<input class="curseur" type="number" name="valname" onchange="valname.innerHTML=valname.value" value=\''+value+'\' step=\''+step+'\'>';
+    s += '<input class="curseur" type="submit" value="ok">'
+    s += '&nbsp;<input class="curseur" type="button" value="--&nbsp;" onclick="valname.value -= 10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+    s += '<input class="curseur" type="button" value="&nbsp;-&nbsp;&nbsp;" onclick="valname.value -= stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+    s += '&nbsp;<input class="curseur" type="button" value="&nbsp;&nbsp;+&nbsp;" onclick="valname.value -= -stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+    s += '<input class="curseur" type="button" value="&nbsp;++" onclick="valname.value -= -10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+    s += '&nbsp;<input class="curseur" type="button" value="&#x270e;" onclick="var tmp=nextSibling; if (tmp.style.display==\'none\') tmp.style.display=\'inline\'; else tmp.style.display=\'none\';">';
+    s += '<span style="display:none">&nbsp;<input class="curseur" type="number" name="minname" value=\''+mini+'\' step=\''+step+'\'>';
+    if (window.innerWidth<600)
+      s += '<input class="curseur" type="range" style="display:none" name="rangename" onclick="valname.value=value;UI.eval_below(form,form.name.value,value);" value='+value+' min='+mini+' max='+maxi+' step=' + step +'>';
+    else 
+      s += '<input class="curseur" type="range" name="rangename" onclick="valname.value=value;UI.eval_below(form,form.name.value,value);" value='+value+' min='+mini+' max='+maxi+' step=' + step +'>';
+    s += '<input class="curseur" type="number" name="maxname" value=\''+maxi+'\' step=\''+step+'\'>&nbsp;';
+    s += '(pas <input class="curseur" type="number" name="stepname" value=\''+step+'\' step=\''+step/100+'\'>)</span>';
     s += '</form>';
     s += '</td>';
-    s += UI.erase_button();
+    s += UI.erase_button(!UI.qa);
     return s;
   },
   addcurseur: function(name,value,mini,maxi,step){
@@ -1528,12 +1629,13 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     //Module.print(postcmd);
     if (prev.parentNode.previousSibling){
       //Module.print(prev.parentNode.parentNode.firstChild.innerHTML);
-      UI.reeval(prev.parentNode.parentNode.firstChild,postcmd);
+      UI.reeval(prev.parentNode.parentNode.firstChild,postcmd,false);
     }
     else
-      UI.reeval(prev.parentNode.parentNode.previousSibling.firstChild,postcmd);
+      UI.reeval(prev.parentNode.parentNode.previousSibling.firstChild,postcmd,false);
   },
   eval_cmdline: function(){
+    UI.set_config_width();
     var value;
     document.getElementById('keyboardfunc').style.display='none';
     document.getElementById('keyboard').style.display='none';
@@ -1628,6 +1730,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     }
   },
   switch_buttons: function(field,onoff){
+    if (!field || !field.firstChild) return;
     var f=field.firstChild;
     // f = f.nextSibling; // &bull; in move_buttons
     if (onoff) f.style.visibility='visible'; else f.style.visibility='hidden';
@@ -1717,9 +1820,19 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.show_history123();
     var s=UI.move_buttons(!UI.qa);
     var t=text.substr(2,text.length-2);
-    s += '<td colspan="2"><span style="display:none"><textarea row="5" cols="60">'+t+'</textarea><button class="bouton" onclick="UI.editcomment_end(this)">ok</button><br><button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_math(UI.focused)">math</button><button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_tt(UI.focused)">fixe</button><button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_strong(UI.focused)">gras</button><button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_em(UI.focused)">italique</button><button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_list(UI.focused)">liste</button><button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_enum(UI.focused)">num&eacute;rot&eacute;e</button><button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_h2(UI.focused)">sous</button><button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_h1(UI.focused)">titre</button></span><span onclick="UI.editcomment1(this)">'+UI.rendercomment(t)+'</span></td>';
-    s += '<td> <button class="bouton" onclick="UI.editcomment2(this);">edit</td>';
-    s += UI.erase_button();
+    s += '<td colspan="2"><span style="display:none"><textarea title="Ctrl-Enter ou bouton ok pour valider ce commentaire" onkeypress="UI.ckenter_comment(event,this)" row="5" cols="60">'+t+'</textarea>';
+    s += '<button class="bouton" title="Valide ce commentaire" onclick="UI.editcomment_end(this)">&#x2705;</button>';
+    s += '<br><button onmousedown="event.preventDefault()" title="Ajoute $ $ pour ins&eacute;rer des maths" class="bouton" onclick="UI.add_math(UI.focused)">math</button>';
+    s += '<button onmousedown="event.preventDefault()" title="Passe en police fixe" class="bouton" onclick="UI.add_tt(UI.focused)">fixe</button>';
+    s += '<button title="Passe en gras" onmousedown="event.preventDefault()"  class="bouton" onclick="UI.add_strong(UI.focused)">gras</button>';
+    s += '<button title="Passe en italique" onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_em(UI.focused)">italique</button>';
+    s += '<button onmousedown="event.preventDefault()" title="Ins&egrave;re une liste" class="bouton" onclick="UI.add_list(UI.focused)">liste</button>';
+    s += '<button onmousedown="event.preventDefault()" title="Ins&egrave;re une listenum&eacute;rot&eacute;e" class="bouton" onclick="UI.add_enum(UI.focused)">num&eacute;rot&eacute;e</button>';
+    s += '<button onmousedown="event.preventDefault()" class="bouton" onclick="UI.add_h2(UI.focused)">sous</button>';
+    s += '<button onmousedown="event.preventDefault()" title="Ins&egrave;re un titre" class="bouton" onclick="UI.add_h1(UI.focused)">titre</button>';
+    s += '</span><span onclick="UI.editcomment1(this)">'+UI.rendercomment(t)+'</span></td>';
+    s += '<td> <button title="Editer ce commentaire" class="bouton" onclick="UI.editcomment2(this);">&#x270e;</td>';
+    s += UI.erase_button(!UI.qa);
     return s;
   },
   editcomment1: function(field){
@@ -1753,6 +1866,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
   eval: function(text,textin){
     UI.set_locale();
     var out=UI.caseval(text);
+    //console.log(text,out);
     var s=' ';
     if (out.substr(1,4)=='<svg' || out.substr(0,5)=='gl3d ' || out.substr(0,5)=='gr2d('){
       // Module.print(text+' -> Done');
@@ -1791,9 +1905,59 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       UI.render_canvas(f);
     }
   },
-  reeval: function(field,postcmd){
+  search:function(field,cmd){
+    if (!field) return;
+    field=field.parentNode;
+    if (field){
+      if (field){
+	if (field.parentNode)
+	  field=field.parentNode;
+	if (field){
+	  field=field.firstChild;
+	  if (field){
+	    var cm=field.nextSibling.CodeMirror;
+	    if (cm){
+	      if (cmd==0){ CodeMirror.commands.find(cm); return;}
+	      if (cmd==1){ CodeMirror.commands.findNext(cm); return;}
+	      if (cmd==2){ CodeMirror.commands.findPrev(cm); return;}
+	      if (cmd==3){ CodeMirror.commands.replace(cm); return;}
+	      if (cmd==4){ CodeMirror.commands.replaceAll(cm); return;}
+	      if (cmd==5){ CodeMirror.commands.jumpToLine(cm); return;}
+	      if (cmd==6){ cm.undo(); return;}
+	      if (cmd==7){ cm.redo(); return;}
+	      if (cmd==-1){ UI.completion(cm); return;}
+	    }
+	  }
+	}
+      }
+    }
+  },
+  evallevel:function(field,eval){
+    if (!field) return;
+    field=field.parentNode;
+    if (field){
+      field.style.display='none'; // hide ok button
+      if (field){
+	if (field.parentNode)
+	  field=field.parentNode;
+	if (field){
+	  field=field.firstChild;
+	  if (field){
+	    if (field.nextSibling.CodeMirror){ // convert codemirror back
+	      var cm=field.nextSibling;
+	      cm.CodeMirror.toTextArea();
+	    }
+	    if (eval) UI.reeval(field,'',false); else UI.link(0);
+	  }
+	}
+      }
+    }
+  },
+  reeval: function(field,postcmd,focusnextsibling){
     // field=field.previousSibling;
+    UI.set_config_width();
     if (field.type!='textarea'){ var t=field.getTextArea(); t.value=field.getValue();field=t;}
+    UI.set_editline(field,false);
     var s=field.value;
     //console.log(s);
     var par=field.parentNode;
@@ -1808,12 +1972,22 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       MathJax.Hub.Queue(["Typeset",MathJax.Hub,'"hist'+(UI.histcount-1)+'"']);
     }
     if (UI.focusaftereval){
-      par=par.parentNode.nextSibling;
-      if (par==null) cmentree.focus(); // console.log(par);
-      else {
-	par=par.firstChild.firstChild.nextSibling.nextSibling.firstChild;
-	par.focus();
+      if (focusnextsibling){
+	par=par.parentNode.nextSibling;
+	if (par==null) cmentree.focus(); 
+	else {
+	  par=par.firstChild.firstChild.nextSibling.nextSibling;
+	  par=par.firstChild;
+	  if (par.style.display=='none'){ // commentaire
+	    par=par.nextSibling;
+	    par.click();
+	  }
+	  else
+	    par.focus();
+	}
       }
+      else
+	cmentree.focus();       
     }
   },
   eval_level: function(field){
@@ -1877,24 +2051,36 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       else c++;
     }
     cm.setCursor({line:l,ch:c}); cm.refresh();
-    cm.setSize(null,h+20);
-    cm.on("focus",function(cm){ UI.set_focused(cm); });
+    UI.setoption_mode(cm);
+    //cm.setSize(null,h+20); // commented (auto-resize)
+    cm.on("focus",function(cm){
+      UI.set_focused(cm);
+      UI.set_editline(cm,true); // insure OK is visible on mobile
+      UI.set_config_width();
+    });
     cm.on("blur",function(cmf) {
+      //cmf.getTextArea().value=cmf.getValue();
+      //UI.resizetextarea(cmf.getTextArea());
       if (cmf.getSelection().length > 0){UI.selection=cmf.getSelection();}
-      cmf.toTextArea();
+      //UI.set_editline(cm,false);
+      //UI.set_config_width();
+      //cmf.toTextArea();
     });
     // cm.setOption("inputStyle", "textarea");
     cm.setOption("extraKeys", {
-      Enter: function(cm){
+      "Ctrl-Enter": function(cm){
 	var txt=cm.getTextArea();
 	cm.toTextArea();
-	UI.reeval(txt,'');
+	UI.reeval(txt,'',true);
+      },
+      Backspace: function(cm){
+	UI.backspace(cm);
       },
       F1: function(cm) {
 	UI.completion(cm);
       },
       Tab: function(cm) {
-	UI.completion(cm);
+	UI.indentline(cm);
 	//cm.toTextArea();  
       }
     });
@@ -1909,7 +2095,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
   },
   addinput: function(textin,textout,mathmlout){
     document.getElementById('startup_restore').style.display='none'
-    //console.log(textout,mathmlout); 
+    //console.log(textin,textout,mathmlout); 
     if (mathmlout.length>=5 && mathmlout.substr(0,5)=='gl3d '){ document.getElementById('table_3d').style.display='inherit';}
     if (textin.length >= 2 && textin.substr(0,2)=='//') return UI.addcomment(textin);
     UI.show_history123();
@@ -1932,7 +2118,24 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       else
 	//s += 'rows='+(UI.count_newline(textin)+1) +' style="font-size:large"';
 	s += 'style="height:'+(20+16*UI.count_newline(textin))+'px; font-size:large"';
-      s += ' title="Shift-Enter: saut de ligne, Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm){var h=offsetHeight;UI.history_cm=CodeMirror.fromTextArea(this,{ matchBrackets: true}); UI.history_cm.setCursor({line:0,ch:selectionStart});UI.codemirror_setoptions(UI.history_cm);UI.history_cm.options.indentUnit=UI.python_mode?UI.python_indent:2; UI.prepare_cm(this,h,UI.history_cm);UI.changefontsize(UI.history_cm,16); UI.set_focused(UI.history_cm);} else UI.set_focused(this);" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">'+textin+'</textarea>';
+      s += ' title="Enter: saut de ligne, Ctrl-Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm) {var h=offsetHeight;UI.history_cm=CodeMirror.fromTextArea(this,{ matchBrackets: true,lineNumbers:true,viewportMargin: Infinity}); UI.history_cm.setCursor({line:0,ch:selectionStart});UI.history_cm.options.indentUnit=UI.python_mode?UI.python_indent:2; UI.prepare_cm(this,h,UI.history_cm);UI.changefontsize(UI.history_cm,16); UI.set_focused(UI.history_cm);} else UI.set_focused(this); UI.set_editline(this,true); UI.set_config_width(); parentNode.scrollIntoView();" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">'+textin+'</textarea>';
+      s += '<span style="display:none">';
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.evallevel(this,true)" title="R&eacute;evaluer le niveau (Ctrl-Enter)">&nbsp;&#x2705;&nbsp;&nbsp;</button>';
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.search(this,-1);" title="Donne une aide courte et quelques exemples d\'utilisation d\'une commande.">&nbsp;?&nbsp;</button>';
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)" title="Deplace vers la gauche le curseur">&nbsp;←&nbsp;</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur">&nbsp;→&nbsp;</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Deplace vers le haut le curseur">↑&nbsp;</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Deplace vers le bas le curseur">&nbsp;↓</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.indentline(UI.focused)" title="Indente">→|</button>'
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Efface">&#x232b;</button>'
+      if (UI.usecm){
+	s += '<br>';
+	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,6)" title="Annuler"><img width="16" height="16" src="undo.png" alt="Annuler" align="center"></button>';
+	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,7)" title="Refaire"><img width="16" height="16" src="redo.png" alt="Refaire" align="center"></button>';
+	s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,0)" title="Rechercher">find</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,1)" title="Rechercher suivant">&#x21D2;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,2)" title="Rechercher pr&eacute;c&eacute;dent">&#x21D0;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,3)" title="Remplacer">repl</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,5)" title="Aller ligne">go</button>';
+      }
+      s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.evallevel(this,false)" title="Abandonner">&nbsp;&#x274C;</button>';
+      s += '</span>';
       if (UI.qa) s += '</td>'; 
       if (is_svg || is_3d || is_gr2d){
 	if (UI.qa) s += '<td>'; else s+='<br>';
@@ -1959,7 +2162,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	  s += '<button class="bouton" onclick="UI.zoom(this.previousSibling,0.707)">in</button><br>';
 	}
 	if (is_svg) s += '<button class="bouton" onclick="UI.savesvg(parentNode.previousSibling)">sav</button><br>';
-	s += '<br><button style="height:25px;" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">del</button>'; delbut=true;
+	s += '<br><button style="height:25px;" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">&#x232b;</button>'; delbut=true;
 	s += '</td>';
       }
       else {
@@ -1982,7 +2185,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	s +='</td>';
       }
     }
-    if (delbut) s += '</tr>'; else s += UI.erase_button();
+    if (delbut) s += '</tr>'; else s += UI.erase_button(!UI.qa);
     // console.log(s);
     return s;
   },
@@ -2177,14 +2380,76 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
   set_focused: function(field){ UI.focused=field;},
   selectionne: function(){
     UI.focused.focus();
-    if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); }
-    else {UI.focused.select(); UI.selection=UI.focused.value;}
+    if (UI.focused.type!='textarea'){
+      if (UI.focused.execCommand)
+	UI.focused.execCommand('selectAll');
+    }
+    else {
+      UI.focused.select(); UI.selection=UI.focused.value;
+    }
   },
   set_focus:function(s){
     var tmp=document.getElementById(s);
     UI.focused=tmp;
     UI.selectionne(); // if (!UI.is_touch_device()) tmp.focus();
   },
+  adjust_focus:function(field){
+    var p1=field.parentNode;
+    if (p1){
+      p1=p1.nextSibling;
+      if (p1){
+	p1=p1.firstChild;
+	if (p1){
+	  p1=p1.nextSibling;
+	  if (p1 && p1.title=='Editer ce commentaire'){
+	    p1.click();
+	    return;
+	  }
+	}
+      }
+    }
+    var p2=field.nextSibling;
+    if (p2.CodeMirror){
+      p2.CodeMirror.toTextArea();
+    }
+    field.focus();
+  },
+  move_focus_end:function(par){
+    if (par.firstChild==null) return;
+    UI.switch_buttons(par.firstChild,true) 
+    par=par.firstChild.firstChild.nextSibling.nextSibling.nextSibling.firstChild;
+    if (par.nextSibling.title=="Editer ce commentaire"){
+      par.nextSibling.click();
+      return;
+    }
+    if (par.nextSibling==null){
+      par=par.parentNode.previousSibling.firstChild;
+      UI.adjust_focus(par);
+      return;
+    } 
+    //console.log(par.innerHTML);
+    par.style.display='none';
+    par=par.nextSibling;
+    par.style.display='inherit';
+    par.select();
+    UI.set_focused(par);
+    UI.adjust_focus(par);
+    return;
+  },
+  move_focus_end2:function(par){
+    par=par.parentNode.parentNode.parentNode;
+    if (!par.nextSibling) par=par.parentNode; // inside a comment 1 more level
+    par=par.nextSibling;
+    if (par==null || par.firstChild==null) {
+      UI.set_focused(cmentree); cmentree.focus();
+    }
+    else {
+      // console.log(par);
+      UI.switch_buttons(par.firstChild,true) 
+      par=par.firstChild.firstChild.nextSibling.nextSibling.firstChild;
+      UI.adjust_focus(par);
+    }
+  },    
   move_focus:function(field,n){
     // focus on next or previous history level
     if (n>0){
@@ -2197,13 +2462,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	par=par.nextSibling;
 	par=par.firstChild;
 	if (par.nextSibling==null){
-	  par=par.parentNode.parentNode.parentNode.nextSibling;
-	  if (par==null) cmentree.focus(); // console.log(par);
-	  else {
-	    UI.switch_buttons(par.firstChild,true) 
-	    par=par.firstChild.firstChild.nextSibling.nextSibling.firstChild;
-	    par.focus();
-	  }
+	  UI.move_focus_end2(par);
 	  return;
 	}
 	par.style.display='none';
@@ -2211,60 +2470,29 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	par.style.display='inherit';
 	par.select();
 	UI.set_focused(par);
-	par.focus();
+	UI.adjust_focus(par);
 	return;
       }
       var bidon=field.previousSibling;
       if (bidon.style.display!='none') return;
       bidon.style.display='block';
       field.style.display='none';
-      var par=field.parentNode.parentNode.parentNode.nextSibling;
-      if (par==null) {
-	UI.set_focused(cmentree); cmentree.focus();
-	//  console.log(par);
-      }
-      else {
-	UI.switch_buttons(par.firstChild,true) 
-	par=par.firstChild.firstChild.nextSibling.nextSibling.firstChild;
-	par.focus();
-      }
+      UI.move_focus_end2(field);
       return;
-    }
+    } // end if n>0
     if (field==cmentree){
       var par=document.getElementById('mathoutput').lastChild;
       if (par==null) return;
-      UI.switch_buttons(par.firstChild,true) 
-      par=par.firstChild.firstChild.nextSibling.nextSibling.nextSibling.firstChild;
-      if (par.nextSibling==null){
-	par=par.parentNode.previousSibling.firstChild;
-	par.focus(); return;
-      } 
-      //console.log(par.innerHTML);
-      par.style.display='none';
-      par=par.nextSibling;
-      par.style.display='inherit';
-      par.select();
-      UI.set_focused(par);
-      par.focus();
+      UI.move_focus_end(par);
       return;
     }
     if (field.type!="textarea" && field.type!="text")
       field=field.getTextArea();
     if (field.previousSibling==null){
-      var par=field.parentNode.parentNode.parentNode.previousSibling;
-      UI.switch_buttons(par.firstChild,true) 
-      par=par.firstChild.firstChild.nextSibling.nextSibling.nextSibling.firstChild;
-      if (par.nextSibling==null){
-	//console.log(par.nextSibling);
-	par=par.parentNode.previousSibling.firstChild;
-	par.focus(); return;
-      } 
-      par.style.display='none';
-      par=par.nextSibling;
-      par.style.display='inherit';
-      par.select();
-      UI.set_focused(par);
-      par.focus();
+      var par=field.parentNode.parentNode.parentNode;
+      if (!par.previousSibling) par=par.parentNode; // inside a comment 1 more level
+      par=par.previousSibling;
+      UI.move_focus_end(par);
       return;
     }
     var bidon=field.previousSibling;
@@ -2272,7 +2500,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     bidon.style.display='block';
     field.style.display='none';
     var par=field.parentNode.previousSibling.firstChild;
-    par.focus();
+    UI.adjust_focus(par);
     UI.switch_buttons(par.parentNode.parentNode,true) 
   },
   selline:0,
@@ -2427,6 +2655,8 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     UI.link(0);
   },
   updatelevel: function(field){
+    UI.set_editline(field,false);
+    UI.set_config_width();
     var pos=field.selectionStart;
     field.innerHTML=field.value;
     if (pos>=0 && pos<field.value.length)
@@ -2441,6 +2671,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     list.removeChild(par);
     list.insertBefore(par,prev);
     if (UI.focusaftereval) UI.focused.focus();
+    UI.link(0);
   },
   movedown: function(field){
     var par=field.parentNode;
@@ -2451,6 +2682,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     var list = par.parentNode;
     list.removeChild(par);
     list.insertBefore(par,nxt);
+    UI.link(0);
   },
   backspace: function(field){
     //if (UI.focusaftereval) field.focus();
@@ -2509,7 +2741,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
   },
   insert: function(myField, value) {
     var myValue=value.replace(/&quote;/g,'\"');
-    //console.log(myField.type, myValue);
+    //console.log('2',myField);
     if (UI.focusaftereval) myField.focus();
     if (myField.type!="textarea" && myField.type!="text"){
       if (myField.type==undefined && myField.firstChild!=undefined){
@@ -2546,6 +2778,11 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       UI.resizetextarea(myField);
     }
     // UI.show_curseur();
+  },
+  insertsemi: function(myField, value) {
+    if (UI.python_mode)
+      return UI.insert(myField,value);
+    UI.insert(myField,';'+value);
   },
   resizetextarea:function(field){
     if (field.type!='textarea') return;
@@ -2745,24 +2982,28 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
   pixon_draw:function(id,s){
     var v=eval(s);
     if (!Array.isArray(v)) return;
-    //console.log(v[0]);
+    //console.log(v[0],v.length);
     var canvas = document.getElementById(id);
     var l=v.length,w=0,h=0;
     if (l<2) return;
     var scale=v[0];
     for (var k=1;k<l;k++){
-      var cur=v[k],x=cur[0],y=cur[1];
+      var cur=v[k];
+      var x=cur[0],y=cur[1];
+      //console.log(cur,x,y);
       if (x>w) w=x;
       if (y>h) h=y;
     }
-    w=w*scale;
-    h=h*scale;
+    w=(w+1)*scale;
+    h=(h+1)*scale;
     canvas.width=w;
     canvas.height=h;
+    //console.log(h,w);
     if (canvas.getContext) {
       var ctx = canvas.getContext('2d');
       for (var k=1;k<l;k++){
 	var cur=v[k],cl;
+	//console.log(cur);
 	if (!Array.isArray(cur) || (cl=cur.length)<2) continue;
 	// cur[0]=x, cur[1]=y, cur[2]=color, cur[3]=w if +, h if -
 	var x=cur[0]*scale;

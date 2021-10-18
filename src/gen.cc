@@ -1244,12 +1244,11 @@ namespace giac {
       subtype= (a.type==_DOUBLE_) + (b.type==_DOUBLE_)*2;
     }
   }
-  
   gen::gen(const complex<double> & c) {
 #ifdef SMARTPTR64
-      * ((ulonglong * ) this) = ulonglong(new ref_complex(real(c),imag(c))) << 16;
+      * ((ulonglong * ) this) = ulonglong(new ref_complex(c)) << 16;
 #else
-      __CPLXptr = new_ref_complex(real(c),imag(c));
+      __CPLXptr = new ref_complex(c);
 #endif
     type=_CPLX;
     subtype=3;
@@ -12244,10 +12243,13 @@ namespace giac {
       }
     }
 #if 1 // for debugging/profiling pixon_print
-    if (v.back().is_symb_of_sommet(at_pnt) ){
-      gen f=v.back()._SYMBptr->feuille;
-      if (f.type==_VECT)
-	f=f._VECTptr->front();
+    if (is_pnt_or_pixon(v.back())){
+      gen f=v.back();
+      if (f.is_symb_of_sommet(at_pnt)){
+	f=f._SYMBptr->feuille;
+	if (f.type==_VECT)
+	  f=f._VECTptr->front();
+      }
       if (f.is_symb_of_sommet(at_pixon)){
 	string S;
 	pixon_print(v,S,contextptr);
@@ -13191,7 +13193,11 @@ namespace giac {
       reim(d,dr,di,contextptr);
       n=n*gen(dr,-di);
       d=dr*dr+di*di;
-      return print_FRAC(fraction(n,d),contextptr);
+      gen nd=fraction(n,d);
+      if (nd.type==_FRAC)
+	return print_FRAC(nd,contextptr);
+      else
+	return nd.print(contextptr);
     }
     return _FRAC2_SYMB(f).print(contextptr);
   }
@@ -15496,8 +15502,8 @@ namespace giac {
       S="gr2d(logo("+last.print(&C)+"))";
       return S.c_str();
     }
-    if (calc_mode(&C)!=1 && last.is_symb_of_sommet(at_pnt)){
-#ifndef GIAC_GGB
+    if (calc_mode(&C)!=1 && (last.is_symb_of_sommet(at_pnt) || last.is_symb_of_sommet(at_pixon))){
+#if !defined(GIAC_GGB) && defined(EMCC)
       if (is3d(last)){
 	bool worker=false;
 	worker=EM_ASM_INT_V({

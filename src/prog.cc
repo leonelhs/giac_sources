@@ -206,54 +206,58 @@ namespace giac {
       return a;
   }
 
-  static void increment_instruction(const const_iterateur & it0,const const_iterateur & itend,GIAC_CONTEXT){
+  static void increment_instruction(const const_iterateur & it0,const const_iterateur & itend,debug_struct * dbgptr){
     const_iterateur it=it0;
     for (;it!=itend;++it)
-      increment_instruction(*it,contextptr);
+      increment_instruction(*it,dbgptr);
   }
 
-  void increment_instruction(const vecteur & v,GIAC_CONTEXT){
+  void increment_instruction(const vecteur & v,debug_struct * dbgptr){
     const_iterateur it=v.begin(),itend=v.end();
     for (;it!=itend;++it)
-      increment_instruction(*it,contextptr);
+      increment_instruction(*it,dbgptr);
   }
 
-  void increment_instruction(const gen & arg,GIAC_CONTEXT){
+  void increment_instruction(const gen & arg,debug_struct * dbgptr){
     // cerr << debug_ptr(contextptr)->current_instruction << " " << arg <<endl;
-    ++debug_ptr(contextptr)->current_instruction;
+    ++dbgptr->current_instruction;
     if (arg.type!=_SYMB)
       return;
-    unary_function_ptr u=arg._SYMBptr->sommet;
-    gen f=arg._SYMBptr->feuille;
+    const unary_function_ptr & u=arg._SYMBptr->sommet;
+    const gen & f=arg._SYMBptr->feuille;
     const unary_function_eval * uptr=dynamic_cast<const unary_function_eval *>(u.ptr());
     if (uptr && uptr->op==_ifte){
-      --debug_ptr(contextptr)->current_instruction;
-      increment_instruction(*f._VECTptr,contextptr);
+      --dbgptr->current_instruction;
+      increment_instruction(*f._VECTptr,dbgptr);
       return;
     }
     if ( (u==at_local) || (uptr && uptr->op==_for) ){
-      f=f._VECTptr->back();
-      if (f.type!=_VECT){
-	if (f.is_symb_of_sommet(at_bloc) && f._SYMBptr->feuille.type==_VECT)
-	  increment_instruction(*f._SYMBptr->feuille._VECTptr,contextptr);
+      gen F(f._VECTptr->back());
+      if (F.type!=_VECT){
+	if (F.is_symb_of_sommet(at_bloc) && F._SYMBptr->feuille.type==_VECT)
+	  increment_instruction(*F._SYMBptr->feuille._VECTptr,dbgptr);
 	else
-	  increment_instruction(f,contextptr);
+	  increment_instruction(F,dbgptr);
       }
       else 
-	increment_instruction(*f._VECTptr,contextptr);
+	increment_instruction(*F._VECTptr,dbgptr);
       return;
     }
     if (u==at_bloc){
       if (f.type!=_VECT)
-	increment_instruction(f,contextptr);
+	increment_instruction(f,dbgptr);
       else
-	increment_instruction(*f._VECTptr,contextptr);
+	increment_instruction(*f._VECTptr,dbgptr);
       return;
     }
     if (u==at_try_catch){
-      increment_instruction(f._VECTptr->front(),contextptr);
-      increment_instruction(f._VECTptr->back(),contextptr);
+      increment_instruction(f._VECTptr->front(),dbgptr);
+      increment_instruction(f._VECTptr->back(),dbgptr);
     }
+  }
+
+  void increment_instruction(const gen & arg,GIAC_CONTEXT){
+    increment_instruction(arg,debug_ptr(contextptr));
   }
 
   static string concatenate(const vector<string> & v){
@@ -1509,7 +1513,7 @@ namespace giac {
 	    // res=it->_SYMBptr->feuille.eval(prog_eval_level(contextptr),contextptr);
 	    if (!it->_SYMBptr->feuille.in_eval(prog_eval_level(contextptr),res,contextptr))
 	      res=it->_SYMBptr->feuille;
-	    increment_instruction(it+1,itend,contextptr);
+	    increment_instruction(it+1,itend,dbgptr);
 	    return symbolic(at_return,res);
 	  }
 	  else {
@@ -1525,7 +1529,7 @@ namespace giac {
 	if (res.type==_SYMB){
 	  unary_function_ptr & u=res._SYMBptr->sommet;
 	  if (!findlabel && (u==at_return || u==at_break)) {
-	    increment_instruction(it+1,itend,contextptr);
+	    increment_instruction(it+1,itend,dbgptr);
 	    return res; // it->eval(eval_level(contextptr),contextptr);
 	  }
 	  if (!findlabel && u==at_goto){
@@ -1715,9 +1719,9 @@ namespace giac {
     // *logptr(contextptr) << "Ifte " << debug_ptr(contextptr)->current_instruction << endl ;
     if (is_zero(test)){ // test false, do the else part
       if (isifte){
-	increment_instruction((*argsptr)[1],contextptr);
-	// *logptr(contextptr) << "Else " << debug_ptr(contextptr)->current_instruction << endl ;
 	debug_struct * dbgptr=debug_ptr(contextptr);
+	increment_instruction((*argsptr)[1],dbgptr);
+	// *logptr(contextptr) << "Else " << debug_ptr(contextptr)->current_instruction << endl ;
 	++dbgptr->current_instruction;
 	if (dbgptr->debug_mode){
 	  debug_loop(test,contextptr);
@@ -1772,6 +1776,7 @@ namespace giac {
 
   gen _evalb(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
+    if (args.type==_VECT) return apply(args,_evalb,contextptr);
     gen test=equaltosame(args);
     test=normal(test,contextptr);
     test=test.eval(eval_level(contextptr),contextptr);
@@ -2406,7 +2411,7 @@ namespace giac {
 	    if (dbgptr->debug_mode){
 	      debug_loop(res,newcontextptr);
 	      if (is_undef(res)){
-		increment_instruction(it+1,itend,newcontextptr);
+		increment_instruction(it+1,itend,dbgptr);
 		if (bound)
 		  leave(protect,loop_var,newcontextptr);
 		return res;
@@ -2432,7 +2437,7 @@ namespace giac {
 	      res=*it;
 	    }
 	    if (is_return(res,newres)) {
-	      increment_instruction(it+1,itend,newcontextptr);
+	      increment_instruction(it+1,itend,dbgptr);
 	      if (bound)
 		leave(protect,loop_var,newcontextptr);
 	      return res;
@@ -2441,14 +2446,14 @@ namespace giac {
 	      unary_function_ptr & u=res._SYMBptr->sommet;
 	      if (!findlabel){ 
 		if (u==at_break){
-		  increment_instruction(it+1,itend,newcontextptr);
+		  increment_instruction(it+1,itend,dbgptr);
 		  test=zero;
 		  idx=0;
 		  res=u; // res=oldres;
 		  break;
 		}
 		if (u==at_continue){
-		  increment_instruction(it+1,itend,newcontextptr);
+		  increment_instruction(it+1,itend,dbgptr);
 		  res=oldres;
 		  break;
 		}
@@ -2468,7 +2473,7 @@ namespace giac {
 	} // end of user FOR loop
       } // end else one iteration
       dbgptr->current_instruction=save_current_instruction;
-      increment_instruction(itbeg,itend,newcontextptr);
+      increment_instruction(itbeg,itend,dbgptr);
 #ifndef NO_STDEXCEPT
     } // end try
     catch (std::runtime_error & e){
@@ -5053,10 +5058,13 @@ namespace giac {
     }
     w.push_back(dw);
     // print debugged program instructions from current-2 to current+3
-    string s=w[2].print(contextptr);
     progs="debug "+w[0].print(contextptr)+'\n';
     if (w[4].type==_INT_){
       vector<string> ws;
+#if 1
+      ws.push_back("");
+      debug_print(w[2],ws,contextptr);
+#else
       int l=s.size();
       string cur;
       for (int i=0;i<l;++i){
@@ -5067,13 +5075,16 @@ namespace giac {
 	else cur+=s[i];
       }
       ws.push_back(cur);
+#endif
       int m=giacmax(0,w[4].val-2),M=giacmin(w[4].val+3,ws.size()-1);
       for (int i=m;i<=M;++i){
 	progs += print_INT_(i)+((i==w[4].val)?" => ":"    ")+ws[i]+'\n';
       }
     }
-    else
+    else {
+      string s=w[2].print(contextptr);
       progs += "\nprg: "+s+" # "+w[4].print(contextptr);
+    }
     progs += "======\n";
     // evaluate watch with debug_ptr(contextptr)->debug_allowed=false
     debug_ptr(contextptr)->debug_allowed=false;
@@ -6414,7 +6425,27 @@ namespace giac {
       if (wi.type==_SYMB){
 	gen f =wi._SYMBptr->feuille;
 	if (wi.is_symb_of_sommet(at_pow) && f.type==_VECT && f._VECTptr->size()==2 && f._VECTptr->back().type==_FRAC){
+	  gen base=f._VECTptr->front();
 	  gen d= f._VECTptr->back()._FRACptr->den;
+	  if ( (base.type==_INT_ && absint(base.val)>3) || base.type==_ZINT){
+	    gen b=evalf_double(base,1,contextptr);
+	    if (b.type==_DOUBLE_){
+	      double bd=b._DOUBLE_val;
+	      bd=std::log(bd);
+	      int N=int(bd/std::log(2));
+	      int ii;
+	      for (ii=3;ii<=N;++ii){
+		double di=std::exp(bd/ii);
+		gen g=exact_double(di,1e-15);
+		if (is_integer(g) && pow(g,ii,contextptr)==base){
+		  wi=pow(g,ii*f._VECTptr->back(),contextptr);
+		  break;
+		}
+	      }
+	      if (ii!=N+1)
+		continue;
+	    }
+	  }
 	  if (d.type==_INT_){
 	    gen f0=simplifier(f._VECTptr->front(),contextptr);
 	    gen z=fast_icontent(f0);
@@ -9376,7 +9407,8 @@ namespace giac {
     "_u",
     "_yd",
     "_yr",
-    "_µ"
+    "_\u03BC"
+    // "_µ"
   };
 
   const char * const * const unitname_tab_end=unitname_tab+unitptr_tab_length;
@@ -9420,7 +9452,8 @@ namespace giac {
   gen _atm_unit(mksa_register("_atm",&__atm_unit));
   gen _au_unit(mksa_register("_au",&__au_unit));
   gen _Angstrom_unit(mksa_register("_Angstrom",&__Angstrom_unit));
-  gen _micron_unit(mksa_register("_µ",&__micron_unit));
+  gen _micron_unit(mksa_register("_\u03BC",&__micron_unit));
+  //gen _micron_unit(mksa_register("_µ",&__micron_unit));
   gen _b_unit(mksa_register("_b",&__b_unit));
   gen _bar_unit(mksa_register("_bar",&__bar_unit));
   gen _bbl_unit(mksa_register("_bbl",&__bbl_unit));

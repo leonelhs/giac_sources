@@ -856,6 +856,9 @@ std::string Xcas_browser_name() {
   tmp="/usr/bin/dillo";
   if (giac::is_file_available(tmp.c_str()))
      return tmp;
+  tmp="/usr/bin/chromium";
+  if (giac::is_file_available(tmp.c_str()))
+     return tmp;
   #ifdef WIN32 //
     tmp="/cygdrive/c/Program Files/Mozilla Firefox/firefox.exe";
    // if (giac::is_file_available(tmp.c_str())) return "'"+tmp+"'";

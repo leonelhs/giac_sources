@@ -2138,14 +2138,17 @@ namespace giac {
     return e;
   }
 
-  vecteur merge_pixon(const vecteur & v){
-    vecteur w;
+  void merge_pixon(const vecteur & v,vecteur & w){
     const_iterateur it=v.begin(),itend=v.end();
     w.reserve(itend-it);
     int lastxmin=-1,lastxmax=-1,lastymin=-1,lastymax=-1,lastcolor=-1;
     for (;it!=itend;++it){
-      if (!it->is_symb_of_sommet(at_pnt)){
-	w.push_back(it->type==_VECT?gen(merge_pixon(*it->_VECTptr),it->subtype):*it);
+      if (!is_pnt_or_pixon(*it)){
+	if (it->type==_VECT){
+	  merge_pixon(*it->_VECTptr,w);
+	  continue;
+	}
+	w.push_back(*it);
 	continue;
       }
       gen tmp=remove_at_pnt(*it);
@@ -2173,6 +2176,20 @@ namespace giac {
 	++lastxmax;
 	continue;
       }
+#ifdef EMCC
+      if (lastcolor!=-1){
+	if (lastxmax==lastxmin){
+	  if (lastymax==lastymin)
+	    w.push_back(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor)));
+	  else
+	    w.push_back(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastymax+1-lastymin)));
+	}
+	else {
+	  if (lastymax==lastymin)
+	    w.push_back(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastxmin-lastxmax-1)));
+	}
+      }
+#else
       if (lastcolor!=-1){
 	if (lastxmax==lastxmin){
 	  if (lastymax==lastymin)
@@ -2185,6 +2202,7 @@ namespace giac {
 	    w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastxmin-lastxmax-1)),0)));
 	}
       }
+#endif
       lastxmax=lastxmin=x.val;
       lastymax=lastymin=y.val;
       lastcolor=c.val;
@@ -2201,35 +2219,52 @@ namespace giac {
 	  w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastxmin-lastxmax-1)),0)));
       }
     }
+  }
+
+  vecteur merge_pixon(const vecteur & v){
+    vecteur w;
+    merge_pixon(v,w);
     return w;
   }
 
   void pixon_print(const gen &g,std::string & S,GIAC_CONTEXT){
     if (g.type==_VECT){
-      vecteur v=merge_pixon(*g._VECTptr);
+      vecteur v;
+      merge_pixon(*g._VECTptr,v);
       const_iterateur it=v.begin(),itend=v.end();
       if (it==itend) return;
       S+='[';
       S+=print_INT_(pixon_size);
       S+=",";
-      for (;;++it){
-	if (it->type!=_SYMB || it->_SYMBptr->sommet!=at_pnt)
+      for (;it!=itend;++it){
+	if (it->type!=_SYMB)
 	  continue;
-	const gen & g=it->_SYMBptr->feuille;
-	if (g.type!=_VECT)
-	  continue;
-	const vecteur & w= *g._VECTptr;
-	if (w.empty() || w.front().type!=_SYMB || w.front()._SYMBptr->sommet!=at_pixon)
-	  continue;
-	const gen & f=w.front()._SYMBptr->feuille;
-	if (f.type!=_VECT){
-	  S+=f.print(contextptr);
+	const gen * f;
+	if (it->_SYMBptr->sommet==at_pnt){
+	  const gen & g=it->_SYMBptr->feuille;
+	  if (g.type!=_VECT)
+	    continue;
+	  const vecteur & w= *g._VECTptr;
+	  if (w.empty() || w.front().type!=_SYMB || w.front()._SYMBptr->sommet!=at_pixon)
+	    continue;
+	  f=&w.front()._SYMBptr->feuille;
+	}
+	else {
+	  if (it->_SYMBptr->sommet!=at_pixon)
+	    continue;
+	  f=&it->_SYMBptr->feuille;
+	}
+	if (f->type!=_VECT){
+	  S+=f->print(contextptr);
 	  continue;
 	}
 	S+='[';
-	const_iterateur jt=f._VECTptr->begin(),jtend=f._VECTptr->end();
+	const_iterateur jt=f->_VECTptr->begin(),jtend=f->_VECTptr->end();
 	for (;;){
-	  S+=jt->print(contextptr);
+	  if (jt->type==_INT_)
+	    add_print_INT_(S,jt->val);
+	  else
+	    S+=jt->print(contextptr);
 	  ++jt;
 	  if (jt==jtend) break;
 	  S+=',';
@@ -2282,8 +2317,13 @@ namespace giac {
       if (s==0) return pixon_size;
       return gensizeerr(contextptr);
     }
-    if (s>=3)
+    if (s>=3){
+#ifdef EMCC
+      return symbolic(at_pixon,a);
+#else
       return symb_pnt(symbolic(at_pixon,a),0,contextptr);
+#endif
+    }
     vecteur v(*args._VECTptr);
     v.push_back(default_color(contextptr));
     return symb_pnt(symbolic(at_pixon,gen(v,_SEQ__VECT)),0,contextptr);
@@ -5343,8 +5383,16 @@ namespace giac {
   }
   gen _longueur2(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
-    if ( args.type!=_VECT || args.subtype!=_SEQ__VECT || args._VECTptr->size()!=2)
+    if (args.type==_INT_){int d=args.val; return d*d;}
+    if (args.type==_DOUBLE_){double d=args._DOUBLE_val; return d*d;}
+    if (args.type==_CPLX && args.subtype==3){
+      double r=args._CPLXptr->_DOUBLE_val,i=(args._CPLXptr+1)->_DOUBLE_val;
+      return r*r+i*i;
+    }
+    if ( args.type!=_VECT || args.subtype!=_SEQ__VECT || args._VECTptr->size()!=2){
+      if (args.type!=_VECT) return args*args;
       return gensizeerr(contextptr);
+    }
     gen e1=args._VECTptr->front(),e2=args._VECTptr->back();
     if (e1.type==_VECT && e2.type==_VECT){
       vecteur e12=subvecteur(*e1._VECTptr,*e2._VECTptr);
@@ -14474,6 +14522,11 @@ namespace giac {
   static const char _est_rectangle_s []="is_rectangle";
   static define_unary_function_eval (__est_rectangle,&giac::_est_rectangle,_est_rectangle_s);
   define_unary_function_ptr5( at_est_rectangle ,alias_at_est_rectangle,&__est_rectangle,0,true);
+  
+  bool is_pnt_or_pixon(const gen & g){
+    if (g.type!=_SYMB) return false;
+    return g._SYMBptr->sommet==at_pnt || g._SYMBptr->sommet==at_pixon;
+  }
 
   gen _is_3dpoint(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;

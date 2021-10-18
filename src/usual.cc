@@ -4403,8 +4403,15 @@ namespace giac {
       if (a2==at_additionally)
 	return giac_additionally(a1,contextptr);
     }
-    purge_assume(a,contextptr);
-    return assumesymbolic(a,0,contextptr);
+    gen a_;
+    if (a.type==_SYMB){
+      if (a._SYMBptr->sommet==at_and || a._SYMBptr->sommet==at_et || a._SYMBptr->sommet==at_ou || a._SYMBptr->sommet==at_oufr || a._SYMBptr->sommet==at_inferieur_strict || a._SYMBptr->sommet==at_inferieur_egal || a._SYMBptr->sommet==at_superieur_egal || a._SYMBptr->sommet==at_superieur_strict || a._SYMBptr->sommet==at_equal) 
+	a_=a;
+      else
+	a_=eval(a,1,contextptr);
+    }
+    purge_assume(a_,contextptr);
+    return assumesymbolic(a_,0,contextptr);
   }
   static const char giac_assume_s []="assume";
   static define_unary_function_eval_quoted (giac__assume,&giac::giac_assume,giac_assume_s);
@@ -4961,7 +4968,7 @@ namespace giac {
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if (args.type!=_VECT)
       return symb_superieur_strict(args);
-    gen res=superieur_strict(args._VECTptr->front(),args._VECTptr->back(),contextptr);
+    gen res(superieur_strict(args._VECTptr->front(),args._VECTptr->back(),contextptr));
     if (res.type==_INT_ && abs_calc_mode(contextptr)!=38)
       res.subtype=_INT_BOOLEAN;
     return res;
