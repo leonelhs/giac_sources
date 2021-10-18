@@ -4,36 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Digits</title>
+<title>Representation by hardware floats</title>
 </head>
 <body >
-<a href="cascmd_en746.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="cascmd_en747.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en749.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec961" class="subsection">9.1.1  Digits</h3>
+<h3 id="sec962" class="subsection">9.1.2  Representation by hardware floats</h3>
 <p>
-The <span style="font-family:monospace">Digits</span> variable is used to control how real numbers
-are represented and also how they are displayed.
-When the specified
-number of digits is less or equal to 14 (for example <span style="font-family:monospace">Digits:=14</span>), then hardware floating point
-numbers are used and they are displayed using the specified
-number of digits.
-When <span style="font-family:monospace">Digits</span> is larger than 14, Xcas uses the MPFR
-library, the representation is similar to hardware floats
-(cf. infra) but the number of bits of
-the mantissa is not fixed and the range of exponents is much larger.
-More precisely, the number of bits of the mantissa of a created MPFR float
-is <span style="font-family:monospace">ceil(Digits*log(10)/log(2))</span>.</p><p>Note that if you change the value of <span style="font-family:monospace">Digits</span>, this will affect
-the creation of new real numbers compiled from command lines 
-or programs or by instructions like <span style="font-family:monospace">approx</span>, but it will
-not affect existing real numbers. Hence hardware floats may coexist
-with MPFR floats, and even in MPFR floats, some may have 100 bits
-of mantissa and some may have 150 bits of mantissa. If operations
-mix different kinds of floats, the most precise kind of floats
-are coerced to the less precise kind of floats.</p>
+A real is represented by a floating number <span style="font-style:italic">d</span>, that is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">d</span>=2(1+<span style="font-style:italic">m</span>),     0&lt;<span style="font-style:italic">m</span>&lt;1, −2<sup>10</sup> &lt; α &lt; 2<sup>10</sup> </td></tr>
+</table><p>
+If α&gt;1−2<sup>10</sup>, then <span style="font-style:italic">m</span> ≥ 1/2, and <span style="font-style:italic">d</span> is
+a normalized floating point number, otherwise
+<span style="font-style:italic">d</span> is denormalized (α=1−2<sup>10</sup>). The special exponent 2<sup>10</sup>
+is used to represent plus or minus infinity and NaN (Not a Number).
+A hardware float is made of 64 bits:
+</p><ul class="itemize"><li class="li-itemize">
+the first bit is for the sign of <span style="font-style:italic">d</span> (0 for ’+’ and 1 for ’-’)
+</li><li class="li-itemize">the 11 following bits represents the exponent, more precisely 
+if α denotes the integer from the 11 bits,
+the exponent is α+2<sup>10</sup>−1, 
+</li><li class="li-itemize">the 52 last bits codes the mantissa <span style="font-style:italic">m</span>, more precisely if
+<span style="font-style:italic">M</span> denotes the integer from the 52 bits, then
+<span style="font-style:italic">m</span>=1/2+<span style="font-style:italic">M</span>/2<sup>53</sup> for normalized floats and <span style="font-style:italic">m</span>=<span style="font-style:italic">M</span>/2<sup>53</sup> for
+denormalized floats.
+</li></ul><p>
+Examples of representations of the exponent:
+</p><ul class="itemize"><li class="li-itemize">
+α=0 is coded by 011 1111 1111
+</li><li class="li-itemize">α=1 is coded by 100 0000 0000
+</li><li class="li-itemize">α=4 is coded by 100 0000 0011
+</li><li class="li-itemize">α=5 is coded by 100 0000 0100
+</li><li class="li-itemize">α=−1 is coded by 011 1111 1110
+</li><li class="li-itemize">α=−4 is coded by 011 1111 1011
+</li><li class="li-itemize">α=−5 is coded by 011 1111 1010
+</li><li class="li-itemize">α=2<sup>10</sup> is coded by 111 1111 1111
+</li><li class="li-itemize">α=2<sup>−10</sup>−1 is coded by 000 0000 000
+</li></ul><p>
+<span style="font-weight:bold">Remark</span>: 2<sup>−52</sup>=0.2220446049250313<span style="font-style:italic">e</span>−15</p>
 <hr>
-<a href="cascmd_en746.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="cascmd_en747.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en749.html"><img src="next_motif.gif" alt="Next"></a>
 </body>

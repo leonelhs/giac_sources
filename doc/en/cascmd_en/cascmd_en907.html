@@ -4,59 +4,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Inversion in the plane: inversion</title>
+<title>Orthogonal projection in the plane: projection</title>
 </head>
 <body >
 <a href="cascmd_en906.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en908.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1168" class="subsection">12.15.7  Inversion in the plane: <span style="font-family:monospace">inversion</span><a id="hevea_default1584"></a></h3>
+<h3 id="sec1169" class="subsection">12.15.8  Orthogonal projection in the plane: <span style="font-family:monospace">projection</span><a id="hevea_default1585"></a></h3>
 <p>
-<a id="sec:2dinversion"></a></p><p>See section <a href="cascmd_en999.html#sec%3A3dinversion">13.14.7</a> for inversions in space.</p><p>Given a circle <span style="font-style:italic">C</span> with center <span style="font-style:italic">O</span> and radius <span style="font-style:italic">r</span>, the <em>inversion</em>
-of a point <span style="font-style:italic">A</span> with respect to <span style="font-style:italic">C</span> is the
-point <span style="font-style:italic">A</span>′ on the ray <span style="font-style:italic">OA</span> satisfying
-<span style="text-decoration:overline"><span style="font-style:italic">OA</span></span>·<span style="text-decoration:overline"><span style="font-style:italic">OA</span></span><span style="text-decoration:overline">′</span> = <span style="font-style:italic">r</span><sup>2</sup>.</p><p>The <span style="font-family:monospace">inversion</span> command takes two or three arguments.</p><p>If <span style="font-family:monospace">inversion</span> has two arguments, they are a point (the center
-of inversion) and a real number (the radius).
-<span style="font-family:monospace">inversion</span> returns a new command which performs the
-inversion.<br>
+<a id="sec:2dprojection"></a></p><p>See section <a href="cascmd_en999.html#sec%3A3dprojection">13.14.8</a> for projections in space.</p><p>The <span style="font-family:monospace">projection</span> command takes one or two arguments.</p><p>If <span style="font-family:monospace">projection</span> has one argument, it is a geometric object.
+<span style="font-family:monospace">projection</span> returns a new command which projects points onto
+the object.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">inver := inversion(i, 2)
+<span style="font-family:monospace">p1 := projection(line(-1,i))
 </span></div><p>
 then:
 </p><div class="center">
-<span style="font-family:monospace">inver(circle(1+i,1))
+<span style="font-family:monospace">p1(i+1)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en171.png">
+<img src="cascmd_en175.png">
 </div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">p2 := projection(circle(-1,1))
+</span></div><p>
 then:
 </p><div class="center">
-<span style="font-family:monospace">inver(circle(1+i,1/2))
+<span style="font-family:monospace">p2(i)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en172.png">
-</div><p>If <span style="font-family:monospace">inversion</span> has three arguments, the first two arguments are a
-point and number as above, and the third argument is a geometric
-object. <span style="font-family:monospace">inversion</span> returns and draws the inverted object.<br>
+<img src="cascmd_en176.png">
+</div><p>If <span style="font-family:monospace">projection</span> has two arguments, the first arguments is a
+geometric object as above, and the second argument is a point.
+<span style="font-family:monospace">projection</span> returns and draws the projection of the point onto
+the object.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">inversion(i, 2, circle(1+i,1))
+<span style="font-family:monospace">projection(line(-1, i), 1+i)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en173.png">
+<img src="cascmd_en177.png">
 </div><p>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">inversion(i, 2, circle(1+i,1/2))
+<span style="font-family:monospace">projection(circle(-1,1), i)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en174.png">
+<img src="cascmd_en178.png">
 </div>
 <hr>
 <a href="cascmd_en906.html"><img src="previous_motif.gif" alt="Previous"></a>

@@ -148,4 +148,4 @@ typedef const void *machine_const_ptr_t; // must be of pointer size
     { MP_ROM_QSTR(MP_QSTR_input), (mp_obj_t)&mp_builtin_input_obj }, \
     { MP_ROM_QSTR(MP_QSTR_open), (mp_obj_t)&mp_builtin_open_obj },
 
-#include <alloca.h>
+/* #include <alloca.h> */

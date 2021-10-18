@@ -4,26 +4,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Going to the next iteration of a loop: continue</title>
+<title>Changing the order of execution: goto, label</title>
 </head>
 <body >
 <a href="cascmd_en803.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en805.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1035" class="subsection">11.3.7  Going to the next iteration of a loop: <span style="font-family:monospace">continue</span></h3>
-<p>The <span style="font-family:monospace">continue</span> command will skip the rest of the current
-iteration of a loop and go to the next iteration. For example,
-if you enter
-</p><pre class="verbatim">  S := 0
-  for (j := 1, j &lt;= 10; j++) {
-     if (j == 5) {continue;}
-     S := S + j;
+<h3 id="sec1036" class="subsection">11.3.8  Changing the order of execution: <span style="font-family:monospace">goto, label</span></h3>
+<p>
+<a id="hevea_default1429"></a><a id="hevea_default1430"></a></p><p>The <span style="font-family:monospace">goto</span> command will tell a program to jump to a different
+spot in a program, where the spot needs to have been marked with
+<span style="font-family:monospace">label</span>. They both must have the same argument, which is
+simply a sequence of characters. For example, the following program
+will add the terms of the harmonic series until the term is less than
+some specified value <span style="font-family:monospace">eps</span> and print the result.
+</p><pre class="verbatim">  harmsum(eps) := {
+  local S, j;
+  S := 0;
+  j := 0;
+  label(spot);
+  j := j + 1;       
+  S := S + 1/j;
+  if (1/j &gt;= eps) goto (spot);
+  print(S);
+  return 0;
   }
-</pre><p>
-then <span style="font-family:monospace">S</span> will be 50, which is the sum of the integers from 1 to
-10 except for 5, since the loop never gets to <span style="font-family:monospace">S := S + j</span> when
-<span style="font-family:monospace">j</span> is equal to 5.</p>
+</pre>
 <hr>
 <a href="cascmd_en803.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

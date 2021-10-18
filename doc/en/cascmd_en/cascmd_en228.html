@@ -4,32 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Numerical differentiation : numdiff</title>
+<title>Numerical differentiation: numdiff</title>
 </head>
 <body >
 <a href="cascmd_en227.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en229.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec282" class="subsection">5.19.7  Numerical differentiation : <span style="font-family:monospace">numdiff</span></h3>
+<h3 id="sec282" class="subsection">5.19.7  Numerical differentiation: <span style="font-family:monospace">numdiff</span></h3>
 <p><a id="hevea_default397"></a>
-<span style="font-family:monospace">numdiff</span> takes three mandatory arguments: lists <span style="font-style:italic">X</span>={α<sub>0</sub>,α<sub>1</sub>,…,α<sub><span style="font-style:italic">n</span></sub>}, <span style="font-style:italic">Y</span>={β<sub>0</sub>,β<sub>1</sub>,…,β<sub><span style="font-style:italic">n</span></sub>} of real numbers, where <span style="font-style:italic">n</span>≥ 1, and a real number <span style="font-style:italic">x</span><sub>0</sub>. The optional fourth argument is an integer <span style="font-style:italic">m</span>, which defaults to 1. The function returns an approximation of the <span style="font-style:italic">m</span>-th derivative of function <span style="font-style:italic">f</span>, given by <span style="font-style:italic">f</span>(α<sub><span style="font-style:italic">k</span></sub>)=β<sub><span style="font-style:italic">k</span></sub>, <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">n</span>, at point <span style="font-style:italic">x</span><sub>0</sub>.</p><p>The strategy is to use Fornberg’s algorithm described in “Generation of Finite Difference Formulas on Arbitrarily Spaced Grids”, <span style="font-style:italic">Mathematics of Computation</span>, 51(184):699–706, 1988. The complexity of this algorithm is <span style="font-style:italic">O</span>(<span style="font-style:italic">n</span><sup>2</sup><span style="font-style:italic">m</span>) in both time and space. To avoid numerical instability, <span style="font-family:monospace">numdiff</span> operates in exact arithmetic. Unless a symbolic variable is present in the input, the result is returned using the floating-point representation.</p><p>Note that α<sub>0</sub>,α<sub>1</sub>,…,α<sub><span style="font-style:italic">n</span></sub> do not have to be equally spaced, but they must be mutually different and input in ascending order. There are no restrictions on the choice of <span style="font-style:italic">x</span><sub>0</sub>.</p><p>For example, let <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=sin(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span></sup>, <span style="font-style:italic">x</span>∈[0,1]. We sample this function at points
+<span style="font-family:monospace">numdiff</span> takes three mandatory arguments: lists <span style="font-style:italic">X</span>={α<sub>0</sub>,α<sub>1</sub>,…,α<sub><span style="font-style:italic">n</span></sub>}, <span style="font-style:italic">Y</span>={β<sub>0</sub>,β<sub>1</sub>,…,β<sub><span style="font-style:italic">n</span></sub>} of real numbers, where <span style="font-style:italic">n</span>≥ 1, and a real number <span style="font-style:italic">x</span><sub>0</sub>. The optional fourth argument is an integer <span style="font-style:italic">m</span>, which defaults to 1. The function returns an approximation of the <span style="font-style:italic">m</span>-th derivative of function <span style="font-style:italic">f</span>, given by <span style="font-style:italic">f</span>(α<sub><span style="font-style:italic">k</span></sub>)=β<sub><span style="font-style:italic">k</span></sub>, <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">n</span>, at point <span style="font-style:italic">x</span><sub>0</sub>.</p><p>The strategy is to use Fornberg’s algorithm described in “Generation of Finite Difference Formulas on Arbitrarily Spaced Grids”, <span style="font-style:italic">Mathematics of Computation</span>, 51(184):699–706, 1988. The complexity of this algorithm is <span style="font-style:italic">O</span>(<span style="font-style:italic">n</span><sup>2</sup><span style="font-style:italic">m</span>) in both time and space. To avoid numerical instabilities, <span style="font-family:monospace">numdiff</span> operates in exact arithmetic.</p><p>Note that α<sub>0</sub>,α<sub>1</sub>,…,α<sub><span style="font-style:italic">n</span></sub> do not have to be equally spaced, but they must be mutually different and input in ascending order. There are no restrictions on the choice of <span style="font-style:italic">x</span><sub>0</sub>.</p><p>For example, let <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=sin(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span></sup>, <span style="font-style:italic">x</span>∈[0,1]. We sample this function at points
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">X</span>=[0,0.1,0.2,0.4,0.5,0.7,0.8,1] </td></tr>
 </table><p>
-by computing the list <span style="font-style:italic">Y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">X</span>). Input :
+by computing the list <span style="font-style:italic">Y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">X</span>). Input:
 </p><div class="center">
 <span style="font-family:monospace">f:=unapply(sin(x)*exp(-x),x)<br>
-X:=[0,0.1,0.2,0.4,0.5,0.7,0.8,1]; Y=apply(f,X)
+X:=[0,0.1,0.2,0.4,0.5,0.7,0.8,1]:; Y:=apply(f,X):;
 </span></div><p>
-Now we approximate the second derivative at the point <span style="font-style:italic">x</span><sub>0</sub>=1/π. Input :
+Now we approximate the second derivative at the point <span style="font-style:italic">x</span><sub>0</sub>=1/π. Input:
 </p><div class="center">
 <span style="font-family:monospace">x0:=1/pi:; d:=numdiff(X,Y,x0,2)
 </span></div><p>
-Finally, we compute the relative error of the obtained approximation. Input :
+Output:
+</p><div class="center">
+<span style="font-family:monospace">-1.38167652799
+</span></div><p>
+Finally, we compute the relative error of the obtained approximation. Input:
 </p><div class="center">
 <span style="font-family:monospace">abs(d-f’’(x0))/abs(f’’(x0))*100
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 <span style="font-family:monospace">2.82983388966e-05
 </span></div><p>
@@ -39,29 +43,29 @@ The result is expressed in percentages.</p><p>Optionally, a sequence of values o
 <tr><td class="dcell" style="text-align:center">1+<span style="font-style:italic">x</span><sup>2</sup></td></tr>
 </table></td><td class="dcell">,   <span style="font-style:italic">x</span>∈[0,1], </td></tr>
 </table><p>
-at point <span style="font-style:italic">x</span><sub>0</sub>=γ, where γ≈ 0.57722 is Euler-Mascheroni constant, by sampling <span style="font-style:italic">f</span> at 21 equidistant points in the segment [0,1]. Input :
+at point <span style="font-style:italic">x</span><sub>0</sub>=γ, where γ≈ 0.57722 is Euler-Mascheroni constant, by sampling <span style="font-style:italic">f</span> at 21 equidistant points in the segment [0,1]. Input:
 </p><div class="center">
 	<span style="font-family:monospace">f:=unapply(1-1/(1+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),x)<br>
 	X:=[(0.05*k)$(k=0..20)]:; Y:=apply(f,X):;<br>
 	numdiff(X,Y,euler_gamma,0,1,2)
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 	<span style="font-family:monospace">[0.249912571952,0.649519026355,0.000393517939481]
 </span></div><p>
-The correct values are <span style="font-style:italic">f</span>(γ)=0.249912571952, <span style="font-style:italic">f</span>′(γ)=0.649519026356 and <span style="font-style:italic">f</span>″(γ)=0.000393517946748.</p><p><span style="font-family:monospace">numdiff</span> can be used for generating custom finite-difference stencils for approximation of derivatives. For example, let <span style="font-style:italic">X</span>=[−1,0,2,4], <span style="font-style:italic">Y</span>=[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span>] and <span style="font-style:italic">x</span><sub>0</sub>=1. To obtain an approximation formula for the second derivative, input :
+The correct values are <span style="font-style:italic">f</span>(γ)=0.249912571952, <span style="font-style:italic">f</span>′(γ)=0.649519026356 and <span style="font-style:italic">f</span>″(γ)=0.000393517946748.</p><p><span style="font-family:monospace">numdiff</span> can be used for generating custom finite-difference stencils for approximation of derivatives. For example, let <span style="font-style:italic">X</span>=[−1,0,2,4], <span style="font-style:italic">Y</span>=[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span>] and <span style="font-style:italic">x</span><sub>0</sub>=1. To obtain an approximation formula for the second derivative, input:
 </p><div class="center">
 	<span style="font-family:monospace">numdiff([-1,0,2,4],[a,b,c,d],1,2)
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 	<span style="font-family:monospace">2*a/5-b/2+d/10
 </span></div><p>
-The approximation is always a linear combination of elements in <span style="font-style:italic">Y</span>, regardless of <span style="font-style:italic">X</span>, <span style="font-style:italic">x</span><sub>0</sub> and <span style="font-style:italic">m</span>.</p><p>Given <span style="font-style:italic">X</span> and <span style="font-style:italic">Y</span>, the Lagrange polynomial passing through points (α<sub><span style="font-style:italic">k</span></sub>,β<sub><span style="font-style:italic">k</span></sub>) where <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">n</span> can be obtained by setting <span style="font-style:italic">m</span>=0 and entering a symbol for <span style="font-style:italic">x</span><sub>0</sub>. For example, letting <span style="font-style:italic">X</span>=[−2,0,1] and <span style="font-style:italic">Y</span>=[2,4,1] input :
+The approximation is always a linear combination of elements in <span style="font-style:italic">Y</span>, regardless of <span style="font-style:italic">X</span>, <span style="font-style:italic">x</span><sub>0</sub> and <span style="font-style:italic">m</span>.</p><p>Given <span style="font-style:italic">X</span> and <span style="font-style:italic">Y</span>, the Lagrange polynomial passing through points (α<sub><span style="font-style:italic">k</span></sub>,β<sub><span style="font-style:italic">k</span></sub>) where <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">n</span> can be obtained by setting <span style="font-style:italic">m</span>=0 and entering a symbol for <span style="font-style:italic">x</span><sub>0</sub>. For example, letting <span style="font-style:italic">X</span>=[−2,0,1] and <span style="font-style:italic">Y</span>=[2,4,1] input:
 </p><div class="center">
 	<span style="font-family:monospace">expand(numdiff([-2,0,1],[2,4,1],x,0))
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 	<span style="font-family:monospace">-4*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/3-5*x/3+4
 </span></div><p>

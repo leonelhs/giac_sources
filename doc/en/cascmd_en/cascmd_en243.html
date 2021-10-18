@@ -13,7 +13,7 @@
 <hr>
 <h3 id="sec304" class="subsection">5.23.2  Combine terms of the same type : <span style="font-family:monospace">combine</span></h3>
 <p><a id="hevea_default415"></a><a id="hevea_default416"></a><a id="hevea_default417"></a><a id="hevea_default418"></a><a id="hevea_default419"></a><a id="hevea_default420"></a><a id="hevea_default421"></a>
-<span style="font-family:monospace">combine</span> takes two arguments : an expression and 
+<span style="font-family:monospace">combine</span> takes two arguments: an expression and 
 the name of a function or class of functions
 <span style="font-family:monospace">exp,log,ln, sin,cos,trig</span>.<br>
 Whenever possible, <span style="font-family:monospace">combine</span> put together subexpressions corresponding
@@ -24,23 +24,23 @@ as <span style="font-family:monospace">lncollect(expr)</span>
 </li><li class="li-itemize"><span style="font-family:monospace">combine(expr,trig)</span> or <span style="font-family:monospace">combine(expr,sin)</span> or <span style="font-family:monospace">combine(expr,cos)</span>
 gives the same result as <span style="font-family:monospace">tcollect(expr)</span>.
 </li></ul><p>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),exp)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">exp(x+y)+sin(x)*cos(x)+ln(x)+ln(y)</span></div><p>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),trig)</span></div><p>
 or
 </p><div class="center"><span style="font-family:monospace">combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),sin)</span></div><p>
 or
 </p><div class="center"><span style="font-family:monospace">combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),cos)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">exp(y)*exp(x)+(sin(2*x))/2+ln(x)+ln(y)</span></div><p>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),ln)</span></div><p>
 or
 </p><div class="center"><span style="font-family:monospace">combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),log)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">exp(x)*exp(y)+sin(x)*cos(x)+ln(x*y)</span></div>
 <hr>
 <a href="cascmd_en242.html"><img src="previous_motif.gif" alt="Previous"></a>

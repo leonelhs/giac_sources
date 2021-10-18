@@ -4,21 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Check if two lines or two spheres in space are orthogonal: is_orthogonal</title>
+<title>Check if three points in space are collinear: is_collinear</title>
 </head>
 <body >
 <a href="cascmd_en982.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en984.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1263" class="subsection">13.13.5  Check if two lines or two spheres in space are orthogonal: <span style="font-family:monospace">is_orthogonal</span><a id="hevea_default1666"></a></h3>
+<h3 id="sec1264" class="subsection">13.13.6  Check if three points in space are collinear: <span style="font-family:monospace">is_collinear</span><a id="hevea_default1667"></a></h3>
 <p>
-<a id="sec:3dcheckorth"></a></p><p>See section <a href="cascmd_en921.html#sec%3A2dcheckorth">12.16.13</a> for checking for orthogonality in
-two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_orthogonal</span> command takes as arguments two lines, two
-spheres, two planes or a line and a plane.</p><p><span style="font-family:monospace">is_orthogonal</span> returns <span style="font-family:monospace">1</span> is the objects are
-orthogonal; it returns <span style="font-family:monospace">0</span> otherwise.</p><p>Input:
+<a id="sec:3dcheckcollinear"></a></p><p>See section <a href="cascmd_en909.html#sec%3A2dcheckcollinear">12.16.2</a> for checking for collinearity in
+two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_collinear</span> command takes as argument a list or
+sequence of points.</p><p><span style="font-family:monospace">is_collinear</span> returns 1 if the points are collinear, it
+returns 0 otherwise.</p><p>Input:
 </p><div class="center">
-<span style="font-family:monospace">is_orthogonal(line([2,3,-2],[-1,-1,-1]),line([1,0,0],[1,2,8]))
+<span style="font-family:monospace">is_collinear([2,0,0],[0,2,0],[1,1,0])
 </span></div><p>
 Output:
 </p><div class="center">
@@ -26,29 +26,11 @@ Output:
 </span></div><p>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">is_orthogonal(line([2,3,-2],[-1,-1,-1]),<br>
- plane([-1,-1,-1],[-1,0,3],[-2,0,0]))
+<span style="font-family:monospace">is_collinear([2,0,0],[0,2,0],[0,1,1])
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">1
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">is_orthogonal(plane([0,0,0],[1,2,-3],[1,1,-2]),<br>
- plane([-1,-1,-1],[1,2,-3],[0,0,0]))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">is_orthogonal(sphere([0,0,0],sqrt(2)),sphere([2,0,0],sqrt(2)))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1
+<span style="font-family:monospace">0
 </span></div>
 <hr>
 <a href="cascmd_en982.html"><img src="previous_motif.gif" alt="Previous"></a>

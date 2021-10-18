@@ -16,18 +16,18 @@
 <a id="hevea_default1001"></a>
 <a id="hevea_default1002"></a>
 <a id="sec:rref"></a></p><p><span style="font-family:monospace">rref</span> solves a linear system of equations written in
-matrix form (see also <a href="cascmd_en420.html#sec%3Arrefm">5.36.17</a>) :
+matrix form (see also <a href="cascmd_en420.html#sec%3Arrefm">5.36.17</a>):
 </p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
 <span style="font-family:monospace">rref</span> takes one or two arguments.
 </p><ul class="itemize"><li class="li-itemize">
 If <span style="font-family:monospace">rref</span> has only one argument, this argument is the augmented matrix 
 of the system (the matrix obtained by augmenting matrix <span style="font-family:monospace">A</span> to the 
 right with the column vector <span style="font-family:monospace">B</span>).<br>
-The result is a matrix <span style="font-family:monospace">[A1,B1]</span> : <span style="font-family:monospace">A1</span> has zeros both above and under 
+The result is a matrix <span style="font-family:monospace">[A1,B1]</span>: <span style="font-family:monospace">A1</span> has zeros both above and under 
 its principal diagonal and has 1 on its principal diagonal, and the solutions 
 of:
 <div class="center"><span style="font-family:monospace">A1*X=B1</span></div> 
-are the same as :
+are the same as:
 <div class="center"><span style="font-family:monospace">A*X=B</span></div>
 For example, to solve the system:
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
@@ -36,9 +36,9 @@ For example, to solve the system:
 <tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
 </table></td></tr>
 </table> 
-Input :
+Input:
 <div class="center"><span style="font-family:monospace">rref([[3,1,-2],[3,2,2]])</span></div>
-Output :
+Output:
 <div class="center"><span style="font-family:monospace">[[1,0,-2],[0,1,4]]</span></div>
 Hence <span style="font-style:italic">x</span>=−2 and <span style="font-style:italic">y</span>=4 is the solution of this system.<p><span style="font-family:monospace">rref</span> can also solve several linear systems
 of equations having the same first member.

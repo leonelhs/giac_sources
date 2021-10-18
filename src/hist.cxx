@@ -1419,8 +1419,8 @@ giac::html_help_init("aide_cas",1);
 static void cb_Xcas_index_German(Fl_Menu_*, void*) {
   const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(3,giac::context0);
-doc_prefix=giac::set_language(9,contextptr);
-giac::language(9,giac::context0);
+doc_prefix=giac::set_language(5,contextptr);
+giac::language(5,giac::context0);
 giac::html_help_init("aide_cas",1);
 }
 

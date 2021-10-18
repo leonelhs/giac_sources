@@ -4,60 +4,115 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Logistic regression: logistic_regression logistic_regression_plot</title>
+<title>Producing uniformly distributed random numbers: rand random alea hasard</title>
 </head>
 <body >
 <a href="cascmd_en706.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en708.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec864" class="subsection">8.2.9  Logistic regression: <span style="font-family:monospace">logistic_regression</span><a id="hevea_default1203"></a> <span style="font-family:monospace">logistic_regression_plot</span><a id="hevea_default1204"></a></h3>
-<p>Differential equations of the form <span style="font-style:italic">y</span>′ = <span style="font-style:italic">y</span>(<span style="font-style:italic">a</span>*<span style="font-style:italic">y</span> + <span style="font-style:italic">b</span>) come up often,
-particularly when studying bounded population growth. With the
-initial condition <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0) = <span style="font-style:italic">y</span>0, the solution is the logistic equation
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span> = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−<span style="font-style:italic">b</span>*<span style="font-style:italic">y</span>0</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span>*<span style="font-style:italic">y</span>0 − (<span style="font-style:italic">a</span>*<span style="font-style:italic">y</span>0+<span style="font-style:italic">b</span>)exp(<span style="font-style:italic">b</span>(<span style="font-style:italic">x</span>0−<span style="font-style:italic">x</span>))</td></tr>
-</table></td></tr>
-</table><p>
-However, you often don’t know the values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>. You can
-still get a “best fit” logisitic equation with the following
-information: The initial value of <span style="font-style:italic">x</span>, the initial value of <span style="font-style:italic">y</span>, and
-several values of <span style="font-style:italic">y</span>′; namely, <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0),<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+1),…,<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+<span style="font-style:italic">n</span>−1) where
-<span style="font-style:italic">x</span>0 is the initial value of <span style="font-style:italic">x</span>. <span style="font-family:monospace">Xcas</span> will then take the
-initial value <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0) = <span style="font-style:italic">y</span>0 and the approximation <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>+1) ≈ <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)
-+ <span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>) to get the approximations <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+1) ≈ <span style="font-style:italic">y</span>0 + <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0),
-<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+2) ≈ <span style="font-style:italic">y</span>0 + <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0) + <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+1), …<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+<span style="font-style:italic">n</span>) ≈ <span style="font-style:italic">y</span>0 + <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0) +… <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+<span style="font-style:italic">n</span>−1), …Since <span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span> = <span style="font-style:italic">a</span> + <span style="font-style:italic">by</span>, <span style="font-family:monospace">Xcas</span> will take the
-approximate values of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>)/<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>) and use linear interpolation
-to get the best fit values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, and then solve the
-differential equation.</p><p>The <span style="font-family:monospace">logistic_regression</span> command will take as input a list
-and two numbers; the list will be [<span style="font-style:italic">y</span><sub>10</sub>,<span style="font-style:italic">y</span><sub>11</sub>,…,<span style="font-style:italic">y</span><sub>1(<span style="font-style:italic">n</span>−1)</sub>], 
-where <span style="font-style:italic">y</span><sub>1<span style="font-style:italic">j</span></sub> represents the value of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub> + <span style="font-style:italic">j</span>), 
-the first number is <span style="font-style:italic">x</span><sub>0</sub> and the last number is
-<span style="font-style:italic">y</span><sub>0</sub>=<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>). The command will return the function <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>), the
-derivative <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>), the number <span style="font-style:italic">C</span>=−<span style="font-style:italic">b</span>/<span style="font-style:italic">a</span>, <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub><span style="font-style:italic">M</span></sub>) which is the maximum value
-of <span style="font-style:italic">y</span>′, <span style="font-style:italic">x</span><sub><span style="font-style:italic">M</span></sub> which is where <span style="font-style:italic">y</span>′ has its maximum, and the linear
-correlation coefficient <span style="font-style:italic">R</span> of <span style="font-style:italic">Y</span>=<span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span> as a function of <span style="font-style:italic">y</span> with <span style="font-style:italic">Y</span>=<span style="font-style:italic">a</span>*<span style="font-style:italic">y</span>
-+ <span style="font-style:italic">b</span>. For example, if you enter
+<h3 id="sec866" class="subsection">8.3.1  Producing uniformly distributed random numbers: <span style="font-family:monospace">rand</span><a id="hevea_default1205"></a> <span style="font-family:monospace">random</span><a id="hevea_default1206"></a> <span style="font-family:monospace">alea</span><a id="hevea_default1207"></a> <span style="font-family:monospace">hasard</span><a id="hevea_default1208"></a></h3>
+<p>
+<a id="ssec:rand"></a></p><p>The <span style="font-family:monospace">rand</span> (or <span style="font-family:monospace">random</span>) command will produce a number in
+[0,1) randomly and with equal probability. If you enter
 </p><div class="center">
-<span style="font-family:monospace">logistic_regression([0.0,1.0,2.5],0,1)
+<span style="font-family:monospace">rand()
 </span></div><p>
-you will get
-</p><pre class="verbatim">   Pinstant=0.132478632479*Pcumul+0.0206552706553
-   Correlation 0.780548607383, Estimated total P=-0.155913978495
-   Returning estimated Pcumul, Pinstant, Ptotal, Pinstantmax, tmax, R
-   [-0.155913978495/(1+exp(-0.0554152581707*x+0.140088513344+3.14159265359*i)),
-    -0.00161022271237/(1+cos((-i)*(-0.0554152581707*x+0.140088513344+3.14159265359*i))),
-    -0.155913978495,-0.000805111356186,2.52797727501+56.6918346552*i,0.780548607383]
-</pre><p>You can plot the logistic equation with the command
-<span style="font-family:monospace">logistic_regression_plot</span>; if you enter
+you might get, for example,
 </p><div class="center">
-<span style="font-family:monospace">logistic_regression_plot([1,2,4,6,8,7,5],0,2.0)
+<span style="font-family:monospace">0.93233498279
+</span></div><p>If you want a random number in a different interval, you can give
+<span style="font-family:monospace">rand</span> two real arguments; <span style="font-family:monospace">rand(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will return a
+random number from the interval [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>). If you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(1,1.5)
+</span></div><p>
+for example, you might get
+</p><div class="center">
+<span style="font-family:monospace">1.27419309644
+</span></div><p>
+If you give <span style="font-family:monospace">rand</span> an interval, then you will get function
+which will generate a random number in the interval. If you enter
+</p><div class="center">
+<span style="font-family:monospace">r:=rand(1.0..2.5)
 </span></div><p>
 you will get
 </p><div class="center">
-<img src="cascmd_en051.png">
-</div>
+<span style="font-family:monospace">// Success
+(NULL)-&gt;rand(1.0,2.5)
+</span></div><p>
+and you can get a random number in the interval by calling the function;
+</p><div class="center">
+<span style="font-family:monospace">r()
+</span></div><p>
+might return
+</p><div class="center">
+<span style="font-family:monospace">1.76314622024
+</span></div><p>If you want to generate a random integer, then <span style="font-family:monospace">rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> (for
+integer <span style="font-style:italic">n</span>) will return a random integer in [0,<span style="font-style:italic">n</span>) (or (<span style="font-style:italic">n</span>,0] if
+<span style="font-style:italic">n</span> is negative). If you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(5)
+</span></div><p>
+for example, you might get
+</p><div class="center">
+<span style="font-family:monospace">2
+</span></div><p>You can then use <span style="font-family:monospace">rand</span> to find a random integer in a specified interval; if
+you want an random integer between 6 and 10, inclusive, for example,
+you can enter
+</p><div class="center">
+<span style="font-family:monospace">6 + rand(11-6)
+</span></div><p>
+You might get
+</p><div class="center">
+<span style="font-family:monospace">7
+</span></div><p>
+Alternatively, the <span style="font-family:monospace">randint</span> will give you a random integer in
+a given interval; <span style="font-family:monospace">randint(</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">)</span> will return a random
+integer between <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, inclusive; to get a random integer
+from 6 to 10, you could enter
+</p><div class="center">
+<span style="font-family:monospace">randint(6,10)
+</span></div><p>The <span style="font-family:monospace">rand</span> command can also choose elements without
+replacement. If you give <span style="font-family:monospace">rand</span> three integer arguments, 
+<span style="font-family:monospace">rand(</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">)</span> then it will return <span style="font-style:italic">p</span> distinct random
+integers from <span style="font-style:italic">n</span><sub>1</sub> to <span style="font-style:italic">n</span><sub>2</sub>. If you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(2,1,10)
+</span></div><p>
+for example, you will get 2 distinct random numbers from 1 to 10;
+perhaps
+</p><div class="center">
+<span style="font-family:monospace">[2,9]
+</span></div><p>You can also choose (without replacement) random elements of a given
+list. For this, you give <span style="font-family:monospace">rand</span>, a postive integer <span style="font-style:italic">n</span>
+and a list <span style="font-style:italic">L</span>; <span style="font-family:monospace">rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> will then return <span style="font-style:italic">n</span> random
+elements from the list. If you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(3,["a","b","c","d","e","f","g","h"])
+</span></div><p>
+you might get
+</p><div class="center">
+<span style="font-family:monospace">["c","b","e"]
+</span></div><p>
+The list can have repeated elements; if you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(4,["r","r","r","r","v","v","v"])
+</span></div><p>
+you might get
+</p><div class="center">
+<span style="font-family:monospace">["v","v","r","v"]
+</span></div><p>
+The <span style="font-family:monospace">sample</span> command will also randomly select items from a
+list without replacement. With the <span style="font-family:monospace">sample</span> command, the list
+comes first and then the integer. If you enter
+</p><div class="center">
+<span style="font-family:monospace">sample(["r","r","r","r","v","v","v"],4)
+</span></div><p>
+you might get
+</p><div class="center">
+<span style="font-family:monospace">["v","r","r","r"]
+</span></div>
 <hr>
 <a href="cascmd_en706.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

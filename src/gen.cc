@@ -3947,7 +3947,10 @@ namespace giac {
     if (is_zero(i,contextptr))
       return real_abs(s,contextptr);
     else {
-      if (i.type==_SYMB && i._SYMBptr->sommet==at_im && !lop(r,at_re).empty())
+      if (i.type==_SYMB  
+	  && !lop(i,at_im).empty() // was i._SYMBptr->sommet==at_im, changed 3 jan 2021 for abs(2*(sqrt(x+sqrt(x))-(sqrt(x)))-1); 
+	  && !lop(r,at_re).empty()
+	  )
 	return new_ref_symbolic(symbolic(at_abs,s));
       gen r2i2=pow(r,2)+pow(i,2);
       if (has_op(r2i2,*at_cos) || has_op(r2i2,*at_sin)){
@@ -9711,6 +9714,12 @@ namespace giac {
       gen db=monomial_degree(b);
       if (da!=db)
 	return increasing_power(contextptr)?is_greater(db,da,contextptr):is_greater(da,db,contextptr);
+      bool apow=a.is_symb_of_sommet(at_pow);
+      bool bpow=b.is_symb_of_sommet(at_pow);
+      if (apow && !bpow)
+	return true;
+      if (bpow && !apow)
+	return false;
     }
     if (a.type==b.type)
       return a.islesscomplexthan(b);

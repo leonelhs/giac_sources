@@ -15,28 +15,28 @@
 <p><a id="hevea_default386"></a>
 <span style="font-family:monospace">function_diff</span> takes a function as argument.<br>
 <span style="font-family:monospace">function_diff</span> returns the derivative function of this function.<br>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">function_diff(sin)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">(‘ x‘)-&gt;cos(‘ x‘)</span></div><p> 
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">function_diff(sin)(x)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">cos(x)</span></div><p> 
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*cos(x)</span></div><div class="center"><span style="font-family:monospace">function_diff(f)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">(‘ x‘)-&gt;2*‘ x‘+cos(‘ x‘)+‘ x‘*(-(sin(‘ x‘)))</span></div><p> 
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">function_diff(f)(x)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">cos(x)+x*(-(sin(x)))+2*x</span></div><p> 
-To define the function <span style="font-style:italic">g</span> as <span style="font-style:italic">f</span>′, input :<br>
+To define the function <span style="font-style:italic">g</span> as <span style="font-style:italic">f</span>′, input:<br>
 </p><div class="center"><span style="font-family:monospace">g:=function_diff(f)</span></div><p>
 The <span style="font-family:monospace">function_diff</span> instruction has the same effect as
-using the expression derivative in conjunction with <span style="font-family:monospace">unapply</span> :
+using the expression derivative in conjunction with <span style="font-family:monospace">unapply</span>:
 </p><div class="center"><span style="font-family:monospace">g:=unapply(diff(f(x),x),x)</span></div><div class="center"><span style="font-family:monospace">g(x)</span></div><p> 
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">cos(x)+x*(-(sin(x)))+2*x</span></div><p> 
 <span style="font-weight:bold">Warning !!!</span><br>
 In <span style="font-family:monospace">Maple</span> mode, for compatibility,

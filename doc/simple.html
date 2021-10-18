@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+  <meta charset="utf-8">
+<title>Minimal example with Giac/Xcas</title>
+</head>
+
+<body>
+<h1>Eval with Xcas, MicroPython or Javascript</h1>
+This HTML file is a simple example of use of Giac/Xcas inside
+HTML/Javascript. Enter an expression to evaluate and choose
+the interpreter. 
+<br>
+The required files are <tt>loadgiac.js</tt> and
+<tt>giacwasm.js, giacwasm.wasm</tt> for Web-Assembly compatible
+browsers or <tt>giac.js</tt> otherwise.
+<hr>
+
+<script src="loadgiac.js" async></script>
+
+<div id="status">Downloading...</div>
+<div>
+  <progress value="0" max="100" id="progress" hidden=1></progress>
+</div>
+
+<script>
+var change_style=function(i){
+$id('mp_button').style.fontSize=(i==1?"16px":"10px");
+$id('js_button').style.fontSize=(i==-1?"16px":"10px");
+$id('xcas_button').style.fontSize=(i==0?"16px":"10px");
+}
+</script>
+
+<div id="output"></div>
+<textarea style="font-size:18px" id="input" cols="60" rows="1"
+onkeypress="if (event.keyCode==13){ UI.evalinput();event.preventDefault();}">1/3+1/6</textarea>
+<button id="xcas_button" style="font-size:16px" onclick="UI.micropy=0;UI.python_mode=0;change_style(0); UI.evalinput();">Xcas</button>
+<button id="js_button" onclick="UI.micropy=-1;UI.python_mode=0;change_style(-1); UI.evalinput();">Javascript</button>
+<button id="mp_button" onclick="UI.micropy=1;UI.python_mode=4;change_style(1); UI.evalinput();">Python</button>
+
+<hr>
+<canvas id='canvas' width=0 height=0
+onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"
+onmouseup="UI.canvas_pushed=false;"
+onmousemove="UI.canvas_mousemove(event, '');"
+>
+</canvas>
+<address></address>
+<!-- hhmts start -->Last modified: Wed Dec 30 08:59:59 CET 2020 <!-- hhmts end -->
+</body> </html>

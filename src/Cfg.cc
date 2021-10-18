@@ -181,7 +181,9 @@ namespace xcas {
     {gettext("Xcas"), 0,  (Fl_Callback*)cb_Xcas_Set_CPP, 0, 0, 0, 0, 14, 56},
     {gettext("Python ^==**"), 0,  (Fl_Callback*)cb_Xcas_Set_Python1, 0, 0, 0, 0, 14, 56},
     {gettext("Python ^==xor"), 0,  (Fl_Callback*)cb_Xcas_Set_Python2, 0, 0, 0, 0, 14, 56},
+#ifdef HAVE_LIBMICROPYTHON
     {gettext("MicroPython"), 0,  (Fl_Callback*)cb_Xcas_Set_Python4, 0, 0, 0, 0, 14, 56},
+#endif
     {gettext("Maple"), 0,  (Fl_Callback*)cb_Xcas_Set_Maple, 0, 0, 0, 0, 14, 56},
     {gettext("Mupad"), 0,  (Fl_Callback*)cb_Xcas_Set_Mupad, 0, 0, 0, 0, 14, 56},
     {gettext("TI89/92"), 0,  (Fl_Callback*)cb_Xcas_Set_TI, 0, 0, 0, 0, 14, 56},

@@ -41,10 +41,18 @@
 #include "extmod/utime_mphal.h"
 
 #ifdef _WIN32
+#if 1
+#include <windows.h>
+static inline int msec_sleep_tv(struct timeval *tv) {
+    Sleep(tv->tv_sec * 1000.0 );
+    return 0;
+}
+#else
 static inline int msec_sleep_tv(struct timeval *tv) {
     msec_sleep(tv->tv_sec * 1000.0 + tv->tv_usec / 1000.0);
     return 0;
 }
+#endif
 #define sleep_select(a,b,c,d,e) msec_sleep_tv((e))
 #else
 #define sleep_select select

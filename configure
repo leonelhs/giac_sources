@@ -1013,6 +1013,7 @@ enable_rpath
 with_libiconv_prefix
 with_included_gettext
 with_libintl_prefix
+enable_micropy
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1683,6 +1684,7 @@ Optional Features:
   --enable-gui            enable GUI [[default=yes]]
   --disable-nls           do not use Native Language Support
   --disable-rpath         do not hardcode runtime library paths
+  --enable-micropy        enable MICROPY [[default=yes]]
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -5708,13 +5710,13 @@ if ${lt_cv_nm_interface+:} false; then :
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:5711: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:5713: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5714: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:5716: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5717: output\"" >&5)
+  (eval echo "\"\$as_me:5719: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -6802,7 +6804,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6805 "configure"' > conftest.$ac_ext
+  echo '#line 6807 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8859,11 +8861,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8862: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8864: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8866: \$? = $ac_status" >&5
+   echo "$as_me:8868: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9183,11 +9185,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9186: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9188: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9190: \$? = $ac_status" >&5
+   echo "$as_me:9192: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9288,11 +9290,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9291: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9293: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9295: \$? = $ac_status" >&5
+   echo "$as_me:9297: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9343,11 +9345,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9346: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9348: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9350: \$? = $ac_status" >&5
+   echo "$as_me:9352: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11715,7 +11717,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11718 "configure"
+#line 11720 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11815,7 +11817,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11818 "configure"
+#line 11820 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13762,11 +13764,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13765: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13767: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13769: \$? = $ac_status" >&5
+   echo "$as_me:13771: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -13861,11 +13863,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13864: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13866: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13868: \$? = $ac_status" >&5
+   echo "$as_me:13870: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -13913,11 +13915,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13916: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13918: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13920: \$? = $ac_status" >&5
+   echo "$as_me:13922: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17569,6 +17571,212 @@ if test "x$ac_cv_lib_intl_main" = xyes; then :
 _ACEOF
 
   LIBS="-lintl $LIBS"
+
+fi
+
+		;;
+
+		*mingw*)
+		CXXFLAGS="$CXXFLAGS -D__MINGW_H"
+		CFLAGS="$CFLAGS -D__MINGW_H"
+		LIBS="$LIBS -lopengl32"
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lfltk_gl" >&5
+$as_echo_n "checking for main in -lfltk_gl... " >&6; }
+if ${ac_cv_lib_fltk_gl_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lfltk_gl  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_fltk_gl_main=yes
+else
+  ac_cv_lib_fltk_gl_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_fltk_gl_main" >&5
+$as_echo "$ac_cv_lib_fltk_gl_main" >&6; }
+if test "x$ac_cv_lib_fltk_gl_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBFLTK_GL 1
+_ACEOF
+
+  LIBS="-lfltk_gl $LIBS"
+
+fi
+
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lfltk" >&5
+$as_echo_n "checking for main in -lfltk... " >&6; }
+if ${ac_cv_lib_fltk_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lfltk  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_fltk_main=yes
+else
+  ac_cv_lib_fltk_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_fltk_main" >&5
+$as_echo "$ac_cv_lib_fltk_main" >&6; }
+if test "x$ac_cv_lib_fltk_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBFLTK 1
+_ACEOF
+
+  LIBS="-lfltk $LIBS"
+
+fi
+
+		if test "$HAVE_LIBFLTK_GL" = "1" ; then
+
+$as_echo "#define USE_OPENGL32 1" >>confdefs.h
+
+		fi
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lz" >&5
+$as_echo_n "checking for main in -lz... " >&6; }
+if ${ac_cv_lib_z_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lz  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_z_main=yes
+else
+  ac_cv_lib_z_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_z_main" >&5
+$as_echo "$ac_cv_lib_z_main" >&6; }
+if test "x$ac_cv_lib_z_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBZ 1
+_ACEOF
+
+  LIBS="-lz $LIBS"
+
+fi
+
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -ljpeg" >&5
+$as_echo_n "checking for main in -ljpeg... " >&6; }
+if ${ac_cv_lib_jpeg_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-ljpeg  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_jpeg_main=yes
+else
+  ac_cv_lib_jpeg_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_jpeg_main" >&5
+$as_echo "$ac_cv_lib_jpeg_main" >&6; }
+if test "x$ac_cv_lib_jpeg_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBJPEG 1
+_ACEOF
+
+  LIBS="-ljpeg $LIBS"
+
+fi
+
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lfltk_images" >&5
+$as_echo_n "checking for main in -lfltk_images... " >&6; }
+if ${ac_cv_lib_fltk_images_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lfltk_images  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_fltk_images_main=yes
+else
+  ac_cv_lib_fltk_images_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_fltk_images_main" >&5
+$as_echo "$ac_cv_lib_fltk_images_main" >&6; }
+if test "x$ac_cv_lib_fltk_images_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBFLTK_IMAGES 1
+_ACEOF
+
+  LIBS="-lfltk_images $LIBS"
 
 fi
 
@@ -23178,8 +23386,17 @@ done
 
 CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS"
 
-LDFLAGS="$LDFLAGS -L. -L.. -lmicropython"
-CXXFLAGS="$CXXFLAGS -DHAVE_LIBMICROPYTHON -fpermissive"
+CONFIG_MICROPY="yes"
+# Check whether --enable-micropy was given.
+if test "${enable_micropy+set}" = set; then :
+  enableval=$enable_micropy;  if test "x$enableval" = "xno"; then CONFIG_MICROPY="no"; fi
+fi
+
+
+if test "$CONFIG_MICROPY" = "yes"; then
+  LDFLAGS="$LDFLAGS -L. -L.. -lmicropython"
+  CXXFLAGS="$CXXFLAGS -DHAVE_LIBMICROPYTHON -fpermissive"
+fi
 
 ac_config_files="$ac_config_files Makefile src/Makefile check/Makefile doc/Makefile doc/en/Makefile doc/es/Makefile doc/fr/Makefile doc/el/Makefile doc/el/tutoriel/Makefile doc/el/casinter/Makefile doc/local/Makefile doc/pt/Makefile doc/zh/Makefile doc/de/Makefile intl/Makefile po/Makefile.in examples/Makefile debianold/Makefile debian/Makefile micropython-1.12/Makefile micropython-1.12/docs/Makefile micropython-1.12/drivers/Makefile micropython-1.12/examples/Makefile micropython-1.12/extmod/Makefile micropython-1.12/lib/Makefile micropython-1.12/logo/Makefile micropython-1.12/nspire/Makefile micropython-1.12/numworks/Makefile micropython-1.12/ports/Makefile micropython-1.12/py/Makefile micropython-1.12/tests/Makefile micropython-1.12/tools/Makefile micropython-1.12/unix/Makefile"
 

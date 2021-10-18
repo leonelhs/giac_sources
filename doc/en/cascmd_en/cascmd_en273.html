@@ -57,7 +57,7 @@ on periodic sequences such that
 </table></td></tr>
 </table></td></tr>
 </table><p>
-i.e. :
+i.e.:
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">(<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>(<span style="font-style:italic">x</span>))<sub><span style="font-style:italic">k</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span></td></tr>
@@ -84,7 +84,7 @@ The Hadamard product (notation ·) is defined by:
 </table></td><td class="dcell"><span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub><span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span>−<span style="font-style:italic">j</span></sub> </td></tr>
 </table>
 </li></ul><p>
-<span style="font-weight:bold">Properties</span> :
+<span style="font-weight:bold">Properties</span>:
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">N</span>*<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span> · <span style="font-style:italic">y</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span>) * <span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">y</span>)</td></tr>
 <tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span> * <span style="font-style:italic">y</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span>) · <span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">y</span>)
 </td></tr>
@@ -109,15 +109,15 @@ This is just the discrete Fourier transform of <span style="font-style:italic">c
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">j</span>=0</td></tr>
 </table></td><td class="dcell"><span style="font-style:italic">c</span><sub><span style="font-style:italic">j</span></sub>(ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">k</span></sup>)<sup><span style="font-style:italic">j</span></sup>=<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">c</span>)<sub><span style="font-style:italic">k</span></sub> </td></tr>
 </table>
-Input, for example :
+Input, for example:
 <div class="center">
 <span style="font-family:monospace">P(x):=x+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2; w:=i</span>
 </div>
 Here the coefficients of <span style="font-style:italic">P</span> are [0,1,1,0], 
 <span style="font-style:italic">N</span>=4 and ω=exp(2<span style="font-style:italic">i</span>π/4)=<span style="font-style:italic">i</span>.<br>
-Input :<br>
+Input:<br>
 <span style="font-family:monospace">fft([0,1,1,0])</span><br>
-Output :<br>
+Output:<br>
 <span style="font-family:monospace">[2,-1-i,0,-1+i]</span><br>
 hence 
 <ul class="itemize"><li class="li-itemize">
@@ -137,15 +137,15 @@ This is <span style="font-style:italic">N</span> times the inverse fourier trans
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">j</span>=0</td></tr>
 </table></td><td class="dcell"><span style="font-style:italic">c</span><sub><span style="font-style:italic">j</span></sub>(ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">k</span></sup>)<sup><span style="font-style:italic">j</span></sup>=<span style="font-style:italic">NF</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>(<span style="font-style:italic">c</span>)<sub><span style="font-style:italic">k</span></sub> </td></tr>
 </table>
-Input, for example :<br>
+Input, for example:<br>
 <span style="font-family:monospace">P(x):=x+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span> and <span style="font-family:monospace">w:=i</span><br>
 Hence, the coefficients of <span style="font-style:italic">P</span> are [0,1,1,0], 
 <span style="font-style:italic">N</span>=4 and ω=exp(2<span style="font-style:italic">i</span>π/4)=<span style="font-style:italic">i</span>.<br>
-Input :<br>
+Input:<br>
 <span style="font-family:monospace">4*ifft([0,1,1,0])</span><br>
-Output :<br>
+Output:<br>
 <span style="font-family:monospace">[2,-1+i,0,-1-i]</span><br>
-hence : <ul class="itemize"><li class="li-itemize">
+hence: <ul class="itemize"><li class="li-itemize">
 <span style="font-family:monospace">P(1)=2</span>,
 </li><li class="li-itemize"><span style="font-family:monospace">P(i)=P(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">1)=-1+i</span>,
 </li><li class="li-itemize"><span style="font-family:monospace">P(-1)=P(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)=0</span>,
@@ -282,7 +282,7 @@ Indeed, since <span style="font-style:italic">x</span><sub><span style="font-sty
 </td></tr>
 </table></td></tr>
 </table>
-Hence :
+Hence:
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[c<sub>0</sub>,..c</td><td class="dcell"><table class="display"><tr><td class="dcell">&nbsp;</td></tr>
 <tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span></td></tr>
 <tr><td class="hbar"></td></tr>
@@ -329,7 +329,7 @@ then
 the trigonometric polynomial that interpolate <span style="font-style:italic">f</span>=<span style="font-style:italic">P</span> is <span style="font-style:italic">P</span>, the numeric 
 approximation of the coefficients are in fact exact (c<sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>).
 </li><li class="li-itemize">More generally, we can compute c<sub><span style="font-style:italic">n</span></sub>−<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>.<br>
-Suppose that <span style="font-style:italic">f</span> is equal to its Fourier series, i.e. that :<br>
+Suppose that <span style="font-style:italic">f</span> is equal to its Fourier series, i.e. that:<br>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">+∞</td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">m</span>=−∞</td></tr>
@@ -339,7 +339,7 @@ Suppose that <span style="font-style:italic">f</span> is equal to its Fourier se
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">m</span>=−∞</td></tr>
 </table></td><td class="dcell">|<span style="font-style:italic">c</span><sub><span style="font-style:italic">m</span></sub>|&lt;∞ </td></tr>
 </table>
-Then :
+Then:
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">f</span>(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2<span style="font-style:italic">k</span>π</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span></td></tr>
@@ -406,12 +406,12 @@ Conclusion: if |<span style="font-style:italic">n</span>|&lt;<span style="font-s
 rate of convergence of the Fourier series).
 </li></ul><p>
 <span style="font-weight:bold">Example</span>
-Input :<br>
+Input:<br>
 </p><div class="center">
 <span style="font-family:monospace">f(t):=cos(t)+cos(2*t)</span><br>
 <span style="font-family:monospace">x:=f(2*k*pi/8)$(k=0..7)</span><br>
 </div><p>
-Then :
+Then:
 </p><div class="center">
 <span style="font-family:monospace">x={2,sqrt(2)/2,-1,(-sqrt(2)/2,0,(-sqrt(2))/2,-1,sqrt(2)/2} </span><br>
 <span style="font-family:monospace">fft(x)=[0.0,4.0,4.0,0.0,0.0,0.0,4.0,4.0]</span>

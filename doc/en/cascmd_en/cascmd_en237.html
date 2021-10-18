@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Jacobi equation : jacobi_equation</title>
+<title>Jacobi equation: jacobi_equation</title>
 </head>
 <body >
 <a href="cascmd_en236.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en238.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec296" class="subsection">5.21.3  Jacobi equation : <span style="font-family:monospace">jacobi_equation</span><a id="hevea_default408"></a></h3>
+<h3 id="sec296" class="subsection">5.21.3  Jacobi equation: <span style="font-family:monospace">jacobi_equation</span><a id="hevea_default408"></a></h3>
 <p>
-<span style="font-family:monospace">jacobi_equation</span> takes five or six arguments :
+<span style="font-family:monospace">jacobi_equation</span> takes five or six arguments:
 </p><ul class="itemize"><li class="li-itemize">
 expression <span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>),
 </li><li class="li-itemize">independent variable <span style="font-style:italic">x</span>,
@@ -41,11 +41,11 @@ The return value contains the Jacobi equation
 ⎠</td><td class="dcell"> <span style="font-style:italic">h</span>=0.
     (3)</td></tr>
 </table><p>
-If the Jacobi equation has a solution such that <span style="font-style:italic">h</span>(<span style="font-style:italic">a</span>)=0, <span style="font-style:italic">h</span>(<span style="font-style:italic">c</span>)=0 for some <span style="font-style:italic">c</span>∈(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] and <span style="font-style:italic">h</span> not identically zero on [<span style="font-style:italic">a</span>,<span style="font-style:italic">c</span>], then <span style="font-style:italic">y</span><sub>0</sub> does not minimize the functional <span style="font-style:italic">F</span>. It is said that <span style="font-style:italic">c</span> is <em>conjugate</em> to <span style="font-style:italic">a</span>. The function <span style="font-style:italic">y</span><sub>0</sub> minimizes <span style="font-style:italic">F</span> if <span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">t</span>)&gt;0 for all <span style="font-style:italic">t</span>∈[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] and there are no points conjugate to <span style="font-style:italic">a</span> in (<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>].</p><p>If the Jacobi equation can be solved by <span style="font-family:monospace">dsolve</span>, a sequence containing the equation (<a href="#eq%3Ajacobi-equation">3</a>) and its solution is returned. Otherwise, if (<a href="#eq%3Ajacobi-equation">3</a>) cannot be solved immediately, only the Jacobi equation is returned.</p><p>For example, input :
+If the Jacobi equation has a solution such that <span style="font-style:italic">h</span>(<span style="font-style:italic">a</span>)=0, <span style="font-style:italic">h</span>(<span style="font-style:italic">c</span>)=0 for some <span style="font-style:italic">c</span>∈(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] and <span style="font-style:italic">h</span> not identically zero on [<span style="font-style:italic">a</span>,<span style="font-style:italic">c</span>], then <span style="font-style:italic">y</span><sub>0</sub> does not minimize the functional <span style="font-style:italic">F</span>. It is said that <span style="font-style:italic">c</span> is <em>conjugate</em> to <span style="font-style:italic">a</span>. The function <span style="font-style:italic">y</span><sub>0</sub> minimizes <span style="font-style:italic">F</span> if <span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">t</span>)&gt;0 for all <span style="font-style:italic">t</span>∈[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] and there are no points conjugate to <span style="font-style:italic">a</span> in (<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>].</p><p>If the Jacobi equation can be solved by <span style="font-family:monospace">dsolve</span>, a sequence containing the equation (<a href="#eq%3Ajacobi-equation">3</a>) and its solution is returned. Otherwise, if (<a href="#eq%3Ajacobi-equation">3</a>) cannot be solved immediately, only the Jacobi equation is returned.</p><p>For example, input:
 </p><div class="center">
 <span style="font-family:monospace">jacobi_equation(-1/2*y’(t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y(t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/2,t,y,sin(t),h,0)
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 <span style="font-family:monospace">(-diff(h(t),t,2)-h(t))=0, c_0*sin(t)
 </span></div>

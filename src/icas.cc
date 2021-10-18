@@ -10,7 +10,7 @@ int main(){
 }
 #else
 /*
- *  Copyright (C) 2000,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
+ *  Copyright (C) 2000,2020 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -228,14 +228,16 @@ void ifstream_output(istream & tmpif){
   flush_stdout();
   putchar(TEXMACS_DATA_BEGIN);
 #if 0 // changes by L. Marohnić
-  printf("scheme:(padded-centered \"%gex\" \"%gex\" (document (image (tuple (raw-data \"",
-         TEXMACS_IMAGE_PADDING_ABOVE,TEXMACS_IMAGE_PADDING_BELOW);
+  printf("scheme:(with \"par-mode\" \"center\" (document (image (tuple (raw-data \"");
   char c;
   for (int j=1;!tmpif.eof();++j){
     tmpif.get(c);
     putchar(c);
+    if (!(j%1024))
+      flush_stdout();
   }
-  printf("\") \"eps\") \"%g%%\" \"\" \"\" \"\")))",TEXMACS_IMAGE_SCALE);
+  flush_stdout();
+  printf("\n\") \"ps\") \"0.7par\" \"\" \"\" \"\")))");
 #else
   printf("ps:");
   char c;
@@ -245,7 +247,6 @@ void ifstream_output(istream & tmpif){
     if (!(j%1024))
       flush_stdout();
   }
-  putchar('\n');
 #endif
   putchar(TEXMACS_DATA_END);
   flush_stdout();
@@ -257,7 +258,11 @@ void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfi
 #if 1 // changes by L. Marohnić
   char buf[L_tmpnam];
   bool has_temp_file=(tmpnam(buf)!=NULL);
-  string tmpname(has_temp_file?buf:"casgraph"),ext=".eps",extc="-cleaned.eps";
+  string tmpname(has_temp_file?buf:"casgraph");
+#ifdef _WIN32
+  tmpname=string("C:\\Users\\Public")+tmpname; // this path is writable in every Windows version
+#endif
+  string ext=".eps",extc="cl.eps";
   if (!xcas::fltk_view(g,gg,tmpname+ext,figfilename,file_type,contextptr)){
     putchar(TEXMACS_DATA_BEGIN);
     printf("verbatim:Plot cancelled or unable to plot\n");
@@ -280,14 +285,21 @@ void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfi
   }
   else {
     bool cleaned=false;
+#ifdef HAVE_SYSTEM
     if (system(NULL)) {
       int status;
       status=system(("eps2eps "+tmpname+ext+" "+tmpname+extc).c_str());
-      if (status!=-1 && WEXITSTATUS(status)==0)
+      if (status!=-1
+#ifndef __MINGW_H
+			&& WEXITSTATUS(status)==0
+#endif
+		)
         cleaned=true;
     }
+#endif
     ifstream tmpif((tmpname+(cleaned?extc:ext)).c_str());
     ifstream_output(tmpif); // send PS to TeXmacs
+    tmpif.close();
     // remove temporary files:
     bool remove_fail=false;
     if (remove((tmpname+ext).c_str())!=0)
@@ -363,7 +375,7 @@ void texmacs_output(const giac::gen & g,giac::gen & gg,bool reading_file,int no,
   if (gg.type==giac::_STRNG)
     printf("verbatim:%s\n",gg._STRNGptr->c_str());
   else 
-    printf("scheme:(document (math (with \"math-display\" \"true\" %s)))",giac::gen2scm(gg,giac::context0).c_str());
+    printf("scheme:(document (equation* %s))",giac::gen2scm(gg,giac::context0).c_str());
 #else
   if (reading_file){
     putchar(TEXMACS_DATA_BEGIN);
@@ -1073,7 +1085,9 @@ int micropy_evaled(string & s,const giac::context * contextptr){
 }
 
 int main(int ARGC, char *ARGV[]){    
+#ifdef HAVE_LIBFLTK
   giac::__get_key.op=&xcas::Xcas_fltk_getKey;
+#endif
   //giac::step_infolevel=1;
   cerr << "// Maximum number of parallel threads " << giac::threads << '\n';
   giac::context giac_context;
@@ -1143,7 +1157,7 @@ int main(int ARGC, char *ARGV[]){
   }
 #endif
   if (ARGC==2 && (string(ARGV[1])=="-v" || string(ARGV[1])=="--version" ) ){
-    cout << "// (c) 2001, 2018 B. Parisse & others" << '\n';
+    cout << "// (c) 2001, 2020 B. Parisse & others" << '\n';
     cout << GIAC_VERSION << '\n';
 #ifndef GNUWINCE
     return 0;
@@ -1479,19 +1493,17 @@ int main(int ARGC, char *ARGV[]){
   if ( intexmacs){
     giac::html_help_init(ARGV[0],false);
     giac::enable_texmacs_compatible_latex_export(true);
-    int out_handle;
 #ifdef WITH_GNUPLOT
+    int out_handle;
     giac::run_gnuplot(out_handle);
 #endif
     putchar(TEXMACS_DATA_BEGIN);
-    // printf("verbatim:");
-    // format_plugin();
-    printf("latex:");
+    printf("verbatim:");
     format_plugin();
-    printf("{\\centering\\begin{tabular}{|c|}\\hline Giac CAS for TeXmacs, released under the GPL license (3.0)\\\\See \\url{http://www.gnu.org} for license details\\\\May contain BSD licensed software parts (lapack, atlas, tinymt)\\\\\\copyright\\ 2003--2019 B. Parisse \\& al (giac), J. van der Hoeven (TeXmacs)\\\\\\hline\\end{tabular}\\par}");
-    putchar(TEXMACS_DATA_END);
-    putchar(TEXMACS_DATA_BEGIN);
-    printf("verbatim:\n\n");
+    printf("Giac %s for TeXmacs, released under the GPL license (3.0)\n",PACKAGE_VERSION);
+    printf("See www.gnu.org for license details\n");
+    printf("May contain BSD licensed software parts (lapack, atlas, tinymt)\n");
+    printf("© 2003--2020 B. Parisse & al (giac), J. van der Hoeven (TeXmacs)\n");
     switch (giac::xcas_mode(contextptr)){
     case 0:
       printf("Xcas (C-like) syntax mode\n");
@@ -1509,8 +1521,15 @@ int main(int ARGC, char *ARGV[]){
     printf("Type tabulation key to complete a partial command\n");
     putchar(TEXMACS_DATA_END);
     texmacs_next_input();
+#ifdef __MINGW_H
+    char buf[4096];
+#endif
     while (1) {      
       string buffer;
+#ifdef __MINGW_H
+      cin.getline(buf,4096,'\n');
+      buffer=string(buf);
+#else
       char car;//,nxt;
       for (;;){
 	int i=getchar();
@@ -1519,13 +1538,13 @@ int main(int ARGC, char *ARGV[]){
 	  break;
 	car=i;
 	if (car=='\n'){
-#if !defined VISUALC && !defined __MINGW_H
+#if !defined VISUALC
 	  giac::set_nonblock_flag(STDIN_FILENO,1); // set non blocking mode on stdin
 #endif
 	  usleep(5000);
 	  // ssize_t s=read(STDIN_FILENO,&nxt,1);
 	  i=getchar();
-#if !defined VISUALC && !defined __MINGW_H
+#if !defined VISUALC
 	  giac::set_nonblock_flag(STDIN_FILENO,0); // set blocking mode on stdin
 #endif
 	  // cerr << "read "  << s << '\n';
@@ -1538,6 +1557,7 @@ int main(int ARGC, char *ARGV[]){
 	else
 	  buffer +=car;
       }
+#endif
       // end read buffer
       if (buffer[0]==TEXMACS_DATA_COMMAND){
 	int bs=buffer.size();
@@ -1601,7 +1621,7 @@ int main(int ARGC, char *ARGV[]){
       if ( buffer=="quit") 
 	break; // end of session
       // Begin answer
-      putchar( TEXMACS_DATA_BEGIN); 
+      putchar(TEXMACS_DATA_BEGIN);
       printf("verbatim:");
       // ONLINE HELP
       if (buffer=="?"){
@@ -1701,7 +1721,11 @@ int main(int ARGC, char *ARGV[]){
     int taillemax=1000;
     if (getenv("GIAC_TAILLEMAX"))
       taillemax=atoi(getenv("GIAC_TAILLEMAX"));
-    struct tms start, end;  
+#ifndef HAVE_NO_SYS_TIMES_H
+    struct tms start, end;
+#else
+	clock_t start, end;
+#endif
     using_history();
     cout << "Welcome to giac readline interface" << '\n';
     cout << "(c) 2001,2020 B. Parisse & others" << '\n';
@@ -1710,7 +1734,11 @@ int main(int ARGC, char *ARGV[]){
     cout << "See http://www.gnu.org for license details" << '\n';
     cout << "May contain BSD licensed software parts (lapack, atlas, tinymt)" << '\n';
     cout << "-------------------------------------------------" << '\n';
+#ifdef __MINGW_H
+    cout << "Press CTRL and C or D simultaneously to finish session" << '\n';
+#else
     cout << "Press CTRL and D simultaneously to finish session" << '\n';
+#endif
     cout << "Type ?commandname for help" << '\n';
     for (int count=0;;++count) {
       char * res=rl_gets(count);
@@ -1775,12 +1803,20 @@ int main(int ARGC, char *ARGV[]){
 #ifdef __APPLE__
       unsigned startc=clock();
 #endif
+#ifndef HAVE_NO_SYS_TIMES_H
       times(&start);
+#else
+      start=clock();
+#endif
       xcas::icas_eval(gq,ge,reading_file,filename,contextptr);
 #ifdef __APPLE_
       startc=clock()-startc;
 #endif
+#ifndef HAVE_NO_SYS_TIMES_H
       times(&end);
+#else
+      end=clock();
+#endif
       giac::history_in(contextptr).push_back(gq);
       giac::history_out(contextptr).push_back(ge);
       // 2-d plot?

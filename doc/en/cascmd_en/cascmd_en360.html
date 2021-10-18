@@ -19,20 +19,20 @@
 It is used when <span style="font-family:monospace">Xcas</span> is in Maple mode to compute
 the euclidean remainder of the division of two
 polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ using Maple-like syntax.<br>
-In <span style="font-family:monospace">Xcas</span> mode, input :
+In <span style="font-family:monospace">Xcas</span> mode, input:
 </p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)</span></div><p>
 In <span style="font-family:monospace">Maple</span> mode, input :
 </p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+3*x,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">2*x</span></div><p>
 The division was done using modular arithmetic, unlike with
 </p><div class="center"><span style="font-family:monospace">rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+3*x,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
 where the division is done in ℤ[<span style="font-style:italic">X</span>] and reduced after to:
 </p><div class="center"><span style="font-family:monospace">12*x</span></div><p>
 If <span style="font-family:monospace">Xcas</span> is not in Maple mode, polynomial division 
-in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>] is done e.g. by :
+in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>] is done e.g. by:
 </p><div class="center"><code>rem((x^3+3*x)% 5,(2x^2+6x+5)%5)</code>
 </div>
 <hr>

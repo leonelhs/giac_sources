@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Quadric reduction : reduced_quadric</title>
+<title>Quadric reduction: reduced_quadric</title>
 </head>
 <body >
 <a href="cascmd_en626.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en628.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec749" class="subsection">5.58.9  Quadric reduction : <span style="font-family:monospace">reduced_quadric</span></h3>
+<h3 id="sec749" class="subsection">5.58.9  Quadric reduction: <span style="font-family:monospace">reduced_quadric</span></h3>
 <p><a id="hevea_default975"></a>
-<span style="font-family:monospace">reduced_quadric</span> takes two arguments : the equation of a 
+<span style="font-family:monospace">reduced_quadric</span> takes two arguments: the equation of a 
 quadric and a vector of variable names.<br>
 <span style="font-family:monospace">reduced_quadric</span> returns a list whose elements are:
 </p><ul class="itemize"><li class="li-itemize">
@@ -24,12 +24,12 @@ the origin,
 </li><li class="li-itemize">a vector with its parametric equations.
 </li></ul><p> 
 <span style="font-weight:bold">Warning !</span> 
-<span style="font-family:monospace">u,v</span> will be used as parameters of the parametric equations : 
+<span style="font-family:monospace">u,v</span> will be used as parameters of the parametric equations: 
 these variables should not be assigned (<span style="font-family:monospace">purge</span> them before
 calling <span style="font-family:monospace">reduced_quadric</span>).<br>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">reduced_quadric(7*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+ 4*x*y-4*x*z-2*y*z-4*x+5*y+4*z-18)</span></div><p>
-Output is a list containing :
+Output is a list containing:
 </p><ul class="itemize"><li class="li-itemize">
 The origin (center of symmetry) of the quadric
 <div class="center"><span style="font-family:monospace">[11/27,(-26)/27,(-29)/54],</span></div>
@@ -38,9 +38,9 @@ The origin (center of symmetry) of the quadric
 [(sqrt(6))/6,0,(sqrt(30))/6],
 [(-(sqrt(6)))/6,(2*sqrt(5))/5,(sqrt(30))/30]],</span></div>
 </li><li class="li-itemize">1 hence the quadric is not degenerated
-</li><li class="li-itemize">the reduced equation of the quadric :
+</li><li class="li-itemize">the reduced equation of the quadric:
 <div class="center"><span style="font-family:monospace">0,9*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+3*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(-602)/27,</span></div> 
-</li><li class="li-itemize">The parametric equations (in the original frame) are :
+</li><li class="li-itemize">The parametric equations (in the original frame) are:
 <div class="center"><span style="font-family:monospace">[[(sqrt(6)*sqrt(602/243)*sin(u)*cos(v))/3+
 (sqrt(5)*sqrt(602/81)*sin(u)*sin(v))/5+
 ((-(sqrt(30)))*sqrt(602/81)*cos(u))/15+11/27,
@@ -52,11 +52,11 @@ The origin (center of symmetry) of the quadric
 u=(0 .. pi),v=(0.. (2*pi)),ustep=(pi/20),
 vstep=((2*pi)/20)]]</span></div>
 </li></ul><p>
-Hence the quadric is an ellipsoid and its reduced equation is :
+Hence the quadric is an ellipsoid and its reduced equation is:
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">9*<span style="font-style:italic">x</span><sup>2</sup>+3*<span style="font-style:italic">y</span><sup>2</sup>+3*<span style="font-style:italic">z</span><sup>2</sup>+(−602)/27 = 0</td></tr>
 </table><p>
 after the change of origin [11/27,(−26)/27,(−29)/54],
-the matrix of basis change <span style="font-family:monospace">P</span> is :
+the matrix of basis change <span style="font-family:monospace">P</span> is:
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
 ⎢<br>
 ⎢<br>
@@ -143,7 +143,7 @@ the matrix of basis change <span style="font-family:monospace">P</span> is :
 ⎥<br>
 ⎦</td></tr>
 </table><p>
-Its parametric equation is :
+Its parametric equation is:
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
 ⎪<br>
 ⎪<br>
@@ -284,14 +284,14 @@ Its parametric equation is :
 </table></td><td class="dcell">
 </td></tr>
 </table><p>
-<span style="font-weight:bold">Remark</span> :<br>
+<span style="font-weight:bold">Remark</span>:<br>
 Note that if the quadric is degenerate and made of 1 or 2 plane(s), 
 each plane is not given by 
 its parametric equation but by the list of a point of the plane
 and of a normal vector to the plane.<br>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">reduced_quadric(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+3*x+y+2)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">[[(-3)/2,1/2,0],[[1,0,0],[0,1,0],[0,0,-1]],0,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2, [hyperplan([1,1,0],[(-3)/2,1/2,0]), hyperplan([1,-1,0],[(-3)/2,1/2,0])]]</span></div>
 <hr>
 <a href="cascmd_en626.html"><img src="previous_motif.gif" alt="Previous"></a>

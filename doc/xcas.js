@@ -1356,6 +1356,12 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     //console.log(s);//console.log(UI.python_output);
   },
   mpeval:function(text){
+    while (text.length>0){
+      var ch=text.substr(text.length-1,1);
+      if (ch!=' ')
+	break;
+      text=text.substr(0,text.length-1);
+    }
     if (text=='xcas' || text=='xcas '){
       UI.micropy=0; UI.python_mode=0; 
       var form = $id('config');
@@ -1405,6 +1411,14 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     return '"'+UI.python_output+'"';
   },
   handle_shortcuts:function(text){
+    while (text.length>0){
+      var ch=text.substr(text.length-1,1);
+      if (ch!=' '){
+	if (ch==':') return text.substr(0,text.length-1)+';show_pixels()';
+	break;
+      }
+      text=text.substr(0,text.length-1);
+    }
     if (text=='.') return 'avance(0)';
     if (text==',') return 'show()';
     if (text==';') return 'show_pixels()';
@@ -3173,12 +3187,18 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       UI.turtle_draw(n, field.nextSibling.value);
     }
     if (n && n.length > 5 && n.substr(0, 5) == 'gl3d_') {
-      Module.print(n);
+      console.log('render',n);
+      field.removeEventListener("touchstart", UI.touch_handler, false);
+      field.removeEventListener("touchend", UI.touch_handler, false);
+      field.removeEventListener("touchmove", UI.touch_handler, false); 
+      field.addEventListener("touchstart", UI.touch_handler, false);
+      field.addEventListener("touchend", UI.touch_handler, false);
+      field.addEventListener("touchmove", UI.touch_handler, false);
+      $id('table_3d').style.display='none';
       var n3d = n.substr(5, n.length - 5);
       //Module.print(n3d);
       //Module.canvas=$id(n);
       UI.giac_renderer(n3d);
-      //Module.canvas=$id('canvas');
       return;
     }
     var f = field.firstChild;
@@ -3589,8 +3609,28 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       }
     }
     if (delbut) s += '</tr>'; else s += UI.erase_button(!UI.qa);
-    // console.log(s);
+    //console.log(s);
     return s;
+  },
+  touch_handler:function(event){
+    var touches = event.changedTouches,
+        first = touches[0];
+    var s2=first.target.id;
+    var is_3d= s2.length>5 && s2.substr(0,4)=='gl3d';
+    var n3d='';
+    if (is_3d)
+      n3d = s2.substr(5, s2.length - 5);
+    event.preventDefault();
+    if (event.type=="touchstart"){
+      UI.canvas_pushed=true;
+      UI.canvas_lastx=first.clientX; UI.canvas_lasty=first.clientY;
+    }
+    if (event.type=="touchmove"){
+      UI.canvas_mousemove(first, n3d);
+    }
+    if (event.type=="touchend"){
+      UI.canvas_pushed=false;
+    }
   },
   giac_renderer: function (text) {
     var gr = Module.cwrap('_ZN4giac13giac_rendererEPKc', 'number', ['string']);

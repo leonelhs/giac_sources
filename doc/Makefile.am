@@ -1,6 +1,6 @@
 SUBDIRS = 	en es fr el local pt zh de
 DIST_SUBDIRS = 	en es fr el local pt zh de
-XCASHTML = xcasfr.html xcasen.html *.css *.js giacwasm.wasm logo.png giac.tex giacfr.tex test.tex testfr.tex test.html testfr.html algolycee.html graphtheory-user_manual.pdf *.sty
+XCASHTML = xcasfr.html xcasen.html *.css *.js giacwasm.wasm logo.png giac.tex giacfr.tex test.tex testfr.tex test.html testfr.html algolycee.html graphtheory-user_manual.pdf *.sty simple.html
 EXTRA_DIST = aide_cas README index.html $(XCASHTML) dxcas/* pari/* castex.tex tortue.tex 
 
 dist_pkgdata_DATA = aide_cas

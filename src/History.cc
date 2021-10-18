@@ -59,12 +59,15 @@ const int xwaspy_shift=33;
 #include <strstream>
 #endif
 #ifdef WIN32
-#ifndef GNUWINCE
+#if !defined(GNUWINCE) && !defined(__MINGW_H)
 #include <sys/cygwin.h>
 #endif
 #endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+#ifdef __MINGW_H
+#include <direct.h>
 #endif
 
 using namespace std;
@@ -1698,6 +1701,10 @@ namespace xcas {
 
 #ifdef WIN32
   std::string unix_path(const std::string & winpath){
+#ifdef __MINGW_H
+	string res=winpath;
+	std::replace(res.begin(),res.end(),'\\','/');
+#else
 #ifdef x86_64
     int s = cygwin_conv_path (CCP_WIN_A_TO_POSIX , winpath.c_str(), NULL, 0);
     char * unixpath = (char *) malloc(s);
@@ -1708,6 +1715,7 @@ namespace xcas {
 #endif
     string res=unixpath;
     free(unixpath);
+#endif
     return res;
   }
 #else
@@ -4176,7 +4184,11 @@ namespace xcas {
 	getkeywin->hide();
     }
     if (current_status){
-      current_status->color((python_compat(ptr)&4)?FL_YELLOW:245);
+      current_status->color(
+#ifdef HAVE_LIBMICROPYTHON
+			    (python_compat(ptr)&4)?FL_YELLOW:
+#endif
+			    245);
       string mode_s="Config ";
       if (pack->url)
 	mode_s += '\''+remove_path(*pack->url)+'\'';
@@ -4209,9 +4221,11 @@ namespace xcas {
       switch (giac::xcas_mode(ptr)){
       case 0: 
 	if (python_compat(ptr)){
+#ifdef HAVE_LIBMICROPYTHON
 	  if (python_compat(ptr)&4)
 	    mode_s += "MicroPython ";
 	  else
+#endif
 	    mode_s += python_compat(ptr)==2?"python ^==xor ":"python ^=** ";
 	}
 	else
@@ -4233,7 +4247,7 @@ namespace xcas {
       // mode_s += "Time: ";
       // double t=double(clock());
       // mode_s += xcas::print_DOUBLE_(t/CLOCKS_PER_SEC);
-#ifdef HAVE_MALLOC_H //
+#if defined(HAVE_MALLOC_H) && !defined(__MINGW_H)
       struct mallinfo mem=mallinfo();
       double memd=mem.arena+mem.hblkhd;
       mode_s +=xcas::print_DOUBLE_(memd/1048576);

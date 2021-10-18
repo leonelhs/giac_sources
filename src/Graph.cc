@@ -265,8 +265,12 @@ namespace xcas {
     // localization code and pointer to RGB image reader
     if (!giac::readrgb_ptr){
       giac::readrgb_ptr=readrgb;
-#ifdef HAVE_LC_MESSAGES
-      xcas_locale()=getenv("XCAS_LOCALE")?getenv("XCAS_LOCALE"):giac_locale_location;	
+#if defined(HAVE_LC_MESSAGES)  || defined(__MINGW_H)
+#ifdef __MINGW_H
+      xcas_locale()=getenv("XCAS_LOCALE")?getenv("XCAS_LOCALE"):"c:/xcaswin/locale";	
+#else
+      xcas_locale()=getenv("XCAS_LOCALE")?getenv("XCAS_LOCALE"):giac_locale_location;
+#endif	
       cerr << "// Using locale " << xcas_locale() << '\n';
       const char * ptr=setlocale (LC_MESSAGES, "");
       if (ptr)

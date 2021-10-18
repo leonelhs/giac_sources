@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Finding conjugate points : conjugate_equation</title>
+<title>Finding conjugate points: conjugate_equation</title>
 </head>
 <body >
 <a href="cascmd_en237.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en239.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec297" class="subsection">5.21.4  Finding conjugate points : <span style="font-family:monospace">conjugate_equation</span><a id="hevea_default409"></a></h3>
+<h3 id="sec297" class="subsection">5.21.4  Finding conjugate points: <span style="font-family:monospace">conjugate_equation</span><a id="hevea_default409"></a></h3>
 <p>
-<span style="font-family:monospace">conjugate_equation</span> takes four arguments :
+<span style="font-family:monospace">conjugate_equation</span> takes four arguments:
 </p><ul class="itemize"><li class="li-itemize">
 expression <span style="font-style:italic">y</span><sub>0</sub> which depends on the independent variable and two parameters,
 </li><li class="li-itemize">list [α,β] of parameters which <span style="font-style:italic">y</span><sub>0</sub> depends on,
@@ -52,43 +52,43 @@ at α=<span style="font-style:italic">A</span> and β=<span style="font-style:it
 ⎝</td><td class="dcell"><span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>)<sup>2</sup>−<span style="font-style:italic">x</span> <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)<sup>2</sup></td><td class="dcell">⎞<br>
 ⎠</td><td class="dcell"> <span style="font-style:italic">d</span><span style="font-style:italic">x</span> </td></tr>
 </table><p>
-on <span style="font-style:italic">D</span>={<span style="font-style:italic">y</span>∈ <span style="font-style:italic">C</span><sup>1</sup>[0,π/2]:<span style="font-style:italic">y</span>(0)=<span style="font-style:italic">y</span>(π/2)=0}. The corresponding Euler-Lagrange equation is :
+on <span style="font-style:italic">D</span>={<span style="font-style:italic">y</span>∈ <span style="font-style:italic">C</span><sup>1</sup>[0,π/2]:<span style="font-style:italic">y</span>(0)=<span style="font-style:italic">y</span>(π/2)=0}. The corresponding Euler-Lagrange equation is:
 </p><div class="center">
 <span style="font-family:monospace">eq:=euler_lagrange(y’(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x*y(x)-y(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,y(x))
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 <span style="font-family:monospace">diff(y(x),x,2)=((-2*y(x)-x)/2)
 </span></div><p>
-The general solution is :
+The general solution is:
 </p><div class="center">
 <span style="font-family:monospace">y0:=dsolve(eq,x,y)
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 <span style="font-family:monospace">c_0*cos(x)+c_1*sin(x)-x/2
 </span></div><p>
-The stationary function depends on two parameters <span style="font-style:italic">c</span><sub>0</sub> and <span style="font-style:italic">c</span><sub>1</sub> which are fixed by the boundary conditions :
+The stationary function depends on two parameters <span style="font-style:italic">c</span><sub>0</sub> and <span style="font-style:italic">c</span><sub>1</sub> which are fixed by the boundary conditions:
 </p><div class="center">
 <span style="font-family:monospace">c:=solve([subs(y0,x,0)=0,subs(y0,x,pi/2)=0],[c_0,c_1])
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 <span style="font-family:monospace">[[0,pi/4]]
 </span></div><p>
-Input :
+Input:
 </p><div class="center">
 <span style="font-family:monospace">conjugate_equation(y0,[c_0,c_1],c[0],x,0)
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 <span style="font-family:monospace">sin(x)
 </span></div><p>
-The above expression obviously has no zeros in (0,π/2], hence there are no points conjugate to 0. Since <span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>=2&gt;0, where <span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>) is the integrand in <span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>) (the strong Legendre condition), <span style="font-style:italic">y</span><sub>0</sub> minimizes <span style="font-style:italic">F</span> on <span style="font-style:italic">D</span>. To obtain <span style="font-style:italic">y</span><sub>0</sub> explicitly, input :
+The above expression obviously has no zeros in (0,π/2], hence there are no points conjugate to 0. Since <span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>=2&gt;0, where <span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>) is the integrand in <span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>) (the strong Legendre condition), <span style="font-style:italic">y</span><sub>0</sub> minimizes <span style="font-style:italic">F</span> on <span style="font-style:italic">D</span>. To obtain <span style="font-style:italic">y</span><sub>0</sub> explicitly, input:
 </p><div class="center">
 <span style="font-family:monospace">subs(y0,[c_0,c_1],c[0])
 </span></div><p>
-Output :
+Output:
 </p><div class="center">
 <span style="font-family:monospace">pi*sin(x)/4-x/2
 </span></div>

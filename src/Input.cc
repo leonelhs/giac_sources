@@ -337,6 +337,7 @@ namespace xcas {
     }
   }
 
+#ifdef HAVE_LIBMICROPYTHON
   vector<string> micropython_filter_help(const vector<string> & v_orig){
     vector<string> v;
     for (int i=0;i<v_orig.size();++i){
@@ -346,6 +347,7 @@ namespace xcas {
     }
     return v;
   }
+#endif
 
   Fl_Window * handle_tab_w = 0;
   // Find a completion of s in v -> ans, return true if user OK
@@ -375,7 +377,11 @@ namespace xcas {
 	dx=500;
     }
     // filter help if MicroPython is active
+#ifdef HAVE_LIBMICROPYTHON
     vector<string> v( (contextptr && (python_compat(contextptr) & 4))?micropython_filter_help(v_orig):v_orig);
+#else
+    vector<string> v(v_orig);
+#endif
     if (dy<300)
       dy=300;
     if (dx<240)

@@ -75,6 +75,8 @@ using namespace std;
 #ifndef VISUALC
 #if !defined(GNUWINCE) && !defined(__MINGW_H)
 #include <sys/cygwin.h>
+#endif
+#if !defined(GNUWINCE) 
 #include <windows.h>
 #endif // ndef gnuwince
 #endif // ndef visualc
@@ -1826,7 +1828,11 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
   int printprog=0;
 #if defined __APPLE__ || defined VISUALC || defined __MINGW_H || defined BESTA_OS || defined NSPIRE || defined FXCG || defined NSPIRE_NEWLIB || defined KHICAS
+#ifdef _WIN32
+  int threads=atoi(getenv("NUMBER_OF_PROCESSORS"));
+#else
   int threads=1;
+#endif
 #else
   int threads=sysconf (_SC_NPROCESSORS_ONLN);
 #endif
@@ -2806,7 +2812,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   string giac_aide_dir(){
-#if defined __MINGW_H || defined NSPIRE || defined FXCG
+#if defined NSPIRE || defined FXCG || defined MINGW32
     return xcasroot();
 #else
     if (!access((xcasroot()+"aide_cas").c_str(),R_OK)){
@@ -2920,7 +2926,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   bool is_file_available(const char * ch){
     if (!ch)
       return false;
-#if !defined __MINGW_H && !defined NSPIRE && !defined FXCG
+#if !defined NSPIRE && !defined FXCG && !defined MINGW32
     if (access(ch,R_OK))
       return false;
 #endif
@@ -2974,7 +2980,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   string browser_command(const string & orig_file){
-#if defined __MINGW_H || defined NSPIRE || defined FXCG
+#if defined NSPIRE || defined FXCG || defined MINGW32
     return "";
 #else
     string file=orig_file;
@@ -3148,10 +3154,21 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
     }
     CERR << res << '\n';
-#if !defined VISUALC && !defined __MINGW_H && !defined NSPIRE && !defined FXCG
+#if !defined VISUALC && !defined NSPIRE && !defined FXCG
+#ifdef __MINGW_H
+    while (res.size()>=2 && res.substr(0,2)=="./")
+      res=res.substr(2,res.size()-2);
+    if (res.size()<4 || res.substr(0,4)!="http")
+      res = "file:///c:/xcaswin/"+res;
+    CERR << "running open on " << res << '\n';
+    //ShellExecute(NULL,"open","file:///c:/xcaswin/doc/fr/cascmd_fr/index.html",\
+NULL,NULL,SW_SHOWNORMAL);
+    ShellExecute(NULL,"open",res.c_str(),NULL,NULL,SW_SHOWNORMAL);
+#else
     // FIXME: works under visualc but not using /UNICODE flag
     // find correct flag
     ShellExecute(NULL,NULL,res.c_str(),NULL,NULL,1);
+#endif
 #endif
     return true;
 #else
@@ -3469,7 +3486,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     if (getenv("LANG"))
       s=getenv("LANG");
     else { // __APPLE__ workaround
-#if !defined VISUALC && !defined __MINGW_H && !defined NSPIRE && !defined FXCG
+#if !defined VISUALC && !defined NSPIRE && !defined FXCG
       if (!strcmp(gettext("File"),"Fich")){
 	setenv("LANG","fr_FR.UTF8",1);
 	s="fr_FR.UTF8";
@@ -3477,6 +3494,10 @@ extern "C" void Sleep(unsigned int miliSecond);
       else {
 	s="en_US.UTF8";
 	setenv("LANG",s.c_str(),1);
+      }
+      if (!strcmp(gettext("File"),"Datei")){
+	setenv("LANG","de_DE.UTF8",1);
+	s="de_DE.UTF8";
       }
 #endif
     }
@@ -3735,6 +3756,10 @@ extern "C" void Sleep(unsigned int miliSecond);
     return double( tmp2.tms_utime+tmp2.tms_stime+tmp2.tms_cutime+tmp2.tms_cstime-(tmp1.tms_utime+tmp1.tms_stime+tmp1.tms_cutime+tmp1.tms_cstime) )/CLK_TCK;
 #endif
    }
+#elif defined(__MINGW_H)
+  double delta_tms(clock_t tmp1,clock_t tmp2) {
+    return (double)(tmp2-tmp1)/CLOCKS_PER_SEC;
+  }
 #endif /// HAVE_NO_SYS_TIMES_H
 
   string remove_filename(const string & s){

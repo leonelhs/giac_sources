@@ -4,14 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Construction of a Galois field : GF</title>
+<title>Construction of a Galois field: GF</title>
 </head>
 <body >
 <a href="cascmd_en420.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en422.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec504" class="subsection">5.36.18  Construction of a Galois field : <span style="font-family:monospace">GF</span></h3>
+<h3 id="sec504" class="subsection">5.36.18  Construction of a Galois field: <span style="font-family:monospace">GF</span></h3>
 <p><a id="hevea_default665"></a>
 <span style="font-family:monospace">GF</span> takes as arguments a prime integer <span style="font-style:italic">p</span> 
 and an integer <span style="font-style:italic">n</span>&gt;1.<br>
@@ -35,19 +35,19 @@ You should give a name to this field (for example <span style="font-family:monos
 in order to build elements of the field from a polynomial in
 ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>], for example <span style="font-family:monospace">G(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x)</span>. Note that <span style="font-family:monospace">G(x)</span>
 is a generator of the multiplicative group <span style="font-style:italic">G</span><sup>*</sup>.<br>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">G:=GF(2,8)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">GF(2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1,x,undef)</span></div><p>
 The field <span style="font-style:italic">G</span> has 2<sup>8</sup>=256 elements and 
 <span style="font-style:italic">x</span> generates the multiplicative group
 of this field ({ 1,<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span><sup>2</sup>,...<span style="font-style:italic">x</span><sup>254</sup> }).<br>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">G(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">9)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">GF(2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1,x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">7+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x)</span></div><p>
 indeed <span style="font-style:italic">x</span><sup>8</sup>=<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1, hence <span style="font-style:italic">x</span><sup>9</sup>=<span style="font-style:italic">x</span><sup>7</sup>+<span style="font-style:italic">x</span><sup>5</sup>+<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>.<br>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">G(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">255</span></div><p>
 Output should be the unit, indeed:
 </p><div class="center">
@@ -63,24 +63,24 @@ name is grouped with the variable name in a list
 passed as third argument to <span style="font-family:monospace">GF</span>.
 Note that these two variable names must be quoted.<br>
 Example,<br>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">G:=GF(2,2,[’w’,’G’]):; G(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">Done, G(w+1)</span></div><p>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">G(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">G(1)</span></div><p>
 Hence, the elements of <span style="font-family:monospace">GF(2,2)</span> are
 <span style="font-family:monospace">G(0),G(1),G(w),G(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)=G(w+1)</span>.</p><p>We may also impose the irreducible primitive polynomial that we wish
 to use, by putting it as second argument (instead of <span style="font-style:italic">n</span>), 
-for example :
+for example:
 </p><div class="center"><code>G:=GF(2,w^8+w^6+w^3+w^2+1,['w','G'])</code></div><p>
 If the polynomial is not primitive, <span style="font-family:monospace">Xcas</span> will replace it
-automatically by a primitive polynomial, for example :<br>
-Input :
+automatically by a primitive polynomial, for example:<br>
+Input:
 </p><div class="center"><code>G:=GF(2,w^8+w^7+w^5+w+1,['w','G'])</code></div><p>
-Output :
+Output:
 </p><div class="center"><code>G:=GF(2,w^8-w^6-w^3-w^2-1,['w','G'],undef)</code></div>
 <hr>
 <a href="cascmd_en420.html"><img src="previous_motif.gif" alt="Previous"></a>

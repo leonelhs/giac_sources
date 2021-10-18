@@ -388,6 +388,20 @@ dnl		AC_CHECK_LIB(GLU, main)
 		AC_CHECK_LIB(intl, main)
 		;;
 
+		*mingw*)
+		CXXFLAGS="$CXXFLAGS -D__MINGW_H"
+		CFLAGS="$CFLAGS -D__MINGW_H"
+		LIBS="$LIBS -lopengl32"
+		AC_CHECK_LIB(fltk_gl, main)
+		AC_CHECK_LIB(fltk, main)
+		if test "$HAVE_LIBFLTK_GL" = "1" ; then
+		    AC_DEFINE([USE_OPENGL32],1,[Defined if fltk has OpenGL enabled])
+		fi		
+		AC_CHECK_LIB(z, main)
+		AC_CHECK_LIB(jpeg, main)
+		AC_CHECK_LIB(fltk_images, main)
+		;;
+
 		*darwin*)
 		dnl FLTK does not need X libraries on this platform
 		;;
@@ -488,8 +502,15 @@ dnl CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -DSMARTPTR64"
 CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS"
 
 dnl enables MicroPython, -fpermissive to avoid failure on Debian 10
-LDFLAGS="$LDFLAGS -L. -L.. -lmicropython"
-CXXFLAGS="$CXXFLAGS -DHAVE_LIBMICROPYTHON -fpermissive"
+CONFIG_MICROPY="yes"
+AC_ARG_ENABLE([micropy],
+	[AS_HELP_STRING([--enable-micropy], [enable MICROPY [[default=yes]]])],
+	[ if test "x$enableval" = "xno"; then CONFIG_MICROPY="no"; fi], [])
+	
+if test "$CONFIG_MICROPY" = "yes"; then 
+  LDFLAGS="$LDFLAGS -L. -L.. -lmicropython"
+  CXXFLAGS="$CXXFLAGS -DHAVE_LIBMICROPYTHON -fpermissive"
+fi
 
 dnl Output makefiles etc.
 AC_OUTPUT([

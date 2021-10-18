@@ -905,7 +905,9 @@ namespace xcas {
       }
       ps_preview +="Program\\ Files/Ghostgum/gsview/gsview32.exe";
     }
+#ifndef __MINGW_H
     pngpdf |= 0x4;
+#endif
 #endif
     // translate into png, (inside GIMP Image->Transform->rotate, not anymore)
     // inside latex use includegraphics[width=\textwidth{filename}

@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Make a sequence or a list : seq $</title>
+<title>Make a sequence or a list: seq $</title>
 </head>
 <body >
 <a href="cascmd_en454.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en456.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec543" class="subsection">5.41.5  Make a sequence or a list : <span style="font-family:monospace">seq $</span></h3>
+<h3 id="sec543" class="subsection">5.41.5  Make a sequence or a list: <span style="font-family:monospace">seq $</span></h3>
 <p><a id="hevea_default708"></a><a id="hevea_default709"></a>
-<span style="font-family:monospace">seq</span> takes two, three, four or five arguments : the first 
+<span style="font-family:monospace">seq</span> takes two, three, four or five arguments: the first 
 argument is an expression depending of a parameter (for example <span style="font-style:italic">j</span>) and 
 the remaining argument(s) describe which values of <span style="font-style:italic">j</span> will be used to
 generate the sequence. More precisely <span style="font-style:italic">j</span> is assumed to move 
@@ -42,7 +42,7 @@ To specify a step <span style="font-style:italic">p</span> for the variation of
 <span style="font-style:italic">j</span> from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>, use <span style="font-family:monospace">j=a..b,p</span> or use the <span style="font-family:monospace">TI</span> syntax
 <span style="font-family:monospace">j,a,b,p</span> and get the sequence from the list with <span style="font-family:monospace">op(...)</span>.
 </li></ul><p>
-In summary, the different way to build a sequence are :
+In summary, the different way to build a sequence are:
 </p><ul class="itemize"><li class="li-itemize">
 with <span style="font-family:monospace">Maple</span>-like <span style="font-weight:bold">syntax</span> 
 <ol class="enumerate" type=1><li class="li-enumerate">
@@ -83,63 +83,63 @@ in <span style="font-family:monospace">Maple</span> syntax, <span style="font-fa
 returns a sequence,
 while in <span style="font-family:monospace">TI</span> syntax, <span style="font-family:monospace">seq</span> takes at least 4 arguments 
 and returns a list.<br>
-Input to have a sequence with same elements :
+Input to have a sequence with same elements:
 </p><div class="center"><span style="font-family:monospace">seq(t,4)</span></div><p>
-or : 
+or: 
 </p><div class="center"><span style="font-family:monospace">seq(t,k=1..4)</span></div><p>
-or :
+or:
 </p><div class="center"><span style="font-family:monospace">t$4</span></div><p> 
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">(t,t,t,t)</span></div><p>
-Input to have a sequence :
+Input to have a sequence:
 </p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j=1..4)</span></div><p>
-or : 
+or: 
 </p><div class="center"><span style="font-family:monospace">(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)$(j=1..4)</span></div><p> 
-or :
+or:
 </p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,1..4)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">(1,8,27,64)</span></div><p>
-Input to have a sequence :
+Input to have a sequence:
 </p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j=-1..4,2)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">(-1,1,27)</span></div><p>
 Or to have a list,<br>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,1,4)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">[1,8,27,64]</span></div><p>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,0,5,2)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">[0,8,64]</span></div><p>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,5,0,-2)</span></div><p>
 or
 </p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,5,0,2)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">[125,27,1]</span></div><p>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,1,3,0.5)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">[1,3.375,8,15.625,27]</span></div><p>
-Input :
+Input:
 </p><div class="center"><span style="font-family:monospace">seq(j</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,j,1,3,1/2)</span></div><p>
-Output :
+Output:
 </p><div class="center"><span style="font-family:monospace">[1,27/8,8,125/8,27]</span></div><p>
 <span style="font-weight:bold">Examples</span>
 </p><ul class="itemize"><li class="li-itemize">
 Find the third derivative of  ln(<span style="font-style:italic">t</span>), input:
 <div class="center"><span style="font-family:monospace">diff(log(t),t$3)</span></div>
-Output :
+Output:
 <div class="center"><span style="font-family:monospace">-((-(2*t))/t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4)</span></div>
-</li><li class="li-itemize">Input :
+</li><li class="li-itemize">Input:
 <div class="center"><span style="font-family:monospace">l:=[[2,3],[5,1],[7,2]]</span></div>
 <div class="center"><span style="font-family:monospace">seq((l[k][0])$(l[k][1]),k=0 .. size(l)-1)</span></div>
-Output :
+Output:
 <div class="center"><span style="font-family:monospace">2,2,2,seq[5],7,7</span></div>
 then <span style="font-family:monospace">eval(ans())</span> returns:
 <div class="center"><span style="font-family:monospace">2,2,2,5,7,7</span></div>
-</li><li class="li-itemize">Input to transform a string into the list of its characters :
+</li><li class="li-itemize">Input to transform a string into the list of its characters:
 <pre class="verbatim">f(chn):={
  local l;
  l:=size(chn);
@@ -148,7 +148,7 @@ then <span style="font-family:monospace">eval(ans())</span> returns:
 </pre>
 then input:
 <div class="center"><span style="font-family:monospace">f("abracadabra")</span></div>
-Output :
+Output:
 <div class="center"><span style="font-family:monospace">["a","b","r","a","c","a","d","a","b","r","a"]</span></div>
 </li></ul>
 <hr>

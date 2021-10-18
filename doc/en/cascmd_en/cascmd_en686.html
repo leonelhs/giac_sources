@@ -4,74 +4,72 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Variance and standard deviation: variance stdev</title>
+<title>The population standard deviation: stddevp stdDev</title>
 </head>
 <body >
 <a href="cascmd_en685.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en687.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec842" class="subsection">8.1.2  Variance and standard deviation: <span style="font-family:monospace">variance</span><a id="hevea_default1161"></a> <span style="font-family:monospace">stdev</span><a id="hevea_default1162"></a></h3>
-<p>The variance of a list of numbers measures how close the numbers are
-to their mean by finding the average of the squares of the
-differences between the numbers and the mean; specifically,
-given a list of numbers [<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>] with mean µ = (<span style="font-style:italic">x</span><sub>1</sub> +
-⋯ + <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>)/<span style="font-style:italic">n</span>, the variance is
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub>1</sub> − µ)<sup>2</sup> + … + (<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> − µ)<sup>2</sup></td></tr>
+<h3 id="sec843" class="subsection">8.1.3  The population standard deviation: <span style="font-family:monospace">stddevp</span><a id="hevea_default1163"></a> <span style="font-family:monospace">stdDev</span><a id="hevea_default1164"></a></h3>
+<p>Given a large population, rather than collecting all of the numbers it
+might be more feasible to get a smaller collection of numbers and try
+to extrapolate from that. For example, to get information about the
+ages of a large population, you might get the ages of a sample of 100
+of the people and work with that.</p><p>If a list of numbers is a sample of data from a larger population,
+then the <span style="font-family:monospace">mean</span> function will find the mean of the sample,
+which can be used to estimate the mean of the population. The
+standard deviation uses the mean to find the standard
+deviation of the sample, but since the mean of the sample is only an
+approximation to the mean of the entire population, the standard
+deviation of the sample doesn’t provide an optimal estimate of
+the standard deviation of the population. An unbiased estimate of the
+standard deviation of the entire population is given by the population
+standard deviation <span style="font-family:monospace">stddevp</span> function; 
+given a list <span style="font-style:italic">L</span> = [<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>] with mean µ, the population
+standard deviation is 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">σ = </td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub>1</sub> − µ)<sup>2</sup> + … + (<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> − µ)<sup>2</sup></td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
+</table></td></tr>
 </table></td><td class="dcell">.
 </td></tr>
 </table><p>
-The squares help ensure that the numbers above the mean and those
-below the mean don’t cancel out. The variance can be computed with
-the command <span style="font-family:monospace">variance</span>,</p><p>A potentially better way to measure how close numbers are to their
-mean is the standard deviation, which is the square root of the
-variance;. Note that if the list of numbers have units, then the
-standard deviation will have the same unit.
-The <span style="font-family:monospace">stddev</span> function will compute the standard
-deviation of a list of numbers. For example, 
-the list [1,2,3,4] has mean 5/2, and so 
-<span style="font-family:monospace">stddev([1,2,3,4])</span>
-will return
-</p><div class="center">
-<span style="font-family:monospace">2*sqrt(5)/4
-</span></div><p>
-since
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">(1−5/2)<sup>2</sup> + (2−5/2)<sup>2</sup> + (3−5/2)<sup>2</sup> + (4−5/2)<sup>2</sup></td></tr>
+Note that
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">stddevp(<span style="font-style:italic">L</span>)<sup>2</sup> = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">4</td></tr>
-</table></td></tr>
-</table></td><td class="dcell"> =
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">2</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">4</td></tr>
-</table></td></tr>
-</table><p>
-Like the mean, given a matrix, <span style="font-family:monospace">stddev</span> will compute the
-standard deviation of each column separately;
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
+</table></td><td class="dcell"> stddev(<span style="font-style:italic">L</span>)<sup>2</sup>.</td></tr>
+</table><p>For example,
 </p><div class="center">
-<span style="font-family:monospace">stddev([[1,2],[3,6]])
-</span></div><p>
-will compute
-</p><div class="center">
-<span style="font-family:monospace">[1,2]
-</span></div><p>
-Also, a second list (or matrix) as an argument will provide weights
-when finding the standard deviation;
-</p><div class="center">
-<span style="font-family:monospace">stddev([1,2,3],[2,1,1])
+<span style="font-family:monospace">stddev([1,2,3,4])
 </span></div><p>
 will return
 </p><div class="center">
-<span style="font-family:monospace">4*sqrt(11)/16
-</span></div>
+<span style="font-family:monospace">sqrt(5)/2
+</span></div><p>
+while 
+</p><div class="center">
+<span style="font-family:monospace">stddevp([1,2,3,4])
+</span></div><p>
+will return
+</p><div class="center">
+<span style="font-family:monospace">sqrt(15)/3
+</span></div><p>Like <span style="font-family:monospace">stddev</span>, the <span style="font-family:monospace">stddevp</span> command can take a second
+argument for weights. If you enter
+</p><div class="center">
+<span style="font-family:monospace">A := [0,1,2,3,4,5,6,7,8,9,10,11]<br>
+ stddevp(A,A)
+</span></div><p>
+then you will get
+</p><div class="center">
+<span style="font-family:monospace">sqrt(66)/3
+</span></div><p>The <span style="font-family:monospace">stdDev</span> function is equivalent to <span style="font-family:monospace">stddevp</span>, for TI
+compatibility. There is no population variance function; if needed,
+it can be computed by squaring the <span style="font-family:monospace">stddevp</span> function.</p>
 <hr>
 <a href="cascmd_en685.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
