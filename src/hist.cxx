@@ -751,7 +751,7 @@ void load_autorecover_data() {
       if (f){
         fclose(f);
        // Xcas_Main_Window_->hide();
-       int n=fl_choice(gettext("Choose start mode"),gettext("Xcas (Python-ic)"),gettext("Xcas"),gettext("Other")),mm=-1; // n==0 maple, 1 xcas, 2 other
+       int n=fl_choice(gettext("Choose start mode"),gettext("Xcas"),gettext("Xcas-Python"),gettext("Other")),mm=-1; // n==2 other
        if (n==2){
           mm=fl_choice(gettext("Choose start mode"),gettext("Turtle"),gettext("Spreadsheet"),gettext("Geometry"));
           if (mm==0) mm=7;
@@ -772,7 +772,7 @@ void load_autorecover_data() {
        configs+=giac::print_INT_(mm+1);
        configs += ",0";
        configs +=");xcas_mode(";
-       if (n==0)
+       if (n==1)
         configs+="256"; 
        else
         configs+='0';
@@ -2187,7 +2187,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Highschool", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Turtle", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"New turtle", 0x80064,  (Fl_Callback*)cb_Xcas_Add_Logo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"New turtle", 0x8006c,  (Fl_Callback*)cb_Xcas_Add_Logo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {0,0,0,0,0,0,0,0,0}
 };
@@ -3171,7 +3171,7 @@ static void cb_Xcas_DispG_ClrGraph(Fl_Button*, void*) {
 }
 
 Fl_Window* Xcas_run(int argc,char ** argv) {
-  { Xcas_Main_Window_ = new Fl_Window(775, 520, gettext("Xcas New Interface"));
+  { Xcas_Main_Window_ = new Fl_Window(865, 520, gettext("Xcas New Interface"));
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;

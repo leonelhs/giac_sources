@@ -843,7 +843,7 @@ Function {load_autorecover_data()} {open
     if (f){
       fclose(f);
      // Xcas_Main_Window_->hide();
-     int n=fl_choice(gettext("Choose start mode"),gettext("Xcas (Python-ic)"),gettext("Xcas"),gettext("Other")),mm=-1; // n==0 maple, 1 xcas, 2 other
+     int n=fl_choice(gettext("Choose start mode"),gettext("Xcas"),gettext("Xcas-Python"),gettext("Other")),mm=-1; // n==2 other
      if (n==2){
         mm=fl_choice(gettext("Choose start mode"),gettext("Turtle"),gettext("Spreadsheet"),gettext("Geometry"));
         if (mm==0) mm=7;
@@ -864,7 +864,7 @@ Function {load_autorecover_data()} {open
      configs+=giac::print_INT_(mm+1);
      configs += ",0";
      configs +=");xcas_mode(";
-     if (n==0)
+     if (n==1)
       configs+="256"; 
      else
       configs+='0';
@@ -1025,7 +1025,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
 } {
   Fl_Window Xcas_Main_Window_ {
     label {Xcas New Interface} open
-    xywh {95 113 775 520} type Single resizable visible
+    xywh {95 113 865 520} type Single resizable visible
   } {
     Fl_Menu_Bar Xcas_main_menu {open
       xywh {0 0 775 25}
@@ -1273,9 +1273,8 @@ update_xcas=0;}
                 xcas::History_Pack * hp=dynamic_cast<xcas::History_Pack *>(wid);
                 int i=std::floor(atof(ch)*1e6);
                 if (hp && i>0 && i<120e6){ hp->next_delay=i;xcas::History_cb_Run_Worksheet(wid,0);}
-             }
-          }
-          xywh {140 140 100 20} 
+             }}
+          xywh {140 140 100 20}
         }
         MenuItem Xcas_Execute_Below {
           label {Execute below}
@@ -1452,7 +1451,7 @@ Xcas_update_mode();}
           MenuItem Xcas_show_DispG {
             label DispG
             callback {Xcas_DispG_Window_->show(); 
-Xcas_DispG_Cancel_->hide();} selected
+Xcas_DispG_Cancel_->hide();}
             xywh {45 45 100 20} shortcut 0x80064
           }
           MenuItem Xcas_show_keyboard {
@@ -1987,8 +1986,7 @@ if (i>0 && i<26){
         MenuItem Xcas_help_start_algoseconde {
           label {Tutoriel algo}
           callback {if (xcas::use_external_browser)
-           giac::system_browser_command(doc_prefix+"../algolycee.html");
-          }
+           giac::system_browser_command(doc_prefix+"../algolycee.html");}
           xywh {10 10 100 20}
         }
         MenuItem Xcas_help_make_index {
@@ -2745,13 +2743,13 @@ if (f && plotparam_dialog(f,arg,2)){
         xywh {75 75 100 20}
       } {}
       Submenu Xcas_help_tortue {
-        label Turtle
+        label Turtle open
         xywh {65 65 100 20}
       } {
         MenuItem Xcas_Add_Logo {
           label {New turtle}
-          callback {xcas::History_cb_New_Logo(Xcas_current_session(),0);}
-          xywh {105 105 100 20} shortcut 0x80064
+          callback {xcas::History_cb_New_Logo(Xcas_current_session(),0);} selected
+          xywh {105 105 100 20} shortcut 0x8006c
         }
       }
     }
@@ -4407,8 +4405,7 @@ else make_history();
 
 Function {main(int argc,char ** argv)} {open return_type int
 } {
-  code {
-if (argc==2 && strlen(argv[1])==0)
+  code {if (argc==2 && strlen(argv[1])==0)
   argc=1;
 if (getenv("XCAS_AUTOSAVE_FOLDER")){
   xcas::autosave_folder=getenv("XCAS_AUTOSAVE_FOLDER");

@@ -5717,7 +5717,7 @@ namespace giac {
     if (args.type!=_INT_)
       return xcas_mode(contextptr);
     xcas_mode(contextptr)=args.val & 0xff;
-    python_compat(contextptr)=args.val>=256;
+    python_compat(args.val>=256,contextptr);
     return string2gen("Warning: some commands like subs might change arguments order",false);
   }
   static const char _xcas_mode_s []="xcas_mode";
@@ -5734,7 +5734,7 @@ namespace giac {
     if (args.type!=_INT_)
       return python_compat(contextptr);
     int p=python_compat(contextptr);
-    python_compat(contextptr)=args.val ;
+    python_compat(args.val,contextptr) ;
     return p;
   }
   static const char _python_compat_s []="python_compat";
@@ -7505,9 +7505,20 @@ namespace giac {
     int s=int(v.size());
     if (s<2)
       return gentoofewargs("");
-    if (v[1].type!=_VECT)
-      return gensizeerr(contextptr);
-    int i=equalposcomp(*v[1]._VECTptr,v[0]);
+    int i=-1;
+    if (v[0].type==_STRNG && v[1].type==_STRNG){
+      string f=*v[0]._STRNGptr,s=*v[1]._STRNGptr;
+      int pos=s.find(f);
+      if (pos<0 || pos>=s.size())
+	i=0;
+      else
+	i=pos+1;
+    }
+    else {
+      if (v[1].type!=_VECT)
+	return gensizeerr(contextptr);
+      i=equalposcomp(*v[1]._VECTptr,v[0]);
+    }
     if (s==3){
       gen tmpsto;
       if (array_start(contextptr))
@@ -7927,6 +7938,8 @@ namespace giac {
   }
   gen _goto(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
+    if (args.type==_VECT && args.subtype==_SEQ__VECT && args._VECTptr->size()==2)
+      return _position(change_subtype(args,0),contextptr);
     return symbolic(at_goto,args);
   }
   static const char _goto_s []="goto";

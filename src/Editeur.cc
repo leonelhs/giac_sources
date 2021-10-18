@@ -221,10 +221,10 @@ namespace xcas {
       if (current == 'B' || current>='E') current = 'A';
       if (current == 'A') {
 	// Check for directives, comments, strings, and keywords...
-	if (col == 0 && *text == '#') {
+	if (col == 0 && *text == '#' && !python_color) {
 	  // Set style to directive
 	  current = 'E';
-	} else if (strncmp(text, "//", 2) == 0) {
+	} else if (strncmp(text, "//", 2) == 0 || (python_color &&strncmp(text,"#",1)==0)) {
 	  current = 'B';
 	  for (; length > 0 && *text != '\n'; length --, text ++) *style++ = 'B';
 	  
@@ -515,12 +515,14 @@ namespace xcas {
 	break;
       tmp += ch;
     }
-    if (mode<0 || mode==xcas_mode(contextptr)){
+    if (mode<0 || ((mode&0xff)==xcas_mode(contextptr) && (mode>=256)==python_compat(contextptr))){
       e->insert(tmp.c_str());
       return;
     }
     int save_maple_mode=xcas_mode(contextptr);
-    xcas_mode(contextptr)=mode;
+    int save_python=python_compat(contextptr);
+    xcas_mode(contextptr)=(mode&0xff);
+    python_compat((mode>=256?1:0),contextptr);
     gen g;
     try {
       g=gen(tmp,contextptr);
@@ -529,6 +531,7 @@ namespace xcas {
       cerr << err.what() << endl;
     }
     xcas_mode(contextptr)=save_maple_mode;
+    python_compat(save_python,contextptr);
     if (g.type==_VECT && g.subtype==_SEQ__VECT && xcas_mode(contextptr) !=3 ){
       const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
       for (;it!=itend;++it){
@@ -595,7 +598,9 @@ namespace xcas {
 	return;
     }
     int save_maple_mode=xcas_mode(contextptr);
-    xcas_mode(contextptr)=mode;
+    xcas_mode(contextptr)=(mode & 0xff);
+    int save_python=python_compat(contextptr);
+    python_compat((mode>=256?1:0),contextptr);
     ofstream of(newfile.c_str());
     if (g.type==_VECT && g.subtype==_SEQ__VECT && xcas_mode(contextptr) !=3 ){
       const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
@@ -606,6 +611,7 @@ namespace xcas {
     }
     else
       of << g.print_universal(contextptr) << ((xcas_mode(contextptr)==3)?"\n":";\n");
+    python_compat(save_python,contextptr);
     xcas_mode(contextptr)=save_maple_mode;
   }
 
@@ -625,6 +631,10 @@ namespace xcas {
 
   static void cb_Editeur_Insert_Xcas(Fl_Menu_* m , void*) {
     cb_editeur_insert(m,".cxx",0);
+  }
+
+  static void cb_Editeur_Insert_Python(Fl_Menu_* m , void*) {
+    cb_editeur_insert(m,".py",256);
   }
 
   static void cb_Editeur_Insert_Maple(Fl_Menu_* m , void*) {
@@ -652,6 +662,14 @@ namespace xcas {
     if (e){
       char * newfile = file_chooser("Export program", "*.cxx", "session.cxx");
       editeur_export(e,newfile,0);
+    }
+  }
+
+  static void cb_Editeur_Export_Python(Fl_Menu_* m , void*) {
+    Fl_Text_Editor * e = find_editor(m);
+    if (e){
+      char * newfile = file_chooser("Export program", "*.py", "session.py");
+      editeur_export(e,newfile,256);
     }
   }
 
@@ -1657,7 +1675,7 @@ namespace xcas {
 	s += python?"\nelse:\n":" sinon ";
 	s += elseclause->value();
       }
-      if (python) s+="\n\n"; else s += " fsi;\n";
+      if (python) s+="\n"; else s += " fsi;\n";
       ed->buffer()->insert(i,s.c_str());
       int delta=s.size();
       if (Xcas_Text_Editor * xed=dynamic_cast<Xcas_Text_Editor *>(ed)){
@@ -1666,8 +1684,8 @@ namespace xcas {
 	if (python){
 	  j=ed->buffer()->line_end(j)+1;
 	  delta += xed->indent(j)-j;
-	  j=ed->buffer()->line_end(j)+1;
-	  delta += xed->indent(j)-j;
+	  //j=ed->buffer()->line_end(j)+1;
+	  //delta += xed->indent(j)-j;
 	  if (!ifonly){
 	    j=ed->buffer()->line_end(j)+1;
 	    delta += xed->indent(j)-j;
@@ -1818,7 +1836,7 @@ namespace xcas {
 	  s += " de ";
 	  s += start->value();
 	  s += " jusque ";
-	  s += stop->value();
+	  s += stop->value()+(python?1:0);
 	}
 	gen g(step->value(),contextptr);
 	if (!is_undef(g)){
@@ -1837,7 +1855,7 @@ namespace xcas {
 	  s += " faire\n";
 	s += loop->value();
 	if (python)
-	  s += "\n\n";
+	  s += "\n";
 	else
 	  s += "\nfpour;\n";
       }
@@ -1848,8 +1866,10 @@ namespace xcas {
 	delta += xed->indent(j)-j;
 	j=ed->buffer()->line_end(j)+1;
 	delta += xed->indent(j)-j;
-	j=ed->buffer()->line_end(j)+1;
-	delta += xed->indent(j)-j;
+	if (!python){
+	  j=ed->buffer()->line_end(j)+1;
+	  delta += xed->indent(j)-j;
+	}
 	ed->insert_position(i+delta);
 	if (python){
 	  Fl_Text_Editor::kf_backspace(0,ed);
@@ -2414,6 +2434,7 @@ namespace xcas {
     {gettext("Insert"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("file"), 0,  (Fl_Callback*)cb_Editeur_Insert_File, 0, 0, 0, 0, 14, 56},
     {gettext("xcas text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Xcas, 0, 0, 0, 0, 14, 56},
+    {gettext("xcas python text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Python, 0, 0, 0, 0, 14, 56},
     {gettext("maple text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Maple, 0, 0, 0, 0, 14, 56},
     {gettext("mupad text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Mupad, 0, 0, 0, 0, 14, 56},
     {gettext("ti text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Ti, 0, 0, 0, 0, 14, 56},
@@ -2423,6 +2444,7 @@ namespace xcas {
     {gettext("File extension"), 0,  (Fl_Callback*)cb_Editeur_Extension, 0, 0, 0, 0, 14, 56},
     {gettext("Export"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("xcas text"), 0,  (Fl_Callback*)cb_Editeur_Export_Xcas, 0, 0, 0, 0, 14, 56},
+    {gettext("xcas-python text"), 0,  (Fl_Callback*)cb_Editeur_Export_Python, 0, 0, 0, 0, 14, 56},
     {gettext("maple text"), 0,  (Fl_Callback*)cb_Editeur_Export_Maple, 0, 0, 0, 0, 14, 56},
     {gettext("mupad text"), 0,  (Fl_Callback*)cb_Editeur_Export_Mupad, 0, 0, 0, 0, 14, 56},
     {gettext("ti text"), 0,  (Fl_Callback*)cb_Editeur_Export_Ti, 0, 0, 0, 0, 14, 56},
@@ -2520,6 +2542,7 @@ namespace xcas {
     if (parent()){
       labelsize(parent()->labelsize());
       logo=dynamic_cast<Logo *>(parent());
+      contextptr=get_context(parent());
     }
     Fl_Group::current(this);
     int L=(3*labelsize())/2;
@@ -2598,7 +2621,10 @@ namespace xcas {
     resizable(editor);
     switch (xcas_mode(contextptr)){
     case 0:
-      extension="cxx";
+      if (python_compat(contextptr))
+	extension="py";
+      else
+	extension="cxx";
       break;
     case 1:
       extension="map";
@@ -3109,6 +3135,16 @@ namespace xcas {
     int debut_ligne=buffer()->line_start(pos),i;
     char * ch=buffer()->line_text(debut_ligne);
     string s(ch); free(ch);
+    // skip spaces ahead
+    int lpos=pos-debut_ligne;
+    for (;lpos<s.size();++lpos){
+      if (s[lpos]!=' ')
+	break;
+    }
+    if (lpos<s.size()){
+      insert_position(lpos+debut_ligne);
+      pos=insert_position();
+    }
     int curind=pos-debut_ligne;
     for (i=0;i<curind;++i){
       if (s[i]!=' ')

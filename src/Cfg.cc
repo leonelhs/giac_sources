@@ -154,7 +154,7 @@ namespace xcas {
   }
 
   static void cb_Xcas_Set_Python(Fl_Menu_*, void*) {
-    do_maple_mode=256; Xcas_Style->value("Xcas (Python-ic)");
+    do_maple_mode=256; Xcas_Style->value("Xcas (Python)");
   }
 
   static void cb_Xcas_Set_Maple(Fl_Menu_*, void*) {
@@ -223,7 +223,7 @@ namespace xcas {
     giac::complex_mode(Xcas_Complex_mode->value(),contextptr);
     giac::complex_variables(Xcas_Complex_variables->value(),contextptr);
     giac::xcas_mode(contextptr)=do_maple_mode &0xff;
-    giac::python_compat(contextptr)=do_maple_mode>=256;
+    giac::python_compat(do_maple_mode>=256,contextptr);
     giac::increasing_power(Xcas_Increasing_power->value(),contextptr);
     giac::angle_radian(Xcas_Angle_radian->value(),contextptr);
     giac::approx_mode(Xcas_Approx_mode->value(),contextptr);

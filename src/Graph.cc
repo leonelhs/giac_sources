@@ -7300,12 +7300,28 @@ namespace xcas {
       text=localize("ecris ",l);
     if (b->label()==gettext("sg"))
       text=localize("signe ",l);
+    if (Fl_Text_Editor * ed=dynamic_cast<Fl_Text_Editor *>(Xcas_input_focus)){
+      int i=ed->insert_position();
+      ed->buffer()->insert(i,text.c_str());
+      ed->insert_position(i+text.size());
+      return;
+    }
     Fl::focus(Xcas_input_focus);
     if (!text.empty())
       help_output(text.substr(0,text.size()-1),language(get_context(Fl::focus())));
+#ifdef __APPLE__
+    const char * ch=text.c_str();
+    int ll=strlen(ch);
+    for (int i=0;i<ll;++ch,++i){
+      Fl::e_text= (char *) ch;
+      Fl::e_length=1;
+      fl_handle(Fl::focus());
+    }
+#else
     Fl::e_text= (char *) text.c_str();
     Fl::e_length=text.size();
     fl_handle(Fl::focus());
+#endif
   }
 
   Fl_Widget * Logo_eval(Fl_Widget * w) {

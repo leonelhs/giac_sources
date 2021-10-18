@@ -1359,18 +1359,7 @@ namespace xcas {
     return s;
   }
 
-  string replace(const string & s,char c1,char c2){
-    string res;
-    int l=s.size();
-    res.reserve(l);
-    const char * ch=s.c_str();
-    for (int i=0;i<l;++i,++ch){
-      res+= (*ch==c1? c2: *ch);
-    }
-    return res;
-  }
-
-  string replace(const string & s,char c1,const string & c2){
+  string replaces(const string & s,char c1,const string & c2){
     string res;
     int l=s.size();
     res.reserve(l);
@@ -1466,7 +1455,7 @@ namespace xcas {
     if (const Fl_Input_ * i=dynamic_cast<const Fl_Input_ *>(o)){
       string s=i->value();
       if (dynamic_cast<const Comment_Multiline_Input *>(i))
-	s = "// "+replace(s,'\n',"<br>");
+	s = "// "+replaces(s,'\n',"<br>");
       if ( dynamic_cast<const Multiline_Input_tab *>(i) )
 	s=unlocalize(s);
       if (s.empty())
@@ -3222,6 +3211,8 @@ namespace xcas {
 #else
 
   gen Xcas_fltk_inputform(const gen & args,const giac::context * contextptr){
+    if (args.type==_VECT && args._VECTptr->empty())
+      return Xcas_fltk_inputform(identificateur("tmp_input"),contextptr);
     vecteur v(inputform_pre_analysis(args,contextptr));
     Fl::lock();
     gen res=makeform(v,contextptr);

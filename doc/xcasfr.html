@@ -338,6 +338,8 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
   title="Cocher pour avoir commandes et reponses sur le meme niveau">,
       <input class="bouton" type="button" title="Coloration syntaxique si on edite un niveau existant" value="Coloration syntaxique" onclick="usecm.checked=!usecm.checked"> <input class="bouton" type="checkbox" name="usecm"
       title="Coloration syntaxique si on edite un niveau existant">
+      <input class="bouton" type="button" title="Les boutons de deplacement et del restent" value="Del fixe" onclick="fixeddel.checked=!fixeddel.checked"> <input class="bouton" type="checkbox" name="fixeddel"
+      title="Les boutons de deplacement et del restent">
       
     </td>
   </tr>
@@ -430,7 +432,17 @@ ci-dessous, ou consultez le
 <a
 href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/cascmd_fr">guide de Xcas</a>
 Pour obtenir de l'aide sur une commande, tapez la commande puis le
-bouton <tt>?</tt>.
+    bouton <tt>?</tt>.
+    <br>
+Vous pouvez optionnellement
+    <strong>installer</strong> Xcas sur votre appareil pour l'utiliser
+    en mode avion,
+  d&eacute;zippez
+  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
+  xcashtml.zip</a> et
+  cherchez <tt>xcasfr.html</tt>, depuis <a
+  href="file:///sdcard/">ici</a> (Android).
+
   </div>
   </li>
   <li style="display:inline">
@@ -576,18 +588,6 @@ un acc&egrave;s r&eacute;seau.
 <br>
 <strong>Il est donc recommend&eacute; de t&eacute;l&eacute;charger
 Firefox et d'ex&eacute;cuter Xcas depuis Firefox</strong>
-<br>
-<strong>Remarque</strong> :
-  Vous pouvez revenir travailler sur cette page meme si vous n'avez pas de
-r&eacute;seau disponible, car les ressources n&eacute;cessaires sont
-automatiquement plac&eacute;ees dans le cache de votre navigateur.
-Vous pouvez optionnellement
-  <strong>installer</strong> Xcas sur votre appareil,
-  d&eacute;zippez
-  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
-  xcashtml.zip</a> et
-  cherchez <tt>xcasfr.html</tt>, depuis <a
-  href="file:///sdcard/">ici</a> (Android).
 <br>
 <button class="bouton"
 onclick="document.getElementById('tutointerface').style.display='none';">Masquer
@@ -985,7 +985,7 @@ onclick="var tmp=document.getElementById('tutograph'); if (tmp.style.display=='n
   <strong>Graphes </strong>
   </button>
   <span id="tutograph" style="display:none">
-  Utiliser les assistants du <tt>math</tt> pour
+  Utiliser les assistants du bouton <tt>math</tt> pour
   cr&eacute;er un graphe d'une fonction d'une ou deux variables
   (<tt>plot</tt>, voir aussi <tt>f(x)</tt> pour avoir un tableau
   de variations),
@@ -1042,15 +1042,23 @@ onclick="var tmp=document.getElementById('tutoprog'); if (tmp.style.display=='no
    pour cr&eacute;er les structures de programmation
   (test, boucle, fonction). Pour passer &agrave; la ligne,
   tapez simultan&eacute;ment sur Shift-Entree ou utilisez le
-  bouton <tt>\n</tt> du clavier scientifique <tt>123</tt> ou du
-  <tt>prg</tt>.
+  bouton <tt>\n</tt>. Pour indenter, utilisez le bouton <tt>/-></tt>.
+  Le bouton <tt>debug</tt>
+  permet d'ex&eacute;cuter une fonction en mode pas &agrave; pas
+  pour la mettre au point.
   <br>
   Plusieurs syntaxes sont accept&eacute;es,
   dont une syntaxe en francais tr&egrave;s proche du langage
   algorithmique et une syntaxe compatible avec Python, on renvoie vers ce
-  <a href="algolycee.html"target="_blank">manuel de programmation</a> pour un
-  tutoriel d'apprentissage du langage.
-  <br>
+  <a href="irem/algolycee.html"target="_blank">manuel de programmation</a> pour un
+  tutoriel d'apprentissage du langage ou aux exemples &agrave;
+  afficher en cliquant sur
+  <button class="bouton"
+onclick="var tmp=document.getElementById('progex'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
+  <strong>Exemples</strong>
+  </button>
+
+  <div id="progex" style="display:none">
   Par exemple voici un programme calculant
   la somme des carr&eacute;s de 1 &agrave; x &eacute;crit en syntaxe Xcas
   <br>
@@ -1084,12 +1092,108 @@ onclick="var tmp=document.getElementById('tutoprog'); if (tmp.style.display=='no
   </tt>
   <button class="bouton" onclick="UI.insert(UI.focused,'fonction f(x)\n  local y,s;\n  si x &gt; 100 alors retourne &quot;Nombre trop grand&quot; fsi;\n  s:=0;\n  pour y de 1 jusque x faire\n    s:=s+y^2;\n  fpour\n  retourne s;\nffonction:; ')">Tester (Xcas)</button>
   <button class="bouton" onclick="UI.insert(UI.focused,'def f(x):\n  # local y,s\n  if x > 100000:\n    return &quot;Nombre trop grand&quot;\n  s=0\n  for y in range(1,x):\n    s=s+y^2\n  return s\n')">Tester (Python)</button>
+<br>
+    Voici quelques exemples de sessions contenant des programmes
+<ul>
+  <li>Variables,
+  types, affectation, test, boucle, fonction, syntaxe
+  <a
+  href="xcasfr.html#+//Pour%20ex%C3%A9cuter%20les%20commandes,%20cliquez%20sur%20le%20bouton%20Exec%20a%20droite%20de%20Historique&+//%20Ligne%20de%20commande,%20utiliser%20des%20.%20pour%20s%C3%A9parer%20partie%20enti%C3%A8re%20et%20d%C3%A9cimale,%20expliciter%20les%20multiplications,%20attention%20aux%20parenth%C3%A8ses&+1.2%3B%202*3%2B4%3B%202*(3%2B4)&+expand((x%2B1)%5E2)%3B%0Afactor(x%5E2%2B4x%2B4)%3B%0Asin(pi/3)&+//%20Variables,%20l'affectation%20se%20fait%20avec%20:=&+a%3A%3D2&+2*a%2B5&+a%3A%3D2%3B%20type(a)&+a%3A%3D2.3%3B%20type(a)&+a%3A%3D%22bonjour%22%3B%20type(a)&+//%20Un%20test&+a%3A%3D1%3B%20%0Asi%20a%3E0%20alors%20%22positif%22%3B%20%0Asinon%20%22negatif%22%3B%20fsi%3B&+//%20Une%20boucle%20d%C3%A9finie%20(affichage%20dans%20la%20console%20tout%20en%20bas)&+pour%20j%20de%201%20jusque%2010%20faire%0A%20%20print(j%2B%22%20au%20carre%20vaut%20%22%2Bj%5E2)%3B%20%0Afpour%3B&+//%20Une%20boucle%20tantque,%20illustrant%20la%20pr%C3%A9cision%20des%20tests%20avec%20des%20nombres%20approch%C3%A9s.&+j%3A%3D1.0%3B%20%0Atantque%20j-1!%3Dj%20faire%20%0A%20%20j%3D2*j%3B%20%0Aftantque%3B&+//%20Cr%C3%A9ation%20d'une%20fonction%20simple,%20par%20exemple%20le%20milieu%20de%202%20points.%20On%20construit%20d'abord%20le%20milieu%20de%20mani%C3%A8re%20interactive&+A%3A%3Dpoint(1%2C2)%3B%20B%3A%3Dpoint(-2%2C-2)&+Ax%3A%3Dabscisse(A)%3B%20Ay%3A%3Dordonnee(A)%3B%0ABx%3A%3Dabscisse(B)%3B%20By%3A%3Dordonnee(B)&+//%20On%20calcule%20M%20et%20on%20fait%20la%20repr%C3%A9sentation%20graphique&+M%3A%3Dpoint((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)%3B%0AA%3B%0AB%3B%0A&+//%20On%20regroupe%20ces%20instructions%20dans%20une%20fonction&+fonction%20Milieu(A%2CB)%0A%20%20var%20Ax%2CAy%2CBx%2CBy%3B%0A%20%20Ax%3A%3Dabscisse(A)%3B%20%0A%20%20Ay%3A%3Dordonnee(A)%3B%0A%20%20Bx%3A%3Dabscisse(B)%3B%20%0A%20%20By%3A%3Dordonnee(B)%3B%20%0A%20%20retourne%20point((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)%3B%0Affonction%3A%3B&+A%3BB%3BM%3A%3DMilieu(A%2CB)&"
+  target="_blank">
+  Xcas</a> ou
+  <a
+  href="xcasfr.html#+//Pour%20ex%C3%A9cuter%20les%20commandes,%20cliquez%20sur%20le%20bouton%20Exec%20a%20droite%20de%20Historique&+//%20Ligne%20de%20commande,%20utiliser%20des%20.%20pour%20s%C3%A9parer%20partie%20enti%C3%A8re%20et%20d%C3%A9cimale,%20expliciter%20les%20multiplications,%20attention%20aux%20parenth%C3%A8ses&+%23%20calcul%20avec%20des%20nombres%0A1.2%0A2*3%2B4%0A2*(3%2B4)&+%23%20calculs%20litteraux%0Adevelopper((x%2B1)%5E2)%0Afactoriser(x%5E2%2B4x%2B4)%0Asin(pi/3)&+//Variables,%20l'affectation%20se%20fait%20avec%20:=,%20ou%20=&+a%3D2&+2*a%2B5&+type(a)&+a%3D2.3&+type(a)&+%23%0Aa%3D%22bonjour%22%0Atype(a)&+//%20Un%20test&+a%3D1%0Aif%20a%3E0%3A%20%0A%20%20%20%20%22positif%22%0A%20%20%20%20else%3A%0A%20%20%20%20%22negatif%22&+//%20Une%20boucle%20d%C3%A9finie%20(affichage%20dans%20la%20console%20tout%20en%20bas)&+for%20j%20in%20range(10)%3A%0A%20%20%20%20print(j%2B%22%20au%20carre%20vaut%20%22%2Bj%5E2)&+//%20Une%20boucle%20tantque,%20qui%20s'arrete%20lorsque%20la%20valeur%20approch%C3%A9e%20de%20j%20est%20consider%C3%A9e%20comme%20%C3%A9gale%20a%20j+1&+j%3D1.0%0Awhile%20j-1!%3Dj%3A%0A%20%20%20%20j%3D2*j&+//%20Cr%C3%A9ation%20d'une%20fonction%20simple,%20par%20exemple%20le%20milieu%20de%202%20points.%20On%20construit%20d'abord%20le%20milieu%20de%20mani%C3%A8re%20interactive&+%23%20creation%20de%202%20points%0AA%3Dpoint(1%2C2)%20%0AB%3Dpoint(-2%2C-2)&+%23%20calcul%20des%20coordonnees%0AAx%3Dabscisse(A)%20%0AAy%3Dordonnee(A)%0ABx%3Dabscisse(B)%0ABy%3Dordonnee(B)&+%23%20calcul%20de%20M%20et%20representation%20graphique%0AM%3Dpoint((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)%0AA%0AB&+//%20On%20regroupe%20ces%20instructions%20dans%20une%20fonction&+def%20Milieu(A%2CB)%3A%0A%20%20%20%20%23%20local%20Ax%2CAy%2CBx%2CBy%3B%0A%20%20%20%20Ax%3Dabscisse(A)%0A%20%20%20%20Ay%3Dordonnee(A)%0A%20%20%20%20Bx%3Dabscisse(B)%0A%20%20%20%20By%3Dordonnee(B)%0A%20%20%20%20return%20point((Ax%2BBx)%2F2%2C(Ay%2BBy)%2F2)&+%23%0AA%0AB%0AM%3DMilieu(A%2CB)&"
+  target="_blank">Python</a>
+  </li>
+  <li> Seconde: trac&eacute; de courbe, syntaxe
+  <a
+  href="xcasfr.html#+f(x)%3A%3Dsi%20x%3C0%20alors%20-x%5E2-3%20%0A%20%20sinon%20x%5E2%2B1%20fsi%3B&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+L%3A%3DNULL%3B%20%0Apour%20x%20de%20-3%20jusque%203%20pas%200.5%20faire%0A%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0Afpour%3B&+polygone_ouvert(L)&+//Observer%20le%20saut%20a%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20interet%20a%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+fonction%20tabval(f%2Cxmin%2Cxmax%2Cdx)%0A%20%20var%20x%2CL%3B%0A%20%20L%3A%3DNULL%3B%0A%20%20pour%20x%20de%20xmin%20jusque%20xmax%20pas%20dx%20faire%0A%20%20%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0A%20%20fpour%3B%0A%20%20retourne%20L%3B%0Affonction%3A%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
+  target="_blank">
+  Xcas</a> ou
+  <a
+  href="xcasfr.html#+def%20f(x)%3A%0A%20%20%20%20if%20x%3C0%3A%0A%20%20%20%20%20%20%20%20return%20-x%5E2-3%20%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20return%20x%5E2%2B1&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+L%3D%5B%5D%0Afor%20j%20in%20range(7)%3A%0A%20%20%20%20x%3D-3%2B0.5*j%0A%20%20%20%20L.append(%5Bx%2Cf(x)%5D)&+polygone_ouvert(L)&+//Observer%20le%20saut%20a%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20interet%20a%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+def%20tabval(f%2Ca%2Cb%2Cdx)%3A%0A%20%20%20%20%23%20local%20x%2Cj%2CL%3B%0A%20%20%20%20L%3D%5B%5D%3B%0A%20%20%20%20for%20j%20in%20range((b-a)%2Fdx%2B1)%3A%0A%20%20%20%20%20%20%20%20x%3Da%2Bj*dx%0A%20%20%20%20%20%20%20%20L.append(%5Bx%2Cf(x)%5D)%0A%20%20%20%20return%20L%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
+  target="_blank">Python</a>
+  </li>
+  <li> Seconde: &Eacute;quation  d'une droite
+  <a
+  href="xcasfr.html#+A%3A%3Dpoint(-2%2C3)%3B%20%0AB%3A%3Dpoint(1%2C-1)%3B%20%0AD%3A%3Ddroite(A%2CB)&+fonction%20eqdroite(A%2CB)%0A%20%20var%20Ax%2CAy%2CBx%2CBy%2Cm%3B%0A%20%20Ax%2CAy%3A%3Dcoordonnees(A)%3B%0A%20%20Bx%2CBy%3A%3Dcoordonnees(B)%3B%0A%20%20si%20Ax%3DBx%20alors%20return%20%22x%3D%22%2BAx%3B%20fsi%3B%0A%20%20m%3A%3D(By-Ay)%2F(Bx-Ax)%3B%0A%20%20%2F%2F%20m*Ax%2Bp%3DAy%0A%20%20retourne%20%22y%3D%22%2Bm%2B%22*x%2B%22%2B(Ay-m*Ax)%3B%0Affonction%3A%3B&+eqdroite(A%2CB)%3B%20equation(D)&"
+  target="_blank">Xcas</a>
+  ou
+  <a
+  href="xcasfr.html#+%23%20%0AA%3Dpoint(-2%2C3)%0AB%3A%3Dpoint(1%2C-1)%3B%20%0AD%3A%3Ddroite(A%2CB)&+def%20eqdroite(A%2CB)%3A%0A%20%20%20%20%23%20local%20Ax%2CAy%2CBx%2CBy%2Cm%3B%0A%20%20%20%20Ax%2CAy%3Dcoordonnees(A)%0A%20%20%20%20Bx%2CBy%3Dcoordonnees(B)%0A%20%20%20%20if%20Ax%3D%3DBx%3A%0A%20%20%20%20%20%20%20%20return%20%22x%3D%22%2BAx%0A%20%20%20%20m%3D(By-Ay)%2F(Bx-Ax)%0A%20%20%20%20%23%20m*Ax%2Bp%3DAy%0A%20%20%20%20return%20%22y%3D%22%2Bm%2B%22*x%2B%22%2B(Ay-m*Ax)&+eqdroite(A%2CB)%3B%20equation(D)&"
+  target="_blank">
+  Python</a>
+  </li>
+  <li> Seconde, fr&eacute;quence dans un &eacute;chantillon, syntaxe
+  <a
+  href="xcasfr.html#+//%20Algorithme%20de%20calcul%20de%20la%20fr%C3%A9quence%20de%20valeur%20dans%20echantillon&+fonction%20freq(echantillon%2Cvaleur)%0A%20%20var%20j%2Ctotal%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20dim(echantillon)%20faire%0A%20%20%20%20si%20echantillon(j)%3Dvaleur%20alors%20%0A%20%20%20%20%20%20total%3A%3Dtotal%2B1%3B%20%0A%20%20%20%20fsi%3B%0A%20%20fpour%3B%0A%20%20retourne%20total%2Fdim(echantillon)%3B%0Affonction%3A%3B&+echantillon%3A%3Dranv(100%2C2)&+freq(echantillon%2C1)%3B%20%0Afreq(echantillon%2C0)&+//%20Intervalle%20de%20fluctuation%20d%20une%20fr%C3%A9quence,%20ici%200.4.%20On%20tire%20100%20%C3%A9chantillons%20de%20N=200%20valeurs%20selon%20la%20loi%20binomiale%20et%20on%20renvoie%20la%20fr%C3%A9quence%20de%201.&+f%3A%3D0.4%3B%20N%3A%3D200&+echantillon%3A%3D%0Aranv(100%2Cbinomial%2CN%2Cf)%2FN&+count(x-%3E%0A%20%20abs(x-f)%3C1%2Fsqrt(N)%2Cechantillon)&+//%20Sans%20utiliser%20ranv,%20on%20peut%20simuler%20une%20frequence%20f%20avec%20rand()%20en%20comparant%20avec%20f&+rand()&+tirage(f)%3A%3Drand()%3Cf&+tirage(f)%3Btirage(f)%3Btirage(f)&+fonction%20simu(N%2Cf)%0A%20%20var%20j%2Cres%3B%0A%20%20res%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20si%20tirage(f)%20alors%20res%3A%3Dres%2B1%3B%20fsi%3B%0A%20%20fpour%3B%0A%20%20return%20res%2FN%3B%0Affonction%3A%3B&+simu(200%2C.4)&+l%3A%3Dseq(simu(200%2C.4)%2C100)&+count(x-%3Eabs(x-f)%3C1%2Fsqrt(N)%2Cl)&"
+  target="_blank">
+  Xcas</a> ou
+  <a
+  href="xcasfr.html#+//%20Algorithme%20de%20calcul%20de%20la%20fr%C3%A9quence%20de%20valeur%20dans%20echantillon&+def%20Freq(echantillon%2Cvaleur)%3A%0A%20%20%20%20%23%20local%20j%2Ctotal%3B%0A%20%20%20%20total%3D0%3B%0A%20%20%20%20for%20j%20in%20range(dim(echantillon))%3A%0A%20%20%20%20%20%20%20%20if%20echantillon%5Bj%5D%3D%3Dvaleur%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20total%3Dtotal%2B1%0A%20%20%20%20return%20total%2Fdim(echantillon)&+echantillon%3Dranv(100%2C2)&+%23%0AFreq(echantillon%2C1)%0AFreq(echantillon%2C0)&+//%20Intervalle%20de%20fluctuation%20d%20une%20fr%C3%A9quence,%20ici%200.4.%20On%20tire%20100%20%C3%A9chantillons%20de%20N=200%20valeurs%20selon%20la%20loi%20binomiale%20et%20on%20renvoie%20la%20fr%C3%A9quence%20de%201.&+%23%0Af%3D0.4%0AN%3D200&+echantillon%3D%0Aranv(100%2Cbinomial%2CN%2Cf)%2FN&+def%20Ok(echantillon%2Cf%2CN)%3A%0A%20%20%20%20%23%20local%20c%2Cx%0A%20%20%20%20c%3D0%0A%20%20%20%20for%20x%20in%20echantillon%3A%0A%20%20%20%20%20%20%20%20if%20abs(x-f)%3C1%2Fsqrt(N)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20c%3Dc%2B1%0A%20%20%20%20return%20c&+Ok(echantillon%2Cf%2CN)&+//%20Sans%20utiliser%20ranv,%20on%20peut%20simuler%20une%20frequence%20f%20avec%20random()%20en%20comparant%20avec%20f&+random()&+def%20Tirage(f)%3A%0A%20%20%20%20return%20random()%3Cf&+Tirage(f)%3BTirage(f)%3BTirage(f)&+def%20Simu(N%2Cf)%3A%0A%20%20%20%20%23%20local%20j%2Cres%0A%20%20%20%20res%3D0%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20if%20Tirage(f)%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20res%3Dres%2B1%0A%20%20%20%20return%20res%2FN&+Simu(200%2C.4)&+l%3Dseq(Simu(200%2C.4)%2C100)&+Ok(l%2Cf%2CN)&"
+  target="_blank">Python</a>
+  </li>
+  <li> Premi&egrave;re, &eacute;quation du second degr&eacute;
+  <a
+  href="xcasfr.html#+fonction%20resolution2(a%2Cb%2Cc)%0A%20%20var%20delta%3B%0A%20%20delta%3A%3Db%5E2-4*a*c%3B%0A%20%20si%20delta%3C0%20alors%20retourne%20%22pas%20de%20racines%22%3B%20fsi%3B%0A%20%20si%20delta%3D0%20alors%20retourne%20-b%2F(2*a)%3B%20fsi%3B%0A%20%20delta%3A%3Dsqrt(delta)%3B%0A%20%20retourne%20(-b-delta)%2F(2*a)%2C(-b%2Bdelta)%2F(2*a)%3B%0Affonction%3A%3B&+resolution2(1%2C2%2C3)&+resolution2(1%2C2%2C1)&+resolution2(1%2C1%2C-1)&"
+  target="_blank">
+  Xcas</a>,
+  <a
+  href="xcasfr.html#+def%20resolution2(a%2Cb%2Cc)%3A%0A%20%20%20%20%23%20local%20delta%2Cs%0A%20%20%20%20delta%3Db%5E2-4*a*c%0A%20%20%20%20if%20delta%3C0%3A%0A%20%20%20%20%20%20%20%20return%20%22pas%20de%20racines%22%0A%20%20%20%20if%20delta%3D%3D0%3A%0A%20%20%20%20%20%20%20%20return%20-b%2F(2*a)%0A%20%20%20%20s%3Dsqrt(delta)%0A%20%20%20%20return%20%5B(-b-s)%2F(2*a)%2C(-b%2Bs)%2F(2*a)%5D&+resolution2(1%2C2%2C3)&+resolution2(1%2C2%2C1)&+resolution2(1%2C1%2C-1)&"
+  target="_blank">Python</a>
+  </li>
+  <li> Premi&egrave;re, suites
+  <a
+  href="xcasfr.html#+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20donn%C3%A9e%20par%20une%20expression&+u(n)%3A%3D1%2Fn&+s%3A%3Dseq(u(n)%2Cn%2C1%2C10)&+seq(point(n%2Cu(n))%2Cn%2C1%2C10)&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20recurrente%20u_{n+1}=f(u_n)&+fonction%20ntermes(f%2Cu0%2CN)%20%0A%20%20var%20n%2Cu%3B%0A%20%20u%3A%3D%5Bu0%5D%3B%0A%20%20pour%20n%20de%201%20jusque%20N%20faire%0A%20%20%20%20u%5Bn%5D%3A%3Df(u%5Bn-1%5D)%3B%0A%20%20fpour%3B%0A%20%20retourne%20u%3B%20%0A%20%20%2F%2F%20ou%20retourne%20u%5BN%5D%20pour%20le%20dernier%20terme%0Affonction%3A%3B&+f(x)%3A%3D1%2F2*(x%2B2%2Fx)&+ntermes(f%2C1.0%2C1)&+U%3A%3Dntermes(f%2C1.0%2C5)&+ntermes(f%2C1%2C5)&+seq(point(n%2CU%5Bn%5D)%2Cn%2C0%2Csize(U)-1)&
+  target="_blank"">Xcas
+  </a>,
+  <a
+  href="xcasfr.html#+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20donn%C3%A9e%20par%20une%20expression&+def%20u(n)%3A%0A%20%20%20%20return%201.0%2Fn%0A&+s%3D%5Bu(n)%20for%20n%20in%20range(1%2C11)%5D&+%5Bpoint(n%2Cu(n))%20for%20n%20in%20range(1%2C11)%5D&+//%20calcul%20des%20premiers%20termes%20d'une%20suite%20r%C3%A9currente%20u_{n+1}=f(u_n)&+def%20ntermes(f%2Cu0%2CN)%3A%0A%20%20%20%20%23%20local%20n%2Cu%0A%20%20%20%20u%3D%5Bu0%5D%3B%0A%20%20%20%20for%20n%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20u.append(f(u%5Bn%5D))%0A%20%20%20%20return%20u%20%0A%20%20%20%20%23%20ou%20retourne%20u%5BN%5D%20pour%20le%20dernier%20terme%0A%20%20%20%20&+def%20f(x)%3A%0A%20%20%20%20return%201%2F2*(x%2B2%2Fx)&+ntermes(f%2C1.0%2C1)&+U%3Dntermes(f%2C1.0%2C5)&+ntermes(f%2C1%2C5)&+%5Bpoint(n%2CU%5Bn%5D)%20for%20n%20in%20range(size(U))%5D%0A&
+  target="_blank"">Python</a>
+  </li>
+  <li> Premi&egrave;re, Loi binomiale et loi g&eacute;om&eacute;trique tronqu&eacute;e
+  <a
+  href="xcasfr.html#+python_compat(0)&+//%20simulation%20de%20n%20tirages%20au%20hasard%20avec%20probabilit%C3%A9%20p%20de%20succes&+fonction%20Tirages(n%2Cp)%0A%20%20var%20total%2Cj%2Ch%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20j%20de%201%20jusque%20n%20faire%0A%20%20%20%20h%3A%3Drand(0%2C1)%3B%0A%20%20%20%20si%20h%3C%3Dp%20alors%20total%3A%3Dtotal%2B1%3B%20fsi%3B%0A%20%20%20fpour%3B%0A%20%20retourne%20total%3B%0Affonction%3A%3B&+Tirages(10%2C0.4)&+//%20histogramme%20de%201000%20tirages%20et%20comparaison%20avec%20l'histogramme%20de%20la%20loi%20binomiale&+s%3A%3Dseq(Tirages(10%2C0.4)%2C1000)&+histogramme(s%2C-0.5%2C1%2Ccouleur%3Dred)%3B%20%0Ahistogramme(binomial%2C10%2C0.4)&+//%20calcul%20de%20l'intervalle%20de%20confiance%20centr%C3%A9%20pour%20la%20loi%20binomiale&+n%3A%3D100%3B%20p%3A%3D0.16%3B%20%0Axmin%3A%3Dbinomial_icdf(n%2Cp%2C0.025)%3B%0Axmax%3A%3Dbinomial_icdf(n%2Cp%2C0.975)&+gl_x%3D0..40%3B%20gl_y%3D0..0.15%3B%0Ahistogram(binomial%2Cn%2Cp)%3B%0Adroite(x%3Dxmin%2Ccolor%3Dred)%3B%0Adroite(x%3Dxmax%2Ccolor%3Dred)%3B&+//%20programme%20de%20calcul%20de%20l'intervalle%20de%20confiance%20%C3%A0%20partir%20de%20la%20loi%20binomiale&+fonction%20confiance(n%2Cp%2Cseuil)%0A%20%20var%20k%2Ctotal%3B%0A%20%20total%3A%3D0%3B%0A%20%20pour%20k%20de%200%20jusque%20n%20faire%0A%20%20%20%20total%3A%3Dtotal%2Bbinomial(n%2Cp%2Ck)%3B%0A%20%20%20%20si%20total%3E%3Dseuil%20alors%20retourne%20k%3B%20fsi%3B%0A%20%20fpour%3B%0Affonction%3A%3B&+confiance(100%2C.16%2C0.025)&+confiance(100%2C.16%2C0.975)&+//%20comparaison%20avec%20[p-1/sqrt(n),p+1/sqrt(n)]&+n%3A%3D30%3Bplotfunc(%0A%5Bbinomial_icdf(30%2Cp%2C0.025)%2Fn%2C%0Abinomial_icdf(30%2Cp%2C0.975)%2Fn%2C%0Ap-sqrt(1%2Fn)%2Cp%2Bsqrt(1%2Fn)%5D%2C%0Ap%3D0..1%2Ccolor%3D%5Bred%2Cred%2Cblack%2Cblack%5D)%3B&+//%20loi%20g%C3%A9om%C3%A9trique%20tronqu%C3%A9e%20(renvoie%20le%201er%20succ%C3%A8s%20ou%200)&+fonction%20geo(n%2Cp)%0A%20%20var%20k%2Ct%3B%0A%20%20pour%20k%20de%201%20jusque%20n%20faire%0A%20%20%20%20t%3A%3Dalea(0%2C1)%3B%0A%20%20%20%20si%20t%3C%3Dp%20alors%20retourne%20k%3B%20fsi%3B%0A%20%20fpour%3B%0A%20%20retourne%200%3B%0Affonction%3A%3B&+geo(10%2C.4)&+s%3A%3Dseq(geo(10%2C.4)%2C1000)&+histogramme(s%2C-0.5%2C1%2Ccouleur%3Dred)%3B%20%0Ahistogramme(geometric%2C0.4)&"
+  target="_blank">Xcas
+</a>,
+<a
+  href="xcasfr.html#+//%20simulation%20de%20n%20tirages%20au%20hasard%20avec%20probabilit%C3%A9%20p%20de%20succes&+def%20Tirages(n%2Cp)%3A%0A%20%20%20%20%23%20local%20total%2Cj%2Ch%0A%20%20%20%20total%3D0%0A%20%20%20%20for%20j%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20h%3Drandom()%0A%20%20%20%20%20%20%20%20if%20h%3C%3Dp%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20total%3Dtotal%2B1%0A%20%20%20%20return%20total%0A&+Tirages(10%2C0.4)&+//%20histogramme%20de%201000%20tirages%20et%20comparaison%20avec%20l'histogramme%20de%20la%20loi%20binomiale&+s%3Dseq(Tirages(10%2C0.4)%2C1000)&+histogramme(s%2C-0.5%2C1%2Ccouleur%3Dred)%3B%0Ahistogramme(binomial%2C10%2C0.4)&+//%20calcul%20de%20l'intervalle%20de%20confiance%20centr%C3%A9%20pour%20la%20loi%20binomiale&+%23%0An%3D100%0Ap%3D0.16%0Axmin%3Dbinomial_icdf(n%2Cp%2C0.025)%0Axmax%3Dbinomial_icdf(n%2Cp%2C0.975)&+%23%0Agl_x%3D0..40%0Agl_y%3D0..0.15%0Ahistogram(binomial%2Cn%2Cp)%0Acolor(droite(equal(x%2Cxmin))%2Cred)%0Acolor(droite(equal(x%2Cxmax))%2Cred)&+//%20programme%20de%20calcul%20de%20l'intervalle%20de%20confiance%20%C3%A0%20partir%20de%20la%20loi%20binomiale&+def%20confiance(n%2Cp%2Cseuil)%3A%0A%20%20%20%20%23%20local%20k%2Ctotal%0A%20%20%20%20total%3D0%0A%20%20%20%20for%20k%20in%20range(n%2B1)%3A%0A%20%20%20%20%20%20%20%20total%3Dtotal%2Bbinomial(n%2Cp%2Ck)%0A%20%20%20%20%20%20%20%20if%20total%3E%3Dseuil%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20k%0A&+confiance(100%2C.16%2C0.025)&+confiance(100%2C.16%2C0.975)&+//%20comparaison%20avec%20[p-1/sqrt(n),p+1/sqrt(n)]&+%23%0An%3D30%0Aplotfunc(%5Bbinomial_icdf(30%2Cp%2C0.025)%2Fn%2Cbinomial_icdf(30%2Cp%2C0.975)%2Fn%2Cp-sqrt(1%2Fn)%2Cp%2Bsqrt(1%2Fn)%5D%2Cp%2C0%2C1)&+//%20loi%20g%C3%A9om%C3%A9trique%20tronqu%C3%A9e%20(renvoie%20le%201er%20succ%C3%A8s%20ou%200)&+def%20geo(n%2Cp)%3A%0A%20%20%20%20%23%20local%20k%2Ct%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20t%3Drandom()%0A%20%20%20%20%20%20%20%20if%20t%3C%3Dp%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20return%20k%2B1%0A%20%20%20%20return%200%0A&+geo(10%2C.4)&+s%3Dseq(geo(10%2C.4)%2C1000)&+%23%0Acolor(histogramme(s%2C-0.5%2C1)%2Cred)%20%0Ahistogramme(geometric%2C0.4)&"
+  target="_blank">Python</a>
+</li>
+<li> Premi&egrave;re Triangle de Pascal
+<a
+href="xcasfr.html#+//%20Triangle%20de%20Pascal%20pour%20trouver%20les%20coefficients%20binomiaux&+fonction%20Pascal(n)%0A%20%20var%20tableau%2Cj%2Ck%3B%0A%20%20tableau%3A%3Dmatrix(n%2Cn)%3B%0A%20%20pour%20j%20de%200%20jusque%20n-1%20faire%0A%20%20%20%20tableau%5Bj%2C0%5D%3A%3D1%3B%0A%20%20%20%20pour%20k%20de%201%20jusque%20j%20faire%0A%20%20%20%20%20%20tableau%5Bj%2Ck%5D%3A%3Dtableau%5Bj-1%2Ck-1%5D%2Btableau%5Bj-1%2Ck%5D%3B%0A%20%20%20%20fpour%3B%0A%20%20fpour%3B%0A%20%20retourne%20tableau%3B%0Affonction%3A%3B&+Pascal(6)&"
+  target="_blank">
+Xcas</a>
+<a
+  href="xcasfr.html#+//%20Triangle%20de%20Pascal%20pour%20trouver%20les%20coefficients%20binomiaux&+def%20Pascal(n)%3A%0A%20%20%20%20%23%20local%20tableau%2Cj%2Ck%3B%0A%20%20%20%20tableau%3Dmatrix(n%2Cn)%0A%20%20%20%20for%20j%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20tableau%5Bj%2C0%5D%3D1%0A%20%20%20%20%20%20%20%20for%20k%20in%20range(1%2Cj%2B1)%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20tableau%5Bj%2Ck%5D%3Dtableau%5Bj-1%2Ck-1%5D%2Btableau%5Bj-1%2Ck%5D%0A%20%20%20%20return%20tableau%0A&+Pascal(6)&"
+  target="_blank">Python</a>
+</li>
+<li>
+Terminale: Dichotomie
+<a
+href="xcasfr.html#+//%20recherche%20d'une%20racine%20de%20f%20entre%20a%20et%20b%20par%20dichotomie,%20avec%20pr%C3%A9cision%20eps&+fonction%20dicho(f%2Ca%2Cb%2Ceps)%0A%20%20var%20c%2Cniter%3B%0A%20%20si%20f(a)*f(b)%3E%3D0%20alors%20retourne%20%22erreur%3A%20pas%20de%20changement%20de%20signe%22%3B%20fsi%3B%0A%20%20tantque%20abs(b-a)%3Eeps%20faire%0A%20%20%20%20c%3D(a%2Bb)%2F2%3B%0A%20%20%20%20si%20f(a)*f(c)%3E0%20alors%20a%3Dc%3B%20sinon%20b%3Dc%3B%20fsi%3B%0A%20%20ftantque%0A%20%20retourne%20c%3B%0Affonction%3A%3B&+f(x)%3A%3Dcos(x)-x%3B&+plot(f(x)%2Cx%2C0%2C2)&+dicho(f%2C0.0%2C1.0%2C1e-8)&"
+  target="_blank">
+Xcas
+</a>,
+<a
+  href="xcasfr.html#+//%20recherche%20d'une%20racine%20de%20f%20entre%20a%20et%20b%20par%20dichotomie,%20avec%20pr%C3%A9cision%20eps&+def%20dicho(f%2Ca%2Cb%2Ceps)%3A%0A%20%20%20%20%23%20local%20var%20c%2Cniter%3B%0A%20%20%20%20if%20f(a)*f(b)%3E%3D0%3A%20%0A%20%20%20%20%20%20%20%20return%20%22erreur%3A%20f(a)*f(b)%3E%3D0%22%0A%20%20%20%20while%20abs(b-a)%3Eeps%3A%0A%20%20%20%20%20%20%20%20c%3D(a%2Bb)%2F2%0A%20%20%20%20%20%20%20%20if%20f(a)*f(c)%3E0%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20a%3Dc%0A%20%20%20%20%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20b%3Dc%0A%20%20%20%20return%20c%0A&+def%20f(x)%3A%0A%20%20%20%20return%20cos(x)-x&+plot(f(x)%2Cx%2C0%2C2)&+dicho(f%2C0.0%2C1.0%2C1e-8)&"
+  target="_blank">Python</a>
+</li>
+<li>
+Terminale, Calcul approch&eacute; d'int&eacute;grales.
+<a
+href="xcasfr.html#+//%20calcul%20approche%20d'int%C3%A9grale&+f(x)%3A%3Dsin(x)&+plot(f(x)%2Cx%2C0%2C1)%3B%20droite(y%3D0)%3B&+fonction%20rect(f%2Ca%2Cb%2CN)%0A%20%20var%20S%3B%0A%20%20S%3A%3D0.0%3B%0A%20%20h%3A%3D(b-a)%2FN%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20S%3A%3DS%2Bf(a%2Bj*h)%3B%0A%20%20fpour%3B%0A%20%20retourne%20S*h%3B%0Affonction%3A%3B%0A&+rect(f%2C0%2C1%2C100)&+integrate(f(x)%2Cx%2C0%2C1.0)&+//%20pour%20le%20point%20milieu%20on%20remplace%20f(a+j*h)%20par%20f(a-h/2+j*h)&+fonction%20pointmilieu(f%2Ca%2Cb%2CN)%0A%20%20var%20S%3B%0A%20%20S%3A%3D0.0%3B%0A%20%20h%3A%3D(b-a)%2FN%3B%0A%20%20pour%20j%20de%201%20jusque%20N%20faire%0A%20%20%20%20S%3A%3DS%2Bf(a-h%2F2%2Bj*h)%3B%0A%20%20fpour%3B%0A%20%20retourne%20S*h%3B%0Affonction%3A%3B%0A&+pointmilieu(f%2C0%2C1%2C100)&+//%20Observer%20la%20pr%C3%A9cision%20bien%20meilleure,%20pour%20un%20cout%20de%20calcul%20quasi-identique.%20Intuitivement%20le%20rectangle%20correspondant%20approche%20mieux%20la%20fonction.&+plot(f(x)%2Cx%2C0%2C1)%3B%0Arectangle(0%2C1%2Cf(1)%2Ccolor%3Dred)%3B%20%0Arectangle(0%2C1%2Cf(1%2F2)%2Ccolor%3Dgreen)&"
+  target="_blank">Xcas
+</a>
+<a
+href="xcasfr.html#+//%20calcul%20approche%20d'int%C3%A9grale&+f(x)%3A%3Dsin(x)&+plot(f(x)%2Cx%2C0%2C1)%3B%20droite(y%3D0)%3B&+def%20Rect(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2FN%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2Bj*h)%0A%20%20%20%20return%20S*h%0A&+Rect(f%2C0%2C1%2C100)&+integrate(f(x)%2Cx%2C0%2C1.0)&+//%20pour%20le%20point%20milieu%20on%20remplace%20f(a+j*h)%20par%20f(a-h/2+j*h)&+def%20Pointmilieu(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2FN%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2F2%2Bj*h)%0A%20%20%20%20return%20S*h%0A&+Pointmilieu(f%2C0%2C1%2C100)&+//%20Observer%20la%20pr%C3%A9cision%20bien%20meilleure,%20pour%20un%20cout%20de%20calcul%20quasi-identique.%20Intuitivement%20le%20rectangle%20correspondant%20approche%20mieux%20la%20fonction.&+plot(f(x)%2Cx%2C0%2C1)%3B%0Arectangle(0%2C1%2Cf(1)%2Ccolor%3Dred)%3B%20%0Arectangle(0%2C1%2Cf(1%2F2)%2Ccolor%3Dgreen)&"
+  target="_blank">Python</a>
+</li>
+</ul>
   <br>
-  La commande <button class="bouton"  onmousedown="event.preventDefault()"
-  onclick="UI.insert(UI.focused,'debug(')"><tt>debug</tt></button>
-  permet d'ex&eacute;cuter une fonction en mode pas &agrave; pas
-  pour la mettre au point.
-  <ul>
+</div>
+<ul>
     <li> Listes:
     <button class="bouton" onclick="UI.insert(UI.focused,'seq(');">seq</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'append(');">append</button>
@@ -1148,7 +1252,7 @@ onclick="var l=['tutointro','tutointerface','tutosimplifier','tutoarit','tutosol
   target="_blank">Internet</a>,
     </li>
     <li> Programmation :
-    <a href="algolycee.html"target="_blank">algorithmique lyc&eacute;e</a>,
+    <a href="irem/algolycee.html"target="_blank">algorithmique lyc&eacute;e</a>,
     <a href="file:///usr/share/giac/doc/fr/casrouge/index.html"
     target="_blank">disque dur</a>,
   <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/casrouge/index.html"
@@ -2475,6 +2579,7 @@ for (var i=0;i<kbd_a.length;i++){
   focused:entree,
   savefocused:entree,
   usecm:true,
+  fixeddel:false,
   kbdshift:false,
   usemathjax:false,
   prettyprint:true,
@@ -3276,6 +3381,12 @@ UI.insert(UI.focused,tmp);
      cmentree.on("blur",function(cm) { if (cm.getSelection().length > 0){UI.selection=cm.getSelection();} });
      cmentree.setValue(entree.value);
      UI.changefontsize(cmentree,18);
+     UI.codemirror_setoptions(cmentree);
+   } // if (UI.usecm)
+  } else { if (cmentree!=entree) cmentree.toTextArea(); cmentree=entree; }
+   cmentree.focus();
+  },
+  codemirror_setoptions:function(cmentree){
      cmentree.setOption("extraKeys", {
      Enter: function(cm){
       UI.eval_cmdline();
@@ -3290,10 +3401,7 @@ UI.insert(UI.focused,tmp);
       UI.indentline(cm);
      },
     });
-   } // if (UI.usecm)
-  } else { if (cmentree!=entree) cmentree.toTextArea(); cmentree=entree; }
-   cmentree.focus();
- },
+  },
   kbdonfuncoff:function() {
      UI.savefocused=UI.focused;
     document.getElementById('keyboard').style.display='inline';
@@ -3452,6 +3560,7 @@ UI.insert(UI.focused,tmp);
    // Module.print(text+ ' '+s);
    callback(s,args);
   },
+  history_cm:0,
   ckenter: function(event,field){
     //console.log(event.keyCode,event.shiftKey);
     var key = event.keyCode;
@@ -3680,7 +3789,7 @@ show_menu:function(){
    if (w>hw-300) w=hw-300;
    var hi=hw-w-200;
    if (!UI.qa){ hi=hw-130; w=hi; }
-   var hb=25; if (hh>=400) hb=29; if (hh>=500) hb=33; if (hh>600) hb=37;
+   var hb=29; if (hh>=400) hb=32; if (hh>=500) hb=34; if (hh>600) hb=37;
    s='h1,h2,h3 { display:inline; font-size:1em;}\ninput[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+form.outdiv_height.value+'px;  overflow: auto;}\n.filenamecss {width:120px;height:20px}\n.historyinput {width:'+hi+'px;}\n.bouton{height:'+hb+'px;}';
    // console.log(s);// Module.print(s);
    var st=document.getElementById('document_style');
@@ -3710,7 +3819,7 @@ var kbd_math=["add_simplify" ,"add_matr",
 var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
 "add_boucle","add_function","add_debug"];
    w=Math.floor(hw/12)-1; w=w+"px"; 
-   h=Math.floor(hh/20); if (h<30) h=30; h=h+"px"; // console.log(hw,w,hh,h);
+   h=Math.floor(hh/20); if (h<34) h=34; h=h+"px"; // console.log(hw,w,hh,h);
    for (var i=0;i<kbd_l.length;i++){
      document.getElementById(kbd_l[i]).style.width=w;
      document.getElementById(kbd_l[i]).style.height=h;
@@ -3725,6 +3834,10 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
      document.getElementById(kbd_cmd[i]).style.width=w;
      document.getElementById(kbd_cmd[i]).style.height=h;
    }
+   for (var i=0;i<kbd_prog.length;i++){
+     document.getElementById(kbd_prog[i]).style.width=w;
+     document.getElementById(kbd_prog[i]).style.height=h;
+   }
    w=Math.floor(hw/9)-3; if (w<30) w=30; w=w+"px"; 
    h=Math.floor(hh/20); if (h<35) h=35; h=h+"px"; // console.log(hw,w,hh,h);
    for (var i=0;i<kbd_math.length;i++){
@@ -3732,15 +3845,12 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
      document.getElementById(kbd_math[i]).style.height=h;
    }
    w=Math.floor(hw/9)-3; if (w<30) w=30; w=w+"px"; 
-   for (var i=0;i<kbd_prog.length;i++){
-     document.getElementById(kbd_prog[i]).style.width=w;
-     document.getElementById(kbd_prog[i]).style.height=h;
-   }
   },
   config_string:function(){
    var form=document.getElementById('config');
    if (form.qa.checked) UI.qa=true; else UI.qa=false;
    if (form.usecm.checked) UI.usecm=true; else UI.usecm=false; UI.switchcm();
+   if (form.fixeddel.checked) UI.fixeddel=true; else UI.fixeddel=false; 
    UI.set_config_width();
    var s;
    var st=document.getElementById('document_style');
@@ -3795,6 +3905,7 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
    UI.createCookie('xcas_prettyprint',UI.prettyprint?1:-1,10000);
    UI.createCookie('xcas_qa',UI.qa?1:-1,10000);
    UI.createCookie('xcas_usecm',UI.usecm?1:-1,10000);
+   UI.createCookie('xcas_fixeddel',UI.fixeddel?1:-1,10000);
    UI.createCookie('xcas_history_width',form.history_width.value,10000);
    UI.createCookie('xcas_history_height',form.history_height.value,10000);
    UI.createCookie('xcas_outdiv_width',form.outdiv_width.value,10000);
@@ -3883,12 +3994,12 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
     return '<td><button style="width:30px;height:30px;" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">del</button></td></tr>';
   },
   move_buttons:function(newline){
-   var s='<tr onmouseenter="UI.switch_buttons(this,true)" onmouseleave="UI.switch_buttons(this,false)">';
-   s += '<td><button style="width:20px;height:30px;" onclick=\'UI.moveup(this)\' title="d&eacute;placer vers le haut">↑</button>';
+   var s='<tr onmouseenter="UI.switch_buttons(this,true)" onmouseleave="if (!UI.fixeddel) UI.switch_buttons(this,false)">';
+   // s += '<td>&bull;</td>'; // f=f.nextSibling in switch_buttons
    if (newline)
-     s += '<br><button style="width:20px;height:30px;" onclick=\'UI.movedown(this)\' title="d&eacute;placer vers la bas">↓</button></td><td></td>';
+     s += '<td><button style="width:20px;height:30px;" onclick="UI.moveup(this)" title="d&eacute;placer vers le haut">↑</button><br><button style="width:20px;height:30px;" onclick="UI.movedown(this)" title="d&eacute;placer vers la bas">↓</button></td><td></td>';
    else
-     s += '</td><td><button style="width:20px;height:30px;" onclick=\'UI.movedown(this)\' title="d&eacute;placer vers la bas">↓</button></td>';
+     s += '<td><button style="width:20px;height:15px;" onclick="UI.moveup(this)" title="d&eacute;placer vers le haut">↑</button><button style="width:20px;height:15px;" onclick="UI.movedown(this)" title="d&eacute;placervers la bas">↓</button></td><td><button style="width:20px;height:15px;" onclick="for (var i=0;i<5;i++) UI.moveup(this)" title="d&eacute;placer de 5 vers le haut">↑↑</button><button style="width:20px;height:15px;" onclick="for (var i=0;i<5;i++) UI.movedown(this)" title="d&eacute;placer de 5  vers la bas">↓↓</button></td>';
    return s;
   },
    skip_buttons:function(field){
@@ -4064,6 +4175,7 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
  },
   switch_buttons: function(field,onoff){
     var f=field.firstChild;
+    // f = f.nextSibling; // &bull; in move_buttons
     if (onoff) f.style.visibility='visible'; else f.style.visibility='hidden';
     f = f.nextSibling;
     if (onoff) f.style.visibility='visible'; else f.style.visibility='hidden';
@@ -4095,7 +4207,7 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
  editcomment : function(field){
    var prev=field.parentNode.previousSibling;
    var s=prev.innerHTML;
-   s='<td colspan="2"><textarea rows="2" columns="60">'+s+'</textarea>';
+   s='<td colspan="2"><textarea rows="5" cols="60">'+s+'</textarea>';
    s+='<button onclick="UI.editcomment_end(this)">ok</button></td>';
    prev.innerHTML=s;
    field.parentNode.style.display='none';
@@ -4226,13 +4338,21 @@ addcomment: function(text){
   },
   prepare_cm: function(txt,h,cm){
   var pos=txt.selectionStart;
-  cm.setCursor({line:0,ch:pos}); cm.refresh();
+  var i,s=txt.value,l=0,c=0;
+  for (i=0;i<pos;++i){
+    if (s[i]=='\n'){
+       l++; c=0;
+    }
+    else c++;
+  }
+  cm.setCursor({line:l,ch:c}); cm.refresh();
   cm.setSize(null,h+20);
   cm.on("focus",function(cm){ UI.set_focused(cm); });
   cm.on("blur",function(cmf) {
   if (cmf.getSelection().length > 0){UI.selection=cmf.getSelection();}
   cmf.toTextArea();
   });
+  // cm.setOption("inputStyle", "textarea");
   cm.setOption("extraKeys", {
    Enter: function(cm){
      var txt=cm.getTextArea();
@@ -4280,7 +4400,7 @@ addcomment: function(text){
     else
 	//s += 'rows='+(UI.count_newline(textin)+1) +' style="font-size:large"';
 	s += 'style="height:'+(20+16*UI.count_newline(textin))+'px; font-size:large"';
-    s += ' title="Shift-Enter: saut de ligne, Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm){var h=offsetHeight;var cm=CodeMirror.fromTextArea(this,{ matchBrackets: true}); cm.options.indentUnit=UI.python_mode?UI.python_indent:2; UI.prepare_cm(this,h,cm);UI.changefontsize(cm,16); UI.set_focused(cm);} else UI.set_focused(this);" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">'+textin+'</textarea>';
+    s += ' title="Shift-Enter: saut de ligne, Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm){var h=offsetHeight;UI.history_cm=CodeMirror.fromTextArea(this,{ matchBrackets: true}); UI.history_cm.setCursor({line:0,ch:selectionStart});UI.codemirror_setoptions(UI.history_cm);UI.history_cm.options.indentUnit=UI.python_mode?UI.python_indent:2; UI.prepare_cm(this,h,UI.history_cm);UI.changefontsize(UI.history_cm,16); UI.set_focused(UI.history_cm);} else UI.set_focused(this);" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">'+textin+'</textarea>';
     if (UI.qa) s += '</td>'; 
     if (is_svg || is_3d){
       if (UI.qa) s += '<td>'; else s+='<br>';
@@ -4396,6 +4516,7 @@ gr(text);
      s=s.substr(k+1,kend-k);
      if (s.length<2){ UI.insert(UI.focused,'?'); return;}
      var sc=UI.unique_completion(UI.xcascmd,s);
+     //Module.print(s); Module.print(sc);
      if (cm.type=='textarea'){
        cm.selectionStart=k+1;
        cm.selectionEnd=kstart;
@@ -4413,6 +4534,7 @@ gr(text);
          s=sc;
        }
        else {
+          cm.setCursor({line:pos.line,ch:k+1+s.length});
           cm.showHint();
        }
      }
@@ -5054,6 +5176,8 @@ insert: function(myField, myValue) {
   if (ck) form.qa.checked=UI.qa=(ck=='1');
   ck=UI.readCookie('xcas_usecm');
   if (ck) form.usecm.checked=UI.usecm=(ck=='1');
+  ck=UI.readCookie('xcas_fixeddel');
+  if (ck) form.fixeddel.checked=UI.fixeddel=(ck=='1');
   ck=UI.config_string(); console.log(ck);
   //UI.sleep(200);
   if (0) UI.caseval(ck); else UI.initconfigstring=ck; //UI.set_config_width();

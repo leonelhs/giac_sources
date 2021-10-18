@@ -78,8 +78,6 @@ namespace xcas {
 
   bool has_autorecover_data(const std::string & s,std::vector<time_string> & newest);
 
-  // replace c1 by c2 in s
-  std::string replace(const std::string & s,char c1,char c2);
 
   // Check for auto-recovery data in directory s
   bool has_autorecover_data(const std::string & s,std::string & newest);

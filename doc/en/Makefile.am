@@ -1,4 +1,4 @@
-TEX_LOCAL = cascmd_en.tex casinter.tex cas.tex slipres.tex giacxcas.tex
+TEX_LOCAL = cascmd_en.tex casinter.tex cas.tex slipres.tex giacxcas.tex tutoriel.tex
 
 PDF_LOCAL = cascmd_en.pdf casinter.pdf cas.pdf troussesurvie_en.pdf
 
@@ -6,9 +6,9 @@ PS_LOCAL = cascmd_en.ps casinter.ps cas.ps
 
 DVI_LOCAL = cascmd_en.dvi casinter.dvi cas.dvi
 
-HTML_DIRS_LOCAL = casinter cascmd_en
+HTML_DIRS_LOCAL = casinter cascmd_en tutoriel
 
-HTML_STAMPS = casinter.stamp cascmd_en.stamp
+HTML_STAMPS = casinter.stamp cascmd_en.stamp tutoriel
 
 info_TEXINFOS = giac_us.texinfo
 AM_MAKEINFOHTMLFLAGS = --no-split
@@ -16,7 +16,7 @@ AM_MAKEINFOHTMLFLAGS = --no-split
 EXTRA_DIST = $(TEX_LOCAL) $(PDF_LOCAL) $(DVI_LOCAL) $(PS_LOCAL) \
 	     $(HTML_DIRS_LOCAL) $(HTML_LOCAL) $(HTML_STAMPS) \
 	     pgcd.cc pgcd.cpp giac_bassin.cpp .gdbinit cutting.* \
-	     xcas-open.png  xcas-scientific-keyboard.png hevea.sty
+	     xcas*.png  hevea.sty 
 
 GIAC_HOMEPAGE = "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html"
 GIAC_ADDRESS = <A HREF=$(LATEX2HTML_HOMEPAGE)>giac</A> documentation written
@@ -32,6 +32,7 @@ ps-local: $(PS_LOCAL)
 
 $(srcdir)/cascmd_en: cascmd_en.stamp
 $(srcdir)/casinter: casinter.stamp
+$(srcdir)/tutoriel: tutoriel.stamp
 
 install-data-local: $(HTML_STAMPS) $(PS_LOCAL) $(DVI_LOCAL) troussesurvie_en.pdf # $(PDF_LOCAL) 
 	$(install_sh) -d $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
@@ -93,6 +94,16 @@ casinter.stamp: casinter.tex
 	touch $@	
 
 cascmd_en.stamp: cascmd_en.tex
+	$(RUN_HEVEA) $< 
+	tdir=`echo $< | sed -e 's/\.tex//'`; \
+	$(install_sh) -d $$tdir ; \
+	hacha $$tdir.html -o $$tdir/index.html ; \
+	touch $$tdir.png ; \
+	/bin/cp -f $$tdir*.png $$tdir
+#	rm -f $$tdir/*.old $$tdir/*.pl $$tdir/images.??? $$tdir/WARNINGS
+	touch $@
+
+tutoriel.stamp: tutoriel.tex
 	$(RUN_HEVEA) $< 
 	tdir=`echo $< | sed -e 's/\.tex//'`; \
 	$(install_sh) -d $$tdir ; \

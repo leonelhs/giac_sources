@@ -540,6 +540,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       _integer_mode_=b;
   }
 
+  bool python_color=false;
   static int _python_compat_=false;
   int & python_compat(GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
@@ -549,6 +550,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   void python_compat(int b,GIAC_CONTEXT){
+    python_color=b; //cout << "python_color " << b << endl;
     if (contextptr && contextptr->globalptr )
       contextptr->globalptr->_python_compat_=b;
     else
@@ -5588,7 +5590,18 @@ unsigned int ConvertUTF8toUTF16 (
     }
   }
 
-  static string remove_comment(const string & s,const string &pattern,bool replace){
+  string replace(const string & s,char c1,char c2){
+    string res;
+    int l=s.size();
+    res.reserve(l);
+    const char * ch=s.c_str();
+    for (int i=0;i<l;++i,++ch){
+      res+= (*ch==c1? c2: *ch);
+    }
+    return res;
+  }
+
+  static string remove_comment(const string & s,const string &pattern,bool rep){
     string res(s);
     for (;;){
       int pos1=res.find(pattern);
@@ -5597,8 +5610,8 @@ unsigned int ConvertUTF8toUTF16 (
       int pos2=res.find(pattern,pos1+3);
       if (pos2<0 || pos2+3>=int(res.size()))
 	break;
-      if (replace)
-	res=res.substr(0,pos1)+'"'+res.substr(pos1+3,pos2-pos1-3)+'"'+res.substr(pos2+3,res.size()-pos2-3);
+      if (rep)
+	res=res.substr(0,pos1)+'"'+replace(res.substr(pos1+3,pos2-pos1-3),'\n',' ')+'"'+res.substr(pos2+3,res.size()-pos2-3);
       else
 	res=res.substr(0,pos1)+res.substr(pos2+3,res.size()-pos2-3);
     }
@@ -5658,7 +5671,7 @@ unsigned int ConvertUTF8toUTF16 (
 	++pos;
 	continue;
       }
-      if (curch=='=' && prevch!='>' && prevch!='<' && prevch!='!' && prevch!=':' && prevch!='=' && prevch!='+' && prevch!='-' && prevch!='*' && prevch!='/' && (pos==int(cur.size())-1 || (cur[pos+1]!='=' && cur[pos+1]!='<'))){
+      if (curch=='=' && prevch!='>' && prevch!='<' && prevch!='!' && prevch!=':' && prevch!=';' && prevch!='=' && prevch!='+' && prevch!='-' && prevch!='*' && prevch!='/' && (pos==int(cur.size())-1 || (cur[pos+1]!='=' && cur[pos+1]!='<'))){
 	cur.insert(cur.begin()+pos,':');
 	++pos;
 	continue;
@@ -5666,6 +5679,32 @@ unsigned int ConvertUTF8toUTF16 (
       if (prevch=='/' && curch=='/')
 	cur[pos]='%';
     }
+  }
+
+  string glue_lines_backslash(const string & s){
+    int ss=s.size();
+    int i=s.find('\\');
+    if (i<0 || i>=ss)
+      return s;
+    string res,line;    
+    for (i=0;i<ss;++i){
+      if (s[i]!='\n'){
+	line += s[i];
+	continue;
+      }
+      int ls=line.size(),j;
+      for (j=ls-1;j>=0;--j){
+	if (line[j]!=' ')
+	  break;
+      }
+      if (line[j]!='\\' || (j && line[j-1]=='\\')){
+	res += line+'\n';
+	line ="";
+      }
+      else
+	line=line.substr(0,j); 
+    }
+    return res+line;
   }
 
   // detect Python like syntax: 
@@ -5693,9 +5732,12 @@ unsigned int ConvertUTF8toUTF16 (
     if (first>=0 && first<sss)
       return s_orig;
     bool pythonmode=false;
-    for (first=0;first<sss;){
-      if (first==0 && s_orig[0]=='#')
-	break;
+    first=0;
+    if (sss>24 && s_orig.substr(0,17)=="add_autosimplify(")
+      first=17;
+    if (s_orig[first]=='#' || s_orig.substr(first,4)=="from" || s_orig.substr(first,7)=="import ")
+      pythonmode=true;
+    for (first=0;!pythonmode && first<sss;){
       int pos=s_orig.find(":]");
       if (pos>=0 && pos<sss){
 	pythonmode=true;
@@ -5748,8 +5790,11 @@ unsigned int ConvertUTF8toUTF16 (
       res=res.substr(17,res.size()-18);
     res=remove_comment(res,"\"\"\"",false);
     res=remove_comment(res,"'''",true);
+    res=glue_lines_backslash(res);
     vector<int_string> stack;
     string s,cur; 
+    bool pythoncompat=python_compat(contextptr);
+    if (pythoncompat) pythonmode=true;
     for (;res.size();){
       int pos=res.find('\n');
       if (pos<0 || pos>=int(res.size())){
@@ -5765,6 +5810,44 @@ unsigned int ConvertUTF8toUTF16 (
 	char ch=cur[pos];
 	if (ch==' ' || ch==char(9))
 	  continue;
+	if (!instring && pythoncompat &&
+	    ch=='\'' && pos<cur.size()-2 && cur[pos+1]!='\\' && (pos==0 || (cur[pos-1]!='\\' && cur[pos-1]!='\''))){ // workaround for '' string delimiters
+	  int p=pos,q,beg; // skip spaces
+	  for (p++;p<int(cur.size());++p)
+	    if (cur[p]!=' ') 
+	      break;
+	  if (p!=cur.size()){
+	    // find matching ' 
+	    beg=q=p;
+	    for (;p<int(cur.size());++p)
+	      if (cur[p]=='\'') 
+		break;
+	    if (p>0 && p<int(cur.size())){
+	      --p;
+	      // does cur[pos+1..p-1] look like a string?
+	      bool str=!isalpha(cur[q]) || !isalphan(cur[p]);
+	      if (p && cur[p]=='.' && cur[p-1]>'9')
+		str=true;
+	      for (;!str && q<p;++q){
+		char ch=cur[q];
+		if (ch=='"' || ch==' ')
+		  str=true;
+	      }
+	      if (str){ // replace delimiters with " and " inside by \"
+		string rep("\"");
+		for (q=beg;q<=p;++q){
+		  if (cur[q]!='"')
+		    rep+=cur[q];
+		  else
+		    rep+="\\\"";
+		}
+		rep += '"';
+		cur=cur.substr(0,pos)+rep+cur.substr(p+2,cur.size()-(p+2));
+		ch=cur[pos];
+	      }
+	    }
+	  }
+	}
 	if (ch=='"' && (pos==0 || cur[pos-1]!='\\')){
 	  chkfrom=false;
 	  instring=!instring;
@@ -5784,21 +5867,30 @@ unsigned int ConvertUTF8toUTF16 (
 	if (chkfrom && ch=='f' && pos+15<int(cur.size()) && cur.substr(pos,5)=="from "){
 	  chkfrom=false;
 	  int posi=cur.find(" import ");
+	  if (posi<0 || posi>=int(cur.size()))
+	    posi = cur.find(" import*");
 	  if (posi>pos+5 && posi<int(cur.size())){
+	    posi=cur.find("turtle");
+	    int cs=int(cur.size());
 	    cur=cur.substr(0,pos);
+	    if (posi>=0 && posi<cs){
+	      // add python turtle shortcuts
+	      cur += "\npu:=penup;up:=penup; pd:=pendown;down:=pendown; fd:=forward;bk:=backward; rt:=right; lt:=left; pos:=position; seth:=heading;setheading:=heading; reset:=efface\n";
+	    }
 	    pythonmode=true;
 	    break;
 	  }
 	}
 	chkfrom=false;
 	// import * as ** -> **:=*
-	if (ch=='i' && pos+6<int(cur.size()) && cur.substr(pos,6)=="import"){
+	if (ch=='i' && pos+7<int(cur.size()) && cur.substr(pos,7)=="import "){
 	  int posi=cur.find(" as ");
-	  if (posi>pos+5 && posi<int(cur.size())){
+	  if (posi>pos+5 && posi<int(cur.size()))
 	    cur=cur.substr(posi+4,cur.size()-posi-4)+":="+cur.substr(7,posi-7);
-	    pythonmode=true;
-	    break;	    
-	  }
+	  else
+	    cur=cur.substr(pos+7,cur.size()-pos-7);
+	  pythonmode=true;
+	  break;	    
 	}
 	if (ch=='l' && pos+6<int(cur.size()) && cur.substr(pos,6)=="lambda" && instruction_at(cur,pos,6)){
 	  int posdot=cur.find(':',pos);
@@ -5886,8 +5978,13 @@ unsigned int ConvertUTF8toUTF16 (
 	  if (nl)
 	    s=s.substr(0,ss-1);
 	  while (!stack.empty() && stack.back().decal>=ws){
+	    int sb=stack.back().decal;
 	    s += ' '+stack.back().endbloc+';';
 	    stack.pop_back();
+	    // indent must match one of the saved indent
+	    if (sb!=ws && !stack.empty() && stack.back().decal<ws){
+	      return "\"Bad indentation at "+cur+"\"";
+	    }
 	  }
 	  if (nl)
 	    s += '\n';
@@ -5959,7 +6056,9 @@ unsigned int ConvertUTF8toUTF16 (
 	s += ":;";
       else
 	s += ";";
-      *logptr(contextptr) << "// Python-like syntax, check string delimiters \"\" and declare local variables.\nTranslated to Xcas as:\n" << s << endl;
+      *logptr(contextptr) << "// Python compatibility, check string delimiters \"\" and declare local variables!\n";
+      if (debug_infolevel)
+	*logptr(contextptr) << "Translated to Xcas as:\n" << s << endl;
     }
     return s;
   }

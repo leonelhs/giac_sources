@@ -1730,6 +1730,8 @@ namespace giac {
       if (opt.type!=_VECT || opt._VECTptr->size()!=2)
 	continue;
       gen opt1=opt._VECTptr->front(),opt2=opt._VECTptr->back().eval(1,0);
+      if (opt2.type==_STRNG)
+	opt2=gen(*opt2._STRNGptr,contextptr);
       unsigned colormask=0xffff0000;
       if (opt1==at_couleur || opt1==at_display){
 	opt1=_COLOR; opt1.subtype=_INT_COLOR;
@@ -8180,7 +8182,7 @@ namespace giac {
     if (g.type==_VECT){
       v=*g._VECTptr;
       int s=int(v.size()),nd=0,nargs=0;
-      if (v[0].type==_FUNC && (nd=is_distribution(v[0])) && 1+(nargs=distrib_nargs(nd))<=s){
+      if (s && v[0].type==_FUNC && (nd=is_distribution(v[0])) && 1+(nargs=distrib_nargs(nd))<=s){
 	if (is_discrete_distribution(nd))
 	  return _histogram(g,contextptr);
 	gen d=distribution(nd);
@@ -8211,6 +8213,25 @@ namespace giac {
     int s=int(v.size());
     gen attribut=default_color(contextptr);
     vecteur attributs(1,attribut);
+    gen v1=eval(v[1],1,contextptr);
+    if (s>1 && v[0].type<=_REAL && v1.type<=_REAL){
+      *logptr(contextptr) << gettext("To get a point, run point(")<<v[0]<<","<<v1<<")" << endl;
+      // gen pos=v[0]+cst_i*v1; s=read_attributs(v,attributs,contextptr); return put_attributs(_point(pos,contextptr),attributs,contextptr);
+    }
+    if (s>1 && v[0].type==_VECT && v1.type==_VECT && v[0]._VECTptr->size()==v1._VECTptr->size()){
+      *logptr(contextptr) << gettext("Assuming you want to run polygonscatterplot") << endl;
+      vecteur w0=*v[0]._VECTptr,w1=*v1._VECTptr;
+      int ss=w0.size(),i;
+      for (i=0;i<ss;++i){
+	if (w0[i].type>_REAL || w1[i].type>_REAL)
+	  break;
+      }
+      if (i=ss){
+	// polygonscatterplot
+	s=read_attributs(v,attributs,contextptr);
+	return put_attributs(_polygonscatterplot(makesequence(v[0],v1),contextptr),attributs,contextptr);
+      }
+    }
     if (g.subtype!=_SEQ__VECT && s==3 ){
       if (v[2].type==_IDNT)
 	return plotparam(v[0]+cst_i*v[1],v[2],attributs,true,gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax,gnuplot_tmin,gnuplot_tmax,gnuplot_tstep,undef,undef,contextptr); // FIX equation?
@@ -10205,6 +10226,10 @@ namespace giac {
 
   gen _couleur(const gen & a,GIAC_CONTEXT){
     if (is_undef(a)) return a;
+    if (a.type==_STRNG){
+      *logptr(contextptr) << gettext("Use pencolor for the turtle") << endl;
+      return _couleur(gen(*a._STRNGptr,contextptr),contextptr);
+    }
     if (a.type==_INT_){
       int i=default_color(contextptr);
       default_color(a.val,contextptr);
@@ -13435,6 +13460,9 @@ namespace giac {
     turtle(contextptr).theta = turtle(contextptr).theta - floor(turtle(contextptr).theta/360)*360;
     turtle_stack(contextptr).push_back(turtle(contextptr));
     gen res=turtle_state(contextptr);
+#ifdef EMCC // should directly interact with canvas
+    return gen(turtlevect2vecteur(turtle_stack(contextptr)),_LOGO__VECT);
+#endif
     // update parent turtle state
     if (turtle_stack(contextptr).size()==1)
       __interactive.op(symbolic(at_pnt,-1),contextptr); // clear parent stack
@@ -13470,6 +13498,10 @@ namespace giac {
   static define_unary_function_eval2 (__avance,&_avance,_avance_s,&printastifunction);
   define_unary_function_ptr5( at_avance ,alias_at_avance,&__avance,0,T_LOGO);
 
+  static const char _forward_s []="forward";
+  static define_unary_function_eval (__forward,&_avance,_forward_s);
+  define_unary_function_ptr5( at_forward ,alias_at_forward,&__forward,0,true);
+
   gen _recule(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     // logo instruction
@@ -13480,6 +13512,10 @@ namespace giac {
   static const char _recule_s []="recule";
   static define_unary_function_eval2 (__recule,&_recule,_recule_s,&printastifunction);
   define_unary_function_ptr5( at_recule ,alias_at_recule,&__recule,0,T_LOGO);
+
+  static const char _backward_s []="backward";
+  static define_unary_function_eval (__backward,&_recule,_backward_s);
+  define_unary_function_ptr5( at_backward ,alias_at_backward,&__backward,0,true);
 
   gen _position(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
@@ -13517,6 +13553,11 @@ namespace giac {
   static const char _cap_s []="cap";
   static define_unary_function_eval2 (__cap,&_cap,_cap_s,&printastifunction);
   define_unary_function_ptr5( at_cap ,alias_at_cap,&__cap,0,T_LOGO);
+
+  static const char _heading_s []="heading";
+  static define_unary_function_eval (__heading,&_cap,_heading_s);
+  define_unary_function_ptr5( at_heading ,alias_at_heading,&__heading,0,true);
+
 
   gen _tourne_droite(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
@@ -13566,6 +13607,10 @@ namespace giac {
   static define_unary_function_eval2 (__leve_crayon,&_leve_crayon,_leve_crayon_s,&printastifunction);
   define_unary_function_ptr5( at_leve_crayon ,alias_at_leve_crayon,&__leve_crayon,0,T_LOGO);
 
+  static const char _penup_s []="penup";
+  static define_unary_function_eval (__penup,&_leve_crayon,_penup_s);
+  define_unary_function_ptr5( at_penup ,alias_at_penup,&__penup,0,true);
+
   gen _baisse_crayon(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     // logo instruction
@@ -13576,6 +13621,10 @@ namespace giac {
   static const char _baisse_crayon_s []="baisse_crayon";
   static define_unary_function_eval2 (__baisse_crayon,&_baisse_crayon,_baisse_crayon_s,&printastifunction);
   define_unary_function_ptr5( at_baisse_crayon ,alias_at_baisse_crayon,&__baisse_crayon,0,T_LOGO);
+
+  static const char _pendown_s []="pendown";
+  static define_unary_function_eval (__pendown,&_baisse_crayon,_pendown_s);
+  define_unary_function_ptr5( at_pendown ,alias_at_pendown,&__pendown,0,true);
 
   gen _ecris(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
@@ -13649,6 +13698,10 @@ namespace giac {
   static define_unary_function_eval2 (__cache_tortue,&_cache_tortue,_cache_tortue_s,&printastifunction);
   define_unary_function_ptr5( at_cache_tortue ,alias_at_cache_tortue,&__cache_tortue,0,T_LOGO);
 
+  static const char _hideturtle_s []="hideturtle";
+  static define_unary_function_eval (__hideturtle,&_cache_tortue,_hideturtle_s);
+  define_unary_function_ptr5( at_hideturtle ,alias_at_hideturtle,&__hideturtle,0,true);
+
   gen _montre_tortue(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     // logo instruction
@@ -13659,6 +13712,10 @@ namespace giac {
   static const char _montre_tortue_s []="montre_tortue";
   static define_unary_function_eval2 (__montre_tortue,&_montre_tortue,_montre_tortue_s,&printastifunction);
   define_unary_function_ptr5( at_montre_tortue ,alias_at_montre_tortue,&__montre_tortue,0,T_LOGO);
+
+  static const char _showturtle_s []="showturtle";
+  static define_unary_function_eval (__showturtle,&_montre_tortue,_showturtle_s);
+  define_unary_function_ptr5( at_showturtle ,alias_at_showturtle,&__showturtle,0,true);
 
   gen _debut_enregistrement(const gen & g0,GIAC_CONTEXT){
     if ( g0.type==_STRNG && g0.subtype==-1) return  g0;
@@ -13735,6 +13792,7 @@ namespace giac {
 
   gen _crayon(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
+    if (g.type==_STRNG) return _crayon(gen(*g._STRNGptr,contextptr),contextptr);
     // logo instruction
     if (g.type!=_INT_){
       gen res=turtle(contextptr).color;
@@ -13748,6 +13806,11 @@ namespace giac {
   static const char _crayon_s []="crayon";
   static define_unary_function_eval2 (__crayon,&_crayon,_crayon_s,&printastifunction);
   define_unary_function_ptr5( at_crayon ,alias_at_crayon,&__crayon,0,T_LOGO);
+
+  static const char _pencolor_s []="pencolor";
+  static define_unary_function_eval (__pencolor,&_crayon,_pencolor_s);
+  define_unary_function_ptr5( at_pencolor ,alias_at_pencolor,&__pencolor,0,true);
+
 
   gen _efface(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;

@@ -15431,6 +15431,10 @@ namespace giac {
 #ifdef EMCC
     // compile with -s LEGACY_GL_EMULATION=1
     gen last=g;
+    if (last.type==_VECT && last.subtype==_LOGO__VECT){
+      S="logo "+last.print(&C);
+      return S.c_str();
+    }
     while (last.type==_VECT && !last._VECTptr->empty()){
       gen tmp=last._VECTptr->back();
       if (tmp.is_symb_of_sommet(at_equal))
