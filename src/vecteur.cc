@@ -6979,7 +6979,7 @@ namespace giac {
     }
   }    
 
-  // lower row reduction of N from l to lmax using already reduced lines 
+#if 1
   void smallmodrref_lower(vector< vector<int> > & N,int lstart,int l,int lmax,int c,int cmax,const vector<int> & pivots,int modulo,bool debuginfo){
     int ps=int(pivots.size());
     longlong modulo2=longlong(modulo)*modulo;
@@ -7006,12 +7006,16 @@ namespace giac {
 	  CERR << "rref_lower Bad matrix "<< lmax << "x" << cmax << " l" << line << " c" << col << endl;
 	  continue;
 	}
-	Nline[col] %= modulo;
 	if (Nline[col]!=1){
-	  CERR << "rref_lower Bad matrix "<< lmax << "x" << cmax << " l" << line << " c" << col << " " << Nline[col] << endl;
-	  continue;
+	  Nline[col] %= modulo;
+	  if (Nline[col]!=1){
+	    CERR << "rref_lower Bad matrix "<< lmax << "x" << cmax << " l" << line << " c" << col << " " << Nline[col] << endl;
+	    continue;
+	  }
 	}
-	longlong coeff=buffer[col] % modulo;
+	longlong coeff=buffer[col];
+	if (!coeff) continue;
+	coeff %= modulo;
 	if (!coeff) continue;
 	buffer[col]=0;
 	if (convertpos){
@@ -7042,6 +7046,134 @@ namespace giac {
     } // end loop on L
   }
 
+#else
+  // lower row reduction of N from l to lmax using already reduced lines
+  // with column slicing, not kept seems slower 
+  void smallmodrref_lower(vector< vector<int> > & N,int lstart,int l,int lmax,int c,int cmax,const vector<int> & pivots,int modulo,bool debuginfo){
+    int ps=int(pivots.size());
+    if (!ps) return;
+    longlong modulo2=longlong(modulo)*modulo;
+    bool convertpos= double(modulo2)*ps >= 9.22e18;
+    if (convertpos)
+      makepositive(N,lstart,lmax,c,cmax,modulo);
+    vector<longlong> buffer(cmax);
+    // slice in columns
+    // this requires a first pass with effcmax=pivot.back()+1 (last col)
+    // where linear combination coefficients are stored (in N)
+    // then linear combinations are done using stored coefficients
+    int effcmin,effcmax=giacmin(pivots.back()+1,cmax);
+    if (cmax-effcmax<16)
+      effcmax=cmax;
+    for (int L=l;L<lmax;++L){
+      // copy line to 64 bits buffer
+      vector<int> & NL=N[L];
+      if (NL.empty()) continue;
+      for (int C=c;C<effcmax;++C)
+	buffer[C]=NL[C];
+      // substract lines in pivots[k].first from column pivots[k].second to cmax
+      for (int line=lstart;line<lstart+ps;++line){
+	int col=pivots[line-lstart];
+	if (col<0) continue;
+	vector<int> & Nline=N[line];
+	if (Nline.empty()){
+	  CERR << "rref_lower Bad matrix "<< lmax << "x" << cmax << " l" << line << " c" << col << endl;
+	  continue;
+	}
+	if (Nline[col]!=1){
+	  Nline[col] %= modulo;
+	  if (Nline[col]!=1){
+	    CERR << "rref_lower Bad matrix "<< lmax << "x" << cmax << " l" << line << " c" << col << " " << Nline[col] << endl;
+	    continue;
+	  }
+	}
+	longlong coeff=buffer[col];
+	if (coeff) 
+	  coeff %= modulo;
+	buffer[col]=coeff;
+	if (!coeff) continue;
+	if (convertpos){
+	  int C=col+1;
+	  for (;C<effcmax;++C){
+	    longlong & b=buffer[C] ;
+	    longlong x = b;
+	    x -= coeff*Nline[C];   
+	    x -= (x>>63)*modulo2;
+	    b=x;
+	  }
+	}
+	else {
+	  int C=col+1;
+	  for (;C<effcmax;++C){
+	    buffer[C] -= coeff*Nline[C];   
+	  }
+	}
+      }
+      // copy back buffer to N[l]
+      for (int C=c;C<effcmax;++C){
+	longlong x=buffer[C];
+	if (x) 
+	  NL[C]=x % modulo;
+	else
+	  NL[C]=0;
+      } 
+    }
+    // slice: second pass for remaining columns
+    effcmin=effcmax;
+    int nslice=std::ceil(ps*double(cmax-effcmin)*sizeof(int)/32768); // lower matrix size/L1 cache size
+    if (nslice<=0) nslice=1;
+    int slicestep=std::ceil((cmax-effcmin)/nslice);
+    if (slicestep<16) slicestep=16;
+    for (;effcmin<cmax;effcmin=effcmax){
+      effcmax=giacmin(effcmin+slicestep,cmax);
+      for (int L=l;L<lmax;++L){
+	vector<int> & NL=N[L];
+	if (NL.empty()) continue;
+	for (int C=effcmin;C<effcmax;++C)
+	  buffer[C]=NL[C];
+	for (int line=lstart;line<lstart+ps;++line){
+	  int col=pivots[line-lstart];
+	  if (col<0) continue;
+	  vector<int> & Nline=N[line];
+	  longlong coeff=NL[col];
+	  if (!coeff) continue;
+	  if (convertpos){
+	    for (int C=effcmin;C<effcmax;++C){
+	      longlong & b=buffer[C] ;
+	      longlong x = b;
+	      x -= coeff*Nline[C];   
+	      x -= (x>>63)*modulo2;
+	      b=x;
+	    }
+	  }
+	  else {
+	    for (int C=effcmin;C<effcmax;++C){
+	      buffer[C] -= coeff*Nline[C];   
+	    }
+	  }
+	} // end loop on l
+	// copy back buffer to N[l]
+	for (int C=effcmin;C<effcmax;++C){
+	  longlong x=buffer[C];
+	  if (x) 
+	    NL[C]=x % modulo;
+	  else
+	    NL[C]=0;
+	} 
+      } // end loop on L
+    } // end slicing
+    // reset stored linear combination coeffs to 0
+    for (int L=l;L<lmax;++L){
+      vector<int> & NL=N[L];
+      if (NL.empty()) continue;
+      for (int i=0;i<pivots.size();++i){
+	int c=pivots[i];
+	if (c<0) continue;
+	NL[c]=0;
+      }
+    }
+  }
+#endif
+
   // find pivot columns in submatrix N[l..lmax-1,c..cmax-1]
   void smallmodrref_lower_pivots(vector< vector<int> > & N,int l,int lmax,int c,int cmax,vector<int> & pivots,int modulo){
     pivots.clear();
@@ -7065,6 +7197,8 @@ namespace giac {
 	pivots.push_back(-1); ++L;
       }
     }
+    while (!pivots.empty() && pivots.back()==-1)
+      pivots.pop_back();
   }
   
   void free_null_lines(vector< vector<int> > & N,int l,int lmax,int c,int cmax){
@@ -7592,8 +7726,8 @@ namespace giac {
 	  pivots.push_back(pivot);
 	// invert pivot. If pivot==1 we might optimize but only if allow_bloc is true
 #if 1
-	if (pivot==1 && allow_block)
-	  temp=1;
+	if (0 && pivot==1 && allow_block)
+	  temp=1; // can not be activated because pseudo-mod expect reducing line to be smaller than p
 	else {
 	  temp=invmod(pivot,modulo);
 	  // multiply det
@@ -7601,6 +7735,7 @@ namespace giac {
 	  if (fullreduction || rref_or_det_or_lu<2){ // not LU decomp
 	    vector<int>::iterator it=N[pivotline].begin(),itend=N[pivotline].end();
 	    for (;it!=itend;++it){
+	      if (!*it) continue;
 	      *it=(longlong(temp) * *it)%modulo;
 	      if (*it>0){
 		if (2* *it>modulo)
@@ -7620,6 +7755,7 @@ namespace giac {
 	if (fullreduction || rref_or_det_or_lu<2){ // not LU decomp
 	  vector<int>::iterator it=N[pivotline].begin(),itend=N[pivotline].end();
 	  for (;it!=itend;++it){
+	    if (!*it) continue;
 	    *it=(longlong(temp) * *it)%modulo;
 	    if (*it>0){
 	      if (2* *it>modulo)

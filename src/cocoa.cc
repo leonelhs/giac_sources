@@ -11152,7 +11152,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     const zpolymod<tdeg_t> & h = res[pos];
     order_t order=h.order;
     short dim=h.dim;
-    vector<unsigned> C;
+    vector<unsigned> C,Ccancel;
     C.reserve(G.size()+1);
     const tdeg_t & h0=h.ldeg;
     for (unsigned i=0;i<oldG.size();++i){
@@ -11189,6 +11189,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       if (interrupted || ctrl_c)
 	return;
       if (disjoint(h0,res[G[i]].ldeg,order,dim)){
+	Ccancel.push_back(G[i]);
 	cancellables.push_back(tmp[i]);
 	continue;
       }
@@ -11237,29 +11238,43 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	// look for the pair B[i].second,pos compared to B[i].first/B[i].second
 	// and delay pair (seems slower in multimodular mode)
 	// this speeds up problems with symmetries like cyclic*
+	// comparisons below seem reversed but they increase speed probably
+	// because they detect symmetries
 	tdeg_t tmpBi2;
 	index_lcm(h0,res[B[i].second].ldeg,tmpBi2,order);
 	if (int p=equalposcomp(C,B[i].second)){
-#if 0
-	  if (tmp1==tmpBi2){
-	    // remove B[i].second from C if present
-	    C.erase(C.begin()+p-1);
-	    continue;
-	  }
-#else
-	  if (0 && tdeg_t_all_greater(tmp1,tmpBi2,order)){
+	  if (
+	      0 && tmp1==tmpBi2
+	      // tdeg_t_all_greater(tmp1,tmpBi2,order)
+	      ){
 	    C[p-1]=C[p-1]|0x80000000;
 	    B1.push_back(B[i]);
 	    continue;
 	  }
-	  if (tdeg_t_all_greater(tmpBi2,tmp1,order)){
+	  if (
+	      //tmp1==tmpBi2
+	      tdeg_t_all_greater(tmpBi2,tmp1,order)
+	      //tdeg_t_all_greater(tmp1,tmpBi2,order)
+	      ){
 	    // set B[i] for later reduction
 	    B[i].live=false;
 	    B1.push_back(B[i]);
 	    continue;
 	  }
-#endif
 	}
+#if 1
+	if (int p=equalposcomp(Ccancel,B[i].second)){
+	  if (
+	      //tmp1==tmpBi2
+	      tdeg_t_all_greater(tmpBi2,tmp1,order)
+	      //tdeg_t_all_greater(tmp1,tmpBi2,order)
+             ){
+	    B[i].live=false;
+	    B1.push_back(B[i]);
+	    continue;
+	  }
+	}
+#endif
       }
 #endif // GIAC_GBASIS_DELAYPAIRS
       if (!tdeg_t_all_greater(tmp1,h0,order)){
