@@ -141,6 +141,7 @@ namespace xcas {
   bool find_fold_autosave_function(bool);
   bool get_font(Fl_Font & police,int & taille);
 
+  History_Fold * load_history_fold(int sx,int sy,int sw,int sh,int sl,const char * filename,bool modified); // might be used from icas.cc to call xcas online
 #endif
 
   bool fltk_view(const giac::gen & g,giac::gen & ge,const std::string & filename,std::string & figure_filename,int file_type,const giac::context *);
@@ -148,7 +149,6 @@ namespace xcas {
   void icas_eval(giac::gen & g,giac::gen & gg,int & reading_file,std::string &filename,giac::context * contextptr);
 
   int read_file(const giac::gen & g);
-  History_Fold * load_history_fold(int sx,int sy,int sw,int sh,int sl,const char * filename,bool modified); // might be used from icas.cc to call xcas online
 
 
 #ifndef NO_NAMESPACE_XCAS

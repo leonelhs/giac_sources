@@ -2318,6 +2318,7 @@ namespace xcas {
   }
 
   void Graph2d3d::autoscale(bool fullview){
+    glequal(false);
     if (!plot_instructions.empty()){
       // Find the largest and lowest x/y/z in objects (except lines/plans)
       vector<double> vx,vy,vz;
@@ -2365,6 +2366,30 @@ namespace xcas {
     y_tick=find_tick(window_ymax-window_ymin);
     redraw();
     push_cfg();
+  }
+
+  void glequalv(vecteur & v,bool rmequal){
+    iterateur it=v.begin(),itend=v.end();
+    if (rmequal){
+      for (;it!=itend;++it){
+	if (it->type==_VECT)
+	  glequalv(*it->_VECTptr,rmequal);
+	if (it->is_symb_of_sommet(at_equal))
+	  *it=symbolic(at_nop,it->_SYMBptr->feuille);
+      }
+    }
+    else {
+      for (;it!=itend;++it){
+	if (it->type==_VECT)
+	  glequalv(*it->_VECTptr,rmequal);
+	if (it->is_symb_of_sommet(at_nop))
+	  *it=symbolic(at_equal,it->_SYMBptr->feuille);
+      }
+    }
+  }
+
+  void Graph2d3d::glequal(bool rmequal){
+    glequalv(plot_instructions,rmequal);
   }
 
   void Graph2d3d::zoomx(double d,bool round){
@@ -2418,6 +2443,7 @@ namespace xcas {
 
 
   void Graph2d3d::zoom(double d){ 
+    glequal(true);
     zoomx(d);
     zoomy(d);
     zoomz(d);
@@ -2459,6 +2485,7 @@ namespace xcas {
   }
 
   void Graph2d3d::up(double d){ 
+    glequal(true);
     window_ymin += d;
     window_ymax += d;
     parent_redraw(this);
@@ -2466,6 +2493,7 @@ namespace xcas {
   }
 
   void Graph2d3d::down(double d){ 
+    glequal(true);
     window_ymin -= d;
     window_ymax -= d;
     parent_redraw(this);
@@ -2473,6 +2501,7 @@ namespace xcas {
   }
 
   void Graph2d3d::up_z(double d){ 
+    glequal(true);
     window_zmin += d;
     window_zmax += d;
     parent_redraw(this);
@@ -2480,6 +2509,7 @@ namespace xcas {
   }
 
   void Graph2d3d::down_z(double d){ 
+    glequal(true);
     window_zmin -= d;
     window_zmax -= d;
     parent_redraw(this);
@@ -2487,6 +2517,7 @@ namespace xcas {
   }
 
   void Graph2d3d::left(double d){ 
+    glequal(true);
     window_xmin -= d;
     window_xmax -= d;
     parent_redraw(this);
@@ -2494,6 +2525,7 @@ namespace xcas {
   }
 
   void Graph2d3d::right(double d){ 
+    glequal(true);
     window_xmin += d;
     window_xmax += d;
     parent_redraw(this);

@@ -241,6 +241,7 @@ namespace giac {
   // step by step utilities
   bool step_func(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poig,vecteur & tvi,bool printtvi,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_tabvar;
+  bool step_param(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT);
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

@@ -3197,6 +3197,17 @@ namespace giac {
 	}
 	return;
       }
+      if (is_zero(im(expo,contextptr),contextptr)){
+	reim(e,r,i,contextptr);
+	gen abse=normal(pow(r,2,contextptr)+pow(i,2,contextptr),contextptr);
+	gen arge=arg(e,contextptr);
+	arge=expo*arge;
+	abse=sqrt(abse,contextptr);
+	abse=pow(abse,expo,contextptr);
+	r=abse*cos(arge,contextptr);
+	i=abse*sin(arge,contextptr);
+	return;
+      }
     }
     if (u==at_rootof && f.type==_VECT && f._VECTptr->size()==2){
       vecteur tmp=*f._VECTptr;
@@ -6472,7 +6483,7 @@ namespace giac {
       if (b.is_symb_of_sommet(at_unit)){
 	vecteur & v=*b._SYMBptr->feuille._VECTptr;
 	gen res=va[1]*v[1];
-	res=ratnormal(res);
+	res=ratnormal(res,contextptr);
 	if (is_one(res))
 	  return va[0]*v[0];
 	return new_ref_symbolic(symbolic(at_unit,makenewvecteur(operator_times(va[0],v[0],contextptr),res)));
@@ -14883,8 +14894,13 @@ namespace giac {
 #ifdef EMCC
     // compile with -s LEGACY_GL_EMULATION=1
     gen last=g;
-    while (last.type==_VECT && !last._VECTptr->empty())
-      last=last._VECTptr->back();
+    while (last.type==_VECT && !last._VECTptr->empty()){
+      gen tmp=last._VECTptr->back();
+      if (tmp.is_symb_of_sommet(at_equal))
+	last=vecteur(last._VECTptr->begin(),last._VECTptr->end()-1);
+      else
+	last=tmp;
+    }
     if (calc_mode(&C)!=1 && last.is_symb_of_sommet(at_pnt)){
 #ifndef GIAC_GGB
       if (is3d(last)){
@@ -14908,7 +14924,7 @@ namespace giac {
       double xscale=window_xmax-window_xmin,yscale=window_ymax-window_ymin;
       double ratio=yscale/xscale;
       double gratio=0.6,gwidth=9;
-      if (ratio<gratio/2 || ratio>2*gratio) ortho=false;
+      if (ratio<gratio/3 || ratio>3*gratio) ortho=false; else ortho=true;
       if (ortho){
 	if (ratio>gratio){ // yscale>gratio*xscale, use yscale for x
 	  double xc=(window_xmax+window_xmin)/2;

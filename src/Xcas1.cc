@@ -3297,9 +3297,11 @@ namespace xcas {
     else {
       // if (CLOCK()-t<1e5) return;
     }
+#ifdef HAVE_LIBFLTK
     Fl_Widget * w=(Fl_Widget *)(widget);
     w->hide();
     fltk_return_value=0;
+#endif
   }
 
   // open a FLTK window, that will be printed to filename when closed

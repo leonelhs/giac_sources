@@ -205,6 +205,7 @@ namespace xcas {
     virtual void config_light(unsigned i);
     virtual void reset_light(unsigned i);
     virtual void set_axes(int b);
+    void glequal(bool equal); 
     void copy(const Graph2d3d & gr);
     void add_mouse_param_group(int x,int y,int w,int h);
     virtual void do_handle(const giac::gen & g);

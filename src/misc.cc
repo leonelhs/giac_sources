@@ -152,7 +152,7 @@ namespace giac {
     for (int i=s-2;i>=0;--i){
       res = res*(x-vx[i])+w[i];
       if (i%100==99) // otherwise segfault 
-	res=ratnormal(res);
+	res=ratnormal(res,contextptr);
     }
     return res;
     /*
@@ -417,6 +417,16 @@ namespace giac {
       return gentypeerr(contextptr);
     gen l=v.front(),i=v.back();
     int ii=0;
+    if (i.type==_VECT){
+      i=sortad(*i._VECTptr,false,contextptr);
+      if (i.type==_VECT){
+	const_iterateur it=i._VECTptr->begin(),itend=i._VECTptr->end();
+	for (;it!=itend;++it){
+	  l=_suppress(makesequence(l,*it),contextptr);
+	}
+	return l;
+      }
+    }
     if (i.type==_INT_ )
       ii=i.val-(xcas_mode(contextptr)!=0 || abs_calc_mode(contextptr)==38);
     if (l.type==_STRNG){
@@ -1238,7 +1248,7 @@ namespace giac {
 
   /*
   gen exptorootof(const gen & g,GIAC_CONTEXT){
-    gen h=ratnormal(g/cst_two_pi/cst_i);
+    gen h=ratnormal(g/cst_two_pi/cst_i,contextptr);
     if (h.type!=_FRAC || h._FRACptr->num.type!=_INT_ || h._FRACptr->den.type!=_INT_)
       return symbolic(at_exp,g);
     int n=h._FRACptr->num.val,d=h._FRACptr->den.val;
@@ -4740,7 +4750,7 @@ static define_unary_function_eval (__simplex_reduce,&_simplex_reduce,_simplex_re
     pol.push_back(v);
     for (int i=0;i<n;++i){   
       // move from xi to xi+1
-      v=*ratnormal(taylor(v,x[i+1]-x[i]))._VECTptr;
+      v=*ratnormal(taylor(v,x[i+1]-x[i]),contextptr)._VECTptr;
       lineq.push_back(v[d]-y[i+1]);
       // new v changes by the first coeff of v only
       v[0]=(i==n-1)?0:z[i+1];
@@ -4754,7 +4764,7 @@ static define_unary_function_eval (__simplex_reduce,&_simplex_reduce,_simplex_re
     vecteur zf=linsolve(lineq,inconnu,contextptr);
     if (is_undef(zf)) return zf;
     pol.pop_back();
-    pol=*ratnormal(subst(pol,inconnu,zf,false,contextptr))._VECTptr;
+    pol=*ratnormal(subst(pol,inconnu,zf,false,contextptr),contextptr)._VECTptr;
     for (int i=0;i<n;++i){
       if (pol[i].type==_VECT)
 	pol[i]=symb_horner(*pol[i]._VECTptr,xvar-x[i]);
@@ -6328,6 +6338,341 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     return is_one(g);
   }
   
+  bool step_param(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT){
+    if (t.type!=_IDNT)
+      return false;
+    gen periodef,periodeg,periode;
+    if (is_periodic(f,t,periodef,contextptr) && is_periodic(g,t,periodeg,contextptr)){
+      periode=gcd(periodef,periodeg,contextptr);
+      tmin=normal(-periode/2,contextptr);
+      tmax=normal(periode/2,contextptr);
+    }
+    int eof=0,eog=0;
+    if (tmin==-tmax && (eof=is_even_odd(f,t,contextptr)) && (eog=is_even_odd(g,t,contextptr))){
+      if (eof==1){
+	if (eog==1)
+	  gprintf("Even functions.",vecteur(0),contextptr);
+	else
+	  gprintf("Even function %gen, odd function %gen. Reflection Ox",makevecteur(f,g),contextptr);
+      }
+      else {
+	if (eog==1)
+	  gprintf("Odd function %gen, even function %gen. Reflection Oy",makevecteur(f,g),contextptr);
+	else
+	  gprintf("Odd functions. Center O",vecteur(0),contextptr);
+      }
+      tmin=0;
+    }
+    gen tmin0=tmin,tmax0=tmax;
+    vecteur lv=lidnt(evalf(f,1,contextptr));
+    if (lv.empty())
+      return true;
+    if (lv.size()!=1 || lv.front()!=t)
+      return false;
+    gen fg=symbolic(at_plus,makesequence(f,g));
+    gen df=domain(fg,t,0,contextptr);
+    gprintf("Domain %gen",vecteur(1,df),contextptr);
+    gen df1=domain(f,t,1,contextptr); // singular values only
+    if (df1.type!=_VECT){
+      gensizeerr("Unable to find singular points");
+      return false;
+    }
+    // Singularities
+    vecteur sing,crit;
+    identificateur xid=*t._IDNTptr;
+    const_iterateur it=df1._VECTptr->begin(),itend=df1._VECTptr->end();
+    for (;it!=itend;++it){
+      if (is_greater(*it,tmin,contextptr) && is_greater(tmax,*it,contextptr)){
+	sing.push_back(*it);
+      }
+    }
+    // Extremas
+    gen f1=derive(f,t,contextptr),g1=derive(g,t,contextptr);
+    gen f2=derive(f1,t,contextptr),g2=derive(g1,t,contextptr);
+    gen tval=eval(t,1,contextptr);
+    giac_assume(symb_and(symb_superieur_egal(t,tmin),symb_inferieur_egal(t,tmax)),contextptr);
+    gen cx=recursive_normal(solve(f1,t,0,contextptr),contextptr),cy=recursive_normal(solve(g1,t,0,contextptr),contextptr);
+    if (t!=tval)
+      sto(tval,t,contextptr);
+    if (cx.type!=_VECT || cy.type!=_VECT){
+      gensizeerr("Unable to find critical points");
+      return false;
+    }
+    vecteur c=mergevecteur(*cx._VECTptr,*cy._VECTptr);
+    comprim(c);
+    it=c.begin();itend=c.end();
+    for (;it!=itend;++it){
+      if (is_greater(*it,tmin,contextptr) && is_greater(tmax,*it,contextptr)){
+	crit.push_back(*it);
+	gen fx=limit(f,xid,*it,0,contextptr);
+	fx=recursive_normal(fx,contextptr);
+	gen gx=limit(g,xid,*it,0,contextptr);
+	gx=recursive_normal(gx,contextptr);
+	gen ax,ay;
+	bool singp=equalposcomp(*cx._VECTptr,*it) && equalposcomp(*cy._VECTptr,*it);
+	if (singp){
+	  // singular point, find tangent (and kind?)
+	  ax=limit(f2,xid,*it,0,contextptr);
+	  ax=recursive_normal(ax,contextptr);
+	  ay=limit(g2,xid,*it,0,contextptr);
+	  ay=recursive_normal(ay,contextptr);
+	  if (is_zero(ax) && is_zero(ay)){
+	    // series expansion
+	  }
+	  gprintf("Singular point %gen, point %gen direction %gen",makevecteur(symb_equal(t__IDNT_e,*it),makevecteur(fx,gx),makevecteur(ax,ay)),contextptr);
+	}
+	else {
+	  ax=limit(f1,xid,*it,0,contextptr);
+	  ay=limit(g1,xid,*it,0,contextptr);
+	  ax=recursive_normal(ax,contextptr);
+	  ay=recursive_normal(ay,contextptr);
+	}
+	gen n=sqrt(ax*evalf(ax,1,contextptr)+ay*ay,contextptr);
+	if (!is_undef(fx) && !is_inf(fx) && !is_undef(gx) && !is_inf(gx)){
+	  gen pnt=_point(makesequence(fx,gx,symb_equal(at_legende,makevecteur(fx,gx)),symb_equal(at_couleur,_MAGENTA)),contextptr);
+	  poi.push_back(pnt);	
+	  vecteur ve=makevecteur(_point(makesequence(fx,gx),contextptr),makevecteur(ax/n,ay/n),symb_equal(at_couleur,_MAGENTA));
+	  if (singp)
+	    ve.push_back(symb_equal(at_legende,makevecteur(ax,ay)));
+	  gen vv=_vector(gen(ve,_SEQ__VECT),contextptr);
+	  poi.push_back(vv);
+	}	
+      }
+    }
+    if (tmin==minus_inf && !equalposcomp(sing,minus_inf)){
+      if (in_domain(df,t,tmin,contextptr))
+	sing.push_back(tmin);
+      tmin=plus_inf;
+    }
+    if (tmax==plus_inf && !equalposcomp(sing,plus_inf)){
+      if (in_domain(df,t,tmin,contextptr))
+	sing.push_back(tmax);
+      tmax=minus_inf;
+    }
+    it=crit.begin();itend=crit.end();
+    for (;it!=itend;++it){
+      if (!is_inf(*it)){ 
+	if (is_greater(tmin,*it,contextptr))
+	  tmin=*it;
+	if (is_greater(*it,tmax,contextptr))
+	  tmax=*it;
+      }
+    }
+    // asymptotes
+    it=sing.begin();itend=sing.end();
+    for (;it!=itend;++it){
+      gen fx=limit(f,xid,*it,0,contextptr);
+      fx=recursive_normal(fx,contextptr);
+      gen fy=limit(g,xid,*it,0,contextptr);
+      fy=recursive_normal(fy,contextptr);
+      if (is_inf(fx)){
+	if (!is_inf(fy)){
+	  gen equ=symb_equal(y__IDNT_e,fy);
+	  gprintf("Horizontal asymptote %gen",vecteur(1,equ),contextptr);
+	  gen dr=_droite(makesequence(equ,symb_equal(at_legende,equ),symb_equal(at_couleur,_BLUE)),contextptr);
+	  if (!equalposcomp(poi,dr))
+	    poi.push_back(dr);
+	  continue;
+	}
+	gen a=limit(fy/fx,xid,*it,0,contextptr);
+	a=recursive_normal(a,contextptr);
+	if (is_undef(a)) continue;
+	if (is_inf(a)){
+	  gprintf("Vertical parabolic branch at %gen",vecteur(1,a),contextptr);
+	  continue;
+	}
+	if (is_zero(a)){
+	  gprintf("Horizontal parabolic branch at %gen",vecteur(1,a),contextptr);
+	  continue;
+	}
+	gen b=limit(fy-a*fx,xid,*it,0,contextptr);
+	b=recursive_normal(b,contextptr);
+	if (is_undef(a)) continue;
+	if (is_inf(a)){
+	  gprintf("Parabolic branch direction %gen at infinity",vecteur(1,symb_equal(y__IDNT_e,a*x__IDNT_e)),contextptr);
+	  continue;
+	}
+	gen equ=symb_equal(y__IDNT_e,a*x__IDNT_e+b);
+	gprintf("Asymptote %gen",vecteur(1,equ),contextptr);
+	gen dr=_droite(makesequence(equ,symb_equal(at_legende,equ),symb_equal(at_couleur,_BLUE)),contextptr);
+	if (!equalposcomp(poi,dr))
+	  poi.push_back(dr);
+	continue;
+      }
+      if (is_inf(fx)){
+	gen equ=symb_equal(x__IDNT_e,fx);
+	gprintf("Horizontal asymptote %gen",vecteur(1,equ),contextptr);
+	gen dr=_droite(makesequence(equ,symb_equal(at_legende,equ),symb_equal(at_couleur,_BLUE)),contextptr);
+	if (!equalposcomp(poi,dr))
+	  poi.push_back(dr);
+	continue;
+      }
+    }
+    vecteur tvx=mergevecteur(sing,crit);
+    if (in_domain(df,t,tmin0,contextptr))
+      tvx.insert(tvx.begin(),tmin0);
+    if (in_domain(df,t,tmax0,contextptr))
+      tvx.push_back(tmax0);
+    comprim(tvx);
+    gen tmp=_sort(tvx,contextptr);
+    if (tmp.type!=_VECT)
+      return false;
+    tvx=*tmp._VECTptr;
+    int pos=equalposcomp(tvx,minus_inf);
+    if (pos){
+      tvx.erase(tvx.begin()+pos-1);
+      tvx.insert(tvx.begin(),minus_inf);
+    }
+    pos=equalposcomp(tvx,plus_inf);
+    if (pos){
+      tvx.erase(tvx.begin()+pos-1);
+      tvx.push_back(plus_inf);
+    }
+    gen nextt=tvx.front();
+    vecteur tvit=makevecteur(t,nextt);
+    gen x=limit(f,xid,nextt,1,contextptr),xmin(plus_inf),xmax(minus_inf);
+    if (!is_inf(x) && is_greater(xmin,x,contextptr))
+      xmin=x;
+    if (!is_inf(x) && is_greater(x,xmax,contextptr))
+      xmax=x;
+    gen y=limit(g,xid,nextt,1,contextptr),ymin(plus_inf),ymax(minus_inf);
+    if (!is_inf(y) && is_greater(ymin,y,contextptr))
+      ymin=y;
+    if (!is_inf(y) && is_greater(y,ymax,contextptr))
+      ymax=y;
+    vecteur tvif=makevecteur(f,y);
+    vecteur tvig=makevecteur(g,y);
+    gen nothing=string2gen(" ",false);
+    vecteur tvidf=makevecteur(symb_equal(symb_derive(f,t),f1),limit(f1,xid,nextt,1,contextptr));
+    vecteur tvidg=makevecteur(symb_equal(symb_derive(g,t),g1),limit(g1,xid,nextt,1,contextptr));
+    int tvs=int(tvx.size());
+    for (int i=1;i<tvs;++i){
+      gen curt=nextt,dfx,dgx;
+      nextt=tvx[i];
+      tvit.push_back(nothing);
+      if (is_inf(nextt) && is_inf(curt)){
+	dfx=limit(f1,xid,0,0,contextptr);
+	dgx=limit(g1,xid,0,0,contextptr);
+      }
+      else {
+	if (curt==minus_inf){
+	  dfx=limit(f1,xid,nextt-1,0,contextptr);
+	  dgx=limit(g1,xid,nextt-1,0,contextptr);
+	}
+	else {
+	  if (nextt==plus_inf){
+	    dfx=limit(f1,xid,curt+1,0,contextptr);
+	    dgx=limit(g1,xid,curt+1,0,contextptr);
+	  }
+	  else {
+	    dfx=limit(f1,xid,(curt+nextt)/2,0,contextptr);
+	    dgx=limit(g1,xid,(curt+nextt)/2,0,contextptr);
+	  }
+	}
+      }
+      if (is_zero(dfx) || is_zero(dgx))
+	return false;
+      if (is_strictly_positive(dfx,contextptr)){
+	tvif.push_back(string2gen("↑",false));
+	tvidf.push_back(string2gen("+",false));
+      }
+      else {
+	tvif.push_back(string2gen("↓",false));
+	tvidf.push_back(string2gen("-",false));
+      }
+      if (is_strictly_positive(dgx,contextptr)){
+	tvig.push_back(string2gen("↑",false));
+	tvidg.push_back(string2gen("+",false));
+      }
+      else {
+	tvig.push_back(string2gen("↓",false));
+	tvidg.push_back(string2gen("-",false));
+      }
+      if (i<tvs-1 && equalposcomp(sing,nextt)){
+	x=limit(f,xid,nextt,-1,contextptr);
+	if (!is_inf(x) && is_greater(xmin,x,contextptr))
+	  xmin=x;
+	if (!is_inf(x) && is_greater(x,xmax,contextptr))
+	  xmax=x;
+	y=limit(g,xid,nextt,-1,contextptr);
+	if (!is_inf(y) && is_greater(ymin,y,contextptr))
+	  ymin=y;
+	if (!is_inf(y) && is_greater(y,ymax,contextptr))
+	  ymax=y;
+	tvit.push_back(nextt);
+	tvif.push_back(x);
+	tvig.push_back(y);
+	tvidf.push_back(nothing);
+	tvidg.push_back(nothing);
+	gen x=limit(f,xid,nextt,1,contextptr);
+	if (!is_inf(x) && is_greater(xmin,x,contextptr))
+	  xmin=x;
+	if (!is_inf(x) && is_greater(x,xmax,contextptr))
+	  xmax=x;
+	y=limit(g,xid,nextt,1,contextptr);
+	if (!is_inf(y) && is_greater(ymin,y,contextptr))
+	  ymin=y;
+	if (!is_inf(y) && is_greater(y,ymax,contextptr))
+	  ymax=y;
+	tvit.push_back(nextt);
+	tvif.push_back(x);
+	tvig.push_back(y);
+	tvidf.push_back(nothing);
+	tvidg.push_back(nothing);
+      }
+      else {
+	gen x=limit(f,xid,nextt,-1,contextptr);
+	if (!is_inf(x) && is_greater(xmin,x,contextptr))
+	  xmin=x;
+	if (!is_inf(x) && is_greater(x,xmax,contextptr))
+	  xmax=x;
+	y=limit(g,xid,nextt,-1,contextptr);
+	if (!is_inf(y) && is_greater(ymin,y,contextptr))
+	  ymin=y;
+	if (!is_inf(y) && is_greater(y,ymax,contextptr))
+	  ymax=y;
+	tvit.push_back(nextt);
+	tvif.push_back(x);
+	tvig.push_back(g);
+	tvidf.push_back(limit(f1,xid,nextt,-1,contextptr));
+	tvidg.push_back(limit(g1,xid,nextt,-1,contextptr));
+      }
+    }
+    tvi=makevecteur(tvit,tvif,tvidf,tvig,tvidg);
+    gen xscale=xmax-xmin;
+    if (is_inf(xscale) || xscale==0)
+      xscale=gnuplot_xmax-gnuplot_xmin;
+    if (eof==2){
+      xmax=max(xmax,-xmin,contextptr);
+      xmin=-xmax;
+    }
+    if (eof)
+      tmin=-tmax;
+    gen glx(_GL_X);
+    glx.subtype=_INT_PLOT;
+    glx=symb_equal(glx,symb_interval(xmin-xscale/2,xmax+xscale/2));
+    poi.insert(poi.begin(),glx);
+    gen yscale=ymax-ymin;
+    if (is_inf(yscale) || yscale==0)
+      yscale=gnuplot_ymax-gnuplot_ymin;
+    if (eog==2){
+      ymax=max(ymax,-ymin,contextptr);
+      ymin=-ymax;
+    }
+    gen gly(_GL_Y);
+    gly.subtype=_INT_PLOT;
+    gly=symb_equal(gly,symb_interval(ymin-yscale/2,ymax+yscale/2));
+    poi.insert(poi.begin(),gly);
+    if (step_infolevel(contextptr)) 
+      gprintf("Variations (%gen,%gen)\n%gen",makevecteur(f,g,tvi),contextptr);
+#ifndef EMCC
+    if (printtvi && step_infolevel(contextptr)==0)
+      *logptr(contextptr) << tvi << endl;
+#endif
+    // finished!
+    return true;
+  }
+
   // x->f in xmin..xmax
   // pass -inf and inf by default.
   // poi will contain point of interest: asymptotes and extremas
@@ -6340,6 +6685,14 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       gprintf("Periodic function T=%gen",vecteur(1,periode),contextptr);
       xmin=normal(-periode/2,contextptr);
       xmax=normal(periode/2,contextptr);
+    }
+    int eo=0;
+    if (xmin==-xmax && (eo=is_even_odd(f,x,contextptr))){
+      if (eo==1)
+	gprintf("Even function %gen. Reflection Oy",vecteur(1,f),contextptr);
+      else
+	gprintf("Odd function %gen. Center O",vecteur(1,f),contextptr);
+      xmin=0;
     }
     gen xmin0=xmin,xmax0=xmax;
     vecteur lv=lidnt(evalf(f,1,contextptr));
@@ -6366,7 +6719,11 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     // Extremas
     gen f1=derive(f,x,contextptr);
 #if 1
+    gen xval=eval(x,1,contextptr);
+    giac_assume(symb_and(symb_superieur_egal(x,xmin),symb_inferieur_egal(x,xmax)),contextptr);
     gen c=solve(f1,x,0,contextptr);
+    if (x!=xval)
+      sto(xval,x,contextptr);
     // if (c.type==_VECT && c._VECTptr->empty()) c=_fsolve(makesequence(f,x),contextptr);
 #else
     gen c=critical(makesequence(f,x),false,contextptr);
@@ -6380,7 +6737,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (is_greater(*it,xmin,contextptr) && is_greater(xmax,*it,contextptr)){
 	crit.push_back(*it);
 	gen fx=limit(f,xid,*it,0,contextptr);
-	if (!is_undef(fx) && !is_inf(x))
+	fx=recursive_normal(fx,contextptr);
+	if (!is_undef(fx) && !is_inf(fx))
 	  poi.push_back(_point(makesequence(*it,fx,symb_equal(at_legende,makevecteur(*it,fx)),symb_equal(at_couleur,_MAGENTA)),contextptr));
       }
     }
@@ -6417,14 +6775,18 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	continue;
       }
       gen l=limit(f,xid,*it,0,contextptr);
+      l=recursive_normal(l,contextptr);
       if (is_undef(l)) continue;
       if (!is_inf(l)){
 	equ=symb_equal(y__IDNT_e,l);
 	gprintf("Horizontal asymptote %gen",vecteur(1,equ),contextptr);
-	poi.push_back(_droite(makesequence(l*cst_i,l*cst_i+1,symb_equal(at_legende,equ),symb_equal(at_couleur,_BLUE)),contextptr));
+	gen dr=_droite(makesequence(l*cst_i,l*cst_i+1,symb_equal(at_legende,equ),symb_equal(at_couleur,_BLUE)),contextptr);
+	if (!equalposcomp(poi,dr))
+	  poi.push_back(dr);
 	continue;
       }
       gen a=limit(f/x,xid,*it,0,contextptr);
+      a=recursive_normal(a,contextptr);
       if (is_undef(a)) continue;
       if (is_inf(a)){
 	gprintf("Vertical parabolic branch at %gen",vecteur(1,a),contextptr);
@@ -6435,6 +6797,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	continue;
       }
       gen b=limit(f-a*x,xid,*it,0,contextptr);
+      b=recursive_normal(b,contextptr);
       if (is_undef(a)) continue;
       if (is_inf(a)){
 	gprintf("Parabolic branch direction %gen at infinity",vecteur(1,symb_equal(y__IDNT_e,a*x__IDNT_e)),contextptr);
@@ -6442,7 +6805,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       }
       equ=symb_equal(y__IDNT_e,a*x__IDNT_e+b);
       gprintf("Asymptote %gen",vecteur(1,equ),contextptr);
-      gen dr=_droite(makesequence(b*cst_i,1+(a+b)*cst_i,symb_equal(at_legende,equ),symb_equal(at_couleur,_BLUE)),contextptr);
+      gen dr=_droite(makesequence(equ,symb_equal(at_legende,equ),symb_equal(at_couleur,_BLUE)),contextptr);
       if (!equalposcomp(poi,dr))
 	poi.push_back(dr);
     }
@@ -6469,7 +6832,12 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     }
     gen nextx=tvx.front();
     vecteur tvix=makevecteur(x,nextx);
-    vecteur tvif=makevecteur(f,limit(f,xid,nextx,1,contextptr));
+    gen y=limit(f,xid,nextx,1,contextptr),ymin(plus_inf),ymax(minus_inf);
+    if (!is_inf(y) && is_greater(ymin,y,contextptr))
+      ymin=y;
+    if (!is_inf(y) && is_greater(y,ymax,contextptr))
+      ymax=y;
+    vecteur tvif=makevecteur(f,y);
     gen nothing=string2gen(" ",false);
     vecteur tvidf=makevecteur(symb_equal(symb_derive(f,x),f1),limit(f1,xid,nextx,1,contextptr));
     int tvs=int(tvx.size());
@@ -6480,8 +6848,16 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (is_inf(nextx) && is_inf(curx)){
 	dfx=limit(f1,xid,0,0,contextptr);
       }
-      else
-	dfx=limit(f1,xid,(curx+nextx)/2,0,contextptr);
+      else {
+	if (curx==minus_inf)
+	  dfx=limit(f1,xid,nextx-1,0,contextptr);
+	else {
+	  if (nextx==plus_inf)
+	    dfx=limit(f1,xid,curx+1,0,contextptr);
+	  else
+	    dfx=limit(f1,xid,(curx+nextx)/2,0,contextptr);
+	}
+      }
       if (is_zero(dfx))
 	return false;
       if (is_strictly_positive(dfx,contextptr)){
@@ -6493,34 +6869,70 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvidf.push_back(string2gen("-",false));
       }
       if (i<tvs-1 && equalposcomp(sing,nextx)){
-	gen fx=limit(f,xid,nextx,-1,contextptr);
+	y=limit(f,xid,nextx,-1,contextptr);
+	if (!is_inf(y) && is_greater(ymin,y,contextptr))
+	  ymin=y;
+	if (!is_inf(y) && is_greater(y,ymax,contextptr))
+	  ymax=y;
 	tvix.push_back(nextx);
-	tvif.push_back(fx);
+	tvif.push_back(y);
 	tvidf.push_back(string2gen("||",false));
-	fx=limit(f,xid,nextx,1,contextptr);
+	y=limit(f,xid,nextx,1,contextptr);
+	if (!is_inf(y) && is_greater(ymin,y,contextptr))
+	  ymin=y;
+	if (!is_inf(y) && is_greater(y,ymax,contextptr))
+	  ymax=y;
 	tvix.push_back(nothing);
-	tvif.push_back(fx);
+	tvif.push_back(y);
 	tvidf.push_back(string2gen("||",false));
       }
       else {
-	gen fx=limit(f,xid,nextx,-1,contextptr);
+	y=limit(f,xid,nextx,-1,contextptr);
+	if (!is_inf(y) && is_greater(ymin,y,contextptr))
+	  ymin=y;
+	if (!is_inf(y) && is_greater(y,ymax,contextptr))
+	  ymax=y;
 	tvix.push_back(nextx);
-	tvif.push_back(fx);
+	tvif.push_back(y);
 	tvidf.push_back(limit(f1,xid,nextx,-1,contextptr));
       }
     }
     tvi=makevecteur(tvix,tvif,tvidf);
-    if (step_infolevel(contextptr)) gprintf("Variations %gen\n%gen",makevecteur(f,tvi),contextptr);
-    if (printtvi)
+    gen yscale=ymax-ymin;
+    if (is_inf(yscale) || yscale==0)
+      yscale=xmax-xmin;
+    if (is_inf(yscale) || yscale==0)
+      yscale=gnuplot_ymax-gnuplot_ymin;
+    if (eo){
+      xmax=max(xmax,-xmin,contextptr);
+      xmin=-xmax;
+      if (eo==2){
+	ymax=max(ymax,-ymin,contextptr);
+	ymin=-ymax;
+      }
+    }
+    gen gly(_GL_Y);
+    gly.subtype=_INT_PLOT;
+    gly=symb_equal(gly,symb_interval(ymin-yscale/2,ymax+yscale/2));
+    poi.insert(poi.begin(),gly);
+    if (step_infolevel(contextptr)) 
+      gprintf("Variations %gen\n%gen",makevecteur(f,tvi),contextptr);
+#ifndef EMCC
+    if (printtvi && step_infolevel(contextptr)==0)
       *logptr(contextptr) << tvi << endl;
+#endif
     // finished!
     return true;
   }
 
   gen _tabvar(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
-    vecteur v(plotpreprocess(g,contextptr));
+    vecteur v(g.type==_VECT && g.subtype==_SEQ__VECT?*g._VECTptr:vecteur(1,g));
     int s=int(v.size());
+    if (s==1){
+      v.push_back(ggb_var(g));
+      ++s;
+    }
     if (s<2)
       return gensizeerr(contextptr);
     gen f=v[0];
@@ -6544,14 +6956,30 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	xmax=v[3];
 	s0=4;
       }
+      if (s==2 && x.type!=_IDNT)
+	return _tabvar(makevecteur(f,x),contextptr);
     }
     vecteur tvi,poi;
     int st=step_infolevel(contextptr);
     if (!st) step_infolevel(1,contextptr);
-    step_func(f,x,xmin,xmax,poi,tvi,false,contextptr);
+    bool param=f.type==_VECT && f._VECTptr->size()==2;
+    if (param)
+      step_param(f._VECTptr->front(),f._VECTptr->back(),x,xmin,xmax,poi,tvi,false,contextptr);
+    else
+      step_func(f,x,xmin,xmax,poi,tvi,false,contextptr);
     step_infolevel(st,contextptr);
     if (v[s-1]==at_tabvar)
       return tvi;
+#ifdef EMCC
+    bool plot=true;
+#else
+    bool plot=false;
+#endif
+    if (v[s-1]==at_plot){
+      plot=true;
+      v.pop_back();
+      --s;
+    }
     gen scale=(gnuplot_xmax-gnuplot_xmin)/5.0;
     gen m=xmin,M=xmax;
     if (is_inf(m))
@@ -6571,9 +6999,19 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     for (;s0<s;++s0){
       w.push_back(v[s0]);
     }
-    gen p=funcplotfunc(gen(w,_SEQ__VECT),false,contextptr);
-    poi=mergevecteur(poi,gen2vecteur(p));
-    return gen(poi,_SEQ__VECT);
+    gen p;
+    if (param)
+      p=paramplotparam(gen(w,_SEQ__VECT),false,contextptr);
+    else
+      p=funcplotfunc(gen(w,_SEQ__VECT),false,contextptr);
+    if (plot){
+      poi=mergevecteur(poi,gen2vecteur(p));
+      return gen(poi,_SEQ__VECT);
+    }
+    else {
+      *logptr(contextptr) << "You can see the function with DispG or plotfunc(" << gen(w,_SEQ__VECT) << endl;
+      return tvi;
+    }
   }
   static const char _tabvar_s []="tabvar";
   static define_unary_function_eval (__tabvar,&_tabvar,_tabvar_s);
