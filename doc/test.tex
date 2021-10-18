@@ -139,6 +139,9 @@ with optional style argument\\
 \verb|\giaccmd[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}|\\
 \giaccmd[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}
 
+{\bf Warning}, you must replace \verb|<| by \verb|&lt;| and \verb|>|
+by \verb|&gt;|, otherwise they will be interpreted as HTML delimiters.
+
 For a program\index{giacprog} or multi-line commands\\
 \verb|\begin{giacprog}...\end{giacprog}|, example homemade absolute value\\
 \begin{giacprog}
@@ -148,7 +151,8 @@ f(x):={
   return y;
 }
 \end{giacprog}
-Do not use in another environment (like itemize or enumerate).
+Inside this environment, you can keep \verb|<| and \verb|>|.
+Do not use this environment in another environment (like itemize or enumerate).
 
 A link\index{giaclink} to Xcas offline with a few commands\\
 \verb|\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasen.html#+factor(x^4-1)&+a:=idn(3)&}|\\

@@ -221,8 +221,12 @@ namespace xcas {
     giac::increasing_power(Xcas_Increasing_power->value(),contextptr);
     giac::angle_radian(Xcas_Angle_radian->value(),contextptr);
     giac::approx_mode(Xcas_Approx_mode->value(),contextptr);
-    if (strlen(Xcas_Autosimplify->value())<3)
-      giac::_autosimplify(0,contextptr);
+    if (strlen(Xcas_Autosimplify->value())<3){
+      if (Xcas_Autosimplify->value()[0]>='0' && Xcas_Autosimplify->value()[0]<='2')
+	giac::_autosimplify(Xcas_Autosimplify->value()[0]-'0',contextptr);
+      else
+	giac::_autosimplify(0,contextptr);
+    }
     else
       giac::_autosimplify(gen(Xcas_Autosimplify->value(),contextptr),contextptr);
     giac::scientific_format(do_scientific_format,contextptr);

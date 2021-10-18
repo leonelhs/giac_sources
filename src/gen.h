@@ -461,7 +461,7 @@ namespace giac {
     gen operator () (const gen & arg,GIAC_CONTEXT) const;
 #ifdef NO_UNARY_FUNCTION_COMPOSE
     inline unary_function_eval * ptr() const {
-#ifdef __x86_64__
+#ifdef x86_64
       return (unary_function_eval *) (((ulonglong ) _ptr) & 0xfffffffffffffffc);
 #else
       return (unary_function_eval *) (((size_t) _ptr) & 0xfffffffc);
@@ -470,7 +470,7 @@ namespace giac {
 #else // NO_UNARY_FUNCTION_COMPOSE
     inline unary_function_abstract * ptr () const
     {
-#ifdef __x86_64__
+#ifdef x86_64
       return (unary_function_abstract *) (((ulonglong ) _ptr) & 0xfffffffffffffffc);
 #else
       return (unary_function_abstract *) (((size_t) _ptr) & 0xfffffffc);
@@ -480,7 +480,7 @@ namespace giac {
     bool quoted() const ;
     inline bool operator ==(const unary_function_ptr & u) const { 
       // if (&u==this) return true; 
-#ifdef __x86_64__
+#ifdef x86_64
       return ((ulonglong)(_ptr) & 0xfffffffffffffffc)  == ((ulonglong)( u._ptr) & 0xfffffffffffffffc ); 
 #else
       return ((size_t)(_ptr) & 0xfffffffc) == ((size_t)(u._ptr) & 0xfffffffc); 
@@ -489,7 +489,7 @@ namespace giac {
     inline bool operator !=(const unary_function_ptr & u) const { return !(*this==u); }
     inline bool operator ==(const unary_function_ptr * u) const { 
       // if (&u==this) return true; 
-#ifdef __x86_64__
+#ifdef x86_64
       return u && ( ((ulonglong)(_ptr) & 0xfffffffffffffffc) == ((ulonglong)(u->_ptr) & 0xfffffffffffffffc) ); 
 #else
       return u && ( ((size_t)(_ptr) & 0xfffffffc) == ((size_t)(u->_ptr) & 0xfffffffc ) ); 
@@ -541,7 +541,7 @@ namespace giac {
       ref_vecteur * __VECTptr ; // vecteur: std::vectors & dense_POLY1 (type _VECT)
       ref_sparse_poly1 * __SPOL1ptr ; // std::vector<monome>: sparse 1-d poly (type _SPOL1)
       ref_string * __STRNGptr;
-      unsigned _FUNC_;
+      size_t _FUNC_;
       // ref_unary_function_ptr * __FUNCptr;
       ref_gen_user * __USERptr;
       ref_gen_map * __MAPptr;
@@ -1232,7 +1232,7 @@ namespace giac {
   std::istream & operator >> (std::istream & is,gen & a);
 #endif
 
-#if defined(GIAC_GENERIC_CONSTANTS) // || (defined(VISUALC) && !defined(RTOS_THREADX)) || defined(__x86_64__)
+#if defined(GIAC_GENERIC_CONSTANTS) // || (defined(VISUALC) && !defined(RTOS_THREADX)) || defined(x86_64)
   extern const gen zero;
 #else
   extern const gen & zero;

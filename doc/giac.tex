@@ -172,10 +172,38 @@ var Module = {
      UI.render_canvas(f);
    }
   },
+  ltgt:function(s){
+    var ss=s.length,i,res='';
+    for (i=0;i<ss-4;i++){
+      if (s[i]!='&' || s[i+2]!='t' || s[i+3]!=';'){
+        res += s[i];
+        continue;
+      }
+      if (s[i+1]=='l'){
+        res += '<';
+        i +=3;
+        continue;
+      }
+      if (s[i+1]=='g'){
+        res += '>';
+        i +=3;
+        continue;
+      }
+      res += s[i];
+    }
+    for (;i<ss;i++) res+=s[i];
+    return res;
+  },
+  rmquote:function(tmp){
+    var s=tmp.length;
+    if (s>2 && tmp.charCodeAt(0)==34 && tmp.charCodeAt(s-1)==34)
+      tmp=tmp.substr(1,s-2);
+    return tmp;
+  },
   quick:function(field){
     var tmp1=field.previousSibling.value;
     var tmp=UI.caseval(tmp1);
-    if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); 
+    tmp=UI.rmquote(tmp); 
     tmp=UI.latexeval(tmp);
     Module.print(String.fromCharCode(2));
     Module.print("<tt>");
@@ -230,7 +258,7 @@ var Module = {
    Module.print(tmp);
     tmp=UI.caseval(tmp);
     if (mode==1){
-      if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); 
+      tmp=UI.rmquote(tmp); 
    }
    if (mode==2){
      tmp=UI.latexeval(tmp);
@@ -294,7 +322,7 @@ var Module = {
 \newenvironment{giacprog}{
 \verbatim}
 {\endverbatim 
-\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;t.value=tmp;tmp=UI.caseval(tmp);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
+\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
 }
 }
 \else
@@ -315,7 +343,7 @@ var Module = {
 \@getprint{#1>#3}
 \@print{</textarea><button onclick="var tmp=UI.caseval(}
 \@getprint{'#2('}
-\@print{+previousSibling.value+')');if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling)">}
+\@print{+previousSibling.value+')');tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling)">}
 \@getprint{#2}
 \@print{</button><span></span><br>}
 \else
@@ -326,7 +354,7 @@ var Module = {
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
 \@getprint{#1>#2}
-\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
 \else
 \lstinline@#2@
 \fi
@@ -335,7 +363,7 @@ var Module = {
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
 \@getprint{#1>#2}
-\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">}
 \@getprint{#3}
 \@print{</button><span></span><br>}
 \else
@@ -346,7 +374,7 @@ var Module = {
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
 \@getprint{#1>#2}
-\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
 \else
 \lstinline@#2@
 \fi
@@ -367,7 +395,7 @@ var Module = {
 \newcommand{\giacinputmath}[2][style="width:400px;height:20px;font-size:large"]{\ifhevea
 \begin{rawhtml}<br><textarea onkeypress="UI.ckenter(event,this,2)" \end{rawhtml}
 \@getprint{#1>#2} 
-\begin{rawhtml}</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><span></span><br>\end{rawhtml}
+\begin{rawhtml}</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><span></span><br>\end{rawhtml}
 \else
 \lstinline@#2@
 \fi
@@ -397,7 +425,7 @@ var Module = {
 \newcommand{\giacinputbigmath}[2][style="width:800px;height:20px;font-size:large"]{\ifhevea
 \begin{rawhtml}<div><textarea onkeypress="UI.ckenter(event,this,2)" \end{rawhtml}
 \@getprint{#1>#2} 
-\begin{rawhtml}</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>\end{rawhtml}
+\begin{rawhtml}</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>\end{rawhtml}
 \else
 \lstinline@#2@
 \fi

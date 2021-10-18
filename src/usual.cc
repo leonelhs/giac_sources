@@ -7961,6 +7961,8 @@ namespace giac {
       return gensizeerr(contextptr);
     if (n==-1)
       return Gamma(x,contextptr);
+    if (n==0)
+      return Psi(x,contextptr);
     if (is_integer(x) && is_positive(-x,contextptr))
       return unsigned_inf;
     if (is_one(x)){
@@ -9737,7 +9739,7 @@ namespace giac {
       return G;
     }
     if (g.type!=_SYMB)
-      return (g.type==_FRAC || is_integer(g))?abs(g,context0):1;
+      return (g.type==_FRAC || (is_integer(g) && g!=0))?abs(g,context0):1;
     if (g._SYMBptr->sommet==at_plus || g._SYMBptr->sommet==at_neg)
       return fast_icontent(g._SYMBptr->feuille);
     if (g._SYMBptr->sommet==at_inv)

@@ -147,7 +147,11 @@ accepte aussi un argument de style optionnel~:\\
 \verb|\giaccmd[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}|\\
 \giaccmd[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}
 
-La m\^eme chose avec un programme ou tout autre commande de plusieurs lignes
+{\bf Attention}, pour toutes ces commandes, il faut remplacer \verb|<| par
+\verb|&lt;| et \verb|>| par \verb|&gt;| sinon ces caract\`eres
+sont interpr\'et\'es comme des d\'elimieturs HTML.
+
+La m\^eme chose avec un programme ou une commande de plusieurs lignes
 avec \verb|\begin{giacprog}...\end{giacprog}|\index{giacprog}~:
 \begin{giacprog}
 f(x):={
@@ -156,7 +160,8 @@ f(x):={
   return y;
 }
 \end{giacprog}
-Attention, ne pas utiliser dans un autre environement (itemize, enumerate...).
+Ici on peut utiliser les caract\`eres \verb|<| et \verb|>|. Attention, il 
+ne pas utiliser cet environement dans un autre environement (itemize, enumerate...).
 
 La commande \verb|\giacslider{}{}{}{}{}|
 permet de cr\'eer une variable
