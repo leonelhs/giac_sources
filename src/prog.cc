@@ -444,6 +444,23 @@ namespace giac {
   bool is_constant_idnt(const gen & g){
     return g==cst_pi || g==cst_euler_gamma || is_inf(g) || is_undef(g) || (g.type==_IDNT && strcmp(g._IDNTptr->id_name,"i")==0);
   }
+
+  bool warn_equal_in_prog=true;
+  gen _warn_equal_in_prog(const gen & g,GIAC_CONTEXT){
+    if (is_zero(g) && g.type!=_VECT){
+      warn_equal_in_prog=false;
+      return string2gen("Warning disabled",false);
+    }
+    if (is_one(g)){
+      warn_equal_in_prog=true;
+      return string2gen("Warning enabled",false);
+    }
+    return warn_equal_in_prog;
+  }
+  static const char _warn_equal_in_prog_s []="warn_equal_in_prog";
+  static define_unary_function_eval (__warn_equal_in_prog,&_warn_equal_in_prog,_warn_equal_in_prog_s);
+  define_unary_function_ptr5( at_warn_equal_in_prog ,alias_at_warn_equal_in_prog,&__warn_equal_in_prog,0,true);
+
   // Return the names of variables that are not local in g
   // and the equality that are not used (warning = instead of := )
   string check_local_assign(const gen & g,GIAC_CONTEXT){
@@ -461,7 +478,7 @@ namespace giac {
       if (f.type!=_VECT || f._VECTptr->size()!=2)
 	return res;
       res=check_local_assign(f._VECTptr->front(),contextptr);
-      return res.substr(0,res.size()-1)+gettext(" compiling ")+f._VECTptr->back().print(contextptr)+'\n';
+      return res.substr(0,res.size()-1)+"\n//"+gettext(" compiling ")+f._VECTptr->back().print(contextptr)+'\n';
     }
     if (!g.is_symb_of_sommet(at_program))
       return res;
@@ -483,8 +500,9 @@ namespace giac {
 	--i; --rs;
       }
     }
-    if (0 && !res1.empty()){ // disabled since it is now accepted
-      res += gettext("// Warning, assignation is :=, check these lines: ");
+    if (warn_equal_in_prog && !res1.empty()){ // syntax = for := is now accepted
+      res += gettext("// Warning, assignation is :=, check the lines below:\n");
+      res += "// (Run warn_equal_in_prog(0) to disable this warning)\n";
       const_iterateur it=res1.begin(),itend=res1.end();
       for (;it!=itend;++it){
 	res += it->print(contextptr);

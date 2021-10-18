@@ -6159,15 +6159,32 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   static define_unary_function_eval (__is_polynomial,&_is_polynomial,_is_polynomial_s);
   define_unary_function_ptr5( at_is_polynomial ,alias_at_is_polynomial,&__is_polynomial,0,true);
 
-  // find positions of object in list
+  // find positions of object in list or first position of substring in string
   gen _find(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     vecteur v = gen2vecteur(args);
-    if (v.size()!=2 || v.back().type!=_VECT)
+    if (v.size()!=2)
       return gensizeerr(contextptr);
     const gen a=v.front();
+    int shift=xcas_mode(contextptr)>0 || abs_calc_mode(contextptr)==38;
+    if (a.type==_STRNG){
+      if (v.back().type!=_STRNG)
+	return gensizeerr(contextptr);
+      const string s=*v.back()._STRNGptr;
+      vecteur res;
+      int pos=0;
+      for (;;++pos){
+	pos=s.find(*a._STRNGptr,pos);
+	if (pos<0 || pos>=s.size())
+	  break;
+	res.push_back(pos+shift);
+      }
+      return res;
+    }
+    if (v.back().type!=_VECT)
+      return gensizeerr(contextptr);
     const vecteur & w =*v.back()._VECTptr;
-    int s=int(w.size()),shift=xcas_mode(contextptr)>0 || abs_calc_mode(contextptr)==38;
+    int s=int(w.size());
     vecteur res;
     for (int i=0;i<s;++i){
       if (a==w[i])

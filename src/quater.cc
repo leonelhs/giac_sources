@@ -158,7 +158,7 @@ namespace giac {
 	  lrdm(*minmat[i]._VECTptr,m-1);
 	minmat=mtran(minmat);
 	matrice minred,pivots; gen det;
-	if (!modrref(minmat,minred,pivots,det,0,m,0,m+1,true,0,p,0))
+	if (!modrref(minmat,minred,pivots,det,0,m,0,m+1,true,0,p,false,0))
 	  return 0;
 	// Extract kernel from last column
 	vmin=vecteur(m+1,1);

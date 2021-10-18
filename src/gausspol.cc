@@ -3269,7 +3269,7 @@ namespace giac {
 	    // Reduce linear system modulo modulo
 	    gen det; vecteur pivots; matrice mred;
 	    // CERR << "SPMOD " << CLOCK() << endl;
-	    modrref(m,mred,pivots,det,0,int(m.size()),0,int(m.front()._VECTptr->size())-1,true,false,modulo,false);
+	    modrref(m,mred,pivots,det,0,int(m.size()),0,int(m.front()._VECTptr->size())-1,true,false,modulo,false,0);
 	    // CERR << "SPMODend " << CLOCK() << endl;
 	    if (!is_zero(det)){	      
 	      // Last column is the solution, it should be polynomials
@@ -5486,6 +5486,15 @@ namespace giac {
 
   static bool do_factor(const polynome &p,polynome & p_content,factorization & f,bool isprimitive,bool with_sqrt,bool complexmode,const gen & divide_an_by,gen & extra_div);
 
+  bool has_embedded_poly(const polynome & p){
+    vector< monomial<gen> >::const_iterator it=p.coord.begin(),itend=p.coord.end();
+    for (;it!=itend;++it){
+      if (it->value.type==_POLY)
+	return true;
+    }
+    return false;
+  }
+
   bool ext_factor(const polynome &p,const gen & e,gen & an,polynome & p_content,factorization & f,bool complexmode,gen & extra_div){
     if (e._EXTptr->type!=_VECT){
 #ifndef NO_STDEXCEPT
@@ -5669,6 +5678,7 @@ namespace giac {
       else {
 	gen bn(1);
 	polynome pcopy(pcur);
+	bool embedded_poly=has_embedded_poly(p_mini);
 	for (;f_it!=f_itend;++f_it){
 	  if (k){ // shift f_it->fact
 	    //vecteur v=polynome2poly1(f_it->fact);
@@ -5679,35 +5689,37 @@ namespace giac {
 	    v=taylor(v,decal);
 	    // pcur=poly12polynome(v); 
 	    poly12polynome(v,1,pcur,f_it->fact.dim);
-#if 0
-	    pcur=gcd(pcur,pcopy); 
-#else
-	    if (f_it+1==f_itend){
-	      pcur=pcopy;
-	    }
+	    if (embedded_poly)
+	      pcur=gcd(pcur,pcopy); 
 	    else {
-	      polynome dcur=simplify(pcur,pcopy);
-	      dcur.coord.swap(pcur.coord);
-	      gen t;
-	      lcmdeno(pcopy,t);
+	      // fix it for normal(sqrt(a*pi)/(2*sqrt(a)*sqrt(pi)));
+	      // dcur might have denominators inside
+	      if (f_it+1==f_itend){
+		pcur=pcopy;
+	      }
+	      else {
+		polynome dcur=simplify(pcur,pcopy);
+		dcur.coord.swap(pcur.coord);
+		gen t;
+		lcmdeno(pcopy,t);
+	      }
 	    }
-#endif
 	  }
 	  else {
-#if 0
-	    pcur=gcd(f_it->fact,p);
-#else
-	    if (f_it+1==f_itend){
-	      pcur=pcopy;
-	    }
+	    if (embedded_poly)
+	      pcur=gcd(f_it->fact,p);
 	    else {
-	      polynome fcopy(f_it->fact);
-	      polynome dcur=simplify(fcopy,pcopy);
-	      dcur.coord.swap(pcur.coord);
-	      gen t;
-	      lcmdeno(pcopy,t);
+	      if (f_it+1==f_itend){
+		pcur=pcopy;
+	      }
+	      else {
+		polynome fcopy(f_it->fact);
+		polynome dcur=simplify(fcopy,pcopy);
+		dcur.coord.swap(pcur.coord);
+		gen t;
+		lcmdeno(pcopy,t);
+	      }
 	    }
-#endif
 	  }
 	  // unitarize pcur instead of computing bn
 	  pcur=pcur/pcur.coord.front().value;

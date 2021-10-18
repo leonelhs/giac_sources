@@ -4173,7 +4173,7 @@ namespace giac {
 
       if (a.type==_DOUBLE_){
 #ifdef DOUBLEVAL
-	return a._DOUBLE_val += b._DOUBLE_val;
+	a._DOUBLE_val += b._DOUBLE_val; return a;
 #else
 	*((double *) &a) += *((double *) &b);
 	a.type = _DOUBLE_;
@@ -4182,7 +4182,7 @@ namespace giac {
       }
       if (a.type==_FLOAT_){
 #ifdef DOUBLEVAL
-	return a._FLOAT_val += b._FLOAT_val;
+	a._FLOAT_val += b._FLOAT_val; return a;
 #else
 	*((giac_float *) &a) += *((giac_float *) &b);
 	a.type = _FLOAT_;
@@ -4945,7 +4945,7 @@ namespace giac {
 #endif
       if (a.type==_DOUBLE_){
 #ifdef DOUBLEVAL
-	return a._DOUBLE_val -= b._DOUBLE_val;
+	a._DOUBLE_val -= b._DOUBLE_val; return a;
 #else
 	*((double *) &a) -= *((double *) &b);
 	a.type = _DOUBLE_;
@@ -4954,7 +4954,7 @@ namespace giac {
       }
       if (a.type==_FLOAT_){
 #ifdef DOUBLEVAL
-	return a._FLOAT_val -= b._FLOAT_val;
+	a._FLOAT_val -= b._FLOAT_val; return a;
 #else
 	*((double *) &a) -= *((double *) &b);
 	a.type = _FLOAT_;

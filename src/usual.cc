@@ -5002,8 +5002,10 @@ namespace giac {
     }
     vecteur vb(lvar(b));
     vecteur vab(lvar(makevecteur(a,b)));
-    if (vab.size()==va.size()+vb.size())
-      return symb_of(a,b);
+    if (vab.size()==va.size()+vb.size()){
+      if (va.size()!=1 || va.front().type!=_IDNT || lvarx(b,va.front()).empty())
+	return symb_of(a,b);
+    }
     if (!warn_implicit(a,b,contextptr))
       return gensizeerr("Invalid implicit multiplication for ("+ a.print(contextptr)+")(" + b.print(contextptr)+')');
     return a*b;
