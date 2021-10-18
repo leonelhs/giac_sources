@@ -2516,7 +2516,7 @@ namespace xcas {
     // cerr << s << endl;
     int L=s.size(),i=0;
     // Check for an HTML link
-    if (L>8 && (s.substr(0,6)=="http:/" || s.substr(0,6)=="file:/") ){
+    if (L>8 && (s.substr(0,6)=="http:/" || s.substr(0,7)=="https:/" || s.substr(0,6)=="file:/") ){
       // find # position, then create normal line for +, slider for *
       int pos=s.find('#');
       if (pos>0 && pos<L){

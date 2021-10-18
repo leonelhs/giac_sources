@@ -1479,7 +1479,7 @@ namespace xcas {
 	  if (!haspoint)
 	    continue;
 	  string url;
-	  if (i>wordbegin+7 && (s.substr(wordbegin,7)=="http://" || s.substr(wordbegin,7)=="file://")){
+	  if (i>wordbegin+8 && (s.substr(wordbegin,8)=="https://" || s.substr(wordbegin,7)=="http://" || s.substr(wordbegin,7)=="file://")){
 	    url=s.substr(wordbegin,i-wordbegin);
 	  }
 	  else {
@@ -1494,7 +1494,7 @@ namespace xcas {
 	      url=*giac::_pwd(0,0)._STRNGptr+"/"+url;
 	  }
 	  else {
-	    if (url.size()<7 || (url.substr(0,7)!="http://" && url.substr(0,7)!="file://"))
+	    if (url.size()<8 || (url.substr(0,8)!="https://" && url.substr(0,7)!="http://" && url.substr(0,7)!="file://"))
 	      url="http://"+url;
 	  }
 	  giac::system_browser_command(url);
