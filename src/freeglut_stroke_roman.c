@@ -1,3 +1,4 @@
+#ifndef GIAC_GGB
 
 /* char: 0x20 */
 
@@ -2815,3 +2816,5 @@ static const SFG_StrokeChar *chars[] =
 };
 
 const SFG_StrokeFont fgStrokeRoman = {"Roman",128,152.381f,chars};
+
+#endif // ndef GIAC_GGB

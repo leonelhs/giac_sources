@@ -5846,6 +5846,41 @@ namespace giac {
   typedef char used_t;
   // typedef bool used_t;
 
+  void f4_innerloop(modint2 * wt,const modint * jt,const modint * jtend,modint c,const shifttype* it){
+    jtend -= 8;
+    for (;jt<=jtend;){
+      wt += *it; ++it;
+      *wt-=modint2(c)*(*jt);
+      ++jt;
+      wt += *it; ++it;
+      *wt-=modint2(c)*(*jt);
+      ++jt;
+      wt += *it; ++it;
+      *wt-=modint2(c)*(*jt);
+      ++jt;
+      wt += *it; ++it;
+      *wt-=modint2(c)*(*jt);
+      ++jt;
+      wt += *it; ++it;
+      *wt-=modint2(c)*(*jt);
+      ++jt;
+      wt += *it; ++it;
+      *wt-=modint2(c)*(*jt);
+      ++jt;
+      wt += *it; ++it;
+      *wt-=modint2(c)*(*jt);
+      ++jt;
+      wt += *it; ++it;
+      *wt-=modint2(c)*(*jt);
+      ++jt;
+    }
+    jtend+=8;
+    for (;jt!=jtend;++jt){
+      wt += *it; ++it;
+      *wt-=modint2(c)*(*jt);
+    }
+  }
+
   unsigned reducef4buchbergersplit(vector<modint2> &v64,const vector< vector<shifttype> > & M,const vector<unsigned> & firstpos,const vector< vector<modint> > & coeffs,const vector<coeffindex_t> & coeffindex,vector<modint> & lescoeffs,unsigned * bitmap,vector<used_t> & used,modint env){
     vector<unsigned>::const_iterator fit=firstpos.begin(),fit0=fit,fitend=firstpos.end();
     vector<modint2>::iterator wt=v64.begin(),wt0=wt,wt1,wtend=v64.end();
@@ -5888,36 +5923,7 @@ namespace giac {
 	++jt;
 #ifdef GIAC_SHORTSHIFTTYPE
 	if (shortshifts){
-	  for (;jt<jt_;){
-	    wt += *it; ++it;
-	    *wt-=modint2(c)*(*jt);
-	    ++jt;
-	    wt += *it; ++it;
-	    *wt-=modint2(c)*(*jt);
-	    ++jt;
-	    wt += *it; ++it;
-	    *wt-=modint2(c)*(*jt);
-	    ++jt;
-	    wt += *it; ++it;
-	    *wt-=modint2(c)*(*jt);
-	    ++jt;
-	    wt += *it; ++it;
-	    *wt-=modint2(c)*(*jt);
-	    ++jt;
-	    wt += *it; ++it;
-	    *wt-=modint2(c)*(*jt);
-	    ++jt;
-	    wt += *it; ++it;
-	    *wt-=modint2(c)*(*jt);
-	    ++jt;
-	    wt += *it; ++it;
-	    *wt-=modint2(c)*(*jt);
-	    ++jt;
-	  }
-	  for (;jt!=jtend;++jt){
-	    wt += *it; ++it;
-	    *wt-=modint2(c)*(*jt);
-	  }
+	  f4_innerloop(&*wt,jt,jtend,c,it);
 	}
 	else {
 	  for (;jt<jt_;){
@@ -7903,7 +7909,7 @@ namespace giac {
     // CERR << K << endl;
     smallmodrref(1,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/);
     //CERR << K << endl;
-	unsigned first0 = unsigned(pivots.size());
+    unsigned first0 = unsigned(pivots.size());
     if (first0<K.size() && (learning || !f4buchberger_info)){
       vector<modint> & tmpv=K[first0];
       for (i=0;i<tmpv.size();++i){
@@ -7911,7 +7917,7 @@ namespace giac {
 	  break;
       }
       if (i==tmpv.size()){
-		  unsigned Ksize = unsigned(K.size());
+	unsigned Ksize = unsigned(K.size());
 	K.resize(first0);
 	K.resize(Ksize);
       }
@@ -8356,7 +8362,7 @@ namespace giac {
   template<class tdeg_t>
   bool in_gbasisf4buchbergermod(vectpoly8<tdeg_t> & res8,vectpolymod<tdeg_t> &res,vector<unsigned> & G,modint env,bool totdeg,vector< paire > * pairs_reducing_to_zero,vector< info_t<tdeg_t> > * f4buchberger_info,bool recomputeR){
     convert(res8,res,env);
-	unsigned ressize = unsigned(res8.size());
+    unsigned ressize = unsigned(res8.size());
     bool b=in_gbasisf4buchbergermod(res,ressize,G,env,totdeg,pairs_reducing_to_zero,f4buchberger_info,recomputeR);
     convert(res,res8,env);
     return b;
@@ -12394,6 +12400,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
       }
       else {
+	resmod.clear();
 	if (!in_gbasisf4buchbergermod(current,resmod,G,p.val,true/*totaldeg*/,
 				      //		  0,0
 				      &reduceto0,&f4buchberger_info,
@@ -12405,11 +12412,13 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 				      )){
 	  // retry 
 	  reduceto0.clear();
-	  f4buchberger_info.clear();
+	  f4buchberger_info.clear(); G.clear();
 	  if (!in_gbasisf4buchbergermod(current,resmod,G,p.val,true/*totaldeg*/,&reduceto0,&f4buchberger_info,false)){
 	    ok=false;
 	    break;
 	  }
+	  reduceto0.clear();
+	  f4buchberger_info.clear();
 	}
       }
 #else
@@ -12987,7 +12996,8 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       vector<deg_t>::const_iterator it=lm.begin(),itend=lm.end();
       if (order.o==_REVLEX_ORDER || order.o==_TDEG_ORDER){
 	unsigned td=sum_degree(lm);
-	if (td>=128) gensizeerr("Degree too large");
+	if (td>=128) 
+	  gensizeerr("Degree too large");
 	*ptr=td;
 	++ptr;
 	*ptr=0;
@@ -14455,7 +14465,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	if (modularalgo && (!env || env->modulo==0 || env->moduloon==false)){
 	  if (mod_gbasis(res,modularcheck,
 			 //order.o==_REVLEX_ORDER /* zdata*/,
-			 !rur /* zdata*/,
+			 1 || !rur /* zdata*/,
 			 rur,contextptr,eliminate_flag)){
 	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << endl;
 	    get_newres(res,newres,v);
@@ -14493,7 +14503,9 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    debug_infolevel=save_debuginfo; return true;
 	  }
 	}
-      }  catch (std::runtime_error & e){ CERR << "degree too large" << endl;}
+      }  catch (std::runtime_error & e){ 
+	CERR << "Degree too large for compressed monomials. Using uncompressed monomials instead." << endl;
+      }
     }
 #endif
     if (v.front().dim<=11 && order.o==_REVLEX_ORDER){

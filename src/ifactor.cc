@@ -1166,7 +1166,7 @@ namespace giac {
   }
 #endif
 
-#if (defined __i386__ || defined __x86_64__) && !defined PIC && !defined _I386_ && !defined __APPLE__ && !defined VISUALC
+#if (defined __i386__ || defined __x86_64__) && !defined PIC && !defined _I386_ && !defined __APPLE__ && !defined VISUALC && !defined(FIR_LINUX)
   #define _I386_
 #endif
 

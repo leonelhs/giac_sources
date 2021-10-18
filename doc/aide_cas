@@ -1,5 +1,5 @@
 # jacobi_linsolve(A,b,eps[,maxiter]) et gauss_seidel_linsolve([omega=1,]A,b,eps[,maxiter])
-1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode itérative de Jacobi avec une tolérance de eps et un nombre maximal d'iterations de maxiter. 
+1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode itérative de Jacobi avec une tolérance de eps et un nombre maximal d'itérations de maxiter. 
 2 Resolution of a linear system  A*X=b  by the iterative Jacobi method with eps as error margin  and a number of iterations inferior to maxiter.
 0 Mtrx(A),Vect(b),Real(eps),[Int(maxiter)]
 -1 gauss_seidel_linsolve
@@ -7,8 +7,8 @@
  a:=[[100,2],[2,100]];jacobi_linsolve(a,[0,1],1e-12);
  a:=[[100,2],[2,100]];jacobi_linsolve(table(a),[0,1],1e-12); 
 
-#  gauss_seidel_linsolve
-1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode iterative de Gauss-Seidel (par défaut omega=1) ou de relaxation avec une tolérance de eps et un nombre maximal d'iterations de maxiter. 
+# gauss_seidel_linsolve
+1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode iterative de Gauss-Seidel (par défaut omega=1) ou de relaxation avec une tolérance de eps et un nombre maximal d'itérations de maxiter. 
 2 Resolution of a linear system A*X=b  by the iterative Gauss-Seidel method (by defaut omega=1) or by relaxation method, with eps as error margin and a number of iterations inferior to maxiter.
 0 [Real(omega)],Mtrx(A),Vect(b),Real(eps),[Int(maxiter)]
 -1 jacobi_linsolve
@@ -88,7 +88,7 @@ batons([1,2,3],[3,5,2])
 
 # REDIM redim
 1 Redimensionne selon n1,n2 une matrice (resp vecteur) soit en la raccourcissant, soit en l'augmentant avec des 0.
-2 Shrink or enlarge with 0 a matrix (or vector) according to the new n1 and n2 dimensions
+2 Shrink or enlarge with 0 a matrix (or vector) according to the new n1 and n2 dimensions.
 0 Mtrx||Vect,Intg(n1),Intg(n2)
 -1 replace
 redim([[1,2,3],[3,-9,6],[4,5,6]],1,2)
@@ -295,7 +295,7 @@ exponential(2.1,0.5)
  ranm(4,3,exponential,1.2)
 
 # exponential_cdf exponentiald_cdf
-1 Renvoie la probabilité qu'une variable aléatoire exponentielle de parametre lambda soit inférieure à x0 (ou entre x0 et y0). 
+1 Renvoie la probabilité qu'une variable aléatoire exponentielle de paramètre lambda soit inférieure à x0 (ou entre x0 et y0). 
 2 Returns the probability that a exponential random variable of parameter lambda is lower than x0 (or between x0 and y0).
 3 Devuelve la probabilidad que una variable aleatoria según ley exponential sea menor que x0.
 4 Επιστρέφει την πιθανότητα μια τυχαίας μεταβλητής exponential να είναι μικρότερη του x0.
@@ -307,7 +307,7 @@ exponential_cdf(4.2,2.1)
 exponential_cdf(4.2,2.1,3.2)
 
 # exponential_icdf exponentiald_icdf
-1 Renvoie la valeur h telle que, la probabilité qu'une variable aléatoire exponentielle de parametre lambda soit inférieure à h soit p (0<=p<=1).
+1 Renvoie la valeur h telle que, la probabilité qu'une variable aléatoire exponentielle de paramètre lambda soit inférieure à h soit p (0<=p<=1).
 2 Returns h such that the probability that a exponential random variable of parameter lambda is lower than h is p (0<=p<=1).
 3 Devuelve h tal que la probabilidad que una variable aleatoria según ley exponential sea menor que h es p (0<=p<=1).
 4 Επιστρέφει h τέτοιο ώστε η πιθανότητα μια τυχαία μεταβλητή exponential να είναι μικρότερη του h είναι p (0<=p<=1).
@@ -398,7 +398,7 @@ weibull_icdf(4.2,1.3,0.0,0.95)
 weibull_icdf(2.2,1.5,0.4,0.632)
 
 # cauchy cauchyd
-1 Renvoie la densité de probabilité en x de la loi de Cauchy de parametres x0 (position) et a>0 (par défaut x0=0 et a=1).
+1 Renvoie la densité de probabilité en x de la loi de Cauchy de paramètres x0 (position) et a>0 (par défaut x0=0 et a=1).
 2 Returns the density of probability at x of the Cauchy law of parameters x0 and a (by default  x0=0 and a=1).
 3 Devuelve la densidad de probabilidad de la ley de Cauchy.
 4 Επιστρέφει την πυκνότητα της πιθανότητας της κατανομής Cauchy.
@@ -455,7 +455,7 @@ icdf(binomial,10,0.5,0.6)
 icdf(normald,0.0,1.0,0.975)
 
 # markov
-1 Calcul des éléments propres d'une matrice de transition d'une chaine de Markov M, renvoie la liste des suites d'états récurrents positifs, la liste des probabilités stationnaires correspondants, la liste des autres composantes fortement connexes, la liste des probabilités de finir sur les états récurrents positifs.
+1 Calcul des éléments propres d'une matrice de transition d'une chaîne de Markov M, renvoie la liste des suites d'états récurrents positifs, la liste des probabilités stationnaires correspondants, la liste des autres composantes fortement connexes, la liste des probabilités de finir sur les états récurrents positifs.
 2 Computation of the proper elements of a Markov chain transition matrix M, returns the list of sequence of positive recurrent states, the list of corresponding invariant probabilities, the list of other strong connected components, the list of probability to end up in the sequence of recurrent states.
 0 Mtrx(M),[Real(eps)]
 -1 randmarkov
@@ -463,8 +463,8 @@ icdf(normald,0.0,1.0,0.975)
 markov([[0,0,1/2,0,1/2],[0,0,1,0,0],[1/4,1/4,0,1/4,1/4],[0,0,1/2,0,1/2],[0,0,0,0,1]])
 
 # randmarkov
-1 Génère une suite de n états (chaine de Markov) partant de i0 dont les probabilites de transitions sont données par M (matrice stochastique) ou génère une matrice stochastique ayant p boucles récurrentes v=[n1,...,np] et i0 états transients
-2 Returns a random sequence of n states (Markov chain) starting from i0, with probability transition matrix M, or returns a stochastic matrix with p recurrent loops v=[n1,..,np] and i0 transient states
+1 Génère une suite de n états (chaîne de Markov) partant de i0 dont les probabilités de transitions sont données par M (matrice stochastique) ou génère une matrice stochastique ayant p boucles récurrentes v=[n1,...,np] et i0 états transients.
+2 Returns a random sequence of n states (Markov chain) starting from i0, with probability transition matrix M, or returns a stochastic matrix with p recurrent loops v=[n1,..,np] and i0 transient states.
 0 Mtrx(M) || Vctr(v),Intg(i0),[Intg(n)]
 -1 markov
 -2 plotproba
@@ -731,8 +731,8 @@ odd(1251)
 
 # plex
 1 Option de la commande gbasis ou greduce pour spécifier un ordre sur les monômes (=ordre par défaut=lexicographique pur).
-2 Option of the gbasis or greduce command to specify an order for monomials (=default order=pure lexicographic)
-3 Opción del comando gbasis o greduce para especificar un orden sobre los monomios (=orden por defecto=lexicográfico puro)
+2 Option of the gbasis or greduce command to specify an order for monomials (=default order=pure lexicographic).
+3 Opción del comando gbasis o greduce para especificar un orden sobre los monomios (=orden por defecto=lexicográfico puro).
 4 Επιλογή της εντολής gbasis ή greduce για καθορισμό μιας διάταξης για μονώνυμα (προεπιλεγμένη διάταξη = λεξικογραφική διάταξη).
 0 Opt
 -1 gbasis
@@ -741,7 +741,7 @@ odd(1251)
 # revlex
 1 Option de la commande gbasis ou greduce pour spécifier un ordre sur les monômes (degré total puis ordre lexicographique inverse).
 2 Option of the gbasis or greduce command to specify an order for monomials (complete degree then inverse lexicographic order).
-3 Opción de gbasis o greduce para especificar un orden sobre los monomios (grado total, luego orden antilexicográfico)
+3 Opción de gbasis o greduce para especificar un orden sobre los monomios (grado total, luego orden antilexicográfico).
 4 Επιλογή της εντολής gbasis ή greduce για καθορισμό μιας διάταξης για μονώνυμα (συνολικού βαθμού και μετά αντίστροφης λεξικογραφικής διάταξης).
 0 Opt
 -1 gbasis
@@ -752,7 +752,7 @@ odd(1251)
 2 Option of the plotimplicit command.
 3 Opción del comando plotimplicit.
 4 Επιλογή της εντολής plotimplicit.
-0 Opt
+0 Opt.
 -1 plotimplicit
  plotimplicit(x^2+y^2-1,x,y,unfactored)
  plotimplicit(x^2+y^2-1,[x,y],unfactored)
@@ -899,6 +899,7 @@ odd(1251)
 -2 op
  set[1,2,3]
  %{1,2,3%}
+ L:=[1,2,2,3];S:=set[op(L)]
 
 # i[]
 1 i[] est utilisé pour définir un intervalle réel.
@@ -1218,7 +1219,7 @@ bar_plot([[2,"xyz","abc"],["A",2,5],["B",5,6],["C",7,7]])
 1 Trace la ligne polygonale reliant les points d'abscisse 0,...,n et d'ordonnée l=[y0,...,yn] ou la ligne reliant les points d'abscisse la première colonne de M et d'ordonnée sa deuxième colonne.
 2 Draws the polygonal line through the points of abscissa 0,...,n and ordinate l=[y0,...,yn] or the line through the points of abscissa the first M column and ordinate the second column.
 3 Traza la linea polígonal vinculando los puntos de abscisa 0,...,n y de ordenada l=[y0,...,yn] o la linea vinculando los puntos de abscisa la primera columna de M y de ordenadas la segundo columna.
-4 Σχεδιάζει την γραμμή που διέρχεται από τα σημεία με τετμημένη 0,...,n και τεταγμένη l=[y0,...,yn]
+4 Σχεδιάζει την γραμμή που διέρχεται από τα σημεία με τετμημένη 0,...,n και τεταγμένη l=[y0,...,yn].
 0 Lst(l)||Mtrx(M)
 -1 polygonplot
 -2 scatterplot
@@ -1228,10 +1229,10 @@ listplot([1,13],[2,10],[3,15],[4,16])
 listplot([[0,13],[2,10],[4,15]])
 
 # pari
-1 Exécute une commande de PARI/GP ou exporte les commandes de PARI/GP
-2 Execute a PARI/GP command or exports all PARI/GP commands
-3 Ejecuta un comando de PARI/GP o exporta los comandos de PARI/GP
-4 Εκτελεί την εντολή στο PARI / GP ή εξάγει όλες τις εντολές του PARI / GP
+1 Exécute une commande de PARI/GP ou exporte les commandes de PARI/GP.
+2 Execute a PARI/GP command or exports all PARI/GP commands.
+3 Ejecuta un comando de PARI/GP o exporta los comandos de PARI/GP.
+4 Εκτελεί την εντολή στο PARI/GP ή εξάγει όλες τις εντολές του PARI/GP.
 0 Str,arguments
 -1 gcd
 -2 lgcd
@@ -1246,47 +1247,47 @@ pari("isprime",9856989898997789789,1)
 pari("isprime",9856989898997789789,2)
 
 # bitor
-1 Ou logique inclusif bit à bit
-2 Inclusive logical bit or
-3 "O" lógico inclusivo bit a bit (disyunción)
-4 Λογική πράξη Η (bit προς bit)
+1 Ou logique inclusif bit à bit.
+2 Inclusive logical bit or.
+3 "O" lógico inclusivo bit a bit (disyunción).
+4 Λογική πράξη Η (bit προς bit).
 0 Intg,Intg
 -1 bitxor
 -2 bitand
 bitor(0x12,0x38)
 
 # bitand
-1 Et logique bit à bit
-2 Logical bit and
-3 "Y" lógico bit a bit (conjunción)
-4 Λογική πράξη ΚΑΙ (bit προς bit)
+1 Et logique bit à bit.
+2 Logical bit and.
+3 "Y" lógico bit a bit (conjunción).
+4 Λογική πράξη ΚΑΙ (bit προς bit).
 0 Intg,Intg
 -1 bitxor
 -2 bitor
 bitand(0x12,0x38)
 
 # bitxor
-1 Ou logique exclusif bit à bit
-2 Exclusive logical bit or
-3 "O" lógico exclusivo bit a bit (disyunción)
-4 Λογική πράξη Αποκλειστικό Η (bit προς bit)
+1 Ou logique exclusif bit à bit.
+2 Exclusive logical bit or.
+3 "O" lógico exclusivo bit a bit (disyunción).
+4 Λογική πράξη Αποκλειστικό Η (bit προς bit).
 0 Intg,Intg
 -1 bitor
 -2 bitand
 bitxor(0x12,0x38)
 
 # hamdist
-1 Distance de Hamming bit à bit
-2 Bit Hamming distance
-3 Distancia de Hamming bit a bit
-4 Απόσταση Hamming των bit
+1 Distance de Hamming bit à bit.
+2 Bit Hamming distance.
+3 Distancia de Hamming bit a bit.
+4 Απόσταση Hamming των bit.
 0 Intg,Intg
 hamdist(0x12,0x38)
 
 # simplex_reduce
-1 Réduction par le simplexe pour trouver max(c.x) avec A.x<=b et x>=0, b>=0. Renvoie le max, la solution augmentée x et la matrice réduite. Accepte aussi en argument [[A|I|b],[-c|*|0]]
+1 Réduction par le simplexe pour trouver max(c.x) avec A.x<=b et x>=0, b>=0. Renvoie le max, la solution augmentée x et la matrice réduite. Accepte aussi en argument [[A|I|b],[-c|*|0]].
 2 Reduction by simplex algorithm to find max(c.x) under A.x<=b and x>=0, b>=0. Returns the maximum, the augmented solution x and the reduced matrix. Accepts also [[A|I|b],[-c|*|0]] as argument.
-3 Reducción por el simplex para encontrar max(c.x) con A.x<=b y x>=0, b>=0. Devuelve el máximo,la solución aumentada x y la matriz reducida. Acepta también en argumento [[A|I|b],[-c|*|0]]
+3 Reducción por el simplex para encontrar max(c.x) con A.x<=b y x>=0, b>=0. Devuelve el máximo,la solución aumentada x y la matriz reducida. Acepta también en argumento [[A|I|b],[-c|*|0]].
 4 Αναγωγή σύμφωνα με τον αλγόριθμο simplex για την εύρεση του max(c.x) με συνθήκες A.x<=b και x>=0, b>=0. Επιστρέφει το μέγιστο, την επαυξημένη λύση x και τον ανηγμένο πίνακα. Δέχεται επίσης ως όρισμα το [[A|I|b],[-c|*|0]].
 0 Mtrx(A), Vect(b), Vect(c)
 simplex_reduce([[3,2,2],[1,1,1]],[3,4],[1,2,3])
@@ -1296,19 +1297,19 @@ simplex_reduce([[-3,2,1,0,3],[1,1,0,1,4],[-1,-2,0,0,0]])
 simplex_reduce([[2,1,1,1,0,0,2],[1,2,3,0,1,0,5],[2,2,1,0,0,1,6],[-3,-1,-3,1,-1,2,0]])
 
 # spline
-1 Spline naturelle passant par les points donnés par les listes lx et ly, variable x, de degré d
-2 Natural spline through the points given by the lx and ly lists, variable x, degree d
-3 Spline natural pasando por los puntos dados por las listas lx y ly, variable x, de grado d
-4 Φυσικό spline μεταξύ των σημείων που δίνονται από τις λίστες lx, ly, την μεταβλητή x και τον βαθμό d
+1 Spline naturelle passant par les points donnés par les listes lx et ly, variable x, de degré d.
+2 Natural spline through the points given by the lx and ly lists, variable x, degree d.
+3 Spline natural pasando por los puntos dados por las listas lx y ly, variable x, de grado d.
+4 Φυσικό spline μεταξύ των σημείων που δίνονται από τις λίστες lx, ly, την μεταβλητή x και τον βαθμό d.
 0 Lst(lx),Lst(ly),Var(x),Intg(d)
 -1 lagrange
 spline([0,1,2],[1,3,0],x,3)
 
 # convexhull
-1 Enveloppe convexe d'un ensemble de points du plan
-2 Convex hull of a list of 2-d points
-3 Envoltura convexa de un conjunto de puntos del plano
-4 Κυρτό περίβλημα ενός συνόλου 2-Δ σημείων
+1 Enveloppe convexe d'un ensemble de points du plan.
+2 Convex hull of a list of 2-d points.
+3 Envoltura convexa de un conjunto de puntos del plano.
+4 Κυρτό περίβλημα ενός συνόλου 2-Δ σημείων.
 0 Lst
 -1 polygon
 convexhull(0,1,1+i,1+2i,-1-i,1-3i,-2+i)
@@ -1375,10 +1376,10 @@ quest(2)
 quest(-2)
 
 # ClrIO
-1 Efface l'écran des sorties
-2 Clear the output screen
-3 Borra la pantalla de salidas
-4 Καθαρίζει την γραμμή απαντήσεων
+1 Efface l'écran des sorties.
+2 Clear the output screen.
+3 Borra la pantalla de salidas.
+4 Καθαρίζει την γραμμή απαντήσεων.
 0 NULL
 -1 ClrGraph
 -2 ClrDraw
@@ -1468,7 +1469,7 @@ droite_tangente(x^2-x,1)
 1 Trace la tangente au graphe de y=f(x) en x=a. Ne pas mettre de parenthèses ou les mettre à l'extérieur.
 2 Draws the tangent to y=f(x) at x=a. Do not put parenthesis or put the parenthesis around.
 3 Traza la tangente de y=f(x) en x=a.
-4 Σχεδιάζει την εφαπτομένη της y=f(x) στο x=α.
+4 Σχεδιάζει την εφαπτομένη της y=f(x) στο x=a.
 0 Expr(f(x)),[Var],Expr(a)
 -1 tangent
 -2 droite_tangente
@@ -1481,8 +1482,8 @@ droite_tangente(x^2-x,1)
 # xor
 1 Ou exclusif (opérateur infixé).
 2 Exclusive or (infix operator).
-3 O exclusivo (operador no fijado)
-4 Αποκλειστικό Η (προθεματικός τελεστής)
+3 O exclusivo (operador no fijado).
+4 Αποκλειστικό Η (προθεματικός τελεστής).
 8 异或。 如果 value1 或 value2 只有一个为非零值，则返回 1； 否则，返回 0。
 0 Expr, Expr
 -1 or
@@ -1938,10 +1939,10 @@ line([1+t,2-t,-1+3*t],t)
 line(1-i,slope=slope(line(1,2i)))
 
 # point
-1 A:=point(za) ou A:=point(a,b) (resp A:=point([a,b,c])) dessine le point d'affixe za=a+ib (resp de coordonnées (a,b,c)) et de légende A
-2 A:=point(za) or A:=point(a,b) (resp A:=point([a,b,c])) draws a point of affix za=a+ib (resp of coordinates (a,b,c)) with the legend A
-3 A:=point(za) o A:=point(a,b) (resp A:=point([a,b,c])) traza el punto de afijo za=a+ib (resp de coordenadas (a,b,c)) con la leyenda A
-4 A:=point(za) ή A:=point(a,b) (resp A:=point([a,b,c])) σχεδιάζει ένα σημείο με προσθήκη za=a+ib (αναφορικά με τις συντεταγμένες (a,b,c)) και με υπόμνημα A
+1 A:=point(za) ou A:=point(a,b) (resp A:=point([a,b,c])) dessine le point d'affixe za=a+ib (resp de coordonnées (a,b,c)) et de légende A.
+2 A:=point(za) or A:=point(a,b) (resp A:=point([a,b,c])) draws a point of affix za=a+ib (resp of coordinates (a,b,c)) with the legend A.
+3 A:=point(za) o A:=point(a,b) (resp A:=point([a,b,c])) traza el punto de afijo za=a+ib (resp de coordenadas (a,b,c)) con la leyenda A.
+4 A:=point(za) ή A:=point(a,b) (resp A:=point([a,b,c])) σχεδιάζει ένα σημείο με προσθήκη za=a+ib (αναφορικά με τις συντεταγμένες (a,b,c)) και με υπόμνημα A.
 0 Cplx(za)||Vect
 -1 pixon
 -2 line
@@ -1974,16 +1975,16 @@ efface()
 0 
 -1 if
  si alors sinon fsi
- n:=1; si n>0 alors triangle_plein(20*n); sinon disque(20*n);fsi
- n:=-1; si n>0 alors triangle_plein(20*n); sinon disque(20*n);fsi
- si x>0 alors x:=x+1; print("x est strictement plus grand que 1");fsi
- si x>0 alors x:=x+1; print("x est strictement plus grand que 1"); sinon x:=x-1;print("x est plus petit ou égal à -1");fsi
+ n:=1; si n>0 alors triangle_plein(20*n); sinon disque(20*n);fsi;
+ n:=-1; si n>0 alors triangle_plein(20*n); sinon disque(20*n);fsi;
+ si x>0 alors x:=x+1; print("x est strictement plus grand que 1");fsi;
+ si x>0 alors x:=x+1; print("x est strictement plus grand que 1"); sinon x:=x-1;print("x est plus petit ou égal à -1");fsi;
 
 # pour
-1 Boucle pour (pour...de ...jusque... [pas...] faire...fpour).
-2 Loop pour (pour...de ...jusque... [pas...] faire...fpour).
-3 Bucle pour (pour...de ...jusque... [pas...] faire...fpour).
-4 Βρόχος (Επανάληψη) (pour...de ...jusque... [pas...] faire...fpour).
+1 Boucle pour (pour...de ...jusque... [pas...] faire...fpour;).
+2 Loop pour (pour...de ...jusque... [pas...] faire...fpour;).
+3 Bucle pour (pour...de ...jusque... [pas...] faire...fpour;).
+4 Βρόχος (Επανάληψη) (pour...de ...jusque... [pas...] faire...fpour;).
 0 
 -1 for
 -2 de
@@ -1997,10 +1998,10 @@ efface()
  S:=0;pour n de 4 jusque 1 pas -1 faire S:=S+n;fpour;
 
 # de from
-1 Utilisé dans une boucle pour (pour...de ...jusque... [pas...] faire...fpour).
-2 Used in a loop for (for...from ...to... [step...] do...od).
-3 Utilizado en una bucle for (for...from ...to...[step...] do...od).
-4 Βρόχος (Επανάληψη) (pour...de ...jusque... [pas...] faire...fpour).
+1 Utilisé dans une boucle pour (pour...de ...jusque... [pas...] faire...fpour;).
+2 Used in a loop for (for...from ...to... [step...] do...od;).
+3 Utilizado en una bucle for (for...from ...to...[step...] do...od;).
+4 Βρόχος (Επανάληψη) (pour...de ...jusque... [pas...] faire...fpour;).
 8 属于 "for...from...to...do...end" 循环结构的一部分。
 0 
 -1 for
@@ -2013,11 +2014,11 @@ efface()
  S:=0;pour n de 4 jusque 1 pas -1 faire S:=S+n;fpour ;
 
 # jusque to
-1 Utilisé dans une boucle pour (pour...de ...jusque... [pas...] faire...fpour).
-2 Used in a loop for (for...from ...to... [step...] do...od).
-3 Utilizado en una bucle pour o for (for...from ...to...[step...] do...od).
-4 Βρόχος (Επανάληψη) (pour...de ...jusque... [pas...] faire...fpour).
-8 属于 "for...from...to...do...end" 循环结构的一部分
+1 Utilisé dans une boucle pour (pour...de ...jusque... [pas...] faire...fpour;).
+2 Used in a loop for (for...from ...to... [step...] do...od;).
+3 Utilizado en una bucle pour o for (for...from ...to...[step...] do...od;).
+4 Βρόχος (Επανάληψη) (pour...de ...jusque... [pas...] faire...fpour;).
+8 属于 "for...from...to...do...end" 循环结构的一部分。
 0 
 -1 for
 -2 pour
@@ -2029,10 +2030,10 @@ efface()
  S:=0;pour n de 4 jusque 1 pas -1 faire S:=S+n;fpour;
 
 # tantque
-1 Boucle tantque (tantque...faire...ftantque).
-2 Loop tantque (tantque...faire...ftantque).
-3 Bucle tantque (tantque...faire...ftantque).
-4 Βρόχος (Επανάληψη) tantque (tantque...faire...ftantque).
+1 Boucle tantque (tantque...faire...ftantque;).
+2 Loop tantque (tantque...faire...ftantque;).
+3 Bucle tantque (tantque...faire...ftantque;).
+4 Βρόχος (Επανάληψη) tantque (tantque...faire...ftantque;).
 0 
 -1 while
 -2 pour
@@ -2057,10 +2058,10 @@ efface()
  pour n de 1 jusque 4 faire triangle_plein(10*n);saute(10*n);fpour
 
 # return
-1 Instruction qui fait sortir d'une fonction en renvoyant sa valeur
-2 Instruction that interrupts a function and returns its value
-3 Instrucción que interrumpe una función y devuelve su valor
-4 Εντολή για την έξοδο από μια συνάρτηση επιστρέφοντας την τιμή της
+1 Instruction qui fait sortir d'une fonction en renvoyant sa valeur.
+2 Instruction that interrupts a function and returns its value.
+3 Instrucción que interrumpe una función y devuelve su valor.
+4 Εντολή για την έξοδο από μια συνάρτηση επιστρέφοντας την τιμή της.
 0 Expr
 -1 break
  zeroinl(l):={local k; for (k:=0;k<size(l);k++){if (l[k]==0) return(1);} return(0);}
@@ -2166,8 +2167,8 @@ baisse_crayon()
 
 # crayon
 1 Change la couleur du crayon (sans paramètre, renvoie la couleur courante).
-2 Changes the color of the pencil (without parameter, returns the current color).
-3 Cambia el color del lápiz (sin parámetros, devuelve el color actual)
+2 Changes the color of the pencil (without parameter,returns the current color).
+3 Cambia el color del lápiz (sin parámetros, devuelve el color actual).
 4 Αλλάζει το χρώμα του μολυβιού (χωρίς παραμέτρους επιστρέφει το τρέχον χρώμα).
 0 Color
 -1 leve_crayon
@@ -2338,7 +2339,7 @@ montre_tortue()
 1 Renvoie l'enveloppe des courbes d'équation Xpr=0, lorsque t varie.
 2 Returns the envelope of the curves with equation Xpr=0, when t move.
 3 Devuelve la envoltura de las curvas de ecuación Xpr=0, cuando t varia.
-4 Επιστρέφει την περιβάλλουσα των καμπύλων με εξίσωση Xpr=0, καθώς το t μεταβάλλεται
+4 Επιστρέφει την περιβάλλουσα των καμπύλων με εξίσωση Xpr=0, καθώς το t μεταβάλλεται.
 0 Expr(Xpr),Var(t)||[x,y,t]
 -1 tangent
 -2 locus
@@ -2614,7 +2615,7 @@ coordinates(vecteur([1,2,3],[4,5,6]))
 1 booléen valant faux ou 0.
 2 boolean equal to false or 0.
 3 Tipo de dato lógico (booleano) que vale falso o 0.
-4 λογική τιμή ίση με ΛΑΘΟΣ ή 0
+4 λογική τιμή ίση με ΛΑΘΟΣ ή 0.
 0 
 -1 true
  a:=false
@@ -2623,16 +2624,16 @@ coordinates(vecteur([1,2,3],[4,5,6]))
 1 booléen valant vrai ou 1.
 2 boolean equal to true or 1.
 3 Tipo de dato lógico (booleano) que vale verdadero o 1.
-4 λογική τιμή ίση με ΣΩΣΤΟ ή 1
+4 λογική τιμή ίση με ΣΩΣΤΟ ή 1.
 0 
 -1 false
  a:=true
 
 # or || ou
-1 opérateur booléen infixé (ou)
-2 infixed boolean operator (or)
-3 operador booleano infijo (o)
-4 εντεθειμένος λογικός τελεστής (Η)
+1 opérateur booléen infixé (ou).
+2 infixed boolean operator (or).
+3 operador booleano infijo (o).
+4 εντεθειμένος λογικός τελεστής (Η).
 8 逻辑 OR。  如果 value1 或 如果 value2 为非零值，则返回 1，否则返回 0。
 0 Expr, Expr
 -1 and
@@ -2641,10 +2642,10 @@ coordinates(vecteur([1,2,3],[4,5,6]))
  (1==2) or (2>1)
 
 # and && et
-1 opérateur booléen infixé (et)
-2 infixed boolean operator (and)
-3 operador booleano infijo (y)
-4 εντεθειμένος λογικός τελεστής (ΚΑΙ)
+1 opérateur booléen infixé (et).
+2 infixed boolean operator (and).
+3 operador booleano infijo (y).
+4 εντεθειμένος λογικός τελεστής (ΚΑΙ).
 8 逻辑 AND。  比较 value1 和 value2。 如果都为非零值，则返回 1；否则返回 0。
 0 Expr, Expr
 -1 or
@@ -2693,462 +2694,466 @@ coordinates(vecteur([1,2,3],[4,5,6]))
  fsolve([x^2+y-2,x+y^2-2],[x,y],[2,2],newtonj_solver)
 
 # _cm
-1 centimètre
-2 Centimetre
-3 centímetro
-4 εκατοστόμετρα
+1 centimètre.
+2 Centimetre.
+3 centímetro.
+4 εκατοστόμετρα.
 0 
  5_cm
  mksa(_cm)
 
 # _mm
-1 millimètre
-2 Millimetre
-3 milímetro
-4 χιλιοστόμετρα
+1 millimètre.
+2 Millimetre.
+3 milímetro.
+4 χιλιοστόμετρα.
 0 
  5_mm
  mksa(_mm)
 
 # _km
-1 kilomètre
-2 Kilometre
-3 kilómetro
-4 χιλιόμετρα
+1 kilomètre.
+2 Kilometre.
+3 kilómetro.
+4 χιλιόμετρα.
 0 
  5_km
  mksa(_km)
 
 # _m^2
-1 mètre carré
-2 Square metre
-3 metro cuadrado
-4 τετραγωνικά μέτρα
+1 mètre carré.
+2 Square metre.
+3 metro cuadrado.
+4 τετραγωνικά μέτρα.
 0 
  5_m^2
  mksa(_m^2)
 
 # _m^3
-1 mètre cube
-2 Cubic metre
-3 metro cúbico
-4 κυβικά μέτρα
+1 mètre cube.
+2 Cubic metre.
+3 metro cúbico.
+4 κυβικά μέτρα.
 0 
  5_m^3
  mksa(_m^3)
 
 # _cm^2
-1 centimètre carré
-2 Square centimetre
-3 centímetro cuadrado
-4 τετραγωνικά εκατοστά
+1 centimètre carré.
+2 Square centimetre.
+3 centímetro cuadrado.
+4 τετραγωνικά εκατοστά.
 0 
  5_cm^2
  mksa(_cm^2)
 
 # _cm^3
-1 centimètre cube
-2 Cubic centimetre
-3 centímetro cúbico
-4 κυβικά εκατοστά
+1 centimètre cube.
+2 Cubic centimetre.
+3 centímetro cúbico.
+4 κυβικά εκατοστά.
 0 
  5_cm^3
  mksa(_cm^3)
 
 # _km^2
-1 kilomètre carré
-2 Square kilometre
-3 kilómetro cuadrado
-4 τετραγωνικά χιλιόμετρα
+1 kilomètre carré.
+2 Square kilometre.
+3 kilómetro cuadrado.
+4 τετραγωνικά χιλιόμετρα.
 0 
  5_km^2
  mksa(_km^2)
 
 # _yd^2
-1 yard carré
-2 Square yard
-3 yard cuadrado
-4 τετραγωνικές γυάρδες
+1 yard carré.
+2 Square yard.
+3 yard cuadrado.
+4 τετραγωνικές γυάρδες.
 0 
  5_yd^2
  mksa(_yd^2)
 
 # _yd^3
-1 yard cube
-2 Cubic yard
-3 yard cúbico
-4 κυβικές γυάρδες
+1 yard cube.
+2 Cubic yard.
+3 yard cúbico.
+4 κυβικές γυάρδες.
 0 
  5_yd^3
  mksa(_yd^3)
 
 # _ft^2
-1 foot carré (pied carré)
-2 Square foot
-3 foot cuadrado (pie cuadrado)
-4 τετραγωνικά πόδια
+1 foot carré (pied carré).
+2 Square foot.
+3 foot cuadrado (pie cuadrado).
+4 τετραγωνικά πόδια.
 0 
  5_ft^2
  mksa(_ft^2)
 
 # _ft^3
-1 foot cube
-2 Cubic foot
-3 foot cúbico (pie cúbico)
-4 κυβικά πόδια
+1 foot cube.
+2 Cubic foot.
+3 foot cúbico (pie cúbico).
+4 κυβικά πόδια.
 0 
  5_ft^3
  mksa(_ft^3)
 
 # _in^2
-1 inch carré (pouce carré)
-2 Square inch
-3 inch cuadrado (pulgada cuadrada)
-4 τετραγωνικές ίντσες
+1 inch carré (pouce carré).
+2 Square inch.
+3 inch cuadrado (pulgada cuadrada).
+4 τετραγωνικές ίντσες.
 0 
  5_in^2
  mksa(_in^2)
 
 # _in^3
-1 inch cube
-2 Cubic inch
-3 inch cúbico (plugada cúbica)
-4 κυβικές ίντσες
+1 inch cube.
+2 Cubic inch.
+3 inch cúbico (plugada cúbica).
+4 κυβικές ίντσες.
 0 
  5_in^3
  mksa(_in^3)
 
 # _mi^2
-1 mile carré international
-2 Square international mile
-3 milla cuadrada internacional
-4 τετραγωνικά μίλια (διεθνή)
+1 mile carré international.
+2 Square international mile.
+3 milla cuadrada internacional.
+4 τετραγωνικά μίλια (διεθνή).
 0 
  5_mi^2
  mksa(_mi^2)
 
 # _miUS^2
-1 US statue mile carré
-2 Square US statue mile
-3 milla estatuaria (EEUU) cuadrada
-4 τετραγωνικά μίλια (ΗΠΑ)
+1 US statue mile carré.
+2 Square US statue mile.
+3 milla estatuaria (EEUU) cuadrada.
+4 τετραγωνικά μίλια (ΗΠΑ).
 0 
  5_miUS^2
  mksa(_miUS^2)
 
 # _ml
-1 millilitre
-2 millilitre
-3 mililitro
-4 μιλιλίτρα
+1 millilitre.
+2 millilitre.
+3 mililitro.
+4 μιλιλίτρα.
 0 
  5_ml
  mksa(_ml)
 
-# _mn
-1 minute
-2 Minute
-3 minuto
-4 λεπτά
+# _s
+1 seconde.
+2 second.
+3 segundo.
+4 
 0 
+-1 convert
+-2 mksa
  5_mn
  mksa(_mn)
 
-# _min
-1 minute
-2 Minute
-3 minuto
-4 λεπτά
+# _mn
+1 minute.
+2 Minute.
+3 minuto.
+4 λεπτά.
 0 
- 5_min
- mksa(_min)
+-1 convert
+-2 mksa
+ 5_mn
+ mksa(_mn)
 
 # _(m/s)
-1 mètre par seconde
-2 metre per second
-3 metro por segundo
-4 μέτρα ανά δευτερόλεπτο
+1 mètre par seconde.
+2 metre per second.
+3 metro por segundo.
+4 μέτρα ανά δευτερόλεπτο.
 0 
  5_(m/s)
  mksa(_(m/s))
 
 # _(cm/s)
-1 centimètre par seconde
-2 centimetre per second
-3 centimetro por segundo
-4 εκατοστόμετρα ανά δευτερόλεπτο
+1 centimètre par seconde.
+2 centimetre per second.
+3 centimetro por segundo.
+4 εκατοστόμετρα ανά δευτερόλεπτο.
 0 
  5_(cm/s)
  mksa(_(cm/s))
 
 # _(ft/s)
-1 foot par seconde (pied par seconde)
-2 foot per second
-3 foot por segundo (pie por segundo)
-4 πόδια ανά δευτερόλεπτο
+1 foot par seconde (pied par seconde).
+2 foot per second.
+3 foot por segundo (pie por segundo).
+4 πόδια ανά δευτερόλεπτο.
 0 
  5_(ft/s)
  mksa(_(ft/s))
 
 # _(m/s^2)
-1 mètre par seconde au carré
-2 metre per square second
-3 metro por segundo cuadrado
-4 μέτρα ανά τετραγωνικό δευτερόλεπτο
+1 mètre par seconde au carré.
+2 metre per square second.
+3 metro por segundo cuadrado.
+4 μέτρα ανά τετραγωνικό δευτερόλεπτο.
 0 
  5_(m/s^2)
  mksa(_(m/s^2))
 
 # _Wh
-1 wattheure
-2 Watt-hour
-3 vatio-hora
-4 Βατώρα
+1 wattheure.
+2 Watt-hour.
+3 vatio-hora.
+4 Βατώρα.
 0 
  5_Wh
  mksa(_Wh)
 
 # _kWh
-1 kilowattheure
-2 Kilowatt-hour
-3 kilovatio-hora
-4 Κιλοβατώρα
+1 kilowattheure.
+2 Kilowatt-hour.
+3 kilovatio-hora.
+4 Κιλοβατώρα.
 0 
  5_kWh
  mksa(_kWh)
 
 # _Kcal
-1 kilocalorie
-2 Kilocalorie
-3 kilocaloría
-4 Χιλιοκαλορίς
+1 kilocalorie.
+2 Kilocalorie.
+3 kilocaloría.
+4 Χιλιοκαλορίς.
 0 
  5_Kcal
  mksa(_Kcal)
 
 # _MeV
-1 mégaélectronvolt
-2 Megaelectronvolt
-3 megaelectronvoltio
-4 μεγαηλεκτρονιοβόλτ
+1 mégaélectronvolt.
+2 Megaelectronvolt.
+3 megaelectronvoltio.
+4 μεγαηλεκτρονιοβόλτ.
 0 
  5_MeV
  mksa(_MeV)
 
 # _ft*lb
-1 foot par pound
-2 foot per pound
-3 foot por pound (pie por libra)
-4 πόδια ανά λίβρα
+1 foot par pound.
+2 foot per pound.
+3 foot por pound (pie por libra).
+4 πόδια ανά λίβρα.
 0 
  5_ft*lb
  mksa(_ft*lb)
 
 # _tep
-1 tonne d'équivalent pétrole
-2 Tonne of oil equivalent
-3 Tonelada equivalente de petróleo
-4 τόνος, ισοδύναμος για πετρέλαιο
+1 tonne d'équivalent pétrole.
+2 Tonne of oil equivalent.
+3 Tonelada equivalente de petróleo.
+4 τόνος, ισοδύναμος για πετρέλαιο.
 0 
  5_tep
  mksa(_tep)
 
 # _lep
-1 litre d'équivalent pétrole
-2 Liter of oil equivalent
-3 litro equivalente de petróleo
-4 λίτρο, ισοδύναμο για πετρέλαιο
+1 litre d'équivalent pétrole.
+2 Liter of oil equivalent.
+3 litro equivalente de petróleo.
+4 λίτρο, ισοδύναμο για πετρέλαιο.
 0 
  5_lep
  mksa(_lep)
 
 # _bblep
-1 baril d'équivalent pétrole
-2 Barrel of oil equivalent
-3 barril equivalente de petróleo
-4 βαρέλι, ισοδύναμο για πετρέλαιο
+1 baril d'équivalent pétrole.
+2 Barrel of oil equivalent.
+3 barril equivalente de petróleo.
+4 βαρέλι, ισοδύναμο για πετρέλαιο.
 0 
  5_bblep
  mksa(_bblep)
 
 # _MW
-1 mégawatt
-2 Megawatt
-3 megavatio
-4 μεγκαβάτ
+1 mégawatt.
+2 Megawatt.
+3 megavatio.
+4 μεγκαβάτ.
 0 
  5_MW
  mksa(_MW)
 
 # _degreeF
-1 degré Fahrenheit
-2 Degree Fahrenheit
-3 grado Fahrenheit
-4 βαθμοί Fahrenheit
+1 degré Fahrenheit.
+2 Degree Fahrenheit.
+3 grado Fahrenheit.
+4 βαθμοί Fahrenheit.
 0 
  5_degreeF
  mksa(_degreeF)
 
 # _deg
-1 degré (angle)
-2 Degree (angle)
-3 grado (ángulo)
-4 μοίρες (για γωνίες)
+1 degré (angle).
+2 Degree (angle).
+3 grado (ángulo).
+4 μοίρες (για γωνίες).
 0 
  5_deg
  mksa(_deg)
 
 # _Rankine
-1 degré Rankine
-2 Degree Rankine
-3 grado Rankine
-4 βαθμοί Rankine
+1 degré Rankine.
+2 Degree Rankine.
+3 grado Rankine.
+4 βαθμοί Rankine.
 0 
  5_Rankine
  mksa(_Rankine)
 
 # _MHz
-1 mégahertz
-2 Megahertz
-3 megahercio
-4 μεγκαχέρτζ
+1 mégahertz.
+2 Megahertz.
+3 megahercio.
+4 μεγκαχέρτζ.
 0 
  5_MHz
  mksa(_MHz)
 
 # _tec
-1 tonne d'équivalent charbon
-2 Tonne of coal equivalent
-3 tonelada de equivalente carbón
-4 τόνος, ισοδύναμος για κάρβουνο
+1 tonne d'équivalent charbon.
+2 Tonne of coal equivalent.
+3 tonelada de equivalente carbón.
+4 τόνος, ισοδύναμος για κάρβουνο.
 0 
  5_tec
  mksa(_tec)
 
 # _tr
-1 tour=2*pi _rad
-2 tour=2*pi _rad
-3 tour=2*pi _rad
-4 tour=2*pi _rad
+1 tour=2*pi _rad.
+2 tour=2*pi _rad.
+3 tour=2*pi _rad.
+4 tour=2*pi _rad.
 0 
  5_tr
  mksa(_tr)
 
 # _tex
-1 tex=10^-6 _(kg/m)
-2 tex=10^-6 _(kg/m)
-3 tex=10^-6 _(kg/m)
-4 tex=10^-6 _(kg/m)
+1 tex=10^-6 _(kg/m).
+2 tex=10^-6 _(kg/m).
+3 tex=10^-6 _(kg/m).
+4 tex=10^-6 _(kg/m).
 0 
  5_tex
  mksa(_tex)
 
 # _(rad/s)
-1 radian par seconde
-2 Radian per second
-3 radián por segundo
-4 ακτίνια ανά δευτερόλεπτο
+1 radian par seconde.
+2 Radian per second.
+3 radián por segundo.
+4 ακτίνια ανά δευτερόλεπτο.
 0 
  5_(rad/s)
  mksa(_(rad/s))
 
 # _(tr/min)
-1 tour par minute
-2 Revolutions per minute
-3 Revoluciones por minuto
-4 Tour ανά λεπτό
+1 tour par minute.
+2 Revolutions per minute.
+3 Revoluciones por minuto.
+4 Tour ανά λεπτό.
 0 
  5_(tr/min)
  mksa(_(tr/min))
 
 # _(tr/s)
-1 tour par seconde
-2 Revolutions per second
-3 Revoluciones por segundo
-4 Tour ανά δευτερόλεπτο
+1 tour par seconde.
+2 Revolutions per second.
+3 Revoluciones por segundo.
+4 Tour ανά δευτερόλεπτο.
 0 
  5_(tr/s)
  mksa(_(tr/s))
 
 # _Gal
-1 gal=0.01_(m/s^2)
-2 Gal=0.01_(m/s^2)
-3 Gal=0.01_(m/s^2)
-4 Gal=0.01_(m/s^2)
+1 gal=0.01_(m/s^2).
+2 Gal=0.01_(m/s^2).
+3 Gal=0.01_(m/s^2).
+4 Gal=0.01_(m/s^2).
 0 
  5_Gal
  mksa(_Gal)
 
 # _(rad/s^2)
-1 radian par seconde au carré
-2 Radian per square second
-3 radián por segundo cuadrado
-4 ακτίνια ανά τετραγωνικό δευτερόλεπτο
+1 radian par seconde au carré.
+2 Radian per square second.
+3 radián por segundo cuadrado.
+4 ακτίνια ανά τετραγωνικό δευτερόλεπτο.
 0 
  5_(rad/s^2)
  mksa(_(rad/s^2))
 
 # _NA_
-1 Nombre d'Avogadro
-2 Avogadro's number
-3 Número de Avogrado
-4 Αριθμός Avogadro
+1 Nombre d'Avogadro.
+2 Avogadro's number.
+3 Número de Avogrado.
+4 Αριθμός Avogadro.
 0 
  mksa(_NA_)
 
 # _k_
-1 Constante de Boltzmann
-2 Boltzmann constant
-3 Constante de Boltzmann
-4 Σταθερά Boltzmann
+1 Constante de Boltzmann.
+2 Boltzmann constant.
+3 Constante de Boltzmann.
+4 Σταθερά Boltzmann.
 0 
  mksa(_k_)
 
 # _Vm_
-1 Volume molaire
-2 Molar volume
-3 Volumen molar
-4 Γραμμομοριακός Όγκος
+1 Volume molaire.
+2 Molar volume.
+3 Volumen molar.
+4 Γραμμομοριακός Όγκος.
 0 
  mksa(_Vm_)
 
 # _R_
-1 Constante universelle des gaz
-2 Universal gas constant
-3 Constante universal de los gases
-4 Παγκόσμια σταθερά αερίων
+1 Constante universelle des gaz.
+2 Universal gas constant.
+3 Constante universal de los gases.
+4 Παγκόσμια σταθερά αερίων.
 0 
  mksa(_R_)
 
 # _StdT_
-1 Température standard
-2 Standard temperature
-3 Temperatura estándar
-4 Κανονική Θερμοκρασία
+1 Température standard.
+2 Standard temperature.
+3 Temperatura estándar.
+4 Κανονική Θερμοκρασία.
 0 
  mksa(_StdT_)
 
 # _StdP_
-1 Pression standard
-2 Standard pressure
-3 Presión estándar
-4 Κανονική πίεση
+1 Pression standard.
+2 Standard pressure.
+3 Presión estándar.
+4 Κανονική πίεση.
 0 
  mksa(_StdP_)
 
 # _sigma_
-1 Constante de Stefan-Boltzmann
-2 Stefan-Boltzmann constant
-3 Constante de Stefan-Boltzmann
-4 Σταθερά Stefan-Boltzmann
+1 Constante de Stefan-Boltzmann.
+2 Stefan-Boltzmann constant.
+3 Constante de Stefan-Boltzmann.
+4 Σταθερά Stefan-Boltzmann.
 0 
  mksa(_sigma_)
 
 # _c_
-1 Vitesse de la lumière
-2 Speed of light in vacuum
-3 Velocidad de la luz en el vacío
-4 Ταχύτητα φωτός στο κενό
+1 Vitesse de la lumière.
+2 Speed of light in vacuum.
+3 Velocidad de la luz en el vacío.
+4 Ταχύτητα φωτός στο κενό.
 0 
  mksa(_c_)
 
@@ -7162,10 +7167,10 @@ power_regression_plot([[1.0,2.0],[2.0,4.0],[3.0,9.0],[4.0,16.0]])
 power_regression_plot([1.0,2.0,3.0,4.0],[2.0,4.0,9.0,16.0])
 
 # parfrac fullparfrac
-1 Option de la commande convert ou convertir (id partfrac).
-2 Option of the convert or convertir command (id partfrac).
-3 Opción del comando convert o convertir (id partfrac).
-4 Επιλογή της εντολής convert ή convertir (id partfrac).
+1 Option de la commande convert ou convertir (id à l'option partfrac).
+2 Option of the convert or convertir command (id at the option partfrac).
+3 Opción del comando convert o convertir (id a opción partfrac).
+4 Επιλογή της εντολής convert ή convertir (id με eπιλογή partfrac).
 0 Opt
 -1 convert
  convert(1/(x^2-1),parfrac)
@@ -8093,6 +8098,9 @@ taylor(ln(x+x^2)-ln(x),x,2)
 taylor(ln(x+x^2)-ln(x),x=0,2)
 taylor(ln(x+x^2)-ln(x),x=1,2)
 taylor((x^4+x+2)/(x^2+1),x,5)
+taylor(sin(t*x+t*y)+cos(t*x*t*y),t=0,6,polynom)(h=1) 
+taylor(sin((1+h*t)*(pi/2+k*t)),t=0,3,polynom)(t=1)
+taylor((-1+k*t)^2/(1+h*t)^3,t=0,3,polynom)(t=1)
 
 # dim
 1 Retourne la liste donnant la dimension de la matrice donnée en argument.
@@ -9169,6 +9177,10 @@ desolve([y''+y=sin(x),y(0)=1,y'(0)=2],[x,y])
 desolve(diff(y(t),t)+t*y(t)=0,t,y)
 desolve(diff(y(t),t)+t*y(t)=0,[t,y])
 desolve((y''+y=sin(x)) and (y(0)=1) and (y'(0)=2),y)
+desolve([z''+2*z'+z,z(0)=1,z'(0)=0],u,z)
+desolve([z''+2*z'+z,z(0)=1,z'(0)=0],z(u))
+desolve([z'=[[1,2],[2,1]]*z+[t,t+1],z(0)=[1,2]],t,z)
+desolve([z'=[[1,2],[2,1]]*z+[t,t+1],z(0)=[1,2]],z(t))
 
 # det
 1 Déterminant d'une matrice carrée M.
@@ -10712,10 +10724,10 @@ lin(exp(x)^n)
 lin((exp(x)^3+exp(x))^2)
 
 # linsolve resoudre_systeme_lineaire
-1 Résolution d'un système d'équations linéaires
-2 Linear equations system solver
-3 Resolución de un sistema de ecuaciones lineales
-4 Επιλύει σύστημα γραμμικών εξισώσεων
+1 Résolution d'un système d'équations linéaires.
+2 Linear equations system solver.
+3 Resolución de un sistema de ecuaciones lineales.
+4 Επιλύει σύστημα γραμμικών εξισώσεων.
 0 LstLinEq,LstVar
 -1 solve
 -2 proot
@@ -10768,7 +10780,7 @@ linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
 1 Option globale d'une commande graphique pour mettre un titre au graphique.
 2 Global option of a graphic command to put a title in a graphic.
 3 Opción global de una instrucción gráfica para poner un título al gráfico.
-4 Kαθολική επιλογή μιας εντολής γραφικών για την τοποθέτηση τίτλου σε γράφημα
+4 Kαθολική επιλογή μιας εντολής γραφικών για την τοποθέτηση τίτλου σε γράφημα.
 0 Opt
 -1 line_width
  title="segment";segment(0,point(1,1),epaisseur=5)
@@ -10778,7 +10790,7 @@ linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
 1 Option permettant de mettre une image sur les rectangles de côtés parallèles aux axes en 2-d et sur les surfaces en 3-d ou permettant de mettre un fond sur un graphique 2-d.
 2 Option that puts a picture in a rectangle of sides parallel to the axis (2-d) or on a 3-d surface or to fill the background (2-d).
 3 Opción que permite poner una imagen sobre los rectángulos de lados paralelos a los ejes en 2-d y sobre las superficies en 3-d o que permite poner un fondo sobre un gráfico 2-d.
-4 Επιλογή που τοποθετεί μια εικόνα σε ορθογώνια με πλευρές παράλληλες προς τους άξονες (2-Δ) και σε επιφάνειες στον 3-Δ χώρο ή επιτρέπει να βάλουμε φόντο σε 2-Δ γράφημα
+4 Επιλογή που τοποθετεί μια εικόνα σε ορθογώνια με πλευρές παράλληλες προς τους άξονες (2-Δ) και σε επιφάνειες στον 3-Δ χώρο ή επιτρέπει να βάλουμε φόντο σε 2-Δ γράφημα.
 0 Opt=NameFich
  carre(i,1+i,gl_texture="image.jpg")
  gl_texture="image.jpg"; carre(i,1+i)
@@ -10819,7 +10831,7 @@ linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
 # gl_xtick gl_ytick gl_ztick
 1 Option globale permettant de définir l'espacement des marques sur l'axe des x (resp y, z).
 2 Global option that defines the interval between tick marks on the x (resp. y, z) axis.
-3 Opción globalque permite definir el intervalo de marcas sobre el eje x (resp. y, z)
+3 Opción globalque permite definir el intervalo de marcas sobre el eje x (resp. y, z).
 4 Καθολική επιλογή που επιτρέπει τον ορισμό των διαστημάτων ανάμεσα στα σημεία του άξονα των x,(αντίστοιχα y,z).
 0 Opt=Real
  gl_xtick=0.5
@@ -10828,7 +10840,7 @@ linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
 # gl_x_axis_unit gl_y_axis_unit gl_z_axis_unit
 1 Option globale permettant de définir individuellement les noms des unités sur les axes des x (resp y,z).
 2 Global option that is an individual definition of the units of the x, (or y or z) axis.
-3 Opción global que permite definir de manera individual los nombres de unidad sobre los ejes x, y y z.
+3 Opción global que permite definir de manera individual los nombres de unidad sobre los ejes x, (o y, o z).
 4 Καθολική επιλογή που επιτρέπει τον ορισμό (ατομικά) των ονομάτων των μονάδων στον άξονα των x (αντίστοιχα y,z).
 0 Opt=Str
  gl_x_axis_unit="s";
@@ -10837,7 +10849,7 @@ linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
 # gl_x_axis_color gl_y_axis_color gl_z_axis_color
 1 Option globale permettant de définir individuellement les couleurs des axes des x (resp y,z).
 2 Global option that is an individual definition of the colors of the x, (or y or z) axis.
-3 Opción global que permite definir de manera individual los colores de los ejes x, y z (negro=0 rojo=1 verde=2 amarillo=3 azul=4).
+3 Opción global que permite definir de manera individual los colores de los ejes x, (o y, o z) (negro=0 rojo=1 verde=2 amarillo=3 azul=4).
 4 Καθολική επιλογή που επιτρέπει τον ορισμό (ατομικά) των χρώματα στον άξονα των x (αντίστοιχα y,z)(μαύρο=0 κόκκινο=1 πράσινο=2 κίτρινο=3 μπλε=4).
 0 Opt=Intg
  gl_x_axis_color=123;
@@ -10847,21 +10859,22 @@ linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
 # gl_x_axis_name gl_y_axis_name gl_z_axis_name
 1 Option globale permettant de définir individuellement les noms des axes x (resp y,z).
 2 Global option that is an individual definition of the names of the x (or y or z) axis.
-3 Opción global que permite definir de manera individual los nombre de los ejes x, y, z.
+3 Opción global que permite definir de manera individual los nombre de los ejes x, (o y, o z).
 4 Καθολική επιλογή που επιτρέπει τον ορισμό (ατομικά) των ονομάτων στον άξονα των x (αντίστοιχα y,z).
 0 Opt=Str
  gl_x_axis_name="s";
  gl_y_axis_name="m/s";
 
 # legend
-1 legende(za,"ici") (ou legende([20,60],"ici")) "ici" est écrit au point d'affixe za (ou à la position [20,60] en pixel) et legende=["m","s"] écrit "m","s" comme unités sur les axes
+1 legende(za,"ici") (ou legende([20,60],"ici")) "ici" est écrit au point d'affixe za (ou à la position [20,60] en pixel) et legende=["m","s"] écrit "m","s" comme unités sur les axes.
 2 legend(za,"here") (or legend([20,60],"here")) "here" is written at the point of affix za (or at the pixel position [20,60]) and legend=["m","s"] write "m","s" as units on the axis.
 3 legend(za,"aqui") (o legend([20,60],"aqui")) "aqui" está escrito en el punto de afijo za (o en la posición [20,60] en pixel) y legend=["m","s"] escribe "m","s" como unidad en los ejes.
-4 legend(za,"here") (ή legend([20,60],"here")) "here" εγγράφεται στο σημείο με προσθήκη za (ή στο στη θέση [20,60]) και legend=["m","s"] εγγράφει "m","s" ως μονάδες των αξόνων..
+4 legend(za,"here") (ή legend([20,60],"here")) "here" εγγράφεται στο σημείο με προσθήκη za (ή στο στη θέση [20,60]) και legend=["m","s"] εγγράφει "m","s" ως μονάδες των αξόνων.
 0 Cplx or Lst,Str
 -1 labels
 -2 angle
 legend(1+i,"Hello")
+legend(point([0,2,3],"Hello")
 legend(point(0,1),"Hello",vert)
 legend(point(0,1,0),"Hello",vert)
 legend(1+i,"Hello",quadrant4,red)
@@ -10888,10 +10901,10 @@ legend([30,20],"bonjour")
  display(legend(1+i,"A"),red)
 
 # legendre_symbol
-1 Symbole de Legendre
-2 Legendre symbol
-3 Símbolo de Legendre
-4 Σύμβολο Legendre
+1 Symbole de Legendre.
+2 Legendre symbol.
+3 Símbolo de Legendre.
+4 Σύμβολο Legendre.
 0 Intg,Intg
 -1 jacobi_symbol
 legendre_symbol(132,5)
@@ -10924,7 +10937,7 @@ ln(e)
 -4 trig2exp
  convert(cos(x),expln)
 
-# local
+# local var
 1 Définit des variables locales: f(x):={local (var1:=x),var2; instruction;};
 2 Local variables definition: f(x):={local (var1:=x),var2; instruction;};
 3 Definición de variables locales: f(x):={local (var1:=x),var2; instruction;};
@@ -10937,10 +10950,10 @@ ln(e)
  f2(x):={local (a:=2),b; b:=a*x; return b;}
 
 # logb
-1 Logarithme à base b
-2 Logarithm of base b
-3 Logaritmo en base b
-4 Λογάριθμος με βάση b
+1 Logarithme à base b.
+2 Logarithm of base b.
+3 Logaritmo en base b.
+4 Λογάριθμος με βάση b.
 0 Real
 -1 log
 -2 log10
@@ -10948,10 +10961,10 @@ logb(5,2)
 logb(7,10)
 
 # log10
-1 Logarithme à base 10
-2 Common logarithm (base 10)
-3 Logaritmo en base 10
-4 Λογάριθμος βάσης 10
+1 Logarithme à base 10.
+2 Common logarithm (base 10).
+3 Logaritmo en base 10.
+4 Λογάριθμος βάσης 10.
 8 LOG: 常用对数。返回数值的常用对数。  常用对数是以 10 为底的对数。
 0 Expr
 -1 alog10
@@ -10969,10 +10982,10 @@ log10(10)
 alog10(3)
 
 # distance
-1 Calcule la distance entre 2 points ou un point et une courbe
-2 Calculates the distance between 2 points or a point and a curve
-3 Calcula la distancia entre 2 puntos o entre 1 punto y una curva
-4 Υπολογισμός της απόστασης μεταξύ 2 σημείων ή ενός σημείου και μιας καμπύλης
+1 Calcule la distance entre 2 points ou un point et une courbe.
+2 Calculates the distance between 2 points or a point and a curve.
+3 Calcula la distancia entre 2 puntos o entre 1 punto y una curva.
+4 Υπολογισμός της απόστασης μεταξύ 2 σημείων ή ενός σημείου και μιας καμπύλης.
 0 (Pnt or Cplx),(Pnt or Cplx or Curve)
 -1 distance2
 -2 distanceat
@@ -10982,10 +10995,10 @@ distance(1+i,segment(1-i,i))
 distance(0,1+i)
 
 # distance2
-1 Calcule le carré de la distance entre 2 points ou un point et une courbe
-2 Calculates the square of the distance between 2 points or a point and a curve
-3 Calcula el cuadrado de la distancia entre 2 puntos o entre un punto y una curva
-4 Υπολογισμός του τετραγώνου της απόστασης μεταξύ 2 σημείων ή ενός σημείου και μιας καμπύλης
+1 Calcule le carré de la distance entre 2 points ou un point et une courbe.
+2 Calculates the square of the distance between 2 points or a point and a curve.
+3 Calcula el cuadrado de la distancia entre 2 puntos o entre un punto y una curva.
+4 Υπολογισμός του τετραγώνου της απόστασης μεταξύ 2 σημείων ή ενός σημείου και μιας καμπύλης.
 0 (Pnt or Cplx),(Pnt or Cplx or Curve)
 -1 distance
 distance2(point(0),point(1+i))
@@ -10993,10 +11006,10 @@ distance2(1+i,segment(1-i,i))
 distance2(0,1+i)
 
 # limit limite
-1 Limite d'une expression en un point (a or +/-infinity)(d=-1 pour limite inf et +1 pour limite sup)
-2 Limit of an expression at a limit point (a or +/-infinity)(d=-1 for limit inf and +1 for limit sup)
-3 Límite de una expresión en un punto (a o +/-infinity)(d=-1 o +1)
-4 Όριο μιας παράστασης σε ένα σημείο (a ή +/-άπειρο)(d=-1 ή +1)
+1 Limite d'une expression en un point (a or +/-infinity)(d=-1 pour limite inf et +1 pour limite sup).
+2 Limit of an expression at a limit point (a or +/-infinity)(d=-1 for limit inf and +1 for limit sup).
+3 Límite de una expresión en un punto (a o +/-infinity)(d=-1 o +1).
+4 Όριο μιας παράστασης σε ένα σημείο (a ή +/-άπειρο)(d=-1 ή +1).
 0 Expr,Var,Val,[Dir(d)]
 -1 series
 -2 taylor
@@ -11010,10 +11023,10 @@ limit(exp(1/x),x,0,-1)
 limit(taux_accroissement(x^n,1,1+h),h,0)
 
 # lu
-1 Pour A une matrice numérique, renvoie p permutation, L et U tels que PA=LU (P=permu2mat(p))
-2 For a numerical matrix A, returns p permutation, L and U such that PA=LU (P=permu2mat(p))
-3 Para una matriz numérica A, devuelve permutación p, L y U tales que PA=LU (P=permu2mat(p))
-4 Για ένα αριθμητικό πίνακα Α, επιστρέφει την μετάθεση p, και L και U τέτοιους ώστε PA=LU (P=permu2mat(p))
+1 Pour A une matrice numérique, renvoie p permutation, L et U tels que PA=LU (P=permu2mat(p)).
+2 For a numerical matrix A, returns p permutation, L and U such that PA=LU (P=permu2mat(p)).
+3 Para una matriz numérica A, devuelve permutación p, L y U tales que PA=LU (P=permu2mat(p)).
+4 Για ένα αριθμητικό πίνακα Α, επιστρέφει την μετάθεση p, και L και U τέτοιους ώστε PA=LU (P=permu2mat(p)).
 8 lu 分解。 将矩形矩阵分解成三个矩阵： {[[下三角形矩阵]]、[[上三角形矩阵]]、[[置换矩阵]]} 上三角形矩阵在其对角线上有元素。
 0 Mtrx
 -1 qr
@@ -11023,10 +11036,10 @@ lu([[1,2],[3,4]])
 lu([[6,12,18],[5,14,31],[3,8,18]])
 
 # lvar
-1 Liste des variables d'un objet (avec dépendance rationnelle)
-2 List of variables of an object (with rational dependence)
-3 Lista de variables de un objeto (con dependencia racional)
-4 Λίστα των ρητών μεταβλητών μιας παράστασης
+1 Liste des variables d'un objet (avec dépendance rationnelle).
+2 List of variables of an object (with rational dependence).
+3 Lista de variables de un objeto (con dependencia racional).
+4 Λίστα των ρητών μεταβλητών μιας παράστασης.
 0 Expr
 -1 lname
 -2 has
@@ -11034,10 +11047,10 @@ lvar(exp(x)*2*sin(y))
 lvar(exp(x)*2*sin(y)+ln(x))
 
 # lname indets
-1 Liste des variables de l'expression
-2 List of variables in the expression
-3 Lista de las variables de una expresión
-4 Λίστα των μεταβλητών μιας παράστασης
+1 Liste des variables de l'expression.
+2 List of variables in the expression.
+3 Lista de las variables de una expresión.
+4 Λίστα των μεταβλητών μιας παράστασης.
 0 Expr
 -1 has
 -2 lvar
@@ -11057,10 +11070,10 @@ norm([[1,2],[3,-4]])
 norm([[1,2,3],[3,-9,6],[4,5,6]])
 
 # maxnorm
-1 Norme du max d'un vecteur (ou d'une matrice): maxnorm([x1,x2,..,xn])=max(|x1|,..,|xn|)
-2 Norm with the max of a vector (or of a matrix): maxnorm([x1,x2,..,xn])=max(|x1|,..,|xn|)
-3 Norma del max de un vector (o de una matriz): maxnorm([x1,x2,..,xn])=max(|x1|,..,|xn|)
-4 Νόρμα με το μέγιστο ενός διανύσματος (ή ενός πίνακα): maxnorm([x1,x2,..,xn])=max(|x1|,..,|xn|)
+1 Norme du max d'un vecteur (ou d'une matrice): maxnorm([x1,x2,..,xn])=max(|x1|,..,|xn|).
+2 Norm with the max of a vector (or of a matrix): maxnorm([x1,x2,..,xn])=max(|x1|,..,|xn|).
+3 Norma del max de un vector (o de una matriz): maxnorm([x1,x2,..,xn])=max(|x1|,..,|xn|).
+4 Νόρμα με το μέγιστο ενός διανύσματος (ή ενός πίνακα): maxnorm([x1,x2,..,xn])=max(|x1|,..,|xn|).
 0 Vect or Mtrx
 -1 l2norm
 -2 l1norm
@@ -11080,11 +11093,11 @@ rowNorm([[1,2],[3,-4]])
 rowNorm([[1,2,3,-4],[-5,3,2,1]])
 
 # colNorm colnorm
-1 Renvoie le maximum des sommes des valeurs absolues des éléments situés sur les colonnes de la matrice: colNorm(a_{j,k})=max_k(sum_j(|a_{j,k}|))
-2 Returns the max of the l1_norm fo the columns of a matrix: colNorm(a_{j,k})=max_k(sum_j(|a_{j,k}|))
-3 Devuelve el máximo de las sumas de los valores absolutos de los elementos encontrados sobre las columnas de la matriz: colNorm(a_{j,k})=max_k(sum_j(|a_{j,k}|))
-4 Επιστρέφει την μέγιστη l1 νόρμας των στηλών ενός πίνακα: colNorm(a_{j,k})=max_k(sum_j(|a_{j,k}|))
-8 列范数。 查找所有元素绝对值之和的最大值（范围为所有列）
+1 Renvoie le maximum des sommes des valeurs absolues des éléments situés sur les colonnes de la matrice: colNorm(a_{j,k})=max_k(sum_j(|a_{j,k}|)).
+2 Returns the max of the l1_norm fo the columns of a matrix: colNorm(a_{j,k})=max_k(sum_j(|a_{j,k}|)).
+3 Devuelve el máximo de las sumas de los valores absolutos de los elementos encontrados sobre las columnas de la matriz: colNorm(a_{j,k})=max_k(sum_j(|a_{j,k}|)).
+4 Επιστρέφει την μέγιστη l1 νόρμας των στηλών ενός πίνακα: colNorm(a_{j,k})=max_k(sum_j(|a_{j,k}|)).
+8 列范数。 查找所有元素绝对值之和的最大值（范围为所有列）。
 0 Vect or Mtrx
 -1 norm
 colNorm([[1,2],[3,-4]])
@@ -11092,9 +11105,9 @@ colNorm([[1,2,3,-4],[-5,3,2,1]])
 
 # max
 1 Maximum des éléments d'une séquence ou d'une liste de réels.
-2 Maximum of elements of a sequence or a list of reals
-3 Máximo de dos reales
-4 Μέγιστος 2 πραγματικών αριθμών
+2 Maximum of elements of a sequence or a list of reals.
+3 Máximo de dos reales.
+4 Μέγιστος 2 πραγματικών αριθμών.
 8 最大。 返回两个值中较大值。
 0 Seq||Lst
 -1 min
@@ -11118,7 +11131,7 @@ makelist(x->ifte(x<5,"A","B"),1,10)
 1 Applique la fonction f à tous les éléments de la liste l ou à un polynôme donné au format interne.
 2 Apply the function f at the elements of the list l or at a polynomial of internal format.
 3 Aplica la función f a todos los elementos de la lista l o a un polinomio dado en formato interno.
-4 Εφαρμογή της συνάρτησης f στα στοιχεία της λίστας l
+4 Εφαρμογή της συνάρτησης f στα στοιχεία της λίστας l.
 0 Lst(l),Fnc(f)
 -1 apply
 map([1,2,3],x->x^3)
@@ -11137,43 +11150,43 @@ apply(x->x^3,[1,2,3])
 apply(x->x+1,[[1,2,3],[1,2,3]],matrix)
 
 # maple_mode
-1 Passe en mode Xcas (0), Maple (1), Mupad (2), TI89 (3)
-2 Switches to mode Xcas (0), Maple (1), Mupad (2), TI89 (3)
-3 Cambia a modo Xcas (0), Maple (1), Mupad (2), TI89 (3)
-4 Εναλλαγή στον τρόπο λειτουργίας: Xcas (0), Maple (1), Mupad (2), TI89 (3)
+1 Passe en mode Xcas (0), Maple (1), Mupad (2), TI89 (3).
+2 Switches to mode Xcas (0), Maple (1), Mupad (2), TI89 (3).
+3 Cambia a modo Xcas (0), Maple (1), Mupad (2), TI89 (3).
+4 Εναλλαγή στον τρόπο λειτουργίας: Xcas (0), Maple (1), Mupad (2), TI89 (3).
 0 Intg(0) or 1 or 2 or 3
 maple_mode(1)
 maple_mode(0)
 
 # maple2mupad
-1 maple2mupad("fichier1","fichier2") traduit fichier1(Maple) en fichier2(MuPAD)
-2 maple2mupad("file1","file2") translate file1(Maple) to file2(MuPAD)
-3 maple2mupad("file1","file2") traduce file1(Maple) en file2(MuPAD)
-4 maple2mupad("file1","file2") μετατροπή του file1(Maple) σε file2(MuPAD)
+1 maple2mupad("fichier1","fichier2") traduit fichier1(Maple) en fichier2(MuPAD).
+2 maple2mupad("file1","file2") translate file1(Maple) to file2(MuPAD).
+3 maple2mupad("file1","file2") traduce file1(Maple) en file2(MuPAD).
+4 maple2mupad("file1","file2") μετατροπή του file1(Maple) σε file2(MuPAD).
 0 Str("Name_Maplefile"),Str("Name_Mupadfile")
 -1 maple2xcas
 
 # maple2xcas
-1 maple2xcas("fichier1","fichier2") traduit fichier1(Maple) en fichier2(xcas)
-2 maple2xcas("file1","file2") translate file1(Maple) to file2(xcas)
-3 maple2xcas("file1","file2") traduce file1(Maple) en file2(xcas)
-4 maple2xcas("file1","file2") μετατροπή του file1(Maple) σε file2(xcas)
+1 maple2xcas("fichier1","fichier2") traduit fichier1(Maple) en fichier2(Xcas).
+2 maple2xcas("file1","file2") translate file1(Maple) to file2(Xcas).
+3 maple2xcas("file1","file2") traduce file1(Maple) en file2(Xcas).
+4 maple2xcas("file1","file2") μετατροπή του file1(Maple) σε file2(Xcas).
 0 Str("NameMapleFile"),Str("NameXcasFile")
 -1 maple2mupad
 
 # mupad2maple
-1 mupad2maple("fichier1","fichier2") traduit fichier1(MuPAD) en fichier2(Maple)
-2 mupad2maple("file1","file2") translate file1(MuPAD) to file2(Maple)
-3 mupad2maple("file1","file2") traduce file1(MuPAD) en file2(Maple)
-4 mupad2maple("file1","file2") μετατροπή του file1(MuPAD) σε file2(Maple)
+1 mupad2maple("fichier1","fichier2") traduit fichier1(MuPAD) en fichier2(Maple).
+2 mupad2maple("file1","file2") translate file1(MuPAD) to file2(Maple).
+3 mupad2maple("file1","file2") traduce file1(MuPAD) en file2(Maple).
+4 mupad2maple("file1","file2") μετατροπή του file1(MuPAD) σε file2(Maple).
 0 Str("NameMupadFile"),Str("NameMapleFile")
 -1 mupad2xcas
 
 # mupad2xcas
-1 mupad2xcas("fichier1","fichier2") traduit fichier1(MuPAD) en fichier2(xcas)
-2 mupad2xcas("file1","file2") translate file1(MuPAD) to file2(xcas)
-3 mupad2xcas("file1","file2") traduce file1(MuPAD) en file2(xcas)
-4 mupad2xcas("file1","file2") μετατροπή του file1(MuPAD) σε file2(xcas)
+1 mupad2xcas("fichier1","fichier2") traduit fichier1(MuPAD) en fichier2(Xcas).
+2 mupad2xcas("file1","file2") translate file1(MuPAD) to file2(Xcas).
+3 mupad2xcas("file1","file2") traduce file1(MuPAD) en file2(Xcas).
+4 mupad2xcas("file1","file2") μετατροπή του file1(MuPAD) σε file2(Xcas).
 0 Str("NameMupadFile"),Str("NameXcasFile")
 -1 mupad2maple
 
@@ -11188,10 +11201,10 @@ maple_mode(0)
 min(25,35)
 
 # mkisom
-1 Matrice d'une isométrie donnée par ses éléments propres
-2 Matrix of an isometry given by its proper elements
-3 Matriz de una isometría dada por sus elementos propios
-4 Πίνακας μιας ισομετρίας δοθέντων των στοιχείων της
+1 Matrice d'une isométrie donnée par ses éléments propres.
+2 Matrix of an isometry given by its proper elements.
+3 Matriz de una isometría dada por sus elementos propios.
+4 Πίνακας μιας ισομετρίας δοθέντων των στοιχείων της.
 0 Vect,(Sign(1) or -1)
 -1 isom
 mkisom([1,2],1)
@@ -11199,10 +11212,10 @@ mkisom([[1,0,0],pi/3],-1)
 mkisom(pi,1)
 
 # minus
-1 minus est un opérateur infixé pour avoir la différence de 2 ensembles
-2 minus is a infixed operator to get the difference of 2 sets
-3 minus es un operador infijo para obtener la diferencia de 2 conjuntos
-4 minus είναι ένας εντεθειμένος τελεστής που δίνει τη διαφορά 2 συνόλων
+1 minus est un opérateur infixé pour avoir la différence de 2 ensembles.
+2 minus is a infixed operator to get the difference of 2 sets.
+3 minus es un operador infijo para obtener la diferencia de 2 conjuntos.
+4 minus είναι ένας εντεθειμένος τελεστής που δίνει τη διαφορά 2 συνόλων.
 0 (Vect or Set),(Vect or Set)
 -1 union
 -2 intersect
@@ -11210,10 +11223,10 @@ mkisom(pi,1)
  %{1,2,3%} minus %{2,5,6%}
 
 # moyal
-1 Produit de Moyal de 2 symboles
-2 Moyal product of 2 symbols
-3 Producto de Moyal de 2 expresiones simbólicas
-4 Γινόμενο Moyal 2 συμβόλων
+1 Produit de Moyal de 2 symboles.
+2 Moyal product of 2 symbols.
+3 Producto de Moyal de 2 expresiones simbólicas.
+4 Γινόμενο Moyal 2 συμβόλων.
 0 Expr,Expr,VectVar
 -1 
 moyal(x^2+y^4,x^4-y^2,[x,y],5)
@@ -11244,10 +11257,10 @@ nextprime(9856989898990)
 nextprime(97160249868928888261606009)
 
 # normal evala
-1 Simplifie l'expression
-2 Simplify the expression
-3 Simplifica la expresión
-4 Κανονικοποίηση της παράστασης
+1 Simplifie l'expression.
+2 Simplify the expression.
+3 Simplifica la expresión.
+4 Κανονικοποίηση της παράστασης.
 0 Expr
 -1 simplify
 normal(2*x+y=1)
@@ -11255,10 +11268,10 @@ normal(2*x*2)
 normal((2*x+1)^2)
 
 # not non
-1 Renvoie l'inverse logique de l'argument
-2 Returns the logical inverse of the argument
-3 Devuelve el inverso lógico del argumento
-4 Επιστρέφει το λογικό αντίστροφο του ορίσματος
+1 Renvoie l'inverse logique de l'argument.
+2 Returns the logical inverse of the argument.
+3 Devuelve el inverso lógico del argumento.
+4 Επιστρέφει το λογικό αντίστροφο του ορίσματος.
 8 如值为 0，返回 1；否则，返回 0。
 0 Boolean
 -1 or
@@ -11282,10 +11295,10 @@ not(b>0)
  5!
 
 # nop
-1 Instruction ne rien faire
-2 No OPeration instruction
-3 Instrucción para no hacer nada
-4 Εντολή μη εκτέλεσης
+1 Instruction ne rien faire.
+2 No OPeration instruction.
+3 Instrucción para no hacer nada.
+4 Εντολή μη εκτέλεσης.
 0 NULL
 -1 
 nop()
@@ -11308,27 +11321,27 @@ odesolve(sin(t*y),t=0..2,y,1,tstep=0.5,curve)
 
 
 # of
-1 Renvoie la valeur f(a)
-2 Returns the value : f(a)
-3 Devuelve el valor f(a)
-4 Επιστρέφει την τιμή: f(a)
+1 Renvoie la valeur f(a).
+2 Returns the value : f(a).
+3 Devuelve el valor f(a).
+4 Επιστρέφει την τιμή: f(a).
 0 Fnc(f),Real(a)
 -1 at
 of(x->x^2,4)
 
 # option
-1 Mot réservé pour compatibilité
-2 Reserved word for compatibility
-3 Palabra reservada para compatibilidad
-4 Δεσμευμένη λέξη για συμβατότητα
+1 Mot réservé pour compatibilité.
+2 Reserved word for compatibility.
+3 Palabra reservada para compatibilidad.
+4 Δεσμευμένη λέξη για συμβατότητα.
 0 
 -1 
 
 # order_size
-1 Reste (terme en O) d'un développement en séries: limit(x^a*order_size(x),x=0)=0 si a>0
-2 Remainder (O term) of a series expansion: limit(x^a*order_size(x),x=0)=0 if a>0
-3 Resto (término en O) de un desarrollo en serie: limit(x^a*order_size(x),x=0)=0 si a>0
-4 Υπόλοιπο (O όροι) ενός αναπτύγματος σειράς: limit(x^a*order_size(x),x=0)=0 αν a>0
+1 Reste (terme en O) d'un développement en séries: limit(x^a*order_size(x),x=0)=0 si a>0.
+2 Remainder (O term) of a series expansion: limit(x^a*order_size(x),x=0)=0 if a>0.
+3 Resto (término en O) de un desarrollo en serie: limit(x^a*order_size(x),x=0)=0 si a>0.
+4 Υπόλοιπο (O όροι) ενός αναπτύγματος σειράς: limit(x^a*order_size(x),x=0)=0 αν a>0.
 0 Expr
 -1 series
 order_size(x)
@@ -11363,10 +11376,10 @@ parallel([1,0,0],line(x=0,y=0),line(x=y,y=z))
 parallel(line(x=y,y=z),line(x=0,y=0))
 
 # parameter
-1 Mot réservé
-2 Reserved word
+1 Mot réservé.
+2 Reserved word.
 3 Palabra reservada
-4 Δεσμευμένη λέξη
+4 Δεσμευμένη λέξη.
 0 
 -1 
 
@@ -11387,34 +11400,35 @@ plotparam([v*cos(u),v*sin(u),v],[u,v])
 plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3],ustep=0.1,vstep=0.2)
 
 # parameq
-1 parameq(C) renvoie le nombre complexe = équation paramétrique de la courbe C
-2 parameq(C) returns the complex number=parametric equation of the curve C
-3 parameq(C) devuelve el número complejo = ecuación paramétrica de la curva C
-4 parameq(C) επιστρέφει τον μιγαδικό αριθμό = με την παραμετρική εξίσωση της καμπύλης C
+1 parameq(C) renvoie le nombre complexe = équation paramétrique de la courbe C.
+2 parameq(C) returns the complex number=parametric equation of the curve C.
+3 parameq(C) devuelve el número complejo = ecuación paramétrica de la curva C.
+4 parameq(C) επιστρέφει τον μιγαδικό αριθμό = με την παραμετρική εξίσωση της καμπύλης C.
 0 GeoObj
 -1 equation
 parameq(circle(0,1))
 parameq(line(i,1-i))
 
 # partfrac
-1 Décomposition en éléments simples d'une fraction rationnelle ou Option de la commande convert ou convertir (id partfrac).
-2 Performs partial fraction decomposition on a fraction or Option of the convert or convertir command (id partfrac).
-3 Efectua la descomposición parcial de una fracción o Opción del comando convert o convertir (id partfrac).
-4 Ανάλυση σε μερικά κλάσματα μιας ρητής παράστασης ή Επιλογή της εντολής convert ή convertir (id partfrac).
+1 Décomposition en éléments simples d'une fraction rationnelle ou Option de la commande convert ou convertir (id à l'option parfrac).
+2 Performs partial fraction decomposition on a fraction or Option of the convert or convertir command (id at the option parfrac).
+3 Efectua la descomposición parcial de una fracción o Opción del comando convert o convertir (id a opción parfrac).
+4 Ανάλυση σε μερικά κλάσματα μιας ρητής παράστασης ή Επιλογή της εντολής convert ή convertir (id με eπιλογή parfrac).
 0 RatFrac or Opt
 -1 factor
 -2 normal
 -3 convert
+-4 propfrac
 partfrac(x/(4-x^2))
 partfrac((x^2-2*x+3)/(x^2-3*x+2))
 partfrac(a/(z*(z-b)),z)
  convert(x/(4-x^2),partfrac)
 
 # cpartfrac
-1 Décomposition en éléments simples dans ℂ d'une fraction rationnelle
-2 Performs partial fraction decomposition in ℂ of a fraction
-3 Efectua la descomposición parcial en ℂ de una fracción
-4 Ανάλυση σε μερικά κλάσματα μιας ρητής παράστασης στους μιγαδικούς
+1 Décomposition en éléments simples dans ℂ d'une fraction rationnelle.
+2 Performs partial fraction decomposition in ℂ of a fraction.
+3 Efectua la descomposición parcial en ℂ de una fracción.
+4 Ανάλυση σε μερικά κλάσματα μιας ρητής παράστασης στους μιγαδικούς.
 0 RatFrac
 -1 factor
 -2 normal
@@ -11440,10 +11454,10 @@ pcar([[1,2,3],[1,3,6],[2,5,7]])
 pcar([[1,2,3],[1,3,6],[2,5,7]],z)
 
 # pcar_hessenberg
-1 Polynôme caractéristique d'une matrice par la méthode de Hessenberg (si les coefficients sont dans un corps fini)
-2 Characteristic polynomial of a matrix by the Hessenberg method (if the coefficients are in a finite field)
-3 Polinomio característico de una matriz por el método de Hessenberg (si los coeficientes están en un campo finito)
-4 Χαρακτηριστικό πολυώνυμο ενός πίνακα σύμφωνα με τη μέθοδο Hessenberg
+1 Polynôme caractéristique d'une matrice par la méthode de Hessenberg (si les coefficients sont dans un corps fini).
+2 Characteristic polynomial of a matrix by the Hessenberg method (if the coefficients are in a finite field).
+3 Polinomio característico de una matriz por el método de Hessenberg (si los coeficientes están en un campo finito).
+4 Χαρακτηριστικό πολυώνυμο ενός πίνακα σύμφωνα με τη μέθοδο Hessenberg.
 0 Mtrx,[Var]
 -1 jordan
 -2 pcar
@@ -11453,10 +11467,10 @@ pcar_hessenberg([[1,2],[3,4]],x)
 pcar_hessenberg([[1,2,3],[1,3,6],[2,5,7]])
 
 # perm nPr
-1 perm(n,p)=nombre d'arrangements de p objets pris parmi n=n!/(n-p)!
-2 perm(n,p)=number of arrangements of p objects taken among n=n!/(n-p)!
-3 perm(n,p)=número de arreglos de p objetos tomados de n en n=n!/(n-p)!
-4 perm(n,p)=ο αριθμός των διατάξεων p αντικειμένων λαμβανομένων από n
+1 perm(n,p)=nombre d'arrangements de p objets pris parmi n : n!/(n-p)!
+2 perm(n,p)=number of arrangements of p objects taken among n : n!/(n-p)!
+3 perm(n,p)=número de arreglos de p objetos tomados de n en n : n!/(n-p)!
+4 perm(n,p)=ο αριθμός των διατάξεων p αντικειμένων λαμβανομένων από n : n!/(n-p)!
 8 排列。  返回从 n 个元素中一次取 r 个数的排列数（考虑排列顺序）： n!/(n-p)!。
 0 Intg(n),Intg(p)
 -1 comb
@@ -11508,9 +11522,9 @@ proot(x^4+5x-3,30)
 
 # pcoeff pcoef
 1 Retourne les coefficients du polynôme dont les racines sont données en argument avec 1 comme coefficient dominant.
-2 Returns the polynomial coefficients having the roots specified as argument
-3 Devuelve los coeficientes de un polinomio cuyas raíces están dadas en argumento
-4 Επιστρέφει τους συντελεστές του πολυωνύμου του οποίου οι ρίζες δίνονται ως όρισμα
+2 Returns the polynomial coefficients having the roots specified as argument.
+3 Devuelve los coeficientes de un polinomio cuyas raíces están dadas en argumento.
+4 Επιστρέφει τους συντελεστές του πολυωνύμου του οποίου οι ρίζες δίνονται ως όρισμα.
 8 多项式系数。 返回具有矢量指定根的多项式的系数。
 0 Vect
 -1 proot
@@ -11519,10 +11533,10 @@ pcoeff([1,0,0,0,1])
 pcoeff([1,0,-2])
 
 # peval polyEval
-1 Évalue en un point x0, un polynôme donné par ses coefficients
-2 Evaluates at a point x0, a polynomial given by its coefficients
-3 Evalua en un punto x0, un polinomio dado por sus coeficientes
-4 Αποτίμηση στο σημείο x0, ενός πολυωνύμου δοθέντων των συντελεστών του
+1 Évalue en un point x0, un polynôme donné par ses coefficients.
+2 Evaluates at a point x0, a polynomial given by its coefficients.
+3 Evalua en un punto x0, un polinomio dado por sus coeficientes.
+4 Αποτίμηση στο σημείο x0, ενός πολυωνύμου δοθέντων των συντελεστών του.
 8 多项式计算。 对一个具有矢量指定系数的多项式求得某个点的数值。
 0 Vect,Real(x0)
 -1 proot
@@ -11531,10 +11545,10 @@ peval([1,0,-2],1)
 peval([1,2,-25,-26,120],8)
 
 # plot graphe
-1 Trace le graphe d'une expression (ou d'une liste d'expressions) d'1 variable ou d'une densite de loi de probabilite
-2 Plot a one-variable expression (or list of expressions)
-3 Traza la gráfica de una expresión (o de una lista de expresiónes) de 1 variable
-4 Σχεδιάζει το γράφημα μιας παράστασης (ή λίστας παραστάσεων) με 1 μεταβλητή
+1 Trace le graphe d'une expression (ou d'une liste d'expressions) d'1 variable ou d'une densité de loi de probabilité.
+2 Plot a one-variable expression (or list of expressions).
+3 Traza la gráfica de una expresión (o de una lista de expresiónes) de 1 variable.
+4 Σχεδιάζει το γράφημα μιας παράστασης (ή λίστας παραστάσεων) με 1 μεταβλητή.
 0 (Expr or LstExpr),Var[=VarMin..VarMax],[color=LstColor]
 -1 plotfunc
 -2 plotparam
@@ -11550,10 +11564,10 @@ plot(normald)
 plot(normald(-1,2))
 
 # plotfunc funcplot DrawFunc Graph
-1 Trace le graphe d'une expression d'1 ou 2 variables avec superposition
-2 Plot a 1 variable or 2 variables expression with superposition
-3 Traza la gráfica de una expresión de 1 o 2 variables con superposición
-4 Σχεδιάζει το γράφημα μιας παράστασης με 1 ή 2 μεταβλητές, με υπέρθεση
+1 Trace le graphe d'une expression d'1 ou 2 variables avec superposition.
+2 Plot a 1 variable or 2 variables expression with superposition.
+3 Traza la gráfica de una expresión de 1 o 2 variables con superposición.
+4 Σχεδιάζει το γράφημα μιας παράστασης με 1 ή 2 μεταβλητές, με υπέρθεση.
 0 Expr,[Var(x) or VectVar] ,[Intg(color)]
 -1 plot
 -2 plot3d
@@ -11568,10 +11582,10 @@ plotfunc(x^2+y^2,[x=-1..1,y=-2..2],nstep=900)
 plotfunc((x+i*y)^2,[x=-1..1,y=-2..2],nstep=900,affichage=rempli)
 
 # plotimplicit implicitplot
-1 plotimplicit(f(x,y),x,y) ou plotimplicit(f(x,y),[x,y]) graphe de f(x,y)=0
-2 plotimplicit(f(x,y),x,y) or plotimplicit(f(x,y),[x,y]) graph of f(x,y)=0
-3 plotimplicit(f(x,y),x,y) o plotimplicit(f(x,y),[x,y]) gráfica de f(x,y)=0
-4 plotimplicit(f(x,y),x,y) γράφημα της f(x,y)=0
+1 plotimplicit(f(x,y),x,y) ou plotimplicit(f(x,y),[x,y]) graphe de f(x,y)=0.
+2 plotimplicit(f(x,y),x,y) or plotimplicit(f(x,y),[x,y]) graph of f(x,y)=0.
+3 plotimplicit(f(x,y),x,y) o plotimplicit(f(x,y),[x,y]) gráfica de f(x,y)=0.
+4 plotimplicit(f(x,y),x,y) γράφημα της f(x,y)=0.
 0 Expr,Var1,Var2
 -1 plotcontour
 -2 unfactored
@@ -11587,10 +11601,10 @@ plotimplicit((x+5)^2+(y+4)^2-1,x=-6..-4,y=-5..-3)
 plotimplicit((x+5)^2+(y+4)^2-1,[x=-6..-4,y=-5..-3])
 
 # fieldplot plotfield
-1 fieldplot(f(t,y),[t,y]) trace le champ des tangentes (normalisé ou non selon l'option) de l'equa diff y'=f(t,y)
-2 fieldplot(f(t,y),[t,y]) draws the plotfield of the diff equation y'=f(t,y)
-3 fieldplot(f(t,y),[t,y]) traza el campo de las tangentes (normalizadas o no según la opción) de la ecuación diferencial y'=f(t,y)
-4 fieldplot(f(t,y),[t,y]) σχεδιάζει το πεδίο κλίσεων της διαφορικής εξίσωσης y'=f(t,y)
+1 fieldplot(f(t,y),[t,y]) trace le champ des tangentes (normalisé ou non selon l'option) de l'equa diff y'=f(t,y).
+2 fieldplot(f(t,y),[t,y]) draws the plotfield of the diff equation y'=f(t,y).
+3 fieldplot(f(t,y),[t,y]) traza el campo de las tangentes (normalizadas o no según la opción) de la ecuación diferencial y'=f(t,y).
+4 fieldplot(f(t,y),[t,y]) σχεδιάζει το πεδίο κλίσεων της διαφορικής εξίσωσης y'=f(t,y).
 0 Expr,VectVar,[Opt]
 -1 interactive_plotode
 -2 odeplot
@@ -11603,10 +11617,10 @@ fieldplot(-t*y,[t,y],normalize,xstep=0.5,ystep=0.5)
 fieldplot(-t*y,[t=-6.868..6.868,y=-6.868..6.868],normalize)
 
 # interactive_plotode interactive_odeplot
-1 Trace (dans DispG) une solution pour chaque point t0+i*y0 désigné par la souris (Esc=arrêt)
-2 Draws (in DispG) a solution for each point t0+i*y0 clicked with the mouse (Esc=halt)
-3 Traza (en DispG) una solución para cada punto t0+i*y0 designado por el ratón (Esc=interrumpir)
-4 Σχεδιάζει (στο DispG) μια λύση για κάθε σημείο t0+i*y0 που επιλέγεται με το ποντίκι (Esc=παύση)
+1 Trace (dans DispG) une solution pour chaque point t0+i*y0 désigné par la souris (Esc=arrêt).
+2 Draws (in DispG) a solution for each point t0+i*y0 clicked with the mouse (Esc=halt).
+3 Traza (en DispG) una solución para cada punto t0+i*y0 designado por el ratón (Esc=interrumpir).
+4 Σχεδιάζει (στο DispG) μια λύση για κάθε σημείο t0+i*y0 που επιλέγεται με το ποντίκι (Esc=παύση).
 0 Expr,VectVar
 -1 odeplot
 -2 plotfield
@@ -11648,10 +11662,10 @@ pmin(sqrt(2)+sqrt(3))
 pmin(sqrt(2)+sqrt(3),x)
 
 # plotpolar polarplot DrawPol courbe_polaire
-1 plotpolar(f(x),x,a,b) trace la courbe en polaire r=f(x) pour x dans [a,b]
-2 plotpolar(f(x),x,a,b) draws the polar curve r=fx) for x in [a,b]
-3 plotpolar(f(x),x,a,b) traza la curva polar r=f(x) para x en [a,b]
-4 plotpolar(f(x),x,a,b) σχεδιάζει την πολική καμπύλη r=fx) για x στο [a,b]
+1 plotpolar(f(x),x,a,b) trace la courbe en polaire r=f(x) pour x dans [a,b].
+2 plotpolar(f(x),x,a,b) draws the polar curve r=fx) for x in [a,b].
+3 plotpolar(f(x),x,a,b) traza la curva polar r=f(x) para x en [a,b].
+4 plotpolar(f(x),x,a,b) σχεδιάζει την πολική καμπύλη r=fx) για x στο [a,b].
 0 Expr,Var,VarMin,VarMax
 -1 plotparam
 -2 plotfunc
@@ -11669,29 +11683,29 @@ plotpolar(sin(2*x),x,0,pi,tstep=0.1)
 pixon(1,2)
 
 # pixoff
-1 Éteint un pixel
-2 Pixel off
-3 Desactiva un pixel
-4 Απενεργοποίηση εικονοστοιχείου
+1 Éteint un pixel.
+2 Pixel off.
+3 Desactiva un pixel.
+4 Απενεργοποίηση εικονοστοιχείου.
 0 Real(x),Real(y)
 -1 pixon
 pixoff(1,2)
 
 # potential
-1 Renvoie U tel que gradient(U)=derive(U,Vector_of_variable)=V
-2 Returns U such as derive(U,Vector_of_variable)=V
-3 Devuelve U tal que grad(U)=derive(U,Vector_of_variable)=V
-4 Επιστρέφει U τέτοιο ώστε derive(U,Vector_of_variable)=V
+1 Renvoie U tel que gradient(U)=derive(U,Vector_of_variable)=V.
+2 Returns U such as derive(U,Vector_of_variable)=V.
+3 Devuelve U tal que grad(U)=derive(U,Vector_of_variable)=V.
+4 Επιστρέφει U τέτοιο ώστε derive(U,Vector_of_variable)=V.
 0 Vect(V),VectVar
 -1 derive
 -2 vpotential
 potential([2*x*y+3,x^2-4*z,-4*y],[x,y,z])
 
 # powmod powermod
-1 Calcule a^n modulo p ou modulo p,P(x) (puissance rapide)
-2 Computes a^n modulo p or modulo p,P(x) (fast algorithm)
-3 Calcula a^n modulo p o modulo p,P(x) (cálculo rápido)
-4 Υπολογίζει a^n modulo p ή modulo p,P(x) (ταχεία υλοποίηση)
+1 Calcule a^n modulo p ou modulo p,P(x) (puissance rapide).
+2 Computes a^n modulo p or modulo p,P(x) (fast algorithm).
+3 Calcula a^n modulo p o modulo p,P(x) (cálculo rápido).
+4 Υπολογίζει a^n modulo p ή modulo p,P(x) (ταχεία υλοποίηση).
 8 快速幂同余。 整数求幂与同余。 对于整数 a、n 及 p，返回 a^n mod p。
 0 Intg(a),Intg(n),Intg(p),[Expr(P(x))],[Var]
 -1 pow
@@ -11700,10 +11714,10 @@ powmod(17,452,19)
 powmod(x+1,452,19,x^4+x+1,x)
 
 # pow
-1 Calcule a^n.(puissance rapide)
-2 Computes a^n (fast algorithm)
-3 Calcula a^n(cálculo rápido)
-4 Υπολογίζει a^n (ταχεία υλοποίηση)
+1 Calcule a^n.(puissance rapide).
+2 Computes a^n (fast algorithm).
+3 Calcula a^n(cálculo rápido).
+4 Υπολογίζει a^n (ταχεία υλοποίηση).
 8 返回 a 的 n 次幂的结果。
 0 Intg(a),Intg(n)
 -1 ^
@@ -11712,11 +11726,11 @@ pow(17,452)
 pow(x+1,452)
 
 # preval
-1 Renvoie F(b)-F(a)
-2 Returns F(b)-F(a)
-3 Devuelve F(b)-F(a)
-4 Επιστρέφει F(b)-F(a)
-8 返回 F(b)-F(a)
+1 Renvoie F(b)-F(a).
+2 Returns F(b)-F(a).
+3 Devuelve F(b)-F(a).
+4 Επιστρέφει F(b)-F(a).
+8 返回 F(b)-F(a)。
 0 Expr(F(var)),Real(a),Real(b),[Var]
 -1 subst
 -2 int
@@ -11739,20 +11753,20 @@ prevprime(9856989898999)
 prevprime(97160249868928888261606009)
 
 # prepend
-1 Met l'élément au début de la liste
-2 Puts the element at the beginning of the list
-3 Pone el elemento al principio de la lista
-4 Ένθεση στοιχείου στην αρχή μιας λίστας
+1 Met l'élément au début de la liste.
+2 Puts the element at the beginning of the list.
+3 Pone el elemento al principio de la lista.
+4 Ένθεση στοιχείου στην αρχή μιας λίστας.
 0 Lst,Elem
 -1 append
 -2 concat
 prepend([1,2],3)
 
 # print Disp
-1 Permet d'afficher un résultat intermédiaire dans un programme
-2 Prints a result in a program
-3 Permite mostrar un resultado intermedio en un programa
-4 Εκτύπωση ενδιαμέσου αποτελέσματος σε ένα πρόγραμμα
+1 Permet d'afficher un résultat intermédiaire dans un programme.
+2 Prints a result in a program.
+3 Permite mostrar un resultado intermedio en un programa.
+4 Εκτύπωση ενδιαμέσου αποτελέσματος σε ένα πρόγραμμα.
 8 将 expr 或 string 结果打印到终端。
 0 Expr or Str
 -1 
@@ -11760,10 +11774,10 @@ print("salut")
 print(a)
 
 # projection
-1 projection(C,A) est la projection orthogonale de A sur la courbe C
-2 projection(C,A) is the orthogonal projection of A on the curve C
-3 projection(C,A) es la proyección ortogonal de A sobre la curva C
-4 projection(C,A) είναι η ορθοργώνια προβολή του A πάνω στην καμπύλη C
+1 projection(C,A) est la projection orthogonale de A sur la courbe C.
+2 projection(C,A) is the orthogonal projection of A on the curve C.
+3 projection(C,A) es la proyección ortogonal de A sobre la curva C.
+4 projection(C,A) είναι η ορθοργώνια προβολή του A πάνω στην καμπύλη C.
 8 射影。
 0 Curve,Pnt
 -1 perpendicular
@@ -11772,36 +11786,36 @@ print(a)
  J:=projection(circle(0,1),point(1+2*i))
 
 # program
-1 Mot réservé
-2 Reserved word
-3 Palabra reservada
-4 Δεσμευμένη λέξη
+1 Mot réservé.
+2 Reserved word.
+3 Palabra reservada.
+4 Δεσμευμένη λέξη.
 0 
 -1 
 
 # proc
-1 Début de procédure (comme en MuPAD)
-2 Begin a procedure (like with MuPAD)
-3 Empieza un proceso (como en MuPAD)
-4 Εκκίνηση διαδικασίας (όπως η MuPAD)
+1 Début de procédure (comme en MuPAD).
+2 Begin a procedure (like with MuPAD).
+3 Empieza un proceso (como en MuPAD).
+4 Εκκίνηση διαδικασίας (όπως η MuPAD).
 0 
 -1 
  proc ... begin ... end_proc;
 
 # Psi
-1 Psi(a,n)=dérivée n-ième de la fonction DiGamma (=ln@Gamma) au point a (Psi(a,0)=Psi(a))
-2 Psi(a,n)=n-th derivative of the function DiGamma (=ln@Gamma) at point a (Psi(a,0)=Psi(a))
-3 Psi(a,n)=n-ésima derivada de la función DiGamma (=ln@Gamma) en el punto a (Psi(a,0)=Psi(a))
-4 Psi(a,n)=n-στη παράγωγος της DiGamma συνάρτησης (=ln@Gamma) στο σημείο a (Psi(a,0)=Psi(a))
+1 Psi(a,n)=dérivée n-ième de la fonction DiGamma (=ln@Gamma) au point a (Psi(a,0)=Psi(a)).
+2 Psi(a,n)=n-th derivative of the function DiGamma (=ln@Gamma) at point a (Psi(a,0)=Psi(a)).
+3 Psi(a,n)=n-ésima derivada de la función DiGamma (=ln@Gamma) en el punto a (Psi(a,0)=Psi(a)).
+4 Psi(a,n)=n-στη παράγωγος της DiGamma συνάρτησης (=ln@Gamma) στο σημείο a (Psi(a,0)=Psi(a)).
 0 Real(a),Intg(n)
 -1 Gamma
 Psi(3,1)
 
 # ptayl
-1 Renvoie le polynôme de Taylor de l'expression au point a l'ordre specifie ou le polynome Q tel que P(x)=Q(x-a)
-2 Returns the Taylor polynomial of the expression at the given point and order or a polynomial Q such that P(x)=Q(x-a)
-3 Devuelve el polinomio de Taylor Q tal que P(x)=Q(x-a)
-4 Επιστρέφει το πολυώνυμου του Taylor Q τέτοιου ώστε P(x)=Q(x-a)
+1 Renvoie le polynôme de Taylor de l'expression au point à l'ordre spécifié ou le polynôme Q tel que P(x)=Q(x-a).
+2 Returns the Taylor polynomial of the expression at the given point and order or a polynomial Q such that P(x)=Q(x-a).
+3 Devuelve el polinomio de Taylor Q tal que P(x)=Q(x-a).
+4 Επιστρέφει το πολυώνυμου του Taylor Q τέτοιου ώστε P(x)=Q(x-a).
 0 Expr||Poly(P(var)),Var=Real || Real(a),[Order || Var]
 -1 series
 -2 taylor
@@ -11809,12 +11823,14 @@ ptayl(sin(x),x=0,5)
 ptayl(x^2+2*x+1,1)
 ptayl(x^2+2*x+1,-1)
 ptayl(y^2+2*y+1,1.1,y)
+ptayl(y^3+y^2+2*y+1,2,y)
+ subst(ptayl(y^3+y^2+2*y+1,2,y),y,y-2)
 
 # purge DelVar
-1 purge(nomvar) enlève la valeur stockée dans la variable nomvar
-2 purge(varname) unassign the variable varname
-3 purge(nombrevariable) borra el valor guardado en la variable nombrevariable
-4 purge(varname) αποανάθεση της μεταβλητής με όνομα varname
+1 purge(nomvar) enlève la valeur stockée dans la variable nomvar.
+2 purge(varname) unassign the variable varname.
+3 purge(nombrevariable) borra el valor guardado en la variable nombrevariable.
+4 purge(varname) αποανάθεση της μεταβλητής με όνομα varname.
 0 Var
 -1 sto
 -2 restart
@@ -11824,48 +11840,48 @@ purge(t)
 purge(C)
 
 # pwd
-1 Répertoire de travail actuel
-2 Current working directory
-3 Repertorio de trabajo actual
-4 Τρέχον κατάλλογος εργασίας
+1 Répertoire de travail actuel.
+2 Current working directory.
+3 Repertorio de trabajo actual.
+4 Τρέχον κατάλλογος εργασίας.
 0 NULL
 -1 cd
 pwd()
 
 # p1oc2
-1 Renvoie la permutation produit de p1 et de c2
-2 Returns the permutation product of p1 and c2
-3 Devuelve la permutación producto de p1 y c2
-4 Επιστρέφει το μεταθετικό γινόμενο του p1 και c2
+1 Renvoie la permutation produit de p1 et de c2.
+2 Returns the permutation product of p1 and c2.
+3 Devuelve la permutación producto de p1 y c2.
+4 Επιστρέφει το μεταθετικό γινόμενο του p1 και c2.
 0 Permut,Cycle
 -1 c1op2
 -2 p1op2
 p1oc2([0,2,1],[2,1,3])
 
 # p1op2
-1 Renvoie la permutation produit de p1 et de p2
-2 Returns the permutation product of p1 and p2
-3 Devuelve la permutación producto de p1 y p2
-4 Επιστρέφει το μεταθετικό γινόμενο του p1 και p2
+1 Renvoie la permutation produit de p1 et de p2.
+2 Returns the permutation product of p1 and p2.
+3 Devuelve la permutación producto de p1 y p2.
+4 Επιστρέφει το μεταθετικό γινόμενο του p1 και p2.
 0 Permut,Permut
 -1 c1op2
 -2 p1oc2
 p1op2([0,2,1],[1,0,3,2])
 
 # qr
-1 Pour A matrice numérique, renvoie R (right) telle que A=QR et Q orthogonale
-2 For a numerical matrix A, returns R (right) such that A=QR and Q orthogonal
-3 Para una matriz numérica A, devuelve R (derecha) tal que A=QR y Q es ortogonal
-4 Για έναν αριθμητικό πίνακα Α, επιστρέφει R (δεξιό) τέτοιο ώστε A=QR και Q ορθογώνιος
+1 Pour A matrice numérique, renvoie R (right) telle que A=QR et Q orthogonale.
+2 For a numerical matrix A, returns R (right) such that A=QR and Q orthogonal.
+3 Para una matriz numérica A, devuelve R (derecha) tal que A=QR y Q es ortogonal.
+4 Για έναν αριθμητικό πίνακα Α, επιστρέφει R (δεξιό) τέτοιο ώστε A=QR και Q ορθογώνιος.
 0 Mtrx
 -1 lu
 qr([[1,2],[3,4]])
 
 # quote hold
-1 Retourne son argument sans l'évaluer (et aussi a:=quote(a) qui purge a)
-2 Returns its argument unevaluated (and also a:=quote(a) that purge a)
-3 Devuelve su argumento sin evaluarlo (y también a:=quote(a) que purge a)
-4 Αναστολή υπολογισμών. Επιστρέφει το όρισμα μη-αποτιμημένο (και επίσης a:=quote(a) καθαρίζει το a)
+1 Retourne son argument sans l'évaluer (et aussi a:=quote(a) qui purge a).
+2 Returns its argument unevaluated (and also a:=quote(a) that purge a).
+3 Devuelve su argumento sin evaluarlo (y también a:=quote(a) que purge a).
+4 Αναστολή υπολογισμών. Επιστρέφει το όρισμα μη-αποτιμημένο (και επίσης a:=quote(a) καθαρίζει το a).
 0 Expr
 -1 
 quote(1+2)
@@ -11873,10 +11889,10 @@ quote(1/x+1/(x-1))
 quote((x+1)*(x-1))
 
 # quo
-1 Quotient euclidien de 2 polynômes
-2 Euclidean quotient of 2 polynomials
-3 Cociente euclidiano de 2 polinomios
-4 Ευκλείδιο πηλίκο 2 πολυωνύμων
+1 Quotient euclidien de 2 polynômes.
+2 Euclidean quotient of 2 polynomials.
+3 Cociente euclidiano de 2 polinomios.
+4 Ευκλείδιο πηλίκο 2 πολυωνύμων.
 8 商（多项式 综合除法）
 0 (Vect or Poly),(Vect or Poly),[Var]
 -1 rem
@@ -11888,10 +11904,10 @@ quo(x^3+2x^2+3x+4,-x+2)
 quo(t^3+2t^2+3t+4,-t+2,t)
 
 # Quo
-1 Renvoie le quotient euclidien de 2 polynômes sans l'évaluer
-2 Returns the euclidean quotient of 2 polynomials without evaluation
-3 Cociente euclidiano de 2 polinomios sin evaluar
-4 Επιστρέφει το ευκλείδιου πηλίκο 2 πολυωνύμων δίχως αποτίμηση
+1 Renvoie le quotient euclidien de 2 polynômes sans l'évaluer.
+2 Returns the euclidean quotient of 2 polynomials without evaluation.
+3 Cociente euclidiano de 2 polinomios sin evaluar.
+4 Επιστρέφει το ευκλείδιου πηλίκο 2 πολυωνύμων δίχως αποτίμηση.
 0 (Vect or Poly),(Vect or Poly),[Var]
 -1 quo
 -2 quorem
@@ -11900,10 +11916,10 @@ Quo(x^3+2x^2+3x+4,-x+2)
 Quo(t^3+2t^2+3t+4,-t+2,t)
 
 # quorem divide
-1 Quotient et reste euclidien de 2 polynômes
-2 Euclidean quotient and remainder of 2 polynomials
-3 Cociente y resto euclidianos de 2 polinomios
-4 Ευκλείδιο πηλίκο και υπόλοιπο 2 πολυωνύμων
+1 Quotient et reste euclidien de 2 polynômes.
+2 Euclidean quotient and remainder of 2 polynomials.
+3 Cociente y resto euclidianos de 2 polinomios.
+4 Ευκλείδιο πηλίκο και υπόλοιπο 2 πολυωνύμων.
 0 (Vect or Poly),(Vect or Poly),[Var]
 -1 rem
 -2 quo
@@ -11914,10 +11930,10 @@ quorem(t^3+2t^2+3t+4,-t+2,t)
 quorem(t^4-1,(t+1)^2,t)
 
 # q2a
-1 q2a(q(x,y),[x,y])=la matrice symétrique associée à la forme quadratique q
-2 q2a(q(x,y),[x,y])=the symmetric matrix associated to the quadratic form q
-3 q2a(q(x,y),[x,y])=matriz simétrica asociada a la forma cuadrática q
-4 q2a(q(x,y),[x,y])=ο συμμετρικός πίνακας συσχετισμένος με την τετραγωνική μορφή q
+1 q2a(q(x,y),[x,y])=la matrice symétrique associée à la forme quadratique q.
+2 q2a(q(x,y),[x,y])=the symmetric matrix associated to the quadratic form q.
+3 q2a(q(x,y),[x,y])=matriz simétrica asociada a la forma cuadrática q.
+4 q2a(q(x,y),[x,y])=ο συμμετρικός πίνακας συσχετισμένος με την τετραγωνική μορφή q.
 0 QuadraForm, VectVar
 -1 a2q
 q2a(x^2+2*x*y+2*y^2,[x,y])
@@ -11942,10 +11958,10 @@ rand(3,1,10)
 rand(3,["r","r","r","b","n"])
 
 # hasard
-1 (hasard n)=un entier (resp (hasard p,n)=un réel ou hasard(p..n)=une fonction réelle) aléatoire uniformément distribué dans 0.. n-1 (resp dans [p; n]) (hasard ou (hasard 0,1)=un réel aléatoire de [0,1[) ou hasard(n,b1,b2)=n entiers de [b1;b2] ou hasard(n,L)=n éléments de L. Si hasard a un seul argument il peut se passer de () (compatibilité langage tortue)
-2 (hasard n)=a random integer (resp (hasard p,n)=a real or hasard(p..n)=a real function) with uniform distribution in 0..n-1 (resp in [p;n])(hasard= (hasard 0,1)=a random real in [0,1[) or hasard(n,b1,b2)=n integers between b1 and b2 or hasard(n,L)=n elements of L. If hasard has only one argument, () are not necessary (compatibility with turtle language)
-3 (hasard n)=un número (resp hasard(p,n)=un número real o hasard(p..n)=una función real) aleatorio distribuido en 0..n-1 (resp en [p;n]) (hasard =(hasard 0,1)) o nhasard(n,b1,b2)= enteros entre b1 y b2 o hasard(n,L)=n elementos de L. Si hasard tiene un sólo arguemnto, no se tiene que poner () (compatibilidad lenguaje tortuga)
-4 (hasard n)=έναν τυχαίο ακέραιο (αντίστοιχα (hasard p,n)=ένα πραγματικό ή hasard(p..n)=μια πραγματική συνάρτηση) ομοιόμορφα κατανεμημένο στο 0..n-1 (αντίστοιχα στο [p;n])(hasard=(hasard 0,1)) ή hasard(n,b1,b2)=n ακέραιους μεταξύ b1 και b2 ή hasard(n,L)=n στοιχεία του L. Εάν η hasard έχει ένα μόνο όρισμα τότε οι () δεν είναι απαραίτητες (συμβατότητα με τη γλώσσα προγραμματισμού για την χελώνα)
+1 (hasard n)=un entier (resp (hasard p,n)=un réel ou hasard(p..n)=une fonction réelle) aléatoire uniformément distribué dans 0.. n-1 (resp dans [p; n]) (hasard ou (hasard 0,1)=un réel aléatoire de [0,1[) ou hasard(n,b1,b2)=n entiers de [b1;b2] ou hasard(n,L)=n éléments de L. Si hasard a un seul argument il peut se passer de () (compatibilité langage tortue).
+2 (hasard n)=a random integer (resp (hasard p,n)=a real or hasard(p..n)=a real function) with uniform distribution in 0..n-1 (resp in [p;n])(hasard= (hasard 0,1)=a random real in [0,1[) or hasard(n,b1,b2)=n integers between b1 and b2 or hasard(n,L)=n elements of L. If hasard has only one argument, () are not necessary (compatibility with turtle language).
+3 (hasard n)=un número (resp hasard(p,n)=un número real o hasard(p..n)=una función real) aleatorio distribuido en 0..n-1 (resp en [p;n]) (hasard =(hasard 0,1)) o nhasard(n,b1,b2)= enteros entre b1 y b2 o hasard(n,L)=n elementos de L. Si hasard tiene un sólo arguemnto, no se tiene que poner () (compatibilidad lenguaje tortuga).
+4 (hasard n)=έναν τυχαίο ακέραιο (αντίστοιχα (hasard p,n)=ένα πραγματικό ή hasard(p..n)=μια πραγματική συνάρτηση) ομοιόμορφα κατανεμημένο στο 0..n-1 (αντίστοιχα στο [p;n])(hasard=(hasard 0,1)) ή hasard(n,b1,b2)=n ακέραιους μεταξύ b1 και b2 ή hasard(n,L)=n στοιχεία του L. Εάν η hasard έχει ένα μόνο όρισμα τότε οι () δεν είναι απαραίτητες (συμβατότητα με τη γλώσσα προγραμματισμού για την χελώνα).
 0 Intg(n) or Interval(p..n) or NULL,[Intg(b1) or Lst(L)],[Intg(b2)]
 -1 rand
 -2 randpoly
@@ -11963,7 +11979,7 @@ hasard(3,["r","r","r","b","n"])
 # randbinomial
 1 Renvoie un entier aléatoirement distribué selon la loi binomiale B(n,p) i.e. le nombre de succès dans une suite de n tirages indépendants lorsque pour chaque tirage, un succès est de probabilité p.
 2 Returns a random integer with binomial distribution B(n,p) i.e. the number of success for n independant tests where for each test, the success probability is p.
-3 Devuelve un número aleatorio distribuido según la ley binomimal B(n,p)
+3 Devuelve un número aleatorio distribuido según la ley binomimal B(n,p).
 4 Επιστρέφει έναν τυχαίο πραγματικό με κατανομή B(n,p).
 0 Intg(n),Real(p)
 -1 rand
@@ -11996,8 +12012,8 @@ randmultinomial([1/2,1/3,1/6])
 randmultinomial([1/2,1/3,1/6],["R","V","B"])
 
 # randgeometric
-1 Renvoie un entier aléatoirement distribué selon la loi géométrique de paramètre p
-2 Returns a random integer following geometric distribution of parameter p
+1 Renvoie un entier aléatoirement distribué selon la loi géométrique de paramètre p.
+2 Returns a random integer following geometric distribution of parameter p.
 0 Real(p)
 -1 rand
 -2 randpoly
@@ -12083,10 +12099,10 @@ randfisher(5,2)
 randfisher(2,4)
 
 # randnorm randNorm
-1 Renvoie un réel aléatoirement distribué selon la loi normale N(mu,sigma)
-2 Returns a random real with normal distribution N(mu,sigma)
-3 Devuelve un número aleatorio distribuido según la ley normal N(mu,sigma)
-4 Επιστρέφει έναν τυχαίο πραγματικό με κανονική κατανομή N(μ,σ)
+1 Renvoie un réel aléatoirement distribué selon la loi normale N(mu,sigma).
+2 Returns a random real with normal distribution N(mu,sigma).
+3 Devuelve un número aleatorio distribuido según la ley normal N(mu,sigma).
+4 Επιστρέφει έναν τυχαίο πραγματικό με κανονική κατανομή N(μ,σ).
 0 Real(mu),Real(sigma)
 -1 rand
 -2 randpoly
@@ -12103,8 +12119,8 @@ randnorm(2,1)
 # randexp
 1 Renvoie un réel aléatoirement distribué selon la loi exponentielle de paramètre a>0.
 2 Returns a random real according to the exponential distribution of parameter a>0.
-3 Devuelve un número aleatorio distribuido según la ley exponencial (parámetro a>0)
-4 Επιστρέφει έναν τυχαίο πραγματικό με Εκθετικό κατανομή (παράμετρο a>0)
+3 Devuelve un número aleatorio distribuido según la ley exponencial (parámetro a>0).
+4 Επιστρέφει έναν τυχαίο πραγματικό με Εκθετικό κατανομή (παράμετρο a>0).
 0 Real(a)
 -1 rand
 -2 randpoly
@@ -12114,10 +12130,10 @@ randexp(1)
 randexp(2)
 
 # randpoly randPoly
-1 Renvoie un polynôme de variable var (ou x), de degré n et dont les coefficients sont des entiers aléatoires équirépartis sur -99,+99 ou selon une loi
-2 Returns a polynomial of variable var (or x), of degree n and where the coefficients are random integers in the range -99 through 99 with uniform distribution or according to a law
-3 Devuelve el polinomio de variable var (o x), de grado n y cuyos coeficientes son enteros aleatorios equirepartidos entre -99 y 99
-4 Επιστρέφει ένα πολυώνυμο μεταβλητής var (ή x), βαθμού n και του οποίου οι συντελεστές είναι τυχαίοι ακέραιοι από -99 μέχρι 99 ομοιόμορφα κατανεμημένοι
+1 Renvoie un polynôme de variable var (ou x), de degré n et dont les coefficients sont des entiers aléatoires équirépartis sur -99,+99 ou selon une loi.
+2 Returns a polynomial of variable var (or x), of degree n and where the coefficients are random integers in the range -99 through 99 with uniform distribution or according to a law.
+3 Devuelve el polinomio de variable var (o x), de grado n y cuyos coeficientes son enteros aleatorios equirepartidos entre -99 y 99.
+4 Επιστρέφει ένα πολυώνυμο μεταβλητής var (ή x), βαθμού n και του οποίου οι συντελεστές είναι τυχαίοι ακέραιοι από -99 μέχρι 99 ομοιόμορφα κατανεμημένοι.
 0 [Var(var)],Intg(n),[law]
 -1 ranm
 -2 randvector
@@ -12153,10 +12169,10 @@ ranm(3,5,multinomial,[1/2,1/3,1/6],["R","V","B"])
  GF(2,8,g);ranm(3,3,g)
 
 # randvector ranv
-1 Renvoie une liste de taille n constituée d'entiers aléatoires entre -99 et 99 ou (entre 0 et m-1) uniformément distribués ou de nombres aléatoires distribués selon la loi mise entre-quote
-2 Returns a list of size n that contains random integers in the range -99 through 99 (or in 0..m-1) with uniform distribution or contains random numbers according to the law put between quote
-3 Devuelve una lista de tamaño n constituida por enteros aleatorios uniformemente distribuidos entre -99 y 99 (o entre 0 y m-1) o de números aleatorios distribuidos según la ley puesta entre comillas
-4 Επιστρέφει μια λίστα μεγέθους n που θα περιέχει τυχαίους ακέραιους αριθμούς από -99 μέχρι 99 (0 μέχρι m-1) ομοιόμορφα κατανεμημένους ή τυχαίους αριθμούς σύμφωνα με την παρένθετο κατανομή
+1 Renvoie une liste de taille n constituée d'entiers aléatoires entre -99 et 99 ou (entre 0 et m-1) uniformément distribués ou de nombres aléatoires distribués selon la loi mise entre-quote.
+2 Returns a list of size n that contains random integers in the range -99 through 99 (or in 0..m-1) with uniform distribution or contains random numbers according to the law put between quote.
+3 Devuelve una lista de tamaño n constituida por enteros aleatorios uniformemente distribuidos entre -99 y 99 (o entre 0 y m-1) o de números aleatorios distribuidos según la ley puesta entre comillas.
+4 Επιστρέφει μια λίστα μεγέθους n που θα περιέχει τυχαίους ακέραιους αριθμούς από -99 μέχρι 99 (0 μέχρι m-1) ομοιόμορφα κατανεμημένους ή τυχαίους αριθμούς σύμφωνα με την παρένθετο κατανομή.
 0 Intg(n), [Intg(m)],[Interval or quote(DistribLaw)]
 -1 idn
 -2 randPoly
@@ -12174,10 +12190,10 @@ randvector(3,1..2)
  GF(2,8,g);randvector(3,g)
 
 # randperm
-1 Renvoie une permutation aléatoire de [0,1,2,..,n-1]
-2 Returns a random permutation of [0,1,2,..,n-1]
-3 Devuelve una permutación aleatoria de [0,1,2,..,n-1]
-4 Επιστρέφει μια τυχαία μετάθεση στο [0,1,2,..,n-1]
+1 Renvoie une permutation aléatoire de [0,1,2,..,n-1].
+2 Returns a random permutation of [0,1,2,..,n-1].
+3 Devuelve una permutación aleatoria de [0,1,2,..,n-1].
+4 Επιστρέφει μια τυχαία μετάθεση στο [0,1,2,..,n-1].
 0 Intg(n)
 -1 permu2cycles
 -2 is_permu
@@ -12207,29 +12223,29 @@ prevperm([0,1,3,2])
 prevperm([0,1,2,3])
 
 # radius
-1 rayon(C) donne le rayon du cercle C
-2 radius(C) gives the radius of the circle C
-3 radius(C) devuelve el radio de la circunferencia C
-4 radius(C) δίνει την ακτίνα του κύκλου C
+1 rayon(C) donne le rayon du cercle C.
+2 radius(C) gives the radius of the circle C.
+3 radius(C) devuelve el radio de la circunferencia C.
+4 radius(C) δίνει την ακτίνα του κύκλου C.
 0 Crcle
 -1 center
 -2 circle
 radius(incircle(-1,1-i,i))
 
 # rcl
-1 Rappelle le contenu d'une variable sans l'évaluer
-2 Recalls an identifier content, does not evaluate it
-3 Llama al contenido de una variable sin evaluarlo
-4 Επανακαλεί το περιεχόμενο μιας μεταβλητής, δίχως αποτίμηση
+1 Rappelle le contenu d'une variable sans l'évaluer.
+2 Recalls an identifier content, does not evaluate it.
+3 Llama al contenido de una variable sin evaluarlo.
+4 Επανακαλεί το περιεχόμενο μιας μεταβλητής, δίχως αποτίμηση.
 0 Var
 -1 
 rcl(a)
 
 # re real
-1 Partie réelle d'un nombre complexe
-2 Returns the real part of a complex number
-3 Devuelve la parte real de un número complejo
-4 Επιστρέφει το πραγματικό μέρος ενός μιγαδικού αριθμού
+1 Partie réelle d'un nombre complexe.
+2 Returns the real part of a complex number.
+3 Devuelve la parte real de un número complejo.
+4 Επιστρέφει το πραγματικό μέρος ενός μιγαδικού αριθμού.
 0 Cplx or LstCplx
 -1 im
 -2 conj
@@ -12238,10 +12254,10 @@ re((1+2*i)^2)
 real([1+2*i,(1+2*i)^2])
 
 # rem
-1 Reste euclidien de 2 polynômes
-2 Euclidean remainder of 2 polynomials
-3 Resto euclidiano de 2 polinomios
-4 Ευκλείδιο υπόλοιπο 2 πολυωνύμων
+1 Reste euclidien de 2 polynômes.
+2 Euclidean remainder of 2 polynomials.
+3 Resto euclidiano de 2 polinomios.
+4 Ευκλείδιο υπόλοιπο 2 πολυωνύμων.
 8 余项（多项式 综合除法）
 0 (Vect or Poly),(Vect or Poly),[Var]
 -1 quo
@@ -12253,10 +12269,10 @@ rem(x^3+2x^2+3x+4,-x+2)
 rem(t^3+2t^2+3t+4,-t+2,t)
 
 # Rem
-1 Renvoie le reste euclidien de 2 polynômes sans l'évaluer
-2 Returns the euclidean remainder of 2 polynomials without evaluation
-3 Resto euclidiano de 2 polinomios sin evaluar
-4 Επιστρέφει το ευκλείδιο υπόλοιπο 2 πολυωνύμων δίχως αποτίμηση
+1 Renvoie le reste euclidien de 2 polynômes sans l'évaluer.
+2 Returns the euclidean remainder of 2 polynomials without evaluation.
+3 Resto euclidiano de 2 polinomios sin evaluar.
+4 Επιστρέφει το ευκλείδιο υπόλοιπο 2 πολυωνύμων δίχως αποτίμηση.
 0 (Vect or Poly),(Vect or Poly),[Var]
 -1 rem
 -2 quorem
@@ -12276,20 +12292,20 @@ remove(x->x>=5,[1,2,6,7])
 remove(5,[1,2,5,6,7,5])
 
 # reorder
-1 Réordonne les variables de E selon l'ordre donné dans le 2ème argument
-2 Reorders the variables in E according to the order of the 2nd argument
-3 Reordena las variables en E según el orden dado en 2º argumento
-4 Επαναδιάταξη των μεταβλητών της Ε σύμφωνα με τη διάταξη του 2ου ορίσματος
+1 Réordonne les variables de E selon l'ordre donné dans le 2ème argument.
+2 Reorders the variables in E according to the order of the 2nd argument.
+3 Reordena las variables en E según el orden dado en 2º argumento.
+4 Επαναδιάταξη των μεταβλητών της Ε σύμφωνα με τη διάταξη του 2ου ορίσματος.
 0 Expr, LstVar
 -1 
 -2
 reorder(x^2+2*x+y^2,[y,x])
 
 # resultant
-1 Résultant de deux polynômes
-2 Resultant of two polynomials
-3 Resultante de 2 polinomios
-4 Απαλείφουσα 2 πολυωνύμων
+1 Résultant de deux polynômes.
+2 Resultant of two polynomials.
+3 Resultante de 2 polinomios.
+4 Απαλείφουσα 2 πολυωνύμων.
 0 Poly,Poly,Var
 -1 sylvester
 -2 gcd
@@ -12297,10 +12313,10 @@ resultant(x^2-1,x^3-1,x)
 resultant(x^3-p*x+q,3*x^2-p,x)
 
 # sylvester
-1 Matrice de Sylvester de deux polynômes
-2 Sylvester matrix of two polynomials
-3 Matriz de Sylvester de 2 polinomios
-4 Ο πίνακας Sylvester 2 πολυωνύμων
+1 Matrice de Sylvester de deux polynômes.
+2 Sylvester matrix of two polynomials.
+3 Matriz de Sylvester de 2 polinomios.
+4 Ο πίνακας Sylvester 2 πολυωνύμων.
 0 Poly,Poly,Var
 -1 resultant
 sylvester(x^2-1,x^3-1,x)
@@ -12309,8 +12325,8 @@ sylvester(x^3-p*x+q,3*x^2-p,x)
 # rootof
 1 Polynôme fonction d'une racine d'un polynôme irréductible sur Q. Renvoie P(a) où a est la plus grande racine de Q.
 2 Polynomial in terms of a root of an irreducible polynomial on Q. Returns P(a) with a the greatest root of Q.
-3 Polinomio en términos de la raíz de un Q polinomio irreducible
-4 Πολυώνυμο συναρτήσει μιας ρίζας ενός ανάγωγου πολυωνύμου
+3 Polinomio en términos de la raíz de un Q polinomio irreducible.
+4 Πολυώνυμο συναρτήσει μιας ρίζας ενός ανάγωγου πολυωνύμου.
 0 LstPoly(P),LstPoly(Q)
 -1 
  normal(1/rootof([1,0],[1,0,10,0,1]))
@@ -12320,7 +12336,7 @@ sylvester(x^3-p*x+q,3*x^2-p,x)
 1 rotation(B,a1,A) (resp rotation(d,a1,A)) est le transformé de A par rotation de centre B (resp d'axe d) et d'angle a1.
 2 rotation(B,a1,A)(resp rotation(d,a1,A)) is the transformed of A by rotation of center B (resp of axis d) and of angle a1.
 3 rotation(B,a1,A)(resp rotation(d,a1,A)) es la transformación de A por rotación de centro B (resp eje d) y ángulo a1.
-4 rotation(B,a1,A)(αντίστοιχα rotation(d,a1,A)) είναι ο μετασχηματισμός του Α μέσω περιστροφής κέντρου Β (αντίστοιχα άξονα d) και γωνίας a1
+4 rotation(B,a1,A)(αντίστοιχα rotation(d,a1,A)) είναι ο μετασχηματισμός του Α μέσω περιστροφής κέντρου Β (αντίστοιχα άξονα d) και γωνίας a1.
 8 2 维旋转 与 3 维旋转
 0 (Pnt(B) or Cplx or Dr3),Angle(a1),(Pnt(A) or Curve)
 -1 translation
@@ -12332,28 +12348,28 @@ rotation(line(x=y,y=z),pi/2,point(1,-1,2))
  r:=rotation(line(x=y,y=z),pi/2);r(point(1,-1,2))
 
 # rmbreakpoint
-1 Efface un point d'arrêt
-2 Removes a breakpoint
-3 Quita un punto de ruptura
-4 Απομάκρυνση ενός σημείου διαφυγής
+1 Efface un point d'arrêt.
+2 Removes a breakpoint.
+3 Quita un punto de ruptura.
+4 Απομάκρυνση ενός σημείου διαφυγής.
 0 Intg
 -1 breakpoint
 rmbreakpoint(1)
 
 # rmwatch
-1 Efface une variable de la table des variables affichées en pas-à-pas
-2 Clears a variables from the table of displayed variables in step/step
-3 Borra una variable de la tabla de variables mostrada en paso a paso
-4 Εκκαθάριση μιας μεταβλητής από τον πίνακα των εμφανισθέντων μεταβλητών, στην βήμα προς βήμα λειτουργία
+1 Efface une variable de la table des variables affichées en pas-à-pas.
+2 Clears a variables from the table of displayed variables in step/step.
+3 Borra una variable de la tabla de variables mostrada en paso a paso.
+4 Εκκαθάριση μιας μεταβλητής από τον πίνακα των εμφανισθέντων μεταβλητών, στην βήμα προς βήμα λειτουργία.
 0 Var
 -1 watch
 rmwatch(a)
 
 # rref gaussjord
-1 Réduction sous forme échelonnée de AX=b (M=A|(-b)) [Réduction sur les k premières colonnes]
+1 Réduction sous forme échelonnée de AX=b (M=A|(-b)) [Réduction sur les k premières colonnes].
 2 Row reduction to echelon form of AX=b (M=A|(-b)) [Reduction on columns 0..k-1]
-3 Reducción a la forma escalonada de AX=b (M=A|(-b)) [Reducción sobre los columnas 0..k-1]
-4 Αναγωγή σε κλιμακωτή μορφή του AX=b (M=A|(-b))
+3 Reducción a la forma escalonada de AX=b (M=A|(-b)) [Reducción sobre los columnas 0..k-1].
+4 Αναγωγή σε κλιμακωτή μορφή του AX=b (M=A|(-b)).
 8 行简阶梯性形式。 将矩形矩阵更改为其行简阶梯形矩阵。
 0 Mtrx(M),[Intg(k)]||Opt
 -1 ker
@@ -12369,10 +12385,10 @@ rref([[2,1,1,-1],[1,1,2,-1],[1,2,1,-4]],2)
 rref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[1,0,0,1,-a4]],keep_pivot)
 
 # keep_pivot
-1 Option de la commande rref
-2 Option of the rref command
-3 Opción de rref
-4 Επιλογή της εντολής rref
+1 Option de la commande rref.
+2 Option of the rref command.
+3 Opción de rref.
+4 Επιλογή της εντολής rref.
 0 Opt
 -1 rref
  rref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[1,0,0,1,-a4]],keep_pivot)
@@ -12389,10 +12405,10 @@ Rref([[3,1,-2],[3,2,2]])
 Rref([[2,1,1,-1],[1,1,2,-1],[1,2,1,-4]])
 
 # ref
-1 Réduction de Gauss de AX=b (M=A|(-b))
-2 Reduction of Gauss of AX=b (M=A|(-b))
-3 Reducción de Gauss de AX=b (M=A|(-b))
-4 Αναγωγή Gauss του AX=b (M=A|(-b))
+1 Réduction de Gauss de AX=b (M=A|(-b)).
+2 Reduction of Gauss of AX=b (M=A|(-b)).
+3 Reducción de Gauss de AX=b (M=A|(-b)).
+4 Αναγωγή Gauss του AX=b (M=A|(-b)).
 0 Mtrx(M)
 -1 rref
 -2 det
@@ -12400,20 +12416,20 @@ ref([[3,1,-2],[3,2,2]])
 ref([[2,1,1,-1],[1,1,2,-1],[1,2,1,-4]])
 
 # same
-1 Test d'égalité
-2 Equality test
-3 Comprobación de igualdad
-4 Έλεγχος ισότητας
+1 Test d'égalité.
+2 Equality test.
+3 Comprobación de igualdad.
+4 Έλεγχος ισότητας.
 0 Expr,Expr
 -1 
 same(a,b)
 same((2-1)^2,2^2-2*2+1)
 
 # sec
-1 Sécante: sec(x)=1/cos(x)
-2 Secant: sec(x)=1/cos(x)
-3 Secante: sec(x)=1/cos(x)
-4 Τέμνουσα sec(x)=1/cos(x)
+1 Sécante: sec(x)=1/cos(x).
+2 Secant: sec(x)=1/cos(x).
+3 Secante: sec(x)=1/cos(x).
+4 Τέμνουσα sec(x)=1/cos(x).
 8 正割。  正割函数; 即，1/cos(x)。
 0 Expr
 -1 cos
@@ -12421,10 +12437,10 @@ same((2-1)^2,2^2-2*2+1)
 sec(pi/3)
 
 # segment
-1 segment(A,B) trace le segment AB
-2 segment(A,B) draws the segment AB
-3 segment(A,B) traza el segmento AB
-4 segment(A,B) σχεδιάζει το ευθύγραμμο τμήμα ΑΒ
+1 segment(A,B) trace le segment AB.
+2 segment(A,B) draws the segment AB.
+3 segment(A,B) traza el segmento AB.
+4 segment(A,B) σχεδιάζει το ευθύγραμμο τμήμα ΑΒ.
 0 (Pnt or Cplx),(Pnt or Cplx),[Var],[Var]
 -1 line
 segment(i,1+i)
@@ -12433,20 +12449,20 @@ segment(point(i),point(1+i),A,B)
 
 
 # half_line
-1 demi_droite(A,B) trace la demi-droite AB d'origine A
-2 half_line(A,B) draws the half-line AB with A as origin
-3 half_line(A,B) traza la media-recta AB con origen A
-4 half_line(A,B) σχεδιάζει την ημιευθεία ΑΒ με αρχή το Α
+1 demi_droite(A,B) trace la demi-droite AB d'origine A.
+2 half_line(A,B) draws the half-line AB with A as origin.
+3 half_line(A,B) traza la media-recta AB con origen A.
+4 half_line(A,B) σχεδιάζει την ημιευθεία ΑΒ με αρχή το Α.
 0 (Pnt or Cplx),(Pnt or Cplx)
 -1 line
 half_line(i,1+i)
 half_line(point(i),point(1+i))
 
 # series
-1 Développement limité ou asymptotique
-2 Series expansion at finite or infinite points
-3 Desarrollo en serie finito o asintótico
-4 Ανάπτυγμα πεπερασμένο ή ασυμπτωτικό
+1 Développement limité ou asymptotique.
+2 Series expansion at finite or infinite points.
+3 Desarrollo en serie finito o asintótico.
+4 Ανάπτυγμα πεπερασμένο ή ασυμπτωτικό.
 0 Expr,Equal(var=limit_point),[Order],[Dir(1,0,-1)]
 -1 limit
 -2 taylor
@@ -12458,22 +12474,26 @@ series(ln(x+x^2)-ln(x),x=0,1)
 series((x^4+x+2)/(x^2+1),x=0,5)
 series(sin(x),x=0,6,polynom)
 series(1/(1+x+y),[x,y],[0,0],5) 
+series(sin(x*y),[x,y],[1,pi/2],3)
+series(sin((1+h*t)*(pi/2+k*t)),t=0,3,polynom)(t=1)
+series(y^2/x^3,[x,y],[1,-1],3)
+series((-1+k*t)^2/(1+h*t)^3,t=0,3,polynom)(t=1)
  truncate(series(sin(x),x=0,6),6)
 
 # select
-1 Sélectionne les éléments e de l vérifiant f(e)=vrai
-2 Selects the elements e of l such that f(e)=true
-3 Selecciona los elementos e de l tales que f(e)=verdadero
-4 Επιλέγει τα στοιχεία e της l που ικανοποιούν f(e)=true
+1 Sélectionne les éléments e de l vérifiant f(e)=vrai.
+2 Selects the elements e of l such that f(e)=true.
+3 Selecciona los elementos e de l tales que f(e)=verdadero.
+4 Επιλέγει τα στοιχεία e της l που ικανοποιούν f(e)=true.
 0 FncBool(f),Lst(l)
 -1 remove
 select(x->x>=5,[1,2,6,7])
 
 # sign
-1 Retourne le signe (-1,0,+1) de l'argument
-2 Returns the sign (-1,0,+1) of its argument
-3 Devuelve el signo (-1,0,+1) del argumento
-4 Επιστρέφει το πρόσημο του ορίσματος (-1,0,+1)
+1 Retourne le signe (-1,0,+1) de l'argument.
+2 Returns the sign (-1,0,+1) of its argument.
+3 Devuelve el signo (-1,0,+1) del argumento.
+4 Επιστρέφει το πρόσημο του ορίσματος (-1,0,+1).
 8 返回值符号。 如果是正数，则结果为 1；如果是负数，则为 -1。如果是零，则结果为零。
 0 Expr
 -1 abs
@@ -12481,10 +12501,10 @@ sign(-4)
 sign(4-5)
 
 # signature
-1 Renvoies la signature d'une permutation
-2 Returns the signature of a permutation
-3 Devuelve la signatura de una permutación
-4 Επιστρέφει το ίχνος μιας μετάθεσης
+1 Renvoies la signature d'une permutation.
+2 Returns the signature of a permutation.
+3 Devuelve la signatura de una permutación.
+4 Επιστρέφει το ίχνος μιας μετάθεσης.
 0 Permut
 -1 permu2cycles
 -2 is_permu
@@ -12504,10 +12524,10 @@ sin(0)
  convert(cos(x)^4+sin(x)^2,sin)
 
 # sinh
-1 Sinus hyperbolique
-2 Hyperbolic sine
-3 Seno hiperbólico
-4 Υπερβολικό ημίτονο
+1 Sinus hyperbolique.
+2 Hyperbolic sine.
+3 Seno hiperbólico.
+4 Υπερβολικό ημίτονο.
 8 双曲正弦。
 0 Expr
 -1 asinh
@@ -12527,10 +12547,10 @@ similarity(line(x=y,y=z),2,pi/3,point(-1,2,1))
  s:=similarity(line(x=y,y=z),2,pi/3),s(point(-1,2,1))
 
 # size nops length
-1 Renvoie la longueur d'une liste, d'une chaîne de caractères ou d'une suite
-2 Returns the size of a list, a string or a sequence
-3 Devuelve el tamaño de una lista, cadena o secuencia de caracteres o de una secuencia
-4 Επιστρέφει το μέγεθος μιας λίστας, μιας συμβολοσειράς ή μιας ακολουθίας
+1 Renvoie la longueur d'une liste, d'une chaîne de caractères ou d'une suite.
+2 Returns the size of a list, a string or a sequence.
+3 Devuelve el tamaño de una lista, cadena o secuencia de caracteres o de una secuencia.
+4 Επιστρέφει το μέγεθος μιας λίστας, μιας συμβολοσειράς ή μιας ακολουθίας.
 8 列大小。  返回列中元素的数量。 实参列可以是列本身或列名。
 0 Lst or Str or Seq
 -1 sizes
@@ -12541,20 +12561,20 @@ size("bonjour")
 size(1,2,3)
 
 # sizes
-1 Renvoie la liste des longueurs d'une liste de listes
-2 Returns the list of sizes of a list of lists
-3 Devuelve la lista de tamaños de una lista de listas
-4 Επιστρέφει την λίστα των μεγεθών μιας λίστας λιστών
+1 Renvoie la liste des longueurs d'une liste de listes.
+2 Returns the list of sizes of a list of lists.
+3 Devuelve la lista de tamaños de una lista de listas.
+4 Επιστρέφει την λίστα των μεγεθών μιας λίστας λιστών.
 0 Lst or Str or Seq
 -1 size
 -2 dim
 sizes([[1,2,3],[1,2],[1]])
 
 # zeros
-1 Renvoie la liste des zéros (réels ou complexes selon le mode) de l'expression (ou la matrice dont les lignes sont les solutions du système : expression1=0,expression2=0...)
-2 Returns the zeros (real or complex according to the mode) of the expression (or the matrix where the lines are the solutions of the system : expression1=0,expression2=0...)
-3 Devuelve la lsita de zeros (reales o complejos según el modo) de la expresión (o la matriz cuyas filas son soluciones del sistema : expression1=0,expression2=0...)
-4 Επιστρέφει τις ρίζες (πραγματικές ή μιγαδικές ανάλογα με τον τρόπο λειτουργίας) μιας παράστασης (ή τον πίνακα του οποίου οι γραμμές είναι λύσεις του συστήματος: expression1=0,expression2=0...)
+1 Renvoie la liste des zéros (réels ou complexes selon le mode) de l'expression (ou la matrice dont les lignes sont les solutions du système : expression1=0,expression2=0...).
+2 Returns the zeros (real or complex according to the mode) of the expression (or the matrix where the lines are the solutions of the system : expression1=0,expression2=0...).
+3 Devuelve la lsita de zeros (reales o complejos según el modo) de la expresión (o la matriz cuyas filas son soluciones del sistema : expression1=0,expression2=0...).
+4 Επιστρέφει τις ρίζες (πραγματικές ή μιγαδικές ανάλογα με τον τρόπο λειτουργίας) μιας παράστασης (ή τον πίνακα του οποίου οι γραμμές είναι λύσεις του συστήματος: expression1=0,expression2=0...).
 0 Expr,[Var]
 -1 
 zeros(x^2+4)
@@ -12563,10 +12583,10 @@ zeros(ln(y)^2-2,y)
 zeros([x^2-1,x^2-y^2],[x,y])
 
 # solve resoudre
-1 Résout une équation ou un système polynomial
-2 Solves a (or a set of) polynomial equation
-3 Resuelve una ecuación o un sistema de ecuaciones polinomiales
-4 Επίλυση μιας εξίσωσης ή ενός συστήματος πολυωνυμικών εξισώσεων
+1 Résout une équation ou un système polynomial.
+2 Solves a (or a set of) polynomial equation.
+3 Resuelve una ecuación o un sistema de ecuaciones polinomiales.
+4 Επίλυση μιας εξίσωσης ή ενός συστήματος πολυωνυμικών εξισώσεων.
 8 方程求解。
 0 Expr,[Var]
 -1 linsolve
@@ -12580,10 +12600,10 @@ solve([y-z=0,z-x=0,x-y=0,x-1+y+z=0],[x,y,z])
 solve([x^2-y^2=0,x^2-z^2=0],[x,y,z])
 
 # line_segments
-1 Renvoie la liste des arêtes (1 arête=segment) du polyèdre P
-2 Returns the list of the line_segments (1 line=segment) of the polyhedron P
-3 Devuelve la lista de las aristas (1 arista=segment) de un poliedro P
-4 Επιστρέφει την λίστα των ακμών (1 ακμή=ευθύγραμμο τμήμα) του πολυέδρου P
+1 Renvoie la liste des arêtes (1 arête=segment) du polyèdre P.
+2 Returns the list of the line_segments (1 line=segment) of the polyhedron P.
+3 Devuelve la lista de las aristas (1 arista=segment) de un poliedro P.
+4 Επιστρέφει την λίστα των ακμών (1 ακμή=ευθύγραμμο τμήμα) του πολυέδρου P.
 0 Polygon or Polyedr(P)
 -1 polyhedron
 line_segments(polyhedron([0,0,0],[0,5,0],[0,0,5],[1,2,6]))
@@ -12624,10 +12644,10 @@ vertices_abca(polyhedron([0,0,0],[0,5,0],[0,0,5],[1,2,6]))
 vertices_abca(isosceles_triangle(0,1,pi/4))[2]
 
 # sommet
-1 Renvoie le sommet d'un opérateur
-2 Returns the sommet of an operator
-3 Devuelve la cumbre de un operador
-4 Επιστρέφει την κεφαλή (κορυφή) μιας παράστασης
+1 Renvoie le sommet d'un opérateur.
+2 Returns the sommet of an operator.
+3 Devuelve la cumbre de un operador.
+4 Επιστρέφει την κεφαλή (κορυφή) μιας παράστασης.
 0 Op or Fnct
 -1 feuille
 -2 quote
@@ -12635,10 +12655,10 @@ sommet(quote(gcd(45,123)))
 sommet('gcd(45,123)')
 
 # smod mods
-1 Retourne le reste symétrique de la division euclidienne de 2 entiers
-2 Returns the Euclidean symmetric remainder of two integers
-3 Devuelve el resto simétrico de la división euclidiana de 2 enteros
-4 Επιστρέφει το Ευκλείδιο συμμετρικό υπόλοιπο 2 ακεραίων
+1 Retourne le reste symétrique de la division euclidienne de 2 entiers.
+2 Returns the Euclidean symmetric remainder of two integers.
+3 Devuelve el resto simétrico de la división euclidiana de 2 enteros.
+4 Επιστρέφει το Ευκλείδιο συμμετρικό υπόλοιπο 2 ακεραίων.
 0 Intg,Intg
 -1 irem
 -2 iquo
@@ -12649,10 +12669,10 @@ smod(10,4)
 smod(11,7)
 
 # sqrt
-1 Racine carrée
-2 Square root
-3 Raíz cuadrada
-4 Τετραγωνική ρίζα
+1 Racine carrée.
+2 Square root.
+3 Raíz cuadrada.
+4 Τετραγωνική ρίζα.
 0 Expr
 -1 surd
 -2 ^
@@ -12671,44 +12691,44 @@ surd(8,3)
 surd(-8,3)
 
 # sst
-1 Exécute 1 instruction en pas-à-pas
-2 Step 1 instruction
-3 Ejecuta una instrucción paso a paso
-4 Βηματική εκτέλεση μιας εντολής
+1 Exécute 1 instruction en pas-à-pas.
+2 Step 1 instruction.
+3 Ejecuta una instrucción paso a paso.
+4 Βηματική εκτέλεση μιας εντολής.
 0 NULL
 -1 
 sst()
 
 # sst_in
-1 Entre à l'intérieur d'une fonction en pas-à-pas
-2 Enter into a function in step-by-step mode
-3 Se introduce al interior de una función en modo paso a paso
-4 Βηματική εκτέλεση μιας συνάρτησης
+1 Entre à l'intérieur d'une fonction en pas-à-pas.
+2 Enter into a function in step-by-step mode.
+3 Se introduce al interior de una función en modo paso a paso.
+4 Βηματική εκτέλεση μιας συνάρτησης.
 0 NULL
 -1 
 sst_in()
 
 # stack
-1 Mot réservé
-2 Reserved word
-3 Palabra reservada
-4 Δεσμευμένη λέξη
+1 Mot réservé.
+2 Reserved word.
+3 Palabra reservada.
+4 Δεσμευμένη λέξη.
 0 
 -1 
 
 # start
-1 Boucle en mode RPN
-2 RPN loop
-3 Bucle en modo RPN
-4 Βρόχος σε λειτουργία RPN (Αντίστροφος Πολωνικός Συμβολισμός)
+1 Boucle en mode RPN.
+2 RPN loop.
+3 Bucle en modo RPN.
+4 Βρόχος σε λειτουργία RPN (Αντίστροφος Πολωνικός Συμβολισμός).
 0 
 -1 
 
 # step by pas
-1 Saut de la variable dans une itération (taille du saut)
-2 Step in an iteration (step size of incrementation)
+1 Saut de la variable dans une itération (taille du saut).
+2 Step in an iteration (step size of incrementation).
 3 Incremento en una iteración (tamaño del salto).
-4 Μέγεθος βήματος μεταβλητής μέσα σε βρόχο
+4 Μέγεθος βήματος μεταβλητής μέσα σε βρόχο.
 8 属于 "for...from...to...[step]...do...end" 循环结构的可选部分。
 0 
 -1 for
@@ -12722,10 +12742,10 @@ sst_in()
 
 
 # sto Store
-1 Stocke le premier argument dans la variable donnée comme deuxième argument
-2 Store the first argument in the variable given as second argument
-3 Guarda el primer argumento en la variable dada como segundo argumento
-4 Αποθήκευση του πρώτου ορίσματος στη μεταβλητή που δίνεται ως δεύτερο όρισμα
+1 Stocke le premier argument dans la variable donnée comme deuxième argument.
+2 Store the first argument in the variable given as second argument.
+3 Guarda el primer argumento en la variable dada como segundo argumento.
+4 Αποθήκευση του πρώτου ορίσματος στη μεταβλητή που δίνεται ως δεύτερο όρισμα.
 8 将一个实数存储在一个变量中。
 0 (Real or Str),Var
 -1 :=
@@ -12823,7 +12843,7 @@ sto("salut",b)
 1 Opérateur infixé qui stocke le deuxième argument dans la variable donnée comme premier argument.
 2 Infixed operator that stores the second argument in the variable given as first argument.
 3 Operador infijo que guarda el segundo argumento en la variable dada como primer argumento.
-4 Εντεθειμένος τελεστής που αποθηκεύει το 2ο όρισμα στη μεταβλητή που δίνεται ως 1ο όρισμα
+4 Εντεθειμένος τελεστής που αποθηκεύει το 2ο όρισμα στη μεταβλητή που δίνεται ως 1ο όρισμα.
 8 将一个实数存储在一个变量中。
 0 Var,(Real or Str)
 -1 sto
@@ -12929,10 +12949,10 @@ subst('sum(x^(n+1)/((n+p+1)*(n+1)),n,0,inf)',n=k-1)
  f:=1/(x^2+y^2;f(x=2,y=3)
 
 # sum somme add
-1 Somme discrète (avec 4 ou 2 arguments renvoie la somme de a à b si a<=b ou de l'opposé de la somme de b+1 à a-1 si a>b+1 ou 0 si a=b+1) ou la primitive discrète ou la somme des éléments d'une liste (ou séquence)
-2 Discrete sum (with 2 or 4 arguments return then sum from a to b if a<=b or of the opposite of the sum from b+1 to a-1 if a>b+1 or 0 if a=b+1) or the discrete primitive or sum of the elements of a list or a sequence
-3 Suma discreta o suma de elementos de una lista (o secuencia)
-4 Διακριτό άθροισμα ή άθροισμα των στοιχείων μιας λίστας ή μιας ακολουθίας
+1 Somme discrète (avec 4 ou 2 arguments renvoie la somme de a à b si a<=b ou de l'opposé de la somme de b+1 à a-1 si a>b+1 ou 0 si a=b+1) ou la primitive discrète ou la somme des éléments d'une liste (ou séquence).
+2 Discrete sum (with 2 or 4 arguments return then sum from a to b if a<=b or of the opposite of the sum from b+1 to a-1 if a>b+1 or 0 if a=b+1) or the discrete primitive or sum of the elements of a list or a sequence.
+3 Suma discreta o suma de elementos de una lista (o secuencia).
+4 Διακριτό άθροισμα ή άθροισμα των στοιχείων μιας λίστας ή μιας ακολουθίας.
 8 求和。  返回列表中所有元素的和 或  返回对表达式的变量从初值取值到终值时求和。
 0 Expr,Var,VarMin(a),VarMax(b),[VarStep(p)]
 -1 +
@@ -12948,10 +12968,10 @@ sum(1/(x*(x+1)),x)
 sum(cos(n*x),n)
 
 # suppress
-1 Renvoie l sans son élément d'indice n
-2 Returns l without the element of index n
-3 Devuelve l sin el elemento de índice n
-4 Επιστρέφει την l χωρίς το στοιχείο με δείκτη n
+1 Renvoie l sans son élément d'indice n.
+2 Returns l without the element of index n.
+3 Devuelve l sin el elemento de índice n.
+4 Επιστρέφει την l χωρίς το στοιχείο με δείκτη n.
 0 Vect(l),Intg(n)
 -1 tail
 -2 mid
@@ -12959,10 +12979,10 @@ sum(cos(n*x),n)
 suppress([0,1,2,3],2)
 
 # svd
-1 Pour une matrice carrée numérique réelle A, renvoie U orthogonale, S vecteur des valeurs singulières, Q orthogonale tels que A=U*diag(S)*tran(Q)
-2 For a square numerical real matrix A, returns U orthogonal, S vector of singular values, Q orthogonal such that A=U*diag(S)*tran(Q)
-3 Para una matriz cuadrada real numérica A, devuelve U ortogonal, S vector de Singular Values, Q ortogonal tales que A=U*diag(S)*tran(Q)
-4 Για έναν αριθμητικό πίνακα Α, επιστρέφει U, S, Q τέτοια ώστε A=U*diag(S)*tran(Q)
+1 Pour une matrice carrée numérique réelle A, renvoie U orthogonale, S vecteur des valeurs singulières, Q orthogonale tels que A=U*diag(S)*tran(Q).
+2 For a square numerical real matrix A, returns U orthogonal, S vector of singular values, Q orthogonal such that A=U*diag(S)*tran(Q).
+3 Para una matriz cuadrada real numérica A, devuelve U ortogonal, S vector de Singular Values, Q ortogonal tales que A=U*diag(S)*tran(Q).
+4 Για έναν αριθμητικό πίνακα Α, επιστρέφει U, S, Q τέτοια ώστε A=U*diag(S)*tran(Q).
 0 Mtrx(A)
 svd([[1,2],[3,4]])
 
@@ -12993,20 +13013,20 @@ piecewise(x<=-pi,x+2*pi,x<=pi,x,x+2*pi)
 piecewise(x<-2,-2,x<-1,3x+4,x<0,1,x+1)
 
 # switch_axes
-1 switch_axes() met ou enlève les axes de l'écran géométrique
-2 switch_axes() put or erase the axes of the graphic-screen
-3 switch_axes() pone o quita los ejes en la pantalla de geometría
-4 switch_axes() σχεδιάζει ή διαγράφει τους άξονες από την οθόνη γραφικών
+1 switch_axes() met ou enlève les axes de l'écran géométrique.
+2 switch_axes() put or erase the axes of the graphic-screen.
+3 switch_axes() pone o quita los ejes en la pantalla de geometría.
+4 switch_axes() σχεδιάζει ή διαγράφει τους άξονες από την οθόνη γραφικών.
 0 [Intg(0 or 1)]
 switch_axes()
 switch_axes(0)
 switch_axes(1)
 
 # xyztrange
-1 xyztrange permet d'initialiser l'écran graphique (cf bouton Cfg)
-2 xyztrange put or erase the axes on the graphic-screen (cf button Cfg)
-3 xyztrange permite inicializar la pantalla de geometría (cf botón Cfg)
-4 xyztrange αρχικοποιεί την οθόνη γραφικών (cf κουμπί Cfg)
+1 xyztrange permet d'initialiser l'écran graphique (cf bouton Cfg).
+2 xyztrange put or erase the axes on the graphic-screen (cf button Cfg).
+3 xyztrange permite inicializar la pantalla de geometría (cf botón Cfg).
+4 xyztrange αρχικοποιεί την οθόνη γραφικών (cf κουμπί Cfg).
 0 SeqReal
 xyztrange(-5.0,5.0,-5.0,2.0,-10.0,10.0,-1.0,6.0,-5.0,5.0,-1.2384,2.0,1,0.0,1.0)
 
@@ -13109,10 +13129,10 @@ frame_2d()
 frame_3d()
 
 # reflection
-1 reflection(D,C) (resp reflection(A,C))=symétrique de C dans la symétrie-droite D (resp sym-point A)
-2 reflection(D,C) (or reflection(A,C))=symmetrical of C in the symmetry-line D (or sym-point A)
-3 reflection(D,C) (o reflection(A,C))=simétrico de C en la recta de simetría D (o punto de simetría A)
-4 reflection(D,C) (ή reflection(A,C))=συμμετρικό του C ως προς τον άξονα συμμετρίας D (ή σημείο συμμετρίας Α)
+1 reflection(D,C) (resp reflection(A,C))=symétrique de C dans la symétrie-droite D (resp sym-point A).
+2 reflection(D,C) (or reflection(A,C))=symmetrical of C in the symmetry-line D (or sym-point A).
+3 reflection(D,C) (o reflection(A,C))=simétrico de C en la recta de simetría D (o punto de simetría A).
+4 reflection(D,C) (ή reflection(A,C))=συμμετρικό του C ως προς τον άξονα συμμετρίας D (ή σημείο συμμετρίας Α).
 0 (Pnt(A) or Line(D)),(Pnt(C) or Curve(C))
 -1 rotation
 -2 translation
@@ -13122,10 +13142,10 @@ reflection(line(0,1+i),circle(i,1+i))
 
 
 # syst2mat
-1 Renvoie la matrice M=A|(-b) associée au système Y=AX+b
-2 Returns the matrix M=A|(-b) associate to the system Y=AX+b
-3 Devuelve la matriz M=A|(-b) asociada al sistema Y=AX+b
-4 Επιστρέφει τον πίνακα M=A|(-b) συσχετισμένο με το σύστημα Y=AX+b
+1 Renvoie la matrice M=A|(-b) associée au système Y=AX+b.
+2 Returns the matrix M=A|(-b) associate to the system Y=AX+b.
+3 Devuelve la matriz M=A|(-b) asociada al sistema Y=AX+b.
+4 Επιστρέφει τον πίνακα M=A|(-b) συσχετισμένο με το σύστημα Y=AX+b.
 0 LstLinEq,LstVar
 -1 linsolve
 -2 rref
@@ -13142,9 +13162,9 @@ tablefunc(sin(x),x)
 tablefunc(x^2-x-2,x)
 
 # tableseq
-1 Tableau de valeurs d'une suite (dans un tableur)
-2 Table of value of a sequence (in a spreadsheet)
-3 Tabla de valores de una secuencia (en una hoja de balance)
+1 Tableau de valeurs d'une suite (dans un tableur).
+2 Table of value of a sequence (in a spreadsheet.)
+3 Tabla de valores de una secuencia (en una hoja de balance).
 4 Πίνακας τιμών μιας ακολουθίας (σε λογιστικό φύλλο).
 0 Expr,(Var or LstVar),(InitVal or LstInitVal)
 -1 tablefunc
@@ -13180,6 +13200,7 @@ seqsolve([x+2*y+n+1,x],[x,y,n],[0,1])
 rsolve(u(n+1)=2*u(n)+n,u(n),u(0)=1)
 rsolve(u(n+1)=2*u(n)+n,u(n),u(1)^2=1)
 rsolve(u(n+1)=(u(n)-1)/(u(n)-2),u(n),u(0)=4)
+rsolve(u(n+2)=u(n)+2*u(n+1)+n+1,u(n),[u(0)=0,u(1)=1])
 rsolve([u(n+1)=3*v(n)+u(n),v(n+1)=v(n)+u(n)],[u(n),v(n)],[u(0)=1,v(0)=2])
 
 # tan TAN
@@ -13235,10 +13256,10 @@ tchebyshev1(3)
 tchebyshev2(3)
 
 # test
-1 Fonction de test pour les développeurs
-2 Test function for system developers
-3 Función de comprobación para desarrolladores
-4 Συνάρτηση test που παρέχεται στους σχεδιαστές του συστήματος
+1 Fonction de test pour les développeurs.
+2 Test function for system developers.
+3 Función de comprobación para desarrolladores.
+4 Συνάρτηση test που παρέχεται στους σχεδιαστές του συστήματος.
 0 Var
 -1 
 test(x)
@@ -13279,10 +13300,10 @@ trace([[1+i,2,3],[1,3,6],[2,5,9-i]])
  assume(a=[0.7,-5,5,0.1]);trace(inter_unique(droite(y=a*x+a),droite(y=2*a*x+1)))
 
 # tran transpose
-1 Transposée d'une matrice (sans conjugaison)
-2 Transposes a matrix (without conjugation)
-3 Transpone una matriz (sin conjugación)
-4 Αναστρέφει έναν πίνακα (χωρίς να παίρνει συζυγείς)
+1 Transposée d'une matrice (sans conjugaison).
+2 Transposes a matrix (without conjugation).
+3 Transpone una matriz (sin conjugación).
+4 Αναστρέφει έναν πίνακα (χωρίς να παίρνει συζυγείς).
 8 转置阵。  转置矩阵。
 0 Mtrx
 -1 conj
@@ -13356,10 +13377,10 @@ right_triangle(point(0,0,0),point(3,3,3),[point(0,0,3),1/2],C)
 right_triangle(point(0,0,0),point(3,3,3),[point(0,0,3),1/2],C)
 
 # trn
-1 Renvoie la matrice adjointe de A =tran(conj(A))
-2 Returns the adjoint matrix of A =tran(conj(A))
-3 Devuelve la matriz adjunta de A=tran(conj(A))
-4 Επιστρέφει τον προσαρτισμένο πίνακα του Α=tran(conj(A))
+1 Renvoie la matrice adjointe de A =tran(conj(A)).
+2 Returns the adjoint matrix of A =tran(conj(A)).
+3 Devuelve la matriz adjunta de A=tran(conj(A)).
+4 Επιστρέφει τον προσαρτισμένο πίνακα του Α=tran(conj(A)).
 8 转置阵。  转置矩阵。 则 TRN 将查找共轭转置。
 0 Mtrx
 -1 tran
@@ -13376,20 +13397,20 @@ trn([[1,2+i],[3,4]])
 truncate((x^2+x)^2,3)
 
 # try
-1 Protection contre les erreurs: try {instructions;} catch(variable) {error_instructions;} (dans un programme)
-2 Error protection: try {instructions;} catch(variable) {error_instructions;} (in a program)
-3 Protección contra errores: try {instructions;} catch(variable) {error_instructions;} (dentro de un programa)
-4 Προστασία από λάθη: try {instructions;} catch(variable) {error_instructions;} (σε ένα πρόγραμμα)
+1 Protection contre les erreurs: try {instructions;} catch(variable) {error_instructions;} (dans un programme).
+2 Error protection: try {instructions;} catch(variable) {error_instructions;} (in a program).
+3 Protección contra errores: try {instructions;} catch(variable) {error_instructions;} (dentro de un programa).
+4 Προστασία από λάθη: try {instructions;} catch(variable) {error_instructions;} (σε ένα πρόγραμμα).
 0 
 -1 throw
 -2 catch
  essai(x):={local y,err;try {y:=[[1,2]]*x;}catch (err){y:="erreur fatale:"+err;} return y;};essai([1,2,3])
 
 # type
-1 Renvoie n dans [1..12] définissant le type de l'argument
-2 Returns n in [1..12] that define the type of the argument
-3 Devuelve n de [1..12] que define el tipo del argumento
-4 Επιστρέφει n στο [1..12] που ορίζει τον τύπο του ορίσματος
+1 Renvoie n dans [1..12] définissant le type de l'argument.
+2 Returns n in [1..12] that define the type of the argument.
+3 Devuelve n de [1..12] que define el tipo del argumento.
+4 Επιστρέφει n στο [1..12] που ορίζει τον τύπο του ορίσματος.
 0 Expr
 -1 DOM_FLOAT
 -2 DOM_INT
@@ -13406,7 +13427,7 @@ type([1,2,3])
 
 # subtype
 1 Renvoie 1 pour une séquence, 2 pour un ensemble, 10 pour un polynôme et 0 sinon.
-2 Returns 1 for a sequence,2 for a set, 10 for a polynomial and 0 otherwise
+2 Returns 1 for a sequence,2 for a set, 10 for a polynomial and 0 otherwise.
 3 Devuelve 1 para una secuencia, 2 para uno conjunto, 10 para uno polinómio y 0 si no.
 4 Επιστρέφει 1 (ακολουθία), 2 (σύνολο), 10 (πολυωνύμου) και 0 διαφορετικά.
 0 Expr
@@ -13418,10 +13439,10 @@ subtype(poly1[1,2,3])
 subtype([1,2,3])
 
 # union
-1 union est un opérateur infixé pour avoir l'union de 2 ensembles
-2 union is an infixed operator to get the union of 2 sets
-3 union es un operador infijo para obtener la unión de dos conjuntos
-4 union είναι ένας εντεθειμένος τελεστής που ενώνει 2 σύνολα
+1 union est un opérateur infixé pour avoir l'union de 2 ensembles.
+2 union is an infixed operator to get the union of 2 sets.
+3 union es un operador infijo para obtener la unión de dos conjuntos.
+4 union είναι ένας εντεθειμένος τελεστής που ενώνει 2 σύνολα.
 0 (Vect or Set),(Vect or Set)
 -1 minus
 -2 intersect
@@ -13429,8 +13450,8 @@ subtype([1,2,3])
  %{1,2,3%} union %{2,5,6%}
 
 # valuation ldegree
-1 Renvoie la valuation (degré du terme de plus bas degré) du polynôme P
-2 Returns the valuation (degree of the term of lowest degree) of the polynomial P .
+1 Renvoie la valuation (degré du terme de plus bas degré) du polynôme P.
+2 Returns the valuation (degree of the term of lowest degree) of the polynomial P.
 3 Devuelve la evaluación del polinómio P (grado del término de grado menor).
 4 Επιστρέφει την εκτίμηση (βαθμό του όρου με το χαμηλότερο βαθμό) του πολυωνύμου Ρ.
 0 Poly(P)
@@ -13442,39 +13463,39 @@ valuation(x^5+3*x^2)
 valuation([5,0,0,3,0,0])
 
 # vandermonde
-1 Renvoie la matrice de Vandermonde=[V^0,V^1,..]
-2 Returns the Vandermonde matrix=[V^0,V^1,..]
-3 Devuelve la matriz de Vandermonde=[V^0,V^1,..]
-4 Επιστρέφει τον πίνακα Vandermonde=[V^0,V^1,..]
+1 Renvoie la matrice de Vandermonde=[V^0,V^1,..].
+2 Returns the Vandermonde matrix=[V^0,V^1,..].
+3 Devuelve la matriz de Vandermonde=[V^0,V^1,..].
+4 Επιστρέφει τον πίνακα Vandermonde=[V^0,V^1,..].
 0 Vect(V)
 -1 det
 vandermonde([1,2,a])
 
 # VARS
-1 Liste des variables et des répertoires du répertoire courant
-2 List of the variables and folders of the current directory
-3 Lista de las variables y de los repertorios del repertorio actual
-4 Λίστα των μεταβλητών και των φακέλων του τρέχοντος καταλόγου εργασίας
+1 Liste des variables et des répertoires du répertoire courant.
+2 List of the variables and folders of the current directory.
+3 Lista de las variables y de los repertorios del repertorio actual.
+4 Λίστα των μεταβλητών και των φακέλων του τρέχοντος καταλόγου εργασίας.
 8 变量。
 0 NULL
 -1 lvar
 VARS()
 
 # vpotential
-1 Renvoie U tel que curl(U)=V
-2 Returns U such as curl(U)=V
-3 Devuelve U tal que curl(U)=V
-4 Επιστρέφει U τέτοιο ώστε curl(U)=V
+1 Renvoie U tel que curl(U)=V.
+2 Returns U such as curl(U)=V.
+3 Devuelve U tal que curl(U)=V.
+4 Επιστρέφει U τέτοιο ώστε curl(U)=V.
 0 Vect(V),LstVar
 -1 curl
 -2 potential
 vpotential([2*x*y+3,x^2-4*z,-2*y*z],[x,y,z])
 
 # watch
-1 Ajoute une variable à la liste des variables affichées en pas-à-pas
-2 Adds a variable to the list of displayed variables in step by step
-3 Añade una variable a la lista de las variables mostradas en paso a paso
-4 Προσθήκη μιας μεταβλητής στη λίστα των μεταβλητών που εμφανίζονται στην λειτουργία βήμα προς βήμα
+1 Ajoute une variable à la liste des variables affichées en pas-à-pas.
+2 Adds a variable to the list of displayed variables in step by step.
+3 Añade una variable a la lista de las variables mostradas en paso a paso.
+4 Προσθήκη μιας μεταβλητής στη λίστα των μεταβλητών που εμφανίζονται στην λειτουργία βήμα προς βήμα.
 0 Var
 -1 rmwatch
 watch(a)
@@ -13511,10 +13532,10 @@ watch(a)
  n:=4;repeter triangle_plein(10*n);saute(10*n);n:=n-1; jusqua n==0;
 
 # {}
-1 Bloc d'instructions
-2 Instructions bloc
-3 Bloque de instrucciones
-4 Μπλοκ εντολών
+1 Bloc d'instructions.
+2 Instructions bloc.
+3 Bloque de instrucciones.
+4 Μπλοκ εντολών.
 0 
 -1 begin
 -2 end
@@ -13524,10 +13545,10 @@ watch(a)
  k(x):={local (n:=x+1);return x+n;}
 
 # abcuv
-1 Renvoie [u,v] vérifiant au+bv=c pour 3 polynômes a,b,c
-2 Returns [u,v] such as au+bv=c for 3 polynomials a,b,c
-3 Devuelve [u,v] tales que au+bv=c para 3 polinomios a,b,c
-4 Επιστρέφει [u,v] έτσι ώστε au+bv=c για 3 πολυώνυμα a,b,c
+1 Renvoie [u,v] vérifiant au+bv=c pour 3 polynômes a,b,c.
+2 Returns [u,v] such as au+bv=c for 3 polynomials a,b,c.
+3 Devuelve [u,v] tales que au+bv=c para 3 polinomios a,b,c.
+4 Επιστρέφει [u,v] έτσι ώστε au+bv=c για 3 πολυώνυμα a,b,c.
 8 对多项式求解 a.u+b.v=c
 0 Poly(a),Poly(b),Poly(c),[Var]
 -1 egcd
@@ -13539,10 +13560,10 @@ abcuv(X^2+2*X+1,X^2-1,X^3+1,X)
 abcuv([1,2,1],[1,0,-1],[1,0,0,1])
 
 # iabcuv
-1 Renvoie [u,v] vérifiant au+bv=c pour 3 entiers a,b,c
-2 Returns [u,v] such as au+bv=c for 3 integers a,b,c
-3 Devuelve [u,v] tales que au+bv=c para 3 enteros a,b,c
-4 Επιστρέφει [u,v] έτσι ώστε au+bv=c για 3 ακεραίους a,b,c
+1 Renvoie [u,v] vérifiant au+bv=c pour 3 entiers a,b,c.
+2 Returns [u,v] such as au+bv=c for 3 integers a,b,c.
+3 Devuelve [u,v] tales que au+bv=c para 3 enteros a,b,c.
+4 Επιστρέφει [u,v] έτσι ώστε au+bv=c για 3 ακεραίους a,b,c.
 0 Intg(a),Intg(b),Intg(c)
 -1 iegcd
 -2 abcuv
@@ -13551,10 +13572,10 @@ iabcuv(21,28,14)
 iabcuv(21,28,1)
 
 # iegcd igcdex bezout_entiers
-1 Identité de Bézout pour 2 entiers
-2 Extended greatest common divisor of 2 integers
-3 Identidad de Bézout de 2 enteros
-4 Επεκταμένος ΜΚΔ για 2 ακεραίους (ταυτότητα Bezout)
+1 Identité de Bézout pour 2 entiers.
+2 Extended greatest common divisor of 2 integers.
+3 Identidad de Bézout de 2 enteros.
+4 Επεκταμένος ΜΚΔ για 2 ακεραίους (ταυτότητα Bezout).
 8 整数扩展的最大公约数。  返回 [u,v,igcd(a,b)]，以使 a*u+b*v=igcd(a,b)。
 0 Intg,Intg
 -1 gcd
@@ -13565,50 +13586,50 @@ iegcd(21,28)
 iegcd(30,49)
 
 # acos2asin
-1 Remplace arccos(x) par pi/2-arcsin(x) dans l'argument
-2 Replaces arccos(x) by pi/2-arcsin(x) in the argument
-3 Reemplaza arccos(x) por pi/2-arcsin(x) en el argumento
-4 Αντικαθιστά το arccos(x) στο όρισμα με pi/2-arcsin(x)
+1 Remplace arccos(x) par pi/2-arcsin(x) dans l'argument.
+2 Replaces arccos(x) by pi/2-arcsin(x) in the argument.
+3 Reemplaza arccos(x) por pi/2-arcsin(x) en el argumento.
+4 Αντικαθιστά το arccos(x) στο όρισμα με pi/2-arcsin(x).
 0 Expr
 -1 acos2atan
 acos2asin(acos(x)+asin(x))
 acos2asin(2*acos(x))
 
 # acos2atan
-1 Remplace arccos(x) par pi/2-arctan(x/sqrt(1-x^2)) dans l'argument
-2 Replaces arccos(x) by pi/2-arctan(x/sqrt(1-x^2)) in the argument
-3 Reemplaza arccos(x) por pi/2-arctan(x/sqrt(1-x^2)) en el argumento
-4 Αντικαθιστά το arccos(x) στο όρισμα με pi/2-arctan(x/sqrt(1-x^2))
+1 Remplace arccos(x) par pi/2-arctan(x/sqrt(1-x^2)) dans l'argument.
+2 Replaces arccos(x) by pi/2-arctan(x/sqrt(1-x^2)) in the argument.
+3 Reemplaza arccos(x) por pi/2-arctan(x/sqrt(1-x^2)) en el argumento.
+4 Αντικαθιστά το arccos(x) στο όρισμα με pi/2-arctan(x/sqrt(1-x^2)).
 0 Expr
 -1 acos2asin
 acos2atan(2*acos(x))
 acos2atan(acos(sqrt(1-x^2))+acos(x))
 
 # asin2acos
-1 Remplace arcsin(x) par pi/2-arccos(x) dans l'argument
-2 Replaces arcsin(x) by pi/2-arccos(x) in the argument
-3 Reemplaza arcsin(x) por pi/2-arccos(x) en el argumento
-4 Αντικαθιστά το arcsin(x) στο όρισμα με pi/2-arccos(x)
+1 Remplace arcsin(x) par pi/2-arccos(x) dans l'argument.
+2 Replaces arcsin(x) by pi/2-arccos(x) in the argument.
+3 Reemplaza arcsin(x) por pi/2-arccos(x) en el argumento.
+4 Αντικαθιστά το arcsin(x) στο όρισμα με pi/2-arccos(x).
 0 Expr
 -1 asin2atan
 asin2acos(acos(x)+asin(x))
 asin2acos(2*asin(x))
 
 # asin2atan
-1 Remplace arcsin(x) par arctan(x/sqrt(1-x^2)) dans l'argument
-2 Replaces arcsin(x) by arctan(x/sqrt(1-x^2)) in the argument
-3 Reemplaza arcsin(x) por arctan(x/sqrt(1-x^2)) en el argumento
-4 Αντικαθιστά το arcsin(x) στο όρισμα με arctan(x/sqrt(1-x^2))
+1 Remplace arcsin(x) par arctan(x/sqrt(1-x^2)) dans l'argument.
+2 Replaces arcsin(x) by arctan(x/sqrt(1-x^2)) in the argument.
+3 Reemplaza arcsin(x) por arctan(x/sqrt(1-x^2)) en el argumento.
+4 Αντικαθιστά το arcsin(x) στο όρισμα με arctan(x/sqrt(1-x^2)).
 0 Expr
 -1 asin2acos
 asin2atan(2*asin(x))
 asin2atan(asin(sqrt(1-x^2))+asin(x))
 
 # collect
-1 Factorisation d'un polynôme (ou d'une liste de poly) sur les entiers
-2 Integer factorization of a polynomial (or of a list of poly)
-3 Factorización de un polinomio (o de una lista de polinomios) sobre los enteros
-4 Παραγοντοποίηση, στους ακεραίους, ενός πολυωνύμου (ή μιας λίστας πολυωνύμων)
+1 Factorisation d'un polynôme (ou d'une liste de poly) sur les entiers.
+2 Integer factorization of a polynomial (or of a list of poly).
+3 Factorización de un polinomio (o de una lista de polinomios) sobre los enteros.
+4 Παραγοντοποίηση, στους ακεραίους, ενός πολυωνύμου (ή μιας λίστας πολυωνύμων).
 0 Poly or LstPoly
 -1 factor
 -2 factors
@@ -13829,10 +13850,10 @@ when(n,1,0)
  (a>1)?a+1:0
 
 # intersect
-1 intersect est un opérateur infixé pour avoir l'intersection de 2 ensembles
-2 intersect is a infixed operator to get the intersection of 2 sets
-3 intersect es un operador infijo para obtener la intersection de 2 conjuntos
-4 intersect είναι ένας εντεθειμένος τελεστής για την τομή 2 συνόλων
+1 intersect est un opérateur infixé pour avoir l'intersection de 2 ensembles.
+2 intersect is a infixed operator to get the intersection of 2 sets.
+3 intersect es un operador infijo para obtener la intersection de 2 conjuntos.
+4 intersect είναι ένας εντεθειμένος τελεστής για την τομή 2 συνόλων.
 0 (Vect or Set),(Vect or Set)
 -1 union
 -2 minus
@@ -13840,10 +13861,10 @@ when(n,1,0)
  %{1,2,3%} intersect %{2,5,6%}
 
 # lncollect
-1 Rassemble les logarithmes. Applique ln(a)+n*ln(b)->ln(a*b^n) pour n entier
-2 Collect logarithms. Applies ln(a)+n*ln(b)->ln(a*b^n) for integers n
-3 Aplica ln(a)+n*ln(b)->ln(a*b^n) para n entero
-4 Εφαρμόζεται τον ln(a)+n*ln(b)->ln(a*b^n) για ακεραίο n
+1 Rassemble les logarithmes. Applique ln(a)+n*ln(b)->ln(a*b^n) pour n entier.
+2 Collect logarithms. Applies ln(a)+n*ln(b)->ln(a*b^n) for integers n.
+3 Aplica ln(a)+n*ln(b)->ln(a*b^n) para n entero.
+4 Εφαρμόζεται τον ln(a)+n*ln(b)->ln(a*b^n) για ακεραίο n.
 8 合并对数项  : lncollect(ln(a)+3*ln(b)) 返回  ln(a*b^3))
 0 Expr
 -1 texpand
@@ -13851,9 +13872,9 @@ lncollect(ln(x)+2*ln(y))
 
 # makemat
 1 Crée une matrice à partir de la fonction f.
-2 Create a matrix
-3 Crea una matriz
-4 Δημιουργία ενός πίνακα
+2 Create a matrix.
+3 Crea una matriz.
+4 Δημιουργία ενός πίνακα.
 8 产生矩阵。 利用函数来计算每个元素，从而创建维数为“行数 x 列数”的矩阵。 如果函数包含变量 I 和 J，则每个元素的计算值会替代变量 I 所占的当前行数及变量 J 所占的当前列数。
 0 Fnct(f),RowsNumb,ColsNumb
 -1 matrix
@@ -13862,10 +13883,10 @@ makemat((j,k)->1/(j+k+1),2,3)
 makemat(sqrt(2),2,3)
 
 # matrix
-1 Crée une matrice m(j,k) de p lignes et q colonnes, m(j,k)=f(j,k) ou m(j,k)=a avec des indices qui commencent à 0 ou 1 selon le mode xcas ou maple (ou option de apply) ou crée une matrice à partir d'une table.
-2 Make a matrix m(j,k) with p rows and q cols, m(j,k)=f(j,k) or m(j,k)=a : the index start at 0 or 1 according to the mode (xcas or maple) (or option of apply) or make a maytice with a table.
-3 Crea una matriz m(j,k) de p filas y q columnas, m(j,k)=f(j,k) o f(j,k)=a (o opción de apply)
-4 Δημιουργία ενός πίνακα m(j,k) με p γραμμές και q στήλες, m(j,k)=f(j,k) ή m(j,k)=a
+1 Crée une matrice m(j,k) de p lignes et q colonnes, m(j,k)=f(j,k) ou m(j,k)=a avec des indices qui commencent à 0 ou 1 selon le mode Xcas ou Maple (ou option de apply) ou crée une matrice à partir d'une table.
+2 Make a matrix m(j,k) with p rows and q cols, m(j,k)=f(j,k) or m(j,k)=a : the index start at 0 or 1 according to the mode (Xcas or Maple) (or option of apply) or make a maytice with a table.
+3 Crea una matriz m(j,k) de p filas y q columnas, m(j,k)=f(j,k) o f(j,k)=a (o opción de apply).
+4 Δημιουργία ενός πίνακα m(j,k) με p γραμμές και q στήλες, m(j,k)=f(j,k) ή m(j,k)=a.
 0 Intg(p),Intg(q),(Fnc(f) or Val(a))
 -1 makemat
 -2 makelist
@@ -13877,7 +13898,7 @@ matrix(2,3,4)
 
 # display color
 1 Trace un objet géométrique en couleur (noir=0 rouge=1 vert=2 jaune=3 bleu=4), en trait +/- épais (line_width_n 0<n<8) et peut l'afficher selon une ligne pointillée (dash_line), rempli permet de remplir un polygone ou une courbe fermée.
-2 Draws an geometrical object with colors black=0 red=1 green=2 yellow=3 blue=4, rempli put the color in the interior of a closed curve,line_width_n (0<n<8) is for the width of the line and dash_line is for dotted line.
+2 Draws an geometrical object with colors black=0 red=1 green=2 yellow=3 blue=4, filled put the color in the interior of a closed curve,line_width_n (0<n<8) is for the width of the line and dash_line is for dotted line.
 3 Dibuja un objeto geométrico con colores (negro=0 rojo=1 verde=2 amarillo=3 azul=4), con trazado +/- grueso (line_width_n 0<n<8) y puede mostrarlo según una recta punteada (dash_line), mientras filled permite de rellenar un polígono o una curva cerrada.
 4 Σχεδιασμός ενός γεωμετρικού αντικειμένου με χρώματα: μαύρο=0 κόκκινο=1 πράσινο=2 κίτρινο=3 μπλε=4), και με το + καθορίζουμε το πάχος της ευθείας (line_width_n 0<n<8) και το εάν θα είναι διακεκομένη (dash_line), ενώ το filled (rempli) επιτρέπει να γεμίσουμε με το χρώμα ένα πολύγωνο ή μια κλειστή καμπύλη.
 0 [GeoObj or legende],Intg
@@ -13887,7 +13908,8 @@ display(A,1)
 display(F:=point(2+1.5*i),2)
 display(point(2+1.5*i),2)
 display(legende(1+i,"abc"),4)
-display(square(0,1),filled+red+line_width_6)
+display(square(0,1),filled+red)
+display(carre(0,1),rempli+rouge)
 display(circle(0,1),filled)
 display(line(y=x),green+dash_line+line_width_2)
 display(red);square(0,1);
@@ -13908,7 +13930,7 @@ display(red+filled);square(0,1);
 # line_width_1 line_width_2 line_width_3 line_width_4 line_width_5 line_width_6 line_width_7 epaisseur_ligne_1 epaisseur_ligne_2 epaisseur_ligne_3 epaisseur_ligne_4 epaisseur_ligne_5 epaisseur_ligne_6 epaisseur_ligne_7
 1 Option de la commande affichage (ou display) pour une ligne.
 2 Option of the display command for a line.
-3 Opción de la instrucción Display para una línea
+3 Opción de la instrucción Display para una línea.
 4 Επιλογή της εντολής display (ή affichage) για μια γραμμή.
 0 Opt
 -1 display
@@ -13920,7 +13942,7 @@ display(red+filled);square(0,1);
 # dash_line ligne_tiret solid_line ligne_trait_plein dashdot_line ligne_tiret_point dashdotdot_line ligne_tiret_pointpoint cap_flat_line ligne_chapeau_plat cap_square_line ligne_chapeau_carre cap_round_line ligne_chapeau_rond
 1 Option de la commande affichage (ou display) pour une ligne.
 2 Option of the display command for a line.
-3 Opción de la instrucción Display para una línea
+3 Opción de la instrucción Display para una línea.
 4 Επιλογή της εντολής display (ή affichage) για μια γραμμή.
 0 Opt
 -1 display
@@ -13989,10 +14011,10 @@ display(red+filled);square(0,1);
  square(0,2) -< filled
 
 # ->
-1 Opérateur infixé qui définit une fonction utilisateur: x->f(x)
-2 Infixed operator which define an user function: x->f(x)
-3 Operador infijo que define una función definida por el usuario: x->f(x)
-4 Εντεθειμένος τελεστής που καθορίζει μια συνάρτηση ως απεικόνιση: x->f(x)
+1 Opérateur infixé qui définit une fonction utilisateur: x->f(x).
+2 Infixed operator which define an user function: x->f(x).
+3 Operador infijo que define una función definida por el usuario: x->f(x).
+4 Εντεθειμένος τελεστής που καθορίζει μια συνάρτηση ως απεικόνιση: x->f(x).
 0 VectVar(x),Expr(f(x))
 -1 for
 -2 if
@@ -14004,10 +14026,10 @@ display(red+filled);square(0,1);
  g:=(x,y)->return(sin(x+y),sin(x-y))
 
 # mod %
-1 Opérateur infixé qui renvoie n mod p un nombre de ℤ/pℤ
-2 Infixed operator which returns n mod p a number of ℤ/pℤ
-3 Operador infijo que devuelve n mod p un número de ℤ/pℤ
-4 Εντεθειμένος τελεστής που επιστρέφει n mod p, έναν αριθμό του ℤ/pℤ
+1 Opérateur infixé qui renvoie n mod p un nombre de ℤ/pℤ.
+2 Infixed operator which returns n mod p a number of ℤ/pℤ.
+3 Operador infijo que devuelve n mod p un número de ℤ/pℤ.
+4 Εντεθειμένος τελεστής που επιστρέφει n mod p, έναν αριθμό του ℤ/pℤ.
 8 求模。 返回值 1/值 2 的余数。
 0 Intg(n),Intg(p)
 -1 smod
@@ -14015,22 +14037,25 @@ display(red+filled);square(0,1);
 -3 fracmod
  15 mod 6
  (2 mod 10)^50
+ (72 mod 7) mod 0
  (2%10)^50
+ (72%7)%0
 
 # pa2b2
-1 Renvoie [a,b] tels que a^2+b^2=n (pour n premier et n=1 (mod 4))
-2 Returns [a,b] such as a^2+b^2=n (for n prime and n=1 (mod 4))
-3 Devuelve [a,b] tales que a^2+b^2=n (para n primo y n=1 (mod 4))
-4 Επιστρέφει [a,b] έτσι ώστε a^2+b^2=n (για n πρώτο και n=1 (mod 4))
+1 Renvoie [a,b] tels que a^2+b^2=n (pour n premier et n=1 (mod 4)).
+2 Returns [a,b] such as a^2+b^2=n (for n prime and n=1 (mod 4)).
+3 Devuelve [a,b] tales que a^2+b^2=n (para n primo y n=1 (mod 4)).
+4 Επιστρέφει [a,b] έτσι ώστε a^2+b^2=n (για n πρώτο και n=1 (mod 4)).
 0 Intg(n)
 pa2b2(17)
 pa2b2(209)
+pa2b2(229)
 
 # permu2cycles
-1 Convertit une permutation en un produit de cycles disjoints
-2 Converts a permutation to a product of disjoined cycles
-3 Convierte una permutación en un producto de ciclos disjuntos
-4 Μετατρέπει μια μετάθεση σε γινόμενο ξένων κύκλων
+1 Convertit une permutation en un produit de cycles disjoints.
+2 Converts a permutation to a product of disjoined cycles.
+3 Convierte una permutación en un producto de ciclos disjuntos.
+4 Μετατρέπει μια μετάθεση σε γινόμενο ξένων κύκλων.
 0 Permut
 -1  cycles2permu
 -2 cycle2perm
@@ -14038,10 +14063,10 @@ permu2cycles([0,2,1,3,5,4])
 permu2cycles([0,2,1,4,3,5])
 
 # plotseq seqplot graphe_suite
-1 Permet de visualiser les p premiers termes de la suite u(0)=a,u(n)=f(u(n-1))
-2 For seeing the pth terms of the sequence u(0)=a,u(n)=f(u(n-1))
-3 Permite visualizar los p primeros términos de la sucesión u(0)=a,u(n)=f(u(n-1))
-4 Για την εμφάνιση των πρώτων p όρων της ακολουθίας u(0)=a,u(n)=f(u(n-1))
+1 Permet de visualiser les p premiers termes de la suite u(0)=a,u(n)=f(u(n-1)).
+2 For seeing the pth terms of the sequence u(0)=a,u(n)=f(u(n-1)).
+3 Permite visualizar los p primeros términos de la sucesión u(0)=a,u(n)=f(u(n-1)).
+4 Για την εμφάνιση των πρώτων p όρων της ακολουθίας u(0)=a,u(n)=f(u(n-1)).
 0 Expr(f(Var)),Var=[a,xm,xM],Intg(p)
 -1 seqsolve
 -2 rsolve
@@ -14050,20 +14075,20 @@ plotseq(sqrt(2+t),t=6,5)
 plotseq(sqrt(2+x),x=[6,1,7],5,affichage=epaisseur_ligne_2)
 
 # propfrac propFrac
-1 Simplifie et écrit la fraction (ou fraction rationnelle) A/B sous la forme Q+R/B avec R<B (ou deg(R)<deg(B))
-2 Simplifies and writes the fraction (or rational fraction) A/B as Q+R/B with R<B (or deg(R)<deg(B))
-3 Simplifica y escribe la facción (o fracción racional) A/B como Q+R/B con R<B (o deg(R)<deg(B))
-4 Απλοποίηση και απόδοση του κλάσματος (ή ρητής συνάρτησης) A/B ως Q+R/B με R<B (ή deg(R)<deg(B))
+1 Simplifie et écrit la fraction (ou fraction rationnelle) A/B sous la forme Q+R/B avec R<B (ou deg(R)<deg(B)).
+2 Simplifies and writes the fraction (or rational fraction) A/B as Q+R/B with R<B (or deg(R)<deg(B)).
+3 Simplifica y escribe la facción (o fracción racional) A/B como Q+R/B con R<B (o deg(R)<deg(B)).
+4 Απλοποίηση και απόδοση του κλάσματος (ή ρητής συνάρτησης) A/B ως Q+R/B με R<B (ή deg(R)<deg(B)).
 0 Frac or RatFrac
 -1 partfrac
 propfrac(28/12)
 propfrac((x^2+2*x-1)/(x+1))
 
 # rank
-1 Renvoie le rang de la matrice
-2 Returns the rank of the matrix
-3 Devuelve el rango de una matriz
-4 Επιστρέφει την τάξη του πίνακα
+1 Renvoie le rang de la matrice.
+2 Returns the rank of the matrix.
+3 Devuelve el rango de una matriz.
+4 Επιστρέφει την τάξη του πίνακα.
 8 排列矩形矩阵。
 0 Mtrx
 -1 det
@@ -14072,10 +14097,10 @@ rank([[1,1,2],[2,1,3],[3,1,4]])
 rank([[1,1,2],[2,1,3],[3,1,5]])
 
 # romberg nInt
-1 Renvoie la valeur approchée de integrate(f(x),x,a,b) par la méthode de Romberg
-2 Returns the approximate value of integrate(f(x),x,a,b) by Romberg's method
-3 Devuelve el valor aproximado de integrate(f(x),x,a,b) por el método de Romberg
-4 Επιστρέφει την προσεγγιστική τιμή του ολοκληρώματος(f(x),x,a,b) με τη μέθοδο του Romberg
+1 Renvoie la valeur approchée de integrate(f(x),x,a,b) par la méthode de Romberg.
+2 Returns the approximate value of integrate(f(x),x,a,b) by Romberg's method.
+3 Devuelve el valor aproximado de integrate(f(x),x,a,b) por el método de Romberg.
+4 Επιστρέφει την προσεγγιστική τιμή του ολοκληρώματος(f(x),x,a,b) με τη μέθοδο του Romberg.
 0 Expr(f(x)),Var(x),Real(a),Real(b)
 -1 integrate
 -2 gaussquad
@@ -14084,7 +14109,7 @@ romberg(x^2,x,0,1)
 romberg(exp(-x^2),x,-1,1)
 
 # gaussquad
-1 Renvoie la valeur approchée de integrate(f(x),x,a,b) par une quadrature de Gauss adaptative à 15 points
+1 Renvoie la valeur approchée de integrate(f(x),x,a,b) par une quadrature de Gauss adaptative à 15 points.
 2 Returns the approximate value of integrate(f(x),x,a,b) by adaptive Gaussian quadratures with 15 points.
 3 Devuelve el valor aproximado de integrate(f(x),x,a,b)  por el método de Gauss.
 4 Επιστρέφει την προσεγγιστική τιμή του ολοκληρώματος(f(x),x,a,b) με τη μέθοδο του Gauss.
@@ -14111,29 +14136,29 @@ round(1.237,2)
 round(sqrt(2)+i*sqrt(5),4)
 
 # epsilon
-1 Renvoie la valeur de epsilon de la configuration du cas
-2 Returns the value of epsilon of the cas configuration
-3 Devuelve el valor de epsilon de la configuración del CAS
-4 Επιστρέφει την τιμή του έψιλον της ρύθμισης του CAS
+1 Renvoie la valeur de epsilon de la configuration du CAS.
+2 Returns the value of epsilon of the CAS configuration.
+3 Devuelve el valor de epsilon de la configuración del CAS.
+4 Επιστρέφει την τιμή του έψιλον της ρύθμισης του CAS.
 0 NULL
 -1  epsilon2zero
 epsilon()
 
 # simp2
-1 Renvoie la liste [A/gcd(A,B),B/gcd(A,B)]
-2 Returns the list [A/gcd(A,B),B/gcd(A,B)]
-3 Devuelve la lista [A/gcd(A,B),B/gcd(A,B)]
-4 Επιστρέφει την λίστα [A/gcd(A,B),B/gcd(A,B)]
+1 Renvoie la liste [A/gcd(A,B),B/gcd(A,B)].
+2 Returns the list [A/gcd(A,B),B/gcd(A,B)].
+3 Devuelve la lista [A/gcd(A,B),B/gcd(A,B)].
+4 Επιστρέφει την λίστα [A/gcd(A,B),B/gcd(A,B)].
 0 Intg(A) or Poly(A),Intg(B) or Poly(B)
 -1 gcd
 simp2(12,18)
 simp2(x^3-1,x^2-1)
 
 # simplify simplifier
-1 Simplifie une expression
-2 Simplifies an expression
-3 Simplifica una expresión
-4 Απλοποίηση μιας παράστασης
+1 Simplifie une expression.
+2 Simplifies an expression.
+3 Simplifica una expresión.
+4 Απλοποίηση μιας παράστασης.
 0 Expr
 -1 normal
 simplify(4*atan(1/5)-atan(1/239))
@@ -14156,20 +14181,20 @@ sort([[1,2],[2,3],[4,3]],(x,y)->when(x[1]==y[1],x[0]>y[0],x[1]>y[1]))
 sort(y*x*2+x*y)
 
 # split
-1 Sépare les deux variables var1,var2 de l'expression Xpr (si elle n'a pas de dénominateur) ou renvoie [0]
-2 Splits the two variables var1,var2 of the expression Xpr (without denominator) or returns [0]
-3 Separa las 2 variables var1,var2 de la expresión Xpr (sin no tiene denominador) o devuelve [0]
-4 Διασπά τις 2 μεταβλητές var1,var2 της παράστασης Xpr (αν δεν έχει παρονομαστή) ή επιστρέφει [0]
+1 Sépare les deux variables var1,var2 de l'expression Xpr (si elle n'a pas de dénominateur) ou renvoie [0].
+2 Splits the two variables var1,var2 of the expression Xpr (without denominator) or returns [0].
+3 Separa las 2 variables var1,var2 de la expresión Xpr (sin no tiene denominador) o devuelve [0].
+4 Διασπά τις 2 μεταβλητές var1,var2 της παράστασης Xpr (αν δεν έχει παρονομαστή) ή επιστρέφει [0].
 0 Expr(Xpr),Lst(var1,var2)
 -1 factor
 split(x^3*y^2-y^2+x^3-1,[x,y])
 split(x^3*y^2-y^2+x^3+1,[x,y])
 
 # sum_riemann
-1 Renvoie un équivalent au voisinage de var1=+infini de la somme de Xpr(var1,var2) pour var2 allant de 1 à var1 lorsque la somme est une somme de Riemann
-2 Returns an equivalent when var1=+infinity of the sum of Xpr(var1,var2) for var2 from 1 to var1 when the sum is a sum of Riemann
-3 Devuelve un equivalente en la vecindad de var1=+infini de la suma de Xpr(var1,var2) para var2:=1 a var1 cuando la suma es una suma de Riemann
-4 Επιστρέφει μία παράσταση ισοδύναμη προς το άθροισμα της Xpr(var1,var2) στην περιοχή var1=+infini όταν var2:=1 ή var1 όταν το άθροισμα είναι άθροισμα Riemann
+1 Renvoie un équivalent au voisinage de var1=+infini de la somme de Xpr(var1,var2) pour var2 allant de 1 à var1 lorsque la somme est une somme de Riemann.
+2 Returns an equivalent when var1=+infinity of the sum of Xpr(var1,var2) for var2 from 1 to var1 when the sum is a sum of Riemann.
+3 Devuelve un equivalente en la vecindad de var1=+infini de la suma de Xpr(var1,var2) para var2:=1 a var1 cuando la suma es una suma de Riemann.
+4 Επιστρέφει μία παράσταση ισοδύναμη προς το άθροισμα της Xpr(var1,var2) στην περιοχή var1=+infini όταν var2:=1 ή var1 όταν το άθροισμα είναι άθροισμα Riemann.
 0 Expr(Xpr),Lst(var1,var2)
 -1 
 sum_riemann(1/(n+k),[n,k])
@@ -14215,10 +14240,10 @@ sturmab(x^3-1,x,-2,5)
 sturmab(x^3-1,x,-2-i,5+3i)
 
 # tail
-1 Renvoie la liste (ou suite ou chaîne) privée de son premier élément
-2 Returns the list (or sequence or string) without its first element
-3 Devuelve la lista (o secuencia o cadena) sin su primer elemento
-4 Επιστρέφει την λίστα (ή την ακολουθία ή συμβολοσειράς) δίχως το 1ο στοιχείο
+1 Renvoie la liste (ou suite ou chaîne) privée de son premier élément.
+2 Returns the list (or sequence or string) without its first element.
+3 Devuelve la lista (o secuencia o cadena) sin su primer elemento.
+4 Επιστρέφει την λίστα (ή την ακολουθία ή συμβολοσειράς) δίχως το 1ο στοιχείο.
 0 Lst or Seq or Str
 -1 head
 -2 mid
@@ -14247,10 +14272,10 @@ mid("azertyuiop",2)
 mid([[1,2],[3,4],[5,6]],1)
 
 # tan2sincos
-1 Remplace tan(x) par sin(x)/cos(x) dans l'argument
-2 Replaces tan(x) by sin(x)/cos(x) in the argument
-3 Reemplaza tan(x) por sin(x)/cos(x) en el argumento
-4 Αντικαθιστά στο όρισμα το tan(x) με sin(x)/cos(x)
+1 Remplace tan(x) par sin(x)/cos(x) dans l'argument.
+2 Replaces tan(x) by sin(x)/cos(x) in the argument.
+3 Reemplaza tan(x) por sin(x)/cos(x) en el argumento.
+4 Αντικαθιστά στο όρισμα το tan(x) με sin(x)/cos(x).
 0 Expr
 -1 sin2costan
 -2 cos2sintan
@@ -14259,10 +14284,10 @@ mid([[1,2],[3,4],[5,6]],1)
 tan2sincos(tan(x))
 
 # sin2costan
-1 Remplace sin(x) par cos(x)*tan(x) dans l'argument
-2 Replaces sin(x) by cos(x)*tan(x) in the argument
-3 Reemplaza sin(x) por cos(x)*tan(x) en el argumento
-4 Αντικαθιστά στο όρισμα το sin(x) με cos(x)*tan(x)
+1 Remplace sin(x) par cos(x)*tan(x) dans l'argument.
+2 Replaces sin(x) by cos(x)*tan(x) in the argument.
+3 Reemplaza sin(x) por cos(x)*tan(x) en el argumento.
+4 Αντικαθιστά στο όρισμα το sin(x) με cos(x)*tan(x).
 0 Expr
 -1 tan2sincos
 -2 cos2sintan
@@ -14271,10 +14296,10 @@ tan2sincos(tan(x))
 sin2costan(sin(x))
 
 # cos2sintan
-1 Remplace cos(x) par sin(x)/tan(x) dans l'argument
-2 Replaces cos(x) by sin(x)/tan(x) in the argument
-3 Reemplaza cos(x) por sin(x)/tan(x) en el argumento
-4 Αντικαθιστά στο όρισμα το cos(x) με sin(x)/tan(x)
+1 Remplace cos(x) par sin(x)/tan(x) dans l'argument.
+2 Replaces cos(x) by sin(x)/tan(x) in the argument.
+3 Reemplaza cos(x) por sin(x)/tan(x) en el argumento.
+4 Αντικαθιστά στο όρισμα το cos(x) με sin(x)/tan(x).
 0 Expr
 -1 tan2sincos
 -2 sin2costan
@@ -14283,10 +14308,10 @@ sin2costan(sin(x))
 cos2sintan(cos(x))
 
 # tan2sincos2
-1 Remplace tan(x) par sin(2*x)/(1+cos(2*x)) dans l'argument
-2 Replaces tan(x) by sin(2*x)/(1+cos(2*x)) in the argument
-3 Reemplaza tan(x) por sin(2*x)/(1+cos(2*x)) en el argumento
-4 Αντικαθιστά στο όρισμα το tan(x) με sin(2*x)/(1+cos(2*x))
+1 Remplace tan(x) par sin(2*x)/(1+cos(2*x)) dans l'argument.
+2 Replaces tan(x) by sin(2*x)/(1+cos(2*x)) in the argument.
+3 Reemplaza tan(x) por sin(2*x)/(1+cos(2*x)) en el argumento.
+4 Αντικαθιστά στο όρισμα το tan(x) με sin(2*x)/(1+cos(2*x)).
 0 Expr
 -1 tan2cossin2
 -2 tan2sincos
@@ -14295,10 +14320,10 @@ cos2sintan(cos(x))
 tan2sincos2(tan(x))
 
 # tan2cossin2
-1 Remplace tan(x) par (1-cos(2*x))/sin(2*x) dans l'argument
-2 Replaces tan(x) by (1-cos(2*x))/sin(2*x) in the argument
-3 Reemplaza tan(x) por (1-cos(2*x))/sin(2*x) en el argumento
-4 Αντικαθιστά στο όρισμα το tan(x) με (1-cos(2*x))/sin(2*x)
+1 Remplace tan(x) par (1-cos(2*x))/sin(2*x) dans l'argument.
+2 Replaces tan(x) by (1-cos(2*x))/sin(2*x) in the argument.
+3 Reemplaza tan(x) por (1-cos(2*x))/sin(2*x) en el argumento.
+4 Αντικαθιστά στο όρισμα το tan(x) με (1-cos(2*x))/sin(2*x).
 0 Expr
 -1 tan2sincos2
 -2 tan2sincos
@@ -14307,10 +14332,10 @@ tan2sincos2(tan(x))
 tan2cossin2(tan(x))
 
 # tanh
-1 Tangente hyperbolique
-2 Hyperbolic tangent
-3 Tangente hiperbólica
-4 Υπερβολική εφαπτομένη
+1 Tangente hyperbolique.
+2 Hyperbolic tangent.
+3 Tangente hiperbólica.
+4 Υπερβολική εφαπτομένη.
 8 双曲正切。
 0 Expr
 -1 atanh
@@ -14319,20 +14344,20 @@ tanh(0)
 hyp2exp(tanh(1))
 
 # tcollect tCollect rassembler_trigo
-1 Rassemble des expressions trigonométriques
-2 Collect trigonometric expressions
-3 Agrupa expresiones trigonométricas
-4 Συλλογή τριγωνομετρικών παραστάσεων
+1 Rassemble des expressions trigonométriques.
+2 Collect trigonometric expressions.
+3 Agrupa expresiones trigonométricas.
+4 Συλλογή τριγωνομετρικών παραστάσεων.
 0 Expr
 -1 texpand
 -2 tlin
 tcollect(sin(x)+cos(x))
 
 # texpand tExpand developper_transcendant
-1 Développe des expressions transcendantes
-2 Expand transcendental expressions
-3 Expande expresiones transcendentales
-4 Ανάπτυγμα υπερβατικών παραστάσεων
+1 Développe des expressions transcendantes.
+2 Expand transcendental expressions.
+3 Expande expresiones transcendentales.
+4 Ανάπτυγμα υπερβατικών παραστάσεων.
 0 Expr
 -1 tcollect
 -2 tlin
@@ -14343,78 +14368,78 @@ texpand(cos(x+y))
 texpand(cos(3*x))
 
 # trig2exp
-1 Remplace dans l'argument les fonctions trigonométriques en exponentielles complexes sans linéariser
-2 Replaces in the argument the trigonometric functions by complex exponentials without linearisation
-3 Reemplaza en el argumento las funciones trigonométricas por exponenciales complejas sin linealización
-4 Αντικαθιστά τις τριγωνομετρικές συναρτήσεις στο όρισμα από μιγαδικά εκθετικά χωρίς γραμμικοποίηση
+1 Remplace dans l'argument les fonctions trigonométriques en exponentielles complexes sans linéariser.
+2 Replaces in the argument the trigonometric functions by complex exponentials without linearisation.
+3 Reemplaza en el argumento las funciones trigonométricas por exponenciales complejas sin linealización.
+4 Αντικαθιστά τις τριγωνομετρικές συναρτήσεις στο όρισμα από μιγαδικά εκθετικά χωρίς γραμμικοποίηση.
 0 Expr
 -1 exp2trig
 -2 atrig2ln
 trig2exp(sin(x))
 
 # trigcos
-1 Simplifie l'argument avec les formules sin(x)^2+cos(x)^2=1 et tan(x)=sin(x)/cos(x) en privilégiant les cosinus
-2 Simplifies the argument with the formulas sin(x)^2+cos(x)^2=1 and tan(x)=sin(x)/cos(x) privileging cosine
-3 Simplifica el argumento usando las fórmulas sin(x)^2+cos(x)^2=1 y tan(x)=sin(x)/cos(x) prefiriendo los cosenos
-4 Απλοποίηση του ορίσματος με τους τύπους sin(x)^2+cos(x)^2=1 και tan(x)=sin(x)/cos(x) δίνοντας προτεραιότητα στο συνημίτονο
+1 Simplifie l'argument avec les formules sin(x)^2+cos(x)^2=1 et tan(x)=sin(x)/cos(x) en privilégiant les cosinus.
+2 Simplifies the argument with the formulas sin(x)^2+cos(x)^2=1 and tan(x)=sin(x)/cos(x) privileging cosine.
+3 Simplifica el argumento usando las fórmulas sin(x)^2+cos(x)^2=1 y tan(x)=sin(x)/cos(x) prefiriendo los cosenos.
+4 Απλοποίηση του ορίσματος με τους τύπους sin(x)^2+cos(x)^2=1 και tan(x)=sin(x)/cos(x) δίνοντας προτεραιότητα στο συνημίτον.ο
 0 Expr
 -1 trigsin
 -2 trigtan
 trigcos(sin(x)^4+sin(x)^2)
 
 # trigsin
-1 Simplifie l'argument avec les formules sin(x)^2+cos(x)^2=1 et tan(x)=sin(x)/cos(x) en privilégiant les sinus
-2 Simplifies the argument with the formulas sin(x)^2+cos(x)^2=1 and tan(x)=sin(x)/cos(x) privileging sine
-3 Simplifica el argumento usando las fórmulas sin(x)^2+cos(x)^2=1 y tan(x)=sin(x)/cos(x) prefiriendo senos
-4 Απλοποίηση του ορίσματος με τους τύπους sin(x)^2+cos(x)^2=1 και tan(x)=sin(x)/cos(x) δίνοντας προτεραιότητα στο ημίτονο
+1 Simplifie l'argument avec les formules sin(x)^2+cos(x)^2=1 et tan(x)=sin(x)/cos(x) en privilégiant les sinus.
+2 Simplifies the argument with the formulas sin(x)^2+cos(x)^2=1 and tan(x)=sin(x)/cos(x) privileging sine.
+3 Simplifica el argumento usando las fórmulas sin(x)^2+cos(x)^2=1 y tan(x)=sin(x)/cos(x) prefiriendo senos.
+4 Απλοποίηση του ορίσματος με τους τύπους sin(x)^2+cos(x)^2=1 και tan(x)=sin(x)/cos(x) δίνοντας προτεραιότητα στο ημίτονο.
 0 Expr
 -1 trigcos
 -2 trigtan
 trigsin(cos(x)^4+sin(x)^2)
 
 # trigtan
-1 Simplifie l'argument avec les formules sin(x)^2+cos(x)^2=1 et tan(x)=sin(x)/cos(x) en privilégiant la fonction tangente
-2 Simplifies the argument with the formulas sin(x)^2+cos(x)^2=1 and tan(x)=sin(x)/cos(x) privileging tangent
-3 Simplifica el argumento usando las fórmulas sin(x)^2+cos(x)^2=1 y tan(x)=sin(x)/cos(x) prefiriendo tangentes
-4 Απλοποίηση του ορίσματος με τους τύπους sin(x)^2+cos(x)^2=1 και tan(x)=sin(x)/cos(x) δίνοντας προτεραιότητα στην εφαπτομένη
+1 Simplifie l'argument avec les formules sin(x)^2+cos(x)^2=1 et tan(x)=sin(x)/cos(x) en privilégiant la fonction tangente.
+2 Simplifies the argument with the formulas sin(x)^2+cos(x)^2=1 and tan(x)=sin(x)/cos(x) privileging tangent.
+3 Simplifica el argumento usando las fórmulas sin(x)^2+cos(x)^2=1 y tan(x)=sin(x)/cos(x) prefiriendo tangentes.
+4 Απλοποίηση του ορίσματος με τους τύπους sin(x)^2+cos(x)^2=1 και tan(x)=sin(x)/cos(x) δίνοντας προτεραιότητα στην εφαπτομένη.
 0 Expr
 -1 trigsin
 -2 trigcos
 trigtan(cos(x)^4+sin(x)^2)
 
 # tsimplify
-1 Diminue le nombre de variables non rationnelles
-2 Lower the number of non rational variables
-3 Disminuye el número de variables no racionales
-4 Ελλατώνει το πλήθος των μη-ρητών μεταβλητών
+1 Diminue le nombre de variables non rationnelles.
+2 Lower the number of non rational variables.
+3 Disminuye el número de variables no racionales.
+4 Ελλατώνει το πλήθος των μη-ρητών μεταβλητών.
 0 Expr
 -1 simplify
 tsimplify(exp(2*x)+exp(x))
 
 # Zeta
-1 Renvoie si a>1 sum(1/n^a,n,1,+infinity)
-2 Returns if a>1 sum(1/n^a,n,1,+infinity)
-3 Devuelve si a>1 sum(1/n^a,n,1,+infinito)
-4 Επιστρέφει το sum(1/n^a,n,1,+infinity) αν a>1
+1 Renvoie si a>1 sum(1/n^a,n,1,+infinity).
+2 Returns if a>1 sum(1/n^a,n,1,+infinity).
+3 Devuelve si a>1 sum(1/n^a,n,1,+infinito).
+4 Επιστρέφει το sum(1/n^a,n,1,+infinity) αν a>1.
 0 Real(a)
 -1 sum
 Zeta(2)
 
 # open
-1 Ouvre un fichier de nom s, renvoie le numéro de handle du fichier
-2 Opens a file named s, returns the file handle
-3 Abre una archivo de nombre s, devuelve el número de handle del archivo
-4 Ανοίγει ένα αρχείο ονόματος s, και επιστρέφει τον αριθμό χειρισμού του αρχείου
+1 Ouvre un fichier de nom s, renvoie le numéro de handle du fichier.
+2 Opens a file named s, returns the file handle.
+3 Abre una archivo de nombre s, devuelve el número de handle del archivo.
+4 Ανοίγει ένα αρχείο ονόματος s, και επιστρέφει τον αριθμό χειρισμού του αρχείου.
 0 Str(s)
 -1 fopen
 -2 close
  f:=open("filename")
 
 # fopen
-1 Ouvre un fichier de nom s, renvoie une variable de type fichier
-2 Opens a file named s, returns a variable of type file
+1 Ouvre un fichier de nom s, renvoie une variable de type fichier.
+2 Opens a file named s, returns a variable of type file.
 3 Abre un archivo llamado s, devuelve una variable de tipo archivo.
-4 Ανοίγει ένα αρχείο ονόματος s, και επιστρέφει μια μεταβλητή τύπου αρχείο
+4 Ανοίγει ένα αρχείο ονόματος s, και επιστρέφει μια μεταβλητή τύπου αρχείο.
 0 Str(s)
 -1 fprint
 -2 fclose
@@ -14431,10 +14456,10 @@ Zeta(2)
 fclose(f)
 
 # fprint
-1 Écrit dans le fichier f des données
-2 Writes in the file f some data
+1 Écrit dans le fichier f des données.
+2 Writes in the file f some data.
 3 Escribe en el archivo f algunos datos.
-4 Γράφει στο αρχείο f κάποια δεδομένα
+4 Γράφει στο αρχείο f κάποια δεδομένα.
 0 File(f),Var,[Var,Var...]
 -1 fopen
 -2 fclose
@@ -14443,27 +14468,27 @@ fprint(f,"blabla")
 fprint(f,Unquoted,"blabla")
 
 # readwav
-1 Lit un fichier son au format WAV
-2 Reads a WAV sound file
-3 Lee un archivo de sonido en el formato WAV
-4 Διαβάζει ένα αρχείο ήχου τύπου WAV
+1 Lit un fichier son au format WAV.
+2 Reads a WAV sound file.
+3 Lee un archivo de sonido en el formato WAV.
+4 Διαβάζει ένα αρχείο ήχου τύπου WAV.
 0 Str(s)
 -1 writewav
 readwav("pop.wav")
 
 # writewav
-1 Écrit un fichier son au format WAV
-2 Writes a WAV sound file
-3 Graba un archivo de sonido en el formato WAV
-4 Γράφει ένα αρχείο ήχου τύπου WAV
+1 Écrit un fichier son au format WAV.
+2 Writes a WAV sound file.
+3 Graba un archivo de sonido en el formato WAV.
+4 Γράφει ένα αρχείο ήχου τύπου WAV.
 0 Str(s),Lst(l)
 -1 readwav
 writewav("la.wav",2^14*(sin(2*pi*440*soundsec(1))))
 writewav("beep.wav",[[1,16,44100,80000],[65000$10000,0$10000,65000$10000,0$10000]])
 
 # playsnd
-1 Joue une donnee de type son
-2 Plays a sound data
+1 Joue une donnée de type son.
+2 Plays a sound data.
 0 Vect
 -1 readwav
 -2 writewav
@@ -14471,8 +14496,8 @@ writewav("beep.wav",[[1,16,44100,80000],[65000$10000,0$10000,65000$10000,0$10000
 playsnd(2^14*(sin(2*pi*440*soundsec(1)))
 
 # soundsec
-1 Genere un vecteur correspondant a n secondes de temps/N (defaut N=44100)
-2 Generates a vector coding n seconds of time/N (default N=44100)
+1 Génère un vecteur correspondant à n secondes de temps/N (défaut N=44100).
+2 Generates a vector coding n seconds of time/N (default N=44100).
 0 Intg(n),[Intg(N)]
 -1 readwav
 -2 writewav
@@ -14626,19 +14651,19 @@ autosimplify(factor)
 autosimplify(simplify)
 
 # regroup
-1 Effectue les simplifications évidentes sur une expression
-2 Collect terms in an expression
-3 Agrupar y simplifica la expresión
-4 Κανονικοποίηση της παράστασης
+1 Effectue les simplifications évidentes sur une expression.
+2 Collect terms in an expression.
+3 Agrupar y simplifica la expresión.
+4 Κανονικοποίηση της παράστασης.
 0 Expr
 -1 simplify
 -2 normal
 regroup(x+3*x+5*4/x)
 
 # is_inside
-1 Teste si un point est à l'intérieur d'un polygone ou d'un cercle
-2 Checks whether a point is inside a polygon or a circle
-3 Comprueba si un punto está en un polígono o circunferencia
+1 Teste si un point est à l'intérieur d'un polygone ou d'un cercle.
+2 Checks whether a point is inside a polygon or a circle.
+3 Comprueba si un punto está en un polígono o circunferencia.
 4 Επιστρέφει 1 αν το σημείο είναι πάνω σε γεωμετρικό αντικείμενο και 0 διαφορετικά.
 0 Pnt,Polygon or Circle
 -1 is_element
@@ -14647,7 +14672,7 @@ is_inside(point(1-i),triangle([1,2-i,3+i]))
 
 # in_ideal
 1 Test d'appartenance d'un polynôme ou d'une liste de polynômes à un idéal donné par une base de Groebner (2ème argument) par rapport à une liste de variables.
-2 Checks whether a polynomial or list of polynomials belongs to an ideal given by a Grobner basis (2nd argument) with respect to a variable list
+2 Checks whether a polynomial or list of polynomials belongs to an ideal given by a Grobner basis (2nd argument) with respect to a variable list.
 0 Poly,Lst,LstVar,[order]
 -1 gbasis
 -2 greduce
@@ -14723,7 +14748,7 @@ wilcoxont([1, 3, 4, 5, 7, 8, 8, 12, 15, 17] , 10,'>')
 wilcoxont([1, 3, 4, 5, 7, 8, 8, 12, 15, 17] , 10,'>',0.05)
 
 # wilcoxonp
-1 Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney pour 1 ou 2 echantillon
+1 Polynôme donnant la distribution du test de Wilcoxon ou de Mann-Whitney pour 1 ou 2 échantillons
 2 Distribution of the Wilcoxon or Mann-Whitney test for one or two samples
 0 Intg,[Intg]
 -1 wilcoxont
@@ -14732,7 +14757,7 @@ wilcoxonp(4)
 wilcoxonp(7,5)
 
 # wilcoxons
-1 Statistique de Wilcoxon ou de Mann-Whitney pour 1 echantillon/une mediane ou 2 echantillons
+1 Statistique de Wilcoxon ou de Mann-Whitney pour 1 échantillon/une médiane ou 2 échantillons
 2 Rank statistic of Wilcoxon or Mann-Whitney for 1 sample and one median or 2 samples
 0 List,List || Real
 -1 wilcoxont

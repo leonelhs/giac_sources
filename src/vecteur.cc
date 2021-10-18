@@ -1811,17 +1811,23 @@ namespace giac {
       eps=save_eps;
       double eps1=1/(evalf_double(maxvt,1,contextptr)._DOUBLE_val);
       if (debug_infolevel)
-	CERR << "proot after shift: coefficients ratio " << eps << endl;
+	CERR << "proot after shift: coefficients ratio " << eps1 << endl;
       if (eps1<eps)
 	eps=eps1;
       v=vt;
     }
+#if 0 // longfloat conversion does not work correctly or vect2GEN in pari.cc
     if (eps<1e-14 && pari_polroots(v,res,14,contextptr)){
       for (unsigned i=0;i<res.size();++i)
 	res[i] += shift;
       res=multvecteur(prefact,res);
       return true;
     }
+#else
+    if (eps<1e-14 && pari_polroots(w,res,rprec,contextptr)){
+      return true;
+    }
+#endif
     if (eps<1e-14 && isolaterealroot){
       // first try to isolate real roots
       gen epsg=pow(plus_two,-int(w.size())-50,contextptr);
@@ -2086,6 +2092,14 @@ namespace giac {
 	  gen vi=vv[i];
 	  vi=_e2r(makevecteur(vi,vx_var),context0);
 	  if (vi.type==_VECT && vv[i+1].type==_INT_){
+#if 1 // ndef HAVE_LIBPARI
+	    gen norme=linfnorm(vi,context0);
+	    if (norme.type==_ZINT){
+	      rprec=giacmax(rprec,mpz_sizeinbase(*norme._ZINTptr,2));
+	      eps=std::pow(2.0,-rprec);
+	      if (eps==0) eps=1e-300;
+	    }
+#endif
 	    int mult=vv[i+1].val;
 	    vecteur current=proot(*vi._VECTptr,eps,rprec,false);
 	    for (unsigned j=0;j<current.size();++j){
@@ -2131,19 +2145,29 @@ namespace giac {
       if (!is_numericv(v,1))
 	return vecteur(0);
     }
-    bool add_conjugate=is_zero(im(v,context0),context0); // ok
+    context ct;
+    context * contextptr=&ct;
+    epsilon(contextptr)=eps;
+    bool add_conjugate=is_zero(im(v,contextptr),contextptr); // ok
     vecteur res,crystalball;
     bool cache=proot_cached(v,eps,crystalball);
     // CERR << v << " " << crystalball << endl;
     if (cache)
       return crystalball;
     cache=true;
+    // call pari if degree is large
+    if (
+	0 && v.size()>=64 && 
+	pari_polroots(accurate_evalf(v,rprec),crystalball,giacmax(rprec,53),contextptr) && !is_undef(crystalball)){
+      proot_cache(v,eps,crystalball);
+      return crystalball;
+    }
 #ifdef HAVE_LIBMPFR
     int nbits = 2*(rprec+vsize);
     vecteur v_accurate(accurate_evalf(v,nbits));
     v_accurate=divvecteur(v_accurate,v_accurate.front());
     // compute roots with companion matrix
-    if (crystalball.empty() && !in_proot(v,eps,rprec,crystalball,true,context0)){
+    if (crystalball.empty() && !in_proot(v,eps,rprec,crystalball,true,contextptr)){
       // initial guess not precise enough, DKW disabled
       if (0 && int(crystalball.size())==deg && dkw(v_accurate,crystalball,nbits,eps)){
 	proot_cache(v,eps,crystalball);
@@ -2176,9 +2200,9 @@ namespace giac {
 	  int k2=-1,k3=-1;
 	  for (int k=0;k<deg;k++){
 	    if (k==j) continue;
-	    gen curdist=abs(cur-crystalball[k],context0);
-	    distances[k]=evalf_double(curdist,1,context0)._DOUBLE_val;
-	    if (is_strictly_greater(mindist,curdist,context0)){
+	    gen curdist=abs(cur-crystalball[k],contextptr);
+	    distances[k]=evalf_double(curdist,1,contextptr)._DOUBLE_val;
+	    if (is_strictly_greater(mindist,curdist,contextptr)){
 	      mindist2=mindist;
 	      k3=k2;
 	      mindist=curdist;
@@ -2190,28 +2214,30 @@ namespace giac {
 	  for (unsigned k=0;int(k)<SOLVER_MAX_ITERATE;++k){
 	    gen num=horner(v_accurate,tmp),den=horner(dv,tmp),ratio=num/den;
 	    decal += ratio;
-	    gen prec=abs(ratio,context0);
-	    if (is_greater(eps*deg*10,prec,context0)){
+	    gen prec=abs(ratio,contextptr);
+	    if (is_greater(eps*deg*10,prec,contextptr)){
 	      done[j]=1;
 	      tmp -= ratio;
 	      num=horner(v_accurate,tmp);
 	      den=horner(dv,tmp);
 	      ratio=num/den;
-	      prec=abs(ratio,context0);
+	      prec=abs(ratio,contextptr);
 	      int precbits=60;
 	      if (is_exactly_zero(prec))
 		precbits=2*epsbits;
 	      else
-		precbits=_floor(-ln(prec,context0)/std::log(2.0),context0).val;
+		precbits=_floor(-ln(prec,contextptr)/std::log(2.0),contextptr).val;
 	      if (precbits>2*epsbits)
 		precbits=2*epsbits;
 	      if (precbits<=48)
-		crystalball[j]=evalf_double(tmp,1,context0);
+		crystalball[j]=evalf_double(tmp,1,contextptr);
 	      else
 		crystalball[j] =accurate_evalf(tmp,precbits);
+	      if (debug_infolevel)
+		CERR << "Root " << j << " " << crystalball[j] << endl;
 	      break;
 	    }
-	    if (is_greater(2.5*abs(decal,context0),mindist,context0)){
+	    if (is_greater(2.5*abs(decal,contextptr),mindist,contextptr)){
 	      // if decal is small wrt mindist2 
 	      // we have roots that are almost equal 
 	      // sort distance, and find a cluster of roots around
@@ -2232,7 +2258,7 @@ namespace giac {
 		  if (dists[i]<=distances[dd]){
 		    positions.push_back(i);
 		    roots.push_back(accurate_evalf(crystalball[i],nbits));
-		    if (i+1<dists.size() && add_conjugate && !is_exactly_zero(im(crystalball[i],context0))){
+		    if (i+1<dists.size() && add_conjugate && !is_exactly_zero(im(crystalball[i],contextptr))){
 		      positions.push_back(i+1);
 		      roots.push_back(accurate_evalf(crystalball[i+1],nbits));
 		      ++i;
@@ -2262,16 +2288,22 @@ namespace giac {
 		  while (R.size()<m.size())
 		    R.insert(R.begin(),accurate_evalf(zero,nbits));
 		  // solve system
-		  dcurrent=linsolve(m,R,context0);
+		  dcurrent=linsolve(m,R,contextptr);
+		  vecteur dcurrentv=lidnt(dcurrent);
+		  if (!dcurrentv.empty()){
+		    if (debug_infolevel)
+		      CERR << "non invertible jacobian" << endl;
+		    break;
+		  }
 		  dcurrent.insert(dcurrent.begin(),0);
 		  // termination test
 		  gen ck=0;
 		  for (unsigned i=1;i<dcurrent.size();++i){
 		    if (!is_exactly_zero(current[i]))
-		      ck+=abs(dcurrent[i]/current[i],context0);
+		      ck+=abs(dcurrent[i]/current[i],contextptr);
 		  }
 		  current=addvecteur(current,dcurrent);
-		  if (is_greater(eps,ck,context0))
+		  if (is_greater(eps,ck,contextptr))
 		    break;
 		}
 		if (int(k)>=SOLVER_MAX_ITERATE){
@@ -2289,9 +2321,9 @@ namespace giac {
 		  roots=vecteur(curdeg,multi);
 		  vecteur test=pcoeff(roots);
 		  test=subvecteur(current,test);
-		  gen testn=l2norm(test,context0);
-		  if (is_greater(eps,testn,context0)){
-		    int precbits=_floor(-ln(testn,context0)/std::log(2.0),context0).val;
+		  gen testn=l2norm(test,contextptr);
+		  if (curdeg>1 && is_greater(eps,testn,contextptr)){
+		    int precbits=_floor(-ln(testn,contextptr)/std::log(2.0),contextptr).val;
 		    multi=accurate_evalf(multi,precbits);
 		    for (unsigned i=0;i<positions.size();++i){
 		      done[positions[i]]=1;
@@ -2307,17 +2339,17 @@ namespace giac {
 		      num=horner(v_accurate,roots[i]);
 		      den=horner(dv,roots[i]);
 		      ratio=num/den;
-		      prec=abs(ratio,context0);
+		      prec=abs(ratio,contextptr);
 		      int precbits=60;
 		      if (is_exactly_zero(prec))
 			precbits=2*epsbits;
 		      else
-			precbits=_floor(-ln(prec,context0)/std::log(2.0),context0).val;
+			precbits=_floor(-ln(prec,contextptr)/std::log(2.0),contextptr).val;
 		      if (precbits>2*epsbits)
 			precbits=2*epsbits;
 		      done[positions[i]]=1;
 		      if (precbits<=48)
-			crystalball[positions[i]]=evalf_double(roots[i],1,context0);
+			crystalball[positions[i]]=evalf_double(roots[i],1,contextptr);
 		      else
 			crystalball[positions[i]] =accurate_evalf(roots[i],precbits);
 		    }
@@ -2327,11 +2359,11 @@ namespace giac {
 	      }
 #else
 	      // the second one is crystalball[k2]
-	      if (is_greater(mindist2,3*abs(ratio,context0),context0)){
+	      if (is_greater(mindist2,3*abs(ratio,contextptr),contextptr)){
 		if (debug_infolevel)
 		  CERR << "Entering Bairstow " << j << " " << k2 << endl;
 		tmp=accurate_evalf(crystalball[j],nbits);
-		if (crystalball[j]==conj(crystalball[j+1],context0)) k2=j+1;
+		if (crystalball[j]==conj(crystalball[j+1],contextptr)) k2=j+1;
 		gen tmp2=accurate_evalf(crystalball[k2],nbits);
 		modpoly current(3,1); current[1]=-tmp-tmp2; current[2]=tmp*tmp2;
 		for (;k<SOLVER_MAX_ITERATE;++k){
@@ -2360,12 +2392,12 @@ namespace giac {
 		  gen dc1=(D*R0-B*R1)/delta,dc2=(A*R1-C*R0)/delta;
 		  current[1] += dc1;
 		  current[2] += dc2;
-		  if (is_greater(eps*deg*10,abs(dc1/current[1],context0)+abs(dc2/current[2],context0),context0)){
+		  if (is_greater(eps*deg*10,abs(dc1/current[1],contextptr)+abs(dc2/current[2],contextptr),contextptr)){
 		    // recompute crystalball[j]/k2 and tmp/tmp2
 		    gen s=current[1],p=current[2];
 		    delta=s*s-4*p;
-		    delta=sqrt(delta,context0);
-		    if (is_positive(s,context0)){
+		    delta=sqrt(delta,contextptr);
+		    if (is_positive(s,contextptr)){
 		      tmp=(-s-delta)/2; 
 		      tmp2=p/tmp; 
 		    }
@@ -2380,25 +2412,25 @@ namespace giac {
 		      crystalball[k2]=accurate_evalf(tmp2,-3.2*std::log(eps));
 		    }
 		    else {
-		      crystalball[j]=evalf_double(tmp,1,context0);
-		      crystalball[k2]=evalf_double(tmp2,1,context0);
+		      crystalball[j]=evalf_double(tmp,1,contextptr);
+		      crystalball[k2]=evalf_double(tmp2,1,contextptr);
 		    }
 		    break;
 		  }
 		}
 	      }	    
 #endif
-	      if (is_greater(3*abs(decal,context0),mindist,context0)){
+	      if (is_greater(3*abs(decal,contextptr),mindist,contextptr)){
 		cache=false;
 		done[j]=false;
-		CERR << "Bad conditionned root j= " << j << " value " << crystalball[j] << " ratio " << evalf_double(abs(ratio,context0),1,context0) << " mindist " << mindist << endl;
+		CERR << "Bad conditionned root j= " << j << " value " << crystalball[j] << " ratio " << evalf_double(abs(ratio,contextptr),1,contextptr) << " mindist " << mindist << endl;
 		break;
 	      }
 	    }
 	    tmp -= ratio;
 	  }
 	}
-	if (!cache && pari_polroots(v,crystalball,14,context0))
+	if (!cache && pari_polroots(v,crystalball,14,contextptr))
 	  cache=true;
 	if (0 && !cache){ // could be improved via Hensel lifting
 	  vecteur good;
@@ -2409,7 +2441,7 @@ namespace giac {
 	  good=pcoeff(good);
 	  vecteur rem=operator_div(v,good,0);
 	  if (rem.size()<=crystalball.size()/2){
-	    rem=*_proot(rem,context0)._VECTptr;
+	    rem=*_proot(rem,contextptr)._VECTptr;
 	    CERR << rem << endl;
 	  }
 	}
@@ -2421,9 +2453,9 @@ namespace giac {
 #else // HAVE_LIBMPFR
     int nbits=45;
     rprec = 37;
-    vecteur v_accurate(*evalf_double(v,1,context0)._VECTptr);
+    vecteur v_accurate(*evalf_double(v,1,contextptr)._VECTptr);
     if (crystalball.empty()){
-      in_proot(v,eps,rprec,crystalball,true,context0);
+      in_proot(v,eps,rprec,crystalball,true,contextptr);
       // CERR << crystalball << endl;
       proot_cache(v,eps,crystalball);
     }
@@ -2439,13 +2471,13 @@ namespace giac {
       if (cur_v.size()<2)
 	return res;
       // gen scale=linfnorm(cur_v);
-      // r=a_root(cur_v,0,scale.evalf_double(1,context0)._DOUBLE_val*eps); // ok
+      // r=a_root(cur_v,0,scale.evalf_double(1,contextptr)._DOUBLE_val*eps); // ok
       if (!crystalball.empty()){
 	r=crystalball.back();
 	crystalball.pop_back();
       }
       else
-	r=a_root(*evalf_double(cur_v,1,context0)._VECTptr,0,eps); // ok
+	r=a_root(*evalf_double(cur_v,1,contextptr)._VECTptr,0,eps); // ok
       if (debug_infolevel)
 	CERR << "Approx float root " << r << endl;
       if (is_undef(r))
@@ -2458,7 +2490,7 @@ namespace giac {
       int vsize2=vsize*(1+nbits/48);
       for (;j<SOLVER_MAX_ITERATE*vsize2;j++){
 	if (!(j%vsize2)){
-	  if (is_zero(im(r,context0),context0))
+	  if (is_zero(im(r,contextptr),contextptr))
 	    r=r*accurate_evalf(gen(1.,1e-2),nbits);
 	  // random restart
 	  else
@@ -2469,50 +2501,50 @@ namespace giac {
 	fprimer=horner(dcur_v,r);
 	dr=oldval/fprimer;
 	newr=r-prefact*dr;
-	if (is_zero(dr) || is_positive(-rprec-ln(abs(dr)/abs(r),context0)/std::log(2.0),context0)){
+	if (is_zero(dr) || is_positive(-rprec-ln(abs(dr)/abs(r),contextptr)/std::log(2.0),contextptr)){
 	  r=newr;
 	  break;
 	}
 	newval=horner(cur_v,newr);
-	if (is_strictly_positive(abs(newval,context0)-abs(oldval,context0),context0)){
+	if (is_strictly_positive(abs(newval,contextptr)-abs(oldval,contextptr),contextptr)){
 	  prefact=prefact/2;
 	}
 	else {
 	  r=newr;
 	  oldval=newval;
 	  prefact=prefact*accurate_evalf(gen(1.1),nbits);
-	  if (is_positive(prefact-1,context0))
+	  if (is_positive(prefact-1,contextptr))
 	    prefact=accurate_evalf(plus_one,nbits);
 	}
       }
       for (j=0;j<vsize;j++){
 	dr=horner(v_accurate,r)/horner(dv_accurate,r);
 	r=r-dr;
-	if (is_zero(dr) || is_positive(-rprec-ln(abs(dr)/abs(r),context0)/std::log(2.0),context0))
+	if (is_zero(dr) || is_positive(-rprec-ln(abs(dr)/abs(r),contextptr)/std::log(2.0),contextptr))
 	  break;
       }
       if (j==vsize)
 	return vecteur(1,gensizeerr(gettext("Proot error : no root found")));
       if (debug_infolevel)
-	CERR << "Root found " << evalf_double(r,1,context0) << endl;
-      if (add_conjugate && is_greater(abs(im(r,context0),context0),eps,context0) ){ // ok
-	res.push_back(rprec<53?evalf_double(conj(r,context0),1,context0):conj(accurate_evalf(r,rprec),context0)); // ok
+	CERR << "Root found " << evalf_double(r,1,contextptr) << endl;
+      if (add_conjugate && is_greater(abs(im(r,contextptr),contextptr),eps,contextptr) ){ // ok
+	res.push_back(rprec<53?evalf_double(conj(r,contextptr),1,contextptr):conj(accurate_evalf(r,rprec),contextptr)); // ok
 	if (!crystalball.empty()){
 	  gen rcrystal=crystalball.back();
-	  if (is_greater(1e-5,abs(rcrystal-res.back(),context0),context0))
+	  if (is_greater(1e-5,abs(rcrystal-res.back(),contextptr),contextptr))
 	    crystalball.pop_back();
 	}	
 	vr=horner(cur_v,r,0,new_v);
-	horner(new_v,conj(r,context0),0,cur_v); // ok
-	cur_v=*(re(cur_v,context0)._VECTptr); // ok
+	horner(new_v,conj(r,contextptr),0,cur_v); // ok
+	cur_v=*(re(cur_v,contextptr)._VECTptr); // ok
       }
       else {
 	if (add_conjugate)
-	  r=re(r,context0);
+	  r=re(r,contextptr);
 	vr=horner(cur_v,r,0,new_v);
 	cur_v=new_v;
       }
-      res.push_back(rprec<53?evalf_double(r,1,context0):accurate_evalf(r,rprec)); // ok
+      res.push_back(rprec<53?evalf_double(r,1,contextptr):accurate_evalf(r,rprec)); // ok
       dcur_v=derivative(cur_v);
     } // end i loop
   }
@@ -6247,6 +6279,7 @@ namespace giac {
 	    GIAC_CONTEXT){
     if (!ckmatrix(a))
       return 0;
+    double eps=epsilon(contextptr);
     unsigned as=unsigned(a.size()),a0s=unsigned(a.front()._VECTptr->size());
     bool step_rref=false;
     if (algorithm==RREF_GUESS && step_infolevel && as<5 && a0s<7){
@@ -6344,11 +6377,11 @@ namespace giac {
 	algorithm=RREF_LAGRANGE;
 #if 1 // ndef BCD
       matrix_double N;
-      if (num_mat && matrice2std_matrix_double(res,N,true)){
+      if (eps>=1e-16 && num_mat && matrice2std_matrix_double(res,N,true)){
 	// specialization for double
 	double ddet;
 	vector<int> maxrankcols;
-	doublerref(N,pivots,permutation,maxrankcols,ddet,l,lmax,c,cmax,fullreduction,dont_swap_below,rref_or_det_or_lu,epsilon(contextptr));
+	doublerref(N,pivots,permutation,maxrankcols,ddet,l,lmax,c,cmax,fullreduction,dont_swap_below,rref_or_det_or_lu,eps);
 	if (rref_or_det_or_lu!=1){
 	  std_matrix<gen> RES;
 	  std_matrix_giac_double2std_matrix_gen(N,RES);
@@ -6672,9 +6705,9 @@ namespace giac {
 	    }
 	    if (ltemp!=l){
 	      if (algorithm!=RREF_GAUSS_JORDAN) // M[ltemp] = rdiv( pivot * M[ltemp] - M[ltemp][pivotcol]* M[l], bareiss);
-		linear_combination(pivot,M[ltemp],-M[ltemp][pivotcol],M[l],bareiss,M[ltemp],1e-12,0);
+		linear_combination(pivot,M[ltemp],-M[ltemp][pivotcol],M[l],bareiss,M[ltemp],eps,0);
 	      else // M[ltemp]=M[ltemp]-rdiv(M[ltemp][pivotcol],pivot)*M[l];
-		linear_combination(plus_one,M[ltemp],-rdiv(M[ltemp][pivotcol],pivot,contextptr),M[l],plus_one,M[ltemp],1e-12,0);
+		linear_combination(plus_one,M[ltemp],-rdiv(M[ltemp][pivotcol],pivot,contextptr),M[l],plus_one,M[ltemp],eps,0);
 	    }
 	  }
 	}
@@ -6696,10 +6729,10 @@ namespace giac {
 	      gprintf(step_rrefpivot0,gettext("Matrix %gen\nRow operation L%gen <- (%gen)*L%gen-(%gen)*L%gen"),makevecteur(res,l+1,coeff1,ltemp+1,coeff2,l+1),contextptr);
 	    }
 	    if (algorithm!=RREF_GAUSS_JORDAN)
-	      linear_combination(pivot,M[ltemp],-M[ltemp][pivotcol],M[l],bareiss,M[ltemp],1e-12,(c+1)*(rref_or_det_or_lu>0));
+	      linear_combination(pivot,M[ltemp],-M[ltemp][pivotcol],M[l],bareiss,M[ltemp],eps,(c+1)*(rref_or_det_or_lu>0));
 	    else {
 	      gen coeff=M[ltemp][pivotcol]/pivot;
-	      linear_combination(plus_one,M[ltemp],-coeff,M[l],plus_one,M[ltemp],1e-12,(c+1)*(rref_or_det_or_lu>0));
+	      linear_combination(plus_one,M[ltemp],-coeff,M[l],plus_one,M[ltemp],eps,(c+1)*(rref_or_det_or_lu>0));
 	      if (rref_or_det_or_lu==2 || rref_or_det_or_lu == 3)
 		M[ltemp][pivotcol]=coeff;
 	    }
