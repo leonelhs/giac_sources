@@ -725,7 +725,7 @@ void cb_Assistant_ItemName(Fl_Widget * wid , void* ptr) {
         if (ii==1)
   	ans = ans +"()";
         if (xcas::Xcas_Text_Editor * in =dynamic_cast<xcas::Xcas_Text_Editor *>(w)){
-  	  if (ii==1){
+  	  if (ii==1 || ii==2){
   	    in->buffer()->insert(in->insert_position(),ans.c_str());
   	    in->insert_position(in->insert_position()+ans.size()-1);
   	  }

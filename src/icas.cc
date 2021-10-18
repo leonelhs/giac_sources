@@ -410,6 +410,13 @@ int main(int ARGC, char *ARGV[]){
   giac::read_env(contextptr,!inemacs && !intexmacs);
   int savedbg=giac::debug_infolevel;
   giac::protected_read_config(contextptr,false);
+  if (getenv("GIAC_THREADS")){
+    int t=atoi(getenv("GIAC_THREADS"));
+    if (t>=1){
+      giac::threads=t;
+      *logptr(contextptr) << "Setting threads to " << t << endl;
+    }
+  }
   if (savedbg)
     giac::debug_infolevel=savedbg;
   // Help and completion
