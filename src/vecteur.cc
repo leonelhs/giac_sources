@@ -16568,7 +16568,11 @@ namespace giac {
       CERR << CLOCK() << " iterate2 " << n1 << " " << n2 << endl;
     giac_double s,p; // s=sum of shifts, p=product
     giac_double ok=std::abs(H[n2-1][n2-2]/H[n2-1][n2-1]);
-    if (!in_recursion && H.size()>=50){
+    if (
+#ifdef GIAC_HAS_STO38 // otherwise p:=48*x*(1+x)^60 -(1+x)^60 +1; proot(p) crashes
+	0 &&
+#endif
+	!in_recursion && H.size()>=50){
       // search for a small coeff on the subdiagonal in the last elements
       int k=-1,ksmallest=-1;
       const double limite=0.5;giac_double savetest,smallest=-1;

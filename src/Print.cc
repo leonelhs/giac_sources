@@ -829,14 +829,16 @@ namespace xcas {
     return true;
   }
 
-  void widget_ps_print(Fl_Widget * widget,const std::string & fname0,bool eps,int pngpdf,bool preview,bool hidemouseparam){
+  void widget_ps_print(Fl_Widget * widget,const std::string & fname0,bool eps,int pngpdf,bool preview,bool hidemouseparam,bool askusersize){
     if (!eps)
       pngpdf=0;
 #ifdef Fl_Printer_H
     // Fl_PrintDevice * p = fl_printer_chooser();
-    int x=widget->x(),y=widget->y(),w=widget->w(),h=widget->h(),neww(w),newh(h);
+    int x=widget->x(),y=widget->y(),w=widget->w(),h=widget->h(),neww(giacmin(w,570)),newh(h);
+    if (!askusersize && neww==570)
+      newh=300;
     if (eps){
-      if (!new_widget_size(neww,newh))
+      if (askusersize && !new_widget_size(neww,newh))
 	return;
       widget->resize(x,y,neww,newh);
     }

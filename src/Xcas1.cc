@@ -1330,6 +1330,28 @@ namespace xcas {
     return w;
   }
 
+  History_Fold * load_history_fold(int sx,int sy,int sw,int sh,int sl,const char * filename,bool modified){
+    Fl_Group::current(0);
+    xcas::History_Fold * w = new xcas::History_Fold(sx,sy,sw,sh,1);
+    w->end();
+    w->pack->contextptr = giac::clone_context(giac::context0);
+    w->pack->labelsize(sl);
+    w->pack->eval=xcas::Xcas_eval;
+    w->pack->_insert=xcas::Xcas_pack_insert;
+    w->pack->_select=xcas::Xcas_pack_select;  
+    w->pack->new_url(filename);
+    w->pack->insert_url(filename,-1);
+    w->labelfont(w->pack->labelfont());
+    xcas::change_group_fontsize(w,w->pack->labelsize());
+    if (!modified)
+      w->pack->clear_modified();
+    else {
+      w->autosave(true);  
+      if (w->pack->url){ delete w->pack->url; w->pack->url=0; }
+      w->label("Unnamed");
+    }
+    return w;
+  }
   std::string widget_html5(const Fl_Widget * o){
     string res;
     const giac::context * contextptr = get_context(o);
@@ -3266,6 +3288,20 @@ namespace xcas {
   }
 #endif
 
+  void quit_idle_function(void * widget){
+    static int t=0;
+    if (!widget){
+      //t=CLOCK();
+      return;
+    }
+    else {
+      // if (CLOCK()-t<1e5) return;
+    }
+    Fl_Widget * w=(Fl_Widget *)(widget);
+    w->hide();
+    fltk_return_value=0;
+  }
+
   // open a FLTK window, that will be printed to filename when closed
   // return false if FLTK not avail 
   bool fltk_view(const giac::gen & g,giac::gen & ge,const std::string & filename,std::string & figure_filename,int file_type,const giac::context *contextptr){
@@ -3306,7 +3342,12 @@ namespace xcas {
       w->resizable(w);
     }
     // xcas::initialize_function=load_autorecover_data;
-    Fl::add_idle(xcas::Xcas_idle_function,0);
+    if (file_type==-1){
+      quit_idle_function(0);
+      Fl::add_idle(quit_idle_function,w);
+    }
+    else
+      Fl::add_idle(xcas::Xcas_idle_function,0);
     // xcas::idle_function=Xcas_update_mode;
     Fl_Group::current(w);
     int dx=w->w(),dy=w->h();
@@ -3391,7 +3432,11 @@ namespace xcas {
     w->hotspot(w);
     fltk_return_value=-1;
     Fl::run();
-    Fl::remove_idle(xcas::Xcas_idle_function,0);
+    if (file_type==-1)
+      Fl::remove_idle(quit_idle_function,w);
+    else
+      Fl::remove_idle(xcas::Xcas_idle_function,0);
+    w->show();
     if (!fltk_return_value){
       if (xcas::Figure * fig=dynamic_cast<xcas::Figure *>(wid)){
 	if (fig->geo->hp->_modified && !figure_filename.empty()){
@@ -3427,7 +3472,7 @@ namespace xcas {
       if (!filename.empty() 
 	  // && !figure_filename.empty()
 	  )
-	xcas::widget_ps_print(print_wid,filename,true,0,false);
+	xcas::widget_ps_print(print_wid,filename,true,0,false,true,false); // don't ask user for pixel size
     }
     w->hide();
     Fl::wait(0.001);

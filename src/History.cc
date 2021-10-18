@@ -1637,9 +1637,9 @@ namespace xcas {
 #ifdef WIN32
   std::string unix_path(const std::string & winpath){
 #ifdef __x86_64__
-    int s = cygwin_conv_path (CCP_WIN_W_TO_POSIX , winpath.c_str(), NULL, 0);
+    int s = cygwin_conv_path (CCP_WIN_A_TO_POSIX , winpath.c_str(), NULL, 0);
     char * unixpath = (char *) malloc(s);
-    cygwin_conv_path(CCP_WIN_W_TO_POSIX,winpath.c_str(), unixpath,s);
+    cygwin_conv_path(CCP_WIN_A_TO_POSIX,winpath.c_str(), unixpath,s);
 #else
     char * unixpath = (char *) malloc (cygwin_win32_to_posix_path_list_buf_size (winpath.c_str()));
     cygwin_win32_to_posix_path_list (winpath.c_str(), unixpath);
@@ -1718,7 +1718,7 @@ namespace xcas {
       return false;
     static string html5;
     html5=widget_html5(this);
-    Fl::copy(html5.c_str(),html5.size(),1);
+    if (autosave_rm) Fl::copy(html5.c_str(),html5.size(),1);
     const char * chs=_select(this,0,children()-1);
     if (!chs)
       return false;

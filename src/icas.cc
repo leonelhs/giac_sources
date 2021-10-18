@@ -321,6 +321,490 @@ void check_browser_help(const giac::gen & g){
   }
 }
 
+#ifdef HAVE_LIBFLTK
+//#include "Equation.h"
+// split s at newline or space to avoid too long strings
+void split(std::string & s,int cut){
+  if (cut<30) cut=30;
+  std::string remains(s);
+  s.clear();
+  int ss;
+  while ( (ss=remains.size())>cut ){
+    int i=0;
+    for (;i<cut;++i){
+      if (remains[i]=='\n')
+	break;
+    }
+    if (i<cut){
+      s = s+remains.substr(0,i+1);
+      remains=remains.substr(i+1,ss-i-1);
+      ss=remains.size();
+      continue;
+    }
+    for (i=cut-10;i<ss;++i){
+      if (remains[i]==' ' || remains[i]=='\\' || remains[i]=='(' || remains[i]==')' || remains[i]=='{' || remains[i]=='}' || remains[i]=='[' || remains[i]==']')
+	break;
+    }
+    s = s+remains.substr(0,i)+'\n';
+    remains=remains.substr(i,ss-i);
+    ss=remains.size();
+  }
+  s = s+remains;
+}
+
+void verb(std::string & warn,int line,ostream & out,std::string cmd,const std::string & infile,int & texmacs_counter,bool slider,giac::context * contextptr){
+  giac::gen g(cmd,contextptr),gg;
+  split(cmd,50);
+  int pos=cmd.find('\n');
+  if (pos<0 || pos>=cmd.size())
+    pos=cmd.find('|');
+  if (pos<0 || pos>=cmd.size())
+    out << "\\verb|"<<cmd<<"|\\\\"<<endl;
+  else
+    out << "\\begin{verbatim}\n" << cmd << "\\end{verbatim}" << endl;
+  int reading_file=0;
+  std::string filename,tmp;
+  xcas::icas_eval(g,gg,reading_file,filename,contextptr);
+  int graph_output=graph_output_type(gg);
+  if (graph_output){
+    filename=infile+giac::print_INT_(texmacs_counter)+".eps";
+    if (xcas::fltk_view(g,gg,filename,tmp,-1,contextptr)){
+      out << "\n\\begin{center}\n\\includegraphics[width=0.8\\linewidth]{" << filename << "}\n\\end{center}\n"<<std::endl;
+      ++texmacs_counter;
+    }
+  }
+  else {
+    if (slider) {
+      string tmp=gg.print(contextptr);
+      if (tmp.size()>256) tmp=tmp.substr(0,255)+"...";
+      warn +=  "Line " + giac::print_INT_(line)+" slider "+ g.print(contextptr)+ " -> " +tmp + '\n';
+      return;
+    }
+    int ta=taille(gg,41);
+    if (ta>=40){
+      string tmp=gg.print(contextptr);
+      if (tmp.size()>256) tmp=tmp.substr(0,255)+"...";
+      warn +=  "Line " + giac::print_INT_(line)+ " large output "+g.print(contextptr)+ " -> " +tmp + '\n';
+      // giac::attributs attr(14,0,1);
+      // giac::gen data=xcas::Equation_compute_size(g,attr,600,contextptr);
+    }
+    gg=giac::_latex(gg,contextptr);
+    std::string s=(gg.type==giac::_STRNG)?(*gg._STRNGptr):gg.print(contextptr);
+    out << "$$" << s << "$$" << std::endl;
+  }  
+}
+
+void pgiac(std::string infile,std::string outfile){
+  COUT << "Giac pdflatex and HTML5 output" << endl;
+  COUT << "Partly inspired from pgiac by Jean-Michel Sarlat" << endl;
+  if (!giac::is_file_available("giac.tex")){
+    if (giac::is_file_available("/usr/share/giac/doc/giac.tex"))
+      system("cp /usr/share/giac/doc/giac.tex .");
+    else {
+      if (giac::is_file_available("/usr/local/share/giac/doc/giac.tex"))
+	system("cp /usr/local/share/giac/doc/giac.tex .");
+      else 
+	if (giac::is_file_available("/Applications/share/giac/doc/giac.tex"))
+	  system("cp /Applications/share/giac/doc/giac.tex .");
+    }
+  }
+  if (!giac::is_file_available("giacfr.tex")){
+    if (giac::is_file_available("/usr/share/giac/doc/giacfr.tex"))
+      system("cp /usr/share/giac/doc/giacfr.tex .");
+    else {
+      if (giac::is_file_available("/usr/local/share/giac/doc/giacfr.tex"))
+	system("cp /usr/local/share/giac/doc/giacfr.tex .");
+      else 
+	if (giac::is_file_available("/Applications/share/giac/doc/giacfr.tex"))
+	  system("cp /Applications/share/giac/doc/giacfr.tex .");
+    }
+  }
+  std::string infile_=giac::remove_extension(infile),warn;
+  int line=0;
+  giac::context ct;
+  ifstream in(infile.c_str());
+  ofstream out(outfile.c_str());
+  const int BUFFER_SIZE=32768-1;
+  char buf[BUFFER_SIZE+1];
+  buf[BUFFER_SIZE]=0;
+  bool inside=false,inprog=false,inverb=false;
+  string prg;
+  for (;;){
+    if (in.eof())
+      break;
+    in.getline(buf,BUFFER_SIZE,'\n');++line;
+    string s(buf);
+    for (;!s.empty();){
+      int ss=s.size();
+      int pos=0;
+      if (inside){
+	if (!inverb){
+	  pos=s.find("\\verb");
+	  if (pos>=0 && pos<ss){
+	    out << s << endl; // ignore filtering if \verb inside
+	    break;
+	  }
+	  pos=s.find("\\begin{verbatim}");
+	  if (pos>=0 && pos<ss){
+	    inverb=true;
+	    out << s << endl;
+	    break;
+	  }
+	}
+	pos=s.find("\\end{verbatim}");
+	if (pos>=0 && pos<ss){
+	  inverb=false;
+	  out << s << endl;
+	  break;
+	}
+      }
+      pos=s.find("%");
+      if (pos>=0 && pos<ss){
+	int pos1=s.find("{"),pos2=s.find("}");
+	if (pos1<0 || pos1>=pos || pos2<0 || pos2>=ss){ 
+	  s=s.substr(0,pos); // should check % inside verb/verbatim
+	  continue;
+	}
+      }
+      if (!inside){
+	int pos=s.find("\\begin{document}");
+	if (pos>=0 && pos<ss){
+	  out << "\\usepackage{graphicx}\n\\usepackage{xcolor}\n\\newcommand{\\MarqueCommandeGiac}[1]{\n\\color[HTML]{8B7500}$\\rightarrow$}\n\\newcommand{\\MarqueLaTeXGiac}{%\n\\color[HTML]{08868B}}\n\\newcommand{\\InscriptionFigureGiac}[1]{%\n\\begin{center}\n\\includegraphics[width=0.7\\linewidth]{#1}\n\\end{center}\n}" << endl;
+	  inside=true;
+	}
+      }
+      else {
+	int pos=s.find("\\end{document}");
+	if (pos>=0 && pos<ss){
+	  out << s << endl;
+	  out.close();
+	  COUT << "File " << outfile << " created, now running hevea in background and pgiac " << outfile << endl << "Then I will run pdflatex " << giac::remove_extension(outfile) << endl << "For HTML5 output, you can run\nhevea -fix " << infile_ << endl;
+	  std::string cmd="hevea -fix "+infile_+" &";
+	  system(cmd.c_str());
+	  cmd="makeindex "+giac::remove_extension(outfile);
+	  system(cmd.c_str());
+	  cmd=("pdflatex "+giac::remove_extension(outfile)+" && mv "+giac::remove_extension(outfile)+".pdf "+infile_+".pdf");
+	  COUT << cmd << endl;
+	  system(cmd.c_str());
+	  if (!warn.empty()){
+	    COUT << "*********************************" << endl;
+	    COUT << "*********************************" << endl;
+	    COUT << "Please take care of the warnings below. Press ENTER to continue" << endl << warn;
+	    COUT << "*********************************" << endl;	    
+	    COUT << "*********************************" << endl;
+	  }
+	  return;
+	}
+      }
+      if (inprog){
+	pos=s.find("\\end{giacprog}");
+	if (pos>=0 && pos<ss){
+	  prg += s.substr(0,pos);
+	  out << "\\begin{verbatim}\n" << prg << "\\end{verbatim}" << endl;
+	  giac::gen g(prg,&ct),gg;
+	  int reading_file=0;
+	  std::string filename;
+	  xcas::icas_eval(g,gg,reading_file,filename,&ct);  
+	  s=s.substr(pos+14,ss-14-pos);
+	  inprog=false;
+	  continue;
+	}
+	prg += s + '\n';
+	break; // read next line until \end{giacprog}
+      }
+      pos=s.find("\\begin{giacprog}");
+      if (pos>=0 && pos<ss){
+	prg = "";
+	s=s.substr(pos+16,ss-16-pos);
+	inprog=true;
+	continue;
+      }
+      pos=s.find("\\giac");
+      if (inside && pos>=0 && pos<ss){
+	out << s.substr(0,pos) << endl;
+	s=s.substr(pos,ss-pos);
+	ss=s.size();
+	bool invalid=false;
+	int pos1=s.find("{"),pos2=s.find("}");
+	while ( (pos1>=0 && pos1<ss ) && (pos2<0 || pos2>=ss)){
+	  // scan file until matching }
+	  if (in.eof())
+	    break;
+	  in.getline(buf,BUFFER_SIZE,'\n');++line;
+	  string adds(buf);
+	  s += adds; ss=s.size();
+	  pos2=s.find("}");
+	}
+	if (ss>10 && s.substr(1,8)=="giaclink" && pos1>=0 && pos1<ss && pos2>=0 && pos2<ss){
+	  out << s.substr(0,pos2+1) << endl;
+	  s=s.substr(pos2+1,ss-pos2-1);
+	  continue;
+	}
+	if (ss>20 && s.substr(1,10)=="giacslider" && pos1>=0 && pos1<ss && pos2>=0 && pos2<ss){
+	  string cmd=s.substr(pos1+1,pos2-pos1-1)+":=";
+	  for (int j=2;j<6;++j){
+	    s=s.substr(pos2+1,ss-pos2-1);
+	    ss=s.size();
+	    pos1=s.find("{");pos2=s.find("}");
+	    while ( (pos1>=0 && pos1<ss ) && (pos2<0 || pos2>=ss)){
+	      // scan file until matching }
+	      if (in.eof())
+		break;
+	      in.getline(buf,BUFFER_SIZE,'\n'); ++line;
+	      string adds(buf);
+	      s += adds; ss=s.size();
+	      pos2=s.find("}");
+	    }
+	    if (pos1>=0 && pos1<ss && pos2>=0 && pos2<ss)
+	      continue;
+	    invalid=true;
+	  }
+	  if (!invalid){
+	    cmd += s.substr(pos1+1,pos2-pos1-1);
+	    s=s.substr(pos2+1,ss-pos2-1);
+	    ss=s.size();
+	    pos1=s.find("{");pos2=s.find("}");
+	    while ( (pos1>=0 && pos1<ss ) && (pos2<0 || pos2>=ss)){
+	      // scan file until matching }
+	      if (in.eof())
+		break;
+	      in.getline(buf,BUFFER_SIZE,'\n'); ++line;
+	      string adds(buf);
+	      s += adds; ss=s.size();
+	      pos2=s.find("}");
+	    }
+	    if (pos1>=0 && pos1<ss && pos2>=0 && pos2<ss){
+	      cmd += ';'+s.substr(pos1+1,pos2-pos1-1);
+	      s=s.substr(pos2+1,ss-pos2-1);
+	      ss=s.size();
+	      verb(warn,line,out,cmd,infile_,texmacs_counter,true,&ct);
+	    }
+	  }
+	  continue;
+	}
+	if (ss>10 && s.substr(1,7)=="giaccmd" && pos1>=0 && pos1<ss && pos2>=0 && pos2<ss){
+	  string cmd=s.substr(pos1+1,pos2-pos1-1);
+	  s=s.substr(pos2+1,ss-pos2-1);
+	  ss=s.size();
+	  pos1=s.find("{");pos2=s.find("}");
+	  while ( (pos1>=0 && pos1<ss ) && (pos2<0 || pos2>=ss)){
+	    // scan file until matching }
+	    if (in.eof())
+	      break;
+	    in.getline(buf,BUFFER_SIZE,'\n'); ++line;
+	    string adds(buf);
+	    s += adds; ss=s.size();
+	    pos2=s.find("}");
+	  }
+	  cmd = cmd + '('+s.substr(pos1+1,pos2-pos1-1)+')';
+	  verb(warn,line,out,cmd,infile_,texmacs_counter,false,&ct); 
+	  s=s.substr(pos2+1,ss-pos2-1);	
+	  continue;
+	}
+	if (pos1>0 && pos1<ss && pos2>0 && pos2<ss){
+	  string cmd=s.substr(pos1+1,pos2-pos1-1);
+	  verb(warn,line,out,cmd,infile_,texmacs_counter,false,&ct); 
+	  s=s.substr(pos2+1,ss-pos2-1);
+	  continue;
+	}
+	else
+	  COUT << "Invalid giac command " << s << endl;
+      }
+      out << s << endl;
+      break;
+    }
+  }
+  out.close();
+  COUT << "Missing \\end{document}. File " << outfile << " created" << endl;
+  //system(("pgiac "+outfile).c_str());
+}
+
+#else
+void pgiac(std::string infile,std::string outfile){
+  ifstream in(infile.c_str());
+  ofstream out(outfile.c_str());
+  const int BUFFER_SIZE=32768-1;
+  char buf[BUFFER_SIZE+1];
+  buf[BUFFER_SIZE]=0;
+  bool inside=false,inprog=false,inverb=false;
+  string prg;
+  for (;;){
+    if (in.eof())
+      break;
+    in.getline(buf,BUFFER_SIZE,'\n');
+    string s(buf);
+    for (;!s.empty();){
+      int ss=s.size();
+      int pos=0;
+      if (inside){
+	if (!inverb){
+	  pos=s.find("\\verb");
+	  if (pos>=0 && pos<ss){
+	    out << s << endl; // ignore filtering if \verb inside
+	    break;
+	  }
+	  pos=s.find("\\begin{verbatim}");
+	  if (pos>=0 && pos<ss){
+	    inverb=true;
+	    out << s << endl;
+	    break;
+	  }
+	}
+	pos=s.find("\\end{verbatim}");
+	if (pos>=0 && pos<ss){
+	  inverb=false;
+	  out << s << endl;
+	  break;
+	}
+      }
+      pos=s.find("%");
+      if (pos>=0 && pos<ss){
+	int pos1=s.find("{"),pos2=s.find("}");
+	if (pos1<0 || pos1>=pos || pos2<0 || pos2>=ss){ 
+	  s=s.substr(0,pos); // should check % inside verb/verbatim
+	  continue;
+	}
+      }
+      if (!inside){
+	int pos=s.find("\\begin{document}");
+	if (pos>=0 && pos<ss){
+	  out << "\\usepackage{graphicx}\n\\usepackage{xcolor}\n\\newcommand{\\MarqueCommandeGiac}[1]{\n\\color[HTML]{8B7500}$\\rightarrow$}\n\\newcommand{\\MarqueLaTeXGiac}{%\n\\color[HTML]{08868B}}\n\\newcommand{\\InscriptionFigureGiac}[1]{%\n\\begin{center}\n\\includegraphics[width=0.7\\linewidth]{#1}\n\\end{center}\n}" << endl;
+	  inside=true;
+	}
+      }
+      else {
+	int pos=s.find("\\end{document}");
+	if (pos>=0 && pos<ss){
+	  out << s << endl;
+	  out.close();
+	  COUT << "File " << outfile << " created, now running hevea in background and pgiac " << outfile << endl << "Then I will run pdflatex " << giac::remove_extension(outfile) << endl << "For HTML5 output, you can run\nhevea -fix " << giac::remove_extension(infile) << endl;
+	  std::string cmd="hevea -fix "+giac::remove_extension(infile)+" &";
+	  system(cmd.c_str());
+	  cmd=("pgiac "+outfile+" && pdflatex "+giac::remove_extension(outfile)+" && mv "+giac::remove_extension(outfile)+".pdf "+giac::remove_extension(infile)+".pdf");
+	  COUT << cmd << endl;
+	  system(cmd.c_str());
+	  return;
+	}
+      }
+      if (inprog){
+	pos=s.find("\\end{giacprog}");
+	if (pos>=0 && pos<ss){
+	  prg += s.substr(0,pos);
+	  out << ".g " << prg << endl;
+	  s=s.substr(pos+14,ss-14-pos);
+	  inprog=false;
+	  continue;
+	}
+	prg += s + " ";
+	break; // read next line until \end{giacprog}
+      }
+      pos=s.find("\\begin{giacprog}");
+      if (pos>=0 && pos<ss){
+	prg = "";
+	s=s.substr(pos+16,ss-16-pos);
+	inprog=true;
+	continue;
+      }
+      pos=s.find("\\giac");
+      if (inside && pos>=0 && pos<ss){
+	out << s.substr(0,pos) << endl;
+	s=s.substr(pos,ss-pos);
+	ss=s.size();
+	bool invalid=false;
+	int pos1=s.find("{"),pos2=s.find("}");
+	while ( (pos1>=0 && pos1<ss ) && (pos2<0 || pos2>=ss)){
+	  // scan file until matching }
+	  if (in.eof())
+	    break;
+	  in.getline(buf,BUFFER_SIZE,'\n');
+	  string adds(buf);
+	  s += adds; ss=s.size();
+	  pos2=s.find("}");
+	}
+	if (ss>10 && s.substr(1,8)=="giaclink" && pos1>=0 && pos1<ss && pos2>=0 && pos2<ss){
+	  out << s.substr(0,pos2+1) << endl;
+	  s=s.substr(pos2+1,ss-pos2-1);
+	  continue;
+	}
+	if (ss>20 && s.substr(1,10)=="giacslider" && pos1>=0 && pos1<ss && pos2>=0 && pos2<ss){
+	  string cmd=s.substr(pos1+1,pos2-pos1-1)+":=";
+	  for (int j=2;j<6;++j){
+	    s=s.substr(pos2+1,ss-pos2-1);
+	    ss=s.size();
+	    pos1=s.find("{");pos2=s.find("}");
+	    while ( (pos1>=0 && pos1<ss ) && (pos2<0 || pos2>=ss)){
+	      // scan file until matching }
+	      if (in.eof())
+		break;
+	      in.getline(buf,BUFFER_SIZE,'\n');
+	      string adds(buf);
+	      s += adds; ss=s.size();
+	      pos2=s.find("}");
+	    }
+	    if (pos1>=0 && pos1<ss && pos2>=0 && pos2<ss)
+	      continue;
+	    invalid=true;
+	  }
+	  if (!invalid){
+	    cmd += s.substr(pos1+1,pos2-pos1-1);
+	    s=s.substr(pos2+1,ss-pos2-1);
+	    ss=s.size();
+	    pos1=s.find("{");pos2=s.find("}");
+	    while ( (pos1>=0 && pos1<ss ) && (pos2<0 || pos2>=ss)){
+	      // scan file until matching }
+	      if (in.eof())
+		break;
+	      in.getline(buf,BUFFER_SIZE,'\n');
+	      string adds(buf);
+	      s += adds; ss=s.size();
+	      pos2=s.find("}");
+	    }
+	    if (pos1>=0 && pos1<ss && pos2>=0 && pos2<ss){
+	      cmd += ';'+s.substr(pos1+1,pos2-pos1-1);
+	      s=s.substr(pos2+1,ss-pos2-1);
+	      ss=s.size();
+	      out << ".g " << cmd << endl ;
+	    }
+	  }
+	  continue;
+	}
+	if (ss>10 && s.substr(1,7)=="giaccmd" && pos1>=0 && pos1<ss && pos2>=0 && pos2<ss){
+	  string cmd=s.substr(pos1+1,pos2-pos1-1);
+	  s=s.substr(pos2+1,ss-pos2-1);
+	  ss=s.size();
+	  pos1=s.find("{");pos2=s.find("}");
+	  while ( (pos1>=0 && pos1<ss ) && (pos2<0 || pos2>=ss)){
+	    // scan file until matching }
+	    if (in.eof())
+	      break;
+	    in.getline(buf,BUFFER_SIZE,'\n');
+	    string adds(buf);
+	    s += adds; ss=s.size();
+	    pos2=s.find("}");
+	  }
+	  cmd = cmd + '('+s.substr(pos1+1,pos2-pos1-1)+')';
+	  out << ".g " << cmd << endl ;
+	  s=s.substr(pos2+1,ss-pos2-1);	
+	  continue;
+	}
+	if (pos1>0 && pos1<ss && pos2>0 && pos2<ss){
+	  string cmd=s.substr(pos1+1,pos2-pos1-1);
+	  out << ".g " << cmd << endl ;
+	  s=s.substr(pos2+1,ss-pos2-1);
+	  continue;
+	}
+	else
+	  COUT << "Invalid giac command " << s << endl;
+      }
+      out << s << endl;
+      break;
+    }
+  }
+  out.close();
+  COUT << "Missing \\end{document}. File " << outfile << " created, now running pgiac" << endl;
+  system(("pgiac "+outfile).c_str());
+}
+#endif
 
 int main(int ARGC, char *ARGV[]){    
   //giac::step_infolevel=1;
@@ -419,6 +903,40 @@ int main(int ARGC, char *ARGV[]){
   }
   if (savedbg)
     giac::debug_infolevel=savedbg;
+  if (ARGC>=2){
+    std::string infile(ARGV[1]),outfile=giac::remove_extension(infile);
+    if (infile==outfile+".tex"){
+      outfile=outfile+"_.tex";
+      // outfile=outfile+"_.w";
+      if (ARGC>=3)
+	outfile=ARGV[2];
+      if (!giac::is_file_available(infile.c_str())){
+	COUT << "Unable to read " << infile << endl;
+	return 1;
+      }
+      pgiac(infile,outfile);
+      return 0;
+    }
+  }
+  if (ARGC>=3 && std::string(ARGV[1])=="--tex"){
+    // scan ARGV[2], search for commands starting by \giac...{}
+    // output .g command, output everything else verbatim 
+    // output goes in ARGV[3] or in ARGV[2].w
+    // after that it is processed by pgiac
+    std::string infile(ARGV[2]),outfile=giac::remove_extension(infile);
+    if (infile==outfile){
+      infile=infile+".tex";
+      outfile=outfile+"_.w";
+    }
+    if (ARGC>=4)
+      outfile=ARGV[3];
+    if (!giac::is_file_available(infile.c_str())){
+      COUT << "Unable to read " << infile << endl;
+      return 1;
+    }
+    pgiac(infile,outfile);
+    return 0;
+  }
   // Help and completion
   int helpitems;
 #ifdef STATIC_BUILTIN_LEXER_FUNCTIONS

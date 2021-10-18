@@ -27,6 +27,7 @@ using namespace std;
 #include "prog.h"
 #include "derive.h"
 #include "ezgcd.h"
+#include "cocoa.h" // for memory_usage
 #include "giacintl.h"
 #include <stdlib.h>
 #include <cmath>
@@ -35,7 +36,7 @@ using namespace std;
 #ifdef HAVE_SYS_TIME_H
 #include <time.h>
 #else
-#ifndef BESTA_OS
+#if !defined BESTA_OS && !defined EMCC
 #define clock_t int
 #define CLOCK() 0
 #endif
@@ -1101,7 +1102,10 @@ namespace giac {
     if ( env && (env->moduloon) && !env->complexe && (env->modulo.type==_INT_) && (env->modulo.val < smallint) && (product_deg < 65536) )
       Mulmodpolysmall(ita,ita_end,itb,itb_end,env,new_coord);
     else {
-      if ( 0 && (!env || !env->moduloon ) && as>FFTMUL_SIZE && bs>FFTMUL_SIZE){
+      if ( //1 ||
+	   (!env || !env->moduloon || env->modulo.type==_INT_) 
+	   && as>FFTMUL_SIZE && bs>FFTMUL_SIZE
+	   ){
 	// Check that all coeff are integers
 	for (;ita!=ita_end;++ita){
 	  if (!ita->is_integer())
@@ -1112,8 +1116,14 @@ namespace giac {
 	    break;
 	}
 	if (ita==ita_end && itb==itb_end){
-	  CERR << "// fftmult" << endl;
-	  fftmult(a,b,new_coord);
+	  //CERR << "// fftmult" << endl;
+	  fftmult(a,b,new_coord,(env && env->moduloon && env->modulo.type==_INT_)?env->modulo.val:0);
+#if 0
+	  vecteur save=new_coord;
+	  Muldense_POLY1(a.begin(),ita_end,b.begin(),itb_end,env,new_coord);
+	  if (save!=new_coord)
+	    CERR << " fft mult error poly1" << a << "*" << b << ";" << (env && env->moduloon?env->modulo:zero) << endl;
+#endif
 	  return ;
 	}
 	ita=a.begin();
@@ -1140,6 +1150,26 @@ namespace giac {
     return new_coord;
   }
 
+  modpoly unmod(const modpoly & a,const gen & m){
+    modpoly res(a);
+    iterateur it=res.begin(),itend=res.end();
+    for (;it!=itend;++it){
+      if (is_integer(*it))
+	continue;
+      if (it->type!=_MOD || *(it->_MODptr+1)!=m)
+	return modpoly(1,gensizeerr("Can not convert "+it->print(context0)+" mod "+m.print(context0)));
+      *it=*it->_MODptr;
+    }
+    return res;
+  }
+
+  void modularize(modpoly & a,const gen & m){
+    iterateur it=a.begin(),itend=a.end();
+    for (;it!=itend;++it){
+      *it=makemod(*it,m);
+    }
+  }
+
   void operator_times (const modpoly & a, const modpoly & b,environment * env,modpoly & new_coord) {
 #ifdef TIMEOUT
     control_c();
@@ -1154,12 +1184,60 @@ namespace giac {
       return ;
     }
     modpoly::const_iterator ita=a.begin(),ita_end=a.end(),itb=b.begin(),itb_end=b.end();
+#if 1
+    if (ita->type==_DOUBLE_ || (ita->type==_CPLX && (ita->subtype==3 || ita->_CPLXptr->type==_DOUBLE_ || (ita->_CPLXptr+1)->type==_DOUBLE_) ) ) {
+      std::vector< complex_double > af,bf;
+      if (convert(a,af,true) && convert(b,bf,true)){
+	bool real=is_real(a,context0) && is_real(b,context0);
+	int as=int(a.size()),bs=int(b.size());
+	int rs=as+bs-1;
+	int logrs=sizeinbase2(rs);
+	if (logrs>30) { new_coord=modpoly(1,gensizeerr("Degree too large")); return ;}
+	int n=(1u<<logrs); double invn=1.0/n;
+	reverse(af.begin(),af.end()); af.resize(n);
+	reverse(bf.begin(),bf.end()); bf.resize(n);
+	fft2(&af.front(),n,2*M_PI/n);
+	fft2(&bf.front(),n,2*M_PI/n);
+	for (int i=0;i<n;++i)
+	  af[i] *= bf[i];
+	fft2(&af.front(),n,-2*M_PI/n);
+	af.resize(rs);
+	reverse(af.begin(),af.end());
+	new_coord.clear(); new_coord.reserve(rs);
+	if (real){
+	  for (int i=0;i<rs;++i)
+	    new_coord.push_back(invn*af[i].real());
+	}
+	else {
+	  for (int i=0;i<rs;++i)
+	    new_coord.push_back(invn*af[i]);
+	}
+	return;
+      }
+    }
+#endif
     // Check that all coeff of a b are integers
     for (;ita!=ita_end;++ita){
+      if (ita->type==_MOD && (ita->_MODptr+1)->type==_INT_){
+	environment e;
+	e.modulo=*(ita->_MODptr+1);
+	e.moduloon=true;
+	mulmodpoly(unmod(a,e.modulo),unmod(b,e.modulo),&e,new_coord);
+	modularize(new_coord,e.modulo);
+	return;
+      }
       if (!ita->is_integer())
 	break;
     }
     for (;itb!=itb_end;++itb){
+      if (itb->type==_MOD && (itb->_MODptr+1)->type==_INT_){
+	environment e;
+	e.modulo=*(itb->_MODptr+1);
+	e.moduloon=true;
+	mulmodpoly(unmod(a,e.modulo),unmod(b,e.modulo),&e,new_coord);
+	modularize(new_coord,e.modulo);
+	return;
+      }
       if (!itb->is_integer())
 	break;
     }
@@ -4113,6 +4191,125 @@ namespace giac {
     return res;
   }
 
+  // p and q assumed to have the same size, gcd(pmod,qmod)=1
+  bool ichinrem_inplace(dense_POLY1 &p,const dense_POLY1 & q,const gen & pmod,int qmodval){
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " ichinrem begin"<< endl;
+    gen u,v,d,tmp,pqmod(qmodval*pmod),pqmod2=iquo(pqmod,2),minuspqmod2=-pqmod2;
+    egcd(pmod,qmodval,u,v,d);
+    if (u.type==_ZINT)
+      u=modulo(*u._ZINTptr,qmodval);
+    int U=u.val;
+    if (d==-1){ u=-u; v=-v; d=1; }
+    if (d!=1)
+      return false;
+    if (pmod.type!=_ZINT)
+      return false;
+    dense_POLY1::iterator a = p.begin(),a_end = p.end();
+    dense_POLY1::const_iterator b = q.begin(),b_end = q.end();
+    int n=int(a_end-a), m=int(b_end-b);
+    if (n!=m)
+      return false;
+    mpz_t tmpz;
+    mpz_init(tmpz);
+    for (;a!=a_end;++a,++b){
+      // smod(*a+((u*(*b-*a))%qmod)*pmod,pqmod)
+#ifndef USE_GMP_REPLACEMENTS
+      if (a->type==_ZINT){
+#if 1
+	int amodq=modulo(*a->_ZINTptr,qmodval);
+	if (amodq==b->val)
+	  continue;
+	mpz_mul_si(tmpz,*pmod._ZINTptr,(U*(b->val-longlong(amodq)))%qmodval);
+	mpz_add(tmpz,tmpz,*a->_ZINTptr);	  
+#else
+	mpz_set_si(tmpz,b->val);
+	mpz_sub(tmpz,tmpz,*a->_ZINTptr);
+	mpz_mul_si(tmpz,*pmod._ZINTptr,(longlong(U)*modulo(tmpz,qmodval))%qmodval);
+	mpz_add(tmpz,tmpz,*a->_ZINTptr);
+#endif
+      }
+      else {
+	mpz_mul_si(tmpz,*pmod._ZINTptr,(U*(longlong(b->val)-a->val))%qmodval);
+	if (a->val>=0)
+	  mpz_add_ui(tmpz,tmpz,a->val);
+	else
+	  mpz_sub_ui(tmpz,tmpz,-a->val);
+      }
+      if (mpz_cmp(tmpz,*pqmod2._ZINTptr)>=0)
+	mpz_sub(tmpz,tmpz,*pqmod._ZINTptr);
+      else {
+	if (mpz_cmp(tmpz,*minuspqmod2._ZINTptr)<=0)
+	  mpz_add(tmpz,tmpz,*pqmod._ZINTptr);
+      }
+      if (a->type==_ZINT) mpz_set(*a->_ZINTptr,tmpz); else *a=tmpz;
+#else
+      *a=*a+u*(*b-*a) *pmod ; // improve to modulo(U*(*b-*a), qmodval) and type checking for overwrite
+      *a = smod(*a,pqmod);
+#endif
+    }
+    mpz_clear(tmpz);
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " ichinrem end"<< endl;
+    return true;
+  }
+
+  // p and q assumed to have the same size, gcd(pmod,qmod)=1
+  bool ichinrem_inplace(dense_POLY1 &p,const vector<int> & q,const gen & pmod,int qmodval){
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " ichinrem begin"<< endl;
+    gen u,v,d,tmp,pqmod(qmodval*pmod),pqmod2=iquo(pqmod,2),minuspqmod2=-pqmod2;
+    egcd(pmod,qmodval,u,v,d);
+    if (u.type==_ZINT)
+      u=modulo(*u._ZINTptr,qmodval);
+    int U=u.val;
+    if (d==-1){ u=-u; v=-v; d=1; }
+    if (d!=1)
+      return false;
+    if (pmod.type!=_ZINT)
+      return false;
+    dense_POLY1::iterator a = p.begin(),a_end = p.end();
+    vector<int>::const_iterator b = q.begin(),b_end = q.end();
+    int n=int(a_end-a), m=int(b_end-b);
+    if (n!=m)
+      return false;
+    mpz_t tmpz;
+    mpz_init(tmpz);
+    for (;a!=a_end;++a,++b){
+      // smod(*a+((u*(*b-*a))%qmod)*pmod,pqmod)
+#ifndef USE_GMP_REPLACEMENTS
+      if (a->type==_ZINT){
+	int amodq=modulo(*a->_ZINTptr,qmodval);
+	if (amodq==*b)
+	  continue;
+	mpz_mul_si(tmpz,*pmod._ZINTptr,(U*(*b-longlong(amodq)))%qmodval);
+	mpz_add(tmpz,tmpz,*a->_ZINTptr);	  
+      }
+      else {
+	mpz_mul_si(tmpz,*pmod._ZINTptr,(U*(longlong(*b)-a->val))%qmodval);
+	if (a->val>=0)
+	  mpz_add_ui(tmpz,tmpz,a->val);
+	else
+	  mpz_sub_ui(tmpz,tmpz,-a->val);
+      }
+      if (mpz_cmp(tmpz,*pqmod2._ZINTptr)>=0)
+	mpz_sub(tmpz,tmpz,*pqmod._ZINTptr);
+      else {
+	if (mpz_cmp(tmpz,*minuspqmod2._ZINTptr)<=0)
+	  mpz_add(tmpz,tmpz,*pqmod._ZINTptr);
+      }
+      if (a->type==_ZINT) mpz_set(*a->_ZINTptr,tmpz); else *a=tmpz;
+#else
+      *a=*a+u*(*b-*a) *pmod ; // improve to modulo(U*(*b-*a), qmodval) and type checking for overwrite
+      *a = smod(*a,pqmod);
+#endif
+    }
+    mpz_clear(tmpz);
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " ichinrem end"<< endl;
+    return true;
+  }
+
   // assuming pmod and qmod are prime together, find r such that
   // r = p mod pmod  and r = q mod qmod
   // hence r = p + A*pmod = q + B*qmod
@@ -4208,10 +4405,10 @@ namespace giac {
       vector<int> RES(F.size());
       int m=env->modulo.val;
       if (debug_infolevel)
-	CERR << CLOCK()*1e-6 << " begin fft int " << W.size() << endl;
+	CERR << CLOCK()*1e-6 << " begin fft int " << W.size() << " memory " << memory_usage()*1e-6 << "M" << endl;
       fft(F,W,RES,m);
       if (debug_infolevel)
-	CERR << CLOCK()*1e-6 << " end fft int " << W.size() << endl;
+	CERR << CLOCK()*1e-6 << " end fft int " << W.size() << " memory " << memory_usage()*1e-6 << "M" << endl;
       unsigned n=RES.size();
       res.clear();
       res.reserve(n);
@@ -4324,15 +4521,79 @@ namespace giac {
     }
   }
 
-  void fft(const vector< complex<double> >& f,const vector< complex<double> > & w ,vector<complex< double> > & res){
-    unsigned long n=long(f.size()); // unsigned long does not parse with gcc
-    if (n==1){
-      res = f;
-      return ;
+  static void fft2( complex<double> *A, int n, complex<double> *W, complex<double> *T ) {  
+    if ( n==1 ) return;
+    // if p is fixed, the code is about 2* faster
+    if (n==4){
+      complex<double> w1=W[1];
+      complex<double> f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=(f1-f3)*w1;
+      A[0]=(f0+f1+f2+f3);
+      A[1]=(f0-f2+f01);
+      A[2]=(f0-f1+f2-f3);
+      A[3]=(f0-f2-f01);
+      return;
     }
-    unsigned long m=long(w.size());
-    unsigned long step=m/n;
-    unsigned k=0;
+    if (n==2){
+      complex<double> f0=A[0],f1=A[1];
+      A[0]=(f0+f1);
+      A[1]=(f0-f1);
+      return;
+    }
+    int i,n2;
+    n2 = n/2;
+    // Step 1 : arithmetic
+    complex<double> * Tn2=T+n2,*An2=A+n2;
+    for( i=0; i<n2; ++i ) {
+      complex<double> Ai,An2i;
+      Ai=A[i];
+      An2i=An2[i];
+      T[i] = Ai+An2i; // addmod(Ai,An2i,p);
+      Tn2[i] = (Ai-An2i)*W[i]; // submod(Ai,An2i,p); mulmod(t,W[i],p); 
+      i++;
+      Ai=A[i];
+      An2i=An2[i];
+      T[i] = Ai+An2i; // addmod(Ai,An2i,p);
+      Tn2[i] = (Ai-An2i)*W[i]; // submod(Ai,An2i,p); mulmod(t,W[i],p); 
+    }
+    // Step 2 : recursive calls
+    fft2( T,    n2, W+n2, A    );
+    fft2( Tn2, n2, W+n2, A+n2 );
+    // Step 3 : permute
+    for( i=0; i<n2; ++i ) {
+      A[  2*i] = T[i];
+      A[2*i+1] = Tn2[i]; 
+      ++i;
+      A[  2*i] = T[i];
+      A[2*i+1] = Tn2[i]; 
+    }
+    return;
+  }  
+
+  void fft2( complex<double> * A, int n, double theta){
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " begin fft2 C " << n << " memory " << memory_usage()*1e-6 << "M" << endl;
+    vector< complex<double> > W,T(n);
+    W.reserve(n); 
+    double thetak(theta);
+    for (int N=n/2;N;N/=2,thetak*=2){
+      complex<double> ww(1);
+      complex<double> wk(std::cos(thetak),std::sin(thetak));
+      for (int i=0;i<N;ww=ww*wk,++i){
+	if (i%64==0)
+	  ww=complex<double>(std::cos(i*thetak),std::sin(i*thetak));
+	W.push_back(ww);
+      }
+    }
+    fft2(A,n,&W.front(),&T.front());
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " end fft C " << n << " memory " << memory_usage()*1e-6 << "M" << endl;
+  }
+
+  void fft(std::complex<double> * f,int n,const std::complex<double> * w,int m,complex< double> * t){
+    if (n==1)
+      return ;
+    int step=m/n;
+    int k=0;
     if (n%2){
       for (k=3;k*k<=n;k++){
 	if (!(n%k))
@@ -4343,17 +4604,28 @@ namespace giac {
       k=2;
     if (k*k>n){ 
       // prime size, slow discrete Fourier transform
-      res.clear();
-      res.reserve(n);
-      unsigned pos;
+      complex<double> *fj,*fend_=f+n-3,*fend=f+n;
+      complex<double> * res=t;
       for (unsigned i=0;i<n;++i){
 	complex<double> tmp (0,0);
-	pos = 0;
-	for (unsigned j=0;j<n;++j){
-	  tmp +=  f[j]*w[pos];
-	  pos = (pos+i*step)%m;
+	int pos=0,istep=i*step;
+	for (fj=f;fj<fend_;fj+=3){
+	  tmp +=  fj[0]*w[pos];
+	  pos += istep-m; pos += (unsigned(pos)>>31)*m;// pos = (pos+istep)%m;
+	  tmp +=  fj[1]*w[pos];
+	  pos += istep-m; pos += (unsigned(pos)>>31)*m;// pos = (pos+istep)%m;
+	  tmp +=  fj[2]*w[pos];
+	  pos += istep-m; pos += (unsigned(pos)>>31)*m;// pos = (pos+istep)%m;
 	}
-	res.push_back(tmp);
+	for (;fj<fend;++fj){
+	  tmp +=  (*fj)*w[pos];
+	  pos += istep-m; pos += (unsigned(pos)>>31)*m;// pos = (pos+istep)%m;
+	}
+	*res=tmp;
+	++res;
+      }
+      for (fj=f,res=t;fj<fend;++fj,++res){
+	*fj=*res;
       }
       return;
     }
@@ -4363,58 +4635,80 @@ namespace giac {
       // P(w^(kj+l))= Q_l ( (w^k)^j )
       // with Q_l=P_1^(w^l)+w^(nk)*P_2^(w^l)+...
       unsigned long n2=n/k;
-      vector< vector< complex<double> > > Q(k),Qfft(k);
-      for (unsigned j=0;j<k;++j)
-	Q[j]=vector< complex<double> >(n2,0);
       for (unsigned j=0;j<k;j++){
 	// find Q[j]
+	complex<double> * Qj=t+n2*j;
 	for (unsigned i=0;i<n2;i++){
 	  complex<double> tmp(0,0);
-	  for (unsigned J=0;J<k;J++){
-	    tmp += f[J*n2+i]*w[(J*j*n2*step)%m];
+	  int pos=0,jn2step=j*n2*step;
+	  const complex<double> * fi=&f[i], *fiend=fi+k*n2;
+	  for (;fi<fiend;fi+=n2){
+	    tmp += (*fi)*w[pos];
+	    pos += jn2step-m; pos += (unsigned(pos)>>31)*m;
 	  }
-	  tmp *= w[j*step*i];
-	  Q[j][i]=tmp;
+	  Qj[i]=tmp*w[j*step*i];
 	}
-	fft(Q[j],w,Qfft[j]);
+      }
+      for (int j=0;j<k;++j){
+	fft(t+n2*j,n2,w,m,f+n2*j);
       }
       // build fft
-      res.clear();
-      res.reserve(n);
       for (unsigned i=0;i<n2;++i){
-	for (unsigned j=0;j<k;++j)
-	  res.push_back(Qfft[j][i]);
+	for (unsigned j=0;j<k;++j,++f)
+	  *f=t[n2*j+i];
       }
       return;
     }
     // Compute r0=sum_[j<n/2] (f_j+f_(j+n/2))*x^j
     // and r1=sum_[j<n/2] (f_j-f_(j+n/2))*omega^[step*j]*x^j
     unsigned long n2=n/2;
-    vector< complex<double> > r0,r1;
-    r0.reserve(n2); r1.reserve(n2);
-    vector< complex<double> >::const_iterator it=f.begin(),itn=it+n2,itend=itn,itk=w.begin();
-    for (;it!=itend;++itn,itk+=step,++it){
-      r0.push_back(*it+*itn);
-      r1.push_back((*it-*itn)*(*itk));
+    complex<double> * r0=t, *r1=t+n2;
+    complex<double> * it=f,*itn=f+n2,*itend=itn;
+    const complex<double> *itk=w;
+    for (;it!=itend;++itn,itk+=step,++it,++r0,++r1){
+      *r0=*it+*itn;
+      *r1=(*it-*itn)*(*itk);
     }
     // Recursive call
-    vector< complex<double> > r0f(n2),r1f(n2);
-    fft(r0,w,r0f);
-    fft(r1,w,r1f);
+    complex<double> * r0f=f,*r1f=f+n2;
+    fft(t,n2,w,m,r0f);
+    fft(t+n2,n2,w,m,r1f);
     // Return a mix of r0/r1
-    res.clear();
-    res.reserve(n);
-    it=r0f.begin(); itend=it+n2; itn=r1f.begin();
+    it=t; itend=t+n2; itn=t+n2;
     for (;it!=itend;){
-      res.push_back(*it);
-      ++it;
-      res.push_back(*itn);
-      ++itn;
+      *f=*it;
+      ++it; ++f;
+      *f=*itn;
+      ++itn; ++f;
     }
   }
 
+  // inplace fft with positive representant
+  static inline int addmod(int a, int b, int p) { 
+    int t=(a-p)+b;
+#ifdef EMCC
+    if (t<0) return t+p; else return t;
+#else
+    t += (unsigned(t)>>31)*p;
+    return t; 
+#endif
+  }
+  static inline int submod(int a, int b, int p) { 
+    int t=a-b;
+#ifdef EMCC
+    if (t<0) return t+p; else return t;
+#else
+    t += (unsigned(t)>>31)*p;
+    return t; 
+#endif
+  }
+
+  static inline int mulmod(int a, int b, int p) { 
+    return (longlong(a)*b) % p;
+  }
+
   // Interesting primes (from A parallel implementation for polynomial multiplication modulo a prime, Law & Monagan, pasco 2015)
-  // p1 := 2013265921 ; r:=1227303670; root of unity order 2^27 
+  // p1 := 2013265921 ; r:=1227303670; root of unity order 2^27 (15*2^27+1)
   // p2 := 1811939329 ; r:=814458146; order 2^26 
   // p3 := 469762049 ; r:=2187; order 2^26
   // p4 := 2113929217 ; ( 63×2^25 +1)
@@ -4426,7 +4720,802 @@ namespace giac {
   // from multiplication in Z/p1, Z/p2, Z/p3 using fft
   // of size 2^k>degree(product), root of unity from a power of r
   // For multiplication in Z[x], do it mod sufficiently many primes<2^32
+  // input A with positive int, output fft in A
+  // W must contain 
+  // [1,w,...,w^(n/2-1),1,w^2,w^4,...,w^(n/2-2),1,w^4,...,w^(n/2-4)...,1,w^(n/4),1]
+  static void fft2p1( int *A, int n, int *W, int *T) {  
+    int i,n2,t;
+    if ( n==1 ) return;
+    // if p is fixed, the code is about 2* faster
+    const int p = 2013265921 ;
+    if (n==4){
+      int w1=W[1];
+#if 1
+      int f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=mulmod(submod(f1,f3,p),w1,p),f02p=addmod(f0,f2,p),f02m=submod(f0,f2,p),f13=addmod(f1,f3,p);
+      A[0]=addmod(f02p,f13,p);
+      A[1]=addmod(f02m,f01,p);
+      A[2]=submod(f02p,f13,p);
+      A[3]=submod(f02m,f01,p);
+#else
+      longlong f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=(f1-f3)*w1;
+      A[0]=(f0+f1+f2+f3)%p;
+      A[1]=(f0-f2+f01)%p;
+      A[2]=(f0-f1+f2-f3)%p;
+      A[3]=(f0-f2-f01)%p;
+#endif
+      return;
+    }
+    if (n==2){
+      longlong f0=A[0],f1=A[1];
+      A[0]=addmod(f0,f1,p);
+      A[1]=submod(f0,f1,p);
+      return;
+    }
+    n2 = n/2;
+    // Step 1 : arithmetic
+    int * Tn2=T+n2,*An2=A+n2;
+    for( i=0; i<n2; ++i ) {
+      int Ai,An2i;
+      Ai=A[i];
+      An2i=An2[i];
+      T[i] = addmod(Ai,An2i,p);
+      t = submod(Ai,An2i,p);
+      Tn2[i] = mulmod(t,W[i],p); 
+      i++;
+      Ai=A[i];
+      An2i=An2[i];
+      T[i] = addmod(Ai,An2i,p);
+      t = submod(Ai,An2i,p);
+      Tn2[i] = mulmod(t,W[i],p); 
+    }
+    // Step 2 : recursive calls
+    fft2p1(T, n2, W+n2, A);
+    fft2p1(Tn2, n2, W+n2, A+n2);
+    // Step 3 : permute
+    for( i=0; i<n2; ++i ) {
+      A[2*i] = T[i];
+      A[2*i+1] = Tn2[i]; 
+      ++i;
+      A[2*i] = T[i];
+      A[2*i+1] = Tn2[i]; 
+    }
+    return;
+  }  
+
+  static void fft2p1nopermbefore( int *A, int n, int *W) {  
+    int i,n2;
+    if ( n==1 ) return;
+    // if p is fixed, the code is about 2* faster
+    const int p = 2013265921 ;
+    if (n==4){
+      int w1=W[1];
+      int f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=mulmod(submod(f1,f3,p),w1,p),f02p=addmod(f0,f2,p),f02m=submod(f0,f2,p),f13=addmod(f1,f3,p);
+      A[0]=addmod(f02p,f13,p);
+      A[1]=addmod(f02m,f01,p);
+      A[2]=submod(f02p,f13,p);
+      A[3]=submod(f02m,f01,p);
+      return;
+    }
+    if (n==2){
+      longlong f0=A[0],f1=A[1];
+      A[0]=addmod(f0,f1,p);
+      A[1]=submod(f0,f1,p);
+      return;
+    }
+    n2 = n/2; // n2%4==0
+    fft2p1nopermbefore( A,    n2, W+n2);
+    int * An2=A+n2;
+    fft2p1nopermbefore( An2, n2, W+n2);
+    for( i=0; i<n2; i++ ) {
+      int s = A[i];
+      int t = mulmod(W[i],An2[i],p);
+      A[i] = addmod(s,t,p);
+      An2[i] = submod(s,t,p); 
+      ++i;
+      s = A[i];
+      t = mulmod(W[i],An2[i],p);
+      A[i] = addmod(s,t,p);
+      An2[i] = submod(s,t,p); 
+      ++i;
+      s = A[i];
+      t = mulmod(W[i],An2[i],p);
+      A[i] = addmod(s,t,p);
+      An2[i] = submod(s,t,p); 
+      ++i;
+      s = A[i];
+      t = mulmod(W[i],An2[i],p);
+      A[i] = addmod(s,t,p);
+      An2[i] = submod(s,t,p); 
+    }
+  }  
+
+  static void fft2p1nopermafter( int *A, int n, int *W) {  
+    int i,n2,t;
+    if ( n==1 ) return;
+    // if p is fixed, the code is about 2* faster
+    const int p = 2013265921 ;
+    if (n==4){
+      int w1=W[1];
+      int f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=mulmod(submod(f1,f3,p),w1,p),f02p=addmod(f0,f2,p),f02m=submod(f0,f2,p),f13=addmod(f1,f3,p);
+      A[0]=addmod(f02p,f13,p);
+      A[1]=addmod(f02m,f01,p);
+      A[2]=submod(f02p,f13,p);
+      A[3]=submod(f02m,f01,p);
+      return;
+    }
+    if (n==2){
+      longlong f0=A[0],f1=A[1];
+      A[0]=addmod(f0,f1,p);
+      A[1]=submod(f0,f1,p);
+      return;
+    }
+    n2 = n/2;
+    // Step 1 : arithmetic
+    int *An2=A+n2;
+    for( i=0; i<n2; ++i ) {
+      int Ai,An2i;
+      Ai=A[i];
+      An2i=An2[i];
+      A[i] = addmod(Ai,An2i,p);
+      t = submod(Ai,An2i,p);
+      An2[i] = mulmod(t,W[i],p); 
+      i++;
+      Ai=A[i];
+      An2i=An2[i];
+      A[i] = addmod(Ai,An2i,p);
+      t = submod(Ai,An2i,p);
+      An2[i] = mulmod(t,W[i],p); 
+    }
+    // Step 2 : recursive calls
+    fft2p1nopermafter(A, n2, W+n2);
+    fft2p1nopermafter(An2, n2, W+n2);
+  }  
+
+  static void fft4p1nopermafter( int *A, int n, int *W) {  
+    if ( n==1 ) return;
+    // if p is fixed, the code is about 2* faster
+    const int p = 2013265921 ;
+    if (n==4){
+      int w1=W[1];
+      int f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=mulmod(submod(f1,f3,p),w1,p),f02p=addmod(f0,f2,p),f02m=submod(f0,f2,p),f13=addmod(f1,f3,p);
+      A[0]=addmod(f02p,f13,p);
+      A[1]=addmod(f02m,f01,p);
+      A[2]=submod(f02p,f13,p);
+      A[3]=submod(f02m,f01,p);
+      return;
+    }
+    if (n==2){
+      longlong f0=A[0],f1=A[1];
+      A[0]=addmod(f0,f1,p);
+      A[1]=submod(f0,f1,p);
+      return;
+    }
+    int i,n2,n3,n4;
+    n4=n/4; n2=n/2; n3=n2+n4;
+    // Step 1 : arithmetic
+    int *An4=A+n4, *An2=A+n2, *A3n4=A+n3,*Wn4=W+n4;
+    for( i=0; i<n4; ++i ) {
+      int Ai,An2i,An4i,A3n4i;
+      Ai=A[i];
+      An4i=An4[i];
+      An2i=An2[i];
+      A3n4i=A3n4[i];
+      int w=W[2*i];
+      int s1 = addmod(Ai,An2i,p);
+      int s2 = addmod(An4i,A3n4i,p);
+      A[i]=addmod(s1,s2,p);
+      An4[i]=((longlong(s1)+p-s2)*w)%p;// mulmod(submod(s1,s2,p),w,p);
+      s1 = ((longlong(Ai)+p-An2i)*W[i])%p;// mulmod(submod(Ai,An2i,p),W[i],p);
+      s2 = ((longlong(An4i)+p-A3n4i)*Wn4[i])%p;// mulmod(submod(An4i,A3n4i,p),W[i+n4],p);
+      An2[i]=addmod(s1,s2,p);
+      A3n4[i]=((longlong(s1)+p-s2)*w)%p; // mulmod(submod(t1,t2,p),w,p);
+      ++i;
+      Ai=A[i];
+      An4i=An4[i];
+      An2i=An2[i];
+      A3n4i=A3n4[i];
+      w=W[2*i];
+      s1 = addmod(Ai,An2i,p);
+      s2 = addmod(An4i,A3n4i,p);
+      A[i]=addmod(s1,s2,p);
+      An4[i]=((longlong(s1)+p-s2)*w)%p;// mulmod(submod(s1,s2,p),w,p);
+      s1 = ((longlong(Ai)+p-An2i)*W[i])%p;// mulmod(submod(Ai,An2i,p),W[i],p);
+      s2 = ((longlong(An4i)+p-A3n4i)*Wn4[i])%p;// mulmod(submod(An4i,A3n4i,p),W[i+n4],p);
+      An2[i]=addmod(s1,s2,p);
+      A3n4[i]=((longlong(s1)+p-s2)*w)%p; // mulmod(submod(t1,t2,p),w,p);
+    }
+    // Step 2 : recursive calls
+    fft4p1nopermafter(A, n4, W+n2);
+    fft4p1nopermafter(A+n4, n4, W+n2);
+    fft4p1nopermafter(A+n2, n4, W+n2);
+    fft4p1nopermafter(A+n3, n4, W+n2);
+    if (n==8){
+      swapint(A[1],A[2]);
+      swapint(A[5],A[6]);
+    }
+  }  
+
+  static void fft2p2nopermbefore( int *A, int n, int *W) {  
+    int i,n2;
+    if ( n==1 ) return;
+    // if p is fixed, the code is about 2* faster
+    const int p = 1811939329 ;
+    if (n==4){
+      int w1=W[1];
+      int f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=mulmod(submod(f1,f3,p),w1,p),f02p=addmod(f0,f2,p),f02m=submod(f0,f2,p),f13=addmod(f1,f3,p);
+      A[0]=addmod(f02p,f13,p);
+      A[1]=addmod(f02m,f01,p);
+      A[2]=submod(f02p,f13,p);
+      A[3]=submod(f02m,f01,p);
+      return;
+    }
+    if (n==2){
+      longlong f0=A[0],f1=A[1];
+      A[0]=addmod(f0,f1,p);
+      A[1]=submod(f0,f1,p);
+      return;
+    }
+    n2 = n/2;
+    fft2p2nopermbefore( A,    n2, W+n2);
+    int * An2=A+n2;
+    fft2p2nopermbefore( An2, n2, W+n2);
+    for( i=0; i<n2; i++ ) {
+      int s = A[i];
+      int t = mulmod(W[i],An2[i],p);
+      A[i] = addmod(s,t,p);
+      An2[i] = submod(s,t,p); 
+      ++i;
+      s = A[i];
+      t = mulmod(W[i],An2[i],p);
+      A[i] = addmod(s,t,p);
+      An2[i] = submod(s,t,p); 
+      ++i;
+      s = A[i];
+      t = mulmod(W[i],An2[i],p);
+      A[i] = addmod(s,t,p);
+      An2[i] = submod(s,t,p); 
+      ++i;
+      s = A[i];
+      t = mulmod(W[i],An2[i],p);
+      A[i] = addmod(s,t,p);
+      An2[i] = submod(s,t,p); 
+    }
+  }  
+
+  static void fft2p2nopermafter( int *A, int n, int *W) {  
+    int i,n2,t;
+    if ( n==1 ) return;
+    // if p is fixed, the code is about 2* faster
+    const int p = 1811939329 ;
+    if (n==4){
+      int w1=W[1];
+      int f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=mulmod(submod(f1,f3,p),w1,p),f02p=addmod(f0,f2,p),f02m=submod(f0,f2,p),f13=addmod(f1,f3,p);
+      A[0]=addmod(f02p,f13,p);
+      A[1]=addmod(f02m,f01,p);
+      A[2]=submod(f02p,f13,p);
+      A[3]=submod(f02m,f01,p);
+      return;
+    }
+    if (n==2){
+      longlong f0=A[0],f1=A[1];
+      A[0]=addmod(f0,f1,p);
+      A[1]=submod(f0,f1,p);
+      return;
+    }
+    n2 = n/2;
+    // Step 1 : arithmetic
+    int *An2=A+n2;
+    for( i=0; i<n2; ++i ) {
+      int Ai,An2i;
+      Ai=A[i];
+      An2i=An2[i];
+      A[i] = addmod(Ai,An2i,p);
+      t = submod(Ai,An2i,p);
+      An2[i] = mulmod(t,W[i],p); 
+      i++;
+      Ai=A[i];
+      An2i=An2[i];
+      A[i] = addmod(Ai,An2i,p);
+      t = submod(Ai,An2i,p);
+      An2[i] = mulmod(t,W[i],p); 
+    }
+    // Step 2 : recursive calls
+    fft2p2nopermafter(A, n2, W+n2);
+    fft2p2nopermafter(An2, n2, W+n2);
+  }  
+
+  static void fft4p2nopermafter( int *A, int n, int *W) {  
+    if ( n==1 ) return;
+    // if p is fixed, the code is about 2* faster
+    const int p = 1811939329 ;
+    if (n==4){
+      int w1=W[1];
+      int f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=mulmod(submod(f1,f3,p),w1,p),f02p=addmod(f0,f2,p),f02m=submod(f0,f2,p),f13=addmod(f1,f3,p);
+      A[0]=addmod(f02p,f13,p);
+      A[1]=addmod(f02m,f01,p);
+      A[2]=submod(f02p,f13,p);
+      A[3]=submod(f02m,f01,p);
+      return;
+    }
+    if (n==2){
+      longlong f0=A[0],f1=A[1];
+      A[0]=addmod(f0,f1,p);
+      A[1]=submod(f0,f1,p);
+      return;
+    }
+    int i,n2,n3,n4;
+    n4=n/4; n2=n/2; n3=n2+n4;
+    // Step 1 : arithmetic
+    int *An4=A+n4, *An2=A+n2, *A3n4=A+n3,*Wn4=W+n4;
+    for( i=0; i<n4; ++i ) {
+      int Ai,An2i,An4i,A3n4i;
+      Ai=A[i];
+      An4i=An4[i];
+      An2i=An2[i];
+      A3n4i=A3n4[i];
+      int w=W[2*i];
+      int s1 = addmod(Ai,An2i,p);
+      int s2 = addmod(An4i,A3n4i,p);
+      A[i]=addmod(s1,s2,p);
+      An4[i]=((longlong(s1)+p-s2)*w)%p;// mulmod(submod(s1,s2,p),w,p);
+      s1 = ((longlong(Ai)+p-An2i)*W[i])%p;// mulmod(submod(Ai,An2i,p),W[i],p);
+      s2 = ((longlong(An4i)+p-A3n4i)*Wn4[i])%p;// mulmod(submod(An4i,A3n4i,p),W[i+n4],p);
+      An2[i]=addmod(s1,s2,p);
+      A3n4[i]=((longlong(s1)+p-s2)*w)%p; // mulmod(submod(t1,t2,p),w,p);
+      ++i;
+      Ai=A[i];
+      An4i=An4[i];
+      An2i=An2[i];
+      A3n4i=A3n4[i];
+      w=W[2*i];
+      s1 = addmod(Ai,An2i,p);
+      s2 = addmod(An4i,A3n4i,p);
+      A[i]=addmod(s1,s2,p);
+      An4[i]=((longlong(s1)+p-s2)*w)%p;// mulmod(submod(s1,s2,p),w,p);
+      s1 = ((longlong(Ai)+p-An2i)*W[i])%p;// mulmod(submod(Ai,An2i,p),W[i],p);
+      s2 = ((longlong(An4i)+p-A3n4i)*Wn4[i])%p;// mulmod(submod(An4i,A3n4i,p),W[i+n4],p);
+      An2[i]=addmod(s1,s2,p);
+      A3n4[i]=((longlong(s1)+p-s2)*w)%p; // mulmod(submod(t1,t2,p),w,p);
+    }
+    // Step 2 : recursive calls
+    fft4p2nopermafter(A, n4, W+n2);
+    fft4p2nopermafter(A+n4, n4, W+n2);
+    fft4p2nopermafter(A+n2, n4, W+n2);
+    fft4p2nopermafter(A+n3, n4, W+n2);
+    if (n==8){
+      swapint(A[1],A[2]);
+      swapint(A[5],A[6]);
+    }
+  }  
+
+  static void fft2p2( int *A, int n, int *W, int *T ) {  
+    int i,n2,t;
+    if ( n==1 ) return;
+    // if p is fixed, the code is about 2* faster
+    const int p = 1811939329 ;
+    if (n==4){
+      int w1=W[1];
+#if 1
+      int f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=mulmod(submod(f1,f3,p),w1,p),f02p=addmod(f0,f2,p),f02m=submod(f0,f2,p),f13=addmod(f1,f3,p);
+      A[0]=addmod(f02p,f13,p);
+      A[1]=addmod(f02m,f01,p);
+      A[2]=submod(f02p,f13,p);
+      A[3]=submod(f02m,f01,p);
+#else
+      longlong f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=(f1-f3)*w1;
+      A[0]=(f0+f1+f2+f3)%p;
+      A[1]=(f0-f2+f01)%p;
+      A[2]=(f0-f1+f2-f3)%p;
+      A[3]=(f0-f2-f01)%p;
+#endif
+      return;
+    }
+    if (n==2){
+      longlong f0=A[0],f1=A[1];
+      A[0]=addmod(f0,f1,p);
+      A[1]=submod(f0,f1,p);
+      return;
+    }
+    n2 = n/2;
+    // Step 1 : arithmetic
+    int * Tn2=T+n2,*An2=A+n2;
+    for( i=0; i<n2; ++i ) {
+      int Ai,An2i;
+      Ai=A[i];
+      An2i=An2[i];
+      T[i] = addmod(Ai,An2i,p);
+      t = submod(Ai,An2i,p);
+      Tn2[i] = mulmod(t,W[i],p); 
+      i++;
+      Ai=A[i];
+      An2i=An2[i];
+      T[i] = addmod(Ai,An2i,p);
+      t = submod(Ai,An2i,p);
+      Tn2[i] = mulmod(t,W[i],p); 
+    }
+    // Step 2 : recursive calls
+    fft2p2(T, n2, W+n2, A);
+    fft2p2(Tn2, n2, W+n2, A+n2);
+    // Step 3 : permute
+    for( i=0; i<n2; ++i ) {
+      A[2*i] = T[i];
+      A[2*i+1] = Tn2[i]; 
+      ++i;
+      A[2*i] = T[i];
+      A[2*i+1] = Tn2[i]; 
+    }
+    return;
+  }  
+
+  static void fft2( int *A, int n, int *W, int p, int *T ) {  
+    int i,n2,t;
+    if ( n==1 ) return;
+    if (p==2013265921){
+      fft2p1(A,n,W,T);
+      return;
+    }
+    if (p==1811939329){
+      fft2p2(A,n,W,T);
+      return;
+    }
+    if (n==4){
+      int w1=W[1];
+#if 1
+      int f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=mulmod(submod(f1,f3,p),w1,p),f02p=addmod(f0,f2,p),f02m=submod(f0,f2,p),f13=addmod(f1,f3,p);
+      A[0]=addmod(f02p,f13,p);
+      A[1]=addmod(f02m,f01,p);
+      A[2]=submod(f02p,f13,p);
+      A[3]=submod(f02m,f01,p);
+#else
+      longlong f0=A[0],f1=A[1],f2=A[2],f3=A[3],f01=(f1-f3)*w1;
+      A[0]=(f0+f1+f2+f3)%p;
+      A[1]=(f0-f2+f01)%p;
+      A[2]=(f0-f1+f2-f3)%p;
+      A[3]=(f0-f2-f01)%p;
+#endif
+      return;
+    }
+    n2 = n/2;
+    // Step 1 : arithmetic
+    int * Tn2=T+n2,*An2=A+n2;
+    for( i=0; i<n2; i++ ) {
+      int Ai,An2i;
+      Ai=A[i];
+      An2i=An2[i];
+      T[i] = addmod(Ai,An2i,p);
+      t = submod(Ai,An2i,p);
+      Tn2[i] = mulmod(t,W[i],p); 
+    }
+    // Step 2 : recursive calls
+    fft2(T, n2, W+n2, p, A);
+    fft2(Tn2, n2, W+n2, p, A+n2);
+    // Step 3 : permute
+    for( i=0; i<n2; i++ ) {
+      A[2*i] = T[i];
+      A[2*i+1] = Tn2[i]; 
+    }
+    return;
+  }  
+
+  void fft2wp1(vector<int> & W,int n,int w){
+    W.reserve(n); 
+    const int p = 2013265921 ;
+    w=w % p;
+    if (w<0) w += p;
+    longlong wk=w;
+    for (int N=n/2;N;N/=2,wk=(wk*wk)%p){
+      int ww=1;
+      for (int i=0;i<N;ww=(ww*wk)%p,++i){
+	W.push_back(ww);
+      }
+    }
+  }
+
+  static void fft4wp1(vector<int> & W,int n,int w){
+    W.reserve(n); 
+    const int p = 2013265921 ;
+    w=w % p;
+    if (w<0) w += p;
+    longlong wk=w;
+    for (int N=n/2;N;N/=4,wk=(wk*wk)%p,wk=(wk*wk)%p){
+      int ww=1;
+      for (int i=0;i<N;ww=(ww*wk)%p,++i){
+	W.push_back(ww);
+      }
+    }
+  }
+
+  void fft2wp2(vector<int> & W,int n,int w){
+    W.reserve(n); 
+    const int p = 1811939329 ;
+    w=w % p;
+    if (w<0) w += p;
+    longlong wk=w;
+    for (int N=n/2;N;N/=2,wk=(wk*wk)%p){
+      int ww=1;
+      for (int i=0;i<N;ww=(ww*wk)%p,++i){
+	W.push_back(ww);
+      }
+    }
+  }
+
+  static void fft4wp2(vector<int> & W,int n,int w){
+    W.reserve(n); 
+    const int p = 1811939329 ;
+    w=w % p;
+    if (w<0) w += p;
+    longlong wk=w;
+    for (int N=n/2;N;N/=4,wk=(wk*wk)%p,wk=(wk*wk)%p){
+      int ww=1;
+      for (int i=0;i<N;ww=(ww*wk)%p,++i){
+	W.push_back(ww);
+      }
+    }
+  }
+
+  void fft2w(vector<int> & W,int n,int w,int p){
+    W.reserve(n); 
+    w=w % p;
+    if (w<0) w += p;
+    longlong wk=w;
+    for (int N=n/2;N;N/=2,wk=(wk*wk)%p){
+      int ww=1;
+      for (int i=0;i<N;ww=(ww*wk)%p,++i){
+	W.push_back(ww);
+      }
+    }
+  }
+
+  void fft2(int * A, int n, int w, int p){
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " begin fft2 int " << n << " memory " << memory_usage()*1e-6 << "M" << endl;
+    vector<int> W,T(n);
+    fft2w(W,n,w,p);
+    int * Aend=A+n;
+    for (int * a=A;a<Aend;++a)
+      if (*a<0) *a += p;
+    fft2(A,n,&W.front(),p,&T.front());
+    for (int * a=A;a<Aend;++a)
+      if (*a<0) *a += p;    
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " end fft int " << n << " memory " << memory_usage()*1e-6 << "M" << endl;
+  }
+
+  void makepositive(int * p,int n,int modulo){
+    int * pend=p+n;
+    for (;p!=pend;++p){
+      int P=*p;
+      if (P>=0) continue;
+      P += modulo;
+      P += (unsigned(P)>>31)*modulo;
+      *p=P;
+    }
+  }
+
+  // copy source to target in reverse order
+  void reverse_copy(const vector<int> & source,vector<int> & target){
+    const int * sb=&source.front(), * s=sb+source.size();
+    int * t=&target.front();
+    for (;s!=sb;){
+      --s;
+      *t=*s;
+      ++t;
+    }
+  }
+
+  // res=a*b mod p
+  bool fft2mult(const vector<int> & a,const vector<int> & b,vector<int> & res,int modulo,vector<int> & W,vector<int> & T,vector<int> & fftmult_p,vector<int> & fftmult_q,bool reverseatend){
+    int as=a.size(),bs=b.size(),rs=as+bs-1;
+    int logrs=sizeinbase2(rs);
+    if (logrs>25) return false;
+    int n=(1u<<logrs);
+    W.reserve(n);
+    T.resize(n);
+    res.resize(n);
+#if 1
+    fftmult_p.clear(); fftmult_p.resize(n); fftmult_q.clear(); fftmult_q.resize(n);
+    reverse_copy(a,fftmult_p);
+    reverse_copy(b,fftmult_q);
+#else
+    fftmult_p=a;fftmult_q=b;
+    reverse(fftmult_p.begin(),fftmult_p.end());
+    fftmult_p.resize(n);
+    reverse(fftmult_q.begin(),fftmult_q.end());
+    fftmult_q.resize(n);
+#endif
+    // r:=1227303670; w:=powmod(r,2^(27-logrs),p1); 
+    // fft(p,w,p1);fft(q,w,p1); res=p.*q; ifft(res,w,p1);
+    const int p1=2013265921; int r=1227303670;
+    if (modulo==p1){
+      if (debug_infolevel>1)
+	CERR << CLOCK()*1e-6 << " + begin" << endl;
+      makepositive(&fftmult_p.front(),as,p1);
+      makepositive(&fftmult_q.front(),bs,p1);
+      if (debug_infolevel>1)
+	CERR << CLOCK()*1e-6 << " + end" << endl;
+      int w=powmod(r,(1u<<(27-logrs)),p1);
+      W.clear();
+#if 0
+      fft4wp1(W,n,w);
+      fft4p1nopermafter(&fftmult_p.front(),n,&W.front());
+      fft4p1nopermafter(&fftmult_q.front(),n,&W.front());
+      for (int i=0;i<n;++i){
+	fftmult_p[i]=mulmod(fftmult_p[i],fftmult_q[i],p1);
+      }
+      w=invmod(w,p1); if (w<0) w+=p1;
+      W.clear();
+      fft2wp1(W,n,w);
+      fft2p1nopermbefore(&fftmult_p.front(),n,&W.front());
+#else
+      fft2wp1(W,n,w);
+      fft2p1nopermafter(&fftmult_p.front(),n,&W.front());
+      fft2p1nopermafter(&fftmult_q.front(),n,&W.front());
+      for (int i=0;i<n;++i){
+	fftmult_p[i]=mulmod(fftmult_p[i],fftmult_q[i],p1);
+      }
+      w=invmod(w,p1); if (w<0) w+=p1;
+      W.clear();
+      fft2wp1(W,n,w);
+      fft2p1nopermbefore(&fftmult_p.front(),n,&W.front());
+#endif
+      fftmult_p.resize(rs);
+      int ninv=invmod(n,p1); if (ninv<0) ninv+=p1;
+      for (int i=0;i<rs;++i){
+	fftmult_p[i]=mulmod(ninv,fftmult_p[i],p1);
+	if (fftmult_p[i]>p1/2)
+	  fftmult_p[i]-=p1;
+      }
+      if (reverseatend)
+	reverse(fftmult_p.begin(),fftmult_p.end());
+      res.swap(fftmult_p);
+      return true;
+    }
+    const int p2=1811939329;r=814458146;
+    if (modulo==p2){// p2 := 1811939329 ; r:=814458146; order 2^26 
+      int w=powmod(r,(1u<<(26-logrs)),p2);
+      W.clear();
+      makepositive(&fftmult_p.front(),as,p2);
+      makepositive(&fftmult_q.front(),bs,p2);
+#if 0
+      fft4wp2(W,n,w);
+      fft4p2nopermafter(&fftmult_p.front(),n,&W.front());
+      fft4p2nopermafter(&fftmult_q.front(),n,&W.front());
+      for (int i=0;i<n;++i){
+	fftmult_p[i]=mulmod(fftmult_p[i],fftmult_q[i],p2);
+      }
+      w=invmod(w,p2); if (w<0) w+=p2;
+      W.clear();
+      fft2wp2(W,n,w);
+      fft2p2nopermbefore(&fftmult_p.front(),n,&W.front());
+#else
+      fft2wp2(W,n,w);
+      fft2p2nopermafter(&fftmult_p.front(),n,&W.front());
+      fft2p2nopermafter(&fftmult_q.front(),n,&W.front());
+      for (int i=0;i<n;++i){
+	fftmult_p[i]=mulmod(fftmult_p[i],fftmult_q[i],p2);
+      }
+      w=invmod(w,p2); if (w<0) w+=p2;
+      W.clear();
+      fft2wp2(W,n,w);
+      fft2p2nopermbefore(&fftmult_p.front(),n,&W.front());
+#endif
+      fftmult_p.resize(rs);
+      int ninv=invmod(n,p2); if (ninv<0) ninv+=p2;
+      for (int i=0;i<rs;++i){
+	fftmult_p[i]=mulmod(ninv,fftmult_p[i],p2);
+	if (fftmult_p[i]>p2/2)
+	  fftmult_p[i]-=p2;
+      }
+      if (reverseatend)
+	reverse(fftmult_p.begin(),fftmult_p.end());
+      res.swap(fftmult_p);
+      return true;
+    }
+    return false;
+  }
+
+  void fft(int * f,int n,const int * w,int m,int * t,int p){
+    if (n==1)
+      return ;
+    int step=m/n;
+    int k=0;
+    if (n%2){
+      for (k=3;k*k<=n;k++){
+	if (!(n%k))
+	  break;
+      }
+    }
+    else
+      k=2;
+    if (k*k>n){ 
+      // prime size, slow discrete Fourier transform
+      int *fj,*fend_=f+n-3,*fend=f+n;
+      int * res=t;
+      for (unsigned i=0;i<n;++i){
+	int tmp (0);
+	int pos=0,istep=i*step;
+	for (fj=f;fj<fend_;fj+=3){
+	  tmp =  (tmp + longlong(fj[0])*w[pos])%p;
+	  pos += istep-m; pos += (unsigned(pos)>>31)*m;// pos = (pos+istep)%m;
+	  tmp =  (tmp + longlong(fj[1])*w[pos])%p;
+	  pos += istep-m; pos += (unsigned(pos)>>31)*m;// pos = (pos+istep)%m;
+	  tmp =  (tmp + longlong(fj[2])*w[pos])%p;
+	  pos += istep-m; pos += (unsigned(pos)>>31)*m;// pos = (pos+istep)%m;
+	}
+	for (;fj<fend;++fj){
+	  tmp =  (tmp + longlong(fj[0])*w[pos])%p;
+	  pos += istep-m; pos += (unsigned(pos)>>31)*m;// pos = (pos+istep)%m;
+	}
+	*res=tmp;
+	++res;
+      }
+      for (fj=f,res=t;fj<fend;++fj,++res){
+	*fj=*res;
+      }
+      return;
+    }
+    if (k!=2){
+      // assumes n is divisible by k, nk=n/k
+      // P(X)=P_k(X)*[X^nk]^(k-1)+...+P_1(X) degree(P_k)<nk
+      // P(w^(kj+l))= Q_l ( (w^k)^j )
+      // with Q_l=P_1^(w^l)+w^(nk)*P_2^(w^l)+...
+      unsigned long n2=n/k;
+      for (unsigned j=0;j<k;j++){
+	// find Q[j]
+	int * Qj=t+n2*j;
+	for (unsigned i=0;i<n2;i++){
+	  longlong tmp(0);
+	  int pos=0,jn2step=j*n2*step;
+	  const int * fi=&f[i], *fiend=fi+k*n2;
+	  for (;fi<fiend;fi+=n2){
+	    tmp = (tmp+longlong(*fi)*w[pos]) % p;
+	    pos += jn2step-m; pos += (unsigned(pos)>>31)*m;
+	  }
+	  Qj[i]=(tmp*w[j*step*i])%p;
+	}
+      }
+      for (int j=0;j<k;++j){
+	fft(t+n2*j,n2,w,m,f+n2*j,p);
+      }
+      // build fft
+      for (unsigned i=0;i<n2;++i){
+	for (unsigned j=0;j<k;++j,++f)
+	  *f=t[n2*j+i];
+      }
+      return;
+    }
+    // Compute r0=sum_[j<n/2] (f_j+f_(j+n/2))*x^j
+    // and r1=sum_[j<n/2] (f_j-f_(j+n/2))*omega^[step*j]*x^j
+    unsigned long n2=n/2;
+    int * r0=t, *r1=t+n2;
+    int * it=f,*itn=f+n2,*itend=itn;
+    const int *itk=w;
+    for (;it!=itend;++itn,itk+=step,++it,++r0,++r1){
+      longlong a(*it),b(*itn);
+      *r0=(a+b)%p;
+      *r1=((a-b)*(*itk))%p;
+    }
+    // Recursive call
+    int * r0f=f,*r1f=f+n2;
+    fft(t,n2,w,m,r0f,p);
+    fft(t+n2,n2,w,m,r1f,p);
+    // Return a mix of r0/r1
+    it=t; itend=t+n2; itn=t+n2;
+    for (;it!=itend;){
+      *f=*it;
+      ++it; ++f;
+      *f=*itn;
+      ++itn; ++f;
+    }
+  }
+
   void fft(const vector<int> & f,const vector<int> & w ,vector<int> & res,int modulo){
+#if 1
+    res=f;
+    vector<int> tmp(w.size());
+    fft(&res.front(),res.size(),&w.front(),w.size(),&tmp.front(),modulo);
+    return;
+#endif
     // longlong M=longlong(modulo)*modulo;
     unsigned long n=long(f.size()); // unsigned long does not parse with gcc
     if (n==4){
@@ -4514,13 +5603,13 @@ namespace giac {
       r1.push_back(((a-b)*(*itk))%modulo);
     }
     // Recursive call
-    vector<int> r0f(n2),r1f(n2);
-    fft(r0,w,r0f,modulo);
-    fft(r1,w,r1f,modulo);
+    vector<int> r0f(n2);
+    fft(r0,w,r0f,modulo); // r0 is not used anymore, alias for r1f
+    fft(r1,w,r0,modulo);
     // Return a mix of r0/r1
     res.clear();
     res.reserve(n);
-    it=r0f.begin(); itend=it+n2; itn=r1f.begin();
+    it=r0f.begin(); itend=it+n2; itn=r0.begin();
     for (;it!=itend;){
       res.push_back(*it);
       ++it;
@@ -4528,6 +5617,7 @@ namespace giac {
       ++itn;
     }
   }
+
 
   // Convolution of p and q, omega a n-th root of unity, n=2^k
   // WARNING p0 and q0 are given in ascending power
@@ -4583,14 +5673,215 @@ namespace giac {
     pq=trim(pq,env);
   }
 
+  // p must be non 0
+  void vecteur2vectorint(const vecteur & v,int p,vector<int> & res){
+    vecteur::const_iterator it=v.begin(),itend=v.end();
+    res.clear();
+    res.reserve(itend-it);
+    const int p1=2013265921,p2=1811939329;
+    if (p==p1){
+      for (;it!=itend;++it){
+	if (it->type==_ZINT)
+	  res.push_back(modulo(*it->_ZINTptr,p1));
+	else
+	  res.push_back(it->val % p1);
+      }
+      return;
+    }
+    if (p==p2){
+      for (;it!=itend;++it){
+	if (it->type==_ZINT)
+	  res.push_back(modulo(*it->_ZINTptr,p2));
+	else
+	  res.push_back(it->val % p2);
+      }
+      return;
+    }
+    for (;it!=itend;++it){
+      if (it->type==_ZINT)
+	res.push_back(modulo(*it->_ZINTptr,p));
+      else
+	res.push_back(it->val % p);
+    }
+  } 
+
   // Product of polynomial with integer coeffs using FFT
-  // Only useful for large degree (around 1000 for coeff of size 2^degree(p))
-  // Following ntl src/ZZX1.c SSMul
-  void fftmult(const modpoly & p,const modpoly & q,modpoly & pq){
-    int ps=int(p.size()),qs=int(q.size());
+  void fftmult(const modpoly & p,const modpoly & q,modpoly & pq,int modulo,	vector<int> & a,vector<int>&b,vector<int> &resp1,vector<int>&resp2,bool compute_pq){
+    vector<int> W,T,tmp_p,tmp_q;
+#if 1
+    gen P=norm(p,context0), Q=norm(q,context0); // coeff assumed to be integers -> no context
+    int ps=int(p.size()),qs=int(q.size()),mindeg=giacmin(ps-1,qs-1);
+    int rs=ps+qs-1;
+    pq.clear(); pq.reserve(rs);
+    gen PQ=P*Q;
+#if 0 // def HAVE_LIBGMP
+    if (modulo){
+      vector<int> a,b; 
+      int shift=int(std::ceil(std::log(modulo*double(modulo)*mindeg)/std::log(2.0)));
+      if (shift<=64) shift=64;
+      else shift=128;
+      if (shift==64){
+	if (debug_infolevel)
+	  CERR << CLOCK()*1e-6 << " begin Kronecker gmp conversion " << rs << endl;
+	vecteur2vectorint(p,modulo,a);
+	makepositive(&a.front(),ps,modulo);
+	vecteur2vectorint(q,modulo,b);
+	makepositive(&b.front(),qs,modulo);
+	mpz_t tmp1,tmp2;
+	mpz_init2(tmp1,shift*rs);
+	mpz_init2(tmp2,shift*rs);
+	vector<longlong> A(ps),B(qs),C(rs);
+	for (int i=0;i<ps;++i)
+	  A[i]=a[i];
+	for (int i=0;i<qs;++i)
+	  B[i]=b[i];
+	mpz_import(tmp1,ps,1,sizeof(longlong),0,0,&A.front());
+	mpz_import(tmp2,qs,1,sizeof(longlong),0,0,&B.front());
+	//CERR << gen(tmp1) << endl << gen(tmp2) << endl;
+	if (debug_infolevel)
+	  CERR << CLOCK()*1e-6 << " begin Kronecker gmp mult " << rs << endl;
+	mpz_mul(tmp1,tmp1,tmp2);
+	if (debug_infolevel)
+	  CERR << CLOCK()*1e-6 << " end Kronecker gmp mult " << rs << endl;
+	size_t countp;
+	mpz_export(&C.front(),&countp,1,sizeof(longlong),0,0,tmp1);
+	for (int i=0;i<rs;++i){
+	  int tmp(C[i] % modulo);
+	  if (tmp>modulo/2) tmp-=modulo;
+	  pq.push_back(tmp);
+	}
+	mpz_clear(tmp1); mpz_clear(tmp2);
+	if (debug_infolevel)
+	  CERR << CLOCK()*1e-6 << " end Kronecker conversion " << rs << endl;
+	return;
+      }
+    }
+#endif
+    PQ=evalf_double(P*Q,1,context0);
+    const int p1=2013265921,p2=1811939329,p3=469762049;
+    const longlong p1p2=longlong(p1)*p2,p1p2sur2=p1p2/2;
+    if (PQ.type==_DOUBLE_){
+      double PQd=PQ._DOUBLE_val;
+      if (modulo){
+	double pq2=modulo*double(modulo);
+	if (pq2<PQd)
+	  PQd=pq2;
+      }
+      double test=PQd*mindeg;
+      if (test<p2*double(p1)/2 || modulo==p1 || modulo==p2){
+	vecteur2vectorint(p,modulo?modulo:p1,a);
+	vecteur2vectorint(q,modulo?modulo:p1,b);
+	if (debug_infolevel)
+	  CERR << CLOCK()*1e-6 << (modulo==p2?" begin fft2 p2 ":" begin fft2 p1 ") << rs << endl;
+	if (modulo==p2) 
+	  fft2mult(a,b,resp1,p2,W,T,tmp_p,tmp_q,false);
+	else
+	  fft2mult(a,b,resp1,p1,W,T,tmp_p,tmp_q,false);
+	if (debug_infolevel)
+	  CERR << CLOCK()*1e-6 << (modulo==p2?" end fft2 p2":" end fft2 p1 ") << rs << endl;
+	if (test>=p1/2 && modulo!=p1 && modulo!=p2) {
+	  if (debug_infolevel)
+	    CERR << CLOCK()*1e-6 << " begin fft2 p2 " << rs << endl;
+	  if (!modulo){
+	    vecteur2vectorint(p,p2,a);
+	    vecteur2vectorint(q,p2,b);
+	  }
+	  fft2mult(a,b,resp2,p2,W,T,tmp_p,tmp_q,false);
+	  if (debug_infolevel)
+	    CERR << CLOCK()*1e-6 << " end fft2 p2 " << rs << endl;
+	  int p1modinv=invmod(p1,p2);
+	  int modulo2=modulo/2;
+	  if (modulo){
+	    for (int i=0;i<rs;++i){
+	      int A=resp1[i],B=resp2[i];
+	      // a mod p1, b mod p2 -> res mod p1*p2
+	      longlong res=A+((longlong(p1modinv)*(B-A))%p2)*p1;
+	      //res += (ulonglong(res)>>63)*p1p2; res -= (ulonglong(p1p2/2-res)>>63)*modulo;
+	      if (res>p1p2sur2) res-=p1p2; else if (res<-p1p2sur2) res+=p1p2;
+	      A=res % modulo;
+	      A += (unsigned(A)>>31)*modulo; // A now positive
+	      A -= (unsigned(modulo2-A)>>31)*modulo; // if (A>modulo2) A-=modulo;
+	      resp1[i]=A;
+	    }
+	  }
+	  else {
+	    for (int i=0;i<rs;++i){
+	      int A=resp1[i],B=resp2[i];
+	      // a mod p1, b mod p2 -> res mod p1*p2
+	      longlong res=A+((longlong(p1modinv)*(B-A))%p2)*p1;
+	      //res += (ulonglong(res)>>63)*p1p2; res -= (ulonglong(p1p2/2-res)>>63)*modulo;
+	      if (res>p1p2sur2) res-=p1p2; else if (res<-p1p2sur2) res+=p1p2;
+	      pq.push_back(res);
+	    }
+	  }
+	  if (debug_infolevel)
+	    CERR << CLOCK()*1e-6 << " end fft2 chinrem " << rs << endl;
+	  if (!modulo){
+	    reverse(pq.begin(),pq.end());
+	    return;
+	  }
+	}
+	reverse(resp1.begin(),resp1.end());
+	if (!modulo || compute_pq)
+	  vector_int2vecteur(resp1,pq);
+	return;
+      }
+    }
+    if (modulo==0){
+      if (debug_infolevel)
+	CERR << CLOCK()*1e-6 << " begin fft2 int, p1 " << rs << endl;
+      // first prime used is p1
+      fftmult(p,q,pq,p1,a,b,resp1,resp2,false);
+      if (debug_infolevel)
+	CERR << CLOCK()*1e-6 << " end fft2 int p1 " << rs << endl;
+      gen bound=p1;
+      if (debug_infolevel)
+	CERR << CLOCK()*1e-6 << " begin fft2 int p2 " << rs << endl;
+      fftmult(p,q,pq,p2,a,b,resp2,resp1,false);
+      if (debug_infolevel)
+	CERR << CLOCK()*1e-6 << " end fft2 int p2 " << rs << endl;
+      bound=p2*bound;
+      P=2*mindeg*P*Q;
+      int nbits=256;
+#ifndef USE_GMP_REPLACEMENTS
+      if (P.type==_ZINT)
+	nbits=(mpz_sizeinbase(*P._ZINTptr,2)/64+1)*64;
+#endif
+#if 1
+      int p1modinv=invmod(p1,p2);
+      for (int i=0;i<rs;++i){
+	//int A=pq[i].val,B=curres[i].val;
+	int A=resp1[i],B=resp2[i];
+	// a mod p1, b mod p2 -> res mod p1*p2
+	longlong res=A+((longlong(p1modinv)*(B-A))%p2)*p1;
+	if (res>p1p2sur2) res-=p1p2;
+	else if (res<-p1p2sur2) res+=p1p2;
+	pq.push_back(gen(res,nbits)); // pq[i]=res;
+      }
+#else
+      ichinrem_inplace(pq,curres,p1,p2); // pq=ichinrem(pq,curres,p1,p2);
+#endif
+      modpoly curres; // not used
+      // valid primes m must verify m*m<1.8e18/mindeg
+      int prime=int(std::sqrt(1.8e18/mindeg));
+      while(is_greater(P,bound,context0)){
+	prime=prevprime(prime-1).val;
+	curres.clear();
+	if (debug_infolevel)
+	  CERR << CLOCK()*1e-6 << " BEGIN FFT2 MOD " << prime << endl;
+	fftmult(p,q,curres,prime,a,b,resp1,resp2,false);
+	if (debug_infolevel)
+	  CERR << CLOCK()*1e-6 << " END FFT2 MOD " << prime << endl;
+	ichinrem_inplace(pq,resp1,bound,prime); // pq=ichinrem(pq,curres,bound,prime);
+	bound=prime*bound;
+      }
+      return;
+    }
+#endif
+    // Only useful for large degree (around 1000 for coeff of size 2^degree(p))
+    // Following ntl src/ZZX1.c SSMul
     unsigned long l=gen(ps+qs-1).bindigits()-1; // m=2^l <= deg(p*q) < 2^{l+1}
     // long m2 = 1u << (l + 1); /* m2 = 2m = 2^{l+1} */
-    gen P=norm(p,0), Q=norm(q,0); // coeff assumed to be integers -> no context
     P=gen(giacmin(ps,qs))*P*Q+1;
     unsigned long bound=P.bindigits()+1; // 2^bound=smod bound on coeff of p*q
     unsigned long r=(bound >> l)+1;
@@ -4601,6 +5892,11 @@ namespace giac {
     env->pn=env->modulo;
     env->moduloon=true;
     fftconv(p,q,l+1,pow(plus_two,r),pq,env);
+  }
+
+  void fftmult(const modpoly & p,const modpoly & q,modpoly & pq,int modulo){
+    vector<int> a,b,resp1,resp2;
+    fftmult(p,q,pq,modulo,a,b,resp1,resp2,true);
   }
 
   modpoly fftmult(const modpoly & p,const modpoly & q){

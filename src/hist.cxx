@@ -5,7 +5,7 @@
 #ifdef FL_DEVICE
 #include <FL/Fl_Printer.H>
 #endif
-/* */ namespace xcas { extern int printer_format; extern bool printer_landscape; void widget_ps_print(Fl_Widget * widget,const std::string & fname,bool eps,int pngpdf,bool preview,bool ); void widget_print(Fl_Widget * widget);}
+/* */ namespace xcas { extern int printer_format; extern bool printer_landscape; void widget_ps_print(Fl_Widget * widget,const std::string & fname,bool eps,int pngpdf,bool preview,bool,bool ); void widget_print(Fl_Widget * widget);}
 #ifdef HAVE_MALLOC_H
 #include <malloc.h>
 #endif
@@ -559,25 +559,7 @@ void load_history(int mws) {
 
 void load_filename(const char * filename,bool modified) {
   Fl_Group * s = Xcas_Main_Tab;
-          Fl_Group::current(0);
-          xcas::History_Fold * w = new xcas::History_Fold(s->x()+2,s->y()+s->labelsize()+4,s->w()-4,s->h()-s->labelsize()-6,1);
-          w->end();
-          w->pack->contextptr = giac::clone_context(giac::context0);
-          w->pack->labelsize(s->labelsize());
-          w->pack->eval=xcas::Xcas_eval;
-          w->pack->_insert=xcas::Xcas_pack_insert;
-          w->pack->_select=xcas::Xcas_pack_select;  
-  	w->pack->new_url(filename);
-          w->pack->insert_url(filename,-1);
-          w->labelfont(w->pack->labelfont());
-          xcas::change_group_fontsize(w,w->pack->labelsize());
-          if (!modified)
-            w->pack->clear_modified();
-          else {
-            w->autosave(true);  
-            if (w->pack->url){ delete w->pack->url; w->pack->url=0; }
-            w->label("Unnamed");
-          }
+          xcas::History_Fold * w=xcas::load_history_fold(s->x()+2,s->y()+s->labelsize()+4,s->w()-4,s->h()-s->labelsize()-6,s->labelsize(),filename,modified);
           // w->pack->focus(0,true);
           Xcas_Main_Tab->add(w); 
           Xcas_Main_Tab->value(Xcas_Main_Tab->child(Xcas_Main_Tab->children()-1));
@@ -725,7 +707,7 @@ void cb_Assistant_ItemName(Fl_Widget * wid , void* ptr) {
         if (ii==1)
   	ans = ans +"()";
         if (xcas::Xcas_Text_Editor * in =dynamic_cast<xcas::Xcas_Text_Editor *>(w)){
-  	  if (ii==1){
+  	  if (ii>=1){
   	    in->buffer()->insert(in->insert_position(),ans.c_str());
   	    in->insert_position(in->insert_position()+ans.size()-1);
   	  }
@@ -1036,7 +1018,7 @@ static void cb_Xcas_LaTeX_Print_Selection(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_screen_capture(Fl_Menu_*, void*) {
-  xcas::widget_ps_print(Xcas_Main_Window_,"window",true,3,true,false);
+  xcas::widget_ps_print(Xcas_Main_Window_,"window",true,3,true,false,true);
 }
 
 static void cb_Xcas_create_links(Fl_Menu_*, void*) {
@@ -3080,7 +3062,7 @@ xcas::DispG_Window *Xcas_DispG_Window_=(xcas::DispG_Window *)0;
 Fl_Menu_Bar *Xcas_DispG_Menu=(Fl_Menu_Bar *)0;
 
 static void cb_preview(Fl_Menu_*, void*) {
-  xcas::widget_ps_print(Xcas_DispG_,"DispG",true,3,true,true);
+  xcas::widget_ps_print(Xcas_DispG_,"DispG",true,3,true,true,true);
 }
 
 static void cb_print(Fl_Menu_*, void*) {
@@ -5282,8 +5264,19 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   a_propos();
   show_rpn_menu(0);
   if (argc>argstart){
-    for (int i=argstart;i<argc;++i)
+    bool link=false;
+    if (!strcmp(argv[argstart],"--online")){
+      link=true; ++argstart; 
+    }
+    for (int i=argstart;i<argc;++i){
       load_filename(argv[i],false);
+      if (link){
+        std::string html5="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session()); std::cout << html5 << std::endl; giac::system_browser_command(html5);
+      }
+    }
+    if (link){
+      return 0;
+    }
   }
   else make_history();
     bool running=true;
@@ -5294,6 +5287,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
       running=!Xcas_save_all(Xcas_Main_Tab);
       if (running) Xcas_Main_Window_->show();
     }
+    return 0;
   return Xcas_DispG_Window_;
 }
 

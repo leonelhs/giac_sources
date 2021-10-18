@@ -51,13 +51,16 @@ width:400px;
 </script>
 
 <div id="startup">
-  During load time, the tutorial is displayed. Once Xcas is
+  During load time, the tutorial is displayed. Once the page is
   ready (this will take more than one minute the first time, at most
   a few seconds the next times), the tutorial will be hidden.
   You can display it again by clicking on the Tutorial button below.
   <br>
   If Xcas does not work correctly, clear your browser cache and reload
   the page.
+  <br>
+  You can partially open an existing session from the File, Clone
+  menu of the Xcas program (or <tt>xcas --online filename.xws</tt>).
 </div>
 
 <span id="apropos" style="display:none">
@@ -536,7 +539,7 @@ ok</button>
    <button style="height:25px" onclick="cmentree.setValue('//'+cmentree.getValue()); cmentree.focus();" title="Comment">//</button>
 &nbsp;&nbsp;
 <button style="height:25px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Add a slider">Slider</button>
-<button id="stop_button" style="height:25px" onclick="if (UI.webworker && confirm('Really kill current session ?')){ UI.webworker.terminate(); UI.webworker=0;}" title="End current session">STOP</button>
+<button id="stop_button" style="height:25px;visibility:hidden" onclick="if (UI.webworker && confirm('Really kill current session ?')){ UI.webworker.terminate(); UI.busy=0; UI.webworker=0;alert('Session restarted. Everything has been cleared.');}" title="End current session">STOP</button>
 <textarea name="entree" id="entree" size=60></textarea>
 </span>
 <b>Console</b>
@@ -1143,6 +1146,28 @@ ok</button>
   canvas_lastx:0,
   canvas_lasty:0,
   canvas_pushed:false,
+  createCookie:function(name,value,days) {
+	if (days) {
+	  var date = new Date();
+	  date.setTime(date.getTime()+(days*24*60*60*1000));
+	  var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
+  },
+  readCookie:function(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+	  while (c.charAt(0)==' ') c = c.substring(1,c.length);
+	  if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+  },
+  eraseCookie:function(name) {
+	createCookie(name,"",-1);
+  },
   browser_type: function(){
    var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
    var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
@@ -1175,6 +1200,7 @@ ok</button>
   },
   webworker:0,
   withworker:0,
+  busy:0,
   casevalcb: function(text,callback,args){
    // prepare for webworker: casevalcb will run docaseval in a worker
    // too slow to be useful, and plotting does not work...
@@ -1182,22 +1208,15 @@ ok</button>
      if (!UI.webworker){
       UI.webworker = new Worker("giacworker.js");
       console.log('worker created ');
-      UI.webworker.onmessage =  function(e){
-       var s=e.data[1];
-       if (e.data[0]=='cas') Module.print(s);
-       if (e.data[0]=='print') Module.print(s);
-      }
      }
      // the worker will do the evaluation and post s
-     // onmessage = function(e){    importScripts('giac.js');     var docaseval = Module.cwrap('caseval',  'string', ['string']);    var value=e.data[0];    var n=value.search(';');    if (n<0 || n>=value.length)	value='add_autosimplify('+value+')';    var s,err;try {s=docaseval(value); } catch(err){ }    postMessage([s]);}
-     // callback(s,args) is run by
-     // passing text
-      UI.webworker.onmessage =  function(e){
-       var s=e.data[1];
+     UI.webworker.onmessage =  function(e){
+       var s=e.data[1]; UI.busy=0;
        if (e.data[0]=='cas') callback(s,args);
        if (e.data[0]=='print') Module.print(s);
-      }
-     UI.webworker.postMessage([text]);
+     }
+     UI.busy=1;
+     UI.webworker.postMessage(['eval',text]);
      return;
      // STOP: myWorker.terminate()
    }
@@ -1353,27 +1372,50 @@ ok</button>
    else
      UI.docprefix="file://"+form.doc_path.value;
    if (form.prettyprint.checked) UI.prettyprint=true; else UI.prettyprint=false;
-   if (form.worker_mode.checked) UI.withworker=true; else UI.withworker=false;
+   if (form.worker_mode.checked){
+     if (!UI.withworker) alert('Session restarted (variables cleared). Computations will be done by a webworker.')
+     UI.withworker=true;
+   } else {
+     if (UI.withworker) alert('Session restarted (variables cleared).')
+     UI.withworker=false;
+   }
+   if (UI.withworker) document.getElementById('stop_button').style.visibility='visible'; else document.getElementById('stop_button').style.visibility='hidden';
    UI.caseval("autosimplify("+form.autosimp_level.value+")");
    //Module.print(st.innerHTML);
    s='Digits:=';
    s += form.digits_mode.value;
-   s += '; angle_radian:=';
+   s += ';angle_radian:=';
    if (form.angle_mode.checked) s += 1; else s += 0;
-   s += '; complex_mode:=';
+   s += ';complex_mode:=';
    if (form.complex_mode.checked) s += 1; else s += 0;
-   s += '; with_sqrt(';
+   s += ';with_sqrt(';
    if (form.sqrt_mode.checked) s += 1; else s += 0;
-   s += '); step_infolevel(';
+   s += ');step_infolevel(';
    if (form.step_mode.checked) s += 1; else s += 0;
    s += ');';
    return s;
   },
   set_config:function(){
-   // Module.print(s);
-   UI.addhelp(' ',UI.config_string());
+   var form=document.getElementById('config');
+   var s=UI.config_string();
+   console.log(s);
+   UI.addhelp(' ',s);
    document.getElementById('config').style.display='none';
    if (UI.focusaftereval) UI.focused.focus();
+   UI.createCookie('xcas_digits',form.digits_mode.value,10000);
+   UI.createCookie('xcas_angle_radian',form.angle_mode.checked?1:0,10000);
+   UI.createCookie('xcas_complex_mode',form.complex_mode.checked?1:0,10000);
+   UI.createCookie('xcas_with_sqrt',form.sqrt_mode.checked?1:0,10000);
+   UI.createCookie('xcas_step_infolevel',form.step_mode.checked?1:0,10000);
+   UI.createCookie('xcas_autosimplify',form.autosimp_level.value,10000);
+   UI.createCookie('xcas_docprefix',UI.docprefix,10000);
+   UI.createCookie('xcas_withworker',UI.withworker?1:0,10000);
+   UI.createCookie('xcas_prettyprint',UI.prettyprint?1:0,10000);
+   UI.createCookie('xcas_qa',UI.qa?1:0,10000);
+   UI.createCookie('xcas_history_width',form.history_width.value,10000);
+   UI.createCookie('xcas_history_height',form.history_height.value,10000);
+   UI.createCookie('xcas_outdiv_width',form.outdiv_width.value,10000);
+   UI.createCookie('xcas_outdiv_height',form.outdiv_height.value,10000);
   },
   savesession:function(i){
     var s;
@@ -1558,8 +1600,7 @@ ok</button>
   } else {
     if (docaseval) {
       //Module.print(value);
-      out=UI.casevalcb(value,UI.eval_cmdline1cb,value);
-      return;
+      if (UI.busy) { out=" Computing kernel is busy."; s=out; } else {out=UI.casevalcb(value,UI.eval_cmdline1cb,value);return;}
     }
     else { out=' Non evalue '; s=out; }
   }
@@ -2212,7 +2253,32 @@ insert: function(myField, myValue) {
   var form=document.getElementById('config');
   var hw=window.innerWidth-50;
   if (hw>=1000){ UI.qa=true; form.qa.checked=true;}
-  UI.caseval(UI.config_string()); //UI.set_config_width();
+  // config in cookies
+  var ck;
+  ck=UI.readCookie('xcas_digits');
+  if (ck) form.digits_mode.value=eval(ck);
+  ck=UI.readCookie('xcas_angle_radian');
+  if (ck) form.angle_mode.checked=(ck=='1');
+  ck=UI.readCookie('xcas_complex_mode');
+  if (ck) form.complex_mode.checked=(ck=='1');
+  ck=UI.readCookie('xcas_with_sqrt');
+  if (ck) form.sqrt_mode.checked=(ck=='1');
+  ck=UI.readCookie('xcas_step_infolevel');
+  if (ck) form.step_mode.checked=(ck=='1');
+  ck=UI.readCookie('xcas_autosimplify');
+  if (ck) form.autosimp_level.value=eval(ck);
+  ck=UI.readCookie('xcas_docprefix');
+  if (ck) UI.docprefix=ck;
+  ck=UI.readCookie('xcas_withworker');
+  if (ck) form.worker_mode.checked=(ck=='1');
+  UI.withworker=form.worker_mode.checked;
+  ck=UI.readCookie('xcas_prettyprint');
+  if (ck) form.prettyprint.checked=(ck=='1');
+  UI.prettyprint=form.prettyprint.checked;
+  ck=UI.readCookie('xcas_qa'); 
+  if (ck) UI.qa=(ck=='1');
+  ck=UI.config_string(); console.log(ck);
+  UI.caseval(ck); //UI.set_config_width();
   var ua = window.navigator.userAgent;
   var old_ie = ua.indexOf('MSIE ');
   var new_ie = ua.indexOf('Trident/');
@@ -2233,7 +2299,7 @@ insert: function(myField, myValue) {
  var asked=false;
  if (hist.firstChild){
   asked=true;
-  if (confirm('Evaluate history levels?')) {
+  if (!UI.withworker && confirm('Evaluate history levels?')) {
    doexec=true;
   }
   // else {alert('Historique non execute');}
@@ -2247,7 +2313,8 @@ insert: function(myField, myValue) {
     s=s.replace('%20',' ','g');
     if (s.length && s.charAt(0)=='+'){
        if (!asked) doexec=true;
-       UI.eval_cmdline1(s.substr(1),false);
+       s=s.substr(1);
+       if (s.length) UI.eval_cmdline1(s,false);
        continue;
     }
     if (s.length && s.charAt(0)=='*'){
