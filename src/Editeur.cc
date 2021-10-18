@@ -2758,6 +2758,8 @@ namespace xcas {
       if (empty_line)
 	indent = 0;
       else {
+	while (*ch==' ') 
+	  ++ch;
 	int firstchar=*ch,lastchar = *ch,prevlast=0;
 	if (lastchar ==';' && !*(ch+1))
 	  indent -= 2;
@@ -2767,7 +2769,7 @@ namespace xcas {
 	  switch (*ch){
 	  case '(': case '[': case '{':
 	    indent += 2;
-		break;
+	    break;
 	  case ')': case ']': case '}':
 	    indent -=2;
 	    break;
@@ -2780,10 +2782,10 @@ namespace xcas {
 	  }
 	}
 	Lastchar=lastchar;
-	    // Last non space should be { or ; 
-	if (lastchar=='{' || (lastchar=='}' && firstchar!='}') || (lastchar==';' && prevlast!='}' ) )
+	// Last non space should be { or ; 
+	if ( (lastchar=='{' && firstchar!='}') || (lastchar=='}' && firstchar!='}') || (lastchar==';' && prevlast!='}' ) )
 	  indent -=2;
-	    free(ch_);
+	free(ch_);
       }
     }
     // Now indent line
@@ -2792,7 +2794,7 @@ namespace xcas {
     for (;*ch;++ch,--delta){
       if (*ch!=' ')
 	break;
-	}
+    }
     if (*ch=='}')
       indent -= 2;
     string mot;

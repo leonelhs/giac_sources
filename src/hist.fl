@@ -1084,12 +1084,12 @@ Function {Xcas_run(int argc,char ** argv)} {open
            MenuItem Xcas_CloneOffline {
              label Offline
              xywh {10 10 100 20}
-             callback { std::string html5=giac::browser_command("doc/xcasfr.html\#"+xcas::widget_html5(Xcas_current_session())); std::cout << html5 << std::endl; system(html5.c_str());} 
+             callback { std::string html5=giac::browser_command("doc/xcasfr.html\#"+xcas::widget_html5(Xcas_current_session())); std::cout << html5 << std::endl; system(html5.c_str());}
            }
            MenuItem Xcas_CloneOnline {
              label Online
              xywh {10 10 100 20}
-             callback { std::string html5="http://www-fourier.ujf-grenoble.fr/~parisse/"+xcas::widget_html5(Xcas_current_session())+"\#"; std::cout << html5 << std::endl; giac::system_browser_command(html5);} 
+             callback { std::string html5="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html\#"+xcas::widget_html5(Xcas_current_session()); std::cout << html5 << std::endl; giac::system_browser_command(html5);} 
            }
 	}
         Submenu Xcas_Insert {

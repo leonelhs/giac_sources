@@ -960,7 +960,7 @@ static void cb_Xcas_CloneOffline(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_CloneOnline(Fl_Menu_*, void*) {
-  std::string html5="http://www-fourier.ujf-grenoble.fr/~parisse/"+xcas::widget_html5(Xcas_current_session()); std::cout << html5 << std::endl; giac::system_browser_command(html5);
+  std::string html5="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session()); std::cout << html5 << std::endl; giac::system_browser_command(html5);
 }
 
 static void cb_Xcas_Insert_Session(Fl_Menu_*, void*) {

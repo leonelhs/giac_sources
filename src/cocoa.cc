@@ -3880,6 +3880,7 @@ namespace giac {
     tdeg_t deg;
     order_t o;
     unsigned terms;
+    int age;
   };
   
   bool operator < (const zsymb_data & z1,const zsymb_data & z2){
@@ -3888,6 +3889,9 @@ namespace giac {
       return tdeg_t_greater(z2.deg,z1.deg,z1.o);
     if (z1.terms!=z2.terms) return z2.terms>z1.terms;
 #else 
+    int d1=z1.deg.total_degree(z1.o),d2=z2.deg.total_degree(z2.o);
+    //double Z1=d1*double(z1.terms)*(z1.age+1); double Z2=d2*double(z2.terms)*(z2.age+1); if (Z1!=Z2) return Z2>Z1;
+    double Z1=double(z1.terms)*d1; double Z2=double(z2.terms)*d2; if (Z1!=Z2) return Z2>Z1;
     if (z1.terms!=z2.terms) return z2.terms>z1.terms;
     if (z1.deg!=z2.deg)
       return tdeg_t_greater(z1.deg,z2.deg,z1.o);
@@ -3912,7 +3916,7 @@ namespace giac {
     for (unsigned i=0;i<Gs;++i){
       int Gi=G[i];
       const polymod & cur=res[Gi];
-      zsymb_data tmp={Gi,cur.coord.empty()?0:cur.coord.front().u,o,cur.coord.size()};
+      zsymb_data tmp={Gi,cur.coord.empty()?0:cur.coord.front().u,o,cur.coord.size(),0};
       zsGi[i]=tmp;
     }
     sort(zsGi.begin(),zsGi.end());
@@ -6034,15 +6038,35 @@ namespace giac {
     }
   }
 
-  void zconvert(const vector<modint> & v,vector<modint> & lescoeffs,unsigned * bitmap,vector<used_t> & used){
-    vector<modint>::const_iterator it=v.begin(),itend=v.end();
+  void zconvert_(vector<modint> & v,vector<modint> & lescoeffs,unsigned * bitmap,vector<used_t> & used){
+    vector<modint>::iterator it0=v.begin(),it=it0,itend=v.end(),itend4=itend-4;
     used_t * uit=&used.front();
-    for (unsigned i=0;it!=itend;++i,++it){
-      if (!*it)
-	continue;
+    for (;it<=itend4;++it){
+      if (!*it ){
+	++it;
+	if (!*it){
+	  ++it;
+	  if (!*it){
+	    ++it;
+	    if (!*it)
+	      continue;
+	  }
+	}
+      }
+      unsigned i=it-it0;
       *(uit+i)=1; // used[i]=1;
       bitmap[i>>5] |= (1<<(i&0x1f));
       lescoeffs.push_back(*it);
+      *it=0;
+    }
+    for (;it!=itend;++it){
+      if (!*it)
+	continue;
+      unsigned i=it-it0;
+      *(uit+i)=1; // used[i]=1;
+      bitmap[i>>5] |= (1<<(i&0x1f));
+      lescoeffs.push_back(*it);
+      *it=0;
     }
   }
 
@@ -6828,7 +6852,7 @@ namespace giac {
 	}
 #ifdef GIAC_Z
 	// zconvert(v,coeffit,bitmap,used); bitmap += (N>>5)+1;
-	zconvert(v,lescoeffs,bitmap,used); bitmap += (N>>5)+1;
+	zconvert_(v,lescoeffs,bitmap,used); bitmap += (N>>5)+1;
 #else
 	convert(v,SK[i],used);
 #endif
@@ -7292,7 +7316,7 @@ namespace giac {
 #endif // __x86_64__
       // zconvert(v,coeffit,bitmap,used); bitmap += (N>>5)+1;
       K[i].reserve(Kcols);
-      zconvert(v,K[i],bitmap,used); bitmap += (N>>5)+1;
+      zconvert_(v,K[i],bitmap,used); bitmap += (N>>5)+1;
       //CERR << v << endl << SK[i] << endl;
     } // end for (i=0;i<B.size();++i)
     Mindex.clear(); Muindex.clear();
@@ -9150,13 +9174,14 @@ namespace giac {
   struct zpolymod {
     order_t order;
     short int dim;
+    short int age;
     vector<zmodint> coord;
     const vector<tdeg_t> * expo;
     tdeg_t ldeg;
-    zpolymod():dim(0),expo(0),ldeg() {order.o=0; order.lex=0; order.dim=0;}
-    zpolymod(order_t o,int d): dim(d),expo(0),ldeg() {order=o; order.dim=d;}
-    zpolymod(order_t o,int d,const tdeg_t & l): dim(d),expo(0),ldeg(l) {order=o; order.dim=d;}
-    zpolymod(order_t o,int d,const vector<tdeg_t> * e,const tdeg_t & l): dim(d),expo(e),ldeg(l) {order=o; order.dim=d;}
+    zpolymod():dim(0),expo(0),ldeg(),age(0) {order.o=0; order.lex=0; order.dim=0;}
+    zpolymod(order_t o,int d): dim(d),expo(0),ldeg(),age(0) {order=o; order.dim=d;}
+    zpolymod(order_t o,int d,const tdeg_t & l): dim(d),expo(0),ldeg(l),age(0) {order=o; order.dim=d;}
+    zpolymod(order_t o,int d,const vector<tdeg_t> * e,const tdeg_t & l): dim(d),expo(e),ldeg(l),age(0) {order=o; order.dim=d;}
     void dbgprint() const;
   };
 
@@ -9339,8 +9364,9 @@ namespace giac {
   void zcollect(const vectzpolymod & res,vector< pair<unsigned,unsigned> > & B,vector<tdeg_t> & allf4buchberger,vector<tdeg_t> & leftshift,vector<tdeg_t> & rightshift){
     int start=1;
     vector<heap_tt> Ht;
+    heap_tt heap_elem;
     vector<heap_tt_ptr> H; 
-    Ht.reserve(2*B.size());
+    Ht.reserve(2*B.size()+1);
     H.reserve(2*B.size());
     unsigned s=0;
     order_t keyorder={_REVLEX_ORDER,0};
@@ -9349,12 +9375,12 @@ namespace giac {
       const zpolymod & q=res[B[i].second];
       keyorder=p.order;
       if (int(p.coord.size())>start){
-		  s = giacmax(s, unsigned(p.coord.size()));
+	s = giacmax(s, unsigned(p.coord.size()));
 	Ht.push_back(heap_tt(true,i,start,(*p.expo)[p.coord[start].u]+leftshift[i]));
 	H.push_back(heap_tt_ptr(&Ht.back()));
       }
       if (int(q.coord.size())>start){
-		  s = giacmax(s, unsigned(q.coord.size()));
+	s = giacmax(s, unsigned(q.coord.size()));
 	Ht.push_back(heap_tt(false,i,start,(*q.expo)[q.coord[start].u]+rightshift[i]));
 	H.push_back(heap_tt_ptr(&Ht.back()));
       }
@@ -9363,9 +9389,8 @@ namespace giac {
     compare_heap_tt_ptr key(keyorder);
     make_heap(H.begin(),H.end(),key);
     while (!H.empty()){
-      std::pop_heap(H.begin(),H.end(),key);
       // push root node of the heap in allf4buchberger
-      heap_tt & current = *H.back().ptr;
+      heap_tt & current = *H.front().ptr;
       if (allf4buchberger.empty() || allf4buchberger.back()!=current.u)
 	allf4buchberger.push_back(current.u);
       ++current.polymodpos;
@@ -9375,6 +9400,7 @@ namespace giac {
       else
 	vpos=B[current.f4buchbergervpos].second;
       if (current.polymodpos>=res[vpos].coord.size()){
+	std::pop_heap(H.begin(),H.end(),key);
 	H.pop_back();
 	continue;
       }
@@ -9383,7 +9409,11 @@ namespace giac {
 	current.u=(*resvpos.expo)[resvpos.coord[current.polymodpos].u]+leftshift[current.f4buchbergervpos];
       else 
 	current.u=(*resvpos.expo)[resvpos.coord[current.polymodpos].u]+rightshift[current.f4buchbergervpos];
-      std::push_heap(H.begin(),H.end(),key);
+      // push_back &current into heap so that pop_heap will bubble out the
+      // modified root node (initialization will exchange two identical pointers)
+      H.push_back(heap_tt_ptr(&current));
+      std::pop_heap(H.begin(),H.end(),key);
+      H.pop_back();
     }
   }
 
@@ -9400,7 +9430,7 @@ namespace giac {
     // and the number of terms (should be minimal)
     vector<zsymb_data> GG(G.size());
     for (unsigned i=0;i<G.size();++i){
-      zsymb_data zz={i,g[G[i]].ldeg,g[G[i]].order,unsigned(g[G[i]].coord.size())};
+      zsymb_data zz={i,g[G[i]].ldeg,g[G[i]].order,unsigned(g[G[i]].coord.size()),g[G[i]].age};
       GG[i]=zz;
     }
     sort(GG.begin(),GG.end());
@@ -9439,17 +9469,20 @@ namespace giac {
       R.push_back(m);
       // extract from heap all terms having m as monomials, substract from c
       while (!H.empty() && H_[H.front()].u==m){
-	std::pop_heap(H.begin(),H.end(),key);
-	heap_t & current=H_[H.back()]; // was root node of the heap
+	heap_t & current=H_[H.front()]; // was root node of the heap
 	const zpolymod & gcurrent = g[G[current.i]];
 	if (current.gj<gcurrent.coord.size()-1){
 	  ++current.gj;
 	  //current.u=q[current.i][current.qi]+(*gcurrent.expo)[gcurrent.coord[current.gj].u];
 	  add(q[current.i][current.qi],(*gcurrent.expo)[gcurrent.coord[current.gj].u],current.u,dim);
-	  std::push_heap(H.begin(),H.end(),key);
-	}
-	else
+	  H.push_back(H.front());
+	  std::pop_heap(H.begin(),H.end(),key);
 	  H.pop_back();
+	}
+	else {
+	  std::pop_heap(H.begin(),H.end(),key);
+	  H.pop_back();
+	}
       }
       // divide (c,m) by one of the g if possible, otherwise push in remainder
       if (finish){
@@ -9581,8 +9614,9 @@ namespace giac {
 
 
   void zmakeline(const zpolymod & p,const tdeg_t * shiftptr,const vector<tdeg_t> & R,vector<modint> & v,int start=0){
-    v.resize(R.size()); 
-    v.assign(R.size(),0);
+    int Rs=int(R.size());
+    // if (v.size()!=Rs) v.resize(Rs); 
+    // v.assign(Rs,0);
     std::vector<zmodint>::const_iterator it=p.coord.begin()+start,itend=p.coord.end();
     std::vector<tdeg_t>::const_iterator jt=R.begin(),jtbeg=jt,jtend=R.end();
     double nop1=double(R.size()); 
@@ -9692,7 +9726,7 @@ namespace giac {
     }
   }
 
-  int zf4mod(vectzpolymod & res,const vector<unsigned> & G,modint env,vector< pair<unsigned,unsigned> > & B,vectzpolymod & f4buchbergerv,bool learning,unsigned & learned_position,vector< pair<unsigned,unsigned> > * pairs_reducing_to_zero,vector<zinfo_t> & f4buchberger_info,unsigned & f4buchberger_info_position,bool recomputeR){
+  int zf4mod(vectzpolymod & res,const vector<unsigned> & G,modint env,vector< pair<unsigned,unsigned> > & B,vectzpolymod & f4buchbergerv,bool learning,unsigned & learned_position,vector< pair<unsigned,unsigned> > * pairs_reducing_to_zero,vector<zinfo_t> & f4buchberger_info,unsigned & f4buchberger_info_position,bool recomputeR,int age){
     if (B.empty())
       return 0;
     int dim=res.front().dim;
@@ -9753,7 +9787,7 @@ namespace giac {
     for (i=0;i<G.size();++i){
       nrows += unsigned(quo[i].size());
     }
-    unsigned c=N;
+    unsigned colonnes=N;
     double sknon0=0;
     vector<used_t> used(N,0);
     unsigned usedcount=0,zerolines=0;
@@ -9847,6 +9881,7 @@ namespace giac {
     unsigned Kcols=N-nrows;
     vector<unsigned> lebitmap(((N>>5)+1)*B.size());
     unsigned * bitmap=&lebitmap.front();
+    vector<modint> Ki; Ki.reserve(Kcols);
     for (i=0;i<B.size();++i){
       pair<unsigned,unsigned> bk=B[i];
       if (!learning && pairs_reducing_to_zero && learned_position<pairs_reducing_to_zero->size() && bk==(*pairs_reducing_to_zero)[learned_position]){
@@ -9858,24 +9893,32 @@ namespace giac {
 	bitmap += tofill;
 	continue;
       }
+      // CERR << bk.first << " " << leftshift[i] << endl;
       zmakeline(res[bk.first],&leftshift[i],R,v,1);
+      // CERR << bk.second << " " << rightshift[i] << endl;
       zmakelinesub(res[bk.second],&rightshift[i],R,v,1,env);
       // CERR << v << endl << v2 << endl;
       // sub(v,v2,env);
       // CERR << v << endl;
 #ifdef __x86_64__
       if (large || env<(1<<24)){
-	c=giacmin(c,reducef4buchbergersplit(v,Mindex,firstpos,Mcoeff,coeffindex,env,v64));
+	colonnes=giacmin(colonnes,reducef4buchbergersplit(v,Mindex,firstpos,Mcoeff,coeffindex,env,v64));
       }
       else {
-	c=giacmin(c,reducef4buchbergersplit64(v,Mindex,firstpos,Mcoeff,coeffindex,env,v128));
+	colonnes=giacmin(colonnes,reducef4buchbergersplit64(v,Mindex,firstpos,Mcoeff,coeffindex,env,v128));
       }
 #else // __x86_64__
-	c=giacmin(c,reducef4buchbergersplit(v,Mindex,firstpos,Mcoeff,coeffindex,env,v64));
+      colonnes=giacmin(colonnes,reducef4buchbergersplit(v,Mindex,firstpos,Mcoeff,coeffindex,env,v64));
 #endif // __x86_64__
       // zconvert(v,coeffit,bitmap,used); bitmap += (N>>5)+1;
-      K[i].reserve(Kcols);
-      zconvert(v,K[i],bitmap,used); bitmap += (N>>5)+1;
+      Ki.clear();
+      zconvert_(v,Ki,bitmap,used); bitmap += (N>>5)+1;
+      if (Ki.size()>Kcols*.8){
+	K[i].swap(Ki);
+	Ki.reserve(Kcols);
+      }
+      else
+	K[i]=Ki;      
       //CERR << v << endl << SK[i] << endl;
     } // end for (i=0;i<B.size();++i)
     Mindex.clear();
@@ -9884,7 +9927,7 @@ namespace giac {
       info_ptr->R.swap(clearer);
     }
     if (debug_infolevel>1)
-      CERR << CLOCK() << " f4buchbergerv split reduced " << B.size() << " polynoms over " << N << " monomials, start at " << c << endl;
+      CERR << CLOCK() << " f4buchbergerv split reduced " << B.size() << " polynoms over " << N << " monomials, start at " << colonnes << endl;
     for (i=0;i<N;++i)
       usedcount += (used[i]>0);
     if (debug_infolevel>1){
@@ -9904,7 +9947,7 @@ namespace giac {
     //CERR << K << endl;
     smallmodrref(K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/);
     //CERR << K << endl;
-	unsigned first0 = unsigned(pivots.size());
+    unsigned first0 = unsigned(pivots.size());
     if (first0<K.size() && learning){
       vector<modint> & tmpv=K[first0];
       for (i=0;i<tmpv.size();++i){
@@ -9912,7 +9955,7 @@ namespace giac {
 	  break;
       }
       if (i==tmpv.size()){
-		  unsigned Ksize = unsigned(K.size());
+	unsigned Ksize = unsigned(K.size());
 	K.resize(first0);
 	K.resize(Ksize);
       }
@@ -9938,6 +9981,7 @@ namespace giac {
       f4buchbergerv[permutation[i]].expo=&info_ptr->rem;
       f4buchbergerv[permutation[i]].order=order;
       f4buchbergerv[permutation[i]].dim=dim;
+      f4buchbergerv[permutation[i]].age=age;
       vector< zmodint > & Pcoord=f4buchbergerv[permutation[i]].coord;
       Pcoord.clear();
       vector<modint> & v =K[i];
@@ -10162,6 +10206,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     for (unsigned i=0;i<v.size();++i){
       w.push_back(zpolymod(v[i].order,v[i].dim,v[i].expo,v[i].ldeg));
       w[i].coord.swap(v[i].coord);
+      w[i].age=v[i].age;
     }
     v.swap(w);
   }
@@ -10217,7 +10262,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       convert(resmod[l],res[l],R0);
     if (debug_infolevel>1000)
       res.dbgprint(); // instantiate
-    for (;!B.empty() && !interrupted && !ctrl_c;){
+    for (int age=1;!B.empty() && !interrupted && !ctrl_c;++age){
 #ifdef TIMEOUT
       control_c();
 #endif
@@ -10333,9 +10378,9 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	if (!clean[i])
 	  Gall.push_back(i);
       }
-      f4res=zf4mod(res,Gall,env,smallposp,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR);
+      f4res=zf4mod(res,Gall,env,smallposp,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age);
 #else
-      f4res=zf4mod(res,G,env,smallposp,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR);
+      f4res=zf4mod(res,G,env,smallposp,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age);
 #endif
       if (f4res==-1)
 	return false;
@@ -10367,6 +10412,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    res.push_back(zpolymod(order,dim,f4buchbergerv[i].ldeg));
 	  res[ressize].expo=f4buchbergerv[i].expo;
 	  swap(res[ressize].coord,f4buchbergerv[i].coord);
+	  res[ressize].age=f4buchbergerv[i].age;
 	  ++ressize;
 	  if (learning || f4buchberger_info_position-1>=f4buchberger_info.size())
 	    zgbasis_updatemod(G,B,res,ressize-1,oldG);
@@ -11716,6 +11762,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   }
 
   bool greduce8(const vectpoly & v,const vectpoly & gb_,order_t & order,vectpoly & newres,environment * env,GIAC_CONTEXT){
+    if (v.empty()){ newres.clear(); return true;}
     vectpoly8 red,gb,quo;
     vectpoly_2_vectpoly8(v,order,red);
     vectpoly_2_vectpoly8(gb_,order,gb);
