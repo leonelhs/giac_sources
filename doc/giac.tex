@@ -283,6 +283,29 @@ var Module = {
        UI.exec(f);
        f=f.nextSibling;
      }
+   },
+  execonload: function(field){
+     var f=field.nextSibling;
+     if (f && f.innerHTML=="onload" && field.nodeName=="BUTTON"){
+        field.click();
+        return;
+     }
+     f=field.firstChild;
+     while (f){
+       UI.execonload(f);
+       f=f.nextSibling;
+     }
+   },
+  textarealtgt: function(field){
+     if (field.nodeName=="TEXTAREA"){
+        field.value=UI.ltgt(field.value);
+        return;
+     }
+     var f=field.firstChild;
+     while (f){
+       UI.textarealtgt(f);
+       f=f.nextSibling;
+     }
    }
  };
  window.onload = function(e){
@@ -312,6 +335,8 @@ var Module = {
   giaceval('set_language(1);');
   giaceval('factor(x^4-1)');
   giaceval('sin(x+y)+f(t)');
+  UI.textarealtgt(document.documentElement);
+  UI.execonload(document.documentElement);
  // if (confirm('Exec commands?')) UI.exec(document.documentElement);
  };
 </script>
@@ -325,8 +350,22 @@ var Module = {
 \@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
 }
 }
+\newenvironment{giaconload}{
+\verbatim}
+{\endverbatim 
+\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span>onload</span><br>
+}
+}
 \else
 \newenvironment{giacprog}
+{
+\VerbatimEnvironment
+\begin{Verbatim}
+}
+{
+\end{Verbatim}
+}
+\newenvironment{giaconload}
 {
 \VerbatimEnvironment
 \begin{Verbatim}

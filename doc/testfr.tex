@@ -1,6 +1,6 @@
 % Pour compiler ce fichier, vous devez d'abord installer
 % hevea: http://hevea.inria.fr
-% giac.tex: http://www-fourier.ujf-grenoble.fr/~parisse/giac/giac.tex
+% giacfr.tex: http://www-fourier.ujf-grenoble.fr/~parisse/giac/giacfr.tex
 % copier hevea.sty dans le repertoire courant
 % ensuite vous pouvez tester avec la commande hevea test 
 \documentclass[a4paper,11pt]{article}
@@ -33,6 +33,21 @@
 \fi
 
 \input{giacfr.tex}
+\usepackage[auto]{mathjax}
+\renewcommand{\jax@meta}{\begin{rawhtml}<script language="javascript"> 
+var ua = window.navigator.userAgent;  
+var old_ie = ua.indexOf('MSIE ');  
+var new_ie = ua.indexOf('Trident/');  
+if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
+ (function () {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src  = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML";
+  document.getElementsByTagName("head")[0].appendChild(script);
+})();
+}
+</script>
+\end{rawhtml}}
 
 
 \newtheorem{thm}{Théorème}
@@ -52,7 +67,7 @@
 \makeindex
 
 \title {Exemple de calculs interactifs dans un fichier \LaTeX\ compil\'e
-en HTML.}
+en HTML et PDF.}
 \author{B. Parisse\\Institut Fourier\\UMR 5582 du CNRS
 \\Université de Grenoble}
 
@@ -63,6 +78,8 @@ en HTML.}
 \begin{giacjshere}
 %\loadgiacjs
 %\loadgiacjsonline
+Un $x$
+$$ 1/2 $$
  
 \maketitle
 
@@ -73,7 +90,9 @@ en HTML.}
 \section{Description}
 Ce source \LaTeX\ illustre l'utilisation du moteur de calcul formel Giac
 lorsqu'on le compile en HTML avec {\tt hevea} (test\'e avec
-\verb|hevea 2.23, 2.25|).
+\verb|hevea 2.23, 2.25|).  Il est possible de compiler \`a la fois
+vers HTML5 et vers PDF en compilant avec {\tt icas} sous linux.
+
 
 \section{Installation}
 Vous devez installer
@@ -88,11 +107,14 @@ de ce fichier et v\'erifier votre installation en le compilant\\
 \verb|hevea testfr|
 
 \section{Utilisation} 
-La commande \verb|\begin{giacjs}|\index{giacjs} ou \verb|\begin{giacjsonline}|\index{giacjsonline}
-doit figurer juste apr\`es \verb|\begin{document}|, selon que l'on va utiliser le moteur
-de calcul \verb|giac.js| depuis une installation de Xcas sur le disque dur
-ou par t\'el\'echargement sur le serveur de l'Institut Fourier. La
-commande correspondante \verb|\end{giacjs}| ou \verb|\end{giacjsonline}| 
+La commande\verb|\begin{giacjshere}|\index{giacjshere}, 
+\verb|\begin{giacjs}|\index{giacjs} ou \verb|\begin{giacjsonline}|\index{giacjsonline}
+doit figurer juste apr\`es \verb|\begin{document}|, selon que l'on va charger le moteur
+de calcul \verb|giac.js| de la m\^eme fa\c{c}on que la page HTML,
+depuis une installation de Xcas sur le disque dur
+ou depuis le serveur de l'Institut Fourier. La
+commande correspondante \verb|\end{giacjs}|, \verb|\end{giacjshere}| 
+ou \verb|\end{giacjsonline}| 
 doit figurer juste avant \verb|\end{document}|.
 Pour que les liens du tableau de bord Table et Index fonctionnent,
 vous devez imprimer la table des mati\`eres et l'index au d\'ebut du
@@ -117,6 +139,13 @@ et ajouter un argument de style\\
 \verb|\giaccmdmath[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}|\\
 \giaccmdmath[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}
 
+Pour cacher le champ de saisie et donner un nom au bouton, 
+utiliser \verb|\giachidden{}{}| 
+ou \verb|\giachiddenmath{}{}| 
+par exemple
+\giachidden{factor(x^10-1)}{reponse} ou
+\giachiddenmath{factor(x^10-1)}{reponse}
+ 
 Pour cr\'eer une commande hors-ligne avec r\'eponse en MathML (ou sous forme de graphique 2d)
 utilisez \verb|\giacinputbigmath{}| ou 
 \verb|\giaccmdbigmath{}{}|, ces commandes
@@ -147,7 +176,8 @@ accepte aussi un argument de style optionnel~:\\
 \verb|\giaccmd[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}|\\
 \giaccmd[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}
 
-{\bf Attention}, pour toutes ces commandes, il faut remplacer \verb|<| par
+{\bf Attention}, pour toutes ces commandes, il faut remplacer dans le
+source latex le signe \verb|<| par
 \verb|&lt;| et \verb|>| par \verb|&gt;| sinon ces caract\`eres
 sont interpr\'et\'es comme des d\'elimieturs HTML.
 
@@ -161,19 +191,32 @@ f(x):={
 }
 \end{giacprog}
 Ici on peut utiliser les caract\`eres \verb|<| et \verb|>|. Attention, il 
-ne pas utiliser cet environement dans un autre environement (itemize, enumerate...).
+ne pas utiliser cet environement dans un autre environement (itemize,
+enumerate...).
+Si vous souhaitez que le programme soit interpr\'et\'e au chargement
+de la page HTML, utilisez \verb|giaconload| au lieu de \verb|giacprog|.
 
 La commande \verb|\giacslider{}{}{}{}{}|
 permet de cr\'eer une variable
 modifiable par le lecteur \`a la souris et des calculs qui
 d\'ependent de cette variable~:\\
-\verb|\giacslider{a}{-5}{5}{0.1}{0}{plot(sin(a*x))}|\index{giacslider} \\
-\giacslider{a}{-5}{5}{0.1}{0}{plot(sin(a*x))}
+\verb|\giacslider{a}{-5}{5}{0.1}{2.3}{plot(x^2+a*x)}|\index{giacslider} \\
+\giacslider{a}{-5}{5}{0.1}{2.3}{plot(x^2+a*x)}
 
 Pour cr\'eer un lien utiliser \verb|\giaclink{}|, par
 exemple un lien vers Xcas offline~:\\
 \verb|\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+factor(x^4-1)&+a:=idn(3)&}|\index{giaclink}\\
 \giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+factor(x^4-1)&+a:=idn(3)&}
+
+\section{Postprocessing}
+On peut utiliser \verb|hevea --mathjax| du fork 
+\verb|https://github.com/YannickChevalier/hevea-mathjax|
+pour laisser MathJax faire le rendu des formules math\'ematiques.
+On peut alors convertir en mathml en utilisant itex2mml
+\verb|https://golem.ph.utexas.edu/~distler/blog/itex2MML.html|
+Attention, il faut remplacer \verb|\(| et \verb|\)| par \verb|$|,
+certains caract\`eres ne sont pas support\'es (par exemple \verb|\ |),
+et \verb|\begin{equation}| ou \verb|eqnarray| n'est pas support\'e.
 
 \end{giacjshere}
 \end{document}

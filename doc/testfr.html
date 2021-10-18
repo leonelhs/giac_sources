@@ -51,11 +51,11 @@ td p{margin:0px;}
 .lstlisting{font-family:monospace;white-space:pre;margin-right:auto;margin-left:0pt;text-align:left}
 </style>
 <title>Exemple de calculs interactifs dans un fichier LATEX compilé
-en HTML.
+en HTML et PDF.
 </title>
 </head>
 <body >
-<!--HEVEA command line is: hevea testfr -->
+<!--HEVEA command line is: hevea -fix testfr -->
 <!--CUT STYLE article--><!--CUT DEF section 1 --><p>
 
 
@@ -64,7 +64,7 @@ en HTML.
 
 
 </p><table class="title"><tr><td style="padding:1ex"><h1 class="titlemain">Exemple de calculs interactifs dans un fichier L<sup>A</sup>T<sub>E</sub>X compilé
-en HTML.</h1><h3 class="titlerest">B. Parisse<br>
+en HTML et PDF.</h1><h3 class="titlerest">B. Parisse<br>
 Institut Fourier<br>
 UMR 5582 du CNRS
 <br>
@@ -74,33 +74,36 @@ Université de Grenoble</h3><h3 class="titlerest">Juillet 2015</h3></td></tr>
 <a href="#sec3">1  Description</a>
 </li><li class="li-toc"><a href="#sec4">2  Installation</a>
 </li><li class="li-toc"><a href="#sec5">3  Utilisation</a>
+</li><li class="li-toc"><a href="#sec6">4  Postprocessing</a>
 </li></ul><!--TOC section id="sec2" Index-->
 <h2 id="sec2" class="section">Index</h2><!--SEC END --><p></p><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="vertical-align:top;text-align:left;" ><ul class="indexenv"><li class="li-indexenv">
-giaccmd, <a href="#hevea_default10">3</a>
-</li><li class="li-indexenv">giaccmdbigmath, <a href="#hevea_default7">3</a>
-</li><li class="li-indexenv">giaccmdmath, <a href="#hevea_default5">3</a>
-</li><li class="li-indexenv">giacinput, <a href="#hevea_default9">3</a>
-</li><li class="li-indexenv">giacinputbig, <a href="#hevea_default8">3</a>
-</li><li class="li-indexenv">giacinputbigmath, <a href="#hevea_default6">3</a>
-</li><li class="li-indexenv">giacinputmath, <a href="#hevea_default4">3</a>
-</li><li class="li-indexenv">giacjs, <a href="#hevea_default0">3</a>
-</li></ul></td><td style="vertical-align:top;text-align:left;" ><ul class="indexenv"><li class="li-indexenv">giacjsonline, <a href="#hevea_default1">3</a>
-</li><li class="li-indexenv">giaclink, <a href="#hevea_default13">3</a>
-</li><li class="li-indexenv">giacprog, <a href="#hevea_default11">3</a>
-</li><li class="li-indexenv">giacslider, <a href="#hevea_default12">3</a>
+giaccmd, <a href="#hevea_default11">3</a>
+</li><li class="li-indexenv">giaccmdbigmath, <a href="#hevea_default8">3</a>
+</li><li class="li-indexenv">giaccmdmath, <a href="#hevea_default6">3</a>
+</li><li class="li-indexenv">giacinput, <a href="#hevea_default10">3</a>
+</li><li class="li-indexenv">giacinputbig, <a href="#hevea_default9">3</a>
+</li><li class="li-indexenv">giacinputbigmath, <a href="#hevea_default7">3</a>
+</li><li class="li-indexenv">giacinputmath, <a href="#hevea_default5">3</a>
+</li><li class="li-indexenv">giacjs, <a href="#hevea_default1">3</a>
+</li><li class="li-indexenv">giacjshere, <a href="#hevea_default0">3</a>
+</li></ul></td><td style="vertical-align:top;text-align:left;" ><ul class="indexenv"><li class="li-indexenv">giacjsonline, <a href="#hevea_default2">3</a>
+</li><li class="li-indexenv">giaclink, <a href="#hevea_default14">3</a>
+</li><li class="li-indexenv">giacprog, <a href="#hevea_default12">3</a>
+</li><li class="li-indexenv">giacslider, <a href="#hevea_default13">3</a>
 <br>
 <br>
-</li><li class="li-indexenv">index, <a href="#hevea_default3">3</a>
+</li><li class="li-indexenv">index, <a href="#hevea_default4">3</a>
 <br>
 <br>
-</li><li class="li-indexenv">table, <a href="#hevea_default2">3</a>
+</li><li class="li-indexenv">table, <a href="#hevea_default3">3</a>
 </li></ul></td></tr>
 </table>
 <!--TOC section id="sec3" Description-->
 <h2 id="sec3" class="section">1  Description</h2><!--SEC END --><p>
 Ce source L<sup>A</sup>T<sub>E</sub>X illustre l’utilisation du moteur de calcul formel Giac
 lorsqu’on le compile en HTML avec <span style="font-family:monospace">hevea</span> (testé avec
-<code>hevea 2.23, 2.25</code>).</p>
+<code>hevea 2.23, 2.25</code>). Il est possible de compiler à la fois
+vers HTML5 et vers PDF en compilant avec <span style="font-family:monospace">icas</span> sous linux.</p>
 <!--TOC section id="sec4" Installation-->
 <h2 id="sec4" class="section">2  Installation</h2><!--SEC END --><p>
 Vous devez installer
@@ -115,22 +118,25 @@ de ce fichier et vérifier votre installation en le compilant<br>
 <code>hevea testfr</code></p>
 <!--TOC section id="sec5" Utilisation-->
 <h2 id="sec5" class="section">3  Utilisation</h2><!--SEC END --><p> 
-La commande <code>\begin{giacjs}</code><a id="hevea_default0"></a> ou <code>\begin{giacjsonline}</code><a id="hevea_default1"></a>
-doit figurer juste après <code>\begin{document}</code>, selon que l’on va utiliser le moteur
-de calcul <code>giac.js</code> depuis une installation de Xcas sur le disque dur
-ou par téléchargement sur le serveur de l’Institut Fourier. La
-commande correspondante <code>\end{giacjs}</code> ou <code>\end{giacjsonline}</code> 
+La commande<code>\begin{giacjshere}</code><a id="hevea_default0"></a>, 
+<code>\begin{giacjs}</code><a id="hevea_default1"></a> ou <code>\begin{giacjsonline}</code><a id="hevea_default2"></a>
+doit figurer juste après <code>\begin{document}</code>, selon que l’on va charger le moteur
+de calcul <code>giac.js</code> de la même façon que la page HTML,
+depuis une installation de Xcas sur le disque dur
+ou depuis le serveur de l’Institut Fourier. La
+commande correspondante <code>\end{giacjs}</code>, <code>\end{giacjshere}</code> 
+ou <code>\end{giacjsonline}</code> 
 doit figurer juste avant <code>\end{document}</code>.
 Pour que les liens du tableau de bord Table et Index fonctionnent,
 vous devez imprimer la table des matières et l’index au début du
-document, comme dans ce fichier (commandes <code>\tableofcontents</code><a id="hevea_default2"></a> et
-<code>\printindex</code><a id="hevea_default3"></a> juste après
+document, comme dans ce fichier (commandes <code>\tableofcontents</code><a id="hevea_default3"></a> et
+<code>\printindex</code><a id="hevea_default4"></a> juste après
 <code>\begin{giacjsonline}</code> et commande <code>\makeindex</code> 
 juste avant <code>\begin{document}</code>).</p><p>Pour créer une commande en ligne avec réponse en MathML (ou
 graphique 2d) utilisez
 <code>\giacinputmath{}</code>,
 par exemple<br>
-<code>\giacinputmath{factor(x^10-1)}</code><a id="hevea_default4"></a>
+<code>\giacinputmath{factor(x^10-1)}</code><a id="hevea_default5"></a>
 <br><textarea onkeypress="UI.ckenter(event,this,2)" style="width:400px;height:20px;font-size:large">factor(x^10-1) 
 </textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><span></span><br>
 On peut ajouter un argument optionnel pour changer le style :<br>
@@ -140,7 +146,7 @@ On peut ajouter un argument optionnel pour changer le style :<br>
 Vous pouvez imposer la commande appliquée avec
 <code>\giaccmdmath{}{}</code>,
 par exemple<br>
-<code>\giaccmdmath{factor}{x^4-1}</code><a id="hevea_default5"></a> 
+<code>\giaccmdmath{factor}{x^4-1}</code><a id="hevea_default6"></a> 
 <br><textarea style="width:400px;height:20px;font-size:large">x^4-1
 </textarea><button onclick="var tmp=UI.caseval('factor('+
 previousSibling.value+')');  tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling]);
@@ -152,17 +158,30 @@ et ajouter un argument de style<br>
 </textarea><button onclick="var tmp=UI.caseval('factor('+
 previousSibling.value+')');  tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling]);
 ">factor
+</button><span></span><br></p><p>Pour cacher le champ de saisie et donner un nom au bouton, 
+utiliser <code>\giachidden{}{}</code> 
+ou <code>\giachiddenmath{}{}</code> 
+par exemple
+
+<textarea onkeypress="UI.ckenter(event,this,1)" 
+style="display:none;width:400px;height:20px;font-size:large">factor(x^10-1)
+</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">
+reponse
+</button><span></span><br>
+ ou
+<br><textarea onkeypress="UI.ckenter(event,this,2)" style="display:none;width:400px;height:20px;font-size:large">factor(x^10-1) 
+</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">reponse
 </button><span></span><br></p><p>Pour créer une commande hors-ligne avec réponse en MathML (ou sous forme de graphique 2d)
 utilisez <code>\giacinputbigmath{}</code> ou 
 <code>\giaccmdbigmath{}{}</code>, ces commandes
 acceptent aussi un argument optionnel de style :<br>
-<code>\giacinputbigmath{factor(x^100-1)}</code><a id="hevea_default6"></a><br>
+<code>\giacinputbigmath{factor(x^100-1)}</code><a id="hevea_default7"></a><br>
 <div><textarea onkeypress="UI.ckenter(event,this,2)" style="width:800px;height:20px;font-size:large">factor(x^100-1) 
 </textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div><br>
 <code>\giacinputbigmath[style="width:600px;height:20px;font-size:large"]{factor(x^100-1)}</code><br>
 <div><textarea onkeypress="UI.ckenter(event,this,2)" style="display:none;width:600px;height:20px;font-size:large">factor(x^100-1) 
 </textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div><br>
-<code>\giaccmdbigmath{factor}{x^100-1}</code><a id="hevea_default7"></a><br>
+<code>\giaccmdbigmath{factor}{x^100-1}</code><a id="hevea_default8"></a><br>
 <br><textarea style="width:800px;height:20px;font-size:large">x^100-1 
 </textarea><button onclick="var tmp=UI.caseval('factor('+
 previousSibling.value+')');  tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">factor
@@ -173,28 +192,28 @@ previousSibling.value+')');  tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if
 previousSibling.value+')');  tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">factor
 </button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div><br></p><p>Pour une commande avec réponse en mode texte ou sous forme de graphique 2d 
 utiliser <code>\giacinput</code>ou
-<code>\giacinputbig</code><a id="hevea_default8"></a>, 
+<code>\giacinputbig</code><a id="hevea_default9"></a>, 
 par exemple<br>
-<code>\giacinput{factor(x^4-1)}</code><a id="hevea_default9"></a> donne :<br>
+<code>\giacinput{factor(x^4-1)}</code><a id="hevea_default10"></a> donne :<br>
 
 <textarea onkeypress="UI.ckenter(event,this,1)" 
 style="width:400px;height:20px;font-size:large">factor(x^4-1)
-</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
 <br>
 La même avec un argument de style optionnel de la ligne de commande<br>
 <code>\giacinput[style="width:200px;height:20px;font-size:large"]{plot(sin(x))}</code><br>
 
 <textarea onkeypress="UI.ckenter(event,this,1)" 
 style="width:200px;height:20px;font-size:large">plot(sin(x))
-</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
+</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>
 </p><p>Un bouton avec une commande qui sera appliquée à un argument avec
-<code>\giaccmd</code>, ici <code>\giaccmd{factor}{x^4-1}</code><a id="hevea_default10"></a> :<br>
+<code>\giaccmd</code>, ici <code>\giaccmd{factor}{x^4-1}</code><a id="hevea_default11"></a> :<br>
 
 <textarea
 style="width:400px;height:20px;font-size:large">x^4-1
 </textarea><button onclick="var tmp=UI.caseval(
 'factor('
-+previousSibling.value+')');if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">
++previousSibling.value+')');tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">
 factor
 </button><span></span><br>
 <br>
@@ -205,11 +224,14 @@ accepte aussi un argument de style optionnel :<br>
 style="width:200px;height:20px;font-size:large">x^4-1
 </textarea><button onclick="var tmp=UI.caseval(
 'factor('
-+previousSibling.value+')');if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">
++previousSibling.value+')');tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">
 factor
 </button><span></span><br>
-</p><p>La même chose avec un programme ou tout autre commande de plusieurs lignes
-avec <code>\begin{giacprog}...\end{giacprog}</code><a id="hevea_default11"></a> :
+</p><p><span style="font-weight:bold">Attention</span>, pour toutes ces commandes, il faut remplacer dans le
+source latex le signe <code>&lt;</code> par
+<code>&amp;lt;</code> et <code>&gt;</code> par <code>&amp;gt;</code> sinon ces caractères
+sont interprétés comme des délimieturs HTML.</p><p>La même chose avec un programme ou une commande de plusieurs lignes
+avec <code>\begin{giacprog}...\end{giacprog}</code><a id="hevea_default12"></a> :
 
 </p><pre class="verbatim">f(x):={
   local y;
@@ -217,13 +239,17 @@ avec <code>\begin{giacprog}...\end{giacprog}</code><a id="hevea_default11"></a>�
   return y;
 }
 </pre><p> 
-<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;t.value=tmp;tmp=UI.caseval(tmp);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML);field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
+<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
 
-Attention, ne pas utiliser dans un autre environement (itemize, enumerate...).</p><p>La commande <code>\giacslider{}{}{}{}{}</code>
+Ici on peut utiliser les caractères <code>&lt;</code> et <code>&gt;</code>. Attention, il 
+ne pas utiliser cet environement dans un autre environement (itemize,
+enumerate...).
+Si vous souhaitez que le programme soit interprété au chargement
+de la page HTML, utilisez <code>giaconload</code> au lieu de <code>giacprog</code>.</p><p>La commande <code>\giacslider{}{}{}{}{}</code>
 permet de créer une variable
 modifiable par le lecteur à la souris et des calculs qui
 dépendent de cette variable :<br>
-<code>\giacslider{a}{-5}{5}{0.1}{0}{plot(sin(a*x))}</code><a id="hevea_default12"></a> <br>
+<code>\giacslider{a}{-5}{5}{0.1}{2.3}{plot(x^2+a*x)}</code><a id="hevea_default13"></a> <br>
 
 
 <div><form onsubmit="setTimeout(function(){UI.eval_form(form);});return false;">
@@ -231,7 +257,7 @@ dépendent de cette variable :<br>
 "a">
 
 =<input type="number" name="valname" onchange="UI.eval_form(form);" value=
-"0">
+"2.3">
 
 <input type="button" value="-" onclick="valname.value -= stepname.value;UI.eval_form(form);">
 <input type="button" value="+" onclick="valname.value -= -stepname.value;UI.eval_form(form);">
@@ -240,20 +266,30 @@ dépendent de cette variable :<br>
 
 <input type="range" name="rangename"
 onclick="valname.value=value;UI.eval_form(form);" value=
-"0" min="-5" max="5" step="0.1">
+"2.3" min="-5" max="5" step="0.1">
 
 <textarea name="prog" onchange="UI.eval_form(form)" style="width:400px;height:120px;vertical-align:bottom;font-size:large">
-plot(sin(a*x))
+plot(x^2+a*x)
 
 </textarea>
 </form>
 <span>Not evaled</span></div>
 </p><p>Pour créer un lien utiliser <code>\giaclink{}</code>, par
 exemple un lien vers Xcas offline :<br>
-<code>\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+factor(x^4-1)&amp;+a:=idn(3)&amp;}</code><a id="hevea_default13"></a><br>
+<code>\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+factor(x^4-1)&amp;+a:=idn(3)&amp;}</code><a id="hevea_default14"></a><br>
 <a href="http://www-fourier.ujf-grenoble.fr/%7eparisse/xcasfr.html#+factor(x^4-1)&+a:=idn(3)&"
  target="_blank">Tester en ligne
-</a></p><p>
+</a></p>
+<!--TOC section id="sec6" Postprocessing-->
+<h2 id="sec6" class="section">4  Postprocessing</h2><!--SEC END --><p>
+On peut utiliser <code>hevea --mathjax</code> du fork<br>
+<code>https://github.com/YannickChevalier/hevea-mathjax</code>
+pour laisser MathJax faire le rendu des formules mathématiques.
+On peut alors convertir en mathml en utilisant itex2mml<br>
+<code>https://golem.ph.utexas.edu/~distler/blog/itex2MML.html</code>
+Attention, il faut remplacer <code>\(</code> et <code>\)</code> par <code>$</code>,
+certains caractères ne sont pas supportés (par exemple <code>\ </code>),
+et <code>\begin{equation}</code> ou <code>eqnarray</code> n’est pas supporté.</p><p>
 
 </div>
 <div id="controldiv" style="max-height: 400px; overflow:auto">
@@ -331,10 +367,38 @@ var Module = {
       }
     }
   },  
+  ltgt:function(s){
+    var ss=s.length,i,res='';
+    for (i=0;i<ss-4;i++){
+      if (s[i]!='&' || s[i+2]!='t' || s[i+3]!=';'){
+        res += s[i];
+        continue;
+      }
+      if (s[i+1]=='l'){
+        res += '<';
+        i +=3;
+        continue;
+      }
+      if (s[i+1]=='g'){
+        res += '>';
+        i +=3;
+        continue;
+      }
+      res += s[i];
+    }
+    for (;i<ss;i++) res+=s[i];
+    return res;
+  },
+  rmquote:function(tmp){
+    var s=tmp.length;
+    if (s>2 && tmp.charCodeAt(0)==34 && tmp.charCodeAt(s-1)==34)
+      tmp=tmp.substr(1,s-2);
+    return tmp;
+  },
   quick:function(field){
     var tmp1=field.previousSibling.value;
     var tmp=UI.caseval(tmp1);
-    if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); 
+    tmp=UI.rmquote(tmp); 
     tmp=UI.latexeval(tmp);
     Module.print(String.fromCharCode(2));
     Module.print("<tt>");
@@ -401,7 +465,7 @@ var Module = {
    Module.print(tmp);
     tmp=UI.caseval(tmp);
     if (mode==1){
-      if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); 
+      tmp=UI.rmquote(tmp); 
    }
    if (mode==2){
      tmp=UI.latexeval(tmp);
@@ -420,6 +484,29 @@ var Module = {
      var f=field.firstChild;
      while (f){
        UI.exec(f);
+       f=f.nextSibling;
+     }
+   },
+  execonload: function(field){
+     var f=field.nextSibling;
+     if (f && f.innerHTML=="onload" && field.nodeName=="BUTTON"){
+        field.click();
+        return;
+     }
+     f=field.firstChild;
+     while (f){
+       UI.execonload(f);
+       f=f.nextSibling;
+     }
+   },
+  textarealtgt: function(field){
+     if (field.nodeName=="TEXTAREA"){
+        field.value=UI.ltgt(field.value);
+        return;
+     }
+     var f=field.firstChild;
+     while (f){
+       UI.textarealtgt(f);
        f=f.nextSibling;
      }
    }
@@ -450,6 +537,8 @@ var Module = {
   giaceval('set_language(1);');
   giaceval('factor(x^4-1)');
   giaceval('sin(x+y)+f(t)');
+  UI.textarealtgt(document.documentElement);
+  UI.execonload(document.documentElement);
  // if (confirm('Executer les commandes?')) UI.exec(document.documentElement);
  };
 </script>

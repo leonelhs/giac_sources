@@ -353,10 +353,35 @@ void split(std::string & s,int cut){
   s = s+remains;
 }
 
+string ltgt(const string & s){
+  int ss=s.size(),i;
+  string res;
+  for (i=0;i<ss-4;i++){
+    if (s[i]!='&' || s[i+2]!='t' || s[i+3]!=';'){
+      res += s[i];
+      continue;
+    }
+    if (s[i+1]=='l'){
+      res += '<';
+      i +=3;
+      continue;
+    }
+    if (s[i+1]=='g'){
+      res += '>';
+      i +=3;
+      continue;
+    }
+    res += s[i];
+  }
+  for (;i<ss;i++) res+=s[i];
+  return res;
+}
+
 void verb(std::string & warn,int line,ostream & out,std::string cmd,const std::string & infile,int & texmacs_counter,bool slider,giac::context * contextptr,ostream * checkptr,std::ostream * checkptrin){
   giac::gen g(cmd,contextptr),gg;
   string gs=cmd;
   split(cmd,50);
+  cmd=ltgt(cmd);
   int pos=cmd.find('\n');
   if (pos<0 || pos>=cmd.size())
     pos=cmd.find('|');
@@ -401,7 +426,7 @@ void verb(std::string & warn,int line,ostream & out,std::string cmd,const std::s
       // giac::attributs attr(14,0,1);
       // giac::gen data=xcas::Equation_compute_size(g,attr,600,contextptr);
     }
-    gg=giac::_latex(gg,contextptr);
+    gg=giac::string2gen(giac::gen2tex(gg,contextptr),false);
     std::string s=(gg.type==giac::_STRNG)?(*gg._STRNGptr):gg.print(contextptr);
     out << "$$" << s << "$$" << std::endl;
   }  

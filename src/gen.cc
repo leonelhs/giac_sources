@@ -8090,6 +8090,14 @@ namespace giac {
 	return *a._USERptr==b;
       if (b.type==_USER)
 	return *b._USERptr==a;
+      if (a.type==_INT_ && a.subtype==_INT_TYPE && b.type==_FUNC){
+	if (a==_STRNG && b==at_string) return true;
+	if (a==_VECT && b==at_vector) return true;
+	if (a==_FLOAT_ && b==at_float) return true;
+	if (a==_DOUBLE_ && b==at_real) return true;
+      }
+      if (b.type==_INT_ && b.subtype==_INT_TYPE && a.type==_FUNC)
+	return operator_equal(b,a,contextptr);
       return false;
     }
   }
@@ -11480,7 +11488,7 @@ namespace giac {
   /* I/O: Print routines */
   string print_DOUBLE_(double d,GIAC_CONTEXT){
     if (my_isnan(d))
-      return calc_mode(contextptr)?"?":"undef";
+      return calc_mode(contextptr)==1?"?":"undef";
     if (my_isinf(d))
       return "infinity";
 #ifdef BCD
@@ -12060,6 +12068,28 @@ namespace giac {
 	return "rational";
       case _MAPLE_LIST:
 	return "list";
+      }
+    }
+    if (abs_calc_mode(contextptr)!=38){
+      switch(val){
+      case _DOUBLE_:
+	return "real";
+      case _ZINT:
+	return "integer";
+      case _CPLX:
+	return "complex";
+      case _VECT:
+	return "vector";
+      case _IDNT:
+	return "identifier";
+      case _SYMB:
+	return "expression";
+      case _FRAC:
+	return "rational";
+      case _STRNG:
+	return "string";
+      case _FUNC:
+	return "func";
       }
     }
     switch(val){

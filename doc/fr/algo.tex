@@ -1,3 +1,5 @@
+% Merci a Yannick Chevallier pour la version mathjax-enabled
+% hevea -mathjax algo.tex puis itex2MML -d --forbid-markup <~/giac-1.2.3/src/algo.html > algo.html
 \documentclass[a4paper,11pt]{article}
 %\textwidth 11,8 cm
 %\textheight 17 cm
@@ -44,12 +46,7 @@
 \newtheorem{example}[thm]{Exemple}
 
 
-\newcommand{\R}{{\mathbb{R}}}
-\newcommand{\C}{{\mathbb{C}}}
-\newcommand{\Z}{{\mathbb{Z}}}
-\newcommand{\N}{{\mathbb{N}}}
-\newcommand{\Q}{{\mathbb{Q}}}
-\newcommand{\tr}{\mbox{tr\,}}
+
 
 
 \title {Algorithmes de calcul formel et num\'erique}
@@ -61,6 +58,21 @@
 \makeindex
 
 \input{giacfr.tex}
+\usepackage[auto]{mathjax}
+\renewcommand{\jax@meta}{\begin{rawhtml}<script language="javascript"> 
+var ua = window.navigator.userAgent;  
+var old_ie = ua.indexOf('MSIE ');  
+var new_ie = ua.indexOf('Trident/');  
+if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
+ (function () {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src  = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML";
+  document.getElementsByTagName("head")[0].appendChild(script);
+})();
+}
+</script>
+\end{rawhtml}}
 
 \begin{document}
 \begin{giacjshere} % ne pas oublier de changer \end{giacjs...} a la fin
@@ -68,13 +80,42 @@
 
 \maketitle
 
+\ifhevea
+%\( %uncomment for mathjax rendering without itex2MML
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\tr}{\mbox{tr\,}}
+%\) %uncomment for mathjax rendering without itex2MML
+\else
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\tr}{\mbox{tr\,}}
+\fi
+
 La version HTML de ce document comporte des champs de saisie
 interactifs, ceux-ci apparaissent comme des commandes ``mortes'' dans
-la version PDF. La version HTML est
-optimis\'ee pour le navigateur Firefox. Vous pouvez
+la version PDF (elles sont ex\'ecut\'ees une fois pour toutes
+par la version non interactive de \verb|giac|). 
+La version HTML est optimis\'ee pour le navigateur Firefox. 
+Deux versions HTML
+sont propos\'ees, une utilisant mathml pour
+un rendu plus fid\`ele des formules, mais qui n\'ecessite
+un navigateur affichant le mathml, l'autre sans. Ces fichiers HTML
+ont \'et\'e g\'en\'er\'es avec \verb|hevea.inria.fr| de Luc Maranget,
+et le fork de Yannick Chevallier pour le support mathjax, ainsi
+qu'une version modifi\'ee de \verb|itex2MML| 
+de Jacques Distler pour la conversion en MathML.
+Vous pouvez
 ex\'ecuter toutes les commandes interactives en cliquant sur le bouton
 Ex\'ecuter, le champ suivant est la console de l'interpr\'eteur du
 logiciel de calcul formel.
+
 
 \begin{abstract}
 Giac/Xcas est un logiciel libre de calcul formel dont
@@ -233,7 +274,7 @@ en produit de facteurs premiers entre eux et sans racines multiples.
 \giacinputbigmath{m:=sylvester(p,q); det(m);}
 \item d\'ecomposition en \'el\'ements simples
 \giacinputbigmath{partfrac(1/(x^4-1))}
-\item polyn\^omes \`a coefficients dans $\Z/p\Z$
+\item polyn\^omes \`a coefficients dans $\mathbb{Z}/p\mathbb{Z}$
 \giacinput{p:=(x^5+4x+7) \% 11; gcd(p,p');}
 \item Corps fini non premier de caract\'eristique $p$~:\\
 \verb|GF(p,n)| cr\'ee un corps fini $K$ de cardinal $p^n$, 
@@ -892,9 +933,9 @@ est monotone, il suffit de calculer l'image des deux bornes
 de l'intervalle. Pour les polyn\^omes, Xcas d\'ecompose
 les coefficients en deux parties $P=P_+-P_-$ en fonction
 du signe, puis utilise la monotonie de $P_+$ et $P_-$ sur
-$\R^+$ et $\R^-$ respectivement.
+$\mathbb{R}^+$ et $\mathbb{R}^-$ respectivement.
 
-L'arithm\'etique d'intervalle dans $\C$ est beaucoup plus difficile
+L'arithm\'etique d'intervalle dans $\mathbb{C}$ est beaucoup plus difficile
 \`a mettre en oeuvre puisqu'il n'y a plus d'ordre ni de monotonie,
 on doit alors s'en remettre \`a des estimations sur les parties
 r\'eelles et imaginaires qui ne tiendront pas compte du ph\'enom\`ene
@@ -1024,12 +1065,12 @@ Voici donc les restes successifs lorsqu'on applique l'algorithme
 d'Euclide pour calculer le PGCD de $P(x)=(x+1)^{7}-(x-1)^{6}$ avec
 sa d\'eriv\'ee (les deux polyn\^omes sont premiers entre eux)~:
 \begin{eqnarray*}
-7\* (x+1)^{6}-6\* (x-1)^{5} &&\\
-\frac{162}{49} \* x^{5}+\frac{-390}{49} \* x^{4}+\frac{1060}{49} \* x^{3}+\frac{-780}{49} \* x^{2}+\frac{474}{49} \* x+\frac{-78}{49}&&\\
-\frac{157780}{729} \* x^{4}+\frac{-507640}{2187} \* x^{3}+\frac{290864}{729} \* x^{2}+\frac{-101528}{729} \* x+\frac{28028}{729}&&\\
-\frac{1}{49} \* (\frac{1400328}{2645} \* x^{3}+\frac{-732888}{2645} \* x^{2}+\frac{1133352}{3703} \* x+\frac{-732888}{18515})&&\\
-\frac{1}{2187} \* (\frac{2161816376832}{4669921} \* x^{2}+\frac{-555436846944}{4669921} \* x+\frac{301917024864}{4669921})&&\\
-\frac{1}{907235} \* (\frac{469345063045455}{129411872} \* x+\frac{-47641670106615}{129411872})&&\\
+7\* (x+1)^{6}-6\* (x-1)^{5} & &\\
+\frac{162}{49} \* x^{5}+\frac{-390}{49} \* x^{4}+\frac{1060}{49} \* x^{3}+\frac{-780}{49} \* x^{2}+\frac{474}{49} \* x+\frac{-78}{49}& &\\
+\frac{157780}{729} \* x^{4}+\frac{-507640}{2187} \* x^{3}+\frac{290864}{729} \* x^{2}+\frac{-101528}{729} \* x+\frac{28028}{729}& &\\
+\frac{1}{49} \* (\frac{1400328}{2645} \* x^{3}+\frac{-732888}{2645} \* x^{2}+\frac{1133352}{3703} \* x+\frac{-732888}{18515})& &\\
+\frac{1}{2187} \* (\frac{2161816376832}{4669921} \* x^{2}+\frac{-555436846944}{4669921} \* x+\frac{301917024864}{4669921})& &\\
+\frac{1}{907235} \* (\frac{469345063045455}{129411872} \* x+\frac{-47641670106615}{129411872})& &\\
 \frac{5497465490623352995840}{209648836272383412129}
 \end{eqnarray*}
 Le lecteur voulant tester d'autres exemples pourra utiliser le programme 
@@ -1220,12 +1261,12 @@ et polyn\^omes en une variable en repr\'esentation dense, on peut
 y acc\'eder par valeur (\verb|:=|) ou par r\'ef\'erence
 (\verb|=<|). Ces polyn\^omes servent eux-m\^emes \'a repr\'esenter
 des \'el\'ements d'une 
-{\bf extension alg\'ebrique}\index{extension alg\'ebrique}\index{alg\'ebrique, extension}  de $\Q$ (vus comme
+{\bf extension alg\'ebrique}\index{extension alg\'ebrique}\index{alg\'ebrique, extension}  de $\mathbb{Q}$ (vus comme
 un couple de polyn\^omes $P,Q$, o\`u $Q$ est un polynome minimal
 irr\'eductible \`a coefficients entiers, autrement dit $P,Q$ vaut $P(\alpha)$ 
 o\`u $Q(\alpha)=0$),
 ou des \'el\'ements d'un corps fini (comme ci-dessus, mais ici $Q$ est
-\`a coefficients dans $\Z/p\Z$ avec $p$ premier, cf. la commande \verb|GF|).
+\`a coefficients dans $\mathbb{Z}/p\mathbb{Z}$ avec $p$ premier, cf. la commande \verb|GF|).
 Giac poss\'ede aussi un type pour les polyn\^omes
 en repr\'esentation creuse distribu\'ee en plusieurs
 ind\'etermin\'ees (cf. les commandes \verb|symb2poly| et \verb|poly2symb|).
@@ -1411,8 +1452,8 @@ ce type de m\'ethode, par exemple pour le calcul de PGCD ou la factorisation
 de polyn\^omes \`a coefficients entiers.
 
 Les m\'ethodes {\bf modulaires}\index{modulaire, m\'ethode} consistent \`a r\'eduire un probl\`eme dans 
-$\Z$ \`a son \'equivalent dans $Z/n\Z$ pour une ou 
-plusieurs valeurs de $n$, nombre premier. Le calcul dans $\Z/n\Z$
+$\mathbb{Z}$ \`a son \'equivalent dans $\mathbb{Z}/n\mathbb{Z}$ pour une ou 
+plusieurs valeurs de $n$, nombre premier. Le calcul dans $\mathbb{Z}/n\mathbb{Z}$
 a l'avantage de se faire avec des entiers dont la taille est bornée.
 Ensuite \`a l'aide d'estimations 
 \`a priori sur la taille des solutions 
@@ -1420,15 +1461,15 @@ Ensuite \`a l'aide d'estimations
 initial avec le th\'eor\`eme des restes chinois. 
 
 Par exemple, on peut calculer un d\'eterminant d'une matrice
-\`a coefficients entiers en cherchant ce d\'eterminant dans $\Z/n\Z$
+\`a coefficients entiers en cherchant ce d\'eterminant dans $\mathbb{Z}/n\mathbb{Z}$
 pour plusieurs nombres premiers $n$, dont le produit est deux fois plus grand qu'une 
 estimation \`a priori de la taille du d\'eterminant 
 (donnée par exemple par l'inégalité d'Hadamard, cf. Cohen, p. 50). 
 
 Les m\'ethodes {\bf $p$-adiques}\index{p-adique, m\'ethode} commencent de mani\`ere identique par un 
-calcul dans $\Z/n\Z$, on augmente ensuite la
-pr\'ecision de la solution en la \og liftant\fg de $\Z/n^k \Z$ vers 
-$\Z/n^{k+1}\Z$ ou vers $\Z/n^{2k}\Z$ (lift
+calcul dans $\mathbb{Z}/n\mathbb{Z}$, on augmente ensuite la
+pr\'ecision de la solution en la \og liftant\fg de $\mathbb{Z}/n^k \mathbb{Z}$ vers 
+$\mathbb{Z}/n^{k+1}\mathbb{Z}$ ou vers $\mathbb{Z}/n^{2k}\mathbb{Z}$ (lift
 lin\'eaire ou lift quadratique), on s'arr\^ete lorsque $k$ est assez grand 
 (\`a l'aide d'estimations \`a priori) et on
 reconstruit alors la solution initiale. L'\'etape de \og lift\fg est en 
@@ -1455,13 +1496,13 @@ Lorsque les coefficients de $P$ sont entiers, la recherche pr\'ec\'edente
 revient \`a trouver un facteur \`a
 coefficients entiers $qX-p$ de $P$, on peut donc r\'eduire le probl\`eme 
 modulo un entier premier $n$ qui ne divise pas $a_d$~: si un tel facteur 
-existe dans $\Z$ alors ce facteur (r\'eduit modulo $n$) est un facteur 
-de $P$ dans $\Z/n\Z$
-donc $P$ admet une racine dans $\Z/n\Z$ (puisque $q$ est inversible 
+existe dans $\mathbb{Z}$ alors ce facteur (r\'eduit modulo $n$) est un facteur 
+de $P$ dans $\mathbb{Z}/n\mathbb{Z}$
+donc $P$ admet une racine dans $\mathbb{Z}/n\mathbb{Z}$ (puisque $q$ est inversible 
 modulo $n$ car on a choisi $n$ premier ne divisant pas $a_d$). On
-\'evalue maintenant $P$ en les $n$ \'el\'ements de $\Z/n\Z$. S'il n'y a pas 
+\'evalue maintenant $P$ en les $n$ \'el\'ements de $\mathbb{Z}/n\mathbb{Z}$. S'il n'y a pas 
 de 0, alors $P$ n'a pas de racine rationnelle. S'il y a des racines, on va 
-les lifter de $\Z/n^k\Z$ dans $\Z/n^{2k}\Z$.
+les lifter de $\mathbb{Z}/n^k\mathbb{Z}$ dans $\mathbb{Z}/n^{2k}\mathbb{Z}$.
 
 On suppose donc que pour $k\geq 1$, il existe un entier $p_k$ tel que
 \[ P(p_k)=0 \pmod{n^k} \]
@@ -1479,18 +1520,18 @@ permet de l'inverser modulo $n^k$ (et c'est ici qu'intervient
 l'identit\'e de B\'ezout). En pratique quand on factorise
 un polyn\^ome, on commence par retirer les multiplicités, 
 on peut donc supposer que $P$ est sans facteur multiple dans
-$\Z$. Ceci n'entraîne pas forcément qu'il le reste dans $\Z/n\Z$ 
+$\mathbb{Z}$. Ceci n'entraîne pas forcément qu'il le reste dans $\mathbb{Z}/n\mathbb{Z}$ 
 ce qui crée une contrainte supplémentaire sur le choix
-de $n$, à savoir que $P$ et $P'$ restent premier entre eux dans $\Z/n\Z$ 
+de $n$, à savoir que $P$ et $P'$ restent premier entre eux dans $\mathbb{Z}/n\mathbb{Z}$ 
 (il existe forcément de tels $n$, par exemple
 $n$ premier plus grand que le plus grand entier intervenant dans le calcul 
-du PGCD de $P$ et $P'$ dans $\Z$).
+du PGCD de $P$ et $P'$ dans $\mathbb{Z}$).
 
-Reste donc à revenir dans $\Z$ à partir d'une racine $p_k$ dans $\Z/(n^k \Z)$
+Reste donc à revenir dans $\mathbb{Z}$ à partir d'une racine $p_k$ dans $\mathbb{Z}/(n^k \mathbb{Z})$
 (où on peut choisir $k$). 
 On va maintenant utiliser la repr\'esentation 
 {\bf modulaire sym\'etrique}\index{modulaire sym\'etrique}~:
-on prend comme représentant modulaire d'un entier $z$ dans $\Z/n^k\Z$
+on prend comme représentant modulaire d'un entier $z$ dans $\mathbb{Z}/n^k\mathbb{Z}$
 l'unique entier congru \`a $z$ modulo $n$ qui est strictement compris entre
 $-n^k/2$ et $n^k/2$ (si $n$ est pair, la deuxi\`eme in\'egalit\'e
 est choisie large).
@@ -1503,7 +1544,7 @@ modulaire symétrique de $a_dX-\frac{a_d}{q}p$ est inchang\'ee,
 en effet on a des estimations à priori sur les entiers $p$ et $q$~: 
 $|q|\leq |a_d|$ et $|p| \leq |a_0|$ puisque $q$ 
 divise $a_d$ et $p$ divise $a_0$. 
-Comme $a_dX-\frac{a_d}{q}p$ est \'egal \`a $a_d(X-p_k)$ dans $\Z/(n^k \Z)$,
+Comme $a_dX-\frac{a_d}{q}p$ est \'egal \`a $a_d(X-p_k)$ dans $\mathbb{Z}/(n^k \mathbb{Z})$,
 il nous suffit d'écrire en repr\'esentation modulaire 
 sym\'etrique $a_d(X-p_k)=a_d X-p'$.
 Pour conclure, on sait que $a_d X-p'$ est un multiple entier de $qX-p$.
@@ -1525,7 +1566,7 @@ L'estimation \`a priori est $2|a_d||a_0|=12$ donc $k=2$ ($5^2=25>12$),
 une it\'eration suffira. On a $P'(-1)=7$, l'inverse de $P'(-1) \pmod 5$
 est -2 donc:
 \[ x= -\frac{P(-1)}{5} (-2) = -(-1) \* (-2)=-2 \]
-et $p_2=-1+5\times(-2)=-11$ est racine de $P$ dans $\Z/25\Z$.
+et $p_2=-1+5\times(-2)=-11$ est racine de $P$ dans $\mathbb{Z}/25\mathbb{Z}$.
 On calcule ensuite $a_d(X-p_k)=2(X+11)=2X+22=2X-3$ en repr\'esentation
 sym\'etrique, le PGCD de 2 et -3 est 1 donc on teste le facteur
 $2X-3$, ici il divise $P$ donc $P$ admet un unique facteur entier
@@ -1588,7 +1629,7 @@ ou pour les entiers la documentation de GMP, ou infra pour Karatsuba.
 \item Au lieu de la division euclidienne, on utilise très souvent la
 {\bf pseudo-division}\index{pseudo-division} pour les polynômes~: étant donné deux polyn\^omes $A$
 et $B$ de degrés $a$ et $b$ à coefficients dans un anneau contenu dans un corps
-(par exemple $\Z$), on multiplie $A$ par une puissance du coefficient
+(par exemple $\mathbb{Z}$), on multiplie $A$ par une puissance du coefficient
 dominant $B_b$ de $B$, plus précisément par $B_b^{a-b+1}$, ce qui permet 
 d'effectuer la division par $B$ sans que
 les coefficients sortent de l'anneau.
@@ -1631,7 +1672,7 @@ Si l'on veut l'inverse de $a$ modulo
 $b$ on remarque qu'il n'est pas utile de calculer les coefficients
 appartenant à la 3ème colonne. Enfin, les lignes intermédiaires
 peuvent servir à reconstruire une fraction d'entier représentée
-par un entier de $\Z/n\Z$ lorsque le numérateur et le dénominateur
+par un entier de $\mathbb{Z}/n\mathbb{Z}$ lorsque le numérateur et le dénominateur
 sont de valeur absolue inférieure à $\sqrt{n/2}$. Exemple~:\\
 \giacinputbigmath{step_infolevel:=1;iegcd(1234,357);step_infolevel:=0}\\
 Voir aussi dans Xcas la session exemple depuis le menu Exemple,arit,bezout.xws.
@@ -1835,7 +1876,7 @@ L'algorithme de calcul des termes du d\'eveloppement est le suivant~:
 Soit $x\geq0$. On initialise $y=x$ et la liste des $a_p$ \`a vide. 
 Puis on fait une boucle~: on ajoute la partie enti\`ere de $y$ \`a la
 liste, on calcule la partie fractionnaire de $y$, si elle est nulle on
-s'arr\^ete (dans ce cas $x\in \Q$),
+s'arr\^ete (dans ce cas $x\in \mathbb{Q}$),
 sinon on stocke dans $y$ l'inverse de cette partie fractionnaire et on recommence.
 On note classiquement~:
 \begin{eqnarray} h_{-2}=0, & h_{-1}=1, & h_p=a_p h_{p-1}+h_{p-2}\\
@@ -1864,8 +1905,8 @@ suites adjacentes qui convergent vers $x$, et on a
   k_{p-1}}
 \end{equation}
 En effet, la derni\`ere \'egalit\'e est une cons\'equence imm\'ediate
-de (\ref{eq:fraccon}), la croissance ou d\'ecroissance des suites
-d'indice pair ou impair s'en d\'eduit en ajoutant (\ref{eq:fraccon1}) au cran
+de (\(\ref{eq:fraccon}\)), la croissance ou d\'ecroissance des suites
+d'indice pair ou impair s'en d\'eduit en ajoutant (\(\ref{eq:fraccon1}\)) au cran
 suivant. La convergence vient de la
 limite infinie de $k_p$ en l'infini.
 On a donc
@@ -2003,7 +2044,7 @@ calcul de $b$ et du bit correspondant se font dans une m\^eme boucle).
 \item D\'eterminer un entier $c$ tel que $c=1 \pmod 3$, 
 $c=3 \pmod 5$, $c=5 \pmod 7$ et $c=2 \pmod{11}$.
 \giacinput{ichinrem()}
-\item Calculez dans $\Z/11\Z$
+\item Calculez dans $\mathbb{Z}/11\mathbb{Z}$
 \[  \prod_{a=0}^{10} (x-a)\]
 \giacinput{product()}
 \item Algorithmes fondementaux~: \'ecrire des programmes impl\'ementant
@@ -2147,7 +2188,7 @@ que la division euclidienne par $m$ peut se coder efficacement en base
 $x=(2^k \pm 1)q+r=2^k q + (r \pm q)$.
 Ainsi pour $k=4$ et $m=2^4+1=17$, $m$ est premier.
 On peut construire une suite de p\'eriode 16 en choisissant $a$ g\'en\'erateur
-de $(\Z/17\Z)^*$, par exemple $a=3$ et $c=2$ donne la suite
+de $(\mathbb{Z}/17\mathbb{Z})^*$, par exemple $a=3$ et $c=2$ donne la suite
 $0,2,8,9,12,4,14,10,15,13,7,6,3,11,1,5$.
 
 On a le~:
@@ -2191,7 +2232,7 @@ On trouvera dans Knuth une discussion détaillée du choix de $a, b, m$.
 
 Exemple~: $m=2^{31}-1$ est premier, on peut donc construire un
 g\'en\'erateur congruentiel de p\'eriode $m-1$ en choisissant $a$
-g\'en\'erateur de $\Z/m\Z^*$. Pour en trouver un, on peut tester
+g\'en\'erateur de $\mathbb{Z}/m\mathbb{Z}^*$. Pour en trouver un, on peut tester
 $a$ pris au hasard et voir si $a^{\frac{m-1}{j}} \neq 1 \pmod m$
 pour tous les diviseurs premiers de $m-1$. Par exemple\\
 \giacinputbigmath{m:=2^31-1;F:=ifactors(b:=m-1); G:=seq(F[2*j],j,0,iquo(size(F)-1,2))}
@@ -2265,7 +2306,7 @@ au point $(x,y)$ (coordonnées cartésiennes) ou $(r,\theta)$ est~:
 $$ \frac{1}{\sqrt{2\pi}^2} e^{-\frac{x^2+y^2}{2}} \, dx \, dy
 =  \left( e^{-\frac{r^2}{2}} r  \, dr \right)
 \left( \frac{1}{2\pi} \, d\theta \right)
-= \left( \frac12 e^{-\frac s2} \, ds \right)
+= \left( \frac{1}{2} e^{-\frac s2} \, ds \right)
 \left( \frac{1}{2\pi} \, d\theta \right)$$
 où $r^2=s$. Donc $s$ suit une loi exponentielle (générée
 par la réciproque de la distribution cumulée) et $\theta$
@@ -2322,7 +2363,7 @@ La première étape d'un algorithme de calcul de pgcd consiste donc
 $X + 1$ est un pgcd de $P$ et $Q$ puisqu'il est de degré maximal divisant $P$
 et $Q$ mais le pgcd de $P$ et $Q$ est $2 ( X + 1 )$. Remarquons qu'avec notre
 définition $- 2 ( X + 1 )$ convient aussi. Par convention on appelera
-pgcd dans $\Z[X]$ le
+pgcd dans $\mathbb{Z}[X]$ le
 polynôme ayant un coefficient dominant positif.
 
 {\bf{Définition}}: On appelle {\bf contenu}\index{contenu} $c ( P )$ d'un polynôme $P$ le
@@ -2342,16 +2383,16 @@ et $A$/contenu de $A$ est primitif, $B$/contenu de $B$ est primitif
 donc le produit l'est,
 
 {\bf Proposition~}: Si $A$ et $B$ sont primitifs et si $B$ divise $A$
-dans $\Q[X]$ alors $A/B \in \Z[X]$.
+dans $\mathbb{Q}[X]$ alors $A/B \in \mathbb{Z}[X]$.
 
-{\bf Preuve~}: Soit $Q=A/B \in \Q[X]$. Soit $q \in \N $ le PPCM des
-d\'enominateurs des coefficients de $Q$ et notons $P=qQ \in \Z[X]$.
+{\bf Preuve~}: Soit $Q=A/B \in \mathbb{Q}[X]$. Soit $q \in \mathbb{N} $ le PPCM des
+d\'enominateurs des coefficients de $Q$ et notons $P=qQ \in \mathbb{Z}[X]$.
 On a $A=BQ$ donc $qA=BP$ donc le contenu de $qA$ est le produit 
 du contenu de $B$ par celui de $P$, donc le contenu de $P=qQ$ est $q$,
-donc $Q \in \Z[X]$.
+donc $Q \in \mathbb{Z}[X]$.
 
-Donc le PGCD de $A$ et $B$, polyn\^omes primitifs de $\Z[X]$ est
-obtenu en prenant un PGCD de $A$ et $B$ dans $\Q[X]$, en multipliant
+Donc le PGCD de $A$ et $B$, polyn\^omes primitifs de $\mathbb{Z}[X]$ est
+obtenu en prenant un PGCD de $A$ et $B$ dans $\mathbb{Q}[X]$, en multipliant
 par le PPCM des d\'enominateurs et en rendant le polyn\^ome obtenu
 primitif (on change le signe du r\'esultat si n\'ecessaire pour avoir
 un coefficient dominant positif).
@@ -2603,13 +2644,13 @@ Finalement
 La procédure de construction de $G$ nous donne une majoration de ces
 coefficients par $| z | / 2$, donc de $c ( G )$ par $| z | / 2$, donc $C ( z
 )$ divise un entier de module plus petit que $| z | / 2$, donc
-\[ | C ( z ) | \leqslant \frac{| z |}{2} \]
+\[ | C ( z ) | \leq \frac{| z |}{2} \]
 On considère maintenant les racines complexes $z_1, \ldots ., z_n$ du polynôme
 $C$ (il en existe au moins une puisqu'on a supposé $C$ non constant). On a:
 \[ C ( X ) = c_n ( X - z_1 ) \ldots . ( X - z_n ) \]
 Donc, comme $c_n$ est un entier (ou entier de Gauss) non nul, sa norme est
 supérieure ou égale à 1 et :
-\[ | C ( z ) | \geqslant \prod^n_{j = 1} ( | z | - | z_j | ) \]
+\[ | C ( z ) | \geq \prod^n_{j = 1} ( | z | - | z_j | ) \]
 Il nous reste à majorer les racines de $C$ pour minorer $| C ( z ) |$. Comme
 $C$ divise $D$ il divise $P$ et $Q$ donc les racines de $C$ sont des racines
 communes à $P$ et $Q$. On va appliquer le:
@@ -2618,19 +2659,19 @@ communes à $P$ et $Q$. On va appliquer le:
   Soit x une racine complexe d'un polynôme $P = a_n X^n + \ldots . + a_0$.
   
   Alors~
-  \[ \text{$| x | < \frac{| P |}{| a_n |} + 1, | P | = \max_{0 \leqslant i
-     \leqslant n} ( | a_i | )$} \]
+  \[ | x | < \frac{| P |}{| a_n |} + 1, | P | = \max_{0 \leq i
+     \leq n} ( | a_i | ) \]
 \end{lemma}
 
 Application du lemme à $C(X)$~: on a $1/|c_n|\leq 1$
-donc si on a choisi $z$ tel que $| z | \geqslant 2 \min ( | P |, | Q | ) + 2$,
+donc si on a choisi $z$ tel que $| z | \geq 2 \min ( | P |, | Q | ) + 2$,
 alors pour tout $j$, $| z_j | < | z | / 2$ donc
 \[ | C ( z ) | > \left( \frac{| z |}{2} \right)^n \]
 qui contredit notre majoration de $| C ( z ) |$.
 
 \begin{thm}
   Soit $P$ et Q deux polynômes à coefficients entiers. On
-  choisit un entier z tel que $| z | \geqslant 2 \min ( | P |, | Q | ) + 2$,
+  choisit un entier z tel que $| z | \geq 2 \min ( | P |, | Q | ) + 2$,
   si la partie primitive du polynôme $G$ reconstruit à partir du pgcd de $P (
   z ) \mbox{et}$Q(z) par écriture en base $z$ (avec comme reste euclidien le
   reste symétrique) divise $P$ et $Q$ alors c'est le pgcd de $P$ et $Q$.
@@ -2640,11 +2681,11 @@ Pour finir la démonstration du théorème, il nous faut encore montrer le lemme
 On a
 \[ - a_n x^n = a_{n - 1} x^{n - 1} + \ldots . + a_0 \]
 Donc
-\[ | a_n | | x |^n \leqslant | P | ( 1 + \ldots . + | x |^{n - 1} ) = | P |
+\[ | a_n | | x |^n \leq | P | ( 1 + \ldots . + | x |^{n - 1} ) = | P |
    \frac{| x |^n - 1}{| x | - 1} \]
-Ici on peut supposer que $| x | \geqslant 1$, sinon le lemme est démontré,
+Ici on peut supposer que $| x | \geq 1$, sinon le lemme est démontré,
 donc $| x | - 1$ est positif et
-\[ | a_n | ( | x | - 1 ) \leqslant | P | \frac{| x |^n - 1}{| x |^n}
+\[ | a_n | ( | x | - 1 ) \leq | P | \frac{| x |^n - 1}{| x |^n}
    \Rightarrow | x | - 1 < \frac{| P |}{| a_n |} \]
 Remarques
 \begin{itemize}
@@ -2673,7 +2714,7 @@ Remarques
   Donc le pgcd $g$ de $P ( z )$ et $Q ( z )$ divise $\alpha D ( z ) = \alpha
   d$. Comme $g$ est un multiple de $d$, on en déduit que $g = \beta d$, où
   $\beta$ est un diviseur de $\alpha$. Si on a choisi $z$ tel que
-  \[ | z | > \text{ $2 | D | | \alpha |$} \]
+  \[ | z | > 2 | D | | \alpha | \]
   alors $| z | > 2 | D | | \beta |$ donc l'écriture symétrique en base $z$ de
   $g$ est $G = \beta D$. Donc la partie primitive de $G$ est $D$, le
   pgcd de $P$ et $Q$.
@@ -2754,14 +2795,14 @@ $D$. On utilisera ensuite la même méthode que dans l'algorithme modulaire de
 recherche de racines évidentes: on multiplie $G$ dans $\mathbb{Z} / n
 \mathbb{Z}$ par le pgcd dans $\mathbb{Z}$ des coefficients dominants $p$ et
 $q$ de $P$ et $Q$. Soit $\tilde{D} = \mbox{pgcd} ( p, q ) G$ le résultat écrit
-en représentation symétrique. Si $n \geqslant b \mbox{pgcd} ( p, q )$ et si
+en représentation symétrique. Si $n \geq b \mbox{pgcd} ( p, q )$ et si
 $G$ est du bon degré, on montre de la même manière que $D = \tilde{D}$. Comme 
 on ne connait pas le degré de $D$, on est obligé de tester si $\tilde{D}$ 
 divise $P$
 et $Q$. Si c'est le cas, alors $\tilde{D}$ divise $D$ donc $\tilde{D} = D$
-puisque $\mbox{degre} ( \tilde{D} ) = \mbox{degre} ( G ) \geqslant
+puisque $\mbox{degre} ( \tilde{D} ) = \mbox{degre} ( G ) \geq
 \mbox{degre} ( D )$. Sinon, $n$ est un nombre premier malchanceux pour ce
-calcul de pgcd ($\mbox{degre} ( G ) \geqslant \mbox{degre} ( D )$), il faut
+calcul de pgcd ($\mbox{degre} ( G ) \geq \mbox{degre} ( D )$), il faut
 essayer un autre premier.
 
 {\bf{Remarque:}} On serait tenté de dire que les coefficients de $D$
@@ -2784,15 +2825,15 @@ coefficients de $D$.
 \begin{lemma} \label{lemme:A}
   Soit $A = \sum_{j = 0}^a a_j X^j$ un polynôme et $\alpha \in \mathbb{C}$.
   Alors
-  \[ \text{$| ( X - \alpha ) A | = | ( \overline{\alpha} X - 1 ) A |$} \]
+  \[ | ( X - \alpha ) A | = | ( \overline{\alpha} X - 1 ) A | \]
 \end{lemma}
 
 Pour prouver le lemme \ref{lemme:A}, on développe les produits de polynômes. 
 On pose $a_{-1} = a_{a + 1} = 0$ et on note $\Re$ la partie réelle.
-\[ \text{$| ( X - \alpha ) A |^2 = \sum_{j = 0}^{a + 1}$} | a_{j - 1} - \alpha
+\[ | ( X - \alpha ) A |^2 = \sum_{j = 0}^{a + 1} | a_{j - 1} - \alpha
    a_j |^2 = \sum_{j = 0}^{a + 1} | a_{j - 1} |^2 + | \alpha |^2 | a_j |^2 - 2
    \Re ( a_{j - 1} \overline{\alpha  a_j} ) \]
-\[ \text{$| (  \overline{\alpha} X - 1 ) A |$}^2 = \sum_{j = 0}^{a + 1} | 
+\[ | (  \overline{\alpha} X - 1 ) A |^2 = \sum_{j = 0}^{a + 1} | 
 \overline{\alpha} a_{j - 1}
    - a_j |^2 = \sum_{j = 0}^{a + 1} | \alpha |^2 | a_{j - 1} |^2 + | a_j |^2 -
    2 \Re ( \overline{\alpha}  a_{j - 1}   \overline{a_j} ) \]
@@ -2800,15 +2841,15 @@ Les deux donnent bien le même résultat.
 
 Soit $P ( X ) = p \prod ( X - \alpha_j )$ la factorisation de $P$ sur
 $\mathbb{C}$. On introduit le polynôme
-\[ \tilde{P} = p \prod_{j / | \alpha_j | \geqslant 1} ( X - \alpha_j )
+\[ \tilde{P} = p \prod_{j / | \alpha_j | \geq 1} ( X - \alpha_j )
    \prod_{j / | \alpha_j | < 1} (  \overline{\alpha_j} X - 1 ) \]
 qui d'après le lemme a la même norme que $P$. La norme de $P$ majore donc le
 coefficient constant de $\tilde{P} $ d'où:
 \begin{equation}
-  \label{mignotte} \text{$ \prod_{j / | \alpha_j | \geqslant 1} | \alpha_j |
-  \leqslant \frac{| P |}{| p |}$}
+  \label{mignotte} \prod_{j / | \alpha_j | \geq 1} | \alpha_j |
+  \leq \frac{| P |}{| p |}
 \end{equation}
-On remarque que (\ref{mignotte}) reste vraie si on considère les
+On remarque que (\(\ref{mignotte}\)) reste vraie si on considère les
 racines $\delta_j$ de norme plus grande que 1 d'un diviseur $D$ de $P$ puisque
 le produit porte alors sur un sous-ensemble. On écrit maintenant l'expression
 des coefficients $d_j$ de $D$ à l'aide des racines $\delta_j$ de $D$:
@@ -2820,13 +2861,13 @@ $\beta_k = \max ( 1, | \delta_k | )$. On est donc ramené à majorer
 \[ \sigma_{j, m} ( \beta ) = \sum_{\mbox{choix} \mbox{de} j \mbox{parmi} m
    \mbox{valeurs} \beta_k} \quad \prod_{\beta_k \in \mbox{choix}} \beta_k  \]
 avec pour hypothèse une majoration de $M = \prod_{k = 1}^m \beta_k$ donnée par
-la relation (\ref{mignotte}). Pour cela, on cherche le maximum de $\sigma_{j,
-m} ( \beta )$ sous les contraintes $M$ fixé et $\beta_k \geqslant 1$.
+la relation (\(\ref{mignotte}\)). Pour cela, on cherche le maximum de $\sigma_{j,
+m} ( \beta )$ sous les contraintes $M$ fixé et $\beta_k \geq 1$.
 
 On va montrer que le maximum ne peut être atteint que si l'un des $\beta_k =
 M$ (et tous les autres $\beta_k = 1 )$. Sinon, quitte à réordonner supposons
 que les $\beta_k$ sont classés par ordre croissant. On a donc $\beta_{m - 1}
-\neq 1$, on pose $\widetilde{\beta_k} = \beta_k$ pour $k \leqslant m - 2$,
+\neq 1$, on pose $\widetilde{\beta_k} = \beta_k$ pour $k \leq m - 2$,
 $\tilde{\beta}_{m - 1} = 1$ et $\tilde{\beta}_m = \beta_{m - 1} \beta_m$.
 Comparons $\sigma_{j, m} ( \beta )$ et $\sigma_{j, \mbox{nm}} ( \tilde{\beta}
 )$. Si le choix de $j$ parmi $m$ comporte $k = m - 1$ et $k = m$, le produit
@@ -2834,13 +2875,13 @@ est inchangé. Sinon on a la somme de deux produits, l'un contenant $k = m - 1$
 et l'autre $k = m$. On compare donc $B ( \beta_{m - 1} + \beta_m )$ et $B ( 1
 + \beta_{m - 1} \beta_m )$ avec $B = \prod_{\beta_k \in \mbox{reste} \mbox{du}
 \mbox{choix}} \beta_k$. Comme
-\[ \text{$1 + \beta_{m - 1} \beta_m \geqslant \beta_{m - 1} + \beta_m$} \]
+\[ 1 + \beta_{m - 1} \beta_m \geq \beta_{m - 1} + \beta_m \]
 puisque la différence est le produit $(1-\beta_m)(1-\beta_{m-1})$ de deux
 nombres positifs, on arrive à la contradiction souhaitée.
 
 Ensuite on décompose les choix de $\sigma_{m, j}$ en ceux contenant $M$ et
 des 1 et ceux ne contenant que des 1, d'où la majoration
-\[ \sigma_{j, m} ( \beta ) \leqslant \left(\begin{array}{c}
+\[ \sigma_{j, m} ( \beta ) \leq \left(\begin{array}{c}
      m - 1\\
      j - 1
    \end{array}\right) M + \left(\begin{array}{c}
@@ -2849,7 +2890,7 @@ des 1 et ceux ne contenant que des 1, d'où la majoration
    \end{array}\right)  \]
 et finalement
 \begin{equation}
-  | d_{m - j} | \leqslant | d | \left( \left(\begin{array}{c}
+  | d_{m - j} | \leq | d | \left( \left(\begin{array}{c}
     m - 1\\
     j - 1
   \end{array}\right)  \frac{| P |}{| p |} + \left(\begin{array}{c}
@@ -2869,14 +2910,14 @@ Soit $P$ un polynôme à coefficients entiers (ou entiers de
   euclidienne du vecteur des coefficients de $P$ et $p$ le coefficient
   dominant de $P$ alors les coefficients $d_j$ de $D$ satisfont l'inégalité
   \begin{equation}
-    | d_j | \leqslant 2^{m - 1} ( | P | + | p | )
+    | d_j | \leq 2^{m - 1} ( | P | + | p | )
   \end{equation}
 \end{thm}
 
 Avec cette estimation, on en déduit que si $n$ est un premier plus grand que
 \begin{equation}
-  \text{$\min \left( 2^{\mbox{degre} ( P ) - 1} ( | P | + | p | ),
-  2^{\mbox{degre} ( Q ) - 1} ( | Q | + | q | ) \right)$}, \label{pgcdbound}
+  \min \left( 2^{\mbox{degre} ( P ) - 1} ( | P | + | p | ),
+  2^{\mbox{degre} ( Q ) - 1} ( | Q | + | q | ) \right), \label{pgcdbound}
 \end{equation}
 alors le pgcd trouvé dans $\mathbb{Z} / n \mathbb{Z}$ va se reconstruire en un
 pgcd dans $\mathbb{Z}$ si son degré est le bon.
@@ -2884,11 +2925,12 @@ pgcd dans $\mathbb{Z}$ si son degré est le bon.
 Malheureusement la borne précédente est souvent très grande par rapport aux
 coefficients du pgcd et calculer dans $\mathbb{Z} / n \mathbb{Z}$ s'avèrera
 encore inefficace (surtout si le pgcd est 1). Cela reste vrai même si on
-optimise un peu la majoration (\ref{pgcdbound}) en repartant de (\ref{pgcdd}).
+optimise un peu la majoration (\(\ref{pgcdbound}\)) en repartant de 
+(\(\ref{pgcdd}\)).
 
 L'idée est donc de travailler modulo plusieurs nombres premiers plus petits et
 reconstruire le pgcd des 2 polynômes à coefficients entiers à partir des pgcd
-des polynômes dans $\text{$\mathbb{Z}$} / n \text{$\mathbb{Z}$}$ et du
+des polynômes dans $\mathbb{Z} / n \mathbb{Z}$ et du
 théorème des restes chinois. En pratique on prend des nombres premiers
 inférieurs à la racine carrée du plus grand entier hardware de la machine
 (donc plus petits que $2^{16}$ sur une machine 32 bits) ce qui permet 
@@ -2986,8 +3028,8 @@ tel que $D = C \ast \mbox{pp} ( G ) .$ On évalue en $z$ et on obtient $d = C (
 z ) g / c ( G )$, où $c ( G )$ est un entier, donc
 \[ c ( G ) = a \ast C ( z ) \]
 Comme $c ( G )$ est un entier, $a$ et $C ( z )$ sont des polynômes constants.
-Comme précédemment, on a aussi $| C ( z ) | \leqslant | z | / 2$ puisque $| c
-( G ) | \leqslant | z | / 2$.
+Comme précédemment, on a aussi $| C ( z ) | \leq | z | / 2$ puisque $| c
+( G ) | \leq | z | / 2$.
 \begin{itemize}
   \item Premier cas: si $C$ ne dépend que de la variable $X_k$. On continue le
   raisonnement comme dans le cas unidimensionnel.
@@ -3111,8 +3153,8 @@ X_n$ à coefficients entiers. Renvoie le pgcd de $P$ et $Q$.
     \item Faire $\alpha$=entier aléatoire n'appartenant pas à $E$ jusqu'à ce
     que
     \begin{eqnarray*}
-      \text{degre($P ( X_1, \ldots ., X_{n - 1}, \alpha
-      ))$=$\mbox{degre}_{X_n} ( P ( X_1, \ldots ., X_n )$} &  & \\
+      \mbox{degre}(P ( X_1, \ldots ., X_{n - 1}, \alpha
+      ))=\mbox{degre}_{X_n} ( P ( X_1, \ldots ., X_n ) &  & \\
       \mbox{degre} ( Q ( X_1, \ldots ., X_{n - 1}, \alpha )) =
       \mbox{degre}_{X_n} ( Q ( X_1, \ldots ., X_n )) &  & 
     \end{eqnarray*}
@@ -3121,7 +3163,7 @@ X_n$ à coefficients entiers. Renvoie le pgcd de $P$ et $Q$.
     ., X_{n - 1}, \alpha )$.
     
     \item Si $\mbox{degre}_{} ( G )_i < \delta_i$ pour un indice au moins.
-    Si $\mbox{degre} ( G ) \leqslant \delta$, on pose $\delta =
+    Si $\mbox{degre} ( G ) \leq \delta$, on pose $\delta =
     \mbox{degre} ( G )$, $D' = G \frac{\Delta ( \alpha )}{\mbox{lcoeff} ( G
     )}$, $I = X_n - \alpha$, $e = 1$ et $E = [ \alpha ]$, sinon on pose $\delta
     = \min ( \delta, \mbox{degre} ( G )), D' = 0, I = 1, e = 0, E = [ ]$.
@@ -3267,9 +3309,9 @@ Il faut donc résoudre
 On peut alors appliquer l'identité de Bézout qui permet de déterminer des
 polynômes $P_1$ et $Q_1$ satisfaisant l'égalité ci-dessus (avec comme reste $O
 ( 2 )$ nul) puisque $P_0$ et $Q_0$ sont premiers entre eux. De plus, on
-choisit $P_1$ et $Q_1$ tels que $\mbox{degre}_{X_1} P_1 \leqslant
+choisit $P_1$ et $Q_1$ tels que $\mbox{degre}_{X_1} P_1 \leq
 \mbox{degre}_{X_1} ( F ) - \mbox{degre}_{} ( Q_0 ) = \mbox{degre} ( P_0 )$ et
-$\mbox{degre}_{X_1} ( Q_1 ) \leqslant \mbox{degre} ( Q_0 )$ et
+$\mbox{degre}_{X_1} ( Q_1 ) \leq \mbox{degre} ( Q_0 )$ et
 $\mbox{lcoeff}_{X_1} ( P_0 + P_1 ) + O ( 2 ) = \mbox{lcoeff}_{X_1} ( Q_0 + Q_1
 ) + O ( 2 ) = \mbox{lcoeff}_{X_1} ( F )$. On tronque ensuite $P_1$ et $Q_1$ en
 ne conservant que les termes de degré 1 par rapport à $X_2, \ldots ., X_n$.
@@ -3288,7 +3330,7 @@ Si on est bien en un point de bonne évaluation et si $k$ est plus grand que le
 degré total (par rapport aux variables $X_2, \ldots ., X_n$) du polynôme
  $F \mbox{lcoeff} ( F )$ on va vérifier que $P_0 + \ldots . + P_k = D
 \frac{\mbox{lcoeff} ( F )}{\mbox{lcoeff} ( D )}$. En effet, si on a deux
-suites de polynômes $P$ et $P'$ et $Q$ et $Q'$ satisfaisant (\ref{ezgcd}) avec
+suites de polynômes $P$ et $P'$ et $Q$ et $Q'$ satisfaisant (\(\ref{ezgcd}\)) avec
 les même termes de degré zéro $P_0$ et $Q_0$, alors en prenant la différence,
 on obtient:
 \[ ( P_0 + P_1 \ldots  + P_k ) ( Q_0 + Q_1 \ldots  + Q_k ) = ( P_0 + P_1'
@@ -3326,7 +3368,7 @@ le pgcd de $F$ et $G$ ou false.
   \item On note $\mbox{lcF}$ et $\mbox{lcG}$ les coefficients dominants de $F$
   et de $G$ par rapport à $X_1$.
   
-  \item Si $\mbox{degre} ( F ) \leqslant \mbox{degre} ( G )$ et $\mbox{degre}
+  \item Si $\mbox{degre} ( F ) \leq \mbox{degre} ( G )$ et $\mbox{degre}
   ( D_b ) = \mbox{degre} ( G )$ et $F$ divise $G$ renvoyer $F$
   
   \item Si $\mbox{degre} ( G ) < \mbox{degre} ( F )$ et $\mbox{degre} ( D_b )
@@ -3391,8 +3433,8 @@ P_0$ et $\mbox{lcoeff} ( P ) = \mbox{lcoeff} ( Q ) = \mbox{lcF}$.
     Remarque: on montre alors que $\alpha + \beta = \frac{\mbox{lcoeff} ( H
     )}{\mbox{lcoeff} ( P_0 Q_0 )} + O ( k + 1 )$ donc $P_0 u + Q_0 v = H + O (
     k + 1 )$ en utilisant les propriétés :
-    \[ \text{$\mbox{lcoeff} ( F ) = \mbox{lcoeff} ( P ) + O ( k ) =
-       \mbox{lcoeff} ( Q ) + O ( k ) = \mbox{lcoeff} ( P_0 ) + O ( 1 )$} \]
+    \[ \mbox{lcoeff} ( F ) = \mbox{lcoeff} ( P ) + O ( k ) =
+       \mbox{lcoeff} ( Q ) + O ( k ) = \mbox{lcoeff} ( P_0 ) + O ( 1 ) \]
     \item Réduire $u$ et $v$ en éliminant les termes de degré strictement
     supérieur à $k$ par rapport à $X_2, \ldots ., X_n$. S'il reste un
     coefficient non entier, renvoyer false
@@ -3430,8 +3472,8 @@ P_1$ et $Q_0 + Q_1$ sont bien à $O ( 2 )$ près les facteurs de $F
 \[ P = ( x + 1 ) y + x^2 + 1 = P_0 + P_1 + O ( 2 ), \ Q = ( x +
    1 ) ( y^2 + x y + 1 ) = Q_0 + Q_1 + O ( 2 ) \]
 Une deuxième itération est nécessaire. On calcule
-\[ \text{$H = G - ( P_0 + P_1 ) ( Q_0 + Q_1 ) = ( 2 y^2 + y + 1 ) x^2 + O ( 3
-   )$} \]
+\[ H = G - ( P_0 + P_1 ) ( Q_0 + Q_1 ) = ( 2 y^2 + y + 1 ) x^2 + O ( 3
+   ) \]
 puis $\mbox{reste} ( U H / d, Q_0 ) = y x^2$ et $\mbox{reste} ( V H / d, P_0 )
 = x^2$. Ici les coefficients $\alpha$ et $\beta$ sont nuls car $\mbox{lcoeff}
 ( F )$ n'a pas de partie homogène de degré 2. On trouve alors $P = P_0 + P_1 +
@@ -3515,7 +3557,7 @@ déterminant du système est non nul.
 
 {\bf Définition:} \\
 On appelle résultant de $A$ et $B$ le déterminant de ce système 
-(\ref{eq:bezout}). Il s'annule si et seulement si $A$ et $B$
+(\(\ref{eq:bezout}\)). Il s'annule si et seulement si $A$ et $B$
 ne sont pas premiers entre eux (ont au moins une racine commune).
 On appelle {\bf matrice de Sylvester}\index{Sylvester} la transposée de la matrice du système
 (les inconnues étant par ordre décroissant les coefficients de $U$
@@ -3564,8 +3606,8 @@ Ce résultat a un intérêt pour par exemple minorer à priori l'écart entre
 
 \subsection{Applications}
 Revenons au cas o\`u nos polyn\^omes sont \`a coefficients dans un
-anneau contenu dans un corps, par exemple $\Z \in \Q$ ou un anneau 
-de polyn\^omes $\Z[X_2,...,X_n] $  dans son corps de fractions.
+anneau contenu dans un corps, par exemple $\mathbb{Z} \in \mathbb{Q}$ ou un anneau 
+de polyn\^omes $\mathbb{Z}[X_2,...,X_n] $  dans son corps de fractions.
 On remarque alors que l'\'equation~:
 $$ AU+BV=C$$
 a une solution dans l'anneau si $C$ est le r\'esultant $r$
@@ -3591,8 +3633,8 @@ et en d\'eveloppant le d\'eterminant par rapport \`a cette
 derni\`ere colonne, on obtient l'identit\'e de B\'ezout.
 
 {\bf Exemple}~: le r\'esultant de $x+1$ et $x-1$ est 2, donc l'\'equation
-$$ (x+1)U+(x-1)V=2$$ a une solution $U=1$ et $V=-1$ dans $\Z[X]$,
-par contre $$ (x+1)U+(x-1)V=1$$ n'a pas de solution dans $\Z[X]$.
+$$ (x+1)U+(x-1)V=2$$ a une solution $U=1$ et $V=-1$ dans $\mathbb{Z}[X]$,
+par contre $$ (x+1)U+(x-1)V=1$$ n'a pas de solution dans $\mathbb{Z}[X]$.
 
 \subsubsection{Syst\`emes polynomiaux}
 Ceci peut servir \`a \'eliminer des inconnues lorsqu'on r\'esoud un
@@ -3628,7 +3670,7 @@ calcul de bases de Groebner. Mais le r\'esultant est tr\`es bien
 adapt\'e par exemple \`a la recherche d'\'equations cart\'esiennes
 d'une courbe ou surface param\'etr\'ee par des fractions rationnelles.
 
-\subsubsection{Identit\'e de B\'ezout dans $\Z[X]$.}
+\subsubsection{Identit\'e de B\'ezout dans $\mathbb{Z}[X]$.}
 Lorsque les polyn\^omes $A$ et $B$ sont \`a coefficients entiers,
 on peut r\'esoudre l'identit\'e de B\'ezout en r\'esolvant le
 syst\`eme lin\'eaire $AU+BV=D$ o\`u $D$ est calcul\'e par
@@ -3638,7 +3680,7 @@ par une m\'ethode $p$-adique, permettant de calculer efficacement
 les coefficients rationnels de $U$ et $V$.
 
 On peut \'etendre \`a des polyn\^omes premiers entre eux ayant des coefficients
-dans une extension alg\'ebrique de $\Q$, en calculant l'identit\'e
+dans une extension alg\'ebrique de $\mathbb{Q}$, en calculant l'identit\'e
 de B\'ezout pour $\tilde{A}$=norme$(A)$ et 
 $\tilde{B}$=norme$(B)$ (norme au sens de norme
 alg\'ebrique, obtenue en multipliant par les conjugu\'es du
@@ -3723,10 +3765,10 @@ raisonnement, et on utilise la majoration du degr\'e du r\'esultant
 par rapport \`a $y$ par $mn$, on a donc au plus $mn$ valeurs
 de $y$, donc au plus $mn$ points d'intersections, puisqu'une valeur
 de $y$ ne correspond qu'\`a une valeur de $x$ par choix du rep\`ere.
-Lorsqu'on travaille dans $\C^2$, le d\'efaut de nombre de points
+Lorsqu'on travaille dans $\mathbb{C}^2$, le d\'efaut de nombre de points
 d'intersection par rapport au majorant $mn$ provient des points \`a
 l'infini, \`a condition de prendre en compte la multiplicit\'e des
-intersections. Dans $\R^2$, on perd aussi les points non r\'eels.
+intersections. Dans $\mathbb{R}^2$, on perd aussi les points non r\'eels.
 Exemple~: intersection de $(x-2)^2+y^2=4$ et $y^2=(x-3)*(x^2-16)$.
 
 Le degr\'e du r\'esultant explique pourquoi on ne peut pas r\'esoudre
@@ -3893,10 +3935,10 @@ Par continuit\'e de la suite des polyn\^omes, $s$ ne peut varier que
 si l'un des polyn\^omes s'annule.
 On consid\'ere la suite des signes en un point~: elle ne peut contenir
 deux 0 successifs (sinon toute la suite vaudrait 0 en ce point en appliquant
-(\ref{eq:sturm}), or $A_k$ est constant non nul). Elle ne peut pas
+(\(\ref{eq:sturm}\)), or $A_k$ est constant non nul). Elle ne peut pas
 non plus contenir +,0,+ ni -,0,- \`a cause de la convention de signe
-sur les restes de (\ref{eq:sturm}). Donc une racine $b$
-de $A_i$ pour $0<i<k$, n'influe pas sur la valeur de $s$ au voisinage
+sur les restes de (\(\ref{eq:sturm}\)). Donc une racine $b$
+de $A_i$ pour $ 0 < i < k $, n'influe pas sur la valeur de $s$ au voisinage
 de $b$ (il y a toujours un changement de signe entre les positions
 $i-1$ et $i+1$). Comme $A_k$ est constant, seules les racines de $A_0=P$
 sont susceptibles de faire varier $s$. Comme $A_1=P'$, le sens de
@@ -3933,8 +3975,8 @@ d'{\bf isolation}\index{isolation de racines} des racines
 La base de cet algorithme utilise la r\`egle des signes de
 Descartes\index{Descartes} \index{regle des signes}
 \begin{prop}
-Soit $P=a_nx^n+...+a_1x+a_0 \in \R[x]$, $r(P)$ le nombre de racines de
-$P$ sur $\R^{*+}$, et $\sigma(P)$ le nombre de changements de signe
+Soit $P=a_nx^n+...+a_1x+a_0 \in \mathbb{R}[x]$, $r(P)$ le nombre de racines de
+$P$ sur $\mathbb{R}^{*+}$, et $\sigma(P)$ le nombre de changements de signe
 de la suite des coefficients $a_n,...,a_0$ de $P$. Alors $r(P) \leq \sigma(P)$.
 \end{prop}
 La preuve se fait par r\'ecurrence. Pour $n=0$ on a bien $0 \leq 0$.
@@ -3960,7 +4002,7 @@ peut d\'eterminer le nombre de racines contenues dans un
 rectangle du plan complexe (cf. par exemple l'article
 de Mickael Eiserman sur \verb|www-fourier.ujf-grenoble.fr/~eiserm|). 
 Malheureusement, il faut calculer une nouvelle suite de Sturm
-pour chaque rectangle (alors que dans $\R$ on peut r\'eutiliser la
+pour chaque rectangle (alors que dans $\mathbb{R}$ on peut r\'eutiliser la
 m\^eme suite de Sturm). Ce qui est donc beaucoup plus couteux,
 en pratique on ne peut gu\`ere aller au-del\`a du degr\'e 10 avec
 l'instruction \verb|complexroot| de Giac, analogue de \verb|realroot|.
@@ -4098,7 +4140,7 @@ liste des noms de variables d'une expression
 % \item (MuPAD) \verb|poly(expr,[var],coeff)| crée un polynôme à partir de
 % l'expression symbolique \verb|expr| par rapport une variable ou
 % à une liste de variables \verb|var|, on peut indiquer dans quel anneau 
-% vivent les coefficients (par exemple dans $\Z/13\Z$ avec comme 3ème argument
+% vivent les coefficients (par exemple dans $\mathbb{Z}/13\mathbb{Z}$ avec comme 3ème argument
 % \verb|IntMod(13)|)
 \item \verb|primpart|: partie primitive d'un polyn\^ome
 \item \verb|quo|, \verb|rem| quotient et reste euclidien
@@ -4125,7 +4167,7 @@ Notez aussi que le menu \verb|Exemples->poly->pgcd.xws| de Xcas contient
 des exemples de programmes de calcul de pgcd de type Euclide.
 
 \subsubsection{Calculs modulo $n$}
-Pour travailler dans $\Z/n\Z[X]$~:
+Pour travailler dans $\mathbb{Z}/n\mathbb{Z}[X]$~:
 \begin{itemize}
 \item avec \verb|Xcas| on utilise la notation \% comme en C, par
 exemple {\tt gcd(P \% 3, Q \% 3)}. On peut aussi utiliser la notation
@@ -4237,7 +4279,7 @@ cas et faire l'\'etude de la courbe.
 
 \subsection{Exercice (Bézout modulaire)}
 Soit $A$ et $B$ deux polynômes à coefficients entiers et premiers
-entre eux. Soit $c \in \Z^* $ le résultant de $A$ et $B$,
+entre eux. Soit $c \in \mathbb{Z}^* $ le résultant de $A$ et $B$,
 on va calculer les polynômes $U$ et $V$ de l'identité de Bézout 
 \begin{equation} \label{eq:bezoutmod}
  A U + B V = c , \quad \mbox{deg}(U)<\mbox{deg}(B), \mbox{deg}(V)<\mbox{deg}(A)
@@ -4250,25 +4292,25 @@ valeur absolue inférieure ou égale à la borne de Hadamard $h$ de
 la matrice de Sylvester de $A$ et $B$ (dont le déterminant est $c$,
 le résultant de $A$ et $B$). Calculer $h$ en fonction
 de la norme euclidienne de $A$, $B$ et de leurs degr\'es. 
-\item On calcule $c \in \Z^*$ puis on
-résoud (\ref{eq:bezoutmod}) dans $\Z/p_i Z[X]$ pour
+\item On calcule $c \in \mathbb{Z}^*$ puis on
+résoud (\(\ref{eq:bezoutmod}\)) dans $\mathbb{Z}/p_i Z[X]$ pour
 plusieurs nombres premiers $p_i$ (choisis si possible inférieurs 
 à $\sqrt{2^{31}}$ pour des raisons d'efficacité), puis on calcule par le
-théorème des restes chinois (\ref{eq:bezoutmod}) 
-dans $\Z/\prod p_i Z[X]$. Donner une minoration de 
+théorème des restes chinois (\(\ref{eq:bezoutmod}\)) 
+dans $\mathbb{Z}/\prod p_i Z[X]$. Donner une minoration de 
 $\prod_i p_i$ faisant intervenir $h$ qui permette de garantir
-que l'écriture en représentation symétrique de (\ref{eq:bezoutmod})
-dans $\Z/\prod p_i Z[X]$ est identique \`a (\ref{eq:bezoutmod}) dans $\Z[X]$.
+que l'écriture en représentation symétrique de (\(\ref{eq:bezoutmod}\))
+dans $\mathbb{Z}/\prod p_i Z[X]$ est identique \`a (\(\ref{eq:bezoutmod}\)) dans $\mathbb{Z}[X]$.
 \item Application~: résoudre de cette manière l'équation de
 Bézout pour 
 \[ A=(X+1)^4(X-3), \quad B=(X-1)^4(X+2)\] 
 (vous pouvez utiliser
 sans justifications l'instruction de calcul de r\'esultant,
-des coefficients de Bézout dans $\Z/p_iZ[X]$ et 
+des coefficients de Bézout dans $\mathbb{Z}/p_iZ[X]$ et 
 de reste chinois de votre logiciel).
 \item \'Ecrire une fonction mettant en oeuvre cet algorithme.
 \item Que pensez-vous de l'intérêt de cet algorithme par rapport à
-l'algorithme d'Euclide étendu dans $\Z[X]$?
+l'algorithme d'Euclide étendu dans $\mathbb{Z}[X]$?
 \end{enumerate}
 
 
@@ -4315,18 +4357,18 @@ de la partie imaginaire du birapport des affixes $\alpha, \beta, \gamma,
 
 \subsection{Décalage entier entre racines.}
 Soit $P$ un polynôme à coefficients entiers sans racines multiples. 
-On dira que $P$ a la propriété ${\mathcal I}$ si
+On dira que $P$ a la propriété $\mathcal{I}$ si
 deux des racines de $P$ sont d\'ecal\'ees d'un entier. 
 En d'autres termes, si $r_1,...,r_n$ d\'esignent
 les racines complexes distinctes de $P$, $P$ poss\`ede la
-propri\'et\'e ${\mathcal I}$
+propri\'et\'e $\mathcal{I}$
 s'il existe 
 au moins un entier parmi les différences $r_i-r_j$ pour $i \neq j$. 
 \begin{enumerate}
 \item Soit
 \[ R(t)=\mbox{resultant}_x(P(x),P(x+t)) \]
 Montrer que $R$ est à coefficients entiers.
-Montrer que la propriété ${\mathcal I}$ est équivalente à
+Montrer que la propriété $\mathcal{I}$ est équivalente à
 la propriété ``$R$ possède une racine entière non nulle''.
 On va maintenant construire un algorithme d\'eterminant les racines
 enti\`eres du polyn\^ome $R$.
@@ -4347,7 +4389,7 @@ de $R$ modulo $p$ en la ``remontant'' modulo $p^k$ pour $k$
 assez grand (algorithme p-adique). Pour quelle valeur de $k$ peut-on
 reconstruire toutes les racines enti\`eres de $R$~? 
 \item Comparer l'algorithme ci-dessus avec les algorithmes suivants~:
-la factorisation de $R$ sur $\Z$, 
+la factorisation de $R$ sur $\mathbb{Z}$, 
 la recherche num\'erique des racines complexes de $R$,
 la recherche des racines enti\`eres de $R$ parmi les diviseurs 
 entiers du coefficient constant de $R$ et leurs oppos\'es.
@@ -4357,7 +4399,7 @@ peut-on en déduire les facteurs de $P$ dont les racines diffèrent
 de cet(ces) entier(s)?
 \item Soit 
 \[P(x)=x^6+9x^5+29x^4+41x^3+37 x^2+59x+31\]
-Montrer que $P$ a la propriété ${\mathcal I}$. Calculer
+Montrer que $P$ a la propriété $\mathcal{I}$. Calculer
 la ou les racines entières de $R$ et donner la factorisation
 correspondante de $P$. 
 \item \'Ecrire un programme qui effectue cet algorithme sur un
@@ -4372,7 +4414,7 @@ D\'ecomposer cette fraction
 en \'el\'ements simples (donner le d\'etail des calculs en utilisant
 la factorisation pr\'ec\'edente et l'identit\'e de Bezout 
 \verb|abcuv| en Xcas). 
-\item Calculer la somme pr\'ec\'edente (\ref{eq}).
+\item Calculer la somme pr\'ec\'edente (\(\ref{eq}\)).
 On pourra remarquer que pour $k$ entier strictement positif,
 $\frac{1}{f(x+k)}-\frac{1}{f(x)}$
 s'exprime comme une somme de diff\'erences  
@@ -4537,9 +4579,9 @@ implementations of new algorithms speeding up the original Buchberger
 algorithm: Gebauer and M\"oller criterion (\cite{Gebauer1988275}), F4 and F5
 algorithms from J.-C. Faug\`ere (\cite{F99a}, \cite{Fau02a}), and are widely described in the
 literature if the base field is a finite field.
-Much less was said about computing over $\Q$. It seems that
+Much less was said about computing over $\mathbb{Q}$. It seems that
 implementers are using the same algorithm as for finite fields,
-this time working with coefficients in $\Q$ or in $\Z$ (sometimes
+this time working with coefficients in $\mathbb{Q}$ or in $\mathbb{Z}$ (sometimes
 with fast integer linear algebra), 
 despite the fact that an efficient p-adic or Chinese remaindering
 algorithm were described as soon as in year 2000 by E. Arnold
@@ -4574,33 +4616,33 @@ size) and may be faster than Magma on multi-processors,
 while computation modulo $p$ are faster for characteristics in the
 24-31 bits range.
 Moreover the modular algorithm memory usage is essentially
-twice the memory required to store the basis on $\Q$, sometimes
+twice the memory required to store the basis on $\mathbb{Q}$, sometimes
 much less than the memory required by other algorithms.
 
 \subsection{Checking a reconstructed Groebner basis} \label{sec:probagb}
-Let $f_1,..,f_m$ be polynomials in $\Q[x_1,..,x_n]$, $I=<f_1,...,f_m>$
+Let $f_1,..,f_m$ be polynomials in $\mathbb{Q}[x_1,..,x_n]$, $I=<f_1,...,f_m>$
 be the ideal generated by $f_1,...,f_n$. Without loss of generality, we may
-assume that the $f_i$ have coefficients in $\Z$ by multiplying
+assume that the $f_i$ have coefficients in $\mathbb{Z}$ by multiplying
 by the least common multiple of the denominators of the coefficients
 of $f_i$. We may also assume that the $f_i$ are primitive by dividing
 by their content.
 
 Let $<$ be a total monomial ordering (for example {\tt revlex} the
 total degree reverse lexicographic ordering). We want to compute
-the Groebner basis $G$ of $I$ over $\Q$ (and more precisely
+the Groebner basis $G$ of $I$ over $\mathbb{Q}$ (and more precisely
 the inter-reduced Groebner basis, sorted with respect to $<$).
 Now consider the ideal $I_p$ generated by the same $f_i$ but with
-coefficients in $\Z/p\Z$ for a prime $p$. Let $G_p$ be the Groebner basis of $I_p$
+coefficients in $\mathbb{Z}/p\mathbb{Z}$ for a prime $p$. Let $G_p$ be the Groebner basis of $I_p$
 (also assumed to be inter-reduced, sorted with respect to $<$, and with
 all leading coefficients equal to 1).
 
 Assume we compute $G$ by the Buchberger
-algorithm with Gebauer and M\"oller criterion, and we reduce in $\Z$
+algorithm with Gebauer and M\"oller criterion, and we reduce in $\mathbb{Z}$
 (by multiplying the s-poly to be reduced by appropriate leading
 coefficients), if no leading coefficient in the polynomials are
 divisible by $p$, we will get by the same process but computing modulo
 $p$ the $G_p$ Groebner basis. Therefore the computation can be
-done in parallel in $\Z$ and in $\Z/p\Z$ except for a finite 
+done in parallel in $\mathbb{Z}$ and in $\mathbb{Z}/p\mathbb{Z}$ except for a finite 
 set of {\em unlucky} primes (since the number of intermediate polynomials
 generated in the algorithm is finite). If we are choosing our primes
 sufficiently large (e.g. about $2^{31}$), the probability to fall on
@@ -4613,7 +4655,7 @@ The Chinese remaindering algorithm is as follow: compute $G_p$ for
 several primes, for all primes that have the same leading monomials
 in $G_p$ (i.e. if coefficient values are ignored), reconstruct
 $G_{\prod p_j}$ by Chinese remaindering, then reconstruct a
-candidate Groebner basis $G_c$ in $\Q$ by Farey reconstruction. Once it
+candidate Groebner basis $G_c$ in $\mathbb{Q}$ by Farey reconstruction. Once it
 stabilizes, do the checking step described below, and return $G_c$
 on success.
 
@@ -4638,10 +4680,10 @@ as soon as the inverse of the product of these primes is less than a
 fixed $\varepsilon>0$.
 
 {\bf Deterministic checking algorithm}: check that all s-polys
-reduce to 0 over $\Q$. This can be done either by integer computations
+reduce to 0 over $\mathbb{Q}$. This can be done either by integer computations
 (or even by rational computations, I have not tried that),
 or by reconstruction of the quotients using modular reduction to 0
-over $\Z/p\Z$ for sufficiently many primes. Once the reconstructed
+over $\mathbb{Z}/p\mathbb{Z}$ for sufficiently many primes. Once the reconstructed
 quotients stabilize, we can check the 0-reduction identity, and this
 can be done without computing the products quotients by elements of $G_c$
 if we have enough primes (with appropriate bounds on
@@ -4652,7 +4694,7 @@ reconstructed quotients).
 Once we have computed a Groebner basis modulo an initial prime $p$, if $p$ is
 not an unlucky prime, then we can speedup computing Groebner basis
 modulo other lucky primes. Indeed, if one s-poly reduce to 0 modulo
-$p$, then it reduces most certainly to 0 on $\Q$ (non zero s-poly have
+$p$, then it reduces most certainly to 0 on $\mathbb{Q}$ (non zero s-poly have
 in general several terms, cancellation of one term mod $p$ has
 probability $1/p$, simultaneous cancellation of several terms of a non-zero
 s-poly modulo $p$ is highly improbable), and we discard this s-poly in the
@@ -4772,16 +4814,16 @@ if so combine them by Chinese remaindering and go to step 4, otherwise add
 a new entry in the list of reconstructed basis and continue with
 next prime at step 3 (clearing all learning data is probably a good
 idea here).
-\item If the Farey $\Q$-reconstructed basis is not 
+\item If the Farey $\mathbb{Q}$-reconstructed basis is not 
 identical to the previous one, go to the loop iteration step 3
 (a fast way to check that is to reconstruct with all primes
 but the last one, and check the value modulo the last prime).
 If they are identical, run the final check : the initial polynomials $f_i$ must reduce
 to 0 modulo the reconstructed basis and
 the reconstructed basis s-polys must reduce to 0 (this is
-done on $\Q$ either directly or by modular reconstruction
+done on $\mathbb{Q}$ either directly or by modular reconstruction
 for the deterministic algorithm, or checked modulo several primes
-for the probabilistic algorithm). On success output the $\Q$
+for the probabilistic algorithm). On success output the $\mathbb{Q}$
 Groebner basis, otherwise continue with next prime at step 3.
 \end{enumerate}
 
@@ -4793,19 +4835,19 @@ on Mac OS X.6, Dual Core i5 2.3Ghz, RAM 2*2Go:
 \begin{itemize}
 \item Mod timings were computed modulo \verb|nextprime(2^24)|
 and modulo 1073741827 (\verb|nexprime(2^30)|).
-\item Probabilistic check on $\Q$ depends linearly on log of precision, two
+\item Probabilistic check on $\mathbb{Q}$ depends linearly on log of precision, two
 timings are reported, one with error probability less than \verb|1e-7|, and
 the second one for \verb|1e-16|.
-\item Check on $\Q$ in giac can be done with integer or modular computations
+\item Check on $\mathbb{Q}$ in giac can be done with integer or modular computations
 hence two times are reported.
 \item \verb|>>| means timeout (3/4h or more) or memory exhausted
 (Katsura12 modular \verb|1e-16| check with giac) or test not done because
-it would obviously timeout (e.g. Cyclic8 or 9 on $\Q$ with Singular)
+it would obviously timeout (e.g. Cyclic8 or 9 on $\mathbb{Q}$ with Singular)
 \end{itemize}
 \begin{tabular}{|c|c|c|c||c|c|c|} \hline
-        & giac mod $p$ & giac & singular & giac $\Q$ prob. & giac $\Q$  & singular \\ 
+        & giac mod $p$ & giac & singular & giac $\mathbb{Q}$ prob. & giac $\mathbb{Q}$  & singular \\ 
         & 24, 31 bits & run2 & mod $p$ & \verb|1e-7|, \verb|1e-16| &
-                                                                     certified & std $\Q$ \\ \hline
+                                                                     certified & std $\mathbb{Q}$ \\ \hline
 %Cyclic6 & 0.02 & & 0.02 & 0.06 & 0.15 0.26& 0.35\\
 Cyclic7 & 0.5, 0.58 & 0.1&2.0 & 3.5, 4.2 & 21, 29.3 & >2700 \\
 Cyclic8 & 7.2, 8.9 & 1.8 &52.5 & 103, 106 & 258, 679 & >> \\
@@ -4823,12 +4865,12 @@ This leads to the following observations~:
 \item Computation modulo $p$ for 24 to 31 bits is faster that Singular, but seems also
   faster than magma (and maple). For smaller primes, magma is 2 to 3
   times faster.
-\item The probabilistic algorithm on $\Q$ is much faster than Singular on these examples.
+\item The probabilistic algorithm on $\mathbb{Q}$ is much faster than Singular on these examples.
 Compared to maple16, it is reported to be faster for Katsura10, 
 and as fast for Cyclic8. Compared to magma, it is about 3 to 4
 times slower. 
 \item If \cite{magma} is up to date (except about giac), giac is the third software and first
-  open-source software to solve Cyclic9 on $\Q$. It requires 378
+  open-source software to solve Cyclic9 on $\mathbb{Q}$. It requires 378
   primes of size 29 bits, takes a little more than 1 day, requires 5Gb
   of memory on 1 processor, while with 6 processors it takes
 8h30 (requires 16Gb). The answer has integer coefficients of about 1600 digits
@@ -4876,7 +4918,7 @@ to 50).
 
 \subsection{Conclusion}
 I have described some enhancements to a modular algorithm
-to compute Groebner basis over $\Q$ which, combined to 
+to compute Groebner basis over $\mathbb{Q}$ which, combined to 
 linear algebra from F4, gives
 a sometimes much faster open-source implementation 
 than state-of-the-art open-source implementations 
@@ -4910,7 +4952,7 @@ built.
 \item checking could also benefit from parallelization.
 \item As an alternative to the modular algorithm,
 a first learning run could be done modulo a 24 bits prime, and
-the collected info used for f4 on $\Q$ as a probabilistic alternative
+the collected info used for f4 on $\mathbb{Q}$ as a probabilistic alternative
 to F5.
 \item FGLM conversion is still not optimized and therefore
 slow in Giac/Xcas, 
@@ -4939,7 +4981,7 @@ part il faut calculer des PGCD et
 factoriser des polynômes sur des extensions algébriques
 dont la taille peut augmenter au fur et à mesure que l'on remonte (ou faire
 des calculs approchés...). Il serait plus intéressant de calculer
-d'un seul coup une extension algébrique de $\Q$ qui permette
+d'un seul coup une extension algébrique de $\mathbb{Q}$ qui permette
 d'exprimer toutes les variables. Ceci peut se faire si on arrive à
 trouver une forme linéaire en les variables qui sépare
 les solutions (la valeur de la forme est distincte si les points
@@ -4982,9 +5024,9 @@ et la réutiliser). Pour éviter les problèmes de croissance de coefficients
 dans les calculs intermédiaires,
 ce calcul est effectué modulo plusieurs nombres premiers dans giac,
 jusqu'à pouvoir reconstruire par les restes chinois le polynôme minimal
-de la forme séparante sur $\Q$ et les expressions des variables comme
+de la forme séparante sur $\mathbb{Q}$ et les expressions des variables comme
 polynôme de la forme séparante (on n'a alors pas besoin
-de reconstruire la base de Groebner sur $\Q$). Bien entendu,
+de reconstruire la base de Groebner sur $\mathbb{Q}$). Bien entendu,
 il faut traiter le cas des mauvaises r\'eductions, pour cela
 on regarde si les monomes de la base du quotient de l'anneau par l'id\'eal
 sont ind\'ependants du nombre premier choisi, en cas de diff\'erence,
@@ -5000,7 +5042,7 @@ forme séparante d'abord parmi les variables puis avec des combinaisons
 linéaires aléatoires à petits coefficients entiers),
 \verb|solve| essaie de renvoyer des solutions exactes
 si le polynome minimal de la forme lin\'eaire s\'eparante
-se factorise sur $\Q$, \verb|fsolve| (en mode r\'eel)
+se factorise sur $\mathbb{Q}$, \verb|fsolve| (en mode r\'eel)
 localise les racines r\'eelles par la m\'ethode d'Akritas,
 \verb|cfsolve| localise les racines complexes par
 factorisation de Schur de la matrice companion. La fonction
@@ -5017,7 +5059,7 @@ euclidienne du numérateur de la fraction obtenue par le polynome
 minimal $P$ doit donner 0.
 
 Exemple~:
-\giacinputbigmath{syst:=[x^2-y^2-1,x^3+y^3-x*y-5]:fsolve(syst,[x,y])}
+\giacinputbigmath{syst:=[x^2-y^2-1,x^3+y^3-x*y-5];fsolve(syst,[x,y])}
 Calcul en mode pas \`a pas~:
 \giacinputbigmath{G:=gbasis(syst,[x,y],rur)}
 l'\'el\'ement d'indice 1 est la forme lin\'eaire s\'eparante,
@@ -5035,7 +5077,7 @@ On trouve les solutions approch\'ees
 La repr\'esentation rationnelle univari\'ee a des applications
 au-del\`a de la seule r\'esolution de syst\`emes polynomiaux.
 On peut s'en servir pour trouver une extension alg\'ebrique unique de
-$\Q$ permettant de calculer toutes les racines d'un polyn\^ome, 
+$\mathbb{Q}$ permettant de calculer toutes les racines d'un polyn\^ome, 
 il suffit de poser le syst\`eme form\'e par les relations
 racines-coefficients de ce polyn\^ome et d'en chercher la
 repr\'esentation rationnelle univari\'ee, cf. la section 
@@ -5043,9 +5085,9 @@ repr\'esentation rationnelle univari\'ee, cf. la section
 On peut \'egalement s'en servir pour trouver une 
 {\bf extension
 alg\'ebrique}\index{extension alg\'ebrique}\index{alg\'ebrique, extension} 
-unique contenant plusieurs extensions de $\Q$
+unique contenant plusieurs extensions de $\mathbb{Q}$
 dont on a le polyn\^ome minimal. Par exemple pour
-travailler dans $\Q[\sqrt{2},\sqrt{3},\sqrt{5}]$, on pose \\
+travailler dans $\mathbb{Q}[\sqrt{2},\sqrt{3},\sqrt{5}]$, on pose \\
 \verb|G:=gbasis([a^2-2,b^2-3,c^2-5],[a,b,c],rur)|,\\
 on a alors $\pm \sqrt{2}=$\verb|rootof(G[4],G[2])/rootof(G[3],G[2])|,\\
 $\pm \sqrt{3}=$\verb|rootof(G[5],G[2])/rootof(G[3],G[2])|,\\
@@ -5055,7 +5097,7 @@ $\pm \sqrt{5}=$\verb|rootof(G[6],G[2])/rootof(G[3],G[2])|\\
 \section{Courbes param\'etriques et polaires} \label{sec:courbes}
 
 \subsection{Introduction}
-Le graphe d'une fonction $f: I \mapsto \R$ ($I$ un intervalle)
+Le graphe d'une fonction $f: I \mapsto \mathbb{R}$ ($I$ un intervalle)
 est un exemple de courbe du plan, mais il
 n'est pas assez g\'en\'eral pour repr\'esenter tous les types de
 courbe du plan, par exemple un segment de droite vertical, ou
@@ -5073,7 +5115,7 @@ ce sont les courbes implicites.
 
 Dans cette section, on va \'etudier les courbes en param\'etriques,
 donn\'ee par un couple de fonctions $(x(t),y(t))$ d\'efinies 
-pour $t$ dans un sous-ensemble des r\'eels et \`a valeurs dans $\R$.
+pour $t$ dans un sous-ensemble des r\'eels et \`a valeurs dans $\mathbb{R}$.
 (Ceci ne restreint pas trop la g\'en\'eralit\'e,
 on peut montrer sous des hypoth\`eses assez g\'en\'erales 
 que l'allure locale d'une courbe implicite est identique \`a celle
@@ -5095,10 +5137,10 @@ donc param\'etrable comme ci-dessus. Une droite verticale $x=a$ peut
 se param\'etrer par $(x(t),y(t))=(a,t)$
 \item le cercle de centre l'origine et de rayon 1 peut se param\'etrer
   par $(x(t),y(t))=(\cos(t),sin(t)), t \in [0,2\pi[$. On peut bien sur
-le param\'etrer par $t \in \R$, mais dans ce cas on parcourt plusieurs
+le param\'etrer par $t \in \mathbb{R}$, mais dans ce cas on parcourt plusieurs
 fois le cercle (p\'eriodicit\'e). On peut aussi param\'etrer tout le
 cercle sauf un point avec le param\'etrage rationnel
-$(x(t),y(t))=(\frac{1-t^2}{1+t^2},\frac{2t}{1+t^2}), t \in \R$. Ce
+$(x(t),y(t))=(\frac{1-t^2}{1+t^2},\frac{2t}{1+t^2}), t \in \mathbb{R}$. Ce
 param\'etrage permet de calculer plus facilement des points
 du cercle, mais contrairement au param\'etrage trigonom\'etrique,
 il n'est pas ``uniforme''.\\
@@ -5239,7 +5281,7 @@ au lieu d'une seule $x \rightarrow y(x)$.
 \subsubsection{Domaine et p\'eriodicit\'e}
 On supposera dans toute la suite que les fonctions $x(t)$ et $y(t)$
 sont continument d\'erivables au moins 2 fois, sauf peut-\^etre
-en un nombre fini de r\'eels d'un intervalle $I$ de $\R$.
+en un nombre fini de r\'eels d'un intervalle $I$ de $\mathbb{R}$.
 
 On commence par d\'eterminer le domaine de d\'efinition de $x(t)$
 et de $y(t)$, et on essaie de le r\'eduire si possible, soit par
@@ -5247,7 +5289,7 @@ p\'eriodicit\'e (par exemple pour le cercle ci-dessus, $t \in [0,2 \pi]$)
 soit par l'existence de sym\'etries si les fonctions
 $x(t)$ et $y(t)$ sont paires ou impaires. Par exemple, si $x$ et $y$
 sont paires, alors on parcourt deux fois le m\^eme arc de courbe
-sur $\R^+$ et $\R^-$, on peut restreindre le domaine d'\'etude
+sur $\mathbb{R}^+$ et $\mathbb{R}^-$, on peut restreindre le domaine d'\'etude
 \`a $t\geq 0$. Si $x$ est pair et $y$ impair, alors 
 $(x(-t),y(-t))=(x(t),-y(t))$, il y a une sym\'etrie par rapport \`a
 l'axe des $x$, on se restreint \`a $t \in R^+$.
@@ -5278,9 +5320,9 @@ on a une {\bf asymptote}\index{asymptote} oblique $y=ax+b$ (on peut d\'eterminer
 la position en cherchant le signe de $y-(ax+b)$.
 
 Exemples~: 
-$$ (\frac{t^2}{t+1},t+\frac1{t^2+1}), \
-(t^2,t^3), \
-(\frac{t^3}{t^2+1},t+\frac{1}{t^2+2}), \
+$$ (\frac{t^2}{t+1},t+\frac1{t^2+1}), \ 
+(t^2,t^3), \ 
+(\frac{t^3}{t^2+1},t+\frac{1}{t^2+2}), \ 
 (\frac{1}{t^2-1},\frac{t}{t+1}), $$
 On peut utiliser la commande \verb|limit| dans Xcas pour \'etudier
 une asymptote, par exemple dans le premier cas, pour \'etudier la
@@ -5601,7 +5643,7 @@ $$\overrightarrow{v}= r' e_r + r e_\theta$$
 où $\{ e_r,e_\theta \}$ est une base orthonormée directe.\\
 Donc si $r\neq 0$ ou $r' \neq 0$, le point est régulier et
 l'angle $V$ de la tangente avec $e_r$ vérifie 
-$$\tan(V)=\frac{r}{r'} \in \R \cup \{ \pm \infty \} $$
+$$\tan(V)=\frac{r}{r'} \in \mathbb{R} \cup \{ \pm \infty \} $$
 (si $r \neq 0$ et $r'=0$, la tangente est portée par $e_\theta$).
 Si $r=0$, la tangente est portée par $e_r$.\footnote{Si $r'\neq 0$,
 cela se lit sur l'expression de la vitesse qui est non nulle, mais
@@ -5725,7 +5767,7 @@ En coordonn\'ees polaires, on note $\rho$ la distance de $F_1$ \`a
 $M$, et $\theta$ l'angle entre l'axe $Ox$ et $F_1M$. L'abscisse de $M$
 est donc~:
 \[ x= ea + \rho \cos(\theta)\]
-que l'on combine avec (\ref{eq:MF1}) pour obtenir~:
+que l'on combine avec (\(\ref{eq:MF1}\)) pour obtenir~:
 \[ \rho = a-ex =a(1-e^2) - e \rho \cos(\theta) \]
 donc~:
 \[ \rho = \frac{a(1-e^2)}{1+e\cos(\theta)} \]
@@ -6335,7 +6377,7 @@ les \'el\'ements propres de la conique (\verb|conique_reduite|).
 Pour les courbes alg\'ebriques de degr\'e
 plus grand, on commence par factoriser le polyn\^ome,
 c'est une factorisation absolue (section \ref{sec:factorisation_absolue}) qui est n\'ecessaire (ou
-au moins num\'erique dans $\C[x,y]$). Pour le moment,
+au moins num\'erique dans $\mathbb{C}[x,y]$). Pour le moment,
 Xcas fait simplement une factorisation sur le corps
 des coefficients, et rep\`ere les \'equations de coniques.
 
@@ -6470,7 +6512,7 @@ On note donc $dx$ [resp. $dy$] la diff\'erentielle de
 $V(x,y)=x$ [resp. $V(x,y)=y$]\footnote{G\'eom\'etriquement,
 $dx$ [resp. $dy$] est la forme lin\'eaire constante
 (i.e. ind\'ependante du point du plan choisi) qui a tout vecteur de
-$\R^2$ associe sa premi\`ere [resp. deuxi\`eme] coordonn\'ee~:
+$\mathbb{R}^2$ associe sa premi\`ere [resp. deuxi\`eme] coordonn\'ee~:
 $$ dx(v_1,v_2)=v_1, \quad dy(v_1,v_2)=v_2 $$}
 on a~:
 $$ dV=\partial_xV dx + \partial_yV dy$$
@@ -6486,14 +6528,14 @@ partielles d'une fonction $V$.
  
 La d\'efinition g\'eom\'etrique d'une forme diff\'erentielle $\omega$
 est la donn\'ee en tout point du plan (ou d'un domaine ouvert
-du plan) d'une application lin\'eaire de $\R^2$ \`a valeur dans $\R$
+du plan) d'une application lin\'eaire de $\mathbb{R}^2$ \`a valeur dans $\mathbb{R}$
 \footnote{Pour \^etre complet, on suppose de plus que cette application
 lin\'eaire qui d\'epend du point du plan en d\'epend de mani\`ere 
 continue voire diff\'erentiable}
-(ou en tout point de l'espace d'une application lin\'eraire de $\R^3$
-\`a valeurs dans $\R$ pour une courbe de $\R^3$). 
-Si on prend la base canonique de $\R^2$,
-une application lin\'eaire de $\R^2$ dans $\R$ est caract\'eris\'ee
+(ou en tout point de l'espace d'une application lin\'eraire de $\mathbb{R}^3$
+\`a valeurs dans $\mathbb{R}$ pour une courbe de $\mathbb{R}^3$). 
+Si on prend la base canonique de $\mathbb{R}^2$,
+une application lin\'eaire de $\mathbb{R}^2$ dans $\mathbb{R}$ est caract\'eris\'ee
 par sa matrice qui poss\`ede une ligne et deux colonnes et
 a donc deux coefficients $M$ et $N$, une forme diff\'erentielle
 \'equivaut donc bien \`a la donn\'ee d'un couple de fonction 
@@ -6521,9 +6563,9 @@ $$ \int_\gamma \omega =\int_{t_0}^{t_1}
 Exemple: on prend $\omega=ydx$ et on calcule l'int\'egrale
 curviligne le long de l'arc de parabole $(t,t^2)$ pour $t\in[0,1]$,
 on obtient
-$$ \int_0^1 t^2 \ dt =\frac13$$
+$$ \int_0^1 t^2 \ dt =\frac{1}{3}$$
 En param\'etrant par $(u^2,u^4)$ avec $u\in[0,1]$
-$$ \int_0^1 u^4 (2u \ du) = \left[2\frac{u^6}{6}\right]_0^1=\frac13$$
+$$ \int_0^1 u^4 (2u \ du) = \left[2\frac{u^6}{6}\right]_0^1=\frac{1}{3}$$
 on retrouve le m\^eme r\'esultat.
 
 La valeur de l'int\'egrale est bien d\'efinie
@@ -6544,7 +6586,7 @@ Attention \`a l'orientation, si on change d'orientation, on change le
 signe, par exemple si on parcourt l'arc de parabole de $(1,1)$
 vers $(0,0)$, en utilisant le param\'etrage $(1-t,(1-t)^2), t \in
 [0,1]$, on obtient l'oppos\'e~:
-$$ \int_0^1 (1-t) (-dt) = \left[\frac{(t-1)^2}{3}\right]_0^1 = -\frac13$$
+$$ \int_0^1 (1-t) (-dt) = \left[\frac{(t-1)^2}{3}\right]_0^1 = -\frac{1}{3}$$
 
 Remarque~: le travail d'une force $\overrightarrow{F}=(F_x,F_y)$ le 
 long d'un arc de courbe est donn\'e par l'int\'egrale curviligne de la forme
@@ -6609,7 +6651,7 @@ $\partial_y M=\partial_x N$
 Une forme exacte est toujours ferm\'ee, mais la r\'eciproque n'est pas
 toujours vraie, une forme ferm\'ee n'est pas forc\'ement exacte, cela
 d\'epend o\`u elle est d\'efinie. Si elle est d\'efinie dans un
-domaine ouvert de $\R^2$ sans trou ($\R^2$ tout entier,
+domaine ouvert de $\mathbb{R}^2$ sans trou ($\mathbb{R}^2$ tout entier,
 un rectangle, un disque, etc.), 
 on peut montrer qu'une forme 
 ferm\'ee est une forme exacte, en appliquant le th\'eor\`eme 
@@ -6700,8 +6742,8 @@ On a donc $U$ d\'elimit\'e par $\gamma$, r\'eunion de $\{(x,0), \ x
 \in [0,1]\} $, $C$ et $\{(0,y), y \in [1,0]\}$.
 Pour trouver la position du centre
 d'inertie en $x$ (en $y$ c'est identique), on doit calculer
-$$ \int \int_U x \ dx dy = \int_\gamma \frac12 x^2 \ dy
-= 0 + \frac12 \int_0^{\frac{\pi}{2}} \cos(t)^2 \cos(t) \ dt + 0= \frac13$$
+$$ \int \int_U x \ dx dy = \int_\gamma \frac{1}{2} x^2 \ dy
+= 0 + \frac{1}{2} \int_0^{\frac{\pi}{2}} \cos(t)^2 \cos(t) \ dt + 0= \frac{1}{3}$$
 et on divise par $\pi/4$ l'aire du quart de cercle, on trouve
 donc $(\frac{4}{3\pi},\frac{4}{3\pi})$, on peut visualiser avec
 la commande \verb|cercle(0,1); G:=point(4/(3*pi),4/(3*pi))|
@@ -6716,7 +6758,7 @@ On s'int\'eresse \`a l'\'equation diff\'erentielle
 \begin{equation} \label{eq:diff}
  y'=\frac{dy}{dt}=f(y,t)
 \end{equation}
-o\`u $y(t) \in \R^n$ et $f: \R^n \times \R \rightarrow \R^n$.
+o\`u $y(t) \in \mathbb{R}^n$ et $f: \mathbb{R}^n \times \mathbb{R} \rightarrow \mathbb{R}^n$.
 Si $n=1$, c'est une \'equation diff\'erentielle, si $n>1$ c'est
 un syst\`eme diff\'erentiel.
 
@@ -6751,7 +6793,7 @@ plotfield(-y+cos(t),[t=-5..5,y=-5..5],xstep=0.4,ystep=0.4);
 plotode(-y+cos(t),[t=-5..5,y],[0,y0],tstep=0.1,color=red)
 }
 
-L'\'equation (\ref{eq:diff}) est d'ordre 1, or certaines \'equations
+L'\'equation (\(\ref{eq:diff}\)) est d'ordre 1, or certaines \'equations
 diff\'erentielles se pr\'esentent naturellement comme des
 \'equations d'ordre 2, par exemple l'\'equation fondementale
 de la dynamique (acc\'el\'eration=somme des forces divis\'ee par
@@ -6781,8 +6823,8 @@ par une courbe param\'etrique en $(x,v)$ (ou en position
 impulsion). On a encore la notion de champ des tangentes
 si $f(y,t)=f(y)$ ne d\'epend pas explicitement du temps
 (on dit que le syst\`eme est {\em autonome}), dans ce
-cas une courbe int\'egrale a pour tangente en $y\in \R^2$ 
-de direction port\'ee par le vecteur $f(y) \in \R^2$.\\
+cas une courbe int\'egrale a pour tangente en $y\in \mathbb{R}^2$ 
+de direction port\'ee par le vecteur $f(y) \in \mathbb{R}^2$.\\
 {\bf Exemple}~: $(x,v)'=5(-v,x)$. La commande \\
 \giacinput{purge(v,x);plotfield(5*[-v,x],[x=-1..1,v=-1..1],normalize)}
 %\verb|plotfield(5*[-v,x],[x=-1..1,v=-1..1],normalize)|
@@ -6799,7 +6841,7 @@ $$ x'{'}=-5v'=-25x$$
 donc $x(t)=A\cos(5t)+B\sin(5t)$, $A, B$ \'etant d\'etermin\'es
 par les conditions initiales sur $(x,v)$.
 
-Une \'equation donn\'ee sous la forme (\ref{eq:diff}) 
+Une \'equation donn\'ee sous la forme (\(\ref{eq:diff}\)) 
 est appel\'ee une \'equation r\'esolue en $y$,
 car on a exprim\'e la d\'eriv\'ee en fonction de $y$ et de $t$. Il
 existe (plus fr\'equemment en math\'ematiques) d'autres formes d'\'equations
@@ -6834,13 +6876,13 @@ Il s'agit ici de pr\'eciser dans quelles conditions le r\'esultat
 intuitif suivant est vrai~: \'etant donn\'e une condition initiale
 $y(t_0)=y_0$, il y a une et une seule \'evolution possible, donc
 une solution unique $y(t)$ de l'\'equation ou du syst\`eme
-(\ref{eq:diff}).
+(\(\ref{eq:diff}\)).
 
 On a le~:
 \begin{thm} \label{thm:eqdiff} (Cauchy-Lipschitz)
-Si $f$ est continument d\'erivable en $y$ et $t$ sur $\R^n \times \R$
-ou sur un domaine ouvert $D$ inclus dans $\R^n \times \R$, alors l'\'equation
-(ou le syst\`eme) r\'esolu (\ref{eq:diff}) admet pour toute condition
+Si $f$ est continument d\'erivable en $y$ et $t$ sur $\mathbb{R}^n \times \mathbb{R}$
+ou sur un domaine ouvert $D$ inclus dans $\mathbb{R}^n \times \mathbb{R}$, alors l'\'equation
+(ou le syst\`eme) r\'esolu (\(\ref{eq:diff}\)) admet pour toute condition
 initiale $y(t_0)=y_0$ une solution unique
 sur un intervalle maximal ouvert en temps contenant $t_0$.
 \end{thm}
@@ -6911,7 +6953,7 @@ Cette \'equation autonome admet deux solutions
 \'evidentes $y=0$ et $y=1$. Donc pour toute condition initiale $y(t_0)
 \in ]0,1[$, on a $y(t) \in ]0,1[$\footnote{En toute rigueur,
 il faut prouver que la solution maximale est bien d\'efinie sur
-$\R$ tout entier. Soit $]t_m,t_M[$ l'intervalle maximal de
+$\mathbb{R}$ tout entier. Soit $]t_m,t_M[$ l'intervalle maximal de
 d\'efinition de la solution. Si $t_M \neq +\infty$,
 alors en int\'egrant $y'$ qui est born\'e sur $[t_0,t_M[$ 
 on obtient une valeur finie pour la limite en $t_M$ de $y(t)$,
@@ -6943,7 +6985,7 @@ $h(y_0)=0$. Si $h(y(t_0)) \neq 0$, par le th\'eor\`eme de
 Cauchy-Lipschitz $h(y(t))$ ne s'annule nulle part sur son domaine
 de d\'efinition. On peut donc diviser par $h(y)$ et 
 int\'egrer~:
-$$ \Rightarrow \int \frac{dy}{h(y)} = \int g(t) \
+$$ \Rightarrow \int \frac{dy}{h(y)} = \int g(t) \ 
 dt$$
 On obtient une \'equation implicite de la forme $H(y)=G(t)+C$ o\`u
 $G$ est une primitive de $g$, $H$ de $1/h$ et $C$ une constante
@@ -6969,7 +7011,7 @@ L'ensemble des solutions est un espace vectoriel (car l'\'equation
 est lin\'eaire) et de dimension l'ordre de
 l'\'equation~: pour le prouver on peut appliquer le th\'eor\`eme
 de Cauchy-Lipschitz au syst\`eme d'ordre 1 \'equivalent, ce
-syst\`eme est tel que $y$ est un vecteur de $\R^n$, on a ensuite
+syst\`eme est tel que $y$ est un vecteur de $\mathbb{R}^n$, on a ensuite
 un isomorphisme entre les solutions et la condition initiale.
 
 Si l'ordre est 1, on a une \'equation \`a variables s\'eparables
@@ -7018,7 +7060,7 @@ de degr\'e le degr\'e de l'\'equation diff\'erentielle.
 Plus pr\'ecis\'ement, si on remplace $e^{rt}$ dans
 $$ a_n y^{[n]}+...+a_1 y'+a_0y=0$$ alors
 $$ a_n r^n +...+a_1r +a_0=P(r)=0$$
-Si  $P$ n'a que des racines simples $r_1,...,r_n \in \C$, 
+Si  $P$ n'a que des racines simples $r_1,...,r_n \in \mathbb{C}$, 
 l'ensemble des solutions
 est alors l'espace vectoriel engendr\'e par 
 $\{ e^{r_1t}, ... , e^{r_nt} \}$.
@@ -7096,8 +7138,8 @@ On peut aussi utiliser la transformation de Laplace et son inverse.
 constants d'ordre 1.}\index{lin\'eaire, syst\`eme diff\'erentiel}
 Il s'agit donc de syst\`emes de la forme
 $$ y'=Ay+b(t)$$
-o\`u $y(t)\in \R^n$, $A$ est une matrice carr\'ee de taille $n$ 
-ind\'ependante du temps, et $b(t) \in \R^n$.
+o\`u $y(t)\in \mathbb{R}^n$, $A$ est une matrice carr\'ee de taille $n$ 
+ind\'ependante du temps, et $b(t) \in \mathbb{R}^n$.
 
 On commence par r\'esoudre l'\'equation homog\`ene $y'=Ay$.
 Si la matrice $A$ est diagonalisable, alors $A=PDP^{-1}$ o\`u
@@ -7196,7 +7238,7 @@ $$r^2=-i\frac{qB}{m}r$$
 poss\`ede deux racines distinctes 0 et $-i\frac{qB}{m}$ (mais pas le
 conjugu\'e, l'\'equation n'est pas \`a coefficients r\'eels!) donc
 la solution homog\`ene est 
-$$z=\alpha + \beta e^{-i\frac{qB}{m}t}, \quad \alpha,\beta \in \C$$
+$$z=\alpha + \beta e^{-i\frac{qB}{m}t}, \quad \alpha,\beta \in \mathbb{C}$$
 Le champ \'electrique joue ici le r\^ole de second membre, comme 0
 est solution de l'\'equation caract\'eristique, la forme de la 
 solution particuli\`ere est $z=At$, en rempla\c{c}ant on obtient 
@@ -7299,7 +7341,7 @@ premi\`ere \'energie
 totale permet de ramener l'\'equation fondamentale de la
 dynamique d'ordre 2 \`a une \'equation
 du premier ordre \`a variables s\'eparables~:
-$$ \frac12 m x'^2+ V(x) = E $$
+$$ \frac{1}{2} m x'^2+ V(x) = E $$
 soit
 $$ \frac{dx}{dt} = \sqrt{\frac{2(E-V(x))}{m}}$$
 donc 
@@ -7315,7 +7357,7 @@ par l'angle $\theta$ form\'e avec la verticale (orient\'e vers le
 bas), de sorte que
 l'\'energie potentielle de la masse est $-mgl\cos(\theta)$
 on a donc 
-$$ \frac12 m l^2\dot{\theta}^2-mgl\cos(\theta)=E$$
+$$ \frac{1}{2} m l^2\dot{\theta}^2-mgl\cos(\theta)=E$$
 puis
 $$ \dot{\theta}=\sqrt{\frac{2(E+mgl\cos(\theta))}{ml^2}}$$
 Si on lache sans vitesse initiale la masse avec un angle 
@@ -7360,41 +7402,41 @@ grad$(E).f=0$, en effet
 $$ \frac{d}{dt} E(y(t))= \sum_{j=1}^n \frac{\partial E}{\partial y_j} f_j$$
 
 {\bf Probl\`eme \`a deux corps~} 
-Cas d'un point de $\R^3$
+Cas d'un point de $\mathbb{R}^3$
 soumis \`a une force centrale\index{centrale, force}\index{force centrale}
 comme la gravit\'e ou la force coulombienne~:
-$$\frac{d^2 {\bf r}}{dt^2}=-\mu \frac{{\bf r}}{r^3}$$ 
+$$\frac{d^2 {\mathbf r}}{dt^2}=-\mu \frac{{\mathbf r}}{r^3}$$ 
 on montre
 \begin{itemize}
 \item  la conservation du moment cin\'etique 
-$${\bf L}=
-{\bf r} \wedge \frac{d {\bf r}}{dt}$$
+$${\mathbf L}=
+{\mathbf r} \wedge \frac{d {\mathbf r}}{dt}$$
 (v\'erification imm\'ediate en d\'erivant).
 Ceci entraine que
 le mouvement est dans un plan orthogonal \`a 
-${\bf L}=L \overrightarrow{k}$
+${\mathbf L}=L \overrightarrow{k}$
 et la loi des aires (o\`u $\theta$ est l'angle form\'e par 
-${\bf r}$ avec une direction fixe du plan)~:
+${\mathbf r}$ avec une direction fixe du plan)~:
 $$r^2 \frac{d\theta}{dt}=L$$
 (ceci est vrai d\`es que la force est centrale, ind\'ependamment
 de la norme de la force)
 \item la conservation du vecteur excentricit\'e d\'efini par~:
-\[ {\bf E}= \frac{1}{\mu} \frac{d{\bf r}}{dt} \wedge 
-{\bf L} - \frac{{\bf r}}{r} 
-= \frac{L }{\mu} \frac{d{\bf r}}{dt} \wedge 
+\[ {\mathbf E}= \frac{1}{\mu} \frac{d{\mathbf r}}{dt} \wedge 
+{\mathbf L} - \frac{{\mathbf r}}{r} 
+= \frac{L }{\mu} \frac{d{\mathbf r}}{dt} \wedge 
 \overrightarrow{k} - \overrightarrow{e_r} \]
 En effet $d \overrightarrow{e_r}/dt=d\theta/dt
 \overrightarrow{e_\theta}$ o\`u $\{ \overrightarrow{e_r},
 \overrightarrow{e_\theta}, \overrightarrow{k} \}$ est orthonorm\'e direct
 et $L=r^2 d\theta/dt$.
 \end{itemize}
-Si on prend l'axe des $x$ port\'e par ${\bf E}$,
-en faisant le produit scalaire avec ${\bf r}$~:
-$$rE \cos(\theta)={\bf r}.{\bf E}
+Si on prend l'axe des $x$ port\'e par ${\mathbf E}$,
+en faisant le produit scalaire avec ${\mathbf r}$~:
+$$rE \cos(\theta)={\mathbf r}.{\mathbf E}
 = \frac{1}{\mu} 
-(\frac{d{\bf r}}{dt} \wedge {\bf L}) . {\bf r} - r$$
+(\frac{d{\mathbf r}}{dt} \wedge {\mathbf L}) . {\mathbf r} - r$$
 on obtient en appliquant les propri\'et\'es du produit mixte et la
-d\'efinition de ${\bf L}$~:
+d\'efinition de ${\mathbf L}$~:
 \[ r = \frac{L^2}{\mu(1+E \cos(\theta))}\]
 la courbe int\'egrale est donc une conique d'excentricit\'e $E$
 ayant l'origine pour foyer et parcourue selon la loi des aires
@@ -7707,7 +7749,7 @@ d\'ecrite de mani\`ere p\'eriodique.
 {\bf Cas autonome}\index{autonome}\\
 On ne sait pas int\'egrer un syst\`eme $y'=f(y)$ sans plus
 de pr\'ecision sur $f$ (ce n'est plus une \'equation \`a
-variables s\'eparables et il n'y a pas d'ordre dans $\R^n$,
+variables s\'eparables et il n'y a pas d'ordre dans $\mathbb{R}^n$,
 donc pas de monotonie des solutions \`a attendre).
 On ne peut donc
 esp\'erer un r\'esultat g\'en\'eral que si la condition initiale 
@@ -7777,7 +7819,7 @@ de glace sur l'alb\'edo).
 \subsection{Résolution numérique}
 \subsubsection{Méthodes à un pas}
 On considère l'équation différentielle 
-$$y'=f(t,y), \quad t \in \R, \quad y(t) \in \R^d, y(0)=y_0$$ 
+$$y'=f(t,y), \quad t \in \mathbb{R}, \quad y(t) \in \mathbb{R}^d, y(0)=y_0$$ 
 o\`u $y(t)$ est la fonction inconnue cherchée
 et où $f$ est une fonction régulière de $t$ et $y$ (par exemple
 $C^1$ sur un domaine pour avoir existence et non recoupement des courbes
@@ -7849,7 +7891,7 @@ $$ |y(t_n)-y_n| \leq h^p \frac{C_p}{\Lambda}
 \end{thm}
 Par exemple, pour Euler explicite, $\Phi(t,y,h)=f(t,y)$, la constante
 $\Lambda$ est la constante de Lipschitz de $f$, et on prendra pour
-$C_1$ un majorant de $\frac12|\partial_y f(t,y)|$ dans un voisinage de la
+$C_1$ un majorant de $\frac{1}{2}|\partial_y f(t,y)|$ dans un voisinage de la
 solution $y(t)$ pour $t \in [t_0,t_n]$.
 
 Pour prouver ce r\'esultat, il faut d\'eterminer comment se propagent
@@ -7917,12 +7959,12 @@ ligne exprime comment on estime $y(t_i+h/2)$, la troisi\`eme
 $y(t_{i+1})=y(t_i+h)$~:
 $$ \begin{array}{cccc}
 0 & : &  \\
-  \frac12 & : & \frac12 \\
+  \frac{1}{2} & : & \frac{1}{2} \\
 1 & : & 0 & 1
 \end{array}
 $$
 on a donc 
-$$y(t_i+\frac12h) \approx Y_1=y(t_i)+\frac12hf(t_i,y(t_i))$$
+$$y(t_i+\frac{1}{2}h) \approx Y_1=y(t_i)+\frac{1}{2}hf(t_i,y(t_i))$$
 $$y(t_i+h) \approx Y_2=y(t_i)+hf(t_i+\frac{h}{2},Y_1)=y(t_i)+hf(t_i+\frac{h}{2},y(t_i)+\frac{h}{2}f(t_i,y(t_i)))$$
 
 La suite des temps $\alpha_k$ est croissante, mais pas forcément
@@ -7937,10 +7979,10 @@ Ainsi, la méthode RK4 utilise le tableau suivant
 $$
 \begin{array}{cccccc}
 0 & : & \\
-\frac12 & : & \frac12 \\
-\frac12 & : & 0 & \frac12 \\
+\frac{1}{2} & : & \frac{1}{2} \\
+\frac{1}{2} & : & 0 & \frac{1}{2} \\
 1 & : & 0 & 0 & 1 \\
-1 & : & \frac16 & \frac13 & \frac13 & \frac16
+1 & : & \frac{1}{6} & \frac{1}{3} & \frac{1}{3} & \frac{1}{6}
 \end{array}
 $$
 Ce qui se traduit par
@@ -7964,14 +8006,15 @@ avec 2 méthodes emboitées RK4 et
 Prince-Dormand, cf. Hairer).
 
 
-\section{Introduction au calcul variationnel} \label{sec:lagrangien}
+\section{Introduction au calcul variationnel}
 La recherche de minimas/maximas est une des application 
 du calcul diff\'erentiel~: en dimension 1, la d\'eriv\'ee s'annule
 lorsque la fonction est maximale ou minimale, en dimension plus
 grande c'est le gradient qui s'annule. Le calcul variationnel
 est une g\'en\'eralisation du principe pr\'ec\'edent lorsque
 l'inconnue n'est pas l'endroit $x$ o\`u l'extr\^emum est atteint
-(un r\'eel ou un point), mais une fonction. Par exemple, si on recherche
+(un r\'eel ou un point), mais une fonction $\gamma(t)$. 
+Par exemple, si on recherche
 le plus court chemin entre 2 points de l'espace, ou entre 2 points
 situ\'e sur une sph\`ere ou une surface~: dans ce cas l'inconnue
 est le chemin, que l'on peut repr\'esenter par une courbe 
@@ -7988,41 +8031,71 @@ formulation variationnelle de ces \'equations, c'est que ce type
 de formulation est plus intrins\`eque (plus g\'eom\'etrique) 
 elle ne d\'epend pas des coordonn\'ees.
 
-Le probl\`eme est donc le suivant~: on se donne un 
-{\bf lagrangien}\index{lagrangien}
-$$L(x,\dot{x},t): \R^n \times \R^n \times \R \rightarrow \R$$ 
-o\`u~:
+Dans le cas g\'en\'eral on se donne~:
 \begin{itemize}
-\item $L$ est une fonction d\'ependant de la position $x \in \R^n$,
-de la vitesse $\dot{x} \in \R^n$ et du temps $t$,
-deux fois continument d\'erivable,
-\item $A$ et $B \in \R^n$ sont deux points
+\item $L$ une fonction deux fois continument d\'erivable
+d\'ependant de la position $x$ dans un
+syst\`eme de coordonn\'ees, de la d\'eriv\'ee de $x$ par rapport au 
+temps $\dot{x}$ et du temps $t$ appel\'e
+{\bf lagrangien}\index{lagrangien}~:
+$$(x,\dot{x},t) \rightarrow L(x,\dot{x},t) \in \mathbb{R} $$ 
+En coordonn\'ees cart\'esiennes $x=(x_1,...,x_n)\in \mathbb{R}^n$,
+en coordonn\'ees polaires $x=(r,\theta)$, etc.
+En coordonn\'ees cart\'esienne, 
+$\dot{x}\in \mathbb{R}^n$ est la vitesse\footnote{on appelle espace
+des configurations l'espace des positions, vitesses,
+$(x,\dot{x}) \in \mathbb{R}^n \times \mathbb{R}^n$ en coordonn\'ees cart\'esiennes,
+espace que l'on a d\'ej\`a utilis\'e implicitement pour passer d'une
+\'equation diff\'erentielle d'ordre 2 \`a un syst\`eme diff\'erentiel
+d'ordre 1}, alors qu'en polaires la vitesse n'est pas 
+$(\dot{r},\dot{\theta})$.
+\item $A$ et $B \in \mathbb{R}^n$ deux points
 \end{itemize}
 et on cherche parmi les courbes param\'etr\'ees
 deux fois continument d\'erivables
 $\gamma(t)$ d'origine $\gamma(t_0)=A$ 
 et extr\'emit\'e $\gamma(t_1)=B$ le(s) chemin(s) r\'ealisant le
-minimum (s'il existe) de l'{\bf action}\index{action}~:
+minimum (s'il existe) de l'{\bf action}\index{action}\footnote{On
+pourrait bien sur avoir une action d\'ependant de d\'eriv\'ees
+d'ordre sup\'erieur de $\gamma(t)$}~:
 $$ S=\int_{t_0}^{t_1} L(\gamma(t),\frac{d\gamma(t)}{dt},t) dt $$
+En coordonn\'ees cart\'esiennes, $\gamma(t)$ est une courbe
+param\'etrique (mais en coordonn\'ees polaires, $(r(t),\theta(t))$
+n'est pas une courbe en polaires).
 
 Exemples~: 
 \begin{itemize}
 \item
-longueur minimale dans le plan, $n=2$ et 
-$L(x,\dot{x},t)=\| \dot{x} \|=\sqrt{\dot{x_1}^2+\dot{x_2}^2}$.
+longueur minimale dans le plan, en coordonn\'ees cart\'esiennes $n=2$ 
+et $x=(x_1,x_2)$
+$$L(x,\dot{x},t)=\| \dot{x} \|=\sqrt{\dot{x_1}^2+\dot{x_2}^2}$$
 \item lagrangien de la m\'ecanique classique ($n=1,2$ ou 3, dans un
-  r\'ef\'erentiel galil\'een)~:
-$$L(x,\dot{x},t)=\frac12m\dot{x}^2-V(x,t)$$
+  r\'ef\'erentiel galil\'een en coordonn\'ees cart\'esiennes)~: 
+\'energie cin\'etique 
+{\bf moins}\footnote{Le signe moins vient de la convention adopt\'ee
+en physique pour le lien entre potentiel et force}
+\'energie potentielle~:
+$$L(x,\dot{x},t)=\frac{1}{2}m\dot{x}^2-V(x,t)$$
 \item lagrangien en relativit\'e restreinte~:
 $$ L(x,\dot{x},t)=-mc^2\sqrt{1-\frac{\dot{x}^2}{c^2}}-V(x,t)$$
+le premier terme est proportionnel \`a l'oppos\'e du temps propre.
+\item si on consid\`ere une particule charg\'ee de charge $q$
+dans un champ \'electrique alors $V(x,t)=q\phi(x,t)$
+(dans un champ \'electro-magn\'etrique $V$ d\'epend
+de la vitesse, $V(x,\dot{x},t)=q\phi(x,t)-q
+\dot{x}.\overrightarrow{A(x,t)}$), o\`u $\phi(x,t)$ est le potentiel
+scalaire (et o\`u $\overrightarrow{A(x)}$ est
+le potentiel vecteur tel que
+rot$(\overrightarrow{A})=\overrightarrow{B}$).
+Les champs $\phi$ et $A$ peuvent d\'ependre du temps ou non.
 \end{itemize}
 
 \begin{prop}
-\'Equations d'{\bf Euler-Lagrange}\index{Euler-Lagrange}~: 
+\'Equations d'Euler-Lagrange\index{Euler-Lagrange}~: 
 ce sont des conditions n\'ecessaires
 pour que $\gamma(t)$ soit un extr\^emum, si
 $x=(x_1,...,x_n)$ est un syst\`eme de coordonn\'ees (pas
-forc\'ement dans un rep\`ere orthonorm\'e),
+forc\'ement cart\'esiennes),
 elles sont donn\'ees par~:
 $$ \frac{d}{dt} \frac{\partial L}{\partial \dot{x_i}} = 
 \frac{\partial L}{\partial x_i} \quad \mbox{pour } i=1,...,n$$
@@ -8083,10 +8156,10 @@ On int\`egre par parties le deuxi\`eme terme ($\dot{\delta}=\frac{d
   \delta}{dt}$), le terme tout int\'egr\'e est nul 
 car $\delta(t_0)=\delta(t_1)=0$, d'o\`u~:
 $$ 0=S'(0)=\int_{t_0}^{t_1} \left( \frac{\partial L}{\partial x_1} \delta 
--\frac{d}{dt} \frac{\partial L}{\partial \dot{x_1}} \delta \right) \
+-\frac{d}{dt} \frac{\partial L}{\partial \dot{x_1}} \delta \right) \ 
 dt
 =\int_{t_0}^{t_1} \left( \frac{\partial L}{\partial x_1} 
--\frac{d}{dt} \frac{\partial L}{\partial \dot{x_1}} \right) \delta \
+-\frac{d}{dt} \frac{\partial L}{\partial \dot{x_1}} \right) \delta \ 
 dt$$
 Comme le r\'esultat doit \^etre nul
 pour toute valeur de $\delta$, on en d\'eduit la premi\`ere
@@ -8104,14 +8177,46 @@ Un des int\'er\^ets de cette \'ecriture des \'equations de la
 m\'ecanique, c'est de pouvoir effectuer un changement de coordonn\'ees
 plus facilement, car la propri\'et\'e de rendre l'action extr\^emale pour un
 chemin est ind\'ependant du choix des coordonn\'ees.
-Par exemple, si $n=2$, on peut utiliser les coordonn\'ees polaires 
+{\bf Exemple~:} si $n=2$, on peut utiliser les coordonn\'ees polaires 
 $(r,\theta)$, on a alors
-$$ L=\frac12m(\dot{r}^2+r^2 \dot{\theta}^2) - V(r,\theta)$$
-Si le potentiel est \`a sym\'etrie sph\'erique, alors $L$ ne
+$$ L=\frac{1}{2}m(\dot{r}^2+r^2 \dot{\theta}^2) - V(r,\theta)$$
+Si le potentiel d\'epend seulement de $r$ (en dimension 2), alors $L$ ne
 d\'epend pas de $\theta$ (seulement de $\dot{\theta}$) donc
 $$ \frac{d}{dt} \frac{\partial L}{\partial \dot{\theta}} = 0$$
 on a donc une int\'egrale premi\`ere, qui est le moment cin\'etique
-$mr^2 \dot{\theta}$.
+$mr^2 \dot{\theta}=\mathcal{L}$. L'autre \'equation est
+$$ \frac{d}{dt} \frac{\partial L}{\partial \dot{r}} = m\ddot{r}
+= \frac{\partial L}{\partial r} = m r \dot{\theta}^2 - V'(r)$$
+et s'exprime uniquement en fonction de $r$
+$$ m\ddot{r} = \frac{\mathcal{L}^2}{mr^3} - V'(r)$$
+tout se passe comme si on \'etait en dimension 1 avec un potentiel
+effectif $V(r)+ \frac{\mathcal{L}^2}{2mr^2}$.
+
+{\bf Exercice}~: Calculer le lagrangien en coordonn\'ees sph\'eriques
+et donner les \'equations d'Euler-Lagrange si le potentiel
+$V$ est radial ($V=V(r)$).\\
+{\bf Solution abr\'eg\'ee}
+$$ L=\frac{1}{2}m(\dot{r}^2+r^2\dot{\theta}^2+r^2\sin(\theta)^2
+\dot{\phi}^2)-V$$
+$L$ ne d\'epend pas explicitement de $\phi$, il y a donc une constante
+du mouvement 
+$$p_\phi=\partial L/\partial{\dot{\phi}} = m r^2 \sin(\theta)^2 
+\dot{\phi}, \quad \dot{p_\phi}=0$$ 
+c'est le moment cin\'etique par rapport \`a $Oz$.
+$V$ ne d\'epend pas de $\theta$ mais $L$ en d\'epend, donc
+$p_\theta=\partial L/\partial{\dot{\theta}}$ 
+n'est pas conserv\'e~:
+$$ p_\theta=mr^2\dot{\theta}, 
+\quad \dot{p_\theta}=mr^2\sin(\theta)\cos(\theta)\dot{\phi}^2$$
+Toutefois, pour des raisons de sym\'etrie, les moments par rapport \`a
+$Ox$ et $Oy$ sont aussi conserv\'es, on a donc d'autres constantes
+du mouvement. On peut continuer de deux mani\`eres, soit choisir
+le rep\`ere pour avoir $\dot{\phi}=0$ \`a la condition initiale, alors
+$\dot{\phi}$ reste nul pendant tout le mouvement qui se passe dans
+le plan $\phi$ constant, on est ramen\'e \`a un lagrangien en
+coordonn\'ees polaires, qui ne d\'epend plus de $\theta$.
+Ou bien on montre que $p_\theta^2+p_\phi^2/\sin^2(\theta)$
+est constant.
 
 Plus g\'en\'eralement, si $L$ ne d\'epend pas explicitement du temps,
 alors le {\bf hamiltonien}\index{hamiltonien} d\'efini par~:
@@ -8154,8 +8259,8 @@ Pour se ramener au probl\`eme pr\'ec\'edent,
 on change de notations, $x$ devient un ``temps virtuel''
 $\tau$ et $y'=\dot{y}$ est la d\'eriv\'ee de $y$ par
 rapport \`a ce temps virtuel, il faut minimiser
-$$ \int_0^{\tau_B} L(\tau,y,\dot{y}) d\tau, \quad 
-L(\tau,y,\dot{y})=\frac{\sqrt{1+\dot{y}^2}}{\sqrt{-2gy}} $$
+$$ \int_0^{\tau_B} L(y,\dot{y},\tau) d\tau, \quad 
+L(y,\dot{y},\tau)=\frac{\sqrt{1+\dot{y}^2}}{\sqrt{-2gy}} $$
 le lagrangien ne d\'epend pas explicitement de $\tau$, donc le
 hamiltonient correspondant
 $$ H=\dot{y} \frac{\partial L}{\partial\dot{y}}  - L $$
@@ -8189,10 +8294,10 @@ la solution est donc une cyclo\"ide\index{cyclo\"ide} renvers\'ee.
 On peut aussi le v\'erifier directement
 en rempla\c{c}ant dans l'\'equation $x$ et $y$
 par les \'equations param\'etriques de la cyclo\"ide renvers\'ee
-$$x=c(t-\sin(t)), \ y=-c+c\cos(t)), \ t \in [0,\pi]$$
+$$x=c(t-\sin(t)), \ y=-c+c\cos(t), \ t \in [0,\pi]$$
 on trouve pour le membre de droite~:
 \begin{eqnarray*}
-\sqrt{\frac{-2c}{y}-1} \ dx &=& c \sqrt{\frac{2}{1-\cos(t)}-1} \
+\sqrt{\frac{-2c}{y}-1} \ dx &=& c \sqrt{\frac{2}{1-\cos(t)}-1} \ 
 (1-\cos(t)) \ dt\\
 &=& c \sqrt{\frac{1+\cos(t)}{1-\cos(t)}} \  (1-\cos(t)) \ dt \\
 &=& c \sqrt{1-\cos(t)^2} \ dt\\
@@ -8200,12 +8305,32 @@ on trouve pour le membre de droite~:
 &=& -dy
 \end{eqnarray*}
 
+{\bf Pour aller plus loin}~:
+\begin{itemize}
+\item le th\'eor\`eme de Noether permet de d\'eduire une
+constante du mouvement lorsque le lagrangien est invariant
+par un groupe continu de transformations (par exemple
+translation ou rotation dans l'espace).
+\item les \'equations de la m\'ecanique peuvent se r\'e\'ecrire
+en terme du hamiltonien, en utilisant 
+les coordonn\'ees $(q=x,p=\partial L/\partial \dot{x})$
+de l'espace des phases, sous la forme
+$$ \dot{q}=\frac{\partial H}{\partial p}, \quad
+\dot{p}=-\frac{\partial H}{\partial q}$$
+On obtient un syst\`eme {\em symplectique}
+qui poss\`ede des propri\'et\'es g\'eom\'etriques et permet
+de calculer des solutions num\'eriques de meilleure qualit\'e en en tenant
+compte (int\'egration symplectique). La formulation
+hamiltonienne de la m\'ecanique est aussi tr\`es li\'ee \`a la 
+m\'ecanique quantique (principe de correspondance).
+\end{itemize}
+
 
 \section{Corps finis.} \label{sec:gf}\index{corps fini}\index{GF}
 \subsection{Rappels}
 Soit $K$ un corps fini. Le plus petit entier $p$ tel que
 $p.1=0$ est la caract\'eristique du corps, c'est un nombre premier
-(car $xy=0 \Rightarrow x=0$ ou $y=0$), et $K$ est un $\Z/p\Z$
+(car $xy=0 \Rightarrow x=0$ ou $y=0$), et $K$ est un $\mathbb{Z}/p\mathbb{Z}$
 espace vectoriel de dimension finie $n$, donc son cardinal est $p^n$.
 
 Les inversibles pour la multiplication forment un groupe de cardinal
@@ -8215,8 +8340,8 @@ est donc un diviseur strict de $p^n-1$, mais c'est impossible car
 le polyn\^ome $x^d-x$ a alors $p^n-1>d$ racines).
 
 L'application $\phi:x \rightarrow x^p$ est une application lin\'eaire
-et le noyau de $\phi$-id est $\Z/p\Z$. Si $P$ est un polyn\^ome 
-irr\'eductible \`a coefficients dans $\Z/p\Z$ de degr\'e divisant $n$, alors
+et le noyau de $\phi$-id est $\mathbb{Z}/p\mathbb{Z}$. Si $P$ est un polyn\^ome 
+irr\'eductible \`a coefficients dans $\mathbb{Z}/p\mathbb{Z}$ de degr\'e divisant $n$, alors
 $P$ se d\'ecompose en produit de facteurs de degr\'e 1 et on passe
 d'une racine de $P$ dans $K$ \`a une autre en appliquant $\phi$
 (en effet $P$ divise $x^{p^n}-x$ modulo $p$ et
@@ -8227,18 +8352,18 @@ de cardinal $3^5$, puis
 et ex\'ecuter \`a niveau la commande jusqu'\`a ce que $P$ soit
 irr\'eductible, puis tester \verb|factor(P,g)|.
 Evidemment, ce r\'esultat n'est plus vrai si $P$ a des coefficients
-dans $K$ au lieu de $\Z/p\Z$ (essayer avec \verb|P:=randpoly(5,g)|).
+dans $K$ au lieu de $\mathbb{Z}/p\mathbb{Z}$ (essayer avec \verb|P:=randpoly(5,g)|).
 
 \subsection{Repr\'esentation des corps non premiers.}
 \subsubsection{Cas g\'en\'eral.}
 Pour repr\'esenter $K$, on utilise g\'en\'eralement la
 repr\'esentation dite additive, c'est-\`a-dire que $K$
-est isomorphe \`a $\Z/p\Z[X]/P(X)$ avec $P$ un polyn\^ome
-irr\'eductible de $\Z/p\Z[X]$ de degr\'e $n$. Si la classe de $X$
+est isomorphe \`a $\mathbb{Z}/p\mathbb{Z}[X]/P(X)$ avec $P$ un polyn\^ome
+irr\'eductible de $\mathbb{Z}/p\mathbb{Z}[X]$ de degr\'e $n$. Si la classe de $X$
 est d'ordre $p^n-1$ dans $K^*$ on dit que $P$ est {\bf primitif}\index{primitif}.
 Dans Xcas, c'est cette repr\'esentation qui est utilis\'ee,
 l'instruction \verb|GF(p,n)| g\'en\`ere al\'eatoirement
-un polyn\^ome irr\'eductible de degr\'e $n$ sur $\Z/p\Z$,
+un polyn\^ome irr\'eductible de degr\'e $n$ sur $\mathbb{Z}/p\mathbb{Z}$,
 puis cherche un \'el\'ement cyclique, calcule son polyn\^ome
 minimal (qui est donc primitif), et affiche le nom d'un
 g\'en\'erateur (par d\'efaut \verb|g|), 
@@ -8246,7 +8371,7 @@ il suffit alors d'\'ecrire n'importe quelle
 expression symbolique polynomiale en ce g\'en\'erateur
 pour cr\'eer un \'el\'ement de $K$. En interne, Xcas stocke
 les \'el\'ements de $K$ comme des polyn\^omes-listes
-\`a coefficients dans $\Z/p\Z$, et les affiche comme polyn\^ome
+\`a coefficients dans $\mathbb{Z}/p\mathbb{Z}$, et les affiche comme polyn\^ome
 symbolique en fonction du g\'en\'erateur. On peut aussi
 utiliser un entier entre 0 et $p^n-1$ dont l'\'ecriture en base
 $p$ repr\'esente les coefficients du polyn\^ome.
@@ -8300,7 +8425,7 @@ effectuer toutes les op\'erations sur le corps $K$ tr\`es
 rapidement~: la multiplication devient un test si l'un
 des \'el\'ements vaut $p^n-1$ suivi d'une addition modulo $p^n-1$ si
 ce n'est pas le cas, l'addition une \'ecriture en base $p$ et $n$
-additions dans $\Z/p\Z$.
+additions dans $\mathbb{Z}/p\mathbb{Z}$.
 
 En caract\'eristique 2, l'addition est encore plus simple, il s'agit
 d'un ou exclusif bit \`a bit (sur un type entier court 8 ou 16 ou 32 bits). 
@@ -8318,10 +8443,10 @@ en une dizaine de cycles du microprocesseur.
 \pagebreak
 
 \subsection{Exercices}
-Dans Xcas, pour travailler dans $\Z/p\Z$, on utilise l'op\'erateur \verb|%|.
+Dans Xcas, pour travailler dans $\mathbb{Z}/p\mathbb{Z}$, on utilise l'op\'erateur \verb|%|.
 Attention \`a bien laisser un espace avant ou/et apr\`es \verb|%| si vous 
 utilisez des noms de variables. Par exemple \verb|p:=7; 3 % p| repr\'esente
-la classe de 3 dans $\Z/7\Z$.
+la classe de 3 dans $\mathbb{Z}/7\mathbb{Z}$.
 Pour travailler dans un corps fini non premier de caract\'eristique $p$
 et de cardinal $p^n$,
 on cr\'ee le corps avec la commande \verb|GF(p,n)| ou une variante.
@@ -8342,7 +8467,7 @@ primitif.
 
 Exercices~:
 \begin{enumerate}
-\item Trouver un polyn\^ome irr\'eductible $P$ de degr\'e 5 sur $\Z/7\Z$.
+\item Trouver un polyn\^ome irr\'eductible $P$ de degr\'e 5 sur $\mathbb{Z}/7\mathbb{Z}$.
 En d\'eduire une repr\'esentation de \verb|GF(7,5)|. Factoriser 
 le polyn\^ome $P$ sur votre repr\'esentation de \verb|GF(7,5)| (on pourra utiliser
 l'application $x \rightarrow x^7$).
@@ -8352,7 +8477,7 @@ M\^eme question mais en degr\'e 4 avec la repr\'esentation de Xcas.
 \item Factoriser avec Xcas $x^{16}-x$ modulo 2 (on pourra utiliser
 \verb|factors()|, \verb|% 2| et \verb|% 0|). 
 En d\'eduire les polyn\^omes irr\'eductibles de degr\'e 4 sur
-  $\Z/2\Z$, d\'eterminez les polyn\^omes irr\'eductibles
+  $\mathbb{Z}/2\mathbb{Z}$, d\'eterminez les polyn\^omes irr\'eductibles
 primitif de degr\'e 4, pour l'un d'entre eux construire une table entre repr\'esentation
 multiplicative et additive de \verb|GF(2,4)|.
 \item \'Ecrire une fonction permettant de d\'eterminer si un
@@ -8438,7 +8563,7 @@ Hamming binaires).
  
 On appellera symbole d'information l'unit\'e de base transmise, qu'on
 supposera appartenir à un corps fini $K$, par
-exemple pour un bit un élément de $K=\Z/2\Z$, ou pour un octet 
+exemple pour un bit un élément de $K=\mathbb{Z}/2\mathbb{Z}$, ou pour un octet 
 un \'el\'ement du corps à 256 éléments $K=F_{256}=F_d$.
 
 On veut coder un message de longueur $k$ avec des possibilit\'es
@@ -8455,7 +8580,7 @@ est pair. On peut ainsi d\'etecter une erreur de transmission si
 \`a la r\'eception le nombre de bits d'un octet est impair, mais on
 ne peut pas corriger d'erreurs.
 On peut aussi dire que l'octet
-repr\'esente un polyn\^ome \`a coefficients dans $\Z/2\Z$ divisible
+repr\'esente un polyn\^ome \`a coefficients dans $\mathbb{Z}/2\mathbb{Z}$ divisible
 par $X+1$.
 
 {\bf Exercice}~:
@@ -8584,7 +8709,7 @@ au plus de $n-k+1$.
 Exercice~: si votre code linéaire n'est pas de distance 3, modifiez
 les 3 dernières lignes pour réaliser un code de distance 3. On
 ne peut pas obtenir une distance $n-k+1=4$ avec $n=7$ et $k=4$ 
-dans $\Z/2\Z$, essayez! Essayez sur $\Z/3\Z$ et $\Z/5\Z$.
+dans $\mathbb{Z}/2\mathbb{Z}$, essayez! Essayez sur $\mathbb{Z}/3\mathbb{Z}$ et $\mathbb{Z}/5\mathbb{Z}$.
 
 N.B.~: Pour les codes non
 polynomiaux, par exemple convolutifs, la distance n'est pas
@@ -8608,7 +8733,7 @@ On dit qu'un code $t$-correcteur est
 de centre un mot de code et de rayon $t$ (pour la distance de Hamming)
 est disjointe et recouvre l'ensemble des mots ($K^n$).
 
-Exercice~: votre code linéaire sur $\Z/2\Z$ (celui de distance 3) 
+Exercice~: votre code linéaire sur $\mathbb{Z}/2\mathbb{Z}$ (celui de distance 3) 
 est-il un code 1-correcteur parfait~?
 
 \subsubsection{Codes de Hamming}
@@ -8676,7 +8801,7 @@ On se donne un g\'en\'erateur $a$
 de $F_q^*$ et le polyn\^ome $g(x)=(x-a)...(x-a^{2t})$ (donc $n-k=2t$). 
 Typiquement $q=2^m$ avec $m=8$, 
 $a$ est une racine d'un polyn\^ome irr\'eductible
-de degr\'e $m$ à coefficients dans $\Z/2$ 
+de degr\'e $m$ à coefficients dans $\mathbb{Z}/2$ 
 qui ne divise pas $x^l-1$ pour $l$ diviseur
 strict de $2^m-1$ (pour en construire,
 cf. le chapitre corps finis \ref{sec:gf}).
@@ -8726,7 +8851,7 @@ alors en coefficient de $s(x)$ le polyn\^ome $l(x)$ de degr\'e inf\'erieur ou
 du corps avec Horner), donc la place des symboles erron\'es.
 
 Pour calculer les valeurs $\alpha_k$, on reprend la définition de $w$,
-c'est le terme de droite de l'équation (\ref{eq:lsw}) modulo $x^{2t}$,
+c'est le terme de droite de l'équation (\(\ref{eq:lsw}\)) modulo $x^{2t}$,
 donc~:
 \[ w(x)=\sum_{k=1}^\nu \alpha_k a^{i_k} (-1)
 \prod_{j\neq k, j \in [1,\nu]} (a^{i_j}x-1) \]
@@ -8753,7 +8878,7 @@ avec deg$(l)<=t$ et deg$(w)<=t-1$
 
 On a vu que deg$(v)<=t$.
 On commence par factoriser la puissance de $x$ de degr\'e maximal $p$ dans
-$v(x)$, et on simplifie (\ref{eq:loc}) par $x^p$. 
+$v(x)$, et on simplifie (\(\ref{eq:loc}\)) par $x^p$. 
 Quitte \`a changer $v$ et $r$, on se
 ramene donc \`a:
 \[   u(x)  x^{2t-p}+ v(x) s(x) = r(x) \]
@@ -8936,7 +9061,7 @@ $$ P=1(1-\frac1N)(1-\frac2N)...(1-\frac{n-1}{N})$$
 donc
 $$ -\ln(P)=\sum_{k=0}^{n-1} -\ln(1-\frac{k}{N})  $$
 on reconnait une m\'ethode de rectangles pour approcher $\int
--\ln(1-t)$, fonction croissante positive sur $\R^+$ d'o\`u l'encadrement
+-\ln(1-t)$, fonction croissante positive sur $\mathbb{R}^+$ d'o\`u l'encadrement
 $$ \int_{0}^{n-1} -\ln(1-\frac{t}{N}) \, dt \leq -\ln(P) \leq
 \int_{1}^{n} -\ln(1-\frac{t}{N})  \, dt $$
 On int\`egre par parties, en posant $-1=(N-t)'$ 
@@ -8988,7 +9113,7 @@ La taille de la base dépend de la taille de $N$.
 La recherche de $x^2$ se fait par produit de $x_i$ 
 tel qu'il n'apparaisse que des carrés de la base des petits 
 nombres premiers, ce qui s'obtient en résolvant 
-un gros système linéaire à coefficient dans $\Z/2\Z$.
+un gros système linéaire à coefficient dans $\mathbb{Z}/2\mathbb{Z}$.
 Pour trouver les $x_i$ on utilise un crible: 
 sachant que si on a une solution de $x^2-N=0 \pmod p$, 
 alors $x+p$, $x+2p$, etc. le seront aussi, on a facilement les $x$ 
@@ -9038,8 +9163,8 @@ d'un polyn\^ome, cf. la section \ref{sec:proot}.
 Pour un polynôme en une variable,
 cele se fait en plusieurs étapes~: on commence
 par se ramener à un polynôme $P$ dont tous les facteurs sont de multiplicité
-un, ensuite on factorise $P$ dans $\Z/p\Z$ (par la méthode de Berlekamp
-ou Cantor-Zassenhauss), puis on remonte à $\Z/p^k Z$
+un, ensuite on factorise $P$ dans $\mathbb{Z}/p\mathbb{Z}$ (par la méthode de Berlekamp
+ou Cantor-Zassenhauss), puis on remonte à $\mathbb{Z}/p^k Z$
 pour $k$ suffisamment grand (en fonction de la borne de Landau sur les
 facteurs de $P$), et on recombine enfin les facteurs modulaires pour
 trouver les facteurs de $P$. Lorsque $P$ à plusieurs variables, on utilise
@@ -9047,7 +9172,7 @@ une méthode analogue à celle permettant de trouver le pgcd de polynômes
 à plusieurs variables. 
 %On présentera ensuite une méthode simple permettant
 %de calculer la factorisation d'un polynôme à coefficients dans une
-%extension algébrique de $\Z$ (par exemple $\Z[i]$).
+%extension algébrique de $\mathbb{Z}$ (par exemple $\mathbb{Z}[i]$).
 
 {\bf Rappel}\\
 Le pgcd des coefficients d'un polynôme est appelé contenu de ce polynôme.
@@ -9098,7 +9223,7 @@ Y_{m}=\sum_{k>m} (k-m)P_k'\Pi_{j\geq m, j\neq k} P_j \]
 Lorsqu'on programme cet algorithme, le test d'arrêt est $G_m=1$.
 
 {\bf Square-free factorisation (Algorithme de Yun)}\\
-Argument: un polynôme primitif $P$ à coefficients entiers (ou dans $\Z[i]$
+Argument: un polynôme primitif $P$ à coefficients entiers (ou dans $\mathbb{Z}[i]$
 ou dans un corps de caractéristique nulle).\\
 Valeur renvoyée: une liste de polynômes $P_m$ telle que 
 $P=\Pi_{k=1}^n P_k^k$.\\
@@ -9159,27 +9284,27 @@ On suppose maintenant qu'on veut factoriser un polynôme $P$ sans facteur
 multiple (et primitif). En général on commence par simplifier $P$ par
 ses facteurs linéaires (détectés avec l'algorithme présenté dans le
 premier article de cette série). On commence par chercher un nombre premier $p$
-tel que $P$ dans $\Z/p\Z$ conserve le même degré et reste sans facteur 
-multiple (donc pgcd$(P,P')$=1 dans $\Z/p\Z$), ce qui est toujours
+tel que $P$ dans $\mathbb{Z}/p\mathbb{Z}$ conserve le même degré et reste sans facteur 
+multiple (donc pgcd$(P,P')$=1 dans $\mathbb{Z}/p\mathbb{Z}$), ce qui est toujours
 possible (il suffit de prendre $p$ plus grand que le plus grand entier 
 apparaissant dans l'algorithme du sous-résultant pour calculer
-le pgcd de $P$ et $P'$ dans $\Z$).
+le pgcd de $P$ et $P'$ dans $\mathbb{Z}$).
 
 {\bf Convention}\\
 Tous les polynômes ayant leurs coefficients dans un corps fini sont
 supposés avoir comme coefficient dominant 1 lorsque le choix
 existe (par exemple les facteurs d'un polynôme modulo $p$).
 
-\subsubsection{Factorisation dans $\Z/p\Z[X]$}
-On suppose qu'on a un polynôme $P$ à coefficients dans $\Z/p\Z$ sans
-facteur multiple. Il s'agit de factoriser $P$ dans $\Z/p\Z[X]$.
+\subsubsection{Factorisation dans $\mathbb{Z}/p\mathbb{Z}[X]$}
+On suppose qu'on a un polynôme $P$ à coefficients dans $\mathbb{Z}/p\mathbb{Z}$ sans
+facteur multiple. Il s'agit de factoriser $P$ dans $\mathbb{Z}/p\mathbb{Z}[X]$.
 Il existe essentiellement deux stratégies, l'une commence par factoriser par
 groupes de facteurs de même degré puis casse les facteurs et l'autre 
 plus directe à base d'algèbre linéaire modulaire (méthode de Berlekamp). 
 Dans les deux cas, on utilise le fait que si $F$ est un polynôme, 
-alors les polynômes à coefficients dans $\Z/p\Z$
+alors les polynômes à coefficients dans $\mathbb{Z}/p\mathbb{Z}$
 modulo $F$ forment un anneau $A$ qui est aussi un espace vectoriel 
-sur $\Z/p\Z$ de dimension le degré de $F$ 
+sur $\mathbb{Z}/p\mathbb{Z}$ de dimension le degré de $F$ 
 (si $F$ est irréductible, alors $A$ est un corps).
 On s'intéresse alors aux propriétés de l'application 
 $\varphi: x \in A \mapsto x^p$.
@@ -9190,7 +9315,7 @@ $\varphi(x+y)=\varphi(x)+\varphi(y)$.
 
 {\bf Calcul de $\varphi$}\\
 Pour mettre en oeuvre ces algorithmes, on commence par déterminer la matrice
-de l'endomorphisme $\varphi: x \mapsto x^p$ dans $\Z/p\Z[X] \pmod {P(X)}$
+de l'endomorphisme $\varphi: x \mapsto x^p$ dans $\mathbb{Z}/p\mathbb{Z}[X] \pmod {P(X)}$
 muni de sa base canonique $\{ 1, X,...,X^{\mbox{deg}(P)-1} \}$.
 
 \subsubsection{Distinct degree factorization} \index{ddf (distinct
@@ -9199,25 +9324,25 @@ Cette méthode consiste à détecter les groupes de facteurs
 ayant un degré donné (distinct degree factorization). Si nécessaire, 
 on utilise ensuite un autre algorithme pour casser ces groupes.
 On utilise ici les propriétés des itérées de l'application linéaire 
-$\varphi$ sur des espaces vectoriels de corps de base $\Z/p\Z$.
+$\varphi$ sur des espaces vectoriels de corps de base $\mathbb{Z}/p\mathbb{Z}$.
 On va déterminer le produit $P_k$ de tous les facteurs de $P$ de degré $k$
-en calculant le pgcd de $P$ et de $X^{(p^k)}-X$ dans $\Z/p\Z[X]$.
+en calculant le pgcd de $P$ et de $X^{(p^k)}-X$ dans $\mathbb{Z}/p\mathbb{Z}[X]$.
 
-Pour $k=1$, $X^p-X$ est le produit des $X-k$ pour tout $k\in \Z/p\Z$
+Pour $k=1$, $X^p-X$ est le produit des $X-k$ pour tout $k\in \mathbb{Z}/p\mathbb{Z}$
 par le petit théorème de Fermat ($k^p=k \pmod p$), donc le pgcd
-de $P$ et de $X^{(p^1)}-X$ dans $\Z/p\Z[X]$ est le produit des facteurs
+de $P$ et de $X^{(p^1)}-X$ dans $\mathbb{Z}/p\mathbb{Z}[X]$ est le produit des facteurs
 de $P$ de degré 1.
 
 Pour $k>1$, le raisonnement se généralise de la manière suivante~: on
 considère un facteur irréductible $F(X)$ de $P$ de degré $k$ et le corps
-$K=(\Z/p\Z)[Y] \pmod{F(Y)}$. Le corps $K$ est un corps fini, c'est
-aussi un espace vectoriel sur $\Z/p\Z$ de dimension $k$, donc $K$ possède
+$K=(\mathbb{Z}/p\mathbb{Z})[Y] \pmod{F(Y)}$. Le corps $K$ est un corps fini, c'est
+aussi un espace vectoriel sur $\mathbb{Z}/p\mathbb{Z}$ de dimension $k$, donc $K$ possède
 $p^k$ éléments et $K^*$ est un groupe multiplicatif à $p^k-1$ éléments,
 donc tout élément de $K^*$ vérifie l'équation $x^{p^k-1}=1$ donc
 tout élément de $K$ vérifie $x^{(p^k)}=x$. En particulier pour 
 $x=Y \pmod {F(Y)}$ 
 on trouve que $Y^{(p^k)}=Y \pmod {F(Y)}$ donc $F(X)$ divise $X^{(p^k)}-X$
-dans $\Z/p\Z$.
+dans $\mathbb{Z}/p\mathbb{Z}$.
 
 Réciproquement, si on se donne un facteur irréductible $F$ qui divise
 $X^{p^k}-X$, soit $K$ le corps correspondant à $F$, 
@@ -9226,7 +9351,7 @@ alors le noyau de l'application linéaire
 est $K$ tout entier, car $Y=Y^{p^k} \pmod F$
 entraine $(Y^2)^{(p^k)}=Y^{2 p^k}=(Y^{p^k})^2=Y^2 \pmod F$ et de même
 pour les autres puissances de $Y$ qui, avec $Y^0=1$ également dans le
-noyau, forment une base de l'espace vectoriel $K$ sur $\Z/p\Z$. Donc le
+noyau, forment une base de l'espace vectoriel $K$ sur $\mathbb{Z}/p\mathbb{Z}$. Donc le
 nombre d'éléments de $K$ est inférieur ou égal au degré du polynôme
 $X^{p^k}-X$ (puisque $X^{(p^k)}-X$ est divisible par
 $X-x$ pour tout $x\in K$),
@@ -9261,7 +9386,7 @@ par le quotient de $P$ par $G$.
 
 {\bf Exemple}~:\\
 Factorisation en degré distincts de $(X^3+X+1)(X^4-X+1)$ dans
-$\Z/5\Z$. On regarde d'abord si $P$ reste sans facteur multiple après
+$\mathbb{Z}/5\mathbb{Z}$. On regarde d'abord si $P$ reste sans facteur multiple après
 réduction modulo 5.
 \begin{verbatim}
 P:=normal((x^3+x+1)*(x^4-x+1) mod 5);
@@ -9275,10 +9400,10 @@ P2:=gcd(P,(x^(5^2)-x)mod 5);
 P3:=gcd(P,(x^(5^3)-x)mod 5);
     (x^6+2*x^5+x^2+x+2) mod 5
 \end{verbatim}
-Donc $P$ admet 3 facteurs dans $\Z/5\Z$: un de degré 1 ($x-2$) et
+Donc $P$ admet 3 facteurs dans $\mathbb{Z}/5\mathbb{Z}$: un de degré 1 ($x-2$) et
 deux de degré 3 (dont le produit est $x^6+2x^5+x^2+x+2$).
 
-Le même calcul dans $\Z/7\Z$ donne
+Le même calcul dans $\mathbb{Z}/7\mathbb{Z}$ donne
 \begin{verbatim}
 P:=normal((x^3+x+1)*(x^4-x+1) mod 7);
 gcd(P,diff(P,x));
@@ -9295,7 +9420,7 @@ de degré 4 est forcément irréductible.
 
 On remarque sur cet exemple que 7 est plus intéressant que 5, car
 la factorisation modulo 7 donne moins de facteurs (à recombiner pour
-trouver la factorisation dans $\Z$) et la factorisation est
+trouver la factorisation dans $\mathbb{Z}$) et la factorisation est
 complète modulo 7 alors que modulo 5 il faut casser le facteur de
 degré 6 en deux facteurs de degré 3. La plupart des algorithmes
 de factorisation effectuent la factorisation en degré distinct
@@ -9308,7 +9433,7 @@ Cet algorithme sert à casser des groupes de facteurs de même degré,
 c'est une méthode probabiliste. On suppose donc qu'on a un produit $P$
 d'au moins deux facteurs irréductibles de degré $d$ à casser.
 Soit $D$ l'un des polynômes irréductibles de degré $d$ à coefficients
-dans $\Z/p\Z$, et soit $K=\Z/p\Z[Y] \pmod {D(Y)}$, on a~:
+dans $\mathbb{Z}/p\mathbb{Z}$, et soit $K=\mathbb{Z}/p\mathbb{Z}[Y] \pmod {D(Y)}$, on a~:
 \[X^{p^d}-X=\Pi_{\alpha \in K }(X-\alpha) \]
 puisque le corps $K$ possède $p^d$ éléments tous racines
 de l'équation $X^{p^d}=X$.
@@ -9316,21 +9441,21 @@ de l'équation $X^{p^d}=X$.
 On considère un polynôme $T$ non constant, et le polynôme
 $T^{p^d}-T$. En remplaçant $X$ par $T$ ci-dessus, on en déduit~:
 \[T^{p^d}-T=\Pi_{\alpha \in K }(T-\alpha) \]
-Donc pour tout élément $\beta \in K=\Z/p\Z[Y] \pmod {D(Y)}$, on a
+Donc pour tout élément $\beta \in K=\mathbb{Z}/p\mathbb{Z}[Y] \pmod {D(Y)}$, on a
 \[(T^{p^d}-T)(\beta)=\Pi_{\alpha \in K }(T(\beta)-\alpha)=0\]
 Donc $T^{p^d}-T$ est divisible par $X^{p^d}-X$ (puisque toutes les racines
 du second sont racines du premier), donc est divisible par tout polynôme
-irréductible de degré inférieur ou égal à $d$ à coefficients dans $Z/p\Z$.
+irréductible de degré inférieur ou égal à $d$ à coefficients dans $Z/p\mathbb{Z}$.
 Comme
 \begin{equation} \label{eq:cantor}
 T^{p^d}-T=T(T^{\frac{p^d-1}{2}}-1)(T^{\frac{p^d-1}{2}}+1)
 \end{equation}
 et que ces trois facteurs sont premiers entre eux, on en déduit que tout 
 polynôme irréductible de degré inférieur ou égal à $d$ à coefficients dans 
-$Z/p\Z$ divise l'un des trois facteurs ci-dessus. Pour casser $P$, l'idée
+$Z/p\mathbb{Z}$ divise l'un des trois facteurs ci-dessus. Pour casser $P$, l'idée
 consiste alors à calculer le pgcd de $P$ et $T^{\frac{p^d-1}{2}}-1$
 pour un polynôme pris au hasard. On sait que $P$ divise le produit des
-3 termes de (\ref{eq:cantor}), et on espère que les facteurs irréductibles
+3 termes de (\(\ref{eq:cantor}\)), et on espère que les facteurs irréductibles
 de $P$ ne diviseront pas tous le même terme.
 
 On va montrer que si $T$ est un polynôme de degré $\leq 2d-1$ choisi au hasard,
@@ -9344,15 +9469,15 @@ T = A U + B V
 avec degre($U \leq d-1$) et degre($V \leq d-1$) et réciproquement 
 une combinaison linéaire de cette forme est un polynôme de degré $\leq 2d-1$.
 Choisir $T$ au hasard revient donc à choisir un couple $(U,V)$ de polynômes
-à coefficients dans $\Z/p\Z$ au hasard et
+à coefficients dans $\mathbb{Z}/p\mathbb{Z}$ au hasard et
 de manière indépendante. D'autre part, $A$ et $B$ étant de degré $d$, on
-sait que dans $K=\Z/p\Z[Y] \pmod{D(Y)}$ ces polynômes admettent $d$ racines.
+sait que dans $K=\mathbb{Z}/p\mathbb{Z}[Y] \pmod{D(Y)}$ ces polynômes admettent $d$ racines.
 Soit donc $\alpha$ [respectivement $\beta$] une racine de $A$ [resp. $B$]
 dans $K$. Alors $A$ divise $T^{\frac{p^d-1}{2}}-1$
 si et seulement si $T(\alpha )^{\frac{p^d-1}{2}}=1$ (et de même pour
 $B$ et $\beta$) car $T^{\frac{p^d-1}{2}}-1$ a ses coefficients dans
-$\Z/p\Z$ (et non dans $K$). 
-En appliquant (\ref{eq:bezout2}), $A$ divise $T^{\frac{p^d-1}{2}}-1$
+$\mathbb{Z}/p\mathbb{Z}$ (et non dans $K$). 
+En appliquant (\(\ref{eq:bezout2}\)), $A$ divise $T^{\frac{p^d-1}{2}}-1$
 si et seulement si~:
 \[ B(\alpha )^{\frac{p^d-1}{2}}V(\alpha )^{\frac{p^d-1}{2}}=1 \]
 Le premier terme de cette égalité est une constante égale à 1 ou -1, 
@@ -9366,7 +9491,7 @@ puisque $U$ et $V$ le sont, donc la probabilité que soit $A$ soit $B$ divise
 divise $T^{\frac{p^d-1}{2}}-1$ est proche de 0.5.
 
 {\bf Algorithme de Cantor-Zassenhaus}\\
-Argument: Un polynôme $P$ à coefficients dans $\Z/p\Z$ de degré $k$
+Argument: Un polynôme $P$ à coefficients dans $\mathbb{Z}/p\mathbb{Z}$ de degré $k$
 dont tous les facteurs irréductibles sont de degré $d$.\\
 Valeur renvoyée: la liste des facteurs irréductibles de $P$.\\
 \begin{itemize}
@@ -9393,22 +9518,22 @@ ce $T$ n'aurait pas permis de casser $P$.
 \subsubsection{La méthode de Berlekamp}\index{Berlekamp}
 Cette méthode permet de factoriser un polynôme sans facteurs multiples,
 elle peut aussi servir à casser des groupes de facteurs de même degré.
-Ici on travaille dans l'anneau des polynômes à coefficients dans $\Z/p\Z$
+Ici on travaille dans l'anneau des polynômes à coefficients dans $\mathbb{Z}/p\mathbb{Z}$
 modulo le polynôme $P$ et on s'intéresse au noyau de $\varphi-Id$
 (où $\varphi: x \mapsto x^p$). On
 suppose que $P=\Pi_{j=1}^n F_j$ où les $F_j$ sont irréductibles et
 premiers entre eux. On va montrer que le noyau de $\varphi-Id$ est
 composé des polynômes $Q$ tels que $Q \pmod {F_j}$ est constant
-(dans $\Z/p\Z$) pour tout $j$.
+(dans $\mathbb{Z}/p\mathbb{Z}$) pour tout $j$.
 
-Si $Q \pmod {F_j}=s_j \in \Z/p\Z$, alors $Q^p \pmod {F_j}=s_j^p=s_j$, donc
+Si $Q \pmod {F_j}=s_j \in \mathbb{Z}/p\mathbb{Z}$, alors $Q^p \pmod {F_j}=s_j^p=s_j$, donc
 par le théorème des restes chinois, $Q=Q^p \pmod P$. 
 
 Réciproquement, si
 $Q^p-Q=0 \pmod P$, en utilisant la factorisation~:
-\[ X^p-X= \Pi_{j \in \Z/p\Z } (X-j)\]
-on en tire $P$ divise $Q^p-Q=\Pi_{j \in \Z/p\Z } (Q(X)-j)$,
-donc $F_j$ divise l'un des facteurs et $Q(X) \pmod {F_j} \in \Z/p\Z$.
+\[ X^p-X= \Pi_{j \in \mathbb{Z}/p\mathbb{Z} } (X-j)\]
+on en tire $P$ divise $Q^p-Q=\Pi_{j \in \mathbb{Z}/p\mathbb{Z} } (Q(X)-j)$,
+donc $F_j$ divise l'un des facteurs et $Q(X) \pmod {F_j} \in \mathbb{Z}/p\mathbb{Z}$.
 Le noyau de $\varphi -Id$
 est donc un espace vectoriel de dimension $n$, le nombre
 de facteurs irréductibles de $P$ et possède donc $p^n$ éléments
@@ -9422,7 +9547,7 @@ irréductibles. De plus, on remarque que le polynome constant 1 est un
 élément du noyau qu'on appellera $T_1$, on note alors $T_2,...,T_n$ les
 autres polynômes unitaires d'une base du noyau. 
 Ensuite, on calcule le pgcd de $P$ avec $T_2-jT_1$
-pour $j\in \Z/p\Z$. On sait que $T_2=s_{2,k} \pmod {F_k}$, donc pgcd$(P,T_2-jT_1)$
+pour $j\in \mathbb{Z}/p\mathbb{Z}$. On sait que $T_2=s_{2,k} \pmod {F_k}$, donc pgcd$(P,T_2-jT_1)$
 est égal au produit des facteurs $F_k$ tels que $s_{2,k}=jT_1$. L'un au moins
 des pgcd calculés est non trivial car sinon $T_2=T_1 \pmod{F_j}$ pour
 tout $j$ donc $T_2=T_1$. Si on a de la chance tous les $s_{2,j}$ seront
@@ -9449,10 +9574,10 @@ La matrice de $\varphi$ est donc~:
 \end{array}
 \right)\]
 On calcule ensuite le noyau de $\varphi-Id$ (comme matrice à coefficients
-dans $\Z/5\Z$), on obtient une
+dans $\mathbb{Z}/5\mathbb{Z}$), on obtient une
 base du noyau en prenant par exemple les vecteurs $(-1,0,0,0,0,0)$
 et $(0,0,-1,-1,0,-1)$. Donc le polynôme $P$ possède 2 facteurs dans
-$\Z/5\Z[X]$. Pour déterminer les facteurs, on calcule le pgcd de $P$
+$\mathbb{Z}/5\mathbb{Z}[X]$. Pour déterminer les facteurs, on calcule le pgcd de $P$
 avec le polynôme $T_2-s$ où $T_2=-x^5-x^3-x^2$ correspond au 2ème
 vecteur de la base du noyau. On obtient pour $s=0$ un pcgd non trivial
 ($x^3+x+1$), ce qui permet de calculer les 2 facteurs. Si on avait
@@ -9460,13 +9585,13 @@ essayé d'autres valeurs de $s$, pour $s=1$ on obtient comme pgcd 1, pour
 $s=2$ on trouve le 2ème facteur $x^3+2x^2-x+2$.
 
 \subsubsection{Remontée (Hensel)} \index{Hensel}
-Il s'agit de passer d'une factorisation de $P$ dans $\Z/p\Z[X]$ à une
-factorisation de $P$ dans $\Z/p^k Z[X]$, la méthode est analogue à celle
+Il s'agit de passer d'une factorisation de $P$ dans $\mathbb{Z}/p\mathbb{Z}[X]$ à une
+factorisation de $P$ dans $\mathbb{Z}/p^k Z[X]$, la méthode est analogue à celle
 de l'algorithme EZGCD de calcul de pgcd de polynômes.
 
 On suppose donc que
 \[ P=\Pi_{j=1}^n P_j \pmod p \]
-où les $P_j$ sont premiers entre eux deux à deux dans $\Z/p\Z$.
+où les $P_j$ sont premiers entre eux deux à deux dans $\mathbb{Z}/p\mathbb{Z}$.
 Il s'agit de trouver des polynômes $P_{j,k}=P_j \pmod p$ tels que
 \[ P=\Pi_{j=1}^n P_{j,k} \pmod {p^k} \]
 Commençons par le cas $k=2$. On pose
@@ -9501,8 +9626,8 @@ solutions de l'identité de Bézout pour $Q=1$, et on multiplie par $Q$.
 
 {\bf Algorithme de remontée de Hensel linéaire}\\
 Arguments: Un polynôme $P$ à coefficients entiers, la liste $L=\{ P_j \}$ 
-de ses facteurs dans $\Z/p\Z[X]$\\
-Valeur renvoyée: la liste des facteurs de $P$ dans $\Z/p^l \Z[X]$\\
+de ses facteurs dans $\mathbb{Z}/p\mathbb{Z}[X]$\\
+Valeur renvoyée: la liste des facteurs de $P$ dans $\mathbb{Z}/p^l \mathbb{Z}[X]$\\
 On calcule la borne de Landau-Mignotte\footnote{Rappelons qu'il s'agit d'une
 majoration sur la valeur absolue des coefficients des facteurs de $P$} 
 pour les facteurs de $P$, on multiplie
@@ -9563,13 +9688,13 @@ maintenant l'identité de Bézout modulo $p^{2^k}$)
 
 {\bf Remarque}\\
 Pendant l'étape de remontée de Hensel, une optimisation classique
-consiste à tester la divisibilité dans $\Z$ du polynôme $P$ par le 
+consiste à tester la divisibilité dans $\mathbb{Z}$ du polynôme $P$ par le 
 facteur lifté $P_j$ (\footnote{Plus exactement, on multiplie $P_j$ par le
 coefficient dominant de $P$ modulo $p^l$})
 lorsqu'il n'a pas subi de modification pendant 2 étapes successives
 (autrement dit lorsque $P_j \pmod {p^l}=P_j \pmod {p^{l+1}}$ (ou
 $\pmod {p^{2l}}$ pour le lift quadratique). Si la division
-est exacte, on obtient un facteur irréductible de $P$ dans $\Z$.
+est exacte, on obtient un facteur irréductible de $P$ dans $\mathbb{Z}$.
 On recalcule alors la borne de Landau de $P/P_j$ pour diminuer
 le nombre d'itérations à effectuer dans cette étape.
 
@@ -9618,24 +9743,24 @@ donc~:
 =x^3+37x^2-6x+27 \]
 
 On peut aussi observer que $b_1=b$, ceci laisse à penser que $b$ est 
-un facteur de $P$ dans $\Z$ ce qu'on vérifie en effectuant la
+un facteur de $P$ dans $\mathbb{Z}$ ce qu'on vérifie en effectuant la
 division euclidienne de $P$ par $b=x^3+x+1$. Comme elle tombe
 juste, on est ramené à factoriser $x^4-x+1$ et donc à remonter
 la factorisation de $ac$. La borne de Landau diminue à $8(\sqrt{3}+1)$
 puisque le degré est 4 et la norme euclidienne du polynôme est $\sqrt{3}$.
-Il suffit alors de remonter dans $\Z/125 \Z$ au lieu de $\Z/625 \Z$
+Il suffit alors de remonter dans $\mathbb{Z}/125 \mathbb{Z}$ au lieu de $\mathbb{Z}/625 \mathbb{Z}$
 (on gagne ainsi une itération).
 
 \subsubsection{Combinaison de facteurs}
-Lorsqu'on a les facteurs de $P$ dans $\Z/p^k\Z[X]$ avec $p^k$ plus grand
+Lorsqu'on a les facteurs de $P$ dans $\mathbb{Z}/p^k\mathbb{Z}[X]$ avec $p^k$ plus grand
 que le produit du coefficient dominant de $P$ multiplié par la borne
 de Landau-Mignotte sur les coefficients de $P$, on commence par
-tester la divisibilité dans $\Z[X]$ de $P$ par chaque facteur trouvé
+tester la divisibilité dans $\mathbb{Z}[X]$ de $P$ par chaque facteur trouvé
 multiplié par le coefficient dominant de $P$. Si la division est
 exacte, on a un facteur irréductible, mais si elle n'est pas exacte
-il peut se produire qu'un facteur irréductible de $P$ dans $\Z[X]$ soit un
+il peut se produire qu'un facteur irréductible de $P$ dans $\mathbb{Z}[X]$ soit un
 produit de deux, voir plusieurs, facteurs modulaires. Il faut
-donc tester la divisibilité de $P$ dans $\Z[X]$ par toutes les combinaisons 
+donc tester la divisibilité de $P$ dans $\mathbb{Z}[X]$ par toutes les combinaisons 
 possibles de produits de facteurs modulaires (toujours multiplié par
 le coefficient dominant de $P$). Cette étape peut être exponentiellement
 longue si le nombre de facteurs modulaires est grand et si par
@@ -9644,9 +9769,9 @@ exemple $P$ est irréductible, bien que les cas soient très rares.
 {\bf Algorithme de recombinaison}\\
 Arguments: un polynôme à coefficients entiers, primitif et sans facteur 
 multiple $P$ de coefficient dominant $p_n$,
-la liste $L$ des facteurs de $P$ dans $\Z/p^l Z[X]$ pour 
+la liste $L$ des facteurs de $P$ dans $\mathbb{Z}/p^l Z[X]$ pour 
 $l$ assez grand et $p^l$\\
-Valeur de retour: la liste $F$ des facteurs de $P$ dans $\Z$.\\
+Valeur de retour: la liste $F$ des facteurs de $P$ dans $\mathbb{Z}$.\\
 Initialiser $F$ à vide, initialiser le nombre de facteurs à combine $c$ 
 à 1, entamer une boucle infinie~:
 \begin{itemize}
@@ -9658,8 +9783,8 @@ la valeur $(1,...,c$)
 \item Boucle indéfinie intérieure~:
 \begin{enumerate}
 \item Faire le produit des facteurs de $F$ d'indice $v$, multiplier
-par $p_n$ dans $\Z/p^l Z$, écrire le facteur en représentation symétrique,
-le rendre primitif et tester si c'est un facteur de $P$ dans $\Z$.
+par $p_n$ dans $\mathbb{Z}/p^l Z$, écrire le facteur en représentation symétrique,
+le rendre primitif et tester si c'est un facteur de $P$ dans $\mathbb{Z}$.
 \item Si on a trouvé un facteur, le rajouter à la liste $F$ et supprimer les
 indices de $v$ de la liste $L$, terminer cette boucle intérieure.
 \item Sinon, incrémenter $v$ de la manière suivante:\\
@@ -9698,8 +9823,8 @@ qui permet d'eliminer complètement cette complexité exponentielle.
 
 {\bf Exemple}~:\\ 
 Toujours le même exemple, il nous restait deux
-facteurs dans $\Z/125 \Z$, le facteur $x^3+x+1$ ayant été
-détecté comme un facteur de $P=x^7+x^5+x^3-x^2+1$ dans $\Z$.
+facteurs dans $\mathbb{Z}/125 \mathbb{Z}$, le facteur $x^3+x+1$ ayant été
+détecté comme un facteur de $P=x^7+x^5+x^3-x^2+1$ dans $\mathbb{Z}$.
 On teste chacun des facteurs  $a_2=x-37$ et $c_2=x^3+37x^2-6*x+27$
 séparément, sans succès. On les multiplie alors modulo 125,
 ce qui donne $x^4-x+1$ en représentation symétrique qui est bien
@@ -9719,11 +9844,11 @@ On va présenter ici plus en détails l'algorithme de factorisation heuristique.
 Soit $P$ un polynôme en $X_1,...,X_n$ à coefficients entiers avec $n>1$,
 on choisit une des variables par exemple $X_n$, qu'on notera $X$ dans la suite.
 On considère $P$ comme un polynôme en $X_1,...,X_{n-1}$ à coefficients dans 
-$\Z[X]$. On suppose que $P$ est primitif (quitte à extraire
-son contenu qui est dans $\Z[X]$). On calcule ensuite
+$\mathbb{Z}[X]$. On suppose que $P$ est primitif (quitte à extraire
+son contenu qui est dans $\mathbb{Z}[X]$). On calcule ensuite
 $P(z)$ pour un entier $z$ tel que\footnote{Ici $|P|$ désigne le plus grand
 coefficient de $P$ en valeur absolue} $|z| \geq 2|P|+2$. On factorise $P(z)$
-dans $\Z[X_1,...,X_{n-1}]$~:
+dans $\mathbb{Z}[X_1,...,X_{n-1}]$~:
 \begin{equation} \label{eq:heu1}
  P(z)(X_1,...,X_{n-1})=c(z) \Pi_{j=1}^k p_j(X_1,...,X_{n-1})
 \end{equation}
@@ -9751,23 +9876,23 @@ Il existe une majoration $C$ du contenu $|c(z)|$ de $P$ évalué en $X=z$
 $C$).\\
 Il existe un nombre fini de $z$ tels que l'un des facteurs irréductibles
 $P_k$ de $P$ évalué en $X=z$ soit
-réductible (c'est-à-dire tels que (\ref{eq:heu2}) admette 
+réductible (c'est-à-dire tels que (\(\ref{eq:heu2}\)) admette 
 plusieurs facteurs $p_j$ distincts)
 \end{thm}
 
 {\bf Preuve}\\
 Pour déterminer $C$, on remarque que les facteurs du contenu de $P(z)$
 sont des facteurs communs des coefficients de $P$ évalués en $z$
-vu comme polynôme en $X_1,...,X_{n-1}$ à coefficients dans $\Z[X]$.
+vu comme polynôme en $X_1,...,X_{n-1}$ à coefficients dans $\mathbb{Z}[X]$.
 Donc $c(z)$ divise le générateur de l'idéal engendré par ces coefficients
-(ce générateur est un polynôme de $\Z[X]$ qui est constant car on a supposé
+(ce générateur est un polynôme de $\mathbb{Z}[X]$ qui est constant car on a supposé
 $P$ primitif), on peut aussi dire que deux au moins des coefficients
-dans $\Z[X]$ de $P$ sont premiers entre eux, alors $c(z)$ divise le
+dans $\mathbb{Z}[X]$ de $P$ sont premiers entre eux, alors $c(z)$ divise le
 coefficient de l'identité de Bézout de ces 2 coefficients vu
 comme polynômes en $X$.
 
 Considérons maintenant un facteur irréductible $P_k$ de $P$ de degré $d$
-par rapport à $X$. Pour $X_1,...,X_{n-1}$ fixés, on factorise $P_k$ sur $\C$~:
+par rapport à $X$. Pour $X_1,...,X_{n-1}$ fixés, on factorise $P_k$ sur $\mathbb{C}$~:
 \[ P_k(X)=p_k \Pi_{j=1}^d (X-z_j) \]
 On va maintenant se restreindre à un domaine des $X_1,...,X_{n-1}$ sur
 lequel les $z_j$ ont une dépendance analytique par rapport à $X_1,...,X_{n-1}$.
@@ -9781,7 +9906,7 @@ de $X_1,...,X_{n-1},X$ tels que~:
 \[ U P_k + V P_k' = D \]
 Si $D(X_1,...,X_{n-1})$ ne s'annule pas, on va pouvoir appliquer le théorème
 des fonctions implicites. On se fixe $x_1,..,x_{n-1}$,
-on calcule dans $\C$ les racines $z_j$ du polynôme $P(x_1,..,x_{n-1},X)$
+on calcule dans $\mathbb{C}$ les racines $z_j$ du polynôme $P(x_1,..,x_{n-1},X)$
 pour une solution $z_j$ telle que $P(x_1,..,x_{n-1},z_j)=0$, 
 comme $D$ est non nul, on a $P'(x_1,...,x_{n-1},z_j)\neq 0$, donc on peut 
 écrire au voisinage de $(x_1,..,x_{n-1})$
@@ -9802,7 +9927,7 @@ $c$ (puisqu'il y a un nombre fini de combinaisons possibles des
 racines en facteur et un nombre fini de diviseurs possibles
 du contenu de $P_k$). Pour $z \in Z$, on a~:
 \[ f_j(X_1,...,X_n,z)=c \Pi_{l \in R} (z-z_j), \quad 
-f_j \in \Z[X_1,...,X_{n-1}] \]
+f_j \in \mathbb{Z}[X_1,...,X_{n-1}] \]
 Soit $L(X)$ le polynôme obtenu par interpolation de Lagrange 
 en cardinal$(R)+1$ points $z$ de $Z$, égal à $f_j$ en $X=z$.
 Pour des raisons de degré, on a~:
@@ -9830,7 +9955,7 @@ facteur irréductible de $P$.
 Argument: un polynôme $P$ primitif en au moins 2 variables.\\
 Valeur renvoyée: les facteurs irréductibles de $P$\\
 Choisir la variable $X$ par rapport à laquelle $P$ est de plus bas degré puis
-factoriser le contenu de $P$ vu comme polynôme à coefficients dans $\Z[X]$.
+factoriser le contenu de $P$ vu comme polynôme à coefficients dans $\mathbb{Z}[X]$.
 Initialiser un entier $z$ à $2|P|+2$ (où $|P|$ est le plus grand coefficient 
 entier de $P$ en valeur absolue) et une liste $L$ à la factorisation de
 du contenu de $P$.\\
@@ -9867,7 +9992,7 @@ ce que l'on peut faire par hypothèse de récurrence.
 
 \subsection{Algorithme de Bézout généralisé}\index{B\'ezout g\'en\'eralis\'e}
 Arguments: une liste $P_1,...,P_n$ de polynômes premiers entre eux 2 à 2  
-et un polynôme $Q$ à coefficients dans $\Z/p\Z$\\
+et un polynôme $Q$ à coefficients dans $\mathbb{Z}/p\mathbb{Z}$\\
 Valeur renvoyée: la liste de polynômes $Q_1,...,Q_n$ tels que
 \[ \sum_{j=1}^n Q_j \Pi_{k\neq j} P_k=Q \pmod p \]
 On peut commencer par calculer le produit de tous les $P_k$ puis faire une 
@@ -9878,7 +10003,7 @@ Boucle indéfinie sur $n$ décrémenté de 1 par itération~:
 \begin{itemize}
 \item Si $n=2$, on rajoute à la liste résultat les polynômes 
 $Q_1$ et $Q_2$ de l'algorithme de Bézout usuel et on renvoie la liste
-\item Sinon, on calcule les polynômes $R_n$ et $Q_n$ vérifiant (\ref{eq:Qn}),
+\item Sinon, on calcule les polynômes $R_n$ et $Q_n$ vérifiant (\(\ref{eq:Qn}\)),
 on rajoute $Q_n$ en début de liste, on remplace $Q$ par $R_n$.
 \end{itemize}
 Remarquons que lorsque nous utiliserons cet algorithme, $Q$ sera la différence
@@ -9899,7 +10024,7 @@ Henri Cohen pp. 142-144. Cet algorithme est utilis\'e lorsqu'on
 met l'extension alg\'ebrique en deuxi\`eme argument de \verb|factor|
 dans Xcas. Pour trouver l'extension alg\'ebrique qui permet de
 factoriser, on peut dans les cas simples essayer \verb|solve|. Si
-le polyn\^ome $P$ \`a factoriser est irr\'eductible sur $\Q$, 
+le polyn\^ome $P$ \`a factoriser est irr\'eductible sur $\mathbb{Q}$, 
 on peut essayer \verb|factor(P,rootof(P))|. Mais en g\'en\'eral
 cela ne permettra d'extraire qu'un seul facteur de degr\'e 1. Pour
 obtenir une d\'ecomposition compl\`ete si $P$ est de petit
@@ -9908,11 +10033,11 @@ formant une expression non sym\'etrique \`a partir des racines approch\'ees,
 puis en appliquant toutes les permutations de racines \`a cette
 expression et en construisant le polyn\^ome ayant ces racines,
 si on a suffisamment de pr\'ecision sur les racines, on peut arrondir
-le polyn\^ome obtenu, le factoriser sur $\Q$, et prendre un des
+le polyn\^ome obtenu, le factoriser sur $\mathbb{Q}$, et prendre un des
 facteurs irr\'eductibles de degr\'e suffisant comme argument de
 \verb|rootof|.
 
-Par exemple soit \`a factoriser $P=x^4+3x+1$ sur $\overline{\Q}$.
+Par exemple soit \`a factoriser $P=x^4+3x+1$ sur $\overline{\mathbb{Q}}$.
 On entre la fonction suivante~:
 \begin{verbatim}
 f(P):={
@@ -9986,9 +10111,9 @@ On peut aussi se demander pour un polyn\^ome \`a coefficients
 rationnels (squarefree) quelle extension\index{extension
   alg\'ebrique}\index{alg\'ebrique, extension} 
 permet la factorisation la plus
-compl\`ete. Par exemple $x^2+y^2$ est irr\'eductible sur $\Q[x,y]$
-mais pas sur $\Q[i][x,y]$ ou $x^4+y^4$ est irr\'eductible sur $\Q[x,y]$
-mais pas sur $\Q[\sqrt{2}][x,y]$. Ceci am\`ene \`a la notion
+compl\`ete. Par exemple $x^2+y^2$ est irr\'eductible sur $\mathbb{Q}[x,y]$
+mais pas sur $\mathbb{Q}[i][x,y]$ ou $x^4+y^4$ est irr\'eductible sur $\mathbb{Q}[x,y]$
+mais pas sur $\mathbb{Q}[\sqrt{2}][x,y]$. Ceci am\`ene \`a la notion
 de {\em factorisation absolue} d'un polyn\^ome. Une m\'ethode simple
 (mais pas forc\'ement tr\`es efficace) pour d\'eterminer une telle
 extension alg\'ebrique consiste \`a \'evaluer toutes les variables
@@ -10042,7 +10167,7 @@ $q$ ci-dessous, auquel on applique r\'ecursivement l'algorithme
 \begin{giacprog}
 restart;
 sym(P,X):={ // P polynome symetrique, X liste des variables
-  local k,s,xs,Q,V,W,S,q,r;
+  local s,xs,Q,V,W,S,q,r;
   s:=size(X);
   si s<=1 alors return P; fsi;
   xs:=X[s-1];
@@ -10050,7 +10175,7 @@ sym(P,X):={ // P polynome symetrique, X liste des variables
   Q:=normal(subst(P,xs=0)); // Q est symetrique en X[0..s-2]
   V:=sym(Q,X[0..s-2]); // appel recursif
   S:=pcoeff(X[0..s-1]); // polynomes symetriques en les X
-  pour k de 0 jusque size(S)-1 faire S[k]:=(-1)^k*S[k]; fpour;
+  pour k de 0 jusque size(S)-1 faire S[k]=(-1)^k*S[k]; fpour;
   q,r:=quorem((P-subst(V,X[0..s-2],S[1..s-1])),S[s],xs); // reste nul
   si r!=0 alors throw("non symetrique"); fsi;
   W:=sym(q,X);
@@ -10065,7 +10190,7 @@ on v\'erifie
 % On peut aussi consulter le code source de Mupad, les routines
 % de factorisation se trouvent dans le répertoire \verb|lib/POLYLIB/FACLIB|
 % après avoir désarchivé la \verb|lib.tar|. Le point d'entrée pour factoriser
-% des polynômes à plusieurs variables sur $\Z$ est le fichier 
+% des polynômes à plusieurs variables sur $\mathbb{Z}$ est le fichier 
 % \verb|mfactor.mu|, on observera que l'algorithme utilisé par Mupad est
 % assez différent de celui qu'on a détaillé dans la section précédente.
 
@@ -10104,8 +10229,8 @@ de degr\'e $n$).
 \item Calculer avec un logiciel les valeurs numériques des racines
 complexes de $P(x)=x^5+x+1$. Trouver les combinaisons de racines
 dont la somme est entière (aux arrondis près). En déduire la factorisation
-en facteurs irréductibles sur $\Z$ de $P$.
-\item Factorisation numérique sur $\C$. \'Ecrire un programme
+en facteurs irréductibles sur $\mathbb{Z}$ de $P$.
+\item Factorisation numérique sur $\mathbb{C}$. \'Ecrire un programme
 qui calcule une racine d'un polynôme à coefficients complexes
 en utilisant une méthode itérative de type méthode de Newton 
 (avec éventuellement un préfacteur lorsqu'on débute la recherche).
@@ -10115,7 +10240,7 @@ Trouver ensuite toutes les racines du polynôme en éliminant la
 racine trouvée (toujours avec Horner). Trouver les combinaisons
 de racines correspondant à un facteur à coefficients entiers.
 \item Soit $p$ un entier premier et $P$ un polynôme \`a
-coefficients dans $\Z/p\Z$. On a la relation
+coefficients dans $\mathbb{Z}/p\mathbb{Z}$. On a la relation
 \[ \mbox{gcd}(X^{p^k}-X,P) = \prod_{ f | P, \mbox{\small deg}(f) | k} f, 
 \quad f \mbox{ irréductible} \]
 En utilisant cette relation, 
@@ -10123,21 +10248,21 @@ déterminer les degrés des facteurs de
 \[ (x^3+x+1)(x^4+x+1) \]
 modulo 5 et 7 (sans utiliser la commande factor). 
 Peut-on en déduire que $x^3+x+1$ et
-$x^4+x+1$ sont irréductibles sur $\Z$?
+$x^4+x+1$ sont irréductibles sur $\mathbb{Z}$?
 \item Utiliser les options ``verbose'' de votre logiciel de calcul formel
 pour factoriser $x^{202}+x^{101}+1$ et vérifiez que vous avez compris
 la méthode utilisée.
 \item Trouver les facteurs de degré 1 s'ils existent de
 $3x^5+25x^4+67x^3+77x^2+55x+13$ en remontant ses racines
-dans $\Z/pZ[X]$ pour $p$ premier bien choisi.
+dans $\mathbb{Z}/pZ[X]$ pour $p$ premier bien choisi.
 \item Factoriser le polynôme $x^5+x+1$ par la méthode 
 de Berlekamp.
-\item Montrer que $2x+x^2y+x^3+2x^4+y^3+x^5$ est irréductible sur $\Z$
+\item Montrer que $2x+x^2y+x^3+2x^4+y^3+x^5$ est irréductible sur $\mathbb{Z}$
 sans utiliser l'instruction factor à 2 variables (on pourra factoriser 
 pour quelques valeurs de $x$ ou de $y$)
 
 \item Que se passe-t-il lorsqu'on ex\'ecute l'algorithme de Yun
-dans $\Z/n\Z$?
+dans $\mathbb{Z}/n\mathbb{Z}$?
 
 \item Recherche des facteurs de degré 2 d'un polynôme à coefficients
 réels sans racines réelles en utilisant la méthode de Bairstow décrite
@@ -10218,7 +10343,7 @@ plusieurs variables algébriquement indépendantes
 f_n(x,f_1(x),f_2(x,f_1(x)),...,f_{n-1}(x,f_1(x),...,f_{n-2}(x))) \]
 où les $f_i$ sont soit l'exponentielle soit le logarithme d'une fraction
 rationnelle (le corps de base appelé aussi corps de
-constantes ici est soit $\C$, soit une extension algébrique de $\Q$ ou une
+constantes ici est soit $\mathbb{C}$, soit une extension algébrique de $\mathbb{Q}$ ou une
 extension algébrique d'un corps de fractions rationnelles s'il
 y a des paramètres). 
 On appelle tour de variables
@@ -10262,7 +10387,7 @@ Dans la suite, on va s'intéresser aux tours de variables dans lesquelles
 on a effectué des simplifications évidentes.
 On élimine les $\ln \circ \exp$ de la manière suivante~:
 si $f_k=\ln(g_k)$, on regarde si $g_k$ vu comme fraction 
-en $f_1,...,f_{k-1}$ possède un facteur $f_j^m$ (avec $m \in \Z$)
+en $f_1,...,f_{k-1}$ possède un facteur $f_j^m$ (avec $m \in \mathbb{Z}$)
 lorsque $f_j=\exp(g_j)$ est une exponentielle.
 Si c'est le cas, on a $f_k= m g_j + \ln(g_k/g_j^m)$. On change
 alors de tour en remplaçant $f_k$ par $\tilde{f}_k=\ln(g_k/g_j^m)=f_k-mg_j$.
@@ -10342,8 +10467,8 @@ $\prod_j P_j^j$ où les $P_j$ sont sans facteurs multiples et
 premiers entre eux 2 à 2 (par rapport à $X$), il existe
 $C$ indépendant de $X$ tel que~:
 \begin{equation} \label{eq:g}
- g=C\prod_{j \in \Z} P_j ^{j} \Rightarrow 
-\ln(g)=\ln(C)+\sum_{j \in \Z} j \ln(P_j)
+ g=C\prod_{j \in \mathbb{Z}} P_j ^{j} \Rightarrow 
+\ln(g)=\ln(C)+\sum_{j \in \mathbb{Z}} j \ln(P_j)
 \end{equation}
 Alors $f'=\ln(C)'+\sum_j j P_j'/P_j$ donc $\prod P_j f'$ est un 
 polynôme en $X$. 
@@ -10371,7 +10496,7 @@ ou si la variable $X$ est une exponentielle et $P=X$.
 Montrons que ce deuxième cas est en fait exclus:
 en effet si $P=X=\exp(Y)$ est une exponentielle, on a alors 
 $D=X^k$ et $Q=1$.
-Comme $P'=Y'X$, (\ref{eq:estpolynome}) devient~:
+Comme $P'=Y'X$, (\(\ref{eq:estpolynome}\)) devient~:
 \[ \left( \prod_j P_j \right) \frac{X (N' - k N Y' )}{X^{k+1}}
 \mbox{ est un polynôme en $X$} \]
 Comme $X$ ne divise pas $N$, $N$ possède donc un coefficient constant 
@@ -10381,7 +10506,7 @@ or $a_0$ ne dépend pas de $X$ donc $c=0$ donc $a_0=0$, absurde.
 Donc $X$ ne divise pas $N'-kNY'$.
 Comme $X^{k+1}$ divise $ \prod P_j X (N' - k N Y' )$, on en déduit que
 $X^k$ divise un des $P_j$. Donc $k=1$ et $P_j=XQ_j$. 
-Revenons maintenant à (\ref{eq:g}), on a~:
+Revenons maintenant à (\(\ref{eq:g}\)), on a~:
 \[  f=\ln(g) = \ln(C)+j \ln(XQ_j)+ \sum_{l \neq j} l \ln(P_l) \]
 on dérive~:
 \[ f'=\ln(C)'+jY'+j\frac{Q_j'}{Q_j}+\sum_{l \neq j} l \frac{P_l'}{P_l}\]
@@ -10449,7 +10574,7 @@ les $x_l$ sont entiers. Rappelons
 que les $\ln (g_l)$ sont algébriquement indépendants, on peut donc
 construire des polynômes irréductibles $I_l$ par rapport aux variables
 de la tour tels que $I_l$ divise une fois $g_l$ mais ne divise pas les $g_k$
-précédents. Soit $h=\prod_{j \in \Z} P_j^j$ la factorisation
+précédents. Soit $h=\prod_{j \in \mathbb{Z}} P_j^j$ la factorisation
 sans facteurs multiples de $h$. On dérive alors $\ln(h)$ ce qui donne~:
 \[ \sum_l x_l g_l'/g_l = \sum_j j P_j'/P_j \]
 où $\prod_j P_j^j$ est la décomposition sans facteurs multiples
@@ -10598,9 +10723,9 @@ Notons que le fait que $X$ soit une exponentielle est essentiel,
 car par exemple l'intégrale d'une fraction rationnelle dépendant de $x^n$ 
 comme $x^3$ ou $1/(x^3-1)$ ne s'exprime pas en fonction de $x^3$.
 On traite d'abord la partie polynomiale généralisée de $f$ en $X^n$:
-\[ \sum_{j\in \Z} a_j (X^n)^j\]
+\[ \sum_{j\in \mathbb{Z}} a_j (X^n)^j\]
 Son intégrale est un polynôme généralisé, éventuellement dépendant
-de $X$, soit $\sum_{j\in \Z} A_j X^j$. On dérive, et on obtient
+de $X$, soit $\sum_{j\in \mathbb{Z}} A_j X^j$. On dérive, et on obtient
 pour $k$ non multiple de $n$, $A_k Y/n+A_k'=0$ dont $A_k=0$ est
 solution. La partie polynôme généralisé ne dépend donc que de $X^n$.
 On effectue aussi les intégrations par parties pour réduire le 
@@ -10785,8 +10910,8 @@ donc retirer cette partie enti\`ere \`a la partie polynomiale.
 \subsubsection{La partie polynomiale (généralisée)}
 On doit résoudre~:
 \[ (\sum_j A_j X^j)'=\sum_j a_j X^j \]
-avec une somme sur $j \in\Z$ si $X$ est une exponentielle et
-$j\in \N$ sinon.
+avec une somme sur $j \in\mathbb{Z}$ si $X$ est une exponentielle et
+$j\in \mathbb{N}$ sinon.
 
 Si $X=x$, $j\geq 0$ et la résolution est immédiate: on prend $A_0=0$ et 
 $A_{j+1}=a_{j}/(j+1)$.
@@ -10892,7 +11017,7 @@ simples (avec B\'ezout) puis on ordonne par puissances croissantes
 de $P$~:
 \[y= N_1 P^\alpha +..., f= N_2 P^{-1}+...,\]
 avec $N_1,N_2$ de degré plus petit que $P$, puis on remplace dans 
-(\ref{eq:rischdiffeq2}). On cherche les termes de valuation $\alpha-1$
+(\(\ref{eq:rischdiffeq2}\)). On cherche les termes de valuation $\alpha-1$
 en $P$ qui doivent se simplifier~:
 \[ \alpha N_1 P' P^{\alpha-1} + N_2 P^{-1} N_1 P^\alpha =0 \]
 donc~:
@@ -10901,14 +11026,14 @@ ce qui d\'etermine $\alpha$.
 
 {\bf Récapitulons}\\
 Si $f$ est une dérivée, alors $\beta=-1$ est exclus et on peut
-appliquer (\ref{eq:defD}) pour déterminer $D$. Si $f$ n'est
+appliquer (\(\ref{eq:defD}\)) pour déterminer $D$. Si $f$ n'est
 pas une dérivée, on calcule les facteurs de degré 1 de $f_d$~:
 \[ f_1=\frac{f_d}{\mbox{gcd}(f_d,\partial_Z f_d)} \]
 on décompose $f$ par Bézout en isolant la partie $N/f_1$
 les $\alpha$ possibles sont alors les racines entières (en $t$)
 du résultant en $Z$ de $N-tf_1'$ et $f_1$, ils correspondent aux
 facteurs gcd$(N-\alpha f_1',f_1)$ que l'on retire de $f_d$ pour
-appliquer (\ref{eq:defD}).
+appliquer (\(\ref{eq:defD}\)).
 
 {\bf Exemple}\\
 Reprenons $y'+2xy=a(x)$. Si $a(x)=1$ (résolution de $\int \exp(x^2)$),
@@ -11034,7 +11159,7 @@ polyn\^omes $U$ et $V$ tels que~:
 \begin{equation} \label{eq:rischdebezout}
 RU+SV=T, \quad \mbox{deg}(V)< \mbox{deg}(R)
 \end{equation}
-En soustrayant (\ref{eq:rischdebezout}) de (\ref{eq:rischdepol}), 
+En soustrayant (\(\ref{eq:rischdebezout}\)) de (\(\ref{eq:rischdepol}\)), 
 on montre que $R$ divise $N-V$. Soit $H=(N-V)/R$. Alors $N=RH+V$ donc
 \[ R (RH'+R'H+V')+SRH+SV= T=RU+SV\]
 donc apr\`es simplification par $SV$ et division par $R$, 
@@ -11220,7 +11345,7 @@ Pour les trapèzes, la fonction $g$ dont le graphe est le segment reliant
 $[\alpha,f(\alpha)]$ à $[\beta,f(\beta)]$ est $f(\alpha)+(t-\alpha)/(\beta-\alpha)f(\beta)$,
 c'est en fait un polynome de Lagrange, si $f$ est deux fois continument
 dérivable, on peut donc majorer la différence
-entre $f$ et $g$ en utilisant (\ref{eq:lagrange}), on intègre la valeur
+entre $f$ et $g$ en utilisant (\(\ref{eq:lagrange}\)), on intègre la valeur
 absolue ce qui donne
 \[ |\int_{\alpha}^{\beta} f(t) dt - \int_{\alpha}^{\beta} g(t) dt |
 \leq \int_{\alpha}^{\beta} |\frac{f'{'}(\xi_x)}{2} (x-\alpha)(x-\beta)|
@@ -11305,7 +11430,7 @@ Donc comme la méthode est exacte pour $T_n(f)$, on en déduit que
 \sum_{j=1}^k |w_j| M_{n+1} \frac{(\beta-\alpha)^{n+1}}{(n+1)!} 
 \end{eqnarray*}
 Si les $w_j\geq 0$, alors $\sum_{j=1}^k |w_j|=\sum_{j=1}^k w_j=\beta-\alpha$
-et on obtient finalement (\ref{eq:majoration_err})
+et on obtient finalement (\(\ref{eq:majoration_err}\))
 
 On remarque qu'on peut am\'eliorer la valeur de la constante 
 en faisant tous les d\'eveloppement de Taylor
@@ -11325,7 +11450,7 @@ m\'ethode d'ordre $n$, et utilis\'e une majoration pas toujours
 optimale du reste. Pour obtenir la meilleure valeur possible de la
 constante, il faut exprimer le reste de la formule de Taylor sous
 forme int\'egrale et utiliser la forme pr\'ecise de la m\'ethode~:
-$$ f(t)=T_n(f)(t)+\int_\alpha^t \frac{(t-x)^n}{n!} f^{[n+1]}(x) \
+$$ f(t)=T_n(f)(t)+\int_\alpha^t \frac{(t-x)^n}{n!} f^{[n+1]}(x) \ 
 dx $$
 donc
 $$ \int_{\alpha}^{\beta} f- \int_{\alpha}^{\beta} T_{n}(f)
@@ -11397,11 +11522,11 @@ En effet sur une subdivision \'el\'ementaire $[\alpha,\beta]$,
 le noyau de P\'eano vaut~:
 \begin{eqnarray*}
  N(x) &=&
-\frac{(\beta-x)^4}{4!} - \frac16 \frac{(\beta-x)_+^{3}}{3!}
+\frac{(\beta-x)^4}{4!} - \frac{1}{6} \frac{(\beta-x)_+^{3}}{3!}
 -\frac23 \frac{(\frac{\alpha+\beta}2-x)_+^{3}}{3!} - 
-\frac16 \frac{(\alpha-x)_+^{3}}{3!} \\
+\frac{1}{6} \frac{(\alpha-x)_+^{3}}{3!} \\
 & =&
-\frac{(\beta-x)^4}{4!} - \frac16 \frac{(\beta-x)^{3}}{3!}
+\frac{(\beta-x)^4}{4!} - \frac{1}{6} \frac{(\beta-x)^{3}}{3!}
 -\frac23 \frac{(\frac{\alpha+\beta}2-x)_+^{3}}{3!} 
 \end{eqnarray*}
 on observe que $N(x)\leq 0$ sur $[\alpha,\beta]$ \\
@@ -11412,7 +11537,7 @@ et son int\'egrale vaut $-1/2880(\beta-\alpha)^4$~:\\
 \giacinputbigmath{int(N(x),x=0..1/2)+int(N(x),x=1/2..1)}
 
 {\bf Remarque}~: Une autre preuve de cette majoration utilise les
-diff\'erences divis\'ees (\ref{eq:errinterpdd}).
+diff\'erences divis\'ees (\(\ref{eq:errinterpdd}\)).
 La m\'ethode de Simpson sur $[\alpha,\beta$ 
 utilise le polyn\^ome d'interpolation en 
 $\alpha, (\alpha+\beta)/2, \beta$, on a donc
@@ -11421,7 +11546,7 @@ f[\alpha,\frac{\alpha+\beta}{2},\beta,x]$$
 on doit donc majorer l'erreur
 $$ E=\int_\alpha^\beta (x-\alpha)(x-\beta) (x-\frac{\alpha+\beta}{2})
 f[\alpha,\frac{\alpha+\beta}{2},\beta,x] \ dx $$
-D'autre part, en appliquant \ref{eq:fdd} avec $n+1$ et $n+2$ points, on a
+D'autre part, en appliquant \(\ref{eq:fdd}\) avec $n+1$ et $n+2$ points, on a
 pour tout $x_{n+1}$
 $$ f[x_0,..,x_n,x]=f[x_0,..,x_n,x_{n+1}]+(x-x_{n+1})f[x_0,..,x_n,x_{n+1},x]$$
 donc ici~:
@@ -11511,7 +11636,7 @@ tout polyn\^ome de degr\'e $n$. Si on prend
 $P_j(x)=\prod_{k \neq j}(x-x_k)$, on en d\'eduit~:
 $$ \int_\alpha^\beta P_j(x) \ dx = w_j P_j(x_j) $$ 
 Par exemple en interpolant en $0,1/2,1$ sur $[0,1]$, on obtient
-$$w_0 P_0(0)=\int_0^1 P_0(x) \ dx, \quad P_0(x)=(x-\frac12)(x-1)$$
+$$w_0 P_0(0)=\int_0^1 P_0(x) \ dx, \quad P_0(x)=(x-\frac{1}{2})(x-1)$$
 \giacinputbigmath{P0:=(x-1)*(x-1/2); int(P0,x,0,1)/P0(x=0);}\\
 On peut aussi r\'esoudre un syst\`eme lin\'eaire en prenant pour $f$
 les polyn\^omes de la base canonique, la matrice du syst\`eme est
@@ -11525,10 +11650,10 @@ Int\'egration sur $[a,b]$, $h$ pas d'une subdivision, $M_k$ majorant
 de la d\'eriv\'ee $k$-i\`eme de la fonction sur $[a,b]$\\
 \begin{tabular}{|c|c|c|c|c|} \hline 
  & formule & Lagrange degr\'e & ordre & erreur \\ \hline
-rectangles & (\ref{eq:rectangle_gauche}), (\ref{eq:rectangle_droit}) & 0 & 0 & $M_1 h (b-a)/2$ \\
-point milieu & (\ref{eq:point_milieu}) & 0 & 1 & $M_2 h^2 (b-a)/24$ \\
-trap\`ezes & (\ref{eq:trapezes}) & 1 & 1 & $M_2 h^2 (b-a)/12$ \\
-Simpson & (\ref{eq:simpson})& 2 & 3 & $M_4 h^4 (b-a)/2880$  \\ \hline
+rectangles & (\(\ref{eq:rectangle_gauche}\)), (\(\ref{eq:rectangle_droit}\)) & 0 & 0 & $M_1 h (b-a)/2$ \\
+point milieu & (\(\ref{eq:point_milieu}\)) & 0 & 1 & $M_2 h^2 (b-a)/24$ \\
+trap\`ezes & (\(\ref{eq:trapezes}\)) & 1 & 1 & $M_2 h^2 (b-a)/12$ \\
+Simpson & (\(\ref{eq:simpson}\))& 2 & 3 & $M_4 h^4 (b-a)/2880$  \\ \hline
 \end{tabular}
 
 \subsection{Accélération de Richardson-Romberg}
@@ -11544,17 +11669,17 @@ Alors $T_h(g)$ admet un développement en puissances paires de $h$
 Pour montrer ce résultat, il faut établir la formule d'Euler-Mac
 Laurin. On commence par se placer sur une subdivision de l'intervalle
 $[0,1]$, on intègre par parties $\int_0^1 f(t)\ dt$ en faisant apparaitre
-la formule des trapèzes, on intègre donc 1 en $t-\frac12$
+la formule des trapèzes, on intègre donc 1 en $t-\frac{1}{2}$
 $$ \int_0^1 f(t) \ dt = 
-[(t-\frac12)f(t)]_0^1 - \int_0^1 (t-\frac12)f'(t) \ dt =
-\frac{f(0)+f(1)}{2} - \int_0^1 (t-\frac12)f'(t) \ dt
+[(t-\frac{1}{2})f(t)]_0^1 - \int_0^1 (t-\frac{1}{2})f'(t) \ dt =
+\frac{f(0)+f(1)}{2} - \int_0^1 (t-\frac{1}{2})f'(t) \ dt
 $$
 où encore
 $$ T_1(f)=\int_0^1 f(t) \ dt 
-+  \int_0^1 (t-\frac12)f'(t) \ dt $$
-Pour poursuivre, on pose $B_1(t)=t-\frac12$, qu'on va intégrer
-en $\frac12((t-\frac12)^2+c)$, où on choisit $c$ pour que l'intégrale
-soit nulle, donc $c=-1/6$. On pose $B_2=(t-\frac12)^2-1/6$, on a~:
++  \int_0^1 (t-\frac{1}{2})f'(t) \ dt $$
+Pour poursuivre, on pose $B_1(t)=t-\frac{1}{2}$, qu'on va intégrer
+en $\frac{1}{2}((t-\frac{1}{2})^2+c)$, où on choisit $c$ pour que l'intégrale
+soit nulle, donc $c=-1/6$. On pose $B_2=(t-\frac{1}{2})^2-1/6$, on a~:
 $$  T_1(f)=\int_0^1 f(t) \ dt 
 + [\frac{B_2}{2} f']_0^1 - \int_0^1 \frac{B_2}{2}f'{'}(t) \ dt 
 $$
@@ -11766,7 +11891,7 @@ f[x_0,...,x_n,x]=f[x_0,...,x_n,x_{n+1}]+f[x_0,...,x_n,x_{n+1},x](x-x_{n+1})
 \end{equation}
 mais en fait on va ajouter plus qu'un point, on va en ajouter $n+1$
 \begin{eqnarray*}
-&&f(x)-(f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,...,x_n](x-x_0)...(x-x_{n-1})
+& &f(x)-(f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,...,x_n](x-x_0)...(x-x_{n-1})
 )\\
 &=&f[x_0,...,x_n,x_{n+1}](x-x_0)...(x-x_{n-1})(x-x_n) +...+f[x_0,...,x_{2n+1}](x-x_0)...(x-x_{2n})
 + f[x_0,...,x_{2n+1},x](x-x_0)...(x-x_{2n+1})
@@ -11777,7 +11902,7 @@ proportionnel \`a $(x-x_0)...(x-x_{n-1})(x-x_n) $, de degr\'e $n+1$,
 est orthogonal \`a tous les polyn\^ome de degr\'e $\leq n$
 $$ \int_{-1}^1 (f(x) -P_n(x)) \ dx = \int_{-1}^1
 f[x_0,...,x_{2n+1},x](x-x_0)...(x-x_{2n+1}) \ dx $$
-D'autre part, le r\'esultat sur l'erreur d'interpolation \ref{eq:lagrange} donne
+D'autre part, le r\'esultat sur l'erreur d'interpolation \(\ref{eq:lagrange}\) donne
 $$ f[x_0,...,x_n,x]=\frac{f^{[n+1]}(\xi_x)}{(n+1)!}$$
 en particulier $|f[x_0,...,x_n,x]| \leq M_{n+1}/(n+1)!$
 D'o\`u la majoration
@@ -11885,7 +12010,7 @@ une récurrence affine.
 
 \subsubsection{Récurrence affine}\index{affine, r\'ecurrence}
 \index{lin\'eaire, r\'ecurrence}
-On peut toujours se ramener au cas d'une suite vectorielle dans $\R^d$
+On peut toujours se ramener au cas d'une suite vectorielle dans $\mathbb{R}^d$
 vérifiant un récurrence à un cran~:
 \begin{equation} v_{n+1} = A v_n + B \label{eq:recaffine}
 \end{equation}
@@ -11896,7 +12021,7 @@ Par exemple pour une suite $u_n$ récurrente à deux crans
 on pose $v_n=(u_n,u_{n+1})$ qui vérifie alors~:
 \[ v_{n+1}= \left( \begin{array}{cc} 0 & 1 \\ b & a \end{array}\right) v_n + 
 \left( \begin{array}{c}0 \\ c\end{array}\right)\] 
-La solution générale de (\ref{eq:recaffine}) est la somme de la solution
+La solution générale de (\(\ref{eq:recaffine}\)) est la somme de la solution
 de l'équation homogène $v_{n+1}=Av_n$ et d'une solution particulière,
 solution que l'on sait calculer lorsque $B$ est combinaison linéaire
 d'un produit d'exponentielle par un polynôme en $n$.
@@ -11942,14 +12067,14 @@ la base de Newton (voir section ci-dessous).
 \index{Newton, base de}
 Plutôt que d'exprimer les polynômes dans la base canonique, il est
 intéressant d'utiliser la base $1,n,n(n-1),n(n-1)(n-2),...,n(n-1)...(n-p+1)$.
-En effet (\ref{eq:recpart}) appliqué à $Q_{k+1} n(n-1)..(n-k)$ s'écrit
+En effet (\(\ref{eq:recpart}\)) appliqué à $Q_{k+1} n(n-1)..(n-k)$ s'écrit
 $Q_{k+1}((n+1)-(n-k))n(n-1)...(n-k+1)=Q_{k+1}(k+1)n(n-1)...(n-k+1)$, on obtient
 donc $Q_{k+1}=P_{k}/(k+1)$. Le calcul des coefficients $P_k$ s'effectue
 efficacement par l'algorithme des différences divisées à partir
 du polynôme $P$ et de sa valeur en 0,1,2,...,degré$(P)$.
 
-\subsection{Le point fixe dans $\R$}\index{fixe, point} 
-Soit $f$ une fonction continue sur un intervalle $I=[a,b]$ de $\R$, et 
+\subsection{Le point fixe dans $\mathbb{R}$}\index{fixe, point} 
+Soit $f$ une fonction continue sur un intervalle $I=[a,b]$ de $\mathbb{R}$, et 
 à valeurs dans $I$ (attention à bien choisir $I$ pour que l'image
 de $I$ par $f$ reste dans $I$).
 On s'intéresse à la suite 
@@ -11962,7 +12087,7 @@ $n \rightarrow +\infty$, alors la limite doit vérifier
 puisque $f$ est continue. On dit que $l$ est un point fixe de $f$.
 Ceci amène à l'idée d'utiliser ces suites pour résoudre numériquement
 l'équation $f(x)=x$. Nous allons donner un théorème permettant
-d'assurer que la suite (\ref{eq:u_n_fixe}) converge, et que la limite
+d'assurer que la suite (\(\ref{eq:u_n_fixe}\)) converge, et que la limite
 est l'unique solution de $f(l)=l$ sur $I$.
 
 \begin{defn}
@@ -11984,7 +12109,7 @@ On a alors le
 \begin{thm} (du {\bf point fixe})\index{point fixe}\\
 si $f$ est contractante de $I=[a,b]$
 dans $I$ de rapport $k$ 
-alors la suite (\ref{eq:u_n_fixe}) converge vers l'unique
+alors la suite (\(\ref{eq:u_n_fixe}\)) converge vers l'unique
 solution de $f(l)=l$ dans $I$. On a de plus les encadrements~:
 \begin{equation}  \label{eq:u_n_l}
 |u_n-l| \leq k^n |b-a|, \quad
@@ -11998,7 +12123,7 @@ Soit $g(x)=f(x)-x$, alors $g$ est continue, positive en $a$ et négative
 en $b$, il existe donc $l\in[a,b]$ tel que $g(l)=0$ (théorème des
 valeurs intermédiaires). 
 Soit $u_n$ une suite définie par
-(\ref{eq:u_n_fixe}). On a alors pour tout $n$
+(\(\ref{eq:u_n_fixe}\)). On a alors pour tout $n$
 \[ |u_{n+1}-l|=|f(u_n)-f(l)| \leq k |u_n-l| \]
 Donc par une récurrence évidente~:
 \[ |u_n-l| \leq k^n |u_0-l| \]
@@ -12008,7 +12133,7 @@ lorsque $n$ tend vers l'infini, donc $u_n$ tend vers $l$.
 Notons que $l$ est unique car si $l'$ est une autre solution
 alors $|l-l'|=|f(l)-f(l')| \leq k|l-l'|$ donc $(1-k)|l-l'| \leq 0$,
 or $1-k>0$ et $|l-l'| \geq 0$ donc $|l-l'|$ doit \^etre nul.
-Passons à la preuve de la majoration (\ref{eq:u_n_l}) qui est importante
+Passons à la preuve de la majoration (\(\ref{eq:u_n_l}\)) qui est importante
 en pratique car elle donne un test d'arrêt de calcul des
 termes de la suite récurrente, on écrit pour $m>0$~:
 \[ u_n-l= u_n - u_{n+1} + u_{n+1} - u_{n+2} + ... + u_{n+m-1}- u_{n+m}
@@ -12054,7 +12179,7 @@ Si on a une valeur numérique pour $t$, on peut trouver une valeur
 numérique approchée de $x$ par la méthode du point fixe, en réécrivant
 l'équation sous la forme 
 \[ f(x)=t+e\sin(x) = x \]
-On observe que $f$ envoie $\R$ dans $[t-e,t+e]$ donc on peut prendre
+On observe que $f$ envoie $\mathbb{R}$ dans $[t-e,t+e]$ donc on peut prendre
 $I=[t-e,t+e]$, de plus $|f'|\leq e <1$, $f$ est contractante
 de rapport $e \in [0,1[$, le théorème s'applique, il suffit de
 prendre une valeur initiale dans $[t-e,t+e]$ et d'itérer la suite
@@ -12111,11 +12236,11 @@ constante de contractance est suffisamment petite (par exemple $k=0.1$
 garantit 15 d\'ecimales en 15 it\'erations) et pr\'esente l'avantage
 de se g\'en\'eraliser en dimension plus grande, cf. la section suivante.
 
-\subsection{Le point fixe dans $\R^n$}
+\subsection{Le point fixe dans $\mathbb{R}^n$}
 Le th\'eor\`eme pr\'ec\'edent se g\'en\'eralise. 
 \begin{thm}
 Soit $I$ un ensemble
-ferm\'e de $\R^n$ (ou d'un espace m\'etrique complet) tel que $f$ 
+ferm\'e de $\mathbb{R}^n$ (ou d'un espace m\'etrique complet) tel que $f$ 
 envoie $I$ dans $I$ et tel que $f$ soit contractante sur $I$
 $$ \exists k<1, \forall x,y \in I, \quad |f(x)-f(y)| \leq k |x-y|$$
 Alors pour tout $u_0 \in I$, la suite $(u_n)$ d\'efinie par
@@ -12140,8 +12265,8 @@ se g\'en\'eralise si $I$ est un convexe compact pr\'eserv\'e
 par $f$ (th\'eor\`eme
 de Brouwer ou de Schauder).
 \item Pour v\'erifier les hypoth\`eses du th\'eor\`eme dans
-$\R^n$, il suffit de montrer que dans $I$ la norme triple de $f'$
-subordonn\'ee \`a la norme choisie dans $\R^n$ est inf\'erieure
+$\mathbb{R}^n$, il suffit de montrer que dans $I$ la norme triple de $f'$
+subordonn\'ee \`a la norme choisie dans $\mathbb{R}^n$ est inf\'erieure
 \`a $k<1$. Pour $f$ lin\'eaire,
 cela revient \`a calculer une norme subordonn\'ee de matrice
 et donne lieu \`a des m\'ethodes it\'eratives alternatives \`a
@@ -12149,13 +12274,13 @@ l'inversion de matrice, cf. la section \ref{sec:jacobi}.
 \item l'algorithme de recherche
 PageRank de google utilise le point fixe, en tr\`es grande dimension~:
 $n$ est le nombre de pages Web, $I$ est l'ensemble des vecteurs
-de $\R^n$ dont toutes les coordonn\'ees sont positives ou nulles et
+de $\mathbb{R}^n$ dont toutes les coordonn\'ees sont positives ou nulles et
 dont la somme des coordonn\'ees vaut 1, $f$ est la somme d'un vecteur
 constant et du produit du vecteur $x$ par une matrice $A$ transpos\'ee
 d'une matrice stochastique.
 \end{itemize}
 
-\subsection{La méthode de Newton dans $\R$.}
+\subsection{La méthode de Newton dans $\mathbb{R}$.}
 La méthode de Newton est une méthode de résolution de l'équation
 $f(x)=0$, attention à la différence avec le théorème du point fixe
 qui permet de résoudre numériquement $f(x)=x$.
@@ -12232,7 +12357,7 @@ plus pr\'ecis\'ement, on montre par r\'ecurrence que
 il faut donc un nombre d'it\'erations proportionnel \`a $\ln(n)$
 pour atteindre une pr\'ecision donn\'ee.
 
-{\bf Remarque~:} ce théorème se généralise sur $\C$ et même sur $\R^n$
+{\bf Remarque~:} ce théorème se généralise sur $\mathbb{C}$ et même sur $\mathbb{R}^n$
 (cf. la section suivante).
 
 {\bf Exemple~:} pour calculer $\sqrt{2}$, on écrit l'équation $x^2-2=0$
@@ -12260,7 +12385,7 @@ servant aux origines de suite qui ne semblent pas converger).
 
 Passons maintenant à un critère tr\`es utile en pratique~:
 \begin{defn} ({\bf convexité})\index{convexe}\\
-Une fonction $f$ continument dérivable sur un intervalle $I$ de $\R$
+Une fonction $f$ continument dérivable sur un intervalle $I$ de $\mathbb{R}$
 est dite convexe si son graphe est au-dessus de la tangente en tout point
 de $I$.
 \end{defn}
@@ -12328,7 +12453,7 @@ racine $k$-i\`eme d'un r\'eel $a>0$ en appliquant ce deuxi\`eme
 th\'eor\`eme. En effet si
 $a>0$, alors $x^k-a$ est 2 fois continument d\'erivable et 
 de d\'eriv\'ee premi\`ere $kx^{k-1} $ et
-seconde $k(k-1)x^{k-2}$ strictement positives sur $\R^{+\ast}$ (car $k \geq 2$).
+seconde $k(k-1)x^{k-2}$ strictement positives sur $\mathbb{R}^{+\ast}$ (car $k \geq 2$).
 Il suffit donc de prendre une valeur de d\'epart $u_0$ plus grande que
 la racine $k$-i\`eme, par exemple $1+a/k$ (en effet
 $(1+a/k)^k \geq 1+k a/k=1+a$).
@@ -12344,11 +12469,11 @@ on peut donc choisir comme test d'arr\^et
 Par exemple pour $\sqrt{2}$, le test d'arr\^et serait 
 $u_n^2-2 \leq 2 \varepsilon$.
 
-\subsection{La m\'ethode de Newton dans $\R^n$.}
+\subsection{La m\'ethode de Newton dans $\mathbb{R}^n$.}
 Le premier \'enonc\'e du cas de la dimension 1 se g\'en\'eralise en~:
 \begin{thm} \index{Newton}
 Soit $f$ une fonction de classe $C^2$ (2 fois continument d\'erivable)
-sur un ferm\'e $I$ de $\R^n$. Soit $r$ une racine simple de $f$
+sur un ferm\'e $I$ de $\mathbb{R}^n$. Soit $r$ une racine simple de $f$
 situ\'ee \`a l'int\'erieur de $I$
 (telle que $f(r)=0$ et $f'(r)=(\partial_j f_i)(r)$ inversible). 
 Alors il existe $\varepsilon>0$
@@ -12370,7 +12495,7 @@ f'{'}(r+\theta (u_n-r)) (r-u_n) \, d\theta \]
 donc~:
 $$u_{n+1}-r =-f'(u_n)^{-1}  (r-u_n) 
 \left(\int_0^1 (1-\theta)f'{'}(r+\theta (u_n-r)) \, d\theta \right) (r-u_n)  $$
-et on en d\'eduit (\ref{eq:newton}) et on conclut de m\^eme en
+et on en d\'eduit (\(\ref{eq:newton}\)) et on conclut de m\^eme en
 rempla\c{c}ant intervalle centr\'e en $r$ de rayon $\varepsilon$
 par boule de rayon $\varepsilon$.
 
@@ -12441,7 +12566,7 @@ la th\`ese de Xavier Gourdon et l'article Splitting circle method de Wikipedia)
 et est appel\'e par Xcas pour des polyn\^omes mals conditionn\'es.
 
 Enfin, on peut appliquer directement la m\'ethode de Newton pour
-trouver dans $\C^n$ toutes les racines simultan\'ement, c'est la
+trouver dans $\mathbb{C}^n$ toutes les racines simultan\'ement, c'est la
 m\'ethode de {\bf Durand-Kerner, Weierstrass}\index{Durand-Kerner, Weierstrass}.
 On pose $g_x(z)=\prod_{i=1}^n (x-z_i)$, il s'agit de r\'esoudre en $z$
 $g_x(z)=P(x)$. On a a l'ordre 1 en $z$
@@ -12489,8 +12614,8 @@ par des it\'erations inverses ou par la m\'ethode de Newton en une
 variable.
 
 \subsection{M\'ethodes de gradient (sans contrainte)}
-Il s'agit ici de minimiser une fonction $f$ d'un ouvert $U$ de $\R^n$ 
-\`a valeurs dans $\R$. Lorsque la fonction $f$ est
+Il s'agit ici de minimiser une fonction $f$ d'un ouvert $U$ de $\mathbb{R}^n$ 
+\`a valeurs dans $\mathbb{R}$. Lorsque la fonction $f$ est
 suffisamment r\'eguli\`ere sur $U$, une condition n\'ecessaire
 en un extremum local de l'ouvert est que la diff\'erentielle $df$
 s'annulle. R\'eciproquement, la recherche d'une solution de $f(x)=0$
@@ -12563,7 +12688,7 @@ inf\'erieurement).
 La premi\`ere condition de Wolfe donne
 $$ f(v_{k})-f(v_{k+1})  \ \geq  \ \varepsilon_1 \rho_k <-\nabla
 f(v_k)|w_k> $$
-puis (\ref{eq:minor_rho})~:
+puis (\(\ref{eq:minor_rho}\))~:
 $$ f(v_{k})-f(v_{k+1})  \geq \ 
 \varepsilon_1  (1-\varepsilon_2)<\nabla f(v_k)|w_k>^2\frac{1}{M_2  \|  w_k \|^2} 
  \geq 0 $$
@@ -12626,7 +12751,7 @@ le pivot le plus simple possible, (remarque, lorsque les donn\'ees
 sont approch\'ees, on n'utilise pas non plus cette méthode
 pour des raisons de stabilit\'e num\'erique).
 Le domaine d'utilisation naturel concerne donc les coefficients
-dans un corps fini (par exemple $\Z/n\Z$).
+dans un corps fini (par exemple $\mathbb{Z}/n\mathbb{Z}$).
 \item Le pivot partiel. On choisit le meilleur coefficient non nul de la
 colonne, où meilleur dépend du type de coefficient~: avec des données
 exactes, on choisirait le coefficient de taille la plus petite possible,
@@ -12872,7 +12997,7 @@ alors au rang $k+1$, on a~:
 & = & - (-1)^k n
 \end{eqnarray*}
 On v\'erifie aussi que le signe de $\beta_k$ est positif si $k$ est impair
-et n\'egatif si $k$ est pair, on d\'eduit donc de (\ref{eq:rec})~:
+et n\'egatif si $k$ est pair, on d\'eduit donc de (\(\ref{eq:rec}\))~:
 \[ |\beta_{k+1}| r_k < n \]
 (avec \'egalit\'e si $r_{k+1}=0$)
 
@@ -12970,7 +13095,7 @@ que tous les vecteurs de ce type forment une famille libre de
 la bonne taille, c'est donc bien une base du noyau.
 
 
-\subsection{Alg\`ebre lin\'eaire sur $\Z$}
+\subsection{Alg\`ebre lin\'eaire sur $\mathbb{Z}$}
 
 \subsubsection{Calcul du d\'eterminant d'une matrice \`a coefficient entiers}
 L'algorithme $p$-adique de r\'esolution de syst\`emes
@@ -13002,15 +13127,15 @@ d'inversion ou de r\'eduction de type Strassen.
   de)} \index{Smith (forme de)}
 Lorsque $M$ est une matrice \`a coefficients entiers, 
 on ne peut plus faire l'algorithme du pivot de Gauss ou de
-Gauss-Bareiss en restant dans $\Z$ et en \'etant r\'eversible.
+Gauss-Bareiss en restant dans $\mathbb{Z}$ et en \'etant r\'eversible.
 On peut toutefois effectuer des manipulations \'el\'ementaires
-r\'eversibles dans $\Z$, gr\^ace \`a l'idendit\'e de B\'ezout. Si $a$
+r\'eversibles dans $\mathbb{Z}$, gr\^ace \`a l'idendit\'e de B\'ezout. Si $a$
 est le pivot en ligne $i$, $b$ le coefficient en ligne $j$ \`a
 annuler, et $u, v, d$ les coefficients de l'identit\'e de B\'ezout
 $a u + b v =d$ on fait les changements~:
 \[ L_i \leftarrow uL_i +v L_j, \quad 
 L_j \leftarrow -\frac{b}{d} L_i + \frac{a}{d} L_j \]
-qui est r\'eversible dans $\Z$
+qui est r\'eversible dans $\mathbb{Z}$
 car le d\'eterminant de la sous-matrice \'el\'ementaire
 correspondante est
 \[ \left| \begin{array}{cc}
@@ -13040,7 +13165,7 @@ r\'eduction de Hermite \`a $(M^t|I)$, on obtient une matrice $(U|L)$
 telle que $U=LM^t$.
 Dans Xcas, on peut utiliser l'instruction \verb|ihermite| (ou
 \verb|mathnf| de PARI). L'aide
-d\'etaill\'ee de Xcas donne un exemple de calcul de $\Z$-base
+d\'etaill\'ee de Xcas donne un exemple de calcul de $\mathbb{Z}$-base
 d'un noyau. 
 
 Exemple~: soit \`a r\'esoudre en entiers $2x+3y+5z=0$.
@@ -13054,13 +13179,13 @@ correspondantes de $L^t$, ainsi les lignes de $L$ correspondant
 \`a des lignes nulles de $U$ sont dans le noyau. Et si un vecteur
 \`a coefficient entiers est dans le noyau, alors il se d\'ecompose
 sur les vecteurs colonnes de $L^t$ avec des coefficients entiers
-(puisque $L\in$GL$_n(\Z)$), on applique $M$ et on conclut
+(puisque $L\in$GL$_n(\mathbb{Z})$), on applique $M$ et on conclut
 que ses composantes sur les colonnes non nulles de $U^t$ sont nulles.
 
 Remarque~: l'algorithme du pivot de Gauss permet de trouver plus
-rapidement une base sur $\Q$ du noyau de $M$ \`a coefficients entiers,
+rapidement une base sur $\mathbb{Q}$ du noyau de $M$ \`a coefficients entiers,
 par exemple ici $\{ v_1=(-3,2,0), v_2=(-5,0,2)\}$ mais ce n'est pas une base
-sur $\Z$, par exemple $1/2v_1+1/2v_2 \in \Z^3$.
+sur $\mathbb{Z}$, par exemple $1/2v_1+1/2v_2 \in \mathbb{Z}^3$.
 
 Plus g\'en\'eralement, chercher une solution particuli\`ere
 du syst\`eme $MX=B$ revient \`a r\'esoudre
@@ -13079,7 +13204,7 @@ avec \verb|normal(M*X)|.
 
 On peut aussi se servir de la forme normale de Hermite pour
 compl\'eter un vecteur $v=(a_1,...,a_n)$ de contenu 1 en une base
-de $\Z^n$ (si le contenu n'est pas 1, c'est bien sur impossible
+de $\mathbb{Z}^n$ (si le contenu n'est pas 1, c'est bien sur impossible
 puisque le d\'eterminant est un multiple du contenu), il suffit
 de prendre les colonnes de $L^{-1}$ 
 (o\`u \verb|L,U:=ihermite(tran(v))|).
@@ -13115,9 +13240,9 @@ $C_1+C_2$, puis on fait apparaitre le pgcd de $d_1$ et $d_2$ en ligne
 1 colonne 1 en cr\'eant un 0 en ligne 2 colonne 1. 
 
 La r\'eduction de Smith sert par exemple \`a montrer
-qu'un sous-module de $\Z^n$ obtenu par quotient par l'image 
+qu'un sous-module de $\mathbb{Z}^n$ obtenu par quotient par l'image 
 d'une application lin\'eaire de matrice $A$ est isomorphe 
-\`a $\Z/d_i \times ... \times \Z/d_r \times \Z^{n-r}$. C'est ce
+\`a $\mathbb{Z}/d_i \times ... \times \mathbb{Z}/d_r \times \mathbb{Z}^{n-r}$. C'est ce
 qu'on obtient pour un module pr\'esent\'e par des g\'en\'erateurs
 et relations entre g\'en\'erateurs.
 Les coefficients $d_i$ sont appel\'es {\bf facteurs
@@ -13130,10 +13255,10 @@ Exemple 1~: on se donne le groupe ab\'elien engendr\'e par $x_1$ et
 $x_2$ v\'erifiant les relations $2x_1+4x_2=0, -2x_1+6x_2=0$. On fait
 $L_2=L_2+L_1$ et $C_2=C_2-C_1$ ce qui donne la matrice r\'eduite
 de diagonale 2 et 10, qui en sont les facteurs invariants, le groupe
-est isomorphe \`a $\Z/2 \times \Z/10$ (parfois not\'e 
+est isomorphe \`a $\mathbb{Z}/2 \times \mathbb{Z}/10$ (parfois not\'e 
 $\oplus$ au lieu de $\times$).
 
-Exemple 2~: on se donne un module sur $\Z$ engendr\'e par $m_1,m_2,m_3$
+Exemple 2~: on se donne un module sur $\mathbb{Z}$ engendr\'e par $m_1,m_2,m_3$
 et les relations $2m_1+3m_2+5m_3=0, 7m_1+3m_2-5m_3=0$.
 On pose \verb|A:=[[2,3,5],[7,3,-5]]|, puis
 \verb|U,B,V:=ismith(A)|, on a donc $B=UAV$.
@@ -13141,8 +13266,8 @@ Si $M=(m_1,m_2,m_3)$, on a $AM=0$ donc $B V^{-1}M=UAM=0$.
 On pose $(n_1,n_2,n_3)=N=V^{-1}M$, 
 les g\'en\'erateurs $n_1=m_1-6m_2-20m_3, n_2=m_2+3m_3,n_3=m_3$
 v\'erifient donc $b_1 n_1=0, b_2n_2=0, b_1=1, b_2=15$, le module est donc
-isomorphe \`a  $\Z/1 \times \Z/15 \times \Z$ soit encore $\Z/15\Z
-\times \Z$.
+isomorphe \`a  $\mathbb{Z}/1 \times \mathbb{Z}/15 \times \mathbb{Z}$ soit encore $\mathbb{Z}/15\mathbb{Z}
+\times \mathbb{Z}$.
 
 \subsubsection{L'algorithme LLL.} \index{LLL}
 Il s'agit d'une m\'ethode permettant d'obtenir rapidement
@@ -13156,7 +13281,7 @@ Cet algorithme est tr\`es utile en calcul formel, pour \'eviter
 une explosion combinatoire dans certaines
 op\'erations de recombinaison. Par exemple, supposons que
 nous souhaitions factoriser un polyn\^ome $P$ \`a coefficients
-entiers sur $\Z[X]$ en utilisant ses racines approch\'ees. Si
+entiers sur $\mathbb{Z}[X]$ en utilisant ses racines approch\'ees. Si
 plusieurs racines $r_k$ correspondent \`a un facteur entier,
 alors $p_n \sum r_k $ doit \^etre un entier aux erreurs
 d'arrondi pr\`es. Tester toutes les combinaisons possibles
@@ -13181,7 +13306,7 @@ f(P):={
   l:=proot(P,prec+n);
   M:=round(tran([op(idn(n)),
      lcoeff(P)*10^prec*re(l),lcoeff(P)*10^prec*im(l)]));
-  M:=[op(M),[0$n,10^prec,0],[0$(n+1),10^prec]];
+  M:=[op(M),[op(seq(0,n)),10^prec,0],[op(seq(0,n+1)),10^prec]];
   S,A,L,O:=lll(M);
   retourne l,A;
 }:;
@@ -13469,7 +13594,7 @@ calculé les $i-1$ premi\`eres colonnes
 a_{ij}=l_{i1}l_{j1}+\ldots+l_{ii}l_{ji} \]
 d'où 
 \[ l_{ii}= \sqrt{{a_{ii}-{\sum_{k=1}^{i-1}l_{ik}^{2}}}}, \quad
-l_{ji}=\frac{a_{ij}-{\sum_{k=1}^{i-1}l_{ik}l_{jk}}}{l_{ii}} \
+l_{ji}=\frac{a_{ij}-{\sum_{k=1}^{i-1}l_{ik}l_{jk}}}{l_{ii}} \ 
 (\mbox{pour } j > i)\]
 Pour une matrice hermitienne complexe, il suffit de remplacer
 $l_{ik}l_{jk}$ par $l_{ik}\overline{l_{jk}}$ et $l_{ik}^{2}$ par
@@ -13568,12 +13693,15 @@ En effet, on a
 $$ A \Delta x =\Delta b - \Delta A(x+\Delta x)
 \Rightarrow \Delta x = A^{-1}(\Delta b - \Delta A(x+\Delta x))  $$
 donc en norme
-$$ \| \Delta x \| \leq |||A^{-1}||| (\frac{\|\Delta b\|}{\|b\|}\|Ax\|
-+ \frac{||| \Delta A |||}{|||A|||} |||A||| (\|x\|+\|\Delta x\|))$$
+$$ \| \Delta x \| \leq |||A^{-1}||| \left(
+\frac{\|\Delta b\|}{\|b\|}\|Ax\|
++ \frac{||| \Delta A |||}{|||A|||} |||A||| (\|x\|+\|\Delta x\|)
+\right)$$
 puis~:
-$$ \frac{\| \Delta x \|}{\|x\\} \leq \kappa(A)
-(\frac{\|\Delta b\|}{\|b\|}
-+ \frac{||| \Delta A |||}{|||A|||} (1+\frac{\| \Delta x \|}{\|x\\}) $$
+$$ \frac{\| \Delta x \|}{\|x\|} \leq \kappa(A)
+\left(\frac{\|\Delta b\|}{\|b\|}
++ \frac{||| \Delta A |||}{|||A|||} \left(1+\frac{\| \Delta x \|}{\|x\|}\right) 
+\right)$$
 
 
 
@@ -13592,7 +13720,7 @@ annule la matrice $A$. On peut aussi calculer le polynôme $P$
 précédent pour quelques vecteurs aléatoires et prendre le PPCM des
 polynômes obtenus, il suffit de s'arr\^eter lorsque l'espace engendr\'e
 par les vecteurs et les images par les puissances de $A$ engendrent
-tout $\R^n$. On peut aussi utiliser l'algorithme de Danilevsky (voir
+tout $\mathbb{R}^n$. On peut aussi utiliser l'algorithme de Danilevsky (voir
 plus bas) qui est int\'eressant sur les corps finis.
 
 {\bf Exemple 1}\\
@@ -13843,7 +13971,7 @@ de $\lambda I-A$
 \[ \mbox{tr}(B)=P'(\lambda) \]
 \end{thm}
 Le théorème nous donne $\mbox{tr}(B_k) = (k+1)p_{k+1} $.
-Si on prend la trace de (\ref{eq:Bp1}), on a~:
+Si on prend la trace de (\(\ref{eq:Bp1}\)), on a~:
 \[ \mbox{tr}(B_{n-1})=n p_n, \quad (k+1)p_{k+1} -\mbox{tr}(AB_{k+1})
 =np_{k+1} \]
 donc on calcule $p_{k+1}$ en fonction de $B_{k+1}$ puis $B_k$~:
@@ -13930,7 +14058,6 @@ $\lambda _i$:
 \begin{eqnarray*} 
 -P(\lambda )I&=&(A-\lambda I)\left(
 B(\lambda_i )+ B'(\lambda _i)(\lambda -\lambda _i)
-% + ... + \frac{B^{(n_i)}(\lambda_i )}{n_i!} (\lambda -\lambda _i)^{n_i}
 + ... +  \frac{B^{(n-1)}(\lambda_i )}{(n-1)!} 
 (\lambda -\lambda _i)^{n-1} \right) \\
 &=& -(\lambda -\lambda _i)^{n_i}
@@ -13958,13 +14085,13 @@ l'image de $B^{(n_i-1)}(\lambda _i)/(n_i-1)!$.
 {\bf Preuve~:}\\
 On montre d'abord que Im$B^{(n_i-1)}(\lambda _i)/(n_i-1)!$ est inclus
 dans l'espace caractéristique correspondant à $\lambda_i$ en
-appliquant l'\'equation (\ref{eq:jordan3}) et les \'equations précédentes.
+appliquant l'\'equation (\(\ref{eq:jordan3}\)) et les \'equations précédentes.
 Réciproquement on veut prouver que tout vecteur caract\'eristique $v$ est dans 
 l'image de $B^{(n_i-1)}(\lambda _i)/(n_i-1)!$. Prouvons le par r\'ecurrence
 sur le plus petit entier $m$ tel que
 $(A-\lambda _i)^{m}v=0$. Le cas $m=0$ est clair puisque $v=0$.
 Supposons le cas $m$ vrai, prouvons le cas $m+1$. On applique l'\'equation
-(\ref{eq:jordan4}) \`a $v$, il suffit alors de prouver que
+(\(\ref{eq:jordan4}\)) \`a $v$, il suffit alors de prouver que
 \[ w=(A-\lambda _i)\frac{B^{(n_i)}(\lambda_i)}{n_i!} v\]
 appartient \`a l'image de
 $B^{(n_i-1)}(\lambda _i)/(n_i-1)!$.
@@ -13979,7 +14106,7 @@ Pour calculer les cycles de Jordan, nous allons effectuer une
 r\'eduction par le pivot de Gau\ss\ simultan\'ement sur les colonnes
 des matrices $B^{(k)}(\lambda _i)/k!$ o\`u $k<n_i$. 
 La simultan\'eit\'e a pour but de conserver les
-relations (\ref{eq:jordan1}) \`a (\ref{eq:jordan3}) pour les matrices
+relations (\(\ref{eq:jordan1}\)) \`a (\(\ref{eq:jordan3}\)) pour les matrices
 r\'eduites. Pour visualiser l'algorithme, on se repr\'esente les
 matrices les unes au-dessus des autres, colonnes align\'ees.
 On commence par r\'eduire la matrice $B(\lambda _i)$ jusqu'\`a ce
@@ -14341,7 +14468,7 @@ on montre par r\'ecurrence que~:
 v_{j,l} = A^l v_{j,0} - \sum_{m=1}^{\mbox{\small inf}(l,j)} 
 \left( ^l _m\right) v_{j-m,l-m}
 \end{equation}
-On remplace dans (\ref{eq:jordanrat1}) d'o\`u~:
+On remplace dans (\(\ref{eq:jordanrat1}\)) d'o\`u~:
 \[ A^d v_{j,0} - \sum_{m=1}^{\mbox{\small inf}(d,j)} 
 \left( ^d _m\right)v_{j-m,l-m}
 + \sum_{l=0}^d 
@@ -14357,7 +14484,7 @@ q_l \sum_{m=1}^{\mbox{\small inf}(l,j)} \left( ^l _m\right) v_{j-m,l-m}
 {\bf Application \`a l'exemple~:}\\
 Ici $v_{0,0}=(4,24,12,32,8,-4)$ et $v_{0,1}=Av_{j,0}$ dont une pr\'eimage
 par $Q(A)$ est $w_{1,0}=(0,4,-4,8,4,-4)$ et $w_{1,1}=Aw_{1,0}$.
-On applique (\ref{eq:jordanrat}), comme $q_1=0$ et $q_2=1$
+On applique (\(\ref{eq:jordanrat}\)), comme $q_1=0$ et $q_2=1$
 on doit avoir~:
 \[ Q(A) v_{1,0} = \sum_{l=1}^2
 q_l \sum_{m=1}^{\mbox{\small inf}(l,1)} \left( ^l _m\right) v_{1-m,l-m} 
@@ -14435,7 +14562,7 @@ faisant des op\'erations de multiplication par bloc.
 \subsubsection{Factorisation $QR$}\index{QR}
 La factorisation $QR$ 
 consiste à écrire une matrice $A$ comme produit d'une matrice
-orthogonale (ou unitaire dans $\C$) et d'une matrice triangulaire
+orthogonale (ou unitaire dans $\mathbb{C}$) et d'une matrice triangulaire
 supérieure. Les matrices orthogonales ayant un conditionnement
 de 1 (en norme $L^2$) cette factorisation peut s'obtenir de mani\`ere 
 numériquement stable.
@@ -14750,10 +14877,10 @@ Xcas {\tt jacobi\_linsolve} et {\tt gauss\_seidel\_linsolve}.
 Soit $A$ est une matrice sym\'etrique d\'efinie positive (relativement
 \`a un produit scalaire not\'e $<|>$), on
 consid\`ere la fonctionnelle~:
-$$ J(v)=\frac12 <Av|v>-<b|v>$$
+$$ J(v)=\frac{1}{2} <Av|v>-<b|v>$$
 $J(v)$ tend vers $+\infty$ lorsque $\|v\|$ tend vers l'infini, 
 car si $\lambda_1>0$ est la plus petite valeur propre de $A$,
-on a $J(v)\geq \frac12 \lambda_1 \|v\|^2-\|b\|\|v\|$.
+on a $J(v)\geq \frac{1}{2} \lambda_1 \|v\|^2-\|b\|\|v\|$.
 Elle admet donc un minimum global, qui v\'erifie $J'(v)=\nabla J(v)=0$
 Or $d_vJ(w)=<Av-b|w>$, en effet
 $$<A(v+hw)|(v+hw)>-<Av|v>=h<Aw|v>+h<Av|w>+O(h^2)=2h<Av|w>+O(h^2)$$
@@ -14782,8 +14909,8 @@ soit $0<\rho<\frac1{1+\cos(\pi/(n+1))}$.
 La valeur optimale est obtenue lorsque les 2 valeurs extr\^emales ont
 m\^eme valeur absolue
 $$ 2\rho (1+\cos(\pi/(n+1))-1=1-2\rho (1-\cos(\pi/(n+1)) 
-\ \Rightarrow \
-\rho = \frac12
+\ \Rightarrow \ 
+\rho = \frac{1}{2}
 $$
 La vitesse de convergence est assez lente, car $|I-\rho A|$ a pour
 valeur propre maximale $\cos(\pi/(n+1))$, par exemple pour $n=20$,
@@ -15048,7 +15175,7 @@ Si la matrice $A$ n'est pas symétrique, il faut consid\'erer
 $B=A-x_n e_n f_n^t /e_n.f_n$ o\`u $f_n$ est vecteur propre
 de $A^t$ associ\'e \`a $x_n$. En effet $f_k.e_j=0$ si $i \neq j$
 car $Ae_k.f_j=x_ke_k.f_j=e_k.A^tf_j=x_je_kf_j$ et donc $f_k.e_k \neq 0$
-(sinon $e_k$ est dans l'orthogonal de $\R^n=$Vect$(f_1,...,f_n)$.
+(sinon $e_k$ est dans l'orthogonal de $\mathbb{R}^n=$Vect$(f_1,...,f_n)$.
 
 
 \subsubsection{D\'ecomposition de Schur}\index{Schur (factorisation)}
@@ -15327,8 +15454,8 @@ avec une majuscule (forme inerte) suivi de {\tt mod n}.
 \begin{enumerate}
 \item \'Ecrire un programme calculant l'inverse d'une matrice
 en utilisant sa d\'ecomposition $LU$. Tester avec une matrice
-\`a coefficients dans $\Z/p\Z$ puis dans un corps fini non premier.
-Que se passe-t-il sur $\Q$~?
+\`a coefficients dans $\mathbb{Z}/p\mathbb{Z}$ puis dans un corps fini non premier.
+Que se passe-t-il sur $\mathbb{Q}$~?
 \item En utilisant un logiciel de calcul formel,
 comparez le temps de calcul d'un d\'eterminant de matrice
 al\'eatoire de tailles 50, 100 et 200 \`a coefficients dans
@@ -15353,7 +15480,7 @@ et vérifiez le résultat de la reconstruction modulaire du déterminant.
 \item Créez une matrice 100x100 aléatoire à coefficients entiers
 et calculez son déterminant
 modulo quelques nombres premiers. Dans quels cas peut-on
-conclure que la matrice est inversible dans $\R$? dans $\Z$?
+conclure que la matrice est inversible dans $\mathbb{R}$? dans $\mathbb{Z}$?
 \item \'Ecrire un programme calculant par interpolation de Lagrange 
 (\verb|interp|)
 le polyn\^ome caract\'eristique d'une matrice (en donnant \`a $\lambda$
@@ -15473,7 +15600,7 @@ Reste \`a estimer l'\'ecart entre une fonction et son polynome
 interpolateur, on a le~:
 \begin{thm} \index{lagrange}
 Soit $f$ une fonction $n+1$ fois d\'erivable sur un intervalle $I=[a,b]$
-de $\R$, $x_0,...,x_n$ des r\'eels distincts de $I$. 
+de $\mathbb{R}$, $x_0,...,x_n$ des r\'eels distincts de $I$. 
 Soit $P$ le polynome de Lagrange donn\'e par les $x_j$ et $y_j=f(x_j)$.
 Pour tout r\'eel $x \in I$,
 il existe un r\'eel $\xi_x \in [a,b]$ (qui d\'epend de $x$) tel
@@ -15689,7 +15816,7 @@ $[-1,1]$, mais son degr\'e est au plus $n-1$ donc $T_n=U$ absurde.
 
 On a donc int\'er\^et \`a prendre les abscisses des points
 d'interpolation en les racines $t_n$ de $T_n$
-$$ \frac{a+b}{2} + \frac{a-b}{2} t_n, \quad t_n=\cos((k+\frac12)\frac\pi n), 
+$$ \frac{a+b}{2} + \frac{a-b}{2} t_n, \quad t_n=\cos((k+\frac{1}{2})\frac\pi n), 
 \quad k=0..n-1$$
 On pourra observer que le ph\'enom\`ene de 
 Runge\index{Runge, ph\'enom\`ene de} qui apparait par
@@ -15843,8 +15970,8 @@ les polyn\^omes obtenus ont un nom~:
 \begin{itemize}
 \item Legendre\index{Legendre} pour $w(x)=1$ sur $[-1,1]$,
   $a(x)=1-x^2$
-\item Hermite pour $w(x)=e^{-x^2}$ sur $\R$, $a(x)=1$
-\item Laguerre pour $w(x)=x^a e^{-x}$ sur $\R^+$, 
+\item Hermite pour $w(x)=e^{-x^2}$ sur $\mathbb{R}$, $a(x)=1$
+\item Laguerre pour $w(x)=x^a e^{-x}$ sur $\mathbb{R}^+$, 
 \item Tchebyshev de premi\`ere esp\`ece pour $w(x)=1/\sqrt{1-x^2}$ sur
   $[-1,1]$, $a(x)=1-x^2$
 \item Tchebyshev de deuxi\`eme esp\`ece pour $w(x)=\sqrt{1-x^2}$ sur
@@ -15897,7 +16024,7 @@ En effet la normalisation en 1 donne $1=a_n-c_n$ donc $c_n=a_n-1$,
 les termes de degr\'e $n+1$ et $n-1$ de $P_{n+1}=a_nxP_n-c_nP_{n-1}$ donnent
 $$ p_{n+1,n+1}=a_np_{n,n}, \quad p_{n+1,n-1}=a_n
 p_{n,n-2}-(a_n-1)p_{n-1,n-1}$$
-On applique alors (\ref{eq:legendre_rec}) et on d\'eduit de la
+On applique alors (\(\ref{eq:legendre_rec}\)) et on d\'eduit de la
 deuxi\`eme \'equation ci-dessus~:
 $$ -\frac{n(n+1)}{2(2n+1)} p_{n+1,n+1}= -\frac{n(n-1)}{2(2n+1)} a_n
 p_{n,n}-(a_n-1)p_{n-1,n-1}$$
@@ -15991,7 +16118,7 @@ donne parfois de tr\`es bons r\'esultats comme pour la fonction
 exponentielle pr\`es de 0 par exemple).
 
 
-Soit $f$ une fonction indéfiniment dérivable sur un intervalle $I$ de $\R$
+Soit $f$ une fonction indéfiniment dérivable sur un intervalle $I$ de $\mathbb{R}$
 et $x_0 \in I$. On peut alors effectuer le développement de Taylor de $f$
 en $x_0$ à l'ordre $n$\index{Taylor}
 \[ T_n(f)(x)= f(x_0) + (x-x_0) f'(x_0) + ... + 
@@ -16057,7 +16184,7 @@ Pour les grands réels, on peut utiliser $e^{2x}=(e^x)^2$
 On peut aussi, si on connait une valeur approchée
 de $\ln(2)$, effectuer la division euclidienne de $x$ par $\ln(2)$ 
 avec reste symétrique~:
-\[ x = a \ln(2) + r, \quad a \in \Z, |r| \leq \frac{ln(2)}{2} \]
+\[ x = a \ln(2) + r, \quad a \in \mathbb{Z}, |r| \leq \frac{ln(2)}{2} \]
 puis si $r$ est positif, on somme la série de $T(f)(r)$, si $r$
 est négatif, on calcule $T(f)(-r)$ et on inverse, on applique alors~:
 \[ e^x = 2^a e^r \]
@@ -16184,7 +16311,7 @@ La fonction tangente également car le dénominateur cosinus est non nul en 0,
 mais son rayon de convergence n'est pas l'infini et le calcul des $a_n$
 est assez complexe.
 La fonction $(1+x)^\alpha$ est développable en séries entières
-pour tout $\alpha \in \R$ avec un rayon de convergence 1 (ou l'infini
+pour tout $\alpha \in \mathbb{R}$ avec un rayon de convergence 1 (ou l'infini
 pour $\alpha $ entier positif). 
 \[ (1+x)^\alpha = 1 + \alpha x + \frac{\alpha (\alpha-1)}{2!} x^2 +
 ... + \frac{\alpha (\alpha-1) ... (\alpha -n +1)}{n!} x^n + ...\]
@@ -16278,7 +16405,7 @@ $X$ par rapport \`a $x$ lorsque $x$ est petit.
 lorsque $x$ est proche de 1, $-x/(1+x)$ est proche de $-x/2$, on
 a presque divis\'e par 2. Attention toutefois, on se retrouve alors
 avec une s\'erie non altern\'ee, mais on peut utiliser 
-(\ref{eq:maj_serie_entiere}) pour majorer le reste dans ce cas.
+(\(\ref{eq:maj_serie_entiere}\)) pour majorer le reste dans ce cas.
 \item trouver une valeur approch\'ee $y_0$ de $\ln(1+x)$ \`a une pr\'ecision
 faible, par exemple $1e-4$, et utiliser la m\'ethode de Newton pour
 am\'eliorer la pr\'ecision. Soit en effet $y=\ln(1+x)$, alors
@@ -16292,7 +16419,7 @@ de $e^y$ est rapide et pr\'ecis et de plus la m\'ethode de Newton
 \end{itemize}
 
 Nous sommes donc en mesure de calculer pr\'ecis\'ement le logarithme
-$\ln(1+x)$ pour disons $|x|<1/2$. Pour calculer $ln$ sur $\R^+$,
+$\ln(1+x)$ pour disons $|x|<1/2$. Pour calculer $ln$ sur $\mathbb{R}^+$,
 on se ram\`ene \`a $[1,2]$ en utilisant l'\'ecriture
 mantisse-exposant, puis si $x\in[3/2,2]$ on peut en prendre la racine
 carr\'ee pour se retrouver dans l'intervalle souhait\'e.
@@ -16312,7 +16439,7 @@ $\ln(2)$ pr\'ecis\'ement, on peut utiliser
 et le d\'eveloppement en s\'erie calcul\'e en mode exact avec des
 fractions \`a un ordre suffisant, on majore le reste en utilisant 
 que le terme g\'en\'eral de la s\'erie $\ln(1+x)$ est born\'e par
-$M=1$ en $x=1$, donc d'apr\`es (\ref{eq:maj_serie_entiere})~:
+$M=1$ en $x=1$, donc d'apr\`es (\(\ref{eq:maj_serie_entiere}\))~:
 \[ |R_n| \leq \frac{1}{2^n}\]
 (on peut m\^eme obtenir $1/(n2^n)$ car on a besoin de $M$ uniquement
 pour les termes d'ordre plus grand que $n$, on peut donc prendre $M=1/n$).
@@ -16612,7 +16739,7 @@ pour pouvoir calculer $f(x)$ par son développement asymptotique à la précisio
 puis de calculer l'intégrale du membre de droite par le développement en séries en $x=0$
 (en utilisant une précision intermédiaire plus grande puisque ce développement en séries
 va sembler diverger au début avant de converger pour $n$ suffisamment grand).
-Par exemple, on pose $x=13$, on calcule $f(13)$ par (\ref{eq:Eiinf})
+Par exemple, on pose $x=13$, on calcule $f(13)$ par (\(\ref{eq:Eiinf}\))
 avec $n=13$ (qui correspond au moment o\`u le terme g\'en\'eral
 de la s\'erie est minimum puisque le rapport de deux termes successifs
 est en $n/x$)
@@ -16620,7 +16747,7 @@ et une erreur absolue inf\'erieure \`a $e^{-13} 13!/13^{14}=4e-12$
 \begin{center}
 $f(13) \approx$ \verb|exp(-13)*sum((-1)^n*n!/13.^(n+1),n=0..13)|
 \end{center}
-puis on remplace dans (\ref{eq:gamma}), avec 
+puis on remplace dans (\(\ref{eq:gamma}\)), avec 
 \[ \int_0^{x} \frac{1-e^{-t}}{t} \ dt = 
 \sum_{n=0}^{\infty} (-1)^n \frac{x^{n+1}}{(n+1) (n+1)!}\]
 dont on obtient une valeur approch\'ee, 
@@ -16654,7 +16781,7 @@ soit \verb|0.577215664897| avec une erreur inf\'erieure \`a \verb|1.2e-11|.
 Bien entendu, cette m\'ethode est surtout int\'eressante si on veut calculer
 un grand nombre de d\'ecimales de la constante d'Euler, sinon
 on peut par exemple appliquer la m\'ethode d'acc\'el\'eration de Richardson \`a
-la suite convergente (\ref{eq:def_gamma}) qui d\'efinit $\gamma$
+la suite convergente (\(\ref{eq:def_gamma}\)) qui d\'efinit $\gamma$
 ou d'autres m\'ethodes d'acc\'el\'eration (en transformant par
 exemple la s\'erie en s\'erie altern\'ee). On calcule alors
 de deux mani\`eres diff\'erentes $f(x)$ pour $x$ plus grand (d\'etermin\'e
@@ -16670,7 +16797,7 @@ donn\'e plus bas)
  \int_0^{+\infty} \frac{\sin(t)}{t} \ dt = \frac{\pi}{2}
 \end{equation}
 
-{\bf Calcul de $C$ (et preuve de (\ref{eq:Siinf}))}:\\
+{\bf Calcul de $C$ (et preuve de (\(\ref{eq:Siinf}\)))}:\\
 Pour cela on effectue une intégration par parties, cette fois en intégrant $1/t$
 et en dérivant l'exponentielle (moins 1 dans la première intégrale).
 \begin{eqnarray*}
@@ -16728,7 +16855,7 @@ En faisant tendre $\alpha$ vers $-i$, $-\ln(\alpha)$
 tend vers $\ln(i)=i\frac{\pi}{2}$ et on obtient
 \[ \int_0^{1}(e^{it}-1)\frac{1}{t} \ dt + \int_1^{+\infty} e^{i t} \frac{1}{t} \ dt 
 = -\gamma + i \frac{\pi}{2} \]
-dont la partie imaginaire nous donne (\ref{eq:Siinf}), et la
+dont la partie imaginaire nous donne (\(\ref{eq:Siinf}\)), et la
 partie r\'eelle une autre identit\'e sur $\gamma$ faisant intervenir
 la fonction cosinus int\'egral.
 
@@ -16775,7 +16902,7 @@ grande, les fonctions usuelles sont aussi applicables.
 
 Les op\'erations sur les s\'eries sont impl\'ement\'ees sans optimisation
 particuli\`ere, leur utilisation principale dans Xcas \'etant le
-calcul de d\'eveloppement de Taylor ou asymptotique sur $\Q$.
+calcul de d\'eveloppement de Taylor ou asymptotique sur $\mathbb{Q}$.
 
 \section{La transform\'ee de Fourier discr\`ete.}
 \label{sec:dft}
@@ -16835,7 +16962,7 @@ d'où le résultat.
 on peut interpr\'eter la DFT
 en termes du produit scalaire hermitien
 $$ <x|y>=\sum_{j=0}^{N-1} \overline{x}_j y_j$$
-sur l'espace $\C^N$, on a une base orthogonale donn\'ee par 
+sur l'espace $\mathbb{C}^N$, on a une base orthogonale donn\'ee par 
 les $\{ W_k=(\omega^{jk})_{j=0..N-1}, k=0..N-1\}$, la DFT d'une suite $x$ est le calcul
 des produits scalaires $<W_k|x>$, et la r\'ecriproque est l'\'ecriture
 de $x$ dans cette base orthogonale.
@@ -16986,7 +17113,7 @@ DFT inverse.
 Exemple~: on cherche des nombres premiers de la forme $p=k2^n+1$
 par exemple $p=7\times 2^{20}+1$ est premier, 
 \giacinput{isprime(p:=7*2^20+1)}
-on cherche un g\'en\'erateur de $\Z/p\Z$
+on cherche un g\'en\'erateur de $\mathbb{Z}/p\mathbb{Z}$
 \begin{giacprog}
 for(g:=2;g<p;g++){ 
   if (powmod(g,(p-1)/2,p)!=1 and powmod(g,(p-1)/7,p)!=1) break;
@@ -17001,7 +17128,7 @@ inf\'erieure \`a $2^k$, par exemple pour $a$ et $b$ de
 degr\'es 5 et 7, on prendra $k=4$
 \giacinputbigmath{a:=randpoly(5,[]); b:=randpoly(7,[]);w:=powmod(r,2^16,p);}
 on allonge $a$ et $b$ avec des 0 pour les amener \`a la taille $16=2^k$
-\giacinputbigmath{ar:=[op(a),0$(16-size(a))];br:=[op(b),0$(16-size(b))];}
+\giacinputbigmath{ar:=[op(a),op(seq(0,(16-size(a))))];br:=[op(b),op(seq(0,(16-size(b))))]}
 on calcule les transform\'ees de Fourier rapide de $a$ et $b$
 \giacinputbigmath{A:=fft(ar,w,p); B:=fft(br,w,p);}
 puis on fait le produit terme \`a terme et on applique la transform\'ee
@@ -17033,7 +17160,7 @@ modulo a prime'',  PASCO 2015,
 \begin{itemize}
 \item $n_1 = 2013265921 =15 \times 2^{27}+1$ 
 ($r=1227303670$ est racine d'ordre $2^{27}$, il suffit de prendre 
-un g\'en\'erateur de $(\Z/n_1\Z)^*$ \`a la puissance 15, ce qui
+un g\'en\'erateur de $(\mathbb{Z}/n_1\mathbb{Z})^*$ \`a la puissance 15, ce qui
 se fait en testant 2, 3,...).
 \item
   $n_2 = 1811939329 =27 \times 2^{26}$ ($r=814458146$ est racine d'ordre $2^{26}$) 
@@ -17192,7 +17319,7 @@ L'intervalle entre 2 culminations n'est pas constant au cours de
 l'ann\'ee, car $\varphi_0$ n'est pas une fonction lin\'eaire de
 $\theta$ (qui lui m\^eme n'est pas lin\'eaire en fonction du temps
 sauf en premi\`ere approximation avec une orbite terrestre
-circulaire). On peut le calculer en d\'erivant (\ref{eq:culmination}).
+circulaire). On peut le calculer en d\'erivant (\(\ref{eq:culmination}\)).
 Par exemple dans l'approximation d'une excentricit\'e nulle,
 au solstice d'hiver ($\theta=\theta_0$), on obtient
 \[ \varphi_0= 0, \quad (1+0^2) d\varphi_0 = (1+0^2)\frac{d\theta} {\cos(i)} \]
@@ -17416,7 +17543,7 @@ En coordonn\'ees polaires, on note $\rho$ la distance de $F_1$ \`a
 $M$, et $\theta$ l'angle entre l'axe $Ox$ et $F_1M$. L'abscisse de $M$
 est donc~:
 \[ x= ea + \rho \cos(\theta)\]
-que l'on combine avec (\ref{eq:MF1}) pour obtenir~:
+que l'on combine avec (\(\ref{eq:MF1}\)) pour obtenir~:
 \[ \rho = a-ex =a(1-e^2) - e \rho \cos(\theta) \]
 donc~:
 \[ \rho = \frac{a(1-e^2)}{1+e\cos(\theta)} \]
@@ -17496,14 +17623,14 @@ et réciproquement~:
 {\bf Durée des saisons~}:\\
 Il suffit de connaitre l'angle $\theta$ lors du solstice d'hiver et
 de lui ajouter $k\pi/2$ pour $k=1,2,3$ pour connaitre l'angle $\theta$
-au printemps, en été et à l'automne, on en déduit $V$ par (\ref{eq:Vt}) 
-puis le temps écoulé depuis le p\'erihélie avec (\ref{eq:tempsV}).
+au printemps, en été et à l'automne, on en déduit $V$ par (\(\ref{eq:Vt}\)) 
+puis le temps écoulé depuis le p\'erihélie avec (\(\ref{eq:tempsV}\)).
 
 {\bf Calcul de $\theta$ en fonction du temps écoulé depuis le passage
 au p\'erihélie}~:\\
 Il faut calculer $V$ par des méthodes numériques (point fixe ou 
-méthode de Newton) en appliquant (\ref{eq:tempsV}), on en déduit
-$\theta$ avec (\ref{eq:tV}).
+méthode de Newton) en appliquant (\(\ref{eq:tempsV}\)), on en déduit
+$\theta$ avec (\(\ref{eq:tV}\)).
 En résumé, on a le~:
 \begin{thm}
 Soit $\theta$ l'angle entre le demi grand axe de l'ellipse et 
@@ -17589,7 +17716,7 @@ la convergence est quadratique.
 
 On suppose dans la suite que $a\geq b$ sans changer la généralité puisque échanger $a$ et $b$
 ne change pas la valeur de $u_n$ et $v_n$ pour $n>0$. On a alors $u_n \geq v_n$ 
-(d'après (\ref{eq:agm1}) pour $n>0$) et $u_{n+1} \leq u_n$ car
+(d'après (\(\ref{eq:agm1}\)) pour $n>0$) et $u_{n+1} \leq u_n$ car
 \[ u_{n+1}-u_n=\frac{1}{2}(v_n-u_{n}) \leq 0\]
 et $v_{n+1}=\sqrt{u_nv_n} \geq \sqrt{v_nv_n}=v_n$. Donc $(u_n)$ est décroissante 
 minorée (par $v_0$), $(v_n)$ est croissante majorée (par $u_0$), ces 2 suites sont 
@@ -17613,7 +17740,7 @@ au log du log du rapport $a/b$.
 Ensuite on est ramené à étudier la convergence de la suite arithmético-géométrique
 de premiers termes $a=u_{n_0}$ et $b=v_{n_0}$ et même en tenant compte
 de $M(a,b)=aM(1,b/a)$ à $a=1$ et $b=v_n/u_n$ donc $0\leq a-b \leq 1-e^{-0.1}$.
-Alors l'équation (\ref{eq:agm1}) entraine 
+Alors l'équation (\(\ref{eq:agm1}\)) entraine 
 \[ u_{n+1}-v_{n+1} \leq \frac{1}{8}(u_n-v_n)^2 \]
 puis (par récurrence)
 \[ 0 \leq u_n-v_n \leq \frac{1}{8^{2^n-1}}(a-b)^{2^n} \]
@@ -17627,7 +17754,7 @@ il faudra alors $O(\ln(n))$ itérations pour se ramener à $M(1,b)$ avec $b\in [
 puis $O(\ln(n))$ itérations pour avoir la limite avec $n$ chiffres significatifs.
 
 {\bf Le cas complexe}\\
-On suppose maintenant que $a, b \in \C$ avec $\Re(a)>0, \Re(b)>0$. On va voir que
+On suppose maintenant que $a, b \in \mathbb{C}$ avec $\Re(a)>0, \Re(b)>0$. On va voir que
 la suite arithmético-géométrique converge encore. \\
 {\bf \'Etude de l'argument}\\
 On voit aisément (par récurrence)
@@ -17686,7 +17813,7 @@ qui va nous donner la minoration de $\rho_{n+1}$
 en prenant les log et en minorant $\ln(1-x)$ par $-2x$
 \[ \ln \rho_{n+1} \geq \frac{1}{2} (-|\ln \rho_n|+\ln(1 -\frac{1} {4 \times 2^{2n+2}} ))
 \geq -\frac{1}{2} (|\ln \rho_n|+\frac{1} {2^{2n+3}} )  \]
-Finalement avec (\ref{eq:lnrhon})
+Finalement avec (\(\ref{eq:lnrhon}\))
 \[ |\ln \rho_{n+1}|
 \leq \frac{1}{2} (|\ln \rho_n|+\frac{1}{2^{2n+3}} ) \]
 On en déduit
@@ -17702,7 +17829,7 @@ de $a$ et $b$ n'est pas trivial
 au premier abord. Il est reli\'e aux int\'egrales elliptiques, plus
 pr\'ecis\'ement on peut construire une int\'egrale d\'ependant
 de deux param\`etres $a$ et $b$ et qui est invariante par
-la transformation $u_n,v_n \rightarrow u_{n+1},v_{n+1}$ (\ref{eq:agm})
+la transformation $u_n,v_n \rightarrow u_{n+1},v_{n+1}$ (\(\ref{eq:agm}\))
 \[ I(a,b)=\int_{-\infty}^{+\infty}  \frac{dt} {\sqrt{(a^2+t^2)(b^2+t^2)}}
 \]
 On a en effet
@@ -17718,7 +17845,7 @@ I(\frac{a+b}{2},\sqrt{ab})
 &=& 2 \int_{0}^{+\infty} \frac{dt}{\sqrt{(a^2+t^2)(b^2+t^2)}}
 = I(a,b)
 \end{eqnarray*}
-On note au passage que $I$ est définie si $a,b \in \C$ vérifient $\Re(a)>0, \Re(b)>0$,
+On note au passage que $I$ est définie si $a,b \in \mathbb{C}$ vérifient $\Re(a)>0, \Re(b)>0$,
 on peut montrer que la relation ci-dessus s'étend (par holomorphie).
 
 Lorsque $a=b=l$ (par exemple lorsqu'on est \`a la limite), 
@@ -17839,7 +17966,7 @@ Soit
 {\sqrt{A} \sqrt{B} (\sqrt{A}+\sqrt{B})y\sin(y)}
 \end{equation}
 On décompose l'intégrale en 2 parties $[0,k]$ et $[k,\pi/2]$.
-Sur $[0,k]$ on utilise (\ref{eq:maj0}), on majore chaque terme séparément
+Sur $[0,k]$ on utilise (\(\ref{eq:maj0}\)), on majore chaque terme séparément
 et on minore $A$ et $B$ par
 \[ A=k^2+(1-k^2)\sin(y)^2 \geq k^2, \quad B=k^2+(1-k^2)y^2 \geq k^2\]
 Donc
@@ -17854,7 +17981,7 @@ Donc
 &\leq & \frac{k^2}{30}-  \ln (1- \frac{1}{2!}\left(\frac{k}{2}\right)^2) \\
 &\leq &  \frac{k^2}{30} +\frac{k^2}{4}
 \end{eqnarray*}
-Sur $[k,\pi/2]$, on utilise (\ref{eq:maj2})
+Sur $[k,\pi/2]$, on utilise (\(\ref{eq:maj2}\))
 et on minore $A$ et $B$ par
 \[ A=\sin(y)^2+k^2 \cos(y)^2 \geq \sin(y)^2, \quad B=y^2+(1-y^2)k^2 \geq y^2\]
 on obtient
@@ -17918,7 +18045,7 @@ Finalement
 \leq k^2 \left( -\frac{1}{6} \ln(k) + \frac{\pi^3}{96} + \frac{1}{6} + \frac{1}{30}+ 
 \frac{1}{4} \right)
 \]
-où $J$ est donné en (\ref{eq:J}).
+où $J$ est donné en (\(\ref{eq:J}\)).
 
 {\bf Majoration de $J-ln(\pi/k)$}\\
 On a
@@ -17955,7 +18082,7 @@ que l'on peut réécrire
 |\frac{\pi}{2M(1,k)}-\ln\left(\frac{4}{k}\right) |
 \leq  k^2(3.8-0.8\ln(k))
 \end{equation}
-La formule (\ref{eq:ln_agm}) 
+La formule (\(\ref{eq:ln_agm}\)) 
 permet de calculer le logarithme d'un r\'eel positif
 avec (presque) $n$ bits 
 lorsque $k \leq 2^{-n/2}$ (ce \`a quoi on peut toujours se ramener
@@ -18380,7 +18507,7 @@ les op\'erations polynomiales rapides font appel \`a des
 biblioth\`eques C/C++ et d\'ependent donc des performances
 de ces biblioth\`eques~: par exemple le calcul de base
 de Groebner sur les entiers utilise Singular, dont la version
-actuelle est tr\`es inefficace sur $\Z$
+actuelle est tr\`es inefficace sur $\mathbb{Z}$
 \end{itemize} 
 De ce fait, le portage est difficile~: sans m\^eme parler des OS de tablettes
 et smartphones, ce n'est que fin 2016 qu'apparait une version 
@@ -18790,4 +18917,16 @@ en mobilit\'e avec un peu plus de donn\'ees \`a saisir.
 
 \end{document}
 
+\ifhevea
+\@print{<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/SVG","output/CommonHTML"],
+    tex2jax: {inlineMath: [["\\(","\\)"]]},
+    TeX: { equationNumbers: { autoNumber: "AMS" } },
+  });
+</script>
+<script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js"></script>
+}
+\fi
 
