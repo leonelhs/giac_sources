@@ -6,28 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les points et les nombres complexes</TITLE>
+<TITLE>Effacer les axes : switch_axes</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr876.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr878.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1034">10.8.1</A>  Les points et les nombres complexes</H3><P><A NAME="sec:pointa2"></A>
-L’affixe d’un point en géométrie plane est un nombre complexe.<BR>
-La commande <TT>point</TT> a comme argument un nombre complexe <I>c</I> (ou un couple 
-de 2 nombres <I>a</I>,<I>b</I>) et renvoie
-le point d’affixe <I>c</I> (ou d’affixe <I>a</I>+<I>ib</I>) tracé dans un écran graphique.<BR>
-Certaines fonctions peuvent admettre comme argument soit un point, soit un 
-nombre complexe, mais quelquefois le résultat n’est pas le même.<BR>
-<B>Exemples</B><BR>
-<TT>re(1+2*i)</TT> renvoie <TT>1</TT><BR>
-Si <TT>A:=point(1+2*i)</TT>, <TT>re(A)</TT> renvoie un point d’affixe <TT>1</TT>, 
-et <TT>im(A)</TT> renvoie un point d’affixe <TT>2*i</TT><BR>
-<TT>cercle(1,1+i)</TT> renvoie le cercle de centre le point d’affixe 1 et de
-rayon égal à √<SPAN style="text-decoration:overline">2</SPAN>=<TT>abs(1+i)</TT>,<BR>
-<TT>cercle(1,point(1+i))</TT> renvoie le cercle de diamètre le point d’affixe 
-1 et le point d’affixe (1+i)</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1029">10.2.2</A>  Effacer les axes : <TT>switch_axes</TT></H3><P><A NAME="@default1587"></A>
+<TT>switch_axes</TT> met ou enlève les axes de l’écran 
+géométrique.<BR>
+Vous pouvez aussi effacer les axes (resp les faire réapparaitre) en 
+cochant (resp décochant) <TT>Montrer les axes</TT> avec le bouton <TT>cfg</TT>
+de l’écran de géométrie.<BR>
+<TT>switch_axes</TT> a comme paramètres <TT>1</TT> pour mettre 
+les axes, <TT>0</TT> pour les enlever, ou aucun paramètre, dans ce cas, 
+<TT>Xcas</TT> met les axes, si ils n’y sont pas, et les enlève si ils y sont.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>switch_axes(0)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>L’effacement des axes de l’écran graphique</TT></DIV><P>
+On tape ensuite :
+</P><DIV CLASS="center"><TT>switch_axes()</TT></DIV><P>
+Ou
+</P><DIV CLASS="center"><TT>switch_axes(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le tracé des axes de l’écran graphique</TT></DIV><HR>
 <A HREF="cascmd_fr876.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr878.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

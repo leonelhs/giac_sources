@@ -6,37 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’instruction conditionnelle : switch</TITLE>
+<TITLE>Fonction testant le type de son argument: getType</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr829.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr831.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc975">9.4.20</A>  L’instruction conditionnelle : <TT>switch</TT></H3><P><A NAME="@default1498"></A><A NAME="@default1499"></A><A NAME="@default1500"></A>
-<TT>switch</TT> a comme paramètre une expression.<BR>
-Selon la valeur de cette expression, marquée par <TT>case</TT> (ou par 
-<TT>default</TT>), <TT>switch</TT> 
-permet de faire le bloc d’instructions correspondant à la valeur d’une 
-expression qui doit être une valeur entière.<BR>
+<H3 CLASS="subsection"><A NAME="htoc976">9.4.6</A>  Fonction testant le type de son argument: <TT>getType</TT></H3><P><A NAME="@default1492"></A><A NAME="@default1493"></A><A NAME="@default1494"></A><A NAME="@default1495"></A><A NAME="@default1496"></A><A NAME="@default1497"></A><A NAME="@default1498"></A>
+<TT>getType</TT> est une fonction qui a un argument et qui renvoie le
+type de cet argument par exemple :<BR>
+ <TT>STR,EXPR,VAR,NONE,PIC,LIST,MAT,FUNC,NUM...</TT>.<BR>
+<TT>getType</TT> ne renvoie pas la même chose que <TT>type</TT>, c’est pour des 
+raisons de compatibilité.<BR>
 On tape :
-</P><PRE CLASS="verbatim">opere(a,b,c):={
-switch(c) {
-  case 1 : {a:=a+b;break;} 
-  case 2 : {a:=a-b;break;} 
-  case 3 : {a:=a*b;break;} 
-  default : {a:=a^b;}
-}
-return a;
-}
-</PRE><P>puis :
-</P><DIV CLASS="center"><TT>opere(2,3,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>getType(3.14)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>5</TT></DIV><P>
+</P><DIV CLASS="center"><TT>NUM</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>opere(2,3,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>getType(x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>VAR</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>getType(x+2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>EXPR</TT></DIV><HR>
 <A HREF="cascmd_fr829.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr831.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

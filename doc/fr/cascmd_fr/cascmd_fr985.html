@@ -6,26 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le conjugué harmonique : harmonic_conjugate conj_harmonique</TITLE>
+<TITLE>Savoir si on a un triangle isocéle : is_isosceles est_isocele</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr984.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr986.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1153">10.19.4</A>  Le conjugué harmonique : <TT>harmonic_conjugate conj_harmonique</TT></H3><P><A NAME="@default1912"></A><A NAME="@default1913"></A>
-<TT>conj_harmonique</TT> a comme arguments 3 points alignés <I>A</I>,<I>B</I>,<I>C</I>
-(resp 3 droites concourantes ou parallèles).<BR>
-<TT>conj_harmonique</TT> renvoie et dessine le conjugué harmonique de <I>C</I> par rapport
-à <I>A</I> et <I>B</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1153">10.18.6</A>  Savoir si on a un triangle isocéle : <TT>is_isosceles est_isocele</TT></H3><P><A NAME="@default1918"></A><A NAME="@default1919"></A><A NAME="sec:estisocele2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1063.html#sec:estisocele3">11.13.10</A> pour la géométrie 3-d.<BR>
+<TT>est_isocele</TT> est une fonction booléenne ayant comme 
+argument trois points ou un objet géométrique.<BR>
+<TT>est_isocele</TT> vaut 1 (resp 2, 3) si les trois points forment un 
+triangle isocéle ou si l’objet géométrique est un triangle isocéle dont
+l’angle portant les deux cotés égaux est désigné par le premier (resp 
+second, troisième) argument, ou vaut 4 si les trois points forment un 
+triangle équilatéral, ou si l’objet géométrique est un triangle 
+équilatéral, et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>conj_harmonique(0,2,3/2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_isocele(1,1+i,i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>pnt(3,0)et dessine ce point</TT></DIV><P>
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>conj_harmonique(droite(0,1+i),droite(0,3+i),droite(0,i))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>T:=triangle_isocele(0,1,pi/4);est_isocele(T)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>pnt([[0,3+2*i],0]) et dessine cette droite</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>T:=triangle_isocele(0,1,pi/4,C);est_isocele(T[0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+En effet <TT>T[0]</TT> désigne un triangle car <TT>T</TT> est une liste composée 
+du triangle et de son sommet <TT>C</TT>.<BR>
+On tape <TT>affixe(C)</TT> et on obtient <TT>(sqrt(2))/2+((i)*sqrt(2))/2</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>est_isocele(1+i,-1+i,-i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
 <A HREF="cascmd_fr984.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr986.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

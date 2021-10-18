@@ -1301,7 +1301,7 @@ namespace giac {
   define_unary_function_ptr5( at_program ,alias_at_program,&__program,_QUOTE_ARGUMENTS,0);
 
   static string printasbloc(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
-    if ( (feuille.type!=_VECT) )
+    if ( feuille.type!=_VECT || feuille._VECTptr->empty() )
       return "{"+feuille.print(contextptr)+";}";
     const_iterateur it=feuille._VECTptr->begin(),itend=feuille._VECTptr->end();
     string res("{");
@@ -1601,11 +1601,19 @@ namespace giac {
     test=normal(test,contextptr);
     test=test.eval(eval_level(contextptr),contextptr);
     test=test.evalf_double(1,contextptr);
-    if ( (test.type!=_DOUBLE_) && (test.type!=_CPLX) )
-      return symbolic(at_evalb,args);
-    if (is_zero(test))
-      return zero;
-    return plus_one;
+    if ( (test.type!=_DOUBLE_) && (test.type!=_CPLX) ){
+      test=args.eval(eval_level(contextptr),contextptr);
+      test=equaltosame(test);
+      test=normal(test,contextptr);
+      test=test.eval(eval_level(contextptr),contextptr);
+      test=test.evalf_double(1,contextptr);
+      if ( (test.type!=_DOUBLE_) && (test.type!=_CPLX) ){
+	return symbolic(at_evalb,args);
+      }
+    }
+    gen g=is_zero(test)?zero:plus_one;
+    g.subtype=_INT_BOOLEAN;
+    return g;
   }
   static const char _evalb_s []="evalb";
   static define_unary_function_eval_quoted (__evalb,&_evalb,_evalb_s);

@@ -6,35 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Décomposition en éléments simples : partfrac =>+</TITLE>
+<TITLE>Numérateur et dénominateur : f2nd fxnd</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr424.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr426.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc515">6.31.9</A>  Décomposition en éléments simples : <TT>partfrac =&gt;+</TT></H3><P><A NAME="@default771"></A><A NAME="@default772"></A><A NAME="sec:convertparf"></A><A NAME="@default773"></A><A NAME="@default774"></A>
-<TT>=&gt;+</TT> est la version postfixée de <TT>partfrac</TT>
-<TT>partfrac</TT> a comme argument une fraction rationnelle.<BR>
-<TT>partfrac</TT> renvoie sa décomposition en éléments simples.<BR>
-<B>Exemple</B> :<BR>
-Décomposer en éléments simples la fraction rationnelle :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>5</SUP>−2<I>x</I><SUP>3</SUP>+1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>4</SUP>−2<I>x</I><SUP>3</SUP>+2<I>x</I><SUP>2</SUP>−2<I>x</I>+1</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-On utilise la commande <TT>partfrac</TT> ou <TT>=&gt;+</TT>.<BR>
-On peut aussi utiliser <TT>convert</TT> avec l’option <TT>parfrac</TT> ou
-<TT>partfrac</TT> ou <TT>fullparfrac</TT> (voir aussi <A HREF="cascmd_fr340.html#sec:convert">6.24.26</A>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc516">6.32.5</A>  Numérateur et dénominateur : <TT>f2nd fxnd</TT></H3><P><A NAME="@default779"></A><A NAME="@default780"></A><A NAME="sec:fxnd"></A>
+<TT>f2nd</TT> (ou <TT>fxnd</TT>) a comme argument une fraction rationnelle 
+et renvoie la liste formée par le numérateur et le dénominateur de cette 
+fraction simplifiée (voir aussi <A HREF="cascmd_fr201.html#sec:ifxnd">6.9.5</A>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>5-2*x</TT><CODE><TT>^</TT></CODE><TT>3+1)/(x</TT><CODE><TT>^</TT></CODE><TT>4-2*x</TT><CODE><TT>^</TT></CODE><TT>3+2*x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1)=&gt;+</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>partfrac((x</TT><CODE><TT>^</TT></CODE><TT>5-2*x</TT><CODE><TT>^</TT></CODE><TT>3+1)/(x</TT><CODE><TT>^</TT></CODE><TT>4-2*x</TT><CODE><TT>^</TT></CODE><TT>3+2*x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1))</TT></DIV><P>
-On obtient en mode réel:
-</P><DIV CLASS="center"><TT>x+2-1/(2*(x-1))+(x-3)/(2*(x</TT><CODE><TT>^</TT></CODE><TT>2+1)) </TT></DIV><P>
-On obtient en mode complexe :
-</P><DIV CLASS="center"><TT>x+2+1/((x-1)*-2)+(1-3*i)/((x+i)*4)+(1+3*i)/((x-i)*4)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>f2nd((x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(x-1)) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[x+1,1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>f2nd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)) </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[x+1,x-1]</TT></DIV><HR>
 <A HREF="cascmd_fr424.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr426.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

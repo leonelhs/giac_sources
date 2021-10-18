@@ -6,43 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Factorisation dans ℂ : cFactor factoriser_sur_C cfactor</TITLE>
+<TITLE>Séparation des variables : split</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr265.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr267.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc339">6.14.12</A>  Factorisation dans ℂ : <TT>cFactor factoriser_sur_C cfactor</TT></H3><P><A NAME="@default446"></A><A NAME="@default447"></A><A NAME="@default448"></A>
-<TT>cFactor</TT> ou <TT>cfactor</TT> ou <TT>factoriser_sur_C</TT> a comme 
-paramètre une expression que l’on veut factoriser sur le corps des complexes 
-sans avoir besoin d’être en mode complexe. Lorsqu’il y a plus de 2 variables 
-la factorisation se fait sur les entiers de Gauss.<BR>
-<B>Exemples</B>
-</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-Factoriser dans <FONT COLOR=red><I>C</I></FONT> :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>4</SUP>−1</TD></TR>
-</TABLE>
+<H3 CLASS="subsection"><A NAME="htoc339">6.14.10</A>  Séparation des variables : <TT>split</TT></H3><P><A NAME="@default443"></A>
+<TT>split</TT> a deux arguments : une expression dépendant de deux 
+variables et la liste de ces deux variables.<BR>
+Si l’expression est factorisable avec deux facteurs qui ne dependent chacun que
+d’une des 2 variables, <TT>split</TT> renvoie une liste formée par ces deux 
+facteurs et sinon renvoie la liste <TT>[0]</TT>.<BR>
 On tape :
-<DIV CLASS="center"><TT>cFactor(x</TT><CODE><TT>^</TT></CODE><TT>4-1)</TT></DIV>
+</P><DIV CLASS="center"><TT>split((x+1)*(y-2),[x,y])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>split(x*y-2*x+y-2,[x,y])</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>-((x+-i)*((-i)*x+1)*((-i)*x+i)*(x+1))</TT></DIV>
-</LI><LI CLASS="li-enumerate">Factoriser dans <FONT COLOR=red><I>C</I></FONT> :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>4</SUP>+1</TD></TR>
-</TABLE>
+</P><DIV CLASS="center"><TT>[x+1,y-2]</TT></DIV><P> 
 On tape :
-<DIV CLASS="center"><TT>cFactor(x</TT><CODE><TT>^</TT></CODE><TT>4+1)</TT></DIV>
+</P><DIV CLASS="center"><TT>split(x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2-1,[x,y])</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+i)*(x</TT><CODE><TT>^</TT></CODE><TT>2+-i)</TT></DIV>
-Puis, on tape :
-<DIV CLASS="center"><TT>cFactor(sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>2+i))*cFactor(sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>2+-i))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>sqrt(2)*1/2*(sqrt(2)*x+1-i)*(sqrt(2)*x-1+i)*sqrt(2)* 1/2*(sqrt(2)*x+1+i)*(sqrt(2)*x-1-i)</TT></DIV>
-Mais si on tape, :
-<DIV CLASS="center"><TT>cFactor(sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>4+1))</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>2+sqrt(2)*x+1)*(x</TT><CODE><TT>^</TT></CODE><TT>2+(-(sqrt(2)))*x+1)</TT></DIV>
-</LI></OL><HR>
+</P><DIV CLASS="center"><TT>[0]</TT></DIV><HR>
 <A HREF="cascmd_fr265.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr267.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

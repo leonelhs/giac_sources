@@ -6,22 +6,54 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’abscisse d’un point 3-d : abscissa abscisse</TITLE>
+<TITLE>Le triangle isocèle dans l’espace : isosceles_triangle triangle_isocele</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1029.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1031.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1212">11.12.1</A>  L’abscisse d’un point 3-d : <TT>abscissa abscisse</TT></H3><P><A NAME="@default1998"></A><A NAME="@default1999"></A><A NAME="sec:abscisse3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr932.html#sec:abscisse2">10.15.2</A> pour la géométrie plane.<BR>
-<TT>abscisse</TT>, en géométrie 3-d, est une fonction ayant comme 
-argument un point 3-d.<BR>
-<TT>abscisse</TT> renvoie l’abscisse dd ce point.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1208">11.7.2</A>  Le triangle isocèle dans l’espace : <TT>isosceles_triangle triangle_isocele</TT></H3><P><A NAME="@default2005"></A><A NAME="@default2006"></A><A NAME="sec:triangleiso3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr921.html#sec:triangleiso2">10.10.3</A> pour la géométrie plane.<BR>
+<TT>triangle_isocele</TT>, en géométrie 3-d, a trois ou quatre 
+arguments.<BR>
+Description des arguments :<BR>
+- si il a trois arguments, ce sont : 3 points (les 2 premiers sommets <I>A</I> et
+<I>B</I> du triangle) et le troisième argument est soit un point <I>P</I>, soit une 
+liste formée par un point <I>P</I> et un réel <I>c</I> qui désigne la mesure en 
+radians (ou en degrés) de l’angle (<I>AB</I>,<I>AC</I>), l’angle (<I>AB</I>,<I>AP</I>) étant positif.<BR>
+Le point <I>P</I> définit le plan du triangle 
+ainsi que l’orientation de ce plan pour que l’angle (<I>AB</I>,<I>AP</I>) soit positif.<BR>
+<TT>triangle_isocele(A,B,P)</TT> renvoie et trace dans le plan <I>ABP</I> orienté 
+par <I>P</I> (l’angle (<I>AB</I>,<I>AP</I>) est positif)
+le triangle <I>ABC</I> isocèle de sommet <I>A</I> (<I>AB</I>=<I>AC</I>) et tel que l’angle 
+(<I>AB</I>,<I>AC</I>)=(<I>AB</I>,<I>AP</I>), sans définir le point <I>C</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>abscisse(point([1,2,3]))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>triangle_isocele(A,B,P)</TT></DIV><DIV CLASS="center"><TT>Dans le plan ABP, le triangle isocéle de sommets AB, d’angle </TT><TT>(<I>AB</I>,<I>AC</I>)=(<I>AB</I>,<I>AP</I>)</TT></DIV><P><TT>triangle_isocele(A,B,[P,c])</TT> renvoie et trace dans le plan <I>ABP</I> 
+orienté par <I>P</I> (l’angle (<I>AB</I>,<I>AP</I>) est positif) le triangle <I>ABC</I> isocèle de sommet <I>A</I> (<I>AB</I>=<I>AC</I>) et tel que l’angle 
+(<I>AB</I>,<I>AC</I>)=<I>c</I> radians (ou degrés), sans 
+définir le point <I>C</I>).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>triangle_isocele(A,B,[P,3*pi/4])</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>Dans le plan ABP, le triangle isocéle de sommets AB, 
+d’angle </TT><TT>(<I>AB</I>,<I>AC</I>)=3*<I>pi</I>/4</TT></DIV><P>
+- si il a quatre arguments, le dernier argument est le nom d’une 
+variable qui servira à définir le troisième sommet.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>triangle_isocele(A,B,[P,3*pi/4],C)</TT></DIV><P>
+On obtient si on a coché <TT>radian</TT> dans la configuration du <TT>cas</TT> 
+(bouton donnant la ligne d’état) :
+</P><DIV CLASS="center"><TT>Dans le plan ABP, le triangle isocéle de sommets AB, d’angle </TT><TT>(<I>AB</I>,<I>AC</I>)=3*<I>pi</I>/4</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[(-3*sqrt(2)-3)/2,(-3*sqrt(2)-3)/2,(-3*sqrt(2)+6)/2]</TT></DIV><HR>
 <A HREF="cascmd_fr1029.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1031.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

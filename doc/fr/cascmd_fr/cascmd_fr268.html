@@ -6,39 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Zéros complexe d’une expression : cZeros</TITLE>
+<TITLE>Factorisation dans ℂ : cFactor factoriser_sur_C cfactor</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr267.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr269.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc341">6.14.14</A>  Zéros complexe d’une expression : <TT>cZeros</TT></H3><P><A NAME="@default450"></A>
-<TT>cZeros</TT> a comme paramètre une expression.<BR>
-<TT>cZeros</TT> renvoie la liste des éléments complexes qui annulent 
-l’expression.<BR>
-<B>Remarque</B><BR>
-Différence entre <TT>zeros</TT> et <TT>cZeros</TT> :
-En mode complexe <TT>zeros</TT> renvoie le même résultat que <TT>cZeros</TT> 
-(pour <TT>cZeros</TT> que l’on soit en mode complexe ou réel cela importe peu).
-Ainsi, si on ne veut pas que le résultat dépende du mode, pour avoir les 
-solutions complexes il est préférable d’utiliser <TT>cZeros</TT>.<BR>
-On tape en mode réel ou complexe: 
-</P><DIV CLASS="center"><TT>cZeros(x</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV><P> 
+<H3 CLASS="subsection"><A NAME="htoc341">6.14.12</A>  Factorisation dans ℂ : <TT>cFactor factoriser_sur_C cfactor</TT></H3><P><A NAME="@default449"></A><A NAME="@default450"></A><A NAME="@default451"></A>
+<TT>cFactor</TT> ou <TT>cfactor</TT> ou <TT>factoriser_sur_C</TT> a comme 
+paramètre une expression que l’on veut factoriser sur le corps des complexes 
+sans avoir besoin d’être en mode complexe. Lorsqu’il y a plus de 2 variables 
+la factorisation se fait sur les entiers de Gauss.<BR>
+<B>Exemples</B>
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Factoriser dans <FONT COLOR=red><I>C</I></FONT> :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>4</SUP>−1</TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>cFactor(x</TT><CODE><TT>^</TT></CODE><TT>4-1)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[-2*i,2*i]</TT></DIV><P> 
-On tape : 
-</P><DIV CLASS="center"><TT>cZeros(ln(x)</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV><P> 
+<DIV CLASS="center"><TT>-((x+-i)*((-i)*x+1)*((-i)*x+i)*(x+1))</TT></DIV>
+</LI><LI CLASS="li-enumerate">Factoriser dans <FONT COLOR=red><I>C</I></FONT> :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>4</SUP>+1</TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>cFactor(x</TT><CODE><TT>^</TT></CODE><TT>4+1)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[exp(sqrt(2)),exp(-(sqrt(2)))]</TT></DIV><P> 
-On tape : 
-</P><DIV CLASS="center"><TT>cZeros(ln(y)</TT><CODE><TT>^</TT></CODE><TT>2-2,y)</TT></DIV><P> 
+<DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+i)*(x</TT><CODE><TT>^</TT></CODE><TT>2+-i)</TT></DIV>
+Puis, on tape :
+<DIV CLASS="center"><TT>cFactor(sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>2+i))*cFactor(sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>2+-i))</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[exp(sqrt(2)),exp(-(sqrt(2)))]</TT></DIV><P> 
-On tape : 
-</P><DIV CLASS="center"><TT>cZeros(x*(exp(x))</TT><CODE><TT>^</TT></CODE><TT>2-2*x-2*(exp(x))</TT><CODE><TT>^</TT></CODE><TT>2+4)</TT></DIV><P> 
+<DIV CLASS="center"><TT>sqrt(2)*1/2*(sqrt(2)*x+1-i)*(sqrt(2)*x-1+i)*sqrt(2)* 1/2*(sqrt(2)*x+1+i)*(sqrt(2)*x-1-i)</TT></DIV>
+Mais si on tape, :
+<DIV CLASS="center"><TT>cFactor(sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>4+1))</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[[log(sqrt(2)),log(-sqrt(2)),2]]</TT></DIV><HR>
+<DIV CLASS="center"><TT>sqrt(2)*(x</TT><CODE><TT>^</TT></CODE><TT>2+sqrt(2)*x+1)*(x</TT><CODE><TT>^</TT></CODE><TT>2+(-(sqrt(2)))*x+1)</TT></DIV>
+</LI></OL><HR>
 <A HREF="cascmd_fr267.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr269.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

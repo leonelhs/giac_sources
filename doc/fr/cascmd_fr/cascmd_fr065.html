@@ -6,22 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’affectation : := => sto Store</TITLE>
+<TITLE>L’affectation : = := => sto Store</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr064.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr066.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc85">2.5.2</A>  L’affectation : <TT>:= =&gt; sto Store</TT></H3><P><A NAME="@default46"></A><A NAME="@default47"></A><A NAME="@default48"></A><A NAME="@default49"></A><A NAME="sec:variable"></A>
-On peut utiliser les fonctions infixées <TT>:=</TT> comme en Pascal ou <TT>=&gt;</TT>
-comme le "sto" des calculatrices pour réaliser une affectation ou encore,<BR>
+<H3 CLASS="subsection"><A NAME="htoc85">2.5.2</A>  L’affectation : <TT>= := =&gt; sto Store</TT></H3><P><A NAME="@default46"></A><A NAME="@default47"></A><A NAME="@default48"></A><A NAME="@default49"></A><A NAME="@default50"></A><A NAME="sec:variable"></A>
+On peut utiliser les fonctions infixées <TT>:=</TT> comme en Pascal ou <TT>=</TT> ou
+<TT>=&gt;</TT> comme le "sto" des calculatrices pour réaliser une affectation ou 
+encore,<BR>
 les fonctions préfixées, <TT>sto</TT> ou <TT>Store</TT>, d’arguments la valeur 
 à affecter et le nom d’une variable.<BR>
-<TT>:=</TT> (ou <TT>=&gt;</TT> ou <TT>sto</TT> ou <TT>Store</TT>) permet d’affecter
-une variable.<BR>
-On tape (attention à l’ordre des arguments !) :
+<TT>:=</TT> (ou <TT>=</TT> ou <TT>=&gt;</TT> ou <TT>sto</TT> ou <TT>Store</TT>) permet 
+d’affecter une variable.<BR>
+On tape (<B>attention à l’ordre des arguments !</B>) :
 </P><DIV CLASS="center"><TT>a:=4</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>a=4</TT></DIV><P>
 ou
 </P><DIV CLASS="center"><TT>4=&gt;a</TT></DIV><P>
 ou
@@ -44,7 +47,7 @@ On peut aussi définir une fonction par morceaux :
 une fonction définie par 2 valeurs,<BR>
 par exemple, pour définir 
 la fonction <I>g</I> qui vaut 1 si <I>x</I>&gt;0 et -1 si <I>x</I>≤ 0 on tape :
-<A NAME="@default50"></A><A NAME="@default51"></A><A NAME="@default52"></A><A NAME="@default53"></A><A NAME="@default54"></A>
+<A NAME="@default51"></A><A NAME="@default52"></A><A NAME="@default53"></A><A NAME="@default54"></A><A NAME="@default55"></A>
 On tape :
 <DIV CLASS="center"><TT>g(x):=ifte(x&gt;0,1,-1)</TT></DIV> 
 ce qui est équivalent à :
@@ -56,11 +59,11 @@ ou
 ou 
 <DIV CLASS="center"><TT>g(x):=IFTE(x&gt;0,1,-1)</TT></DIV>
 ou 
-<DIV CLASS="center"><TT>g(x):=x&gt;0?1:-1</TT></DIV>
+<DIV CLASS="center"><TT>g(x):=(x&gt;0)?1:-1</TT></DIV>
 En effet <TT>ifte</TT> (ou <TT>when</TT> ou <TT>quand</TT> ou <TT>IFTE</TT>) a trois 
 arguments : une condition et deux expressions et <TT>?</TT> est infixé avec la 
-condition à gauche et à droite on met les deux expressions séparées par
-<TT>:</TT>.<BR>
+conditionà gauche entre des parenthèses et à droite on met les deux
+expressions séparées par <TT>:</TT>.<BR>
 Si la condition est vraie, <TT>ifte</TT> (ou <TT>when</TT> ou <TT>quand</TT> ou 
 <TT>IFTE</TT> ou <TT>?</TT>) renvoie la première expression et sinon <TT>ifte</TT> (ou
 <TT>when</TT> ou <TT>quand</TT> ou <TT>IFTE</TT> ou <TT>?</TT>) renvoie la deuxième 
@@ -87,7 +90,7 @@ besoin dêtre affectée.<BR>
 On tape <TT>g(x)</TT><BR>
 on obtient :<BR>
 <TT>((x&gt;0)? 1 : -1)</TT><BR>
-car <TT>?</TT> est la version infixée de <TT>when</TT>.</P></LI><LI CLASS="li-itemize">une fonction définie par <I>n</I> valeurs,<A NAME="@default55"></A><BR>
+car <TT>?</TT> est la version infixée de <TT>when</TT>.</P></LI><LI CLASS="li-itemize">une fonction définie par <I>n</I> valeurs,<A NAME="@default56"></A><BR>
 par exemple, pour définir 
 la fonction <I>g</I> qui vaut -1 si <I>x</I>&lt;−1, 0 si −1≤ <I>x</I>≤ 1 et 1 si <I>x</I>&gt;1,
 on tape :

@@ -6,77 +6,82 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour changer le niveau dévaluation : eval_level</TITLE>
+<TITLE>Qu’est-ce qune expression</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr256.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr258.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc330">6.14.3</A>  Pour changer le niveau dévaluation : <TT>eval_level</TT></H3><P><A NAME="@default429"></A>
-On peut alors avoir différentes évaluation d’une variable selon le niveau
-<I>n</I> dévaluation demandé : ce nombre <I>n</I> est le nombre de la case <TT>eval</TT>
-de la configuration du CAS qui représente le nombre maximum d’évaluations 
-récursives en mode interactif (cf <A HREF="cascmd_fr020.html#sec:configcas">1.6.1</A>). On peut changer ce 
-nombre avec <TT>eval_level</TT> qui a comme argument l’entier <I>n</I>&gt;0.<BR>
-<TT>eval_level()</TT> renvoie la valeur de <TT>eval</TT> de la configuration du 
-CAS.<BR>
-<TT>eval_level(0)</TT> met la valeur de <TT>eval</TT> de la configuration du 
-CAS à 0 et du coup plus rien ne sera évalué. On peut revenir en 
-situation normale en changeant la valeur de <TT>eval</TT> de la configuration du 
-CAS.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>eval_level(1)</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>a,b,c</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>b+1,c+1,3</TT></DIV><P>
-et <TT>eval</TT> de la configuration du CAS vaut 1.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>eval_level(2)</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>a,b,c</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>c+1+1,4,3</TT></DIV><P>
-et <TT>eval</TT> de la configuration du CAS vaut 2.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>eval_level(3)</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>a,b,c</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>5,4,3</TT></DIV><P>
-et <TT>eval</TT> de la configuration du CAS vaut 3.<BR>
-On tape ensuite :
-</P><DIV CLASS="center"><TT>eval_level()</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
-ce qui veut dire que <TT>eval</TT> de la configuration du CAS vaut 3.<BR>
-<B>Remarque</B><BR>
- On peut préciser le niveau dévaluation d’une variable sans changer la 
-configuration du CAS en utilisant <TT>eval</TT> avec 2 arguments une expression et 
-son niveau d’évaluation.
-On tape :
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>eval(a,0),eval(a,1),eval(a,2),eval(a,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>a,b+1,c+1+1,5</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc330">6.14.1</A>  Qu’est-ce qune expression</H3><P>
+Il ne faut pas confondre expression et fonction.<BR>
+Une expression est une combinaison de nombres et de variables reliés par des 
+opérations alors qu’une fonction associe à une variable une expression.<BR>
+Par exemple :<BR>
+<CODE>a:=x^2+2*x+1</CODE> définit une expression et
+<CODE>b(x):=x^2+2*x+1</CODE> définit une fonction.<BR>
+On obtient la valeur de l’expression <CODE>a</CODE> en 0, avec
+<CODE>subst(a,x=0)</CODE> et la valeur de la fonction <CODE>b</CODE> en 0, 
+avec <CODE>b(0)</CODE>.<BR>
+On peut aussi considérer une expression comme un arbre.<BR>
+Par exemple, si <TT>A:=3+2*x/y</TT> ou si <TT>B:=sin(2x+3)</TT> on a :<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+le sommet de l’arbre <TT>A</TT> est l’opérateur <TT>’+’</TT> et le sommet de 
+l’arbre <TT>B</TT> est la fonction <TT>’sin’</TT>.<BR>
+ On a :<BR>
+<TT>sommet(A)</TT> renvoie <TT>’+’</TT><BR>
+ <TT>sommet(B)</TT> renvoie <TT>’sin’</TT>
+</LI><LI CLASS="li-itemize">les feuilles de l’arbre <TT>A</TT> sont <TT>3,2*x/y</TT> (car <TT>’+’</TT> est 
+un opérateur binaire) et la feuille de l’arbre <TT>B</TT> est <TT>2*x+3</TT> (car
+<TT>’sin’</TT> est une fonction d’une variable).<BR>
+On a :<BR>
+<TT>feuille(A)</TT> renvoie <TT>3,2*x/y</TT><BR>
+<TT>feuille(B)</TT> renvoie <TT>2*x+3</TT>
+</LI><LI CLASS="li-itemize">la feuille <TT>2*x/y</TT> est elle-même un arbre de sommet <TT>’*’</TT> etc...
+</LI><LI CLASS="li-itemize">Les variables <TT>A</TT> et <TT>B</TT> permettent de retrouver la structure 
+d’arbre en effet :<BR>
+<TT>A[0],A[1],A[2],A[2,0],A[2,1],A[2,2],A[2,3],A[2,3,0],A[2,3,1]</TT><BR>
+renvoie : <TT>’+’,3,2*x,’*’,2,x,1/y,’inv’,y</TT><BR>
+<TT>B[0],B[1,0],B[1,1],B[1,2],B[1,1,0],B[1,1,1],B[1,1,2]</TT><BR>
+renvoie : <TT>’sin’,’+’,2*x,3,’*’,2,x</TT><BR>
+</LI></UL><P>
 <B>Attention</B><BR>
-<TT>eval_level</TT> est fait pour être exécuté seul, sinon il y aura 
-forcément des effets de frontière entre la valeur du niveau d’évaluation 
-utilisé pour les commandes de la ligne (en principe le prćdent) et la 
-nouvelle valeur qui s’appliquera après. Si on tape :<BR>
-</P><DIV CLASS="center"><TT>purge(a,b,c);a:=b+1; b:=c+1;c:=3;</TT></DIV><P>
-puis sur un même niveau :
-</P><DIV CLASS="center"><TT>eval_level(3);a,b,c</TT></DIV><P>
-si <TT>eval</TT> de configuration du CAS vaut 1 alors <TT>a,b,c</TT> seront 
-évalués au niveau 1, puis <TT>eval</TT> de configuration du CAS vaudra 3.</P><HR>
+Si <TT>C:=2*x-y</TT> alors<BR>
+<TT>sommet(C)</TT> renvoie <TT>’+’</TT> et<BR>
+<TT>feuille(C)</TT> renvoie <TT>2*x,-y</TT><BR>
+car l’expression est <TT>C</TT> s’écrit <TT>2*x+(-y)</TT><BR>
+De même si <TT>D:=x/3</TT> alors<BR>
+<TT>sommet(D)</TT> renvoie <TT>’*’</TT> et<BR>
+<TT>feuille(C)</TT> renvoie <TT>x,1/3</TT><BR>
+car l’expression est <TT>D</TT> s’écrit <TT>x*1/3</TT><BR>
+On a alors :<BR>
+<TT>C[0],C[1],C[1,0],C[1,1],C[1,2],C[2],C[2,0],C[2,1]</TT><BR>
+renvoie : <TT>’+’,2*x,’*’,2,x,-y,’-’,y</TT> (<TT>’-’</TT> est le "moins" unaire).<BR>
+Et :<BR>
+<TT>D[0],D[1],D[2],D[2,0],D[2,1],B[1,1,2]</TT><BR>
+renvoie : <TT>’*’,x,1/3,’inv’,3</TT><BR>
+<B>Remarque </B><BR>
+Ce qui suit n’est valable que pour des programmeurs confirmés avec les 
+manipulations qui suivent, les erreurs sont faciles !<BR>
+On peut changer le sommet ou une feuille terminale en affectant l’une des 
+variables <TT>A[0],A[1],A[2],A[2,0],A[2,1],A[2,2],A[2,3],A[2,3,0],A[2,3,1]</TT><BR>
+ou <TT>B[0],B[1,0],B[1,1],B[1,2],B[1,1,0],B[1,1,1],B[1,1,2]</TT><BR>
+MAIS il faut faire cela avec prudence car le système ne fait pas de 
+vérifications et n’enverra pas de message d’erreurs.<BR>
+On tape :<BR>
+<TT>A:=3+2*x/y</TT><BR>
+<TT>A[0]:=’*’</TT>
+Et <TT>A</TT> renvoie <TT>6*x/y</TT>
+Maintenant :<TT>A[1]</TT> renvoie <TT>6</TT><BR>
+On peut taper :<BR>
+<TT>A[1]:=2+z</TT>
+Maintenant <TT>A</TT> renvoie <TT>(2+z)*x/y</TT><BR>
+On tape :<BR>
+<TT>B:=sin(2*x+3)</TT><BR>
+<TT>B[0]:=cos</TT>
+Et <TT>B</TT> renvoie <TT>cos(2*x+3)</TT>
+Puis, on tape :<BR>
+<TT>B[1,2]:=y</TT> et <TT>B</TT> renvoie <TT>cos(2*x+y)</TT></P><HR>
 <A HREF="cascmd_fr256.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr258.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

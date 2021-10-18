@@ -13,17 +13,17 @@
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr193.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc259">6.8.2</A>  Les coefficients binomiaux : <TT>comb nCr</TT></H3><P><A NAME="@default346"></A><A NAME="@default347"></A><A NAME="@default348"></A>
+<H3 CLASS="subsection"><A NAME="htoc259">6.8.2</A>  Les coefficients binomiaux : <TT>comb nCr</TT></H3><P><A NAME="@default347"></A><A NAME="@default348"></A>
 <TT>comb</TT> (ou <TT>nCr</TT>) a comme paramètre deux entiers positifs
-<TT>n</TT> et <TT>p</TT>.<BR>
-<TT>comb(n,p)</TT> ou <TT>nCr(n,p)</TT> calcule <I>C</I><SUB><I>n</I></SUB><SUP><I>p</I></SUP>.<BR>
+<TT>n</TT> et <TT>k</TT>.<BR>
+<TT>comb(n,k)</TT> ou <TT>nCr(n,k)</TT> calcule <I>C</I><SUB><I>n</I></SUB><SUP><I>k</I></SUP>.<BR>
 On a :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>C</I><SUB><I>n</I></SUB><SUP><I>p</I></SUP>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>!</TD></TR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>C</I><SUB><I>n</I></SUB><SUP><I>k</I></SUP>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>!</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>p</I>!(<I>n</I>−<I>p</I>)!</TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>(<I>n</I>−1)...(<I>n</I>−<I>p</I>+1)</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>!(<I>n</I>−<I>k</I>)!</TD></TR>
+</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>(<I>n</I>−1)...(<I>n</I>−<I>k</I>+1)</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>p</I>!</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>!</TD></TR>
 </TABLE></TD></TR>
 </TABLE><P>
 On tape :
@@ -31,12 +31,12 @@ On tape :
 On obtient :
 </P><DIV CLASS="center"><TT>10</TT></DIV><P>
 <B>Remarque 1</B><BR>
-Si <I>n</I> est un entier positif et <I>p</I> un entier négatif alors :<BR>
-<TT>comb(n,p)=nCr(n,p)=0</TT>.<BR>
+Si <I>n</I> est un entier positif et <I>k</I> un entier négatif alors :<BR>
+<TT>comb(n,k)=nCr(n,k)=0</TT>.<BR>
 Par exemple <TT>comb(5,-2)=nCr(5,-2)=0</TT>.<BR>
 Mais, on peut définir <TT>comb</TT> (ou <TT>nCr</TT>) avec comme 
-paramètres <TT>n</TT> entier négatif et <TT>p</TT> entier positif par :<BR>
-<TT>comb(n,p)=</TT> <I>n</I>(<I>n</I>−1)...(<I>n</I>−<I>p</I>+1)/<I>p</I>!<BR>
+paramètres <TT>n</TT> entier négatif et <TT>k</TT> entier positif par :<BR>
+<TT>comb(n,k)=</TT> <I>n</I>(<I>n</I>−1)...(<I>n</I>−<I>k</I>+1)/<I>k</I>!<BR>
 On tape :
 </P><DIV CLASS="center"><TT>comb(-5,2)</TT></DIV><P>
 On obtient :
@@ -47,16 +47,11 @@ On tape :
 On obtient :
 </P><DIV CLASS="center"><TT>-35</TT></DIV><P>
 En effet −5*−6*−7/6=−35<BR>
-<B>Remarque 2</B><BR>
-On a aussi <TT>binomial(n,p)=comb(n,p)</TT> lorsque <TT>n</TT> et <TT>p</TT> sont deux 
-entiers positifs mais <TT>binomial</TT> peut admettre un paramètre 
-supplémentaire et dans ce cas <TT>binomial(n,p,a)</TT> calcule 
-<I>C</I><SUB><I>n</I></SUB><SUP><I>p</I></SUP>*<I>a</I><SUP><I>p</I></SUP>*(1−<I>a</I>)<SUP><I>n</I>−<I>p</I></SUP>.<BR>
-<B>Remarque 3 : Relation avec la fonction </B><B>Γ</B><BR>
+<B>Remarque 2 : Relation avec la fonction </B><B>Γ</B><BR>
 On a :<BR>
 <TT>comb(n,p)=Gamma(1+n)/(Gamma(1+p)*Gamma(1+n-p))</TT><BR>
 Quand <I>n</I> est un entier négatif <TT>Gamma(1+n)</TT> est infini et on a :<BR>
-<TT>comb(n,p)=limit(Gamma(1+x)/(Gamma(1+p)*Gamma(1+x-p),x,n)</TT>.<BR>
+<TT>comb(n,p)=limit(Gamma(1+x)/(Gamma(1+p)*Gamma(1+x-p)),x,n)</TT>.<BR>
 Par exemple, on tape :<BR>
 <TT>comb(-5,3),limit(Gamma(1+x)/(Gamma(1+3)*Gamma(1+x-3)),x,-5)</TT><BR>
 On obtient :<BR>

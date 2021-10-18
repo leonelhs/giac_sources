@@ -6,36 +6,39 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour initialiser les nombres aléatoires : srand randseed RandSeed</TITLE>
+<TITLE>Interpolation linéaire : linear_interpolate</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr734.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr736.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc873">8.3.1</A>  Pour initialiser les nombres aléatoires : <TT>srand randseed RandSeed</TT></H3><P><A NAME="@default1320"></A><A NAME="@default1321"></A><A NAME="@default1322"></A>
-<TT>srand</TT> (ou <TT>randseed</TT> ou <TT>RandSeed</TT>) sert à 
-initialiser la suite des nommbres aléatoires que l’on obtient avec 
-<TT>rand()</TT> ou avec <TT>randnorm()</TT>.<BR>
-<TT>RandSeed</TT> a toujours un argument entier, alors que <TT>randseed</TT> ou 
-<TT>srand</TT> peut ne pas avoir d’arguments (dans ce cas le générateur 
-aléatoire est intialisé avec l’horloge du système).<BR>
-Ainsi, <TT>srand(n)</TT> (ou <TT>randseed(n)</TT> ou <TT>RandSeed(n)</TT>) avec <TT>n</TT> 
-entier sert à initialiser la suite des nommbres aléatoires pour que l’on 
-puisse obtenir la même suite aléatoire avec <TT>rand()</TT> ou avec 
-<TT>randnorm()</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc873">8.2.9</A>  Interpolation linéaire : <TT>linear_interpolate</TT></H3><P><A NAME="@default1319"></A>
+É tant donné une matrice à 2 lignes donnant
+les coordonnées de points : apres avoir ordonné les abcisses de ces points,
+ces points définissent une ligne polygonale.
+On veut avoir les coordonnées des points de cette ligne pour des points
+définis de maniere régulière.<BR>
+<TT>linear_interpolate</TT> a 4 arguments, une matrice <TT>A</TT> à 2 lignes donnant
+les coordonnées des points d’une ligne polygonale, la valeur minimum des x 
+(<TT>xmin</TT>), la valeur maximum des x (<TT>xmax</TT>) et le pas (<TT>xstep</TT>).<BR>
+<TT>linear_interpolate</TT> renvoie les coordonnées des points de la ligne 
+polygonale pour x variant de <TT>xmin</TT> à <TT>xmax</TT> avec un pas ègal à 
+<TT>xstep</TT>.<BR>
+<B>Remarque</B> on doit avoir <TT>xmin</TT> et <TT>xmax</TT> dans l’intervalle 
+<TT>[min(A[0]);max(A[0])]</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>srand</TT></DIV><P>
-On obtient par exemple :
-</P><DIV CLASS="center"><TT>1054990506</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>srand(121054990506)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>linear_interpolate([[1,2,6,9],[3,4,6,12]],1,9,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>121054990506</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>RandSeed(10549905061234)</TT></DIV><P>
-On obtient par exemple :
-</P><DIV CLASS="center"><TT>10549905061234</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0],[3.0,4.0,4.5,5.0,5.5,6.0,8.0,10.0,12.0]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>linear_interpolate([[1,2,6,9],[3,4,6,12]],2,7,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[2.0,3.0,4.0,5.0,6.0,7.0],[4.0,4.5,5.0,5.5,6.0,8.0]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>linear_interpolate([[1,2,9,6],[3,4,6,12]],1,9,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0],[3.0,4.0,6.0,8.0,10.0,12.0,10.0,8.0,6.0]]</TT></DIV><HR>
 <A HREF="cascmd_fr734.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr736.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,29 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Rajouter une colonne à une matrice : border</TITLE>
+<TITLE>Remplacer une partie d’une matrice ou d’un vecteur : replace</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr586.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr588.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc695">6.49.15</A>  Rajouter une colonne à une matrice : <TT>border</TT></H3><P><A NAME="@default1067"></A>
-<TT>border</TT> a comme argument une matrice <TT>A</TT> de dimension <I>p</I>*<I>q</I> 
-et une liste <TT>b</TT> de dimension <I>p</I> (c’est à dire 
-<TT>nrows(A)=size(b)</TT>).<BR>
-<TT>border</TT> renvoie la matrice obtenue à partir de <TT>A</TT> en lui rajoutant 
-comme dernière colonne <TT>tran(b)</TT>.<BR>
-On a :<BR>
-<TT>border(A,b)=tran([op(tran(A)),b])=tran(append(tran(A),b))</TT><BR>
+<H3 CLASS="subsection"><A NAME="htoc696">6.50.6</A>  Remplacer une partie d’une matrice ou d’un vecteur : <TT>replace</TT></H3><P><A NAME="@default1070"></A>
+<TT>replace</TT> a comme argument une matrice <I>A</I> (resp un vecteur) et 
+une liste de 2 indices (resp 1 entier) et la matrice (resp le vecteur) qui doit
+être mis en remplacement à partir de ces 2 indices.<BR>
+<TT>replace</TT> effectue ce remplacement en élaguant éventuellement la 
+matrice (resp le vecteur) si elle (resp il) est sur dimensionnée.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>border([[1,2,4],[3,4,5]],[6,7])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>replace([[1,2,3],[4,5,6]],[1,1],[[5,6],[7,8]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,2,4,6],[3,4,5,7]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[5,6,3],[7,8,6]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>border([[1,2,3,4],[4,5,6,8],[7,8,9,10]],[1,3,5])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>replace([[1,2,3],[4,5,6]],[1,2],[[7,8,10],[9,0,11]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,2,3,4,1],[4,5,6,8,3],[7,8,9,10,5]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1,7,8],[4,9,0]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>replace([1,2,3,4],2,[5,6])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,5,6,4]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>replace([1,2,3,4],2,[5,6,7,8])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,5,6,7]</TT></DIV><HR>
 <A HREF="cascmd_fr586.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr588.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

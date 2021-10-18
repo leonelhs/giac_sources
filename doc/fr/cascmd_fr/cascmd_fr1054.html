@@ -6,37 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La translation : translation</TITLE>
+<TITLE>Savoir si 1 objet géométrique est sur un objet graphique : is_element est_element</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1053.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1055.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1238">11.14.2</A>  La translation : <TT>translation</TT></H3><P><A NAME="@default2039"></A><A NAME="sec:translation3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr958.html#sec:translation2">10.17.2</A> pour la géométrie plane.<BR>
-<TT>translation</TT>, en géométrie 3-d, a un ou deux arguments : 
-le vecteur de translation donné par la liste de ses coordonnées et 
-éventuellement l’objet géométrique à transformer.<BR>
-Lorsque <TT>translation</TT> a un argument, c’est une fonction qui agit sur un 
-objet géométrique.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1238">11.13.1</A>  Savoir si 1 objet géométrique est sur un objet graphique : <TT>is_element est_element</TT></H3><P><A NAME="@default2048"></A><A NAME="@default2049"></A><A NAME="sec:estelement3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr980.html#sec:estelement2">10.18.1</A> pour la géométrie plane.<BR>
+<TT>est_element(a,A)</TT> teste si l’objet géométrique <TT>a</TT> est
+contenu dans l’objet géométrique <TT>A</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>t:=translation([1,1,1])</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>t(point(1,2,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>P:=plan([0,0,0],[1,2,-3],[1,1,-2])</TT></DIV><DIV CLASS="center"><TT>est_element(point(2,3,-5),P)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point (2,3,4) est tracé</TT></DIV><P>
-Lorsque <TT>translation</TT> a deux arguments, <TT>translation</TT> dessine et 
-renvoie le transformé du deuxième argument dans la translation de vecteur 
-le premier argument.<BR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>translation([1,1,1], point(1,2,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>dd:=droite([2,3,-2],[-1,-1,-1])</TT></DIV><DIV CLASS="center"><TT>R:=plan([-1,-1,-1],[1,2,-3],[1,1,-2])</TT></DIV><DIV CLASS="center"><TT>est_element(dd,R)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point (2,3,4) est tracé</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>translation([1,1,1],droite([0,0,0],[1,2,3]))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La droite passant par les points (1,1,1) et (2,3,4)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr1053.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1055.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

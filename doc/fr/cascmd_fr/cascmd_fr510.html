@@ -6,24 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Longueur d’une liste : size nops length</TITLE>
+<TITLE>Insérer un élément dans une liste ou une chaine de caractères : insert</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr509.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr511.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc610">6.41.15</A>  Longueur d’une liste : <TT>size nops length</TT></H3><P><A NAME="@default902"></A><A NAME="@default903"></A><A NAME="@default904"></A>
-<TT>size</TT> ou <TT>nops</TT> ou <TT>length</TT> renvoie la longueur d’une 
-liste (ou d’une chaîne).<BR>
+<H3 CLASS="subsection"><A NAME="htoc611">6.42.8</A>  Insérer un élément dans une liste ou une chaine de caractères : <TT>insert</TT></H3><P><A NAME="@default906"></A>
+<TT>insert</TT> insère dans une liste, ou dans une chaine de 
+caractèresà l’indice donné en 2nd argument, l’élément donné en 3ième argument.<BR>
+<TT>insert</TT> renvoie une erreur si l’indice donné <I>p</I> est trop grand i.e. si 
+<I>p</I>&gt;<I>dim</I>(<I>L</I>).<BR>
+<B>Attention !</B> l’indice du premier élément est 0.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>nops([3,4,2])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>size([3,4,2])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>length([3,4,2])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>insert([3,4,2],2,5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[3,4,5,2]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>insert("342",2,"5")</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>"3452"</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>insert([3,4,2],4,5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>insert([3,4,2],4,5)Erreur: Dimension invalide</TT></DIV><HR>
 <A HREF="cascmd_fr509.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr511.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

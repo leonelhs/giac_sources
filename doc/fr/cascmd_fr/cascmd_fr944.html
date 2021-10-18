@@ -6,55 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La mesure d’un angle et son affichage : angleat angleen et angleatraw angleenbrut</TITLE>
+<TITLE>L’hyperbole : hyperbola hyperbole</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr943.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr945.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1109">10.16.6</A>  La mesure d’un angle et son affichage : <TT>angleat angleen</TT> et <TT>angleatraw angleenbrut</TT></H3><P><A NAME="@default1826"></A><A NAME="@default1827"></A><A NAME="@default1828"></A><A NAME="@default1829"></A>
-<TT>angleat</TT> ou <TT>angleen</TT> (resp <TT>angleatraw</TT> ou 
-<TT>angleenbrut</TT>) sont des commandes qui permettent l’affichage avec légende
-(resp sans légende) de la valeur d’un angle désigné en cliquant (on 
-cliqueson sommet puis ses 2 côtés et enfin la position de la l’affichage).
-Ces commandes sont obtenues 
-lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le bouton 
-<TT>Mode-&gt;Mesures-&gt;angleen</TT> ou <TT>Mode-&gt;Mesures-&gt;angleenbrut</TT>. Dans ce cas 
-il faut que tous les objets désignés par la souris soient 
-déjà nommés, sauf les points qui seront alors définis par les différents clicks de la souris.<BR>
-
-On peut néammoins taper ces commandes dans une ligne de commande.<BR>
-<TT>angleat</TT> ou <TT>angleen</TT> a comme argument quatre points (ou 3 points et 
-1 nombre complexe qui est l’affixe d’un point).<BR>
-<B>Attention</B> Il faut que les 3 premiers points aient un nom.<BR>
-<TT>angleat</TT> ou <TT>angleen</TT> renvoie le 4-ième point, calcule la mesure (en
-radians ou en degrés) de l’angle orienté de sommet le premier argument, le
-deuxième argument se trouve sur le premier coté de l’angle et le troisième
-argument se trouve sur le deuxiéme coté et cette mesure est affichée, 
-précédée d’une légende, à l’endroit du 4-ième point.<BR>
-Ainsi <TT>anglen(A,B,C,D)</TT> désigne la mesure de l’angle en radians (ou en 
-degrés) de (<I>AB</I>,<I>AC</I>) et cette messue sera 
-affichée, pécédée de α<TT>A=</TT>, à l’endroit du point <TT>D</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1108">10.14.2</A>  L’hyperbole : <TT>hyperbola hyperbole</TT></H3><P><A NAME="@default1829"></A><A NAME="@default1830"></A><A NAME="sec:hyperbole2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1043.html#sec:hyperbole3">11.11.2</A> pour la géométrie 3-d.<BR>
+<TT>hyperbole</TT>, en géométrie plane, a 1 ou 3 paramètres :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+un paramètre : son équation de variables <I>x</I> et <I>y</I>. 
+<TT>hyperbole(p(x,y))</TT> trace la conique d’équation <TT>p(x,y)=0</TT> si 
+<TT>p(x,y)</TT> est un polynôme de degré 2.
+</LI><LI CLASS="li-itemize">trois paramètres : ses 
+deux foyers et un de ces points (ou son affixe si cette affixe n’est pas 
+réelle) ou ses deux foyers et un réel (son demi-grand axe).<BR>
+<TT>hyperbole(F1,F2,A)</TT> trace l’hyperbole passant par <TT>A</TT> et de foyers 
+<TT>F1</TT> et <TT>F2</TT> ou,<BR>
+<TT>hyperbole(F1,F2,a)</TT> où <TT>a</TT> est un nombre réel, trace l’hyperbole 
+de foyers <TT>F1</TT> et <TT>F2</TT> et de demi-grand axe <TT>|a|</TT>.
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);C:=point(i);</TT></DIV><DIV CLASS="center"><TT>segment(A,B);segment(A,C);</TT></DIV><DIV CLASS="center"><TT>angleen(A,B,C,0.2i) </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>α</TT><TT>A=atan(1/3) s’écrit au point(0.4i)</TT></DIV><P><TT>angleatraw</TT> ou <TT>angleenbrut</TT> a comme argument quatre points
-(ou 3 points et 1 nombre complexe qui est l’affixe d’un point).<BR>
-<TT>angleatraw</TT> ou <TT>angleenbrut</TT> renvoie le 4-ième point, calcule la 
-mesure (en radians ou en degrés) de l’angle orienté de sommet le premier 
-argument, le deuxième point se trouve sur le premier coté de l’angle et le 
-troisième point se trouve sur le deuxiéme coté et cette mesure est 
-affichée à l’endroit du 4-ième point.
-Ainsi <TT>angleenbrut(A,B,C,D)</TT> désigne la mesure de l’angle en radians 
-(ou en degrés) de (<I>AB</I>,<I>AC</I>) et cette mesure
-sera affichée à l’endroit du point <TT>D</TT>.<BR>
+</P><DIV CLASS="center"><TT>hyperbole(-i,i,1+i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>L’hyperbole de foyers -i, i et passant par 1+i</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);C:=point(i);</TT></DIV><DIV CLASS="center"><TT>segment(A,B);segment(A,C);</TT></DIV><DIV CLASS="center"><TT>angleenbrut(A,B,C,0.2i) </TT></DIV><P>
-On obtient si on a coché <TT>radian</TT> dans la configuration du 
-<TT>cas</TT> (bouton donnant la ligne d’état) :
-</P><DIV CLASS="center"><TT>atan(1/3) s’écrit au point(0.4i)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>hyperbole(-i,i,1/2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>L’hyperbole de foyers -i, i et de demi-grand axe 1/2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>hyperbole(x</TT><CODE><TT>^</TT></CODE><TT>2+2*y</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+ou on tape :
+</P><DIV CLASS="center"><TT>hyperbole(sqrt(6)/2,-sqrt(6)/2,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>L’hyperbole de centre 0 et de demi-grand axe 1 et de foyers sqrt(6)/2 et -sqrt(6)/2</TT></DIV><HR>
 <A HREF="cascmd_fr943.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr945.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

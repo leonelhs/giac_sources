@@ -6,45 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le triangle équilatèral : equilateral_triangle triangle_equilateral</TITLE>
+<TITLE>Le vecteur en géométrie plane : segment</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr907.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr909.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1067">10.10.5</A>  Le triangle équilatèral : <TT>equilateral_triangle</TT> <TT>triangle_equilateral</TT></H3><P><A NAME="@default1758"></A><A NAME="@default1759"></A><A NAME="sec:trianglequi2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1017.html#sec:trianglequi3">11.7.4</A> pour la géométrie 3-d.<BR>
-<TT>triangle_equilateral</TT>, en géométrie plane, a deux ou trois
-arguments.<BR>
-Description des arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si il a deux arguments, ce sont: 2 points ou 2 nombres complexes 
-représentant l’affixe de ces points (ou encore une liste de 2 points ou de 
-2 complexes).<BR>
-<TT>triangle_equilateral(A,B)</TT> renvoie et trace le triangle 
-équilatéral direct <I>ABC</I> mais sans définir le point <I>C</I>. 
+<H3 CLASS="subsection"><A NAME="htoc1067">10.9.4</A>  Le vecteur en géométrie plane : <TT>segment</TT></H3><P><A NAME="@default1770"></A><A NAME="sec:segvect"></A>
+<TT>segment</TT> peut aussi dessiner un vecteur en géométrie plane.<BR>
+<TT>segment</TT> a alors comme premier argument l’origine du vecteur qui est un 
+point ou un nombre complexe ou la liste des coordonnées d’un point et comme 
+deuxième argument la liste des coordonnées du vecteur.<BR>
+<TT>segment</TT> renvoie et trace le vecteur défini par les deux arguments.<BR>
+<TT>segment([xM,yM],[xN,yN])</TT> trace le vecteur d’origine [xM,yM] de coordonnées
+[xN,yN] (i.e le segment(M,point(M+N)).<BR>
 On tape :
-<DIV CLASS="center"><TT>equilateral_triangle(0,2)</TT></DIV>
+</P><DIV CLASS="center"><TT>segment([-1,0],[1,1])</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>le triangle équilatèral de sommets les points d’affixe 0,2,1+i*sqrt(3)</TT></DIV>
-Pour définir le troisième sommet <I>C</I>, on peut donner un nom 
-au triangle (par exemple <I>T</I>) et utiliser la commande <TT>sommets(T)</TT> qui 
-renvoie la liste des sommets de <I>T</I>. 
-On définira alors <TT>C:= sommets(T)[2]</TT> mais il est plus simple de rajouter
-<I>C</I> le nom du dernier sommet comme troisième argument.<BR>
-</LI><LI CLASS="li-itemize">si il a trois arguments, le dernier argument est le nom d’une 
-variable qui servira à définir et à tracer le troisième sommet avec sa 
-légende.
+</P><DIV CLASS="center"><TT>Le segment d’origine le point(-1) et d’extrémité le point([-1,0]+[1,1])=point([0,1])</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>equilateral_triangle(0,2,C)</TT></DIV>
+</P><DIV CLASS="center"><TT>A:=[-1,0];B:=[1,1];segment(A,B-A)</TT></DIV><P>
+ou en posant <TT>C:=B-A</TT>
+</P><DIV CLASS="center"><TT>A:=[-1,0];C:=[2,1];segment(A,C)</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>A:=[-1,0];C:=[2,1];segment(A,point(-1,0]+[2,1])</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>le triangle équilatèral de sommets les points d’affixe 0,2,1+i*sqrt(3)</TT></DIV>
+</P><DIV CLASS="center"><TT>Le segment d’origine le point(A) et d’extrémité le point(B)=point(A+C)</TT></DIV><P>
+<B>Remarque</B> On peut aussi utiliser la commande <TT>vecteur</TT><BR>
 On tape :
-<DIV CLASS="center"><TT>normal(affixe(C))</TT></DIV>
+</P><DIV CLASS="center"><TT>A:=[-1,0];C:=[2,1];vecteur(A,C)</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>1+i*sqrt(3)</TT></DIV>
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>Le vecteur d’origine le point(A) et d’extrémité le point(B)=point(A+C)(segment AB avec une flèche)</TT></DIV><HR>
 <A HREF="cascmd_fr907.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr909.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

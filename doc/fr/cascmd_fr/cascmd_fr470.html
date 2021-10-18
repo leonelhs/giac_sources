@@ -6,46 +6,47 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour accéder aux bornes d’une plage de valeurs : left gauche right droit</TITLE>
+<TITLE>Développement de Taylor d’une fonction de plusieurs variables : series taylor</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr469.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr471.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc566">6.37.2</A>  Pour accéder aux bornes d’une plage de valeurs : <TT>left gauche right droit</TT></H3><P><A NAME="@default835"></A><A NAME="@default836"></A><A NAME="@default837"></A><A NAME="@default838"></A><A NAME="@default839"></A><A NAME="@default840"></A> <A NAME="@default841"></A><A NAME="@default842"></A>
-<TT>left</TT> (resp <TT>right</TT>) a comme argument un intervalle.<BR>
-<TT>left</TT> (resp <TT>right</TT>) permet d’accéder à la partie 
-gauche (resp droite) de l’intervalle.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>(3..5)[0]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>sommet(3..5)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>’..’</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>left(3..5)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>(3..5)[1]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>feuille(3..5)[0]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>op(3..5)[0]</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>right(3..5)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>(2..5)[2]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>feuille(3..5)[1]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>op(3..5)[1]</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>5</TT></DIV><P>
-<B>Remarque</B><BR>
-<TT>left</TT> et <TT>right</TT> permettent aussi d’accéder aux membres d’une 
-équation (par exemple <TT>left(2*x+1=x+2)</TT> renvoie <TT>2*x+1</TT>).</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc566">6.37.4</A>  Développement de Taylor d’une fonction de plusieurs variables : <TT>series taylor</TT></H3><P><A NAME="@default844"></A><A NAME="@default845"></A> 
+On peut avoir le développement de Taylor d’ordre <I>p</I> d’une fonction 
+<I>f</I>(<I>x</I><SUB>1</SUB>,..<I>x</I><SUB><I>n</I></SUB>) au voisinage de <I>a</I><SUB>1</SUB>,..<I>a</I><SUB><I>n</I></SUB> avec <TT>series</TT>. 
+Pour avoir le développement de Taylor d’ordre <I>p</I> d’une fonction 
+<I>f</I>(<I>x</I><SUB>1</SUB>,..<I>x</I><SUB><I>n</I></SUB>) au voisinage de <I>a</I><SUB>1</SUB>,..<I>a</I><SUB><I>n</I></SUB> avec <TT>taylor</TT> on se ramène à une variable en posant :<BR>
+<I>x</I><SUB><I>j</I></SUB>=<I>a</I><SUB><I>j</I></SUB>+<I>ht</I> pour <I>j</I>=1..<I>n</I> et<BR>
+ en définissant la fonction :<BR>
+<I>g</I>(<I>t</I>)=<I>f</I>(<I>a</I><SUB>1</SUB>+<I>h</I><SUB>1</SUB>*<I>t</I>,...<I>a</I><SUB><I>n</I></SUB>+<I>h</I><SUB><I>n</I></SUB>*<I>t</I>).<BR>
+On a alors :<BR>
+<I>g</I>(1)−<I>g</I>(0)=<I>f</I>(<I>a</I><SUB>1</SUB>+<I>h</I><SUB>1</SUB>,...<I>a</I><SUB><I>n</I></SUB>+<I>h</I><SUB><I>n</I></SUB>)−<I>f</I>(<I>a</I><SUB>1</SUB>,...<I>a</I><SUB><I>n</I></SUB>)<BR>
+On développe <I>g</I> à l’ordre <I>p</I> au voisinage de <I>t</I>=0.<BR>
+On transforme ce développement en un polynôme puis on remplace <I>t</I> par 1 et 
+<I>h</I><SUB><I>j</I></SUB> par <I>x</I><SUB><I>j</I></SUB>−<I>a</I><SUB><I>j</I></SUB>. Il faut ensuite rajouter le reste.<BR>
+Dans ce cas les 2 commandes <TT>series</TT> et <TT>taylor</TT> sont utilisables.<BR>
+Prenons comme exemple le développement à l’ordre 3 de la fonction de 2 
+variables <I>f</I>(<I>x</I>,<I>y</I>)=<I>y</I><SUP>2</SUP>/<I>x</I><SUP>3</SUP> au voisinage de (1,−1).<BR>
+On tape :<BR>
+<TT>f(x,y):=y</TT><CODE><TT>^</TT></CODE><TT>2/x</TT><CODE><TT>^</TT></CODE><TT>3</TT><BR>
+<TT>series(f(x,y),[x,y],[1,-1],3)</TT><BR>
+On obtient :<BR>
+<TT>1-2*(y+1)-3*(x-1)+(y+1)</TT><CODE><TT>^</TT></CODE><TT>2+6*(x-1)*(y+1)+6*(x-1)</TT><CODE><TT>^</TT></CODE><TT>2-3*(x-1)*(y+1)</TT><CODE><TT>^</TT></CODE><TT>2-12*(x-1)</TT><CODE><TT>^</TT></CODE><TT>2*(y+1)-10*(x-1)</TT><CODE><TT>^</TT></CODE><TT>3</TT><BR>
+Ou bien on tape :<BR>
+<TT>g(t):=f(1+h*t,-1+k*t)</TT><BR>
+<TT>series(g(t),t=0,3,polynom)(t=1)</TT> ou<BR>
+<TT>taylor(g(t),t=0,3,polynom)(t=1)</TT><BR>
+On obtient une expression de <I>h</I> et <I>k</I> où <I>h</I>=<I>x</I>−1 et <I>k</I>=<I>y</I>+1.<BR>
+:<BR>
+<TT>1-3*h-2*k+6*h</TT><CODE><TT>^</TT></CODE><TT>2+k</TT><CODE><TT>^</TT></CODE><TT>2+6*h*k-10*h</TT><CODE><TT>^</TT></CODE><TT>3-3*h*k</TT><CODE><TT>^</TT></CODE><TT>2-12*h</TT><CODE><TT>^</TT></CODE><TT>2*k</TT><BR>
+On tape :<BR>
+<TT>(1-3*h-2*k+6*h</TT><CODE><TT>^</TT></CODE><TT>2+k</TT><CODE><TT>^</TT></CODE><TT>2+6*h*k-10*h</TT><CODE><TT>^</TT></CODE><TT>3-3*h*k</TT><CODE><TT>^</TT></CODE><TT>2-12*h</TT><CODE><TT>^</TT></CODE><TT>2*k)(h=x-1,k=y+1])</TT><BR>
+On obtient le premier résultat :<BR>
+<TT>1+1-2*y-3*x+1-4*y+y</TT><CODE><TT>^</TT></CODE><TT>2-6*x+6*x*y+6*x</TT><CODE><TT>^</TT></CODE><TT>2+1-6*y+3*y</TT><CODE><TT>^</TT></CODE><TT>2- 9*x+18*x*y-3*x*y</TT><CODE><TT>^</TT></CODE><TT>2+18*x</TT><CODE><TT>^</TT></CODE><TT>2-12*x</TT><CODE><TT>^</TT></CODE><TT>2*y-10*x</TT><CODE><TT>^</TT></CODE><TT>3</TT><BR>
+Il faut dans les 2 cas rajouter le reste qui vaut :<BR>
+(<I>h</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP>)<SUP>3/2</SUP>*є(<I>h</I>,<I>k</I>) avec є(<I>h</I>,<I>k</I>)−&gt;0 quand <I>h</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP>−&gt;0</P><HR>
 <A HREF="cascmd_fr469.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr471.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

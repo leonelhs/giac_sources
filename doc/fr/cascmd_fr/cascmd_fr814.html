@@ -6,63 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction testant le type de son argument: type</TITLE>
+<TITLE>Généralités</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr813.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr815.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc959">9.4.4</A>  Fonction testant le type de son argument: <TT>type</TT></H3><P><A NAME="@default1446"></A>
-<A NAME="@default1447"></A><A NAME="@default1448"></A><A NAME="@default1449"></A><A NAME="@default1450"></A><A NAME="@default1451"></A><A NAME="@default1452"></A><A NAME="@default1453"></A><A NAME="@default1454"></A><A NAME="@default1455"></A>
-<TT>type</TT> est une fonction qui a un argument et qui renvoie le
-type de cet argument par exemple :<BR>
- <TT>DOM_FLOAT,DOM_INT,DOM_COMPLEX,..,DOM_IDENT,DOM_LIST,<BR>
-DOM_SYMBOLIC,DOM_RAT,..DOM_SYMBOLIC,DOM_STRING</TT>.<BR>
-Il y a 20 types différents qui sont représentés par un entier entre 1 
-et 20.<BR>
-<TT>type</TT> permet de tester une erreur d’entrée.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>type(3.14)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>DOM_FLOAT</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>type(3.14)+0</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>type(3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>DOM_INT</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>type(3)+0</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>type(3% 5)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>15</TT></DIV><P><B>Remarque : utilisation de type pour les graphes</B><BR>
-voir aussi <A HREF="index.html#sec:plot">3</A><BR>
-Si le graphe dépend d’une fonction utilisateur, il faut que la fonction soit 
-définie même lorsque le(s) paramètre(s) a (ont) une valeur formelle, ce 
-qui peut se faire en testant le type du paramètre, comme dans l’exemple 
-suivant, <I>f</I> est définie en testant du type du paramètre par :
-</P><PRE CLASS="verbatim">f(x):= {
-  if (type(x)==DOM_IDENT) return 'f'(x); 
-  while(x&gt;0){ x--; } 
-  return x; 
-}:;
-</PRE><P>Ainsi <TT>f(x)</TT> renvoie <TT>f(x)</TT> et <TT>f(3.1)</TT> renvoie <TT>-0.9</TT>.<BR>
-ou bien<BR>
-</P><PRE CLASS="verbatim">g(x):= {   
-  if (type(x)!=DOM_LIST) return 'g'(x); 
-  if (type(x)==DOM_IDENT) return 'g'(x); 
-  while(x[0]&gt;0){x[0]:=x[0]-1; } 
-  return x; 
-}:;
-</PRE><P>Ainsi <TT>g(x)</TT> renvoie <TT>g(x)</TT>, <TT>g([x,y,z])</TT> renvoie <TT>g([x,y,z])</TT>
-et <TT>g([1.1,2,3])</TT> renvoie <TT>[-0.9,2,3]</TT>.<BR>
-Par exemple si <TT>G:=plotfunc(g(x)</TT>, le test permet d’utiliser le graphe <TT>G</TT> de <TT>g</TT> dans des commandes comme <TT>translation(1+i,G)</TT>...
+<H3 CLASS="subsection"><A NAME="htoc955">8.5.1</A>  Généralités</H3><P>
+Concernant une variable aléatoire <I>X</I>, on veut comparer la valeur effective
+d’un paramètre <I>p</I> à une valeur attendue <I>p</I><SUB>0</SUB>. Il s’agit de savoir si la
+valeur observée sur un échantillon est vraisemblable avec <I>p</I>=<I>p</I><SUB>0</SUB><BR>
+<B>Test statistique</B> : procédure conduisant au vu de léchantillon à
+rejeter, avec un certain risque d’erreur une hypothèse que l’on cherche à
+tester appelée <I>H</I><SUB>0</SUB>. La procédure de test est fondée sur une opposition
+d’hypothèses et on note <I>H</I><SUB>1</SUB> l’hypothèse alternative.<BR>
+<B>Test bilatéral</B> : test pour lequel l’hypothèse <I>H</I><SUB>0</SUB> est rejetée,
+si la statistique utilisée prend une valeur en dehors d’un intervalle.
+<B>Test unilatéral à droite</B> : test pour lequel l’hypothèse <I>H</I><SUB>0</SUB> est
+rejetée, si la statistique utilisée prend une valeur inférieure à une
+valeur.<BR>
+<B>Test unilatéral à gauche</B> : test pour lequel l’hypothèse <I>H</I><SUB>0</SUB> est
+rejetée, si la statistique utilisée prend une valeur supérieure à une
+valeur.<BR>
+<B>Construction d’un test</B> :<BR>
+- choix des hypothèses <I>H</I><SUB>0</SUB> et <I>H</I><SUB>1</SUB>,<BR>
+- choix d’une variable statistique <I>S</I> servant de variable de décision<BR>
+- détermination de la région critique au seuil α,<BR>
+- énonce de la règle de décision.<BR>
+<B>Utilisation du test</B> :<BR>
+- prélèvement d’un échantillon,<BR>
+- au vu de la valeur observée de <I>S</I>, on rejete ou on accepte <I>H</I><SUB>0</SUB>.
 </P><HR>
 <A HREF="cascmd_fr813.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

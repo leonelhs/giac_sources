@@ -6,21 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Complément à 1 de la fonction de répartition de la loi du χ2 : UTPC</TITLE>
+<TITLE>Fonction de répartition de Poisson : poisson_cdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr764.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr766.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc904">8.4.22</A>  Complément à 1 de la fonction de répartition de la loi du χ<SUP>2</SUP> : <TT>UTPC</TT></H3><P><A NAME="@default1367"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi du χ<SUP>2</SUP> ayant <I>n</I> degrés
-de liberté,
-on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPC(n,x)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc905">8.4.9</A>  Fonction de répartition de Poisson : <TT>poisson_cdf</TT></H3><P><A NAME="@default1374"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi de Poisson de 
+paramètre <TT>mu</TT>, c’est à dire de moyenne <TT>mu</TT> et d’écart-type 
+<TT>mu</TT>, on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>x</I>)=<TT>poisson_cdf( mu,x)</TT> avec <I>X</I>∈ <FONT COLOR=red><I>P</I></FONT>(<I>mu</I>). et<BR>
+<I>Proba</I>(<I>x</I>1≤ <I>X</I> ≤ <I>x</I>2)=<TT>poisson_cdf(mu,x1,x2)=<BR>
+poisson_cdf(mu,x1)+...+poisson_cdf(mu,x2)</TT> c’est à dire :<BR>
+<TT>poisson_cdf(mu,x1,x2)=poisson_cdf(mu,x2)-poisson_cdf(mu,x1-1)</TT><BR>
+<TT>poisson_cdf(mu,x)</TT> est la fonction de répartition de 
+la loi de Poisson de paramètre <TT>mu</TT>,
 On tape :
-</P><DIV CLASS="center"><TT>UTPC(5,11)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>poisson_cdf(10.0,3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0513799834831</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.0103360506759</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>poisson_cdf(10.0,3,10)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.572703699517</TT></DIV><HR>
 <A HREF="cascmd_fr764.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr766.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

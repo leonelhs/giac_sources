@@ -6,43 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Utilisation des instructions du debuggeur : cont halt kill</TITLE>
+<TITLE>Définir une fonction ayant un nombre variable d’arguments : args</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr856.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr858.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1005">9.7.9</A>  Utilisation des instructions du debuggeur : <TT>cont halt kill</TT></H3><P>
-Les instructions <TT>cont halt kill</TT> n’ont pas d’arguments.<BR>
-<TT>cont halt kill</TT> sont des instructions du debuggeur (voir ci-dessus).<BR>
-<TT>cont()</TT> et <TT>kill()</TT> s’utilisent uniquement dans une session de 
-debogage, quand le programme est arrêté. Typiquement, <TT>kill()</TT> 
-s’utilise quand on a vu où se trouve l’erreur, et que on va savoir corriger 
-le programme, et qu’il est donc inutile de continuer l’exécution du programme
-buggué.<BR>
-<TT>cont()</TT> s’utilise pour atteindre le point d’arrêt suivant.<BR>
-<TT>halt()</TT> peut être mis comme instruction dans le programme pour 
-programmer un point d’arrêt (cela évite de faire une commande 
-<TT>breakpoint</TT> avec un numéro de ligne)
-Par exemple on tape :
-</P><PRE CLASS="verbatim">testhalt(x):={
-  local y; 
-  y:=x;  
-  halt();  
-  return(y);  
-}
-</PRE><P>On tape :
-</P><DIV CLASS="center"><TT>debug(testhalt(5))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>l’ouverture du debuggeur et l’arrêt du programme</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1005">9.6.1</A>  Définir une fonction ayant un nombre variable d’arguments : <TT>args</TT></H3><P><A NAME="@default1563"></A>
+<TT>args</TT> ou <TT>args(NULL)</TT> renvoie la liste des arguments d’une 
+fonction sous forme d’une liste :
+l’élément d’indice <TT>0</TT> est la fonction, les suivants sont les
+arguments passés à la fonction.
+Cela permet de travailler avec des fonctions ayant un nombre d’arguments
+non fixé a l’avance.<BR>
+<B>Remarque</B> on ne peut pas mettre <TT>args()</TT> mais <TT>args</TT> ou 
+<TT>args(NULL)</TT> (<TT>NULL</TT> est obligatoire) 
+on peut aussi utiliser <TT>(args)[0]</TT> pour désigner la fonction, 
+<TT>(args)[1]</TT> pour désigner le nom du premier argument... mais il ne 
+faut pas oublier les parenthèses autour de <TT>args</TT>!<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cont() pour continuer le debugage ou kill() pour l’arrêter</TT></DIV><P>
-<B>Attention</B><BR>
-Si on tape juste <TT>testhalt(5)</TT> sans mettre <TT>debug</TT>, le debuggeur 
-s’ouvre mais, la liste des instructions formant le programme n’est pas
-affichée donc il vaut mieux faire <TT>debug(testhalt(5))</TT> puis enlever 
-les <TT>halt()</TT> quand le programme est au point.</P><HR>
+</P><DIV CLASS="center"><TT>testargs():={ local y; y:=args; return y[1];}</TT></DIV><DIV CLASS="center"><TT>testargs(12,5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>12</TT></DIV><P>
+On tape :
+</P><PRE CLASS="verbatim">somme():={
+ local s,a;
+ a:=args;
+ s:=0;
+ for (k:=1;k&lt;size(a);k++){
+ s:=s+a[k];
+ }
+ return s;
+ }
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>somme(1,2,3,4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>10</TT></DIV><HR>
 <A HREF="cascmd_fr856.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr858.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

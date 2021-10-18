@@ -6,22 +6,59 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Factorisation dans ℤ/pℤ[x] : factor factoriser</TITLE>
+<TITLE>Calcul de an mod p ou de A(x)n mod P(x),p:
+powmod powermod</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr449.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr451.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc543">6.34.14</A>  Factorisation dans ℤ/<I>p</I>ℤ[<I>x</I>] : <TT>factor factoriser</TT></H3><P><A NAME="@default807"></A><A NAME="@default808"></A>
-<TT>factor</TT> a comme argument un polynôme à coefficients dans 
-ℤ/<I>p</I>ℤ.<BR>
-<TT>factor</TT> factorise ce polynôme dans ℤ/<I>p</I>ℤ[<I>x</I>] (<I>p</I> doit être 
-premier).<BR>
+<H3 CLASS="subsection"><A NAME="htoc544">6.35.10</A>  Calcul de <I>a</I><SUP><I>n</I></SUP> mod <I>p</I> ou de <I>A</I>(<I>x</I>)<SUP><I>n</I></SUP> mod <I>P</I>(<I>x</I>),<I>p</I>:
+<TT>powmod powermod</TT></H3><P><A NAME="@default813"></A><A NAME="@default814"></A>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Pour calculer dans [0;<I>p</I>−1] 
+<I>a</I><SUP><I>n</I></SUP> mod <I>p</I> on utilise la commande <TT>powmod</TT>
+ou <TT>powermod</TT> avec comme argument <I>a</I>,<I>n</I>,<I>p</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>factor((-3*x</TT><CODE><TT>^</TT></CODE><TT>3+5*x</TT><CODE><TT>^</TT></CODE><TT>2-5*x+4)% 13)</TT></DIV><P>
+<DIV CLASS="center"><TT>powmod(5,21,13)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>((1% 13)*x+-6% 13)*((-3% 13)*x</TT><CODE><TT>^</TT></CODE><TT>2+-5% 13)</TT></DIV><HR>
+<DIV CLASS="center"><TT>5</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>powmod(5,21,8)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>5</TT></DIV>
+</LI><LI CLASS="li-itemize">Pour calculer <I>A</I>(<I>x</I>)<SUP><I>n</I></SUP> mod <I>P</I>(<I>x</I>),<I>p</I> avec en réponse un polynôme
+à coefficients dans ℤ (qui seront des restes symétriques de division par
+<I>p</I>), on utilise la commande <TT>powmod</TT>
+ou <TT>powermod</TT> avec comme argument <I>A</I>(<I>x</I>),<I>n</I>,<I>p</I>,<I>P</I>(<I>x</I>).
+</LI></UL><P>
+On tape :
+</P><DIV CLASS="center"><TT>powmod(x+1,17,5,x</TT><CODE><TT>^</TT></CODE><TT>4+x+1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On a en effet :<BR>
+</P><DIV CLASS="center"><TT>rem((x+1)</TT><CODE><TT>^</TT></CODE><TT>17,x</TT><CODE><TT>^</TT></CODE><TT>4+x+1)</TT></DIV><P>
+qui renvoie :<BR>
+<TT>29144*x</TT><CODE><TT>^</TT></CODE><TT>3+36519*x</TT><CODE><TT>^</TT></CODE><TT>2+12270*x-4185</TT>
+et<BR>
+<TT>(29144*x</TT><CODE><TT>^</TT></CODE><TT>3+36519*x</TT><CODE><TT>^</TT></CODE><TT>2+12270*x-4185)% 5</TT>
+qui renvoie :<BR>
+<TT>(-1 % 5)*x</TT><CODE><TT>^</TT></CODE><TT>3+(-1 % 5)*x</TT><CODE><TT>^</TT></CODE><TT>2</TT><BR>
+et<BR>
+<TT>((-1 % 5)*x</TT><CODE><TT>^</TT></CODE><TT>3+(-1 % 5)*x</TT><CODE><TT>^</TT></CODE><TT>2)% 0</TT><BR>
+ qui renvoie :<BR>
+<TT>-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2</TT><BR>
+<B>Remarque</B> (cf section <A HREF="cascmd_fr449.html#sec:powZp">6.35.9</A>)<BR>
+Si on peut calculer une puissance dans ℤ/<I>p</I>ℤ on tape par exemple :<BR>
+:
+</P><DIV CLASS="center"><TT>(5% 13)</TT><CODE><TT>^</TT></CODE><TT>21)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>5% 13</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>(5% 8)</TT><CODE><TT>^</TT></CODE><TT>21)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-3% 8</TT></DIV><HR>
 <A HREF="cascmd_fr449.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr451.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

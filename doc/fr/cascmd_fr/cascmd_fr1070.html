@@ -6,23 +6,59 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le prisme : prism prisme</TITLE>
+<TITLE>La symétrie par rapport à un plan, une droite ou un point : reflection symetrie</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1069.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1071.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1256">11.16.4</A>  Le prisme : <TT>prism prisme</TT></H3><P><A NAME="@default2066"></A><A NAME="@default2067"></A>
-<TT>prisme</TT> a comme argument une liste de points <TT>[A,B,C,D...]</TT> 
-d’un même plan et un point <TT>A1</TT>.<BR>
-<TT>prisme([A,B,C,D,..],A1)</TT> dessine un prisme de base le polygone 
-<TT>A,B,C,D...</TT> et de arêtes parallèles à <TT>AA1</TT> (les faces sont des 
-parallélogrammes).<BR>
+<H3 CLASS="subsection"><A NAME="htoc1255">11.14.3</A>  La symétrie par rapport à un plan, une droite ou un point : <TT>reflection symetrie</TT></H3><P><A NAME="@default2076"></A><A NAME="@default2077"></A><A NAME="sec:symetrie3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr974.html#sec:symetrie2">10.17.3</A> pour la géométrie plane.<BR>
+<TT>symetrie</TT>, en géométrie 3-d, a un ou deux arguments : un
+point ou une droite ou un plan et éventuellement l’objet géométrique à 
+transformer.<BR>
+Lorsque <TT>symetrie</TT> a un argument, c’est une fonction qui agit sur un 
+objet géométrique : quand le premier argument est un point il s’agit de la 
+symétrie par rapport à ce point, quand le premier argument est une droite 
+il s’agit de la symétrie par rapport à cette droite et quand le premier 
+argument est un plan il s’agit de la symétrie par rapport à ce plan.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>prisme([[0,0,0],[5,0,0],[0,5,0],[-5,5,0]],[0,0,5])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>s:=symetrie(point(1,1,1))</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>s(point(-1,2,4))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>un prisme de base un parallélogramme et d’arrêtes verticales</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le point (3,0,-2) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sd:=symetrie(droite([1,1,0],[-1,-3,0]))</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>sd(point(-1,2,4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,-4) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sp:=symetrie(plan([1,1,0],[-1,-3,0],[1,1,1]))</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>sp(point(-1,2,4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,4) est tracé</TT></DIV><P>
+Lorsque <TT>symetrie</TT> a deux arguments, <TT>symetrie</TT> dessine et renvoie le 
+transformé du deuxième argument dans la symétrie définie par le 
+premier argument : quand le premier argument est un point il s’agit de la 
+symétrie par rapport à ce point, quand le premier argument est une droite 
+il s’agit de la symétrie par rapport à cette droite et quand le premier 
+argument est un plan il s’agit de la symétrie par rapport à ce plan.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>symetrie(point(1,1,1),point(-1,2,4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,-2) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>symetrie(droite([1,1,0],[-1,-3,0]),point(-1,2,4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,-4) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>sp:=symetrie(plan([1,1,0],[-1,-3,0],[1,1,1]),point(-1,2,3))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (3,0,4) est tracé</TT></DIV><HR>
 <A HREF="cascmd_fr1069.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1071.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

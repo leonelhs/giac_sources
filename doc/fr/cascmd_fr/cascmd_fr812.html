@@ -6,62 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les entrées : input, saisir, Input, InputStr, saisir_chaine, textinput</TITLE>
+<TITLE>Chaine de Markov : markov</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr811.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr813.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc957">9.4.2</A>  Les entrées : <TT>input, saisir, Input, InputStr, saisir_chaine, textinput</TT></H3><P><A NAME="@default1439"></A><A NAME="@default1440"></A><A NAME="@default1441"></A><A NAME="@default1442"></A><A NAME="@default1443"></A><A NAME="@default1444"></A>
-<TT>input, saisir, Input</TT> permettent de saisir des expressions et 
-<TT>InputStr, saisir_chaine, textinput</TT> permettent de saisir des chaines de
-caractères.
-<TT>input, saisir, Input</TT> et <TT>InputStr, saisir_chaine, textinput</TT> ont 
-comme argument le nom d’une variable (resp une séquence de noms de variables)
-ou une chaîne de caractères (chaîne donnant à l’utilisateur des 
-indications sur la valeur à entrer) et le nom d’une variable (resp une 
-séquence de chaînes 
-de caractères et une séquence de noms de variables).<BR>
-<TT>input, saisir, Input</TT> et InputStr, saisir_chaine, textinput ouvrent une
-fenêtre où on peut entrer la valeur de la variable donnée comme argument 
-et où on retrouve, comme légende, la chaîne de caractères mise dans 
-l’argument (si on la mise!!!).<BR>
-Avec <TT>input, Input, saisir</TT> on peut entrer des nombres ou des chaînes de 
-caractères (il faut alors mettre "...") ou des noms de variables 
-(sans mettre "...").<BR>
-Avec <TT>InputStr, textinput, saisir_chaine</TT> on ne peut entrer que des 
-chaînes de caractères, mais on n’a donc pas besoin de mettre "...".<BR>
+<H3 CLASS="subsection"><A NAME="htoc952">8.4.56</A>  Chaine de Markov : <TT>markov</TT></H3><P><A NAME="@default1443"></A>
+<TT>markov(M)</TT> calcule des éléments caractéristiques d’une 
+matrice de transition d’une chaine de Markov <TT>M</TT>.<BR>
+<TT>markov(M)</TT> renvoie la liste des suites d’états
+récurrents positifs, la liste des probabilités stationnaires 
+correspondantes, la liste des autres composantes fortement connexes, la liste 
+des probabilités de finir sur les états récurrents positifs.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>input(a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>input("a=?",a)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>markov([[0,0,1/2,0,1/2],[0,0,1,0,0],[1/4,1/4,0,1/4,1/4], [0,0,1/2,0,1/2],[0,0,0,0,1]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer la valeur de </TT><TT>a</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>12 dans cette fenêtre puis OK</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>a+3</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>15</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>input("polynome",p,"valeur",a)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer les valeurs de </TT><TT>p</TT><TT> avec la légende "polynome" et de </TT><TT>a</TT><TT> avec la légende "valeur"</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>InputStr(a)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>InputStr("reponse=",a)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>une fenêtre où on peut entrer la valeur de </TT><TT>a</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>12 dans cette fenêtre puis OK</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>a+3</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>123</TT></DIV><P>
-car <TT>a</TT> est la chaîne de catractères <TT>"12"</TT> et le <TT>"+"</TT> 
-concaténe les deux chaînes <TT>"12"</TT> et <TT>"3"</TT>.</P><HR>
+</P><DIV CLASS="center"><TT>[[4]],[[0,0,0,0,1]],[[3,1,2,0]],[[1],[1],[1],[1],[1]]</TT></DIV><HR>
 <A HREF="cascmd_fr811.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr813.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

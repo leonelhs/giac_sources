@@ -6,55 +6,45 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le rectangle dans l’espace : rectangle</TITLE>
+<TITLE>Plan et droites parallèles : parallel parallele</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1198">11.8.3</A>  Le rectangle dans l’espace : <TT>rectangle</TT></H3><P><A NAME="@default1978"></A><A NAME="sec:rectangle3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr912.html#sec:rectangle2">10.11.4</A> pour la géométrie plane.<BR>
-<TT>rectangle</TT>, en géométrie 3-d, peut avoir de trois à cinq 
-arguments.<BR>
-Les arguments sont :<BR>
-- si il a trois arguments ce sont : 2 points (les 2 sommets du rectangle) et 
-le troisième argument est soit un point <I>P</I> soit la
-liste formée par un point <I>P</I> et un nombre réel <I>k</I> non nul.<BR>
-Le point <I>P</I> définit le plan du rectangle et l’orientation de ce plan.<BR>
-<TT>rectangle(A,B,P)</TT> renvoie et trace dans le plan <I>ABP</I>, le rectangle 
-<I>ABCD</I> tel que :<BR>
-<I>AD</I>=<I>AP</I> et (<I>AB</I>,<I>AD</I>)=π/2, 
-mais sans définir les points <I>C</I> et <I>D</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1196">11.5.6</A>  Plan et droites parallèles : <TT>parallel parallele</TT></H3><P><A NAME="@default1989"></A><A NAME="@default1990"></A><A NAME="sec:parallele3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr911.html#sec:parallele2">10.9.7</A> pour la géométrie plane.<BR>
+<TT>parallele</TT>, en géométrie 3-d, renvoie et dessine une droite 
+ou un plan selon ses arguments. Si ses arguments sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+un point <I>A</I> et 1 droites <I>d</I>, <TT>parallele(A,d)</TT> renvoie et dessine la
+droite parallèle à la droite <I>d</I> passant par le point <I>A</I>,
+</LI><LI CLASS="li-itemize">une droite <I>dd</I> et une droite <I>d</I> non parallèles <TT>parallele(dd,d)</TT>
+renvoie et dessine le plan parallèle à la droite <I>d</I> passant par la 
+droite <I>dd</I>, 
+</LI><LI CLASS="li-itemize">un point <I>A</I> et un plan <I>P</I>, <TT>parallele(A,P)</TT>
+renvoie et dessine le plan parallèle au plan <I>P</I> passant par le point <I>A</I>,
+</LI><LI CLASS="li-itemize">un point <I>A</I> et 2 droites <I>d</I> et <I>dd</I> non parallèles,
+<TT>parallele(A,d,dd)</TT> renvoie et dessine le plan parallèle aux droites <I>d</I> 
+et <I>dd</I> passant par le point <I>A</I>.<BR>
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>rectangle(A,B,P)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>parallele(point(1,1,1),droite(point(0,0,0),point(0,0,1)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le rectangle de sommets </TT></DIV><P><TT>rectangle(A,B,[P,k])</TT> renvoie et trace dans le plan <I>ABP</I>, le rectangle 
-<I>ABCD</I> tel que :<BR>
-<I>AD</I>=|<I>k</I>|*<I>AB</I> et (<I>AB</I>,<I>AD</I>)=(<I>k</I>/|<I>k</I>|)*π/2, 
-mais sans définir les points <I>C</I> et <I>D</I>.<BR>
+</P><DIV CLASS="center"><TT>La droite d’équation x=1,y=1 est tracée</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>rectangle(A,B,[P,1/2])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>parallele(droite(point(1,0,0),point(0,1,0)),droite(point(0,0,0),point(0,0,1)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le rectangle de sommets </TT></DIV><P>
-- si il a cinq arguments, les 2 derniers paramètres sont les noms de deux 
-variables qui serviront à définir les 2 derniers sommets.<BR>
+</P><DIV CLASS="center"><TT>Le plan d’équation x+y-1=0 est tracé</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>rectangle(A,B,P,C,D)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>parallele(point(0,0,0),plan(point(1,0,0),point(0,1,0),point(0,0,1)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le rectangle de sommets </TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le plan d’équation x+y+z=0 est tracé</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(C))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>parallele(point(1,1,1),droite(point(0,0,0),point(0,0,1)),droite(point(1,0,0),point(0,1,0)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[(-sqrt(6)+6)/2,(-sqrt(6)+6)/2,sqrt(6)+3]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>simplify(coordonnees(D))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[(-(sqrt(6)))/2,(-(sqrt(6)))/2,sqrt(6)]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le plan d’équation x+y=2 est tracée</TT></DIV><HR>
 <A HREF="cascmd_fr1019.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1021.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

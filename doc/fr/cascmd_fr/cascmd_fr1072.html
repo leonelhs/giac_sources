@@ -6,26 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les sommets : sommets</TITLE>
+<TITLE>L’homothétie : homothety homothetie</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1071.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1073.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1258">11.16.6</A>  Les sommets : <TT>sommets</TT></H3><P><A NAME="@default2070"></A>
-<TT>sommets</TT> a comme argument un <TT>polyedre</TT>.<BR>
-Dans un niveau de géométrie 3d, <TT>sommets</TT> dessine et renvoie la liste des sommets du polyèdre.<BR>
-Dans une ligne de commande, <TT>sommets</TT> dessine les sommets du polyèdre.<BR>
- Un sommet est un vecteur de ℝ<SUP>3</SUP>.<BR>
-On tape dans un niveau de géométrie 3d :
-</P><DIV CLASS="center"><TT>sommets(polyedre([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1257">11.14.5</A>  L’homothétie : <TT>homothety homothetie</TT></H3><P><A NAME="@default2079"></A><A NAME="@default2080"></A><A NAME="sec:homothetie3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr976.html#sec:homothetie2">10.17.5</A> pour la géométrie plane.<BR>
+<TT>homothetie</TT>, en géométrie 3-d, a deux ou trois arguments  :
+un point (le centre de l’homothétie), un réel (la valeur du rapport de 
+l’homothétie) et éventuellement l’objet géométrique à transformer.<BR>
+Lorsque <TT>homothetie</TT> a deux arguments, c’est une fonction qui agit sur 
+un objet géométrique.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>h:=homothetie(point(0,0,0),2)</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>h(point(0,0,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le dessin des sommets et dans l’historique on a les coordonnées de ces sommets [-2,0,0]</TT></DIV><P>
-On tape dans un niveau de géométrie 3d :
-</P><DIV CLASS="center"><TT>sommets(polyedre([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))[1]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point (0,0,2) est tracé</TT></DIV><P>
+Lorsque <TT>homothetie</TT> a trois arguments, <TT>homothetie</TT> dessine et 
+renvoie le transformé du troisième argument dans l’homothétie de centre
+le premier argument et de rapport le deuxième argument.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>homothetie(point(0,0,0),2,point(0,0,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le dessin d’un sommet et dans l’historique on a les coordonnées de ce sommets [-2,0,0]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le point (0,0,2) est tracé</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>homothetie(point(0,0,0),2,sqhere(point(0,0,0),1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>La sphère de centre (0,0,0) et de rayon 2</TT></DIV><HR>
 <A HREF="cascmd_fr1071.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1073.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

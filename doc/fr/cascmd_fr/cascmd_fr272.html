@@ -6,52 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour réécrire les résultats selon son choix : autosimplify</TITLE>
+<TITLE>Développer et simplifier : normal</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr271.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr273.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc345">6.14.18</A>  Pour réécrire les résultats selon son choix : <TT>autosimplify</TT></H3><P><A NAME="@default456"></A>
-<TT>autosimplify</TT> a pour argument une commande (comme <TT>factor</TT>, 
-<TT>simplify</TT> ...) qui sera utilisée pour réécrire les résultats dans 
-<TT>Xcas</TT> (la valeur de l’argument de <TT>autosimplify</TT> au lancement est 
-<TT>regroup</TT>).<BR>
-Si on ne veut pas de simplifications automatique il faudra taper au début de 
-la session : <TT>autosimplify(nop)</TT>.<BR>
-Si on veut changer le mode de simplification en cours de session il faudra que
-le nouveau <TT>autosimplify(...)</TT> se trouve seul sur une ligne. 
-On tape en début de session : 
-</P><DIV CLASS="center"><TT>autosimplify(1)</TT></DIV><P>
-ou 
-</P><DIV CLASS="center"><TT>autosimplify(regroup)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc345">6.14.16</A>  Développer et simplifier : <TT>normal</TT></H3><P><A NAME="@default456"></A>
+<TT>normal</TT> a comme paramètre une expression.<BR>
+<TT>normal</TT> renvoie l’expression développée et simplifiée.<BR>
+On tape : 
+</P><DIV CLASS="center"><TT>normal(x+3*x+5*4/x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(4*x</TT><CODE><TT>^</TT></CODE><TT>2+20)/x</TT></DIV><P> 
+On tape : 
+</P><DIV CLASS="center"><TT>normal((x-1)*(x+1))</TT></DIV><P>
 On obtient :
 </P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT></DIV><P> 
-On tape sur une ligne : 
-</P><DIV CLASS="center"><TT>autosimplify(factor)</TT></DIV><P>
-Puis on tape : 
-</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x-1)*(x+1)</TT></DIV><P> 
+<B>Attention</B> <TT>normal</TT> est moins efficace que <TT>simplify</TT> et on est 
+quelquefois obligé de faire plusieurs fois la commande <TT>normal</TT>.<BR>
 On tape : 
-</P><DIV CLASS="center"><TT>autosimplify(nop)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>autosimplify()</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>autosimplify(0)</TT></DIV><P>
-Puis on tape : 
-</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal(3-54*sqrt(1/162))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>(-9*sqrt(2)+9)/3</TT></DIV><P>
 On tape : 
-</P><DIV CLASS="center"><TT>autosimplify(regroup)</TT></DIV><P>
-Puis on tape : 
-</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
-On obtient comme en début de session :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>normal((-9*sqrt(2)+9)/3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-(3*sqrt(2))+3</TT></DIV><HR>
 <A HREF="cascmd_fr271.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr273.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

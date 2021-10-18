@@ -6,39 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Rassembler les termes de même nature : combine</TITLE>
+<TITLE>Tableau de valeurs et graphe : tablefunc table_fonction et plotfunc</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr313.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr315.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc396">6.23.2</A>  Rassembler les termes de même nature : <TT>combine</TT></H3><P><A NAME="@default581"></A><A NAME="@default582"></A><A NAME="@default583"></A><A NAME="@default584"></A><A NAME="@default585"></A><A NAME="@default586"></A><A NAME="@default587"></A>
-<TT>combine</TT> a deux arguments : une expression <TT>Xpr</TT> et une 
-option <TT>exp,log,ln,sin,cos,trig</TT> le nom d’une classe de fonction.<BR>
-<TT>combine</TT> rassemble les termes de l’expression contenant cette fonction.<BR>
-<TT>combine(Xpr,ln)</TT> ou <TT>combine(Xpr,log)</TT> donne le même résultat 
-que <TT>lncollect(Xpr)</TT><BR>
-<TT>combine(Xpr,trig)</TT> ou <TT>combine(Xpr,sin)</TT> ou <TT>combine(Xpr,cos)</TT>
-donne le même résultat que <TT>tcollect(Xpr)</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),exp)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>exp(x+y)+sin(x)*cos(x)+ln(x)+ln(y)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),trig)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),sin)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),cos)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>exp(y)*exp(x)+(sin(2*x))/2+ln(x)+ln(y)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),ln)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>combine(exp(x)*exp(y)+sin(x)*cos(x)+ln(x)+ln(y),log)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>exp(x)*exp(y)+sin(x)*cos(x)+ln(x*y)</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc395">6.22.2</A>  Tableau de valeurs et graphe : <TT>tablefunc table_fonction</TT> et <TT>plotfunc</TT></H3><P><A NAME="@default582"></A> <A NAME="@default583"></A><A NAME="@default584"></A> 
+On peut avoir, dans le tableur, les différentes valeurs d’une expression 
+<I>f</I>(<I>x</I>) pour <I>x</I>=<I>x</I><SUB>0</SUB>, <I>x</I><SUB>0</SUB>+<I>h</I>,...., grâce à la commande :<BR>
+<TT><I>tablefunc</I>(<I>f</I>(<I>x</I>),<I>x</I>,<I>x</I></TT><SUB><TT>0</TT></SUB><TT>,<I>h</I>)</TT> ou <TT><I>tablefunc</I>(<I>f</I>(<I>x</I>),<I>x</I>)</TT>.<BR>
+ Dans ce cas les
+valeurs de départ <TT><I>x</I></TT><SUB><TT>0</TT></SUB> et le pas <TT><I>h</I></TT>, valent par défaut :
+<TT><I>x</I></TT><SUB><TT>0</TT></SUB><TT>=-5.0</TT> et <TT><I>h</I>=1.0</TT>.<BR>
+On ouvre un tableur avec <TT>Alt+t</TT>.<BR>
+Puis, on sélectionne une case du tableur (par exemple <TT>C0</TT>) et pour 
+avoir une table de <TT>"sinus"</TT>, on tape, dans la ligne de commande du 
+tableur : 
+</P><DIV CLASS="center"><TT>tablefunc(sin(x),x)</TT></DIV><P>
+On obtient deux colonnes <TT>x</TT> et <TT>sin(x)</TT> :<BR>
+- dans la colonne <TT>x</TT> il y a la valeur du pas <TT>h</TT> (1.0) et le départ
+de l’évaluation numérique (-5.0), puis une formule, par exemple 
+<TT>=C2+C$1</TT> qui a été recopiée vers le bas.<BR>
+- dans la colonne <TT>sin(x)</TT> il y a 
+<TT>"Tablefunc"</TT> puis une formule, par exemple <TT>=evalf(subst(D$0,C$0,C2))</TT>, qui a été aussi recopiée vers le bas.<BR>
+Les valeurs de <TT>sin(x)</TT> s’affichent alors en face des <TT>x</TT> 
+correspondants.<BR>
+On peut bien sûr changer le pas ou la valeur de départ ou encore remplacer 
+<TT>sin(x)</TT> par <TT>cos(x)</TT> en changeant la valeur de la cellule 
+correspondante.<BR>
+La représentation graphique se fait avec la commande :<BR>
+<TT>plotfunc</TT> pour cela voir <A HREF="cascmd_fr086.html#sec:plotfunc">3.7.1</A>.</P><HR>
 <A HREF="cascmd_fr313.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr315.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

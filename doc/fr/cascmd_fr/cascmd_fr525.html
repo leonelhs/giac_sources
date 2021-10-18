@@ -6,37 +6,66 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Nombre d’éléments supérieurs à une valeur : count_sup</TITLE>
+<TITLE>Trier une liste selon l’ordre croissant : SortA et sorta</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr524.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr526.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc625">6.41.30</A>  Nombre d’éléments supérieurs à une valeur : <TT>count_sup</TT></H3><P><A NAME="@default928"></A><A NAME="@default929"></A>
-<A NAME="@default930"></A>
-<TT>count_sup</TT> a deux paramètres : une nombre et une liste 
-réelle (ou une matrice réelle) et dans le cas où le deuxième 
-paramètre est une matrice, un argument optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
-<TT>count_sup</TT> renvoie le nombre d’éléments de la liste 
-(ou de la matrice) qui sont strictement supérieurs au premier argument. 
-Dans le cas où il y a un argument 
-optionnel <TT>row</TT> (resp <TT>col</TT>) <TT>count_sup</TT> agit sur chacune des 
-lignes (resp colonnes) de la matrice et renvoie alors une liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc626">6.42.23</A>  Trier une liste selon l’ordre croissant : <TT>SortA et sorta</TT></H3><P><A NAME="@default930"></A><A NAME="@default931"></A>
+<B>Attention</B> <TT>SortA</TT> et <TT>sorta</TT> ne sont pas des synonymes : 
+<TT>SortA</TT> s’utilise avec la syntaxe TI i.e. sans avoir besoin
+de mettre des parenthèses et modifie la valeur de l’argument alors que 
+<TT>sorta</TT> s’utilise comme des fonctions normales de <TT>Xcas</TT> (parenthèses
+obligatoires et sans changer l’argument !).<BR>
+<TT>SortA</TT> ou <TT>sorta</TT> a comme argument une liste, une séquence ou une 
+matrice.<BR>
+<TT>SortA</TT> ou <TT>sorta</TT> renvoie la liste ou la séquence triée selon 
+l’ordre croissant.<BR>
+Si l’argument est une matrice, <TT>SortA</TT> ou <TT>sorta</TT> trie la 1-ière 
+ligne de la matrice selon l’ordre croissant, et reporte les manœuvres de 
+tri de la 1-ière ligne sur les autres lignes c’est à dire le tri conserve 
+les colonnes de la matrice.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>count_sup(12,[2,12,45,3,7,78])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>count_sup(12,[[2,12,45],[3,7,78]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sorta([3,4,2])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortA([3,4,2])</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>SortA [3,4,2]</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>SortA 3,4,2</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[2,3,4]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>count_sup(12,[[2,12,45],[3,7,78]],row)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sorta([[3,4,2],[6,4,5]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortA([[3,4,2],[6,4,5]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortA [[3,4,2],[6,4,5]]</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SortA [3,4,2],[6,4,5]</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,1]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[2,3,4],[5,6,4]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>count_sup(12,[[2,12,45],[3,7,78]],col)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=[[3,4,2],[6,4,5]]</TT></DIV><DIV CLASS="center"><TT>SortA(A)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0,0,2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[2,3,4],[5,6,4]]</TT></DIV><P>
+et maintenant <TT>A</TT> vaut <TT>[[2,3,4],[5,6,4]]</TT>
+Mais, on tape :
+</P><DIV CLASS="center"><TT>A:=[[3,4,2],[6,4,5]]</TT></DIV><DIV CLASS="center"><TT>sorta(A)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[2,3,4],[5,6,4]]</TT></DIV><P>
+et maintenant <TT>A</TT> vaut toujours <TT>[[3,4,2],[6,4,5]]</TT></P><P><B>Attention</B>
+La syntaxe sans parenthèse peut vous jouer des tours !<BR>
+Par exemple, on tape :<BR>
+<TT>L1:=[1,3,2];L2:=[2,3,1];</TT><BR>
+<TT>SortA L1,SortA L2</TT><BR>
+On obtient la matrice !:
+<TT>[[1,2,3],[3,2,1]]</TT><BR>
+qui est le résultat de :<BR>
+<TT>SortA(L1,SortA(L2))</TT>
+</P><HR>
 <A HREF="cascmd_fr524.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr526.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,24 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Chaine de Markov : markov</TITLE>
+<TITLE>Fonction de répartition de la loi de exponentielle : exponential_cdf exponentiald_cdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr798.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr800.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc938">8.4.56</A>  Chaine de Markov : <TT>markov</TT></H3><P><A NAME="@default1418"></A>
-<TT>markov(M)</TT> calcule des éléments caractéristiques d’une 
-matrice de transition d’une chaine de Markov <TT>M</TT>.<BR>
-<TT>markov(M)</TT> renvoie la liste des suites d’états
-récurrents positifs, la liste des probabilités stationnaires 
-correspondantes, la liste des autres composantes fortement connexes, la liste 
-des probabilités de finir sur les états récurrents positifs.<BR>
+<H3 CLASS="subsection"><A NAME="htoc939">8.4.43</A>  Fonction de répartition de la loi de exponentielle : <TT>exponential_cdf exponentiald_cdf</TT></H3><P><A NAME="@default1425"></A><A NAME="@default1426"></A>
+Lorsqu’une variable aléatoire <I>X</I> à valeur dans ℝ<SUP>+</SUP> suit une loi 
+exponentielle de paramètre λ &gt;0 on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>exponential_cdf(lambda,x)</TT> avec <I>x</I>≥ 0.<BR>
+<I>Proba</I>(<I>x</I>≤ <I>X</I>≤ <I>y</I>)=<TT>exponential_cdf(lambda,x,y)</TT> avec <I>x</I>≥ 0 et <I>y</I>≥ 0.<BR>
+On a :<BR>
+<TT>exponential_cdf(lambda,x)</TT> est égale à 
+ 1−exp(−<I>x</I>) et<BR>
+<TT>exponential_cdf(lambda,x,y)</TT> est égale à :<BR>
+ exp(−<I>x</I>)−exp(−<I>y</I>)<BR>
 On tape :
-</P><DIV CLASS="center"><TT>markov([[0,0,1/2,0,1/2],[0,0,1,0,0],[1/4,1/4,0,1/4,1/4], [0,0,1/2,0,1/2],[0,0,0,0,1]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>exponential_cdf(2.3,3.2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4]],[[0,0,0,0,1]],[[3,1,2,0]],[[1],[1],[1],[1],[1]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.99936380154</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>exponential_cdf(2.3,0.9)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.873814218295</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>exponential_cdf(2.3,0.9,3.2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.125549583246</TT></DIV><HR>
 <A HREF="cascmd_fr798.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr800.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

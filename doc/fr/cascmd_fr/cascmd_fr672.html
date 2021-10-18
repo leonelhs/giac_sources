@@ -6,28 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice d’un système : syst2mat</TITLE>
+<TITLE>Le rotationnel : curl</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr671.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr673.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc792">6.61.1</A>  Matrice d’un système : <TT>syst2mat</TT></H3><P><A NAME="@default1216"></A>
-<TT>syst2mat</TT> a comme argument un vecteur contenant un système 
-d’équations linéaires et un vecteur contenant les variables.<BR>
-<TT>syst2mat</TT> écrit le système <I>AX</I>=<I>B</I> sous la forme d’une matrice 
-formée de <I>A</I> bordée à droite par −<I>B</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc791">6.60.5</A>  Le rotationnel : <TT>curl</TT></H3><P><A NAME="@default1221"></A>
+<TT>curl</TT> a deux paramètres : une expression <I>F</I> dependant de 
+3 variables rèelles et un vecteur de dimension
+3 indiquant le nom de ces variables.<BR>
+<TT>curl</TT> désigne le rotationnel de <I>F</I>.<BR>
+<B>Attention</B>, ici <I>n</I>=3.<BR>
+On a :<BR>
+<TT>curl([A,B,C],[x,y,z])</TT>= [∂ <I>C</I>/∂ <I>y</I>−∂ <I>B</I>/∂ <I>z</I>, ∂ <I>A</I>/∂ <I>z</I>−∂ <I>C</I>/∂ <I>x</I>, ∂ <I>B</I>/∂ <I>x</I>−∂ <I>A</I>/∂ <I>y</I>].<BR>
 On tape :
-</P><DIV CLASS="center"><TT>syst2mat([x+y,x-y-2],[x,y])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>curl([x*z,-y</TT><CODE><TT>^</TT></CODE><TT>2,2*x</TT><CODE><TT>^</TT></CODE><TT>y],[x,y,z])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,1,0],[1,-1,-2]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>syst2mat([x+y=0,x-y=2],[x,y])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,1,0],[1,-1,-2]]</TT></DIV><P>
-<B>Attention !!!</B><BR>
- Il faut purger auparavant les variables (ici <TT>x</TT> et <TT>y</TT>).</P><HR>
+</P><DIV CLASS="center"><TT>[2*x</TT><CODE><TT>^</TT></CODE><TT>y*log(x),x-2*y*x</TT><CODE><TT>^</TT></CODE><TT>(y-1),0]</TT></DIV><HR>
 <A HREF="cascmd_fr671.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr673.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

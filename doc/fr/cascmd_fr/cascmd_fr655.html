@@ -6,88 +6,40 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Réduction d’une conique : conique_reduite 
-reduced_conic</TITLE>
+<TITLE>Valeurs singulières (compatible HP) : SVL svl</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr654.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr656.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc772">6.58.7</A>  Réduction d’une conique : <TT>conique_reduite<BR>
-reduced_conic</TT></H3><P><A NAME="@default1185"></A><A NAME="@default1186"></A> 
-<TT>conique_reduite</TT> a un ou deux arguments : l’expression d’une 
-conique et le vecteur de composantes les variables utilisées si il est 
-différent de <TT>[x,y]</TT>.<BR>
-<TT>conique_reduite</TT> renvoie une liste d’éléments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-l’origine de la conique,
-</LI><LI CLASS="li-itemize">la matrice d’un repère dans lequel
-la conique est réduite,
-</LI><LI CLASS="li-itemize">0 ou 1 pour savoir si la conique est dégénérée
-ou pas,
-</LI><LI CLASS="li-itemize">l’équation réduite de la conique dans ce repère,
-</LI><LI CLASS="li-itemize">un vecteur contenant son équation paramétrique ou ses équations 
-paramétriques lorsque la conique est composée de plusieurs nappes.<BR>
-</LI></UL><P> 
+<H3 CLASS="subsection"><A NAME="htoc772">6.58.7</A>  Valeurs singulières (compatible HP) : <TT>SVL svl</TT></H3><P><A NAME="@default1195"></A><A NAME="@default1196"></A>
+<TT>SVL</TT> ou <TT>svl</TT> a comme argument une matrice carrée numérique d’ordre 
+<I>n</I>.<BR>
+<TT>SVL(A)</TT> renvoie les valeurs singulières de <I>A</I>.<BR>
+Les valeurs singulières de <I>A</I> sont les racines carrées positives des 
+valeurs propres de <I>A</I>*<I>trn</I>(<I>A</I>). Ainsi lorsque <I>A</I> est symétrique, les valeurs 
+singulières de <I>A</I> sont les valeurs absolues de ses valeurs propres.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>conique_reduite(2*x</TT><CODE><TT>^</TT></CODE><TT>2+2*x*y+2*y</TT><CODE><TT>^</TT></CODE><TT>2+5*x+3,[x,y])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>SVL([[1,2],[3,4]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>svl([[1,2],[3,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[-5/3,5/6],[[-1/(sqrt(2)),1/(sqrt(2))],[-1/(sqrt(2)),
--1/(sqrt(2))]],1,3*x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2+-7/6,[[(-10+5*i)/6+(1/(sqrt(2))+
-(i)/(sqrt(2)))*((sqrt(14)*cos(‘ t‘))/6+
-((i)*sqrt(42)*sin(t))/6),t,0,2*pi,(2*pi)/60]]]</TT></DIV><P>
-La conique n’est pas dégénérée et a pour équation réduite :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">3<I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>−7/6=0 </TD></TR>
-</TABLE><P> 
-dans le repère d’origine −5/3+5*<I>i</I>/6 et d’axes parallèles
-aux vecteurs (−1,1) et (−1,−1).<BR>
-Son équation paramétrique est :<BR>
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">−10+5*<I>i</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
-</TABLE></TD><TD CLASS="dcell">+
-</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">(1+<I>i</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">*</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">(</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>14</TD></TR>
-</TABLE></TD><TD CLASS="dcell">*<I>cos</I>(<I>t</I>)+<I>i</I>*</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>42</TD></TR>
-</TABLE></TD><TD CLASS="dcell">*<I>sin</I>(<I>t</I>))</TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-et pour le dessin, le paramètre <I>t</I> varie de 0 à 2π avec un pas
-<TT>tstep</TT>=2π/60.</P><P><B>Remarque</B> :<BR>
- Lorsque la conique est dégénérée en 1 ou 2 droite(s), chaque droite 
-n’est pas donné par son équation paramétrique mais par la liste 
-constituée par un vecteur normal à la droite et un point de la droite.<BR>
+</P><DIV CLASS="center"><TT>[0.365966190626,5.46498570422]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>conique_reduite(x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2+3*x+y+2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>evalf(sqrt(eigenvals([[1,2],[3,4]]*[[1,3],[2,4]])))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[(-3)/2,1/2],[[1,0],[0,1]],0,x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2,
-[[(-1+2*i)/(1-i),(1+2*i)/(1-i)], [(-1+2*i)/(1-i),(-1)/(1-i)]]]</TT></DIV><P>On obtient :<BR>
-<TT>(2*sqrt(5*23297</TT><CODE><TT>^</TT></CODE><TT>2*126757</TT><CODE><TT>^</TT></CODE><TT>*21302293</TT><CODE><TT>^</TT></CODE><TT>2))/62906903119301897</TT><BR>
-Soit :<BR>
-<TT>2*sqrt(5)</TT><BR>
-On tape :<BR>
-<TT>H1:=projection(D1,M)</TT><BR>
-<TT>longueur(M,F1)/longueur(M,H1)</TT><BR>
-On obtient :<BR>
-<TT>(2</TT><CODE><TT>^</TT></CODE><TT>14*3*13*17*89*311*521*563*769*2609*<BR>
-sqrt(2*3*49409</TT><CODE><TT>^</TT></CODE><TT>2*112249</TT><CODE><TT>^</TT></CODE><TT>2*126757</TT><CODE><TT>^</TT></CODE><TT>2*<BR>
-21302293</TT><CODE><TT>^</TT></CODE><TT>2*568000439</TT><CODE><TT>^</TT></CODE><TT>2*6789838247809</TT><CODE><TT>^</TT></CODE><TT>2))/<BR>
-(2</TT><CODE><TT>^</TT></CODE><TT>14*3</TT><CODE><TT>^</TT></CODE><TT>2*13*17*89*311*521*563*769*<BR>
-2609*49409*112249*126757*21302293*568000439*6789838247809)</TT><BR>
-Soit :<BR>
-<TT>(sqrt(6))/3</TT>
-</P><HR>
+</P><DIV CLASS="center"><TT>[5.46498570422,0.365966190626]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>SVL([[1,4],[4,1]])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>svl([[1,4],[4,1]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[5.0,3.0]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>abs(eigenvals([[1,4],[4,1]]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[5,3]</TT></DIV><HR>
 <A HREF="cascmd_fr654.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr656.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,140 +6,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Extraire un ou des élément(s) d’une matrice : at</TITLE>
+<TITLE>Multiplication de deux matrices : * &amp;*</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr569.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr571.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc677">6.48.1</A>  Extraire un ou des élément(s) d’une matrice : <TT>at</TT></H3><P><A NAME="@default1039"></A>
-Un matrice est une liste de listes de même longueur.<BR>
-On tape : 
-</P><DIV CLASS="center"><TT>A:=[[3,4,5],[1,2,6]]</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[3,4,5],[1,2,6]]</TT></DIV><UL CLASS="itemize"><LI CLASS="li-itemize">
-Pour obtenir un élément, on met deux arguments entre des crochets :
-l’indice de la ligne et l’indice de la colonne séparé par une virgule si 
-on veut que les indices commencent à 0.<BR>
- On tape :
-<DIV CLASS="center"><TT>[[3,4,5],[1,2,6]][1,2]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>A[1,2]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>A[1][2]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>at(A,[1,2])</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>6</TT></DIV>
-<B>Ou bien</B>
-On tape des doubles crochets ou des parenthèses si on veut que les indices 
-commencent à 1 :
-<DIV CLASS="center"><TT>[[3,4,5],[1,2,6]][[1,2]]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>A[[1,2]]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>A[[1]][[2]]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>[[3,4,5],[1,2,6]](1,2)</TT></DIV>
-ou<DIV CLASS="center"><TT>A(1,2)</TT></DIV>
-ou
-<DIV CLASS="center"><TT>A(1)(2)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>4</TT></DIV></LI><LI CLASS="li-itemize">Pour obtenir une ligne de la matrice <TT>A</TT>, on met l’indice de la 
-ligne entre des crochets, on tape:
-<DIV CLASS="center"><TT>[[3,4,5],[1,2,6]][1]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>A[1]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>at(A,1)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[1,2,6]</TT></DIV>
-<B>Ou bien</B>
-Si on veut que les indices commencent à 1, on tape des doubles crochets ou 
-des parenthèses :
-<DIV CLASS="center"><TT>[[3,4,5],[1,2,6]][[1]]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>A[[1]]</TT></DIV>
-ou 
-<DIV CLASS="center"><TT>[[3,4,5],[1,2,6]](1)</TT></DIV>
-ou
-<DIV CLASS="center"><TT>A(1)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[3,4,5]</TT></DIV>
-</LI><LI CLASS="li-itemize">Pour obtenir une sous-ligne de la matrice <TT>A</TT>, on met deux arguments 
-entre des crochets : l’indice de la ligne et un 
-intervalle pour désigner les indices des colonnes formant la sous-ligne.<BR>
- On tape :
-<DIV CLASS="center"><TT>A[1,0..2]</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[1,2,6]</TT></DIV>
+<H3 CLASS="subsection"><A NAME="htoc677">6.48.3</A>  Multiplication de deux matrices : <TT>* &amp;*</TT></H3><P><A NAME="@default1048"></A><A NAME="@default1049"></A>
+La multiplication de deux matrices se fait à l’aide de 
+l’opérateur infixé <TT>*</TT> (ou <TT>&amp;*</TT>).<BR>
 On tape :
-<DIV CLASS="center"><TT>A[1,1..2]</TT></DIV>
+</P><DIV CLASS="center"><TT>[[1,2],[3,4]] * [[5,6],[7,8]]</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>[[1,2],[3,4]] &amp;* [[5,6],[7,8]]</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>[2,6]</TT></DIV>
-</LI><LI CLASS="li-itemize">Pour obtenir, sous la forme d’une liste, une colonne de la matrice 
-<TT>A</TT>, on utilise <TT>tran(A)</TT> qui désigne la transposée de <TT>A</TT> et 
-on tape l’indice de la colonne entre des crochets si les indices commencent 
-à 0 :
-<DIV CLASS="center"><TT>tran([[3,4,5],[1,2,6]])[[1]]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>tran(A)[1]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>at(tran(A),1)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[4,2]</TT></DIV>
-<B>Ou bien</B>
-On tape l’indice de la colonne entre des doubles crochets ou des parenthèses
-si on veut que les indices commencent à 1 :
-<DIV CLASS="center"><TT>tran([[3,4,5],[1,2,6]])[[1]]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>tran(A)[[1]]</TT></DIV>
-ou
-<DIV CLASS="center"><TT>tran([[3,4,5],[1,2,6]])(1)</TT></DIV>
-ou
-<DIV CLASS="center"><TT>tran(A)(1)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[3,1]</TT></DIV><P>ou encore on met deux arguments entre des crochets : un intervalle pour 
-désigner toutes les lignes et l’indice de la colonne.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>A[0..1,1]</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[4,2]</TT></DIV></LI><LI CLASS="li-itemize">Pour avoir une liste représentant une sous-colonne, on met deux 
-arguments entre des crochets : un intervalle pour 
-désigner les indices des lignes formant la sous-colonne et l’indice de la 
-colonne.<BR>
-On tape :
-<DIV CLASS="center"><TT>A[0..0,1]</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[4]</TT></DIV>
-Cela peut être utiliser pour extraire une colonne, en mettant comme premier 
-indice, l’intervalle désignant toutes les lignes.<BR>
-On tape :
-<DIV CLASS="center"><TT>A[0..1,1]</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[4,2]</TT></DIV></LI><LI CLASS="li-itemize">Pour extraire une sous-matrice d’une matrice, on met deux arguments entre
-des crochets : un intervalle pour désigner les lignes et un intervalle pour 
-désigner les colonnes.<BR>
-On définit la matrice <TT>A</TT>, on tape :
-<DIV CLASS="center"><TT>A:=[[3,4,5],[1,2,6]]</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>A[0..1,1..2]</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[[4,5],[2,6]]</TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>A[0..1,1..1]</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[[4],[2]]</TT></DIV>
-<B>Remarque</B><BR>
-Si on veut une sous matrice constituée de lignes consécutives complètes,
-on peut ommettre le deuxième argument et ne mettre que l’intervalle 
-pour désigner les lignes entre des crochets.<BR>
-On tape :
-<DIV CLASS="center"><TT>A[1..1]</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[[1,2,6]]</TT></DIV>
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>[[19,22],[43,50]]</TT></DIV><HR>
 <A HREF="cascmd_fr569.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr571.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

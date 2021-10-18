@@ -6,34 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Compter les éléments ayant une valeur donnée : count_eq</TITLE>
+<TITLE>Multiplier une ligne par une expression : mRow et scale SCALE</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr588.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr590.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc698">6.50.2</A>  Compter les éléments ayant une valeur donnée : <TT>count_eq</TT></H3><P><A NAME="@default1071"></A><A NAME="@default1072"></A><A NAME="@default1073"></A>
-<TT>count_eq</TT> a deux ou trois paramètres : un réel et une 
-matrice (ou une liste) réelle et éventuellement un paramètre 
-optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
-<TT>count_eq</TT> renvoie le nombre d’éléments de la matrice (ou de la liste)
-qui sont égaux au premier argument.<BR>
-Si il y a <TT>row</TT> (resp <TT>col</TT>) comme troisième paramètre 
-<TT>count_eq</TT> agit sur chaque ligne (resp colonne) de la matrice et renvoie 
-une liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc698">6.50.8</A>  Multiplier une ligne par une expression : <TT>mRow</TT> et <TT>scale SCALE</TT></H3><P><A NAME="@default1072"></A><A NAME="@default1073"></A><A NAME="@default1074"></A>
+<TT>mRow</TT> a trois arguments : une expression, une matrice <I>A</I> et un 
+entier <I>n</I>.<BR>
+<TT>scale</TT> (ou <TT>SCALE</TT>) a trois arguments : une matrice <I>A</I>, une expression
+et un entier <I>n</I>.<BR>
+<B>Attention à l’ordre des arguments !</B><BR>
+<TT>mRow</TT> et <TT>scale</TT> (ou <TT>SCALE</TT>)
+renvoie la matrice obtenue en remplacant dans <I>A</I> la ligne <I>n</I>
+par la multiplication de la ligne <I>n</I> par l’expression.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>count_eq(12,[[2,12,45],[3,7,78]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>mRow(12,[[1,2],[3,4]],1)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>scale([[1,2],[3,4]],12,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>count_eq(12,[[2,12,45],[3,7,78]],row)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1,0]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>count_eq(12,[[2,12,45],[3,7,78]],col)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0,1,0]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1,2],[36,48]]</TT></DIV><HR>
 <A HREF="cascmd_fr588.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr590.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

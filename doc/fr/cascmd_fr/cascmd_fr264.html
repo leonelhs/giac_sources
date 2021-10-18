@@ -6,29 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Séparation des variables : split</TITLE>
+<TITLE>Forme canonique : canonical_form</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr263.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr265.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc337">6.14.10</A>  Séparation des variables : <TT>split</TT></H3><P><A NAME="@default441"></A>
-<TT>split</TT> a deux arguments : une expression dépendant de deux 
-variables et la liste de ces deux variables.<BR>
-Si l’expression est factorisable avec deux facteurs qui ne dependent chacun que
-d’une des 2 variables, <TT>split</TT> renvoie une liste formée par ces deux 
-facteurs et sinon renvoie la liste <TT>[0]</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc337">6.14.8</A>  Forme canonique : <TT>canonical_form</TT></H3><P><A NAME="@default440"></A>
+<TT>canonical_form</TT> a comme paramètre un trinôme du second degré que 
+l’on veut mettre sous la forme canonique.<BR>
+Exemple :<BR>
+Mettre sous la forme canonique:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>2</SUP>−6<I>x</I>+1</TD></TR>
+</TABLE><P>
 On tape :
-</P><DIV CLASS="center"><TT>split((x+1)*(y-2),[x,y])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>split(x*y-2*x+y-2,[x,y])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[x+1,y-2]</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>split(x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2-1,[x,y])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>canonical_form(x</TT><CODE><TT>^</TT></CODE><TT>2-6*x+1)</TT></DIV><P>
+On trouve :
+</P><DIV CLASS="center"><TT>(x-3)</TT><CODE><TT>^</TT></CODE><TT>2-8</TT></DIV><HR>
 <A HREF="cascmd_fr263.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr265.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

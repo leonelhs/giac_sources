@@ -6,38 +6,21 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Ligne polygonale : listplot plotlist</TITLE>
+<TITLE>Regroupement de termes : accumulate_head_tail</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr719.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr721.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc857">8.2.7</A>  Ligne polygonale : <TT>listplot plotlist</TT></H3><P><A NAME="@default1290"></A><A NAME="@default1291"></A>
-<TT>listplot</TT> ou <TT>plotlist</TT> a pour argument une liste <TT>l</TT> ou 
-une matrice ayant deux colonnes.<BR>
-<TT>listplot</TT> ou <TT>plotlist</TT> permet de visualiser les segments reliant le 
-nuage de points ayant 
-pour abscisse <TT>[0,1,2...n]</TT> et pour ordonnée <TT>l</TT> ou pour coordonnées
-une ligne de la matrice. <TT>listplot</TT> ou <TT>plotlist</TT> relie par des 
-segments de droites, les différents points du nuage, mais sans réordonner 
-les points contrairement à <TT>polygonplot</TT> qui réordonne les points 
-selon leur abscisse puis les relie.<BR>
+<H3 CLASS="subsection"><A NAME="htoc857">8.1.11</A>  Regroupement de termes : <TT>accumulate_head_tail</TT></H3><P><A NAME="@default1296"></A>
+<TT>accumulate_head_tail</TT> permet de regrouper les premiers termes et les derniers termes d’une liste en les remplacant par leur somme.<BR>
+Les paramètres sont la liste, le nombre de termes que l’on regroupe au 
+début de la liste et le nombre de termes l’on regroupe en fin de la liste.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>listplot([0,1,4,9,16])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>listplot([[0,0],[1,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
-La fenêtre graphique s’ouvre automatiquement et on obtient à condition d’avoir défini correctement la configuration du graphique (menu <TT>Cfg</TT>) :
-</P><DIV CLASS="center"><TT>le dessin des 5 points ((0,0),(1,1),...(4,16)) reliés par 4 segments</TT></DIV><P> 
-On tape si <I>A</I> est une matrice ayant 5 lignes et 2 colonnes :
-</P><DIV CLASS="center"><TT>A:=[[0,0],[1,1],[5,4],[3,9],[4,16]]</TT></DIV><DIV CLASS="center"><TT>listplot(A[0..4,0..1])</TT></DIV><P>
-La fenêtre graphique s’ouvre automatiquement et on obtient :
-</P><DIV CLASS="center"><TT>les 5 points reliés par 4 segments</TT></DIV><P> 
-<B>Bien voir</B> la différence entre :
-</P><DIV CLASS="center"><TT>listplot([[0,0],[1,1],[5,4],[3,9],[4,16]])</TT></DIV><DIV CLASS="center"><TT>polygonplot([[0,0],[1,1],[5,4],[3,9],[4,16]])</TT></DIV><P>
-<B>Attention</B><BR>
-<TT>listplot([0,1,2,3,4],[0,1,4,9,16])</TT> ou<BR>
-<TT>listplot([[0,1,2,3,4],[0,1,4,9,16]])</TT> n’est pas valide !</P><HR>
+</P><DIV CLASS="center"><TT>accumulate_head_tail([0,1,1,0,2,2,3,3,4,3,1,1],4,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,2,2,3,3,4,3,2]</TT></DIV><HR>
 <A HREF="cascmd_fr719.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr721.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

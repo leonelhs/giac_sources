@@ -6,52 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynôme minimal d’un nombre algébrique : pmin</TITLE>
+<TITLE>Barycentre de complexes : barycenter barycentre</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr253.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr255.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc326">6.13.2</A>  Polynôme minimal d’un nombre algébrique : <TT>pmin</TT></H3><P><A NAME="@default427"></A>
-<TT>pmin</TT> a comme argument <TT>a</TT> un nombre algébrique réel 
-(resp complexe).<BR>
-<TT>pmin</TT> renvoie le polynôme de plus petit degré ayant comme coefficients 
-des entiers qui admet <TT>a</TT> comme racine.<BR>
+<H3 CLASS="subsection"><A NAME="htoc325">6.12.10</A>  Barycentre de complexes : <TT>barycenter barycentre</TT></H3><P><A NAME="@default427"></A><A NAME="@default428"></A><A NAME="sec:baryc"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr900.html#sec:barycentre2">10.8.10</A> et <A HREF="cascmd_fr1014.html#sec:barycentre3">11.4.7</A>.<BR>
+<TT>barycentre</TT> a comme argument soit des listes de longueur 2 :
+chaque liste représente un point <I>A</I><SUB><I>j</I></SUB> ou l’affixe <I>a</I><SUB><I>j</I></SUB> d’un point suivi 
+par un coefficient réel α<SUB><I>j</I></SUB>, soit une matrice ayant deux colonnes : la
+première colonne contient des points <I>A</I><SUB><I>j</I></SUB> ou des nombres complexes <I>a</I><SUB><I>j</I></SUB> 
+représentant l’affixe de ces points et la deuxième colonne contient des 
+coefficients réels α<SUB><I>j</I></SUB>.<BR>
+<TT>barycentre</TT> renvoie le point ou l’affixe du point qui est le barycentre 
+des points <I>A</I><SUB><I>j</I></SUB> d’affixes <I>a</I><SUB><I>j</I></SUB> affectés des coefficients réels α<SUB><I>j</I></SUB> 
+lorsque ∑α<SUB><I>j</I></SUB> ≠ 0. Si ∑α<SUB><I>j</I></SUB>=0, <TT>barycentre</TT> renvoie 
+une erreur.<BR>
+<B>Attention</B> pour avoir un nombre complexe il faut demander l’affixe du 
+barycentre, sinon vous avez le tracé du point barycentre dans l’écran 
+géométrique.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+sqrt(3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>affixe(barycentre([1+i,2],[1-i,1]))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>affixe(barycentre([[1+i,2],[1-i,1]]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>poly1[1,0,-10,0,1]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+sqrt(3),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4-10*x</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
-En effet (√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>=5+2√<SPAN style="text-decoration:overline">6</SPAN> et donc :<BR>
-((√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>−5)<SUP>2</SUP>=24 donc<BR>
-(√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>4</SUP>−10(√<SPAN style="text-decoration:overline">2</SPAN>+√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>+1=0
-On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+i*sqrt(3))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>poly1[1,0,2,0,25]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+i*sqrt(3),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4-4*i*x</TT><CODE><TT>^</TT></CODE><TT>2-100</TT></DIV><P>
-En effet (√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>=−1+2<I>i</I>√<SPAN style="text-decoration:overline">6</SPAN> et donc :<BR>
-((√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>+1)<SUP>2</SUP>=−24 donc<BR>
-(√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>4</SUP>+2(√<SPAN style="text-decoration:overline">2</SPAN>+<I>i</I>√<SPAN style="text-decoration:overline">3</SPAN>)<SUP>2</SUP>)+25=0
-On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>poly1[1,0,4,0,36] </TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>pmin(sqrt(2)+2*i,x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4+4*x</TT><CODE><TT>^</TT></CODE><TT>2+36</TT></DIV><P>
-En effet (√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>2</SUP>=(4*<I>i</I>)*<I>sqrt</I>(2)−2 et donc :<BR>
-((√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>2</SUP>+2)<SUP>2</SUP>=−32 donc<BR>
-(√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>4</SUP>+4(√<SPAN style="text-decoration:overline">2</SPAN>+2*<I>i</I>)<SUP>2</SUP>+36+0
-</P><HR>
+</P><DIV CLASS="center"><TT>(3+i)/3</TT></DIV><HR>
 <A HREF="cascmd_fr253.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr255.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

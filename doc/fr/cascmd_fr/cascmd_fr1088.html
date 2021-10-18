@@ -6,22 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour lire une image : readrgb</TITLE>
+<TITLE>Les faces : faces</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1087.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1089.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1279">12.2.2</A>  Pour lire une image : <TT>readrgb</TT></H3><P><A NAME="@default2088"></A>
-<TT>readrgb</TT> peut lire un fichier contenant une image. Ce fichier
-peut être un fichier <TT>.jpg</TT> ou <TT>.png</TT> ou <TT>.gif</TT>.<BR>
-<TT>readrgb</TT> renvoie [[nombre_canaux,largeur,hauteur],Rouge,Vert,
-Transparence,Bleu] où Rouge,Vert,Transparence,Bleu sont des matrices.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>a:=readrgb("image.jpg")</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1275">11.16.7</A>  Les faces : <TT>faces</TT></H3><P><A NAME="@default2107"></A>
+<TT>faces</TT> a comme argument un <TT>polyedre</TT>.<BR>
+Dans un niveau de géométrie 3d, <TT>faces</TT> dessine et renvoie la liste des
+faces du polyèdre.<BR>
+Dans une ligne de commande, <TT>faces</TT> renvoie la liste des faces du 
+polyèdre.<BR>
+Une face est une matrice de <I>n</I> lignes et 3 colonnes dont les lignes sont les 
+sommets de la face.<BR>
+On tape dans un niveau de géométrie 3d :
+</P><DIV CLASS="center"><TT>faces(polyedre([1,-1,0],[1,1,0],[0,0,2],[0,0,-2],[-1,1,0],[-1,-1,0]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>une liste de 5 éléments qui sont [4,20,10] suivi de 4 matrices de dimension 20,10 qui indiquent où sont situé les couleurs rouge,vert,transparence,bleu]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>le dessin et les coordonnées des 3 sommets des 8 faces</TT></DIV><P>
+On tape dans un niveau de géométrie 3d :
+</P><DIV CLASS="center"><TT>faces(polyedre([0,-1,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))[1]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>le dessin et [0,-1,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]</TT></DIV><HR>
 <A HREF="cascmd_fr1087.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1089.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

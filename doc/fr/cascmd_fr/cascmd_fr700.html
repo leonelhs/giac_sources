@@ -6,30 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La variance : variance</TITLE>
+<TITLE>Test de la présence d’une variable dans une expression : has</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr699.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr701.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc836">8.1.4</A>  La variance : <TT>variance</TT></H3><P><A NAME="@default1264"></A>
-<TT>variance</TT> calcule la variance numérique des éléments 
-d’une liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc824">6.65.5</A>  Test de la présence d’une variable dans une expression : <TT>has</TT></H3><P><A NAME="@default1267"></A>
+<TT>has</TT> a comme paramètre une expression et le nom d’une 
+variable.<BR>
+<TT>has</TT> renvoie <TT>1</TT>, ou <TT>0</TT>, selon que la variable est présente, 
+ou non présente, dans l’expression.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>variance(A)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>has(x*y*sin(x),y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>143/12</TT></DIV><P><BR>
-<TT>variance</TT> calcule la variance numérique des éléments d’une 
-liste pondérée par une autre liste donnée comme deuxième argument.<BR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>variance(A,A)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>has(x*y*sin(x),z)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>65/9</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>variance([[1,2],[3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1,1]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr699.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr701.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

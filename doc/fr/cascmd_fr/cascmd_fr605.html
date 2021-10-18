@@ -6,61 +6,62 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice équivalente : changebase</TITLE>
+<TITLE>Définition</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr604.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr606.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc716">6.52.8</A>  Matrice équivalente : <TT>changebase</TT></H3><P><A NAME="@default1115"></A>
-<TT>changebase</TT> a comme argument une matrice <I>A</I> et une matrice de changement de base <I>P</I>.<BR>
-<TT>changebase</TT> renvoie la matrice <I>B</I> telle que <I>B</I>=<I>P</I><SUP>−1</SUP><I>AP</I>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>changebase([[1,2],[3,4]],[[1,0],[0,1]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,2],[3,4]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>changebase([[1,1],[0,1]],[[1,2],[3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[-5,-8],[9/2,7]]</TT></DIV><P>
-En effet :<BR>
- </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>1</TD><TD ALIGN=right NOWRAP>2</TD></TR>
-<TR><TD ALIGN=right NOWRAP>3</TD><TD ALIGN=right NOWRAP>4</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><SUP>−1</SUP>*</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>1</TD><TD ALIGN=right NOWRAP>1</TD></TR>
-<TR><TD ALIGN=right NOWRAP>0</TD><TD ALIGN=right NOWRAP>1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">*</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>1</TD><TD ALIGN=right NOWRAP>2</TD></TR>
-<TR><TD ALIGN=right NOWRAP>3</TD><TD ALIGN=right NOWRAP>4</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎦</TD><TD CLASS="dcell">=</TD><TD CLASS="dcell">⎡<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎢<BR>
-⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=right NOWRAP>−5</TD><TD ALIGN=right NOWRAP>−8</TD></TR>
-<TR><TD ALIGN=right NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">9</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD ALIGN=right NOWRAP>7</TD></TR>
-</TABLE></TD><TD CLASS="dcell">⎤<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎥<BR>
-⎦</TD></TR>
-</TABLE><P>.</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc716">6.52.1</A>  Définition</H3><P>
+Pour définir une matrice creuse i.e. une matrice de grande taille ayant 
+peu de coefficients non nuls on peut tout d’abord définir une table puis on 
+transforme cette table en une matrice par la commande <TT>matrix</TT>.<BR>
+On tape :<BR>
+<TT>A:=table((0,0)=1,(1,1)=2,(2,2)=3,(3,3)=4,(4,4)=5)</TT><BR>
+Ou plus simplement en utilisant une multi-affectation à condition que la 
+variable soit purgée.<BR>
+Ou on tape :<BR>
+<TT>purge(A)</TT><BR>
+<TT>A[0..4,0..4]:=[1,2,3,4,5]</TT><BR>
+On obtient :<BR>
+<TT>table((0,0)=1,(1,1)=2,(2,2)=3,(3,3)=4,(4,4)=5)</TT><BR>
+On tape :<BR>
+<TT>purge(B)</TT><BR>
+<TT>B[0..3,1..4]:=[1,2,3,4];</TT><BR>
+On obtient :<BR>
+<TT>table((0,1)=1,(1,2)=2,(2,3)=3,(3,4)=4)</TT>
+On peut ajouter des éléments à cette table plus tard, éventuellement 
+après avoir fait des opérations dessus.<BR>
+On tape :<BR>
+<TT>B [0..2,0]:=5</TT><BR>
+On obtient :<BR>
+<TT>table((0,1)=1,(1,2)=2,(2,3)=3,(3,4)=4)<BR>
+(0,0)=5,(0,1)=5,(0,2)=5</TT><BR>
+On convertit ensuite ces tables avec la fonction <TT>convert</TT> avec comme option
+<I><FONT COLOR=maroon>array</FONT></I> ou avec la commande <TT>matrix</TT>.<BR>
+Pour convertir une matrice en une table on utilise la commande <TT>table</TT>.<BR>
+On tape :<BR>
+<TT>a:=convert(A,array)</TT><BR>
+Ou on tape :<BR>
+<TT>a:=matrix(A)</TT><BR>
+On obtient :<BR>
+<TT>[[1,0,0,0,0],[0,2,0,0,0],[0,0,3,0,0],[0,0,0,4,0],[0,0,0,0,5]]</TT><BR>
+On tape :<BR>
+<TT>b:=convert(B,array)</TT><BR>
+Ou on tape :<BR>
+<TT>b:=matrix(B)</TT><BR>
+On obtient :<BR>
+<TT>[[0,1,0,0,0],[0,0,2,0,0],[0,0,0,3,0],[0,0,0,0,4]]</TT><BR>
+On peut continuer à modifier <TT>B</TT>, on tape par exemple:<BR>
+<TT>B[0..4,0]:=5</TT><BR>
+<TT>b:=convert(B,array)</TT> (ou <TT>b:=matrix(B)</TT><BR>
+On obtient :<BR>
+<TT>[[5,1,0,0,0],[5,0,2,0,0],[5,0,0,3,0],[5,0,0,0,4],[5,0,0,0,0]]</TT><BR>
+On tape :<BR>
+<TT>C:=table(b)</TT><BR>
+On a alors <TT>C==B</TT>.
+</P><HR>
 <A HREF="cascmd_fr604.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr606.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

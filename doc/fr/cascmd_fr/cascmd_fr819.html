@@ -6,26 +6,184 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour effacer les sorties : ClrIO</TITLE>
+<TITLE>Des exemples</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr818.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr820.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc964">9.4.9</A>  Pour effacer les sorties : <TT>ClrIO</TT></H3><P><A NAME="@default1468"></A>
-<TT>ClrIO</TT> n’a pas d’argument, il efface toutes les sorties faites dans le 
-niveau où il a été tapé.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>a:=12</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>print("a=",a)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>"a=",12 s’écrit en bleu et la réponse est 1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>print("a=",a);ClrIO()</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(1,1) comme réponse</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc960">8.5.6</A>  Des exemples</H3><P>
+Voici quelques exercices :
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+<B>Exercice</B><BR>
+Pour tester l’efficacité d’un vaccin antigrippal on soumet 300 personnes 
+à une expérience :<BR>
+- sur 100 personnes non vaccinées, 32 sont atteintes par la grippe,<BR>
+- sur 200 personnes vaccinées, 50 sont atteintes par la grippe,<BR>
+Ce résultat permet-il d’apprécier l’efficacité du vaccin ?<BR>
+On calcule les valeurs <I>f</I>1 et <I>f</I>2 qui sont les proportions des grippés 
+des deux échantillons on tape :<BR>
+<TT>f1:=32/100</TT><BR>
+<TT>f2:=50/200</TT><BR>
+On tape :<BR>
+ <TT>f1-f2</TT><BR>
+On obtient :<BR>
+<TT>7/100</TT><BR>
+Donc |<I>f</I><SUB>1</SUB>−<I>f</I><SUB>2</SUB>|=0.07<BR>
+On calcule la valeur <I>p</I> proportion des grippés lorsqu’on reunit les deux 
+échantillons on tape :<BR>
+<TT>p:=82/300</TT><BR>
+On obtient :<BR>
+<TT>41/150</TT><BR>
+Donc <I>p</I>≃ 0.273333333333<BR>
+On calcule <I>s</I><SUB>12</SUB>, on tape :<BR>
+<TT>s12:=sqrt(p*(1-p)*(1/100+1/200))</TT><BR>
+On obtient :<BR>
+<TT>sqrt(4469/1500000)</TT><BR>
+Donc <I>s</I><SUB>12</SUB> ≃ 0.0545832697201<BR>
+On tape :<BR>
+<TT>normalt([32,100],[50,200],0.0545832697201,’!=’,0.05)</TT><BR>
+On obtient :<BR>
+<TT>0</TT><BR>
+et en vert le resumé du test :<BR>
+Moyenne estimee en utilisant le(s) echantillon(s) 125<BR>
+*** TEST RESULT 0 ***<BR>
+Summary Z-Test null hypothesis mu1=mu2, alt. hyp. mu1!=mu2.
+Test returns 0 if probability to observe data is less than 0.05
+(null hyp. mu1=mu2 rejected with less than alpha probability error)
+Test returns 1 otherwise (can not reject null hypothesis)
+Data mean mu1=32, population mean mu2=125
+alpha level 0.05, multiplier*stddev/sqrt(sample size)= 1.95996*0.0545833/10
+<TT>1.95996*0.0545833/10</TT> renvoie <TT>0.0106981084668</TT><BR>
+On tape :<BR>
+<TT>a:=normal_icdf(0,sqrt(4469/1500000),0.975)</TT><BR>
+On obtient :<BR>
+<TT>0.10698124281</TT><BR>
+Puisque <TT>|f1-f2|=0.07&lt;a=0.10698124281</TT>, on en déduit que les deux 
+échantillons ne sont pas significativement différents au seuil de 5% : 
+on peut donc 
+dire que le vaccin n’est pas efficace mais ce n’est pas une certitude...<BR>
+
+La statistique  <I>D</I><SUP>2</SUP>=∑<SUB><I>j</I>=1</SUB><SUP><I>k</I></SUP>(<I>n</I><SUB><I>j</I></SUB>−<I>e</I><SUB><I>j</I></SUB>)<SUP>2</SUP>/<I>e</I><SUB><I>j</I></SUB> est une 
+bonne mesure de l’écart entre les effectifs observés et les effectifs 
+théoriques : plus <I>D</I><SUP>2</SUP> est proche de zéro, plus la distribution de 
+l’échantillon est conforme à la distribution théorique.<BR>
+On calcule la valeur <I>d</I>2 de <I>D</I><SUP>2</SUP> on tape :<BR>
+<TT>d2:=300*(150*32-68*50)</TT><CODE><TT>^</TT></CODE><TT>2/(100*200*82*218)</TT><BR>
+On obtient :<BR>
+<TT>7350/4469</TT><BR>
+donc <I>d</I><SUP>2</SUP> ≃ 1.645<BR>
+On cherche la valeur <I>h</I> qui vérifie :<BR>
+<I>Proba</I>(χ<SUB>1</SUB><SUP>2</SUP>&gt;<I>h</I>)=0.05  ou encore  <I>Proba</I>(χ<SUB>1</SUB><SUP>2</SUP> ≤ <I>h</I>)=0.95<BR>
+ pour cela on tape :<BR>
+<TT>chisquare_icdf(1,0.95)</TT><BR>
+On obtient :<BR>
+<TT>3.84145882069</TT><BR>
+donc <I>h</I> ≃ 3.84<BR>
+Puisque <TT><I>d</I>2≃ 1.645&lt;3.84</TT> on en déduit que les deux échantillons
+ne sont pas significativement différents au seuil de 5% : on peut donc 
+mettre en doute l’efficacité du vaccin.<BR>
+On tape :<BR>
+<TT>?</TT><BR>
+On obtient :<BR>
+<TT>?</TT>
+</LI><LI CLASS="li-enumerate"><B>Exercice</B><BR>
+Sur un registre d’état civil, on a relevé 552 naissances dont 289 
+garçons.<BR>
+a/ Estimer la fréquence <TT>p</TT> de naissance d’un garçon.<BR>
+b/ Donner un intervalle de confiance pour cette estimation.<BR>
+On tape :<BR>
+<TT>?</TT><BR>
+On obtient :<BR>
+<TT>?</TT>
+</LI><LI CLASS="li-enumerate"><B>Exercice</B><BR>
+Dans un hôpital sur un échantillon de 458 malades admis pendant un 
+trimestre il y a eu 141 décès. Estimer le pourcentage de décès par un 
+intervalle de confiance au seuil de 0.01.<BR>
+On tape :<BR>
+<TT>?</TT><BR>
+On obtient :<BR>
+<TT>?</TT>
+</LI><LI CLASS="li-enumerate"><B>Exercice : comparaison de deux moyennes</B><BR>
+Pour une même épreuve,
+voici les notes obtenues dans une classe de terminale du lycée A.<BR>
+6,10,14,17,9,6,4,12,9,10,10,11,12,18,10,9,11,8,7,10.<BR>
+et les notes obtenues dans une classe de terminale du lycée B.<BR>
+2,10,14,13,9,6,1,12,9,10,10,10,12,15,19,9,11,8,9,10<BR>
+1/ Analyser les résultats de chaque groupe.<BR>
+2/ Peut-on considérer que les 2 groupes sont issus d’une même population ?
+</LI><LI CLASS="li-enumerate"><B>Exercice : comparaison de deux moyennes</B><BR>
+Deux entreprises A et B livrent des pièces dans des paquets de 100 pièces.
+On note <I>X</I><SUB>1</SUB> (resp <I>X</I><SUB>2</SUB>) la variable aléatoire égale au nombre de 
+pièces défectueuses par paquet provenant de A (resp B).<BR>
+On note <SPAN style="text-decoration:overline"><I>X</I></SPAN><SUB>1</SUB> (resp <SPAN style="text-decoration:overline"><I>X</I></SPAN><SUB>2</SUB>) la variable aléatoire égale au nombre moyen de 
+pièces défectueuses par paquet pour des échantillons aléatoires 
+de 49 paquets (resp 64 paquets) provenant de A (resp B).<BR>
+ <B>I)</B> Sur un échantillon de 49 paquets provenant de A on compte le
+nombre de pièces défectueuses dans chaque paquet et on trouve :<BR>
+7, 5, 5, 4, 4, 4, 9, 7, 9, 2, 7, 8, 7, 8, 4, 4, 9, 10,<BR>
+5, 10, 6, 4, 5, 6, 1, 2, 5, 7, 8, 0, 6, 0, 1, 5, 2, 0,<BR>
+5, 2, 3, 3, 4, 1, 3, 10, 1, 0, 10, 2, 7<BR>
+1/ Calculer la moyenne <I>m</I><SUB>1</SUB> et l’écart-type <I>s</I><SUB>1</SUB> de cet échantillon.<BR>
+2/ Donner une estimation de la moyenne µ<SUB>1</SUB> et de l’écart-type σ<SUB>1</SUB>
+de <I>X</I><SUB>1</SUB>.<BR>
+3/ Donner une estimation de la moyenne et de l’écart-type de <SPAN style="text-decoration:overline"><I>X</I></SPAN><SUB>1</SUB>.<BR>
+On tape :<BR>
+<TT>?</TT><BR>
+On obtient :<BR>
+<TT>?</TT><BR>
+On tape :<BR>
+<TT>?</TT><BR>
+On obtient :<BR><BR>
+On tape :<BR>
+<TT>?</TT><BR>
+On obtient :<BR>
+<TT>?</TT>
+</LI><LI CLASS="li-enumerate"><B>Exercice </B><BR>
+On a administré un somnifère A à 50 personnes choisies au hasard et on a observé une moyenne de sommeil de 8h22 avec un écart-type de 0h24.<BR>
+On a administré un somnifère B à 100 personnes choisies au hasard et on a observé une moyenne de sommeil de 7h15 avec un écart-type de 0h30.<BR>
+Ces deux somnifères ont-ils une efficacité signicativement différente ? de combien ?<BR>
+</LI><LI CLASS="li-enumerate"><B>Exercice : Échantillons appariés</B><BR>
+On a fait faire une double correction de 30 copies par deux examinateurs A et B
+afin de comparer leur notation. Les copies sont numerotées de 0 à 29.<BR>
+On a obtenu pour A :<BR>
+<TT>13,15,12,15,8,7,11,10,9,13,3,18,17,5,9,10,</TT><BR>
+<TT>11,14,12,10,9,8,13,6,8,16,14,11,12,10</TT><BR>
+On a obtenu pour B:<BR>
+<TT>12,13,12,15,7,5,12,10,8,13,4,17,16,4,9,11,10,</TT><BR>
+<TT>13,13,9,10,7,14,8,7,15,13,10,13,10</TT><BR>
+On tape :<BR>
+<TT>?</TT><BR>
+On obtient :<BR>
+<TT>?</TT>
+</LI><LI CLASS="li-enumerate"><B>Exercice : Jet d’un dé et test du </B><B>χ</B><SUP><B>2</B></SUP><BR>
+On jette un dé 90 fois et on a obtenu :<BR>
+1 a été obtenu 11 fois,<BR>
+2 a été obtenu 16 fois,<BR>
+3 a été obtenu 17 fois,<BR>
+4 a été obtenu 22 fois,<BR>
+5 a été obtenu 14 fois,<BR>
+6 a été obtenu 10 fois.<BR>
+Peut-on admettre au vu de cette expérience que le dé est régulier ?<BR>
+On tape :<BR>
+<TT>?</TT><BR>
+On obtient :<BR>
+<TT>?</TT>
+</LI><LI CLASS="li-enumerate"><B>Exercice : Jet d’un dé et test du </B><B>χ</B><SUP><B>2</B></SUP><BR>
+On jette un dé 180 fois et on a obtenu :<BR>
+1 a été obtenu 22 fois,<BR>
+2 a été obtenu 32 fois,<BR>
+3 a été obtenu 34 fois,<BR>
+4 a été obtenu 44 fois,<BR>
+5 a été obtenu 28 fois,<BR>
+6 a été obtenu 20 fois.<BR>
+Peut-on admettre au vu de cette expérience que le dé est régulier ?<BR>
+On tape :<BR>
+<TT>?</TT><BR>
+On obtient :<BR>
+<TT>?</TT>
+</LI></OL><HR>
 <A HREF="cascmd_fr818.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr820.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

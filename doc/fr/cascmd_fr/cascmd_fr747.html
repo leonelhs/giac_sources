@@ -6,48 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Probabilité que X égale k lorsque X ∈ NegBin(n,p) : negbinomial</TITLE>
+<TITLE>Graphe de la régression logistique : 
+ logistic_regression_plot</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr746.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr748.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc886">8.4.4</A>  Probabilité que <I>X</I> égale <I>k</I> lorsque <I>X</I> ∈ <FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>) : <TT>negbinomial</TT></H3><P><A NAME="@default1344"></A>
-La loi binomiale négative est une distribution de probabilité 
-discrète. Elle dépend de 2 paramètres : un entier <I>n</I> (le nombre de 
-succès attendus) et un réel <I>p</I> de ]0,1[ (la probabilité d’un succés).<BR>
-On la note <FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>).<BR>
-Elle permet de décrire la situation suivante : on fait une suite de tirages 
-indépendants (avec pour chaque tirage, la probabilité <I>p</I> d’avoir un 
-succès) jusqu’à obtenir <I>n</I> succès.
-La variable aléatoire représentant le nombre d’échecs qu’il a fallut avant 
-d’avoir <I>n</I> succès, suit alors une loi binomiale négative.<BR>
- Cette loi est aussi connue sous le nom de loi de Pascal en l’honneur de 
-Blaise Pascal et de loi de Polya, en l’honneur de George Pólya.<BR>
-<TT>negbinomial(n,p,k)=comb</TT>(<I>n</I>+<I>k</I>−1,<I>k</I>)*<I>p</I><SUP><I>n</I></SUP>*(1−<I>p</I>)<SUP><I>k</I></SUP> pour <I>k</I>=0,1,2..
-La loi se généralise pour deux paramètres <I>r</I> et <I>p</I>, où <I>r</I> peut 
-prendre des valeurs réelles strictement positives. On a alors :<BR>
-<TT>negbinomial(r,p)=</TT> Γ(<I>r</I>+<I>k</I>)/<I>k</I>! Γ(<I>r</I>) <I>p</I><SUP><I>r</I></SUP> <I>q</I><SUP><I>k</I></SUP><BR>
-<B>Remarque</B><BR>
-Si on définit <TT>comb(n,k)</TT> pour <I>n</I>&lt;0 par <TT>comb(n,k)=n*(n-1)*..*(n-k-1)/k!</TT>, alors
-Si <I>X</I> ∈ <FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>) (<I>n</I> ∈ ℕ et <I>p</I> ∈ [0;1]) alors
-<TT><I>Proba</I>(<I>X</I>=<I>k</I>)=<I>p</I></TT><SUP><TT><I>n</I></TT></SUP><TT>*(<I>p</I>-1)</TT><SUP><TT><I>k</I></TT></SUP><TT>*<I>comb</I>(-<I>n</I>,<I>k</I>)</TT>
-ce qui justifie le nom de loi binomiale négative et qui facilite le calcul de
-l’espérance (égale à <I>n</I>(1−<I>p</I>)/<I>p</I>) et de la variance (égale à 
-<I>n</I>(1−<I>p</I>)/<I>p</I><SUP>2</SUP>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc885">8.2.21</A>  Graphe de la régression logistique :<BR>
+ <TT>logistic_regression_plot</TT></H3><P><A NAME="@default1339"></A><A NAME="@default1340"></A><A NAME="@default1341"></A>
+Lorsque on connait les valeurs de <I>f</I>′(<I>x</I>) en <I>x</I>=<I>x</I><SUB>0</SUB>,<I>x</I><SUB>0</SUB>+1....<I>x</I><SUB>0</SUB>+<I>n</I>, pour 
+tracer le graphe de la derivée <I>y</I>′(<I>x</I>) d’une fonction logistique <I>y</I>(<I>x</I>), 
+solution de l’équation 
+<I>y</I>′/<I>y</I>=<I>a</I>*<I>y</I>+<I>b</I> (<I>a</I>&lt;0 et <I>b</I>&gt;0) vérifiant <I>y</I><SUB>0</SUB>=<I>y</I>(<I>x</I><SUB>0</SUB>) et tel que <I>y</I>′(<I>x</I>) 
+approche au mieux les différentes valeurs de <I>f</I>′(<I>x</I>), on utilise 
+<TT>logistic_regression_plot</TT>.<BR>
+<TT>logistic_regression_plot</TT> a les mêmes arguments que 
+<TT>logistic_regression</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>negbinomial(10,12,0.4)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.0670901607617</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>negbinomial(4,2,0.5)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.15625</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>negbinomial(1,2,0.4)</TT></DIV><P>
-On obtient 0.6<SUP>2</SUP>*0.4 soit:
-</P><DIV CLASS="center"><TT>0.144</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>logistic_regression_plot([1,2,4,6,8,7,5],0,2.0)</TT></DIV><P>
+On obtient avec écrit en bleu les valeurs renvoyées par:
+</P><DIV CLASS="center"><TT>Le graphe de la fonction solution de </TT><TT><I>y</I>′/<I>y</I>=<I>a</I>*<I>y</I>+<I>b</I></TT><TT> avec </TT><TT><I>y</I>′(0)=1,<I>y</I>′(1)=2,<I>y</I>′(3)=4...<I>y</I>′(6)=5</TT><TT>, </TT><TT><I>y</I>(0)=2</TT></DIV><P>
+car c’est la fonction logistique qui approche au mieux les données.
+<B>Remarque</B>
+On remarquera que l’équation de la courbe representée ainsi que la valeur 
+du coefficient de corrélation des données sont écrits en bleu.<BR>
+Si on veut avoir l’équation et/ou le carré du coefficient de corrélation 
+sur le dessin il faut rajouter comme dernier argument, l’option <TT>equation</TT> 
+et/ou <TT>correlation</TT>. Par exemple,
+<TT>logistic_regression_plot([1,2,4,6,8,7,5],0,2.0,correlation)</TT>
+et <TT>R2=0.658961299812</TT> s’inscrit sur le graphe.</P><HR>
 <A HREF="cascmd_fr746.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr748.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

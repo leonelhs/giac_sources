@@ -6,45 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Appliquer une fonction de plusieurs variables à un polynôme 
-donné au format interne :map</TITLE>
+<TITLE>Tester si un élément est dans une liste : contains</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr529.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr531.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc630">6.41.35</A>  Appliquer une fonction de plusieurs variables à un polynôme 
-donné au format interne :<TT>map</TT></H3><P><A NAME="@default940"></A>
-Le polynôme <I>x</I><SUP>2</SUP>+2<I>xy</I>+<I>y</I><SUP>2</SUP> s’écrit au format interne :<BR>
-<TT>% % % {1,[2,0]% % % }+% % % {2,[1,1]% % % }+% % % {1,[0,2]% % % }</TT><BR>
-On peut transformer <I>x</I><SUP>2</SUP>+2<I>xy</I>+<I>y</I><SUP>2</SUP> au format interne avec la commande 
-<TT>symb2poly</TT> (voir <A HREF="cascmd_fr360.html#sec:interne">6.27.6</A>). Par exemple <TT>p:=symb2poly((x+y)</TT><CODE><TT>^</TT></CODE><TT>2,[x,y])</TT> renvoie
-<TT>% % % {1,[2,0]% % % }+% % % {2,[1,1]% % % }+% % % {1,[0,2]% % % }</TT><BR>
-Pour un polynôme de <I>n</I> variables, <I>f</I> va agir sur les coefficients de
-chaque monôme du polynôme.<BR>
-Pour agir sur un monôme de <I>n</I> variables, <I>f</I> doit être une fonction de 
-<I>n</I>+1 variables, on considère que ces variables représentent le coefficient,
-l’exposant de la première variable,...,l’exposant de la <I>n</I>-ième variable 
-et <I>f</I> transforme le coefficient de ce monôme.<BR>
-Par exemple, si le monôme est 5<I>x</I><SUP>2</SUP><I>y</I><SUP>3</SUP>, au format interne il s’écrit :
-<TT>% % % {5,[2,3]% % % }</TT><BR>
-et si <I>f</I> est dédfinie par :<BR>
-<TT>f(a,b,c):=a*(2*b+3*c)</TT><BR>
-alors<BR>
-<TT>map(% % % {5,[2,3]% % % },f)</TT> renvoie le monôme 
-<I>f</I>(5,2,3)<I>x</I><SUP>2</SUP><I>y</I><SUP>3</SUP>=65<I>x</I><SUP>2</SUP><I>y</I><SUP>3</SUP> écrit au format interne, c’est à dire
-<TT>% % % {65,[2,3]% % % }</TT><BR>
-On tape :<BR>
-<TT>map(% % % {5,[2,3]% % % },(a,b,c)-&gt;a*(2b+3c))</TT><BR>
-On obtient :<BR>
-<TT>% % % {65,[2,3]% % % }</TT><BR>
-On tape :<BR>
-<TT>map(% % % {1,[2,0]% % % }+% % % {2,[1,1]% % % }+% % % {1,[0,2]% % % },(a,b,c)-&gt;a*(b+2c))</TT><BR>
-On obtient :<BR>
-<TT>% % % {2,[2,0]% % % }+% % % {6,[1,1]% % % }+% % % {4,[0,2]% % % }</TT>
-car si <I>f</I> est la fonction (<I>a</I>,<I>b</I>,<I>c</I>)−&gt;<I>a</I>*(<I>b</I>+2<I>c</I>) alors <I>f</I>(1,2,0)=2,<I>f</I>(2,1,1)=6, <I>f</I>(1,0,2)=4
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc631">6.42.28</A>  Tester si un élément est dans une liste : <TT>contains</TT></H3><P><A NAME="@default937"></A>
+<TT>contains</TT> a deux paramètres : une liste (ou un ensemble) 
+<TT>L</TT> et un élément <TT>c</TT>.<BR>
+<TT>contains</TT> est une fonction qui teste si l’élément <TT>c</TT>
+est dans la liste <TT>L</TT>.<BR>
+ <TT>contains</TT> renvoie <TT>0</TT> si <TT>c</TT> n’est 
+pas dans <TT>L</TT>, et sinon renvoie :<BR>
+<TT>1+"l’indice de sa première apparition"</TT>.<BR>
+<B>Attention</B>, à l’ordre des paramètres, c’est pour des raisons de 
+compatibilité !<BR>
+On tape :
+</P><DIV CLASS="center"><TT>contains([0,1,2,3,4,2],2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>contains(% {0,1,2,3,4,2% },2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
 <A HREF="cascmd_fr529.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr531.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

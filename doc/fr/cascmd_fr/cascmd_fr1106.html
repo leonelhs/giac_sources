@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Pour traduire un programme Xcas en C++</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr1105.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr1107.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1299">12.3.1</A>  Pour traduire un programme <TT>Xcas</TT> en <I>C</I><SUP>++</SUP></H3><P><A NAME="@default2126"></A><A NAME="@default2127"></A>
+Lorsqu’un programme <TT>Xcas</TT> (par exemple <TT>nomprog</TT>) a des variables typées, on pourra le traduire en <I>C</I><SUP>++</SUP> et le compiler grâce à la commande <TT>cpp</TT> suivi du nom du 
+programme (par exemple <TT>cpp(nomprog)</TT>)<BR>
+Cela va créer un fichier <TT>giac_nomprog.cpp</TT> et un fichier 
+<TT>libgiac_nomfichier.so</TT> sur le disque dur.<BR>
+<B>Attention</B> le nom du fichier doit avoir plus qu’une lettre.<BR>
+Par exemple :<BR>
+<TT>truc(n:integer):={return 2*n+1;}</TT> puis<BR>
+<TT>cpp(truc)</TT><BR>
+On obtient :<BR>
+<TT>1</TT><BR>
+et cela a créé sur le disque dur le fichier <TT>giac_truc.cpp</TT> qui est 
+un fichier <I>C</I><SUP>++</SUP> et le fichier <TT>libgiac_truc.so</TT> qui est 
+le fichier <I>C</I><SUP>++</SUP> compilé :<BR>
+Voici ce que contient <TT>giac_truc.cpp</TT> :
+</P><PRE CLASS="verbatim">#include &lt;giac/giac.h&gt;
+using namespace std;
+namespace giac {
+giac::gen truc(int n_i,const giac::context * contextptr){
+giac::makevecteur(return 2*n_i+1)
+}
+giac::gen _truc(const giac::gen &amp; g,const giac::context * contextptr){
+return truc(g,contextptr);
+}
+
+const string _truc_s("truc");
+unary_function_eval __truc(0,&amp;_truc,_truc_s);
+unary_function_ptr at_truc(&amp;__truc,0,true);
+}
+</PRE><P>La commande <TT>insmode(nomprog)</TT> utilisé dans une session <TT>Xcas</TT> va lire
+le module compilé <TT>libgiac_truc.so</TT> sur le disque dur.<BR>
+On peut alors utiliser le même nom <TT>nomprog</TT>) dans cette session <TT>Xcas</TT> 
+mais le programme sera plus efficace grâce à la compilation.</P><HR>
+<A HREF="cascmd_fr1105.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr1107.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

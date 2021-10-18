@@ -6,46 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Un des points d’intersection de deux objets géométriques : single_inter line_inter inter_unique inter_droite</TITLE>
+<TITLE>Ces droites sont en faisceau ? is_harmonic_line_bundle est_faisceau_droite</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr994.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr996.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1169">11.4.3</A>  Un des points d’intersection de deux objets géométriques : <TT>single_inter line_inter inter_unique inter_droite</TT></H3><P><A NAME="@default1934"></A><A NAME="@default1935"></A><A NAME="@default1936"></A><A NAME="@default1937"></A><A NAME="sec:interdroite3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr881.html#sec:interdroite2">10.8.5</A> pour la géométrie plane.<BR>
-<TT>inter_unique</TT> ou <TT>inter_droite</TT> a 2 ou 3 arguments qui 
-sont deux objets géométriques et éventuellement un 3ième argument qui 
-est soit un point soit une liste de points.<BR>
-<TT>inter_unique</TT> renvoie l’un des points d’intersection de ces deux objets
-géométriques. Si on a mis un point <TT>A</TT> comme troisième argument 
-<TT>inter_unique</TT> renvoie le point d’intersection le plus proche de <TT>A</TT>
-et si on a mis une liste de points <TT>L</TT> comme troisième argument 
-<TT>inter_unique</TT> renvoie le point d’intersection qui ne se trouve pas dans 
-la liste <TT>L</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1163">10.18.16</A>  Ces droites sont en faisceau ? <TT>is_harmonic_line_bundle est_faisceau_droite</TT></H3><P><A NAME="@default1938"></A><A NAME="@default1939"></A>
+<TT>est_faisceau_droite</TT> a comme argument une liste de droites.<BR>
+ <TT>est_faisceau_droite</TT> renvoie :<BR>
+1 si ces droites sont concourantes en un point,<BR>
+2 si ces droites sont parallèles,<BR>
+3 si ces droites sont confondues,<BR>
+et 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=inter_unique(plan(point(0,1,1),point(1,0,1),point(1,1,0)),droite(point(0,0,0),point(1,1,1)))</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>coordonnees(A)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_faisceau_droite([droite(0,1+i),droite(0,2+i), droite(0,3+i),droite(0,1)])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2/3,2/3,2/3]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>B:=inter_unique(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)))</TT></DIV><DIV CLASS="center"><TT>coordonnees(B)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>B1:=inter_unique(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)),point(-1,0,0))</TT></DIV><DIV CLASS="center"><TT>coordonnees(B1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>B1:=inter_unique(sphere(point(0,0,0),1),droite(point(1,0,0),point(1,1,1)))</TT></DIV><DIV CLASS="center"><TT>coordonnees(B1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1,0,0]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>B1:=inter_unique(sphere(point(0,0,0),1),droite(point(1,0,0),point(1,1,1)),[point(1,0,0)])</TT></DIV><DIV CLASS="center"><TT>coordonnees(B1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1/3,2/3,2/3]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr994.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr996.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

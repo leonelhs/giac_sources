@@ -6,41 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La moyenne : mean moyenne</TITLE>
+<TITLE>Liste des variables : lname indets</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr696.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr698.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc833">8.1.1</A>  La moyenne : <TT>mean moyenne</TT></H3><P><A NAME="@default1257"></A> <A NAME="@default1258"></A>
-<TT>mean</TT> calcule la moyenne numérique des éléments d’une 
-liste (ou de chaque colonne d’une matrice).<BR>
+<H3 CLASS="subsection"><A NAME="htoc821">6.65.2</A>  Liste des variables : <TT>lname indets</TT></H3><P><A NAME="@default1263"></A><A NAME="@default1264"></A>
+<TT>lname</TT> (ou <TT>indets</TT>) a comme paramètre une expression.<BR>
+<TT>lname</TT> (ou <TT>indets</TT>) renvoie un vecteur de composantes le nom des 
+variables symboliques utilisées dans cette expression.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>mean(A)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>lname(x*y*sin(x))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>11/2</TT></DIV><P>
-En effet (0+1+...+11)=66 et 66/12=11/2<BR>
+</P><DIV CLASS="center"><TT>[x,y]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>mean([[1,2],[3,4]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a:=2;assume(b&gt;0);assume(c=3);</TT></DIV><DIV CLASS="center"><TT>lname(a*x</TT><CODE><TT>^</TT></CODE><TT>2+b*x+c)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2,3]</TT></DIV><P>
-En effet (1+3)/2=2 et (2+4)/2=3.<BR>
-<TT>mean</TT> calcule la moyenne numérique des éléments d’une 
-liste (respectivement de chaque colonne d’une matrice) pondérée par une liste (respectivement
-matrice) de même taille donnée comme deuxième argument.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>mean(A,A)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>23/3</TT></DIV><P>
-En effet : 1*1+2*2+..11*11=23*12*11/6=23*2*11 et 1+2+..11=66 donc:<BR>
-<TT>mean(A,A)</TT>=23*2*11/66=23/3<BR>
-On tape :
-</P><DIV CLASS="center"><TT>mean([[1,2],[3,4]],[[1,2],[3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[5/2,10/3]</TT></DIV><P>
-En effet : (1*1+3*3)/(1+3)=5/2 et (2*2+4*4)/(2+4)=10/3
-</P><HR>
+</P><DIV CLASS="center"><TT>[x,b,c]</TT></DIV><HR>
 <A HREF="cascmd_fr696.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr698.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

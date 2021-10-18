@@ -6,34 +6,52 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour utiliser une chaîne comme nom de commande : expr</TITLE>
+<TITLE>L’affectation d’une égalité : assign</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr840.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr842.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc987">9.5.6</A>  Pour utiliser une chaîne comme nom de commande : <TT>expr</TT></H3><P><A NAME="@default1526"></A><A NAME="sec:expr"></A>
-<TT>expr</TT> permet d’utiliser une chaîne de caractères comme une 
-commande.<BR>
-<TT>expr</TT> est surtout utile dans un programme.<BR>
-<TT>expr</TT> a comme argument une chaîne de caractères pouvant être 
-interprétée comme une commande (ou le nom d’une 
-variable qui contient une chaîne ou une expression renvoyant une chaîne).<BR>
-<TT>expr</TT> transforme la chaîne en une expression, puis évalue cette 
-expression :<BR>
-pour faire une affectation, on ne doit pas écrire <TT>expr("a"):=2</TT>, mais on
-doit écrire <TT>expr("a:=2")</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr839.html#sec:diese">9.5.4</A>)<BR>
+<H3 CLASS="subsection"><A NAME="htoc987">9.4.17</A>  L’affectation d’une égalité : <TT>assign</TT></H3><P><A NAME="@default1518"></A><A NAME="@default1519"></A><A NAME="@default1520"></A>
+<TT>assign</TT> permet de stocker une valeur dans une variable.<BR>
+<TT>assign</TT> a un ou deux arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+un argument : une égalité entre un nom de variable et la 
+valeur à stocker, ou une listed’égalité entre des noms de variable et les
+valeurs à stocker, 
+</LI><LI CLASS="li-itemize">deux arguments : un nom de variable et la valeur à stocker.<BR>
+</LI></UL><P>
+<B>Attention</B><BR>
+La variable doit être purgée avant l’utilisation de <TT>assign</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>expr("c:=1")</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La variable c contient 1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>a:="ifactor(54)";expr(a)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>assign(a,3)</TT></DIV><P>
 ou :
-</P><DIV CLASS="center"><TT>expr("ifactor(54)")</TT></DIV><P>
+</P><DIV CLASS="center"><TT>assign(a=3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>3 et la variable a contient 3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>assign([a1=1,a2=2,a3=3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,2,3] et a1 contient 1, a2 contient 2 et a3 contient 3</TT></DIV><P>
+<B>Remarque</B>
+<TT>assign</TT> sert surtout en mode Maple, voici un exemple :
+On tape en mode Maple :
+</P><DIV CLASS="center"><TT>purge(a,b)</TT></DIV><DIV CLASS="center"><TT>sol:=solve([a+b=1,a-b=3],[a,b])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[a=2,b=(-1)]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>assign(sol)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,-1] et ainsi a contient 2 et b contient -1 </TT></DIV><P> 
+en mode <TT>Xcas</TT> la même suite d’instructions donnent :
+</P><DIV CLASS="center"><TT>sol:=solve([a+b=1,a-b=3],[a,b])</TT></DIV><P>
+On obtient la liste des solution donc ici une matrice 1×1 :
+</P><DIV CLASS="center"><TT>[[2,-1]]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>[a,b]:=sol[0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,-1] et ainsi a contient 2 et b contient -1</TT></DIV><HR>
 <A HREF="cascmd_fr840.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr842.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

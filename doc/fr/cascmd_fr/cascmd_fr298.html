@@ -6,44 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Gńéralités</TITLE>
+<TITLE>Puissance n-ième de composition d’une fonction : @@</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr297.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr299.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc376">6.19.1</A>  Gńéralités</H3><P>
-Pour définir la fonction dérivée d’une fonction on a plusieurs 
-possibilités.<BR>
-<B>Exemple</B>
-Calculer la dérivée de la fonction <I>f</I> définie par <I>f</I>(<I>x</I>)=sin(2<I>x</I>)+<I>x</I>.<BR>
-On tape, par exemple, pour définr <I>f</I> :<BR>
-<TT>f(x):=sin(2x)+x</TT><BR>
-On peut taper pour définr la dériv'e <I>g</I> de <I>f</I> :<BR>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>g:=f’</TT> ou<BR>
-<TT>g(x):=f’(x)</TT> ou<BR>
-<TT>g:=x-&gt;f’(x)</TT>
-</LI><LI CLASS="li-itemize"><TT>g:=function_diff(f)</TT> ou<BR>
-<TT>g(x):=function_diff(f)(x)</TT> ou<BR>
-<TT>g:=x-&gt;function_diff(f)(x)</TT>
-</LI><LI CLASS="li-itemize"><TT>g:=unapply(diff(f(x),x),x)</TT> ou<BR>
-<TT>g(x):=unapply(diff(f(x),x),x)(x)</TT> ou<BR>
-<TT>g:=x-&gt;unapply(diff(f(x),x),x)(x)</TT> 
-</LI><LI CLASS="li-itemize"><TT>g:=unapply(diff(f(x)),x)</TT> ou<BR>
-<TT>g(x):=unapply(diff(f(x)),x)(x)</TT> ou<BR>
-<TT>g:=x-&gt;unapply(diff(f(x)),x)(x)</TT>
-</LI><LI CLASS="li-itemize"><TT>g:=diff(f)</TT> ou<BR>
-<TT>g(x):=diff(f)(x)</TT> ou<BR>
-<TT>g:=x-&gt;diff(f)(x)</TT>
-</LI></UL><P>
-<B>MAIS ATTENTION</B><BR>
-<TT>g(x):=diff(f(x))</TT> ou <TT>g(x):=diff(f(x),x)</TT> n’est pas correct, car lors 
-d’une affectation ce qui est à droite de <TT>:=</TT> n’est pas évalué lors 
-de la définition....il faut utiliser <TT>unapply</TT> ou écrire 
-<TT>g(x):=diff(f)(x)</TT>.
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc375">6.18.5</A>  Puissance <I>n</I>-ième de composition d’une fonction : <TT>@@</TT></H3><P><A NAME="@default556"></A>
+La puissance n-ième de composition d’une fonction se fait avec <TT>Xcas</TT>
+grâce à l’opérateur <TT>@@</TT> qui est infixé.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>(sin@@3)(x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sin(sin(sin(x)))</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>(sin@@2)(pi/2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>sin(1)</TT></DIV><HR>
 <A HREF="cascmd_fr297.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr299.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

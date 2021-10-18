@@ -6,40 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’affectation par copie : copy</TITLE>
+<TITLE>La forme d’un programme</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr822.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr824.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc968">9.4.13</A>  L’affectation par copie : <TT>copy</TT></H3><P><A NAME="@default1475"></A>
-<TT>copy</TT> permet de cloner une liste, un vecteur
-ou une matrice, en général pour le stocker dans une 
-variable.<BR>
-<TT>copy</TT> a un argument, la liste (vecteur ou matrice) à cloner.<BR>
-<TT>A:= copy(B)</TT> recopie la liste (vecteur, matrice) B dans A.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>B:=copy([[4,5],[2,6]])</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>A:=[[4,5],[2,6]];B:=copy(A)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>A,B</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[4,5],[2,6]],[[4,5],[2,6]]</TT></DIV><P>
-<B>Quand doit-on utiliser </B><B><TT>copy</TT></B><B> ?</B><BR>
-<TT>copy</TT> est surtout utile pour des listes ou des matrices qui 
-seront par la suite modifiées par référence avec <TT>=&lt;</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV><DIV CLASS="center"><TT>B:=copy(A)</TT></DIV><P>
-Puis, si on tape :
-</P><DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV><DIV CLASS="center"><TT>A,B</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,3,4]</TT></DIV><P>
-Puis si on tape :
-</P><DIV CLASS="center"><TT>B[3]=&lt;55</TT></DIV><DIV CLASS="center"><TT>A,B</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,55,4]</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc966">9.1.4</A>  La forme d’un programme</H3><P><A NAME="@default1455"></A><A NAME="@default1456"></A><A NAME="@default1457"></A><A NAME="@default1458"></A>
+<A NAME="sec:dispgg"></A>
+Un programme a la même forme qu’une fonction mais ne renvoie pas de valeurs,
+mais un programme peut afficher des résultats ou 
+faire des dessins : dans ce cas toutes les instructions d’affichage 
+(<TT>afficher</TT> ou <TT>Disp;</TT>) se feront 
+en bleu dans l’écran intermédiaire situé avant la réponse et les 
+instructions de dessins se feront dans l’écran <TT>DispG</TT>. En particulier 
+les dessins récursifs ne seront visibles que dans l’écran <TT>DispG</TT>.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Pour ouvrir l’écran <TT>DispG</TT>, on utilise le menu 
+<TT>Cfg</TT><TT>▸</TT><TT>Montrer</TT><TT>▸</TT><TT> DispG</TT> ou 
+l’instruction <TT>DispG;</TT> (ne pas mettre de parenthèses).
+</LI><LI CLASS="li-itemize">Pour effacer l’écran <TT>DispG</TT>, on utilise la commande 
+<TT>ClrGraph()</TT> ou <TT>erase</TT>.
+</LI><LI CLASS="li-itemize">Pour cacher l’écran <TT>DispG</TT>, on utilise le menu 
+<TT>Cfg</TT><TT>▸</TT><TT>Cacher</TT><TT>▸</TT><TT> DispG</TT> ou 
+l’instruction <TT>DispHome;</TT> (ne pas mettre de parenthèses).
+</LI></UL><P>
+Lors de l’exécution du programme, on aura comme réponse, la valeur 
+(ou le dessin) de la dernière instruction du programme.<BR>
+Il est préférable de mettre <TT>return 0</TT> à la fin d’un programme et de 
+le transformer ainsi en fonction : l’exécution de ce programme renverra 0 
+comme réponse ce qui voudra dire que son exécution s’est bien passée.</P><HR>
 <A HREF="cascmd_fr822.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr824.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

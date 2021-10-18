@@ -6,39 +6,104 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de la loi binomiale négative : negbinomial_icdf</TITLE>
+<TITLE>Tirage équiréparti rand alea hasard</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr748.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr750.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc888">8.4.6</A>  Fonction de répartition inverse de la loi binomiale négative : <TT>negbinomial_icdf</TT></H3><P><A NAME="@default1346"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale négative
-<FONT COLOR=red><I>N</I></FONT><I>eg</I><FONT COLOR=red><I>B</I></FONT><I>in</I>(<I>n</I>,<I>p</I>), lorsqu’on a 
-<TT>negbinomial_icdf(n,p,x)=h</TT> c’est que<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)=<I>x</I>=<TT>negbinomial_cdf(n,p,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc888">8.3.2</A>  Tirage équiréparti <TT>rand alea hasard</TT></H3><P><A NAME="@default1348"></A><A NAME="@default1349"></A><A NAME="@default1350"></A>
+</P><H4 CLASS="subsubsection"><A NAME="toc26"></A>Tirage équiréparti sur [0,1[ : <TT>rand() alea() hasard</TT></H4><P>
+<TT>rand()</TT> renvoie au hasard, de façon équiprobable, un nombre 
+réel de [0,1[.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>negbinomial_icdf(4,0.5,0.9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rand()</TT></DIV><P>
+ou on tape
+</P><DIV CLASS="center"><TT>alea()</TT></DIV><P>
+ou on tape (attention <TT>hasard</TT> n’utilise pas de <TT>()</TT> et est utilisé 
+pour le langage de la tortue)
+</P><DIV CLASS="center"><TT>hasard</TT></DIV><P>
+On obtient par exemple:
+</P><DIV CLASS="center"><TT>0.912569261115</TT></DIV><P>
+Pour avoir, au hasard, de façon équiprobable, un nombre de [0;1[, on peut 
+aussi utiliser (voir le paragraphe suivant):
+</P><DIV CLASS="center"><TT>rand(0,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>8</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.391549611697</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc27"></A>Tirage aléatoire équiréparti sur l’intervalle [a;b[ : <TT>rand(a,b) hasard(a,b) rand(a..b)() hasard(a..b)()</TT></H4><P>
+Si <TT>a</TT> et <TT>b</TT> sont des réels <TT>rand(a,b)</TT> désigne un nombre 
+décimal aléatoire compris dans l’intervalle [<I>a</I>;<I>b</I>[.<BR>
+Donc, <TT>rand(a,b)</TT> ou (<TT>hasard(a,b)</TT>) renvoie au hasard, et de façon 
+équiprobable, un nombre décimal de [<I>a</I>;<I>b</I>[.<BR>
+Pour avoir, au hasard et de façon équiprobable, un nombre décimal de [0;1[, 
+on tape :
+</P><DIV CLASS="center"><TT>rand(0,1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.391549611697</TT></DIV><P>
+ou on tape (attention <TT>hasard</TT> utilise des <TT>()</TT> qui englobent hasard et sesparamètres et <TT>hasard</TT> est 
+utilisé pour le langage de la tortue)
+</P><DIV CLASS="center"><TT>(hasard 0,1)</TT></DIV><P>
+On obtient par exemple:
+</P><DIV CLASS="center"><TT>0.912569261115</TT></DIV><P>
+Pour avoir, au hasard et de façon équiprobable, un nombre décimal de 
+[0;0.5[, on tape :
+</P><DIV CLASS="center"><TT>rand(0,0.5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.303484437987</TT></DIV><P>
+Pour avoir, au hasard et de façon équiprobable, un nombre décimal de ]−0.5;0], 
+on tape :
+</P><DIV CLASS="center"><TT>rand(0,-0.5)</TT></DIV><P>
+ou on tape :
+</P><DIV CLASS="center"><TT>rand(-0.5,0)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>-0.20047219703</TT></DIV><P>Si <TT>a</TT> et <TT>b</TT> sont des réels <TT>rand(a..b)</TT> ou <TT>alea(a..b)</TT> ou 
+<TT>hasard(a..b)</TT> désigne une fonction qui est un générateur de nombres
+aléatoires compris dans l’intervalle [<I>a</I>;<I>b</I>[.<BR>
+Donc, <TT>rand(a..b)()</TT> renvoie au hasard, et de façon équiprobable, un
+nombre décimal de [<I>a</I>;<I>b</I>[.<BR>
+Pour avoir, au hasard et de façon équiprobable, un nombre décimal de [0;1[, 
+on tape :
+</P><DIV CLASS="center"><TT>rand(0..1)()</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.391549611697</TT></DIV><P>
+Pour avoir, au hasard et de façon équiprobable, plusieurs nombres 
+aléatoires décimaux compris dans l’intervalle [1;2[, 
+on tape :
+</P><DIV CLASS="center"><TT>r:=rand(1..2)</TT></DIV><P>
+puis il suffit de taper <TT>r()</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>negbinomial_icdf(2,0.3,0.95)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>r()</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>12</TT></DIV><P>
-<B>Les programmes naifs pour calculer les fonctiond précédentes</B><BR>
-</P><PRE CLASS="verbatim">negbino(n,p,k):=comb(-n,k)*p^n*(p-1)^k;
-negbin(n,p,k):=comb(n+k-1,k)*p^n*(1-p)^k;
-negbi(n,p,k):=(n+k-1)!/k!/(n-1)!*p^n*(1-p)^k;
-negbino_cdf(n,p,x):=sum(negbi(n,p,k),k=0..floor(x));
-negbino_icdf(n,p,x):={
- local k:=0;
- tantque negbino_cd(n,p,k)&lt;x faire
-   k:=k+1;
-   ftantque;
-   return k;
-   }:;
-</PRE><HR>
+</P><DIV CLASS="center"><TT>1.14160255529</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc28"></A>Tirage aléatoire d’entiers équirépartis sur [0,..,<I>n</I>[ : <TT>rand(n) alea(n) hasard(n)</TT></H4><P><A NAME="@default1351"></A><A NAME="@default1352"></A><A NAME="@default1353"></A>
+Si <TT>n</TT> est un entier relatif <TT>rand(n)</TT> ou <TT>hasard(n)</TT> renvoie au 
+hasard, et de façon équiprobable, un entier de [0,1,..,<I>n</I>[ 
+(ou de ]<I>n</I>,..1,0] si <I>n</I> est negatif).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>rand(2)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>alea(2)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>hasard(2)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>hasard 2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+ou on obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>rand(-2)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>hasard(-2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-1</TT></DIV><P>
+ou on obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+On tape pour avoir un entier aléatoire entre 6 et 10, bornes comprises :
+</P><DIV CLASS="center"><TT>6+rand(11-6)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>6+hasard(11-6)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>8</TT></DIV><HR>
 <A HREF="cascmd_fr748.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr750.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

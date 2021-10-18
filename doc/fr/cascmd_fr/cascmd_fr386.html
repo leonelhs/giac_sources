@@ -6,22 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Liste aléatoire : ranm</TITLE>
+<TITLE>Convertir un polynôme de n variables en une liste : convert convertir</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr385.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr387.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc472">6.27.32</A>  Liste aléatoire : <TT>ranm</TT></H3><P><A NAME="@default723"></A><A NAME="sec:ranm1"></A>
-<TT>ranm</TT> a comme argument un entier <TT>n</TT>.<BR>
-<TT>ranm</TT> renvoie une liste de n entiers aléatoires (entre -99 et +99) 
-pouvant être considérés comme les coefficients d’un polynôme de 
-degré <TT>n-1</TT> (voir aussi <A HREF="cascmd_fr548.html#sec:ranm2">6.45.3</A>, <A HREF="cascmd_fr534.html#sec:ranm4">6.41.39</A> et <A HREF="cascmd_fr743.html#sec:ranm3">8.3.9</A>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc473">6.28.28</A>  Convertir un polynôme de <I>n</I> variables en une liste : <TT>convert convertir</TT></H3><P><A NAME="@default727"></A><A NAME="@default728"></A><A NAME="@default729"></A><A NAME="sec:convertpolyl"></A>
+<TT>convert</TT>, avec l’option <TT>list</TT>, permet de convertir un
+polynôme de <I>n</I> variables en une liste.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>ranm(3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>p:=symb2poly((x+y)</TT><CODE><TT>^</TT></CODE><TT>2,[x,y])</TT></DIV><DIV CLASS="center"><TT>l:=convert(p,list)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>l:=convert(p)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[68,-21,56]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1,[2,0]],[2,[1,1]],[1,[0,2]]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>p:=symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x*y+3*x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>4,[x,y])</TT></DIV><DIV CLASS="center"><TT>l:=convert(p,list)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>l:=convert(p)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[3,[3,4]],[1,[2,0]],[2,[1,1]]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>q:=symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x*y+3*x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>4,[x,y])</TT></DIV><DIV CLASS="center"><TT>l:=convert(q,list)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>l:=convert(q)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[3,[4,3]],[2,[1,1]],[1,[0,2]]]]</TT></DIV><HR>
 <A HREF="cascmd_fr385.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr387.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

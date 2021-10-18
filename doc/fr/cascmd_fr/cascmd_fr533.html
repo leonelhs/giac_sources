@@ -6,31 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Faire une liste avec une fonction : makelist</TITLE>
+<TITLE>Nombre d’éléments inférieurs à une valeur : count_inf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr532.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr534.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc633">6.41.38</A>  Faire une liste avec une fonction : <TT>makelist</TT></H3><P><A NAME="@default943"></A>
-<TT>makelist</TT> fabrique une liste à l’aide d’une fonction, 
-en donnant les bornes de la variable et le pas de cette variable qui par 
-défaut vaut 1 ou -1 selon que l’ordre des bornes.<BR>
+<H3 CLASS="subsection"><A NAME="htoc634">6.42.31</A>  Nombre d’éléments inférieurs à une valeur : <TT>count_inf</TT></H3><P><A NAME="@default944"></A><A NAME="@default945"></A>
+<A NAME="@default946"></A>
+<TT>count_inf</TT> a deux ou trois paramètres : une nombre et une 
+liste (ou une matrice) et dans le cas où le deuxième paramètre est une 
+matrice, un argument optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
+<TT>count_inf</TT> renvoie le nombre d’éléments de la liste (ou de la 
+matrice) qui sont strictement inférieurs au premier argument. 
+Dans le cas où il y a un argument 
+optionnel <TT>row</TT> (resp <TT>col</TT>) <TT>count_inf</TT> agit sur chacune des 
+lignes (resp colonnes) de la matrice et renvoie alors une liste.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,3,5)</TT></DIV><P>
-ou bien
-</P><DIV CLASS="center"><TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,3,5,1)</TT></DIV><P>
-ou on définit la fonction <I>h</I>(<I>x</I>)=<I>x</I><SUP>2</SUP> en tapant :
-<TT>h(x):=x</TT><CODE><TT>^</TT></CODE><TT>2</TT> puis
-</P><DIV CLASS="center"><TT>makelist(h,3,5,1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>count_inf(12,[2,12,45,3,7,78])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>count_inf(12,[[2,12,45],[3,7,78]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[9,16,25]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,3,6,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>count_inf(12,[[2,12,45],[3,7,78]],row)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[9,25]</TT></DIV><P>
-<B>Attention!!!</B> il faut purger <TT>x</TT> si <TT>x</TT> est affecté.</P><HR>
+</P><DIV CLASS="center"><TT>[1,2]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>count_inf(12,[[2,12,45],[3,7,78]],col)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,1,0]</TT></DIV><HR>
 <A HREF="cascmd_fr532.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr534.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,22 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les quadrilatères quelconques dans l’espace : quadrilateral quadrilatere</TITLE>
+<TITLE>Droite orthogonale à un plan et plan orthogonal à une droite : orthogonal</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1021.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1023.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1200">11.8.5</A>  Les quadrilatères quelconques dans l’espace : <TT>quadrilateral quadrilatere</TT></H3><P><A NAME="@default1981"></A><A NAME="@default1982"></A><A NAME="sec:quadrila3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr914.html#sec:quadrila2">10.11.6</A> pour la géométrie plane.<BR>
-<TT>quadrilatere(A,B,C,D)</TT>, en géométrie 3-d, renvoie et trace 
-la ligne polygonale fermée (ie un quadrilatère non plan si les points ne 
-sont pas coplanaires) <I>ABCD</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1198">11.5.8</A>  Droite orthogonale à un plan et plan orthogonal à une droite : <TT>orthogonal</TT></H3><P><A NAME="@default1993"></A><A NAME="sec:orthogonal3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1021.html#sec:perpendi3">11.5.7</A> et, pour la géométrie plane 
+<A HREF="cascmd_fr912.html#sec:perpendi2">10.9.8</A>.<BR>
+<TT>orthogonal</TT>, en géométrie 3-d, renvoie et dessine une droite 
+(resp un plan) si le 2-ième argument est un plan (resp une droite). Plus 
+précisemment, si ses arguments sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+une droite <I>dd</I> et une droite <I>d</I>, <TT>orthogonal(dd,d)</TT> renvoie et 
+dessine un plan orthogonal à la droite <I>d</I> et passant par <I>dd</I>,
+</LI><LI CLASS="li-itemize">un point <I>A</I> et un plan <I>P</I>, <TT>orthogonal(A,P)</TT> renvoie et dessine
+une droite orthogonale au plan <I>P</I> et passant par <I>A</I>.<BR>
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>quadrilatere(point(0,0,0),point(0,1,0),point(0,2,2)point(1,0,2))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>orthogonal(point(0,0,0),droite(point(1,0,0),point(0,1,0)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le quadilatère (de l’espace) de sommets les points donnés</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le plan d’équation y=x</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>orthogonal(point(0,0,0),plan(point(1,0,0),point(0,1,0),point(0,0,1)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>La droite d’équation x=y=z</TT></DIV><HR>
 <A HREF="cascmd_fr1021.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1023.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

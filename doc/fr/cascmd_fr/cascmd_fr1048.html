@@ -6,35 +6,86 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un triangle isocéle : is_isosceles est_isocele</TITLE>
+<TITLE>Les coordonnées d’un point, d’un vecteur ou d’une droite 3-d : coordinates coordonnees</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1047.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1049.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1231">11.13.10</A>  Savoir si on a un triangle isocéle : <TT>is_isosceles est_isocele</TT></H3><P><A NAME="@default2030"></A><A NAME="@default2031"></A><A NAME="sec:estisocele3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr970.html#sec:estisocele2">10.18.6</A> pour la géométrie plane.<BR>
-<TT>est_isocele</TT> est une fonction booléenne ayant comme 
-argument trois points ou un objet géométrique.<BR>
-<TT>est_isocele</TT> vaut 1 (resp 2, 3) si les trois points forment un 
-triangle isocéle ou si l’objet géométrique est un triangle isocéle dont
-le sommet de l’angle portant les deux cotés égaux est désigné par le 
-premier (resp second, troisième) argument, ou vaut 4 si les trois points 
-forment un triangle équilatéral, ou si l’objet géométrique est un 
-triangle équilatéral, et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1231">11.12.4</A>  Les coordonnées d’un point, d’un vecteur ou d’une droite 3-d : <TT>coordinates coordonnees</TT></H3><P><A NAME="@default2039"></A><A NAME="@default2040"></A><A NAME="sec:coordonnees3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr949.html#sec:coordonnees2">10.15.4</A> pour la géométrie plane.<BR>
+<TT>coordonnees</TT>, en géométrie 3-d, est une fonction ayant 
+comme argument un point ou un vecteur ou une droite 3-d.<BR>
+<TT>coordonnees</TT> renvoie la liste de l’abscisse, de l’ordonnée et de la cote
+du point ou du vecteur ou renvoie une matrice de 2 lignes qui donnent 
+l’abscisse, l’ordonnée et la cote de 2 points de la droite orientée.<BR>
+On a :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si le point <TT>A</TT> a pour coordonnées cartésiennes 
+(<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>A</I></SUB>,<I>z</I><SUB><I>A</I></SUB>),<BR>
+ <TT>coordonnees(A)</TT> renvoie [<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>A</I></SUB>,<I>z</I><SUB><I>A</I></SUB>], 
+</LI><LI CLASS="li-itemize">si le point <TT>B</TT> a pour coordonnées cartésiennes 
+(<I>x</I><SUB><I>B</I></SUB>,<I>y</I><SUB><I>B</I></SUB>,<I>z</I><SUB><I>B</I></SUB>),<BR>
+ <TT>coordonnees(vecteur(A,B))</TT> ou <TT>B-A</TT> renvoie<BR>
+[<I>x</I><SUB><I>B</I></SUB>−<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>B</I></SUB>−<I>y</I><SUB><I>A</I></SUB>,<I>z</I><SUB><I>B</I></SUB>−<I>z</I><SUB><I>A</I></SUB>]<BR>
+car <TT>B-A</TT> désigne les coordonnées du 
+vecteur <I>AB</I>,
+</LI><LI CLASS="li-itemize">si le vecteur <TT>V</TT> a pour coordonnées cartésiennes 
+(<I>x</I><SUB><I>V</I></SUB>,<I>y</I><SUB><I>V</I></SUB>,<I>z</I><SUB><I>V</I></SUB>),<BR>
+ <TT>coordonnees(V)</TT> ou <TT>coordonnees(vecteur(A,V))</TT> renvoie<BR>
+[<I>x</I><SUB><I>V</I></SUB>,<I>y</I><SUB><I>V</I></SUB>,<I>z</I><SUB><I>V</I></SUB>],
+</LI><LI CLASS="li-itemize">si une droite <TT>d</TT> est définie par deux points <TT>A</TT> et <TT>B</TT>,<BR>
+<TT>coordonnees(d)</TT> renvoie <TT>[coordonnees(A),coordonnees(B)]</TT>,
+</LI><LI CLASS="li-itemize">si une droite <TT>d</TT> est définie par son équation,<BR>
+<TT>coordonnees(d)</TT> renvoie <TT>[coordonnees(A),coordonnees(B)]</TT> où <TT>A</TT>
+et <TT>B</TT> sont deux points de la droite <TT>d</TT>, le vecteur <TT>AB</TT> ayant 
+même orientation que <TT>d</TT>.
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_isocele([2,0,0],[0,0,0],[0,2,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>coordonnees(point([1,2,3]))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(point(1,2,3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[1,2,3]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>T:=triangle_isocele([0,0,0],[2,2,0],[2,2,2]); est_isocele(T)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>coordonnees(vecteur(point([1,2,3]),point([2,4,7])))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(vecteur(point(1,2,3),point(2,4,7)))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(vecteur([1,2,3],[2,4,7])))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(vecteur([1,2,4])))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>coordonnees(vecteur([1,2,3],vecteur([1,2,4])))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>point([2,4,7])-point([1,2,3])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[1,2,4]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_isocele([1,1,0],[-1,1,0],[-1,0,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>d:=droite(point(-1,1,0),point(1,2,3))</TT></DIV><DIV CLASS="center"><TT>coordonnees(d)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[-1,1,0],[1,2,3]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>d:=droite(x-2*y+3=0,6*x+3*y-5*z+3=0)</TT></DIV><DIV CLASS="center"><TT>coordonnees(d)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[-1,1,0],[9,6,15]]</TT></DIV><P>
+<B>Attention</B><BR>
+<TT>coordonnees</TT> peut aussi avoir comme argument une séquence ou une liste
+de points. <TT>coordonnees</TT> renvoie alors la séquence ou la liste des
+listes des coordonnées de ces points, par exemple :<BR>
+<TT>coordonnees(point([0,1,2]),point([1,2,4]))</TT><BR>
+renvoie la séquence :<BR>
+<TT>[0,1,2],[1,2,4]</TT><BR>
+et<BR>
+<TT>coordonnees([point([0,1,2]),point([1,2,4])])</TT><BR>
+ renvoie la matrice :<BR>
+<TT>[[0,1,2],[1,2,4]]</TT> mais<BR>
+<TT>coordonnees([1,2,4])</TT><BR>
+ renvoie la matrice :<BR>
+<TT>[[1,0],[2,0],[4,0]]</TT><BR>
+ car <TT>[1,2,4]</TT> est considéré comme la liste de
+3 points d’affixe <TT>1</TT>, <TT>2</TT> et <TT>4</TT>.</P><HR>
 <A HREF="cascmd_fr1047.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1049.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

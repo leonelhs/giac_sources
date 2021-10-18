@@ -6,25 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tirage selon une loi exponentielle : randexp</TITLE>
+<TITLE>Régression polynômiale : polynomial_regression</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr741.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr743.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc880">8.3.8</A>  Tirage selon une loi exponentielle : <TT>randexp</TT></H3><P><A NAME="@default1337"></A>
-<TT>randexp(a)</TT> renvoie au hasard 
-des nombres répartis selon la loi exponentielle de paramètre <TT>a</TT>
-positif.<BR>
-La densité de probabilité est proportionnelle à exp(−<I>a</I>*<I>t</I>) et on a :<BR>
-Proba(<I>X</I>≤ <I>t</I>)=<I>a</I>∫<SUB>0</SUB><SUP><I>t</I></SUP>exp(−<I>a</I>*<I>u</I>)<I>du</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc880">8.2.16</A>  Régression polynômiale : <TT>polynomial_regression</TT></H3><P><A NAME="@default1332"></A>
+Pour approcher les données par une fonction polynômiale de degré ≤ <I>n</I>
+d’équation <I>y</I>=<I>a</I><SUB>0</SUB><I>x</I><SUP><I>n</I></SUP>+..+<I>a</I><SUB><I>n</I></SUB>, on utilise, en mettant le degré <I>n</I> comme 
+dernier paramètre, <TT>polynomial_regression</TT> qui renvoie la liste 
+[<I>a</I><SUB><I>n</I></SUB>,..<I>a</I><SUB>0</SUB>].<BR>
+<TT>polynomial_regression</TT> a les mêmes premiers arguments que 
+<TT>covariance</TT>, le dernier argument étant le degré du polynôme 
+renvoyé.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>randexp(1)</TT></DIV><P>
-On obtient par exemple :
-</P><DIV CLASS="center"><TT>0.310153677284</TT></DIV><P>
-ou on obtient par exemple :
-</P><DIV CLASS="center"><TT>0.776007926195</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>polynomial_regression([[1,1],[2,4],[3,9],[4,16]],3)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>polynomial_regression([1,2,3,4],[1,4,9,16],3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0,1,0,0]</TT></DIV><P>
+c’est donc la fonction polynomiale d’équation <I>y</I>=0*<I>x</I><SUP>3</SUP>+<I>x</I><SUP>2</SUP>+0*<I>x</I>+0=<I>x</I><SUP>2</SUP> 
+qui approche au mieux les données.
+<B>Remarque</B>
+On remarquera que l’équation de la courbe representée ainsi que la valeur 
+du coefficient de corrélation des données sont écrits en bleu.<BR>
+Si on veut avoir l’équation et/ou le coefficient de corrélation sur le 
+dessin il faut rajouter comme dernier argument, l’option <TT>equation</TT> et/ou 
+<TT>correlation</TT>.</P><HR>
 <A HREF="cascmd_fr741.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr743.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

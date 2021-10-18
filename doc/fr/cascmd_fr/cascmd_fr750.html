@@ -6,42 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Probabilité que X égale [k0,k1..kj]+K lorsque X suit une loi multinomiale de probabilité [p0,p1,..pj]=P : multinomial</TITLE>
+<TITLE>Tirage aléatoire sans remise de p objets parmi n : rand alea hasard</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr749.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr751.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc889">8.4.7</A>  Probabilité que <I>X</I> égale [<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>]+<I>K</I> lorsque <I>X</I> suit une loi multinomiale de probabilité [<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>]=<I>P</I> : <TT>multinomial</TT></H3><P><A NAME="@default1347"></A>
-La probabilité pour que <I>X</I> égale <I>K</I>=[<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>]
-(avec <I>k</I><SUB>0</SUB>+..+<I>k</I><SUB><I>j</I></SUB>=<I>n</I>) lorsque <I>X</I> suit une loi multinomiale de probabilité 
-<I>P</I>=[<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>] (avec <I>p</I><SUB>0</SUB>+..+<I>p</I><SUB><I>j</I></SUB>=1) est :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TT><I>multinomial</I>(<I>n</I>,<I>P</I>,<I>K</I>)=</TT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>!</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">(<I>k</I><SUB>0</SUB>!<I>k</I><SUB>1</SUB>!..<I>k</I><SUB><I>j</I></SUB>!)</TD></TR>
-</TABLE></TD><TD CLASS="dcell">*(<I>p</I><SUB>0</SUB><SUP><I>k</I><SUB>0</SUB></SUP> <I>p</I><SUB>1</SUB><SUP><I>k</I><SUB>1</SUB></SUP>..<I>p</I><SUB><I>j</I></SUB><SUP><I>k</I><SUB><I>j</I></SUB></SUP>)</TD></TR>
-</TABLE><P>
-<B>Remarque</B>
-<TT>multinomial(n,P,K)</TT> avec <I>P</I>=[<I>p</I><SUB>0</SUB>,<I>p</I><SUB>1</SUB>,..<I>p</I><SUB><I>j</I></SUB>] et <I>K</I>=[<I>k</I><SUB>0</SUB>,<I>k</I><SUB>1</SUB>..<I>k</I><SUB><I>j</I></SUB>] renvoie
-<I>n</I>!/(<I>k</I><SUB>0</SUB>!<I>k</I><SUB>1</SUB>!..<I>k</I><SUB><I>j</I></SUB>!)*(<I>p</I><SUB>0</SUB><SUP><I>k</I><SUB>0</SUB></SUP> <I>p</I><SUB>1</SUB><SUP><I>k</I><SUB>1</SUB></SUP>..<I>p</I><SUB><I>j</I></SUB><SUP><I>k</I><SUB><I>j</I></SUB></SUP>) même si 
-<I>p</I><SUB>0</SUB>+..+<I>p</I><SUB><I>j</I></SUB>≠ 1 mais renvoie une erreur si <I>k</I><SUB>0</SUB>+..+<I>k</I><SUB><I>j</I></SUB>≠ <I>n</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc889">8.3.3</A>  Tirage aléatoire sans remise de p objets parmi n : <TT>rand alea hasard</TT></H3><P><A NAME="@default1354"></A><A NAME="@default1355"></A><A NAME="@default1356"></A>
+<TT>rand</TT> a dans ce cas, soit 2, soit 3 arguments.<BR>
+ Si <TT>rand</TT> a 2 arguments : les arguments sont un entier <I>p</I> et une liste 
+<I>L</I> alors <TT>rand(p,L)</TT> renvoie, au hasard, <TT>p</TT> éléments de la liste 
+<TT>L</TT>.<BR>
+ Si <TT>rand</TT> a 3 arguments : les arguments sont trois entiers 
+<TT>p,min,max</TT> alors
+<TT>rand(p,min,max)</TT> renvoie, au hasard, <TT>p</TT> entiers de 
+<TT>[min,..,max]</TT> 
 On tape :
-</P><DIV CLASS="center"><TT>multinomial(10,[0.2,0.3,0.5],[3,2,5])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rand(3,["r","r","r","r","v","v","v"])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0567</TT></DIV><P>
-On vérifie :<BR>
-10!/(3!*2!*5!)*0.2<SUP>3</SUP>*0.3<SUP>2</SUP>*0.5<SUP>5</SUP>=0.0567.<BR>
-Donc la probabilité d’obtenir [3,2,5] (3 fois l’objet ayant la probabilité 
-0.2 d’être tiré, 2 fois l’objet ayant la probabilité 0.3 d’être tiré 
-et 5 fois l’objet ayant la probabilité 0.5 d’être tiré) lors de 10 
-tirages d’un objet parmi ces 3 objets est 0.0567.<BR>
+</P><DIV CLASS="center"><TT>["r","r","v"]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>multinomial(4,[0.5,0.5],[2,2])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>binomial(4,2,0.5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rand(2,1,10)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.375</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[3,7]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>rand(2,4,10)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[5,7]</TT></DIV><HR>
 <A HREF="cascmd_fr749.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr751.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

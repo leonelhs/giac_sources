@@ -6,23 +6,40 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Nombre de lignes : rowdim rowDim nrows</TITLE>
+<TITLE>Faire une matrice avec deux matrices : semi_augment</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr593.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr595.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc703">6.50.7</A>  Nombre de lignes : <TT>rowdim rowDim nrows</TT></H3><P><A NAME="@default1091"></A><A NAME="@default1092"></A><A NAME="@default1093"></A>
-<TT>rowdim</TT> (ou <TT>rowDim</TT> ou <TT>nrows</TT>) a comme argument une 
-matrice <I>A</I>.<BR>
-<TT>rowdim</TT> (ou <TT>rowDim</TT> ou <TT>nrows</TT>) renvoie le nombre de lignes de la matrice <I>A</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc703">6.50.13</A>  Faire une matrice avec deux matrices : <TT>semi_augment</TT></H3><P><A NAME="@default1085"></A>
+<TT>semi_augment</TT> concaténe deux matrices ayant le même nombre 
+de colonnes.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>rowdim([[1,2,3],[3,4,5]])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>nrows([[1,2,3],[3,4,5]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>semi_augment([[3,4],[2,1],[0,1]],[[1,2],[4,5]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[3,4],[2,1],[0,1],[1,2],[4,5]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>semi_augment([[3,4,2]],[[1,2,4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[3,4,2],[1,2,4]]</TT></DIV><P>
+<B>Attention</B> Comparer <TT>semi_augment</TT> et <TT>concat</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>concat([[3,4,2]],[[1,2,4]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[3,4,2,1,2,4]]</TT></DIV><P>
+En effet, quand les deux matrices <I>A</I> et <I>B</I> ont la même dimension, 
+<TT>concat</TT> fabrique une matrice ayant même nombre de 
+lignes que <I>A</I> et <I>B</I> en accolant <I>A</I> et <I>B</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>concat([[3,4],[2,1],[0,1]],[[1,2],[4,5]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[3,4],[2,1],[0,1],[1,2],[4,5]]</TT></DIV><P>
+alors que :
+</P><DIV CLASS="center"><TT>concat([[3,4],[2,1]],[[1,2],[4,5]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[3,4,1,2],[2,1,4,5]]</TT></DIV><HR>
 <A HREF="cascmd_fr593.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr595.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

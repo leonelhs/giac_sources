@@ -6,23 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le triangle quelconque dans l’espace: triangle</TITLE>
+<TITLE>Point défini comme barycentre de n points : barycenter barycentre</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1013.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1015.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1191">11.7.1</A>  Le triangle quelconque dans l’espace: <TT>triangle</TT></H3><P><A NAME="@default1968"></A><A NAME="sec:triangle3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr905.html#sec:triangle2">10.10.2</A> pour la géométrie plane.<BR>
-<TT>triangle</TT>, en géométrie 3-d, a comme arguments : 3 points
-<TT>triangle</TT> renvoie et trace le triangle ayant pour sommets ces 3 points.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1189">11.4.7</A>  Point défini comme barycentre de <I>n</I> points : <TT>barycenter barycentre</TT></H3><P><A NAME="@default1979"></A><A NAME="@default1980"></A><A NAME="sec:barycentre3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr900.html#sec:barycentre2">10.8.10</A> pour la géométrie plane et
+<A HREF="cascmd_fr254.html#sec:baryc">6.12.10</A>.<BR>
+<TT>barycentre</TT> ou <TT>barycenter</TT>, , en géométrie 3-d, a comme 
+argument des listes de longueur 2 (resp une matrice ayant deux colonnes) :<BR>
+le premier élément de la liste <I>j</I> (resp le <I>j</I>ième élément de la 
+première colonne de la matrice) contient le point <I>A</I><SUB><I>j</I></SUB>, le deuxième 
+élément de la liste <I>j</I> (resp le <I>j</I>ième élément de la deuxième 
+colonne) contient le coefficient réel α<SUB><I>j</I></SUB> affecté à <I>A</I><SUB><I>j</I></SUB>.<BR>
+<TT>barycentre</TT> ou <TT>barycenter</TT> renvoie et trace le point qui est le 
+barycentre des points <I>A</I><SUB><I>j</I></SUB> affectés des coefficients réels
+α<SUB><I>j</I></SUB> lorsque ∑α<SUB><I>j</I></SUB> ≠ 0.<BR>
+Si ∑α<SUB><I>j</I></SUB> = 0, <TT>barycentre</TT> ou <TT>barycenter</TT> renvoie une 
+erreur.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>C:=point(0,3,0)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>triangle(A,B,C)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>barycentre([point(1,4,0),1],[point(1,-2,0),1])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>barycentre([[point(1,4,0),1],[point(1,-2,0),1]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le triangle ABC</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le point (1,1,0) est tracé</TT></DIV><HR>
 <A HREF="cascmd_fr1013.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1015.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

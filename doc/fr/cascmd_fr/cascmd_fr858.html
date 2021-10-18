@@ -6,35 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Avoir un arrêt momentané : Pause</TITLE>
+<TITLE>Pour sortir d’une boucle : break</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr857.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr859.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1006">9.7.10</A>  Avoir un arrêt momentané : <TT>Pause</TT></H3><P><A NAME="@default1544"></A>
-<TT>Pause</TT> est une instruction qui permet de suspendre l’exécution 
-d’un programme.<BR>
-<TT>Pause</TT> n’a pas d’argument ou a comme argument le temps de 
-pause en secondes : on ne met pas de parenthèses, on écrit :<BR>
-<TT>Pause;</TT> ou <TT>Pause n;</TT><BR>
-Lorsque <TT>Pause</TT> n’a pas d’argument (ne pas mettre de parenthèses), une 
-fenêtre <SPAN CLASS="textboxed"><FONT SIZE=7>i</FONT></SPAN><SPAN CLASS="textboxed"> </SPAN><SPAN CLASS="textboxed"><TT> Paused</TT></SPAN> s’ouvre et l’exécution reprend 
-lorsque l’utilisateur appuie sur <TT>Enter</TT> ou sur <TT>Close</TT> de cette 
-fenêtre.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1006">9.6.2</A>  Pour sortir d’une boucle : <TT>break</TT></H3><P><A NAME="@default1564"></A>
+<TT>break</TT> n’a pas d’argument ni parenthèse.<BR>
+<TT>break</TT> permet de sortir d’une boucle.<BR>
 On tape :
-<TT>a:=21;b:=5</TT> puis,
-</P><DIV CLASS="center"><TT>print(a);Pause;print(b);</TT></DIV><P>
+</P><PRE CLASS="verbatim">testbreak(a,b):={
+local r;
+while (1==1){
+  if (b==0){break;} 
+  r:=irem(a,b);
+  a:=b;
+  b:=r;
+}
+return a;
+}
+</PRE><P>puis on tape :
+</P><DIV CLASS="center"><TT>testbreak(4,0)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>21 s’écrit en bleu, un arrêt puis la fenêtre</TT> 
-<SPAN CLASS="textboxed"><FONT SIZE=7>i</FONT></SPAN><SPAN CLASS="textboxed"> </SPAN><SPAN CLASS="textboxed"><TT>Paused</TT></SPAN> <TT>s’ouvre, on tape sur Close et 5 
-s’écrit en bleu et on a (1,0,1) comme réponse</TT></DIV><P>
-On tape :
-<TT>a:=21;b:=5</TT> puis,
-</P><DIV CLASS="center"><TT>print(a);Pause 3;print(b);</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>21 s’écrit en bleu, un arrêt de 3 secondes, puis 5 s’écrit en bleu et on a (1,0,1) comme réponse</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>4 car il y a eu l’interruption de la boucle while quand b==0</TT></DIV><HR>
 <A HREF="cascmd_fr857.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr859.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

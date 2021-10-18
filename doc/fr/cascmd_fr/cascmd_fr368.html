@@ -6,21 +6,40 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Mise en facteur de xn dans un polynôme : factor_xn</TITLE>
+<TITLE>Valuation d’un polynôme : valuation ldegree</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr367.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr369.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc454">6.27.14</A>  Mise en facteur de <I>x</I><SUP><I>n</I></SUP> dans un polynôme : <TT>factor_xn</TT></H3><P><A NAME="@default696"></A>
-<TT>factor_xn</TT> a comme argument un polynôme <TT>P</TT>.<BR>
-<TT>factor_xn</TT> renvoie le polynôme <TT>P</TT> dans lequel on a mis en facteur 
-<I>x</I><SUP><I>n</I></SUP> où <I>n</I> est le degré de <TT>P</TT> (<TT>n=degree(P)</TT>).<BR>
- On tape :
-</P><DIV CLASS="center"><TT>factor_xn(-x</TT><CODE><TT>^</TT></CODE><TT>4+3)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc455">6.28.10</A>  Valuation d’un polynôme : <TT>valuation ldegree</TT></H3><P><A NAME="@default703"></A><A NAME="@default704"></A>
+<TT>valuation</TT> ou <TT>ldegre</TT> a 1 ou 2 arguments : un polynôme 
+donné sous forme symbolique ou par la liste de ses coefficients et le nom 
+d’une variable (<TT>x</TT> est la variable par défaut).<BR>
+<TT>valuation</TT> ou <TT>ldegre</TT> renvoie la valuation de ce polynôme, c’est 
+le degré du monôme de plus petit degré par rapport au 2ième argument
+(<TT>ldegree</TT>=low degree).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>valuation(x</TT><CODE><TT>^</TT></CODE><TT>3+x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>4*(-1+3*x</TT><CODE><TT>^</TT></CODE><TT>-4)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>valuation([1,0,1,0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>valuation(x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>3+x*y</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>3+x*y</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[x</TT><CODE><TT>^</TT></CODE><TT>3,x,0,0]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>valuation([x</TT><CODE><TT>^</TT></CODE><TT>3,x,0,0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr367.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr369.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

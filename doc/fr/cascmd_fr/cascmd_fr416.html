@@ -6,45 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Construire un polynôme de n variables : genpoly</TITLE>
+<TITLE>Polynôme de Tchebychev de 2-ième espèce : tchebyshev2</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr415.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr417.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc505">6.30.4</A>  Construire un polynôme de n variables : <TT>genpoly</TT></H3><P><A NAME="@default761"></A>
-<TT>genpoly</TT> a trois arguments : un polynôme <I>P</I> de <I>n</I>−1 variables, un entier <I>b</I> et le nom d’une variable <TT>var</TT>.<BR>
-<TT>genpoly</TT> renvoie le polynôme <I>Q</I> de <I>n</I> variables (celles de <I>P</I> et celle donnée dans l’argument), construit à partir de <I>P</I> pour avoir :<BR>
- <TT>subst(Q,var=b)=P</TT> et de plus
-les coefficients de <I>Q</I> sont dans l’intervalle ]−<I>b</I>/2  ;  <I>b</I>/2]<BR>
+<H3 CLASS="subsection"><A NAME="htoc505">6.30.5</A>  Polynôme de Tchebychev de 2-ième espèce : <TT>tchebyshev2</TT></H3><P><A NAME="@default770"></A>
+<TT>tchebyshev2</TT> a comme argument un entier <I>n</I> et eventuellement le 
+nom de la variable (<I>x</I> par défaut).<BR>
+<TT>tchebyshev2</TT> renvoie le polynôme de Tchebychev de seconde espèce,
+de degré <I>n</I>, noté <I>U</I>(<I>n</I>,<I>x</I>).<BR>
+On a :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>U</I>(<I>n</I>,<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">sin((<I>n</I>+1).arccos(<I>x</I>))</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">sin(arccos(<I>x</I>))</TD></TR>
+</TABLE></TD></TR>
+</TABLE><P><BR>
+ou encore
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">sin((<I>n</I>+1)<I>x</I>)=sin(<I>x</I>)*<I>U</I>(<I>n</I>,cos(<I>x</I>))</TD></TR>
+</TABLE><P> 
+<I>U</I>(<I>n</I>,<I>x</I>) vérifie les relations :<BR>
+<I>U</I>(0,<I>x</I>)=1<BR>
+<I>U</I>(1,<I>x</I>)=2<I>x</I><BR>
+<I>U</I>(<I>n</I>,<I>x</I>)=2<I>xU</I>(<I>n</I>−1,<I>x</I>)−<I>U</I>(<I>n</I>−2,<I>x</I>)<BR>
+Les polynômes <I>U</I>(<I>n</I>,<I>x</I>) sont orthogonaux pour le produit scalaire :<BR>
+&lt;<I>f</I>,<I>g</I>&gt;=∫<SUB>−1</SUB><SUP>+1</SUP><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)√<SPAN style="text-decoration:overline">1−<I>x</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><I>dx</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>genpoly(61,6,x) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>tchebyshev2(3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2*x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1</TT></DIV><P>
-En effet, on a : 61=6<SUP>2</SUP>+4*6+1 mais les coefficients des puissances de 6 
-doivent être dans l’intervalle ]−3  ;  3] donc on écrit 
-61=2*6<SUP>2</SUP>−2*6+1<BR>
+</P><DIV CLASS="center"><TT>8*x</TT><CODE><TT>^</TT></CODE><TT>3+-4*x</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>genpoly(5,6,x) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>tchebyshev2(3,y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x-1</TT></DIV><P>
-En effet : 5=6−1<BR>
-On tape :
-</P><DIV CLASS="center"><TT>genpoly(7,6,x) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x+1</TT></DIV><P>
-En effet : 7=6+1<BR>
-On tape :
-</P><DIV CLASS="center"><TT>genpoly(7*y+5,6,x) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x*y+x+y-1</TT></DIV><P>
-En effet : <I>x</I>*<I>y</I>+<I>x</I>+<I>y</I>−1=<I>y</I>(<I>x</I>+1)+(<I>x</I>−1)<BR>
-On tape :
-</P><DIV CLASS="center"><TT>genpoly(7*y+5*z</TT><CODE><TT>^2</TT></CODE><TT>,6,x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x*y+x*z+y-z</TT></DIV><P>
-En effet : <I>x</I>*<I>y</I>+<I>x</I>*<I>z</I>+<I>y</I>−<I>z</I>=<I>y</I>*(<I>x</I>+1)+<I>z</I>*(<I>x</I>−1)</P><HR>
+</P><DIV CLASS="center"><TT>8*y</TT><CODE><TT>^</TT></CODE><TT>3+-4*y</TT></DIV><P>
+en effet :<BR>
+sin(4.<I>x</I>)=sin(<I>x</I>)*(8*cos(<I>x</I>)<SUP>3</SUP>−4.cos(<I>x</I>))=sin(<I>x</I>)*<I>U</I>(3,cos(<I>x</I>)).</P><HR>
 <A HREF="cascmd_fr415.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr417.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

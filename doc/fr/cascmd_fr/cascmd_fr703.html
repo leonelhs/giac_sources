@@ -6,26 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le premier quartile : quartile1</TITLE>
+<TITLE>Approximation rationnelle : float2rational exact</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr702.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr704.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc839">8.1.7</A>  Le premier quartile : <TT>quartile1</TT></H3><P><A NAME="@default1267"></A>
-<TT>quartile1</TT> renvoie le premier quartile des éléments d’une 
-liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc827">6.65.8</A>  Approximation rationnelle : <TT>float2rational exact</TT></H3><P><A NAME="@default1270"></A><A NAME="@default1271"></A>
+<TT>float2rational</TT> (ou <TT>exact</TT>) a comme paramètre une 
+expression numérique réelle.<BR>
+<TT>float2rational</TT> donne une approximation rationnelle de tous les nombres 
+décimaux <I>r</I> contenus dans l’expression à 
+moins de <TT>epsilon</TT> c’està dire 
+|<I>r</I>−<TT>float2rational</TT>(<I>r</I>)|&lt;є où є est définit par
+<TT>epsilon</TT> dans la configuration du <TT>cas</TT> (menu <TT>Cfg</TT> , ou 
+commande <TT>cas_setup</TT>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT></DIV><DIV CLASS="center"><TT>quartile1(A)</TT></DIV><P>
-On obtient le premier quartile de <TT>A</TT> :
-</P><DIV CLASS="center"><TT>2.0</TT></DIV><P>
-<TT>quartile1</TT> calcule le premier quartile des éléments d’une 
-liste pondérée par une autre liste donnée comme deuxième argument.<BR>
+</P><DIV CLASS="center"><TT>float2rational(1.5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3/2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>quartile1(A,A)</TT></DIV><P>
-On obtient le premier quartile de <TT>A</TT> ponderée par <TT>A</TT> :
-</P><DIV CLASS="center"><TT>6</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>float2rational(1.414)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>707/500</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>float2rational(0.156381102937*2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>5144/16447</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>float2rational(1.41421356237)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>114243/80782</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>float2rational(1.41421356237</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr702.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr704.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

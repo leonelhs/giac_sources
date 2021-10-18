@@ -6,41 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La fonction : seq</TITLE>
+<TITLE>Les sorties : print, Disp, afficher</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr831.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr833.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc977">9.4.22</A>  La fonction : <TT>seq</TT></H3><P><A NAME="@default1508"></A>
-<TT>seq</TT> n’est pas une instruction mais une fonction qui permet
-de renvoyer la liste constituée par les différentes valeurs du premier 
-argument lorsque le deuxième argument varie selon les valeurs des arguments 
-suivants : valeur de départ, valeur d’arrivée, pas (pas=1 par défaut).<BR>
-<TT>seq(f(k),k,1,3)=[f(1),f(2),f(3)]</TT><BR>
-<TT>seq(f(k),k,1,5,2)=[f(1),f(3),f(5)]</TT><BR>
-La fonction <TT>seq</TT> est utile pour tracer une suite de points dans les
-écrans de géométrie.<BR>
-<B>Exemple</B><BR>
- On veut représenter les 10 premiers termes de la suite :<BR>
-<I>u</I><SUB><I>n</I></SUB>=(1+1/<I>n</I>)<SUP><I>n</I></SUP>=<I>f</I>(<I>n</I>) par les points <I>n</I>+<I>i</I>*<I>f</I>(<I>n</I>).<BR>
-On ouvre un écran de géomérie et on tape :
-</P><DIV CLASS="center"><TT>f(n):=(1+1/n)</TT><CODE><TT>^</TT></CODE><TT>n</TT></DIV><DIV CLASS="center"><TT>seq(point(k+i*f(k)),k,1,10)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc978">9.4.8</A>  Les sorties : <TT>print, Disp, afficher</TT></H3><P><A NAME="@default1500"></A><A NAME="@default1501"></A><A NAME="@default1502"></A>
+<TT>print</TT> (ou <TT>Disp</TT> ou <TT>afficher</TT>) a comme argument une séquence 
+de chaîne de caractères ou de noms de variables.<BR>
+<TT>print</TT> (ou <TT>Disp</TT> ou <TT>afficher</TT>) écrit en bleu les chaînes de
+caractères et le contenu des variables dans l’écran situé avant la 
+réponse.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>a:=12</TT></DIV><P>
+puis :
+</P><DIV CLASS="center"><TT>print("a=",a)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>On voit les points dans cet écran de géomérie</TT></DIV><P>
-Si on tape:
-</P><DIV CLASS="center"><TT>for (k:=1;k&lt;11;k++) {point(k+i*f(k));}</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>les points sont seulement dans l’écran </TT><TT>DispG</TT><TT> qu’on 
-ouvre avec Cfg-&gt;Montrer-&gt;DispG ou avec DispG()</TT></DIV><P>
-Mais si on ouvre un écran de géomérie et si on tape:
-</P><DIV CLASS="center"><TT>L:=[];for (k:=1;k&lt;11;k++) {L:=append(L,point(k+i*f(k)));}:;L;</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>On voit les points dans cet écran de géomérie</TT></DIV><P>On peut aussi utiliser la syntaxe comme avec Maple,
-<CODE>seq(2^k,k=0..8)</CODE>, en ajoutant éventuellement un pas
-<CODE>seq(2^k,k=0..8,1)</CODE>
-</P><HR>
+</P><DIV CLASS="center"><TT>"a=",12 écrit en bleu et la réponse est 1</TT></DIV><HR>
 <A HREF="cascmd_fr831.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr833.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,35 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Remplacer une partie d’une matrice ou d’un vecteur : REPLACE</TITLE>
+<TITLE>Produit de Hadamard : hadamard product</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr574.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr576.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc683">6.49.3</A>  Remplacer une partie d’une matrice ou d’un vecteur : <TT>REPLACE</TT></H3><P><A NAME="@default1045"></A>
-<TT>REPLACE</TT> a comme argument une matrice <I>A</I> (resp un vecteur) et 
-une liste de 2 indices (resp 1 entier) et la matrice (resp le vecteur) qui doit
-être mis en remplacement à partir de ces 2 indices.<BR>
-<TT>REPLACE</TT> effectue ce remplacement en élaguant éventuellement la 
-matrice (resp le vecteur) si elle (resp il) est sur dimensionnée.<BR>
+<H3 CLASS="subsection"><A NAME="htoc682">6.48.8</A>  Produit de Hadamard : <TT>hadamard product</TT></H3><P><A NAME="@default1055"></A><A NAME="@default1056"></A><A NAME="sec:product2"></A><A NAME="sec:hadam"></A>
+Voir aussi <TT>.*</TT> pour les listes (cf <A HREF="cascmd_fr551.html#sec:hadal">6.43.5</A>)<BR>
+<TT>hadamard</TT> (ou <TT>product</TT>) a comme arguments deux matrices <I>A</I> et <I>B</I> 
+de même ordre.<BR>
+<TT>product</TT> est une fonction plus générale (voir aussi <A HREF="cascmd_fr537.html#sec:product">6.42.35</A>
+et <A HREF="cascmd_fr573.html#sec:product1">6.48.6</A>).<BR>
+<TT>hadamard</TT> (ou <TT>product</TT>) renvoie la matrice constituée par le 
+produit terme à terme des éléments de <I>A</I> et <I>B</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>REPLACE([[1,2,3],[4,5,6]],[0,1],[[5,6],[7,8]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>hadamard([[1, 2],[3,4]],[[5, 6],[7, 8]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,5,6],[4,7,8]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>REPLACE([[1,2,3],[4,5,6]],[1,2],[[7,8],[9,0]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[5,12],[21,32]]</TT></DIV><P>
+Si on tape :
+</P><DIV CLASS="center"><TT>hadamard([1,2],[3,4])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>hadamard([[1,2],[3,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,2,3],[4,5,7]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>REPLACE([4,1,-2,1,2,-1],2,[10,11])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>5*sqrt(5)</TT></DIV><P>
+Ici [1,2],[3,4] n’est pas considéré comme 2 vecteurs (car le produit de 
+Hadamard ne marche que sur des matrices) mais comme une matrice à 2 lignes.<BR>
+<TT>hadamard</TT> calcule prend le produit des normes des vecteurs colonnes et des
+vecteurs lignes et renvoie le plus petit des 2 :<BR>
+√<SPAN style="text-decoration:overline">1+4</SPAN>*√<SPAN style="text-decoration:overline">9+16</SPAN>=5√<SPAN style="text-decoration:overline">5</SPAN> qui est plus petit que 
+√<SPAN style="text-decoration:overline">1+9</SPAN>**√<SPAN style="text-decoration:overline">4+16</SPAN>=10√<SPAN style="text-decoration:overline">2</SPAN>.<BR>
+Mais si on tape :<BR>
+</P><DIV CLASS="center"><TT>product([1,2],[3,4])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>product([[1,2],[3,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[4,1,10,11,2,-1]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>REPLACE([4,1,-2,1,2,-1],1,[10,11,13])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[4,10,11,13,2,-1]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[3,8]</TT></DIV><HR>
 <A HREF="cascmd_fr574.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr576.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

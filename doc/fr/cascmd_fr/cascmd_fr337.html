@@ -6,22 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Simplifier en privilégiant les sinus : trigsin</TITLE>
+<TITLE>Transformer une expression trigonométrique en fonction de tan(x/2) : halftan</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr336.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr338.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc420">6.24.23</A>  Simplifier en privilégiant les sinus : <TT>trigsin</TT></H3><P><A NAME="@default630"></A>
-<TT>trigsin</TT> a comme argument une expression trigonométrique.<BR>
-<TT>trigsin</TT> simplifie cette expression à l’aide des formules :<BR>
-sin(<I>x</I>)<SUP>2</SUP>+cos(<I>x</I>)<SUP>2</SUP>=1,  tan(<I>x</I>)=sin(<I>x</I>)/cos(<I>x</I>) et en
-privilégiant les sinus.<BR>
+<H3 CLASS="subsection"><A NAME="htoc421">6.25.19</A>  Transformer une expression trigonométrique en fonction de tan(x/2) : <TT>halftan</TT></H3><P><A NAME="@default638"></A>
+<TT>halftan</TT> a comme argument une expression trigonométrique.<BR>
+<TT>halftan</TT> transforme les sin(<I>x</I>), cos(<I>x</I>) et  tan(<I>x</I>) contenus dans 
+l’expression en fonction de tan(<I>x</I>/2).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>trigsin(sin(x)</TT><CODE><TT>^</TT></CODE><TT>4+cos(x)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>halftan(sin(x))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sin(x)</TT><CODE><TT>^</TT></CODE><TT>4-sin(x)</TT><CODE><TT>^</TT></CODE><TT>2+2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>2*tan(x/2)/(1+tan(x/2)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>halftan(sin(2*x)/(1+cos(2*x)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2*tan(2*x/2)/((tan(2*x/2))</TT><CODE><TT>^</TT></CODE><TT>2+1)/</TT></DIV><DIV CLASS="center"><TT>(1+(1-(tan(2*x/2))</TT><CODE><TT>^</TT></CODE><TT>2)/((tan(2*x/2))</TT><CODE><TT>^</TT></CODE><TT>2+1))</TT></DIV><P>
+Et, après simplification avec <TT>simplify(ans())</TT>, on obtient :
+</P><DIV CLASS="center"><TT>tan(x)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>halftan(sin(x)</TT><CODE><TT>^</TT></CODE><TT>2+cos(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(2*tan(x/2)/((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2+1))</TT><CODE><TT>^</TT></CODE><TT>2+</TT></DIV><DIV CLASS="center"><TT>((1-(tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2)/((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2+1))</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On obtient, après simplification avec <TT>normal(ans())</TT> :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr336.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr338.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

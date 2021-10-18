@@ -6,110 +6,220 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Point sur un objet géométrique : element</TITLE>
+<TITLE>Les commandes d’affichage : display color affichage couleur</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr889.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr891.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1047">10.8.14</A>  Point sur un objet géométrique : <TT>element</TT></H3><P><A NAME="@default1727"></A>
-<TT>element</TT> peut avoir différents types d’arguments :
+<H3 CLASS="subsection"><A NAME="htoc1043">10.3.5</A>  Les commandes d’affichage : <TT>display color affichage couleur</TT></H3><P><A NAME="@default1663"></A><A NAME="@default1664"></A><A NAME="@default1665"></A><A NAME="@default1666"></A>
+<TT>affichage couleur</TT> peut avoir comme paramètre différentes valeurs, 
+reliées par <TT>+</TT>, permettant de gérer les attributs des graphiques à 
+venir d’une ligne de commandes normale (la commande est alors globale) ou de 
+gérer les attributs d’un objet graphique ou d’une légende (la commande est 
+alors locale).<BR>
+<B>Attention</B><BR>
+<TT>affichage(0)</TT> remet l’affichage par défaut : couleur noire, figure non 
+pleine, les points ont des légendes...</P><H4 CLASS="subsubsection"><A NAME="toc29"></A>Pour ne pas afficher le nom de l’objet</H4><P><A NAME="@default1667"></A>
+<TT>hidden_name</TT> est une valeur de paramètre de la commande <TT>affichage</TT>
+qui permet de ne pas afficher le nom de l’objet.
+On tape (ici la commande <TT>affichage</TT> est locale au point <TT>A</TT>) :
+</P><DIV CLASS="center"><TT>affichage(A:=point(1+i),hidden_name);B:=point(-1); D:=droite(A,B)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>A est dessiné sans son nom et B et la droite A,B sont dessinés avec leur nom</TT></DIV><P>
+On tape (ici la commande <TT>affichage</TT> est locale):
+</P><DIV CLASS="center"><TT>A:=point(1+i);B:=point(-1);affichage(D:=droite(A,B),hidden_name)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Les points A et B et leurs noms et la droite A,B dessinée sans son nom</TT></DIV><P>
+<B>Attention</B> NE PAS mettre <TT>affichage(hidden_name)</TT> comme commande 
+globale car après, aucun nom sera visible, et seule la commande 
+<TT>affichage(0)</TT> remettra l’affichage par défaut.</P><H4 CLASS="subsubsection"><A NAME="toc30"></A>Mettre de la couleur</H4><P><A NAME="@default1668"></A><A NAME="@default1669"></A><A NAME="@default1670"></A><A NAME="@default1671"></A><A NAME="@default1672"></A><A NAME="@default1673"></A><A NAME="@default1674"></A><A NAME="@default1675"></A>
+<A NAME="@default1676"></A><A NAME="@default1677"></A><A NAME="@default1678"></A><A NAME="@default1679"></A><A NAME="@default1680"></A><A NAME="@default1681"></A>
+Un entier entre 0 et 255 (ou un nom de couleur) représente une 
+couleur de la palette des couleurs que l’on peut voir avec le bouton des 
+couleurs de l’écran de géométrie et, un entier entre 256 et 381 
+représente les couleurs de l’arc en ciel. Pour voir les 
+couleurs de l’arc en ciel il suffit d’exécuter le programme suivant :
+</P><PRE CLASS="verbatim">arcenciel():={
+local j,C;
+C:=[];
+for (j:=256;j&lt;382;j++){
+C:=append(C,carre(j,j+1,couleur=j+rempli));
+}
+C;
+}
+</PRE><P>Pour voir l’arc en ciel, on tape <TT>a:=arcenciel():;</TT>, puis <TT>a</TT>
+pour voir toutes les couleurs (le numéro d’une couleur
+est alors égal à son abscisse) ou par exemple <TT>a[300-256]</TT>
+pour voir la couleur de numéro 300. </P><P>Autre méthode, on tape :<BR>
+<TT>ciel():={ local j;<BR>
+for (j:=0;j&lt;126;j++)<BR>
+ carre(j,(j+1),affichage=rempli+256+j);}</TT>
+puis,<BR>
+<TT>ClrGraph;ciel()</TT> et on ouvre la fenêtre <TT>DispG</TT> avec le menu 
+<TT>Cfg</TT> sous menu <TT>Montrer</TT> puis <TT>DispG</TT>.
+On regle <TT>cfg</TT> de cette fenêtre en prenant <TT>WX-=-1</TT>, <TT>WX+=127</TT>,
+<TT>WY-=0</TT> et <TT>WY+=1</TT> et on voit ainsi les 126 couleurs 
+de l’arc en ciel !</P><P>La commande <TT>couleur</TT> ou <TT>affichage</TT> avec comme 
+paramètre un entier entre 0 et 381 (ou un nom de couleur) permet de 
+tracer un objet géométrique avec la couleur spécifiée.<BR>
+<TT>couleur</TT> ou <TT>affichage</TT> a un argument (resp deux arguments) : le nom 
+de la couleur ou l’entier désignant cette couleur (noir=0, rouge=1, vert=2, 
+jaune=3, bleu=4) (resp l’objet géométrique ou une légende et le nom de la couleur ou le numéro de la couleur).<BR>
+<B>Attention</B><A NAME="@default1682"></A><A NAME="@default1683"></A><A NAME="@default1684"></A><A NAME="@default1685"></A><BR>
+Le nom <TT>couleur</TT> ou <TT>affichage</TT> ou display ou <TT>color</TT> peut 
+aussi servir de paramètre optionnel 
+d’une commande graphique. Dans ce cas, le nom du paramètre optionnel (ici
+<TT>couleur</TT> ou <TT>affichage</TT> ou <TT>color</TT>) est suivi de <TT>=</TT> puis de
+la valeur de l’entier désignant la couleur, est 
+le paramètre que l’on passe comme argument supplémentaire
+dans les commandes graphiques.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>couleur(segment(0,1+i),rouge)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>segment(0,1+i,couleur=rouge)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le segment(0,1+i) est dessiné en rouge</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>couleur(point(1+i),2)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>point(1+i, couleur=2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point 1+i apparait avec une croix (x) verte</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>affichage(rouge)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>après cette instruction, les dessins resultant de commandes graphiques se feront en rouge</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>couleur(legende(1+i,"AA"),rouge)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>legende(1+i,"AA",couleur=rouge)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point(1+i) dessiné en rouge a comme légende rouge AA</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc31"></A>Pour dessiner une figure pleine</H4><P><A NAME="@default1686"></A><A NAME="@default1687"></A>
+<TT>rempli</TT> ou <TT>filled</TT> est une valeur de paramètre de la commande 
+<TT>affichage</TT> qui permet d e dessiner une figure pleine.
+On tape (ici la commande <TT>affichage</TT> est globale) :
+</P><DIV CLASS="center"><TT>affichage(rempli);carre(0,1+i);triangle(-1,0,-i);</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>le carre(0,1+i) plein et le triangle(-1,0,-i) plein</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc32"></A>Les différents affichages de points</H4><P>
+<A NAME="@default1688"></A><A NAME="@default1689"></A>
+<A NAME="@default1690"></A><A NAME="@default1691"></A>
+<A NAME="@default1692"></A><A NAME="@default1693"></A>
+<A NAME="@default1694"></A><A NAME="@default1695"></A>
+<A NAME="@default1696"></A><A NAME="@default1697"></A>
+<A NAME="@default1698"></A><A NAME="@default1699"></A>
+<A NAME="@default1700"></A>
+<A NAME="@default1701"></A><A NAME="@default1702"></A>
+<A NAME="@default1703"></A>
+<A NAME="@default1704"></A>
+<A NAME="@default1705"></A>
+<A NAME="@default1706"></A>
+<A NAME="@default1707"></A>
+<A NAME="@default1708"></A>
+<TT>couleur</TT> ou <TT>affichage</TT> peut avoir comme argument la forme de la 
+représentation des points 2-d à l’affichage. Ces formes peuvent avoir des 
+traits plus ou moins épais selon la valeur de <TT>n</TT> de 
+<TT>point_width_n</TT>.<BR>
+La représentation des points 3-d a comme forme un carré (c’est 
+<TT>point_carre</TT>) plus ou moins 
+gros selon la valeur de <TT>n</TT> de <TT>point_width_n</TT>.<BR>
+Les différentes options sont :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un intervalle <I>a</I>..<I>b</I> et deux réels la valeur et le pas (par défaut la
-valeur vaut (<I>a</I>+<I>b</I>)/2 et le pas (<I>b</I>−<I>a</I>)/100), par exemple, 
-<TT>t:=element(0..pi)</TT> ou 
-<TT>t:=element(0..pi,pi/2)</TT> ou
-<TT>t:=element(0..pi,pi/2,pi/100.0)</TT> 
-signifie que <TT>t</TT> peut prendre une valeur quelconque de l’intervalle 
-[0;π] et le deuxième argument π/2 donne la valeur qui définit 
-<TT>t</TT> : cela a pour effet d’avoir en haut et à droite un curseur noté 
-<TT>t</TT> que l’on peut faire bouger à la souris de 0 à π, avec à 
-gauche de ce curseur un nombre égal à la valeur de <TT>t</TT> du curseur.
-</LI><LI CLASS="li-itemize">un objet géométrique et un réel (par défaut ce réel vaut 
-1/2), par exemple, <TT>A:=element(cercle(0,2),1)</TT> signifie que <TT>A</TT> se 
-trouve sur le cercle de centre 0 et de rayon 2 et a comme affixe 2*exp(<I>i</I>) 
-(car 2*exp(<I>i</I>*<I>t</I>) est l’équation paramétrique du cercle(0,2) et le 
-deuxième argument 1 donne la valeur du paramètre <I>t</I> pour définir 
-<TT>A</TT>). Par exemple, <TT>A:=element(cercle(0,1))</TT> signifie que <TT>A</TT> se 
-trouve sur le cercle de centre 0 et de rayon 1, le point <TT>A</TT> sera tracé
-en prenant <I>t</I>=1/2 comme valeur du paramètre de l’équation 
-paramétrique de l’objet géométrique (ici <TT>affixe(A)</TT>=
-2*exp(<I>i</I>/2)). Lorsque ensuite on déplacera <TT>A</TT> avec la souris, 
-<TT>A</TT> se déplacera sur l’objet géométrique.</LI><LI CLASS="li-itemize">un objet géométrique et un nom de variable (par exemple <TT>t</TT>)
-défini auparavant par la commande <TT>element</TT> : par exemple 
-<TT>t:=element(0..pi)</TT>. Si on tape <TT>A:=element(cercle(0,2),t)</TT>, alors
-<I>t</I> est la variable de paramétrage de l’obget géométrique défini par 
-le premier argument, c’est à dire que <TT>A</TT> se trouve sur le cercle de 
-centre 0 et de rayon 2 et que <TT>A</TT> a comme affixe 2*exp(<I>i</I>*<I>t</I>), car 
-2*exp(<I>i</I>*<I>t</I>) est l’équation paramétrique du cercle(0,2). Il est donc 
-obligatoire dans ce cas de définir auparavant le deuxième argument (ici 
-<TT>t</TT>) comme étant l’élément d’un intervalle.<BR>
-On tape par exemple:<BR>
-<DIV CLASS="center"><TT>t:=element(0..pi)</TT></DIV>
-puis
-<DIV CLASS="center"><TT>A:=element(cercle(0,2),t)</TT></DIV>
-cela a pour effet d’avoir en haut et à droite un curseur noté <TT>t</TT> que 
-l’on peut faire bouger à la souris de 0 à π, avec à gauche de ce 
-curseur un nombre égal à la valeur de <TT>t</TT> du curseur. Ce curseur permet
-de faire bouger le point <TT>A</TT> sur le demi-cercle supérieur du cercle de 
-centre 0 et de rayon 1 (car 0≤ <I>t</I> ≤ π) et cela sans tracer ce 
-demi-cercle.
-On tape par exemple:<BR>
-<DIV CLASS="center"><TT>A:=point(1);B:=point(2+i)</TT></DIV>
-<DIV CLASS="center"><TT>t:=element(0..2)</TT></DIV>
-puis
-<DIV CLASS="center"><TT>M:=element(droite(A,B),t)</TT></DIV>
-<TT>M</TT> est un point de la droite <TT>AB</TT> et on a <TT>M=A+t*(B-A)</TT>
-c’est à dire <TT>M=(1-t)*A+t*B</TT>
-pout parcourir le segment <TT>AB</TT> , il faut mettre <TT>t:=element(0..1)</TT> ou 
-encore <TT>M:=element(segment(A,B),t)</TT> qui aura pour effet de laisser <TT>M</TT> 
-en <TT>A</TT> si <TT>t&lt;0</TT> et de laisser <TT>M</TT> en <TT>B</TT> si <TT>t&gt;1</TT>.
-</LI><LI CLASS="li-itemize">une ligne polygonale <TT>LP</TT> et <TT>[floor(t),frac(t)]</TT> avec <TT>t</TT>
-défini auparavant par la commande <TT>element</TT> : par exemple 
-<TT>t:=element(0..5)</TT> si <TT>LP</TT> a 5 côtés.<BR>
-Les côtés de la ligne polygonale <TT>LP</TT> ont comme numèro : 0,1....<BR>
-Si par exemple <TT>LP</TT> a 5 côtés et a pour sommets 
-<TT>A(0),...A(4),A(5)=A(0)</TT>,
-on tapera :<BR>
-<TT>t:=element(0..5)</TT><BR>
-<TT>M:=element(LP,[floor(t),frac(t)])</TT><BR>
-Ainsi selon les valeurs de <TT>t</TT>, <TT>M</TT> va parcourir les 5 côtés de 
-<TT>LP</TT> : <TT>M</TT> sera situé sur le côté de numéro <TT>n=floor(t)</TT>
-et on aura <TT>M=frac(t)*A(n)+(1-frac(t))*A(n+1)</TT>.<BR>
-Par exemple :
-<PRE CLASS="verbatim">A:=point(0);
-B:=point(4);
-C:=point(4*i);
-t:=element(0..3);
-T:=triangle(A,B,C);
-M:=element(T,[floor(t),frac(t)]);
-</PRE></LI></UL><P>
-<B>Attention</B>
-Si à un point <I>M</I> d’affixe <I>m</I>, défini comme élément d’une courbe <I>C</I>,
-on ajoute un complexe <I>a</I>, cela définit un point <I>N</I> de la courbe <I>C</I> qui est
-le projeté du point d’affixe <I>m</I>+<I>a</I> sur <I>C</I>.<BR>
-Par contre si un point <I>M</I> d’affixe <I>m</I>, défini comme élément d’une 
-courbe <I>C</I>, on ajoute un point <I>A</I> d’affixe <I>a</I>, cela définit un point <I>P</I>
-d’affixe <I>m</I>+<I>a</I>
-Par exemple, étant donné 3 points <I>M</I>,<I>A</I>,<I>B</I>, si on veut définir le point 
-<TT>N</TT> vérifiant par exemple : <I>MN</I>=<I>AB</I>, 
-on peut taper : <TT>N:=M+(B-A)</TT> à condition que <I>M</I> ne soit pas défini 
-comme élément d’une courbe <I>C</I>.
-En effet si on a tapé <TT>M:=element(C)</TT> il faut définir <I>N</I> en tapant :
-<TT>N:=affixe(M)+B-A</TT> ou <TT>N:=M+B-A</TT> (sans parenthèses) car 
-<TT>N:=M+B-A</TT> est interprété en <TT>N:=(M+B)-A</TT> car il n’y a pas de 
-règle de priorité entre <TT>+</TT> et <TT>-</TT> alors que<BR>
- <TT>M+(B-A)</TT> renvoie un élément de la courbe <I>C</I> qui est le projeté de
-<I>N</I> sur <I>C</I>.<BR>
-On a donc, si on tape :<BR>
-<TT>A:=point(-2,2);B:=point(1,3);C:=cercle(0,1);</TT><BR>
-<TT>M:=element(C);N:=affixe(M)+B-A</TT>;(ou <TT>N:=M+B-A</TT>;) <TT>N</TT> n’est pas sur
-la courbe <TT>C</TT><BR>
-si on tape :<BR>
-<TT>P:=M+(B-A)</TT> (ou P:=projection(C,N);) <TT>P</TT> est sur la courbe <TT>C</TT><BR>
-
-</P><HR>
+<TT>point_losange</TT> ou <TT>rhombus_point</TT> pour représenter un point par un petit losange
+(◇),
+</LI><LI CLASS="li-itemize"><TT>point_carre</TT> ou <TT>square_point</TT> pour représenter un point par un petit carré 
+(□),
+</LI><LI CLASS="li-itemize"><TT>point_croix</TT> ou <TT>cross_point</TT> pour représenter un point par 
+une croix (×) c’est la représentation par défaut,
+</LI><LI CLASS="li-itemize"><TT>point_etoile</TT> ou <TT>star_point</TT> pour représenter un point par 
+une étoile (*),
+</LI><LI CLASS="li-itemize"><TT>point_plus</TT> ou <TT>plus_point</TT> pour représenter un point par le
+signe plus (+),
+</LI><LI CLASS="li-itemize"><TT>point_point</TT> pour représenter un point par un point (·).
+</LI><LI CLASS="li-itemize"><TT>point_triangle</TT> ou <TT>triangle_point</TT> pour représenter un 
+point par un triangle (△),
+</LI><LI CLASS="li-itemize"><TT>point_invisible</TT> ou <TT>invisible_point</TT> pour ne pas 
+représenter un point.
+</LI></UL><P>
+Les différentes épaisseurs sont :<BR>
+<TT>point_width_1</TT> ou <TT>epaisseur_point_1</TT>,<TT>point_width_2</TT> ou 
+<TT>epaisseur_point_2</TT>...<TT>point_width_8</TT> ou 
+<TT>epaisseur_point_8</TT><BR>
+<B>Attention</B><BR>
+<A NAME="@default1709"></A><A NAME="@default1710"></A><A NAME="@default1711"></A>
+Le nom <TT>couleur</TT> ou <TT>color</TT> ou <TT>affichage</TT> est aussi le nom d’un 
+paramètre que
+l’on passe comme argument supplémentaire dans les commandes géométriques 
+lorsqu’il est suivi de <TT>=</TT>, puis de la valeur d’un attribut puis de 
+<TT>+</TT>, puis de la valeur d’un autre attribut etc...<BR>
+On tape :
+</P><DIV CLASS="center"><TT>couleur(point(1+i),rouge+point_carre+point_width_3)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>point(1+i,affichage=rouge+point_carre+point_width_3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le point (1+i) est dessiné en rouge à l’aide d’un petit carré</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>affichage(point_carre)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>après cette instruction, les points seront dessinés à l’aide d’un petit carré</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc33"></A>Les différents formes d’affichage des lignes</H4><P>
+<A NAME="@default1712"></A>
+<A NAME="@default1713"></A>
+<A NAME="@default1714"></A>
+<A NAME="@default1715"></A>
+<A NAME="@default1716"></A>
+<A NAME="@default1717"></A>
+<A NAME="@default1718"></A>
+<A NAME="@default1719"></A>
+<A NAME="@default1720"></A>
+<A NAME="@default1721"></A>
+<A NAME="@default1722"></A>
+<A NAME="@default1723"></A>
+<A NAME="@default1724"></A>
+<A NAME="@default1725"></A>
+<TT>couleur</TT> ou <TT>affichage</TT> peut avoir comme argument la forme de la 
+représentation des lignes à l’affichage.<BR>
+Les différentes options sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>solid_line</TT> ou <TT>ligne_trait_plein</TT> est un argument de 
+<TT>couleur</TT> et permet de 
+dessiner une ligne en trait plein (c’est la représentation par défaut),
+</LI><LI CLASS="li-itemize"><TT>dash_line</TT> ou <TT>ligne_tiret</TT> est un argument de <TT>couleur</TT> 
+et permet de dessiner
+une ligne en pointillé.
+</LI><LI CLASS="li-itemize"><TT>dashdot_line</TT> ou <TT>ligne_tiret_point</TT> est un argument de 
+<TT>couleur</TT> et permet de 
+dessiner une ligne avec un tiret et un point,
+</LI><LI CLASS="li-itemize"><TT>dashdotdot_line</TT> ou <TT>ligne_tiret_pointpoint</TT> est un argument 
+de <TT>couleur</TT> et permet de dessiner une ligne avec un tiret et deux points,
+</LI><LI CLASS="li-itemize"><TT>cap_flat_line</TT> ou <TT>ligne_chapeau_plat</TT> est un argument de 
+<TT>couleur</TT> et permet de dessiner une ligne plate,
+</LI><LI CLASS="li-itemize"><TT>cap_round_line</TT> ou <TT>ligne_chapeau_rond</TT> est un argument de 
+<TT>couleur</TT> et permet de dessiner une ligne tubulaire,
+</LI><LI CLASS="li-itemize"><TT>cap_square_line</TT> ou <TT>ligne_chapeau_carre</TT> est un argument de
+<TT>couleur</TT> et permet de dessiner une ligne à section carr’ee.
+</LI></UL><P>
+On tape :
+</P><DIV CLASS="center"><TT>couleur(segment(0,1+i),rouge+dash_line)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le segment (0,1+i) est dessiné en rouge en pointillé</TT></DIV><H4 CLASS="subsubsection"><A NAME="toc34"></A>Les différentes épaisseurs d’affichage des lignes</H4><P><A NAME="@default1726"></A><A NAME="@default1727"></A><A NAME="@default1728"></A>
+<A NAME="@default1729"></A>
+<A NAME="@default1730"></A>
+<A NAME="@default1731"></A></P><P><TT>couleur</TT> ou <TT>affichage</TT> peut avoir comme argument 
+l’épaisseur de la représentation des lignes à l’affichage.<BR>
+Les différentes options d’épaisseurs sont :<BR>
+<TT>line_width_1</TT>, <TT>line_wdith_2</TT>,...<TT>line_width_8</TT> ou<BR>
+<TT>epaisseur_ligne_1</TT>, <TT>epaisseur_ligne_2</TT>,...<TT>epaisseur_ligne_8</TT>.<BR>
+<TT>line_width_n</TT> est un argument de <TT>couleur</TT> ou <TT>affichage</TT> et 
+permet de dessiner une ligne plus ou moins epaisse.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>couleur(droite(y=1),rouge+line_width_1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>La droite (y=1) est dessinée en rouge et en trait fin</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>couleur(droite(y=2),rouge+line_width_7)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>La droite (y=2) est dessinée en rouge et en trait très épais</TT></DIV><HR>
 <A HREF="cascmd_fr889.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr891.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

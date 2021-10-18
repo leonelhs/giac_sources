@@ -6,65 +6,65 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Éliminer une (ou des) variable(s) dans une liste d’équations : eliminate</TITLE>
+<TITLE>Substituer une valeur à une variable (compatibilité Maple et Mupad) : subs</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr278.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr280.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc352">6.14.25</A>  Éliminer une (ou des) variable(s) dans une liste d’équations : <TT>eliminate</TT></H3><P><A NAME="@default464"></A>
-<TT>eliminate</TT> permet d’éliminer une ou plusieurs variables dans une liste 
-d’équations algébriques, équations algébriques qui sont verifiées par
-plusieurs variables.<BR>
-<TT>eliminate</TT> a 2 arguments :<BR>
-une liste d’équations <TT>L1</TT> et<BR>
-la variable ou la liste des variables à éliminer.<BR>
-<TT>eliminate</TT> renvoie la liste <TT>L2</TT> des équations qui sont vérifiées
-par les variables non éliminées et pour lesquelles <TT>=0</TT> est sous 
-entendu.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>eliminate([x=v0*t,y=y0-g*t</TT><CODE><TT>^</TT></CODE><TT>2],t)</TT></DIV><P> 
-On obtient si la variable <TT>t</TT> n’est pas affectée et si les autres 
-variables ne sont pas affectées (si les autres variables sont affectées, elles sont remplacées par leur valeurs ce qui modifie le résultat) :
-</P><DIV CLASS="center"><TT>[x</TT><CODE><TT>^</TT></CODE><TT>2*g-v0</TT><CODE><TT>^</TT></CODE><TT>2*y0+v0</TT><CODE><TT>^</TT></CODE><TT>2*y]</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>eliminate([x=2*t,y=1-10*t</TT><CODE><TT>^</TT></CODE><TT>2,z=x+y-t],t)</TT></DIV><P> 
-On obtient si la variable <TT>t</TT> n’est pas affectée et si les 
-variables <TT>x,y,z</TT> ne sont pas affectées :
-</P><DIV CLASS="center"><TT>[x+2*y-2*z,-10*y</TT><CODE><TT>^</TT></CODE><TT>2+20*y*z-y-10*z</TT><CODE><TT>^</TT></CODE><TT>2+1]</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>eliminate([x+y+z+t-2,x*y*t=1,x</TT><CODE><TT>^</TT></CODE><TT>2+t</TT><CODE><TT>^</TT></CODE><TT>2=z</TT><CODE><TT>^</TT></CODE><TT>2],[x,z])</TT></DIV><P> 
-On obtient si les variables <TT>x</TT> et <TT>z</TT> ne sont pas affectées et si 
-les autres variables ne sont pas affectées (si les autres variables sont 
-affectées, elles sont remplacées par leur valeurs ce qui modifie le 
-résultat) :
-</P><DIV CLASS="center"><TT>[y</TT><CODE><TT>^</TT></CODE><TT>3*t+2*y</TT><CODE><TT>^</TT></CODE><TT>2*t</TT><CODE><TT>^</TT></CODE><TT>2-4*y</TT><CODE><TT>^</TT></CODE><TT>2*t-4*y*t</TT><CODE><TT>^</TT></CODE><TT>2+4*y*t+2*y+2*t-4]</TT></DIV><P> 
-<B>Attention</B><BR>
-Si la réponse est <TT>[1]</TT> ou <TT>[-1]</TT>, cela veut dire que
-la ou les variables ne peuvent pas être élinminées.<BR>
-Si la réponse est <TT>[]</TT>, cela veut dire que certaines équations 
-déterminent les valeurs des variables à éliminer et que ces valeurs 
-vérifient toutes les équations.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>x:=2;y:=-5</TT></DIV><DIV CLASS="center"><TT>eliminate([x=2*t,y=1-10*t</TT><CODE><TT>^</TT></CODE><TT>2],t)</TT></DIV><P> 
-On obtient si la variable <TT>t</TT> n’est pas affectée :
-</P><DIV CLASS="center"><TT>[1]</TT></DIV><P> 
-On ne peut donc pas éliminer <TT>t</TT> des deux équations :<BR>
-2=2<I>t</I>,−5=1−10<I>t</I><SUP>2</SUP>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>x:=2;y:=-9</TT></DIV><DIV CLASS="center"><TT>eliminate([x=2*t,y=1-10*t</TT><CODE><TT>^</TT></CODE><TT>2],t)</TT></DIV><P> 
-On obtient si la variable <TT>t</TT> n’est pas affectée :
-</P><DIV CLASS="center"><TT>[]</TT></DIV><P> 
-En effet la première équation :<BR>
-2=2<I>t</I> donne <I>t</I>=1 et <I>t</I>=1 vérifie la deuxième équation −9=1−10<I>t</I><SUP>2</SUP>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>x:=2;y:=-9</TT></DIV><DIV CLASS="center"><TT>eliminate([x=2*t,y=1-10*t</TT><CODE><TT>^</TT></CODE><TT>2,z=x+y-t],t)</TT></DIV><P> 
-On obtient si la variable <TT>t</TT> n’est pas affectée :
-</P><DIV CLASS="center"><TT>[z+8]</TT></DIV><P> 
-En effet la première équation :<BR>
-2=2<I>t</I> donne <I>t</I>=1, <I>t</I>=1 vérifie la deuxième équation −9=1−10<I>t</I><SUP>2</SUP> et il
-reste la troisième équation <I>z</I>=2−9−1=−8 soit <I>z</I>+8=0.</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc352">6.14.23</A>  Substituer une valeur à une variable (compatibilité Maple et Mupad) : <TT>subs</TT></H3><P><A NAME="@default465"></A><A NAME="sec:subs"></A>
+En <TT>Maple</TT> et en <TT>Mupad</TT> la commande synonyme de <TT>subst</TT> 
+est <TT>subs</TT>, mais l’ordre des paramètres de <TT>subs</TT> n’est pas le même
+en <TT>Maple</TT> et en <TT>Mupad</TT>.<BR>
+Ainsi les arguments de <TT>subs</TT> sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+En mode <TT>Maple</TT>, la fonction <TT>subs</TT> a deux arguments : une 
+égalité (paramètre=valeur de substitution) et une expression 
+dépendant du paramètre.<BR>
+Pour faire plusieurs substitutions, <TT>subs</TT> a deux arguments : une liste 
+dégalité (paramètre=valeur de substitution) et une expression 
+dépendant de ces paramètres.<BR>
+</LI><LI CLASS="li-itemize">En mode <TT>Mupad</TT> ou <TT>Xcas</TT> ou <TT>TI</TT>, la fonction <TT>subs</TT> a deux ou trois 
+arguments : une expression dépendant d’un paramètre et une égalité 
+(paramètre=valeur de substitution) ou une expression dépendant d’un 
+paramètre, le paramètre et la valeur de substitution.<BR>
+Pour faire plusieurs substitutions, la fonction <TT>subs</TT> a deux ou trois 
+arguments : une expression dépendant de paramètres et une liste 
+d’égalité (paramètre=valeur de substitution) ou une expression 
+dépendant de paramètres, la liste des paramètres et la liste des valeurs
+de substitution.<BR>
+</LI></UL><P>
+<TT>subs</TT> effectue la substitution demandée dans l’expression à condition
+que le paramètre ne soit pas affecté car <TT>subs</TT> évalue tout d’abord 
+l’expression et remplace donc le paramètre par sa valeur sans tenir compte 
+de la valeur de substitution donnée par le deuxième paramètre.<BR>
+On tape en mode Maple :
+</P><DIV CLASS="center"><TT>subs(a=2,a</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+On obtient (si la variable <TT>a</TT> n’est pas affectée, sinon il faut taper 
+auparavant <TT>purge(a)</TT>):
+</P><DIV CLASS="center"><TT>5</TT></DIV><P> 
+Lorsque l’on veut substituer plusieurs variables :<BR>
+On tape, en mode <TT>Maple</TT> :
+</P><DIV CLASS="center"><TT>subs([a=2,b=1],a</TT><CODE><TT>^</TT></CODE><TT>2+b)</TT></DIV><P> 
+On obtient (si les variables <TT>a</TT> et <TT>b</TT> ne sont pas affectées, sinon 
+il faut taper auparavant <TT>purge(a,b)</TT>):
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+On tape, en mode <TT>Mupad</TT> ou <TT>Xcas</TT> ou <TT>TI</TT> :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a=2)</TT></DIV><P> 
+ou :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+1,a,2)</TT></DIV><P> 
+On obtient (si la variable <TT>a</TT> n’est pas affectée, sinon il faut taper 
+auparavant <TT>purge(a)</TT>) :
+</P><DIV CLASS="center"><TT>5</TT></DIV><P> 
+Lorsque l’on veut substituer plusieurs variables :<BR>
+On tape, dans les modes <TT>Mupad Xcas TI</TT> :
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a=2,b=1])</TT></DIV><P> 
+ou on tape
+</P><DIV CLASS="center"><TT>subs(a</TT><CODE><TT>^</TT></CODE><TT>2+b,[a,b],[2,1])</TT></DIV><P> 
+On obtient (si les variables <TT>a</TT> et <TT>b</TT> ne sont pas affectées, sinon 
+il faut taper auparavant <TT>purge(a,b)</TT>):
+</P><DIV CLASS="center"><TT>2</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><HR>
 <A HREF="cascmd_fr278.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr280.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

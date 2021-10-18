@@ -6,21 +6,57 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Axe radical de deux cercles : radical_axis axe_radical</TITLE>
+<TITLE>Le rectangle : rectangle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr926.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr928.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1089">10.13.8</A>  Axe radical de deux cercles : <TT>radical_axis axe_radical</TT></H3><P><A NAME="@default1790"></A><A NAME="@default1791"></A>
-L’axe radical de deux cercles <I>C</I><SUB>1</SUB> et <I>C</I><SUB>2</SUB> est le lieu des points qui ont
-même puissance par rapport à <I>C</I><SUB>1</SUB> et à <I>C</I><SUB>2</SUB>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1088">10.11.4</A>  Le rectangle : <TT>rectangle</TT></H3><P><A NAME="@default1800"></A><A NAME="sec:rectangle2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1035.html#sec:rectangle3">11.8.3</A> pour la géométrie 3-d.<BR>
+<TT>rectangle</TT>, en géométrie plane, peut avoir de trois à 
+cinq arguments.<BR>
+Description des arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si il a trois arguments ce sont : deux points (ou deux
+nombres complexes représentant l’affixe de ces points) et un nombre réel
+<I>k</I> non nul.<BR>
+<TT>rectangle(A,B,k)</TT> renvoie et trace le rectangle <I>ABCD</I> tel que :<BR>
+<I>AD</I>=|<I>k</I>|*<I>AB</I> et (<I>AB</I>,<I>AD</I>)=(<I>k</I>/|<I>k</I>|)*π/2,<BR>
+c’est à dire tel que :<BR>
+<I>affixe</I>(<I>D</I>)=<I>affixe</I>(<I>A</I>)+<I>k</I>*exp(<I>i</I>*π/2)*(<I>affixe</I>(<I>B</I>)−<I>affixe</I>(<I>A</I>))
+mais sans définir les points <I>C</I> et <I>D</I>.<BR>
+<B>Remarque</B> Si <I>k</I> est complexe, on a :<BR>
+<I>affixe</I>(<I>D</I>)=<I>affixe</I>(<I>A</I>)+<I>k</I>*exp(<I>i</I>*π/2)*(<I>affixe</I>(<I>B</I>)−<I>affixe</I>(<I>A</I>)) et on peut ainsi se
+retrouver avec le tracé d’un parallélogramme.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>axe_radical(cercle(0,1+i),cercle(1,1+i)))</TT></DIV><P>
+<DIV CLASS="center"><TT>rectangle(0,1+i,1/2)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le tracé de la droite x=1/2</TT></DIV><P>
-En effet : la droite x=1/2 est la médiatrice du segment [0;1]</P><HR>
+<DIV CLASS="center"><TT>Le rectangle de sommets 0,1+i,1/2+3*i/2,-1/2+i/2</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>rectangle(0,1+i,-1/2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>Le rectangle de sommets 0,1+i,3/2+i/2,1/2-i/2</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>rectangle(0,1,1+i)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>Le parallélogramme de sommets 0,1,i,-1+i car </TT><TT>-1+<I>i</I>=(1+<I>i</I>)*</TT><TT>exp</TT><TT>(<I>i</I>*π/2)</TT></DIV>
+</LI><LI CLASS="li-itemize">si il a cinq arguments les 2 derniers paramètres sont les noms de deux 
+variables qui serviront à définir les 2 derniers sommets.<BR>
+On tape :
+<DIV CLASS="center"><TT>rectangle(0,1+i,-1/2,G,H)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>Le rectangle de sommets 0,1+i,3/2+i/2,1/2-i/2</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>normal(affixe(G))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(3+i)/2</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>normal(affixe(H))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(1-i)/2</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr926.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr928.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,29 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Liste des variables et des expressions : lvar</TITLE>
+<TITLE>Étape de la réduction de Gauss-Jordan d’une matrice : pivot</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr685.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr687.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc809">6.64.3</A>  Liste des variables et des expressions : <TT>lvar</TT></H3><P><A NAME="@default1241"></A><A NAME="sec:lvar"></A>
-<TT>lvar</TT> a comme paramètre une expression.<BR>
-<TT>lvar</TT> renvoie un vecteur de composantes les noms de variables et des 
-expressions dont cette expression dépend rationnellement.<BR>
+<H3 CLASS="subsection"><A NAME="htoc807">6.62.5</A>  Étape de la réduction de Gauss-Jordan d’une matrice : <TT>pivot</TT></H3><P><A NAME="@default1245"></A><A NAME="sec:pivot"></A>
+<TT>pivot</TT> a trois arguments : une matrice de <I>n</I> lignes et <I>p</I> 
+colonnes et deux entiers <I>l</I> et <I>c</I> vérifiant : 0≤ <I>l</I>&lt;<I>n</I> et 0≤ <I>c</I>&lt;<I>p</I>.<BR>
+<TT>pivot(A,l,c)</TT> renvoie la matrice obtenue en créant des zéros dans
+la colonne <TT>c</TT> de <TT>A</TT>, avec la méthode de Gauss-Jordan, en 
+utilisant comme pivot l’élément <TT>A[l,c]</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>lvar(x*y*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2+ln(x)*cos(y))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pivot([[1,2],[3,4],[5,6]],1,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x,y,sin(x)]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[-2,0],[3,4],[2,0]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>lvar(x*y*sin(x)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>pivot([[1,2],[3,4],[5,6]],0,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x,y,sin(x),ln(x),cos(y)]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>lvar(y+x*sqrt(z)+y*sin(x))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[y,x,sqrt(z),sin(x)]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1,2],[2,0],[4,0]]</TT></DIV><HR>
 <A HREF="cascmd_fr685.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr687.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

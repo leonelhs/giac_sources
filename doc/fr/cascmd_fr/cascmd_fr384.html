@@ -6,31 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynômes aléatoires : randpoly randPoly</TITLE>
+<TITLE>Troncature d’ordre n : truncate</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr383.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr385.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc470">6.27.30</A>  Polynômes aléatoires : <TT>randpoly randPoly</TT></H3><P><A NAME="@default720"></A><A NAME="@default721"></A>
-<TT>randpoly</TT> (ou <TT>randPoly</TT>) a deux paramètres le nom d’une 
-variable (par défaut <TT>x</TT>) et un entier <TT>n</TT> (en fait l’ordre des paramètres n’est pas important).<BR>
-<TT>randpoly</TT> renvoie un polynôme de variable le premier paramètre (ou
-<TT>x</TT>), de degré le deuxième paramètre et dont les coefficients sont 
-des entiers aléatoires équirépartis sur -99..+99.<BR>
+<H3 CLASS="subsection"><A NAME="htoc471">6.28.26</A>  Troncature d’ordre <I>n</I> : <TT>truncate</TT></H3><P><A NAME="@default723"></A>
+<TT>truncate</TT> permet de tronquer un polynôme à un ordre donné 
+<TT>truncate</TT> est utile quand on fait des développements limités à 
+la main, ou pour transformer un développement limité en polynôme.<BR>
+<TT>truncate</TT> a deux arguments : un polynôme et un entier <TT>n</TT>.<BR>
+<TT>truncate</TT> renvoie le polynôme tronqué à l’ordre <TT>n</TT> (pas de 
+termes d’ordre supérieur ou égal à <TT>n+1</TT>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>randpoly(t,4)</TT></DIV><P>
-On obtient par exemple:
-</P><DIV CLASS="center"><TT>-8*t</TT><CODE><TT>^</TT></CODE><TT>4-87*t</TT><CODE><TT>^</TT></CODE><TT>3-52*t</TT><CODE><TT>^</TT></CODE><TT>2+94*t+80</TT></DIV><P>
+</P><DIV CLASS="center"><TT>truncate((1+x+x</TT><CODE><TT>^</TT></CODE><TT>2/2)</TT><CODE><TT>^</TT></CODE><TT>3,4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(9*x</TT><CODE><TT>^</TT></CODE><TT>4+16*x</TT><CODE><TT>^</TT></CODE><TT>3+18*x</TT><CODE><TT>^</TT></CODE><TT>2+12*x+4)/4</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>randpoly(4)</TT></DIV><P>
-On obtient par exemple:
-</P><DIV CLASS="center"><TT>70*x</TT><CODE><TT>^</TT></CODE><TT>4-46*x</TT><CODE><TT>^</TT></CODE><TT>3-7*x</TT><CODE><TT>^</TT></CODE><TT>2-24*x+52</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>randpoly(4,u)</TT></DIV><P>
-On obtient par exemple:
-</P><DIV CLASS="center"><TT>2*u</TT><CODE><TT>^</TT></CODE><TT>4+33*u</TT><CODE><TT>^</TT></CODE><TT>3-6*u</TT><CODE><TT>^</TT></CODE><TT>2-92*u-12</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>truncate(series(sin(x)),4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(-x</TT><CODE><TT>^</TT></CODE><TT>3-(-6)*x)/6</TT></DIV><P>
+On remarquera que le polynôme renvoyé est réduit au même 
+dénominateur.</P><HR>
 <A HREF="cascmd_fr383.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr385.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

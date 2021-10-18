@@ -6,26 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de la loi gamma : gammad_icdf</TITLE>
+<TITLE>Fonction de répartition de la loi de Student : student_cdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr771.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr773.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc911">8.4.29</A>  Fonction de répartition inverse de la loi gamma : <TT>gammad_icdf</TT></H3><P><A NAME="@default1379"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi gamma de paramètre <I>a</I> et 
-<I>b</I>, si on a <TT>gammad_icdf(a,b,x)=h</TT> 
-c’est que l’on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=gammad_cdf(a,b,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc912">8.4.16</A>  Fonction de répartition de la loi de Student : <TT>student_cdf</TT></H3><P><A NAME="@default1385"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi de Student ayant <I>n</I> degrés 
+de liberté, on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>student_cdf(n,x)</TT>.<BR>
+<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)= <TT>student_cdf(n,x,y)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>gammad_icdf(2,1,0.5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>student_cdf(5,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.67834699002</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.949030260585</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>gammad_icdf(2,1,0.1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>student_cdf(5,-2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.53181160839</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.0509697394149</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>student_cdf(5,-2,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0.89806052117</TT></DIV><P>
+car 0.949030260585−0.0509697394149=0.89806052117
+</P><HR>
 <A HREF="cascmd_fr771.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr773.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

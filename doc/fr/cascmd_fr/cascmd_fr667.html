@@ -6,20 +6,296 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer une équation en une liste : equal2list</TITLE>
+<TITLE>Réduction d’une quadrique : quadrique_reduite 
+reduced_quadric</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr666.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr668.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc786">6.60.3</A>  Transformer une équation en une liste : <TT>equal2list</TT></H3><P><A NAME="@default1204"></A>
-<TT>equal2list</TT> a comme paramètre une équation.<BR>
-<TT>equal2list</TT> renvoie la liste formée par les deux membres de l’équation.<BR>
+<H3 CLASS="subsection"><A NAME="htoc785">6.59.9</A>  Réduction d’une quadrique : <TT>quadrique_reduite<BR>
+reduced_quadric</TT></H3><P><A NAME="@default1210"></A><A NAME="@default1211"></A> 
+<TT>quadrique_reduite</TT> a un ou deux arguments : l’expression d’une 
+quadrique et le vecteur de composantes les variables utilisées si il est 
+différent de <TT>[x,y,z]</TT>.<BR>
+<TT>quadrique_reduite</TT> renvoie une liste d’éléments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+l’origine,
+</LI><LI CLASS="li-itemize">la matrice d’un repère dans lequel la quadrique est réduite,
+</LI><LI CLASS="li-itemize">0 ou 1 (0 si la quadrique est dégénérée),
+</LI><LI CLASS="li-itemize">l’équation réduite de la quadrique dans ce repère,
+</LI><LI CLASS="li-itemize">un vecteur contenant son équation paramétrique 
+ou ses équations paramétriques si la quadrique est composée de plusieurs 
+nappes. 
+</LI></UL><P>
+<B>Attention !</B> les équations paramétriques sont écrites à l’aide des
+variables <TT>u,v</TT> : ces variables doivent donc être libres (<TT>purge</TT>
+<TT>u,v</TT> avant d’appeler <TT>quadrique_reduite</TT>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>equal2list(2x-1=3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>quadrique_reduite(7*x</TT><CODE><TT>^</TT></CODE><TT>2+4*y</TT><CODE><TT>^</TT></CODE><TT>2+4*z</TT><CODE><TT>^</TT></CODE><TT>2+ 4*x*y-4*x*z-2*y*z-4*x+5*y+4*z-18)</TT></DIV><P>
+On obtient une liste contenant :<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+L’origine du repère (centre de symétrie de la quadrique) :
+<DIV CLASS="center"><TT>[11/27,(-26)/27,(-29)/54],</TT></DIV>
+</LI><LI CLASS="li-itemize">La matrice de passage :
+<DIV CLASS="center"><TT>[[(sqrt(6))/3,(sqrt(5))/5,(-(sqrt(30)))/15], [(sqrt(6))/6,0,(sqrt(30))/6], [(-(sqrt(6)))/6,(2*sqrt(5))/5,(sqrt(30))/30]],</TT></DIV>
+</LI><LI CLASS="li-itemize">1 donc la quadrique n’est pas dégénérée 
+</LI><LI CLASS="li-itemize">l’équation réduite de la quadrique dans ce repère :
+<DIV CLASS="center"><TT>0,9*x</TT><CODE><TT>^</TT></CODE><TT>2+3*y</TT><CODE><TT>^</TT></CODE><TT>2+3*z</TT><CODE><TT>^</TT></CODE><TT>2+(-602)/27,</TT></DIV> 
+</LI><LI CLASS="li-itemize">l’équation paramétrique de la quadrique (dans le premier repère),
+de paramètres [u,v] :
+<DIV CLASS="center"><TT>[[(sqrt(6)*sqrt(602/243)*sin(u)*cos(v))/3+ 
+(sqrt(5)*sqrt(602/81)*sin(u)*sin(v))/5+ 
+((-(sqrt(30)))*sqrt(602/81)*cos(u))/15+11/27, 
+(sqrt(6)*sqrt(602/243)*sin(u)*cos(v))/6+ 
+(sqrt(30)*sqrt(602/81)*cos(u))/6+(-26)/27, 
+((-(sqrt(6)))*sqrt(602/243)*sin(u)*cos(v))/6+ 
+(2*sqrt(5)*sqrt(602/81)*sin(u)*sin(v))/5+ 
+(sqrt(30)*sqrt(602/81)*cos(u))/30+(-29)/54], 
+u=(0 .. pi),v=(0 .. (2*pi)),ustep=(pi/20),
+vstep=((2*pi)/20)]]</TT></DIV>
+</LI></UL><P>
+Donc la quadrique est un ellipsoïde eta pour équation :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">9*<I>x</I><SUP>2</SUP>+3*<I>y</I><SUP>2</SUP>+3*<I>z</I><SUP>2</SUP>+(−602)/27 </TD></TR>
+</TABLE><P>
+dans le repère d’origine [11/27,(−26)/27,(−29)/54]<BR>
+de matrice de passage <TT>P</TT> est :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎡<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎣</TD><TD CLASS="dcell">
+</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>6</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>5</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">5</TD></TR>
+</TABLE></TD><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>30</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">15</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>6</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>30</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"> −</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>6</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">2</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>5</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">5</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>30</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">30</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+</TD><TD CLASS="dcell">⎤<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎦</TD></TR>
+</TABLE><P>
+Son équation paramétrique est :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎨<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎪<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I> = </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>6</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:2em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">602</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">243</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">sin(<I>u</I>)cos(<I>v</I>)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>5</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:2em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">602</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">81</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">sin(<I>u</I>)sin(<I>v</I>)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">5</TD></TR>
+</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>30</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:2em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">602</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">81</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">cos(<I>u</I>)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">15</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">11</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">27</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>y</I> = </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>6</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:2em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">602</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">243</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">sin(<I>u</I>)cos(<I>v</I>)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>30</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:2em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">602</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">81</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">cos(<I>u</I>))</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
+</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">26</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">27</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD ALIGN=left NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>z</I> = </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">−</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>6</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:2em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">602</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">243</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">*sin(<I>u</I>)cos(<I>v</I>)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">6</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell">2</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>5</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:2em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">602</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">81</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">sin(<I>u</I>)sin(<I>v</I>)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">5</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>30</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:2em;"></DIV></TD></TR>
+<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">602</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">81</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">cos(<I>u</I>)</TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">30</TD></TR>
+</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">29</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">54</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+</TD></TR>
+</TABLE><P>
+<B>Remarque</B> :<BR>
+ Lorsque la quadrique est dégénérée en 1 ou 2 plan(s), chaque plan 
+n’est pas donné par son équation paramétrique mais par la liste 
+constituée par un vecteur normal au plan et un point du plan.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>quadrique_reduite(x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2+3*x+y+2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2*x-1,3]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[(-3)/2,1/2,0],[[1,0,0],[0,1,0],[0,0,-1]],0,x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2, [hyperplan([1,1,0],[(-3)/2,1/2,0]), hyperplan([1,-1,0],[(-3)/2,1/2,0])]]</TT></DIV><HR>
 <A HREF="cascmd_fr666.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr668.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

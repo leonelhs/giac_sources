@@ -6,52 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’affectation d’une égalité : assign</TITLE>
+<TITLE>Fonction testant si une touche est pressée : getKey</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr826.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr828.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc972">9.4.17</A>  L’affectation d’une égalité : <TT>assign</TT></H3><P><A NAME="@default1483"></A><A NAME="@default1484"></A><A NAME="@default1485"></A>
-<TT>assign</TT> permet de stocker une valeur dans une variable.<BR>
-<TT>assign</TT> a un ou deux arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-un argument : une égalité entre un nom de variable et la 
-valeur à stocker, ou une listed’égalité entre des noms de variable et les
-valeurs à stocker, 
-</LI><LI CLASS="li-itemize">deux arguments : un nom de variable et la valeur à stocker.<BR>
-</LI></UL><P>
-<B>Attention</B><BR>
-La variable doit être purgée avant l’utilisation de <TT>assign</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc973">9.4.3</A>  Fonction testant si une touche est pressée : <TT>getKey</TT></H3><P><A NAME="@default1471"></A>
+<TT>getKey</TT> est une fonction qui n’a pas d’argument et qui renvoie le
+code <TT>ASCII</TT> de la touche pressée dans l’écran <TT>xterm</TT> de la
+fenêtre du terminal ou <TT>0</TT> si aucune touche n’est pressée dans cet 
+écran .<BR>
 On tape :
-</P><DIV CLASS="center"><TT>assign(a,3)</TT></DIV><P>
-ou :
-</P><DIV CLASS="center"><TT>assign(a=3)</TT></DIV><P>
+</P><PRE CLASS="verbatim">testkey():={
+local a;
+while (1==1) {
+a:=getKey();
+if (a!=0) break;
+}
+return a;
+}
+</PRE><P>puis:
+</P><DIV CLASS="center"><TT>testkey()</TT></DIV><P>
+puis:
+</P><DIV CLASS="center"><TT>A</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3 et la variable a contient 3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>assign([a1=1,a2=2,a3=3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1,2,3] et a1 contient 1, a2 contient 2 et a3 contient 3</TT></DIV><P>
-<B>Remarque</B>
-<TT>assign</TT> sert surtout en mode Maple, voici un exemple :
-On tape en mode Maple :
-</P><DIV CLASS="center"><TT>purge(a,b)</TT></DIV><DIV CLASS="center"><TT>sol:=solve([a+b=1,a-b=3],[a,b])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[a=2,b=(-1)]</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>assign(sol)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[2,-1] et ainsi a contient 2 et b contient -1 </TT></DIV><P> 
-en mode <TT>Xcas</TT> la même suite d’instructions donnent :
-</P><DIV CLASS="center"><TT>sol:=solve([a+b=1,a-b=3],[a,b])</TT></DIV><P>
-On obtient la liste des solution donc ici une matrice 1×1 :
-</P><DIV CLASS="center"><TT>[[2,-1]]</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>[a,b]:=sol[0])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[2,-1] et ainsi a contient 2 et b contient -1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>65</TT></DIV><HR>
 <A HREF="cascmd_fr826.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr828.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,52 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Encadrement exact des racines complexes d’un polynôme : 
-complexroot</TITLE>
+<TITLE>Réduire au même dénominateur : comDenom</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr426.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr428.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc518">6.32.1</A>  Encadrement exact des racines complexes d’un polynôme :<BR>
-<TT>complexroot</TT></H3><P><A NAME="@default776"></A>
-<TT>complexroot</TT> a 2 ou 4 arguments : un polynôme et un nombre 
-rèel є et éventuellement deux complexes α,β.
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Si <TT>complexroot</TT> a 2 arguments, <TT>complexroot</TT> renvoie la liste des
-intervalles complexes contenant la valeur des racines complexes et exactes du 
-polynôme et leur multiplicité (par exemple
-i[1,1.1]+i[3.1,3.2]*i pour dire que le rectangle 
-[1,1.1]x[3.1,3.2] contient une racine complexe du polynôme) et la 
-multiplicité de cette racine.<BR>
-Si l’intervalle est [<I>a</I><SUB>1</SUB>+<I>ib</I><SUB>1</SUB>,<I>a</I><SUB>2</SUB>+<I>ib</I><SUB>2</SUB>] on a |<I>a</I><SUB>1</SUB>−<I>a</I><SUB>2</SUB>|&lt;є et 
-|<I>b</I><SUB>1</SUB>−<I>b</I><SUB>2</SUB>|&lt;є et la racine <I>a</I>+<I>ib</I> vérifie 
-<I>a</I><SUB>1</SUB>≤ <I>a</I> ≤ <I>a</I><SUB>2</SUB> et <I>b</I><SUB>1</SUB>≤ <I>b</I> ≤ <I>b</I><SUB>2</SUB>.
-</LI><LI CLASS="li-itemize">Si <TT>complexroot</TT> a 4 arguments, <TT>complexroot</TT> ne renvoie que les 
-racines situées dans le rectangle de côtés parallèles aux axes et de 
-sommets opposés α,β.
-</LI></UL><P>
-On tape pour avoir les racines de <I>x</I><SUP>3</SUP>+1 :
-</P><DIV CLASS="center"><TT>complexroot(x</TT><CODE><TT>^</TT></CODE><TT>3+1,0.1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc518">6.32.7</A>  Réduire au même dénominateur : <TT>comDenom</TT></H3><P><A NAME="@default782"></A>
+<TT>comDenom</TT> a comme paramètre une somme de fractions 
+rationnelles.<BR>
+<TT>comDenom</TT> renvoie cette somme sous la forme d’une fraction rationnelle
+c’est à dire renvoie cette somme après réduction au même dénominateur
+des fractions rationnelles la composant.<BR>
+ On tape :
+</P><DIV CLASS="center"><TT>comDenom(x-1/(x-1)-1/(x</TT><CODE><TT>^</TT></CODE><TT>2-1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center">[[i[-1.0000000000036,-0.99999999999633],1],
-[i[0.49999999999909,0.50000000000091] -i[0.86602540378354,0.86602540378536]*i,1],[i[0.49999999999909,0.50000000000091] +i[0.86602540378354,0.86602540378536]*i,1]]</DIV><P>
-Donc pour <I>x</I><SUP>3</SUP>+1 :<BR>
--1 est une racine de multiplicité 1,<BR>
-1/2i*<I>b</I> est une racine de multiplicité 1 avec −7/8≤ <I>b</I> ≤ −13/16,<BR>
-1/2i*<I>c</I> est racine de multiplicité1 avec 13/1≤ <I>c</I> ≤ 7/8.<BR>
-On tape pour avoir les racines de <I>x</I><SUP>3</SUP>+1 dans le rectangle de sommets 
-opposés −1,1+2*<I>i</I> :
-</P><DIV CLASS="center"><TT>complexroot(x</TT><CODE><TT>^</TT></CODE><TT>3+1,0.1,-1,1+2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center">[[i[-1.0000000000036,-0.99999999999633],1],
-[i[0.49999999999909,0.50000000000091] +i[0.86602540378354,0.86602540378536]*i,1]]</DIV><P>
-On tape pour avoir les racines de <I>x</I><SUP>3</SUP>+1 dans le rectangle de sommets 
-opposés 0,1+2*<I>i</I> :
-</P><DIV CLASS="center"><TT>complexroot(x</TT><CODE><TT>^</TT></CODE><TT>3+1,0.1,0,1+2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center">[[i[0.49999999999909,0.50000000000091] +i[0.86602540378354,0.86602540378536]*i,1]]</DIV><HR>
+</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>3+-2*x-2)/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><HR>
 <A HREF="cascmd_fr426.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr428.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

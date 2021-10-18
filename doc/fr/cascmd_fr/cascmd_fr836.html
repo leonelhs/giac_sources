@@ -6,32 +6,79 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour lire les entrées à partir d’un fichier : read</TITLE>
+<TITLE>Les affectations infixées : => := =<</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr835.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr837.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc982">9.5.1</A>  Pour lire les entrées à partir d’un fichier : <TT>read</TT></H3><P><A NAME="@default1519"></A>
-<TT>read</TT> a comme argument le nom d’un fichier (fichier crée par 
-<TT>write</TT> ou par la sauvegarde d’un éditeur et dans lequel on a écrit, 
-par exemple, plusieurs fonctions ou instructions).<BR>
-<TT>read</TT> renvoie la liste des valeurs stockées dans le fichier.<BR>
+<H3 CLASS="subsection"><A NAME="htoc982">9.4.12</A>  Les affectations infixées : <TT>=&gt; := =&lt;</TT></H3><P><A NAME="@default1507"></A><A NAME="@default1508"></A><A NAME="@default1509"></A>
+<TT>:= =&gt; =&lt;</TT> sont des opérateurs infixés qui permettent de 
+stocker une valeur dans une variable, mais leurs arguments de <TT>=&gt;</TT> et de
+<TT>:= =&lt;</TT> ne sont pas dans le même ordre !<BR>
+De plus <TT>:=</TT> et <TT>=&lt;</TT> n’ont pas le même effet lorsque le premier 
+argument est un élément d’une liste (ou matrice) contenu dans une variable.
+En effet, <TT>=&lt;</TT> modifie lélément d’une liste (ou matrice) par 
+référence (voir <A HREF="cascmd_fr838.html#sec:diffaffectation">9.4.14</A>)
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>=&gt;</TT> est la version infixée de <TT>sto</TT>.<BR>
+<TT>=&gt;</TT> stocke le premier argument dans la variable donnée comme deuxième 
+argument.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>a:=3.14; b:=456;write("titi",a,b);</TT></DIV><P>
-puis :
-</P><DIV CLASS="center"><TT>read("titi")</TT></DIV><P>
+<DIV CLASS="center"><TT>4=&gt;a</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>sto(4,a)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[3.14,456] et les variables </TT><TT>a</TT><TT> et </TT><TT>b</TT><TT> sont affectées par 3.14 et 456</TT></DIV><P>
+<DIV CLASS="center"><TT>4 et la variable a contient 4</TT></DIV></LI><LI CLASS="li-itemize"><TT>:=</TT> et <TT>=&lt;</TT> ont comme arguments, un nom de variable et la valeur
+à stocker. 
+On tape :
+<DIV CLASS="center"><TT>a:=4</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>a=&lt;4)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>4 et la variable a contient 4</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>A:=[0,1,2,3,4]</TT></DIV>
+<DIV CLASS="center"><TT>B:=A</TT></DIV>
+puis par exemple pour modifier <TT>A[3]</TT>, on tape :
+<DIV CLASS="center"><TT>A[3]=&lt;33</TT></DIV>
+puis
+<DIV CLASS="center"><TT>A,B</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[0,1,2,33,4],[0,1,2,33,4]</TT></DIV>
+Les variables <TT>A</TT> et <TT>B</TT> contiennent toutes les deux la liste
+<TT>[0,1,2,33,4]</TT>, en effet :<BR>
+<TT>A:=[0,1,2,3,4]</TT> fait pointer <TT>A</TT> sur la liste <TT>[0,1,2,3,4]</TT>, 
+puis<BR>
+<TT>B:=A</TT> fait pointer <TT>B</TT> sur <TT>A</TT> donc sur la liste 
+<TT>[0,1,2,3,4]</TT>,<BR>
+<TT>A[3]=&lt;33</TT> modifie la liste pointée par <TT>A</TT> donc modifie la liste 
+<TT>[0,1,2,3,4]</TT> en la liste <TT>[0,1,2,33,4]</TT> et donc <TT>B</TT> est modifié.
+Il en serait de même si on avait mis <TT>B[3]=&lt;33</TT> au lieu de 
+<TT>A[3]=&lt;33</TT>, les variables <TT>A</TT> et <TT>B</TT> contiendraient toutes les 
+deux la liste <TT>[0,1,2,33,4]</TT>. 
+</LI></UL><P> 
+<B>Remarque</B><BR>
+On peut faire plusieurs affectations à la fois en utilisant les séquences 
+ou les listes.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>[a,b,c]:=[1,2,3]</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,2,3]</TT></DIV><DIV CLASS="center"><TT>a contient 1, b contient 2 et c contient 3</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>(a,b,c):=(1,2,3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(1,2,3)</TT></DIV><DIV CLASS="center"><TT>a contient 1, b contient 2 et c contient 3</TT></DIV><P>
 <B>Attention</B><BR>
-Si <TT>a</TT> et <TT>b</TT> existent leurs valeurs seront remplacées sans préavis
-par les valeurs stockées dans le fichier :<BR>
-le principe de <TT>read</TT> est que l’utilisateur met dans un fichier
-par exemple des programmes ou des grosses variables, donc il sait
-ce qu’il y a dedans, et lors d’un <TT>read</TT> les instructions sont 
-exécutées et seules les reponses sont affichées.
-</P><HR>
+Si <TT>a</TT> contient <TT>5</TT> et que l’on tape :<BR>
+<TT>(a,b):=(2,a)</TT><BR>
+alors <TT>a</TT> contient <TT>2</TT> et <TT>b</TT> contient <TT>5</TT><BR>
+Si <TT>a</TT> contient <TT>1</TT> et que l’on tape :<BR>
+<TT>(a,b):=(2,a)</TT><BR>
+alors <TT>a</TT> contient <TT>2</TT> et <TT>b</TT> contient <TT>1</TT><BR>
+<TT>(a,b):=(b,a+b)</TT><BR>
+alors <TT>a</TT> contient <TT>1</TT> et <TT>b</TT> contient <TT>3</TT></P><HR>
 <A HREF="cascmd_fr835.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr837.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

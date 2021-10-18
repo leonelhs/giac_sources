@@ -6,55 +6,79 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tableau de valeurs et graphe d’une suite récurrente : tableseq table_suite et plotseq graphe_suite</TITLE>
+<TITLE>Valeurs d’une suite récurrente ou d’un système de suites récurrentes : seqsolve</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr284.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr286.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc359">6.15.4</A>  Tableau de valeurs et graphe d’une suite récurrente : <TT>tableseq table_suite</TT> et <TT>plotseq graphe_suite</TT></H3><P><A NAME="@default471"></A><A NAME="@default472"></A><A NAME="@default473"></A><A NAME="@default474"></A>
-<TT>tableseq</TT> ou <TT>table_suite</TT> est une commande qui s’utilise à 
-l’intérieur d’un tableur (que l’on ouvre avec <TT>Alt+t</TT>) et qui .<BR>
-remplit une colonne avec <TT><I>u</I></TT><SUB><TT>0</TT></SUB><TT>,  <I>u</I></TT><SUB><TT><I>n</I>+1</TT></SUB><TT>=<I>f</I>(<I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>)</TT> (récurrence sur un 
-terme) ou plus générallement 
-<I>u</I><SUB>0</SUB>,...,<I>u</I><SUB><I>k</I></SUB>,   <I>u</I><SUB><I>n</I>+<I>k</I>+1</SUB>=<I>f</I>(<I>u</I><SUB><I>n</I></SUB>,<I>u</I><SUB><I>n</I>+1</SUB>,...,<I>u</I><SUB><I>n</I>+<I>k</I></SUB>).
-<TT>tableseq</TT> ou <TT>table_suite</TT> remplit une colonne à partir de la 
-cellule sélectionnée ou à partir de
-<TT>0</TT> si c’est le nom de la colonne qui est sélectionnée.<BR>
-Voir aussi <TT>plotseq</TT> (section <A HREF="index.html#sec:plotseq">3.19</A>) pour la représentation 
-graphique des suites récurrentes.</P><P><B>Exemples</B> :
+<H3 CLASS="subsection"><A NAME="htoc359">6.15.2</A>  Valeurs d’une suite récurrente ou d’un système de suites récurrentes : <TT>seqsolve</TT></H3><P><A NAME="@default472"></A><A NAME="sec:seqsolve"></A>
+Voir aussi <TT>rsolve</TT> <A HREF="cascmd_fr286.html#sec:rsolve">6.15.3</A>.<BR>
+<TT>seqsolve</TT> a comme argument l’expression ou la liste des expressions qui 
+défini(ssen)t une/des relation(s) de récurrence, par exemple 
+<I>f</I>(<I>x</I>,<I>n</I>) si la relation de récurrence est <I>u</I><SUB><I>n</I>+1</SUB>=<I>f</I>(<I>u</I><SUB><I>n</I></SUB>,<I>n</I>) (resp <I>g</I>(<I>x</I>,<I>y</I>,<I>n</I>)
+si la relation de récurrence est <I>u</I><SUB><I>n</I>+2</SUB>=<I>g</I>(<I>u</I><SUB><I>n</I></SUB>,<I>u</I><SUB><I>n</I>+1</SUB>,<I>n</I>)=<I>g</I>(<I>x</I>,<I>y</I>,<I>n</I>)), 
+le nom des variables utilisées (par exemple [<I>x</I>,<I>n</I>] (resp [<I>x</I>,<I>y</I>,<I>n</I>])) et les 
+valeurs de départ de la suite : par exemple <I>a</I> si <I>u</I><SUB>0</SUB>=<I>a</I> (resp [<I>a</I>,<I>b</I>] si
+<I>u</I><SUB>0</SUB>=<I>a</I> et <I>u</I><SUB>1</SUB>=<I>b</I>).</P><P>La relation de récurrence doit comporter une partie homogène
+linéaire, la partie non homogène doit être une combinaison
+linéaire de produit de polynôme en <I>n</I> par une suite
+géométrique en <I>n</I>.
+<TT>seqsolve</TT> renvoie alors la valeur de la suite en fonctions de <I>n</I>.</P><P><B>Exemples</B> :
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Affichage des valeurs de la suite <I>u</I><SUB>0</SUB>=3.5,  <I>u</I><SUB><I>n</I></SUB>=sin(<I>u</I><SUB><I>n</I>−1</SUB>)<BR>
-On ouvre un tableur avec <TT>Alt+t</TT>.<BR>
-Puis, on sélectionne une case du tableur (par exemple <TT>B0</TT>) et pour 
-avoir les valeurs de <I>u</I><SUB>0</SUB>=3.5,  <I>u</I><SUB><I>n</I></SUB>=sin(<I>u</I><SUB><I>n</I>−1</SUB>), on tape, 
-dans la ligne de commande du tableur : 
-<DIV CLASS="center"><TT>tableseq(sin(u),u,4)</TT></DIV>
+Valeurs de la suite <I>u</I><SUB>0</SUB>=3,  <I>u</I><SUB><I>n</I>+1</SUB>=2<I>u</I><SUB><I>n</I></SUB>+<I>n</I><BR>
+On tape : 
+<DIV CLASS="center"><TT>seqsolve(2x+n,[x,n],3)</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>une colonne contenant sin(n), n, 3.5 
-et une formule evalf(subst(B$0,B$1,B2))</TT>
-</DIV> 
-Les valeurs de la suite
-<TT><I>u</I></TT><SUB><TT>0</TT></SUB><TT>=4, <I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>=<I>sin</I>(<I>u</I></TT><SUB><TT><I>n</I>-1</TT></SUB><TT>)</TT> s’affichent dans la colonne <TT>B</TT>.<BR>
-
-</LI><LI CLASS="li-itemize">Affichage des valeurs de la suite de Fibonacci
-<I>u</I><SUB>0</SUB>=1, <I>u</I><SUB>1</SUB>=1  <I>u</I><SUB><I>n</I>+2</SUB>=<I>u</I><SUB><I>n</I></SUB>+<I>u</I><SUB><I>n</I>+1</SUB><BR>
-Après avoir selectionné <TT>B0</TT>, on tape, dans la ligne de 
-commande du tableur :
-<DIV CLASS="center"><TT>tableseq(x+y,[x,y],[1,1])</TT></DIV>
-On obtient, les premiers termes de la suite de Fibonacci :
-<DIV CLASS="center"><TABLE BORDER=1 CELLSPACING=0 CELLPADDING=1><TR><TD ALIGN=left NOWRAP><TT>ligne</TT></TD><TD ALIGN=left NOWRAP><TT>B</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>x+y</TT></TD><TD ALIGN=left NOWRAP><TT>&nbsp;</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>1</TT></TD><TD ALIGN=left NOWRAP><TT>x</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>2</TT></TD><TD ALIGN=left NOWRAP><TT>y</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>3</TT></TD><TD ALIGN=left NOWRAP><TT>1</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>4</TT></TD><TD ALIGN=left NOWRAP><TT>1</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>5</TT></TD><TD ALIGN=left NOWRAP><TT>2</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>..</TT></TD><TD ALIGN=left NOWRAP><TT>..</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>7</TT></TD><TD ALIGN=left NOWRAP><TT>5</TT></TD></TR>
-<TR><TD ALIGN=left NOWRAP><TT>..</TT></TD><TD ALIGN=left NOWRAP><TT>..</TT></TD></TR>
-</TABLE></DIV>
+<DIV CLASS="center"><TT>-n-1+4*2^n</TT></DIV>
+On peut aussi taper rsolve(u(n+1)=2*u(n)+n,u(n),u(0)=3) (cf<A HREF="cascmd_fr286.html#sec:rsolve">6.15.3</A>)
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=3,  <I>u</I><SUB><I>n</I>+1</SUB>=2<I>u</I><SUB><I>n</I></SUB>+<I>n</I>3<SUP><I>n</I></SUP><BR>
+On tape : 
+<DIV CLASS="center"><TT>seqsolve(2x+n*3^n,[x,n],3)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(n-3)*3^n+6*2^n</TT></DIV> 
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=0,<I>u</I><SUB>1</SUB>=1,  <I>u</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>+<I>u</I><SUB><I>n</I>−1</SUB> pour <I>n</I>&gt;0.<BR>
+On tape : 
+<DIV CLASS="center"><TT>seqsolve(x+y,[x,y,n],[0,1])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(5+sqrt(5))/10*((sqrt(5)+1)/2)^(n-1)+ (5-(sqrt(5)))/10*((-sqrt(5)+1)/2)^(n-1)</TT></DIV></LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=0,<I>u</I><SUB>1</SUB>=1,  <I>u</I><SUB><I>n</I>+2</SUB>=2*<I>u</I><SUB><I>n</I>+1</SUB>+<I>u</I><SUB><I>n</I></SUB>+<I>n</I>+1 pour <I>n</I>&gt;0.<BR>
+À la main, on trouve <I>u</I><SUB>2</SUB>=3, <I>u</I><SUB>3</SUB>=9 <I>u</I><SUB>4</SUB>=24 etc...<BR>
+On tape : 
+<DIV CLASS="center"><TT>seqsolve(x+2y+n+1,[x,y,n],[0,1])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(-4*n-3*(-(sqrt(2)-1))</TT><CODE><TT>^</TT></CODE><TT>n*sqrt(2)+2*(-(sqrt(2)-1))</TT><CODE><TT>^</TT></CODE><TT>n+3*(sqrt(2)+1)</TT><CODE><TT>^</TT></CODE><TT>n*sqrt(2)+2*(sqrt(2)+1)</TT><CODE><TT>^</TT></CODE><TT>n-4)/8</TT></DIV>
+On vérifie pour <TT>n:=4</TT> on obtient bien <TT>24</TT><BR>
+Ou on tape car on a <I>u</I><SUB><I>n</I>+1</SUB>=2<I>u</I><SUB><I>n</I></SUB>+<I>v</I><SUB><I>n</I></SUB>+<I>n</I> et <I>v</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB> (donc <I>v</I><SUB><I>n</I></SUB>=<I>u</I><SUB><I>n</I>−1</SUB>)
+avec <I>u</I><SUB>0</SUB>=0 et <I>u</I><SUB>1</SUB>=2<I>u</I><SUB>0</SUB>+<I>v</I><SUB>0</SUB>+0=1 donc <I>v</I><SUB>0</SUB>=1: 
+<DIV CLASS="center"><TT>seqsolve([2x+y+n,x],[x,y,n],[0,1]) </TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[(-1)/2-(-2-3*sqrt(2))/8*(sqrt(2)+1)^n-
+(-2+3*sqrt(2))/8*(-sqrt(2)+1)^n-1/2*n,
+-(-4+sqrt(2))/8*(sqrt(2)+1)^n-
+(-4-sqrt(2))/8*(-sqrt(2)+1)^n-1/2*n]</TT></DIV>
+On vérifie pour <TT>n:=4</TT> on obtient bien <TT>24</TT>
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=0,<I>v</I><SUB>0</SUB>=1,  <I>u</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>+2<I>v</I><SUB><I>n</I></SUB>,<I>v</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>+<I>n</I>+1 pour <I>n</I>&gt;0.<BR>
+On tape : 
+<DIV CLASS="center"><TT>seqsolve([x+2*y,n+1+x],[x,y,n],[0,1])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[(-2*n-(-1)</TT><CODE><TT>^</TT></CODE><TT>n+2</TT><CODE><TT>^</TT></CODE><TT>n*4-3)/2,((-1)</TT><CODE><TT>^</TT></CODE><TT>n+2*2</TT><CODE><TT>^</TT></CODE><TT>n-1)/2]</TT></DIV>
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=0,<I>v</I><SUB>0</SUB>=1,  <I>u</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>+2<I>v</I><SUB><I>n</I></SUB>+<I>n</I>+1,<I>v</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB> pour <I>n</I>&gt;0.<BR>
+On tape : 
+<DIV CLASS="center"><TT>seqsolve([x+2*y+n+1,x],[x,y,n],[0,1])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[(-2*n-(-1)</TT><CODE><TT>^</TT></CODE><TT>n*3+2</TT><CODE><TT>^</TT></CODE><TT>n*8-5)/4,(-2*n+(-1)</TT><CODE><TT>^</TT></CODE><TT>n*3+2</TT><CODE><TT>^</TT></CODE><TT>n*4-3)/4]</TT></DIV>
+</LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=0,<I>v</I><SUB>0</SUB>=1,  <I>u</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>+<I>v</I><SUB><I>n</I></SUB>, <I>v</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>−<I>v</I><SUB><I>n</I></SUB> pour <I>n</I>&gt;0.<BR>
+On tape : 
+<DIV CLASS="center"><TT>seqsolve([x+y,x-y],[x,y,n],[0,1])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[(-4*n-3*(-(sqrt(2)-1))</TT><CODE><TT>^</TT></CODE><TT>n*sqrt(2)+ 2*(-(sqrt(2)-1))</TT><CODE><TT>^</TT></CODE><TT>n+ 3*(sqrt(2)+1)</TT><CODE><TT>^</TT></CODE><TT>n*sqrt(2)+ 2*(sqrt(2)+1)</TT><CODE><TT>^</TT></CODE><TT>n-4)/8,</TT></DIV>
+<DIV CLASS="center"><TT>(-4*n+(-(sqrt(2)-1))</TT><CODE><TT>^</TT></CODE><TT>n*sqrt(2)+ 4*(-(sqrt(2)-1))</TT><CODE><TT>^</TT></CODE><TT>n-(sqrt(2)+ 1)</TT><CODE><TT>^</TT></CODE><TT>n*sqrt(2)+ 4*(sqrt(2)+1)</TT><CODE><TT>^</TT></CODE><TT>n)/8]</TT></DIV> </LI><LI CLASS="li-itemize">Valeurs de la suite <I>u</I><SUB>0</SUB>=2,<I>v</I><SUB>0</SUB>=0,  <I>u</I><SUB><I>n</I>+1</SUB>=4*<I>v</I><SUB><I>n</I></SUB>+<I>n</I>+1, <I>v</I><SUB><I>n</I>+1</SUB>=<I>u</I><SUB><I>n</I></SUB>, pour <I>n</I>&gt;0.<BR>
+On tape : 
+<DIV CLASS="center"><TT>seqsolve([4y+n+1,x],[x,y,n],[2,0])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[(-8)/9+2*2^n-(-8)/9*(-1)^n*2^n-1/3*n,<BR>
+(-5)/9+2^n-4/9*(-1)^n*2^n-1/3*n]</TT></DIV> 
 </LI></UL><HR>
 <A HREF="cascmd_fr284.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

@@ -6,76 +6,82 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice triangulaire inférieure ou supérieure associée à une matrice : diag</TITLE>
+<TITLE>Différence terme à terme de deux listes : - .-</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr549.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr551.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc654">6.45.5</A>  Matrice triangulaire inférieure ou supérieure associée à une matrice : <TT>diag</TT></H3><P><A NAME="@default1011"></A><A NAME="@default1012"></A><A NAME="@default1013"></A><A NAME="@default1014"></A>
-<TT>diag</TT> peut avoir 1 ,2 ou 3 arguments.<BR>
-</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
-Avec 1 argument qui est soit une liste soit une matrice<BR>
-<UL CLASS="itemize"><LI CLASS="li-itemize">
-une liste <TT>l</TT>, <TT>diag(l)</TT> renvoie la matrice diagonale de diagonale <TT>l</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc652">6.43.4</A>  Différence terme à terme de deux listes : <TT>- .-</TT></H3><P><A NAME="@default984"></A><A NAME="@default985"></A>
+La différence terme à terme de deux listes se fait avec l’opérateur 
+infixé <TT>-</TT> ou <TT>.-</TT> et aussi avec l’opérateur prefixé <TT>’-’</TT>.<BR>
+Si les deux listes n’ont pas la même longueur la liste la plus petit est 
+complétée par des zéros.<BR>
+Bien voir la différence avec les séquences car si l’opérateur infixé
+<TT>-</TT> a comme arguments deux séquences, il renvoie la différence des 
+sommes des termes de chacune des séquences.<BR>
 On tape :
-<DIV CLASS="center"><TT>diag([1,4])</TT></DIV>
+</P><DIV CLASS="center"><TT>[1,2,3]-[4,3,5]</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>[1,2,3] .- [4,3,5]</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>’-’([1,2,3],[4,3,5])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>’-’([[1,2,3],[4,3,5]])</TT></DIV><P>
 On obtient :
-<DIV CLASS="center"><TT>[[1,0],[0,4]]</TT></DIV>
-</LI><LI CLASS="li-itemize">une matrice <TT>A</TT>, <TT>diag(A)</TT> renvoie la diagonale de <TT>A</TT>.<BR>
+</P><DIV CLASS="center"><TT>[-3,-1,-2]</TT></DIV><P>
+<B>Attention</B><BR>
+Quand l’opérateur <TT>-</TT> est préfixé il doit être quoté c’est
+à dire écrit <TT>’-’</TT>.<BR>
+<B>Attention</B><BR>
+Il y a une différence entre l’opérateur infixé
+<TT>-</TT> et <TT>.-</TT>.<BR>
+L’opérateur infixé <TT>.-</TT> et <TT>-</TT> (ou de l’opérateur prefixé 
+<TT>’-’</TT>) peuvent aussi avoir comme paramètres une liste <I>L</I> (resp une 
+matrice <I>M</I>) et un réel <I>a</I>.<BR>
+Dans ce cas il ne renvoie pas la même chose :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>L .- a</TT> (resp <TT>M .- a</TT>) renvoie la liste (resp la matrice) 
+obtenue en supprimant <TT>a</TT> à chaque élément de la liste <TT>L</TT> (resp 
+à chaque élément de la matrice <TT>M</TT>).<BR>
 On tape :
-<DIV CLASS="center"><TT>diag([[1,2],[3,4]])</TT></DIV>
+<DIV CLASS="center"><TT>[1,2,3,4].-5</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>[1,4]</TT></DIV>
-</LI></UL>
-</LI><LI CLASS="li-enumerate">Avec 2 arguments qui sont une matrice et une option<BR>
-<UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>diag(A,left)</TT> renvoie la matrice triangulaire inférieure <TT>L</TT>
-formée par la partie gauche large de <TT>A</TT> (<TT>L[j,k]=0</TT> si <TT>k&gt;j</TT> et 
-<TT>L[j,k]=A[j,k]</TT> si <TT>k&lt;=j</TT>).<BR>
+<DIV CLASS="center"><TT>[-4,-3,-2,-1]</TT></DIV>
 On tape :
-<DIV CLASS="center"><TT>diag([[1,2],[3,4]],left)</TT></DIV>
+<DIV CLASS="center"><TT>[[1,2],[3,4]].-5</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>[[1,0],[3,4]]</TT></DIV>
+<DIV CLASS="center"><TT>[[-4,-3],[-2,-1]]</TT></DIV>
+</LI><LI CLASS="li-itemize"><TT>L - a</TT> (resp <TT>M - a</TT>)(ou <TT>’-’(L, a)</TT> (resp <TT>’-’(M ,a)</TT>)
+renvoie la liste (resp la matrice) obtenue en 
+enlevant <TT>a</TT> au dernier élément de la liste <TT>L</TT> (resp à la 
+diagonale de la matrice <TT>M</TT>) :
 On tape :
-<DIV CLASS="center"><TT>diag([[1,2,3],[4,5,6],[7,8,9]],left)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[[1,0,0],[4,5,0],[7,8,9]]</TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>diag(A,right)</TT> renvoie la matrice triangulaire supérieure <TT>U</TT>
-formée par la partie droite large de <TT>A</TT> (<TT>L[j,k]=0</TT> si <TT>k&lt;j</TT> et 
-<TT>L[j,k]=A[j,k]</TT> si <TT>k&gt;=j</TT>).<BR>
+<DIV CLASS="center"><TT>[1,2,3,4,5,6]-4</TT></DIV>
+On obtient, car la liste est considèrée comme les coefficients d’un 
+polynôme :
+<DIV CLASS="center"><TT>[1,2,3,4,5,2]</TT></DIV>
 On tape :
-<DIV CLASS="center"><TT>diag([[1,2],[3,4]],right)</TT></DIV>
+<DIV CLASS="center"><TT>[[1,2],[3,4]]-5</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>[[1,2],[0,4]]</TT></DIV>
+<DIV CLASS="center"><TT>[[-4,2],[3,-1]]</TT></DIV>
+</LI></UL><P>
+<B>Bien voir aussi la différence avec les séquences</B><BR>
+ Si l’opérateur 
+infixé <TT>*</TT> a comme arguments deux séquences <I>S</I><SUB>1</SUB> et <I>S</I><SUB>2</SUB>, il renvoie 
+de la différence entre la somme des termes de la séquence <I>S</I><SUB>1</SUB> et la somme
+des termes de la séquence <I>S</I><SUB>2</SUB> et<BR>
+si l’opérateur infixé <TT>.-</TT> a comme arguments deux séquences <I>S</I><SUB>1</SUB> et 
+<I>S</I><SUB>2</SUB>,, il renvoie la différence <I>S</I><SUB>1</SUB>[0]−<I>S</I><SUB>2</SUB>[<I>size</I>(<I>S</I><SUB>2</SUB>−1].<BR>
 On tape :
-<DIV CLASS="center"><TT>diag([[1,2,3],[4,5,6],[7,8,9]],right)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[[1,2,3],[0,5,6],[0,0,9]]</TT></DIV>
-</LI><LI CLASS="li-itemize"><TT>diag(A,lu)</TT> renvoie 3 parties de <TT>A</TT> : la partie gauche stricte, la diagonale et la partie droite stricte. 
+</P><DIV CLASS="center"><TT>(1,2,3)-(4,5,16)</TT></DIV><P>
+On obtient (6-25) :
+</P><DIV CLASS="center"><TT>-19</TT></DIV><P>
 On tape :
-<DIV CLASS="center"><TT>diag([[1,2],[3,4]],lu)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[[0,0],[3,0]],[1,4],[[0,2],[0,0]] </TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>diag([[1,2,3],[4,5,6],[7,8,9]],lu)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[[0,0,0],[4,0,0],[7,8,0]],[1,5,9],[[0,2,3],[0,0,6],[0,0,0]] </TT></DIV>
-</LI></UL>
-</LI><LI CLASS="li-enumerate">Avec 3 arguments qui sont 3 listes de dimension <TT>n-1</TT>, <TT>n</TT> et 
-<TT>n-1</TT><BR>
-<TT>diag(l,d,u)</TT> renvoie la matrice tridiagonale de dimension <TT>[n,n]</TT> et 
-de diagonales principales <TT>l,d,u</TT>.<BR>
-On tape :
-<DIV CLASS="center"><TT>diag([1,2],[3,4,5],[6,7]])</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[[3,6,0],[1,4,7],[0,2,5]] </TT></DIV>
-On tape :
-<DIV CLASS="center"><TT>diag([1,2,3],[4,5,6,7],[8,9,10]])</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>[[4,8,0,0],[1,5,9,0],[0,2,6,10],[0,0,3,7]] </TT></DIV>
-</LI></OL><HR>
+</P><DIV CLASS="center"><TT>(1,2,3) .- (4,5,16)</TT></DIV><P>
+On obtient:
+</P><DIV CLASS="center"><TT>-16</TT></DIV><HR>
 <A HREF="cascmd_fr549.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr551.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

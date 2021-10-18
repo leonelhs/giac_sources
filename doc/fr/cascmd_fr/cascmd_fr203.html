@@ -6,48 +6,80 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le nième nombre de Bernoulli : bernoulli</TITLE>
+<TITLE>Développement en fraction continue d’un réel : dfc</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr202.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr204.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc271">6.9.9</A>  Le <I>n</I><SUP><I>i</I>è<I>me</I></SUP> nombre de Bernoulli : <TT>bernoulli</TT></H3><P><A NAME="@default369"></A>
-Si <TT>bernoulli</TT> a comme argument un entier <I>n</I> alors :<BR>
-<TT>bernoulli</TT> renvoie le <I>n</I><SUP><I>i</I>è<I>me</I></SUP> nombre de Bernoulli <I>B</I>(<I>n</I>).<BR>
-On a :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>e</I><SUP><I>t</I></SUP>−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+∞</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>B</I>(<I>n</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>!</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>t</I><SUP><I>n</I></SUP></TD></TR>
-</TABLE><P>
-On rappelle que les polynômes de Bernoulli <I>B</I><SUB><I>k</I></SUB> sont définis par :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>B</I><SUB>0</SUB>=1</TD></TR>
-</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>B</I><SUB><I>k</I></SUB>′(<I>x</I>)=<I>kB</I><SUB><I>k</I>−1</SUB>(<I>x</I>)</TD></TR>
-</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>B</I><SUB><I>k</I></SUB>(<I>x</I>)<I>dx</I>=0</TD></TR>
-</TABLE><P>
-On a alors :<BR>
-<I>B</I>(<I>n</I>)=<I>B</I><SUB><I>n</I></SUB>(0)<BR>
+<H3 CLASS="subsection"><A NAME="htoc271">6.9.7</A>  Développement en fraction continue d’un réel : <TT>dfc</TT></H3><P><A NAME="@default368"></A><A NAME="sec:convertdfc"></A><A NAME="@default369"></A>
+<TT>dfc</TT> a comme argument un nombre réel ou 
+fractionnaire ou décimal <TT>a</TT> et un entier <TT>n</TT> (ou un réel 
+<TT>epsilon</TT>).<BR>
+<TT>dfc</TT> renvoie une liste représentant le développement en fractions 
+continues de <TT>a</TT> d’ordre <TT>n</TT> (ou de précision <TT>epsilon</TT> c’est à
+dire le développement en fractions continues qui approche <TT>a</TT> ou 
+<TT>evalf(a)</TT> à moins de <TT>epsilon</TT>, par défaut <TT>epsilon</TT> est 
+égal à la valeur du <TT>epsilon</TT> définit dans la configuration du 
+<TT>cas</TT> à l’aide du menu 
+<TT>Cfg</TT><TT>▸</TT><TT>Configuration du CAS</TT>).<BR>
+On peut aussi utiliser <TT>convert</TT> avec l’option <TT>confrac</TT> : dans ce cas
+la valeur de <TT>epsilon</TT> est égal à la valeur du <TT>epsilon</TT> définit 
+dans la configuration du <TT>CAS</TT> à l’aide du menu 
+<TT>Cfg</TT><TT>▸</TT><TT>Configuration du CAS</TT> (voir <A HREF="cascmd_fr344.html#sec:convert">6.25.26</A>).<BR>
+<B>Remarques</B><BR>
+Si le dernier élément de la liste résultat est une liste il représente 
+la période et si le dernier élément de la liste résultat n’est pas entier, il représente le reste <I>r</I> (<I>a</I>=<I>a</I>0+1/....+1/<I>an</I>+1/<I>r</I>).<BR>
+Si on a <TT>dfc(a)=[a0,a1,a2,[b0,b1]]</TT> cela veut dire que :<BR>
+ <I>a</I>=<I>a</I>0+1/<I>a</I>1+1/<I>a</I>2+1/<I>b</I>0+1/<I>b</I>1+1/<I>b</I>0+...<BR>
+Si on a <TT>dfc(a)=[a0,a1,a2,r]</TT> cela veut dire que :<BR>
+ <I>a</I>=<I>a</I>0+1/<I>a</I>1+1/<I>a</I>2+1/<I>r</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>bernoulli(3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>dfc(sqrt(2),5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[1,2,[2]]</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>bernoulli(6)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>dfc(evalf(sqrt(2)),1e-9)</TT></DIV><P>
+Ou : 
+</P><DIV CLASS="center"><TT>dfc(sqrt(2),1e-9)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1/42</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[1,2,2,2,2,2,2,2,2,2,2,2,2]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>convert(sqrt(2),confrac,’dev’)</TT></DIV><P>
+On obtient si dans la configuration du <TT>cas</TT> <TT>epsilon=1e-9</TT> :
+</P><DIV CLASS="center"><TT>[1,2,2,2,2,2,2,2,2,2,2,2,2]</TT></DIV><P> 
+et <TT>dev</TT> contient <TT>[1,2,2,2,2,2,2,2,2,2,2,2,2]</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>dfc(9976/6961,5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,2,3,4,5,43/7]</TT></DIV><P> 
+En effet
+on tape :<BR>
+<TT>1+1/(2+1/(3+1/(4+1/(5+7/43))))</TT><BR>
+et on obtient :<BR>
+<TT>9976/6961</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>convert(9976/6961,confrac,’l’)</TT></DIV><P>
+On obtient si dans la configuration du <TT>cas</TT> <TT>epsilon=1e-9</TT> :
+</P><DIV CLASS="center"><TT>[1,2,3,4,5,6,7]</TT></DIV><P> 
+et <TT>l</TT> contient <TT>[1,2,3,4,5,6,7]</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>dfc(pi,5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[3,7,15,1,292,(-113*pi+355)/(33102*pi-103993)]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>dfc(evalf(pi),5)</TT></DIV><P>
+On obtient (si on travaille avec 12 chiffres significatifs) :
+</P><DIV CLASS="center"><TT>[3,7,15,1,292,1.57581843574]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>dfc(evalf(pi),1e-9)</TT></DIV><P>
+Ou :
+</P><DIV CLASS="center"><TT>dfc(pi,1e-9)</TT></DIV><P>
+Ou (si <TT>epsilon=1e-9</TT> dans la configuration du <TT>cas</TT>) :
+</P><DIV CLASS="center"><TT>convert(pi,confrac,’ll’)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[3,7,15,1,292]</TT></DIV><HR>
 <A HREF="cascmd_fr202.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr204.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

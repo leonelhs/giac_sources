@@ -6,32 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi de Weibull : weibull weibulld</TITLE>
+<TITLE>Fonction de répartition inverse de la loi beta : betad_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr787.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr789.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc927">8.4.45</A>  Densité de probabilité de la loi de Weibull : <TT>weibull weibulld</TT></H3><P><A NAME="@default1404"></A><A NAME="@default1405"></A>
-<TT>weibulld</TT> a 3 ou 4 paramètres : deux réels <I>k</I>,λ strictement positifs et 1 ou 2 réels θ, <I>x</I> positif ou nul (par défaut θ=0).<BR>
-<TT>weibull(k,lambda,theta,x)</TT> renvoie la densité de probabilité de la 
-loi de Weibull à savoir :<BR>
- <I>k</I>/λ(<I>x</I>−θ/λ)<SUP><I>k</I>−1</SUP>*exp(−(<I>x</I>−θ/λ)<SUP><I>k</I></SUP>)<BR>
+<H3 CLASS="subsection"><A NAME="htoc928">8.4.32</A>  Fonction de répartition inverse de la loi beta : <TT>betad_icdf</TT></H3><P><A NAME="@default1407"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi beta de paramètre 
+<I>a</I> et <I>b</I>, si on a <TT>betad_icdf(a,b,x)=h</TT> c’est que l’on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=betad_cdf(a,b,h)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>weibull(2,1,3)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>weibull(2,1,0,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>betad_icdf(2,3,0.1808)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>6/exp(9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>weibull(2.2,1.5,0.8)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull(2.2,1.5,0.0,0.8)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull(2.2,1.5,0.4,1.2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>betad_icdf(2,3,0.9963)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.536773868051</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.9</TT></DIV><HR>
 <A HREF="cascmd_fr787.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr789.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

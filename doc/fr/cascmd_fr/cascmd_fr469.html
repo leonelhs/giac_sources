@@ -6,25 +6,138 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Définition d’une plage de valeurs : a1..a2</TITLE>
+<TITLE>Développement limité : series</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr468.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr470.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc565">6.37.1</A>  Définition d’une plage de valeurs : <TT>a1..a2</TT></H3><P><A NAME="@default834"></A>
-Un intervalle est défini par deux nombres séparés par <TT>..</TT> on 
+<H3 CLASS="subsection"><A NAME="htoc565">6.37.3</A>  Développement limité : <TT>series</TT></H3><P><A NAME="@default841"></A><A NAME="@default842"></A><A NAME="@default843"></A> 
+<TT>series</TT> permet de faire le développement limité d’une 
+expression au voisinage d’un point à un ordre donné.<BR>
+<B>Développement limité au voisinage de 0</B><BR>
+Pour un développement limité au voisinage de 0 on peut utiliser la 
+commande <TT>series</TT> de 2 façons :<BR>
+Soit on tape par exemple :<BR>
+<TT>series("h",8)</TT><BR>
+puis<BR>
+<TT>ln(1+h)</TT><BR>
+cela effectura le développement limité à l’odre 8 de <TT>ln(1+x)</TT> au
+voisinage de 0. On obtient alors :
+<TT>h-h</TT><CODE><TT>^</TT></CODE><TT>2/2+h</TT><CODE><TT>^</TT></CODE><TT>3/3-h</TT><CODE><TT>^</TT></CODE><TT>4/4+h</TT><CODE><TT>^</TT></CODE><TT>5/5-h</TT><CODE><TT>^</TT></CODE><TT>6/6+h</TT><CODE><TT>^</TT></CODE><TT>7/7-h</TT><CODE><TT>^</TT></CODE><TT>8/8+O(h</TT><CODE><TT>^</TT></CODE><TT>9)</TT><BR>
+ce qui signifie qu’il existe une constante <I>C</I> tel que :<BR>
+ <I>O</I>(<I>h</I><SUP>9</SUP>)&lt;<I>Ch</I><SUP>9</SUP>.<BR>
+Ou bien on tape directement :<BR>
+<TT>series(ln(1+x),x=0,8)</TT> ou <TT>series(ln(1+x),x=0,8)</TT><BR>
+et on obtient :<BR>
+<TT>x-x</TT><CODE><TT>^</TT></CODE><TT>2/2+x</TT><CODE><TT>^</TT></CODE><TT>3/3-x</TT><CODE><TT>^</TT></CODE><TT>4/4+x</TT><CODE><TT>^</TT></CODE><TT>5/5-x</TT><CODE><TT>^</TT></CODE><TT>6/6+x</TT><CODE><TT>^</TT></CODE><TT>7/7-x</TT><CODE><TT>^</TT></CODE><TT>8/8+x</TT><CODE><TT>^</TT></CODE><TT>9)*order_size(x)</TT><BR>
+ce qui signifie qu’il existe une constante <I>C</I> tel que :<BR>
+<I>h</I><SUP>9</SUP>*<I>order</I>_<I>size</I>(<I>x</I>))&lt;<I>Cx</I><SUP>9</SUP>.<BR>
+<B>Développement limité au voisinage de </B><B><TT>x=a</TT></B>
+<TT>series</TT> peut avoir de un à quatre paramètres si on veut une écriture
+avec reste et de un à cinq paramètres si on ne veut pas mettre le reste :<BR>
+l’expression à développer, <TT>x=a</TT> (par défaut <TT>x=0</TT>), 
+l’ordre du développement (par défaut <TT>5</TT>), la direction <TT>-1, 1</TT>
+(pour un développement unidirectionel) ou <TT>0</TT> (pour un 
+développement bidirectionel) (par défaut <TT>0</TT>).<BR>
+Si on veut un développement limité sans mettre le reste il faut utiliser 
+comme dernier paramètre l’option <TT>polynom</TT>.<BR>
+<B>Remarque</B> on peut aussi mettre <TT>x,</TT><TT><I>a</I></TT><TT>,</TT><TT><I>n</I></TT> au lieu de 
+<TT>x=</TT><TT><I>a</I></TT><TT>,</TT><TT><I>n</I></TT><BR>
+<TT>series</TT> renvoie un polynôme en <TT>x-a</TT>, plus un reste que <TT>Xcas</TT> 
 écrit :<BR>
-<TT>1..3</TT> ou<BR>
-<TT>1.2..sqrt(2)</TT><BR>
+ <TT>(x-a)</TT><CODE><TT>^</TT></CODE><TT>n*order_size(x-a)</TT><BR>
+cela signifie que l’on a un développement limité à l’ordre <I>n</I>−1 
+(ou à l’ordre <I>p</I>&lt;<I>n</I>). 
+En effet <TT>order_size</TT> désigne une fonction telle que,
+quelque soit <TT><I>r</I></TT> positif :<BR>
+<TT>x</TT><CODE><TT>^</TT></CODE><TT>r*order_size(x)</TT> tend vers zéro quand <TT>x</TT> tend vers zéro.<BR>
+ Par exemple, les fonctions constantes, la fonction log (ou ln), sont 
+des fonctions <TT>order_size</TT>.<BR>
+<B>Attention!!!</B><BR>
+L’ordre que l’algorithme utilise pour les développements limités peut 
+être plus petit que celui demandé : l’ordre peut diminuer si il y a des
+compensations (voir les exemples qui suivent)
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+développement au voisinage de <TT>x=0</TT> de sin(<I>x</I>)/<I>x</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=1..4</TT></DIV><DIV CLASS="center"><TT>B:=1.2..sqrt(2)</TT></DIV><P>
-<B>Attention!</B><BR>
- l’ordre est important :
-si <TT>B:=2..3</TT> et <TT>C:=3..2</TT> la réponse de <TT>B==C</TT> est 
-<TT>0</TT>.
-</P><HR>
+<DIV CLASS="center"><TT>series(sin(x)/x)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1-x</TT><CODE><TT>^</TT></CODE><TT>2/6+x</TT><CODE><TT>^</TT></CODE><TT>4/120+x</TT><CODE><TT>^</TT></CODE><TT>6*order_size(x)</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>series(sin(x)/x),polynom)</TT></DIV>
+On obtient seulement le polynôme le développement à l’ordre 5 
+mais sans reste:
+<DIV CLASS="center"><TT>1-x</TT><CODE><TT>^</TT></CODE><TT>2/6+x</TT><CODE><TT>^</TT></CODE><TT>4/120 </TT></DIV>
+</LI><LI CLASS="li-itemize">développement au voisinage de <TT>x=0</TT><BR>
+Donner le développement de  <I>x</I><SUP>3</SUP>+sin(<I>x</I>)<SUP>3</SUP>/<I>x</I>−sin(<I>x</I>) 
+au voisinage de <TT>x=0</TT><BR>
+On tape :
+<DIV CLASS="center"><TT>series(x</TT><CODE><TT>^</TT></CODE><TT>3+sin(x)</TT><CODE><TT>^</TT></CODE><TT>3/(x-sin(x)))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>6+-27/10*x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3+711*x</TT><CODE><TT>^</TT></CODE><TT>4/1400+x</TT><CODE><TT>^</TT></CODE><TT>6*order_size(x)</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>series(x</TT><CODE><TT>^</TT></CODE><TT>3+sin(x)</TT><CODE><TT>^</TT></CODE><TT>3/(x-sin(x)),x=0,7)</TT></DIV>
+On obtient seulement un développement à l’ordre 4 :
+<DIV CLASS="center"><TT>6+-27/10*x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3+711/1400*x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>5*order_size(x)</TT></DIV>
+</LI><LI CLASS="li-itemize">développement au voisinage de <TT>x=a</TT><BR>
+Exemple :<BR>
+Donner un développement limité à l’ordre 4 au voisinage de 
+<I>x</I>=π/6 de cos(2<I>x</I>)<SUP>2</SUP>.<BR>
+On tape :
+<DIV CLASS="center"><TT>series(cos(2*x)</TT><CODE><TT>^</TT></CODE><TT>2,x=pi/6, 4)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>1/4+(-(4*sqrt(3)))/4*(x-pi/6)+(4*3-4)/4*(x-pi/6)</TT><CODE><TT>^</TT></CODE><TT>2+ 32*sqrt(3)/3/4*(x-pi/6)</TT><CODE><TT>^</TT></CODE><TT>3+(-16*3+16)/3/4*(x-pi/6)</TT><CODE><TT>^</TT></CODE><TT>4+ (x-pi/6)</TT><CODE><TT>^</TT></CODE><TT>5*order_size(x-pi/6)</TT></DIV> 
+</LI><LI CLASS="li-itemize">développement au voisinage de <TT>x=+</TT><TT>∞</TT> ou <TT>x=-</TT><TT>∞</TT><BR>
+Exemple 1 :<BR>
+Donner un développement de arctan(<I>x</I>) à l’ordre 5 au voisinage de
+<TT>x=+</TT><TT>∞</TT> en prenant comme infiniment petit 
+ <I>h</I>=1/<I>x</I>.<BR>
+On tape :
+<DIV CLASS="center"><TT>series(atan(x),x=+infinity,5)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>pi/2-1/x+1/3*(1/x)</TT><CODE><TT>^</TT></CODE><TT>3-1/5*(1/x)</TT><CODE><TT>^</TT></CODE><TT>5+</TT></DIV>
+<DIV CLASS="center"><TT>(1/x)</TT><CODE><TT>^</TT></CODE><TT>6*order_size(1/x)</TT></DIV>
+Donner un développement de arctan(<I>x</I>) à l’ordre 5 au voisinage de
+<TT>x=-</TT><TT>∞</TT> en prenant comme infiniment petit 
+ <I>h</I>=1/<I>x</I>.<BR>
+On tape :
+<DIV CLASS="center"><TT>series(atan(x),x=-infinity,5)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>-pi/2-1/x-1/3*(-1/x)</TT><CODE><TT>^</TT></CODE><TT>3+1/5*(-1/x)</TT><CODE><TT>^</TT></CODE><TT>5+</TT></DIV>
+<DIV CLASS="center"><TT>(-1/x)</TT><CODE><TT>^</TT></CODE><TT>6*order_size(-1/x)</TT></DIV><P>Exemple 2 :<BR>
+Donner un développement de (2<I>x</I>−1)<I>e</I><SUP>1/<I>x</I>−1</SUP> à l’ordre 2 au voisinage de
+<TT>x=+</TT><TT>∞</TT> en prenant comme infiniment petit <I>h</I>=1/<I>x</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>series((2*x-1)*exp(1/(x-1)),x=+infinity,3)</TT></DIV><P>
+On obtient seulement l’ordre 1 :
+</P><DIV CLASS="center"><TT>2*x+1+2/x+(1/x)</TT><CODE><TT>^</TT></CODE><TT>2*order_size(1/x)</TT></DIV><P>
+On tape pour avoir le développement à l’ordre 2 en 1/<I>x</I>:
+</P><DIV CLASS="center"><TT>series((2*x-1)*exp(1/(x-1)),x=+infinity,4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2*x+1+2/x+17/6*(1/x)</TT><CODE><TT>^</TT></CODE><TT>2+(1/x)</TT><CODE><TT>^</TT></CODE><TT>3*order_size(1/x)</TT></DIV><P>
+Exemple 3 :<BR>
+Donner un développement de (2<I>x</I>−1)<I>e</I><SUP>1/<I>x</I>−1</SUP>) à l’ordre 2 au voisinage de
+<TT>x=-</TT><TT>∞</TT> en prenant comme infiniment petit <I>h</I>=−1/<I>x</I>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>series((2*x-1)*exp(1/(x-1)),x=-infinity,4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>-2*(-x)+1-2*(-1/x)+17/6*(-1/x)</TT><CODE><TT>^</TT></CODE><TT>2+</TT></DIV><DIV CLASS="center"><TT>(-1/x)</TT><CODE><TT>^</TT></CODE><TT>3*order_size(-1/x)</TT></DIV></LI><LI CLASS="li-itemize">développement unidirectionnel<BR>
+Il faut utiliser un paramètre supplémentaire pour indiquer la direction :
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>1</TT> pour faire un développement au voisinage de <I>x</I>=<I>a</I> avec   <I>x</I>&gt;<I>a</I>,
+</LI><LI CLASS="li-itemize"><TT>-1</TT> pour faire un développement au voisinage de <I>x</I>=<I>a</I> avec   <I>x</I>&lt;<I>a</I>,
+</LI><LI CLASS="li-itemize"><TT>0</TT> pour faire un développement au voisinage de <I>x</I>=<I>a</I> avec   <I>x</I> ≠ <I>a</I>.
+</LI></UL>
+<B>Exemple</B><BR>
+Donner un développement de  (1+<I>x</I>)<SUP>1/<I>x</I></SUP>/<I>x</I><SUP>3</SUP>  à l’ordre 2, 
+au voisinage de <I>x</I>=0<SUP>+</SUP>.<BR>
+On tape :
+<DIV CLASS="center"><TT>series((1+x)</TT><CODE><TT>^</TT></CODE><TT>(1/x)/x</TT><CODE><TT>^</TT></CODE><TT>3,x=0,2,1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>exp(1)/x</TT><CODE><TT>^</TT></CODE><TT>3+(-(exp(1)))/2/x</TT><CODE><TT>^</TT></CODE><TT>2+1/x*order_size(x)</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr468.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr470.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

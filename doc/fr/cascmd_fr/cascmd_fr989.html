@@ -6,41 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les enveloppes : envelope enveloppe</TITLE>
+<TITLE>Savoir si on a un parallélogramme : is_parallelogram est_parallelogramme</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr988.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr990.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1158">10.20.2</A>  Les enveloppes : <TT>envelope enveloppe</TT></H3><P><A NAME="@default1921"></A><A NAME="@default1922"></A> <A NAME="sec:envelope"></A>
-<TT>enveloppe</TT> a 2 arguments : une expression <I>Xpr</I> dépendant de 3
-variables <I>x</I>,<I>y</I>,<I>t</I> (resp <I>u</I>,<I>v</I>,<I>t</I>) et <I>t</I> (resp le vecteur [<I>u</I>,<I>v</I>,<I>t</I>]).<BR>
-Les equations <I>Xpr</I>=0 sont considérées comme les 
-équations de courbes de paramètre <I>t</I>.<BR>
-<TT>enveloppe</TT> renvoie l’enveloppe de ces courbes lorsque <I>t</I> varie.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1157">10.18.10</A>  Savoir si on a un parallélogramme : <TT>is_parallelogram est_parallelogramme</TT></H3><P><A NAME="@default1926"></A><A NAME="@default1927"></A><A NAME="sec:estparalelo2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1067.html#sec:estparalelo3">11.13.14</A> pour la géométrie 3-d.<BR>
+<TT>est_parallelogramme</TT> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<BR>
+<TT>est_parallelogramme</TT> vaut 1 (resp 2, 3, 4) si les quatre points forment
+un parallélogramme (resp un losange, un rectangle, un carré) ou si l’objet 
+géométrique est un parallélogramme (resp un losange, un rectangle, 
+un carré), et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>enveloppe(y+x*tan(t)-2*sin(t),t)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_parallelogramme(i,-1+i,-1-i,1-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>enveloppe(v+u*tan(t)-3*sin(t),[u,v,t))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_parallelogramme(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le dessin d’une astroïde</TT></DIV><P>
-<B>Remarque</B>
-Si on a une famille de droites <TT>d</TT> qui dépendent d’un paramètre 
-<TT>a</TT>, on peut utiliser soit <TT>enveloppe(equation(d,a))</TT> soit 
-la commande <TT>lieu</TT> (voir <A HREF="cascmd_fr988.html#sec:lieudroite">10.20.1</A>).<BR>
-Voici un exemple simple : enveloppe de la tangente à un cercle.<BR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><PRE CLASS="verbatim">c:=cercle(0,2):;
-assume(a:=1);
-A:=element(c,a);
-d:=tangente(cercle(0,2),A);
-</PRE><P>Puis soit:
-</P><DIV CLASS="center"><TT>enveloppe(equation(d),a)</TT></DIV><P> 
-soit :
-</P><DIV CLASS="center"><TT>lieu(d,A)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Q:=quadrilatere(1+i,-1+i,-1-i,1-i);est_parallelogramme(Q)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>4</TT></DIV><P>
+<B>Attention</B><BR>
+On doit taper :
+</P><DIV CLASS="center"><TT>P:=parallelogramme(-1-i,1-i,i,D);est_parallelogramme(P[0])</TT></DIV><P>
+Pour obtienir :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+En effet c’est <TT>P[0]</TT> qui désigne un parallélogramme car <TT>P</TT> est 
+une liste composée d’un parallélogramme et de son dernier sommet <TT>D</TT>.<BR>
+Si on tape <TT>affixe(D))</TT>, on obtient <TT>-2+i</TT>.<BR>
+
+</P><HR>
 <A HREF="cascmd_fr988.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr990.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

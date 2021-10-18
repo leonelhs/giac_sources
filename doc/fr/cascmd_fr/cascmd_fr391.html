@@ -6,41 +6,213 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Quotient euclidien : Quo</TITLE>
+<TITLE>Interpolation de Lagrange : lagrange interp</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr390.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr392.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc478">6.28.3</A>  Quotient euclidien : <TT>Quo</TT></H3><P><A NAME="@default730"></A>
-<TT>Quo</TT> est la forme inerte de <TT>quo</TT>.<BR>
-<TT>Quo</TT> renvoie le quotient de la division euclidienne de deux polynômes 
-(division selon les puissances décroissantes) sans l’évaluer et
-cela permet de calculer le quotient euclidien de deux polynômes à
-coefficients dans ℤ/<I>p</I>ℤ en utilisant la syntaxe Maple.<BR>
-<B>Attention</B> il faut être en mode Maple pour que cela soit efficace.<BR>
-On tape, en mode <TT>Xcas</TT> :
-</P><DIV CLASS="center"><TT>Quo(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc478">6.28.33</A>  Interpolation de Lagrange : <TT>lagrange interp</TT></H3><P><A NAME="@default737"></A><A NAME="@default738"></A><A NAME="@default739"></A> <A NAME="sec:diffdiv"></A>
+Selon le dernier paramètre on a :
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+<TT>lagrange</TT> permet d’interpoler une fonction <I>f</I> aux points 
+d’abscisses <I>x</I><SUB><I>k</I></SUB> (<I>k</I>=0..<I>n</I>−1) par un polynôme de degré <I>n</I>−1 : c’est le 
+polynôme d’interpolation de Lagrange.<BR>
+<TT>lagrange</TT> renvoie ce polynôme soit sous forme symbolique, soit selon la 
+liste de ses coefficients (le dernier paramètre doit être alors le nom de 
+la variable choisie ou <TT>[]</TT>).
+</LI><LI CLASS="li-enumerate"><TT>lagrange</TT> effectue aussi le calcul des différences divisées du 
+polynôme de Lagrange (le dernier paramètre est alors <I><FONT COLOR=maroon>lagrange</FONT></I>).
+</LI></OL><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Polynôme d’interpolation de Lagrange<BR>
+<TT>lagrange</TT> a 1, 2 ou 3 arguments :
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+deux listes de longueur <TT>n</TT> (ou une matrice de deux lignes et <TT>n</TT>
+colonnes) et eventuellement le nom de la variable <TT>var</TT> (par défaut 
+<TT>x</TT>) pour que le polynôme soit sous forme symbolique ou eventuellement 
+une liste vide (<TT>[]</TT>) pour que le polynôme soit selon la liste de ses 
+coefficients.<BR>
+La première liste (ou ligne) correspond à des valeurs d’abscisses <I>x</I><SUB><I>k</I></SUB>, et 
+La deuxième liste (ou ligne) correspond à des valeurs d’ordonnées <I>y</I><SUB><I>k</I></SUB> 
+pour <I>k</I> allant de 0 à <TT>n-1</TT>,
+</LI><LI CLASS="li-itemize">une liste de longueur <TT>n</TT> correspondant aux valeurs d’abscisses <I>x</I><SUB><I>k</I></SUB> 
+et une fonction <I>f</I> et eventuellement <TT>[]</TT> ou le nom de la variable 
+<TT>var</TT> (par défaut <TT>x</TT>).<BR>
+ Les valeurs des ordonnées sont alors <I>y</I><SUB><I>k</I></SUB>=<I>f</I>(<I>x</I><SUB><I>k</I></SUB>) pour <I>k</I>=0..<I>n</I>−1.<BR>
+<TT>lagrange</TT> renvoie une expression polynômiale <TT>P(var)</TT> de degré 
+<TT>n-1</TT> tel que <I>P</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB> (<I>k</I>=0..<I>n</I>−1) ou la liste des coefficients de
+<TT>P</TT> (selon les puissances décroissantes) c’est à dire l’écriture 
+liste du polynôme de degré <TT>n-1</TT> tel que <I>P</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB> (<I>k</I>=0..<I>n</I>−1).<BR>
+</LI></UL>
+</LI><LI CLASS="li-enumerate">Différences divisées du polynôme de Lagrange<BR>
+<TT>lagrange</TT> a comme argument deux listes de longueur <TT>n</TT> (ou une matrice
+de deux lignes et <TT>n</TT> colonnes) et comme dernier argument l’option 
+<I><FONT COLOR=maroon>lagrange</FONT></I> de la commande <TT>lagrange</TT>.<BR>
+<TT>lagrange</TT> renvoie la liste des différences divisées :<BR>
+[α<SUB>0</SUB>...α<SUB><I>n</I>−1</SUB>].<BR>
+<B>Définition de </B><B>α</B><SUB><B>0</B></SUB><B>,..,α</B><SUB><B><I>n</I>−1</B></SUB><BR>
+Si <I>P</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB>=<I>f</I>(<I>x</I><SUB><I>k</I></SUB>) (<I>k</I>=0..<I>n</I>−1) i.e. si <I>P</I> interpole <I>f</I> en 
+[<I>x</I><SUB>0</SUB>,..,<I>x</I><SUB><I>n</I>−1</SUB>], on a :<BR>
+<I>P</I>(<I>x</I>)=α<SUB>0</SUB>+α<SUB>1</SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)+...+α<SUB><I>n</I>−1</SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)(<I>x</I>−<I>x</I><SUB>1</SUB>)...(<I>x</I>−<I>x</I><SUB><I>n</I>−2</SUB>)<BR>
+On a alors :<BR>
+α<SUB>0</SUB>=<I>P</I>(<I>x</I><SUB>0</SUB>)=<I>f</I>(<I>x</I><SUB>0</SUB>)<BR>
+ α<SUB>1</SUB>=<I>f</I>(<I>x</I><SUB>1</SUB>)−<I>f</I>(<I>x</I><SUB>0</SUB>)/<I>x</I><SUB>1</SUB>−<I>x</I><SUB>0</SUB>=<I>f</I>[<I>x</I><SUB>0</SUB>,<I>x</I><SUB>1</SUB>]<BR>
+ <I>P</I>(<I>x</I><SUB>2</SUB>)=α<SUB>0</SUB>+α<SUB>1</SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)+α<SUB>2</SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)(<I>x</I>−<I>x</I><SUB>1</SUB>)<BR>
+donc<BR>
+ α<SUB>2</SUB>=<I>P</I>(<I>x</I><SUB>2</SUB>)−α<SUB>0</SUB>/(<I>x</I><SUB>2</SUB>−<I>x</I><SUB>0</SUB>)(<I>x</I><SUB>2</SUB>−<I>x</I><SUB>1</SUB>)−α<SUB>1</SUB>/<I>x</I><SUB>2</SUB>−<I>x</I><SUB>1</SUB><BR>
+ <I>P</I>(<I>x</I><SUB>3</SUB>)=α<SUB>0</SUB>+α<SUB>1</SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)+α<SUB>2</SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)(<I>x</I>−<I>x</I><SUB>1</SUB>)+α<SUB>(</SUB><I>x</I>−<I>x</I><SUB>0</SUB>)(<I>x</I>−<I>x</I><SUB>1</SUB>)(<I>x</I>−<I>x</I><SUB>2</SUB>)<BR>
+donc<BR>
+ α<SUB>3</SUB>=<I>P</I>(<I>x</I><SUB>3</SUB>)−α<SUB>0</SUB>−α<SUB>1</SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)−α<SUB>2</SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)(<I>x</I>−<I>x</I><SUB>1</SUB>/(<I>x</I>−<I>x</I><SUB>0</SUB>)(<I>x</I>−<I>x</I><SUB>1</SUB>)(<I>x</I>−<I>x</I><SUB>2</SUB>)=<BR>
+ <I>P</I>(<I>x</I><SUB>3</SUB>)−α<SUB>0</SUB>/(<I>x</I><SUB>3</SUB>−<I>x</I><SUB>0</SUB>)(<I>x</I><SUB>3</SUB>−<I>x</I><SUB>1</SUB>)(<I>x</I><SUB>3</SUB>−<I>x</I><SUB>2</SUB>)−α<SUB>1</SUB>/(<I>x</I><SUB>3</SUB>−<I>x</I><SUB>1</SUB>)(<I>x</I><SUB>3</SUB>−<I>x</I><SUB>2</SUB>)−α<SUB>2</SUB>/<I>x</I><SUB>3</SUB>−<I>x</I><SUB>2</SUB><BR>
+<B>Notations</B><BR>
+On note :<BR>
+<I>f</I>[<I>x</I><SUB>0</SUB>,<I>x</I><SUB>1</SUB>]=α<SUB>1</SUB>= <I>f</I>(<I>x</I><SUB>1</SUB>)−<I>f</I>(<I>x</I><SUB>0</SUB>)/<I>x</I><SUB>1</SUB>−<I>x</I><SUB>0</SUB><BR>
+α<SUB><I>k</I></SUB>=<I>f</I>[<I>x</I><SUB>0</SUB>,..,<I>x</I><SUB><I>k</I></SUB>]<BR>
+Le calcul des α<SUB><I>k</I></SUB> se fait par récurrence.<BR>
+Si <I>P</I><SUB><I>k</I></SUB> est le polynôme de lagrange qui interpole <I>f</I> en [<I>x</I><SUB>0</SUB>,..,<I>x</I><SUB><I>k</I></SUB>], 
+on a:<BR>
+<I>P</I><SUB><I>k</I></SUB>(<I>x</I>)=α<SUB>0</SUB>+α<SUB>1</SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)+...+α<SUB><I>k</I></SUB>(<I>x</I>−<I>x</I><SUB>0</SUB>)(<I>x</I>−<I>x</I><SUB>1</SUB>)...(<I>x</I>−<I>x</I><SUB><I>k</I>−1</SUB>)<BR>
+Si <I>Q</I><SUB><I>k</I></SUB> est le polynôme de lagrange qui interpole <I>f</I> en [<I>x</I><SUB>1</SUB>,..,<I>x</I><SUB><I>k</I>+1</SUB>], 
+on a :<BR>
+<I>Q</I><SUB><I>k</I></SUB>(<I>x</I>)=β<SUB>0</SUB>+β<SUB>1</SUB>(<I>x</I>−<I>x</I><SUB>1</SUB>)+...+β<SUB><I>k</I></SUB>(<I>x</I>−<I>x</I><SUB>1</SUB>)(<I>x</I>−<I>x</I><SUB>2</SUB>)...(<I>x</I>−<I>x</I><SUB><I>k</I></SUB>)<BR>
+β<SUB>0</SUB>=<I>f</I>[<I>x</I><SUB>1</SUB>], β<SUB>1</SUB>=<I>f</I>[<I>x</I><SUB>1</SUB>,<I>x</I><SUB>2</SUB>], β<SUB><I>k</I></SUB>=<I>f</I>[<I>x</I><SUB>1</SUB>,..,<I>x</I><SUB><I>k</I>+1</SUB>].<BR>
+<B>Propriétés</B><BR>
+On a :<BR>
+ <I>P</I><SUB><I>k</I>+1</SUB>(<I>x</I>)=(<I>x</I><SUB><I>k</I>+1</SUB>−<I>x</I>)<I>P</I><SUB><I>k</I></SUB>(<I>x</I>)+(<I>x</I>−<I>x</I><SUB>0</SUB>)<I>Q</I><SUB><I>k</I></SUB>(<I>x</I>)/<I>x</I><SUB><I>k</I>+1</SUB>−<I>x</I><SUB>0</SUB><BR>
+et<BR>
+α<SUB><I>k</I>+1</SUB> est le <TT>lcoeff</TT> de <I>P</I><SUB><I>k</I>+1</SUB> (<TT>lcoeff(P)</TT> est le 
+coefficient du terme de plus haut degré (dominant=leading)) donc<BR>
+α<SUB><I>k</I>+1</SUB>=(<TT>lcoeff</TT>(<I>Q</I><SUB><I>k</I></SUB>)-<TT>lcoeff</TT>(<I>P</I><SUB><I>k</I></SUB>))/(<I>x</I><SUB><I>k</I>+1</SUB>−<I>x</I><SUB>0</SUB>)<BR>
+α<SUB><I>k</I>+1</SUB>=(β<SUB><I>k</I></SUB>−α<SUB><I>k</I></SUB>)/(<I>x</I><SUB><I>k</I>+1</SUB>−<I>x</I><SUB>0</SUB>)
+ce qui donne l’algorithme calculant les différences divisées.
+</LI></OL><P>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([[1,3],[0,1]])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>lagrange([1,3],[0,1])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>quo(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x)</TT></DIV><P>
-On peut aussi taper pour avoir le quotient de <I>x</I><SUP>2</SUP>+2<I>x</I>+4 par <I>x</I><SUP>2</SUP>+<I>x</I>+2 :
-</P><DIV CLASS="center"><TT>Quo([1,2,4],[1,1,2])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x-1)/2</TT></DIV><P>
+en effet pour <I>x</I>=1 on a <I>x</I>−1/2=0  et pour <I>x</I>=3 on a 
+<I>x</I>−1/2=1.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([1,3],[0,1],y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>quo([1,2,4],[1,1,2])</TT></DIV><P>
-En mode <TT>Maple</TT> on tape :
-</P><DIV CLASS="center"><TT>Quo(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(y-1)/2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([1,3],[0,1],[])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-(2)*x+1)</TT></DIV><P>
-La division est faite dans ℤ/5ℤ[<I>X</I>] alors que pour :
-</P><DIV CLASS="center"><TT>quo(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
-la division est faite dans ℤ[<I>X</I>] puis est réduite après :
-</P><DIV CLASS="center"><TT>3*x-9</TT></DIV><P>
-Si <TT>Xcas</TT> n’est pas en mode Maple, la division des polynômes dans 
-ℤ/<I>p</I>ℤ[<I>X</I>] se fait en tapant :
-</P><DIV CLASS="center">
-<CODE>quo((x^3+3*x)% 5,(2x^2+6x+5)%5)</CODE>
-</DIV><HR>
+</P><DIV CLASS="center"><TT>[1/2,-1/2]</TT></DIV><P>
+qui est l’écriture liste du polynôme <TT>x/2-1/2</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([1,3],[0,1],lagrange)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0,1/2]</TT></DIV><P>
+en effet :
+<I>P</I>(<I>x</I>)=(<I>x</I>−1)/2=0+1/2(<I>x</I>−1)<BR>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([1,2,3,4],[15,24,33,54],x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(2*(x-3)*(x-2)+9)*(x-1)+15</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([1,2,3,4],[15,24,33,54],[])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2,-12,31,-6]</TT></DIV><P>
+qui est la liste <I>a</I><SUB>3</SUB>,<I>a</I><SUB>2</SUB>,<I>a</I><SUB>1</SUB>,<I>a</I><SUB>0</SUB> des coefficients <I>a</I><SUB><I>k</I></SUB> de <I>x</I><SUP><I>k</I></SUP> du polynôme 
+<TT>(2*(x-3)*(x-2)+9)*(x-1)+15=2*x</TT><CODE><TT>^</TT></CODE><TT>3-12*x</TT><CODE><TT>^</TT></CODE><TT>2+31*x-6</TT><BR>
+On tape (lorsque l’écriture des polynômes est selon les puissances 
+décroissantes) :
+</P><DIV CLASS="center"><TT>normal((2*(x-3)*(x-2)+9)*(x-1)+15)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2*x</TT><CODE><TT>^</TT></CODE><TT>3-12*x</TT><CODE><TT>^</TT></CODE><TT>2+31*x-6</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([1,2,3,4],[15,24,33,54],lagrange)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[15,9,0,2]</TT></DIV><P>
+en effet, on a <I>P</I>(<I>x</I>)=2*<I>x</I><SUP>3</SUP>−12*<I>x</I><SUP>2</SUP>+31*<I>x</I>−6 donc :<BR>
+<I>P</I>(1)=15, (<I>P</I>(2)−<I>P</I>(1))/(2−1)=9, (<I>P</I>(3)−15)/2−9=(33−15)/2−9=0<BR>
+(<I>P</I>(4)−15)/((4−1)*(3−1)*(2−1))−9/((3−1)*(2−1))=(54−15)/6−9/2=2<BR>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([0,1,2],[1,2,-1])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1+3*x-2*x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([0,1,2],[1,2,-1],y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(-2*(y-1)+1)*y+1</TT></DIV><P>
+soit après simplification :
+</P><DIV CLASS="center"><TT>(1+3*y-2*y</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([0,1,2],[1,2,-1],[])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-2,3,1]</TT></DIV><P>
+qui est l’écriture liste du polynôme <TT>-2*x</TT><CODE><TT>^</TT></CODE><TT>2+3x+1</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([0,1,2],[1,2,-1],lagrange)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,1,-2]</TT></DIV><P>
+en effet : <I>P</I>(0)=1, <I>P</I>(1)=2, <I>P</I>(2)=−1 et<BR>
+<I>P</I>(<I>x</I>)=1+1*(<I>x</I>−0)−2*(<I>x</I>−0)*(<I>x</I>−1)=−2<I>x</I><SUP>2</SUP>+3<I>x</I>+1<BR>
+<I>P</I>(<I>x</I>)=1+<I>x</I>(1+(<I>x</I>−1)*(−2))=1+<I>x</I>−2<I>x</I>(<I>x</I>−1)=−2<I>x</I><SUP>2</SUP>+3<I>x</I>+1<BR>
+On tape :
+</P><DIV CLASS="center"><TT>f(x):=exp(x)-1</TT></DIV><DIV CLASS="center"><TT>lagrange([-1,0,1],[f(-1),f(0),f(1)])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>lagrange([-1,0,1],[1/e-1,0,e-1])</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>lagrange([-1,0,1],f)</TT></DIV><P>
+On obtient après simplification et linéarisation du numérateur :
+</P><DIV CLASS="center"><TT>(-x+x</TT><CODE><TT>^</TT></CODE><TT>2+(x+x</TT><CODE><TT>^</TT></CODE><TT>2)*exp(2)-2*x</TT><CODE><TT>^</TT></CODE><TT>2*exp(1))/(2*exp(1))</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([0,1,2],[1,exp(1),exp(2)],[])</TT></DIV><P>
+On obtient :<BR>
+</P><DIV CLASS="center"><TT>[(1-2*exp(1)+exp(1)</TT><CODE><TT>^</TT></CODE><TT>2)/2,(-3+4*exp(1)-exp(1)</TT><CODE><TT>^</TT></CODE><TT>2)/2,1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lagrange([0,1,2],[1,exp(1),exp(2)],lagrange)</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>lagrange([0,1,2],exp,lagrange)</TT></DIV><P>
+On obtient :<BR>
+</P><DIV CLASS="center"><TT>[1,exp(1)-1,(exp(1)-1)</TT><CODE><TT>^</TT></CODE><TT>2/2]</TT></DIV><P>
+On a en effet :<BR>
+<I>P</I>(<I>x</I>)=1+<I>x</I>((<I>exp</I>(1)−1)+(<I>x</I>−1)(<I>exp</I>(1)−1)<SUP>2</SUP>/2)<BR>
+On a bien <I>P</I>(0)=1, <I>P</I>(1)=<I>e</I>−1, <I>P</I>(2)=1+2(<I>e</I>−1+<I>e</I><SUP>2</SUP>/2−<I>e</I>+1/2)=1−2+1+<I>e</I><SUP>2</SUP>=<I>e</I><SUP>2</SUP><BR>
+Si on applique l’algorithme :<BR>
+<I>f</I>[<I>x</I><SUB>0</SUB>]=α<SUB>0</SUB>=1, <I>f</I>[<I>x</I><SUB>1</SUB>]=β<SUB>0</SUB>=<I>e</I>, <I>f</I>[<I>x</I><SUB>2</SUB>]=γ<SUB>0</SUB>=<I>e</I><SUP>2</SUP>,<BR>
+<I>f</I>[<I>x</I><SUB>0</SUB><I>x</I><SUB>1</SUB>]=α<SUB>1</SUB>=(β<SUB>0</SUB>−α<SUB>0</SUB>)/(1−0)=<I>e</I>−1,<BR>
+<I>f</I>[<I>x</I><SUB>1</SUB><I>x</I><SUB>2</SUB>]=β<SUB>1</SUB>=(γ<SUB>0</SUB>−β<SUB>0</SUB>)/(1−0)=<I>e</I><SUP>2</SUP>−<I>e</I>,<BR>
+<I>f</I>[<I>x</I><SUB>1</SUB><I>x</I><SUB>2</SUB><I>x</I><SUB>3</SUB>]=α<SUB>2</SUB>=(β<SUB>1</SUB>−α<SUB>1</SUB>)/(2−0)=(<I>e</I><SUP>2</SUP>−2<I>e</I>+1)/2<BR>
+<B>Attention</B><BR>
+<TT>lagrange([1,2],[3,4],y)</TT> ne renvoie pas une fonction mais une expression.
+mais on peut définir une fonction en mettant :<BR>
+<TT>f(x):=lagrange([1,2],[3,4],x)</TT> ou<BR>
+<TT>f(y):=lagrange([1,2],[3,4],y)</TT> et alors<BR>
+<TT>f(4)</TT> renvoie <TT>6</TT> car <TT>f(x)=x+2</TT>)<BR>
+Bien voir la différence entre :<BR>
+<TT>g(x):=lagrange([1,2],[3,4])</TT> et<BR>
+<TT>f(x):=lagrange([1,2],[3,4],x)</TT>.<BR>
+<TT>g(x):=lagrange([1,2],[3,4])</TT> ne definit pas une fonction,
+par exemple, <TT>g(2)=x-1+3</TT> alors que <TT>f(2)=4</TT>.<BR>
+Ceci dit, la définition of <TT>f</TT> n’est pas efficace car le polynôme sera 
+recalculé depuis le
+début à chaque appel de <TT>f</TT> (quand on définit une fonction le membre 
+de droite n’est pas évalué, l’évaluation est faite seulement quand on 
+appelle <TT>f</TT>).<BR>
+Pour être efficace il faut utiliser <TT>unapply</TT>:<BR>
+<TT>f:=unapply(lagrange([1,2],[3,4]),x)</TT> ou<BR>
+<TT>f:=unapply(lagrange([1,2],[3,4],y),y)</TT>.<BR>
+<B>Exercice</B>
+Soient <I>f</I>(<I>x</I>) = 1/<I>x</I>, <I>x</I><SUB>0</SUB>=2 <I>x</I><SUB>1</SUB> = 2.5 et <I>x</I><SUB>2</SUB> =4.
+On demande de calculer le polynôme <I>L</I> d’interpolation de Lagrange et sa 
+valeur en <I>x</I>=3 et <I>x</I>=4.5.<BR>
+On tape :<BR>
+<TT>f(x):=1/x</TT><BR>
+<TT>L:=unapply(normal(lagrange([2,2.5,4],[f(2),f(2.5),f(4)])),x)</TT><BR>
+On obtient :<BR>
+<TT>x-&gt;0.05*x</TT><CODE><TT>^</TT></CODE><TT>2-0.425*x+1.15</TT><BR>
+On tape :<BR>
+<TT>L(3),L(4.5)</TT><BR>
+On obtient :<BR>
+<TT>0.325,0.25</TT>
+</P><HR>
 <A HREF="cascmd_fr390.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr392.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

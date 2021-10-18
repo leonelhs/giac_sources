@@ -6,34 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’hexagone : hexagon hexagone</TITLE>
+<TITLE>La perpendiculaire commune à deux droites 3-d : common_perpendicular perpendicu- laire_commune</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1022.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1024.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1202">11.9.1</A>  L’hexagone : <TT>hexagon hexagone</TT></H3><P><A NAME="@default1983"></A><A NAME="@default1984"></A><A NAME="sec:hexagone3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr915.html#sec:hexagone2">10.12.1</A> pour la géométrie plane.<BR>
-<B>Voir aussi :</B> <A HREF="cascmd_fr916.html#sec:isopolygone2">10.12.2</A> pour la géométrie plane et
-<A HREF="cascmd_fr1024.html#sec:isopolygone3">11.9.2</A> pour la géométrie 3-d.<BR>
-<TT>hexagone</TT>, en géométrie 3-d, a comme 3 ou 7 arguments qui sont
-3 points de l’espace suivi éventuellement de 4 noms de variables.
-Les trois points sont les 2 sommets 
-de l’hexagone et le troisième point qui définit le plan de 
-l’hexagone et l’orientation du plan et les noms de variables désignent les 4 
-autres sommets de l’hexagone et servent à définir les sommets manquants.<BR>
-<TT>hexagone(A,B,P)</TT> renvoie et trace l’hexagone de
-sommets <I>A</I>, <I>B</I> dans le demi-plan <I>ABP</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1199">11.5.9</A>  La perpendiculaire commune à deux droites 3-d : <TT>common_perpendicular perpendicu- laire_commune</TT></H3><P><A NAME="@default1994"></A><A NAME="@default1995"></A>
+<TT>perpendiculaire_commune</TT> a comme argument deux droites 
+<TT>D1</TT> et <TT>D2</TT>.<BR>
+<TT>perpendiculaire_commune(D1,D2)</TT> dessine la perpendiculaire commune des 
+droites <TT>D1</TT> et <TT>D2</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>P:=point(0,0,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>D1:=droite([1,1,0],[0,1,1]); D2:=droite([0,-1,0],[1,-1,1]);</TT></DIV><P>
 Puis on tape :
-</P><DIV CLASS="center"><TT>hexagone(A,B,P)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>perpendiculaire_commune(D1,D2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Dans le demi-plan ABP, un hexagone de sommets A et B</TT></DIV><P>
-On aurait pu taper :
-</P><DIV CLASS="center"><TT>hexagone(A,B,P,C,D,E,F)</TT></DIV><P>
-pour définir les quatre autres sommets manquants.</P><HR>
+</P><DIV CLASS="center"><TT>La perpendiculaire commune aux deux droites D1 et D2</TT></DIV><P>
+Si on tape :
+</P><DIV CLASS="center"><TT>d:=perpendiculaire_commune(D1,D2);0</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>expr("pnt(pnt[line[point[1,0,-1],point[-1/3,-2/3,-1/3]],56,"d"])",0),0</TT></DIV><P>
+Ce qui veut dire que la perpendiculaire commune à D1 et D2 passe par les 
+points [1,0,-1] et [-1/3,-2/3,-1/3].<BR>
+Puis on tape :<BR>
+</P><DIV CLASS="center"><TT>equation(d)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2/3-2*x/3+4*y/3=0,-4/3-8*x/9-4*y/9-20*z/9=0</TT></DIV><HR>
 <A HREF="cascmd_fr1022.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1024.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

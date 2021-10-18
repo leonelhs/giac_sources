@@ -6,38 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si on a un carré : is_square est_carre</TITLE>
+<TITLE>Généralités</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr971.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr973.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1139">10.18.8</A>  Savoir si on a un carré : <TT>is_square est_carre</TT></H3><P><A NAME="@default1886"></A><A NAME="@default1887"></A><A NAME="sec:estcarre2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1050.html#sec:estcarre3">11.13.12</A> pour la géométrie 3-d.<BR>
-<TT>est_carre</TT> est une fonction booléenne ayant comme 
-argument quatre points ou un objet géométrique.<BR>
-<TT>est_carre</TT> vaut 1 si les quatre points forment un carré ou si l’objet 
-géométrique est un carré, et vaut 0 sinon.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>est_carre(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>K:=carre(1+i,-1+i);est_carre(K)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>K:=carre(1+i,-1+i,C,D);est_carre(K[0])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-En effet <TT>K[0]</TT> désigne un carré car <TT>K</TT> est une liste composée
-d’un carré et de ses sommets <TT>C</TT> et <TT>D</TT>.<BR>
-Si on tape <TT>affixe(C,D)</TT>, on obtient <TT>-1-i,1-i</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>est_carre(i,-1+i,-1-i,1-i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc1139">10.17.1</A>  Généralités</H3><P>
+Les transformations ci-dessous :<BR>
+<TT>translation, rotation, homothetie, similitude, symetrie</TT>, 
+<TT>projection, inversion</TT><BR>
+peuvent toujours être considérées, soit 
+comme des fonctions (les arguments sont les paramètres servant à définir 
+la transformation), soit comme agissant sur le dernier argument (les premiers
+arguments sont les paramètres servant à définir la transformation et 
+l’objet géométrique à transformer est mis comme dernier paramètre).<BR>
+L’objet géométrique à transformer peut être de tout type comme point, 
+droite, cercle, polygone, courbe paramètrèe, graphe de fonctions etc...
+Par exemple si <TT>P</TT> est l’objet géométrique à transformer on peut 
+avoir :<BR>
+<TT>P:=point(1+i)</TT> ou <TT>P:=droite(x=1)</TT> ou <TT>P:=plan(z=0)</TT> ou<BR>
+<TT>P:=cercle(point(1,1),1)</TT> ou <TT>P:=plotfunc(x2-2)</TT> etc...</P><HR>
 <A HREF="cascmd_fr971.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr973.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

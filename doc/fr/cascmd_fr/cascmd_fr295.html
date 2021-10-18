@@ -6,24 +6,73 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Composition de fonctions : @</TITLE>
+<TITLE>Les fonctions usuelles</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr294.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr296.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc372">6.18.4</A>  Composition de fonctions : <TT>@</TT></H3><P><A NAME="@default546"></A>
-La composition de fonctions se fait avec <TT>Xcas</TT> grâce à l’opérateur 
-<TT>@</TT> qui est infixé.<BR>
+<H3 CLASS="subsection"><A NAME="htoc372">6.18.2</A>  Les fonctions usuelles</H3><P>
+<TT>max</TT><A NAME="@default512"></A> d’une séquence ou d’une liste de réels renvoie leur maximum,<BR>
+<TT>min</TT><A NAME="@default513"></A> d’une séquence ou d’une liste de réels renvoie leur minimum,<BR>
+<TT>abs</TT><A NAME="@default514"></A> d’un réel renvoie sa valeur absolue,<BR>
+<TT>sign</TT><A NAME="@default515"></A> d’un réel renvoie son signe (+1 si il est 
+positif, 0 si il est nul et -1 si il est négatif),<BR>
+<TT>floor</TT><A NAME="@default516"></A> d’un réel renvoie sa partie entière,<BR>
+<TT>round</TT><A NAME="@default517"></A> d’un réel renvoie l’entier le plus proche,<BR>
+<TT>ceil</TT> ou <TT>ceiling</TT><A NAME="@default518"></A><A NAME="@default519"></A> d’un 
+réel renvoie sa partie entière plus un,<BR>
+<TT>frac</TT><A NAME="@default520"></A> (ou <TT>fPart</TT><A NAME="@default521"></A>) d’un réel 
+renvoie sa partie fractionnaire,<BR>
+<TT>trunc</TT><A NAME="@default522"></A> d’un réel renvoie l’entier égal au réel 
+argument sans sa partie fractionnaire ou le réel tronqué à <I>n</I> 
+décimales,<BR>
+<TT>iPart</TT><A NAME="@default523"></A>) d’un réel renvoie le réel égal au réel
+argument sans sa partie fractionnaire,<BR>
+<TT>id</TT><A NAME="@default524"></A> désigne la fonction identité,<BR>
+<TT>sq</TT><A NAME="@default525"></A> désigne la fonction carrée,<BR>
+<TT>sqrt</TT><A NAME="@default526"></A> désigne la fonction racine carrée,<BR>
+<TT>surd</TT><A NAME="@default527"></A> désigne la fonction puissance 1/<I>n</I>,<BR>
+<TT>exp</TT><A NAME="@default528"></A> désigne la fonction exponentielle,<BR>
+<TT>log</TT><A NAME="@default529"></A> ou <TT>ln</TT><A NAME="@default530"></A> désigne la fonction logarithme népérien,<BR>
+<TT>log10</TT><A NAME="@default531"></A> désigne la fonction logarithme à base 
+dix,<BR>
+<TT>logb</TT><A NAME="@default532"></A> désigne la fonction logarithme à base 
+donnée comme deuxième argument : 
+<TT>logb(7,10)=log10(7)=log(7)/log(10)</TT>,<BR>
+<TT>alog10</TT><A NAME="@default533"></A> désigne la fonction anti-logarithme à 
+base dix : c’est la fonction <I>x</I>−&gt;10<SUP><I>x</I></SUP>.<BR>
+<TT>sinh</TT><A NAME="@default534"></A> désigne la fonction sinus hyperbolique,<BR>
+<TT>cosh</TT><A NAME="@default535"></A> désigne la fonction cosinus hyperbolique,<BR>
+<TT>tanh</TT><A NAME="@default536"></A> désigne la fonction tangente hyperbolique,<BR>
+<TT>asinh</TT> ou <TT>arcsinh</TT><A NAME="@default537"></A><A NAME="@default538"></A> (respectivement <TT>acosh</TT> ou <TT>arccosh</TT><A NAME="@default539"></A><A NAME="@default540"></A>, <TT>atanh</TT> ou <TT>arctanh</TT><A NAME="@default541"></A><A NAME="@default542"></A>)
+désigne la fonction réciproque de <TT>sinh</TT> (respectivement 
+<TT>cosh</TT>, <TT>tanh</TT>)<BR>
+<TT>sin, cos, tan, cot, sec, csc</TT> et 
+<TT>asin</TT> (ou <TT>arcsin</TT>)<A NAME="@default543"></A><A NAME="@default544"></A>, <TT>acos</TT>
+(ou <TT>arccos</TT>)<A NAME="@default545"></A><A NAME="@default546"></A>, <TT>atan</TT> (ou 
+<TT>arctan</TT>)<A NAME="@default547"></A><A NAME="@default548"></A>, <TT>acot, asec, acsc</TT> 
+pour les fonctions trigonométriques et pour leurs fonctions réciproques (on
+se reportera à la section <A HREF="cascmd_fr319.html#sec:trigo">6.25.1</A> pour les commandes les concernant).
 On tape :
-</P><DIV CLASS="center"><TT>(sq@sin+id)(x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal(surd(8,3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(sin(x))</TT><CODE><TT>^</TT></CODE><TT>2+x</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>(sin@sin)(pi/2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal(surd(-8,3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>sin(1)</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>-2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>normal(8</TT><CODE><TT>^</TT></CODE><TT>(1/3))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>simplify((-8)</TT><CODE><TT>^</TT></CODE><TT>(1/3))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(i)*sqrt(3)+1</TT></DIV><P>
+car <TT>Xcas</TT> prend <I>i</I>π comme détermination de ln(−1) et
+<I>i</I>π/3 comme détermination de ln((−1)<SUP>1/3</SUP>) </P><HR>
 <A HREF="cascmd_fr294.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr296.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

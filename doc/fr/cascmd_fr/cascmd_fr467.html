@@ -6,34 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Résidu d’une expression en un point : residue</TITLE>
+<TITLE>Division selon les puissances croissantes : divpc</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr466.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr468.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc562">6.36.5</A>  Résidu d’une expression en un point : <TT>residue</TT></H3><P><A NAME="@default832"></A>
-<TT>residue</TT> a comme argument une expression dépendant d’une variable, 
-le nom de cette variable et un complexe <I>a</I> ou bien une expression dépendant 
-d’une variable et l’égalité : nom_de_variable=<I>a</I>.
-<TT>residue</TT> renvoie le résidu de cette exppression au point <I>a</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc563">6.37.1</A>  Division selon les puissances croissantes : <TT>divpc</TT></H3><P><A NAME="@default837"></A>
+<TT>divpc</TT> a trois arguments : deux polynômes  <I>A</I>(<I>x</I>), <I>B</I>(<I>x</I>) 
+(avec <I>B</I>(0) ≠ 0) et un entier <I>n</I>.<BR>
+<TT>divpc</TT> renvoie le quotient <I>Q</I>(<I>x</I>) de la division de <I>A</I>(<I>x</I>) par <I>B</I>(<I>x</I>) 
+selon les puissances croissantes avec <TT>degree</TT>(<I>Q</I>)≤ <I>n</I> ou  <I>Q</I>=0.<BR>
+<I>Q</I>(<I>x</I>) est donc le développement limité, d’ordre <I>n</I>, de  <I>A</I>(<I>x</I>)/<I>B</I>(<I>x</I>) au voisinage de <I>x</I>=0.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>residue(cos(x)/x</TT><CODE><TT>^</TT></CODE><TT>3,x,0)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>residue(cos(x)/x</TT><CODE><TT>^</TT></CODE><TT>3,x=0)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>divpc(1+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3,1+x</TT><CODE><TT>^</TT></CODE><TT>2,5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(-1)/2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>int(exp(i*t)/(2*exp(i*t)-1),t=0..2*pi)</TT></DIV><P>
-On obtient :<BR>
-Searching int of 1/(2*<I>t</I>−1) where <I>t</I> is on the unit circle, using residues
-</P><DIV CLASS="center"><TT>(2*pi)/2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>int(exp(2*i*t)/(2*exp(i*t)-1))</TT><CODE><TT>^</TT></CODE><TT>2,t=0..2*pi)</TT></DIV><P>
-On obtient :<BR>
-Searching int of <I>t</I>/(4*<I>t</I><SUP>2</SUP>−4*<I>t</I>+1) where <I>t</I> is on the unit circle, using residues
-</P><DIV CLASS="center"><TT>(2*pi)/4</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>-x</TT><CODE><TT>^</TT></CODE><TT>5+x</TT><CODE><TT>^</TT></CODE><TT>3+1</TT></DIV><P>
+<B>Attention !!!</B> cette commande ne marche pas si les polynômes sont 
+écrits avec la liste de leurs coefficients.</P><HR>
 <A HREF="cascmd_fr466.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr468.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

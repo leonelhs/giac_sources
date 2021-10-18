@@ -6,24 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La sphère : sphere</TITLE>
+<TITLE>Savoir si on a un triangle rectangle ou si on a un rectangle : est_rectangle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1063.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1065.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1249">11.15.4</A>  La sphère : <TT>sphere</TT></H3><P><A NAME="@default2054"></A>
-<TT>sphere </TT> a comme argument soit deux points (le diamètre de la 
-sphère) soit un point et un réel (son centre et son rayon).<BR>
-<TT>sphere(A,B)</TT> (resp <TT>sphere(A,r)</TT>) trace la sphère de diamètre 
-<TT>AB</TT> (resp centre <TT>A</TT> et de rayon <TT>r</TT>) dans l’espace 3-d.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1248">11.13.11</A>  Savoir si on a un triangle rectangle ou si on a un rectangle : <TT>est_rectangle</TT></H3><P><A NAME="@default2068"></A><A NAME="sec:estrectangle3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr986.html#sec:estrectangle2">10.18.7</A> pour la géométrie plane.<BR>
+<TT>est_rectangle</TT> est une fonction booléenne ayant comme 
+argument trois ou quatre points ou un objet géométrique.<BR>
+<TT>est_rectangle(A,B,C)</TT> vaut 1 (resp 2 ou 3) si les trois points 
+<TT>A,B,C</TT> forment un triangle rectangle, l’angle droit étant désigné 
+par le premier (resp second, troisième) argument ou si l’objet 
+géométrique est un triangle rectangle,<BR>
+<TT>est_rectangle(A,B,C,D)</TT> vaut 1 (resp 2) si les quatre points 
+<TT>A,B,C,D</TT> sont coplanaires et forment un rectangle (resp un carré) ou si 
+l’objet géométrique est un rectangle (resp un carré), et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sphere([-2,0,0],[2,0,0])</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>sphere([0,0,0],2) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_rectangle([2,0,0],[2,2,0],[0,2,0])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La sphère de centre l’origine et de rayon 2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>est_rectangle([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr1063.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1065.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

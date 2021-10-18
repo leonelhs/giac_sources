@@ -6,271 +6,244 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Somme de Riemann : sum_riemann</TITLE>
+<TITLE>Derivées et derivées partielles d’une expression et derivées d’une fonction : diff derive deriver ’</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr304.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr306.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc384">6.20.4</A>  Somme de Riemann : <TT>sum_riemann</TT></H3><P><A NAME="@default564"></A>
-<TT>sum_riemann</TT> a deux arguments : une expression <TT>Xpr</TT>
-dépendant de deux variables et la liste des noms de ces deux variables.<BR>
-<TT>sum_riemann(Xpr(n,k),[n,k])</TT> renvoie un équivalent, au 
-voisinage de <I>n</I>=+∞, de ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>Xpr</I>(<I>n</I>,<I>k</I>) ou de 
- ∑<SUB><I>k</I>=0</SUB><SUP><I>n</I>−1</SUP> <I>Xpr</I>(<I>n</I>,<I>k</I>) ou de  ∑<SUB><I>k</I>=1</SUB><SUP><I>n</I>−1</SUP> <I>Xpr</I>(<I>n</I>,<I>k</I>), 
-lorsque la somme considérée est une somme de Riemann associée à une 
-fonction continue sur [0,1] ou répond quand la recherche a été 
-infructueuse <TT>"ce n’est probablement pas une somme de Riemann"</TT> .<BR>
-<B>Exercice 1</B><BR>
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>2</SUP>/<I>n</I><SUP>3</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(k</TT><CODE><TT>^</TT></CODE><TT>2/n</TT><CODE><TT>^</TT></CODE><TT>3,[n,k])</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc384">6.20.4</A>  Derivées et derivées partielles d’une expression et derivées d’une fonction : <TT>diff derive deriver ’</TT></H3><P><A NAME="@default564"></A><A NAME="@default565"></A><A NAME="@default566"></A><A NAME="@default567"></A>
+</P><H4 CLASS="subsubsection"><A NAME="toc11"></A>Généralités</H4><P>
+<TT>diff</TT> ou <TT>derive</TT> ou <TT>deriver</TT> sont des fonctions 
+préfixées alors que <TT>’</TT> est la version postfixée de <TT>diff</TT> ou 
+<TT>derive</TT> ou <TT>deriver</TT>.<BR>
+Ces fonctions ont un, deux ou plus de 2 arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+avec un argument qui peut être soit une fonction, soit une expression 
+de la variable <TT>x</TT>.
+<UL CLASS="itemize"><LI CLASS="li-itemize">
+Si cet argument est une fonction, <TT>diff</TT> ou <TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT> renvoie la fonction dérivée de cette fonction.<BR>
+Ces fonctions sont alors equivalentes à <TT>function_diff</TT>.
+</LI><LI CLASS="li-itemize">Si cet argument est une expression de la variable <TT>x</TT>, <TT>diff</TT> ou 
+<TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT> renvoie la dérivée de l’expression
+par rapport à <TT>x</TT> 
+</LI><LI CLASS="li-itemize"><B>Remarque</B> Dans ce cas on peut aussi utiliser <TT>convert</TT> (ou sa 
+version infixée <TT>=&gt;</TT>) avec l’option <TT>diff</TT>. 
+</LI></UL>
+</LI><LI CLASS="li-itemize">avec 2 arguments qui peuvent être soit une expression et le nom d’une 
+variable, soit une expression et une liste de noms de variables.<BR>
+Cela va permettre de calculer des 
+dérivées et des derivées partielles du premier ordre et plusieurs 
+arguments pour calculer des derivées partielles de tous les ordres d’une 
+expression.
+</LI><LI CLASS="li-itemize">avec plus que 2 arguments qui peuvent être:<BR>
+ une expression et le nom des variables par rapport 
+auxquelles il faut dériver cette expression (le nom des variables est 
+éventuellement suivi de $<I>n</I> pour indiquer le nombre <I>n</I> de fois que l’on 
+veut dériver) , 
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc12"></A>Derivée et fonction derivée</H4><P>
+<TT>diff</TT> ou <TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT> ont comme argument soit 
+une fonction, soit une expression de la variable <TT>x</TT>.<BR>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Si cet argument est une fonction, <TT>diff</TT> ou <TT>derive</TT> ou 
+<TT>deriver</TT> ou <TT>’</TT> renvoie une fonction qui est la fonction dérivée 
+de la fonction argument.<BR>
+<TT>diff</TT> (ou <TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT>) est alors equivalente à <TT>function_diff</TT>.<BR>
+On tape :<BR>
+<DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2+x*cos(x)+</TT></DIV>
+Pour définir <I>g</I> comme <I>f</I>′, on tape :<BR>
+<DIV CLASS="center"><TT>g:=f’</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>g:=(f=&gt;diff)</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>g:=diff(f)</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>g:=function_diff(f)</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>g:=unapply(diff(f(x),x),x)</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>g(x):=f’(x)</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>g(x):=(f(x)=&gt;diff)</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>g(x):=diff(f)(x))</TT></DIV>
+Puis, on tape :
+<DIV CLASS="center"><TT>g(x)</TT></DIV> 
 On obtient :
-</P><DIV CLASS="center"><TT>1/3</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>2</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>3</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>2</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>x</I><SUP>2</SUP><I>dx</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">3</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-<B>Exercice 2</B><BR>
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> <I>k</I><SUP>3</SUP>/<I>n</I><SUP>4</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(k</TT><CODE><TT>^</TT></CODE><TT>3/n</TT><CODE><TT>^</TT></CODE><TT>4,[n,k])</TT></DIV><P>
+<DIV CLASS="center"><TT>cos(x)+x*(-(sin(x)))+2*x</TT></DIV> 
+Pour définir <I>h</I> comme <I>f</I>″, on tape :<BR>
+<DIV CLASS="center"><TT>h:=f’’</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>h:=diff(diff(f))</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>h:=function_diff(function_diff(f))</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>h:=diff(unapply(diff(f(x),x),x))</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>h(x):=diff(diff(f))(x))</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>h(x):=f’’(x)</TT></DIV>
+Puis, on tape :
+<DIV CLASS="center"><TT>h(x)</TT></DIV> 
 On obtient :
-</P><DIV CLASS="center"><TT>1/4</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>3</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>4</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>k</I><SUP>3</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>3</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>x</I><SUP>3</SUP><I>dx</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-<B>Exercice 3</B><BR>
-Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(1/<I>n</I>+1+1/<I>n</I>+2+...+1/<I>n</I>+<I>n</I>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(1/(n+k),[n,k])</TT></DIV><P>
+<DIV CLASS="center"><TT>-sin(x)+x*(-cos(x))-sin(x)+2</TT></DIV> </LI><LI CLASS="li-itemize">Si cet argument est une expression de la variable <TT>x</TT>, <TT>diff</TT> ou 
+<TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT> renvoie une expression qui est 
+l’expression de la dérivée de l’argument par rapport à <TT>x</TT>. 
+On tape :<BR>
+<DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>+x*cos(x)+</TT></DIV>
+Pour calculer la dérivée de <I>f</I>(<I>x</I>), on tape :<BR>
+<DIV CLASS="center"><TT>A:=f(x)’</TT></DIV>
+Ou :
+<DIV CLASS="center"><TT>A:=diff(f(x))</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>log(2)</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>+<I>k</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+(<I>k</I>/<I>n</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+<I>x</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=ln(1+1)=ln(2)</TD></TR>
-</TABLE><P>
-<B>Exercice 4</B><BR>
-Soit  <I>S</I><SUB><I>n</I></SUB>=∑<SUB><I>k</I>=1</SUB><SUP><I>n</I></SUP> 32<I>n</I><SUP>3</SUP>/16<I>n</I><SUP>4</SUP>−<I>k</I><SUP>4</SUP>.<BR>
-Calculer  lim<SUB><I>n</I> → +∞</SUB> <I>S</I><SUB><I>n</I></SUB>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(32*n</TT><CODE><TT>^</TT></CODE><TT>3/(16*n</TT><CODE><TT>^</TT></CODE><TT>4-k</TT><CODE><TT>^</TT></CODE><TT>4),[n,k])</TT></DIV><P>
+<DIV CLASS="center"><TT>cos(x)+x*(-(sin(x)))+2*x</TT></DIV> 
+Ou encore :
+<DIV CLASS="center"><TT>A:=diff(f(a),a)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>2*atan(1/2)+log(3)</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">32<I>n</I><SUP>3</SUP></TD></TR>
+<DIV CLASS="center"><TT>cos(a)+a*(-(sin(a)))+2*a</TT></DIV> 
+<B>MAIS ATTENTION</B><BR>
+cela ne définit pas une fonction car le résultat est une expression.<BR>
+<TT>g(x):=diff(f(x))</TT> ou <TT>g(x):=diff(f(x),x)</TT> n’est pas correct, car lors 
+d’une affectation ce qui est à droite de <TT>:=</TT> n’est pas évalué lors 
+de la définition....il faut utiliser <TT>unapply</TT> 
+(<TT>g(x):=unapply(diff(f(x),x),x)</TT>) ou écrire <TT>g(x):=diff(f)(x)</TT>.
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc13"></A>Derivées et derivées partielles d’ordre 1 : <TT>diff derive deriver ’</TT></H4><P>
+Pour avoir des derivées partielles d’ordre 1 :<BR>
+<TT>diff</TT> (ou <TT>derive</TT> ou <TT>deriver</TT> ou <TT>’</TT>) a deux arguments : 
+une expression et une variable (resp une liste contenant le nom des variables) 
+(voir fonctions de plusieurs variables paragraphe <A HREF="index.html#sec:plusvar">6.60</A>).<BR>
+<TT>diff</TT> renvoie la dérivée de l’expression par rapport à la variable 
+donnée comme deuxième paramètre, trés utile pour calculer des 
+dérivées partielles!) (resp renvoie une liste contenant les dérivées
+par rapport aux variables de la liste du 2nd argument).<BR>
+<B>Exemples</B> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Soit à calculer :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∂ (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">16<I>n</I><SUP>4</SUP>−<I>k</I><SUP>4</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">32</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">16−(<I>k</I>/<I>n</I>)<SUP>4</SUP></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">∂ <I>z</I></TD></TR>
 </TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">32</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">16−<I>x</I><SUP>4</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−2</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>+4</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-qui vaut donc ln(3)−ln(2)+ln(2)−ln(1)+2  atan (1/2)=ln(3)+2  atan (1/2)<BR>
-<B>Exercice 5</B><BR>
-Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(<I>n</I>/<I>n</I><SUP>2</SUP>+1<SUP>2</SUP>+<I>n</I>/<I>n</I><SUP>2</SUP>+2<SUP>2</SUP>+...+<I>n</I>/<I>n</I><SUP>2</SUP>+<I>n</I><SUP>2</SUP>).<BR>
+</TABLE>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(n/(n</TT><CODE><TT>^</TT></CODE><TT>2+k</TT><CODE><TT>^</TT></CODE><TT>2),[n,k])</TT></DIV><P>
+<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,z)’</TT></DIV>
+ou on tape :
+<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,z)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>pi/4</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+(<I>k</I>/<I>n</I>)<SUP>2</SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">1+<I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=  atan (1)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">π</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">4</TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-<B>Exercice 6</B><BR>
-Calculer 
- lim<SUB><I>n</I> → +∞</SUB>(1/√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+1</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>+1/√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+2</SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>+...+1/√<SPAN style="text-decoration:overline"><I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><SPAN style="text-decoration:overline">+<I>n</I></SPAN><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>).<BR>
+<DIV CLASS="center"><TT>x*y</TT><CODE><TT>^</TT></CODE><TT>2*3*z</TT><CODE><TT>^</TT></CODE><TT>2+x*y</TT></DIV>
+Si on a cocher  Pas à pas dans la configuration générale on a en plus, en vert,
+le détail du calcul :
+<PRE CLASS="verbatim">Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=x*y^2*z^3,x*y*z
+Derivative of a power: (z^3)'=3*z'*(z)^(3-1)
+</PRE></LI><LI CLASS="li-itemize">Soit à calculer les 3 derivées partielles premières de <I>x</I>*<I>y</I><SUP>2</SUP>*<I>z</I><SUP>3</SUP>+<I>x</I>*<I>y</I>*<I>z</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>sum_riemann(1/sqrt(n</TT><CODE><TT>^</TT></CODE><TT>2+k</TT><CODE><TT>^</TT></CODE><TT>2),[n,k])</TT></DIV><P>
+<DIV CLASS="center"><TT>(x*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y,[x,y,z])’</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>diff(x*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y,[x,y,z])</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>-ln(sqrt(2)-1)</TT></DIV><P>
-car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<DIV CLASS="center"><TT>[y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+y*z, x*2*y*z</TT><CODE><TT>^</TT></CODE><TT>3+x*z, x*y</TT><CODE><TT>^</TT></CODE><TT>2*3*z</TT><CODE><TT>^</TT></CODE><TT>2+x*y]</TT></DIV>
+Si on a cocher  Pas à pas dans la configuration générale on a en plus, en vert,
+le détail du calcul :
+<PRE CLASS="verbatim">Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=x*y^2*z^3,x*y
+Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=x*y^2*z^3,x*y
+Derivative of a power: (y^2)'=2*y'*(y)^(2-1)
+Derivative of a power: (z^3)'=3*z'*(z)^(3-1)
+</PRE></LI><LI CLASS="li-itemize">Soit à calculer :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∂<SUP>3</SUP> (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>n</I><SUP>2</SUP>+<I>k</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">∂ <I>y</I>∂<SUP>2</SUP> <I>z</I></TD></TR>
 </TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,y,z$2)’</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,y,z$2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>12*x*y*z</TT></DIV>
+Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+plus, en vert, le détail du calcul :
+<PRE CLASS="verbatim">Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=x*y^2*z^3,x*y*z
+Derivative of a power: (y^2)'=2*y'*(y)^(2-1)
+Derivative of a sum: (u+v+...)'=u'+v'+...
+  with u,v,...=2*x*y*z^3,x*z
+Derivative of a power: (z^3)'=3*z'*(z)^(3-1)
+Derivative of a power: (z^2)'=2*z'*(z)^(2-1)
+</PRE></LI></UL><H4 CLASS="subsubsection"><A NAME="toc14"></A>Derivée et derivée partielle d’ordre <I>n</I> : <TT>diff derive deriver</TT></H4><P><A NAME="@default568"></A>
+Lorsque <TT>derive</TT> (ou <TT>diff</TT>) a plus de deux arguments,
+ce sont : une expression et le nom des variables par rapport 
+auxquelles il faut dériver cette expression (le nom des variables est 
+éventuellement suivi de $<I>n</I> pour indiquer le nombre <I>n</I> de fois que l’on 
+veut dériver).<BR>
+<TT>diff</TT> renvoie la dérivée de l’expression par rapport aux variables
+données après le premier paramètre (utile pour calculer des 
+dérivées partielles de tous les ordres).<BR>
+Donc pour dériver <I>n</I> fois :<BR>
+<TT>diff</TT> (ou <TT>derive</TT>) a <I>n</I>+1 arguments : une expression et le nom de 
+la variable qui sera répété <I>n</I> fois. Pour avoir une écriture plus 
+facile on écrira plutôt le nom de la variable suivi de $<I>n</I> pour indiquer 
+que l’on veut dériver <I>n</I> fois (en effet <TT>x$3=(x,x,x)</TT>).
+Par exemple pour dériver <TT>exp(x*y)</TT> 1 fois par 
+rapport à <I>x</I> et 2 fois par rapport à <I>y</I>, on met comme arguments 
+l’expression, puis, les noms des variables éventuellement suivi de $ pour 
+indiquer le nombre de fois que l’on veut dériver et on tape 
+<TT>diff(exp(x*y),x,y$2)</TT> qui est équivalent à <TT>diff(exp(x*y),x,y,y)</TT>
+(en effet <TT>y$2=(y,y)</TT>).<BR>
+<B>Exemples</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Soit à calculer :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∂<SUP>2</SUP> (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">∂ <I>x</I>∂ <I>z</I></TD></TR>
+</TABLE></TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z)’</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>y</TT><CODE><TT>^</TT></CODE><TT>2*3*z</TT><CODE><TT>^</TT></CODE><TT>2+y</TT></DIV>
+</LI><LI CLASS="li-itemize">Soit à calculer :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">∂<SUP>3</SUP> (<I>x</I>.<I>y</I><SUP>2</SUP>.<I>z</I><SUP>3</SUP>+<I>x</I>.<I>y</I>.<I>z</I>)</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+(<I>k</I>/<I>n</I>)<SUP>2</SUP></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">∂ <I>x</I>∂<SUP>2</SUP> <I>z</I></TD></TR>
 </TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-est la somme de riemann associée à :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z,z)’</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z$2)’</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z,z)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>diff(x*y </TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>3+x*y*z,x,z$2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>6*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT></DIV>
+</LI><LI CLASS="li-itemize">Soit à calculer la dérivée troisième de :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+<I>x</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>+2</TD></TR>
 </TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>dx</I>=ln(1+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+1<SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">−ln(0+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+0<SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell">=ln(1+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>2</TD></TR>
-</TABLE></TD></TR>
-</TABLE><HR>
+</TABLE>
+On tape :
+<DIV CLASS="center"><TT>(1/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x,x,x)’</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>(1/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x$3)’</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>diff((1)/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x,x,x)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>diff((1)/(x</TT><CODE><TT>^</TT></CODE><TT>2+2),x$3)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(-24*x</TT><CODE><TT>^</TT></CODE><TT>3+48*x)/(x</TT><CODE><TT>^</TT></CODE><TT>8+8*x</TT><CODE><TT>^</TT></CODE><TT>6+24*x</TT><CODE><TT>^</TT></CODE><TT>4+32*x</TT><CODE><TT>^</TT></CODE><TT>2+16)</TT></DIV>
+</LI></UL><P>
+<B>Remarque</B><BR>
+Bien voir la différence entre <TT>diff(Xpr,x,y)</TT> et <TT>diff(Xpr,[x,y])</TT> 
+où <TT>Xpr</TT> est une expression :<BR>
+<TT>diff</TT>(<I>Xpr</I>,<I>x</I>,<I>y</I>) renvoie  ∂<SUP>2</SUP>(<I>Xpr</I>)/∂ <I>x</I>∂ <I>y</I> et<BR>
+<TT>diff</TT>(<I>Xpr</I>,[<I>x</I>,<I>y</I>]) renvoie [∂(<I>Xpr</I>)/∂ <I>x</I>,∂ (<I>Xpr</I>)/∂ <I>y</I>] </P><HR>
 <A HREF="cascmd_fr304.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr306.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

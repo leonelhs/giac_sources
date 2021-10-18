@@ -6,63 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>PGCD de polynômes par l’algorithme d’Euclide : gcd igcd</TITLE>
+<TITLE>Quotient euclidien : Quo</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr394.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr396.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc482">6.28.7</A>  PGCD de polynômes par l’algorithme d’Euclide : <TT>gcd igcd</TT></H3><P><A NAME="@default735"></A><A NAME="@default736"></A><A NAME="sec:gcd"></A>
-<TT>gcd</TT> désigne le PGCD (plus grand commun diviseur) de deux 
-polynômes pouvant avoir plusieurs variables et aussi le PGCD d’une liste de 
-polynômes ou d’une séquence de polynômes pouvant avoir plusieurs 
-variables (voir <A HREF="cascmd_fr161.html#sec:igcd">6.7.2</A> pour le PGCD d’entiers).
-On peut aussi mettre comme paramètres deux listes de même longueur (ou une 
-matrice ayant 2 lignes), dans ce cas <TT>gcd</TT> renvoie le PGCD des 
-éléments de même indice (ou d’une même colonne).
-On tape :
-</P><DIV CLASS="center"><TT>gcd([x</TT><CODE><TT>^</TT></CODE><TT>2-4,x*y-y],[x</TT><CODE><TT>^</TT></CODE><TT>3-8,y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2*y])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>gcd([[x</TT><CODE><TT>^</TT></CODE><TT>2-4,x*y-y],[x</TT><CODE><TT>^</TT></CODE><TT>3-8,y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2*y]])</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc483">6.29.3</A>  Quotient euclidien : <TT>Quo</TT></H3><P><A NAME="@default743"></A>
+<TT>Quo</TT> est la forme inerte de <TT>quo</TT>.<BR>
+<TT>Quo</TT> renvoie le quotient de la division euclidienne de deux polynômes 
+(division selon les puissances décroissantes) sans l’évaluer et
+cela permet de calculer le quotient euclidien de deux polynômes à
+coefficients dans ℤ/<I>p</I>ℤ en utilisant la syntaxe Maple.<BR>
+<B>Attention</B> il faut être en mode Maple pour que cela soit efficace.<BR>
+On tape, en mode <TT>Xcas</TT> :
+</P><DIV CLASS="center"><TT>Quo(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x-2,y]</TT></DIV><P><B>Exemples</B><BR>
-On tape :
-</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>quo(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x)</TT></DIV><P>
+On peut aussi taper pour avoir le quotient de <I>x</I><SUP>2</SUP>+2<I>x</I>+4 par <I>x</I><SUP>2</SUP>+<I>x</I>+2 :
+</P><DIV CLASS="center"><TT>Quo([1,2,4],[1,1,2])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x+1 </TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1,x</TT><CODE><TT>^</TT></CODE><TT>2+x-2)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>gcd([x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1,x</TT><CODE><TT>^</TT></CODE><TT>2+x-2])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>quo([1,2,4],[1,1,2])</TT></DIV><P>
+En mode <TT>Maple</TT> on tape :
+</P><DIV CLASS="center"><TT>Quo(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x-1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>A:=z</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(y</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(x</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><DIV CLASS="center"><TT>B:=x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>3*z+(-(y</TT><CODE><TT>^</TT></CODE><TT>3))*z+x</TT><CODE><TT>^</TT></CODE><TT>3*z-z</TT></DIV><DIV CLASS="center"><TT>C:=gcd(A,B)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>z*x*y+z*x-z*y-z</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>factor(A)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(y-1)*(y+1)*(x-1)*(x+1)*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>factor(B)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+x+1)*(x-1)*(y+1)*(y</TT><CODE><TT>^</TT></CODE><TT>2-y+1)*z</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>factor(C)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(y+1)*(x-1)*z</TT></DIV><P>Pour les polynômes à coefficients modulaire, on tape par exemple :
-On tape :
-</P><DIV CLASS="center"><TT>gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+2) mod 5,(x</TT><CODE><TT>^</TT></CODE><TT>2-1) mod 5)</TT></DIV><P> 
-On obtient :
-</P><DIV CLASS="center"><TT>(1 % 5)*x-1 % 5</TT></DIV><P>
-Mais si on tape :
-</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+2,x</TT><CODE><TT>^</TT></CODE><TT>2-1) mod 5)</TT></DIV><P> 
-On obtient :
-</P><DIV CLASS="center"><TT>1%5</TT></DIV><P>
-car l’opération modulaire se fait après le calcul du PGCD qui a èté 
-calculé dans ℤ[<I>X</I>].</P><HR>
+</P><DIV CLASS="center"><TT>-(2)*x+1)</TT></DIV><P>
+La division est faite dans ℤ/5ℤ[<I>X</I>] alors que pour :
+</P><DIV CLASS="center"><TT>quo(x</TT><CODE><TT>^</TT></CODE><TT>3+3*x,2*x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+5) mod 5</TT></DIV><P>
+la division est faite dans ℤ[<I>X</I>] puis est réduite après :
+</P><DIV CLASS="center"><TT>3*x-9</TT></DIV><P>
+Si <TT>Xcas</TT> n’est pas en mode Maple, la division des polynômes dans 
+ℤ/<I>p</I>ℤ[<I>X</I>] se fait en tapant :
+</P><DIV CLASS="center">
+<CODE>quo((x^3+3*x)% 5,(2x^2+6x+5)%5)</CODE>
+</DIV><HR>
 <A HREF="cascmd_fr394.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr396.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,23 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polaire réciproque: reciprocation polaire_reciproque</TITLE>
+<TITLE>Savoir si on a un carré : is_square est_carre</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr986.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr988.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1155">10.19.6</A>  Polaire réciproque: <TT>reciprocation polaire_reciproque</TT></H3><P><A NAME="@default1917"></A><A NAME="@default1918"></A>
-<TT>polaire_reciproque</TT> a comme argument un cercle <I>C</I> et une liste
-de points et de droites.<BR>
-<TT>polaire_reciproque</TT> renvoie la liste obtenue en remplacant dans la liste
-argument un point (resp une 
-droite) par sa polaire (resp son pôle) par rapport au cercle <I>C</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1155">10.18.8</A>  Savoir si on a un carré : <TT>is_square est_carre</TT></H3><P><A NAME="@default1922"></A><A NAME="@default1923"></A><A NAME="sec:estcarre2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1065.html#sec:estcarre3">11.13.12</A> pour la géométrie 3-d.<BR>
+<TT>est_carre</TT> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<BR>
+<TT>est_carre</TT> vaut 1 si les quatre points forment un carré ou si l’objet 
+géométrique est un carré, et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>polaire_reciproque(cercle(0,1),[point((1+i)/2), droite(1,-1+i)])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_carre(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[pnt([[2,2*i],0]),pnt(1+2*i,0)] et dessine cette droite et ce point</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>K:=carre(1+i,-1+i);est_carre(K)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>K:=carre(1+i,-1+i,C,D);est_carre(K[0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+En effet <TT>K[0]</TT> désigne un carré car <TT>K</TT> est une liste composée
+d’un carré et de ses sommets <TT>C</TT> et <TT>D</TT>.<BR>
+Si on tape <TT>affixe(C,D)</TT>, on obtient <TT>-1-i,1-i</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>est_carre(i,-1+i,-1-i,1-i)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr986.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr988.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,34 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tracer les vecteurs unitaires : vecteur_unitaire_Ox_3d Ox_3d_unit_vector, vecteur_unitaire_Oy_3d Oy_3d_unit_vector, vecteur_unitaire_Oz_3d Oz_3d_unit_vector</TITLE>
+<TITLE>Savoir si 2 droites 2-d sont perpendiculaires : is_perpendicular est_perpendiculaire</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr990.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr992.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1164">11.3.1</A>  Tracer les vecteurs unitaires : <TT>vecteur_unitaire_Ox_3d Ox_3d_unit_vector</TT>, <TT>vecteur_unitaire_Oy_3d Oy_3d_unit_vector</TT>, <TT>vecteur_unitaire_Oz_3d Oz_3d_unit_vector</TT></H3><P><A NAME="@default1924"></A> <A NAME="@default1925"></A><A NAME="@default1926"></A> <A NAME="@default1927"></A><A NAME="@default1928"></A> <A NAME="@default1929"></A>
-<TT>vecteur_unitaire_Ox_3d(), Ox_3d_unit_vector()</TT> trace le vecteur unitaire de l’axe des <I>x</I> de écran de géométrie 3-d.<BR>
-<TT>vecteur_unitaire_Oy_3d(), Oy_3d_unit_vector()</TT> trace le vecteur unitaire de l’axe des <I>y</I> de écran de géométrie 3-d.<BR>
-<TT>vecteur_unitaire_Oz_3d(), Oz_3d_unit_vector()</TT> trace le vecteur unitaire de l’axe des <I>z</I> de écran de géométrie 3-d.<BR>
-Vous pouvez effacer les axes (resp les faire réapparaitre) en 
-cochant (resp décochant) <TT>Montrer les axes</TT> avec le bouton <TT>cfg</TT>
-de l’écran de géométrie.<BR>
-Ces commandes n’ont pas de paramètre. On peut toutefois rajouter une 
-légende avec la commande <TT>legende</TT><BR>
+<H3 CLASS="subsection"><A NAME="htoc1159">10.18.12</A>  Savoir si 2 droites 2-d sont perpendiculaires : <TT>is_perpendicular est_perpendiculaire</TT></H3><P><A NAME="@default1930"></A><A NAME="@default1931"></A><A NAME="sec:estperp2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1057.html#sec:estperp3">11.13.4</A> pour la géométrie 3-d.<BR>
+<TT>est_perpendiculaire</TT>, en géométrie plane, est une 
+fonction booléenne ayant comme argument deux droites.<BR>
+ <TT>est_perpendiculaire</TT> vaut 1 si les deux droites sont perpendiculaires,
+et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>vecteur_unitaire_Ox_3d(),legende(point([1,0,0]),"i",vert)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_perpendiculaire(droite(0,1+i),droite(i,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le vecteur unitaire de l’axe des </TT><TT><I>x</I></TT><TT> de écran de géométrie 3-d avec </TT><TT><I>i</I></TT><TT> écrit en vert</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>vecteur_unitaire_Oy_3d(),legende(point([0,1,0]),"j",vert)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_perpendiculaire(droite(0,1+i),droite(1+i,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le vecteur unitaire de l’axe des </TT><TT><I>y</I></TT><TT> de écran de géométrie 3-d avec </TT><TT><I>j</I></TT><TT> écrit en vert</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>vecteur_unitaire_Oz_3d(),legende(point([0,0,1]),"k",vert)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le vecteur unitaire de l’axe des </TT><TT><I>z</I></TT><TT> de écran de géométrie 3-d avec </TT><TT><I>k</I></TT><TT> écrit en vert</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr990.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr992.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

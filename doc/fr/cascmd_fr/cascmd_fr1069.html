@@ -6,29 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le parallélépipède : parallelepiped parallelepipede</TITLE>
+<TITLE>La translation : translation</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1068.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1070.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1255">11.16.3</A>  Le parallélépipède : <TT>parallelepiped parallelepipede</TT></H3><P><A NAME="@default2064"></A><A NAME="@default2065"></A>
-<TT>parallelepipede</TT> a comme argument quatre points <TT>A,B,C,D</TT>.<BR>
-<TT>parallelepipede(A,B,C,D)</TT> dessine un parallélépipède de côtés 
-<TT>AB,AC,AD</TT> (les faces sont des parallélogrammes).<BR>
+<H3 CLASS="subsection"><A NAME="htoc1254">11.14.2</A>  La translation : <TT>translation</TT></H3><P><A NAME="@default2075"></A><A NAME="sec:translation3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr973.html#sec:translation2">10.17.2</A> pour la géométrie plane.<BR>
+<TT>translation</TT>, en géométrie 3-d, a un ou deux arguments : 
+le vecteur de translation donné par la liste de ses coordonnées et 
+éventuellement l’objet géométrique à transformer.<BR>
+Lorsque <TT>translation</TT> a un argument, c’est une fonction qui agit sur un 
+objet géométrique.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>parallelepipede([0,0,0],[5,0,0],[0,5,0],[0,0,5])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>t:=translation([1,1,1])</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>t(point(1,2,3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>un cube de sommet l’origine et dont 3 faces sont contenues dans les plans du repère</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point (2,3,4) est tracé</TT></DIV><P>
+Lorsque <TT>translation</TT> a deux arguments, <TT>translation</TT> dessine et 
+renvoie le transformé du deuxième argument dans la translation de vecteur 
+le premier argument.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>p:=parallelepipede([0,0,0],[5,0,0],[0,3,0],[0,0,2]);</TT></DIV><DIV CLASS="center"><TT>c1,c2,c3,c4,c5,c6,c7,c8:=sommets(p); </TT></DIV><P>
+</P><DIV CLASS="center"><TT>translation([1,1,1], point(1,2,3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>un parallélépipède de sommets c1 le point(0,0,0), c2 le point(5,0,0),c3 le point(5,3,0), c4 le point(0,3,0), c5 le point(0,0,2), c6 le point(5,0,2), c7 le point(5,3,2), c8 le point(0,3,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point (2,3,4) est tracé</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>parallelepipede([0,0,0],[3,2,0],[0,3,2],[2,0,3])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>translation([1,1,1],droite([0,0,0],[1,2,3]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Un parallélépipède</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>La droite passant par les points (1,1,1) et (2,3,4)</TT></DIV><HR>
 <A HREF="cascmd_fr1068.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1070.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

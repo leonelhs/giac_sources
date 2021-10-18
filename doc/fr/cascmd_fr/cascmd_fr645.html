@@ -6,40 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Valeurs singulières (compatible HP) : SVL svl</TITLE>
+<TITLE>Forme normale de Smith dans ℤ : ismith</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr644.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr646.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc761">6.57.7</A>  Valeurs singulières (compatible HP) : <TT>SVL svl</TT></H3><P><A NAME="@default1173"></A><A NAME="@default1174"></A>
-<TT>SVL</TT> ou <TT>svl</TT> a comme argument une matrice carrée numérique d’ordre 
-<I>n</I>.<BR>
-<TT>SVL(A)</TT> renvoie les valeurs singulières de <I>A</I>.<BR>
-Les valeurs singulières de <I>A</I> sont les racines carrées positives des 
-valeurs propres de <I>A</I>*<I>trn</I>(<I>A</I>). Ainsi lorsque <I>A</I> est symétrique, les valeurs 
-singulières de <I>A</I> sont les valeurs absolues de ses valeurs propres.<BR>
+<H3 CLASS="subsection"><A NAME="htoc760">6.56.14</A>  Forme normale de Smith dans ℤ : <TT>ismith</TT></H3><P><A NAME="@default1184"></A>
+<TT>ismith</TT> a comme argument une matrice à coefficients dans 
+ℤ.<BR>
+<TT>ismith</TT> renvoie les matrices <TT>U, B</TT> et <TT>V</TT> tels que <TT>U</TT> et 
+<TT>V</TT> sont inversibles dans ℤ, <TT>B</TT> est diagonale avec
+<TT>B[i,i]</TT> divise <TT>B[i+1,i+1]</TT> et on a <TT>B=U*A*V</TT>.<BR>
+Les <TT>B[i,i]</TT> s’appellent facteurs invariants et permettent entre
+autre de trouver la structure des groupes abéliens de type fini.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>SVL([[1,2],[3,4]])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>svl([[1,2],[3,4]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=[[9,-36,30],[-36,192,-180],[30,-180,180]]; U,B,V:=ismith(A)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0.365966190626,5.46498570422]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>evalf(sqrt(eigenvals([[1,2],[3,4]]*[[1,3],[2,4]])))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[5.46498570422,0.365966190626]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>SVL([[1,4],[4,1]])</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>svl([[1,4],[4,1]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[5.0,3.0]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>abs(eigenvals([[1,4],[4,1]]))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[5,3]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[-3,0,1],[6,4,3],[20,15,12]],
+[[3,0,0],[0,12,0],[0,0,60]], 
+[[1,24,-30],[0,1,0],[0,0,1]]</TT>
+</DIV><P>
+Les facteurs invariants sont 3, 12 et 60.</P><HR>
 <A HREF="cascmd_fr644.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr646.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

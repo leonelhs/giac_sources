@@ -6,24 +6,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Forme canonique : canonical_form</TITLE>
+<TITLE>Pour forcer à évaluer une expression : unquote</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr261.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr263.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc335">6.14.8</A>  Forme canonique : <TT>canonical_form</TT></H3><P><A NAME="@default438"></A>
-<TT>canonical_form</TT> a comme paramètre un trinôme du second degré que 
-l’on veut mettre sous la forme canonique.<BR>
-Exemple :<BR>
-Mettre sous la forme canonique:
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I><SUP>2</SUP>−6<I>x</I>+1</TD></TR>
-</TABLE><P>
-On tape :
-</P><DIV CLASS="center"><TT>canonical_form(x</TT><CODE><TT>^</TT></CODE><TT>2-6*x+1)</TT></DIV><P>
-On trouve :
-</P><DIV CLASS="center"><TT>(x-3)</TT><CODE><TT>^</TT></CODE><TT>2-8</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc335">6.14.6</A>  Pour forcer à évaluer une expression : <TT>unquote</TT></H3><P><A NAME="@default436"></A>
+Si on veut qu’une expression quotée soit évaluée dans un calcul, il faut
+utiliser la fonction <TT>unquote</TT>.<BR>
+Par exemple dans une affectation, la variable est quotée c’est à dire non
+évaluée.<BR>
+ On peut forcer son évaluation pour cela on tape :
+</P><DIV CLASS="center"><TT>purge(b);a:=b;unquote(a):=3</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>a et b contiennent 3</TT></DIV><HR>
 <A HREF="cascmd_fr261.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr263.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,25 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tracé d’une quadrique : quadrique</TITLE>
+<TITLE>Singular value decomposition : svd</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr655.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr657.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc773">6.58.8</A>  Tracé d’une quadrique : <TT>quadrique</TT></H3><P><A NAME="@default1187"></A>
-<TT>quadrique</TT> a comme arguments l’expression d’une quadrique.<BR>
-<TT>quadrique</TT> trace la quadrique ayant pour équation l’argument égalé 
-à zéro.<BR>
+<H3 CLASS="subsection"><A NAME="htoc773">6.58.8</A>  Singular value decomposition : <TT>svd</TT></H3><P><A NAME="@default1197"></A>
+<TT>svd</TT> (singular value decomposition) a comme argument une matrice 
+carrée numérique réelle d’ordre <I>n</I>.<BR>
+<TT>svd</TT> utilise la librairie lapack<BR>
+<TT>svd(A)</TT> renvoie <I>U</I> une matrice orthogonale, <I>s</I> la diagonale d’une 
+matrice diagonale <I>S</I> constituée par les valeurs singulières de <I>A</I> et <I>Q</I> 
+une matrice orthogonale (<SUP><I>t</I></SUP><I>Q</I>*<I>Q</I>=<I>I</I>) tel que :<BR>
+ <I>A</I>=<I>U</I>.diag(<I>s</I>).tran(<I>Q</I>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>quadrique(7*x</TT><CODE><TT>^</TT></CODE><TT>2+4*y</TT><CODE><TT>^</TT></CODE><TT>2+4*z</TT><CODE><TT>^</TT></CODE><TT>2+4*x*y- 4*x*z-2*y*z-4*x+5*y+4*z-18)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>svd([[1,2],[3,4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>le tracé de l’ellipsoïde d’équation 7*x</TT><CODE><TT>^</TT></CODE><TT>2+4*y</TT><CODE><TT>^</TT></CODE><TT>2+4*z</TT><CODE><TT>^</TT></CODE><TT>2+4*x*y-4*x*z-2*y*z-4*x+5*y+4*z-18=0</TT></DIV><P>
-<B>Remarque</B> :<BR>
-Utiliser <TT>quadrique_reduite</TT> pour avoir l’équation paramétrique de la quadrique.<BR>
-
-</P><HR>
+</P><DIV CLASS="center"><TT>[[-0.404553584834,-0.914514295677],[-0.914514295677, 0.404553584834]], [5.46498570422,0.365966190626], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>(U,s,Q):=svd([[3,5],[4,5]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[-0.672988041811,-0.739653361771],[-0.739653361771, 0.672988041811]],[8.6409011028,0.578643354497], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</TT></DIV><P>
+Vérifions :<BR>
+On tape :
+</P><DIV CLASS="center"><TT>U*diag(s)*tran(Q)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[3.0,5.0],[4.0,5.0]]</TT></DIV><HR>
 <A HREF="cascmd_fr655.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr657.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,114 +6,15 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Limites : limit limite</TITLE>
+<TITLE>Changement de variables : subst substituer</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr310.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr312.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc392">6.22.1</A>  Limites : <TT>limit limite</TT></H3><P><A NAME="@default573"></A><A NAME="@default574"></A><A NAME="sec:limit"></A>
-<TT>limit</TT> permet de calculer <B>à condition d’être en radians</B> la limite d’une expression en un point fini (ou 
-infini). En utilisant un paramètre supplementaire, on peut indiquer si on
-cherche une limite par valeurs supérieures ou par 
-valeurs inférieures (1 pour dire "par valeurs supérieures" et -1 pour dire 
-"par valeurs inférieures").<BR>
-<TT>limit</TT> a trois ou quatre arguments :<BR>
-une expression, le nom de la variable (par exemple <TT>x</TT>), le point limite 
-(par exemple <TT>a</TT>) et un argument optionnel qui indique si la limite est 
-unidirectionnelle ou bidirectionnelle (par défaut <TT>0</TT>). 
-Cet argument est égal à 
-<TT>-1</TT> pour une limite à gauche (<TT>x&lt;a</TT>) ou est égal à <TT>1</TT> 
-pour une limite à droite (<TT>x&gt;a</TT>) ou à <TT>0</TT> pour une limite.<BR>
-L’argument optionnel est donc utilisé lorsque l’on veut calculer une limite 
-à droite (+1) ou une limite à gauche (-1).<BR>
-<TT>limit</TT> renvoie la limite demandée (si elle existe !).<BR>
-<B>Remarque</B><BR>
-On peut aussi mettre comme argument <TT>x=a</TT> à la place de <TT>x,a</TT> donc :
-<TT>limit</TT> a aussi comme arguments une expression dépendant d’une variable, 
-une égalité (variable =la valeur où l’on veut calculer la limite) et 
-éventuellement 1 ou -1 pour indiquer la direction.<BR>
-<B>Autre remarque</B><A NAME="@default575"></A><BR>
-si on tape <TT>limit((-1)</TT><CODE><TT>^</TT></CODE><TT>n,n=inf)</TT>, alors <TT>Xcas</TT> répond
-<TT>bounded_function(5)</TT> ce qui veut dire que la fonction est bornée mais 
-qu’elle n’a pas de limite à l’infini.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>limit(1/x,x,0,-1)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>limit(1/x,x=0,-1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-(infinity)</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>limit(1/x,x,0,1)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>limit(1/x,x=0,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>+(infinity)</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>limit(1/x,x,0,0)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>limit(1/x,x,0)</TT></DIV><P>
-ou
-</P><DIV CLASS="center"><TT>limit(1/x,x=0)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>infinity</TT></DIV><P> 
-cela veut dire que <TT>abs(1/x)</TT> tend vers +∞ 
-quand <I>x</I> tend vers 0.<BR>
-<B>Exercices :</B>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Trouver pour <I>n</I>&gt;2, la limite quand <I>x</I> tend vers 0 de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>tan(<I>x</I>)−tan(<I>nx</I>)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">sin(<I>nx</I>)−<I>n</I>sin(<I>x</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE>
-On tape :
-<DIV CLASS="center"><TT>limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>2 </TT></DIV>
-</LI><LI CLASS="li-itemize">Trouver la limite quand <I>x</I> tend vers +∞ de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:4em;"></DIV></TD></TR>
-<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>+</TD><TD CLASS="dcell"><TABLE CELLSPACING=0 CELLPADDING=0><TR><TD ALIGN="right"><DIV CLASS="vbar" STYLE="height:0em;"></DIV></TD></TR>
-<TR><TD><FONT SIZE=7>√</FONT></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=0 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><I>x</I>+</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=0 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>x</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP><I>x</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE> 
-On tape :
-<DIV CLASS="center"><TT>limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>1/2 </TT></DIV>
-</LI><LI CLASS="li-itemize">Trouver la limite quand <I>x</I> tend vers 0 de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
-<TR><TD ALIGN=center NOWRAP>1+<I>x</I>+<I>x</I><SUP>2</SUP>/2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">−exp(<I>x</I>/2)</TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">(1−cos(<I>x</I>))sin(<I>x</I>)</TD></TR>
-</TABLE></TD></TR>
-</TABLE> 
-On tape :
-<DIV CLASS="center"><TT>limit((sqrt(1+x+x</TT><CODE><TT>^</TT></CODE><TT>2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)</TT></DIV>
-On obtient :
-<DIV CLASS="center"><TT>-1/6 </TT></DIV>
-</LI></UL><P>Pour calculer quelquefois des limites plus aisément, il peut être 
-judicieux de quoter le premier argument.<BR>
-On tape par exemple :
-</P><DIV CLASS="center"><TT>limit(’(2*x-1)*exp(1/(x-1))’,x=+infinity)</TT></DIV><P>
-On remarquera que l’on a quoté ici le premier argument pour qu’il ne soit 
-pas évalué c’est à dire pour qu’il ne soit pas simplifié.<BR>
-On obtient :
-</P><DIV CLASS="center"><TT>+(infinity)</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc391">6.21.6</A>  Changement de variables : <TT>subst substituer</TT></H3><P>
+On se reportera à la commande <TT>subst</TT> de la section <A HREF="cascmd_fr277.html#sec:subst">6.14.21</A>. </P><HR>
 <A HREF="cascmd_fr310.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr312.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

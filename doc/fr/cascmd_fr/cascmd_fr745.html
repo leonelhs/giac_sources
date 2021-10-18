@@ -6,34 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi binomiale : binomial_cdf</TITLE>
+<TITLE>Graphe de la régression puissance : 
+ power_regression_plot</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr744.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr746.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc884">8.4.2</A>  Fonction de répartition de la loi binomiale : <TT>binomial_cdf</TT></H3><P><A NAME="@default1342"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale 
-<FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>), on a :<BR>
-<TT>binomial_cdf(n,p,x)</TT>=<I>Proba</I>(<I>X</I> ≤ <I>x</I>)=<BR>
-<TT>binomial(n,0,p)+...+binomial(n,floor(x),p)</TT>.<BR>
-<TT>binomial_cdf(n,p,x,y)</TT>=<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)=<BR>
-<TT>binomial(n,ceil(x),p)+...+binomial(n,floor(y),p)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc883">8.2.19</A>  Graphe de la régression puissance :<BR>
+ <TT>power_regression_plot</TT></H3><P><A NAME="@default1335"></A><A NAME="@default1336"></A><A NAME="@default1337"></A>
+Pour approcher les données par le graphe d’une fonction puissance 
+d’équation <I>y</I>=<I>bx</I><SUP><I>m</I></SUP>, on utilise <TT>power_regression_plot</TT>.<BR>
+<TT>power_regression_plot</TT> a les mêmes arguments que <TT>covariance</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(4,0.5,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>power_regression_plot([[1.0,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.6875</TT></DIV><P>
-On peut vérifier que :
-</P><DIV CLASS="center"><TT>binomial(4,0,0.5)+binomial(4,1,0.5)+binomial(4,2,0.5)</TT></DIV><DIV CLASS="center"><TT>=0.6875</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(2,0.3,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.91</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>binomial_cdf(2,0.3,1,2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.51</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le graphe de la fonction puissance d’équation </TT><TT><I>y</I>=1*<I>x</I></TT><SUP><TT>2</TT></SUP></DIV><P>
+car c’est la fonction puissance d’équation <I>y</I>=1*<I>x</I><SUP>2</SUP> qui approche au mieux 
+les données.
+<B>Remarque</B>
+On remarquera que l’équation de la courbe representée ainsi que la valeur 
+du coefficient de corrélation des données sont écrits en bleu.<BR>
+Si on veut avoir l’équation et/ou le coefficient de corrélation sur le 
+dessin il faut rajouter comme dernier argument, l’option <TT>equation</TT> et/ou 
+<TT>correlation</TT>.</P><HR>
 <A HREF="cascmd_fr744.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr746.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

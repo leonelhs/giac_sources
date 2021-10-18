@@ -1958,6 +1958,13 @@ if (i>0 && i<26){
             xywh {5 5 100 20}
           }
         }
+        MenuItem Xcas_help_start_algoseconde {
+          label {Tutoriel algo}
+          callback {if (xcas::use_external_browser)
+           giac::system_browser_command(doc_prefix+"../algoseconde.html");
+          }
+          xywh {10 10 100 20}
+        }
         MenuItem Xcas_help_make_index {
           label {Rebuild help cache}
           callback {const giac::context * contextptr=Xcas_get_context();

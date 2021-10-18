@@ -6,25 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Distribution de Kolmogorov-Smirnov : kolmogorovd</TITLE>
+<TITLE>Fonction de répartition inverse de la loi géométrique : geometric_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr790.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr792.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc930">8.4.48</A>  Distribution de Kolmogorov-Smirnov : <TT>kolmogorovd</TT></H3><P><A NAME="@default1410"></A>
-<TT>kolmogorovd(x)</TT> renvoie la distribution de Kolmogorov-Smirnov à
-savoir :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">1−2*</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">+∞</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>k</I>=1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">(−1)<SUP><I>k</I>−1</SUP>exp(−<I>k</I><SUP>2</SUP><I>x</I><SUP>2</SUP>)</TD></TR>
-</TABLE><P>
+<H3 CLASS="subsection"><A NAME="htoc931">8.4.35</A>  Fonction de répartition inverse de la loi géométrique : <TT>geometric_icdf</TT></H3><P><A NAME="@default1410"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi géométrique de paramètre
+<I>p</I> (0&lt;<I>p</I>&lt;1), si on a <TT>geometric_icdf(p,x)=h</TT> avec <I>x</I>∈ [0,1]
+c’est que l’on a :<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=x=geometric_cdf(p,h)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>kolmogorovd(1.36)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>geometric_icdf(0.2,0.488)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.950514123245</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>geometric_icdf(0.5,0.5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr790.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr792.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,22 +6,32 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Évaluer une primitive : preval</TITLE>
+<TITLE>Substituer dans une expression, une expression algébrique par une variable : algsubs</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr279.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr281.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc353">6.14.26</A>  Évaluer une primitive : <TT>preval</TT></H3><P><A NAME="@default465"></A>
-<TT>preval</TT> a trois paramètres : une expression <TT>F(x)</TT> dépendant de la variable <TT>x</TT>, et deux expressions <TT>a</TT> et <TT>b</TT>.<BR>
-<TT>preval</TT> effectue <TT>F(b)-F(a)</TT>.<BR>
- <TT>preval</TT> est utile pour calculer une intégrale définie à partir 
-d’une primitive : on calcule une primitive, puis on évalue cette primitive entre les deux bornes de l’intégrale.<BR>
+<H3 CLASS="subsection"><A NAME="htoc353">6.14.24</A>  Substituer dans une expression, une expression algébrique par une variable : <TT>algsubs</TT></H3><P><A NAME="@default466"></A>
+<TT>algsubs</TT> permet de substituer dans une expression, une expression 
+algébrique par une autre expression algébrique.<BR>
+<TT>algsubs</TT> a 2 arguments :<BR>
+une équation entre 2 expressions algébriques <TT>Xpr1=Xpr2</TT> et<BR>
+une expression dans laquelle <TT>algsubs</TT> remplacera l’expression algébrique
+<TT>Xpr1</TT> par <TT>Xpr2</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>preval(x</TT><CODE><TT>^</TT></CODE><TT>2+x,2,3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>algsubs(x</TT><CODE><TT>^</TT></CODE><TT>2=u,1+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>4)</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT>6</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>u</TT><CODE><TT>^</TT></CODE><TT>2+u+1</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>algsubs(a*b/c=d, 2*a*b</TT><CODE><TT>^</TT></CODE><TT>2/c)</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>2*b*d</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>algsubs(2a=p</TT><CODE><TT>^</TT></CODE><TT>2-q</TT><CODE><TT>^</TT></CODE><TT>2,algsubs(2c=p</TT><CODE><TT>^</TT></CODE><TT>2+q</TT><CODE><TT>^</TT></CODE><TT>2,c</TT><CODE><TT>^</TT></CODE><TT>2-a</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>p</TT><CODE><TT>^</TT></CODE><TT>2*q</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr279.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr281.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

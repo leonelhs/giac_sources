@@ -6,23 +6,52 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Substituer une valeur à une variable : |</TITLE>
+<TITLE>Pour réécrire les résultats selon son choix : autosimplify</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr273.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr275.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc347">6.14.20</A>  Substituer une valeur à une variable : <TT>|</TT></H3><P><A NAME="@default458"></A>
-<TT>|</TT> est une fonction infixée qui substitue des valeurs à des variables : <TT>|</TT> a deux arguments : une expression dependant d’un paramètre et une égalité (paramètre=valeur de substitution,paramètre=valeur de substitution,... ) .
-On tape :
-</P><DIV CLASS="center"><TT>a</TT><CODE><TT>^</TT></CODE><TT>2+1|a=2</TT></DIV><P> 
-On obtient même si la variable <TT>a</TT> est affectée :
-</P><DIV CLASS="center"><TT>5</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>a</TT><CODE><TT>^</TT></CODE><TT>2+b|a=2,b=3</TT></DIV><P> 
-On obtient même si les variables <TT>a</TT> et <TT>b</TT> sont affectées :
-</P><DIV CLASS="center"><TT>7</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc347">6.14.18</A>  Pour réécrire les résultats selon son choix : <TT>autosimplify</TT></H3><P><A NAME="@default459"></A>
+<TT>autosimplify</TT> a pour argument une commande (comme <TT>factor</TT>, 
+<TT>simplify</TT> ...) qui sera utilisée pour réécrire les résultats dans 
+<TT>Xcas</TT> (la valeur de l’argument de <TT>autosimplify</TT> au lancement est 
+<TT>regroup</TT>).<BR>
+Si on ne veut pas de simplifications automatique il faudra taper au début de 
+la session : <TT>autosimplify(nop)</TT>.<BR>
+Si on veut changer le mode de simplification en cours de session il faudra que
+le nouveau <TT>autosimplify(...)</TT> se trouve seul sur une ligne. 
+On tape en début de session : 
+</P><DIV CLASS="center"><TT>autosimplify(1)</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>autosimplify(regroup)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT></DIV><P> 
+On tape sur une ligne : 
+</P><DIV CLASS="center"><TT>autosimplify(factor)</TT></DIV><P>
+Puis on tape : 
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x-1)*(x+1)</TT></DIV><P> 
+On tape : 
+</P><DIV CLASS="center"><TT>autosimplify(nop)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>autosimplify()</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>autosimplify(0)</TT></DIV><P>
+Puis on tape : 
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P> 
+On tape : 
+</P><DIV CLASS="center"><TT>autosimplify(regroup)</TT></DIV><P>
+Puis on tape : 
+</P><DIV CLASS="center"><TT>1+x</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV><P>
+On obtient comme en début de session :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT></DIV><HR>
 <A HREF="cascmd_fr273.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr275.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

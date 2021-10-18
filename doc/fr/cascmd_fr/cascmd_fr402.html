@@ -6,49 +6,44 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynôme cyclotomique : cyclotomic</TITLE>
+<TITLE>PPCM de deux polynômes : lcm</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr401.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr403.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc489">6.28.14</A>  Polynôme cyclotomique : <TT>cyclotomic</TT></H3><P><A NAME="@default747"></A>
-<TT>cyclotomic</TT> a comme paramètre un entier <I>n</I>.<BR>
-<TT>cyclotomic</TT> renvoie la liste des coefficients du polynôme cyclotomique 
-d’ordre <I>n</I>.
-C’est le polynôme dont les zéros sont toutes les racines <I>n</I>-ième et
-primitives de l’unité (une racine <I>n</I>-ième de l’unité est primitive 
-si ses puissances engendrent toutes 
-les autres racines <I>n</I>-ième de l’unité).<BR>
-Par exemple pour <I>n</I>=4, les racines quatrième de l’unité sont :
-{ 1,<I>i</I>,−1,−<I>i</I>},<BR>
-et les racines primitives sont : {<I>i</I>,−<I>i</I>}.<BR>
-Donc le polynôme cyclotomique d’ordre 4 est (<I>x</I>−<I>i</I>).(<I>x</I>+<I>i</I>)=<I>x</I><SUP>2</SUP>+1.<BR>
+<H3 CLASS="subsection"><A NAME="htoc490">6.29.10</A>  PPCM de deux polynômes : <TT>lcm</TT></H3><P><A NAME="@default755"></A><A NAME="sec:lcm"></A>
+<TT>lcm</TT> désigne le PPCM (plus petit commun multiple) de deux 
+polynômes pouvant avoir plusieurs variables et aussi le PPCM d’une liste de 
+polynômes ou d’une séquence de polynômes pouvant avoir plusieurs 
+variables (voir <A HREF="cascmd_fr164.html#sec:ilcm">6.7.5</A> pour le PPCM d’entiers).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cyclotomic(4)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>lcm(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,0,1]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(x+1)*(x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>cyclotomic(5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>lcm(x,x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>lcm([x,x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,1,1,1,1]</TT></DIV><P>
-Donc le polynôme cyclotomique d’ordre 5 est <I>x</I><SUP>4</SUP>+<I>x</I><SUP>3</SUP>+<I>x</I><SUP>2</SUP>+<I>x</I>+1 et on a 
-(<I>x</I>−1)*(<I>x</I><SUP>4</SUP>+<I>x</I><SUP>3</SUP>+<I>x</I><SUP>2</SUP>+<I>x</I>+1)=<I>x</I><SUP>5</SUP>−1.<BR>
+</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+x)*(x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>cyclotomic(10)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=z</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(y</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(x</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><DIV CLASS="center"><TT>B:=x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>3*z+(-(y</TT><CODE><TT>^</TT></CODE><TT>3))*z+x</TT><CODE><TT>^</TT></CODE><TT>3*z-z</TT></DIV><DIV CLASS="center"><TT>D:=lcm(A,B)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,-1,1,-1,1]</TT></DIV><P>
-Donc le polynôme cyclotomique d’ordre 10 est <I>x</I><SUP>4</SUP>−<I>x</I><SUP>3</SUP>+<I>x</I><SUP>2</SUP>−<I>x</I>+1 et on a 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>x</I><SUP>5</SUP>−1)*(<I>x</I>+1)*(<I>x</I><SUP>4</SUP>−<I>x</I><SUP>3</SUP>+<I>x</I><SUP>2</SUP>−<I>x</I>+1)=<I>x</I><SUP>10</SUP>−1 </TD></TR>
-</TABLE><P>
+</P><DIV CLASS="center"><TT>(x*y*z-x*z+y*z-z)*(x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>3*z+(-(y</TT><CODE><TT>^</TT></CODE><TT>3))*z+x</TT><CODE><TT>^</TT></CODE><TT>3*z-z)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>cyclotomic(20)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>factor(A)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,0,-1,0,1,0,-1,0,1]</TT></DIV><P>
-Donc le polynôme cyclotomique d’ordre 20 est <I>x</I><SUP>8</SUP>−<I>x</I><SUP>6</SUP>+<I>x</I><SUP>4</SUP>−<I>x</I><SUP>2</SUP>+1 et on a 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>x</I><SUP>10</SUP>−1)*(<I>x</I><SUP>2</SUP>+1)*(<I>x</I><SUP>8</SUP>−<I>x</I><SUP>6</SUP>+<I>x</I><SUP>4</SUP>−<I>x</I><SUP>2</SUP>+1)=<I>x</I><SUP>20</SUP>−1 </TD></TR>
-</TABLE><HR>
+</P><DIV CLASS="center"><TT>(y-1)*(y+1)*(x-1)*(x+1)*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(B)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+x+1)*(x-1)*(y+1)*(y</TT><CODE><TT>^</TT></CODE><TT>2-y+1)*z</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(D)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x-1)*(x+1)*(x</TT><CODE><TT>^</TT></CODE><TT>2+x+1)*(y-1)*(y+1)*(y</TT><CODE><TT>^</TT></CODE><TT>2-y+1)*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr401.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr403.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

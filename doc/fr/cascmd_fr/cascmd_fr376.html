@@ -6,32 +6,49 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Écriture selon les puissances de (x-a) : ptayl</TITLE>
+<TITLE>Factorisation : factor factoriser</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr375.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr377.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc462">6.27.22</A>  Écriture selon les puissances de (x-a) : <TT>ptayl</TT></H3><P><A NAME="@default705"></A>
-Il s’agit d’écrire un polynôme <TT>P(x)</TT> selon les puissances de 
-<TT>x-a)</TT><I>x</I>−<I>a</I>.<BR>
-<TT>ptayl</TT> a deux paramètres : un polynôme <TT>P</TT> donné sous 
-forme symbolique ou par la liste de ses coefficients et un nombre <TT>a</TT>.<BR>
-<TT>ptayl</TT> renvoie le polynôme <TT>Q</TT> tel que <TT>Q(x-a)=P(x)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc463">6.28.18</A>  Factorisation : <TT>factor factoriser</TT></H3><P><A NAME="@default713"></A><A NAME="@default714"></A><A NAME="sec:factor"></A>
+<TT>factor</TT> a pour argument un polynôme ou une liste de 
+polynômes et éventuellement <TT>sqrt(n)</TT>.<BR>
+<TT>factor</TT> factorise le polynôme ou la liste de polynômes 
+sur les réels en mode réel et sur les complexes en mode 
+complexe Les coefficients des facteurs sont dans ℚ(√<SPAN style="text-decoration:overline">(</SPAN><I>n</I>)) si 
+<TT>Sqrt</TT> est coché dans la configuration du <TT>cas</TT> ou si <TT>sqrt(n)</TT> 
+est le second argument (voir aussi <A HREF="cascmd_fr267.html#sec:factore">6.14.11</A>).</P><P><B>Note</B> pour être en mode réel (ou complexe) décochez (ou cochez)
+<TT>Complexe</TT> dans la configuration du 
+<TT>cas</TT> que l’on ouvre avec le bouton donnant la ligne d’état.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>ptayl(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,2)</TT></DIV><P>
-On obtient le polynôme Q(x):
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+6*x+9</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ptayl([1,2,1],2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,6,9]</TT></DIV><P>
-<B>Attention</B><BR>
- On a:
-</P><DIV CLASS="center"><TT>P(x)=Q(x-a)</TT></DIV><P>
-c’est à dire pour l’exemple que :<BR>
-<I>x</I><SUP>2</SUP>+2<I>x</I>+1=(<I>x</I>−2)<SUP>2</SUP>+6(<I>x</I>−2)+9</P><HR>
+</P><DIV CLASS="center"><TT>(x+1)</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>4-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(-x+1)</TT><CODE><TT>^</TT></CODE><TT>2*(x+1)</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT> 3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+On obtient si <TT>Sqrt</TT> n’est pas coché dans la configuration du <TT>cas</TT> :</P><DIV CLASS="center"><TT>(x-1)*(x</TT><CODE><TT>^</TT></CODE><TT>2-x-1)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT> 3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+On obtient si <TT>Sqrt</TT> est coché dans la configuration du <TT>cas</TT> :
+</P><DIV CLASS="center"><TT>(x-1)*(x+(sqrt(5)+1)/2)*(x+(-sqrt(5)+1)/2)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT> 3-2*x</TT><CODE><TT>^</TT></CODE><TT>2+1,sqrt(5))</TT></DIV><P>
+On obtient si <TT>Sqrt</TT> est coché ou non dans la configuration du 
+<TT>cas</TT> :
+</P><DIV CLASS="center"><TT>((2*sqrt(5)-19)*((sqrt(5)+15)*x+7*sqrt(5)-5)*(-x+1)*((sqrt(5)+25)*x-13*sqrt(5)-15))/6820</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(x</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
+On obtient en mode réel :
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV><P>
+On obtient en mode complexe :
+</P><DIV CLASS="center"><TT>((-i)*x+1)*((i)*x+1)</TT></DIV><HR>
 <A HREF="cascmd_fr375.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr377.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

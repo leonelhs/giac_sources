@@ -6,38 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Compter les éléments plus petits qu’une valeur donnée : 
-count_inf</TITLE>
+<TITLE>Ajouter k fois une ligne à une autre : mRowAdd et scaleadd SCALEADD</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr589.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr591.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc699">6.50.3</A>  Compter les éléments plus petits qu’une valeur donnée :<BR>
-<TT>count_inf</TT></H3><P><A NAME="@default1074"></A><A NAME="@default1075"></A><A NAME="@default1076"></A>
-<TT>count_inf</TT> a deux ou trois paramètres : une nombre et une 
-matrice (ou liste) réelle et éventuellement un paramètre 
-optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
-<TT>count_inf</TT> renvoie le nombre d’éléments de la 
-matrice (ou liste) qui sont strictement inférieurs au premier argument.<BR>
-Si il y a <TT>row</TT> (resp <TT>col</TT>) comme troisième paramètre 
-<TT>count_inf</TT> agit sur chaque ligne (resp colonne) de la matrice et renvoie 
-une liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc699">6.50.9</A>  Ajouter <I>k</I> fois une ligne à une autre : <TT>mRowAdd</TT> et <TT>scaleadd SCALEADD</TT></H3><P><A NAME="@default1075"></A><A NAME="@default1076"></A><A NAME="@default1077"></A>
+<TT>mRowAdd</TT> a quatre arguments : un réel <I>k</I>, une matrice <I>A</I> et 
+deux entiers <I>n</I>1 et <I>n</I>2.<BR>
+<TT>scale</TT> (ou <TT>SCALE</TT>) a quatre arguments : une matrice <I>A</I>, un réel <I>k</I>
+et deux entiers <I>n</I>1 et <I>n</I>2.<BR>
+<B>Attention à l’ordre des arguments !</B><BR>
+<TT>mRowAdd</TT> et <TT>scale</TT> (ou <TT>SCALE</TT>) renvoie la matrice obtenue en 
+remplacant dans <I>A</I> la ligne <I>n</I>2 par la somme de la ligne <I>n</I>2 et de <I>k</I> fois 
+la ligne <I>n</I>1.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[2,12,45,3,7,78])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>mRowAdd(1.1,[[5,7],[3,4],[1,2]],1,2)</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[[2,12],[45,3],[7,78]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>scaleadd([[5,7],[3,4],[1,2]],1.1,1,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[[2,12],[45,3],[7,78]],row)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[1,1,1]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>count_inf(12,[[2,12],[45,3],[7,78]],col)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[2,1]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[5,7],[3,4],[4.3,6.4]]</TT></DIV><HR>
 <A HREF="cascmd_fr589.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr591.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

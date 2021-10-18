@@ -6,26 +6,215 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynôme caractéristique d’une matrice creuse de grande dimension: pcar_hessenberg</TITLE>
+<TITLE>La triple norme d’une matrice : matrix_norm et l1norm, l2norm ou norm ou specnorm, linfnorm</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr629.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr631.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc744">6.55.8</A>  Polynôme caractéristique d’une matrice creuse de grande dimension: <TT>pcar_hessenberg</TT></H3><P><A NAME="@default1156"></A>
-<TT>pcar_hessenberg</TT> a comme argument une matrice <I>A</I> d’ordre <I>n</I>.<BR>
-<TT>pcar_hessenberg</TT> renvoie le polynôme caractéristique <I>P</I> de <I>A</I> 
-calculé selon la méthode de Hessenberg (lorsque les coefficients de <I>A</I> 
-sont dans un corps fini ou sont à représentation finie) et définit 
-par :<BR>
-<I>P</I>(<I>x</I>)=(−1)<SUP><I>n</I></SUP>.det(<I>A</I>−<I>x</I>.<I>I</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc744">6.55.4</A>  La triple norme d’une matrice : <TT>matrix_norm</TT> et <TT>l1norm</TT>, <TT>l2norm</TT> ou <TT>norm</TT> ou <TT>specnorm</TT>, <TT>linfnorm</TT></H3><P><A NAME="@default1152"></A><A NAME="@default1153"></A><A NAME="@default1154"></A><A NAME="@default1155"></A><A NAME="@default1156"></A><A NAME="@default1157"></A><A NAME="sec:l1normm"></A><A NAME="sec:l2normm"></A><A NAME="sec:maxnormm"></A>
+<TT>matrix_norm</TT> a deux arguments : une matrice <TT>A</TT> 
+et <TT>1</TT> ou <TT>2</TT> ou <TT>inf</TT> et par défaut <TT>1</TT>.<BR>
+<TT>matrix_norm</TT> renvoie la triple norme subordonnée à <I>l</I><SUB>1</SUB> 
+(resp <I>l</I><SUB>2</SUB> ou <I>l</I><SUP>∞</SUP>) si il n’y a pas de second argument ou si le second 
+argument est <TT>1</TT> (resp <TT>2</TT> ou <TT>inf</TT>).<BR>
+<TT>matrix_norm(A)</TT> ou <TT>matrix_norm(A,1)</TT> c’est aussi <TT>l1norm(A)</TT> ou
+<TT>colnorm(A)</TT>,<BR>
+<TT>matrix_norm(A,2)</TT> c’est aussi <TT>l2norm(A)</TT> ou <TT>SPECNORM(A)</TT> ou
+<TT>max(SVL(A))</TT>,<BR>
+<TT>matrix_norm(A,inf)</TT> c’est aussi <TT>linfnorm(A)</TT> ou <TT>rownorm(A)</TT>.<BR>
+Pour les différentes normes de vecteurs (voir aussi <A HREF="cascmd_fr547.html#sec:l1normv">6.43.1</A>,
+<A HREF="cascmd_fr547.html#sec:l2normv">6.43.1</A> et <A HREF="cascmd_fr547.html#sec:maxnormv">6.43.1</A>).<BR>
+Pour plus de détails sur la triple norme voir le <B>Rappel</B> situé après
+les exemples.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>B:=[[1,2,3],[3,-9,6],[4,5,6]]</TT></DIV><P>
+Puis
+</P><DIV CLASS="center"><TT>matrix_norm(B)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>matrix_norm(B,1)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>l1norm(B)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>colnorm(B)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,-6,12,-8]</TT></DIV><P>
-Donc le polynôme caractéristique de [[4,1,-2],[1,2,-1],[2,1,0]] est :<BR>
-<I>x</I><SUP>3</SUP>−6<I>x</I><SUP>2</SUP>+12<I>x</I>−8.</P><HR>
+</P><DIV CLASS="center"><TT>16</TT></DIV><P>
+En effet <TT>max</TT>(1+3+4,2+9+5,3+6+6)=16<BR>
+On tape :
+</P><DIV CLASS="center"><TT>matrix_norm(B,2)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>l2norm(B)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>SPECNORM(B)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>max(SVL(B))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>11.2449175989</TT></DIV><P>
+En effet <TT>max(SVL(B))</TT> renvoie la plus grande racine carrée des valeurs 
+propres de <TT>trn(B)*B</TT>.<BR>
+<TT>sqrt(proot(pcar(trn(B)*B)))</TT> ou <TT>sqrt(EIGENVAL(trn(B)*B))</TT> renvoie :<BR>
+<TT>[9.48552308331,0.759394515579,11.2449175989]</TT><BR>
+On tape :
+</P><DIV CLASS="center"><TT>matrix_norm(B,inf)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>linfnorm(B)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>rownorm(B)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>18</TT></DIV><P>
+En effet <TT>max</TT>(1+2+3,3+9+6,4+5+6)=18<BR>
+
+<B>Rappel</B><BR>
+En mathématiques, et plus particulièrement en analyse fonctionnelle, une norme 
+d’opérateur ou norme subordonnée est une norme définie sur l’espace des 
+opérateurs bornés entre deux espaces vectoriels normés. Entre deux tels 
+espaces, les opérateurs bornés ne sont autres que les applications linéaires 
+continues.<BR>
+On va considérer ici que les applications linéaires sur des espaces 
+vectoriels de dimension finie.<BR>
+<B>Théorème</B><BR>
+ Soient <I>E</I> et <I>F</I> 2 espaces vectoriels normés (de norme ||  ||<SUB><I>E</I></SUB> et 
+||  ||<SUB><I>F</I></SUB>) de dimension finie et <I>f</I> une application linéaire de <I>E</I> 
+dans <I>F</I>.<BR>
+Alors il existe une constante réelle <I>K</I> tel que pour tout <I>x</I>∈ <I>E</I> on ait :<BR>
+|| <I>f</I>(<I>x</I>)||<SUB><I>F</I></SUB>≤ <I>K</I>|| <I>x</I>||<SUB><I>E</I></SUB><BR>
+<I>f</I> est donc lipschitzienne sur <I>E</I> et continue de <I>E</I> dans <I>F</I>.<BR>
+<B>Définition de la triple norme</B><BR>
+D’après ce qui précéde, on a :<BR>
+pour tout <I>x</I>∈ <I>E</I> si || <I>x</I>||<SUB><I>E</I></SUB>≤ 1 alors on a || <I>f</I>(<I>x</I>)||<SUB><I>F</I></SUB>≤ <I>K</I>.<BR>
+Donc l’ensemble {|| <I>f</I>(<I>x</I>)||<SUB><I>F</I></SUB>  pour || <I>x</I>||<SUB><I>E</I></SUB>≤ 1} est une partie 
+non vide et majorée de ℝ. Cet ensemble admet donc une borne supérieure 
+que l’on appelle <B>la triple norme</B>.<BR>
+Ainsi 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">|||<I>f</I> ||| =</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">sup</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">|| <I>x</I>||<SUB><I>E</I></SUB>≤ 1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> || <I>f</I>(<I>x</I>)||<SUB><I>F</I></SUB></TD></TR>
+</TABLE><P>
+<B>Attention</B> La valeur de ||| <I>f</I> ||| dépend des normes 
+|| ||<SUB><I>E</I></SUB> et || ||<SUB><I>F</I></SUB> utilisées.<BR>
+<B>la triple norme</B> est donc une norme subordonnée aux normes de <I>E</I> et <I>F</I>.<BR>
+
+Dans le cas où <I>E</I> = <I>F</I>, on choisit usuellement || ||<SUB><I>E</I></SUB>=|| ||<SUB><I>F</I></SUB> (même si
+ce n’est pas obligatoire).<BR>
+Pour les normes usuelles, on dispose de formules pratiques : prenons <I>E</I> = ℝ<SUP><I>n</I></SUP>
+et <I>f</I>∈ <I>L</I>(<I>E</I>). Notons <I>x</I>=(<I>x</I><SUB>1</SUB>,... ,<I>x</I><SUB><I>n</I></SUB>) un vecteur quelconque de ℝ<SUP><I>n</I></SUP> 
+et <I>A</I>=(<I>a</I><SUB><I>jk</I></SUB>) la matrice de <I>f</I> dans la base canonique. On a alors :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Si ||<I>x</I>||<SUB><I>E</I></SUB>=max<SUB>0≤ <I>j</I>≤ <I>n</I>−1</SUB>|<I>x</I><SUB><I>j</I></SUB>| (c’est la norme <I>l</I><SUP>∞</SUP>), 
+alors la norme de <I>f</I> vaut :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">max</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">0≤ <I>j</I>≤ <I>n</I>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">0≤ <I>k</I>≤ <I>n</I>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">|<I>a</I><SUB><I>jk</I></SUB>|</TD></TR>
+</TABLE>
+C’est ce qui est défini dans <TT>Xcas</TT> par <TT>rownorm(A)</TT>
+</LI><LI CLASS="li-itemize">Si ||<I>x</I>||<SUB><I>E</I></SUB>=∑<SUB>1≤ <I>i</I>≤ <I>n</I></SUB>|<I>x</I><SUB><I>i</I></SUB>| (c’est la norme <I>l</I><SUB>1</SUB>), alors 
+la norme de <I>f</I> vaut :
+<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">max</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">0≤ <I>k</I>≤ <I>n</I>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">0≤ <I>j</I>≤ <I>n</I>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">|<I>a</I><SUB><I>jk</I></SUB>|</TD></TR>
+</TABLE>
+C’est ce qui est noté dans <TT>Xcas</TT> : <TT>colnorm(A)</TT>
+</LI><LI CLASS="li-itemize">Si ||<I>x</I>||<SUB><I>E</I></SUB>=√<SPAN style="text-decoration:overline">∑</SPAN><SUB><SPAN style="text-decoration:overline">0≤ <I>j</I>≤ <I>n</I>−1</SPAN></SUB><SPAN style="text-decoration:overline"><I>x</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>j</I></SPAN></SUB><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP> (c’est la norme <I>l</I><SUB>2</SUB> 
+ou euclidienne, associée au produit scalaire canonique), alors la norme triple
+de <I>f</I> est la racine carrée de la plus grande valeur propre de <I>f</I><SUP>*</SUP>∘ <I>f</I>, où 
+<I>f</I><SUP>*</SUP> désigne l’adjoint de <I>f</I>.<BR>
+La norme triple de <I>f</I> est donc sa plus grande valeur singulière. Ceci se 
+généralise en remplaçant ℝ<SUP><I>n</I></SUP> par n’importe quel espace de Hilbert.<BR>
+C’est ce qui est noté dans <TT>Xcas</TT> : <TT>max(SVL(A))</TT> : c’est la plus 
+grande valeur singulière de <TT>A</TT> i.e la plus grande 
+valeur de la racine carrée des valeurs propres de <TT>trn(A)*A</TT>.<BR>
+Pour tout endomorphisme symétrique <I>g</I> (en particulier pour <I>g</I> = <I>f</I><SUP>*</SUP>∘ <I>f</I>),
+la norme de <I>g</I> est égale à son rayon spectral, qui est la plus grande des 
+valeurs absolues de ses valeurs propres.
+</LI></UL><P>
+<B>Démonstration</B>
+Soient <I>E</I>=<I>R</I><SUP><I>n</I></SUP> et <I>F</I>=<I>R</I><SUP><I>p</I></SUP> munis de leur base canonique<BR>
+Soit <I>e</I><SUB>1</SUB>..<I>e</I><SUB><I>n</I></SUB> est la base canonique de <I>E</I><BR>
+Soit <I>a</I><SUB><I>j</I>,<I>k</I></SUB> la matrice associée à <I>f</I> dans les bases canoniques de <I>E</I> et <I>F</I>.</P><P>Montrons que pour la norme <TT>l1norm</TT>, la triple norme de <TT>A</TT> nommée 
+ici <TT>matrix_norm(A,1)</TT> c’est <TT>colnorm</TT>.<BR>
+Soit <I>x</I>=∑<SUB><I>k</I></SUB>(<I>x</I><SUB><I>k</I></SUB>*<I>e</I><SUB><I>k</I></SUB>)<BR>
+On a donc :<BR>
+<TT>l1norm</TT>(<I>f</I>(<I>x</I>))=<TT>l1norm</TT>(∑<SUB><I>k</I></SUB><I>x</I><SUB><I>k</I></SUB>*<I>f</I>(<I>e</I><SUB><I>k</I></SUB>))≤ ∑<SUB><I>k</I></SUB>|<I>x</I><SUB><I>k</I></SUB>|*<TT>l1norm</TT>(<I>f</I>(<I>e</I><SUB><I>k</I></SUB>))<BR>
+<TT>l1norm</TT>(<I>f</I>(<I>x</I>)) ≤ ∑<SUB><I>k</I></SUB>|<I>x</I><SUB><I>k</I></SUB>|*max<SUB><I>k</I></SUB>(<TT>l1norm</TT>(<I>f</I>(<I>e</I><SUB><I>k</I></SUB>)))=<TT>l1norm</TT>(<I>x</I>)*max<SUB><I>k</I></SUB>(∑<SUB><I>j</I></SUB>|<I>a</I><SUB><I>j</I>,<I>k</I></SUB>|)<BR>
+donc<BR>
+<TT>matrix_norm(A,1)&lt;=colnorm(A)</TT><BR>
+Montrons que ce maximum est atteint.<BR>
+Soit <I>k</I><SUB>0</SUB> tel que :<BR>
+max<SUB><I>k</I></SUB>(∑<SUB><I>j</I></SUB>|<I>a</I><SUB><I>j</I>,<I>k</I></SUB>|)=∑<SUB><I>j</I></SUB>|<I>a</I><SUB><I>j</I>,<I>k</I><SUB>0</SUB></SUB>|=<TT>colnorm(A)</TT><BR>
+On a alors <TT>l1norm</TT>(<I>e</I><SUB><I>k</I><SUB>0</SUB></SUB>)=1 et <TT>l1norm</TT>(<I>f</I>(<I>e</I><SUB><I>k</I><SUB>0</SUB></SUB>))=∑<SUB><I>j</I></SUB>|<I>a</I><SUB><I>j</I>,<I>k</I><SUB>0</SUB></SUB>|<BR>
+donc <TT>matrix_norm(A,1)=colnorm(A)</TT>.</P><P>Montrons que pour la norme du maximum la triple norme de <TT>A</TT> nommée ici 
+<TT>matrix_norm(A,inf)</TT> c’est <TT>rownorm</TT>.<BR>
+Soit <I>x</I>=∑<SUB><I>k</I></SUB><I>x</I><SUB><I>k</I></SUB>*<I>e</I><SUB><I>k</I></SUB> avec max<SUB><I>k</I></SUB>(|<I>x</I><SUB><I>k</I></SUB>|)≤ 1<BR>
+On a :<BR>
+<TT>maxnorm</TT>(<I>f</I>(<I>x</I>))=<TT>maxnorm</TT>(∑<SUB><I>k</I></SUB><I>x</I><SUB><I>k</I></SUB>*<I>f</I>(<I>e</I><SUB><I>k</I></SUB>))=<BR>
+<TT>maxnorm</TT>(<I>f</I>(<I>x</I>))=max<SUB><I>j</I></SUB>(|∑<SUB><I>k</I></SUB><I>x</I><SUB><I>k</I></SUB>*<I>ajk</I>|)≤max<SUB><I>j</I></SUB>(∑<SUB><I>k</I></SUB>|<I>x</I><SUB><I>k</I></SUB>|*|<I>a</I><SUB><I>j</I>,<I>k</I></SUB>|) 
+puisque max<SUB><I>k</I></SUB>|<I>x</I><SUB><I>k</I></SUB>)≤ 1<BR>
+<TT>maxnorm</TT>(<I>f</I>(<I>x</I>))≤ max<SUB><I>j</I></SUB>(∑<SUB><I>k</I></SUB>|<I>a</I><SUB><I>j</I>,<I>k</I></SUB>|)=<TT>colrow(A)</TT><BR>
+Montrons que ce maximum est atteint.<BR>
+Soit <I>j</I><SUB>0</SUB> tel que max<SUB><I>j</I></SUB>(∑<SUB><I>k</I></SUB>|<I>a</I><SUB><I>j</I>,<I>k</I></SUB>|)=∑<SUB><I>k</I></SUB>|<I>a</I><I>j</I><SUB>0</SUB>,<I>k</I>|=<TT>rownorm(A)</TT>.<BR>
+Soit <I>x</I><SUB><I>O</I></SUB>=∑<SUB><I>k</I></SUB><TT>sign</TT>(<I>a</I><SUB><I>j</I><SUB>0</SUB>,<I>k</I></SUB>)*<I>e</I><SUB><I>k</I></SUB> alors <TT>maxnorm</TT>(<I>x</I><SUB>0</SUB>)=1 et<BR>
+<TT>maxnorm</TT>(<I>f</I>(<I>x</I><SUB>0</SUB>))=max<SUB><I>j</I></SUB>(<I>f</I>(<I>x</I><SUB>0</SUB>))=max<SUB><I>j</I></SUB>(|∑<SUB><I>k</I></SUB><TT>sign</TT>(<I>a</I><SUB><I>j</I><SUB>0</SUB>,<I>k</I></SUB>)*<I>a</I><SUB><I>j</I>,<I>k</I></SUB>|)=<BR>
+max(∑<SUB><I>k</I></SUB>|<I>a</I><SUB><I>j</I><SUB>0</SUB>,<I>k</I></SUB>|,max<SUB><I>j</I>!=<I>j</I><SUB>0</SUB></SUB>(|∑<SUB><I>k</I></SUB><TT>sign</TT>(<I>a</I><SUB><I>j</I><SUB>0</SUB>,<I>k</I></SUB>)*<I>a</I><SUB><I>j</I>,<I>k</I></SUB>|))<BR>
+si <I>j</I>!=<I>j</I><SUB>0</SUB> on a :<BR>
+|∑<SUB><I>k</I></SUB><TT>sign</TT>(<I>a</I><SUB><I>j</I><SUB>0</SUB>,<I>k</I></SUB>)*<I>a</I><SUB><I>j</I>,<I>k</I></SUB>)|≤ ∑<SUB><I>k</I></SUB>|<I>a</I><SUB><I>j</I>,<I>k</I></SUB>|≤∑<SUB><I>k</I></SUB>|<I>a</I><SUB><I>j</I><SUB>0</SUB>,<I>k</I></SUB>|<BR>
+Donc<BR>
+<TT>maxnorm</TT>(<I>f</I>(<I>x</I><SUB>0</SUB>))=∑<SUB><I>k</I></SUB>|<I>a</I><SUB><I>j</I><SUB>0</SUB>,<I>k</I></SUB>|=<TT>rownorm(A)</TT><BR>
+Donc <TT>matrix_norm(A,inf)=rownorm(A)</TT>.<BR>
+
+Montrons que pour la norme <TT>l2norm</TT>, la triple norme de la matrice <TT>A</TT>
+nommée ici <TT>matrix_norm(A,2)</TT> c’est <TT>max(SVL(A))</TT> c’est à dire la 
+plus grande racine carrée des valeurs propres de <TT>trn(A)*A</TT>.<BR>
+Soit <I>x</I>=∑<SUB><I>k</I></SUB>(<I>x</I><SUB><I>k</I></SUB>*<I>e</I><SUB><I>k</I></SUB>)<BR>
+On a :<BR>
+<TT>l2norm(x)=sqrt(scalar_product(x,x))</TT><BR>
+0n note
+&lt;<I>x</I>,<I>x</I>&gt;=√<SPAN style="text-decoration:overline">∑</SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SPAN style="text-decoration:overline"><I>x</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=<TT>scalar_product(x,x)</TT><BR>
+<TT>l2norm(f(x))=sqrt(scalar_product(A*x,A*x))</TT><BR>
+On a : &lt;<I>Ax</I>,<I>Ax</I>&gt;=&lt;<I>x</I>,(<I>A</I>)<SUP><I>t</I></SUP><I>Ax</I>&gt; donc<BR>
+<TT>l2norm(f(x))=sqrt(scalar_product(x,trn(A)*A*x))</TT><BR>
+La matrice <I>M</I>=<I>trn</I>(<I>A</I>)*<I>A</I> est symétrique donc diagonalisable et ses valeurs 
+propres λ<SUB><I>k</I></SUB> sont réelles.<BR>
+Il existe une matrice <I>B</I> diagonale et <I>P</I> une matrice de passage orthogonale 
+(i.e. <TT>inv(P)=trn(P)</TT>) tels que :<BR>
+<I>B</I>=<I>tran</I>(<I>P</I>)*<I>M</I>*<I>P</I> i.e. <I>M</I>=<I>trn</I>(<I>A</I>)*<I>A</I>=<I>P</I>*<I>B</I>*<I>trn</I>(<I>P</I>)<BR>
+On a de plus :<BR>
+<I>Mv</I><SUB><I>k</I></SUB>=λ<SUB><I>k</I></SUB><I>v</I><SUB><I>k</I></SUB> et<BR>
+ &lt;<I>Av</I><SUB><I>k</I></SUB>,<I>Av</I><SUB><I>k</I></SUB>&gt;=&lt;<I>v</I><SUB><I>k</I></SUB>,<I>Mv</I><SUB><I>k</I></SUB>&gt;=&lt;<I>v</I><SUB><I>k</I></SUB>,λ<SUB><I>k</I></SUB><I>v</I><SUB><I>k</I></SUB>&gt;=λ<SUB><I>k</I></SUB>&lt;<I>v</I><SUB><I>k</I></SUB>,<I>v</I><SUB><I>k</I></SUB>&gt;<SUB><I>k</I></SUB><BR>
+Comme &lt;<I>Av</I><SUB><I>k</I></SUB>,<I>Av</I><SUB><I>k</I></SUB>&gt;≥ 0 on en déduit que
+les λ<SUB><I>k</I></SUB> sont positifs.<BR>
+Donc <TT>l2norm(f(x))=sqrt(scalar_product(trn(P)*x,B*trn(P)*x))</TT><BR>
+Si <I>y</I>=<I>trn</I>(<I>P</I>)*<I>x</I>=(<I>y</I><SUB>0</SUB>...<I>y</I><SUB><I>n</I>−1</SUB>) on a :<BR>
+&lt;<I>y</I>,<I>y</I>&gt;=&lt;<I>x</I>,<I>P</I>*<I>trn</I>(<I>P</I>)<I>x</I>&gt;=&lt;<I>x</I>,<I>x</I>&gt;<BR>
+<I>B</I>*<I>y</I>=∑<SUB><I>k</I></SUB> λ<SUB><I>k</I></SUB>*<I>y</I><SUB><I>k</I></SUB> et &lt;<I>y</I>,<I>B</I>*<I>y</I>&gt;=∑<SUB><I>k</I></SUB> λ<SUB><I>k</I></SUB>*<I>y</I><SUB><I>k</I></SUB><SUP>2</SUP><BR>
+Donc :<BR>
+<TT>l2norm(f(x))</TT>=√<SPAN style="text-decoration:overline">∑</SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SPAN style="text-decoration:overline"> λ</SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SPAN style="text-decoration:overline">*<I>y</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+Or puisque λ<SUB><I>k</I></SUB>&gt;0 on a :<BR>
+∑<SUB><I>k</I></SUB> λ<SUB><I>k</I></SUB>*<I>y</I><SUB><I>k</I></SUB><SUP>2</SUP>≤ <I>max</I><SUB><I>k</I></SUB>(λ<SUB><I>k</I></SUB>)∑<SUB><I>k</I></SUB> <I>y</I><SUB><I>k</I></SUB><SUP>2</SUP>
+et<BR>
+√<SPAN style="text-decoration:overline">λ</SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB> existe<BR>
+ et<BR>
+√<SPAN style="text-decoration:overline">∑</SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SPAN style="text-decoration:overline"> <I>y</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP>=&lt;<I>y</I>,<I>y</I>&gt;=&lt;<I>x</I>,<I>x</I>&gt;=√<SPAN style="text-decoration:overline">∑</SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SPAN style="text-decoration:overline"> <I>x</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+Donc :<BR>
+<TT>l2norm(f(x))</TT>≤ max<SUB><I>k</I></SUB>(√<SPAN style="text-decoration:overline">λ</SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB>)*√<SPAN style="text-decoration:overline">∑</SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SPAN style="text-decoration:overline"> <I>x</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>k</I></SPAN></SUB><SUP><SPAN style="text-decoration:overline">2</SPAN></SUP><BR>
+Montrons que ce maximum est atteint.<BR>
+Soit λ<SUB><I>m</I></SUB>=<I>max</I><SUB><I>k</I></SUB>(λ<SUB><I>k</I></SUB>) et <I>v</I><SUB><I>m</I></SUB> le vecteur propre associé.<BR>
+On a alors :<BR>
+<TT>l2norm(f(vm))= sqrt(scalar_product(A*vm,A*vm))</TT><BR>
+<TT>l2norm(f(vm))=</TT> √<SPAN style="text-decoration:overline">λ</SPAN><SUB><SPAN style="text-decoration:overline"><I>m</I></SPAN></SUB><SPAN style="text-decoration:overline">*&lt;<I>v</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>m</I></SPAN></SUB><SPAN style="text-decoration:overline">,<I>v</I></SPAN><SUB><SPAN style="text-decoration:overline"><I>m</I></SPAN></SUB><SPAN style="text-decoration:overline">&gt;</SPAN>=√<SPAN style="text-decoration:overline">λ</SPAN><SUB><SPAN style="text-decoration:overline"><I>m</I></SPAN></SUB>*<TT>l2norm(vm)</TT>.
+Donc puisque √<SPAN style="text-decoration:overline">λ</SPAN><SUB><SPAN style="text-decoration:overline"><I>m</I></SPAN></SUB> est la plus 
+grande racine carrée des valeurs propres de <TT>trn(A)*A</TT>, on a :<BR>
+√<SPAN style="text-decoration:overline">λ</SPAN><SUB><SPAN style="text-decoration:overline"><I>m</I></SPAN></SUB>=<TT>max(SVL(A))</TT>.<BR>
+Donc : <TT>matrix_norm(A,2)=max(SVL(A))</TT></P><HR>
 <A HREF="cascmd_fr629.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr631.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

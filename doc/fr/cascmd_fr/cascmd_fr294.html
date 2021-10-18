@@ -6,102 +6,60 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Définition d’une fonction</TITLE>
+<TITLE>Les fonctions ayant plusieurs usages</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr293.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr295.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc371">6.18.3</A>  Définition d’une fonction</H3><H4 CLASS="subsubsection"><A NAME="toc7"></A>Définition d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ</H4><P>
-On tape pour définir la fonction <I>f</I> : (<I>x</I>)−&gt;<I>x</I>*sin(<I>x</I>) :
-</P><DIV CLASS="center"><TT>f(x):=x*sin(x)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>f:=x-&gt;x*sin(x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;x*sin(x)</TT></DIV><P>
-On tape pour définir la fonction <I>f</I> : (<I>x</I>,<I>y</I>)−&gt;<I>x</I>*sin(<I>y</I>) :
-</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>f:=(x,y)-&gt;x*sin(y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x,y)-&gt;x*sin(y)</TT></DIV><P>
-<B>Attention !!!</B> ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué.
-</P><H4 CLASS="subsubsection"><A NAME="toc8"></A>Définition d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ<SUP><I>q</I></SUP></H4><P>
-On tape pour définir la fonction <I>h</I> : (<I>x</I>,<I>y</I>)−&gt;(<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)) :
-</P><DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV><P>
-On tape pour définir la fonction <I>h</I> : (<I>x</I>,<I>y</I>)−&gt;[<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)] :
-</P><DIV CLASS="center"><TT>h(x,y):=[x*cos(y),x*sin(y)];</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>h:=(x,y)-&gt;[x*cos(y),x*sin(y)];</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>h(x,y):={[x*cos(y),x*sin(y)]};</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>h:=(x,y)-&gt;return[x*cos(y),x*sin(y)];</TT></DIV><P>
-Ou on tape 
-</P><DIV CLASS="center"><TT>h(x,y):={return [x*cos(y),x*sin(y)];}</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x,y)-&gt;{return([x*cos(y),x*sin(y)]);}</TT></DIV><P>
-<B>Attention !!!</B> ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué.
-</P><H4 CLASS="subsubsection"><A NAME="toc9"></A>Définition d’une fonction de ℝ<SUP><I>p</I>−1</SUP> dans ℝ<SUP><I>q</I></SUP> à partir d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ<SUP><I>q</I></SUP></H4><P>
-On définit la fonction <I>f</I>(<I>x</I>,<I>y</I>)=<I>x</I>*sin(<I>y</I>), puis on veut définir la famille
-de fonctions dépendant du paramètre <I>t</I> par
-<I>g</I>(<I>t</I>)(<I>y</I>):=<I>f</I>(<I>t</I>,<I>y</I>).<BR>
-Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
-définir <I>g</I>(<I>t</I>) par <TT>g(t):=y-&gt;f(t,y)</TT> et on doit utiliser la commande
-<TT>unapply</TT>.<BR>
-On tape pour définir les fonctions <I>f</I>(<I>x</I>,<I>y</I>)=<I>x</I>sin(<I>y</I>) et <I>g</I>(<I>t</I>)=<I>y</I>−&gt;<I>f</I>(<I>t</I>,<I>y</I>) :
-</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y);g(t):=unapply(f(t,y),y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>((x,y)-&gt;x*sin(y), (t)-&gt;unapply(f(t,y),y))</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>g(2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>y-&gt;2</TT><TT>·</TT><TT> sin(y)</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>g(2)(1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT><TT>·</TT><TT> sin(1)</TT></DIV><P>On définit la fonction <I>h</I>(<I>x</I>,<I>y</I>)=(<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)), 
-puis on veut définir la famille de fonctions dépendant du paramètre <I>t</I> 
-par <I>k</I>(<I>t</I>)(<I>y</I>):=<I>h</I>(<I>t</I>,<I>y</I>).<BR>
-Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
-définir <I>k</I>(<I>t</I>) par <I>k</I>(<I>t</I>):=<I>y</I>−&gt;<I>h</I>(<I>x</I>,<I>y</I>) et on est obligé d’utiliser la 
-commande <TT>unapply</TT>.<BR>
-On tape pour définir la fonction <I>h</I>(<I>x</I>,<I>y</I>) :
-</P><DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV><P>
-On tape pour définir la fonction <I>k</I>(<I>t</I>) :
-</P><DIV CLASS="center"><TT>k(t):=unapply(h(x,t),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(t)-&gt;unapply(h(x,t),x)</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>k(2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;(x*cos(2),x*sin(2))</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>k(2)(1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(2*cos(1),2*sin(1))</TT></DIV><P>
-Ou encore
-On définit la fonction <I>h</I>(<I>x</I>,<I>y</I>)=[<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)], 
-puis on veut définir la famille de fonctions dépendant du paramètre <I>t</I> 
-par <I>k</I>(<I>t</I>)(<I>y</I>):=<I>h</I>(<I>t</I>,<I>y</I>).<BR>
-Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
-définir <I>k</I>(<I>t</I>) par <I>k</I>(<I>t</I>):=<I>y</I>−&gt;<I>h</I>(<I>x</I>,<I>y</I>) et on est obligé d’utiliser la 
-commande <TT>unapply</TT>.<BR>
-On tape pour définir la fonction <I>h</I>(<I>x</I>,<I>y</I>) :
-</P><DIV CLASS="center"><TT>h(x,y):={[x*cos(y),x*sin(y)]}</TT></DIV><P>
-On tape pour définir la fonction <I>k</I>(<I>t</I>) :
-</P><DIV CLASS="center"><TT>k(t):=unapply(h(x,t),x)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(t)-&gt;unapply(h(x,t),x)</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>k(2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x)-&gt;{[x*cos(2),x*sin(2)];}</TT></DIV><P>
-On tape 
-</P><DIV CLASS="center"><TT>k(2)(1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[2</TT><TT>·</TT><TT> cos(1),2</TT><TT>·</TT><TT> sin(1)]</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc371">6.18.1</A>  Les fonctions ayant plusieurs usages</H3><H4 CLASS="subsubsection"><A NAME="toc4"></A><TT>+</TT> et <TT>-</TT></H4><P><A NAME="@default504"></A><A NAME="@default505"></A><A NAME="@default506"></A><A NAME="@default507"></A>
+<TT>+</TT> (resp <TT>-</TT>) est une fonction infixée et <TT>’+’</TT> 
+(resp <TT>’-’</TT>) est une fonction préfixée. Elle renvoie un résultat qui 
+dépend de la nature de ses arguments.<BR>
+Voici des exemples avec <TT>+</TT> (seul le dernier exemple n’est pas utilisable 
+avec <TT>-</TT>) :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On tape (1,2)+(3,4) ou (1,2,3)+4=1+2+3+4 ou’+’(1,2,3,4), on obtient 10,
+</LI><LI CLASS="li-itemize">On tape 1+i+2+3*i ou ’+’(1,i,2,3*i), on obtient 3+4*i,
+</LI><LI CLASS="li-itemize">On tape [1,2,3]+[4,1] ou [1,2,3]+[4,1,0] ou ’+’([1,2,3],[4,1]), on 
+obtient [5,3,3],
+</LI><LI CLASS="li-itemize">On tape [1,2]+[3,4] ou ’+’([1,2],[3,4]), on obtient [4,6], 
+</LI><LI CLASS="li-itemize">On tape [[1,2],[3,4]]+ [[1,2],[3,4]], on obtient [[2,4],[6,8]],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]+4 ou ’+’([1,2,3],4), on obtient poly1[1,2,7],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]+(4,1) ou ’+’([1,2,3],4,1), on obtient poly1[1,2,8],
+</LI><LI CLASS="li-itemize">On tape "bon"+"jour" ou ’+’("bon","jour"), on obtient "bonjour".
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc5"></A><TT>*</TT></H4><P><A NAME="@default508"></A><A NAME="@default509"></A>
+<TT>*</TT> est une fonction infixée et <TT>’*’</TT> 
+est une fonction préfixée. Elle renvoie un résultat qui 
+dépend de la nature de ses arguments.<BR>
+Voici des exemples avec <TT>*</TT> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On tape (1,2)*(3,4) ou (1,2,3)*4 ou 1*2*3*4 ou ’*’(1,2,3,4), on obtient 
+24,
+</LI><LI CLASS="li-itemize">On tape 1*i*2*3*i ou ’*’(1,i,2,3*i), on obtient -6,
+</LI><LI CLASS="li-itemize">On tape [10,2,3]*[4,1] ou [10,2,3]*[4,1,0] ou ’+’([10,2,3],[4,1]), 
+on obtient 42 (produit scalaire),
+</LI><LI CLASS="li-itemize">On tape [1,2]*[3,4] ou ’*’([1,2],[3,4]), on obtient 11 (produit scalaire),
+</LI><LI CLASS="li-itemize">On tape [[1,2],[3,4]]* [[1,2],[3,4]], on obtient [[7,10],[15,22]],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]*4=’*’([1,2,3],4), on obtient [4,8,12],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]*(4,2)ou ’*’([1,2,3],4,2), on obtient [1,2,3]*8=[8,16,24],
+</LI><LI CLASS="li-itemize">On tape (1,2)+i*(2,3), on obtient 1+2+i*2*3=3+6*i.
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc6"></A><TT>/</TT></H4><P><A NAME="@default510"></A><A NAME="@default511"></A>
+<TT>/</TT> est une fonction infixée et <TT>’/’</TT> 
+est une fonction préfixée. Elle renvoie un résultat qui 
+dépend de la nature de ses arguments.<BR>
+Voici des exemples avec <TT>/</TT> :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On tape [10,2,3]/[4,1], on obtient invalid dim,
+</LI><LI CLASS="li-itemize">On tape [1,2]/[3,4] ou ’/’([1,2],[3,4]), on obtient [1/3,1/2], 
+</LI><LI CLASS="li-itemize">On tape 1/[[1,2],[3,4]], on obtient [[-2,1],[3/2,(-1)/2]],
+</LI><LI CLASS="li-itemize">On tape [[1,2],[3,4]]*1/ [[1,2],[3,4]], on obtient [[1,0],[0,1]],
+</LI><LI CLASS="li-itemize">On tape [[1,2],[3,4]]/ [[1,2],[3,4]], on obtient [[1,1],[1,1]] (division
+terme à terme),
+</LI><LI CLASS="li-itemize">On tape [1,2,3]*4 ou ’*’([1,2,3],4), on obtient [4,8,12],
+</LI><LI CLASS="li-itemize">On tape [1,2,3]/(4,2) ou ’*’([1,2,3],4,2)=[1,2,3]*8, on obtient [8,16,24].
+</LI></UL><HR>
 <A HREF="cascmd_fr293.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr295.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

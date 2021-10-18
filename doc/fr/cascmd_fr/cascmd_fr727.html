@@ -6,54 +6,81 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Régression logarithmique : logarithmic_regression</TITLE>
+<TITLE>La covariance : covariance</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr726.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr728.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc864">8.2.14</A>  Régression logarithmique : <TT>logarithmic_regression</TT></H3><P><A NAME="@default1303"></A>
-Pour approcher les données par une fonction logarithmique d’équation 
-<I>y</I>=<I>m</I>ln(<I>x</I>)+<I>b</I>, on utilise <TT>logarithmic_regression</TT> qui renvoie le couple 
-(<I>m</I>,<I>b</I>).<BR>
-<TT>logarithmic_regression</TT> a les mêmes arguments que <TT>covariance</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc865">8.2.1</A>  La covariance : <TT>covariance</TT></H3><P><A NAME="@default1307"></A>
+La covariance de deux variables aléatoires
+<I>X</I> et <I>Y</I> est :<BR>
+<I>cov</I>(<I>X</I>,<I>Y</I>)=<I>E</I>((<I>X</I>−<SPAN style="text-decoration:overline">X</SPAN>)(<I>Y</I>−Ȳ)).<BR>
+<TT>covariance</TT> a différentes sortes d’arguments :</P><P>- quand les effectifs sont égaux à 1,<BR>
+ <TT>covariance</TT> a pour argument deux 
+listes de même longueur ou une matrice ayant deux colonnes.<BR>
+<TT>covariance</TT> calcule la covariance numérique des deux listes ou
+deux colonnes de cette matrice.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>evalf(logarithmic_regression([[1,1],[2,4],[3,9],[4,16]]))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>covariance([1,2,3,4],[1,4,9,16])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>25/4</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>covariance([[1,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>25/4</TT></DIV><P>
+Car on a :<BR>
+1/4*(1+8+27+64)-75/4=25/4<BR>
+On tape (on a <TT>A:=[0,1,2,3,4,5,6,7,8,9,10,11]</TT>) :
+</P><DIV CLASS="center"><TT>covariance(A,A</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1573/12</TT></DIV><P>- quand les effectifs sont différents de 1 :<BR>
+- si les couples <I>a</I>[<I>j</I>],<I>b</I>[<I>j</I>] ont pour 
+effectif <I>n</I>[<I>j</I>] (<I>j</I>=0..<I>p</I>−1), <TT>covariance</TT> a pour argument 
+trois listes <I>a</I>, <I>b</I>, <I>n</I> de même longueur <I>p</I>, ou 
+une matrice de trois colonnes <I>a</I>, 
+<I>b</I>, <I>n</I> et de <I>p</I> lignes [<I>a</I>[<I>j</I>],<I>b</I>[<I>j</I>],<I>n</I>[<I>j</I>]].<BR>
+<TT>covariance</TT> calcule la covariance numérique 
+des deux premières listes pondérées par la liste donnée comme dernier 
+argument ou 
+des deux colonnes de cette matrice pondérées par la troisiéme colonne.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>covariance([1,2,3,4],[1,4,9,16],[3,1,5,2])</TT></DIV><P>
 Ou on tape :
-</P><DIV CLASS="center"><TT>evalf(logarithmic_regression([1,2,3,4],[1,4,9,16]))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>covariance([[1,1,3],[2,4,1],[3,9,5],[4,16,2]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>10.1506450002,-0.564824055818</TT></DIV><P>
-c’est donc la fonction logarithmique d’équation 
-<I>y</I>=10.15ln(<I>x</I>)−0.565 qui approche au mieux les données.<BR>
+</P><DIV CLASS="center"><TT>662/121</TT></DIV><P>- si les couples <I>a</I>[<I>j</I>],<I>b</I>[<I>k</I>] ont pour effectif <I>N</I>[<I>j</I>,<I>k</I>] (<I>j</I>=0..<I>p</I>−1,<I>k</I>=0..<I>q</I>−1), 
+<TT>covariance</TT> a pour argument deux listes <I>a</I>, <I>b</I> de longueurs respectives 
+<I>p</I> et <I>q</I> et une matrice <I>N</I> de <I>p</I> lignes et <I>q</I> colonnes ou encore,<BR>
+afin de pouvoir écrire les données de façon plaisante dans le tableur,
+<TT>covariance</TT> peut aussi avoir deux arguments, une matrice <I>M</I> et -1.<BR>
+<I>M</I> est alors un tableau à deux entrées égal à :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>M</I>=</TD><TD CLASS="dcell">⎡<BR>
+⎢<BR>
+⎢<BR>
+⎢<BR>
+⎣</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>a</I> ∖ <I>b</I></TD><TD ALIGN=center NOWRAP><I>b</I>[0]</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP><I>b</I>[<I>q</I>−1]</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>a</I>[0]</TD><TD ALIGN=center NOWRAP><I>N</I>[0,0]</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP><I>N</I>[0,<I>q</I>−1]</TD></TR>
+<TR><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP>...</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>a</I>[<I>p</I>−1]</TD><TD ALIGN=center NOWRAP><I>N</I>[<I>p</I>−1,0]</TD><TD ALIGN=center NOWRAP>...</TD><TD ALIGN=center NOWRAP><I>N</I>[<I>p</I>−1,<I>q</I>−1]</TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+</TD><TD CLASS="dcell">⎤<BR>
+⎥<BR>
+⎥<BR>
+⎥<BR>
+⎦</TD></TR>
+</TABLE><P>
+<TT>covariance(a,b,N)</TT> ou <TT>covariance(M,-1)</TT> calcule la covariance 
+numérique des couples <I>a</I>[<I>j</I>],<I>b</I>[<I>k</I>] pondérés par <I>N</I><SUB><I>j</I>,<I>k</I></SUB>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>X:=[1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8]</TT></DIV><DIV CLASS="center"><TT>Y:=[1.6,2.15,2.65,3.12,3.56,3.99,4.4,4.8,5.18,</TT></DIV><DIV CLASS="center"><TT>5.58,5.92,6.27,6.62,7.06,7.3]</TT></DIV><DIV CLASS="center"><TT>logarithmic_regression(X,Y)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>covariance([1,2,3,4],[1,4,9,16],[[3,0,0,0],</TT></DIV><DIV CLASS="center"><TT>[0,1,0,0],[0,0,5,0],[0,0,0,2]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2.83870854646,0.843078064152</TT></DIV><P>
-c’est donc la fonction logarithmique d’équation 
-<I>y</I>=0.84ln(<I>x</I>)+2.84 qui approche au mieux les données .<BR>
-On vérifie en tapant :<BR>
-</P><DIV CLASS="center"><TT>linear_regression(ln(X),Y)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>662/121</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>covariance([[b</TT><TT>∖</TT><TT>a,1,2,3,4],[1,3,0,0,0],</TT></DIV><DIV CLASS="center"><TT>[4,0,1,0,0],[9,0,0,5,0],[16,0,0,0,2]],-1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2.83870854646,0.843078064152</TT></DIV><P>
-et le coefficient de corrélation est :
-</P><DIV CLASS="center"><TT>correlation(ln(X),Y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.977939822434</TT></DIV><P>
-On peut aussi taper pour chercher une meilleur approximation :
-</P><DIV CLASS="center"><TT>logarithmic_regression(X,log(Y))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.732351031846,0.467599676658</TT></DIV><P>
-c’est donc la fonction logarithmique d’équation 
-<I>z</I>=ln(<I>y</I>)=0.73ln(<I>x</I>)+0.47 qui approche au mieux les données.<BR>
-On vérifie en tapant :<BR>
-</P><DIV CLASS="center"><TT>linear_regression(ln(X),ln(Y))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.732351031846,0.467599676658</TT></DIV><P>
-et le coefficient de corrélation est :
-</P><DIV CLASS="center"><TT>correlation(ln(X),ln(Y))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.999969474543</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>662/121</TT></DIV><HR>
 <A HREF="cascmd_fr726.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr728.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

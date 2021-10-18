@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+            "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<META name="GENERATOR" content="hevea 1.10">
+<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<TITLE>Exercice 1</TITLE>
+</HEAD>
+<BODY >
+<A HREF="cascmd_fr1094.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr1096.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+<HR>
+<H3 CLASS="subsection"><A NAME="htoc1284">11.18.1</A>  Exercice 1</H3><P>
+Soit <TT>SABCD</TT> une pyramide de sommet <TT>S</TT> dont la base <TT>ABCD</TT> est un 
+parallélogramme de centre <TT>O</TT>.<BR>
+Soient <TT>M</TT> et <TT>N</TT> les milieux respectifs de <TT>SA</TT> et <TT>SD</TT>.<BR>
+Montrer que les plans <TT>OMN</TT> et <TT>SBC</TT> sont parallèles.<BR>
+Pour faire la figure, on tape :
+</P><PRE CLASS="verbatim">// dessin exo1
+A:=point(2,2,0);
+B:=point(-2,2,0);
+C:=point(-3,-2,0);
+D:=point(1,-2,0);
+S:=point(0,0,4);
+polyedre(S,A,B,C,D);
+M:=milieu(S,A);
+N:=milieu(S,D);
+O:=milieu(A,C);
+P:=plan(O,M,N);
+Q:=plan(S,B,C);
+est_parallele(P,Q);
+</PRE><P>Pour faire la démonstration avec <TT>Xcas</TT>, on tape :
+</P><PRE CLASS="verbatim">// demo exo1
+A:=point(a,b,c);
+B:=point(d,e,f);
+D:=point(u,v,w);
+C:=B+(D-A);
+//S:=isobarycentre(A,B,C,D)+t*cross(B-A,D-A);
+S:=point(k,l,m);
+M:=milieu(S,A);
+N:=milieu(S,D);
+O:=milieu(A,C);
+P:=plan(O,M,N);
+Q:=plan(S,B,C);
+est_parallele(P,Q);
+</PRE><P>On obtient :
+<TT>1</TT><BR>
+ce qui veut dire que les plans <TT>P</TT> et <TT>Q</TT> sont parallèles.<BR>
+ 
+La démonstration géométrique :<BR>
+Soit <TT>R</TT> le milieu de <TT>AB</TT>.<BR>
+On a :<BR>
+<TT>M</TT> est le milieu de <TT>SA </TT> et <TT>N</TT> est le milieu de <TT>SD</TT>, donc
+<TT>MN</TT> est parallèle à <TT>AD</TT> et <TT>2*MN=AD</TT><BR>
+<TT>M</TT> est le milieu de <TT>SA </TT> et <TT>R</TT> est le milieu de <TT>AB</TT>, donc
+<TT>MR</TT> est parallèle à <TT>SB</TT> et <TT>2*MR=SB</TT><BR>
+<TT>O</TT> est le milieu de <TT>AC </TT> et <TT>R</TT> est le milieu de <TT>AB</TT>, donc
+<TT>OR</TT> est parallèle à <TT>CB</TT> et <TT>2*OR=CB</TT><BR>
+ou encore :<BR>
+<TT>2*<I>MN</I>=<I>AD</I></TT><BR>
+<TT>2*<I>MR</I>=<I>SB</I></TT><BR>
+<TT>2*<I>OR</I>=<I>CB</I></TT><BR>
+La base <TT>ABCD</TT> est un parallélogramme donc :<BR>
+<TT><I>overrightarrow</I></TT><TT><I>AD</I></TT><TT>=<I>BC</I></TT><BR>
+On en déduit que <TT>MNOR</TT> est un parallélogramme dont le plan est 
+parallèle à la face <TT>SBC</TT>.
+</P><HR>
+<A HREF="cascmd_fr1094.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
+<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
+<A HREF="cascmd_fr1096.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
+</BODY>
+</HTML>

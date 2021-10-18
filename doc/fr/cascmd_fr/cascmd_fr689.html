@@ -6,25 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Évaluation numérique : evalf</TITLE>
+<TITLE>Résoudre un système linéaire par la méthode itérative de
+Gauss-Seidel : gauss_seidel_linsolve</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr688.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr690.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc812">6.64.6</A>  Évaluation numérique : <TT>evalf</TT></H3><P><A NAME="@default1244"></A>
-<TT>evalf</TT> a comme paramètre une expression ou une matrice.<BR>
-<TT>evalf</TT> renvoie la valeur numérique de
-l’expression ou de la matrice.<BR>
+<H3 CLASS="subsection"><A NAME="htoc810">6.62.8</A>  Résoudre un système linéaire par la méthode itérative de
+Gauss-Seidel : <TT>gauss_seidel_linsolve</TT></H3><P>
+<A NAME="@default1249"></A>
+<TT>gauss_seidel_linsolve</TT> a comme paramètres :<BR>
+la valeur de omega (par défaut omega=1),<BR>
+la matrice du système <I>A</I>,<BR>
+le second membre <I>b</I> sous la forme d’une liste,<BR>
+la tolérance <I>eps</I> et<BR>
+le nombre maximum d’itération <I>maxiter</I>.<BR>
+<TT>gauss_seidel_linsolve</TT> permet de résoudre un système d’équations 
+linéaires de matrice <I>A</I> et de second membre <I>b</I>, par la méthode itérative
+de Gauss-Seidel (par défaut omega=1) ou de relaxation avec une tolérance de 
+<I>eps</I> et un nombre maximal d’itérations de <I>maxiter</I>.<BR>
+<TT>gauss_seidel_linsolve</TT> renvoie une liste qui est solution du système 
+d’équations.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>evalf(sqrt(2))</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>A:=[[100,2],[2,100]];</TT></DIV><DIV CLASS="center"><TT>gauss_seidel_linsolve(A,[0,1],1e-12);</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.41421356237</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[-0.0002000800320128,0.01000400160064]</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>evalf([[1,sqrt(2)],[0,1]])</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>A:=[[100,2],[2,100]];</TT></DIV><DIV CLASS="center"><TT>gauss_seidel_linsolve(1.5,A,[0,1],1e-12);</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1.0,1.41421356237],[0.0,1.0]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[-0.00020008003221835,0.010004001600635]</TT></DIV><P> 
+Si on tape :
+</P><DIV CLASS="center"><TT>evalf(linsolve(A,[0.1]))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-0.000200080032013,0.0100040016006]</TT></DIV><HR>
 <A HREF="cascmd_fr688.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr690.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

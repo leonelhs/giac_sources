@@ -6,25 +6,59 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Numérateur : getNum</TITLE>
+<TITLE>Base de Gröbner : gbasis</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr416.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr418.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc507">6.31.1</A>  Numérateur : <TT>getNum</TT></H3><P><A NAME="@default762"></A><A NAME="sec:getnum"></A>
-<TT>getNum</TT> a comme argument une fraction 
-rationnelle et renvoie le numérateur de cette fraction non
-simplifiée.<BR>
+<H3 CLASS="subsection"><A NAME="htoc507">6.31.1</A>  Base de Gröbner : <TT>gbasis</TT></H3><P><A NAME="@default771"></A>
+<A NAME="sec:gbasis"></A>
+<TT>gbasis</TT> a au moins deux arguments : 
+une liste de polynômes de 
+plusieurs variables et la liste du nom de ces variables.<BR>
+<TT>gbasis</TT> renvoie une base de Gröbner de l’idéal polynomial engendré
+par les polynômes donnés dans le premier argument.<BR>
+On choisit d’ordonner les monômes selon l’ordre lexicographique en accord 
+avec la liste donnée par le dernier 
+argument et selon les puissances décroissantes : par exemple on écrira
+<I>x</I><SUP>2</SUP>*<I>y</I><SUP>4</SUP>*<I>z</I><SUP>3</SUP> puis <I>x</I><SUP>2</SUP>*<I>y</I><SUP>3</SUP>*<I>z</I><SUP>4</SUP> si le deuxième argument est [<I>x</I>,<I>y</I>,<I>z</I>] car
+(2,4,3)&gt;(2,3,4) mais on écrira <I>x</I><SUP>2</SUP>*<I>y</I><SUP>3</SUP><I>z</I><SUP>4</SUP> puis <I>x</I><SUP>2</SUP>*<I>y</I><SUP>4</SUP>*<I>z</I><SUP>3</SUP> si le
+deuxième argument est [<I>x</I>,<I>z</I>,<I>y</I>].<BR>
+Si <I>I</I> est un idéal et si 
+(<I>G</I><SUB><I>k</I></SUB>)<SUB><I>k</I> ∈ <I>K</I></SUB> est une base de Gröbner de l’idéal <I>I</I> alors,
+si <I>F</I> est un polynôme non nul de <I>I</I>, le terme dominant de <I>F</I> 
+est divisible par le terme dominant d’un <I>G</I><SUB><I>k</I></SUB>.<BR>
+Propriété : Si on fait la division euclidienne de <I>F</I> par un des <I>G</I><SUB><I>k</I></SUB> 
+puis, si on recommence avec le reste obtenu et le <I>G</I><SUB><I>k</I></SUB> suivant, on finit par obtenir un reste nul.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>getNum((x</TT><CODE><TT>^</TT></CODE><TT>2-1)/(x-1)) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>gbasis([2*x*y-y</TT><CODE><TT>^</TT></CODE><TT>2,x</TT><CODE><TT>^</TT></CODE><TT>2-2*x*y],[x,y])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>getNum((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1)/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)) </TT></DIV><P>
-On obtient :)
-</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[y</TT><CODE><TT>^</TT></CODE><TT>3,x*y+(-1/2)*y</TT><CODE><TT>^</TT></CODE><TT>2,x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2]</TT></DIV><P>On peut donner des arguments supplémentaires :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>plex</TT> (lexicographique pur utilisé par défaut)), <TT>tdeg</TT> 
+(degré total puis ordre lexicographique),
+<TT>revlex</TT> (degré total puis ordre lexicographique inverse), pour
+spécifier un ordre sur les monômes différent de l’ordre
+par défaut (qui est <TT>plex</TT>),
+</LI><LI CLASS="li-itemize"><TT>with_cocoa=true</TT> ou <TT>with_cocoa=false</TT>, si on veut
+utiliser la librairie <TT>CoCoA</TT> pour faire le calcul de la base
+de Gröbner.
+</LI><LI CLASS="li-itemize"><TT>with_f5=true</TT> ou <TT>with_f5=false</TT> pour utiliser
+l’implémentation de l’algorithme F5 de la librairie <TT>CoCoA</TT>.
+L’ordre spécifié n’est alors pas utilisé, les polynômes étant 
+homogénéisés.
+</LI></UL><P>
+On tape :
+</P><DIV CLASS="center">
+<CODE>gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1],</CODE><BR>
+<CODE>[x1,x2,x3],tdeg,with_cocoa=false)</CODE>
+</DIV><P>
+On obtient
+</P><DIV CLASS="center">
+<CODE>[x3^3-1,-x2^2-x2*x3-x3^2,x1+x2+x3]</CODE>
+</DIV><HR>
 <A HREF="cascmd_fr416.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr418.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

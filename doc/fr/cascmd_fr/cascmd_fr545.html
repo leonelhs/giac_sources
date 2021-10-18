@@ -6,25 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le produit vectoriel : cross crossP crossproduct</TITLE>
+<TITLE>Faire une matrice avec une liste : list2mat</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr544.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr546.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc646">6.42.8</A>  Le produit vectoriel : <TT>cross crossP crossproduct</TT></H3><P><A NAME="@default974"></A><A NAME="@default975"></A><A NAME="@default976"></A>
-<TT>cross</TT> ou <TT>crossP</TT> ou <TT>crossproduct</TT> calcule les composantes du 
-produit vectoriel des deux vecteurs dont les composantes sont données en 
-argument.<BR>
+<H3 CLASS="subsection"><A NAME="htoc646">6.42.43</A>  Faire une matrice avec une liste : <TT>list2mat</TT></H3><P><A NAME="@default973"></A>
+<TT>list2mat</TT> permet d’obtenir la matrice des termes de
+la liste donnée comme argument en scindant la liste selon le nombre de
+colonnes spécifiées. Si il manque des termes, la liste est complétée 
+par des <TT>0</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cross([1,2,3],[4,3,2])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>cross(vecteur([1,2,3]),vecteur([4,3,2]))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>list2mat([5,8,1,9,5,6],2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[-5,10,-5]</TT></DIV><P>
-En effet : 
-−5=2*2−3*3,  10=−1*2+4*3,  −5=1*3−2*4.</P><HR>
+</P><DIV CLASS="center"><TT>[[5,8],[1,9],[5,6]]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>list2mat([5,8,1,9],3)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[5,8,1],[9,0,0]]</TT></DIV><P>
+<B>Remarque</B><BR>
+En réponse, les délimiteurs d’une matrice sont [ et ] alors que 
+les délimiteurs d’une liste sont <TT>[</TT> et <TT>]</TT> (la barre verticale des 
+crochets est plus eppaisse pour les matrices). 
+</P><HR>
 <A HREF="cascmd_fr544.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr546.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

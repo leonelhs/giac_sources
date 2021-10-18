@@ -6,41 +6,35 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les points d’intersection de deux objets géométriques : inter</TITLE>
+<TITLE>Avoir du papier avec des lignes : papier_ligne 
+line_paper</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr881.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr883.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1039">10.8.6</A>  Les points d’intersection de deux objets géométriques : <TT>inter</TT></H3><P><A NAME="@default1710"></A><A NAME="sec:inter2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr996.html#sec:inter3">11.4.4</A> pour la géométrie 3-d.<BR>
-<TT>inter</TT> a soit 2 arguments soit 3 arguments.
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <TT>inter</TT> a 2 arguments qui sont deux objets géométriques.<BR>
-<TT>inter</TT> renvoie la liste des points d’intersection de ces deux objets 
-géométriques.<BR>
-</LI><LI CLASS="li-itemize">si <TT>inter</TT> a 2 arguments qui sont deux objets géométriques et 
-un point.<BR>
-<TT>inter</TT> renvoie le point d’intersection de ces deux objets géométriques
-le plus proche du point donné comme troisième argument.
-</LI></UL><P>
-On tape en géométrie plane :
-</P><DIV CLASS="center"><TT>A:=inter(droite(0,1+i),droite(1,i))[0]</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1034">10.2.7</A>  Avoir du papier avec des lignes : <TT>papier_ligne<BR>
+line_paper</TT></H3><P><A NAME="@default1596"></A><A NAME="@default1597"></A>
+<TT>papier_ligne</TT> permet d’avoir du papier avec des lignes 
+espacées de <I>ux</I> sur l’axe des <I>x</I> et faisant un angle <I>t</I> avec 
+l’horizontale.<BR>
+<TT>papier_ligne</TT> a 2, 3 ou 4 arguments : l’unité <TT>ux</TT> sur l’axe des 
+<I>x</I>, l’angle <TT>t</TT> formé par l’axe des <I>y</I> et des <I>x</I> et éventuellement 
+<TT>x=xmin..xmax,y=ymin..ymax</TT> pour avoir ces lignes dans le rectangle
+<TT>[xmin..xmax]*[ymin..ymax]</TT>. Par défaut <TT>xmin,xmax,ymin,ymax</TT> sont
+les valeurs définies dans <TT>Cfg-&gt;Configuration graphique</TT>.<BR>
+Vous avez la possibilité d’enlever les axes orthonormés en utilisant
+le bouton <TT>cfg</TT> et en décochant <TT>Montrer les axes</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>papier_ligne(0.6,pi/3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe 1/2+i/2 est tracé avec une croix et est noté A</TT></DIV><P>
-On tape en géométrie plane :
-</P><DIV CLASS="center"><TT>B:=inter(cercle(0,1),droite(1,i))[0]</TT></DIV><DIV CLASS="center"><TT>C:=inter(cercle(0,1),droite(1,i))[1]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>des lignes espacées de 0.6 sur l’axe des </TT><TT><I>x</I></TT><TT> et faisant un angle de </TT><TT>π/3</TT><TT> avec </TT><TT><I>Ox</I></TT><TT> dans le rectangle </TT><TT>[<I>xmin</I>,<I>xmax</I>]×[<I>ymin</I>,<I>ymax</I>]</TT><TT> </TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>papier_ligne(0.6,pi/3,x=-2..3,y=-1..2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe i est tracé avec une croix et est noté B</TT></DIV><DIV CLASS="center"><TT>Le point d’affixe 1 est tracé avec une croix et est noté C</TT></DIV><P>
-On tape en géométrie plane :
-</P><DIV CLASS="center"><TT>L:=inter(cercle(0,1),droite(1,i))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Les points d’affixe i et 1 sont tracés avec une croix et sont notés L</TT></DIV><P>
-On tape en géométrie plane :
-</P><DIV CLASS="center"><TT>D:=inter(cercle(0,1),droite(1,i),point(1/2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe 1 est tracé avec une croix et est noté D</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>des lignes espacées de 0.6 sur l’axe des </TT><TT><I>x</I></TT><TT> et faisant un angle de </TT><TT>π/3</TT><TT> avec </TT><TT><I>Ox</I></TT><TT> dans le rectangle </TT><TT>[-2,3]×[-1,2]</TT>
+</DIV><HR>
 <A HREF="cascmd_fr881.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr883.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

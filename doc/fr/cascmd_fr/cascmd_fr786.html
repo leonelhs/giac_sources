@@ -6,35 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi de exponentielle : exponential_cdf exponentiald_cdf</TITLE>
+<TITLE>Densité de probabilité de la loi beta : betad</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr785.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr787.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc925">8.4.43</A>  Fonction de répartition de la loi de exponentielle : <TT>exponential_cdf exponentiald_cdf</TT></H3><P><A NAME="@default1400"></A><A NAME="@default1401"></A>
-Lorsqu’une variable aléatoire <I>X</I> à valeur dans ℝ<SUP>+</SUP> suit une loi 
-exponentielle de paramètre λ &gt;0 on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>exponential_cdf(lambda,x)</TT> avec <I>x</I>≥ 0.<BR>
-<I>Proba</I>(<I>x</I>≤ <I>X</I>≤ <I>y</I>)=<TT>exponential_cdf(lambda,x,y)</TT> avec <I>x</I>≥ 0 et <I>y</I>≥ 0.<BR>
-On a :<BR>
-<TT>exponential_cdf(lambda,x)</TT> est égale à 
- 1−exp(−<I>x</I>) et<BR>
-<TT>exponential_cdf(lambda,x,y)</TT> est égale à :<BR>
- exp(−<I>x</I>)−exp(−<I>y</I>)<BR>
+<H3 CLASS="subsection"><A NAME="htoc926">8.4.30</A>  Densité de probabilité de la loi beta : <TT>betad</TT></H3><P><A NAME="@default1405"></A>
+<TT>betad</TT> a 3 paramètres : deux réels <I>a</I>,<I>b</I> strictement positifs
+et un réel <I>x</I> de [0,1].<BR>
+<TT>betad(a,b,x)</TT> renvoie la densité de probabilité de la loi beta à 
+savoir :<BR>
+Γ(<I>a</I>+<I>b</I>)*<I>x</I><SUP>(</SUP><I>a</I>−1)*(1−<I>x</I>)<SUP>(</SUP><I>b</I>−1)/(Γ(<I>a</I>)*Γ(<I>b</I>))<BR>
 On tape :
-</P><DIV CLASS="center"><TT>exponential_cdf(2.3,3.2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>betad(2,1,0.3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.99936380154</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.6</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>exponential_cdf(2.3,0.9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>betad(2.2,1.5,0.8)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.873814218295</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>exponential_cdf(2.3,0.9,3.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.125549583246</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1.46143068876</TT></DIV><HR>
 <A HREF="cascmd_fr785.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr787.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,36 +6,55 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynôme de Laguerre : laguerre</TITLE>
+<TITLE>Matrice de Sylvester de deux polynômes : sylvester</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr409.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr411.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc498">6.29.3</A>  Polynôme de Laguerre : <TT>laguerre</TT></H3><P><A NAME="@default755"></A>
-<TT>laguerre</TT> a comme argument un entier <I>n</I> et eventuellement le 
-nom de la variable (<I>x</I> par défaut) et du paramètre (<I>a</I> par défaut).<BR>
-<TT>laguerre</TT> renvoie le polynôme de Laguerre de degré <I>n</I> et de paramètre <I>a</I>.<BR>
-Le polynôme de Laguerre de degré <I>n</I> de paramètre <I>a</I> noté <I>L</I>(<I>n</I>,<I>a</I>,<I>x</I>) 
-vérifie les relations :<BR>
-<I>L</I>(0,<I>a</I>,<I>x</I>)=1<BR>
-<I>L</I>(1,<I>a</I>,<I>x</I>)=1+<I>a</I>−<I>x</I><BR>
-<I>L</I>(<I>n</I>,<I>a</I>,<I>x</I>)=2<I>n</I>+<I>a</I>−1−<I>x</I>/<I>n</I><I>L</I>(<I>n</I>−1,<I>a</I>,<I>x</I>)−<I>n</I>+<I>a</I>−1/<I>n</I><I>L</I>(<I>n</I>−2,<I>a</I>,<I>x</I>)<BR>
-Ces polynômes sont orthogonaux pour le produit scalaire :<BR>
-&lt;<I>f</I>,<I>g</I>&gt;=∫<SUB>0</SUB><SUP>+∞</SUP><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)<I>x</I><SUP><I>a</I></SUP><I>e</I><SUP>−<I>x</I></SUP><I>dx</I><BR>
+<H3 CLASS="subsection"><A NAME="htoc498">6.29.18</A>  Matrice de Sylvester de deux polynômes : <TT>sylvester</TT></H3><P><A NAME="@default764"></A>
+<TT>sylvester</TT> a comme arguments deux polynômes.<BR>
+<TT>sylvester</TT> renvoie la matrice <I>S</I> de Sylvester des deux polynômes.<BR>
+Pour deux polynômes <I>A</I>(<I>x</I>)=∑<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>n</I></SUP> <I>a</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP> et 
+<I>B</I>(<I>x</I>)=∑<SUB><I>i</I>=0</SUB><SUP><I>i</I>=<I>m</I></SUP><I>b</I><SUB><I>i</I></SUB><I>x</I><SUP><I>i</I></SUP>, la matrice <TT>S</TT> de Sylvester est une matrice
+carrée de dimensiom <TT>m+n</TT> dont les <TT>m=degree(B(x))</TT> premières 
+lignes sont composées à partir des coefficients de <I>A</I>(<I>x</I>) :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB>11</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>12</SUB>=<I>a</I><SUB><I>n</I>−1</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>1(<I>n</I>+1)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>21</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>22</SUB>=<I>a</I><SUB><I>n</I></SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>2(<I>n</I>+1)</SUB>=<I>a</I><SUB>1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>2(<I>n</I>+2)</SUB>=<I>a</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>1</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>2</SUB>=0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>(<I>n</I>+1)</SUB>=<I>a</I><SUB><I>m</I>−1</SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB><I>m</I>(<I>n</I>+2)</SUB>=<I>a</I><SUB><I>m</I>−2</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>a</I><SUB>0</SUB> </TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
+et les <TT>n=degree(A(x))</TT> lignes suivantes sont composées de la même 
+façon à partir des coefficients de <TT>B(x)</TT> :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)1</SUB>=<I>b</I><SUB><I>m</I></SUB></TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)2</SUB>=<I>b</I><SUB><I>m</I>−1</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+1)(<I>m</I>+1)</SUB>=<I>b</I><SUB>0</SUB></TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+<TR><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD><TD ALIGN=center NOWRAP>⋱</TD><TD ALIGN=center NOWRAP>⋮</TD></TR>
+<TR><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)1</SUB>=0</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)2</SUB>=0</TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>s</I><SUB>(<I>m</I>+<I>n</I>)(<I>m</I>+1)</SUB>=<I>b</I><SUB><I>n</I>−1</SUB></TD><TD ALIGN=center NOWRAP><I>b</I><SUB><I>n</I>−2</SUB></TD><TD ALIGN=center NOWRAP>⋯</TD><TD ALIGN=center NOWRAP><I>b</I><SUB>0</SUB> </TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
 On tape :
-</P><DIV CLASS="center"><TT>laguerre(2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sylvester(x</TT><CODE><TT>^</TT></CODE><TT>3-p*x+q,3*x</TT><CODE><TT>^</TT></CODE><TT>2-p,x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(a</TT><CODE><TT>^</TT></CODE><TT>2+-2*a*x+3*a+x</TT><CODE><TT>^</TT></CODE><TT>2+-4*x+2)/2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>laguerre(2,y)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>det([[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(a</TT><CODE><TT>^</TT></CODE><TT>2+-2*a*y+3*a+y</TT><CODE><TT>^</TT></CODE><TT>2+-4*y+2)/2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>laguerre(2,y,b)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1/2*b</TT><CODE><TT>^</TT></CODE><TT>2+-b*y+3/2*b+1/2*y</TT><CODE><TT>^</TT></CODE><TT>2-2*y+1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>-4*p</TT><CODE><TT>^</TT></CODE><TT>3--27*q</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr409.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr411.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,26 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Produit terme à terme de deux listes : .*</TITLE>
+<TITLE>Faire une liste avec une fonction : makelist</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr541.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr543.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc643">6.42.5</A>  Produit terme à terme de deux listes : <TT>.*</TT></H3><P><A NAME="@default965"></A><A NAME="sec:hadal"></A>
-Voir aussi <A HREF="cascmd_fr567.html#sec:hadami">6.47.9</A>, <TT>hadamard</TT> pour les matrices (cf <A HREF="cascmd_fr566.html#sec:hadam">6.47.8</A>) et
-<TT>product</TT> pour les listes et les matrices (cf <A HREF="cascmd_fr564.html#sec:product1">6.47.6</A> et <A HREF="cascmd_fr528.html#sec:product">6.41.33</A>)<BR>
-Le produit terme à terme de deux listes de même longueur se fait avec 
-l’opérateur infixé <TT>.*</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc643">6.42.40</A>  Faire une liste avec une fonction : <TT>makelist</TT></H3><P><A NAME="@default963"></A>
+<TT>makelist</TT> fabrique une liste à l’aide d’une fonction, 
+en donnant les bornes de la variable et le pas de cette variable qui par 
+défaut vaut 1 ou -1 selon que l’ordre des bornes.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>[1,2,3] .* [4,3,5]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,3,5)</TT></DIV><P>
+ou bien
+</P><DIV CLASS="center"><TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,3,5,1)</TT></DIV><P>
+ou on définit la fonction <I>h</I>(<I>x</I>)=<I>x</I><SUP>2</SUP> en tapant :
+<TT>h(x):=x</TT><CODE><TT>^</TT></CODE><TT>2</TT> puis
+</P><DIV CLASS="center"><TT>makelist(h,3,5,1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[4,6,15]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[9,16,25]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>[[1,2],[4,3]] .* [[4,3],[5,6]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>makelist(h,5,3,-1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4,6],[20,18]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[25,16,9]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,3,6,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[9,25]</TT></DIV><P>
+<B>Attention!!!</B> il faut purger <TT>x</TT> si <TT>x</TT> est affecté.<BR>
+<B>Remarque</B> :<BR>
+On peut aussi définir une liste constante avec <TT>makelist</TT>.<BR>
+ On tape :<BR>
+<TT>makelist(4,1,3)</TT> ou <TT>[4$3]</TT> renvoie <TT>[4,4,4]</TT><BR>
+<TT>makelist(4,2,7)</TT> ou <TT>[4$6]</TT> renvoie <TT>[4,4,4,4,4,4]</TT> (car on
+considère que 4 est la constante, 2 est l’indice du début et 7 est l’indice 
+de fin donc que la liste constante égale à 4 est de dimension 6.)</P><HR>
 <A HREF="cascmd_fr541.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr543.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

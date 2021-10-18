@@ -6,26 +6,76 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Degré d’un polynôme : degree</TITLE>
+<TITLE>Transformer un polynôme en une liste (format interne récursif dense) : symb2poly e2r</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr362.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr364.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc449">6.27.9</A>  Degré d’un polynôme : <TT>degree</TT></H3><P><A NAME="@default689"></A>
-<TT>degree</TT> a comme argument un polynôme donné sous 
-forme symbolique ou par la liste de ses coefficients.<BR>
-<TT>degree</TT> renvoie le degré de ce polynôme (degré du monôme de 
-plus grand degré).<BR>
+<H3 CLASS="subsection"><A NAME="htoc450">6.28.5</A>  Transformer un polynôme en une liste (format interne récursif dense) : <TT>symb2poly e2r</TT></H3><P><A NAME="@default693"></A><A NAME="@default694"></A>
+<TT>e2r</TT> ou <TT>symb2poly</TT> a comme argument polynôme, donné avec
+une écriture polynômiale, d’une variable (resp plusieurs variables), et le 
+nom de cette variable formelle (par défaut <TT>x</TT>) (resp la séquence des 
+noms de ces variables).<BR>
+<TT>e2r</TT> ou <TT>symb2poly</TT> transforme cette écriture polynômiale, 
+en la liste des coefficients selon les puissances décroissantes selon le 
+nom de la variable donné en deuxième argument (resp l’écriture 
+récursive de la liste des coefficients selon les puissances décroissantes 
+selon les noms des variables donnés en deuxième argument : le résultat est
+la liste des coefficients de la première variable, coefficients qui sont 
+eux-mêmes des polynômes qui seront donnés sous la forme 
+la liste des coefficients de la deuxième variable etc...).<BR>
+<B>Attention</B> Si le deuxième argument est une liste, le résultat est
+l’écriture du polynôme au format interne.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>degree(x</TT><CODE><TT>^</TT></CODE><TT>3+x)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>e2r(x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>2-1,x)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>e2r(x</TT><CODE><TT>^</TT></CODE><TT>2-1,x)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>symb2poly(y</TT><CODE><TT>^</TT></CODE><TT>2-1,y)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>e2r(y</TT><CODE><TT>^</TT></CODE><TT>2-1,y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>[]</TT><TT>1,0,-1</TT><TT>[]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>degree([1,0,1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>symb2poly(x*y</TT><CODE><TT>^</TT></CODE><TT>2+2y-1,x)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>e2r(x*y</TT><CODE><TT>^</TT></CODE><TT>2+2y-1,x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[]</TT><TT>y</TT><CODE><TT>^</TT></CODE><TT>2,2y-1</TT><TT>[]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>symb2poly(x*y</TT><CODE><TT>^</TT></CODE><TT>2+2y-1,y)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>e2r(x*y</TT><CODE><TT>^</TT></CODE><TT>2+2y-1,y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[]</TT><TT>x,2,-1</TT><TT>[]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>symb2poly(x*y</TT><CODE><TT>^</TT></CODE><TT>2+2y-1,x,y)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>e2r(x*y</TT><CODE><TT>^</TT></CODE><TT>2+2y-1,x,y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[]</TT><TT>[]</TT><TT>1,0,0</TT><TT>[]</TT><TT>,</TT><TT>[]</TT><TT>2,-1</TT><TT>[]</TT><TT>[]</TT></DIV><P>
+ce qui signifie que le polynôme est de degré 1 en <I>x</I> que le coeff de <I>x</I> 
+est le polynôme en <I>y</I> de coefficients [1,0,0] c’est 
+à dire <I>y</I><SUP>2</SUP> et que le terme constant est le polynôme en <I>y</I> de coefficients
+[2,-1] c’est à dire 2<I>y</I>−1.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2+2x*y+4y</TT><CODE><TT>^</TT></CODE><TT>2-y+3,x,y)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>e2r(x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2+2x*y+4y</TT><CODE><TT>^</TT></CODE><TT>2-y+3,x,y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[]</TT><TT>1,0,-1</TT><TT>[]</TT><TT>,</TT><TT>[]</TT><TT>2,0</TT><TT>[]</TT><TT>,</TT><TT>[]</TT><TT>4,-1,3</TT><TT>[]</TT><TT>[]</TT></DIV><P>
+ce qui signifie que le polynôme est de degré 2 en <I>x</I> que le coeff de <I>x</I><SUP>2</SUP> 
+est le polynôme en <I>y</I> de coefficients <TT>[]</TT>1,0,-1<TT>[]</TT>
+c’est à dire <I>y</I><SUP>2</SUP>−1, le coeff de <I>x</I> 
+est le polynôme en <I>y</I> de coefficients <TT>[]</TT>2,0<TT>[]</TT>
+c’est à dire 2<I>y</I> et que le terme constant est le polynôme en <I>y</I> de 
+coefficients <TT>[]</TT>4,-1,3<TT>[]</TT> c’est à dire 4<I>y</I><SUP>2</SUP>−<I>y</I>+3.</P><HR>
 <A HREF="cascmd_fr362.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr364.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,26 +6,39 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Test de la présence d’une variable dans une expression : has</TITLE>
+<TITLE>Résoudre un système linéaire par la méthode itérative de
+Jacobi : jacobi_linsolve</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr687.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr689.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc811">6.64.5</A>  Test de la présence d’une variable dans une expression : <TT>has</TT></H3><P><A NAME="@default1243"></A>
-<TT>has</TT> a comme paramètre une expression et le nom d’une 
-variable.<BR>
-<TT>has</TT> renvoie <TT>1</TT>, ou <TT>0</TT>, selon que la variable est présente, 
-ou non présente, dans l’expression.<BR>
+<H3 CLASS="subsection"><A NAME="htoc809">6.62.7</A>  Résoudre un système linéaire par la méthode itérative de
+Jacobi : <TT>jacobi_linsolve</TT></H3><P><A NAME="@default1248"></A>
+<TT>jacobi_linsolve</TT> a comme paramètres :<BR>
+la matrice du système <I>A</I>,<BR>
+le second membre <I>b</I> sous la forme d’une liste,<BR>
+la tolérance <I>eps</I> et<BR>
+le nombre maximum d’itération <I>maxiter</I>.<BR>
+la matrice du système <I>A</I>,<BR>
+le second membre <I>b</I> sous la forme d’une liste,<BR>
+la tolérance <I>eps</I> et<BR>
+le nombre maximum d’itération <I>maxiter</I>.<BR>
+<TT>jacobi_linsolve</TT> permet de résoudre un système d’équations 
+linéaires de matrice <I>A</I> et de second membre <I>b</I>, par la méthode itérative
+de Jacobi avec une tolérance de <I>eps</I> et un nombre maximal d’itérations de 
+<I>maxiter</I>.<BR>
+<TT>jacobi_linsolve</TT> renvoie une liste qui est solution du système 
+d’équations.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>has(x*y*sin(x),y)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=[[100,2],[2,100]];</TT></DIV><DIV CLASS="center"><TT>jacobi_linsolve(A,[0,1],1e-12);</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>has(x*y*sin(x),z)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[-0.000200080032,0.0100040016006]</TT></DIV><P> 
+Si on tape :
+</P><DIV CLASS="center"><TT>evalf(linsolve(A,[0.1]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[-0.000200080032013,0.0100040016006]</TT></DIV><HR>
 <A HREF="cascmd_fr687.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr689.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

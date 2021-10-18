@@ -6,24 +6,188 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Puissance n-ième de composition d’une fonction : @@</TITLE>
+<TITLE>Définition d’une fonction utilisateur</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr295.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr297.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc373">6.18.5</A>  Puissance <I>n</I>-ième de composition d’une fonction : <TT>@@</TT></H3><P><A NAME="@default547"></A>
-La puissance n-ième de composition d’une fonction se fait avec <TT>Xcas</TT>
-grâce à l’opérateur <TT>@@</TT> qui est infixé.<BR>
+<H3 CLASS="subsection"><A NAME="htoc373">6.18.3</A>  Définition d’une fonction utilisateur</H3><H4 CLASS="subsubsection"><A NAME="toc7"></A>Généralités</H4><P>
+On distingue les fonctions ou commandes de <TT>Xcas</TT> et les fonctions 
+définies par l’utilisateur. Pour éviter le risque d’utiliser un nom
+de fonction de <TT>Xcas</TT>, il est conseillé de nommer les fonctions
+utilisateurs en utilisant une majuscule comme première lettre.<BR>
+Pour définir des fonctions (utilisateurs), on distinguera
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+les fonctions définies par une expression algébrique.
+Leur définition peut se faire simplement avec <TT>:=</TT>
+</LI><LI CLASS="li-itemize">les fonctions qui nécessitent des calculs intermédiaires ou
+des structures de contrôle
+(test, boucle). Leur définition se fait au moyen d’un 
+programme, en utilisant les instructions 
+<TT>fonction...ffonction</TT>, <TT>local</TT> et <TT>retourne</TT> et
+les structures de contrôle.
+</LI><LI CLASS="li-itemize">valeur par défaut d’une variable<BR>
+On veut définir les fonctions :<BR>
+<I>f</I><SUB>1</SUB> définie pour <I>x</I> ∈ ℝ, par <I>f</I><SUB>1</SUB>(<I>x</I>)=<I>x</I><SUP>2</SUP>+1 et<BR>
+<I>f</I><SUB>2</SUB> définie pour (<I>x</I>,<I>y</I>) ∈ ℝ<SUP>2</SUP>, par <I>f</I><SUB>2</SUB>(<I>x</I>,<I>y</I>)=<I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>.<BR>
+On tape simplement :<BR>
+<DIV CLASS="center"><TT>f1(x):=x</TT><CODE><TT>^</TT></CODE><TT>2+1</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>fonction f1(x,y) x</TT><CODE><TT>^</TT></CODE><TT>2+1;ffonction</TT></DIV>
+On tape simplement :<BR>
+<DIV CLASS="center"><TT>f2(x,y):=x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>fonction f2(x,y) x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2;ffonction</TT></DIV>
+<I>f</I><SUB>1</SUB> est le nom de la fonction et <I>f</I><SUB>1</SUB> a 1 argument réel : <I>x</I> (en 
+mathématique on dit que <I>x</I> est la variable de <I>f</I><SUB>1</SUB>).<BR>
+La valeur de la fonction <I>f</I><SUB>1</SUB> est <I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>.<BR>
+ <I>f</I><SUB>2</SUB> est le nom de la fonction et <I>f</I><SUB>2</SUB> a 2 arguments réels : <I>x</I>,<I>y</I> (en 
+mathématique on dit que <I>x</I>,<I>y</I> sont les variables de <I>f</I><SUB>2</SUB>).<BR>
+La valeur de la fonction <I>f</I><SUB>2</SUB> est <I>x</I><SUP>2</SUP>+<I>y</I><SUP>2</SUP>.<BR>
+On peut définir la <B>valeur par défaut</B> de l’argument <TT>y</TT> et ainsi
+donner à ces 2 fonctions le même nom <I>f</I>.<BR>
+On tape simplement :<BR>
+<DIV CLASS="center"><TT>f(x,y):=x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+On tape :<BR>
+<DIV CLASS="center"><TT>f(x,y=1):=x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>fonction f(x,y=1) x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2;ffonction</TT></DIV>
 On tape :
-</P><DIV CLASS="center"><TT>(sin@@3)(x)</TT></DIV><P>
+<DIV CLASS="center"><TT>f(3,4)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>sin(sin(sin(x)))</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>(sin@@2)(pi/2)</TT></DIV><P>
+<DIV CLASS="center"><TT>25</TT></DIV>
+On tape alors :
+<DIV CLASS="center"><TT>f(3)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>sin(1)</TT></DIV><HR>
+<DIV CLASS="center"><TT>10</TT></DIV>
+</LI></UL><H4 CLASS="subsubsection"><A NAME="toc8"></A>Définition d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ</H4><P>
+<A NAME="@default549"></A><A NAME="@default550"></A><A NAME="@default551"></A><A NAME="@default552"></A><A NAME="@default553"></A><A NAME="@default554"></A>
+On tape pour définir la fonction <I>f</I> : (<I>x</I>)−&gt;<I>x</I>*sin(<I>x</I>) :
+</P><DIV CLASS="center"><TT>f(x):=x*sin(x)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=x-&gt;x*sin(x)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=fonction(x) x*sin(x);ffonction</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=function(x) x*sin(x);end</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>fonction f(x) x*sin(x);ffonction</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x)-&gt;x*sin(x)</TT></DIV><P><BR>
+On tape pour définir la fonction <I>f</I> : (<I>x</I>,<I>y</I>)−&gt;<I>x</I>*sin(<I>y</I>) :
+</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=(x,y)-&gt;x*sin(y)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=fonction(x,y) x*sin(y);ffonction</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=function(x,y) x*sin(y);end</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>fonction f(x,y) x*sin(y);ffonction</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x,y)-&gt;x*sin(y)</TT></DIV><P>
+<B>Attention !!!</B> ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué.<BR>
+Si on a besoin de variables locales.<BR>
+On tape pour définir la fonction <I>f</I> : (<I>x</I>,<I>y</I>)−&gt;<I>x</I>*sin(<I>y</I>) :
+</P><DIV CLASS="center"><TT>f(a,b):={local c; c:=gcd(a,b) retourne a*b/c;}</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=(a,b)-&gt;{local c; c:=gcd(a,b) retourne a*b/c;}</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=fonction(a,b) local c; c:=gcd(a,b) retourne a*b/c;ffonction</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>f:=function(a,b) local c; c:=gcd(a,b) retourne a*b/c;end</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>fonction f(a,b) local c; c:=gcd(a,b); retourne a*b/c;ffonction</TT></DIV><P>
+On obtient :
+</P><PRE CLASS="verbatim">(a,b)-&gt; 
+{ local c; 
+  c:=gcd(a,b);  
+  return(a*b/c);  
+}
+</PRE><H4 CLASS="subsubsection"><A NAME="toc9"></A>Définition d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ<SUP><I>q</I></SUP></H4><P>
+On tape pour définir la fonction <I>h</I> : (<I>x</I>,<I>y</I>)−&gt;(<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)) :
+</P><DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV><P>
+On tape pour définir la fonction <I>h</I> : (<I>x</I>,<I>y</I>)−&gt;[<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)] :
+</P><DIV CLASS="center"><TT>h(x,y):=[x*cos(y),x*sin(y)];</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>h:=(x,y)-&gt;[x*cos(y),x*sin(y)];</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>h(x,y):={[x*cos(y),x*sin(y)]};</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>h:=(x,y)-&gt;return[x*cos(y),x*sin(y)];</TT></DIV><P>
+Ou on tape 
+</P><DIV CLASS="center"><TT>h(x,y):={return [x*cos(y),x*sin(y)];}</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>h:=fonction(x,y) retourne [x*cos(y),x*sin(y)];ffonction</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>h:=function(x,y) return[x*cos(y),x*sin(y)];end</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x,y)-&gt;{return([x*cos(y),x*sin(y)]);}</TT></DIV><P>
+<B>Attention !!!</B> ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué.</P><H4 CLASS="subsubsection"><A NAME="toc10"></A>Définition d’une fonction de ℝ<SUP><I>p</I>−1</SUP> dans ℝ<SUP><I>q</I></SUP> à partir d’une fonction de ℝ<SUP><I>p</I></SUP> dans ℝ<SUP><I>q</I></SUP></H4><P>
+On définit la fonction <I>f</I>(<I>x</I>,<I>y</I>)=<I>x</I>*sin(<I>y</I>), puis on veut définir la famille
+de fonctions dépendant du paramètre <I>t</I> par
+<I>g</I>(<I>t</I>)(<I>y</I>):=<I>f</I>(<I>t</I>,<I>y</I>).<BR>
+Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
+définir <I>g</I>(<I>t</I>) par <TT>g(t):=y-&gt;f(t,y)</TT> et on doit utiliser la commande
+<TT>unapply</TT>.<BR>
+On tape pour définir les fonctions <I>f</I>(<I>x</I>,<I>y</I>)=<I>x</I>sin(<I>y</I>) et <I>g</I>(<I>t</I>)=<I>y</I>−&gt;<I>f</I>(<I>t</I>,<I>y</I>) :
+</P><DIV CLASS="center"><TT>f(x,y):=x*sin(y);g(t):=unapply(f(t,y),y)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>((x,y)-&gt;x*sin(y), (t)-&gt;unapply(f(t,y),y))</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>g(2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>y-&gt;2</TT><TT>·</TT><TT> sin(y)</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>g(2)(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT><TT>·</TT><TT> sin(1)</TT></DIV><P>On définit la fonction <I>h</I>(<I>x</I>,<I>y</I>)=(<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)), 
+puis on veut définir la famille de fonctions dépendant du paramètre <I>t</I> 
+par <I>k</I>(<I>t</I>)(<I>x</I>):=<I>h</I>(<I>x</I>,<I>t</I>).<BR>
+Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
+définir <I>k</I>(<I>t</I>) par <I>k</I>(<I>t</I>):=<I>x</I>−&gt;<I>h</I>(<I>x</I>,<I>t</I>) et on est obligé d’utiliser la 
+commande <TT>unapply</TT>.<BR>
+On tape pour définir la fonction <I>h</I>(<I>x</I>,<I>y</I>) :
+</P><DIV CLASS="center"><TT>h(x,y):=(x*cos(y),x*sin(y))</TT></DIV><P>
+On tape pour définir la fonction <I>k</I>(<I>t</I>) :
+</P><DIV CLASS="center"><TT>k(t):=unapply(h(x,t),x)</TT></DIV><P>
+ce qui veut dire que <TT>k(t)</TT> est est une fonction de <TT>x</TT> et que
+<TT>k(t)(x)</TT> est égal à <TT>(x*cos(y),x*sin(y))</TT><BR>
+On obtient :
+</P><DIV CLASS="center"><TT>(t)-&gt;unapply(h(x,t),x)</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>k(2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x)-&gt;(x*cos(2),x*sin(2))</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>k(2)(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(2*cos(1),2*sin(1))</TT></DIV><P>
+Ou encore
+On définit la fonction <I>h</I>(<I>x</I>,<I>y</I>)=[<I>x</I>*cos(<I>y</I>),<I>x</I>*sin(<I>y</I>)], 
+puis on veut définir la famille de fonctions dépendant du paramètre <I>t</I> 
+par <I>k</I>(<I>t</I>)(<I>y</I>):=<I>h</I>(<I>t</I>,<I>y</I>).<BR>
+Comme ce qui se trouve après <TT>-&gt; </TT> n’est pas évalué, on ne peut pas 
+définir <I>k</I>(<I>t</I>) par <I>k</I>(<I>t</I>):=<I>y</I>−&gt;<I>h</I>(<I>x</I>,<I>y</I>) et on est obligé d’utiliser la 
+commande <TT>unapply</TT>.<BR>
+On tape pour définir la fonction <I>h</I>(<I>x</I>,<I>y</I>) :
+</P><DIV CLASS="center"><TT>h(x,y):={[x*cos(y),x*sin(y)]}</TT></DIV><P>
+On tape pour définir la fonction <I>k</I>(<I>t</I>) :
+</P><DIV CLASS="center"><TT>k(t):=unapply(h(x,t),x)</TT></DIV><P>
+ce qui veut dire que <TT>k(t)</TT> est est une fonction de <TT>x</TT> et que
+<TT>k(t)(x)</TT> est égal à <TT>[x*cos(y),x*sin(y)]</TT><BR>
+On obtient :
+</P><DIV CLASS="center"><TT>(t)-&gt;unapply(h(x,t),x)</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>k(2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x)-&gt;{[x*cos(2),x*sin(2)];}</TT></DIV><P>
+On tape 
+</P><DIV CLASS="center"><TT>k(2)(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[2</TT><TT>·</TT><TT> cos(1),2</TT><TT>·</TT><TT> sin(1)]</TT></DIV><HR>
 <A HREF="cascmd_fr295.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr297.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

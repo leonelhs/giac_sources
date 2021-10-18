@@ -6,31 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si droites ou /et plans sont parallèles is_parallel est_parallele</TITLE>
+<TITLE>Ligne polygonale dans l’espace : open_polygon polygone_ouvert</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1040.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1042.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1224">11.13.3</A>  Savoir si droites ou /et plans sont parallèles <TT>is_parallel est_parallele</TT></H3><P><A NAME="@default2016"></A><A NAME="@default2017"></A><A NAME="sec:estpara3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr975.html#sec:estpara2">10.18.11</A> pour la géométrie plane.<BR>
-<TT>est_parallele</TT>, en géométrie 3-d, teste si deux droites ou, si une 
-droite et un plan ou, si deux plans sont parallèles.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1221">11.9.4</A>  Ligne polygonale dans l’espace : <TT>open_polygon polygone_ouvert</TT></H3><P><A NAME="@default2025"></A><A NAME="@default2026"></A><A NAME="sec:polygonou3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr933.html#sec:polygonou2">10.12.4</A> pour la géométrie plane.<BR>
+<TT>polygone_ouvert</TT>, en géométrie 3-d, a comme argument une
+séquence) de <I>n</I> points 3-d.<BR>
+<TT>polygone_ouvert</TT> renvoie et trace la ligne polygonale ayant pour 
+sommets ces <I>n</I> points.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>d:=droite([0,0,0],[-1,-1,-1])</TT></DIV><DIV CLASS="center"><TT>dd:=droite([2,3,-2],[-1,-1,-1])</TT></DIV><DIV CLASS="center"><TT>est_parallele(d,dd)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>polygone_ouvert(point(0,0,0),point(0,1,0),point(0,2,2),point(1,0,2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>S:=plan([-1,-1,-1],[1,2,-3],[0,0,0])</TT></DIV><DIV CLASS="center"><TT>est_parallele(S,dd)</TT></DIV><P>
-ou on tape :
-</P><DIV CLASS="center"><TT>est_parallele(dd,S)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>P:=plan([0,0,0],[1,2,-3],[1,1,-2])</TT></DIV><DIV CLASS="center"><TT>Q:=plan([1,1,0],[2,3,-3],[2,2,-2])</TT></DIV><DIV CLASS="center"><TT>est_parallele(P,Q)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Une ligne polygonale de sommets les points donnés</TT></DIV><HR>
 <A HREF="cascmd_fr1040.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1042.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

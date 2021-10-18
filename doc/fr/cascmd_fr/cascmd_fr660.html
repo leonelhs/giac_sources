@@ -6,36 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La matrice hessienne : hessian</TITLE>
+<TITLE>Transformer une matrice en une forme quadratique : a2q</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr659.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr661.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc778">6.59.3</A>  La matrice hessienne : <TT>hessian</TT></H3><P><A NAME="@default1197"></A>
-<TT>hessian</TT> a deux paramètres : une expression <I>F</I> dependant de 
-<I>n</I> variables rèelles et un vecteur de dimension
-<I>n</I> indiquant le nom de ces variables.<BR>
-<TT>hessian</TT> renvoie la hessienne de <I>F</I> qui est la matrice des dérivées 
-d’ordre 2.<BR>
-<B>Exemple</B><BR>
-Déterminer la hessienne de <I>F</I>(<I>x</I>,<I>y</I>,<I>z</I>)=2<I>x</I><SUP>2</SUP><I>y</I>−<I>xz</I><SUP>3</SUP>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc778">6.59.2</A>  Transformer une matrice en une forme quadratique : <TT>a2q</TT></H3><P><A NAME="@default1201"></A>
+<TT>a2q</TT> a deux arguments : une matrice symétrique <I>A</I> 
+représentant une forme quadratique <I>q</I> et le vecteur de composantes les 
+variables utilisées.<BR>
+<TT>a2q</TT> renvoie la forme quadratique <I>q</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>hessian(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3 , [x,y,z])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>a2q([[0,1],[1,0]],[x,y])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4*y,4*x,-(3*z</TT><CODE><TT>^</TT></CODE><TT>2)],[2*2*x,0,0],[-(3*z</TT><CODE><TT>^</TT></CODE><TT>2),0,x*3*2*z]]</TT></DIV><P>
-Pour avoir la hessienne aux points critiques on tape tout d’abord :
-</P><DIV CLASS="center"><TT>solve(derive(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z]),[x,y,z])</TT></DIV><P> 
-pour avoir les points critiques.<BR>
-On obtient : 
-</P><DIV CLASS="center"><TT>[[0,y,0]]</TT></DIV><P>
-Puis, on calcule la hessienne en ces points, on tape : 
-</P><DIV CLASS="center"><TT>subst([[4*y,4*x,-(3*z</TT><CODE><TT>^</TT></CODE><TT>2)],[2*2*x,0,0], [-(3*z</TT><CODE><TT>^</TT></CODE><TT>2),0,6*x*z]],[x,y,z],[0,y,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>2*x*y</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>a2q([[1,2],[2,4]],[x,y]) </TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[4*y,4*0,-(3*0</TT><CODE><TT>^</TT></CODE><TT>2)],[4*0,0,0],[-(3*0</TT><CODE><TT>^</TT></CODE><TT>2),0,6*0*0]]</TT></DIV><P>
-et après simplification :
-</P><DIV CLASS="center"><TT>[[4*y,0,0],[0,0,0],[0,0,0]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>2+4*x*y+4*y</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr659.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr661.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

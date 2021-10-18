@@ -6,44 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformer un polynôme au format interne : e2r symb2poly</TITLE>
+<TITLE>Les polynômes à plusieurs variables</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr359.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr361.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc446">6.27.6</A>  Transformer un polynôme au format interne : <TT>e2r symb2poly</TT></H3><P><A NAME="@default682"></A><A NAME="@default683"></A><A NAME="sec:interne"></A>
-<TT>e2r</TT> ou <TT>symb2poly</TT> a comme argument polynôme d’une ou 
-plusieurs variables, donné avec une écriture polynômiale et la liste de 
-ces variables formelles.<BR>
-<TT>e2r</TT> ou <TT>symb2poly</TT> transforme cette écriture polynômiale, 
-en l’écriture au format interne selon la liste de variables donnée
-en deuxième argument.<BR>
-<B>Attention</B> Si le deuxième argument n’est pas une liste, le résultat est
-la liste des coefficients de la première variable, coefficients qui sont 
-eux-mêmes des polynômes qui seront donnés sous la forme 
-la liste des coefficients de la deuxième variable etc...<BR>
-On tape :
-</P><DIV CLASS="center"><TT>e2r(x</TT><CODE><TT>^</TT></CODE><TT>2-1,[x])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>2-1,[x])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>%%%{1,[2]%%%}+%%%{-1,[0]%%%}</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>e2r(x</TT><CODE><TT>^</TT></CODE><TT>2-x*y+y, [x,y])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>2-x*y+2*y, [x,y])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%}</TT></DIV><P>
-ce qui signifie que le coefficient du terme <I>x</I><SUP>2</SUP><I>y</I><SUP>0</SUP> est 1, celui du terme
-<I>x</I><SUP>1</SUP><I>y</I><SUP>1</SUP> est -1 et celui du terme <I>x</I><SUP>0</SUP><I>y</I><SUP>1</SUP> est 2.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>symb2poly(x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2+2x*y+4y</TT><CODE><TT>^</TT></CODE><TT>2-y+3,[x,y])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>e2r(x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2+2x*y+4y</TT><CODE><TT>^</TT></CODE><TT>2-y+3,x,y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>%%%{1,[2,2]%%%}+%%%{-1,[2,0]%%%}+%%%{2,[1,1]%%%}+ %%%{4,[0,2]%%%}+%%%{-1,[0,1]%%%}+%%%{3,[0,0]%%%}</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc447">6.28.2</A>  Les polynômes à plusieurs variables</H3><P> <A NAME="@default688"></A>
+Un monôme de plusieurs variables peut être représenté :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+soit par son expression symbolique (par exemple 3<I>x</I><SUP>2</SUP><I>y</I>), 
+</LI><LI CLASS="li-itemize">soit par son coefficent et la liste des puissances de ses variables 
+(selon la liste de ses variables) que l’on parenthése avec <TT>%%%{</TT> et
+<TT>%%%}</TT> : c’est le format interne creux distribué : par exemple
+<TT>symb2poly(3x</TT><CODE><TT>^</TT></CODE><TT>2*y,[x,y])</TT> renvoie <TT>%%%{3,[2,1]%%%}</TT> qui
+représente 3<I>x</I><SUP>2</SUP><I>y</I> si la liste des variables est <TT>[x,y]</TT>,
+</LI><LI CLASS="li-itemize">soit par la liste des coefficients de la première variable,
+coefficients qui sont eux-mêmes des polynômes qui seront donnés sous la 
+forme la liste des coefficients de la deuxième variable etc... et
+que l’on parenthése avec <TT>[]</TT>,<TT>[]</TT> : c’est le format 
+interne dense récursif : par exemple <TT>symb2poly(3x</TT><CODE><TT>^</TT></CODE><TT>2*y,x,y)</TT> 
+renvoie <TT>[]</TT><TT>[]</TT>3,0<TT>[]</TT>,0,0<TT>[]</TT> qui représente 3<I>x</I><SUP>2</SUP><I>y</I> si 
+les variables sont <TT>x,y</TT>.
+</LI></UL><P>
+Un polynôme de plusieurs variables est représenté par la somme de 
+ses monômes.
+</P><HR>
 <A HREF="cascmd_fr359.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr361.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

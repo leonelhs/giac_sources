@@ -6,21 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Coefficients d’une fraction rationnelle définie par ses racines et ses pôles : fcoeff</TITLE>
+<TITLE>Borne inférieure des racines réelles positives d’un polynôme : poslbdLMQ</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr435.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr437.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc528">6.33.2</A>  Coefficients d’une fraction rationnelle définie par ses racines et ses pôles : <TT>fcoeff</TT></H3><P><A NAME="@default785"></A>
-<TT>fcoeff</TT> a comme argument un vecteur de composantes les racines et
-les pôles d’une fraction rationnelle <I>F</I>(<I>x</I>) suivis de leur multiplicité.<BR>
-<TT>fcoeff</TT> renvoie la fraction rationnelle <I>F</I>(<I>x</I>).<BR>
-On tape :
-</P><DIV CLASS="center"><TT>fcoeff([1,2,0,3,2,-1]) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x-1)</TT><CODE><TT>^</TT></CODE><TT>2*x</TT><CODE><TT>^</TT></CODE><TT>3/(x-2)</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc528">6.33.6</A>  Borne inférieure des racines réelles positives d’un polynôme : <TT>poslbdLMQ</TT></H3><P><A NAME="@default794"></A>
+<TT>poslbdLMQ(P)</TT> renvoie une borne inférieure pour les racines positives de 
+<TT>P</TT> par l’algorithme Akritas-Strzebonski-Vigklas’ Local Max Quadratic 
+(LMQ). Cette borne n’est pas optimale.<BR>
+On tape :<BR>
+<TT>poslbdLMQ(x</TT><CODE><TT>^</TT></CODE><TT>3-7*x+7)</TT><BR>
+On obtient :<BR>
+<TT>1/2</TT><BR>
+On tape :<BR>
+<TT>poslbdLMQ(x</TT><CODE><TT>^</TT></CODE><TT>5+2*x</TT><CODE><TT>^</TT></CODE><TT>4-6*x</TT><CODE><TT>^</TT></CODE><TT>3-7*x</TT><CODE><TT>^</TT></CODE><TT>2+7*x+7)</TT><BR>
+On obtient :<BR>
+<TT>1/2</TT><BR>
+On tape :<BR>
+<TT>poslbdLMQ((x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+2)</TT><BR>
+On obtient :<BR>
+<TT>1/2</TT>
+</P><HR>
 <A HREF="cascmd_fr435.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr437.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

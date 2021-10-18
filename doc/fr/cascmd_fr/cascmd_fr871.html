@@ -6,29 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Changer les paramètres de la fenêtre graphique : xyztrange</TITLE>
+<TITLE>Utilisation des instructions du debuggeur : cont halt kill</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr870.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr872.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1022">10.2.10</A>  Changer les paramètres de la fenêtre graphique : <TT>xyztrange</TT></H3><P><A NAME="@default1567"></A>
-<TT>xyztrange</TT> met ou enlève les axes de l’écran 
-géométrique. <TT>xyztrange</TT> a 15 paramètres ce sont des paramètres 
-que l’on peut définir dans l’écran de la configuration du graphique. On 
-ouvre cet écran avec la configuration graphique (voir <A HREF="cascmd_fr021.html#sec:configgeo">1.6.2</A>).<BR>
-On tape ou plutôt on utilise le menu <TT>Cfg</TT> :
-</P><DIV CLASS="center"><TT>xyztrange(-5,5,-5,2,-10,10,-1,6,-5,5,-1.2384,2,1,0,1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc1020">9.7.9</A>  Utilisation des instructions du debuggeur : <TT>cont halt kill</TT></H3><P>
+Les instructions <TT>cont halt kill</TT> n’ont pas d’arguments.<BR>
+<TT>cont halt kill</TT> sont des instructions du debuggeur (voir ci-dessus).<BR>
+<TT>cont()</TT> et <TT>kill()</TT> s’utilisent uniquement dans une session de 
+debogage, quand le programme est arrêté. Typiquement, <TT>kill()</TT> 
+s’utilise quand on a vu où se trouve l’erreur, et que on va savoir corriger 
+le programme, et qu’il est donc inutile de continuer l’exécution du programme
+buggué.<BR>
+<TT>cont()</TT> s’utilise pour atteindre le point d’arrêt suivant.<BR>
+<TT>halt()</TT> peut être mis comme instruction dans le programme pour 
+programmer un point d’arrêt (cela évite de faire une commande 
+<TT>breakpoint</TT> avec un numéro de ligne)
+Par exemple on tape :
+</P><PRE CLASS="verbatim">testhalt(x):={
+  local y; 
+  y:=x;  
+  halt();  
+  return(y);  
+}
+</PRE><P>On tape :
+</P><DIV CLASS="center"><TT>debug(testhalt(5))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>La fenêtre visible est [-5;5]*[-1.2834;2]</TT></DIV><P>
-<B>Attention</B> à la différence entre "fenêtre de calcul" et "fenêtre 
-visible" : si la fenêtre de calcul est plus grande, on pourra aller voir ce 
-qui se passe "ailleurs" avec les flèches faisant parties des boutons de 
-l’écran géométrique.<BR>
-De plus, si on a demandé un repère orthonormé en cliquant sur
-⊥, la fenêtre visible demandée sera contenue dans ce qui est 
-réellement visible. </P><HR>
+</P><DIV CLASS="center"><TT>l’ouverture du debuggeur et l’arrêt du programme</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>cont() pour continuer le debugage ou kill() pour l’arrêter</TT></DIV><P>
+<B>Attention</B><BR>
+Si on tape juste <TT>testhalt(5)</TT> sans mettre <TT>debug</TT>, le debuggeur 
+s’ouvre mais, la liste des instructions formant le programme n’est pas
+affichée donc il vaut mieux faire <TT>debug(testhalt(5))</TT> puis enlever 
+les <TT>halt()</TT> quand le programme est au point.</P><HR>
 <A HREF="cascmd_fr870.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr872.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

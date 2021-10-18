@@ -6,21 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Écrire avec des exponentielles complexes : tsimplify</TITLE>
+<TITLE>Regrouper les log : lncollect</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr353.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr355.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc439">6.26.9</A>  Écrire avec des exponentielles complexes : <TT>tsimplify</TT></H3><P><A NAME="@default673"></A>
-<TT>tsimplify</TT> simplifie toutes les expressions en les transformant
-en exponentielles complexes.<BR>
-On n’utilise <TT>tsimplify</TT> qu’en dernier ressort.<BR>
+<H3 CLASS="subsection"><A NAME="htoc440">6.27.5</A>  Regrouper les log : <TT>lncollect</TT></H3><P><A NAME="@default682"></A>
+<TT>lncollect</TT> a comme argument une expression contenant des 
+logarithmes.<BR>
+<TT>lncollect</TT> regroupe les termes en logarithmes. Il est donc préférable
+de l’utiliser sur une expression factorisée (en utilisant <TT>factor</TT>).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>tsimplify((sin(7*x)+sin(3*x))/sin(5*x))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>lncollect(ln(x+1)+ln(x-1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>((exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>4+1)/(exp((i)*x))</TT><CODE><TT>^</TT></CODE><TT>2 </TT></DIV><HR>
+</P><DIV CLASS="center"><TT>ln((x+1)*(x-1))</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>lncollect(exp(ln(x+1)+ln(x-1)))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(x+1)*(x-1)</TT></DIV><P>
+<B>Attention!!!</B> Pour <TT>CAS</TT>, <TT>log=ln</TT></P><HR>
 <A HREF="cascmd_fr353.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr355.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

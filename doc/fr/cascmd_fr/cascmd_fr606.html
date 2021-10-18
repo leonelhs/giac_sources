@@ -6,22 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Base d’un sous espace vectoriel : basis</TITLE>
+<TITLE>Opérations</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr605.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr607.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc717">6.52.9</A>  Base d’un sous espace vectoriel : <TT>basis</TT></H3><P><A NAME="@default1116"></A>
-<TT>basis</TT> a comme argument la liste des composantes des vecteurs qui
-engendrent un sous espace vectoriel de ℝ<SUP><I>n</I></SUP>.<BR>
-<TT>basis</TT> renvoie une liste constituée des vecteurs d’une base de ce sous 
-espace vectoriel.<BR>
+<H3 CLASS="subsection"><A NAME="htoc717">6.52.2</A>  Opérations</H3><P>
+On peut faire toutes les opérations matricielles sur les tables définissant 
+des matrices creuses.<BR>
+Soient <I>A</I> et <I>B</I> définit par :
+</P><DIV CLASS="center"><TT>purge(A); A[0..2,0..2]:=[1,2,3]</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0)=1,(1,1)=2,(2,2)=3)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>basis([[1,2,3],[1,1,1],[2,3,4]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,0,-1], [0,1,2]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>purge(B);B[0..1,1..2]:=[1,2];B[0..2,0]:=5</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0)=5,(0,1)=1,(1,0)=5,(1,2)=2,(2,0)=5)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>A+B</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0) = 6,(0,1) = 1,(1,0) = 5,
+(1,1) = 2,(1,2) = 2,(2,0) = 5,(2,2) = 3)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>A*B</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0)=5,(0,1)=1,(1,0)=10,(1,2)=4,(2,0)=15)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>2*A)</TT></DIV><P>
+On obtient : :
+</P><DIV CLASS="center"><TT>table((0,0) = 2,(1,1) = 4,(2,2) = 6)</TT></DIV><P>
+On tape :
+</P><P>
+On obtient : :
+</P><HR>
 <A HREF="cascmd_fr605.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr607.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

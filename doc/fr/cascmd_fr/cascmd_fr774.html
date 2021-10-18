@@ -6,35 +6,21 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi beta : betad_cdf</TITLE>
+<TITLE>Complément à 1 de la fonction de répartition de la loi de Student : UTPT</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr773.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr775.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc913">8.4.31</A>  Fonction de répartition de la loi beta : <TT>betad_cdf</TT></H3><P><A NAME="@default1381"></A>
-Lorsqu’une variable aléatoire <I>X</I> à valeur dans [0,1] suit une 
-loi beta de paramètre <I>a</I> et <I>b</I>, on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>betad_cdf(a,b,x)</TT> avec <I>x</I>∈ [0,1].<BR>
-<I>Proba</I>(<I>x</I>≤ <I>X</I>≤ <I>y</I>)=<TT>betad_cdf(a,b,x,y)</TT> avec <I>x</I>∈ [0,1] et <I>y</I>∈ [0,1].<BR>
-On a :<BR>
-<TT>betad_cdf(a,b,x)</TT> est égale à 
- β(<I>a</I>,<I>b</I>,<I>x</I>)*Γ(<I>a</I>+<I>b</I>)/Γ(<I>a</I>)*Γ(<I>b</I>) et<BR>
-<TT>betad_cdf(a,b,x,y)</TT> est égale à :<BR>
- Γ(<I>a</I>+<I>b</I>)*(β(<I>a</I>,<I>b</I>,<I>y</I>)−β(<I>a</I>,<I>b</I>,<I>x</I>))/Γ(<I>b</I>)*Γ(<I>a</I>)<BR>
-On rappelle que l’on a :<BR>
-<TT>Beta(a,b)</TT> est égale à <TT>int(t</TT><CODE><TT>^</TT></CODE><TT>(a-1)*(1-t)</TT><CODE><TT>^</TT></CODE><TT>(b-1),t=0..1)</TT> ,<BR>
-<TT>Beta(a,b,p)</TT> est égale à <TT>int(t</TT><CODE><TT>^</TT></CODE><TT>(a-1)*(1-t)</TT><CODE><TT>^</TT></CODE><TT>(b-1),t=0..p)</TT> ,<BR>
-<TT>Beta(a,b,p,1)</TT> est égale à <TT>=Beta(a,b,p)/Beta(a,b)</TT><BR>
+<H3 CLASS="subsection"><A NAME="htoc914">8.4.18</A>  Complément à 1 de la fonction de répartition de la loi de Student : <TT>UTPT</TT></H3><P><A NAME="@default1387"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi de Student ayant <I>n</I> degrés 
+de liberté,
+on a : <I>Proba</I>(<I>X</I> &gt; <I>x</I>)= <TT>UTPT(n,x)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>betad_cdf(2,3,0.2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>UTPT(5,2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.1808</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>betad_cdf(2,3,0.9)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.9963</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.0509697394149</TT></DIV><HR>
 <A HREF="cascmd_fr773.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr775.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

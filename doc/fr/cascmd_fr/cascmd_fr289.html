@@ -6,34 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Différence entre fonction et expression</TITLE>
+<TITLE>Les autres opérateurs de Xcas</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr288.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr290.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc365">6.17.1</A>  Différence entre fonction et expression</H3><P><A NAME="@default495"></A><A NAME="@default496"></A>
-Une fonction <TT>f</TT> est définie par exemple par :<BR>
-<TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT> ou encore par <TT>f:=x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT><BR>
-cela signifie que pour tous les <I>x</I>, <I>f</I>(<I>x</I>) est égale à l’expression 
-<I>x</I><SUP>2</SUP>−1.<BR>
-On pourra ainsi taper <TT>f(2)</TT> pour avoir la valeur de <I>f</I> en <I>x</I>=2.<BR>
-Par contre si on définit :<BR>
-<TT>g:=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT> cela signifie que <TT>g</TT> est une variable qui contient 
-l’expression <I>x</I><SUP>2</SUP>−1. Pour avoir la valeur de <I>g</I> en <I>x</I>=2 il faut alors 
-écrire :<BR>
-<TT>subst(g,x=2)</TT> car <I>g</I> est une expression qui dépend de <I>x</I>.<BR>
-Aussi, lorsque l’argument d’une commande est une fonction il faut mettre 
-comme argument, soit par exemple <TT>x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>, soit <TT>f</TT> (si 
-<TT>f</TT> est une fonction qui a été définie auparavant par exemple par 
-<TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>) et<BR>
-lorsque l’argument d’une commande est une expression on met comme argument, 
-soit par exemple <TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>, soit <TT>g</TT> (si <TT>g</TT> est une variable 
-que l’on a définie auparavant par exemple <TT>g:=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>), soit 
-<TT>f(x)</TT> (si <TT>f</TT> est une fonction qui a été définie auparavant par 
-exemple <TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>).
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc364">6.16.2</A>  Les autres opérateurs de <TT>Xcas</TT></H3><P><A NAME="@default483"></A><A NAME="@default484"></A><A NAME="@default485"></A><A NAME="@default486"></A><A NAME="@default487"></A><A NAME="@default488"></A><A NAME="@default489"></A><A NAME="@default490"></A> <A NAME="@default491"></A>
+<A NAME="@default492"></A><A NAME="@default493"></A><A NAME="@default494"></A>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<TT>$ </TT> est la version infixée de <TT>seq</TT> par exemple :<BR>
+<TT>(2</TT><CODE><TT>^</TT></CODE><TT>k)$(k=0..3)= seq(2</TT><CODE><TT>^</TT></CODE><TT>k,k=0..3)=(1,2,4,8)</TT> (ne pas oublier 
+de parenthéser les arguments),
+</LI><LI CLASS="li-itemize"><TT>mod</TT> ou <TT>% </TT> pour définir un nombre modulaire,
+</LI><LI CLASS="li-itemize"><TT>@</TT> pour composer des fonctions par exemple :
+<TT>(f@g)(x)=f(g(x))</TT>,
+</LI><LI CLASS="li-itemize"><TT>@@ </TT> pour composer une fonction avec elle-même par exemple :<BR>
+<TT>(f@@3)(x)=f(f(f(x)))</TT>,
+</LI><LI CLASS="li-itemize"><TT>minus union intersect</TT> pour traduire la différence, l’union et 
+l’intersection de deux ensembles,
+</LI><LI CLASS="li-itemize"><TT>-&gt;</TT> pour définir une fonction,
+</LI><LI CLASS="li-itemize"><TT>:= ou =&gt;</TT> pour affecter une variable (c’est la version infixée de 
+<TT>sto</TT> avec l’ordre permuté des arguments pour <TT>:=</TT>), 
+par exemple : <TT>a:=2</TT> or <TT>2=&gt;a</TT> or <TT>sto(2,a)</TT>.
+</LI><LI CLASS="li-itemize"><TT>=&gt;</TT> permet aussi de faire des conversions d’unité et des 
+réécritures d’expressions, par exemples : <TT>3_m=&gt;_cm</TT>, 
+<TT>sin(x)=&gt;diff</TT>, <TT>sin(x)=&gt;exp</TT>, <TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1=&gt;*</TT> etc... 
+<TT>=&lt;</TT> pour stocker une expression dans une variable, avec une affectation 
+par référence (l’ordre des arguments est le même que pour <TT>:=</TT>)
+si la cible est un élément d’une matrice ou d’une liste.
+Ceci est plus rapide si on modifie les élèments d’une matrice ou d’une 
+liste existante de grande dimension, car on ne fait pas de copie.
+À utiliser avec précautions car tous les objets pointant sur cette matrice 
+seront modifiés. Dans un programme il faudra utiliser <TT>copy</TT> lors de 
+l’initialisation pour que les modifications se fassent sur la copie 
+(cf <A HREF="cascmd_fr839.html#sec:copie">9.4.15</A>)
+</LI></UL><HR>
 <A HREF="cascmd_fr288.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr290.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

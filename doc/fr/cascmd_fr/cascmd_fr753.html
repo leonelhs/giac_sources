@@ -6,25 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de Poisson : poisson_icdf</TITLE>
+<TITLE>Tirage selon une loi de Poisson : randpoisson</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr752.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr754.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc892">8.4.10</A>  Fonction de répartition inverse de Poisson : <TT>poisson_icdf</TT></H3><P><A NAME="@default1350"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de Poisson de 
-paramètre <TT>mu</TT>, c’est à dire de moyenne <TT>mu</TT> et d’écart-type 
-<TT>mu</TT>, on a :<BR>
-<TT>poisson_icdf(mu,t)</TT>= <I>h</I> équivaut à<BR>
-<I>Proba</I>(<I>X</I>≤ <I>h</I>)=<TT>t= poisson_cdf(mu,h)</TT> avec <I>X</I>∈ <FONT COLOR=red><I>P</I></FONT>(<I>mu</I>).<BR>
-<TT>poisson_icdf(mu,t)</TT> est l’inverse de la fonction de répartition de 
-la loi de Poisson de paramètre <TT>mu</TT>,
+<H3 CLASS="subsection"><A NAME="htoc892">8.3.6</A>  Tirage selon une loi de Poisson : <TT>randpoisson</TT></H3><P><A NAME="@default1359"></A>
+<TT>randpoisson(</TT><TT>λ</TT><TT>)</TT> renvoie au hasard des nombres entiers 
+répartisselon la loi de Poisson <I>P</I>(λ) de moyenne <TT>λ</TT> et 
+d’écart type <TT>√</TT><TT><SPAN style="text-decoration:overline">λ</SPAN></TT>.<BR>
+On a :<BR>
+Proba(<I>X</I>≤ <I>k</I>)=exp(−λ)λ<SUP><I>k</I></SUP>/<I>k</I>!.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>poisson_icdf(10.0,0.975)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.125110035721</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>randpoisson(10.6)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>8</TT></DIV><P>
+ou on obtient par exemple :
+</P><DIV CLASS="center"><TT>17</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>randpoisson(2.4)</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>1</TT></DIV><HR>
 <A HREF="cascmd_fr752.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr754.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

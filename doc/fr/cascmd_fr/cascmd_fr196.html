@@ -6,31 +6,48 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Partie entière et fractionnaire : propfrac propFrac</TITLE>
+<TITLE>Certificat de Wilf-Zeilberger pour une identité : wz_certificate</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr195.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr197.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc264">6.9.2</A>  Partie entière et fractionnaire : <TT>propfrac propFrac</TT></H3><P><A NAME="@default357"></A><A NAME="@default358"></A><A NAME="sec:ipropfrac"></A>
-<TT>propfrac(A/B)</TT> ou <TT>propFrac(A/B)</TT> écrit la fraction
- <I>A</I>/<I>B</I> après simplification en 
- <I>a</I>/<I>b</I> (avec gcd(<I>a</I>,<I>b</I>)=1) sous la forme :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>q</I>+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>r</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>b</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">  avec   0≤ <I>r</I>&lt;<I>b</I></TD></TR>
-</TABLE><P>
-Pour les fractions rationnelles on se reportera à <A HREF="cascmd_fr424.html#sec:propfrac">6.31.8</A>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc263">6.8.6</A>  Certificat de Wilf-Zeilberger pour une identité : <TT>wz_certificate</TT></H3><P><A NAME="@default355"></A> 
+<TT>wz_certificate(U,res,n,k)</TT> renvoie le certificat de Wilf-Zeilberger pour 
+une identité de la forme <TT>sum(U,k)=res</TT>
+Par exemple, si on veut prouver que pour tout <I>n</I>∈ ℕ :<BR>
+<TT>sum((-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k),k=0..n);</TT> estégale à :<BR>
+<TT>comb(2n,n)</TT>,<BR>
+on forme le quotient :<BR>
+<TT>F(n,k):=(-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k)/comb(2n,n)</TT>.<BR>
+Il s’agit donc de montrer que :<BR>
+<TT>sum(F(n,k),k=0..n) == sum(F(n+1,k),k=0..n+1)</TT><BR>
+On cherche s’il existe une fonction <TT>G</TT> telle que :<BR>
+<TT>F(n+1,k)-F(n,k)=G(n,k+1)-G(n,k)</TT>, comme ca
+<TT>sum(F(n+1,k),k=0..n+1)-sum(F(n,k),k=0..n)=</TT><BR>
+<TT>sum(F(n+1,k)-F(n,k),k=1..n)+F(n+1,n+1)+F(n+1,0)-F(n,0)=</TT><BR>
+<TT>sum(G(n,k+1)-G(n,k),k=1..n)+F(n+1,n+1)+F(n+1,0)-F(n,0)</TT><BR>
+ce qui est une somme qui se simplifie en :<BR>
+<TT>G(n,n+1)-G(n,1)+F(n+1,n+1)+F(n+1,0)-F(n,0)</TT>.<BR>
+Le certificat de Wilf-Zeilberger renvoie <TT>R(n,k)</TT> qui est une fonction 
+rationnelle de <TT>n</TT> et <TT>k</TT> prouvant l’existence de <TT>G</TT>, plus 
+precisement <TT>G(n,k)=R(n,k)*F(n,k-1)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>propfrac(42/15)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2+4/5</TT></DIV><P>
+</P><DIV CLASS="center"><TT>wz_certificate((-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k),comb(2n,n),n,k);</TT></DIV><P>
+On obtient <TT>R(n,k)</TT> :
+</P><DIV CLASS="center"><TT>(-1+2*k)/(1+2*n)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>propfrac(43/12)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3+7/12</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>F(n,k):=(-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>n-k)/comb(2n,n)</TT></DIV><DIV CLASS="center"><TT>R(n,k):=(-1+2*k)/(1+2*n)</TT></DIV><DIV CLASS="center"><TT>G(n,k):=R(n,k)*F(n,k-1)</TT></DIV><DIV CLASS="center"><TT>simplify(G(n,n+1)-G(n,1)+F(n+1,n+1)+F(n+1,0)-F(n,0))</TT></DIV><P>
+On obtient la valeur de <TT>sum(F(n+1,k),k=0..n+1)-sum(F(n,k),k=0..n)</TT> :
+</P><DIV CLASS="center"><TT>0</TT></DIV><P>
+ce qui prouve que <TT>sum(F(n,k),k=0..n)</TT> ne dépend pas de <TT>n</TT> et donc<BR>
+<TT>sum((-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k),k=0..n)/comb(2n,n)</TT> 
+ne dépend pas de <TT>n</TT> et donc cette somme vaut <TT>F(0,0)</TT> c’est à dire 
+<TT>1</TT><BR>
+Donc on a prouver que :<BR>
+<TT>sum((-1)</TT><CODE><TT>^</TT></CODE><TT>k*comb(n,k)*comb(2k,k)*4</TT><CODE><TT>^</TT></CODE><TT>(n-k),k=0..n);</TT> estégale à :<BR>
+<TT>comb(2n,n)</TT></P><HR>
 <A HREF="cascmd_fr195.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr197.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

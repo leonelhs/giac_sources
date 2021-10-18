@@ -6,53 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Comatrice : adjoint_matrix</TITLE>
+<TITLE>Valeurs propres : eigenvals eigenvalues</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr631.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr633.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc746">6.55.10</A>  Comatrice : <TT>adjoint_matrix</TT></H3><P><A NAME="@default1158"></A>
-La comatrice de <I>A</I> est une matrice <I>B</I> telle que <I>A</I>* <I>B</I>=det(<I>A</I>)* <I>I</I>.<BR>
-<TT>adjoint_matrix </TT> a comme argument une matrice carrée <I>A</I> d’ordre <I>n</I>.<BR>
-<TT>adjoint_matrix </TT> renvoie une liste composée des coefficients du
-polynôme caractéristique <I>P</I> de <I>A</I>, d’une liste contenant les coefficients matriciels d’un polynôme <I>Q</I> tel que <I>Q</I>(<I>x</I>) soit la comatrice de <I>A</I>−<I>x</I>* <I>I</I> au signe près si <I>n</I> est pair!<BR>
-On a :<BR>
-<I>P</I>(<I>x</I>)=(−1)<SUP><I>n</I></SUP>* det(<I>A</I>−<I>x</I>* <I>I</I>) et <I>P</I>(<I>A</I>)−<I>P</I>(<I>x</I>)* <I>I</I>=(<I>A</I>−<I>x</I>* <I>I</I>)* <I>Q</I>(<I>x</I>)<BR>
-En effet le polynôme à coefficients matriciels <I>P</I>(<I>A</I>)−<I>P</I>(<I>x</I>)* <I>I</I>  est divisible
-par <I>A</I>−<I>x</I>* <I>I</I> car il s’annule pour <I>x</I>=<I>A</I> :<BR>
-<I>P</I>(<I>A</I>)=0, on a donc  <I>P</I>(<I>A</I>)−<I>P</I>(<I>x</I>)* <I>I</I> = −<I>P</I>(<I>x</I>)* <I>I</I> = (<I>A</I>−<I>x</I>* <I>I</I>)* <I>Q</I>(<I>x</I>).<BR>
-<I>Q</I>(<I>x</I>) est donc la comatrice de <I>A</I>−<I>x</I>* <I>I</I> au signe près si <I>n</I> est pair, 
-puisque :<BR>
- (<I>A</I>−<I>x</I>* <I>I</I>)* <I>Q</I>(<I>x</I>)= −<I>P</I>(<I>x</I>)* <I>I</I>=(−1)<SUP><I>n</I>+1</SUP>* det(<I>A</I>−<I>x</I>* <I>I</I>).<BR>
-On a alors <I>Q</I>(<I>x</I>) = <I>I</I>* <I>x</I><SUP><I>n</I>−1</SUP>+...+<I>B</I><SUB>0</SUB>  où <I>B</I><SUB>0</SUB>= est la comatrice de <I>A</I> (au signe près si <I>n</I> est pair!) puisque <I>Q</I>(0)=<I>B</I><SUB>0</SUB> et <I>A</I>* <I>Q</I>(0)=(−1)<SUP><I>n</I>+1</SUP>det(<I>A</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc747">6.56.1</A>  Valeurs propres : <TT>eigenvals eigenvalues</TT></H3><P><A NAME="@default1160"></A><A NAME="@default1161"></A>
+<TT>eigenvals</TT> ou <TT>eigenvalues</TT>) a comme argument une matrice <I>A</I> d’ordre <I>n</I>.<BR>
+<TT>eigenvals</TT> ou <TT>eigenvalues</TT>) renvoie une suite constitué par les <I>n</I> valeurs propres de 
+<I>A</I>.<BR>
+<B>Remarque</B> : Si <I>A</I> est symbolique, on peut avoir en réponse des valeurs 
+propres numériques car il faut que <TT>Xcas</TT> puisse factoriser le polynôme
+caractéristique formellement!<BR>
 On tape :
-</P><DIV CLASS="center"><TT>adjoint_matrix([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>eigenvals([[4,1,-2],[1,2,-1],[2,1,0]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,-6,12,-8],[[[1,0,0],[0,1,0],[0,0,1]],[[-2,1,-2], [1,-4,-1],[2,1,-6]],[[1,-2,3],[-2,4,2],[-3,-2,7]]]]</TT></DIV><P>
-Donc le polynôme caractéristique est :<BR>
-<I>x</I><SUP>3</SUP>−6*<I>x</I><SUP>2</SUP>+12*<I>x</I>−8<BR>
-Le déterminant de <I>A</I> est égal à −<I>P</I>(0) donc à 8<BR>
-La comatrice de <I>A</I> est égale à <I>Q</I>(0) donc à :<BR>
-[[1,−2,3],[−2,4,2],[−3,−2,7]]<BR>
-L’inverse de <I>A</I> est donc :<BR>
- 1/8*[[1,−2,3],[−2,4,2],[−3,−2,7]]<BR>
-La comatrice de <I>A</I>−<I>x</I> * <I>I</I> est donc :<BR>
-[[<I>x</I><SUP>2</SUP>−2<I>x</I>+1,<I>x</I>−2,−2<I>x</I>+3],[<I>x</I>−2,<I>x</I><SUP>2</SUP>−4<I>x</I>+4,−<I>x</I>+2],[2<I>x</I>−3,<I>x</I>−2,<I>x</I><SUP>2</SUP>−6<I>x</I>+7]]<BR>
+</P><DIV CLASS="center"><TT>(2,2,2) </TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>adjoint_matrix([[4,1],[1,2]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>eigenvals([[4,1,0],[1,2,-1],[2,1,0]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,-6,7],[[[1,0],[0,1]],[[-2,1],[1,-4]]]]</TT></DIV><P>
-Donc le polynôme caractéristique est :<BR>
- <I>x</I><SUP>2</SUP>−6*<I>x</I>+7<BR>
-Le déterminant de <I>A</I> est égal à +<I>P</I>(0) donc à 7<BR>
-La comatrice de <I>A</I> est égale à <I>Q</I>(0) donc à :<BR>
- −[[−2,1],[1,−4]].<BR>
-L’inverse de <I>A</I> est donc :<BR>
- −1/7*[[−2,1],[1,−4]].<BR>
-La comatrice de <I>A</I>−<I>x</I>* <I>I</I> est donc :<BR>
- −[[<I>x</I>−2,1],[1,<I>x</I>−4]].</P><HR>
+</P><DIV CLASS="center"><TT>(0.324869129433,4.21431974338,1.46081112719)</TT></DIV><HR>
 <A HREF="cascmd_fr631.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr633.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

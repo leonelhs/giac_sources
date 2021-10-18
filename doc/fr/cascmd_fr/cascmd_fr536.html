@@ -6,31 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Faire une matrice avec une liste : list2mat</TITLE>
+<TITLE>Somme cumulée des éléments d’une liste : cumSum</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr535.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr537.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc636">6.41.41</A>  Faire une matrice avec une liste : <TT>list2mat</TT></H3><P><A NAME="@default952"></A>
-<TT>list2mat</TT> permet d’obtenir la matrice des termes de
-la liste donnée comme argument en scindant la liste selon le nombre de
-colonnes spécifiées. Si il manque des termes, la liste est complétée 
-par des <TT>0</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc637">6.42.34</A>  Somme cumulée des éléments d’une liste : <TT>cumSum</TT></H3><P><A NAME="@default952"></A>
+<TT>cumSum</TT> a comme paramètre <TT>l</TT> une liste (ou une séquence) 
+de nombres réels ou de décimaux ou de chaîne de caractères.<BR>
+<TT>cumSum</TT> renvoie la liste (ou la séquence) de même longueur que <TT>l</TT>
+avec comme <I>k</I>-ième élément la somme (ou la concaténation) des 
+éléments <TT><I>l</I>[0],..,<I>l</I>[<I>k</I>]</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>list2mat([5,8,1,9,5,6],2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cumSum(sqrt(2),3,4,5,6)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[5,8],[1,9],[5,6]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sqrt(2),3+sqrt(2),3+sqrt(2)+4,3+sqrt(2)+4+5,</TT></DIV><DIV CLASS="center"><TT>3+sqrt(2)+4+5+6</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>list2mat([5,8,1,9],3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal(cumSum(sqrt(2),3,4,5,6))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[5,8,1],[9,0,0]]</TT></DIV><P>
-<B>Remarque</B><BR>
-En réponse, les délimiteurs d’une matrice sont [ et ] alors que 
-les délimiteurs d’une liste sont <TT>[</TT> et <TT>]</TT> (la barre verticale des 
-crochets est plus eppaisse pour les matrices). 
-</P><HR>
+</P><DIV CLASS="center"><TT>sqrt(2),sqrt(2)+3,sqrt(2)+7,sqrt(2)+12,sqrt(2)+18</TT></DIV><P>On tape :
+</P><DIV CLASS="center"><TT>cumSum(1.2,3,4.5,6)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1.2,4.2,8.7,14.7</TT></DIV><P>
+On tape :</P><DIV CLASS="center"><TT>cumSum([0,1,2,3,4])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0,1,3,6,10]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>cumSum("a","b","c","d")</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>"a","ab","abc","abcd"</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>cumSum("a","ab","abc","abcd")</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>"a","aab","aababc","aababcabcd"</TT></DIV><HR>
 <A HREF="cascmd_fr535.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr537.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,59 +6,46 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Base de Gröbner : gbasis</TITLE>
+<TITLE>Polynôme de Hermite : hermite</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr412.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr414.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc502">6.30.1</A>  Base de Gröbner : <TT>gbasis</TT></H3><P><A NAME="@default758"></A>
-<A NAME="sec:gbasis"></A>
-<TT>gbasis</TT> a au moins deux arguments : 
-une liste de polynômes de 
-plusieurs variables et la liste du nom de ces variables.<BR>
-<TT>gbasis</TT> renvoie une base de Gröbner de l’idéal polynomial engendré
-par les polynômes donnés dans le premier argument.<BR>
-On choisit d’ordonner les monômes selon l’ordre lexicographique en accord 
-avec la liste donnée par le dernier 
-argument et selon les puissances décroissantes : par exemple on écrira
-<I>x</I><SUP>2</SUP>*<I>y</I><SUP>4</SUP>*<I>z</I><SUP>3</SUP> puis <I>x</I><SUP>2</SUP>*<I>y</I><SUP>3</SUP>*<I>z</I><SUP>4</SUP> si le deuxième argument est [<I>x</I>,<I>y</I>,<I>z</I>] car
-(2,4,3)&gt;(2,3,4) mais on écrira <I>x</I><SUP>2</SUP>*<I>y</I><SUP>3</SUP><I>z</I><SUP>4</SUP> puis <I>x</I><SUP>2</SUP>*<I>y</I><SUP>4</SUP>*<I>z</I><SUP>3</SUP> si le
-deuxième argument est [<I>x</I>,<I>z</I>,<I>y</I>].<BR>
-Si <I>I</I> est un idéal et si 
-(<I>G</I><SUB><I>k</I></SUB>)<SUB><I>k</I> ∈ <I>K</I></SUB> est une base de Gröbner de l’idéal <I>I</I> alors,
-si <I>F</I> est un polynôme non nul de <I>I</I>, le terme dominant de <I>F</I> 
-est divisible par le terme dominant d’un <I>G</I><SUB><I>k</I></SUB>.<BR>
-Propriété : Si on fait la division euclidienne de <I>F</I> par un des <I>G</I><SUB><I>k</I></SUB> 
-puis, si on recommence avec le reste obtenu et le <I>G</I><SUB><I>k</I></SUB> suivant, on finit par obtenir un reste nul.<BR>
+<H3 CLASS="subsection"><A NAME="htoc502">6.30.2</A>  Polynôme de Hermite : <TT>hermite</TT></H3><P><A NAME="@default767"></A>
+<TT>hermite</TT> deux fonctionnalités :
+</P><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+<TT>hermite</TT> a comme argument un entier <I>n</I> et èventuellement le 
+nom de la variable (<I>x</I> par défaut).<BR>
+<TT>hermite</TT> renvoie le polynôme de Hermite de degré <I>n</I>.<BR>
+Le polynôme de Hermite de degré <I>n</I> noté <I>P</I>(<I>n</I>,<I>x</I>) vérifie les relations
+:<BR>
+<I>P</I>(0,<I>x</I>)=1<BR>
+<I>P</I>(1,<I>x</I>)=2<I>x</I><BR>
+<I>P</I>(<I>n</I>,<I>x</I>)=2<I>xP</I>(<I>n</I>−1,<I>x</I>)−2(<I>n</I>−1)<I>P</I>(<I>n</I>−2,<I>x</I>)<BR>
+Ces polynômes sont orthogonaux pour le produit scalaire :<BR>
+&lt;<I>f</I>,<I>g</I>&gt;=∫<SUB>−∞</SUB><SUP>+∞</SUP><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)<I>e</I><SUP>−<I>x</I><SUP>2</SUP></SUP><I>dx</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>gbasis([2*x*y-y</TT><CODE><TT>^</TT></CODE><TT>2,x</TT><CODE><TT>^</TT></CODE><TT>2-2*x*y],[x,y])</TT></DIV><P>
+<DIV CLASS="center"><TT>hermite(6)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[y</TT><CODE><TT>^</TT></CODE><TT>3,x*y+(-1/2)*y</TT><CODE><TT>^</TT></CODE><TT>2,x</TT><CODE><TT>^</TT></CODE><TT>2-y</TT><CODE><TT>^</TT></CODE><TT>2]</TT></DIV><P>On peut donner des arguments supplémentaires :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>plex</TT> (lexicographique pur utilisé par défaut)), <TT>tdeg</TT> 
-(degré total puis ordre lexicographique),
-<TT>revlex</TT> (degré total puis ordre lexicographique inverse), pour
-spécifier un ordre sur les monômes différent de l’ordre
-par défaut (qui est <TT>plex</TT>),
-</LI><LI CLASS="li-itemize"><TT>with_cocoa=true</TT> ou <TT>with_cocoa=false</TT>, si on veut
-utiliser la librairie <TT>CoCoA</TT> pour faire le calcul de la base
-de Gröbner.
-</LI><LI CLASS="li-itemize"><TT>with_f5=true</TT> ou <TT>with_f5=false</TT> pour utiliser
-l’implémentation de l’algorithme F5 de la librairie <TT>CoCoA</TT>.
-L’ordre spécifié n’est alors pas utilisé, les polynômes étant 
-homogénéisés.
-</LI></UL><P>
-On tape :
-</P><DIV CLASS="center">
-<CODE>gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1],</CODE><BR>
-<CODE>[x1,x2,x3],tdeg,with_cocoa=false)</CODE>
-</DIV><P>
-On obtient
-</P><DIV CLASS="center">
-<CODE>[x3^3-1,-x2^2-x2*x3-x3^2,x1+x2+x3]</CODE>
-</DIV><HR>
+<DIV CLASS="center"><TT>64*x</TT><CODE><TT>^</TT></CODE><TT>6+-480*x</TT><CODE><TT>^</TT></CODE><TT>4+720*x</TT><CODE><TT>^</TT></CODE><TT>2-120</TT></DIV>On tape :
+<DIV CLASS="center"><TT>hermite(6,y)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>64*y</TT><CODE><TT>^</TT></CODE><TT>6+-480*y</TT><CODE><TT>^</TT></CODE><TT>4+720*y</TT><CODE><TT>^</TT></CODE><TT>2-120</TT></DIV>
+</LI><LI CLASS="li-enumerate"><TT>hermite</TT> a comme argument une matrice <TT>A</TT> à coefficients polynomiaux.<BR>
+<TT>hermite</TT> renvoie la forme normale de Hermite de la matrice <TT>A</TT>.<BR>
+Si les matrices <TT>I</TT> et <TT>U</TT> sont définies par <TT>I,U:=hermite(A)</TT>, 
+on a <TT>I*A=U</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>n:=5; a:=ranm(n,n) % 17; </TT></DIV>
+<DIV CLASS="center"><TT>I,U:=hermite(x-a)</TT></DIV>
+On obtient :
+
+On tape :
+<DIV CLASS="center"><TT>normal(I*(x-a)-U)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>0</TT></DIV></LI></OL><HR>
 <A HREF="cascmd_fr412.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr414.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

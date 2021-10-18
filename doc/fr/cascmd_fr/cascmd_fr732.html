@@ -6,31 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Graphe de la régression puissance : 
- power_regression_plot</TITLE>
+<TITLE>Ligne polygonale : polygonplot ligne_polygonale</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr731.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr733.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc869">8.2.19</A>  Graphe de la régression puissance :<BR>
- <TT>power_regression_plot</TT></H3><P><A NAME="@default1310"></A><A NAME="@default1311"></A><A NAME="@default1312"></A>
-Pour approcher les données par le graphe d’une fonction puissance 
-d’équation <I>y</I>=<I>bx</I><SUP><I>m</I></SUP>, on utilise <TT>power_regression_plot</TT>.<BR>
-<TT>power_regression_plot</TT> a les mêmes arguments que <TT>covariance</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc870">8.2.6</A>  Ligne polygonale : <TT>polygonplot ligne_polygonale</TT></H3><P><A NAME="@default1313"></A><A NAME="@default1314"></A>
+<TT>polygonplot</TT> a pour arguments deux listes ou une matrice 
+ayant deux colonnes.<BR>
+<TT>polygonplot</TT> permet de visualiser les segments de droites reliant les 
+différents points du nuage de points définis par 
+l’argument et ordonnés selon les abscisses croissantes. Si vous voulez que 
+les points soient reliés dans l’ordre donnés il faut utiliser 
+<TT>listplot</TT><BR>
 On tape :
-</P><DIV CLASS="center"><TT>power_regression_plot([[1.0,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le graphe de la fonction puissance d’équation </TT><TT><I>y</I>=1*<I>x</I></TT><SUP><TT>2</TT></SUP></DIV><P>
-car c’est la fonction puissance d’équation <I>y</I>=1*<I>x</I><SUP>2</SUP> qui approche au mieux 
-les données.
-<B>Remarque</B>
-On remarquera que l’équation de la courbe representée ainsi que la valeur 
-du coefficient de corrélation des données sont écrits en bleu.<BR>
-Si on veut avoir l’équation et/ou le coefficient de corrélation sur le 
-dessin il faut rajouter comme dernier argument, l’option <TT>equation</TT> et/ou 
-<TT>correlation</TT>.</P><HR>
+</P><DIV CLASS="center"><TT>polygonplot([[0,0],[1,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
+Ou on tape car les points seront ordonnés selon les abscisses croissantes :
+</P><DIV CLASS="center"><TT>polygonplot([[2,4],[0,0],[3,9],[1,1],[4,16]])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>polygonplot([0,1,2,3,4],[0,1,4,9,16])</TT></DIV><P>
+La fenêtre graphique s’ouvre automatiquement et on obtient le dessin des 
+4 segments reliant les 5 points ((0,0),...(4,16)), 
+à condition d’avoir défini correctement
+la configuration du graphique (menu <TT>Cfg</TT>).</P><HR>
 <A HREF="cascmd_fr731.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr733.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

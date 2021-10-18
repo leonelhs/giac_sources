@@ -907,6 +907,7 @@ int main(int ARGC, char *ARGV[]){
   giac::secure_run=false;
 #if !defined EMCC && !defined NSPIRE_NEWLIB
   if (ARGC==2 && !strcmp(ARGV[1],"--rebuild-help-cache")){
+    // works with old version of hevea (1.10) but not with hevea 2.29
     for (int i=0;i<=4;++i)
       giac::html_help_init("aide_cas",i,true,true);
     return 0;

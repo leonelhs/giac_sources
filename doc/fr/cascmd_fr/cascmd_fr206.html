@@ -6,53 +6,46 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Évaluer un réel et nombre de digits : evalf et Digits, DIGITS)</TITLE>
+<TITLE>Le polynôme de Bernoulli : bernoulli</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr205.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr207.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc275">6.10.1</A>  Évaluer un réel et nombre de digits : <TT>evalf</TT> et <TT>Digits</TT>, <TT>DIGITS</TT>)</H3><P><A NAME="@default372"></A><A NAME="@default373"></A><A NAME="@default374"></A>
-Il faut distinguer le nombre réel de sa valeur numérique qui est un nombre 
-flottant.<BR>
-La précision des nombres flottants, en nombre de chiffres est contrôlée
-par la variable <TT>Digits</TT> qui vaut 12 par défaut.<BR>
-Une expression peut être évaluée en flottant grâce à la commande 
-<TT>evalf</TT>.<BR>
-<B>Attention !!!!</B><BR>
- Les nombres flottants sont contagieux (!) car une expression 
-qui comporte un nombre flottant est calculée en flottant.<BR>
- On tape :
-</P><DIV CLASS="center"><TT>1+1/2</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3/2</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc274">6.9.10</A>  Le polynôme de Bernoulli : <TT>bernoulli</TT></H3><P><A NAME="@default372"></A>
+Si <TT>bernoulli</TT> a deux arguments un entier <I>n</I> et le nom d’une variable alors :<BR>
+<TT>bernoulli(n,x)</TT> renvoie le <TT>n</TT>-ième polynôme de Bernoulli en 
+fonction de <TT>x</TT>.<BR>
+On rappelle que les polynômes de Bernoulli <I>B</I><SUB><I>k</I></SUB> sont définis par :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>B</I><SUB>0</SUB>=1</TD></TR>
+</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>B</I><SUB><I>k</I></SUB>′(<I>x</I>)=<I>kB</I><SUB><I>k</I>−1</SUB>(<I>x</I>) </TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>B</I><SUB><I>k</I></SUB>(<I>x</I>)<I>dx</I>=0</TD></TR>
+</TABLE><P>
+On a alors :<BR>
+<I>B</I>(<I>n</I>)=<I>B</I><SUB><I>n</I></SUB>(0)<BR>
+<I>B</I><SUB>1</SUB>′(<I>x</I>)=<I>B</I><SUB>0</SUB>(<I>x</I>)=1  et  ∫<SUB>0</SUB><SUP>1</SUP><I>B</I><SUB>1</SUB>(<I>x</I>)<I>dx</I>=0 donc :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>B</I><SUB>1</SUB>(<I>x</I>)=<I>x</I>−1/2</TD></TR>
+</TABLE><P>
+<I>B</I><SUB>2</SUB>′(<I>x</I>)=2<I>B</I><SUB>1</SUB>(<I>x</I>)=2<I>x</I>−1 et ∫<SUB>0</SUB><SUP>1</SUP><I>B</I><SUB>2</SUB>(<I>x</I>)<I>dx</I>=0 donc 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>B</I><SUB>2</SUB>(<I>x</I>)=<I>x</I><SUP>2</SUP>−<I>x</I>+1/6</TD></TR>
+</TABLE><P>
+<I>B</I><SUB>3</SUB>′(<I>x</I>)=3<I>B</I><SUB>2</SUB>(<I>x</I>)=3<I>x</I><SUP>2</SUP>−3<I>x</I>+1/2 et ∫<SUB>0</SUB><SUP>1</SUP><I>B</I><SUB>3</SUB>(<I>x</I>)<I>dx</I>=0 donc 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>B</I><SUB>3</SUB>(<I>x</I>)=<I>x</I><SUP>3</SUP>−3*<I>x</I><SUP>2</SUP>/2+<I>x</I>/2</TD></TR>
+</TABLE><P>
+....<BR>
 On tape :
-</P><DIV CLASS="center"><TT>1.0+1/2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>bernoulli(3,x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.5</TT></DIV><P>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3-3*x</TT><CODE><TT>^</TT></CODE><TT>2/2+x/2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>exp(pi*sqrt(20))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>bernoulli(6,x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>exp(pi*2*sqrt(5)) </TT></DIV><P>
-Avec la commande <TT>evalf</TT>, on tape :
-</P><DIV CLASS="center"><TT>evalf(exp(pi*2*sqrt(5)))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1263794.75367</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>1.1</TT><CODE><TT>^</TT></CODE><TT>20</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>6.72749994933</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>sqrt(2)</TT><CODE><TT>^</TT></CODE><TT>21</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>sqrt(2)*2</TT><CODE><TT>^</TT></CODE><TT>10</TT></DIV><P>
-On tape pour avoir 30 chiffres significatifs :
-</P><DIV CLASS="center"><TT>Digits:=30</TT></DIV><P>
-On tape pour avoir la valeur numérique de <I>e</I><SUP>π√<SPAN style="text-decoration:overline">163</SPAN></SUP>:
-</P><DIV CLASS="center"><TT>evalf(exp(pi*sqrt(163)))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.262537412640768743999999999985e18</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>6-3*x</TT><CODE><TT>^</TT></CODE><TT>5+5*x</TT><CODE><TT>^</TT></CODE><TT>4/2-x</TT><CODE><TT>^</TT></CODE><TT>2/2+1/42</TT></DIV><HR>
 <A HREF="cascmd_fr205.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr207.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

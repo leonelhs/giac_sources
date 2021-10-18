@@ -6,34 +6,42 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Singular value decomposition : svd</TITLE>
+<TITLE>Forme normale de Smith : smith</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr645.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr647.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc762">6.57.8</A>  Singular value decomposition : <TT>svd</TT></H3><P><A NAME="@default1175"></A>
-<TT>svd</TT> (singular value decomposition) a comme argument une matrice 
-carrée numérique réelle d’ordre <I>n</I>.<BR>
-<TT>svd</TT> utilise la librairie lapack<BR>
-<TT>svd(A)</TT> renvoie <I>U</I> une matrice orthogonale, <I>s</I> la diagonale d’une 
-matrice diagonale <I>S</I> constituée par les valeurs singulières de <I>A</I> et <I>Q</I> 
-une matrice orthogonale (<SUP><I>t</I></SUP><I>Q</I>*<I>Q</I>=<I>I</I>) tel que :<BR>
- <I>A</I>=<I>U</I>.diag(<I>s</I>).tran(<I>Q</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc761">6.56.15</A>  Forme normale de Smith : <TT>smith</TT></H3><P><A NAME="@default1185"></A>
+<TT>smith</TT> a comme argument une matrice <TT>A</TT> à coefficients 
+des polynômes qui ont leur coefficients dans un corps <I>K</I>.<BR>
+<TT>smith</TT> renvoie les matrices <TT>U, D, V</TT> avec <TT>U</TT> et 
+<TT>V</TT> inversibles et <TT>D</TT> diagonale et vérifiant <TT>D=U*A*V</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>svd([[1,2],[3,4]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>M:=([[5,-2,3,6],[1,-3,1,3],[7,-6,-4,7],[-2,-4,-3,0]]) % 17</TT></DIV><DIV CLASS="center"><TT>A:=x*idn(4)-M</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[-0.404553584834,-0.914514295677],[-0.914514295677, 0.404553584834]], [5.46498570422,0.365966190626], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[x+(-5)% 17,2 % 17,(-3) % 17,(-6) % 17],
+[(-1) % 17,x+3 % 17,(-1) % 17,(-3) % 17],
+[(-7) % 17,6 % 17,x+4 % 17,(-7) % 17],
+[2 % 17,4 % 17,3 % 17,x]]</TT>
+</DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>(U,s,Q):=svd([[3,5],[4,5]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[-0.672988041811,-0.739653361771],[-0.739653361771, 0.672988041811]],[8.6409011028,0.578643354497], [[-0.576048436766,0.81741556047],[-0.81741556047, -0.576048436766]]</TT></DIV><P>
-Vérifions :<BR>
+</P><DIV CLASS="center"><TT>U,D,V:=smith(A)</TT></DIV><P>
+On obtient <TT>U,D,V</TT>:
+</P><DIV CLASS="center"><TT>[([[0,-1,0,0],[0,0,6,4],[5-2*x,-5-4*x,-6-3*x,6-3*x+x</TT><CODE><TT>^</TT></CODE><TT>2],[6+5*x+2*x</TT><CODE><TT>^</TT></CODE><TT>2,2+8*x+4*x</TT><CODE><TT>^</TT></CODE><TT>2,1+4*x+3*x</TT><CODE><TT>^</TT></CODE><TT>2,-6+2*x-2*x</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>3]]) % 17,</TT></DIV><DIV CLASS="center"><TT>([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,2-3*x+8*x</TT><CODE><TT>^</TT></CODE><TT>2-2*x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>4]]) % 17,</TT></DIV><DIV CLASS="center"><TT>([[1,3+x,-7-3*x-6*x</TT><CODE><TT>^</TT></CODE><TT>2,6-8*x+x</TT><CODE><TT>^</TT></CODE><TT>2-2*x</TT><CODE><TT>^</TT></CODE><TT>3+2*x</TT><CODE><TT>^</TT></CODE><TT>4+6*x</TT><CODE><TT>^</TT></CODE><TT>5],[0,1,-2-6*x,-6+5*x-6*x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3+6*x</TT><CODE><TT>^</TT></CODE><TT>4],[0,0,1,7+3*x</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>3],[0,0,0,1]]) % 17]</TT></DIV><P>
+On vérifie, on tape :
+</P><DIV CLASS="center"><TT>normal(U*A*V-D)</TT></DIV><P>
+On obtient:
+</P><DIV CLASS="center"><TT>[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>U*diag(s)*tran(Q)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>B:=[[x</TT><CODE><TT>^</TT></CODE><TT>2+x-1,1,0,1],[-1,x,0,-1],[0,x</TT><CODE><TT>^</TT></CODE><TT>2+1,x,0],[1,0,1,x</TT><CODE><TT>^</TT></CODE><TT>2+x+1]] % 3</TT></DIV><DIV CLASS="center"><TT>L:=smith(B)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[3.0,5.0],[4.0,5.0]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[([[0,-1,0,0],[1,0,0,1-x-x</TT><CODE><TT>^</TT></CODE><TT>2],[0,1+x</TT><CODE><TT>^</TT></CODE><TT>2,-x,1+x</TT><CODE><TT>^</TT></CODE><TT>2],[-1,1+x-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>4,1-x+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3,-x+x</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>4]]) % 3,([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1+x+x</TT><CODE><TT>^</TT></CODE><TT>5-x</TT><CODE><TT>^</TT></CODE><TT>6]]) % 3,([[1,x,-x+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3,-1+x+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>6-x</TT><CODE><TT>^</TT></CODE><TT>7],[0,1,-1+x+x</TT><CODE><TT>^</TT></CODE><TT>2,1+x+x</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>5-x</TT><CODE><TT>^</TT></CODE><TT>6],[0,0,1,-x-x</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>4],[0,0,0,1]]) % 3]</TT></DIV><P>
+On vérifie, on tape :
+</P><DIV CLASS="center"><TT>normal(L[0]*B*L[2]-L[1])</TT></DIV><P>
+On obtient:
+</P><DIV CLASS="center"><TT>[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]%3</TT></DIV><HR>
 <A HREF="cascmd_fr645.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr647.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

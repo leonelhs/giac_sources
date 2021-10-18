@@ -6,47 +6,63 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Idendité de Bézout : egcd gcdex</TITLE>
+<TITLE>PGCD de polynômes par l’algorithme d’Euclide : gcd igcd</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr398.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr400.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc486">6.28.11</A>  Idendité de Bézout : <TT>egcd gcdex</TT></H3><P><A NAME="@default743"></A><A NAME="@default744"></A>
-Il s’agit de l’identité de Bézout pour les polynômes (Extended Greatest 
-Common Divisor).<BR>
-<TT>egcd</TT> a 2 ou 3 arguments: les polynômes <I>A</I> and <I>B</I> qui sont, 
-soit sous la forme d’expressions d’une variable, (si la variable n’est pas
-spécifiée c’est <I>x</I>), soit donné par la liste de leurs coefficients par 
-ordre de puissances décroissantes.<BR>
-Etant donnés 2 polynômes <I>A</I>(<I>x</I>),<I>B</I>(<I>x</I>), <TT>egcd</TT> ou <TT>gcdex</TT> renvoie 
-3 polynômes <TT>[U(x),V(x),D(x)]</TT> vérifiant :
-</P><DIV CLASS="center"><TT>U(x)*A(x)+V(x)*B(x)=D(x)=PGCD(A(x),B(x))</TT></DIV><P> 
+<H3 CLASS="subsection"><A NAME="htoc487">6.29.7</A>  PGCD de polynômes par l’algorithme d’Euclide : <TT>gcd igcd</TT></H3><P><A NAME="@default748"></A><A NAME="@default749"></A><A NAME="sec:gcd"></A>
+<TT>gcd</TT> désigne le PGCD (plus grand commun diviseur) de deux 
+polynômes pouvant avoir plusieurs variables et aussi le PGCD d’une liste de 
+polynômes ou d’une séquence de polynômes pouvant avoir plusieurs 
+variables (voir <A HREF="cascmd_fr161.html#sec:igcd">6.7.2</A> pour le PGCD d’entiers).
+On peut aussi mettre comme paramètres deux listes de même longueur (ou une 
+matrice ayant 2 lignes), dans ce cas <TT>gcd</TT> renvoie le PGCD des 
+éléments de même indice (ou d’une même colonne).
 On tape :
-</P><DIV CLASS="center"><TT>egcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>gcd([x</TT><CODE><TT>^</TT></CODE><TT>2-4,x*y-y],[x</TT><CODE><TT>^</TT></CODE><TT>3-8,y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2*y])</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>gcd([[x</TT><CODE><TT>^</TT></CODE><TT>2-4,x*y-y],[x</TT><CODE><TT>^</TT></CODE><TT>3-8,y</TT><CODE><TT>^</TT></CODE><TT>2-x</TT><CODE><TT>^</TT></CODE><TT>2*y]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,-1,2*x+2]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[x-2,y]</TT></DIV><P><B>Exemples</B><BR>
 On tape :
-</P><DIV CLASS="center"><TT>egcd([1,2,1],[1,0,-1])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1],[-1],[2,2]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>x+1 </TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>egcd(t</TT><CODE><TT>^</TT></CODE><TT>2+2*t+1,t</TT><CODE><TT>^</TT></CODE><TT>2-1,t)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1,x</TT><CODE><TT>^</TT></CODE><TT>2+x-2)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>gcd([x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>3-1,x</TT><CODE><TT>^</TT></CODE><TT>2-1,x</TT><CODE><TT>^</TT></CODE><TT>2+x-2])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,-1,2*t+2]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>x-1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>egcd(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1,x</TT><CODE><TT>^</TT></CODE><TT>2-x+2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=z</TT><CODE><TT>^</TT></CODE><TT>2+x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>2*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(y</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2+(-(x</TT><CODE><TT>^</TT></CODE><TT>2))*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><DIV CLASS="center"><TT>B:=x</TT><CODE><TT>^</TT></CODE><TT>3*y</TT><CODE><TT>^</TT></CODE><TT>3*z+(-(y</TT><CODE><TT>^</TT></CODE><TT>3))*z+x</TT><CODE><TT>^</TT></CODE><TT>3*z-z</TT></DIV><DIV CLASS="center"><TT>C:=gcd(A,B)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x-2,-x+3,4]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>z*x*y+z*x-z*y-z</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>egcd([1,-2,1],[1,-1,2])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>factor(A)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[1,-2],[-1,3],[4]]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(y-1)*(y+1)*(x-1)*(x+1)*z</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>egcd(t</TT><CODE><TT>^</TT></CODE><TT>2-2*t+1,t</TT><CODE><TT>^</TT></CODE><TT>2-t+2,t)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>factor(B)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[t-2,-t+3,4]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+x+1)*(x-1)*(y+1)*(y</TT><CODE><TT>^</TT></CODE><TT>2-y+1)*z</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>factor(C)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(y+1)*(x-1)*z</TT></DIV><P>Pour les polynômes à coefficients modulaire, on tape par exemple :
+On tape :
+</P><DIV CLASS="center"><TT>gcd((x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+2) mod 5,(x</TT><CODE><TT>^</TT></CODE><TT>2-1) mod 5)</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>(1 % 5)*x-1 % 5</TT></DIV><P>
+Mais si on tape :
+</P><DIV CLASS="center"><TT>gcd(x</TT><CODE><TT>^</TT></CODE><TT>2+2*x+2,x</TT><CODE><TT>^</TT></CODE><TT>2-1) mod 5)</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>1%5</TT></DIV><P>
+car l’opération modulaire se fait après le calcul du PGCD qui a èté 
+calculé dans ℤ[<I>X</I>].</P><HR>
 <A HREF="cascmd_fr398.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr400.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

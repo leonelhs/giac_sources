@@ -6,27 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si 4 points sont cocycliques : is_concyclic est_cocyclique</TITLE>
+<TITLE>Avoir comme réponse la valeur d’une mesure affichée : extract_measure, extraire_mesure</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr966.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr968.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1134">10.18.3</A>  Savoir si 4 points sont cocycliques : <TT>is_concyclic est_cocyclique</TT></H3><P><A NAME="@default1876"></A><A NAME="@default1877"></A><A NAME="sec:estcocyclique"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1045.html#sec:estcocyclique3">11.13.7</A> et <A HREF="cascmd_fr1046.html#sec:estcospherique">11.13.8</A> pour la
-géométrie 3-d.<BR>
-<TT>is_concyclic</TT> ou <TT>est_cocyclique</TT> est une fonction 
-booléenne ayant comme argument une liste ou une séquence de points.<BR>
-<TT>est_cocyclique</TT> vaut 1 si les points sont cocycliques, et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1133">10.16.14</A>  Avoir comme réponse la valeur d’une mesure affichée : <TT>extract_measure, extraire_mesure</TT></H3><P><A NAME="@default1891"></A><A NAME="@default1892"></A>
+<TT>extract_measure</TT> ou <TT>extraire_mesure</TT> permet d’obtenir la valeur 
+d’une mesure qui a été affichée.<BR>
+<TT>extract_measure</TT> ou <TT>extraire_mesure</TT> a pour argument la commande 
+qui a affiché cette mesure.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_cocyclique(1+i,-1+i,-1-i,1-i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=point(-1);B:=point(1+i);C:=point(i);</TT></DIV><DIV CLASS="center"><TT>extraire_mesure(angleen(A,B,C,0.2i))</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>extract_measure(angleat(A,B,C,0.2i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>atan(1/3)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_cocyclique(i,-1+i,-1-i,1-i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>extraire_mesure(distanceenbrut(A,B,C,0.2i))</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>extract_measure(distanceatraw(A,B,0.4i))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>sqrt(5)</TT></DIV><HR>
 <A HREF="cascmd_fr966.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr968.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

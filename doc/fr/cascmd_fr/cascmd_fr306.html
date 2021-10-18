@@ -6,169 +6,147 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Intégration par parties : integrer_par_parties_dv ibpdv et integrer_par_parties_u ibpu</TITLE>
+<TITLE>Primitive et intégrale définie : integrate Int integrer int integration</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr305.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr307.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc385">6.20.5</A>  Intégration par parties : <TT>integrer_par_parties_dv ibpdv</TT> et <TT>integrer_par_parties_u ibpu</TT></H3><H4 CLASS="subsubsection"><A NAME="toc14"></A><TT>ibpdv</TT></H4><P><A NAME="@default565"></A>
-<TT>ibpdv</TT> permet de chercher une primitive (ou de calculer une 
-intégrale définie) d’une expression de la forme <I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>).<BR>
-<TT>ibpdv</TT> a deux paramètres pour les primitives et cinq paramètres pour 
-les intégrales définies :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-soit une expression de la forme
-<I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>) et <I>v</I>(<I>x</I>) (ou une liste de deux expressions 
-[<I>F</I>(<I>x</I>), <I>u</I>(<I>x</I>)*<I>v</I>′(<I>x</I>)] et <I>v</I>(<I>x</I>)),
-</LI><LI CLASS="li-itemize">soit une expression de la forme
-<I>g</I>(<I>x</I>) et 0 (ou une liste de deux expressions [<I>F</I>(<I>x</I>), <I>g</I>(<I>x</I>)] et 0).
-</LI><LI CLASS="li-itemize">pour les intégrales définies, il faut rajouter trois autres 
-paramètres : le nom de la variable et les bornes. 
-</LI></UL><P>
-Lorsque <TT>ibpdv</TT> a 2 arguments <TT>ibpdv</TT> renvoie :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>v</I>(<I>x</I>) ≠ 0, une liste formée de <I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>) (ou une liste formée de <I>F</I>(<I>x</I>)+<I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>) et de 
-−<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>)),
-</LI><LI CLASS="li-itemize">si le deuxième argument est nul, une primitive de 
-<I>g</I>(<I>x</I>) (le premier argument) (ou <I>F</I>(<I>x</I>)+une primitive de <I>g</I>(<I>x</I>)) :<BR>
-donc, <TT>ibpdv(g(x),0)</TT> renvoie une primitive <TT>G(x)</TT> de <TT>g(x)</TT> ou<BR>
-<TT>ibpdv([F(x),g(x)],0)</TT> renvoie <TT>F(x)+G(x)</TT> où <TT>diff(G(x))=g(x)</TT>.
-</LI></UL><P>
-C’est à dire <TT>ibpdv</TT> renvoie les termes que l’on doit calculer quand on 
-fait une intégration par parties, en faisant éventuellement plusieurs 
-<TT>ibpdv</TT> à la suite.<BR>
-Ainsi, lorsque l’on vient d’utiliser la commande <TT>ibpdv(u(x)*v’(x),v(x))</TT>, 
-il reste alors
-à calculer l’intégrale du deuxième terme puis à 
-faire la somme avec le premier terme pour obtenir une primitive de <I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>): pour cela on peut utiliser à nouveau la commande <TT>ibpdv</TT> avec comme 
-premier paramètre la liste obtenue et comme deuxième paramètre un 
-nouveau <I>v</I>(<I>x</I>) (ou 0 pour terminer l’intégration).<BR>
+<H3 CLASS="subsection"><A NAME="htoc386">6.21.1</A>  Primitive et intégrale définie : <TT>integrate Int integrer int integration</TT></H3><P><A NAME="@default569"></A><A NAME="@default570"></A><A NAME="@default571"></A><A NAME="@default572"></A><A NAME="@default573"></A>
+<TT>integrate</TT> (ou <TT>int</TT>) permettent de calculer une 
+primitive ou une intégrale définie. La seule différence entre ces deux 
+commandes est que <TT>integrate</TT> écrit avec le symbole ∫ 
+la réponse de la commande <TT>quest()</TT> qui suit l’évaluation de 
+<TT>integrate</TT>.<BR>
+Par contre <TT>Int</TT> renvoie <TT>integrate</TT> sans l’évaluer : c’est pour 
+avoir la compatibilité avec Maple, lorsque l’on fait un calcul numérique 
+d’intégrales :<BR>
 On tape :
-</P><DIV CLASS="center"><TT>ibpdv(ln(x),x) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>Int(exp(x),x,0,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[x.ln(x),-1]</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>ibpdv([x.ln(x),-1],0) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-x+x.ln(x)</TT></DIV><P>Lorsque <TT>ibpdv</TT> a 5 arguments <TT>ibpdv(u(x)*v’(x),v(x),x,a,b)</TT> ou
-<TT>ibpdv([F(x),u(x)*v’(x),v(x),x,a,b)</TT> renvoie :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>v</I>(<I>x</I>) ≠ 0, une liste formée de <I>u</I>(<I>b</I>).<I>v</I>(<I>b</I>)−<I>u</I>(<I>a</I>).<I>v</I>(<I>a</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>) (ou une liste formée de <I>F</I>(<I>b</I>)+<I>u</I>(<I>b</I>).<I>v</I>(<I>b</I>)−<I>F</I>(<I>a</I>)−<I>u</I>(<I>a</I>).<I>v</I>(<I>a</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>)),
-</LI><LI CLASS="li-itemize">si le deuxième argument est nul, <TT>ibpdv(g(x),0,x,a,b)</TT>
-renvoie <I>G</I>(<I>b</I>)−<I>G</I>(<I>a</I>) où <I>G</I>(<I>x</I>) est une primitive du premier argument 
-<I>g</I>(<I>x</I>) et<BR>
-<TT>ibpdv([F(x),g(x)],0,x,a,b)</TT>
-renvoie <I>F</I>(<I>x</I>)+<I>G</I>(<I>b</I>)−<I>G</I>(<I>a</I>) où <I>G</I>(<I>x</I>) est une primitive de 
-<I>g</I>(<I>x</I>)) de façon à pouvoir faire plusieurs <TT>ibpdv</TT> à la suite.
-</LI></UL><P>
+</P><DIV CLASS="center"><TT>integrate(exp(x),x,0,1)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>ibpdv(ln(x),x,x,2,3) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>int(exp(x),x,0,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[3*ln(3)-2*ln(2),-1]</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>ibpdv([3*ln(3)-2*ln(2),-1],0,x,2,3) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>exp(1)-1)</TT></DIV><P>On tape :
+</P><DIV CLASS="center"><TT>evalf(Int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>evalf(int(exp(x</TT><CODE><TT>^</TT></CODE><TT>2),x,0,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1+3*ln(3)-2*ln(2)</TT></DIV><P>
-<B>Remarque</B><BR>
- Lorsque le premier paramètre de <TT>ibpdv</TT> est une liste de deux
-éléments, <TT>ibpdv</TT> n’agit que sur le dernier élément de cette 
-liste et ajoute le terme intégré au premier élément de la liste 
-(de façon à pouvoir faire plusieurs <TT>ibpdv</TT> à la suite).<BR>
-On a par exemple :<BR>
-<TT>ibpdv((log(x))</TT><CODE><TT>^</TT></CODE><TT>2,x) = [x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))]</TT><BR>
-il reste à intégrer <TT>-(2*log(x))</TT>, on utilise <TT>ibpdv(ans(),x)</TT> ou 
-on tape :<BR>
-<TT>ibpdv([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))],x)</TT><BR>
-On obtient :<BR>
-<TT>[x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2]</TT><BR>
-et il reste à intégrer <TT>2</TT>, on utilise <TT>ibpdv(ans(),0)</TT> :<BR>
-<TT>ibpdv([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2],0)</TT>.<BR>
-On obtient :
-<TT>x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x)))+2*x</TT>
-</P><H4 CLASS="subsubsection"><A NAME="toc15"></A><TT>ibpu</TT></H4><P><A NAME="@default566"></A>
-<TT>ibpu</TT> permet de chercher une primitive (ou de calculer une 
-intégrale définie) d’une expression de la forme <I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>).<BR>
-<TT>ibpu</TT> a deux paramètres pour les primitives et cinq paramètres pour 
-les intégrales définies : 
+</P><DIV CLASS="center"><TT>1.46265174591</TT></DIV><P>
+<TT>integrate</TT> (ou <TT>int</TT> ou <TT>Int</TT>) a un, deux ou quatre arguments.<BR>
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-soit une expression de la forme 
-<I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>) et <I>u</I>(<I>x</I>) (ou une liste de deux expressions [<I>F</I>(<I>x</I>), <I>u</I>(<I>x</I>)*<I>v</I>′(<I>x</I>)] 
-et <I>u</I>(<I>x</I>)),
-</LI><LI CLASS="li-itemize">soit une expression de la forme 
-<I>g</I>(<I>x</I>) et 0 (ou une liste de deux expressions [<I>F</I>(<I>x</I>), <I>g</I>(<I>x</I>)] 
-et 0).
-</LI><LI CLASS="li-itemize">pour les intégrales définies, il faut rajouter trois autres 
-paramètres : le nom de la variable et les bornes. 
-</LI></UL><P>
-Lorsque <TT>ibpu</TT> a 2 arguments <TT>ibpu</TT> renvoie :
-<TT>ibpu</TT> renvoie :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>u</I>(<I>x</I>) ≠ 0, une liste formée de <I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>) et de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>) 
-(ou une liste formée de <I>F</I>(<I>x</I>)+<I>u</I>(<I>x</I>).<I>v</I>(<I>x</I>) et de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>)),
-</LI><LI CLASS="li-itemize">si le deuxième argument est nul, une primitive de
-<I>g</I>(<I>x</I>) (le premier argument) 
-(ou <I>F</I>(<I>x</I>)+une primitive de <I>g</I>(<I>x</I>)):<BR>
-<TT>ibpu(g(x),0)</TT> renvoie <TT>G(x)</TT> où <TT>diff(G(x))=g(x)</TT> ou<BR>
- <TT>ibpu([F(x),g(x)],0)</TT> renvoie <TT>F(x)+G(x)</TT> où <TT>diff(G(x))=g(x)</TT>.
-</LI></UL><P>
-c’est à dire <TT>ibpu</TT> renvoie les termes que l’on doit calculer quand on 
-fait une intégration par parties, en faisant éventuellement plusieurs 
-<TT>ibpu</TT> à la suite.<BR>
-Ainsi, lorsque l’on vient d’utiliser la commande <TT>ibpu(u(x)*v’(x),u(x))</TT>, 
-il reste à calculer l’intégrale du deuxième terme puis à faire la somme 
-avec le premier terme pour obtenir une primitive de <I>u</I>(<I>x</I>).<I>v</I>′(<I>x</I>). Pour cela, 
-on peut utiliser à nouveau la commande <TT>ibpu</TT> avec comme 
-premier paramètre la liste obtenue et comme deuxième paramètre un 
-nouveau <I>u</I>(<I>x</I>) (ou 0 pour terminer l’intégration).<BR>
+avec un argument qui est une expression de la variable <TT>x</TT>, (resp une
+fonction).<BR>
+<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors une expression qui est une 
+primitive de l’expression par rapport à la variable <TT>x</TT> (resp renvoie une
+fonction primitive de la fonction donnée en argument)
 On tape :
-</P><DIV CLASS="center"><TT>ibpu(ln(x),ln(x)) </TT></DIV><P>
+<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[x.ln(x),-1]</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>ibpu([x.ln(x),-1],0) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-x+x.ln(x)</TT></DIV><P>Lorsque <TT>ibpu</TT> a 5 arguments <TT>ibpu(u(x)*v’(x),u(x),x,a,b)</TT> ou
-<TT>ibpu([F(x),u(x)*v’(x)],u(x),x,a,b)</TT> renvoie :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-si <I>u</I>(<I>x</I>) ≠ 0, une liste formée de <I>u</I>(<I>b</I>).<I>v</I>(<I>b</I>)−<I>u</I>(<I>a</I>).<I>v</I>(<I>a</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>) (ou une liste formée de <I>F</I>(<I>b</I>)+<I>u</I>(<I>b</I>).<I>v</I>(<I>b</I>)−<I>F</I>(<I>a</I>)−<I>u</I>(<I>a</I>).<I>v</I>(<I>a</I>) et 
-de −<I>v</I>(<I>x</I>).<I>u</I>′(<I>x</I>)),
-</LI><LI CLASS="li-itemize">si le deuxième argument est nul, <TT>ibpu(g(x),0,x,a,b)</TT>
-renvoie <I>G</I>(<I>b</I>)−<I>G</I>(<I>a</I>) où <I>G</I>(<I>x</I>) une primitive de 
-<I>g</I>(<I>x</I>) (le premier argument) (ou <TT>ibpu([F(x),g(x)],0,x,a,b)</TT>)
-renvoie <I>F</I>(<I>x</I>)+<I>G</I>(<I>b</I>)−<I>G</I>(<I>a</I>) où <I>G</I>(<I>x</I>) est une primitive de 
-<I>g</I>(<I>x</I>)) de façon à pouvoir faire plusieurs <TT>ibpu</TT> à la suite.
-</LI></UL><P>
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
 On tape :
-</P><DIV CLASS="center"><TT>ibpu(ln(x),ln(x),x,2,3)</TT></DIV><P>
+<DIV CLASS="center"><TT>f(t):=t</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+<DIV CLASS="center"><TT>g:=integrate(f)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>[3*ln(3)-2*ln(2),-1]</TT></DIV><P>
-puis
-</P><DIV CLASS="center"><TT>ibpu([3*ln(3)-2*ln(2),-1],0,x,2,3) </TT></DIV><P>
+<DIV CLASS="center"><TT>(t)-&gt;t</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+<B>Remarque</B> Dans ce cas on peut aussi utiliser <TT>convert</TT> (ou sa 
+version infixée <TT>=&gt;</TT>) avec l’option <TT>int</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV>
+<DIV CLASS="center"><TT>g(x):=(f(x)=&gt;int)</TT></DIV>
+ou 
+<DIV CLASS="center"><TT>g:=(f=&gt;int))</TT></DIV>
+</LI><LI CLASS="li-itemize">avec deux arguments qui sont :<BR>
+ une expression et une variable,<BR>
+<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors une primitive de l’expression 
+par rapport à la variable donnée comme deuxième paramètre.<BR>
+On tape :
+<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>-1+3*ln(3)-2*ln(2)</TT></DIV><P>
-<B>Remarque</B><BR>
-Lorsque le premier paramètre de <TT>ibpu</TT> est une liste de deux 
-éléments, <TT>ibpu</TT> n’agit que sur le dernier élément de cette liste 
-et ajoute le terme intégré au premier élément de la liste (de façon à 
-pouvoir faire plusieurs <TT>ibpu</TT> à la suite).<BR>
-
-On a par exemple :<BR>
-<TT>ibpu((log(x))</TT><CODE><TT>^</TT></CODE><TT>2,log(x)) = [x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))]</TT><BR>
-il reste à intégrer <TT>-(2*log(x))</TT>, on utilise <TT>ibpu(ans(),log(x))</TT> 
-ou on tape:<BR>
-<TT>ibpu([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2,-(2*log(x))],log(x))</TT><BR>
-On obtient :<BR>
-<TT>[x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2]</TT><BR>
-et il reste à intégrer <TT>2</TT>, on utilise <TT>ibpu(ans(),0)</TT> :<BR>
-<TT>ibpu([x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x))),2],0)</TT>.<BR>
+<DIV CLASS="center"><TT>x</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>integrate(t</TT><CODE><TT>^</TT></CODE><TT>2,t)</TT></DIV>
 On obtient :
-<TT>x*(log(x))</TT><CODE><TT>^</TT></CODE><TT>2+x*(-(2*log(x)))+2*x</TT></P><HR>
+<DIV CLASS="center"><TT>t</TT><CODE><TT>^</TT></CODE><TT>3/3</TT></DIV>
+</LI><LI CLASS="li-itemize">avec quatre arguments qui sont :<BR>
+une expression, une variable et les bornes de l’intégrale définie,<BR>
+<TT>integrate</TT> (ou <TT>int</TT>) renvoie alors la valeur de l’intégrale 
+définie.<BR>
+On tape :
+<DIV CLASS="center"><TT>integrate(x</TT><CODE><TT>^</TT></CODE><TT>2,x,1,2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>7/3</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>integrate(1/(sin(x)+2),x,0,2*pi)</TT></DIV>
+On obtient après simplification (appel à <TT>simplify</TT>) :
+<DIV CLASS="center"><TT>2*pi*sqrt(3)/3</TT></DIV>
+</LI></UL><P>
+<B>Exercice 1</B><BR>
+Soit </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">+ln(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell">)</TD></TR>
+</TABLE><P>
+Calculer une primitive de f.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>int(x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1)))</TT></DIV><P>
+On obtient : 
+</P><DIV CLASS="center"><TT>x*log((x+1)/(x-1))+log(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+1/2*log(2*x</TT><CODE><TT>^</TT></CODE><TT>2/2-1)</TT></DIV><P>
+Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+plus, en vert, le détail du calcul :
+</P><PRE CLASS="verbatim">Integration of x/(x^2-1): f(u)*u' where f=x-&gt;1/(x*2-1) and u=(x^2)/2
+Integrate rational fraction 1/(2*x-1)
+Integration of ln((x+1)/(x-1)) by part of u*v' where u=1 and v=ln((x+1)/(x-1))'
+Integrate rational fraction with denominator x^2-1=0
+roots are deduced from nth-roots of unity
+</PRE><P>Ou bien on définit la fonction <TT>f</TT> en tapant :<BR>
+</P><DIV CLASS="center"><TT>f(x):=x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+ln((x+1)/(x-1))</TT></DIV><P>
+puis on tape :
+</P><DIV CLASS="center"><TT>int(f(x))</TT></DIV><P>
+On obtient bien sûr le même résultat.<BR>
+<B>Attention</B><BR>
+ Pour <TT>Xcas</TT>, <TT>log</TT> est égal à <TT>ln</TT> (logarithme népérien) 
+et <TT>log10</TT> est le logarithme en base 10.<BR>
+<B>Exercice 2</B><BR>
+Calculer :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>6</SUP>+2 · <I>x</I><SUP>4</SUP>+<I>x</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>int(2/(x</TT><CODE><TT>^</TT></CODE><TT>6+2*x</TT><CODE><TT>^</TT></CODE><TT>4+x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2*((3*x</TT><CODE><TT>^</TT></CODE><TT>2+2)/(-(2*(x</TT><CODE><TT>^</TT></CODE><TT>3+x)))+-3/2*atan(x))</TT></DIV><P>
+Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+plus, en vert, le détail du calcul :
+</P><PRE CLASS="verbatim">Integrate rational fraction 1/(x^3+x)^2
+Partial fraction 1/(x^3+x)^2 -&gt; Hermite reduction -&gt; 
+         integrate squarefree part -(3*x)/(2*x^3+2*x)
+</PRE><P><B>Exercice 3</B><BR>
+Calculer :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">sin(<I>x</I>)+sin(2 · <I>x</I> )</TD></TR>
+</TABLE></TD><TD CLASS="dcell">  <I>dx</I> </TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>integrate(1/(sin(x)+sin(2*x )))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(1/-3*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2-3)+1/12*log((tan(x/2))</TT><CODE><TT>^</TT></CODE><TT>2))*2</TT></DIV><P> 
+Si on a cocher <TT>Pas à pas</TT> dans la configuration générale on a en 
+plus, en vert, le détail du calcul :
+</P><PRE CLASS="verbatim">Integrate rational fraction of trigonometric 1/(sin(x)+sin(2*x)) by tan(x/2) change of variable, 
+              leading to integral of 1/((1+x^2)*((2*x)/(x^2+1)+(2*(1-x^2)/(x^2+1)*2*x)/(x^2+1)))
+Integrate rational fraction 1/((1+x^2)*((2*x)/(x^2+1)+(2*(1-x^2)/(x^2+1)*2*x)/(x^2+1))), 
+               change of variable x=x^2
+Integrate rational fraction (-x-1)/(4*x^2-12*x)
+</PRE><HR>
 <A HREF="cascmd_fr305.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr307.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

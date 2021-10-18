@@ -6,29 +6,31 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Puissance dans ℤ/pℤ et dans ℤ/pℤ[x] : ^</TITLE>
+<TITLE>Quotient : quo</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr444.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr446.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc538">6.34.9</A>  Puissance dans ℤ/<I>p</I>ℤ et dans ℤ/<I>p</I>ℤ[<I>x</I>] : <TT>^</TT></H3><P><A NAME="@default798"></A><A NAME="sec:powZp"></A>
-Pour calculer <TT>a</TT> à la puissance <TT>n</TT> dans ℤ/<I>p</I>ℤ on utilise 
-l’opérateur <CODE>^</CODE>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc539">6.35.5</A>  Quotient : <TT>quo</TT></H3><P><A NAME="@default807"></A>
+<TT>quo</TT> a comme arguments deux 
+polynômes <I>A</I> et <I>B</I> à coefficients dans ℤ/<I>p</I>ℤ. <I>A</I> et <I>B</I> peuvent 
+être donnés par une expression polynômiale symbolique (de <I>x</I> ou du nom 
+de variable donné comme troisième argument) ou par la liste de 
+leur coefficients.<BR>
+<TT>quo</TT> renvoie le quotient de la division euclidienne de <I>A</I> par <I>B</I> dans 
+ℤ/<I>p</I>ℤ[<I>x</I>].<BR>
 On tape :
-</P><DIV CLASS="center"><TT>(5% 13)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>quo((x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>2+1)% 13,(2*x</TT><CODE><TT>^</TT></CODE><TT>2+4)% 13)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>quo((x</TT><CODE><TT>^</TT></CODE><TT>3+x</TT><CODE><TT>^</TT></CODE><TT>2+1,2*x</TT><CODE><TT>^</TT></CODE><TT>2+4)% 13)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1% 13</TT></DIV><P>
-Pour calculer <TT>A</TT> à la puissance <TT>n</TT> dans ℤ/<I>p</I>ℤ[<I>x</I>] on utilise 
-l’opérateur <CODE><TT>^</TT></CODE> et la
-commande <TT>normal</TT><A NAME="@default799"></A>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>normal(((2*x+1)% 13)</TT><CODE><TT>^</TT></CODE><TT>5)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(6% 13)*x</TT><CODE><TT>^</TT></CODE><TT>5+(2% 13)*x</TT><CODE><TT>^</TT></CODE><TT>4+(2% 13)*x</TT><CODE><TT>^</TT></CODE><TT>3+(1% 13)*x</TT><CODE><TT>^</TT></CODE><TT>2+(-3% 13)*x+1% 13</TT></DIV><P>
-car :<BR>
- 10=−3  (mod 13)    40=1 (mod 13)   80=2  (mod 13)  32=6 (mod 13). </P><HR>
+</P><DIV CLASS="center"><TT>(-6% 13)*x+-6% 13</TT></DIV><P>
+en effet  <I>x</I><SUP>3</SUP>+<I>x</I><SUP>2</SUP>+1=(2<I>x</I><SUP>2</SUP>+4)(<I>x</I>+1/2)+5<I>x</I>−4/4<BR>
+et que −3*4=−6*2=1  mod13<BR>
+
+</P><HR>
 <A HREF="cascmd_fr444.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr446.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

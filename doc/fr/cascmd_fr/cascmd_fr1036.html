@@ -6,24 +6,40 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La longueur d’un segment: distance longueur</TITLE>
+<TITLE>Le parallélogramme dans l’espace : parallelogram parallelogramme</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1035.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1037.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1218">11.12.7</A>  La longueur d’un segment: <TT>distance longueur</TT></H3><P><A NAME="@default2007"></A><A NAME="@default2008"></A><A NAME="sec:longueur3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr940.html#sec:longueur2">10.16.2</A> pour la géométrie plane.<BR>
-<TT>longueur</TT> a comme argument deux points (ou deux listes qui sont
-les coordonnées de ces points).<BR>
-<TT>longueur</TT> renvoie la longueur du segment défini par ces deux points.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1215">11.8.4</A>  Le parallélogramme dans l’espace : <TT>parallelogram parallelogramme</TT></H3><P><A NAME="@default2015"></A><A NAME="@default2016"></A><A NAME="sec:parallelo3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr928.html#sec:parallelo2">10.11.5</A> pour la géométrie plane.<BR>
+<TT>parallelogramme</TT>, en géométrie 3-d, a trois arguments ou 
+quatre arguments.<BR>
+Les arguments sont :<BR>
+- si il a trois arguments ce sont : trois points les sommets <I>A</I>,<I>B</I>,<I>C</I> du 
+parallélogramme <I>ABCD</I>.<BR>
+<TT>parallelogramme(A,B,C)</TT> renvoie et trace dans le plan <I>ABC</I>, le 
+parallélogramme <I>ABCD</I> tel que : 
+<I>AD</I>=<I>BC</I>
+mais sans définir le point <I>D</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>longueur(point(-1,1,1),point(1,1,1))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>longueur([-1,1,1],[1,1,1])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>C:=point(0,0,3)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>parallelogramme(A,B,C)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2 </TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le parallélogramme ABCD</TT></DIV><P>
+- si il a quatre arguments le dernier paramètre est le nom d’une 
+variable qui servira à définir le sommet manquant.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>parallelogramme(A,B,C,D)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le parallélogramme ABCD et le point D</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>coordonnees(D)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[-3,-3,0]</TT></DIV><HR>
 <A HREF="cascmd_fr1035.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1037.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

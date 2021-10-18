@@ -6,24 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Avoir la liste permutée : revlist</TITLE>
+<TITLE>Comment définir une liste :makelist</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr503.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr505.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc604">6.41.9</A>  Avoir la liste permutée : <TT>revlist</TT></H3><P><A NAME="@default893"></A>
-<TT>revlist</TT> a comme argument une liste (resp séquence).<BR>
-<TT>revlist</TT> renvoie la liste (resp séquence) dans l’ordre inverse.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>revlist([0,1,2,3,4])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[4,3,2,1,0]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>revlist([0,1,2,3,4],3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3,[0,1,2,3,4]</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc605">6.42.2</A>  Comment définir une liste :<TT>makelist</TT></H3><P><A NAME="@default897"></A>
+Pour définir la liste vide <TT>L0</TT>, on tape :<BR>
+<TT>L0:=[]</TT>
+Pour définir la liste <TT>L1</TT> égale à <TT>[1,2,3]</TT>, on tape :<BR>
+<TT>L1:=[1,2,3]</TT>.<BR>
+Dans ce cas <TT>L1[0]</TT> vaut 1,<TT>L1[1]</TT> vaut 2 et <TT>L1[2]</TT> vaut 3 car les 
+indices commencent à 0.<BR>
+On peut modifier ces listes facilement (voir aussi <A HREF="cascmd_fr516.html#sec:subsop">6.42.14</A>).<BR>
+On tape :<BR>
+<TT>L0[5]:=16;L0</TT> et on obtient :<BR>
+<TT>[0,0,0,0,0,16],[0,0,0,0,0,16]</TT><BR>
+<TT>L1[2]:=16;L1</TT> et on obtient :<BR>
+<TT>[1,2,16],[1,2,16]</TT><BR>
+On peut aussi définir une liste qui est faite à partir d’une fonction ou d’une
+constante avec <TT>makelist</TT>.<BR>
+ On tape :<BR>
+<TT>makelist(4,1,3)</TT> ou <TT>[4$3]</TT> renvoie <TT>[4,4,4]</TT><BR>
+<TT>makelist(4,2,7)</TT> ou <TT>[4$6]</TT> renvoie <TT>[4,4,4,4,4,4]</TT><BR>
+<TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,1,10,2)</TT> ou <TT>[(k</TT><CODE><TT>^</TT></CODE><TT>2)$(k=1..10,2)]</TT>
+renvoie <TT>[1,9,25,49,81]</TT><BR>
+<TT>makelist(x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2,2,11,3)</TT> ou <TT>[(k</TT><CODE><TT>^</TT></CODE><TT>2)$(k=2..11,3)]</TT>
+renvoie <TT>[4,25,64,121]</TT><BR>
+
+</P><HR>
 <A HREF="cascmd_fr503.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr505.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

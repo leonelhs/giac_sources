@@ -6,27 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tirage selon une loi normale : randnorm randNorm</TITLE>
+<TITLE>Graphe de la régression logarithmique : 
+logarithmic_regression_plot</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr740.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr742.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc879">8.3.7</A>  Tirage selon une loi normale : <TT>randnorm randNorm</TT></H3><P><A NAME="@default1335"></A><A NAME="@default1336"></A>
-<TT>randnorm(m,sigma)</TT> ou <TT>randNorm(m,sigma)</TT> renvoie au hasard 
-des nombres répartis selon la loi normale de moyenne <TT>m</TT> et d’écart 
-type <TT>sigma</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc879">8.2.15</A>  Graphe de la régression logarithmique :<BR>
+<TT>logarithmic_regression_plot</TT></H3><P><A NAME="@default1329"></A><A NAME="@default1330"></A><A NAME="@default1331"></A>
+Pour dessiner le graphe de la fonction logarithmique d’équation 
+<I>y</I>=<I>m</I> ln<I>x</I>+<I>b</I> qui approche au mieux les données, on utilise 
+<TT>logarithmic_regression_plot</TT>.<BR>
+<TT>logarithmic_regression_plot</TT> a les mêmes arguments que <TT>covariance</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>randnorm(0,1)</TT></DIV><P>
-On obtient par exemple :
-</P><DIV CLASS="center"><TT>0.549605372982</TT></DIV><P>
-ou on obtient par exemple :
-</P><DIV CLASS="center"><TT>-0.58946494465</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>randnorm(2,1)</TT></DIV><P>
-On obtient par exemple :
-</P><DIV CLASS="center"><TT>2.54178274488</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>logarithmic_regression_plot([[1.0,1],[2,4],[3,9],[4,16]])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le graphe de la fonction logarithme d’équation </TT><TT><I>y</I>=10.1506450002</TT><TT>ln</TT><TT>(<I>x</I>)-0.564824055818</TT></DIV><P>
+car c’est la fonction logarithme d’équation :<BR>
+<I>y</I>=10.1506450002ln(<I>x</I>)−0.564824055818<BR>
+qui approche au mieux les données.<BR>
+<B>Remarque</B>
+On remarquera que l’équation de la courbe representée ainsi que la valeur 
+du coefficient de corrélation de ln(<I>X</I>),ln(<I>Y</I>) (si les données sont 
+<I>X</I>,<I>Y</I>)) sont écrits en bleu.<BR>
+Si on veut avoir l’équation et/ou le coefficient de corrélation sur le 
+dessin il faut rajouter comme dernier argument, l’option <TT>equation</TT> et/ou 
+<TT>correlation</TT>.</P><HR>
 <A HREF="cascmd_fr740.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr742.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

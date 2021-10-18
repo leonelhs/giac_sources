@@ -6,40 +6,64 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La projection orthogonale : projection</TITLE>
+<TITLE>Périmètre d’un polygone et son affichage :perimeterat perimetreen et perimeteratraw perimetreenbrut</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr963.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr965.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1130">10.17.8</A>  La projection orthogonale : <TT>projection</TT></H3><P><A NAME="@default1871"></A><A NAME="sec:projection2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1060.html#sec:projection3">11.14.8</A> pour la géométrie 3-d.<BR>
-<TT>projection</TT>, en géométrie plane, a un ou deux arguments : un 
-objet géométrique et éventuellement un point.<BR>
-Lorsque <TT>projection</TT> a un argument, c’est une fonction qui agit sur un 
-point et qui projette orthogonalement ce point sur l’objet géométrique.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1130">10.16.11</A>  Périmètre d’un polygone et son affichage :<TT>perimeterat perimetreen</TT> et <TT>perimeteratraw perimetreenbrut</TT></H3><P><A NAME="@default1879"></A><A NAME="@default1880"></A><A NAME="@default1881"></A><A NAME="@default1882"></A>
+<TT>perimeterat</TT> ou <TT>perimetreen</TT> et <TT>perimeteratraw</TT> ou 
+<TT>perimetreenbrut</TT> sont des commandes 
+obtenues lorsqu’on utilse, dans un niveau de géométrie 2<I>d</I> ou 3<I>d</I>, le 
+bouton <TT>Mode-&gt;Mesures-&gt;perimetreen</TT> ou <TT>Mode-&gt;Mesures-&gt;perimetreenbrut</TT>.
+Dans ce cas il faut que tous les objets désignés par la souris soient 
+déjà nommés.<BR>
+On peut néammoins taper ces commandes dans une ligne de commande.<BR>
+
+<TT>perimeterat</TT> ou <TT>perimetreen</TT> et <TT>perimeteratraw</TT> ou 
+<TT>perimetreenbrut</TT> ont comme argument un cercle ou un polygone et 1
+point (ou 1 nombre complexe qui est l’affixe d’un point).<BR>
+<TT>perimeterat</TT> ou <TT>perimetreen</TT> renvoie le point, calcule le 
+périmètre du cercle ou du polygone et affiche ce périmètre à 
+l’endroit du point avec une légende. <B>Attention</B> Il faut que le 
+polygone ait un nom.<BR>
+<TT>perimeteratraw</TT> ou <TT>perimetreenbrut</TT> renvoie le point, calcule le 
+périmètre du cercle ou du polygone et affiche ce périmètre à 
+l’endroit du point.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>p1:=projection(droite(-1,i))</TT></DIV><P>
-Puis :
-</P><DIV CLASS="center"><TT>p1(1+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>t:=triangle(0,1,i)</TT></DIV><DIV CLASS="center"><TT>perimetreen(t,(1+i)/2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point 1/2+3/2*i apparait avec une croix (x) noire</TT></DIV><P>
+</P><DIV CLASS="center"><TT>2+sqrt(2) s’écrit au point((1+i)/2) avec une légende</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>p2:=projection(cercle(-1,1))</TT></DIV><DIV CLASS="center"><TT>p2(i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>perimetreenbrut(triangle(0,1,i),(1+i)/2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe, sqrt(2)/2+(i)*sqrt(2)/2-1, apparait avec une croix (x) noire</TT></DIV><P>
-Lorsque <TT>projection</TT> a deux arguments, <TT>projection</TT> dessine et renvoie
-le transformé du point par la projection orthogonale sur le premier 
-argument.<BR>
+</P><DIV CLASS="center"><TT>2+sqrt(2) s’écrit au point((1+i)/2)</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>projection(droite(-1,i),1+i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>c:=carre(0,2)</TT></DIV><DIV CLASS="center"><TT>perimetreen(c,2.2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point 1/2+3/2*i apparait avec une croix (x) noire</TT></DIV><P>
+</P><DIV CLASS="center"><TT>8 s’écrit au point(2.2) avec une légende</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>projection(cercle(-1,1),i)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>perimetreenbrut(carre(0,2),2.2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point d’affixe, -1+sqrt(2)/2+(i)*sqrt(2)/2, apparait avec une croix (x) noire</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>8 s’écrit au point(2.2)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>cc:=cercle(0,2)</TT></DIV><DIV CLASS="center"><TT>perimetreen(cc,2.2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>4*pi s’écrit au point(2.2) avec une légende</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>perimetreenbrut(cercle(0,2),2.2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>4*pi s’écrit au point(2.2)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>h:=hexagone(0,1)</TT></DIV><DIV CLASS="center"><TT>perimetreen(h,1.2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>6 s’écrit au point(1.2) avec une légende</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>perimetreenbrut(hexagone(0,1),1.2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>6 s’écrit au point(1.2)</TT></DIV><HR>
 <A HREF="cascmd_fr963.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr965.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

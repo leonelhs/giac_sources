@@ -6,28 +6,48 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le cercle (compatibilité TI): Circle</TITLE>
+<TITLE>Le triangle rectangle : right_triangle triangle_rectangle</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr921.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr923.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1084">10.13.3</A>  Le cercle (compatibilité TI): <TT>Circle</TT></H3><P><A NAME="@default1781"></A>
-<TT>Circle</TT> a quatre arguments : les coordonnées du centre 
-(<I>xc</I>,<I>yc</I>), la valeur du rayon <I>r</I> et 0 ou 1 (par défaut 1).<BR>
-Si le quatrième paramètre est 1 ou est différent de zéro, 
-<TT>Circle</TT> dessine le cercle de centre (<I>xc</I>,<I>yc</I>) et de rayon <I>r</I>,<BR>
-Si le quatrième paramètre est 0, <TT>Circle</TT> efface le cercle de centre 
-(<I>xc</I>,<I>yc</I>) et de rayon <I>r</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1082">10.10.4</A>  Le triangle rectangle : <TT>right_triangle triangle_rectangle</TT></H3><P><A NAME="@default1792"></A><A NAME="@default1793"></A><A NAME="sec:trianglerect2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1031.html#sec:trianglerect3">11.7.3</A> pour la géométrie 3-d.<BR>
+<TT>triangle_rectangle</TT>, en géométrie plane, a trois ou quatre
+arguments.<BR>
+Description des arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si il a trois arguments, ce sont : 2 points <I>A</I> et <I>B</I> 
+(ou 2 nombres complexes représentant l’affixe de ces points)
+et un réel <I>k</I> non nul.<BR>
+<TT>triangle_rectangle(A,B,k)</TT> renvoie et trace le triangle <I>ABC</I> rectangle 
+en <I>A</I> : ce triangle est direct si <I>k</I>&gt;0, indirect si <I>k</I>&lt;0 et est
+tel que <I>AC</I>=|<I>k</I>|*<I>AB</I>.<BR>
+Ainsi si l’angle (<I>BC</I>,<I>BA</I>)=β radians 
+(ou degrés), on a tan(β)=<I>k</I>.<BR>
+On remarquera que si <I>C</I> est le transformé de <I>B</I> dans la similitude de 
+centre <I>A</I> de rapport |<I>k</I>| et d’angle (<I>k</I>/|<I>k</I>|)*π/2.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>Circle(-1,0,2,1)</TT></DIV><P>
+<DIV CLASS="center"><TT>triangle_rectangle(i,-i,2)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le cercle de centre -1, de rayon 2 est tracé</TT></DIV><P>
+<DIV CLASS="center"><TT>Le triangle rectangle de sommets i, -i, 4+i</TT></DIV>
 On tape :
-</P><DIV CLASS="center"><TT>Circle(-1,0,2,0)</TT></DIV><P>
+<DIV CLASS="center"><TT>triangle_rectangle(i,-i,-2)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>Le cercle de centre -1, de rayon 2 est effacé</TT></DIV><HR>
+<DIV CLASS="center"><TT>Le triangle rectangle de sommets i, -i, -4+i</TT></DIV>
+</LI><LI CLASS="li-itemize">si il a quatre arguments, le dernier argument est le nom d’une 
+variable qui servira à définir le troisième sommet.<BR>
+On tape :
+<DIV CLASS="center"><TT>triangle_rectangle(i,-i,2,D)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>Le triangle rectangle de sommets i, -i, 4+i</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>normal(affixe(D))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>4+i</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr921.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr923.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

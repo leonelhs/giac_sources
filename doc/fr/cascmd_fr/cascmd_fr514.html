@@ -6,23 +6,36 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Rajouter un élément au début d’une liste : prepend</TITLE>
+<TITLE>Avoir la liste permutée à partir de son n-ième élément : rotate</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr513.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr515.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc614">6.41.19</A>  Rajouter un élément au début d’une liste : <TT>prepend</TT></H3><P><A NAME="@default909"></A>
-<TT>prepend</TT> rajoute un élément au début d’une liste.<BR>
+<H3 CLASS="subsection"><A NAME="htoc615">6.42.12</A>  Avoir la liste permutée à partir de son n-ième élément : <TT>rotate</TT></H3><P><A NAME="@default913"></A>
+<TT>rotate</TT> a comme argument une liste et un nombre entier relatif 
+(par défaut <TT>n=-1</TT>).<BR>
+<TT>rotate</TT> renvoie :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+si <TT>n&gt;0</TT>, la liste obtenue en permuttant les <TT>n</TT> premiers 
+éléments avec la fin de la liste,
+</LI><LI CLASS="li-itemize">si <TT>n&lt;0</TT> en permuttant les <TT>-n</TT> derniers 
+éléments avec le début de la liste. Par défaut <TT>n=-1</TT> et on met le dernier
+élément en premier.<BR>
+</LI></UL><P>
 On tape :
-</P><DIV CLASS="center"><TT>prepend([3,4,2],1)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rotate([0,1,2,3,4])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[1,3,4,2]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[4,0,1,2,3]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>prepend([1,2],[3,4])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>rotate([0,1,2,3,4],2)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[3,4],1,2]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[2,3,4,0,1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>rotate([0,1,2,3,4],-2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[3,4,0,1,2]</TT></DIV><HR>
 <A HREF="cascmd_fr513.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr515.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

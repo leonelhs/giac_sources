@@ -6,27 +6,28 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Intersection de deux ensembles, de deux listes : intersect</TITLE>
+<TITLE>Pour transformer une séquence en liste : [] nop</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr493.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr495.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc593">6.40.4</A>  Intersection de deux ensembles, de deux listes : <TT>intersect</TT></H3><P><A NAME="@default877"></A>
-<TT>intersect</TT> renvoie l’ensemble qui est l’intersection de deux 
-ensembles ou de deux listes.<BR>
- <TT>intersect</TT> est un opérateur infixé.<BR>
+<H3 CLASS="subsection"><A NAME="htoc593">6.40.6</A>  Pour transformer une séquence en liste : <TT>[] nop</TT></H3><P><A NAME="@default884"></A><A NAME="@default885"></A>
+Pour transformer une séquence en liste il suffit d’entourer la séquence
+par des crochets (<TT>[]</TT>) ou on utilise la fonction <TT>nop</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>set[1,2,3,4] intersect set[5,6,3,4]</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>% {1,2,3,4% } intersect % {5,6,3,4% }</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j=1..4)]</TT></DIV><P>
+ce qui équivaut à :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,1,4)</TT></DIV><P>
+ou à :
+</P><DIV CLASS="center"><TT>[(j</TT><CODE><TT>^</TT></CODE><TT>3)$(j=1..4)]</TT></DIV><P> 
 On obtient :
-</P><DIV CLASS="center"><TT><B>[</B></TT><TT>3,4</TT><TT><B>]</B></TT></DIV><P>
+</P><DIV CLASS="center"><TT>[1,4,9,16]</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>[1,2,3,4] intersect [5,6,3,4]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>nop(1,4,9,16)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT><B>[</B></TT><TT>3,4</TT><TT><B>]</B></TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[1,4,9,16]</TT></DIV><HR>
 <A HREF="cascmd_fr493.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr495.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

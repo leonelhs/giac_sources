@@ -6,66 +6,21 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>: centered_cube cube_centre</TITLE>
+<TITLE>Le cône : cone</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1075.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1077.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1263">11.17.2</A>   : <TT>centered_cube cube_centre</TT></H3><P><A NAME="@default2076"></A><A NAME="@default2077"></A>
-<TT>cube_centre</TT> a comme argument trois points <TT>A,B,C</TT>.<BR>
-<TT>cube_centre</TT> dessine un cube de centre <TT>A</TT>, de sommet <TT>B</TT>
-et tel que le plan <TT>ABC</TT> soit un plan de symetrie du cube.<BR>
-Ce plan <TT>ABC</TT> contient une arête <TT>BD</TT> du cube issue de <TT>B</TT> et 
-le sommet <TT>D</TT> de cette arête est situé du même côté que <TT>C</TT>
-par rapport à <TT>AB</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1262">11.15.1</A>  Le cône : <TT>cone</TT></H3><P><A NAME="@default2085"></A>
+<TT>cone</TT> a comme argument un point <TT>A</TT>, une direction <TT>v</TT> et un réel <TT>t</TT>.<BR>
+<TT>cone(A,v,t)</TT> dessine un demi-cône de sommet <TT>A</TT>, direction <TT>v</TT> 
+et de demi-angle au sommet <TT>t</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cube_centre([0,0,0],[3,3,3],[0,1,0])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>cone([0,1,0],[0,0,1],pi/3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le cube de centre [0,0,0], de sommet [3,3,3] et ayant comme sommet D [-1,5,-1]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>cube_centre([0,0,0],[3,3,3],[0,-1,0])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>cube_centre([0,0,0],[3,3,3],[3,-3,3])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le cube de centre [0,0,0], de sommet [3,3,3] et ayant l’axe det ayant comme sommet D [3,-3,3] et dont les arêtes sont parallèles aux axes</TT></DIV><P>
-<B>Remarques</B>
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Il existe (cf les exemples ci-dessus) 2 cubes ayant un sommet commun 
-<TT>B</TT>, même centre <TT>A</TT>, et le même plan de symétrie <TT>ABC</TT>.<BR>
-En effet, si <I>a</I> est le côté du cube, on a <I>AB</I>=<I>a</I>*√<SPAN style="text-decoration:overline">3</SPAN>. La donnée de 
-<I>A</I> et de <I>B</I> détermine donc entièrement la sphère <I>S</I> inscrite dans le 
-cube. 
-Le plan <I>ABC</I> coupe <I>S</I> selon un cercle <I>Cs</I> et le cube selon un rectangle 
-<I>BDEF</I> avec <I>BD</I>=<I>a</I> et <I>BF</I>=<I>a</I>*√<SPAN style="text-decoration:overline">2</SPAN> car <I>BD</I> est une arête et <I>BF</I> est une 
-diagonale d’une face du cube. Cette face est tangente à <I>S</I> et <I>BF</I> est une
-tangente au cercle <I>Cs</I> menée par <I>B</I>. Du point <I>B</I>, on peut mener, dans le 
-plan <I>ABC</I>, deux tangentes au cercle <I>Cs</I>. Ces 2 tangentes sont situées
-de part et d’autre de la droite <I>AB</I> (car <I>A</I> est le centre du cercle <I>Cs</I>). 
-On choisit la tangente située dans le demi-plan ne contenant pas <I>C</I> et on 
-détermine ainsi, une face contenue dans le plan tangent à la sphère 
-passant par cette tangente. Par symétrie par rapport à <I>A</I>, on détermine 
-enfin tout le cube.<BR>
-Si le cube a <TT>A</TT> comme centre et <TT>B</TT> comme sommet et si de plus le plan
-<TT>ABC</TT> contient une arête du cube, on peut aussi dire que le point <TT>C</TT>
-est dans un plan passant par <TT>A, B</TT> et une arête du cube <TT>BD</TT> issue 
-de <TT>B</TT> et que <TT>C</TT> est du même côté que <TT>D</TT> par rapport
-à <TT>AB</TT>.<BR>
-</LI><LI CLASS="li-itemize">Pour avoir les coordonnées des sommets du cube, on tape :<BR>
-<DIV CLASS="center"><TT>normal(cube_centre([0,0,0],[3,3,3],[0,1,0])),0</TT></DIV>
-car c’est le dernier argument d’une liste qui détermine 
-le mode d’affichage : ici <TT>0</TT> dit 
-que l’on affiche des expressions.<BR>
-On obtient :
-<DIV CLASS="center"><TT>pnt(pnt[[[[3,3,3],[-1,-1,5],[-5,1,1],[-1,5,-1]], 
-[[3,3,3],[-1,5,-1],[1,1,-5],[5,-1,-1]],[[3,3,3],[-1,-1,5],[1,-5,1],
-[5,-1,-1]],[[-1,-1,5],[-5,1,1],[-3,-3,-3],[1,-5,1]],[[-1,5,-1],
-[-5,1,1],[-3,-3,-3],[1,1,-5]],[[5,-1,-1],[1,-5,1],[-3,-3,-3],
-[1,1,-5]]],0]),0</TT></DIV>
-On peut aussi taper
-<DIV CLASS="center"><TT>normal(coordonnees(sommets(cube_centre([0,0,0],[3,3,3],[0,1,0]))))</TT></DIV>
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>Le cône d’axe paralléle à 0z passant par [0,1,0] et de demi-angle au sommet égal à </TT><TT>π/3</TT></DIV><HR>
 <A HREF="cascmd_fr1075.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1077.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

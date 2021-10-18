@@ -6,63 +6,53 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Transformée en z inverse d’une fraction rationnelle, la fonction invztrans : invztrans</TITLE>
+<TITLE>Réduction de Gauss d’une matrice : ref</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr682.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr684.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc805">6.63.2</A>  Transformée en z inverse d’une fraction rationnelle, la fonction <I>invztrans</I> : <TT>invztrans</TT></H3><P><A NAME="@default1236"></A>
-<TT>invztrans</TT> a un ou trois arguments :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-une fraction rationnelle donnée par son expression en utilisant la 
-variable <I>x</I> et <I>x</I> sera aussi le nom de la variable utilisée dans la 
-fonction renvoyée par, <TT>ztrans</TT>,
-</LI><LI CLASS="li-itemize">trois arguments une fraction rationnelle donnée par son expression, le 
-nom de la variable utilisée pour définir cette expression (paz exemple la 
-variable <I>z</I>), et le nom de la variable utilisée dans la fonction renvoyée 
-par <TT>invztrans</TT> (par exemple <I>n</I>).
-</LI></UL><P> 
-<TT>invztrans</TT> calcule la transformée en <I>z</I> inverse de la fraction 
-rationnelle donnée en argument.<BR>
-On a par définition :<BR>
-si <I>invztrans</I>(<I>R</I><SUB><I>x</I></SUB>)=<I>a</I><SUB><I>x</I></SUB> on a 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>R</I><SUB><I>x</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP><I>n</I></SUP></TD></TR>
+<H3 CLASS="subsection"><A NAME="htoc804">6.62.2</A>  Réduction de Gauss d’une matrice : <TT>ref</TT></H3><P><A NAME="@default1239"></A><A NAME="ref"></A> <A NAME="sec:ref"></A>
+<TT>ref</TT> permet de résoudre un système d’équations linéaires 
+que l’on écrit sous forme matricielle :
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+Le paramètre de <TT>ref</TT> est la "matrice augmentée" du système (celle 
+formée par la matrice <TT>A</TT> du système et ayant comme dernier vecteur 
+colonne le second membre <TT>B</TT>).<BR>
+Le résultat est une matrice <TT>[A1,B1]</TT> : <TT>A1</TT> a des zéros 
+au dessous de sa diagonale et les solutions de :
+</P><DIV CLASS="center"><TT>A1*X=B1</TT></DIV><P> 
+sont les mêmes que celles de : 
+</P><DIV CLASS="center"><TT>A*X=B</TT></DIV><P>
+<TT>ref</TT> peut travailler dans ℤ/<I>p</I>ℤ.<BR>
+Par exemple, soit à résoudre le système dans ℝ et dans ℤ/5ℤ:
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎧<BR>
+⎨<BR>
+⎩</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=left NOWRAP>3<I>x</I> + <I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>−2 </TD></TR>
+<TR><TD ALIGN=left NOWRAP>3<I>x</I> +2<I>y</I></TD><TD ALIGN=center NOWRAP>=</TD><TD ALIGN=right NOWRAP>2 </TD></TR>
 </TABLE></TD></TR>
-</TABLE><P>
-si <I>a</I><SUB><I>n</I></SUB>=<I>invztrans</I>(<I>R</I><SUB><I>z</I></SUB>,<I>z</I>,<I>n</I>) on a 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>R</I><SUB><I>z</I></SUB>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>z</I><SUP><I>n</I></SUP></TD></TR>
-</TABLE></TD></TR>
-</TABLE><P>
-On tape :
-</P><DIV CLASS="center"><TT>invztrans(x/(x-1))</TT></DIV><P>
+</TABLE><P> 
+On tape pour résoudre le système dans ℝ :
+</P><DIV CLASS="center"><TT>ref([[3,1,-2],[3,2,2]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>invztrans(z/(z-1),z,n)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1,1/3,-2/3],[0,1,4]]</TT></DIV><P>
+cela signifie donc que :<BR>
+ <I>y</I>=4 et <I>x</I>=−2 sont solutions du système.
+On tape pour résoudre le système dans ℤ/5ℤ :
+</P><DIV CLASS="center"><TT>ref([[3,1,-2],[3,2,2]]%5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
-On a en effet :
-<I>z</I>/(<I>z</I>−1)=1/1−1/<I>z</I>=1+1/<I>z</I>+1/<I>z</I><SUP>2</SUP>+1/<I>z</I><SUP>3</SUP>+1/<I>z</I><SUP>4</SUP>+..=∑<SUB><I>n</I>=0</SUB><SUP><I>inf</I></SUP>1/<I>z</I><SUP><I>n</I></SUP> 
-On tape :
-</P><DIV CLASS="center"><TT>invztrans(x/(x-1)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[[1 % 5,2 % 5,1 % 5],[0 % 5,1 % 5,-1 % 5]]</TT></DIV><P>
+cela signifie donc que :<BR>
+ <I>y</I>=−1%5 et <I>x</I>=3%5 sont solutions du système.</P><P><B>Remarque</B><BR>
+Lorsque le nombre de colonnes est égal au nombre de lignes +1
+<TT>ref</TT> ne divise pas par le pivot de la derniere colonne, par exemple, on 
+tape :
+</P><DIV CLASS="center"><TT>ref([[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[1,0,0,1,-a4]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>x</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>invztrans(z/(z-1)</TT><CODE><TT>^</TT></CODE><TT>2,z,n)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>n</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[1,1,0,0,-a1],[0,1,1,0,-a2],[0,0,1,1,-a3],[0,0,0,0,a1-a2+a3-a4]]</TT></DIV><P>
+Ainsi on peut savoir que si <TT>a1-a2+a3-a4</TT> n’est pas nul, il n’y a pas de 
+solution. </P><HR>
 <A HREF="cascmd_fr682.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr684.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

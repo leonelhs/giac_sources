@@ -6,98 +6,24 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Matrice aléatoire : ranm randMat randmatrix</TITLE>
+<TITLE>Pour normaliser les composantes d’un vecteur : normalize unitV</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr547.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr549.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc652">6.45.3</A>  Matrice aléatoire : <TT>ranm randMat randmatrix</TT></H3><P><A NAME="@default1000"></A><A NAME="@default1001"></A><A NAME="@default1002"></A><A NAME="sec:ranm2"></A><A NAME="@default1003"></A><A NAME="@default1004"></A><A NAME="@default1005"></A><A NAME="@default1006"></A><A NAME="@default1007"></A><A NAME="@default1008"></A>
-<TT>ranm</TT> ou <TT>randMat</TT> ou <TT>randmatrix</TT> a comme argument un 
-entier <I>n</I> ou deux entiers <I>n</I>,<I>m</I> et éventuellement un troisième 
-argument soit un entier <I>k</I>, soit le nom quoté ou non quoté
-de la loi de distribution des nombres aléatoires de la matrice 
-(voir aussi <A HREF="cascmd_fr386.html#sec:ranm1">6.27.32</A>, <A HREF="cascmd_fr534.html#sec:ranm4">6.41.39</A> 
-et <A HREF="cascmd_fr743.html#sec:ranm3">8.3.9</A>).<BR>
-<TT>ranm</TT> renvoie un vecteur d’ordre <I>n</I> ou une matrice <I>n</I>× <I>m</I>
-constituée d’entiers aléatoires uniformément distribués entre -99 et 99 
-(par défaut) ou entre 0 et <I>k</I>−1 ou une matrice <I>n</I>× <I>m</I> de nombres 
-aléatoires distribués selon la loi mise entre-quote.<BR>
-<B>Attention</B> la syntaxe sans quote marche avec les lois mais pas avec la 
-commande <TT>rand...</TT> correspondante, donc par esxemple les commandes
-<TT>ranm(3,4,normald,0,1)</TT> ou <TT>ranm(3,4,’normald(0,1)’)</TT> ou
-<TT>ranm(3,4,’randnorm(0,1)’)</TT> sont valables mais 
-<TT>ranm(3,4,randnorm,0,1)</TT> n’est pas valable.<BR>
+<H3 CLASS="subsection"><A NAME="htoc650">6.43.2</A>  Pour normaliser les composantes d’un vecteur : <TT>normalize unitV</TT></H3><P><A NAME="@default980"></A><A NAME="@default981"></A>
+<TT>normalize</TT> ou <TT>unitV</TT> normalise les composantes d’un vecteur
+et renvoie les composantes d’un vecteur de norme 1 selon la norme 
+<I>l</I><SUP>2</SUP> (la racine carrée de la somme des carrés de ses 
+coordonnées).<BR>
 On tape :
-</P><DIV CLASS="center"><TT>ranm(3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>normalize([3,4,5])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[-54,78,-29]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(2,4)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[27,-29,37,-66],[-11,76,65,-33]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(2,4,3)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ranm(2,4,’rand(3)’)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[0,1,1,0],[0,1,2,0]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(2,4,’randnorm(0,1)’)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1.83785427742,0.793007112053,-0.978388964902,-1.88602023857], [-1.50900874199,-0.241173369698,0.311373795585,-0.532752431454]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(2,4,2..4)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[2.00549363438,3.03381264955,2.06539073586,2.04844321217],
-[3.88383254968,3.28664474655,3.76909781061,2.39113253355]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(4,5,binomial,4,0.2)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ranm(4,5,’binomial(4,0.2)’)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,1,1,0,2],[2,1,0,0,0],[1,2,2,1,1],[0,2,1,1,0]]</TT></DIV><P>
-On effectue 4*5 fois 4 tirages avec une probabilité de succés de 0.2 et à 
-chaque fois le nombre de succés a été de :<BR>
-1 puis 1, puis 1, puis 0, puis 2, puis 2, puis 1 etc...<BR>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(4,5,multinomial,[1/2,1/3,1/6])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ranm(4,5,’multinomial([1/2,1/3,1/6])’)</TT></DIV><P>
-On obtient par exemple:
-</P><DIV CLASS="center"><TT>[[4,1,0],[2,2,1],[3,2,0],[4,1,0]]</TT></DIV><P>
-Dans ce cas on obitient une matrice ayant 4 lignes et 3 colonnes car sur 
-chaque ligne on a le décompte du nombre de tirages par type, ici
-pour le premier tirage on a obtenu 4 objets ayant la probabilité 1/2 dêtre 
-tirés, 1 objet de probabilité ayant la probabilité 1/3 dêtre tirés, 0
-objet de probabilité ayant la probabilité 1/6 dêtre tirés, etc...
-C’est pratique car par exemple <TT>ranm(4,200,multinomial,[1/2,1/3,1/6])</TT> va 
-renvoyer une matrice 4*3 qui donne la répartition.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(3,5,multinomial,[1/2,1/3,1/6],["R","V","B"])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ranm(3,5,’multinomial([1/2,1/3,1/6],["R","V","B"])’)</TT></DIV><P>
-On obtient par exemple:
-</P><DIV CLASS="center"><TT>[["B","B","V","V","R"],["B","R","R","R","R"],["R","R","R","R","V"]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(3,4,poisson,1.3)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ranm(3,4,’poisson(1.3)’)</TT></DIV><P>
-On obtient par exemple :
-</P><DIV CLASS="center"><TT>[[2,2,0,4],[0,0,1,1],[0,4,1,0]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(2,3,exponential,1.2)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ranm(2,3,’exponential(1.2)’)</TT></DIV><P>
-On obtient par exemple :
-</P><DIV CLASS="center"><TT>[[1.39292444066,0.214488721628,0.607596751757], [0.58087800165,0.662248573431,0.385110606536]]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ranm(2,3,fisher,6,5)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>ranm(2,3,’fisher(6,5)’)</TT></DIV><P>
-On obtient par exemple :
-</P><DIV CLASS="center"><TT>[[0.580815888368,0.43932104968,3.00433399184],[0.546184604298,2.07846757518,0.385033837577]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[3/(5*sqrt(2)),4/(5*sqrt(2)),5/(5*sqrt(2))]</TT></DIV><P>
+En effet : <TT>x=3, y=4, z=5</TT> et  50=|<I>x</I>|<SUP>2</SUP>+|<I>y</I>|<SUP>2</SUP>+|<I>z</I>|<SUP>2</SUP>.
+</P><HR>
 <A HREF="cascmd_fr547.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr549.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

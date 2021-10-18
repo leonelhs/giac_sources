@@ -6,30 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Algorithme du gradient conjugué : conjugate_gradient</TITLE>
+<TITLE>Décomposition LQ (compatible HP) : LQ</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr651.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr653.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc769">6.58.4</A>  Algorithme du gradient conjugué : <TT>conjugate_gradient</TT></H3><P><A NAME="@default1181"></A>
-<TT>conjugate_gradient(A,y,x0,eps)</TT> met en œuvre l’algorithme du gradient 
-conjugué pour résoudre <I>A</I>*<I>x</I>=<I>y</I> à <I>eps</I> près, lorsque <I>A</I> est une 
-matrice symétrique définie positive et <I>x</I><SUB>0</SUB> une solution initiale 
-approchée optionnelle.<BR>
+<H3 CLASS="subsection"><A NAME="htoc769">6.58.4</A>  Décomposition LQ (compatible HP) : <TT>LQ</TT></H3><P><A NAME="@default1191"></A>
+<TT>LQ</TT> a comme argument une matrice rectangulaire numérique <I>A</I> 
+d’ordre <I>m</I>× <I>n</I>.<BR>
+<TT>LQ(A)</TT> renvoie <TT>L, Q, P</TT> tel que <TT>P*A=L*Q</TT> avec :
+<I>L</I> une matrice triangulaire inférieure d’ordre <I>m</I>× <I>n</I>, 
+<I>Q</I> une matrice orthogonale d’ordre <I>n</I>× <I>n</I> (<SUP><I>t</I></SUP><I>Q</I>*<I>Q</I>=<I>I</I>) et <I>P</I> une 
+matrice de permutation d’ordre <I>n</I>× <I>n</I>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[5/9,-1/9]</TT></DIV><P>
+</P><DIV CLASS="center"><TT>L,Q,P:=LQ([[4,0,0],[8,-4,3]])</TT></DIV><P>
+On obtient les 3 matrices <TT>L, Q, P</TT> :
+</P><DIV CLASS="center"><TT>[[4.0,0,0],[8.0,5.0,0]],[[1,0,0],[0,-0.8,0.6],[0,-0.6,-0.8]],[[1,0],[0,1]]</TT></DIV><P>
+On tape : <TT>L*Q</TT> et on obtient <TT>P*A</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>L,Q,P:=LQ([[24,18],[30,24]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[0.555,-0.11]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-10)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[0.555555555556,-0.111111111111]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[30.0,0],[38.4,1.2]],[[0.8,0.6],[-0.6,0.8]],[[1,0],[0,1]]</TT></DIV><P>
+On tape : <TT>L*Q</TT> et on obtient <TT>P*A</TT>.</P><HR>
 <A HREF="cascmd_fr651.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr653.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

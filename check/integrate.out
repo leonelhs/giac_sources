@@ -29,7 +29,7 @@ x*atan(2*x/(1+x^2))-1/2*(-ln(x^4+6*x^2+1)+2/sqrt(2)*ln((2*x^2+6-4*sqrt(2))/(2*x^
 sqrt(x^2+1)*(x^2+1)/3,
 1/cos(x),
 atan(exp(x)),
-1/2*ln(2*abs(x*tan(x/2)^4+2*x*tan(x/2)^2+x+2*tan(x/2)^3+2*tan(x/2))/(tan(x/2)^4+2*tan(x/2)^2+1)),
+1/4*ln((4*x^2*tan(x/2)^4+8*x^2*tan(x/2)^2+4*x^2+16*x*tan(x/2)^3+16*x*tan(x/2)+16*tan(x/2)^2)/(tan(x/2)^4+2*tan(x/2)^2+1)),
 2*(sqrt(x+1)*(x+1)/3-sqrt(x+1)),
 atan(sqrt(exp(x)-1)/2),
 2/3*asin(sqrt(x)*x/sqrt(a)/abs(a)),

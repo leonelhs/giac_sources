@@ -6,26 +6,30 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition inverse de la loi de Cauchy : cauchy_icdf cauchyd_icdf</TITLE>
+<TITLE>Inverse de la fonction de répartition de la loi de Fisher-Snédécor : fisher_icdf snedecor_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr780.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr782.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc920">8.4.38</A>  Fonction de répartition inverse de la loi de Cauchy : <TT>cauchy_icdf cauchyd_icdf</TT></H3><P><A NAME="@default1390"></A><A NAME="@default1391"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de Cauchy de paramètre <I>a</I> 
-et <I>b</I>, si on a <TT>cauchy_icdf(a,b,p)=h</TT> avec <I>p</I>∈ [0,1]
-c’est que l’on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>h</I>)<TT>=p=cauchy_cdf(a,b,h)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc921">8.4.25</A>  Inverse de la fonction de répartition de la loi de Fisher-Snédécor : <TT>fisher_icdf snedecor_icdf</TT></H3><P><A NAME="@default1399"></A><A NAME="@default1400"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi de 
+Fisher-Snédécor ayant comme degrés de liberté <I>n</I>1,<I>n</I>2, si on a :<BR>
+<TT>fisher_icdf(n1,n2,x)=h</TT> c’est que :<BR>
+ <I>Proba</I>(<I>X</I> ≤ <I>h</I>)=<TT>x=fisher_cdf(n1,n2,h)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>cauchy_icdf(2,3,0.23)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>fisher_icdf(5,3,0.95)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>snedecor_icdf(5,3,0.95)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1.40283204777</TT></DIV><P>
+</P><DIV CLASS="center"><TT>9.01345516752</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>cauchy_icdf(2,3,0.44)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>1/fisher_icdf(3,5,0.05)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.42771939334</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>9.01345516752</TT></DIV><P>
+<B>Remarque</B> :<BR>
+<TT>fisher_icdf(n1,n2,p)=1/fisher_icdf(n2,n1,1-p)</TT></P><HR>
 <A HREF="cascmd_fr780.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr782.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

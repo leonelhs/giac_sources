@@ -6,22 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Avoir un arrêt momentané : WAIT</TITLE>
+<TITLE>Pour ne pas faire la fin d’une boucle : continue</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr858.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr860.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1007">9.7.11</A>  Avoir un arrêt momentané : <TT>WAIT</TT></H3><P><A NAME="@default1545"></A>
-<TT>WAIT</TT> est une instruction qui permet de suspendre l’exécution 
-d’un programme.<BR>
-<TT>WAIT</TT> a comme argument le temps de pause en secondes.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1007">9.6.3</A>  Pour ne pas faire la fin d’une boucle : <TT>continue</TT></H3><P><A NAME="@default1565"></A>
+<TT>continue</TT> n’a pas d’argument ni parenthèse.<BR>
+<TT>continue</TT> dans une boucle, permet d’ignorer la fin de l’itération 
+et ainsi de passer directement à l’itération suivante.<BR>
 On tape :
-<TT>a:=21;b:=5</TT> puis,
-</P><DIV CLASS="center"><TT>print(a);WAIT(3);print(b);</TT></DIV><P>
+</P><PRE CLASS="verbatim">testcont(b):={
+local a;
+a:=10;
+while (a&gt;0) {
+a:=a-3; 
+if (a&gt;=b) {continue;} 
+print(a);
+}
+}
+</PRE><P>puis on tape :
+</P><DIV CLASS="center"><TT>testcont(4)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>21 s’écrit en bleu, un arrêt de 3 secondes, puis 5 s’écrit en bleu et on a (1,0,1) comme réponse</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>a:1 et a:-2 écrit en bleu et 1 comme réponse</TT></DIV><P>
+car <TT>a</TT> est imprimé que si <TT>a&lt;b=4</TT>
+</P><HR>
 <A HREF="cascmd_fr858.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr860.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

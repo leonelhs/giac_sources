@@ -6,27 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si 1 point est sur un objet graphique : is_element est_element</TITLE>
+<TITLE>Pente d’une droite : slope pente</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr964.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr966.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1132">10.18.1</A>  Savoir si 1 point est sur un objet graphique : <TT>is_element est_element</TT></H3><P><A NAME="@default1872"></A><A NAME="@default1873"></A><A NAME="sec:estelement2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1039.html#sec:estelement3">11.13.1</A> pour la géométrie 3-d.<BR>
-<TT>est_element</TT> est une fonction booléenne ayant comme 
-argument un point et un objet géométrique.<BR>
-<TT>est_element</TT> vaut 1 si le point appartient à l’objet 
-géométrique, et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1131">10.16.12</A>  Pente d’une droite : <TT>slope pente</TT></H3><P><A NAME="@default1883"></A><A NAME="@default1884"></A>
+<A NAME="@default1885"></A><A NAME="@default1886"></A><A NAME="sec:pente"></A>
+<TT>slope pente</TT> est soit une commande soit un attribut de la 
+commande <TT>droite</TT> pour cela voir <A HREF="cascmd_fr905.html#sec:droite2">10.9.1</A><BR>
+Lorsque <TT>slope pente</TT> est une commande son argument est une droite ou un 
+segment ou deux points ou deux nombres complexes.<BR>
+ <TT>slope pente</TT> renvoie la pente de la droite définie par le segment ou par 
+les 2 points ou leurs affixes.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_element(point(-1-i),droite(0,1+i)) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>pente(droite(1,2i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pente(segment(1,2i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pente(point(1),point(2i))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pente(1,2i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>-2</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>est_element(point(i),droite(0,1+i)) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>pente(droite(2y-x=3))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>1/2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>pente(tangente(plotfunc(sin(x)),pi/4))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>pente(droite_tangente(sin(x),pi/4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(sqrt(2))/2</TT></DIV><HR>
 <A HREF="cascmd_fr964.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr966.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

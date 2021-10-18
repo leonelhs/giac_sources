@@ -6,44 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Résoudre des équations dans ℂ : resoudre_dans_C csolve cSolve </TITLE>
+<TITLE>La divergence : divergence</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr670.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr672.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc790">6.60.7</A>  Résoudre des équations dans ℂ : <TT>resoudre_dans_C csolve cSolve </TT></H3><P><A NAME="@default1213"></A><A NAME="@default1214"></A><A NAME="@default1215"></A>
-<TT>csolve</TT> ou <TT>cSolve</TT> ou <TT>resoudre_dans_C</TT> résout une 
-équation ou un système d’équations 
-polynômiales dans ℂ sans avoir besoin d’être en mode complexe.
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Résolution d’une équation<BR>
-<TT>cSolve</TT> a comme arguments une équation entre deux 
-expressions ou une expression (<TT>=0</TT> est alors sous-entendu), 
-et le nom d’une variable (par défaut <TT>x</TT>).<BR>
-<TT>cSolve</TT> résout cette équation dans ℂ sans avoir besoin 
-d’être en mode complexe.
-</LI><LI CLASS="li-itemize">Résolution d’un système d’équations polynômiales<BR>
-<TT>cSolve</TT> a comme arguments deux vecteurs : le vecteur des équations du
-système et le vecteur du nom des variables.<BR>
-<TT>cSolve</TT> résout ce système d’équations polynômiales dans 
-<FONT COLOR=red><I>C</I></FONT> sans avoir besoin d’être en mode complexe.
-</LI></UL><P>
+<H3 CLASS="subsection"><A NAME="htoc790">6.60.4</A>  La divergence : <TT>divergence</TT></H3><P><A NAME="@default1220"></A>
+<TT>divergence</TT> a deux paramètres : une expression <I>F</I> dependant de
+<I>n</I> variables rèelles et un vecteur de dimension
+<I>n</I> indiquant le nom de ces variables.<BR>
+On a si <I>n</I>=3 :<BR>
+ <TT>divergence([A,B,C],[x,y,z])</TT>=∂ <I>A</I>/∂ <I>x</I>+∂ <I>B</I>/∂ <I>y</I>+∂ <I>C</I>/∂ <I>z</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>cSolve(x</TT><CODE><TT>^</TT></CODE><TT>4-1=3)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>divergence([x*z,-y</TT><CODE><TT>^</TT></CODE><TT>2,2*x</TT><CODE><TT>^</TT></CODE><TT>y],[x,y,z])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[sqrt(2),-(sqrt(2)),(i)*sqrt(2),-((i)*sqrt(2))]</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>cSolve([-x</TT><CODE><TT>^</TT></CODE><TT>2+y=2,x</TT><CODE><TT>^</TT></CODE><TT>2+y],[x,y])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[i,1],[-i,1]]</TT></DIV><P>
-On tape en mode complexe ou réel:
-</P><DIV CLASS="center"><TT>csolve(re(r*exp(-(i)*t))-1,r) </TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[‘ x‘+(i)*1/(sin(t))*(-‘ x‘*cos(t)+1)]</TT></DIV><P>
-car avec <TT>csolve</TT>, l’inconnue <TT>r</TT> est toujours considérée comme un 
-nombre complexe.)</P><HR>
+</P><DIV CLASS="center"><TT>z+-2*y</TT></DIV><HR>
 <A HREF="cascmd_fr670.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr672.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

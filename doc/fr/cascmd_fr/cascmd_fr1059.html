@@ -6,52 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’inversion : inversion</TITLE>
+<TITLE>Savoir si 3 points sont alignés : is_collinear est_aligne</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1058.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1060.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1243">11.14.7</A>  L’inversion : <TT>inversion</TT></H3><P><A NAME="@default2047"></A><A NAME="sec:inversion3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr963.html#sec:inversion2">10.17.7</A> pour la géométrie plane.<BR>
-<TT>inversion</TT>, en géométrie 3-d, a deux ou trois arguments : 
-un point (le centre de l’inversion), un réel (la valeur du rapport de 
-l’inversion) et éventuellement l’objet géométrique à transformer.<BR>
-Lorsque <TT>inversion</TT> a deux arguments, c’est une fonction qui agit sur un 
-objet géométrique.<BR>
-Si <TT>inver:=inversion(C,k)</TT> et <TT>A1:=inver(A)</TT>,
-on a <SPAN style="text-decoration:overline"><I>CA</I></SPAN>*<SPAN style="text-decoration:overline"><I>CA</I>1</SPAN>=<I>k</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1243">11.13.6</A>  Savoir si 3 points sont alignés : <TT>is_collinear est_aligne</TT></H3><P><A NAME="@default2058"></A><A NAME="@default2059"></A><A NAME="sec:estaligne3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr981.html#sec:estaligne2">10.18.2</A> pour la géométrie plane.<BR>
+<TT>est_aligne</TT> est une fonction booléenne ayant comme 
+argument une liste ou une séquence de points.<BR>
+<TT>est_aligne</TT> vaut 1 si les points sont alignés, et vaut 0 sinon.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>inver:=inversion(point(0,0,0),2)</TT></DIV><P>
-Puis :<BR>
+</P><DIV CLASS="center"><TT>est_aligne([2,0,0],[0,2,0],[1,1,0])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>inver(point(1,2,-2))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>est_aligne([2,0,0],[0,2,0],[0,1,1])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le point (2/9,4/9,-4/9)</TT></DIV><P> 
-On a en effet :<BR>
-<TT>[2/9,4/9,-4/9]*[1,2,-2]=2</TT> et les points (1,2,-2) et
-(2/9,4/9,-4/9) sont alignés avec le point (0,0,0) centre de l’nversion.<BR>
-On tape 
-</P><DIV CLASS="center"><TT>inver(sqhere(point(1,0,0),1))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x=1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>inver(sqhere(point(1,0,0),1/2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La sphère de centre (8/3,0,0) et de rayon 4/3 (elle passe par les points (4/3,0,0) et (4,0,0))</TT></DIV><P>
-Lorsque <TT>inversion</TT> a trois arguments, <TT>inversion</TT> dessine et renvoie 
-le transformé du troisième argument dans l’inversion de centre le premier 
-argument et de rapport le deuxième argument.<BR>
-Si <TT>A1:=inversion(C,k,A)</TT> on a <SPAN style="text-decoration:overline"><I>CA</I></SPAN>*<SPAN style="text-decoration:overline"><I>CA</I>1</SPAN>=<I>k</I>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>inversion(point(0,0,0),2,sphere(point(1,0,0),1))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>Le plan d’équation x=1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>inversion(point(0,0,0),2,sphere(point(1,0,0),1/2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>La sphère de centre (8/3,0,0) et de rayon 4/3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr1058.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1060.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,35 +6,52 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le gradient : derive deriver diff grad</TITLE>
+<TITLE>Recherche d’une base de vecteurs courts d’un réseau : lll</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr657.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr659.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc776">6.59.1</A>  Le gradient : <TT>derive deriver diff grad</TT></H3><P><A NAME="@default1190"></A><A NAME="@default1191"></A><A NAME="@default1192"></A><A NAME="@default1193"></A><A NAME="sec:derive"></A><A NAME="@default1194"></A><A NAME="@default1195"></A>
-<TT>derive</TT> (ou <TT>diff</TT> ou <TT>grad</TT>) a deux paramètres : une 
-expression <I>F</I> dependant de <I>n</I> variables rèelles et un vecteur de dimension
-<I>n</I> indiquant le nom de ces variables.<BR>
-<TT>derive</TT> renvoie le gradient de <I>F</I> (<FONT COLOR=red><I>G</I></FONT><I>rad</I>(<I>F</I>)= [∂ <I>F</I>/∂ <I>x</I>,∂ <I>F</I>/∂ <I>y</I>,∂ <I>F</I>/∂ <I>z</I>] si <I>n</I>=3).<BR>
-<B>Exemple</B><BR>
-Déterminer le gradient de <I>F</I>(<I>x</I>,<I>y</I>,<I>z</I>)=2<I>x</I><SUP>2</SUP><I>y</I>−<I>xz</I><SUP>3</SUP>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc775">6.58.10</A>  Recherche d’une base de vecteurs courts d’un réseau : <TT>lll</TT></H3><P><A NAME="@default1199"></A>
+<TT>lll</TT> a comme argument une matrice inversible <I>M</I> à coefficients entiers.<BR>
+<TT>lll</TT> renvoie (<I>S</I>,<I>A</I>,<I>L</I>,<I>O</I>) :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<I>S</I> a comme lignes une base courte du reseau engendré par les 
+lignes de <I>M</I>,
+</LI><LI CLASS="li-itemize"><I>A</I> est la matrice de passage de la base courte à la base définie 
+par les lignes de <I>M</I> (<I>A</I>*<I>M</I>=<I>S</I>),
+</LI><LI CLASS="li-itemize"><I>L</I> est une matrice triangulaire inférieure dont les coefficients sont 
+de module plus petits que 1/2,
+</LI><LI CLASS="li-itemize"><I>O</I> est une matrice dont les lignes sont orthogonales et on a <I>L</I>*<I>O</I>=<I>S</I>.
+</LI></UL><P>Si en dimension 2, un vecteur du réseau a comme coordonnées [<I>a</I>,<I>b</I>] dans 
+la base définie par <I>M</I> et a comme coordonnées [<I>a</I>1,<I>b</I>1] dans la base 
+courte définie par <I>S</I> c’est à dire si [<I>a</I>,<I>b</I>]*<I>M</I>=[<I>a</I>1,<I>b</I>1]*<I>S</I>, alors :<BR>
+[<I>a</I>,<I>b</I>]=[<I>a</I>1,<I>b</I>1]*<I>A</I><BR>
+[<I>a</I>1,<I>b</I>1]*<I>S</I>=[<I>a</I>1,<I>b</I>1]*<I>A</I>*<I>M</I>=[<I>a</I>,<I>b</I>]*<I>M</I> et<BR>
+[<I>a</I>,<I>b</I>]*<I>M</I>=[<I>a</I>,<I>b</I>]*<I>A</I><SUP>−1</SUP>*<I>S</I>=[<I>a</I>1,<I>b</I>1]*<I>S</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>derive(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>diff(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z])</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>grad(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>(S,A,L,O):=lll([[2,1],[1,2]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2*2*x*y-z</TT><CODE><TT>^</TT></CODE><TT>3,2*x</TT><CODE><TT>^</TT></CODE><TT>2,-(x*3*z</TT><CODE><TT>^</TT></CODE><TT>2)]</TT></DIV><P>
-On obtient après simplification avec <TT>normal(ans())</TT> :
-</P><DIV CLASS="center"><TT>[4*x*y-z</TT><CODE><TT>^</TT></CODE><TT>3,2*x</TT><CODE><TT>^</TT></CODE><TT>2,-(3*x*z</TT><CODE><TT>^</TT></CODE><TT>2)]</TT></DIV><P>
-Si on veut connaitre les points critiques de 
-<I>F</I>(<I>x</I>,<I>y</I>,<I>z</I>)=2<I>x</I><SUP>2</SUP><I>y</I>−<I>xz</I><SUP>3</SUP>, il suffit de taper :
-</P><DIV CLASS="center"><TT>solve(derive(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z]),[x,y,z])</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>[[-1,1],[2,1]],[[-1,1],[1,0]],[[1,0],[1/-2,1]],[[-1,1],[3/2,3/2]]</TT></DIV><P>
+Donc :<BR>
+<TT>S=[[-1,1],[2,1]]</TT><BR>
+<TT>A=[[-1,1],[1,0]]</TT><BR>
+<TT>L=[[1,0],[1/-2,1]]</TT><BR>
+<TT>O=[[-1,1],[3/2,3/2]]</TT><BR>
+
+On a comme ancienne base : <TT>v1=[2,1], v2=[1,2]</TT> et<BR>
+comme base courte : <TT>w1=[-1,1], w2=[2,1]</TT>.<BR>
+Puisque <TT>w1=-v1+v2</TT> et <TT>w2=v1</TT> on a<BR>
+<TT>A:=[[-1,1],[1,0]]</TT>, <TT>A*M==S</TT> et <TT>L*O==S</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>(S,A,L,O):=lll([[3,2,1],[1,2,3],[2,3,1]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[[0,y,0]]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>S=[[-1,1,0],[-1,-1,2],[3,2,1]] </TT></DIV><DIV CLASS="center"><TT>A= [[-1,0,1],[0,1,-1],[1,0,0]]</TT></DIV><DIV CLASS="center"><TT>L= [[1,0,0],[0,1,0],[(-1)/2,(-1)/2,1]]</TT></DIV><DIV CLASS="center"><TT>O= [[-1,1,0],[-1,-1,2],[2,2,2]]</TT></DIV><P>
+si on tape :<BR>
+<TT>M:=[[3,2,1],[1,2,3],[2,3,1]]</TT><BR>
+On a :<BR>
+<TT>A*M==S</TT> et <TT>L*O==S</TT></P><HR>
 <A HREF="cascmd_fr657.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr659.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

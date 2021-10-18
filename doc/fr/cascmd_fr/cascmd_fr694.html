@@ -6,57 +6,69 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Applications</TITLE>
+<TITLE>Transformée en z d’une suite, la fonction ztrans : ztrans</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr693.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr695.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc824">7.5.4</A>  Applications</H3><P>
-Trouver la courbure et le centre de courbure de la spirale logarithmique :<BR>
-ρ=3<I>e</I><SUP>θ/2</SUP> en un point <I>M</I> de coordonnées :<BR>
-ρcos(θ),ρsin(θ) et<BR>
-en un point <I>M</I><SUB>0</SUB> de coordonnées :<BR>
-3<I>e</I><SUP>7/2</SUP>cos(7),3<I>e</I><SUP>7/2</SUP>sin(7).<BR>
-On tape :<BR>
-<TT>trigcos(courbure([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t))</TT><BR>
-On obtient le rayon de courbure au point <I>M</I> d’affixe 
-3*exp(1/2)*(cos(1)+<I>i</I>*sin(1)):<BR>
-<TT>2*sqrt(5)/(15*exp(t/2))</TT><BR>
-On tape pour avoir le rayon de courbure au point <I>M</I><SUB>0</SUB> d’affixe 
-3*exp(7/2)*(cos(7)+<I>i</I>*sin(7)):<BR>
-<TT>trigcos(courbure([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7))</TT><BR>
-On obtient :<BR>
-<TT>2*sqrt(5)/(15*exp(7/2))</TT><BR>
-Pour avoir l’équation du cercle osculateur en <I>M</I>, on tape :<BR>
-<TT>trigcos(equation(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)))</TT><BR>
-On obtient :<BR>
-<TT>x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2+9*exp(t/2)</TT><CODE><TT>^</TT></CODE><TT>2/4+3*x*exp(t/2)*sin(t)-3*y*exp(t/2)*cos(t)=(45*exp(t/2)</TT><CODE><TT>^</TT></CODE><TT>2/4)</TT><BR>
-Pour avoir l’équation du cercle osculateur en <I>M</I><SUB>0</SUB>, on tape :<BR>
-<TT>trigcos(equation(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)))</TT><BR>
-On obtient :<BR>
-<TT>x</TT><CODE><TT>^</TT></CODE><TT>2+y</TT><CODE><TT>^</TT></CODE><TT>2+9*exp(7/2)</TT><CODE><TT>^</TT></CODE><TT>2/4+3*x*exp(7/2)*sin(7)-3*y*exp(7/2)*cos(7)=(45*exp(7/2)</TT><CODE><TT>^</TT></CODE><TT>2/4)</TT><BR>
-Pour avoir l’affixe du centre du cercle osculateur en <I>M</I>, on tape :<BR>
-<TT>affixe(centre(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t)))</TT><BR>
-On obtient :<BR>
-<TT>(3*i)*exp(t/2)*cos(t)/2-3*exp(t/2)*sin(t)/2)</TT><BR>
-Pour avoir l’affixe du centre du cercle osculateur en <I>M</I><SUB>0</SUB>, on tape :<BR>
-<TT>affixe(centre(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7)))</TT><BR>
-On obtient :<BR>
-<TT>(3*i)*exp(7/2)*cos(7)/2-3*exp(7/2)*sin(7)/2</TT><BR>
-On tape :<BR>
-<TT>plotparam(3*exp(t/2)*(cos(t)+i*sin(t)));</TT><BR>
-<TT>M0:=point(3*exp(7/2)*(cos(7)+i*sin(7)));</TT><BR>
-<TT>C:=centre(cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7));</TT><BR>
-<TT>cercle_osculateur([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,7,affichage=1)</TT><BR>
-<TT>segment(C,M0)</TT><BR>
-<TT>tangente(plotparam(3*exp(t/2)*exp(i*t),t),7);</TT><BR>
-<TT>demi_droite(0,M0);</TT><BR>
-<TT>demi_droite(0,C);</TT><BR>
-On obtient :<BR>
-<IMG SRC="cascmd_fr007.png">
-</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc817">6.64.1</A>  Transformée en <I>z</I> d’une suite, la fonction <I>ztrans</I> : <TT>ztrans</TT></H3><P><A NAME="@default1259"></A>
+<TT>ztrans</TT> a un ou trois arguments :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+une suite donnée par son terme général <I>a</I><SUB><I>x</I></SUB> : la 
+variable utilisée pour définir le terme général est <I>x</I> et <I>x</I> sera 
+aussi le nom de la variable utilisée dans la fonction renvoyée par 
+<TT>ztrans</TT>
+</LI><LI CLASS="li-itemize">une suite donnée par son terme général <I>a</I><SUB><I>n</I></SUB>, le 
+nom de la variable utilisée pour définir ce terme général (ici <I>n</I>) et
+le nom de la variable utilisée dans la fonction renvoyée par <TT>ztrans</TT>
+(par exemple <I>z</I>).
+</LI></UL><P> 
+<TT>ztrans</TT> calcule la transformée en <I>z</I> de la suite donnée en argument.<BR>
+On a par définition :<BR>
+si <I>f</I>(<I>x</I>)=<I>ztrans</I>(<I>a</I><SUB><I>x</I></SUB>) on a 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP><I>n</I></SUP></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+si <I>f</I>(<I>z</I>)=<I>ztrans</I>(<I>a</I><SUB><I>n</I></SUB>,<I>n</I>,<I>z</I>) on a 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>f</I>(<I>z</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>inf</I></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>n</I>=0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUB><I>n</I></SUB></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>z</I><SUP><I>n</I></SUP></TD></TR>
+</TABLE></TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>ztrans(1)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x/(x-1)</TT></DIV><P>
+On a en effet :<BR>
+=∑<SUB><I>n</I>=0</SUB><SUP><I>inf</I></SUP>1/<I>x</I><SUP><I>n</I></SUP>=1/1−1/<I>x</I>=<I>x</I>/<I>x</I>−1<BR>
+On tape :
+</P><DIV CLASS="center"><TT>ztrans(1,n,z)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>z/(z-1)</TT></DIV><P>
+On a en effet :<BR>
+1+1/<I>z</I>+1/<I>z</I><SUP>2</SUP>+1/<I>z</I><SUP>3</SUP>+1/<I>z</I><SUP>4</SUP>+..=∑<SUB><I>n</I>=0</SUB><SUP><I>inf</I></SUP>1/<I>z</I><SUP><I>n</I></SUP>=1/1−1/<I>z</I>=<I>z</I>/(<I>z</I>−1)<BR>
+On tape :
+</P><DIV CLASS="center"><TT>ztrans(x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>x/(x</TT><CODE><TT>^</TT></CODE><TT>2-2*x+1)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>ztrans(n,n,z)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>z/(z</TT><CODE><TT>^</TT></CODE><TT>2-2*z+1)</TT></DIV><P>
+On a en effet :
+1/<I>z</I>−1=∑<SUB><I>n</I>=1</SUB><SUP><I>inf</I></SUP>1/<I>z</I><SUP><I>n</I></SUP><BR>
+1/(<I>z</I>−1)<SUP>2</SUP>=−(1/(<I>z</I>−1))′=∑<SUB><I>n</I>=1</SUB><SUP><I>inf</I></SUP><I>n</I>/<I>z</I><SUP><I>n</I>−1</SUP><BR>
+Donc <I>z</I>/(<I>z</I>−1)<SUP>2</SUP>=∑<SUB><I>n</I>=1</SUB><SUP><I>inf</I></SUP><I>n</I>/<I>z</I><SUP><I>n</I></SUP></P><HR>
 <A HREF="cascmd_fr693.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr695.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

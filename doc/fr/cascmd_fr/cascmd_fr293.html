@@ -6,73 +6,62 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les fonctions usuelles</TITLE>
+<TITLE>Sommet et feuille d’une expression : sommet feuille op</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr292.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr294.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc370">6.18.2</A>  Les fonctions usuelles</H3><P>
-<TT>max</TT><A NAME="@default509"></A> d’une séquence ou d’une liste de réels renvoie leur maximum,<BR>
-<TT>min</TT><A NAME="@default510"></A> d’une séquence ou d’une liste de réels renvoie leur minimum,<BR>
-<TT>abs</TT><A NAME="@default511"></A> d’un réel renvoie sa valeur absolue,<BR>
-<TT>sign</TT><A NAME="@default512"></A> d’un réel renvoie son signe (+1 si il est 
-positif, 0 si il est nul et -1 si il est négatif),<BR>
-<TT>floor</TT><A NAME="@default513"></A> d’un réel renvoie sa partie entière,<BR>
-<TT>round</TT><A NAME="@default514"></A> d’un réel renvoie l’entier le plus proche,<BR>
-<TT>ceil</TT> ou <TT>ceiling</TT><A NAME="@default515"></A><A NAME="@default516"></A> d’un 
-réel renvoie sa partie entière plus un,<BR>
-<TT>frac</TT><A NAME="@default517"></A> (ou <TT>fPart</TT><A NAME="@default518"></A>) d’un réel 
-renvoie sa partie fractionnaire,<BR>
-<TT>trunc</TT><A NAME="@default519"></A> d’un réel renvoie l’entier égal au réel 
-argument sans sa partie fractionnaire ou le réel tronqué à <I>n</I> 
-décimales,<BR>
-<TT>iPart</TT><A NAME="@default520"></A>) d’un réel renvoie le réel égal au réel
-argument sans sa partie fractionnaire,<BR>
-<TT>id</TT><A NAME="@default521"></A> désigne la fonction identité,<BR>
-<TT>sq</TT><A NAME="@default522"></A> désigne la fonction carrée,<BR>
-<TT>sqrt</TT><A NAME="@default523"></A> désigne la fonction racine carrée,<BR>
-<TT>surd</TT><A NAME="@default524"></A> désigne la fonction puissance 1/<I>n</I>,<BR>
-<TT>exp</TT><A NAME="@default525"></A> désigne la fonction exponentielle,<BR>
-<TT>log</TT><A NAME="@default526"></A> ou <TT>ln</TT><A NAME="@default527"></A> désigne la fonction logarithme népérien,<BR>
-<TT>log10</TT><A NAME="@default528"></A> désigne la fonction logarithme à base 
-dix,<BR>
-<TT>logb</TT><A NAME="@default529"></A> désigne la fonction logarithme à base 
-donnée comme deuxième argument : 
-<TT>logb(7,10)=log10(7)=log(7)/log(10)</TT>,<BR>
-<TT>alog10</TT><A NAME="@default530"></A> désigne la fonction anti-logarithme à 
-base dix : c’est la fonction <I>x</I>−&gt;10<SUP><I>x</I></SUP>.<BR>
-<TT>sinh</TT><A NAME="@default531"></A> désigne la fonction sinus hyperbolique,<BR>
-<TT>cosh</TT><A NAME="@default532"></A> désigne la fonction cosinus hyperbolique,<BR>
-<TT>tanh</TT><A NAME="@default533"></A> désigne la fonction tangente hyperbolique,<BR>
-<TT>asinh</TT> ou <TT>arcsinh</TT><A NAME="@default534"></A><A NAME="@default535"></A> (respectivement <TT>acosh</TT> ou <TT>arccosh</TT><A NAME="@default536"></A><A NAME="@default537"></A>, <TT>atanh</TT> ou <TT>arctanh</TT><A NAME="@default538"></A><A NAME="@default539"></A>)
-désigne la fonction réciproque de <TT>sinh</TT> (respectivement 
-<TT>cosh</TT>, <TT>tanh</TT>)<BR>
-<TT>sin, cos, tan, cot, sec, csc</TT> et 
-<TT>asin</TT> (ou <TT>arcsin</TT>)<A NAME="@default540"></A><A NAME="@default541"></A>,<TT>acos</TT>
-(ou <TT>arccos</TT>)<A NAME="@default542"></A><A NAME="@default543"></A>, <TT>atan</TT> (ou 
-<TT>arctan</TT>)<A NAME="@default544"></A><A NAME="@default545"></A>, <TT>acot, asec, acsc</TT> 
-pour les fonctions trigonométriques et pour leurs fonctions réciproques (on
-se reportera à la section <A HREF="cascmd_fr315.html#sec:trigo">6.24.1</A> pour les commandes les concernant).
+<H3 CLASS="subsection"><A NAME="htoc369">6.17.3</A>  Sommet et feuille d’une expression : <TT>sommet feuille op</TT></H3><P><A NAME="@default501"></A><A NAME="@default502"></A><A NAME="@default503"></A><A NAME="sec:op"></A>
+Un opérateur est une fonction infixée : par exemple ’+’ est un 
+opérateur et ’sin’ est une fonction.<BR>
+On peut représenter une expression par un arbre. Le sommet de l’arbre est 
+soit un opérateur, soit une fonction et les feuilles de l’arbre sont les 
+arguments de l’opérateur ou de la fonction (voir aussi <A HREF="cascmd_fr517.html#sec:makesuiteop">6.42.15</A>).<BR>
+La fonction <TT>sommet</TT> (resp <TT>feuille</TT> (ou <TT>op</TT>))
+renvoie le sommet (resp la liste des feuilles) d’une expression.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>normal(surd(8,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sommet(sin(x+2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>’sin’</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>normal(surd(-8,3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sommet(x+2*y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>’+’</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>normal(8</TT><CODE><TT>^</TT></CODE><TT>(1/3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>feuille(sin(x+2))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>op(sin(x+2))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>x+2</TT></DIV><P> 
 On tape :
-</P><DIV CLASS="center"><TT>simplify((-8)</TT><CODE><TT>^</TT></CODE><TT>(1/3))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>feuille(x+2*y)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>op(x+2*y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(i)*sqrt(3)+1</TT></DIV><P>
-car <TT>Xcas</TT> prend <I>i</I>π comme détermination de ln(−1) et
-<I>i</I>π/3 comme détermination de ln((−1)<SUP>1/3</SUP>) </P><HR>
+</P><DIV CLASS="center"><TT>(x,2*y) </TT></DIV><P> 
+<B>Remarque</B><BR>
+Lorsque l’utilisateur définit une fonction par un programme par exemple la
+fonction <TT>pgcd</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>pgcd(a,b):={local r; while (b!=0) {r:=irem(a,b);a:=b;b:=r;} return a;}</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>sommet(pgcd)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>’program’</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[0]</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>(a,b)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[1]</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>(0,0) ou (15,25) si l’on vient d’exécuter pgcd(15,25)</TT></DIV><P>
+Puis on tape :
+</P><DIV CLASS="center"><TT>feuille(pgcd)[2]</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>Le corps du programme : {local r;....return(a);}</TT></DIV><HR>
 <A HREF="cascmd_fr292.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr294.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

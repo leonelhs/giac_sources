@@ -52,10 +52,58 @@ width:400px;
 }
 </style>
 <style type="text/css">
+
 .matrixcell {
   font-size:18px;
-  height:1.5em;
-  width:5.5em;
+}
+
+td.matrixcell {
+border: 1px solid ;
+}
+
+input.matrixcell {
+  width: 100px;
+}
+
+input.matrixcell:hover {
+  background-color: #eee;
+}
+
+input.matrixcell:focus {
+  background-color: #ccf;
+}
+
+input.matrixcell:not(:focus) {
+  text-align: right;
+}
+
+textarea.matrixcell {
+  width: 100px;
+  height: 22px;
+}
+
+textarea.matrixcell:hover {
+  background-color: #eee;
+}
+
+textarea.matrixcell:focus {
+  background-color: #ccf;
+}
+
+textarea.matrixcell:not(:focus) {
+  text-align: right;
+}
+
+div.matrixcell:hover {
+  background-color: #eee;
+}
+
+div.matrixcell:focus {
+  background-color: #ccf;
+}
+
+div.matrixcell:not(:focus) {
+  text-align: right;
 }
 </style>
 
@@ -300,6 +348,9 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
       title="Nombre de lignes" value=40 min=1 max=1000>,
       <input class="bouton" type="number" name="matr_cfg_cols" id="matr_cfg_cols"
       title="Nombre de colonnes" value=6 min=1 max=100>
+      <input class="bouton" type="checkbox" name="matr_textarea"
+      onclick="UI.assistant_matr_textarea=checked; UI.assistant_matr_setmatrix(UI.assistant_matr_maxrows,UI.assistant_matr_maxcols); UI.assistant_matr_setdisplay();"
+  id="matr_textarea" title="Cocher pour avoir des cellules dont on peut changer la taille">d&eacute;formable
     </td>
   </tr>
   <tr>
@@ -1093,7 +1144,8 @@ onclick="var l=['tutointro','tutointerface','tutosimplifier','tutoarit','tutosol
   target="_blank">Internet</a>,
     </li>
     <li> Programmation :
-  <a href="file:///usr/share/giac/doc/fr/casrouge/index.html"
+    <a href="algoseconde.html"target="_blank">algorithmique lyc&eacute;e</a>,
+    <a href="file:///usr/share/giac/doc/fr/casrouge/index.html"
     target="_blank">disque dur</a>,
   <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/casrouge/index.html"
   target="_blank">Internet</a>,
@@ -1182,8 +1234,8 @@ title="Placer tout les niveaux de l'historique dans la
   <tr>
     <td> 
       <input type="button" style="width:29px;height:35px;"
-  name="add_newline" id="add_newline" value="\n"
-  onmousedown="event.preventDefault()"  onClick="if (UI.kbdshift) UI.insert(UI.focused,' ') ; else UI.insert(UI.focused,' \n');">  
+  name="add_newline" id="add_newline" value=" "
+  onmousedown="event.preventDefault()"  onClick="if (UI.kbdshift) UI.insert(UI.focused,' \n') ; else UI.insert(UI.focused,' ');">  
       <input type="button" style="width:29px;height:35px;" name="add_sin" id="add_sin"  value="sin" onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value+'(')" title="fonction sinus, taper asin pour arcinus">        
       <input type="button" style="width:29px;height:35px;" name="add_cos"
 id="add_cos"
@@ -1329,7 +1381,7 @@ id="add_limit"
       <input type="button" style="width:60px;height:35px"
   name="add_matr" id="add_matr" value="matrix"
   onmousedown="event.preventDefault()"
-  onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;document.getElementById('assistant_matr').style.display='block';document.getElementById('matr_type_chooser').style.display='block';document.getElementById('matr_stats').style.display='none';UI.assistant_matr_setdisplay();UI.set_focus('matr_name');"
+  onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;document.getElementById('assistant_matr').style.display='block';document.getElementById('matr_type_chooser').style.display='inline';document.getElementById('matr_stats').style.display='none';UI.assistant_matr_setdisplay();UI.set_focus('matr_case0_0');"
   title="assistant cr&eacute;ation de matrice">
       <input type="button" style="width:60px;height:35px" name="add_tabvar"
 id="add_tabvar"
@@ -1354,23 +1406,24 @@ id="add_diff"
     <td>
       <input type="button" style="width:60px;height:35px"
   name="add_stats" id="add_stats" value="stats"
+      title="Probabilit&eacute;s et statistiques"
       onmousedown="event.preventDefault()"
   onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;var mat=document.getElementById('assistant_matr');mat.style.display='block';mat.matr_formule.checked=false;mat.matr_formuleshadow.checked=true;document.getElementById('matr_type_chooser').style.display='none';document.getElementById('matr_stats').style.display='block';UI.assistant_matr_setdisplay();document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';"
 >
 
       <input type="button" style="width:60px;height:35px"
-  name="add_rand" id="add_rand" value="rand"
+  name="add_rand" id="add_rand" value="al&eacute;a"
   onmousedown="event.preventDefault()"
   onClick="UI.savefocused=UI.focused;document.getElementById('assistant_rand').style.display='block';UI.assistant_rand_setdisplay();UI.kbdonfuncoff();"
-  title="rand g&eacute;n&egrave;re un nombre al&eacute;atoire">        
+  title="g&eacute;n&eacute;rer un nombre, une liste ou une matrice al&eacute;atoirement">        
       <input type="button" style="width:50px;height:35px"
-  name="add_seq" id="add_seq" value="seq"
+  name="add_seq" id="add_seq" value="list"
   onmousedown="event.preventDefault()"
   onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;document.getElementById('assistant_seq').style.display='block';UI.set_focus('seqexpr')"
-  title="seq permet de creer une sequence, par exemple seq(j^2,j,1,n) cree la sequence des carres des entiers de 1 a n"> 
+  title="assistant de cr&eacute;ation de liste ou tableau de valeurs, par exemple seq(j^2,j,1,n) cr&eacute;e la liste des carr&eacute;s des entiers de 1 &agrave; n ou seq(x^2,x,-2,2,0.1) cr&eacute;e la liste des carr&eacute;s des r&eacute;els de -2 &agrave; 2 par pas de 0.1"> 
 <input type="button" style="width:60px;height:35px"
   name="add_rsolve" id="add_rsolve" value="u_n"
-  onmousedown="event.preventDefault()" onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;document.getElementById('assistant_suites').style.display='block';UI.xtn='n';" title="Recherche de l'expression du terme general d'une suite recurrente, par exemple rsolve(u(n+2)=u(n+1)+u(n),u(n),[u(0)=1,u(1)=1])">             
+  onmousedown="event.preventDefault()" onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;document.getElementById('assistant_suites').style.display='block';UI.xtn='n';" title="Recherche de l'expression du terme g&eacute;n&eacute;ral d'une suite r&eacute;currente, par exemple rsolve(u(n+2)=u(n+1)+u(n),u(n),[u(0)=1,u(1)=1])">             
       <input type="button" style="width:60px;height:35px"
   name="add_plotparam" id="add_plotparam" value="param"
   onmousedown="event.preventDefault()" onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;document.getElementById('assistant_plotparam').style.display='block';UI.xtn='t';" title="Graphe d'une courbe en parametriques, par exemple plotparam([cos(t),sin(t)],t=0..2*pi,tstep=0.1)">  
@@ -1415,23 +1468,26 @@ id="add_debug"
 </div>
 
 <form id="assistant_matr" style="display:none" onsubmit="setTimeout(UI.assistant_matr_ok()); return false">
-<input class="bouton" type="button" title="Annuler" value="Annul." onclick="form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();">
-<input class="bouton" type="submit" title="ok" value="OK">
 <div id="matr_type_chooser">
   <input class="bouton" type="checkbox" name="matr_formule"
   onclick="document.getElementById('assistant_matr').matr_formuleshadow.checked=!checked;UI.assistant_matr_setdisplay();"
-  title="Cocher pour d&eacute;finir la matrice par une formule" checked>
+  title="Cocher pour d&eacute;finir la matrice par une formule">
   <input class="bouton" type="button" value="formule" onclick="document.getElementById('assistant_matr').matr_formule.checked=true;document.getElementById('assistant_matr').matr_formuleshadow.checked=false;UI.assistant_matr_setdisplay();"> ou
   <input class="bouton" type="checkbox" name="matr_formuleshadow"
   onclick="document.getElementById('assistant_matr').matr_formule.checked=!checked;UI.assistant_matr_setdisplay();"
-  title="Cocher pour d&eacute;finir la matrice &eacute;l&eacute;ment par &eacute;l&eacute;ment">
+  title="Cocher pour d&eacute;finir la matrice &eacute;l&eacute;ment par &eacute;l&eacute;ment" checked>
   <input class="bouton" type="button" value="&eacute;l&eacute;ment par &eacute;l&eacute;ment" onclick="document.getElementById('assistant_matr').matr_formule.checked=false;document.getElementById('assistant_matr').matr_formuleshadow.checked=true;UI.assistant_matr_setdisplay();">
 </div>
+&nbsp; &nbsp; &nbsp;
+<input class="bouton" type="button" title="Annuler" value="Annul." onclick="form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();"> &nbsp;
+<input class="bouton" type="submit" title="ok" value="OK">
 <div id="matr_stats" style="display:none">
-  <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='block';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='block';document.getElementById('matr_submat').style.display='block';" value="statistiques descriptives">
+  <input class="bouton" type="button"
+  onclick="document.getElementById('chooselawdiv').style.display='block';document.getElementById('law_arg').style.display='inline';document.getElementById('matr_stat12').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';" value="lois usuelles">
   ou <input class="bouton" type="button"
-  onclick="document.getElementById('chooselawdiv').style.display='block';document.getElementById('matr_stat12').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='block';document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';" value="intervalle de fluctuation">
-  ou <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='none';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='block';document.getElementById('risque_alpha').style.display='block';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='block';document.getElementById('matr_submat').style.display='block';" value="statistiques inf&eacute;rentielles">
+  onclick="document.getElementById('chooselawdiv').style.display='block';document.getElementById('law_arg').style.display='none';document.getElementById('matr_stat12').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='block';document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';" value="intervalle de fluctuation">
+  ou <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='block';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='inline';document.getElementById('matr_submat').style.display='block';" value="statistiques descriptives">
+  ou <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='none';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='block';document.getElementById('risque_alpha').style.display='block';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='inline';document.getElementById('matr_submat').style.display='block';" value="statistiques inf&eacute;rentielles">
 <div id="matr_stat12" style="display:none">
   <input class="bouton" type="checkbox" name="stat_mean">Moyenne,
   <input class="bouton" type="checkbox" name="stat_stddev">Ecart-type,
@@ -1496,21 +1552,23 @@ id="add_debug"
 </div>
 </div>
 <div id="matr_matr">
- Matrice
+<input id="matr_or_sheet" name="matr_or_sheet" class="bouton"
+  type="checkbox" title="Cocher pour passer en mode tableur"
+  onchange="UI.is_sheet=checked; if (checked) UI.matrix2spreadsheet(); else UI.spreadsheet2matrix(false);" checked> Tableur
 <input id="matr_name" name="matr_name" class="bouton" type="text" value="m" title="Nom de la matrice" size=3> :
 <input class="bouton" type="button"
-onclick="document.getElementById('matr_nrows').value--;UI.assistant_matr_setdisplay();" value="-">
-<input class="bouton" type="number" id="matr_nrows" name="matr_nrows" onchange="UI.assistant_matr_setdisplay();"
+onclick="var field=document.getElementById('matr_nrows');field.value=eval(field.value)-1;UI.assistant_matr_setdisplay();" value="-">
+<input class="bouton" type="number" id="matr_nrows" name="matr_nrows" onkeypress="if (event.keyCode!=13) return true; UI.assistant_matr_setdisplay(); return false;"
 title="Nombre de lignes de la matrice" value=3 min=1 max=40>
 <input class="bouton" type="button"
-onclick="document.getElementById('matr_nrows').value++;UI.assistant_matr_setdisplay();" value="+">
+onclick="var field=document.getElementById('matr_nrows');field.value=eval(field.value)+1;UI.assistant_matr_setdisplay();" value="+">
  par 
 <input class="bouton" type="button"
-onclick="document.getElementById('matr_ncols').value--;UI.assistant_matr_setdisplay();" value="-">
-<input class="bouton" type="number" id="matr_ncols" name="matr_ncols" onchange="UI.assistant_matr_setdisplay();"
+onclick="var field=document.getElementById('matr_ncols');field.value=eval(field.value)-1;UI.assistant_matr_setdisplay();" value="-">
+<input class="bouton" type="number" id="matr_ncols" name="matr_ncols" onkeypress="if (event.keyCode!=13) return true; UI.assistant_matr_setdisplay(); return false;" 
 title="Nombre de colonnes de la matrice" value=3 min=1 max=6>
 <input class="bouton" type="button"
-onclick="document.getElementById('matr_ncols').value++;UI.assistant_matr_setdisplay();"
+onclick="var field=document.getElementById('matr_ncols');field.value=eval(field.value)+1;UI.assistant_matr_setdisplay();"
  value="+">
   </div>
 <div id="matr_formulediv"> 
@@ -1536,7 +1594,7 @@ onclick="document.getElementById('matr_ncols').value++;UI.assistant_matr_setdisp
   <input name="stat_cmax" class="bouton" type="number" min=0 value=1>
   </div>
 
-  <div id="matr_casediv" >
+  <div id="matr_casediv">
   </div>
   </div>
 </form>
@@ -1575,7 +1633,9 @@ title="Loi" value='normald'>, param&egrave;tres optionnels
 <input class="bouton" type="number" name="rand_law1" id="rand_law1"
 title="1er param&egrave;tre" value=0 step=0.01>  
 <input class="bouton" type="number" name="rand_law2" id="rand_law2"
-title="2&egrave;me param&egrave;tre" value=1 step=0.01>
+  title="2&egrave;me param&egrave;tre" value=1 step=0.01>
+  <input class="bouton" type="text" name="law_arg" id="law_arg"
+  title="argument de la loi, par exemple 1 ou 2 ou 1.3 ou x" value=1>
   <br>
   Choisir une autre loi
   <input type="button" onclick="document.getElementById('rand_law').value='uniform';document.getElementById('rand_law1').value=0;document.getElementById('rand_law1').step=0.01;document.getElementById('rand_law2').value=1;document.getElementById('rand_law1').style.display='inline';document.getElementById('rand_law2').style.display='inline';" value="uniform">
@@ -2384,20 +2444,122 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
       document.getElementById('rand_intdiv').style.display='block';
     } else {
       document.getElementById('chooselawdiv').style.display='block';
+      document.getElementById('law_arg').style.display='none';
       document.getElementById('rand_intdiv').style.display='none';
     }
   },
   assistant_matr_maxrows:40,
   assistant_matr_maxcols:6,
+  assistant_matr_textarea:-1,
+  assistant_matr_source:[], // JS array for spreadsheet, if length==0 matrix
+  is_sheet:true,
+  sheet_recompute:function(){ // convert to CAS sheet, eval and convert back
+    var R=UI.assistant_matr_maxrows;
+    if (!UI.is_sheet || R==0) return;
+    var s='spreadsheet[';
+    for (var i=0;i<R;i++){
+      var C=UI.assistant_matr_maxcols;
+      s += '[';
+      for (var j=0;j<C;j++){
+        var field=document.getElementById('matr_case'+i+'_'+j);
+        var tmp='['+field.value;
+        if (tmp.length==1) tmp += '""';
+        s += tmp+',0,0],';
+      }
+      s +='],';
+    }
+    s += ']';
+    //console.log(s);
+    s=UI.caseval_noautosimp(s);
+    //console.log(s);
+    s=eval(s);
+    UI.assistant_matr_source=s;
+    //console.log(s);
+    if (R>s.length) R=s.length;
+    // dispatch to UI
+    for (var i=0;i<R;i++){
+      var r=s[i];
+      var C=r.length;
+      if (C>UI.assistant_matr_maxcols) C=UI.assistant_matr_maxcols;
+      for (var j=0;j<C;j++){
+        var field=document.getElementById('matr_span'+i+'_'+j);
+        //console.log(i,j,field,r);
+        var tmp=r[j];
+        if (tmp === undefined) continue;
+        if (r[j].length>1) tmp=tmp[1]; else tmp=tmp[0];
+        if (r[j].length==3) tmp=r[j][2];
+        // console.log(i,j,tmp);
+        if (tmp=='""') tmp='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        field.innerHTML=tmp;
+        //console.log(i,j,tmp,field.innerHTML);
+        // field.style.display='inline';
+      }
+    }
+    return 1;
+  },
+  matrix2spreadsheet:function(){
+    // convert matrix headers to spreadsheet and store source formulae
+    var l=UI.assistant_matr_maxrows;
+    var c=UI.assistant_matr_maxcols;
+    //console.log(l,c);
+    if (c>26){ UI.assistant_matr_maxcols=c=26; }
+    for (var j=0;j<c;j++){
+      document.getElementById('matr_head_'+j).innerHTML=String.fromCharCode(65+j);
+    }
+    UI.is_sheet=true;
+    UI.sheet_recompute();
+    for (var i=0;i<l;i++){
+      for (var j=0;j<c;j++){
+        //console.log(i,j);
+        var field=document.getElementById('matr_span'+i+'_'+j);
+        field.style.display='inline';
+        field.previousSibling.style.display='none';
+      }
+    }
+  },
+  spreadsheet2matrix:function(evaled){
+    var l=UI.assistant_matr_maxrows;
+    var c=UI.assistant_matr_maxcols;
+    if (c>26){ UI.assistant_matr_maxcols=c=26; }
+    for (var j=0;j<c;j++){
+      document.getElementById('matr_head_'+j).innerHTML=''+j;
+    }
+    for (var i=0;i<l;i++){
+      ligne=UI.assistant_matr_source[i];
+      for (var j=0;j<c;j++){
+        var tmp=ligne[j][1];
+        if (tmp=='""') tmp='';
+        var field=document.getElementById('matr_case'+i+'_'+j);
+        if (evaled) field.value=tmp;
+        field.style.display='inline';
+        field.nextSibling.style.display='none';
+      }
+    }
+    UI.is_sheet=false;
+  },
+  sheet_onfocus:function(field){
+   //console.log(field.id,field.previousSibling.id);
+   field=field.previousSibling;
+   field.style.display='inline';
+   field.focus();
+   UI.focused=field;
+  },
+  sheet_set:function(field,value){
+    field.value=value;
+  },
   assistant_matr_setmatrix:function(l,c){
+    // Code de creation de la matrice
     if (l*c>10000){ l=100; c=100;}
     var mydiv=document.getElementById('matr_casediv');
+    mydiv.style.maxHeight=window.innerHeight/2+'px';
+    mydiv.style.maxWidth=(window.innerWidth-50)+'px';
+    mydiv.style.overflow="auto";
     UI.assistant_matr_maxrows=l;
     UI.assistant_matr_maxcols=c;
     var s='<table>\n';
-    var h = '<tr><th>l\\c</th>';
+    var h = '<tr><th>@</th>';
     for (var j=0;j<c;++j){
-      h+='<th id="matr_head_'+j+'">'+j+'</th>';
+      h+='<th id="matr_head_'+j+'" style="text-align:center">'+j+'</th>';
     }
     h += '</tr>\n';
     s += h;
@@ -2405,35 +2567,51 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
       s += '<tr id="matr_ligne'+i+'">';
       s += '<td>'+i+'</td>';
       for (var j=0;j<c;++j){
-        s+='<td><textarea class="matrixcell" onkeypress="if (event.keyCode!=13) return true;UI.cb_matr_enter(this); return false;" onclick="UI.focused=this;" id="matr_case'+i+'_'+j+'"></textarea></td>';
+        var field=document.getElementById('matr_case'+i+'_'+j);
+        var oldval='';
+        //console.log(i,j,field.value);
+        if (field!==null) oldval=field.value;
+        if (UI.assistant_matr_textarea>0)
+          s+='<td class="matrixcell"><textarea class="matrixcell" \
+	    onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this); return false;" \
+	    onclick="UI.focused=this;" onblur="style.display=\'none\';nextSibling.style.display=\'inline\'" onfocus="nextSibling.style.display=\'none\'" \
+	    id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);" id="matr_span'+i+'_'+j+'"></div></td>';
+	else
+	  s+='<td class="matrixcell" onclick="UI.sheet_onfocus(lastChild);"><input class="matrixcell" onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this); return false;" onclick="UI.focused=this;" onblur="style.display=\'none\';nextSibling.style.display=\'inline\'" onfocus="nextSibling.style.display=\'none\'" id="matr_case'+i+'_'+j+'" value="'+oldval+'" /><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);"  id="matr_span'+i+'_'+j+'"></div></td>';
       }
       s += '</tr>\n';
     }
     s += '</table>';
     //console.log(s);
     mydiv.innerHTML=s;
+    if (document.getElementById('matr_or_sheet').checked){ UI.matrix2spreadsheet();}
     //console.log(mydiv.innerHTML);
     //mydiv.style.display='none';
   },
   cb_matr_enter:function(field){
     var s='csv2gen("'+field.value+'",string)';
     //console.log(s);
-    var se=UI.caseval(s);
+    var se=UI.caseval_noautosimp(s);
     if (se.length>8 && se.substr(0,8)=='matrix[[')
       se=se.substr(6,se.length-6);
     //console.log(se);
-    se=eval(se);
     s=field.id;
-    var l=s.length,i,j;
+    var l=s.length,i,j,err;
     for (i=8;i<l;++i){ if (s[i]=='_') break; }
     j=eval(s.substr(i+1,l-i-1));
     i=eval(s.substr(9,i-9));
     var form=document.getElementById('assistant_matr'),nr=form.matr_nrows.value,nc=form.matr_ncols.value;
-    //console.log(i,j); // position dans la matrice
+    try { se=eval(se); } catch(err){ se=UI.caseval_noautosimp(field.value); }
+    // console.log(i,j); // position dans la matrice
     if (!Array.isArray(se)){
-       if (i>nr) return;
+       UI.sheet_set(field,se);
        i++;
-       UI.set_focus('matr_case'+i+'_'+j);
+       if (i>=nr){
+        i=0; j++; if (j>=nc) j=0; 
+       }
+       UI.sheet_recompute();
+       var tmp='matr_span'+i+'_'+j; // console.log(tmp);
+       document.getElementById(tmp).click();
        return;
     }
     else {
@@ -2451,19 +2629,30 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
             var j_=j,jend=j+ligne.length;
             if (jend>=UI.assistant_matr_maxncols) jend=UI.assistant_matr_maxncols;
             if (jend>form.matr_ncols.value){ extend=true;  form.matr_ncols.value=jend; }
-            for (;j_<jend;++j_) document.getElementById('matr_case'+i+'_'+j_).value=ligne[j_-j];
+            for (;j_<jend;++j_) UI.sheet_set(document.getElementById('matr_case'+i+'_'+j_),ligne[j_-j]);
           }
           else
-            document.getElementById('matr_case'+i+'_'+j).value=ligne;
+            UI.sheet_set(document.getElementById('matr_case'+i+'_'+j),ligne);
         }
-        if (extend) UI.assistant_matr_setdisplay();
-        else UI.set_focus('matr_case'+iend+'_'+j0);
+        if (extend){
+          UI.assistant_matr_setdisplay();
+          UI.sheet_recompute();
+        }
+        else {
+          //console.log(iend,j0);
+          if (iend>=nr) iend=0; if (j0>=nc) j0=0;
+          UI.sheet_recompute();
+          tmp='matr_span'+iend+'_'+j0;
+          document.getElementById(tmp).click();
+        }
         return;
       }
       // remplissage ligne i, colonnes j -> j+l-1
       var jend=j+l,shift=j;
       if (jend>=UI.assistant_matr_maxncols) jend=UI.assistant_matr_maxncols;
-      for (;j<jend;++j) document.getElementById('matr_case'+i+'_'+j).value=se[j-shift];
+      for (;j<jend;++j)
+        UI.sheet_set(document.getElementById('matr_case'+i+'_'+j),se[j-shift]);
+      UI.sheet_recompute();
     }
   },
   adequation:function(form){
@@ -2516,6 +2705,7 @@ UI.insert(UI.focused,tmp);
 var stats=document.getElementById('matr_stats').style.display!='none';
 var stat12=document.getElementById('matr_stat12').style.display!='none';
 var stathyp=document.getElementById('matr_testhyp').style.display!='none';
+var fluctu=document.getElementById('risque_alpha').style.display!='none';
 document.getElementById('assistant_matr').style.display='none';
 document.getElementById('chooselawdiv').style.display='none';
 document.getElementById('risque_alpha').style.display='none';
@@ -2523,16 +2713,24 @@ UI.focused=UI.savefocused;
 var tmp; 
 if (stats && !stat12 && !stathyp){
   var form=document.getElementById('chooselawform');
-  tmp=form.rand_law.value+'_icdf(';
+  tmp=form.rand_law.value;
+  if (fluctu) tmp +='_icdf';
+  tmp += '(';
   if (form.rand_law1.style.display!='none')
     tmp += form.rand_law1.value+',';
   if (form.rand_law2.style.display!='none')
     tmp += form.rand_law2.value+',';
-  var alpha=0.05;
-  var alphaf=document.getElementById('adequation_alpha');
-  //console.log(alphaf.value); return;
-  if (alphaf.value.length) alpha=eval(alphaf.value);
-  tmp = tmp+alpha/2+'),'+tmp+(1-alpha/2)+');';
+  if (fluctu){
+   var alpha=0.05;
+   var alphaf=document.getElementById('adequation_alpha');
+   //console.log(alphaf.value); return;
+   if (alphaf.value.length) alpha=eval(alphaf.value);
+   tmp = tmp+alpha/2+'),'+tmp+(1-alpha/2)+');';
+  }
+  else {
+   var argu=document.getElementById('law_arg');
+   tmp += argu.value+')';
+  }
   UI.insert(UI.focused,tmp);
   return;
 }
@@ -2561,11 +2759,21 @@ if (stats && mat.length==0) mat='m_s';
    for (var j=0;j<ncols.value;j++){
      //console.log(j,tmp);
      var val=document.getElementById('matr_case'+i+'_'+j).value;
+     if (UI.is_sheet && i<UI.assistant_matr_source.length){
+       var ligne=UI.assistant_matr_source[i];
+       if (j<ligne.length){
+         ligne=ligne[j];
+         if (ligne.length>1){
+           ligne=ligne[1];
+           if (ligne!='""') val=ligne;
+         }
+       }
+     }
      if (val.length>0) tmp+=val; else tmp+='0';
      if (j<ncols.value-1) tmp+=',';
    }
    tmp += ']';
-   if (i<nrows.value-1) tmp+=',';
+   if (i<nrows.value-1) tmp+=',\n';
   }
   tmp += ']'; 
  }
@@ -2691,6 +2899,7 @@ UI.insert(UI.focused,tmp);
       var nrows=document.getElementById('matr_nrows');
       var ncols=document.getElementById('matr_ncols');
       var maxrows=UI.assistant_matr_maxrows,maxcols=UI.assistant_matr_maxcols;
+      //console.log(nrows.value,maxrows,ncols.value,maxcols);
       if (ncols.value<1) ncols.value=1;
       if (ncols.value>maxcols) ncols.value=maxcols;
       if (nrows.value<1) nrows.value=1;
@@ -2710,14 +2919,26 @@ UI.insert(UI.focused,tmp);
         for (var j=0;j<maxcols;j++){
           ligne[j]=document.getElementById('matr_case'+i+'_'+j);
           ligne[j].style.display='none';
+          //console.log(j,ligne[j].parentNode.style.display);
+          ligne[j].parentNode.style.display='none';
+          ligne[j].nextSibling.style.display='none';
         }
         matr[i]=ligne;
       }
       for (var i=0;i<nrows.value;i++){
         //document.getElementById('matr_ligne'+i).style.visibility='visible';
         document.getElementById('matr_ligne'+i).style.display='table-row';
-        for (var j=0;j<ncols.value;j++){
-          matr[i][j].style.display='inline';
+        if (UI.is_sheet){
+         for (var j=0;j<ncols.value;j++){
+           matr[i][j].nextSibling.style.display='inline';
+           matr[i][j].parentNode.style.display='';
+         }
+        }
+        else {
+         for (var j=0;j<ncols.value;j++){
+           matr[i][j].style.display='inline';
+           matr[i][j].parentNode.style.display='';
+         }
         }
       }
       //UI.set_focus(matr[0][0]);
@@ -2731,7 +2952,7 @@ UI.insert(UI.focused,tmp);
       document.getElementById('add_sin').value="asin";
       document.getElementById('add_cos').value="acos";
       document.getElementById('add_tan').value="atan";
-      document.getElementById('add_newline').value=" ";
+      document.getElementById('add_newline').value="\\n";
       document.getElementById('add_,').value="'";
       document.getElementById('add_:').value="!";
       document.getElementById('add_semi').value="\"";
@@ -2747,7 +2968,7 @@ UI.insert(UI.focused,tmp);
       document.getElementById('add_sin').value="sin";
       document.getElementById('add_cos').value="cos";
       document.getElementById('add_tan').value="tan";
-      document.getElementById('add_newline').value="\\n";
+      document.getElementById('add_newline').value=" ";
       document.getElementById('add_,').value=",";
       document.getElementById('add_:').value=":=";
       document.getElementById('add_semi').value=";";
@@ -2878,6 +3099,14 @@ UI.insert(UI.focused,tmp);
    var s,err;
    try {s=docaseval(value); } catch(err){ console.log(err); }
    // Module.print(text+ ' '+s);
+   return s;
+  },
+  caseval_noautosimp: function(text){
+   var docaseval = Module.cwrap('caseval',  'string', ['string']);
+   var value=text;
+   value=value.replace(/%22/g,'\"'); 
+   var s,err;
+   try {s=docaseval(value); } catch(err){ console.log(err); }
    return s;
   },
   webworker:0,
@@ -3240,6 +3469,7 @@ var kbd_util=["add_simplify" ,"add_matr",
    UI.createCookie('xcas_outdiv_height',form.outdiv_height.value,10000);
    UI.createCookie('xcas_matrix_maxrows',form.matr_cfg_rows.value,10000);
    UI.createCookie('xcas_matrix_maxcols',form.matr_cfg_cols.value,10000);
+   UI.createCookie('xcas_matrix_textarea',form.matr_textarea.checked?1:-1,10000);
    UI.assistant_matr_setmatrix(form.matr_cfg_rows.value,form.matr_cfg_cols.value);
    UI.assistant_matr_setdisplay();
   },
@@ -3706,8 +3936,11 @@ addcomment: function(text){
     else
       s += '<td colspan=2>';	
     s += '<textarea class="historyinput" ';
-    if (is_svg && UI.qa) s+='rows=8 style="font-size:large"';
-    else s += 'style="height:'+(20+16*UI.count_newline(textin))+'px; font-size:large"';
+    if (is_svg && UI.qa)
+	s+='rows=8 style="font-size:large"';
+    else
+	//s += 'rows='+(UI.count_newline(textin)+1) +' style="font-size:large"';
+	s += 'style="height:'+(20+16*UI.count_newline(textin))+'px; font-size:large"';
     s += ' title="Shift-Enter: saut de ligne, Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm){var h=offsetHeight;var cm=CodeMirror.fromTextArea(this,{ matchBrackets: true}); UI.prepare_cm(this,h,cm);UI.changefontsize(cm,16); UI.set_focused(cm);} else UI.set_focused(this);" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">'+textin+'</textarea>';
     if (UI.qa) s += '</td>'; 
     if (is_svg || is_3d){
@@ -4244,9 +4477,9 @@ updatelevel: function(field){
     }
   },
 insert: function(myField, myValue) {
- //console.log(myValue);
+ //console.log(myField.type, myValue);
  if (UI.focusaftereval) myField.focus();
- if (myField.type!="textarea"){
+ if (myField.type!="textarea" && myField.type!="text"){
   myField.replaceSelection(myValue);
   myField.execCommand("indentAuto");
   var t=myField.getTextArea(); t.value=myField.getValue();
@@ -4457,6 +4690,9 @@ insert: function(myField, myValue) {
   ck=UI.readCookie('xcas_matrix_maxcols');
   ck=eval(ck);
   if (ck>0 && ck<=100){ UI.assistant_matr_maxcols=ck; document.getElementById('matr_cfg_cols').value=ck;}
+  ck=UI.readCookie('xcas_matrix_textarea');
+  ck=eval(ck);
+  if (ck>0 && ck<=100){ UI.assistant_matr_textarea=ck; document.getElementById('matr_textarea').checked=ck;}
   UI.assistant_matr_setmatrix(UI.assistant_matr_maxrows,UI.assistant_matr_maxcols);
  var hist=document.getElementById('mathoutput');
  var doexec=false;

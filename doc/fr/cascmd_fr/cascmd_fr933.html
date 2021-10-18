@@ -6,39 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’ordonnée d’un point ou d’un vecteur : ordinate ordonnee</TITLE>
+<TITLE>La ligne polygonale : open_polygon polygone_ouvert</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr932.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr934.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1097">10.15.3</A>  L’ordonnée d’un point ou d’un vecteur : <TT>ordinate ordonnee</TT></H3><P><A NAME="@default1801"></A><A NAME="@default1802"></A><A NAME="sec:ordonnee2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1031.html#sec:ordonnee3">11.12.2</A> pour la géométrie 3-d.<BR>
-<TT>ordonnee</TT>, en géométrie plane, est une fonction ayant 
-comme argument un point ou un vecteur ou un nombre complexe.<BR>
-<TT>ordonnee</TT> renvoie l’ordonnée du point ou du vecteur :<BR>
-- si le point <TT>A</TT> a pour coordonnées cartésiennes (<I>x</I><SUB><I>A</I></SUB>,<I>y</I><SUB><I>A</I></SUB>),
-<TT>ordonnee(A)</TT> renvoie <I>y</I><SUB><I>A</I></SUB>,<BR>
-- si le point <TT>B</TT> a pour coordonnées cartésiennes (<I>x</I><SUB><I>B</I></SUB>,<I>y</I><SUB><I>B</I></SUB>),
-<TT>ordonnee(A-B)</TT> renvoie <I>y</I><SUB><I>A</I></SUB>−<I>y</I><SUB><I>B</I></SUB> (<TT>A-B</TT> désigne 
-le vecteur <I>BA</I>).<BR>
+<H3 CLASS="subsection"><A NAME="htoc1095">10.12.4</A>  La ligne polygonale : <TT>open_polygon polygone_ouvert</TT></H3><P><A NAME="@default1811"></A><A NAME="@default1812"></A><A NAME="sec:polygonou2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1041.html#sec:polygonou3">11.9.4</A> pour la géométrie 3-d.<BR>
+<TT>polygone_ouvert</TT>, en géométrie plane, a comme argument la 
+liste (ou la séquence) de <I>n</I> points ou de <I>n</I> nombres complexes représentant l’affixe de ces points.<BR>
+<TT>polygone_ouvert</TT> renvoie et trace la ligne polygonale ayant pour sommets 
+ces <I>n</I> points.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>ordonnee(point(1+2*i))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>polygone_ouvert(-1,-1+i/2,i,1+i,-i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+</P><DIV CLASS="center"><TT>La ligne polygonale de sommets -1,-1+i/2,i,1+i,-i</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>ordonnee(point(i)-point(1+2*i))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>polygone_ouvert(makelist(x-&gt;exp(i*pi*x/3),0,5,1))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>-1</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ordonnee(1+2*i)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>ordonnee([1,2])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>La ligne polygonale de sommets 1,</TT><TT>
+<I>e</I></TT><SUP><TT><I>i</I>π/3</TT></SUP><TT>, <I>e</I></TT><SUP><TT>2<I>i</I>π/3</TT></SUP><TT>, ..,
+ <I>e</I></TT><SUP><TT>5<I>i</I>π/3</TT></SUP></DIV><HR>
 <A HREF="cascmd_fr932.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr934.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

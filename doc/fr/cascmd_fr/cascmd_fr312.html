@@ -6,78 +6,74 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Limite et intégrale</TITLE>
+<TITLE>Longueur d’un arc de courbe : arcLen</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr311.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr313.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc393">6.22.2</A>  Limite et intégrale</H3><P><A NAME="@default576"></A> <A NAME="@default577"></A> 
-On ne donne ici que deux exemple :
+<H3 CLASS="subsection"><A NAME="htoc392">6.21.7</A>  Longueur d’un arc de courbe : <TT>arcLen</TT></H3><P><A NAME="@default579"></A><A NAME="sec:longarc"></A>
+<TT>arcLen</TT> a soit 1 soit quatre paramètres.<BR>
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Déterminer la limite quand <I>a</I> tend vers l’infini de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>a</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP></TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>dx</I></TD></TR>
-</TABLE>
+le paramètre est soit un cercle ou un arc de cercle, soit un polygone.<BR>
+ On tape
+<DIV CLASS="center"><TT>arcLen(cercle(0,1,0,pi/2))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>pi/4</TT></DIV>
+On tape
+<DIV CLASS="center"><TT>arcLen(hexagone(0,1))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>6</TT></DIV>
+</LI><LI CLASS="li-itemize">les 4 paramètres sont :une expression <I>expr</I> (resp une 
+liste de 2 expressions [<I>expr</I>1,<I>expr</I>2]), le nom d’un paramètre et deux valeurs 
+<I>a</I> et <I>b</I> de ce paramètre.<BR>
+<TT>arcLen</TT> calcule la longueur de l’arc de courbe définie par l’équation
+<I>y</I>=<I>f</I>(<I>x</I>)=<I>expr</I> (resp par <I>x</I>=<I>expr</I>1,<I>y</I>=<I>expr</I>2) pour les valeurs du paramètre 
+comprises entre <I>a</I> et <I>b</I>.<BR>
+On a donc <TT>arcLen(f(x),x,a,b)=</TT> :<BR>
+<TT>integrate(sqrt(diff(f(x),x)</TT><CODE><TT>^</TT></CODE><TT>2+1),x,a,b)</TT><BR>
+ou<BR>
+<TT>integrate(sqrt(diff(x(t),t)</TT><CODE><TT>^</TT></CODE><TT>2+diff(y(t),t)</TT><CODE><TT>^</TT></CODE><TT>2),t,a,b)</TT>.<BR>
+</LI></UL><P>
+<B>Exemples</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+Calculer la longueur de l’arc de cercle <I>AB</I> (avec <I>A</I>=(0,0) et 
+<I>B</I>=(0,1)) et d’angle au centre π/2.<BR>
+On tape
+<DIV CLASS="center"><TT>arcLen(arc(0,1,pi/2))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>sqrt(2)*pi/4</TT></DIV>
+</LI><LI CLASS="li-itemize">Calculer le périmètre du triangle <I>ABC</I> (avec <I>A</I>=(0,0), <I>B</I>=(0,1) et
+<I>C</I>=(1,1)).<BR>
+On tape
+<DIV CLASS="center"><TT>arcLen(triangle(0,1,1+i))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>sqrt(2)+2</TT></DIV>
+On tape
+
+On obtient :
+
+</LI><LI CLASS="li-itemize">Calculer la longueur de l’arc de parabole <I>y</I>=<I>x</I><SUP>2</SUP> pour <I>x</I> allant de 0 
+à <I>x</I>=1.<BR>
+ On tape
+<DIV CLASS="center"><TT>arcLen(x</TT><CODE><TT>^</TT></CODE><TT>2,x,0,1)</TT></DIV>
+ou
+<DIV CLASS="center"><TT>arcLen([t,t</TT><CODE><TT>^</TT></CODE><TT>2],t,0,1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(sqrt(5))/2-ln(sqrt(5)-2)/4</TT></DIV> 
+</LI><LI CLASS="li-itemize">Calculer la longueur de l’arc de la courbe <I>y</I>=cosh(<I>x</I>) pour <I>x</I> allant 
+de 0 à <I>x</I>=ln(2).<BR>
 On tape :
-<DIV CLASS="center"><TT>limit(integrate(1/(x</TT><CODE><TT>^</TT></CODE><TT>2),x,2,a),a,+(infinity))</TT></DIV>
-On obtient (vérifier que <TT>a</TT> est formelle sinon faire <TT>purge(a)</TT>) :
-<DIV CLASS="center"><TT>1/2</TT></DIV>
-En effet ∫<SUB>2</SUB><SUP><I>a</I></SUP> 1/<I>x</I><SUP>2</SUP> <I>dx</I>=1/2−1/<I>a</I><BR>
-Donc ∫<SUB>2</SUB><SUP><I>a</I></SUP> 1/<I>x</I><SUP>2</SUP> <I>dx</I> tend vers 1/2 quand <I>a</I> tend vers l’infini.
-</LI><LI CLASS="li-itemize">Déterminer la limite quand <I>a</I> tend vers l’infini de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>a</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> (</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I><SUP>2</SUP>−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">+ln(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>x</I>+1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>x</I>−1</TD></TR>
-</TABLE></TD><TD CLASS="dcell">)) <I>dx</I></TD></TR>
-</TABLE>
-On tape :
-<DIV CLASS="center"><TT>limit(integrate(x/(x</TT><CODE><TT>^</TT></CODE><TT>2-1)+log((x+1)/(x-1)),x,2,a),</TT></DIV> 
-<DIV CLASS="center"><TT>a,+(infinity))</TT></DIV> 
-On obtient (vérifier que <TT>a</TT> est formelle sinon faire <TT>purge(a)</TT>):
-<DIV CLASS="center"><TT>+(infinity)</TT></DIV>
-En effet :<BR>
- ∫<SUB>2</SUB><SUP><I>a</I></SUP> <I>x</I>/<I>x</I><SUP>2</SUP>−1 <I>dx</I>=1/2(ln(<I>a</I><SUP>2</SUP>−1)−ln(3)) et<BR>
- ∫<SUB>2</SUB><SUP><I>a</I></SUP> ln(<I>x</I>+1/<I>x</I>−1) <I>dx</I>=<I>ln</I>(<I>a</I>+1)+<I>ln</I>(<I>a</I>−1)+<I>a</I>*<I>ln</I>(<I>a</I>+1/<I>a</I>−1)−3ln(3)
-Donc quand <I>a</I> tend vers +∞ l’intégrale tend vers +∞.
-</LI><LI CLASS="li-itemize">Déterminer la limite quand <I>a</I> tend vers 0 de :
-<TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">3<I>a</I></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><BR>
-<BR>
-</TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><I>a</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell">cos(<I>x</I>)/<I>x</I> <I>dx</I> </TD></TR>
-</TABLE>
-<DIV CLASS="center"><TT>limit(int(cos(x)/x,x,a,3a),a,0)</TT></DIV> 
-On obtient (vérifier que <TT>a</TT> est formelle sinon faire <TT>purge(a)</TT>):
-<DIV CLASS="center"><TT>ln(3)</TT></DIV>
-Pour trouver cette limite on encadre cos(<I>x</I>)/<I>x</I> car on ne connait pas 
-la primitive de cos(<I>x</I>)/<I>x</I>.<BR>
-On sait que :<BR>
-1−2sin<SUP>2</SUP><I>x</I>/2=cos(<I>x</I>)≤ 1 et<BR>
-sin<SUP>2</SUP><I>x</I>/2≤ <I>x</I><SUP>2</SUP>/4 donc,<BR>
-1−<I>x</I><SUP>2</SUP>/2=cos(<I>x</I>)≤ 1 et<BR>
-1/<I>x</I>−<I>x</I>/2≤ cos(<I>x</I>)/<I>x</I>≤ 1/<I>x</I><BR>
-Donc :<BR>
-∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>(1/<I>x</I>−<I>x</I>/2) <I>dx</I> ≤ ∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>cos(<I>x</I>)/<I>x</I> <I>dx</I>≤ ∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>1/<I>x</I> <I>dx</I>.<BR>
-ln(3)−9<I>a</I><SUP>2</SUP>/4+<I>a</I><SUP>2</SUP>/4 ≤ ∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>cos(<I>x</I>)/<I>x</I> <I>dx</I>≤ ln(3).<BR>
-Donc ∫<SUB><I>a</I></SUB><SUP>3<I>a</I></SUP>cos(<I>x</I>)/<I>x</I> <I>dx</I> tend vers ln(3) quand <I>a</I> tend vers 0.
+<DIV CLASS="center"><TT>arcLen(cosh(x),x,0,log(2))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>3/4</TT></DIV>
+</LI><LI CLASS="li-itemize">Calculer la longueur de l’arc de cercle <I>x</I>=cos(<I>t</I>),<I>y</I>=sin(<I>t</I>) pour <I>t</I> 
+allant de 0 à <I>t</I>=2*π.<BR>
+ On tape 
+<DIV CLASS="center"><TT>arcLen([cos(t),sin(t)],t,0,2*pi)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>2*pi</TT></DIV>
 </LI></UL><HR>
 <A HREF="cascmd_fr311.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

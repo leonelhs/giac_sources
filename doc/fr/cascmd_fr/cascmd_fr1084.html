@@ -6,26 +6,29 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Écriture d’un fichier wav : writewav</TITLE>
+<TITLE>Le parallélépipède : parallelepiped parallelepipede</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1083.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1085.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1274">12.1.2</A>  Écriture d’un fichier wav : <TT>writewav</TT></H3><P><A NAME="@default2085"></A>
-La commande <TT>writewav</TT> effectue l’écriture d’une donnée de
-type son dans un fichier au format WAV sur le disque dur. Elle est
-donc inverse de la commande <TT>readwav</TT>.<BR>
-On passe en argument le nom du fichier et les données son.<BR>
-On peut soit utiliser le même format que celui renvoyé par la commande 
-<TT>readwav</TT>, soit pour un son mono utilisant les valeurs des paramètres par
-défaut (16 bits, 44100 Hz) donner uniquement la liste des données 
-numériques du son sur le canal.<BR>
-Par exemple la commande :<BR>
-<CODE>writewav("la.wav",2^14*(sin(2*pi*440*soundsec(1))))</CODE><BR>
-sauvegarde dans le fichier de nom <CODE>la.wav</CODE>, un son pur
-de fréquence 440 Hz (un la), échantilloné 44100 fois par seconde.</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc1271">11.16.3</A>  Le parallélépipède : <TT>parallelepiped parallelepipede</TT></H3><P><A NAME="@default2100"></A><A NAME="@default2101"></A>
+<TT>parallelepipede</TT> a comme argument quatre points <TT>A,B,C,D</TT>.<BR>
+<TT>parallelepipede(A,B,C,D)</TT> dessine un parallélépipède de côtés 
+<TT>AB,AC,AD</TT> (les faces sont des parallélogrammes).<BR>
+On tape :
+</P><DIV CLASS="center"><TT>parallelepipede([0,0,0],[5,0,0],[0,5,0],[0,0,5])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>un cube de sommet l’origine et dont 3 faces sont contenues dans les plans du repère</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>p:=parallelepipede([0,0,0],[5,0,0],[0,3,0],[0,0,2]);</TT></DIV><DIV CLASS="center"><TT>c1,c2,c3,c4,c5,c6,c7,c8:=sommets(p); </TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>un parallélépipède de sommets c1 le point(0,0,0), c2 le point(5,0,0),c3 le point(5,3,0), c4 le point(0,3,0), c5 le point(0,0,2), c6 le point(5,0,2), c7 le point(5,3,2), c8 le point(0,3,2)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>parallelepipede([0,0,0],[3,2,0],[0,3,2],[2,0,3])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Un parallélépipède</TT></DIV><HR>
 <A HREF="cascmd_fr1083.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1085.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

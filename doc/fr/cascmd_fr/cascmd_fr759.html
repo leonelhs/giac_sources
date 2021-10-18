@@ -6,32 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi de Student : student_cdf</TITLE>
+<TITLE>Fonction de répartition inverse de la loi binomiale: binomial_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr758.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr760.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc898">8.4.16</A>  Fonction de répartition de la loi de Student : <TT>student_cdf</TT></H3><P><A NAME="@default1360"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de Student ayant <I>n</I> degrés 
-de liberté, on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>student_cdf(n,x)</TT>.<BR>
-<I>Proba</I>(<I>x</I>≤ <I>X</I> ≤ <I>y</I>)= <TT>student_cdf(n,x,y)</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc899">8.4.3</A>  Fonction de répartition inverse de la loi binomiale: <TT>binomial_icdf</TT></H3><P><A NAME="@default1368"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi binomiale <FONT COLOR=red><I>B</I></FONT>(<I>n</I>,<I>p</I>),
+si on a :<BR>
+<TT>binomial_icdf(n,p,x)=h</TT> c’est que<BR>
+<I>Proba</I>(<I>X</I> ≤ <I>h</I>)=<I>x</I>=<TT>binomial_cdf(n,p,h)</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>student_cdf(5,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>binomial_icdf(4,0.5,0.9)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.949030260585</TT></DIV><P>
+</P><DIV CLASS="center"><TT>3</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>student_cdf(5,-2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>binomial_icdf(2,0.3,0.95)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.0509697394149</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>student_cdf(5,-2,2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.89806052117</TT></DIV><P>
-car 0.949030260585−0.0509697394149=0.89806052117
-</P><HR>
+</P><DIV CLASS="center"><TT>2</TT></DIV><HR>
 <A HREF="cascmd_fr758.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr760.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

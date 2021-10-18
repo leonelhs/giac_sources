@@ -6,31 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de Poisson : poisson_cdf</TITLE>
+<TITLE>Tirage selon une loi multinomiale : randmultinomial</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr751.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr753.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc891">8.4.9</A>  Fonction de répartition de Poisson : <TT>poisson_cdf</TT></H3><P><A NAME="@default1349"></A>
-Lorsqu’une variable aléatoire <I>X</I> suit une loi de Poisson de 
-paramètre <TT>mu</TT>, c’est à dire de moyenne <TT>mu</TT> et d’écart-type 
-<TT>mu</TT>, on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>x</I>)=<TT>poisson_cdf( mu,x)</TT> avec <I>X</I>∈ <FONT COLOR=red><I>P</I></FONT>(<I>mu</I>). et<BR>
-<I>Proba</I>(<I>x</I>1≤ <I>X</I> ≤ <I>x</I>2)=<TT>poisson_cdf(mu,x1,x2)=<BR>
-poisson_cdf(mu,x1)+...+poisson_cdf(mu,x2)</TT> c’est à dire :<BR>
-<TT>poisson_cdf(mu,x1,x2)=poisson_cdf(mu,x2)-poisson_cdf(mu,x1-1)</TT><BR>
-<TT>poisson_cdf(mu,x)</TT> est la fonction de répartition de 
-la loi de Poisson de paramètre <TT>mu</TT>,
+<H3 CLASS="subsection"><A NAME="htoc891">8.3.5</A>  Tirage selon une loi multinomiale : <TT>randmultinomial</TT></H3><P><A NAME="@default1358"></A>
+<TT>randmultinomial(P)</TT> renvoie un index ou <TT>randmultinomial(P,K)</TT>
+renvoie un élément de la liste <TT>K</TT>, aléatoirement distribué selon 
+la loi multinomiale de probabilités donnée par la liste <TT>P</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>poisson_cdf(10.0,3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.0103360506759</TT></DIV><P>
+</P><DIV CLASS="center"><TT>randmultinomial([1/2,1/3,1/6]</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+Ce qui correspond à l’indice de l’objet obtenu avec la probabilité 
+<TT>1/3</TT>.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>poisson_cdf(10.0,3,10)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.572703699517</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>randmultinomial([1/2,1/3,1/6],["R","V","B"])</TT></DIV><P>
+On obtient par exemple :
+</P><DIV CLASS="center"><TT>"R"</TT></DIV><HR>
 <A HREF="cascmd_fr751.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr753.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

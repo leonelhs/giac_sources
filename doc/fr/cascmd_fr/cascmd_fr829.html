@@ -6,73 +6,38 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>L’instruction conditionnelle : if then elif else end</TITLE>
+<TITLE>Fonction testant les sous-type du type DOM_LIST : subtype</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr828.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr830.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc974">9.4.19</A>  L’instruction conditionnelle : <TT>if then elif else end</TT></H3><P><A NAME="@default1494"></A>
-Lorsqu’il y a plusieurs <TT>if...else if...</TT> à la suite
-on peut aussi utiliser un <TT>elif</TT> qui est une écriture 
-condensée de <TT>else if</TT>. L’instruction <TT>elif</TT> permet une écriture
-plus lisible car un seul <TT>end</TT> suffit pour clore le <TT>if</TT>. 
-Le dernier <TT>elif</TT> peut comporter 
-ou ne pas comporter un <TT>else</TT>. Voici la syntaxe :<BR>
-<A NAME="@default1495"></A><A NAME="@default1496"></A><A NAME="@default1497"></A></P><P><TT>if (</TT><TT><EM>condition1</EM></TT><TT>) then<BR>
-</TT><TT><EM>action1</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition2</EM></TT><TT>) then<BR>
-</TT><TT><EM>action2</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition3</EM></TT><TT>) then<BR>
-</TT><TT><EM>action3</EM></TT><TT>;<BR>
-end</TT><BR>
-ou bien
-<TT>if (</TT><TT><EM>condition1</EM></TT><TT>) then<BR>
-</TT><TT><EM>action1</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition2</EM></TT><TT>) then<BR>
-</TT><TT><EM>action2</EM></TT><TT>;<BR>
-elif (</TT><TT><EM>condition3</EM></TT><TT>) then<BR>
-</TT><TT><EM>action3</EM></TT><TT>;<BR>
-else 
-</TT><TT><EM>action4</EM></TT><TT>;<BR>
-end</TT><BR>
-On tape par exemple pour définir la fonction <TT>f</TT> définit par :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<I>f</I>(<I>x</I>)=8 si <I>x</I>&gt;8
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=4 si 4&lt;<I>x</I>≥ 8
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=2 si 2&lt;<I>x</I>≥ 4
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=1 si 0&lt;<I>x</I>≥ 2
-</LI><LI CLASS="li-itemize"><I>f</I>(<I>x</I>)=0 si  <I>x</I>≤ 0
-</LI></UL><PRE CLASS="verbatim">f(a):= {
-  if a&gt;8 then 
-    return 8;
-  elif a&gt;4 then 
-    return 4;
-  elif a&gt;2 then 
-    return 2;
-  elif a&gt;0 then 
-    return 1;
-  elif a&lt;=0 then
-    return 0;
-  end;
-}:;
-</PRE><P>ou plutôt en utilisant un <TT>else</TT> à la place du dernier <TT>elif</TT>,
-on tape:
-</P><PRE CLASS="verbatim">f(a):= {
-  if a&gt;8 then 
-    return 8;
-  elif a&gt;4 then 
-    return 4;
-  elif a&gt;2 then 
-    return 2;
-  elif a&gt;0 then 
-    return 1;
-  else
-    return 0;
-  end;
-}:;
-</PRE><HR>
+<H3 CLASS="subsection"><A NAME="htoc975">9.4.5</A>  Fonction testant les sous-type du type DOM_LIST : <TT>subtype</TT></H3><P><A NAME="@default1491"></A>
+<TT>subtype</TT> est une fonction qui a un argument et qui renvoie :<BR>
+1 si cet argument est une séquence, et 0 sinon.<BR>
+2 si cet argument est un ensemble,<BR>
+10 si cet argument estun polynôme et<BR>
+0 sinon.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>type(3,1,4)</TT></DIV><DIV CLASS="center"><TT>type(set[3,1,4])</TT></DIV><DIV CLASS="center"><TT>type(poly1[3,1,4])</TT></DIV><DIV CLASS="center"><TT>type([3,1,4])</TT></DIV><P>
+On obtient :</P><DIV CLASS="center"><TT>DOM_LIST</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>subtype(3,1,4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>subtype(set[3,1,4])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>subtype(poly1[3,1,4])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>10</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>subtype([3,1,4])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
 <A HREF="cascmd_fr828.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr830.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,22 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Trace d’une matrice : trace</TITLE>
+<TITLE>Compter les éléments plus grands qu’une valeur donnée : count_sup</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr599.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr601.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc711">6.52.3</A>  Trace d’une matrice : <TT>trace</TT></H3><P><A NAME="@default1106"></A><A NAME="sec:tracemat"></A>
-<TT>trace</TT> a comme argument une matrice <I>A</I> (voir aussi <TT>trace</TT>
-d’un objet géométrique <A HREF="cascmd_fr990.html#sec:tracegeo">10.20.3</A>).<BR>
-<TT>trace</TT> renvoie la trace de <I>A</I> : c’est la somme des éléments de la 
-diagonale.<BR>
+<H3 CLASS="subsection"><A NAME="htoc710">6.51.4</A>  Compter les éléments plus grands qu’une valeur donnée : <TT>count_sup</TT></H3><P><A NAME="@default1098"></A><A NAME="@default1099"></A><A NAME="@default1100"></A>
+<TT>count_sup</TT> a deux ou trois paramètres : une nombre et une 
+matrice (ou liste) réelle et éventuellement un paramètre 
+optionnel <TT>row</TT> ou <TT>col</TT>.<BR>
+<TT>count_sup</TT> renvoie le nombre d’éléments de la matrice (ou 
+liste) qui sont strictement supérieurs au premier argument.<BR>
+Si il y a <TT>row</TT> (resp <TT>col</TT>) comme troisième paramètre 
+<TT>count_sup</TT> agit sur chaque ligne (resp colonne) de la matrice et renvoie 
+une liste.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>trace([[1,2],[3,4]])</TT></DIV><P>
+</P><DIV CLASS="center"><TT>count_sup(12,[[2,12,45],[3,7,78]])</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>5</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>2</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>count_sup(12,[[2,12,45],[3,7,78]],row)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>count_sup(12,[[2,12,45],[3,7,78]],col)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>0,0,2]</TT></DIV><HR>
 <A HREF="cascmd_fr599.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr601.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

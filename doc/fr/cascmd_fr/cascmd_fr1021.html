@@ -6,40 +6,33 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le parallélogramme dans l’espace : parallelogram parallelogramme</TITLE>
+<TITLE>Plans (ou droites) perpendiculaires : perpendicular perpendiculaire</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr1020.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1022.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1199">11.8.4</A>  Le parallélogramme dans l’espace : <TT>parallelogram parallelogramme</TT></H3><P><A NAME="@default1979"></A><A NAME="@default1980"></A><A NAME="sec:parallelo3"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr913.html#sec:parallelo2">10.11.5</A> pour la géométrie plane.<BR>
-<TT>parallelogramme</TT>, en géométrie 3-d, a trois arguments ou 
-quatre arguments.<BR>
-Les arguments sont :<BR>
-- si il a trois arguments ce sont : trois points les sommets <I>A</I>,<I>B</I>,<I>C</I> du 
-parallélogramme <I>ABCD</I>.<BR>
-<TT>parallelogramme(A,B,C)</TT> renvoie et trace dans le plan <I>ABC</I>, le 
-parallélogramme <I>ABCD</I> tel que : 
-<I>AD</I>=<I>BC</I>
-mais sans définir le point <I>D</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1197">11.5.7</A>  Plans (ou droites) perpendiculaires : <TT>perpendicular perpendiculaire</TT></H3><P><A NAME="@default1991"></A><A NAME="@default1992"></A><A NAME="sec:perpendi3"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1022.html#sec:orthogonal3">11.5.8</A> et, pour la géométrie plane 
+<A HREF="cascmd_fr912.html#sec:perpendi2">10.9.8</A>.<BR>
+<TT>perpendiculaire</TT>, en géométrie 3-d, renvoie et dessine une 
+droite (resp un plan) si le 2-ième argument est une droite (resp un plan).<BR>
+Plus précisemment, si ses arguments sont :
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+un point <I>A</I> et une droite <I>d</I>, <TT>perpendiculaire(A,d)</TT> renvoie et 
+dessine la droite perpendiculaire à la droite <I>d</I> et passant par <I>A</I>,
+</LI><LI CLASS="li-itemize">une droite <I>dd</I> et un plan <I>P</I>, <TT>perpendiculaire(dd,P)</TT> renvoie et 
+dessine le plan perpendiculaire au plan <I>P</I> et passant par <I>dd</I>.<BR>
+</LI></UL><P> 
 On tape :
-</P><DIV CLASS="center"><TT>A:=point(0,0,0)</TT></DIV><DIV CLASS="center"><TT>B:=point(3,3,3)</TT></DIV><DIV CLASS="center"><TT>C:=point(0,0,3)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>parallelogramme(A,B,C)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>perpendiculaire(point(0,0,0),droite(point(1,0,0),point(0,1,0)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le parallélogramme ABCD</TT></DIV><P>
-- si il a quatre arguments le dernier paramètre est le nom d’une 
-variable qui servira à définir le sommet manquant.<BR>
+</P><DIV CLASS="center"><TT>La droite d’équation y=x, z=0</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>parallelogramme(A,B,C,D)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>perpendiculaire(droite([0,0,0],[1,1,0]),plan(point(1,0,0),point(0,1,0),point(0,0,1)))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>Le parallélogramme ABCD et le point D</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>coordonnees(D)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[-3,-3,0]</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le plan d’équation x=y</TT></DIV><HR>
 <A HREF="cascmd_fr1020.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr1022.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

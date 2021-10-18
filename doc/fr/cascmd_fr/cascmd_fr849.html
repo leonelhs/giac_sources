@@ -6,54 +6,37 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Ouvrir le débuggeur : debug</TITLE>
+<TITLE>Modifier l’ordre d’exécution des instructions : label goto</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr848.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr850.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc997">9.7.1</A>  Ouvrir le débuggeur : <TT>debug</TT></H3><P><A NAME="@default1534"></A>
-<TT>debug</TT> a comme argument une fonction et ses arguments.<BR>
-<TT>debug</TT> ouvre l’écran de la fenêtre de mise au point (ou débugger)
-avec sa barre de boutons.
-On a la possibilité :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-d’exécuter le programme au pas
-à pas avec le bouton <TT>sst</TT><A NAME="@default1535"></A> qui inscrit la commande 
-<TT>sst()</TT> dans la ligne de commande,
-</LI><LI CLASS="li-itemize">de mettre des points d’arrêts (breakpoint) avec 
-<TT>break</TT> (ou la commande <TT>breakpoint</TT>), 
-</LI><LI CLASS="li-itemize">d’aller directement avec<TT>cont</TT> à une ligne 
-précise marquée par un point d’arrêt (ou la commande <TT>cont</TT>),
-</LI><LI CLASS="li-itemize">de voir avec <TT>watch</TT> les 
-variables que l’on désire surveiller (ou la commande <TT>watch</TT>),
-</LI><LI CLASS="li-itemize">d’exécuter au pas à pas 
-les instructions d’une fonction utilisateur avec <TT>dans</TT><A NAME="@default1536"></A> qui 
-inscrit la commande <TT>sst_in()</TT> dans la ligne de commande, ou encore 
-</LI><LI CLASS="li-itemize">de sortir brutalement du débuggeur avec <TT>tuer</TT> (ou la commande <TT>kill</TT>).
-</LI></UL><P>
-On tape par exemple :<BR>
- <TT>debug(pgcd(15,25))</TT>.<BR>
-Il faut bien sûr que le programme <TT>pgcd</TT> existe.<BR>
-Par exemple on a tapé :
-</P><PRE CLASS="verbatim">pgcd(a,b):={
-local r;
-while(b!=0) {
-r:=irem(a,b);
-a:=b;
-b:=r;
+<H3 CLASS="subsection"><A NAME="htoc995">9.4.25</A>  Modifier l’ordre d’exécution des instructions : <TT>label goto</TT></H3><P><A NAME="@default1552"></A><A NAME="@default1553"></A>
+<TT>label</TT> permet de repérer une instruction dans un programme par 
+un nom de variable.<BR>
+<TT>goto</TT> permet de modifier l’ordre d’exécution des instructions, en
+exécutant les instructions du programme à partir d’une instruction 
+repérée par un label.<BR>
+<TT>label</TT> a comme arguments, une suite de caractères : par exemple <TT>label(truc)</TT> ou <TT>label(1)</TT>.<BR>
+<TT>goto</TT> a comme arguments un nom de label: par exemple <TT>goto(truc)</TT> ou <TT>goto(1)</TT>.<BR>
+On tape :
+</P><PRE CLASS="verbatim">essai(eps):={
+local s,j;
+s:=0;
+j:=0;
+label(truc);
+j:=j+1;
+s:=s+1/j;
+if (1/j&gt;=eps) goto(truc);
+print(s);
+return 0;
 }
-return a;
-}
-</PRE><P>Puis si on veut observer les variables <TT>a</TT> et <TT>b</TT>, on clique sur 
-<TT>watch</TT> : <TT>watch</TT> s’inscrit dans la ligne <TT>eval</TT> et on compléte
-cette ligne en <TT>watch(a)</TT> puis <TT>enter</TT>, puis on clique sur 
-<TT>watch</TT> et on compléte <TT>watch</TT> en <TT>watch(b)</TT> puis <TT>enter</TT>.<BR>
-Ensuite on clique sur <TT>sst</TT>, et on voit à chaque ètape (la ligne qui 
-est exécutée est en surbrillance) les valeurs de 
-<TT>a</TT> et <TT>b</TT> dans la zone située en dessous de la barre des boutons.
-</P><HR>
+</PRE><P>puis :
+</P><DIV CLASS="center"><TT>essai(0.2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>s:137/60 écrit en bleu, puis 0 comme réponse</TT></DIV><HR>
 <A HREF="cascmd_fr848.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr850.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

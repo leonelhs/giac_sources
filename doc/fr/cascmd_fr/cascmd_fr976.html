@@ -6,27 +6,41 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Savoir si 2 droites 2-d sont perpendiculaires : is_perpendicular est_perpendiculaire</TITLE>
+<TITLE>L’homothétie : homothety homothetie</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr975.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr977.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1143">10.18.12</A>  Savoir si 2 droites 2-d sont perpendiculaires : <TT>is_perpendicular est_perpendiculaire</TT></H3><P><A NAME="@default1894"></A><A NAME="@default1895"></A><A NAME="sec:estperp2"></A>
-<B>Voir aussi :</B> <A HREF="cascmd_fr1042.html#sec:estperp3">11.13.4</A> pour la géométrie 3-d.<BR>
-<TT>est_perpendiculaire</TT>, en géométrie plane, est une 
-fonction booléenne ayant comme argument deux droites.<BR>
- <TT>est_perpendiculaire</TT> vaut 1 si les deux droites sont perpendiculaires,
-et vaut 0 sinon.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1143">10.17.5</A>  L’homothétie : <TT>homothety homothetie</TT></H3><P><A NAME="@default1902"></A><A NAME="@default1903"></A><A NAME="sec:homothetie2"></A>
+<B>Voir aussi :</B> <A HREF="cascmd_fr1072.html#sec:homothetie3">11.14.5</A> pour la géométrie 3-d.<BR>
+<TT>homothetie</TT>, en géométrie plane, a deux ou trois arguments  :
+un point (le centre de l’homothétie), un réel (la valeur du rapport de 
+l’homothétie) et éventuellement l’objet géométrique à transformer.<BR>
+Lorsque <TT>homothetie</TT> a deux arguments, c’est une fonction qui agit sur 
+un objet géométrique.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_perpendiculaire(droite(0,1+i),droite(i,1))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>h:=homothetie(i,2)</TT></DIV><P>
+Puis :
+</P><DIV CLASS="center"><TT>h(1+i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1</TT></DIV><P>
+</P><DIV CLASS="center"><TT>Le point 2+i tracé avec une croix (x) noire</TT></DIV><P>
+Lorsque <TT>homothetie</TT> a trois arguments, <TT>homothetie</TT> dessine et 
+renvoie le transformé du troisième argument dans l’homothétie de centre
+le premier argument et de rapport le deuxième argument.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>est_perpendiculaire(droite(0,1+i),droite(1+i,1))</TT></DIV><P>
+</P><DIV CLASS="center"><TT>homothetie(i,2,1+i)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>Le point 2+i tracé avec une croix (x) noire</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>homothetie(i,2,cercle(1+i,1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>Le cercle de centre 2+i et de rayon 2</TT></DIV><P>
+<B>Remarque</B><BR>
+Lorsque la valeur du rapport de l’homothétie est un nombre complexe <I>k</I> non 
+réel <TT>homothetie(A,k)</TT> est la similitude de centre le point <TT>A</TT>, de 
+rapport <TT>abs(k)</TT> et d’angle <TT>arg(k)</TT>. </P><HR>
 <A HREF="cascmd_fr975.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr977.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

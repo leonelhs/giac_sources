@@ -6,22 +6,27 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Somme cumulée des éléments d’une même colonne d’une matrice : cumSum</TITLE>
+<TITLE>Création et modification par affectation</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr562.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr564.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc669">6.47.5</A>  Somme cumulée des éléments d’une même colonne d’une matrice : <TT>cumSum</TT></H3><P><A NAME="@default1030"></A> 
-<TT>cumSum</TT> a comme argument une matrice <I>A</I>.<BR>
-<TT>cumSum</TT> renvoie la matrice dont les colonnes sont les sommes cumulées 
-deséléments d’une même colonne de la matrice <I>A</I>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>cumSum([[1,2],[3,4],[5,6]])</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>[[1,2],[4,6],[9,12]]</TT></DIV><P>
-puisque les sommes cumulées sont 1, 1+3=4, 1+3+5=9 et 2, 2+4=6, 2+4+6=12.</P><HR>
+<H3 CLASS="subsection"><A NAME="htoc669">6.47.1</A>  Création et modification par affectation</H3><P>
+On peut donner un nom à une matrice par une affectation, par exemple :<BR>
+<TT>A:=[[1,2,6],[3,4,8],[1,0,1]]</TT><BR>
+On a alors accés :
+à ses éléments, par exemple <TT>A[0,1]</TT> renvoie <TT>2</TT><BR>
+à ses lignes, par exemple <TT>A[0]</TT> renvoie <TT>[1,2,6]</TT><BR>
+à ses colonnes, par exemple <TT>A[0..2,1]</TT> renvoie <TT>[2,4,0]</TT><BR>
+On peut aussi changer la valeurs d’un de ses éléments, par exemple :<BR>
+<TT>A[0,1]:=5</TT> 
+Ainsi <TT>A</TT> est la matrice <TT>[[1,5,6],[3,4,8],[1,0,1]]</TT><BR>
+On a alors accés à des sous-matrices, par exemple :<BR>
+<TT>A[1..2]</TT> renvoie <TT>[[3,4,8],[1,0,1]]</TT>
+<TT>A[0..2,1..2]</TT> renvoie <TT>[[2,6],[4,8],[0,1]]</TT>
+<TT>A[0..1,1..2]</TT> renvoie <TT>[[2,6],[4,8]]</TT></P><HR>
 <A HREF="cascmd_fr562.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr564.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

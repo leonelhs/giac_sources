@@ -6,35 +6,82 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Linéariser une expression trigonométrique : tlin 
-lineariser_trigo</TITLE>
+<TITLE>Développer une expression transcendante et trigonométrique : texpand tExpand developper_transcendant</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr316.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr318.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc400">6.24.3</A>  Linéariser une expression trigonométrique : <TT>tlin<BR>
-lineariser_trigo</TT></H3><P><A NAME="@default604"></A><A NAME="@default605"></A>
-<TT>tlin</TT> a comme argument une expression trigonométrique.<BR>
-<TT>tlin</TT> linéarise cette expression en fonction de sin(<I>n</I>.<I>x</I>) et cos(<I>n</I>.<I>x</I>).<BR>
-<B>Exemples</B>
+<H3 CLASS="subsection"><A NAME="htoc400">6.24.1</A>  Développer une expression transcendante et trigonométrique : <TT>texpand tExpand developper_transcendant</TT></H3><P><A NAME="@default590"></A><A NAME="@default591"></A><A NAME="@default592"></A>
+<TT>texpand</TT> ou <TT>tExpand</TT> a comme argument une expression 
+transcendante et trigonométrique.<BR>
+<TT>texpand</TT> ou <TT>tExpand</TT> est la généralisation de <TT>expexpand</TT>, 
+<TT>lnexpand</TT> et <TT>trigexpand</TT> car elle développe les expressions 
+transcendantes et trigonométriques.<BR>
+<TT>texpand</TT> ou <TT>tExpand</TT> permet, par exemple, de transformer ln(<I>x</I><SUP><I>n</I></SUP>) 
+en <I>n</I>ln(<I>x</I>), exp(<I>x</I>)<SUP><I>n</I></SUP> en exp(<I>nx</I>) et sin(2<I>x</I>) en 2sin(<I>x</I>)cos(<I>x</I>).<BR>
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
-Linéariser cos(<I>x</I>)*cos(<I>y</I>).<BR>
+<TT>texpand</TT> ou <TT>tExpand</TT> a comme argument une expression 
+transcendante et trigonométrique.<BR>
+<B>Exemple</B> :<BR>
+Développer exp(<I>x</I>+<I>y</I>)+cos(<I>x</I>+<I>y</I>)+ln(3<I>x</I><SUP>2</SUP>).<BR>
 On tape :
-<DIV CLASS="center"><TT>tlin(cos(x)*cos(y))</TT></DIV>
+<DIV CLASS="center"><TT>texpand(exp(x+y)+cos(x+y)+ln(3*x</TT><CODE><TT>^</TT></CODE><TT>2))</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>1/2*cos(x-y)+1/2*cos(x+y)</TT></DIV>
-</LI><LI CLASS="li-itemize">Linéariser cos(<I>x</I>)<SUP>3</SUP>.<BR>
+<DIV CLASS="center"><TT>cos(x)*cos(y)-sin(x)*sin(y)+exp(x)*exp(y)+ ln(3)+2*ln(x)</TT></DIV>
+</LI><LI CLASS="li-itemize"><TT>texpand</TT> ou <TT>tExpand</TT> a comme argument une expression 
+trigonométrique.<BR>
+<TT>texpand</TT> ou <TT>tExpand</TT> développe cette expression en fonction de sin(<I>x</I>) et cos(<I>x</I>).<BR>
+<B>Exemples</B> 
+<OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Développer cos(<I>x</I>+<I>y</I>).<BR>
 On tape :
-<DIV CLASS="center"><TT>tlin(cos(x)</TT><CODE><TT>^</TT></CODE><TT>3)</TT></DIV>
+<DIV CLASS="center"><TT>texpand(cos(x+y))</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>3/4*cos(x)+1/4*cos(3*x)</TT></DIV>
-</LI><LI CLASS="li-itemize">Linéariser 4cos(<I>x</I>)<SUP>2</SUP>−2.<BR>
+<DIV CLASS="center"><TT>cos(x)*cos(y)-sin(x)*sin(y)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Développer cos(3<I>x</I>).<BR>
 On tape :
-<DIV CLASS="center"><TT>tlin(4*cos(x)</TT><CODE><TT>^</TT></CODE><TT>2-2)</TT></DIV>
+<DIV CLASS="center"><TT>texpand(cos(3*x))</TT></DIV>
 On obtient :
-<DIV CLASS="center"><TT>2*cos(2*x)</TT></DIV>
+<DIV CLASS="center"><TT>4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT> 3-3*cos(x)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Développer  sin(3*<I>x</I>)+sin(7*<I>x</I>)/sin(5*<I>x</I>).<BR>
+On tape :
+<DIV CLASS="center"><TT>texpand((sin(3*x)+sin(7*x))/sin(5*x))</TT></DIV>
+On obtient
+<DIV CLASS="center"><TT>(4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-1)*(sin(x)/(16*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4- 12*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2+1))/sin(x)+(64*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>6- 80*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4+24*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2- 1)*sin(x)/ (16*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>4-12*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2+1)/sin(x)</TT></DIV>
+Et, après une simplification en tapant <TT>normal(ans())</TT>, on obtient :
+<DIV CLASS="center"><TT>4*(cos(x))</TT><CODE><TT>^</TT></CODE><TT>2-2</TT></DIV>
+</LI></OL>
+</LI><LI CLASS="li-itemize"><TT>texpand</TT> ou <TT>tExpand</TT> a comme argument une expression 
+transcendante.<BR>
+<TT>texpand</TT> ou <TT>tExpand</TT> développe cette expression.<BR>
+<B>Exemples</B> 
+<OL CLASS="enumerate" type=1><LI CLASS="li-enumerate">
+Développer exp(<I>x</I>+<I>y</I>).<BR>
+On tape :
+<DIV CLASS="center"><TT>texpand(exp(x+y))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>exp(x)*exp(y)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Développer ln(<I>x</I>+<I>y</I>).<BR>
+On tape :
+<DIV CLASS="center"><TT>texpand(log(x*y))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>log(x)+log(y)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Développer ln(<I>x</I><SUP><I>n</I></SUP>).<BR>
+<DIV CLASS="center"><TT>texpand(ln(x</TT><CODE><TT>^</TT></CODE><TT>n))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>n*ln(x)</TT></DIV>
+</LI><LI CLASS="li-enumerate">Développer ln((<I>e</I><SUP>2</SUP>)+exp(2*ln(2))+<I>exp</I>(ln(3)+ln(2))).<BR>
+On tape :
+<DIV CLASS="center"><TT>texpand(log(e</TT><CODE><TT>^</TT></CODE><TT>2)+exp(2*log(2))+exp(log(3)+log(2)))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>6+3*2</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>texpand(log(e</TT><CODE><TT>^</TT></CODE><TT>2)+exp(2*log(2)))+ lncollect(exp(log(3)+log(2)))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>12</TT></DIV>
+</LI></OL>
 </LI></UL><HR>
 <A HREF="cascmd_fr316.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>

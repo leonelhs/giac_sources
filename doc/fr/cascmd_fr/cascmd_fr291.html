@@ -6,62 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Sommet et feuille d’une expression : sommet feuille op</TITLE>
+<TITLE>Différence entre fonction et expression</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr290.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr292.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc367">6.17.3</A>  Sommet et feuille d’une expression : <TT>sommet feuille op</TT></H3><P><A NAME="@default498"></A><A NAME="@default499"></A><A NAME="@default500"></A><A NAME="sec:op"></A>
-Un opérateur est une fonction infixée : par exemple ’+’ est un 
-opérateur et ’sin’ est une fonction.<BR>
-On peut représenter une expression par un arbre. Le sommet de l’arbre est 
-soit un opérateur, soit une fonction et les feuilles de l’arbre sont les 
-arguments de l’opérateur ou de la fonction (voir aussi <A HREF="cascmd_fr508.html#sec:makesuiteop">6.41.13</A>).<BR>
-La fonction <TT>sommet</TT> (resp <TT>feuille</TT> (ou <TT>op</TT>))
-renvoie le sommet (resp la liste des feuilles) d’une expression.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>sommet(sin(x+2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>’sin’</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>sommet(x+2*y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>’+’</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>feuille(sin(x+2))</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>op(sin(x+2))</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>x+2</TT></DIV><P> 
-On tape :
-</P><DIV CLASS="center"><TT>feuille(x+2*y)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>op(x+2*y)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>(x,2*y) </TT></DIV><P> 
-<B>Remarque</B><BR>
-Lorsque l’utilisateur définit une fonction par un programme par exemple la
-fonction <TT>pgcd</TT>.<BR>
-On tape :
-</P><DIV CLASS="center"><TT>pgcd(a,b):={local r; while (b!=0) {r:=irem(a,b);a:=b;b:=r;} return a;}</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>sommet(pgcd)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>’program’</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>feuille(pgcd)[0]</TT></DIV><P> 
-On obtient :
-</P><DIV CLASS="center"><TT>(a,b)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>feuille(pgcd)[1]</TT></DIV><P> 
-On obtient :
-</P><DIV CLASS="center"><TT>(0,0) ou (15,25) si l’on vient d’exécuter pgcd(15,25)</TT></DIV><P>
-Puis on tape :
-</P><DIV CLASS="center"><TT>feuille(pgcd)[2]</TT></DIV><P> 
-On obtient :
-</P><DIV CLASS="center"><TT>Le corps du programme : {local r;....return(a);}</TT></DIV><HR>
+<H3 CLASS="subsection"><A NAME="htoc367">6.17.1</A>  Différence entre fonction et expression</H3><P><A NAME="@default498"></A><A NAME="@default499"></A>
+Une fonction <TT>f</TT> est définie par exemple par :<BR>
+<TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT> ou encore par <TT>f:=x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT><BR>
+cela signifie que pour tous les <I>x</I>, <I>f</I>(<I>x</I>) est égale à l’expression 
+<I>x</I><SUP>2</SUP>−1.<BR>
+On pourra ainsi taper <TT>f(2)</TT> pour avoir la valeur de <I>f</I> en <I>x</I>=2.<BR>
+Par contre si on définit :<BR>
+<TT>g:=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT> cela signifie que <TT>g</TT> est une variable qui contient 
+l’expression <I>x</I><SUP>2</SUP>−1. Pour avoir la valeur de <I>g</I> en <I>x</I>=2 il faut alors 
+écrire :<BR>
+<TT>subst(g,x=2)</TT> car <I>g</I> est une expression qui dépend de <I>x</I>.<BR>
+Aussi, lorsque l’argument d’une commande est une fonction il faut mettre 
+comme argument, soit par exemple <TT>x-&gt;x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>, soit <TT>f</TT> (si 
+<TT>f</TT> est une fonction qui a été définie auparavant par exemple par 
+<TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>) et<BR>
+lorsque l’argument d’une commande est une expression on met comme argument, 
+soit par exemple <TT>x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>, soit <TT>g</TT> (si <TT>g</TT> est une variable 
+que l’on a définie auparavant par exemple <TT>g:=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>), soit 
+<TT>f(x)</TT> (si <TT>f</TT> est une fonction qui a été définie auparavant par 
+exemple <TT>f(x):=x</TT><CODE><TT>^</TT></CODE><TT>2-1</TT>).
+</P><HR>
 <A HREF="cascmd_fr290.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr292.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

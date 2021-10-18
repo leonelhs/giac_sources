@@ -7685,17 +7685,42 @@ namespace giac {
       if (a._SYMBptr->sommet==at_abs || (a._SYMBptr->sommet==at_exp && is_real(a._SYMBptr->feuille,contextptr)))
 	return 1;
     }
-    if (a.type==_SYMB && a.is_symb_of_sommet(at_pow)){
-      gen & f =a._SYMBptr->feuille;
-      if (f.type==_VECT && f._VECTptr->size()==2){
-	gen & ex = f._VECTptr->back();
-	if (ex.type==_INT_){
-	  if (ex.val%2==0)
-	    return 1;
-	  return fastsign(f._VECTptr->front(),contextptr);
+    if (a.type==_SYMB){
+      bool aplus=a.is_symb_of_sommet(at_plus);
+      if (aplus || a.is_symb_of_sommet(at_prod)){
+	gen f=a._SYMBptr->feuille;
+	if (f.type==_VECT){
+	  vecteur & v=*f._VECTptr;
+	  int i=0,fs=v.size(),curs=0;
+	  for (;i<fs;++i){
+	    int news=fastsign(v[i],contextptr);
+	    if (news==0) 
+	      break;
+	    if (i==0) { 
+	      curs=news; 
+	      continue; 
+	    }
+	    if (aplus && curs!=news) 
+	      break;
+	    if (!aplus) 
+	      curs=curs*news;
+	  }
+	  if (i==fs)
+	    return curs;
 	}
-	if (ex.type==_FRAC && ex._FRACptr->den.type==_INT_ && ex._FRACptr->den.val % 2 ==0 ) 
-	  return 1;
+     }
+     if (a.is_symb_of_sommet(at_pow)){
+	gen & f =a._SYMBptr->feuille;
+	if (f.type==_VECT && f._VECTptr->size()==2){
+	  gen & ex = f._VECTptr->back();
+	  if (ex.type==_INT_){
+	    if (ex.val%2==0)
+	      return 1;
+	    return fastsign(f._VECTptr->front(),contextptr);
+	  }
+	  if (ex.type==_FRAC && ex._FRACptr->den.type==_INT_ && ex._FRACptr->den.val % 2 ==0 ) 
+	    return 1;
+	}
       }
     }
     if (is_inf(a)){
@@ -11977,6 +12002,55 @@ namespace giac {
     }    
   }
 
+  const char * svg2doutput(const gen & g,string & S,GIAC_CONTEXT){
+#ifdef EMCC
+    bool fullview=true;
+    vector<double> vx,vy,vz;
+    double window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax;
+    bool ortho=autoscaleg(g,vx,vy,vz,contextptr);
+    autoscaleminmax(vx,window_xmin,window_xmax,fullview);
+    autoscaleminmax(vy,window_ymin,window_ymax,fullview);
+    double xscale=window_xmax-window_xmin,yscale=window_ymax-window_ymin;
+    double ratio=yscale/xscale;
+    double gratio=0.6,gwidth=9;
+#ifndef GIAC_GGB
+    gwidth=EM_ASM_DOUBLE_V({
+	var hw=window.innerWidth;
+	if (hw>=1000)
+	  return 9.0*hw/1000.0;
+	else
+	  return hw/60.0;
+      });
+#endif // GIAC_GGB
+    //CERR << gwidth << endl;
+    int maxgratio=ortho?10:3;
+    if (ratio<gratio/maxgratio || ratio>maxgratio*gratio) ortho=false; else ortho=true;
+    if (ortho){
+      if (ratio>gratio){ // yscale>gratio*xscale, use yscale for x
+	double xc=(window_xmax+window_xmin)/2;
+	window_xmin=xc-yscale/(2*gratio);
+	window_xmax=xc+yscale/(2*gratio);
+      }
+      else { // xscale>yscale/gratio
+	double yc=(window_ymax+window_ymin)/2;
+	window_ymin=yc-gratio*xscale/2;
+	window_ymax=yc+gratio*xscale/2;
+      }
+      ratio=gratio;
+      ortho=false;
+    }
+    overwrite_viewbox(g,window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax);
+    xscale=window_xmax-window_xmin;yscale=window_ymax-window_ymin;
+    ratio=yscale/xscale;
+    //COUT << window_xmin << " " << window_xmax << " " << window_ymin << " " << window_ymax << endl;
+    //g=_symetrie(makesequence(_droite(makesequence(0,1),contextptr),g),contextptr);
+    //S='"'+svg_preamble(7,7,gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax,ortho,false)+gen2svg(g,contextptr)+svg_grid(gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax)+"</svg>\"";
+    S='"'+svg_preamble(gwidth,gwidth*gratio,window_xmin,window_xmax,window_ymin,window_ymax,ortho,false);
+    S= S+(gen2svg(g,window_xmin,window_xmax,window_ymin,window_ymax,ratio/gratio,contextptr)+svg_grid(window_xmin,window_xmax,window_ymin,window_ymax)+"</svg>\"");
+#endif
+    return S.c_str();
+  }
+
   string print_VECT(const vecteur & v,int subtype,GIAC_CONTEXT){
     if (v.empty()){
       switch (subtype){
@@ -11995,7 +12069,13 @@ namespace giac {
     }
     string s;
     if (subtype==_SPREAD__VECT && !v.empty() && v.front().type==_VECT){
+#ifdef EMCC
+      bool add_quotes=true;
+      s = "[";
+#else
+      bool add_quotes=false;
       s = "spreadsheet[";
+#endif
       int nr=int(v.size());
       int nc=int(v.front()._VECTptr->size());
       for (int i=0;;){
@@ -12007,7 +12087,41 @@ namespace giac {
 	  save_c=printcell_current_col(contextptr);
 	  printcell_current_row(contextptr)=i;
 	  printcell_current_col(contextptr)=j;
-	  s += w[j].print(contextptr);
+	  if (add_quotes){
+	    gen tmp=w[j];
+	    if (tmp.type==_VECT && tmp._VECTptr->size()>=2){
+	      vecteur & w=*tmp._VECTptr;
+	      s += "['"+w[0].print(contextptr)+"',";
+	      s += "'"+w[1].print(contextptr)+"',";
+	      // COUT << i << " " << j << " " << w[1] << endl;
+	      if (w[1].type==_STRNG && *w[1]._STRNGptr=="")
+		s += "'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;']";
+	      else {
+		string ms;
+		if (w[1].is_symb_of_sommet(at_pnt)){
+		  svg2doutput(w[1],ms,contextptr); // remove quotes
+		  if (ms[0]=='"' && ms[ms.size()-1]=='"')
+		    ms=ms.substr(1,ms.size()-2);
+		}
+#ifndef GIAC_HAS_STO_38
+		else
+		  ms=*_mathml(makesequence(w[1],1),contextptr)._STRNGptr;
+#endif
+		string res;
+		int l=ms.size();
+		res.reserve(l);
+		const char * ch=ms.c_str();
+		for (int i=0;i<l;++i,++ch){
+		  res+= (*ch=='\n'? ' ': *ch);
+		}
+		s += "'&nbsp;"+res+"&nbsp;']";
+	      }
+	    }
+	    else
+	      s += w[j].print(contextptr);
+	  }
+	  else
+	    s += w[j].print(contextptr);
 	  printcell_current_row(contextptr)=save_r;
 	  printcell_current_col(contextptr)=save_c;
 	  ++j;
@@ -15184,50 +15298,7 @@ namespace giac {
 	return S.c_str();
       }
 #endif // GIAC_GGB
-      bool fullview=true;
-      vector<double> vx,vy,vz;
-      double window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax;
-      bool ortho=autoscaleg(g,vx,vy,vz,&C);
-      autoscaleminmax(vx,window_xmin,window_xmax,fullview);
-      autoscaleminmax(vy,window_ymin,window_ymax,fullview);
-      double xscale=window_xmax-window_xmin,yscale=window_ymax-window_ymin;
-      double ratio=yscale/xscale;
-      double gratio=0.6,gwidth=9;
-#ifndef GIAC_GGB
-      gwidth=EM_ASM_DOUBLE_V({
-	  var hw=window.innerWidth;
-	  if (hw>=1000)
-	    return 9.0*hw/1000.0;
-	  else
-	    return hw/60.0;
-	});
-#endif // GIAC_GGB
-      //CERR << gwidth << endl;
-      int maxgratio=ortho?10:3;
-      if (ratio<gratio/maxgratio || ratio>maxgratio*gratio) ortho=false; else ortho=true;
-      if (ortho){
-	if (ratio>gratio){ // yscale>gratio*xscale, use yscale for x
-	  double xc=(window_xmax+window_xmin)/2;
-	  window_xmin=xc-yscale/(2*gratio);
-	  window_xmax=xc+yscale/(2*gratio);
-	}
-	else { // xscale>yscale/gratio
-	  double yc=(window_ymax+window_ymin)/2;
-	  window_ymin=yc-gratio*xscale/2;
-	  window_ymax=yc+gratio*xscale/2;
-	}
-	ratio=gratio;
-	ortho=false;
-      }
-      overwrite_viewbox(g,window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax);
-      xscale=window_xmax-window_xmin;yscale=window_ymax-window_ymin;
-      ratio=yscale/xscale;
-      //COUT << window_xmin << " " << window_xmax << " " << window_ymin << " " << window_ymax << endl;
-      //g=_symetrie(makesequence(_droite(makesequence(0,1),&C),g),&C);
-      //S='"'+svg_preamble(7,7,gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax,ortho,false)+gen2svg(g,&C)+svg_grid(gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax)+"</svg>\"";
-      S='"'+svg_preamble(gwidth,gwidth*gratio,window_xmin,window_xmax,window_ymin,window_ymax,ortho,false);
-      S= S+(gen2svg(g,window_xmin,window_xmax,window_ymin,window_ymax,ratio/gratio,&C)+svg_grid(window_xmin,window_xmax,window_ymin,window_ymax)+"</svg>\"");
-      return S.c_str();
+      return svg2doutput(g,S,&C);
     }
 #endif // EMCC
     if (calc_mode(&C)==1 && !lop(g,at_rootof).empty())

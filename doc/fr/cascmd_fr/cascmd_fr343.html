@@ -6,45 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La transformée de Fourier rapide : fft</TITLE>
+<TITLE>Simplifier en privilégiant les tangentes : trigtan</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr342.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr344.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc427">6.25.3</A>  La transformée de Fourier rapide : <TT>fft</TT></H3><P><A NAME="@default662"></A>
-<TT>fft</TT> a comme argument une liste (ou une séquence)
-<TT>[<I>a</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>a</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT> où <TT>N</TT> est une puissance de deux.<BR>
-<TT>fft</TT> renvoie la liste <TT>[<I>b</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>b</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>]</TT> tel que pour <TT>k=0..N-1</TT>
-on ait :<BR>
-<TT>
-</TT><TT><I>fft</I>([<I>a</I></TT><SUB><TT>0</TT></SUB><TT>,..<I>a</I></TT><SUB><TT><I>N</I>-1</TT></SUB><TT>])</TT><TT>[<I>k</I>]=<I>b</I></TT><SUB><TT><I>k</I></TT></SUB><TT>=∑</TT><SUB><TT><I>j</I>=0</TT></SUB><SUP><TT><I>N</I>-1</TT></SUP><TT><I>x</I></TT><SUB><TT><I>j</I></TT></SUB><TT>ω</TT><SUB><TT><I>N</I></TT></SUB><SUP><TT>-<I>k</I>·
-<I>j</I></TT></SUP> 
-avec ω<SUB><I>N</I></SUB> racine <I>N</I>-ième de l’unité.<BR>
+<H3 CLASS="subsection"><A NAME="htoc427">6.25.25</A>  Simplifier en privilégiant les tangentes : <TT>trigtan</TT></H3><P><A NAME="@default644"></A>
+<TT>trigtan</TT> a comme argument une expression trigonométrique.<BR>
+<TT>trigtan</TT> simplifie cette expression à l’aide des formules :<BR>
+sin(<I>x</I>)<SUP>2</SUP>+cos(<I>x</I>)<SUP>2</SUP>=1,  tan(<I>x</I>)=sin(<I>x</I>)/cos(<I>x</I>) et en privilégiant les tangentes.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>fft(0,1,1,0)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>trigtan(sin(x)</TT><CODE><TT>^</TT></CODE><TT>4+cos(x)</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>[2.0, -1-i, 0.0, -1+i]</TT></DIV><P>On peut aussi travailler sur un corps fini ℤ/<I>p</I>ℤ, en indiquant une
-racine <I>N</I>-ième primitive de l’unité en 2ième argument
-et <I>p</I> en 3ième argument de <TT>fft</TT>. Par exemple
-on verifie que 22798 est une racine primitive d’ordre 128 de 1
-modulo 35969. 
-Par exemple, calculons par FFT le carré d’un polynôme à
-coefficients
-entiers aléatoire inférieur à 10, de degré 60, 
-représenté par la liste de ses coefficients par ordre croissant
-complété par des 0 pour avoir une liste de taille <I>N</I>=128 :
-</P><DIV CLASS="center">
-<TT>P:=poly1[op(ranm(1,60,10)[0]),0$68];<BR>
-p:=fft(P,22798,35969)</TT>
-</DIV><P>
-il suffit maintenant de calculer le produit terme à terme de <TT>p</TT>
-avec
-lui-même et d’en calculer la FFT inverse
-</P><DIV CLASS="center">
-<TT>Q:=ifft(p .* p,22798,35969)</TT>
-</DIV><HR>
+</P><DIV CLASS="center"><TT>((tan(x))</TT><CODE><TT>^</TT></CODE><TT>2/(1+(tan(x))</TT><CODE><TT>^</TT></CODE><TT>2))</TT><CODE><TT>^</TT></CODE><TT>2+1/(1+(tan(x)</TT><CODE><TT>^</TT></CODE><TT>2)+1</TT></DIV><P>
+et après simplification avec <TT>normal</TT> on a :
+</P><DIV CLASS="center"><TT>(2*tan(x)</TT><CODE><TT>^</TT></CODE><TT>4+3*tan(x)</TT><CODE><TT>^</TT></CODE><TT>2+2)/(tan(x)</TT><CODE><TT>^</TT></CODE><TT>4+2*tan(x))</TT><CODE><TT>^</TT></CODE><TT>2+1)</TT></DIV><HR>
 <A HREF="cascmd_fr342.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr344.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

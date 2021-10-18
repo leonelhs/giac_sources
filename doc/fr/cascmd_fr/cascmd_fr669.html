@@ -6,30 +6,77 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour avoir le membre de droite d’une équation : right droit rhs</TITLE>
+<TITLE>Le Laplacien : laplacian</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr668.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr670.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc788">6.60.5</A>  Pour avoir le membre de droite d’une équation : <TT>right droit rhs</TT></H3><P><A NAME="@default1208"></A><A NAME="@default1209"></A> <A NAME="@default1210"></A>
-<TT>right</TT> ou <TT>rhs</TT> a comme paramètre une équation ou un 
-intervalle.<BR>
-<TT>right</TT> ou <TT>rhs</TT> renvoie le membre de droite de l’équationou de 
-la borne droite de l’intervalle.<BR>
+<H3 CLASS="subsection"><A NAME="htoc788">6.60.2</A>  Le Laplacien : <TT>laplacian</TT></H3><P><A NAME="@default1218"></A>
+<TT>laplacian</TT> a un ou deux paramètres.
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+le paramètre est un entier ou un entier flottant <I>n</I>.<BR>
+<TT>laplacian(n)</TT> renvoie la matrice de taille n du laplacien discret en 
+dimension 1.<BR>
+ Cette matrice est tridiagonale et a 2 sur la diagonale principale, 
+-1 sur la diagonale supérieure et -1 sur la diagonale inférieure.<BR>
+En effet :<BR>
+Soit <I>F</I> est définie en <I>x</I><SUB>1</SUB>,<I>x</I><SUB>2</SUB>,<I>x</I><SUB>3</SUB>,<I>x</I><SUB>4</SUB>,<I>x</I><SUB>5</SUB>,<I>x</I><SUB>6</SUB> (où <I>x</I><SUB><I>k</I>+1</SUB>−<I>x</I><SUB><I>k</I></SUB>=<I>h</I>) par 
+<I>F</I>(<I>x</I><SUB><I>k</I></SUB>)=<I>y</I><SUB><I>k</I></SUB>) et on suppose que <I>F</I>(<I>x</I><SUB>0</SUB>)=<I>F</I>(<I>x</I><SUB>1</SUB>−<I>h</I>)=0=<I>y</I><SUB>0</SUB> et que 
+<I>F</I>(<I>x</I><SUB>7</SUB>)=<I>F</I>(<I>x</I><SUB>6</SUB>+<I>h</I>)=0=<I>y</I><SUB>7</SUB> (ici <I>n</I>=6).<BR>
+Les valeurs approchées de la dérivée première en <I>x</I><SUB>0</SUB>,<I>x</I><SUB>1</SUB>..<I>x</I><SUB>6</SUB> sont :<BR>
+(<I>y</I><SUB>1</SUB>−<I>y</I><SUB>0</SUB>)/<I>h</I>=<I>y</I><SUB>1</SUB>/<I>h</I>,(<I>y</I><SUB>2</SUB>−<I>y</I><SUB>1</SUB>)/<I>h</I>,(<I>y</I><SUB>3</SUB>−<I>y</I><SUB>2</SUB>)/<I>h</I>,...,(<I>y</I><SUB>6</SUB>−<I>y</I><SUB>5</SUB>)/<I>h</I>, (<I>y</I><SUB>7</SUB>−<I>y</I>6)/<I>h</I>.<BR>
+Les valeurs approchées de la dérivée seconde en <I>x</I><SUB>1</SUB>..<I>x</I><SUB>6</SUB> sont :<BR>
+((<I>y</I><SUB>2</SUB>−<I>y</I><SUB>1</SUB>)/<I>h</I>−<I>y</I><SUB>1</SUB>/<I>h</I>)/<I>h</I>=((<I>y</I><SUB>2</SUB>−2<I>y</I><SUB>1</SUB>)/<I>h</I><SUP>2</SUP><BR>
+((<I>y</I><SUB>3</SUB>−<I>y</I><SUB>2</SUB>)/<I>h</I>−(<I>y</I><SUB>2</SUB>−<I>y</I><SUB>1</SUB>)/<I>h</I>)/<I>h</I>=(<I>y</I><SUB>3</SUB>−2<I>y</I><SUB>2</SUB>+<I>y</I><SUB>1</SUB>)/<I>h</I><SUP>2</SUP><BR>
+((<I>y</I><SUB>6</SUB>−<I>y</I><SUB>5</SUB>)/<I>h</I>−(<I>y</I><SUB>5</SUB>−<I>y</I><SUB>4</SUB>)/<I>h</I>)/<I>h</I>=(<I>y</I><SUB>6</SUB>−2<I>y</I><SUB>5</SUB>+<I>y</I><SUB>4</SUB>)/<I>h</I><SUP>2</SUP><BR>
+((<I>y</I><SUB>7</SUB>−<I>y</I><SUB>6</SUB>)/<I>h</I>−(<I>y</I><SUB>6</SUB>−<I>y</I><SUB>5</SUB>)/<I>h</I>)/<I>h</I>=(−2<I>y</I><SUB>6</SUB>+<I>y</I><SUB>5</SUB>)/<I>h</I><SUP>2</SUP> car <I>y</I><SUB>7</SUB>=0.<BR>
+Donc les valeurs approchées de 
+−∂<SUP>2</SUP> <I>F</I>/∂ <I>x</I><SUP>2</SUP>(<I>x</I><SUB><I>k</I></SUB>) sont pour <I>h</I>=1 :<BR>
+2*<I>y</I><SUB>1</SUB>−<I>y</I><SUB>2</SUB>, −<I>y</I><SUB><I>k</I>−1</SUB>+2*<I>y</I><SUB><I>k</I></SUB>−<I>y</I><SUB><I>k</I>+1</SUB> pour <I>k</I>=2..6−1, −<I>y</I><SUB>5</SUB>+2*<I>y</I><SUB>6</SUB>.<BR>
+On peut aussi plus simplement utiliser la formule de Taylor à l’odre 2 :<BR>
+<I>f</I>(<I>a</I>+<I>h</I>)−<I>f</I>(<I>a</I>)−<I>hf</I>′(<I>a</I>)≃ <I>h</I><SUP>2</SUP><I>f</I>″(<I>a</I>)/2 et<BR>
+<I>f</I>(<I>a</I>−<I>h</I>)−<I>f</I>(<I>a</I>)+<I>hf</I>′(<I>a</I>)≃ <I>h</I><SUP>2</SUP><I>f</I>″(<I>a</I>)/2<BR>
+donc en ajoutant :<BR>
+<I>f</I>″(<I>a</I>)≃ (<I>f</I>(<I>a</I>+<I>h</I>)+<I>f</I>(<I>a</I>−<I>h</I>)−2<I>f</I>(<I>a</I>))/<I>h</I><SUP>2</SUP><BR>
+On retrouve :<BR>
+<I>f</I>″(<I>x</I><SUB>1</SUB>)≃ (<I>f</I>(<I>x</I><SUB>2</SUB>)+<I>f</I>(<I>x</I><SUB>0</SUB>)−2<I>f</I>(<I>x</I><SUB>1</SUB>))/<I>h</I><SUP>2</SUP>=(<I>f</I>(<I>x</I><SUB>2</SUB>)−2<I>f</I>(<I>x</I><SUB>1</SUB>))/<I>h</I><SUP>2</SUP><BR>
+<I>f</I>″(<I>x</I><SUB><I>k</I></SUB>)≃ (<I>f</I>(<I>x</I><SUB><I>k</I>+1</SUB>)+<I>f</I>(<I>x</I><SUB><I>k</I>−1</SUB>)−2<I>f</I>(<I>x</I><SUB><I>k</I></SUB>))/<I>h</I><SUP>2</SUP>, (<I>k</I>=2..<I>n</I>−1)<BR>
+<I>f</I>″(<I>x</I><SUB><I>n</I></SUB>)≃ (<I>f</I>(<I>x</I><SUB><I>n</I>+1</SUB>)+<I>f</I>(<I>x</I><SUB><I>n</I>−1</SUB>)−2<I>f</I>(<I>x</I><SUB><I>n</I></SUB>))/<I>h</I><SUP>2</SUP>=(<I>f</I>(<I>x</I><SUB><I>n</I>−1</SUB>)−2<I>f</I>(<I>x</I><SUB><I>n</I></SUB>))/<I>h</I><SUP>2</SUP><BR>
 On tape :
-</P><DIV CLASS="center"><TT>right(2x-1=3)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>rhs(2x-1=3)</TT></DIV><P>
+<DIV CLASS="center"><TT>laplacian(3)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><P>
+<DIV CLASS="center"><TT>[[2,-1,0],[-1,2,-1],[0,-1,2]]</TT></DIV>
 On tape :
-</P><DIV CLASS="center"><TT>right(1..3)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>rhs(1..3)</TT></DIV><P>
+<DIV CLASS="center"><TT>laplacian(3.)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
+<DIV CLASS="center"><TT>[[2.0,-1.0,0.0],[-1.0,2.0,-1.0],[0.0,-1.0,2.0]]</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>laplacian(6)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[[2,-1,0,0,0,0],[-1,2,-1,0,0,0],[0,-1,2,-1,0,0],</TT></DIV>
+<DIV CLASS="center"><TT>[0,0,-1,2,-1,0],[0,0,0,-1,2,-1],[0,0,0,0,-1,2]]</TT></DIV>
+</LI><LI CLASS="li-itemize">les 2 paramètres sont :<BR>
+une expression <I>F</I> dependant de <I>n</I> variables rèelles et un vecteur de 
+dimension <I>n</I> indiquant le nom de ces variables.<BR>
+<TT>laplacian</TT> renvoie le laplacien de <I>F</I> :<BR>
+(∇<SUP>2</SUP>(<I>F</I>)(<I>x</I>,<I>y</I>,<I>z</I>)=∂<SUP>2</SUP> <I>F</I>/∂ <I>x</I><SUP>2</SUP>(<I>x</I>,<I>y</I>,<I>z</I>)+∂<SUP>2</SUP> <I>F</I>/∂ <I>y</I><SUP>2</SUP>(<I>x</I>,<I>y</I>,<I>z</I>)+∂<SUP>2</SUP> <I>F</I>/∂ <I>z</I><SUP>2</SUP>(<I>x</I>,<I>y</I>,<I>z</I>) si <I>n</I>=3).<BR>
+On tape :
+<DIV CLASS="center"><TT>laplacian(2*x</TT><CODE><TT>^</TT></CODE><TT>4*y</TT><CODE><TT>^</TT></CODE><TT>3-x</TT><CODE><TT>^</TT></CODE><TT>2*y*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z])</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>-2*y*z</TT><CODE><TT>^</TT></CODE><TT>3-6*x</TT><CODE><TT>^</TT></CODE><TT>2*y*z+24*x</TT><CODE><TT>^</TT></CODE><TT>2*y</TT><CODE><TT>^</TT></CODE><TT>3+12*x</TT><CODE><TT>^</TT></CODE><TT>4*y</TT></DIV>
+</LI></UL><P>
+<B>Exemples</B><BR>
+Déterminer le laplacien de <I>F</I>(<I>x</I>,<I>y</I>,<I>z</I>)=2<I>x</I><SUP>2</SUP><I>y</I>−<I>xz</I><SUP>3</SUP>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>laplacian(2*x</TT><CODE><TT>^</TT></CODE><TT>2*y-x*z</TT><CODE><TT>^</TT></CODE><TT>3,[x,y,z])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>4*y+-6*x*z</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>laplacian(4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[[2,-1,0,0],[-1,2,-1,0],[0,-1,2,-1],[0,0,-1,2]]</TT></DIV><HR>
 <A HREF="cascmd_fr668.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr670.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

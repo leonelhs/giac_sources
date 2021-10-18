@@ -6,31 +6,66 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Polynôme de Hermite : hermite</TITLE>
+<TITLE>Suites de Sturm : sturmseq</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr408.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr410.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc497">6.29.2</A>  Polynôme de Hermite : <TT>hermite</TT></H3><P><A NAME="@default754"></A>
-<TT>hermite</TT> a comme argument un entier <I>n</I> et èventuellement le 
-nom de la variable (<I>x</I> par défaut).<BR>
-<TT>hermite</TT> renvoie le polynôme de Hermite de degré <I>n</I>.<BR>
-Le polynôme de Hermite de degré <I>n</I> noté <I>P</I>(<I>n</I>,<I>x</I>) vérifie les relations
-:<BR>
-<I>P</I>(0,<I>x</I>)=1<BR>
-<I>P</I>(1,<I>x</I>)=2<I>x</I><BR>
-<I>P</I>(<I>n</I>,<I>x</I>)=2<I>xP</I>(<I>n</I>−1,<I>x</I>)−2(<I>n</I>−1)<I>P</I>(<I>n</I>−2,<I>x</I>)<BR>
-Ces polynômes sont orthogonaux pour le produit scalaire :<BR>
-&lt;<I>f</I>,<I>g</I>&gt;=∫<SUB>−∞</SUB><SUP>+∞</SUP><I>f</I>(<I>x</I>)<I>g</I>(<I>x</I>)<I>e</I><SUP>−<I>x</I><SUP>2</SUP></SUP><I>dx</I><BR>
+<H3 CLASS="subsection"><A NAME="htoc497">6.29.17</A>  Suites de Sturm : <TT>sturmseq</TT></H3><P><A NAME="@default763"></A>
+<TT>sturmseq</TT> a comme paramètre une expression polynômiale <I>P</I> 
+ou une fraction rationnelle <I>P</I>/<I>Q</I>.<BR>
+<TT>sturmseq</TT> renvoie la liste des suites de Sturm et de leur multiplicité 
+pour <I>P</I> ou pour <I>P</I> et pour <I>Q</I>.<BR>
+La suite de sturm <I>R</I><SUB>1</SUB>,<I>R</I><SUB>2</SUB>,... est obtenue à partir du facteur <I>F</I>
+sans carré de <I>P</I>. Pour obtenir <I>F</I> à partir de la décomposition de <I>P</I>
+en facteurs premiers, on élimine les termes carrés et on 
+transforme les puissances impaires en puissances 1.<BR>
+<I>R</I><SUB>1</SUB> est l’opposé du reste de la division euclidienne de <I>F</I> par <I>F</I>′ puis, <I>R</I><SUB>2</SUB> est l’opposé du reste de la division euclidienne de <I>F</I>′ par <I>R</I><SUB>1</SUB><BR>
+....<BR>
+et ainsi de suite jusqu’à ce que <I>R</I><SUB><I>k</I></SUB>=0.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>hermite(6)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>sturmseq(2*x</TT><CODE><TT>^</TT></CODE><TT>3+2)</TT></DIV><P>
+ou 
+</P><DIV CLASS="center"><TT>sturmseq(2*y</TT><CODE><TT>^</TT></CODE><TT>3+2,y)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>64*x</TT><CODE><TT>^</TT></CODE><TT>6+-480*x</TT><CODE><TT>^</TT></CODE><TT>4+720*x</TT><CODE><TT>^</TT></CODE><TT>2-120</TT></DIV><P>On tape :
-</P><DIV CLASS="center"><TT>hermite(6,y)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>[2,[[1,0,0,1],[3,0,0],-9],1]</TT></DIV><P>
+Le premier terme donne le PGCD des coefficients du numérateur (ici 2), 
+le dernier terme donne le dénominateur (ici 1). Entre les deux on a la 
+suite des polynômes [<I>x</I><SUP>3</SUP>+1,3<I>x</I><SUP>2</SUP>,−9].<BR>
+On tape :
+</P><DIV CLASS="center"><TT>sturmseq((12*x</TT><CODE><TT>^</TT></CODE><TT>3+4)/(6*x</TT><CODE><TT>^</TT></CODE><TT>2+3),x)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>64*y</TT><CODE><TT>^</TT></CODE><TT>6+-480*y</TT><CODE><TT>^</TT></CODE><TT>4+720*y</TT><CODE><TT>^</TT></CODE><TT>2-120</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[4,[[3,0,0,1],[9,0,0],-81],3,[[2,0,1],[4,0],-16]]</TT></DIV><P>
+Le premier terme donne le PGCD des coefficients du numérateur (ici 4),
+puis la suite de Sturm du numérateur ([[3,0,0,1],[9,0,0],-81]), puis le 
+le PGCD des coefficient du dénominateur (ici 3), et la suite de Sturm du 
+dénominateur ([[2,0,1],[4,0],-16]). 
+On a la suite des polynômes [3<I>x</I><SUP>3</SUP>+1,9<I>x</I><SUP>2</SUP>, −81] pour le numérateur et,
+[2<I>x</I><SUP>2</SUP>+1,4<I>x</I>,−16] pour le dénominateur.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>sturmseq((x</TT><CODE><TT>^</TT></CODE><TT>3+1)</TT><CODE><TT>^</TT></CODE><TT>2,x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,1]</TT></DIV><P>
+En effet les termes carrés sont éliminés et <I>F</I>=1.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>sturmseq(3*(3*x</TT><CODE><TT>^</TT></CODE><TT>3+1)/(2*x+2),x)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[3,[[3,0,0,1],[9,0,0],-81],2,[[1,1],1]]</TT></DIV><P>
+Le premier terme donne le PGCD des coefficients du numérateur 
+(ici <TT>3</TT>),<BR>
+le deuxième terme donne la suite de polynômes (ici 
+<TT>3x</TT><CODE><TT>^</TT></CODE><TT>3+1, 9x</TT><CODE><TT>^</TT></CODE><TT>2, -81</TT>),<BR>
+le troisième terme donne le PGCD des coefficients du dénominateur (ici 
+<TT>2</TT>),<BR>
+le quatrième terme indique la suite de polynômes du dénominateur 
+(<TT>x+1,1</TT>).<BR>
+<B>Attention!!!!</B><BR>
+ <I>P</I> doit être donné par son expression symbolique et,si on tape :<BR>
+<TT>sturmseq([1,0,0,1],x)</TT>,<BR>
+on obtient :<BR>
+<TT>Bad argument type</TT>.</P><HR>
 <A HREF="cascmd_fr408.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr410.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

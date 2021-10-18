@@ -6,27 +6,261 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Union de deux ensembles ou de deux listes : union</TITLE>
+<TITLE>Pour fabriquer une séquence ou une liste : seq $</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr492.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr494.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc592">6.40.3</A>  Union de deux ensembles ou de deux listes : <TT>union</TT></H3><P><A NAME="@default876"></A>
-<TT>union</TT> renvoie l’ensemble qui est l’union de deux ensembles ou 
-de deux listes.<BR>
- <TT>union</TT> est un opérateur infixé.<BR>
-On tape : 
-</P><DIV CLASS="center"><TT>set[1,2,3,4] union set[5,6,3,4]</TT></DIV><P>
-Ou on tape : 
-</P><DIV CLASS="center"><TT>% {1,2,3,4% } union % {5,6,3,4% }</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc592">6.40.5</A>  Pour fabriquer une séquence ou une liste : <TT>seq $</TT></H3><P><A NAME="@default882"></A><A NAME="@default883"></A><A NAME="sec:seq"></A>
+<TT>seq</TT> peut renvoyer une séquence (avec la même syntaxe que
+<TT>Maple</TT>) ou une liste (avec la même syntaxe que <TT>TI</TT>) selon la forme 
+de ses arguments qui sont : une expression dépendant d’un paramètre (par 
+exemple <I>j</I>) et des paramètres décrivant la variation de <I>j</I>.<BR>
+<TT>$</TT> renvoie toujours une séquence et c’est la version infixée de 
+<TT>seq</TT> lorsque <TT>seq</TT> a comme arguments : une expression dépendant 
+d’un paramètre (par exemple <I>j</I>) et (<I>j</I>=<I>a</I>..<I>b</I>) où <I>a</I> et <I>b</I> sont des 
+nombres réels (par exemple <TT>j</TT><CODE><TT>^</TT></CODE><TT>2$ (j=-1..3)</TT>).<BR>
+Mais lorsque <TT>seq</TT> a comme arguments une expression constante et un nombre
+<I>n</I> <TT>seq</TT> renvoie une liste (par exemple <TT>seq(4,3)</TT> renvoie 
+<TT>[4,4,4]</TT>) alors que <TT>4$3</TT> renvoie la séquence <TT>(4,4,4)</TT>.<BR>
+<TT>seq</TT> a deux, quatre ou cinq arguments car on peut exprimer
+la variation de <I>j</I> de <I>a</I> à <I>b</I> avec un seul argument (<I>j</I>=<I>a</I>..<I>b</I>) (avec la 
+syntaxe <TT>Maple</TT> où il n’y a pas la possibilité de mettre un paramètre
+de saut) ou avec trois arguments (<I>j</I>,<I>a</I>,<I>b</I>) 
+ou avec quatre arguments (<I>j</I>,<I>a</I>,<I>b</I>,<I>p</I>) (syntaxe <TT>TI</TT>
+avec la possibilité de mettre <I>p</I> comme paramètre de saut).
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+<B>Syntaxe</B> simplifiée <TT>Xcas</TT><BR>
+Si <TT>seq</TT> a <B>deux</B> arguments un intervalle de réels <I>a</I>..<I>b</I> et un réel <I>p</I> (le pas)
+<TT>seq</TT> renvoie la liste des réels entre <I>a</I> et <I>b</I> par pas de <I>p</I>.<BR>
+ <TT>$</TT> a les même arguments mais est une fonction infixée et 
+il faut parenthéser les arguments.<BR>
+On tape :
+<DIV CLASS="center"><TT>seq(1..3,0.2)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>(1..3)$0.2</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT><B>[</B></TT><TT>1,2,3,4,5,6</TT><TT><B>]</B></TT></DIV><P>
-On tape : 
-</P><DIV CLASS="center"><TT>[1,2,3] union [2,5,6]</TT></DIV><P>
+<DIV CLASS="center"><TT>(1,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0)</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>seq(1..3,2/10)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>(1..3)$(2/10)</TT></DIV>
 On obtient :
-</P><DIV CLASS="center"><TT><B>[</B></TT><TT>1,2,3,5,6</TT><TT><B>]</B></TT></DIV><HR>
+<DIV CLASS="center"><TT>(1,6/5,7/5,8/5,9/5,2,11/5,12/5,13/5,14/5,3)</TT></DIV>
+Pour avoir une liste il suffit de rajouter des crochets :<BR>
+On tape :
+<DIV CLASS="center"><TT>[seq(1..3,0.2)</TT>]</DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>[(1..3)$0.2]</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0]</TT></DIV>
+Si <TT>seq</TT> a <B>deux ou quatre</B> arguments une expression dépendant d’un 
+paramètre (par exemple <I>j</I>) et <I>j</I>=<I>a</I>..<I>b</I> où <I>a</I> et <I>b</I> sont des nombres 
+réels <TT>seq</TT> renvoie la liste obtenue en remplacant <I>j</I> par <I>a</I>, 
+<I>a</I>+1..<I>b</I> si <I>b</I>&gt;<I>a</I> dans l’expression et par <I>a</I>, <I>a</I>−1..<I>b</I> si <I>b</I>&lt;<I>a</I>.<BR>
+On tape :<BR>
+<DIV CLASS="center"><TT>seq(2k+1,k=0..6)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>seq(2k+1,k,0,6)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,3,5,7,9,11,13]</TT></DIV>
+Dans ce cas, on peut ajouter un troisième ou un cinquième argument, 
+le pas (qui vaut par défaut 1 ou -1).<BR>
+On tape :<BR>
+<DIV CLASS="center"><TT>seq(2k+1,k=0..6,2)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>seq(2k+1,k,0,6,2)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,5,9,13]</TT></DIV>
+Si <TT>seq</TT> a <B>trois</B> arguments :<BR>
+une expression dépendant d’une variable, le nom de cette variable et une liste.<BR>
+<TT>seq(expression,variable,liste)</TT> équivaut à :<BR>
+<TT>map(liste,unapply(expression,variable))</TT><P><BR>
+<TT>$</TT> a les même arguments mais est une fonction infixée et 
+il faut parenthéser les arguments.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>seq(1..3,0.2)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>(1..3)$0.2</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>seq(2k+1,k=0..2)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>(2k+1)$(k=0..2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,3,5]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>seq(2k+1,k=0..6,2)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>seq(2k+1,k=(0..6)$2)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>(2k+1)$(k=0..6,2)</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>(2k+1)$(k=(0..6)$2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,5,9,13]</TT></DIV></LI><LI CLASS="li-itemize"><B>Syntaxe</B> compatible <TT>Maple</TT><BR>
+Si <TT>seq</TT> a comme arguments une expression constante et un nombre <I>n</I>, 
+<TT>seq</TT> renvoie la liste formée par <I>n</I> fois la constante : par exemple 
+<TT>seq(4,3)</TT> renvoie la liste
+<TT>[4,4,4]</TT> alors que <TT>4$3</TT> renvoie la séquence <TT>(4,4,4)</TT>.<BR>
+Si <TT>seq</TT> a comme arguments une expression dépendant d’un 
+paramètre (par exemple <I>j</I>) et <I>j</I>=<I>a</I>..<I>b</I> où <I>a</I> et <I>b</I> sont des nombres 
+réels <TT>seq</TT> renvoie la séquence obtenue en remplacant <I>j</I> par <I>a</I>, 
+<I>a</I>+1..<I>b</I> si <I>b</I>&gt;<I>a</I> dans l’expression et par <I>a</I>, <I>a</I>−1..<I>b</I> si <I>b</I>&lt;<I>a</I> : par 
+exemple <TT>seq(2k+1,k=0..3)</TT> renvoie <TT>(1,3,5,7)</TT> et <TT>seq(2k+1,k=3..0)</TT>
+renvoie <TT>(7,5,3,1)</TT>. Dans ce cas, on peut ajouter un troisième argument, 
+le pas (qui vaut par défaut 1 ou -1) : par exemple <TT>seq(2k+1,k=0..6,2)</TT> 
+renvoie <TT>(1,5,9,13)</TT>.<BR>
+<TT>$</TT> a les même arguments mais est une fonction infixée et 
+il faut parenthéser les arguments et le pas (qui vaut par défaut 1 ou -1) 
+doit être précédé de $ : par exemple <TT>(2k+1)$(k=0..3)</TT> renvoie 
+<TT>(1,3,5,7)</TT> et <TT>(2k+1)$(k=(0..6)$2</TT> renvoie <TT>(1,5,9,13)</TT>.<BR>
+On tape :
+<DIV CLASS="center"><TT>seq(0.4,5)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>0.4$5</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(0.4,0.4,0.4,0.4,0.4)</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>seq(t,5)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>t$5</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(t,t,t,t,t)</TT></DIV>
+<B>Attention</B> si <TT>t</TT> est une séquence il faut évaluer le résultat 
+à l’aide de la commande <TT>eval</TT>, par exemple :<BR>
+On tape :
+<DIV CLASS="center"><TT>t:=(1,2,3)</TT></DIV>
+<DIV CLASS="center"><TT>eval(seq(t,4))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[1,2,3,1,2,3,1,2,3,1,2,3]</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>eval(t$4)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(1,2,3,1,2,3,1,2,3,1,2,3)</TT></DIV>
+Lorsque le 2ième argument est de la forme <TT>k=a..b</TT>
+On tape :
+<DIV CLASS="center"><TT>seq(2*k+1,k=1..5)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>(2*k+1)$(k=1..5)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(3,5,7,9,11)</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>seq(2*k+1,k=1..10,2)</TT></DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>(2*k+1)$(k=(1..10$2))</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>(3,7,11,15,19)</TT></DIV>
+Pour avoir une liste il suffit de rajouter des crochets :<BR>
+On tape :
+<DIV CLASS="center"><TT>[seq(2*k+1,k=1..5)]</TT>]</DIV>
+Ou on tape :
+<DIV CLASS="center"><TT>[(2*k+1)$(k=1..5)]</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>[3,5,7,9,11]</TT></DIV></LI><LI CLASS="li-itemize"><B>Syntaxe</B> compatible <TT>TI</TT><BR>
+Si <TT>seq</TT> a quatre arguments une expression dépendant d’un 
+paramètre (par exemple <I>j</I>), le nom du paramètre (par exemple <I>j</I>), puis 
+<I>a</I> et <I>b</I> où <I>a</I> et <I>b</I> sont des nombres réels. <TT>seq</TT> définit la 
+liste obtenue en remplaçant dans l’expression <I>j</I> par <I>a</I>, <I>a</I>+1..<I>b</I> si 
+<I>b</I>&gt;<I>a</I> ou par <I>a</I>, <I>a</I>−1..<I>b</I> si <I>b</I>&lt;<I>a</I>).<BR>
+ Si <TT>seq</TT> a cinq arguments une expression dépendant d’un 
+paramètre (par exemple <I>j</I>), le nom du paramètre (par exemple <I>j</I>), puis 
+<I>a</I> et <I>b</I> (où <I>a</I> et <I>b</I> sont des nombres réels) et <I>p</I> le pas (où <I>p</I> 
+est un nombre réel positif ou négatif).<BR>
+<TT>seq</TT> définit la liste obtenue en remplaçant dans l’expression <I>j</I> 
+par <I>a</I>, <I>a</I>+<I>p</I>..<I>a</I>+<I>k</I>*<I>p</I> (<I>a</I>+<I>k</I>*<I>p</I> ≤ <I>b</I> &lt;<I>a</I>+(<I>k</I>+1)*<I>p</I> ou 
+<I>a</I>+<I>k</I>*<I>p</I> ≥ <I>b</I>&gt; <I>a</I>+(<I>k</I>+1)*<I>p</I>). Par défaut, on a <I>p</I>=1 si <I>b</I>&gt;<I>a</I> et <I>p</I>=-1 si 
+<I>b</I>&lt;<I>a</I>. Si <I>p</I> n’a pas le bon signe, ce signe est rectifié par le logiciel!<BR>
+</LI></UL><P>
+<B>Remarque</B> :<BR>
+ Dans la syntaxe <TT>Maple</TT>, <TT>seq</TT> renvoie une séquence et il n’y a pas 
+la possibilité de mettre un paramètre de saut, contrairement à la syntaxe
+<TT>TI</TT> où <TT>seq</TT> renvoie une liste avec 
+la possibilité de mettre un paramètre de saut.<BR>
+On tape pour avoir une liste d’éléments identiques :
+</P><DIV CLASS="center"><TT>seq(t,4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[t,t,t,t]</TT></DIV><P>
+Ou on tape pour avoir une séquence d’éléments identiques : 
+</P><DIV CLASS="center"><TT>seq(t,k=1..4)</TT></DIV><P>
+Ou on tape
+</P><DIV CLASS="center"><TT>t$4</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>(t,t,t,t)</TT></DIV><P>
+<B>Attention</B> si <TT>t</TT> est une séquence il faut évaluer le résultat 
+à l’aide de la commande <TT>eval</TT>, par exemple :<BR>
+On tape :
+</P><DIV CLASS="center"><TT>t:=(1,2,3)</TT></DIV><DIV CLASS="center"><TT>eval(seq(t,4))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,2,3,1,2,3,1,2,3,1,2,3]</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>eval(t$4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>(1,2,3,1,2,3,1,2,3,1,2,3)</TT></DIV><P>
+On tape pour avoir une séquence :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j=1..4)</TT></DIV><P>
+Ou on tape 
+</P><DIV CLASS="center"><TT>(j</TT><CODE><TT>^</TT></CODE><TT>3)$(j=1..4)</TT></DIV><P> 
+On obtient :
+</P><DIV CLASS="center"><TT>(1,4,9,16)</TT></DIV><P>
+Ou on tape pour avoir une liste :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,1,4)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,4,9,16]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,0,5,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[0,8,64]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,5,0,-2)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,5,0,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[125,27,1]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,1,3,0.5)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,3.375,8,15.625,27]</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>seq(j</TT><CODE><TT>^</TT></CODE><TT>3,j,1,3,1/2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1,27/8,8,125/8,27]</TT></DIV><P>
+<B>Exemples d’utilisation</B>
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+On tape pour avoir la dérivée troisième de ln(<I>t</I>) :
+<DIV CLASS="center"><TT>diff(log(t),t$3)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>-((-(2*t))/t</TT><CODE><TT>^</TT></CODE><TT>4)</TT></DIV>
+On tape :
+<DIV CLASS="center"><TT>l:=[[2,3],[5,1],[7,2]]</TT></DIV>
+<DIV CLASS="center"><TT>seq((l[k][0])$(l[k][1]),k=0 .. size(l)-1)</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>2,2,2,seq[5],7,7</TT></DIV>
+<DIV CLASS="center"><TT>2,2,2,5,7,7</TT></DIV>
+</LI><LI CLASS="li-itemize">On tape pour transformer une chaîne en la liste de ces caractères :
+<DIV CLASS="center"><TT>f(chn):={
+local l;
+l:=size(chn);
+return seq(chn[j],j,0,l-1);
+}</TT></DIV>
+puis,
+<DIV CLASS="center"><TT>f("abracadabra")</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>["a","b","r","a","c","a","d","a","b","r","a"]</TT></DIV>
+</LI><LI CLASS="li-itemize">On tape pour transformer une chaîne en la séquence de ces caractères :
+<DIV CLASS="center"><TT>f(chn):={
+local l;
+l:=size(chn);
+return seq(chn[j],j,0..l-1);
+}</TT></DIV>
+puis,
+<DIV CLASS="center"><TT>f("abracadabra")</TT></DIV>
+On obtient :
+<DIV CLASS="center"><TT>("a","b","r","a","c","a","d","a","b","r","a"]))</TT></DIV>
+</LI></UL><HR>
 <A HREF="cascmd_fr492.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr494.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

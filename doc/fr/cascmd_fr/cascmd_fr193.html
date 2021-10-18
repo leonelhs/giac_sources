@@ -6,20 +6,59 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Les arrangements : perm nPr</TITLE>
+<TITLE>Les coefficients binomiaux et valeur de Proba(X=k) quand X suit la loi B(n,p) : binomial</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr192.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr194.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc260">6.8.3</A>  Les arrangements : <TT>perm nPr</TT></H3><P><A NAME="@default349"></A><A NAME="@default350"></A>
-<TT>perm</TT> ou <TT>nPr</TT> a comme paramètre deux entiers <I>n</I> et <I>p</I>.<BR>
-<TT>perm(n,p)</TT> ou <TT>nPr(n,p)</TT> calcule <I>A</I><SUB><I>n</I></SUB><SUP><I>p</I></SUP>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc260">6.8.3</A>  Les coefficients binomiaux et valeur de Proba(<I>X</I>=<I>k</I>) quand <I>X</I> suit la loi <I>B</I>(<I>n</I>,<I>p</I>) : <TT>binomial</TT></H3><P><A NAME="@default349"></A>
+On a <TT>binomial(n,k)=comb(n,k)</TT> lorsque <TT>n</TT> et <TT>k</TT> sont deux 
+entiers positifs mais <TT>binomial</TT> peut admettre un paramètre 
+supplémentaire <TT>p</TT> compris entre 0 et 1 et dans ce cas 
+<TT>binomial(n,k,p)</TT> ou
+<TT>binomial(n,p,k)</TT> calcule :
+<I>C</I><SUB><I>n</I></SUB><SUP><I>k</I></SUP>*<I>p</I><SUP><I>k</I></SUP>*(1−<I>p</I>)<SUP><I>n</I>−<I>k</I></SUP> si 0≤ <I>p</I> ≤ 1.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>perm(5,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>binomial(5,2,0.6)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>20</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.2304</TT></DIV><P>
+Mais si on tape :
+</P><DIV CLASS="center"><TT>comb(5,2,0.6)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>comb(5,2,0.6) Erreur: Type Argument Incorrect</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>assume(p&gt;=0 and p&lt;=1);</TT></DIV><DIV CLASS="center"><TT>binomial(5,2,p)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>binomial(5,p,2)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>10*p</TT><CODE><TT>^</TT></CODE><TT>2*(1-p)</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>assume(p&gt;=0 and p&lt;=1);</TT></DIV><DIV CLASS="center"><TT>binomial(n,k,p)</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>binomial(n,p,k)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>10*p</TT><CODE><TT>^</TT></CODE><TT>2*(1-p)</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><P>
+<B>Remarque : relation avec </B><B><TT>binomial_cdf</TT></B><BR>
+On tape :
+</P><DIV CLASS="center"><TT>binomial(4,2,0.5)</TT></DIV><P>
+ou
+</P><DIV CLASS="center"><TT>binomial(4,0.5,2)</TT></DIV><P>
+On obtient, Proba(<I>X</I>=2) quand <I>X</I> suit la loi <I>B</I>(4,0.5) :
+</P><DIV CLASS="center"><TT>0.375</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>binomial_cdf(4,0.5,2,2)</TT></DIV><P>
+On obtient , Proba(2≤ <I>X</I>≤ 2) quand <I>X</I> suit la loi <I>B</I>(4,0.5) :
+</P><DIV CLASS="center"><TT>0.375</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>binomial(4,2,0.5)+binomial(4,1,0.5)+binomial(4,0,0.5)</TT></DIV><P>
+On obtient Proba(0≤ <I>X</I>≤ 2) quand <I>X</I> suit la loi <I>B</I>(4,0.5) :
+</P><DIV CLASS="center"><TT>0.6875</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>binomial_cdf(4,0.5,2)</TT></DIV><P>
+On obtient Proba(0≤ <I>X</I>≤ 2) quand <I>X</I> suit la loi <I>B</I>(4,0.5) :
+</P><DIV CLASS="center"><TT>0.6875</TT></DIV><HR>
 <A HREF="cascmd_fr192.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr194.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

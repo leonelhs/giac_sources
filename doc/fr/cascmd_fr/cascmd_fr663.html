@@ -6,27 +6,49 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Le potentiel : potential</TITLE>
+<TITLE>Procédé de Gramschmidt : gramschmidt</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr662.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr664.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc781">6.59.6</A>  Le potentiel : <TT>potential</TT></H3><P><A NAME="@default1200"></A>
-<TT>potential</TT> a deux arguments : un vecteur <I>V</I> 
-de ℝ<SUP><I>n</I></SUP> dépendant de <I>n</I> variables et le vecteur constitué du nom 
-de ces variables.<BR>
-<TT>potential</TT> renvoie une fonction <I>U</I> telle que <FONT COLOR=red><I>G</I></FONT><I>rad</I>(<I>U</I>)=<I>V</I> si bien sûr, cela est possible ! On dit alors que 
-<I>V</I> dérive du potentiel <I>U</I>.<BR>
-La solution générale est la somme d’une solution particulière et d’une 
-constante.<BR>
-On sait qu’un vecteur <I>V</I> est un gradient si et seulement si son rotationnel est nul : autrement dit si <TT>curl(V)=0</TT>.<BR>
-<TT>potential</TT> est la fonction réciproque de <TT>derive</TT>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc781">6.59.5</A>  Procédé de Gramschmidt : <TT>gramschmidt</TT></H3><P><A NAME="@default1204"></A>
+<TT>gramschmidt</TT> a un ou deux paramètres : 
+</P><UL CLASS="itemize"><LI CLASS="li-itemize">
+une matrice vue comme une liste de vecteurs lignes, 
+le produit scalaire ètant le produit scalaire canonique, ou
+</LI><LI CLASS="li-itemize">un vecteur contenant la base d’un espace vectoriel et une fonction qui 
+définit un produit scalaire.<BR>
+</LI></UL><P>
+<TT>gramschmidt</TT> donne une base orthonormale par rapport à ce produit 
+scalaire.<BR>
 On tape :
-</P><DIV CLASS="center"><TT>potential([2*x*y+3,x</TT><CODE><TT>^</TT></CODE><TT>2-4*z,-4*y],[x,y,z]) </TT></DIV><P>
+</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]]))</TT></DIV><P>
+Ou on tape :
+</P><DIV CLASS="center"><TT>normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]],dot))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>2*y*x</TT><CODE><TT>^</TT></CODE><TT>2/2+3*x+(x</TT><CODE><TT>^</TT></CODE><TT>2-4*z-2*x</TT><CODE><TT>^</TT></CODE><TT>2/2)*y</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>[[(sqrt(3))/3,(sqrt(3))/3,(sqrt(3))/3],
+[(-(sqrt(6)))/6,(-(sqrt(6)))/6,(sqrt(6))/3],
+[(-(sqrt(2)))/2,(sqrt(2))/2,0]]</TT></DIV><P>
+<B>Exemple</B><BR>
+Pour les polynômes de degré &lt;<I>n</I>, on considère le produit scalaire 
+défini par : 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>.<I>Q</I>=</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left"><BR>
+<BR>
+</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">−1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>P</I>(<I>x</I>).<I>Q</I>(<I>x</I>)<I>dx</I> </TD></TR>
+</TABLE><P>
+On tape :
+</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],(p,q)-&gt;integrate(p*q,x,-1,1))</TT></DIV><P>
+Ou on écrit la fonction <TT>p_scal</TT>, on tape :<BR>
+<TT>p_scal(p,q):=integrate(p*q,x,-1,1)</TT><BR>
+et on tape :
+</P><DIV CLASS="center"><TT>gramschmidt([1,1+x],p_scal)</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>[1/(sqrt(2)),(1+x-1)/sqrt(2/3)]</TT></DIV><HR>
 <A HREF="cascmd_fr662.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr664.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

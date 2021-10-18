@@ -6,96 +6,64 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>La fonction Γ : Gamma</TITLE>
+<TITLE>La fonction erf : erf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr217.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr219.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc287">6.10.13</A>  La fonction Γ : <TT>Gamma</TT></H3><P><A NAME="@default386"></A>
-<TT>Gamma</TT> a comme argument 1 ou 2 arguments.<BR>
-Avec 1 argument : un nombre réel <I>a</I>.<BR>
-<TT>Gamma</TT> calcule les valeurs de la fonction Γ au point <I>a</I>.<BR>
+<H3 CLASS="subsection"><A NAME="htoc287">6.10.11</A>  La fonction <I>erf</I> : <TT>erf</TT></H3><P><A NAME="@default386"></A>
+<TT>erf</TT> a comme argument un nombre <I>a</I>.<BR>
+<TT>erf</TT> calcule les valeurs de la fonction <I>erf</I> au point <I>a</I>.<BR>
 On a par définition :<BR>
-Si <I>a</I> est un réel strictement positif ,
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">Γ(<I>a</I>)=</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+∞</TD></TR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>erf</I>(<I>x</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>π</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>x</I></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><BR>
 <BR>
 </TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>a</I>−1</SUP><I>dt</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>e</I><SUP>−<I>t</I><SUP>2</SUP></SUP><I>dt</I></TD></TR>
 </TABLE><P>
-car ∫<SUB>0</SUB><SUP>+∞</SUP><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>a</I>−1</SUP><I>dt</I> est convergente si <I>a</I>&gt;0,<BR>
-et si <I>a</I> est un réel strictement négatif on définit Γ(<I>a</I>) en 
-utilisant la formule : 
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">Γ(<I>a</I>)=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">Γ(<I>a</I>+1)</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>a</I></TD></TR>
-</TABLE></TD></TR>
+On a : </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>erf</I>(+∞)=1</TD></TR>
+</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>erf</I>(−∞)=−1</TD></TR>
 </TABLE><P>
-Par exemple on a :<BR>
-Γ(0.7)=1.29805533265=−0.3*Γ(−0.3)=−0.3*−1.3*Γ(−1.3)<BR>
-<B>Remarques</B><BR>
-Si <I>a</I> est un entier negatif ou nul, on a Γ(<I>a</I>)=+∞.<BR>
-On a pour <I>n</I> ∈ ℕ : Γ(<I>n</I>+1)=<I>n</I>! car :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">Γ(1)=1</TD></TR>
-</TABLE><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">Γ(<I>n</I>+1)=<I>n</I>*Γ(<I>n</I>)</TD></TR>
-</TABLE><P>
-et ainsi :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">Γ(<I>n</I>+1)=<I>n</I>!</TD></TR>
-</TABLE><P>
-On tape :
-</P><DIV CLASS="center"><TT>Gamma(5)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>24</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>Gamma(1/2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>sqrt(pi)</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>Gamma(0.7)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>1.29805533265</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>Gamma(-0.3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>-4.32685110883</TT></DIV><P>
-En effet : <TT>Gamma(0.7)=-0.3*Gamma(-0.3)</TT><BR>
-On tape :
-</P><DIV CLASS="center"><TT>Gamma(-1.3)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>3.32834700679</TT></DIV><P>
-En effet :<BR>
- <TT>Gamma(0.7)=-0.3*Gamma(-0.3)=(-0.3)*(-1.3)*Gamma(-1.3)</TT><BR>
-
-Avec 2 arguments : les nombres <I>a</I> et <I>b</I>≥ 0.<BR>
-<TT>Gamma(a,b)</TT> calcule les valeurs de la fonction γ supérieure qui 
-a aussi comme nom <TT>ugamma</TT>.<BR>
-On a par définition :<BR>
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">Γ(<I>a</I>,<I>b</I>)=</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+∞</TD></TR>
+En effet on sait que :<BR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">+∞</TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><BR>
 <BR>
 </TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><I>b</I></TD></TR>
-</TABLE></TD><TD CLASS="dcell"><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>a</I>−1</SUP><I>dt</I>,  si   <I>b</I>≥ 0</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
+</TABLE></TD><TD CLASS="dcell"><I>e</I><SUP>−<I>t</I><SUP>2</SUP></SUP><I>dt</I>=</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
+<TR><TD ALIGN=center NOWRAP>π</TD></TR>
+</TABLE></TD></TR>
+</TABLE></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
+</TABLE></TD></TR>
 </TABLE><P>
 On tape :
-</P><DIV CLASS="center"><TT>Gamma(3,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>erf(1)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>10/exp(2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.84270079295</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>Gamma(3.,2)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>erf(1/(sqrt(2)))*1/2+0.5</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1.35335283237</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>Gamma(-1.3,2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.0142127568837</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>Gamma(1.3,2.5)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.118686060676</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.841344746069</TT></DIV><P>
+<B>Remarque</B><BR>
+Il y a une relation entre les fonctions <TT>erf</TT> et <TT>normal_cdf</TT> :<BR>
+<TT>normal_cdf</TT>(<I>x</I>)=1/2+1/2<TT>erf</TT>(<I>x</I>/√<SPAN style="text-decoration:overline">2</SPAN>)<BR>
+En effet :<BR>
+normal_cdf(<I>x</I>)=1/2+1/√<SPAN style="text-decoration:overline">2π</SPAN>∫<SUB>0</SUB><SUP><I>x</I></SUP><I>e</I><SUP>−<I>t</I><SUP>2</SUP>/2</SUP><I>dt</I><BR>
+donc avec le changement de variables <I>t</I>=<I>u</I>* √<SPAN style="text-decoration:overline">2</SPAN> on a :<BR>
+normal_cdf(<I>x</I>)=1/2+1/√<SPAN style="text-decoration:overline">π</SPAN>∫<SUB>0</SUB><SUP><I>x</I>/√<SPAN style="text-decoration:overline">2</SPAN></SUP><I>e</I><SUP>−<I>u</I><SUP>2</SUP></SUP><I>du</I>=1/2+1/2erf(<I>x</I>/√<SPAN style="text-decoration:overline">2</SPAN>)<BR>
+On vérifie en tapant :<BR>
+<TT>normal_cdf(1)=0.841344746069</TT></P><HR>
 <A HREF="cascmd_fr217.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr219.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -184,7 +184,7 @@ namespace xcas {
     Xcas_Increasing_power->value(false);
     Xcas_Angle_radian->value(true);
     Xcas_Approx_mode->value(false);
-    Xcas_Autosimplify->value("regroup");
+    Xcas_Autosimplify->value("1");
     do_scientific_format=0; Xcas_Float_style_output->value("standard");
     do_integer_format=10; Xcas_Integer_style_output->value("10"); 
     do_max_recursion_level=100;Xcas_recursion_level->value(do_max_recursion_level);
@@ -333,7 +333,7 @@ namespace xcas {
     o->align(68|FL_ALIGN_INSIDE);
     }
     { Fl_Input* o = Xcas_Autosimplify = new Fl_Input(175, 205, 55, 25, gettext("autosimplify"));
-    o->tooltip(gettext("Command automatically executed after evaluation (auto-simplification) for example nop or regroup or simplify"));
+    o->tooltip(gettext("Command automatically executed after evaluation (auto-simplification), type 0 for nothing, 1 for regroup and 2 for simplify"));
     o->value("regroup");
     }
     { Fl_Check_Button* o = Xcas_Angle_radian = new Fl_Check_Button(240, 75, 100, 25, gettext("radian"));
@@ -486,7 +486,11 @@ or default eval level)"));
     Xcas_Increasing_power->value(giac::increasing_power(contextptr));
     Xcas_Angle_radian->value(giac::angle_radian(contextptr));
     Xcas_Approx_mode->value(giac::approx_mode(contextptr));
-    Xcas_Autosimplify->value(giac::autosimplify(contextptr).c_str());
+    string s=unlocalize(giac::autosimplify(contextptr));
+    if (s=="'nop'" || s=="Nop") s="0";
+    if (s=="'regroup'" || s=="regroup") s="1";
+    if (s=="'simplify'" || s=="simplify") s="2";
+    Xcas_Autosimplify->value(s.c_str());
     Xcas_sqrt->value(giac::withsqrt(contextptr));
     Xcas_all_trig_sol->value(giac::all_trig_sol(contextptr));
     Xcas_Set_Digits->value(giac::decimal_digits(contextptr));

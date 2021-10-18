@@ -6,33 +6,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Tableau de valeurs des termes d’une suite : tablefunc table_fonction</TITLE>
+<TITLE>Évaluer une primitive : preval</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr281.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr283.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc356">6.15.1</A>  Tableau de valeurs des termes d’une suite : <TT>tablefunc table_fonction</TT></H3><P><A NAME="@default467"></A><A NAME="@default468"></A>
-<TT>tablefunc</TT> ou <TT>table_fonction</TT> est une commande qui s’utilise à 
-l’intérieur d’un tableur (que l’on ouvre avec <TT>Alt+t</TT>) et qui .<BR>
-remplit deux colonnes donnant la table des valeurs d’une fonction.<BR>
-<TT>tablefunc(ex,n,n0,1)</TT>, où <TT>ex</TT> est une expression
-dépendant de <TT>n</TT>, remplira le tableur avec
-les valeurs de la suite <I>u</I><SUB><I>n</I></SUB>=<I>ex</I> pour <I>n</I>=<I>n</I>0, <I>n</I>0+1, <I>n</I>0+2,.....</P><P><B>Exemple</B> : Affichage des valeurs de <I>u</I><SUB><I>n</I></SUB>=sin(<I>n</I>)
-On ouvre un tableur avec <TT>Alt+t</TT>.<BR>
-Puis, on sélectionne une case du tableur (par exemple <TT>C0</TT>) et on tape 
-dans la ligne de commande du tableur : 
-</P><DIV CLASS="center"><TT>tablefunc(sin(n),n,0,1)</TT></DIV><P>
+<H3 CLASS="subsection"><A NAME="htoc355">6.14.26</A>  Évaluer une primitive : <TT>preval</TT></H3><P><A NAME="@default468"></A>
+<TT>preval</TT> a trois paramètres : une expression <TT>F(x)</TT> dépendant de la variable <TT>x</TT>, et deux expressions <TT>a</TT> et <TT>b</TT>.<BR>
+<TT>preval</TT> effectue <TT>F(b)-F(a)</TT>.<BR>
+ <TT>preval</TT> est utile pour calculer une intégrale définie à partir 
+d’une primitive : on calcule une primitive, puis on évalue cette primitive entre les deux bornes de l’intégrale.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>preval(x</TT><CODE><TT>^</TT></CODE><TT>2+x,2,3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>deux colonnes : </TT><TT>n</TT><TT> et </TT><TT>sin(n)</TT></DIV><UL CLASS="itemize"><LI CLASS="li-itemize">
-dans la colonne <TT>n</TT> il y a la valeur du pas (qui doit être égal 
-à 1) et la valeur de <TT>n0</TT> (ici 0), puis une formule <TT>C2+C$1</TT> 
-qui a été recopiée vers le bas.</LI><LI CLASS="li-itemize">dans la colonne <TT>sin(n)</TT> il y a <TT>"Tablefunc"</TT>, puis une formule
-qui a été aussi recopiée vers le bas.<BR>
-Les valeurs de la suite <TT><I>u</I></TT><SUB><TT><I>n</I></TT></SUB><TT>=</TT><TT>sin</TT><TT>(<I>n</I>)</TT> s’affichent alors en face des 
-<TT>n</TT> correspondants à partir de <TT>n=n0</TT> (ici 0).
-</LI></UL><HR>
+</P><DIV CLASS="center"><TT>6</TT></DIV><HR>
 <A HREF="cascmd_fr281.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr283.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

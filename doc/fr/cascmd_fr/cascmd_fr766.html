@@ -6,35 +6,25 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Densité de probabilité de la loi de Fisher-Snédécor : fisher fisherd snedecor snedecord</TITLE>
+<TITLE>Fonction de répartition inverse de Poisson : poisson_icdf</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr765.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr767.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc905">8.4.23</A>  Densité de probabilité de la loi de Fisher-Snédécor : <TT>fisher fisherd snedecor snedecord</TT></H3><P><A NAME="@default1368"></A><A NAME="@default1369"></A><A NAME="@default1370"></A><A NAME="@default1371"></A>
-<TT>fisher(n1,n2,x)</TT> ou <TT>snedecor(n1,n2,x)</TT> est a densité
-de probabilité de la loi de Fisher-Snédécor ayant <TT>n1,n2</TT> degrés
-de liberté.<BR>
-<TT>fisher(n1,n2,x)</TT>, vaut pour <I>x</I>≥ 0 :<BR>
- <I>n</I>1/<I>n</I>2<SUP><I>n</I>1/2</SUP>Γ(<I>n</I>1+<I>n</I>2/2)/Γ(<I>n</I>1/2)Γ(<I>n</I>2/2)<I>x</I><SUP><I>n</I>1−2/2</SUP>(1+(<I>n</I>1/<I>n</I>2) <I>x</I>)<SUP>−<I>n</I>1−<I>n</I>2/2</SUP><BR>
-où Γ est définie pour <I>x</I>&gt;0 par 
-Γ(<I>x</I>)=∫<SUB>0</SUB><SUP>∞</SUP><I>e</I><SUP>−<I>t</I></SUP><I>t</I><SUP><I>x</I>−1</SUP> <I>dt</I><BR>
+<H3 CLASS="subsection"><A NAME="htoc906">8.4.10</A>  Fonction de répartition inverse de Poisson : <TT>poisson_icdf</TT></H3><P><A NAME="@default1375"></A>
+Lorsqu’une variable aléatoire <I>X</I> suit une loi de Poisson de 
+paramètre <TT>mu</TT>, c’est à dire de moyenne <TT>mu</TT> et d’écart-type 
+<TT>mu</TT>, on a :<BR>
+<TT>poisson_icdf(mu,t)</TT>= <I>h</I> équivaut à<BR>
+<I>Proba</I>(<I>X</I>≤ <I>h</I>)=<TT>t= poisson_cdf(mu,h)</TT> avec <I>X</I>∈ <FONT COLOR=red><I>P</I></FONT>(<I>mu</I>).<BR>
+<TT>poisson_icdf(mu,t)</TT> est l’inverse de la fonction de répartition de 
+la loi de Poisson de paramètre <TT>mu</TT>,
 On tape :
-</P><DIV CLASS="center"><TT>fisher(5,3,2.5)</TT></DIV><P>
-Oo on tape :
-</P><DIV CLASS="center"><TT>snedecor(5,3,2.5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>poisson_icdf(10.0,0.975)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.10131184472</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>fisher(4,2,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>8/27</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>fisher(4,2,1)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>8/27</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.125110035721</TT></DIV><HR>
 <A HREF="cascmd_fr765.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr767.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

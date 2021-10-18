@@ -6,32 +6,23 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Pour substituer plus simplement une valeur à une variable dans une expression : ()</TITLE>
+<TITLE>Substituer une valeur à une variable : |</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr275.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr277.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc349">6.14.22</A>  Pour substituer plus simplement une valeur à une variable dans une expression : <TT>()</TT></H3><P><A NAME="@default461"></A>
-Lorsque l’on veut donner dans une expression de plusieurs variables (par 
-exemple <TT>Expr:=x+2y+3z</TT>) une valeur à certaines variables (par exemple 
-<TT>x,y</TT>) on peut le faire de différentes façons.
-On tape par exemple <TT>xpr:=x+2y+3z</TT>, puis :
-On utilise <TT>subst</TT>, on tape :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>subst(subst(Expr,x=1),y=2)</TT> 
-</LI><LI CLASS="li-itemize"><TT>subst(Expr,[x=1,y=2])</TT> 
-</LI><LI CLASS="li-itemize"><TT>subst(Expr,[x,y],[1,2])</TT> 
-</LI></UL><P>
-On n’utilise pas <TT>subst</TT> mais une écriture simplifiée proche d’une
-écriture fonctionnelle :
-</P><UL CLASS="itemize"><LI CLASS="li-itemize">
-<TT>Expr(x=1,y=2)</TT> 
-</LI><LI CLASS="li-itemize"><TT>Expr([x,y],[1,2])</TT> 
-</LI></UL><P>
-On obtient dans tous les cas :
-<TT>5+3*z</TT></P><HR>
+<H3 CLASS="subsection"><A NAME="htoc349">6.14.20</A>  Substituer une valeur à une variable : <TT>|</TT></H3><P><A NAME="@default461"></A>
+<TT>|</TT> est une fonction infixée qui substitue des valeurs à des variables : <TT>|</TT> a deux arguments : une expression dependant d’un paramètre et une égalité (paramètre=valeur de substitution,paramètre=valeur de substitution,... ) .
+On tape :
+</P><DIV CLASS="center"><TT>a</TT><CODE><TT>^</TT></CODE><TT>2+1|a=2</TT></DIV><P> 
+On obtient même si la variable <TT>a</TT> est affectée :
+</P><DIV CLASS="center"><TT>5</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>a</TT><CODE><TT>^</TT></CODE><TT>2+b|a=2,b=3</TT></DIV><P> 
+On obtient même si les variables <TT>a</TT> et <TT>b</TT> sont affectées :
+</P><DIV CLASS="center"><TT>7</TT></DIV><HR>
 <A HREF="cascmd_fr275.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr277.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,47 +6,26 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Fonction de répartition de la loi de Weibull : weibull_cdf weibulld_cdf</TITLE>
+<TITLE>Densité de probabilité de la loi géométrique : geometric</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr788.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr790.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc928">8.4.46</A>  Fonction de répartition de la loi de Weibull : <TT>weibull_cdf weibulld_cdf</TT></H3><P><A NAME="@default1406"></A><A NAME="@default1407"></A>
-Lorsqu’une variable aléatoire <I>X</I> à valeur dans ℝ<SUP>+</SUP> suit une 
-loi de Weibull de paramètres réels <I>k</I>,λ strictement positifs et 
-θ positif ou nul (par défaut θ=0), on a :<BR>
-<I>Proba</I>(<I>X</I> ≤ <I>x</I>)= <TT>weibull_cdf(k,lambda,theta,x)</TT> avec <I>x</I>∈ ℝ<SUP>+</SUP>.<BR>
-<I>Proba</I>(<I>x</I>≤ <I>X</I>≤ <I>y</I>)=<TT>weibull_cdf(k,lambda,theta,x,y)</TT> avec <I>x</I>∈ ℝ<SUP>+</SUP> 
-et <I>y</I>∈ ℝ<SUP>+</SUP>.<BR>
-On a :<BR>
-<TT>weibull_cdf(k,lambda,theta,x)</TT> est égale à 
- 1−exp(−(<I>x</I>−θ/λ)<SUP><I>k</I></SUP>) et<BR>
-<TT>weibull_cdf(k,lambda,theta,x,y)</TT> est égale à :<BR>
- exp(−(<I>x</I>−θ/λ)<SUP><I>k</I></SUP>)−exp(−(<I>y</I>−θ/λ)<SUP><I>k</I></SUP>)<BR>
+<H3 CLASS="subsection"><A NAME="htoc929">8.4.33</A>  Densité de probabilité de la loi géométrique : <TT>geometric</TT></H3><P><A NAME="@default1408"></A>
+<TT>geometric</TT> a 2 paramètres : un réel <I>p</I> de ]0,1[ et un 
+entier <I>n</I>≥ 1.<BR>
+<TT>geometric(p,n)</TT> renvoie la densité de probabilité de la loi 
+géométrique à savoir : (1−<I>p</I>)<SUP><I>n</I>−1</SUP>*<I>p</I><BR>
 On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2,3,5)</TT></DIV><P>
-Ou on tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2,3,0,5)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>geometric(0.2,3)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>1-exp(-25/9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>0.128</TT></DIV><P>
 On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2,3,1.9)</TT></DIV><P>
+</P><DIV CLASS="center"><TT>geometric(0.5,5)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>0.330424340391</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2.2,1.5,0.4,1.9)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.632120558829</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2.2,1.5,0.4,1.2)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.221853318885</TT></DIV><P>
-On tape :
-</P><DIV CLASS="center"><TT>weibull_cdf(2.2,1.5,0.4,1.2,1.9)</TT></DIV><P>
-On obtient :
-</P><DIV CLASS="center"><TT>0.410267239944</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>0.03125</TT></DIV><HR>
 <A HREF="cascmd_fr788.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr790.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

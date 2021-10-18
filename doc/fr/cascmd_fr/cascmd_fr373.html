@@ -6,25 +6,43 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Factorisation sans facteur carré : sqrfree</TITLE>
+<TITLE>PGCD des coefficients d’un polynôme : content</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr372.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr374.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc459">6.27.19</A>  Factorisation sans facteur carré : <TT>sqrfree</TT></H3><P><A NAME="@default702"></A>
-<TT>sqrfree</TT> a comme paramètre un polynôme.<BR>
-<TT>sqrfree</TT> factorise ce polynôme en regroupant les termes ayant
-même exposant.<BR>
-On tape : 
-</P><DIV CLASS="center"><TT>sqrfree((x</TT><CODE><TT>^</TT></CODE><TT>2-1)*(x-1)*(x+2))</TT></DIV><P> 
+<H3 CLASS="subsection"><A NAME="htoc460">6.28.15</A>  PGCD des coefficients d’un polynôme : <TT>content</TT></H3><P><A NAME="@default710"></A>
+<TT>content</TT> a comme arguments un polynôme <TT>P</TT> donné sous 
+forme symbolique ou par la liste de ses coefficients et le nom de la variable 
+(par défaut c’est <I>x</I>).<BR>
+<TT>content</TT> désigne le PGCD (plus grand commun diviseur) des coefficients 
+du polynôme <TT>P</TT>.<BR>
+On tape :
+</P><DIV CLASS="center"><TT>content(6*x</TT><CODE><TT>^</TT></CODE><TT>2-3*x+9)</TT></DIV><P>
+ou on tape :
+</P><DIV CLASS="center"><TT>content(6*t</TT><CODE><TT>^</TT></CODE><TT>2-3*t+9,t)</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+3*x+2)*(x-1)</TT><CODE><TT>^</TT></CODE><TT>2</TT></DIV><P> 
-On tape : 
-</P><DIV CLASS="center"><TT>sqrfree((x</TT><CODE><TT>^</TT></CODE><TT>2-1)</TT><CODE><TT>^</TT></CODE><TT>2*(x-1)*(x+2)</TT><CODE><TT>^</TT></CODE><TT>2)</TT></DIV><P> 
+</P><DIV CLASS="center"><TT>3</TT></DIV><P> 
+ou on tape :
+</P><DIV CLASS="center"><TT>content([6,-3,9]))</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>(x</TT><CODE><TT>^</TT></CODE><TT>2+3*x+2)*(x-1)</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>poly1[3]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>content(6*x</TT><CODE><TT>^</TT></CODE><TT>2*(y</TT><CODE><TT>^</TT></CODE><TT>3-y)-3*x*(y</TT><CODE><TT>^</TT></CODE><TT>3-1)+9*(y-1))</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3*y-3</TT></DIV><P> 
+ou on tape :
+</P><DIV CLASS="center"><TT>content([6*(y</TT><CODE><TT>^</TT></CODE><TT>3-y),-3*(y</TT><CODE><TT>^</TT></CODE><TT>3-1),9*(y-1)])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>poly1[3*y-3]</TT></DIV><P> 
+On tape :
+</P><DIV CLASS="center"><TT>content(6*x</TT><CODE><TT>^</TT></CODE><TT>2*(y</TT><CODE><TT>^</TT></CODE><TT>3-y)-3*x*(y</TT><CODE><TT>^</TT></CODE><TT>3-1)+9*(y-1),y)</TT></DIV><P>
+ou:
+</P><DIV CLASS="center"><TT>content([3x,0,6*x</TT><CODE><TT>^</TT></CODE><TT>2+9,-9-3x])</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>3</TT></DIV><HR>
 <A HREF="cascmd_fr372.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr374.html"><IMG SRC="next_motif.gif" ALT="Next"></A>

@@ -6,20 +6,34 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META name="GENERATOR" content="hevea 1.10">
 <LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE>Instruction du debuggeur : kill</TITLE>
+<TITLE>Pour utiliser une chaîne comme nom de commande : expr</TITLE>
 </HEAD>
 <BODY >
 <A HREF="cascmd_fr854.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr856.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
 <HR>
-<H3 CLASS="subsection"><A NAME="htoc1003">9.7.7</A>  Instruction du debuggeur : <TT>kill</TT></H3><P><A NAME="@default1542"></A>
-<TT>kill</TT> n’a pas d’argument.<BR>
-<TT>kill()</TT> est une instruction du debuggeur et permet de sortir du debuggeur.<BR>
+<H3 CLASS="subsection"><A NAME="htoc1002">9.5.6</A>  Pour utiliser une chaîne comme nom de commande : <TT>expr</TT></H3><P><A NAME="@default1561"></A><A NAME="sec:expr"></A>
+<TT>expr</TT> permet d’utiliser une chaîne de caractères comme une 
+commande.<BR>
+<TT>expr</TT> est surtout utile dans un programme.<BR>
+<TT>expr</TT> a comme argument une chaîne de caractères pouvant être 
+interprétée comme une commande (ou le nom d’une 
+variable qui contient une chaîne ou une expression renvoyant une chaîne).<BR>
+<TT>expr</TT> transforme la chaîne en une expression, puis évalue cette 
+expression :<BR>
+pour faire une affectation, on ne doit pas écrire <TT>expr("a"):=2</TT>, mais on
+doit écrire <TT>expr("a:=2")</TT> (voir aussi <TT>expr</TT> <A HREF="cascmd_fr853.html#sec:diese">9.5.4</A>)<BR>
 On tape :
-</P><DIV CLASS="center"><TT>kill()</TT></DIV><P>
+</P><DIV CLASS="center"><TT>expr("c:=1")</TT></DIV><P>
 On obtient :
-</P><DIV CLASS="center"><TT>on sort du débuggeur</TT></DIV><HR>
+</P><DIV CLASS="center"><TT>La variable c contient 1</TT></DIV><P>
+On tape :
+</P><DIV CLASS="center"><TT>a:="ifactor(54)";expr(a)</TT></DIV><P>
+ou :
+</P><DIV CLASS="center"><TT>expr("ifactor(54)")</TT></DIV><P>
+On obtient :
+</P><DIV CLASS="center"><TT>2*3</TT><CODE><TT>^</TT></CODE><TT>3</TT></DIV><HR>
 <A HREF="cascmd_fr854.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
 <A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
 <A HREF="cascmd_fr856.html"><IMG SRC="next_motif.gif" ALT="Next"></A>
