@@ -1,7 +1,9 @@
 # smith
-1 Renvoie la forme normale de Smith d'une matrice a coefficients polynomiaux (U,D,V tels que U*A*V=D)
-2 Returns the Smith normal form of a polynomial coefficients matrix (U,D,V tels que U*A*V=D)
-0 Matr(A)
+1 Calcule la forme normale de Smith d'une matrice a coefficients polynomiaux :renvoie U,D,V tels que tels que U et V inversibles, D  diagonale et U*A*V=D.
+2 Smith normal form of a matrix with  polynomial coefficients : returns U,D,V such that U and V invertible, D diagonal, and U*A*V=D.
+3 Calcula la forma normal de Smith de una matriz a coeficientes polominos: devuelve U,B,V tales que U y V invertibles, D diagonal, y D=U*A*V.
+4 Υπολογίζει την κανονική μορφή Smith ενός πίνακα με συντελεστές πολυώνυμα : επιστρέφει U, D, V, τέτοια ώστε U και V αντιστρέψιμα, D διαγώνιος, και D=U*A*V.
+0 Mtrx(A)
 -1 hermite
 -2 ismith
 -3 ihermite
@@ -21,7 +23,7 @@ wz_certificate((a+k)!*(b+k)!*(c+n-k-a-b-1)!/(k+1)!/(n-k)!/(c+k)!,(a-1)!*(b-1)!*(
 
 # keep_algext
 1 Laisse les extensions algébriques telles quelles (keep_algext:=1) ou tente de les réécrire (keep_algext:=0).
-2 Pseudo-variable to keep algebraic extensions (keep_algext:=1) or try to rewrite them (keep_algext:=0)
+2 Pseudo-variable to keep algebraic extensions (keep_algext:=1) or try to rewrite them (keep_algext:=0).
 0 :=Intg(0 or 1)
  keep_algext:=1
 
@@ -820,7 +822,7 @@ odd(1251)
  assume(a,integer)
  a:=2;type(a)
 
-# DOM_SYMBOLIC symbol
+# DOM_SYMBOLIC symbol expression
 1 DOM_SYMBOLIC ou symbol représente le type d'une variable symbolique, valeur de la commande type. C'est aussi une option de assume.
 2 DOM_SYMBOLIC or symbol is the type of a symbolic variable, as returned by the type command. It is also an option of the assume command.
 3 DOM_SYMBOLIC o symbol representa el tipo de una variable simbólica, valor del comando type o es una opción del comando assume.
@@ -835,11 +837,11 @@ odd(1251)
  a:=sqrt(2);type(a)
  type(2x+1)
 
-# DOM_IDENT
-1 DOM_IDENT représente le type d'un identificateur, valeur de la commande type. C'est aussi une option de assume.
-2 DOM_IDENT is the type of an identifier, as returned by the type command. It is also an option of the assume command.
-3 DOM_IDENT representa el tipo de un identificador, valor del comando type o es una opción del comando assume.
-4 DOM_IDENT είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας ????? μεταβλητής, είναι η τιμή της εντολής type ή Επιλογή της εντολής assume.
+# DOM_IDENT identifier
+1 DOM_IDENT ou identifier représente le type d'un identificateur, valeur de la commande type. C'est aussi une option de assume.
+2 DOM_IDENT or identifier is the type of an identifier, as returned by the type command. It is also an option of the assume command.
+3 DOM_IDENT o identifier representa el tipo de un identificador, valor del comando type o es una opción del comando assume.
+4 DOM_IDENT ή identifier είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας ????? μεταβλητής, είναι η τιμή της εντολής type ή Επιλογή της εντολής assume.
 0 Opt
 -1 type
 -2 assume
@@ -847,11 +849,11 @@ odd(1251)
 -4 DOM_FLOAT
  purge(a);type(a)
 
-# DOM_LIST
-1 DOM_LIST représente le type d'une liste ou d'une séquence, valeur de la commande type. C'est aussi une option de assume.
-2 DOM_LIST is the type of a list or of a sequence, as returned by the type command. It is also an option of the assume command.
-3 DOM_LIST representa el tipo de una lista o de una secuencia, valor del comando type o es una opción del comando assume.
-4 DOM_LIST είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας ?????? μεταβλητής, είναι η τιμή της εντολής type ή Επιλογή της εντολής assume.
+# DOM_LIST vector
+1 DOM_LIST ou vector représente le type d'une liste ou d'une séquence, valeur de la commande type. C'est aussi une option de assume.
+2 DOM_LIST or vector is the type of a list or of a sequence, as returned by the type command. It is also an option of the assume command.
+3 DOM_LIST o vector representa el tipo de una lista o de una secuencia, valor del comando type o es una opción del comando assume.
+4 DOM_LIST ή vector είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας ?????? μεταβλητής, είναι η τιμή της εντολής type ή Επιλογή της εντολής assume.
 0 Opt
 -1 type
 -2 assume
@@ -861,11 +863,11 @@ odd(1251)
  a:=[1,2,3];type(a)
  a:=1,2,3;type(a)
 
-# DOM_STRING
-1 DOM_STRING représente le type d'une chaîne de caractères, valeur de la commande type. C'est aussi une option de assume.
-2 DOM_STRING is the type of a string, as returned by the type command. It is also an option of the assume command.
-3 DOM_STRING representa el tipo de una cadena de caracteres, valor del comando type o es una opción del comando assume.
-4 DOM_STRING είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας ?????? μεταβλητής, είναι η τιμή της εντολής type ή Επιλογή της εντολής assume.
+# DOM_STRING string
+1 DOM_STRING ou string représente le type d'une chaîne de caractères, valeur de la commande type. C'est aussi une option de assume.
+2 DOM_STRING or string is the type of a string, as returned by the type command. It is also an option of the assume command.
+3 DOM_STRING o string representa el tipo de una cadena de caracteres, valor del comando type o es una opción del comando assume.
+4 DOM_STRING ή string είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας ?????? μεταβλητής, είναι η τιμή της εντολής type ή Επιλογή της εντολής assume.
 0 Opt
 -1 type
 -2 assume
@@ -888,11 +890,11 @@ odd(1251)
  assume(a,DOM_COMPLEX)
  a:=1+i;type(a)
 
-# DOM_FUNC
-1 DOM_FUNC représente le type d'une fonction, valeur de la commande type. C'est aussi une option de assume.
-2 DOM_FUNC is the type of a function, as returned by the type command. It is also an option of the assume command.
-3 DOM_FUNC representa el tipo de una función, valor del comando type o es una opción del comando assume.
-4 DOM_FUNC είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας???????? μεταβλητής, είναι η τιμή της εντολής type ή Επιλογή της εντολής assume.
+# DOM_FUNC func
+1 DOM_FUNC ou func représente le type d'une fonction, valeur de la commande type. C'est aussi une option de assume.
+2 DOM_FUNC or func is the type of a function, as returned by the type command. It is also an option of the assume command.
+3 DOM_FUNC o func representa el tipo de una función, valor del comando type o es una opción del comando assume.
+4 DOM_FUNC ή func είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας???????? μεταβλητής, είναι η τιμή της εντολής type ή Επιλογή της εντολής assume.
 0 Opt
 -1 type
 -2 assume
@@ -904,10 +906,10 @@ odd(1251)
  type(factor)
 
 # DOM_RAT rational
-1 DOM_RAT rational représente le type d'un rationnel, valeur de la commande type. C'est aussi une option de assume.
-2 DOM_RAT rational is the type of a rational, as returned by the type command. It is also an option of the assume command.
-3 DOM_RAT rational reprasenta el tipo de un racional, valor del comando type o es una opción del comando assume.
-4 DOM_RAT rational είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας ?????? μεταβλητής, είναι η τιμή της εντολής type.
+1 DOM_RAT ou rational représente le type d'un rationnel, valeur de la commande type. C'est aussi une option de assume.
+2 DOM_RAT or rational is the type of a rational, as returned by the type command. It is also an option of the assume command.
+3 DOM_RAT o rational reprasenta el tipo de un racional, valor del comando type o es una opción del comando assume.
+4 DOM_RAT ή rational είναι ένας ακέραιος αριθμός που εκφράζει τον τύπο μιας ?????? μεταβλητής, είναι η τιμή της εντολής type.
 0 Opt
 -1 type
 -2 assume
@@ -1457,6 +1459,7 @@ assign([a1=1,a2=2,a3=3])
 4 Υπολογίζει την κανονική μορφή Smith ενός πίνακα με συντελεστές στο ℤ: επιστρέφει U, B, V, τέτοια ώστε U και V αντιστρέψιμα στο ℤ, B διαγώνιος, το B[j,j] διαιρεί το B[j+1,j+1] και Β=U*A*V.
 0 Mtrx(A)
 -1 ihermite
+-2 smith
 ismith([[9,-36,30],[-36,192,-180],[30,-180,180]])
 ismith([[1,2,3],[4,5,6],[7,8,9]])
 
@@ -11197,6 +11200,7 @@ max(25,35)
 -3 $
 makelist(x->x^2,1,10,2)
 makelist(4,1,10)
+makelist(4,5,10)
 makelist(x->ifte(x<5,"A","B"),1,10)
 
 # map
@@ -12556,6 +12560,8 @@ series(sin(x*y),[x,y],[1,pi/2],3)
 series(sin((1+h*t)*(pi/2+k*t)),t=0,3,polynom)(t=1)
 series(y^2/x^3,[x,y],[1,-1],3)
 series((-1+k*t)^2/(1+h*t)^3,t=0,3,polynom)(t=1)
+series(subst(sin(x+y)+cos(y*x),[x,y],h*[x,y]),h=0,6,polynom)
+series(subst(sin(x+y)+cos(y*x),[x,y],h*[x,y]),h=0,6,polynom)(h=1)
  truncate(series(sin(x),x=0,6),6)
 
 # select
@@ -13050,11 +13056,25 @@ sum(cos(n*x),n)
 2 Returns l without the element of index n.
 3 Devuelve l sin el elemento de índice n.
 4 Επιστρέφει την l χωρίς το στοιχείο με δείκτη n.
-0 Vect(l),Intg(n)
+0 Vect(l)||Str(l),Intg(n)
 -1 tail
 -2 mid
 -3 remove
+-4 insert
 suppress([0,1,2,3],2)
+suppress("0123",2)
+
+# insert
+1 Renvoie l dans laquelle l'élément b a été insérer à l'indice n.
+2 Returns l where the element b is of index n.
+3 Devuelve l donde el elemento b es de índice n.
+0 Vect(l)||Str(l),Intg(n),Val(b)
+-1 tail
+-2 mid
+-3 remove
+-4 suppress
+insert([0,1,2,3],2,5)
+insert("0123",2,"5")
 
 # svd
 1 Pour une matrice carrée numérique réelle A, renvoie U orthogonale, S vecteur des valeurs singulières, Q orthogonale tels que A=U*diag(S)*tran(Q).

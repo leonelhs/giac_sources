@@ -179,26 +179,26 @@ La syntaxe respecte les priorit\'es usuelles des
 op\'erateurs, attention il faut toujours saisir le signe \verb|*|
 pour effectuer une multiplication (sauf raccourcis dans l\'ecriture
 de mon\^omes comme \verb|2x|). Mettez des parenth\`eses en cas de doute.
-\giacinput{2x^3; x/2/y; x/(2*y);}
+\giacinputmath{2x^3; x/2/y; x/(2*y);}
 \item 
 Si on entre des donn\'ees exactes, les calculs sont exacts
-\giacinput{1/2-1/3}
+\giacinputmath{1/2-1/3}
 on peut alors convertir en approch\'e avec \verb|evalf|
-\giacinput{evalf(sin(1))}
+\giacinputmath{evalf(sin(1))}
 Si on entre au moins une donn\'ee approch\'ee (nombre avec point
 d\'ecimal), les calculs sont approch\'es
-\giacinput{1/2.0-1/3}
+\giacinputmath{1/2.0-1/3}
 Les nombres flottants peuvent \^etre saisis avec l\'ecriture standard
 mantisse/exposant s\'epar\'es par \verb|e|
-\giacinput{Avogadro:=6.02e23; eps:=1e-10;}
+\giacinputmath{Avogadro:=6.02e23; eps:=1e-10;}
 \item On peut stocker des r\'esultats dans des variables
 pour les r\'eutiliser ensuite
-\giacinput{a:=pi^2/6; evalf(a);}
+\giacinputmath{a:=pi^2/6; evalf(a);}
 On peut effacer le contenu d'une variable avec \verb|purge|, elle
 redevient alors libre (elle s'\'evalue en elle-m\^eme)
-\giacinput{purge(a); a;}
+\giacinputmath{purge(a); a;}
 Les noms de variable peuvent contenir plusieurs lettres
-\giacinput{xy/y; x*y/y;}
+\giacinputmath{xy/y; x*y/y;}
 \item Les noms de commande et mots-clefs du logiciel sont en g\'en\'eral
 affich\'es avec une couleur sp\'ecifique. Les menus permettent
 de trouver les commandes par th\`eme (menus Outils dans Xcas pour
@@ -7838,6 +7838,19 @@ pour la m\'ethode d'Euler explicite, $\Phi(t,y,h)=f(t,y)$, pour
 la m\'ethode d'Euler implicite, $\Phi$ s'obtient en r\'esolvant une 
 \'equation (par exemple avec la m\'ethode du point fixe, pour $h$
 suffisamment petit).
+\begin{giacprog}
+fonction Euler(f,t0,t1,N,y0)
+  // y'=f(t,y) avec f(t0)=y0, calcul de f(t1)
+  local h,y,j;
+  h:=(t1-t0)/N; // pas
+  y:=evalf(y0);
+  pour j de 0 jusque N-1 faire
+    y += h*f(t0+j*h,y); // y(t+h)=y(t)+h*y'
+  fpour;
+  return y;
+ffonction:;
+\end{giacprog}
+\giacinput{f(t,y):=y; Euler(f,0,1,100,1)-exp(1);}
 
 Lorsqu'on compare la solution de l'équation et une valeur
 approchée obtenue par une méthode à un pas, il faut distinguer 

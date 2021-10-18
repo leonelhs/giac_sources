@@ -3355,10 +3355,8 @@ namespace xcas {
     // FIXME user_data()
     giac::kill_thread(true,context0);
   }
-#endif
 
   bool has_graph3d(Fl_Widget * widget){
-#ifdef HAVE_LIBFLTK
     Fl_Group * g=dynamic_cast<Fl_Group *>(widget);
     if (!g)
       return false;
@@ -3372,9 +3370,9 @@ namespace xcas {
       if (Graph3d * gr3=dynamic_cast<Graph3d * >(wid))
 	return true;
     }
-#endif
     return false;
   }
+#endif
 
   void quit_idle_function(void * widget){
     static int t=0;

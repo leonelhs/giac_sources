@@ -4693,7 +4693,7 @@ namespace xcas {
       if ( (f[0].type==_SYMB) && (f[0]._SYMBptr->sommet==at_curve) && (f[0]._SYMBptr->feuille.type==_VECT) && (f[0]._SYMBptr->feuille._VECTptr->size()) ){
 	// Mon_image.show_mouse_on_object=false;
 	point=f[0]._SYMBptr->feuille._VECTptr->back();
-	if (point.type==_VECT && point._VECTptr->size()>2){
+	if (type_line>=4 && point.type==_VECT && point._VECTptr->size()>2){
 	  vecteur v=*point._VECTptr;
 	  int vs=v.size()/2; // 3 -> 1
 	  if (Mon_image.findij(v[vs],x_scale,y_scale,i0,j0,contextptr) && Mon_image.findij(v[vs+1],x_scale,y_scale,i1,j1,contextptr)){
@@ -5785,7 +5785,7 @@ namespace xcas {
       Fl_Group::current(0);
       w=new Fl_Window(dx,dy);
       int l=spread_ptr->labelsize();
-      ltres = new Line_Type(2,2,l,l,_MAGENTA+_FILL_POLYGON);
+      ltres = new Line_Type(2,2,l,l,_MAGENTA+_CAP_FLAT_LINE);
       ltres->show_pnt(true);
       ltres->show_poly(true);
       do_plotfield= new Fl_Check_Button (l+2,2,dx/6-4-l,dy/lignes-4,"Field");

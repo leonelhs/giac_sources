@@ -10,6 +10,14 @@ Session_Xcas
 </title>
 
 <style>
+html {
+    background-color: #FFFFFF;
+}
+body {
+    color: black;
+    text-align: justify;
+    background-color: #FFFFFF;
+}
 .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
 canvas.emscripten { border: 1px solid black; }
 textarea.emscripten { font-family: monospace; width: 100%; }
@@ -1347,7 +1355,7 @@ id="add_diff"
       <input type="button" style="width:60px;height:35px"
   name="add_stats" id="add_stats" value="stats"
       onmousedown="event.preventDefault()"
-  onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;var mat=document.getElementById('assistant_matr');mat.style.display='block';mat.matr_formule.checked=false;mat.matr_formuleshadow.checked=true;document.getElementById('matr_type_chooser').style.display='none';document.getElementById('matr_stats').style.display='block';UI.assistant_matr_setdisplay();document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';document.getElementById('matr_testhyp').style.display='none';"
+  onClick="UI.kbdonfuncoff();UI.savefocused=UI.focused;var mat=document.getElementById('assistant_matr');mat.style.display='block';mat.matr_formule.checked=false;mat.matr_formuleshadow.checked=true;document.getElementById('matr_type_chooser').style.display='none';document.getElementById('matr_stats').style.display='block';UI.assistant_matr_setdisplay();document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';"
 >
 
       <input type="button" style="width:60px;height:35px"
@@ -1420,10 +1428,10 @@ id="add_debug"
   <input class="bouton" type="button" value="&eacute;l&eacute;ment par &eacute;l&eacute;ment" onclick="document.getElementById('assistant_matr').matr_formule.checked=false;document.getElementById('assistant_matr').matr_formuleshadow.checked=true;UI.assistant_matr_setdisplay();">
 </div>
 <div id="matr_stats" style="display:none">
-  <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='block';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='none';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='block';document.getElementById('matr_submat').style.display='block';" value="statistiques descriptives">
-  ou <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='none';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='block';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='block';document.getElementById('matr_submat').style.display='block';" value="inf&eacute;rentielles">
+  <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='block';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='none';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='block';document.getElementById('matr_submat').style.display='block';" value="statistiques descriptives">
   ou <input class="bouton" type="button"
-  onclick="document.getElementById('chooselawdiv').style.display='block';document.getElementById('matr_stat12').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';" value="intervalle de fluctuation">
+  onclick="document.getElementById('chooselawdiv').style.display='block';document.getElementById('matr_stat12').style.display='none';document.getElementById('matr_testhyp').style.display='none';document.getElementById('risque_alpha').style.display='block';document.getElementById('matr').style.display='none';document.getElementById('matr_matr').style.display='none';" value="intervalle de fluctuation">
+  ou <input class="bouton" type="button" onclick="document.getElementById('matr_stat12').style.display='none';document.getElementById('matr').style.display='block'; document.getElementById('matr_testhyp').style.display='block';document.getElementById('risque_alpha').style.display='block';document.getElementById('chooselawdiv').style.display='none'; document.getElementById('matr_matr').style.display='block';document.getElementById('matr_submat').style.display='block';" value="statistiques inf&eacute;rentielles">
 <div id="matr_stat12" style="display:none">
   <input class="bouton" type="checkbox" name="stat_mean">Moyenne,
   <input class="bouton" type="checkbox" name="stat_stddev">Ecart-type,
@@ -1435,9 +1443,11 @@ id="add_debug"
   <input class="bouton" type="checkbox" name="stat_polygonscatter" onclick="form.stat_cmax.value=form.stat_cmin.value+1;">reli&eacute;s,
   <input class="bouton" type="checkbox" name="stat_linreg" onclick="form.stat_cmax.value=form.stat_cmin.value+1;">R&eacute;gression lin&eacute;aire
 </div>
-<div id="matr_testhyp" style="display:none">
+<div id="risque_alpha" style="display:none">
   Risque &alpha;= <input class="bouton" type="text"
-  name="adequation_alpha" value=0.05 size=4>
+ id="adequation_alpha" name="adequation_alpha" value=0.05 size=4>
+</div>
+<div id="matr_testhyp" style="display:none">
   <ul>
     <li> Ad&eacute;quation data/data : 
     <strong>Chi2</strong> <input type="radio" onclick="UI.adequation(form)"
@@ -1457,7 +1467,7 @@ id="add_debug"
     (&sigma;=<input class="bouton" type="text"
     name="adequation_sigma" size=4> optionnel),
     <br>
-    <span title="Hypoth&egrave;se alternative a H0">H1 &lt;<input
+    <span title="Hypoth&egrave;se alternative a H0">Alternative H1 &lt;<input
     type="radio" name="adequation_alt" >,
     &ne;<input type="radio" name="adequation_alt" checked>,
     &gt;<input type="radio" name="adequation_alt"></span>
@@ -1465,20 +1475,22 @@ id="add_debug"
     <li>
     Intervalle de confiance :
     <strong>data</strong><input type="radio" onclick="UI.adequation(form)" name="adequation"
-    title="par la loi de Student">,
-    <strong>proportion</strong><input type="radio" name="adequation" onclick="UI.adequation(form)">
+    title="Intervalle calcul&eacute; par la loi de Student sur les donn&eacute;es des lignes et colonnes de la matrice m">,
+    <strong>proportion</strong><input type="radio" name="adequation"
+    onclick="UI.adequation(form)" title="Intervalle de confiance calcul&eacute; par la loi normale en supposant n*p et n*(1-p)>=5">
     (n=<input name="confiance_n" class="bouton" type="number" value=30
     min=30 step=1 title="Taille de la population. Pour n&gt;100, utilise sqrt(n/(n-1)*p*(1-p)) comme estimateur de l'ecart-type, sinon on majore par 0.5">&gt;30,
     p=<input name="confiance_p" class="bouton" type="number"
     title="Proportion dans l'&eacute;chantillon"
     value=0.5 min=0 max=1 step=0.001>),
-    <strong>&mu;&sigma;</strong><input type="radio" onclick="UI.adequation(form)" name="adequation">
+    <strong>&mu;&sigma;</strong><input type="radio"
+    onclick="UI.adequation(form)" name="adequation" title="Intervalle calcul&eacute par la loi de Student">
     (&mu;=<input name="confiance_mu" class="bouton" type="number"
-    title="Moyenne de l'&eacute;chantillon"
+    title="Moyenne de l'&eacute;chantillon" value=0
     step=0.001>, &sigma;=<input name="confiance_sigma" class="bouton" type="number"
-    step=0.001 min=0 title="Ecart-type de la population">
+    step=0.001 min=0 value=1 title="Ecart-type de la population">
     n=<input name="confiance_n_" class="bouton" type="number" value=30
-    min=30 step=1 title="par la loi de Student">)
+    min=30 step=1 >)
     </li>
   </ul>
 </div>
@@ -1559,7 +1571,7 @@ title="Entier k tel que 0&lt;=k&lt;n ou n&lt;k&lt;-n si n est n&eacute;gatif" va
 <div id="chooselawdiv" style="display:none">
   <form id="chooselawform">
   Loi actuelle <input class="bouton" type="text" id="rand_law" name="rand_law"
-title="Loi" value='uniform'>, param&egrave;tres optionnels
+title="Loi" value='normald'>, param&egrave;tres optionnels
 <input class="bouton" type="number" name="rand_law1" id="rand_law1"
 title="1er param&egrave;tre" value=0 step=0.01>  
 <input class="bouton" type="number" name="rand_law2" id="rand_law2"
@@ -2360,7 +2372,7 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
   assistant_tabvarparam_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_tabvar').style.display='none'; document.getElementById('assistant_tabvarparam').style.display='none'; var varname=document.getElementById('tabvarparamvarname').value; var exprx=document.getElementById('tabvarparamexprx').value ; var expry=document.getElementById('tabvarparamexpry').value ;var tmp=document.getElementById('tabvarparamnamex').value;if (tmp.length) tmp=tmp+':='+varname+'->'+exprx+';\n'+document.getElementById('tabvarparamnamey').value+':='+varname+'->'+expry+';\n';tmp=tmp+'tabvar(['+exprx+','+expry+'],'+varname+'='+document.getElementById('tabvarparamvarmin').value+'..'+document.getElementById('tabvarparamvarmax').value;var tmp1=document.getElementById('tabvarparamvarstep').value; if(tmp1.length) tmp=tmp+',tstep='+tmp1; tmp+=',plot)';UI.insert(UI.focused,tmp);},
   assistant_plotfunc1var_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_plotfunc').style.display='none'; document.getElementById('assistant_plotfunc1var').style.display='none'; var tmp='plotfunc('+document.getElementById('plotfuncexpr').value+','+document.getElementById('plotfuncvarname').value+','+document.getElementById('plotfuncvarmin').value+','+document.getElementById('plotfuncvarmax').value;var tmp1=document.getElementById('plotfuncvarstep').value; if(tmp1.length) tmp=tmp+',xstep='+tmp1; tmp+=')';UI.insert(UI.focused,tmp);},
   assistant_plotfunc2var_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_plotfunc').style.display='none'; document.getElementById('assistant_plotfunc2var').style.display='none'; var tmp='plotfunc('+document.getElementById('plotfunc2expr').value+',['+document.getElementById('plotfunc2varx').value+','+document.getElementById('plotfunc2vary').value+']';var tmp1=document.getElementById('plotfunc2varxstep').value; if(tmp1.length) tmp=tmp+',xstep='+tmp1;tmp1=document.getElementById('plotfunc2varystep').value; if(tmp1.length) tmp=tmp+',ystep='+tmp1; tmp+=')';UI.insert(UI.focused,tmp);},
-  assistant_plotparam_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_plotparam').style.display='none';document.getElementById('assistant_plotparam1var').style.display='none'; var tmp='plotparam(['+document.getElementById('plotparamexprx').value+','+document.getElementById('plotparamexpry').value+'],'+document.getElementById('plotparamvarname').value+','+document.getElementById('plotparamvarmin').value+','+document.getElementById('plotparamvarmax').value;var tmp1=document.getElementById('plotparamvarstep').value; if(tmp1.length) tmp=tmp+',tstep='+tmp1; tmp+=')';UI.insert(UI.focused,tmp);},
+  assistant_plotparam_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_plotparam').style.display='none';document.getElementById('assistant_plotparam1var').style.display='none'; var tmp='plotparam(['+document.getElementById('plotparamexprx').value+','+document.getElementById('plotparamexpry').value+'],'+document.getElementById('plotparamvarname').value+','+document.getElementById('plotparamvarmin').value+','+document.getElementById('plotparamvarmax').value;var tmp1=document.getElementById('plotparamvarstep').value; if(tmp1.length) tmp=tmp+',tstep='+tmp1; tmp+=',display=cap_flat_line)';UI.insert(UI.focused,tmp);},
   assistant_plotparam2var_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_plotparam').style.display='none';document.getElementById('assistant_plotparam2var').style.display='none'; var tmp='plotparam(['+document.getElementById('plotparam2exprx').value+','+document.getElementById('plotparam2expry').value+','+document.getElementById('plotparam2exprz').value+'],['+document.getElementById('plotparam2varx').value+','+document.getElementById('plotparam2vary').value+']';var tmp1=document.getElementById('plotparam2varxstep').value; if(tmp1.length) tmp=tmp+',ustep='+tmp1;tmp1=document.getElementById('plotparam2varystep').value; if(tmp1.length) tmp=tmp+',vstep='+tmp1; tmp+=')';UI.insert(UI.focused,tmp);},
   assistant_plotimplicit_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_plotimplicit').style.display='none'; var ctr=document.getElementById('plotimplicitlevel').value; var tmp=document.getElementById('plotimplicitexprf').value+',['+document.getElementById('plotimplicitvarx').value+','+document.getElementById('plotimplicitvary').value+']'; if(ctr.length) tmp='plotcontour('+tmp+','+ctr; else tmp='plotimplicit('+tmp; var tmp1=document.getElementById('plotimplicitvarxstep').value; if(tmp1.length) tmp=tmp+',xstep='+tmp1;tmp1=document.getElementById('plotimplicitvarystep').value; if(tmp1.length) tmp=tmp+',ystep='+tmp1; tmp+=')';UI.insert(UI.focused,tmp);},
   assistant_plotfield_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_plotfield').style.display='none'; var ctr=document.getElementById('plotfieldinit').value; var tmp=document.getElementById('plotfieldexprf').value+',['+document.getElementById('plotfieldvarx').value+','+document.getElementById('plotfieldvary').value+']'; if(ctr.length) tmp='plotfield('+tmp+',plotode='+ctr; else tmp='plotfield('+tmp; var tmp1=document.getElementById('plotfieldvarxstep').value; if(tmp1.length) tmp=tmp+',xstep='+tmp1;tmp1=document.getElementById('plotfieldvarystep').value; if(tmp1.length) tmp=tmp+',ystep='+tmp1; tmp+=')';UI.insert(UI.focused,tmp);},
@@ -2506,6 +2518,7 @@ var stat12=document.getElementById('matr_stat12').style.display!='none';
 var stathyp=document.getElementById('matr_testhyp').style.display!='none';
 document.getElementById('assistant_matr').style.display='none';
 document.getElementById('chooselawdiv').style.display='none';
+document.getElementById('risque_alpha').style.display='none';
 UI.focused=UI.savefocused;
 var tmp; 
 if (stats && !stat12 && !stathyp){
@@ -2516,8 +2529,8 @@ if (stats && !stat12 && !stathyp){
   if (form.rand_law2.style.display!='none')
     tmp += form.rand_law2.value+',';
   var alpha=0.05;
-  var alphaf=document.getElementById('fluctuat_alpha');
-  //console.log(alphaf.value);
+  var alphaf=document.getElementById('adequation_alpha');
+  //console.log(alphaf.value); return;
   if (alphaf.value.length) alpha=eval(alphaf.value);
   tmp = tmp+alpha/2+'),'+tmp+(1-alpha/2)+');';
   UI.insert(UI.focused,tmp);
