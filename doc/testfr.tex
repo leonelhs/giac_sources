@@ -33,22 +33,7 @@
 \fi
 
 \input{giacfr.tex}
-\usepackage[auto]{mathjax}
-\renewcommand{\jax@meta}{\begin{rawhtml}<script language="javascript"> 
-var ua = window.navigator.userAgent;  
-var old_ie = ua.indexOf('MSIE ');  
-var new_ie = ua.indexOf('Trident/');  
-if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
- (function () {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src  = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML";
-  document.getElementsByTagName("head")[0].appendChild(script);
-})();
-}
-</script>
-\end{rawhtml}}
-
+\giacmathjax
 
 \newtheorem{thm}{Théorème}
 \newtheorem{defn}[thm]{D\'efinition}
@@ -78,8 +63,8 @@ en HTML et PDF.}
 \begin{giacjshere}
 %\loadgiacjs
 %\loadgiacjsonline
-Un $x$
-$$ 1/2 $$
+%Un $x$
+%$$ 1/2 $$
  
 \maketitle
 
@@ -194,7 +179,19 @@ Ici on peut utiliser les caract\`eres \verb|<| et \verb|>|. Attention, il
 ne pas utiliser cet environement dans un autre environement (itemize,
 enumerate...).
 Si vous souhaitez que le programme soit interpr\'et\'e au chargement
-de la page HTML, utilisez \verb|giaconload| au lieu de \verb|giacprog|.
+de la page HTML, utilisez \verb|giaconload|\index{giaconload} 
+(ou \verb|giaconloadhide|\index{giaconloadhide}
+pour masquer l'entr\'ee)
+au lieu de \verb|giacprog|. Par exemple
+\verb|\begin{giaconloadhide}h(x):=x^3:;\end{giaconloadhide}|
+puis
+\verb|\begin{giaconload}plot(h(x),x=-1..1)\end{giaconload}|
+\begin{giaconloadhide}
+h(x):=x^3:;
+\end{giaconloadhide}
+\begin{giaconload}
+plot(h(x),x=-1..1);
+\end{giaconload}
 
 La commande \verb|\giacslider{}{}{}{}{}|
 permet de cr\'eer une variable

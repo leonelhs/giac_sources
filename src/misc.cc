@@ -511,6 +511,10 @@ namespace giac {
     if (v.size()!=2)
       return gentypeerr(contextptr);
     gen l=v.front(),i=v.back();
+    if (i.is_symb_of_sommet(at_deuxpoints))
+      return _suppress(makesequence(l,i[1],i[2]-1),contextptr);
+    if (i.is_symb_of_sommet(at_interval))
+      return _suppress(makesequence(l,i[1],i[2]),contextptr);
     int ii=0;
     if (i.type==_VECT){
       i=sortad(*i._VECTptr,false,contextptr);
@@ -1460,8 +1464,10 @@ namespace giac {
       vecteur sc(1,scalaire(gen(makevecteur(lv[0],lv[0]),_SEQ__VECT),contextptr));
       for (int i=1;i<s;++i){
 	gen cl;
-	for (int j=0;j<i;++j)
-	  cl=cl+rdiv(scalaire(gen(makevecteur(lv[i],lv[j]),_SEQ__VECT),contextptr),sc[j],contextptr)*lv[j];
+	for (int j=0;j<i;++j){
+	  gen tmp=rdiv(scalaire(gen(makevecteur(lv[i],lv[j]),_SEQ__VECT),contextptr),sc[j],contextptr)*lv[j];
+	  cl=cl+tmp;
+	}
 	lv[i]=lv[i]-cl;
 	sc.push_back(scalaire(gen(makevecteur(lv[i],lv[i]),_SEQ__VECT),contextptr));
       }
@@ -8652,7 +8658,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   void draw_filled_polygon(vector< vector<int> > &L,int xmin,int xmax,int ymin,int ymax,int color,GIAC_CONTEXT){
     int n=L.size();
     // close polygon if it is open
-    if (L[n-1]!=L[0])
+    if (!(L[n-1]==L[0]))
       L.push_back(L[0]);
     else
       n--;
@@ -8733,7 +8739,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   }
 
   void draw_polygon(vector< vector<int> > & v1,int color,GIAC_CONTEXT){
-    if (v1.back()!=v1.front())
+    if (!(v1.back()==v1.front()))
       v1.push_back(v1.front());
     int n=v1.size()-1;
     for (int i=0;i<n;++i){

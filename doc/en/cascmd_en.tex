@@ -23443,7 +23443,7 @@ point.
 A point in \texttt{Xcas} is specified with the
 \texttt{point} command (see section \ref{sec:2dpoint}), which takes as
 argument either two real numbers $a,b$ or a complex number $a + bi$.
-In this section, when a command take a point as an argument, the
+In this chapter, when a command take a point as an argument, the
 point can either be the result of the \texttt{point} command or 
 simply a complex number.
 
@@ -23470,9 +23470,10 @@ Output:
 \subsection{Clear the \texttt{DispG} screen: \texttt{erase}\index{erase}}
 
 The \texttt{DispG} screen records all graphic commands
-since the beginning of the session.  The \texttt{Alt-D} command (or
-the menu command \texttt{Cfg $\blacktriangleright$ Show
-$\blacktriangleright$ DispG}) brings up this screen.
+since the beginning of the session or the screen was last erased.  The
+\texttt{Alt-D} command (or the menu command \texttt{Cfg
+$\blacktriangleright$ Show $\blacktriangleright$ DispG}) brings up
+this screen. 
 
 The \texttt{erase} command clears the \texttt{DispG} screen without
 restarting the session.  Entering\\
@@ -23549,12 +23550,13 @@ vectors.
 \subsection{Draw dotted paper: \texttt{dot\_paper}\index{dot\_paper}}
 
 The \texttt{dot\_paper} command draws dotted paper.  This
-command takes three to five arguments; the first argument is
-the spacing in the $x$ direction, the second argument is the angle
-from the horizontal to draw the dots, and the third argument is the spacing
-in the $y$ direction.  By default, the dots extend in the $x$ and
-$y$ directions for the distances given in the graphic configuration
-page accessible from the main menu; the optional fourth and fifth
+command takes three mandatory arguments and two optional arguments.
+The first argument is the spacing in the $x$ direction, the second
+argument is the angle from the horizontal to draw the dots, and the
+third argument is the spacing in the $y$ direction.  By default, the
+dots extend in the $x$ and $y$ directions for the distances given in
+the graphic configuration page accessible from the main menu; the
+optional fourth and fifth 
 arguments \texttt{x=xmin..xmax} and \texttt{y=ymin..ymax} change the
 size of the dotted paper.\\
 Input:
@@ -23650,7 +23652,7 @@ individual objects.
 
 Graphical features are changed by giving appropriate values to
 certain parameters.  Several values can be given at once with an
-expression of the form \texttt{\textit{feature}=value1+value2+\dots}.
+expression of the form \texttt{\textit{feature} = value1 + value2 + \dots}.
 Some values can be set using optional arguments to graphic commands,
 which will set the feature locally; namely, it will only apply to that
 particular graphic object. Some values can be specified at the
@@ -23715,7 +23717,7 @@ Input:
 
     \item The names 
     \texttt{black}, \texttt{white}, \texttt{red}, \texttt{blue},
-    \texttt{green}, \texttt{magenta} \texttt{cyan} or \texttt{yellow}.
+    \texttt{green}, \texttt{magenta}, \texttt{cyan} or \texttt{yellow}.
   \end{itemize}
 
   \item[Fill] The \texttt{filled} value creates a solid object.\\
@@ -23813,7 +23815,7 @@ Output:
    \includegraphics[width=0.75\textwidth]{xcas-some-triangles.png}
 \end{center}
 
-The parameters for features and their possible values are:
+The parameters for global features and their possible values are:
 \begin{description}
   \item[\texttt{axes}]
   This determines whether axes are shown or hidden; a value of
@@ -23823,7 +23825,7 @@ The parameters for features and their possible values are:
   a list of two strings  \texttt{["\textit{x axis label}","\textit{y
   axis label}"]}.
   \item[\texttt{label}]
-  This puts a labels on the graphic screen in the following ways.
+  This puts labels on the graphic screen in the following ways.
   \begin{itemize}
     \item 
     To set the units on the axes, it can be a list of two or three strings,
@@ -24062,7 +24064,7 @@ prints $C$ with its label.
 
 Variables should be unspecified to demonstrate a general geometric
 result, but need to have specific values when drawing.  There are a
-couple of different approaches of dealing with this.
+couple of different approaches to deal with this.
 
 One approach is to use the \texttt{assume} command.  If a variable is 
 \emph{assumed} to have a value, then that value will be used in
@@ -24110,7 +24112,7 @@ If a point is defined and displayed, such as
 with \texttt{A := point(2.1 + i)}, then clicking on the name of the
 point (\texttt{A} in this case) with the right mouse button will bring
 up a configuration screen.  As long as there is a point defined with
-non-symbolic values, there sill be a \texttt{symb} box on the configuration
+non-symbolic values, there will be a \texttt{symb} box on the configuration
 screen.  Selecting the \texttt{symb} box and
 choosing \texttt{OK} will  be equivalent to the commands
 \texttt{assume(Ax=[2.1,-8.16901408451,8.16901408451])}
@@ -24137,7 +24139,7 @@ the points can be specified by a pair or by a complex number.
 See section \ref{sec:3dpoint} for points in space.
 
 In the 2-d geometry screen in point mode, clicking on a point with the
-left mouse button will choose that point.  Points chosen this are
+left mouse button will choose that point.  Points chosen this way are
 automatically named, first with \texttt{A}, then \texttt{B}, etc.  
 
 Alternatively, the \texttt{point} command chooses a point, where the
@@ -24196,7 +24198,7 @@ Input:
 assigns \texttt{A} to a random point.  Once assigned, the point
 is fixed.  The command can also take a sequence of names, and
 will assign separate random points to each name.  For example, to
-generate a random triangle, finding three random points\\
+generate a random triangle, first generate three random points\\
 Input:
 \begin{center}
   \tt
@@ -24209,7 +24211,8 @@ Input:
   triangle(A,B,C)
 \end{center}
 
-\subsection{Points in polar coordinates: \texttt{polar\_point}\index{polar\_point} \texttt{point\_polar}\index{point\_polar}}
+\subsection{Points in polar coordinates:
+\texttt{polar\_point}\index{polar\_point}, \texttt{point\_polar}\index{point\_polar}}
 
 To specify a point in polar coordinates, enter the polar
 representation of complex numbers.  For example, the command\\
@@ -24352,7 +24355,7 @@ given in three different ways.
   The first column of the matrix contains the points and the
   second column contains the corresponding weights.
   \item A matrix with two rows and more than two columns.\\
-  The first row contains the points and the second column the
+  The first row contains the points and the second row the
   corresponding weights.
 \end{enumerate}
 
@@ -24404,7 +24407,8 @@ Output:
   \includegraphics[width=0.75\textwidth]{xcas-center.png}
 \end{center}
 
-\subsection{The vertices of a polygon in the plane: \texttt{vertices}\index{vertices} \texttt{vertices\_abc}\index{vertices\_abc}}
+\subsection{The vertices of a polygon in the plane:
+\texttt{vertices}\index{vertices}, \texttt{vertices\_abc}\index{vertices\_abc}}
 
 The \texttt{vertices} command (or \texttt{vertices\_abc}) takes as argument a
 polygon.
@@ -24435,16 +24439,16 @@ Output:
 The \texttt{vertices\_abca} command takes as argument a polygon.
 
 \texttt{vertices\_abca} returns the ``closed'' list of vertices (it
-repeats the beginning vertex) and draws them.\\
-Input:
-\begin{center}
-  \tt
-  vertices\_abca(equilateral\_triangle(0,2))
-\end{center}
-Output:
-\begin{center}
-  \includegraphics[width=0.75\textwidth]{xcas-vertices_abca.png}
-\end{center}
+repeats the beginning vertex) and draws them.
+% Input:
+% \begin{center}
+%   \tt
+%   vertices\_abca(equilateral\_triangle(0,2))
+% \end{center}
+% Output:
+% \begin{center}
+%   \includegraphics[width=0.75\textwidth]{xcas-vertices_abca.png}
+% \end{center}
 
 \subsection{A point on a geometric object in the plane: \texttt{element}\index{element}}
 \label{sec:element}
@@ -24456,7 +24460,7 @@ restricted to a geometric figure.
 \texttt{element} takes different types of arguments:
 \begin{itemize}
   \item An interval $a..b$ and an optional initial value (by default
-  $(a+b)/2$ and step size (by default $(b-a)/100$).
+  $(a+b)/2$) and step size (by default $(b-a)/100$).
   
   This creates a parameter restricted to the interval, with the
   given initial value and whose value can be changed in the given step
@@ -24525,7 +24529,7 @@ following types of arguments:
   \texttt{[$u_1$,$u_2$]}).\\
   The direction of the line is given by the direction vector.
   \item An equation of the form \texttt{a*x+b*y+c=0}.\\
-  The direction of the line is given by \texttt{[b,-1]}.
+  The direction of the line is given by \texttt{[b,-a]}.
 \end{itemize}
 Input:
 \begin{center}
@@ -32244,5 +32248,172 @@ creates a file \texttt{image3.png} containing an image 2 points by 2
 points, the upper left point is dark gray, the upper
 right point is medium gray, the lower left point is
 light gray and the lower right point is even lighter gray.
+
+\chapter{Using \texttt{giac} inside a program}
+
+\section{Using \texttt{giac} inside a \texttt{C++} program}
+
+To use \texttt{giac} inside of a \texttt{C++} program, put
+\begin{verbatim}
+  #include <giac/giac.h>
+\end{verbatim}
+at the beginning of the file.  To compile the file, use
+\begin{verbatim}
+  c++ -g progname.cc -lgiac -lgmp
+\end{verbatim}
+After compiling, there will be a file \texttt{a.out} which can be run
+with the command
+\begin{verbatim}
+  ./a.out
+\end{verbatim}
+
+For example, put the following program in a file named \texttt{pgcd.cc}.
+\begin{verbatim}
+// -*- compile-command: "g++ -g pgcd.cc -lgiac -lgmp" -*-
+#include <giac/config.h>
+#include <giac/giac.h>
+
+using namespace std;
+using namespace giac;
+
+gen pgcd(gen a,gen b){
+  gen q,r;
+  for (;b!=0;){
+    r=irem(a,b,q);
+    a=b;
+    b=r;
+  }
+  return a;
+}
+
+int main(){
+  cout << "Enter 2 integers ";
+  gen a,b;
+  cin >> a >> b;
+  cout << pgcd(a,b) << endl;
+  return 0;
+}
+\end{verbatim}
+After compiling this with
+\begin{verbatim}
+  c++ -g pgcd.cc -lgiac -lgmp
+\end{verbatim}
+and running it with
+\begin{verbatim}
+  ./a.out
+\end{verbatim}
+there will be a prompt
+\begin{verbatim}
+  Enter 2 integers
+\end{verbatim}
+After entering two integers, such as with
+\begin{verbatim}
+  Enter 2 integers  30 36
+\end{verbatim}
+the result will appear,
+\begin{verbatim}
+  6
+\end{verbatim}
+
+\section{Defining new \texttt{giac} functions}
+
+New \texttt{giac} functions can be defined with a \texttt{C++} program.
+All data in the program used in formal calculations needs to be
+\texttt{gen} type.  A variable \texttt{g} can be declared to be
+\texttt{gen} type with
+\begin{verbatim}
+  gen g;
+\end{verbatim}
+In this case, \texttt{g.type} can have different values.
+\begin{itemize}
+  \item  If \texttt{g.val} is an integer type \texttt{int}, then
+  \texttt{g.type} will be \texttt{\_INT\_}.
+  \item  If \texttt{g.\_DOUBLE\_val} is a real \texttt{double},
+  \texttt{g.type} will be \texttt{\_DOUBLE\_}.
+  \item  If \texttt{g.\_SYMBptr} is type \texttt{symbolic}, then
+  \texttt{g.type} will be \texttt{\_SYMB}.
+  \item  If \texttt{g.\_VECTptr} is a  vector, type \texttt{vector}, then
+  \texttt{g.type} will be \texttt{\_VECT}.
+  \item  If \texttt{g.\_ZINTptr} is an integer type \texttt{zint}, then
+  \texttt{g.type} will be \texttt{\_ZINT}.
+  \item  If \texttt{g.\_IDNTptr} is an identifier, type \texttt{idnt}, then
+  \texttt{g.type} will be \texttt{\_IDNT}.
+  \item  If \texttt{g.\_CPLXptr} is a complex type \texttt{complex}, then
+  \texttt{g.type} will be \texttt{\_CPLX}.
+\end{itemize}
+
+As an example, put the following program in a file called
+\texttt{pgcd.cpp}.
+\begin{verbatim}
+// -*- mode:C++ ; compile-command: "g++ -I.. -fPIC -DPIC -g -c pgcd.cpp -o pgcd.lo && \
+//    ln -sf pgcd.lo pgcd.o && \
+//    gcc -shared pgcd.lo -lc -lgiac -Wl,-soname -Wl,libpgcd.so.0 -o \
+//    libpgcd.so.0.0.0 && ln -sf libpgcd.so.0.0.0 libpgcd.so.0 && \
+//    ln -sf libpgcd.so.0.0.0 libpgcd.so" -*-
+using namespace std;
+#include <stdexcept>
+#include <cmath>
+#include <cstdlib>
+#include <giac/config.h>
+#include <giac/giac.h>
+//#include "pgcd.h"
+
+#ifndef NO_NAMESPACE_GIAC
+namespace giac {
+#endif // ndef NO_NAMESPACE_GIAC
+
+  gen monpgcd(const gen & a0,const gen & b0){
+    gen q,r,a=a0,b=b0;
+    for (;b!=0;){
+      r=irem(a,b,q);
+      a=b;
+      b=r;
+    }
+    return a;
+  }
+  gen _monpgcd(const gen & args,GIAC_CONTEXT){
+    if ( (args.type!=_VECT) || (args._VECTptr->size()!=2))
+      setsizeerr();
+    vecteur &v=*args._VECTptr;
+    return monpgcd(v[0],v[1]);
+  }
+  const string _monpgcd_s("monpgcd");
+  unary_function_eval __monpgcd(0,&_monpgcd,_monpgcd_s);
+  unary_function_ptr at_monpgcd (&__monpgcd,0,true);
+  
+
+#ifndef NO_NAMESPACE_GIAC
+} // namespace giac
+#endif // ndef NO_NAMESPACE_GIAC
+\end{verbatim}
+After compiling this with the commands after the
+\texttt{compile-command} in the header, namely
+\begin{verbatim}
+  g++ -I.. -fPIC -DPIC -g -c pgcd.cpp -o pgcd.lo && \
+    ln -sf pgcd.lo pgcd.o && \
+    gcc -shared pgcd.lo -lc -lgiac -Wl,-soname -Wl,libpgcd.so.0 -o \
+    libpgcd.so.0.0.0 && ln -sf libpgcd.so.0.0.0 libpgcd.so.0 && \
+    ln -sf libpgcd.so.0.0.0 libpgcd.so
+\end{verbatim}
+the new command can be inserted with the \texttt{insmod} command in
+\texttt{giac}, where \texttt{insmod} takes the full absolute path of
+the \texttt{libpgcd.so} file as argument.\\
+Input:
+\begin{center}
+  \tt
+  insmod(\"/path/to/file/libpgcd.so\")
+\end{center}
+Afterwords, the \texttt{monpgcd} command will be another \texttt{giac}
+command.\\
+Input:
+\begin{center}
+  \tt
+  monpgcd(30,36)
+\end{center}
+Output:
+\begin{center}
+  \tt
+ 6 
+\end{center}
 
 \end{document}

@@ -3993,8 +3993,10 @@ namespace giac {
       return args._USERptr->rand(contextptr);
     if (args.is_symb_of_sommet(at_rootof))
       return vranm(1,args,contextptr)[0];
+#ifndef USE_GMP_REPLACEMENTS
     if (args.is_symb_of_sommet(at_discreted))
       return vranm(1,args,contextptr)[0];
+#endif
     if (args.type==_VECT && args._VECTptr->front()==at_multinomial) {
       vecteur v=*args._VECTptr;
       v.insert(v.begin(),1);
@@ -4387,10 +4389,11 @@ namespace giac {
     opt[0]=objet;
     if (objet.type!=_VECT)
       return to_map(opt,contextptr);
+    bool multimap=!matrix && opt.size()>1 && ckmatrix(opt);
     const_iterateur it=objet._VECTptr->begin(),itend=objet._VECTptr->end();
     vecteur res;
     res.reserve(itend-it);
-    for (;it!=itend;++it){
+    for (int k=0;it!=itend;++it,++k){
       if (matrix && it->type==_VECT){
 	const vecteur & tmp = *it->_VECTptr;
 	const_iterateur jt=tmp.begin(),jtend=tmp.end();
@@ -4404,7 +4407,13 @@ namespace giac {
       }
       else {
 	opt[0]=*it;
-	res.push_back(to_map(gen(opt,_SEQ__VECT),contextptr));
+	gen arg=gen(opt,_SEQ__VECT);
+	if (multimap){
+	  vecteur & v=*arg._VECTptr;
+	  for (int j=1;j<v.size();++j)
+	    v[j]=(*v[j]._VECTptr)[k];
+	} 
+	res.push_back(to_map(arg,contextptr));
       }
     }
     return res;
@@ -7615,6 +7624,9 @@ namespace giac {
 	    return v;
 	  }
 	  g.subtype=0;
+	  return g;
+	case _SET__VECT:
+	  g.subtype=_SET__VECT;
 	  return g;
 	default:
 	  return gensizeerr(contextptr);
