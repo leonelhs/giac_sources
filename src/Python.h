@@ -82,7 +82,7 @@ extern "C" {
   int os_get_pixel(int x,int y);
 }
 struct micropy_bidon_t {
-  micropy_bidon_t(){ giac::micropy_ptr=micropy_ck_eval; }
+  micropy_bidon_t(){ giac::micropy_ptr=micropy_ck_eval; micropy_ck_eval("1");}
 };
 #endif // HAVE_LIBMICROPYTHON
 #endif // PYTHON_H

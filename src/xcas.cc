@@ -1,5 +1,5 @@
-#include "giacPCH.h"
 #include "config.h"
+#include "giacPCH.h"
 #ifdef HAVE_LIBFLTK
 #include "hist.cxx"
 #else

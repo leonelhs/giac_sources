@@ -886,48 +886,50 @@ namespace giac {
       delta_x=r2sym(delta_x,lv,contextptr);
       vecteur vtmp;
       in_solve(newe,compositex,vtmp,isolate_mode,contextptr);
-      vecteur unitroot(1,plus_one),munitroot;
-      if (complexmode){
-	for (int k=1;k<deg;++k)
-	  unitroot.push_back(exp(2*k*cst_pi/deg*cst_i,contextptr));
-	for (int k=0;k<deg;++k)
-	  munitroot.push_back(exp((1+2*k)*cst_pi/deg*cst_i,contextptr));
-      }
-      const_iterateur it=vtmp.begin(),itend=vtmp.end();
-      for (;it!=itend;++it){
-	bool negatif=is_strictly_positive(-*it,contextptr);
-	gen tmp;
-	if (deg==2) 
-	  tmp=sqrt((negatif?-*it:*it),contextptr);
-	else
-	  tmp=pow((negatif?-*it:*it),invdeg,contextptr);
+      if (lop(vtmp,at_rootof).empty()){
+	vecteur unitroot(1,plus_one),munitroot;
 	if (complexmode){
-	  const_iterateur jt,jtend;
-	  if (!negatif){
-	    jt=unitroot.begin();
-	    jtend=unitroot.end();
-	  }
-	  else {
-	    jt=munitroot.begin();
-	    jtend=munitroot.end();
-	  }
-	  for (;jt!=jtend;++jt)
-	    newv.push_back(delta_x + (*jt) * tmp);
+	  for (int k=1;k<deg;++k)
+	    unitroot.push_back(exp(2*k*cst_pi/deg*cst_i,contextptr));
+	  for (int k=0;k<deg;++k)
+	    munitroot.push_back(exp((1+2*k)*cst_pi/deg*cst_i,contextptr));
 	}
-	else {
-	  if (deg%2)
-	    newv.push_back(delta_x + (negatif?-tmp:tmp));
-	  else {
+	const_iterateur it=vtmp.begin(),itend=vtmp.end();
+	for (;it!=itend;++it){
+	  bool negatif=is_strictly_positive(-*it,contextptr);
+	  gen tmp;
+	  if (deg==2) 
+	    tmp=sqrt((negatif?-*it:*it),contextptr);
+	  else
+	    tmp=pow((negatif?-*it:*it),invdeg,contextptr);
+	  if (complexmode){
+	    const_iterateur jt,jtend;
 	    if (!negatif){
-	      newv.push_back(delta_x + tmp);
-	      newv.push_back(delta_x - tmp);
+	      jt=unitroot.begin();
+	      jtend=unitroot.end();
+	    }
+	    else {
+	      jt=munitroot.begin();
+	      jtend=munitroot.end();
+	    }
+	    for (;jt!=jtend;++jt)
+	      newv.push_back(delta_x + (*jt) * tmp);
+	  }
+	  else {
+	    if (deg%2)
+	      newv.push_back(delta_x + (negatif?-tmp:tmp));
+	    else {
+	      if (!negatif){
+		newv.push_back(delta_x + tmp);
+		newv.push_back(delta_x - tmp);
+	      }
 	    }
 	  }
 	}
+	solve_ckrange(x,newv,isolate_mode,contextptr);
+	v=mergevecteur(v,newv);
+	return;
       }
-      solve_ckrange(x,newv,isolate_mode,contextptr);
-      v=mergevecteur(v,newv);
-      return;
     }
     // if degree(w)=0, 1 or 2 solve it, otherwise error (should return ext)
     int d=int(w.size())-1;
@@ -1697,7 +1699,7 @@ namespace giac {
     for (;it!=itend;++it){
       if (it->_SYMBptr->sommet==at_surd){
 	vecteur & arg=*it->_SYMBptr->feuille._VECTptr;
-	if (arg.size()==2 && arg.back().type==_INT_){
+	if (arg.size()==2 && arg.back().type==_INT_ && absint(arg.back().val)<=MAX_ALG_EXT_ORDER_SIZE){
 	  l.push_back(arg[0]);
 	  l.push_back(arg[1]);
 	  l.push_back(*it);
@@ -1706,7 +1708,7 @@ namespace giac {
       }
       if (it->_SYMBptr->sommet==at_NTHROOT){
 	vecteur & arg=*it->_SYMBptr->feuille._VECTptr;
-	if (arg.size()==2 && arg.front().type==_INT_){
+	if (arg.size()==2 && arg.front().type==_INT_ && absint(arg.front().val)<=MAX_ALG_EXT_ORDER_SIZE){
 	  l.push_back(arg[1]);
 	  l.push_back(arg[0]);
 	  l.push_back(*it);
@@ -1733,7 +1735,7 @@ namespace giac {
 	expnum=v[0];
 	expden=v[1]._SYMBptr->feuille;
       }
-      if (expden.type!=_INT_)
+      if (expden.type!=_INT_ || absint(expden.val)>MAX_ALG_EXT_ORDER_SIZE)
 	continue;
       l.push_back(arg[0]);
       l.push_back(expden.val);
@@ -2166,7 +2168,7 @@ namespace giac {
       if (othervar.size()<=listvars.size()){
 	const_iterateur it=fullres.begin(),itend=fullres.end();
 	for (;it!=itend;++it){
-	  vecteur algv=alg_lvar(*it);
+	  vecteur algv=alg_lvar(evalf(*it,1,contextptr));
 	  if (!algv.empty() && algv.front().type==_VECT && !algv.front()._VECTptr->empty()){
 	    *logptr(contextptr) << "Warning, " << *it << " not checked" << '\n';
 	    res.push_back(*it);
@@ -4759,7 +4761,7 @@ namespace giac {
     case _DOUBLE_: case _REAL: case _FLOAT_:
       return true;
     case _CPLX:
-      return (e._CPLXptr->type==_DOUBLE_) || ((e._CPLXptr+1)->type==_DOUBLE_);
+      return (e._CPLXptr->type==_DOUBLE_ || e._CPLXptr->type==_REAL || e._CPLXptr->type==_FLOAT_) || ((e._CPLXptr+1)->type==_DOUBLE_ || (e._CPLXptr+1)->type==_REAL || (e._CPLXptr+1)->type==_FLOAT_);
     case _SYMB:
       return has_num_coeff(e._SYMBptr->feuille);
     case _VECT:

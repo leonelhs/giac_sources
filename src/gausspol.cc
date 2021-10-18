@@ -5172,6 +5172,24 @@ namespace giac {
   }
 
   void egcd(const polynome &p1, const polynome & p2, polynome & u,polynome & v,polynome & d){
+    if (p1.lexsorted_degree()==0){
+      d=p1;
+      u.coord.clear();
+      u.dim=p1.dim;
+      u.coord.push_back(monomial<gen>(1,0));
+      v.dim=p1.dim;
+      v.coord.clear();
+      return;
+    }
+    if (p2.lexsorted_degree()==0){
+      d=p2;
+      u.coord.clear();
+      u.dim=p2.dim;
+      v.dim=p2.dim;
+      v.coord.clear();
+      v.coord.push_back(monomial<gen>(1,0));
+      return;
+    }
     if (try_hensel_egcd(p1,p2,u,v,d))
       return;
     polynome g=gcd(p1,p2);
@@ -5180,15 +5198,17 @@ namespace giac {
       d=g*d;
       return;
     }
-    if (p1.dim!=1){
-      egcdpsr(p1,p2,u,v,d);
-      return;
-    }
     gen p1g,p2g;
     int p1t=coefftype(p1,p1g);
     int p2t=coefftype(p2,p2g);
+    if (p1.dim!=1 
+	//&& (p1t!=0 || p2t!=0)
+	){
+      egcdpsr(p1,p2,u,v,d);
+      return;
+    }
     if (p1t==0 && p2t==0 
-	&& p1.lexsorted_degree()>=GIAC_PADIC/2 && p2.lexsorted_degree()>=GIAC_PADIC/2
+	&& (p1.dim!=1 || (p1.lexsorted_degree()>=GIAC_PADIC/2 && p2.lexsorted_degree()>=GIAC_PADIC/2))
 	){
       if (debug_infolevel>2)
 	CERR << CLOCK()*1e-6 << "starting extended gcd degrees " << p1.lexsorted_degree() << " " << p2.lexsorted_degree() << '\n';
@@ -5200,8 +5220,18 @@ namespace giac {
       matrice S=sylvester(p1v,p2v);
       S=mtran(S);
       int add=int(p1v.size()+p2v.size()-G.size()-2);
-      vecteur V=mergevecteur(vecteur(add,0),G);
-      vecteur U=linsolve(S,V,context0);
+      vecteur V=mergevecteur(vecteur(add,0),G),U;
+      if (p1.dim>1){
+	// make the system symbolic so that Lagrange interpolation may happen
+	vecteur varv;
+	for (int i=1;i<p1.dim;++i)
+	  varv.push_back(identificateur("x"+print_INT_(i)));
+	S=gen2vecteur(r2e(S,varv,context0)); V=gen2vecteur(r2e(V,varv,context0));
+	U=linsolve(S,V,context0);
+	U=gen2vecteur(e2r(U,varv,context0));
+      }
+      else
+	U=linsolve(S,V,context0);
       gen D;
       lcmdeno(U,D,context0);
       if (is_positive(-D,context0)){
@@ -5269,9 +5299,10 @@ namespace giac {
       }
     }
     if (p1t==_EXT && p2t==0 && p1g.type==_EXT && (p1g._EXTptr+1)->type==_VECT){
-      vecteur G,p2v;
+      vecteur G,p2v,p1v;
       polynome2poly1(g,1,G);
       polynome2poly1(p2,1,p2v);
+      polynome2poly1(p1,1,p1v);
       polynome pmini(2),P1;
       algext_vmin2pmin(*(p1g._EXTptr+1)->_VECTptr,pmini);
       polynome P1n(1);
@@ -5291,14 +5322,27 @@ namespace giac {
 	    vecteur U(linsolve(S,V,context0));
 	    gen D;
 	    lcmdeno(U,D,context0);
-	    G=multvecteur(D,G);
-	    poly12polynome(G,1,d);
 	    int p2s=int(p2v.size())-1;
 	    V=vecteur(U.begin()+p2s,U.end());
+#if 1
+	    // uv*p1v+V*p2v=D
+	    // find remainder(V,p1v) -> V then uv=(D-V*p2v)/p1v
+	    V=V % p1v;
+	    gen DV; lcmdeno(V,DV,context0);
+	    poly12polynome(V,1,v);
+	    D=D*DV;
+	    vecteur tmpv; mulmodpoly(V,p2v,0,tmpv);
+	    submodpoly(vecteur(1,D),tmpv,U);
+	    U=U/p1v;
+	    poly12polynome(U,1,u);	    
+#else // does not always work, must take remainder
 	    poly12polynome(V,1,v);
 	    U=vecteur(U.begin(),U.begin()+p2s);
 	    poly12polynome(U,1,u);
 	    u=u*P1;
+#endif
+	    G=multvecteur(D,G);
+	    poly12polynome(G,1,d);
 	    //CERR << (operator_times(u,p1,0)+operator_times(v,p2,0))/D << '\n';
 	    return;
 	  }
@@ -7237,28 +7281,28 @@ namespace giac {
       swap(a,b); // a=b
       const tensor<gen> temp=Tpow(h,ddeg);
       // now divides r by g*h^(m-n), result is the new b
-      r.TDivRem1(g*temp,b,q); // q is not used anymore
+      r.TDivRem1(g*temp,b,q,true); // q is not used anymore
       swap(ua,ub); // ua=ub
-      ur.TDivRem1(g*temp,ub,q);
+      ur.TDivRem1(g*temp,ub,q,true);
       // COUT << (b-ub*p1) << "/" << p2 << '\n';
       // new g=b0 and new h=b0^(m-n)*h/temp
       if (ddeg==1) // the normal case, remainder deg. decreases by 1 each time
 	h=b0;
       else // not sure if it's better to keep temp or divide by h^(m-n+1)
-	(Tpow(b0,ddeg)*h).TDivRem1(temp,h,q);
+	(Tpow(b0,ddeg)*h).TDivRem1(temp,h,q,true);
       g=b0;
     }
     // ub is valid and b is the gcd, vb=(b-ub*p1)/p2 if not Tswapped
     // vb is stored in ua
     // COUT << ub << '\n';
     if (genswapped){
-      (b-ub*pp2).TDivRem1(pp1,ua,r);
+      (b-ub*pp2).TDivRem1(pp1,ua,r,true); // must allow rational for ext coeffs
       ua *= cp2; // ua=ua*cp2;
       ub *= cp1; // ub=ub*cp1;
       b *= cp1; b *= cp2; // b=b*cp1*cp2;
     }
     else {
-      (b-ub*pp1).TDivRem1(pp2,ua,r);
+      (b-ub*pp1).TDivRem1(pp2,ua,r,true);
       ua *= cp1; // ua=ua*cp1;
       ub *= cp2; // ub=ub*cp2;
       b *= cp1; b *= cp2; // b=b*cp1*cp2;

@@ -89,7 +89,7 @@ const char * console_input(){
 
 #if 1 // maybe add a timer and a timeout, and print to logptr after timeout
 void console_output(const char * s,int l){
-  python_console += string(s).substr(0,l);
+  python_console() += string(s).substr(0,l);
 }
 #else
 void console_output(const char * s,int l){

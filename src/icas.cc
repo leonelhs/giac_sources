@@ -1082,9 +1082,9 @@ int micropyjs_evaled(string & s,const giac::context * contextptr){
     bool turt=strcmp(ptr,".")==0;
     if (!gr && !pix && !turt){
       giac::python_contextptr=contextptr;
-      python_console="";
+      python_console()="";
       int i=micropy_ck_eval(s.c_str());
-      cout << python_console ;
+      cout << python_console() ;
       return 1;
     }
     giac::context * cascontextptr=(giac::context *)giac::caseval("caseval contextptr");

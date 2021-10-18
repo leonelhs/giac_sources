@@ -522,7 +522,7 @@ dnl Checking for sstream for mathml
 AC_CHECK_HEADERS(sstream, AC_DEFINE(HAVE_SSTREAM,1), )
 
 dnl CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -DSMARTPTR64"
-CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS"
+CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS -DTIMEOUT"
 
 dnl enables MicroPython, -fpermissive to avoid failure on Debian 10
 CONFIG_MICROPY="yes"

@@ -743,7 +743,7 @@ namespace giac {
         else
           tmp = 200;
       }
-      gen tmp2=evalf(e._SYMBptr->feuille,1,contextptr);
+      gen tmp2=evalf_double(e._SYMBptr->feuille,0,contextptr);
       if (tmp2.type<_IDNT)
 	tmp2=_floor(tmp2/tmp+plus_one_half,contextptr);
       else
@@ -1339,7 +1339,7 @@ namespace giac {
 	    }
 	  }
 	}
-      }
+      } // end if v.size()==1
       for (unsigned i=0;i<v.size();++i){
 	gen vi=v[i];
 	if (vi.is_symb_of_sommet(at_cos)){
@@ -1361,7 +1361,7 @@ namespace giac {
 	  }
 	}
       } // end loop on vars
-    }
+    } // end _SYMB type
     return pow(e,plus_one_half,contextptr);
   }
   static gen d_sqrt(const gen & e,GIAC_CONTEXT){
@@ -1616,7 +1616,7 @@ namespace giac {
     }
     if (e.type==_SYMB) {
       unary_function_ptr u=e._SYMBptr->sommet;
-      gen f=e._SYMBptr->feuille;
+      gen f=e._SYMBptr->feuille,e_;
       if (u==at_neg)
 	return cos(f,contextptr);
       if (u==at_acos)
@@ -1625,6 +1625,16 @@ namespace giac {
 	return sqrt(1-pow(f,2),contextptr);
       if (u==at_atan)
 	return sqrt(inv(pow(f,2)+1,contextptr),contextptr);
+      int n=is_half_atrig(e,f);
+      if (n && has_evalf(e,e_,1,contextptr)){
+	if (n==2)
+	  f=sqrt((f+1)/2,contextptr);
+	if (n==1)
+	  f=sqrt((sqrt(1-pow(f,2),contextptr)+1)/2,contextptr);
+	if (n==3)
+	  f=sqrt((inv(sqrt(1+pow(f,2),contextptr),contextptr)+1)/2,contextptr);
+	if (is_positive(e_,contextptr)) return f; else return -f;
+      }
     }
     if (is_equal(e))
       return apply_to_equal(e,cos,contextptr);
@@ -1854,7 +1864,7 @@ namespace giac {
     }
     if (e.type==_SYMB) {
       unary_function_ptr u=e._SYMBptr->sommet;
-      gen f=e._SYMBptr->feuille;
+      gen f=e._SYMBptr->feuille,e_;
       if (u==at_neg)
 	return -sin(f,contextptr);
       if (u==at_asin)
@@ -1863,6 +1873,16 @@ namespace giac {
 	return sqrt(1-pow(f,2),contextptr);
       if (u==at_atan)
 	return rdiv(f,sqrt(pow(f,2)+1,contextptr),contextptr);
+      int n=is_half_atrig(e,f);
+      if (n && has_evalf(e,e_,1,contextptr)){
+	if (n==2)
+	  f=sqrt((1-f)/2,contextptr);
+	if (n==1)
+	  f=sqrt((1-sqrt(1-pow(f,2),contextptr))/2,contextptr);
+	if (n==3)
+	  f=sqrt((1-inv(sqrt(1+pow(f,2),contextptr),contextptr))/2,contextptr);
+	if (is_positive(e_,contextptr)) return f; else return -f;
+      }
     }
     if (is_equal(e))
       return apply_to_equal(e,sin,contextptr);
@@ -2046,7 +2066,7 @@ namespace giac {
     }
     if (e.type==_SYMB) {
       unary_function_ptr u=e._SYMBptr->sommet;
-      gen f=e._SYMBptr->feuille;
+      gen f=e._SYMBptr->feuille,e_;
       if (u==at_neg)
 	return -tan(f,contextptr);
       if (u==at_atan)
@@ -2055,6 +2075,15 @@ namespace giac {
 	return rdiv(sqrt(1-pow(f,2),contextptr),f,contextptr);
       if (u==at_asin)
 	return rdiv(f,sqrt(1-pow(f,2),contextptr),contextptr);
+      int n=is_half_atrig(e,f);
+      if (n && has_evalf(e,e_,1,contextptr)){
+	if (n==1)
+	  f=sqrt(1-pow(f,2),contextptr);
+	if (n==3)
+	  f=inv(sqrt(1+pow(f,2),contextptr),contextptr);
+	f=sqrt((1-f)/(1+f),contextptr);
+	if (is_positive(e_,contextptr)) return f; else return -f;
+      }
     }
     if (is_equal(e))
       return apply_to_equal(e,tan,contextptr);
@@ -3428,6 +3457,7 @@ namespace giac {
 	    series_flags(contextptr) ^= (1<<6);
 	}
       }
+#ifndef POCKETCAS
       if (bl>=3){
 	if (name[bl-2]=='_'){
 	  switch (name[bl-1]){
@@ -3461,6 +3491,7 @@ namespace giac {
 	  }
 	}
       }
+#endif
       if (!contextptr){
 	// Remove stale local assignements
 #ifdef NO_STDEXCEPT
@@ -4521,6 +4552,9 @@ namespace giac {
   // returns the assumed idnt name
   // used if assumptions are in OR conjonction
   gen assumesymbolic(const gen & a,gen idnt_must_be,GIAC_CONTEXT){
+#ifndef NO_STDEXCEPT
+    try {
+#endif
     if (a.type==_IDNT)
       return a._IDNTptr->eval(eval_level(contextptr),a,contextptr);
     if ( (a.type!=_SYMB) || (a._SYMBptr->feuille.type!=_VECT) )
@@ -4607,6 +4641,12 @@ namespace giac {
       }
     }
     return gensizeerr(contextptr);
+#ifndef NO_STDEXCEPT
+    } catch (std::runtime_error & err){
+      *logptr(contextptr) << err.what() << '\n';
+      return 0;
+    }
+#endif
   }
   static void purge_assume(const gen & a,GIAC_CONTEXT){
     if (a.type==_SYMB && (a._SYMBptr->sommet==at_and || a._SYMBptr->sommet==at_et || a._SYMBptr->sommet==at_ou || a._SYMBptr->sommet==at_oufr || a._SYMBptr->sommet==at_inferieur_strict || a._SYMBptr->sommet==at_inferieur_egal || a._SYMBptr->sommet==at_superieur_egal || a._SYMBptr->sommet==at_superieur_strict || a._SYMBptr->sommet==at_equal) ){

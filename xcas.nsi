@@ -12,7 +12,7 @@
 ;Definition of constants
 
   !define APPNAME       "Xcas"
-  !define VERSION       "1.4.9"
+  !define VERSION       "1.7.0"
   !define URL           "http://www-fourier.ujf-grenoble.fr/~parisse/"
   !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 

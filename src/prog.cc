@@ -6301,7 +6301,7 @@ namespace giac {
 	bool turt=strcmp(ptr,".")==0;
 	bool xc=strcmp(ptr,"xcas")==0;
 	python_contextptr=contextptr;
-	python_console="";
+	python_console()="";
 	gen g;
 	if (!gr && !xc && !turt && !pix ){
 	  (*micropy_ptr)(ptr);
@@ -6317,11 +6317,11 @@ namespace giac {
 	  return _show_pixels(0,contextptr);
 	if (gr)
 	  return history_plot(cascontextptr);
-	if (python_console.empty())
+	if (python_console().empty())
 	  return string2gen("Done",false);
-	if (python_console[python_console.size()-1]=='\n')
-	  python_console=python_console.substr(0,python_console.size()-1);
-	return string2gen(python_console.empty()?"Done":python_console,false);
+	if (python_console()[python_console().size()-1]=='\n')
+	  python_console()=python_console().substr(0,python_console().size()-1);
+	return string2gen(python_console().empty()?"Done":python_console(),false);
       }
     }
 #endif
@@ -6701,6 +6701,53 @@ namespace giac {
   static const char _keep_algext_s []="keep_algext";
   static define_unary_function_eval2 (__keep_algext,&_keep_algext,_keep_algext_s,&printasDigits);
   define_unary_function_ptr( at_keep_algext ,alias_at_keep_algext ,&__keep_algext);
+
+  gen _auto_assume(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG &&  g.subtype==-1) return  g;
+    gen args(g);
+    if (g.type==_DOUBLE_)
+      args=int(g._DOUBLE_val);
+    if (g.type==_SYMB || g.type==_IDNT)
+      return autoassume(g,vx_var,contextptr);
+    if (args.type!=_INT_)
+      return auto_assume(contextptr);
+    auto_assume((args.val)!=0,contextptr);
+    parent_cas_setup(contextptr);
+    return args;
+  }
+  static const char _auto_assume_s []="auto_assume";
+  static define_unary_function_eval (__auto_assume,&_auto_assume,_auto_assume_s);
+  define_unary_function_ptr5( at_auto_assume ,alias_at_auto_assume ,&__auto_assume,0,true);
+
+  gen _parse_e(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG &&  g.subtype==-1) return  g;
+    gen args(g);
+    if (g.type==_DOUBLE_)
+      args=int(g._DOUBLE_val);
+    if (args.type!=_INT_)
+      return parse_e(contextptr);
+    parse_e((args.val)!=0,contextptr);
+    parent_cas_setup(contextptr);
+    return args;
+  }
+  static const char _parse_e_s []="parse_e";
+  static define_unary_function_eval (__parse_e,&_parse_e,_parse_e_s);
+  define_unary_function_ptr5( at_parse_e ,alias_at_parse_e ,&__parse_e,0,true);
+
+  gen _convert_rootof(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG &&  g.subtype==-1) return  g;
+    gen args(g);
+    if (g.type==_DOUBLE_)
+      args=int(g._DOUBLE_val);
+    if (args.type!=_INT_)
+      return convert_rootof(contextptr);
+    convert_rootof((args.val)!=0,contextptr);
+    parent_cas_setup(contextptr);
+    return args;
+  }
+  static const char _convert_rootof_s []="convert_rootof";
+  static define_unary_function_eval (__convert_rootof,&_convert_rootof,_convert_rootof_s);
+  define_unary_function_ptr5( at_convert_rootof ,alias_at_convert_rootof ,&__convert_rootof,0,true);
 
   gen _angle_radian(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG &&  g.subtype==-1) return  g;
@@ -9600,7 +9647,10 @@ namespace giac {
     }
     if (args.type!=_STRNG)
       return symbolic(at_expr,args);
-    return eval(gen(*args._STRNGptr,contextptr),eval_level(contextptr),contextptr);
+    gen g(*args._STRNGptr,contextptr);
+    if (giac::first_error_line(contextptr))
+      return gensizeerr(string(gettext("Syntax compatibility mode "))+print_program_syntax(xcas_mode(contextptr))+gettext(". Parse error line ")+print_INT_(giac::first_error_line(contextptr)) + gettext(" column ")+print_INT_(giac::lexer_column_number(contextptr))+  gettext(" at ")  + giac::error_token_name(contextptr)) ;
+    return eval(g,eval_level(contextptr),contextptr);
   }
   static const char _expr_s []="expr";
   static define_unary_function_eval (__expr,&_expr,_expr_s);

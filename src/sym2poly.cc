@@ -857,7 +857,11 @@ namespace giac {
 	  a__VECTg=*(a._EXTptr+1);
 	}
 	int k;
-	gen new_v=common_minimal_POLY(a__VECTg,v,a,b,k,contextptr);
+	vecteur lvadd(lv); lvadd.insert(lvadd.begin(),vecteur(0));
+	gen new_v=common_minimal_POLY(a__VECTg,v,a,b,k,
+				      // 0.
+				      &lvadd ,
+				      contextptr);
 	if (is_undef(new_v))
 	  return false;
 	*(num._EXTptr+1)=a;
@@ -1935,8 +1939,9 @@ namespace giac {
   }
 
   gen e2r(const gen & e,const vecteur & l,GIAC_CONTEXT){
-    if (e.type!=_VECT)
+    if (e.type!=_VECT){
       return sym2r(e,l,contextptr);
+    }
     bool totally_converted=true;
     int l_size;
     if (!l.empty() && l.front().type==_VECT)
@@ -2272,7 +2277,7 @@ namespace giac {
 	gen tmp=_evalf(makesequence(x,n),contextptr);
 	tmp=_horner(makesequence(p,tmp),contextptr);
 	gen test=(1-cur/tmp);
-	if (is_greater(1e-12,test,contextptr))
+	if (!is_undef(test) && !is_inf(test) && is_greater(1e-12,test,contextptr))
 	  return cur;
 	cur=tmp;
       }
@@ -2280,7 +2285,7 @@ namespace giac {
     for (;n<=1024;n*=2){
       gen tmp=_evalf(makesequence(g,n),contextptr);
       gen test=(1-cur/tmp);
-      if (is_greater(1e-12,test,contextptr))
+      if (!is_undef(test) && !is_inf(test) && is_greater(1e-12,test,contextptr))
 	return cur;
       cur=tmp;
     }
@@ -2736,6 +2741,14 @@ namespace giac {
 	continue;
       if (is_one(expnum) && is_integer(arg[0]))
 	continue;
+      if (is_one(expnum) && arg[0].type==_SYMB){
+	gen tmp=sqrt(arg[0],contextptr); // detect e.g. (1+sin(x))^(1/2)
+	if (tmp!=*it){
+	  lin.push_back(*it);
+	  lout.push_back(tmp);
+	  continue;
+	}
+      }
       // sqrt(arg[0]), we may check that arg[0] is a+b+/-2*sqrt(a*b)
       gen var,a,b,hyp;
       if (is_sqrtxy(arg[0],a,contextptr)){
@@ -2959,6 +2972,7 @@ namespace giac {
       if (lvar(EE).size()<lvar(ee).size()){
 	ee=EE; L=LL;
       }
+      ee=invfracpow(ee,contextptr);
       l=alg_lvar(ee);
       sort0(l);
       if (!L.empty() && debug_infolevel)

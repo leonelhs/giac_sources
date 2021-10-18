@@ -6978,7 +6978,7 @@ namespace xcas {
       int t=s.size();
       if (t<4 || s.substr(t-4,4)!=".tns")
 	continue;
-      if ( (s=="khicas.tns" || s=="luagiac.luax.tns" || s=="khicaslua.tns" || s=="ptt.tns" || s.substr(0,17)=="ndless_installer_" || s=="ndless_resources.tns" || s=="ndless.cfg.tns")){
+      if ( (s=="khicas.tns" || s=="luagiac.luax.tns" || s=="khicaslua.tns" || s=="ptt.tns" || s.substr(0,17)=="ndless_installer_" || s=="ndless_resources.tns" || s=="ndless.cfg.tns")){ // shakeys.tns is not copied, it is retrieved from non-exam mode
 	string ss=dirname+("/"+s);
 	*logptr(contextptr) << "processing " << s << "\n" ; //" " << ss << " " << (targetdirname+("/"+s)) << '\n';
 	if (1 || sha_check(ss.c_str(),nkeys,hash)){ // check done when setting exam mode
@@ -12822,8 +12822,12 @@ namespace xcas {
     //mp_stack_set_top((void *)(&stackTop));
     //mp_stack_set_limit(24*1024);
 #endif
+#ifdef QUICKJS
     quickjs_ck_eval("0");
+#endif
+#ifdef MICROPY_LIB
     giac::micropy_ptr=micropy_ck_eval;
+#endif
     python_heap=0;
     sheetptr=0;
     shutdown=do_shutdown;

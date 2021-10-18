@@ -342,21 +342,30 @@ namespace giac {
 	    alpha=giacmin(0,gamma-beta);
 	  else { // possible cancellation case depend of cst coeff of f
 	    vecteur vtmp(polynome2poly1(fnum,1));
-	    gen f0=r2sym(vtmp[0],lv1,contextptr);
+	    gen f0=r2sym(vtmp.back(),lv1,contextptr);
 	    vtmp=polynome2poly1(fdenred,1);
-	    f0=f0/r2sym(vtmp[0],lv1,contextptr);
+	    f0=f0/r2sym(vtmp.back(),lv1,contextptr);
+#if 1
+	    gen lnc=ratnormal(-f0/derive(Z._SYMBptr->feuille,x,contextptr),contextptr);
+	    if (lnc.type==_INT_)
+	      alpha=giacmin(lnc.val,alpha);
+#else // old code, seems wrong
 	    gen lnc,prim,remains;
 	    if (in_risch(f0,x,v1,Z._SYMBptr->feuille,prim,lnc,remains,contextptr)&&lnc.type==_INT_)
 	      alpha=giacmin(lnc.val,alpha);
+#endif
 	  }
 	}
       }
       if (gamma>=0 && beta==0){
 	// possible cancellation case depend of cst coeff of f
 	vecteur vtmp(polynome2poly1(fnum,1));
-	gen f0=r2sym(vtmp[0],lv1,contextptr);
-	if (f0.type==_INT_ && f0.val>0)
-	  alpha=-f0.val;
+	gen f0=r2sym(vtmp.back(),lv1,contextptr);
+	vtmp=polynome2poly1(fdenred,1);
+	f0=f0/r2sym(vtmp.back(),lv1,contextptr);
+	gen lnc=ratnormal(-f0/derive(Z._SYMBptr->feuille,x,contextptr),contextptr);
+	if (lnc.type==_INT_)
+	  alpha=giacmin(lnc.val,alpha);
       }
       D=polynome(monomial<gen>(plus_one,-alpha,1,ss)); // Z^(-alpha)
     }
@@ -827,8 +836,25 @@ namespace giac {
   }
 
   static gen risch_lin(const gen & e_orig,const identificateur & x,gen & remains_to_integrate,GIAC_CONTEXT){
-    vecteur v;
+    // check for fractional powers 
+    vecteur chk(rlvarx(e_orig,x)),chk1,chk2;
+    for (int i=0;i<chk.size();++i){
+      gen base,expo;
+      if (chk[i].is_symb_of_sommet(at_pow) && (expo=chk[i]._SYMBptr->feuille[1]).type==_FRAC){
+	if ((base=chk[i]._SYMBptr->feuille[0]).is_symb_of_sommet(at_pow)){
+	  chk1.push_back(chk[i]);
+	  chk2.push_back(symb_pow(base._SYMBptr->feuille[0],expo*base._SYMBptr->feuille[1]));
+	}
+	else {
+	  remains_to_integrate=e_orig;
+	  return 0;
+	}
+      }
+    }
     gen e=e_orig;
+    if (!chk1.empty())
+      e=complex_subst(e,chk1,chk2,contextptr);
+    vecteur v;
     vecteur vatan=lop(e,at_atan);
     vecteur vln;
     for (int i=0;i<int(vatan.size());++i){

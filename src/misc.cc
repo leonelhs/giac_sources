@@ -378,6 +378,10 @@ namespace giac {
   static define_unary_function_eval (__asec,&_asec,_asec_s);
   define_unary_function_ptr5( at_asec ,alias_at_asec,&__asec,0,true);
 
+  static const char _arcsec_s []="arcsec";
+  static define_unary_function_eval (__arcsec,&_asec,_arcsec_s);
+  define_unary_function_ptr5( at_arcsec ,alias_at_arcsec,&__arcsec,0,true);
+
   gen _acsc(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     return asin(inv(args,contextptr),contextptr);
@@ -385,6 +389,10 @@ namespace giac {
   static const char _acsc_s []="acsc";
   static define_unary_function_eval (__acsc,&_acsc,_acsc_s);
   define_unary_function_ptr5( at_acsc ,alias_at_acsc,&__acsc,0,true);
+
+  static const char _arccsc_s []="arccsc";
+  static define_unary_function_eval (__arccsc,&_acsc,_arccsc_s);
+  define_unary_function_ptr5( at_arccsc ,alias_at_arccsc,&__arccsc,0,true);
 
   gen _acot(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
@@ -400,6 +408,10 @@ namespace giac {
   static const char _acot_s []="acot";
   static define_unary_function_eval (__acot,&_acot,_acot_s);
   define_unary_function_ptr5( at_acot ,alias_at_acot,&__acot,0,true);
+
+  static const char _arccot_s []="arccot";
+  static define_unary_function_eval (__arccot,&_acot,_arccot_s);
+  define_unary_function_ptr5( at_arccot ,alias_at_arccot,&__arccot,0,true);
 
   // args=[u'*v,v] or [[F,u'*v],v] -> [F+u*v,-u*v']
   // a third argument would be the integration var
@@ -9101,8 +9113,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     return gensizeerr(contextptr);
   }
   static const char _range_s []="range";
-  static define_unary_function_eval (__range,&_range,_range_s);
-  define_unary_function_ptr5( at_range ,alias_at_range,&__range,0,true);
+  static define_unary_function_eval (__giac_range,&_range,_range_s);
+  define_unary_function_ptr5( at_range ,alias_at_range,&__giac_range,0,true);
 
   string strip(const string & s,const string &chars){
     int ss=int(s.size()),cs=int(chars.size()),i,j;
@@ -10114,6 +10126,13 @@ void sync_screen(){}
   static define_unary_function_eval (__modf,&_modf,_modf_s);
   define_unary_function_ptr5( at_modf ,alias_at_modf,&__modf,0,true);
 
+  gen _leafsize(const gen & g,GIAC_CONTEXT){
+    return int(taille(g,RAND_MAX));
+  }
+  static const char _leafsize_s []="leafsize";
+  static define_unary_function_eval (__leafsize,&_leafsize,_leafsize_s);
+  define_unary_function_ptr5( at_leafsize ,alias_at_leafsize,&__leafsize,0,true);
+  
 #if defined HAVE_UNISTD_H && !defined NUMWORKS
   void locate_files(const char * dirname,const char * ext_,vector<string> & v,bool recurse,GIAC_CONTEXT){
     DIR *dp;

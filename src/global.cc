@@ -133,7 +133,12 @@ int js_token(const char * list,const char * buf){
 }
 
 #ifdef HAVE_LIBMICROPYTHON
-std::string python_console;
+std::string & python_console(){
+  std::string * ptr=0;
+  if (!ptr)
+    ptr=new string;
+  return *ptr;
+}
 #endif
 bool freezeturtle=false;
 
@@ -874,6 +879,51 @@ extern "C" void Sleep(unsigned int miliSecond);
       contextptr->globalptr->_keep_algext_=b;
     else
       _keep_algext_=b;
+  }
+
+  static bool _auto_assume_=false; 
+  bool & auto_assume(GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      return contextptr->globalptr->_auto_assume_;
+    else
+      return _auto_assume_;
+  }
+
+  void auto_assume(bool b,GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      contextptr->globalptr->_auto_assume_=b;
+    else
+      _auto_assume_=b;
+  }
+
+  static bool _parse_e_=false; 
+  bool & parse_e(GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      return contextptr->globalptr->_parse_e_;
+    else
+      return _parse_e_;
+  }
+
+  void parse_e(bool b,GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      contextptr->globalptr->_parse_e_=b;
+    else
+      _parse_e_=b;
+  }
+
+  static bool _convert_rootof_=true; 
+  bool & convert_rootof(GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      return contextptr->globalptr->_convert_rootof_;
+    else
+      return _convert_rootof_;
+  }
+
+  void convert_rootof(bool b,GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      contextptr->globalptr->_convert_rootof_=b;
+    else
+      _convert_rootof_=b;
   }
 
   static bool _lexer_close_parenthesis_=true; 
@@ -2898,7 +2948,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       return "/Applications/usr/share/giac/";
     return "/Applications/usr/share/giac/";
 #endif
-#ifdef WIN32
+#if defined WIN32 && !defined MINGW
     return "/cygdrive/c/xcas/";
 #endif
     string s(giac_aide_location); // ".../aide_cas"
@@ -3709,6 +3759,9 @@ NULL,NULL,SW_SHOWNORMAL);
      ptr->globalptr->_atan_tan_no_floor_=_atan_tan_no_floor_;
      ptr->globalptr->_keep_acosh_asinh_=_keep_acosh_asinh_;
      ptr->globalptr->_keep_algext_=_keep_algext_;
+     ptr->globalptr->_auto_assume_=_auto_assume_;
+     ptr->globalptr->_parse_e_=_parse_e_;
+     ptr->globalptr->_convert_rootof_=_convert_rootof_;
      ptr->globalptr->_python_compat_=_python_compat_;
      ptr->globalptr->_complex_variables_=_complex_variables_;
      ptr->globalptr->_increasing_power_=_increasing_power_;
@@ -4150,7 +4203,7 @@ NULL,NULL,SW_SHOWNORMAL);
 		     _ntl_on_(true),
 #endif
 #ifdef WITH_MYOSTREAM
-		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),
+		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),_auto_assume_(false),_parse_e_(false),_convert_rootof_(true),
 #ifdef KHICAS
 		     _python_compat_(true),
 #else
@@ -4164,7 +4217,7 @@ NULL,NULL,SW_SHOWNORMAL);
 #endif
 		     _total_time_(0),_evaled_table_(0),_extra_ptr_(0),_series_variable_name_('h'),_series_default_order_(5),
 #else
-		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),
+		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),_auto_assume_(false),_parse_e_(false),_convert_rootof_(true),
 #ifdef KHICAS
 		     _python_compat_(true),
 #else
@@ -4246,6 +4299,9 @@ NULL,NULL,SW_SHOWNORMAL);
      _atan_tan_no_floor_=g._atan_tan_no_floor_;
      _keep_acosh_asinh_=g._keep_acosh_asinh_;
      _keep_algext_=g._keep_algext_;
+     _auto_assume_=g._auto_assume_;
+     _parse_e_=g._parse_e_;
+     _convert_rootof_=g._convert_rootof_;
      _python_compat_=g._python_compat_;
      _variables_are_files_=g._variables_are_files_;
      _bounded_function_no_=g._bounded_function_no_;

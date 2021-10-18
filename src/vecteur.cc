@@ -3320,7 +3320,7 @@ namespace giac {
 
   void mtran(const matrice & a,matrice & res,int ncolres,bool ckundef){
     if (!ckmatrix(a,true,ckundef)){
-      res=vecteur(1,vecteur(ncolres,gensizeerr("Unable to tranpose")));
+      res=vecteur(1,vecteur(ncolres,gensizeerr("Unable to transpose")));
       return;
     }
     vecteur::const_iterator it=a.begin(),itend=a.end();
@@ -7394,7 +7394,7 @@ namespace giac {
 		polydim=tmp._POLYptr->dim;
 		const int & curdeg=tmp._POLYptr->lexsorted_degree();
 		if (curdeg>maxdegi)
-		  maxdegi=tmp._POLYptr->lexsorted_degree();
+		  maxdegi=tmp._POLYptr->lexsorted_degree();// curdeg
 		if (curdeg>maxdegj[j])
 		  maxdegj[j]=curdeg;
 		tmp=polynome2poly1(tmp,1);
@@ -7403,8 +7403,9 @@ namespace giac {
 	    totaldeg+=maxdegi;
 	  }
 	  if (polydim){
-	    if (debug_infolevel)
-	      CERR << CLOCK()*1e-6 << " det: begin interp" << '\n';
+	    bool dbg=debug_infolevel && (polydim>1 || debug_infolevel>1);
+	    if (dbg)
+	      CERR << CLOCK()*1e-6 << " det: begin interp dim " << polydim << '\n';
 	    totaldeg=std::min(totaldeg,total_degree(maxdegj));
 	    if (!interpolable(totaldeg+1,coeffp,true,contextptr))
 	      return 0;
@@ -7417,8 +7418,8 @@ namespace giac {
 	      X[x]=realx;
 	      vecteur resx;
 	      resx.reserve(totaldeg+1);
-	      if (debug_infolevel)
-		CERR << CLOCK()*1e-6 << " det: begin horner" << '\n';
+	      if (dbg)
+		CERR << CLOCK()*1e-6 << " det: begin horner dim " << polydim << " pos " << x << " from" << totaldeg << '\n';
 	      for (unsigned int i=0;i<as;++i){
 		vecteur resxi;
 		resxi.reserve(a0s); // was (totaldeg+1);
@@ -7428,8 +7429,8 @@ namespace giac {
 		}
 		resx.push_back(resxi);
 	      }
-	      if (debug_infolevel)
-		CERR << CLOCK()*1e-6 << " det: end horner" << '\n';
+	      if (dbg)
+		CERR << CLOCK()*1e-6 << " det: end horner dim " << polydim << " pos " << x << " from" << totaldeg << '\n';
 	      matrice res1;
 	      if (!mrref(resx,res1,pivots,det,l,lmax,c,cmax,-fullreduction,dont_swap_below,false,algorithm_,rref_or_det_or_lu,contextptr))
 		return 0;
@@ -7454,23 +7455,26 @@ namespace giac {
 	    } // end for x
 	    if (x==totaldeg+1){
 	      proba_epsilon(contextptr) *= totaldeg;
-	      if (debug_infolevel)
-		CERR << CLOCK()*1e-6 << " det: divided diff" << '\n';
+	      if (dbg)
+		CERR << CLOCK()*1e-6 << " det: divided diff dim " << polydim << '\n';
 	      // Lagrange interpolation
 	      vecteur L=divided_differences(X,Y);
-	      if (debug_infolevel)
-		CERR << CLOCK()*1e-6 << " det: end divided diff" << '\n';
+	      if (dbg)
+		CERR << CLOCK()*1e-6 << " det: end divided diff dim " << polydim << '\n';
 	      det=untrunc1(L[totaldeg]);
 	      monomial<gen> mtmp(1,1,polydim);
 	      gen xpoly=polynome(mtmp);
 	      for (int i=totaldeg-1;i>=0;--i){
 		det = det*(xpoly-untrunc1(X[i]))+untrunc1(L[i]);
 	      }
+	      gen det0=det;
 	      det=det*detnum/detden;
-	      if (convert_internal)
+	      if (convert_internal){
 		det=r2sym(det,lva,contextptr);
-	      if (debug_infolevel)
-		CERR << CLOCK()*1e-6 << " det: end interp" << '\n';
+		det0=r2sym(det0,lva,contextptr);
+	      }
+	      if (dbg)
+		CERR << CLOCK()*1e-6 << " det: end interp dim " << polydim << '\n';
 	      if (fullreduction){
 		vecteur R,RR;
 		interpolate(X,Z,R,0);
@@ -7490,7 +7494,7 @@ namespace giac {
 		}
 		vecteur R0=midn(lmax);
 		for (int i=0;i<R0.size();++i){
-		  (*R0[i]._VECTptr)[i]=det;
+		  (*R0[i]._VECTptr)[i]=det0;
 		}
 		R=mergevecteur(R0,RR);
 		res=mtran(R);

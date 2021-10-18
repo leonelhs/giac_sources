@@ -395,11 +395,20 @@ namespace giac {
     return true;
   }
 
-  bool is_known_rootof(const vecteur & v,gen & symroot,GIAC_CONTEXT){
-    const_iterateur it=v.begin(),itend=v.end();
+  bool is_known_rootof(const vecteur & v_,const vecteur * lvptr,gen & symroot,GIAC_CONTEXT){
+    if (!convert_rootof(contextptr))
+      lvptr=0; // keep symbolic rootof in answers
+    vecteur v(v_),lv;
+    if (lvptr && !lvptr->empty())
+      lv=vecteur(lvptr->begin()+1,lvptr->end());
+    iterateur it=v.begin(),itend=v.end();
     for (;it!=itend;++it){
-      if (it->type!=_INT_)
-	return false;
+      if (lvptr)
+	*it=r2e(*it,lv,contextptr);
+      else {
+	if (it->type!=_INT_)
+	  return false;
+      }
     }
     if (rootof_trylock())
       return false;
@@ -448,7 +457,7 @@ namespace giac {
   // find k / Q[theta1+ k*theta2 ] contains theta1 and theta2
   // return the minimal poly of theta=theta1+k*theta2
   // and return in a and b theta1 and theta2 as ext (in terms of theta)
-  gen common_minimal_POLY(const gen & ga,const gen & gb, gen & a,gen & b,int & k,GIAC_CONTEXT){
+  gen common_minimal_POLY(const gen & ga,const gen & gb, gen & a,gen & b,int & k,const vecteur * lvptr,GIAC_CONTEXT){
     const vecteur & va=*ga._VECTptr;
     const vecteur & vb=*gb._VECTptr;
     int na=int(va.size()-1),nb=int(vb.size()-1);
@@ -704,9 +713,14 @@ namespace giac {
       if (rit==ritend){
 	// should first check that va/vb are solvable poly
 	gen gaa,gbb;
-	if (is_known_rootof(va,gaa,contextptr) && is_known_rootof(vb,gbb,contextptr)){
+	if (is_known_rootof(va,lvptr,gaa,contextptr) && is_known_rootof(vb,lvptr,gbb,contextptr)){
 	  if (!rootof_trylock()){
-	    symbolic_rootof_list()[v]=gaa +k*gbb;
+	    if (lvptr){
+	      gen vexpr=r2e(v,vecteur(lvptr->begin()+1,lvptr->end()),contextptr);
+	      symbolic_rootof_list()[vexpr]=gaa+k*gbb;
+	    }
+	    else
+	      symbolic_rootof_list()[v]=gaa+k*gbb;
 	    rootof_unlock();
 	  }
 	}
@@ -829,6 +843,38 @@ namespace giac {
       a=algebraic_EXTension(makevecteur(1,0),a);
       return tmp;
     }
+    // special handling if fractional power of the same object
+    if (is_one(a__VECT[0]) && is_one(b__VECT[0]) && is_zero(a__VECT[as-1]-b__VECT[bs-1])){
+      int i=1;
+      for (;i<as-1;++i){
+	if (!is_zero(a__VECT[i])) break;
+      }
+      if (i==as-1){
+	for (i=1;i<bs-1;++i){
+	  if (!is_zero(b__VECT[i])) break;
+	}
+	if (i==bs-1){
+	  int gs=(as-1)*(bs-1)/gcd(as-1,bs-1);
+	  vecteur c(gs+1);
+	  c[0]=1;
+	  c[gs]=a__VECT[as-1];
+	  polynome cp=poly12polynome(c),cpc; factorization f; gen an,extra;
+	  factor(cp,cpc,f,false,false,false,an,extra);
+	  if (f.size()==1){
+	    gen C(c);
+	    as=gs/(as-1);
+	    vecteur A(as+1);
+	    A[0]=1;
+	    a=algebraic_EXTension(A,C);
+	    bs=gs/(bs-1);
+	    vecteur B(bs+1);
+	    B[0]=1;
+	    b=algebraic_EXTension(B,C);
+	    return C;
+	  }
+	}
+      }
+    }
     // special handling if both extensions are cyclotomic
     int ac=is_cyclotomic(*a__VECT._VECTptr,epsilon(contextptr)),bc;
     if (ac && (bc=is_cyclotomic(*b__VECT._VECTptr,epsilon(contextptr))) ){
@@ -930,8 +976,10 @@ namespace giac {
 		vecteur V,V1=*A._VECTptr,V2=derivative(V1);
 		V=gcd(V1,V2,0);
 		//if (is_zero(vb)) cout << V1 << V2 << V << endl;
-		if (V.size()>1)
+		if (V.size()>1){
+		  vb=vranm(vb.size(),0,0);
 		  continue;
+		}
 	      }
 	      if (vb0==vb)
 		break;
@@ -1036,7 +1084,7 @@ namespace giac {
     b__VECT=polynome2poly1(p/p.coord.front().value); // p must be monic (?)
     // compute new minimal polynomial
     int k;    
-    gen res1=common_minimal_POLY(a__VECT,b__VECT,a,b,k,contextptr);
+    gen res1=common_minimal_POLY(a__VECT,b__VECT,a,b,k,l,contextptr);
     if ((a_orig.type==_EXT) && (b_orig.type==_EXT) && !is_undef(res1))
       return algebraic_EXTension(a_orig+gen(k)*b_orig,res1);
     else
@@ -1266,6 +1314,43 @@ namespace giac {
   static const char _max_algext_s []="max_algext";
   static define_unary_function_eval (__max_algext,&max_algext,_max_algext_s);
   define_unary_function_ptr5( at_max_algext ,alias_at_max_algext,&__max_algext,0,true);
+
+  // set_timeout(), set_timeout(15), set_timeout(20,30)
+  gen set_timeout(const gen & args,GIAC_CONTEXT){
+    gen g=args;
+    if (g.type==_VECT && g._VECTptr->empty()){
+#ifdef TIMEOUT
+      return caseval_mod?makevecteur(caseval_maxtime,caseval_mod):0;
+#else
+      return -1;
+#endif
+    }
+    if (g.type==_VECT && g._VECTptr->size()==2 && g._VECTptr->front().type==_INT_ && g._VECTptr->back().type==_INT_){
+#ifdef TIMEOUT
+      caseval_maxtime=giacmax(2,g._VECTptr->front().val);
+      caseval_n=0;
+      caseval_mod=giacmax(2,g._VECTptr->back().val);
+      string S="Max eval time set to "+print_INT_(caseval_maxtime)+", check frequency 1/"+print_INT_(caseval_mod);
+      return string2gen(S,false);
+#else
+      return -1;
+#endif
+    }
+    if (!is_integral(g) || g.type!=_INT_ || g.val<3 || g.val>24*60)
+      return gensizeerr(contextptr);
+#ifdef TIMEOUT
+    caseval_maxtime=g.val;
+    caseval_n=0;
+    caseval_mod=10;
+    string S="Max eval time set to "+g.print()+" , check frequency 1/10";
+#else
+    string S="Recompile with -DTIMEOUT to have timeout support.";
+#endif
+    return string2gen(S,false);
+   }
+  static const char _set_timeout_s []="set_timeout";
+  static define_unary_function_eval (__set_timeout,&set_timeout,_set_timeout_s);
+  define_unary_function_ptr5( at_set_timeout ,alias_at_set_timeout,&__set_timeout,0,true);
 
   static vecteur sturm(const gen & g){
     if (g.type!=_POLY)
@@ -1806,6 +1891,7 @@ namespace giac {
       }
     }
     vecteur a;
+    // should be replaced by a call that gives info if a boundaries are strict
     if (!find_range(v0,a,contextptr))
       return -2;
     int previous_sign=2,current_sign=0;

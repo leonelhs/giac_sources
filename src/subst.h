@@ -129,6 +129,7 @@ namespace giac {
   bool is_unit(const gen & g);
   bool is_algebraic_extension(const gen & g);
   vecteur rlvar(const gen &e,bool alg);
+  gen lvar_ratnormal(const gen & e,GIAC_CONTEXT);
 
   // rewrite vars of e in terms of exp/ln if s1 resp. s2 is > 1
   // and simplify
@@ -142,6 +143,9 @@ namespace giac {
   gen simplify(const gen & e,GIAC_CONTEXT);
   gen _simplify(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_simplify;
+
+  // inv(base^fractional_exponent) -> base^positive_frac_exponent/base^int_expo
+  gen invfracpow(const gen & e,GIAC_CONTEXT);
 
   gen trigcos(const gen & e,GIAC_CONTEXT);
   gen _trigcos(const gen & args,GIAC_CONTEXT);

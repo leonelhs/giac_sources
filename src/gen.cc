@@ -3238,6 +3238,10 @@ namespace giac {
   static void symb_reim(const symbolic & s,gen & r,gen & i,GIAC_CONTEXT){
     unary_function_ptr u=s.sommet;
     gen f=s.feuille;
+    if (u==at_nop){
+      reim(f,r,i,contextptr);
+      return;
+    }
     if ( (u==at_re) || (u==at_im) || (u==at_abs) || (u==at_surd) || (u==at_NTHROOT) || (u==at_innertln)){
       r=s;
       i=0;
@@ -7700,6 +7704,8 @@ namespace giac {
       return iquocmplx(a,b);
     case _CPLX__CPLX:
       return adjust_complex_display(iquocmplx(a,b),a,b);
+    case _EXT__INT_: case _EXT__ZINT:
+      return rdiv(a,b);
     default:
       return gentypeerr(gettext("iquo"));
     }
@@ -7757,6 +7763,25 @@ namespace giac {
     if (divrem1(ap,bp,q,r) && r.coord.empty())
       return q;
     return normal(fraction(a,b),context0); // ok
+  }
+
+  bool is_exactly_zero_normal(const gen &b,GIAC_CONTEXT){
+    if (b.type!=_SYMB)
+      return is_exactly_zero(b);
+    const unary_function_ptr & u=b._SYMBptr->sommet;
+    if (u==at_neg) return is_exactly_zero_normal(b._SYMBptr->feuille,contextptr);
+    if (u==at_prod){
+      gen f=b._SYMBptr->feuille;
+      if (f.type==_VECT){
+	vecteur &v=*f._VECTptr;
+	for (int i=0;i<v.size();++i){
+	  if (is_exactly_zero_normal(v[i],contextptr))
+	    return true;
+	}
+	return false;
+      }
+    }
+    return is_exactly_zero(normal(b,contextptr));
   }
 
   gen rdiv(const gen &a,const gen &b,GIAC_CONTEXT){
@@ -7953,7 +7978,7 @@ namespace giac {
       if (is_minus_one(b))
 	return chkmod(-a,b);
       if (is_exactly_zero(a)){
-	if (!is_exactly_zero(normal(b,contextptr)))
+	if (!is_exactly_zero_normal(b,contextptr))
 	  return a;
 	else
 	  return undef;
@@ -16268,6 +16293,7 @@ void sprint_double(char * s,double d){
 	  const char * expr =xcas::Console_GetLine(contextptr);
 	  if (!expr || expr[0]==4 || strcmp(expr,"exit")==0)
 	    break;
+	  giac::freeze=true;
 	  xcas::run(expr,7,contextptr);
 	  xcas::Console_NewLine(xcas::LINE_TYPE_OUTPUT,1);
 	}
@@ -16540,7 +16566,7 @@ void sprint_double(char * s,double d){
 	  S='['+S+']'; // vector/list not allowed in Numworks calc app
       }
 #else
-      if (last.is_symb_of_sommet(at_pnt))
+      if (calc_mode(contextptr)!=1 && last.is_symb_of_sommet(at_pnt))
 	S="Graphic_object";
       else if (islogo(g))
 	S="Logo_turtle";

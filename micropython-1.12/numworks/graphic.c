@@ -2746,7 +2746,7 @@ static mp_obj_t matplotl_boxplot(size_t n_args, const mp_obj_t *args) {
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(matplotl_boxplot_obj, 1, 2, matplotl_boxplot);
 
 static mp_obj_t matplotl_arrow(size_t n_args, const mp_obj_t *args) {
-  double a=0,b=0,c=0,d=d;
+  double a=0,b=0,c=0,d=0;
   int col=0;
   if (n_args==5)
     col=mp_get_color(args[4]);

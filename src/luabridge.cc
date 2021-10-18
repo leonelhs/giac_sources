@@ -12,6 +12,11 @@ using namespace std;
 static int initialized=0;
 
 void luagiac_free(){
+#if 0
+  if (nspire_exam_mode==1){
+    set_exam_mode(3,contextptr); exam_mode=0;
+  }
+#endif
 #ifdef MICROPY_LIB
   python_free();
 #endif
@@ -37,7 +42,9 @@ void luagiac_init(){
     nspire_exam_mode=1; 
   nspirelua=1;
   giac::context * contextptr=(giac::context *)giac::caseval("caseval contextptr");
+#ifdef MICROPY_LIB
   giac::micropy_ptr=micropy_ck_eval;
+#endif
   freeze=true;
   python_heap=0;
   xcas::sheetptr=0;
@@ -52,6 +59,11 @@ void luagiac_init(){
   xcas::Console_Init(contextptr);
   rand_seed(millis(),contextptr);
   giac::angle_radian(os_get_angle_unit()==0,contextptr);
+#if 0
+  if (nspire_exam_mode){ // must save LED state for restoration at end
+    set_exam_mode(2,contextptr); exam_mode=0;
+  }
+#endif
   // GetKey(&key);
   // Console_Disp(1,contextptr);
 }

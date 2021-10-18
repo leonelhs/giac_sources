@@ -1759,7 +1759,7 @@ static const JSMallocFunctions def_malloc_funcs = {
     malloc_size,
 #elif defined(_WIN32)
     (size_t (*)(const void *))_msize,
-#elif defined(EMSCRIPTEN) || defined(NSPIRE_NEWLIB)
+#elif defined(EMSCRIPTEN) || defined(NSPIRE_NEWLIB) || defined WIN32
     NULL,
 #elif defined(__linux__)
     (size_t (*)(const void *))malloc_usable_size,
