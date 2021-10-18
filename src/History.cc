@@ -4165,6 +4165,7 @@ namespace xcas {
       stop_button->deactivate();
     }
     if (current_status){
+      current_status->color((python_compat(ptr)&4)?FL_YELLOW:245);
       string mode_s="Config ";
       if (pack->url)
 	mode_s += '\''+remove_path(*pack->url)+'\'';

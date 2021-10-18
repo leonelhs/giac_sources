@@ -470,6 +470,39 @@ giac::gen Xcas_widget_size(const giac::gen & g,const giac::context * cptr) {
   	if (browser.size()!=0)
   	  setenv("http_proxy",browser.c_str(),1);
         }
+        if (s>14 && v[14].type==giac::_STRNG){
+  	std::string printer_format=*v[14]._STRNGptr;
+  	if (printer_format=="A5"){
+            Xcas_Page_Format_Output->value("A5");
+  #ifdef FL_DEVICE
+            xcas::printer_format=Fl_Printer::A5;
+  #endif
+          }
+  	if (printer_format=="A4"){
+            Xcas_Page_Format_Output->value("A4");
+  #ifdef FL_DEVICE
+            xcas::printer_format=Fl_Printer::A4;
+  #endif
+          }
+  	if (printer_format=="A3"){
+            Xcas_Page_Format_Output->value("A3");
+  #ifdef FL_DEVICE
+            xcas::printer_format=Fl_Printer::A3;
+  #endif
+          }
+  	if (printer_format=="ENVELOPE"){
+            Xcas_Page_Format_Output->value("ENVELOPE");
+  #ifdef FL_DEVICE
+            xcas::printer_format=Fl_Printer::ENVELOPE;
+  #endif
+          }
+  	if (printer_format=="LETTER"){
+            Xcas_Page_Format_Output->value("LETTER");
+  #ifdef FL_DEVICE
+            xcas::printer_format=Fl_Printer::LETTER;
+  #endif
+          }
+        }
       }
       else {
         if (g.type!=giac::_INT_)
@@ -952,6 +985,7 @@ void Xcas_save_config(const giac::context * contextptr) {
        of << "," << '"' << getenv("http_proxy") << '"' ;
      else
        of << "," << '"' << '"' ;
+     of << "," << '"' << Xcas_Page_Format_Output->value() << '"';
      of << ");" << std::endl;
      of << giac::cas_setup_string(contextptr) << ";" << std::endl;
      of << giac::geo_setup_string() << ";" << std::endl;
@@ -3155,7 +3189,7 @@ Xcas_Page_Format_Output->value("A5");
 
 static void cb_Xcas_Page_A3(Fl_Menu_*, void*) {
   #ifdef FL_DEVICE
-xcas::printer_format=Fl_Printer::A5;
+xcas::printer_format=Fl_Printer::A3;
 #endif
 Xcas_Page_Format_Output->value("A3");
 }
@@ -5432,6 +5466,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   //fl_widget_unarchive_function=&fltk_fl_widget_unarchive_function;
   //fl_widget_texprint_function=&fltk_fl_widget_texprint_function;
   //fl_widget_updatepict_function=&fltk_fl_widget_updatepict_function;
+  Xcas_Page_Format_Output->value("A4");
   giac::protected_read_config(giac::context0); // read xcas.rc
   xcas::read_recent_filenames(Xcas_main_menu); 
   xcas::Xcas_load_filename=load_filename;
@@ -5451,7 +5486,6 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   xcas::alt_ctrl_cb=Xcas_alt_ctrl_cb;
   Fl::add_idle(xcas::Xcas_idle_function,0);
   xcas::idle_function=Xcas_update_mode;
-  Xcas_Page_Format_Output->value("A4");
   if (getenv("GIAC_PREVIEW")) Xcas_ps_preview->value(getenv("GIAC_PREVIEW"));
   xcas::Xcas_update_mode_ptr=Xcas_update_mode;
   xcas::Xcas_save_config_ptr=Xcas_save_config;

@@ -31,17 +31,17 @@ A:=1/d*add(a[i]*x^i,i=0..degree(P)-1);
 H:=d*A;
 M:=matrix([seq([seq(coeff(rem(A*x^i,P,x),x,j),i=0..degree(P)-1)],j=0..degree(P)-1)]);
 M:=matrix(4,4,(i,j)->coeff(rem(A*x^(j-1),P),x,i-1)); #c'est plus simple
-cp:=charpoly(M,x):
+Cp:=charpoly(M,x):
 res:=resultant(subs(x=y,P),d*x-subs(x=y,H),y): #attention re est un mot reserve
 /* le poly caract est 1/d^(deg P) * resultant: verification:*/
-normal(d^(degree(P))*cp-res); #ils sont bien egaux
+normal(d^(degree(P))*Cp-res); #ils sont bien egaux
  P:=x^4+1;
  A:=x^2:H:=A;
  M:=matrix([seq([seq(coeff(rem(A*x^i,P,x),x,j),i=0..degree(P)-1)],j=0..degree(P)-1)]);
-cp:=charpoly(M,x):
+Cp:=charpoly(M,x):
 res:=resultant(subs(x=y,P),x-subs(x=y,H),y):
 /* le poly caract est 1/d^(deg P) * resultant: verification:*/
-normal(cp-res);
+normal(Cp-res);
 /* le poly min est une puissance de:*/
  gcd(res,diff(res,x));
  pmin(M,x);#ils sont egaux.

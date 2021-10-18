@@ -12028,7 +12028,12 @@ gen plotseq(const gen& f,const gen&x,double x0,double xmin,double xmax,int niter
       res[j]=gen(x0,x0);
       ++j;
     }
-    vecteur g(gen2vecteur(_plotfunc(gen(makevecteur(f,symb_equal(x,symb_interval(xmin,xmax))),_SEQ__VECT),contextptr)));
+    vecteur g(gen2vecteur(_plotfunc(gen(makevecteur(f,
+						    symb_equal(x,symb_interval(xmin,xmax))
+#ifdef NUMWORKS
+						    ,symb_equal(change_subtype(_NSTEP,_INT_PLOT),100)
+#endif
+					),_SEQ__VECT),contextptr)));
     g.push_back(pnt_attrib(gen(makevecteur(gen(xmin,xmin),gen(xmax,xmax)),_LINE__VECT),attributs,contextptr));
 #ifdef GIAC_HAS_STO_38
     int color=FL_BLACK;

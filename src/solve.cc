@@ -1260,6 +1260,15 @@ namespace giac {
 	  testval=(l+m)/2;
       }
       gen test=eval(subst(e0,x,testval,false,contextptr),eval_level(contextptr),contextptr);
+      // additional numeric check
+      if (e0.type==_SYMB && e0._SYMBptr->feuille.type==_VECT && e0._SYMBptr->feuille._VECTptr->size()==2){
+	gen a=e0._SYMBptr->feuille[0];
+	gen b=e0._SYMBptr->feuille[1];
+	a=a-b;
+	gen testnum=subst(a,x,evalf(testval,1,contextptr),false,contextptr);
+	if (testnum.type==_CPLX)
+	  continue;
+      }
       if (is_undef(test)){
 	if (e0.type==_SYMB && e0._SYMBptr->feuille.type==_VECT && e0._SYMBptr->feuille._VECTptr->size()==2){
 	  gen a=e0._SYMBptr->feuille[0];
@@ -1313,7 +1322,7 @@ namespace giac {
 	  )
 	symb_inf=symb_superieur_strict(x,lsymb);
       else {
-	if (equalposcomp(excluded_not_singu,l) || (test!=1 && equalposcomp(singu,l)))
+	if (is_undef(testeq) || equalposcomp(excluded_not_singu,l) || (test!=1 && equalposcomp(singu,l)))
 	  symb_inf=symb_superieur_strict(x,lsymb);
 	else
 	  symb_inf=symb_superieur_egal(x,lsymb);
@@ -1347,7 +1356,7 @@ namespace giac {
 	  )
 	symb_sup=symb_inferieur_strict(x,msymb);
       else {
-	if (equalposcomp(excluded_not_singu,m) || (test!=1 && equalposcomp(singu,m)))
+	if (is_undef(testeq) || equalposcomp(excluded_not_singu,m) || (test!=1 && equalposcomp(singu,m)))
 	  symb_sup=symb_inferieur_strict(x,msymb);
 	else
 	  symb_sup=symb_inferieur_egal(x,msymb);
@@ -2041,6 +2050,7 @@ namespace giac {
 	continue;
       vecteur res;
       gen ee=subst(expr,*itla,g,false,contextptr);
+      ee=simplifier(ee,contextptr);
       vecteur v1=solve(ee,x,isolate_mode,contextptr);
       const_iterateur it=v1.begin(),itend=v1.end();
       for (;it!=itend;++it){

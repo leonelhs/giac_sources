@@ -102,7 +102,8 @@ enum MarkupBlockTypeFlags {
   _MLBLOCK_POWER=2048,
   _MLBLOCK_DERIVATIVE=4096,
   _MLBLOCK_HAS_SUBSCRIPT=8192,
-  _MLBLOCK_LEADING_DIGIT=16384
+  _MLBLOCK_LEADING_DIGIT=16384,
+  _MLBLOCK_IDNT_NAME=32768
 };
 
 enum MarkupFlags {
@@ -594,9 +595,10 @@ string constant2content(const string &s,int idc) {
   return mml_tag("csymbol",ret,idc,"cd","physical_consts1");
 }
 
-string idnt2markup(const string &s_orig,int typ,bool unit=false,int idc=0) {
+string idnt2markup(const string &s_orig,int typ,bool unit,int idc,bool &isname) {
   bool tex=typ==0;
   bool scm=typ==1;
+  isname=false;
   if (unit && !s_orig.empty() && s_orig[0]=='_') {
     string s=s_orig.substr(1);
     if (s=="a0_")
@@ -605,9 +607,9 @@ string idnt2markup(const string &s_orig,int typ,bool unit=false,int idc=0) {
     else if (s=="alpha_")
       return tex?"\\alpha ":(scm?"<space><nosymbol><alpha><nosymbol>":mml_tag("mi","&alpha;",idc));
     else if (s=="c_")
-      return tex || scm?"<space><nosymbol>c<nosymbol>":mml_tag("mi","c",idc);
+      return tex?"c":(scm?"<space><nosymbol>c<nosymbol>":mml_tag("mi","c",idc));
     else if (s=="c3_")
-      return tex || scm?"<space><nosymbol>b<nosymbol>":mml_tag("mi","b",idc);
+      return tex?"b":(scm?"<space><nosymbol>b<nosymbol>":mml_tag("mi","b",idc));
     else if (s=="epsilon0_")
       return tex?"\\varepsilon_0"
                 :(scm?"(concat \"<space><nosymbol><varepsilon>\" (rsub \"0\") \"<nosymbol>\")"
@@ -621,23 +623,23 @@ string idnt2markup(const string &s_orig,int typ,bool unit=false,int idc=0) {
                 :(scm?"(concat \"<space><nosymbol><varepsilon>\" (rsub \"Si\") \"<nosymbol>\")"
                      :mml_tag("msub","<mi>&epsilon;</mi><mi>Si<mi>",idc));
     else if (s=="F_")
-      return tex || scm?"<space><nosymbol>F<nosymbol>":mml_tag("mi","F",idc);
+      return tex?"F":(scm?"<space><nosymbol>F<nosymbol>":mml_tag("mi","F",idc));
     else if (s=="f0_")
       return tex?"f_0":(scm?"(concat \"<space><nosymbol>f\" (rsub \"0\") \"<nosymbol>\")"
                            :mml_tag("msub","<mi>f</mi><mn>0</mn>",idc));
     else if (s=="g_")
-      return tex || scm?"<space><nosymbol>g<nosymbol>":mml_tag("mi","g",idc);
+      return tex?"g":(scm?"<space><nosymbol>g<nosymbol>":mml_tag("mi","g",idc));
     else if (s=="G_")
-      return tex || scm?"<space><nosymbol>G<nosymbol>":mml_tag("mi","G",idc);
+      return tex?"G":(scm?"<space><nosymbol>G<nosymbol>":mml_tag("mi","G",idc));
     else if (s=="h_")
-      return tex || scm?"<space><nosymbol>h<nosymbol>":mml_tag("mi","h",idc);
+      return tex?"h":(scm?"<space><nosymbol>h<nosymbol>":mml_tag("mi","h",idc));
     else if (s=="hbar_")
       return tex?"\\hslash ":(scm?"<space><nosymbol><hbar><nosymbol>":mml_tag("mi","&#x210f;",idc));
     else if (s=="I0_")
       return tex?"I_0":(scm?"(concat \"<space><nosymbol>I\" (rsub \"0\") \"<nosymbol>\")"
                            :mml_tag("msub","<mi>I</mi><mn>0</mn>",idc));
     else if (s=="k_")
-      return tex || scm?"<space><nosymbol>k<nosymbol>":mml_tag("mi","k",idc);
+      return tex?"k":(scm?"<space><nosymbol>k<nosymbol>":mml_tag("mi","k",idc));
     else if (s=="lambda0_")
       return tex?"\\lambda_0":(scm?"(concat \"<space><nosymbol><lambda>\" (rsub \"0\") \"<nosymbol>\")"
                                   :mml_tag("msub","<mi>&lambda;</mi><mn>0</mn>",idc));
@@ -677,7 +679,7 @@ string idnt2markup(const string &s_orig,int typ,bool unit=false,int idc=0) {
                 :(scm?"(concat \"<space><nosymbol>P\" (rsub \"<odot>\") \"<nosymbol>\")"
                      :mml_tag("msub","<mi>P</mi><mi>&odot;</mi>",idc));
     else if (s=="q_")
-      return tex || scm?"<space><nosymbol>q<nosymbol>":mml_tag("mi","q",idc);
+      return tex?"q":(scm?"<space><nosymbol>q<nosymbol>":mml_tag("mi","q",idc));
     else if (s=="R_")
       return tex || scm?"<space><nosymbol>R<nosymbol>":mml_tag("mi","R",idc);
     else if (s=="REarth_")
@@ -884,6 +886,8 @@ string idnt2markup(const string &s_orig,int typ,bool unit=false,int idc=0) {
       } else ++i;
     }
   }
+  if (len>1)
+    isname=true;
   return ret;
 }
 
@@ -1083,7 +1087,7 @@ string func2markup(const gen &g,int typ,int idc=0) {
   if (g.type==_FUNC) return func2markup(symbolic(*g._FUNCptr,vecteur(0)),typ,idc);
   bool tex=typ==0,scm=typ==1,content=typ==2;
   string ret;
-  bool has_id=false;
+  bool has_id=false,isname;
   if (g.is_symb_of_sommet(at_ln) || g.is_symb_of_sommet(at_LN))
     ret=tex?"\\ln ":(scm?"ln":(content? "<ln/>":"<mi>ln</mi>"));
   else if (g.is_symb_of_sommet(at_sin) || g.is_symb_of_sommet(at_SIN))
@@ -1167,7 +1171,7 @@ string func2markup(const gen &g,int typ,int idc=0) {
       if (content)
         ret=mml_tag("ci",g._SYMBptr->sommet.ptr()->s,idc,"type","function");
       else
-        ret=idnt2markup(g._SYMBptr->sommet.ptr()->s,typ,false,idc);
+        ret=idnt2markup(g._SYMBptr->sommet.ptr()->s,typ,false,idc,isname);
       has_id=true;
     }
     if (tex && ret.length()>1 && isalpha(ret.at(0)))
@@ -1193,7 +1197,7 @@ MarkupBlock gen2markup(const gen &g,int flags_orig,int &idc,GIAC_CONTEXT) {
   bool mml_presentation=(flags & _MARKUP_MATHML_PRESENTATION)!=0;
   bool mml_content=(flags & _MARKUP_MATHML_CONTENT)!=0;
   bool isfactor=(flags & _MARKUP_FACTOR)!=0;
-  bool vectarg,isbinary,isone;
+  bool vectarg,isbinary,isone,isname=false;
   flags &= ~_MARKUP_TOPLEVEL;
   flags &= ~_MARKUP_FACTOR;
   string ld,rd,ld_tex,rd_tex,ld_scm,rd_scm,str;
@@ -1267,11 +1271,11 @@ MarkupBlock gen2markup(const gen &g,int flags_orig,int &idc,GIAC_CONTEXT) {
             ml.content=mml_tag("ci",g.print(contextptr),++idc);
         }
         if (mml_presentation)
-          ml.markup=idnt2markup(g.print(contextptr),2,false,idc);
+          ml.markup=idnt2markup(g.print(contextptr),2,false,idc,isname);
         if (tex)
-          ml.latex=idnt2markup(g.print(contextptr),0);
+          ml.latex=idnt2markup(g.print(contextptr),0,false,0,isname);
         if (scm)
-          ml.scheme=scm_quote(idnt2markup(g.print(contextptr),1));
+          ml.scheme=scm_quote(idnt2markup(g.print(contextptr),1,false,0,isname));
         ml.type=_MLBLOCK_SUBTYPE_IDNT;
       }
     } else {
@@ -1455,19 +1459,21 @@ MarkupBlock gen2markup(const gen &g,int flags_orig,int &idc,GIAC_CONTEXT) {
       }
       bool has_subscript=false;
       if (mml_presentation) {
-        ml.markup=idnt2markup(g.print(contextptr),2,isunit,idc);
+        ml.markup=idnt2markup(g.print(contextptr),2,isunit,idc,isname);
         has_subscript=is_substr(ml.markup,"<msub>");
       }
       if (tex) {
-        ml.latex=idnt2markup(g.print(contextptr),0,isunit);
+        ml.latex=idnt2markup(g.print(contextptr),0,isunit,0,isname);
         has_subscript=is_substr(ml.latex,"_{");
       }
       if (scm) {
-        ml.scheme=scm_quote(idnt2markup(g.print(contextptr),1,isunit));
+        ml.scheme=scm_quote(idnt2markup(g.print(contextptr),1,isunit,0,isname));
         has_subscript=is_substr(ml.scheme,"(rsub ");
       }
       if (has_subscript)
         ml.type|=_MLBLOCK_HAS_SUBSCRIPT;
+      if (isname)
+        ml.type|=_MLBLOCK_IDNT_NAME;
     }
     return ml;
   /*
@@ -1846,7 +1852,8 @@ MarkupBlock gen2markup(const gen &g,int flags_orig,int &idc,GIAC_CONTEXT) {
           parenthesize(tmp,flags);
         is_cdot=
             tmp.ctype(_MLBLOCK_LEADING_DIGIT) || tmp.ctype(_MLBLOCK_SUBTYPE_IDNT) ||
-            tmp.ctype(_MLBLOCK_FACTORIAL) || prev.ctype(_MLBLOCK_SUBTYPE_IDNT) ||
+            tmp.ctype(_MLBLOCK_FACTORIAL) || tmp.ctype(_MLBLOCK_IDNT_NAME) ||
+            prev.ctype(_MLBLOCK_IDNT_NAME) || prev.ctype(_MLBLOCK_SUBTYPE_IDNT) ||
             (tmp.ctype(_MLBLOCK_FRACTION) && prev.ctype(_MLBLOCK_FRACTION)) ||
             (prev.ctype(_MLBLOCK_ELEMAPP) && prev.appl);
         prod_sign=is_cdot?mml_cdot:mml_itimes;
@@ -3362,10 +3369,10 @@ MarkupBlock gen2markup(const gen &g,int flags_orig,int &idc,GIAC_CONTEXT) {
         opt="\\mathbin{"+op+"}";
         ops=scm_quote(op);
       } else {
-        op="<mspace width='thickmathspace'/>"+idnt2markup(op,2,false,idc)+
+        op="<mspace width='thickmathspace'/>"+idnt2markup(op,2,false,idc,isname)+
              "<mspace width='thickmathspace'/>";
-        opt="\\;"+idnt2markup(op,0)+"\\;";
-        ops="\"<space>\" "+idnt2markup(op,1)+" \"<space>\"";
+        opt="\\;"+idnt2markup(op,0,false,0,isname)+"\\;";
+        ops="\"<space>\" "+idnt2markup(op,1,false,0,isname)+" \"<space>\"";
       }
       if (mml_presentation)
         ml.markup=mml_tag("mrow",left.markup+op+right.markup,idc);

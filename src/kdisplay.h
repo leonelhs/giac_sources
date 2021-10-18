@@ -30,6 +30,7 @@ extern "C" {
   void  mp_deinit();
   void mp_stack_ctrl_init();
   extern int parser_errorline,parser_errorcol;
+  void python_free();
 }
 int micropy_ck_eval(const char *line);
 #endif
@@ -85,7 +86,8 @@ extern "C" {
   int python_init(int stack_size,int heap_size);
 }
 extern int lang;
-extern bool warn_nr,nspirelua;
+extern short int nspirelua;
+extern bool warn_nr;
 int select_interpreter(); // 0 Xcas, 1|2 Xcas python_compat(1|2), 3 MicroPython 
 const char * gettext(const char * s) ;
 
@@ -107,6 +109,7 @@ namespace xcas {
   int print_color(int print_x,int print_y,const char *s,int color,bool invert,bool minimini,const giac::context * contextptr);
   bool tooltip(int x,int y,int pos,const char * editline,const giac::context * contextptr);
 			   
+  bool textedit(char * s,int bufsize,bool OKparse,const giac::context * contextptr,const char * filename=0);
   bool textedit(char * s,int bufsize,const giac::context * contextptr);
   // maximum "size" of symbolics displayed in an Equation (pretty print)
   extern unsigned max_prettyprint_equation;
@@ -176,6 +179,7 @@ namespace xcas {
     short int speed=0;
   };
   
+  int run(const char * s,int do_logo_graph_eqw,const giac::context * contextptr);
   int displaygraph(const giac::gen & ge, const giac::context * contextptr);
   int displaylogo();
   giac::gen eqw(const giac::gen & ge,bool editable,const giac::context * contextptr);
@@ -276,13 +280,14 @@ namespace xcas {
   };
 
   enum CONSOLE_SCREEN_SPEC {
-			    _LINE_MAX = 48,
-			    LINE_DISP_MAX = 11,
 #ifdef NSPIRE_NEWLIB
+			    _LINE_MAX = 128,
 			    COL_DISP_MAX = 32,
 #else
+			    _LINE_MAX = 48,
 			    COL_DISP_MAX = 30,//32
 #endif
+			    LINE_DISP_MAX = 11,
 			    EDIT_LINE_MAX = 2048
   };
   
@@ -323,6 +328,7 @@ namespace xcas {
   int Console_Backspace(const giac::context *);
   int Console_GetKey(const giac::context *);
   int Console_Init(const giac::context *);
+  void Console_Free();
   int Console_Disp(int redraw_mode,const giac::context*ptr);
   int Console_FMenu(int key,const giac::context *);
   extern char menu_f1[8],menu_f2[8],menu_f3[8],menu_f4[8],menu_f5[8],menu_f6[8];

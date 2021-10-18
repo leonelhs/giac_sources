@@ -25,6 +25,7 @@ using namespace std;
 #include <cmath>
 #include "pari.h"
 #include "gen.h"
+#include "quater.h"
 
 // uncomment to remove NTL factorization
 // #undef HAVE_LIBNTL
@@ -1401,6 +1402,104 @@ namespace giac {
 
 
 #endif // ndef HAVE_LIBNTL
+  
+  gen irred_using_factors(const gen &g,const gen & x,GIAC_CONTEXT){
+    gen facto=_factors(g,contextptr);
+    if (facto.type!=_VECT)
+      return undef;
+    vecteur v=*facto._VECTptr;
+    bool stop=false;
+    for (int i=0;i<v.size();i+=2){
+      gen vi=v[i];
+      if (vi.type<_IDNT || vi.type==_MOD || vi.type==_USER)
+	continue;
+      gen deg=_degree(makesequence(vi,x),contextptr);
+      if (is_inf(deg))
+	continue;
+      if (deg.type!=_INT_)
+	return undef;
+      if (deg.val>=1){
+	if (stop)
+	  return 0;
+	stop=true;
+      }
+    }
+    return stop?1:0;
+  }
+
+  gen _is_irreducible(const gen & args,GIAC_CONTEXT){
+    vecteur lv(lidnt(args));
+    if (lv.size()>1) {
+      // this might be improved by checking some specializations
+      // but factor does it as well...
+      // should check irred w.r.t a variable
+      if (args.type==_VECT && args._VECTptr->size()==2)
+	return irred_using_factors(args._VECTptr->front(),args._VECTptr->back(),contextptr);
+      return irred_using_factors(args,vx_var,contextptr);
+    }
+    gen arg;
+    if (args.type!=_VECT)
+      arg=makesequence(args,ggb_var(args));
+    else
+      arg=args;
+    vecteur v;
+    v=*arg._VECTptr;
+    if (!lv.empty()){
+      if (v.size()!=2)
+	return gentypeerr(contextptr);
+      gen f=v[0],x=v[1];
+      f=_symb2poly(makesequence(f,x),contextptr);
+      if (f.type==_FRAC)
+	f=f._FRACptr->num;
+      if (f.type!=_VECT)
+	return gentypeerr(contextptr);
+      v=*f._VECTptr;
+    }
+    if (v.size()==1)
+      return 0;
+    if (v.size()==2)
+      return 1;
+    vecteur w=derivative(v);
+    vecteur d=gcd(v,w,0,false);
+    if (d.size()>1
+	//&& d.size()<v.size()
+	)
+      return 0;
+    // coeff type
+    gen coeff;
+    int t=coefftype(v,coeff);
+    if (t==_MOD){
+      v=*unmod(v)._VECTptr;
+      vecteur vmin;
+      if (is_irreducible_primitive(v,*(coeff._MODptr+1),vmin,2,contextptr))
+	return 1;
+      return 0;
+    }
+#ifndef NO_RTTI
+    if (coeff.type==_USER)
+      return is_irreducible(v,coeff);
+#endif
+    gen g=_poly2symb(makesequence(v,vx_var),contextptr);
+    return irred_using_factors(g,vx_var,contextptr);
+  }
+  static const char _is_irreducible_s []="is_irreducible";
+  static define_unary_function_eval (__is_irreducible,&_is_irreducible,_is_irreducible_s);
+  define_unary_function_ptr5( at_is_irreducible ,alias_at_is_irreducible,&__is_irreducible,0,true);
+
+  gen _max_alg_ext_order_size(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG && g.subtype==-1) return  g;
+    if (g.type==_VECT && g._VECTptr->empty())
+      return MAX_ALG_EXT_ORDER_SIZE;
+    if (g.type!=_INT_ || g.val<0)
+      return gensizeerr(contextptr);
+    if (g.val>0)
+      MAX_ALG_EXT_ORDER_SIZE=g.val;
+    return MAX_ALG_EXT_ORDER_SIZE;
+  }
+  static const char _max_alg_ext_order_size_s []="max_alg_ext_order_size";
+  static define_unary_function_eval (__max_alg_ext_order_size,&_max_alg_ext_order_size,_max_alg_ext_order_size_s);
+  define_unary_function_ptr5( at_max_alg_ext_order_size ,alias_at_max_alg_ext_order_size,&__max_alg_ext_order_size,0,true);
+
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

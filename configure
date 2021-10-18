@@ -18751,6 +18751,45 @@ fi
   fi
 LIBS="$save_LIBS"
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lcliquer" >&5
+$as_echo_n "checking for main in -lcliquer... " >&6; }
+if ${ac_cv_lib_cliquer_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lcliquer  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_cliquer_main=yes
+else
+  ac_cv_lib_cliquer_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_cliquer_main" >&5
+$as_echo "$ac_cv_lib_cliquer_main" >&6; }
+if test "x$ac_cv_lib_cliquer_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBCLIQUER 1
+_ACEOF
+
+  LIBS="-lcliquer $LIBS"
+
+fi
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lnauty" >&5
 $as_echo_n "checking for main in -lnauty... " >&6; }
 if ${ac_cv_lib_nauty_main+:} false; then :

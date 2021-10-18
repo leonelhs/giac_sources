@@ -2,7 +2,7 @@
 int (*shutdown)()=0;
 
 short shutdown_state=0;
-short exam_mode=0;
+short exam_mode=0,nspire_exam_mode=0;
 unsigned exam_start=0; // RTC start
 int exam_duration=0;
 // <0: indicative duration, ==0 time displayed during exam, >0 end exam_mode after
@@ -20,6 +20,7 @@ int exam_bg(){
 // cx ii 90140050 (R/W): Disable bus access to peripherals. Reads will just return the last word read from anywhere in the address range, and writes will be ignored.
 // cx 900F0020 (R/W): LCD contrast/backlight. Valid range for contrast: 0x11a to 0x1ce; normal value is 0x174. However, it can range from 0x100 (backlight off) to about 0x1d0 (about max brightness).
 // -> cx ii The OS controls the LCD backlight by writing to 90130018.
+#include <libndls.h>
 #include "os.h" // Ndless/ndless-sdk/include/os.h
 #include <unistd.h>
 #include <stdio.h>
@@ -86,7 +87,9 @@ void get_hms(int *h,int *m,int *s){
   *s%=60;
 }
 
-// #define is_cx2 false
+#ifndef is_cx2
+#define is_cx2 false
+#endif
 
 double loopsleep(int ms){
   double n=ms*(is_cx2?3000:1000),j=0.0;
@@ -97,8 +100,8 @@ double loopsleep(int ms){
 }
 
 void ck_msleep(int ms){
-  msleep(ms);
-  //loopsleep(ms);
+  //msleep(ms);
+  loopsleep(ms);
 }
 
 void os_wait_1ms(int ms){
@@ -239,6 +242,14 @@ int os_file_browser(const char ** filenames,int maxrecords,const char * extensio
 }
 
 Gc nspire_gc=0;
+
+void reset_gc(){
+  if (nspire_gc){
+    gui_gc_finish(nspire_gc);
+    //gui_gc_free(nspire_gc);
+  }
+  nspire_gc=0;
+}
 
 Gc * get_gc(){
   if (!nspire_gc){
@@ -687,21 +698,27 @@ int getkey(int allow_suspend){
       sync_screen();
     }
     bool autosuspend=(t1-lastt>=100);
-    if (is_cx2 && nspire_ctrl && on_key_pressed()){
+    if (nspire_exam_mode!=2 &&
+	is_cx2 && nspire_ctrl && on_key_pressed()){
       os_fill_rect(50,90,200,40,0x1234);
       nspire_draw_string(60,120,0,0xffff,Regular12,"Quit KhiCAS to shutdown",false);
       nspire_ctrl=false;
       statusline(1);
       continue;
     }
-    if (!is_cx2 && allow_suspend && (autosuspend || (nspire_ctrl && on_key_pressed()))){
+    if ( (nspire_exam_mode==2 || !is_cx2) &&
+	allow_suspend && (autosuspend || (nspire_ctrl && on_key_pressed()))){
       nspire_ctrl=nspire_shift=false;
       while (!autosuspend && on_key_pressed())
 	loopsleep(10);
       // somewhat OFF by setting LCD to 0
-      unsigned NSPIRE_CONTRAST_ADDR=is_cx2?0x90130018:0x900f0020;
-      unsigned oldval=*(volatile unsigned *)NSPIRE_CONTRAST_ADDR;
-      *(volatile unsigned *)NSPIRE_CONTRAST_ADDR=0x100;
+      unsigned NSPIRE_CONTRAST_ADDR=is_cx2?0x90130014:0x900f0020;
+      unsigned oldval=*(volatile unsigned *)NSPIRE_CONTRAST_ADDR,oldval2;
+      if (is_cx2){
+	oldval2=*(volatile unsigned *) (NSPIRE_CONTRAST_ADDR+4);
+	*(volatile unsigned *) (NSPIRE_CONTRAST_ADDR+4)=0xffff;
+      }
+      *(volatile unsigned *)NSPIRE_CONTRAST_ADDR=is_cx2?0xffff:0x100;
       static volatile uint32_t *lcd_controller = (volatile uint32_t*) 0xC0000000;
       lcd_controller[6] &= ~(0b1 << 11);
       loopsleep(20);
@@ -710,7 +727,7 @@ int getkey(int allow_suspend){
       for (int n=0;!on_key_pressed();++n){
 	loopsleep(100);
 	idle();
-	if (!exam_mode && shutdown
+	if (!exam_mode && nspire_exam_mode!=2 && shutdown
 	    // && n&0xff==0
 	    ){
 	  unsigned curtime=* (volatile unsigned *) NSPIRE_RTC_ADDR;
@@ -721,14 +738,17 @@ int getkey(int allow_suspend){
 	    lcd_controller[6] |= 0b1;
 	    loopsleep(20);
 	    lcd_controller[6]|= 0b1 << 11;
+	    if (is_cx2)
+	      *(volatile unsigned *)(NSPIRE_CONTRAST_ADDR+4)=oldval2;
 	    *(volatile unsigned *)NSPIRE_CONTRAST_ADDR=oldval;
 	    statuslinemsg("Press ON to disable KhiCAS auto shutdown");
 	    //os_fill_rect(0,0,320,222,0xffff);
 	    sync_screen();
 	    int m=0,mmax=150;
 	    for (;m<mmax;++m){
-	      if (on_key_pressed())
+	      if (on_key_pressed()){
 		break;
+	      }
 	      loopsleep(100);
 	      idle();
 	    }
@@ -743,9 +763,22 @@ int getkey(int allow_suspend){
 	  }
 	}
       }
+      if (nspire_exam_mode==2){
+	os_fill_rect(20,30,280,150,0x1234);
+	os_fill_rect(25,45,270,121,0xffff);
+	nspire_draw_string(25,60,0,0xffff,Regular12,"Mode examen de KhiCAS, avec CAS.",false);
+	nspire_draw_string(25,77,0,0xffff,Regular12,"Mode conforme à la règlementation",false);
+	nspire_draw_string(25,94,0,0xffff,Regular12,"du bac en France (les fichiers non",false);
+	nspire_draw_string(25,111,0,0xffff,Regular12,"autorisés ont été effacés et les",false);
+	nspire_draw_string(25,128,0,0xffff,Regular12,"sauvegardes sont desactivées).",false);
+	nspire_draw_string(25,150,0,0xffff,Regular12,"Quitter KhiCAS (ou appuyer sur reset)",false);
+	nspire_draw_string(25,167,0,0xffff,Regular12,"relancera le clignotement des leds.",false);
+      }
       lcd_controller[6] |= 0b1;
       loopsleep(20);
       lcd_controller[6]|= 0b1 << 11;
+      if (is_cx2)
+	*(volatile unsigned *)(NSPIRE_CONTRAST_ADDR+4)=oldval2;
       *(volatile unsigned *)NSPIRE_CONTRAST_ADDR=oldval;
       statusline(0);
       sync_screen();

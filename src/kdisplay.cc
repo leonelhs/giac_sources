@@ -17,13 +17,27 @@
  */
 #include "config.h"
 #include "giacPCH.h"
+#if defined HAVE_UNISTD_H && !defined NUMWORKS
+#include <dirent.h>
+#endif
 #ifdef NSPIRE_NEWLIB
+#include <fstream>
+#include <libndls.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <os.h>
 #include <syscall.h>
+#include "sha256.h"
+#endif
+#ifndef is_cx2
+#define is_cx2 false
 #endif
 #ifdef KHICAS
+#ifndef NSPIRE_NEWLIB
+extern "C" {
+  short int nspire_exam_mode=0;
+}
+#endif
 #define XWASPY 1 // save .xw file as _xw.py (to be recognized by Numworks workshop)
 const int xwaspy_shift=33; // must be between 32 and 63, reflect in xcas.js and History.cc
 #include "kdisplay.h"
@@ -37,9 +51,10 @@ const int xwaspy_shift=33; // must be between 32 and 63, reflect in xcas.js and 
 //giac::context * contextptr=0;
 int clip_ymin=0;
 int lang=1;
-bool warn_nr=true,nspirelua=false;
+short int nspirelua=0;
+bool warn_nr=true; 
 bool xthetat=false;
-bool freezeturtle=false;
+//bool freezeturtle=false;
 bool global_show_axes=true;
 int esc_flag=0;
 int xcas_python_eval=0;
@@ -6710,12 +6725,286 @@ namespace xcas {
     giac::kbd_interrupted=giac::interrupted=false;
   }
 
+#ifdef NSPIRE_NEWLIB
+  const unsigned char rsa_n_tab[]=
+  {
+   0xf2,0x0e,0xd4,0x9d,0x44,0x04,0xc4,0xc8,0x6a,0x5b,0xc6,0x9a,0xd6,0xdf,
+   0x9c,0xf5,0x56,0xf2,0x0d,0xad,0x6c,0x34,0xb4,0x48,0xf7,0xa7,0xa8,0x27,0xa0,
+   0xc8,0xbe,0x36,0xb1,0xc0,0x95,0xf8,0xc2,0x72,0xfb,0x78,0x0f,0x3f,0x15,0x22,
+   0xaf,0x51,0x96,0xe3,0xdc,0x39,0xb4,0xc6,0x40,0x6d,0x58,0x56,0x1f,0xad,0x55,
+   0x55,0x08,0xf1,0xde,0x5a,0xbc,0xd3,0xcc,0x16,0x3d,0x33,0xee,0x83,0x3f,0x32,
+   0xa7,0xa7,0xb8,0x95,0x2f,0x35,0xeb,0xf6,0x32,0x4d,0x22,0xd9,0x60,0xb7,0x5e,
+   0xbd,0xea,0xa5,0xcb,0x9c,0x69,0xeb,0xfd,0x9f,0x2b,0x5f,0x3d,0x38,0x5a,0xe1,
+   0x2b,0x63,0xf8,0x92,0x35,0x91,0xea,0x77,0x07,0xcc,0x4b,0x7a,0xbc,0xe0,0xa0,
+   0x8b,0x82,0x98,0xa2,0x87,0x10,0x2c,0xe2,0x23,0x53,0x2f,0x70,0x03,0xec,0x2d,
+   0x22,0x34,0x72,0x57,0x4d,0x24,0x2e,0x97,0xc9,0xfb,0x23,0xb0,0x05,0xff,0x87,
+   0x6e,0xbf,0x94,0x2d,0xf0,0x36,0xed,0xd7,0x9a,0xac,0x0c,0x21,0x94,0xa2,0x75,
+   0xfc,0x39,0x9b,0xba,0xf2,0xc6,0xc9,0x34,0xa0,0xb2,0x66,0x5a,0xcc,0xc9,0x5c,
+   0xc7,0xdb,0xce,0xfb,0x3a,0x10,0xee,0xc1,0x82,0x9a,0x43,0xef,0xed,0x87,0xbd,
+   0x6c,0xe4,0xc1,0x36,0xd0,0x0a,0x85,0x6e,0xca,0xcd,0x13,0x29,0x65,0xb5,0xd4,
+   0x13,0x4a,0x14,0xaa,0x65,0xac,0x0e,0x6f,0x19,0xb0,0x62,0x47,0x65,0x0e,0x40,
+   0x82,0x37,0xd6,0xf0,0x17,0x48,0xaa,0x8c,0x7b,0xc4,0x5e,0x4a,0x72,0x26,0xa6,
+   0x08,0x2e,0xff,0x2d,0x9d,0x0e,0x2e,0x19,0xe9,0x6a,0x4c,0x7c,0x3e,0xe9,0xbc,
+   0x78,0x95
+  };
+
+  gen tabunsignedchar2gen(const unsigned char tab[],int len){
+    gen res=0;
+    for (int i=0;i<len;++i){
+      res=256*res;
+      res+=tab[i];
+    }
+    return res;
+  }
+  // rsa_check will return a number of keys if the file is made of encrypted sha256
+  // fingerprints, and will set the list of keys accordingly
+  // decrypted sha256 keys must be written in basis 256
+  // as decimal strings of 3 digits
+  // a key has 32 bytes -> 96 digits -> crypted as a 96 hexadecimal BCD number
+  // 96 bytes = 768 bits + 1280 leadings bits ignored
+  // if after decryption one byte is not in '0'..'9' then the key file is wrong
+  int rsa_check(const char * filename,int maxkeys,BYTE hash[][SHA256_BLOCK_SIZE]){
+    // 2048 bits key
+    //gen rsa_n("30556983006074777238153119417050033796377803388439527860005340326999902386793820226251074714511561407075812479599501874865302578278319769475202313110451510448783794266461205935851713896070734772609406958034158877973097041361961511770051269836310307170258399115935233789006376756279696914861909994161265089406023979340582770078210602481999222884431385627202086122099546391904669923221616360112943964540439315592530076604901633280666259500385969154248745363924897530806256116825070881718288938659701112718863366914419207811508217802754887145264781681001930842410022363032920896943814827354941650810105635438172850387093",context0);
+    gen rsa_n(tabunsignedchar2gen(rsa_n_tab,sizeof(rsa_n_tab)));
+    gen N=pow(gen(2),768),q;
+    // read by blocks of 2048 bits=256 bytes
+    FILE * f=fopen(filename,"r");
+    if (!f)
+      return -1;
+    for (int i=0;;++i){
+      gen key=0;
+      // skip 0x prefix
+      for (;;){
+	unsigned char c=fgetc(f);
+	if (feof(f))
+	  break;
+	if (c=='\n' || c==' ' || c=='0')
+	  continue;
+	if (c=='x')
+	  break;
+	// invalid char
+	unlink(filename);
+	return -2;
+      }
+      if (feof(f)){
+	fclose(f);
+	return i;
+      }
+      for (int j=0;j<256;++j){
+	key = 256*key;
+	unsigned char c=fgetc(f);
+	if (feof(f)){
+	  fclose(f);
+	  if (j!=0){ unlink(filename); return 0; }
+	  return i;
+	}
+	if (c==' ' || c=='\n')
+	  break;
+	if (c>='0' && c<='9')
+	  c=c-'0';
+	else {
+	  if (c>='a' && c<='f')
+	    c=10+c-'a';
+	  else {
+	    fclose(f);
+	    unlink(filename);
+	    return -3;
+	  }
+	}
+	unsigned char d=fgetc(f);
+	if (feof(f)){
+	  fclose(f);
+	  unlink(filename);
+	  return -4;
+	}
+	if (d==' ' || d=='\n'){
+	  key = key/16+int(c);
+	  break;
+	}
+	if (d>='0' && d<='9')
+	  d=d-'0';
+	else {
+	  if (d>='a' && d<='f')
+	    d=10+d-'a';
+	  else {
+	    fclose(f);
+	    unlink(filename);
+	    return -5;
+	  }
+	}
+	key = key+int(c)*16+int(d);
+      }
+      // public key decrypt and keep only 768 low bits
+      //std::cout << key << '\n' ;
+      key=powmod(key,65537,rsa_n);
+      key=irem(key,N,q); // q should be irem(rsa_n,12345)
+      if (q!=12345){
+	fclose(f);
+	//unlink(filename);
+	return -6;
+      }
+      // check that key is valid and write in hash[i]
+      for (int j=0;j<32;++j){
+	// divide 3 times by 256, remainder must be in '0'..'9'
+	int o=0;
+	int tab[]={1,10,100};
+	for (int k=0;k<3;++k){
+	  gen r=irem(key,256,q);
+	  key=q;
+	  if (r.type!=_INT_ || r.val>'9' || r.val<'0'){
+	    fclose(f);
+	    unlink(filename);
+	    return -7;
+	  }
+	  o+=(r.val-'0')*tab[k];
+	}
+	if (o<0 || o>255){
+	  fclose(f);
+	  unlink(filename);
+	  return -8;
+	}
+	if (i<maxkeys)
+	  hash[i][31-j]=o;
+      }
+    }
+    fclose(f);
+    return maxkeys;
+  }
+
+  bool sha_check(const char * filename,int nkeys,BYTE hash[][SHA256_BLOCK_SIZE]){
+    // must contain sha256 hash for ndless and khicas files (max 32 hash keys)
+    // if more keys are needed modify maxkeys here and in buildsha.cc
+    // Keys are generated with buildsha.cc (private program)
+    // ./a.out ndless/* khicas*tns luagiac.luax.tns 
+    BYTE buf[SHA256_BLOCK_SIZE];
+    SHA256_CTX ctx;
+    string text;
+    FILE * f=fopen(filename,"r");
+    if (!f)
+      return false;
+    for (;;){
+      unsigned char c=fgetc(f);
+      if (feof(f))
+	break;
+      text += c;
+    }
+    fclose(f);
+    unsigned char * ptr=(unsigned char *)text.c_str();
+    sha256_init(&ctx);
+    sha256_update(&ctx, ptr, text.size());
+    sha256_final(&ctx, buf);
+    for (int i=0;i<nkeys;++i){
+      if (!memcmp(hash[i], buf, SHA256_BLOCK_SIZE))
+	return true;
+    }
+    return false;
+  }
+  
+  DIR * nspire_clear_data(const char * dirname,int nkeys,BYTE hash[][SHA256_BLOCK_SIZE],GIAC_CONTEXT){
+    bool toplevel=strcmp(dirname,"/exammode/usr")==0;
+    bool ndless=strcmp(dirname,"/exammode/usr/ndless")==0;
+    DIR *dp;
+    struct dirent *ep;
+    dp = opendir (dirname);
+    if (!dp)
+      return dp;
+    string s;
+    int t;
+    while ( (ep = readdir (dp)) ){
+      s=ep->d_name;
+      t=s.size();
+      if (s=="." || s==".." || s=="NspireLogs.zip" || s=="themes.csv")
+	continue;
+      int res=0;
+      if (t<4 || s.substr(t-4,4)!=".tns"){ // dev, tmp, phoenix, documents, logs, widgets, ptt, metric, wlan, temp_ccp, images
+	s=dirname+("/"+s);
+	DIR * ptr=nspire_clear_data(s.c_str(),nkeys,hash,contextptr);
+	if (ptr && s!="/exammode/usr/ndless" && s!="/exammode/usr/Press-to-Test")
+	  res=rmdir(s.c_str());
+	// else *logptr(contextptr) << s << '\n'; //
+      }
+      else {
+	if (toplevel || ndless){
+	  if (ndless && s=="shakeys.tns")
+	    continue;
+	  if ( (s=="khicas.tns" || s=="luagiac.luax.tns" || s=="khicaslua.tns" || s=="ptt.tns")){
+	    string ss=dirname+("/"+s);
+	    if (sha_check(ss.c_str(),nkeys,hash))
+	      continue;
+	  }
+	}
+	if (ndless){
+	  if ((s.substr(0,17)=="ndless_installer_" || s=="ndless_resources.tns" || s=="ndless.cfg.tns") ){
+	    string ss=dirname+("/"+s);
+	    if (sha_check(ss.c_str(),nkeys,hash))
+	      continue;
+	  }
+	}
+	s=dirname+("/"+s);
+	res=unlink(s.c_str());//*logptr(contextptr) << s << '\n'; //
+      }
+    }
+    closedir (dp);
+    return dp;
+  }
+  
+  void nspire_clear_data(GIAC_CONTEXT){
+    int maxkeys=32;
+    BYTE hash[maxkeys][SHA256_BLOCK_SIZE]={
+    };
+    int nkeys=rsa_check("/exammode/usr/ndless/shakeys.tns",maxkeys,hash);
+    if (nkeys<=0)
+      nkeys=rsa_check("/documents/ndless/shakeys.tns",maxkeys,hash);
+    if (lang==1)
+      *logptr(contextptr) << "Il y a " << nkeys << " empreintes cryptees de fichiers autorises\n";
+    else
+      *logptr(contextptr) << "Found " << nkeys << " valid crypted keys of secure files\n";
+    for (int i=0;i<nkeys;++i){
+      *logptr(contextptr) << "{";
+      for (int j=0;j<SHA256_BLOCK_SIZE;j++){
+	*logptr(contextptr) << hash[i][j] <<",";
+      }
+      *logptr(contextptr) << (lang==1?"Teste et efface les fichiers non autorisess\n":"}\nChecking and clearing non secure files\n");
+    }
+    nspire_clear_data("/exammode/usr",nkeys,hash,contextptr);
+    *logptr(contextptr) << (lang==1?"Fichiers non autorises effaces\nTapez menu menu pour relancer le mode examen\n":"Filesystem checked.\nPress menu menu to restart exam mode\n");
+  }
+#endif
+
+  // maybe we should use int nl_exec(const char *prgm_path, int argsn, char *args[])
 #ifdef NSPIRE_LED
 #include "kled.cc"
+#else
+#ifdef NSPIRE_NEWLIB
+  // #include "ptt"
+  void set_exam_mode(int i,GIAC_CONTEXT){
+    unsigned NSPIRE_RTC_ADDR=0x90090000;
+    unsigned t1= * (volatile unsigned *) NSPIRE_RTC_ADDR;
+    gen n=tabunsignedchar2gen(rsa_n_tab,sizeof(rsa_n_tab));
+    gen key=powmod(longlong(t1),65537,n);
+    key.uncoerce();
+    // char exec[]="/documents/ndless/ptt.tns";
+    char exec[]="/exammode/usr/ndless/ptt.tns";
+    char clef[]="/documents/rtc.tns";
+    char mode[2]="0";
+    char * args[]={clef,mode};
+    mode[0] += i;
+    FILE * f=fopen(clef,"w");
+    mpz_out_str(f,10,*key._ZINTptr);
+    fclose(f);
+    // main_ptt(1,0);
+    int res=nl_exec(exec,2,args);
+    //int res=nl_exec(exec,1,0);
+    // int res=nl_exec("/documents/ndless/ptt.tns",1,filenames);
+    unlink(clef);
+    exam_mode=i;
+  }
 #else
   void set_exam_mode(int i,GIAC_CONTEXT){
     exam_mode=i;
   }
+#endif
 #endif
   string print_duration(double & duration){
     if (duration<=0)
@@ -7341,6 +7630,8 @@ namespace xcas {
   }
 
   int check_leave(textArea * text){
+    if (nspire_exam_mode==2)
+      return 0;
     if (text->editable && text->filename.size()){
       if (text->changed){
 	// save or cancel?
@@ -8091,6 +8382,8 @@ namespace xcas {
   }
 
   void save_script(const char * filename,const string & s){
+    if (nspire_exam_mode==2)
+      return;
 #ifdef NUMWORKS
     char buf[s.size()+2];
     buf[0]=1;
@@ -8102,14 +8395,16 @@ namespace xcas {
 #ifdef NSPIRE_NEWLIB
     char filenametns[strlen(filename)+5];
     strcpy(filenametns,filename);
-    strcpy(filenametns+strlen(filename),".tns");
+    int l=strlen(filenametns);
+    if (l<4 || strncmp(filename+l-4,".tns",4))
+      strcpy(filenametns+strlen(filename),".tns");
     write_file(filenametns,buf);
 #else
     write_file(filename,buf);
 #endif
   }
 
-  bool textedit(char * s,int bufsize,bool OKparse,const giac::context * contextptr){
+  bool textedit(char * s,int bufsize,bool OKparse,const giac::context * contextptr,const char * filename){
     if (!s)
       return false;
     int ss=strlen(s);
@@ -8123,7 +8418,7 @@ namespace xcas {
     ta.editable=true;
     ta.clipline=-1;
     ta.changed=false;
-    ta.filename="temp.py";
+    ta.filename=filename?filename:"temp.py";
     ta.y=0;
     ta.python=true;
     ta.allowEXE=false;//true; // set back to true later
@@ -8838,7 +9133,9 @@ namespace xcas {
 	  }
 	}
 	break;
-      case KEY_SAVE: 
+      case KEY_SAVE:
+	if (nspire_exam_mode==2)
+	  continue;
 	save_script(text->filename.c_str(),merge_area(v));
 	text->changed=false;
 	char status[256];
@@ -8863,7 +9160,8 @@ namespace xcas {
 	  smallmenuitems[0].text = (char*)((lang==1)?"Tester syntaxe":"Check syntax");
 	  smallmenuitems[1].text = (char*)((lang==1)?"Sauvegarder":"Save");
 	  smallmenuitems[2].text = (char*)((lang==1)?"Sauvegarder comme":"Save as");
-	  if (exam_mode) smallmenuitems[2].text = (char*)"";
+	  if (nspire_exam_mode==2) smallmenuitems[1].text = (char*)(lang==1?"Sauvegarde desactivee":"Saving disabled");
+	  if (exam_mode || nspire_exam_mode==2) smallmenuitems[2].text = (char*)"";
 	  smallmenuitems[3].text = (char*)((lang==1)?"Inserer":"Insert");
 	  smallmenuitems[4].text = (char*)((lang==1)?"Effacer":"Clear");
 	  smallmenuitems[5].text = (char*)((lang==1)?"Chercher,remplacer":"Search, replace");
@@ -8916,14 +9214,14 @@ namespace xcas {
 	      if (err) // move cursor to the error line
 		textline=err-1;
 	    } 
-	    if (sres==3 && exam_mode==0){
+	    if (sres==3 && exam_mode==0 && nspire_exam_mode!=2){
 	      char filename[MAX_FILENAME_SIZE+1];
 	      if (get_filename(filename,".py")){
 		text->filename=filename;
 		sres=2;
 	      }
 	    }
-	    if(sres == 2) {
+	    if(sres == 2 && nspire_exam_mode!=2) {
 	      save_script(text->filename.c_str(),merge_area(v));
 	      text->changed=false;
 	      char status[256];
@@ -9117,8 +9415,6 @@ namespace xcas {
     Bdisp_PutDisp_DD();
   }
 
-  // #define is_cx2 false
-  
   void leave_exam_mode(GIAC_CONTEXT){
 #ifdef NSPIRE_NEWLIB
     // FIXME test USB connection instead
@@ -9182,6 +9478,7 @@ namespace xcas {
       confirm((lang==1)?"Fin du mode examen":"End exam mode","enter: OK");
   }    
 
+  
   void menu_setup(GIAC_CONTEXT){
     Menu smallmenu;
     smallmenu.numitems=15;
@@ -9303,6 +9600,42 @@ namespace xcas {
 	  break;
 	}
 	if (smallmenu.selection == 11){
+#ifdef NSPIRE_NEWLIB
+	  if (nspire_exam_mode==1){
+	    if (confirm((lang==1?"Quitter Xcas pour relancer le mode examen":"Leave Xcas to re-enter exam mode"),(lang==1?"!enter OK, esc annul":"enter OK, esc cancel."))!=KEY_CTRL_F1)
+	      break;
+	    do_restart(contextptr);
+	    clear_turtle_history(contextptr);
+	    Console_Init(contextptr);
+	    Console_Clear_EditLine();
+	    console_changed=0;
+	    nspire_clear_data(contextptr);
+	    nspire_exam_mode=2;
+	    set_exam_mode(0,contextptr);
+	    break;
+	  }
+	  else {
+	    //nspire_clear_data(contextptr);
+	    //set_exam_mode(0,contextptr);
+	    if (1
+		|| is_cx2
+		){
+	      textArea text;
+	      text.editable=false;
+	      text.clipline=-1;
+	      text.title = lang==1?"KhiCAS et mode examen":"KhiCAS and exam mode";
+	      add(&text,(lang==1)?
+		  "Attention, verifiez que le calcul formel est autorise avant d'utiliser KhiCAS en mode examen. En France, c'est en principe autorise lorsque la calculatrice graphique l'est (par exemple au bac)":
+		  "Warning! Check that CAS is allowed before running KhiCAS in exam mode.");
+	      const char exam_mode_fr_string[]="Pour utiliser KhiCAS en mode examen, il faut effectuer une preparation chez soi quelques heures avant avec une connection PC ou quelques minutes avant l'examen avec un autre etudiant ayant une Nspire CX ou CX II.\nLancer le mode examen sur la calculatrice cible (esc-on), recopier ndless et khicas.tns (ou luagiac.luax.tns et khicaslua.tns) sur la calculatrice cible en mode examen. Avec 2 calculatrices, recommencez sur l'autre calculatrice (mettre l'autre calculatrice en mode examen et copiez dessus ndless et khicas).\nActiver ndless (cable debranche) puis lancez KhiCAS puis touche calculatrice (en-dessous de esc) puis selectionner l'item 11. mode examen, valider : ceci va effacer les donnees et desactiver le clignotement des leds.\n\nAu debut de l'examen, lorsque le surveillant demande d'activer le mode examen, quittez KhiCAS en tapant menu menu (ou appuyez sur reset), le mode examen sera a nouveau actif et les leds clignoteront. Vous pouvez activer ndless et lancez KhiCAS.\nPour les institutions n'acceptant pas KhiCAS en mode examen: demandez a vos etudiants de redemarrer la calculatrice, puis faire esc-on et reinitialiser le mode examen.";
+	      const char exam_mode_en_string[]="Running KhiCAS in exam mode requires preparation at home with a PC or a few minutes with another student having a Nspire CX/CXII.\nActivate exam mode on the target calculator (esc-on), connect the PC or the other calculator, copy ndless and khicas.tns (or luagiac.luax.tns and khicaslua.tns) to the target calc (kept in exam mode). With 2 calculators, repeat on the other calculator.\n Activate ndless (disconnect the link) and run KhiCAS. Type the calculator key below esc then select 11. Exam mode. This will desactivate leds blinking and clear data. When exam begins, quit KhiCAS (menu menu) or press reset, exam mode will be active again and leds will blink. Activate ndless and run KhiCAS.\n\nFor institutions who do not want to allow KhiCAS, ask your students to reset their calculator, press esc-on and restart exam mode, this will clear ndless and KhiCAS.";
+	      add(&text,(lang==1)?exam_mode_fr_string:exam_mode_en_string);
+	      if (doTextArea(&text,contextptr)==KEY_SHUTDOWN)
+		return ;
+	      break;
+	    }
+	  }
+#endif // NSPIRE_NEWLIB
 	  if (!exam_mode && confirm((lang==1?"Verifiez que le calcul formel est autorise.":"Please check that the CAS is allowed."),(lang==1?"France: autorise au bac. Enter: ok, esc: annul":"enter: yes, esc: no"))!=KEY_CTRL_F1)
 	    break;
 #ifdef NUMWORKS
@@ -9352,13 +9685,13 @@ namespace xcas {
 	      exam_start=0;
 	      exam_duration=1;
 #endif
-	      set_exam_mode(1,contextptr);
 	      do_restart(contextptr);
 	      clear_turtle_history(contextptr);
 	      Console_Init(contextptr);
 	      Console_Clear_EditLine();
-	      console_changed=0;
+	      set_exam_mode(1,contextptr);
 	      strcpy(session_filename,"session.xw");
+	      console_changed=0;
 	      save_session(contextptr);
 	      if (edptr){
 		edptr->elements.resize(1);
@@ -10517,6 +10850,8 @@ namespace xcas {
 
 
   void save(const char * fname,GIAC_CONTEXT){
+    if (nspire_exam_mode==2)
+      return;
     clear_abort();
 #if 0
     return;
@@ -10601,15 +10936,19 @@ namespace xcas {
       strcpy(session_filename,filename.c_str());
       filename += ".xw.tns";
     }
-    else
-      return restore_script(filename,true,contextptr);
+    else {
+      if (file_exists((filename+".py.tns").c_str()))
+	return restore_script(filename,true,contextptr);
+    }
 #else
     if (file_exists((filename+".xw").c_str())){
       strcpy(session_filename,filename.c_str());
       filename += ".xw";
     }
-    else
-      return restore_script(filename,true,contextptr);
+    else {
+      if (file_exists((filename+".py").c_str()))
+	return restore_script(filename,true,contextptr);
+    }
 #endif
     if (!load_console_state_smem(filename.c_str(),contextptr)){
       int x=0,y=0;
@@ -10886,7 +11225,25 @@ namespace xcas {
     Console_Disp(1,contextptr);
     return true;
   }
-  
+
+#ifdef NSPIRE_NEWLIB
+  void check_nspire_exam_mode(GIAC_CONTEXT){
+    refresh_osscr();
+    if (nspire_exam_mode==2){
+      // reset
+      if (is_cx2)
+	*(unsigned *) 0x90140020=8*16;
+      else
+	*(unsigned *) 0x900a0008=2;
+    }
+    if (nspire_exam_mode==1){
+      set_exam_mode(3,contextptr); exam_mode=0;
+    }
+  }
+#else
+  void check_nspire_exam_mode(GIAC_CONTEXT){}
+#endif
+
   int Console_GetKey(GIAC_CONTEXT){
     int key;
     bool keytooltip=false;
@@ -11057,7 +11414,8 @@ namespace xcas {
 	  sess += session_filename;
 	  smallmenuitems[1].text = (char *) (sess.c_str());
 	  smallmenuitems[2].text = (char *) ((lang==1)?"Enregistrer sous":"Save session as");
-	  if (exam_mode)
+	  if (nspire_exam_mode==2) smallmenuitems[1].text = (char*)(lang==1?"Sauvegarde desactivee":"Saving disabled");
+	  if (exam_mode || nspire_exam_mode==2)
 	    smallmenuitems[2].text = (char *) "";
 	  smallmenuitems[3].text = (char*) ((lang==1)?"Charger session":"Load session");
 	  smallmenuitems[4].text = (char*)((lang==1)?"Nouvelle session":"New session");
@@ -11079,11 +11437,15 @@ namespace xcas {
 #endif
 	  if (exam_mode)
 	    smallmenuitems[16].text = (char*)((lang==1)?"Quitter le mode examen":"Quit exam mode");
+	  if (nspire_exam_mode==2)
+	    smallmenuitems[16].text = (char*)((lang==1)?"Relancer le mode examen":"Restart exam mode");
 	  if (shutdown_state)
 	    return KEY_SHUTDOWN;
 	  int sres = doMenu(&smallmenu);
 	  if(sres == MENU_RETURN_SELECTION || sres==KEY_CTRL_EXE) {
 	    if (smallmenu.selection==smallmenu.numitems){
+	      if (nspire_exam_mode==2)
+		check_nspire_exam_mode(contextptr);
 	      if (!exam_mode)
 		return KEY_CTRL_MENU;
 	      leave_exam_mode(contextptr);
@@ -11102,7 +11464,7 @@ namespace xcas {
 		break;
 	      }
 	    }
-	    if (smallmenu.selection==3 && !exam_mode){
+	    if (smallmenu.selection==3 && !exam_mode && nspire_exam_mode!=2){
 	      char buf[270];
 	      if (get_filename(buf,".xw")){
 		save(buf,contextptr);
@@ -11322,6 +11684,18 @@ namespace xcas {
 	Console_Disp(1,contextptr);
 	keytooltip=Console_tooltip(contextptr);
 	continue;
+      }
+      if (key==KEY_CTRL_PAGEDOWN){
+	int j=0;
+	for (int i=0;i<10;++i)
+	  j=Console_MoveCursor(CURSOR_DOWN);
+	return j;
+      }
+      if (key==KEY_CTRL_PAGEUP){
+	int j=0;
+	for (int i=0;i<10;++i)
+	  j=Console_MoveCursor(CURSOR_UP);
+	return j;
       }
       if (key == KEY_CTRL_UP)
 	return Console_MoveCursor(alph?CURSOR_ALPHA_UP:CURSOR_UP);
@@ -12158,6 +12532,8 @@ namespace xcas {
   }
 
   void save_session(GIAC_CONTEXT){
+    if (nspire_exam_mode==2)
+      return;
     if (strcmp(session_filename,"session") && console_changed){
       string tmp(session_filename);
       tmp += (lang==1)?" a ete modifie!":" was modified!";
@@ -12216,7 +12592,7 @@ namespace xcas {
   extern "C" void mp_stack_set_top(void *);
   extern "C" void mp_stack_set_limit(size_t);
 #endif
-  
+
   int console_main(GIAC_CONTEXT,const char * sessionname){
 #ifdef NUMWORKS
     mp_stack_ctrl_init();
@@ -12229,6 +12605,18 @@ namespace xcas {
     sheetptr=0;
     shutdown=do_shutdown;
 #ifdef NSPIRE_NEWLIB
+    // detect if leds are blinking
+    unsigned green=*(unsigned *) 0x90110b04;
+    unsigned red=*(unsigned *) 0x90110b0c;
+    if (green || red){
+      nspire_exam_mode=1;
+      if (1 || is_cx2){
+	if (!do_confirm(lang?"Le CAS est-il autorise en examen?":"Is CAS allowed during exam?"))
+	  return 0;
+      }
+    }
+    // CX and CX II we should modify the led colors to match CAS exam mode
+    // red value should be the same as green value -> yellow
     // try to detect emulator or real calc
     unsigned NSPIRE_SPEED=0x900B0000;
     unsigned speed=*(unsigned *)NSPIRE_SPEED;
@@ -12257,6 +12645,9 @@ namespace xcas {
     giac::angle_radian(os_get_angle_unit()==0,contextptr);
     //GetKey(&key);
     Console_Disp(1,contextptr);
+    if (nspire_exam_mode){ // must save LED state for restoration at end
+      set_exam_mode(2,contextptr); exam_mode=0;
+    }
     // GetKey(&key);
     char *expr=0;
 #ifndef NO_STDEXCEPT
@@ -12268,6 +12659,7 @@ namespace xcas {
 #ifdef NUMWORKS
 	return 0;
 #endif
+	check_nspire_exam_mode(contextptr);
 #ifdef MICROPY_LIB
 	python_free();
 #endif
@@ -12283,11 +12675,11 @@ namespace xcas {
       if (strcmp((const char *)expr,"restart")==0){
 	if (confirm((lang==1)?"Effacer variables?":"Clear variables?",
 #ifdef NSPIRE_NEWLIB
-		    (lang==1)?"enter: annul,  esc: confirmer":"enter: cancel,  esc: confirm"
+		    (lang==1)?"enter: confirmer,  esc: annuler":"enter: confirm,  esc: cancel"
 #else
-		    (lang==1)?"OK: annul,  Back: confirmer":"OK: cancel,  Back: confirm"
+		    (lang==1)?"OK: confirmer,  Back: annuler":"OK: confirm,  Back: cancel"
 #endif
-		    )!=KEY_CTRL_F6){
+		    )!=KEY_CTRL_F1){
 	  Console_Output(" cancelled");
 	  Console_NewLine(LINE_TYPE_OUTPUT,1);
 	  //GetKey(&key);
@@ -12314,6 +12706,7 @@ namespace xcas {
 #ifdef NUMWORKS
     return 0;
 #endif
+    check_nspire_exam_mode(contextptr);
     Console_Free();
     release_globals();
 #ifdef MICROPY_LIB

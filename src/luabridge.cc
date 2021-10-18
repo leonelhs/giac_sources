@@ -1,6 +1,6 @@
+#include "giacPCH.h"
 #include <os.h>
 #include <lauxlib.h>
-#include "giac.h"
 #include "luabridge.h"
 #include "kdisplay.h"
 
@@ -9,8 +9,33 @@ using namespace giac;
 //nio::console * std::console_cin_ptr=0;
 using namespace std;
 
+static int initialized=0;
+
+void luagiac_free(){
+#ifdef MICROPY_LIB
+  python_free();
+#endif
+  xcas::Console_Free();
+  giac::release_globals();
+}
+
+struct bridge_bidon_t{
+  bridge_bidon_t(){
+  }
+  ~bridge_bidon_t() {
+    if (initialized)
+      luagiac_free();
+  }
+};
+
+bridge_bidon_t bridge_bidon;
+
 void luagiac_init(){
-  nspirelua=true;
+  unsigned green=*(unsigned *) 0x90110b04;
+  unsigned red=*(unsigned *) 0x90110b0c;
+  if (green || red)
+    nspire_exam_mode=1; 
+  nspirelua=1;
   giac::context * contextptr=(giac::context *)giac::caseval("caseval contextptr");
   giac::micropy_ptr=micropy_ck_eval;
   freeze=true;
@@ -32,7 +57,6 @@ void luagiac_init(){
 }
 
 const char * giac_caseval(const char * s){
-  static int initialized=0;
   if (!initialized){
     luagiac_init();
     initialized=1;
@@ -40,8 +64,11 @@ const char * giac_caseval(const char * s){
   vx_var=identificateur("x");
   //static nio::console console_cin;
   //console_cin_ptr=&console_cin;
-  giac::debug_infolevel=2;
+  //giac::debug_infolevel=2;
+  int intmask = TCT_Local_Control_Interrupts(-1); // disable
   const char * res=giac::caseval(s);
+  reset_gc();
+  TCT_Local_Control_Interrupts(intmask); // restore (0 to enable)
   return res;
 }
 

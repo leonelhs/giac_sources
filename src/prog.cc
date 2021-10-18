@@ -190,7 +190,7 @@ namespace giac {
   gen check_secure(){
     if (secure_run
 #ifdef KHICAS
-	|| exam_mode
+	|| exam_mode || nspire_exam_mode
 #endif
 	)
       return gensizeerr(gettext("Running in secure mode"));
@@ -935,7 +935,8 @@ namespace giac {
       if (xcas_mode(contextptr)==3)
 	return res+":Func "+fb.print(contextptr)+"\n:EndFunc\n";
       if (fb.is_symb_of_sommet(at_local)){
-	gen fb0=fb._SYMBptr->feuille[0][0];
+	gen fb0=fb._SYMBptr->feuille[0];
+	//fb0=fb0[0];
 	if (fb0.type==_VECT && fb0._VECTptr->empty())
 	  return res+'{'+fb.print(contextptr)+'}';
       }
@@ -6532,7 +6533,7 @@ namespace giac {
       args=int(g._DOUBLE_val);    
     if (args.type!=_INT_)
       return eval_level(contextptr);
-    eval_level(contextptr)=args.val;
+    eval_level(contextptr)=giacmax(args.val,1);
     DEFAULT_EVAL_LEVEL=args.val;
     return args;
   }
@@ -8269,7 +8270,7 @@ namespace giac {
   }
   gen _read(const gen & args,GIAC_CONTEXT){
 #ifdef KHICAS
-    if (exam_mode)
+    if (exam_mode || nspire_exam_mode)
       return gensizeerr("Exam mode");
 #endif
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
@@ -8304,6 +8305,38 @@ namespace giac {
     size_t addr;
     if (is_address(args,addr))
       return (int) *(unsigned short *) addr;
+    if (args.type==_STRNG){
+#ifdef KHICAS
+      if (exam_mode || nspire_exam_mode)
+	return gensizeerr("Exam mode");
+#endif
+      FILE * f=fopen(args._STRNGptr->c_str(),"r");
+      if (!f)
+	return undef;
+      vecteur v,l; char buf[9]; buf[8]=0; int i;
+      for (i=0;;++i){
+	unsigned char c=fgetc(f);
+	buf[i&7]=(c>=32 && c<=127)?c:'.';
+	if (feof(f))
+	  break;
+	l.push_back(c);
+	if ((i&0x7)==0x7){
+	  l.insert(l.begin(),string2gen(buf,false));
+	  l.insert(l.begin(),i-7);
+	  v.push_back(l);
+	  l.clear();
+	}
+      }
+      if (!l.empty()){
+	for (int j=l.size();j<8;++j)
+	  l.push_back(-1);
+	l.insert(l.begin(),string2gen(buf,false));
+	l.insert(l.begin(),int(i&0xfffffff8));
+	v.push_back(l);
+      }
+      fclose(f);
+      return v;
+    }
     return gensizeerr(contextptr);
   }
   static const char _read16_s []="read16";
@@ -8407,7 +8440,7 @@ namespace giac {
   gen _write32(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
 #ifdef KHICAS
-    if (exam_mode)
+    if (exam_mode || nspire_exam_mode)
       return gensizeerr("Exam mode");
 #endif
     if (args.type!=_VECT)
@@ -8438,7 +8471,7 @@ namespace giac {
   gen _write16(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
 #ifdef KHICAS
-    if (exam_mode)
+    if (exam_mode || nspire_exam_mode)
       return gensizeerr("Exam mode");
 #endif
     if (args.type==_VECT){
@@ -8714,6 +8747,9 @@ namespace giac {
     gen graphe=symbolic(at_plotfunc,
 			gen(makevecteur(_cell(makevecteur(vecteur(1,minus_one),vecteur(1,zero)),contextptr),
 					symb_equal(_cell(makevecteur(vecteur(1,minus_one),vecteur(1,minus_one)),contextptr),symb_interval(xstart,xmax))
+#ifdef NUMWORKS
+					,symb_equal(change_subtype(_NSTEP,_INT_PLOT),100)
+#endif
 				    ),_SEQ__VECT));
     graphe.subtype=_SPREAD__SYMB;
     vecteur l1(makevecteur(step,graphe));

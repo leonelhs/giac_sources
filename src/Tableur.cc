@@ -1190,6 +1190,8 @@ namespace xcas {
 	spread_ptr->update_input();
         return;
       }
+      if (g.type>=_IDNT && spread_ptr->is_spreadsheet && v[C].type!=_VECT)
+	v[C]=makevecteur(v[C],0,0);
       if ( (v[C].type==_VECT) && (v[C]._VECTptr->size()==3)){
 	v[C]._VECTptr->front()=spread_convert(g,R,C,contextptr);
 	if (!spread_ptr->is_spreadsheet)

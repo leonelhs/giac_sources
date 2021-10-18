@@ -417,6 +417,7 @@ dnl		AC_CHECK_LIB(GLU, main)
   fi
 LIBS="$save_LIBS"
 
+AC_CHECK_LIB(cliquer,main) 
 AC_CHECK_LIB(nauty,main)
 AC_CHECK_HEADERS(nauty/naututil.h)
 dnl https://github.com/vectorclass by Agner Fog
