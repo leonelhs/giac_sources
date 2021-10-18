@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title></title>
+</head>
+<script src="numworks.js"></script>
+<script src="nws_sig.js"></script>
+<script src="nws.js"></script>
+
+<body>
+<h1>Outils Numworks</h1>
+<ul>
+  <li>
+  <button
+  onclick="UI.numworks_install_delta();">Installation
+  KhiCAS+Delta</button><br>
+  Si votre calculatrice est bloqu&eacute;e,
+  vous pouvez installer <a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr#xcaswin">Xcas</a> puis dans le menu
+  <tt>Fich</tt>, sous-menu <tt>Numworks</tt>, choisissez
+  <tt>Assistance calculatrice bloquee</tt> pour installer le mode
+  de r&eacute;cup&eacute;ration sur la Numworks.
+  <!--- <li>
+  Assistance calculatrice bloqu&eacute;e
+  <button
+  onclick="UI.numworks_rescue();">r&eacute;cup&eacute;ration</button>
+  !--->
+  <li>
+  Pour certifier que le firmware d'une calculatrice Numworks N0110 est
+  une version non modifi&eacute;e de Delta+KhiCAS, cliquez sur l'un des
+  deux boutons
+  <br>
+  <button
+  onclick="UI.numworks_certify(nws_sig,false);">Certification</button> 
+  <button
+  onclick="UI.numworks_certify(nws_sig,true);">Certification + R/W test</button>
+  <br>
+  Le premier test prend 15 secondes environ, le deuxi&egrave;me est plus
+s&eacute;curis&eacute; mais dure 1 minute environ.
+</ul>
+Cette page fonctionne uniquement avec un navigateur compatible webusb,
+par exemple Chromium ou Chrome et avec un serveur.
+Pour une utilisation en local, il faut activer un serveur, par exemple
+avec la commande <tt>python3 -m http.server</tt>, puis cliquer
+<a href="localhost:8000/nws.html">sur ce lien</a>.
+
+
+<hr>
+<div id="output" style="max-height: 200px; overflow:auto"></div>
+<hr>
+<address></address>
+<!-- hhmts start -->Last modified: Fri Jul 30 09:34:22 CEST 2021 <!-- hhmts end -->
+</body> </html>
+<script language="javascript">
+window.onload = function (e) {
+if (!navigator.usb) alert(UI.langue==-1?'Utilisez un navigateur compatible usb comme Chromium ou Chrome':'Requires a webusb browser like Chromium or Chrome');
+}
+</script>

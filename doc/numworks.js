@@ -636,15 +636,15 @@ DFU.Device = class {
         do {
             bytes_to_read = Math.min(xfer_size, max_size - bytes_read);
             result = await this.upload(bytes_to_read, transaction++);
-            this.logDebug("Read " + result.byteLength + " bytes");
+            // this.logDebug("Read " + result.byteLength + " bytes");
             if (result.byteLength > 0) {
                 blocks.push(result);
                 bytes_read += result.byteLength;
             }
             if (Number.isFinite(max_size)) {
-                this.logProgress(bytes_read, max_size);
+                //this.logProgress(bytes_read, max_size);
             } else {
-                this.logProgress(bytes_read);
+                //this.logProgress(bytes_read);
             }
         } while ((bytes_read < max_size) && (result.byteLength === bytes_to_read));
 
@@ -1330,6 +1330,42 @@ class Numworks {
         this.device.startAddress = 0x080001c4;
         const blob = await this.device.do_upload(this.transferSize, 0x48);
         return this.__parsePlatformInfo(await blob.arrayBuffer());
+    }
+    
+    async get_internal_flash() {
+        this.device.startAddress = 0x08000000;
+        const blob = await this.device.do_upload(this.transferSize, 0x8000);
+        return await blob.arrayBuffer();
+    }
+    
+    async get_external_flash() {
+        this.device.startAddress = 0x90000000;
+        const blob = await this.device.do_upload(this.transferSize, 0x100000);
+        return await blob.arrayBuffer();
+    }
+
+    async rw_check(addr,n){
+      this.device.startAddress = addr;
+      let data=new Uint8Array(n);
+      let i;
+      for (i=0;i<n;++i){
+	let j=Math.floor(Math.random()*n);
+	data[j]=Math.floor(Math.random()*0xff);
+      }
+      await this.device.do_download(this.transferSize, data, false);
+      const blob = await this.device.do_upload(this.transferSize, n);
+      let data1= new Uint8Array(await blob.arrayBuffer());
+      for (i=0;i<n;++i){
+	if (data[i]!=data1[i])
+	  break;
+      }
+      return i==n;
+    }
+  
+    async get_apps() {
+        this.device.startAddress = 0x90200000;
+        const blob = await this.device.do_upload(this.transferSize, 0x600000);
+        return await blob.arrayBuffer();
     }
     
     async __autoConnectDevice(device) {

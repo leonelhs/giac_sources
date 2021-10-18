@@ -76,16 +76,20 @@ if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
 </p><table class="title"><tr><td style="padding:1ex"><h1 class="titlemain"><math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>&chi;</mi></mrow><annotation encoding='application/x-tex'>\chi</annotation></semantics></math>CAS pour Numworks N0110</h1><h3 class="titlerest">Bernard.Parisse@ujf-grenoble.fr</h3><h3 class="titlerest">2021</h3></td></tr>
 </table><p><span style="font-weight:bold">Avertissement</span>
 Numworks va fermer ses calculatrices aux développements tiers. À partir
-de la version stable 16, il sera impossible d’installer <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>&chi;</mi></mrow><annotation encoding='application/x-tex'>\chi</annotation></semantics></math>CAS sur votre
+de la version stable 16 prévue pour la rentrée 2021, 
+il sera impossible d’installer <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>&chi;</mi></mrow><annotation encoding='application/x-tex'>\chi</annotation></semantics></math>CAS sur votre
 Numworks et impossible de revenir en arrière. <span style="font-weight:bold">Il est donc essentiel
-de ne pas mettre à jour votre calculatrice sur le site de Numworks</span>
-et de diffuser cette information aux personnes susceptibles de le faire.
+de ne pas mettre à jour votre calculatrice sur le site de
+Numworks. Si vous achetez une calculatrice, demandez un numéro
+de version du logiciel </span><math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mo>&leq;</mo></mrow><annotation encoding='application/x-tex'>\leq</annotation></semantics></math><span style="font-weight:bold">15.</span>
+Diffusez cette information aux personnes susceptibles de faire une
+mise à jour.
 Prenez garde en particulier lorsque vous vous connectez sur le workshop
 de Numworks, il est fort possible que le site vous propose (voire
 impose) une mise à jour sans vous avertir que cela bloque <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>&chi;</mi></mrow><annotation encoding='application/x-tex'>\chi</annotation></semantics></math>CAS .
 Utilisez de préférence une version à jour de 
 <a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html">Xcas</a>.
-(1.7.0-19 au moins) qui permet dorénavant d’échanger des programmes
+(1.7.0-23 au moins) qui permet dorénavant d’échanger des programmes
 entre la calculatrice et votre ordinateur.</p><p>Plus d’informations <a href="https://tiplanet.org/forum/viewtopic.php?f=97&t=24968">sur le site TI-Planet</a>. Si vous trouvez cette évolution désastreuse,
 vous pouvez signer <a href="https://www.change.org/freenumworks">une pétition en ligne</a> ou mieux contacter
 Numworks et leur faire part de votre opinion.</p><!--TOC section id="sec1" Table des matières-->
@@ -435,6 +439,17 @@ remplacer par tous les programmes de la session Xcas actuelle
 </li><li class="li-itemize">restaurer votre calculatrice à partir d’une sauvegarde
 </li><li class="li-itemize">installer Delta+<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>&chi;</mi></mrow><annotation encoding='application/x-tex'>\chi</annotation></semantics></math>CAS sur une calculatrice (il suffit de le
 faire une fois pour toutes)
+</li><li class="li-itemize">débloquer une calculatrice Numworks. Ceci fonctionnera
+sur toute calculatrice N0110 qui n’est pas verrouillée par
+une mise à jour faite sur le site de Numworks après septembre
+2021. Cela utilise
+le bootloader du fabricant du microprocesseur (ST) 
+que l’on lance en maintenant la touche 6
+de la calculatrice enfoncée en appuyant sur RESET 
+à l’arrière de la calculatrice en même temps.
+Ce sous-menu envoie un bootloader “rescue mode” dans la RAM de la
+calculatrice et l’exécute, on peut ensuite installer Delta+<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>&chi;</mi></mrow><annotation encoding='application/x-tex'>\chi</annotation></semantics></math>CAS (ou toute
+autre version dérivée d’Epsilon <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mo>&leq;</mo><mn>15</mn></mrow><annotation encoding='application/x-tex'>\leq 15</annotation></semantics></math>).
 </li><li class="li-itemize">certifier que la version de Delta+<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>&chi;</mi></mrow><annotation encoding='application/x-tex'>\chi</annotation></semantics></math>CAS de la
 calculatrice d’un élève est identique à
 celle fournie avec Xcas (et n’a donc pas été
@@ -443,12 +458,14 @@ personnelles).
 </li></ul><p><a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html">La
 version web de Xcas</a> utilisée avec un
 navigateur compatible webusb, par exemple Chrome ou Chromium
-permet d’échanger des données avec la calculatrice Numworks.
+permet d’échanger des données avec la calculatrice Numworks. 
+C’est la méthode recommandée Sur Mac. 
 En cliquant sur le bouton Numworks<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mo>&rightarrow;</mo></mrow><annotation encoding='application/x-tex'>\rightarrow</annotation></semantics></math>, on peut importer
 un script de la calculatrice vers la feuille de calcul du navigateur,
 le modifier, puis le renvoyer vers la calculatrice avec le bouton
-Export.
-Sur Mac, il est conseillé d’utiliser cette méthode.</p>
+Export. En affichant la section Numworks de la documentation
+(depuis le bouton Doc) on a également accès à la certification
+du firmware Delta+<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>&chi;</mi></mrow><annotation encoding='application/x-tex'>\chi</annotation></semantics></math>CAS.</p>
 <!--TOC section id="sec6" Commandes usuelles de calcul formel-->
 <h2 id="sec6" class="section">5  Commandes usuelles de calcul formel</h2><!--SEC END -->
 <!--TOC subsection id="sec7" Développer et factoriser-->

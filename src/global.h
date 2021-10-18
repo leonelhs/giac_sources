@@ -112,6 +112,7 @@ extern "C" const char * console_prompt(const char * s);
 bool dfu_get_scriptstore_addr(size_t & start,size_t & taille);
 bool dfu_get_scriptstore(const char * fname);
 bool dfu_send_scriptstore(const char * fname);
+bool dfu_send_rescue(const char * fname);
 const int nwstoresize1=0x8000,nwstoresize2=0x8014;
 bool dfu_send_firmware(const char * fname);
 bool dfu_send_apps(const char * fname);
@@ -534,7 +535,7 @@ throw(std::runtime_error("Stopped by user interruption.")); \
   bool map2scriptstore(const nws_map & m,const char * fname);
   // check that filename content matches a file content signed in sigfilename
   bool sha256_check(const char * sigfilename,const char * filename);
-  bool nws_certify_firmware(GIAC_CONTEXT); // Numworks certification
+  bool nws_certify_firmware(bool with_overwrite,GIAC_CONTEXT); // Numworks certification
 
   struct parser_lexer {
     int _index_status_; // 0 if [ -> T_VECT_DISPATCH, 1 if [ -> T_INDEX_BEGIN

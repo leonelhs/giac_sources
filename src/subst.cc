@@ -2364,11 +2364,11 @@ namespace giac {
 		e2=subst(e,var,(symb_pow(var,vexp._FRACptr->den)-b)/a,false,contextptr);
 	      e2=eval(e2,1,contextptr); // simplifies power if assumptions avail.
 	      gen e3=simplify(e2,contextptr);
-	      e2=subst(e3,var,vpow[i],false,contextptr);
 	      if (varval!=var)
 		sto(varval,var,contextptr);
 	      else
 		purgenoassume(var,contextptr);
+	      e2=subst(e3,var,vpow[i],false,contextptr);
 	      e2=recursive_ratnormal(e2,contextptr);
 	      return e2;
 	    }

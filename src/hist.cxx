@@ -1099,7 +1099,7 @@ static void cb_Xcas_send_numworks_xws(Fl_Menu_*, void*) {
   xcas::History_cb_Send_session_numworks(Xcas_current_session(),0);
 }
 
-static void cb_Xcas_send_numworks_xws1(Fl_Menu_*, void*) {
+static void cb_Xcas_send_numworks_prog(Fl_Menu_*, void*) {
   xcas::cb_Editeur_Send_Numworks(xcas::Xcas_input_focus,0);
 }
 
@@ -1116,41 +1116,61 @@ static void cb_Xcas_nw_backup(Fl_Menu_*, void*) {
   const char * newfile=file_chooser("Enter file name", "*.nws", "backup.nws");
              if (!newfile) return;
              if (giac::is_file_available(newfile)){
-                int i=fl_ask("File %s exists. Overwrite?",newfile);
+                int i=fl_ask(gettext("File %s exists. Overwrite?"),newfile);
                 if ( !i ) return;
              }
              if (!dfu_get_scriptstore(newfile))
-               fl_alert("%s","Unable to backup calculator");
+               fl_alert("%s",gettext("Unable to backup calculator"));
 }
 
 static void cb_Xcas_nw_restore(Fl_Menu_*, void*) {
   const char * newfile=load_file_chooser("","*.nws","*.nws",0,false); 
              if (newfile){ 
                 if (!dfu_send_scriptstore(newfile))
-                  fl_alert("%s","Unable to restore backup to calculator");
+                  fl_alert("%s",gettext("Unable to restore backup to calculator"));
              };
-}
-
-static void cb_Xcas_nw_certify(Fl_Menu_*, void*) {
-  bool b=giac::nws_certify_firmware(Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
 }
 
 static void cb_Xcas_nw_install(Fl_Menu_*, void*) {
   char fname[]="backup.nws";
              if (!dfu_get_scriptstore(fname))
-               fl_alert("%s","Unable to backup calculator");
+               fl_alert("%s",gettext("Unable to backup calculator"));
 	     else {
               std::string prefix=giac::giac_aide_dir()+"doc/";
               if (!dfu_send_firmware((prefix+"epsilon.dfu").c_str()))
-                fl_alert("%s","Unable to send firmware");
+                fl_alert("%s",gettext("Unable to send firmware"));
               else if (!dfu_send_apps((prefix+"apps.tar").c_str()))
-                fl_alert("%s","Unable to send KhiCAS");
+                fl_alert("%s",gettext("Unable to send KhiCAS"));
               else {
-                fl_alert("Install success. Reset the calculator, then connect to restore backup %s",fname);
+                fl_alert(gettext("Install success. Reset the calculator, then connect to restore backup %s"),fname);
 		dfu_send_scriptstore(fname);
               }
              };
+}
+
+static void cb_Xcas_nw_rescue(Fl_Menu_*, void*) {
+  int i=fl_ask(gettext("Connect the calculator,\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\nThe screen should be down and the led should be red")); if (!i) return;
+             std::string prefix=giac::giac_aide_dir()+"doc/";
+             if (!dfu_send_rescue((prefix+"recovery").c_str()))
+               fl_alert("%s",gettext("Unable to send rescue RAM image to the Numworks calculator."));
+              i=fl_ask(gettext("Install KhiCAS?"));
+              if (!i) return;
+              if (!dfu_send_firmware((prefix+"epsilon.dfu").c_str()))
+                fl_alert("%s",gettext("Unable to send firmware"));
+              else if (!dfu_send_apps((prefix+"apps.tar").c_str()))
+                fl_alert("%s",gettext("Unable to send KhiCAS"));
+              else 
+                fl_alert(gettext("Install success. Press the RESET button on the calculator back."));
+}
+
+static void cb_Xcas_nw_certify(Fl_Menu_*, void*) {
+  bool b=giac::nws_certify_firmware(false,Xcas_get_context());
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
+}
+
+static void cb_Xcas_nw_certify_overwrite(Fl_Menu_*, void*) {
+  bool b=giac::nws_certify_firmware(true,Xcas_get_context());
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
 }
 
 static void cb_Xcas_Export_nws(Fl_Menu_*, void*) {
@@ -2108,13 +2128,15 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Documentation", 0,  (Fl_Callback*)cb_Xcas_nws_doc, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Open calculator session", 0,  (Fl_Callback*)cb_Xcas_open_numworks_xws, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Send session to calculator", 0,  (Fl_Callback*)cb_Xcas_send_numworks_xws, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Send program to calculator", 0,  (Fl_Callback*)cb_Xcas_send_numworks_xws1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send program to calculator", 0,  (Fl_Callback*)cb_Xcas_send_numworks_prog, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Import all programs from calculator", 0,  (Fl_Callback*)cb_Xcas_open_nws_calc, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Overwrite calculator", 0,  (Fl_Callback*)cb_Xcas_Export_nws_calc, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Backup Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_backup, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Restore Numworks from backup", 0,  (Fl_Callback*)cb_Xcas_nw_restore, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Certification du firmware Numworks", 0,  (Fl_Callback*)cb_Xcas_nw_certify, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Install KhiCAS on Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_install, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Rescue mode (calculator assistance)", 0,  (Fl_Callback*)cb_Xcas_nw_rescue, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Certification du firmware Numworks N0110", 0,  (Fl_Callback*)cb_Xcas_nw_certify, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Certification N0110 avec test R/W", 0,  (Fl_Callback*)cb_Xcas_nw_certify_overwrite, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Export as", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"Numworks Archive", 0,  (Fl_Callback*)cb_Xcas_Export_nws, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3424,7 +3446,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<362; i++)
+        for ( ; i<364; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

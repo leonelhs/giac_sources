@@ -649,7 +649,15 @@
 	      Numworks calculator Xcas, it can be
 	      <a href="https://parisseb.github.io/nw-external-apps/"
                     target="_blank">installed </a> on
-	      Numworks N0110 with a version of the OS lower or equal to 15.
+	      Numworks N0110 with a version of the OS lower or equal
+	      to 15.
+	      You can certify that a Numworks N0110 firmware is
+	      Delta+KhiCAS by clicking on the button
+	      	      <button
+                    onclick="UI.numworks_certify(nws_sig,false);">Certification</button> or
+	      <button
+                    onclick="UI.numworks_certify(nws_sig,true);">Certification
+	      with read/write test</button>.
 	      <b>Beware, upgrades from the Numworks official website
 	      versions 16 (or more) are incompatible with Xcas and if
 	      you upgrade this is irreversible</b>. <a
@@ -3594,6 +3602,7 @@ If you want to see informations while a computation is running, run first
 </style>
 <script src="xcas.js"></script>
 <script src="numworks.js"></script>
+<script src="nws_sig.js"></script>
 <script type='text/javascript'>
     // remove existing codemirror field
     prog = $id('prog');

@@ -2599,6 +2599,144 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     UI.nws_connect();
     window.setTimeout(UI.numworks_load_,100);
   },
+  sig_check:async function(sig,data){
+    // sig should be a list of lists of size 3 (name, length, hash)
+    /* c++ program to generate nws_sig.js
+// -*- mode:C++ ; compile-command: "/usr/bin/g++ -g nws_sig.cc sha256.c -Wall -o nws_sig" -*-
+// Pour pouvoir certifier compiler puis faire 
+// ./nws_sig /shared/numworks/nw-external-apps/firmware/* ../doc/apps.tar 
+// recopier nws_sig.js dans le repertoire de xcasfr.html
+#include <sys/stat.h>
+#include <sys/types.h>
+#include "sha256.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <string.h>
+using namespace std;
+const char sigfname[]="nws_sig.js";
+const int MAXKEYS=64;
+std::string remove_path(const std::string & st){
+  int s=int(st.size()),i;
+  for (i=s-1;i>=0;--i){
+    if (st[i]=='/')
+	break;
+  }
+  return st.substr(i+1,s-i-1);
+}
+
+int main(int argc,const char ** argv){
+  if (argc<2)
+    return 0;
+  if (argc>MAXKEYS)
+    argc=MAXKEYS+1;
+  ofstream of(sigfname);
+  // BYTE hash[MAXKEYS][SHA256_BLOCK_SIZE];
+  BYTE buf[SHA256_BLOCK_SIZE];
+  SHA256_CTX ctx;
+  of << "var nws_sig=[\n";
+  for (int j=1;j<argc;++j){
+    string text;
+    FILE * f=fopen(argv[j],"r");
+    if (!f)
+      return 0;
+    size_t taille=0;
+    for (;;++taille){
+      unsigned char c=fgetc(f);
+      if (feof(f))
+	break;
+      text += c;
+    }
+    fclose(f);
+    unsigned char * ptr=(unsigned char *)text.c_str();
+    sha256_init(&ctx);
+    sha256_update(&ctx, ptr, text.size());
+    sha256_final(&ctx, buf);
+    of << '[' << '"' << remove_path(argv[j]) << '"' << "," << taille << ", [";
+    for (int i=0;i<SHA256_BLOCK_SIZE;++i){
+      of << (unsigned) buf[i] << ",";
+      // bcd convert
+      //int b=buf[i];
+      //b = (b/100+'0')*65536+(((b/10)%10)+'0')*256+((b%10)+'0');
+    }
+    of << "]],\n";
+  }
+  of << "];\n";
+  of.close();
+  return 0;
+}
+     // end of C program to generate nws_sig.js */
+    let i=0,l=sig.length;
+    for (;i<l;++i){
+      let cur=sig[i];
+      console.log('sig_check',cur[1],data.byteLength);
+      if (cur[1]>data.byteLength) continue;
+      let dat=data.slice(0,cur[1]);
+      let digest = await window.crypto.subtle.digest('SHA-256', dat);
+      digest=Array.from(new Uint8Array(digest));
+      console.log(cur[2],digest);
+      let j=0;
+      for (;j<32;++j){
+	let tst=(digest[j]-cur[2][j]) % 256;
+	// console.log(j,digest[j],cur[2][j]);
+	if (tst)
+	  break;
+      }
+      if (j==32){
+	console.log('signature match',cur[0]);
+	return true;
+      }      
+    }
+    return false;
+  },
+  numworks_certify:function(sigfile,rwcheck=false){
+    UI.calc=2;
+    UI.nws_connect();
+    window.setTimeout(UI.numworks_certify_,100,sigfile,rwcheck);
+  },
+  numworks_certify_:async function(sigfile,rwcheck){
+    if (UI.calculator==0 || !UI.calculator_connected){
+      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      return -1;
+    }
+    if (rwcheck)
+      alert(UI.langue==-1?'Le test va prendre une petite minute':'Test will take about 1 minute');
+    else
+      alert(UI.langue==-1?'Le test va prendre environ 20 secondes':'Test will take about 20 seconds');
+    let internal=await UI.calculator.get_internal_flash();
+    //console.log(sigfile);
+    let res=await UI.sig_check(sigfile,internal);
+    if (!res){
+      alert(UI.langue==-1?'Flash interne non certifiee':'Internal flash not certified');
+      return 1;
+    }
+    Module.print('Internal flash OK');
+    let external=await UI.calculator.get_external_flash();
+    res=await UI.sig_check(sigfile,external);
+    if (!res){
+      alert(UI.langue==-1?'Flash externe non certifiee':'External flash not certified');
+      return 2;
+    }
+    Module.print('External flash OK');
+    let apps=await UI.calculator.get_apps();
+    res=await UI.sig_check(sigfile,apps);
+    if (!res){
+      alert(UI.langue==-1?'Applications non certifiees':'Applications not certified');
+      return 3;
+    }
+    Module.print('Apps OK');
+    if (rwcheck){
+      Module.print('R/W check');
+      res=await UI.calculator.rw_check(0x90100000,0x100000);
+      if (!res){
+	alert(UI.langue==-1?'Echec du test lecture/ecriture':'Read/Write test failure');
+	return 4;
+      }
+      Module.print('R/W OK');
+    }
+    alert(UI.langue==-1?'Firmware certifie':'Firmware certified');
+    return 0;
+  },
   numworks_load_: async function(){
     console.log(UI.calculator,UI.calculator_connected);
     if (UI.calculator==0 || !UI.calculator_connected){

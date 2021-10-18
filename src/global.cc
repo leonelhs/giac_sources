@@ -238,7 +238,7 @@ int dfu_exec(const char * s_){
 #ifdef __APPLE__
   string s(s_);
   s="/Applications/usr/bin/"+s;
-  return system(s.c_str());
+  return giac::system_no_deprecation(s.c_str());
 #else
   return system(s_);
 #endif
@@ -276,6 +276,11 @@ bool dfu_send_scriptstore(const char * fname){
   return !dfu_exec(s.c_str());
 } 
 
+bool dfu_send_rescue(const char * fname){
+  string s=string("dfu-util -i0 -a0 -s 0x20030000:force:leave -D ")+ fname;
+  return !dfu_exec(s.c_str());
+}
+
 bool dfu_send_firmware(const char * fname){
   string s=string("dfu-util -i0 -a0 -D ")+ fname;
   return !dfu_exec(s.c_str());
@@ -296,6 +301,42 @@ bool dfu_get_epsilon(const char * fname){
   unlink(fname);
   string s=string("dfu-util -i 0 -a 0 -s 0x90000000:0x100000 -U ")+ fname;
   return !dfu_exec(s.c_str());
+}
+
+// check that we can really read/write on the Numworks at 0x90100000
+// and get the same
+bool dfu_check_epsilon2(const char * fname){
+  FILE * f=fopen(fname,"w");
+  int n=0x100000;
+  char * ptr=(char *) malloc(n);
+  srand(time(NULL));
+  int i;
+  for (i=0;i<n;++i){
+    int j=(rand()/(1.0+RAND_MAX))*n;
+    ptr[j]=rand();
+  }
+  for (i=0;i<n;++i){
+    fputc(ptr[i],f);
+  }
+  fclose(f);
+  // write to the device something that can not be guessed 
+  // without really storing to flash
+  string s=string("dfu-util -i 0 -a 0 -s 0x90100000:0x100000 -D ")+ fname;
+  if (dfu_exec(s.c_str()))
+    return false;
+  // retrieve it and compare
+  unlink(fname);
+  s=string("dfu-util -i 0 -a 0 -s 0x90100000:0x100000 -U ")+ fname;
+  if (dfu_exec(s.c_str()))
+    return false;
+  f=fopen(fname,"r");
+  for (i=0;i<n;++i){
+    char ch=fgetc(f);
+    if (ch!=ptr[i])
+      break;
+  }
+  fclose(f);
+  return i==n;
 }
 
 bool dfu_get_apps(const char * fname){
@@ -714,7 +755,7 @@ namespace giac {
     return false;
   }
   
-  bool nws_certify_firmware(GIAC_CONTEXT){
+  bool nws_certify_firmware(bool withoverwrite,GIAC_CONTEXT){
     string sig(giac::giac_aide_dir()+"shakeys");
     if (!is_file_available(sig.c_str())){
 #ifdef __APPLE__
@@ -751,6 +792,11 @@ namespace giac {
     if (!dfu_get_apps(apps)) return false;
     *logptr(contextptr) << "Verification de signature epsilon\n" ;
     if (!sha256_check(sig.c_str(),epsilon)) return false;
+    const char eps2name[]="eps2__";
+    if (withoverwrite && !dfu_check_epsilon2(eps2name)){
+      *logptr(contextptr) << "Le test d'ecriture et relecture a echoue. Le firwmare n'est peut-etre pas conforme.\n";
+      return false;
+    }
     *logptr(contextptr) << "Signature applications conforme\nCalculatrice conforme à la reglementation\nCertification par le logiciel Xcas\nInstitut Fourier\nUniversité de Grenoble\nAssurez-vous d'avoir téléchargé Xcas sur\nwww-fourier.ujf-grenoble.fr/~parisse/install_fr.html\n" ;
     return true;
   }
@@ -1682,8 +1728,12 @@ extern "C" void Sleep(unsigned int miliSecond);
 
   void angle_mode(int b, GIAC_CONTEXT)
   {
-    if(contextptr && contextptr->globalptr)
+    if(contextptr && contextptr->globalptr){
+#ifdef POCKETCAS
+      _angle_mode_ = b;
+#endif
       contextptr->globalptr->_angle_mode_ = b;
+    }
     else
       _angle_mode_ = b;
   }

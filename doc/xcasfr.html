@@ -618,7 +618,8 @@
 	      Sur les navigateurs qui impl&eacute;mentent webusb (par
 	      exemple Chromium ou Chrome), vous pouvez
 	      &eacute;changer facilement des scripts avec une
-	      calculatrice Numworks.<br>
+	      calculatrice Numworks. 
+	      <br>
 	      Pour r&eacute;cup&eacute;rer un script depuis la
 	      calculatrice, cliquer sur le bouton Numworks→. Pour
 	      renvoyer un script vers la Numworks, cliquer sur le
@@ -633,7 +634,13 @@
 	      <a href="https://parisseb.github.io/nw-external-apps/"
                     target="_blank">s'installe </a> sur les
 	      Numworks N0110 qui ont une version du syst&egrave;me
-	      inf&eacute;rieure ou &eacute;gale &agrave; 15:
+	      inf&eacute;rieure ou &eacute;gale &agrave; 15. Vous pouvez certifier
+	      qu'une calculatrice Numworks contient le firmware
+	      Delta+KhiCAS en cliquant sur le bouton
+	      <button
+                    onclick="UI.numworks_certify(nws_sig,false);">Certification</button> ou
+	      <button
+                    onclick="UI.numworks_certify(nws_sig,true);">Certification avec test d'&eacute;criture</button>.
 	      <b>Attention, ne mettez pas &agrave; jour votre calculatrice
 	      sur le site officiel de Numworks, les mises
 	      &agrave; jour versions 16 ou plus sont
@@ -3784,6 +3791,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
 </style>
 <script src="xcas.js"></script>
 <script src="numworks.js"></script>
+<script src="nws_sig.js"></script>
 <script type='text/javascript'>
     // remove existing codemirror field
     prog = $id('prog');
